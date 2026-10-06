@@ -1,0 +1,215 @@
+/* ---------------------------------------------------------------------------
+   Design tokens
+   --------------------------------------------------------------------------- */
+:root {
+	color-scheme: light;
+
+	--font-sans:
+		'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+	--font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+	--bg: #f6f5f1;
+	--surface: #ffffff;
+	--surface-2: #efede7;
+	--surface-3: #e6e3da;
+	--text: #1c1b19;
+	--text-muted: #6b6963;
+	--text-faint: #9d9a92;
+	--border: rgba(28, 27, 25, 0.1);
+	--border-strong: rgba(28, 27, 25, 0.2);
+	--accent: #2f5fd0;
+	--accent-contrast: #ffffff;
+	--focus: #2f5fd0;
+	--shadow-sm: 0 1px 2px rgba(20, 18, 10, 0.05);
+	--shadow-md: 0 1px 2px rgba(20, 18, 10, 0.04), 0 10px 30px -14px rgba(20, 18, 10, 0.25);
+	--shadow-lg: 0 2px 4px rgba(20, 18, 10, 0.05), 0 24px 60px -24px rgba(20, 18, 10, 0.35);
+
+	/* Stage (illustration) colours that depend on the theme */
+	--stage-bg: #fbfaf7;
+	--stage-ink: #2a2926;
+	--stage-ink-muted: #7a776f;
+	--stage-line: #c8c4b8;
+	--stage-grid: rgba(28, 27, 25, 0.06);
+
+	--radius-sm: 6px;
+	--radius-md: 10px;
+	--radius-lg: 16px;
+
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:root[data-theme='dark'] {
+	color-scheme: dark;
+
+	--bg: #111214;
+	--surface: #1a1b1e;
+	--surface-2: #222327;
+	--surface-3: #2b2c31;
+	--text: #e9e7e2;
+	--text-muted: #a09d96;
+	--text-faint: #6f6d67;
+	--border: rgba(255, 255, 255, 0.09);
+	--border-strong: rgba(255, 255, 255, 0.18);
+	--accent: #85a8ff;
+	--accent-contrast: #0b1020;
+	--focus: #85a8ff;
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+	--shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.6);
+	--shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.3), 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+
+	--stage-bg: #16171a;
+	--stage-ink: #e4e2dc;
+	--stage-ink-muted: #8d8b84;
+	--stage-line: #45464c;
+	--stage-grid: rgba(255, 255, 255, 0.05);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-family: var(--font-sans);
+	font-size: 16px;
+	-webkit-text-size-adjust: 100%;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	min-height: 100dvh;
+	background: var(--bg);
+	color: var(--text);
+	line-height: 1.6;
+	transition:
+		background-color 0.25s var(--ease-out),
+		color 0.25s var(--ease-out);
+}
+
+h1,
+h2,
+h3,
+h4 {
+	margin: 0;
+	font-weight: 600;
+	letter-spacing: -0.015em;
+	line-height: 1.2;
+	text-wrap: balance;
+}
+
+p {
+	margin: 0;
+}
+
+a {
+	color: var(--accent);
+	text-decoration: none;
+	text-underline-offset: 0.15em;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+button {
+	font: inherit;
+	color: inherit;
+}
+
+:focus-visible {
+	outline: 2px solid var(--focus);
+	outline-offset: 2px;
+	border-radius: var(--radius-sm);
+}
+
+::selection {
+	background: color-mix(in oklab, var(--accent) 25%, transparent);
+}
+
+sub,
+sup {
+	font-size: 0.72em;
+	line-height: 0;
+}
+
+/* Chemistry formulas: keep subscripts tidy inside prose */
+.formula {
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+/* Keyboard key hint */
+kbd {
+	font-family: var(--font-sans);
+	font-size: 0.78em;
+	padding: 0.1em 0.45em;
+	border: 1px solid var(--border-strong);
+	border-bottom-width: 2px;
+	border-radius: 5px;
+	background: var(--surface-2);
+	color: var(--text-muted);
+}
+
+/* Visually hidden, but available to assistive tech */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+	}
+}
+
+/* ---------------------------------------------------------------------------
+   Stage (illustration) palette that depends on the theme
+   --------------------------------------------------------------------------- */
+:root {
+	--membrane: #d8c7a0;
+	--membrane-edge: #b9a67a;
+	--lumen: #e6eef6;
+	--stroma: #eef4ea;
+	--cell: #f3f6ee;
+	--protein: #c9d3c6;
+	--protein-edge: #93a08f;
+	--leaf: #4fae6c;
+	--leaf-dark: #2f8a4f;
+	--leaf-vein: #9bd3ad;
+	--sky: #eaf3fb;
+}
+:root[data-theme='dark'] {
+	--membrane: #6d5b3b;
+	--membrane-edge: #8d7a55;
+	--lumen: #1b2733;
+	--stroma: #1a241c;
+	--cell: #1c231c;
+	--protein: #3a4a3e;
+	--protein-edge: #6e8273;
+	--leaf: #3f9c5e;
+	--leaf-dark: #2b7a46;
+	--leaf-vein: #6fbf8c;
+	--sky: #16202a;
+}
