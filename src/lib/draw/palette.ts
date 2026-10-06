@@ -80,8 +80,13 @@ export function wavelengthToColor(nm: number): string {
 export function absorbance(nm: number) {
 	const peak = (center: number, width: number, height: number) =>
 		height * Math.exp(-((nm - center) ** 2) / (2 * width * width));
-	const chlA = Math.min(1, peak(430, 14, 1) + peak(410, 18, 0.55) + peak(662, 11, 0.8));
-	const chlB = Math.min(1, peak(453, 14, 0.9) + peak(642, 10, 0.45));
+	// Main peaks plus a weak, broad tail through the green: real pigments
+	// still absorb a little there, which is why leaves are not transparent.
+	const chlA = Math.min(
+		1,
+		peak(430, 14, 1) + peak(410, 18, 0.55) + peak(662, 11, 0.8) + peak(545, 55, 0.07)
+	);
+	const chlB = Math.min(1, peak(453, 14, 0.9) + peak(642, 10, 0.45) + peak(540, 45, 0.09));
 	const car = Math.min(1, peak(450, 22, 0.7) + peak(480, 14, 0.55) + peak(425, 14, 0.5));
 	return { chlA, chlB, car, total: Math.min(1, 0.6 * chlA + 0.25 * chlB + 0.25 * car) };
 }
