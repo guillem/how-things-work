@@ -328,9 +328,9 @@
 		{ x: 682, y: 214 }
 	]);
 	const nadphOut = smooth([
-		{ x: 668, y: 228 },
-		{ x: 676, y: 162 },
-		{ x: 692, y: 104 }
+		{ x: 670, y: 228 },
+		{ x: 684, y: 160 },
+		{ x: 692, y: 100 }
 	]);
 	const hIn = smooth([
 		{ x: 736, y: 262 },
@@ -925,12 +925,12 @@
 		<Label
 			x={512}
 			y={212}
-			text="re-energises electrons"
+			text="re-excites electrons"
 			anchor="start"
 			size={lerp(11, 12.5, lit(o.psi))}
 			muted
 		/>
-		<Label x={583} y={247} text="Fd" anchor="end" size={11} muted />
+		<Label x={580} y={247} text="Fd" anchor="end" size={11} muted />
 		<Label x={650} y={262} text="FNR" size={11} muted />
 	</g>
 	<g opacity={o.atp}>
