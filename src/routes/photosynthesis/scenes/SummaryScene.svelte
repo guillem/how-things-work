@@ -179,7 +179,7 @@
 			p.y > GLOBE.y - 128 &&
 			p.y < GLOBE.y + 130
 	);
-	const planetPhotons = [-152, -138, -124, -110].map((deg) => {
+	const planetPhotons = [-146, -133, -120, -107].map((deg) => {
 		const to = polar(GLOBE.x, GLOBE.y, GLOBE.r + 8, (deg / 180) * Math.PI);
 		return { to, angle: (Math.atan2(to.y - PSUN.y, to.x - PSUN.x) * 180) / Math.PI };
 	});
@@ -306,7 +306,7 @@
 			/>
 			<rect x="96" y="307" width="288" height="34" rx="17" fill="var(--lumen)" />
 			<Label x={240} y={329} text="lumen" size={10} muted />
-			<Label x={78} y={262} text="stroma" size={10} muted anchor="start" />
+			<Label x={412} y={262} text="stroma" size={10} muted anchor="end" />
 			<!-- complexes -->
 			<rect
 				x={PSII.x - 17}
@@ -378,7 +378,7 @@
 			{#each photonPaths as p, pi (pi)}
 				{#each photonSlots as k (k)}
 					{@const u = cycle(t, 2.4, k / 3 + pi * 0.17)}
-					{@const vis = smoothstep((k - 0.4) / 3, (k + 0.6) / 3, level)}
+					{@const vis = smoothstep(k / 3 + 0.02, (k + 0.8) / 3, level)}
 					<Photon
 						x={lerp(SUN.x, p.to.x, u)}
 						y={lerp(SUN.y, p.to.y, u)}
@@ -492,9 +492,10 @@
 					/>
 				{/each}
 			</g>
-			<Label x={RING.x} y={298} text="fix · reduce" size={10} muted />
-			<Label x={RING.x} y={312} text="regenerate" size={10} muted />
-			<Label x={RING.x} y={332} text="9 ATP + 6 NADPH / G3P" size={10} />
+			<Label x={RING.x} y={294} text="fix · reduce" size={10} muted />
+			<Label x={RING.x} y={308} text="regenerate" size={10} muted />
+			<Label x={RING.x} y={329} text="9 ATP + 6 NADPH" size={10} />
+			<Label x={RING.x} y={343} text="per G3P" size={10} muted />
 			<ellipse
 				cx={RUBISCO.x}
 				cy={RUBISCO.y}
@@ -505,8 +506,8 @@
 				stroke-width="1"
 			/>
 			<Label x={RUBISCO.x + 26} y={RUBISCO.y + 20} text="RuBisCO" size={10} muted anchor="start" />
-			{#each [0, 1, 2] as i (i)}
-				{@const u = cycle(flow, 5, i / 3)}
+			{#each [0, 1] as i (i)}
+				{@const u = cycle(flow, 5, i / 2)}
 				{@const p = along(co2Path, u)}
 				<Molecule
 					kind="CO2"
@@ -630,7 +631,7 @@
 			<!-- CO₂ spiralling in (right side), O₂ leaving (left / bottom) -->
 			{#each co2In as i (i)}
 				{@const u = cycle(t, 7, i / co2In.length)}
-				{@const a = -1.25 + i * 0.5 + u * 1.0}
+				{@const a = -1.35 + i * 0.38 + u * 0.55}
 				{@const r = lerp(205, GLOBE.r + 12, u)}
 				{@const p = polar(GLOBE.x, GLOBE.y, r, a)}
 				<Molecule
@@ -644,7 +645,7 @@
 			{/each}
 			{#each o2Out as i (i)}
 				{@const u = cycle(t, 6, i / o2Out.length + 0.3)}
-				{@const a = 1.75 + i * 0.38 + u * 0.7}
+				{@const a = 2.4 + i * 0.26 + u * 0.3}
 				{@const r = lerp(GLOBE.r + 10, 228, u)}
 				{@const p = polar(GLOBE.x, GLOBE.y, r, a)}
 				<Molecule
@@ -657,10 +658,10 @@
 				/>
 			{/each}
 			<Label x={470} y={122} text="CO₂ in" size={11} muted />
-			<Label x={98} y={474} text="O₂ out" size={11} muted />
+			<Label x={62} y={462} text="O₂ out" size={11} muted />
 			<Label
-				x={GLOBE.x}
-				y={GLOBE.y + GLOBE.r + 40}
+				x={250}
+				y={GLOBE.y + GLOBE.r + 42}
 				text="phytoplankton · forests · crops"
 				size={11}
 				muted
