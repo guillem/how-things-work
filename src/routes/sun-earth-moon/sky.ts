@@ -26,8 +26,21 @@ export const PERIHELION_DAY = 3;
 const rad = (d: number) => (d * Math.PI) / 180;
 const deg = (r: number) => (r * 180) / Math.PI;
 
-/** Sun's ecliptic longitude (0 at the March equinox) on a day of the year, uniform circular motion. */
-export const sunLongitude = (day: number) => (((day - MARCH_EQUINOX_DAY) / YEAR) * 360 + 360) % 360;
+/** Equation of centre (degrees): how far ahead of uniform motion the Earth is, to first order in e. */
+const centre = (day: number) =>
+	deg(2 * ECCENTRICITY * Math.sin(((day - PERIHELION_DAY) / YEAR) * 2 * Math.PI));
+/** Day on which the uniform ("mean") longitude is 0, chosen so the true longitude is 0 on MARCH_EQUINOX_DAY. */
+const MEAN_ZERO_DAY = MARCH_EQUINOX_DAY + (centre(MARCH_EQUINOX_DAY) / 360) * YEAR;
+
+/**
+ * Sun's ecliptic longitude (0 at the March equinox, 180 at the September one)
+ * on a day of the year. The Earth moves a little faster near perihelion in
+ * January (Kepler's second law), so the first-order equation of centre is
+ * added to uniform motion; this puts the September equinox on 22–23 September,
+ * not 20.
+ */
+export const sunLongitude = (day: number) =>
+	(((((day - MEAN_ZERO_DAY) / YEAR) * 360 + centre(day)) % 360) + 360) % 360;
 
 /** Solar declination: the latitude where the Sun is overhead at noon. */
 export const declination = (longitude: number, tilt = TILT) =>
