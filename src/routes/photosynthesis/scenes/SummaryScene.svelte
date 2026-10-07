@@ -3,11 +3,13 @@
 	 * Steps 15–16: the whole system at a glance (light reactions and Calvin
 	 * cycle coupled by the ATP/NADPH shuttles, driven by the light slider) and
 	 * the planetary big picture (a stylised Earth with the headline numbers).
-	 * The two layouts cross-fade when the step's `phase` hint changes.
+	 * The two layouts hand over (one fades out, then the other fades in) when
+	 * the step's `phase` hint changes. The light slider drives the system layout
+	 * through a t-indexed history of the light level (see `frame` below).
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
-	import { cubicInOut } from 'svelte/easing';
+	import { cubicInOut, linear } from 'svelte/easing';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
 		Molecule,
@@ -32,50 +34,155 @@
 
 	// ---- phase cross-fade -------------------------------------------------------
 	const phase = $derived(String(step.hints?.phase ?? 'system'));
+	/**
+	 * 0 = system, 1 = planet. The layouts hand over sequentially rather than
+	 * cross-fading: the system is gone by mix = 0.5 and only then does the
+	 * planet fade in, so the labels of one never sit on top of the other's.
+	 * The tween is linear; each half gets its own smoothstep below.
+	 */
+	const MIX_MS = 1000;
 	const mix = new Tween(untrack(() => phase) === 'planet' ? 1 : 0, {
-		duration: 800,
-		easing: cubicInOut
+		duration: MIX_MS,
+		easing: linear
 	});
 	$effect(() => {
 		const target = phase === 'planet' ? 1 : 0;
-		const duration = reduced ? 0 : 800;
+		const duration = reduced ? 0 : MIX_MS;
 		untrack(() => mix.set(target, { duration }));
 	});
 	const planetMix = $derived(mix.current);
+	const systemOpacity = $derived(1 - smoothstep(0, 0.5, planetMix));
+	const planetOpacity = $derived(smoothstep(0.5, 1, planetMix));
 
-	// ---- light → carrier level ---------------------------------------------------
-	const lightParam = $derived(Number(params.light ?? 70) / 100);
-	const carrier = new Tween(0.7, { duration: 1200, easing: cubicInOut });
+	// ---- light → carriers ---------------------------------------------------------
+	const light = $derived(Number(params.light ?? 70) / 100);
+	/** Seconds a carrier takes to cross the upper lane to the Calvin cycle. */
+	const LANE_TIME = 5;
+	/** Seconds a spent carrier takes to return along the lower lane. */
+	const LOWER_TIME = 6;
+	/**
+	 * Oldest "light level N seconds ago" the scene asks for: a spent carrier at
+	 * the end of the lower lane was charged LANE_TIME + LOWER_TIME seconds ago.
+	 */
+	const HISTORY = LANE_TIME + LOWER_TIME;
+	/**
+	 * The slider is smoothed by one short wall-clock tween (0.9 s, the guide's
+	 * sanctioned use); everything downstream runs on `t`.
+	 */
+	const supplyTween = new Tween(
+		untrack(() => light),
+		{ duration: 900, easing: cubicInOut }
+	);
 	$effect(() => {
-		const target = lightParam;
-		const duration = reduced ? 0 : 1200;
-		untrack(() => carrier.set(target, { duration }));
+		const target = light;
+		const duration = reduced ? 0 : 900;
+		untrack(() => supplyTween.set(target, { duration }));
 	});
-	const level = $derived(carrier.current);
-	/** 0 when the lanes are empty (no light), 1 when the shuttles are running. */
-	const running = $derived(smoothstep(0.02, 0.22, level));
+	/** Light reaching the membrane right now. */
+	const supply = $derived(supplyTween.current);
 
 	/**
-	 * "Flow time": the integral of the carrier level over `t`. Everything that
-	 * the carriers drive (lane particles, ring rotation, O₂ and sugar output)
-	 * moves along this clock, so it slows down smoothly and stops at light 0
-	 * without any jump when the slider changes.
+	 * Per-frame bookkeeping — the one documented exception to "a pure function
+	 * of t" in this scene. Two things are kept from frame to frame:
+	 *
+	 * 1. A history of the light level, sampled in t-time. A carrier that is
+	 *    `age` seconds along its lane was emitted `age` seconds ago, so
+	 *    `levelAt(age)` says whether it exists. Cut the light and the carriers
+	 *    already under way still reach the Calvin cycle while no new ones appear
+	 *    behind them: the lane empties from the thylakoid end and the cycle, fed
+	 *    by `levelAt(LANE_TIME)`, stalls a few seconds later — "the carriers run
+	 *    out". Because the history is indexed by `t`, the lane, the gauges and
+	 *    the ring stay in step at 0.5× / 2× playback and while paused (a
+	 *    wall-clock delayed tween would not).
+	 * 2. The ATP-synthase rotor and Calvin-ring angles, which are the integrals
+	 *    of rates that change smoothly with the slider (a pure `t × rate` would
+	 *    jump with every rate change).
+	 *
+	 * Guards: `t` restarting at 0 on a step change (dt < 0) resets the history
+	 * and only resyncs the angles; a paused clock (dt = 0) records nothing new
+	 * but lets the newest sample follow a slider moved while paused; under
+	 * reduced motion (t frozen at 2.5 s) the history is a single sample at the
+	 * current level and both angles stay at 0, so the frame is static and shows
+	 * the slider's state.
 	 */
-	let flowAcc = 0;
-	let flowLastT = -1;
-	const flow = $derived.by(() => {
-		const dt = t - flowLastT;
-		if (flowLastT >= 0 && dt > 0 && dt < 0.5) flowAcc += dt * level;
-		flowLastT = t;
-		return flowAcc;
+	interface Sample {
+		t: number;
+		v: number;
+	}
+	let hist: Sample[] = [];
+	let rotorAcc = 0;
+	let ringAcc = 0;
+	let lastT = -1;
+	/** Newest sample taken at or before `now - age` (the oldest one if none is). */
+	function lookup(samples: Sample[], now: number, age: number) {
+		const target = now - age;
+		let lo = 0;
+		let hi = samples.length - 1;
+		if (samples[0].t >= target) return samples[0].v;
+		while (lo < hi) {
+			const mid = (lo + hi + 1) >> 1;
+			if (samples[mid].t <= target) lo = mid;
+			else hi = mid - 1;
+		}
+		return samples[lo].v;
+	}
+	/**
+	 * Calvin-cycle rate for a given carrier supply: nearly proportional while
+	 * carriers are scarce, flattening towards full light, where RuBisCO and the
+	 * CO₂ supply set the pace (0.7 → 0.84, 1 → 1).
+	 */
+	const saturate = (x: number) => (x * 1.8) / (x + 0.8);
+	const frame = $derived.by(() => {
+		const dt = t - lastT;
+		if (reduced || lastT < 0 || dt < 0) {
+			hist = [{ t, v: supply }];
+		} else if (dt === 0) {
+			hist[hist.length - 1] = { t, v: supply };
+		} else {
+			hist.push({ t, v: supply });
+			while (hist.length > 1 && hist[1].t <= t - HISTORY) hist.shift();
+			if (dt < 0.5) {
+				rotorAcc += dt * supply;
+				ringAcc += dt * saturate(lookup(hist, t, LANE_TIME));
+			}
+		}
+		lastT = t;
+		return { hist, rotor: rotorAcc, ring: ringAcc };
 	});
+	const clocks = $derived({ rotor: frame.rotor, ring: frame.ring });
+	/** Light level as it was `age` seconds ago. */
+	const levelAt = (age: number) => lookup(frame.hist, t, age);
+	/** Carriers arriving at the Calvin cycle now: what left the membrane LANE_TIME ago. */
+	const arrived = $derived(levelAt(LANE_TIME));
+	/** 0 → 1 as a level goes from "nothing" to "clearly running". */
+	const on = (level: number) => smoothstep(0.03, 0.25, level);
+	const lit = $derived(on(supply));
+	const running = $derived(on(arrived));
+	/**
+	 * Captions, both keyed to the carriers ARRIVING at the Calvin cycle so they
+	 * agree with the ring and the gauges. The stall caption's window sits
+	 * between two slider stops (running 0.03 → 0.2, i.e. arrived ≈ 5 % → 10 %:
+	 * fully on at 5 %, fully off at 10 %); the bottleneck caption only comes in
+	 * once bright-light carriers arrive (arrived 0.9 → 0.97: fully off at 90 %
+	 * on the slider, clearly on at 95 %). The two sentences share a spot and are
+	 * never drawn on top of each other.
+	 */
+	const stalled = $derived(1 - smoothstep(0.03, 0.2, running));
+	const bottleneck = $derived(smoothstep(0.9, 0.97, arrived));
 
 	const fadeEnds = (u: number) => smoothstep(0, 0.08, u) * (1 - smoothstep(0.9, 1, u));
+	/**
+	 * Lane pills fade in/out short of the Calvin ring so none is ever drawn
+	 * across its stroke: the upper lane's last 10 % (its arrowhead) and the lower
+	 * lane's first 10 % (where it leaves the ring) stay pill-free.
+	 */
+	const fadeUpper = (u: number) => smoothstep(0, 0.08, u) * (1 - smoothstep(0.8, 0.9, u));
+	const fadeLower = (u: number) => smoothstep(0.1, 0.18, u) * (1 - smoothstep(0.9, 1, u));
 
 	// ============================================================ system layout
 	const LEFT = { x: 60, y: 120, w: 370, h: 350 };
 	const RIGHT = { x: 530, y: 120, w: 370, h: 350 };
-	const SUN = { x: 392, y: 182 };
+	const SUN = { x: 212, y: 206 };
 	const PSII = { x: 150, y: 298 };
 	const B6F = { x: 205, y: 299 };
 	const PSI = { x: 278, y: 298 };
@@ -84,8 +191,8 @@
 	const RUBISCO = { x: 793, y: 310 };
 
 	const photonPaths = [
-		{ to: { x: PSII.x + 4, y: PSII.y - 18 } },
-		{ to: { x: PSI.x + 4, y: PSI.y - 18 } }
+		{ to: { x: PSII.x + 2, y: PSII.y - 20 } },
+		{ to: { x: PSI.x - 2, y: PSI.y - 20 } }
 	].map((p) => ({
 		...p,
 		angle: (Math.atan2(p.to.y - SUN.y, p.to.x - SUN.x) * 180) / Math.PI
@@ -117,11 +224,11 @@
 		{ x: 652, y: 358 },
 		{ x: 600, y: 376 },
 		{ x: 520, y: 381 },
-		{ x: 450, y: 376 },
-		{ x: 406, y: 348 }
+		{ x: 450, y: 378 },
+		{ x: 412, y: 352 }
 	]);
 	const co2Path = smooth([
-		{ x: 936, y: 282 },
+		{ x: 928, y: 282 },
 		{ x: 880, y: 284 },
 		{ x: 840, y: 290 },
 		{ x: 816, y: 298 }
@@ -131,10 +238,27 @@
 		{ x: RING.x, y: 440 },
 		{ x: RING.x, y: 496 }
 	]);
+	/**
+	 * Carrier slots on the lanes; higher slots only fill up in brighter light
+	 * (4 of 5 at the default 70 %, all at 100 %). Five slots on the ≈255 px
+	 * lower lane leave ≥ 13 px between the 45 px NADP⁺ pill and its neighbours.
+	 * Each slot switches inside a 3 %-wide window centred between two slider
+	 * stops (7.5 %, 22.5 %, 37.5 %, 57.5 %, 72.5 %), so at every reachable
+	 * slider value a pill is fully on or fully off — never parked half-faded —
+	 * while the 0.9 s tween still fades it rather than popping it.
+	 */
 	const upperPills = ['ATP', 'NADPH', 'ATP', 'ATP', 'NADPH'] as const;
-	const lowerPills = ['ADP', 'Pi', 'NADP+', 'ADP', 'Pi', 'NADP+'] as const;
+	const lowerPills = ['ADP', 'Pi', 'NADP+', 'ADP', 'NADP+'] as const;
+	const slotOn = (i: number, n: number, level: number) => {
+		const mid = Math.floor(1 + (17 * i) / n) * 0.05 + 0.025;
+		return smoothstep(mid - 0.015, mid + 0.015, level);
+	};
+	const gauges = [
+		{ x: 455, c: colors.atp, n: 'ATP' },
+		{ x: 505, c: colors.nadph, n: 'NADPH' }
+	];
 
-	const ringAngle = $derived(flow * 45);
+	const ringAngle = $derived(clocks.ring * 48);
 	const ringArc = (a0: number, a1: number) => {
 		const p0 = polar(RING.x, RING.y, RING.r, a0);
 		const p1 = polar(RING.x, RING.y, RING.r, a1);
@@ -185,44 +309,47 @@
 	});
 	const co2In = [0, 1, 2, 3, 4, 5];
 	const o2Out = [0, 1, 2, 3, 4];
-	const tiles = [
+	const TILE = { w: 210, h: 150, pad: 16 };
+	const tiles: { x: number; y: number; n: string; lines: string[]; note?: string; c: string }[] = [
 		{
-			x: 520,
+			x: 508,
 			y: 128,
 			n: '~105 Gt C',
-			a: 'of carbon fixed every year',
-			b: 'by all photosynthesis',
+			lines: ['of carbon fixed every year', 'on land and in the oceans'],
+			note: '(net primary production)',
 			c: colors.sugar
 		},
 		{
-			x: 735,
+			x: 730,
 			y: 128,
-			n: '~½',
-			a: 'of it happens at sea:',
-			b: 'algae and cyanobacteria',
+			n: '~50 %',
+			lines: ['of it at sea: microscopic', 'algae and cyanobacteria'],
 			c: '#3b7dd8'
 		},
 		{
-			x: 520,
+			x: 508,
 			y: 298,
 			n: '21 % O₂',
-			a: 'in the atmosphere —',
-			b: 'all of it from photosynthesis',
+			lines: ['in the air: the accumulated', 'by-product of photosynthesis'],
 			c: colors.oxygen
 		},
 		{
-			x: 735,
+			x: 730,
 			y: 298,
 			n: '1–2 %',
-			a: 'of sunlight energy ends up',
-			b: 'as biomass in a crop field',
+			lines: ['of sunlight energy becomes', 'biomass in a crop field'],
+			note: 'theoretical ceiling ≈ 5 %',
 			c: '#d97706'
 		}
 	];
-	const TILE = { w: 200, h: 150 };
 	/** Timeline: billions of years ago → x. */
 	const tx = (bya: number) => 880 - (bya / 3) * 750;
 	const TL_Y = 530;
+	const milestones = [
+		{ b: 3, l1: '~3 billion years ago', l2: 'first cyanobacteria' },
+		{ b: 2.4, l1: '~2.4 billion years ago', l2: 'Great Oxidation Event' },
+		{ b: 0.47, l1: '~470 million years ago', l2: 'plants colonise land' }
+	];
 	const o2Curve = pathFrom([
 		{ x: tx(3), y: TL_Y },
 		{ x: tx(2.5), y: TL_Y - 1 },
@@ -247,8 +374,8 @@
 	</radialGradient>
 
 	<!-- ============================================================ system -->
-	{#if planetMix < 0.995}
-		<g opacity={1 - planetMix}>
+	{#if planetMix < 0.5}
+		<g opacity={systemOpacity}>
 			<!-- compartments -->
 			<rect
 				x={LEFT.x}
@@ -277,7 +404,7 @@
 
 			<!-- ---- light reactions ---- -->
 			<!-- sun -->
-			<g transform="translate({SUN.x} {SUN.y})" opacity={0.3 + 0.7 * level}>
+			<g transform="translate({SUN.x} {SUN.y})" opacity={0.3 + 0.7 * supply}>
 				<circle r="22" fill={colors.photon} opacity="0.14" />
 				<circle r="11" fill={colors.photon} />
 				{#each [0, 1, 2, 3, 4, 5, 6, 7] as i (i)}
@@ -305,8 +432,8 @@
 				stroke-width="1"
 			/>
 			<rect x="96" y="307" width="288" height="34" rx="17" fill="var(--lumen)" />
-			<Label x={240} y={329} text="lumen" size={10} muted />
-			<Label x={412} y={262} text="stroma" size={10} muted anchor="end" />
+			<Label x={240} y={329} text="lumen" size={11} muted />
+			<Label x={412} y={196} text="stroma" size={11} muted anchor="end" />
 			<!-- complexes -->
 			<rect
 				x={PSII.x - 17}
@@ -348,7 +475,7 @@
 				stroke="var(--protein-edge)"
 				stroke-width="1"
 			/>
-			<g transform="translate({SYNTH.x} {SYNTH.y - 26}) rotate({flow * 240})">
+			<g transform="translate({SYNTH.x} {SYNTH.y - 26}) rotate({clocks.rotor * 240})">
 				<circle r="12" fill={colors.atpSynthase} stroke="var(--protein-edge)" stroke-width="1" />
 				<line
 					x1="-7"
@@ -369,16 +496,16 @@
 					opacity="0.7"
 				/>
 			</g>
-			<Label x={PSII.x} y={370} text="PSII" size={10} muted />
-			<Label x={B6F.x} y={370} text="cyt b₆f" size={10} muted />
-			<Label x={PSI.x} y={370} text="PSI" size={10} muted />
-			<Label x={SYNTH.x} y={370} text="ATP synthase" size={10} muted />
+			<Label x={PSII.x} y={378} text="PSII" size={11} muted />
+			<Label x={B6F.x} y={378} text="cyt b₆f" size={11} muted />
+			<Label x={PSI.x} y={378} text="PSI" size={11} muted />
+			<Label x={SYNTH.x} y={378} text="ATP synthase" size={11} muted />
 
-			<!-- photons from the sun to PSII and PSI -->
+			<!-- photons from the sun to PSII and PSI (more of them in brighter light) -->
 			{#each photonPaths as p, pi (pi)}
 				{#each photonSlots as k (k)}
 					{@const u = cycle(t, 2.4, k / 3 + pi * 0.17)}
-					{@const vis = smoothstep(k / 3 + 0.02, (k + 0.8) / 3, level)}
+					{@const vis = smoothstep(k / 3 + 0.02, (k + 0.8) / 3, supply)}
 					<Photon
 						x={lerp(SUN.x, p.to.x, u)}
 						y={lerp(SUN.y, p.to.y, u)}
@@ -389,31 +516,34 @@
 					/>
 				{/each}
 			{/each}
-			<!-- water in, oxygen out -->
+			<!-- water in, oxygen out: like the lane pills, a molecule at phase u set off
+			     u × period seconds ago, so they run out from the source and restart from it
+			     instead of popping in mid-path (the +0.15 phase keeps every water
+			     molecule out of its fade zones in the reduced-motion frame at t = 2.5 s) -->
 			{#each [0, 1, 2] as i (i)}
-				{@const u = cycle(flow, 4, i / 3)}
+				{@const u = cycle(t, 4, i / 3 + 0.15)}
 				{@const p = along(waterPath, u)}
 				<Molecule
 					kind="H2O"
 					x={p.x}
 					y={p.y + 3 * Math.sin(t * 2 + i)}
 					scale={0.8}
-					opacity={fadeEnds(u) * running}
+					opacity={fadeEnds(u) * on(levelAt(u * 4))}
 				/>
 			{/each}
-			<Label x={32} y={362} text="H₂O" size={11} muted anchor="start" />
+			<Label x={32} y={362} text="H₂O" size={12} anchor="start" opacity={0.4 + 0.6 * lit} />
 			{#each [0, 1] as i (i)}
-				{@const u = cycle(flow, 4.5, i / 2 + 0.3)}
+				{@const u = cycle(t, 4.5, i / 2 + 0.3)}
 				{@const p = along(o2Path, u)}
 				<Molecule
 					kind="O2"
 					x={p.x + 4 * Math.sin(t * 1.5 + i * 2)}
 					y={p.y}
 					scale={0.85}
-					opacity={fadeEnds(u) * running}
+					opacity={fadeEnds(u) * on(levelAt(u * 4.5))}
 				/>
 			{/each}
-			<Label x={158} y={108} text="O₂" size={12} anchor="start" opacity={0.4 + 0.6 * running} />
+			<Label x={158} y={108} text="O₂" size={12} anchor="start" opacity={0.4 + 0.6 * lit} />
 
 			<!-- ---- shuttles between the two machines ---- -->
 			<Flow
@@ -422,9 +552,9 @@
 				width={2}
 				arrow
 				dash={6}
-				t={flow}
+				{t}
 				speed={60}
-				opacity={0.25 + 0.35 * running}
+				opacity={0.25 + 0.35 * lit}
 			/>
 			<Flow
 				d={pathFrom(lowerLane)}
@@ -432,22 +562,41 @@
 				width={2}
 				arrow
 				dash={6}
-				t={flow}
+				{t}
 				speed={60}
 				opacity={0.25 + 0.35 * running}
 			/>
+			<!-- a carrier at phase u set off u × LANE_TIME seconds ago -->
 			{#each upperPills as kind, i (i)}
-				{@const u = cycle(flow, 5, i / upperPills.length)}
+				{@const u = cycle(t, LANE_TIME, i / upperPills.length)}
 				{@const p = along(upperLane, u)}
-				<Molecule {kind} x={p.x} y={p.y} scale={0.85} opacity={fadeEnds(u) * running} />
+				<Molecule
+					{kind}
+					x={p.x}
+					y={p.y}
+					scale={1}
+					opacity={fadeUpper(u) * slotOn(i, upperPills.length, levelAt(u * LANE_TIME))}
+				/>
 			{/each}
+			<!-- a spent carrier at phase u left the ring u × LOWER_TIME seconds ago and was
+			     charged LANE_TIME seconds before that; its age advances with the pill, so after
+			     a light change the lane empties (or fills) from the ring end, never mid-lane -->
 			{#each lowerPills as kind, i (i)}
-				{@const u = cycle(flow, 6, i / lowerPills.length)}
+				{@const u = cycle(t, LOWER_TIME, i / lowerPills.length)}
 				{@const p = along(lowerLane, u)}
-				<Molecule {kind} x={p.x} y={p.y} scale={0.85} opacity={fadeEnds(u) * running} />
+				<Molecule
+					{kind}
+					x={p.x}
+					y={p.y}
+					scale={0.9}
+					opacity={fadeLower(u) * slotOn(i, lowerPills.length, levelAt(LANE_TIME + LOWER_TIME * u))}
+				/>
 			{/each}
-			<!-- gauges -->
-			{#each [{ x: 455, c: colors.atp, n: 'ATP' }, { x: 505, c: colors.nadph, n: 'NADPH' }] as g (g.n)}
+			<!-- gauges: charged carriers on hand at the Calvin cycle. They follow what has
+			     ARRIVED, not the light right now, so gauge, ring, G3P and the stall caption
+			     always agree: the lane empties first, then the gauges drain as the last
+			     carriers are used up and the cycle stops. -->
+			{#each gauges as g (g.n)}
 				<rect
 					x={g.x - 7}
 					y="262"
@@ -460,14 +609,14 @@
 				/>
 				<rect
 					x={g.x - 7}
-					y={334 - 72 * level}
+					y={334 - 72 * arrived}
 					width="14"
-					height={72 * level}
+					height={72 * arrived}
 					rx="4"
 					fill={g.c}
 					opacity="0.9"
 				/>
-				<Label x={g.x} y={350} text={g.n} size={9} muted />
+				<Label x={g.x} y={349} text={g.n} size={11} muted />
 			{/each}
 
 			<!-- ---- Calvin cycle ---- -->
@@ -492,10 +641,10 @@
 					/>
 				{/each}
 			</g>
-			<Label x={RING.x} y={294} text="fix · reduce" size={10} muted />
-			<Label x={RING.x} y={308} text="regenerate" size={10} muted />
-			<Label x={RING.x} y={329} text="9 ATP + 6 NADPH" size={10} />
-			<Label x={RING.x} y={343} text="per G3P" size={10} muted />
+			<Label x={RING.x} y={293} text="fix · reduce" size={11} muted />
+			<Label x={RING.x} y={308} text="regenerate" size={11} muted />
+			<Label x={RING.x} y={330} text="9 ATP + 6 NADPH" size={11} />
+			<Label x={RING.x} y={345} text="per G3P" size={11} muted />
 			<ellipse
 				cx={RUBISCO.x}
 				cy={RUBISCO.y}
@@ -505,9 +654,12 @@
 				stroke="var(--protein-edge)"
 				stroke-width="1"
 			/>
-			<Label x={RUBISCO.x + 26} y={RUBISCO.y + 20} text="RuBisCO" size={10} muted anchor="start" />
+			<Label x={RUBISCO.x + 26} y={RUBISCO.y + 21} text="RuBisCO" size={11} muted anchor="start" />
+			<!-- CO₂ is the supply, not the product: it keeps drifting in on t (dimmed while
+			     the cycle is stalled) instead of freezing with the ring, which left a
+			     half-faded molecule stuck under the label -->
 			{#each [0, 1] as i (i)}
-				{@const u = cycle(flow, 5, i / 2)}
+				{@const u = cycle(t, 5, i / 2)}
 				{@const p = along(co2Path, u)}
 				<Molecule
 					kind="CO2"
@@ -518,9 +670,9 @@
 					opacity={fadeEnds(u) * (0.35 + 0.65 * running)}
 				/>
 			{/each}
-			<Label x={905} y={262} text="CO₂" size={11} muted />
+			<Label x={905} y={262} text="CO₂" size={12} />
 			{#each [0, 1] as i (i)}
-				{@const u = cycle(flow, 5, i / 2 + 0.25)}
+				{@const u = cycle(clocks.ring, 5, i / 2 + 0.25)}
 				{@const p = along(sugarPath, u)}
 				<Molecule
 					kind="sugar"
@@ -532,7 +684,14 @@
 					opacity={fadeEnds(u) * running}
 				/>
 			{/each}
-			<Label x={RING.x + 32} y={438} text="G3P" size={11} muted anchor="start" />
+			<Label
+				x={RING.x + 32}
+				y={438}
+				text="G3P"
+				size={12}
+				anchor="start"
+				opacity={0.45 + 0.55 * running}
+			/>
 			<Label
 				x={RING.x}
 				y={522}
@@ -545,18 +704,26 @@
 			<Label
 				x={245}
 				y={502}
-				text="no light → no ATP/NADPH → the Calvin cycle stalls"
+				text="no light → no ATP or NADPH → the Calvin cycle stalls"
 				size={12}
 				muted
-				opacity={1 - running}
+				opacity={stalled}
+			/>
+			<Label
+				x={245}
+				y={502}
+				text="bright light: RuBisCO and the CO₂ supply set the pace"
+				size={12}
+				muted
+				opacity={bottleneck}
 			/>
 			<Label x={480} y={568} text="6 CO₂ + 6 H₂O + light → C₆H₁₂O₆ + 6 O₂" size={15} weight={600} />
 		</g>
 	{/if}
 
 	<!-- ============================================================ planet -->
-	{#if planetMix > 0.005}
-		<g opacity={planetMix}>
+	{#if planetMix > 0.5}
+		<g opacity={planetOpacity}>
 			<!-- sun -->
 			<g transform="translate({PSUN.x} {PSUN.y})">
 				<circle r="46" fill={colors.photon} opacity="0.12" />
@@ -617,9 +784,10 @@
 			</g>
 			<circle cx={GLOBE.x} cy={GLOBE.y} r={GLOBE.r} fill="none" stroke="#2a5da8" stroke-width="2" />
 
-			<!-- photons from the sun -->
+			<!-- photons from the sun (the +0.1 phase keeps every photon out of its fade zones
+			     in the reduced-motion frame at t = 2.5 s) -->
 			{#each planetPhotons as p, i (i)}
-				{@const u = cycle(t, 2.6, i / planetPhotons.length)}
+				{@const u = cycle(t, 2.6, i / planetPhotons.length + 0.1)}
 				<Photon
 					x={lerp(PSUN.x + 30, p.to.x, u)}
 					y={lerp(PSUN.y + 30, p.to.y, u)}
@@ -629,10 +797,12 @@
 				/>
 			{/each}
 			<!-- CO₂ spiralling in (right side), O₂ leaving (left / bottom) -->
+			<!-- (the +0.05 phase keeps every molecule out of its fade-in zone in the
+			     reduced-motion frame at t = 2.5 s) -->
 			{#each co2In as i (i)}
-				{@const u = cycle(t, 7, i / co2In.length)}
+				{@const u = cycle(t, 7, i / co2In.length + 0.05)}
 				{@const a = -1.35 + i * 0.38 + u * 0.55}
-				{@const r = lerp(205, GLOBE.r + 12, u)}
+				{@const r = lerp(196, GLOBE.r + 12, u)}
 				{@const p = polar(GLOBE.x, GLOBE.y, r, a)}
 				<Molecule
 					kind="CO2"
@@ -660,7 +830,7 @@
 			<Label x={470} y={122} text="CO₂ in" size={11} muted />
 			<Label x={62} y={462} text="O₂ out" size={11} muted />
 			<Label
-				x={250}
+				x={GLOBE.x}
 				y={GLOBE.y + GLOBE.r + 42}
 				text="phytoplankton · forests · crops"
 				size={11}
@@ -681,17 +851,42 @@
 						stroke="var(--stage-line)"
 						stroke-width="1"
 					/>
-					<rect x={tile.x + 20} y={tile.y + 24} width="30" height="4" rx="2" fill={tile.c} />
-					<text x={tile.x + 20} y={tile.y + 70} font-size="28" font-weight="700">{tile.n}</text>
-					<text x={tile.x + 20} y={tile.y + 100} font-size="12" class="muted">{tile.a}</text>
-					<text x={tile.x + 20} y={tile.y + 118} font-size="12" class="muted">{tile.b}</text>
+					<rect x={tile.x + TILE.pad} y={tile.y + 24} width="30" height="4" rx="2" fill={tile.c} />
+					<Label
+						x={tile.x + TILE.pad}
+						y={tile.y + 68}
+						text={tile.n}
+						size={26}
+						weight={700}
+						anchor="start"
+					/>
+					{#each tile.lines as line, li (li)}
+						<Label
+							x={tile.x + TILE.pad}
+							y={tile.y + 96 + li * 18}
+							text={line}
+							size={12}
+							muted
+							anchor="start"
+						/>
+					{/each}
+					{#if tile.note}
+						<Label
+							x={tile.x + TILE.pad}
+							y={tile.y + 134}
+							text={tile.note}
+							size={11}
+							muted
+							anchor="start"
+						/>
+					{/if}
 				</g>
 			{/each}
 
 			<!-- timeline -->
 			<path d="{o2Curve} L{tx(0)} {TL_Y} Z" fill={colors.oxygen} opacity="0.12" />
 			<path d={o2Curve} fill="none" stroke={colors.oxygen} stroke-width="1.5" opacity="0.7" />
-			<Label x={tx(1.5)} y={TL_Y - 18} text="oxygen in the air" size={10} muted />
+			<Label x={tx(1.5)} y={TL_Y - 24} text="oxygen in the air" size={11} muted />
 			<Flow
 				d="M{tx(3)} {TL_Y} L{tx(0) + 14} {TL_Y}"
 				color="var(--stage-ink-muted)"
@@ -702,7 +897,7 @@
 				speed={30}
 				opacity={0.6}
 			/>
-			{#each [{ b: 3, l1: '~3 billion years ago', l2: 'first cyanobacteria' }, { b: 2.4, l1: '~2.4 billion years ago', l2: 'Great Oxidation Event' }, { b: 0.47, l1: '~470 million years ago', l2: 'plants colonise land' }] as m (m.b)}
+			{#each milestones as m (m.b)}
 				<circle
 					cx={tx(m.b)}
 					cy={TL_Y}
