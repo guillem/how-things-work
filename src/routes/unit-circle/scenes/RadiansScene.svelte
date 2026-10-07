@@ -192,9 +192,20 @@
 	const bandPath = $derived(thetaArc(BAND));
 	const arcR = 34;
 	const smallArc = $derived(thetaArc(arcR));
-	const thetaLabel = $derived(at(rad / 2, arcR + 18));
+	// Halfway round the arc, but at least 14° away from the y- and x-axes (at
+	// 180° and 360° halfway is on an axis); small angles keep the true halfway.
+	const thetaLabel = $derived.by(() => {
+		const m = theta / 2;
+		const axis = Math.round(m / 90) * 90;
+		const deg = axis === 0 || Math.abs(m - axis) >= 14 ? m : axis - 14;
+		return at(toRad(deg), arcR + 18);
+	});
 
 	// Inviting pulse on the handle at the start of the step.
+	// Labels round the circle fade while the reader's point sits on them.
+	const clearOf = (x: number, y: number) =>
+		0.15 + 0.85 * smoothstep(16, 26, Math.hypot(P.x - x, P.y - (y - 5)));
+
 	const pulse = $derived(reduced ? 0 : (1 - smoothstep(2.5, 4, t)) * (0.5 + 0.5 * Math.sin(t * 5)));
 
 	// ---- readout panel ------------------------------------------------------------
@@ -208,7 +219,7 @@
 				: `≈ ${num(rad)} radians`
 	);
 	const arcLine = $derived(
-		theta === 0 ? 'No turn: the arc has no length' : `The arc is ${num(rad)} radii long`
+		theta === 0 ? 'No turn: the arc has no length' : `The arc is about ${num(rad)} radii long`
 	);
 
 	// The circumference unrolled into a ruler, measured in radii.
@@ -312,11 +323,14 @@
 		stroke="var(--stage-ink)"
 		stroke-width="1.6"
 	/>
-	{@render txt(CX + R + 12, CY - 24, '0', 12, { muted: true, opacity: 1 - done })}
+	{@render txt(CX + R + 12, CY - 24, '0', 12, {
+		muted: true,
+		opacity: (1 - done) * clearOf(CX + R + 16, CY - 24)
+	})}
 	{@render txt(CX + R + 12, CY - 24, '2π ≈ 6.28', 13, {
 		weight: 600,
 		color: INK_ORANGE,
-		opacity: done
+		opacity: done * clearOf(CX + R + 16, CY - 24)
 	})}
 	{#each TICKS as tk (tk.n)}
 		{@const on = smoothstep(1.1, 1.5, local(tk.n - 1))}
@@ -333,7 +347,8 @@
 				{@render txt(tk.x, tk.y, tk.text, tk.n === 1 ? 13 : 14, {
 					anchor: tk.anchor,
 					weight: 600,
-					color: INK_ORANGE
+					color: INK_ORANGE,
+					opacity: clearOf(tk.x, tk.y)
 				})}
 			</g>
 		{/if}
@@ -343,7 +358,7 @@
 		{@render txt(lp.x, lp.y + 8, '+ 0.28', 12, {
 			weight: 600,
 			color: INK_ORANGE,
-			opacity: done
+			opacity: done * clearOf(lp.x + 18, lp.y + 8)
 		})}
 	{/if}
 

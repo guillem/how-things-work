@@ -101,7 +101,7 @@
 >
 	<!-- generous, invisible grab area (fingers are larger than dots) -->
 	<circle cx={x} cy={y} r={r + 14} fill="transparent" />
-	<circle class="halo" cx={x} cy={y} r={r + 6} fill={color} />
+	<circle class="grab-halo" cx={x} cy={y} r={r + 6} fill={color} />
 	<circle class="ring" cx={x} cy={y} r={r + 5} fill="none" stroke="var(--focus)" stroke-width="2" />
 	<circle cx={x} cy={y} {r} fill={color} stroke="var(--stage-bg)" stroke-width="2.5" />
 </g>
@@ -115,12 +115,12 @@
 	.handle.dragging {
 		cursor: grabbing;
 	}
-	.halo {
+	.grab-halo {
 		opacity: 0.18;
 		transition: opacity 0.15s;
 	}
-	.handle:hover .halo,
-	.handle.dragging .halo {
+	.handle:hover .grab-halo,
+	.handle.dragging .grab-halo {
 		opacity: 0.32;
 	}
 	.ring {

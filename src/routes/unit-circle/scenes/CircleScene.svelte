@@ -24,6 +24,7 @@
 		angleParam,
 		degText,
 		exact,
+		isSpecial,
 		num,
 		radText,
 		reduce,
@@ -43,8 +44,11 @@
 	const phase = $derived(String(step.hints?.phase ?? 'angle'));
 	const theta = $derived(angleParam(step, params));
 	const rad = $derived(toRad(theta));
-	const cos = $derived(Math.cos(rad));
-	const sin = $derived(Math.sin(rad));
+	// Math.cos(π/2) is 6e-17, not 0: round away the float noise so that signs
+	// (which side a label goes, which quadrant) are exact on the axes.
+	const clean = (v: number) => (Math.abs(v) < 1e-9 ? 0 : v);
+	const cos = $derived(clean(Math.cos(rad)));
+	const sin = $derived(clean(Math.sin(rad)));
 	const P = $derived({ x: CX + R * cos, y: CY - R * sin });
 	const foot = $derived({ x: P.x, y: CY });
 
@@ -66,6 +70,14 @@
 		triangle: weights.triangle.current,
 		quadrants: weights.quadrants.current
 	});
+	// Panel text blocks share the same lines, so they swap rather than overlap:
+	// the old one is gone halfway through the tween, the new one appears after.
+	const panel = $derived({
+		angle: smoothstep(0.5, 1, w.angle),
+		triangle: smoothstep(0.5, 1, w.triangle),
+		quadrants: smoothstep(0.5, 1, w.quadrants),
+		segs: smoothstep(0.5, 1, Math.max(w.coords, w.triangle, w.quadrants))
+	});
 	// The coordinate segments stay on in the triangle and quadrant phases too.
 	const segs = $derived(Math.max(w.coords, w.triangle, w.quadrants));
 
@@ -75,12 +87,19 @@
 		Boolean(params.snap) && (step.controls ?? []).some((c) => c.id === 'snap')
 	);
 
+	const nearestSpecial = (deg: number) =>
+		SPECIAL.reduce((a, b) => (Math.abs(b - deg) < Math.abs(a - deg) ? b : a));
 	function setAngle(deg: number) {
-		let v = Math.round(deg);
-		if (snapping) v = SPECIAL.reduce((a, b) => (Math.abs(b - deg) < Math.abs(a - deg) ? b : a));
-		// Keep 360 when dragging up to the start from above, 0 from below.
+		const v = snapping ? nearestSpecial(deg) : Math.round(deg);
 		setParam('angle', Math.max(0, Math.min(360, v)));
 	}
+	// Turning snap on moves the point to the nearest special angle straight away.
+	$effect(() => {
+		if (!snapping) return;
+		untrack(() => {
+			if (!SPECIAL.includes(theta)) setAngle(theta);
+		});
+	});
 	function onmove(p: Point) {
 		const raw = screenAngle(CX, CY, p.x, p.y);
 		// Crossing the 0° seam from above lands on 360° (a full turn), not 0°.
@@ -90,9 +109,12 @@
 		if (k === 'start') return setAngle(0);
 		if (k === 'end') return setAngle(360);
 		if (snapping) {
+			// Next special angle in that direction, wrapping round like the plain keys.
 			const next =
-				k > 0 ? SPECIAL.find((s) => s > theta) : [...SPECIAL].reverse().find((s) => s < theta);
-			return setAngle(next ?? theta);
+				k > 0
+					? (SPECIAL.find((s) => s > theta) ?? 30)
+					: ([...SPECIAL].reverse().find((s) => s < theta) ?? 330);
+			return setAngle(next);
 		}
 		// Arrow keys wrap around: past 360° back to 1°, below 0° to 359°.
 		const v = theta + k;
@@ -110,10 +132,21 @@
 		}
 		return `M${CX + arcR} ${CY} A${arcR} ${arcR} 0 ${large} 0 ${end.x.toFixed(2)} ${end.y.toFixed(2)}`;
 	});
-	const mid = $derived(toRad(theta / 2));
-	const thetaLabel = $derived({
-		x: CX + (arcR + 18) * Math.cos(mid),
-		y: CY - (arcR + 18) * Math.sin(mid) + 5
+	// The θ label sits halfway round the arc, but at least 14° away from an
+	// axis (at 180° and 360° halfway would put it on the y- or x-axis).
+	const mid = $derived.by(() => {
+		const m = theta / 2;
+		const axis = Math.round(m / 90) * 90;
+		// (Small angles keep the true halfway point: it sits inside the narrow wedge.)
+		if (axis === 0 || Math.abs(m - axis) >= 14) return toRad(m);
+		const lo = axis - 14;
+		return toRad(lo > 0 ? lo : axis + 14);
+	});
+	const thetaLabel = $derived.by(() => {
+		let x = CX + (arcR + 18) * Math.cos(mid);
+		// Just short of 90° the sin segment runs through the label: step aside.
+		if (segs > 0.01 && Math.abs(x - P.x) < 12) x = P.x + (cos >= 0 ? 12 : -12);
+		return { x, y: CY - (arcR + 18) * Math.sin(mid) + 5 };
 	});
 
 	const quadrant = $derived(theta % 90 === 0 ? 0 : Math.floor(reduce(theta) / 90) + 1);
@@ -125,22 +158,72 @@
 		{ q: 4, x: CX + AX - 34, y: CY + AX - 26, signs: '(+, −)' }
 	];
 
-	// The point's label sits outside the circle, away from the axes.
+	// The point's coordinates, in a pill just outside the circle. Near the
+	// x-axis (|cos θ| ≥ 0.75) it goes above or below the point, so it stays
+	// clear of the readout panel; elsewhere beside it, but never on the y-axis.
+	const coordsText = $derived(`(${num(cos)}, ${num(sin)})`);
+	const pillW = (text: string, size: number) => text.length * size * 0.5 + 14;
 	const pointLabel = $derived.by(() => {
-		// Beside the point when there is room; above or below it near the left
-		// and right edges, kept 16 px inside the frame (labels are ~110 px wide).
-		const side = Math.abs(cos) < 0.75;
-		const x = side ? CX + (R + 22) * cos : P.x;
-		const y = side ? CY - (R + 22) * sin + 5 : P.y + (sin >= 0 ? -24 : 32);
-		return {
-			x: Math.min(944 - 60, Math.max(16 + 60, x)),
-			y,
-			anchor: side ? (cos > 0.3 ? 'start' : cos < -0.3 ? 'end' : 'middle') : 'middle'
-		} as const;
+		const lw = pillW(coordsText, 13);
+		if (Math.abs(cos) >= 0.75) {
+			return {
+				x: Math.min(944 - lw / 2, Math.max(16 + lw / 2, P.x)),
+				y: sin >= 0 ? P.y - 27 : P.y + 32,
+				anchor: 'middle'
+			} as const;
+		}
+		const right = cos >= 0;
+		const rx = CX + (R + 24) * cos;
+		const ry = CY - (R + 24) * sin;
+		if (Math.abs(cos) < 0.3) {
+			return {
+				x: right ? Math.max(rx, CX + 16) : Math.min(rx, CX - 16),
+				y: sin >= 0 ? Math.min(ry, P.y - 27) + 4 : Math.max(ry, P.y + 30),
+				anchor: right ? 'start' : 'end'
+			} as const;
+		}
+		return { x: rx, y: ry + 5, anchor: right ? 'start' : 'end' } as const;
 	});
 
-	// The cos label goes on the side of the x-axis the angle arc does not cover.
-	const cosBelow = $derived(theta <= 180 || theta >= 270);
+	// The cos label goes on the side of the x-axis away from the triangle; above
+	// the axis it keeps clear of the θ arc around the centre.
+	const cosBelow = $derived(sin >= 0);
+	const firstQuadrant = $derived(theta > 0 && theta < 90);
+	// In the triangle phase, and only where θ is the triangle's own corner
+	// (0° < θ < 90°), a second line names the side: (adjacent) / (opposite).
+	const sideNames = $derived(firstQuadrant ? w.triangle : 0);
+	const cosLabelX = $derived.by(() => {
+		const m = (CX + P.x) / 2;
+		// half the label's width, plus a gap from the y-axis (or the θ arc above it)
+		const clear = (sideNames > 0.01 ? 30 : 17) + (cosBelow ? 6 : arcR + 8);
+		return cos >= 0 ? Math.max(m, CX + clear) : Math.min(m, CX - clear);
+	});
+	const sinLabel = $derived({
+		x: P.x + (cos >= 0 ? 1 : -1) * (Math.abs(sin) < 0.3 ? 18 : 10),
+		y: (CY + P.y) / 2 + 4 - 7 * sideNames
+	});
+
+	// "1 (hypotenuse)" runs along the radius, on the side away from the
+	// triangle (and from the cos / sin labels when the triangle is flat).
+	const hypLabel = $derived.by(() => {
+		const s = (sin >= 0 ? 1 : -1) * (cos >= 0 ? 1 : -1);
+		const n = { x: -s * sin, y: -s * cos }; // screen coordinates
+		const rot = ((((-theta + 90) % 180) + 180) % 180) - 90; // never upside down
+		const m = { x: 0.58 * R * cos, y: -0.58 * R * sin }; // midpoint, from the centre
+		// 11 px off the radius; further if that would put it on an axis (a nearly
+		// vertical radius in the first quadrant has the y-axis on its outer side).
+		let k = 11;
+		if (Math.abs(m.x + k * n.x) < 12 && Math.abs(n.x) > 0.5)
+			k = (Math.abs(m.x) + 12) / Math.abs(n.x);
+		if (Math.abs(m.y + k * n.y) < 12 && Math.abs(n.y) > 0.5)
+			k = (Math.abs(m.y) + 12) / Math.abs(n.y);
+		return { x: CX + m.x + k * n.x, y: CY + m.y + k * n.y, rot };
+	});
+
+	// Tick labels on the axes fade while the point sits on top of them (the
+	// x-axis ones from further away: the sin θ label then hangs just below).
+	const tickOpacity = (x: number, y: number, far = false) =>
+		0.15 + 0.85 * smoothstep(far ? 40 : 22, far ? 56 : 34, Math.hypot(P.x - x, P.y - y));
 
 	// Right-angle mark at the foot of the drop.
 	const rightMark = $derived.by(() => {
@@ -155,6 +238,14 @@
 
 	// Readout panel.
 	const PX = 606;
+	// "0.25 of a full turn" when exact, "≈ 0.083 of a full turn" when rounded.
+	const turnLine = $derived(
+		`${(theta * 1000) % 360 === 0 ? '' : '≈ '}${Number((theta / 360).toFixed(3))} of a full turn`
+	);
+	// "= π/6 radians" when exact, "≈ 0.52 radians" when rounded.
+	const radLine = $derived(
+		`${theta === 0 || radText(theta).includes('π') ? '=' : '≈'} ${radText(theta)} radians`
+	);
 	const sinSq = $derived(sin * sin);
 	const cosSq = $derived(cos * cos);
 	const special = $derived(exact(cos) !== null && exact(sin) !== null && Number.isInteger(theta));
@@ -165,14 +256,39 @@
 	y: number,
 	text: string,
 	size: number,
-	opts: { anchor?: string; color?: string; weight?: number; muted?: boolean; opacity?: number } = {}
+	opts: {
+		anchor?: string;
+		color?: string;
+		weight?: number;
+		muted?: boolean;
+		opacity?: number;
+		/** Degrees, about (x, y); the text is then centred vertically on y. */
+		rotate?: number;
+		/** A rounded card behind the text instead of a halo. */
+		pill?: boolean;
+	} = {}
 )}
+	{#if opts.pill}
+		{@const pw = pillW(text, size)}
+		<rect
+			x={opts.anchor === 'start' ? x - 7 : opts.anchor === 'end' ? x - pw + 7 : x - pw / 2}
+			y={y - size * 0.75 - 5}
+			width={pw}
+			height={size + 10}
+			rx={(size + 10) / 2}
+			fill="var(--surface)"
+			stroke="var(--border)"
+			opacity={opts.opacity ?? 1}
+		/>
+	{/if}
 	<text
 		{x}
 		{y}
-		class="halo"
+		class={opts.pill ? undefined : 'halo'}
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
+		dominant-baseline={opts.rotate === undefined ? undefined : 'central'}
+		transform={opts.rotate === undefined ? undefined : `rotate(${opts.rotate} ${x} ${y})`}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
 		style:font-size="{size}px"
@@ -215,15 +331,18 @@
 		<line x1={CX - 5} x2={CX + 5} y1={CY - v * R} y2={CY - v * R} stroke="var(--stage-line)" />
 		{@render txt(CX + v * R + (v > 0 ? 8 : -8), CY + 18, v > 0 ? '1' : '−1', 12, {
 			anchor: v > 0 ? 'start' : 'end',
-			muted: true
+			muted: true,
+			opacity: tickOpacity(CX + v * (R + 12), CY + 14, true)
 		})}
 		{@render txt(CX - 9, CY - v * R + (v > 0 ? -6 : 16), v > 0 ? '1' : '−1', 12, {
 			anchor: 'end',
-			muted: true
+			muted: true,
+			opacity: tickOpacity(CX - 15, CY - v * R + (v > 0 ? -10 : 12))
 		})}
 	{/each}
-	{@render txt(CX + AX - 2, CY - 9, 'x', 13, { anchor: 'end', muted: true })}
-	{@render txt(CX + 9, CY - AX + 12, 'y', 13, { muted: true })}
+	<!-- axis names: x below the axis (the 0° / 360° mark is above it), y left of it -->
+	{@render txt(CX + AX - 2, CY + 18, 'x', 13, { anchor: 'end', muted: true })}
+	{@render txt(CX - 9, CY - AX + 10, 'y', 13, { anchor: 'end', muted: true })}
 	<circle
 		cx={CX}
 		cy={CY}
@@ -336,22 +455,32 @@
 				stroke-linecap="round"
 			/>
 			{#if Math.abs(cos) > 0.12}
-				{@render txt(
-					(CX + P.x) / 2,
-					CY + (cosBelow ? 22 : -12),
-					w.triangle > 0.5 ? 'cos θ (adjacent)' : 'cos θ',
-					13,
-					{ anchor: 'middle', weight: 600, color: 'var(--trig-cos)' }
-				)}
+				{@render txt(cosLabelX, CY + (cosBelow ? 22 : -12), 'cos θ', 13, {
+					anchor: 'middle',
+					weight: 600,
+					color: 'var(--trig-cos)'
+				})}
+				{#if sideNames > 0.01}
+					{@render txt(cosLabelX, CY + 36, '(adjacent)', 11, {
+						anchor: 'middle',
+						color: 'var(--trig-cos)',
+						opacity: sideNames
+					})}
+				{/if}
 			{/if}
 			{#if Math.abs(sin) > 0.12}
-				{@render txt(
-					P.x + (cos >= 0 ? 10 : -10),
-					(CY + P.y) / 2 + 4,
-					w.triangle > 0.5 ? 'sin θ (opposite)' : 'sin θ',
-					13,
-					{ anchor: cos >= 0 ? 'start' : 'end', weight: 600, color: 'var(--trig-sin)' }
-				)}
+				{@render txt(sinLabel.x, sinLabel.y, 'sin θ', 13, {
+					anchor: cos >= 0 ? 'start' : 'end',
+					weight: 600,
+					color: 'var(--trig-sin)'
+				})}
+				{#if sideNames > 0.01}
+					{@render txt(sinLabel.x, sinLabel.y + 14, '(opposite)', 11, {
+						anchor: cos >= 0 ? 'start' : 'end',
+						color: 'var(--trig-sin)',
+						opacity: sideNames
+					})}
+				{/if}
 			{/if}
 		</g>
 	{/if}
@@ -367,22 +496,21 @@
 		stroke-linecap="round"
 	/>
 	{#if w.triangle > 0.01}
-		{@render txt(
-			CX + 0.55 * R * cos - 14 * sin * (cos >= 0 ? 1 : -1),
-			CY - 0.55 * R * sin - 14 * Math.abs(cos) + 4,
-			'1 (hypotenuse)',
-			12,
-			{ anchor: cos >= 0 ? 'end' : 'start', opacity: w.triangle }
-		)}
+		{@render txt(hypLabel.x, hypLabel.y, '1 (hypotenuse)', 12, {
+			anchor: 'middle',
+			rotate: hypLabel.rot,
+			opacity: w.triangle
+		})}
 	{/if}
 	<circle cx={CX} cy={CY} r="3.5" fill="var(--stage-ink)" />
 
 	<!-- the point's coordinates -->
 	{#if segs > 0.01}
-		{@render txt(pointLabel.x, pointLabel.y, `(${num(cos)}, ${num(sin)})`, 13, {
+		{@render txt(pointLabel.x, pointLabel.y, coordsText, 13, {
 			anchor: pointLabel.anchor,
 			weight: 600,
-			opacity: segs
+			opacity: segs,
+			pill: true
 		})}
 	{/if}
 
@@ -413,10 +541,10 @@
 	<!-- ================= readout panel ================= -->
 	<g>
 		{@render txt(PX, 104, `θ = ${degText(theta)}`, 30, { weight: 600 })}
-		{@render txt(PX, 132, `= ${radText(theta)} radians`, 15, { muted: true })}
+		{@render txt(PX, 132, radLine, 15, { muted: true })}
 
 		{#if w.angle > 0.01}
-			<g opacity={w.angle}>
+			<g opacity={panel.angle}>
 				{@render txt(
 					PX,
 					196,
@@ -435,22 +563,22 @@
 											: theta === 270
 												? 'Straight down: three quarters of a turn'
 												: theta < 360
-													? 'Nearly a full turn'
+													? 'Past three quarters of a turn'
 													: 'A full turn: back to the start',
 					14
 				)}
-				{@render txt(PX, 222, `${num(theta / 360, 3)} of a full turn`, 13, { muted: true })}
+				{@render txt(PX, 222, turnLine, 13, { muted: true })}
 			</g>
 		{/if}
 
-		{#if segs > 0.01}
-			<g opacity={segs}>
+		{#if panel.segs > 0.01}
+			<g opacity={panel.segs}>
 				{#each [{ id: 'cos', v: cos, color: 'var(--trig-cos)', y: 196, label: 'cos θ', what: 'sideways position' }, { id: 'sin', v: sin, color: 'var(--trig-sin)', y: 262, label: 'sin θ', what: 'height' }] as row (row.id)}
 					{@render txt(
 						PX,
 						row.y,
-						`${row.label} = ${trigText(theta, row.id as 'sin' | 'cos')}`,
-						18,
+						`${row.label} ${isSpecial(theta) ? '=' : '≈'} ${trigText(theta, row.id as 'sin' | 'cos')}`,
+						16,
 						{ weight: 600, color: row.color }
 					)}
 					{@render txt(PX + 300, row.y, row.what, 12, { anchor: 'end', muted: true })}
@@ -488,9 +616,18 @@
 		{/if}
 
 		{#if w.triangle > 0.01}
-			<g opacity={w.triangle}>
-				{@render txt(PX, 350, 'sin θ = opposite ÷ hypotenuse', 13)}
-				{@render txt(PX, 372, 'cos θ = adjacent ÷ hypotenuse', 13)}
+			<g opacity={panel.triangle}>
+				<!-- lengths of a triangle with θ as a corner: only true for 0° < θ < 90° -->
+				{@render txt(PX, 350, 'sin θ = opposite ÷ hypotenuse', 13, {
+					opacity: firstQuadrant ? 1 : 0.4
+				})}
+				{@render txt(PX, 372, 'cos θ = adjacent ÷ hypotenuse', 13, {
+					opacity: firstQuadrant ? 1 : 0.4
+				})}
+				{@render txt(PX, 391, 'for 0° < θ < 90°, where θ is a corner of the triangle', 11, {
+					muted: firstQuadrant,
+					color: firstQuadrant ? undefined : 'var(--explainer-accent)'
+				})}
 				{@render txt(PX, 412, 'Pythagoras:', 13, { muted: true })}
 				{@render txt(
 					PX,
@@ -526,7 +663,7 @@
 		{/if}
 
 		{#if w.quadrants > 0.01}
-			<g opacity={w.quadrants}>
+			<g opacity={panel.quadrants}>
 				{@render txt(
 					PX,
 					350,
@@ -549,11 +686,22 @@
 				)}
 				{@render txt(PX, 420, 'Special angles in the first quadrant', 12, { muted: true })}
 				{#each [{ a: 30, c: '√3/2', s: '½' }, { a: 45, c: '√2/2', s: '√2/2' }, { a: 60, c: '½', s: '√3/2' }] as row, i (row.a)}
-					{@render txt(PX, 446 + i * 22, `${row.a}°`, 13, {
-						weight: 600,
-						opacity:
-							reduce(theta) % 180 === row.a || 180 - (reduce(theta) % 180) === row.a ? 1 : 0.6
-					})}
+					<!-- the row whose mirror image the current angle is -->
+					{@const hit =
+						Number.isInteger(theta) &&
+						(reduce(theta) % 180 === row.a || 180 - (reduce(theta) % 180) === row.a)}
+					{#if hit}
+						<rect
+							x={PX - 8}
+							y={446 + i * 22 - 16}
+							width="250"
+							height="22"
+							rx="5"
+							fill="var(--explainer-accent)"
+							opacity="0.14"
+						/>
+					{/if}
+					{@render txt(PX, 446 + i * 22, `${row.a}°`, 13, { weight: hit ? 700 : 500 })}
 					{@render txt(PX + 60, 446 + i * 22, `cos ${row.c}`, 13, { color: 'var(--trig-cos)' })}
 					{@render txt(PX + 170, 446 + i * 22, `sin ${row.s}`, 13, { color: 'var(--trig-sin)' })}
 				{/each}
