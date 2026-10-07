@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-07 18:52 UTC.
+Last updated: 2026-10-07 19:05 UTC.
 
 ## How we work
 
@@ -61,10 +61,11 @@ Plan (tick as done):
 - [x] CrowdScene (steps outbreak, contacts, curves, vaccination, realworld): written and
       screenshot-checked roughly; full review matrix still to do. Default seeds chosen with a
       script (contacts: seed 150 → first case infectious 8.6 days, 30 meetings, infects 3).
-- [ ] TreeScene (r0, exponential), SirScene (compartments, peak, overshoot), RunsScene (chance),
-      ThresholdScene (threshold): being drafted by four parallel agents from detailed briefs
-      (each verifies with screenshots and reports). If interrupted: the files may hold partial
-      drafts — check them with the screenshot helper before trusting them.
+- [x] TreeScene (r0, exponential), SirScene (compartments, peak, overshoot), RunsScene (chance),
+      ThresholdScene (threshold): drafted by four parallel agents, each with its own screenshot
+      matrix; looked at and committed. Their wording proposals were applied to `steps.ts`.
+- [x] Narrative fact-check (agent, with sources): 4 must-fix + suggestions applied.
+- [x] `Label` colour fix (shared): `style:fill`, so `<Label color>` is no longer overridden.
 - [x] Card art in `TopicArt.svelte`; e2e tests `e2e/epidemics.e2e.ts` (Run again, R0 < 1 dies
       out, controls only act on steps that show them).
 - [x] Found and fixed a bug already live on `main`: after opening a deep link, Next/Previous
@@ -72,12 +73,13 @@ Plan (tick as done):
       both branches (cherry-picked onto `site/catalogue-index` and pushed).
 - [x] CrowdScene screenshot matrix taken (both themes, two WAITs, R0 0.5/1.3/8, D 2/14,
       vaccinated 50/70/95, re-run, reduced motion) and looked at; one wording fix.
-- [ ] Review: screenshot matrix per scene (both themes, two WAITs, control extremes, reduced
-      motion), parallel reviewers, adversarial second look, fact-check of the narrative.
+- [ ] Adversarial second look: three reviewers running (crowd+runs, tree+sir, threshold + whole
+      page as a reader incl. mobile and definition of done). If interrupted: rerun them; scene
+      files may hold uncommitted fixes — check `git diff` and screenshots before committing.
 - [ ] Tick `epidemics` in the TOPICS.md checklist; log times; push; PR.
 
-Next action: integrate the four scene drafts (agents still running at 18:52 UTC), apply the
-narrative fact-check (agent running), then the review round.
+Next action: apply the reviewers' findings, rerun all checks, tick the checklist, log times,
+push, PR.
 
 ## Open questions for the user
 
