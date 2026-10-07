@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-07 20:05 UTC.
+Last updated: 2026-10-07 20:30 UTC.
 
 ## How we work
 
@@ -47,13 +47,16 @@ Plan (tick as done):
       `--trig-sin` / `--trig-cos`.
 - [x] CircleScene (circle, coordinates, triangle, quadrants): written and screenshot-checked.
 - [x] e2e `e2e/unit-circle.e2e.ts`: drag sets the angle, keys, snap.
-- [ ] RadiansScene (radians) and WaveScene (sine, cosine, periodic, oscillation): being drafted by
-      two parallel agents (started 20:00 UTC). If interrupted: check the files with the
-      screenshot helper before trusting them.
+- [x] RadiansScene (radians) and WaveScene (sine, cosine, periodic, oscillation): drafted by two
+      agents with their own screenshot matrices and Playwright interaction tests; committed.
+- [x] `StageProps.setParam`: scenes change controls through it (writing to `params` triggered
+      Svelte's ownership warning). Scene guide updated.
+- [ ] Review round running (3 agents: circle+radians, wave, whole page + fact-check). If
+      interrupted: scene files may hold uncommitted reviewer fixes — check `git diff`.
 - [ ] Review round (adversarial reviewers, whole-page read, definition of done), all checks,
       tick, time log, then ask the user to validate.
 
-Next action: integrate the two scene drafts.
+Next action: apply the review findings, run all checks, tick, log time, ask the user to validate.
 
 ## Open questions for the user
 
