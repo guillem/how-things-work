@@ -16,7 +16,7 @@ const pace: Control = {
 	max: 60,
 	step: 1,
 	default: 6,
-	unit: ' operations/s'
+	unit: ' steps/s'
 };
 
 const size: Control = {

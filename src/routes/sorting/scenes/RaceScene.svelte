@@ -17,7 +17,7 @@
 	 *
 	 * Speed. The slider sets ticks per second. A reversed row of 40 bars needs
 	 * 1,560 operations from bubble sort — over four minutes at 6/s — so the
-	 * race runs ×round((n/16)²) faster for more than ~22 bars, which keeps
+	 * race runs ×round((n/16)²) faster from 20 bars on, which keeps
 	 * the slow (n²) runs at about the same length at every size. The factor is
 	 * printed on the stage whenever it is not ×1.
 	 *
@@ -28,10 +28,17 @@
 	 * (step restart), and is bypassed under reduced motion, where the finished
 	 * race is shown.
 	 *
+	 * Stepping. With "Run by itself" off, the race stands at a tick stored with
+	 * `setParam` (`raceTick`, valid for the input named by `raceKey`), and the
+	 * timeline marker (a Handle) moves all four lanes one tick at a time. Turning
+	 * it off freezes the race where it was; turning it on carries on from there
+	 * (from the start once the race is over).
+	 *
 	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
 	 * presentation attributes (docs/BACKLOG.md).
 	 */
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { untrack } from 'svelte';
+	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
 		ALGORITHMS,
@@ -43,12 +50,13 @@
 		type Order
 	} from '../sorts';
 
-	let { t, params, reduced }: StageProps = $props();
+	let { t, params, setParam, reduced }: StageProps = $props();
 
 	const n = $derived(Number(params.size ?? 16));
 	const order = $derived(String(params.order ?? 'shuffled') as Order);
 	const seed = $derived(1 + 101 * Number(params.shuffle ?? 0));
 	const pace = $derived(Number(params.pace ?? 6));
+	const playing = $derived(params.play !== false);
 	const factor = $derived(Math.max(1, Math.round((n / 16) ** 2)));
 	const rate = $derived(pace * factor);
 
@@ -83,28 +91,78 @@
 
 	// ---- the race clock (ticks), see the comment at the top -----------------------
 	const LEAD = 0.6;
+	const manual = $derived(params.raceKey === runKey ? Number(params.raceTick ?? 0) : 0);
 	let acc = 0;
 	let lastT = 0;
 	let startT = 0;
 	let clockKey = '';
+	let clockPlaying = false;
+	// The last tick shown while playing, for the freeze (see BarsScene).
+	let lastK = 0;
 	const k = $derived.by(() => {
-		if (reduced) return longest;
+		if (reduced) {
+			const v = playing ? longest : clamp(manual, 0, longest);
+			if (playing) lastK = v;
+			return v;
+		}
 		if (runKey !== clockKey || t < lastT) {
 			clockKey = runKey;
 			acc = 0;
 			startT = t;
-		} else if (t > lastT) {
+			clockPlaying = playing;
+		} else if (playing && !clockPlaying) {
+			// Resume from the stepped position, without the opening pause.
+			acc = manual >= longest ? 0 : Math.max(0, manual);
+			startT = t - LEAD;
+			clockPlaying = true;
+		} else if (playing && t > lastT) {
 			const from = Math.max(lastT, startT + LEAD);
 			if (t > from) acc += (t - from) * rate;
 		}
 		lastT = t;
+		if (!playing) {
+			clockPlaying = false;
+			return clamp(manual, 0, longest);
+		}
 		acc = Math.min(acc, longest);
+		lastK = acc;
 		return acc;
 	});
 
+	// Turning "Run by itself" off freezes the race where it is (only the switch
+	// from on to off; the scrubber sets `lastK` first so the freeze lands on it).
+	let wasPlaying = false;
+	$effect(() => {
+		const now = playing;
+		untrack(() => {
+			if (!now && wasPlaying) setTick(lastK);
+			wasPlaying = now;
+		});
+	});
+	function setTick(v: number) {
+		setParam('raceKey', runKey);
+		setParam('raceTick', clamp(Math.round(v), 0, longest));
+	}
+	function scrubTo(v: number) {
+		lastK = clamp(Math.round(v), 0, longest);
+		if (playing) setParam('play', false);
+		setTick(v);
+	}
+	const TL0 = 96;
+	const TL1 = 864;
+	const TLY = 526;
+	const tlx = $derived(TL0 + (TL1 - TL0) * (longest ? Math.min(k, longest) / longest : 0));
+	function onmove(p: Point) {
+		scrubTo(((p.x - TL0) / (TL1 - TL0)) * longest);
+	}
+	function onkey(s: number | 'start' | 'end') {
+		const base = playing ? Math.round(lastK) : Math.round(manual);
+		scrubTo(s === 'start' ? 0 : s === 'end' ? longest : base + s);
+	}
+
 	// ---- geometry -------------------------------------------------------------------
 	const ROW0 = 78;
-	const ROWH = 112;
+	const ROWH = 100;
 	const GAP = 8;
 	const NAME_X = 40;
 	const MEDAL_X = 244;
@@ -137,16 +195,22 @@
 			const values = r.rec.at(raw);
 			const done = new Uint8Array(n);
 			let pivot: number | undefined;
+			// The pivot is followed as quick sort swaps it into place, and is no
+			// longer outlined once it is in its final place.
 			for (let s = 0; s < raw; s++) {
 				const o = r.rec.ops[s];
 				if (o.kind === 'done') for (let p = o.from; p <= o.to; p++) done[p] = 1;
 				else if (o.kind === 'focus') pivot = o.pivot;
+				else if (o.kind === 'swap' && pivot !== undefined) {
+					if (o.i === pivot) pivot = o.j;
+					else if (o.j === pivot) pivot = o.i;
+				}
+				if (pivot !== undefined && done[pivot]) pivot = undefined;
 			}
 			if (finished) {
 				done.fill(1);
 				pivot = undefined;
 			}
-			if (pivot !== undefined && done[pivot]) pivot = undefined;
 			const bars = values.map((v, p) => {
 				let x = xOf(p);
 				let lift = 0;
@@ -168,7 +232,8 @@
 				return { p, x, h: hOf(v), color, lift };
 			});
 			// The operation under way counts once it is half done (at once when not animated).
-			const current = op && (kk - j > 0.5 || !animate) ? 1 : 0;
+			// Stepping: the highlighted operation is the next one, not yet counted.
+			const current = op && (kk - j > 0.5 || (!animate && playing)) ? 1 : 0;
 			const comparisons = r.cmp[j] + (op?.kind === 'compare' ? current : 0);
 			return {
 				...r,
@@ -189,7 +254,9 @@
 	const tick = $derived(Math.max(...rows.map((r) => r.operations)));
 	const speedText = $derived(
 		reduced
-			? 'Reduced motion: the race is shown finished'
+			? playing
+				? 'Reduced motion: the race is shown finished'
+				: 'Reduced motion: stepping through the race by hand'
 			: factor > 1
 				? `${rate} ticks per second: speed ${pace} × ${factor}, sped up so that ${n} bars do not take minutes`
 				: `${rate} tick${rate === 1 ? '' : 's'} per second`
@@ -299,6 +366,48 @@
 		<rect x={C0} y={cy - 9} width={Math.max(0, w)} height="18" rx="4" fill={r.color} />
 		{@render txt(C0 + w + 8, cy + 5, String(r.comparisons), 13, { weight: 600 })}
 	{/each}
+
+	<!-- timeline of ticks: drag or use the keys to step the race -->
+	<line
+		x1={TL0}
+		x2={TL1}
+		y1={TLY}
+		y2={TLY}
+		stroke="var(--stage-grid)"
+		stroke-width="6"
+		stroke-linecap="round"
+	/>
+	<line
+		x1={TL0}
+		x2={tlx}
+		y1={TLY}
+		y2={TLY}
+		stroke="var(--explainer-accent)"
+		stroke-width="6"
+		stroke-linecap="round"
+		opacity="0.6"
+	/>
+	{@render txt(TL0 - 14, TLY + 4, 'start', 11, { anchor: 'end', muted: true })}
+	{@render txt(TL1 + 14, TLY + 4, 'end', 11, { muted: true })}
+	{@render txt(
+		(TL0 + TL1) / 2,
+		TLY + 26,
+		`tick ${tick} of ${longest}${playing && !reduced ? '' : playing ? ' · drag or use ← → to step through' : ' · paused: drag or use ← →'}`,
+		12,
+		{ anchor: 'middle', muted: true }
+	)}
+	<Handle
+		x={tlx}
+		y={TLY}
+		r={8}
+		label="Race position"
+		value={Math.round(Math.min(k, longest))}
+		min={0}
+		max={longest}
+		valuetext="tick {tick} of {longest}"
+		{onmove}
+		{onkey}
+	/>
 
 	<!-- the rules of the race -->
 	{@render txt(
