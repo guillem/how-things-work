@@ -7,3 +7,6 @@ bun.lockb
 
 # Miscellaneous
 /static/
+
+# Hand-written planning docs, kept exactly as authored
+/docs/TOPICS.md
