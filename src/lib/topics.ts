@@ -69,6 +69,15 @@ const explainers: Explainer[] = [
 		accent: '#0b7285',
 		steps: 10,
 		minutes: 15
+	},
+	{
+		slug: 'newtons-laws',
+		title: "Newton's laws: forces, motion and energy",
+		summary:
+			'Push carts, launch projectiles and send a car along a track you shape yourself, and see why forces change motion instead of keeping it going.',
+		accent: '#1971c2',
+		steps: 10,
+		minutes: 15
 	}
 ];
 
