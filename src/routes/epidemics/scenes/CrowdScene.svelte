@@ -469,7 +469,11 @@
 				R₀ {opts.r0.toFixed(1)} × {Math.round((100 * sample.s) / POPULATION)}% still susceptible
 			</text>
 			<text x={PX1} y={496} font-size="11" class="muted" text-anchor="end">
-				{rNow > 1 ? 'above 1: growing' : 'below 1: shrinking'}
+				{sample.i === 0
+					? 'nobody is infectious now'
+					: rNow > 1
+						? 'above 1: growing'
+						: 'below 1: shrinking'}
 			</text>
 		</g>
 		<Label x={PX0} y={540} text={status} size={13} anchor="start" />
