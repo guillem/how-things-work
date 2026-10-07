@@ -84,7 +84,7 @@ export const spec: ExplainerSpec = {
 			chapter: 'spread',
 			title: 'Meeting people, passing it on',
 			scene: 'crowd',
-			hints: { view: 'case', initial: 1, seed: 11, pace: 1.5 },
+			hints: { view: 'case', initial: 1, seed: 150, pace: 1 },
 			duration: 24,
 			controls: [rerun],
 			body: `

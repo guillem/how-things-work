@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-07 18:30 UTC.
+Last updated: 2026-10-07 18:43 UTC.
 
 ## How we work
 
@@ -34,10 +34,10 @@ Last updated: 2026-10-07 18:30 UTC.
      only built topics; catalogue parsed from `docs/TOPICS.md` at build time
      (`src/lib/catalog.ts`); shared explainer page shell with "Read first / Related / Leads on to"
      links (`ExplainerPage.svelte`, `TopicLinks.svelte`); catalogue invariants test; scene tests
-     loop over every explainer; these status/backlog/time-log docs. **State: done, tests pass;
-     to push and PR.**
+     loop over every explainer; these status/backlog/time-log docs. **State: done, tests pass,
+     pushed to origin; PR not opened yet (see open questions).**
   2. **`topic/epidemics`** (base `site/catalogue-index` — it needs the page shell; rebase onto
-     `main` once the first PR is merged). **State: not started.**
+     `main` once the first PR is merged). **State: in progress, see below.**
 
 ## Current development: epidemics
 
@@ -46,20 +46,31 @@ Catalogue entry `epidemics` (Body & Medicine, level 1, simulate, no prerequisite
 
 Plan (tick as done):
 
-- [ ] Model (`src/routes/epidemics/model.ts`): agent-based SIR on a torus with exponential
-      infectious periods, R0 calibrated from contact density; deterministic SIR ODE, final-size
-      equation, herd-immunity threshold; Node tests comparing agents with theory.
-- [ ] Shared chart primitive in `src/lib/draw/` (axes + series as single paths).
-- [ ] "Run again" control type in the explainer framework (+ e2e test).
-- [ ] Narrative `steps.ts` (3 chapters: spread, the SIR model, herd immunity).
-- [ ] Scenes: crowd + live plot; transmission tree (R0); SIR compartments + curves; threshold.
-- [ ] Register the topic, card art, e2e coverage.
+- [x] Model (`src/routes/epidemics/model.ts`) + tests (`e2e/epidemics-model.e2e.ts`, Node only).
+      Agent-based SIR with **well-mixed contacts** (anyone can meet anyone; 4 meetings/day;
+      chance per meeting = R0 / (4 × D)) and exponential infectious periods, so it matches the
+      SIR equations. A first version tied infection to distance; it measured R ≈ 1.7 for a slider
+      value of 3 (neighbours stay the same for days), so it was replaced — the page states the
+      simplification (notes of the `contacts` step).
+- [x] Shared chart primitive: `src/lib/draw/Axes.svelte` + `src/lib/draw/chart.ts`.
+- [x] Shared scene loader: `src/lib/explainer/SceneStage.svelte` (photosynthesis uses it too).
+- [x] "Run again" control: new `action` control type (value = number of presses);
+      `scripts/shot.mjs` `SET=rerun:N` presses it N times. **e2e test still to add.**
+- [x] Narrative `steps.ts`: 12 steps, chapters spread / sir / herd. Real-disease R0 figures only
+      in notes, with citations.
+- [x] CrowdScene (steps outbreak, contacts, curves, vaccination, realworld): written and
+      screenshot-checked roughly; full review matrix still to do. Default seeds chosen with a
+      script (contacts: seed 150 → first case infectious 8.6 days, 30 meetings, infects 3).
+- [ ] TreeScene (r0, exponential), SirScene (compartments, peak, overshoot), RunsScene (chance),
+      ThresholdScene (threshold): being drafted by four parallel agents from detailed briefs
+      (each verifies with screenshots and reports). If interrupted: the files may hold partial
+      drafts — check them with the screenshot helper before trusting them.
+- [ ] Card art in `TopicArt.svelte`; e2e test for the action control and the epidemics controls.
 - [ ] Review: screenshot matrix per scene (both themes, two WAITs, control extremes, reduced
       motion), parallel reviewers, adversarial second look, fact-check of the narrative.
 - [ ] Tick `epidemics` in the TOPICS.md checklist; log times; push; PR.
 
-Next action: push `site/catalogue-index`, then branch `topic/epidemics` from it and write the
-model.
+Next action: integrate the four scene drafts, then the review round.
 
 ## Open questions for the user
 

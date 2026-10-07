@@ -10,13 +10,13 @@ leaves a record.
 
 ## Topics
 
-| Topic          | Phase                                     | Start            | End              | Active | Notes                                                                                                                                                                                                                                   |
-| -------------- | ----------------------------------------- | ---------------- | ---------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| photosynthesis | whole topic (reconstructed from git)      | 2026-10-06 23:09 | 2026-10-07 17:44 | ?      | Includes scaffolding the site and long idle gaps; first commit to last polish commit. Not a usable per-topic estimate on its own: 6 scenes, 16 steps, written by drafting agents then reviewed and polished scene by scene in parallel. |
-| epidemics      | see [STATUS](STATUS.md) while in progress |                  |                  |        |                                                                                                                                                                                                                                         |
+| Topic          | Phase                                | Start            | End              | Active | Notes                                                                                                                                                                                                                                   |
+| -------------- | ------------------------------------ | ---------------- | ---------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| photosynthesis | whole topic (reconstructed from git) | 2026-10-06 23:09 | 2026-10-07 17:44 | ?      | Includes scaffolding the site and long idle gaps; first commit to last polish commit. Not a usable per-topic estimate on its own: 6 scenes, 16 steps, written by drafting agents then reviewed and polished scene by scene in parallel. |
+| epidemics      | model + theory tests                 | 2026-10-07 18:27 | 2026-10-07 18:34 | 7 min  | includes the proximity-model dead end                                                                                                                                                                                                   |
 
 ## Site work (not counted in topic estimates)
 
 | Work                                                | Start            | End              | Active | Notes                                                |
 | --------------------------------------------------- | ---------------- | ---------------- | ------ | ---------------------------------------------------- |
-| Catalogue-driven index, cross-links, status/backlog | 2026-10-07 18:20 | 2026-10-07 18:27 | same   | Includes reading the codebase and planning epidemics |
+| Catalogue-driven index, cross-links, status/backlog | 2026-10-07 18:20 | 2026-10-07 18:27 | 7 min  | Includes reading the codebase and planning epidemics |
