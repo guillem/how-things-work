@@ -44,6 +44,46 @@
 	}
 	/** A speed: two decimals below 1 m/s, one above. */
 	const fmtV = (v: number) => fmt(v, Math.abs(v) < 0.995 && Math.abs(v) > 0.005 ? 2 : 1);
+	/** Two speeds in one sentence, with the same number of decimals. */
+	function fmtV2(a: number, b: number) {
+		const small = [a, b].some((v) => Math.abs(v) < 0.995 && Math.abs(v) > 0.005);
+		return [fmt(a, small ? 2 : 1), fmt(b, small ? 2 : 1)];
+	}
+	/** Round half away from zero, after removing floating-point noise. */
+	const rnd = (x: number) => {
+		const c = Number(x.toFixed(6));
+		return Math.sign(c) * Math.round(Math.abs(c));
+	};
+	/**
+	 * Rounds `parts` to `d` decimals so that they add up exactly to `total`
+	 * rounded the same way (largest remainder): the readouts a reader adds up
+	 * always agree with the total shown.
+	 */
+	function apportion(parts: number[], total: number, d: number) {
+		const f = 10 ** d;
+		const N = rnd(total * f);
+		const raw = parts.map((p) => p * f);
+		const n = raw.map(rnd);
+		let diff = N - n.reduce((a, b) => a + b, 0);
+		while (diff !== 0) {
+			const s = Math.sign(diff);
+			let best = 0;
+			for (let i = 1; i < n.length; i++)
+				if ((raw[i] - n[i]) * s > (raw[best] - n[best]) * s) best = i;
+			n[best] += s;
+			diff -= s;
+		}
+		return { parts: n.map((v) => v / f), total: N / f };
+	}
+	/** A velocity arrow's drawn length: proportional, but never too short to show its direction. */
+	const vis = (len: number) => Math.sign(len) * Math.max(Math.abs(len), 14);
+	/**
+	 * Fades a label (and its arrow) spanning [a, b] in x out over the last
+	 * 40 px before the stage edges, so carts leaving the view never show
+	 * text cut in half.
+	 */
+	const edgeFade = (a: number, b: number) =>
+		smoothstep(16, 56, Math.min(a, b)) * (1 - smoothstep(904, 944, Math.max(a, b)));
 
 	// ---- shared geometry ------------------------------------------------------------
 	const TRACK_Y: Record<string, number> = {
@@ -53,14 +93,17 @@
 		collide: 250,
 		energy: 250
 	};
-	const trackY = Tween.of(() => TRACK_Y[phase] ?? 300, { duration: 800, easing: cubicInOut });
+	const trackY = Tween.of(() => TRACK_Y[phase] ?? 300, {
+		duration: () => (reduced ? 0 : 800),
+		easing: cubicInOut
+	});
 	const ty = $derived(trackY.current);
 	const graphIn = Tween.of(() => (phase === 'push' ? 1 : 0), {
-		duration: 700,
+		duration: () => (reduced ? 0 : 700),
 		easing: cubicInOut
 	});
 	const energyMix = Tween.of(() => (phase === 'energy' ? 1 : 0), {
-		duration: 800,
+		duration: () => (reduced ? 0 : 800),
 		easing: cubicInOut
 	});
 
@@ -138,7 +181,7 @@
 	const GT = 10; // seconds on the graph
 	const gx = scale([0, GT], [110, 880]);
 	const vMax = Tween.of(() => niceMax(Math.max(run.vEnd, 1)), {
-		duration: 700,
+		duration: () => (reduced ? 0 : 700),
 		easing: cubicInOut
 	});
 	const gy = $derived(scale([0, vMax.current], [540, 326]));
@@ -155,9 +198,13 @@
 	});
 
 	const formula = $derived.by(() => {
-		if (mu === 0) return `a = F ÷ m = ${fmtN(F)} ÷ ${fmtN(mass)} = ${fmtN(run.a)} m/s²`;
-		if (!moves) return `a = 0: the push (${fmtN(F)} N) cannot beat friction (${fmt(fricMax, 2)} N)`;
-		return `a = (push − friction) ÷ m = (${fmtN(F)} − ${fmt(fricMax, 2)}) ÷ ${fmtN(mass)} = ${fmtN(run.a)} m/s²`;
+		if (F === 0) return `a = F ÷ m = 0 ÷ ${fmtN(mass)} = 0 m/s²`;
+		if (mu > 0 && !moves)
+			return `a = 0: the push (${fmtN(F)} N) cannot beat friction (${fmt(fricMax, 2)} N)`;
+		// Once the hand has let go, the formula is about the push that is over.
+		const when = released ? 'While pushed: ' : '';
+		if (mu === 0) return `${when}a = F ÷ m = ${fmtN(F)} ÷ ${fmtN(mass)} = ${fmtN(run.a)} m/s²`;
+		return `${when}a = (push − friction) ÷ m = (${fmtN(F)} − ${fmt(fricMax, 2)}) ÷ ${fmtN(mass)} = ${fmtN(run.a)} m/s²`;
 	});
 
 	const status1 = $derived.by(() => {
@@ -222,7 +269,18 @@
 		if (pm1 === pm2) return 'Equal masses: equal speeds, in opposite directions.';
 		const heavy = pm1 > pm2 ? 'left' : 'right';
 		const r = Math.max(pm1, pm2) / Math.min(pm1, pm2);
-		const part = r === 2 ? 'half' : r === 3 ? 'a third' : r === 4 ? 'a quarter' : null;
+		const part =
+			(
+				{
+					1.5: 'two thirds',
+					2: 'half',
+					2.5: 'two fifths',
+					3: 'a third',
+					4: 'a quarter',
+					5: 'a fifth',
+					10: 'a tenth'
+				} as Record<number, string>
+			)[r] ?? null;
 		return `The ${heavy} cart has ${fmtN(r)}× the mass, so it moves off at ${part ? `${part} of the speed` : `the speed ÷ ${fmtN(r)}`}.`;
 	});
 
@@ -265,12 +323,32 @@
 	const keB = $derived(kB[0] + kB[1]);
 	const keA = $derived(kA[0] + kA[1]);
 	const lost = $derived(Math.max(0, keB - keA));
+	// What the bars print: rounded so that the parts add up to the totals shown,
+	// the momentum total is the same number before and after, and the kinetic
+	// energy after plus the amount lost is exactly the energy before.
+	const pShow = $derived.by(() => {
+		const before = apportion(pB.slice(0, 2), pB[2], 1);
+		const after = apportion(pA.slice(0, 2), pB[2], 1);
+		return {
+			B: [...before.parts, before.total],
+			A: [...after.parts, before.total]
+		};
+	});
+	const kShow = $derived.by(() => {
+		const before = apportion(kB, keB, 2);
+		const after = apportion(kA, lost < 1e-9 ? keB : keA, 2);
+		return {
+			B: [...before.parts, before.total],
+			A: [...after.parts, after.total],
+			lost: Number((before.total - after.total).toFixed(2))
+		};
+	});
 	const pScale = Tween.of(() => niceMax(Math.max(0.5, ...pB.map(Math.abs), ...pA.map(Math.abs))), {
-		duration: 700,
+		duration: () => (reduced ? 0 : 700),
 		easing: cubicInOut
 	});
 	const kScale = Tween.of(() => niceMax(Math.max(0.5, keB)), {
-		duration: 700,
+		duration: () => (reduced ? 0 : 700),
 		easing: cubicInOut
 	});
 
@@ -280,15 +358,23 @@
 			if (cu1 === 0) return 'The left cart is at rest and the right one moves away: no collision.';
 			return 'The right cart moves away at least as fast as the left one follows: they never meet.';
 		}
-		if (!crashed) return `The left cart closes in at ${fmtV(cu1 - cu2)} m/s…`;
-		if (Math.abs(fv1 - fv2) < 1e-6)
-			return Math.abs(fv1) < 1e-6
+		if (!crashed) return `The carts close in at ${fmtV(cu1 - cu2)} m/s…`;
+		const still = (v: number) => Math.abs(v) < 1e-6;
+		const side = (v: number) => (v < 0 ? 'left' : 'right');
+		if (still(fv1 - fv2))
+			return still(fv1)
 				? 'They stick together and stop dead.'
-				: `They stick together and move on at ${fmtV(Math.abs(fv1))} m/s.`;
-		if (Math.abs(fv1) < 1e-6)
-			return `The left cart stops dead; the right one leaves at ${fmtV(fv2)} m/s.`;
-		if (fv1 < 0) return `The left cart bounces back at ${fmtV(-fv1)} m/s.`;
-		return `Both carts move on to the right, at ${fmtV(fv1)} and ${fmtV(fv2)} m/s.`;
+				: `They stick together and move ${side(fv1)} at ${fmtV(Math.abs(fv1))} m/s.`;
+		const [s1, s2] = fmtV2(Math.abs(fv1), Math.abs(fv2));
+		if (still(fv1)) return `The left cart stops dead; the right one moves right at ${s2} m/s.`;
+		if (fv1 > 0) return `Both carts move on to the right, at ${s1} and ${s2} m/s.`;
+		// The left cart ends up moving left: back the way it came, or knocked left from rest.
+		const left =
+			cu1 > 0
+				? `The left cart bounces back at ${s1} m/s`
+				: `The left cart is knocked left at ${s1} m/s`;
+		if (still(fv2)) return `${left}; the right one stops.`;
+		return `${left}; the right one moves ${side(fv2)} at ${s2} m/s.`;
 	});
 
 	// bars layout
@@ -298,6 +384,10 @@
 	];
 	const ROW = [374, 418, 476];
 	const ROWH = [18, 18, 22];
+	// The momentum and energy views swap in turn (old out, then new in), so their
+	// texts never sit on top of each other half-faded.
+	const momView = $derived(1 - smoothstep(0, 0.5, energyMix.current));
+	const enView = $derived(smoothstep(0.5, 1, energyMix.current));
 	const ROWNAME = $derived([`left cart, ${fmtN(cm1)} kg`, `right cart, ${fmtN(cm2)} kg`, 'total']);
 	const PHALF = 130; // px for the momentum scale, either side of zero
 	const KLEN = 300; // px for the energy scale
@@ -457,8 +547,9 @@
 				{@render cart(cx1, mass, (xNow * S1) / WHEEL)}
 				{#if vNow > 1e-3}
 					{@const y = bodyTop(mass) - 18}
-					{@render arrow(cx1, y, cx1 + vNow * VA1, 'var(--mech-velocity)')}
-					{@render txt(cx1 + (vNow * VA1) / 2, y - 10, `${fmtV(vNow)} m/s`, 13, {
+					{@const len = vis(vNow * VA1)}
+					{@render arrow(cx1, y, cx1 + len, 'var(--mech-velocity)')}
+					{@render txt(cx1 + len / 2, y - 10, `${fmtV(vNow)} m/s`, 13, {
 						anchor: 'middle',
 						color: 'var(--mech-velocity)',
 						weight: 600
@@ -467,17 +558,19 @@
 				{#if pushNow > 0}
 					{@const x = cx1 + cartW(mass) / 2 + 4}
 					{@const y = bodyMid(mass)}
-					{@render arrow(x, y, x + pushNow * FA1, 'var(--mech-force)')}
-					{@render txt(x + pushNow * FA1 + 8, y + 4, `push ${fmtN(pushNow)} N`, 13, {
+					{@const len = Math.max(pushNow * FA1, 14)}
+					{@render arrow(x, y, x + len, 'var(--mech-force)')}
+					{@render txt(x + len + 8, y + 4, `push ${fmtN(pushNow)} N`, 13, {
 						color: 'var(--mech-force)',
 						weight: 600
 					})}
 				{/if}
 				{#if fricNow > 0}
 					{@const x = cx1 - cartW(mass) / 2 - 2}
-					{@const y = ty - 3}
-					{@render arrow(x, y, x - fricNow * FA1, 'var(--mech-force)', 2.5)}
-					{@render txt(x - fricNow * FA1 - 6, y + 4, `friction ${fmt(fricNow, 2)} N`, 12, {
+					{@const y = ty - WHEEL}
+					{@const len = Math.max(fricNow * FA1, 14)}
+					{@render arrow(x, y, x - len, 'var(--mech-force)', 2.5)}
+					{@render txt(x - len - 6, y + 4, `friction ${fmt(fricNow, 2)} N`, 12, {
 						anchor: 'end',
 						color: 'var(--mech-force)',
 						weight: 600
@@ -510,7 +603,13 @@
 			{:else}
 				{@render txt(32, 48, formula, 16, { weight: 600 })}
 				<g opacity={life}>
-					{@render txt(32, 72, `${status1.big}. ${status1.small}`, 13, { muted: true })}
+					{@render txt(
+						32,
+						72,
+						`${status1.big}${/[.…]$/.test(status1.big) ? '' : '.'} ${status1.small}`,
+						13,
+						{ muted: true }
+					)}
 				</g>
 			{/if}
 
@@ -610,12 +709,20 @@
 				{#each [{ cx: leftFront - cartW(pm1) / 2, m: pm1, v: pvl }, { cx: rightRear + cartW(pm2) / 2, m: pm2, v: pvr }] as c, i (i)}
 					{#if Math.abs(c.v) > 1e-3 && !springing}
 						{@const y = bodyTop(c.m) - 18}
-						{@render arrow(c.cx, y, c.cx + c.v * VAP, 'var(--mech-velocity)')}
-						{@render txt(c.cx + (c.v * VAP) / 2, y - 10, `${fmtV(Math.abs(c.v))} m/s`, 13, {
-							anchor: 'middle',
-							color: 'var(--mech-velocity)',
-							weight: 600
-						})}
+						{@const len = vis(c.v * VAP)}
+						<g
+							opacity={edgeFade(
+								Math.min(c.cx, c.cx + len / 2 - 30),
+								Math.max(c.cx, c.cx + len / 2 + 30)
+							)}
+						>
+							{@render arrow(c.cx, y, c.cx + len, 'var(--mech-velocity)')}
+							{@render txt(c.cx + len / 2, y - 10, `${fmtV(Math.abs(c.v))} m/s`, 13, {
+								anchor: 'middle',
+								color: 'var(--mech-velocity)',
+								weight: 600
+							})}
+						</g>
 					{/if}
 				{/each}
 			</g>
@@ -631,7 +738,7 @@
 					{@render txt(
 						480,
 						352,
-						`The spring pushed both carts equally hard (${fmtN(FP)} N for ${DP} s), in opposite directions`,
+						`Each cart pushed the other equally hard (${fmtN(FP)} N for ${DP} s), in opposite directions`,
 						15,
 						{ anchor: 'middle', weight: 600, color: 'var(--mech-force)' }
 					)}
@@ -709,14 +816,26 @@
 				{#each [{ cx: cxa, m: cm1, v: cv1 }, { cx: cxb, m: cm2, v: cv2 }] as c, i (i)}
 					{@const y = bodyTop(c.m) - 18}
 					{#if Math.abs(c.v) > 1e-3 && bang < 0.02}
-						{@render arrow(c.cx, y, c.cx + c.v * VAC, 'var(--mech-velocity)')}
-						{@render txt(c.cx + (c.v * VAC) / 2, y - 10, `${fmtV(Math.abs(c.v))} m/s`, 13, {
-							anchor: 'middle',
-							color: 'var(--mech-velocity)',
-							weight: 600
-						})}
+						{@const len = vis(c.v * VAC)}
+						<g
+							opacity={edgeFade(
+								Math.min(c.cx, c.cx + len / 2 - 30),
+								Math.max(c.cx, c.cx + len / 2 + 30)
+							)}
+						>
+							{@render arrow(c.cx, y, c.cx + len, 'var(--mech-velocity)')}
+							{@render txt(c.cx + len / 2, y - 10, `${fmtV(Math.abs(c.v))} m/s`, 13, {
+								anchor: 'middle',
+								color: 'var(--mech-velocity)',
+								weight: 600
+							})}
+						</g>
 					{:else if bang < 0.02}
-						{@render txt(c.cx, y - 4, 'at rest', 12, { anchor: 'middle', muted: true })}
+						{@render txt(c.cx, y - 4, 'at rest', 12, {
+							anchor: 'middle',
+							muted: true,
+							opacity: edgeFade(c.cx - 22, c.cx + 22)
+						})}
 					{/if}
 				{/each}
 			</g>
@@ -726,7 +845,8 @@
 				{@const after = pi === 1}
 				{@const show = after ? afterIn * life : 1}
 				{@const zero = (panel.x0 + panel.x1) / 2}
-				{@const pTot = after ? pA[2] : pB[2]}
+				{@const pTot = pB[2]}
+				{@const pTotText = fmt(pShow.B[2])}
 				{@render txt(panel.x0, 338, after && !meets ? 'Later (no crash)' : panel.label, 14, {
 					weight: 600
 				})}
@@ -747,7 +867,7 @@
 				/>
 
 				<!-- momentum view -->
-				<g opacity={1 - energyMix.current}>
+				<g opacity={momView}>
 					{#if pi === 0}
 						{@render txt(panel.x1, 338, 'momentum, kg·m/s', 12, {
 							anchor: 'end',
@@ -764,6 +884,7 @@
 					/>
 					{#each [0, 1, 2] as r (r)}
 						{@const p = after ? pA[r] : pB[r]}
+						{@const shownP = after ? pShow.A[r] : pShow.B[r]}
 						{@const len = (p / pScale.current) * PHALF}
 						{@render txt(panel.x0, ROW[r] - 6, ROWNAME[r], 11, {
 							muted: true,
@@ -774,7 +895,7 @@
 							{@render txt(
 								p < 0 ? zero + len - 6 : zero + len + 6,
 								ROW[r] + ROWH[r] / 2 + 5,
-								fmt(p),
+								fmt(shownP),
 								13,
 								{
 									anchor: p < 0 ? 'end' : 'start',
@@ -787,7 +908,7 @@
 				</g>
 
 				<!-- energy view -->
-				<g opacity={energyMix.current}>
+				<g opacity={enView}>
 					{#if pi === 0}
 						{@render txt(panel.x1, 338, 'kinetic energy, J', 12, {
 							anchor: 'end',
@@ -806,7 +927,9 @@
 						{@const k = r === 2 ? (after ? keA : keB) : after ? kA[r] : kB[r]}
 						{@const len = (k / kScale.current) * KLEN}
 						{@const heat = after && r === 2 ? (lost / kScale.current) * KLEN : 0}
-						{@render txt(panel.x0, ROW[r] - 6, ROWNAME[r], 11, {
+						{@const shownK = after ? kShow.A[r] : kShow.B[r]}
+						<!-- clear of the axis line at x0 -->
+						{@render txt(panel.x0 + 6, ROW[r] - 6, ROWNAME[r], 11, {
 							muted: true,
 							weight: r === 2 ? 600 : 500
 						})}
@@ -822,13 +945,18 @@
 							{#if heat > 0.5}
 								{@render bar(panel.x0 + len + 1, ROW[r], heat, ROWH[r], 'var(--mech-heat)', 0.85)}
 							{/if}
-							{@render txt(
-								panel.x0 + len + heat + 6,
-								ROW[r] + ROWH[r] / 2 + 5,
-								`${fmt(k, 2)} J`,
-								13,
-								{ weight: 600, color: 'var(--mech-kinetic)' }
-							)}
+							<!-- after a lossy crash: the kinetic energy left, then the part turned to heat -->
+							<text
+								x={panel.x0 + len + heat + 6}
+								y={ROW[r] + ROWH[r] / 2 + 5}
+								class="halo"
+								font-weight="600"
+								style:font-size="13px"
+								><tspan style:fill="var(--mech-kinetic)">{fmt(shownK, 2)} J</tspan
+								>{#if heat > 0.5}<tspan style:fill="var(--mech-heat)"
+										>{` + ${fmt(kShow.lost, 2)} J`}</tspan
+									>{/if}</text
+							>
 						</g>
 					{/each}
 					{#if after}
@@ -837,7 +965,7 @@
 								panel.x0,
 								520,
 								lost > 0.005
-									? `+ ${fmt(lost, 2)} J lost to denting, heat and sound`
+									? `${fmt(kShow.lost, 2)} J of kinetic energy went into denting, heat and sound`
 									: meets
 										? 'nothing lost: perfectly elastic'
 										: 'no crash, so nothing changes',
@@ -858,7 +986,7 @@
 						{@render txt(
 							zero + (pTot / pScale.current) * 90 + (pTot < 0 ? -6 : 6),
 							554,
-							`${fmt(pTot)} kg·m/s`,
+							`${pTotText} kg·m/s`,
 							11,
 							{
 								anchor: pTot < 0 ? 'end' : 'start',
@@ -869,7 +997,7 @@
 					</g>
 				</g>
 			{/each}
-			<g opacity={afterIn * life * (lost > 0.005 ? 1 - energyMix.current : 1)}>
+			<g opacity={afterIn * life * (lost > 0.005 ? momView : 1)}>
 				{@render txt(480, 494, '=', 24, {
 					anchor: 'middle',
 					weight: 600,

@@ -63,8 +63,11 @@
 	// ---- the ride (precomputed; ~3–10 ms) --------------------------------------------
 	const SAMPLE = 0.02; // ride() records every 20 ms
 	const motion = $derived.by(() => {
-		const duration = mu > 0 ? 120 : 60;
-		const samples = ride(track, MASS, mu, duration);
+		// With friction, compute until the car has settled: that takes up to about
+		// 5.5/μ seconds (550 s at μ = 0.01). Long rides use a coarser step (the same
+		// motion to well under a millimetre; ~20 ms at worst).
+		const duration = mu > 0 ? Math.min(600, Math.max(120, 6 / mu)) : 60;
+		const samples = ride(track, MASS, mu, duration, duration > 120 ? 0.004 : 0.002);
 		// Turning points: v changes sign while slow (a buffer bounce flips v at
 		// speed), away from the buffers, and not within 0.5 s of the last one (a
 		// car pinned against a buffer jitters).
@@ -206,9 +209,18 @@
 			const anchor = nx < -0.45 ? 'end' : nx > 0.45 ? 'start' : 'middle';
 			const mid = (o: { lx: number; anchor: string }) =>
 				o.anchor === 'end' ? o.lx - 17 : o.anchor === 'start' ? o.lx + 17 : o.lx;
-			const label = !out.some(
-				(o) => o.label && Math.abs(mid(o) - mid({ lx, anchor })) < 42 && Math.abs(o.ly - ly) < 16
-			);
+			// No label on top of the release-height text (the mark itself stays).
+			const rl = releaseLabel;
+			const onRelease =
+				mid({ lx, anchor }) + 20 > rl.x - 4 &&
+				mid({ lx, anchor }) - 20 < rl.x + releaseW + 4 &&
+				ly > rl.y - 14 &&
+				ly - 12 < rl.y + (releaseLines.length - 1) * 15 + 4;
+			const label =
+				!onRelease &&
+				!out.some(
+					(o) => o.label && Math.abs(mid(o) - mid({ lx, anchor })) < 42 && Math.abs(o.ly - ly) < 16
+				);
 			out.push({ key: p.t, x, y, h: p.h, lx, ly, anchor, label });
 		}
 		return out;
@@ -237,8 +249,9 @@
 			? [`released from ${h0.toFixed(1)} m`]
 			: [`released from ${h0.toFixed(1)} m`, 'the car never climbs above this line']
 	);
+	const releaseW = $derived(Math.max(...releaseLines.map((l) => l.length)) * 6.2);
 	const releaseLabel = $derived.by(() => {
-		const w = Math.max(...releaseLines.map((l) => l.length)) * 6.2;
+		const w = releaseW;
 		const up = (releaseLines.length - 1) * 15; // extra height of the block
 		const y = sy(h0);
 		for (let x = sx(0) + 40; x <= X1 - w; x += 8) {
@@ -571,7 +584,6 @@
 				fill="var(--stage-grid)"
 			/>
 			<rect x={c.x - BW / 2} y={BASE - bar(c.j)} width={BW} height={bar(c.j)} fill={c.color} />
-			{@render txt(c.x, BASE - bar(c.j) - 8, `${c.n} J`, 13, { anchor: 'middle', weight: 600 })}
 			{@render txt(c.x, BASE + 20, c.id, 12, { anchor: 'middle', color: c.color, weight: 600 })}
 		</g>
 	{/each}
@@ -617,6 +629,14 @@
 		stroke-width="1.3"
 		stroke-dasharray="6 5"
 	/>
+	<!-- the values go over the dashed line, so its dashes never strike them through -->
+	{#each columns as c (c.id)}
+		{@render txt(c.x, BASE - bar(c.j) - 8, `${c.n} J`, 13, {
+			anchor: 'middle',
+			weight: 600,
+			opacity: c.id === 'heat' ? 0.4 + 0.6 * heatW : 1
+		})}
+	{/each}
 	{@render txt(cols.total, BASE - bar(E0) - 8, `${shown.total} J`, 13, {
 		anchor: 'middle',
 		weight: 700

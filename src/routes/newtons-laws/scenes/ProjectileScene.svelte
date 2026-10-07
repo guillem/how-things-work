@@ -213,8 +213,13 @@
 	const vxLen = $derived(ball.vx * VS);
 	const vyLen = $derived(ball.vy * VS); // + is up
 	const vNow = $derived(Math.hypot(ball.vx, ball.vy));
+	// Both force arrows share one scale, so the air arrow stays true to the
+	// weight; it shrinks for throws where the air force at launch would exceed
+	// the room around the ball (k·v²/g reaches 4.6 at 30 m/s in thick air).
+	const fScale = $derived(Math.min(1, 80 / (WEIGHT * Math.max(1, (k * speed * speed) / G))));
+	const wLen = $derived(WEIGHT * fScale);
 	// Air force relative to the weight: k·v² / g (same mass).
-	const airLen = $derived((WEIGHT * k * vNow * vNow) / G);
+	const airLen = $derived((wLen * k * vNow * vNow) / G);
 	const airDir = $derived(vNow > 1e-6 ? { x: -ball.vx / vNow, y: ball.vy / vNow } : { x: 0, y: 0 });
 
 	// The horizontal part's label goes just past its arrowhead, on the arrow's
@@ -231,18 +236,29 @@
 	// the right (the weight and its label are on the left).
 	const vLabelLeft = $derived(ball.vy >= 0 && B.x - 90 >= RULER + 8);
 	// The weight's label: left of its arrow, unless the height ruler is there.
-	const weightLeft = $derived(B.x - 64 >= RULER + 8);
+	const weightLeft = $derived(
+		B.x - 64 >= RULER + 8 && !nearHandle(B.x - 18, B.y + 6 + wLen, 'end', 48)
+	);
+	// Arrows that point down fade out as their tips dip below the ground, so they
+	// never run through the distance labels (or off the stage) at launch and landing.
+	const aboveGround = (tipY: number) => 1 - smoothstep(GY - 4, GY + 12, tipY);
+	const vOn = $derived(aboveGround(B.y - vyLen));
+	const wOn = $derived(aboveGround(B.y + 6 + wLen));
+	const airOn = $derived(aboveGround(B.y + airDir.y * (8 + airLen)));
 
 	// The air arrow lies along the trace behind the ball: its label goes beside
 	// its middle, on the upper side (the path curves away below its tangent).
 	const airLabel = $derived.by(() => {
 		const n = airDir.x >= 0 ? { x: airDir.y, y: -airDir.x } : { x: -airDir.y, y: airDir.x };
 		const m = 8 + airLen / 2;
-		return {
-			x: B.x + airDir.x * m + n.x * 10,
-			y: B.y + airDir.y * m + n.y * 10 + 4,
-			anchor: n.x < -0.3 ? 'end' : n.x > 0.3 ? 'start' : 'middle'
-		};
+		const place = (s: number) => ({
+			x: B.x + airDir.x * m + s * n.x * 10,
+			y: B.y + airDir.y * m + s * n.y * 10 + 4,
+			anchor: s * n.x < -0.3 ? 'end' : s * n.x > 0.3 ? 'start' : 'middle'
+		});
+		// …unless the launch handle is there: then on the other side.
+		const up = place(1);
+		return nearHandle(up.x, up.y, up.anchor, 22) ? place(-1) : up;
 	});
 
 	// ---- launch arrow & handle --------------------------------------------------------
@@ -251,6 +267,13 @@
 		x: X0 + VS * speed * Math.cos(rad),
 		y: GY - VS * speed * Math.sin(rad)
 	});
+	/** Would a 12 px label of width `w` at (x, y) touch the launch handle? */
+	function nearHandle(x: number, y: number, anchor: string, w: number) {
+		const x0 = anchor === 'end' ? x - w : anchor === 'middle' ? x - w / 2 : x;
+		const dx = Math.max(x0 - tip.x, 0, tip.x - (x0 + w));
+		const dy = Math.max(y - 12 - tip.y, 0, tip.y - (y + 2));
+		return Math.hypot(dx, dy) < 20;
+	}
 	function onmove(p: Point) {
 		const dx = p.x - X0;
 		const dy = GY - p.y;
@@ -343,9 +366,10 @@
 	y2: number,
 	color: string,
 	opacity: number,
-	width = 2.2
+	width = 2.2,
+	min = 10
 )}
-	{#if Math.hypot(x2 - x1, y2 - y1) > 10 && opacity > 0.01}
+	{#if Math.hypot(x2 - x1, y2 - y1) > min && opacity > 0.01}
 		<line
 			{x1}
 			{y1}
@@ -360,7 +384,14 @@
 	{/if}
 {/snippet}
 
-<g>
+<defs>
+	<!-- while the distance scale tweens to a longer throw, paths may briefly overshoot -->
+	<clipPath id="projectile-view">
+		<rect x="16" y="0" width="928" height="600" />
+	</clipPath>
+</defs>
+
+<g clip-path="url(#projectile-view)">
 	<!-- ================= ground, axes ================= -->
 	<rect x="16" y={GY} width="928" height="7" rx="2" fill="var(--mech-ground)" />
 	<line x1="16" x2="944" y1={GY} y2={GY} stroke="var(--stage-line)" stroke-width="1.5" />
@@ -513,8 +544,8 @@
 		{#if w.basic > 0.01}
 			{@const o = w.basic * arrowsOn}
 			{@render arrow(B.x, B.y, B.x + vxLen, B.y, 'var(--mech-velocity)', o)}
-			{@render arrow(B.x, B.y, B.x, B.y - vyLen, 'var(--mech-velocity)', o)}
-			{@render arrow(B.x - 12, B.y + 6, B.x - 12, B.y + 6 + WEIGHT, 'var(--mech-force)', o)}
+			{@render arrow(B.x, B.y, B.x, B.y - vyLen, 'var(--mech-velocity)', o * vOn)}
+			{@render arrow(B.x - 12, B.y + 6, B.x - 12, B.y + 6 + wLen, 'var(--mech-force)', o * wOn)}
 			{#if o > 0.01}
 				{@render txt(hLabel.x, hLabel.y, ms(ball.vx), 12, {
 					anchor: hLabel.anchor,
@@ -522,7 +553,7 @@
 					color: 'var(--mech-velocity)',
 					opacity: o
 				})}
-				{#if Math.abs(vyLen) > 10}
+				{#if Math.abs(vyLen) > 10 && o * vOn > 0.01}
 					{@render txt(
 						vLabelLeft ? B.x - 9 : B.x + 9,
 						ball.vy >= 0
@@ -534,20 +565,20 @@
 							anchor: vLabelLeft ? 'end' : 'start',
 							weight: 600,
 							color: 'var(--mech-velocity)',
-							opacity: o
+							opacity: o * vOn
 						}
 					)}
 				{/if}
 				{@render txt(
 					weightLeft ? B.x - 18 : B.x - 12,
-					B.y + 6 + WEIGHT + (weightLeft ? 0 : 16),
+					B.y + 6 + wLen + (weightLeft ? 0 : 16),
 					'weight',
 					12,
 					{
 						anchor: weightLeft ? 'end' : 'middle',
 						weight: 600,
 						color: 'var(--mech-force)',
-						opacity: o
+						opacity: o * wOn
 					}
 				)}
 			{/if}
@@ -555,27 +586,32 @@
 		<!-- drag: the forces, weight and air -->
 		{#if w.drag > 0.01}
 			{@const o = w.drag * arrowsOn}
-			{@render arrow(B.x, B.y + 6, B.x, B.y + 6 + WEIGHT, 'var(--mech-force)', o)}
+			{@render arrow(B.x, B.y + 6, B.x, B.y + 6 + wLen, 'var(--mech-force)', o * wOn)}
 			{@render arrow(
 				B.x + airDir.x * 8,
 				B.y + airDir.y * 8,
 				B.x + airDir.x * (8 + airLen),
 				B.y + airDir.y * (8 + airLen),
 				'var(--mech-force)',
-				o
+				o * airOn,
+				2.2,
+				// a weak air force is still shown (an arrowhead is enough for its direction)
+				4
 			)}
 			{#if o > 0.01}
-				{@render txt(B.x + 8, B.y + 6 + WEIGHT, 'weight', 12, {
+				{@const wRight = !nearHandle(B.x + 8, B.y + 6 + wLen, 'start', 48)}
+				{@render txt(wRight ? B.x + 8 : B.x - 8, B.y + 6 + wLen, 'weight', 12, {
+					anchor: wRight ? 'start' : 'end',
 					weight: 600,
 					color: 'var(--mech-force)',
-					opacity: o
+					opacity: o * wOn
 				})}
-				{#if airLen > 10}
+				{#if airLen > 6}
 					{@render txt(airLabel.x, airLabel.y, 'air', 12, {
 						anchor: airLabel.anchor,
 						weight: 600,
 						color: 'var(--mech-force)',
-						opacity: o
+						opacity: o * airOn
 					})}
 				{/if}
 			{/if}
@@ -662,19 +698,23 @@
 					weight: 600,
 					color: 'var(--mech-velocity)'
 				})}
-				{@render txt(PX, 218, `vertical speed loses ${G.toFixed(1)} m/s each second`, 14, {
+				{@render txt(PX, 218, `vertical speed changes by ${G.toFixed(1)} m/s`, 14, {
+					weight: 600,
+					color: 'var(--mech-velocity)'
+				})}
+				{@render txt(PX, 236, 'each second, always downwards', 13, {
 					weight: 600,
 					color: 'var(--mech-velocity)'
 				})}
 				{@render txt(
 					PX,
-					240,
+					258,
 					`after ${tf.toFixed(1)} s: ${ms(ball.vy)} ${ball.vy >= 0 ? 'up' : 'down'}`,
 					13,
 					{ muted: true }
 				)}
-				<circle cx={PX + 4} cy={258} r="3.5" fill="var(--stage-ink-muted)" />
-				{@render txt(PX + 14, 262, `dots: ${dotLabel} — equal steps sideways`, 12, {
+				<circle cx={PX + 4} cy={276} r="3.5" fill="var(--stage-ink-muted)" />
+				{@render txt(PX + 14, 280, `dots: ${dotLabel} — equal steps sideways`, 12, {
 					muted: true
 				})}
 			</g>
