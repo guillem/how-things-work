@@ -168,7 +168,7 @@ export const spec: ExplainerSpec = {
 <p>So what does a force do? It changes the velocity: it <dfn data-def="The rate at which velocity changes, in metres per second per second (m/s²).">accelerates</dfn> the object. How much depends on the object's mass:</p>
 <p class="formula"><strong>F = m × a</strong></p>
 <p>Newton's <strong>second law</strong>. A force of 6 newtons on a 2 kg cart gives it an acceleration of 3 m/s²: every second the push lasts, the cart goes 3 m/s faster. Double the mass and the same push gives half the acceleration.</p>
-<p>The graph shows the speed. It climbs while the hand pushes and stays level once it lets go — with no friction there is no force, so no change in speed.</p>`,
+<p>The graph shows the speed. It climbs while the hand pushes and stays level once it lets go — with no friction there is no force, so no change in speed. Switch friction on and it slopes back down to zero: friction is now the only force.</p>`,
 			notes: `<p>The newton (N) is defined by this law: 1 N is the force that gives 1 kg an acceleration of 1 m/s². Lifting a small apple takes about 1 N. Strictly, F is the <em>net</em> force — all the forces added together, with directions. With friction on, the cart only accelerates by (push − friction) ÷ mass.</p>`
 		},
 		{
@@ -182,7 +182,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Two carts are held together with a squashed spring between them. Release it, and both move off — in opposite directions.</p>
 <p>The spring pushes the left cart left exactly as hard as it pushes the right cart right. Forces always come in such pairs: when one object pushes on another, the other pushes back equally hard in the opposite direction. That is Newton's <strong>third law</strong>.</p>
-<p>Equal forces for the same time, but not equal speeds: the heavier cart picks up less speed (F = m × a again). Make one cart three times heavier and it moves off at a third of the speed.</p>`,
+<p>Equal forces for the same time, but not equal speeds: the heavier cart picks up less speed (F = m × a again). Make one cart three times heavier and it moves off at a third of the speed. Mass × speed comes out the same for both carts, in opposite directions — a quantity we will meet again as momentum.</p>`,
 			notes: `<p>This is how rockets work: the engine pushes exhaust gas backwards and the gas pushes the rocket forwards, with nothing to push against. It is also why a gun recoils.</p>`
 		},
 		// ------------------------------------------------------------------ flight
