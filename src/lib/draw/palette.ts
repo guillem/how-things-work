@@ -4,6 +4,7 @@
  * (membranes, compartments, ink) are CSS custom properties in `app.css`.
  */
 export const colors = {
+	/** Light-theme value; drawings use the `--carbon` CSS token (see app.css). */
 	carbon: '#4b5563',
 	carbonEdge: '#1f2937',
 	oxygen: '#e5484d',
@@ -80,13 +81,21 @@ export function wavelengthToColor(nm: number): string {
 export function absorbance(nm: number) {
 	const peak = (center: number, width: number, height: number) =>
 		height * Math.exp(-((nm - center) ** 2) / (2 * width * width));
-	// Main peaks plus a weak, broad tail through the green: real pigments
-	// still absorb a little there, which is why leaves are not transparent.
+	// Main peaks plus weak, broad tails between them: real pigments still
+	// absorb a little there, which is why leaves are not transparent. The tails
+	// are placed so that the minimum of the combined curve sits in the green
+	// (around 550 nm), as the narrative says.
 	const chlA = Math.min(
 		1,
-		peak(430, 14, 1) + peak(410, 18, 0.55) + peak(662, 11, 0.8) + peak(545, 55, 0.07)
+		peak(430, 14, 1) +
+			peak(410, 18, 0.55) +
+			peak(662, 12, 0.8) +
+			// protein-bound forms absorb a little further into the red (~680 nm)
+			peak(680, 14, 0.25) +
+			peak(600, 45, 0.08) +
+			peak(530, 40, 0.04)
 	);
-	const chlB = Math.min(1, peak(453, 14, 0.9) + peak(642, 10, 0.45) + peak(540, 45, 0.09));
+	const chlB = Math.min(1, peak(453, 14, 0.9) + peak(642, 10, 0.45) + peak(590, 40, 0.07));
 	const car = Math.min(1, peak(450, 22, 0.7) + peak(480, 14, 0.55) + peak(425, 14, 0.5));
 	return { chlA, chlB, car, total: Math.min(1, 0.6 * chlA + 0.25 * chlB + 0.25 * car) };
 }

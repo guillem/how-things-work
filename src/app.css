@@ -199,6 +199,8 @@ kbd {
 	--leaf-dark: #2f8a4f;
 	--leaf-vein: #9bd3ad;
 	--sky: #eaf3fb;
+	/* carbon atoms in molecule drawings (see src/lib/draw/Molecule.svelte) */
+	--carbon: #4b5563;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -212,4 +214,5 @@ kbd {
 	--leaf-dark: #2b7a46;
 	--leaf-vein: #6fbf8c;
 	--sky: #16202a;
+	--carbon: #8b93a1;
 }

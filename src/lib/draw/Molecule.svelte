@@ -4,6 +4,8 @@
 	 * coordinate system, with an optional label. Simple molecules are drawn as
 	 * space-filling "beads"; sugars as a chain of carbon beads (one bead per
 	 * carbon, with phosphate groups as orange "P" circles); carriers as pills.
+	 * Carbon beads use the theme token `--carbon` (lighter in the dark theme)
+	 * so they keep enough contrast on dark compartments.
 	 */
 	import { colors } from './palette';
 
@@ -99,7 +101,7 @@
 				cx="0"
 				cy="0"
 				r="7.5"
-				fill={colors.carbon}
+				fill="var(--carbon)"
 				stroke={colors.carbonEdge}
 				stroke-width="1"
 			/>
@@ -190,9 +192,9 @@
 		{:else if kind === 'NADPH' || kind === 'NADP+'}
 			{@const full = kind === 'NADPH'}
 			<rect
-				x="-22"
+				x="-25"
 				y="-9"
-				width="44"
+				width="50"
 				height="18"
 				rx="9"
 				fill={full ? colors.nadph : 'var(--stage-bg)'}
@@ -252,7 +254,7 @@
 						cx={start + i * 12}
 						cy="0"
 						r="6"
-						fill={colors.carbon}
+						fill="var(--carbon)"
 						stroke={colors.carbonEdge}
 						stroke-width="1"
 					/>
