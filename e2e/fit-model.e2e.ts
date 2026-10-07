@@ -53,3 +53,25 @@ test('training error falls with flexibility while test error turns upward', () =
 	expect(best.degree).toBeLessThan(10);
 	expect(curve[12].test).toBeGreaterThan(best.test * 1.5); // too flexible: worse on new points
 });
+
+test('the sweet spot moves right with more examples and left with more noise', () => {
+	// Best degree for the test error, averaged (geometric mean) over 40 random sets.
+	const best = (n: number, noise: number) => {
+		const sum = new Array(13).fill(0);
+		for (let k = 0; k < 40; k++) {
+			const d = makeData(n, noise, 1 + 1000 * k);
+			const curve = errorCurve(
+				d.filter((p) => !p.test),
+				d.filter((p) => p.test),
+				12
+			);
+			curve.forEach((e, i) => (sum[i] += Math.log(Math.max(1e-12, e.test))));
+		}
+		const maxDegree = Math.min(12, n - Math.ceil(n / 3) - 1);
+		let b = 0;
+		for (let i = 0; i <= maxDegree; i++) if (sum[i] < sum[b]) b = i;
+		return b;
+	};
+	expect(best(12, 0.15)).toBeLessThan(best(40, 0.15));
+	expect(best(21, 0.3)).toBeLessThan(best(21, 0.05));
+});

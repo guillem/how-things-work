@@ -35,7 +35,7 @@ const noise: Control = {
 	label: 'Noise in the examples',
 	min: 0,
 	max: 0.4,
-	step: 0.02,
+	step: 0.01,
 	default: 0.15,
 	format: (v) => (v === 0 ? 'none' : v.toFixed(2))
 };

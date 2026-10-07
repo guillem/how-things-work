@@ -33,7 +33,7 @@ const gaussian = (rand: () => number) =>
 	Math.sqrt(-2 * Math.log(1 - rand())) * Math.cos(2 * Math.PI * rand());
 
 /** The hidden "true" relationship the examples come from (x and y in [−1, 1]). */
-export const truth = (x: number) => 0.55 * Math.sin(2.4 * x + 0.4) + 0.25 * x;
+export const truth = (x: number) => 0.45 * Math.sin(5.5 * x + 0.6) + 0.2 * x;
 
 /**
  * `n` examples with x spread over [−0.95, 0.95] (jittered), y = truth + noise
