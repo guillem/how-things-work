@@ -350,6 +350,10 @@
 	.stage-card {
 		position: sticky;
 		top: 76px;
+		/* Never taller than the viewport: in short windows the stage shrinks and
+		   the SVG letterboxes, so the controls stay reachable. */
+		max-height: calc(100vh - 92px);
+		max-height: calc(100dvh - 92px);
 		display: flex;
 		flex-direction: column;
 		border: 1px solid var(--border);
@@ -358,7 +362,11 @@
 		box-shadow: var(--shadow-md);
 		overflow: hidden;
 	}
+	.stage-card > :global(.controls) {
+		flex: 0 0 auto;
+	}
 	.progress {
+		flex: 0 0 auto;
 		display: flex;
 		gap: 3px;
 		height: 4px;
@@ -381,6 +389,8 @@
 	}
 	.stage {
 		position: relative;
+		flex: 1 1 auto;
+		min-height: 0;
 		aspect-ratio: 16 / 10;
 		background: var(--stage-bg);
 		overflow: hidden;
@@ -698,9 +708,20 @@
 			gap: 20px;
 		}
 		.stage-card {
-			top: 64px;
+			/* Sits flush under the 60 px site header while the text scrolls beneath. */
+			top: 60px;
+			max-height: calc(100vh - 72px);
+			max-height: calc(100dvh - 72px);
 			z-index: 3;
 			border-radius: var(--radius-md);
+		}
+	}
+	/* Landscape phones and other very short viewports: a pinned stage would
+	   hide the narrative, so let it scroll away with the page. */
+	@media (max-height: 560px) {
+		.stage-card {
+			position: static;
+			max-height: none;
 		}
 	}
 	@media (max-width: 640px) {
