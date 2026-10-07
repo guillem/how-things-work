@@ -56,7 +56,7 @@ const explainers: Explainer[] = [
 		slug: 'unit-circle',
 		title: 'Sine, cosine and the unit circle',
 		summary:
-			'Drag a point around a circle and watch its height and its sideways position trace out the two most important waves in mathematics.',
+			'Drag a point around a circle and watch its height and its sideways position trace out the sine and cosine waves.',
 		accent: '#7048e8',
 		steps: 9,
 		minutes: 12

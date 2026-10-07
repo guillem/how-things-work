@@ -32,7 +32,7 @@
 		/** Called with the pointer position (scene coordinates) while dragging. */
 		onmove: (p: Point) => void;
 		/**
-		 * Called for arrow keys with ±1 (±10 with Shift), and with
+		 * Called for arrow keys with ±1 (±10 with Shift or Page Up/Down), and with
 		 * `'start'` / `'end'` for Home / End.
 		 */
 		onkey?: (step: number | 'start' | 'end') => void;
@@ -74,6 +74,8 @@
 			ArrowUp: big,
 			ArrowLeft: -big,
 			ArrowDown: -big,
+			PageUp: 10,
+			PageDown: -10,
 			Home: 'start',
 			End: 'end'
 		};
