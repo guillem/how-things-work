@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-07 22:35 UTC.
+Last updated: 2026-10-07 22:57 UTC.
 
 ## How we work
 
@@ -33,7 +33,7 @@ Last updated: 2026-10-07 22:35 UTC.
   merged.
 - **Batch in progress (user away, asked 2026-10-07 ~22:05 UTC for 4–5 topics to validate
   together).** Stacked branches, merge in this order after validation:
-  1. `topic/sorting` (base `main`) — scenes done, review running.
+  1. `topic/sorting` (base `main`) — **done**: reviewed, 91 e2e pass, ticked.
   2. `topic/newtons-laws` (base `topic/sorting`), worked in the git worktree
      `../hiw-newtons` (dev server on port 5174; `node_modules` is a symlink to the main
      checkout's; `svelte-check` there shows one spurious `$types` error in `+layout.svelte` — run
@@ -58,12 +58,12 @@ Plan (tick as done):
       e2e `e2e/sorting.e2e.ts` (finishes sorted, scrubber steps, freeze on pause).
 - [x] RaceScene (race) and GrowthScene (growth, bigo, inputs, machine): drafted by two agents,
       committed; their wording corrections applied; playback re-anchors on speed changes.
-- [ ] Review round running (2 agents: bars+race, growth+whole page/fact-check). If interrupted:
-      scene files may hold uncommitted reviewer fixes — check `git diff`.
+- [x] Review round (2 agents) and fixes; race stepping added (catalogue: "stepping or playing");
+      all checks pass; ticked; time logged.
 - [ ] Review round (adversarial reviewers + whole page/fact-check), all checks, tick, time log,
       then ask the user to validate.
 
-Next action: apply the sorting review findings; run all checks; tick; rebase newtons.
+Next action (sorting): none — waits for the user's validation with the rest of the batch.
 
 ## Open questions for the user
 
