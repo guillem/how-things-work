@@ -48,6 +48,16 @@ catalogue's suggested first `build`), `ecosystems`, `electric-circuits` (unlocks
 
 ## Site and framework work
 
+- **Stage text styling overrides SVG attributes (site-wide, found 2026-10-07).** In
+  `src/lib/explainer/Explainer.svelte`, `.stage :global(text) { font-family; fill; font-size: 13px }`
+  beats presentation attributes, so every `font-size=`/`fill=` on `<text>` (including `<Axes>` tick
+  labels at 11 px and `<Label size>`) renders at 13 px in ink. Photosynthesis was polished under
+  this behaviour, so the fix (move the three declarations to `.stage :global(svg)` so they
+  inherit) changes every scene's look and needs its own branch with a full screenshot re-review of
+  both topics. Until then: `<Label color>` works (it sets `style:fill`), and the epidemics
+  threshold/SIR scenes use local snippets with `style:font-size`/`style:fill`; switch them back to
+  `<Label>` after the fix.
+
 - Shared components still to create as their first topic needs them: draggable handles
   (`unit-circle`), an algorithm stepper / bar chart (`sorting`), a build palette (`pagerank` or
   `graph-search`), pan/zoom (`chaos-fractals`).
