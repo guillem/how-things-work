@@ -93,7 +93,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [angle],
 			body: `
-<p>Degrees split a full turn into 360 parts — a number chosen by the Babylonians, not by nature. Mathematicians prefer a natural unit: walk along the circle and measure the <em>distance</em> travelled.</p>
+<p>Degrees split a full turn into 360 parts — a number inherited from Babylonian astronomers, not one nature picked. Mathematicians prefer a natural unit: walk along the circle and measure the <em>distance</em> travelled.</p>
 <p>On a unit circle, an arc as long as the radius makes an angle of <strong>1 <dfn data-def="The angle at the centre of a circle made by an arc as long as the radius. 1 radian ≈ 57.3°.">radian</dfn></strong>, about 57.3°. The whole circumference is 2π ≈ 6.28 radii long, so a full turn is <strong>2π radians</strong>: a little more than six radii fit around it.</p>
 <p>That makes the conversion easy to remember: 180° = π radians. So 90° is π/2, 45° is π/4 and 30° is π/6.</p>`,
 			notes: `<p>On a circle of radius <i>r</i>, an angle of θ radians cuts off an arc of length <i>r</i>θ. That simple rule is why radians are used in calculus and physics: formulas such as the speed of a point on a spinning wheel, or the derivative of sin θ, take their simplest form when θ is in radians.</p>`
