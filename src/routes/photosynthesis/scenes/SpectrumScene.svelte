@@ -3,13 +3,15 @@
 	 * Step "pigments" — why leaves are green.
 	 *
 	 * One composition in three parts, all driven by the `wavelength` control:
-	 *   (a) the visible spectrum with a marker and a readout (colour, energy);
+	 *   (a) the visible spectrum with a marker and a readout (colour, photon energy);
 	 *   (b) the absorption spectra of chlorophyll a, chlorophyll b and the
-	 *       carotenoids, with a cursor at the current wavelength;
+	 *       carotenoids, with a cursor at the current wavelength and a legend
+	 *       that doubles as a live readout of the three curves;
 	 *   (c) a leaf hit by a stream of photons of that wavelength. Each photon is
-	 *       either absorbed (it fades out inside the leaf with a glow) or
-	 *       reflected, in proportion to the total absorbance.
-	 * A caption at the bottom puts the number into words.
+	 *       absorbed (it fades out just inside the leaf with a glow), reflected,
+	 *       or passes through the leaf, in proportion to the combined absorption.
+	 * A caption at the bottom puts the drawn numbers into words: its wording
+	 * follows the "N% absorbed" pill, the legend readout and the photon count.
 	 */
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
@@ -52,24 +54,42 @@
 	);
 	const pct = (v: number) => `${Math.round(v * 100)}%`;
 
+	/**
+	 * Abundance weights of the three pigments — the same ones `absorbance().total`
+	 * in palette.ts uses to mix the curves (chlorophyll a : b : carotenoids ≈ 3 : 1 : 1).
+	 */
+	const WEIGHTS = { chlA: 0.6, chlB: 0.25, car: 0.25 };
+	/**
+	 * Fraction of the light of a given wavelength that the leaf absorbs. The
+	 * palette's `total` is the weighted mixture kept below 1 for plotting; a leaf
+	 * is thick enough to absorb essentially all the light at chlorophyll a's main
+	 * peak, so the same mixture is rescaled to saturate there.
+	 */
+	const combined = (nm: number) => Math.min(1, absorbance(nm).total / WEIGHTS.chlA);
+	const absorbed = $derived(combined(wavelength));
+
 	// ---- (a) spectrum bar ------------------------------------------------------
-	const BAR = { x: 80, y: 60, w: 800, h: 36 };
+	const BAR = { x: 80, y: 70, w: 800, h: 36 };
 	const barX = (nm: number) => BAR.x + ((nm - 400) / 300) * BAR.w;
 	const stops = Array.from({ length: 31 }, (_, i) => 400 + i * 10);
 	const ticks = [400, 450, 500, 550, 600, 650, 700];
 	const markerX = $derived(barX(wavelength));
-	const readoutX = $derived(clamp(markerX, 200, 760));
+	// The readout follows the marker but stays inside the bar at either end.
+	const readoutX = $derived(clamp(markerX, BAR.x + 150, BAR.x + BAR.w - 150));
 
 	// ---- (b) absorption chart --------------------------------------------------
-	const PLOT = { x: 110, y: 160, w: 500, h: 150 };
+	// The chart runs down to the axis title at y ≈ 460, so that it spans the same
+	// height as the leaf demo on the right (the caption rule is at y = 504).
+	const PLOT = { x: 110, y: 164, w: 500, h: 260 };
 	const cx = (nm: number) => PLOT.x + ((nm - 400) / 300) * PLOT.w;
 	const cy = (a: number) => PLOT.y + PLOT.h - a * PLOT.h;
-	type Pigment = 'chlA' | 'chlB' | 'car' | 'total';
+	type Pigment = 'chlA' | 'chlB' | 'car';
 	const samples = Array.from({ length: 61 }, (_, i) => ({
 		nm: 400 + i * 5,
-		...absorbance(400 + i * 5)
+		...absorbance(400 + i * 5),
+		leaf: combined(400 + i * 5)
 	}));
-	const curve = (key: Pigment) =>
+	const curve = (key: Pigment | 'leaf') =>
 		pathFrom(
 			smooth(
 				samples.map((s) => ({ x: cx(s.nm), y: cy(s[key]) })),
@@ -79,19 +99,54 @@
 	const pathA = curve('chlA');
 	const pathB = curve('chlB');
 	const pathCar = curve('car');
-	const pathTotal = curve('total');
-	const areaTotal = `${pathTotal} L${cx(700)} ${cy(0)} L${cx(400)} ${cy(0)} Z`;
-	const legend = [
-		{ key: 'chlA' as const, label: 'chlorophyll a', color: colors.chlorophyllA },
-		{ key: 'chlB' as const, label: 'chlorophyll b', color: colors.chlorophyllB },
-		{ key: 'car' as const, label: 'carotenoids', color: colors.carotenoid }
+	const pathLeaf = curve('leaf');
+	const areaLeaf = `${pathLeaf} L${cx(700)} ${cy(0)} L${cx(400)} ${cy(0)} Z`;
+	const legend: { key: Pigment; label: string; color: string }[] = [
+		{ key: 'chlA', label: 'chlorophyll a', color: colors.chlorophyllA },
+		{ key: 'chlB', label: 'chlorophyll b', color: colors.chlorophyllB },
+		{ key: 'car', label: 'carotenoids', color: colors.carotenoid }
 	];
+	// The legend sits in the green gap of the chart (≈ 497–641 nm), where no
+	// curve rises above 0.5 (its bottom edge is at 0.65); it has an opaque
+	// backing so the cursor line passes cleanly behind it.
+	const LEGEND = { x: 272, y: PLOT.y + 6, w: 240, h: 84, row: 18, pad: 14 };
+	const legendY = (i: number) => LEGEND.pad + i * LEGEND.row;
 	const cursorX = $derived(cx(wavelength));
-	const cursorPillX = $derived(clamp(cursorX, PLOT.x + 60, PLOT.x + PLOT.w - 60));
+	const cursorPillX = $derived(clamp(cursorX, PLOT.x + 56, PLOT.x + PLOT.w - 56));
+	/**
+	 * The three pigment dots on the cursor line. Where two curves cross (or one
+	 * coincides with the combined curve) the dots would hide each other, so a dot
+	 * is pushed a few pixels to the side when its spot is already taken; a dot may
+	 * still sit inside the combined ring when the two values coincide exactly.
+	 */
+	const dots = $derived.by(() => {
+		const ringY = cy(absorbed);
+		const placed: { y: number; dx: number }[] = [];
+		let ringTaken = false;
+		return legend
+			.map((item) => ({ key: item.key, color: item.color, y: cy(abs[item.key]) }))
+			.sort((a, b) => a.y - b.y)
+			.map((d) => {
+				let dx = 0;
+				for (const cand of [0, -8, 8, -16, 16]) {
+					const nearRing = cand === 0 && Math.abs(d.y - ringY) < 8;
+					const inRing = nearRing && Math.abs(d.y - ringY) < 2.5 && !ringTaken;
+					const clash =
+						(nearRing && !inRing) || placed.some((p) => p.dx === cand && Math.abs(p.y - d.y) < 8);
+					if (!clash) {
+						dx = cand;
+						if (inRing) ringTaken = true;
+						break;
+					}
+				}
+				placed.push({ y: d.y, dx });
+				return { ...d, dx };
+			});
+	});
 
 	// ---- (c) leaf and photons --------------------------------------------------
 	// The blade of LeafScene, scaled down and laid almost flat (tip to the right).
-	const LEAF = { cx: 800, cy: 338, s: 0.53, rot: 16 };
+	const LEAF = { cx: 800, cy: 365, s: 0.53, rot: 16 };
 	const ORIGIN = { x: 446, y: 284 }; // centre of the blade in LeafScene coordinates
 	const cosR = Math.cos((LEAF.rot * Math.PI) / 180);
 	const sinR = Math.sin((LEAF.rot * Math.PI) / 180);
@@ -100,32 +155,59 @@
 		y: LEAF.cy + LEAF.s * (sinR * (p.x - ORIGIN.x) + cosR * (p.y - ORIGIN.y))
 	});
 	const leafTransform = `translate(${LEAF.cx} ${LEAF.cy}) rotate(${LEAF.rot}) scale(${LEAF.s}) translate(${-ORIGIN.x} ${-ORIGIN.y})`;
+	const BLADE = 'M200 362 C 280 222, 520 150, 692 198 C 575 332, 365 428, 200 362 Z';
 
-	// Upper edge of the blade (cubic Bézier, LeafScene coordinates).
-	const E0 = { x: 200, y: 362 };
-	const E1 = { x: 280, y: 222 };
-	const E2 = { x: 520, y: 150 };
-	const E3 = { x: 692, y: 198 };
-	const bez = (u: number): Point => {
+	// The two cubic Béziers of the blade outline (LeafScene coordinates).
+	const bezier = (a: Point, b: Point, c: Point, d: Point) => (u: number) => {
 		const v = 1 - u;
 		return {
-			x: v * v * v * E0.x + 3 * v * v * u * E1.x + 3 * v * u * u * E2.x + u * u * u * E3.x,
-			y: v * v * v * E0.y + 3 * v * v * u * E1.y + 3 * v * u * u * E2.y + u * u * u * E3.y
+			x: v * v * v * a.x + 3 * v * v * u * b.x + 3 * v * u * u * c.x + u * u * u * d.x,
+			y: v * v * v * a.y + 3 * v * v * u * b.y + 3 * v * u * u * c.y + u * u * u * d.y
 		};
 	};
-	const edge = Array.from({ length: 121 }, (_, i) => toStage(bez(i / 120)));
+	const upper = bezier(
+		{ x: 200, y: 362 },
+		{ x: 280, y: 222 },
+		{ x: 520, y: 150 },
+		{ x: 692, y: 198 }
+	);
+	const lower = bezier(
+		{ x: 692, y: 198 },
+		{ x: 575, y: 332 },
+		{ x: 365, y: 428 },
+		{ x: 200, y: 362 }
+	);
+	const edge = Array.from({ length: 121 }, (_, i) => toStage(upper(i / 120)));
+	const outline = [
+		...Array.from({ length: 60 }, (_, i) => toStage(upper(i / 60))),
+		...Array.from({ length: 60 }, (_, i) => toStage(lower(i / 60)))
+	];
+	const insideBlade = (p: Point) => {
+		let inside = false;
+		for (let i = 0, j = outline.length - 1; i < outline.length; j = i++) {
+			const a = outline[i];
+			const b = outline[j];
+			if (a.y > p.y !== b.y > p.y && p.x < ((b.x - a.x) * (p.y - a.y)) / (b.y - a.y) + a.x)
+				inside = !inside;
+		}
+		return inside;
+	};
 	const unit = (v: Point): Point => {
 		const l = Math.hypot(v.x, v.y) || 1;
 		return { x: v.x / l, y: v.y / l };
 	};
 
 	const N = 10;
-	const PERIOD = 3.4;
+	const PERIOD = 2.8;
 	const HIT = 0.55; // fraction of the cycle spent travelling to the leaf
 	const D_IN = unit({ x: -0.45, y: 1 }); // photons come from the upper right
-	const L_IN = 145;
+	const L_IN = 120;
 	const L_OUT = 130;
 	const L_ABS = 26;
+	const L_EMERGE = 64; // how far a transmitted photon travels after leaving the leaf
+	// Share of a transmitted photon's remaining cycle spent (unseen) inside the
+	// blade; after that it emerges at the same speed as the incoming beam.
+	const INSIDE = 0.35;
 	// The upper surface is nearly flat, so every photon reflects about the same
 	// (slightly tilted) normal: a clean fan going up and to the left.
 	const NORMAL = unit({ x: -0.17, y: -1 });
@@ -134,59 +216,121 @@
 		return unit({ x: D_IN.x - 2 * dot * NORMAL.x, y: D_IN.y - 2 * dot * NORMAL.y });
 	})();
 	const deg = (v: Point) => (Math.atan2(v.y, v.x) * 180) / Math.PI;
+	/** Where a ray entering at `hit` along D_IN leaves the blade again. */
+	const exitOf = (hit: Point): Point => {
+		for (let s = 8; s < 320; s += 2) {
+			const q = { x: hit.x + D_IN.x * s, y: hit.y + D_IN.y * s };
+			if (!insideBlade(q)) return q;
+		}
+		return hit;
+	};
 	const photons = Array.from({ length: N }, (_, i) => {
 		// Hit points spread along the upper surface, in a shuffled order.
-		const targetX = 735 + (105 * ((i * 7) % N)) / (N - 1);
+		const targetX = LEAF.cx - 65 + (105 * ((i * 7) % N)) / (N - 1);
 		let k = 0;
 		for (let j = 1; j < edge.length; j++)
 			if (Math.abs(edge[j].x - targetX) < Math.abs(edge[k].x - targetX)) k = j;
 		const hit = edge[k];
-		const r = R_OUT;
+		const exit = exitOf(hit);
+		const insideLen = Math.hypot(exit.x - hit.x, exit.y - hit.y);
+		// Transmitted photons stay fully visible for most of the emerging run and
+		// fade over its last quarter, just above the "passed through" label.
+		const fadeLen = insideLen + 0.75 * L_EMERGE;
 		return {
 			i,
-			// Stratified thresholds: the share of absorbed photons tracks the
-			// total absorbance in steps of 1/N, in a fixed pseudo-random order.
-			threshold: (i + hash(i, 11)) / N,
 			offset: ((i * 3) % N) / N,
 			start: { x: hit.x - D_IN.x * L_IN, y: hit.y - D_IN.y * L_IN },
 			hit,
-			reflectEnd: { x: hit.x + r.x * L_OUT, y: hit.y + r.y * L_OUT },
+			reflectEnd: { x: hit.x + R_OUT.x * L_OUT, y: hit.y + R_OUT.y * L_OUT },
 			absorbEnd: { x: hit.x + D_IN.x * L_ABS, y: hit.y + D_IN.y * L_ABS },
+			exit,
+			insideLen,
+			fadeLen,
+			throughEnd: { x: exit.x + D_IN.x * L_EMERGE, y: exit.y + D_IN.y * L_EMERGE },
+			throughLen: insideLen + L_EMERGE,
 			angleIn: deg(D_IN),
-			angleOut: deg(r)
+			angleOut: deg(R_OUT)
 		};
 	});
-	const reflectLabel = (() => {
-		const ends = photons.map((p) => p.reflectEnd);
-		const x = ends.reduce((s, p) => s + p.x, 0) / ends.length;
-		const y = Math.min(...ends.map((p) => p.y));
-		return { x: x - 10, y: y - 16 };
-	})();
-	const absorbLabel = { x: 790, y: 414 };
+	// A fixed pseudo-random order in which photons get absorbed as the
+	// absorption rises, so that the absorbed ones are spread over the surface
+	// and over time rather than clustered. (The salt is chosen so that the frozen
+	// reduced-motion frame at t = 2.5 s shows all three fates at 550 nm.)
+	const rank: number[] = [];
+	Array.from({ length: N }, (_, i) => i)
+		.sort((a, b) => hash(a, 38) - hash(b, 38))
+		.forEach((i, r) => (rank[i] = r));
+	// One photon in ten is the finest split the demo can show, so the extremes
+	// are kept for the model's extremes: all ten absorbed only when essentially
+	// everything is (the chart pill would otherwise read 96% beside "10 of 10"),
+	// none only when essentially nothing is.
+	const absorbedCount = $derived(
+		absorbed >= 0.995
+			? N
+			: absorbed <= 0.005
+				? 0
+				: Math.min(N - 1, Math.max(1, Math.round(absorbed * N)))
+	);
+	type Fate = 'absorb' | 'reflect' | 'through';
+	const fates: Fate[] = $derived.by(() => {
+		const out: Fate[] = photons.map(() => 'absorb');
+		// The escaping photons alternate between passing through and bouncing off
+		// in the order they arrive, so that both streams are evenly spaced in time
+		// rather than clustered. (Passing through goes first so that the frozen
+		// reduced-motion frame at t = 2.5 s shows all three fates at 550 nm.)
+		photons
+			.filter((p) => rank[p.i] >= absorbedCount)
+			.sort((a, b) => a.offset - b.offset)
+			.forEach((p, j) => (out[p.i] = j % 2 === 0 ? 'through' : 'reflect'));
+		return out;
+	});
+	const reflectedCount = $derived(fates.filter((f) => f === 'reflect').length);
+	const throughCount = $derived(N - absorbedCount - reflectedCount);
 
-	const absorbedCount = $derived(photons.filter((p) => p.threshold < abs.total).length);
+	const mean = (xs: number[]) => xs.reduce((s, v) => s + v, 0) / xs.length;
+	// "reflected" just beyond the tips of the reflected fan.
+	const reflectLabel = {
+		x: mean(photons.map((p) => p.reflectEnd.x)) - 4,
+		y: Math.min(...photons.map((p) => p.reflectEnd.y)) - 10
+	};
+	// The count sits in the lower half of the blade, below the hits and their glows.
+	const absorbLabel = { x: LEAF.cx, y: Math.max(...photons.map((p) => p.hit.y)) + 50 };
+	// "passed through" just beyond the end of the emerging stream, mirroring
+	// "reflected": the photons fade out right above its text.
+	const throughLabel = {
+		x: mean(photons.map((p) => p.throughEnd.x)) - 4,
+		y: Math.max(...photons.map((p) => p.throughEnd.y)) + 16
+	};
 
 	// ---- (d) caption -----------------------------------------------------------
-	const dominant = $derived(
-		abs.chlA >= abs.chlB && abs.chlA >= abs.car
-			? 'chlorophyll a'
-			: abs.chlB >= abs.car
-				? 'chlorophyll b'
-				: 'the carotenoids'
-	);
+	// Which pigment(s) the chart shows absorbing most at this wavelength, read
+	// off the plotted (unweighted) curves so that the words agree with the legend
+	// readout; curves within 0.1 of the highest are named together.
+	const dominant = $derived.by(() => {
+		const top = Math.max(abs.chlA, abs.chlB, abs.car);
+		const names = legend
+			.filter((item) => abs[item.key] >= top - 0.1)
+			.map((item) => (item.key === 'car' ? 'the carotenoids' : item.label));
+		return names.length === 3 ? 'all three pigments' : names.join(' and ');
+	});
+	// The bands follow the drawn fraction (the "N% absorbed" pill and the photon
+	// count), not the real leaf: at 680 nm the model gives about a half.
 	const caption = $derived.by(() => {
 		const Colour = band[0].toUpperCase() + band.slice(1);
-		if (abs.total <= 0.15) {
-			return band === 'green'
-				? 'Green light is mostly reflected — this is why leaves look green.'
-				: `${Colour} light is mostly reflected or passed through — the pigments barely absorb it.`;
+		if (absorbed <= 0.2) {
+			if (band === 'green')
+				return 'Green light is absorbed only weakly — more of it is reflected or passed through, so leaves look green.';
+			if (wavelength > 662)
+				return `At ${wavelength} nm we are past chlorophyll's red peak — most of this light is reflected or passed through.`;
+			return `${Colour} light falls between the pigments' peaks — most of it is reflected or passed through.`;
 		}
-		if (abs.total <= 0.45) return `${Colour} light is partly absorbed, mostly by ${dominant}.`;
+		if (absorbed <= 0.4) return `${Colour} light is partly absorbed, mainly by ${dominant}.`;
+		if (absorbed <= 0.6)
+			return `At ${wavelength} nm about half of the light is absorbed, mainly by ${dominant}.`;
+		if (absorbed <= 0.8) return `${Colour} light is mostly absorbed, mainly by ${dominant}.`;
 		return `${Colour} light is strongly absorbed, mainly by ${dominant}.`;
 	});
-	const breakdown = $derived(
-		`chlorophyll a ${pct(abs.chlA)} · chlorophyll b ${pct(abs.chlB)} · carotenoids ${pct(abs.car)} · ${absorbedCount} of ${N} photons absorbed`
-	);
+	const CAPTION_Y = 504;
 </script>
 
 <g class="spectrum-scene">
@@ -200,7 +344,7 @@
 			<rect x={PLOT.x} y={PLOT.y - 6} width={PLOT.w} height={PLOT.h + 6} />
 		</clipPath>
 		<clipPath id="spectrum-blade">
-			<path d="M200 362 C 280 222, 520 150, 692 198 C 575 332, 365 428, 200 362 Z" />
+			<path d={BLADE} />
 		</clipPath>
 	</defs>
 
@@ -224,9 +368,7 @@
 			stroke="var(--stage-line)"
 			stroke-width="1"
 		/>
-		<text x={barX(nm)} y={BAR.y + BAR.h + 18} class="muted" font-size="11" text-anchor="middle">
-			{nm}
-		</text>
+		<Label x={barX(nm)} y={BAR.y + BAR.h + 17} text={String(nm)} size={11} muted />
 	{/each}
 	<!-- marker -->
 	<line
@@ -255,7 +397,7 @@
 	<Label
 		x={readoutX}
 		y={BAR.y - 18}
-		text="{wavelength} nm · {band} · {energy.toFixed(2)} eV"
+		text="{wavelength} nm · {band} · {energy.toFixed(2)} eV per photon"
 		size={14}
 		weight={600}
 	/>
@@ -285,14 +427,14 @@
 		{/each}
 		<!-- area under the combined curve, tinted by the spectrum -->
 		<g clip-path="url(#spectrum-plot)">
-			<path d={areaTotal} fill="url(#spectrum-bar)" opacity="0.18" />
+			<path d={areaLeaf} fill="url(#spectrum-bar)" opacity="0.16" />
 			<path
-				d={pathTotal}
+				d={pathLeaf}
 				fill="none"
 				stroke="var(--stage-ink-muted)"
-				stroke-width="1"
+				stroke-width="1.2"
 				stroke-dasharray="3 3"
-				opacity="0.7"
+				opacity="0.9"
 			/>
 			<path
 				d={pathCar}
@@ -334,61 +476,28 @@
 			stroke-width="1"
 		/>
 		{#each ticks as nm (nm)}
-			<text x={cx(nm)} y={PLOT.y + PLOT.h + 18} class="muted" font-size="11" text-anchor="middle">
-				{nm}
-			</text>
+			<Label x={cx(nm)} y={PLOT.y + PLOT.h + 18} text={String(nm)} size={11} muted />
 		{/each}
 		{#each [0, 0.5, 1] as a (a)}
-			<text x={PLOT.x - 6} y={cy(a) + 4} class="muted" font-size="11" text-anchor="end">
-				{a === 0 ? '0' : a === 1 ? '1' : '0.5'}
-			</text>
+			<Label
+				x={PLOT.x - 6}
+				y={cy(a) + 4}
+				text={a === 0 ? '0' : a === 1 ? '1' : '0.5'}
+				size={11}
+				anchor="end"
+				muted
+			/>
 		{/each}
-		<text
+		<Label
 			x={PLOT.x + PLOT.w}
 			y={PLOT.y + PLOT.h + 36}
-			class="muted"
-			font-size="11"
-			text-anchor="end"
-		>
-			wavelength (nm)
-		</text>
-		<text
-			x={PLOT.x - 28}
-			y={PLOT.y + PLOT.h / 2}
-			class="muted"
-			font-size="11"
-			text-anchor="middle"
-			transform="rotate(-90 {PLOT.x - 28} {PLOT.y + PLOT.h / 2})"
-		>
-			absorption
-		</text>
-		<!-- legend (sits in the green gap, where nothing is absorbed) -->
-		<g transform="translate(300 196)">
-			{#each legend as item, i (item.key)}
-				<line
-					x1="0"
-					y1={i * 18}
-					x2="18"
-					y2={i * 18}
-					stroke={item.color}
-					stroke-width="2.2"
-					stroke-linecap="round"
-				/>
-				<text x="25" y={i * 18 + 4} font-size="12">{item.label}</text>
-			{/each}
-			<rect x="0" y="48" width="18" height="8" rx="2" fill="url(#spectrum-bar)" opacity="0.5" />
-			<line
-				x1="0"
-				y1="48"
-				x2="18"
-				y2="48"
-				stroke="var(--stage-ink-muted)"
-				stroke-width="1"
-				stroke-dasharray="3 3"
-			/>
-			<text x="25" y="58" font-size="12" class="muted">all pigments combined</text>
-		</g>
-		<!-- cursor -->
+			text="wavelength (nm)"
+			size={11}
+			anchor="end"
+			muted
+		/>
+		<Label x={PLOT.x - 28} y={PLOT.y + PLOT.h / 2} text="absorption" size={11} rotate={-90} muted />
+		<!-- cursor (drawn before the legend so that it passes behind it) -->
 		<line
 			x1={cursorX}
 			y1={PLOT.y - 4}
@@ -398,31 +507,104 @@
 			stroke-width="1"
 			opacity="0.55"
 		/>
+		<!-- legend, doubling as a readout of the three curves at the cursor -->
+		<g transform="translate({LEGEND.x} {LEGEND.y})">
+			<rect
+				width={LEGEND.w}
+				height={LEGEND.h}
+				rx="8"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			{#each legend as item, i (item.key)}
+				{@const y = legendY(i)}
+				<line
+					x1="10"
+					y1={y}
+					x2="28"
+					y2={y}
+					stroke={item.color}
+					stroke-width="2.2"
+					stroke-linecap="round"
+				/>
+				<Label x={35} y={y + 4} text={item.label} size={12} anchor="start" />
+				<Label x={LEGEND.w - 12} y={y + 4} text={pct(abs[item.key])} size={12} anchor="end" />
+			{/each}
+			<rect
+				x="10"
+				y={legendY(3)}
+				width="18"
+				height="7"
+				rx="2"
+				fill="url(#spectrum-bar)"
+				opacity="0.5"
+			/>
+			<line
+				x1="10"
+				y1={legendY(3)}
+				x2="28"
+				y2={legendY(3)}
+				stroke="var(--stage-ink-muted)"
+				stroke-width="1.2"
+				stroke-dasharray="3 3"
+			/>
+			<!-- the dashed curve is the leaf's absorbed fraction, not an average of the three -->
+			<Label
+				x={35}
+				y={legendY(3) + 4}
+				text="whole leaf (all three combined)"
+				size={12}
+				anchor="start"
+				muted
+			/>
+		</g>
+		<!-- cursor markers: a ring on the combined curve, a dot on each pigment curve -->
 		<circle
 			cx={cursorX}
-			cy={cy(abs.total)}
+			cy={cy(absorbed)}
 			r="5"
 			fill="var(--stage-bg)"
 			stroke="var(--stage-ink)"
 			stroke-width="1.2"
 		/>
-		{#each legend as item (item.key)}
+		{#each dots as d (d.key)}
 			<circle
-				cx={cursorX}
-				cy={cy(abs[item.key])}
+				cx={cursorX + d.dx}
+				cy={d.y}
 				r="3.5"
-				fill={item.color}
+				fill={d.color}
 				stroke="var(--stage-bg)"
 				stroke-width="1.5"
 			/>
 		{/each}
-		<Label x={cursorPillX} y={PLOT.y - 14} text="{pct(abs.total)} absorbed" size={12} pill />
+		<!-- 4 px clear of the cursor ring when the combined curve is at 1 -->
+		<Label x={cursorPillX} y={PLOT.y - 18} text="{pct(absorbed)} absorbed" size={12} pill />
 	</g>
 
 	<!-- ================= (c) leaf and photons ================= -->
+	<!-- photons passing through the leaf travel behind it -->
+	{#each photons as p (p.i)}
+		{@const u = cycle(t, PERIOD, p.offset)}
+		{#if fates[p.i] === 'through' && u >= HIT}
+			{@const w = (u - HIT) / (1 - HIT)}
+			{@const s =
+				w < INSIDE
+					? (w / INSIDE) * p.insideLen
+					: p.insideLen + ((w - INSIDE) / (1 - INSIDE)) * L_EMERGE}
+			<Photon
+				x={p.hit.x + D_IN.x * s}
+				y={p.hit.y + D_IN.y * s}
+				angle={p.angleIn}
+				{wavelength}
+				opacity={1 - smoothstep(p.fadeLen, p.throughLen, s)}
+				phase={t * 3}
+			/>
+		{/if}
+	{/each}
+
 	<g transform={leafTransform}>
 		<path
-			d="M200 362 C 280 222, 520 150, 692 198 C 575 332, 365 428, 200 362 Z"
+			d={BLADE}
 			fill="var(--leaf)"
 			stroke="var(--leaf-dark)"
 			stroke-width="4"
@@ -460,7 +642,7 @@
 
 	{#each photons as p (p.i)}
 		{@const u = cycle(t, PERIOD, p.offset)}
-		{@const absorbed = p.threshold < abs.total}
+		{@const fate = fates[p.i]}
 		{#if u < HIT}
 			{@const v = u / HIT}
 			<Photon
@@ -471,7 +653,7 @@
 				opacity={smoothstep(0, 0.12, v)}
 				phase={t * 3}
 			/>
-		{:else if absorbed}
+		{:else if fate === 'absorb'}
 			{@const v = (u - HIT) / 0.22}
 			{#if v < 1}
 				<circle
@@ -491,7 +673,7 @@
 					phase={t * 3}
 				/>
 			{/if}
-		{:else}
+		{:else if fate === 'reflect'}
 			{@const v = (u - HIT) / (1 - HIT)}
 			<circle
 				cx={p.hit.x}
@@ -513,19 +695,39 @@
 		{/if}
 	{/each}
 
-	<Label x={reflectLabel.x} y={reflectLabel.y} text="reflected" size={12} muted />
-	<Label x={absorbLabel.x} y={absorbLabel.y} text="absorbed" size={12} muted />
+	<Label
+		x={reflectLabel.x}
+		y={reflectLabel.y}
+		text="reflected"
+		size={12}
+		muted
+		opacity={reflectedCount ? 1 : 0.45}
+	/>
+	<Label
+		x={absorbLabel.x}
+		y={absorbLabel.y}
+		text="{absorbedCount} of {N} absorbed"
+		size={12}
+		pill
+	/>
+	<Label
+		x={throughLabel.x}
+		y={throughLabel.y}
+		text="passed through"
+		size={12}
+		muted
+		opacity={throughCount ? 1 : 0.45}
+	/>
 
 	<!-- ================= (d) caption ================= -->
 	<line
 		x1="80"
-		y1="462"
+		y1={CAPTION_Y}
 		x2="880"
-		y2="462"
+		y2={CAPTION_Y}
 		stroke="var(--stage-line)"
 		stroke-width="1"
 		opacity="0.7"
 	/>
-	<Label x={480} y={498} text={caption} size={15} />
-	<Label x={480} y={524} text={breakdown} size={11} muted />
+	<Label x={480} y={CAPTION_Y + 34} text={caption} size={14} />
 </g>
