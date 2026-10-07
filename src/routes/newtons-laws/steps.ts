@@ -125,7 +125,7 @@ const trackFriction: Control = {
 	min: 0,
 	max: 0.15,
 	step: 0.01,
-	default: 0.04,
+	default: 0.08,
 	format: (v) => (v === 0 ? 'none' : v.toFixed(2))
 };
 
@@ -263,7 +263,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'free' },
 			duration: 22,
 			body: `
-<p>Release a car from the top of a track. As it runs down it speeds up; as it climbs it slows. Its energy keeps changing form between two kinds:</p>
+<p>Release a car from high up on a track. As it runs down it speeds up; as it climbs it slows. Its energy keeps changing form between two kinds:</p>
 <ul>
 <li><dfn data-def="Energy stored by height in a gravitational field: mass × g × height.">potential energy</dfn>, from its height: <i>m</i> × <i>g</i> × <i>h</i>;</li>
 <li>kinetic energy, from its speed: ½ × <i>m</i> × <i>v</i>².</li>
@@ -277,10 +277,10 @@ export const spec: ExplainerSpec = {
 			title: 'Where the energy goes',
 			scene: 'track',
 			hints: { phase: 'friction' },
-			duration: 24,
+			duration: 36,
 			controls: [trackFriction],
 			body: `
-<p>Real tracks have friction, and now the car never quite gets back up: each hill it climbs is a little lower than the last, until it settles in a valley.</p>
+<p>Real tracks have friction, and now the car never quite gets back up: each hill it climbs is a little lower than the last. Soon it can no longer get over the hills and is trapped in a valley, rocking back and forth less and less until it stops.</p>
 <p>The energy it loses appears in a third bar: <strong>heat</strong>, warming the wheels, the rails and the air. Add the three bars together and the total is still exactly what the car started with.</p>
 <p>This is the <dfn data-def="Energy cannot be created or destroyed, only converted from one form into another.">conservation of energy</dfn>, one of the deepest rules in physics: energy changes form, but the total stays the same. Together with the conservation of momentum, it is why Newton's laws can predict a motion before it happens.</p>`
 		}
