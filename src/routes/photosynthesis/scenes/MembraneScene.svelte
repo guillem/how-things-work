@@ -1,13 +1,16 @@
 <script lang="ts">
 	/**
 	 * Steps 5–9: the thylakoid membrane seen edge-on, with the stroma above
-	 * and the lumen below. Photosystem II, the plastoquinone pool, cytochrome
-	 * b₆f, plastocyanin, photosystem I (with ferredoxin and FNR) and ATP
-	 * synthase sit in the membrane, left to right, and the whole chain runs
-	 * continuously: photons → excitation → electrons → NADPH, water → O₂ +
-	 * protons, protons → ATP. The step's `focus`/`phase` hints decide which
-	 * part is lit up and which callout is shown; `params.light` scales every
-	 * rate and feeds the proton gradient.
+	 * and the lumen below. Photosystem II (core + light-harvesting antenna),
+	 * the plastoquinone pool, cytochrome b₆f, plastocyanin, photosystem I
+	 * (with ferredoxin and FNR) and ATP synthase sit in the membrane, left to
+	 * right, and the whole chain runs continuously on ONE clock so that the
+	 * events stay in step: a flash at P680 → an electron leaves → it reaches
+	 * P700 just as P700 flashes → NADPH; every fourth P680 flash splits two
+	 * waters; protons pile up in the lumen and stream back through ATP
+	 * synthase. The step's `focus`/`phase` hints decide which part is lit up
+	 * and which callout is shown; `params.light` scales the rate, fades the
+	 * driven particles out when the light is off and feeds the proton gradient.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -40,51 +43,70 @@
 	const focus = $derived(String(step.hints?.focus ?? 'psii'));
 	const phase = $derived(String(step.hints?.phase ?? 'antenna'));
 	const light = $derived(clamp(Number(params.light ?? 70), 0, 100));
-	/** 1 at the default light level; every rate in the scene is multiplied by it. */
+	/** 1 at the default light level; the whole chain runs at this rate. */
 	const speed = $derived(light / 70);
+	/**
+	 * One clock for every driven process, so flashes, electrons and products
+	 * stay in step. It is the integral of `speed` over time, accumulated from
+	 * the frame-to-frame change of `t` (the sanctioned exception in the scene
+	 * guide): a pure `t × speed` would make every electron, PQ, PC disc and
+	 * the rotor teleport with each notch of the light slider. The guards keep
+	 * it safe when `t` restarts at 0 on a step change (dt < 0: resync only)
+	 * and when the clock is paused (dt = 0). Under reduced motion the frozen
+	 * `t × speed` is used instead, so that frame stays the t = 2.5 s frame.
+	 */
+	let chainAcc = 0;
+	let lastT = -1;
+	const chainClock = $derived.by(() => {
+		const dt = t - lastT;
+		if (lastT >= 0 && dt > 0 && dt < 0.5) chainAcc += dt * speed;
+		lastT = t;
+		return chainAcc;
+	});
+	const tc = $derived(reduced ? t * speed : chainClock);
 
 	// ---- emphasis -------------------------------------------------------------
-	const DIM = 0.4;
+	const DIM = 0.5;
+	const emphasis = (f: string, p: string) => ({
+		psii: f === 'psii' ? 1 : DIM,
+		etc: f === 'etc' ? 1 : DIM,
+		psi: f === 'psi' ? 1 : DIM,
+		atp: f === 'atp' ? 1 : DIM,
+		cloud: f === 'etc' || f === 'atp' || p === 'water' ? 1 : 0.5,
+		cAntenna: p === 'antenna' ? 1 : 0,
+		cWater: p === 'water' ? 1 : 0,
+		cEtc: p === 'etc' ? 1 : 0,
+		cPsi: p === 'psi' ? 1 : 0,
+		cAtp: p === 'atp' ? 1 : 0
+	});
 	const op = new Tween(
-		{
-			psii: 1,
-			etc: DIM,
-			psi: DIM,
-			atp: DIM,
-			cloud: 0.5,
-			cAntenna: 1,
-			cWater: 0,
-			cEtc: 0,
-			cPsi: 0,
-			cAtp: 0
-		},
+		untrack(() => emphasis(focus, phase)),
 		{ duration: 750, easing: cubicInOut }
 	);
 	$effect(() => {
-		const f = focus;
-		const p = phase;
+		const target = emphasis(focus, phase);
 		const duration = reduced ? 0 : 750;
-		untrack(() =>
-			op.set(
-				{
-					psii: f === 'psii' ? 1 : DIM,
-					etc: f === 'etc' ? 1 : DIM,
-					psi: f === 'psi' ? 1 : DIM,
-					atp: f === 'atp' ? 1 : DIM,
-					cloud: f === 'etc' || f === 'atp' || p === 'water' ? 1 : 0.5,
-					cAntenna: p === 'antenna' ? 1 : 0,
-					cWater: p === 'water' ? 1 : 0,
-					cEtc: p === 'etc' ? 1 : 0,
-					cPsi: p === 'psi' ? 1 : 0,
-					cAtp: p === 'atp' ? 1 : 0
-				},
-				{ duration }
-			)
-		);
+		// untrack: the tween's own state must not re-trigger this effect
+		untrack(() => op.set(target, { duration }));
 	});
 	const o = $derived(op.current);
 	/** 0 when a group is dimmed, 1 when it is the focus. */
 	const lit = (v: number) => clamp((v - DIM) / (1 - DIM));
+
+	// ---- light-driven flow: 1 in the light, 0 when the light is off ------------
+	// Every driven particle (photons, excitations, electrons, moving protons,
+	// substrates and products) is faded by this, so switching the light off
+	// visibly stops the machinery instead of freezing particles in mid-air.
+	const flowT = new Tween(
+		untrack(() => smoothstep(0, 12, light)),
+		{ duration: 700, easing: cubicInOut }
+	);
+	$effect(() => {
+		const target = smoothstep(0, 12, light);
+		const duration = reduced ? 0 : 700;
+		untrack(() => flowT.set(target, { duration }));
+	});
+	const flow = $derived(flowT.current);
 
 	// ---- proton gradient (0–1) follows the light with a lag -------------------
 	const gradient = new Tween(
@@ -101,88 +123,64 @@
 	const cloudCount = $derived(Math.round(lerp(6, 30, g)));
 	const cloud = $derived(Array.from({ length: cloudCount }, (_, i) => i));
 
-	// ---- group clocks: dimmed parts keep moving, at half speed -------------------
-	const rate = (f: number) => speed * (0.5 + 0.5 * f);
-	const tPsii = $derived(t * rate(o.psii));
-	const tEtc = $derived(t * rate(o.etc));
-	const tPsi = $derived(t * rate(o.psi));
-	const tAtp = $derived(t * rate(o.atp));
-	const tElec = $derived(t * rate(Math.max(o.psii, o.etc, o.psi)));
-
 	// ---- geometry -------------------------------------------------------------
 	const MEM = { top: 272, bottom: 328, mid: 300 };
-	const PSII = { x: 170, w: 84, top: 258, bottom: 350 };
-	const B6F = { x: 400, w: 60, top: 262, bottom: 338 };
-	const PSI = { x: 560, w: 84, top: 258, bottom: 342 };
+	const ANT = { top: 266, bottom: 334 }; // light-harvesting antenna belt
+	const PSII = { x: 170, w: 84, top: 258, bottom: 350, antL: 60, antR: 280 };
+	const B6F = { x: 396, w: 60, top: 262, bottom: 338 };
+	const PSI = { x: 574, w: 84, top: 258, bottom: 342, antL: 472, antR: 676 };
 	const OEC = { x: 170, y: 340 };
-	const FD = { x: 596, y: 243 };
-	const FNR = { x: 650, y: 236 };
+	const FD = { x: 610, y: 243 };
+	const FNR = { x: 666, y: 236 };
 	const ATP = { x: 800, headY: 208 };
+	const P680: Point = { x: PSII.x, y: MEM.mid };
+	const P700: Point = { x: PSI.x, y: MEM.mid };
 
 	const darker = (c: string) => `color-mix(in srgb, ${c} 62%, #000)`;
+	/** Proton pink pulled towards the ink of the theme, for the small H⁺ direction cues. */
+	const protonInk = `color-mix(in srgb, ${colors.proton} 65%, var(--stage-ink))`;
 
-	// Antenna: two rings of pigment dots around a photosystem, skipping the
-	// part of the ring that the protein itself covers.
+	// Antenna pigments: a small, regular lattice of chlorophyll a / b and
+	// carotenoid molecules in each wing of the light-harvesting belt,
+	// WING_ROWS rows × WING_COLS columns, indexed wing[col * WING_ROWS + row].
 	interface Dot extends Point {
 		r: number;
 		c: string;
 	}
-	function makeAntenna(
-		cx: number,
-		halfW: number,
-		top: number,
-		bottom: number,
-		salt: number,
-		gapBelow: boolean
-	): Dot[] {
+	const WING_ROWS = 3;
+	const WING_COLS = 4;
+	function makeWing(x0: number, salt: number): Dot[] {
 		const dots: Dot[] = [];
-		const rings = [
-			{ n: 24, rx: 82, ry: 54 },
-			{ n: 20, rx: 64, ry: 44 }
-		];
-		rings.forEach((ring, ri) => {
-			for (let i = 0; i < ring.n; i++) {
-				const a = (i / ring.n) * TAU + ri * 0.16 + (hash(i, salt + ri) - 0.5) * 0.14;
-				if (gapBelow && ri === 0 && Math.abs(a - Math.PI / 2) < 0.55) continue;
-				const jr = 1 + (hash(i, salt + 7 + ri) - 0.5) * 0.12;
-				const x = cx + ring.rx * jr * Math.cos(a);
-				const y = MEM.mid + ring.ry * jr * Math.sin(a);
-				if (Math.abs(x - cx) < halfW + 5 && y > top - 5 && y < bottom + 5) continue;
-				const h = hash(i, salt + 13 + ri);
+		for (let c = 0; c < WING_COLS; c++) {
+			for (let r = 0; r < WING_ROWS; r++) {
+				const i = c * WING_ROWS + r;
+				const h = hash(i, salt);
 				dots.push({
-					x,
-					y,
-					r: 2.8 + h * 1.2,
+					x: x0 + c * 13 + (hash(i, salt + 1) - 0.5) * 1.5,
+					y: 283 + r * 17 + (hash(i, salt + 2) - 0.5) * 1.5,
+					r: 4 + h * 0.5,
 					c: h < 0.55 ? colors.chlorophyllA : h < 0.85 ? colors.chlorophyllB : colors.carotenoid
 				});
 			}
-		});
+		}
 		return dots;
 	}
-	const psiiDots = makeAntenna(PSII.x, PSII.w / 2, PSII.top, PSII.bottom, 1, true);
-	const psiDots = makeAntenna(PSI.x, PSI.w / 2, PSI.top, PSI.bottom, 2, false);
+	const psiiWingL = makeWing(72, 1);
+	const psiiWingR = makeWing(225, 2);
+	const psiWingL = makeWing(484, 3);
+	const psiWingR = makeWing(628, 4);
+	const psiiDots = [...psiiWingL, ...psiiWingR];
+	const psiDots = [...psiWingL, ...psiWingR];
 
 	const lerpP = (a: Point, b: Point, u: number): Point => ({
 		x: lerp(a.x, b.x, u),
 		y: lerp(a.y, b.y, u)
 	});
-	function nearest(dots: Dot[], p: Point, exclude: Point[] = []): Point {
-		let best = dots[0];
-		let bd = Infinity;
-		for (const d of dots) {
-			if (exclude.includes(d)) continue;
-			const dd = dist(d, p);
-			if (dd < bd) {
-				bd = dd;
-				best = d;
-			}
-		}
-		return best;
-	}
 
 	// Photons: each one has a start point, the antenna pigment it hits and the
-	// chain of pigments the excitation hops along on its way to the core.
+	// chain of pigments the excitation hops along on its way to the special pair.
 	const PH_PERIOD = 6;
+	const PH_FLIGHT = 0.45; // cycle phase at which the photon is absorbed
 	const PH_FLASH = 0.68; // cycle phase at which the excitation reaches the core
 	interface PhotonSpec {
 		start: Point;
@@ -192,46 +190,45 @@
 		off: number;
 	}
 	function makePhotons(
-		dots: Dot[],
-		cx: number,
+		wing: Dot[],
 		core: Point,
-		specs: { start: Point; angle: number }[],
+		specs: { start: Point; hops: [number, number][] }[],
 		shift: number
 	): PhotonSpec[] {
 		return specs.map((s, j) => {
-			// The excitation wanders around the ring to the pigments beside the
-			// core (in the membrane plane) before it is trapped by the special pair.
-			const rad = (deg: number) => (deg * Math.PI) / 180;
-			const entry = nearest(dots, polar(cx, MEM.mid, 82, rad(s.angle)));
-			const m1 = nearest(dots, polar(cx, MEM.mid, 82, rad((s.angle + 180) / 2)), [entry]);
-			const m2 = nearest(dots, polar(cx, MEM.mid, 64, Math.PI), [entry, m1]);
+			const chain: Point[] = s.hops.map(([c, r]) => wing[c * WING_ROWS + r]);
+			chain.push(core);
+			const entry = chain[0];
 			const angle = (Math.atan2(entry.y - s.start.y, entry.x - s.start.x) * 180) / Math.PI;
 			const off = (((PH_FLASH - j / 3 - shift) % 1) + 1) % 1;
-			return { start: s.start, entry, angle, chain: [entry, m1, m2, core], off };
+			return { start: s.start, entry, angle, chain, off };
 		});
 	}
-	const P680: Point = { x: PSII.x, y: MEM.mid };
-	const P700: Point = { x: PSI.x, y: MEM.mid };
 
-	// Electron route: P680 → PQ (in the membrane) → cyt b₆f → PC (lumen) → PSI → Fd → FNR.
+	// Electron route: P680 → PQ (in the membrane) → cyt b₆f → PC (lumen) → P700 → Fd → FNR.
 	const E_PERIOD = 10;
-	const E_COUNT = 5;
+	const E_COUNT = 5; // one electron leaves P680 every 2 s
 	const ePath = smooth(
 		[
-			{ x: 178, y: 300 },
-			{ x: 222, y: 296 },
-			{ x: 290, y: 300 },
-			{ x: 356, y: 306 },
-			{ x: 398, y: 316 },
-			{ x: 428, y: 342 },
-			{ x: 445, y: 350 },
-			{ x: 515, y: 350 },
-			{ x: 540, y: 338 },
-			{ x: 560, y: 302 },
-			{ x: 572, y: 272 },
-			{ x: 596, y: 246 },
-			{ x: 625, y: 236 },
-			{ x: 650, y: 234 }
+			{ x: 176, y: 300 },
+			{ x: 214, y: 308 },
+			{ x: 252, y: 309 },
+			{ x: 300, y: 292 },
+			{ x: 336, y: 302 },
+			{ x: 372, y: 314 },
+			{ x: 404, y: 322 },
+			{ x: 424, y: 344 },
+			{ x: 445, y: 352 },
+			{ x: 515, y: 352 },
+			{ x: 542, y: 338 },
+			{ x: 574, y: 302 },
+			// leave the pair along its own level and climb the right side of the
+			// core, clear of the 'PSI' / 'P700' texts (x ≈ 559–589)
+			{ x: 600, y: 296 },
+			{ x: 612, y: 270 },
+			{ x: 610, y: 252 },
+			{ x: 638, y: 238 },
+			{ x: 666, y: 236 }
 		],
 		6
 	);
@@ -255,64 +252,111 @@
 		}
 		return upTo / total;
 	})();
-	// Electrons leave P680 every E_PERIOD / E_COUNT seconds (= 2 s); the PSII
-	// flashes are phased to coincide, and the PSI flashes to the electron's
-	// arrival at P700.
+	// PSII flashes 0.4 s before each electron leaves P680 (electrons leave at
+	// t ≡ 0 mod 2 s); PSI flashes 0.3 s before the electron reaches P700.
 	const psiiPhotons = makePhotons(
-		psiiDots,
-		PSII.x,
+		psiiWingL,
 		P680,
 		[
-			{ start: { x: 60, y: 150 }, angle: 185 },
-			{ start: { x: 72, y: 112 }, angle: 210 },
-			{ start: { x: 90, y: 92 }, angle: 235 }
+			{
+				start: { x: 30, y: 150 },
+				hops: [
+					[0, 0],
+					[1, 1],
+					[2, 2],
+					[3, 1]
+				]
+			},
+			{
+				start: { x: 100, y: 90 },
+				hops: [
+					[2, 0],
+					[3, 1]
+				]
+			},
+			{
+				start: { x: 40, y: 100 },
+				hops: [
+					[1, 0],
+					[2, 1],
+					[3, 2]
+				]
+			}
 		],
-		0
+		1.6 / PH_PERIOD
 	);
 	const psiPhotons = makePhotons(
-		psiDots,
-		PSI.x,
+		psiWingL,
 		P700,
 		[
-			{ start: { x: 476, y: 124 }, angle: 200 },
-			{ start: { x: 488, y: 102 }, angle: 220 },
-			{ start: { x: 504, y: 86 }, angle: 240 }
+			{
+				// these three lines stay between the cyt b₆f subtitle (x ≤ 479)
+				// and the 'Photosystem I' title (x ≥ 525)
+				start: { x: 508, y: 116 },
+				hops: [
+					[0, 0],
+					[1, 1],
+					[2, 2],
+					[3, 1]
+				]
+			},
+			{
+				start: { x: 478, y: 46 },
+				hops: [
+					[1, 0],
+					[2, 1],
+					[3, 2]
+				]
+			},
+			{
+				start: { x: 463, y: 78 },
+				hops: [
+					[2, 0],
+					[3, 1]
+				]
+			}
 		],
-		((E_PERIOD * f700) % 2) / PH_PERIOD
+		((((E_PERIOD * f700 - 0.3) % 2) + 2) % 2) / PH_PERIOD
 	);
 
-	// Water in, O₂ and protons out (PSII, lumen side).
+	// Water in, O₂ + 4 H⁺ out at the Mn₄CaO₅ cluster (lumen side of PSII), and
+	// 4 e⁻ up into P680. One O₂ per four P680 flashes = every 8 s, 0.1 s after a flash.
 	const O2_PERIOD = 8;
+	const W_OFF = 0.7875;
 	const waterPaths = [
 		smooth([
-			{ x: 66, y: 534 },
-			{ x: 116, y: 454 },
-			{ x: 160, y: 370 }
+			{ x: 60, y: 520 },
+			{ x: 112, y: 450 },
+			{ x: 160, y: 372 }
 		]),
 		smooth([
-			{ x: 236, y: 540 },
-			{ x: 198, y: 460 },
-			{ x: 178, y: 370 }
+			{ x: 250, y: 520 },
+			{ x: 206, y: 456 },
+			{ x: 180, y: 372 }
 		])
 	];
+	// O₂ drifts away to the left, below the Mn₄CaO₅ label and clear of the
+	// water routes; the four H⁺ fan out to the right and below (never along the
+	// O₂ route), from the right side of the cluster.
 	const o2Path = smooth([
-		{ x: 170, y: 360 },
-		{ x: 132, y: 410 },
-		{ x: 92, y: 456 },
-		{ x: 58, y: 500 }
+		{ x: 162, y: 360 },
+		{ x: 122, y: 378 },
+		{ x: 78, y: 396 },
+		{ x: 36, y: 412 }
 	]);
-	const burstAngles = [28, 66, 112, 152];
+	const BURST: Point = { x: OEC.x + 8, y: OEC.y + 10 };
+	const burstAngles = [16, 44, 72, 100];
 
-	// Plastoquinone: three molecules looping between PSII (stroma side, where
-	// they pick up protons) and cyt b₆f (lumen side, where the protons are
-	// released).
+	// Plastoquinone: three molecules looping between PSII (where they pick up
+	// 2 e⁻ and 2 H⁺ from the stroma) and cyt b₆f (which releases the H⁺ into the lumen).
 	const PQ_PERIOD = 6;
+	const PQ_OFF = 0.15;
 	const pqLoop: Point[] = [
-		{ x: 238, y: 283 },
-		{ x: 300, y: 298 },
-		{ x: 362, y: 316 },
-		{ x: 300, y: 308 },
-		{ x: 238, y: 283 }
+		{ x: 300, y: 284 },
+		{ x: 332, y: 300 },
+		{ x: 360, y: 316 },
+		{ x: 332, y: 306 },
+		{ x: 300, y: 284 }
 	];
 	const hexPath = (r: number) =>
 		Array.from({ length: 6 }, (_, i) => polar(0, 0, r, (i / 6) * TAU + Math.PI / 6))
@@ -320,25 +364,28 @@
 			.join(' ') + ' Z';
 	const HEX = hexPath(8);
 
-	// Ferredoxin → FNR: NADP⁺ + H⁺ in, NADPH out.
+	// Ferredoxin → FNR: NADP⁺ + H⁺ in (from the stroma), NADPH out (into the stroma).
+	// The two carriers run phase-locked (one arrives while the other leaves), so
+	// the routes keep ≥ 55 px between them wherever they share a height; the
+	// NADP⁺ start also stays clear of the ATP exit (x ≥ 781) and the CF₁ head.
 	const N_PERIOD = 8;
 	const nadpIn = smooth([
-		{ x: 766, y: 40 },
-		{ x: 752, y: 130 },
-		{ x: 682, y: 214 }
+		{ x: 750, y: 140 },
+		{ x: 744, y: 180 },
+		{ x: 700, y: 226 }
 	]);
 	const nadphOut = smooth([
-		{ x: 670, y: 228 },
-		{ x: 684, y: 160 },
-		{ x: 692, y: 100 }
+		{ x: 670, y: 222 },
+		{ x: 686, y: 160 },
+		{ x: 700, y: 80 }
 	]);
 	const hIn = smooth([
-		{ x: 736, y: 262 },
-		{ x: 702, y: 246 },
-		{ x: 672, y: 232 }
+		{ x: 732, y: 262 },
+		{ x: 704, y: 248 },
+		{ x: 676, y: 236 }
 	]);
 
-	// ATP synthase: protons stream up through CF₀; ADP + Pi meet at CF₁; ATP leaves.
+	// ATP synthase: protons stream up through CF₀ (lumen → stroma); ADP + Pi meet at CF₁; ATP leaves.
 	const ROTOR_TURN = 7; // seconds per full turn at the default light (14 H⁺)
 	const ATP_PERIOD = (ROTOR_TURN / 3) * 2; // two ATP particles → 3 ATP per turn
 	const H_PERIOD = 2.5; // five protons → 2 H⁺/s = 14 per turn
@@ -347,25 +394,34 @@
 		{ x: 797, y: 350 },
 		{ x: 800, y: 300 },
 		{ x: 802, y: 262 },
-		{ x: 806, y: 248 }
+		{ x: 806, y: 250 }
 	]);
 	const adpIn = smooth([
-		{ x: 926, y: 246 },
-		{ x: 882, y: 236 },
-		{ x: 838, y: 218 }
+		{ x: 926, y: 252 },
+		{ x: 884, y: 238 },
+		{ x: 842, y: 222 }
 	]);
 	const piIn = smooth([
-		{ x: 930, y: 200 },
-		{ x: 886, y: 200 },
-		{ x: 836, y: 206 }
+		{ x: 930, y: 198 },
+		{ x: 888, y: 200 },
+		{ x: 840, y: 206 }
 	]);
 	const atpOut = smooth([
-		{ x: 818, y: 190 },
-		{ x: 842, y: 120 },
-		{ x: 846, y: 52 }
+		{ x: 806, y: 184 },
+		{ x: 792, y: 120 },
+		{ x: 786, y: 50 }
 	]);
 	const rotor = Array.from({ length: 14 }, (_, i) => i);
-	const theta = $derived((tAtp / ROTOR_TURN) * TAU);
+	const theta = $derived((tc / ROTOR_TURN) * TAU);
+	/** Two opposite c-subunits are marked, so one marker is always on the visible half. */
+	const marked = (i: number) => i === 0 || i === 7;
+
+	/**
+	 * S-state of the Mn₄CaO₅ cluster: each P680 flash pulls one electron out
+	 * of it (S₀ → S₁ → … → S₄) and the fourth triggers the water split, 0.1 s
+	 * later, which resets it. Drawn as a yellow halo per charged Mn atom.
+	 */
+	const sState = $derived(Math.min(4, Math.floor(cycle(tc, O2_PERIOD, W_OFF) * 4 + 0.04)));
 
 	const fadeEnds = (u: number) => smoothstep(0, 0.08, u) * (1 - smoothstep(0.9, 1, u));
 	/** Position of the excitation pulse along a hop chain, snapping dot to dot. */
@@ -375,9 +431,56 @@
 		const f = easeInOut(clamp(v * n - idx));
 		return { p: lerpP(chain[idx], chain[idx + 1], f), idx };
 	}
-
-	const noLight = $derived(1 - smoothstep(0, 10, light));
 </script>
+
+{#snippet antennaRun(photons: PhotonSpec[], core: Point)}
+	<g opacity={flow}>
+		{#each photons as ph, j (j)}
+			{@const u = cycle(tc, PH_PERIOD, ph.off)}
+			{#if u < PH_FLIGHT}
+				{@const v = u / PH_FLIGHT}
+				<Photon
+					x={lerp(ph.start.x, ph.entry.x, v)}
+					y={lerp(ph.start.y, ph.entry.y, v)}
+					angle={ph.angle}
+					opacity={smoothstep(0, 0.12, v) * (1 - smoothstep(0.9, 1, v))}
+					phase={t * 3}
+				/>
+			{:else if u < PH_FLASH}
+				{@const h = hop(ph.chain, (u - PH_FLIGHT) / (PH_FLASH - PH_FLIGHT))}
+				<path
+					d={pathFrom(ph.chain)}
+					fill="none"
+					stroke={colors.photon}
+					stroke-width="1.3"
+					stroke-dasharray="3 3"
+					opacity="0.6"
+				/>
+				<circle
+					cx={ph.chain[h.idx].x}
+					cy={ph.chain[h.idx].y}
+					r="7"
+					fill="none"
+					stroke={colors.photon}
+					stroke-width="1.5"
+					opacity="0.85"
+				/>
+				<circle cx={h.p.x} cy={h.p.y} r="6.5" fill={colors.photon} filter="url(#glow)" />
+			{:else if u < PH_FLASH + 0.12}
+				{@const v = (u - PH_FLASH) / 0.12}
+				<circle
+					cx={core.x}
+					cy={core.y}
+					r={6 + 18 * v}
+					fill="none"
+					stroke={colors.photon}
+					stroke-width={2.5 * (1 - v)}
+					opacity={1 - v}
+				/>
+			{/if}
+		{/each}
+	</g>
+{/snippet}
 
 <g class="membrane-scene">
 	<!-- ================= compartments ================= -->
@@ -388,7 +491,7 @@
 	<g opacity={lerp(0.45, 1, o.cloud)}>
 		{#each cloud as i (i)}
 			{@const x = 56 + hash(i, 31) * 850 + 5 * Math.sin(t * 0.6 + i * 1.7)}
-			{@const y = 374 + hash(i, 32) * 160 + 4 * Math.cos(t * 0.5 + i * 2.3)}
+			{@const y = 392 + hash(i, 32) * 140 + 4 * Math.cos(t * 0.5 + i * 2.3)}
 			<Molecule kind="proton" {x} {y} scale={0.85} opacity={0.85} />
 		{/each}
 	</g>
@@ -446,9 +549,27 @@
 
 	<!-- ================= photosystem II ================= -->
 	<g opacity={o.psii}>
+		<!-- light-harvesting antenna belt with its pigments -->
+		<rect
+			x={PSII.antL}
+			y={ANT.top}
+			width={PSII.antR - PSII.antL}
+			height={ANT.bottom - ANT.top}
+			rx="12"
+			fill={colors.psii}
+			opacity="0.3"
+		/>
 		{#each psiiDots as d, i (i)}
-			<circle cx={d.x} cy={d.y} r={d.r} fill={d.c} opacity="0.9" />
+			<circle
+				cx={d.x}
+				cy={d.y}
+				r={d.r}
+				fill={d.c}
+				style="stroke: {darker(d.c)}"
+				stroke-width="0.8"
+			/>
 		{/each}
+		<!-- reaction-centre core -->
 		<rect
 			x={PSII.x - PSII.w / 2}
 			y={PSII.top}
@@ -460,152 +581,131 @@
 			stroke-width="1.5"
 			filter="url(#soft-shadow)"
 		/>
-		<text x={PSII.x} y="281" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"
-			>PSII</text
-		>
-		<!-- P680: the special chlorophyll pair -->
+		<!-- P680: the special chlorophyll pair, and the slot the water electrons climb through -->
+		<rect x={PSII.x - 5.5} y="306" width="11" height="30" rx="5.5" fill="#fff" opacity="0.2" />
 		<circle cx={PSII.x - 5} cy={MEM.mid} r="5" fill={colors.chlorophyllA} stroke="#fff" />
 		<circle cx={PSII.x + 5} cy={MEM.mid} r="5" fill={colors.chlorophyllA} stroke="#fff" />
-		<text
-			x={PSII.x}
-			y="320"
-			text-anchor="middle"
-			font-size="10"
-			font-weight="700"
-			fill="#fff"
-			opacity="0.95">P680</text
-		>
-		<!-- oxygen-evolving complex: Mn₄CaO₅ -->
+		<!-- oxygen-evolving complex: Mn₄CaO₅; a halo per Mn atom charged by a flash (S-state) -->
 		<g transform="translate({OEC.x} {OEC.y})">
+			{#each [[-7, -3], [3, -6], [-2, 5], [11, 0]] as [dx, dy], i (i)}
+				{#if i < sState}
+					<circle cx={dx} cy={dy} r="6.5" fill={colors.photon} opacity={0.6 * flow} />
+				{/if}
+			{/each}
 			{#each [[-7, -3], [3, -6], [-2, 5], [11, 0]] as [dx, dy], i (i)}
 				<circle cx={dx} cy={dy} r="3.6" fill="#a855f7" stroke="#581c87" stroke-width="1" />
 			{/each}
 			<circle cx="6" cy="4" r="3.2" fill="#d9f99d" stroke="#65a30d" stroke-width="1" />
 		</g>
 
-		<!-- photons → antenna → P680 -->
-		{#each psiiPhotons as ph, j (j)}
-			{@const u = cycle(tPsii, PH_PERIOD, ph.off)}
-			{#if u < 0.45}
-				{@const v = u / 0.45}
-				<Photon
-					x={lerp(ph.start.x, ph.entry.x, v)}
-					y={lerp(ph.start.y, ph.entry.y, v)}
-					angle={ph.angle}
-					opacity={smoothstep(0, 0.12, v) * (1 - smoothstep(0.9, 1, v))}
-					phase={t * 3}
-				/>
-			{:else if u < PH_FLASH}
-				{@const h = hop(ph.chain, (u - 0.45) / (PH_FLASH - 0.45))}
-				<path
-					d={pathFrom(ph.chain)}
-					fill="none"
-					stroke={colors.photon}
-					stroke-width="1.2"
-					stroke-dasharray="3 3"
-					opacity="0.55"
-				/>
-				<circle
-					cx={ph.chain[h.idx].x}
-					cy={ph.chain[h.idx].y}
-					r="7"
-					fill="none"
-					stroke={colors.photon}
-					stroke-width="1.5"
-					opacity="0.8"
-				/>
-				<circle cx={h.p.x} cy={h.p.y} r="6" fill={colors.photon} filter="url(#glow)" />
-			{:else if u < PH_FLASH + 0.12}
-				{@const v = (u - PH_FLASH) / 0.12}
-				<circle
-					cx={P680.x}
-					cy={P680.y}
-					r={6 + 18 * v}
-					fill="none"
-					stroke={colors.photon}
-					stroke-width={2.5 * (1 - v)}
-					opacity={1 - v}
-				/>
-			{/if}
-		{/each}
+		<!-- photons → antenna → P680 (before the core texts, so the flash ring passes under them) -->
+		{@render antennaRun(psiiPhotons, P680)}
+		<text x={PSII.x} y="271" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"
+			>PSII</text
+		>
+		<text
+			x={PSII.x}
+			y="290"
+			text-anchor="middle"
+			font-size="10"
+			font-weight="700"
+			fill="#fff"
+			opacity="0.95">P680</text
+		>
 
-		<!-- water in, O₂ and 4 H⁺ out -->
-		{#each waterPaths as path, i (i)}
-			{@const u = cycle(tPsii, O2_PERIOD, i / 2)}
-			{@const p = along(path, u)}
-			<Molecule
-				kind="H2O"
-				x={p.x}
-				y={p.y}
-				rotate={-20 + 25 * Math.sin(t + i * 2)}
-				opacity={fadeEnds(u)}
-				scale={0.85}
-				label={i === 0 ? 'H₂O' : undefined}
-				labelPosition="left"
-			/>
-		{/each}
-		{#each [0] as k (k)}
-			{@const u = cycle(tPsii, O2_PERIOD, 0)}
-			{#if u < 0.55}
-				{@const v = u / 0.55}
-				{@const p = along(o2Path, v)}
+		<!-- water in, O₂ + 4 H⁺ out, 4 e⁻ up to P680 -->
+		<g opacity={flow}>
+			<!-- the two waters travel almost together and both arrive just before the split -->
+			{#each waterPaths as path, i (i)}
+				{@const u = cycle(tc, O2_PERIOD, i * 0.06 + W_OFF)}
+				{@const p = along(path, u)}
 				<Molecule
-					kind="O2"
+					kind="H2O"
 					x={p.x}
 					y={p.y}
-					rotate={-40 + 20 * Math.sin(t * 1.3)}
-					opacity={fadeEnds(v)}
-					scale={0.9}
-					label="O₂"
-					labelPosition="right"
+					rotate={-20 + 25 * Math.sin(t + i * 2)}
+					opacity={fadeEnds(u)}
+					scale={0.85}
+					label={i === 0 ? 'H₂O' : undefined}
+					labelPosition="left"
 				/>
-			{/if}
-			{#if u < 0.22}
-				{@const v = u / 0.22}
-				<circle
-					cx={OEC.x}
-					cy={OEC.y + 8}
-					r={8 + 22 * v}
-					fill="none"
-					stroke={colors.oxygen}
-					stroke-width={2 * (1 - v)}
-					opacity={0.8 * (1 - v)}
-				/>
-				{#each burstAngles as a, i (i)}
-					{@const p = polar(OEC.x, OEC.y + 10, 12 + 52 * easeInOut(v), (a * Math.PI) / 180)}
+			{/each}
+			{#each [0] as k (k)}
+				{@const u = cycle(tc, O2_PERIOD, W_OFF)}
+				{#if u < 0.55}
+					{@const v = u / 0.55}
+					{@const p = along(o2Path, v)}
 					<Molecule
-						kind="proton"
+						kind="O2"
 						x={p.x}
 						y={p.y}
-						opacity={smoothstep(0, 0.1, v) * (1 - smoothstep(0.6, 1, v))}
+						rotate={-40 + 20 * Math.sin(t * 1.3)}
+						opacity={fadeEnds(v)}
+						scale={0.9}
+						label="O₂"
+						labelPosition="below"
 					/>
+				{/if}
+				{#if u < 0.22}
+					{@const v = u / 0.22}
+					<circle
+						cx={OEC.x}
+						cy={OEC.y + 8}
+						r={8 + 22 * v}
+						fill="none"
+						stroke={colors.oxygen}
+						stroke-width={2 * (1 - v)}
+						opacity={0.8 * (1 - v)}
+					/>
+					{#each burstAngles as a, i (i)}
+						{@const q = polar(BURST.x, BURST.y, 12 + 50 * easeInOut(v), (a * Math.PI) / 180)}
+						<Molecule
+							kind="proton"
+							x={q.x}
+							y={q.y}
+							opacity={smoothstep(0, 0.1, v) * (1 - smoothstep(0.6, 1, v))}
+						/>
+					{/each}
+				{/if}
+				<!-- the four electrons climb from the cluster into P680 -->
+				{#each [0, 1, 2, 3] as i (i)}
+					{@const v = (u - 0.02 - i * 0.05) / 0.07}
+					{#if v > 0 && v < 1}
+						<Molecule
+							kind="electron"
+							x={OEC.x + (i - 1.5) * 2}
+							y={lerp(OEC.y - 4, P680.y + 7, easeInOut(v))}
+							opacity={smoothstep(0, 0.15, v) * (1 - smoothstep(0.8, 1, v))}
+							glow
+						/>
+					{/if}
 				{/each}
-			{/if}
-		{/each}
+			{/each}
+		</g>
 	</g>
 
 	<!-- ================= electron transport chain ================= -->
 	<g opacity={o.etc}>
 		<!-- plastoquinone shuttles: H⁺ picked up from the stroma, released by b₆f into the lumen -->
 		{#each [0, 1, 2] as k (k)}
-			{@const u = cycle(tEtc, PQ_PERIOD, k / 3)}
+			{@const u = cycle(tc, PQ_PERIOD, k / 3 + PQ_OFF)}
 			{@const p = along(pqLoop, u)}
 			<path
 				d={HEX}
-				transform="translate({p.x} {p.y}) rotate({tEtc * 40 + k * 60})"
+				transform="translate({p.x} {p.y}) rotate({tc * 40 + k * 60})"
 				fill="var(--protein)"
 				stroke="var(--protein-edge)"
 				stroke-width="1.2"
 			/>
-			{@const pu = cycle(tEtc, PQ_PERIOD, k / 3 + 0.14)}
+			{@const pu = cycle(tc, PQ_PERIOD, k / 3 + PQ_OFF + 0.14)}
 			{#if pu < 0.14}
 				{@const v = pu / 0.14}
 				{#each [-7, 7] as dx (dx)}
 					<Molecule
 						kind="proton"
 						x={pqLoop[0].x + dx}
-						y={lerp(236, 280, easeInOut(v))}
-						opacity={smoothstep(0, 0.15, v) * (1 - smoothstep(0.85, 1, v))}
+						y={lerp(246, 284, easeInOut(v))}
+						opacity={flow * smoothstep(0, 0.15, v) * (1 - smoothstep(0.85, 1, v))}
 					/>
 				{/each}
 			{/if}
@@ -616,7 +716,7 @@
 						kind="proton"
 						x={B6F.x + dx + dx * v}
 						y={lerp(320, 374, easeInOut(v))}
-						opacity={smoothstep(0, 0.15, v) * (1 - smoothstep(0.7, 1, v))}
+						opacity={flow * smoothstep(0, 0.15, v) * (1 - smoothstep(0.7, 1, v))}
 					/>
 				{/each}
 			{/if}
@@ -637,13 +737,16 @@
 		<text x={B6F.x} y="296" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"
 			>cyt b₆f</text
 		>
+		<!-- where the protons get on (from the stroma, onto PQ) and off (from b₆f, into the lumen) -->
+		<Flow d="M316 236 L316 268" color={protonInk} width={1.5} arrow opacity={0.85} />
+		<Flow d="M{B6F.x} 342 L{B6F.x} 376" color={protonInk} width={1.5} arrow opacity={0.85} />
 
 		<!-- plastocyanin: copper protein ferrying electrons along the lumen -->
 		{#each [0, 1] as k (k)}
-			{@const x = lerp(440, 520, pingpong(tEtc, 5, k / 2))}
+			{@const x = lerp(445, 515, pingpong(tc, 5, k / 2))}
 			<circle
 				cx={x}
-				cy="350"
+				cy="352"
 				r="8"
 				fill="#60a5fa"
 				stroke="#1d4ed8"
@@ -655,8 +758,24 @@
 
 	<!-- ================= photosystem I ================= -->
 	<g opacity={o.psi}>
+		<rect
+			x={PSI.antL}
+			y={ANT.top}
+			width={PSI.antR - PSI.antL}
+			height={ANT.bottom - ANT.top}
+			rx="12"
+			fill={colors.psi}
+			opacity="0.3"
+		/>
 		{#each psiDots as d, i (i)}
-			<circle cx={d.x} cy={d.y} r={d.r} fill={d.c} opacity="0.9" />
+			<circle
+				cx={d.x}
+				cy={d.y}
+				r={d.r}
+				fill={d.c}
+				style="stroke: {darker(d.c)}"
+				stroke-width="0.8"
+			/>
 		{/each}
 		<rect
 			x={PSI.x - PSI.w / 2}
@@ -669,14 +788,16 @@
 			stroke-width="1.5"
 			filter="url(#soft-shadow)"
 		/>
-		<text x={PSI.x} y="281" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"
-			>PSI</text
-		>
 		<circle cx={PSI.x - 5} cy={MEM.mid} r="5" fill={colors.chlorophyllA} stroke="#fff" />
 		<circle cx={PSI.x + 5} cy={MEM.mid} r="5" fill={colors.chlorophyllA} stroke="#fff" />
+		<!-- photons → antenna → P700 (before the core texts, so the flash ring passes under them) -->
+		{@render antennaRun(psiPhotons, P700)}
+		<text x={PSI.x} y="271" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"
+			>PSI</text
+		>
 		<text
 			x={PSI.x}
-			y="320"
+			y="290"
 			text-anchor="middle"
 			font-size="10"
 			font-weight="700"
@@ -704,69 +825,26 @@
 			filter="url(#soft-shadow)"
 		/>
 
-		{#each psiPhotons as ph, j (j)}
-			{@const u = cycle(tPsi, PH_PERIOD, ph.off)}
-			{#if u < 0.45}
-				{@const v = u / 0.45}
-				<Photon
-					x={lerp(ph.start.x, ph.entry.x, v)}
-					y={lerp(ph.start.y, ph.entry.y, v)}
-					angle={ph.angle}
-					opacity={smoothstep(0, 0.12, v) * (1 - smoothstep(0.9, 1, v))}
-					phase={t * 3}
-				/>
-			{:else if u < PH_FLASH}
-				{@const h = hop(ph.chain, (u - 0.45) / (PH_FLASH - 0.45))}
-				<path
-					d={pathFrom(ph.chain)}
-					fill="none"
-					stroke={colors.photon}
-					stroke-width="1.2"
-					stroke-dasharray="3 3"
-					opacity="0.55"
-				/>
-				<circle
-					cx={ph.chain[h.idx].x}
-					cy={ph.chain[h.idx].y}
-					r="7"
-					fill="none"
-					stroke={colors.photon}
-					stroke-width="1.5"
-					opacity="0.8"
-				/>
-				<circle cx={h.p.x} cy={h.p.y} r="6" fill={colors.photon} filter="url(#glow)" />
-			{:else if u < PH_FLASH + 0.12}
-				{@const v = (u - PH_FLASH) / 0.12}
-				<circle
-					cx={P700.x}
-					cy={P700.y}
-					r={6 + 18 * v}
-					fill="none"
-					stroke={colors.photon}
-					stroke-width={2.5 * (1 - v)}
-					opacity={1 - v}
-				/>
-			{/if}
-		{/each}
-
 		<!-- NADP⁺ + H⁺ → NADPH at FNR -->
-		{#each [0, 1] as k (k)}
-			{@const u = cycle(tPsi, N_PERIOD, k / 2 + 0.3)}
-			{#if u < 0.5}
-				{@const v = u / 0.5}
-				{@const p = along(nadpIn, v)}
-				<Molecule kind="NADP+" x={p.x} y={p.y} opacity={fadeEnds(v)} scale={0.9} />
-				{#if v > 0.4}
-					{@const w = (v - 0.4) / 0.6}
-					{@const q = along(hIn, w)}
-					<Molecule kind="proton" x={q.x} y={q.y} opacity={fadeEnds(w)} />
+		<g opacity={flow}>
+			{#each [0, 1] as k (k)}
+				{@const u = cycle(tc, N_PERIOD, k / 2 + 0.3)}
+				{#if u < 0.5}
+					{@const v = u / 0.5}
+					{@const p = along(nadpIn, v)}
+					<Molecule kind="NADP+" x={p.x} y={p.y} opacity={fadeEnds(v)} scale={0.9} />
+					{#if v > 0.4}
+						{@const w = (v - 0.4) / 0.6}
+						{@const q = along(hIn, w)}
+						<Molecule kind="proton" x={q.x} y={q.y} opacity={fadeEnds(w)} />
+					{/if}
+				{:else}
+					{@const v = (u - 0.5) / 0.5}
+					{@const p = along(nadphOut, v)}
+					<Molecule kind="NADPH" x={p.x} y={p.y} opacity={fadeEnds(v)} scale={0.9} />
 				{/if}
-			{:else}
-				{@const v = (u - 0.5) / 0.5}
-				{@const p = along(nadphOut, v)}
-				<Molecule kind="NADPH" x={p.x} y={p.y} opacity={fadeEnds(v)} scale={0.9} />
-			{/if}
-		{/each}
+			{/each}
+		</g>
 	</g>
 
 	<!-- electrons ride the whole chain; the route is drawn as a faint marching dash -->
@@ -776,15 +854,17 @@
 			color={colors.electronEdge}
 			width={1.4}
 			dash={4}
-			t={tElec}
+			t={tc}
 			speed={30}
 			opacity={lerp(0.14, 0.45, lit(o.etc))}
 		/>
-		{#each Array.from({ length: E_COUNT }, (_, i) => i) as k (k)}
-			{@const u = cycle(tElec, E_PERIOD, k / E_COUNT)}
-			{@const p = along(ePath, u)}
-			<Molecule kind="electron" x={p.x} y={p.y} opacity={fadeEnds(u)} glow />
-		{/each}
+		<g opacity={flow}>
+			{#each Array.from({ length: E_COUNT }, (_, i) => i) as k (k)}
+				{@const u = cycle(tc, E_PERIOD, k / E_COUNT)}
+				{@const p = along(ePath, u)}
+				<Molecule kind="electron" x={p.x} y={p.y} opacity={fadeEnds(u)} glow />
+			{/each}
+		</g>
 	</g>
 
 	<!-- ================= ATP synthase ================= -->
@@ -801,6 +881,23 @@
 			stroke-width="1.5"
 			filter="url(#soft-shadow)"
 		/>
+		<!-- back half of the ring, faint, so the marked subunits can be followed all the way round -->
+		{#each rotor as i (i)}
+			{@const a = (i / rotor.length) * TAU + theta}
+			{@const c = Math.cos(a)}
+			{#if c <= 0}
+				<line
+					x1={ATP.x + 25 * Math.sin(a)}
+					y1={MEM.top + 10}
+					x2={ATP.x + 25 * Math.sin(a)}
+					y2={MEM.bottom - 10}
+					stroke={marked(i) ? darker(colors.atpSynthase) : '#fff'}
+					stroke-width={marked(i) ? 3 : 2}
+					stroke-linecap="round"
+					opacity={marked(i) ? 0.3 : 0.16}
+				/>
+			{/if}
+		{/each}
 		{#each rotor as i (i)}
 			{@const a = (i / rotor.length) * TAU + theta}
 			{@const c = Math.cos(a)}
@@ -810,20 +907,22 @@
 					y1={MEM.top + 8}
 					x2={ATP.x + 25 * Math.sin(a)}
 					y2={MEM.bottom - 8}
-					stroke="#fff"
-					stroke-width="3"
+					stroke={marked(i) ? darker(colors.atpSynthase) : '#fff'}
+					stroke-width={marked(i) ? 4 : 3}
 					stroke-linecap="round"
-					opacity={0.15 + 0.6 * c}
+					opacity={0.2 + 0.6 * c}
 				/>
 			{/if}
 		{/each}
-		<!-- stalk and CF₁ head in the stroma -->
-		<rect
-			x={ATP.x - 6}
-			y={ATP.headY + 22}
-			width="12"
-			height={MEM.top - ATP.headY - 20}
-			fill={darker(colors.atpSynthase)}
+		<!-- central stalk (turns with the ring) and CF₁ head in the stroma -->
+		<line
+			x1={ATP.x + 5 * Math.sin(theta)}
+			y1={MEM.top + 2}
+			x2={ATP.x}
+			y2={ATP.headY + 22}
+			stroke={darker(colors.atpSynthase)}
+			stroke-width="10"
+			stroke-linecap="round"
 		/>
 		<ellipse
 			cx={ATP.x}
@@ -847,34 +946,35 @@
 			font-weight="700"
 			fill="#fff">CF₁</text
 		>
-		<text x={ATP.x + 38} y="346" text-anchor="start" font-size="10" class="muted">CF₀ rotor</text>
 
-		<!-- protons stream up through the rotor -->
-		{#each [0, 1, 2, 3, 4] as k (k)}
-			{@const u = cycle(tAtp, H_PERIOD, k / 5)}
-			{@const p = along(protonStream, u)}
-			<Molecule kind="proton" x={p.x} y={p.y} opacity={fadeEnds(u)} glow />
-		{/each}
-		<!-- ADP + Pi → ATP at the head -->
-		{#each [0, 1] as k (k)}
-			{@const u = cycle(tAtp, ATP_PERIOD, k / 2)}
-			{#if u < 0.5}
-				{@const v = u / 0.5}
-				{@const a = along(adpIn, v)}
-				{@const q = along(piIn, v)}
-				<Molecule kind="ADP" x={a.x} y={a.y} opacity={fadeEnds(v)} scale={0.9} />
-				<Molecule kind="Pi" x={q.x} y={q.y} opacity={fadeEnds(v)} scale={0.9} />
-			{:else}
-				{@const v = (u - 0.5) / 0.5}
-				{@const p = along(atpOut, v)}
-				<Molecule kind="ATP" x={p.x} y={p.y} opacity={fadeEnds(v)} scale={0.9} />
-			{/if}
-		{/each}
+		<g opacity={flow}>
+			<!-- protons stream up through the rotor, lumen → stroma -->
+			{#each [0, 1, 2, 3, 4] as k (k)}
+				{@const u = cycle(tc, H_PERIOD, k / 5)}
+				{@const p = along(protonStream, u)}
+				<Molecule kind="proton" x={p.x} y={p.y} opacity={fadeEnds(u)} glow />
+			{/each}
+			<!-- ADP + Pi → ATP at the head -->
+			{#each [0, 1] as k (k)}
+				{@const u = cycle(tc, ATP_PERIOD, k / 2 + 0.2)}
+				{#if u < 0.5}
+					{@const v = u / 0.5}
+					{@const a = along(adpIn, v)}
+					{@const q = along(piIn, v)}
+					<Molecule kind="ADP" x={a.x} y={a.y} opacity={fadeEnds(v)} scale={0.9} />
+					<Molecule kind="Pi" x={q.x} y={q.y} opacity={fadeEnds(v)} scale={0.9} />
+				{:else}
+					{@const v = (u - 0.5) / 0.5}
+					{@const p = along(atpOut, v)}
+					<Molecule kind="ATP" x={p.x} y={p.y} opacity={fadeEnds(v)} scale={0.9} />
+				{/if}
+			{/each}
+		</g>
 	</g>
 
 	<!-- ================= labels ================= -->
 	<Label x={24} y={40} text="stroma · pH ≈ 8" anchor="start" size={14} weight={600} />
-	<Label x={24} y={58} text="the Calvin cycle runs out here" anchor="start" size={11} muted />
+	<Label x={24} y={58} text="the Calvin cycle runs here" anchor="start" size={11} muted />
 	<Label
 		x={24}
 		y={562}
@@ -898,7 +998,7 @@
 		anchor="end"
 		size={11}
 		muted
-		opacity={noLight}
+		opacity={1 - flow}
 	/>
 
 	<!-- names and roles -->
@@ -912,37 +1012,43 @@
 			size={lerp(11, 12.5, lit(o.psii))}
 			muted
 		/>
-		<Label x={220} y={366} text="Mn₄CaO₅" anchor="start" size={11} muted />
+		<Label x={246} y={348} text="antenna" size={11} muted />
+		<Label x={118} y={353} text="Mn₄CaO₅" anchor="end" size={11} muted />
+		<line x1="121" y1="350" x2="156" y2="343" stroke="var(--stage-ink-muted)" stroke-width="1" />
 	</g>
 	<g opacity={o.etc}>
-		<Label x={400} y={196} text="Cytochrome b₆f" weight={600} />
-		<Label x={400} y={212} text="pumps H⁺ into the lumen" size={lerp(11, 12.5, lit(o.etc))} muted />
-		<Label x={290} y={352} text="PQ pool" size={11} muted />
-		<Label x={480} y={373} text="PC" size={11} muted />
-	</g>
-	<g opacity={o.psi}>
-		<Label x={512} y={196} text="Photosystem I" anchor="start" weight={600} />
+		<Label x={B6F.x} y={196} text="Cytochrome b₆f" weight={600} />
 		<Label
-			x={512}
+			x={B6F.x}
 			y={212}
-			text="re-excites electrons"
-			anchor="start"
-			size={lerp(11, 12.5, lit(o.psi))}
+			text="pumps H⁺ into the lumen"
+			size={lerp(11, 12.5, lit(o.etc))}
 			muted
 		/>
-		<Label x={580} y={247} text="Fd" anchor="end" size={11} muted />
-		<Label x={650} y={262} text="FNR" size={11} muted />
+		<Label x={323} y={250} text="2 H⁺ from stroma" anchor="start" size={11} color={protonInk} />
+		<Label x={403} y={386} text="2 H⁺ into lumen" anchor="start" size={11} color={protonInk} />
+		<Label x={332} y={348} text="PQ pool" size={11} muted />
+		<!-- at the right end of the plastocyanin track, clear of the '2 H⁺ into lumen' label -->
+		<Label x={536} y={372} text="PC" anchor="start" size={11} muted />
+	</g>
+	<g opacity={o.psi}>
+		<Label x={PSI.x} y={196} text="Photosystem I" weight={600} />
+		<Label x={PSI.x} y={212} text="re-excites electrons" size={lerp(11, 12.5, lit(o.psi))} muted />
+		<Label x={592} y={247} text="Fd" anchor="end" size={11} muted />
+		<Label x={FNR.x} y={262} text="FNR" size={11} muted />
+		<Label x={646} y={348} text="antenna" size={11} muted />
 	</g>
 	<g opacity={o.atp}>
-		<Label x={852} y={150} text="ATP synthase" anchor="start" weight={600} />
+		<Label x={940} y={150} text="ATP synthase" anchor="end" weight={600} />
 		<Label
-			x={852}
+			x={940}
 			y={166}
 			text="proton turbine"
-			anchor="start"
+			anchor="end"
 			size={lerp(11, 12.5, lit(o.atp))}
 			muted
 		/>
+		<Label x={840} y={348} text="CF₀ rotor" anchor="start" size={11} muted />
 	</g>
 
 	<!-- callouts -->
@@ -953,7 +1059,7 @@
 		pill
 		opacity={o.cAntenna}
 	/>
-	<Label x={320} y={412} text="2 H₂O → O₂ + 4 H⁺ + 4 e⁻" pill weight={600} opacity={o.cWater} />
+	<Label x={330} y={412} text="2 H₂O → O₂ + 4 H⁺ + 4 e⁻" pill weight={600} opacity={o.cWater} />
 	<Label
 		x={440}
 		y={444}
@@ -961,6 +1067,6 @@
 		pill
 		opacity={o.cEtc}
 	/>
-	<Label x={600} y={70} text="NADP⁺ + H⁺ + 2 e⁻ → NADPH" pill weight={600} opacity={o.cPsi} />
+	<Label x={620} y={40} text="NADP⁺ + H⁺ + 2 e⁻ → NADPH" pill weight={600} opacity={o.cPsi} />
 	<Label x={800} y={452} text="~14 H⁺ per turn → 3 ATP" pill weight={600} opacity={o.cAtp} />
 </g>
