@@ -34,6 +34,17 @@ test('deep links open the right step', async ({ page }) => {
 	await expect(page.locator('.counter .current')).toHaveText('11');
 });
 
+test('after opening a deep link, the step buttons still move between steps', async ({ page }) => {
+	await open(page, '/photosynthesis/#pigments');
+	await page.getByRole('button', { name: 'Next step' }).click();
+	await expect(stepTitle(page)).toHaveText(/catching a photon/i);
+	await expect(page).toHaveURL(/#antenna$/);
+	await page.getByRole('button', { name: 'Previous step' }).click();
+	await page.getByRole('button', { name: 'Previous step' }).click();
+	await expect(stepTitle(page)).toHaveText(/chloroplast/i);
+	await expect(page.locator('.counter .current')).toHaveText('3');
+});
+
 test('contents list jumps to a step', async ({ page }) => {
 	await open(page, '/photosynthesis/');
 	await page.getByRole('navigation', { name: 'Steps' }).locator('summary').click();
