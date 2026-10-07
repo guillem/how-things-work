@@ -31,6 +31,23 @@
 		return `${i ? 'L' : 'M'}${x.toFixed(1)} ${(100 - 280 * u * (1 - u)).toFixed(1)}`;
 	}).join(' ');
 
+	// Learning from data: points scattered around a gentle curve, the curve,
+	// and a wiggly overfit through the points.
+	const fitArt = (() => {
+		const f = (x: number) => 60 - 28 * Math.sin((x - 20) / 50);
+		const points = [26, 44, 60, 78, 94, 112, 130, 148, 166].map((x, i) => ({
+			x,
+			y: f(x) + [9, -8, 6, -10, 7, -6, 10, -7, 5][i]
+		}));
+		const path = (g: (x: number) => number) =>
+			Array.from({ length: 61 }, (_, i) => {
+				const x = 20 + (i / 60) * 160;
+				return `${i ? 'L' : 'M'}${x.toFixed(1)} ${g(x).toFixed(1)}`;
+			}).join(' ');
+		const wiggle = (x: number) => f(x) + 9 * Math.sin((x - 26) / 5.7);
+		return { points, smooth: path(f), wiggle: path(wiggle) };
+	})();
+
 	// Epidemics: a jittered grid of people; infection spreads from the left,
 	// recovered behind the front, susceptible ahead of it.
 	const crowd = Array.from({ length: 48 }, (_, k) => {
@@ -185,6 +202,21 @@
 		<rect x="140" y="84" width="34" height="16" rx="3" fill="var(--mech-cart)" />
 		<circle cx="148" cy="101" r="3.5" fill="currentColor" opacity="0.6" />
 		<circle cx="166" cy="101" r="3.5" fill="currentColor" opacity="0.6" />
+	{:else if slug === 'learning-from-data'}
+		<!-- noisy points, a sensible fit and an overfit wiggle -->
+		<line x1="18" x2="184" y1="104" y2="104" stroke="currentColor" opacity="0.25" />
+		<path d={fitArt.smooth} fill="none" stroke="var(--fit-model)" stroke-width="2.4" />
+		<path
+			d={fitArt.wiggle}
+			fill="none"
+			stroke="var(--fit-test)"
+			stroke-width="1.4"
+			opacity="0.6"
+			stroke-dasharray="3 3"
+		/>
+		{#each fitArt.points as p, i (i)}
+			<circle cx={p.x} cy={p.y} r="3.4" fill="var(--fit-train)" />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
