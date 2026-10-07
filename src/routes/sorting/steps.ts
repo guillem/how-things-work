@@ -199,8 +199,8 @@ export const spec: ExplainerSpec = {
 <p>The same algorithm can behave very differently depending on its input. Here the counts are measured on three kinds of rows: already sorted, shuffled, and reversed.</p>
 <ul>
 <li>On a <strong>sorted</strong> row, bubble and insertion sort need just <i>n</i> − 1 comparisons — they only check that each neighbour is in order. Quick sort with the last-bar pivot hits its worst case.</li>
-<li>On a <strong>reversed</strong> row, bubble and insertion sort compare every pair: <i>n</i>(<i>n</i> − 1)/2.</li>
-<li>Merge sort barely cares: about <i>n</i> log₂ <i>n</i> every time.</li>
+<li>On a <strong>reversed</strong> row, bubble and insertion sort compare every pair: <i>n</i>(<i>n</i> − 1)/2 — and so does quick sort with its last-bar pivot.</li>
+<li>Merge sort barely cares: never more than about <i>n</i> log₂ <i>n</i>, whatever the order.</li>
 </ul>
 <p>That is why programmers ask not just “how fast on average?” but “how slow can it get?”.</p>`
 		},
