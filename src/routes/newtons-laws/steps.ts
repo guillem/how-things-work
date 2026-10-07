@@ -224,7 +224,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now add the air. It pushes against the ball's motion, harder the faster the ball goes — roughly with the square of its speed.</p>
 <p>The flight is shorter and no longer symmetric: the ball rises along a longer, flatter path and comes down more steeply, as anyone who has hit a ball high has seen. The dashed path is the same throw in a vacuum.</p>
-<p>And the best angle drops below 45°: when the air steals speed, it pays to launch lower and spend less time in the air.</p>`,
+<p>And the best angle drops below 45° — only a little for a slow, light throw, down to the mid-30s for a fast one in thick air: when the air steals speed, it pays to launch lower and spend less time in the air.</p>`,
 			notes: `<p>This page models the air as quadratic drag, a force of size <i>k</i>·<i>m</i>·<i>v</i>² opposite to the velocity, which is a good description for balls at everyday speeds. The motion has no simple formula any more, so it is computed step by step from F = m × a — the way engineers and game physics engines do it.</p>`
 		},
 		// ------------------------------------------------------------------ momentum
