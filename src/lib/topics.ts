@@ -1,70 +1,61 @@
 /**
- * Registry of explainers shown on the index page.
+ * Registry of the explainers that are built.
+ *
+ * Which topics exist, and their category, level, prerequisites and related
+ * topics, come from the catalogue (`docs/TOPICS.md`, parsed in `catalog.ts`).
+ * This file only adds what the catalogue does not know: the explainer's own
+ * title and summary, its accent colour and its length.
  *
  * To add a new explainer:
- *   1. create `src/routes/<slug>/+page.svelte` (see `photosynthesis` for a template)
- *   2. add an entry here with `status: 'published'`
- *   3. optionally add a small illustration in `TopicArt.svelte`
+ *   1. create `src/routes/<slug>/` (see `photosynthesis` for a template); the
+ *      slug must be the catalogue slug
+ *   2. add an entry here
+ *   3. optionally add a small illustration in `components/TopicArt.svelte`
  */
-export type Category = 'Biology' | 'Chemistry' | 'Physics' | 'Technology' | 'Earth & space';
+import { catalog, category, entry, type CatalogCategory, type CatalogEntry } from './catalog';
 
-export interface Topic {
+export interface Explainer {
+	/** Catalogue slug; also the route. */
 	slug: string;
+	/** The explainer's own title (the catalogue title is `entry.title`). */
 	title: string;
 	summary: string;
-	category: Category;
 	/** Accent colour used for the card and the explainer's controls. */
 	accent: string;
 	/** Number of steps in the explainer (shown on the card). */
 	steps: number;
 	/** Rough reading time in minutes. */
 	minutes: number;
-	status: 'published' | 'planned';
 }
 
-export const topics: Topic[] = [
+export interface Topic extends Explainer {
+	entry: CatalogEntry;
+	category: CatalogCategory;
+}
+
+const explainers: Explainer[] = [
 	{
 		slug: 'photosynthesis',
 		title: 'How photosynthesis works',
 		summary:
 			'Follow a photon from sunlight into a leaf and watch it split water, power an electron transport chain and build sugar out of thin air.',
-		category: 'Biology',
 		accent: '#2f9e5d',
 		steps: 16,
-		minutes: 20,
-		status: 'published'
-	},
-	{
-		slug: 'transistor',
-		title: 'How a transistor works',
-		summary: 'Doped silicon, depletion zones and why a tiny voltage can switch a large current.',
-		category: 'Technology',
-		accent: '#d97706',
-		steps: 0,
-		minutes: 0,
-		status: 'planned'
-	},
-	{
-		slug: 'gps',
-		title: 'How GPS finds your position',
-		summary: 'Atomic clocks in orbit, the speed of light and a little relativity.',
-		category: 'Technology',
-		accent: '#2563eb',
-		steps: 0,
-		minutes: 0,
-		status: 'planned'
-	},
-	{
-		slug: 'rainbows',
-		title: 'How a rainbow forms',
-		summary: 'Refraction, dispersion and the 42° circle you can never reach.',
-		category: 'Physics',
-		accent: '#7c3aed',
-		steps: 0,
-		minutes: 0,
-		status: 'planned'
+		minutes: 20
 	}
 ];
 
-export const published = topics.filter((t) => t.status === 'published');
-export const planned = topics.filter((t) => t.status === 'planned');
+export const topics: Topic[] = explainers.map((e) => {
+	const meta = entry(e.slug);
+	return { ...e, entry: meta, category: category(meta.category) };
+});
+
+export const topicBySlug = new Map(topics.map((t) => [t.slug, t]));
+
+/** Catalogue categories that have at least one built topic, in catalogue order. */
+export const sections = catalog.categories
+	.map((c) => ({
+		category: c,
+		topics: c.slugs.flatMap((slug) => topicBySlug.get(slug) ?? [])
+	}))
+	.filter((s) => s.topics.length > 0);

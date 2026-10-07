@@ -60,18 +60,23 @@ src/
   app.css                  design tokens (light + dark), base styles, stage palette
   lib/
     site.ts                site name, tagline, repository URL
-    topics.ts              registry of explainers shown on the index page
+    catalog.ts             the topic catalogue, parsed from docs/TOPICS.md at build time
+    topics.ts              registry of the built explainers (index page, cross-links)
     theme.svelte.ts        theme state (light / dark / follows the OS)
-    components/            header, footer, theme toggle, topic cards
+    components/            header, footer, theme toggle, topic cards, explainer page shell
     explainer/             the explainer framework (see below)
     draw/                  SVG drawing primitives shared by all explainers
   routes/
     +page.svelte           index
     photosynthesis/        one directory per explainer
-      +page.svelte         page: metadata + <Explainer> with the stage
+      +page.svelte         page: <ExplainerPage> with the stage
       steps.ts             the narrative: chapters, steps, controls
       PhotosynthesisStage.svelte   picks and lazy-loads a scene per step
       scenes/*.svelte      the animated SVG scenes
+docs/TOPICS.md             the topic catalogue: 100 topics in 11 categories (content only)
+docs/STATUS.md             where the work stands and how to resume it (the self-handover)
+docs/BACKLOG.md            what to build next, known gaps
+docs/TIMELOG.md            how long each development took
 docs/scene-guide.md        the contract every animated scene follows
 scripts/shot.mjs           screenshot helper for checking scenes in both themes
 e2e/                       Playwright tests (navigation, controls, theme, a render check of every step)
@@ -96,15 +101,23 @@ come for free.
 
 ### Adding a new explainer
 
-1. Copy `src/routes/photosynthesis/` to `src/routes/<slug>/`.
+Topics come from the catalogue in `docs/TOPICS.md`: read its preamble and the topic's entry
+first. Work on a branch `topic/<slug>` and keep `docs/STATUS.md` current as you go.
+
+1. Copy `src/routes/photosynthesis/` to `src/routes/<slug>/`, where `<slug>` is the catalogue
+   slug.
 2. Write the narrative in `steps.ts`: chapters, steps (HTML strings; use
    `<dfn data-def="…">term</dfn>` for hover definitions) and any controls.
 3. Replace the scenes under `scenes/` and the scene map in the stage component, following
    `docs/scene-guide.md`. Reuse the primitives in `src/lib/draw/` (molecules, photons, labels,
    flows, easing and path helpers).
-4. Register the explainer in `src/lib/topics.ts` so it appears on the index page.
-5. Add a test in `e2e/` if the explainer has behaviour worth guarding (`e2e/scenes.e2e.ts` shows
-   how to render every step of an explainer and assert that nothing errors).
+4. Register the explainer in `src/lib/topics.ts`. The index page then lists it under its
+   catalogue category, and the page shell (`ExplainerPage.svelte`) shows its category, level and
+   links to its prerequisites, related topics and the topics that build on it.
+5. `e2e/scenes.e2e.ts` renders every step of every explainer automatically; add a test in
+   `e2e/` for any behaviour worth guarding (controls, a model's results).
+6. When it meets the catalogue's definition of done, tick it in the `docs/TOPICS.md` checklist
+   and log the time in `docs/TIMELOG.md`.
 
 Guidelines that keep scenes consistent (spelled out in `docs/scene-guide.md`): a 960 × 600
 coordinate system with a 16 px safe margin, everything that moves a pure function of `t` (no timers

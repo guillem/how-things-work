@@ -3,7 +3,8 @@
 	import SiteFooter from '#lib/components/SiteFooter.svelte';
 	import TopicCard from '#lib/components/TopicCard.svelte';
 	import { site } from '#lib/site.ts';
-	import { planned, published } from '#lib/topics.ts';
+	import { catalog } from '#lib/catalog.ts';
+	import { sections, topics } from '#lib/topics.ts';
 </script>
 
 <svelte:head>
@@ -23,25 +24,21 @@
 		</p>
 	</section>
 
-	<section class="topics" aria-labelledby="explainers">
-		<h2 id="explainers" class="sr-only">Explainers</h2>
-		<div class="grid">
-			{#each published as topic (topic.slug)}
-				<TopicCard {topic} />
-			{/each}
-		</div>
-	</section>
-
-	{#if planned.length}
-		<section class="topics planned" aria-labelledby="coming-soon">
-			<h2 id="coming-soon">Coming soon</h2>
+	{#each sections as { category, topics: built } (category.id)}
+		<section class="topics" aria-labelledby="category-{category.id}">
+			<h2 id="category-{category.id}">{category.name}</h2>
 			<div class="grid">
-				{#each planned as topic (topic.slug)}
+				{#each built as topic (topic.slug)}
 					<TopicCard {topic} />
 				{/each}
 			</div>
 		</section>
-	{/if}
+	{/each}
+
+	<p class="progress">
+		{topics.length} of the {catalog.entries.length} planned topics are written so far. More are on the
+		way.
+	</p>
 </main>
 
 <SiteFooter />
@@ -75,7 +72,7 @@
 		text-wrap: pretty;
 	}
 	.topics + .topics {
-		margin-top: 56px;
+		margin-top: 48px;
 	}
 	.topics h2 {
 		font-size: 0.85rem;
@@ -90,7 +87,9 @@
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 		gap: 20px;
 	}
-	.planned .grid {
-		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	.progress {
+		margin-top: 48px;
+		color: var(--text-faint);
+		font-size: 0.92rem;
 	}
 </style>
