@@ -60,6 +60,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 9,
 		minutes: 12
+	},
+	{
+		slug: 'sorting',
+		title: 'How computers sort',
+		summary:
+			'Watch four sorting methods put the same bars in order, count every comparison they make, and see why the way the cost grows matters more than the speed of the computer.',
+		accent: '#0b7285',
+		steps: 10,
+		minutes: 15
 	}
 ];
 
