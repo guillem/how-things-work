@@ -88,6 +88,15 @@ Next action: open the PRs (site/catalogue-index first, then topic/epidemics, reb
 main after the first merge) once the user says who opens them; then start the next wave-1 topic
 from BACKLOG.md (`unit-circle`).
 
+## Merging the two branches
+
+`topic/epidemics` was branched from `site/catalogue-index` at `443d55a`; the two Explainer fixes
+were then cherry-picked onto the site branch, so both branches carry them (as different commits).
+Simplest: open the epidemics PR with **base `site/catalogue-index`** (its diff then shows only
+epidemics) and let GitHub retarget it to `main` when the site PR is merged and its branch
+deleted. If the site PR is squash-merged instead, rebase only the epidemics commits:
+`git rebase --onto main 443d55a topic/epidemics` (git drops the duplicate fix commits).
+
 ## Open questions for the user
 
 - Should Claude open the PRs (and merge when asked), or does the user open them? Until answered,
