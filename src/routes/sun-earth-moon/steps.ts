@@ -22,6 +22,9 @@ const day: Control = {
 	help: 'Or drag the Earth along its orbit.'
 };
 
+/** The same date control, on steps where the Earth is not draggable. */
+const date: Control = { ...day, help: undefined };
+
 const latitude: Control = {
 	type: 'range',
 	id: 'latitude',
@@ -98,7 +101,7 @@ export const spec: ExplainerSpec = {
 			scene: 'sunlight',
 			hints: { phase: 'day' },
 			duration: 20,
-			controls: [day, latitude],
+			controls: [date, latitude],
 			body: `
 <p>Leaning towards the Sun has two effects. The first is the length of the day: on the tilted globe, a place in the leaning-in half spends more of each turn on the sunlit side.</p>
 <p>At 40° N, the day lasts about 15 hours in late June and 9 in late December. At the equator it is always about 12 hours. Beyond the <dfn data-def="The circle of latitude 66.6° N (66.6° S for the Antarctic circle): the furthest place from the pole where the Sun can stay up all day or down all day.">Arctic circle</dfn> the Sun does not set at all around the June solstice, and does not rise around the December one.</p>
@@ -112,7 +115,7 @@ export const spec: ExplainerSpec = {
 			scene: 'sunlight',
 			hints: { phase: 'angle' },
 			duration: 20,
-			controls: [day, latitude],
+			controls: [date, latitude],
 			body: `
 <p>The second effect matters even more: the <strong>height of the Sun</strong>. In summer the noon Sun climbs high; in winter it stays low.</p>
 <p>A beam of sunlight falling steeply lands on a small patch of ground. The same beam arriving at a low angle is spread over a much larger patch, so each square metre gets less energy — like a torch shone straight down versus at a slant. Low winter sunlight also passes through more air.</p>
@@ -183,7 +186,7 @@ export const spec: ExplainerSpec = {
 			scene: 'moon',
 			hints: { phase: 'tilted' },
 			duration: 26,
-			controls: [day, moon],
+			controls: [date, moon],
 			body: `
 <p>The Moon's orbit is tilted by about 5° to the Earth's. Seen side-on, most months the new Moon passes a little above or below the Sun, and the full Moon a little above or below the Earth's shadow: no eclipse.</p>
 <p>The two orbits cross at two points called <dfn data-def="The two points where the Moon's tilted orbit crosses the plane of Earth's orbit.">nodes</dfn>. An eclipse needs a new or full Moon to fall close to a node — within about 17° of it for a solar eclipse and about 11° for a lunar one.</p>
