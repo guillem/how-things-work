@@ -124,7 +124,7 @@
 		<line
 			x1="69"
 			y1="40.8"
-			x2="111"
+			x2="107.3"
 			y2="40.8"
 			stroke={accent}
 			stroke-dasharray="2 3"
