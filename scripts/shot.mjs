@@ -4,8 +4,12 @@
 // Env:   WAIT=ms        wait after load before the shot (≈ animation time t); default 900
 //        CLIP=stage     screenshot only the animation stage card
 //        SET=id:value,… set explainer controls first, e.g. SET=wavelength:430,light:0
+//        GOTO=stepId     after SET, jump to another step (controls keep their values across steps,
+//                        so a control that only exists on one step can be tested on the others)
+//        REDUCED=1       emulate prefers-reduced-motion (the stage renders its frozen t = 2.5 s frame)
 //        PW_CHROMIUM_PATH=/path/to/chrome   use a specific Chromium binary
 // Example: WAIT=3000 CLIP=stage node scripts/shot.mjs shots "http://localhost:5173/photosynthesis/#atp" dark 1280 800 0 atp
+//          SET=carbons:false GOTO=reduction CLIP=stage node scripts/shot.mjs shots "http://localhost:5173/photosynthesis/#rubisco" light 1280 800 0 reduction-compact
 import { chromium } from 'playwright';
 import path from 'node:path';
 import fs from 'node:fs';
@@ -25,7 +29,8 @@ const browser = await chromium.launch(
 const context = await browser.newContext({
 	viewport: { width: Number(w), height: Number(h) },
 	deviceScaleFactor: 1,
-	colorScheme: theme === 'dark' ? 'dark' : 'light'
+	colorScheme: theme === 'dark' ? 'dark' : 'light',
+	reducedMotion: process.env.REDUCED ? 'reduce' : 'no-preference'
 });
 const page = await context.newPage();
 const errors = [];
@@ -64,6 +69,14 @@ if (process.env.SET) {
 			[id, value]
 		);
 	}
+}
+if (process.env.GOTO) {
+	const hash = `#${process.env.GOTO.replace(/^#/, '')}`;
+	await page.evaluate((h) => {
+		location.hash = h;
+	}, hash);
+	await page.waitForFunction((h) => location.hash === h, hash);
+	await page.waitForTimeout(100);
 }
 await page.waitForTimeout(Number(process.env.WAIT || 900));
 const file = path.join(

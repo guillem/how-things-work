@@ -24,6 +24,19 @@ npm run test:e2e     # Playwright tests against the production build
 
 The first time you run the tests locally you need the browser: `npx playwright install chromium`.
 
+To look at a scene the way a visitor sees it, run the dev server and take screenshots of the stage
+with the helper (every step, both themes, at two different animation times):
+
+```sh
+CLIP=stage WAIT=1500 node scripts/shot.mjs shots "http://localhost:5173/photosynthesis/#atp" light
+CLIP=stage WAIT=5000 node scripts/shot.mjs shots "http://localhost:5173/photosynthesis/#atp" dark
+SET=light:0 CLIP=stage node scripts/shot.mjs shots "http://localhost:5173/photosynthesis/#atp" dark
+```
+
+The header of `scripts/shot.mjs` lists all options (`SET=` to preset controls, `GOTO=` to move to
+another step afterwards, `REDUCED=1` for the reduced-motion frame). It prints the PNG path and any
+console errors.
+
 ## Deploy
 
 Pushes to `main` run `.github/workflows/deploy.yml`, which builds the site and publishes it with
@@ -59,7 +72,9 @@ src/
       steps.ts             the narrative: chapters, steps, controls
       PhotosynthesisStage.svelte   picks and lazy-loads a scene per step
       scenes/*.svelte      the animated SVG scenes
-e2e/                       Playwright tests
+docs/scene-guide.md        the contract every animated scene follows
+scripts/shot.mjs           screenshot helper for checking scenes in both themes
+e2e/                       Playwright tests (navigation, controls, theme, a render check of every step)
 ```
 
 ## How an explainer works
@@ -84,12 +99,16 @@ come for free.
 1. Copy `src/routes/photosynthesis/` to `src/routes/<slug>/`.
 2. Write the narrative in `steps.ts`: chapters, steps (HTML strings; use
    `<dfn data-def="…">term</dfn>` for hover definitions) and any controls.
-3. Replace the scenes under `scenes/` and the scene map in the stage component. Reuse the
-   primitives in `src/lib/draw/` (molecules, photons, labels, flows, easing and path helpers).
+3. Replace the scenes under `scenes/` and the scene map in the stage component, following
+   `docs/scene-guide.md`. Reuse the primitives in `src/lib/draw/` (molecules, photons, labels,
+   flows, easing and path helpers).
 4. Register the explainer in `src/lib/topics.ts` so it appears on the index page.
-5. Add a test in `e2e/` if the explainer has behaviour worth guarding.
+5. Add a test in `e2e/` if the explainer has behaviour worth guarding (`e2e/scenes.e2e.ts` shows
+   how to render every step of an explainer and assert that nothing errors).
 
-Guidelines that keep scenes consistent: a 960 × 600 coordinate system, theme colours only through
-the CSS variables in `app.css` (`--stage-*`, `--membrane`, `--stroma`, …), fixed molecule colours
-from `src/lib/draw/palette.ts`, labels with the `<Label>` halo so they stay legible over drawings,
-and `$effect`s that depend only on `$derived` values of `step`/`params` (never on `t`).
+Guidelines that keep scenes consistent (spelled out in `docs/scene-guide.md`): a 960 × 600
+coordinate system with a 16 px safe margin, everything that moves a pure function of `t` (no timers
+or CSS animations), theme colours only through the CSS variables in `app.css` (`--stage-*`,
+`--membrane`, `--stroma`, …), fixed molecule colours from `src/lib/draw/palette.ts`, labels with the
+`<Label>` halo so they stay legible over drawings, and `$effect`s that depend only on `$derived`
+values of `step`/`params` (never on `t`) with `Tween.set` wrapped in `untrack()`.

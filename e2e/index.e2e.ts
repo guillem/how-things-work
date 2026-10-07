@@ -27,3 +27,11 @@ test('follows the operating system preference by default', async ({ page }) => {
 	await page.goto('/');
 	await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
+
+test('the 404 page is built and links back home', async ({ page }) => {
+	await page.goto('/404.html');
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/nothing here/i);
+	await page.getByRole('link', { name: /back to all explainers/i }).click();
+	await expect(page).toHaveURL(/\/$/);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/how things work/i);
+});
