@@ -147,6 +147,9 @@
 		const typing =
 			tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable;
 		if (typing && !(tag === 'INPUT' && (target as HTMLInputElement).type === 'range')) return;
+		// Sliders (range inputs, and draggable handles in a scene with role="slider")
+		// use the arrow, Home and End keys themselves.
+		const slider = tag === 'INPUT' || target?.getAttribute('role') === 'slider';
 		if (showHelp && event.key === 'Escape') {
 			showHelp = false;
 			event.preventDefault();
@@ -156,25 +159,25 @@
 			case 'ArrowRight':
 			case 'PageDown':
 			case 'j':
-				if (tag === 'INPUT') return; // let the slider handle arrows
+				if (slider) return; // let the slider handle arrows
 				next();
 				break;
 			case 'ArrowLeft':
 			case 'PageUp':
 			case 'k':
-				if (tag === 'INPUT') return;
+				if (slider) return;
 				prev();
 				break;
 			case 'Home':
-				if (tag === 'INPUT') return; // let the slider jump to its minimum
+				if (slider) return; // let the slider jump to its minimum
 				go(0);
 				break;
 			case 'End':
-				if (tag === 'INPUT') return;
+				if (slider) return;
 				go(steps.length - 1);
 				break;
 			case ' ':
-				if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'A') return;
+				if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'A' || slider) return;
 				clock.playing = !clock.playing;
 				break;
 			case 'r':
@@ -223,7 +226,8 @@
 				</span>
 			{/each}
 		</div>
-		<div class="stage" role="img" aria-label="Animation: {step.title}">
+		<!-- A group, not an image: scenes may contain draggable handles. -->
+		<div class="stage" role="group" aria-label="Animation: {step.title}">
 			{@render stage(stageProps)}
 		</div>
 		<Controls
