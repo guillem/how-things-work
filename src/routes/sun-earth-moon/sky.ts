@@ -163,7 +163,10 @@ export const SUN_TIDE_RATIO = 0.46;
 export const tideHeight = (place: number, moon: number, sun: number) =>
 	Math.cos(2 * rad(place - moon)) + SUN_TIDE_RATIO * Math.cos(2 * rad(place - sun));
 
-/** Tidal range (high − low) relative to the Moon alone, for a Moon–Sun angle. */
+/**
+ * Tidal range (high − low) in units of the Moon-alone amplitude, for a
+ * Moon–Sun angle: the Moon alone gives 2; spring 2.92, neap 1.08.
+ */
 export function tidalRange(moonSunAngle: number) {
 	const c = Math.cos(2 * rad(moonSunAngle));
 	const amp = Math.sqrt(1 + SUN_TIDE_RATIO ** 2 + 2 * SUN_TIDE_RATIO * c);

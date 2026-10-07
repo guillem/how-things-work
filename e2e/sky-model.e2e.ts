@@ -79,4 +79,5 @@ test('tides: spring tides about 2.7× neap tides', () => {
 	const neap = tidalRange(90);
 	expect(spring / neap).toBeCloseTo(1.46 / 0.54, 6);
 	expect(tidalRange(180)).toBeCloseTo(spring, 10); // full Moon too
+	expect(tidalRange(0) / 2).toBeCloseTo(1.46, 6); // units: Moon alone = 2
 });

@@ -14,10 +14,16 @@
 	 *              exaggerated ×3), the line of nodes fixed in space and the
 	 *              Sun's direction set by the date; a side-on view of the Moon
 	 *              passing above or below the Earth–Sun line; a year strip
-	 *              with the two eclipse seasons
+	 *              with the two eclipse seasons. The date is "today" and the
+	 *              Moon's age counts from the last new Moon, so the nearest new
+	 *              and full Moons fall on their own dates (with the Sun's
+	 *              direction on those dates), not on today's.
+	 *
+	 * Steps that do not share a layout (top view ↔ tilted) swap: one fades out,
+	 * then the other in, so their titles and cards never overlap.
 	 *
 	 * The Moon's age lives in `params.moon` (days since new Moon), shared with
-	 * the slider; the handle writes to it (rounded to the slider's 0.5 day).
+	 * the slider; the handle writes to it (rounded to the slider's step, 0.25 day).
 	 * With `params.run` on (phases and eclipses only) the Moon goes round by
 	 * itself, one month in 16 s, from where it was; grabbing the handle, its
 	 * keys or the slider turn run off and leave the Moon where it is.
@@ -82,6 +88,10 @@
 	const wTop = $derived(w.phases + w.eclipses);
 	// Text blocks that share a place swap rather than overlap.
 	const swap = (v: number) => smoothstep(0.5, 1, v);
+	const oTop = $derived(swap(wTop));
+	const oTilt = $derived(swap(w.tilted));
+	/** How much of the top view is the eclipses picture (0 phases … 1 eclipses). */
+	const kEcl = $derived(w.eclipses / Math.max(wTop, 1e-6));
 
 	// ---- the Moon's age (days since new Moon) ------------------------------------
 	const RUN_RATE = SYNODIC_MONTH / 16; // days per second: one month in 16 s
@@ -401,12 +411,17 @@
 	const sunLon = $derived(sunLongitude(dayShown));
 	/** The Moon's argument of latitude: its longitude minus the node's. */
 	const uNow = $derived(mod(sunLon + elong - NODE, 360));
-	const uNew = $derived(mod(sunLon - NODE, 360)); // this month's new Moon
+	// The nearest new Moon (the last one, or the next once past half a month)
+	// and the nearest full Moon, each with the Sun where it is on that date.
+	const newDay = $derived(dayShown - days + (days > SYNODIC_MONTH / 2 ? SYNODIC_MONTH : 0));
+	const fullDay = $derived(dayShown - days + SYNODIC_MONTH / 2);
+	const uNew = $derived(mod(sunLongitude(newDay) - NODE, 360));
+	const uFull = $derived(mod(sunLongitude(fullDay) + 180 - NODE, 360));
 	const betaNow = $derived(moonLatitude(uNow));
 	const betaNew = $derived(moonLatitude(uNew));
-	const betaFull = $derived(moonLatitude(uNew + 180));
+	const betaFull = $derived(moonLatitude(uFull));
 	const solarThisMonth = $derived(eclipseAt(0, uNew));
-	const lunarThisMonth = $derived(eclipseAt(180, uNew + 180));
+	const lunarThisMonth = $derived(eclipseAt(180, uFull));
 	const atNew = $derived(name === 'new Moon');
 	const atFull = $derived(name === 'full Moon');
 	const eclipseNow = $derived(atNew ? solarThisMonth : atFull ? lunarThisMonth : null);
@@ -519,7 +534,7 @@
 	});
 	const sideMoon = $derived(side(moon3.o));
 	const sideNew = $derived(side(orbit3(uNew)));
-	const sideFull = $derived(side(orbit3(uNew + 180)));
+	const sideFull = $derived(side(orbit3(uFull)));
 
 	const degText = (b: number) => `${Math.abs(b).toFixed(1)}°`;
 	const where = (b: number) =>
@@ -554,10 +569,10 @@
 		};
 	});
 	const monthNew = $derived(
-		`New Moon on ${dateText(dayShown)}: ${whereShort(betaNew)} — ${solarThisMonth ? 'solar eclipse' : 'no eclipse'}`
+		`New Moon on ${dateText(newDay)}: ${whereShort(betaNew)} — ${solarThisMonth ? 'solar eclipse' : 'no eclipse'}`
 	);
 	const monthFull = $derived(
-		`Full Moon on ${dateText(dayShown)}: ${whereShort(betaFull)} — ${lunarThisMonth ? 'lunar eclipse' : 'no eclipse'}`
+		`Full Moon on ${dateText(fullDay)}: ${whereShort(betaFull)} — ${lunarThisMonth ? 'lunar eclipse' : 'no eclipse'}`
 	);
 
 	// Year strip with the two eclipse seasons.
@@ -566,43 +581,40 @@
 	const YT = 500; // track top
 	const YH = 12;
 	const yx = (d: number) => YX0 + ((YX1 - YX0) * d) / 365;
-	const dayOfLon = (lon: number) => mod(MARCH_EQUINOX_DAY + (lon / 360) * YEAR, YEAR);
-	const SOLAR_DAYS = (nodeWindow(SOLAR_LIMIT) / 360) * YEAR;
-	const LUNAR_DAYS = (nodeWindow(LUNAR_LIMIT) / 360) * YEAR;
-	/** Bands [from, to) in days, split where they cross the new year. */
-	function band(centre: number, half: number) {
-		const a = centre - half;
-		const b = centre + half;
-		if (a < 0)
-			return [
-				[0, b],
-				[a + 365, 365]
-			];
-		if (b > 365)
-			return [
-				[a, 365],
-				[0, b - 365]
-			];
-		return [[a, b]];
+	/**
+	 * Day of the year on which the Sun reaches ecliptic longitude `lon`: the
+	 * inverse of `sunLongitude` (uniform motion, refined by a few Newton steps),
+	 * so the strip agrees with the eclipse readouts, which use `sunLongitude`.
+	 */
+	function dayOfLon(lon: number) {
+		let d = MARCH_EQUINOX_DAY + (mod(lon, 360) / 360) * YEAR;
+		for (let k = 0; k < 6; k++) d += ((mod(lon - sunLongitude(d) + 180, 360) - 180) / 360) * YEAR;
+		return mod(d, 365);
 	}
-	const SEASONS = [NODE, NODE + 180].map((lon, i) => {
-		const centre = dayOfLon(lon);
-		return {
-			i,
-			centre,
-			solar: band(centre, SOLAR_DAYS),
-			lunar: band(centre, LUNAR_DAYS),
-			label: `${dateText(centre - SOLAR_DAYS)} – ${dateText(centre + SOLAR_DAYS)}`
-		};
-	});
+	const SOLAR_WINDOW = nodeWindow(SOLAR_LIMIT);
+	const LUNAR_WINDOW = nodeWindow(LUNAR_LIMIT);
+	/** Days [from, to) when the Sun is within `win` degrees of longitude `lon`, split at the new year. */
+	function band(lon: number, win: number) {
+		const a = dayOfLon(lon - win);
+		const b = dayOfLon(lon + win);
+		return b >= a
+			? [[a, b]]
+			: [
+					[a, 365],
+					[0, b]
+				];
+	}
+	const SEASONS = [NODE, NODE + 180].map((lon, i) => ({
+		i,
+		centre: dayOfLon(lon),
+		solar: band(lon, SOLAR_WINDOW),
+		lunar: band(lon, LUNAR_WINDOW),
+		label: `${dateText(dayOfLon(lon - SOLAR_WINDOW))} – ${dateText(dayOfLon(lon + SOLAR_WINDOW))}`
+	}));
 	const MONTH_START = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365];
 	const MONTHS = 'JFMAMJJASOND'.split('');
-	const inSeason = $derived(
-		SEASONS.some((s) => {
-			const d = Math.abs(mod(dayShown - s.centre + 182.5, 365) - 182.5);
-			return d <= SOLAR_DAYS;
-		})
-	);
+	/** Today's Sun within the solar-eclipse window of either node (as the strip's bands). */
+	const inSeason = $derived(Math.abs(mod(sunLon - NODE + 90, 180) - 90) <= SOLAR_WINDOW);
 
 	// Shadows use --sky-night (translucent dark in both themes), so that on the
 	// dark stage they are darker than their surroundings, not lighter.
@@ -709,15 +721,17 @@
 			y1="0"
 			y2="0"
 		>
+			<!-- In the phases step the shadow fades out before the Moon's orbit: the
+			     Moon is (almost) never in it. The eclipses step draws it full length. -->
 			<stop offset="0" stop-color="var(--sky-night)" stop-opacity={shade(0.22)} />
-			<stop offset="0.75" stop-color="var(--sky-night)" stop-opacity={shade(0.15)} />
-			<stop offset="1" stop-color="var(--sky-night)" stop-opacity="0" />
+			<stop offset={0.42 + 0.33 * kEcl} stop-color="var(--sky-night)" stop-opacity={shade(0.15)} />
+			<stop offset={0.66 + 0.34 * kEcl} stop-color="var(--sky-night)" stop-opacity="0" />
 		</linearGradient>
 	</defs>
 
 	<!-- ============================================================ top view -->
-	{#if wTop > 0.01}
-		<g opacity={wTop} pointer-events="none">
+	{#if oTop > 0.001}
+		<g opacity={oTop} pointer-events="none">
 			<!-- sunlight from the left -->
 			<rect x="0" y="0" width="700" height="600" fill="url(#moon-sunwash)" />
 			<circle cx="56" cy={EY} r="30" fill="var(--sky-sun)" />
@@ -821,10 +835,24 @@
 			{@render txt(EX, EY + ER + 32, 'North Pole up', 11, { anchor: 'middle', muted: true })}
 
 			<!-- Earth's shadow label -->
-			{@render txt(EX + 106, EY + 4, "Earth's shadow", 12, {
+			{@render txt(EX + 100, EY + 4, "Earth's shadow", 12, {
 				anchor: 'middle',
-				opacity: 1 - 0.85 * smoothstep(60, 30, Math.hypot(moonTop.x - (EX + 106), moonTop.y - EY))
+				opacity: 1 - 0.85 * smoothstep(60, 30, Math.hypot(moonTop.x - (EX + 100), moonTop.y - EY))
 			})}
+			{#if w.phases > 0.01}
+				{@const clear =
+					1 - 0.85 * smoothstep(90, 50, Math.hypot(moonTop.x - (EX + 100), moonTop.y - EY))}
+				{@render txt(EX + 100, EY + 21, 'the Moon usually passes', 11, {
+					anchor: 'middle',
+					muted: true,
+					opacity: swap(w.phases) * clear
+				})}
+				{@render txt(EX + 100, EY + 34, 'above or below it', 11, {
+					anchor: 'middle',
+					muted: true,
+					opacity: swap(w.phases) * clear
+				})}
+			{/if}
 
 			<!-- syzygy labels (eclipses) -->
 			{#if w.eclipses > 0.01}
@@ -840,7 +868,7 @@
 		</g>
 
 		<!-- the Moon (top view), sunward half lit -->
-		<g opacity={wTop}>
+		<g opacity={oTop}>
 			<Handle
 				x={moonTop.x}
 				y={moonTop.y}
@@ -881,7 +909,7 @@
 		</g>
 
 		<!-- titles -->
-		<g opacity={wTop} pointer-events="none">
+		<g opacity={oTop} pointer-events="none">
 			{@render txt(24, 34, 'Seen from above the North Pole (not to scale)', 12, { muted: true })}
 			<g opacity={swap(w.phases)}>
 				{@render txt(24, 54, 'The half facing the Sun is always lit', 15, { weight: 600 })}
@@ -893,7 +921,7 @@
 		</g>
 
 		<!-- inset: the Moon as seen from Earth -->
-		<g opacity={wTop} pointer-events="none">
+		<g opacity={oTop} pointer-events="none">
 			<rect
 				x="690"
 				y="24"
@@ -970,8 +998,8 @@
 	{/if}
 
 	<!-- ============================================================ tilted -->
-	{#if w.tilted > 0.01}
-		<g opacity={w.tilted} pointer-events="none">
+	{#if oTilt > 0.001}
+		<g opacity={oTilt} pointer-events="none">
 			{@render txt(24, 34, "The Moon's orbit is tilted to the Earth's", 15, { weight: 600 })}
 			{@render txt(
 				24,
@@ -1046,7 +1074,7 @@
 				stroke-dasharray="3 4"
 			/>
 			<circle cx={sun3.x} cy={sun3.y} r="15" fill="var(--sky-sun)" />
-			{@render txt(sun3.x, sun3.y + 4, 'Sun', 10, {
+			{@render txt(sun3.x, sun3.y + 4, 'Sun', 11, {
 				anchor: 'middle',
 				weight: 600,
 				color: '#5a4300',
@@ -1140,7 +1168,7 @@
 		</g>
 
 		<!-- the Moon (oblique view), draggable along its orbit -->
-		<g opacity={w.tilted}>
+		<g opacity={oTilt}>
 			<Handle
 				x={moon3.x}
 				y={moon3.y}
@@ -1168,6 +1196,9 @@
 					/>
 				{/if}
 				{@render halfLit(moon3.x, moon3.y, 8, sunAngle, 'var(--sky-moon)', 'var(--sky-moon-dark)')}
+				{#if eclipseNow === 'lunar'}
+					<circle cx={moon3.x} cy={moon3.y} r="8" fill={COPPER} opacity="0.85" />
+				{/if}
 				<circle
 					cx={moon3.x}
 					cy={moon3.y}
@@ -1180,7 +1211,7 @@
 		</g>
 
 		<!-- side-on view and readouts -->
-		<g opacity={w.tilted} pointer-events="none">
+		<g opacity={oTilt} pointer-events="none">
 			<rect
 				x={SX0}
 				y="24"
@@ -1310,7 +1341,7 @@
 		</g>
 
 		<!-- year strip: the two eclipse seasons -->
-		<g opacity={w.tilted} pointer-events="none">
+		<g opacity={oTilt} pointer-events="none">
 			{@render txt(YX0, 470, 'Eclipse seasons', 13, { weight: 600 })}
 			<rect
 				x={YX1 - 300}

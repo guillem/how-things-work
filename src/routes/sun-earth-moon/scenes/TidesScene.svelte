@@ -20,7 +20,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Handle, clamp, scale, type Point } from '#lib/draw/index.ts';
+	import { Handle, clamp, scale, smoothstep, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { SUN_TIDE_RATIO, SYNODIC_MONTH, phaseName, tidalRange, tideHeight } from '../sky';
 
@@ -75,16 +75,24 @@
 	});
 	// Dragging the Moon ('sun' phase) writes the `moon` control, so the slider follows.
 	let dragging = $state(false);
-	const setDays = (d: number) => setParam('moon', clamp(Math.round(d * 2) / 2, 0, 29.5));
+	/** Elongation under the pointer while dragging (unsnapped, so the Moon follows smoothly). */
+	let dragElong = $state<number | null>(null);
+	// Snapped to the slider's step (0.25 day).
+	const setDays = (d: number) => setParam('moon', clamp(Math.round(d * 4) / 4, 0, 29.5));
 	function onMoonMove(p: Point) {
 		const a = (Math.atan2(-(p.y - EY), p.x - EX) * 180) / Math.PI;
-		setDays((mod(a - SUN_DIR, 360) / 360) * SYNODIC_MONTH);
+		dragElong = mod(a - SUN_DIR, 360);
+		setDays((dragElong / 360) * SYNODIC_MONTH);
 	}
 	function onMoonKey(k: number | 'start' | 'end') {
 		setDays(k === 'start' ? 0 : k === 'end' ? 29.5 : days + 0.5 * k);
 	}
 	const w = $derived(sunW.current);
-	const mAng = $derived(moonAng.current);
+	const mAng = $derived(
+		dragging && dragElong !== null && phase === 'sun' ? SUN_DIR + dragElong : moonAng.current
+	);
+	// Text blocks that share a place swap (one fades out, then the other in) rather than overlap.
+	const swap = (v: number) => smoothstep(0.5, 1, v);
 	/** Moon–Sun angle (elongation), 0 at new Moon, as the scene currently shows it. */
 	const elong = $derived(mod(mAng - SUN_DIR, 360));
 
@@ -114,6 +122,11 @@
 		const mo = moonTide(p, m);
 		return mo + sunWeight * (tideHeight(p, m, SUN_DIR) - mo);
 	};
+	/**
+	 * `tidalRange` is high − low in units of the Moon-alone amplitude, so the Moon
+	 * alone gives a range of 2: divide by this to get "× the Moon alone".
+	 */
+	const MOON_RANGE = moonTide(0, 0) - moonTide(90, 0);
 	const heightAt = (tauH: number) => height(mAng + (360 * tauH) / LUNAR_DAY, mAng, w);
 	const townAng = $derived(mAng + (360 * tau) / LUNAR_DAY);
 
@@ -221,8 +234,8 @@
 	const MY0 = 380;
 	const MY1 = 484;
 	const mx = scale([0, SYNODIC_MONTH], [MX0, MX1]);
-	const my = scale([0, 3], [MY1, MY0]);
-	const rangeAt = (d: number) => tidalRange((360 * d) / SYNODIC_MONTH);
+	const my = scale([0, 1.5], [MY1, MY0]);
+	const rangeAt = (d: number) => tidalRange((360 * d) / SYNODIC_MONTH) / MOON_RANGE;
 	const monthPath = (() => {
 		let d = '';
 		for (let i = 0; i <= 120; i++) {
@@ -232,7 +245,10 @@
 		return d;
 	})();
 	const markDay = $derived((elong / 360) * SYNODIC_MONTH);
-	const rangeNow = $derived(tidalRange(elong));
+	const rangeNow = $derived(tidalRange(elong) / MOON_RANGE);
+	/** Spring / neap labels fade while the "now" marker passes over them. */
+	const clearOf = (f: number) =>
+		0.15 + 0.85 * smoothstep(1, 2.2, Math.abs(markDay - f * SYNODIC_MONTH));
 	const springNeap = (tidalRange(0) / tidalRange(90)).toFixed(1);
 	const sunHalf = SUN_TIDE_RATIO.toFixed(2);
 	const geometry = $derived.by(() => {
@@ -252,7 +268,14 @@
 	y: number,
 	text: string,
 	size: number,
-	opts: { anchor?: string; color?: string; weight?: number; muted?: boolean; halo?: boolean } = {}
+	opts: {
+		anchor?: string;
+		color?: string;
+		weight?: number;
+		muted?: boolean;
+		halo?: boolean;
+		opacity?: number;
+	} = {}
 )}
 	<text
 		{x}
@@ -261,6 +284,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
+		opacity={opts.opacity ?? 1}
 		style:font-size="{size}px"
 		style:fill={opts.color}>{text}</text
 	>
@@ -398,12 +422,15 @@
 			onmove={onMoonMove}
 			onkey={onMoonKey}
 			ondragstart={() => (dragging = true)}
-			ondragend={() => (dragging = false)}
+			ondragend={() => {
+				dragging = false;
+				dragElong = null;
+			}}
 		/>
 	{/if}
 
 	<!-- Moon only: the two bulges and the uneven pull -->
-	<g opacity={1 - w}>
+	<g opacity={swap(1 - w)}>
 		{@render txt(446, 196, 'near-side bulge', 12, { anchor: 'middle' })}
 		{@render txt(122, 196, 'far-side bulge', 12, { anchor: 'middle' })}
 		{@render txt(
@@ -425,7 +452,7 @@
 	</g>
 
 	<!-- Moon and Sun: phase and what it does -->
-	<g opacity={w}>
+	<g opacity={swap(w)}>
 		{@render txt(EX, 528, `${cap(phaseName(elong))} · ${markDay.toFixed(1)} days`, 14, {
 			anchor: 'middle',
 			weight: 600
@@ -443,10 +470,10 @@
 		anchor: 'end',
 		muted: true
 	})}
-	<g opacity={1 - w}>
+	<g opacity={swap(1 - w)}>
 		{@render txt(584, 64, "Moon only (the Sun's tide left out)", 12, { muted: true })}
 	</g>
-	<g opacity={w}>
+	<g opacity={swap(w)}>
 		{@render txt(584, 64, 'Moon and Sun together · dotted: the Moon alone', 12, { muted: true })}
 	</g>
 
@@ -543,7 +570,7 @@
 	</g>
 
 	<!-- ============================================================ lower right -->
-	<g opacity={1 - w}>
+	<g opacity={swap(1 - w)}>
 		{@render txt(584, 370, 'Two high tides and two low tides', 15, { weight: 600 })}
 		{@render txt(584, 392, `every ${hm(LUNAR_DAY)}, one lunar day`, 15, { weight: 600 })}
 		{@render txt(584, 424, 'The Earth turns once in 24 h, but meanwhile the', 12, {
@@ -558,10 +585,10 @@
 		{@render txt(584, 478, `high tides are ${hm(LUNAR_DAY / 2)} apart.`, 12, { muted: true })}
 	</g>
 
-	<g opacity={w}>
+	<g opacity={swap(w)}>
 		{@render txt(584, 350, 'Tidal range through the month', 14, { weight: 600 })}
 		{@render txt(928, 350, '× the Moon alone', 11, { anchor: 'end', muted: true })}
-		{#each [0, 1, 2, 3] as v (v)}
+		{#each [0, 0.5, 1, 1.5] as v (v)}
 			<line x1={MX0} x2={MX1} y1={my(v)} y2={my(v)} stroke="var(--stage-grid)" stroke-width="1" />
 			{@render txt(MX0 - 6, my(v) + 4, `${v}×`, 11, { anchor: 'end', muted: true })}
 		{/each}
@@ -575,12 +602,14 @@
 		})}
 		{#each [0, 0.5, 1] as f (f)}
 			{@render txt(mx(f * SYNODIC_MONTH), my(rangeAt(0)) - 8, 'spring', 11, {
-				anchor: f === 0 ? 'start' : f === 1 ? 'end' : 'middle'
+				anchor: f === 0 ? 'start' : f === 1 ? 'end' : 'middle',
+				opacity: clearOf(f)
 			})}
 		{/each}
 		{#each [0.25, 0.75] as f (f)}
 			{@render txt(mx(f * SYNODIC_MONTH), my(rangeAt(SYNODIC_MONTH / 4)) + 18, 'neap', 11, {
-				anchor: 'middle'
+				anchor: 'middle',
+				opacity: clearOf(f)
 			})}
 		{/each}
 		<line
@@ -601,7 +630,7 @@
 			stroke-width="1.5"
 		/>
 		{@render txt(584, 552, `Spring tides ≈ ${springNeap}× neap tides`, 14, { weight: 600 })}
-		{@render txt(584, 572, `Range now: ${rangeNow.toFixed(1)}× the Moon's alone`, 12, {
+		{@render txt(584, 572, `Range now: ${rangeNow.toFixed(2)}× the Moon's alone`, 12, {
 			muted: true
 		})}
 	</g>
