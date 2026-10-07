@@ -27,6 +27,8 @@ test('controls only affect the steps that show them', async ({ page }) => {
 	await page.locator('input[type=range][data-control=vaccinated]').fill('80');
 	await expect(stage(page)).toContainText('Vaccinated');
 	// The last step offers the vaccination slider too, and keeps its value.
+	// (End on a focused slider moves the slider, so move focus off it first.)
+	await page.locator('aside h2').click();
 	await page.keyboard.press('End');
 	await expect(page).toHaveURL(/#realworld$/);
 	await expect(stage(page)).toContainText('Vaccinated');

@@ -5,8 +5,12 @@
 	 * Phases (`step.hints.phase`):
 	 *   tree   — one case, then its generations of cases, left to right, one
 	 *            generation every ~1.5 s. Each case has either ⌊R₀⌋ or ⌈R₀⌉
-	 *            children, handed out in order by error diffusion so that the
-	 *            running average is R₀ (see `kids`). The newest generation is
+	 *            children. A growing chain (R₀ > 1) has round(R₀ᵍ) cases in
+	 *            generation g, so that each generation really is about R₀ times
+	 *            the one before, with the extra children spread evenly over the
+	 *            cases of a generation. A shrinking chain hands out the extra
+	 *            children in order by error diffusion (see `kids`), which makes
+	 *            its total size the expected 1 / (1 − R₀). The newest generation is
 	 *            infectious (red); earlier ones have recovered (grey). A
 	 *            generation too big to draw as dots is a block with its count.
 	 *   growth — the early SIR curve, cases ∝ e^{rt} with r = (R₀ − 1)/D, traced
@@ -40,8 +44,12 @@
 	const opts = $derived(settings(step, params));
 	const r0 = $derived(opts.r0);
 	const days = $derived(opts.days);
-	/** Pure function of `t`; under reduced motion everything is complete. */
-	const clock = $derived(reduced ? 1e6 : t);
+	/**
+	 * Pure function of `t`; under reduced motion everything is complete. The
+	 * layer of the other phase is frozen at its finished state, so that it does
+	 * not jump back to its start (t restarts at each step) while it fades out.
+	 */
+	const clock = $derived(reduced || phase !== 'tree' ? 1e6 : t);
 	const fmt = (v: number) => Math.round(v).toLocaleString('en-US');
 
 	// ---- phase cross-fade (sequential, so the two layouts never overlap) ---------
@@ -66,7 +74,7 @@
 	const X0 = 156;
 	const X1 = 852;
 	/** Largest generation drawn as individual dots; bigger ones are blocks. */
-	const CAP = 125;
+	const CAP = 100;
 	/** Smallest spacing between dots before a generation splits into sub-columns. */
 	const MIN_PITCH = 8;
 	const BLOCK_W = 84;
@@ -113,6 +121,7 @@
 		const C = (i: number) => Math.floor((i * frac + 9) / 10);
 		const kids = (i: number) => whole + C(i + 1) - C(i);
 		const last = r0 < 1 ? 14 : 4;
+		const growingChain = tenths > 10;
 		const out: Gen[] = [];
 		let parents = [-1];
 		let start = 0;
@@ -123,11 +132,19 @@
 			const bh = block ? clamp(150 + 70 * Math.log10(n / CAP), 150, H) : 0;
 			out.push({ g, n, block, dots, r, bh });
 			if (n === 0 || g >= last) break;
-			const next = whole * n + C(start + n) - C(start);
+			const next = growingChain
+				? clamp(Math.round((tenths / 10) ** (g + 1)), whole * n, (whole + 1) * n)
+				: whole * n + C(start + n) - C(start);
+			// Growing chain: the `extra` cases with ⌈R₀⌉ children spread evenly.
+			const extra = next - whole * n;
+			const kidsOf = (j: number) =>
+				growingChain
+					? whole + Math.floor(((j + 1) * extra) / n) - Math.floor((j * extra) / n)
+					: kids(start + j);
 			parents = [];
 			if (next <= CAP) {
 				for (let j = 0; j < n; j++) {
-					for (let k = kids(start + j); k > 0; k--) parents.push(j);
+					for (let k = kidsOf(j); k > 0; k--) parents.push(j);
 				}
 			}
 			start += n;
@@ -235,7 +252,9 @@
 	const isWhole = $derived(Math.round(r0 * 10) % 10 === 0);
 	const treeStatus = $derived(
 		r0 > 1
-			? `Each generation is ${isWhole ? '' : 'about '}R₀ times the one before: ${sequence}`
+			? isWhole
+				? `Each generation is R₀ times the one before: ${sequence}`
+				: `Each generation is about R₀ times the one before, in whole people: ${sequence}`
 			: r0 === 1
 				? 'Each case is replaced by exactly one: the chain neither grows nor shrinks'
 				: diedOut && appear(lastGen.g) > 0.5
@@ -260,7 +279,8 @@
 	const every = $derived(
 		level ? Infinity : growing ? doublingTime(r0, days) : Math.LN2 / Math.abs(rate)
 	);
-	const start = $derived(growing ? 1 : TOP);
+	// A level line sits mid-chart, where it reads as level rather than as the frame.
+	const start = $derived(growing ? 1 : level ? TOP / 2 : TOP);
 	const span = $derived(level ? 10 * days : DOUBLINGS * every);
 	const casesAt = (d: number) => start * Math.exp(rate * d);
 
@@ -281,7 +301,8 @@
 	const sx = $derived(scale([0, xMaxT.current], [PX0, PX1]));
 	const sy = scale([0, TOP], [CB, CT]);
 
-	const traceU = $derived(reduced ? 1 : clamp((t - TRACE_FROM) / TRACE_FOR));
+	// Frozen at its end while the tree is shown (see `clock`).
+	const traceU = $derived(reduced || phase !== 'growth' ? 1 : clamp((t - TRACE_FROM) / TRACE_FOR));
 	const nowDay = $derived(span * traceU);
 	const curve = $derived(
 		Array.from({ length: 161 }, (_, k) => {
@@ -337,17 +358,23 @@
 				? { lead: 'Cases double every', value: `${fmtDays(every)} days` }
 				: { lead: 'Cases halve every', value: `${fmtDays(every)} days` }
 	);
+	/** Two significant figures, so that ln 2 / r matches the headline; a real minus sign. */
+	const fmtRate = (v: number) =>
+		Math.abs(v) < 1e-9
+			? '0'
+			: `${v < 0 ? '−' : ''}${Number(Math.abs(v).toPrecision(2)).toLocaleString('en-US', { maximumFractionDigits: 4 })}`;
 	const formula = $derived(
-		`growth rate r = (R₀ − 1) / D = (${r0.toFixed(1)} − 1) / ${days} days = ${rate.toFixed(2)} per day` +
+		`growth rate r = (R₀ − 1) / D = (${r0.toFixed(1)} − 1) / ${days} days = ${fmtRate(rate)} per day` +
 			(level ? '' : growing ? ' · doubling time = ln 2 / r' : ' · halving time = ln 2 / |r|')
 	);
-	const dayText = $derived(span < 10 ? nowDay.toFixed(1) : Math.floor(nowDay).toString());
+	const dayText = $derived(span < 10 ? nowDay.toFixed(1) : fmt(Math.floor(nowDay)));
 	const nowCases = $derived(casesAt(nowDay));
 	const growthStatus = $derived(
 		`Day ${dayText}: ${fmt(nowCases)} case${Math.round(nowCases) === 1 ? '' : 's'}` +
-			(level ? '' : growing ? ', starting from 1' : ', starting from 1,024')
+			(level ? ', as on day 0' : growing ? ', starting from 1' : ', starting from 1,024')
 	);
-	const xFormat = (v: number) => String(Number(v.toPrecision(3)));
+	const xFormat = (v: number) =>
+		Number(v.toPrecision(3)).toLocaleString('en-US', { maximumFractionDigits: 2 });
 </script>
 
 <g>

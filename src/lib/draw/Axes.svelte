@@ -34,8 +34,8 @@
 		yLabel,
 		xTicks,
 		yTicks,
-		xFormat = (v) => String(v),
-		yFormat = (v) => String(v),
+		xFormat = (v) => v.toLocaleString('en-US'),
+		yFormat = (v) => v.toLocaleString('en-US'),
 		yRight = false,
 		grid = true,
 		opacity = 1

@@ -156,9 +156,23 @@
 	const mix = (k: 'x0' | 'x1' | 'y0' | 'y1') =>
 		w.current.b * rects.boxes[k] + w.current.p * rects.peak[k] + w.current.f * rects.final[k];
 	const box = $derived({ x0: mix('x0'), x1: mix('x1'), y0: mix('y0'), y1: mix('y1') });
+	/**
+	 * Opacity of a phase's own layer from its weight: the outgoing layer is gone
+	 * before the incoming one appears (and before the moving chart reaches it),
+	 * so the two never overlap mid-transition.
+	 */
+	const fade = (v: number) => smoothstep(0.8, 1, v);
+	const fb = $derived(fade(w.current.b));
+	const fp = $derived(fade(w.current.p));
+	const ff = $derived(fade(w.current.f));
+	/** Layers shared by the peak and final phases. */
+	const fChart = $derived(fade(1 - w.current.b));
+	/** The settings readout, shared by the boxes and final phases. */
+	const fNotPeak = $derived(fade(1 - w.current.p));
 	const sx = $derived(scale([0, run.xMax], [box.x0, box.x1]));
 	const sy = $derived(scale([0, 1], [box.y1, box.y0]));
 	const pct = (v: number) => `${Math.round(v * 100)}%`;
+	const fmtDay = (v: number) => Math.floor(v).toLocaleString('en-US');
 	const fmt = (v: number) => {
 		const p = 100 * Math.max(0, v);
 		if (p > 0.0005 && p < 0.05) return '<0.1%';
@@ -267,7 +281,8 @@
 			moved: run.sol[0].s - now.s,
 			color: 'var(--sir-i)',
 			name: 'infection',
-			formula: 'β · S · I / N'
+			formula: 'β · S · I / N',
+			formula2: `β = R₀/D = ${(r0 / D).toFixed(2)}`
 		},
 		{
 			id: 'rec',
@@ -277,7 +292,8 @@
 			moved: now.r,
 			color: 'var(--sir-r)',
 			name: 'recovery',
-			formula: `I / D, D = ${D} days`
+			formula: `I / D, D = ${D} days`,
+			formula2: ''
 		}
 	]);
 	const arrowGeom = $derived(
@@ -328,7 +344,7 @@
 					color: 'var(--sir-i)'
 				}
 			: {
-					text: 'Recoveries outpace infections: not enough susceptible people left to infect',
+					text: `Recoveries outpace infections: with under ${fmt(1 / r0)} still susceptible, too few are left to infect`,
 					color: 'var(--sir-s)'
 				};
 	});
@@ -372,6 +388,13 @@
 		);
 	});
 	const neverText = $derived(shares.never < 1 ? 'under 1%' : `${shares.never}%`);
+	/** 1/R₀ as shown next to the shares, rounded so that the column adds up. */
+	const thText = $derived(`${100 - shares.a}%`);
+	// The column builds up with the sweep: the share infected by the peak once
+	// the peak is passed, the rest once the epidemic is over; dimmed until then.
+	const revealA = $derived(reduced ? 1 : peakShow);
+	const revealEnd = $derived(reduced ? 1 : smoothstep(0.7, 0.92, u));
+	const dimmed = (v: number) => 0.3 + 0.7 * v;
 	const BAR_X = 626;
 	const BAR_W = 16;
 	const LX = BAR_X + BAR_W + 22;
@@ -465,8 +488,9 @@
 
 <g style:font-variant-numeric="tabular-nums">
 	<!-- header -->
-	<Label x={32} y={48} text="Day {Math.floor(day)}" size={16} weight={600} anchor="start" />
-	{#if w.current.b > 0.01}
+	<Label x={32} y={48} text="Day {fmtDay(day)}" size={16} weight={600} anchor="start" />
+	{#if fNotPeak > 0.01}
+		<!-- the final count does not depend on D: show it on the final step too -->
 		<Label
 			x={928}
 			y={48}
@@ -474,37 +498,26 @@
 			size={13}
 			anchor="end"
 			muted
-			opacity={w.current.b}
+			opacity={fNotPeak}
 		/>
 	{/if}
-	{#if w.current.p > 0.01}
+	{#if fp > 0.01}
 		{@render tint(
 			928,
 			48,
 			outbreak
-				? `R = ${rNow.toFixed(2)} now: cases ${rNow > 1 ? 'rising' : 'falling'}`
+				? `R = ${rNow < 0.005 ? 'under 0.01' : rNow.toFixed(2)} now: cases ${rNow > 1 ? 'rising' : 'falling'}`
 				: `R₀ = ${r0.toFixed(1)}: cases only fall`,
 			rNow > 1 ? 'var(--sir-i)' : 'var(--sir-s)',
 			14,
 			'end',
-			w.current.p
+			fp
 		)}
-	{/if}
-	{#if w.current.f > 0.01}
-		<Label
-			x={928}
-			y={48}
-			text="R₀ = {r0.toFixed(1)}"
-			size={13}
-			anchor="end"
-			muted
-			opacity={w.current.f}
-		/>
 	{/if}
 
 	<!-- boxes and arrows -->
-	{#if w.current.b > 0.01}
-		<g opacity={w.current.b}>
+	{#if fb > 0.01}
+		<g opacity={fb}>
 			{#each boxes as b (b.id)}
 				<clipPath id="sir-clip-{b.id}">
 					<rect x={b.x} y={BY0} width={BW} height={BH} rx="14" />
@@ -559,6 +572,11 @@
 				<text x={cx} y={MY + 34} font-size="12" text-anchor="middle">{fmtRate(a.flow)}</text>
 				<text x={cx} y={MY + 50} font-size="11" class="muted" text-anchor="middle">{a.formula}</text
 				>
+				{#if a.formula2}
+					<text x={cx} y={MY + 66} font-size="11" class="muted" text-anchor="middle"
+						>{a.formula2}</text
+					>
+				{/if}
 			{/each}
 
 			{@render tint(480, 352, status.text, status.color, 14, 'middle', 1)}
@@ -573,9 +591,9 @@
 		<text x={lx + 10} y={48} font-size="12">{item.label}</text>
 	{/each}
 
-	{#if outbreak && w.current.b < 0.99}
+	{#if outbreak && fChart > 0.01}
 		<!-- 1/R₀: the susceptible share at which the peak comes -->
-		<g opacity={1 - w.current.b}>
+		<g opacity={fChart}>
 			<line
 				x1={box.x0}
 				x2={w.current.f > 0.01 ? lerp(box.x1, BAR_X + BAR_W, w.current.f) : box.x1}
@@ -585,22 +603,24 @@
 				stroke-width="1.5"
 				stroke-dasharray="6 4"
 			/>
+			<!-- near the top (R₀ close to 1) the S curve runs above the line: label below it -->
 			{@render tint(
 				box.x0 + 8,
-				sy(1 / r0) - 7,
+				sy(1 / r0) + (1 / r0 > 0.75 ? 16 : -7),
 				`1/R₀ = ${fmt(1 / r0)}`,
 				'var(--sir-s)',
 				12,
 				'start',
-				w.current.p
+				fp
 			)}
 		</g>
 	{/if}
 
-	{#if w.current.f > 0.01 && outbreak}
-		<g opacity={w.current.f}>
+	{#if ff > 0.01 && outbreak}
+		<g opacity={ff}>
 			<path d={overshoot} fill="var(--sir-i)" opacity="0.2" />
 			<line
+				opacity={dimmed(revealEnd)}
 				x1={box.x0}
 				x2={BAR_X + BAR_W}
 				y1={sy(shares.sInf)}
@@ -612,7 +632,7 @@
 			{@render tint(
 				box.x1 - 6,
 				sy(1 / r0) - 7,
-				`1/R₀ = ${fmt(1 / r0)}: still susceptible at the peak`,
+				`1/R₀ = ${thText}: still susceptible at the peak`,
 				'var(--sir-s)',
 				12,
 				'end',
@@ -635,16 +655,29 @@
 		{/if}
 	{/each}
 
-	<!-- cursor -->
-	<line
-		x1={sx(day)}
-		x2={sx(day)}
-		y1={box.y0}
-		y2={w.current.p > 0.01 ? lerp(box.y1, RY1, w.current.p) : box.y1}
-		stroke="var(--stage-ink-muted)"
-		stroke-dasharray="2 3"
-		opacity={u >= 1 ? 0 : 0.6}
-	/>
+	<!-- cursor (and its continuation over the R chart, without crossing that chart's title) -->
+	{#if u < 1}
+		<line
+			x1={sx(day)}
+			x2={sx(day)}
+			y1={box.y0}
+			y2={box.y1}
+			stroke="var(--stage-ink-muted)"
+			stroke-dasharray="2 3"
+			opacity="0.6"
+		/>
+		{#if fp > 0.01}
+			<line
+				x1={sx(day)}
+				x2={sx(day)}
+				y1={RY0}
+				y2={RY1}
+				stroke="var(--stage-ink-muted)"
+				stroke-dasharray="2 3"
+				opacity={0.6 * fp}
+			/>
+		{/if}
+	{/if}
 
 	<!-- the peak: S crosses 1/R₀, I is highest, R crosses 1 -->
 	{#if outbreak && peakShow > 0}
@@ -653,12 +686,24 @@
 				x1={sx(run.peakDay)}
 				x2={sx(run.peakDay)}
 				y1={box.y0}
-				y2={w.current.p > 0.01 ? lerp(box.y1, RY1, w.current.p) : box.y1}
+				y2={box.y1}
 				stroke="var(--stage-ink)"
 				stroke-width="1.2"
 				stroke-dasharray="5 4"
 				opacity="0.7"
 			/>
+			{#if fp > 0.01}
+				<line
+					x1={sx(run.peakDay)}
+					x2={sx(run.peakDay)}
+					y1={RY0}
+					y2={RY1}
+					stroke="var(--stage-ink)"
+					stroke-width="1.2"
+					stroke-dasharray="5 4"
+					opacity={0.7 * fp}
+				/>
+			{/if}
 			<circle
 				cx={sx(run.peakDay)}
 				cy={sy(run.peakI)}
@@ -674,7 +719,7 @@
 				fill="var(--stage-bg)"
 				stroke="var(--sir-s)"
 				stroke-width="2"
-				opacity={1 - w.current.b}
+				opacity={fChart}
 			/>
 			<Label
 				x={sx(run.peakDay) - 4}
@@ -687,7 +732,7 @@
 		</g>
 	{/if}
 
-	{#if !outbreak && w.current.b < 0.99}
+	{#if !outbreak && fChart > 0.01}
 		<Label
 			x={(box.x0 + box.x1) / 2}
 			y={lerp(box.y0, box.y1, 0.55)}
@@ -695,14 +740,14 @@
 			size={13}
 			weight={600}
 			pill
-			opacity={1 - w.current.b}
+			opacity={fChart}
 		/>
 	{/if}
 
 	<!-- effective reproduction number -->
-	{#if w.current.p > 0.01}
+	{#if fp > 0.01}
 		{@const sxR = scale([0, run.xMax], [box.x0, box.x1])}
-		<g opacity={w.current.p}>
+		<g opacity={fp}>
 			<Axes
 				sx={sxR}
 				sy={syR}
@@ -761,31 +806,34 @@
 	{/if}
 
 	<!-- final shares -->
-	{#if w.current.f > 0.01}
-		<g opacity={w.current.f}>
+	{#if ff > 0.01}
+		<g opacity={ff}>
 			{#each column as s (s.id)}
+				{@const o = dimmed(s.id === 'a' ? revealA : revealEnd)}
 				<rect
 					x={BAR_X}
 					y={s.yTop}
 					width={BAR_W}
 					height={Math.max(0, s.yBottom - s.yTop)}
 					fill={s.fill}
-					opacity={s.fo}
+					opacity={s.fo * o}
 				/>
-				<line
-					x1={BAR_X + BAR_W + 3}
-					x2={LX - 6}
-					y1={s.mid}
-					y2={s.ly - 5}
-					stroke="var(--stage-line)"
-				/>
-				<text x={LX} y={s.ly} font-size="18" font-weight="600"
-					>{s.id === 'c' && outbreak && s.value < 1 ? '<1' : s.value}%</text
-				>
-				<text x={LX + 54} y={s.ly - 1} font-size="12">{s.line1}</text>
-				{#if s.line2}
-					<text x={LX + 54} y={s.ly + 14} font-size="11" class="muted">{s.line2}</text>
-				{/if}
+				<g opacity={o}>
+					<line
+						x1={BAR_X + BAR_W + 3}
+						x2={LX - 6}
+						y1={s.mid}
+						y2={s.ly - 5}
+						stroke="var(--stage-line)"
+					/>
+					<text x={LX} y={s.ly} font-size="18" font-weight="600"
+						>{s.id === 'c' && outbreak && s.value < 1 ? '<1' : s.value}%</text
+					>
+					<text x={LX + 54} y={s.ly - 1} font-size="12">{s.line1}</text>
+					{#if s.line2}
+						<text x={LX + 54} y={s.ly + 14} font-size="11" class="muted">{s.line2}</text>
+					{/if}
+				</g>
 			{/each}
 			<rect
 				x={BAR_X}
@@ -805,16 +853,16 @@
 					size={14}
 					weight={600}
 					anchor="start"
+					opacity={dimmed(revealEnd)}
 				/>
 				<Label
 					x={rects.final.x0}
 					y={530}
-					text="The peak comes at {fmt(
-						1 / r0
-					)} still susceptible, yet only {neverText} escape in the end"
+					text="The peak comes at {thText} still susceptible, yet only {neverText} escape in the end"
 					size={12}
 					anchor="start"
 					muted
+					opacity={dimmed(revealEnd)}
 				/>
 			{/if}
 		</g>
