@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-07 22:02 UTC.
+Last updated: 2026-10-07 22:35 UTC.
 
 ## How we work
 
@@ -31,7 +31,16 @@ Last updated: 2026-10-07 22:02 UTC.
 - `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps"), epidemics,
   unit-circle (both done, ticked), catalogue-driven index, status/backlog/time log. PRs #1–#3
   merged.
-- In flight: **`topic/sorting`** (base `main`). State: in progress, see below.
+- **Batch in progress (user away, asked 2026-10-07 ~22:05 UTC for 4–5 topics to validate
+  together).** Stacked branches, merge in this order after validation:
+  1. `topic/sorting` (base `main`) — scenes done, review running.
+  2. `topic/newtons-laws` (base `topic/sorting`), worked in the git worktree
+     `../hiw-newtons` (dev server on port 5174; `node_modules` is a symlink to the main
+     checkout's; `svelte-check` there shows one spurious `$types` error in `+layout.svelte` — run
+     final checks in the main checkout). Model, narrative, card done; scenes being drafted.
+  3. Next candidates: `sun-earth-moon`, `learning-from-data` (then `pagerank` if usage allows).
+     When a lower branch changes, rebase the ones above it (`git rebase topic/sorting` on
+     `topic/newtons-laws`, etc.).
 
 ## Current development: sorting
 
@@ -47,12 +56,14 @@ Plan (tick as done):
       page, stage, registry, colours `--sort-*`, card art.
 - [x] BarsScene (problem, bubble, insertion, merge, quick) with a draggable timeline (Handle);
       e2e `e2e/sorting.e2e.ts` (finishes sorted, scrubber steps, freeze on pause).
-- [ ] RaceScene (race) and GrowthScene (growth, bigo, inputs, machine): being drafted by two
-      parallel agents. If interrupted: check the files with screenshots before trusting them.
+- [x] RaceScene (race) and GrowthScene (growth, bigo, inputs, machine): drafted by two agents,
+      committed; their wording corrections applied; playback re-anchors on speed changes.
+- [ ] Review round running (2 agents: bars+race, growth+whole page/fact-check). If interrupted:
+      scene files may hold uncommitted reviewer fixes — check `git diff`.
 - [ ] Review round (adversarial reviewers + whole page/fact-check), all checks, tick, time log,
       then ask the user to validate.
 
-Next action: integrate the two scene drafts.
+Next action: apply the sorting review findings; run all checks; tick; rebase newtons.
 
 ## Open questions for the user
 
