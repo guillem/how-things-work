@@ -97,7 +97,7 @@ A topic is done when:
 ## Checklist
 
 **Mathematics**
-- [ ] unit-circle
+- [x] unit-circle
 - [ ] calculus
 - [ ] linear-transformations
 - [ ] tensors

@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-07 20:30 UTC.
+Last updated: 2026-10-07 21:58 UTC.
 
 ## How we work
 
@@ -31,7 +31,8 @@ Last updated: 2026-10-07 20:30 UTC.
 - `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps"), epidemics
   (done, ticked), catalogue-driven index, status/backlog/time log. PRs #1 and #2 merged
   2026-10-07.
-- In flight: **`topic/unit-circle`** (base `main`). State: in progress, see below.
+- In flight: **`topic/unit-circle`** (base `main`). State: done, pushed, awaiting the user's
+  validation.
 
 ## Current development: unit-circle
 
@@ -51,12 +52,14 @@ Plan (tick as done):
       agents with their own screenshot matrices and Playwright interaction tests; committed.
 - [x] `StageProps.setParam`: scenes change controls through it (writing to `params` triggered
       Svelte's ownership warning). Scene guide updated.
-- [ ] Review round running (3 agents: circle+radians, wave, whole page + fact-check). If
-      interrupted: scene files may hold uncommitted reviewer fixes — check `git diff`.
-- [ ] Review round (adversarial reviewers, whole-page read, definition of done), all checks,
-      tick, time log, then ask the user to validate.
+- [x] Review round (3 agents: circle+radians, wave, whole page + fact-check); all findings
+      applied. Site-wide fixes on the way: glossary tooltips no longer widen the page; Page
+      Up/Down on handles.
+- [x] All checks pass (check, lint, 71 e2e). `unit-circle` ticked in TOPICS.md; time logged.
+- [ ] **Waiting for the user to validate the branch locally**; then PR + merge, then the next
+      topic (`sorting`, per BACKLOG).
 
-Next action: apply the review findings, run all checks, tick, log time, ask the user to validate.
+Next action: user validates `topic/unit-circle`; then open the PR, merge, start `topic/sorting`.
 
 ## Open questions for the user
 
