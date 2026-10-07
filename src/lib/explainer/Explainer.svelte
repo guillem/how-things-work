@@ -166,9 +166,11 @@
 				prev();
 				break;
 			case 'Home':
+				if (tag === 'INPUT') return; // let the slider jump to its minimum
 				go(0);
 				break;
 			case 'End':
+				if (tag === 'INPUT') return;
 				go(steps.length - 1);
 				break;
 			case ' ':
