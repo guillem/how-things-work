@@ -128,7 +128,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [degree, truth, fresh],
 			body: `
-<p>Push the flexibility to the top. The curve now wiggles through nearly every dot, and the training error is almost zero. But look between the dots: it swings wildly, making predictions no sensible person would make.</p>
+<p>Push the flexibility to the top. The curve now wiggles through nearly every dot, and the training error is almost zero. But look between and beyond the dots, especially past the first and last ones: it swings wildly, making predictions no sensible person would make.</p>
 <p>The model has learned the <em>noise</em> — the random wobble of these particular examples — instead of the pattern behind them. This is <dfn data-def="When a model fits the noise in its training examples and so predicts new cases worse.">overfitting</dfn>. Turn on the true curve to see what the model should have found.</p>
 <p>Too little flexibility is a problem too: a straight line through a curved pattern <em>underfits</em>, missing the pattern itself.</p>`
 		},
@@ -144,7 +144,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A real learner never sees the true curve. So how can we tell a good fit from an overfit one? <strong>Hold some examples back.</strong></p>
 <p>The hollow dots are a <dfn data-def="Examples kept aside and not used for fitting, used only to measure how well the model predicts new cases.">test set</dfn>: the model is fitted to the solid dots only, then asked to predict the hollow ones it has never seen. Its error on them — the <strong>test error</strong> — is an honest measure of how well it will do on new cases.</p>
-<p>Slide the flexibility again and watch the two numbers. Training error keeps falling. Test error falls at first, then turns upward.</p>`
+<p>Slide the flexibility again and watch the two numbers. Training error keeps falling. Test error falls at first, then turns upward.</p>`,
+			notes: `<p>With only seven test examples, luck plays a part: for a stiff model the test error can even come out <em>below</em> the training error, simply because the held-back points happened to sit close to the curve. The trend as the flexibility grows is what matters — the next step averages over many random sets to show it clearly.</p>`
 		},
 		{
 			id: 'sweetspot',
