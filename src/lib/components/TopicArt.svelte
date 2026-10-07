@@ -24,6 +24,13 @@
 		c: i >= 6 ? 'var(--sort-done)' : i === 2 || i === 3 ? 'var(--sort-compare)' : accent
 	}));
 
+	// Newton's laws: a parabola from (20, 100) to (130, 100), peak 70 high.
+	const parabolaArt = Array.from({ length: 41 }, (_, i) => {
+		const x = 20 + (i / 40) * 110;
+		const u = i / 40;
+		return `${i ? 'L' : 'M'}${x.toFixed(1)} ${(100 - 280 * u * (1 - u)).toFixed(1)}`;
+	}).join(' ');
+
 	// Epidemics: a jittered grid of people; infection spreads from the left,
 	// recovered behind the front, susceptible ahead of it.
 	const crowd = Array.from({ length: 48 }, (_, k) => {
@@ -159,6 +166,25 @@
 			/>
 		{/each}
 		<line x1="24" x2="176" y1="104.5" y2="104.5" stroke="currentColor" opacity="0.25" />
+	{:else if slug === 'newtons-laws'}
+		<!-- a projectile's parabola over the ground, with its two velocity parts -->
+		<line x1="16" x2="186" y1="100" y2="100" stroke="currentColor" opacity="0.3" />
+		<path
+			d={parabolaArt}
+			fill="none"
+			stroke={accent}
+			stroke-width="2.2"
+			stroke-dasharray="4 4"
+			stroke-linecap="round"
+		/>
+		<circle cx="76" cy="38" r="6" fill={accent} />
+		<line x1="76" y1="38" x2="104" y2="38" stroke="var(--mech-velocity)" stroke-width="2.5" />
+		<path d="M104 34 L111 38 L104 42 Z" fill="var(--mech-velocity)" />
+		<line x1="76" y1="38" x2="76" y2="58" stroke="var(--mech-force)" stroke-width="2.5" />
+		<path d="M72 58 L76 65 L80 58 Z" fill="var(--mech-force)" />
+		<rect x="140" y="84" width="34" height="16" rx="3" fill="var(--mech-cart)" />
+		<circle cx="148" cy="101" r="3.5" fill="currentColor" opacity="0.6" />
+		<circle cx="166" cy="101" r="3.5" fill="currentColor" opacity="0.6" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
