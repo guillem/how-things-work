@@ -148,7 +148,7 @@ A topic is done when:
 - [ ] neurons
 - [ ] vision-color
 - [ ] immune-system
-- [ ] epidemics
+- [x] epidemics
 - [ ] mrna-vaccines
 - [ ] cancer
 - [ ] medical-imaging

@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-07 19:05 UTC.
+Last updated: 2026-10-07 19:30 UTC.
 
 ## How we work
 
@@ -37,7 +37,7 @@ Last updated: 2026-10-07 19:05 UTC.
      loop over every explainer; these status/backlog/time-log docs. **State: done, tests pass,
      pushed to origin; PR not opened yet (see open questions).**
   2. **`topic/epidemics`** (base `site/catalogue-index` — it needs the page shell; rebase onto
-     `main` once the first PR is merged). **State: in progress, see below.**
+     `main` once the first PR is merged). **State: done, tests pass, pushed; PR not opened.**
 
 ## Current development: epidemics
 
@@ -73,13 +73,20 @@ Plan (tick as done):
       both branches (cherry-picked onto `site/catalogue-index` and pushed).
 - [x] CrowdScene screenshot matrix taken (both themes, two WAITs, R0 0.5/1.3/8, D 2/14,
       vaccinated 50/70/95, re-run, reduced motion) and looked at; one wording fix.
-- [ ] Adversarial second look: three reviewers running (crowd+runs, tree+sir, threshold + whole
-      page as a reader incl. mobile and definition of done). If interrupted: rerun them; scene
-      files may hold uncommitted fixes — check `git diff` and screenshots before committing.
-- [ ] Tick `epidemics` in the TOPICS.md checklist; log times; push; PR.
+- [x] Adversarial second look by three reviewers (crowd+runs, tree+sir, threshold + whole page
+      as a reader, mobile, definition of done); their fixes applied. Notable: dragging a slider
+      blanked the crowd; tree counts between whole R0 values; SIR phase overlaps; R arithmetic
+      rounding; Home/End on a focused slider changed the step (site fix, on both branches).
+- [x] All checks pass (check, lint, 58 e2e). `epidemics` ticked in the TOPICS.md checklist;
+      times logged. Branch pushed.
+- [ ] PR to `main` — waiting for the user's answer on who opens PRs (see open questions).
 
-Next action: apply the reviewers' findings, rerun all checks, tick the checklist, log times,
-push, PR.
+Known limits, recorded in BACKLOG: stage text is ~5 px on phones (site-wide); the stage CSS
+overrides SVG font-size/fill (site-wide; scenes use `style:` workarounds).
+
+Next action: open the PRs (site/catalogue-index first, then topic/epidemics, rebased onto
+main after the first merge) once the user says who opens them; then start the next wave-1 topic
+from BACKLOG.md (`unit-circle`).
 
 ## Open questions for the user
 
