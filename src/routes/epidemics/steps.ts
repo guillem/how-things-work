@@ -200,9 +200,9 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [r0, rerun],
 			body: `
-<p>Here is the same crowd run 40 times, each starting from a single case, each with different luck. Every line is one run's infectious count.</p>
+<p>Here is the same crowd run 40 times, each starting from a single case, each with different luck. Every line is one run's infectious count (on a log scale, so that a single case is visible).</p>
 <p>Many runs never take off. If the first case recovers before passing it on — or infects one person who does the same — the chain breaks while it is tiny. In this model a single case fizzles out with a chance of about 1 in R<sub>0</sub>: half the time when R<sub>0</sub> = 2.</p>
-<p>But a run that survives its first few generations behaves predictably: it grows into a full outbreak of almost the same size. Chance matters most at the very beginning, when cases are few.</p>`,
+<p>But a run that survives its first few generations behaves predictably: it grows into a full outbreak of almost the same size — at least once R<sub>0</sub> is well above 1. Chance matters most at the very beginning, when cases are few.</p>`,
 			notes: `<p>This follows from treating the early outbreak as a branching process. With an exponentially distributed infectious period (most cases recover early, a few stay infectious much longer), the number of people a case infects follows a geometric distribution with mean R<sub>0</sub> (zero is the most likely count, and large counts are rare but possible), and the probability that the chain of infections dies out is 1/R<sub>0</sub>. With other distributions the number differs — if every case were infectious for exactly the same time, it would be lower — but the lesson holds: early extinction is common, and it gets less likely with each extra initial case.</p>`
 		},
 		// ------------------------------------------------------------------ herd
