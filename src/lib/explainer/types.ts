@@ -37,7 +37,19 @@ export interface SelectControl extends ControlBase {
 	options: { value: string; label: string }[];
 }
 
-export type Control = RangeControl | ToggleControl | SelectControl;
+/**
+ * A button that triggers something in the stage, such as "Run again". Its
+ * value is the number of times it has been pressed (0 at first), so the stage
+ * reacts to a change of `params[id]`.
+ */
+export interface ActionControl extends ControlBase {
+	type: 'action';
+	/** Text on the button. */
+	action: string;
+	default?: never;
+}
+
+export type Control = RangeControl | ToggleControl | SelectControl | ActionControl;
 
 export interface Chapter {
 	id: string;
@@ -99,3 +111,9 @@ export interface StageProps {
 	/** Current values of all controls, keyed by control id. */
 	params: Params;
 }
+
+/** Scene name (`step.scene`) → lazy import of the scene component, in narrative order. */
+export type SceneLoaders = Record<
+	string,
+	() => Promise<{ default: import('svelte').Component<StageProps> }>
+>;

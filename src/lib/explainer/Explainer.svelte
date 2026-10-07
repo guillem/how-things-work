@@ -38,7 +38,9 @@
 		untrack(() => {
 			const defaults: Params = {};
 			for (const step of steps) {
-				for (const control of step.controls ?? []) defaults[control.id] = control.default;
+				for (const control of step.controls ?? []) {
+					defaults[control.id] = control.type === 'action' ? 0 : control.default;
+				}
 			}
 			return defaults;
 		})

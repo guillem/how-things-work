@@ -70,6 +70,17 @@
 				</div>
 				{#if control.help}<span class="help">{control.help}</span>{/if}
 			</div>
+		{:else if control.type === 'action'}
+			<div class="control action">
+				<button
+					type="button"
+					data-control={control.id}
+					onclick={() => (params[control.id] = Number(params[control.id] ?? 0) + 1)}
+				>
+					{control.action}
+				</button>
+				{#if control.help}<span class="help">{control.help}</span>{/if}
+			</div>
 		{/if}
 	{/each}
 </div>
@@ -206,6 +217,27 @@
 	.switch input:focus-visible + .track {
 		outline: 2px solid var(--focus);
 		outline-offset: 2px;
+	}
+
+	/* Action button */
+	.action button {
+		justify-self: start;
+		padding: 6px 14px;
+		border: 1px solid var(--border-strong);
+		border-radius: 8px;
+		background: var(--surface);
+		color: var(--text);
+		font-size: 0.86rem;
+		font-weight: 500;
+		cursor: pointer;
+		box-shadow: var(--shadow-sm);
+		transition:
+			border-color 0.15s,
+			color 0.15s;
+	}
+	.action button:hover {
+		border-color: var(--explainer-accent, var(--accent));
+		color: var(--explainer-accent, var(--accent));
 	}
 
 	/* Segmented control */

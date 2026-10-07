@@ -109,8 +109,10 @@ export class Crowd {
 	readonly state: Uint8Array;
 	/** Day each person was infected (NaN if never). */
 	readonly infectedAt: Float64Array;
-	/** Day each person recovers / recovered (NaN if never infected). */
+	/** Day each person's infectious period ends (NaN if never infected). */
 	readonly recoversAt: Float64Array;
+	/** Simulation day on which each person was counted as recovered (NaN if not yet). */
+	readonly recoveredAt: Float64Array;
 	/** Index of the infector (−1 for initial cases and the never infected). */
 	readonly infectedBy: Int32Array;
 	/** Number of people each person has infected so far. */
@@ -140,6 +142,7 @@ export class Crowd {
 		this.state = new Uint8Array(n);
 		this.infectedAt = new Float64Array(n).fill(NaN);
 		this.recoversAt = new Float64Array(n).fill(NaN);
+		this.recoveredAt = new Float64Array(n).fill(NaN);
 		this.infectedBy = new Int32Array(n).fill(-1);
 		this.secondary = new Uint16Array(n);
 		this.#x0 = new Float64Array(n);
@@ -196,6 +199,22 @@ export class Crowd {
 		return this.#counts.i === 0;
 	}
 
+	/**
+	 * State of person `k` on a past `day` of the run (up to `this.day`), from
+	 * the recorded infection and recovery days.
+	 */
+	stateAt(k: number, day: number): number {
+		const s = this.state[k];
+		if (s === State.Vaccinated) return s;
+		if (!(this.infectedAt[k] <= day)) return State.Susceptible;
+		return this.recoveredAt[k] <= day ? State.Recovered : State.Infectious;
+	}
+
+	/** Index into `history` of the last sample at or before `day`. */
+	sampleAt(day: number) {
+		return Math.max(0, Math.min(this.history.length - 1, Math.floor(day / DT + 1e-6)));
+	}
+
 	/** Advances the simulation until `day` (in steps of `DT`), or until it is over. */
 	advanceTo(day: number) {
 		while (this.day + DT <= day + 1e-9 && !this.over) this.#tick();
@@ -243,6 +262,7 @@ export class Crowd {
 		for (let k = 0; k < n; k++) {
 			if (this.state[k] === State.Infectious && this.recoversAt[k] <= this.day) {
 				this.state[k] = State.Recovered;
+				this.recoveredAt[k] = this.day;
 				this.#counts.i--;
 				this.#counts.r++;
 			}
