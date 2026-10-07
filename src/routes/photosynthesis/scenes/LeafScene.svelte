@@ -184,11 +184,12 @@
 		{ x: 460, y: 425 },
 		{ x: 560, y: 440 }
 	]);
+	// Leaves below the thylakoid labels (x 830–900, y 400–450) and under the starch grain.
 	const chloroSugar = smooth([
-		{ x: 640, y: 450 },
-		{ x: 760, y: 470 },
-		{ x: 880, y: 440 },
-		{ x: 990, y: 420 }
+		{ x: 640, y: 452 },
+		{ x: 740, y: 486 },
+		{ x: 860, y: 502 },
+		{ x: 990, y: 504 }
 	]);
 	const chloroO2 = smooth([
 		{ x: 352, y: 170 },
@@ -737,18 +738,29 @@
 			<line x1="170" y1="68" x2="200" y2="110" stroke="var(--stage-ink-muted)" stroke-width="1" />
 			<Label x={110} y={118} text="inner membrane" anchor="start" size={12} pill />
 			<line x1="200" y1="124" x2="232" y2="150" stroke="var(--stage-ink-muted)" stroke-width="1" />
-			<Label x={880} y={150} text="stroma" anchor="end" size={12} pill />
-			<Label x={880} y={170} text="fluid: Calvin cycle runs here" anchor="end" size={11} muted />
+			<!-- inside the stroma, clear of the membranes (the inner membrane passes x ≈ 795 at y = 160) -->
+			<Label x={786} y={142} text="stroma" anchor="end" size={12} pill />
+			<Label x={786} y={162} text="fluid: Calvin cycle runs here" anchor="end" size={11} muted />
 			<Label x={352} y={140} text="granum" size={12} pill />
 			<Label x={352} y={158} text="a stack of thylakoids" size={11} muted />
-			<Label x={862} y={408} text="thylakoid" size={12} pill />
-			<line x1="830" y1="396" x2="796" y2="352" stroke="var(--stage-ink-muted)" stroke-width="1" />
-			<Label x={862} y={428} text="membrane: light reactions" size={11} muted />
-			<Label x={862} y={444} text="inside: the lumen" size={11} muted />
-			<Label x={STARCH.x} y={STARCH.y + 40} text="starch grain" size={12} muted />
+			<!-- callout card: it straddles the chloroplast membranes, so it gets its own background -->
+			<rect
+				x="774"
+				y="390"
+				width="168"
+				height="64"
+				rx="8"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			<line x1="800" y1="390" x2="796" y2="358" stroke="var(--stage-ink-muted)" stroke-width="1" />
+			<Label x={858} y={409} text="thylakoid" size={12} weight={600} />
+			<Label x={858} y={428} text="membrane: light reactions" size={11} muted />
+			<Label x={858} y={444} text="inside: the lumen" size={11} muted />
+			<Label x={STARCH.x} y={STARCH.y - 39} text="starch grain" size={12} muted />
 			<Label x={430} y={525} text="ATP & NADPH out, ADP & NADP⁺ back" size={12} muted />
 			<Label x={60} y={420} text="CO₂" anchor="start" size={12} />
-			<Label x={900} y={410} text="G3P (sugar)" anchor="end" size={12} />
+			<Label x={900} y={532} text="G3P (sugar)" anchor="end" size={12} />
 		</g>
 	{/if}
 </g>
