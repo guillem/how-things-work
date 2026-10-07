@@ -156,12 +156,18 @@
 		const close = Math.abs(p - 100 * v) < 1.5 && Math.abs(p - Math.round(p)) > 0.05;
 		return close ? `${p.toFixed(1)}%` : `${Math.round(p)}%`;
 	});
-	/** R, never rounded onto or across 1: near 1 it is rounded away from it. */
+	/**
+	 * R, never rounded onto or across 1 (near 1 it is rounded away from it) and
+	 * never onto 0 (small values keep two decimals). Rounded to hundredths
+	 * first, so that 3.5 × 30% (1.0500…03 in floating point) reads 1.05.
+	 */
 	const rText = $derived.by(() => {
 		const d = Math.abs(rEff - 1);
 		if (d <= 1e-9) return '1.0';
-		if (d >= 0.06) return rEff.toFixed(1);
-		return ((grows ? Math.ceil(rEff * 100) : Math.floor(rEff * 100)) / 100).toFixed(2);
+		if (d >= 0.06 && rEff >= 0.095) return rEff.toFixed(1);
+		let r2 = Math.round(rEff * 100) / 100;
+		if (r2 === 1) r2 = grows ? 1.01 : 0.99;
+		return r2 === 0 ? '<0.01' : r2.toFixed(2);
 	});
 	const verdict = $derived(
 		grows
@@ -171,6 +177,19 @@
 				: 'below 1: chains of infection die out'
 	);
 
+	/**
+	 * Below 1, the chain from one case is finite: on average 1 / (1 − R) cases
+	 * in all, counting the first (a branching process; the text of the
+	 * vaccination step promises "a handful … sometimes a few dozen").
+	 */
+	const chainText = $derived.by(() => {
+		if (rEff > 1 - 1e-9) return 'chains of infection die out, but can run long';
+		const n = 1 / (1 - rEff);
+		return n < 1.5
+			? 'the first case rarely infects anyone'
+			: `one case leads to about ${Math.round(n)} cases in all`;
+	});
+
 	const PX0 = 676;
 	const PX1 = 944;
 	const GAUGE = 8;
@@ -178,8 +197,12 @@
 
 	// 100 people, row by row: vaccinated, then those an outbreak would reach,
 	// then those who escape it. The three counts always add up to 100.
+	// Nobody is drawn as escaping only if nobody does: when a few in 1,000
+	// escape (R₀ = 8, nobody vaccinated), one dot stays blue, as ">99%" says.
 	const nv = $derived(Math.round(100 * v));
-	const ni = $derived(Math.min(100 - nv, Math.round(100 * size)));
+	const ni = $derived(
+		Math.min(100 - nv - (grows && 1 - v - size > 1e-6 ? 1 : 0), Math.round(100 * size))
+	);
 	const ne = $derived(100 - nv - ni);
 	const CELL = 15;
 	const GX = PX0 + 7;
@@ -308,7 +331,7 @@
 			stroke="var(--stage-ink)"
 			stroke-width="1.5"
 		/>
-		{@render say(fluLabel.x, fluLabel.y, 'seasonal flu, R₀ ≈ 1.3', 12)}
+		{@render say(fluLabel.x, fluLabel.y, 'seasonal flu, about 1.3', 12)}
 		{@render say(fluLabel.x, fluLabel.y + 15, `threshold ${pct(herdThreshold(FLU))}`, 11, {
 			muted: true
 		})}
@@ -420,7 +443,7 @@
 			? v < 0.005
 				? `${share(size)} of everyone`
 				: `${share(size)} of everyone, ${share(size / (1 - v))} of the unvaccinated`
-			: 'chains of infection die out after a few cases',
+			: chainText,
 		11,
 		{ muted: true, halo: false }
 	)}

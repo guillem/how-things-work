@@ -50,7 +50,7 @@ const rerun: Control = {
 
 export const spec: ExplainerSpec = {
 	slug: 'epidemics',
-	title: 'How epidemics spread — and how they stop',
+	title: 'How epidemics spread\u00a0— and how they stop',
 	summary:
 		'Release a few cases into a crowd and watch an outbreak grow, peak and fade. Then find out how many people need to be immune to stop it before it starts.',
 	chapters: [
@@ -175,7 +175,7 @@ export const spec: ExplainerSpec = {
 			controls: [r0, days],
 			body: `
 <p>Left to itself, an outbreak does not turn around because the germ weakens. It turns around because it runs short of people who can still catch it.</p>
-<p>R<sub>0</sub> counts infections in a crowd where everyone is susceptible. Later, only some of the people a case meets can still catch it, so each case causes fewer new ones: the <dfn data-def="The average number of people each case infects at a given time, once some of the population is immune.">effective reproduction number</dfn>, R, drops. In this model <strong>R = R<sub>0</sub> × (share still susceptible)</strong>.</p>
+<p>R<sub>0</sub> counts infections in a crowd where everyone is susceptible. Later, only some of the people a case meets can still catch it, so each case causes fewer new ones: the <dfn data-def="The average number of people each case infects at a given time, once some of the population is immune.">effective reproduction number</dfn>, R, drops (not to be confused with the R box of recovered people). In this model <strong>R = R<sub>0</sub> × (share still susceptible)</strong>.</p>
 <p>The lower chart tracks it. While R is above 1, cases increase. The moment the susceptible share falls to 1/R<sub>0</sub>, R crosses 1 — and that is exactly the peak. From then on each case is replaced by less than one, and the outbreak shrinks.</p>`
 		},
 		{
@@ -230,7 +230,7 @@ export const spec: ExplainerSpec = {
 <p>Vaccination lowers the starting point: if a share <i>v</i> of people are immune, each case infects R<sub>0</sub> × (1 − <i>v</i>) people instead of R<sub>0</sub>. An outbreak cannot grow once that is below 1, which happens when</p>
 <p class="formula"><strong>immune share above 1 − 1/R<sub>0</sub></strong></p>
 <p>That is the <strong>herd-immunity threshold</strong>, the curve on the chart: 50% for R<sub>0</sub> = 2, 67% for 3, 90% for 10. The more contagious the disease, the closer to everyone you need.</p>
-<p>Move the point around. Below the curve an outbreak can still take off (the readout shows how many would be infected); above it, chains of infection die out.</p>`,
+<p>Use the sliders to move the point. Below the curve an outbreak can still take off (the readout shows how many would be infected); above it, chains of infection die out.</p>`,
 			notes: `<p>Vaccines are not perfect, so the share that must be <em>vaccinated</em> is higher than the share that must be <em>immune</em>: divide the threshold by the vaccine's effectiveness. For measles, with R<sub>0</sub> often put at 12–18, the threshold is above 90%, which is why the World Health Organization aims for 95% coverage with two doses.</p>
 <p>The threshold also assumes immunity is spread evenly: the coverage has to hold in every community, because pockets of unvaccinated people can still sustain an outbreak. And it is about stopping <em>growth</em>. Below it, vaccination still helps a great deal: every immune person makes the outbreak smaller. See Fine, Eames &amp; Heymann, “Herd immunity: a rough guide”, <i>Clinical Infectious Diseases</i>, 2011.</p>`
 		},

@@ -48,6 +48,11 @@ catalogue's suggested first `build`), `ecosystems`, `electric-circuits` (unlocks
 
 ## Site and framework work
 
+- **Stage text is unreadable on phones (site-wide, found 2026-10-07).** At 390 px wide the
+  960-unit stage is drawn at ~0.37 scale, so 11–13 px labels end up ~4–5 px. Needs a design
+  decision (a narrow-screen layout per scene, a larger minimum text size, or steering readers to
+  full screen / landscape). Affects photosynthesis and epidemics alike.
+
 - **Stage text styling overrides SVG attributes (site-wide, found 2026-10-07).** In
   `src/lib/explainer/Explainer.svelte`, `.stage :global(text) { font-family; fill; font-size: 13px }`
   beats presentation attributes, so every `font-size=`/`fill=` on `<text>` (including `<Axes>` tick

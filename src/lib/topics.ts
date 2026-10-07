@@ -45,7 +45,7 @@ const explainers: Explainer[] = [
 	},
 	{
 		slug: 'epidemics',
-		title: 'How epidemics spread — and how they stop',
+		title: 'How epidemics spread\u00a0— and how they stop',
 		summary:
 			'Release a few cases into a crowd and watch an outbreak grow, peak and fade. Then find out how many people need to be immune to stop it before it starts.',
 		accent: '#d0454c',
