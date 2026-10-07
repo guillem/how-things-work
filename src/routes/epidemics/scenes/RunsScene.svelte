@@ -319,10 +319,16 @@
 				y1={546}
 				y2={546}
 				stroke={item.color}
-				stroke-opacity={item.o}
+				stroke-opacity={item.id === 'open' && pending === 0 ? 0.3 : item.o}
 				stroke-width={item.id === 'up' ? 2.2 : 1.6}
 			/>
-			<text x={lx + 24} y={550} class="muted">{item.label}</text>
+			<!-- once every run is decided, "not yet decided" describes nothing on the chart -->
+			<text
+				x={lx + 24}
+				y={550}
+				class="muted"
+				opacity={item.id === 'open' && pending === 0 ? 0.4 : 1}>{item.label}</text
+			>
 		{/each}
 	</g>
 	<text x={PX0} y={572} font-size="11" class="muted"
@@ -389,7 +395,8 @@
 	</g>
 
 	<!-- final sizes -->
-	<text x={RX0} y={404} font-size="13" font-weight="600">How many each run infected</text>
+	<!-- y 390, not lower: the ▼ for the SIR value sits at y ≈ 410–419 and, at R₀ ≈ 1.1–1.3, under the title -->
+	<text x={RX0} y={390} font-size="13" font-weight="600">How many each run infected</text>
 	<g>
 		<line x1={RX0} x2={RX1} y1={SY0} y2={SY0} stroke="var(--stage-line)" />
 		{#each [0, 0.25, 0.5, 0.75, 1] as v (v)}

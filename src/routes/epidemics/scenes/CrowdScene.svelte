@@ -11,26 +11,18 @@
 	 * A whole run is simulated up front whenever its inputs change (a few
 	 * milliseconds), and every frame is then a pure function of the simulated
 	 * day, which is a function of `t`. The only state kept between frames is
-	 * the run itself and the `t` at which it started (a run restarts when a
-	 * control changes mid-step; documented exception to the scene guide).
+	 * the run itself and the `t` at which it started ("Run again" replays from
+	 * day 0; a slider does not; documented exception to the scene guide).
 	 */
-	import {
-		Axes,
-		Label,
-		clamp,
-		linePath,
-		niceMax,
-		scale,
-		smoothstep,
-		thin
-	} from '#lib/draw/index.ts';
+	import { Axes, Label, clamp, linePath, scale, smoothstep, thin } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { State, type Crowd } from '../model';
+	import { State } from '../model';
 	import { FIELD, POPULATION, endDay, runCrowd, settings } from '../run';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
 	const view = $derived(String(step.hints?.view ?? 'full'));
+	const showGauge = $derived(step.hints?.gauge !== false);
 	const initial = $derived(Number(step.hints?.initial ?? 3));
 	const baseSeed = $derived(Number(step.hints?.seed ?? 1));
 	const opts = $derived(settings(step, params));
@@ -49,15 +41,18 @@
 	const focus = $derived(crowd.infections[0]?.who ?? 0);
 	const focusEnd = $derived(crowd.recoveredAt[focus]);
 
-	// `t` when the current run started: a run that is replaced mid-step (a
-	// control moved) starts from its first day at the current `t`.
+	// `t` when the current run started. "Run again" (a new seed, a new crowd)
+	// replays from day 0 at the current `t`. Moving a slider does NOT restart:
+	// the new run is shown at the same moment, so dragging R₀ after a run has
+	// ended shows each complete new outcome at once, and dragging mid-run never
+	// blanks the stage (it used to restart, and re-fade, on every input event).
 	let startedAt = 0;
-	let startedFor: Crowd | null = null;
+	let startedFor = -1;
 	let lastT = 0;
 	const tRun = $derived.by(() => {
-		if (crowd !== startedFor || t < lastT) {
-			startedAt = startedFor === null || t < lastT ? 0 : t;
-			startedFor = crowd;
+		if (opts.rerun !== startedFor || t < lastT) {
+			startedAt = startedFor === -1 || t < lastT ? 0 : t;
+			startedFor = opts.rerun;
 		}
 		lastT = t;
 		return Math.max(0, t - startedAt);
@@ -105,7 +100,8 @@
 		}
 		return out;
 	}
-	const flashes = $derived(recentInfections(1.2));
+	// Hidden under reduced motion: the frozen frame must not hold a ring caught mid-expansion.
+	const flashes = $derived(reduced ? [] : recentInfections(1.2));
 
 	// The first case's meetings (case view).
 	const focusContacts = $derived(crowd.contacts.filter((c) => c.from === focus));
@@ -128,7 +124,8 @@
 	const PX1 = 916;
 	const chartTop = $derived(view === 'case' ? 392 : 150);
 	const chartBottom = $derived(view === 'case' ? 528 : 382);
-	const xMax = $derived(Math.max(40, niceMax(end * 1.05)));
+	// Round up to 20 days (niceMax would jump from 50 to 100 and leave the chart half empty).
+	const xMax = $derived(Math.max(40, Math.ceil((end * 1.05) / 20) * 20));
 	const sx = $derived(scale([0, xMax], [PX0, PX1]));
 	const sy = $derived(scale([0, POPULATION], [chartBottom, chartTop]));
 	const shown = $derived(thin(crowd.history.slice(0, crowd.sampleAt(day) + 1), 360));
@@ -176,9 +173,45 @@
 		return best;
 	});
 	const pastPeak = $derived(day > peak.day + 2 && peak.i > initial + 2);
+	/**
+	 * Where to put the "peak" label: straight above the marker, at the first
+	 * height that clears the S, R, I and vaccinated lines under the label's
+	 * width. At the peak S and R are near the same height as I (they cross
+	 * there when R₀ ≈ 3), so a label beside the marker sat on top of them.
+	 * Depends on the run only, not on `t`.
+	 */
+	const peakLabel = $derived.by(() => {
+		const x = clamp(sx(peak.day), PX0 + 22, PX1 - 22);
+		const cy = sy(peak.i);
+		const half = 22;
+		const near = crowd.history.filter((h) => Math.abs(sx(h.day) - x) <= half);
+		const lines = near.flatMap((h) => [sy(h.s), sy(h.r), sy(h.i)]);
+		if (crowd.history[0].v > 0) lines.push(sy(crowd.history[0].v));
+		const clearance = (y: number) => {
+			let c = Infinity;
+			for (const ly of lines)
+				c = Math.min(c, ly < y - 11 ? y - 11 - ly : ly > y + 4 ? ly - y - 4 : 0);
+			return c;
+		};
+		let best = { y: cy - 12, c: -1 };
+		for (const off of [12, 22, 34, 48, 64, 82, 102, 124]) {
+			const y = cy - off;
+			if (y < chartTop + 12) break;
+			const c = clearance(y);
+			if (c >= 4) return { x, y, leader: off > 14 };
+			if (c > best.c) best = { y, c };
+		}
+		return { x, y: best.y, leader: cy - best.y > 14 };
+	});
 
 	// ---- readouts --------------------------------------------------------------
 	const rNow = $derived((opts.r0 * sample.s) / POPULATION);
+	// Colour and wording follow the value as displayed (one decimal), so "1.0" is never
+	// called "below 1".
+	const rShown = $derived(Math.round(rNow * 10) / 10);
+	const rColor = $derived(
+		rShown > 1 ? 'var(--sir-i)' : rShown < 1 ? 'var(--sir-s)' : 'var(--stage-ink-muted)'
+	);
 	const gaugeMax = $derived(Math.max(4, Math.ceil(opts.r0)));
 	const gx = $derived(scale([0, gaugeMax], [PX0, PX1]));
 	const infectedTotal = $derived(sample.i + sample.r);
@@ -186,11 +219,11 @@
 	const status = $derived(
 		!over
 			? pastPeak
-				? `Peak: ${peak.i} infectious at once, on day ${Math.round(peak.day)}`
+				? `Peak: ${peak.i} infectious at once, on day ${Math.floor(peak.day)}`
 				: `Day ${Math.floor(day)}: ${infectedTotal} caught it so far`
 			: fizzled
-				? `Died out on day ${Math.round(end)} after ${crowd.counts.r} case${crowd.counts.r === 1 ? '' : 's'}`
-				: `Over by day ${Math.round(end)}: ${crowd.counts.r} caught it, ${crowd.counts.s} never did`
+				? `Died out on day ${Math.floor(end)} after ${crowd.counts.r} case${crowd.counts.r === 1 ? '' : 's'}`
+				: `Over by day ${Math.floor(end)}: ${crowd.counts.r} caught it, ${crowd.counts.s} never did`
 	);
 
 	const legend = $derived([
@@ -337,9 +370,10 @@
 				: `Recovered after ${focusEnd.toFixed(1)} days`}
 		</text>
 		<g style:font-variant-numeric="tabular-nums">
-			<text x={PX0} y={206} font-size="26" font-weight="600">{meetingsSoFar.length}</text>
+			<!-- style:, not attributes: the stage's text rule overrides font-size=/fill= (BACKLOG) -->
+			<text x={PX0} y={206} style:font-size="26px" font-weight="600">{meetingsSoFar.length}</text>
 			<text x={PX0} y={226} font-size="12" class="muted">people met</text>
-			<text x={PX0 + 150} y={206} font-size="26" font-weight="600" fill="var(--sir-i)"
+			<text x={PX0 + 150} y={206} style:font-size="26px" font-weight="600" style:fill="var(--sir-i)"
 				>{focusVictims.length}</text
 			>
 			<text x={PX0 + 150} y={226} font-size="12" class="muted">infected by them</text>
@@ -431,52 +465,67 @@
 			stroke="var(--sir-i)"
 			stroke-width="2"
 		/>
-		<Label
-			x={Math.min(sx(peak.day) + 8, PX1 - 40)}
-			y={sy(peak.i) - 8}
-			text="peak"
-			size={11}
-			anchor="start"
-			color="var(--sir-i)"
-		/>
+		{#if peakLabel.leader}
+			<line
+				x1={sx(peak.day)}
+				x2={peakLabel.x}
+				y1={sy(peak.i) - 5}
+				y2={peakLabel.y + 4}
+				stroke="var(--sir-i)"
+				stroke-width="1"
+				opacity="0.7"
+			/>
+		{/if}
+		<Label x={peakLabel.x} y={peakLabel.y} text="peak" size={11} color="var(--sir-i)" />
 	{/if}
 
 	{#if view === 'full'}
-		<!-- each case now infects: R = R0 × share susceptible -->
-		<g>
-			<text x={PX0} y={436} font-size="13" font-weight="600">Each case now infects</text>
-			<text
-				x={PX1}
-				y={436}
-				font-size="13"
-				font-weight="600"
-				text-anchor="end"
-				fill={rNow > 1 ? 'var(--sir-i)' : 'var(--sir-s)'}
-				style:font-variant-numeric="tabular-nums">{rNow.toFixed(1)} people</text
-			>
-			<rect x={PX0} y={448} width={PX1 - PX0} height="10" rx="5" fill="var(--stage-grid)" />
-			<rect
-				x={PX0}
-				y={448}
-				width={Math.max(0, gx(Math.min(rNow, gaugeMax)) - PX0)}
-				height="10"
-				rx="5"
-				fill={rNow > 1 ? 'var(--sir-i)' : 'var(--sir-s)'}
-			/>
-			<line x1={gx(1)} x2={gx(1)} y1={442} y2={464} stroke="var(--stage-ink)" stroke-width="1.5" />
-			<text x={gx(1)} y={478} font-size="11" text-anchor="middle" class="muted">1</text>
-			<text x={PX0} y={496} font-size="11" class="muted">
-				R₀ {opts.r0.toFixed(1)} × {Math.round((100 * sample.s) / POPULATION)}% still susceptible
-			</text>
-			<text x={PX1} y={496} font-size="11" class="muted" text-anchor="end">
-				{sample.i === 0
-					? 'nobody is infectious now'
-					: rNow > 1
-						? 'above 1: growing'
-						: 'below 1: shrinking'}
-			</text>
-		</g>
-		<Label x={PX0} y={540} text={status} size={13} anchor="start" />
+		<!-- each case now infects: R = R0 × share susceptible (hidden before R0 is introduced) -->
+		{#if showGauge}
+			<g>
+				<text x={PX0} y={436} font-size="13" font-weight="600">Each case now infects</text>
+				<text
+					x={PX1}
+					y={436}
+					font-size="13"
+					font-weight="600"
+					text-anchor="end"
+					style:fill={rColor}
+					style:font-variant-numeric="tabular-nums">{rShown.toFixed(1)} people</text
+				>
+				<rect x={PX0} y={448} width={PX1 - PX0} height="10" rx="5" fill="var(--stage-grid)" />
+				<rect
+					x={PX0}
+					y={448}
+					width={Math.max(0, gx(Math.min(rNow, gaugeMax)) - PX0)}
+					height="10"
+					rx="5"
+					fill={rColor}
+				/>
+				<line
+					x1={gx(1)}
+					x2={gx(1)}
+					y1={442}
+					y2={464}
+					stroke="var(--stage-ink)"
+					stroke-width="1.5"
+				/>
+				<text x={gx(1)} y={478} font-size="11" text-anchor="middle" class="muted">1</text>
+				<text x={PX0} y={496} font-size="11" class="muted">
+					R₀ {opts.r0.toFixed(1)} × {Math.round((100 * sample.s) / POPULATION)}% still susceptible
+				</text>
+				<text x={PX1} y={496} font-size="11" class="muted" text-anchor="end">
+					{sample.i === 0
+						? 'nobody is infectious now'
+						: rShown > 1
+							? 'above 1: growing'
+							: rShown < 1
+								? 'below 1: shrinking'
+								: 'about 1: the turning point'}
+				</text>
+			</g>
+		{/if}
+		<Label x={PX0} y={showGauge ? 540 : 436} text={status} size={13} anchor="start" />
 	{:else}
 		<Label x={PX0} y={568} text={status} size={12} anchor="start" muted />
 	{/if}

@@ -65,7 +65,7 @@ export const spec: ExplainerSpec = {
 			chapter: 'spread',
 			title: 'A few cases in a crowd',
 			scene: 'crowd',
-			hints: { view: 'full', initial: 3, seed: 4 },
+			hints: { view: 'full', initial: 3, seed: 4, gauge: false },
 			duration: 22,
 			controls: [rerun],
 			body: `
@@ -163,7 +163,8 @@ export const spec: ExplainerSpec = {
 <li>raise R<sub>0</sub>: the peak comes sooner, is higher, and fewer people escape;</li>
 <li>lower it towards 1: a long, low wave — or none at all;</li>
 <li>change only the infectious period, keeping R<sub>0</sub> the same (the page lowers the chance per meeting to make up for it): the epidemic plays out faster or slower, but about the same number of people catch it in the end.</li>
-</ul>`
+</ul>
+<p>Moving a slider shows the new outbreak at the same moment; press <em>Run again</em> to watch one from day 0.</p>`
 		},
 		{
 			id: 'peak',
