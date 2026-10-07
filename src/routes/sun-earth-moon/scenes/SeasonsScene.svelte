@@ -93,6 +93,17 @@
 	// Ecliptic longitude of the Earth = Sun's longitude + 180°; with +X at 90°
 	// the angle from +X towards +Z is L + 90°.
 	const earthAngle = (day: number) => (sunLongitude(day) + 90) * RAD;
+	const wrap180 = (x: number) => ((((x + 180) % 360) + 360) % 360) - 180;
+	/**
+	 * The (fractional) day of the year on which the Sun's longitude is `L`: the
+	 * inverse of `sunLongitude`, which is not uniform (Kepler's second law), so a
+	 * few Newton steps from the uniform guess.
+	 */
+	function dayAtLongitude(L: number) {
+		let d = MARCH_EQUINOX_DAY + (L / 360) * YEAR;
+		for (let i = 0; i < 4; i++) d += (wrap180(L - sunLongitude(d)) / 360) * YEAR;
+		return ((d % YEAR) + YEAR) % YEAR;
+	}
 	/** Distance from the Sun in orbit radii: 1 in the orbit view, eccentric (to scale) in the distance view. */
 	const radial = (day: number) => 1 + k * (sunDistance(day) - 1);
 	function orbitPoint(day: number) {
@@ -108,8 +119,17 @@
 	const dec = $derived(declination(L));
 	const E = $derived(orbitPoint(day));
 	const SEASONS = ['spring', 'summer', 'autumn', 'winter'];
-	const north = $derived(SEASONS[Math.floor(L / 90) % 4]);
-	const south = $derived(SEASONS[(Math.floor(L / 90) + 2) % 4]);
+	const EVENTS = ['March equinox', 'June solstice', 'September equinox', 'December solstice'];
+	// Seasons are named from the Sun's longitude at noon on the date; within 1° of a
+	// quarter point (about a day either side) the date is named after the event, and
+	// the season it starts.
+	const Lnoon = $derived(sunLongitude(day + 0.5));
+	const quarter = $derived(Math.round(Lnoon / 90) % 4);
+	const event = $derived(Math.abs(wrap180(Lnoon - quarter * 90)) < 1 ? EVENTS[quarter] : null);
+	const seasonIndex = $derived(event ? quarter : Math.floor(Lnoon / 90) % 4);
+	const north = $derived(SEASONS[seasonIndex]);
+	const south = $derived(SEASONS[(seasonIndex + 2) % 4]);
+	const seasonLine = $derived(event ?? `Northern ${north} · southern ${south}`);
 
 	// ---- the globe ---------------------------------------------------------------
 	const AXIS: V3 = [Math.sin(TILT * RAD), Math.cos(TILT * RAD), 0];
@@ -239,8 +259,17 @@
 			// inside the ellipse in the orbit view, outside the circle in the distance view
 			const r = orbitR * lerp(0.8, 1.11, k);
 			const p = proj([r * Math.cos(a), 0, r * Math.sin(a)]);
-			const x = SX + p.x;
-			const y = SY + p.y + 4;
+			// Pushed clear of the big Earth when it sits on the label.
+			let x = SX + p.x;
+			let y = SY + p.y + 4;
+			const dx = x - E.x;
+			const dy = y - 4 - E.y;
+			const dl = Math.hypot(dx, dy) || 1;
+			const clear = globeR + 16;
+			if (dl < clear) {
+				x = E.x + (dx / dl) * clear;
+				y = E.y + (dy / dl) * clear + 4;
+			}
 			const ta = earthAngle(MONTH_START[i]);
 			const tp = proj([Math.cos(ta), 0, Math.sin(ta)]);
 			const tl = Math.hypot(tp.x, tp.y) || 1;
@@ -254,7 +283,7 @@
 					x2: tick.x + (5 * tp.x) / tl,
 					y2: tick.y + (5 * tp.y) / tl
 				},
-				opacity: 0.2 + 0.8 * near(x, y - 4, globeR + 4, globeR + 22)
+				opacity: 1
 			};
 		})
 	);
@@ -268,7 +297,7 @@
 	];
 	const ghosts = $derived(
 		SEASON_MARKS.map((m) => {
-			const p = orbitPoint(MARCH_EQUINOX_DAY + (m.L / 360) * YEAR);
+			const p = orbitPoint(dayAtLongitude(m.L));
 			const g = globe(p.x, p.y, ghostR, p.a, false);
 			const ly = m.id === 'mar' ? p.y - 70 : m.id === 'sep' ? p.y + 68 : p.y + 72;
 			return {
@@ -378,7 +407,7 @@
 	const leanLine = $derived(
 		Math.abs(dec) < 0.5
 			? 'Neither half leans towards the Sun'
-			: `The ${dec > 0 ? 'northern' : 'southern'} half leans ${Math.abs(dec) < 12 ? 'slightly ' : ''}towards the Sun`
+			: `The ${dec > 0 ? 'northern' : 'southern'} half leans ${Math.abs(dec) < 12 ? 'slightly ' : Math.abs(dec) > 23.3 ? 'most ' : ''}towards the Sun`
 	);
 	const overhead = $derived(
 		Math.abs(dec) < 0.05
@@ -394,7 +423,8 @@
 		ROWS.map((r) => {
 			// At an equinox the Sun circles the poles on the horizon: no meaningful day length.
 			const horizon = r.lat !== 0 && Math.abs(dec) < 0.5;
-			const h = horizon ? 12 : dayLength(r.lat, dec);
+			// drawn as a faint bar across the whole day
+			const h = horizon ? 24 : dayLength(r.lat, dec);
 			const value = horizon
 				? 'Sun on the horizon'
 				: h >= 23.95
@@ -413,7 +443,7 @@
 		const Z = -(p.y - SY) / Math.max(sinE, 0.2);
 		const phi = Math.atan2(Z, X) / RAD;
 		const Lp = (((phi - 90) % 360) + 360) % 360;
-		setParam('day', wrapDay(MARCH_EQUINOX_DAY + (Lp / 360) * YEAR));
+		setParam('day', wrapDay(dayAtLongitude(Lp)));
 	}
 	function onkey(step: number | 'start' | 'end') {
 		if (step === 'start') return setParam('day', 0);
@@ -478,12 +508,12 @@
 
 {#snippet earth(g: ReturnType<typeof globe>)}
 	<circle cx={g.cx} cy={g.cy} r={g.r} fill="var(--sky-ocean)" />
-	<path d={g.cap} fill="#e9f1f8" opacity="0.85" />
+	<path d={g.cap} fill="var(--sky-moon)" opacity="0.85" />
 	{#each g.lines as l (l.id)}
 		<path
 			d={l.d}
 			fill="none"
-			stroke="#ffffff"
+			stroke="var(--sky-moon)"
 			stroke-width={l.main ? 1.2 : 1}
 			stroke-dasharray={l.main ? undefined : '3 3'}
 			opacity={l.main ? 0.7 : 0.85}
@@ -567,7 +597,7 @@
 			<!-- dark on the fixed Sun colour in both themes -->
 			<path
 				d="M{centre.x - 5} {centre.y}h10M{centre.x} {centre.y - 5}v10"
-				stroke="#2a2410"
+				stroke="var(--sky-night-solid)"
 				stroke-width="1.4"
 			/>
 			{@render txt(SX, SY - 62, '+ centre of the orbit:', 11, {
@@ -601,7 +631,7 @@
 		value={day}
 		min={0}
 		max={364}
-		valuetext="{dateText(day)}: northern {north}, southern {south}"
+		valuetext="{dateText(day)}{event ? `, ${event}` : ''}: northern {north}, southern {south}"
 		{onmove}
 		{onkey}
 	/>
@@ -649,8 +679,13 @@
 	{#if orbitW > 0.01}
 		<g opacity={orbitW}>
 			{@render txt(PX, 92, dateText(day), 28, { weight: 600 })}
-			{@render txt(PX, 126, `Northern ${north} · southern ${south}`, 16, { weight: 600 })}
-			{@render txt(PX, 148, leanLine, 13, { muted: true })}
+			{@render txt(PX, 126, seasonLine, 16, { weight: 600 })}
+			{#if event}
+				{@render txt(PX, 148, `Northern ${north} and southern ${south} begin`, 13)}
+				{@render txt(PX, 166, leanLine, 13, { muted: true })}
+			{:else}
+				{@render txt(PX, 148, leanLine, 13, { muted: true })}
+			{/if}
 
 			{@render txt(PX, 192, 'Sun overhead at noon', 12, { muted: true })}
 			<circle
@@ -715,9 +750,17 @@
 				{ muted: true }
 			)}
 			{@render txt(QX, 186, `${FULL_MONTHS[monthIndex]}: ${closeness} —`, 14, { weight: 600 })}
-			{@render txt(QX, 206, `and ${north} in the north, ${south} in the south`, 14, {
-				weight: 600
-			})}
+			{@render txt(
+				QX,
+				206,
+				event
+					? `and the ${event}: northern ${north} begins`
+					: `and ${north} in the north, ${south} in the south`,
+				14,
+				{
+					weight: 600
+				}
+			)}
 
 			{@render txt(QX, 232, spread, 12, { muted: true })}
 			{@render txt(QX, 262, 'Daily sunshine, compared with its yearly average', 12, {

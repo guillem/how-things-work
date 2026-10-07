@@ -94,7 +94,7 @@ export const spec: ExplainerSpec = {
 			controls: [day],
 			body: `
 <p>The Earth goes round the Sun once a year. Its spin axis is not upright: it is tilted by about 23.4° from upright (from the perpendicular to the plane of its orbit) — and, crucially, it keeps pointing the <em>same way in space</em> all year (towards the North Star).</p>
-<p>So in June the northern half of the Earth leans towards the Sun, and in December it leans away. The moments of greatest lean, around 21 June and 21 December, are the <dfn data-def="The two moments a year, around 21 June and 21 December, when one hemisphere leans most towards the Sun: the longest day in one hemisphere and the shortest in the other.">solstices</dfn>. Halfway between, in March and September, neither half leans towards it: those are the <dfn data-def="The two moments a year, around 20 March and 22 September, when the Sun is overhead at the equator and day and night are equal everywhere.">equinoxes</dfn>.</p>
+<p>So in June the northern half of the Earth leans towards the Sun, and in December it leans away. The moments of greatest lean, around 21 June and 21 December, are the <dfn data-def="The two moments a year, around 21 June and 21 December, when one hemisphere leans most towards the Sun: the longest day in one hemisphere and the shortest in the other.">solstices</dfn>. Halfway between, in March and September, neither half leans towards it: those are the <dfn data-def="The two moments a year, around 20 March and 22–23 September, when the Sun is overhead at the equator and day and night are equal everywhere.">equinoxes</dfn>.</p>
 <p>Drag the Earth round its orbit and watch the lit half of the globe: in June the North Pole is in sunlight all day, in December in darkness.</p>`
 		},
 		{

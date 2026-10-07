@@ -125,7 +125,14 @@
 		const m = Math.round((((h % 24) + 24) % 24) * 60);
 		return `${Math.floor(m / 60) % 24}:${String(m % 60).padStart(2, '0')}`;
 	};
-	const x2 = (v: number) => (v <= 0 ? '0' : v < 0.01 ? 'under 0.01' : v.toFixed(2));
+	const x2 = (v: number) => (v < 1e-6 ? '0' : v < 0.01 ? 'under 0.01' : v.toFixed(2));
+	/** A percentage that never shows a lit thing as "0%". */
+	const pctText = (v: number) => (v > 0 && v < 0.005 ? 'under 1%' : `${Math.round(v * 100)}%`);
+	/**
+	 * At a pole within half a degree of an equinox the Sun circles along the
+	 * horizon: a day length means nothing there (same rule as the seasons scene).
+	 */
+	const onHorizon = (la: number, de: number) => Math.abs(la) > 89.5 && Math.abs(de) < 0.5;
 
 	/** Spreads label positions (sorted by wanted y) at least `gap` apart inside [lo, hi]. */
 	function dodge<T extends { y: number }>(items: T[], gap: number, lo: number, hi: number): T[] {
@@ -292,13 +299,27 @@
 	const axis = $derived.by(() => {
 		const N = globe.N;
 		const s = (k: number) => proj([N[0] * k, N[1] * k, N[2] * k]);
+		// A pole seen nearly end-on projects inside the disc: stretch its stub so it
+		// always sticks out past the limb, and put the letter beyond it.
+		const pole = (sign: number) => {
+			const p0 = s(sign);
+			const dx = p0.x - GX;
+			const dy = p0.y - GY;
+			const len = Math.hypot(dx, dy) || 1;
+			const reach = Math.max(1.32 * len, GR + 14);
+			const end = { x: GX + (dx / len) * reach, y: GY + (dy / len) * reach };
+			const label = { x: GX + (dx / len) * (reach + 12), y: GY + (dy / len) * (reach + 12) };
+			return { p0, end, label };
+		};
+		const n = pole(1);
+		const so = pole(-1);
 		return {
-			n0: s(1),
-			n1: s(1.32),
-			s0: s(-1),
-			s1: s(-1.32),
-			nl: s(1.46),
-			sl: s(-1.46),
+			n0: n.p0,
+			n1: n.end,
+			s0: so.p0,
+			s1: so.end,
+			nl: n.label,
+			sl: so.label,
 			nFront: dot(N, cam.view) > 0
 		};
 	});
@@ -343,9 +364,11 @@
 		return dodge(items, 15, DY0 + 4, DY1 + 4);
 	});
 
+	const horizonDay = $derived(onHorizon(lat, dDay));
 	const dayTitle = $derived.by(() => {
 		const where = cap(latName(lat));
 		const when = dateText(day);
+		if (horizonDay) return `${where} on ${when}: the Sun skims along the horizon all day`;
 		if (lenDay >= 24) return `${where} on ${when}: the Sun does not set — 24 h of daylight`;
 		if (lenDay <= 0) return `${where} on ${when}: the Sun does not rise — 24 h of night`;
 		return `${where} on ${when}: ${hm(lenDay)} of daylight`;
@@ -368,7 +391,7 @@
 	const BEAM = 64; // beam width (stands for 1 m)
 	const alt = $derived(noonAltitude(lat, dDay));
 	const perM2 = $derived(spreading(alt));
-	const sunUp = $derived(smoothstep(0, 0.2, alt));
+	const sunUp = $derived(onHorizon(lat, dDay) ? 0 : smoothstep(0, 0.2, alt));
 	const beam = $derived.by(() => {
 		const A = rad(Math.max(alt, 0.4));
 		const u = { x: -Math.cos(A), y: -Math.sin(A) }; // towards the Sun
@@ -413,7 +436,8 @@
 		return `M${PX - r} ${GROUND}A${r} ${r} 0 ${large} 1 ${(PX - r * Math.cos(A)).toFixed(1)} ${(GROUND - r * Math.sin(A)).toFixed(1)}`;
 	});
 	const arcLabel = $derived.by(() => {
-		const A = rad(Math.max(alt, 0) / 2);
+		// Never lower than 8° up, so a low Sun's label stays off the ground and the patch.
+		const A = rad(Math.max(alt, 16) / 2);
 		const r = 74;
 		return { x: PX - r * Math.cos(A), y: GROUND - r * Math.sin(A) + 4 };
 	});
@@ -467,14 +491,13 @@
 	};
 
 	/** Only at a pole on the equinox itself: the Sun's centre runs along the horizon. */
-	const grazing = $derived(Math.abs(alt) < 0.05);
+	const grazing = $derived(onHorizon(lat, dDay));
 	const angleTitle = $derived.by(() => {
 		if (grazing)
 			return `${cap(latName(lat))} on ${dateText(day)}: the Sun skims along the horizon all day`;
 		if (alt <= 0)
 			return `${cap(latName(lat))} on ${dateText(day)}: the Sun stays below the horizon all day`;
-		const pct = Math.round(perM2 * 100);
-		return `Noon Sun ${altText(alt)} high: each m² gets ${pct}% of the overhead value`;
+		return `Noon Sun ${altText(alt)} high: each m² gets ${pctText(perM2)} of the overhead value`;
 	});
 	const angleSub = $derived.by(() => {
 		const where = `${cap(latName(lat))} on ${dateText(day)}`;
@@ -506,7 +529,9 @@
 	const tsy = $derived(scale([0, yMaxTw.current], [TY1, TY0]));
 	const tYTicks = $derived.by(() => {
 		const out: number[] = [];
-		for (let v = 0; v <= yMaxTarget + 1e-9; v += 0.5) out.push(v);
+		// Only ticks inside the (tweened) axis, so none floats above the chart mid-tween.
+		const top = Math.min(yMaxTarget, yMaxTw.current);
+		for (let v = 0; v <= top + 1e-9; v += 0.5) out.push(v);
 		return out;
 	});
 	const tiltCurves = $derived.by(() => {
@@ -574,9 +599,11 @@
 		const nx = Math.sin(e);
 		const ny = -Math.cos(e);
 		const phi = rad(lat);
+		// The real tilt for day lengths at the real setting, so they match the day-length step.
+		const e0 = nearReal ? TILT : tilt;
 		return [
-			{ key: 'jun', cx: SX - 118, sunRight: true, name: 'June solstice', dec: tilt },
-			{ key: 'dec', cx: SX + 118, sunRight: false, name: 'December solstice', dec: -tilt }
+			{ key: 'jun', cx: SX - 118, sunRight: true, name: 'June solstice', dec: e0 },
+			{ key: 'dec', cx: SX + 118, sunRight: false, name: 'December solstice', dec: -e0 }
 		].map((g) => {
 			const c = { x: g.cx + Math.sin(phi) * ER * nx, y: SY + Math.sin(phi) * ER * ny };
 			const hx = Math.cos(phi) * ER * Math.cos(e);
@@ -591,11 +618,17 @@
 			const night = g.sunRight
 				? `M${g.cx} ${SY - ER}A${ER} ${ER} 0 0 0 ${g.cx} ${SY + ER}Z`
 				: `M${g.cx} ${SY - ER}A${ER} ${ER} 0 0 1 ${g.cx} ${SY + ER}Z`;
-			const len = dayLength(lat, g.dec);
+			const len = lenText(lat, g.dec);
+			// Round caps would draw a zero-length segment as a dot.
+			const seg = (p: { x: number; y: number }, q: { x: number; y: number }) =>
+				Math.hypot(q.x - p.x, q.y - p.y) > 0.5;
 			return {
 				...g,
 				lit,
 				dark,
+				showLit: seg(lit.p, lit.q),
+				showDark: seg(dark.p, dark.q),
+				name: tilt < 0.25 ? g.name.split(' ')[0] : g.name,
 				night,
 				n0: { x: g.cx + nx * ER * 1.36, y: SY + ny * ER * 1.36 },
 				n1: { x: g.cx - nx * ER * 1.36, y: SY - ny * ER * 1.36 },
@@ -614,8 +647,11 @@
 			ly: SY - r - 4
 		};
 	});
-	const lenText = (h: number) =>
-		h >= 24 ? 'Sun never sets' : h <= 0 ? 'Sun never rises' : `${hm(h)} of daylight`;
+	const lenText = (la: number, de: number) => {
+		if (onHorizon(la, de)) return 'Sun on the horizon';
+		const h = dayLength(la, de);
+		return h >= 24 ? 'Sun never sets' : h <= 0 ? 'Sun never rises' : `${hm(h)} of daylight`;
+	};
 </script>
 
 {#snippet txt(
@@ -717,22 +753,30 @@
 				stroke-dasharray="3 4"
 				opacity="0.55"
 			/>
-			<!-- visible half -->
-			<path
-				d={circle.frontDay + circle.frontNight}
-				fill="none"
-				stroke="var(--sky-moon)"
-				stroke-width="7.5"
-				stroke-linecap="round"
-			/>
-			<path
-				d={circle.frontNight}
-				fill="none"
-				stroke={DARK}
-				stroke-width="4"
-				stroke-linecap="round"
-			/>
-			<path d={circle.frontDay} fill="none" stroke={SUN} stroke-width="4" stroke-linecap="round" />
+			<!-- visible half (clipped to the disc: near the limb the thick stroke would stick out) -->
+			<g clip-path="url(#sunlight-disc)">
+				<path
+					d={circle.frontDay + circle.frontNight}
+					fill="none"
+					stroke="var(--sky-moon)"
+					stroke-width="7.5"
+					stroke-linecap="round"
+				/>
+				<path
+					d={circle.frontNight}
+					fill="none"
+					stroke={DARK}
+					stroke-width="4"
+					stroke-linecap="round"
+				/>
+				<path
+					d={circle.frontDay}
+					fill="none"
+					stroke={SUN}
+					stroke-width="4"
+					stroke-linecap="round"
+				/>
+			</g>
 			<!-- poles -->
 			{#if axis.nFront}
 				<line
@@ -771,11 +815,13 @@
 			{@render txt(GX + GR + 6, GY + GR * 0.78, 'night side', 12, { muted: true })}
 
 			<!-- 24 hours at that latitude -->
-			{@render txt(BX0, BY - 10, `One day at ${latName(lat)} (local solar time)`, 12, {
+			{@render txt(BX0, BY - 15, `One day at ${latName(lat)} (local solar time)`, 12, {
 				muted: true
 			})}
 			<rect x={BX0} y={BY} width={BX1 - BX0} height="16" rx="3" fill={DARK} />
-			{#if lenDay > 0}
+			{#if horizonDay}
+				<rect x={BX0} y={BY} width={BX1 - BX0} height="16" rx="3" fill={SUN} opacity="0.45" />
+			{:else if lenDay > 0}
 				<rect
 					x={bx(12 - lenDay / 2)}
 					y={BY}
@@ -817,8 +863,8 @@
 			{@render txt(
 				(BX0 + BX1) / 2,
 				BY + 58,
-				Math.abs(lat) > 89.5 && Math.abs(dDay) < 0.05
-					? 'At the pole on the equinox the Sun skims along the horizon all day'
+				horizonDay
+					? 'At the pole near an equinox the Sun circles along the horizon all day'
 					: lenDay >= 24
 						? 'Daylight all 24 hours: the Sun circles the sky without setting'
 						: lenDay <= 0
@@ -909,6 +955,17 @@
 					{/each}
 				</g>
 				{@render sunGlyph(sunPos.x, sunPos.y, 20)}
+				<!-- bracket across the beam: its width never changes (clipped: part of a
+				     low beam has already reached the ground) -->
+				<line
+					x1={beam.b1.x}
+					y1={beam.b1.y}
+					x2={beam.b2.x}
+					y2={beam.b2.y}
+					stroke="var(--stage-ink)"
+					stroke-width="1.5"
+					opacity={sunUp}
+				/>
 			</g>
 			<!-- ground -->
 			<rect
@@ -934,15 +991,6 @@
 						stroke-width="0.75"
 					/>
 				</g>
-				<!-- bracket across the beam: its width never changes -->
-				<line
-					x1={beam.b1.x}
-					y1={beam.b1.y}
-					x2={beam.b2.x}
-					y2={beam.b2.y}
-					stroke="var(--stage-ink)"
-					stroke-width="1.5"
-				/>
 				{@render txt(beam.bl.x, beam.bl.y + 4, 'beam 1 m wide', 12)}
 				<path d={arcPath} fill="none" stroke="var(--stage-ink)" stroke-width="1.2" />
 				{@render txt(arcLabel.x, arcLabel.y, altText(alt), 13, {
@@ -1000,15 +1048,9 @@
 				stroke="var(--stage-line)"
 			/>
 			<rect x={EX} y={ey(perM2)} width={EW} height={EY1 - ey(perM2)} rx="3" fill={SUN} />
-			{@render txt(
-				EX + EW + 6,
-				Math.min(ey(perM2) + 5, EY1 - 2),
-				`${Math.round(perM2 * 100)}%`,
-				13,
-				{
-					weight: 600
-				}
-			)}
+			{@render txt(EX + EW + 6, Math.min(ey(perM2) + 5, EY1 - 2), pctText(perM2), 13, {
+				weight: 600
+			})}
 			{@render txt(EX - 6, EY0 + 4, '100%', 11, { anchor: 'end', muted: true })}
 			{@render txt(EX + EW / 2, EY1 + 18, 'Sun overhead', 11, { anchor: 'middle', muted: true })}
 			{@render txt(EX + EW / 2, EY1 + 32, '= 100%', 11, { anchor: 'middle', muted: true })}
@@ -1090,24 +1132,28 @@
 				<circle cx={g.cx} cy={SY} r={ER} fill={OCEAN} />
 				<path d={g.night} fill={SHADE} />
 				<circle cx={g.cx} cy={SY} r={ER} fill="none" stroke="var(--stage-line)" />
-				<line
-					x1={g.dark.p.x}
-					y1={g.dark.p.y}
-					x2={g.dark.q.x}
-					y2={g.dark.q.y}
-					stroke={DARK}
-					stroke-width="4"
-					stroke-linecap="round"
-				/>
-				<line
-					x1={g.lit.p.x}
-					y1={g.lit.p.y}
-					x2={g.lit.q.x}
-					y2={g.lit.q.y}
-					stroke={SUN}
-					stroke-width="4"
-					stroke-linecap="round"
-				/>
+				{#if g.showDark}
+					<line
+						x1={g.dark.p.x}
+						y1={g.dark.p.y}
+						x2={g.dark.q.x}
+						y2={g.dark.q.y}
+						stroke={DARK}
+						stroke-width="4"
+						stroke-linecap="round"
+					/>
+				{/if}
+				{#if g.showLit}
+					<line
+						x1={g.lit.p.x}
+						y1={g.lit.p.y}
+						x2={g.lit.q.x}
+						y2={g.lit.q.y}
+						stroke={SUN}
+						stroke-width="4"
+						stroke-linecap="round"
+					/>
+				{/if}
 				<line
 					x1={g.n1.x}
 					y1={g.n1.y}
@@ -1118,7 +1164,7 @@
 				/>
 				{@render txt(g.nl.x, g.nl.y + 4, 'N', 12, { anchor: 'middle', weight: 600 })}
 				{@render txt(g.cx, SY + ER + 40, g.name, 11, { anchor: 'middle', muted: true })}
-				{@render txt(g.cx, SY + ER + 56, lenText(g.len), 12, { anchor: 'middle', weight: 600 })}
+				{@render txt(g.cx, SY + ER + 56, g.len, 12, { anchor: 'middle', weight: 600 })}
 			{/each}
 			{#if !noTilt}
 				<path d={tiltArc.d} fill="none" stroke="var(--stage-ink)" stroke-width="1.2" />
@@ -1183,7 +1229,7 @@
 			{@render txt(
 				TX0 - 36,
 				TY1 + 54,
-				`${dateText(drift)}: ${x2(tiltToday)} × the equator at an equinox · ${lenText(dayLength(lat, dTilt))}`,
+				`${dateText(drift)}: ${x2(tiltToday)} × the equator at an equinox · ${lenText(lat, dTilt)}`,
 				12
 			)}
 		</g>
@@ -1191,8 +1237,8 @@
 
 	<defs>
 		<radialGradient id="sunlight-sheen">
-			<stop offset="0" stop-color="#ffffff" stop-opacity="0.35" />
-			<stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+			<stop offset="0" stop-color="var(--sky-moon)" stop-opacity="0.35" />
+			<stop offset="1" stop-color="var(--sky-moon)" stop-opacity="0" />
 		</radialGradient>
 		<clipPath id="sunlight-disc"><circle cx={GX} cy={GY} r={GR} /></clipPath>
 		<clipPath id="sunlight-sky"><rect x="16" y="80" width="480" height={GROUND - 80} /></clipPath>
