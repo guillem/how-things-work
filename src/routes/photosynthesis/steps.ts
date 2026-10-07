@@ -88,9 +88,9 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>Light arrives as <dfn data-def="A particle of light. Its energy is inversely proportional to its wavelength: blue photons carry more energy than red ones.">photons</dfn>, and a pigment molecule can only absorb a photon whose energy matches one of its electronic jumps.</p>
-<p><strong>Chlorophyll <i>a</i></strong>, the main pigment, absorbs strongly in the blue-violet (around 430 nm) and the red (around 660 nm). <strong>Chlorophyll <i>b</i></strong> and the yellow-orange <strong>carotenoids</strong> widen the net a little. In between, green light (around 500–570 nm) is mostly reflected or passed through — which is why leaves look green.</p>
+<p><strong>Chlorophyll <i>a</i></strong>, the main pigment, absorbs strongly in the blue-violet (around 430 nm) and the red (around 660 nm). <strong>Chlorophyll <i>b</i></strong> and the yellow-orange <strong>carotenoids</strong> widen the net a little. In between, green light (around 500–570 nm) is absorbed only weakly, so more of it is reflected or passed through than any other colour — which is why leaves look green.</p>
 <p>Try sliding through the spectrum.</p>`,
-			notes: `<p>The absorption peaks quoted are for chlorophyll in solvent; inside a protein scaffold they shift a few nanometres (the reaction-centre pairs P680 and P700 are named after their peaks in nm). The classic evidence that red and blue light drive photosynthesis is Engelmann's 1882 experiment: oxygen-seeking bacteria crowded around the parts of an alga lit by red and blue light.</p>`
+			notes: `<p>The absorption peaks quoted are for chlorophyll in solvent; bound to proteins in the membrane, the red peak shifts by some 15–20 nm to around 675–680 nm (the reaction-centre pairs P680 and P700 are named after their absorption peaks in nm). An intact leaf still absorbs most of the green light that enters it, because the light is scattered back and forth through many layers of cells — but far less of it than red or blue. The classic evidence that red and blue light drive photosynthesis is Engelmann's 1882 experiment: oxygen-seeking bacteria crowded around the parts of an alga lit by red and blue light.</p>`
 		},
 		{
 			id: 'antenna',
@@ -100,9 +100,9 @@ export const spec: ExplainerSpec = {
 			hints: { focus: 'psii', phase: 'antenna' },
 			controls: [light],
 			body: `
-<p>Embedded in the thylakoid membrane are two large protein complexes, <strong>photosystem II</strong> and <strong>photosystem I</strong> (named in order of discovery, not of use). Each is surrounded by a <dfn data-def="Light-harvesting complexes: hundreds of chlorophyll and carotenoid molecules held by proteins, which funnel absorbed energy to the reaction centre.">light-harvesting antenna</dfn> of a few hundred pigment molecules.</p>
-<p>When any antenna pigment absorbs a photon, one of its electrons jumps to a higher energy level. That excitation hops from pigment to pigment in trillionths of a second until it reaches the <dfn data-def="A special pair of chlorophyll a molecules at the heart of a photosystem, where excitation energy is converted into an actual electron transfer.">reaction centre</dfn> — in photosystem II, a chlorophyll pair called <strong>P680</strong>.</p>
-<p>P680 is where light energy turns into electrical energy: the excited electron is pulled away from the pair and handed down a chain of acceptors.</p>`
+<p>Among the protein complexes embedded in the thylakoid membrane are two light-driven ones, <strong>photosystem II</strong> and <strong>photosystem I</strong> (named in order of discovery, not of use). Each is surrounded by a <dfn data-def="Light-harvesting complexes: hundreds of chlorophyll and carotenoid molecules held by proteins, which funnel absorbed energy to the reaction centre.">light-harvesting antenna</dfn> of a few hundred pigment molecules.</p>
+<p>When any antenna pigment absorbs a photon, one of its electrons jumps to a higher energy level. That excitation hops from pigment to pigment in trillionths of a second until it reaches the <dfn data-def="The protein–pigment core of a photosystem: a special pair of chlorophyll a molecules, which acts as the primary electron donor, together with the chain of electron acceptors beside it.">reaction centre</dfn>. At its heart sits a special pair of chlorophyll molecules — in photosystem II, called <strong>P680</strong>.</p>
+<p>P680 is where light energy turns into electrical energy: the excited electron is pulled away from the pair and handed down the reaction centre's chain of acceptors.</p>`
 		},
 		{
 			id: 'water',
@@ -115,7 +115,7 @@ export const spec: ExplainerSpec = {
 <p>Having lost an electron, P680<sup>+</sup> is one of the strongest oxidising agents in biology — strong enough to steal electrons from water.</p>
 <p>It does so through the <dfn data-def="A cluster of four manganese ions and one calcium ion (Mn₄CaO₅) on the lumen side of photosystem II, which binds two water molecules and strips four electrons from them.">oxygen-evolving complex</dfn>, a tiny cluster of manganese and calcium. After four photons have pulled four electrons out of the cluster, it in turn takes four electrons from two water molecules:</p>
 <p class="formula"><strong>2 H<sub>2</sub>O → O<sub>2</sub> + 4 H<sup>+</sup> + 4 e<sup>−</sup></strong></p>
-<p>The oxygen is a waste product that diffuses out of the leaf. The protons are released into the lumen, where they will matter later. The electrons replace the ones P680 keeps giving away.</p>`,
+<p>The oxygen is a by-product: the plant uses some of it in its own respiration, and the surplus diffuses out through the stomata. The protons are released into the lumen, where they will matter later. The electrons replace the ones P680 keeps giving away.</p>`,
 			notes: `<p>This reaction is the source of essentially all the oxygen in Earth's atmosphere. The manganese cluster cycles through five oxidation states (S<sub>0</sub>–S<sub>4</sub>), one step per photon, and releases O<sub>2</sub> only on the fourth.</p>`
 		},
 		{
@@ -128,8 +128,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The electron leaving P680 is handed to <strong>plastoquinone</strong> (PQ), a small fat-soluble molecule that lives inside the membrane. PQ collects two electrons plus two protons from the stroma and drifts over to the <strong>cytochrome b<sub>6</sub>f</strong> complex.</p>
 <p>Cytochrome b<sub>6</sub>f takes the electrons and releases the protons on the <em>other</em> side, into the lumen. Then it passes the electrons to <strong>plastocyanin</strong> (PC), a small copper-containing protein that ferries them along the lumen to photosystem I.</p>
-<p>Each hand-off is downhill in energy. Rather than being wasted as heat, that drop is used to move protons from the stroma into the lumen — pumping charge like a battery being filled.</p>`,
-			notes: `<p>Cytochrome b<sub>6</sub>f runs a “Q-cycle” that recycles one of the two electrons back into the plastoquinone pool, so that roughly two protons are moved into the lumen for every electron that passes through. This nearly doubles the proton yield of the chain.</p>`
+<p>Each hand-off is downhill in energy, and the biggest drop — from plastoquinone through cytochrome b<sub>6</sub>f — is not simply lost as heat: it is used to move protons from the stroma into the lumen, charging the membrane like a battery being filled.</p>`,
+			notes: `<p>Cytochrome b<sub>6</sub>f runs a “Q-cycle” that recycles one of the two electrons back into the plastoquinone pool, so that this step moves two protons into the lumen for every electron that passes through, rather than one. That raises the whole chain from two to three protons per electron — from 8 to 12 per O<sub>2</sub> released.</p>`
 		},
 		{
 			id: 'psi',
@@ -140,10 +140,10 @@ export const spec: ExplainerSpec = {
 			controls: [light],
 			body: `
 <p>By the time an electron reaches <strong>photosystem I</strong> it has spent most of its energy. So the reaction centre here, <strong>P700</strong>, absorbs a second photon to kick it back up — higher than before.</p>
-<p>The re-energised electron passes through a series of iron–sulfur clusters to <strong>ferredoxin</strong>, a small protein on the stroma side. An enzyme then uses two such electrons to charge up the second energy carrier:</p>
+<p>The re-energised electron passes through a chlorophyll (A<sub>0</sub>), a phylloquinone (A<sub>1</sub>) and three iron–sulfur clusters to <strong>ferredoxin</strong>, a small protein on the stroma side. An enzyme then uses two such electrons to charge up the second energy carrier:</p>
 <p class="formula"><strong>NADP<sup>+</sup> + H<sup>+</sup> + 2 e<sup>−</sup> → NADPH</strong></p>
 <p>NADPH is “reducing power”: a portable pair of high-energy electrons that the Calvin cycle will use to turn CO<sub>2</sub> into sugar. Taking a proton from the stroma also deepens the gradient across the membrane.</p>`,
-			notes: `<p>When the cell needs extra ATP, ferredoxin can send its electron back to cytochrome b<sub>6</sub>f instead of to NADP<sup>+</sup>. This <em>cyclic electron flow</em> pumps more protons (more ATP) without producing NADPH.</p>`
+			notes: `<p>When the cell needs extra ATP, ferredoxin can send its electron back into the plastoquinone pool — and so through cytochrome b<sub>6</sub>f again — instead of to NADP<sup>+</sup>. This <em>cyclic electron flow</em> pumps more protons (more ATP) without producing NADPH.</p>`
 		},
 		{
 			id: 'atp',
@@ -154,7 +154,7 @@ export const spec: ExplainerSpec = {
 			controls: [light],
 			body: `
 <p>Water splitting and cytochrome b<sub>6</sub>f keep pushing protons into the lumen, while NADPH formation removes them from the stroma. In bright light the lumen becomes roughly a thousand times more acidic than the stroma — a difference of about three pH units.</p>
-<p>The only way back out is through <strong>ATP synthase</strong>, a molecular turbine. Protons flowing through it spin a rotor in the membrane; the rotor's shaft forces the enzyme's catalytic head through shape changes that snap ADP and phosphate together into <strong>ATP</strong>.</p>
+<p>The main way back out is through <strong>ATP synthase</strong>, a molecular turbine. Protons flowing through it spin a rotor in the membrane; the rotor's shaft forces the enzyme's catalytic head through shape changes that snap ADP and phosphate together into <strong>ATP</strong>.</p>
 <p>This is <dfn data-def="Peter Mitchell's 1961 hypothesis (Nobel Prize 1978): a proton gradient across a membrane drives ATP synthesis.">chemiosmosis</dfn>, and it is the same mechanism your mitochondria use. One full turn of the rotor makes three ATP.</p>`,
 			notes: `<p>In spinach chloroplasts the rotor ring has 14 subunits, so one rotation lets 14 protons through and yields 3 ATP — about 4.7 protons per ATP. Together with NADPH, this ATP now carries the captured light energy into the stroma.</p>`
 		},
@@ -186,10 +186,10 @@ export const spec: ExplainerSpec = {
 				}
 			],
 			body: `
-<p>Now to the stroma, where the Calvin cycle turns CO<sub>2</sub> into sugar in three stages. It starts with the busiest enzyme on the planet: <strong>RuBisCO</strong>.</p>
+<p>Now to the stroma, where the Calvin cycle turns CO<sub>2</sub> into sugar in three stages. It starts with the most abundant enzyme on the planet — and one of the slowest: <strong>RuBisCO</strong>.</p>
 <p>RuBisCO attaches a CO<sub>2</sub> molecule to a five-carbon sugar, <strong>RuBP</strong> (ribulose-1,5-bisphosphate). The six-carbon product is so unstable that it splits at once into two three-carbon molecules of <strong>3-PGA</strong> (3-phosphoglycerate).</p>
 <p>That is <dfn data-def="Converting inorganic carbon (CO₂) into an organic molecule.">carbon fixation</dfn>: a carbon atom that was floating in the air is now part of a molecule a cell can use.</p>`,
-			notes: `<p>RuBisCO is slow — a few reactions per second — and about one time in four or five it grabs O<sub>2</sub> instead of CO<sub>2</sub>, starting a wasteful side path called photorespiration. Plants compensate by making enormous amounts of it: RuBisCO is probably the most abundant protein on Earth, and C<sub>4</sub> and CAM plants evolved ways to feed it concentrated CO<sub>2</sub>.</p>`
+			notes: `<p>RuBisCO fixes only about three CO<sub>2</sub> per second per active site, and about one time in four or five it grabs O<sub>2</sub> instead of CO<sub>2</sub>, starting a wasteful side path called photorespiration. Plants compensate by making enormous amounts of it — it can be half the soluble protein in a leaf, which makes it probably the most abundant protein on Earth — and C<sub>4</sub> and CAM plants evolved ways to feed it concentrated CO<sub>2</sub>.</p>`
 		},
 		{
 			id: 'reduction',
@@ -198,7 +198,7 @@ export const spec: ExplainerSpec = {
 			scene: 'calvin',
 			hints: { phase: 'reduction' },
 			body: `
-<p>Each 3-PGA is first “primed” with a phosphate from <strong>ATP</strong>, then <dfn data-def="To add electrons to a molecule (here, in the form of a hydride from NADPH). Reduction stores energy; the opposite, oxidation, releases it.">reduced</dfn> by <strong>NADPH</strong>, which donates its high-energy electrons. The result is <strong>G3P</strong> (glyceraldehyde-3-phosphate), a three-carbon sugar.</p>
+<p>Each 3-PGA is first “primed” with a phosphate from <strong>ATP</strong>, then <dfn data-def="To add electrons to a molecule (here, as a hydride from NADPH). Reducing carbon to sugar stores energy; oxidising the sugar back to CO₂, as respiration does, releases it.">reduced</dfn> by <strong>NADPH</strong>, which donates its high-energy electrons. The result is <strong>G3P</strong> (glyceraldehyde-3-phosphate), a three-carbon sugar.</p>
 <p>This is the moment the energy captured from light is locked into a carbon compound. The spent carriers — ADP, phosphate and NADP<sup>+</sup> — drift back to the thylakoids to be recharged.</p>
 <p>For every three CO<sub>2</sub> fixed, six G3P are made. But the cycle cannot give all of them away.</p>`
 		},
@@ -211,7 +211,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Only <strong>one</strong> of the six G3P leaves the cycle as product. The other five — fifteen carbon atoms — are shuffled through a series of enzymes and rebuilt into three molecules of five-carbon RuBP, ready to catch the next three CO<sub>2</sub>. This rearrangement costs three more ATP.</p>
 <p>The carbon bookkeeping balances: 3 RuBP (15 C) + 3 CO<sub>2</sub> (3 C) = 6 G3P (18 C) = 1 G3P out (3 C) + 3 RuBP back (15 C).</p>
-<p>Per turn — one G3P produced — the cycle consumes <strong>9 ATP and 6 NADPH</strong>. The “dark” reactions are not really dark: they run in daylight and stop within minutes without the light reactions feeding them.</p>`
+<p>For each G3P produced — three CO<sub>2</sub> fixed — the cycle consumes <strong>9 ATP and 6 NADPH</strong>. The “dark” reactions are not really dark: they run in daylight and stop within minutes without the light reactions feeding them.</p>`
 		},
 		{
 			id: 'sugar',
@@ -220,8 +220,8 @@ export const spec: ExplainerSpec = {
 			scene: 'calvin',
 			hints: { phase: 'export' },
 			body: `
-<p>Two G3P molecules join to form one six-carbon sugar, so a glucose costs two turns of the cycle: 6 CO<sub>2</sub>, 18 ATP and 12 NADPH.</p>
-<p>In the leaf, little of it stays as free glucose. Some is linked into <strong>starch</strong> grains inside the chloroplast, a store that is broken down again at night. Most is exported from the chloroplast and converted into <strong>sucrose</strong> — table sugar — which travels through the phloem to roots, fruits and growing tips.</p>
+<p>Two G3P molecules join to form one six-carbon sugar, so a glucose costs two rounds of three CO<sub>2</sub> each: 6 CO<sub>2</sub>, 18 ATP and 12 NADPH.</p>
+<p>In the leaf, little of it stays as free glucose. Some is linked into <strong>starch</strong> grains inside the chloroplast, a store that is broken down again at night. The rest is exported from the chloroplast and converted into <strong>sucrose</strong> — table sugar — which travels through the phloem to roots, fruits and growing tips.</p>
 <p>There it becomes everything else: <strong>cellulose</strong> for cell walls, fats, amino acids, and the fuel for the plant's own respiration.</p>`
 		},
 		// ------------------------------------------------------------------ wrap
