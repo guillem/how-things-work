@@ -78,6 +78,15 @@ const explainers: Explainer[] = [
 		accent: '#1971c2',
 		steps: 10,
 		minutes: 15
+	},
+	{
+		slug: 'sun-earth-moon',
+		title: 'Seasons, Moon phases, eclipses and tides',
+		summary:
+			'Tilt the Earth, move it round the Sun and swing the Moon around it: four everyday sky puzzles turn out to be the geometry of three bodies.',
+		accent: '#e67700',
+		steps: 10,
+		minutes: 15
 	}
 ];
 

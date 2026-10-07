@@ -229,6 +229,15 @@ kbd {
 	--mech-heat: #e8590c;
 	--mech-cart: #868e96;
 	--mech-ground: #dee2e6;
+	/* sun, earth and moon */
+	--sky-sun: #fab005;
+	--sky-ocean: #4c8fd6;
+	--sky-land: #5fa35a;
+	--sky-night: rgba(16, 24, 48, 0.55);
+	--sky-moon: #c9ced6;
+	--sky-moon-dark: #4a4f57;
+	--sky-orbit: #b7bcc5;
+	--sky-space: #f1f3f7;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -267,4 +276,12 @@ kbd {
 	--mech-heat: #ff922b;
 	--mech-cart: #868e96;
 	--mech-ground: #343a40;
+	--sky-sun: #ffd43b;
+	--sky-ocean: #3b7bc4;
+	--sky-land: #4f8f4b;
+	--sky-night: rgba(0, 0, 0, 0.6);
+	--sky-moon: #d6dbe2;
+	--sky-moon-dark: #2c3036;
+	--sky-orbit: #50565f;
+	--sky-space: #101217;
 }
