@@ -55,7 +55,7 @@ const moon: Control = {
 	label: 'Days since new Moon',
 	min: 0,
 	max: 29.5,
-	step: 0.5,
+	step: 0.25,
 	default: 4,
 	format: (v) => `${v.toFixed(1)} days`,
 	help: 'Or drag the Moon around the Earth.'
@@ -68,6 +68,9 @@ const spin: Control = {
 	default: true,
 	help: 'Off: move things yourself.'
 };
+
+/** The same toggle where nothing can be moved by hand: off just freezes time. */
+const pause: Control = { ...spin, help: undefined };
 
 export const spec: ExplainerSpec = {
 	slug: 'sun-earth-moon',
@@ -201,7 +204,7 @@ export const spec: ExplainerSpec = {
 			scene: 'tides',
 			hints: { phase: 'moon' },
 			duration: 24,
-			controls: [spin],
+			controls: [pause],
 			body: `
 <p>The Moon's gravity pulls on the whole Earth, but not equally: it pulls the near side a little more than the centre, and the centre a little more than the far side. That <em>difference</em> in pull stretches the oceans into two bulges — one facing the Moon, one on the opposite side.</p>
 <p>As the Earth turns, a coast passes through both bulges and both dips each day: <strong>two high tides and two low tides</strong>, about 12 hours 25 minutes apart, because the Moon moves on a little each day.</p>`,
