@@ -8,7 +8,7 @@
 	import { Clock } from './clock.svelte';
 	import Controls from './Controls.svelte';
 	import ParamControls from './ParamControls.svelte';
-	import type { ExplainerSpec, Params, StageProps } from './types';
+	import type { ExplainerSpec, Params, ParamValue, StageProps } from './types';
 
 	interface Props {
 		spec: ExplainerSpec;
@@ -57,8 +57,12 @@
 		playing: clock.playing && !reduced,
 		reduced,
 		dark: theme.current === 'dark',
-		params
+		params,
+		setParam
 	});
+	function setParam(id: string, value: ParamValue) {
+		params[id] = value;
+	}
 
 	// ---- navigation ----------------------------------------------------------
 	function go(i: number, { announce = true } = {}) {

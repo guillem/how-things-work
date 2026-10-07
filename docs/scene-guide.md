@@ -58,6 +58,11 @@ Run the dev server with `npm run dev` (http://localhost:5173, hot reload).
     frame-to-frame accumulator inside a `$derived` is tolerated if it ignores `dt ≤ 0` (pause,
     step reset) and stays static under reduced motion. Prefer the pure function whenever a snap
     is acceptable.
+- Interactive scenes (`manipulate` topics): use `<Handle>` from `src/lib/draw/` for anything the
+  reader drags (it is keyboard accessible: `role="slider"`, arrows, Shift, Home/End) and
+  `startDrag`/`toSvg` from `pointer.ts` for other drag targets. Write values back with
+  `setParam(id, value)` from `StageProps` — never assign to `params` (it belongs to the explainer;
+  Svelte warns) — so the matching slider follows. Reference: `unit-circle/scenes/CircleScene.svelte`.
 - Prefer `$derived` for geometry that depends on `t`; keep per-frame work small: fewer than
   ~400 SVG nodes, no large array allocations per frame, `{#each ... (key)}` with keys everywhere.
 

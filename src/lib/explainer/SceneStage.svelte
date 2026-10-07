@@ -27,6 +27,7 @@
 	const reduced = $derived(props.reduced);
 	const dark = $derived(props.dark);
 	const params = $derived(props.params);
+	const setParam = $derived(props.setParam);
 
 	type SceneComponent = Component<StageProps>;
 	const loaders = $derived(props.scenes);
@@ -79,7 +80,7 @@
 				in:fade={{ duration: props.reduced ? 0 : 400, delay: props.reduced ? 0 : 120 }}
 				out:fade={{ duration: props.reduced ? 0 : 160 }}
 			>
-				<loaded.component {step} {index} {t} {playing} {reduced} {dark} {params} />
+				<loaded.component {step} {index} {t} {playing} {reduced} {dark} {params} {setParam} />
 			</g>
 		{/key}
 	{/if}

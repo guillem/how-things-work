@@ -32,7 +32,7 @@
 		trigText
 	} from '../trig';
 
-	let { step, t, params, reduced }: StageProps = $props();
+	let { step, t, params, setParam, reduced }: StageProps = $props();
 
 	// ---- geometry ----------------------------------------------------------
 	const CX = 312;
@@ -79,7 +79,7 @@
 		let v = Math.round(deg);
 		if (snapping) v = SPECIAL.reduce((a, b) => (Math.abs(b - deg) < Math.abs(a - deg) ? b : a));
 		// Keep 360 when dragging up to the start from above, 0 from below.
-		params.angle = Math.max(0, Math.min(360, v));
+		setParam('angle', Math.max(0, Math.min(360, v)));
 	}
 	function onmove(p: Point) {
 		const raw = screenAngle(CX, CY, p.x, p.y);

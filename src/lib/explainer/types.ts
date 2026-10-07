@@ -110,6 +110,12 @@ export interface StageProps {
 	dark: boolean;
 	/** Current values of all controls, keyed by control id. */
 	params: Params;
+	/**
+	 * Changes a control's value from the scene (e.g. a dragged handle), so the
+	 * matching slider follows. Scenes must use this rather than assigning to
+	 * `params`, which belongs to the explainer.
+	 */
+	setParam: (id: string, value: ParamValue) => void;
 }
 
 /** Scene name (`step.scene`) → lazy import of the scene component, in narrative order. */
