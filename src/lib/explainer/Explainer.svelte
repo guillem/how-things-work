@@ -543,7 +543,7 @@
 		bottom: calc(100% + 6px);
 		z-index: 4;
 		width: max-content;
-		max-width: min(280px, 80vw);
+		max-width: min(280px, calc(100vw - 32px));
 		padding: 8px 10px;
 		border: 1px solid var(--border);
 		border-radius: 8px;
@@ -554,17 +554,14 @@
 		line-height: 1.4;
 		text-decoration: none;
 		box-shadow: var(--shadow-lg);
-		opacity: 0;
-		transform: translateY(4px);
 		pointer-events: none;
-		transition:
-			opacity 0.15s,
-			transform 0.15s var(--ease-out);
+		/* Not laid out until shown: a hidden tooltip near the right edge would
+		   otherwise widen the page and cause a sideways scroll. */
+		display: none;
 	}
 	.body :global(dfn[data-def]:hover::after),
 	.body :global(dfn[data-def]:focus-visible::after) {
-		opacity: 1;
-		transform: none;
+		display: block;
 	}
 	.step > :global(.controls) {
 		margin-top: 18px;
