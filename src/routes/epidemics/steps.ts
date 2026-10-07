@@ -143,7 +143,7 @@ export const spec: ExplainerSpec = {
 <li><strong>S → I</strong>, infection. Its speed depends on how often infectious and susceptible people meet: it is fastest when there are many of both.</li>
 <li><strong>I → R</strong>, recovery. Each day, about one in D of the infectious recovers.</li>
 </ul>
-<p>That is the whole <strong>SIR model</strong>. Watch the boxes fill and empty: early on, infections far outpace recoveries; later, they cannot keep up, because there are hardly any susceptible people left to infect.</p>`,
+<p>That is the whole <strong>SIR model</strong>. Watch the boxes fill and empty: early on, infections far outpace recoveries; later, they cannot keep up, because too few susceptible people are left to infect.</p>`,
 			notes: `<p>As equations, with N people, β = R<sub>0</sub>/D and γ = 1/D:</p>
 <p class="formula">dS/dt = −β S I / N &nbsp;&nbsp; dI/dt = β S I / N − γ I &nbsp;&nbsp; dR/dt = γ I</p>
 <p>The boxes here are this deterministic version, solved numerically. The crowd on the other steps is its random, person-by-person counterpart: in a large crowd the two agree closely.</p>`
@@ -185,7 +185,7 @@ export const spec: ExplainerSpec = {
 			scene: 'sir',
 			hints: { phase: 'final' },
 			duration: 20,
-			controls: [r0],
+			controls: [r0, days],
 			body: `
 <p>At the peak, plenty of people are still infectious, and each of them still infects someone. So the epidemic keeps going downhill for a long time, pushing the susceptible share well below 1/R<sub>0</sub>.</p>
 <p>The shaded part is that <strong>overshoot</strong>: people infected after the outbreak had already started to shrink. With R<sub>0</sub> = 3, the peak comes when a third of people are still susceptible, yet in the end only about 6% escape.</p>
