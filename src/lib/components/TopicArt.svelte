@@ -17,6 +17,13 @@
 		return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
 	}).join(' ');
 
+	// Sorting: ten bars, the last four already in place, two being compared.
+	const sortArt = [5, 2, 6, 1, 4, 3, 7, 8, 9, 10].map((v, i) => ({
+		i,
+		h: 10 + v * 7.5,
+		c: i >= 6 ? 'var(--sort-done)' : i === 2 || i === 3 ? 'var(--sort-compare)' : accent
+	}));
+
 	// Epidemics: a jittered grid of people; infection spreads from the left,
 	// recovered behind the front, susceptible ahead of it.
 	const crowd = Array.from({ length: 48 }, (_, k) => {
@@ -138,6 +145,20 @@
 			stroke-linecap="round"
 		/>
 		<circle cx="107.3" cy="40.8" r="3.5" fill="var(--trig-sin)" />
+	{:else if slug === 'sorting'}
+		<!-- bars half sorted: sorted (green) on the right, two being compared -->
+		{#each sortArt as b (b.i)}
+			<rect
+				x={30 + b.i * 15}
+				y={104 - b.h}
+				width="11"
+				height={b.h}
+				rx="2.5"
+				fill={b.c}
+				opacity={b.c === accent ? 0.35 : 1}
+			/>
+		{/each}
+		<line x1="24" x2="176" y1="104.5" y2="104.5" stroke="currentColor" opacity="0.25" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

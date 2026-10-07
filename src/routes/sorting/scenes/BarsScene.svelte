@@ -44,7 +44,9 @@
 	let lastK = 0;
 	const k = $derived.by(() => {
 		const v = reduced ? total : position(t, { key: runKey, playing, pace, manual, total });
-		lastK = v;
+		// Only while playing: when playing stops, this re-runs (paused) before
+		// the freeze effect reads the last playing position.
+		if (playing) lastK = v;
 		return v;
 	});
 
