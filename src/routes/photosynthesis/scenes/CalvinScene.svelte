@@ -5,17 +5,22 @@
 	 * A cohort of three RuBP molecules goes round once every 16 s: each one
 	 * meets a CO₂ at RuBisCO (one o'clock), flashes as an unstable 6-carbon
 	 * intermediate and splits into two 3-PGA that ride the ring as a pair. In
-	 * the reduction arc ATP and NADPH arrive from the granum in the middle and
-	 * leave as ADP, Pi and NADP⁺, turning the pair into G3P. At six o'clock one
-	 * G3P leaves the ring and follows a path to the right, where two G3P make
-	 * a glucose that is sent on to starch, sucrose or cellulose. The other five
+	 * the reduction arc ATP and NADPH shuttle out from the granum in the middle
+	 * along two-lane "roads" to a docking point just inside the ring, and the
+	 * spent ADP, Pi and NADP⁺ ride back on the other lane (Pi beside its
+	 * NADP⁺, between the lanes). Each carrier of a pair serves one of the two
+	 * 3-PGA, so the phosphates on the chains change as it arrives. At six o'clock one
+	 * G3P leaves the ring and follows a path to the right, where two G3P make a
+	 * glucose that is sent on to starch, sucrose or cellulose. The other five
 	 * G3P are rebuilt into RuBP in the regeneration arc (three more ATP). A
-	 * ledger on the right keeps the carbon bookkeeping.
+	 * ledger on the right keeps the carbon bookkeeping for one 3-CO₂ round.
 	 *
 	 * `step.hints.phase` (fixation | reduction | regeneration | export) decides
 	 * what is emphasised and where in the cycle the cohort starts, so that each
-	 * step shows its own stage within the first seconds. `params.carbons`
-	 * switches between carbon-bead chains and compact labelled pills.
+	 * step shows its own stage within the first seconds (the ring contents are
+	 * cut and faded back in across the switch, since the cohort jumps to the new
+	 * station). `params.carbons` switches between carbon-bead chains and compact
+	 * labelled pills.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -60,11 +65,25 @@
 		export: { fix: 0, red: 0, reg: 0, exp: 1 }
 	};
 	const emph = new Tween<Emph>({ ...EMPH.fixation }, { duration: 800, easing: cubicInOut });
+	/**
+	 * On a step change the cohort jumps to the new step's starting station (see
+	 * OFFSET), so the ring contents are cut and faded back in instead of teleporting.
+	 */
+	const cut = new Tween(1, { duration: 450, easing: cubicInOut });
+	let lastPhase: string | null = null;
 	$effect(() => {
 		const target = EMPH[phase] ?? EMPH.fixation;
-		const duration = reduced ? 0 : 800;
-		// untrack: the tween's own state must not re-trigger this effect
-		untrack(() => emph.set({ ...target }, { duration }));
+		const next = phase;
+		const instant = reduced;
+		// untrack: the tweens' own state must not re-trigger this effect
+		untrack(() => {
+			emph.set({ ...target }, { duration: instant ? 0 : 800 });
+			if (!instant && lastPhase !== null && lastPhase !== next) {
+				cut.set(0, { duration: 0 });
+				cut.set(1, { duration: 450, delay: 40 });
+			} else cut.set(1, { duration: 0 });
+			lastPhase = next;
+		});
 	});
 	const e = $derived(emph.current);
 	/** Emphasis per arc; in the export step the whole ring stays half lit. */
@@ -73,15 +92,15 @@
 		red: e.red + 0.5 * e.exp,
 		reg: e.reg + 0.5 * e.exp
 	});
-	const DIM = 0.45;
+	const DIM = 0.5;
 	const dimTo = (w: number) => lerp(DIM, 1, clamp(w));
 
 	// ---- ring geometry --------------------------------------------------------
 	const C = { x: 400, y: 310 };
 	const R = 185;
 	/** Half the distance between the two lanes a 3-PGA/G3P pair rides on. */
-	const LANE = 14;
-	/** Ring parameter s ∈ [0, 1): 0 at eleven o'clock, clockwise. */
+	const lane = $derived(compact ? 17 : 14);
+	/** Ring parameter s ∈ [0, 1): 0 at ten o'clock, clockwise. */
 	const deg = (s: number) => -120 + 360 * s;
 	const at = (s: number, r = R) => polar(C.x, C.y, r, (deg(s) * Math.PI) / 180);
 	const arc = (s0: number, s1: number, r = R) => {
@@ -100,65 +119,156 @@
 
 	// ---- timeline (fractions of one lap) ----------------------------------------
 	const PERIOD = 16;
-	const SPACING = 0.06;
+	/** Gap between the three RuBP of the cohort, as a fraction of the lap (≈ 1.4 s). */
+	const SPACING = 0.09;
 	const S_RUBISCO = 1 / 6; // one o'clock
 	const FLASH = 0.03;
 	const SPLIT = 0.035;
 	const S_ATP1 = 0.4;
-	const S_NADPH = 0.48;
+	const S_NADPH = 0.5;
 	const S_EXIT = 7 / 12; // six o'clock
 	const S_ATP2 = 0.82;
-	const REGROUP: [number, number] = [0.86, 0.94];
+	/**
+	 * Regeneration: the G3P of a pair converge and dissolve into the enzyme
+	 * series, then a RuBP condenses a little further on — never both at once, so
+	 * the carbon counts on screen stay honest.
+	 */
+	const REGROUP = { out: [0.87, 0.91], in: [0.91, 0.95] } as const;
+	/** Travel time of a carrier along its road, as a fraction of the lap. */
 	const CARRIER = 0.06;
+	/**
+	 * The second carrier of a pair follows the first by this fraction of the trip.
+	 * With SPACING − CARRIER = LAG · CARRIER the pills on a lane stay evenly spaced
+	 * from one cohort to the next, so two never overlap.
+	 */
+	const LAG = 0.5;
 	const CO2_LEAD = 0.09;
 	const EXIT_TRAVEL = 0.16;
 	/** Where the cohort starts for each step, so the step's stage shows at once. */
 	const OFFSET: Record<string, number> = {
-		fixation: 0.02,
-		reduction: 0.31,
-		regeneration: 0.572,
-		export: 0.565
+		fixation: 0.11,
+		reduction: 0.36,
+		regeneration: 0.724,
+		export: 0.52
 	};
 	const u = $derived(cycle(t, PERIOD, OFFSET[phase] ?? 0));
 	const flash = $derived(0.55 + 0.45 * Math.sin(t * 36));
 
 	const RUBISCO = at(S_RUBISCO);
-	const CO2_SRC = { x: 604, y: 94 };
-	const CO2_MID = { x: 566, y: 100 };
-	const GRANUM = { x: 400, y: 308 };
-	const G_IN = { x: GRANUM.x - 26, y: GRANUM.y };
-	const G_OUT = { x: GRANUM.x + 26, y: GRANUM.y };
+	const CO2_SRC = { x: 598, y: 104 };
+	const CO2_MID = { x: 572, y: 118 };
+	const GRANUM = { x: 400, y: 312 };
+
+	// ---- carrier roads: granum → dock just inside the ring → back -----------------
+	type PillKind = 'CO2' | 'ATP' | 'ADP' | 'NADPH' | 'NADP+' | 'Pi';
+	interface Item {
+		kind: PillKind;
+		/** Delay behind the first item of the trip, as a fraction of the trip. */
+		lag: number;
+		/** Screen-space offset from the lane point, to ride beside another pill. */
+		off?: Point;
+	}
+	interface StationDef {
+		at: number;
+		/** Where the road leaves the granum. */
+		anchor: Point;
+		inbound: Item[];
+		outbound: Item[];
+	}
+	const DOCK_R = R - 44;
+	/** Half the width of a road: inbound and outbound lanes sit either side of it. */
+	const ROAD = 18;
+	/**
+	 * Where a Pi rides relative to its NADP⁺: straight below the (axis-aligned)
+	 * pill, which on this diagonal road keeps it clear of both lanes.
+	 */
+	const PI_OFF: Point = { x: 0, y: 15 };
+	const STATION_DEFS: StationDef[] = [
+		{
+			at: S_ATP1,
+			anchor: { x: GRANUM.x + 34, y: GRANUM.y + 8 },
+			inbound: [
+				{ kind: 'ATP', lag: 0 },
+				{ kind: 'ATP', lag: LAG }
+			],
+			outbound: [
+				{ kind: 'ADP', lag: 0 },
+				{ kind: 'ADP', lag: LAG }
+			]
+		},
+		{
+			at: S_NADPH,
+			anchor: { x: GRANUM.x - 8, y: GRANUM.y + 38 },
+			inbound: [
+				{ kind: 'NADPH', lag: 0 },
+				{ kind: 'NADPH', lag: LAG }
+			],
+			// each NADPH leaves as NADP⁺ plus the phosphate released from the chain
+			outbound: [
+				{ kind: 'NADP+', lag: 0 },
+				{ kind: 'Pi', lag: 0, off: PI_OFF },
+				{ kind: 'NADP+', lag: LAG },
+				{ kind: 'Pi', lag: LAG, off: PI_OFF }
+			]
+		},
+		{
+			at: S_ATP2,
+			anchor: { x: GRANUM.x - 34, y: GRANUM.y + 2 },
+			inbound: [{ kind: 'ATP', lag: 0 }],
+			outbound: [{ kind: 'ADP', lag: 0 }]
+		}
+	];
+	const regionOf = (p: number): Region => (p < S_3 ? 'fix' : p < S_8 ? 'red' : 'reg');
+	const stations = STATION_DEFS.map((s) => {
+		const dock = at(s.at, DOCK_R);
+		const dx = dock.x - s.anchor.x;
+		const dy = dock.y - s.anchor.y;
+		const len = Math.hypot(dx, dy);
+		const n = { x: (-dy / len) * ROAD, y: (dx / len) * ROAD };
+		return {
+			...s,
+			dock,
+			region: regionOf(s.at),
+			in0: { x: s.anchor.x + n.x, y: s.anchor.y + n.y },
+			in1: { x: dock.x + n.x, y: dock.y + n.y },
+			out0: { x: dock.x - n.x, y: dock.y - n.y },
+			out1: { x: s.anchor.x - n.x, y: s.anchor.y - n.y }
+		};
+	});
 
 	// ---- export side ------------------------------------------------------------
 	const J = { x: 712, y: 440 }; // where two G3P become glucose
 	const exitPath = smooth([
-		at(S_EXIT, R + LANE),
+		at(S_EXIT, R + 14),
 		{ x: 470, y: 542 },
 		{ x: 560, y: 553 },
 		{ x: 640, y: 520 },
 		{ x: 690, y: 466 },
 		{ x: J.x - 2, y: J.y + 4 }
 	]);
-	const STARCH = { x: 868, y: 322 };
-	const PHLOEM = { x: 826, y: 419, w: 88, h: 22 };
-	const WALL = { x: 826, y: 506, w: 88, h: 34 };
+	const STARCH = { x: 858, y: 322 };
+	const PHLOEM = { x: 816, y: 419, w: 88, h: 22 };
+	const WALL = { x: 816, y: 506, w: 88, h: 34 };
+	// The branches must not run through the captions of their targets: starch is
+	// reached from below (its captions sit to its left), the phloem and the cell
+	// wall from the left (their captions sit below them).
 	const branches = [
 		smooth([
 			{ x: 740, y: 434 },
-			{ x: 800, y: 426 },
-			{ x: 838, y: 392 },
-			{ x: 850, y: 352 }
+			{ x: 798, y: 428 },
+			{ x: 830, y: 394 },
+			{ x: 840, y: 352 }
 		]),
 		smooth([
 			{ x: 740, y: 440 },
-			{ x: 780, y: 436 },
-			{ x: 822, y: 430 }
+			{ x: 776, y: 436 },
+			{ x: 812, y: 430 }
 		]),
 		smooth([
 			{ x: 740, y: 446 },
-			{ x: 790, y: 470 },
-			{ x: 826, y: 500 },
-			{ x: 848, y: 506 }
+			{ x: 752, y: 480 },
+			{ x: 776, y: 512 },
+			{ x: 812, y: 523 }
 		])
 	];
 
@@ -187,7 +297,6 @@
 		flash: boolean;
 		region: Region;
 	}
-	type PillKind = 'CO2' | 'ATP' | 'ADP' | 'NADPH' | 'NADP+' | 'Pi';
 	interface Pill {
 		id: string;
 		kind: PillKind;
@@ -197,24 +306,15 @@
 		opacity: number;
 		region: Region;
 	}
-	interface Carrier {
-		at: number;
-		kind: PillKind;
-		spent: PillKind[];
-		n: number;
-	}
-	const CARRIERS: Carrier[] = [
-		{ at: S_ATP1, kind: 'ATP', spent: ['ADP'], n: 2 },
-		{ at: S_NADPH, kind: 'NADPH', spent: ['NADP+', 'Pi'], n: 2 },
-		{ at: S_ATP2, kind: 'ATP', spent: ['ADP'], n: 1 }
-	];
-	const regionOf = (p: number): Region => (p < S_3 ? 'fix' : p < S_8 ? 'red' : 'reg');
 	const fadeEnds = (v: number) => smoothstep(0, 0.08, v) * (1 - smoothstep(0.9, 1, v));
+	/** Glucose units are born on the junction glucose: they fade in only once clear of it. */
+	const fadeBranch = (v: number) => smoothstep(0.05, 0.3, v) * (1 - smoothstep(0.9, 1, v));
 
 	const frame = $derived.by(() => {
 		const chains: Chain[] = [];
 		const pills: Pill[] = [];
 		let exported: { x: number; y: number; rotate: number; opacity: number } | null = null;
+		let arrive = 0;
 		for (let k = 0; k < 3; k++) {
 			const p = (((u - k * SPACING) % 1) + 1) % 1;
 			const region = regionOf(p);
@@ -246,34 +346,38 @@
 				});
 			} else {
 				const split = easeInOut(smoothstep(S_RUBISCO + FLASH, S_RUBISCO + FLASH + SPLIT, p));
-				const phosphates = p < S_ATP1 ? 1 : p < S_NADPH ? 2 : 1;
-				const regroup = smoothstep(REGROUP[0], REGROUP[1], p);
-				if (regroup < 1) {
-					for (const lane of [-1, 1]) {
+				const dissolve = smoothstep(REGROUP.out[0], REGROUP.out[1], p);
+				const condense = smoothstep(REGROUP.in[0], REGROUP.in[1], p);
+				if (dissolve < 1) {
+					for (const side of [-1, 1]) {
 						// one of the six G3P leaves the cycle at six o'clock
-						if (k === 0 && lane === 1 && p >= S_EXIT) continue;
-						const pt = at(p, R + lane * LANE * split);
+						if (k === 0 && side === 1 && p >= S_EXIT) continue;
+						// the second carrier of each pair serves the outer molecule, a little later
+						const late = side === 1 ? LAG * CARRIER : 0;
+						// 3-PGA (1 P) → 1,3-bisphosphoglycerate (2 P) after ATP → G3P (1 P) after NADPH
+						const phosphates = p < S_ATP1 + late ? 1 : p < S_NADPH + late ? 2 : 1;
+						const pt = at(p, R + side * lane * split * (1 - dissolve));
 						chains.push({
-							id: `${k}-pga${lane}`,
+							id: `${k}-pga${side}`,
 							x: pt.x,
 							y: pt.y,
 							rotate: rot,
 							carbons: 3,
 							phosphates,
-							opacity: 1 - regroup,
+							opacity: 1 - dissolve,
 							flash: false,
 							region
 						});
 					}
 				}
-				if (regroup > 0) {
+				if (condense > 0) {
 					chains.push({
 						id: `${k}-rubp`,
 						...here,
 						rotate: rot,
 						carbons: 5,
 						phosphates: 2,
-						opacity: regroup,
+						opacity: condense,
 						flash: false,
 						region
 					});
@@ -297,40 +401,38 @@
 				});
 			}
 
-			// -- ATP / NADPH arriving from the granum, spent carriers going back
-			for (const c of CARRIERS) {
-				const T = at(c.at);
-				const reg = regionOf(c.at);
-				const vin = (p - (c.at - CARRIER)) / CARRIER;
-				if (vin >= 0 && vin < 1) {
-					const w = easeInOut(vin);
-					for (let i = 0; i < c.n; i++) {
-						pills.push({
-							id: `${k}-${c.at}-in${i}`,
-							kind: c.kind,
-							x: lerp(G_IN.x, T.x, w) + i * 7,
-							y: lerp(G_IN.y, T.y, w) + i * 9,
-							rotate: 0,
-							opacity: smoothstep(0, 0.2, vin),
-							region: reg
-						});
-					}
+			// -- carriers: out from the granum on one lane, back on the other
+			for (let si = 0; si < stations.length; si++) {
+				const s = stations[si];
+				const vin = (p - (s.at - CARRIER)) / CARRIER;
+				for (let i = 0; i < s.inbound.length; i++) {
+					const v = vin - s.inbound[i].lag;
+					if (v < 0 || v >= 1) continue;
+					const w = easeInOut(v);
+					pills.push({
+						id: `${k}-s${si}-in${i}`,
+						kind: s.inbound[i].kind,
+						x: lerp(s.in0.x, s.in1.x, w),
+						y: lerp(s.in0.y, s.in1.y, w),
+						rotate: 0,
+						opacity: smoothstep(0, 0.15, v) * (1 - smoothstep(0.93, 1, v)),
+						region: s.region
+					});
 				}
-				const vout = (p - c.at) / CARRIER;
-				if (vout >= 0 && vout < 1) {
-					const w = easeInOut(vout);
-					c.spent.forEach((kind, j) => {
-						for (let i = 0; i < c.n; i++) {
-							pills.push({
-								id: `${k}-${c.at}-out${j}${i}`,
-								kind,
-								x: lerp(T.x, G_OUT.x, w) + i * 7 + j * 18,
-								y: lerp(T.y, G_OUT.y, w) + i * 9 - j * 14,
-								rotate: 0,
-								opacity: 1 - smoothstep(0.75, 1, vout),
-								region: reg
-							});
-						}
+				const vout = (p - s.at) / CARRIER;
+				for (let j = 0; j < s.outbound.length; j++) {
+					const v = vout - s.outbound[j].lag;
+					if (v < 0 || v >= 1) continue;
+					const w = easeInOut(v);
+					const off = s.outbound[j].off ?? { x: 0, y: 0 };
+					pills.push({
+						id: `${k}-s${si}-out${j}`,
+						kind: s.outbound[j].kind,
+						x: lerp(s.out0.x, s.out1.x, w) + off.x,
+						y: lerp(s.out0.y, s.out1.y, w) + off.y,
+						rotate: 0,
+						opacity: smoothstep(0, 0.08, v) * (1 - smoothstep(0.7, 0.95, v)),
+						region: s.region
 					});
 				}
 			}
@@ -347,9 +449,11 @@
 						opacity: 1 - smoothstep(0.9, 1, ve)
 					};
 				}
+				// the glucose at the junction swells briefly as the G3P joins it
+				arrive = 1 - smoothstep(0, 0.1, Math.abs(ve - 1));
 			}
 		}
-		return { chains, pills, exported };
+		return { chains, pills, exported, arrive };
 	});
 
 	// ---- ledger -----------------------------------------------------------------
@@ -365,11 +469,13 @@
 		{ text: '→ 6 G3P · 18 C   (6 ATP, 6 NADPH)', phases: ['reduction'] },
 		{ text: '1 G3P out (3 C) + 5 recycled (15 C)', phases: ['regeneration', 'export'] },
 		{ text: '5 G3P → 3 RuBP · 15 C   (3 ATP)', phases: ['regeneration'] },
-		{ text: 'per G3P: 9 ATP + 6 NADPH', phases: ['regeneration'], cost: true },
-		{ text: 'per glucose (2 G3P): 18 ATP + 12 NADPH', phases: ['export'], cost: true }
+		{ text: 'per G3P (3 CO₂): 9 ATP + 6 NADPH', phases: ['regeneration'], cost: true },
+		{ text: 'per glucose: 6 CO₂ · 18 ATP · 12 NADPH', phases: ['export'], cost: true }
 	];
-	const LEDGER = { x: 650, y: 48, w: 290, h: 232 };
+	const LEDGER = { x: 640, y: 48, w: 304, h: 232 };
 	const lineY = (i: number) => LEDGER.y + 52 + i * 22;
+	/** The cost rows are totals: a rule above the first one sets them apart. */
+	const COST_ROW = LINES.findIndex((l) => l.cost);
 	const active = $derived(LINES.map((l) => (l.phases.includes(phase) ? 1 : 0)));
 	const hi = new Tween<number[]>(
 		LINES.map((l) => (l.phases.includes('fixation') ? 1 : 0)),
@@ -417,6 +523,20 @@
 			/>
 		{/each}
 
+		<!-- roads between the granum and the three docking points -->
+		{#each stations as s, si (si)}
+			<line
+				x1={s.anchor.x}
+				y1={s.anchor.y}
+				x2={s.dock.x}
+				y2={s.dock.y}
+				stroke="var(--stage-line)"
+				stroke-width="1"
+				stroke-dasharray="2 4"
+				opacity={0.8 * dimTo(arcEmph[s.region])}
+			/>
+		{/each}
+
 		<!-- granum in the middle: where ATP and NADPH come from -->
 		<g transform="translate({GRANUM.x} {GRANUM.y})" opacity="0.9">
 			{#each [0, 1, 2, 3] as i (i)}
@@ -433,9 +553,9 @@
 				<rect x="-19" y={-17 + i * 11} width="38" height="4" rx="2" fill="var(--lumen)" />
 			{/each}
 		</g>
-		<Label x={C.x} y={248} text="Calvin cycle" size={15} weight={600} />
-		<Label x={C.x} y={265} text="ATP & NADPH from the thylakoids" size={11} muted />
-		<Label x={C.x} y={279} text="ADP, Pi and NADP⁺ go back" size={11} muted />
+		<Label x={C.x} y={244} text="Calvin cycle" size={15} weight={600} />
+		<Label x={C.x} y={261} text="ATP & NADPH from the thylakoids" size={11} muted />
+		<Label x={C.x} y={275} text="ADP, Pi and NADP⁺ go back" size={11} muted />
 
 		<!-- what rides each stretch of the ring -->
 		<Label
@@ -446,33 +566,27 @@
 			muted
 			opacity={dimTo(arcEmph.fix)}
 		/>
+		<!-- sits between the granum captions and the ADP lane of the first road -->
+		<Label x={515} y={300} text="6 × 3-PGA · 3C" size={11} muted opacity={dimTo(arcEmph.red)} />
 		<Label
-			x={at(0.36, 132).x}
-			y={at(0.36, 132).y + 4}
-			text="6 × 3-PGA · 3C"
-			size={11}
-			muted
-			opacity={dimTo(arcEmph.red)}
-		/>
-		<Label
-			x={at(0.5417, 138).x}
-			y={at(0.5417, 138).y + 4}
+			x={at(0.6, 142).x}
+			y={at(0.6, 142).y + 4}
 			text="6 × G3P · 3C"
 			size={11}
 			muted
 			opacity={dimTo(arcEmph.red)}
 		/>
 		<Label
-			x={at(0.75, 138).x}
-			y={at(0.75, 138).y + 4}
+			x={at(0.75, 130).x}
+			y={at(0.75, 130).y + 4}
 			text="5 G3P"
 			size={11}
 			muted
 			opacity={dimTo(arcEmph.reg)}
 		/>
 		<Label
-			x={at(0.903, 138).x}
-			y={at(0.903, 138).y + 4}
+			x={at(0.93, 138).x}
+			y={at(0.93, 138).y + 4}
 			text="→ 3 RuBP"
 			size={11}
 			muted
@@ -501,14 +615,23 @@
 		</g>
 		<Label
 			x={RUBISCO.x + 44}
-			y={RUBISCO.y + 5}
+			y={RUBISCO.y + 12}
 			text="RuBisCO"
 			anchor="start"
 			size={13}
 			weight={600}
 			opacity={dimTo(arcEmph.fix)}
 		/>
-		<Label x={CO2_SRC.x} y={74} text="3 CO₂ in" size={11} muted opacity={dimTo(arcEmph.fix)} />
+		<!-- anchored at its end so that it stays inside the stroma panel (x ≤ 620) -->
+		<Label
+			x={612}
+			y={80}
+			text="3 CO₂ in"
+			anchor="end"
+			size={11}
+			muted
+			opacity={dimTo(arcEmph.fix)}
+		/>
 
 		<!-- the molecules on the ring -->
 		{#each frame.chains as c (c.id)}
@@ -518,7 +641,7 @@
 					cy={c.y}
 					r="26"
 					fill={colors.phosphate}
-					opacity={0.35 * flash * dimTo(arcEmph.fix)}
+					opacity={0.35 * flash * dimTo(arcEmph.fix) * cut.current}
 					filter="url(#glow)"
 				/>
 			{/if}
@@ -531,7 +654,7 @@
 				y={c.y}
 				rotate={compact ? 0 : c.rotate}
 				scale={0.72}
-				opacity={c.opacity * (c.flash ? flash : 1) * dimTo(arcEmph[c.region])}
+				opacity={c.opacity * (c.flash ? flash : 1) * dimTo(arcEmph[c.region]) * cut.current}
 			/>
 		{/each}
 		{#each frame.pills as p (p.id)}
@@ -540,8 +663,8 @@
 				x={p.x}
 				y={p.y}
 				rotate={p.rotate}
-				scale={p.kind === 'CO2' ? 0.8 : 0.72}
-				opacity={p.opacity * dimTo(arcEmph[p.region])}
+				scale={p.kind === 'CO2' ? 0.8 : 0.78}
+				opacity={p.opacity * dimTo(arcEmph[p.region]) * cut.current}
 			/>
 		{/each}
 	</g>
@@ -577,9 +700,9 @@
 		size={12}
 		opacity={e.red}
 	/>
-	{@render heading(40, 240, '3 · Regeneration', arcEmph.reg)}
-	<Label x={40} y={264} text="5 G3P → 3 RuBP · 15 C" anchor="start" size={12} opacity={e.reg} />
-	<Label x={40} y={282} text="costs 3 more ATP" anchor="start" size={11} muted opacity={e.reg} />
+	{@render heading(36, 240, '3 · Regeneration', arcEmph.reg)}
+	<Label x={36} y={264} text="5 G3P → 3 RuBP · 15 C" anchor="start" size={12} opacity={e.reg} />
+	<Label x={36} y={282} text="costs 3 more ATP" anchor="start" size={11} muted opacity={e.reg} />
 
 	<!-- ================= export: G3P → sugars ================= -->
 	<g opacity={exitEmph}>
@@ -593,7 +716,7 @@
 			speed={reduced ? 0 : 30}
 			opacity={0.7}
 		/>
-		<Label x={548} y={579} text="1 G3P out → sugars" size={12} />
+		<Label x={548} y={519} text="1 G3P out → sugars" size={12} />
 	</g>
 	{#if frame.exported}
 		<Molecule
@@ -605,7 +728,7 @@
 			y={frame.exported.y}
 			rotate={compact ? 0 : frame.exported.rotate}
 			scale={0.72}
-			opacity={frame.exported.opacity * exitEmph}
+			opacity={frame.exported.opacity * exitEmph * cut.current}
 		/>
 	{/if}
 
@@ -624,17 +747,24 @@
 			/>
 			{@const v = cycle(t, 7, j / 3 + 0.3)}
 			{@const pt = along(b, v)}
+			<!-- small glucose units on their way: always beads (a pill this small is unreadable) -->
 			<Molecule
 				kind="sugar"
 				carbons={6}
-				{compact}
 				x={pt.x}
 				y={pt.y}
 				scale={0.5}
-				opacity={fadeEnds(v)}
+				opacity={fadeBranch(v) * cut.current}
 			/>
 		{/each}
-		<Molecule kind="sugar" carbons={6} {compact} x={J.x} y={J.y} scale={0.75} />
+		<Molecule
+			kind="sugar"
+			carbons={6}
+			{compact}
+			x={J.x}
+			y={J.y}
+			scale={0.75 + 0.12 * frame.arrive}
+		/>
 		<Label x={J.x} y={404} text="2 G3P → glucose (6C)" size={12} pill />
 
 		<!-- starch grain inside a tiny chloroplast -->
@@ -668,8 +798,16 @@
 			stroke="var(--stage-line)"
 			stroke-width="1.2"
 		/>
-		<Label x={STARCH.x} y={366} text="starch grain" size={12} />
-		<Label x={STARCH.x} y={381} text="stored in the chloroplast" size={11} muted />
+		<!-- captions to the left of the grain: its branch arrives from below -->
+		<Label x={STARCH.x - 52} y={318} text="starch grain" anchor="end" size={12} />
+		<Label
+			x={STARCH.x - 52}
+			y={333}
+			text="stored in the chloroplast"
+			anchor="end"
+			size={11}
+			muted
+		/>
 
 		<!-- sucrose in a phloem tube -->
 		<rect
@@ -682,7 +820,7 @@
 			stroke="var(--protein-edge)"
 			stroke-width="1.2"
 		/>
-		{#each [856, 886] as sx (sx)}
+		{#each [846, 876] as sx (sx)}
 			<line
 				x1={sx}
 				y1={PHLOEM.y + 2}
@@ -696,14 +834,14 @@
 		{#each [0, 1] as i (i)}
 			{@const v = cycle(t, 3.4, i / 2)}
 			{@const sx = lerp(PHLOEM.x + 6, PHLOEM.x + PHLOEM.w - 6, v)}
-			<g transform="translate({sx} {PHLOEM.y + PHLOEM.h / 2})" opacity={fadeEnds(v)}>
+			<g transform="translate({sx} {PHLOEM.y + PHLOEM.h / 2})" opacity={fadeEnds(v) * cut.current}>
 				<line x1="-5" y1="0" x2="5" y2="0" stroke={colors.sugarEdge} stroke-width="2" />
 				<circle cx="-5" r="4.2" fill={colors.sugar} stroke={colors.sugarEdge} stroke-width="1" />
 				<circle cx="5" r="4.2" fill={colors.sugar} stroke={colors.sugarEdge} stroke-width="1" />
 			</g>
 		{/each}
 		<Label x={STARCH.x} y={462} text="sucrose → phloem" size={12} />
-		<Label x={STARCH.x} y={477} text="to roots, fruits, shoots" size={11} muted />
+		<Label x={STARCH.x} y={477} text="to roots, fruits, growing tips" size={11} muted />
 
 		<!-- cellulose: a fragment of cell wall -->
 		<rect
@@ -753,14 +891,26 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	<text x={LEDGER.x + 14} y={LEDGER.y + 25} font-size="13" font-weight="600">
-		Carbon bookkeeping · one turn
-	</text>
+	<Label
+		x={LEDGER.x + 14}
+		y={LEDGER.y + 25}
+		text="Carbon bookkeeping · 3 CO₂ → 1 G3P"
+		anchor="start"
+		size={13}
+		weight={600}
+	/>
 	<line
 		x1={LEDGER.x + 14}
 		y1={LEDGER.y + 36}
 		x2={LEDGER.x + LEDGER.w - 14}
 		y2={LEDGER.y + 36}
+		stroke="var(--border)"
+	/>
+	<line
+		x1={LEDGER.x + 14}
+		y1={lineY(COST_ROW) - 15.5}
+		x2={LEDGER.x + LEDGER.w - 14}
+		y2={lineY(COST_ROW) - 15.5}
 		stroke="var(--border)"
 	/>
 	{#each LINES as line, i (i)}
@@ -774,15 +924,14 @@
 			fill={colors.rubisco}
 			opacity={0.2 * h}
 		/>
-		<text
+		<Label
 			x={LEDGER.x + 14}
 			y={lineY(i)}
-			font-size="12"
-			font-weight={h > 0.5 ? 600 : 500}
+			text={line.text}
+			anchor="start"
+			size={12}
+			weight={h > 0.5 ? 600 : 500}
 			opacity={lerp(0.62, 1, h)}
-			fill={line.cost ? colors.atp : undefined}
-		>
-			{line.text}
-		</text>
+		/>
 	{/each}
 </g>
