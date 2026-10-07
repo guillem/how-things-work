@@ -2,7 +2,7 @@
 	import { onMount, untrack, type Snippet } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	import { prefersReducedMotion } from 'svelte/motion';
-	import { replaceState } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { theme } from '#lib/theme.svelte.ts';
 	import { Clock } from './clock.svelte';
@@ -76,7 +76,8 @@
 
 	function syncHash() {
 		const hash = `#${steps[index].id}`;
-		if (page.url.hash !== hash) replaceState(hash, {});
+		// A shallow navigation: the address bar changes, the page is not reloaded.
+		if (location.hash !== hash) goto(hash, { shallow: true, replace: true, state: {} });
 	}
 
 	function indexFromHash(hash: string) {
@@ -85,10 +86,16 @@
 		return i >= 0 ? i : null;
 	}
 
-	// Keep the step in sync with the URL hash (deep links, back/forward).
+	// Keep the step in sync with the URL hash (deep links, back/forward). Only a
+	// change of the hash may move the step: `index` is read untracked, because
+	// our own shallow navigations do not update `page.url`, so reacting to an
+	// index change here would snap the step back to the hash the page was
+	// opened with.
 	$effect(() => {
 		const i = indexFromHash(page.url.hash);
-		if (i !== null && i !== index) go(i, { announce: false });
+		untrack(() => {
+			if (i !== null && i !== index) go(i, { announce: false });
+		});
 	});
 
 	// ---- auto-advance --------------------------------------------------------
@@ -157,9 +164,11 @@
 				prev();
 				break;
 			case 'Home':
+				if (tag === 'INPUT') return; // let the slider jump to its minimum
 				go(0);
 				break;
 			case 'End':
+				if (tag === 'INPUT') return;
 				go(steps.length - 1);
 				break;
 			case ' ':

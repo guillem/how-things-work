@@ -1,8 +1,12 @@
 import { expect, test } from '@playwright/test';
 
-test('index lists the published explainers', async ({ page }) => {
+test('index lists the built explainers under their catalogue category', async ({ page }) => {
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/how things work/i);
+	const biology = page.getByRole('region', { name: 'Biology' });
+	await expect(biology.getByRole('link', { name: /how photosynthesis works/i })).toBeVisible();
+	// Categories without a built topic are not shown.
+	await expect(page.getByRole('heading', { level: 2, name: 'Reserve' })).toHaveCount(0);
 	const card = page.getByRole('link', { name: /how photosynthesis works/i });
 	await expect(card).toBeVisible();
 	await card.click();
@@ -34,4 +38,16 @@ test('the 404 page is built and links back home', async ({ page }) => {
 	await page.getByRole('link', { name: /back to all explainers/i }).click();
 	await expect(page).toHaveURL(/\/$/);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/how things work/i);
+});
+
+test('an explainer links to its catalogue neighbours, linking only built topics', async ({
+	page
+}) => {
+	await page.goto('/photosynthesis/');
+	await expect(page.locator('header.title .eyebrow')).toContainText('Biology');
+	const links = page.getByRole('navigation', { name: 'Related topics' });
+	await expect(links.getByRole('heading', { name: 'Read first' })).toBeVisible();
+	// the-cell is a prerequisite that is not built yet: named, not linked.
+	await expect(links.getByText('The cell')).toBeVisible();
+	await expect(links.getByRole('link', { name: 'The cell' })).toHaveCount(0);
 });
