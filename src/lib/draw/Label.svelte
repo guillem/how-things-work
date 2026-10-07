@@ -54,7 +54,7 @@
 		text-anchor={anchor}
 		font-size={size}
 		font-weight={weight}
-		fill={color}
+		style:fill={color}
 	>
 		{text}
 	</text>

@@ -201,6 +201,12 @@ kbd {
 	--sky: #eaf3fb;
 	/* carbon atoms in molecule drawings (see src/lib/draw/Molecule.svelte) */
 	--carbon: #4b5563;
+	/* epidemic states: susceptible, infectious, recovered, vaccinated */
+	--sir-s: #3b7ddd;
+	--sir-i: #e5484d;
+	--sir-r: #a3a8b1;
+	--sir-v: #1f9d74;
+	--sir-field: #f2f1ec;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -215,4 +221,9 @@ kbd {
 	--leaf-vein: #6fbf8c;
 	--sky: #16202a;
 	--carbon: #8b93a1;
+	--sir-s: #5b9cf5;
+	--sir-i: #f0595e;
+	--sir-r: #646a74;
+	--sir-v: #34c18f;
+	--sir-field: #1d1e22;
 }

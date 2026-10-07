@@ -22,7 +22,7 @@ checklist); this file is about **order and open work**. Where we are right now i
 | Category                | Topic                  | Kind       | Level | Why this one                                                          | State           |
 | ----------------------- | ---------------------- | ---------- | ----- | --------------------------------------------------------------------- | --------------- |
 | Biology                 | `photosynthesis`       | simulate   | 1     | Already built — the quality reference                                 | published, gaps |
-| Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot      | in progress     |
+| Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot      | done            |
 | Mathematics             | `unit-circle`          | manipulate | 1     | No prerequisites; first draggable handle + linked graph; unlocks 3    | next            |
 | Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.   |                 |
 | Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy       |                 |
@@ -47,6 +47,21 @@ catalogue's suggested first `build`), `ecosystems`, `electric-circuits` (unlocks
   it: add a "limiting factors" step (a rate model checked against a reference), then tick it.
 
 ## Site and framework work
+
+- **Stage text is unreadable on phones (site-wide, found 2026-10-07).** At 390 px wide the
+  960-unit stage is drawn at ~0.37 scale, so 11–13 px labels end up ~4–5 px. Needs a design
+  decision (a narrow-screen layout per scene, a larger minimum text size, or steering readers to
+  full screen / landscape). Affects photosynthesis and epidemics alike.
+
+- **Stage text styling overrides SVG attributes (site-wide, found 2026-10-07).** In
+  `src/lib/explainer/Explainer.svelte`, `.stage :global(text) { font-family; fill; font-size: 13px }`
+  beats presentation attributes, so every `font-size=`/`fill=` on `<text>` (including `<Axes>` tick
+  labels at 11 px and `<Label size>`) renders at 13 px in ink. Photosynthesis was polished under
+  this behaviour, so the fix (move the three declarations to `.stage :global(svg)` so they
+  inherit) changes every scene's look and needs its own branch with a full screenshot re-review of
+  both topics. Until then: `<Label color>` works (it sets `style:fill`), and the epidemics
+  threshold/SIR scenes use local snippets with `style:font-size`/`style:fill`; switch them back to
+  `<Label>` after the fix.
 
 - Shared components still to create as their first topic needs them: draggable handles
   (`unit-circle`), an algorithm stepper / bar chart (`sorting`), a build palette (`pagerank` or

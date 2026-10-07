@@ -42,6 +42,15 @@ const explainers: Explainer[] = [
 		accent: '#2f9e5d',
 		steps: 16,
 		minutes: 20
+	},
+	{
+		slug: 'epidemics',
+		title: 'How epidemics spread\u00a0— and how they stop',
+		summary:
+			'Release a few cases into a crowd and watch an outbreak grow, peak and fade. Then find out how many people need to be immune to stop it before it starts.',
+		accent: '#d0454c',
+		steps: 12,
+		minutes: 15
 	}
 ];
 

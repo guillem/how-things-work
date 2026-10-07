@@ -8,6 +8,18 @@
 		accent: string;
 	}
 	let { slug, accent }: Props = $props();
+
+	// Epidemics: a jittered grid of people; infection spreads from the left,
+	// recovered behind the front, susceptible ahead of it.
+	const crowd = Array.from({ length: 48 }, (_, k) => {
+		const col = k % 8;
+		const row = Math.floor(k / 8);
+		const jitter = (n: number) => Math.sin(k * 12.9898 + n * 78.233) * 3;
+		const x = 14 + col * 11 + jitter(1);
+		const front = 40 + Math.sin(row * 1.7) * 8;
+		const s = x < front - 14 ? 'r' : x < front + 6 ? 'i' : 's';
+		return { k, x, y: 22 + row * 15 + jitter(2), s };
+	});
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -70,6 +82,26 @@
 				<circle cx="7" cy="0" r="6.5" fill="#e5484d" />
 			</g>
 		</g>
+	{:else if slug === 'epidemics'}
+		<!-- a crowd with an outbreak spreading from the left, and its curve -->
+		{#each crowd as p (p.k)}
+			<circle cx={p.x} cy={p.y} r="3.4" fill="var(--sir-{p.s})" />
+		{/each}
+		<path
+			d="M108 104 C 128 104, 134 40, 148 40 S 168 102, 192 104"
+			fill="none"
+			stroke="var(--sir-i)"
+			stroke-width="2.4"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M108 30 C 132 30, 140 92, 156 98 S 180 100, 192 100"
+			fill="none"
+			stroke="var(--sir-s)"
+			stroke-width="1.6"
+			stroke-linecap="round"
+			opacity="0.8"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

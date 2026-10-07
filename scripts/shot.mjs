@@ -4,6 +4,7 @@
 // Env:   WAIT=ms        wait after load before the shot (≈ animation time t); default 900
 //        CLIP=stage     screenshot only the animation stage card
 //        SET=id:value,… set explainer controls first, e.g. SET=wavelength:430,light:0
+//                        (for an action button such as "Run again", the value is the number of presses)
 //        GOTO=stepId     after SET, jump to another step (controls keep their values across steps,
 //                        so a control that only exists on one step can be tested on the others)
 //        REDUCED=1       emulate prefers-reduced-motion (the stage renders its frozen t = 2.5 s frame)
@@ -54,15 +55,18 @@ if (process.env.SET) {
 			([id, value]) => {
 				const range = document.querySelector(`input[type=range][data-control="${id}"]`);
 				const toggle = document.querySelector(`input[type=checkbox][data-control="${id}"]`);
-				const option = document.querySelector(
-					`button[data-control="${id}"][data-value="${value}"]`
-				);
+				const option =
+					document.querySelector(`button[data-control="${id}"][data-value="${value}"]`) ??
+					// Action buttons ("Run again"): SET=id:N presses it N times.
+					document.querySelector(`.action button[data-control="${id}"]`);
 				if (range) {
 					range.value = value;
 					range.dispatchEvent(new Event('input', { bubbles: true }));
 				} else if (toggle) {
 					toggle.checked = value === 'true';
 					toggle.dispatchEvent(new Event('change', { bubbles: true }));
+				} else if (option?.closest('.action')) {
+					for (let k = 0; k < Number(value); k++) option.click();
 				} else if (option) option.click();
 				else console.warn(`SET: no control with id "${id}" on this step`);
 			},
