@@ -22,7 +22,7 @@ checklist); this file is about **order and open work**. Where we are right now i
 | Category                | Topic                  | Kind       | Level | Why this one                                                          | State           |
 | ----------------------- | ---------------------- | ---------- | ----- | --------------------------------------------------------------------- | --------------- |
 | Biology                 | `photosynthesis`       | simulate   | 1     | Already built — the quality reference                                 | published, gaps |
-| Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot      | in progress     |
+| Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot      | done            |
 | Mathematics             | `unit-circle`          | manipulate | 1     | No prerequisites; first draggable handle + linked graph; unlocks 3    | next            |
 | Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.   |                 |
 | Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy       |                 |
