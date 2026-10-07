@@ -43,8 +43,8 @@ const tilt: Control = {
 	label: "Tilt of Earth's axis",
 	min: 0,
 	max: 45,
-	step: 0.5,
-	default: 23.5,
+	step: 0.1,
+	default: 23.4,
 	unit: '°',
 	help: 'The real tilt is 23.4°.'
 };
@@ -58,7 +58,7 @@ const moon: Control = {
 	step: 0.25,
 	default: 4,
 	format: (v) => `${v.toFixed(1)} days`,
-	help: 'Or drag the Moon around the Earth.'
+	help: 'Moving the slider or the Moon stops time.'
 };
 
 const spin: Control = {
@@ -93,8 +93,8 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [day],
 			body: `
-<p>The Earth goes round the Sun once a year. Its spin axis is not upright: it is tilted by about 23.4° from the upright of its orbit — and, crucially, it keeps pointing the <em>same way in space</em> all year (towards the North Star).</p>
-<p>So in June the northern half of the Earth leans towards the Sun, and in December it leans away. Halfway between, in March and September, neither half leans towards it: those are the <dfn data-def="The two moments a year, around 20 March and 22 September, when the Sun is overhead at the equator and day and night are equal everywhere.">equinoxes</dfn>.</p>
+<p>The Earth goes round the Sun once a year. Its spin axis is not upright: it is tilted by about 23.4° from upright (from the perpendicular to the plane of its orbit) — and, crucially, it keeps pointing the <em>same way in space</em> all year (towards the North Star).</p>
+<p>So in June the northern half of the Earth leans towards the Sun, and in December it leans away. The moments of greatest lean, around 21 June and 21 December, are the <dfn data-def="The two moments a year, around 21 June and 21 December, when one hemisphere leans most towards the Sun: the longest day in one hemisphere and the shortest in the other.">solstices</dfn>. Halfway between, in March and September, neither half leans towards it: those are the <dfn data-def="The two moments a year, around 20 March and 22 September, when the Sun is overhead at the equator and day and night are equal everywhere.">equinoxes</dfn>.</p>
 <p>Drag the Earth round its orbit and watch the lit half of the globe: in June the North Pole is in sunlight all day, in December in darkness.</p>`
 		},
 		{
@@ -122,7 +122,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The second effect matters even more: the <strong>height of the Sun</strong>. In summer the noon Sun climbs high; in winter it stays low.</p>
 <p>A beam of sunlight falling steeply lands on a small patch of ground. The same beam arriving at a low angle is spread over a much larger patch, so each square metre gets less energy — like a torch shone straight down versus at a slant. Low winter sunlight also passes through more air.</p>
-<p>Longer days <em>and</em> steeper sunlight together give the summer half of the Earth several times more solar energy each day than the winter half. That is what seasons are.</p>`
+<p>Longer days <em>and</em> steeper sunlight together mean that at 40° N a midsummer day brings over three times as much solar energy as a midwinter day, and the summer half of the Earth as a whole gets more than twice as much as the winter half. That is what seasons are.</p>`,
+			notes: `<p>The chart shows sunshine arriving at the top of the atmosphere. Low winter sunlight also crosses more air, which absorbs and scatters some of it, so at the ground the gap between summer and winter is larger still.</p>`
 		},
 		{
 			id: 'distance',
@@ -162,7 +163,7 @@ export const spec: ExplainerSpec = {
 			controls: [moon, spin],
 			body: `
 <p>The Moon makes no light of its own; it shines by reflecting sunlight. At every moment, the half facing the Sun is lit and the other half is dark — like the Earth's day and night.</p>
-<p>As the Moon goes round the Earth, about once a month, we see that lit half from different angles. Between us and the Sun (<strong>new Moon</strong>) we face its dark half. Opposite the Sun (<strong>full Moon</strong>) we see the lit half face-on. In between we see part of each: crescents, quarters, gibbous Moons.</p>
+<p>As the Moon goes round the Earth, about once a month, we see that lit half from different angles. Between us and the Sun (<strong>new Moon</strong>) we face its dark half. Opposite the Sun (<strong>full Moon</strong>) we see the lit half face-on. In between we see part of each: crescents, quarters and gibbous Moons (more than half lit).</p>
 <p>The phases are <em>not</em> the Earth's shadow falling on the Moon: the shadow points away from the Sun, and the Moon is hardly ever in it.</p>`,
 			notes: `<p>From one new Moon to the next takes 29.5 days (the synodic month). The Moon goes once round the Earth relative to the stars in 27.3 days, but the Earth has moved along its orbit meanwhile, so the Moon needs two more days to line up with the Sun again.</p>`
 		},
@@ -175,7 +176,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [moon, spin],
 			body: `
-<p>Sometimes the three bodies line up exactly.</p>
+<p>Sometimes the Sun, Earth and Moon line up almost exactly.</p>
 <ul>
 <li>A <strong>solar eclipse</strong>: at new Moon, the Moon passes in front of the Sun and its shadow falls on part of the Earth.</li>
 <li>A <strong>lunar eclipse</strong>: at full Moon, the Moon passes through the Earth's shadow and turns dark, often coppery red.</li>
@@ -192,8 +193,8 @@ export const spec: ExplainerSpec = {
 			controls: [date, moon],
 			body: `
 <p>The Moon's orbit is tilted by about 5° to the Earth's. Seen side-on, most months the new Moon passes a little above or below the Sun, and the full Moon a little above or below the Earth's shadow: no eclipse.</p>
-<p>The two orbits cross at two points called <dfn data-def="The two points where the Moon's tilted orbit crosses the plane of Earth's orbit.">nodes</dfn>. An eclipse needs a new or full Moon to fall close to a node — within about 17° of it for a solar eclipse and about 11° for a lunar one.</p>
-<p>The line of nodes points at the Sun twice a year. Around those two <strong>eclipse seasons</strong>, about six months apart, eclipses happen; the rest of the year they cannot. Move the date and the day of the month to find them.</p>`,
+<p>The two orbits cross at two points called <dfn data-def="The two points where the Moon's tilted orbit crosses the plane of Earth's orbit.">nodes</dfn>. An eclipse needs a new or full Moon to fall close to a node — within about 17° of it for a solar eclipse and about 11° for a lunar one, so that the Moon is less than about 1.5° (solar) or 1° (lunar) above or below the plane of Earth's orbit.</p>
+<p>The line of nodes points at the Sun twice a year. Around those two <strong>eclipse seasons</strong>, about six months apart, eclipses happen; the rest of the year they cannot. Move the date and the Moon's age to find them.</p>`,
 			notes: `<p>The limits used here come from the sizes of the Sun and Moon in the sky (about half a degree each), the size of the Earth's shadow at the Moon's distance, and the Moon's parallax — it appears in slightly different places from different parts of the Earth. In reality the nodes also drift round once every 18.6 years, so the eclipse seasons come about 19 days earlier each year; this page keeps them fixed.</p>`
 		},
 		// ------------------------------------------------------------------ tides
@@ -207,8 +208,8 @@ export const spec: ExplainerSpec = {
 			controls: [pause],
 			body: `
 <p>The Moon's gravity pulls on the whole Earth, but not equally: it pulls the near side a little more than the centre, and the centre a little more than the far side. That <em>difference</em> in pull stretches the oceans into two bulges — one facing the Moon, one on the opposite side.</p>
-<p>As the Earth turns, a coast passes through both bulges and both dips each day: <strong>two high tides and two low tides</strong>, about 12 hours 25 minutes apart, because the Moon moves on a little each day.</p>`,
-			notes: `<p>This is the “equilibrium tide”, the shape the oceans would take if they could follow the pull instantly. Real tides are shaped by coastlines and ocean basins: some places get one tide a day, and the Bay of Fundy gets a range of 15 m.</p>`
+<p>As the Earth turns, a coast passes through both bulges and both dips each day: <strong>two high tides and two low tides</strong>, about 12 hours 25 minutes apart rather than 12 hours, because the Moon moves on a little along its orbit each day.</p>`,
+			notes: `<p>This is the “equilibrium tide”, the shape the oceans would take if they could follow the pull instantly. Real tides are shaped by coastlines and ocean basins: some places get one tide a day, and the Bay of Fundy gets a range of up to about 16 m.</p>`
 		},
 		{
 			id: 'spring',

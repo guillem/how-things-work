@@ -17,7 +17,7 @@ import {
 } from '../src/routes/sun-earth-moon/sky';
 
 test('the equinoxes and solstices fall on their calendar dates', () => {
-	expect(sunLongitude(79)).toBeCloseTo(0, 6); // 20 March
+	expect(sunLongitude(78.6)).toBeCloseTo(0, 6); // 20 March
 	const sep = [...Array(30).keys()].map((k) => 250 + k).find((d) => sunLongitude(d + 1) >= 180)!;
 	expect(sep + 1).toBeGreaterThanOrEqual(264); // 22–23 September
 	expect(sep + 1).toBeLessThanOrEqual(266);

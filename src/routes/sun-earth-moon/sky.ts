@@ -20,7 +20,7 @@ export const ECCENTRICITY = 0.0167;
 export const YEAR = 365.2422;
 export const SYNODIC_MONTH = 29.5306;
 /** Day of the year (0 = 1 January) of the March equinox and of perihelion, approximately. */
-export const MARCH_EQUINOX_DAY = 79;
+export const MARCH_EQUINOX_DAY = 78.6; // 20 March, ~14:00 UTC (2026: 14:46)
 export const PERIHELION_DAY = 3;
 
 const rad = (d: number) => (d * Math.PI) / 180;
