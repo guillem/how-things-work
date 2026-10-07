@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-07 22:47 UTC.
+Last updated: 2026-10-07 23:46 UTC.
 
 ## How we work
 
@@ -29,41 +29,31 @@ Last updated: 2026-10-07 22:47 UTC.
 ## Current state
 
 - `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps"), epidemics,
-  unit-circle (both done, ticked), catalogue-driven index, status/backlog/time log. PRs #1–#3
-  merged.
-- **Batch in progress (user away, asked 2026-10-07 ~22:05 UTC for 4–5 topics to validate
-  together).** Stacked branches, merge in this order after validation:
-  1. `topic/sorting` (base `main`) — **done**: reviewed, 91 e2e pass, ticked.
-  2. `topic/newtons-laws` (base `topic/sorting`), worked in the git worktree
-     `../hiw-newtons` (dev server on port 5174; `node_modules` is a symlink to the main
-     checkout's; `svelte-check` there shows one spurious `$types` error in `+layout.svelte` — run
-     final checks in the main checkout). Model, narrative, card done; scenes being drafted.
-  3. Next candidates: `sun-earth-moon`, `learning-from-data` (then `pagerank` if usage allows).
-     When a lower branch changes, rebase the ones above it (`git rebase topic/sorting` on
-     `topic/newtons-laws`, etc.).
+  unit-circle (done, ticked). PRs #1–#3 merged.
+- **Batch awaiting the user's validation** (asked 2026-10-07 ~22:05 UTC: 4–5 topics to validate
+  together while they are away). Stacked branches, all pushed; **merge in this order**, each PR
+  based on `main` after the previous one is merged (or open each with the branch below as its
+  base and let GitHub retarget):
+  1. `topic/sorting` — done (reviewed, ticked).
+  2. `topic/newtons-laws` — done (reviewed, ticked). Built in the git worktree `../hiw-newtons`
+     (dev server there on port 5174; remove it with `git worktree remove ../hiw-newtons` once
+     merged — its `node_modules` is a symlink).
+  3. `topic/sun-earth-moon` — done (reviewed, ticked).
+  4. `topic/learning-from-data` — **in progress** (this branch; see below).
+     All 123 e2e tests pass on `topic/sun-earth-moon` (the stack so far).
+- Merge method: merge commits (`gh pr merge N --merge`), as for #1–#3.
 
-## Current development: sorting
+## Current development: learning-from-data
 
-Catalogue entry `sorting` (Computing, level 1, step, no prerequisites; leads on to
-turing-machines). First `step` topic.
+Catalogue entry `learning-from-data` (AI, level 1, manipulate; related bayes-theorem).
 
-Plan (tick as done):
+- [x] `fit.ts` (Legendre-basis least squares, MSE, error curves, generated data) + tests
+      `e2e/fit-model.e2e.ts`; `steps.ts` (8 steps); page, stage, registry, colours `--fit-*`, card.
+- [ ] FitScene (examples, line, error, flexible, overfit, test) and CurveScene (sweetspot,
+      moredata): being drafted by two agents (started 23:45 UTC).
+- [ ] One combined review (scenes + fact-check + whole page), fixes, checks, tick, time log.
 
-- [x] `sorts.ts`: bubble (early exit), insertion, merge (shown as moves into the merged part),
-      quick (last-element pivot); every comparison and move recorded; counts checked against the
-      textbook in `e2e/sorting-model.e2e.ts`.
-- [x] `playback.ts` (autoplay at a pace, or paused at a scrubbed position), `steps.ts` (10 steps),
-      page, stage, registry, colours `--sort-*`, card art.
-- [x] BarsScene (problem, bubble, insertion, merge, quick) with a draggable timeline (Handle);
-      e2e `e2e/sorting.e2e.ts` (finishes sorted, scrubber steps, freeze on pause).
-- [x] RaceScene (race) and GrowthScene (growth, bigo, inputs, machine): drafted by two agents,
-      committed; their wording corrections applied; playback re-anchors on speed changes.
-- [x] Review round (2 agents) and fixes; race stepping added (catalogue: "stepping or playing");
-      all checks pass; ticked; time logged.
-- [ ] Review round (adversarial reviewers + whole page/fact-check), all checks, tick, time log,
-      then ask the user to validate.
-
-Next action (sorting): none — waits for the user's validation with the rest of the batch.
+Next action: integrate the two scenes, review, then hand the batch to the user.
 
 ## Open questions for the user
 
