@@ -128,7 +128,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The electron leaving P680 is handed to <strong>plastoquinone</strong> (PQ), a small fat-soluble molecule that lives inside the membrane. PQ collects two electrons plus two protons from the stroma and drifts over to the <strong>cytochrome b<sub>6</sub>f</strong> complex.</p>
 <p>Cytochrome b<sub>6</sub>f takes the electrons and releases the protons on the <em>other</em> side, into the lumen. Then it passes the electrons to <strong>plastocyanin</strong> (PC), a small copper-containing protein that ferries them along the lumen to photosystem I.</p>
-<p>Each hand-off is downhill in energy, and the biggest drop — from plastoquinone through cytochrome b<sub>6</sub>f — is not simply lost as heat: it is used to move protons from the stroma into the lumen, charging the membrane like a battery being filled.</p>`,
+<p>Each hand-off is downhill in energy, and the biggest drop in the chain between the two photosystems — from plastoquinone through cytochrome b<sub>6</sub>f — is not simply lost as heat: it is used to move protons from the stroma into the lumen, charging the membrane like a battery being filled.</p>`,
 			notes: `<p>Cytochrome b<sub>6</sub>f runs a “Q-cycle” that recycles one of the two electrons back into the plastoquinone pool, so that this step moves two protons into the lumen for every electron that passes through, rather than one. That raises the whole chain from two to three protons per electron — from 8 to 12 per O<sub>2</sub> released.</p>`
 		},
 		{
