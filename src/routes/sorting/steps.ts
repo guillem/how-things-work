@@ -105,7 +105,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The simplest recipe: walk along the row comparing each pair of <strong>neighbours</strong>, and swap them if they are in the wrong order.</p>
 <p>After one walk, the tallest bar has been carried all the way to the end, like a bubble rising — so it is in its final place (green). Walk again, and the second tallest settles next to it. Repeat until a walk makes no swaps.</p>
-<p>The cost: with <i>n</i> bars, up to <i>n</i> − 1 walks of up to <i>n</i> − 1 comparisons each — roughly <i>n</i>²/2 comparisons. Sixteen bars can take 120 comparisons; a thousand would take about half a million.</p>`,
+<p>The cost: with <i>n</i> bars, up to <i>n</i> − 1 walks, each one comparison shorter than the last (the end is already in place): (<i>n</i> − 1) + (<i>n</i> − 2) + … + 1 = <i>n</i>(<i>n</i> − 1)/2, roughly <i>n</i>²/2 comparisons. Sixteen bars can take 120 comparisons; a thousand would take about half a million.</p>`,
 			notes: `<p>This version stops as soon as a walk makes no swaps, so on an already-sorted row it needs just one walk: <i>n</i> − 1 comparisons. Try the <em>Sorted</em> and <em>Reversed</em> starting orders.</p>`
 		},
 		{
@@ -133,7 +133,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A different idea: <dfn data-def="Solving a problem by splitting it into smaller problems of the same kind, solving those, and combining the answers.">divide and conquer</dfn>. Split the row in half, sort each half, then <strong>merge</strong> the two sorted halves.</p>
 <p>Merging is cheap: look at the first bar of each half, take the smaller, and repeat — one comparison per bar placed. And how do you sort each half? The same way: split it, sort the quarters, merge. Keep splitting until each piece is a single bar, which is already sorted.</p>
-<p>Halving 16 bars takes 4 levels (16 → 8 → 4 → 2 → 1), and each level of merging costs at most about <i>n</i> comparisons. So the total is about <i>n</i> × log₂ <i>n</i> — for a thousand bars, under 10,000 comparisons instead of half a million.</p>`,
+<p>Halving 16 bars takes 4 levels (16 → 8 → 4 → 2 → 1) — that number of halvings is written log₂ 16 = 4 — and each level of merging costs at most about <i>n</i> comparisons. So the total is about <i>n</i> × log₂ <i>n</i> — for a thousand bars, under 10,000 comparisons instead of half a million.</p>`,
 			notes: `<p>log₂ <i>n</i> (“log base 2 of <i>n</i>”) is the number of times you can halve <i>n</i> before reaching 1: log₂ 16 = 4, log₂ 1,024 = 10, log₂ of a million ≈ 20. It grows very slowly, which is the whole point.</p>`
 		},
 		{
@@ -147,8 +147,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Another divide-and-conquer recipe. Pick one bar as the <dfn data-def="The bar that the others are compared with when splitting the row.">pivot</dfn> (here, the last bar of the section). Compare every other bar with it: shorter ones go to its left, taller ones to its right. The pivot is now in its final place.</p>
 <p>Then do the same, separately, to the part on the left and the part on the right, and so on until every piece is a single bar.</p>
-<p>When the pivots split the sections roughly in half, this costs about <i>n</i> log₂ <i>n</i> comparisons, like merge sort — and in practice it is often the fastest of all. But try a <em>Sorted</em> start: the last bar is always the tallest, every split is lopsided, and quick sort slows to <i>n</i>²/2.</p>`,
-			notes: `<p>Real libraries avoid that trap by choosing the pivot more cleverly, for example at random or as the middle value of three bars. This page uses the simple textbook rule so the weakness is visible.</p>`
+<p>When the pivots split the sections roughly in half, this costs about <i>n</i> log₂ <i>n</i> comparisons — on average a few more than merge sort (about 30% more at 1,000 bars), but each step is so simple that in practice it is often the fastest of all. Try a <em>Sorted</em> start: the last bar is always the tallest, every split is lopsided, and quick sort slows to <i>n</i>²/2.</p>`,
+			notes: `<p>Libraries that use quick sort avoid that trap by choosing the pivot more cleverly, for example at random or as the middle value of three bars. This page uses the simple textbook rule so the weakness is visible.</p>`
 		},
 		{
 			id: 'race',
@@ -156,7 +156,7 @@ export const spec: ExplainerSpec = {
 			title: 'A race on the same bars',
 			scene: 'race',
 			duration: 36,
-			controls: [pace, size, order, shuffle],
+			controls: [play, pace, size, order, shuffle],
 			body: `
 <p>All four recipes, side by side, sorting the same row at the same speed: one operation each per tick. The counters show the comparisons each one has made so far.</p>
 <p>With a few bars the difference is small. Raise the number of bars and watch merge sort and quick sort pull away. Then try the starting orders: insertion and bubble sort win on a sorted row, and quick sort with its last-bar pivot is suddenly the slowest.</p>`
@@ -172,7 +172,7 @@ export const spec: ExplainerSpec = {
 			controls: [order],
 			body: `
 <p>Now forget the bars and just count. The chart runs each algorithm on rows of 10 up to 1,000 items and plots the comparisons it needed against the number of items.</p>
-<p>Two families appear. Bubble and insertion sort curve upwards ever more steeply: their cost grows like <i>n</i>². Merge and quick sort stay almost straight: their cost grows like <i>n</i> log₂ <i>n</i>.</p>
+<p>On shuffled rows, two families appear. Bubble and insertion sort curve upwards ever more steeply: their cost grows like <i>n</i>². Merge and quick sort stay almost straight: their cost grows like <i>n</i> log₂ <i>n</i>.</p>
 <p>At 1,000 items the slow pair already needs 20 to 60 times as many comparisons as the fast pair, and the gap widens without limit as <i>n</i> grows.</p>`
 		},
 		{

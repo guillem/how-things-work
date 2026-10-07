@@ -11,10 +11,13 @@
 	 *   takes ~40 s at 100,000 items). Its comparisons are exactly those of
 	 *   `run('merge', …)` on the same rows — checked equal for n = 2…10,007 on
 	 *   several seeds;
-	 * - bubble sort above 2,000 items (5·10⁹ comparisons at 100,000: too slow to
+	 * - bubble sort above 2,500 items (5·10⁹ comparisons at 100,000: too slow to
 	 *   run in a page) is drawn dashed from n(n − 1)/2. On shuffled rows the
-	 *   measured counts are within 0.5 % of it from n = 500 to 4,000 (0.9963 at
-	 *   500, 0.9996 at 2,000, 0.9994 at 4,000), and the gap shrinks as n grows.
+	 *   measured counts are within 1 % of it from n = 500 up: at the chart's own
+	 *   sizes 0.9962 at 447, 0.9934 at 595, 0.9988 at 790, 0.9969 at 1,051,
+	 *   0.9998 at 1,397 and 1,857, 0.9996 at 2,469; the gap shrinks as n grows.
+	 *   Every number read off the dashed part (end labels, a crossing beyond
+	 *   2,500) is marked as an estimate on the chart.
 	 */
 	import {
 		ALGORITHMS,
@@ -71,7 +74,7 @@
 		return c;
 	}
 
-	export const BUBBLE_EXACT_MAX = 2000;
+	export const BUBBLE_EXACT_MAX = 2500;
 	export const MACHINE_MAX = 100000;
 	export interface Machine {
 		n: number[];
@@ -325,7 +328,7 @@
 			];
 		return [
 			'At 1,000 items the slow pair needs',
-			`×${Math.round(gap.lo)} to ×${Math.round(gap.hi)} as many comparisons`,
+			`${Math.round(gap.lo)} to ${Math.round(gap.hi)} times as many comparisons`,
 			'as the fast pair.'
 		];
 	});
@@ -462,12 +465,13 @@
 		// The last sign change: small-n averages are noisy and could cross twice.
 		let i = n.length - 1;
 		while (i >= 0 && f[i] > 0) i--;
-		if (i < 0) return { n: n[0], left: true };
+		if (i < 0) return { n: n[0], left: true, est: false };
 		if (i === n.length - 1) return null;
 		const u = f[i] === f[i + 1] ? 0 : -f[i] / (f[i + 1] - f[i]);
 		const ln = lerp(Math.log10(n[i]), Math.log10(n[i + 1]), clamp(u));
 		const lt = lerp(Math.log10(merge[i]), Math.log10(merge[i + 1]), clamp(u));
-		return { n: 10 ** ln, us: 10 ** lt, left: false };
+		const cn = 10 ** ln;
+		return { n: cn, us: 10 ** lt, left: false, est: cn > n[mData.lastExact] };
 	});
 	const fmtTime = (us: number) => {
 		if (us < 1) return `${sig2(us * 1000)} ns`;
@@ -480,6 +484,8 @@
 	const mLabels = $derived.by(() => {
 		if (!mData || !mPaths) return [];
 		const L = mData.n.length - 1;
+		// The last point is on the dashed part (n(n − 1)/2), not a run.
+		const est = L > mData.lastExact ? ', estimated' : '';
 		const ghost = clamp(logS.current / 0.5);
 		const items = [
 			{
@@ -494,7 +500,7 @@
 				key: 'fast',
 				y: msy(mPaths.fast[L]),
 				name: 'Bubble sort',
-				sub: `×${speed} computer · ${fmtTime(mData.bubble[L] / speed)}`,
+				sub: `×${speed} computer · ${fmtTime(mData.bubble[L] / speed)}${est}`,
 				color: COLOR.bubble,
 				opacity: 1
 			}
@@ -504,7 +510,7 @@
 				key: 'slow',
 				y: msy(mData.bubble[L]),
 				name: 'Bubble sort',
-				sub: `×1 computer · ${fmtTime(mData.bubble[L])}`,
+				sub: `×1 computer · ${fmtTime(mData.bubble[L])}${est}`,
 				color: COLOR.bubble,
 				opacity: 0.55 * ghost
 			});
@@ -856,7 +862,7 @@
 				speed === 1
 					? 'Running time: bubble sort and merge sort on the same ×1 computer'
 					: `Running time: bubble sort on a ×${speed} computer, merge sort on a ×1 one`,
-				'Shuffled rows. Both axes use a log scale: each step is ×10.'
+				'Shuffled rows. Log scales: equal steps mean equal multiples (×10 items across, ×1,000 in time up to 1 s).'
 			)}
 			{#each timeTicks as tk (tk.l)}
 				<line x1={MX0} x2={MX1} y1={msy(tk.us)} y2={msy(tk.us)} stroke="var(--stage-grid)" />
@@ -929,9 +935,13 @@
 				     left half (the lines rise to the right), above-left of one on the right
 				     half (merge sort falls away to the left). It slides between the two. -->
 				{@const k = smoothstep(0.42, 0.62, (cx - MX0) / (MX1 - MX0))}
+				<!-- At the first size (×1: tied at 2 items, merge sort ahead from 3) there is
+				     no "beyond": merge sort is simply never slower. -->
+				{@const never = crossing.left || crossing.n < mData.n[1]}
+				{@const ch = crossing.est ? 66 : 48}
 				{@const card = {
 					x: clamp(lerp(cx + 14, cx - 14 - 236, k), MX0 + 6, MX1 - 236),
-					y: clamp(lerp(cy + 22, cy - 22 - 48, k), MY0, MY1 - 56)
+					y: clamp(lerp(cy + 22, cy - 22 - ch, k), MY0, MY1 - ch - 8)
 				}}
 				<g opacity={mDone}>
 					{#if !crossing.left}
@@ -957,30 +967,45 @@
 						x={card.x}
 						y={card.y}
 						width="236"
-						height="48"
+						height={ch}
 						rx="10"
 						fill="var(--surface)"
 						stroke="var(--border)"
 					/>
-					{@render txt(card.x + 14, card.y + 20, 'Merge sort wins beyond', 13, { halo: false })}
-					{@render txt(card.x + 14, card.y + 39, `about ${fmt(about(crossing.n))} items`, 15, {
-						weight: 700,
-						halo: false
-					})}
+					{@render txt(
+						card.x + 14,
+						card.y + 20,
+						never ? 'At every size on the chart,' : 'Merge sort wins beyond',
+						13,
+						{ halo: false }
+					)}
+					{@render txt(
+						card.x + 14,
+						card.y + 39,
+						never ? 'merge sort is never slower' : `about ${fmt(about(crossing.n))} items`,
+						15,
+						{ weight: 700, halo: false }
+					)}
+					{#if crossing.est}
+						{@render txt(card.x + 14, card.y + 56, 'estimated: on the dashed part', 12, {
+							muted: true,
+							halo: false
+						})}
+					{/if}
 				</g>
 			{/if}
 			<g opacity={mDone}>
 				{@render txt(
 					48,
 					544,
-					'Time if the ×1 computer makes a million comparisons per second; dashed: bubble sort beyond 2,000 items',
+					'Time if the ×1 computer makes a million comparisons per second; dashed: bubble sort beyond 2,500 items',
 					12,
 					{ muted: true }
 				)}
 				{@render txt(
 					48,
 					562,
-					'is too slow to run here, so it is drawn from n(n − 1)/2, which the runs from 500 to 2,000 items match within 0.5 %.',
+					'is too slow to run here, so it is drawn from n(n − 1)/2, which the runs from 500 to 2,500 items match within 1 %.',
 					12,
 					{ muted: true }
 				)}
