@@ -47,12 +47,20 @@
 	const isTime = $derived(phase === 'time');
 
 	// The angle control of this step (0…360 or −360…720): the angle is shared
-	// across steps, so a value set on `periodic` is clamped on the others.
-	const range = $derived.by(() => {
+	// across steps, so a value set on `periodic` is wrapped into the others (see below).
+	const angleControl = $derived.by(() => {
 		const c = (step.controls ?? []).find((c) => c.id === 'angle');
-		return c && c.type === 'range' ? { lo: c.min, hi: c.max } : { lo: 0, hi: 360 };
+		return c && c.type === 'range' ? c : null;
 	});
+	const range = $derived(
+		angleControl ? { lo: angleControl.min, hi: angleControl.max } : { lo: 0, hi: 360 }
+	);
 	const clampA = (v: number) => Math.max(range.lo, Math.min(range.hi, v));
+	/** The same point on the circle, as an angle in [lo, hi): whole turns added or removed. */
+	const wrapInto = (v: number, lo: number, hi: number) =>
+		lo + ((((v - lo) % (hi - lo)) + (hi - lo)) % (hi - lo));
+	/** An angle inside the step's range, keeping the point where it is on the circle. */
+	const fit = (v: number) => (v >= range.lo && v <= range.hi ? v : wrapInto(v, range.lo, range.hi));
 	const hasSpin = $derived((step.controls ?? []).some((c) => c.id === 'spin'));
 	const spinOn = $derived(Boolean(params.spin) && hasSpin && !isTime);
 	const angleVal = $derived(Number(params.angle));
@@ -76,21 +84,26 @@
 	const theta = $derived.by(() => {
 		if (!spinOn || reduced) {
 			lastT = t;
-			return clampA(angleVal);
+			return fit(angleVal);
 		}
 		if (spinKey !== startedKey || t < lastT) {
 			startedAt = t;
 			// Coming from another wave step while spinning, carry on from where
-			// the point was; otherwise start from the angle control.
+			// the point was (the same point, if the ranges differ); otherwise
+			// start from the angle control. `startedKey` is cleared whenever spin
+			// goes off (see the freeze below), so switching spin back on always
+			// starts from the angle control, never from an old spin.
 			const carry = startedKey.endsWith(':true') && !startedKey.startsWith(`${step.id}:`);
-			startAngle = carry ? clampA(lastSpinAngle) : untrack(() => clampA(Number(params.angle)));
+			startAngle = carry ? fit(lastSpinAngle) : untrack(() => fit(Number(params.angle)));
 			startedKey = spinKey;
 		}
 		lastT = t;
-		const span = range.hi - range.lo;
+		// Past the end of the range, start again from 0° (the same point): on the
+		// wide range the spin stays on positive angles, so the trace never jumps
+		// to the clockwise side in the middle of the step.
+		const lo = Math.max(0, range.lo);
 		const raw = startAngle + SPEED * (t - startedAt);
-		// Past the end of the range, start again from its beginning (0° or −360°).
-		const v = range.lo + ((((raw - range.lo) % span) + span) % span);
+		const v = raw <= range.hi ? raw : wrapInto(raw, lo, range.hi);
 		lastSpinAngle = v;
 		angleAtSpin = untrack(() => Number(params.angle));
 		return v;
@@ -109,10 +122,28 @@
 		untrack(() => {
 			const untouched = Number(params.angle) === angleAtSpin;
 			if (prevSpin === true && !on && !skipFreeze && untouched && !reduced) {
-				setParam('angle', clampA(Math.round(lastSpinAngle)));
+				setParam('angle', Math.round(fit(lastSpinAngle)));
 			}
+			// The next spin is a new one: it starts from params.angle.
+			if (!on) startedKey = '';
 			skipFreeze = false;
 			prevSpin = on;
+		});
+	});
+
+	// An angle beyond this step's range (set on `periodic`, −360…720) is
+	// written back as the same point within the range (600° → 240°), so the
+	// point does not jump and the slider can show it. `prevAngle` is updated
+	// first so that this write is not mistaken for the slider below.
+	$effect(() => {
+		const { lo, hi } = range;
+		if (!angleControl) return;
+		untrack(() => {
+			const a = Number(params.angle);
+			if (a >= lo && a <= hi) return;
+			const v = Math.round(wrapInto(a, lo, hi));
+			prevAngle = v;
+			setParam('angle', v);
 		});
 	});
 
@@ -265,6 +296,9 @@
 	});
 
 	// ---- the point -------------------------------------------------------------------
+	// A pure function of t: changing f mid-step redraws the whole curve and
+	// moves the point to its new phase. Intended — the graph always shows
+	// exactly A·sin(2πft) for the current f, which is what the step's formula says.
 	const thetaTime = $derived(360 * freq * tt);
 	const shown = $derived(isTime ? thetaTime : theta);
 	const rCircle = $derived(U * (wAngle + w.time * amp.current));
@@ -296,12 +330,31 @@
 
 	// ---- readouts ----------------------------------------------------------------------
 	const thetaR = $derived(Math.round(theta));
+	/** "π/6", "0", or "≈ 2.16 rad" when the radians are not a multiple of π. */
 	const radLabel = (deg: number) => {
 		const r = radText(deg);
-		return r.includes('π') || r === '0' ? r : `${r} rad`;
+		return r.includes('π') || r === '0' ? r : `≈ ${r} rad`;
+	};
+	const radSpoken = (deg: number) => {
+		const r = radText(deg);
+		return r.includes('π') || r === '0' ? `${r} radians` : `about ${r} radians`;
 	};
 	const sameAs = $derived(reduce(thetaR));
 	const turns = $derived(Math.floor(thetaR / 360));
+
+	// One cycle lasts 1/f seconds: "4.0 s", or "≈ 6.67 s" when it is not exact.
+	const periodText = $derived.by(() => {
+		const p = 1 / freq;
+		const tenths = Math.round(p * 10);
+		return Math.abs(p * 10 - tenths) < 1e-6 ? `${num(p, 1)} s` : `≈ ${num(p, 2)} s`;
+	});
+	// The latest whole cycle on the time graph, bracketed: one turn of the point.
+	const cycle = $derived.by(() => {
+		const k = Math.floor(tt * freq + 1e-9) - 1; // the last completed cycle
+		const a = k / freq;
+		if (k < 0 || a < tLo - 1e-9) return null;
+		return { x0: st(a), x1: st(a + 1 / freq) };
+	});
 
 	// Vertical extent of the graph (grows with the amplitude in the time phase).
 	const ext = $derived(Math.max(1, wAngle + w.time * Math.max(1, amp.current)));
@@ -390,9 +443,7 @@
 	<!-- value grid, axes -->
 	{#each [-1, 1] as v (v)}
 		<line x1={GX0} x2={GX1} y1={yOf(v)} y2={yOf(v)} stroke="var(--stage-grid)" />
-		{@render txt(GX0 - 8, yOf(v) + 4, v > 0 ? '1' : '−1', 12, { anchor: 'end', muted: true })}
 	{/each}
-	{@render txt(GX0 - 8, CY + 4, '0', 12, { anchor: 'end', muted: true })}
 	<line x1={GX0} x2={GX1} y1={CY} y2={CY} stroke="var(--stage-line)" stroke-width="1.5" />
 	<line x1={GX0} x2={GX1} y1={bottomY} y2={bottomY} stroke="var(--stage-line)" />
 	<line x1={GX0} x2={GX0} y1={topY} y2={bottomY} stroke="var(--stage-line)" />
@@ -415,12 +466,30 @@
 					weight: 600
 				})}
 			{/each}
+			<!-- one cycle = one turn of the point = 1/f seconds -->
+			{#if cycle}
+				{@const y = yOf(Math.max(1, amp.current)) - 22}
+				{@const cxl = Math.min(GX1 - 80, Math.max(GX0 + 80, (cycle.x0 + cycle.x1) / 2))}
+				<path
+					d="M{cycle.x0} {y + 7} L{cycle.x0} {y} L{cycle.x1} {y} L{cycle.x1} {y + 7}"
+					fill="none"
+					stroke="var(--stage-ink)"
+					stroke-width="1.5"
+				/>
+				{@render txt(
+					cxl,
+					y - 7,
+					`one cycle: 1/f ${periodText.startsWith('≈') ? periodText : `= ${periodText}`}`,
+					13,
+					{ anchor: 'middle', weight: 600 }
+				)}
+			{/if}
 		</g>
 	{/if}
 
 	<!-- ================= the circle ================= -->
 	<line
-		x1={CX - rCircle - 18}
+		x1={Math.max(16, CX - rCircle - 18)}
 		x2={Math.min(CX + rCircle + 18, GX0 - 18)}
 		y1={CY}
 		y2={CY}
@@ -530,6 +599,12 @@
 			opacity="0.7"
 		/>
 	{/if}
+
+	<!-- value labels, drawn over the link line so it never hides them -->
+	{#each [-1, 1] as v (v)}
+		{@render txt(GX0 - 12, yOf(v) + 4, v > 0 ? '1' : '−1', 12, { anchor: 'end', muted: true })}
+	{/each}
+	{@render txt(GX0 - 12, CY + 4, '0', 12, { anchor: 'end', muted: true })}
 
 	<g clip-path="url(#wave-clip)">
 		{#if wAngle > 0.01}
@@ -684,7 +759,7 @@
 			value={thetaR}
 			min={range.lo}
 			max={range.hi}
-			valuetext="{degText(thetaR)}, {radText(thetaR)} radians"
+			valuetext="{degText(thetaR)}, {radSpoken(thetaR)}"
 			{onmove}
 			{onkey}
 			{ondragstart}
@@ -695,12 +770,12 @@
 	{#if wAngle > 0.01}
 		<g opacity={wAngle}>
 			{@render txt(32, 58, `θ = ${degText(thetaR)} (${radLabel(thetaR)})`, 22, { weight: 600 })}
-			{@render txt(330, 58, `sin θ = ${trigText(thetaR, 'sin')}`, 18, {
+			{@render txt(352, 58, `sin θ = ${trigText(thetaR, 'sin')}`, 18, {
 				weight: 600,
 				color: 'var(--trig-sin)'
 			})}
 			{#if wCos > 0.01}
-				{@render txt(590, 58, `cos θ = ${trigText(thetaR, 'cos')}`, 18, {
+				{@render txt(604, 58, `cos θ = ${trigText(thetaR, 'cos')}`, 18, {
 					weight: 600,
 					color: 'var(--trig-cos)',
 					opacity: Math.min(1, wCos / 0.6)
@@ -744,13 +819,9 @@
 				weight: 600,
 				color: 'var(--trig-sin)'
 			})}
-			{@render txt(
-				400,
-				84,
-				`frequency f = ${num(freq)} Hz → one cycle every ${num(1 / freq, 1)} s`,
-				16,
-				{ weight: 600 }
-			)}
+			{@render txt(400, 84, `frequency f = ${num(freq)} Hz → one cycle every ${periodText}`, 16, {
+				weight: 600
+			})}
 			{@render txt(32, 86, `t = ${num(tt, 1)} s`, 14, { muted: true })}
 		</g>
 	{/if}

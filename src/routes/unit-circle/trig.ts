@@ -91,6 +91,13 @@ export const degText = (deg: number) =>
 
 /** The angle (degrees) a step should show: the `angle` control if the step offers it. */
 export function angleParam(step: Step, params: Params, fallback = 30) {
-	const offered = (step.controls ?? []).some((c) => c.id === 'angle');
-	return offered ? Number(params.angle) : fallback;
+	const control = (step.controls ?? []).find((c) => c.id === 'angle');
+	if (!control || control.type !== 'range') return fallback;
+	const v = Number(params.angle);
+	// An angle set on a wider step (e.g. 600° on "periodic") is shown as the
+	// same point on the circle within this step's range.
+	const { min, max } = control;
+	if (v >= min && v <= max) return v;
+	const span = max - min;
+	return min + ((((v - min) % span) + span) % span);
 }

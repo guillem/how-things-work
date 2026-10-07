@@ -185,7 +185,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [spin, angleWide],
 			body: `
-<p>Nothing stops the point after one turn. At 360° it is back at the start, so from there on the heights and positions repeat exactly: sin(θ + 360°) = sin θ, and the same for cosine. Turning the other way, clockwise, gives negative angles, and the waves continue to the left.</p>
+<p>Nothing stops the point after one turn. At 360° it is back at the start, so from there on the heights and positions repeat exactly: sin(θ + 360°) = sin θ, and the same for cosine. Drag the point clockwise, or move the slider below 0°, and the angles go negative: the waves continue to the left.</p>
 <p>A function that repeats itself like this is <dfn data-def="Repeating at regular intervals. The length of one repeat is the period.">periodic</dfn>, and the length of one repeat, 360° or 2π, is its <strong>period</strong>.</p>
 <p>That is the takeaway of this page: sine and cosine are the coordinates of a point going round a circle, and that is exactly why they repeat as waves.</p>`
 		},
