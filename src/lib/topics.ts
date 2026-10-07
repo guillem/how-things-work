@@ -74,7 +74,7 @@ const explainers: Explainer[] = [
 		slug: 'newtons-laws',
 		title: "Newton's laws: forces, motion and energy",
 		summary:
-			'Push carts, launch projectiles and send a car along a track you shape yourself, and see why forces change motion instead of keeping it going.',
+			'Push carts, launch projectiles and send a car along a track you shape yourself, and see why forces change motion instead of keeping it going — and why momentum and energy never get lost.',
 		accent: '#1971c2',
 		steps: 10,
 		minutes: 15
