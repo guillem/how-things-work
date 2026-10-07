@@ -18,6 +18,7 @@ export function createPlayback(lead = 0.6) {
 	let startedAt = 0;
 	let startedFrom = 0;
 	let fresh = true;
+	let lastPace = 0;
 
 	return function position(
 		t: number,
@@ -32,7 +33,16 @@ export function createPlayback(lead = 0.6) {
 			startedAt = t;
 			startedFrom = o.manual >= o.total ? 0 : Math.max(0, o.manual);
 			fresh = false;
+		} else if (o.playing && o.pace !== lastPace) {
+			// A speed change carries on from where the replay is, without a jump.
+			startedFrom = Math.min(
+				o.total,
+				startedFrom + Math.max(0, lastT - startedAt - (fresh ? lead : 0)) * lastPace
+			);
+			startedAt = lastT;
+			fresh = false;
 		}
+		lastPace = o.pace;
 		wasPlaying = o.playing;
 		lastT = t;
 		if (!o.playing) return Math.max(0, Math.min(o.total, o.manual));

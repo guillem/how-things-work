@@ -155,7 +155,7 @@ export const spec: ExplainerSpec = {
 			chapter: 'divide',
 			title: 'A race on the same bars',
 			scene: 'race',
-			duration: 30,
+			duration: 36,
 			controls: [pace, size, order, shuffle],
 			body: `
 <p>All four recipes, side by side, sorting the same row at the same speed: one operation each per tick. The counters show the comparisons each one has made so far.</p>
