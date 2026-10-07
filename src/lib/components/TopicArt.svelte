@@ -9,6 +9,14 @@
 	}
 	let { slug, accent }: Props = $props();
 
+	// Unit circle: one period of a sine wave, 0°…360° over x 96…186; its 45° point
+	// (x 107.3) is level with the circle's point.
+	const sineArt = Array.from({ length: 61 }, (_, i) => {
+		const x = 96 + (i / 60) * 90;
+		const y = 62 - 30 * Math.sin((i / 60) * 2 * Math.PI);
+		return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+	}).join(' ');
+
 	// Epidemics: a jittered grid of people; infection spreads from the left,
 	// recovered behind the front, susceptible ahead of it.
 	const crowd = Array.from({ length: 48 }, (_, k) => {
@@ -102,6 +110,34 @@
 			stroke-linecap="round"
 			opacity="0.8"
 		/>
+	{:else if slug === 'unit-circle'}
+		<!-- a unit circle with its point, linked to the sine wave it traces -->
+		<g transform="translate(48 62)">
+			<line x1="-36" x2="36" y1="0" y2="0" stroke="currentColor" opacity="0.25" />
+			<line x1="0" x2="0" y1="-36" y2="36" stroke="currentColor" opacity="0.25" />
+			<circle r="30" fill="none" stroke={accent} stroke-width="2" />
+			<line x1="0" y1="0" x2="21.2" y2="-21.2" stroke={accent} stroke-width="2" />
+			<line x1="0" y1="0" x2="21.2" y2="0" stroke="var(--trig-cos)" stroke-width="3" />
+			<line x1="21.2" y1="0" x2="21.2" y2="-21.2" stroke="var(--trig-sin)" stroke-width="3" />
+			<circle cx="21.2" cy="-21.2" r="4" fill={accent} />
+		</g>
+		<line
+			x1="69"
+			y1="40.8"
+			x2="107.3"
+			y2="40.8"
+			stroke={accent}
+			stroke-dasharray="2 3"
+			opacity="0.6"
+		/>
+		<path
+			d={sineArt}
+			fill="none"
+			stroke="var(--trig-sin)"
+			stroke-width="2.4"
+			stroke-linecap="round"
+		/>
+		<circle cx="107.3" cy="40.8" r="3.5" fill="var(--trig-sin)" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -207,6 +207,9 @@ kbd {
 	--sir-r: #a3a8b1;
 	--sir-v: #1f9d74;
 	--sir-field: #f2f1ec;
+	/* trigonometry: sine (height) and cosine (sideways position) */
+	--trig-sin: #d6336c;
+	--trig-cos: #1c7ed6;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -226,4 +229,6 @@ kbd {
 	--sir-r: #646a74;
 	--sir-v: #34c18f;
 	--sir-field: #1d1e22;
+	--trig-sin: #f06595;
+	--trig-cos: #4dabf7;
 }

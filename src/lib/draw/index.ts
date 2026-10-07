@@ -6,3 +6,5 @@ export { colors, wavelengthToColor, absorbance } from './palette';
 export * from './math';
 export { default as Axes } from './Axes.svelte';
 export * from './chart';
+export { default as Handle } from './Handle.svelte';
+export { toSvg, startDrag } from './pointer';

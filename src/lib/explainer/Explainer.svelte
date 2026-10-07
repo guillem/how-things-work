@@ -8,7 +8,7 @@
 	import { Clock } from './clock.svelte';
 	import Controls from './Controls.svelte';
 	import ParamControls from './ParamControls.svelte';
-	import type { ExplainerSpec, Params, StageProps } from './types';
+	import type { ExplainerSpec, Params, ParamValue, StageProps } from './types';
 
 	interface Props {
 		spec: ExplainerSpec;
@@ -57,8 +57,12 @@
 		playing: clock.playing && !reduced,
 		reduced,
 		dark: theme.current === 'dark',
-		params
+		params,
+		setParam
 	});
+	function setParam(id: string, value: ParamValue) {
+		params[id] = value;
+	}
 
 	// ---- navigation ----------------------------------------------------------
 	function go(i: number, { announce = true } = {}) {
@@ -147,6 +151,9 @@
 		const typing =
 			tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable;
 		if (typing && !(tag === 'INPUT' && (target as HTMLInputElement).type === 'range')) return;
+		// Sliders (range inputs, and draggable handles in a scene with role="slider")
+		// use the arrow, Home and End keys themselves.
+		const slider = tag === 'INPUT' || target?.getAttribute('role') === 'slider';
 		if (showHelp && event.key === 'Escape') {
 			showHelp = false;
 			event.preventDefault();
@@ -156,25 +163,25 @@
 			case 'ArrowRight':
 			case 'PageDown':
 			case 'j':
-				if (tag === 'INPUT') return; // let the slider handle arrows
+				if (slider) return; // let the slider handle arrows
 				next();
 				break;
 			case 'ArrowLeft':
 			case 'PageUp':
 			case 'k':
-				if (tag === 'INPUT') return;
+				if (slider) return;
 				prev();
 				break;
 			case 'Home':
-				if (tag === 'INPUT') return; // let the slider jump to its minimum
+				if (slider) return; // let the slider jump to its minimum
 				go(0);
 				break;
 			case 'End':
-				if (tag === 'INPUT') return;
+				if (slider) return;
 				go(steps.length - 1);
 				break;
 			case ' ':
-				if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'A') return;
+				if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'A' || slider) return;
 				clock.playing = !clock.playing;
 				break;
 			case 'r':
@@ -223,7 +230,8 @@
 				</span>
 			{/each}
 		</div>
-		<div class="stage" role="img" aria-label="Animation: {step.title}">
+		<!-- A group, not an image: scenes may contain draggable handles. -->
+		<div class="stage" role="group" aria-label="Animation: {step.title}">
 			{@render stage(stageProps)}
 		</div>
 		<Controls
@@ -535,7 +543,7 @@
 		bottom: calc(100% + 6px);
 		z-index: 4;
 		width: max-content;
-		max-width: min(280px, 80vw);
+		max-width: min(280px, calc(100vw - 32px));
 		padding: 8px 10px;
 		border: 1px solid var(--border);
 		border-radius: 8px;
@@ -546,17 +554,14 @@
 		line-height: 1.4;
 		text-decoration: none;
 		box-shadow: var(--shadow-lg);
-		opacity: 0;
-		transform: translateY(4px);
 		pointer-events: none;
-		transition:
-			opacity 0.15s,
-			transform 0.15s var(--ease-out);
+		/* Not laid out until shown: a hidden tooltip near the right edge would
+		   otherwise widen the page and cause a sideways scroll. */
+		display: none;
 	}
 	.body :global(dfn[data-def]:hover::after),
 	.body :global(dfn[data-def]:focus-visible::after) {
-		opacity: 1;
-		transform: none;
+		display: block;
 	}
 	.step > :global(.controls) {
 		margin-top: 18px;

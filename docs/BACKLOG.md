@@ -23,8 +23,8 @@ checklist); this file is about **order and open work**. Where we are right now i
 | ----------------------- | ---------------------- | ---------- | ----- | --------------------------------------------------------------------- | --------------- |
 | Biology                 | `photosynthesis`       | simulate   | 1     | Already built — the quality reference                                 | published, gaps |
 | Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot      | done            |
-| Mathematics             | `unit-circle`          | manipulate | 1     | No prerequisites; first draggable handle + linked graph; unlocks 3    | next            |
-| Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.   |                 |
+| Mathematics             | `unit-circle`          | manipulate | 1     | No prerequisites; first draggable handle + linked graph; unlocks 3    | done            |
+| Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.   | next            |
 | Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy       |                 |
 | Space                   | `sun-earth-moon`       | manipulate | 1     | No prerequisites, no data                                             |                 |
 | Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`   |                 |
@@ -63,8 +63,10 @@ catalogue's suggested first `build`), `ecosystems`, `electric-circuits` (unlocks
   threshold/SIR scenes use local snippets with `style:font-size`/`style:fill`; switch them back to
   `<Label>` after the fix.
 
-- Shared components still to create as their first topic needs them: draggable handles
-  (`unit-circle`), an algorithm stepper / bar chart (`sorting`), a build palette (`pagerank` or
+- **Snap and the slider (unit-circle):** with "snap to special angles" on, the angle slider can
+  still set a non-special angle (only the handle and keys snap). Fix in the framework: let a
+  control declare allowed values, or round a range while a toggle is on.
+- Shared components still to create as their first topic needs them: an algorithm stepper / bar chart (`sorting`), a build palette (`pagerank` or
   `graph-search`), pan/zoom (`chaos-fractals`).
 - Cards on the index have hand-drawn art only for topics that have a vignette in
   `src/lib/components/TopicArt.svelte`; give each new topic one.
