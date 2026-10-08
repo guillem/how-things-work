@@ -103,7 +103,9 @@ test('truss chords: the top is pushed, the bottom pulled', () => {
 test('in a truss the members mostly pull or push; in the beam they bend', () => {
 	const t = DESIGNS.truss;
 	const sol = solve(t, 20, size(t));
-	const axialShare = sol.members.filter((m) => m.mode === 'tension' || m.mode === 'compression').length;
+	const axialShare = sol.members.filter(
+		(m) => m.mode === 'tension' || m.mode === 'compression'
+	).length;
 	expect(axialShare).toBeGreaterThan(t.members.length / 3);
 	const b = solve(DESIGNS.beam, 20, size(DESIGNS.beam));
 	expect(b.members.every((m) => m.mode === 'bending')).toBe(true);
