@@ -338,6 +338,31 @@
 				stroke-width="2"
 			/>
 		{/each}
+	{:else if slug === 'bridges-structures'}
+		<!-- a truss over a gap: top chord and end posts pushed (red), bottom chord and
+		     diagonals pulled (blue), a truck on the deck -->
+		<path d="M0 72 H44 V120 H0 Z" fill="var(--struct-ground)" />
+		<path d="M156 72 H200 V120 H156 Z" fill="var(--struct-ground)" />
+		<path
+			d="M0 72 H44 V120 M156 120 V72 H200"
+			fill="none"
+			stroke="var(--struct-ground-edge)"
+			stroke-width="1.5"
+		/>
+		<g stroke-linecap="round" stroke-width="2">
+			{#each [72, 100, 128] as x (x)}
+				<line x1={x} y1="44" x2={x} y2="72" stroke="var(--struct-steel)" />
+			{/each}
+			<line x1="72" y1="44" x2="100" y2="72" stroke="var(--struct-tension)" />
+			<line x1="128" y1="44" x2="100" y2="72" stroke="var(--struct-tension)" />
+			<line x1="44" y1="72" x2="72" y2="44" stroke="var(--struct-compression)" stroke-width="3" />
+			<line x1="156" y1="72" x2="128" y2="44" stroke="var(--struct-compression)" stroke-width="3" />
+			<line x1="72" y1="44" x2="128" y2="44" stroke="var(--struct-compression)" stroke-width="3" />
+			<line x1="44" y1="72" x2="156" y2="72" stroke="var(--struct-tension)" stroke-width="3" />
+		</g>
+		<rect x="82" y="59" width="24" height="9" rx="2" fill={accent} />
+		<circle cx="88" cy="69" r="2.6" fill="var(--struct-road)" />
+		<circle cx="100" cy="69" r="2.6" fill="var(--struct-road)" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
