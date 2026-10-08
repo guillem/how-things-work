@@ -72,7 +72,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The simplest idea: after four data bits, send one extra <dfn data-def="An extra bit chosen so that the number of 1s in a group of bits is even. If one bit of the group flips, the count becomes odd.">parity bit</dfn>, chosen so that the number of 1s in the group is <strong>even</strong>. The receiver counts the 1s. Odd? Something flipped.</p>
 <p>One bit has been flipped here and the circle turns red: the error is <em>detected</em>. But the count says nothing about <em>which</em> bit it was, so the receiver can only ask for the data again. Click a second bit: the count is even again and the damage slips through unnoticed.</p>`,
-			notes: `<p>You could instead send every bit three times and take a majority vote: that repairs any single flip in a triple, but it sends three bits for every one. The trick on the next pages does the same job far more cheaply.</p>`
+			notes: `<p>You could instead send every bit three times and take a majority vote: that repairs any single flip in a triple, but it sends three bits for every one. The trick on the next pages repairs any single flip in a block of 7 bits while sending fewer than twice as many bits.</p>`
 		},
 		{
 			id: 'hamming',
@@ -107,7 +107,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: bitControls,
 			body: `
-<p>Hamming's numbering makes the search automatic. Number the 7 bits 1 to 7 and write each number in <a href="/binary/">binary</a>. Check 1 covers every position whose binary has a 1 in the "1s" column (1, 3, 5, 7), check 2 the "2s" column (2, 3, 6, 7) and check 4 the "4s" column (4, 5, 6, 7).</p>
+<p>Hamming's numbering makes the search automatic. Number the 7 bits 1 to 7 and write each number in binary. Check 1 covers every position whose binary has a 1 in the "1s" column (1, 3, 5, 7), check 2 the "2s" column (2, 3, 6, 7) and check 4 the "4s" column (4, 5, 6, 7).</p>
 <p>So write a 1 for each failing check and a 0 for each passing one: check 4, check 2, check 1. Read as a binary number, it is the <strong>position of the flipped bit</strong>. All 0s means no error. The receiver doesn't search; it reads off an address. This number is called the <dfn data-def="The pattern of failing checks. For a Hamming code it is the position of a single flipped bit, written in binary.">syndrome</dfn>.</p>`,
 			notes: `<p>The same recipe works for longer blocks: with 4 check bits at positions 1, 2, 4, 8 you protect 15 bits (11 of data); with 5, 31 bits (26 of data). The check bits get relatively cheaper, but each block can still repair only one flip.</p>`
 		},
@@ -133,9 +133,10 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [noise, resend],
 			body: `
-<p>Back to the noisy channel, now with two copies of the same message: one sent as it is, one with every 4 bits sent as a 7-bit Hamming block. Each bit faces the same chance of flipping. Red marks show the flips; on the coded side, a block with only one flip is repaired, and only blocks hit twice or more come out wrong.</p>
+<p>Back to the noisy channel, now with two copies of the same message: one sent as it is, one with every 4 bits sent as a 7-bit Hamming block. Each bit faces the same chance of flipping. The marks on each strip are the flipped bits. On the coded side, amber marks are flips in a block hit only once, which the receiver repairs; red marks are in blocks hit twice or more, which come out wrong.</p>
 <p>At 5% noise about two letters in three survive without coding, and about 91% with it. At 1% it is 92% against 99.6%. Drag the noise and compare with the curves.</p>`,
-			notes: `<p>A letter is 8 bits, so it survives uncoded with chance (1 − p)⁸. Coded, it is two 7-bit blocks, and a block decodes correctly if it has at most one flip: (1 − p)⁷ + 7p(1 − p)⁶. The dots are what this particular message actually got; "Send again" rolls new noise.</p>`
+			notes: `<p>A letter is 8 bits, so it survives uncoded with chance (1 − p)⁸. Coded, it is two 7-bit blocks, and a block decodes correctly if it has at most one flip: (1 − p)⁷ + 7p(1 − p)⁶. The dots are what this particular message actually got; "Send again" rolls new noise.</p>
+<p>Two simplifications: here every bit flips independently, while real noise often comes in bursts (real systems shuffle the bits of several blocks together so that a burst is spread thinly over many blocks). And both messages face the same flip chance per bit, although the coded one sends 7/4 as many bits; with a fixed power budget each coded bit would be a little noisier, so the real gain is somewhat smaller.</p>`
 		},
 		{
 			id: 'cost',
