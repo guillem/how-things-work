@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-08 03:50 UTC.
+Last updated: 2026-10-08 04:00 UTC.
 
 ## How we work
 
@@ -33,24 +33,32 @@ Last updated: 2026-10-08 03:50 UTC.
   (published, not ticked — "place points" open question). PRs #1–#7 merged (merge commits).
 - **Batch 2 in progress** (user asked 2026-10-08 ~03:20 UTC: merge batch 1, then another batch;
   keep going until close to the session limit but never reach 100% of the 5-hour window; the
-  user validates the whole batch together). Planned, in stack order (each branch starts from the
-  previous one):
-  1. `topic/pagerank` — main checkout (dev server port 5173). Model, tests and narrative
-     committed; three scene agents (votes, surfer, iterate) at work.
-  2. `topic/electric-circuits` — worktree `../hiw-circuits` (port 5174), not started.
-  3. `topic/bridges-structures` — not started (needs a 2-D frame solver: beams carry bending).
-  4. `topic/binary` — not started.
-  5. `topic/atmosphere-weather` — not started; large scope, decide the simplified model first.
-- Scene-author briefs used for this batch: a common brief plus one per topic (kept in the
-  session scratchpad; the essentials are in `scene-guide.md` and this file).
-- Merge method: merge commits (`gh pr merge N --merge`), one PR per topic, in stack order.
+  user validates the whole batch together; always give clickable localhost URLs). Stacked
+  branches, each started from the previous one; every topic has its model, Node tests and
+  narrative committed, scenes written by agents:
+  1. `topic/pagerank` — main checkout, dev server :5173. Scenes committed; adversarial review
+     running; fact-check applied.
+  2. `topic/electric-circuits` — worktree `../hiw-circuits`, :5174. Wire scene done, board
+     scene in progress (uncommitted in the worktree).
+  3. `topic/bridges-structures` — worktree `../hiw-bridges`, :5175. Frame solver (stiffness
+     method, cables tension-only, steel budget shared by demand). Scenes in progress.
+  4. `topic/binary` — worktree `../hiw-binary`, :5176. Scenes in progress.
+  5. `topic/atmosphere-weather` — worktree `../hiw-atmos`, :5177. Energy-balance model,
+     Held–Hou cells, Coriolis parcels, geostrophic winds, frontal advection, hurricane MPI.
+     Five scenes in progress (uncommitted placeholders let the page load meanwhile).
+- Each worktree's `node_modules` is a symlink to the main checkout's. A git-ignored
+  `pw-node.config.ts` (listed in `.git/info/exclude`) runs the Node-only model tests without
+  building the site: `npx playwright test -c pw-node.config.ts <name>-model`. The full e2e run
+  only works on a branch whose earlier topics all have their scenes.
+- When a topic's scenes land: review (adversarial reviewer + fact-check), commit, then rebase
+  the later branches onto it (`git rebase topic/<previous>` in each worktree, in order).
+- Merge method: merge commits (`gh pr merge N --merge`), one PR per topic, in stack order;
+  then `git worktree remove ../hiw-*`.
 
 ## Current development
 
-`topic/pagerank`: `pagerank.ts` (power iteration, random surfer, presets EXAMPLE / TRAPS /
-STARTER), `e2e/pagerank-model.e2e.ts` (9 tests), `steps.ts` (10 steps), `geometry.ts` (shared
-link arrows). Built web stored per step in `params['web:<stepId>']` (string). Next: review the
-scenes, fact-check, screenshot matrix, tick.
+See the list above. Built web/board/bridge/bits state is kept per step in params as strings
+(`web:<step>`, `board:build`, `bridge:build`, `bits:<step>`, `map:<step>`).
 
 ## Open questions for the user
 
