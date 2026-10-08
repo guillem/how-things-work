@@ -176,6 +176,26 @@
 			parts: board.parts.map((p) => (p.kind === 'switch' ? { ...p, closed: true } : p))
 		})
 	);
+	/**
+	 * Which parts can ever carry current: with every switch closed, under all the
+	 * batteries together or under any one of them alone (the others as plain
+	 * wire), so a loop whose batteries push against each other still counts.
+	 */
+	const canFlow = $derived.by(() => {
+		const closed = board.parts.map((p) => (p.kind === 'switch' ? { ...p, closed: true } : p));
+		const live = closed.map((_, i) => Math.abs(solClosed.current[i]) > 1e-6);
+		const bats = closed.flatMap((p, i) => (p.kind === 'battery' ? [i] : []));
+		if (bats.length > 1)
+			for (const k of bats) {
+				const alone = closed.map((p, i): Part =>
+					p.kind === 'battery' && i !== k ? { kind: 'wire', a: p.a, b: p.b } : p
+				);
+				solve({ ...board, parts: alone }).current.forEach((c, i) => {
+					if (Math.abs(c) > 1e-6) live[i] = true;
+				});
+			}
+		return live;
+	});
 	const electrons = $derived(has('charges') && params.charges === 'electrons');
 	const tool = $derived(String(params.part ?? 'bulb') as PartKind | 'erase');
 
@@ -261,7 +281,7 @@
 		// Voltmeter leads: wires that never carry current and connect to a voltmeter.
 		const reach = new Set<number>();
 		for (const p of board.parts) if (p.kind === 'voltmeter') reach.add(p.a).add(p.b);
-		const dead = board.parts.map((p, i) => Math.abs(solClosed.current[i]) < 1e-6);
+		const dead = canFlow.map((live) => !live);
 		const thin = new Set<number>();
 		for (let grew = true; grew;) {
 			grew = false;
@@ -436,6 +456,8 @@
 		return out;
 	});
 	const chargeColor = $derived(electrons ? 'var(--circ-electron)' : 'var(--circ-charge)');
+	/** On the voltage step the wires show potential (blue = low), so the dots go neutral. */
+	const dotColor = $derived(phase === 'voltage' ? 'var(--stage-ink)' : chargeColor);
 
 	// ---- text helpers ----------------------------------------------------------------------------------
 	const fmtA = (a: number) => {
@@ -483,7 +505,9 @@
 	// ---- hover and focus ----------------------------------------------------------------------------------
 	let hovered = $state<string | null>(null);
 	let focused = $state<string | null>(null);
-	const tipKey = $derived(hovered ?? focused);
+	// A target that disappears (another step's board) takes no blur event with it.
+	const focusKey = $derived(focused && (edit || byKey.has(focused)) ? focused : null);
+	const tipKey = $derived(hovered ?? focusKey);
 	const tip = $derived.by(() => {
 		if (!tipKey) return null;
 		const e = EDGE.get(tipKey)!;
@@ -638,7 +662,7 @@
 						? 7
 						: it.part.kind === 'bulb'
 							? 16
-							: 22}
+							: 25}
 	{@const ux = e.vertical ? 0 : 1}
 	{@const uy = e.vertical ? 1 : 0}
 	{@const vp = sol.v[e.p]}
@@ -702,8 +726,10 @@
 		})}
 		<!-- its voltage (on the voltage step the voltmeter beside it says it) -->
 		{#if phase !== 'voltage'}
-			{@render txt(e.cx - e.nx * 26, e.cy - e.ny * 30 + 4, fmtV(valueOf(p)), 12, {
-				anchor: e.vertical ? 'end' : 'middle',
+			<!-- left of a vertical battery, except in column A, where it goes right, past the + and − -->
+			{@const inA = e.vertical && colOf(e.p) === 0}
+			{@render txt(inA ? e.cx + 36 : e.cx - e.nx * 26, e.cy - e.ny * 30 + 4, fmtV(valueOf(p)), 12, {
+				anchor: inA ? 'start' : e.vertical ? 'end' : 'middle',
 				weight: 600,
 				halo: 'var(--circ-board)'
 			})}
@@ -788,18 +814,18 @@
 		<circle
 			cx={e.cx}
 			cy={e.cy}
-			r="22"
+			r="25"
 			style:fill="var(--circ-meter)"
 			style:stroke="var(--circ-wire)"
 			stroke-width="1.5"
 		/>
-		{@render txt(e.cx, e.cy - 6, p.kind === 'ammeter' ? 'A' : 'V', 11, {
+		{@render txt(e.cx, e.cy - 7, p.kind === 'ammeter' ? 'A' : 'V', 11, {
 			anchor: 'middle',
 			weight: 700,
 			muted: true,
 			halo: 'var(--circ-meter)'
 		})}
-		{@render txt(e.cx, e.cy + 10, reading, reading.length > 6 ? 10 : 11.5, {
+		{@render txt(e.cx, e.cy + 9, reading, reading.length > 6 ? 10 : 11, {
 			anchor: 'middle',
 			weight: 700,
 			tabular: true,
@@ -884,7 +910,7 @@
 		{/each}
 
 		<!-- moving charge -->
-		<g style:fill={chargeColor}>
+		<g style:fill={dotColor}>
 			{#each dots as d (d.id)}
 				{#if reduced && d.moving}
 					<path
@@ -892,7 +918,7 @@
 						transform="translate({d.x} {d.y}) rotate({d.angle})"
 						opacity={d.opacity}
 						style:stroke="var(--circ-board)"
-						stroke-width="1"
+						stroke-width={electrons ? 2 : 1}
 					/>
 				{:else if d.streak}
 					<line
@@ -901,7 +927,7 @@
 						x2="0"
 						y2="0"
 						transform="translate({d.x} {d.y}) rotate({d.angle})"
-						style:stroke={chargeColor}
+						style:stroke={dotColor}
 						stroke-width="5"
 						stroke-linecap="round"
 						opacity={0.7 * d.opacity}
@@ -910,10 +936,10 @@
 					<circle
 						cx={d.x}
 						cy={d.y}
-						r={phase === 'voltage' ? 3 : electrons ? 4 : 3.5}
+						r={phase === 'voltage' ? 3 : electrons ? 4.5 : 3.5}
 						opacity={d.opacity}
 						style:stroke="var(--circ-board)"
-						stroke-width={electrons ? 1.75 : 1.25}
+						stroke-width={electrons ? 2.25 : 1.25}
 					/>
 				{/if}
 			{/each}
@@ -1010,7 +1036,7 @@
 				fill="transparent"
 			/>
 			{#if round}
-				<circle cx={e.cx} cy={e.cy} r="23" fill="transparent" />
+				<circle cx={e.cx} cy={e.cy} r="26" fill="transparent" />
 			{/if}
 		</g>
 	{/each}
@@ -1033,6 +1059,8 @@
 	<g style:pointer-events="none">
 		{#if tipKey && edit && !byKey.has(tipKey) && tool !== 'erase'}
 			{@const e = EDGE.get(tipKey)!}
+			<!-- its label right of a vertical gap, except in the last column, where it would leave the board -->
+			{@const left = e.vertical && colOf(e.p) === COLS - 1}
 			<g opacity="0.6">
 				<line
 					x1={e.x1 + (e.vertical ? 0 : 10)}
@@ -1044,19 +1072,23 @@
 					stroke-dasharray="4 4"
 				/>
 				{@render txt(
-					e.cx + (e.vertical ? 20 : 0),
+					e.cx + (e.vertical ? (left ? -20 : 20) : 0),
 					e.cy + (e.vertical ? 4 : -20),
 					`+ ${KIND_NAME[tool]}`,
 					11,
-					{ anchor: e.vertical ? 'start' : 'middle', weight: 600, halo: 'var(--circ-board)' }
+					{
+						anchor: e.vertical ? (left ? 'end' : 'start') : 'middle',
+						weight: 600,
+						halo: 'var(--circ-board)'
+					}
 				)}
 			</g>
 		{/if}
-		{#if hovered && hovered !== focused && (edit || switchParams.has(byKey.get(hovered)?.i ?? -1))}
+		{#if hovered && hovered !== focusKey && (edit || switchParams.has(byKey.get(hovered)?.i ?? -1))}
 			{@render ring(hovered, 0.35)}
 		{/if}
-		{#if focused}
-			{@render ring(focused, 1)}
+		{#if focusKey}
+			{@render ring(focusKey, 1)}
 		{/if}
 	</g>
 
@@ -1128,7 +1160,7 @@
 				color: 'var(--circ-low)',
 				weight: 650
 			})}
-			{@render txt(PL, 210, 'Voltmeters read the difference:', 13)}
+			{@render txt(PL, 210, 'The voltage (difference in potential):', 13)}
 			{@render row(240, 'across the battery', fmtV(vms[0]?.volts ?? 0))}
 			{@render row(268, 'across the bulb', fmtV(vms[1]?.volts ?? 0))}
 			{#if theSwitch && !theSwitch.part.closed}
@@ -1201,9 +1233,18 @@
 				)}
 			{/each}
 			{@render row(254, 'from the battery', fmtA(loopAmps), 'var(--circ-charge)')}
+			{@const nLit = bulbs.filter((b) => b.lit).length}
 			{@render txt(PL, 298, 'Each branch is its own loop through', 13)}
-			{@render txt(PL, 316, 'the battery: one switch turns its', 13)}
-			{@render txt(PL, 334, 'bulb off, the other stays bright.', 13)}
+			{#if nLit === bulbs.length}
+				{@render txt(PL, 316, 'the battery. Open one switch: only', 13)}
+				{@render txt(PL, 334, 'its own bulb goes out.', 13)}
+			{:else if nLit > 0}
+				{@render txt(PL, 316, 'the battery: one switch put its bulb', 13)}
+				{@render txt(PL, 334, 'out; the other is just as bright.', 13)}
+			{:else}
+				{@render txt(PL, 316, 'the battery: both switches are open,', 13)}
+				{@render txt(PL, 334, 'so both bulbs are off.', 13)}
+			{/if}
 			{@render txt(PL, 486, 'Click a switch on the board to flip it.', 12, { muted: true })}
 		{:else}
 			{@const bats = nth('battery')}
@@ -1227,7 +1268,14 @@
 				{@render row(y0, 'bulbs lit', `${lit} of ${bulbs.length}`)}
 			{/if}
 			{#if bats.length && !sol.current.some((c) => Math.abs(c) > 1e-4)}
-				{@render txt(PL, y0 + 34, 'No complete loop: no current.', 13)}
+				{#if solClosed.current.some((c) => Math.abs(c) > 1e-4)}
+					{@render txt(PL, y0 + 34, 'A switch is open: no current.', 13)}
+				{:else if canFlow.some((live, i) => live && board.parts[i].kind === 'battery')}
+					{@render txt(PL, y0 + 34, 'The batteries push against each', 13)}
+					{@render txt(PL, y0 + 52, 'other and cancel: no current.', 13)}
+				{:else}
+					{@render txt(PL, y0 + 34, 'No complete loop: no current.', 13)}
+				{/if}
 			{/if}
 			<circle cx={PL + 5} cy="382" r="4" style:fill={chargeColor} />
 			{@render txt(

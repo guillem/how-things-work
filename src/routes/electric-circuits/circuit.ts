@@ -17,7 +17,8 @@
  * terminal is `b`: it lifts the potential from a to b by its voltage.
  */
 
-export type PartKind = 'wire' | 'battery' | 'bulb' | 'resistor' | 'switch' | 'ammeter' | 'voltmeter';
+export type PartKind =
+	'wire' | 'battery' | 'bulb' | 'resistor' | 'switch' | 'ammeter' | 'voltmeter';
 
 export interface Part {
 	kind: PartKind;
@@ -231,7 +232,8 @@ export function solve(b: Board): Solution {
 	for (const p of b.parts)
 		if (p.kind === 'battery' && !offset.has(group[p.a])) offset.set(group[p.a], v[p.a]);
 	const lowest = new Map<number, number>();
-	for (let i = 0; i < n; i++) lowest.set(group[i], Math.min(lowest.get(group[i]) ?? Infinity, v[i]));
+	for (let i = 0; i < n; i++)
+		lowest.set(group[i], Math.min(lowest.get(group[i]) ?? Infinity, v[i]));
 	const vv = v.map((x, i) => {
 		const g = group[i];
 		const val = x - (offset.get(g) ?? lowest.get(g)!);
@@ -274,7 +276,8 @@ export const brightness = (watts: number) => Math.max(0, Math.min(1, watts / BUL
  * n = 8.5 × 10²⁸ free electrons per m³ and a 1 mm² cross-section. About
  * 0.04 mm/s at 0.5 A — the page's point is that this is very slow.
  */
-export const driftSpeed = (amps: number, areaMm2 = 1) => amps / (8.5e28 * 1.602e-19 * areaMm2 * 1e-6);
+export const driftSpeed = (amps: number, areaMm2 = 1) =>
+	amps / (8.5e28 * 1.602e-19 * areaMm2 * 1e-6);
 
 // ------------------------------------------------------------ the circuits the page starts from
 

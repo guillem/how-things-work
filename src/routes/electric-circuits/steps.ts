@@ -118,7 +118,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>An <dfn data-def="A meter that measures the current through it. It is put into the loop, so that the current has to pass through it.">ammeter</dfn> counts how much charge passes it each second, in <strong>amperes</strong> (A). Here there are three: before the bulb, after it, and on the way back to the battery.</p>
 <p>They all read the same, 0.50 A. The bulb does <em>not</em> use up current: every bit of charge that goes into it comes out the other side, and the same amount flows past every point of the loop. Charge is never created or destroyed; it just goes round.</p>
-<p>What the bulb does take is <strong>energy</strong>, which the charges carry from the battery — the next chapter is about that.</p>`
+<p>What the bulb does take is <strong>energy</strong>: the battery pushes charges all round the loop, and the bulb turns that push into light and heat — the next chapter is about that.</p>`
 		},
 		{
 			id: 'drift',
@@ -131,7 +131,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Zoom into the copper wire. It is packed with free <dfn data-def="Tiny, negatively charged particles. In a metal, some of each atom's electrons are free to wander through the whole piece of metal.">electrons</dfn>, jiggling about in all directions at high speed. When a current flows, the whole crowd also <em>drifts</em> slowly along the wire.</p>
 <p>How slowly? At 0.5 A in an ordinary 1 mm² wire, the drift is less than <strong>0.04 mm per second</strong> — slower than a snail. A single electron would take hours to get from the switch to the bulb.</p>
-<p>The bulb still lights at once because the wire is <em>already full</em> of charges. Closing the switch starts all of them moving at practically the same moment, like the links of a bicycle chain: turn the pedals and the back wheel turns at once, even though each link moves slowly.</p>`,
+<p>The bulb still lights at once because the wire is <em>already full</em> of charges. Closing the switch starts all of them moving at practically the same moment — the push travels along the wire at close to the speed of light, while the charges themselves barely move — like the links of a bicycle chain: turn the pedals and the back wheel turns at once, even though each link moves slowly.</p>`,
 			notes: `<p>Electrons are negative, so they drift from the battery's − end towards its + end. Long before electrons were discovered, the direction of current was defined the other way, from + to −, as if positive charge were moving: the <dfn data-def="The direction positive charge would move: out of the + terminal of a battery, round the circuit and into the − terminal. Electrons in a wire move the opposite way.">conventional current</dfn>. Both describe the same flow; circuit diagrams use the conventional direction. Switch the view to compare. The drift speed is v = I ÷ (n e A): current divided by the number of free electrons per cubic metre (8.5 × 10²⁸ in copper), the charge of each and the wire's cross-section.</p>`
 		},
 		// ------------------------------------------------------------------ energy
@@ -145,7 +145,7 @@ export const spec: ExplainerSpec = {
 			controls: [closed],
 			body: `
 <p>The battery gives energy to the charge passing through it; the bulb turns that energy into light and heat. <dfn data-def="The energy given to (or taken from) each coulomb of charge, measured in volts: 1 volt = 1 joule per coulomb.">Voltage</dfn> measures how much energy each unit of charge gains or loses: a 6-volt battery gives every <dfn data-def="The unit of electric charge: the charge of about 6.2 × 10¹⁸ electrons. One ampere is one coulomb per second.">coulomb</dfn> of charge 6 joules.</p>
-<p>The colours show the <em>electric potential</em> along the loop: the wire leaving the battery's + end is "high" (6 V), the wire back to its − end is "low" (0 V). A <dfn data-def="A meter connected across a part, alongside it, that measures the voltage between its two ends. It takes almost no current.">voltmeter</dfn>, connected across a part, reads the difference: 6 V across the battery, 6 V across the bulb, and practically nothing across a piece of wire.</p>
+<p>The colours show the <em>electric potential</em> along the loop (measured from the battery's − end): the wire leaving the battery's + end is "high" (6 V), the wire back to its − end is "low" (0 V). A <dfn data-def="A meter connected across a part, alongside it, that measures the voltage between its two ends. It takes almost no current.">voltmeter</dfn>, connected across a part, reads the difference: 6 V across the battery, 6 V across the bulb, and practically nothing across a piece of wire.</p>
 <p>Open the switch: no charge flows, the bulb has no voltage across it, and the whole 6 V now appears across the gap in the switch.</p>`
 		},
 		{
@@ -159,7 +159,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A <dfn data-def="A part that makes it harder for current to flow; its resistance is measured in ohms (Ω).">resistor</dfn> makes it harder for current to flow. How much current a voltage drives through it depends on its <strong>resistance</strong>, measured in ohms (Ω):</p>
 <p class="formula">current = voltage ÷ resistance &nbsp;&nbsp; (I = V ÷ R)</p>
-<p>This is <dfn data-def="For many materials at constant temperature, the current through them is proportional to the voltage across them: I = V/R.">Ohm's law</dfn>. Double the battery voltage and the current doubles; double the resistance and it halves. 6 V across 12 Ω drives 0.5 A.</p>`
+<p>For a resistor like this one, R stays the same whatever the voltage, so the current is proportional to the voltage: that is <dfn data-def="For many materials at constant temperature, the current through them is proportional to the voltage across them: I = V/R.">Ohm's law</dfn>. Double the battery voltage and the current doubles; double the resistance and it halves. 6 V across 12 Ω drives 0.5 A.</p>`
 		},
 		// ------------------------------------------------------------------ combine
 		{
@@ -170,7 +170,7 @@ export const spec: ExplainerSpec = {
 			hints: { board: 'series', phase: 'series' },
 			duration: 22,
 			body: `
-<p>Put two bulbs one after the other in the same loop — <dfn data-def="Parts connected one after another, so that the same current flows through all of them.">in series</dfn>. There is still only one path, so the same current flows through both. But now the charge must get through two resistances, so there is less of it: 0.25 A instead of 0.5 A.</p>
+<p>Put two bulbs one after the other in the same loop — <dfn data-def="Parts connected one after another, so that the same current flows through all of them.">in series</dfn>. There is still only one path, so the same current flows through both. But now the charge must get through two resistances, so it flows round more slowly: 0.25 A instead of 0.5 A.</p>
 <p>The battery's 6 V is <strong>shared</strong>: each bulb gets 3 V. With half the voltage and half the current, each bulb gets a quarter of the power, and both glow dimly.</p>`,
 			notes: `<p>Here the bulbs are treated as fixed 12 Ω resistances. A real filament's resistance falls as it cools, so two real bulbs in series glow a little brighter than this — but still much dimmer than one bulb alone.</p>`
 		},

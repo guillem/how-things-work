@@ -261,6 +261,7 @@ kbd {
 	--circ-high: #e8590c;
 	--circ-low: #1971c2;
 	--circ-meter: #f8f9fa;
+	--circ-copper: #d9822b;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -327,4 +328,5 @@ kbd {
 	--circ-high: #ff922b;
 	--circ-low: #4dabf7;
 	--circ-meter: #25292e;
+	--circ-copper: #e8a35a;
 }

@@ -31,12 +31,16 @@
 
 	let { t, params, reduced }: StageProps = $props();
 
+	/** Copper; the snail is neutral grey so it never reads as charge. */
+	const COPPER = 'var(--circ-copper)';
+	const SNAIL = 'var(--stage-ink-muted)';
+
 	const amps = $derived(clamp(Number(params.amps ?? 0.5), 0, 3));
 	const mode = $derived(params.charges === 'electrons' ? 'electrons' : 'conventional');
 	const on = $derived(amps > 0.001);
 
 	// ---- emphasis (tweened) ---------------------------------------------------------
-	const DIM = 0.35;
+	const DIM = 0.5;
 	const elecEm = new Tween(1, { duration: 700, easing: cubicInOut });
 	const convEm = new Tween(1, { duration: 700, easing: cubicInOut });
 	const flowing = new Tween(1, { duration: 600, easing: cubicInOut });
@@ -143,7 +147,8 @@
 	const gateAt = (tau: number) => smoothstep(2.95, 3.05, tau) * (1 - smoothstep(10.5, 10.56, tau));
 
 	const tau = $derived(reduced ? 7 : cycle(t, CYCLE) * CYCLE);
-	const lever = $derived(reduced ? 1 : closedness(tau));
+	/** With 0 A there is nothing to show: the switch stays open. */
+	const lever = $derived(!on ? 0 : reduced ? 1 : closedness(tau));
 	const gate = $derived(reduced ? 1 : gateAt(tau));
 
 	/**
@@ -290,12 +295,12 @@
 			cx="-8"
 			cy="-3"
 			r="7"
-			fill="#f08c00"
-			fill-opacity="0.35"
-			stroke="#f08c00"
+			fill={SNAIL}
+			fill-opacity="0.25"
+			stroke={SNAIL}
 			stroke-width="1.6"
 		/>
-		<path d="M-8 -3 m-3 0 a3 3 0 1 1 3 3" fill="none" stroke="#f08c00" stroke-width="1.2" />
+		<path d="M-8 -3 m-3 0 a3 3 0 1 1 3 3" fill="none" stroke={SNAIL} stroke-width="1.2" />
 	</g>
 {/snippet}
 
@@ -341,8 +346,8 @@
 	<!-- ============ the wire ============ -->
 	<line x1="70" y1="150" x2={WX0 - 6} y2="150" stroke="var(--circ-wire)" stroke-width="4" />
 	<line x1={WX1 + 6} y1="150" x2="890" y2="150" stroke="var(--circ-wire)" stroke-width="4" />
-	{@render terminal(50, '−', 'var(--circ-low)', 'battery −')}
-	{@render terminal(910, '+', 'var(--circ-high)', 'battery +')}
+	{@render terminal(50, '−', 'var(--circ-battery)', 'to battery −')}
+	{@render terminal(910, '+', 'var(--circ-battery)', 'to battery +')}
 
 	<rect
 		x={WX0 - 8}
@@ -360,9 +365,9 @@
 		width={WX1 - WX0}
 		height={WY1 - WY0}
 		rx="6"
-		fill="#f08c00"
-		fill-opacity="0.1"
-		stroke="#f08c00"
+		style:fill={COPPER}
+		fill-opacity="0.12"
+		style:stroke={COPPER}
 		stroke-opacity="0.45"
 	/>
 	<g clip-path="url(#wire-clip)">
@@ -421,10 +426,16 @@
 	</g>
 
 	<!-- ============ directions ============ -->
-	<g opacity={flowing.current * elecEm.current}>
-		{@render txt(40, 271, 'electron drift', 13, { color: 'var(--circ-electron)', weight: 650 })}
+	<!-- the view not chosen dims its arrow only: its words stay readable -->
+	<g opacity={flowing.current}>
+		{@render txt(40, 271, 'electron drift', 13, {
+			color: 'var(--circ-electron)',
+			weight: 650,
+			opacity: 0.6 + 0.4 * elecEm.current
+		})}
 		{@render txt(136, 271, '− to +', 12, { muted: true })}
 		<line
+			opacity={elecEm.current}
 			x1="250"
 			y1="266"
 			x2="660"
@@ -436,10 +447,15 @@
 		/>
 		{@render txt(684, 271, 'the way the electrons really move', 12, { muted: true })}
 	</g>
-	<g opacity={flowing.current * convEm.current}>
-		{@render txt(40, 301, 'conventional current', 13, { color: 'var(--circ-charge)', weight: 650 })}
+	<g opacity={flowing.current}>
+		{@render txt(40, 301, 'conventional current', 13, {
+			color: 'var(--circ-charge)',
+			weight: 650,
+			opacity: 0.6 + 0.4 * convEm.current
+		})}
 		{@render txt(184, 301, '+ to −', 12, { muted: true })}
 		<line
+			opacity={convEm.current}
 			x1="660"
 			y1="296"
 			x2="250"
@@ -463,7 +479,7 @@
 		x="16"
 		y="322"
 		width="436"
-		height="264"
+		height="262"
 		rx="12"
 		fill="var(--surface)"
 		stroke="var(--border)"
@@ -505,15 +521,7 @@
 		fill="var(--stage-line)"
 		opacity="0.35"
 	/>
-	<rect
-		x={RX0}
-		y="487"
-		width={snailMm * PX_PER_MM}
-		height="4"
-		rx="2"
-		fill="#f08c00"
-		opacity="0.8"
-	/>
+	<rect x={RX0} y="487" width={snailMm * PX_PER_MM} height="4" rx="2" fill={SNAIL} opacity="0.8" />
 	{@render snail(RX0 + snailMm * PX_PER_MM + 2, 482)}
 	{@render txt(432, 494, `${snailMm.toFixed(1)} mm`, 12, { anchor: 'end', tabular: true })}
 
@@ -561,7 +569,7 @@
 		x="468"
 		y="322"
 		width="476"
-		height="264"
+		height="262"
 		rx="12"
 		fill="var(--surface)"
 		stroke="var(--border)"
@@ -597,62 +605,53 @@
 		/>
 	{/if}
 
-	<!-- battery: + (long plate) on top -->
-	<rect x={BAT.x - 22} y={BAT.y - 14} width="44" height="28" fill="var(--surface)" />
-	<line
-		x1={BAT.x}
-		y1={BAT.y - 14}
-		x2={BAT.x}
-		y2={BAT.y - 6}
-		stroke="var(--circ-wire)"
-		stroke-width="3"
+	<!-- battery, drawn as on the board: + (long plate) on top -->
+	<rect
+		x={BAT.x - 19}
+		y={BAT.y - 15}
+		width="38"
+		height="30"
+		rx="7"
+		style:fill="color-mix(in oklab, var(--circ-battery) 14%, var(--surface))"
+		stroke="var(--circ-battery)"
+		stroke-width="1.5"
 	/>
 	<line
-		x1={BAT.x}
-		y1={BAT.y + 6}
-		x2={BAT.x}
-		y2={BAT.y + 14}
-		stroke="var(--circ-wire)"
-		stroke-width="3"
-	/>
-	<line
-		x1={BAT.x - 16}
-		y1={BAT.y - 6}
-		x2={BAT.x + 16}
-		y2={BAT.y - 6}
+		x1={BAT.x - 14}
+		y1={BAT.y - 7}
+		x2={BAT.x + 14}
+		y2={BAT.y - 7}
 		stroke="var(--circ-battery)"
 		stroke-width="2.5"
-		stroke-linecap="round"
 	/>
 	<line
-		x1={BAT.x - 8}
-		y1={BAT.y + 6}
-		x2={BAT.x + 8}
-		y2={BAT.y + 6}
+		x1={BAT.x - 7}
+		y1={BAT.y + 7}
+		x2={BAT.x + 7}
+		y2={BAT.y + 7}
 		stroke="var(--circ-battery)"
 		stroke-width="5"
-		stroke-linecap="round"
 	/>
-	{@render txt(BAT.x - 22, BAT.y - 4, '+', 14, {
-		anchor: 'end',
+	{@render txt(BAT.x - 28, BAT.y - 2, '+', 15, {
+		anchor: 'middle',
 		weight: 700,
-		color: 'var(--circ-high)'
+		color: 'var(--circ-battery)'
 	})}
-	{@render txt(BAT.x - 22, BAT.y + 14, '−', 14, {
-		anchor: 'end',
+	{@render txt(BAT.x - 28, BAT.y + 16, '−', 15, {
+		anchor: 'middle',
 		weight: 700,
-		color: 'var(--circ-low)'
+		color: 'var(--circ-battery)'
 	})}
-	{@render txt(BAT.x + 26, BAT.y + 5, 'battery', 12, { muted: true })}
+	{@render txt(BAT.x + 28, BAT.y + 5, 'battery', 12, { muted: true })}
 
-	<!-- switch -->
+	<!-- switch, drawn as on the board -->
 	<line
 		x1={SW0}
 		y1={LY0}
 		x2={leverEnd.x}
 		y2={leverEnd.y}
-		stroke="var(--stage-ink)"
-		stroke-width="3"
+		stroke="var(--circ-wire)"
+		stroke-width="3.5"
 		stroke-linecap="round"
 	/>
 	<circle
@@ -660,7 +659,7 @@
 		cy={LY0}
 		r="4"
 		fill="var(--surface)"
-		stroke="var(--stage-ink)"
+		stroke="var(--circ-wire)"
 		stroke-width="2"
 	/>
 	<circle
@@ -668,30 +667,35 @@
 		cy={LY0}
 		r="4"
 		fill="var(--surface)"
-		stroke="var(--stage-ink)"
+		stroke="var(--circ-wire)"
 		stroke-width="2"
 	/>
 	{@render txt((SW0 + SW1) / 2, LY0 + 24, 'switch', 12, { anchor: 'middle', muted: true })}
 
-	<!-- bulb -->
+	<!-- bulb, drawn as on the board -->
 	<circle cx={BULB.x} cy={BULB.y} r="38" fill="url(#wire-bulb-glow)" opacity={glow} />
-	<circle
-		cx={BULB.x}
-		cy={BULB.y}
-		r="16"
-		fill="var(--surface)"
-		stroke="var(--circ-wire)"
-		stroke-width="2"
-	/>
-	<circle cx={BULB.x} cy={BULB.y} r="15" fill="var(--circ-glow)" opacity={glow * 0.55} />
-	<path
-		d="M{BULB.x} {BULB.y - 16} L{BULB.x} {BULB.y - 8} l-5 4 l5 4 l5 -4 l-5 -4 M{BULB.x} {BULB.y +
-			0} L{BULB.x} {BULB.y + 16}"
-		fill="none"
-		stroke={glow > 0.2 ? 'var(--circ-glow)' : 'var(--circ-wire)'}
-		stroke-width="1.8"
-		stroke-linejoin="round"
-	/>
+	<g transform="translate({BULB.x} {BULB.y}) rotate(90)">
+		<circle
+			r="16"
+			style:fill="color-mix(in oklab, var(--circ-glow) {Math.round(8 + 72 * glow)}%, var(--surface))"
+			stroke="var(--circ-wire)"
+			stroke-width="1.5"
+		/>
+		<path
+			d="M-16 0 L-7 -1 L-6 -7 M16 0 L7 -1 L6 -7"
+			fill="none"
+			stroke="var(--circ-wire)"
+			stroke-width="1.25"
+		/>
+		<path
+			d="M-6 -7 l2 -4 l2 4 l2 -4 l2 4 l2 -4 l2 4"
+			fill="none"
+			style:stroke="color-mix(in oklab, var(--circ-glow) {Math.round(100 * Math.sqrt(glow))}%,
+			var(--circ-wire))"
+			stroke-width={1.4 + 0.8 * glow}
+			stroke-linejoin="round"
+		/>
+	</g>
 	{@render txt(BULB.x - 14, BULB.y + 34, 'bulb', 12, { anchor: 'end', muted: true })}
 
 	<!-- what is happening -->
