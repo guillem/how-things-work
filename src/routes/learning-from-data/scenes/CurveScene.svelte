@@ -14,11 +14,16 @@
 	 * Seeding (shared with FitScene): the set of examples shown is
 	 * `makeData(count, noise, 1 + fresh)`, where `fresh` counts presses of
 	 * "New examples". The averaged sets are seeds `1 + fresh + 1000·k`,
-	 * k = 0…AVERAGE − 1, so k = 0 is the set drawn in the inset.
+	 * k = 0…AVERAGE − 1, so k = 0 is the set drawn in the inset. When that set is
+	 * FitScene's (21 examples, noise 0.15), the examples the reader dragged there
+	 * (`params.pts`, same format as in FitScene) are applied to it, so both
+	 * scenes show the same examples and the same errors.
 	 *
 	 * Degrees above (training examples − 1) have more settings than examples:
 	 * the least-squares fit is not unique there (fit.ts picks one with a tiny
-	 * ridge), so those degrees are drawn faded and never chosen as the sweet spot.
+	 * ridge). Those degrees are shaded, their errors are not drawn (the test
+	 * error of that particular fit is an artefact of the choice and can even dip,
+	 * which would contradict the step) and they are never the sweet spot.
 	 *
 	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
 	 * presentation attributes (docs/BACKLOG.md).
@@ -33,6 +38,7 @@
 	let { step, t, params, reduced }: StageProps = $props();
 
 	const MAX_DEGREE = 12;
+	const degreeName = (d: number) => `degree ${d}`;
 	const AVERAGE = 40;
 	const DEGREES = Array.from({ length: MAX_DEGREE + 1 }, (_, d) => d);
 
@@ -47,6 +53,20 @@
 	const fresh = $derived(Number(params.fresh ?? 0) || 0);
 	const degree = $derived(Math.round(clamp(Number(params.degree ?? 3), 0, MAX_DEGREE)));
 	const seed = $derived(1 + fresh);
+	/** FitScene's set of examples: the only one the reader can have dragged. */
+	const moved = $derived.by(() => {
+		const out: Record<number, { x: number; y: number }> = {};
+		if (count !== 21 || noise !== 0.15) return out;
+		const raw = typeof params.pts === 'string' ? params.pts : '';
+		const [s, list] = raw.split('|');
+		if (Number(s) !== seed || !list) return out;
+		for (const item of list.split(';')) {
+			const [id, xy] = item.split(':');
+			const [x, y] = (xy ?? '').split(',').map(Number);
+			if (Number.isFinite(x) && Number.isFinite(y)) out[Number(id)] = { x, y };
+		}
+		return out;
+	});
 
 	// ---- the data and the error curves ---------------------------------------------------
 	const lg = (v: number) => Math.log10(Math.max(v, 1e-30));
@@ -57,13 +77,15 @@
 		maxD: number; // highest degree with no more settings than training examples
 		best: number;
 	}
-	function curvesFor(ph: Phase, n: number, sd: number, sd0: number): Curves {
+	type Data = ReturnType<typeof makeData>;
+	/** Error curves; `first` is the set for k = 0 (the one in the inset). */
+	function curvesFor(ph: Phase, n: number, sd: number, sd0: number, first: Data): Curves {
 		const sets = ph === 'data' ? AVERAGE : 1;
 		const train = new Array(MAX_DEGREE + 1).fill(0);
 		const test = new Array(MAX_DEGREE + 1).fill(0);
 		let nTrain = 0;
 		for (let k = 0; k < sets; k++) {
-			const pts = makeData(n, sd, sd0 + 1000 * k);
+			const pts = k === 0 ? first : makeData(n, sd, sd0 + 1000 * k);
 			const tr = pts.filter((p) => !p.test);
 			nTrain = tr.length;
 			errorCurve(
@@ -80,9 +102,11 @@
 		for (let d = 1; d <= maxD; d++) if (test[d] < test[best]) best = d;
 		return { train, test, maxD, best };
 	}
-	const curves = $derived(curvesFor(phase, count, noise, seed));
+	const data = $derived(
+		makeData(count, noise, seed).map((p) => ({ ...p, ...(moved[p.id] ?? {}) }))
+	);
+	const curves = $derived(curvesFor(phase, count, noise, seed, data));
 
-	const data = $derived(makeData(count, noise, seed));
 	const trainPts = $derived(data.filter((p) => !p.test));
 	const testPts = $derived(data.filter((p) => p.test));
 	const model = $derived(fitPolynomial(trainPts, degree));
@@ -111,12 +135,20 @@
 			dataW.set(w, o);
 		});
 	});
-	const degreeT = Tween.of(() => degree, opts);
+	const degreeT = new Tween(
+		untrack(() => degree),
+		opts
+	);
+	$effect(() => {
+		const d = degree;
+		untrack(() => degreeT.set(d, { duration: reduced ? 0 : 700 }));
+	});
 
 	// ---- chart geometry --------------------------------------------------------------------
 	const CX0 = 104;
 	const CX1 = 600;
-	const CY0 = 120;
+	const CY0 = 146;
+	const LEGEND_Y = 86;
 	const CY1 = 476;
 	const LOG_LO = -4; // 0.0001
 	const LOG_HI = 1; // 10
@@ -157,36 +189,68 @@
 	]);
 
 	const sweetX = $derived(xOf(bestT.current));
-	/** Sweet-spot label above or below its dot, whichever is further from the nearby dots. */
-	const pillBelow = $derived.by(() => {
-		const y0 = yOf(curves.test[curves.best]);
-		const room = (dy: number) => {
-			const y = y0 + dy;
-			if (y < CY0 + 12 || y > CY1 - 12) return -1;
-			let m = Infinity;
-			for (let d = Math.max(0, curves.best - 2); d <= Math.min(MAX_DEGREE, curves.best + 2); d++)
-				for (const vals of [curves.train, curves.test])
-					if (!(d === curves.best && vals === curves.test))
-						m = Math.min(m, Math.abs(yOf(vals[d]) - y));
-			return m;
-		};
-		return room(30) > room(-30) + 4;
+	const PILL_H = 22;
+	const pillW = (text: string) => text.length * 6.6 + 18;
+	/**
+	 * Where the sweet-spot pill goes: candidate spots above and below its dot
+	 * (and a little to either side); the one whose box covers the fewest dots
+	 * and points along the drawn error curves wins, nearer spots first.
+	 */
+	const sweetPill = $derived.by(() => {
+		const b = curves.best;
+		const w = pillW(`sweet spot: ${degreeName(b)}`);
+		const x0 = xOf(b);
+		const y0 = yOf(curves.test[b]);
+		const pts: { x: number; y: number; dot: boolean }[] = [];
+		for (const vals of [curves.train, curves.test])
+			for (let d = 0; d <= curves.maxD; d++) {
+				pts.push({ x: xOf(d), y: yOf(vals[d]), dot: true });
+				if (d < curves.maxD)
+					for (let k = 1; k < 8; k++)
+						pts.push({
+							x: xOf(d + k / 8),
+							y: yOf(vals[d] + ((vals[d + 1] - vals[d]) * k) / 8),
+							dot: false
+						});
+			}
+		let spot = { x: x0, y: y0 - 30, score: Infinity };
+		for (const dy of [-30, 30, -48, 48, -66, 66])
+			for (const dx of [0, -0.3 * w, 0.3 * w]) {
+				const x = clamp(x0 + dx, CX0 + w / 2 + 4, CX1 - w / 2);
+				const y = y0 + dy;
+				if (y - PILL_H / 2 < CY0 + 4 || y + PILL_H / 2 > CY1 - 4) continue;
+				let score = Math.abs(dy) / 30 + Math.abs(x - x0) / 60;
+				for (const q of pts) {
+					const pad = q.dot ? 7 : 3;
+					if (Math.abs(q.x - x) < w / 2 + pad && Math.abs(q.y - y) < PILL_H / 2 + pad)
+						score += q.dot ? 6 : 2;
+				}
+				if (score < spot.score) spot = { x, y, score };
+			}
+		return spot;
 	});
+	/** Tweened with the dot, so the pill does not jump when the sweet spot moves. */
+	const pillX = Tween.of(() => sweetPill.x, opts);
+	const pillY = Tween.of(() => sweetPill.y, opts);
 	const best = $derived(curves.best);
 	const offChart = $derived(
-		DEGREES.filter((d) => d <= head && curves.test[d] > LOG_HI).map((d) => curves.test[d])
+		DEGREES.filter((d) => d <= head && d <= maxD && curves.test[d] > LOG_HI).map(
+			(d) => curves.test[d]
+		)
 	);
 	const atFloor = $derived(
-		DEGREES.some((d) => d <= head && (curves.train[d] < LOG_LO || curves.test[d] < LOG_LO))
+		DEGREES.some(
+			(d) => d <= head && d <= maxD && (curves.train[d] < LOG_LO || curves.test[d] < LOG_LO)
+		)
 	);
 
 	// ---- formatting ------------------------------------------------------------------------
+	/** Same format as FitScene's readouts, so both scenes show the same numbers. */
 	function fmtErr(l: number) {
 		if (l < LOG_LO) return 'below 0.0001';
 		const v = 10 ** l;
-		return Number(v.toPrecision(2)).toLocaleString('en-US', { maximumSignificantDigits: 2 });
+		return v >= 10 ? v.toFixed(1) : v >= 0.01 ? v.toFixed(3) : v.toFixed(4);
 	}
-	const degreeName = (d: number) => `degree ${d}`;
 
 	// ---- inset: the examples and the fitted curves -----------------------------------------
 	const IX0 = 652;
@@ -214,6 +278,7 @@
 		underdetermined: degree > maxD
 	});
 	const nTrain = $derived(trainPts.length);
+	const modelText = $derived(`your model: ${degreeName(degree)}`);
 	const nTest = $derived(testPts.length);
 </script>
 
@@ -285,9 +350,9 @@
 		stroke-dasharray="5 4"
 	/>
 	{@render pill(
-		clamp(xOf(degreeT.current), CX0 + 64, CX1 - 40),
-		CY0 - 16,
-		`your model: ${degreeName(degree)}`,
+		clamp(xOf(degreeT.current), CX0 + pillW(modelText) / 2 - 30, CX1 - pillW(modelText) / 2 + 20),
+		CY0 - 22,
+		modelText,
 		'var(--fit-model)'
 	)}
 
@@ -301,18 +366,8 @@
 			stroke-linejoin="round"
 			stroke-linecap="round"
 		/>
-		{#if maxD < MAX_DEGREE}
-			<path
-				d={linePath(s.vals, maxD, MAX_DEGREE)}
-				fill="none"
-				stroke={s.color}
-				stroke-width="2"
-				stroke-dasharray="3 4"
-				opacity="0.45"
-			/>
-		{/if}
 		{#each DEGREES as d (d)}
-			{#if d <= head + 0.001}
+			{#if d <= head + 0.001 && d <= maxD}
 				{@const l = s.vals[d]}
 				<circle
 					cx={xOf(d)}
@@ -321,7 +376,6 @@
 					fill={l < LOG_LO || l > LOG_HI ? 'var(--stage-bg)' : s.color}
 					stroke={s.color}
 					stroke-width="1.5"
-					opacity={d > maxD ? 0.45 : 1}
 				/>
 				{#if l > LOG_HI}
 					<path
@@ -329,49 +383,35 @@
 						fill="none"
 						stroke={s.color}
 						stroke-width="1.5"
-						opacity={d > maxD ? 0.45 : 1}
 					/>
 				{/if}
 			{/if}
 		{/each}
 	{/each}
 
-	<!-- legend -->
+	<!-- legend, above the chart (inside it, the curves can run through it) -->
 	<g opacity={clamp(reveal * 3)}>
-		<line
-			x1={CX0 + 14}
-			x2={CX0 + 34}
-			y1={CY0 + 18}
-			y2={CY0 + 18}
-			stroke="var(--fit-test)"
-			stroke-width="2.5"
-		/>
-		<circle cx={CX0 + 24} cy={CY0 + 18} r="4" fill="var(--fit-test)" />
-		{@render txt(CX0 + 42, CY0 + 22, 'test error: examples held back', 12)}
-		<line
-			x1={CX0 + 14}
-			x2={CX0 + 34}
-			y1={CY0 + 38}
-			y2={CY0 + 38}
-			stroke="var(--fit-train)"
-			stroke-width="2.5"
-		/>
-		<circle cx={CX0 + 24} cy={CY0 + 38} r="4" fill="var(--fit-train)" />
-		{@render txt(CX0 + 42, CY0 + 42, 'training error: examples it was fitted to', 12)}
-		{#if offChart.length}
+		{#each [{ x: CX0, color: 'var(--fit-test)', text: 'test error: examples held back' }, { x: CX0 + 232, color: 'var(--fit-train)', text: 'training error: examples it was fitted to' }] as row (row.x)}
+			<line
+				x1={row.x}
+				x2={row.x + 20}
+				y1={LEGEND_Y - 4}
+				y2={LEGEND_Y - 4}
+				stroke={row.color}
+				stroke-width="2.5"
+			/>
+			<circle cx={row.x + 10} cy={LEGEND_Y - 4} r="4" fill={row.color} />
+			{@render txt(row.x + 28, LEGEND_Y, row.text, 12)}
+		{/each}
+		{#if offChart.length || atFloor}
 			{@render txt(
-				CX0 + 42,
-				CY0 + 60,
-				`hollow dot at the top: off the chart (up to ${fmtErr(Math.max(...offChart))})`,
-				11,
-				{ muted: true }
-			)}
-		{/if}
-		{#if atFloor}
-			{@render txt(
-				CX0 + 42,
-				CY0 + (offChart.length ? 76 : 60),
-				'hollow dot at the bottom: below 0.0001, almost zero',
+				CX0 + 28,
+				LEGEND_Y + 16,
+				offChart.length && atFloor
+					? `hollow dots: off the chart at the top (up to ${fmtErr(Math.max(...offChart))}), below 0.0001 at the bottom`
+					: offChart.length
+						? `hollow dot at the top: off the chart (up to ${fmtErr(Math.max(...offChart))})`
+						: 'hollow dot at the bottom: below 0.0001, almost zero',
 				11,
 				{ muted: true }
 			)}
@@ -389,8 +429,8 @@
 			stroke-width="2"
 		/>
 		{@render pill(
-			clamp(sweetX, CX0 + 70, CX1 - 70),
-			yOf(testT.current[best]) + (pillBelow ? 30 : -30),
+			pillX.current,
+			pillY.current,
 			`sweet spot: ${degreeName(best)}`,
 			'var(--fit-test)'
 		)}
@@ -505,15 +545,20 @@
 	<!-- readouts -->
 	<g>
 		{@render txt(IX0, 420, `At ${degreeName(degree)}:`, 13, { weight: 600 })}
-		{@render txt(IX0, 440, `training error ${fmtErr(atDegree.train)}`, 13, {
-			color: 'var(--fit-train)'
-		})}
-		{@render txt(IX0, 460, `test error ${fmtErr(atDegree.test)}`, 13, {
-			color: 'var(--fit-test)'
-		})}
 		{#if atDegree.underdetermined}
-			{@render txt(IX0, 478, 'more settings than examples: not a unique fit', 11, {
+			{@render txt(IX0, 440, 'training error: zero (through every dot)', 13, {
+				color: 'var(--fit-train)'
+			})}
+			{@render txt(IX0, 460, 'test error: not charted', 13, { color: 'var(--fit-test)' })}
+			{@render txt(IX0, 478, 'more settings than examples: many curves fit them', 11, {
 				muted: true
+			})}
+		{:else}
+			{@render txt(IX0, 440, `training error ${fmtErr(atDegree.train)}`, 13, {
+				color: 'var(--fit-train)'
+			})}
+			{@render txt(IX0, 460, `test error ${fmtErr(atDegree.test)}`, 13, {
+				color: 'var(--fit-test)'
 			})}
 		{/if}
 	</g>
@@ -556,7 +601,7 @@
 {/snippet}
 
 {#snippet pill(x: number, y: number, text: string, color: string)}
-	{@const w = text.length * 6.6 + 18}
+	{@const w = pillW(text)}
 	<rect
 		x={x - w / 2}
 		y={y - 11}

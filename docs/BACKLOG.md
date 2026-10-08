@@ -46,6 +46,12 @@ catalogue's suggested first `build`), `ecosystems`, `electric-circuits` (unlocks
   to prerequisites, related topics and dependents now come from the shared page shell. To finish
   it: add a "limiting factors" step (a rate model checked against a reference), then tick it.
 
+- **learning-from-data** — built and reviewed but **not ticked**: the catalogue entry says
+  "Place and drag points", and readers can only drag the 21 generated points, not add new ones.
+  Adding click-to-add needs a design decision (it changes the 21/7 training/test wording and the
+  sync with the error-curve scene, which averages 40 generated sets). Also: move the duplicated
+  `params.pts` parser from both scenes into `fit.ts`.
+
 ## Site and framework work
 
 - **Stage text is unreadable on phones (site-wide, found 2026-10-07).** At 390 px wide the

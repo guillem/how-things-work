@@ -74,4 +74,5 @@ test('the sweet spot moves right with more examples and left with more noise', (
 	};
 	expect(best(12, 0.15)).toBeLessThan(best(40, 0.15));
 	expect(best(21, 0.3)).toBeLessThan(best(21, 0.05));
+	expect(best(21, 0.05)).toBeGreaterThanOrEqual(best(21, 0.15));
 });

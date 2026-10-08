@@ -92,7 +92,7 @@ const explainers: Explainer[] = [
 		slug: 'learning-from-data',
 		title: 'How machines learn from examples',
 		summary:
-			'Fit curves to points you can drag, then hold some points back and discover why a model that fits its examples perfectly can predict new ones worse.',
+			'Fit curves to points you can drag, then hold some points back and discover why a model that fits its examples very closely can predict new ones worse.',
 		accent: '#ae3ec9',
 		steps: 8,
 		minutes: 12

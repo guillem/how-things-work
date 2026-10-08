@@ -345,11 +345,15 @@
 					: `up to ${d - 1} bends`;
 	const overfitNote = $derived(
 		degreeTarget >= 8
-			? [
-					'Through nearly every dot,',
-					swing && !swing.text.includes('between')
-						? 'but wild past the end dots.'
-						: 'but wild between them.'
+			? // Degree 12 has 13 settings for 21 dots: it bends towards them but
+				// does not pass through them all, so say only what the drawing shows.
+				[
+					'It bends to chase the dots,',
+					!swing
+						? 'and still wiggles between them.'
+						: swing.text.includes('between')
+							? 'but swings wildly between them.'
+							: 'but swings wildly past the end dots.'
 				]
 			: degreeTarget <= 3
 				? ['Too stiff to follow the pattern', '(underfitting). Push it to the top.']

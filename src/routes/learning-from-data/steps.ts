@@ -60,7 +60,7 @@ export const spec: ExplainerSpec = {
 	slug: 'learning-from-data',
 	title: 'How machines learn from examples',
 	summary:
-		'Fit curves to points you can drag, then hold some points back and discover why a model that fits its examples perfectly can predict new ones worse.',
+		'Fit curves to points you can drag, then hold some points back and discover why a model that fits its examples very closely can predict new ones worse.',
 	chapters: [
 		{ id: 'fit', title: 'Fitting a model' },
 		{ id: 'flex', title: 'How flexible?' },
@@ -102,7 +102,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [fresh],
 			body: `
-<p>“Best” needs a number. For each example, the gap between the dot and the line is the model's <strong>error</strong> on it. Square each gap — so that misses above and below both count, and big misses count a lot — and average them. That is the <dfn data-def="The average of the squared differences between a model's predictions and the true outputs.">mean squared error</dfn>.</p>
+<p>“Best” needs a number. For each example, the gap between the dot and the line is the model's <strong>error</strong> on it. Square each gap — so that misses above and below both count, and big misses count a lot — and average them. That is the <dfn data-def="The average of the squared differences between a model's predictions and the measured outputs.">mean squared error</dfn>.</p>
 <p>The squares drawn on the gaps are exactly those numbers. The best line is the one that makes their average as small as possible — the <dfn data-def="Choosing a model's settings to minimise the sum of squared errors; for a straight line there is an exact formula.">least-squares</dfn> fit, a method used since Gauss and Legendre around 1800.</p>`
 		},
 		// ------------------------------------------------------------------ flex
@@ -115,8 +115,8 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [degree, fresh],
 			body: `
-<p>A straight line cannot follow a curved pattern. Give the model more settings and it can bend: a <dfn data-def="A curve made of powers of x: a + b·x + c·x² + …; its degree is the highest power. A degree-d polynomial can turn d − 1 times.">polynomial</dfn> of degree 2 can bend once, degree 3 twice, and so on.</p>
-<p>Slide the flexibility up. The training error — measured on the examples the model was fitted to — always goes down: a more flexible curve can always get at least as close to the dots.</p>
+<p>A straight line cannot follow a curved pattern. Give the model more settings and it can bend: a <dfn data-def="A curve made of powers of x: a + b·x + c·x² + …; its degree is the highest power. A degree-d polynomial can turn up to d − 1 times.">polynomial</dfn> of degree 2 can bend once, degree 3 twice, and so on.</p>
+<p>Slide the flexibility up. The training error — measured on the examples the model was fitted to — never goes up: a more flexible curve can always get at least as close to the dots (it could simply copy the stiffer one).</p>
 <p>So should we just use the most flexible model we can?</p>`
 		},
 		{
@@ -128,7 +128,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [degree, truth, fresh],
 			body: `
-<p>Push the flexibility to the top. The curve now wiggles through nearly every dot, and the training error is almost zero. But look between and beyond the dots, especially past the first and last ones: it swings wildly, making predictions no sensible person would make.</p>
+<p>Push the flexibility to the top. The curve now bends to chase the dots, and the training error is the lowest yet. But look between and beyond the dots, especially past the first and last ones: it swings wildly, making predictions no sensible person would make.</p>
 <p>The model has learned the <em>noise</em> — the random wobble of these particular examples — instead of the pattern behind them. This is <dfn data-def="When a model fits the noise in its training examples and so predicts new cases worse.">overfitting</dfn>. Turn on the true curve to see what the model should have found.</p>
 <p>Too little flexibility is a problem too: a straight line through a curved pattern <em>underfits</em>, missing the pattern itself.</p>`
 		},
@@ -156,9 +156,9 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [degree, fresh],
 			body: `
-<p>Plot both errors against flexibility and the story is plain. Training error only ever goes down. Test error makes a U: too stiff on the left, overfitting on the right, and a <strong>sweet spot</strong> in between — the model that predicts new cases best.</p>
+<p>Plot both errors against flexibility and the story is plain. Training error never goes up. Test error makes a U: too stiff on the left, overfitting on the right, and a <strong>sweet spot</strong> in between — the model that predicts new cases best.</p>
 <p>This is how flexibility is chosen in practice, from simple fits like this one to neural networks with billions of settings: never by the training error, always by error on examples held back.</p>`,
-			notes: `<p>With few examples, which ones happen to land in the test set matters a lot: try <em>New examples</em> a few times and the sweet spot moves. Practitioners therefore repeat the split several ways and average (cross-validation). And once a test set has been used to choose the model, its error is a little optimistic — so a final, untouched set is kept for the very end.</p>`
+			notes: `<p>With few examples, which ones happen to land in the test set matters a lot: try <em>New examples</em> a few times and the sweet spot moves. Practitioners therefore repeat the split several ways and average (cross-validation). And once a test set has been used to choose the model, its error is a little optimistic — so a final, untouched set is kept for the very end (the set used for choosing is then usually called a validation set).</p>`
 		},
 		{
 			id: 'moredata',
@@ -169,8 +169,8 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [count, noise, degree, fresh],
 			body: `
-<p>Overfitting happens when a model has more freedom than its examples can pin down. Add examples and each wiggle of a flexible curve has to agree with more dots, so the noise averages out: the sweet spot moves to the right and the test error drops.</p>
-<p>Make the examples noisier and the opposite happens: there is more noise to mistake for pattern, so a simpler model wins.</p>
+<p>Overfitting happens when a model has more freedom than its examples can pin down. Add examples and each wiggle of a flexible curve has to agree with more dots, so the noise averages out: the sweet spot moves to the right, and the test error of the flexible curves drops a long way — though never below the noise itself, which no model can predict.</p>
+<p>Noise works the other way: the noisier the examples, the more there is to mistake for pattern, and the simpler the best model — turn the noise down and watch the sweet spot move right.</p>
 <p>That is the heart of learning from data: <strong>fit the examples, but only as closely as the amount and quality of the data justify</strong> — and judge the result on examples the model has never seen.</p>`
 		}
 	]
