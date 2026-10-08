@@ -569,6 +569,21 @@
 		{#each mandelArt.bulbs as b, i (i)}
 			<circle cx={b.x} cy={b.y} r={b.r} fill={accent} />
 		{/each}
+	{:else if slug === 'orbits-kepler'}
+		<!-- a star at one focus of an ellipse (c = √(70² − 48²) ≈ 51), a planet on the ellipse -->
+		<ellipse
+			cx="100"
+			cy="60"
+			rx="70"
+			ry="48"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.4"
+		/>
+		<circle cx="49" cy="60" r="16" fill={accent} opacity="0.2" />
+		<circle cx="49" cy="60" r="10" fill={accent} />
+		<circle cx="157.8" cy="32.9" r="6" fill="var(--orb-planet)" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
