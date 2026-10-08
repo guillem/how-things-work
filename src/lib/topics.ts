@@ -213,6 +213,15 @@ const explainers: Explainer[] = [
 		accent: '#c2255c',
 		steps: 4,
 		minutes: 9
+	},
+	{
+		slug: 'atoms-periodic-table',
+		title: 'Atoms and the periodic table',
+		summary:
+			'Build an atom from protons, neutrons and electrons, watch the electrons fill their shells, and see why the periodic table has the shape it has.',
+		accent: '#e03131',
+		steps: 6,
+		minutes: 12
 	}
 ];
 
