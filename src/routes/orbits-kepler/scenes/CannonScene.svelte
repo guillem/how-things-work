@@ -4,7 +4,7 @@
 	 * `params.cannonSpeed` km/s (no air). The path comes from `cannon()` in the
 	 * model (Newton's gravity, step by step) and is drawn growing over time, the
 	 * ball moving at its true relative pace (fastest low down). Faint ghost paths
-	 * for 5, 7, 7.9 and 10 km/s show the family of curves Newton drew.
+	 * for 5, 7, 7.7 and 10 km/s show the family of curves Newton drew.
 	 *
 	 * Drawing: the Earth to scale, but heights above the ground are exaggerated
 	 * near the ground (the first 300 km take ~32 px instead of ~8 px; see
@@ -17,7 +17,7 @@
 	 */
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { cannon, EARTH_RADIUS_KM, lowOrbitSpeed, SURFACE_G } from '../orbits';
+	import { cannon, EARTH_RADIUS_KM, SURFACE_G } from '../orbits';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -52,7 +52,8 @@
 	const GM = SURFACE_G * (EARTH_RADIUS_KM * 1000) ** 2; // m³/s²
 	const R0 = (EARTH_RADIUS_KM + H) * 1000; // m
 	const ESCAPE = Math.sqrt((2 * GM) / R0) / 1000; // km/s at the mountain top
-	const LOW = lowOrbitSpeed();
+	// Circular speed at the mountain top (7.7 km/s; √gR = 7.9 is the value at the surface).
+	const LOW = Math.sqrt(GM / R0) / 1000;
 
 	type Outcome = 'lands' | 'orbit' | 'loop' | 'escapes';
 	interface Flight {
@@ -110,7 +111,7 @@
 
 	// Ghost paths: the family Newton drew. (The mountain's right side is a steep
 	// cliff so that even a 2 km/s ball, landing ~5° away, clears it.)
-	const GHOSTS = [5, 7, 7.9, 10].map((v) => {
+	const GHOSTS = [5, 7, 7.7, 10].map((v) => {
 		const f = fly(v);
 		// Label: at the landing point; for orbits beside the path, round the far right.
 		let at = f.pts[f.pts.length - 1];
@@ -383,7 +384,7 @@
 		color: 'var(--orb-planet)',
 		tabular: true
 	})}
-	{@render txt(CL, 140, 'Low-orbit speed (√gR)', 12, { muted: true })}
+	{@render txt(CL, 140, 'Circular speed at 300 km', 12, { muted: true })}
 	{@render txt(CARD.x + CARD.w - 20, 140, `${LOW.toFixed(1)} km/s`, 14, {
 		weight: 600,
 		anchor: 'end',

@@ -407,6 +407,55 @@
 		const d2 = Math.hypot(planet.x - f.x, planet.y - f.y);
 		return { d1, d2, F2X: sx(f.x), F2Y: sy(f.y) };
 	});
+	// `launch`: the pull towards the Sun on the planet (length ∝ 1/r², clamped) — the
+	// "always falling" half of the takeaway, drawn on the planet itself.
+	const pull = $derived.by(() => {
+		const dx = SX - planet.X;
+		const dy = SY - planet.Y;
+		const d = Math.hypot(dx, dy);
+		if (d < 30) return null;
+		const L = Math.min(64, Math.max(24, 36 / (rNow * rNow)), d - 16);
+		const ux = dx / d;
+		const uy = dy / d;
+		const X1 = planet.X + ux * L;
+		const Y1 = planet.Y + uy * L;
+		// arrowhead and a label beside the shaft
+		const hx = -uy * 4.5;
+		const hy = ux * 4.5;
+		return {
+			X1,
+			Y1,
+			head: `${X1 + ux * 7},${Y1 + uy * 7} ${X1 + hx},${Y1 + hy} ${X1 - hx},${Y1 - hy}`,
+			// beyond the tip, towards the Sun (inside the orbit, where it is empty);
+			// hidden when that would crowd the Sun's own label
+			label: d > L + 70,
+			LX: X1 + ux * 30,
+			LY: Y1 + uy * 22 + 4
+		};
+	});
+	const takeaway = $derived(
+		phase === 'launch'
+			? {
+					title: 'An orbit is a fall that never lands',
+					lines: [
+						'Gravity pulls the planet towards the',
+						'Sun at every instant. Its sideways speed',
+						'decides whether the fall closes into a',
+						'circle or an ellipse, or escapes.'
+					]
+				}
+			: phase === 'two'
+				? {
+						title: 'One law of gravity does all of it',
+						lines: [
+							'Every body pulls every other, weaker',
+							'with distance squared. That one rule',
+							'gives circles, ellipses, escapes, all',
+							'three of Kepler’s laws, and the wobbles.'
+						]
+					}
+				: null
+	);
 	const isCircle = $derived(launch.el.kind === 'circle');
 	const showOrbit = $derived(phase !== 'two');
 	const cardH = $derived(phase === 'two' ? 196 : phase === 'second' ? 250 : 236);
@@ -689,6 +738,19 @@
 				</g>
 			{/if}
 
+			<!-- gravity on the planet, always towards the Sun (`launch`) -->
+			{#if phase === 'launch' && pull && !offFrame && !(launch.crashed && crashedNow)}
+				<line
+					x1={planet.X}
+					y1={planet.Y}
+					x2={pull.X1}
+					y2={pull.Y1}
+					stroke="var(--orb-star)"
+					stroke-width="2.5"
+				/>
+				<polygon points={pull.head} fill="var(--orb-star)" />
+			{/if}
+
 			<!-- the planet -->
 			{#if !(launch.crashed && crashedNow)}
 				<circle
@@ -728,6 +790,9 @@
 			{@render txt(arrow.X1 + 10, arrow.Y1 + 4, `${KMS(speed * V1).toFixed(1)} km/s`, 12.5, {
 				weight: 600
 			})}
+			{#if pull && pull.label && !offFrame && !(launch.crashed && crashedNow)}
+				{@render txt(pull.LX, pull.LY, 'gravity', 11.5, { anchor: 'middle', weight: 600 })}
+			{/if}
 		{/if}
 		{@render txt(SX, SY + 26, phase === 'first' ? 'Sun (a focus)' : 'Sun', 12, {
 			anchor: 'middle',
@@ -942,6 +1007,24 @@
 				muted: true
 			})}
 		{/if}
+	{/if}
+	<!-- the takeaway, in the picture: always falling (launch); one law for all (two) -->
+	{#if takeaway}
+		<g>
+			<rect
+				x={CX}
+				y={PY1 - 116}
+				width={CW}
+				height="116"
+				rx="12"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			{@render txt(CX + 16, PY1 - 90, takeaway.title, 13.5, { weight: 700 })}
+			{#each takeaway.lines as line, i (i)}
+				{@render txt(CX + 16, PY1 - 68 + i * 18, line, 12.5)}
+			{/each}
+		</g>
 	{/if}
 	{#if phase === 'two' && twoView && twoView.hi > 2.2}
 		{@render txt(CX + CW / 2, PY0 + cardH + 64, 'Flung out of the frame!', 13.5, {

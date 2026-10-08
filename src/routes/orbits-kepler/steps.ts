@@ -106,7 +106,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>In 1609 Johannes Kepler, working from Tycho Brahe's careful measurements of Mars, found that planets don't move in circles but in <dfn data-def="An oval with two special points, the foci: for every point on the ellipse, the distances to the two foci add up to the same total.">ellipses</dfn>, with the Sun not at the centre but at one of two special points, a <strong>focus</strong>.</p>
 <p>The dashed lines join the planet to both foci: wherever the planet is, their lengths add up to the same total — the definition of an ellipse. The closest point to the Sun is the <em>perihelion</em>, the farthest the <em>aphelion</em>.</p>`,
-			notes: `<p>Real planetary orbits are only slightly elliptical: the Earth's is 1.7% off-centre (eccentricity 0.017), which is why it looks like a circle in drawings. Comets have long, thin ellipses.</p>`
+			notes: `<p>Real planetary orbits are only slightly elliptical: for the Earth the Sun sits only 1.7% of the way from the centre towards the edge (eccentricity 0.017), and the ellipse's width differs from its length by just 0.01%, which is why it looks like a circle in drawings. Comets have long, thin ellipses.</p>`
 		},
 		{
 			id: 'second',
@@ -130,7 +130,7 @@ export const spec: ExplainerSpec = {
 			controls: [ellipseSpeed],
 			body: `
 <p>Kepler's third law (1619): the square of a planet's year is proportional to the cube of its orbit's size — measured in years and AU, <strong>T² = a³</strong>, where <i>a</i> is half the longest width of the ellipse.</p>
-<p>The planets of the Solar System fall exactly on that line, from Mercury's 88-day year to Neptune's 165 years. So does your orbit from the previous steps. Newton later showed that all three of Kepler's laws follow from one law of gravity — and that the 1 in T² = a³ comes from the Sun's mass.</p>`,
+<p>The planets of the Solar System fall exactly on that line, from Mercury's 88-day year to Neptune's 165 years. So does your orbit from the previous steps. Newton later showed that all three of Kepler's laws follow from one law of gravity — and that the Sun's mass sets how T² relates to a³ (it comes out as exactly 1 only because years and AU are measured by the Earth's own orbit).</p>`,
 			notes: `<p>The scales on the chart go up by factors of ten, so that Mercury and Neptune fit on the same picture; on such a chart, T² = a³ is a straight line with a slope of 3/2.</p>`
 		},
 		// ------------------------------------------------------------------ many
@@ -143,7 +143,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [neighbour, launch],
 			body: `
-<p>Kepler's laws are exact only for one planet alone with its star. Add a second planet a little further out and the two pull on each other too. With a planet as light as the Earth the effect is tiny; make the neighbour a few Jupiters heavy and the inner orbit visibly wobbles — its ellipse stretches, shrinks and turns.</p>
+<p>Kepler's laws are exact only for one planet alone with its star — and even then the third needs a tiny correction for the planet's own mass, because the star moves too. Add a second planet a little further out and the two pull on each other too. With a planet as light as the Earth the effect is tiny; make the neighbour a few Jupiters heavy and the inner orbit visibly wobbles — its ellipse stretches, shrinks and turns.</p>
 <p>In 1846 such disturbances in the orbit of Uranus led astronomers to predict where an unseen planet must be. Neptune was found within a degree of the predicted spot.</p>
 <p>An orbit is continuous free fall, and <strong>a single law of gravity produces all of it</strong>: circles, ellipses, escapes, Kepler's three laws and the small disturbances between planets.</p>`
 		}
