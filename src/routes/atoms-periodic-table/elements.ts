@@ -11,7 +11,7 @@ export default {
 		mass: 'standard atomic weight (Da; IUPAC, Meija et al. 2016)',
 		radius: 'covalent radius (pm; Cordero et al. 2008)',
 		ionization: 'first ionization energy (eV; NIST Atomic Spectra Database)',
-		electronegativity: 'Pauling scale',
+		electronegativity: 'Pauling scale (CRC Handbook of Chemistry and Physics)',
 		stable: 'mass numbers of the stable isotopes found in nature (empty: none is stable)'
 	},
 	elements: [
