@@ -53,7 +53,7 @@ export const albedo = (lat: number) => 0.34 + 0.22 * P2(Math.sin(rad(lat)));
 /** Sunlight absorbed at latitude φ (W/m²). */
 export const absorbed = (lat: number) => insolation(lat) * (1 - albedo(lat));
 
-/** Outgoing heat radiation to space at temperature T (°C): A + B·T (Budyko's fit to satellite data). */
+/** Outgoing heat radiation to space at temperature T (°C): A + B·T (North et al. 1981's fit to satellite data, after Budyko). */
 export const OLR_A = 203.3; // W/m²
 export const OLR_B = 2.09; // W/m² per °C
 export const emitted = (T: number) => OLR_A + OLR_B * T;
@@ -151,8 +151,9 @@ export function tempAt(c: Climate, lat: number) {
 /**
  * Poleward edge of the Hadley cell (°) for a planet spinning `spin` times as
  * fast as Earth, from Held & Hou (1980): φ_H = √(5/3 · gHΔ/(Ω²a²)) radians,
- * with tropopause height H = 15 km and equator-to-pole contrast Δ = 1/3 of the
- * mean potential temperature: about 35° for Earth, close to the observed 30°.
+ * with equator-to-pole contrast Δ = 1/3 of the mean potential temperature (as
+ * in the paper) and a height H = 15 km chosen here (the paper's value is lower):
+ * about 35° for Earth, close to the observed 30°.
  * Capped at 90°: a slowly spinning planet has one cell from equator to pole.
  */
 export function hadleyEdge(spin: number) {
@@ -410,17 +411,49 @@ export function category(v: number) {
 	return c;
 }
 
+/** Wind (m/s) of the weak disturbance a hurricane starts from. */
+export const STORM_SEED = 15;
+/** Growth rate of a storm over warm sea (per hour, logistic). */
+const STORM_GROWTH = 1 / 12;
+/** E-folding time (hours) of a storm's decay over cool water, land or near the equator. */
+export const STORM_DECAY_HOURS = 24;
+
 /**
- * Wind speed of a storm `hours` after it forms as a weak disturbance (15 m/s):
- * it grows towards the maximum potential intensity (logistic growth at a rate
- * of 1/12 per hour), or decays when it can't form.
+ * Wind speed of a storm `hours` after it had wind `v0` (m/s), if the sea
+ * temperature and latitude then stay at `sst` and `lat`. Where a hurricane
+ * can form, the wind grows (or, above the new ceiling, eases) towards the
+ * maximum potential intensity by logistic growth at 1/12 per hour; where it
+ * can't, it decays exponentially with a one-day e-folding time, as storms do
+ * over cool water or land.
  * A sketch of typical intensification over 2–4 days; real storms vary a lot
  * (wind shear, dry air, the ocean cooling under them).
  */
-export function stormIntensity(sst: number, lat: number, hours: number) {
-	const v0 = 15;
-	if (!canForm(sst, lat)) return v0 * Math.exp(-hours / 24);
+export function stormEvolve(v0: number, sst: number, lat: number, hours: number) {
+	if (v0 <= 0) return 0;
+	if (!canForm(sst, lat)) return v0 * Math.exp(-hours / STORM_DECAY_HOURS);
 	const vmax = maxIntensity(sst);
-	const r = 1 / 12; // per hour
-	return vmax / (1 + ((vmax - v0) / v0) * Math.exp(-r * hours));
+	return vmax / (1 + ((vmax - v0) / v0) * Math.exp(-STORM_GROWTH * hours));
+}
+
+/**
+ * ∫₀ʰ stormEvolve(v0, sst, lat, h′) dh′ (m/s · hours), exact: how far the
+ * storm's wind has carried the air round in those hours (used to turn it).
+ */
+export function stormWindIntegral(v0: number, sst: number, lat: number, hours: number) {
+	if (v0 <= 0) return 0;
+	if (!canForm(sst, lat))
+		return v0 * STORM_DECAY_HOURS * (1 - Math.exp(-hours / STORM_DECAY_HOURS));
+	const vmax = maxIntensity(sst);
+	const r = STORM_GROWTH;
+	const A = (vmax - v0) / v0;
+	return vmax * (hours + Math.log((1 + A * Math.exp(-r * hours)) / (1 + A)) / r);
+}
+
+/**
+ * Wind speed of a storm `hours` after it forms as a weak disturbance
+ * (STORM_SEED, 15 m/s) at a fixed sea temperature and latitude: see
+ * `stormEvolve`.
+ */
+export function stormIntensity(sst: number, lat: number, hours: number) {
+	return stormEvolve(STORM_SEED, sst, lat, hours);
 }

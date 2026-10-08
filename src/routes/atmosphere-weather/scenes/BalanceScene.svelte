@@ -91,13 +91,14 @@
 		return Math.abs(lerp(northward[i], northward[j], u));
 	}
 
-	// ---- temperature colour scale: cold → neutral → warm ---------------------------
+	// ---- temperature colour scale: cold → neutral (0 °C) → warm ----------------------
+	// The same scale colours the globes of CellsScene and CoriolisScene.
 	function tempColor(T: number) {
 		const u = clamp(T / 35, -1, 1);
 		const p = Math.round(Math.abs(u) * 100);
 		return u < 0
-			? `color-mix(in oklab, var(--atm-cold) ${p}%, var(--surface))`
-			: `color-mix(in oklab, var(--atm-warm) ${p}%, var(--surface))`;
+			? `color-mix(in oklab, var(--atm-cold) ${p}%, var(--atm-neutral))`
+			: `color-mix(in oklab, var(--atm-warm) ${p}%, var(--atm-neutral))`;
 	}
 
 	// ---- globe -------------------------------------------------------------------
@@ -210,8 +211,8 @@
 					right.unshift(`${(p.x + w).toFixed(1)} ${p.y.toFixed(1)}`);
 				}
 				const end = pt(70);
-				const tip = pt(79);
-				const hw = wOf(70) / 2 + 4.5;
+				const tip = pt(80);
+				const hw = Math.max(wOf(70) / 2 + 5, 7);
 				return {
 					key: `${lon}-${h}`,
 					lon,
@@ -300,6 +301,8 @@
 	const fmtT = (v: number) => `${v < 0 ? '−' : ''}${Math.abs(Math.round(v))} °C`;
 
 	const pulse = $derived(reduced ? 0 : t);
+	const KEY_STOPS = [-35, -17.5, 0, 17.5, 35];
+	const KEY_W = 180;
 </script>
 
 <g>
@@ -316,7 +319,24 @@
 				<stop offset={st.off} style:stop-color={tempColor(tempAt(c, st.lat))} />
 			{/each}
 		</linearGradient>
+		<linearGradient id="balance-temp-key" x1="0" x2="1" y1="0" y2="0">
+			{#each KEY_STOPS as T, i (i)}
+				<stop offset={i / (KEY_STOPS.length - 1)} style:stop-color={tempColor(T)} />
+			{/each}
+		</linearGradient>
 	</defs>
+
+	<!-- temperature key -->
+	<g transform="translate({BEAM_X0} 40)">
+		{@render txt(0, 0, 'surface temperature, yearly average', 11, { muted: true })}
+		<rect y="8" width={KEY_W} height="8" rx="2" fill="url(#balance-temp-key)" />
+		{#each [-30, 0, 30] as T (T)}
+			{@render txt(((T + 35) / 70) * KEY_W, 31, fmtT(T), 11, {
+				anchor: 'middle',
+				muted: true
+			})}
+		{/each}
+	</g>
 
 	<!-- ============================== globe ============================== -->
 	<g>
@@ -410,10 +430,6 @@
 				weight: 600
 			})}
 			{@render txt(beam60.xc - 6, beam60.y2 + 33, 'is spread over twice the length', 12, {})}
-			{@render txt(GX, GY + R + 30, 'colour: yearly average temperature', 11, {
-				anchor: 'middle',
-				muted: true
-			})}
 		</g>
 
 		<!-- poleward heat flow -->
@@ -421,15 +437,21 @@
 			{#each ribbons as r (r.key)}
 				<path
 					d={r.body}
-					fill="var(--surface)"
-					fill-opacity="0.92"
-					stroke="var(--atm-warm)"
-					stroke-width="1.4"
+					fill="var(--atm-warm)"
+					stroke="var(--stage-bg)"
+					stroke-width="1.5"
+					stroke-linejoin="round"
 				/>
-				<path d={r.head} fill="var(--atm-warm)" stroke="var(--surface)" stroke-width="1" />
+				<path
+					d={r.head}
+					fill="var(--atm-warm)"
+					stroke="var(--stage-bg)"
+					stroke-width="1.5"
+					stroke-linejoin="round"
+				/>
 			{/each}
 			{#each heatDots as d (d.key)}
-				<circle cx={d.x} cy={d.y} r="2.2" fill="var(--atm-warm)" opacity={d.o} />
+				<circle cx={d.x} cy={d.y} r="2.4" fill="var(--stage-bg)" opacity={d.o} />
 			{/each}
 		</g>
 		{#each [60, 30, 0, -30, -60] as lat (lat)}
@@ -537,11 +559,17 @@
 		color: 'var(--atm-sun)',
 		weight: 600
 	})}
-	{@render txt(sx(0), sy1(Math.min(eqRow.a, eqRow.e)) + 22, 'heat radiated to space', 12, {
-		anchor: 'middle',
-		color: 'var(--atm-emit)',
-		weight: 600
-	})}
+	{@render txt(
+		sx(0),
+		lerp(sy1(240), sy1(Math.min(eqRow.a, eqRow.e)) + 22, strength),
+		'heat radiated to space',
+		12,
+		{
+			anchor: 'middle',
+			color: 'var(--atm-emit)',
+			weight: 600
+		}
+	)}
 	<g opacity={strength}>
 		{@render txt(sx(0), (sy1(eqRow.a) + sy1(eqRow.e)) / 2 + 4, 'surplus: heat to export', 12, {
 			anchor: 'middle',
@@ -552,10 +580,10 @@
 			anchor: 'end',
 			weight: 600
 		})}
-		{@render txt(CX0 + 4, sy1(nRow.a) + 18, 'deficit', 12, { weight: 600 })}
+		{@render txt(CX0 + 10, sy1(nRow.a) + 18, 'deficit', 12, { weight: 600 })}
 	</g>
 	<g opacity={P * (1 - strength)}>
-		{@render txt(sx(0), sy1(eqRow.a) + 40, 'absorbed = radiated at every latitude', 12, {
+		{@render txt(sx(0), sy1(175), 'absorbed = radiated at every latitude', 11, {
 			anchor: 'middle',
 			muted: true
 		})}
@@ -611,11 +639,17 @@
 					muted: true
 				})}
 			</g>
-			{@render txt(sx(0), sy2(tEq) + 18, `equator ${fmtT(tEq)}`, 12, {
-				anchor: 'middle',
-				weight: 600
-			})}
-			{@render txt(sx(0.97), sy2(tPole) - 16, `pole ${fmtT(tPole)}`, 12, {
+			{@render txt(
+				tEq > 45 ? sx(0.14) : sx(0),
+				sy2(tEq) + (tEq > 45 ? 4 : 20),
+				`equator ${fmtT(tEq)}`,
+				12,
+				{
+					anchor: tEq > 45 ? 'start' : 'middle',
+					weight: 600
+				}
+			)}
+			{@render txt(sx(0.97), sy2(tPole) + (tPole > -35 ? 22 : -14), `pole ${fmtT(tPole)}`, 12, {
 				anchor: 'end',
 				weight: 600
 			})}

@@ -8,7 +8,7 @@
 	 *              moving streaks (crossing the isobars in towards the lows),
 	 *              hemisphere switch (45° N or 45° S)
 	 *   fronts   — the air's temperature, carried round by the winds aloft for
-	 *              48 hours (`advectedTemperature`), with isotherms and the
+	 *              36 hours (`advectedTemperature`), with isotherms and the
 	 *              fronts that form where the contrast is sharpest
 	 *
 	 * State: the systems of each step live in `params['map:' + step.id]` as
@@ -74,7 +74,8 @@
 			{ kind: 'low', x: -600, y: 60, dp: -20, r: 450 },
 			{ kind: 'high', x: 700, y: -60, dp: 20, r: 600 }
 		],
-		fronts: [{ kind: 'low', x: 0, y: 0, dp: -25, r: 500 }]
+		// A moderate low: in 36 hours it winds up one warm and one cold front.
+		fronts: [{ kind: 'low', x: 0, y: 0, dp: -15, r: 500 }]
 	};
 	const MAX_SYSTEMS = 4;
 	const R_MIN = 250;
@@ -147,7 +148,7 @@
 		return [
 			...list,
 			kind === 'low'
-				? { kind, x: best.x, y: best.y, dp: -20, r: 450 }
+				? { kind, x: best.x, y: best.y, dp: fronts ? -15 : -20, r: 450 }
 				: { kind, x: best.x, y: best.y, dp: 20, r: 600 }
 		];
 	}
@@ -258,7 +259,9 @@
 		for (const [a, b] of DIAG) {
 			const x = cx + a * rp;
 			const y = cy + b * rp;
-			if (x > MX0 + 12 && x < MX0 + MW - 12 && y > MY0 + 12 && y < MY0 + MH - 12) return { x, y };
+			const inside = x > MX0 + 12 && x < MX0 + MW - 12 && y > MY0 + 12 && y < MY0 + MH - 12;
+			const underCard = x < CX + CW + 12 && y < CY + 160; // hidden behind the legend
+			if (inside && !underCard) return { x, y };
 		}
 		return { x: cx + DIAG[0][0] * rp, y: cy + DIAG[0][1] * rp };
 	}
@@ -396,7 +399,12 @@
 			y > MY0 + 16 &&
 			y < MY0 + MH - 12 &&
 			!(x < CX + CW + 24 && y < CY + 150) &&
-			markers.every((m) => Math.hypot(m.x - x, m.y - y) > 70) &&
+			// clear of each letter, its pressure and its 'rising air…' label, and its edge handle
+			markers.every(
+				(m) =>
+					(Math.abs(m.x - x) > 84 || y < m.y - 56 || y > m.y + 60) &&
+					Math.hypot(m.edge.x - x, m.edge.y - y) > 24
+			) &&
 			placed.every((p) => Math.hypot(p.x - x, p.y - y) > 90);
 		for (const iso of isobars) {
 			if (placed.length >= 7) break;
@@ -505,9 +513,9 @@
 	const tgy = (g: number) => MY0 + ((g + 0.5) * MH) / TNY;
 	const T_MID = 12; // °C, the initial temperature along the middle of the map
 	const T_SPAN = 14;
-	const HOURS = 48;
+	const HOURS = 36; // then held: much later the spiral winds into many thin arms
 	const STEP_H = 3;
-	const PLAY = 16; // seconds for the 48 hours
+	const PLAY = 13; // seconds for the 36 hours
 
 	interface Frame {
 		T: Float64Array;
@@ -518,12 +526,19 @@
 	let cache = new Map<number, Frame>();
 	let cacheKey = '';
 	let canvas: HTMLCanvasElement | null = null;
+	let big: HTMLCanvasElement | null = null;
+	const UP = 4; // mask images are drawn at 4× the grid
 	function maskURL(T: Float64Array, sign: 1 | -1) {
 		if (typeof document === 'undefined') return '';
 		canvas ??= document.createElement('canvas');
 		canvas.width = TNX;
 		canvas.height = TNY;
+		big ??= document.createElement('canvas');
+		big.width = TNX * UP;
+		big.height = TNY * UP;
 		const ctx = canvas.getContext('2d');
+		const out = big.getContext('2d');
+		if (!out) return '';
 		if (!ctx) return '';
 		const img = ctx.createImageData(TNX, TNY);
 		for (let k = 0; k < T.length; k++) {
@@ -534,7 +549,15 @@
 			img.data[4 * k + 3] = 255;
 		}
 		ctx.putImageData(img, 0, 0);
-		return canvas.toDataURL();
+		// Upscale with a blur of about one grid cell, so a front sharper than the
+		// grid shows as a smooth line rather than the staircase of bilinear scaling.
+		// The unblurred copy underneath keeps the borders from fading.
+		out.imageSmoothingEnabled = true;
+		out.filter = 'none';
+		out.drawImage(canvas, 0, 0, big.width, big.height);
+		out.filter = `blur(${UP * 0.8}px)`;
+		out.drawImage(canvas, 0, 0, big.width, big.height);
+		return big.toDataURL();
 	}
 	function frame(list: System[], k: number): Frame {
 		const ck = encode(list);
@@ -750,7 +773,7 @@
 		{/if}
 		<linearGradient id="map-tscale" x1="0" x2="1" y1="0" y2="0">
 			<stop offset="0" style:stop-color="var(--atm-cold)" />
-			<stop offset="0.5" style:stop-color="var(--surface)" />
+			<stop offset="0.5" style:stop-color="var(--atm-neutral)" />
 			<stop offset="1" style:stop-color="var(--atm-warm)" />
 		</linearGradient>
 	</defs>
@@ -760,6 +783,8 @@
 	<g clip-path="url(#map-clip)" style:pointer-events="none">
 		{#if temp}
 			<g opacity={fw.current}>
+				<!-- the middle of the temperature scale -->
+				<rect x={MX0} y={MY0} width={MW} height={MH} fill="var(--atm-neutral)" />
 				<rect
 					x={MX0}
 					y={MY0}
@@ -852,10 +877,10 @@
 			d={arrows}
 			fill="none"
 			stroke="var(--atm-wind)"
-			stroke-width="1.2"
+			stroke-width="1.3"
 			stroke-linecap="round"
 			stroke-linejoin="round"
-			opacity={0.45 * pw}
+			opacity={0.7 * pw}
 		/>
 		{#if !reduced}
 			<g opacity={fronts ? 0.4 : 0.9}>
@@ -1010,7 +1035,7 @@
 				stroke-width="0.5"
 			/>
 			{@render txt(CX + 14, CY + 59, '−2 °C', 11, { muted: true })}
-			{@render txt(CX + CW / 2, CY + 59, '12', 11, { muted: true, anchor: 'middle' })}
+			{@render txt(CX + CW / 2, CY + 59, '12 °C', 11, { muted: true, anchor: 'middle' })}
 			{@render txt(CX + CW - 14, CY + 59, '26 °C', 11, { muted: true, anchor: 'end' })}
 			<path d="M{CX + 14} {CY + 82}h34" stroke="var(--atm-high)" stroke-width="2.5" fill="none" />
 			<path

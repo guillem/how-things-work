@@ -139,7 +139,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			body: `
 <p>How does air carry heat? The same way a pan of water heated from below does: warm air is less dense, so it rises; cool air sinks. Over the hot equator, air rises high into the atmosphere, flows towards the poles up there, cools, sinks, and flows back to the equator along the ground. This loop is a <dfn data-def="A circulation driven by heating from below: warm fluid rises, spreads, cools, sinks and flows back to be heated again.">convection cell</dfn>.</p>
-<p>If the Earth did not spin, there would be one huge cell in each hemisphere, and the wind at the ground would blow steadily from the poles to the equator everywhere. George Hadley proposed this picture in 1735. It is not what we see: at our latitudes the wind blows mostly from the west. The missing piece is the Earth's spin.</p>`
+<p>If the Earth did not spin, there would be one huge cell in each hemisphere, and the wind at the ground would blow steadily from the poles to the equator everywhere. Edmond Halley proposed this picture in 1686. In 1735 George Hadley added the Earth's spin to explain why the trade winds blow from the east, but he still pictured one cell per hemisphere. That is not what we see: at our latitudes the wind blows mostly from the west. The missing piece is what the spin does to the whole circulation.</p>`
 		},
 		{
 			id: 'coriolis',
@@ -150,7 +150,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [spin, launch],
 			body: `
-<p>The Earth turns once a day, and we turn with it. Air that is set moving keeps going in a straight line in space — but the ground turns underneath it. Seen from the ground, moving air seems to be pushed sideways: to the <strong>right</strong> in the northern hemisphere, to the <strong>left</strong> in the southern. This apparent push is the <dfn data-def="The apparent sideways deflection of anything moving freely over a rotating planet, seen by someone turning with the planet. It acts at right angles to the motion: to the right in the northern hemisphere, to the left in the southern.">Coriolis effect</dfn>.</p>
+<p>The Earth turns once a day, and we turn with it. Moving air tends to keep its motion relative to the stars, not to the turning ground, so seen from the ground it seems to be pushed sideways: to the <strong>right</strong> in the northern hemisphere, to the <strong>left</strong> in the southern. This apparent push is the <dfn data-def="The apparent sideways deflection of anything moving freely over a rotating planet, seen by someone turning with the planet. It acts at right angles to the motion: to the right in the northern hemisphere, to the left in the southern.">Coriolis effect</dfn>.</p>
 <p>Watch parcels of air pushed off in different directions. They curve into loops — a couple of hundred kilometres across at the speed of a fresh breeze — and the turn is strongest near the poles and vanishes at the equator. Slow the planet's spin and the curving fades; stop it and the air goes straight.</p>`,
 			notes: `<p>The size of the effect is set by f = 2Ω sin(latitude), where Ω is the Earth's rate of turning. A parcel with nothing else pushing it goes round an "inertial circle" of radius speed ÷ f, once every half a <em>pendulum day</em> (about 17 hours at 45°).</p>`
 		},
@@ -164,8 +164,8 @@ export const spec: ExplainerSpec = {
 			controls: [spin],
 			body: `
 <p>On the spinning Earth the single loop breaks up. Air flowing back to the equator along the ground is turned to its right (in the north): it becomes the steady <strong>trade winds</strong>, blowing from the north-east. The cell they belong to, the <dfn data-def="The circulation between the equator and about 30° latitude: rising air at the equator, sinking air in the subtropics, trade winds at the surface.">Hadley cell</dfn>, only reaches about 30° (35° in this simple model) before the sideways push makes it unable to go further.</p>
-<p>Beyond it, from about 30° to 60°, lie the <strong>westerlies</strong>, which bring weather to Europe and North America from the west; near the poles, cold easterlies. Slide the spin: a slower planet has a wider Hadley cell and fewer bands; a faster one more, narrower bands — like the stripes of Jupiter, which turns once every ten hours.</p>`,
-			notes: `<p>The Hadley cell's width here comes from Held and Hou's theory (1980), which predicts it shrinks in proportion to the spin rate. The other cells are drawn to fill the rest of each hemisphere; the middle-latitude "Ferrel cell" is really the average effect of the passing highs and lows of the next chapter, not a smooth loop. Where air sinks, near 30°, skies are clear and dry: most of the great deserts lie there.</p>`
+<p>Beyond it, from about 30° to 60°, lie the <strong>westerlies</strong>, which bring weather to Europe and North America from the west; near the poles, cold easterlies. Slide the spin: a slower planet has a wider Hadley cell and fewer bands; a faster one more, narrower bands — like the stripes of Jupiter, which turns once every ten hours and is eleven times wider than the Earth.</p>`,
+			notes: `<p>The Hadley cell's width here comes from Held and Hou's theory (1980), which predicts that its width is inversely proportional to the spin rate: twice the spin, half the width. The other cells are drawn to fill the rest of each hemisphere; the middle-latitude "Ferrel cell" is really the average effect of the passing highs and lows of the next chapter, not a smooth loop. Where air sinks, near 30°, skies are clear and dry: most of the great deserts lie there.</p>`
 		},
 		{
 			id: 'sink',
@@ -219,7 +219,7 @@ export const spec: ExplainerSpec = {
 <p>A hurricane is a heat engine. Over a warm sea, water evaporates into the wind; as the moist air spirals in and rises in tall thunderstorms around the eye, the water vapour condenses and releases its heat, which drives the winds faster still, which evaporate more water.</p>
 <p>It only works over a sea warmer than about <strong>26.5 °C</strong>: warm the sea and the storm can grow stronger, up to category 5. Cool it below that and the storm dies away — as hurricanes do when they move over land or cool water. And it needs the Coriolis effect to start spinning: within about 5° of the equator, where it fades away, hurricanes almost never form.</p>
 <p>In the end a hurricane is the most violent example of the rule of this page: it moves heat — from the warm ocean, up into the atmosphere and towards the poles.</p>`,
-			notes: `<p>The strongest wind a storm can reach over a given sea temperature here follows an empirical fit to Atlantic hurricanes (DeMaria and Kaplan, 1994). The growth over a few days is a smooth sketch: real storms are also weakened by winds that change with height, dry air and the cooler water they churn up. The same storms are called typhoons in the north-west Pacific and cyclones in the Indian Ocean; in the southern hemisphere they spin the other way.</p>`
+			notes: `<p>The strongest wind a storm can reach over a given sea temperature here follows an empirical fit to Atlantic hurricanes (DeMaria and Kaplan, 1994). The growth over a few days is a smooth sketch: real storms are also weakened by winds that change with height, dry air and the cooler water they churn up. The same storms are called typhoons in the north-west Pacific and cyclones in the Indian Ocean and South Pacific; in the southern hemisphere they spin the other way.</p>`
 		}
 	]
 };

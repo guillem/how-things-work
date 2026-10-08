@@ -5,19 +5,26 @@
 	 * Left, top: the storm seen from above, over a sea coloured by its surface
 	 * temperature. Its cloud bands spiral round an eye and turn anticlockwise
 	 * (northern hemisphere); size, tightness, eye clarity and rotation speed
-	 * follow the wind speed v = stormIntensity(sst, lat, hours). Below hurricane
+	 * follow the wind speed v (see the clock below). Below hurricane
 	 * strength it is a loose cluster of thunderstorms; when the storm can't form
 	 * (cool sea, or too near the equator) the clouds drift apart and fade.
 	 * Left, bottom: a cross-section through the storm — evaporation, inflow,
 	 * rising eyewall towers releasing heat, outflow at the top, sinking air in
 	 * the eye. Right: readouts, the sea-temperature ceiling and wind vs time.
 	 *
-	 * The storm's clock (simulated hours) restarts on "Start a new storm" and
-	 * whenever a slider moves: the `t` of that moment is remembered in a
-	 * frame-to-frame memo inside a $derived — the guide's sanctioned exception
-	 * for state a pure function of `t` cannot hold (see TrackScene). The
-	 * rotation angle is the exact integral of the wind speed over that clock,
-	 * so it never snaps. Reduced motion shows the 72-hour state, still.
+	 * The storm's history is a list of legs, one per setting of the sliders:
+	 * each remembers the `t` it began, the storm's clock (hours), wind and
+	 * rotation angle at that moment, and evolves from there with
+	 * `stormEvolve` — so cooling the sea (or moving within 5° of the equator)
+	 * makes the running storm decay from its current strength, and warming it
+	 * lets it grow from there. "Start a new storm" (or rewinding t) starts a
+	 * single leg from the 15 m/s seed. The legs live in a frame-to-frame memo
+	 * inside a $derived — the guide's sanctioned exception for state a pure
+	 * function of `t` cannot hold (see TrackScene); within a leg everything is
+	 * a pure function of t. The rotation angle is the exact integral of the
+	 * wind speed, so it never snaps. The clock runs for 5 days (or 2 days past
+	 * the last slider change, the chart scrolling with it), then holds.
+	 * Reduced motion shows a fresh storm's 72-hour state, still.
 	 *
 	 * Text sizes and colours are set with `style:` because the stage's CSS
 	 * overrides SVG presentation attributes.
@@ -27,10 +34,12 @@
 	import {
 		GENESIS_LAT,
 		GENESIS_SST,
+		STORM_SEED,
 		canForm,
 		category,
 		maxIntensity,
-		stormIntensity
+		stormEvolve,
+		stormWindIntegral
 	} from '../atmosphere';
 
 	let { t, params, reduced, dark }: StageProps = $props();
@@ -45,35 +54,75 @@
 
 	// ---- the storm's clock --------------------------------------------------------------
 	const HPS = 4; // simulated hours per second: one day ≈ 6 s
-	const HMAX = 120; // the storm is followed for 5 days, then held
+	const SPAN = 120; // the chart shows 5 days
+	const AFTER = 48; // after a slider change the storm is followed for 2 more days
 	const REDUCED_HOURS = 72;
-	let memo = { key: '', start: 0 };
-	const since = $derived.by(() => {
-		if (reduced) return REDUCED_HOURS / HPS;
-		const key = `${sst}|${lat}|${presses}`;
-		if (key !== memo.key || t < memo.start) memo = { key, start: memo.key === '' ? 0 : t };
-		return Math.max(0, t - memo.start);
-	});
-	const hours = $derived(Math.min(HMAX, since * HPS));
-	const v = $derived(stormIntensity(sst, lat, hours));
-	const vmax = $derived(maxIntensity(sst));
-
-	/** ∫₀ʰ v dh (m/s · h), exact for the model's logistic growth or decay. */
-	function windIntegral(h: number) {
-		const v0 = 15;
-		if (!forms) return v0 * 24 * (1 - Math.exp(-h / 24));
-		const r = 1 / 12;
-		const A = (vmax - v0) / v0;
-		return vmax * (h + Math.log((1 + A * Math.exp(-r * h)) / (1 + A)) / r);
-	}
 	/** Rotation (radians) per (m/s · second): ~0.6 rad/s at 75 m/s. */
 	const SPIN = 0.008;
-	const angle = $derived.by(() => {
-		const tEnd = HMAX / HPS;
-		const s = Math.min(since, tEnd);
-		const base = (SPIN / HPS) * windIntegral(s * HPS);
-		return base + (since > tEnd ? SPIN * stormIntensity(sst, lat, HMAX) * (since - tEnd) : 0);
+
+	/** One stretch of the storm's life under fixed sliders. */
+	interface Leg {
+		start: number; // t when it began (s)
+		h0: number; // storm clock then (hours)
+		v0: number; // wind then (m/s)
+		a0: number; // rotation angle then (radians)
+		sst: number;
+		lat: number;
+	}
+	const fresh = (start: number): Leg => ({ start, h0: 0, v0: STORM_SEED, a0: 0, sst, lat });
+	/** Last hour the clock runs to. */
+	const endOf = (legs: Leg[]) =>
+		legs.length > 1 ? Math.max(SPAN, legs[legs.length - 1].h0 + AFTER) : SPAN;
+	const clockOf = (L: Leg, at: number, end: number) =>
+		Math.min(end, L.h0 + Math.max(0, at - L.start) * HPS);
+	const windOf = (L: Leg, h: number) => stormEvolve(L.v0, L.sst, L.lat, h - L.h0);
+	function angleOf(L: Leg, at: number, end: number) {
+		const h = clockOf(L, at, end);
+		const held = Math.max(0, at - L.start - (end - L.h0) / HPS); // seconds since the clock stopped
+		return (
+			L.a0 +
+			(SPIN / HPS) * stormWindIntegral(L.v0, L.sst, L.lat, h - L.h0) +
+			SPIN * windOf(L, h) * held
+		);
+	}
+
+	let memo: { presses: number; legs: Leg[] } = { presses: -1, legs: [] };
+	const legs = $derived.by(() => {
+		if (reduced) return [fresh(0)];
+		const last = memo.legs[memo.legs.length - 1];
+		if (presses !== memo.presses || !last || t < last.start) {
+			memo = { presses, legs: [fresh(memo.presses === -1 ? 0 : t)] };
+		} else if (sst !== last.sst || lat !== last.lat) {
+			const end = endOf(memo.legs);
+			const h0 = clockOf(last, t, end);
+			let list: Leg[];
+			if (h0 - last.h0 < 0.25) {
+				// A slider being dragged: changes within a quarter of an hour amend the last leg.
+				list = [...memo.legs.slice(0, -1), { ...last, sst, lat }];
+			} else {
+				const next = { start: t, h0, v0: windOf(last, h0), a0: angleOf(last, t, end), sst, lat };
+				list = [...memo.legs, next];
+			}
+			// Forget legs that ended before the chart's window.
+			const lo = endOf(list) - SPAN;
+			while (list.length > 1 && list[1].h0 <= lo) list = list.slice(1);
+			memo = { presses, legs: list };
+		}
+		return memo.legs;
 	});
+	const leg = $derived(legs[legs.length - 1]);
+	const hEnd = $derived(endOf(legs));
+	const hours = $derived(reduced ? REDUCED_HOURS : clockOf(leg, t, hEnd));
+	const v = $derived(windOf(leg, hours));
+	const vmax = $derived(maxIntensity(sst));
+	const angle = $derived(reduced ? angleOf(leg, REDUCED_HOURS / HPS, hEnd) : angleOf(leg, t, hEnd));
+	/** Wind at any hour of the storm's life so far, and projected under the current sliders. */
+	function windAtHour(h: number) {
+		let L = legs[0];
+		for (const l of legs) if (l.h0 <= h) L = l;
+		return windOf(L, h);
+	}
+	const weakening = $derived(v > (forms ? vmax : 0) + 0.5);
 
 	// ---- what the storm looks like -----------------------------------------------------
 	const strength = $derived(clamp((v - 15) / (80 - 15))); // 0 disturbance → 1 extreme
@@ -132,16 +181,18 @@
 
 	// ---- colours ------------------------------------------------------------------------
 	// The sea: the ocean colour, tinted cooler below the 26.5 °C threshold and warmer above it.
+	// The warm side turns the long way round the hue circle (blue → turquoise, never through
+	// grey or rose), so a warm sea still reads as tropical water, not land.
 	const sea = $derived(
 		sst < GENESIS_SST
 			? `color-mix(in oklab, var(--atm-ocean), var(--atm-cold) ${Math.round(((GENESIS_SST - sst) / 6.5) * 55)}%)`
-			: `color-mix(in oklab, var(--atm-ocean), var(--atm-warm) ${Math.round(18 + ((sst - GENESIS_SST) / 4.5) * 42)}%)`
+			: `color-mix(in oklch longer hue, var(--atm-ocean), var(--atm-warm-sea) ${Math.round(2 + ((sst - GENESIS_SST) / 4.5) * 22)}%)`
 	);
 	// Clouds: brighter than the --atm-cloud token so they read against the sea in both themes.
 	const cloud = $derived(
 		dark
 			? 'color-mix(in oklab, var(--atm-cloud), var(--stage-ink) 45%)'
-			: 'color-mix(in oklab, var(--atm-cloud), var(--surface) 55%)'
+			: 'color-mix(in oklab, var(--atm-cloud), var(--atm-neutral) 80%)'
 	);
 
 	// ---- names ---------------------------------------------------------------------------
@@ -152,12 +203,12 @@
 		return 'Tropical depression';
 	}
 	const state = $derived(
-		!forms && v < 10 ? 'Dying away' : !forms ? 'Disturbance, fading' : stateName(v)
+		!forms && v < 10 ? 'Dying away' : !forms && v < 17 ? 'Disturbance, fading' : stateName(v)
 	);
 	const reasons = $derived(
 		[
 			tooCool ? 'sea too cool (below 26.5 °C)' : '',
-			tooNear ? 'too close to the equator: no Coriolis spin' : ''
+			tooNear ? 'too close to the equator (no Coriolis spin)' : ''
 		].filter(Boolean)
 	);
 	const fmtTime = (h: number) => {
@@ -175,7 +226,8 @@
 	const SURF = 556;
 	const towerH = $derived((50 + 60 * strength) * (0.4 + 0.6 * alive));
 	const yTop = $derived(SURF - towerH);
-	const condY = $derived(clamp(yTop + 50, 498, 512)); // under the anvil, above the inflow
+	// Between the outflow (yTop + 18) and the inflow (SURF − 26) runs of the loop.
+	const condY = $derived(Math.min(518, (yTop + 18 + SURF - 26) / 2 - 2));
 	const engine = $derived(organised * alive); // how strongly the loop runs
 	const EYE = 22; // half-width of the eye in the section
 	const WALL = 46; // outer edge of the eyewall tower base
@@ -268,13 +320,19 @@
 	const SST_Y = 218;
 	const cat5At = 30 + Math.log((70 - 28.2) / 55.8) / 0.1813; // where the ceiling reaches 70 m/s
 
-	const sx = scale([0, HMAX], [636, 926]);
+	const hLo = $derived(hEnd - SPAN);
+	const sx = $derived(scale([hLo, hEnd], [636, 926]));
+	const xTicks = $derived(
+		Array.from({ length: 6 }, (_, k) => Math.ceil(hLo / 24) * 24 + 24 * k).filter((h) => h <= hEnd)
+	);
 	const sy = scale([0, 100], [548, 330]);
 	const curve = $derived(
-		Array.from({ length: 61 }, (_, k) => {
-			const h = (k / 60) * HMAX;
-			return { h, v: stormIntensity(sst, lat, h) };
-		})
+		[
+			...Array.from({ length: 61 }, (_, k) => hLo + (k / 60) * SPAN),
+			...legs.map((l) => l.h0).filter((h) => h > hLo)
+		]
+			.sort((a, b) => a - b)
+			.map((h) => ({ h, v: windAtHour(h) }))
 	);
 	const traced = $derived([...curve.filter((p) => p.h < hours), { h: hours, v }]);
 	const fullPath = $derived(
@@ -328,7 +386,7 @@
 <g>
 	<defs>
 		<clipPath id="storm-sea-clip">
-			<rect x="16" y="16" width="560" height="376" rx="12" />
+			<rect x="16" y="16" width="560" height="376" rx="10" />
 		</clipPath>
 		<radialGradient id="storm-cdo">
 			<stop offset="0" style:stop-color={cloud} stop-opacity="1" />
@@ -351,7 +409,7 @@
 		y="16"
 		width="560"
 		height="376"
-		rx="12"
+		rx="10"
 		style:fill={sea}
 		stroke="var(--border)"
 		stroke-width="1"
@@ -414,7 +472,8 @@
 	<!-- state / reason tags -->
 	{#if reasons.length}
 		{#each reasons as r, k (r)}
-			{@const w = r.length * 6.4 + 96}
+			{@const label = `${v >= 17 ? 'Weakening' : 'No hurricane'}: ${r}`}
+			{@const w = label.length * 6.5 + 24}
 			<g transform="translate({CX - w / 2} {360 - (reasons.length - 1 - k) * 28})">
 				<rect
 					width={w}
@@ -424,7 +483,7 @@
 					stroke="var(--atm-low)"
 					stroke-width="1.2"
 				/>
-				{@render txt(w / 2, 15, `No hurricane: ${r}`, 12, { anchor: 'middle', weight: 600 })}
+				{@render txt(w / 2, 15, label, 12, { anchor: 'middle', weight: 600 })}
 			</g>
 		{/each}
 	{:else}
@@ -448,13 +507,13 @@
 		y={STOP}
 		width={SW}
 		height={SBOT - STOP}
-		rx="12"
+		rx="10"
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
 	<path
-		d="M{SX} {SURF} L{SX + SW} {SURF} L{SX + SW} {SBOT - 12} Q{SX + SW} {SBOT} {SX + SW - 12} {SBOT}
-		L{SX + 12} {SBOT} Q{SX} {SBOT} {SX} {SBOT - 12} Z"
+		d="M{SX} {SURF} L{SX + SW} {SURF} L{SX + SW} {SBOT - 10} Q{SX + SW} {SBOT} {SX + SW - 10} {SBOT}
+		L{SX + 10} {SBOT} Q{SX} {SBOT} {SX} {SBOT - 10} Z"
 		style:fill={sea}
 	/>
 	{@render txt(32, 430, 'Cross-section: the heat engine', 13, { weight: 600 })}
@@ -520,10 +579,10 @@
 	{@render txt(
 		32,
 		576,
-		tooCool ? 'evaporation from the cool sea: too little' : 'evaporation from the warm sea',
+		tooCool ? 'cool sea: little evaporation' : 'evaporation from the warm sea',
 		12
 	)}
-	<g opacity={0.3 + 0.7 * engine}>
+	<g opacity={smoothstep(0.05, 0.4, engine)}>
 		{@render txt(CX - WALL - 12, condY, 'condensation', 12, {
 			anchor: 'end'
 		})}
@@ -548,7 +607,7 @@
 		y="16"
 		width={CR - CL}
 		height="568"
-		rx="12"
+		rx="10"
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
@@ -557,10 +616,16 @@
 	{@render txt(CL + 96, 74, `· ${Math.floor(v * 3.6)} km/h sustained wind`, 13, {
 		tabular: true
 	})}
-	{@render txt(CL + 20, 94, `${fmtTime(hours)} after it began`, 12, {
-		muted: true,
-		tabular: true
-	})}
+	{@render txt(
+		CL + 20,
+		94,
+		`${fmtTime(hours)} after it began${weakening ? ' · weakening' : ''}`,
+		12,
+		{
+			muted: true,
+			tabular: true
+		}
+	)}
 	{@render txt(CL + 20, 124, 'Max possible over this sea:', 12, { muted: true })}
 	{#if tooCool}
 		{@render txt(CL + 20, 144, 'none — too cool for a hurricane', 14, {
@@ -623,7 +688,7 @@
 	<Axes
 		{sx}
 		{sy}
-		xTicks={[0, 24, 48, 72, 96, 120]}
+		{xTicks}
 		yTicks={[0, 20, 40, 60, 80, 100]}
 		xFormat={(h) => String(h / 24)}
 		xLabel="days"
@@ -631,22 +696,22 @@
 	/>
 	<!-- hurricane threshold -->
 	<line
-		x1={sx(0)}
-		x2={sx(HMAX)}
+		x1={sx(hLo)}
+		x2={sx(hEnd)}
 		y1={sy(33)}
 		y2={sy(33)}
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="2 3"
 	/>
-	{@render txt(sx(HMAX) - 4, sy(33) + 14, 'hurricane: 33 m/s', 11, {
+	{@render txt(sx(hEnd) - 4, sy(33) + 14, 'hurricane: 33 m/s', 11, {
 		anchor: 'end',
 		muted: true
 	})}
 	<!-- ceiling -->
 	{#if !tooCool}
 		<line
-			x1={sx(0)}
-			x2={sx(HMAX)}
+			x1={sx(hLo)}
+			x2={sx(hEnd)}
 			y1={sy(vmax)}
 			y2={sy(vmax)}
 			stroke="var(--atm-warm)"
@@ -654,7 +719,7 @@
 			stroke-dasharray="6 4"
 			opacity={tooNear ? 0.45 : 1}
 		/>
-		{@render txt(sx(HMAX) - 4, sy(vmax) - 6, `max possible ${Math.floor(vmax)} m/s`, 11, {
+		{@render txt(sx(hEnd) - 4, sy(vmax) - 6, `max possible ${Math.floor(vmax)} m/s`, 11, {
 			anchor: 'end',
 			color: 'var(--atm-warm)',
 			opacity: tooNear ? 0.6 : 1

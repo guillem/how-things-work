@@ -7,7 +7,7 @@
 	 * globe's face, arrows show the wind at the ground in each band.
 	 *
 	 * Phases (`step.hints.phase`):
-	 *   convection — Hadley's 1735 picture: spin from `hints.spin` (0), one cell
+	 *   convection — Halley's 1686 picture: spin from `hints.spin` (0), one cell
 	 *                per hemisphere, wind from pole to equator everywhere.
 	 *   cells      — spin from `params.spin`: `cells(spin)` bands, trade winds,
 	 *                westerlies, polar easterlies.
@@ -23,6 +23,10 @@
 	 * a sketch, atan(1.3 × spin): about 50° at Earth's spin (trade winds from the
 	 * north-east in the north, south-east in the south), 0 without spin.
 	 *
+	 * The globe is coloured by today's yearly average temperature (the energy-
+	 * balance model at D_EARTH), on the same cold → neutral → warm scale as
+	 * BalanceScene, so the globe the reader has just seen carries on here.
+	 *
 	 * Text sizes and colours are set with `style:` because the stage's CSS
 	 * overrides SVG presentation attributes.
 	 */
@@ -31,7 +35,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Label, along, cycle, smoothstep, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { cells, hadleyEdge } from '../atmosphere';
+	import { D_EARTH, cells, climate, hadleyEdge, tempAt } from '../atmosphere';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -193,7 +197,13 @@
 	const EARTH_NAMES = ['Hadley cell', 'Ferrel cell', 'polar cell'];
 	const EARTH_WINDS = ['trade winds', 'westerlies', 'polar easterlies'];
 	const cellName = (k: number) =>
-		count === 3 ? EARTH_NAMES[k] : k === 0 ? 'Hadley cell' : `cell ${k + 1}`;
+		phase === 'convection'
+			? 'convection cell'
+			: count === 3
+				? EARTH_NAMES[k]
+				: k === 0
+					? 'Hadley cell'
+					: `cell ${k + 1}`;
 	const COMPASS = [
 		'north',
 		'north-north-east',
@@ -252,9 +262,19 @@
 		const [b0, b1, b2, b3] = box(b);
 		return a0 < b2 && b0 < a2 && a1 < b3 && b1 < a3;
 	};
+	/**
+	 * Keep labels from the equator outwards and stop at the first that would
+	 * collide, so the labelled bands are always consecutive (dropping one in the
+	 * middle would make two easterly bands look like neighbours). A collision
+	 * with the fixed equator label only skips that one tag.
+	 */
 	const greedy = (tags: Tag[]) => {
 		const kept: Tag[] = [];
-		for (const g of tags) if (!kept.some((o) => overlaps(o, g))) kept.push(g);
+		for (const g of tags) {
+			const hit = kept.filter((o) => overlaps(o, g));
+			if (!hit.length) kept.push(g);
+			else if (hit.some((o) => o.key !== 'eq')) break;
+		}
 		return kept;
 	};
 	const cellTags = $derived(
@@ -325,7 +345,7 @@
 					dy /= m;
 					const ph = reduced ? 0.5 : cycle(t, 2.6, (i * 0.37 + b.k * 0.21 + (south ? 0.5 : 0)) % 1);
 					const shift = (ph - 0.5) * 10;
-					const op = (0.55 + 0.45 * Math.sin(Math.PI * ph)) * b.fade * fit;
+					const op = (0.75 + 0.25 * Math.sin(Math.PI * ph)) * b.fade * fit;
 					out.push({
 						key: `${b.k}-${south ? 's' : 'n'}-${i}`,
 						x1: c.x + dx * (shift - ARROW / 2),
@@ -382,7 +402,9 @@
 	// ---- readouts ------------------------------------------------------------------------------
 	const edgeText = $derived(
 		edge >= 87.5
-			? 'Hadley cell reaches the pole'
+			? phase === 'convection'
+				? 'One cell, equator to pole'
+				: 'Hadley cell reaches the pole'
 			: `Hadley cell reaches ~${Math.round(edge / 5) * 5}°`
 	);
 	const countText = $derived(`${count} cell${count === 1 ? '' : 's'} in each hemisphere`);
@@ -392,19 +414,36 @@
 			: `Day length: ${(24 / target).toFixed(target === 1 ? 0 : 1)} hours`
 	);
 
+	// ---- globe colour: today's temperatures, BalanceScene's scale ------------------------
+	const earth = climate(D_EARTH);
+	function tempColor(T: number) {
+		const u = Math.max(-1, Math.min(1, T / 35));
+		const p = Math.round(Math.abs(u) * 100);
+		return u < 0
+			? `color-mix(in oklab, var(--atm-cold) ${p}%, var(--atm-neutral))`
+			: `color-mix(in oklab, var(--atm-warm) ${p}%, var(--atm-neutral))`;
+	}
+	const globeStops = Array.from({ length: 17 }, (_, i) => {
+		const off = i / 16;
+		const lat = (Math.asin(1 - 2 * off) * 180) / Math.PI;
+		return { i, off, color: tempColor(tempAt(earth, lat)) };
+	});
+
 	const PANEL_X = 694;
 	const PANEL_W = 250;
 
 	// The shell: the right half of an annulus.
 	const shell = `M${CX} ${CY - R - H} A${R + H} ${R + H} 0 0 1 ${CX} ${CY + R + H} L${CX} ${CY + R} A${R} ${R} 0 0 0 ${CX} ${CY - R} Z`;
 	const sinkLabel = $derived(limb(-Math.min(hEdge, 86), R_LABEL));
-	const HADLEY_NOTE = [
-		'A planet that does not spin has',
-		'one cell in each hemisphere. Air',
-		'rises at the equator and sinks at',
-		'the poles; at the ground the wind',
-		'blows from the pole to the equator',
-		'everywhere.'
+	const HALLEY_NOTE = [
+		'No spin: one cell in each',
+		'hemisphere. Air rises at the',
+		'equator and sinks at the poles; at',
+		'the ground the wind blows from',
+		'the pole to the equator everywhere.',
+		'Hadley (1735) added the spin to',
+		'explain the easterly trade winds,',
+		'but still drew a single cell.'
 	];
 </script>
 
@@ -418,18 +457,9 @@
 			y2={CY + R}
 			gradientUnits="userSpaceOnUse"
 		>
-			<stop
-				offset="0"
-				style:stop-color="color-mix(in oklab, var(--atm-cold) 38%, var(--atm-ocean))"
-			/>
-			<stop
-				offset="0.5"
-				style:stop-color="color-mix(in oklab, var(--atm-warm) 32%, var(--atm-ocean))"
-			/>
-			<stop
-				offset="1"
-				style:stop-color="color-mix(in oklab, var(--atm-cold) 38%, var(--atm-ocean))"
-			/>
+			{#each globeStops as st (st.i)}
+				<stop offset={st.off} style:stop-color={st.color} />
+			{/each}
 		</linearGradient>
 	</defs>
 
@@ -585,7 +615,8 @@
 		{/if}
 	{/each}
 	{@render txt(CX - R - 10, CY + 16, 'equator', 11, { anchor: 'end', muted: true })}
-	{@render txt(CX + R + H + 10, CY + 4, 'warm air rises', 11, { muted: true })}
+	{@render txt(CX + R + H + 8, CY - 4, 'warm air', 11, { muted: true })}
+	{@render txt(CX + R + H + 8, CY + 10, 'rises', 11, { muted: true })}
 	{#if hEdge < 88}
 		{@render txt(sinkLabel.x, sinkLabel.y + 8, 'cool, dry air sinks', 11, {
 			muted: true,
@@ -604,10 +635,10 @@
 
 	{#if phase === 'convection'}
 		<g transform="translate({PANEL_X} 140)">
-			<rect width={PANEL_W} height="150" rx="10" fill="var(--surface)" stroke="var(--border)" />
-			{@render txt(14, 26, "Hadley's picture, 1735", 14, { weight: 600 })}
-			{#each HADLEY_NOTE as line, i (i)}
-				{@render txt(14, 50 + i * 17, line, 12)}
+			<rect width={PANEL_W} height="198" rx="10" fill="var(--surface)" stroke="var(--border)" />
+			{@render txt(14, 26, "Halley's picture, 1686", 14, { weight: 600 })}
+			{#each HALLEY_NOTE as line, i (i)}
+				{@render txt(14, 50 + i * 17 + (i >= 5 ? 8 : 0), line, 12, { muted: i >= 5 })}
 			{/each}
 		</g>
 	{/if}

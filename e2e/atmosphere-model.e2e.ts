@@ -14,7 +14,9 @@ import {
 	parcel,
 	pressure,
 	rossby,
+	stormEvolve,
 	stormIntensity,
+	stormWindIntegral,
 	tempAt,
 	wind,
 	type System
@@ -137,4 +139,33 @@ test('hurricanes: warmer seas allow stronger storms; none over cool water or at 
 	expect(stormIntensity(29, 15, 120)).toBeGreaterThan(70);
 	expect(stormIntensity(25, 15, 48)).toBeLessThan(15);
 	expect(category(stormIntensity(29, 15, 120))).toBeGreaterThanOrEqual(4);
+});
+
+test('hurricanes: a running storm decays over cool water and regrows over warm water', () => {
+	// Moved over cool water at 70 m/s: one e-folding in a day, never below zero.
+	expect(stormEvolve(70, 25, 15, 0)).toBeCloseTo(70, 9);
+	expect(stormEvolve(70, 25, 15, 24)).toBeCloseTo(70 / Math.E, 6);
+	expect(stormEvolve(70, 29, 2, 48)).toBeLessThan(10);
+	// Over warm water it grows from its current wind towards the ceiling…
+	expect(stormEvolve(20, 30, 15, 0)).toBeCloseTo(20, 9);
+	expect(stormEvolve(20, 30, 15, 12)).toBeGreaterThan(20);
+	expect(stormEvolve(20, 30, 15, 200)).toBeCloseTo(maxIntensity(30), 3);
+	// …and eases down to a lower ceiling without overshooting it.
+	const v = stormEvolve(80, 27, 15, 48);
+	expect(v).toBeLessThan(80);
+	expect(v).toBeGreaterThan(maxIntensity(27));
+	// The seed storm is the same curve as before.
+	expect(stormIntensity(29, 15, 30)).toBeCloseTo(stormEvolve(15, 29, 15, 30), 9);
+	// The integral matches a numerical one, growing and decaying.
+	for (const [v0, sst, lat] of [
+		[15, 29, 15],
+		[80, 27, 15],
+		[60, 24, 15]
+	]) {
+		let num = 0;
+		const n = 4000;
+		const h = 60;
+		for (let k = 0; k < n; k++) num += stormEvolve(v0, sst, lat, ((k + 0.5) * h) / n) * (h / n);
+		expect(stormWindIntegral(v0, sst, lat, h)).toBeCloseTo(num, 2);
+	}
 });

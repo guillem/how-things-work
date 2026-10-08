@@ -24,7 +24,16 @@
 	 */
 	import { clamp, cycle, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { coriolis, parcel, rossby, SCALES, type Parcel } from '../atmosphere';
+	import {
+		D_EARTH,
+		climate,
+		coriolis,
+		parcel,
+		rossby,
+		tempAt,
+		SCALES,
+		type Parcel
+	} from '../atmosphere';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -37,7 +46,7 @@
 	const DAY_S = 10; // seconds of animation per simulated day
 	const LOOP = 12; // seconds per loop of the animation
 	const RUN = 10.8; // seconds of the loop during which the parcels move (1.08 days)
-	const STILL = 7; // reduced motion: 0.7 days, about one loop at 60° N and at 45° S
+	const STILL = 5; // reduced motion: half a day, most of a loop at 60° N and at 45° S, so the turn shows
 	const DT = 300; // model time step, s
 	const STEPS = Math.ceil(((RUN / DAY_S) * 86400) / DT) + 1;
 	const HALF_KM = 300; // the patch is 600 × 600 km
@@ -124,14 +133,20 @@
 			const turns =
 				f === 0
 					? p.lat === 0 && spin > 0
-						? 'no turn at the equator'
+						? 'no turn on the equator'
 						: 'no turn'
 					: f > 0
 						? 'turns right'
 						: 'turns left';
-			const radius = f === 0 ? '∞' : `${Math.round(SPEED / Math.abs(f) / 1000)} km`;
+			const r = SPEED / Math.abs(f) / 1000;
+			const loopText =
+				f !== 0
+					? `loops ≈ ${Math.round((2 * r) / 10) * 10} km across (radius = speed ÷ |f|)`
+					: p.lat === 0 && spin > 0
+						? 'air sent north or south turns once it leaves'
+						: 'the air goes straight on';
 			const fText = f === 0 ? '0' : `${sci(f)} s⁻¹`;
-			return { turns, radius, fText, arrow: f === 0 ? '' : f > 0 ? '↻' : '↺' };
+			return { turns, loopText, fText, arrow: f === 0 ? '' : f > 0 ? '↻' : '↺' };
 		})
 	);
 
@@ -142,6 +157,16 @@
 	const latY = (lat: number) => G.cy - G.r * Math.sin((lat * Math.PI) / 180);
 	const latHalf = (lat: number) => G.r * Math.cos((lat * Math.PI) / 180);
 	const spinTurn = $derived(reduced ? 0.3 : cycle(t, 6 / Math.max(spin, 0.05)));
+	// Coloured by today's temperatures on BalanceScene's cold → neutral → warm scale.
+	const earth = climate(D_EARTH);
+	const globeStops = Array.from({ length: 9 }, (_, i) => {
+		const off = i / 8;
+		const T = tempAt(earth, (Math.asin(1 - 2 * off) * 180) / Math.PI);
+		const u = Math.max(-1, Math.min(1, T / 35));
+		const pc = Math.round(Math.abs(u) * 100);
+		const end = u < 0 ? 'var(--atm-cold)' : 'var(--atm-warm)';
+		return { i, off, color: `color-mix(in oklab, ${end} ${pc}%, var(--atm-neutral))` };
+	});
 
 	// ------------------------------------------------------------------- scale
 	const CH_L = 300;
@@ -191,7 +216,7 @@
 		<defs>
 			{#each PANELS as p (p.i)}
 				<clipPath id="coriolis-clip-{p.i}">
-					<rect x={p.cx - S / 2} y={p.cy - S / 2} width={S} height={S} rx="8" />
+					<rect x={p.cx - S / 2} y={p.cy - S / 2} width={S} height={S} rx="10" />
 				</clipPath>
 			{/each}
 		</defs>
@@ -207,7 +232,7 @@
 					y={y0}
 					width={S}
 					height={S}
-					rx="8"
+					rx="10"
 					fill="var(--surface)"
 					stroke="var(--border)"
 				/>
@@ -310,7 +335,7 @@
 					muted: true,
 					tabular: true
 				})}
-				{@render txt(p.cx, y0 + S + 68, `loop radius = speed ÷ f ≈ ${r.radius}`, 12, {
+				{@render txt(p.cx, y0 + S + 68, r.loopText, 12, {
 					anchor: 'middle',
 					muted: true,
 					tabular: true
@@ -319,12 +344,26 @@
 		{/each}
 
 		<!-- mini globe: where the three patches are -->
+		<defs>
+			<linearGradient
+				id="coriolis-globe"
+				gradientUnits="userSpaceOnUse"
+				x1="0"
+				x2="0"
+				y1={G.cy - G.r}
+				y2={G.cy + G.r}
+			>
+				{#each globeStops as st (st.i)}
+					<stop offset={st.off} style:stop-color={st.color} />
+				{/each}
+			</linearGradient>
+		</defs>
 		<g>
 			<circle
 				cx={G.cx}
 				cy={G.cy}
 				r={G.r}
-				fill="var(--atm-ocean)"
+				fill="url(#coriolis-globe)"
 				stroke="var(--stage-line)"
 				stroke-width="1.2"
 			/>
@@ -417,9 +456,7 @@
 			{@render txt(
 				0,
 				68,
-				reduced
-					? 'Paths over 0.7 days (about one loop)'
-					: `Time since launch: ${days.toFixed(2)} days`,
+				reduced ? 'Paths over half a day' : `Time since launch: ${days.toFixed(2)} days`,
 				15,
 				{ weight: 600, tabular: true }
 			)}
@@ -446,7 +483,7 @@
 			width={X1 - CH_L}
 			height={AXIS_Y - ROW0 + 44}
 			fill="var(--atm-cold)"
-			fill-opacity="0.08"
+			fill-opacity="0.12"
 		/>
 		<rect
 			x={X1}
@@ -454,7 +491,7 @@
 			width={CH_R - X1}
 			height={AXIS_Y - ROW0 + 44}
 			fill="var(--atm-warm)"
-			fill-opacity="0.06"
+			fill-opacity="0.1"
 		/>
 		{@render txt((CH_L + X1) / 2, ROW0 - 26, "Earth's spin", 13, {
 			anchor: 'middle',
@@ -485,6 +522,11 @@
 			{@render icon(row.id, 44, row.y)}
 			{@render txt(78, row.y - 3, row.label, 13, { weight: 600 })}
 			{@render txt(78, row.y + 14, row.detail, 11, { muted: true })}
+			{#if row.id === 'sink'}
+				{@render txt(78, row.y + 30, 'swirls either way, in either hemisphere', 11, {
+					weight: 600
+				})}
+			{/if}
 			<line
 				x1={X1}
 				x2={x}
