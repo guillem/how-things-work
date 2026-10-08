@@ -191,7 +191,7 @@ A topic is done when:
 - [x] error-correction
 - [ ] cryptography
 - [ ] wireless-signals
-- [ ] internet
+- [x] internet
 - [ ] gps
 - [x] pagerank
 - [ ] consensus-blockchains

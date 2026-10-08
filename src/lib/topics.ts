@@ -236,6 +236,11 @@ const explainers: Explainer[] = [
 		summary:
 			'Let fast and slow particles meet, count the ways they can be arranged, and run the film backward to find out why heat only flows one way.',
 		accent: '#e8590c',
+		slug: 'internet',
+		title: 'How the Internet moves your data',
+		summary:
+			'Send a message across a map of routers and watch it split into packets, find its own way hop by hop, survive cut links, lost packets and traffic jams, and arrive in one piece.',
+		accent: '#1098ad',
 		steps: 7,
 		minutes: 14
 	}

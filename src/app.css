@@ -380,6 +380,21 @@ kbd {
 	--ent-box: #fdfcf9;
 	--ent-entropy: #7048e8;
 	--ent-ways: #0ca678;
+	/* internet: data packets, acknowledgements, other traffic, losses, news of a cut, routes, links, routers, computers, web phases */
+	--net-packet: #1c7ed6;
+	--net-ack: #2b8a3e;
+	--net-other: #adb5bd;
+	--net-lost: #e03131;
+	--net-news: #f08c00;
+	--net-route: #0c8599;
+	--net-link: #c5ccd3;
+	--net-router: #f1f3f5;
+	--net-router-edge: #868e96;
+	--net-host: #e7f5ff;
+	--net-dns: #ae3ec9;
+	--net-tcp: #1971c2;
+	--net-tls: #e8590c;
+	--net-http: #2f9e44;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -551,4 +566,18 @@ kbd {
 	--ent-box: #15181d;
 	--ent-entropy: #9775fa;
 	--ent-ways: #38d9a9;
+	--net-packet: #4dabf7;
+	--net-ack: #69db7c;
+	--net-other: #5c646d;
+	--net-lost: #ff6b6b;
+	--net-news: #ffa94d;
+	--net-route: #3bc9db;
+	--net-link: #454c54;
+	--net-router: #2a2f35;
+	--net-router-edge: #9aa3ac;
+	--net-host: #1a2a3a;
+	--net-dns: #da77f2;
+	--net-tcp: #74c0fc;
+	--net-tls: #ff922b;
+	--net-http: #69db7c;
 }

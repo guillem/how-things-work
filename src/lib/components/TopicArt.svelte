@@ -862,6 +862,41 @@
 		{#each [[122, 32], [146, 44], [130, 62], [156, 74], [118, 52], [140, 92], [160, 30], [124, 96]] as [x, y], i (i)}
 			<circle cx={x} cy={y} r="4" fill="currentColor" opacity="0.4" />
 		{/each}
+	{:else if slug === 'internet'}
+		<!-- a small mesh of routers, packets taking two routes between two computers -->
+		<path
+			d="M22 60 H52 L92 28 L140 34 L178 60 M52 60 L92 92 L140 86 L178 60 M92 28 L92 92 M140 34 L140 86 M92 28 L140 86"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linejoin="round"
+			opacity="0.3"
+		/>
+		{#each [[52, 60], [92, 28], [92, 92], [140, 34], [140, 86]] as [x, y] (`${x},${y}`)}
+			<circle
+				cx={x}
+				cy={y}
+				r="7"
+				fill="var(--surface)"
+				stroke="currentColor"
+				stroke-width="1.8"
+				opacity="0.8"
+			/>
+		{/each}
+		<rect x="10" y="52" width="16" height="16" rx="3" fill="currentColor" opacity="0.55" />
+		<rect x="174" y="52" width="16" height="16" rx="3" fill="currentColor" opacity="0.55" />
+		<rect x="66" y="38" width="12" height="8" rx="2" fill={accent} transform="rotate(-38 72 42)" />
+		<rect x="110" y="26" width="12" height="8" rx="2" fill={accent} transform="rotate(7 116 30)" />
+		<rect x="110" y="84" width="12" height="8" rx="2" fill={accent} transform="rotate(-7 116 88)" />
+		<rect
+			x="153"
+			y="68"
+			width="12"
+			height="8"
+			rx="2"
+			fill={accent}
+			transform="rotate(-34 159 72)"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
