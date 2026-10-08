@@ -236,8 +236,8 @@ export const FULL_ADDER: Circuit = {
 		wire('ci', 'x2', 1),
 		wire('x1', 'n2', 0),
 		wire('ci', 'n2', 1),
-		wire('n2', 'o', 0),
-		wire('n1', 'o', 1),
+		wire('n1', 'o', 0),
+		wire('n2', 'o', 1),
 		wire('x2', 's'),
 		wire('o', 'co')
 	]

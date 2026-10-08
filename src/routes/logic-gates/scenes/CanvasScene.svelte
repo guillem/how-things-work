@@ -252,6 +252,19 @@
 			groups.set(k, g);
 		}
 		const dots: { key: string; x: number; y: number; on: boolean }[] = [];
+		// T-branches: a wire turning off at its lane while another wire from the same
+		// source carries on further along the same horizontal run.
+		for (const w of wires) {
+			if (Number.isNaN(w.lane) || Math.abs(w.ty - w.a.y) < 1) continue;
+			const further = wires.some(
+				(v) =>
+					v !== w &&
+					v.w.from === w.w.from &&
+					!Number.isNaN(v.lane) &&
+					(Math.abs(v.ty - v.a.y) < 1 ? v.b.x : v.lane) > w.lane + 0.5
+			);
+			if (further) dots.push({ key: `t:${w.key}`, x: w.lane, y: w.a.y, on: wireOn(w) });
+		}
 		for (const [k, g] of groups) {
 			if (g.ys.length < 2) continue;
 			const all = [g.sy, ...g.ys];
@@ -501,6 +514,11 @@
 		if (e.key === 'Delete' || e.key === 'Backspace') {
 			e.preventDefault();
 			removeNode(n.id);
+			return;
+		}
+		// A gate has no action of its own; keep Enter/Space from reaching the explainer.
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
 			return;
 		}
 		const dir: Record<string, [number, number]> = {
@@ -793,7 +811,7 @@
 						n.kind === 'NOT' ? -9 : n.kind === 'NAND' ? -10 : -3,
 						n.kind === 'NOT' ? 3 : 4,
 						n.kind,
-						n.kind === 'NOT' ? 8 : 10,
+						n.kind === 'NOT' ? 9 : 11,
 						{
 							anchor: 'middle',
 							weight: 700,
@@ -817,7 +835,7 @@
 						n.kind === 'NOT' ? -9 : n.kind === 'NAND' ? -10 : -3,
 						n.kind === 'NOT' ? 3 : 4,
 						n.kind,
-						n.kind === 'NOT' ? 8 : 10,
+						n.kind === 'NOT' ? 9 : 11,
 						{
 							anchor: 'middle',
 							weight: 700,

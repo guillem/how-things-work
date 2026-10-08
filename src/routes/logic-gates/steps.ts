@@ -122,7 +122,7 @@ export const spec: ExplainerSpec = {
 			controls: [a4, b4],
 			body: `
 <p>Chain four full adders, each passing its carry out to the next one's carry in, and you can add two 4-bit numbers — 0 to 15 each. This is a <dfn data-def="An adder made of a chain of full adders, in which each carry passes ('ripples') to the next column.">ripple-carry adder</dfn>: the carries ripple from right to left, exactly as when you add on paper.</p>
-<p>Set two numbers and watch the carries ripple along. A processor adds 64-bit numbers the same way (with tricks to stop waiting for the ripple), and from adding it builds subtraction, multiplication and everything else.</p>`
+<p>Set two numbers and watch the carries ripple along. A processor adds 64-bit numbers the same way (with tricks to stop waiting for the ripple), and from adding it builds subtraction, multiplication and more.</p>`
 		},
 		{
 			id: 'build',
@@ -135,7 +135,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Your turn: add gates, wire outputs to inputs, flip the switches, and the truth table updates as you build. Pick the challenge to rebuild a half adder from scratch: the table turns green when your circuit is right.</p>
 <p><strong>A few kinds of simple gate, combined, can compute any logical or arithmetic function.</strong> In fact one kind is enough: every gate here can be made from NAND gates alone ("not AND").</p>`,
-			notes: `<p>Circuits like these, with no loops, compute a fixed function of their inputs. Feeding outputs back into inputs makes circuits that can <em>remember</em> — the flip-flops that store bits in a processor — which this page doesn't allow.</p>`
+			notes: `<p>Circuits like these, with no loops, compute a fixed function of their inputs. Feeding outputs back into inputs makes circuits that can <em>remember</em> — the latches and flip-flops that store bits in a processor — which this page doesn't allow.</p>`
 		}
 	]
 };
