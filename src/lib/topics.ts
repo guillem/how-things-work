@@ -123,6 +123,15 @@ const explainers: Explainer[] = [
 		accent: '#c2410c',
 		steps: 8,
 		minutes: 14
+	},
+	{
+		slug: 'binary',
+		title: 'Bits: how computers store everything',
+		summary:
+			'Flip the bits of a byte and read the same pattern as a number, a negative number, a letter, a colour and a fraction — then add two numbers and watch the carries spill over.',
+		accent: '#1971c2',
+		steps: 9,
+		minutes: 13
 	}
 ];
 

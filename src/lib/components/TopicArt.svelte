@@ -363,6 +363,41 @@
 		<rect x="82" y="59" width="24" height="9" rx="2" fill={accent} />
 		<circle cx="88" cy="69" r="2.6" fill="var(--struct-road)" />
 		<circle cx="100" cy="69" r="2.6" fill="var(--struct-road)" />
+	{:else if slug === 'binary'}
+		<!-- a byte, 0100 0001, and two of its readings: 65 and "A" -->
+		{#each [0, 1, 0, 0, 0, 0, 0, 1] as b, i (i)}
+			<rect
+				x={15 + i * 21 + (i >= 4 ? 6 : 0)}
+				y="22"
+				width="17"
+				height="17"
+				rx="3.5"
+				fill={b ? accent : 'none'}
+				stroke={b ? 'none' : 'currentColor'}
+				stroke-opacity="0.3"
+			/>
+		{/each}
+		<path
+			d="M100 48 V58 M60 70 L100 58 L140 70"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.3"
+			stroke-width="1.5"
+		/>
+		<text x="60" y="94" text-anchor="middle" font-size="20" font-weight="700" fill={accent}>65</text
+		>
+		<rect
+			x="125"
+			y="74"
+			width="30"
+			height="30"
+			rx="5"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.6"
+		/>
+		<text x="140" y="96" text-anchor="middle" font-size="19" font-weight="700" fill={accent}>A</text
+		>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
