@@ -20,6 +20,13 @@ Last updated: 2026-10-08 05:55 UTC.
 - **Merging to `main` deploys** to https://guillem.github.io/how-things-work/ (GitHub Pages).
   When a development is finished, stop and ask the user to validate it locally; once they say it
   is fine, Claude opens the PR and merges it (merge commit), then starts the next topic.
+- **Validate once, locally** (user's rule, 2026-10-08: this isn't a critical system; spend effort
+  on content, not on re-validating). There is no CI: the only GitHub workflow builds and deploys
+  `main` (with a 10-minute timeout). While building a topic, run only its Node model tests; run
+  `npm run check`, `npm run lint` and the full e2e suite **once**, on the top branch of a batch,
+  before asking for validation. After merging, run `npm run verify:deploy` once: it waits for
+  the Pages deployment of `origin/main` and checks that the home page and every topic answer.
+  Don't poll Actions or re-run suites per branch.
 - The quality bar is the photosynthesis explainer: narrative depth, scenes that match the text,
   both themes, reduced motion, every step screenshot-reviewed (method in `scene-guide.md`).
 - Never commit the local `package-lock.json` drift (an optional `yaml` entry dropped by a local

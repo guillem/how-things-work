@@ -20,6 +20,7 @@ npm run format       # prettier --write
 npm run build        # static site in ./build
 npm run preview      # serve ./build on http://localhost:4173
 npm run test:e2e     # Playwright tests against the production build
+npm run verify:deploy # after a merge: wait for the Pages deploy, check every page is live
 ```
 
 The first time you run the tests locally you need the browser: `npx playwright install chromium`.
@@ -49,8 +50,8 @@ The site is served from `https://<user>.github.io/<repo>/`, so the build is give
 `/<repo>` through the `BASE_PATH` environment variable. If you add a custom domain, or rename the
 repository to `<user>.github.io`, set `BASE_PATH` to an empty string in the workflow.
 
-Every other push and every pull request runs `.github/workflows/ci.yml` (type-check, lint, build,
-Playwright).
+There is no CI workflow: checks and tests run locally once before a merge, and
+`npm run verify:deploy` confirms the deployed site afterwards (see `docs/STATUS.md`).
 
 ## Project layout
 
