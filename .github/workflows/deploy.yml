@@ -1,4 +1,6 @@
-# Builds the static site and publishes it to GitHub Pages.
+# Builds the static site and publishes it to GitHub Pages. This is the only
+# workflow: type-checks, lint and the e2e tests run locally before a merge
+# (see docs/STATUS.md), and `npm run verify:deploy` checks the live site after.
 #
 # One-time setup in the repository settings:
 #   Settings → Pages → "Build and deployment" → Source: "GitHub Actions".
@@ -26,6 +28,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out
         uses: actions/checkout@v7
@@ -38,9 +41,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Type-check
-        run: npm run check
 
       - name: Build
         run: npm run build
@@ -55,6 +55,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
