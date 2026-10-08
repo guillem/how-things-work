@@ -78,7 +78,7 @@ export const spec: ExplainerSpec = {
 			controls: [birth, room, restart],
 			body: `
 <p>Put a few rabbits in an empty field. With plenty of grass, each year's rabbits have young, the young have young, and the population <strong>grows faster and faster</strong>: the more rabbits, the more births.</p>
-<p>But the field is not endless. As it fills up, food runs short and crowding sets in, so fewer young survive. Growth slows and the population levels off at the most the field can feed — its <dfn data-def="The largest population an environment can support for a long time, given its food, water and space.">carrying capacity</dfn>. Each dot stands for a few rabbits; the curve below counts them all.</p>`,
+<p>But the field is not endless. As it fills up, food runs short and crowding sets in, so fewer young survive. Growth slows and the population levels off at the most the field can feed — its <dfn data-def="The largest population an environment can support for a long time, given its food, water and space.">carrying capacity</dfn>. Each rabbit icon stands for a few rabbits; the curve below counts them all.</p>`,
 			notes: `<p>This S-shaped curve is <dfn data-def="Growth in proportion to the population, slowed as it approaches the carrying capacity K: dN/dt = a·N·(1 − N/K).">logistic growth</dfn>, first described by Pierre-François Verhulst in 1838.</p>`
 		},
 		// ------------------------------------------------------------------ two
@@ -105,7 +105,7 @@ export const spec: ExplainerSpec = {
 			controls: [birth, predation, death, restart],
 			body: `
 <p>Plot foxes against rabbits instead of against time and the cycle becomes a <strong>loop</strong>: rabbits rise first (moving right), then foxes rise (moving up), then rabbits fall, then foxes fall — round and round, back to where it started.</p>
-<p>In the middle sits a <strong>balance point</strong> where births and deaths exactly cancel for both species. Start there and nothing changes; start anywhere else and the populations circle round it. Change the rates and the balance point moves — and some changes are surprising: make the foxes better hunters and the balance point has <em>fewer</em> rabbits — and fewer foxes too; make the rabbits breed faster and it is the foxes that end up more numerous, not the rabbits.</p>`,
+<p>In the middle sits a <strong>balance point</strong> where births and deaths exactly cancel for both species. Start there and nothing changes; start anywhere else and the populations circle round it. Change the rates and the balance point moves — and some changes are surprising: make the foxes better hunters and the balance point has <em>fewer</em> rabbits — and fewer foxes too; make the rabbits breed faster and the balance point has more foxes, not more rabbits.</p>`,
 			notes: `<p>At the balance point, rabbits = fox death rate ÷ (efficiency × hunting rate), and foxes = rabbit birth rate ÷ hunting rate. Better hunting lowers both; a higher rabbit birth rate raises the number of foxes, not of rabbits.</p>`
 		},
 		// ------------------------------------------------------------------ web

@@ -315,7 +315,10 @@
 			: 'back to the starting balance';
 		return {
 			line: `${prefix || 'Everyone back'}: ${body}`,
-			sub: `Settled after about ${Math.max(1, Math.round(seg.settle))} years · compared with the starting numbers`
+			sub:
+				parts.length >= 2 && prefix
+					? `The change rippled through ${parts.length} other species · settled after about ${Math.max(1, Math.round(seg.settle))} years · % vs the start`
+					: `Settled after about ${Math.max(1, Math.round(seg.settle))} years · compared with the starting numbers`
 		};
 	});
 
@@ -579,9 +582,9 @@
 				stroke-dasharray="3 4"
 			/>
 		{/if}
-		{@render txt(CX0, row.top - 9, PLURAL[row.s], 12, { color: COLOR[row.s], weight: 600 })}
-		{@render txt(CX0 - 6, row.bottom + 4, '0', 10, { muted: true, anchor: 'end' })}
-		{@render txt(CX0 - 6, row.top + 4, String(row.yMax), 10, {
+		{@render txt(CX0 + 4, row.top - 9, PLURAL[row.s], 12, { color: COLOR[row.s], weight: 600 })}
+		{@render txt(CX0 - 6, row.bottom + 4, '0', 11, { muted: true, anchor: 'end' })}
+		{@render txt(CX0 - 6, row.top + 4, String(row.yMax), 11, {
 			muted: true,
 			anchor: 'end'
 		})}
@@ -637,7 +640,7 @@
 	{/each}
 
 	{#each yearTicks as v (v)}
-		{@render txt(sx(v), CY1 + 16, String(Math.round(v)), 10, { muted: true, anchor: 'middle' })}
+		{@render txt(sx(v), CY1 + 16, String(Math.round(v)), 11, { muted: true, anchor: 'middle' })}
 	{/each}
 	{@render txt(CX1, CY1 + 32, 'years', 11, { muted: true, anchor: 'end' })}
 </g>

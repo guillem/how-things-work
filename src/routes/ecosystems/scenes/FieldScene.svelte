@@ -312,7 +312,11 @@
 	// ---- readouts --------------------------------------------------------------------
 	const fmt = (v: number) => Math.round(v).toLocaleString('en-US');
 	const cycleText = $derived.by(() => {
-		if (growth) return '';
+		if (growth) {
+			if (rabbits >= 0.97 * room) return `Levelled off at the carrying capacity, ${fmt(room)}`;
+			if (rabbits >= room / 2) return 'Growth slowing as the field fills up';
+			return 'Growing faster and faster';
+		}
 		if (sim.still) return 'No cycle: the run starts at the balance point';
 		if (sim.peaks.length >= 2 && (reduced || year >= sim.peaks[1]))
 			return `One cycle ≈ ${sim.period.toFixed(1)} years`;
@@ -398,7 +402,7 @@
 
 	<!-- ===================================================== chart -->
 	{#if loop}
-		{@render txt(PX0, 40, 'Foxes against rabbits', 15, { weight: 650 })}
+		{@render txt(PX0, 40, 'Foxes against rabbits', 16, { weight: 600 })}
 		<Axes sx={qx} sy={qy} xLabel="rabbits →" yLabel="foxes ↑" />
 		<!-- the balance point lines, where each population stops changing -->
 		<g opacity="0.5">
@@ -608,10 +612,19 @@
 	{/if}
 
 	<!-- under the chart -->
-	{#if cycleText}
-		{@render txt(PX0, 560, cycleText, 14, { weight: 650 })}
-	{/if}
-	{@render txt(944, 584, '1 second ≈ 1 year', 12, { anchor: 'end', muted: true })}
+	<!-- the readout card (same style as the food-web scene's) -->
+	<rect
+		x={PX0 - 16}
+		y="518"
+		width={936 - PX0 + 16}
+		height="62"
+		rx="10"
+		fill="var(--surface)"
+		stroke="var(--border)"
+		stroke-width="1"
+	/>
+	{@render txt(PX0, 544, cycleText, 14, { weight: 600 })}
+	{@render txt(PX0, 566, '1 second ≈ 1 year', 11, { muted: true })}
 </g>
 
 {#snippet txt(
