@@ -32,6 +32,9 @@ test('divisors, primality and factorisation', () => {
 	expect(divisors(60)).toEqual([1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]);
 	expect(divisors(1)).toEqual([1]);
 	expect(divisors(49)).toEqual([1, 7, 49]);
+	expect(divisors(12)).toEqual([1, 2, 3, 4, 6, 12]);
+	expect(divisors(13)).toEqual([1, 13]);
+	expect(isPrime(13)).toBe(true);
 	expect(isPrime(1)).toBe(false); // 1 is neither prime nor composite
 	expect(isPrime(2)).toBe(true);
 	expect(isPrime(91)).toBe(false); // 7 × 13
@@ -162,6 +165,14 @@ test('square-and-multiply', () => {
 	expect(fastCostMax(2048)).toBe(4094);
 	expect(digitsOfPowerOfTwo(2048)).toBe(617);
 	expect(digitsOfPowerOfTwo(10)).toBe(4); // 1024
+	// Any 2048-bit exponent is at least 2^2047, which has 617 digits: more than 10^616.
+	expect(digitsOfPowerOfTwo(2047)).toBe(617);
+	// A 600-digit exponent has at most 1994 bits: a few thousand multiplications.
+	const bits600 = Math.ceil(600 * Math.log2(10));
+	expect(bits600).toBe(1994);
+	expect(fastCostMax(bits600)).toBe(3986);
+	// 3 × 5 = 15 ≡ 3 on 12 hours (the multiply step's example).
+	expect(multiplyHops(3, 5, 12).at(-1)).toBe(3);
 });
 
 test('reversing a power by trial', () => {

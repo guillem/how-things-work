@@ -151,7 +151,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>How do you find all the primes up to 100 without testing each one? Over 2,000 years ago the Greek scholar Eratosthenes used a <dfn data-def="A method that finds all primes up to a limit by repeatedly striking out the multiples of the smallest number not yet struck out.">sieve</dfn>: 2 is prime, so strike out every multiple of 2 — none of them can be prime. The smallest number left, 3, must be prime (nothing smaller divides it), so strike out its multiples. Then 5, then 7.</p>
 <p>Step through it. Each colour marks the prime that struck a number first: that is its smallest prime factor. Notice that each prime's first new victim is its own square — 4, 9, 25, 49 — because the smaller multiples were already struck by smaller primes.</p>`,
-			notes: `<p>That is why a computer running the sieve starts striking each prime p at p², not at 2p. It is still one of the fastest ways to list all primes up to a few billion.</p>`
+			notes: `<p>That is why a computer running the sieve starts striking each prime p at p², not at 2p. Computers still use the sieve to list primes today.</p>`
 		},
 		{
 			id: 'survivors',
@@ -187,7 +187,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [hours, times],
 			body: `
-<p>Multiplying works on a clock too: 3 × 5 is five hops of 3 hours. The drawing multiplies <em>every</em> hour by the same number. On 12 hours, × 3 lands on only four hours — 0, 3, 6 and 9 — and 3 × 4 lands on 0, although neither is 0. Information is lost: you can't undo it, so there's no dividing by 3.</p>
+<p>Multiplying works on a clock too: 3 × 5 = 15 ≡ 3 on 12 hours. The drawing multiplies <em>every</em> hour by the same number. On 12 hours, × 3 lands on only four hours — 0, 3, 6 and 9 — and 3 × 4 lands on 0, although neither is 0. Information is lost: you can't undo it, so there's no dividing by 3.</p>
 <p>× 5 is different: it shuffles all 12 hours, and multiplying by 5 again undoes it (5 × 5 = 25 ≡ 1). A multiplier shuffles the clock exactly when it shares no factor with the number of hours. The row of chips shows every multiplier. Now set a <strong>prime</strong> number of hours, like 13: every multiplier shuffles, so on a prime clock you can always divide.</p>`
 		},
 		{
@@ -226,8 +226,8 @@ export const spec: ExplainerSpec = {
 			controls: [target],
 			body: `
 <p>Now go backwards: 2ˣ lands on 61 on the 101-hour clock — what is x? Without the clock it would be easy: 2ˣ grows steadily, so you can home in on x. On the clock the powers jump around with no visible pattern. The obvious way is to try x = 0, 1, 2, … until you hit it: 78 tries, against 9 multiplications forwards. This reverse problem is called the <dfn data-def="Given g, p and the remainder y of gˣ divided by p, finding the exponent x.">discrete logarithm</dfn>.</p>
-<p>With a prime of 600 digits, computing a power still takes a split second, but nobody knows a way to reverse it in less than an astronomical time. <strong>Primes are what is left when every multiple is struck out, and on a prime clock, powers are easy to compute and hard to reverse: public-key cryptography is built on that one-way street.</strong></p>`,
-			notes: `<p>Trying every x isn't the best known attack: cleverer methods (baby-step giant-step, index calculus, the number field sieve) are much faster, but still hopeless for the 2048-bit primes used in practice. Nobody has proved that a fast method can't exist, and a large quantum computer running Shor's algorithm would find one. In the Diffie–Hellman key exchange (1976), two people each keep a secret exponent and swap only the powers, and end up sharing a secret key that an eavesdropper can't compute. RSA, another public-key system, relies on a related one-way street: multiplying two large primes is easy, finding them again from the product is hard.</p>`
+<p>With a prime of 600 digits, computing a power still takes a split second, but nobody knows a way to reverse it on an ordinary computer in less than an astronomical time. <strong>Primes are what is left when every multiple is struck out, and on a prime clock, powers are easy to compute and hard to reverse: public-key cryptography is built on that one-way street.</strong></p>`,
+			notes: `<p>Trying every x isn't the best known attack: cleverer methods (baby-step giant-step, index calculus, the number field sieve) are much faster, but still hopeless for the 2048-bit primes used in practice. Nobody has proved that a fast method can't exist, and a large quantum computer running Shor's algorithm could reverse it quickly. In the Diffie–Hellman key exchange (1976), two people each keep a secret exponent and swap only the powers, and end up sharing a secret key that an eavesdropper can't compute. RSA, another public-key system, relies on a related one-way street: multiplying two large primes is easy, finding them again from the product is hard.</p>`
 		}
 	]
 };

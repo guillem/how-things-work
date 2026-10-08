@@ -264,6 +264,7 @@
 			stroke="var(--stage-ink)"
 			stroke-width="3"
 			stroke-linecap="round"
+			opacity={addFade}
 		/>
 		<circle cx={CX} cy={CY} r="6" fill="var(--stage-ink)" />
 
