@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-08 07:15 UTC.
+Last updated: 2026-10-08 07:30 UTC.
 
 ## How we work
 
@@ -32,13 +32,17 @@ Last updated: 2026-10-08 07:15 UTC.
   ticked topics: epidemics, unit-circle, sorting, newtons-laws, sun-earth-moon,
   learning-from-data, pagerank, electric-circuits, bridges-structures, binary,
   atmosphere-weather, graph-search, chaos-fractals. PRs #1–#14 merged (merge commits).
-- **Batch 4 complete, awaiting the user's validation** (asked 2026-10-08 ~06:45 UTC: a small
+- **Batch 4 complete (3 topics), awaiting the user's validation** (asked 2026-10-08 ~06:45 UTC: a small
   batch with the remaining ~25% of the 5-hour window). Stacked branches, both pushed; **merge in
   this order**:
   1. `topic/orbits-kepler` — done, ticked. Main checkout.
-  2. `topic/ecosystems` — done, ticked. Worktree `../hiw-eco` (dev server :5174). The full e2e
-     suite (336 tests) passes on this branch, which holds both.
-     After merging: `git worktree remove ../hiw-eco` and stop the dev servers.
+  2. `topic/ecosystems` — done, ticked. Worktree `../hiw-eco`.
+  3. `topic/bayes-theorem` — done, ticked (lean process: one scene agent; the lead checked the
+     numbers and the screenshots). Worktree `../hiw-bayes`. The full e2e suite (349 tests)
+     passes on this branch, which holds all three.
+     The main checkout is detached at the stack's top so :5173 serves everything. After
+     merging: `git worktree remove ../hiw-eco` and `../hiw-bayes`, stop the dev servers, and
+     `git checkout main`.
 - Local testing: other work runs on this machine, so ports can clash (4173 is taken by another
   app). The full e2e suite runs with a git-ignored `pw-local.config.ts` (preview on :4180):
   `npx playwright test -c pw-local.config.ts`; a git-ignored `pw-node.config.ts` runs only the
