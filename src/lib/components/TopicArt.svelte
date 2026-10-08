@@ -787,6 +787,33 @@
 				stroke-width="0.8"
 			/>
 		{/each}
+	{:else if slug === 'reinforcement-learning'}
+		<!-- a small grid world: squares shaded by learnt value, a route of arrows to the reward -->
+		{#each [0, 1, 2, 3, 4, 5] as c (c)}
+			{#each [0, 1, 2] as r (r)}
+				<rect
+					x={37 + c * 21}
+					y={28 + r * 21}
+					width="20"
+					height="20"
+					rx="2"
+					fill={c === 5 && r === 1 ? accent : c === 2 && r === 2 ? 'var(--rl-pit)' : 'currentColor'}
+					fill-opacity={c === 5 && r === 1
+						? 1
+						: c === 2 && r === 2
+							? 0.85
+							: 0.06 + 0.07 * Math.max(0, c - Math.abs(r - 1))}
+				/>
+			{/each}
+		{/each}
+		<path
+			d="M47 59 H66 M68 59 l-4 -4 M68 59 l-4 4 M89 59 H108 M110 59 l-4 -4 M110 59 l-4 4 M131 59 H150 M152 59 l-4 -4 M152 59 l-4 4"
+			stroke={accent}
+			stroke-width="2"
+			stroke-linecap="round"
+			fill="none"
+		/>
+		<circle cx="47" cy="59" r="5" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
