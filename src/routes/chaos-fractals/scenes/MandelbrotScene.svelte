@@ -12,14 +12,17 @@
 	 *   zoom — explore: drag to pan, wheel / + − buttons / keys to zoom, arrows to
 	 *          pan; `params.place` jumps to a `TOUR` view with an animated zoom.
 	 *          The view is kept in `params['view:zoom']` as "x,y,width" (full
-	 *          precision), so it survives step changes. Width is capped at 1e-13,
-	 *          the limit of double precision. A hand-made move clears
+	 *          precision), so it survives step changes. Width is capped at 3e-13
+	 *          (a pixel is then about two steps of double precision near x = −1.75).
+	 *          On the near-whole view, an inset magnifies the tiny copy of the set on
+	 *          the antenna; when the whole view is inside the set, a hint says so. A hand-made move clears
 	 *          `params.place`, so choosing the same place again flies back there.
 	 *
 	 * Rendering is NOT tied to t: an `$effect` that depends only on the displayed
-	 * view and the theme colours draws a small preview synchronously, then (after a
+	 * view and the theme colours draws a small preview synchronously (its size
+	 * shrinks as the repetitions grow, so it stays within a few milliseconds), then (after a
 	 * short debounce, so a drag or a zoom animation does not restart it every frame)
-	 * the full-resolution picture in row chunks of ~10 ms spread over timeouts.
+	 * the full-resolution picture row by row in chunks of ~10 ms spread over timeouts.
 	 * The topic brief explicitly allows splitting this work across frames; these
 	 * timers schedule computation only, never motion. Nothing renders while the
 	 * view is still.
@@ -42,11 +45,16 @@
 	const CY = IMG.y + IMG.h / 2;
 	const PL = 764; // panel left
 	const PR = 944; // panel right
-	// Canvas resolutions: full (1:1 with the stage units) and the instant preview.
+	// Canvas resolutions: full (1:1 with the stage units) and the widest instant preview.
 	const FW = 720;
 	const FH = 560;
 	const PW = 120;
-	const PH = 93;
+	/** Repetitions allowed for the synchronous preview (a few ms even if all inside). */
+	const PREVIEW_BUDGET = 1.5e6;
+	function previewSize(max: number) {
+		const w = Math.round(clamp(Math.sqrt(((PREVIEW_BUDGET / max) * IMG.w) / IMG.h), 24, PW));
+		return { w, h: Math.max(1, Math.round((w * IMG.h) / IMG.w)) };
+	}
 	// Mini-map of the whole set, same shape as the image.
 	const MM = { x: PL, y: 420, w: PR - PL, h: Math.round(((PR - PL) * IMG.h) / IMG.w) };
 
@@ -58,7 +66,7 @@
 	const WHOLE: View = TOUR[0];
 	// The set step: a little wider than the tour's whole view, so that 1 and ±i fit.
 	const SET_VIEW: View = { x: -0.62, y: 0, width: 3.6 };
-	const MIN_W = 1e-13;
+	const MIN_W = 3e-13;
 	const MAX_W = 4;
 	const atLimit = (v: View) => v.width <= MIN_W * 1.0001;
 
@@ -251,7 +259,12 @@
 		for (let j = r0; j < r1; j++) {
 			const cy = y0 - j * d;
 			for (let i = 0; i < w; i++) {
-				const n = escape(x0 + i * d, cy, max);
+				const cx = x0 + i * d;
+				// Inside the main cardioid or the period-2 bulb: in the set, no need to iterate.
+				const q = (cx - 0.25) * (cx - 0.25) + cy * cy;
+				const known =
+					q * (q + cx - 0.25) <= 0.25 * cy * cy || (cx + 1) * (cx + 1) + cy * cy <= 0.0625;
+				const n = known ? max : escape(cx, cy, max);
 				px32[j * w + i] = n >= max ? p.inside : colour(n, p);
 			}
 		}
@@ -271,6 +284,8 @@
 	let fullKey = $state('');
 	let busy = $state(false);
 	let minimapUrl = $state('');
+	let allInside = $state(false);
+	let copyUrl = $state('');
 
 	$effect(() => {
 		const v = view;
@@ -279,10 +294,12 @@
 		const max = iterationsFor(v.width);
 		const key = keyOf(v);
 		// Instant preview (small enough to draw within a frame, even deep down).
-		const pre = canvas(PW, PH);
-		paint(pre.px32, PW, PH, v, max, p);
+		const ps = previewSize(max);
+		const pre = canvas(ps.w, ps.h);
+		paint(pre.px32, ps.w, ps.h, v, max, p);
 		pre.ctx.putImageData(pre.data, 0, 0);
 		previewUrl = pre.cv.toDataURL();
+		allInside = pre.px32.every((c) => c === p.inside);
 		// Full resolution, in chunks, once the view has been still for a moment.
 		let timer: ReturnType<typeof setTimeout> | undefined;
 		let cancelled = false;
@@ -295,9 +312,8 @@
 				if (cancelled) return;
 				const t0 = performance.now();
 				while (row < FH && performance.now() - t0 < 10) {
-					const r1 = Math.min(FH, row + 4);
-					paint(job.px32, FW, FH, v, max, p, row, r1);
-					row = r1;
+					paint(job.px32, FW, FH, v, max, p, row, row + 1);
+					row++;
 				}
 				const done = row >= FH;
 				if (done || performance.now() - shown > 250) {
@@ -328,6 +344,20 @@
 		mm.ctx.putImageData(mm.data, 0, 0);
 		minimapUrl = mm.cv.toDataURL();
 	});
+
+	// The magnifier on the near-whole view: the tiny copy of the set on the
+	// antenna, drawn once per theme (small, so it costs a few milliseconds).
+	const COPY = TOUR.find((q) => q.id === 'minibrot') ?? WHOLE;
+	const INSET = { x: 40, y: 64, w: 176, h: Math.round((176 * IMG.h) / IMG.w) };
+	$effect(() => {
+		const p = palette;
+		if (!p) return;
+		const c = canvas(INSET.w, INSET.h);
+		paint(c.px32, INSET.w, INSET.h, COPY, iterationsFor(COPY.width), p);
+		c.ctx.putImageData(c.data, 0, 0);
+		copyUrl = c.cv.toDataURL();
+	});
+	const insetOn = $derived(show(wZoom.current) * smoothstep(1.6, 2.6, view.width));
 
 	// ---- the orbit (set phase) -------------------------------------------------------------
 	interface Orbit {
@@ -571,6 +601,9 @@
 		<clipPath id="mandelbrot-clip">
 			<rect x={IMG.x} y={IMG.y} width={IMG.w} height={IMG.h} rx="10" />
 		</clipPath>
+		<clipPath id="mandelbrot-inset-clip">
+			<rect x={INSET.x} y={INSET.y} width={INSET.w} height={INSET.h} rx="6" />
+		</clipPath>
 		<clipPath id="mandelbrot-mini-clip">
 			<rect x={MM.x} y={MM.y} width={MM.w} height={MM.h} rx="6" />
 		</clipPath>
@@ -618,6 +651,55 @@
 					height={IMG.h}
 					preserveAspectRatio="none"
 				/>
+			{/if}
+
+			<!-- zoom phase, near-whole view: magnify the tiny copy on the antenna -->
+			{#if insetOn > 0.01 && copyUrl}
+				{@const px = sx(COPY.x, view)}
+				{@const py = sy(COPY.y, view)}
+				<g opacity={insetOn} style:pointer-events="none">
+					<path
+						d="M{INSET.x + INSET.w / 2} {INSET.y + INSET.h} L{px} {py - 7}"
+						stroke="var(--stage-bg)"
+						stroke-width="4"
+						opacity="0.7"
+					/>
+					<path
+						d="M{INSET.x + INSET.w / 2} {INSET.y + INSET.h} L{px} {py - 7}"
+						stroke="var(--stage-ink)"
+						stroke-width="1.25"
+					/>
+					<circle cx={px} cy={py} r="7" fill="none" stroke="var(--stage-bg)" stroke-width="4" />
+					<circle cx={px} cy={py} r="7" fill="none" stroke="var(--stage-ink)" stroke-width="1.75" />
+					<rect
+						x={INSET.x - 2}
+						y={INSET.y - 2}
+						width={INSET.w + 4}
+						height={INSET.h + 4}
+						rx="7"
+						fill="var(--stage-bg)"
+					/>
+					<image
+						href={copyUrl}
+						x={INSET.x}
+						y={INSET.y}
+						width={INSET.w}
+						height={INSET.h}
+						preserveAspectRatio="none"
+						clip-path="url(#mandelbrot-inset-clip)"
+					/>
+					<rect
+						x={INSET.x}
+						y={INSET.y}
+						width={INSET.w}
+						height={INSET.h}
+						rx="6"
+						fill="none"
+						stroke="var(--stage-ink)"
+						stroke-width="1.25"
+					/>
+					{@render txt(INSET.x, INSET.y - 10, 'A tiny copy of the whole set', 13, { weight: 600 })}
+				</g>
 			{/if}
 
 			<!-- axes (set phase) -->
@@ -759,8 +841,10 @@
 				stroke="var(--stage-line)"
 				stroke-width="0.5"
 			/>
-			{@render txt(PL, legendY + 108, 'outside: the colour shows', 12, { muted: true })}
-			{@render txt(PL, legendY + 124, 'how quickly z escapes', 12, { muted: true })}
+			{@render txt(PL, legendY + 104, 'at once', 11, { muted: true })}
+			{@render txt(PR, legendY + 104, 'more slowly →', 11, { anchor: 'end', muted: true })}
+			{@render txt(PL, legendY + 126, 'outside: the colour shows', 12, { muted: true })}
+			{@render txt(PL, legendY + 142, 'how quickly z escapes', 12, { muted: true })}
 		</g>
 	{/if}
 
@@ -800,6 +884,10 @@
 						color: 'var(--chaos-b)',
 						weight: 600
 					})}
+				{:else if allInside}
+					{@render txt(PL, 292, 'All black: you are inside', 12, { weight: 600 })}
+					{@render txt(PL, 308, 'the set. Zoom out (−) or', 12, { muted: true })}
+					{@render txt(PL, 324, 'drag towards an edge.', 12, { muted: true })}
 				{:else}
 					{@render txt(PL, 292, 'Drag the picture to move;', 12, { muted: true })}
 					{@render txt(PL, 308, 'scroll, or press + and −,', 12, { muted: true })}

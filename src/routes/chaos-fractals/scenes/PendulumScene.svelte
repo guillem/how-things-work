@@ -214,7 +214,6 @@
 	const startPose = $derived(pose(runA[0]));
 
 	// ---- readouts -------------------------------------------------------------------------
-	const fmt = (v: number) => (v >= 10 ? v.toFixed(1) : v.toPrecision(3));
 	const eNow = $derived(energy(runA[idx]));
 	const sepNow = $derived(curve ? curve.sep[idx] : 0);
 	const sep0 = $derived(curve ? curve.sep[0] : 0);
@@ -386,13 +385,13 @@
 			{@render txt(722, 298, `Time since release  ${elapsed.toFixed(1)} s`, 13, {
 				tabular: true
 			})}
-			{@render txt(722, 328, `Energy  ${fmt(eNow)} J`, 13, {
+			{@render txt(722, 328, `Energy  ${eNow.toPrecision(7)} J`, 13, {
 				tabular: true,
 				color: 'var(--chaos-a)',
 				weight: 600
 			})}
-			{@render txt(722, 346, 'stays constant, a check that', 11, { muted: true })}
-			{@render txt(722, 362, 'the computation is accurate', 11, { muted: true })}
+			{@render txt(722, 346, 'unchanged to 7 digits: a check', 11, { muted: true })}
+			{@render txt(722, 362, 'that the computation is accurate', 11, { muted: true })}
 		</g>
 	{/if}
 

@@ -108,7 +108,7 @@
 	const webFade = $derived(reduced ? 1 : 1 - smoothstep(LOOP - FADE, LOOP, tau));
 
 	// Left plot
-	const S = 380;
+	const S = 410;
 	const CL = 78;
 	const CT = 74;
 	const cx = (v: number) => CL + v * S;
@@ -194,11 +194,17 @@
 	// =============================================================== bifurcation
 	const rc = $derived(r3(clamp(Number(params.rateCascade ?? 3.5), R_MIN, R_MAX)));
 	const infoC = $derived(behaviour(rc));
+	/** The exponent, with a sign for its meaning and never a "−0.00". */
+	const lyapText = $derived.by(() => {
+		const l = infoC.lyap;
+		const v = Math.abs(l) < 0.005 ? 0 : l;
+		return `${minus(v.toFixed(2))} ${l > 0.005 ? '(> 0: chaos)' : l > -0.01 ? '(≈ 0)' : '(< 0: order)'}`;
+	});
 
 	const DL = 74;
 	const DR = 654;
 	const DT = 74;
-	const DB = 464;
+	const DB = 490;
 	const DW = DR - DL; // 580
 	const DH = DB - DT; // 390
 	const dx = (r: number) => DL + ((r - R_MIN) / (R_MAX - R_MIN)) * DW;
@@ -349,13 +355,9 @@
 				stroke-width="1.25"
 				stroke-dasharray="5 4"
 			/>
-			{@render txt(cx(0.86) - 6, cy(0.86) - 8, 'next = this', 11, {
-				anchor: 'end',
-				muted: true,
-				rotate: -45
-			})}
+			{@render txt(cx(1) + 8, cy(1) + 4, 'next = this', 11, { muted: true })}
 			<path d={parabola} fill="none" stroke="var(--chaos-curve)" stroke-width="2.75" />
-			{@render txt(cx(0.5), cy(rate / 4) - 10, 'next = r · x · (1 − x)', 13, {
+			{@render txt(cx(0.5), CT - 12, 'next = r · x · (1 − x)', 13, {
 				anchor: 'middle',
 				color: 'var(--chaos-curve)',
 				weight: 600
@@ -380,7 +382,7 @@
 					stroke-linejoin="round"
 				/>
 				<circle cx={cx(X0)} cy={cy(0)} r="4" fill="var(--chaos-b)" />
-				{@render txt(cx(X0), CT + S - 10, 'start 0.2', 11, { anchor: 'middle', muted: true })}
+				{@render txt(cx(X0) + 8, CT + S - 8, 'start 0.2', 11, { muted: true })}
 				<circle
 					cx={head.x}
 					cy={head.y}
@@ -412,7 +414,7 @@
 			)}
 
 			<!-- the same orbit, year by year -->
-			{@render txt(SL, ST - 20, 'Population x, year by year', 13, { weight: 600 })}
+			{@render txt(SL, ST - 20, 'Population x, year by year', 14, { weight: 600 })}
 			<rect
 				x={SL}
 				y={ST}
@@ -557,7 +559,7 @@
 				opacity="0.7"
 				style:pointer-events="none"
 			/>
-			{@render txt(ZL, ZT - 26, 'Zoomed in on the window of 3', 13, { weight: 600 })}
+			{@render txt(ZL, ZT - 26, 'Zoomed in on the window of 3', 14, { weight: 600 })}
 			{@render txt(ZL, ZT - 9, `r ${Z.r0} – ${Z.r1}: a small copy of the whole`, 11, {
 				muted: true
 			})}
@@ -624,7 +626,7 @@
 			/>
 
 			<!-- year by year at this r -->
-			{@render txt(ML, MT - 22, `Year by year at r = ${rc.toFixed(3)}`, 13, {
+			{@render txt(ML, MT - 22, `Year by year at r = ${rc.toFixed(3)}`, 14, {
 				weight: 600,
 				tabular: true
 			})}
@@ -662,10 +664,18 @@
 			{@render txt(
 				ML,
 				474,
-				`Lyapunov exponent ${minus(infoC.lyap.toFixed(2))} ${infoC.lyap > 0.005 ? '(> 0: chaos)' : infoC.lyap > -0.01 ? '(≈ 0: at a tipping point)' : '(< 0: order)'}`,
-				11,
-				{ muted: true, tabular: true }
+				infoC.lyap > 0.005
+					? 'two nearby starts drift apart'
+					: infoC.lyap > -0.01
+						? 'nearby starts close in very slowly'
+						: 'two nearby starts come together',
+				12,
+				{ muted: true }
 			)}
+			{@render txt(ML, 491, `Lyapunov exponent ${lyapText}`, 11, {
+				muted: true,
+				tabular: true
+			})}
 		</g>
 	{/if}
 </g>
