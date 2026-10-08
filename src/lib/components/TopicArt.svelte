@@ -787,6 +787,39 @@
 				stroke-width="0.8"
 			/>
 		{/each}
+	{:else if slug === 'ocean-currents'}
+		<!-- an ocean basin: a warm gyre squeezed against the west, a cold gyre north of it -->
+		<rect
+			x="34"
+			y="12"
+			width="132"
+			height="96"
+			rx="6"
+			fill={accent}
+			fill-opacity="0.08"
+			stroke={accent}
+			stroke-opacity="0.5"
+		/>
+		{#each [0, 1, 2] as k (k)}
+			{@const x0 = 40 + k * 3}
+			{@const w = 112 - k * 34}
+			{@const g = [
+				{ cy: 78, h: 22 - k * 7, c: 'var(--oc-warm)' },
+				{ cy: 36, h: 15 - k * 5, c: 'var(--oc-cold)' }
+			]}
+			{#each g as l (l.cy)}
+				<path
+					d="M{x0} {l.cy} C{x0} {l.cy - l.h} {x0 + 6} {l.cy - l.h} {x0 + w * 0.22} {l.cy -
+						l.h} C{x0 + w} {l.cy - l.h} {x0 + w} {l.cy + l.h} {x0 + w * 0.22} {l.cy + l.h} C{x0 +
+						6} {l.cy + l.h} {x0} {l.cy + l.h} {x0} {l.cy} Z"
+					fill="none"
+					stroke={l.c}
+					stroke-width={k === 0 ? 2 : 1.5}
+					opacity={0.9 - k * 0.2}
+				/>
+			{/each}
+		{/each}
+		<path d="M36 74 L40 66 L44 74 Z" fill="var(--oc-warm)" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

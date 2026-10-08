@@ -222,6 +222,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 6,
 		minutes: 12
+	},
+	{
+		slug: 'ocean-currents',
+		title: 'How the ocean moves heat',
+		summary:
+			'Blow wind over an ocean and watch gyres and the Gulf Stream form, chill and freshen the North Atlantic to speed up or stall the deep overturning, and weaken the Pacific trade winds to set off an El Niño.',
+		accent: '#1c7ed6',
+		steps: 8,
+		minutes: 16
 	}
 ];
 
