@@ -24,7 +24,18 @@ export interface LinkGeometry {
  * A link a → b between page circles of radius ra and rb. When b also links
  * to a, both links bow out to opposite sides so the two arrows do not overlap.
  */
-export function linkGeometry(web: Web, a: number, b: number, ra: number, rb: number): LinkGeometry {
+export function linkGeometry(
+	web: Web,
+	a: number,
+	b: number,
+	ra: number,
+	rb: number,
+	/**
+	 * Optional radius of every page: a one-way link that would run through
+	 * another page bows around it instead (for webs the reader edits).
+	 */
+	radii?: readonly number[]
+): LinkGeometry {
 	const A = web.pages[a];
 	const B = web.pages[b];
 	const dx = B.x - A.x;
@@ -35,7 +46,23 @@ export function linkGeometry(web: Web, a: number, b: number, ra: number, rb: num
 	// Left-hand normal; a pair of opposite links bow to their own left.
 	const nx = uy;
 	const ny = -ux;
-	const bow = hasLink(web, b, a) ? Math.min(34, len * 0.18) : 0;
+	let bow = hasLink(web, b, a) ? Math.min(34, len * 0.18) : 0;
+	if (radii && bow === 0) {
+		// The curve's offset at fraction s is 2s(1 − s)·bow: bow away from the
+		// page in the way by just enough to clear it.
+		for (let p = 0; p < web.pages.length; p++) {
+			if (p === a || p === b) continue;
+			const P = web.pages[p];
+			const s = ((P.x - A.x) * ux + (P.y - A.y) * uy) / len;
+			if (s <= 0.08 || s >= 0.92) continue;
+			const off = (P.x - A.x) * nx + (P.y - A.y) * ny;
+			const clear = (radii[p] ?? 16) + 12;
+			if (Math.abs(off) >= clear) continue;
+			const need = (clear - Math.abs(off)) / (2 * s * (1 - s));
+			const h = Math.min(len * 0.5, need) * (off > 0 ? -1 : 1);
+			if (Math.abs(h) > Math.abs(bow)) bow = h;
+		}
+	}
 	const cx = (A.x + B.x) / 2 + nx * bow;
 	const cy = (A.y + B.y) / 2 + ny * bow;
 	// Start and end on the circles, aimed at the control point.

@@ -48,6 +48,50 @@
 		return { points, smooth: path(f), wiggle: path(wiggle) };
 	})();
 
+	// PageRank: five pages of different sizes (their rank) and straight links
+	// between them, each ending in a small arrowhead at the target's edge.
+	const rankArt = (() => {
+		const pages = [
+			{ x: 92, y: 58, r: 21 },
+			{ x: 36, y: 34, r: 9 },
+			{ x: 40, y: 92, r: 11 },
+			{ x: 154, y: 32, r: 14 },
+			{ x: 160, y: 92, r: 8 }
+		];
+		const pairs = [
+			[1, 0],
+			[2, 0],
+			[4, 0],
+			[0, 3],
+			[3, 0],
+			[1, 2],
+			[4, 3]
+		];
+		const links = pairs.map(([a, b]) => {
+			const A = pages[a];
+			const B = pages[b];
+			const len = Math.hypot(B.x - A.x, B.y - A.y);
+			const ux = (B.x - A.x) / len;
+			const uy = (B.y - A.y) / len;
+			// Two-way links are offset sideways so the arrows do not overlap.
+			const two = pairs.some(([c, d]) => c === b && d === a);
+			const ox = two ? -uy * 4 : 0;
+			const oy = two ? ux * 4 : 0;
+			const sx = A.x + ux * (A.r + 3) + ox;
+			const sy = A.y + uy * (A.r + 3) + oy;
+			const tx = B.x - ux * (B.r + 3) + ox;
+			const ty = B.y - uy * (B.r + 3) + oy;
+			const bx = tx - ux * 7;
+			const by = ty - uy * 7;
+			const f = (v: number) => v.toFixed(1);
+			return {
+				d: `M${f(sx)} ${f(sy)} L${f(bx)} ${f(by)}`,
+				head: `M${f(tx)} ${f(ty)} L${f(bx - uy * 3.5)} ${f(by + ux * 3.5)} L${f(bx + uy * 3.5)} ${f(by - ux * 3.5)} Z`
+			};
+		});
+		return { pages, links };
+	})();
+
 	// Epidemics: a jittered grid of people; infection spreads from the left,
 	// recovered behind the front, susceptible ahead of it.
 	const crowd = Array.from({ length: 48 }, (_, k) => {
@@ -216,6 +260,29 @@
 		/>
 		{#each fitArt.points as p, i (i)}
 			<circle cx={p.x} cy={p.y} r="3.4" fill="var(--fit-train)" />
+		{/each}
+	{:else if slug === 'pagerank'}
+		<!-- a little web: pages sized by rank, links as arrows between them -->
+		<g stroke="currentColor" stroke-width="1.5" opacity="0.45" fill="none" stroke-linecap="round">
+			{#each rankArt.links as l (l.d)}
+				<path d={l.d} />
+			{/each}
+		</g>
+		<g fill="currentColor" opacity="0.45">
+			{#each rankArt.links as l (l.d)}
+				<path d={l.head} />
+			{/each}
+		</g>
+		{#each rankArt.pages as p (p.x)}
+			<circle
+				cx={p.x}
+				cy={p.y}
+				r={p.r}
+				fill={accent}
+				fill-opacity="0.2"
+				stroke={accent}
+				stroke-width="2"
+			/>
 		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
