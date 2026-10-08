@@ -979,6 +979,26 @@
 		<circle cx="56" cy="60" r="12" fill="var(--em-plus)" />
 		<circle cx="144" cy="60" r="12" fill="var(--em-minus)" />
 		<path d="M50 60 H62 M56 54 V66 M138 60 H150" stroke="#fff" stroke-width="2.4" />
+	{:else if slug === 'heart-circulation'}
+		<!-- a heart, its blue right side and red left side, over an ECG trace -->
+		<path
+			d="M70 30 C52 14 24 22 26 46 C28 66 50 82 70 98 C90 82 112 66 114 46 C116 22 88 14 70 30 Z"
+			fill="currentColor"
+			fill-opacity="0.12"
+			stroke="currentColor"
+			stroke-opacity="0.5"
+			stroke-width="2"
+		/>
+		<path d="M40 44 C40 34 60 34 64 42 L64 80 C54 72 42 62 40 50 Z" fill="var(--hc-deoxy)" />
+		<path d="M76 42 C80 34 100 34 100 44 L100 50 C98 62 86 72 76 80 Z" fill={accent} />
+		<path
+			d="M120 74 H136 L140 70 L144 74 H150 L154 80 L160 34 L166 88 L170 74 H180 L186 66 L192 74 H196"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.2"
+			stroke-linejoin="round"
+			stroke-linecap="round"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

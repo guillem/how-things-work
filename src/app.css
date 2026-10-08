@@ -428,6 +428,18 @@ kbd {
 	--em-copper: #d9822b;
 	--em-current: #2f9e44;
 	--em-drive: #c2255c;
+	/* heart-circulation: oxygen-rich and -poor blood, heart muscle, electrical signal, ECG, pressure traces, leaks, lung and body tissue */
+	--hc-oxy: #e03131;
+	--hc-deoxy: #4263eb;
+	--hc-muscle: #f0bfb8;
+	--hc-muscle-edge: #b5655c;
+	--hc-signal: #f59f00;
+	--hc-ecg: #2b8a3e;
+	--hc-lv: #7048e8;
+	--hc-la: #0c8599;
+	--hc-leak: #e8590c;
+	--hc-lung: #fbe3e1;
+	--hc-tissue: #f3ecdf;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -642,4 +654,15 @@ kbd {
 	--em-copper: #e8a15a;
 	--em-current: #69db7c;
 	--em-drive: #f06595;
+	--hc-oxy: #ff6b6b;
+	--hc-deoxy: #748ffc;
+	--hc-muscle: #5c3330;
+	--hc-muscle-edge: #b0706a;
+	--hc-signal: #ffd43b;
+	--hc-ecg: #51cf66;
+	--hc-lv: #b197fc;
+	--hc-la: #3bc9db;
+	--hc-leak: #ff922b;
+	--hc-lung: #3a2427;
+	--hc-tissue: #2c2822;
 }

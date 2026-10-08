@@ -262,6 +262,12 @@ const explainers: Explainer[] = [
 			'Place charges and see the field they spread around them, turn a current into a magnet, push a magnet through a coil to make a current — and find out why light is electricity and magnetism keeping each other going.',
 		accent: '#6741d9',
 		steps: 7,
+		slug: 'heart-circulation',
+		title: 'How the heart pumps blood',
+		summary:
+			'Watch a beating heart open and shut its valves in time with its electrical signal, then speed it up, narrow the arteries or make a valve leak.',
+		accent: '#c92a2a',
+		steps: 9,
 		minutes: 14
 	}
 ];
