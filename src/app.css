@@ -35,6 +35,14 @@
 	--radius-md: 10px;
 	--radius-lg: 16px;
 
+	/* Reading progress tags (index page) */
+	--status-done: #d63a2f;
+	--status-done-ink: #ffffff;
+	--status-started: #f2b705;
+	--status-started-ink: #2b2100;
+	--status-new: #1f9254;
+	--status-new-ink: #ffffff;
+
 	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 	--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -63,6 +71,13 @@
 	--stage-ink-muted: #8d8b84;
 	--stage-line: #45464c;
 	--stage-grid: rgba(255, 255, 255, 0.05);
+
+	--status-done: #f0675c;
+	--status-done-ink: #1f0604;
+	--status-started: #f5c84a;
+	--status-started-ink: #231a00;
+	--status-new: #4cc685;
+	--status-new-ink: #04190d;
 }
 
 /* ---------------------------------------------------------------------------

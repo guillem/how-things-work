@@ -2,16 +2,20 @@
 	import { resolve } from '$app/paths';
 	import type { Topic } from '#lib/topics.ts';
 	import { levelNames } from '#lib/catalog.ts';
+	import { progress } from '#lib/progress.svelte.ts';
 	import TopicArt from './TopicArt.svelte';
 
 	interface Props {
 		topic: Topic;
 	}
 	let { topic }: Props = $props();
-	const href = $derived(resolve(...([`${topic.slug}/`] as Parameters<typeof resolve>)));
+	const status = $derived(progress.status(topic.slug));
+	// A started explainer opens on the step the reader left it at.
+	const hash = $derived(status === 'started' ? `#${progress.topics[topic.slug].step}` : '');
+	const href = $derived(resolve(...([`${topic.slug}/`] as Parameters<typeof resolve>)) + hash);
 </script>
 
-<a class="card" {href} style:--card-accent={topic.accent}>
+<a class="card" {href} style:--card-accent={topic.accent} data-status={status}>
 	<div class="art"><TopicArt slug={topic.slug} accent={topic.accent} /></div>
 	<div class="text">
 		<p class="meta">
@@ -20,7 +24,16 @@
 		</p>
 		<h3>{topic.title}</h3>
 		<p class="summary">{topic.summary}</p>
-		<p class="cta">Start <span aria-hidden="true">→</span></p>
+		<p class="cta">
+			{#if status === 'done'}
+				<span class="tag done">Done <span aria-hidden="true">✓</span></span>
+				<span class="again">Read again <span aria-hidden="true">→</span></span>
+			{:else if status === 'started'}
+				<span class="tag started">Continue <span aria-hidden="true">→</span></span>
+			{:else}
+				<span class="tag new">Start <span aria-hidden="true">→</span></span>
+			{/if}
+		</p>
 	</div>
 </a>
 
@@ -85,10 +98,33 @@
 		line-height: 1.55;
 	}
 	.cta {
+		display: flex;
+		align-items: center;
+		gap: 12px;
 		margin-top: auto;
 		padding-top: 8px;
 		font-weight: 500;
 		font-size: 0.92rem;
-		color: var(--card-accent);
+	}
+	.tag {
+		padding: 3px 12px;
+		border-radius: 999px;
+		font-weight: 600;
+		font-size: 0.85rem;
+	}
+	.tag.done {
+		background: var(--status-done);
+		color: var(--status-done-ink);
+	}
+	.tag.started {
+		background: var(--status-started);
+		color: var(--status-started-ink);
+	}
+	.tag.new {
+		background: var(--status-new);
+		color: var(--status-new-ink);
+	}
+	.again {
+		color: var(--text-muted);
 	}
 </style>

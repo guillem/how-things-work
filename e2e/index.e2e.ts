@@ -51,3 +51,45 @@ test('an explainer links to its catalogue neighbours, linking only built topics'
 	await expect(links.getByText('The cell')).toBeVisible();
 	await expect(links.getByRole('link', { name: 'The cell' })).toHaveCount(0);
 });
+
+test('the index tracks reading progress in this browser and can clear it', async ({ page }) => {
+	await page.goto('/');
+	const tally = page.getByRole('region', { name: 'Your progress' });
+	const total = Number((await tally.getByText(/^Total:/).textContent())!.replace(/\D/g, ''));
+	expect(total).toBeGreaterThan(1);
+	await expect(tally.getByText(/^New:/)).toHaveText(`New: ${total}`);
+	const clear = tally.getByRole('button', { name: 'Clear all progress' });
+	await expect(clear).toBeDisabled();
+	const card = () => page.getByRole('link', { name: /how photosynthesis works/i });
+	await expect(card()).toContainText('Start');
+
+	// Opening an explainer and moving on a step: started, and the card continues there.
+	await card().click();
+	await expect(page).toHaveURL(/\/photosynthesis\/$/);
+	await page.getByRole('button', { name: 'Next step' }).click();
+	await expect(page).toHaveURL(/#.+$/);
+	const step = new URL(page.url()).hash;
+	await page.goto('/');
+	await expect(tally.getByText(/^Started:/)).toHaveText('Started: 1');
+	await expect(tally.getByText(/^New:/)).toHaveText(`New: ${total - 1}`);
+	await expect(card()).toContainText('Continue');
+	await expect(card()).toHaveAttribute('href', new RegExp(`photosynthesis/${step}$`));
+
+	// Reaching the last step: done.
+	await card().click();
+	await expect(page).toHaveURL(new RegExp(`${step}$`));
+	await page.keyboard.press('End');
+	await page.goto('/');
+	await expect(tally.getByText(/^Done:/)).toHaveText('Done: 1');
+	await expect(tally.getByText(/^Started:/)).toHaveText('Started: 0');
+	await expect(card()).toContainText('Done');
+
+	// Survives a reload; clearing (after confirming) resets everything.
+	await page.reload();
+	await expect(tally.getByText(/^Done:/)).toHaveText('Done: 1');
+	page.once('dialog', (dialog) => dialog.accept());
+	await clear.click();
+	await expect(tally.getByText(/^New:/)).toHaveText(`New: ${total}`);
+	await expect(card()).toContainText('Start');
+	expect(await page.evaluate(() => localStorage.getItem('progress'))).toBeNull();
+});

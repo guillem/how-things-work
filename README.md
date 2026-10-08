@@ -64,6 +64,7 @@ src/
     catalog.ts             the topic catalogue, parsed from docs/TOPICS.md at build time
     topics.ts              registry of the built explainers (index page, cross-links)
     theme.svelte.ts        theme state (light / dark / follows the OS)
+    progress.svelte.ts     reading progress per explainer, saved in the browser's localStorage
     components/            header, footer, theme toggle, topic cards, explainer page shell
     explainer/             the explainer framework (see below)
     draw/                  SVG drawing primitives shared by all explainers
