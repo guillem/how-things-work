@@ -85,6 +85,16 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 - **ecosystems** — the web step's starting frame is static until the reader switches a species
   off; the cycles chart's two y-axes have unaligned gridlines.
 
+- **oscillations-resonance** — the "10°" label in the pendulum scene is crossed by the rod on
+  left swings.
+
+- **logic-gates** — the switches' "0" has low contrast; a challenge message lingers briefly after
+  switching challenge.
+
+- **central-limit-theorem** — at 2 rows the landed balls are thin columns in wide bins. The `clt`
+  step sets n to 30 on arrival when it is 1 (a scene-side default; a per-step control would be
+  cleaner).
+
 ## Site and framework work
 
 - **Stage text is unreadable on phones (site-wide, found 2026-10-07).** At 390 px wide the
