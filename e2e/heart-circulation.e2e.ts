@@ -20,12 +20,15 @@ test('narrower arteries raise the blood pressure', async ({ page }) => {
 	await expect(stage(page)).toContainText('123/78');
 });
 
-test('a leaking valve sends blood backwards; both pumps still match', async ({ page }) => {
+test('a leaking valve sends blood backwards', async ({ page }) => {
 	await page.goto('/heart-circulation/#leak');
 	await expect(stage(page)).toContainText('leaks back');
 	await expect(stage(page)).toContainText('51 mL');
 	await page.locator('input[type=range][data-control=leak]').fill('0');
 	await expect(stage(page)).toContainText('0 mL');
+});
+
+test('the two pumps in series send out the same volume', async ({ page }) => {
 	await page.goto('/heart-circulation/#loop');
 	await expect(stage(page)).toContainText('right pump → lungs');
 	await expect(stage(page).getByText('75 mL')).toHaveCount(2);
