@@ -209,6 +209,26 @@
 		}).join(' ');
 		return { coil, wave };
 	})();
+
+	// Central limit theorem: a small triangle of pins over a bell-shaped
+	// histogram of 11 bars (binomial, 10 rows), with the normal curve over it.
+	const cltArt = (() => {
+		const C = [1, 10, 45, 120, 210, 252, 210, 120, 45, 10, 1];
+		const bars = C.map((c, k) => {
+			const h = 4 + (c / 252) * 62;
+			return { k, x: 46 + k * 10, y: 108 - h, h };
+		});
+		const pins: { id: string; x: number; y: number }[] = [];
+		for (let r = 0; r < 4; r++)
+			for (let j = 0; j <= r; j++)
+				pins.push({ id: `${r}-${j}`, x: 100 + (j - r / 2) * 12, y: 12 + r * 8 });
+		const curve = Array.from({ length: 61 }, (_, i) => {
+			const x = 40 + (i / 60) * 120;
+			const z = (x - 100) / 15.8;
+			return `${i ? 'L' : 'M'}${x.toFixed(1)} ${(104 - 62 * Math.exp((-z * z) / 2)).toFixed(1)}`;
+		}).join(' ');
+		return { bars, pins, curve };
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -705,6 +725,25 @@
 		/>
 		<circle cx="170" cy="60" r="17" fill={accent} opacity="0.2" />
 		<circle cx="170" cy="60" r="10" fill={accent} />
+	{:else if slug === 'central-limit-theorem'}
+		<!-- pins over a bell-shaped histogram, with the normal curve -->
+		{#each cltArt.pins as p (p.id)}
+			<circle cx={p.x} cy={p.y} r="2" fill="currentColor" opacity="0.45" />
+		{/each}
+		<circle cx="112" cy="21" r="3" fill={accent} />
+		{#each cltArt.bars as b (b.k)}
+			<rect x={b.x} y={b.y} width="8" height={b.h} rx="1.5" fill={accent} opacity="0.35" />
+		{/each}
+		<line
+			x1="38"
+			x2="162"
+			y1="108"
+			y2="108"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.4"
+		/>
+		<path d={cltArt.curve} fill="none" stroke={accent} stroke-width="2" stroke-linecap="round" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -104,7 +104,7 @@ A topic is done when:
 - [ ] complex-numbers
 - [ ] fourier-transform
 - [x] bayes-theorem
-- [ ] central-limit-theorem
+- [x] central-limit-theorem
 - [ ] primes-modular-arithmetic
 - [x] chaos-fractals
 

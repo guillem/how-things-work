@@ -348,6 +348,13 @@ kbd {
 	--lg-gate-edge: #1971c2;
 	--lg-lamp: #ffd43b;
 	--lg-ok: #2f9e44;
+	/* central limit theorem: balls, pins, bins, the starting distribution, sample means, the bell */
+	--clt-ball: #e8590c;
+	--clt-pin: #868e96;
+	--clt-bin: #4dabf7;
+	--clt-source: #2f9e44;
+	--clt-means: #1c7ed6;
+	--clt-bell: #c2255c;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -491,4 +498,10 @@ kbd {
 	--lg-gate-edge: #4dabf7;
 	--lg-lamp: #ffe066;
 	--lg-ok: #51cf66;
+	--clt-ball: #ff922b;
+	--clt-pin: #adb5bd;
+	--clt-bin: #339af0;
+	--clt-source: #51cf66;
+	--clt-means: #4dabf7;
+	--clt-bell: #f06595;
 }
