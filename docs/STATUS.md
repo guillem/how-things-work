@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-08 07:30 UTC.
+Last updated: 2026-10-08 07:55 UTC.
 
 ## How we work
 
@@ -35,21 +35,13 @@ Last updated: 2026-10-08 07:30 UTC.
 
 ## Current state
 
-- `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps") and 13
+- `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps") and 16
   ticked topics: epidemics, unit-circle, sorting, newtons-laws, sun-earth-moon,
   learning-from-data, pagerank, electric-circuits, bridges-structures, binary,
-  atmosphere-weather, graph-search, chaos-fractals. PRs #1–#14 merged (merge commits).
-- **Batch 4 complete (3 topics), awaiting the user's validation** (asked 2026-10-08 ~06:45 UTC: a small
-  batch with the remaining ~25% of the 5-hour window). Stacked branches, both pushed; **merge in
-  this order**:
-  1. `topic/orbits-kepler` — done, ticked. Main checkout.
-  2. `topic/ecosystems` — done, ticked. Worktree `../hiw-eco`.
-  3. `topic/bayes-theorem` — done, ticked (lean process: one scene agent; the lead checked the
-     numbers and the screenshots). Worktree `../hiw-bayes`. The full e2e suite (349 tests)
-     passes on this branch, which holds all three.
-     The main checkout is detached at the stack's top so :5173 serves everything. After
-     merging: `git worktree remove ../hiw-eco` and `../hiw-bayes`, stop the dev servers, and
-     `git checkout main`.
+  atmosphere-weather, graph-search, chaos-fractals, orbits-kepler, ecosystems, bayes-theorem.
+  PRs #1–#18 merged (merge commits); #15 removed CI (see "Validate once, locally").
+- Nothing in progress, nothing awaiting validation. Next: BACKLOG (atoms-periodic-table is
+  unblocked — PubChem data — and many topics are now ready; see "Rules for picking").
 - Local testing: other work runs on this machine, so ports can clash (4173 is taken by another
   app). The full e2e suite runs with a git-ignored `pw-local.config.ts` (preview on :4180):
   `npx playwright test -c pw-local.config.ts`; a git-ignored `pw-node.config.ts` runs only the
@@ -58,17 +50,18 @@ Last updated: 2026-10-08 07:30 UTC.
   403s for the Inter font (symlinked `node_modules` outside Vite's `fs.allow`) and svelte-check
   reports a spurious `./$types` error there — run final checks in the main checkout.
 - Workflow that worked for batches 2–4: Claude writes each topic's model + Node tests +
-  narrative, scene agents write the scenes (briefs: a common one + one per topic, in the session
-  scratchpad), then an adversarial reviewer and a fact-checker (or one combined agent) per topic;
-  stacked branches in git worktrees; rebase later branches with
-  `git rebase --onto topic/<previous> <old-base>` (the only conflicts are additive, in
-  `src/app.css` and `TopicArt.svelte`: keep both sides).
-- Merge method: merge commits (`gh pr merge N --merge`), one PR per topic, in stack order.
+  narrative; scene agents write the scenes (briefs: a common one + one per topic, kept in the
+  session scratchpad — recreate from `scene-guide.md` and this file); then one combined
+  review + fact-check agent per topic (batch 4 showed it is enough); stacked branches in git
+  worktrees; rebase later branches with `git rebase --onto topic/<previous> <old-base>` (the
+  only conflicts are additive, in `src/app.css` and `TopicArt.svelte`: keep both sides).
+- Merge method: merge commits (`gh pr merge N --merge`), one PR per topic, in stack order, then
+  `npm run verify:deploy` once.
 
 ## Current development
 
-None in progress. Built-state params: `web:<step>`, `board:build`, `bridge:build`,
-`bits:<step>`, `map:<step>`, `view:zoom`.
+None. Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<step>`,
+`map:<step>`, `view:zoom`.
 
 ## Open questions for the user
 
