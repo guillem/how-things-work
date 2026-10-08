@@ -365,6 +365,13 @@ kbd {
 	--atom-f: #ae3ec9;
 	--atom-low: #e7f5ff;
 	--atom-high: #1864ab;
+	/* entropy: hot and cold particles, the wall, the box, entropy and counts */
+	--ent-hot: #e8590c;
+	--ent-cold: #1c7ed6;
+	--ent-wall: #495057;
+	--ent-box: #fdfcf9;
+	--ent-entropy: #7048e8;
+	--ent-ways: #0ca678;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -523,4 +530,10 @@ kbd {
 	--atom-f: #da77f2;
 	--atom-low: #1a2733;
 	--atom-high: #74c0fc;
+	--ent-hot: #ff8a4c;
+	--ent-cold: #4dabf7;
+	--ent-wall: #adb5bd;
+	--ent-box: #15181d;
+	--ent-entropy: #9775fa;
+	--ent-ways: #38d9a9;
 }

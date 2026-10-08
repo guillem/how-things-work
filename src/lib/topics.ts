@@ -222,6 +222,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 6,
 		minutes: 12
+	},
+	{
+		slug: 'entropy',
+		title: 'Heat, entropy and the arrow of time',
+		summary:
+			'Let fast and slow particles meet, count the ways they can be arranged, and run the film backward to find out why heat only flows one way.',
+		accent: '#e8590c',
+		steps: 7,
+		minutes: 14
 	}
 ];
 

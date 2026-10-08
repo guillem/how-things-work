@@ -132,9 +132,7 @@ export class GasRun {
 		this.ax = new Float64Array(n);
 		this.ay = new Float64Array(n);
 		// reversals happen on frame boundaries
-		this.reverseSteps = new Set(
-			config.reversals.map((t) => Math.round(t * FPS) * STEPS_PER_FRAME)
-		);
+		this.reverseSteps = new Set(config.reversals.map((t) => Math.round(t * FPS) * STEPS_PER_FRAME));
 		this.wallSteps = config.wallUntil === Infinity ? Infinity : Math.round(config.wallUntil / DT);
 		this.init();
 		this.record();
@@ -409,7 +407,8 @@ export function choose(n: number, k: number): bigint {
 export const positionWays = (n: number, k: number) => choose(n, k);
 
 /** Ways to share q packets of energy among n particles: C(q + n − 1, q). */
-export const energyWays = (q: number, n: number) => (n <= 0 ? (q === 0 ? 1n : 0n) : choose(q + n - 1, q));
+export const energyWays = (q: number, n: number) =>
+	n <= 0 ? (q === 0 ? 1n : 0n) : choose(q + n - 1, q);
 
 /** ln of `energyWays`, for big numbers. */
 export const lnEnergyWays = (q: number, n: number) =>
@@ -464,7 +463,9 @@ export function formatCount(v: bigint | { log10: number }): string {
 	if (typeof v === 'bigint') {
 		if (v < 1000000n) return v.toLocaleString('en-US');
 		const s = v.toString();
-		return sci(s.length - 1 + Math.log10(Number(s.slice(0, 15)) / 10 ** Math.min(14, s.length - 1)));
+		return sci(
+			s.length - 1 + Math.log10(Number(s.slice(0, 15)) / 10 ** Math.min(14, s.length - 1))
+		);
 	}
 	if (v.log10 < 6) return Math.round(10 ** v.log10).toLocaleString('en-US');
 	return sci(v.log10);
