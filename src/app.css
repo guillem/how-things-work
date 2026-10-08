@@ -250,6 +250,18 @@ kbd {
 	--rank-jump: #ae3ec9;
 	--rank-flow: #1098ad;
 	--rank-target: #d6336c;
+	/* electric circuits: board, wires, charges, battery, bulb glow, potential high/low */
+	--circ-board: #eef1f4;
+	--circ-peg: #adb5bd;
+	--circ-wire: #495057;
+	--circ-charge: #1c7ed6;
+	--circ-electron: #0b7285;
+	--circ-battery: #e03131;
+	--circ-glow: #fab005;
+	--circ-high: #e8590c;
+	--circ-low: #1971c2;
+	--circ-meter: #f8f9fa;
+	--circ-copper: #d9822b;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -306,4 +318,15 @@ kbd {
 	--rank-jump: #da77f2;
 	--rank-flow: #3bc9db;
 	--rank-target: #f06595;
+	--circ-board: #1b1f24;
+	--circ-peg: #495057;
+	--circ-wire: #ced4da;
+	--circ-charge: #4dabf7;
+	--circ-electron: #3bc9db;
+	--circ-battery: #ff6b6b;
+	--circ-glow: #ffd43b;
+	--circ-high: #ff922b;
+	--circ-low: #4dabf7;
+	--circ-meter: #25292e;
+	--circ-copper: #e8a35a;
 }

@@ -105,6 +105,15 @@ const explainers: Explainer[] = [
 		accent: '#4263eb',
 		steps: 10,
 		minutes: 15
+	},
+	{
+		slug: 'electric-circuits',
+		title: 'How electric circuits work',
+		summary:
+			'Wire up batteries, bulbs and switches, watch the charges move and read the meters — and find out why current is never used up.',
+		accent: '#f08c00',
+		steps: 9,
+		minutes: 14
 	}
 ];
 

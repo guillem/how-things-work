@@ -246,6 +246,60 @@
 		<rect x="140" y="84" width="34" height="16" rx="3" fill="var(--mech-cart)" />
 		<circle cx="148" cy="101" r="3.5" fill="currentColor" opacity="0.6" />
 		<circle cx="166" cy="101" r="3.5" fill="currentColor" opacity="0.6" />
+	{:else if slug === 'electric-circuits'}
+		<!-- a battery, a loop of wire full of charges and a glowing bulb -->
+		<defs>
+			<radialGradient id="art-glow-electric-circuits">
+				<stop offset="0" stop-color="var(--circ-glow)" stop-opacity="0.9" />
+				<stop offset="0.5" stop-color="var(--circ-glow)" stop-opacity="0.35" />
+				<stop offset="1" stop-color="var(--circ-glow)" stop-opacity="0" />
+			</radialGradient>
+		</defs>
+		<path
+			d="M44 56 L44 36 Q44 24 56 24 L144 24 Q156 24 156 36 L156 86 Q156 98 144 98 L56 98 Q44 98 44 86 L44 65"
+			fill="none"
+			stroke="var(--circ-wire)"
+			stroke-width="2.4"
+		/>
+		{#each [70, 92, 114, 136, 66, 90, 114, 138] as x, i (i)}
+			<circle cx={x} cy={i < 4 ? 24 : 98} r="3.2" fill={accent} />
+		{/each}
+		<!-- battery on the left side: + (long plate) above − -->
+		<line
+			x1="33"
+			y1="56"
+			x2="55"
+			y2="56"
+			stroke="var(--circ-battery)"
+			stroke-width="2.4"
+			stroke-linecap="round"
+		/>
+		<line
+			x1="39"
+			y1="65"
+			x2="49"
+			y2="65"
+			stroke="var(--circ-battery)"
+			stroke-width="4.5"
+			stroke-linecap="round"
+		/>
+		<!-- bulb on the right side, lit -->
+		<circle cx="156" cy="61" r="30" fill="url(#art-glow-electric-circuits)" />
+		<circle
+			cx="156"
+			cy="61"
+			r="11"
+			fill="var(--circ-glow)"
+			stroke="var(--circ-wire)"
+			stroke-width="2"
+		/>
+		<path
+			d="M156 50 L156 56 l-4 3 l4 3 l4 -3 l-4 -3"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.5"
+			stroke-linejoin="round"
+		/>
 	{:else if slug === 'learning-from-data'}
 		<!-- noisy points, a sensible fit and an overfit wiggle -->
 		<line x1="18" x2="184" y1="104" y2="104" stroke="currentColor" opacity="0.25" />
