@@ -132,6 +132,15 @@ const explainers: Explainer[] = [
 		accent: '#1971c2',
 		steps: 9,
 		minutes: 13
+	},
+	{
+		slug: 'atmosphere-weather',
+		title: 'Why the wind blows',
+		summary:
+			'Heat a planet unevenly and spin it: watch convection cells, trade winds and westerlies appear, steer air round highs and lows, and warm the sea to grow a hurricane.',
+		accent: '#0c8599',
+		steps: 9,
+		minutes: 16
 	}
 ];
 

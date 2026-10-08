@@ -398,6 +398,69 @@
 		/>
 		<text x="140" y="96" text-anchor="middle" font-size="19" font-weight="700" fill={accent}>A</text
 		>
+	{:else if slug === 'atmosphere-weather'}
+		<!-- a globe lit from the left: trade winds and westerlies curving round it -->
+		{#each [36, 48, 60, 72, 84] as y (y)}
+			<line x1="18" x2="54" y1={y} y2={y} stroke="var(--atm-sun)" stroke-width="2" opacity="0.7" />
+		{/each}
+		<circle
+			cx="104"
+			cy="60"
+			r="44"
+			fill={accent}
+			fill-opacity="0.1"
+			stroke={accent}
+			stroke-width="1.6"
+		/>
+		<line x1="60" x2="148" y1="60" y2="60" stroke="currentColor" opacity="0.35" />
+		{#each [38, 82] as y (y)}
+			<line
+				x1="66"
+				x2="142"
+				y1={y}
+				y2={y}
+				stroke="currentColor"
+				opacity="0.2"
+				stroke-dasharray="2 3"
+			/>
+		{/each}
+		{#each [1, -1] as h (h)}
+			<!-- westerlies (towards the east) near 45° -->
+			<path
+				d="M80 {60 - h * 30} Q104 {60 - h * 24} 126 {60 - h * 31}"
+				fill="none"
+				stroke={accent}
+				stroke-width="2.2"
+				stroke-linecap="round"
+			/>
+			<path d="M126 {60 - h * 35} L133 {60 - h * 32} L125 {60 - h * 27} Z" fill={accent} />
+			<!-- trade winds (from the east, slanting towards the equator) near 15° -->
+			<path
+				d="M134 {60 - h * 16} Q106 {60 - h * 14} 80 {60 - h * 6}"
+				fill="none"
+				stroke={accent}
+				stroke-width="2.2"
+				stroke-linecap="round"
+			/>
+			<path d="M81 {60 - h * 2} L74 {60 - h * 4} L80 {60 - h * 10} Z" fill={accent} />
+		{/each}
+		<!-- warm tropics, heat carried polewards -->
+		<path
+			d="M164 52 Q172 38 168 24"
+			fill="none"
+			stroke="var(--atm-warm)"
+			stroke-width="2"
+			stroke-linecap="round"
+		/>
+		<path d="M164 25 L168 18 L172 26 Z" fill="var(--atm-warm)" />
+		<path
+			d="M164 68 Q172 82 168 96"
+			fill="none"
+			stroke="var(--atm-warm)"
+			stroke-width="2"
+			stroke-linecap="round"
+		/>
+		<path d="M164 95 L168 102 L172 94 Z" fill="var(--atm-warm)" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

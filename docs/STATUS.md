@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-08 04:00 UTC.
+Last updated: 2026-10-08 04:55 UTC.
 
 ## How we work
 
@@ -31,39 +31,42 @@ Last updated: 2026-10-08 04:00 UTC.
 - `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps"), epidemics,
   unit-circle, sorting, newtons-laws, sun-earth-moon (done, ticked), learning-from-data
   (published, not ticked — "place points" open question). PRs #1–#7 merged (merge commits).
-- **Batch 2 in progress** (user asked 2026-10-08 ~03:20 UTC: merge batch 1, then another batch;
-  keep going until close to the session limit but never reach 100% of the 5-hour window; the
-  user validates the whole batch together; always give clickable localhost URLs). Stacked
-  branches, each started from the previous one; every topic has its model, Node tests and
-  narrative committed, scenes written by agents:
-  1. `topic/pagerank` — main checkout, dev server :5173. Scenes committed; adversarial review
-     running; fact-check applied.
-  2. `topic/electric-circuits` — worktree `../hiw-circuits`, :5174. Wire scene done, board
-     scene in progress (uncommitted in the worktree).
-  3. `topic/bridges-structures` — worktree `../hiw-bridges`, :5175. Frame solver (stiffness
-     method, cables tension-only, steel budget shared by demand). Scenes in progress.
-  4. `topic/binary` — worktree `../hiw-binary`, :5176. Scenes in progress.
-  5. `topic/atmosphere-weather` — worktree `../hiw-atmos`, :5177. Energy-balance model,
-     Held–Hou cells, Coriolis parcels, geostrophic winds, frontal advection, hurricane MPI.
-     Five scenes in progress (uncommitted placeholders let the page load meanwhile).
-- Each worktree's `node_modules` is a symlink to the main checkout's. A git-ignored
-  `pw-node.config.ts` (listed in `.git/info/exclude`) runs the Node-only model tests without
-  building the site: `npx playwright test -c pw-node.config.ts <name>-model`. The full e2e run
-  only works on a branch whose earlier topics all have their scenes.
-- When a topic's scenes land: review (adversarial reviewer + fact-check), commit, then rebase
-  the later branches onto it (`git rebase topic/<previous>` in each worktree, in order).
-- Merge method: merge commits (`gh pr merge N --merge`), one PR per topic, in stack order;
-  then `git worktree remove ../hiw-*`.
+- **Batch 2 complete, awaiting the user's validation** (asked 2026-10-08 ~03:20 UTC: merge
+  batch 1, then another batch; stay clear of 100% of the 5-hour window; the user validates the
+  whole batch together; always give clickable localhost URLs). Stacked branches, all pushed,
+  **merge in this order** (each PR based on `main` after the previous merge):
+  1. `topic/pagerank` — done, ticked. Main checkout, dev server :5173.
+  2. `topic/electric-circuits` — done, ticked. Worktree `../hiw-circuits`, :5174.
+  3. `topic/bridges-structures` — done, ticked. Worktree `../hiw-bridges`, :5175.
+  4. `topic/binary` — done, ticked. Worktree `../hiw-binary`, :5176.
+  5. `topic/atmosphere-weather` — built and reviewed, **not ticked** (see open questions).
+     Worktree `../hiw-atmos`, :5177. Full e2e (265 tests) passes on this branch, which holds
+     the whole stack.
+- After merging: `git worktree remove ../hiw-circuits ../hiw-bridges ../hiw-binary ../hiw-atmos`
+  (one per command) and stop the dev servers on :5174–5177.
+- Local testing quirks: port 4173 is taken by an unrelated app on this machine, so the full e2e
+  suite runs with a git-ignored `pw-local.config.ts` (preview on :4180):
+  `npx playwright test -c pw-local.config.ts`. A git-ignored `pw-node.config.ts` runs only the
+  Node model tests: `npx playwright test -c pw-node.config.ts <name>-model`. Both are listed in
+  `.git/info/exclude`; recreate them from this description if missing. Worktree dev servers log
+  403s for the Inter font (symlinked `node_modules` outside Vite's `fs.allow`) and svelte-check
+  reports a spurious `./$types` error there — run final checks in the main checkout.
+- Merge method: merge commits (`gh pr merge N --merge`), one PR per topic, in stack order.
 
 ## Current development
 
-See the list above. Built web/board/bridge/bits state is kept per step in params as strings
+None in progress. Built web/board/bridge/bits/map state is kept per step in params as strings
 (`web:<step>`, `board:build`, `bridge:build`, `bits:<step>`, `map:<step>`).
 
 ## Open questions for the user
 
 - learning-from-data: add "place points" (click to add) so it meets the catalogue entry, or
   accept dragging only?
+- atmosphere-weather: two departures from the catalogue's interaction. (1) "Zoom in to place …
+  fronts": the reader places highs and lows; fronts then form by themselves where the lows'
+  winds bring warm and cold air together (a real kinematic model) — the reader doesn't draw
+  fronts. (2) "Heat a globe unevenly": the heating is the real sunshine; the reader controls the
+  heat transport and the spin, not the heating pattern. Accept, or change?
 - atoms-periodic-table: which element-data source (e.g. PubChem's periodic table JSON, IUPAC
   atomic weights)? Blocked until chosen (catalogue: never invent data).
 
