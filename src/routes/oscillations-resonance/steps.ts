@@ -27,7 +27,7 @@ const damping: Control = {
 	id: 'damping',
 	label: 'Friction (damping)',
 	min: 0,
-	max: 3,
+	max: 15,
 	step: 0.05,
 	default: 0.3,
 	unit: ' N·s/m'
