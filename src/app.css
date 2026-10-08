@@ -407,6 +407,14 @@ kbd {
 	--pm-walk: #9c36b5;
 	--pm-ok: #2f9e44;
 	--pm-bad: #e03131;
+	/* complex-numbers: the points z and w, their product, real and imaginary parts */
+	--cx-z: #0c8599;
+	--cx-w: #e8590c;
+	--cx-prod: #7048e8;
+	--cx-re: #1c7ed6;
+	--cx-im: #d6336c;
+	/* the turns: angle arcs, θ and e^(iθ) (the topic's accent, lighter in dark mode) */
+	--cx-turn: #087f5b;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -603,4 +611,10 @@ kbd {
 	--pm-walk: #da77f2;
 	--pm-ok: #69db7c;
 	--pm-bad: #ff8787;
+	--cx-z: #3bc9db;
+	--cx-w: #ff922b;
+	--cx-prod: #9775fa;
+	--cx-re: #4dabf7;
+	--cx-im: #f06595;
+	--cx-turn: #20c997;
 }
