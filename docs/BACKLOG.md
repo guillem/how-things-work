@@ -19,19 +19,19 @@ checklist); this file is about **order and open work**. Where we are right now i
 
 ## Wave 1 — one topic per category
 
-| Category                | Topic                  | Kind       | Level | Why this one                                                           | State           |
-| ----------------------- | ---------------------- | ---------- | ----- | ---------------------------------------------------------------------- | --------------- |
-| Biology                 | `photosynthesis`       | simulate   | 1     | Already built — the quality reference                                  | published, gaps |
-| Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot       | done            |
-| Mathematics             | `unit-circle`          | manipulate | 1     | No prerequisites; first draggable handle + linked graph; unlocks 3     | done            |
-| Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.    | done            |
-| Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy        | done            |
-| Space                   | `sun-earth-moon`       | manipulate | 1     | No prerequisites, no data                                              | done            |
-| Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`    | done            |
-| Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning  | done            |
-| Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs`  | done            |
-| Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; element data from PubChem (user, 2026-10-08) | done            |
-| Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton        | done            |
+| Category                | Topic                  | Kind       | Level | Why this one                                                            | State           |
+| ----------------------- | ---------------------- | ---------- | ----- | ----------------------------------------------------------------------- | --------------- |
+| Biology                 | `photosynthesis`       | simulate   | 1     | Already built — the quality reference                                   | published, gaps |
+| Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot        | done            |
+| Mathematics             | `unit-circle`          | manipulate | 1     | No prerequisites; first draggable handle + linked graph; unlocks 3      | done            |
+| Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.     | done            |
+| Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy         | done            |
+| Space                   | `sun-earth-moon`       | manipulate | 1     | No prerequisites, no data                                               | done            |
+| Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`     | done            |
+| Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning   | done            |
+| Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs`   | done            |
+| Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; element data from mendeleev (PubChem blocked) | done            |
+| Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton         | done            |
 
 Batch 2 also takes `electric-circuits` (unlocks 4) and `binary` (unlocks 7), per rule 3.
 
