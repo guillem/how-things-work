@@ -89,13 +89,18 @@
 	// ---- phase times: four quarter turns -----------------------------------------------------
 	const turns = $derived([0, 1, 2, 3].map((k) => mul(pow(I, k), z)));
 	const turnNames = ['z', 'iz', 'i²z = −z', 'i³z = −iz'];
+	// The turn arrows (and the marker on them) run at |z| when that fits inside the
+	// plane; for points near its corners they run on a smaller circle, so the
+	// plane's edges never cut them.
+	const RHO_MAX = 232;
+	const rho = $derived(Math.min(r * U, RHO_MAX));
 	// The marker: 2 s per quarter turn, 1.2 s moving then 0.8 s resting.
 	const marker = $derived.by(() => {
 		const u = (t % 8) / 2;
 		const k = Math.floor(u);
 		const f = smoothstep(0, 0.6, u - k);
 		const a = ((phi + 90 * (k + f)) * Math.PI) / 180;
-		return { x: CX + r * U * Math.cos(a), y: CY - r * U * Math.sin(a) };
+		return { x: CX + rho * Math.cos(a), y: CY - rho * Math.sin(a) };
 	});
 	/** Arc of radius `rad` (stage units) from angle a0 to a1 (degrees, anticlockwise). */
 	function arc(rad: number, a0: number, a1: number) {
@@ -127,6 +132,13 @@
 			anchor: Math.abs(n.x) < 0.2 ? 'middle' : n.x > 0 ? 'start' : 'end'
 		};
 	});
+
+	// The axis names fade out while a point (z, or its quarter turns) sits on them.
+	const clearOf = (x: number, y: number) => {
+		const pts = w.times > 0.5 ? turns.map((p) => ({ x: sx(p.re), y: sy(p.im) })) : [Z];
+		const d = Math.min(...pts.map((p) => Math.hypot(p.x - x, p.y - y)));
+		return 0.1 + 0.9 * smoothstep(30, 50, hasZ > 0.5 ? d : 99);
+	};
 
 	// Inviting pulse on the handle at the start of a step.
 	const pulse = $derived(reduced ? 0 : (1 - smoothstep(2.5, 4, t)) * (0.5 + 0.5 * Math.sin(t * 5)));
@@ -216,7 +228,11 @@
 		})}
 	{/each}
 	{@render txt(CX - 8, CY + 20, '0', 12, { anchor: 'end', muted: true })}
-	{@render txt(CX + E, CY - 10, 'real', 12, { anchor: 'end', muted: true })}
+	{@render txt(CX + E, CY - 10, 'real', 12, {
+		anchor: 'end',
+		muted: true,
+		opacity: clearOf(CX + E - 14, CY - 14)
+	})}
 
 	<!-- the imaginary axis, grown from 0 -->
 	<line
@@ -236,7 +252,10 @@
 				opacity: Math.abs(g) === 1 ? 1 - w.i : 1
 			})}
 		{/each}
-		{@render txt(CX + 10, CY - E + 8, 'imaginary', 12, { muted: true })}
+		{@render txt(CX + 10, CY - E + 8, 'imaginary', 12, {
+			muted: true,
+			opacity: clearOf(CX + 34, CY - E + 4)
+		})}
 	</g>
 
 	<!-- ============ phase i: 1, i, −1, −i ============ -->
@@ -401,11 +420,13 @@
 					stroke-dasharray="2 5"
 					opacity="0.6"
 				/>
+			</g>
+			<g>
 				{#each [0, 1, 2, 3] as k (k)}
 					<path
-						d={arc(r * U, phi + 90 * k + 9, phi + 90 * (k + 1) - 9)}
+						d={arc(rho, phi + 90 * k + 9, phi + 90 * (k + 1) - 9)}
 						fill="none"
-						stroke="var(--explainer-accent)"
+						stroke="var(--cx-turn)"
 						stroke-width="2"
 						marker-end="url(#arrowhead)"
 						opacity={k === 0 ? 1 : 0.45}
@@ -442,17 +463,16 @@
 						s * Math.sin(a)} {CY - s * Math.sin(a) - s * Math.cos(a)} L{CX - s * Math.sin(a)} {CY -
 						s * Math.cos(a)}"
 					fill="none"
-					stroke="var(--explainer-accent)"
+					stroke="var(--cx-turn)"
 					stroke-width="1.5"
 				/>
 			{/if}
 			{#if !reduced}
 				<circle
-					clip-path="url(#plane-clip)"
 					cx={marker.x}
 					cy={marker.y}
 					r="5"
-					fill="var(--explainer-accent)"
+					fill="var(--cx-turn)"
 					stroke="var(--stage-bg)"
 					stroke-width="2"
 				/>
@@ -477,7 +497,7 @@
 			{@render txt(PX, 418, '(a, b)  →  (−b, a)', 16, { weight: 600 })}
 			{@render txt(PX, 440, 'what ×i does to every point', 12, { muted: true })}
 			{@render txt(PX, 486, 'Two quarter turns make a half turn:', 13)}
-			{@render txt(PX, 508, 'i² = −1', 16, { weight: 700, color: 'var(--explainer-accent)' })}
+			{@render txt(PX, 508, 'i² = −1', 16, { weight: 700, color: 'var(--cx-turn)' })}
 		</g>
 	{/if}
 
@@ -522,17 +542,12 @@
 					stroke-width="2.6"
 					stroke-linecap="round"
 				/>
-				<path
-					d={arc(arcR, 0, phi)}
-					fill="none"
-					stroke="var(--explainer-accent)"
-					stroke-width="2.2"
-				/>
+				<path d={arc(arcR, 0, phi)} fill="none" stroke="var(--cx-turn)" stroke-width="2.2" />
 				{#if phi > 14}
 					{@render txt(phiLabel.x, phiLabel.y, 'φ', 15, {
 						anchor: 'middle',
 						weight: 700,
-						color: 'var(--explainer-accent)'
+						color: 'var(--cx-turn)'
 					})}
 				{/if}
 				{#if r >= 0.7}
@@ -546,7 +561,7 @@
 						cx={unitPt.x}
 						cy={unitPt.y}
 						r="5"
-						fill="var(--explainer-accent)"
+						fill="var(--cx-turn)"
 						stroke="var(--stage-bg)"
 						stroke-width="1.5"
 					/>
@@ -568,7 +583,7 @@
 			{@render txt(PX, 250, 'angle from the positive real axis', 12, { muted: true })}
 			{@render txt(PX, 276, r > 0 ? `φ ≈ ${num(phi, 1)}°` : 'φ: none (0 has no direction)', 16, {
 				weight: 600,
-				color: 'var(--explainer-accent)'
+				color: 'var(--cx-turn)'
 			})}
 			{@render txt(PX, 330, 'shrunk to length 1, on the unit circle:', 12, { muted: true })}
 			{@render txt(

@@ -101,7 +101,7 @@ A topic is done when:
 - [ ] calculus
 - [ ] linear-transformations
 - [ ] tensors
-- [ ] complex-numbers
+- [x] complex-numbers
 - [ ] fourier-transform
 - [x] bayes-theorem
 - [x] central-limit-theorem

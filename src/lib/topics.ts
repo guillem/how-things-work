@@ -228,7 +228,7 @@ const explainers: Explainer[] = [
 		title: "Complex numbers and Euler's formula",
 		summary:
 			'Drag two points on the complex plane and watch their product turn and stretch, then follow eⁱᶿ round the unit circle.',
-		accent: '#0c8599',
+		accent: '#087f5b',
 		steps: 8,
 		minutes: 12
 	}

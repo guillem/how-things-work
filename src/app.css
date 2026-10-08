@@ -371,6 +371,8 @@ kbd {
 	--cx-prod: #7048e8;
 	--cx-re: #1c7ed6;
 	--cx-im: #d6336c;
+	/* the turns: angle arcs, θ and e^(iθ) (the topic's accent, lighter in dark mode) */
+	--cx-turn: #087f5b;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -534,4 +536,5 @@ kbd {
 	--cx-prod: #9775fa;
 	--cx-re: #4dabf7;
 	--cx-im: #f06595;
+	--cx-turn: #20c997;
 }

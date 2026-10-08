@@ -124,17 +124,52 @@
 	// Inviting pulse on the handles at the start of the step.
 	const pulse = $derived(reduced ? 0 : (1 - smoothstep(2.5, 4, t)) * (0.5 + 0.5 * Math.sin(t * 5)));
 
-	// Labels of the points sit outside them, away from 0.
-	const outside = (p: Complex, d = 22) => {
-		const len = abs(p) || 1;
-		return { x: sx(p.re) + (d * p.re) / len, y: sy(p.im) - (d * p.im) / len + 5 };
-	};
-	// Near the top or bottom edge the product's name goes beside it instead.
-	const zwLabel = $derived.by(() => {
-		const o = outside(zw, 24);
-		if (o.y >= 34 && o.y <= 590) return o;
-		return { x: ZW.x + (zw.re >= 0 ? 26 : -26), y: ZW.y + 6 };
+	// Labels of the points sit outside them, away from 0 — unless that spot is taken
+	// (by another point, the dots at 0 and 1, an earlier label, or the stage edge):
+	// then the next spot round the point is tried, turning either way. This keeps
+	// "z", "w" and "zw" apart when the points crowd together (z = w, short lengths).
+	type Spot = { x: number; y: number; cx: number; cy: number };
+	function place(
+		P: Point,
+		p: Complex,
+		d: number,
+		width: number,
+		avoid: Point[],
+		taken: Spot[],
+		middle = false
+	) {
+		const base = abs(p) > 0.05 ? Math.atan2(-p.im, p.re) : -Math.PI / 4;
+		let first: Spot | null = null;
+		for (const turn of [0, 50, -50, 100, -100, 150, -150, 180]) {
+			const a = base + (turn * Math.PI) / 180;
+			const x = P.x + d * Math.cos(a);
+			const y = P.y + d * Math.sin(a) + 5;
+			// Centre of the text: centred ("zw"), or the handles' names, which start
+			// there when right of the point and end there when left of it.
+			const cx = middle ? x : x + (x >= P.x ? width / 2 : -width / 2);
+			const spot = { x, y, cx, cy: y - 5 };
+			first ??= spot;
+			const free =
+				cx - width / 2 > 20 &&
+				cx + width / 2 < 590 &&
+				spot.cy > 26 &&
+				spot.cy < 584 &&
+				avoid.every((q) => Math.hypot(q.x - cx, q.y - spot.cy) > 15 + width / 3) &&
+				taken.every((q) => Math.abs(q.cx - cx) > (width + 22) / 2 || Math.abs(q.cy - spot.cy) > 18);
+			if (free) return spot;
+		}
+		return first as Spot;
+	}
+	const labels = $derived.by(() => {
+		const origin = { x: CX, y: CY };
+		const zwL = place(ZW, zw, 24, 22, [Z, W, origin, one], [], true);
+		const wL = place(W, w, 20, 12, [Z, ZW, origin, one], [zwL]);
+		const zL = place(Z, z, 20, 12, [W, ZW, origin, one], [zwL, wL]);
+		return { zw: zwL, w: wL, z: zL };
 	});
+	// When z and w (nearly) coincide, z is drawn as a wider disc under w, so a ring of
+	// z's colour shows round w. Drag w away (or use z's sliders) to separate them.
+	const together = $derived(Math.hypot(Z.x - W.x, Z.y - W.y) < 20);
 
 	const lenText = $derived(`${num(zLen)} × ${num(wLen)} = ${num(zLen * wLen)}`);
 	const angText = $derived(`${zAng}° + ${wAng}° = ${sum}°`);
@@ -292,7 +327,7 @@
 		stroke="var(--stage-bg)"
 		stroke-width="2.5"
 	/>
-	{@render txt(zwLabel.x, zwLabel.y, 'zw', 17, {
+	{@render txt(labels.zw.x, labels.zw.y, 'zw', 17, {
 		anchor: 'middle',
 		weight: 700,
 		italic: true,
@@ -314,7 +349,7 @@
 		{/each}
 	{/if}
 	{#each [{ id: 'z', p: z, P: Z, len: zLen, ang: zAng, color: 'var(--cx-z)', m: zMove }, { id: 'w', p: w, P: W, len: wLen, ang: wAng, color: 'var(--cx-w)', m: wMove }] as h (h.id)}
-		{@const o = outside(h.p, 20)}
+		{@const o = h.id === 'z' ? labels.z : labels.w}
 		<PointHandle
 			x={h.P.x}
 			y={h.P.y}
@@ -322,6 +357,7 @@
 			value={h.ang}
 			valuetext="{h.id}: length {num(h.len)}, angle {h.ang} degrees"
 			color={h.color}
+			r={h.id === 'z' && together ? 14 : 9}
 			name={h.id}
 			nameDx={o.x - h.P.x}
 			nameDy={o.y - h.P.y}
@@ -348,7 +384,7 @@
 		{@render txt(PX, 384, 'angles add', 13, { muted: true })}
 		{@render txt(PX, 410, angText, 18, { weight: 700 })}
 		{#if turnsNote}
-			{@render txt(PX, 432, turnsNote, 12, { color: 'var(--explainer-accent)' })}
+			{@render txt(PX, 432, turnsNote, 12, { color: 'var(--cx-turn)' })}
 		{/if}
 
 		<line x1={PX} x2={PX + 320} y1={458} y2={458} stroke="var(--border)" />

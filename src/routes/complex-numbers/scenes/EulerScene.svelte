@@ -9,8 +9,9 @@
 	 *   compound — the path 1, (1 + iθ/n), (1 + iθ/n)², … (1 + iθ/n)ⁿ, drawn
 	 *              step by step (complete by t ≈ 2.2 s, and at once under
 	 *              reduced motion); the view zooms out when the path is big
-	 *   identity — θ sweeps from 0 to π by itself (done by t = 2.4 s) and
-	 *              e^(iπ) lands on −1; the summary on the right
+	 *   identity — θ sweeps from 0 to π by itself (done by t = 2.0 s) and
+	 *              e^(iπ) lands on −1; only then is it named, on the
+	 *              plane and at the top of the summary on the right
 	 *
 	 * e^(iθ) comes from the model's power series (`expi`), not from cos/sin;
 	 * the compounding path from `compound`. θ lives in `params.theta`
@@ -72,7 +73,9 @@
 	// ---- θ -----------------------------------------------------------------------------
 	const sliderTheta = $derived(clamp(Math.round(Number(params.theta ?? 60)), 0, 360));
 	// In the identity step θ sweeps from 0 to 180° by itself.
-	const sweep = $derived(180 * smoothstep(0.4, 2.4, tt));
+	const sweep = $derived(180 * smoothstep(0.4, 2.0, tt));
+	// e^(iπ) = −1 is named once the point has arrived (complete before the reduced frame at 2.5 s).
+	const arrived = $derived(smoothstep(2.0, 2.3, tt));
 	const thetaDeg = $derived(phase === 'identity' ? sweep : sliderTheta);
 	const th = $derived(toRad(thetaDeg));
 	const E = $derived(expi(th)); // e^(iθ) from the power series
@@ -113,6 +116,9 @@
 	// ---- the point and its parts ------------------------------------------------------------
 	const P = $derived({ x: sx(E.re), y: sy(E.im) });
 	const clean = (v: number) => (Math.abs(v) < 1e-9 ? 0 : v);
+	/** a + bi with both parts to 2 decimals, as in the Euler step: "0.63 + 1.00i". */
+	const parts = (v: { re: number; im: number }) =>
+		`${num(clean(v.re))} + ${num(clean(v.im))}i`.replace('+ −', '− ');
 	const cosV = $derived(clean(E.re));
 	const sinV = $derived(clean(E.im));
 
@@ -179,11 +185,19 @@
 	const thetaText = $derived(
 		`θ = ${Math.round(thetaDeg)}° ${radText(Math.round(thetaDeg)).includes('π') || thetaDeg === 0 ? '=' : '≈'} ${radText(Math.round(thetaDeg))} rad`
 	);
-	// The pill naming the point sits outside the circle.
-	// Near the real axis it goes above the axis, clear of the axis labels.
-	const pointLabel = $derived({
-		x: CX + (U + 34) * Math.cos(th),
-		y: CY - (U + 26) * Math.sin(th) + 5 - (Math.abs(Math.sin(th)) < 0.3 ? 16 : 0)
+	// The name of the point sits outside the circle. Near the real axis it goes above
+	// the axis, and near the imaginary axis to its right: the tick labels are below and
+	// to the left. While the compounding path is shown, it moves a little anticlockwise,
+	// away from the path (which always ends behind θ, at a smaller angle).
+	const pointLabel = $derived.by(() => {
+		const a = th + toRad(12) * w.compound;
+		const nearIm = Math.abs(Math.cos(a)) < 0.3;
+		const x = CX + (U + 34) * Math.cos(a);
+		return {
+			x: nearIm ? Math.max(x, CX + 14) : x,
+			y: CY - (U + 26) * Math.sin(a) + 5 - (Math.abs(Math.sin(a)) < 0.3 ? 16 : 0),
+			anchor: nearIm || Math.cos(a) >= 0 ? 'start' : 'end'
+		};
 	});
 	// The drawn axes: fixed lengths (the circle shrinks inside them when zoomed out).
 	const ext = 240;
@@ -328,17 +342,17 @@
 			<path
 				d={sweepD}
 				fill="none"
-				stroke="var(--explainer-accent)"
+				stroke="var(--cx-turn)"
 				stroke-width="4"
 				stroke-linecap="round"
 				opacity="0.55"
 			/>
 			<circle cx={sx(1)} cy={CY} r="5" fill="var(--stage-ink)" />
 			{@render ex(sx(1) + 10, CY + 24, 'i·0', ' = 1', 14, {})}
-			<g opacity={smoothstep(2.2, 2.5, tt)}>
+			<g opacity={arrived}>
 				{@render ex(sx(-1) - 12, CY + 30, 'iπ', ' = −1', 18, {
 					anchor: 'end',
-					color: 'var(--explainer-accent)',
+					color: 'var(--cx-turn)',
 					weight: 700
 				})}
 			</g>
@@ -356,12 +370,12 @@
 		stroke-linecap="round"
 		opacity={1 - 0.5 * w.compound}
 	/>
-	<path d={arcD} fill="none" stroke="var(--explainer-accent)" stroke-width="2.2" />
+	<path d={arcD} fill="none" stroke="var(--cx-turn)" stroke-width="2.2" />
 	{#if thetaDeg > 18}
 		{@render txt(thetaLabel.x, thetaLabel.y, 'θ', 15, {
 			anchor: 'middle',
 			weight: 700,
-			color: 'var(--explainer-accent)'
+			color: 'var(--cx-turn)'
 		})}
 	{/if}
 	<circle cx={CX} cy={CY} r="3.5" fill="var(--stage-ink)" />
@@ -371,7 +385,7 @@
 			cy={P.y}
 			r={16 + 10 * pulse}
 			fill="none"
-			stroke="var(--explainer-accent)"
+			stroke="var(--cx-turn)"
 			stroke-width="2"
 			opacity={0.5 * pulse}
 		/>
@@ -381,7 +395,7 @@
 			cx={P.x}
 			cy={P.y}
 			r="9"
-			fill="var(--explainer-accent)"
+			fill="var(--cx-turn)"
 			stroke="var(--stage-bg)"
 			stroke-width="2.5"
 		/>
@@ -390,6 +404,7 @@
 			x={P.x}
 			y={P.y}
 			label="The point e to the i theta"
+			color="var(--cx-turn)"
 			value={sliderTheta}
 			min={0}
 			max={360}
@@ -400,8 +415,8 @@
 	{/if}
 	{#if w.identity < 0.99}
 		{@render ex(pointLabel.x, pointLabel.y, 'iθ', '', 16, {
-			anchor: Math.cos(th) >= 0 ? 'start' : 'end',
-			color: 'var(--explainer-accent)',
+			anchor: pointLabel.anchor,
+			color: 'var(--cx-turn)',
 			weight: 700,
 			opacity: 1 - w.identity
 		})}
@@ -500,7 +515,7 @@
 			)}
 
 			{@render txt(PX, 240, `after ${n} step${n === 1 ? '' : 's'}`, 13, { muted: true })}
-			{@render txt(PX, 266, `(1 + iθ/n)ⁿ ≈ ${fmt(end)}`, 17, {
+			{@render txt(PX, 266, `(1 + iθ/n)ⁿ ≈ ${parts(end)}`, 17, {
 				weight: 700,
 				color: 'var(--cx-prod)'
 			})}
@@ -509,8 +524,8 @@
 			})}
 
 			{@render txt(PX, 344, 'the point at angle θ', 13, { muted: true })}
-			{@render ex(PX, 370, 'iθ', ` ≈ ${fmt(E)}`, 17, {
-				color: 'var(--explainer-accent)',
+			{@render ex(PX, 370, 'iθ', ` ≈ ${parts(E)}`, 17, {
+				color: 'var(--cx-turn)',
 				weight: 700
 			})}
 
@@ -532,8 +547,10 @@
 
 	{#if w.identity > 0.01}
 		<g opacity={panel(w.identity)}>
-			{@render ex(PX, 74, 'iπ', ' = −1', 34, { weight: 700, color: 'var(--explainer-accent)' })}
-			{@render ex(PX, 116, 'iπ', ' + 1 = 0', 20, { weight: 600 })}
+			<g opacity={arrived}>
+				{@render ex(PX, 74, 'iπ', ' = −1', 34, { weight: 700, color: 'var(--cx-turn)' })}
+				{@render ex(PX, 116, 'iπ', ' + 1 = 0', 20, { weight: 600 })}
+			</g>
 			{@render txt(PX, 140, 'half a turn round the unit circle', 13, { muted: true })}
 
 			<line x1={PX} x2={PX + PW - 20} y1={176} y2={176} stroke="var(--border)" />
