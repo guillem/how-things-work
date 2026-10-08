@@ -139,7 +139,24 @@
 		4: { x: 310, y: 354 }
 	};
 	const R = 112;
-	const BIG = { x: 310, y: 300, r: 152 };
+	const BIG = { x: 310, y: 296, r: 166 };
+	/**
+	 * Parity phase: the five bits evenly round the circle (keyed by the Venn
+	 * position each one moves to when the three circles appear), leaving the
+	 * centre for the count of 1s.
+	 */
+	const PENT: Record<number, { x: number; y: number }> = Object.fromEntries(
+		[3, 5, 6, 7, 4].map((p, i) => {
+			const a = ((-72 + i * 72) * Math.PI) / 180;
+			return [p, { x: BIG.x + 104 * Math.sin(a), y: BIG.y - 6 - 104 * Math.cos(a) }];
+		})
+	);
+	/** Where bit `pos` (Venn numbering) sits at phase blend m (0 parity, 1 Hamming). */
+	const place = (pos: number, m: number) => {
+		const a = PENT[pos] ?? SPOT[pos];
+		const b = SPOT[pos];
+		return { x: a.x + (b.x - a.x) * m, y: a.y + (b.y - a.y) * m };
+	};
 	/** Where each position sits: in the regions of the circles that cover it. */
 	const SPOT: Record<number, { x: number; y: number }> = {
 		1: { x: 198, y: 220 },
@@ -189,13 +206,13 @@
 			? PARITY_POS.map((vp, i) => ({
 					key: `b${i}`,
 					pos: i + 1,
-					...SPOT[vp],
+					...place(vp, mix.current),
 					name: i < 4 ? `d${i + 1}` : 'P'
 				}))
 			: [1, 2, 3, 4, 5, 6, 7].map((p) => ({
 					key: `b${p}`,
 					pos: p,
-					...SPOT[p],
+					...place(p, mix.current),
 					name: isCheckPos(p) ? `check ${p}` : `d${DATA_POS.indexOf(p) + 1}`
 				}))
 	);
@@ -299,17 +316,25 @@
 				stroke={shown ? statusColor(parityPass) : 'var(--stage-line)'}
 				stroke-width={activeCheck === 0 ? 3 : 2}
 			/>
-			{@render txt(BIG.x + BIG.r * 0.72, BIG.y - BIG.r * 0.78, 'parity check', 13, {
-				weight: 700
+			{@render txt(BIG.x + BIG.r * 0.74, BIG.y - BIG.r * 0.8, 'parity check', 14, {
+				weight: 700,
+				color: 'var(--ec-check)'
 			})}
+			<!-- the count, in the middle of the circle -->
 			{#if shown}
-				{@render txt(
-					BIG.x + BIG.r * 0.72,
-					BIG.y - BIG.r * 0.78 + 18,
-					parityPass ? `${word(parityOnes)} 1s: even ✓` : `${word(parityOnes)} 1s: odd ✗`,
-					12,
-					{ color: statusColor(parityPass), weight: 600 }
-				)}
+				{@render txt(BIG.x, BIG.y + 4, String(parityOnes), 30, {
+					anchor: 'middle',
+					weight: 700,
+					color: statusColor(parityPass)
+				})}
+				{@render txt(BIG.x, BIG.y + 24, parityPass ? '1s: even ✓' : '1s: odd ✗', 12, {
+					anchor: 'middle',
+					weight: 700,
+					color: statusColor(parityPass)
+				})}
+			{:else}
+				{@render txt(BIG.x, BIG.y + 4, '?', 30, { anchor: 'middle', weight: 700, muted: true })}
+				{@render txt(BIG.x, BIG.y + 24, 'counting 1s', 12, { anchor: 'middle', muted: true })}
 			{/if}
 		</g>
 	{/if}

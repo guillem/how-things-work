@@ -188,7 +188,7 @@ A topic is done when:
 
 **Information & Networks**
 - [ ] compression
-- [ ] error-correction
+- [x] error-correction
 - [ ] cryptography
 - [ ] wireless-signals
 - [ ] internet

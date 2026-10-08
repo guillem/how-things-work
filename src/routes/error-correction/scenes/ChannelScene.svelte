@@ -25,7 +25,14 @@
 	import { untrack } from 'svelte';
 	import { Axes, clamp, linePath, scale } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { charOkCoded, charOkPlain, sendCoded, sendPlain, type Transmission } from '../hamming';
+	import {
+		charOkCoded,
+		charOkPlain,
+		charToBits,
+		sendCoded,
+		sendPlain,
+		type Transmission
+	} from '../hamming';
 
 	let { step, t, params, reduced, playing }: StageProps = $props();
 
@@ -89,6 +96,16 @@
 			.filter((i) => i / sent <= arrived)
 			.map((i) => `M${(LX + ((i + 0.5) / sent) * STRIP_W).toFixed(1)} ${y}v14`)
 			.join('');
+
+	// ---- intro: a closer look at one letter -----------------------------------------------
+	/** The first damaged letter of the uncoded message (or the first letter if none is). */
+	const zoomI = $derived(Math.max(0, plain.intact.indexOf(false)));
+	const zoomDamaged = $derived(!plain.intact[zoomI]);
+	const zoomSent = $derived(charToBits(MESSAGE[zoomI]));
+	const zoomGot = $derived(charToBits(plain.text[zoomI]));
+	const zoomHere = $derived(zoomI < nArrived);
+	const ZX = LX + 150;
+	const ZW = 30;
 
 	const intactCount = (tx: Transmission) => tx.intact.filter(Boolean).length;
 	const pct = (v: number) => `${Math.round(v * 100)}%`;
@@ -238,10 +255,70 @@
 
 	{#if showCoded.current < 0.99}
 		<g opacity={1 - showCoded.current}>
-			{@render txt(LX, 330, 'The receiver gets these letters and nothing else:', 13, {
+			<!-- one letter, bit by bit: where the coded lane will appear -->
+			{@render txt(LX, 292, 'A closer look at one letter: 8 bits', 13, { weight: 700 })}
+			{#if zoomHere}
+				<rect
+					x={charX(zoomI) - 1}
+					y={lanes[0].y + 62 + lineOf(zoomI) * 30 - 21}
+					width={CW + 2}
+					height="30"
+					rx="5"
+					fill="none"
+					stroke="var(--stage-ink)"
+					stroke-width="1.5"
+				/>
+			{/if}
+			{#each [0, 1] as row (row)}
+				{@const y = 322 + row * 46}
+				{@const bits = row === 0 ? zoomSent : zoomGot}
+				{@const ch = row === 0 ? MESSAGE[zoomI] : plain.text[zoomI]}
+				{@const show = row === 0 || zoomHere}
+				{@render txt(LX, y + 6, row === 0 ? 'sent' : 'received', 12, { muted: true, weight: 600 })}
+				{@render txt(LX + 110, y + 8, show ? `“${shown(ch) || '␣'}”` : '', 20, {
+					anchor: 'middle',
+					weight: 700,
+					color: row === 1 && zoomDamaged ? 'var(--ec-bad)' : undefined
+				})}
+				{#each bits as b, i (i)}
+					{@const bad = row === 1 && b !== zoomSent[i]}
+					{#if show}
+						<rect
+							x={ZX + i * (ZW + 4)}
+							y={y - 14}
+							width={ZW}
+							height="28"
+							rx="5"
+							fill={bad ? 'var(--ec-bad)' : 'var(--ec-plain)'}
+							fill-opacity={bad ? 0.2 : 0.14}
+							stroke={bad ? 'var(--ec-bad)' : 'var(--ec-plain)'}
+							stroke-width={bad ? 2.5 : 1}
+							stroke-dasharray={bad ? '5 3' : undefined}
+						/>
+						{@render txt(ZX + i * (ZW + 4) + ZW / 2, y + 6, String(b), 15, {
+							anchor: 'middle',
+							weight: 700,
+							color: bad ? 'var(--ec-bad)' : undefined,
+							halo: false
+						})}
+					{/if}
+				{/each}
+			{/each}
+			{@render txt(
+				LX,
+				434,
+				!zoomHere
+					? ''
+					: zoomDamaged
+						? `${zoomSent.filter((b, i) => b !== zoomGot[i]).length === 1 ? 'One flipped bit' : 'A few flipped bits'} and “${MESSAGE[zoomI]}” becomes a different character.`
+						: 'No bit flipped: every letter arrived as sent.',
+				13,
+				{ weight: 600 }
+			)}
+			{@render txt(LX, 470, 'The receiver gets these letters and nothing else:', 13, {
 				muted: true
 			})}
-			{@render txt(LX, 352, 'it cannot tell which ones are wrong, let alone fix them.', 13, {
+			{@render txt(LX, 492, 'it cannot tell which ones are wrong, let alone fix them.', 13, {
 				muted: true
 			})}
 		</g>
