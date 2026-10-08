@@ -239,6 +239,11 @@ kbd {
 	--sky-orbit: #b7bcc5;
 	--sky-space: #f1f3f7;
 	--sky-night-solid: #1f2b4d;
+	/* learning from data: training and test examples, the model, the truth */
+	--fit-train: #1c7ed6;
+	--fit-test: #e8590c;
+	--fit-model: #7048e8;
+	--fit-truth: #2f9e44;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -286,4 +291,8 @@ kbd {
 	--sky-orbit: #50565f;
 	--sky-space: #101217;
 	--sky-night-solid: #1b2240;
+	--fit-train: #4dabf7;
+	--fit-test: #ff922b;
+	--fit-model: #9775fa;
+	--fit-truth: #51cf66;
 }
