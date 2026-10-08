@@ -283,6 +283,18 @@ kbd {
 	--bit-red: #e03131;
 	--bit-green: #2f9e44;
 	--bit-blue: #1971c2;
+	/* atmosphere: warm and cold air, sunlight absorbed vs heat emitted, land, sea, wind, highs, lows, cloud */
+	--atm-warm: #e8590c;
+	--atm-cold: #1c7ed6;
+	--atm-sun: #f59f00;
+	--atm-emit: #c2255c;
+	--atm-ocean: #a5d8ff;
+	--atm-land: #b2d3a8;
+	--atm-wind: #343a40;
+	--atm-high: #1971c2;
+	--atm-low: #e03131;
+	--atm-cloud: #dee2e6;
+	--atm-space: #f1f3f7;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -369,4 +381,15 @@ kbd {
 	--bit-red: #ff6b6b;
 	--bit-green: #51cf66;
 	--bit-blue: #4dabf7;
+	--atm-warm: #ff922b;
+	--atm-cold: #4dabf7;
+	--atm-sun: #ffd43b;
+	--atm-emit: #f06595;
+	--atm-ocean: #1d3a57;
+	--atm-land: #2f4a2b;
+	--atm-wind: #e9ecef;
+	--atm-high: #4dabf7;
+	--atm-low: #ff6b6b;
+	--atm-cloud: #495057;
+	--atm-space: #101217;
 }
