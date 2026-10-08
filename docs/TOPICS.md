@@ -175,7 +175,7 @@ A topic is done when:
 - [ ] exoplanets
 
 **Computing**
-- [ ] binary
+- [x] binary
 - [ ] logic-gates
 - [ ] transistors-chipmaking
 - [ ] cpu
