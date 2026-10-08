@@ -186,6 +186,15 @@ const explainers: Explainer[] = [
 		accent: '#c92a2a',
 		steps: 5,
 		minutes: 8
+	},
+	{
+		slug: 'oscillations-resonance',
+		title: 'Why things wobble, and how to make them wobble more',
+		summary:
+			'Bounce a mass on a spring, swing a pendulum, then push them in time and watch a small push build a huge swing — resonance.',
+		accent: '#1971c2',
+		steps: 5,
+		minutes: 9
 	}
 ];
 
