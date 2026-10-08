@@ -204,6 +204,15 @@ const explainers: Explainer[] = [
 		accent: '#f08c00',
 		steps: 5,
 		minutes: 10
+	},
+	{
+		slug: 'central-limit-theorem',
+		title: 'Why the bell curve is everywhere',
+		summary:
+			'Drop balls through a Galton board, then average samples from any distribution you like and watch the averages pile up into the same bell curve.',
+		accent: '#c2255c',
+		steps: 4,
+		minutes: 9
 	}
 ];
 
