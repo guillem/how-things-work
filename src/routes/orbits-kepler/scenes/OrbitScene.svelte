@@ -155,7 +155,8 @@
 	const since = $derived.by(() => {
 		const key = `${phase}|${speed}|${dirDeg}|${neighbour}|${pressed}`;
 		if (key !== memo.key || t < memo.start) memo = { key, start: memo.key === '' ? 0 : t };
-		return t - memo.start;
+		// Never negative, even if the clock starts a hair below zero.
+		return Math.max(0, t - memo.start);
 	});
 
 	// The overlay fades in on every step change (the orbit itself redraws at once).
@@ -188,19 +189,26 @@
 		if (bound && !long) {
 			const lap = Math.floor(years / el.period);
 			const u = years - lap * el.period;
-			return { i: Math.min(n - 1, u / dt), full: lap >= 1 };
+			return { i: clampIndex(u / dt, n), full: lap >= 1 };
 		}
 		// Escapes and long orbits: run until shortly after leaving the frame
 		// (or to the end of the replay), hold, and start again.
 		const endYears = exit > 0 ? Math.min(loop, exit * dt + 0.5) : loop;
 		const span = endYears + 2 / secPerYear;
 		const u = years % span;
-		return { i: Math.min(u, endYears) / dt, full: false };
+		return { i: clampIndex(Math.min(u, endYears) / dt, n), full: false };
 	});
 
+	/** A fractional sample index kept within a track of `n` samples (0 if not finite). */
+	function clampIndex(i: number, n: number) {
+		return Number.isFinite(i) ? Math.max(0, Math.min(n - 1, i)) : 0;
+	}
+	/** Linear interpolation between samples at a fractional index, clamped to the track. */
 	const at = (arr: Float64Array, i: number) => {
-		const k = Math.min(arr.length - 2, Math.floor(i));
-		const f = i - k;
+		if (arr.length < 2) return arr[0] ?? 0;
+		const j = clampIndex(i, arr.length);
+		const k = Math.min(arr.length - 2, Math.floor(j));
+		const f = j - k;
 		return arr[k] * (1 - f) + arr[k + 1] * f;
 	};
 	const planet = $derived({
@@ -343,12 +351,12 @@
 		if (reduced) return two.n - 1;
 		const span = TWO_YEARS + 3 / TWO_SEC_PER_YEAR; // hold 3 s at the end
 		const years = (since / TWO_SEC_PER_YEAR) % span;
-		return Math.min(two.n - 1, years / TWO_SAMPLE);
+		return clampIndex(years / TWO_SAMPLE, two.n);
 	});
 	const twoView = $derived.by(() => {
 		if (!two) return null;
 		const { track } = two;
-		const i = twoI;
+		const i = clampIndex(twoI, two.n);
 		const k = Math.floor(i);
 		const back = Math.round(TRAIL_YEARS / TWO_SAMPLE);
 		let d = '';
