@@ -787,6 +787,21 @@
 				stroke-width="0.8"
 			/>
 		{/each}
+	{:else if slug === 'electromagnetism'}
+		<!-- a + and a − charge with the field lines running between them -->
+		{#each [-34, -16, 0, 16, 34] as k (k)}
+			<path
+				d="M62 {60 + Math.sign(k) * 4} Q100 {60 + k * 1.6} 138 {60 + Math.sign(k) * 4}"
+				fill="none"
+				stroke={accent}
+				stroke-width="1.6"
+				opacity={k === 0 ? 0.9 : 0.6}
+			/>
+		{/each}
+		<path d="M48 60 H18 M152 60 H182" stroke={accent} stroke-width="1.6" opacity="0.4" />
+		<circle cx="56" cy="60" r="12" fill="#e03131" />
+		<circle cx="144" cy="60" r="12" fill="#1c7ed6" />
+		<path d="M50 60 H62 M56 54 V66 M138 60 H150" stroke="#fff" stroke-width="2.4" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

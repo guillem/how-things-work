@@ -222,6 +222,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 6,
 		minutes: 12
+	},
+	{
+		slug: 'electromagnetism',
+		title: 'Electricity, magnetism and light',
+		summary:
+			'Place charges and see the field they spread around them, turn a current into a magnet, push a magnet through a coil to make a current — and find out why light is electricity and magnetism keeping each other going.',
+		accent: '#6741d9',
+		steps: 7,
+		minutes: 14
 	}
 ];
 
