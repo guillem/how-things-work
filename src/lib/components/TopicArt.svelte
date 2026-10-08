@@ -787,6 +787,42 @@
 				stroke-width="0.8"
 			/>
 		{/each}
+	{:else if slug === 'error-correction'}
+		<!-- three overlapping parity circles; one flipped bit where two of them fail -->
+		{#each [{ x: 82, y: 50, bad: true }, { x: 118, y: 50, bad: false }, { x: 100, y: 81, bad: true }] as c (c.x + c.y)}
+			<circle
+				cx={c.x}
+				cy={c.y}
+				r="34"
+				fill={accent}
+				fill-opacity="0.08"
+				stroke={c.bad ? accent : 'currentColor'}
+				stroke-opacity={c.bad ? 1 : 0.45}
+				stroke-width="2"
+			/>
+		{/each}
+		{#each [{ x: 66, y: 42, on: 0 }, { x: 134, y: 42, on: 1 }, { x: 100, y: 38, on: 1 }, { x: 100, y: 100, on: 0 }, { x: 118, y: 72, on: 1 }, { x: 100, y: 62, on: 1 }] as b (b.x * 1000 + b.y)}
+			<circle
+				cx={b.x}
+				cy={b.y}
+				r="6"
+				fill={b.on ? 'currentColor' : 'none'}
+				fill-opacity="0.55"
+				stroke="currentColor"
+				stroke-opacity="0.55"
+				stroke-width="1.5"
+			/>
+		{/each}
+		<circle
+			cx="82"
+			cy="72"
+			r="10"
+			fill="none"
+			stroke={accent}
+			stroke-width="2"
+			stroke-dasharray="3 2"
+		/>
+		<circle cx="82" cy="72" r="6" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
