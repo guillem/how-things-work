@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-07 23:46 UTC.
+Last updated: 2026-10-08 00:15 UTC.
 
 ## How we work
 
@@ -43,21 +43,17 @@ Last updated: 2026-10-07 23:46 UTC.
      All 123 e2e tests pass on `topic/sun-earth-moon` (the stack so far).
 - Merge method: merge commits (`gh pr merge N --merge`), as for #1–#3.
 
-## Current development: learning-from-data
+## Current development
 
-Catalogue entry `learning-from-data` (AI, level 1, manipulate; related bayes-theorem).
-
-- [x] `fit.ts` (Legendre-basis least squares, MSE, error curves, generated data) + tests
-      `e2e/fit-model.e2e.ts`; `steps.ts` (8 steps); page, stage, registry, colours `--fit-*`, card.
-- [ ] FitScene (examples, line, error, flexible, overfit, test) and CurveScene (sweetspot,
-      moredata): being drafted by two agents (started 23:45 UTC).
-- [ ] One combined review (scenes + fact-check + whole page), fixes, checks, tick, time log.
-
-Next action: integrate the two scenes, review, then hand the batch to the user.
+None in progress: the batch is complete and waits for the user's validation. After that: PRs
+and merges in stack order, then the next wave-1 topics from BACKLOG (`pagerank`,
+`atmosphere-weather`, `atoms-periodic-table` — the last needs an element-data source decision).
 
 ## Open questions for the user
 
-- None right now. (Answered 2026-10-07: Claude opens and merges PRs after the user validates.)
+- learning-from-data: add "place points" (click to add) so it meets the catalogue entry, or
+  accept dragging only? (Claude opens and merges PRs after the user validates — answered
+  2026-10-07.)
 
 ## Resume
 
