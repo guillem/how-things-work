@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-07 21:58 UTC.
+Last updated: 2026-10-07 22:47 UTC.
 
 ## How we work
 
@@ -28,38 +28,42 @@ Last updated: 2026-10-07 21:58 UTC.
 
 ## Current state
 
-- `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps"), epidemics
-  (done, ticked), catalogue-driven index, status/backlog/time log. PRs #1 and #2 merged
-  2026-10-07.
-- In flight: **`topic/unit-circle`** (base `main`). State: done, pushed, awaiting the user's
-  validation.
+- `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps"), epidemics,
+  unit-circle (both done, ticked), catalogue-driven index, status/backlog/time log. PRs #1–#3
+  merged.
+- **Batch in progress (user away, asked 2026-10-07 ~22:05 UTC for 4–5 topics to validate
+  together).** Stacked branches, merge in this order after validation:
+  1. `topic/sorting` (base `main`) — **done**: reviewed, 91 e2e pass, ticked.
+  2. `topic/newtons-laws` (base `topic/sorting`), worked in the git worktree
+     `../hiw-newtons` (dev server on port 5174; `node_modules` is a symlink to the main
+     checkout's; `svelte-check` there shows one spurious `$types` error in `+layout.svelte` — run
+     final checks in the main checkout). Model, narrative, card done; scenes being drafted.
+  3. Next candidates: `sun-earth-moon`, `learning-from-data` (then `pagerank` if usage allows).
+     When a lower branch changes, rebase the ones above it (`git rebase topic/sorting` on
+     `topic/newtons-laws`, etc.).
 
-## Current development: unit-circle
+## Current development: sorting
 
-Catalogue entry `unit-circle` (Mathematics, level 1, manipulate, no prerequisites; leads on to
-complex-numbers, fourier-transform, waves-interference). First `manipulate` topic.
+Catalogue entry `sorting` (Computing, level 1, step, no prerequisites; leads on to
+turing-machines). First `step` topic.
 
 Plan (tick as done):
 
-- [x] Shared draggable point: `src/lib/draw/Handle.svelte` (role=slider, arrows/Shift/Home/End) + `src/lib/draw/pointer.ts` (`toSvg`, `startDrag`). Explainer: keys on a focused handle go
-      to the handle; stage is `role="group"`.
-- [x] `trig.ts` (exact values, π multiples, angle of a dragged point), `steps.ts` (9 steps:
-      angles / sine and cosine / from circle to wave), page, stage, registry, card art, colours
-      `--trig-sin` / `--trig-cos`.
-- [x] CircleScene (circle, coordinates, triangle, quadrants): written and screenshot-checked.
-- [x] e2e `e2e/unit-circle.e2e.ts`: drag sets the angle, keys, snap.
-- [x] RadiansScene (radians) and WaveScene (sine, cosine, periodic, oscillation): drafted by two
-      agents with their own screenshot matrices and Playwright interaction tests; committed.
-- [x] `StageProps.setParam`: scenes change controls through it (writing to `params` triggered
-      Svelte's ownership warning). Scene guide updated.
-- [x] Review round (3 agents: circle+radians, wave, whole page + fact-check); all findings
-      applied. Site-wide fixes on the way: glossary tooltips no longer widen the page; Page
-      Up/Down on handles.
-- [x] All checks pass (check, lint, 71 e2e). `unit-circle` ticked in TOPICS.md; time logged.
-- [ ] **Waiting for the user to validate the branch locally**; then PR + merge, then the next
-      topic (`sorting`, per BACKLOG).
+- [x] `sorts.ts`: bubble (early exit), insertion, merge (shown as moves into the merged part),
+      quick (last-element pivot); every comparison and move recorded; counts checked against the
+      textbook in `e2e/sorting-model.e2e.ts`.
+- [x] `playback.ts` (autoplay at a pace, or paused at a scrubbed position), `steps.ts` (10 steps),
+      page, stage, registry, colours `--sort-*`, card art.
+- [x] BarsScene (problem, bubble, insertion, merge, quick) with a draggable timeline (Handle);
+      e2e `e2e/sorting.e2e.ts` (finishes sorted, scrubber steps, freeze on pause).
+- [x] RaceScene (race) and GrowthScene (growth, bigo, inputs, machine): drafted by two agents,
+      committed; their wording corrections applied; playback re-anchors on speed changes.
+- [x] Review round (2 agents) and fixes; race stepping added (catalogue: "stepping or playing");
+      all checks pass; ticked; time logged.
+- [ ] Review round (adversarial reviewers + whole page/fact-check), all checks, tick, time log,
+      then ask the user to validate.
 
-Next action: user validates `topic/unit-circle`; then open the PR, merge, start `topic/sorting`.
+Next action (sorting): none — waits for the user's validation with the rest of the batch.
 
 ## Open questions for the user
 

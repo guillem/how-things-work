@@ -181,7 +181,7 @@ A topic is done when:
 - [ ] cpu
 - [ ] gpu
 - [ ] graphics-3d
-- [ ] sorting
+- [x] sorting
 - [ ] graph-search
 - [ ] turing-machines
 - [ ] quantum-computing

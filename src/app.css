@@ -210,6 +210,16 @@ kbd {
 	/* trigonometry: sine (height) and cosine (sideways position) */
 	--trig-sin: #d6336c;
 	--trig-cos: #1c7ed6;
+	/* sorting: bars, and the operations on them; one colour per algorithm */
+	--sort-bar: #b4bac2;
+	--sort-compare: #f08c00;
+	--sort-move: #e03131;
+	--sort-done: #2f9e44;
+	--sort-pivot: #7048e8;
+	--sort-bubble: #e8590c;
+	--sort-insertion: #c2255c;
+	--sort-merge: #1c7ed6;
+	--sort-quick: #7048e8;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -231,4 +241,13 @@ kbd {
 	--sir-field: #1d1e22;
 	--trig-sin: #f06595;
 	--trig-cos: #4dabf7;
+	--sort-bar: #5a6069;
+	--sort-compare: #ffa94d;
+	--sort-move: #ff6b6b;
+	--sort-done: #51cf66;
+	--sort-pivot: #9775fa;
+	--sort-bubble: #ff922b;
+	--sort-insertion: #f06595;
+	--sort-merge: #4dabf7;
+	--sort-quick: #9775fa;
 }
