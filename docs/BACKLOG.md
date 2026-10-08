@@ -28,7 +28,7 @@ checklist); this file is about **order and open work**. Where we are right now i
 | Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy        | done            |
 | Space                   | `sun-earth-moon`       | manipulate | 1     | No prerequisites, no data                                              | done            |
 | Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`    | done            |
-| Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning  | published, gaps |
+| Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning  | done            |
 | Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs`  | done            |
 | Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; element data from PubChem (user, 2026-10-08) |                 |
 | Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton        | done            |
