@@ -195,6 +195,15 @@ const explainers: Explainer[] = [
 		accent: '#1971c2',
 		steps: 5,
 		minutes: 9
+	},
+	{
+		slug: 'logic-gates',
+		title: 'How computers add: logic gates',
+		summary:
+			'Flip switches into AND, OR, NOT and XOR gates, wire them into a circuit with a live truth table, and build the adders at the heart of every processor.',
+		accent: '#f08c00',
+		steps: 5,
+		minutes: 10
 	}
 ];
 
