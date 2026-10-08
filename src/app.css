@@ -272,6 +272,14 @@ kbd {
 	--struct-ground-edge: #7f5539;
 	--struct-gap: #e7f5ff;
 	--struct-road: #495057;
+	/* binary: bits on/off, carries, sign, exponent and fraction fields */
+	--bit-on: #1971c2;
+	--bit-off: #e9ecef;
+	--bit-carry: #e8590c;
+	--bit-sign: #c2255c;
+	--bit-exponent: #2b8a3e;
+	--bit-fraction: #5f3dc4;
+	--bit-overflow: #e03131;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -348,4 +356,11 @@ kbd {
 	--struct-ground-edge: #8d6e52;
 	--struct-gap: #14212d;
 	--struct-road: #adb5bd;
+	--bit-on: #4dabf7;
+	--bit-off: #2b3036;
+	--bit-carry: #ff922b;
+	--bit-sign: #f06595;
+	--bit-exponent: #51cf66;
+	--bit-fraction: #9775fa;
+	--bit-overflow: #ff6b6b;
 }
