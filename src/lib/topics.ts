@@ -222,6 +222,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 6,
 		minutes: 12
+	},
+	{
+		slug: 'error-correction',
+		title: 'How error-correcting codes repair data',
+		summary:
+			'Flip bits in a coded message and watch three overlapping parity checks point straight at the damaged bit and repair it, then push a whole message through a noisy channel with and without the code.',
+		accent: '#0ca678',
+		steps: 8,
+		minutes: 12
 	}
 ];
 

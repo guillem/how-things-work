@@ -365,6 +365,14 @@ kbd {
 	--atom-f: #ae3ec9;
 	--atom-low: #e7f5ff;
 	--atom-high: #1864ab;
+	/* error-correction: data bits, check bits, passing/failing checks, noise flips, the repair, the two lanes */
+	--ec-data: #1971c2;
+	--ec-check: #9c36b5;
+	--ec-ok: #2f9e44;
+	--ec-bad: #e03131;
+	--ec-fix: #e67700;
+	--ec-plain: #868e96;
+	--ec-coded: #0ca678;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -523,4 +531,11 @@ kbd {
 	--atom-f: #da77f2;
 	--atom-low: #1a2733;
 	--atom-high: #74c0fc;
+	--ec-data: #4dabf7;
+	--ec-check: #da77f2;
+	--ec-ok: #51cf66;
+	--ec-bad: #ff6b6b;
+	--ec-fix: #ffa94d;
+	--ec-plain: #a6adb5;
+	--ec-coded: #38d9a9;
 }
