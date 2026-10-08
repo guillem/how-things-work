@@ -4,7 +4,6 @@
 	 * the catalogue. Topics that are not built yet are named but not linked.
 	 */
 	import { resolve } from '$app/paths';
-	import type { Path } from '$app/types';
 	import { dependents, entry } from '#lib/catalog.ts';
 	import { topicBySlug } from '#lib/topics.ts';
 
@@ -33,7 +32,10 @@
 						{@const built = topicBySlug.get(s)}
 						<li>
 							{#if built}
-								<a href={resolve(`/${s}/` as Path)} style:--link-accent={built.accent}>
+								<a
+									href={resolve(...([`/${s}/`] as Parameters<typeof resolve>))}
+									style:--link-accent={built.accent}
+								>
 									{built.title}
 								</a>
 							{:else}
