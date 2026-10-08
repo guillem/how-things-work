@@ -242,6 +242,11 @@
 		untrack(() => mOn.set(v, { duration: reduced ? 0 : 600 }));
 	});
 
+	/** Signed, with a true minus sign; `mV` digits after the point. */
+	const signed = (v: number, digits: number, u: string) => {
+		const r = v.toFixed(digits);
+		return `${Number(r) < 0 ? '−' : ''}${r.replace('-', '')} ${u}`;
+	};
 	const fmt = (v: number) => {
 		const a = Math.abs(v);
 		return `${v < 0 && a >= 0.05 ? '−' : ''}${a >= 10 ? a.toFixed(0) : a.toFixed(1)} ${unit}`;
@@ -253,7 +258,7 @@
 					{
 						id: 'e',
 						label: 'voltage induced',
-						value: `${(Math.abs(sim.emf) * 1000).toFixed(0)} mV`,
+						value: signed(sim.emf * 1000, 0, 'mV'),
 						color: 'var(--em-field)'
 					},
 					{ id: 'i', label: 'current', value: fmt(Iu), color: 'var(--em-current)' }
@@ -262,13 +267,13 @@
 					{
 						id: 'a',
 						label: 'current in coil A',
-						value: `${sim.I1.toFixed(2)} A`,
+						value: signed(sim.I1, 2, 'A'),
 						color: 'var(--em-drive)'
 					},
 					{
 						id: 'e',
 						label: 'voltage induced in B',
-						value: `${(Math.abs(sim.emf) * 1000).toFixed(2)} mV`,
+						value: signed(sim.emf * 1000, 2, 'mV'),
 						color: 'var(--em-field)'
 					},
 					{ id: 'i', label: 'current in B', value: fmt(Iu), color: 'var(--em-current)' }

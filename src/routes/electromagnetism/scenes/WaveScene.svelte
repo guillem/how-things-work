@@ -18,7 +18,7 @@
 	 * the oscillations scenes. Reduced motion: the frame at t = 12 s (wave
 	 * across the whole stage).
 	 */
-	import { wavelengthToColor } from '#lib/draw/index.ts';
+	import { smoothstep, wavelengthToColor } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { C, wavelength } from '../em';
 
@@ -54,9 +54,18 @@
 		if (now < memo.since) memo = { on: shaking, since: -Infinity };
 		return memo;
 	});
-	const on = (s: number) => s >= 0 && (s >= hist.since ? hist.on : !hist.on);
+	// Starting or stopping, the shaking eases in or out over EASE seconds instead of
+	// jumping (a jump in the charge's position would send a jump in the field).
+	const EASE = PERIOD * 0.75;
+	/** How strongly the charge is shaking (0…1) at time s. */
+	const level = (s: number) => {
+		if (s < 0) return 0;
+		if (s < hist.since) return hist.on ? 0 : 1;
+		const k = smoothstep(0, EASE, s - hist.since);
+		return hist.on ? k : 1 - k;
+	};
 	/** Displacement of the charge (−1…1) at time s. */
-	const disp = (s: number) => (on(s) ? Math.sin((2 * Math.PI * s) / PERIOD) : 0);
+	const disp = (s: number) => level(s) * Math.sin((2 * Math.PI * s) / PERIOD);
 	const fieldAt = (x: number) => disp(tau - (x - X0) / V);
 
 	const N = 160;

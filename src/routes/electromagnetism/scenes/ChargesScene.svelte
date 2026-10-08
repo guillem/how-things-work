@@ -97,19 +97,23 @@
 		{ x: 760, y: 180 },
 		{ x: 480, y: 310 }
 	];
-	function add(q: number) {
-		if (own.length >= MAX) return;
-		let best = SPOTS[0];
-		let bestD = -1;
-		for (const s of SPOTS) {
-			let d = Math.hypot(s.x - test.x, s.y - test.y);
-			for (const c of own) d = Math.min(d, Math.hypot(s.x - c.x, s.y - c.y));
-			if (d > bestD) {
-				bestD = d;
-				best = s;
+	/** Add `n` charges of `q` nC (several presses can arrive in one update). */
+	function add(q: number, n = 1) {
+		const cs = [...own];
+		for (let k = 0; k < n && cs.length < MAX; k++) {
+			let best = SPOTS[0];
+			let bestD = -1;
+			for (const s of SPOTS) {
+				let d = Math.hypot(s.x - test.x, s.y - test.y);
+				for (const c of cs) d = Math.min(d, Math.hypot(s.x - c.x, s.y - c.y));
+				if (d > bestD) {
+					bestD = d;
+					best = s;
+				}
 			}
+			cs.push({ ...best, q });
 		}
-		save([...own, { ...best, q }]);
+		if (cs.length > own.length) save(cs);
 	}
 	const seen = untrack(() => ({
 		plus: Number(params.addPlus ?? 0),
@@ -128,12 +132,12 @@
 				setParam(testKey, `${TEST0[layout].x},${TEST0[layout].y}`);
 			}
 			if (plus !== seen.plus) {
+				add(10, Math.max(1, plus - seen.plus));
 				seen.plus = plus;
-				add(10);
 			}
 			if (minus !== seen.minus) {
+				add(-10, Math.max(1, minus - seen.minus));
 				seen.minus = minus;
-				add(-10);
 			}
 		});
 	});
@@ -281,7 +285,12 @@
 						id: 'q',
 						label: 'big charge',
 						value: fmtQ(Number(params.charge ?? 10)),
-						color: Number(params.charge ?? 10) >= 0 ? 'var(--em-plus)' : 'var(--em-minus)'
+						color:
+							Number(params.charge ?? 10) > 0
+								? 'var(--em-plus)'
+								: Number(params.charge ?? 10) < 0
+									? 'var(--em-minus)'
+									: undefined
 					},
 					{ id: 'r', label: 'distance', value: `${dist.toFixed(1)} cm` },
 					{
@@ -352,7 +361,10 @@
 				stroke="var(--stage-line)"
 				stroke-dasharray="4 6"
 			/>
-			{@render txt(BIG.x, BIG.y - cm * 20 - 7, `${cm} cm`, 11, { anchor: 'middle', muted: true })}
+			<!-- labelled up and to the right, where both rings are on the stage -->
+			{@render txt(BIG.x + cm * 20 * 0.866 + 6, BIG.y - cm * 20 * 0.5 - 4, `${cm} cm`, 11, {
+				muted: true
+			})}
 		{/each}
 	{/if}
 
