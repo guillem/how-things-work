@@ -82,7 +82,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Hang a second pendulum from the end of the first and let go. The rules are simple and exact: Newton's laws, gravity, two rods and two weights — no randomness anywhere. Given the starting position, the motion is completely <dfn data-def="Fully fixed by the rules and the starting point: running it again from exactly the same start gives exactly the same result.">deterministic</dfn>.</p>
 <p>Yet released from high up, the double pendulum swings, flips and tumbles in a way that never repeats and looks random. Start it low (try 10°) and it rocks gently and regularly; start it high and the motion goes wild.</p>`,
-			notes: `<p>The motion is computed from the equations of motion of two equal weights on two equal, weightless rods with no friction, stepping forward a thousandth of a second at a time. The total energy stays constant to better than a thousandth, a check that the computation is accurate.</p>`
+			notes: `<p>The motion is computed from the equations of motion of two equal weights on two equal, weightless rods with no friction, stepping forward a thousandth of a second at a time. The total energy stays constant to better than a millionth, a check that the computation is accurate.</p>`
 		},
 		{
 			id: 'twins',
@@ -94,8 +94,8 @@ export const spec: ExplainerSpec = {
 			controls: [nudge, release],
 			body: `
 <p>Now release two pendulums side by side, identical except that one starts a thousandth of a degree further round — far less than anyone could measure. For a few seconds they move as one. Then they visibly separate, and soon they are doing completely different things.</p>
-<p>The graph shows the distance between the two lower weights on a scale where each line is ten times the one below. It climbs in a roughly straight line: the tiny difference is being <em>multiplied</em> by about the same factor every second. Make the starting difference a thousand times smaller (0.000001°) and the twins stay together only about four seconds longer: better measurements buy surprisingly little time.</p>
-<p>This is <dfn data-def="Behaviour that follows exact rules but is so sensitive to the starting point that tiny differences grow exponentially, making long-term prediction impossible.">chaos</dfn>: sensitive dependence on the starting point, nicknamed the <strong>butterfly effect</strong>. It is why weather forecasts lose their skill after a week or two — the atmosphere follows exact physics, but we can never measure today's weather perfectly.</p>`,
+<p>The graph shows the distance between the two lower weights on a scale where each line is ten times the one below. It climbs in a roughly straight line: the tiny difference is being <em>multiplied</em>, on average, by about the same factor every second. Make the starting difference a thousand times smaller (0.000001°) and the twins stay together only about four seconds longer: better measurements buy surprisingly little time.</p>
+<p>This is <dfn data-def="Behaviour that follows exact rules but is so sensitive to the starting point that tiny differences grow exponentially, making long-term prediction impossible; the motion never settles into a repeating pattern.">chaos</dfn>: sensitive dependence on the starting point, nicknamed the <strong>butterfly effect</strong>. It is why weather forecasts lose their skill after a week or two — the atmosphere follows exact physics, but we can never measure today's weather perfectly.</p>`,
 			notes: `<p>Edward Lorenz found the effect in 1961 when he restarted a weather simulation from numbers rounded to three decimal places and got a completely different forecast. His 1972 talk asked: "Does the flap of a butterfly's wings in Brazil set off a tornado in Texas?"</p>`
 		},
 		// ------------------------------------------------------------------ logistic
@@ -121,9 +121,9 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [rateCascade],
 			body: `
-<p>Plot where the population ends up for every growth rate and a famous picture appears. One steady value splits into 2 at <i>r</i> = 3, into 4 at about 3.449, into 8 at 3.544, then 16, 32… — the splits come faster and faster and pile up at about 3.5699. Beyond that the population never settles or repeats: it is chaotic, and two populations starting a hair apart soon differ completely.</p>
-<p>Look closely inside the chaos: there are narrow windows of order, such as a cycle of 3 near <i>r</i> = 3.83, which then splits again in the same way. Each part of the picture contains smaller copies of the whole cascade.</p>`,
-			notes: `<p>The gaps between successive splits shrink by a factor that approaches 4.669… — Feigenbaum's constant (1975). Astonishingly, the same number turns up in the period doubling of very different systems, from dripping taps to electronic circuits and fluids heated from below.</p>`
+<p>Plot where the population ends up for every growth rate and a famous picture appears. One steady value splits into 2 at <i>r</i> = 3, into 4 at about 3.449, into 8 at 3.544, then 16, 32… — the splits come faster and faster and pile up at about 3.5699. Beyond that, for most growth rates the population never settles or repeats: it is chaotic, and two populations starting a hair apart soon differ completely.</p>
+<p>Look closely inside the chaos: there are narrow windows of order, such as a cycle of 3 near <i>r</i> = 3.83, which then splits again in the same way. The chaotic region is full of such windows, each a smaller copy of the whole cascade.</p>`,
+			notes: `<p>The gaps between successive splits shrink by a factor that approaches 4.669… — Feigenbaum's constant (1975). Astonishingly, it is the same for every map with a single smooth hump like this one, and roughly the same number has been measured in very different systems, from electronic circuits to fluids heated from below.</p>`
 		},
 		// ------------------------------------------------------------------ fractals
 		{
@@ -135,7 +135,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			body: `
 <p>Another one-line rule, now with <dfn data-def="Numbers with two parts, written a + bi, where i × i = −1. They can be pictured as points on a flat plane.">complex numbers</dfn>, which can be drawn as points on a plane. Pick a point <i>c</i>. Start with <i>z</i> = 0 and repeat: <i>z</i> → <i>z</i>² + <i>c</i>. Either <i>z</i> stays close by for ever, or it shoots off towards infinity.</p>
-<p>Colour <i>c</i> black if it stays, and by how quickly it escapes if it doesn't. The black points form the <dfn data-def="The set of complex numbers c for which z → z² + c, starting from z = 0, stays bounded. Its boundary has endless detail.">Mandelbrot set</dfn>, named after Benoît Mandelbrot, who made it famous around 1980. Its edge is where the interesting things happen: points just outside take longer and longer to escape.</p>`
+<p>Colour <i>c</i> black if it stays, and by how quickly it escapes if it doesn't. The black points form the <dfn data-def="The set of complex numbers c for which z → z² + c, starting from z = 0, stays bounded. Its boundary has endless detail.">Mandelbrot set</dfn>, named after Benoît Mandelbrot, who studied it with computer pictures in 1980; it became famous in the mid-1980s. Its edge is where the interesting things happen: points just outside take longer and longer to escape.</p>`
 		},
 		{
 			id: 'zoom',
@@ -147,7 +147,7 @@ export const spec: ExplainerSpec = {
 			controls: [place],
 			body: `
 <p>Zoom into the edge. However far you go, there is more detail: spirals, seahorse tails, lightning branches — and tiny copies of the whole set, each with its own edge just as detailed. A shape with structure at every scale like this is a <dfn data-def="A shape with detail at every scale, often containing smaller copies of itself.">fractal</dfn>.</p>
-<p>All of it comes from <i>z</i> → <i>z</i>² + <i>c</i>. That is the lesson of this page: <strong>simple, exact rules can produce behaviour that is unpredictable in the long run, and structure that repeats at every scale</strong>. Coastlines, clouds, ferns and blood vessels show the same kind of repeating detail.</p>`,
+<p>All of it comes from <i>z</i> → <i>z</i>² + <i>c</i>. That is the lesson of this page: <strong>simple, exact rules can produce behaviour that is unpredictable in the long run, and structure that repeats at every scale</strong>. Coastlines, clouds, ferns and blood vessels show similar repeating detail over a wide range of scales.</p>`,
 			notes: `<p>Deeper zooms need more repetitions of the rule before a point can be declared "in" — this page uses up to a few thousand — and eventually more precision than a computer's ordinary numbers offer (around a ten-trillionth of the full width).</p>`
 		}
 	]
