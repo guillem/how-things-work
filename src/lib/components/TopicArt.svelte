@@ -208,6 +208,8 @@
 			return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
 		}).join(' ');
 		return { coil, wave };
+	})();
+
 	// Central limit theorem: a small triangle of pins over a bell-shaped
 	// histogram of 11 bars (binomial, 10 rows), with the normal curve over it.
 	const cltArt = (() => {
