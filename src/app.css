@@ -440,6 +440,18 @@ kbd {
 	--hc-leak: #e8590c;
 	--hc-lung: #fbe3e1;
 	--hc-tissue: #f3ecdf;
+	/* reinforcement learning: floor, walls, reward, small reward, pit, good/bad estimates, the agent, random moves, text on cells */
+	--rl-floor: #f8f9fa;
+	--rl-wall: #495057;
+	--rl-reward: #2f9e44;
+	--rl-small: #94d82d;
+	--rl-pit: #e03131;
+	--rl-good: #2b8a3e;
+	--rl-bad: #e03131;
+	--rl-agent: #1c7ed6;
+	--rl-explore: #f08c00;
+	--rl-on-cell: #ffffff;
+	--rl-on-small: #2b3a0f;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -665,4 +677,15 @@ kbd {
 	--hc-leak: #ff922b;
 	--hc-lung: #3a2427;
 	--hc-tissue: #2c2822;
+	--rl-floor: #1e2227;
+	--rl-wall: #868e96;
+	--rl-reward: #40c057;
+	--rl-small: #a9e34b;
+	--rl-pit: #fa5252;
+	--rl-good: #51cf66;
+	--rl-bad: #ff6b6b;
+	--rl-agent: #4dabf7;
+	--rl-explore: #ffa94d;
+	--rl-on-cell: #101113;
+	--rl-on-small: #101113;
 }

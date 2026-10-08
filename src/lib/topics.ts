@@ -269,6 +269,13 @@ const explainers: Explainer[] = [
 		accent: '#c92a2a',
 		steps: 9,
 		minutes: 14
+		slug: 'reinforcement-learning',
+		title: 'How a machine learns by trial and error',
+		summary:
+			'Release an agent into a grid world of rewards, pits and walls, and watch it learn — from rewards alone — which move is worth making in every square.',
+		accent: '#0c8599',
+		steps: 6,
+		minutes: 12
 	}
 ];
 
