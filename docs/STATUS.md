@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-08 00:15 UTC.
+Last updated: 2026-10-08 03:50 UTC.
 
 ## How we work
 
@@ -29,31 +29,35 @@ Last updated: 2026-10-08 00:15 UTC.
 ## Current state
 
 - `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps"), epidemics,
-  unit-circle (done, ticked). PRs #1–#3 merged.
-- **Batch awaiting the user's validation** (asked 2026-10-07 ~22:05 UTC: 4–5 topics to validate
-  together while they are away). Stacked branches, all pushed; **merge in this order**, each PR
-  based on `main` after the previous one is merged (or open each with the branch below as its
-  base and let GitHub retarget):
-  1. `topic/sorting` — done (reviewed, ticked).
-  2. `topic/newtons-laws` — done (reviewed, ticked). Built in the git worktree `../hiw-newtons`
-     (dev server there on port 5174; remove it with `git worktree remove ../hiw-newtons` once
-     merged — its `node_modules` is a symlink).
-  3. `topic/sun-earth-moon` — done (reviewed, ticked).
-  4. `topic/learning-from-data` — **in progress** (this branch; see below).
-     All 123 e2e tests pass on `topic/sun-earth-moon` (the stack so far).
-- Merge method: merge commits (`gh pr merge N --merge`), as for #1–#3.
+  unit-circle, sorting, newtons-laws, sun-earth-moon (done, ticked), learning-from-data
+  (published, not ticked — "place points" open question). PRs #1–#7 merged (merge commits).
+- **Batch 2 in progress** (user asked 2026-10-08 ~03:20 UTC: merge batch 1, then another batch;
+  keep going until close to the session limit but never reach 100% of the 5-hour window; the
+  user validates the whole batch together). Planned, in stack order (each branch starts from the
+  previous one):
+  1. `topic/pagerank` — main checkout (dev server port 5173). Model, tests and narrative
+     committed; three scene agents (votes, surfer, iterate) at work.
+  2. `topic/electric-circuits` — worktree `../hiw-circuits` (port 5174), not started.
+  3. `topic/bridges-structures` — not started (needs a 2-D frame solver: beams carry bending).
+  4. `topic/binary` — not started.
+  5. `topic/atmosphere-weather` — not started; large scope, decide the simplified model first.
+- Scene-author briefs used for this batch: a common brief plus one per topic (kept in the
+  session scratchpad; the essentials are in `scene-guide.md` and this file).
+- Merge method: merge commits (`gh pr merge N --merge`), one PR per topic, in stack order.
 
 ## Current development
 
-None in progress: the batch is complete and waits for the user's validation. After that: PRs
-and merges in stack order, then the next wave-1 topics from BACKLOG (`pagerank`,
-`atmosphere-weather`, `atoms-periodic-table` — the last needs an element-data source decision).
+`topic/pagerank`: `pagerank.ts` (power iteration, random surfer, presets EXAMPLE / TRAPS /
+STARTER), `e2e/pagerank-model.e2e.ts` (9 tests), `steps.ts` (10 steps), `geometry.ts` (shared
+link arrows). Built web stored per step in `params['web:<stepId>']` (string). Next: review the
+scenes, fact-check, screenshot matrix, tick.
 
 ## Open questions for the user
 
 - learning-from-data: add "place points" (click to add) so it meets the catalogue entry, or
-  accept dragging only? (Claude opens and merges PRs after the user validates — answered
-  2026-10-07.)
+  accept dragging only?
+- atoms-periodic-table: which element-data source (e.g. PubChem's periodic table JSON, IUPAC
+  atomic weights)? Blocked until chosen (catalogue: never invent data).
 
 ## Resume
 
