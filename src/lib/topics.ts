@@ -242,6 +242,12 @@ const explainers: Explainer[] = [
 			'Send a message across a map of routers and watch it split into packets, find its own way hop by hop, survive cut links, lost packets and traffic jams, and arrive in one piece.',
 		accent: '#1098ad',
 		steps: 7,
+		slug: 'primes-modular-arithmetic',
+		title: 'Prime numbers and clock arithmetic',
+		summary:
+			'Sieve out the primes from a grid of numbers, then add, multiply and raise to powers on a clock, and see why powers on a prime clock are easy to compute and hard to undo — the idea behind public-key cryptography.',
+		accent: '#9c36b5',
+		steps: 8,
 		minutes: 14
 	}
 ];

@@ -395,6 +395,18 @@ kbd {
 	--net-tcp: #1971c2;
 	--net-tls: #e8590c;
 	--net-http: #2f9e44;
+	/* primes-modular-arithmetic: grid cells, the strike colour of each sieving prime, the primes,
+	   the clock face, the walking hand, hours reached or missed */
+	--pm-cell: #f1f3f5;
+	--pm-p2: #1c7ed6;
+	--pm-p3: #2f9e44;
+	--pm-p5: #e8590c;
+	--pm-p7: #c2255c;
+	--pm-prime: #862e9c;
+	--pm-face: #f8f9fa;
+	--pm-walk: #9c36b5;
+	--pm-ok: #2f9e44;
+	--pm-bad: #e03131;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -580,4 +592,15 @@ kbd {
 	--net-tcp: #74c0fc;
 	--net-tls: #ff922b;
 	--net-http: #69db7c;
+	/* primes-modular-arithmetic */
+	--pm-cell: #24262b;
+	--pm-p2: #4dabf7;
+	--pm-p3: #69db7c;
+	--pm-p5: #ffa94d;
+	--pm-p7: #f783ac;
+	--pm-prime: #e599f7;
+	--pm-face: #1c1d21;
+	--pm-walk: #da77f2;
+	--pm-ok: #69db7c;
+	--pm-bad: #ff8787;
 }

@@ -896,6 +896,49 @@
 			rx="2"
 			fill={accent}
 			transform="rotate(-34 159 72)"
+	{:else if slug === 'primes-modular-arithmetic'}
+		<!-- a 5 × 4 grid of 1–20 with the primes marked, beside a 7-hour clock with the powers of 3 -->
+		{#each Array.from({ length: 20 }, (_, i) => i + 1) as n (n)}
+			{@const prime = [2, 3, 5, 7, 11, 13, 17, 19].includes(n)}
+			<rect
+				x={14 + ((n - 1) % 5) * 18}
+				y={22 + Math.floor((n - 1) / 5) * 20}
+				width="14"
+				height="16"
+				rx="3"
+				fill={prime ? accent : 'currentColor'}
+				opacity={prime ? 0.9 : n === 1 ? 0.12 : 0.22}
+			/>
+		{/each}
+		<circle
+			cx="150"
+			cy="60"
+			r="36"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.35"
+			stroke-width="2"
+		/>
+		{#each [0, 1, 2, 3, 4, 5, 6] as h (h)}
+			<circle
+				cx={150 + 36 * Math.sin((2 * Math.PI * h) / 7)}
+				cy={60 - 36 * Math.cos((2 * Math.PI * h) / 7)}
+				r="3"
+				fill={h === 0 ? 'currentColor' : accent}
+				opacity={h === 0 ? 0.4 : 1}
+			/>
+		{/each}
+		<path
+			d={[1, 3, 2, 6, 4, 5, 1]
+				.map(
+					(h, i) =>
+						`${i ? 'L' : 'M'}${(150 + 36 * Math.sin((2 * Math.PI * h) / 7)).toFixed(1)} ${(60 - 36 * Math.cos((2 * Math.PI * h) / 7)).toFixed(1)}`
+				)
+				.join(' ')}
+			fill="none"
+			stroke={accent}
+			stroke-width="1.8"
+			stroke-linejoin="round"
 		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
