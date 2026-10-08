@@ -57,8 +57,8 @@
 	const WALL_LIFT_REV = 1;
 	const REDUCED_T: Record<string, number> = {
 		wall: 6,
-		mix: 14,
-		entropy: 16,
+		mix: 21.5,
+		entropy: 21.5,
 		reverse: 17,
 		nudge: 17
 	};
@@ -147,12 +147,14 @@
 		tl: number[];
 		tr: number[];
 		s: number[];
+		/** First frame after the wall lifts at which the two ¼-second averages meet (−1: not yet). */
+		eq: number;
 	}
 	const cache = new WeakMap<GasRun, Series>();
 	function series(r: GasRun, upto: number): Series {
 		let c = cache.get(r);
 		if (!c) {
-			c = { tl: [], tr: [], s: [] };
+			c = { tl: [], tr: [], s: [], eq: -1 };
 			cache.set(r, c);
 		}
 		for (let i = c.tl.length; i <= upto; i++) {
@@ -160,6 +162,11 @@
 			c.tl.push(temperature(st.eLeft, st.nLeft));
 			c.tr.push(temperature(st.eRight, r.n - st.nLeft));
 			c.s.push(r.lnWays(i));
+			if (c.eq < 0 && i / FPS > r.config.wallUntil && i >= SMOOTH) {
+				let d = 0;
+				for (let j = i - SMOOTH + 1; j <= i; j++) d += c.tl[j] - c.tr[j];
+				if (Math.abs(d / SMOOTH) < 0.25) c.eq = i;
+			}
 		}
 		return c;
 	}
@@ -227,7 +234,9 @@
 		if (returned)
 			return phase === 'nudge'
 				? '◀ it never got back: the gas stayed mixed'
-				: '◀ back at the start: hot left, cold right (and now it mixes again)';
+				: elapsed < 2 * lastRev - WALL_LIFT_REV + 1.5
+					? '◀ back at the start: hot left, cold right'
+					: '◀ past the start, with no wall to hold it: it mixes again';
 		if (backward)
 			return phase === 'nudge'
 				? `◀ every velocity reversed, one particle ${nudgeLabel}`
@@ -293,8 +302,10 @@
 	const TH_TOP = 92;
 	const TH_BOT = 300;
 	const thY = (T: number) => TH_BOT - (clamp(T, 0, 8) / 8) * (TH_BOT - TH_TOP);
+	// The heat arrow shows the flow from hot to cold until the two halves first meet;
+	// after that the differences are fluctuations of 40 particles, not a heat flow.
 	const flowing = $derived(
-		phase !== 'wall' && wallLift > 0.5 && Math.abs(tlNow - trNow) > 0.35 && !isEntropy
+		phase !== 'wall' && !isEntropy && wallLift > 0.5 && ser.eq < 0 && Math.abs(tlNow - trNow) > 0.35
 	);
 	const log10Now = $derived(toLog10(sNow));
 	const ratioText = (l10: number) =>
@@ -422,7 +433,7 @@
 	{#each xTicks as s (s)}
 		{@render txt(cx(s), CY0 + 16, `${s}`, 11, { anchor: 'middle', muted: true })}
 	{/each}
-	{@render txt(CX1, CY0 + 16, 's', 11, { anchor: 'start', muted: true })}
+	{@render txt(CX1 + 12, CY0 + 16, 's', 11, { anchor: 'start', muted: true })}
 	<text x={CX0 - 34} y={CY1 - 14} class="halo muted" style:font-size="12px">
 		{#if isEntropy}
 			entropy above the start, ΔS ÷ k<tspan baseline-shift="sub" style:font-size="9px">B</tspan>
