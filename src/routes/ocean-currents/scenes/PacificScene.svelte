@@ -180,14 +180,27 @@
 
 	// ---- the plot (enso) ----------------------------------------------------------------------------
 	const px = scale([0, UNITS], [PLOT.x0, PLOT.x1]);
-	const py = scale([-4, 4], [PLOT.bottom, PLOT.top]);
+	// The y range grows with the run's largest swing (strong feedback can pass ±4 °C), so the
+	// curve is never clipped; tweened so the axis rescales smoothly when a control moves.
+	const swing = $derived.by(() => {
+		let m = 0;
+		for (const v of run.T) m = Math.max(m, Math.abs(v));
+		return m * JIN.degrees;
+	});
+	const range = Tween.of(() => Math.max(4, Math.ceil(swing + 0.4)), {
+		duration: 700,
+		easing: cubicInOut
+	});
+	const R = $derived(reduced ? Math.max(4, Math.ceil(swing + 0.4)) : range.current);
+	const py = $derived(scale([-R, R], [PLOT.bottom, PLOT.top]));
+	const yTicks = $derived(R >= 5 ? [-4, 4] : [-2, 2]);
 	const trace = $derived.by(() => {
 		const end = reduced ? UNITS : tau;
 		const n = Math.max(1, Math.round(end / 0.1));
 		let d = '';
 		for (let i = 0; i <= n; i++) {
 			const s = (end * i) / n;
-			const v = Math.max(-4, Math.min(4, sample(run.T, s) * JIN.degrees));
+			const v = Math.max(-R, Math.min(R, sample(run.T, s) * JIN.degrees));
 			d += `${i ? 'L' : 'M'}${px(s).toFixed(1)} ${py(v).toFixed(1)}`;
 		}
 		return d;
@@ -224,7 +237,7 @@
 		{
 			id: 'th',
 			label: 'thermocline depth',
-			value: `${Math.round(pic.westDepth)} → ${Math.max(0, Math.round(pic.eastDepth))} m`,
+			value: `${Math.round(pic.westDepth)} → ${pic.eastDepth < 5 ? '< 5' : Math.round(pic.eastDepth)} m`,
 			sub: 'west → east'
 		},
 		{
@@ -392,7 +405,7 @@
 	{@render txt(
 		X1 - 10,
 		Math.max(yE + 18, surfY(X1) + 40),
-		`${Math.max(0, Math.round(pic.eastDepth))} m`,
+		`${pic.eastDepth < 5 ? '< 5' : Math.round(pic.eastDepth)} m`,
 		12,
 		{
 			anchor: 'end',
@@ -492,9 +505,9 @@
 		<g opacity={ensoOn.current}>
 			<rect
 				x={PLOT.x0}
-				y={py(4)}
+				y={py(R)}
 				width={PLOT.x1 - PLOT.x0}
-				height={py(0.5) - py(4)}
+				height={py(0.5) - py(R)}
 				fill="var(--oc-warm)"
 				opacity="0.1"
 			/>
@@ -502,13 +515,13 @@
 				x={PLOT.x0}
 				y={py(-0.5)}
 				width={PLOT.x1 - PLOT.x0}
-				height={py(-4) - py(-0.5)}
+				height={py(-R) - py(-0.5)}
 				fill="var(--oc-cold)"
 				opacity="0.1"
 			/>
 			<line x1={PLOT.x0} x2={PLOT.x1} y1={py(0)} y2={py(0)} stroke="var(--stage-line)" />
 			<line x1={PLOT.x0} x2={PLOT.x0} y1={PLOT.top} y2={PLOT.bottom} stroke="var(--stage-line)" />
-			{#each [-2, 2] as v (v)}
+			{#each yTicks as v (v)}
 				<text x={PLOT.x0 - 6} y={py(v) + 4} text-anchor="end" class="muted" style:font-size="11px"
 					>{v > 0 ? '+' : '−'}{Math.abs(v)} °C</text
 				>
@@ -536,12 +549,12 @@
 					style:font-size="11px">{yr === 8 ? '8 years' : yr}</text
 				>
 			{/each}
-			{@render txt(PLOT.x1 - 6, py(3.3), 'El Niño', 11, {
+			{@render txt(PLOT.x1 - 6, py(R * 0.82), 'El Niño', 11, {
 				anchor: 'end',
 				weight: 600,
 				color: 'var(--oc-warm)'
 			})}
-			{@render txt(PLOT.x1 - 6, py(-3.0), 'La Niña', 11, {
+			{@render txt(PLOT.x1 - 6, py(-R * 0.75), 'La Niña', 11, {
 				anchor: 'end',
 				weight: 600,
 				color: 'var(--oc-cold)'
@@ -557,7 +570,7 @@
 			/>
 			<circle
 				cx={px(tau)}
-				cy={py(Math.max(-4, Math.min(4, anomaly)))}
+				cy={py(Math.max(-R, Math.min(R, anomaly)))}
 				r="4.5"
 				fill={sstColor(pic.eastSST)}
 				stroke="var(--stage-bg)"

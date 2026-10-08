@@ -231,17 +231,23 @@
 		untrack(() => lowerTS.set(v, { duration: reduced ? 0 : 800 }));
 	});
 	// T–S diagram with lines of equal density: T = 10 + (β(S − 35) − (ρ/ρ0 − 1)) / α
-	const sxS = scale([33.6, 36.4], [PX0, PX1]);
+	// wide enough for the saltiest/freshest steady states the controls can reach (ΔS up to ≈ 6.8)
+	const S_LO = 31.4;
+	const S_HI = 38.6;
+	const sxS = scale([S_LO, S_HI], [PX0, PX1]);
 	const syT = scale([-4, 28], [LP.bottom, LP.top]);
-	const isopycnals = [1023, 1024, 1025, 1026, 1027, 1028, 1029].map((rho) => {
-		const Tof = (S: number) => 10 + (BOX.betaS * (S - 35) - (rho / BOX.rho0 - 1)) / BOX.alpha;
-		return {
-			rho,
-			d: `M${sxS(33.6).toFixed(1)} ${syT(Tof(33.6)).toFixed(1)} L${sxS(36.4).toFixed(1)} ${syT(Tof(36.4)).toFixed(1)}`
-		};
-	});
-	const tsPole = $derived({ x: sxS(sPole), y: syT(Math.max(-4, Math.min(28, tpole))) });
-	const tsEq = $derived({ x: sxS(sEq), y: syT(BOX.Teq) });
+	const isopycnals = [1021, 1022, 1023, 1024, 1025, 1026, 1027, 1028, 1029, 1030, 1031, 1032].map(
+		(rho) => {
+			const Tof = (S: number) => 10 + (BOX.betaS * (S - 35) - (rho / BOX.rho0 - 1)) / BOX.alpha;
+			return {
+				rho,
+				d: `M${sxS(S_LO).toFixed(1)} ${syT(Tof(S_LO)).toFixed(1)} L${sxS(S_HI).toFixed(1)} ${syT(Tof(S_HI)).toFixed(1)}`
+			};
+		}
+	);
+	const clampS = (v: number) => Math.max(S_LO, Math.min(S_HI, v));
+	const tsPole = $derived({ x: sxS(clampS(sPole)), y: syT(Math.max(-4, Math.min(28, tpole))) });
+	const tsEq = $derived({ x: sxS(clampS(sEq)), y: syT(BOX.Teq) });
 	// steady states against fresh water
 	const bx = scale([0, 2.5], [PX0, PX1]);
 	const by = scale([-10, 30], [LP.bottom, LP.top]);
@@ -592,7 +598,7 @@
 			{@render frame(
 				sxS,
 				syT,
-				[34, 35, 36],
+				[32, 34, 36, 38],
 				[0, 10, 20],
 				(v) => `${v}`,
 				(v) => `${v} °C`
@@ -628,8 +634,8 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			{@render txt(tsPole.x - 12, tsPole.y + 4, 'far north', 12, {
-				anchor: 'end',
+			{@render txt(tsPole.x + (tsPole.x < PX0 + 80 ? 12 : -12), tsPole.y + 4, 'far north', 12, {
+				anchor: tsPole.x < PX0 + 80 ? 'start' : 'end',
 				weight: 600
 			})}
 		</g>
