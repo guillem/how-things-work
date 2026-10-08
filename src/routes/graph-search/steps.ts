@@ -163,7 +163,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [pace, brush, resetMap],
 			body: `
-<p>The same map searched three ways, side by side. Breadth-first search finds the route with the fewest steps, whatever it costs. Dijkstra's algorithm finds the cheapest route but explores in every direction. A* finds the cheapest route too, while skipping much of the map.</p>
+<p>The same map searched three ways, side by side. Breadth-first search finds the route with the fewest steps, whatever it costs. Dijkstra's algorithm finds the cheapest route but explores in every direction. A* finds the cheapest route too, while skipping about a third of the squares Dijkstra visits — here the walls force it to search around.</p>
 <p>Paint walls and mud on any of the three maps — they share one map — and compare the squares visited and the cost of each route.</p>`
 		},
 		// ------------------------------------------------------------------ roads
@@ -178,7 +178,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A road map is a graph too: towns are the places, roads the connections, each with its own length. The same methods work unchanged. Dijkstra's algorithm grows outwards from Ashford in order of distance; A* uses the straight-line distance to Juniper as its estimate — no road can be shorter than a straight line, so the estimate is never too high.</p>
 <p>Both find the same shortest route, 473 km; A* gets there after looking at fewer towns. Route planners do this on maps with millions of junctions, with extra tricks such as pre-computed shortcuts between major junctions, mostly along motorways.</p>
-<p>Finding a route is a <strong>systematic exploration of a graph</strong>, and a good estimate of the distance still to go lets the search skip most of it.</p>`
+<p>Finding a route is a <strong>systematic exploration of a graph</strong>, and a good estimate of the distance still to go lets the search skip much of it — three quarters of the squares on the open marsh.</p>`
 		}
 	]
 };

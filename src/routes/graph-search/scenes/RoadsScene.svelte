@@ -37,9 +37,9 @@
 	const res = $derived(results[algo]);
 
 	// ---- geometry: one scale for both axes, so straight lines are true to length -----
-	const S = 2.05;
+	const S = 1.95;
 	const X = (x: number) => 480 + (x - 200) * S;
-	const Y = (y: number) => 86 + (y - 30) * S;
+	const Y = (y: number) => 80 + (y - 30) * S;
 	const P = towns.map((p) => ({ x: X(p.x), y: Y(p.y) }));
 	const crow = (i: number) =>
 		Math.round(Math.hypot(towns[i].x - towns[TO].x, towns[i].y - towns[TO].y));
@@ -53,7 +53,7 @@
 		[0, -15, 'middle'], // Elmstead
 		[0, 30, 'middle'], // Fenwick
 		[17, 5, 'start'], // Glenholm
-		[0, 30, 'middle'], // Harrow End
+		[14, 24, 'start'], // Harrow End
 		[17, 5, 'start'], // Ivybridge
 		[24, 33, 'middle'] // Juniper
 	];
@@ -129,6 +129,8 @@
 			? `${n}: ${d} km so far + ${crow(current)} km straight to Juniper = ${d + crow(current)}, the lowest total`
 			: `${n}: ${d} km from Ashford, the nearest town not yet settled`;
 	});
+	const TAKEAWAY =
+		'A route is a systematic exploration of a graph — and a good estimate lets the search skip part of it.';
 	const fadeIn = $derived(reduced ? 1 : smoothstep(0, 0.5, t));
 </script>
 
@@ -247,13 +249,9 @@
 				stroke-width="1.5"
 				stroke-dasharray="6 5"
 			/>
-			{@render pill(
-				(a.x + b.x) / 2,
-				(a.y + b.y) / 2 - 16,
-				`${crow(current)} km straight`,
-				12,
-				'var(--stage-ink)'
-			)}
+			<!-- the line's length, just above the goal (every estimate line ends there; on the
+			     line itself it would cover towns and road lengths) -->
+			{@render pill(b.x + 44, b.y - 39, `${crow(current)} km straight`, 12, 'var(--stage-ink)')}
 		</g>
 	{/if}
 
@@ -320,45 +318,46 @@
 	})}
 	{#if done}
 		<g opacity={routeIn}>
-			{@render pill(560, 462, `${res.km} km`, 15, 'var(--gs-path)')}
+			{@render pill(592, 434, `${res.km} km`, 15, 'var(--gs-path)')}
 		</g>
 	{/if}
 
 	<!-- readout -->
 	<rect
 		x={16}
-		y={516}
+		y={494}
 		width={928}
-		height={70}
+		height={90}
 		rx="10"
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	{@render txt(36, 543, line1, 15, {
+	{@render txt(36, 519, line1, 15, {
 		weight: 600,
 		color: done ? 'var(--gs-path)' : undefined
 	})}
 	{#if done}
-		{@render txt(36, 570, `${NAME[algo]} looked at ${plural(res.order.length, 'town')}`, 13, {
+		{@render txt(36, 544, `${NAME[algo]} looked at ${plural(res.order.length, 'town')}`, 13, {
 			weight: 600,
 			data: 'looked'
 		})}
 		{@render txt(
 			924,
-			570,
+			544,
 			`towns looked at: ${results.dijkstra.order.length} (Dijkstra) / ${results.astar.order.length} (A*)`,
 			13,
 			{ anchor: 'end', muted: true, data: 'both' }
 		)}
 	{:else}
-		{@render txt(36, 570, `${NAME[algo]}: ${settledCount} of ${towns.length} towns looked at`, 13, {
+		{@render txt(36, 544, `${NAME[algo]}: ${settledCount} of ${towns.length} towns looked at`, 13, {
 			muted: true
 		})}
 		{#if algo === 'astar'}
-			{@render txt(924, 570, 'the estimate is never too high: no road beats a straight line', 13, {
+			{@render txt(924, 544, 'the estimate is never too high: no road beats a straight line', 13, {
 				anchor: 'end',
 				muted: true
 			})}
 		{/if}
 	{/if}
+	{@render txt(36, 569, TAKEAWAY, 13, { weight: done ? 600 : 500, muted: !done, data: 'takeaway' })}
 </g>

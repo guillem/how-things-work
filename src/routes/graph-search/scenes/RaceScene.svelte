@@ -198,11 +198,36 @@
 		if (c < 0 || r < 0 || c >= grid.cols || r >= grid.rows) return -1;
 		return r * grid.cols + c;
 	}
+	/** As on GridScene: painting a square that already has the brush's terrain clears it. */
 	function paint(i: number) {
-		if (i < 0 || i === grid.start || i === grid.goal || grid.cells[i] === brush) return;
+		if (i < 0 || i === grid.start || i === grid.goal) return;
 		const cells = grid.cells.slice();
-		cells[i] = brush;
+		cells[i] = cells[i] === brush ? 0 : brush;
 		save({ ...grid, cells });
+	}
+	/** The squares crossed going from a to b, 4-connected (no diagonal gaps in a painted wall). */
+	function cellsBetween(a: number, b: number): number[] {
+		const W = grid.cols;
+		const out: number[] = [];
+		let c = a % W;
+		let r = Math.floor(a / W);
+		const dc = Math.abs((b % W) - c);
+		const dr = Math.abs(Math.floor(b / W) - r);
+		const sc = Math.sign((b % W) - c);
+		const sr = Math.sign(Math.floor(b / W) - r);
+		let mc = 0;
+		let mr = 0;
+		for (let s = 0; s < dc + dr; s++) {
+			if (mr >= dr || (mc < dc && (mc + 0.5) * dr < (mr + 0.5) * dc)) {
+				c += sc;
+				mc++;
+			} else {
+				r += sr;
+				mr++;
+			}
+			out.push(r * W + c);
+		}
+		return out;
 	}
 	function moveEnd(which: 'start' | 'goal', i: number) {
 		const other = which === 'start' ? grid.goal : grid.start;
@@ -211,11 +236,27 @@
 	}
 	function onpointerdown(e: PointerEvent, p: number) {
 		let mode: 'paint' | 'start' | 'goal' | null = null;
+		// Painting: the first square decides paint or clear (as on GridScene), and a
+		// fast drag fills the squares between two pointer samples.
+		const g = grid;
+		const work = g.cells.slice();
+		let value: Cell | null = null;
+		let last = -1;
 		startDrag(e, (pt) => {
 			const i = cellAt(p, pt);
 			if (mode === null) mode = i === grid.start ? 'start' : i === grid.goal ? 'goal' : 'paint';
-			if (mode === 'paint') paint(i);
-			else moveEnd(mode, i);
+			if (mode !== 'paint') return moveEnd(mode, i);
+			if (i < 0) return;
+			if (value === null) value = work[i] === brush ? 0 : brush;
+			const todo = last < 0 ? [i] : cellsBetween(last, i);
+			last = i;
+			let changed = false;
+			for (const c of todo) {
+				if (c === g.start || c === g.goal || work[c] === value) continue;
+				work[c] = value;
+				changed = true;
+			}
+			if (changed) save({ ...g, cells: work.slice() });
 		});
 	}
 
@@ -481,15 +522,26 @@
 	{/each}
 
 	<!-- legend -->
-	{#each [{ c: 'var(--gs-start)', l: 'start' }, { c: 'var(--gs-goal)', l: 'goal' }, { c: 'var(--gs-mud)', l: 'mud (costs 5)' }, { c: 'var(--gs-wall)', l: 'wall' }, { c: 'var(--gs-frontier)', l: 'frontier' }, { c: 'var(--gs-path)', l: 'route' }] as item, i (item.l)}
+	{#each [{ c: 'var(--gs-start)', l: 'start' }, { c: 'var(--gs-goal)', l: 'goal' }, { c: 'var(--gs-mud)', l: 'mud (costs 5)' }, { c: 'var(--gs-wall)', l: 'wall' }, { c: frontierFill(false), l: 'frontier' }, { c: 'var(--gs-path)', l: 'route' }] as item, i (item.l)}
 		{@const lx = 24 + [0, 62, 120, 234, 290, 368][i]}
-		<rect x={lx} y={288} width="12" height="12" rx={i < 2 ? 6 : 3} fill={item.c} />
+		<rect
+			x={lx}
+			y={288}
+			width="12"
+			height="12"
+			rx={i < 2 ? 6 : 3}
+			style:fill={item.c}
+			stroke={item.l === 'frontier' ? 'var(--gs-frontier)' : 'none'}
+			stroke-width="1.5"
+		/>
 		{@render txt(lx + 17, 299, item.l, 12, { muted: true })}
 	{/each}
 	{#each [0, 2, 4, 6] as b (b)}
 		<rect x={452 + b * 7} y={288} width="7" height="12" style:fill={shade(b)} />
 	{/each}
-	{@render txt(506, 299, 'visited: darker = costlier to reach', 12, { muted: true })}
+	{@render txt(506, 299, `visited: ${dark ? 'brighter' : 'darker'} = costlier to reach`, 12, {
+		muted: true
+	})}
 
 	<!-- summary -->
 	<rect

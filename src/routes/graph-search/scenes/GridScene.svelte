@@ -87,9 +87,12 @@
 
 	// ---- the search, recorded once per map / algorithm / weight -----------------------
 	const result = $derived(algo ? search(grid, algo, weight) : null);
-	// The cheapest route, for comparison (the marsh, and an over-trusted estimate).
+	// The cheapest route, for comparison (the marsh, A* against Dijkstra, and an
+	// over-trusted estimate).
 	const cheapest = $derived(
-		algo && (phase === 'mud' || phase === 'estimate') ? search(grid, 'dijkstra') : null
+		algo && (phase === 'mud' || phase === 'astar' || phase === 'estimate')
+			? search(grid, 'dijkstra')
+			: null
 	);
 
 	/**
@@ -385,6 +388,8 @@
 		}
 	}
 	function markerKey(which: Which, event: KeyboardEvent) {
+		// Space and Enter on a focused marker must not reach the explainer (play/pause).
+		if (event.key === ' ' || event.key === 'Enter') event.preventDefault();
 		if (!DIRS[event.key]) return;
 		event.preventDefault();
 		moveMarker(
@@ -636,7 +641,11 @@
 		{:else}
 			{@render swatch(38, 71, false)}
 			{@render txt(74, 76, `Route found: ${summary(result)}`, 14, { weight: 600 })}
-			{#if cheapest}
+			{#if cheapest && phase === 'astar' && cheapest.cost === result.cost}
+				{@render txt(316, 76, `— Dijkstra’s algorithm visited ${cheapest.expanded} squares`, 13, {
+					muted: true
+				})}
+			{:else if cheapest}
 				{@render txt(316, 76, '— also the cheapest route', 13, { muted: true })}
 			{/if}
 			{#if algo === 'astar'}
