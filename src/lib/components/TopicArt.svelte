@@ -799,8 +799,8 @@
 			/>
 		{/each}
 		<path d="M48 60 H18 M152 60 H182" stroke={accent} stroke-width="1.6" opacity="0.4" />
-		<circle cx="56" cy="60" r="12" fill="#e03131" />
-		<circle cx="144" cy="60" r="12" fill="#1c7ed6" />
+		<circle cx="56" cy="60" r="12" fill="var(--em-plus)" />
+		<circle cx="144" cy="60" r="12" fill="var(--em-minus)" />
 		<path d="M50 60 H62 M56 54 V66 M138 60 H150" stroke="#fff" stroke-width="2.4" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />

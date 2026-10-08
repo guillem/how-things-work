@@ -10,16 +10,19 @@
 	 *            coil and back (`swing`, top speed `params.speed`), a pure
 	 *            function of t. 'hand': the reader drags it (or uses the arrow
 	 *            keys); its position is `params['em:magnetZ']` (m).
-	 *   coils  — coil A, `params.gap` cm to the left, carries 2 A alternating at
-	 *            `params.acFreq` Hz (0 = steady); the meter shows the current
-	 *            induced in the pickup (`neighbour`).
+	 *   coils  — coil A, `params.gap` cm to the left (500 turns), carries 2 A
+	 *            alternating at `params.acFreq` Hz (0 = steady), or, with
+	 *            `params.drive` 'hand', the current the reader sets with
+	 *            `params.currentA`; the meter shows the current induced in the
+	 *            pickup (−M dI/dt, `neighbour`).
 	 *
 	 * The current is emf / R with emf = −dΦ/dt from the model (`linkageTable`).
 	 * Around the coil, the induced electric field (dashed) and the induced
 	 * current's direction (⊙ out of the page, ⊗ into it) and poles (Lenz).
 	 *
-	 * Sanctioned exception (scene guide): in 'hand' mode the magnet's speed is
-	 * the frame-to-frame change of its position over the change of t, smoothed
+	 * Sanctioned exception (scene guide): when the reader drives the change, the
+	 * magnet's speed (or the rate of change of coil A's current) is the
+	 * frame-to-frame change of its position (current) over the change of t, smoothed
 	 * over ~0.08 s, and the trace is a short history of those values. Both
 	 * ignore dt ≤ 0 (pause, step reset) and stay still under reduced motion
 	 * (t is frozen there, so the hand-moved magnet induces nothing; the swing
@@ -48,56 +51,93 @@
 	const isMagnet = $derived(phase === 'magnet');
 	const turns = $derived(Number(params.turns ?? 200));
 	const hand = $derived(isMagnet && String(params.motion ?? 'swing') === 'hand');
+	const setA = $derived(!isMagnet && String(params.drive ?? 'ac') === 'hand');
+	/** The reader drives the change (drags the magnet or coil A's current). */
+	const manual = $derived(hand || setA);
 	const vMax = $derived(Number(params.speed ?? 0.3));
-	const f = $derived(Number(params.acFreq ?? 0.5));
+	const f = $derived(Number(params.acFreq ?? 1));
 	const gapCm = $derived(Number(params.gap ?? 4));
 	const table = $derived(linkageTable(turns));
-	const SCALE = $derived(isMagnet ? 40 : 800); // meter range: mA or µA
+	/** Mutual inductance of coil A and the pickup (H), for the pickup's turns. */
+	const M = $derived((neighbour(0, 0, gapCm / 100).M * turns) / PICKUP.turns);
 	const unit = $derived(isMagnet ? 'mA' : 'µA');
 	const toUnit = $derived(isMagnet ? 1e3 : 1e6);
+	// Meter range: the smallest round range that holds the predicted peak (a fixed
+	// range while the reader drives the change by hand).
+	const peakSlope = $derived.by(() => {
+		let m = 0;
+		for (let z = -0.06; z <= 0.06; z += 0.001) m = Math.max(m, Math.abs(table.slope(z)));
+		return m;
+	});
+	const SCALE = $derived.by(() => {
+		if (isMagnet) {
+			if (hand) return 40;
+			const peak = ((peakSlope * vMax) / R_PICKUP) * 1e3;
+			return [10, 20, 40, 100].find((r) => r >= peak * 1.1) ?? 100;
+		}
+		if (setA) return 200;
+		const peak = ((M * I0 * 2 * Math.PI * f) / R_PICKUP) * 1e6;
+		return [100, 200, 500, 1000, 2000].find((r) => r >= peak * 1.1) ?? 2000;
+	});
 
-	// ---- the magnet ---------------------------------------------------------------------------
+	// ---- what the reader moves -----------------------------------------------------------------
 	const zHand = $derived(clamp(Number(params['em:magnetZ'] ?? -0.1), -ZMAX, ZMAX));
+	const aHand = $derived(clamp(Number(params.currentA ?? 0), -I0, I0));
+	// Moving coil A's current slider while it alternates switches to setting it by hand.
+	let seenA = untrack(() => params.currentA);
+	$effect(() => {
+		const v = params.currentA;
+		if (v === seenA) return;
+		seenA = v;
+		untrack(() => {
+			if (!isMagnet && !setA) setParam('drive', 'hand');
+		});
+	});
 	// Reduced motion: a frozen frame just as the magnet enters the coil (or 6.2 s
 	// into the alternating current), so the still picture shows a pulse.
 	const tau = $derived(
 		reduced ? (isMagnet ? (Math.acos(0.2) + 6 * Math.PI) / (vMax / 0.1) : 6.2) : t
 	);
 
-	// Hand mode: speed from frame-to-frame motion (see header), and a history for the trace.
-	let last = { t: -1, z: 0, v: 0 };
-	let history: { t: number; I: number }[] = [];
-	const handV = $derived.by(() => {
-		if (!hand) {
-			last = { t: -1, z: zHand, v: 0 };
+	// By hand: the rate of change from frame-to-frame motion (see header), and a
+	// history for the trace.
+	let last = { t: -1, x: 0, rate: 0 };
+	let history: { t: number; I: number; a: number }[] = [];
+	const rate = $derived.by(() => {
+		const x = hand ? zHand : aHand;
+		if (!manual) {
+			last = { t: -1, x, rate: 0 };
 			history = [];
 			return 0;
 		}
 		const now = t;
-		const z = zHand;
 		if (last.t < 0 || now < last.t) {
-			last = { t: now, z, v: 0 };
+			last = { t: now, x, rate: 0 };
 			history = [];
 			return 0;
 		}
 		const dt = now - last.t;
-		if (dt <= 0 || reduced) return last.v;
-		const raw = dt > 0.5 ? 0 : (z - last.z) / dt;
-		const v = last.v + (raw - last.v) * Math.min(1, dt / 0.08);
-		last = { t: now, z, v: Math.abs(v) < 1e-4 ? 0 : v };
-		const I = (-table.slope(z) * last.v) / R_PICKUP;
-		history.push({ t: now, I });
+		if (dt <= 0 || reduced) return last.rate;
+		const raw = dt > 0.5 ? 0 : (x - last.x) / dt;
+		const r = last.rate + (raw - last.rate) * Math.min(1, dt / 0.08);
+		last = { t: now, x, rate: Math.abs(r) < 1e-4 ? 0 : r };
+		const emf = hand ? -table.slope(x) * last.rate : -M * last.rate;
+		history.push({ t: now, I: emf / R_PICKUP, a: hand ? 0 : x });
 		while (history.length && history[0].t < now - WIN) history.shift();
-		return last.v;
+		return last.rate;
 	});
 
 	const sim = $derived.by(() => {
+		if (setA) {
+			const r = rate;
+			return { z: 0, v: 0, I1: aHand, emf: -M * r };
+		}
 		if (!isMagnet) {
 			const n = neighbour(tau, f, gapCm / 100, I0);
 			return { z: 0, v: 0, I1: n.I1, emf: (n.emf * turns) / PICKUP.turns };
 		}
 		if (hand) {
-			const v = handV;
+			const v = rate;
 			return { z: zHand, v, I1: 0, emf: -table.slope(zHand) * v };
 		}
 		const s = swing(tau, vMax);
@@ -123,10 +163,12 @@
 	const traces = $derived.by(() => {
 		let b = '';
 		let a = '';
-		if (hand) {
-			void handV;
+		if (manual) {
+			void rate;
 			history.forEach((h, i) => {
-				b += `${i ? 'L' : 'M'}${sx(h.t).toFixed(1)} ${sy((h.I * 1e3) / SCALE).toFixed(1)}`;
+				const x = sx(h.t).toFixed(1);
+				b += `${i ? 'L' : 'M'}${x} ${sy((h.I * toUnit) / SCALE).toFixed(1)}`;
+				if (setA) a += `${i ? 'L' : 'M'}${x} ${sy(h.a / I0).toFixed(1)}`;
 			});
 			return { a, b, n: history.length };
 		}
@@ -439,16 +481,37 @@
 				stroke="var(--em-drive)"
 				stroke-width="2"
 			/>
-			<path
-				d="M{coilA_x - 126} {AX} q8 -14 16 0 t16 0"
-				fill="none"
-				stroke="var(--em-drive)"
-				stroke-width="2.5"
-			/>
-			{@render txt(coilA_x - 110, AX + 52, f === 0 ? 'steady 2 A' : `2 A, ${f.toFixed(2)} Hz`, 11, {
-				anchor: 'middle',
-				muted: true
-			})}
+			{#if setA}
+				<text
+					x={coilA_x - 110}
+					y={AX + 7}
+					text-anchor="middle"
+					font-weight="700"
+					style:font-size="20px"
+					style:fill="var(--em-drive)">±</text
+				>
+			{:else}
+				<path
+					d="M{coilA_x - 126} {AX} q8 -14 16 0 t16 0"
+					fill="none"
+					stroke="var(--em-drive)"
+					stroke-width="2.5"
+				/>
+			{/if}
+			{@render txt(
+				coilA_x - 110,
+				AX + 52,
+				setA
+					? `you set it: ${aHand.toFixed(1)} A`
+					: f === 0
+						? 'steady 2 A'
+						: `2 A, ${f.toFixed(2)} Hz`,
+				11,
+				{
+					anchor: 'middle',
+					muted: true
+				}
+			)}
 		</g>
 	{/if}
 
@@ -563,13 +626,15 @@
 				color: 'var(--em-drive)'
 			})}
 		{/if}
-		{#if hand && traces.n < 2}
+		{#if manual && traces.n < 2}
 			{@render txt(
 				(PLOT.x0 + PLOT.x1) / 2,
 				mid - 14,
 				reduced
 					? 'Reduced motion is on: choose “Swings through” to see the pulses'
-					: 'Drag the magnet through the coil',
+					: hand
+						? 'Drag the magnet through the coil'
+						: 'Move the slider for coil A’s current',
 				13,
 				{ anchor: 'middle', muted: true }
 			)}

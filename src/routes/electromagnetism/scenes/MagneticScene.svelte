@@ -91,7 +91,9 @@
 	const Ic = $derived(Number(params.coilCurrent ?? 1));
 	const isMagnet = $derived(String(params.source ?? 'coil') === 'magnet');
 	const MAXLINES = 9;
-	const count = $derived(isMagnet ? 8 : Math.round((MAXLINES * Math.abs(Ic)) / 3));
+	const count = $derived(
+		isMagnet ? 8 : Ic === 0 ? 0 : Math.max(1, Math.round((MAXLINES * Math.abs(Ic)) / 3))
+	);
 	const lines = $derived.by(() => {
 		if (phase !== 'coil' && wA > 0.99) return [];
 		if (count === 0) return [];

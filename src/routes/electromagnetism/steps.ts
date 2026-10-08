@@ -113,6 +113,29 @@ const acFreq: Control = {
 	help: '0 Hz is a steady current.'
 };
 
+const drive: Control = {
+	type: 'select',
+	id: 'drive',
+	label: 'Coil A’s current',
+	default: 'ac',
+	options: [
+		{ value: 'ac', label: 'Alternating' },
+		{ value: 'hand', label: 'You set it' }
+	]
+};
+
+const currentA: Control = {
+	type: 'range',
+	id: 'currentA',
+	label: 'Current in coil A (when you set it)',
+	min: -2,
+	max: 2,
+	step: 0.1,
+	default: 0,
+	unit: ' A',
+	help: 'Slide it and watch B’s meter; hold it still and B’s meter falls back to zero.'
+};
+
 const gap: Control = {
 	type: 'range',
 	id: 'gap',
@@ -166,7 +189,7 @@ export const spec: ExplainerSpec = {
 			controls: [charge],
 			body: `
 <p>Electric <dfn data-def="The property of particles such as protons (+) and electrons (−) that makes them push and pull on each other, measured in coulombs (C). 1 nC (a nanocoulomb) is a billionth of a coulomb.">charge</dfn> comes in two kinds, positive and negative. Like charges repel, unlike charges attract — without touching, across empty space.</p>
-<p>Drag the small <strong>test charge</strong> (+1 nC) around the big one. The arrow is the force on it. It points straight away from a positive charge and straight towards a negative one, and it weakens fast with distance: at 10 cm from 10 nC the push is 9.0 µN; twice as far it is a <em>quarter</em> of that, 2.25 µN. This is <dfn data-def="The force between two charges is proportional to each charge and inversely proportional to the square of the distance between them: F = k q₁ q₂ / r².">Coulomb's law</dfn>.</p>`,
+<p>Drag the small <strong>test charge</strong> (+1 nC) around the big one. The arrow is the force on it. It points straight away from a positive charge and straight towards a negative one, and it weakens fast with distance: at 10 cm from 10 nC the push is 8.99 µN (about 9 µN); twice as far it is a <em>quarter</em> of that, 2.25 µN. This is <dfn data-def="The force between two charges is proportional to each charge and inversely proportional to the square of the distance between them: F = k q₁ q₂ / r².">Coulomb's law</dfn>.</p>`,
 			notes: `<p>F = k q₁ q₂ ÷ r², with k ≈ 8.99 × 10⁹ N·m²/C². Double either charge and the force doubles; double the distance and it falls to a quarter (the "inverse square"). The same law, with gravity's much weaker constant, holds between masses.</p>`
 		},
 		{
@@ -228,9 +251,9 @@ export const spec: ExplainerSpec = {
 			scene: 'induction',
 			hints: { phase: 'coils' },
 			duration: 30,
-			controls: [acFreq, gap],
+			controls: [drive, acFreq, currentA, gap],
 			body: `
-<p>A magnet isn't needed: a coil with a current is a magnet too. Put coil A next to coil B. A <em>steady</em> current in A (set it to 0 Hz) does nothing to B. Make A's current swing back and forth and B's meter swings too.</p>
+<p>A magnet isn't needed: a coil with a current is a magnet too. Put coil A next to coil B and set A's current yourself: while you change it, B's meter kicks; hold it steady, however large, and B's meter reads zero. Switch to an alternating current and B's meter swings back and forth with it.</p>
 <p>Look closely at the two traces: B's current peaks when A's current is crossing zero, because that is when A's current — and its field — is <em>changing</em> fastest. Alternate faster and the induced voltage grows; move the coils apart and less of A's field passes through B. This is how a <dfn data-def="Two coils sharing a changing magnetic field (usually through an iron core): an alternating voltage in one induces a voltage in the other, stepped up or down by the ratio of their turns.">transformer</dfn> works, and why mains electricity alternates.</p>`,
 			notes: `<p>The voltage in B is − M × (rate of change of A's current), where M, the mutual inductance, measures how much of A's field passes through B. Here coil A has 500 turns and carries 2 A, coil B has 200, both 4 cm across; at 1 Hz and 4 cm apart the induced voltage is under 4 millivolts. Mains current alternates 50 or 60 times a second, and transformers wind both coils on one iron core so that nearly all the flux is shared. Faraday's first discovery, in August 1831, was this very effect: switching a current on in one coil wound round an iron ring made a meter on a second coil kick.</p>`
 		},

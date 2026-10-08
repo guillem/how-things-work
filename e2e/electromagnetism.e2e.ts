@@ -45,4 +45,9 @@ test('a current turns the compasses; a still magnet induces nothing', async ({ p
 	await page.locator('input[type=range][data-control=acFreq]').fill('0');
 	await expect(stage(page)).toContainText('steady 2 A');
 	await expect(stage(page)).toContainText('0.0 µA');
+	// Setting coil A's current by hand: once it is held still, nothing is induced.
+	await page.locator('input[type=range][data-control=currentA]').fill('1.5');
+	await expect(stage(page)).toContainText('you set it: 1.5 A');
+	await expect(stage(page)).toContainText('1.50 A');
+	await expect(stage(page)).toContainText('0.0 µA');
 });
