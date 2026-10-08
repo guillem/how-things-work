@@ -130,7 +130,7 @@ export const spec: ExplainerSpec = {
 			controls: [amps, charges],
 			body: `
 <p>Zoom into the copper wire. It is packed with free <dfn data-def="Tiny, negatively charged particles. In a metal, some of each atom's electrons are free to wander through the whole piece of metal.">electrons</dfn>, jiggling about in all directions at high speed. When a current flows, the whole crowd also <em>drifts</em> slowly along the wire.</p>
-<p>How slowly? At 0.5 A in an ordinary 1 mm² wire, the drift is about <strong>0.04 mm per second</strong> — slower than a snail. A single electron would take hours to get from the switch to the bulb.</p>
+<p>How slowly? At 0.5 A in an ordinary 1 mm² wire, the drift is less than <strong>0.04 mm per second</strong> — slower than a snail. A single electron would take hours to get from the switch to the bulb.</p>
 <p>The bulb still lights at once because the wire is <em>already full</em> of charges. Closing the switch starts all of them moving at practically the same moment, like the links of a bicycle chain: turn the pedals and the back wheel turns at once, even though each link moves slowly.</p>`,
 			notes: `<p>Electrons are negative, so they drift from the battery's − end towards its + end. Long before electrons were discovered, the direction of current was defined the other way, from + to −, as if positive charge were moving: the <dfn data-def="The direction positive charge would move: out of the + terminal of a battery, round the circuit and into the − terminal. Electrons in a wire move the opposite way.">conventional current</dfn>. Both describe the same flow; circuit diagrams use the conventional direction. Switch the view to compare. The drift speed is v = I ÷ (n e A): current divided by the number of free electrons per cubic metre (8.5 × 10²⁸ in copper), the charge of each and the wire's cross-section.</p>`
 		},
@@ -208,7 +208,7 @@ export const spec: ExplainerSpec = {
 			duration: 40,
 			controls: [part, resetBoard, charges],
 			body: `
-<p>Your turn. Pick a part, then click the gap between two pegs to place it; place a part over another to replace it, or use the eraser. Click a switch to flip it, and a battery to turn it round. Hover over or focus any part to read the current through it and the voltage across it.</p>
+<p>Your turn. Pick a part, then click the gap between two pegs to place it; place a part over another to replace it, or remove it with the eraser. Clicking a switch flips it and clicking a battery turns it round, so erase those first to replace them. Hover over or focus any part to read the current through it and the voltage across it.</p>
 <p>Some things to try: two bulbs in series, then in parallel. Two batteries one after the other — and then with one turned round. An ammeter in every branch of a parallel circuit, and check that the currents add up at each junction.</p>
 <p>And one thing not to do with a real battery: connect a plain wire straight from one end to the other. With almost no resistance in the way, a huge current flows — a <dfn data-def="A path with almost no resistance between the two ends of a supply, so a dangerously large current flows. Real wires and batteries heat up fast and can catch fire.">short circuit</dfn> — the battery heats up, and the bulbs, bypassed, go out.</p>`
 		}
