@@ -355,6 +355,16 @@ kbd {
 	--clt-source: #2f9e44;
 	--clt-means: #1c7ed6;
 	--clt-bell: #c2255c;
+	/* atoms: protons, neutrons, electrons, the s/p/d/f blocks, the property colour scale */
+	--atom-proton: #e03131;
+	--atom-neutron: #868e96;
+	--atom-electron: #1c7ed6;
+	--atom-s: #f08c00;
+	--atom-p: #2f9e44;
+	--atom-d: #1971c2;
+	--atom-f: #ae3ec9;
+	--atom-low: #e7f5ff;
+	--atom-high: #1864ab;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -504,4 +514,13 @@ kbd {
 	--clt-source: #51cf66;
 	--clt-means: #4dabf7;
 	--clt-bell: #f06595;
+	--atom-proton: #ff6b6b;
+	--atom-neutron: #adb5bd;
+	--atom-electron: #4dabf7;
+	--atom-s: #ffa94d;
+	--atom-p: #69db7c;
+	--atom-d: #74c0fc;
+	--atom-f: #da77f2;
+	--atom-low: #1a2733;
+	--atom-high: #74c0fc;
 }

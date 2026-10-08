@@ -121,7 +121,7 @@ A topic is done when:
 - [ ] standard-model
 
 **Chemistry & Materials**
-- [ ] atoms-periodic-table
+- [x] atoms-periodic-table
 - [ ] radioactivity
 - [ ] chemical-bonds
 - [ ] states-of-matter
