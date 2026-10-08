@@ -88,7 +88,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A bridge has one job: to carry its own weight and the traffic on it across a gap, and pass all of that down into the ground. Every part of it does this in one of two ways.</p>
 <p>A rope holding up a weight is <strong>pulled</strong>: it is in <dfn data-def="Being pulled from both ends, so that it is slightly stretched.">tension</dfn>. A post holding up the same weight is <strong>pushed</strong>: it is in <dfn data-def="Being pushed from both ends, so that it is slightly squashed.">compression</dfn>. On this page, tension is drawn blue and compression red; the stronger the colour, the closer the part is to its limit.</p>
-<p>By Newton's third law the ground pushes back up as hard as the weight pushes down, so the forces balance and nothing moves.</p>`
+<p>The post pushes down on the ground, and by Newton's third law the ground pushes back up on the post just as hard. The forces on the post add up to zero, so it stays still.</p>`
 		},
 		{
 			id: 'buckling',
@@ -100,8 +100,8 @@ export const spec: ExplainerSpec = {
 			controls: [load, length],
 			body: `
 <p>Steel is about as strong pulled as pushed. Yet a long, thin bar that is pushed end-on does not wait to be crushed: at a much smaller load it suddenly bows out sideways and folds. This is <dfn data-def="The sudden sideways bending and collapse of a slender member under compression, at a load far below what would crush the material.">buckling</dfn>.</p>
-<p>Make the post longer and watch the load it can take fall fast: twice as long, a quarter of the load. A rope or cable can be thin, because pulling only ever straightens it; a part that is pushed has to be thick or short, or braced.</p>`,
-			notes: `<p>For a slender bar with pinned ends, the buckling load is π²EI ÷ L² (Euler, 1744): E is the stiffness of the material, I measures how far the material sits from the bar's centre line, and L is its length. That is why columns and struts are made as tubes or I-shapes, with the material spread out.</p>`
+<p>Make the post longer and watch the load it can take fall fast: once it is long enough to buckle (beyond about 1.4 m here), twice as long means a quarter of the load. A rope or cable can be thin, because pulling only ever straightens it; a part that is pushed has to be thick or short, or braced.</p>`,
+			notes: `<p>For a slender bar with pinned ends, the buckling load is π²EI ÷ L² (Euler, 1744): E is the stiffness of the material, I measures how far the material sits from the bar's centre line, and L is its length. That is why columns and struts are made as tubes or I-shapes, with the material spread out. Euler's load is for a perfectly straight post; real ones buckle somewhat earlier. The tube here is taken to be ordinary structural steel (yielding at 250 MPa); scaffold tube is often stronger steel, which raises the crushing limit but not the buckling load.</p>`
 		},
 		// ------------------------------------------------------------------ shapes
 		{
@@ -114,8 +114,8 @@ export const spec: ExplainerSpec = {
 			controls: [drive],
 			body: `
 <p>The simplest bridge is a single <dfn data-def="A straight member that carries loads across its length by bending.">beam</dfn> laid across the gap. Under a load it <strong>bends</strong>: its top is squashed (red) and its bottom stretched (blue), while the material in the middle of its depth does very little.</p>
-<p>All the bridges on this page use the same 25 tonnes of steel across the same 40-metre gap, shared out sensibly among their parts. As a beam, it is not enough: as soon as the 30-tonne truck is on it, the steel under the truck is pushed past its limit — about 1.3 times what it can take — and the parts that would fail are marked.</p>`,
-			notes: `<p>The drawing exaggerates how far the structures bend, so you can see it. A beam's bending stress grows with the square of the span, which is why plain beams are used for short crossings only.</p>`
+<p>All the bridges on this page use the same 25 tonnes of steel across the same 40-metre gap, shared out sensibly among their parts. As a beam, it is not enough: as soon as the 30-tonne truck is on it, the steel under the truck is stressed past its limit — about 1.3 times what it can take — and the parts that would fail are marked.</p>`,
+			notes: `<p>The drawing exaggerates how far the structures bend, so you can see it. Under its own weight a beam's bending stress grows with the square of the span (and the beam's weight grows too), which is why plain beams are used for short and medium spans. Our beam is a square steel box under half a metre deep; real 40 m beam bridges use deep I-shaped or box girders around 2 m deep — shape at work again, in the cross-section.</p>`
 		},
 		{
 			id: 'truss',
@@ -139,7 +139,7 @@ export const spec: ExplainerSpec = {
 			controls: [drive],
 			body: `
 <p>An <dfn data-def="A curved structure that carries loads mainly by compression, pushing down and outward on its supports.">arch</dfn> turns the weight on it into a push along its curve. Its rib is in compression all along (red), and at its ends it pushes down <em>and outwards</em> on the rock of the gap's walls — which must be strong enough to push back.</p>
-<p>That is why the Romans could build arches of stone, a material that is strong when squeezed but cracks when pulled. Here the road is held up on posts standing on the rib. A truck on one side bends the rib a little; the arch works best when the load is spread evenly.</p>`
+<p>That is why the Romans could build arches of stone, a material that is strong when squeezed but cracks when pulled. Here the road is held up on posts standing on the rib. A truck on one side bends the rib noticeably; the arch works best when the load is spread evenly.</p>`
 		},
 		{
 			id: 'suspension',
@@ -151,7 +151,7 @@ export const spec: ExplainerSpec = {
 			controls: [drive],
 			body: `
 <p>Turn the arch upside down and you get a hanging cable: everything in it is <strong>pulled</strong>. In a <dfn data-def="A bridge whose road hangs from vertical cables (hangers) attached to main cables that run over towers to anchors in the ground.">suspension bridge</dfn> the road hangs from thin hangers on a main cable, which runs over two towers and down to anchors buried in the banks.</p>
-<p>Steel cable is several times stronger than ordinary steel, and pulling never makes it buckle, so the cables can be thin. The towers are pushed down hard (red), and the anchors are pulled. For very long spans — the longest in the world are about 2 kilometres — nothing else comes close.</p>`
+<p>Cable made of high-strength steel wire is several times stronger than ordinary steel, and pulling never makes it buckle, so the cables can be thin. The towers are pushed down hard (red), and the anchors are pulled. For very long spans — the longest in the world are about 2 kilometres — nothing else comes close.</p>`
 		},
 		{
 			id: 'compare',
@@ -164,7 +164,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Four bridges, one gap, the same 25 tonnes of steel each. The bars show how close each design's busiest member comes to failing as the truck crosses.</p>
 <p>The beam fails; the truss, the arch and the suspension bridge all carry the truck with steel to spare. What made the difference was not the amount of material but its <strong>shape</strong>: a good structure carries its loads to the ground mostly by pulling and pushing, not by bending.</p>`,
-			notes: `<p>Real bridges are also designed for wind, many vehicles at once, the shaking of moving traffic, fatigue and corrosion, with safety factors on top; none of that is included here. Over a 40 m gap the truss is the most economical of the four — suspension bridges only pay off over much longer spans.</p>`
+			notes: `<p>Real bridges are also designed for wind, many vehicles at once, the shaking of moving traffic, fatigue and corrosion, with safety factors on top; none of that is included here. The model also treats the steel as perfectly elastic up to its limit, each member as a single straight piece that buckles on its own, and the truck as a single load at its centre. Over a 40 m gap the truss is the most economical of the four — suspension bridges only pay off over much longer spans.</p>`
 		},
 		// ------------------------------------------------------------------ build
 		{
@@ -177,7 +177,7 @@ export const spec: ExplainerSpec = {
 			controls: [tool, drive, resetBridge],
 			body: `
 <p>Your turn: the road alone sags under the truck. Drag between grid points to add beams or cables; anything that touches the ground — the banks, the walls of the gap or its floor — is fixed there. Then drive the truck across.</p>
-<p>You always have the same 25 tonnes of steel. Every member you add makes the others thinner, so a member that does nothing is a waste. Try a single pier in the middle; a few triangles; or a cable from a tall post. Can you get every member out of the danger zone?</p>`
+<p>You always have the same 25 tonnes of steel. Every member you add makes the others thinner, so a member that does nothing is a waste. Try a single pier in the middle; a few triangles; or a cable from a tall post standing on the bank. Can you get every member out of the danger zone?</p>`
 		}
 	]
 };

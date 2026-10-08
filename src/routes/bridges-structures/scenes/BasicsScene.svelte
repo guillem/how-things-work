@@ -69,8 +69,11 @@
 	// ---- helpers ------------------------------------------------------------------
 	const mix = (token: string, p: number) =>
 		`color-mix(in oklab, var(${token}) ${Math.round(clamp(p, 0, 100))}%, var(--struct-steel))`;
-	/** Colour strength from utilisation: 0 → plain steel, 1 → the full colour. */
-	const strength = (u: number) => (u <= 0 ? 0 : 20 + 80 * clamp(u));
+	/**
+	 * Colour strength from utilisation: 0 → plain steel, 1 → the full colour (the same
+	 * mapping as the bridge scene, so a member at 50 % looks the same in both).
+	 */
+	const strength = (u: number) => (u < 0.005 ? 0 : 35 + 65 * Math.sqrt(clamp(u)));
 	const tonnes = (kn: number) => {
 		const v = kn / 9.81;
 		if (v < 0.05) return '0 tonnes';
@@ -100,7 +103,7 @@
 	const LCX = 250; // left set-up (pulled)
 	const RCX = 700; // right set-up (pushed)
 	const CEIL = 118; // underside of the beam the left tube hangs from
-	const GROUND = 480; // ground under the right post
+	const GROUND = 470; // ground under the right post
 	const TUBE_LEN = AXIAL_LENGTH * PPM;
 
 	// Settle: the right weight is lowered onto the post, the left one let go on its hook;
@@ -114,7 +117,9 @@
 	const ampA = $derived(18 * bowAxial.current * take);
 	const squash = $derived(5 * clamp(uPush) + sinkOf(TUBE_LEN, ampA));
 	const boxA = $derived(weightBox(load));
-	const arrowLen = $derived(16 + 50 * clamp(eff / 100));
+	const arrowLen = $derived(12 + 36 * clamp(eff / 100));
+	// No load, no forces to draw.
+	const forcesOn = $derived(take * smoothstep(0, 2, load));
 
 	const leftBottom = $derived(CEIL + TUBE_LEN + stretch);
 	const leftBoxY = $derived(leftBottom + 12 - (1 - lower) * 14);
@@ -123,9 +128,9 @@
 
 	const pullColor = $derived(mix('--struct-tension', strength(uPull)));
 	const pushBuckled = $derived(overAxial && take > 0.5);
-	const pushColor = $derived(
-		pushBuckled ? 'var(--struct-fail)' : mix('--struct-compression', strength(uPush))
-	);
+	// Past its limit the post stays red (it is still pushed) and gets the failure halo,
+	// as members do on the bridges.
+	const pushColor = $derived(mix('--struct-compression', strength(uPush)));
 
 	// ---- buckling step ------------------------------------------------------------
 	const S = 62; // px per metre
@@ -136,9 +141,7 @@
 	const topB = $derived(BG - lenPx + sinkOf(lenPx, ampB));
 	const boxB = $derived(weightBox(load, 0.85));
 	const uB = $derived(load / limitKn);
-	const postColorB = $derived(
-		overBuckle ? 'var(--struct-fail)' : mix('--struct-compression', strength(uB))
-	);
+	const postColorB = $derived(mix('--struct-compression', strength(uB)));
 
 	// Chart: the largest push vs length.
 	const CL = 584;
@@ -208,7 +211,7 @@
 				stroke="var(--struct-cable)"
 			/>
 			<rect x={LCX - 16} y={CEIL - 2} width="32" height="6" rx="1.5" fill="var(--struct-cable)" />
-			<g opacity={take}>
+			<g opacity={forcesOn}>
 				{@render txt(LCX - 18, CEIL + TUBE_LEN / 2 + 4, 'slightly stretched', 11, {
 					anchor: 'end',
 					muted: true
@@ -232,26 +235,25 @@
 				{@render weight(LCX, leftBoxY, boxA.w, boxA.h)}
 			</g>
 
-			<!-- left forces: pointing away from the tube's middle = pulled -->
-			<g opacity={take}>
-				{@render arrow(LCX + 40, CEIL + 70, CEIL + 70 - arrowLen)}
-				{@render txt(LCX + 54, CEIL + 36, 'the beam pulls up', 12, { muted: true })}
-				{@render txt(LCX + 54, CEIL + 52, kn(load), 13, { weight: 600 })}
-				{@render arrow(LCX + 40, CEIL + TUBE_LEN - 70, CEIL + TUBE_LEN - 70 + arrowLen)}
-				{@render txt(LCX + 54, CEIL + TUBE_LEN - 36, 'the weight pulls down', 12, {
+			<!-- left: the two forces ON the tube, pointing away from its middle = pulled -->
+			<g opacity={forcesOn}>
+				{@render arrow(LCX + 40, CEIL + 60, CEIL + 60 - arrowLen)}
+				{@render txt(LCX + 54, CEIL + 30, 'the beam pulls up on the tube', 12, { muted: true })}
+				{@render txt(LCX + 54, CEIL + 46, kn(load), 13, { weight: 600 })}
+				{@render arrow(LCX + 40, CEIL + TUBE_LEN - 60, CEIL + TUBE_LEN - 60 + arrowLen)}
+				{@render txt(LCX + 54, CEIL + TUBE_LEN - 30, 'the weight pulls down on the tube', 12, {
 					muted: true
 				})}
-				{@render txt(LCX + 54, CEIL + TUBE_LEN - 20, kn(load), 13, { weight: 600 })}
-				{@render txt(LCX + 54, CEIL + TUBE_LEN / 2 + 4, 'equal and opposite', 11, {
-					muted: true,
-					opacity: 0.85
+				{@render txt(LCX + 54, CEIL + TUBE_LEN - 14, kn(load), 13, { weight: 600 })}
+				{@render txt(LCX + 54, CEIL + TUBE_LEN / 2 + 4, 'balanced: they add up to zero', 12, {
+					weight: 600
 				})}
 			</g>
 
 			<!-- right: ground -->
-			<rect x={RCX - 140} y={GROUND} width="280" height="26" rx="3" fill="var(--struct-ground)" />
+			<rect x={RCX - 100} y={GROUND} width="240" height="40" rx="3" fill="var(--struct-ground)" />
 			<line
-				x1={RCX - 140}
+				x1={RCX - 100}
 				x2={RCX + 140}
 				y1={GROUND}
 				y2={GROUND}
@@ -259,7 +261,7 @@
 				stroke-width="2"
 			/>
 			{#if !pushBuckled}
-				<g opacity={take}>
+				<g opacity={forcesOn}>
 					{@render txt(RCX - 18, (rightTop + GROUND) / 2 + 4, 'slightly squashed', 11, {
 						anchor: 'end',
 						muted: true
@@ -293,17 +295,29 @@
 			/>
 			{@render weight(RCX, rightBoxY, boxA.w, boxA.h)}
 
-			<!-- right forces: pointing into the tube's middle = pushed -->
-			<g opacity={take}>
+			<!-- right: the two forces ON the post, pointing into its middle = pushed -->
+			<g opacity={forcesOn}>
 				{@render arrow(RCX + 40, rightTop, rightTop + arrowLen)}
-				{@render txt(RCX + 54, rightTop + 30, 'the weight pushes down', 12, { muted: true })}
-				{@render txt(RCX + 54, rightTop + 46, kn(load), 13, { weight: 600 })}
+				{@render txt(RCX + 54, rightTop + 24, 'the weight pushes down', 12, { muted: true })}
+				{@render txt(RCX + 54, rightTop + 39, 'on the post', 12, { muted: true })}
+				{@render txt(RCX + 54, rightTop + 55, kn(load), 13, { weight: 600 })}
 				{@render arrow(RCX + 40, GROUND - 4, GROUND - 4 - arrowLen)}
-				{@render txt(RCX + 54, GROUND - 46, 'the ground pushes back up', 12, { muted: true })}
-				{@render txt(RCX + 54, GROUND - 30, kn(load), 13, { weight: 600 })}
-				{@render txt(RCX + 54, (rightTop + GROUND) / 2 + 4, 'equal and opposite', 11, {
-					muted: true,
-					opacity: 0.85
+				{@render txt(RCX + 54, GROUND - 54, 'the ground pushes up', 12, { muted: true })}
+				{@render txt(RCX + 54, GROUND - 39, 'on the post', 12, { muted: true })}
+				{@render txt(RCX + 54, GROUND - 23, kn(load), 13, { weight: 600 })}
+				{@render txt(RCX + 54, (rightTop + GROUND) / 2 + 4, 'balanced: they add up to zero', 12, {
+					weight: 600
+				})}
+				<!-- Newton's third law: the post pushes on the ground, a different body -->
+				{@render arrow(RCX - 26, GROUND + 3, GROUND + 3 + arrowLen)}
+				{@render txt(RCX - 110, GROUND + 15, 'the post pushes down', 12, {
+					anchor: 'end',
+					muted: true
+				})}
+				{@render txt(RCX - 110, GROUND + 30, 'on the ground', 12, { anchor: 'end', muted: true })}
+				{@render txt(RCX - 110, GROUND + 45, "(Newton's third law: just as hard)", 11, {
+					anchor: 'end',
+					muted: true
 				})}
 			</g>
 			{#if pushBuckled}
@@ -413,7 +427,11 @@
 				weight: 650,
 				color: 'var(--struct-compression)'
 			})}
-			{@render txt(sx(0.75), sy(40), 'holds', 13, { anchor: 'middle', muted: true })}
+			<!-- kept clear of the load line -->
+			{@render txt(sx(0.75), sy(Math.abs(load - 75) < 14 ? 40 : 75), 'holds', 13, {
+				anchor: 'middle',
+				muted: true
+			})}
 
 			<!-- 2 m and 4 m: twice as long, a quarter of the load -->
 			{#each [{ L: 2, k: G2, label: `2 m: ${kn(G2)}` }, { L: 4, k: G4, label: `4 m: ${kn(G4)} (¼)` }] as g (g.L)}
@@ -436,7 +454,7 @@
 			{/each}
 
 			<path d={curveD} fill="none" stroke="var(--struct-compression)" stroke-width="2.5" />
-			{@render txt(sx(0.15), sy(YIELD_KN) + 17, `crushed: ${kn(YIELD_KN)}`, 11, {
+			{@render txt(sx(0.15), sy(YIELD_KN) - 9, `crushed: ${kn(YIELD_KN)}`, 11, {
 				color: 'var(--struct-compression)'
 			})}
 
@@ -459,7 +477,11 @@
 				stroke-width="1.5"
 				opacity="0.8"
 			/>
-			{@render txt(CR, sy(load) - 7, `load ${kn(load)}`, 12, { anchor: 'end', weight: 600 })}
+			<!-- on the right, unless the curve comes down there -->
+			{@render txt(load < 30 ? CL + 8 : CR, sy(load) - 7, `load ${kn(load)}`, 12, {
+				anchor: load < 30 ? 'start' : 'end',
+				weight: 600
+			})}
 			<circle
 				cx={sx(length)}
 				cy={sy(limitKn)}

@@ -71,7 +71,12 @@ const near = (a: number, b: number) => Math.abs(a - b) < 1e-6;
  * can push against the rock — and the floor of the gap, where a pier can stand.
  */
 export function isAnchor(p: Joint) {
-	if (near(p.y, 0) && (p.x <= 1e-6 || p.x >= SPAN - 1e-6) && p.x >= -BANK - 1e-6 && p.x <= SPAN + BANK + 1e-6)
+	if (
+		near(p.y, 0) &&
+		(p.x <= 1e-6 || p.x >= SPAN - 1e-6) &&
+		p.x >= -BANK - 1e-6 &&
+		p.x <= SPAN + BANK + 1e-6
+	)
 		return true;
 	if ((near(p.x, 0) || near(p.x, SPAN)) && p.y <= 1e-6 && p.y >= -DEPTH - 1e-6) return true;
 	// The floor of the gap: where a pier (a support) can stand.
@@ -95,7 +100,8 @@ export const totalLength = (s: Structure) => s.members.reduce((t, m) => t + memb
 export const sectionArea = (s: Structure, budget = BUDGET) =>
 	budget / DENSITY / Math.max(1e-9, totalLength(s));
 
-export const equalAreas = (s: Structure, budget = BUDGET) => s.members.map(() => sectionArea(s, budget));
+export const equalAreas = (s: Structure, budget = BUDGET) =>
+	s.members.map(() => sectionArea(s, budget));
 
 /** Mass of steel in a structure with these member areas (kg). */
 export const steelMass = (s: Structure, areas: readonly number[]) =>
@@ -209,7 +215,8 @@ export function parseStructure(str: unknown): Structure | null {
 	const members: Member[] = [];
 	for (const item of ms ? ms.split(';') : []) {
 		const [k, a, b] = item.split(' ');
-		if ((k !== 'b' && k !== 'c') || !(+a in joints) || !(+b in joints) || +a === +b) return null;
+		if ((k !== 'b' && k !== 'c') || !((+a) in joints) || !((+b) in joints) || +a === +b)
+			return null;
 		members.push({ kind: k === 'b' ? 'beam' : 'cable', a: +a, b: +b });
 	}
 	return { joints, members };
@@ -289,7 +296,10 @@ export const isDeck = (s: Structure, m: Member) =>
 export function deckComplete(s: Structure) {
 	const spans = s.members
 		.filter((m) => isDeck(s, m))
-		.map((m) => [Math.min(s.joints[m.a].x, s.joints[m.b].x), Math.max(s.joints[m.a].x, s.joints[m.b].x)])
+		.map((m) => [
+			Math.min(s.joints[m.a].x, s.joints[m.b].x),
+			Math.max(s.joints[m.a].x, s.joints[m.b].x)
+		])
 		.sort((p, q) => p[0] - q[0]);
 	let reach = 0;
 	for (const [lo, hi] of spans) {
@@ -477,7 +487,9 @@ function solveConnected(s: Structure, truckX: number | null, areas: readonly num
 			const EI = m.kind === 'beam' ? E * I : 0;
 			const weightPerMetre = A * DENSITY * G;
 			const T = transform(c, sn);
-			const dg = [3 * m.a, 3 * m.a + 1, 3 * m.a + 2, 3 * m.b, 3 * m.b + 1, 3 * m.b + 2].map((i) => d[i]);
+			const dg = [3 * m.a, 3 * m.a + 1, 3 * m.a + 2, 3 * m.b, 3 * m.b + 1, 3 * m.b + 2].map(
+				(i) => d[i]
+			);
 			const dl = mulVec(T, dg);
 			const kd = mulVec(localStiffness(EA, EI, L), dl);
 			const fe = kd.map((v, i) => v - feq[k][i]); // forces on the member at its ends
@@ -509,7 +521,8 @@ function solveConnected(s: Structure, truckX: number | null, areas: readonly num
 			const bendStress = (moment * (width / 2)) / I;
 			const axialStress = Math.abs(axial) / A;
 			const strength = (axialStress + bendStress) / YIELD;
-			const buckling = axial < 0 ? -axial / ((Math.PI ** 2 * E * I) / (L * L)) + bendStress / YIELD : 0;
+			const buckling =
+				axial < 0 ? -axial / ((Math.PI ** 2 * E * I) / (L * L)) + bendStress / YIELD : 0;
 			const utilisation = Math.max(strength, buckling);
 			const mode: MemberResult['mode'] =
 				utilisation < 1e-6
@@ -624,13 +637,31 @@ export const BEAM = build(DECK);
 export const TRUSS = build([
 	...DECK,
 	...chain(...[5, 10, 15, 20, 25, 30, 35].map((x) => [x, 5] as [number, number])),
-	...deckXs.slice(0, -1).flatMap((x) => {
-		const out: [number, number][][] = [];
-		if (x > 0) out.push([[x, 0], [x, 5]]);
-		if (x < 20) out.push([[x, 0], [x + 5, 5]]);
-		else out.push([[x, 5], [x + 5, 0]]);
-		return out;
-	}).filter(([p, q]) => !(q[1] === 5 && (q[0] === 0 || q[0] === 40)) && !(p[1] === 5 && (p[0] === 0 || p[0] === 40)))
+	...deckXs
+		.slice(0, -1)
+		.flatMap((x) => {
+			const out: [number, number][][] = [];
+			if (x > 0)
+				out.push([
+					[x, 0],
+					[x, 5]
+				]);
+			if (x < 20)
+				out.push([
+					[x, 0],
+					[x + 5, 5]
+				]);
+			else
+				out.push([
+					[x, 5],
+					[x + 5, 0]
+				]);
+			return out;
+		})
+		.filter(
+			([p, q]) =>
+				!(q[1] === 5 && (q[0] === 0 || q[0] === 40)) && !(p[1] === 5 && (p[0] === 0 || p[0] === 40))
+		)
 ]);
 
 /** A deck arch: an arch springing from the faces of the gap, holding up the road on posts. */
@@ -639,19 +670,47 @@ const archY = (x: number) => -10 + 7.5 * (1 - ((x - 20) / 20) ** 2);
 export const ARCH = build([
 	...DECK,
 	...chain(...[0, 5, 10, 15, 20, 25, 30, 35, 40].map((x) => [x, archY(x)] as [number, number])),
-	...[5, 10, 15, 20, 25, 30, 35].map((x) => [[x, archY(x)], [x, 0]] as [number, number][])
+	...[5, 10, 15, 20, 25, 30, 35].map(
+		(x) =>
+			[
+				[x, archY(x)],
+				[x, 0]
+			] as [number, number][]
+	)
 ]);
 
 /** A suspension bridge: towers on the banks, a main cable over them, hangers holding the road. */
 /** The main cable: a parabola from the tower tops (15 m) down to 2.5 m above the road. */
 const cableY = (x: number) => 2.5 + 12.5 * ((x - 20) / 20) ** 2;
 export const SUSPENSION = build(
-	[...DECK, [[0, 0], [0, 15]], [[40, 0], [40, 15]]],
 	[
-		[[-12.5, 0], [0, 15]],
-		[[40, 15], [52.5, 0]],
+		...DECK,
+		[
+			[0, 0],
+			[0, 15]
+		],
+		[
+			[40, 0],
+			[40, 15]
+		]
+	],
+	[
+		[
+			[-12.5, 0],
+			[0, 15]
+		],
+		[
+			[40, 15],
+			[52.5, 0]
+		],
 		...chain(...[0, 5, 10, 15, 20, 25, 30, 35, 40].map((x) => [x, cableY(x)] as [number, number])),
-		...[5, 10, 15, 20, 25, 30, 35].map((x) => [[x, cableY(x)], [x, 0]] as [number, number][])
+		...[5, 10, 15, 20, 25, 30, 35].map(
+			(x) =>
+				[
+					[x, cableY(x)],
+					[x, 0]
+				] as [number, number][]
+		)
 	]
 );
 

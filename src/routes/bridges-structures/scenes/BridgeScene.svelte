@@ -289,15 +289,20 @@
 	});
 
 	// ---- colours ---------------------------------------------------------------------------
-	const q5 = (v: number) => Math.round(clamp(v) * 20) * 5;
+	/**
+	 * Colour strength from utilisation, shared with the basics scene: 0 → plain steel,
+	 * 1 → the full colour, with a square root so lightly loaded members still show
+	 * their sign. Quantised to 5 % steps so the colour strings don't churn per frame.
+	 */
+	const huePct = (u: number) => (u < 0.005 ? 0 : 35 + 65 * Math.sqrt(clamp(u)));
 	function tone(sign: number, strength: number) {
 		if (sign === 0) return 'var(--struct-steel)';
-		const pct = 40 + (60 * q5(strength)) / 100;
+		const pct = Math.round(huePct(strength) / 5) * 5;
 		const hue = sign > 0 ? 'var(--struct-tension)' : 'var(--struct-compression)';
 		return `color-mix(in oklab, ${hue} ${pct}%, var(--struct-steel))`;
 	}
-	const cableTone = (u: number) =>
-		`color-mix(in oklab, var(--struct-tension) ${30 + (70 * q5(u)) / 100}%, var(--struct-cable))`;
+	/** Legend gradient stops: the same mapping along a 0 → 100 % bar. */
+	const SCALE_STOPS = [0, 0.01, 0.1, 0.25, 0.5, 1].map((u) => ({ u, pct: huePct(u) }));
 
 	// ---- members ---------------------------------------------------------------------------
 	interface Drawn {
@@ -317,7 +322,8 @@
 		dash: string | null;
 		opacity: number;
 		fail: boolean;
-		crack: Point | null;
+		/** A crack across the band, opening from the stretched face. */
+		crack: string | null;
 		r: MemberResult;
 	}
 	const fmtPath = (a: Point, b: Point, ox = 0, oy = 0) =>
@@ -342,7 +348,7 @@
 				dash: null as string | null,
 				opacity: 1,
 				fail: !unstable && r.utilisation > 1,
-				crack: null as Point | null,
+				crack: null as string | null,
 				r
 			};
 			if (unstable || r.unsupported) {
@@ -358,7 +364,7 @@
 				return {
 					...base,
 					hw: 2.2,
-					color: r.slack ? 'var(--struct-cable)' : cableTone(r.utilisation),
+					color: r.slack ? 'var(--struct-cable)' : tone(1, r.utilisation),
 					dash: r.slack ? '4 4' : null,
 					opacity: r.slack ? 0.45 : 1,
 					fail: r.utilisation > 1
@@ -377,7 +383,10 @@
 			const sPlus = sa - sm * sb;
 			const sMinus = sa + sm * sb;
 			const big = Math.max(Math.abs(sPlus), Math.abs(sMinus), 1);
-			const faceSign = (v: number) => (Math.abs(v) < 0.004 * YIELD ? 0 : Math.sign(v));
+			// A face whose stress is small next to the member's larger face is drawn as plain
+			// steel: an arch rib that is mainly pushed reads red, not red-and-blue.
+			const faceSign = (v: number) =>
+				Math.abs(v) < 0.004 * YIELD || Math.abs(v) < 0.3 * big ? 0 : Math.sign(v);
 			const hw = clamp(width * S * 1.8, 4, 12);
 			const L2 = Math.hypot(q.x - p.x, q.y - p.y);
 			const c = (q.x - p.x) / L2;
@@ -389,15 +398,20 @@
 			const plus = tone(faceSign(sPlus), (r.utilisation * Math.abs(sPlus)) / big);
 			const minus = tone(faceSign(sMinus), (r.utilisation * Math.abs(sMinus)) / big);
 			const core = tone(faceSign(sa), (r.utilisation * Math.abs(sa)) / big);
-			let crack: Point | null = null;
+			let crack: string | null = null;
 			if (r.utilisation > 1) {
-				// Cracks open on the stretched face, where the bending is largest.
-				const stretchedPlus = sPlus > sMinus;
+				// Cracks open on the stretched face, where the bending is largest: a zigzag
+				// across the band from that face to past its middle.
+				const side = sPlus > sMinus ? 1 : -1;
 				const at = { x: lerp(a.x, b.x, peak.u), y: lerp(a.y, b.y, peak.u) };
-				crack = {
-					x: at.x + (stretchedPlus ? 1.6 : -1.6) * nx,
-					y: at.y + (stretchedPlus ? 1.6 : -1.6) * ny
-				};
+				const ux = -sn * side; // unit normal towards the stretched face (screen)
+				const uy = -c * side;
+				const tx = c; // unit tangent (screen)
+				const ty = -sn;
+				const pt = (n: number, tt: number) =>
+					`${(at.x + ux * n + tx * tt).toFixed(1)} ${(at.y + uy * n + ty * tt).toFixed(1)}`;
+				const h = hw / 2;
+				crack = `M${pt(h + 3, 0)}L${pt(h * 0.45, 2.5)}L${pt(0, -2)}L${pt(-h * 0.45, 1.5)}`;
 			}
 			return {
 				...base,
@@ -563,7 +577,7 @@
 					y2: sy + 44,
 					lines: ['tower pushed down', kN(f.mag)],
 					lx: sx + side * 10,
-					ly: sy + 80,
+					ly: sy + 98,
 					anchor: side < 0 ? 'end' : 'start',
 					color: 'var(--struct-compression)'
 				});
@@ -639,9 +653,12 @@
 				sub: `It holds its own weight (${pct(nowWorst)} now).`,
 				bad: true
 			};
+		const idle = sol.members.filter((r) => r.unsupported).length;
 		return {
 			text: 'Every member within its limit',
-			sub: `Steel to spare: the busiest part reaches ${Number.isFinite(envWorst) ? pct(envWorst) : '—'}.`,
+			sub: idle
+				? `${idle === 1 ? 'One member is' : `${idle} members are`} not joined to the ground: wasted steel.`
+				: `Steel to spare: the busiest part reaches ${Number.isFinite(envWorst) ? pct(envWorst) : '—'}.`,
 			bad: false
 		};
 	});
@@ -760,9 +777,44 @@
 	function commit(next: typeof built) {
 		setParam('bridge:build', serializeStructure(next));
 	}
+	/**
+	 * Joins members that pass straight through a joint at that joint: a pier drawn up to
+	 * the middle of a road segment holds the road, and a long beam drawn over existing
+	 * joints is connected to them. (`addMember` only connects at a member's two ends.)
+	 */
+	function joinThrough(st: Structure): Structure {
+		for (let guard = 0; guard < 200; guard++) {
+			let split: { i: number; j: Joint } | null = null;
+			for (let i = 0; i < st.members.length && !split; i++) {
+				const m = st.members[i];
+				const pa = st.joints[m.a];
+				const pb = st.joints[m.b];
+				const vx = pb.x - pa.x;
+				const vy = pb.y - pa.y;
+				const len2 = vx * vx + vy * vy;
+				for (const j of st.joints) {
+					const wx = j.x - pa.x;
+					const wy = j.y - pa.y;
+					const u = (wx * vx + wy * vy) / len2;
+					if (u > 1e-6 && u < 1 - 1e-6 && Math.abs(wx * vy - wy * vx) < 1e-6 * len2) {
+						split = { i, j };
+						break;
+					}
+				}
+			}
+			if (!split) return st;
+			const m = st.members[split.i];
+			const pa = st.joints[m.a];
+			const pb = st.joints[m.b];
+			st = removeMember(st, split.i);
+			st = addMember(st, m.kind, pa, split.j);
+			st = addMember(st, m.kind, split.j, pb);
+		}
+		return st;
+	}
 	function addBetween(p: Joint, q: Joint) {
 		if (p.x === q.x && p.y === q.y) return;
-		commit(addMember(built, tool === 'cable' ? 'cable' : 'beam', p, q));
+		commit(joinThrough(addMember(built, tool === 'cable' ? 'cable' : 'beam', p, q)));
 	}
 	function eraseAt(i: number) {
 		commit(removeMember(built, i));
@@ -841,7 +893,7 @@
 			e.preventDefault();
 			sel = null;
 			cursor = null;
-		} else if (e.key === 'Enter') {
+		} else if (e.key === 'Enter' || e.key === ' ') {
 			e.preventDefault();
 			if (!sel || !same(sel, { x: j.x, y: j.y })) {
 				sel = { x: j.x, y: j.y };
@@ -866,7 +918,7 @@
 		}
 	}
 	function onMemberKey(e: KeyboardEvent, i: number) {
-		if (e.key === 'Delete' || e.key === 'Backspace' || e.key === 'Enter') {
+		if (e.key === 'Delete' || e.key === 'Backspace' || e.key === 'Enter' || e.key === ' ') {
 			e.preventDefault();
 			eraseAt(i);
 		}
@@ -919,8 +971,7 @@
 	{@render txt(x + BAR_W, y, Number.isFinite(u) ? pct(u) : '—', 13, {
 		anchor: 'end',
 		weight: 700,
-		tabular: true,
-		color: u > 1 ? 'var(--struct-compression)' : undefined
+		tabular: true
 	})}
 	<rect {x} y={y + 6} width={BAR_W} height="6" rx="3" fill="var(--stage-line)" opacity="0.35" />
 	<rect
@@ -929,7 +980,7 @@
 		width={Math.max(3, Number.isFinite(u) ? barLen(u) : 0)}
 		height="6"
 		rx="3"
-		fill={u > 1 ? 'var(--struct-compression)' : 'var(--stage-ink-muted)'}
+		fill={u > 1 ? 'var(--struct-fail)' : 'var(--stage-ink-muted)'}
 	/>
 	<line
 		x1={x + barLen(1)}
@@ -943,14 +994,17 @@
 
 <g>
 	<defs>
-		<linearGradient id="bridge-scale-t" x1="0" x2="1">
-			<stop offset="0" style:stop-color="var(--struct-steel)" />
-			<stop offset="1" style:stop-color="var(--struct-tension)" />
-		</linearGradient>
-		<linearGradient id="bridge-scale-c" x1="0" x2="1">
-			<stop offset="0" style:stop-color="var(--struct-steel)" />
-			<stop offset="1" style:stop-color="var(--struct-compression)" />
-		</linearGradient>
+		{#each ['tension', 'compression'] as hue (hue)}
+			<linearGradient id="bridge-scale-{hue}" x1="0" x2="1">
+				{#each SCALE_STOPS as st (st.u)}
+					<stop
+						offset={st.u}
+						style:stop-color="color-mix(in oklab, var(--struct-{hue}) {st.pct}%,
+						var(--struct-steel))"
+					/>
+				{/each}
+			</linearGradient>
+		{/each}
 	</defs>
 
 	<!-- ground: the banks, the gap and its floor -->
@@ -1069,11 +1123,12 @@
 		{#each members as d (d.key)}
 			{#if d.crack}
 				<path
-					d="M{d.crack.x - 3} {d.crack.y - 7}l5 4l-5 3l5 4l-4 3"
+					d={d.crack}
 					fill="none"
-					stroke="var(--struct-fail)"
-					stroke-width="2.2"
+					stroke="var(--stage-ink)"
+					stroke-width="1.8"
 					stroke-linejoin="round"
+					stroke-linecap="round"
 				/>
 			{/if}
 		{/each}
@@ -1109,6 +1164,17 @@
 			stroke-width="3"
 			marker-end="url(#arrowhead)"
 			opacity={fade.current}
+		/>
+		{@const w = Math.max(...ga.lines.map((l) => l.length)) * 6.5 + 14}
+		<!-- a card behind the label: it sits on the rock -->
+		<rect
+			x={ga.anchor === 'end' ? ga.lx - w + 7 : ga.lx - 7}
+			y={ga.ly - 14}
+			width={w}
+			height={ga.lines.length * 15 + 6}
+			rx="6"
+			fill="var(--surface)"
+			opacity={0.9 * fade.current}
 		/>
 		{#each ga.lines as line, k (k)}
 			{@render txt(ga.lx, ga.ly + k * 15, line, k === ga.lines.length - 1 ? 11 : 12, {
@@ -1262,10 +1328,10 @@
 		{@render txt(L + 16, 475, subtitle, 11, { muted: true })}
 		{@render meter(L + 18, 497, 'Busiest member now', nowWorst)}
 		{@render meter(L + 18, 527, 'Busiest member as the truck crosses', envWorst)}
-		{@render txt(L + 16, 560, note.text, 12, {
-			weight: 700,
-			color: note.bad ? 'var(--struct-compression)' : undefined
-		})}
+		{#if note.bad}
+			<circle cx={L + 8} cy="556" r="4" fill="var(--struct-fail)" />
+		{/if}
+		{@render txt(L + 16, 560, note.text, 12, { weight: 700 })}
 		{@render txt(L + 16, 576, note.sub, 11, { muted: true })}
 	</g>
 
@@ -1296,7 +1362,7 @@
 					aria-pressed={on}
 					onclick={() => setParam('design', row.id)}
 					onkeydown={(e) => {
-						if (e.key === 'Enter') {
+						if (e.key === 'Enter' || e.key === ' ') {
 							e.preventDefault();
 							setParam('design', row.id);
 						}
@@ -1318,7 +1384,7 @@
 						width={Math.max(3, (CMP_W * Math.min(row.worst, CMP_MAX)) / CMP_MAX)}
 						height="12"
 						rx="3"
-						fill={row.worst > 1 ? 'var(--struct-compression)' : 'var(--stage-ink-muted)'}
+						fill={row.worst > 1 ? 'var(--struct-fail)' : 'var(--stage-ink-muted)'}
 						opacity={on ? 1 : 0.45}
 					/>
 					{@render txt(CMP_X0 + CMP_W + 8, y + 12, pct(row.worst), 12, {
@@ -1381,8 +1447,8 @@
 		<path d="M{LG_X} 496h26" stroke="var(--struct-compression)" stroke-width="4" />
 		{@render txt(LG_X + 34, 500, 'would fail (over 100%)', 12)}
 		{@render txt(LG_X, 524, 'how hard it works', 11, { muted: true })}
-		<rect x={LG_X} y="530" width="120" height="5" rx="2" fill="url(#bridge-scale-t)" />
-		<rect x={LG_X} y="537" width="120" height="5" rx="2" fill="url(#bridge-scale-c)" />
+		<rect x={LG_X} y="530" width="120" height="5" rx="2" fill="url(#bridge-scale-tension)" />
+		<rect x={LG_X} y="537" width="120" height="5" rx="2" fill="url(#bridge-scale-compression)" />
 		{@render txt(LG_X, 556, '0%', 11, { muted: true })}
 		{@render txt(LG_X + 120, 556, '100% of its limit', 11, { muted: true, anchor: 'middle' })}
 		{@render txt(
