@@ -452,6 +452,23 @@ kbd {
 	--rl-explore: #f08c00;
 	--rl-on-cell: #ffffff;
 	--rl-on-small: #2b3a0f;
+	/* ocean currents: sea, deep water, land, wind, Ekman drift, streamlines, warm/cold water, fresh water, thermocline, cloud, high/low sea surface */
+	--oc-sea: #dceefb;
+	--oc-deep: #b7d4ec;
+	--oc-land: #e6dfcc;
+	--oc-land-edge: #c4b896;
+	--oc-wind: #7048e8;
+	--oc-ekman: #0c8599;
+	--oc-flow: #1864ab;
+	--oc-warm: #e8590c;
+	--oc-cold: #1c7ed6;
+	--oc-fresh: #15aabf;
+	--oc-thermo: #212529;
+	--oc-cloud: #ced4da;
+	--oc-hill: #f59f00;
+	--oc-dip: #3b5bdb;
+	--oc-sky: #f1f6fb;
+	--oc-mid: #f4e3c1;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -688,4 +705,20 @@ kbd {
 	--rl-explore: #ffa94d;
 	--rl-on-cell: #101113;
 	--rl-on-small: #101113;
+	--oc-sea: #14293d;
+	--oc-deep: #0d1c2b;
+	--oc-land: #35322a;
+	--oc-land-edge: #5c5644;
+	--oc-wind: #b197fc;
+	--oc-ekman: #3bc9db;
+	--oc-flow: #74c0fc;
+	--oc-warm: #ff8f4a;
+	--oc-cold: #4dabf7;
+	--oc-fresh: #66d9e8;
+	--oc-thermo: #e9ecef;
+	--oc-cloud: #5c636b;
+	--oc-hill: #ffc04d;
+	--oc-dip: #748ffc;
+	--oc-sky: #191c22;
+	--oc-mid: #7a6a52;
 }

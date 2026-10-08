@@ -158,7 +158,7 @@ A topic is done when:
 - [ ] earthquakes
 - [ ] deep-time
 - [x] atmosphere-weather
-- [ ] ocean-currents
+- [x] ocean-currents
 - [ ] ice-ages
 - [ ] carbon-cycle
 - [ ] greenhouse-effect
