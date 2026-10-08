@@ -112,7 +112,7 @@ A topic is done when:
 - [x] newtons-laws
 - [ ] oscillations-resonance
 - [ ] waves-interference
-- [ ] electric-circuits
+- [x] electric-circuits
 - [ ] electromagnetism
 - [ ] light-optics
 - [ ] entropy
