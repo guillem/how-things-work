@@ -30,7 +30,7 @@ checklist); this file is about **order and open work**. Where we are right now i
 | Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`    | done            |
 | Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning  | done            |
 | Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs`  | done            |
-| Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; element data from PubChem (user, 2026-10-08) |                 |
+| Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; element data from PubChem (user, 2026-10-08) | done            |
 | Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton        | done            |
 
 Batch 2 also takes `electric-circuits` (unlocks 4) and `binary` (unlocks 7), per rule 3.
@@ -94,6 +94,10 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 - **central-limit-theorem** — at 2 rows the landed balls are thin columns in wide bins. The `clt`
   step sets n to 30 on arrival when it is 1 (a scene-side default; a per-step control would be
   cleaner).
+
+- **e2e flake** — `scenes.e2e.ts` › orbits-kepler › `#two` occasionally fails under the full
+  parallel run (passes alone and on rerun): the step's page load sometimes exceeds the 5 s
+  expectation. Give that test more time or lighten the step's first render.
 
 ## Site and framework work
 
