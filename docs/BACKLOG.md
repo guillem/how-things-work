@@ -79,6 +79,12 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   (the scene works around it with `DOUBLINGS` and the Lyapunov exponent): make it robust.
   Corner radii differ between the three scenes.
 
+- **orbits-kepler** — on `second` at low speed the wedge labels crowd near aphelion; small
+  label overlaps ("Sun (a focus)", orbit lines over "Sun" at 30 Jupiters).
+
+- **ecosystems** — the web step's starting frame is static until the reader switches a species
+  off; the cycles chart's two y-axes have unaligned gridlines.
+
 ## Site and framework work
 
 - **Stage text is unreadable on phones (site-wide, found 2026-10-07).** At 390 px wide the

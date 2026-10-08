@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-08 05:55 UTC.
+Last updated: 2026-10-08 07:25 UTC.
 
 ## How we work
 
@@ -28,40 +28,36 @@ Last updated: 2026-10-08 05:55 UTC.
 
 ## Current state
 
-- `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps"), epidemics,
-  unit-circle, sorting, newtons-laws, sun-earth-moon (done, ticked), learning-from-data
-  (published, not ticked — "place points" open question). PRs #1–#7 merged (merge commits).
-- **Batch 2 complete, awaiting the user's validation** (asked 2026-10-08 ~03:20 UTC: merge
-  batch 1, then another batch; stay clear of 100% of the 5-hour window; the user validates the
-  whole batch together; always give clickable localhost URLs). Stacked branches, all pushed,
-  **merge in this order** (each PR based on `main` after the previous merge):
-  1. `topic/pagerank` — done, ticked. Main checkout, dev server :5173.
-  2. `topic/electric-circuits` — done, ticked. Worktree `../hiw-circuits`, :5174.
-  3. `topic/bridges-structures` — done, ticked. Worktree `../hiw-bridges`, :5175.
-  4. `topic/binary` — done, ticked. Worktree `../hiw-binary`, :5176.
-  5. `topic/atmosphere-weather` — done, ticked (departures accepted by the user).
-     Worktree `../hiw-atmos`.
-- **Batch 3** (started at ~54% of the 5-hour window, on top of batch 2, same rules): 6. `topic/graph-search` — done, ticked. Worktree `../hiw-graph`. 7. `topic/chaos-fractals` — done, ticked. Worktree `../hiw-chaos`. The full e2e suite (306
-  tests) passes on this branch, which holds the whole stack.
-- The main checkout is **detached at the top of the stack** so its dev server (:5173) shows
-  every new topic for validation; `git checkout topic/pagerank` (or `main` after merging) to
-  get back on a branch.
-- After merging: `git worktree remove ../hiw-<name>` for circuits, bridges, binary, atmos,
-  graph and chaos (one per command), and stop any dev servers still running from them.
-- Local testing quirks: port 4173 is taken by an unrelated app on this machine, so the full e2e
-  suite runs with a git-ignored `pw-local.config.ts` (preview on :4180):
-  `npx playwright test -c pw-local.config.ts`. A git-ignored `pw-node.config.ts` runs only the
+- `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps") and 13
+  ticked topics: epidemics, unit-circle, sorting, newtons-laws, sun-earth-moon,
+  learning-from-data, pagerank, electric-circuits, bridges-structures, binary,
+  atmosphere-weather, graph-search, chaos-fractals. PRs #1–#14 merged (merge commits).
+- **Batch 4 complete, awaiting the user's validation** (asked 2026-10-08 ~06:45 UTC: a small
+  batch with the remaining ~25% of the 5-hour window). Stacked branches, both pushed; **merge in
+  this order**:
+  1. `topic/orbits-kepler` — done, ticked. Main checkout.
+  2. `topic/ecosystems` — done, ticked. Worktree `../hiw-eco` (dev server :5174). The full e2e
+     suite (336 tests) passes on this branch, which holds both.
+     After merging: `git worktree remove ../hiw-eco` and stop the dev servers.
+- Local testing: other work runs on this machine, so ports can clash (4173 is taken by another
+  app). The full e2e suite runs with a git-ignored `pw-local.config.ts` (preview on :4180):
+  `npx playwright test -c pw-local.config.ts`; a git-ignored `pw-node.config.ts` runs only the
   Node model tests: `npx playwright test -c pw-node.config.ts <name>-model`. Both are listed in
   `.git/info/exclude`; recreate them from this description if missing. Worktree dev servers log
   403s for the Inter font (symlinked `node_modules` outside Vite's `fs.allow`) and svelte-check
   reports a spurious `./$types` error there — run final checks in the main checkout.
+- Workflow that worked for batches 2–4: Claude writes each topic's model + Node tests +
+  narrative, scene agents write the scenes (briefs: a common one + one per topic, in the session
+  scratchpad), then an adversarial reviewer and a fact-checker (or one combined agent) per topic;
+  stacked branches in git worktrees; rebase later branches with
+  `git rebase --onto topic/<previous> <old-base>` (the only conflicts are additive, in
+  `src/app.css` and `TopicArt.svelte`: keep both sides).
 - Merge method: merge commits (`gh pr merge N --merge`), one PR per topic, in stack order.
 
 ## Current development
 
-None in progress. Built web/board/bridge/bits/map state is kept per step in params as strings
-(`web:<step>`, `board:build`, `bridge:build`, `bits:<step>`, `map:<step>` — also used by
-graph-search — and `view:zoom` for the Mandelbrot view).
+None in progress. Built-state params: `web:<step>`, `board:build`, `bridge:build`,
+`bits:<step>`, `map:<step>`, `view:zoom`.
 
 ## Open questions for the user
 
