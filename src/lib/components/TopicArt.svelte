@@ -823,6 +823,45 @@
 			stroke-dasharray="3 2"
 		/>
 		<circle cx="82" cy="72" r="6" fill={accent} />
+	{:else if slug === 'entropy'}
+		<!-- a box of fast (hot) and slow (cold) particles, the wall between them lifting -->
+		<rect
+			x="28"
+			y="18"
+			width="144"
+			height="86"
+			rx="6"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.45"
+		/>
+		<line
+			x1="100"
+			x2="100"
+			y1="18"
+			y2="62"
+			stroke="currentColor"
+			stroke-width="3"
+			stroke-linecap="round"
+			opacity="0.4"
+		/>
+		{#each [[44, 34, 8, -6], [62, 52, 9, 4], [48, 80, -7, 7], [80, 30, 6, 6], [74, 70, 9, -3], [88, 92, -8, -5], [58, 96, 8, 0], [108, 84, 9, -4]] as [x, y, dx, dy], i (i)}
+			<line
+				x1={x - dx * 1.6}
+				y1={y - dy * 1.6}
+				x2={x}
+				y2={y}
+				stroke={accent}
+				stroke-width="2"
+				stroke-linecap="round"
+				opacity="0.35"
+			/>
+			<circle cx={x} cy={y} r="4" fill={accent} />
+		{/each}
+		{#each [[122, 32], [146, 44], [130, 62], [156, 74], [118, 52], [140, 92], [160, 30], [124, 96]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="4" fill="currentColor" opacity="0.4" />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -115,7 +115,7 @@ A topic is done when:
 - [x] electric-circuits
 - [ ] electromagnetism
 - [ ] light-optics
-- [ ] entropy
+- [x] entropy
 - [ ] special-relativity
 - [ ] quantum-mechanics
 - [ ] standard-model
