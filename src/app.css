@@ -335,6 +335,12 @@ kbd {
 	--bay-fn: #f08c00;
 	--bay-fp: #4263eb;
 	--bay-tn: #dee2e6;
+	/* oscillations: the mass/bob, the spring, the trace, the push, the resonance curve */
+	--osc-mass: #1971c2;
+	--osc-spring: #868e96;
+	--osc-trace: #1971c2;
+	--osc-push: #e8590c;
+	--osc-curve: #ae3ec9;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -467,4 +473,9 @@ kbd {
 	--bay-fn: #ffa94d;
 	--bay-fp: #748ffc;
 	--bay-tn: #343a40;
+	--osc-mass: #4dabf7;
+	--osc-spring: #adb5bd;
+	--osc-trace: #4dabf7;
+	--osc-push: #ff922b;
+	--osc-curve: #da77f2;
 }

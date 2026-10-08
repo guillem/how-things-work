@@ -194,6 +194,21 @@
 		}
 		return d;
 	})();
+
+	// Oscillations: a mass on a coil spring and the dying wave it draws; the
+	// wave starts level with the mass (centre y 88, line of rest y 62).
+	const oscArt = (() => {
+		let coil = 'M40 18 L40 24';
+		for (let i = 0; i < 12; i++) coil += ` L${i % 2 ? 31 : 49} ${(26 + i * 4.3).toFixed(1)}`;
+		coil += ' L40 76 L40 78';
+		const wave = Array.from({ length: 81 }, (_, i) => {
+			const u = i / 80;
+			const x = 76 + u * 112;
+			const y = 62 + 26 * Math.cos(2 * Math.PI * 3.2 * u) * Math.exp(-1.1 * u);
+			return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+		}).join(' ');
+		return { coil, wave };
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -653,6 +668,21 @@
 			stroke-width="1.5"
 			opacity="0.7"
 		/>
+	{:else if slug === 'oscillations-resonance'}
+		<!-- a mass on a spring and the wave it traces, dying away -->
+		<line x1="18" x2="62" y1="16" y2="16" stroke="currentColor" stroke-width="2.5" opacity="0.5" />
+		<path
+			d={oscArt.coil}
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.8"
+			stroke-linejoin="round"
+			opacity="0.6"
+		/>
+		<rect x="28" y="78" width="24" height="20" rx="4" fill={accent} />
+		<line x1="70" x2="190" y1="62" y2="62" stroke="currentColor" opacity="0.25" />
+		<line x1="54" x2="76" y1="88" y2="88" stroke={accent} stroke-dasharray="2 3" opacity="0.6" />
+		<path d={oscArt.wave} fill="none" stroke={accent} stroke-width="2.4" stroke-linecap="round" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

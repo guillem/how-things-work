@@ -110,7 +110,7 @@ A topic is done when:
 
 **Physics**
 - [x] newtons-laws
-- [ ] oscillations-resonance
+- [x] oscillations-resonance
 - [ ] waves-interference
 - [x] electric-circuits
 - [ ] electromagnetism
