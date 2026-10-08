@@ -182,7 +182,7 @@ A topic is done when:
 - [ ] gpu
 - [ ] graphics-3d
 - [x] sorting
-- [ ] graph-search
+- [x] graph-search
 - [ ] turing-machines
 - [ ] quantum-computing
 
