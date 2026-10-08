@@ -103,6 +103,41 @@
 		const s = x < front - 14 ? 'r' : x < front + 6 ? 'i' : 's';
 		return { k, x, y: 22 + row * 15 + jitter(2), s };
 	});
+
+	// Graph search: a 10 × 5 grid with a wall, the ripple of a breadth-first
+	// search from S (shaded by steps from the start, its frontier outlined) and
+	// the route round the wall to G.
+	const gridArt = (() => {
+		const wall = (c: number, r: number) => c === 5 && r >= 1;
+		const depth: number[] = new Array(50).fill(99);
+		depth[21] = 0;
+		const queue = [21];
+		while (queue.length) {
+			const i = queue.shift()!;
+			const c = i % 10;
+			const r = Math.floor(i / 10);
+			for (const [dc, dr] of [
+				[1, 0],
+				[-1, 0],
+				[0, 1],
+				[0, -1]
+			]) {
+				const nc = c + dc;
+				const nr = r + dr;
+				const j = nr * 10 + nc;
+				if (nc < 0 || nc > 9 || nr < 0 || nr > 4 || wall(nc, nr) || depth[j] < 99) continue;
+				depth[j] = depth[i] + 1;
+				queue.push(j);
+			}
+		}
+		return Array.from({ length: 50 }, (_, i) => {
+			const c = i % 10;
+			const r = Math.floor(i / 10);
+			const d = depth[i];
+			const kind = wall(c, r) ? 'wall' : d <= 4 ? 'seen' : d === 5 ? 'edge' : 'open';
+			return { i, x: 30 + c * 14, y: 24 + r * 14, kind, shade: d * 24 };
+		});
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -461,6 +496,35 @@
 			stroke-linecap="round"
 		/>
 		<path d="M164 95 L168 102 L172 94 Z" fill="var(--atm-warm)" />
+	{:else if slug === 'graph-search'}
+		<!-- a small grid: a wall, the shaded ripple of the search, its frontier and the route -->
+		{#each gridArt as g (g.i)}
+			<rect
+				x={g.x}
+				y={g.y}
+				width="14"
+				height="14"
+				style:fill={g.kind === 'wall'
+					? 'var(--gs-wall)'
+					: g.kind === 'seen'
+						? `color-mix(in srgb, var(--gs-visited-far) ${g.shade}%, var(--gs-visited))`
+						: g.kind === 'edge'
+							? 'var(--gs-frontier)'
+							: 'var(--gs-ground)'}
+				stroke="currentColor"
+				stroke-opacity="0.12"
+			/>
+		{/each}
+		<path
+			d="M51 59 V31 H121 V59 H149"
+			fill="none"
+			stroke={accent}
+			stroke-width="3.5"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		/>
+		<circle cx="51" cy="59" r="5.5" fill="var(--gs-start)" />
+		<circle cx="149" cy="59" r="5.5" fill="var(--gs-goal)" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

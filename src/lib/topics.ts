@@ -141,6 +141,15 @@ const explainers: Explainer[] = [
 		accent: '#0c8599',
 		steps: 9,
 		minutes: 16
+	},
+	{
+		slug: 'graph-search',
+		title: 'How a computer finds the shortest route',
+		summary:
+			'Draw walls and mud on a map and watch three search methods spread out from the start — then see how a good guess lets a route planner skip most of the map.',
+		accent: '#d6336c',
+		steps: 8,
+		minutes: 13
 	}
 ];
 
