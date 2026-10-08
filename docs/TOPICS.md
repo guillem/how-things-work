@@ -101,11 +101,11 @@ A topic is done when:
 - [ ] calculus
 - [ ] linear-transformations
 - [ ] tensors
-- [ ] complex-numbers
+- [x] complex-numbers
 - [ ] fourier-transform
 - [x] bayes-theorem
 - [x] central-limit-theorem
-- [ ] primes-modular-arithmetic
+- [x] primes-modular-arithmetic
 - [x] chaos-fractals
 
 **Physics**
@@ -113,9 +113,9 @@ A topic is done when:
 - [x] oscillations-resonance
 - [ ] waves-interference
 - [x] electric-circuits
-- [ ] electromagnetism
+- [x] electromagnetism
 - [ ] light-optics
-- [ ] entropy
+- [x] entropy
 - [ ] special-relativity
 - [ ] quantum-mechanics
 - [ ] standard-model
@@ -143,7 +143,7 @@ A topic is done when:
 - [ ] crispr
 
 **Body & Medicine**
-- [ ] heart-circulation
+- [x] heart-circulation
 - [ ] homeostasis
 - [ ] neurons
 - [ ] vision-color
@@ -158,7 +158,7 @@ A topic is done when:
 - [ ] earthquakes
 - [ ] deep-time
 - [x] atmosphere-weather
-- [ ] ocean-currents
+- [x] ocean-currents
 - [ ] ice-ages
 - [ ] carbon-cycle
 - [ ] greenhouse-effect
@@ -188,10 +188,10 @@ A topic is done when:
 
 **Information & Networks**
 - [ ] compression
-- [ ] error-correction
+- [x] error-correction
 - [ ] cryptography
 - [ ] wireless-signals
-- [ ] internet
+- [x] internet
 - [ ] gps
 - [x] pagerank
 - [ ] consensus-blockchains
@@ -205,7 +205,7 @@ A topic is done when:
 - [ ] transformers
 - [ ] language-models
 - [ ] diffusion-models
-- [ ] reinforcement-learning
+- [x] reinforcement-learning
 
 **Energy & Machines**
 - [ ] heat-engines

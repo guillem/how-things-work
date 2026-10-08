@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import type { Path } from '$app/types';
 	import type { Topic } from '#lib/topics.ts';
 	import { levelNames } from '#lib/catalog.ts';
 	import TopicArt from './TopicArt.svelte';
@@ -9,7 +8,7 @@
 		topic: Topic;
 	}
 	let { topic }: Props = $props();
-	const href = $derived(resolve(`${topic.slug}/` as Path));
+	const href = $derived(resolve(...([`${topic.slug}/`] as Parameters<typeof resolve>)));
 </script>
 
 <a class="card" {href} style:--card-accent={topic.accent}>

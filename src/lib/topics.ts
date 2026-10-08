@@ -222,6 +222,87 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 6,
 		minutes: 12
+	},
+	{
+		slug: 'error-correction',
+		title: 'How error-correcting codes repair data',
+		summary:
+			'Flip bits in a coded message and watch three overlapping parity checks point straight at the damaged bit and repair it, then push a whole message through a noisy channel with and without the code.',
+		accent: '#0ca678',
+		steps: 8,
+		minutes: 12
+	},
+	{
+		slug: 'entropy',
+		title: 'Heat, entropy and the arrow of time',
+		summary:
+			'Let fast and slow particles meet, count the ways they can be arranged, and run the film backward to find out why heat only flows one way.',
+		accent: '#e8590c',
+		steps: 7,
+		minutes: 14
+	},
+	{
+		slug: 'internet',
+		title: 'How the Internet moves your data',
+		summary:
+			'Send a message across a map of routers and watch it split into packets, find its own way hop by hop, survive cut links, lost packets and traffic jams, and arrive in one piece.',
+		accent: '#1098ad',
+		steps: 7,
+		minutes: 14
+	},
+	{
+		slug: 'primes-modular-arithmetic',
+		title: 'Prime numbers and clock arithmetic',
+		summary:
+			'Sieve out the primes from a grid of numbers, then add, multiply and raise to powers on a clock, and see why powers on a prime clock are easy to compute and hard to undo — the idea behind public-key cryptography.',
+		accent: '#9c36b5',
+		steps: 8,
+		minutes: 14
+	},
+	{
+		slug: 'complex-numbers',
+		title: "Complex numbers and Euler's formula",
+		summary:
+			'Drag two points on the complex plane and watch their product turn and stretch, then follow eⁱᶿ round the unit circle.',
+		accent: '#087f5b',
+		steps: 8,
+		minutes: 12
+	},
+	{
+		slug: 'electromagnetism',
+		title: 'Electricity, magnetism and light',
+		summary:
+			'Place charges and see the field they spread around them, turn a current into a magnet, push a magnet through a coil to make a current — and find out why light is electricity and magnetism keeping each other going.',
+		accent: '#6741d9',
+		steps: 7,
+		minutes: 14
+	},
+	{
+		slug: 'heart-circulation',
+		title: 'How the heart pumps blood',
+		summary:
+			'Watch a beating heart open and shut its valves in time with its electrical signal, then speed it up, narrow the arteries or make a valve leak.',
+		accent: '#c92a2a',
+		steps: 9,
+		minutes: 14
+	},
+	{
+		slug: 'reinforcement-learning',
+		title: 'How a machine learns by trial and error',
+		summary:
+			'Release an agent into a grid world of rewards, pits and walls, and watch it learn — from rewards alone — which move is worth making in every square.',
+		accent: '#0c8599',
+		steps: 6,
+		minutes: 12
+	},
+	{
+		slug: 'ocean-currents',
+		title: 'How the ocean moves heat',
+		summary:
+			'Blow wind over an ocean and watch gyres and the Gulf Stream form, chill and freshen the North Atlantic to speed up or stall the deep overturning, and weaken the Pacific trade winds to set off an El Niño.',
+		accent: '#1c7ed6',
+		steps: 8,
+		minutes: 16
 	}
 ];
 

@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-08 13:45 UTC.
+Last updated: 2026-10-08 14:00 UTC.
 
 ## How we work
 
@@ -40,17 +40,13 @@ Last updated: 2026-10-08 13:45 UTC.
   learning-from-data, pagerank, electric-circuits, bridges-structures, binary,
   atmosphere-weather, graph-search, chaos-fractals, orbits-kepler, ecosystems, bayes-theorem.
   PRs #1–#18 merged (merge commits); #15 removed CI (see "Validate once, locally").
-- **Batch 5 complete, awaiting the user's validation**. Stacked branches, all pushed;
-  **merge in this order**:
-  1. `topic/oscillations-resonance` — done, ticked. Main checkout.
-  2. `topic/logic-gates` — done, ticked. Worktree `../hiw-logic`.
-  3. `topic/central-limit-theorem` — done, ticked. Worktree `../hiw-clt`.
-  4. `topic/atoms-periodic-table` — done, ticked. Worktree `../hiw-atoms`. Element data from the
-     mendeleev database (1.3.0, MIT; PubChem's API was blocked for this network by a reCAPTCHA
-     wall — the user chose mendeleev). The full e2e suite (404 tests) passes on this branch,
-     which holds all four.
-     The main checkout is detached at the stack's top so :5173 serves everything. After merging:
-     remove the three worktrees, stop the dev servers, `git checkout main`, `npm run verify:deploy`.
+- Batch 6 (9 topics: complex-numbers, electromagnetism, heart-circulation, internet,
+  reinforcement-learning, ocean-currents, entropy, primes-modular-arithmetic, error-correction)
+  merged via the integration branch `batch/6` (one PR). New process that worked: one agent
+  builds a whole topic (model, tests, narrative, scenes) in its own worktree off `main`, a second
+  agent reviews, fact-checks and ticks it; then all are merged into `batch/<n>`. The shared files
+  (`src/lib/topics.ts`, `TopicArt.svelte`) don't survive a union merge: rebuild them from main
+  plus each branch's own entry. Nothing in progress; 29 topics ticked.
 - Local testing: other work runs on this machine, so ports can clash (4173 is taken by another
   app). The full e2e suite runs with a git-ignored `pw-local.config.ts` (preview on :4180):
   `npx playwright test -c pw-local.config.ts`; a git-ignored `pw-node.config.ts` runs only the

@@ -787,6 +787,279 @@
 				stroke-width="0.8"
 			/>
 		{/each}
+	{:else if slug === 'error-correction'}
+		<!-- three overlapping parity circles; one flipped bit where two of them fail -->
+		{#each [{ x: 82, y: 50, bad: true }, { x: 118, y: 50, bad: false }, { x: 100, y: 81, bad: true }] as c (c.x + c.y)}
+			<circle
+				cx={c.x}
+				cy={c.y}
+				r="34"
+				fill={accent}
+				fill-opacity="0.08"
+				stroke={c.bad ? accent : 'currentColor'}
+				stroke-opacity={c.bad ? 1 : 0.45}
+				stroke-width="2"
+			/>
+		{/each}
+		{#each [{ x: 66, y: 42, on: 0 }, { x: 134, y: 42, on: 1 }, { x: 100, y: 38, on: 1 }, { x: 100, y: 100, on: 0 }, { x: 118, y: 72, on: 1 }, { x: 100, y: 62, on: 1 }] as b (b.x * 1000 + b.y)}
+			<circle
+				cx={b.x}
+				cy={b.y}
+				r="6"
+				fill={b.on ? 'currentColor' : 'none'}
+				fill-opacity="0.55"
+				stroke="currentColor"
+				stroke-opacity="0.55"
+				stroke-width="1.5"
+			/>
+		{/each}
+		<circle
+			cx="82"
+			cy="72"
+			r="10"
+			fill="none"
+			stroke={accent}
+			stroke-width="2"
+			stroke-dasharray="3 2"
+		/>
+		<circle cx="82" cy="72" r="6" fill={accent} />
+	{:else if slug === 'entropy'}
+		<!-- a box of fast (hot) and slow (cold) particles, the wall between them lifting -->
+		<rect
+			x="28"
+			y="18"
+			width="144"
+			height="86"
+			rx="6"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.45"
+		/>
+		<line
+			x1="100"
+			x2="100"
+			y1="18"
+			y2="62"
+			stroke="currentColor"
+			stroke-width="3"
+			stroke-linecap="round"
+			opacity="0.4"
+		/>
+		{#each [[44, 34, 8, -6], [62, 52, 9, 4], [48, 80, -7, 7], [80, 30, 6, 6], [74, 70, 9, -3], [88, 92, -8, -5], [58, 96, 8, 0], [108, 84, 9, -4]] as [x, y, dx, dy], i (i)}
+			<line
+				x1={x - dx * 1.6}
+				y1={y - dy * 1.6}
+				x2={x}
+				y2={y}
+				stroke={accent}
+				stroke-width="2"
+				stroke-linecap="round"
+				opacity="0.35"
+			/>
+			<circle cx={x} cy={y} r="4" fill={accent} />
+		{/each}
+		{#each [[122, 32], [146, 44], [130, 62], [156, 74], [118, 52], [140, 92], [160, 30], [124, 96]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="4" fill="currentColor" opacity="0.4" />
+		{/each}
+	{:else if slug === 'internet'}
+		<!-- a small mesh of routers, packets taking two routes between two computers -->
+		<path
+			d="M22 60 H52 L92 28 L140 34 L178 60 M52 60 L92 92 L140 86 L178 60 M92 28 L92 92 M140 34 L140 86 M92 28 L140 86"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linejoin="round"
+			opacity="0.3"
+		/>
+		{#each [[52, 60], [92, 28], [92, 92], [140, 34], [140, 86]] as [x, y] (`${x},${y}`)}
+			<circle
+				cx={x}
+				cy={y}
+				r="7"
+				fill="var(--surface)"
+				stroke="currentColor"
+				stroke-width="1.8"
+				opacity="0.8"
+			/>
+		{/each}
+		<rect x="10" y="52" width="16" height="16" rx="3" fill="currentColor" opacity="0.55" />
+		<rect x="174" y="52" width="16" height="16" rx="3" fill="currentColor" opacity="0.55" />
+		<rect x="66" y="38" width="12" height="8" rx="2" fill={accent} transform="rotate(-38 72 42)" />
+		<rect x="110" y="26" width="12" height="8" rx="2" fill={accent} transform="rotate(7 116 30)" />
+		<rect x="110" y="84" width="12" height="8" rx="2" fill={accent} transform="rotate(-7 116 88)" />
+		<rect
+			x="153"
+			y="68"
+			width="12"
+			height="8"
+			rx="2"
+			fill={accent}
+			transform="rotate(-34 159 72)"
+		/>
+	{:else if slug === 'primes-modular-arithmetic'}
+		<!-- a 5 × 4 grid of 1–20 with the primes marked, beside a 7-hour clock with the powers of 3 -->
+		{#each Array.from({ length: 20 }, (_, i) => i + 1) as n (n)}
+			{@const prime = [2, 3, 5, 7, 11, 13, 17, 19].includes(n)}
+			<rect
+				x={14 + ((n - 1) % 5) * 18}
+				y={22 + Math.floor((n - 1) / 5) * 20}
+				width="14"
+				height="16"
+				rx="3"
+				fill={prime ? accent : 'currentColor'}
+				opacity={prime ? 0.9 : n === 1 ? 0.12 : 0.22}
+			/>
+		{/each}
+		<circle
+			cx="150"
+			cy="60"
+			r="36"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.35"
+			stroke-width="2"
+		/>
+		{#each [0, 1, 2, 3, 4, 5, 6] as h (h)}
+			<circle
+				cx={150 + 36 * Math.sin((2 * Math.PI * h) / 7)}
+				cy={60 - 36 * Math.cos((2 * Math.PI * h) / 7)}
+				r="3"
+				fill={h === 0 ? 'currentColor' : accent}
+				opacity={h === 0 ? 0.4 : 1}
+			/>
+		{/each}
+		<path
+			d={[1, 3, 2, 6, 4, 5, 1]
+				.map(
+					(h, i) =>
+						`${i ? 'L' : 'M'}${(150 + 36 * Math.sin((2 * Math.PI * h) / 7)).toFixed(1)} ${(60 - 36 * Math.cos((2 * Math.PI * h) / 7)).toFixed(1)}`
+				)
+				.join(' ')}
+			fill="none"
+			stroke={accent}
+			stroke-width="1.8"
+			stroke-linejoin="round"
+		/>
+	{:else if slug === 'complex-numbers'}
+		<!-- the complex plane: z, w and their product zw (lengths multiply, angles add) -->
+		<path d="M44 66 H156 M100 18 V112" stroke="currentColor" stroke-width="1.5" opacity="0.4" />
+		<circle
+			cx="100"
+			cy="66"
+			r="34"
+			fill="none"
+			stroke="currentColor"
+			stroke-dasharray="2 3"
+			opacity="0.5"
+		/>
+		<path d="M114 66 A14 14 0 0 0 104.8 52.8" fill="none" stroke={accent} stroke-width="2" />
+		<path
+			d="M100 66 L137.6 52.3 M100 66 L126.4 34.6"
+			stroke="currentColor"
+			stroke-width="2.2"
+			stroke-linecap="round"
+			opacity="0.6"
+		/>
+		<circle cx="137.6" cy="52.3" r="4" fill="currentColor" opacity="0.6" />
+		<circle cx="126.4" cy="34.6" r="4" fill="currentColor" opacity="0.6" />
+		<path d="M100 66 L116.4 20.9" stroke={accent} stroke-width="3" stroke-linecap="round" />
+		<circle cx="116.4" cy="20.9" r="5.5" fill={accent} />
+	{:else if slug === 'electromagnetism'}
+		<!-- a + and a − charge with the field lines running between them -->
+		{#each [-34, -16, 0, 16, 34] as k (k)}
+			<path
+				d="M62 {60 + Math.sign(k) * 4} Q100 {60 + k * 1.6} 138 {60 + Math.sign(k) * 4}"
+				fill="none"
+				stroke={accent}
+				stroke-width="1.6"
+				opacity={k === 0 ? 0.9 : 0.6}
+			/>
+		{/each}
+		<path d="M48 60 H18 M152 60 H182" stroke={accent} stroke-width="1.6" opacity="0.4" />
+		<circle cx="56" cy="60" r="12" fill="var(--em-plus)" />
+		<circle cx="144" cy="60" r="12" fill="var(--em-minus)" />
+		<path d="M50 60 H62 M56 54 V66 M138 60 H150" stroke="#fff" stroke-width="2.4" />
+	{:else if slug === 'heart-circulation'}
+		<!-- a heart, its blue right side and red left side, over an ECG trace -->
+		<path
+			d="M70 30 C52 14 24 22 26 46 C28 66 50 82 70 98 C90 82 112 66 114 46 C116 22 88 14 70 30 Z"
+			fill="currentColor"
+			fill-opacity="0.12"
+			stroke="currentColor"
+			stroke-opacity="0.5"
+			stroke-width="2"
+		/>
+		<path d="M40 44 C40 34 60 34 64 42 L64 80 C54 72 42 62 40 50 Z" fill="var(--hc-deoxy)" />
+		<path d="M76 42 C80 34 100 34 100 44 L100 50 C98 62 86 72 76 80 Z" fill={accent} />
+		<path
+			d="M120 74 H136 L140 70 L144 74 H150 L154 80 L160 34 L166 88 L170 74 H180 L186 66 L192 74 H196"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.2"
+			stroke-linejoin="round"
+			stroke-linecap="round"
+		/>
+	{:else if slug === 'reinforcement-learning'}
+		<!-- a small grid world: squares shaded by learnt value, a route of arrows to the reward -->
+		{#each [0, 1, 2, 3, 4, 5] as c (c)}
+			{#each [0, 1, 2] as r (r)}
+				<rect
+					x={37 + c * 21}
+					y={28 + r * 21}
+					width="20"
+					height="20"
+					rx="2"
+					fill={c === 5 && r === 1 ? accent : c === 2 && r === 2 ? 'var(--rl-pit)' : 'currentColor'}
+					fill-opacity={c === 5 && r === 1
+						? 1
+						: c === 2 && r === 2
+							? 0.85
+							: 0.06 + 0.07 * Math.max(0, c - Math.abs(r - 1))}
+				/>
+			{/each}
+		{/each}
+		<path
+			d="M47 59 H66 M68 59 l-4 -4 M68 59 l-4 4 M89 59 H108 M110 59 l-4 -4 M110 59 l-4 4 M131 59 H150 M152 59 l-4 -4 M152 59 l-4 4"
+			stroke={accent}
+			stroke-width="2"
+			stroke-linecap="round"
+			fill="none"
+		/>
+		<circle cx="47" cy="59" r="5" fill={accent} />
+	{:else if slug === 'ocean-currents'}
+		<!-- an ocean basin: a warm gyre squeezed against the west, a cold gyre north of it -->
+		<rect
+			x="34"
+			y="12"
+			width="132"
+			height="96"
+			rx="6"
+			fill={accent}
+			fill-opacity="0.08"
+			stroke={accent}
+			stroke-opacity="0.5"
+		/>
+		{#each [0, 1, 2] as k (k)}
+			{@const x0 = 40 + k * 3}
+			{@const w = 112 - k * 34}
+			{@const g = [
+				{ cy: 78, h: 22 - k * 7, c: 'var(--oc-warm)' },
+				{ cy: 36, h: 15 - k * 5, c: 'var(--oc-cold)' }
+			]}
+			{#each g as l (l.cy)}
+				<path
+					d="M{x0} {l.cy} C{x0} {l.cy - l.h} {x0 + 6} {l.cy - l.h} {x0 + w * 0.22} {l.cy -
+						l.h} C{x0 + w} {l.cy - l.h} {x0 + w} {l.cy + l.h} {x0 + w * 0.22} {l.cy + l.h} C{x0 +
+						6} {l.cy + l.h} {x0} {l.cy + l.h} {x0} {l.cy} Z"
+					fill="none"
+					stroke={l.c}
+					stroke-width={k === 0 ? 2 : 1.5}
+					opacity={0.9 - k * 0.2}
+				/>
+			{/each}
+		{/each}
+		<path d="M36 74 L40 66 L44 74 Z" fill="var(--oc-warm)" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
