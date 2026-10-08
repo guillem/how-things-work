@@ -125,7 +125,7 @@ export const spec: ExplainerSpec = {
 			controls: [pace, play, brush, resetMap],
 			body: `
 <p>In 1956 Edsger Dijkstra worked out a fix in about twenty minutes, sitting at a café in Amsterdam: always expand the frontier square with the <strong>lowest cost so far</strong>. The ripple now spreads in rings of equal <em>cost</em> rather than equal steps — fast across open ground, slowly into the mud.</p>
-<p>When the goal is taken off the frontier, no cheaper route to it can exist, because every square still waiting already costs at least as much. <dfn data-def="Finds the cheapest route in a graph whose connections have costs (none negative), by always expanding the place with the lowest cost so far.">Dijkstra's algorithm</dfn> finds the route round the marsh, cost 21.</p>
+<p>When the goal is taken off the frontier, no cheaper route to it can exist: every square still waiting already costs at least as much, and since no step costs less than zero, going on through one of them can only add cost. <dfn data-def="Finds the cheapest route in a graph whose connections have costs (none negative), by always expanding the place with the lowest cost so far.">Dijkstra's algorithm</dfn> finds the route round the marsh, cost 21.</p>
 <p>The shading shows the cost to reach each square. Paint more mud and watch the ripple bend round it.</p>`
 		},
 		// ------------------------------------------------------------------ guess
@@ -151,8 +151,8 @@ export const spec: ExplainerSpec = {
 			controls: [estimate, pace, play, resetMap],
 			body: `
 <p>The guarantee comes from the estimate never being <em>too high</em>. Each step costs at least 1, so "steps to the goal, ignoring walls and mud" can only be equal to or less than the true cost. Such an estimate is called <dfn data-def="An estimate of the remaining cost that is never higher than the true cost. With it, A* is guaranteed to find the cheapest route.">admissible</dfn>.</p>
-<p>Trust the estimate more — multiply it by 3 or 5 — and A* rushes even more directly at the goal, looking at fewer squares still. But now the estimate can overestimate: going round the marsh <em>looks</em> too expensive, and A* ends up wading through the mud, on a route costing 39 instead of 21. Faster to find, worse to drive.</p>`,
-			notes: `<p>With slow terrain, the estimate must be based on the <em>cheapest</em> terrain: counting each remaining step as a muddy one would often be too high. Games and robots sometimes accept the trade on purpose: a slightly worse route found much faster.</p>`
+<p>Trust the estimate more — multiply it by 3 or 5 — and A* rushes more directly at the goal, looking at fewer squares (36 or 16 instead of 46). But now the estimate can overestimate: going round the marsh <em>looks</em> too expensive, and A* ends up wading through the mud, on a route costing 39 instead of 21. Faster to find, worse to travel.</p>`,
+			notes: `<p>With slow terrain, the estimate must be based on the <em>cheapest</em> terrain: counting each remaining step as a muddy one would often be too high. Games and robots sometimes accept the trade on purpose: a slightly worse route found much faster. Strictly, the version of A* used here, which never looks at a square twice, also needs the estimate to drop by no more than a step's cost from one square to the next; step counts and straight-line distances do.</p>`
 		},
 		{
 			id: 'compare',
@@ -177,7 +177,7 @@ export const spec: ExplainerSpec = {
 			controls: [roadAlgo],
 			body: `
 <p>A road map is a graph too: towns are the places, roads the connections, each with its own length. The same methods work unchanged. Dijkstra's algorithm grows outwards from Ashford in order of distance; A* uses the straight-line distance to Juniper as its estimate — no road can be shorter than a straight line, so the estimate is never too high.</p>
-<p>Both find the same shortest route, 473 km; A* gets there after looking at fewer towns. Route planners do this on maps with millions of junctions, with extra tricks such as pre-computed shortcuts along motorways.</p>
+<p>Both find the same shortest route, 473 km; A* gets there after looking at fewer towns. Route planners do this on maps with millions of junctions, with extra tricks such as pre-computed shortcuts between major junctions, mostly along motorways.</p>
 <p>Finding a route is a <strong>systematic exploration of a graph</strong>, and a good estimate of the distance still to go lets the search skip most of it.</p>`
 		}
 	]
