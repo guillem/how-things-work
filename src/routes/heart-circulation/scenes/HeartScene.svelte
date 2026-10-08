@@ -66,10 +66,10 @@
 			: tau < mc
 				? ['The atria squeeze,', 'topping up the ventricles.']
 				: tau < ao
-					? ['The ventricles squeeze.', 'Every valve is shut: the pressure builds.']
+					? ['The ventricles squeeze.', 'The inlet valves shut: the pressure builds.']
 					: tau < ac
 						? ['The exit valves are pushed open:', 'blood rushes out.']
-						: ['The ventricles relax.', 'Every valve is shut again.']
+						: ['The ventricles relax.', 'The exit valves shut: the pressure falls.']
 	);
 	const flash = (when: number) => {
 		const d = tau - when;

@@ -161,7 +161,7 @@
 						id: 'pr',
 						label: 'P to QRS',
 						value: `${T.pr.toFixed(2)} s`,
-						sub: 'AV node delay'
+						sub: 'mostly the AV node'
 					},
 					{
 						id: 'qt',
@@ -221,9 +221,9 @@
 					},
 					{
 						id: 'o2',
-						label: 'blood coming back',
+						label: 'returning blood',
 						value: `${Math.round(m.venousO2 * 100)}% O₂`,
-						sub: 'left lungs at 98%',
+						sub: 'from lungs: 98%',
 						color: 'var(--hc-deoxy)'
 					}
 				];

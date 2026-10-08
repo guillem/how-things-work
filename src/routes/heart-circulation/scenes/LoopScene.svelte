@@ -53,13 +53,13 @@
 		});
 
 	// Lung circuit: lung artery → capillaries → lung veins.
+	// (It rises straight from the right ventricle, clear of the vena cava on its left.)
 	const lungPre: Point[] = [
 		{ x: X(194), y: Y(40) },
-		{ x: X(194), y: 136 },
-		{ x: 352, y: 136 },
-		{ x: 340, y: 112 }
+		{ x: X(194), y: 132 },
+		{ x: 472, y: 112 }
 	];
-	const lungBed = wavy(340, 640, 112, 54);
+	const lungBed = wavy(472, 640, 112, 44, 36);
 	const lungPost: Point[] = [
 		{ x: 640, y: 112 },
 		{ x: 652, y: 136 },
@@ -187,7 +187,7 @@
 		<linearGradient
 			id="loop-lung-grad"
 			gradientUnits="userSpaceOnUse"
-			x1="340"
+			x1="472"
 			x2="640"
 			y1="0"
 			y2="0"
@@ -219,10 +219,7 @@
 		stroke="var(--border)"
 	/>
 	{@render txt(LUNGS.x + 24, LUNGS.y + 26, 'lungs', 14, { weight: 700 })}
-	{@render txt(LUNGS.x + LUNGS.w - 24, LUNGS.y + 26, 'O₂ in, CO₂ out', 12, {
-		anchor: 'end',
-		muted: true
-	})}
+	{@render txt(LUNGS.x + 24, LUNGS.y + 46, 'O₂ in, CO₂ out', 12, { muted: true })}
 	<rect
 		x={BODY.x}
 		y={BODY.y}

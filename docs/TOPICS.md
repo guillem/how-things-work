@@ -143,7 +143,7 @@ A topic is done when:
 - [ ] crispr
 
 **Body & Medicine**
-- [ ] heart-circulation
+- [x] heart-circulation
 - [ ] homeostasis
 - [ ] neurons
 - [ ] vision-color
