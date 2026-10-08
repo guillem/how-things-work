@@ -896,6 +896,7 @@
 			rx="2"
 			fill={accent}
 			transform="rotate(-34 159 72)"
+		/>
 	{:else if slug === 'primes-modular-arithmetic'}
 		<!-- a 5 × 4 grid of 1–20 with the primes marked, beside a 7-hour clock with the powers of 3 -->
 		{#each Array.from({ length: 20 }, (_, i) => i + 1) as n (n)}

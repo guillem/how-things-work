@@ -231,17 +231,26 @@ const explainers: Explainer[] = [
 		accent: '#0ca678',
 		steps: 8,
 		minutes: 12
+	},
+	{
 		slug: 'entropy',
 		title: 'Heat, entropy and the arrow of time',
 		summary:
 			'Let fast and slow particles meet, count the ways they can be arranged, and run the film backward to find out why heat only flows one way.',
 		accent: '#e8590c',
+		steps: 7,
+		minutes: 14
+	},
+	{
 		slug: 'internet',
 		title: 'How the Internet moves your data',
 		summary:
 			'Send a message across a map of routers and watch it split into packets, find its own way hop by hop, survive cut links, lost packets and traffic jams, and arrive in one piece.',
 		accent: '#1098ad',
 		steps: 7,
+		minutes: 14
+	},
+	{
 		slug: 'primes-modular-arithmetic',
 		title: 'Prime numbers and clock arithmetic',
 		summary:
@@ -249,6 +258,8 @@ const explainers: Explainer[] = [
 		accent: '#9c36b5',
 		steps: 8,
 		minutes: 14
+	},
+	{
 		slug: 'complex-numbers',
 		title: "Complex numbers and Euler's formula",
 		summary:
@@ -256,12 +267,17 @@ const explainers: Explainer[] = [
 		accent: '#087f5b',
 		steps: 8,
 		minutes: 12
+	},
+	{
 		slug: 'electromagnetism',
 		title: 'Electricity, magnetism and light',
 		summary:
 			'Place charges and see the field they spread around them, turn a current into a magnet, push a magnet through a coil to make a current — and find out why light is electricity and magnetism keeping each other going.',
 		accent: '#6741d9',
 		steps: 7,
+		minutes: 14
+	},
+	{
 		slug: 'heart-circulation',
 		title: 'How the heart pumps blood',
 		summary:
@@ -269,6 +285,8 @@ const explainers: Explainer[] = [
 		accent: '#c92a2a',
 		steps: 9,
 		minutes: 14
+	},
+	{
 		slug: 'reinforcement-learning',
 		title: 'How a machine learns by trial and error',
 		summary:
