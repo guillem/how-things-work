@@ -330,6 +330,11 @@ kbd {
 	--eco-deer: #d9480f;
 	--eco-rise: #2f9e44;
 	--eco-fall: #e03131;
+	/* bayes: true/false positives and negatives */
+	--bay-tp: #c92a2a;
+	--bay-fn: #f08c00;
+	--bay-fp: #4263eb;
+	--bay-tn: #dee2e6;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -458,4 +463,8 @@ kbd {
 	--eco-deer: #ff8787;
 	--eco-rise: #51cf66;
 	--eco-fall: #ff8787;
+	--bay-tp: #ff6b6b;
+	--bay-fn: #ffa94d;
+	--bay-fp: #748ffc;
+	--bay-tn: #343a40;
 }

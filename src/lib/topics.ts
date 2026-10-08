@@ -177,6 +177,15 @@ const explainers: Explainer[] = [
 		accent: '#2f9e44',
 		steps: 5,
 		minutes: 10
+	},
+	{
+		slug: 'bayes-theorem',
+		title: 'What a positive test really means',
+		summary:
+			'Colour a crowd of 1,000 people by who is ill and who tests positive, and count your way to Bayes’ theorem — and to why an accurate test for a rare disease is often wrong.',
+		accent: '#c92a2a',
+		steps: 5,
+		minutes: 8
 	}
 ];
 
