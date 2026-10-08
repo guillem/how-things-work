@@ -109,7 +109,7 @@ A topic is done when:
 - [ ] chaos-fractals
 
 **Physics**
-- [ ] newtons-laws
+- [x] newtons-laws
 - [ ] oscillations-resonance
 - [ ] waves-interference
 - [ ] electric-circuits

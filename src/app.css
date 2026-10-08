@@ -220,6 +220,15 @@ kbd {
 	--sort-insertion: #c2255c;
 	--sort-merge: #1c7ed6;
 	--sort-quick: #7048e8;
+	/* mechanics: arrows and energy bars */
+	--mech-velocity: #1c7ed6;
+	--mech-force: #c2255c;
+	--mech-momentum: #0b7285;
+	--mech-kinetic: #2f9e44;
+	--mech-potential: #7048e8;
+	--mech-heat: #e8590c;
+	--mech-cart: #868e96;
+	--mech-ground: #dee2e6;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -250,4 +259,12 @@ kbd {
 	--sort-insertion: #f06595;
 	--sort-merge: #4dabf7;
 	--sort-quick: #9775fa;
+	--mech-velocity: #4dabf7;
+	--mech-force: #f06595;
+	--mech-momentum: #3bc9db;
+	--mech-kinetic: #51cf66;
+	--mech-potential: #9775fa;
+	--mech-heat: #ff922b;
+	--mech-cart: #868e96;
+	--mech-ground: #343a40;
 }
