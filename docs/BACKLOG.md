@@ -27,11 +27,11 @@ checklist); this file is about **order and open work**. Where we are right now i
 | Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.   | done            |
 | Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy       | done            |
 | Space                   | `sun-earth-moon`       | manipulate | 1     | No prerequisites, no data                                             | done            |
-| Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`   | batch 2         |
+| Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`   | done            |
 | Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning | published, gaps |
-| Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs` | batch 2         |
+| Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs` | built, gaps     |
 | Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; needs element data (decide the source)      |                 |
-| Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton       | batch 2         |
+| Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton       | done            |
 
 Batch 2 also takes `electric-circuits` (unlocks 4) and `binary` (unlocks 7), per rule 3.
 
@@ -53,6 +53,26 @@ catalogue's suggested first `build`), `ecosystems`, `electric-circuits` (unlocks
   Adding click-to-add needs a design decision (it changes the 21/7 training/test wording and the
   sync with the error-curve scene, which averages 40 generated sets). Also: move the duplicated
   `params.pts` parser from both scenes into `fit.ts`.
+
+- **atmosphere-weather** — built and reviewed, **not ticked**: fronts form from the placed lows
+  rather than being placed, and the reader sets heat transport and spin rather than the heating
+  pattern (open question in STATUS). Smaller: sharp temperature boundaries along the wind get no
+  front symbol (no stationary fronts); the Cells globe keeps Earth's temperatures at every spin;
+  at spin 0.4 the Coriolis loops overflow their panels; the Held–Hou height is tuned (15 km).
+
+- **bridges-structures** — beam and truss steps show no support reactions (arch and suspension
+  do): add reaction arrows so "loads to the ground" shows on every design. In the arch the posts
+  carry little axial force (the continuous deck spans between banks): check against a deck-arch
+  reference. A cable from a post on the sliding bearing goes slack (the text now says "on the
+  bank"). `addMember` doesn't split a member at a joint it passes through (the build scene does).
+
+- **pagerank** — letter shortcuts (r, j, k…) still reach the explainer while a page is focused;
+  with 9–10 pages E's starting rank drops (more pages share the jumps), not mentioned.
+
+- **electric-circuits** — a board full of wires reaches ~520 SVG nodes (one focusable shape per
+  gap instead of a group would save ~60).
+
+- **binary** — on the overflow step, the sliders show 0–255 even in the signed view.
 
 ## Site and framework work
 
