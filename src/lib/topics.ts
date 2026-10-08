@@ -150,6 +150,15 @@ const explainers: Explainer[] = [
 		accent: '#d6336c',
 		steps: 8,
 		minutes: 13
+	},
+	{
+		slug: 'chaos-fractals',
+		title: 'Chaos and fractals',
+		summary:
+			'Release two pendulums a thousandth of a degree apart and watch them part ways, push a population model into chaos, and zoom forever into the Mandelbrot set.',
+		accent: '#7048e8',
+		steps: 6,
+		minutes: 12
 	}
 ];
 

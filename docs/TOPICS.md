@@ -106,7 +106,7 @@ A topic is done when:
 - [ ] bayes-theorem
 - [ ] central-limit-theorem
 - [ ] primes-modular-arithmetic
-- [ ] chaos-fractals
+- [x] chaos-fractals
 
 **Physics**
 - [x] newtons-laws
@@ -157,7 +157,7 @@ A topic is done when:
 - [ ] plate-tectonics
 - [ ] earthquakes
 - [ ] deep-time
-- [ ] atmosphere-weather
+- [x] atmosphere-weather
 - [ ] ocean-currents
 - [ ] ice-ages
 - [ ] carbon-cycle
@@ -197,7 +197,7 @@ A topic is done when:
 - [ ] consensus-blockchains
 
 **Artificial Intelligence**
-- [ ] learning-from-data
+- [x] learning-from-data
 - [ ] gradient-descent
 - [ ] neural-networks
 - [ ] convolution-vision
