@@ -19,19 +19,19 @@ checklist); this file is about **order and open work**. Where we are right now i
 
 ## Wave 1 — one topic per category
 
-| Category                | Topic                  | Kind       | Level | Why this one                                                          | State           |
-| ----------------------- | ---------------------- | ---------- | ----- | --------------------------------------------------------------------- | --------------- |
-| Biology                 | `photosynthesis`       | simulate   | 1     | Already built — the quality reference                                 | published, gaps |
-| Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot      | done            |
-| Mathematics             | `unit-circle`          | manipulate | 1     | No prerequisites; first draggable handle + linked graph; unlocks 3    | done            |
-| Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.   | done            |
-| Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy       | done            |
-| Space                   | `sun-earth-moon`       | manipulate | 1     | No prerequisites, no data                                             | done            |
-| Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`   | done            |
-| Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning | published, gaps |
-| Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs` | built, gaps     |
-| Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; needs element data (decide the source)      |                 |
-| Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton       | done            |
+| Category                | Topic                  | Kind       | Level | Why this one                                                           | State           |
+| ----------------------- | ---------------------- | ---------- | ----- | ---------------------------------------------------------------------- | --------------- |
+| Biology                 | `photosynthesis`       | simulate   | 1     | Already built — the quality reference                                  | published, gaps |
+| Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot       | done            |
+| Mathematics             | `unit-circle`          | manipulate | 1     | No prerequisites; first draggable handle + linked graph; unlocks 3     | done            |
+| Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.    | done            |
+| Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy        | done            |
+| Space                   | `sun-earth-moon`       | manipulate | 1     | No prerequisites, no data                                              | done            |
+| Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`    | done            |
+| Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning  | published, gaps |
+| Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs`  | built, gaps     |
+| Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; element data from PubChem (user, 2026-10-08) |                 |
+| Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton        | done            |
 
 Batch 2 also takes `electric-circuits` (unlocks 4) and `binary` (unlocks 7), per rule 3.
 
@@ -48,17 +48,14 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   to prerequisites, related topics and dependents now come from the shared page shell. To finish
   it: add a "limiting factors" step (a rate model checked against a reference), then tick it.
 
-- **learning-from-data** — built and reviewed but **not ticked**: the catalogue entry says
-  "Place and drag points", and readers can only drag the 21 generated points, not add new ones.
-  Adding click-to-add needs a design decision (it changes the 21/7 training/test wording and the
-  sync with the error-curve scene, which averages 40 generated sets). Also: move the duplicated
-  `params.pts` parser from both scenes into `fit.ts`.
+- **learning-from-data** — ticked: the user accepted dragging only (2026-10-08). Still to do:
+  move the duplicated `params.pts` parser from both scenes into `fit.ts`.
 
-- **atmosphere-weather** — built and reviewed, **not ticked**: fronts form from the placed lows
-  rather than being placed, and the reader sets heat transport and spin rather than the heating
-  pattern (open question in STATUS). Smaller: sharp temperature boundaries along the wind get no
-  front symbol (no stationary fronts); the Cells globe keeps Earth's temperatures at every spin;
-  at spin 0.4 the Coriolis loops overflow their panels; the Held–Hou height is tuned (15 km).
+- **atmosphere-weather** — ticked: the user accepted that fronts form from the placed lows and
+  that the reader sets heat transport and spin rather than the heating pattern (2026-10-08).
+  Smaller: sharp temperature boundaries along the wind get no front symbol (no stationary
+  fronts); the Cells globe keeps Earth's temperatures at every spin; at spin 0.4 the Coriolis
+  loops overflow their panels; the Held–Hou height is tuned (15 km).
 
 - **bridges-structures** — beam and truss steps show no support reactions (arch and suspension
   do): add reaction arrows so "loads to the ground" shows on every design. In the arch the posts
