@@ -80,6 +80,7 @@ test('every router’s own table leads to Ben without loops, before and after an
 });
 
 test('news of a cut starts at the two ends and spreads outward, router by router', () => {
+	expect(CUT_AT).toBe(1.9); // quoted in the narrative
 	const learn = learnTimes('D-G');
 	expect(learn.get('D')).toBeCloseTo(CUT_AT + DETECT);
 	expect(learn.get('G')).toBeCloseTo(CUT_AT + DETECT);

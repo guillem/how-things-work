@@ -1,5 +1,5 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
-import { LINKS, ROUTERS } from './network';
+import { CUT_AT, ROUTERS } from './network';
 
 const router: Control = {
 	type: 'select',
@@ -17,9 +17,10 @@ const cut: Control = {
 	default: 'D-G',
 	options: [
 		{ value: 'none', label: 'None' },
-		...LINKS.filter((l) => l.cuttable).map((l) => ({ value: l.id, label: l.id.replace('-', '–') }))
+		// The links of the best route and two side links; clicking the map can cut any link.
+		...['A-D', 'D-G', 'G-H', 'B-F', 'C-E'].map((id) => ({ value: id, label: id.replace('-', '–') }))
 	],
-	help: 'Or click a link on the map. It fails 1.9 s into every run.'
+	help: `Or click a link on the map. It fails ${CUT_AT} s into every run.`
 };
 
 const loss: Control = {
@@ -93,7 +94,7 @@ export const spec: ExplainerSpec = {
 <p>When Ada sends Ben a message, her computer doesn't open a private line to his, as an old telephone call did. It cuts the message into small pieces called <dfn data-def="A small chunk of data with a header in front: where it comes from, where it is going and which piece it is.">packets</dfn> and sends them out one after another.</p>
 <p>Each packet starts with a <dfn data-def="The first part of a packet, read by the network: addresses, a number and a few other fields.">header</dfn>, like the outside of an envelope: who it is from, who it is for, and its number in the message. The addresses are just bits: an <dfn data-def="Internet Protocol address, version 4: a 32-bit number that identifies a computer on the Internet, written as four bytes in decimal.">IPv4 address</dfn> is 32 bits, written as four bytes, such as 192.0.2.10.</p>
 <p>Watch the eight packets hop from router to router and get put back in order at Ben's end.</p>`,
-			notes: `<p>Here each packet carries two letters; a real one carries up to about 1,500 bytes. Time is slowed down enormously: a signal in an optical fibre covers about 200 km per millisecond, so a real hop takes from a fraction of a millisecond to a few milliseconds. The addresses shown come from ranges set aside for examples.</p>
+			notes: `<p>Here each packet carries two letters; a real one carries up to about 1,500 bytes. Time is slowed down enormously: a signal in an optical fibre covers about 200 km per millisecond, so a real hop takes from a fraction of a millisecond to a few milliseconds. The addresses shown come from ranges set aside for examples. Strictly, the addresses sit in the IP header and the packet number in the TCP header that follows it.</p>
 <p>32 bits allow about 4.3 billion addresses, fewer than there are devices today. The newer IPv6 uses 128-bit addresses.</p>`
 		},
 		{
@@ -132,8 +133,8 @@ export const spec: ExplainerSpec = {
 			controls: [loss, send],
 			body: `
 <p>Links lose packets now and then: noise garbles some bits, the next router spots the damage and throws the packet away. A router keeps no copy of what it has passed on, so it can't send it again.</p>
-<p>Reliability is added by the two ends. Ben sends a small <dfn data-def="A short reply that says “I got packet number n”.">acknowledgement</dfn> back for every packet he gets. Ada keeps each packet until it is acknowledged, and if no acknowledgement arrives in time (a <dfn data-def="The time a sender waits for an acknowledgement before it sends a packet again.">timeout</dfn>), she sends it again. Watch the ✓ marks on her side. This is what <dfn data-def="Transmission Control Protocol: the rules most Internet traffic uses to deliver data completely and in order.">TCP</dfn> does.</p>`,
-			notes: `<p>An acknowledgement can be lost too; then Ada resends a packet Ben already has, and he simply acknowledges it again. Real TCP acknowledges “everything up to n”, measures the round trip to set its timeout, and resends early when acknowledgements show a gap. Applications that prefer late data to no data, such as video calls, use UDP and skip the resending.</p>`
+<p>Reliability is added by the two ends. Ben sends a small <dfn data-def="A short reply that says “I got packet number n”.">acknowledgement</dfn> back for every packet he gets. Ada keeps each packet until it is acknowledged, and if no acknowledgement arrives in time (a <dfn data-def="The time a sender waits for an acknowledgement before it sends a packet again.">timeout</dfn>), she sends it again. Watch the ✓ marks on her side. This is what <dfn data-def="Transmission Control Protocol: the rules much of the Internet's traffic uses to deliver data completely and in order.">TCP</dfn> does.</p>`,
+			notes: `<p>An acknowledgement can be lost too; then Ada resends a packet Ben already has, and he simply acknowledges it again. Real TCP acknowledges “everything up to n”, measures the round trip to set its timeout, and resends early when acknowledgements show a gap. Applications for which late data is useless, such as video calls, use UDP and skip the resending.</p>`
 		},
 		{
 			id: 'congestion',

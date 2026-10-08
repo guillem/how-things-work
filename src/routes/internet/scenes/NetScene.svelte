@@ -335,6 +335,19 @@
 			<rect x="340" y="23" width="16" height="11" rx="3" fill="var(--net-other)" />
 			{@render txt(362, 33, "other people's traffic", 12, { muted: true })}
 		{/if}
+		{#if useLoad}
+			<rect
+				x="510"
+				y="21"
+				width="12"
+				height="16"
+				rx="3"
+				fill="none"
+				stroke="var(--net-router-edge)"
+				stroke-dasharray="3 3"
+			/>
+			{@render txt(530, 33, `G's queue (room for ${BUFFER})`, 12, { muted: true })}
+		{/if}
 		{@render txt(936, 33, `simulated time ${s.toFixed(1)} s (slowed down)`, 12, {
 			anchor: 'end',
 			muted: true
@@ -453,9 +466,6 @@
 			stroke-dasharray="3 3"
 			opacity="0.8"
 		/>
-		{@render txt(g.x + 22, g.y + QUEUE_0 + (BUFFER / 2 + 0.5) * QUEUE_DY + 4, 'queue', 11, {
-			muted: true
-		})}
 	{/if}
 
 	<!-- computers -->
