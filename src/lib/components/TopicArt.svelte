@@ -127,6 +127,26 @@
 		return { k, x, y: 22 + row * 15 + jitter(2), s };
 	});
 
+	// Ecosystems: rabbits and foxes cycling, the foxes' peaks lagging the rabbits',
+	// over a strip of grass with one of each.
+	const ecoArt = (() => {
+		const curve = (amp: number, lag: number) =>
+			Array.from({ length: 81 }, (_, i) => {
+				const u = i / 80;
+				const x = 16 + u * 168;
+				const y = 54 - amp * Math.sin(u * 4 * Math.PI - lag);
+				return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+			}).join(' ');
+		return { prey: curve(30, 0), predator: curve(20, 1.2) };
+	})();
+	const rabbitIcon =
+		'M-6 0a6 4.6 0 1 0 12 0a6 4.6 0 1 0-12 0Z M3 -3a3 3 0 1 0 6 0a3 3 0 1 0-6 0Z ' +
+		'M6.3 -5L5.4 -11.6L3.2 -11.5L4.4 -4.6Z M7.9 -4.3L9.4 -10.8L7.4 -11.4L6.4 -5Z ' +
+		'M-8.2 -1.2a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0-3.8 0Z';
+	const foxIcon =
+		'M-8 0a8 4.2 0 1 0 16 0a8 4.2 0 1 0-16 0Z M5.5 3L14 0.2L5.5 -4Z M10.2 -2.2L7.6 -9L6.2 -3.2Z ' +
+		'M-7 -1.5C-11 -6 -17 -5 -19.5 -1C-16 2 -11 2.5 -7 1.8Z M-5 2.5L-5.6 7.5L-4 7.5L-3 3Z M4 2.5L4.4 7.5L6 7.5L6 2.5Z';
+
 	// Graph search: a 10 × 5 grid with a wall, the ripple of a breadth-first
 	// search from S (shaded by steps from the start, its frontier outlined) and
 	// the route round the wall to G.
@@ -548,6 +568,26 @@
 		/>
 		<circle cx="51" cy="59" r="5.5" fill="var(--gs-start)" />
 		<circle cx="149" cy="59" r="5.5" fill="var(--gs-goal)" />
+	{:else if slug === 'ecosystems'}
+		<!-- rabbits and foxes rising and falling in turn, over a strip of grass -->
+		<rect x="0" y="96" width="200" height="24" fill={accent} opacity="0.22" />
+		<path
+			d={ecoArt.predator}
+			fill="none"
+			stroke="var(--eco-predator)"
+			stroke-width="1.8"
+			stroke-linecap="round"
+			opacity="0.9"
+		/>
+		<path
+			d={ecoArt.prey}
+			fill="none"
+			stroke="var(--eco-prey)"
+			stroke-width="2.4"
+			stroke-linecap="round"
+		/>
+		<path d={rabbitIcon} transform="translate(64 104) scale(1.3)" fill="var(--eco-prey)" />
+		<path d={foxIcon} transform="translate(140 104) scale(-1.3 1.3)" fill="var(--eco-predator)" />
 	{:else if slug === 'chaos-fractals'}
 		<!-- the Mandelbrot set: a soft fringe round the silhouette, the antenna to −2 -->
 		<g fill="none" stroke={accent} stroke-linejoin="round" opacity="0.22" stroke-width="7">

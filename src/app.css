@@ -319,6 +319,17 @@ kbd {
 	--orb-area: #12b886;
 	--orb-second: #ae3ec9;
 	--orb-space: #f1f3f7;
+	/* ecosystems: grass, rabbits (prey), foxes (predators), and the food-web species */
+	--eco-grass: #d3f9d8;
+	--eco-prey: #a0785a;
+	--eco-predator: #e8590c;
+	--eco-willow: #2f9e44;
+	--eco-elk: #9c6644;
+	--eco-beaver: #6f4e37;
+	--eco-wolf: #495057;
+	--eco-deer: #d9480f;
+	--eco-rise: #2f9e44;
+	--eco-fall: #e03131;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -437,4 +448,14 @@ kbd {
 	--orb-area: #38d9a9;
 	--orb-second: #da77f2;
 	--orb-space: #0b0d12;
+	--eco-grass: #1f3324;
+	--eco-prey: #d2b48c;
+	--eco-predator: #ff922b;
+	--eco-willow: #51cf66;
+	--eco-elk: #c9a27e;
+	--eco-beaver: #b08968;
+	--eco-wolf: #ced4da;
+	--eco-deer: #ff8787;
+	--eco-rise: #51cf66;
+	--eco-fall: #ff8787;
 }
