@@ -159,6 +159,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 6,
 		minutes: 12
+	},
+	{
+		slug: 'orbits-kepler',
+		title: "Orbits and Kepler's laws",
+		summary:
+			'Fire a cannonball fast enough to miss the ground, launch planets round a star, and watch one law of gravity produce circles, ellipses, escapes and all three of Kepler’s laws.',
+		accent: '#f59f00',
+		steps: 6,
+		minutes: 12
 	}
 ];
 

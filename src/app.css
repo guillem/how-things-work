@@ -312,6 +312,13 @@ kbd {
 	--chaos-b: #e8590c;
 	--chaos-curve: #7048e8;
 	--chaos-set: #212529;
+	/* orbits: the star, planets, the path, swept areas, the second planet */
+	--orb-star: #f59f00;
+	--orb-planet: #1c7ed6;
+	--orb-path: #495057;
+	--orb-area: #12b886;
+	--orb-second: #ae3ec9;
+	--orb-space: #f1f3f7;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -424,4 +431,10 @@ kbd {
 	--chaos-b: #ff922b;
 	--chaos-curve: #9775fa;
 	--chaos-set: #000000;
+	--orb-star: #ffd43b;
+	--orb-planet: #4dabf7;
+	--orb-path: #adb5bd;
+	--orb-area: #38d9a9;
+	--orb-second: #da77f2;
+	--orb-space: #0b0d12;
 }
