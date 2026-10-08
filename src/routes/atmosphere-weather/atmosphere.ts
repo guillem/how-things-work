@@ -188,6 +188,8 @@ export function cells(spin: number): Cell[] {
 		{ from: 0, to: h, sense: 'direct', surface: spin > 0 ? 'easterly' : 'none' }
 	];
 	if (h >= 90) return out;
+	// A sliver of a few degrees at the pole is not a separate cell: let the Hadley cell reach it.
+	if (90 - h < 0.4 * h) return [{ ...out[0], to: 90 }];
 	const count = Math.max(1, Math.round((90 - h) / (0.85 * h)));
 	const w = (90 - h) / count;
 	for (let k = 0; k < count; k++) {
