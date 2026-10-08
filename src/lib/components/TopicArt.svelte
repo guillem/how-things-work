@@ -964,6 +964,21 @@
 		<circle cx="126.4" cy="34.6" r="4" fill="currentColor" opacity="0.6" />
 		<path d="M100 66 L116.4 20.9" stroke={accent} stroke-width="3" stroke-linecap="round" />
 		<circle cx="116.4" cy="20.9" r="5.5" fill={accent} />
+	{:else if slug === 'electromagnetism'}
+		<!-- a + and a − charge with the field lines running between them -->
+		{#each [-34, -16, 0, 16, 34] as k (k)}
+			<path
+				d="M62 {60 + Math.sign(k) * 4} Q100 {60 + k * 1.6} 138 {60 + Math.sign(k) * 4}"
+				fill="none"
+				stroke={accent}
+				stroke-width="1.6"
+				opacity={k === 0 ? 0.9 : 0.6}
+			/>
+		{/each}
+		<path d="M48 60 H18 M152 60 H182" stroke={accent} stroke-width="1.6" opacity="0.4" />
+		<circle cx="56" cy="60" r="12" fill="var(--em-plus)" />
+		<circle cx="144" cy="60" r="12" fill="var(--em-minus)" />
+		<path d="M50 60 H62 M56 54 V66 M138 60 H150" stroke="#fff" stroke-width="2.4" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

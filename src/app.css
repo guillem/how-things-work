@@ -415,6 +415,19 @@ kbd {
 	--cx-im: #d6336c;
 	/* the turns: angle arcs, θ and e^(iθ) (the topic's accent, lighter in dark mode) */
 	--cx-turn: #087f5b;
+	/* electromagnetism: charges, electric field, force, test charge, magnetic field, poles, copper, currents */
+	--em-plus: #e03131;
+	--em-minus: #1c7ed6;
+	--em-field: #6741d9;
+	--em-force: #e8590c;
+	--em-test: #f59f00;
+	--em-bfield: #0c8599;
+	--em-north: #e03131;
+	--em-south: #1c7ed6;
+	--em-needle: #adb5bd;
+	--em-copper: #d9822b;
+	--em-current: #2f9e44;
+	--em-drive: #c2255c;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -617,4 +630,16 @@ kbd {
 	--cx-re: #4dabf7;
 	--cx-im: #f06595;
 	--cx-turn: #20c997;
+	--em-plus: #ff6b6b;
+	--em-minus: #4dabf7;
+	--em-field: #9775fa;
+	--em-force: #ff922b;
+	--em-test: #ffd43b;
+	--em-bfield: #3bc9db;
+	--em-north: #ff6b6b;
+	--em-south: #4dabf7;
+	--em-needle: #5c636a;
+	--em-copper: #e8a15a;
+	--em-current: #69db7c;
+	--em-drive: #f06595;
 }
