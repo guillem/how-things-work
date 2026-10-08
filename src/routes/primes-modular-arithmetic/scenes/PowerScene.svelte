@@ -217,7 +217,7 @@
 			stroke-width="2"
 			stroke-dasharray="5 4"
 		/>
-		{@render txt(sx(7.5), sy(94), '2ˣ without the clock', 12, { muted: true })}
+		{@render txt(sx(7.5), AX.y1 - 6, '2ˣ without the clock', 12, { muted: true })}
 
 		<!-- target line -->
 		<line

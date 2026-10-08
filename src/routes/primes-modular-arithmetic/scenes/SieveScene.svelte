@@ -467,11 +467,19 @@
 		{@render txt(PX, 80, '11 × 11 = 121 is off the grid,', 15, { weight: 600 })}
 		{@render txt(PX, 102, 'and 22, 33, … 99 are already struck', 14)}
 		{@render txt(PX, 122, '(22 = 2 × 11, 33 = 3 × 11, …).', 14, { muted: true })}
-		{@render txt(PX, 172, `${shownPrimes} primes up to 100`, 22, {
-			weight: 700,
-			color: 'var(--pm-prime)',
-			opacity: shownPrimes > 0 ? 1 : 0.4
-		})}
+		{@render txt(
+			PX,
+			172,
+			shownPrimes > 0
+				? `${shownPrimes} prime${shownPrimes === 1 ? '' : 's'} up to 100`
+				: 'Primes up to 100: …',
+			22,
+			{
+				weight: 700,
+				color: 'var(--pm-prime)',
+				opacity: shownPrimes > 0 ? 1 : 0.4
+			}
+		)}
 		{#each lines(S.primes, 7) as line, i (i)}
 			{@const firstIdx = i * 7}
 			{@render txt(PX, 206 + i * 26, line, 16, {

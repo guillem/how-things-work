@@ -151,7 +151,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>How do you find all the primes up to 100 without testing each one? Over 2,000 years ago the Greek scholar Eratosthenes used a <dfn data-def="A method that finds all primes up to a limit by repeatedly striking out the multiples of the smallest number not yet struck out.">sieve</dfn>: 2 is prime, so strike out every multiple of 2 — none of them can be prime. The smallest number left, 3, must be prime (nothing smaller divides it), so strike out its multiples. Then 5, then 7.</p>
 <p>Step through it. Each colour marks the prime that struck a number first: that is its smallest prime factor. Notice that each prime's first new victim is its own square — 4, 9, 25, 49 — because the smaller multiples were already struck by smaller primes.</p>`,
-			notes: `<p>That is why a computer running the sieve starts striking each prime p at p², not at 2p. Computers still use the sieve to list primes today.</p>`
+			notes: `<p>That is why a computer running the sieve starts striking each prime p at p², not at 2p. Computers still use the sieve to list primes today. None of Eratosthenes' own writing survives: we know the method from Nicomachus of Gerasa, who described it about 300 years later.</p>`
 		},
 		{
 			id: 'survivors',

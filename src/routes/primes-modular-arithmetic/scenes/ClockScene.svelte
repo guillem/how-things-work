@@ -40,6 +40,15 @@
 	});
 	const HOURS = $derived(Array.from({ length: m }, (_, h) => h));
 	const labelSize = $derived(m > 24 ? 13 : 15);
+	/** Exponent labels (gᵉ) outside the rim: smaller on crowded clocks, and pushed out by
+	 *  their own half-width so that each label clears the rim by the same gap all round. */
+	const expSize = $derived(m > 16 ? 12 : 13);
+	function expLabelAt(h: number, text: string) {
+		const digits = text.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g, '').length;
+		const halfW = (expSize * (0.6 * digits + 0.42 * (text.length - digits))) / 2;
+		const a = ang(h);
+		return at(h, R + 8 + halfW * Math.abs(Math.cos(a)) + expSize * 0.45 * Math.abs(Math.sin(a)));
+	}
 
 	/** A curved chord from hour i to hour j (a small loop if i = j). */
 	function chord(i: number, j: number) {
@@ -150,7 +159,9 @@
 	const seqLines = $derived.by(() => {
 		const items = pw.seq.slice(0, hopsShown).map(String);
 		const out: string[] = [];
-		for (let i = 0; i < items.length; i += 11) out.push(items.slice(i, i + 11).join(', '));
+		// At most 11 per line, balanced over the lines the full cycle needs (no orphan "7, 1").
+		const per = Math.ceil(pw.seq.length / Math.ceil(pw.seq.length / 11));
+		for (let i = 0; i < items.length; i += per) out.push(items.slice(i, i + per).join(', '));
 		return out;
 	});
 	const powDone = $derived(hopsShown === pw.seq.length);
@@ -498,7 +509,7 @@
 			{@const e = firstExp[h]}
 			{@const visited = e !== undefined && (e === 0 || hopOn(e - 1) >= 1)}
 			{#if visited}
-				{@const q = at(h, R + 20)}
+				{@const q = expLabelAt(h, `${g}${sup(e)}`)}
 				<circle
 					cx={p.x}
 					cy={p.y}
@@ -508,9 +519,9 @@
 					stroke="var(--pm-walk)"
 					stroke-width="1.5"
 				/>
-				{@render txt(q.x, q.y + 5, `${g}${sup(e)}`, 13, {
+				{@render txt(q.x, q.y + expSize * 0.35, `${g}${sup(e)}`, expSize, {
 					anchor: 'middle',
-					weight: 600,
+					weight: m > 16 ? 500 : 600,
 					color: 'var(--pm-walk)'
 				})}
 			{/if}
