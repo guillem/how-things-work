@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-08 00:15 UTC.
+Last updated: 2026-10-08 04:00 UTC.
 
 ## How we work
 
@@ -29,31 +29,43 @@ Last updated: 2026-10-08 00:15 UTC.
 ## Current state
 
 - `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps"), epidemics,
-  unit-circle (done, ticked). PRs #1–#3 merged.
-- **Batch awaiting the user's validation** (asked 2026-10-07 ~22:05 UTC: 4–5 topics to validate
-  together while they are away). Stacked branches, all pushed; **merge in this order**, each PR
-  based on `main` after the previous one is merged (or open each with the branch below as its
-  base and let GitHub retarget):
-  1. `topic/sorting` — done (reviewed, ticked).
-  2. `topic/newtons-laws` — done (reviewed, ticked). Built in the git worktree `../hiw-newtons`
-     (dev server there on port 5174; remove it with `git worktree remove ../hiw-newtons` once
-     merged — its `node_modules` is a symlink).
-  3. `topic/sun-earth-moon` — done (reviewed, ticked).
-  4. `topic/learning-from-data` — **in progress** (this branch; see below).
-     All 123 e2e tests pass on `topic/sun-earth-moon` (the stack so far).
-- Merge method: merge commits (`gh pr merge N --merge`), as for #1–#3.
+  unit-circle, sorting, newtons-laws, sun-earth-moon (done, ticked), learning-from-data
+  (published, not ticked — "place points" open question). PRs #1–#7 merged (merge commits).
+- **Batch 2 in progress** (user asked 2026-10-08 ~03:20 UTC: merge batch 1, then another batch;
+  keep going until close to the session limit but never reach 100% of the 5-hour window; the
+  user validates the whole batch together; always give clickable localhost URLs). Stacked
+  branches, each started from the previous one; every topic has its model, Node tests and
+  narrative committed, scenes written by agents:
+  1. `topic/pagerank` — main checkout, dev server :5173. Scenes committed; adversarial review
+     running; fact-check applied.
+  2. `topic/electric-circuits` — worktree `../hiw-circuits`, :5174. Wire scene done, board
+     scene in progress (uncommitted in the worktree).
+  3. `topic/bridges-structures` — worktree `../hiw-bridges`, :5175. Frame solver (stiffness
+     method, cables tension-only, steel budget shared by demand). Scenes in progress.
+  4. `topic/binary` — worktree `../hiw-binary`, :5176. Scenes in progress.
+  5. `topic/atmosphere-weather` — worktree `../hiw-atmos`, :5177. Energy-balance model,
+     Held–Hou cells, Coriolis parcels, geostrophic winds, frontal advection, hurricane MPI.
+     Five scenes in progress (uncommitted placeholders let the page load meanwhile).
+- Each worktree's `node_modules` is a symlink to the main checkout's. A git-ignored
+  `pw-node.config.ts` (listed in `.git/info/exclude`) runs the Node-only model tests without
+  building the site: `npx playwright test -c pw-node.config.ts <name>-model`. The full e2e run
+  only works on a branch whose earlier topics all have their scenes.
+- When a topic's scenes land: review (adversarial reviewer + fact-check), commit, then rebase
+  the later branches onto it (`git rebase topic/<previous>` in each worktree, in order).
+- Merge method: merge commits (`gh pr merge N --merge`), one PR per topic, in stack order;
+  then `git worktree remove ../hiw-*`.
 
 ## Current development
 
-None in progress: the batch is complete and waits for the user's validation. After that: PRs
-and merges in stack order, then the next wave-1 topics from BACKLOG (`pagerank`,
-`atmosphere-weather`, `atoms-periodic-table` — the last needs an element-data source decision).
+See the list above. Built web/board/bridge/bits state is kept per step in params as strings
+(`web:<step>`, `board:build`, `bridge:build`, `bits:<step>`, `map:<step>`).
 
 ## Open questions for the user
 
 - learning-from-data: add "place points" (click to add) so it meets the catalogue entry, or
-  accept dragging only? (Claude opens and merges PRs after the user validates — answered
-  2026-10-07.)
+  accept dragging only?
+- atoms-periodic-table: which element-data source (e.g. PubChem's periodic table JSON, IUPAC
+  atomic weights)? Blocked until chosen (catalogue: never invent data).
 
 ## Resume
 

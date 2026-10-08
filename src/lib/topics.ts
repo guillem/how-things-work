@@ -96,6 +96,15 @@ const explainers: Explainer[] = [
 		accent: '#ae3ec9',
 		steps: 8,
 		minutes: 12
+	},
+	{
+		slug: 'pagerank',
+		title: 'How search engines rank pages',
+		summary:
+			'Build a small web, release a random surfer on it and watch its visits settle into each page’s rank — the idea behind Google’s PageRank.',
+		accent: '#4263eb',
+		steps: 10,
+		minutes: 15
 	}
 ];
 

@@ -27,11 +27,13 @@ checklist); this file is about **order and open work**. Where we are right now i
 | Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.   | done            |
 | Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy       | done            |
 | Space                   | `sun-earth-moon`       | manipulate | 1     | No prerequisites, no data                                             | done            |
-| Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`   |                 |
-| Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning |                 |
-| Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs` |                 |
+| Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`   | batch 2         |
+| Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning | published, gaps |
+| Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs` | batch 2         |
 | Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; needs element data (decide the source)      |                 |
-| Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton       | after Newton    |
+| Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton       | batch 2         |
+
+Batch 2 also takes `electric-circuits` (unlocks 4) and `binary` (unlocks 7), per rule 3.
 
 Other wave-1 candidates kept in mind: `chaos-fractals` (first `explore`), `graph-search` (the
 catalogue's suggested first `build`), `ecosystems`, `electric-circuits` (unlocks 4 topics),
@@ -74,6 +76,8 @@ catalogue's suggested first `build`), `ecosystems`, `electric-circuits` (unlocks
   control declare allowed values, or round a range while a toggle is on.
 - Shared components still to create as their first topic needs them: an algorithm stepper / bar chart (`sorting`), a build palette (`pagerank` or
   `graph-search`), pan/zoom (`chaos-fractals`).
+- `rng` (mulberry32) now lives in `src/lib/draw/math.ts`; epidemics, sorting and
+  learning-from-data still carry their own copies — switch them over.
 - Cards on the index have hand-drawn art only for topics that have a vignette in
   `src/lib/components/TopicArt.svelte`; give each new topic one.
 - When a second explainer exists, consider a short "how to use the controls" note shared by all

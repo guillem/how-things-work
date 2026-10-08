@@ -244,6 +244,12 @@ kbd {
 	--fit-test: #e8590c;
 	--fit-model: #7048e8;
 	--fit-truth: #2f9e44;
+	/* pagerank: pages, the surfer and its jumps, rank flowing along links, a page to boost */
+	--rank-page: #4263eb;
+	--rank-surfer: #e8590c;
+	--rank-jump: #ae3ec9;
+	--rank-flow: #1098ad;
+	--rank-target: #d6336c;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -295,4 +301,9 @@ kbd {
 	--fit-test: #ff922b;
 	--fit-model: #9775fa;
 	--fit-truth: #51cf66;
+	--rank-page: #748ffc;
+	--rank-surfer: #ff922b;
+	--rank-jump: #da77f2;
+	--rank-flow: #3bc9db;
+	--rank-target: #f06595;
 }
