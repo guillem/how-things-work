@@ -16,7 +16,7 @@ const width: Control = {
 	id: 'width',
 	label: 'Width of the small arteries',
 	help: '100% is healthy; narrower vessels resist the flow more.',
-	min: 70,
+	min: 80,
 	max: 100,
 	step: 1,
 	default: 90,
@@ -124,8 +124,8 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [rate],
 			body: `
-<p>How much blood the heart pumps each minute, its <dfn data-def="The volume of blood a ventricle pumps per minute: heart rate × stroke volume. About 5 litres a minute at rest.">cardiac output</dfn>, is the heart rate times the volume of each beat, the <dfn data-def="The volume of blood a ventricle pumps out in one beat, about 70 mL at rest.">stroke volume</dfn>. At 75 beats a minute and about 75 mL per beat, that makes some 5½ litres a minute.</p>
-<p>Speed the heart up and each beat comes sooner, giving the ventricles less time to fill. At 150 beats a minute each beat pumps only about 47 mL, so twice the rate gives only about a quarter more blood. Slow it down to 40 and each beat is bigger, but the output falls, and the body has to take more oxygen out of every litre: the blood comes back with less.</p>`,
+<p>How much blood the heart pumps each minute, its <dfn data-def="The volume of blood a ventricle pumps per minute: heart rate × stroke volume. About 5 litres a minute at rest.">cardiac output</dfn>, is the heart rate times the volume of each beat, the <dfn data-def="The volume of blood a ventricle pumps out in one beat, about 70–80 mL at rest.">stroke volume</dfn>. At 75 beats a minute and about 75 mL per beat, that makes some 5½ litres a minute.</p>
+<p>Speed the heart up and each beat comes sooner, giving the ventricles less time to fill. At 150 beats a minute each beat pumps only about 47 mL, so twice the rate gives only about a quarter more blood. Slow it down to 40 and each beat is bigger, but the output falls, and the body has to take more oxygen out of every litre, so the blood comes back with less oxygen in it.</p>`,
 			notes: `<p>During exercise, nerves and adrenaline do more than speed the heart up: they also make each squeeze stronger and open up the vessels of the working muscles, so the output can rise to about four times its resting value. This model changes only the rate.</p>`
 		},
 		{

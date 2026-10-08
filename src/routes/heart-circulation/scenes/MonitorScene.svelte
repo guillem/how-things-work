@@ -299,6 +299,14 @@
 		}
 	});
 
+	const legend = $derived([
+		{ id: 'poor', label: 'oxygen-poor blood', color: 'var(--hc-deoxy)' },
+		{ id: 'rich', label: 'oxygen-rich blood', color: 'var(--hc-oxy)' },
+		phase === 'leak'
+			? { id: 'leak', label: 'blood leaking back', color: 'var(--hc-leak)' }
+			: { id: 'signal', label: 'electrical signal', color: 'var(--hc-signal)' }
+	]);
+
 	const ecgFocus = $derived(phase === 'signal' ? 1 : 0.55);
 	const pressureFocus = $derived(phase === 'signal' ? 0.4 : 1);
 </script>
@@ -436,6 +444,14 @@
 			{@render txt(P1, PR.bottom + 22, 'shaded: valve open', 12, { anchor: 'end', muted: true })}
 		{/if}
 	</g>
+
+	<!-- key to the heart drawing -->
+	{#each legend as k, i (k.id)}
+		{@const x = 30 + (i % 2) * 200}
+		{@const y = 532 + Math.floor(i / 2) * 26}
+		<rect {x} y={y - 11} width="14" height="14" rx="3" fill={k.color} />
+		{@render txt(x + 22, y + 1, k.label, 12, { muted: true })}
+	{/each}
 
 	<Card x={470} y={476} w={474} h={100} {cells} />
 </g>

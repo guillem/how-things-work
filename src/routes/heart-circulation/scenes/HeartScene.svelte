@@ -62,14 +62,14 @@
 	];
 	const stage = $derived(
 		tau < T.atria || tau >= mo
-			? 'The ventricles relax and fill: inlet valves open, exit valves shut.'
+			? ['The ventricles relax and fill.', 'Inlet valves open, exit valves shut.']
 			: tau < mc
-				? 'The atria squeeze, topping up the ventricles.'
+				? ['The atria squeeze,', 'topping up the ventricles.']
 				: tau < ao
-					? 'The ventricles squeeze: every valve is shut, the pressure builds.'
+					? ['The ventricles squeeze.', 'Every valve is shut: the pressure builds.']
 					: tau < ac
-						? 'The exit valves are pushed open: blood rushes out.'
-						: 'The ventricles relax: every valve is shut again.'
+						? ['The exit valves are pushed open:', 'blood rushes out.']
+						: ['The ventricles relax.', 'Every valve is shut again.']
 	);
 	const flash = (when: number) => {
 		const d = tau - when;
@@ -188,9 +188,9 @@
 		{#each [{ id: 'rv', label: 'right', v: vRV, c: 'var(--hc-deoxy)' }, { id: 'lv', label: 'left', v: vLV, c: 'var(--hc-oxy)' }] as row, i (row.id)}
 			{@const y = 330 + i * 44}
 			{@render txt(PX, y + 13, row.label, 12, { muted: true })}
-			<rect x={PX + 50} {y} width="270" height="18" rx="5" fill="var(--stage-grid)" />
-			<rect x={PX + 50} {y} width={270 * clamp(row.v / VMAX)} height="18" rx="5" fill={row.c} />
-			{@render txt(PX + 330, y + 14, `${Math.round(row.v)} mL`, 13, { weight: 600 })}
+			<rect x={PX + 50} {y} width="220" height="18" rx="5" fill="var(--stage-grid)" />
+			<rect x={PX + 50} {y} width={220 * clamp(row.v / VMAX)} height="18" rx="5" fill={row.c} />
+			{@render txt(PX + 280, y + 14, `${Math.round(row.v)} mL`, 13, { weight: 600 })}
 		{/each}
 		{@render txt(
 			PX,
@@ -259,7 +259,8 @@
 			stroke-width="2.5"
 		/>
 
-		{@render txt(TL.x0, 246, stage, 13, { weight: 600 })}
+		{@render txt(TL.x0, 226, stage[0], 13, { weight: 600 })}
+		{@render txt(TL.x0, 244, stage[1], 13, { muted: true })}
 
 		<!-- state of each valve -->
 		{#each valveRows as v (v.id)}

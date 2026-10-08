@@ -27,6 +27,7 @@
 		passedAt,
 		sizeOf,
 		tauOf,
+		fibres,
 		ventriclePath
 	} from './heart';
 
@@ -40,6 +41,8 @@
 		dim?: number;
 		/** Show the moving flow dashes in the vessels. */
 		vessels?: boolean;
+		/** Opacity of the vessels (paler when they join a larger drawing). */
+		tubes?: number;
 	}
 	let {
 		beat,
@@ -49,7 +52,8 @@
 		scale = 1,
 		signal = 0.35,
 		dim = 1,
-		vessels = true
+		vessels = true,
+		tubes = 1
 	}: Props = $props();
 
 	const T = $derived(beat.timing);
@@ -64,6 +68,12 @@
 	const la = $derived(atriumPath(CH.la.cx, CH.la.w, CH.la.h, sLA));
 	const rv = $derived(ventriclePath(CH.rv.xs, -1, CH.rv.w, CH.rv.depth, sRV));
 	const lv = $derived(ventriclePath(CH.lv.xs, 1, CH.lv.w, CH.lv.depth, sLV));
+	// The bundle runs down the septum to about half the depth of the smaller
+	// ventricle, then its branches follow each ventricle's wall.
+	const split = $derived(VP + 0.45 * Math.min(CH.rv.depth * sRV, CH.lv.depth * sLV));
+	const bundle = $derived(`M${NODES.av.x} ${NODES.av.y} L222 ${VP + 12} L222 ${split.toFixed(1)}`);
+	const leftBranch = $derived(fibres(CH.lv.xs, 1, CH.lv.w, CH.lv.depth, sLV, split));
+	const rightBranch = $derived(fibres(CH.rv.xs, -1, CH.rv.w, CH.rv.depth, sRV, split));
 
 	// ---- valves --------------------------------------------------------------
 	const leakValve = $derived(beat.settings.leak > 0 ? beat.settings.valve : null);
@@ -134,12 +144,14 @@
 
 <g transform="translate({x} {y}) scale({scale})" opacity={dim}>
 	<!-- vessels, behind the chambers -->
-	{@render tube(VESSELS.svc.d, VESSELS.svc.w, 'var(--hc-deoxy)', dash.svc, vessels)}
-	{@render tube(VESSELS.ivc.d, VESSELS.ivc.w, 'var(--hc-deoxy)', dash.ivc, vessels)}
-	{@render tube(VESSELS.pv1.d, VESSELS.pv1.w, 'var(--hc-oxy)', dash.pv, vessels)}
-	{@render tube(VESSELS.pv2.d, VESSELS.pv2.w, 'var(--hc-oxy)', dash.pv, vessels)}
-	{@render tube(VESSELS.pa.d, VESSELS.pa.w, 'var(--hc-deoxy)', dash.pa, vessels)}
-	{@render tube(VESSELS.aorta.d, VESSELS.aorta.w, 'var(--hc-oxy)', dash.aorta, vessels)}
+	<g opacity={tubes}>
+		{@render tube(VESSELS.svc.d, VESSELS.svc.w, 'var(--hc-deoxy)', dash.svc, vessels)}
+		{@render tube(VESSELS.ivc.d, VESSELS.ivc.w, 'var(--hc-deoxy)', dash.ivc, vessels)}
+		{@render tube(VESSELS.pv1.d, VESSELS.pv1.w, 'var(--hc-oxy)', dash.pv, vessels)}
+		{@render tube(VESSELS.pv2.d, VESSELS.pv2.w, 'var(--hc-oxy)', dash.pv, vessels)}
+		{@render tube(VESSELS.pa.d, VESSELS.pa.w, 'var(--hc-deoxy)', dash.pa, vessels)}
+		{@render tube(VESSELS.aorta.d, VESSELS.aorta.w, 'var(--hc-oxy)', dash.aorta, vessels)}
+	</g>
 
 	<!-- muscle: walls (thick strokes), drawn before the blood -->
 	<g fill="var(--hc-muscle)" stroke="var(--hc-muscle)" stroke-linejoin="round">
@@ -239,9 +251,9 @@
 			<g opacity={0.15 + 0.6 * signal} stroke-width="2" stroke-dasharray="3 4">
 				<path d={CONDUCTION.atria} />
 				<path d={CONDUCTION.atriaLeft} />
-				<path d={CONDUCTION.bundle} />
-				<path d={CONDUCTION.left} />
-				<path d={CONDUCTION.right} />
+				<path d={bundle} />
+				<path d={leftBranch} />
+				<path d={rightBranch} />
 			</g>
 			{#if signal > 0.5}
 				<g stroke-width="4.5" opacity={signal}>
@@ -250,18 +262,14 @@
 						<path d={CONDUCTION.atriaLeft} pathLength="1" stroke-dasharray="{atriaFront} 1" />
 					{/if}
 					{#if ventFront > 0 && ventFront < 1}
+						<path d={bundle} pathLength="1" stroke-dasharray="{clamp(ventFront * 3)} 1" />
 						<path
-							d={CONDUCTION.bundle}
-							pathLength="1"
-							stroke-dasharray="{clamp(ventFront * 3)} 1"
-						/>
-						<path
-							d={CONDUCTION.left}
+							d={leftBranch}
 							pathLength="1"
 							stroke-dasharray="{clamp(ventFront * 1.5 - 0.5)} 1"
 						/>
 						<path
-							d={CONDUCTION.right}
+							d={rightBranch}
 							pathLength="1"
 							stroke-dasharray="{clamp(ventFront * 1.5 - 0.5)} 1"
 						/>

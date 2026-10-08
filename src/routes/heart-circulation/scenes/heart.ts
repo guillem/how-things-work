@@ -123,15 +123,45 @@ export const VESSELS = {
 	pv2: { d: 'M452 236 L384 236', w: 14 }
 };
 
-/** The electrical system: sinoatrial node, AV node, bundle and its branches. */
+/** The electrical system: sinoatrial node, AV node, and the paths over the atria. */
 export const NODES = { sa: { x: 116, y: 186 }, av: { x: 210, y: 238 } };
 export const CONDUCTION = {
 	atria: 'M116 186 C150 196 176 214 210 238',
-	atriaLeft: 'M116 186 C190 150 270 170 330 196',
-	bundle: 'M210 238 L222 262 L222 392',
-	left: 'M222 392 C236 432 270 446 300 444 C352 430 386 380 394 300',
-	right: 'M222 392 C204 410 176 410 150 396 C104 368 70 330 58 282'
+	atriaLeft: 'M116 186 C190 150 270 170 330 196'
 };
+
+const bez = (a: number, b: number, c: number, d: number, t: number) =>
+	(1 - t) ** 3 * a + 3 * (1 - t) ** 2 * t * b + 3 * (1 - t) * t * t * c + t ** 3 * d;
+
+/**
+ * The bundle branch and its fibres in one ventricle, following the cavity's
+ * edge (the middle of the wall) as it is now: down the septum from depth
+ * `from`, round the apex and up the outer wall. Same curves as `ventriclePath`.
+ */
+export function fibres(xs: number, dir: number, w: number, depth: number, s: number, from: number) {
+	const sx = 0.82 + 0.18 * s;
+	const ox = xs + dir * w * sx;
+	const ry = depth * s;
+	const ax = xs + dir * w * 0.3 * sx;
+	const ay = VP + ry;
+	const pts: string[] = [`${xs - dir * 8} ${from.toFixed(1)}`];
+	const n = 16;
+	// Septum side, from the top down to the apex.
+	for (let i = n; i >= 0; i--) {
+		const t = i / n;
+		const x = bez(ax, ax - dir * 0.16 * w * sx, xs, xs, t);
+		const y = bez(ay, ay, VP + 0.62 * ry, VP, t);
+		if (y > from) pts.push(`${x.toFixed(1)} ${y.toFixed(1)}`);
+	}
+	// Outer side, from the apex up to near the top.
+	for (let i = n; i >= 0; i--) {
+		const t = i / n;
+		const x = bez(ox, ox, ax + dir * 0.42 * w * sx, ax, t);
+		const y = bez(VP, VP + 0.6 * ry, ay, ay, t);
+		if (y > VP + 0.3 * ry) pts.push(`${x.toFixed(1)} ${y.toFixed(1)}`);
+	}
+	return 'M' + pts.join(' L');
+}
 
 /** Where the names of the parts point to (local coordinates). */
 export const ANCHORS = {
