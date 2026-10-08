@@ -162,6 +162,11 @@
 		};
 	});
 
+	// Read as signed, a carry out of the leftmost column is harmless unless the
+	// signed result is wrong (−1 + 1): it is shown as dropped, not as an error.
+	const harmless = $derived(isSigned && sum.carryOut === 1 && !sum.signedOverflow);
+	const lostColor = $derived(harmless ? 'var(--stage-ink-muted)' : 'var(--bit-overflow)');
+
 	// ---- words --------------------------------------------------------------------------
 	const pill = $derived.by(() => {
 		if (activeCol >= 0) {
@@ -172,17 +177,21 @@
 			return `${terms} = ${s.toString(2)} → write ${s % 2}${s >= 2 ? ', carry 1' : ''}`;
 		}
 		if (tau < LEAD) return 'Start with the rightmost column';
-		if (sum.carryOut) return 'The last carry has no column to go to: it is lost';
+		if (sum.carryOut)
+			return harmless
+				? 'The last carry is dropped, and the signed answer is still right'
+				: 'The last carry has no column to go to: it is lost';
 		if (over) return `${minus(ra)} + ${minus(rb)} → stored as ${minus(rs)}`;
 		return `${minus(ra)} + ${minus(rb)} = ${minus(rs)}`;
 	});
 	const pillW = $derived(pill.length * 7.1 + 28);
 	const activeCase = $derived(activeCol >= 0 ? columnSum(activeCol) : -1);
+	// The four cases, by the column's total: its two bits plus any carry.
 	const CASES = [
-		{ sum: '0 + 0 = 0', note: 'write 0' },
-		{ sum: '0 + 1 = 1', note: 'write 1' },
-		{ sum: '1 + 1 = 10', note: 'write 0, carry 1' },
-		{ sum: '1 + 1 + 1 = 11', note: 'write 1, carry 1' }
+		{ sum: '0 = 0', note: 'write 0', ways: '0 + 0' },
+		{ sum: '1 = 1', note: 'write 1', ways: '0 + 1, 1 + 0, or a carry' },
+		{ sum: '2 = 10', note: 'write 0, carry 1', ways: '1 + 1, or one 1 and a carry' },
+		{ sum: '3 = 11', note: 'write 1, carry 1', ways: '1 + 1 and a carry' }
 	];
 
 	const lines = $derived.by(() => {
@@ -234,7 +243,8 @@
 	const odo = $derived.by(() => {
 		const tt = reduced ? 2.5 : t;
 		const n = Math.floor(tt) % 4;
-		const roll = reduced ? 0 : smoothstep(0.65, 0.95, tt % 1);
+		// 999 rolls over to 000, which is held before the loop starts again.
+		const roll = reduced || n === 3 ? 0 : smoothstep(0.65, 0.95, tt % 1);
 		const v = (997 + n) % 1000;
 		const next = (v + 1) % 1000;
 		const pad = (x: number) => String(x).padStart(3, '0');
@@ -253,6 +263,22 @@
 </script>
 
 <g class="adder">
+	<!-- header, as in the byte scene -->
+	{@render txt(480, 32, over ? 'When the answer does not fit' : 'Adding two bytes', 17, {
+		anchor: 'middle',
+		weight: 650
+	})}
+	{@render txt(
+		480,
+		54,
+		over
+			? isSigned
+				? 'The same bytes read as signed numbers: −128 to 127'
+				: 'A byte holds 0 to 255: there is no 9th column for a carry'
+			: 'Column by column from the right, as on paper',
+		13,
+		{ anchor: 'middle', muted: true }
+	)}
 	<defs>
 		<clipPath id="adder-odo">
 			<rect x={ODO.x} y={ODO.y} width={ODO.dw * 3 + 8} height={ODO.dh} rx="6" />
@@ -320,7 +346,7 @@
 			height={SLOT}
 			rx="7"
 			fill="none"
-			stroke="var(--bit-overflow)"
+			stroke={sum.carryOut ? lostColor : 'var(--stage-line)'}
 			stroke-dasharray="2 4"
 			opacity="0.6"
 		/>
@@ -338,13 +364,13 @@
 				rx="9"
 				fill={tileFill(r.bit)}
 				stroke={r.bit ? 'none' : 'var(--stage-line)'}
-				stroke-width="1"
+				stroke-width="1.25"
 			/>
 			{@render txt(c.x, r.y + 9, String(r.bit), 24, {
 				anchor: 'middle',
 				color: tileInk(r.bit),
 				mono: true,
-				weight: 600,
+				weight: 700,
 				halo: false
 			})}
 		{/each}
@@ -383,17 +409,18 @@
 					rx="9"
 					fill={tileFill(c.s)}
 					stroke={c.s ? 'none' : 'var(--stage-line)'}
+					stroke-width="1.25"
 				/>
 				{@render txt(c.x, Y_SUM + 9, String(c.s), 24, {
 					anchor: 'middle',
 					color: tileInk(c.s),
 					mono: true,
-					weight: 600,
+					weight: 700,
 					halo: false
 				})}
 			</g>
 		{/if}
-		{@render txt(c.x, Y_PLACE, isSigned && c.i === 0 ? '−128' : String(placeValue(c.i, 8)), 11, {
+		{@render txt(c.x, Y_PLACE, isSigned && c.i === 0 ? '−128' : String(placeValue(c.i, 8)), 12, {
 			anchor: 'middle',
 			muted: !(isSigned && c.i === 0),
 			color: isSigned && c.i === 0 ? 'var(--bit-sign)' : undefined,
@@ -441,9 +468,9 @@
 		</g>
 		{#if out.tag > 0.01}
 			<g opacity={out.tag}>
-				{@render txt(LOST.x, LOST.y + 36, 'lost', 14, {
+				{@render txt(LOST.x, LOST.y + 36, harmless ? 'dropped' : 'lost', 14, {
 					anchor: 'middle',
-					color: 'var(--bit-overflow)',
+					color: lostColor,
 					weight: 700
 				})}
 			</g>
@@ -506,34 +533,37 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			{@render txt(44, 496, 'Every column is one of four cases', 13, { weight: 600, halo: false })}
+			{@render txt(44, 494, 'Two bits plus any carry make 0, 1, 2 or 3: four cases', 13, {
+				weight: 600,
+				halo: false
+			})}
 			{#each CASES as c, k (c.sum)}
 				{@const x = 44 + k * 222}
 				{@const on = activeCase === k}
 				<rect
 					{x}
-					y="508"
+					y="504"
 					width="206"
-					height="60"
+					height="68"
 					rx="9"
 					fill={on ? 'var(--bit-on)' : 'none'}
 					fill-opacity={on ? 0.14 : 0}
 					stroke={on ? 'var(--bit-on)' : 'var(--border)'}
 					stroke-width={on ? 2 : 1}
 				/>
-				{@render txt(x + 103, 534, c.sum, 17, {
+				{@render txt(x + 103, 527, c.sum, 17, {
 					anchor: 'middle',
 					mono: true,
 					weight: 600,
 					halo: false
 				})}
-				{@render txt(x + 103, 555, c.note, 12, {
+				{@render txt(x + 103, 546, c.note, 12, {
 					anchor: 'middle',
-					muted: !on,
 					color: on ? 'var(--bit-on)' : undefined,
 					halo: false,
-					weight: on ? 600 : 500
+					weight: 600
 				})}
+				{@render txt(x + 103, 563, c.ways, 11, { anchor: 'middle', muted: true, halo: false })}
 			{/each}
 		</g>
 	{/if}

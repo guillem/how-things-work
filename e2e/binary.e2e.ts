@@ -49,8 +49,9 @@ test('a 32-bit word reads as four characters', async ({ page }) => {
 	await page.locator('button[data-control=width][data-value="32"]').click();
 	await expect(page.getByRole('switch')).toHaveCount(32);
 	for (const n of [1, 2, 3, 4]) await expect(stage(page)).toContainText(`byte ${n}`);
-	await expect(stage(page)).toContainText('code 65');
-	await expect(stage(page)).toContainText('NUL');
+	// Each word size starts from its own pattern: "Bits" at 32 bits.
+	await expect(stage(page)).toContainText('code 66');
+	await expect(stage(page)).toContainText('code 115');
 });
 
 test('the 0.1 preset shows that 0.1 is not stored exactly', async ({ page }) => {

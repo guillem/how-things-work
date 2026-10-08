@@ -95,7 +95,20 @@
 				? asWidth(params.width)
 				: 8
 	);
-	const key = $derived(`bits:${step.id}`);
+	// Each word size of the text, colour and "all" steps keeps its own pattern
+	// (8 bits under the plain key), starting from a pattern chosen for that size,
+	// so that 32 bits read "Bits" rather than "NUL NUL NUL A". The float step keeps
+	// one pattern and re-encodes it by value instead.
+	const enc = (s: string) =>
+		[...s].map((c) => c.charCodeAt(0).toString(2).padStart(8, '0')).join('');
+	const STARTS: Partial<Record<Phase, Partial<Record<Width, string>>>> = {
+		text: { 16: enc('Hi'), 32: enc('Bits') },
+		all: { 16: enc('Hi'), 32: enc('Bits') },
+		// The 8-bit amber (255, 182, 0) in 5-6-5, and in RGBA at 80 % opacity.
+		colour: { 16: '1111110110100000', 32: '11111111101101100000000011001100' }
+	};
+	const perWidth = $derived(phase !== 'float' && has('width') && width !== 8);
+	const key = $derived(perWidth ? `bits:${step.id}@${width}` : `bits:${step.id}`);
 
 	/** A float pattern at another width: the nearest float of the new width. */
 	function reencode(src: Bits, to: Width): Bits {
@@ -104,7 +117,11 @@
 		return to === 16 ? float16Bits(f.value) : float32Bits(f.value);
 	}
 	const bits = $derived.by(() => {
-		const src = parseBits(params[key]) ?? parseBits(step.hints?.bits) ?? toBits(0, 8);
+		const src =
+			parseBits(params[key]) ??
+			(perWidth ? parseBits(STARTS[phase]?.[width]) : null) ??
+			parseBits(step.hints?.bits) ??
+			toBits(0, 8);
 		if (src.length === width) return src;
 		return phase === 'float' ? reencode(src, width) : resize(src, width);
 	});
@@ -396,9 +413,9 @@
 
 	// ---- colour channels ----------------------------------------------------------------
 	const CHANNELS = [
-		{ id: 'R', name: 'Red', color: 'var(--bit-overflow)' },
-		{ id: 'G', name: 'Green', color: 'var(--bit-exponent)' },
-		{ id: 'B', name: 'Blue', color: 'var(--bit-on)' },
+		{ id: 'R', name: 'Red', color: 'var(--bit-red)' },
+		{ id: 'G', name: 'Green', color: 'var(--bit-green)' },
+		{ id: 'B', name: 'Blue', color: 'var(--bit-blue)' },
 		{ id: 'A', name: 'Alpha', color: 'var(--stage-ink-muted)' }
 	];
 	function channelOf(i: number) {
@@ -453,7 +470,8 @@
 	const ladder = $derived(
 		Array.from({ length: 8 }, (_, j) => {
 			const k = j + 1;
-			const h = k * 25;
+			// Height proportional to the number of patterns: the doubling is visible.
+			const h = Math.max(2, (2 ** k / 256) * 214);
 			return {
 				k,
 				cx: 480 + (k - 4.5) * 84,
@@ -616,7 +634,7 @@
 		],
 		all: [
 			`The same ${width} bits, read six ways`,
-			'Nothing in the bits says which reading is right.'
+			'Only the bits are stored: what they mean depends on how they are read.'
 		]
 	});
 	const carryNote = $derived.by(() => {
@@ -786,9 +804,10 @@
 			{#if show(w[p]) > 0.01}
 				<g opacity={show(w[p])}>
 					{@render txt(480, 32, headers[p][0], 17, { anchor: 'middle', weight: 650 })}
-					{@render txt(480, 54, headers[p][1], 13, {
+					{@render txt(480, 54, headers[p][1], p === 'all' ? 14 : 13, {
 						anchor: 'middle',
-						muted: true,
+						muted: p !== 'all',
+						weight: p === 'all' ? 600 : 500,
 						opacity: 1 - carryOn
 					})}
 				</g>
@@ -1252,7 +1271,8 @@
 		<!-- ------------------------------------------------------------ colour -->
 		{#if show(w.colour) > 0.01}
 			{@const grow = reduced ? 1 : smoothstep(0.2, 1.4, t)}
-			<g opacity={show(w.colour)}>
+			<!-- two rows of tiles at 32 bits: the panel moves down a little -->
+			<g opacity={show(w.colour)} transform="translate(0 {width === 32 ? 20 : 0})">
 				<rect x="130" y="276" width="200" height="200" rx="14" fill="url(#byte-checker)" />
 				<rect
 					x="130"
@@ -1426,6 +1446,22 @@
 		{#if show(w.all) > 0.01}
 			{@const cards = ['unsigned', 'signed', 'hex', 'text', 'colour', 'float']}
 			<g opacity={show(w.all)}>
+				<!-- one pattern feeds every reading (no room at 32 bits) -->
+				{#if width !== 32}
+					{@const y0 = geo.placeY(0) + 10}
+					{#each [0, 1, 2] as k (k)}
+						{@const x1 = cardPos(k).x + CARD_W / 2}
+						<path
+							d="M480 {y0} C480 {y0 + 30} {x1} {y0 + 10} {x1} 256"
+							fill="none"
+							stroke="var(--stage-line)"
+							stroke-width="1.5"
+							stroke-dasharray="4 4"
+							marker-end="url(#arrowhead)"
+							opacity={appear(k, 0.15, 0.1)}
+						/>
+					{/each}
+				{/if}
 				{#each cards as kind, k (kind)}
 					{@const p = cardPos(k)}
 					{@const o = appear(k, 0.15, 0.1)}
@@ -1545,7 +1581,7 @@
 							)}
 						{:else}
 							{@render txt(p.x + 18, p.y + 84, 'no 8-bit float', 24, { weight: 700, halo: false })}
-							{@render txt(p.x + 18, p.y + 112, 'The standard starts at 16 bits:', 12, {
+							{@render txt(p.x + 18, p.y + 112, 'IEEE 754 starts at 16 bits:', 12, {
 								muted: true,
 								halo: false
 							})}

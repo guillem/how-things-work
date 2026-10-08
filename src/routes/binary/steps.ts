@@ -108,7 +108,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [plus1, clear],
 			body: `
-<p>A computer's memory is made of billions of tiny switches, each either on or off. One such on/off value is a <dfn data-def="A binary digit: the smallest unit of information, with exactly two possible values, written 0 and 1.">bit</dfn>, written 1 or 0. Click the bits to flip them.</p>
+<p>A computer's memory is made of billions of tiny cells, each holding one of two states — on or off. One such on/off value is a <dfn data-def="A binary digit: the smallest unit of information, with exactly two possible values, written 0 and 1.">bit</dfn>, written 1 or 0. Click the bits to flip them.</p>
 <p>One bit has two possible values. Two bits have four patterns (00, 01, 10, 11); every extra bit doubles the count. A group of eight bits — a <dfn data-def="Eight bits. The basic unit in which computer memory is organised and counted.">byte</dfn> — has 2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 = 256 different patterns.</p>
 <p>Everything a computer stores — numbers, text, pictures, music, this page — is patterns of bits. The patterns themselves mean nothing; meaning comes from how they are read.</p>`
 		},
@@ -148,7 +148,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [width, clear],
 			body: `
-<p>To store text, every character is given a number by an agreed table. The classic one is <dfn data-def="American Standard Code for Information Interchange (1963): a table giving the numbers 0–127 to the English letters, digits, punctuation and control codes.">ASCII</dfn>: 65 is "A", 66 is "B", 97 is "a", 48 is the digit "0", 32 is a space. Some numbers are not visible characters at all but instructions, such as 10, "new line".</p>
+<p>To store text, every character is given a number by an agreed table. The classic one is <dfn data-def="American Standard Code for Information Interchange (first published 1963; small letters added in 1967): a table giving the numbers 0–127 to English letters, digits, punctuation and control codes.">ASCII</dfn>: 65 is "A", 66 is "B", 97 is "a", 48 is the digit "0", 32 is a space. Some numbers are not visible characters at all but instructions, such as 10, "new line".</p>
 <p>So the byte that meant 65 a moment ago now means "A". Flip the bit worth 32 and "A" becomes "a": capital and small letters differ by exactly one bit. Choose a longer word to read 2 or 4 characters at once.</p>`,
 			notes: `<p>ASCII only covers English. Today's text uses <dfn data-def="The international standard that gives a number (a code point) to over 150,000 characters from the world's writing systems, plus emoji.">Unicode</dfn>, usually stored as UTF-8: the ASCII characters keep their single byte, and other characters take two to four bytes. On this page the codes from 128 to 255 are read with the older Latin-1 table (é is 233).</p>`
 		},
@@ -162,7 +162,7 @@ export const spec: ExplainerSpec = {
 			controls: [width, clear],
 			body: `
 <p>A screen makes every colour by mixing red, green and blue light. To store a colour, split the bits into three groups that say how bright each of the three is.</p>
-<p>With one byte, early computers used 3 bits for red, 3 for green and 2 for blue (the eye is least sensitive to blue): only 256 colours. With 16 bits, the split is 5–6–5. Choose 32 bits for today's usual format: a whole byte each for red, green and blue — over 16 million colours — and a fourth byte for how opaque the colour is.</p>`
+<p>With one byte, some computers (such as the MSX2) used 3 bits for red, 3 for green and 2 for blue (the eye is least sensitive to blue): only 256 colours. With 16 bits, the split is 5–6–5. Choose 32 bits for today's usual format: a whole byte each for red, green and blue — over 16 million colours — and usually a fourth byte for how opaque the colour is.</p>`
 		},
 		{
 			id: 'float',
@@ -175,7 +175,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Whole numbers can't hold 0.15625 or the mass of the Sun. For those, computers use <dfn data-def="A way of storing numbers as a sign, a significand and a power of two, like scientific notation, so that both tiny and enormous numbers fit in the same number of bits. Standardised as IEEE 754.">floating point</dfn>: scientific notation in binary. In 32 bits, 1 bit is the <strong>sign</strong>, 8 bits an <strong>exponent</strong> (which power of two) and 23 bits the <strong>fraction</strong> (the digits). The pattern shown is 1.25 × 2⁻³ = 0.15625.</p>
 <p>The exponent lets the same 32 bits hold numbers from about 10⁻³⁸ to 10³⁸ — but only about 7 decimal digits of each. Most fractions can't be stored exactly: 0.1 in binary goes on for ever, like 1/3 in decimal, so the computer keeps the nearest pattern, 0.100000001490116…</p>`,
-			notes: `<p>The exponent is stored with 127 added to it (so 0111 1100 = 124 means 2⁻³), and the leading "1." of the significand is not stored at all, since in binary it is always 1. All-zero and all-one exponents are reserved for zero, very tiny numbers, infinity and "not a number". There is no standard 8-bit version: try 16 bits (half precision: 5 exponent and 10 fraction bits), used in graphics and machine learning.</p>`
+			notes: `<p>The exponent is stored with 127 added to it (so 0111 1100 = 124 means 2⁻³), and the leading "1." of the significand is not stored at all, since in binary it is always 1. All-zero and all-one exponents are reserved for zero, very tiny numbers, infinity and "not a number". The IEEE standard has no 8-bit format (the 8-bit floats now used in AI chips come from newer industry specifications): try 16 bits (half precision: 5 exponent and 10 fraction bits), used in graphics and machine learning.</p>`
 		},
 		{
 			id: 'same',
@@ -199,8 +199,8 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [a, b],
 			body: `
-<p>Computers add binary numbers the way you learned to add on paper, column by column from the right. In each column there are only four cases: 0 + 0 = 0, 0 + 1 = 1, 1 + 1 = 10 — write 0 and <strong>carry</strong> 1 to the next column — and 1 + 1 + a carried 1 = 11: write 1, carry 1.</p>
-<p>Watch the carries ripple from right to left. A processor does this with a chain of tiny circuits called adders, one per column, billions of times a second.</p>`
+<p>Computers add binary numbers the way you learned to add on paper, column by column from the right. In each column the two bits plus any carry add up to 0, 1, 2 or 3, so there are only four cases: 0 = 0; 1 = 1; 2 = 10 in binary — write 0 and <strong>carry</strong> 1 to the next column; and 3 = 11 — write 1, carry 1.</p>
+<p>Watch the carries ripple from right to left. The simplest circuit for this is a chain of tiny full adders, one per column; real processors use faster designs, but the result is the same — billions of times a second.</p>`
 		},
 		{
 			id: 'overflow',
