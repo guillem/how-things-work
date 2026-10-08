@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-08 04:55 UTC.
+Last updated: 2026-10-08 05:55 UTC.
 
 ## How we work
 
@@ -40,10 +40,14 @@ Last updated: 2026-10-08 04:55 UTC.
   3. `topic/bridges-structures` — done, ticked. Worktree `../hiw-bridges`, :5175.
   4. `topic/binary` — done, ticked. Worktree `../hiw-binary`, :5176.
   5. `topic/atmosphere-weather` — built and reviewed, **not ticked** (see open questions).
-     Worktree `../hiw-atmos`, :5177. Full e2e (265 tests) passes on this branch, which holds
-     the whole stack.
-- After merging: `git worktree remove ../hiw-circuits ../hiw-bridges ../hiw-binary ../hiw-atmos`
-  (one per command) and stop the dev servers on :5174–5177.
+     Worktree `../hiw-atmos`.
+- **Batch 3** (started at ~54% of the 5-hour window, on top of batch 2, same rules): 6. `topic/graph-search` — done, ticked. Worktree `../hiw-graph`. 7. `topic/chaos-fractals` — done, ticked. Worktree `../hiw-chaos`. The full e2e suite (306
+  tests) passes on this branch, which holds the whole stack.
+- The main checkout is **detached at the top of the stack** so its dev server (:5173) shows
+  every new topic for validation; `git checkout topic/pagerank` (or `main` after merging) to
+  get back on a branch.
+- After merging: `git worktree remove ../hiw-<name>` for circuits, bridges, binary, atmos,
+  graph and chaos (one per command), and stop any dev servers still running from them.
 - Local testing quirks: port 4173 is taken by an unrelated app on this machine, so the full e2e
   suite runs with a git-ignored `pw-local.config.ts` (preview on :4180):
   `npx playwright test -c pw-local.config.ts`. A git-ignored `pw-node.config.ts` runs only the
@@ -56,7 +60,8 @@ Last updated: 2026-10-08 04:55 UTC.
 ## Current development
 
 None in progress. Built web/board/bridge/bits/map state is kept per step in params as strings
-(`web:<step>`, `board:build`, `bridge:build`, `bits:<step>`, `map:<step>`).
+(`web:<step>`, `board:build`, `bridge:build`, `bits:<step>`, `map:<step>` — also used by
+graph-search — and `view:zoom` for the Mandelbrot view).
 
 ## Open questions for the user
 

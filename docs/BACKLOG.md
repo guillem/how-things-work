@@ -35,8 +35,8 @@ checklist); this file is about **order and open work**. Where we are right now i
 
 Batch 2 also takes `electric-circuits` (unlocks 4) and `binary` (unlocks 7), per rule 3.
 
-Other wave-1 candidates kept in mind: `chaos-fractals` (first `explore`), `graph-search` (the
-catalogue's suggested first `build`), `ecosystems`, `electric-circuits` (unlocks 4 topics),
+Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Other candidates:
+`ecosystems`, `electric-circuits` (unlocks 4 topics),
 `binary` (unlocks 7 topics in Computing and Networks).
 
 ## Known gaps in built topics
@@ -73,6 +73,14 @@ catalogue's suggested first `build`), `ecosystems`, `electric-circuits` (unlocks
   gap instead of a group would save ~60).
 
 - **binary** — on the overflow step, the sliders show 0–255 even in the signed view.
+
+- **graph-search** — Dijkstra's cost numbers are 10 px (small on screen); the race maps are
+  small (three panels across); on the estimate step the dotted cheapest route runs under the
+  found route for two squares.
+
+- **chaos-fractals** — `period(r)` in `chaos.ts` is unreliable right at the splitting points
+  (the scene works around it with `DOUBLINGS` and the Lyapunov exponent): make it robust.
+  Corner radii differ between the three scenes.
 
 ## Site and framework work
 

@@ -106,7 +106,7 @@ A topic is done when:
 - [ ] bayes-theorem
 - [ ] central-limit-theorem
 - [ ] primes-modular-arithmetic
-- [ ] chaos-fractals
+- [x] chaos-fractals
 
 **Physics**
 - [x] newtons-laws
