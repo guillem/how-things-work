@@ -222,6 +222,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 6,
 		minutes: 12
+	},
+	{
+		slug: 'primes-modular-arithmetic',
+		title: 'Prime numbers and clock arithmetic',
+		summary:
+			'Sieve out the primes from a grid of numbers, then add, multiply and raise to powers on a clock, and see why powers on a prime clock are easy to compute and hard to undo — the idea behind public-key cryptography.',
+		accent: '#9c36b5',
+		steps: 8,
+		minutes: 14
 	}
 ];
 
