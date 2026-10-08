@@ -362,11 +362,22 @@
 	{/if}
 
 	{#if damped}
-		{#if envelope}
+		{#if c === 0}
 			{@render txt(
 				PLOT_X1,
 				REST + YMAX * PXM + 36,
-				'dashed: the size of the swing, shrinking a little every second',
+				'no friction: it would swing like this for ever',
+				11,
+				{
+					anchor: 'end',
+					muted: true
+				}
+			)}
+		{:else if envelope}
+			{@render txt(
+				PLOT_X1,
+				REST + YMAX * PXM + 36,
+				'dashed: the size of the swing, shrinking every second',
 				11,
 				{
 					anchor: 'end',

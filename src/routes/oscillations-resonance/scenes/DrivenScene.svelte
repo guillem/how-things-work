@@ -125,14 +125,27 @@
 		}
 		return d;
 	});
+	// With a lot of friction (ζ near or above 1/√2) the peak slides towards 0 Hz and
+	// flattens out: there is no peak left on this axis.
+	const noPeak = $derived(fp < 0.25);
 	const peakText = $derived(
-		!Number.isFinite(Ap)
-			? `peak at ${fp.toFixed(2)} Hz · no limit without friction`
-			: Ap > CV.max
-				? `peak at ${fp.toFixed(2)} Hz · ${fmtLen(Ap)} ↑`
-				: `peak at ${fp.toFixed(2)} Hz · ${fmtLen(Ap)}`
+		noPeak
+			? 'no peak: this much friction smothers it'
+			: !Number.isFinite(Ap)
+				? `peak at ${fp.toFixed(2)} Hz · grows without limit`
+				: Ap > CV.max
+					? `peak at ${fp.toFixed(2)} Hz · ${fmtLen(Ap)} ↑`
+					: `peak at ${fp.toFixed(2)} Hz · ${fmtLen(Ap)}`
 	);
-	const atPeak = $derived(Math.abs(f - fp) < 0.12);
+	const atPeak = $derived(!noPeak && Math.abs(f - fp) < 0.12);
+	const peakLabel = $derived(
+		noPeak
+			? { x: PLOT_X0 + 14, y: CV.top + 40 }
+			: {
+					x: Math.min(PLOT_X1 - peakText.length * 6.6, cx(fp) + 12),
+					y: Math.max(CV.top + 14, Math.min(CV.bottom - 44, cy(Math.min(CV.max, Ap)) - 10))
+				}
+	);
 	const marker = $derived({ x: cx(f), y: cy(Math.min(CV.max, A)) });
 
 	// ---- bars: how far each one moves -------------------------------------------------------
@@ -476,13 +489,16 @@
 					}
 				)}
 			{/if}
-			{@render txt(
-				Math.min(PLOT_X1, cx(fp) + 12),
-				Math.max(CV.top + 14, cy(Math.min(CV.max, Ap)) - 10),
-				atPeak ? `${peakText} — your push` : peakText,
-				12,
-				{ weight: 600, color: 'var(--osc-curve)' }
-			)}
+			{@render txt(peakLabel.x, peakLabel.y, peakText, 12, {
+				weight: 600,
+				color: 'var(--osc-curve)'
+			})}
+			{#if atPeak}
+				{@render txt(peakLabel.x, peakLabel.y + 15, 'your push is right on it', 12, {
+					weight: 600,
+					color: 'var(--osc-push)'
+				})}
+			{/if}
 		</g>
 	{/if}
 

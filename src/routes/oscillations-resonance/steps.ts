@@ -99,14 +99,14 @@ export const spec: ExplainerSpec = {
 		{
 			id: 'damping',
 			chapter: 'free',
-			title: 'Friction dies it away',
+			title: 'Friction makes it die away',
 			scene: 'spring',
 			hints: { phase: 'damping' },
 			duration: 22,
 			controls: [damping, release],
 			body: `
 <p>Real oscillators lose energy — to air, to friction, to heat in the spring — so each swing is a little smaller than the last. This is <dfn data-def="Anything that takes energy out of an oscillation, such as friction or air resistance, making it die away.">damping</dfn>.</p>
-<p>With a little damping the mass rings on for many swings. With more, it settles quickly. With a lot — like a car's shock absorbers, or a door closer — it doesn't swing at all; it just creeps back to rest.</p>`
+<p>With a little damping the mass rings on for many swings. With more, it settles quickly. With a lot — like a door closer — it doesn't swing at all; it just creeps back to rest.</p>`
 		},
 		{
 			id: 'pendulum',
@@ -117,9 +117,9 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [length, swing, release],
 			body: `
-<p>A pendulum is pulled back by gravity instead of a spring. Its natural frequency depends only on its <strong>length</strong>: a 1-metre pendulum takes about 2 seconds for a full swing, and making it four times longer doubles that. The mass of the bob doesn't matter at all.</p>
+<p>A pendulum is pulled back by gravity instead of a spring. Its natural frequency depends only on its <strong>length</strong> (and on gravity): a 1-metre pendulum takes about 2 seconds for a full swing, and making it four times longer doubles that. The mass of the bob doesn't matter at all.</p>
 <p>Nor, for small swings, does how far you pull it — which is why pendulums kept the world's time for three centuries. Release it from far out, though, and the swing slows: at 90° it takes about 18% longer.</p>`,
-			notes: `<p>For small swings the period is 2π√(L/g). Galileo noticed the regularity of swinging lamps around 1602; Christiaan Huygens built the first pendulum clock in 1656.</p>`
+			notes: `<p>For small swings the period is 2π√(L/g). Galileo described the regularity of pendulums around 1602 (legend has him timing a swinging lamp in Pisa cathedral twenty years earlier); Christiaan Huygens built the first pendulum clock in 1656.</p>`
 		},
 		{
 			id: 'push',
