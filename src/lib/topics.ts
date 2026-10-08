@@ -222,6 +222,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 6,
 		minutes: 12
+	},
+	{
+		slug: 'heart-circulation',
+		title: 'How the heart pumps blood',
+		summary:
+			'Watch a beating heart open and shut its valves in time with its electrical signal, then speed it up, narrow the arteries or make a valve leak.',
+		accent: '#c92a2a',
+		steps: 9,
+		minutes: 14
 	}
 ];
 
