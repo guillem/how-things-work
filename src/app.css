@@ -297,6 +297,16 @@ kbd {
 	--atm-space: #f1f3f7;
 	--atm-warm-sea: #ffc9a3;
 	--atm-neutral: #f1f3f5;
+	/* graph search: ground, mud, walls, frontier, visited (by cost), path, start, goal */
+	--gs-ground: #f8f9fa;
+	--gs-mud: #a47148;
+	--gs-wall: #343a40;
+	--gs-frontier: #f59f00;
+	--gs-visited: #a5d8ff;
+	--gs-visited-far: #1c7ed6;
+	--gs-path: #d6336c;
+	--gs-start: #2f9e44;
+	--gs-goal: #e03131;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -396,4 +406,13 @@ kbd {
 	--atm-space: #101217;
 	--atm-warm-sea: #7a4a2e;
 	--atm-neutral: #3a3f45;
+	--gs-ground: #1e2227;
+	--gs-mud: #7f5539;
+	--gs-wall: #ced4da;
+	--gs-frontier: #ffd43b;
+	--gs-visited: #1d3a57;
+	--gs-visited-far: #4dabf7;
+	--gs-path: #f06595;
+	--gs-start: #51cf66;
+	--gs-goal: #ff6b6b;
 }
