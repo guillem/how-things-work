@@ -22,7 +22,7 @@
 	import { clamp, cycle, lerp, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { EXAMPLE, inCount, outLinks, pageName, pagerank } from '../pagerank';
-	import { linkGeometry, pageRadius } from '../geometry';
+	import { PAGE_FILL, PAGE_STROKE, PANEL, letterSize, linkGeometry, pageRadius } from '../geometry';
 
 	let { step, t, reduced }: StageProps = $props();
 
@@ -43,8 +43,11 @@
 	const A = 0;
 	const B = 1;
 	const C = 2;
-	/** The C → A link and B's incoming links: the contrast the weighted step is about. */
-	const keyLink = web.links.map(([a, b]) => (a === C && b === A) || b === B);
+	/**
+	 * The big votes of the weighted step: C → A (all of C's share) and A → B (half of A's).
+	 * B's other three incoming votes stay muted: they come from pages that matter little.
+	 */
+	const keyLink = web.links.map(([a, b]) => (a === C && b === A) || (a === A && b === B));
 
 	// Rankings for the card.
 	const byVotes = [...Array(N).keys()].sort((p, q) => votes[q] - votes[p] || p - q);
@@ -68,14 +71,15 @@
 	const PULSE = 2.4;
 
 	// ---- layout --------------------------------------------------------------------------
-	const CL = 660; // card
-	const CR = 944;
-	const CT = 92;
-	const CB = 520;
-	const ROW0 = 214;
+	const CL = PANEL.x; // the card: the same panel as the other scenes
+	const CR = PANEL.x + PANEL.w;
+	const CT = PANEL.y - 6; // titles line up with the other scenes' panels
+	const ROW0 = CT + 132;
 	const ROW = 46;
+	/** Footer lines, just under the last row. */
+	const FOOT = ROW0 + N * ROW + 16;
 	const BAR_L = 800;
-	const BAR_R = 866;
+	const BAR_R = 870;
 
 	// ---- phases ---------------------------------------------------------------------------
 	const phases = ['web', 'count', 'weighted'] as const;
@@ -269,7 +273,7 @@
 					stroke-dasharray={u < 1 ? '1 1' : undefined}
 					stroke-dashoffset={u < 1 ? 1 - u : undefined}
 				/>
-				<polygon points={g.head} fill={linkColor(k)} opacity={smoothstep(0.8, 1, u)} />
+				<polygon points={g.head} fill={linkColor(k)} opacity={smoothstep(0.94, 1, u)} />
 			</g>
 		{/if}
 	{/each}
@@ -306,16 +310,22 @@
 					{r}
 					fill="color-mix(in srgb, var(--rank-page) {18 + 14 * lit}%, var(--stage-bg))"
 					stroke="var(--rank-page)"
-					stroke-width={1.5 + 1.5 * lit}
+					stroke-width={PAGE_STROKE + 1.5 * lit}
 				/>
 				<!-- a hint of a document: two text lines under the letter -->
-				{#if r > 24}
-					<g stroke="var(--rank-page)" stroke-width="1.6" stroke-linecap="round" opacity="0.45">
+				<!-- a hint of a document, while pages are introduced (first step only) -->
+				{#if r > 24 && wWeb > 0.01}
+					<g
+						stroke="var(--rank-page)"
+						stroke-width="1.6"
+						stroke-linecap="round"
+						opacity={0.45 * wWeb}
+					>
 						<line x1={-r * 0.32} x2={r * 0.32} y1={r * 0.42} y2={r * 0.42} />
 						<line x1={-r * 0.32} x2={r * 0.16} y1={r * 0.58} y2={r * 0.58} />
 					</g>
 				{/if}
-				{@render txt(0, r > 24 ? 4 : 6, pageName(p), r > 24 ? 18 : 16, {
+				{@render txt(0, lerp(6, r > 24 ? 4 : 6, wWeb), pageName(p), letterSize(r), {
 					anchor: 'middle',
 					weight: 700
 				})}
@@ -355,36 +365,36 @@
 	{#if wWeighted > 0.01}
 		<g opacity={wWeighted * (reduced ? 1 : smoothstep(1.2, 2, t))}>
 			<rect
-				x="62"
+				x="36"
 				y="110"
-				width="186"
+				width="196"
 				height="44"
 				rx="8"
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			{@render txt(74, 128, `A: 1 vote, ${pct(rank[A])}`, 13, { weight: 700 })}
-			{@render txt(74, 145, 'from C, with all of C’s share', 11.5, { muted: true })}
+			{@render txt(48, 128, `A: 1 vote, ${pct(rank[A])}`, 13, { weight: 700 })}
+			{@render txt(48, 145, 'from C, with all of C’s share', 12, { muted: true })}
 			<rect
 				x="24"
 				y="384"
-				width="190"
+				width="214"
 				height="44"
 				rx="8"
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
 			{@render txt(36, 402, `B: 4 votes, ${pct(rank[B])}`, 13, { weight: 700 })}
-			{@render txt(36, 419, 'each a small, split share', 11.5, { muted: true })}
+			{@render txt(36, 419, '3 small votes + half of A’s share', 12, { muted: true })}
 		</g>
 	{/if}
 
 	<!-- ============================ the card ============================ -->
 	<rect
-		x={CL}
-		y={CT}
-		width={CR - CL}
-		height={CB - CT}
+		x={PANEL.x}
+		y={PANEL.y}
+		width={PANEL.w}
+		height={PANEL.h}
 		rx="12"
 		fill="var(--surface)"
 		stroke="var(--border)"
@@ -442,9 +452,9 @@
 					muted: true
 				})}
 			</g>
-			{@render txt(CL + 76, ROW0 - 28, 'votes', 11, { muted: true })}
+			{@render txt(CL + 76, ROW0 - 28, 'votes', 12, { muted: true })}
 			<g opacity={wWeighted}>
-				{@render txt(CR - 16, ROW0 - 28, 'PageRank', 11, { muted: true, anchor: 'end' })}
+				{@render txt(CR - 16, ROW0 - 28, 'PageRank', 12, { muted: true, anchor: 'end' })}
 			</g>
 
 			<!-- tied pages share a place (count step) -->
@@ -484,9 +494,9 @@
 						cx={CL + 54}
 						cy={y}
 						r="13"
-						fill="color-mix(in srgb, var(--rank-page) 18%, var(--stage-bg))"
+						fill={PAGE_FILL}
 						stroke="var(--rank-page)"
-						stroke-width="1.5"
+						stroke-width={PAGE_STROKE}
 					/>
 					{@render txt(CL + 54, y + 5, pageName(p), 13, { anchor: 'middle', weight: 700 })}
 					<!-- votes: one ballot mark per incoming link -->
@@ -508,19 +518,18 @@
 					<g opacity={wWeighted}>
 						<rect
 							x={BAR_L}
-							y={y - 4}
+							y={y - 5}
 							width={BAR_R - BAR_L}
-							height="8"
-							rx="4"
-							fill="var(--stage-line)"
-							opacity="0.35"
+							height="10"
+							rx="5"
+							fill="var(--stage-grid)"
 						/>
 						<rect
 							x={BAR_L}
-							y={y - 4}
-							width={Math.max(4, ((BAR_R - BAR_L) * rank[p]) / rank[byRank[0]])}
-							height="8"
-							rx="4"
+							y={y - 5}
+							width={Math.max(5, ((BAR_R - BAR_L) * rank[p]) / rank[byRank[0]])}
+							height="10"
+							rx="5"
 							fill="var(--rank-page)"
 						/>
 						{@render txt(CR - 14, y + 5, pct(rank[p]), 13, {
@@ -534,12 +543,12 @@
 
 			<!-- footers -->
 			<g opacity={wCount * askIn}>
-				{@render txt(CL + 20, CB - 38, 'But should every vote', 13, { weight: 600 })}
-				{@render txt(CL + 20, CB - 20, 'count the same?', 13, { weight: 600 })}
+				{@render txt(CL + 20, FOOT, 'But should every vote', 13, { weight: 600 })}
+				{@render txt(CL + 20, FOOT + 18, 'count the same?', 13, { weight: 600 })}
 			</g>
 			<g opacity={wWeighted}>
-				{@render txt(CL + 20, CB - 38, 'page size = PageRank', 12, { muted: true })}
-				{@render txt(CL + 20, CB - 20, 'arrow width = share it passes on', 12, {
+				{@render txt(CL + 20, FOOT, 'page size = PageRank', 12, { muted: true })}
+				{@render txt(CL + 20, FOOT + 18, 'arrow width = share it passes on', 12, {
 					muted: true
 				})}
 			</g>

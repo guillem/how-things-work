@@ -94,3 +94,11 @@ export function linkGeometry(
 		at: (u: number) => (u >= 1 ? tip : quad(u))
 	};
 }
+
+/** The readout panel on the right, the same in every scene (a `var(--surface)` card). */
+export const PANEL = { x: 660, y: 16, w: 284, h: 568 } as const;
+
+/** Every page is drawn alike: fill, stroke width, and the letter's size for a radius. */
+export const PAGE_FILL = 'color-mix(in srgb, var(--rank-page) 18%, var(--stage-bg))';
+export const PAGE_STROKE = 1.5;
+export const letterSize = (r: number) => (r > 24 ? 18 : 15);

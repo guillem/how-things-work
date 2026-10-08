@@ -46,17 +46,17 @@
 		walk,
 		type Web
 	} from '../pagerank';
-	import { linkGeometry, pageRadius } from '../geometry';
+	import { PAGE_FILL, PAGE_STROKE, PANEL, letterSize, linkGeometry, pageRadius } from '../geometry';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
 	// ---- layout -----------------------------------------------------------------
-	const PX = 676; // the bars panel
-	const PY = 16;
-	const PW = 268;
-	const PH = 568;
+	const PX = PANEL.x; // the bars panel, the same in every scene
+	const PY = PANEL.y;
+	const PW = PANEL.w;
+	const PH = PANEL.h;
 	const TX = PX + 40; // bar track
-	const TW = 146;
+	const TW = 158;
 	const AREA = { x0: 70, x1: 610, y0: 70, y1: 528 }; // where page centres may go
 	const HOPS = 60_000;
 	const REDUCED_HOPS = 3000;
@@ -71,7 +71,10 @@
 	const web = $derived<Web>((editable ? parseWeb(params[webKey]) : null) ?? preset);
 	const n = $derived(web.pages.length);
 	const d = $derived(has('damping') ? clamp(Number(params.damping ?? DAMPING), 0, 1) : DAMPING);
-	const speed = $derived(Math.max(0, Number(params.speed ?? 4)));
+	// The first step has a slow surfer to watch hop by hop; later steps use a faster default
+	// (their own control id, since control values persist across steps).
+	const speedId = $derived(has('speedFast') ? 'speedFast' : 'speed');
+	const speed = $derived(Math.max(0, Number(params[speedId] ?? 4)));
 	const restarts = $derived(Number(params.restart ?? 0));
 	const showMarks = $derived(phase !== 'walk');
 	// The page to boost keeps its identity when earlier pages are removed (and
@@ -112,8 +115,15 @@
 
 	// ---- the surfer ---------------------------------------------------------------
 	const seed = $derived(1 + restarts);
-	const theWalk = $derived(walk(web, HOPS, d, seed));
-	const runKey = $derived(`${step.id}|${seed}|${serializeWeb(web)}|${d}`);
+	/** The link structure alone: moving a page changes neither the walk nor the ranks. */
+	const topo = $derived(`${n}|${web.links.map(([a, b]) => `${a}>${b}`).join(',')}`);
+	const theWalk = $derived.by(() => {
+		const dd = d;
+		const sd = seed;
+		void topo;
+		return untrack(() => walk(web, HOPS, dd, sd));
+	});
+	const runKey = $derived(`${step.id}|${seed}|${topo}|${d}`);
 
 	// Hops done: the integral of the speed control over t (sanctioned
 	// accumulator, see the scene guide). Plain `let`s, never `$state`. dt ≤ 0
@@ -362,6 +372,11 @@
 		} else if (key === 'Delete' || key === 'Backspace') {
 			event.preventDefault();
 			removeAt(i, true);
+		} else if (tool !== 'move' && key.startsWith('Arrow')) {
+			// Arrow keys step through the pages (and so never change the step while editing).
+			event.preventDefault();
+			const dir = key === 'ArrowLeft' || key === 'ArrowUp' ? -1 : 1;
+			pageEls[(i + dir + n) % n]?.focus();
 		} else if (tool === 'move' && key.startsWith('Arrow')) {
 			event.preventDefault();
 			const s = event.shiftKey ? 40 : 10;
@@ -520,13 +535,17 @@
 				cx={p.x}
 				cy={p.y}
 				{r}
-				fill="color-mix(in srgb, var(--rank-page) 18%, var(--stage-bg))"
+				fill={PAGE_FILL}
 				stroke={isSource || hoverTarget === i ? 'var(--rank-surfer)' : 'var(--rank-page)'}
-				stroke-width={isSource || hoverTarget === i ? 3 : i === here && animated ? 2.5 : 1.5}
+				stroke-width={isSource || hoverTarget === i
+					? 3
+					: i === here && animated
+						? 2.5
+						: PAGE_STROKE}
 			/>
-			{@render txt(p.x, p.y + 5, pageName(i), Math.max(13, Math.min(20, r * 0.55)), {
+			{@render txt(p.x, p.y + (r > 24 ? 6 : 5), pageName(i), letterSize(r), {
 				anchor: 'middle',
-				weight: 650,
+				weight: 700,
 				halo: false
 			})}
 		</g>
@@ -567,8 +586,10 @@
 	<!-- trap tags -->
 	{#if capsule}
 		<Label
-			x={capsule.cx - (Math.abs(capsule.ang) > 45 ? capsule.R + 52 : 0)}
-			y={capsule.cy + (Math.abs(capsule.ang) > 45 ? 4 : -capsule.R - 12)}
+			x={capsule.cx}
+			y={Math.abs(capsule.ang) > 45
+				? capsule.cy + capsule.len / 2 + capsule.R + 30
+				: capsule.cy - capsule.R - 12}
 			text="trap: D ⇄ E"
 			pill
 			color="var(--rank-jump)"
@@ -618,8 +639,8 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		{@render txt(PX + 16, PY + 30, showMarks ? 'Share of visits' : 'Visits to each page', 15, {
-			weight: 650,
+		{@render txt(PX + 16, PY + 30, showMarks ? 'Share of visits' : 'Visits to each page', 16, {
+			weight: 700,
 			halo: false
 		})}
 		{@render txt(
@@ -634,7 +655,7 @@
 			{ muted: true, tabular: true, halo: false }
 		)}
 		{#if !showMarks}
-			{@render txt(PX + PW - 14, PY + 76, 'visits', 11, {
+			{@render txt(PX + PW - 14, PY + 76, 'visits', 12, {
 				anchor: 'end',
 				muted: true,
 				halo: false
@@ -668,8 +689,9 @@
 				tabular: true,
 				halo: false
 			})}
-			{#if showMarks && exact[i] !== undefined}
-				{@render txt(PX + PW - 14, y + 24, `rank ${pct(exact[i])}`, 10.5, {
+			<!-- the exact value in words while there is room for it (the tick always shows it) -->
+			{#if showMarks && exact[i] !== undefined && rowH >= 40}
+				{@render txt(PX + PW - 14, y + 25, `rank ${pct(exact[i])}`, 12, {
 					anchor: 'end',
 					muted: true,
 					tabular: true,
@@ -685,7 +707,7 @@
 				TX + 30,
 				legendY + 9,
 				showMarks ? 'share of the surfer’s visits' : 'visits so far',
-				11,
+				12,
 				{
 					muted: true,
 					halo: false
@@ -700,7 +722,7 @@
 					stroke="var(--stage-ink)"
 					stroke-width="2"
 				/>
-				{@render txt(TX + 30, legendY + 32, 'exact PageRank', 11, { muted: true, halo: false })}
+				{@render txt(TX + 30, legendY + 32, 'exact PageRank', 12, { muted: true, halo: false })}
 			{/if}
 		{/if}
 
@@ -727,7 +749,7 @@
 				d >= 1
 					? 'no page is guaranteed any share'
 					: `every page gets at least ${pct((1 - d) / Math.max(1, n))}`,
-				11,
+				12,
 				{ muted: true, halo: false }
 			)}
 		{/if}
@@ -753,13 +775,13 @@
 					tabular: true,
 					halo: false
 				})}
-				{@render txt(PX + 16, cy + 72, 'change since the start', 11, { muted: true, halo: false })}
+				{@render txt(PX + 16, cy + 72, 'change since the start', 12, { muted: true, halo: false })}
 			{:else}
 				{@render txt(PX + 16, cy + 30, 'The page to boost is gone.', 13, {
 					weight: 600,
 					halo: false
 				})}
-				{@render txt(PX + 16, cy + 50, 'Press “Start again” to bring it back.', 11, {
+				{@render txt(PX + 16, cy + 50, 'Press “Start again” to bring it back.', 12, {
 					muted: true,
 					halo: false
 				})}

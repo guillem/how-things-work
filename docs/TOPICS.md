@@ -193,7 +193,7 @@ A topic is done when:
 - [ ] wireless-signals
 - [ ] internet
 - [ ] gps
-- [ ] pagerank
+- [x] pagerank
 - [ ] consensus-blockchains
 
 **Artificial Intelligence**

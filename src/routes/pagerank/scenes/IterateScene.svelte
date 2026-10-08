@@ -35,18 +35,13 @@
 		rounds,
 		type Web
 	} from '../pagerank';
-	import { linkGeometry, pageRadius } from '../geometry';
+	import { PAGE_FILL, PAGE_STROKE, PANEL, letterSize, linkGeometry, pageRadius } from '../geometry';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
 	// ---- the web -------------------------------------------------------------------
-	// Preset positions shifted up a little to leave room for the jump pool below.
-	const OX = -10;
-	const OY = -24;
-	const web: Web = $derived.by(() => {
-		const base = PRESETS[String(step.hints?.web ?? 'example')] ?? EXAMPLE;
-		return { pages: base.pages.map((p) => ({ x: p.x + OX, y: p.y + OY })), links: base.links };
-	});
+	// The preset positions as they are, so the web does not move between scenes.
+	const web: Web = $derived(PRESETS[String(step.hints?.web ?? 'example')] ?? EXAMPLE);
 	const n = $derived(web.pages.length);
 	const out = $derived(outLinks(web));
 	const POOL = { x: 440, y: 548 };
@@ -137,6 +132,38 @@
 			key: `${a}>${b}`,
 			g: linkGeometry(web, a, b, radii[a], radii[b])
 		}))
+	);
+	/**
+	 * Where a small page's percentage goes: below, right, left or above it,
+	 * whichever side is farthest from its links and the pool's spoke.
+	 */
+	const outside = $derived(
+		web.pages.map((P, i) => {
+			const dirs = web.links
+				.filter(([a, b]) => a === i || b === i)
+				.map(([a, b]) => web.pages[a === i ? b : a])
+				.concat([POOL])
+				.map((Q) => Math.atan2(Q.y - P.y, Q.x - P.x));
+			const sides = [
+				{ x: 0, y: 1 },
+				{ x: 1, y: 0 },
+				{ x: -1, y: 0 },
+				{ x: 0, y: -1 }
+			];
+			let best = sides[0];
+			let bestGap = -1;
+			for (const side of sides) {
+				const ang = Math.atan2(side.y, side.x);
+				const gap = Math.min(
+					...dirs.map((a) => Math.abs(Math.atan2(Math.sin(a - ang), Math.cos(a - ang))))
+				);
+				if (gap > bestGap + 0.2) {
+					bestGap = gap;
+					best = side;
+				}
+			}
+			return best;
+		})
 	);
 	/** Radius of a dot carrying `amount` of rank (area ∝ amount). */
 	const dotR = (amount: number) => 1.5 + 17 * Math.sqrt(Math.max(0, amount));
@@ -256,14 +283,14 @@
 	});
 
 	// ---- right panel ------------------------------------------------------------------
-	const PL = 648;
-	const PR = 944;
+	const PL = PANEL.x;
+	const PR = PANEL.x + PANEL.w;
 	const ROW = $derived(Math.min(30, 210 / Math.max(1, n)));
-	const BAR_X = 684;
-	const BAR_W = 168;
+	const BAR_X = PL + 40;
+	const BAR_W = 158;
 	const bx = (v: number) => BAR_X + (v / barMax) * BAR_W;
 	// Change chart.
-	const CX0 = 694;
+	const CX0 = PL + 50;
 	const CX1 = 928;
 	const CY0 = 548; // y of 0
 	const CY1 = 372; // y of changeMax
@@ -350,16 +377,20 @@
 			cx={P.x}
 			cy={P.y}
 			{r}
-			fill="color-mix(in srgb, var(--rank-page) 18%, var(--stage-bg))"
+			fill={PAGE_FILL}
 			stroke="var(--rank-page)"
-			stroke-width="2"
+			stroke-width={PAGE_STROKE}
 		/>
 		{#if r >= 27}
 			{@render txt(P.x, P.y - 2, pageName(i), 16, { anchor: 'middle', weight: 700 })}
 			{@render txt(P.x, P.y + 15, pct(rank[i]), 12, { anchor: 'middle', tabular: true })}
 		{:else}
-			{@render txt(P.x, P.y + 5, pageName(i), 15, { anchor: 'middle', weight: 700 })}
-			{@render txt(P.x, P.y + r + 15, pct(rank[i]), 12, { anchor: 'middle', tabular: true })}
+			{@const o = outside[i]}
+			{@render txt(P.x, P.y + 5, pageName(i), letterSize(r), { anchor: 'middle', weight: 700 })}
+			{@render txt(P.x + o.x * (r + 6), P.y + o.y * (r + 6) + 4 + o.y * 6, pct(rank[i]), 12, {
+				anchor: o.x > 0.5 ? 'start' : o.x < -0.5 ? 'end' : 'middle',
+				tabular: true
+			})}
 		{/if}
 	{/each}
 
@@ -386,63 +417,54 @@
 
 	<!-- right panel -->
 	<rect
-		x={PL}
-		y={16}
-		width={PR - PL}
-		height={568}
+		x={PANEL.x}
+		y={PANEL.y}
+		width={PANEL.w}
+		height={PANEL.h}
 		rx={12}
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	{@render txt(PL + 18, 48, roundTitle, 18, { weight: 700, tabular: true })}
+	{@render txt(PL + 16, 46, roundTitle, 16, { weight: 700, tabular: true })}
 	{#if settled}
 		{@render pill(PR - 52, 43, '✓ settled', 12, 'var(--rank-flow)')}
 	{:else if !reduced && !clock.slow && clock.k < ROUNDS}
 		{@render txt(PR - 18, 47, 'faster now', 11, { anchor: 'end', muted: true })}
 	{/if}
-	{@render txt(PL + 18, 72, 'Rank of each page · tick = exact PageRank', 11, { muted: true })}
+	{@render txt(PL + 16, 68, 'Rank of each page · tick = exact PageRank', 12, { muted: true })}
 
 	{#each rank as v, i (i)}
 		{@const y = 96 + i * ROW}
-		{@render txt(PL + 18, y + ROW / 2 + 4, pageName(i), 13, { weight: 700 })}
+		{@render txt(PL + 18, y + ROW / 2 + 4.5, pageName(i), 13, { weight: 650 })}
+		<rect x={BAR_X} y={y + ROW / 2 - 5} width={BAR_W} height="10" rx="5" fill="var(--stage-grid)" />
 		<rect
 			x={BAR_X}
-			y={y + ROW * 0.2}
-			width={BAR_W}
-			height={ROW * 0.6}
-			rx="3"
-			fill="var(--stage-grid)"
-			opacity="0.6"
-		/>
-		<rect
-			x={BAR_X}
-			y={y + ROW * 0.2}
+			y={y + ROW / 2 - 5}
 			width={Math.max(0, bx(v) - BAR_X)}
-			height={ROW * 0.6}
-			rx="3"
+			height="10"
+			rx="5"
 			fill="var(--rank-page)"
-			opacity="0.85"
 		/>
 		<line
 			x1={bx(final[i])}
 			x2={bx(final[i])}
-			y1={y + ROW * 0.08}
-			y2={y + ROW * 0.92}
+			y1={y + ROW / 2 - 10}
+			y2={y + ROW / 2 + 10}
 			stroke="var(--stage-ink)"
 			stroke-width="2"
 		/>
-		{@render txt(PR - 18, y + ROW / 2 + 4, pct(v), 13, { anchor: 'end', tabular: true })}
+		{@render txt(PR - 14, y + ROW / 2 + 4.5, pct(v), 12, { anchor: 'end', tabular: true })}
 	{/each}
 
 	<!-- change per round -->
-	{@render txt(PL + 18, 314, 'Total change in this round', 13, { weight: 600 })}
+	{@render txt(PL + 16, 314, 'Total change in this round', 13, { weight: 600 })}
 	{@render txt(
-		PL + 18,
-		332,
+		PL + 16,
+		333,
 		shownRound >= 1
 			? `round ${shownRound}: ${lastChange.toFixed(lastChange < 1 ? 2 : 1)}% of all rank moved`
 			: 'starts with round 1',
-		11,
+		12,
 		{ muted: true, tabular: true }
 	)}
 	{#each [0, changeMax / 2, changeMax] as v (v)}

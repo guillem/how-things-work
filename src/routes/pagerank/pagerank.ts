@@ -120,7 +120,12 @@ export function parseWeb(s: unknown): Web | null {
 // ------------------------------------------------------------ ranks
 
 /** One round of the update: the share of rank each page holds after one more hop. */
-export function step(web: Web, rank: readonly number[], d = DAMPING, out = outLinks(web)): number[] {
+export function step(
+	web: Web,
+	rank: readonly number[],
+	d = DAMPING,
+	out = outLinks(web)
+): number[] {
 	const n = rank.length;
 	const next = new Array(n).fill(0);
 	let spread = 0; // rank handed out evenly to every page: random jumps and dead ends
@@ -257,8 +262,8 @@ export const TRAPS = web(
 		[220, 160],
 		[180, 380],
 		[400, 290],
-		[590, 170],
-		[610, 420],
+		[575, 170],
+		[590, 420],
 		[380, 500]
 	],
 	'AB AC BC BF CA CD DE ED'
@@ -268,8 +273,8 @@ export const TRAPS = web(
  * Where the reader's own web starts. E is a new page that links to A but that
  * nobody links to yet: its own links cannot lift it (no surfer arrives by a
  * link, so it keeps only its share of random jumps); a link from A, the top
- * page, lifts it about six-fold, while three new pages linking to it barely
- * double it.
+ * page, lifts it about six-fold, while three new pages linking to it lift it
+ * only about 2.2-fold.
  */
 export const STARTER = web(
 	[
@@ -277,7 +282,7 @@ export const STARTER = web(
 		[180, 380],
 		[420, 280],
 		[260, 520],
-		[600, 400]
+		[600, 210]
 	],
 	'AB BC CA CD DA EA'
 );
