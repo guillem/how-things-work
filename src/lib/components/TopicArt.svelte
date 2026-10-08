@@ -48,6 +48,29 @@
 		return { points, smooth: path(f), wiggle: path(wiggle) };
 	})();
 
+	// Chaos and fractals: the Mandelbrot set's silhouette (main cardioid, the
+	// period-2 disc and a few smaller bulbs) at 44 px per unit, c = 0 at (128, 60).
+	const mandelArt = (() => {
+		const X = (re: number) => 128 + 44 * re;
+		const Y = (im: number) => 60 - 44 * im;
+		const cardioid =
+			Array.from({ length: 73 }, (_, i) => {
+				const a = (i / 72) * 2 * Math.PI;
+				const re = Math.cos(a) / 2 - Math.cos(2 * a) / 4;
+				const im = Math.sin(a) / 2 - Math.sin(2 * a) / 4;
+				return `${i ? 'L' : 'M'}${X(re).toFixed(1)} ${Y(im).toFixed(1)}`;
+			}).join(' ') + ' Z';
+		const bulbs = [
+			{ re: -1, im: 0, r: 0.25 },
+			{ re: -1.3107, im: 0, r: 0.06 },
+			{ re: -0.1226, im: 0.7449, r: 0.095 },
+			{ re: -0.1226, im: -0.7449, r: 0.095 },
+			{ re: 0.2822, im: 0.5301, r: 0.045 },
+			{ re: 0.2822, im: -0.5301, r: 0.045 }
+		].map((b) => ({ x: X(b.re), y: Y(b.im), r: 44 * b.r }));
+		return { cardioid, bulbs, tip: X(-2), neck: X(-1.37) };
+	})();
+
 	// PageRank: five pages of different sizes (their rank) and straight links
 	// between them, each ending in a small arrowhead at the target's edge.
 	const rankArt = (() => {
@@ -525,6 +548,27 @@
 		/>
 		<circle cx="51" cy="59" r="5.5" fill="var(--gs-start)" />
 		<circle cx="149" cy="59" r="5.5" fill="var(--gs-goal)" />
+	{:else if slug === 'chaos-fractals'}
+		<!-- the Mandelbrot set: a soft fringe round the silhouette, the antenna to −2 -->
+		<g fill="none" stroke={accent} stroke-linejoin="round" opacity="0.22" stroke-width="7">
+			<path d={mandelArt.cardioid} />
+			{#each mandelArt.bulbs as b, i (i)}
+				<circle cx={b.x} cy={b.y} r={b.r} />
+			{/each}
+		</g>
+		<line
+			x1={mandelArt.tip}
+			x2={mandelArt.neck}
+			y1="60"
+			y2="60"
+			stroke={accent}
+			stroke-width="1.5"
+			stroke-linecap="round"
+		/>
+		<path d={mandelArt.cardioid} fill={accent} />
+		{#each mandelArt.bulbs as b, i (i)}
+			<circle cx={b.x} cy={b.y} r={b.r} fill={accent} />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

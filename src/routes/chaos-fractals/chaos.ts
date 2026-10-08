@@ -203,6 +203,6 @@ export const iterationsFor = (width: number) =>
 export const TOUR = [
 	{ id: 'whole', label: 'The whole set', x: -0.6, y: 0, width: 3.2 },
 	{ id: 'seahorse', label: 'Seahorse valley', x: -0.7453, y: 0.1127, width: 0.01 },
-	{ id: 'spiral', label: 'A spiral', x: -0.761574, y: -0.0847596, width: 0.0006 },
+	{ id: 'spiral', label: 'A spiral', x: -0.76121, y: -0.08476, width: 0.0012 },
 	{ id: 'minibrot', label: 'A tiny copy of the set', x: -1.7549, y: 0, width: 0.04 }
 ];
