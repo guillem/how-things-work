@@ -307,6 +307,11 @@ kbd {
 	--gs-path: #d6336c;
 	--gs-start: #2f9e44;
 	--gs-goal: #e03131;
+	/* chaos & fractals: the two pendulum twins, the logistic map, the set itself */
+	--chaos-a: #1c7ed6;
+	--chaos-b: #e8590c;
+	--chaos-curve: #7048e8;
+	--chaos-set: #212529;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -415,4 +420,8 @@ kbd {
 	--gs-path: #f06595;
 	--gs-start: #51cf66;
 	--gs-goal: #ff6b6b;
+	--chaos-a: #4dabf7;
+	--chaos-b: #ff922b;
+	--chaos-curve: #9775fa;
+	--chaos-set: #000000;
 }
