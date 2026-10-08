@@ -694,7 +694,7 @@ export function webRequest(o: WebOptions) {
 	hop('q', 'browser', 'resolver', 'Where is example.org?', 'dns', r / 2);
 	if (!o.cached) {
 		hop('root-q', 'resolver', 'root', 'example.org?', 'dns', ns / 2);
-		hop('root-a', 'root', 'resolver', 'Ask the .org servers', 'dns', ns / 2);
+		hop('root-a', 'root', 'resolver', 'Ask .org', 'dns', ns / 2);
 		hop('tld-q', 'resolver', 'tld', 'example.org?', 'dns', ns / 2);
 		hop('tld-a', 'tld', 'resolver', "Ask example.org's server", 'dns', ns / 2);
 		hop('auth-q', 'resolver', 'auth', 'example.org?', 'dns', ns / 2);

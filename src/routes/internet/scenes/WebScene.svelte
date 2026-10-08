@@ -46,8 +46,8 @@
 		http: { name: 'Ask for the page (HTTP)', color: 'var(--net-http)' }
 	};
 
-	const TOP = 120;
-	const ROW = $derived(Math.min(30, 280 / req.msgs.length));
+	const TOP = 118;
+	const ROW = $derived(Math.min(30, 316 / req.msgs.length));
 	/** Extra space between the phases, so their bands do not touch. */
 	const GAP = 12;
 	const ORDER: Phase[] = ['dns', 'tcp', 'tls', 'http'];
@@ -56,7 +56,9 @@
 			const x1 = laneX(m.from);
 			const x2 = laneX(m.to);
 			const y1 = TOP + i * ROW + ORDER.indexOf(m.phase) * GAP;
-			const y2 = y1 + ROW * 0.8;
+			// Shallow arrows, labelled above their start, so a label never touches the
+			// arrow before it (the DNS rows are close together).
+			const y2 = y1 + ROW * 0.5;
 			const p = clamp((ms - m.t0) / (m.t1 - m.t0));
 			return { ...m, i, x1, x2, y1, y2, p };
 		})
@@ -66,7 +68,7 @@
 			const inPhase = rows.filter((r) => r.phase === ph.phase);
 			return {
 				...ph,
-				y0: inPhase[0].y1 - 14,
+				y0: inPhase[0].y1 - 16,
 				y1: inPhase[inPhase.length - 1].y2 + 4,
 				active: ms >= ph.t0 && ms < ph.t1,
 				done: ms >= ph.t1
@@ -165,7 +167,7 @@
 		{@const xm = r.x1 + (r.x2 - r.x1) * r.p}
 		{@const ym = r.y1 + (r.y2 - r.y1) * r.p}
 		{@const lx = (r.x1 + r.x2) / 2}
-		{@const ly = (r.y1 + r.y2) / 2 - 5}
+		{@const ly = r.y1 - 4}
 		<line
 			x1={r.x1}
 			y1={r.y1}
