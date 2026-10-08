@@ -787,6 +787,30 @@
 				stroke-width="0.8"
 			/>
 		{/each}
+	{:else if slug === 'complex-numbers'}
+		<!-- the complex plane: z, w and their product zw (lengths multiply, angles add) -->
+		<path d="M44 66 H156 M100 18 V112" stroke="currentColor" stroke-width="1.5" opacity="0.4" />
+		<circle
+			cx="100"
+			cy="66"
+			r="34"
+			fill="none"
+			stroke="currentColor"
+			stroke-dasharray="2 3"
+			opacity="0.5"
+		/>
+		<path d="M114 66 A14 14 0 0 0 104.8 52.8" fill="none" stroke={accent} stroke-width="2" />
+		<path
+			d="M100 66 L137.6 52.3 M100 66 L126.4 34.6"
+			stroke="currentColor"
+			stroke-width="2.2"
+			stroke-linecap="round"
+			opacity="0.6"
+		/>
+		<circle cx="137.6" cy="52.3" r="4" fill="currentColor" opacity="0.6" />
+		<circle cx="126.4" cy="34.6" r="4" fill="currentColor" opacity="0.6" />
+		<path d="M100 66 L116.4 20.9" stroke={accent} stroke-width="3" stroke-linecap="round" />
+		<circle cx="116.4" cy="20.9" r="5.5" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

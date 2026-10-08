@@ -222,6 +222,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 6,
 		minutes: 12
+	},
+	{
+		slug: 'complex-numbers',
+		title: "Complex numbers and Euler's formula",
+		summary:
+			'Drag two points on the complex plane and watch their product turn and stretch, then follow eⁱᶿ round the unit circle.',
+		accent: '#0c8599',
+		steps: 8,
+		minutes: 12
 	}
 ];
 

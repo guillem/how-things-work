@@ -365,6 +365,12 @@ kbd {
 	--atom-f: #ae3ec9;
 	--atom-low: #e7f5ff;
 	--atom-high: #1864ab;
+	/* complex-numbers: the points z and w, their product, real and imaginary parts */
+	--cx-z: #0c8599;
+	--cx-w: #e8590c;
+	--cx-prod: #7048e8;
+	--cx-re: #1c7ed6;
+	--cx-im: #d6336c;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -523,4 +529,9 @@ kbd {
 	--atom-f: #da77f2;
 	--atom-low: #1a2733;
 	--atom-high: #74c0fc;
+	--cx-z: #3bc9db;
+	--cx-w: #ff922b;
+	--cx-prod: #9775fa;
+	--cx-re: #4dabf7;
+	--cx-im: #f06595;
 }
