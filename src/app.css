@@ -262,6 +262,16 @@ kbd {
 	--circ-low: #1971c2;
 	--circ-meter: #f8f9fa;
 	--circ-copper: #d9822b;
+	/* bridges: tension, compression, failure, steel, cable, ground, sky/water in the gap */
+	--struct-tension: #1c7ed6;
+	--struct-compression: #e03131;
+	--struct-fail: #f59f00;
+	--struct-steel: #868e96;
+	--struct-cable: #495057;
+	--struct-ground: #b08968;
+	--struct-ground-edge: #7f5539;
+	--struct-gap: #e7f5ff;
+	--struct-road: #495057;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -329,4 +339,13 @@ kbd {
 	--circ-low: #4dabf7;
 	--circ-meter: #25292e;
 	--circ-copper: #e8a35a;
+	--struct-tension: #4dabf7;
+	--struct-compression: #ff6b6b;
+	--struct-fail: #ffd43b;
+	--struct-steel: #868e96;
+	--struct-cable: #ced4da;
+	--struct-ground: #5c4632;
+	--struct-ground-edge: #8d6e52;
+	--struct-gap: #14212d;
+	--struct-road: #adb5bd;
 }

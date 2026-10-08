@@ -114,6 +114,15 @@ const explainers: Explainer[] = [
 		accent: '#f08c00',
 		steps: 9,
 		minutes: 14
+	},
+	{
+		slug: 'bridges-structures',
+		title: 'How bridges stand up',
+		summary:
+			'Drive a truck over beams, trusses, arches and suspension bridges and watch every member pull or push — then build your own bridge from a fixed amount of steel.',
+		accent: '#c2410c',
+		steps: 8,
+		minutes: 14
 	}
 ];
 
