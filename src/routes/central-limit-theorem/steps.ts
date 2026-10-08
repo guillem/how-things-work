@@ -92,7 +92,7 @@ export const spec: ExplainerSpec = {
 			controls: [rows, pace, restart],
 			body: `
 <p>Each ball's final position is the <strong>sum of many small, independent random pushes</strong>. Extreme results need almost every push to go the same way, which is rare; middling results can happen in a huge number of ways, so they are common.</p>
-<p>Add more rows and the bell gets wider, but its shape stays the same. Lots of things in nature are sums of many small random effects — heights of people, errors in measurements — which is why bell curves turn up everywhere.</p>`
+<p>Add more rows and the balls spread over more bins, but the shape stays the same bell. Lots of things in nature are sums of many small random effects — adult heights, errors in measurements — which is why bell curves turn up everywhere.</p>`
 		},
 		{
 			id: 'samples',

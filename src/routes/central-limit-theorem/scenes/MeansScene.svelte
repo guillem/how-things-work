@@ -7,7 +7,9 @@
 	 * Phases (`step.hints.phase`):
 	 *   samples — the averages accumulate; readouts n, samples, means, spreads
 	 *   clt     — same, plus the bell curve normalDensity(x, μ, σ/√n) scaled to
-	 *             the count, and the ±σ and ±σ/√n spans on both charts
+	 *             the count, the ±σ span above the top chart and the ±σ/√n
+	 *             span on the bell; arriving here with n = 1, n is set to 30
+	 *             once (n = 1 shows no bell)
 	 *
 	 * The run: `COUNT` samples of n draws from `sampler(shape, seed)` (seed =
 	 * 1 + restart presses); averaging each n draws gives exactly the sequence of
@@ -47,6 +49,17 @@
 	$effect(() => {
 		const v = phase === 'clt' ? 1 : 0;
 		untrack(() => cltAmt.set(v));
+	});
+	// Arriving at the clt step with n = 1 would show two humps under a flat
+	// bell, the opposite of what the step says: bump n once, on arrival only
+	// (never in reaction to n, so the reader can still slide back to 1).
+	let prevPhase = '';
+	$effect(() => {
+		const p = phase;
+		untrack(() => {
+			if (p === 'clt' && prevPhase !== 'clt' && n === 1) setParam('sampleSize', 30);
+			prevPhase = p;
+		});
 	});
 
 	// ---- the starting distribution --------------------------------------------------
@@ -161,6 +174,39 @@
 	const bellAtSd = $derived(
 		BOT_BOT - (taken / B) * normalDensity(mu + sdN, mu, Math.max(sdN, 1e-6)) * unit
 	);
+
+	/** Highest bar (smallest y) of the bottom histogram over the pixel range [x0, x1]. */
+	function barTop(x0: number, x1: number) {
+		const w = (X1 - X0) / B;
+		let top = BOT_BOT;
+		for (let b = Math.max(0, Math.floor((x0 - X0) / w)); b < B && X0 + b * w < x1; b++)
+			if (counts[b] > 0) top = Math.min(top, BOT_BOT - counts[b] * unit);
+		return top;
+	}
+	const LABEL_W = 34;
+	/** Where the σ/√n label goes: right of the span, else left of it, else above the bell's top — never on the bars. */
+	const sdnLabel = $derived.by(() => {
+		const y = bellAtSd + 4;
+		const xr = sx(Math.min(1, mu + sdN)) + 8;
+		if (xr + LABEL_W <= X1 + 24 && barTop(xr - 2, xr + LABEL_W) > y + 4)
+			return { x: xr, y, anchor: 'start' };
+		const xl = sx(Math.max(0, mu - sdN)) - 8;
+		if (xl - LABEL_W >= X0 - 40 && barTop(xl - LABEL_W, xl + 2) > y + 4)
+			return { x: xl, y, anchor: 'end' };
+		const peak = Math.max(BOT_TOP - 10, BOT_BOT - bellPeak * unit);
+		const x = clamp(sx(mu), X0 + LABEL_W / 2, X1 - LABEL_W / 2);
+		return {
+			x,
+			y: Math.min(peak, barTop(x - LABEL_W / 2, x + LABEL_W / 2)) - 8,
+			anchor: 'middle'
+		};
+	});
+	/** The σ label of the starting distribution's span (above the top chart). */
+	const sdLabel = $derived.by(() => {
+		const xr = sx(Math.min(1, mu + sigma)) + 8;
+		if (xr + 10 <= X1 + 24) return { x: xr, anchor: 'start' };
+		return { x: sx(Math.max(0, mu - sigma)) - 8, anchor: 'end' };
+	});
 
 	const meanOfMeans = $derived(run.s1[taken] / taken);
 	const sdOfMeans = $derived(
@@ -281,26 +327,13 @@
 	>
 {/snippet}
 
-{#snippet span(cx: number, half: number, y: number, label: string, color: string)}
+{#snippet span(cx: number, half: number, y: number, color: string)}
+	{@const a = sx(Math.max(0, cx - half))}
+	{@const b = sx(Math.min(1, cx + half))}
 	<g>
-		<line x1={sx(cx - half)} x2={sx(cx + half)} y1={y} y2={y} stroke={color} stroke-width="2" />
-		<line
-			x1={sx(cx - half)}
-			x2={sx(cx - half)}
-			y1={y - 5}
-			y2={y + 5}
-			stroke={color}
-			stroke-width="2"
-		/>
-		<line
-			x1={sx(cx + half)}
-			x2={sx(cx + half)}
-			y1={y - 5}
-			y2={y + 5}
-			stroke={color}
-			stroke-width="2"
-		/>
-		{@render txt(sx(cx + half) + 8, y + 4, label, 12, { color, weight: 600 })}
+		<line x1={a} x2={b} y1={y} y2={y} stroke={color} stroke-width="2" />
+		<line x1={a} x2={a} y1={y - 5} y2={y + 5} stroke={color} stroke-width="2" />
+		<line x1={b} x2={b} y1={y - 5} y2={y + 5} stroke={color} stroke-width="2" />
 	</g>
 {/snippet}
 
@@ -388,7 +421,12 @@
 	<!-- ±σ on the starting distribution (clt) -->
 	{#if cltAmt.current > 0.01}
 		<g opacity={cltAmt.current}>
-			{@render span(mu, sigma, TOP_BOT + 12, 'σ', 'var(--clt-source)')}
+			{@render span(mu, sigma, TOP_Y - 3, 'var(--clt-source)')}
+			{@render txt(sdLabel.x, TOP_Y + 1, 'σ', 12, {
+				anchor: sdLabel.anchor,
+				color: 'var(--clt-source)',
+				weight: 600
+			})}
 		</g>
 	{/if}
 
@@ -454,7 +492,12 @@
 	{#if cltAmt.current > 0.01}
 		<g opacity={cltAmt.current}>
 			<path d={bellPath} fill="none" stroke="var(--clt-bell)" stroke-width="2.5" />
-			{@render span(mu, sdN, bellAtSd, 'σ/√n', 'var(--clt-bell)')}
+			{@render span(mu, sdN, bellAtSd, 'var(--clt-bell)')}
+			{@render txt(sdnLabel.x, sdnLabel.y, 'σ/√n', 12, {
+				anchor: sdnLabel.anchor,
+				color: 'var(--clt-bell)',
+				weight: 600
+			})}
 		</g>
 	{/if}
 
@@ -468,7 +511,7 @@
 	{@render txt(PL, 238, `their average ${f2(show.mean)}`, 16, {
 		weight: 600,
 		color: 'var(--clt-means)',
-		opacity: Math.max(0.4, show.markAmt)
+		opacity: Math.max(0.6, show.markAmt)
 	})}
 	{#if n === 1}
 		{@render txt(PL, 260, 'n = 1: each average is just one value', 12, { muted: true })}
@@ -481,7 +524,7 @@
 	})}
 	{@render txt(PL, 426, `mean of the averages ${f2(meanOfMeans)}`, 12, { tabular: true })}
 	{@render txt(PL, 446, `spread of the averages ${f3(sdOfMeans)}`, 12, { tabular: true })}
-	{@render txt(PL, 466, `σ/√n = ${f2(sigma)}/√${n} = ${f3(sdN)}`, 12, {
+	{@render txt(PL, 466, `σ/√n = ${f3(sigma)}/√${n} = ${f3(sdN)}`, 12, {
 		tabular: true,
 		muted: cltAmt.current < 0.5,
 		color: cltAmt.current >= 0.5 ? 'var(--clt-bell)' : undefined,

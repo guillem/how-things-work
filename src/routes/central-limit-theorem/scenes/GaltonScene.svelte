@@ -5,8 +5,9 @@
 	 *
 	 * Phases (`step.hints.phase`):
 	 *   board — the balls fall and the bins fill; once 50 have landed, the
-	 *           expected shape (binomial × number landed) is drawn over the bins
-	 *   why   — same, plus the normal curve, the number of paths into the end
+	 *           expected shape (binomial × number landed) and the normal curve
+	 *           are drawn over the bins
+	 *   why   — same, plus the number of paths into the end
 	 *           and middle bins, and one ball's path traced pin by pin with its
 	 *           bounces listed (R / L) and its number of rights = its bin
 	 *
@@ -63,11 +64,11 @@
 	});
 
 	// ---- geometry ----------------------------------------------------------------
-	const CX = 320;
+	const CX = 332;
 	const PIN_TOP = 84;
 	const BIN_TOP = 352;
 	const BIN_BOT = 540;
-	const dx = $derived(Math.min(56, 540 / (rows + 1)));
+	const dx = $derived(Math.min(100, 540 / (rows + 1))); // small boards are drawn larger
 	const dy = $derived(Math.min(246 / rows, 1.2 * dx));
 	const pinR = $derived(Math.min(4, dx * 0.12));
 	const ballR = $derived(Math.min(6, dx * 0.2));
@@ -367,15 +368,7 @@
 	<!-- expected shape (binomial) and normal curve -->
 	{#if expectedAmt > 0}
 		<g opacity={expectedAmt}>
-			{#if whyAmt.current > 0.01}
-				<path
-					d={normalPath}
-					fill="none"
-					stroke="var(--clt-bell)"
-					stroke-width="2.5"
-					opacity={whyAmt.current}
-				/>
-			{/if}
+			<path d={normalPath} fill="none" stroke="var(--clt-bell)" stroke-width="2.5" />
 			<path
 				d={expectedPath}
 				fill="none"
@@ -466,12 +459,10 @@
 			<circle cx={PL + 13} cy={172} r="2.5" fill="var(--stage-ink)" />
 			{@render txt(PL + 36, 176, `expected shape for ${fmt(landed)} balls`, 12)}
 		</g>
-		{#if whyAmt.current > 0.01}
-			<g opacity={whyAmt.current * expectedAmt}>
-				<line x1={PL} x2={PL + 26} y1={196} y2={196} stroke="var(--clt-bell)" stroke-width="2.5" />
-				{@render txt(PL + 36, 200, 'the normal (bell) curve', 12)}
-			</g>
-		{/if}
+		<g opacity={expectedAmt}>
+			<line x1={PL} x2={PL + 26} y1={196} y2={196} stroke="var(--clt-bell)" stroke-width="2.5" />
+			{@render txt(PL + 36, 200, 'the normal (bell) curve', 12)}
+		</g>
 
 		{#if hl}
 			<g opacity={whyAmt.current}>
