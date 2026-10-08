@@ -189,7 +189,9 @@ test('a low discount prefers the near +1 to the far +10', () => {
 });
 
 test('cliff walking (Sutton & Barto, example 6.6): Q-learning learns the edge route', () => {
-	// 4 × 12, start bottom-left, goal bottom-right, the cliff between; −1 per move, γ = 1.
+	// 4 × 12, start bottom-left, goal bottom-right, the cliff between; −1 per move, γ = 1,
+	// ε = 0.1. Adapted: here the cliff is a −10 pit that ends the episode (in the book, −100
+	// and back to the start); the learnt route is the same.
 	const w = parseRows(['............', '............', '............', 'SXXXXXXXXXXR']);
 	const run = train(w, {
 		alpha: 0.5,

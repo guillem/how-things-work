@@ -48,7 +48,7 @@
 	} from '../qlearning';
 	import { setup } from '../run';
 
-	let { step, t, params, setParam, reduced }: StageProps = $props();
+	let { step, t, params, setParam, reduced, dark }: StageProps = $props();
 
 	// ---- geometry ----------------------------------------------------------------------
 	const COLS = 10;
@@ -120,6 +120,62 @@
 	const playing = $derived(!cfg.offered.has('play') || params.play !== false);
 	const manual = $derived(params.positionKey === cfg.key ? Number(params.position ?? 0) : 0);
 	let lastK = 0;
+
+	/*
+	 * Credit step: early on, almost no move changes an estimate (they are all 0
+	 * and stay 0 until the agent first reaches the +10), and the first credits
+	 * are hundreds of moves apart. So that the step shows them at a readable
+	 * pace, the replay skips through the dull stretches 20 times faster: a move
+	 * plays at the chosen speed only within a few moves of a change. The
+	 * playback runs on this warped clock; `toV`/`fromV` convert positions.
+	 */
+	const SKIP = 20;
+	const warp = $derived.by(() => {
+		if (phase !== 'credit') return null;
+		const n = run.moves.length;
+		// A change visible in the card's two decimals.
+		const changed = (j: number) => Math.abs(run.moves[j].after - run.moves[j].before) >= 0.005;
+		const len = new Float64Array(n).fill(1 / SKIP);
+		let next = Infinity;
+		for (let j = n - 1; j >= 0; j--) {
+			if (changed(j)) next = j;
+			if (next - j <= 6) len[j] = 1;
+		}
+		let prev = -Infinity;
+		for (let j = 0; j < n; j++) {
+			if (j - prev <= 3) len[j] = 1;
+			if (changed(j)) prev = j;
+		}
+		/** For each move, the latest move up to it that changed an estimate (−1: none). */
+		const last = new Int32Array(n);
+		let l = -1;
+		for (let j = 0; j < n; j++) {
+			if (changed(j)) l = j;
+			last[j] = l;
+		}
+		const cum = new Float64Array(n + 1);
+		for (let j = 0; j < n; j++) cum[j + 1] = cum[j] + len[j];
+		return { len, cum, last };
+	});
+	function toV(kk: number): number {
+		if (!warp) return kk;
+		const j = clamp(Math.floor(kk), 0, total);
+		return j >= total ? warp.cum[total] : warp.cum[j] + (kk - j) * warp.len[j];
+	}
+	function fromV(v: number): number {
+		if (!warp) return v;
+		const c = warp.cum;
+		if (v >= c[total]) return total;
+		let lo = 0;
+		let hi = total - 1;
+		while (lo < hi) {
+			const mid = (lo + hi + 1) >> 1;
+			if (c[mid] <= v) lo = mid;
+			else hi = mid - 1;
+		}
+		return lo + (v - c[lo]) / warp.len[lo];
+	}
+
 	const k = $derived.by(() => {
 		// Reduced motion: the end of the first episode (world), or the finished training.
 		const done = phase === 'world' ? run.episodes[0].length - 0.001 : total;
@@ -127,7 +183,15 @@
 			? playing
 				? done
 				: clamp(manual, 0, total)
-			: position(t, { key: cfg.key, playing, pace: cfg.pace, manual, total });
+			: fromV(
+					position(t, {
+						key: cfg.key,
+						playing,
+						pace: cfg.pace,
+						manual: toV(manual),
+						total: toV(total)
+					})
+				);
 		if (playing) lastK = v;
 		return v;
 	});
@@ -169,6 +233,14 @@
 	const q = $derived(qAt(run, i));
 	const current = $derived(i < total ? run.moves[i] : null);
 	const latest = $derived(i > 0 ? run.moves[i - 1] : null);
+	/** Credit step: the latest move that changed an estimate, and how many moves ago it was. */
+	const lastChange = $derived.by(() => {
+		if (!warp || i === 0) return null;
+		const j = warp.last[i - 1];
+		return j < 0 ? null : { m: run.moves[j], ago: i - 1 - j };
+	});
+	/** Credit step, playing through a stretch where nothing changes. */
+	const skipping = $derived(!!warp && playing && !reduced && i < total && warp.len[i] < 1);
 	/** The previous move ended an episode: show its payoff popping up. */
 	const ended = $derived(
 		latest && isEnd(world, latest.next) && (current === null || ep !== episodeAt(run, i - 1))
@@ -221,10 +293,13 @@
 		if (v < -0.005) return -Math.ceil(Math.sqrt(Math.min(1, -v / 10)) * NEG);
 		return 0;
 	}
+	// The faintest band starts further from the floor colour in dark mode, where a
+	// light mix of green or red on near-black is hard to see.
+	const lo = $derived(dark ? 48 : 30);
 	const bandFill = (b: number) =>
 		b > 0
-			? `color-mix(in srgb, var(--rl-good) ${30 + (b - 1) * 12}%, var(--rl-floor))`
-			: `color-mix(in srgb, var(--rl-bad) ${30 + (-b - 1) * 20}%, var(--rl-floor))`;
+			? `color-mix(in srgb, var(--rl-good) ${lo + (b - 1) * ((100 - lo) / 5)}%, var(--rl-floor))`
+			: `color-mix(in srgb, var(--rl-bad) ${lo + (-b - 1) * ((100 - lo) / 3)}%, var(--rl-floor))`;
 	function tri(s: number, a: number): string {
 		const x = GX + colOf(s) * CS;
 		const y = GY + rowOf(s) * CS;
@@ -302,7 +377,17 @@
 	const routeOk = $derived(route.length > 1 && isEnd(world, route[route.length - 1]));
 	const showRoute = $derived(phase === 'explore' || phase === 'paint');
 	const routePath = $derived(
-		routeOk ? route.map((p, j) => `${j ? 'L' : 'M'}${cx(p)} ${cy(p)}`).join('') : ''
+		routeOk
+			? route
+					.map((p, j) => {
+						// The last leg stops at the edge of the ending square, clear of its label.
+						const last = j === route.length - 1;
+						const x = last ? (cx(p) + cx(route[j - 1])) / 2 : cx(p);
+						const y = last ? (cy(p) + cy(route[j - 1])) / 2 : cy(p);
+						return `${j ? 'L' : 'M'}${x} ${y}`;
+					})
+					.join('')
+			: ''
 	);
 
 	// ---- hover, painting, the start marker, the keyboard cursor ------------------------------
@@ -426,6 +511,7 @@
 	const happening = $derived.by(() => {
 		if (!current) return 'Training over: 300 episodes';
 		if (fast) return `Fast-forward: ${cfg.pace} moves a second`;
+		if (skipping) return 'Skipping ahead to the next move that changes an estimate…';
 		const name = MOVE_NAMES[current.a];
 		const kind = world.cells[current.next];
 		const why = current.explored
@@ -524,11 +610,16 @@
 	);
 
 	const LEGEND = [
-		{ l: 'reward +10', f: 'var(--rl-reward)' },
-		{ l: 'small reward +1', f: 'var(--rl-small)' },
-		{ l: 'pit −10: the episode ends', f: 'var(--rl-pit)' },
-		{ l: 'wall', f: 'var(--rl-wall)' }
+		{ k: REWARD, l: 'reward +10', f: 'var(--rl-reward)' },
+		{ k: SMALL, l: 'small reward +1', f: 'var(--rl-small)' },
+		{ k: PENALTY, l: 'pit −10: the episode ends', f: 'var(--rl-pit)' },
+		{ k: WALL, l: 'wall', f: 'var(--rl-wall)' }
 	];
+	/** The legend lists what is on the map (the reward always, so the agent's goal is named). */
+	const legend = $derived(
+		LEGEND.filter((item) => item.k === REWARD || world.cells.includes(item.k as Cell))
+	);
+	const ly0 = $derived(GY + 50 + legend.length * 28);
 	const terminalLabel = (c: Cell) => (c === REWARD ? '+10' : c === SMALL ? '+1' : '−10');
 	const terminalFill = (c: Cell) =>
 		c === REWARD ? 'var(--rl-reward)' : c === SMALL ? 'var(--rl-small)' : 'var(--rl-pit)';
@@ -673,7 +764,7 @@
 			stroke-width="3"
 			stroke-linecap="round"
 			stroke-linejoin="round"
-			opacity="0.35"
+			opacity={dark ? 0.55 : 0.35}
 		/>
 	{/if}
 	<!-- S: the start square -->
@@ -844,37 +935,45 @@
 			muted: true
 		})}
 	{:else if phase === 'credit'}
-		{@render txt(PX + 20, GY + 32, 'The latest update', 15, { weight: 600 })}
-		{#if latest && !fast}
-			{@const target = latest.r + cfg.settings.gamma * latest.bestNext}
+		{@render txt(PX + 20, GY + 32, 'The latest change', 15, { weight: 600 })}
+		{#if lastChange && !fast}
+			{@const u = lastChange.m}
+			{@render txt(
+				PX + PW - 20,
+				GY + 32,
+				lastChange.ago === 0 ? 'just now' : `${plural(lastChange.ago, 'move')} ago`,
+				12,
+				{ muted: true, anchor: 'end' }
+			)}
+			{@const target = u.r + cfg.settings.gamma * u.bestNext}
 			{@render txt(
 				PX + 20,
 				GY + 56,
-				`square ${sq(latest.s)}, move ${MOVE_NAMES[latest.a]}${latest.explored ? ' (random)' : ''}`,
+				`square ${sq(u.s)}, move ${MOVE_NAMES[u.a]}${u.explored ? ' (random)' : ''}`,
 				13,
 				{ muted: true }
 			)}
-			{@render txt(PX + 20, GY + 86, `reward for this move: ${latest.r}`, 13)}
-			{@render txt(PX + 20, GY + 108, `best estimate where it landed: ${f2(latest.bestNext)}`, 13)}
+			{@render txt(PX + 20, GY + 86, `reward for this move: ${u.r}`, 13)}
+			{@render txt(PX + 20, GY + 108, `best estimate where it landed: ${f2(u.bestNext)}`, 13)}
 			{@render txt(
 				PX + 20,
 				GY + 134,
-				`target = ${latest.r} + ${cfg.settings.gamma.toFixed(2)} × ${f2(latest.bestNext)} = ${f2(target)}`,
+				`target = ${u.r} + ${cfg.settings.gamma.toFixed(2)} × ${f2(u.bestNext)} = ${f2(target)}`,
 				13,
 				{ weight: 600 }
 			)}
 			{@render txt(
 				PX + 20,
 				GY + 160,
-				`old ${f2(latest.before)} + ${cfg.settings.alpha.toFixed(2)} × (${f2(target)} − ${f2(latest.before)})`,
+				`old ${f2(u.before)} + ${cfg.settings.alpha.toFixed(2)} × (${f2(target)} − ${f2(u.before)})`,
 				13
 			)}
-			{@render txt(PX + 20, GY + 188, `estimate: ${f2(latest.before)} → ${f2(latest.after)}`, 16, {
+			{@render txt(PX + 20, GY + 188, `estimate: ${f2(u.before)} → ${f2(u.after)}`, 16, {
 				weight: 700,
 				color:
-					latest.after > latest.before + 0.005
+					u.after > u.before + 0.005
 						? 'var(--rl-good)'
-						: latest.after < latest.before - 0.005
+						: u.after < u.before - 0.005
 							? 'var(--rl-bad)'
 							: undefined
 			})}
@@ -882,11 +981,17 @@
 			{@render txt(
 				PX + 20,
 				GY + 60,
-				fast ? 'Too fast to follow: slow down to read' : 'No move made yet',
+				fast ? 'Too fast to follow: slow down to read' : 'Nothing has changed yet: every move so',
 				13,
 				{ muted: true }
 			)}
-			{@render txt(PX + 20, GY + 80, fast ? 'each update.' : '', 13, { muted: true })}
+			{@render txt(
+				PX + 20,
+				GY + 80,
+				fast ? 'each update.' : 'far paid 0 and led to a square worth 0.',
+				13,
+				{ muted: true }
+			)}
 		{/if}
 		{@render scale(GY + 250)}
 	{:else if phase === 'values'}
@@ -947,7 +1052,7 @@
 		{@render scale(GY + 250)}
 	{:else}
 		{@render txt(PX + 20, GY + 32, 'The world', 15, { weight: 600 })}
-		{#each LEGEND as item, j (item.l)}
+		{#each legend as item, j (item.l)}
 			<rect
 				x={PX + 20}
 				y={GY + 50 + j * 28}
@@ -959,15 +1064,15 @@
 			/>
 			{@render txt(PX + 48, GY + 64 + j * 28, item.l, 13)}
 		{/each}
-		<circle cx={PX + 29} cy={GY + 171} r="9" fill="var(--rl-agent)" />
-		{@render txt(PX + 48, GY + 176, 'the agent; S: where it starts', 13)}
-		{@render txt(PX + 20, GY + 214, 'Moves: up, down, left or right.', 12, { muted: true })}
-		{@render txt(PX + 20, GY + 232, 'Into a wall or the edge: it stays put.', 12, { muted: true })}
-		{@render txt(PX + 20, GY + 276, 'Episodes so far', 12, { muted: true })}
+		<circle cx={PX + 29} cy={ly0 + 9} r="9" fill="var(--rl-agent)" />
+		{@render txt(PX + 48, ly0 + 14, 'the agent; S: where it starts', 13)}
+		{@render txt(PX + 20, ly0 + 52, 'Moves: up, down, left or right.', 12, { muted: true })}
+		{@render txt(PX + 20, ly0 + 70, 'Into a wall or the edge: it stays put.', 12, { muted: true })}
+		{@render txt(PX + 20, ly0 + 114, 'Episodes so far', 12, { muted: true })}
 		{@render txt(
 			PX + 20,
-			GY + 300,
-			`${tally.big[done]} reached the reward · ${tally.pit[done]} fell in a pit${tally.cut[done] ? ` · ${tally.cut[done]} cut off` : ''}`,
+			ly0 + 138,
+			`${hasSmall ? `${tally.big[done]} at the +10 · ${tally.small[done]} at the +1` : `${tally.big[done]} reached the reward`} · ${tally.pit[done]} ${hasSmall ? 'in a pit' : 'fell in a pit'}${tally.cut[done] ? ` · ${tally.cut[done]} cut off` : ''}`,
 			13,
 			{ weight: 600 }
 		)}

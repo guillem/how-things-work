@@ -25,7 +25,7 @@ export function setup(step: Step, params: Params) {
 		episodes: DEFAULTS.episodes,
 		seed: DEFAULTS.seed + num('restart', 0)
 	};
-	const notch = offered.has('speedFast') ? num('speedFast', 4) : num('speed', 2);
+	const notch = offered.has('speedFast') ? num('speedFast', 5) : num('speed', 2);
 	const pace = PACES[Math.round(notch) - 1] ?? PACES[1];
 	const key = [
 		step.id,
