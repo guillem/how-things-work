@@ -229,6 +229,25 @@
 		}).join(' ');
 		return { bars, pins, curve };
 	})();
+	// Atoms: a packed nucleus of protons (accent) and neutrons, in a soft cloud
+	// of electron dots (no orbits).
+	const atomArt = (() => {
+		const nucleons = Array.from({ length: 12 }, (_, i) => {
+			const r = 4.2 * Math.sqrt(i + 0.5);
+			const a = i * 2.39996;
+			return { i, x: 100 + r * Math.cos(a), y: 60 + r * Math.sin(a), p: i % 2 === 0 };
+		}).reverse();
+		const rand = (k: number) => {
+			const x = Math.sin(k * 127.1 + 311.7) * 43758.5453;
+			return x - Math.floor(x);
+		};
+		const dots = Array.from({ length: 26 }, (_, i) => {
+			const a = rand(i) * Math.PI * 2;
+			const r = 22 + 30 * Math.pow(rand(i + 100), 0.8);
+			return { i, x: 100 + r * Math.cos(a) * 1.25, y: 60 + r * Math.sin(a) * 0.95 };
+		});
+		return { nucleons, dots };
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -744,6 +763,30 @@
 			opacity="0.4"
 		/>
 		<path d={cltArt.curve} fill="none" stroke={accent} stroke-width="2" stroke-linecap="round" />
+	{:else if slug === 'atoms-periodic-table'}
+		<!-- a packed nucleus in a soft electron cloud: dots, not orbits -->
+		<defs>
+			<radialGradient id="art-atom-cloud">
+				<stop offset="0" stop-color={accent} stop-opacity="0.22" />
+				<stop offset="0.6" stop-color={accent} stop-opacity="0.1" />
+				<stop offset="1" stop-color={accent} stop-opacity="0" />
+			</radialGradient>
+		</defs>
+		<ellipse cx="100" cy="60" rx="78" ry="56" fill="url(#art-atom-cloud)" />
+		{#each atomArt.dots as d (d.i)}
+			<circle cx={d.x} cy={d.y} r="2" fill="currentColor" opacity="0.5" />
+		{/each}
+		{#each atomArt.nucleons as n (n.i)}
+			<circle
+				cx={n.x}
+				cy={n.y}
+				r="4.6"
+				fill={n.p ? accent : 'currentColor'}
+				fill-opacity={n.p ? 1 : 0.4}
+				stroke="var(--surface)"
+				stroke-width="0.8"
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
