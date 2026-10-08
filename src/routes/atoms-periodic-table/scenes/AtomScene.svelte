@@ -78,7 +78,10 @@
 	const id = $derived(identify(build));
 
 	// Action buttons arrive as press counts; apply the change in each count since
-	// the scene mounted (counts seen at mount are not replayed).
+	// the counts last applied. That baseline is kept in params ('atom:seen') so a
+	// remount (leaving the step and coming back) neither replays nor loses presses;
+	// with no baseline yet, every count is new (counts start at 0), so presses
+	// made while the scene was still loading are applied too.
 	const ACTIONS = [
 		['addProton', 'p', 1],
 		['removeProton', 'p', -1],
@@ -87,26 +90,26 @@
 		['addElectron', 'e', 1],
 		['removeElectron', 'e', -1]
 	] as const;
-	let seen: number[] | null = null;
 	const bump = new Tween(1, { duration: 500, easing: cubicOut });
 	$effect(() => {
 		const counts = ACTIONS.map(([key]) => Number(params[key] ?? 0));
 		untrack(() => {
-			if (!seen) {
-				seen = counts;
-				return;
-			}
+			const stored = String(params['atom:seen'] ?? '')
+				.split(',')
+				.map(Number);
+			const seen = ACTIONS.map((_, i) => (Number.isFinite(stored[i]) ? stored[i] : 0));
+			if (counts.every((c, i) => c === seen[i])) return;
+			setParam('atom:seen', counts.join(','));
 			const b = { p: build.protons, n: build.neutrons, e: build.electrons };
 			let changed = false;
 			counts.forEach((c, i) => {
-				const d = c - (seen as number[])[i];
+				const d = c - seen[i];
 				if (d <= 0) return;
 				const [, k, sign] = ACTIONS[i];
 				const next = clamp(b[k] + sign * d, 0, MAX[k]);
 				if (next !== b[k]) changed = true;
 				b[k] = next;
 			});
-			seen = counts;
 			if (!changed) return;
 			setParam('atom:build', `${b.p},${b.n},${b.e}`);
 			bump.set(0, { duration: 0 });
@@ -301,7 +304,7 @@
 	const SX = 764;
 	const SY = 196;
 	const bandMid = (n: number) => 32 + (n - 1) * 32;
-	const BAND_R = 150; // radius of the gradient circles that draw the bands
+	const BAND_R = 160; // radius of the gradient circles that draw the bands
 	const counts = $derived(shellCounts(z));
 	const shellDots = $derived.by(() => {
 		const out: { key: string; x: number; y: number }[] = [];
@@ -309,9 +312,13 @@
 			const mid = bandMid(s + 1);
 			for (let i = 0; i < c; i++) {
 				const seed = s * 40 + i;
-				// Keep a gap at the top of each band for its count.
-				const a = -Math.PI / 2 + 0.4 + (TAU - 0.8) * ((i + 0.1 + hash(seed, 1) * 0.8) / c);
-				const r = mid - 8 + 16 * hash(seed, 2) + 4 * Math.sin(t * 0.9 + 6 * hash(seed, 3));
+				// Scattered at random through a wide, overlapping band (no ring, no
+				// even spacing: not an orbit), with a gap at the top for the count.
+				const a = -Math.PI / 2 + 0.35 + (TAU - 0.7) * hash(seed, 1);
+				const r =
+					mid +
+					13 * (hash(seed, 2) + hash(seed, 5) - 1) +
+					4 * Math.sin(t * 0.9 + 6 * hash(seed, 3));
 				const da = (reduced ? 0 : 0.05) * Math.sin(t * 0.6 + 6 * hash(seed, 4));
 				out.push({ key: `${s}-${i}`, x: SX + r * Math.cos(a + da), y: SY + r * Math.sin(a + da) });
 			}
@@ -629,13 +636,13 @@
 					r={BAND_R}
 				>
 					<stop
-						offset={(m - 16) / BAND_R}
+						offset={(m - 26) / BAND_R}
 						style:stop-color="var(--atom-electron)"
 						stop-opacity="0"
 					/>
 					<stop offset={m / BAND_R} style:stop-color="var(--atom-electron)" stop-opacity={a} />
 					<stop
-						offset={(m + 16) / BAND_R}
+						offset={(m + 26) / BAND_R}
 						style:stop-color="var(--atom-electron)"
 						stop-opacity="0"
 					/>

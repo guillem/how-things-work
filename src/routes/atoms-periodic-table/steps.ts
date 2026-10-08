@@ -95,7 +95,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Every atom has a tiny, heavy <dfn data-def="The centre of an atom, made of protons and neutrons, about 100,000 times smaller than the atom itself.">nucleus</dfn> of <strong>protons</strong> (positive) and <strong>neutrons</strong> (no charge), surrounded by much lighter <strong>electrons</strong> (negative).</p>
 <p>Add protons and watch the element change: the number of protons — the <dfn data-def="The number of protons in an atom's nucleus. It decides which element the atom is.">atomic number</dfn> — is what makes an atom carbon or iron or gold. Neutrons change only the mass (different <dfn data-def="Atoms of the same element with different numbers of neutrons.">isotopes</dfn>, some stable and some radioactive). Electrons balance the charge: one more or fewer than the protons and the atom becomes an <strong>ion</strong>.</p>`,
-			notes: `<p>The drawing can't be to scale: if the nucleus were the size of a pea, the atom would be the size of a football stadium. Element data on this page comes from the open mendeleev database: ionization energies from NIST, covalent radii from Cordero et al. (2008), standard atomic weights from IUPAC, electronegativities on the Pauling scale.</p>`
+			notes: `<p>The drawing can't be to scale: if the nucleus were the size of a pea, the atom would be the size of a football stadium. Element data on this page comes from the open mendeleev database: ionization energies from NIST, covalent radii from Cordero et al. (2008), standard atomic weights from IUPAC, electronegativities on the Pauling scale (from the CRC Handbook of Chemistry and Physics).</p>`
 		},
 		{
 			id: 'shells',
@@ -108,7 +108,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Electrons are arranged in <strong>shells</strong> around the nucleus, and each shell is made of <dfn data-def="Groups of orbitals within a shell, labelled s, p, d and f, holding up to 2, 6, 10 and 14 electrons.">subshells</dfn> called s, p, d and f, holding 2, 6, 10 and 14 electrons. The first shell has only an s subshell (2 electrons); the second has s and p (2 + 6 = 8); the third s, p and d.</p>
 <p>Electrons fill the lowest-energy places first, in a set order: 1s, 2s, 2p, 3s, 3p, then <strong>4s before 3d</strong>, and so on. Slide the number of electrons up and watch each element's place in the table light up as its last electron goes in.</p>`,
-			notes: `<p>The order follows the "n + ℓ" (Madelung) rule. A score or so of elements break it slightly — chromium and copper, for example, move one electron from 4s to 3d, because half-filled and filled d subshells are especially stable. The page always shows each element's measured configuration and marks these exceptions.</p>`
+			notes: `<p>The order follows the "n + ℓ" (Madelung) rule. A score or so of elements break it slightly — chromium and copper, for example, move one electron from 4s to 3d, because half-filled and filled d subshells are especially stable. The page always shows each element's measured configuration (predicted, for a few of the heaviest) and marks these exceptions.</p>`
 		},
 		{
 			id: 'orbitals',
@@ -145,7 +145,7 @@ export const spec: ExplainerSpec = {
 			controls: [colourBy],
 			body: `
 <p>Colour the table by a property and patterns appear. <strong>Atoms get smaller</strong> from left to right across a row — more protons pull the same shell in tighter — and bigger down a column, as new shells are added.</p>
-<p>The energy needed to pull off an outer electron, the <dfn data-def="The energy needed to remove one electron from an atom; the first ionization energy removes the most loosely held one.">ionization energy</dfn>, does the opposite: lowest at the bottom left, highest at the top right. So does <dfn data-def="How strongly an atom in a molecule pulls shared electrons towards itself (Pauling scale; fluorine is the highest at 3.98).">electronegativity</dfn>, how strongly an atom pulls on shared electrons. Grey squares are elements with no measured value.</p>`
+<p>The energy needed to pull off an outer electron, the <dfn data-def="The energy needed to remove one electron from an atom; the first ionization energy removes the most loosely held one.">ionization energy</dfn>, does the opposite: lowest at the bottom left, highest at the top right. So does <dfn data-def="How strongly an atom in a molecule pulls shared electrons towards itself (Pauling scale; fluorine is the highest at 3.98).">electronegativity</dfn>, how strongly an atom pulls on shared electrons. Grey squares are elements with no value in the data.</p>`
 		},
 		{
 			id: 'chemistry',
@@ -155,7 +155,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'chemistry' },
 			duration: 30,
 			body: `
-<p>Chemistry happens at the edges of atoms, so it is the <strong>outer electrons</strong> that matter. The alkali metals (lithium, sodium, potassium…) each have one outer electron, easy to lose: they all react violently with water. The halogens (fluorine, chlorine…) are one electron short of a full shell and grab one eagerly. The noble gases (helium, neon, argon…) already have full shells and hardly react at all.</p>
+<p>Chemistry happens at the edges of atoms, so it is the <strong>outer electrons</strong> that matter. The alkali metals (lithium, sodium, potassium…) each have one outer electron, easy to lose: they all react vigorously with water, more violently further down. The halogens (fluorine, chlorine…) are one electron short of a full shell and grab one eagerly. The noble gases (helium, neon, argon…) already have full shells and hardly react at all.</p>
 <p>That is the lesson of the table: <strong>its layout follows from how electrons fill shells, and an element's chemistry is set by its outermost electrons</strong>.</p>`
 		}
 	]

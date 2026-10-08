@@ -484,6 +484,21 @@
 					color: g.color
 				})}
 			{/each}
+			<!-- the takeaway -->
+			{@render txt(
+				480,
+				rowY(10) + CH + 36,
+				'The layout follows from how electrons fill shells;',
+				14,
+				{ anchor: 'middle', weight: 600 }
+			)}
+			{@render txt(
+				480,
+				rowY(10) + CH + 56,
+				'the chemistry is set by the outermost electrons.',
+				14,
+				{ anchor: 'middle', weight: 600 }
+			)}
 		</g>
 	{/if}
 
