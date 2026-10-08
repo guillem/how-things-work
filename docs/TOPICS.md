@@ -164,7 +164,7 @@ A topic is done when:
 - [ ] greenhouse-effect
 
 **Space**
-- [ ] sun-earth-moon
+- [x] sun-earth-moon
 - [ ] orbits-kepler
 - [ ] rockets
 - [ ] stars
