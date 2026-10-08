@@ -181,6 +181,19 @@
 			return { i, x: 30 + c * 14, y: 24 + r * 14, kind, shade: d * 24 };
 		});
 	})();
+
+	// Bayes: 12 × 7 people; the first row's ten positives outlined — 2 ill (accent),
+	// 8 healthy false positives — among a crowd of negatives. One path per group.
+	const bayesArt = (() => {
+		const d = { tp: '', fp: '', tn: '' };
+		for (let i = 0; i < 84; i++) {
+			const x = 23 + (i % 12) * 14;
+			const y = 18 + Math.floor(i / 12) * 14;
+			const g = i < 2 ? 'tp' : i < 10 ? 'fp' : 'tn';
+			d[g] += `M${x - 5} ${y - 3}q0-2 2-2h6q2 0 2 2v6q0 2-2 2h-6q-2 0-2-2z`;
+		}
+		return d;
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -624,6 +637,22 @@
 		<circle cx="49" cy="60" r="16" fill={accent} opacity="0.2" />
 		<circle cx="49" cy="60" r="10" fill={accent} />
 		<circle cx="157.8" cy="32.9" r="6" fill="var(--orb-planet)" />
+	{:else if slug === 'bayes-theorem'}
+		<!-- a crowd tested: few of the positives (outlined) are truly ill -->
+		<path d={bayesArt.tn} fill="currentColor" opacity="0.2" />
+		<path d={bayesArt.fp} fill="var(--bay-fp)" />
+		<path d={bayesArt.tp} fill={accent} />
+		<rect
+			x="15"
+			y="10"
+			width="142"
+			height="16"
+			rx="3"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.7"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

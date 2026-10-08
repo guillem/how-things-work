@@ -56,7 +56,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			body: `
 <p>A disease affects 1 person in 100. A test for it catches 90% of the people who have it and correctly clears 91% of those who don't. You test positive. How likely is it that you are ill?</p>
-<p>Most people — doctors included, in many studies — guess around 90%. Let's count instead. Here are 1,000 people. About 1% of them, <strong>10 people</strong>, have the disease (dark); the other 990 are healthy.</p>`
+<p>Most people — doctors included, in many studies — guess around 90%. Let's count instead. Here are 1,000 people. About 1% of them, <strong>10 people</strong>, have the disease (highlighted); the other 990 are healthy.</p>`
 		},
 		{
 			id: 'test',
