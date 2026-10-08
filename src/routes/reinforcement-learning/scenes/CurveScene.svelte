@@ -9,6 +9,7 @@
 	 * The curve is drawn in over the first seconds of the step; each small map's
 	 * agent walks its episode's path on a loop, a pure function of t.
 	 */
+	import { untrack } from 'svelte';
 	import { Handle, clamp, cycle, smoothstep, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { PENALTY, REWARD, SMALL, WALL, distances, train, type Cell } from '../qlearning';
@@ -18,7 +19,12 @@
 
 	const cfg = $derived(setup(step, params));
 	const world = $derived(cfg.world);
-	const run = $derived(train(cfg.world, cfg.settings));
+	// Retrain only when the map or a setting changes, not on every scrub or pick.
+	const runKey = $derived(cfg.key);
+	const run = $derived.by(() => {
+		void runKey;
+		return untrack(() => train(cfg.world, cfg.settings));
+	});
 	const E = $derived(run.episodes.length);
 	const lengths = $derived(run.episodes.map((e) => e.length));
 	const shortest = $derived.by(() => {

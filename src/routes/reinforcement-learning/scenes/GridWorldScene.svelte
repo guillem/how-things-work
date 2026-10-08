@@ -77,7 +77,12 @@
 	const world = $derived(cfg.world);
 	const phase = $derived(String(step.hints?.phase ?? 'world'));
 	const canPaint = $derived(cfg.offered.has('brush'));
-	const run = $derived(train(cfg.world, cfg.settings));
+	// Retrain only when the map or a setting changes, not on every scrub or pick.
+	const runKey = $derived(cfg.key);
+	const run = $derived.by(() => {
+		void runKey;
+		return untrack(() => train(cfg.world, cfg.settings));
+	});
 	const total = $derived(run.moves.length);
 	const E = $derived(run.episodes.length);
 	const exact = $derived(phase === 'values' ? valueIteration(cfg.world, cfg.settings.gamma) : null);

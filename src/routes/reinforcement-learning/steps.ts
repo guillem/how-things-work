@@ -121,7 +121,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [speed, play, brush, resetMap],
 			body: `
-<p>In <a href="/learning-from-data/">learning from examples</a>, someone hands the computer the right answers. Often nobody knows them. How do you teach a robot to walk, or a program to play a game? You let it try, and tell it only how well things went.</p>
+<p>When a machine learns from examples, someone hands the computer the right answers. Often nobody knows them. How do you teach a robot to walk, or a program to play a game? You let it try, and tell it only how well things went.</p>
 <p>Here is the smallest version of that. An <dfn data-def="The learner: something that observes where it is, chooses an action, and receives a reward.">agent</dfn> lives on a grid. In every square it can move up, down, left or right. Stepping onto the green square pays a <dfn data-def="A number the world hands the agent after an action: positive for good outcomes, negative for bad ones. It is all the agent is told.">reward</dfn> of +10; falling into a red pit costs −10. Either way the <dfn data-def="One attempt, from the start square until the agent reaches a reward or a pit (or runs out of moves).">episode</dfn> ends and it starts again from S.</p>
 <p>Nobody tells it where the reward is, or even that walls exist. In its first episode it knows nothing, so every move is a guess: it wanders, bumps into walls, and often ends up in a pit.</p>`,
 			notes: `<p>The agent knows which square it is in and what it was paid, nothing else. Its moves always go where it intends (a model of a slippery floor or a gusty wind would make them random), and it may make up to 400 moves before an episode is cut off.</p>`
@@ -179,7 +179,7 @@ export const spec: ExplainerSpec = {
 			controls: [epsilon, restart],
 			body: `
 <p>Back to the maze. Plot how many moves each episode took and the learning is plain to see. The first episode usually takes well over a hundred moves, and about a third of the first twenty end in a pit. After some fifty episodes the agent needs about 15.</p>
-<p>It never settles at exactly 13, the shortest possible, because one move in ten is still random — sometimes into a pit. Drag along the chart to replay any episode and compare an early one with a late one.</p>`
+<p>It never settles at exactly 13, the shortest possible, because one move in ten is still random — sometimes into a pit. Drag the two handles under the chart to pick an early and a late episode and replay them side by side.</p>`
 		},
 		// ------------------------------------------------------------------ yours
 		{
@@ -193,7 +193,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now build a world. Paint walls, rewards and pits, drag S, and release a fresh agent. Hide the reward behind a wall of pits, give it two rewards to choose between, or wall it off completely and watch the agent learn that nothing is worth anything. In an open field it often settles for a route a couple of moves longer than the shortest: good enough, as far as it knows. More exploration — try “Explore less as it learns” from 100% — usually finds the best one.</p>
 <p><strong>An agent can learn a skill from rewards alone: by trying moves and gradually crediting the ones that led to good outcomes, it builds up a map of what each move is worth — as long as it balances exploring the unknown against using what it already knows.</strong></p>`,
-			notes: `<p>The same idea, with a neural network in place of the table so that similar situations share what was learnt, learned to play backgammon at expert level (TD-Gammon, 1992) and dozens of Atari video games from the screen pixels (DeepMind, 2015), and was part of AlphaGo, which beat the Go champion Lee Sedol in 2016. It is also used to fine-tune chatbots, with human ratings as the reward. A hard part in practice is choosing the reward: an agent pursues exactly what it is paid for, not what its designer meant.</p>`
+			notes: `<p>The same idea, with a neural network in place of the table so that similar situations share what was learnt, learned to play backgammon close to the level of the best human players (TD-Gammon, early 1990s) and dozens of Atari video games from the screen pixels (DeepMind, 2015), and was part of AlphaGo, which in 2016 beat Lee Sedol, one of the world's strongest Go players. It is also used to fine-tune chatbots, with human ratings as the reward. A hard part in practice is choosing the reward: an agent pursues exactly what it is paid for, not what its designer meant.</p>`
 		}
 	]
 };
