@@ -377,7 +377,7 @@ kbd {
 	--em-needle: #adb5bd;
 	--em-copper: #d9822b;
 	--em-current: #2f9e44;
-	--em-drive: #e8590c;
+	--em-drive: #c2255c;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -547,5 +547,5 @@ kbd {
 	--em-needle: #5c636a;
 	--em-copper: #e8a15a;
 	--em-current: #69db7c;
-	--em-drive: #ff922b;
+	--em-drive: #f06595;
 }

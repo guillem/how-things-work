@@ -87,7 +87,7 @@ const speed: Control = {
 	min: 0.1,
 	max: 1,
 	step: 0.05,
-	default: 0.5,
+	default: 0.3,
 	unit: ' m/s'
 };
 

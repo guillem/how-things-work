@@ -428,7 +428,7 @@ export function linkageTable(turns = PICKUP.turns, zMax = 0.2, n = 401) {
  * The magnet swinging through the coil and back: centre at −Z cos(2π f t),
  * with top speed vMax (so f = vMax / (2π Z)). Returns position and speed.
  */
-export function swing(t: number, vMax: number, Z = 0.12) {
+export function swing(t: number, vMax: number, Z = 0.1) {
 	const w = vMax / Z;
 	return { z: -Z * Math.cos(w * t), v: Z * w * Math.sin(w * t), period: (2 * Math.PI) / w };
 }

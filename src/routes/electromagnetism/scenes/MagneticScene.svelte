@@ -114,8 +114,10 @@
 				(l.closed ? 'Z' : '');
 			// Arrows: at the seed (inside) and where the line is furthest out.
 			let far = 0;
+			// (ignoring points at the edge of the frame, where an arrow would be cut off)
 			l.points.forEach((p, k) => {
-				if (C0.y - p.y > C0.y - l.points[far].y) far = k;
+				const inside = p.y > 40 && p.x > 40 && p.x < 920;
+				if (inside && (far === 0 || p.y < l.points[far].y)) far = k;
 			});
 			const arrowAt = (k: number) => {
 				const a = l.points[Math.max(0, k - 1)];

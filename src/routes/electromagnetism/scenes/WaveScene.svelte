@@ -192,7 +192,7 @@
 	<path d={ePath} fill="none" stroke="var(--em-field)" stroke-width="2.6" stroke-linejoin="round" />
 
 	<!-- the front -->
-	{#if front < X1 - 4}
+	{#if front < X1 - 130}
 		<line
 			x1={front}
 			x2={front}
@@ -244,7 +244,10 @@
 		weight: 700,
 		color: 'var(--em-bfield)'
 	})}
-	{@render txt(X1, AXY + 22, 'travels at the speed of light', 12, { anchor: 'end', muted: true })}
+	{@render txt(X1, AXY + AMP + 22, 'travels at the speed of light →', 12, {
+		anchor: 'end',
+		muted: true
+	})}
 	{#if crest !== null}
 		{@const y = AXY - AMP - 34}
 		<path

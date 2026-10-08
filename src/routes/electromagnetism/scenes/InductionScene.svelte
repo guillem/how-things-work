@@ -48,17 +48,21 @@
 	const isMagnet = $derived(phase === 'magnet');
 	const turns = $derived(Number(params.turns ?? 200));
 	const hand = $derived(isMagnet && String(params.motion ?? 'swing') === 'hand');
-	const vMax = $derived(Number(params.speed ?? 0.5));
+	const vMax = $derived(Number(params.speed ?? 0.3));
 	const f = $derived(Number(params.acFreq ?? 0.5));
 	const gapCm = $derived(Number(params.gap ?? 4));
 	const table = $derived(linkageTable(turns));
-	const SCALE = $derived(isMagnet ? 50 : 400); // meter range: mA or µA
+	const SCALE = $derived(isMagnet ? 40 : 800); // meter range: mA or µA
 	const unit = $derived(isMagnet ? 'mA' : 'µA');
 	const toUnit = $derived(isMagnet ? 1e3 : 1e6);
 
 	// ---- the magnet ---------------------------------------------------------------------------
 	const zHand = $derived(clamp(Number(params['em:magnetZ'] ?? -0.1), -ZMAX, ZMAX));
-	const tau = $derived(reduced ? 6.2 : t);
+	// Reduced motion: a frozen frame just as the magnet enters the coil (or 6.2 s
+	// into the alternating current), so the still picture shows a pulse.
+	const tau = $derived(
+		reduced ? (isMagnet ? (Math.acos(0.2) + 6 * Math.PI) / (vMax / 0.1) : 6.2) : t
+	);
 
 	// Hand mode: speed from frame-to-frame motion (see header), and a history for the trace.
 	let last = { t: -1, z: 0, v: 0 };
@@ -422,8 +426,8 @@
 				/>
 			{/if}
 			{@render coil(coilA_x, 'var(--em-drive)', 'front')}
-			{@render txt(coilA_x, AX + COIL_R + 24, 'coil A', 13, {
-				anchor: 'middle',
+			{@render txt(coilA_x - 22, AX + COIL_R + 22, 'coil A', 13, {
+				anchor: 'end',
 				weight: 700,
 				color: 'var(--em-drive)'
 			})}
@@ -470,10 +474,16 @@
 			weight: 600
 		})}
 	{/if}
-	{@render txt(CX, AX + COIL_R + 24, isMagnet ? `${turns} turns` : `coil B · ${turns} turns`, 12, {
-		anchor: 'middle',
-		weight: 600
-	})}
+	{@render txt(
+		CX + 40,
+		AX + COIL_R + 20,
+		isMagnet ? `${turns} turns` : `coil B · ${turns} turns`,
+		12,
+		{
+			anchor: 'start',
+			weight: 600
+		}
+	)}
 
 	<!-- leads to the meter -->
 	<path
