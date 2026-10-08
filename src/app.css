@@ -280,6 +280,9 @@ kbd {
 	--bit-exponent: #2b8a3e;
 	--bit-fraction: #5f3dc4;
 	--bit-overflow: #e03131;
+	--bit-red: #e03131;
+	--bit-green: #2f9e44;
+	--bit-blue: #1971c2;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -363,4 +366,7 @@ kbd {
 	--bit-exponent: #51cf66;
 	--bit-fraction: #9775fa;
 	--bit-overflow: #ff6b6b;
+	--bit-red: #ff6b6b;
+	--bit-green: #51cf66;
+	--bit-blue: #4dabf7;
 }
