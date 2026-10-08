@@ -347,6 +347,7 @@ kbd {
 	--lg-gate: #e7f5ff;
 	--lg-gate-edge: #1971c2;
 	--lg-lamp: #ffd43b;
+	--lg-ok: #2f9e44;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -489,4 +490,5 @@ kbd {
 	--lg-gate: #1b2a3a;
 	--lg-gate-edge: #4dabf7;
 	--lg-lamp: #ffe066;
+	--lg-ok: #51cf66;
 }

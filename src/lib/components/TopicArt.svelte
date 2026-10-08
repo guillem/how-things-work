@@ -683,6 +683,28 @@
 		<line x1="70" x2="190" y1="62" y2="62" stroke="currentColor" opacity="0.25" />
 		<line x1="54" x2="76" y1="88" y2="88" stroke={accent} stroke-dasharray="2 3" opacity="0.6" />
 		<path d={oscArt.wave} fill="none" stroke={accent} stroke-width="2.4" stroke-linecap="round" />
+	{:else if slug === 'logic-gates'}
+		<!-- an AND gate: both inputs on, so the lamp lights -->
+		<path
+			d="M34 44 H76 M34 76 H76 M132 60 H160"
+			fill="none"
+			stroke={accent}
+			stroke-width="3"
+			stroke-linecap="round"
+		/>
+		<circle cx="30" cy="44" r="5" fill={accent} />
+		<circle cx="30" cy="76" r="5" fill={accent} />
+		<path
+			d="M76 30 H102 A30 30 0 0 1 102 90 H76 Z"
+			fill={accent}
+			fill-opacity="0.15"
+			stroke="currentColor"
+			stroke-opacity="0.7"
+			stroke-width="2.5"
+			stroke-linejoin="round"
+		/>
+		<circle cx="170" cy="60" r="17" fill={accent} opacity="0.2" />
+		<circle cx="170" cy="60" r="10" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
