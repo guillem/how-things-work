@@ -328,6 +328,8 @@ kbd {
 	--eco-beaver: #6f4e37;
 	--eco-wolf: #495057;
 	--eco-deer: #d9480f;
+	--eco-rise: #2f9e44;
+	--eco-fall: #e03131;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -454,4 +456,6 @@ kbd {
 	--eco-beaver: #b08968;
 	--eco-wolf: #ced4da;
 	--eco-deer: #ff8787;
+	--eco-rise: #51cf66;
+	--eco-fall: #ff8787;
 }

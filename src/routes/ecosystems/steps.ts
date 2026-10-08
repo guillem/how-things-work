@@ -128,7 +128,7 @@ export const spec: ExplainerSpec = {
 			title: 'A newcomer',
 			scene: 'web',
 			hints: { phase: 'newcomer' },
-			duration: 26,
+			duration: 50,
 			controls: [deer, wolves, elk, beavers],
 			body: `
 <p>Now let a new species in: deer, which eat willow like the elk, are hunted by wolves like the elk, and breed a little faster. Switch them on and watch for decades.</p>
