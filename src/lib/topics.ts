@@ -168,6 +168,15 @@ const explainers: Explainer[] = [
 		accent: '#f59f00',
 		steps: 6,
 		minutes: 12
+	},
+	{
+		slug: 'ecosystems',
+		title: 'How populations rise and fall',
+		summary:
+			'Release rabbits and foxes into a field and watch their numbers chase each other round, then pull one species out of a food web and follow the ripples.',
+		accent: '#2f9e44',
+		steps: 5,
+		minutes: 10
 	}
 ];
 
