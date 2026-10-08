@@ -88,7 +88,8 @@ test('starter web: what lifts E, and what does not', () => {
 	const base = pagerank(STARTER).rank[E];
 	expect(base).toBeCloseTo(0.15 / 5, 10); // nobody links to E: only its share of jumps
 	// E's own links change nothing for E.
-	for (let j = 0; j < 4; j++) expect(pagerank(addLink(STARTER, E, j)).rank[E]).toBeCloseTo(base, 10);
+	for (let j = 0; j < 4; j++)
+		expect(pagerank(addLink(STARTER, E, j)).rank[E]).toBeCloseTo(base, 10);
 	// A link from A (the top page) lifts it about six-fold.
 	const fromA = pagerank(addLink(STARTER, 0, E)).rank[E];
 	expect(fromA / base).toBeGreaterThan(5);
