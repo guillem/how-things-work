@@ -8,14 +8,14 @@ test('clicking a link on the map makes it the one that fails', async ({ page }) 
 		'aria-checked',
 		'true'
 	);
-	await page.getByRole('button', { name: 'Cut link A–B' }).click();
-	await expect(page.locator('button[data-control="cut"][data-value="A-B"]')).toHaveAttribute(
+	await page.getByRole('button', { name: 'Cut link G–H' }).click();
+	await expect(page.locator('button[data-control="cut"][data-value="G-H"]')).toHaveAttribute(
 		'aria-checked',
 		'true'
 	);
-	await expect(page.getByRole('button', { name: 'Repair link A–B' })).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Repair link G–H' })).toBeVisible();
 	// Keyboard: repair it again.
-	await page.getByRole('button', { name: 'Repair link A–B' }).focus();
+	await page.getByRole('button', { name: 'Repair link G–H' }).focus();
 	await page.keyboard.press('Enter');
 	await expect(page.locator('button[data-control="cut"][data-value="none"]')).toHaveAttribute(
 		'aria-checked',
