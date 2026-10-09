@@ -47,6 +47,10 @@ Last updated: 2026-10-08 14:00 UTC.
   agent reviews, fact-checks and ticks it; then all are merged into `batch/<n>`. The shared files
   (`src/lib/topics.ts`, `TopicArt.svelte`) don't survive a union merge: rebuild them from main
   plus each branch's own entry. Nothing in progress; 29 topics ticked.
+- Reading progress (branch `claude/explainer-progress-tracking-qqmcph`): each explainer records
+  the reader's current step in `localStorage` (`src/lib/progress.svelte.ts`); reaching the last
+  step marks it done. The index shows Done (red) / Continue (yellow, opens the saved step) /
+  Start (green) on each card, a counter of each status and a "Clear all progress" button.
 - Local testing: other work runs on this machine, so ports can clash (4173 is taken by another
   app). The full e2e suite runs with a git-ignored `pw-local.config.ts` (preview on :4180):
   `npx playwright test -c pw-local.config.ts`; a git-ignored `pw-node.config.ts` runs only the

@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { theme } from '#lib/theme.svelte.ts';
+	import { progress as readingProgress } from '#lib/progress.svelte.ts';
 	import { Clock } from './clock.svelte';
 	import Controls from './Controls.svelte';
 	import ParamControls from './ParamControls.svelte';
@@ -102,6 +103,14 @@
 		untrack(() => {
 			if (i !== null && i !== index) go(i, { announce: false });
 		});
+	});
+
+	// Remember where the reader is (this browser only); reaching the last step
+	// marks the explainer done.
+	$effect(() => {
+		const id = step.id;
+		const last = index === steps.length - 1;
+		untrack(() => readingProgress.visit(spec.slug, id, last));
 	});
 
 	// ---- auto-advance --------------------------------------------------------
