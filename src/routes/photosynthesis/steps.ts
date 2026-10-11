@@ -37,6 +37,7 @@ export const spec: ExplainerSpec = {
 <p>Photosynthesis is how plants, algae and cyanobacteria capture the energy of sunlight and store it in the chemical bonds of sugar. The overall recipe fits on one line:</p>
 <p class="formula"><strong>6 CO<sub>2</sub> + 6 H<sub>2</sub>O + light → C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6 O<sub>2</sub></strong></p>
 <p>Carbon dioxide from the air and water from the soil go in; glucose and oxygen come out. Almost every meal you eat and every breath you take traces back to this reaction.</p>
+<p>Nearly all of a plant's dry mass is built from the carbon in that CO<sub>2</sub> — a tree is made mostly of air, not soil; the soil supplies water and a few percent of minerals. And the O<sub>2</sub> released comes from the water, not from the CO<sub>2</sub>.</p>
 <p>The one-line version hides two very different machines. Let's zoom into a leaf and follow the energy.</p>`,
 			notes: `<p>The equation is a summary, not a single reaction: dozens of enzymes and electron carriers are involved, and the oxygen released comes from the water, not from the carbon dioxide. Glucose itself is rarely the end product in the leaf — most of the fixed carbon leaves as sucrose or is stored as starch.</p>`
 		},
@@ -221,7 +222,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'export' },
 			body: `
 <p>Two G3P molecules join to form one six-carbon sugar, so a glucose costs two rounds of three CO<sub>2</sub> each: 6 CO<sub>2</sub>, 18 ATP and 12 NADPH.</p>
-<p>In the leaf, little of it stays as free glucose. Some is linked into <strong>starch</strong> grains inside the chloroplast, a store that is broken down again at night. The rest is exported from the chloroplast and converted into <strong>sucrose</strong> — table sugar — which travels through the phloem to roots, fruits and growing tips.</p>
+<p>In the leaf, little of it ever becomes free glucose. Some G3P stays in the chloroplast and is built, via six-carbon sugar phosphates, into <strong>starch</strong> grains, a store that is broken down again at night. Most is exported to the surrounding cytoplasm (the <dfn data-def="The fluid part of the cell outside the organelles.">cytosol</dfn>) as three-carbon sugar phosphate and assembled there into <strong>sucrose</strong> — table sugar — which travels through the phloem to roots, fruits and growing tips.</p>
 <p>There it becomes everything else: <strong>cellulose</strong> for cell walls, fats, amino acids, and the fuel for the plant's own respiration.</p>`
 		},
 		// ------------------------------------------------------------------ wrap
@@ -245,10 +246,10 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'planet' },
 			duration: 20,
 			body: `
-<p>Every year, photosynthesis on land and in the oceans fixes on the order of a hundred billion tonnes of carbon — roughly half of it by microscopic algae and cyanobacteria at sea. The oxygen in the air is the accumulated by-product, first released in bulk by cyanobacteria some 2.4 billion years ago.</p>
+<p>Every year, photosynthesis on land and in the oceans adds about a hundred billion tonnes of carbon to new biomass, after the plants' own respiration (gross fixation is considerably more) — roughly half of it by microscopic algae and cyanobacteria at sea. The oxygen in the air is the accumulated by-product, first released in bulk by cyanobacteria some 2.4 billion years ago.</p>
 <p>It is not especially efficient: a crop field converts only about 1–2% of the sunlight energy falling on it into biomass, against a theoretical ceiling near 5%. But it runs on water, air and light, at ambient temperature, repairing itself continuously — and it feeds nearly every living thing on the planet.</p>
 <p>Coal, oil and gas are its fossilised output. Understanding how it works is step one in doing better.</p>`,
-			notes: `<p>Estimates of global net primary production are around 105 gigatonnes of carbon per year, split roughly evenly between land and ocean (Field et al., <i>Science</i>, 1998). The theoretical maximum efficiency of converting solar energy into biomass is about 4.6% for C<sub>3</sub> plants and 6% for C<sub>4</sub> plants (Zhu, Long &amp; Ort, 2008); real fields achieve a fraction of that.</p>`
+			notes: `<p>Estimates of global net primary production are around 105 gigatonnes of carbon per year, split roughly evenly between land and ocean (Field et al., <i>Science</i>, 1998). Gross fixation is larger: about 123 gigatonnes a year on land alone (Beer et al., <i>Science</i>, 2010), about half of which the plants respire themselves. The theoretical maximum efficiency of converting solar energy into biomass is about 4.6% for C<sub>3</sub> plants and 6% for C<sub>4</sub> plants (Zhu, Long &amp; Ort, 2008); real fields achieve a fraction of that.</p>`
 		}
 	]
 };

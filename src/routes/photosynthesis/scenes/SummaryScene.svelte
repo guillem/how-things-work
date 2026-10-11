@@ -315,7 +315,7 @@
 			x: 508,
 			y: 128,
 			n: '~105 Gt C',
-			lines: ['of carbon fixed every year', 'on land and in the oceans'],
+			lines: ['of carbon into new biomass', 'every year, on land and at sea'],
 			note: '(net primary production)',
 			c: colors.sugar
 		},
@@ -346,19 +346,30 @@
 	const tx = (bya: number) => 880 - (bya / 3) * 750;
 	const TL_Y = 530;
 	const milestones = [
-		{ b: 3, l1: '~3 billion years ago', l2: 'first cyanobacteria' },
+		{ b: 3, l1: '~3 billion years ago (?)', l2: 'first O₂-making life' },
 		{ b: 2.4, l1: '~2.4 billion years ago', l2: 'Great Oxidation Event' },
 		{ b: 0.47, l1: '~470 million years ago', l2: 'plants colonise land' }
 	];
+	/**
+	 * Atmospheric O₂, schematic (33 px = today's level), after the shape of the
+	 * reconstruction in Lyons, Reinhard & Planavsky 2014 (Nature 506:307):
+	 * almost none before the Great Oxidation Event (~2.4 Ga), a transient high
+	 * around 2.3–2.1 Ga, then well under 1% of today's level through the
+	 * mid-Proterozoic (≤ 0.1% from chromium isotopes, Planavsky et al. 2014),
+	 * rising to modern levels between 0.8 and 0.4 Ga, with a Carboniferous peak.
+	 * The low values are drawn at 1 px so the line stays visible.
+	 */
 	const o2Curve = pathFrom([
 		{ x: tx(3), y: TL_Y },
-		{ x: tx(2.5), y: TL_Y - 1 },
-		{ x: tx(2.4), y: TL_Y - 9 },
-		{ x: tx(2.2), y: TL_Y - 10 },
-		{ x: tx(1.0), y: TL_Y - 11 },
-		{ x: tx(0.75), y: TL_Y - 14 },
-		{ x: tx(0.55), y: TL_Y - 26 },
-		{ x: tx(0.3), y: TL_Y - 34 },
+		{ x: tx(2.45), y: TL_Y },
+		{ x: tx(2.3), y: TL_Y - 4 },
+		{ x: tx(2.1), y: TL_Y - 4 },
+		{ x: tx(1.9), y: TL_Y - 1 },
+		{ x: tx(0.8), y: TL_Y - 1 },
+		{ x: tx(0.6), y: TL_Y - 6 },
+		{ x: tx(0.42), y: TL_Y - 24 },
+		{ x: tx(0.3), y: TL_Y - 38 },
+		{ x: tx(0.2), y: TL_Y - 30 },
 		{ x: tx(0), y: TL_Y - 33 }
 	]);
 </script>
@@ -886,7 +897,7 @@
 			<!-- timeline -->
 			<path d="{o2Curve} L{tx(0)} {TL_Y} Z" fill={colors.oxygen} opacity="0.12" />
 			<path d={o2Curve} fill="none" stroke={colors.oxygen} stroke-width="1.5" opacity="0.7" />
-			<Label x={tx(1.5)} y={TL_Y - 24} text="oxygen in the air" size={11} muted />
+			<Label x={tx(1.5)} y={TL_Y - 24} text="oxygen in the air (schematic)" size={11} muted />
 			<Flow
 				d="M{tx(3)} {TL_Y} L{tx(0) + 14} {TL_Y}"
 				color="var(--stage-ink-muted)"

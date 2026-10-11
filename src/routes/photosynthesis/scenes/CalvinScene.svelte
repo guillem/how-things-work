@@ -11,7 +11,11 @@
 	 * NADP⁺, between the lanes). Each carrier of a pair serves one of the two
 	 * 3-PGA, so the phosphates on the chains change as it arrives. At six o'clock one
 	 * G3P leaves the ring and follows a path to the right, where two G3P make a
-	 * glucose that is sent on to starch, sucrose or cellulose. The other five
+	 * six-carbon sugar that is sent on to starch, sucrose or cellulose. (This is
+	 * the carbon accounting, drawn as one junction: in the leaf, starch is built
+	 * inside the chloroplast from six-carbon sugar phosphates, and most G3P is
+	 * exported as triose phosphate and assembled into sucrose in the cytosol;
+	 * the captions say where.) The other five
 	 * G3P are rebuilt into RuBP in the regeneration arc (three more ATP). A
 	 * ledger on the right keeps the carbon bookkeeping for one 3-CO₂ round.
 	 *
@@ -765,7 +769,7 @@
 			y={J.y}
 			scale={0.75 + 0.12 * frame.arrive}
 		/>
-		<Label x={J.x} y={404} text="2 G3P → glucose (6C)" size={12} pill />
+		<Label x={J.x} y={404} text="2 G3P → 6C sugar" size={12} pill />
 
 		<!-- starch grain inside a tiny chloroplast -->
 		<ellipse
@@ -800,14 +804,7 @@
 		/>
 		<!-- captions to the left of the grain: its branch arrives from below -->
 		<Label x={STARCH.x - 52} y={318} text="starch grain" anchor="end" size={12} />
-		<Label
-			x={STARCH.x - 52}
-			y={333}
-			text="stored in the chloroplast"
-			anchor="end"
-			size={11}
-			muted
-		/>
+		<Label x={STARCH.x - 52} y={333} text="built in the chloroplast" anchor="end" size={11} muted />
 
 		<!-- sucrose in a phloem tube -->
 		<rect
@@ -841,7 +838,7 @@
 			</g>
 		{/each}
 		<Label x={STARCH.x} y={462} text="sucrose → phloem" size={12} />
-		<Label x={STARCH.x} y={477} text="to roots, fruits, growing tips" size={11} muted />
+		<Label x={STARCH.x} y={477} text="built in the cytosol" size={11} muted />
 
 		<!-- cellulose: a fragment of cell wall -->
 		<rect
