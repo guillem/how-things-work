@@ -84,7 +84,7 @@
 	const DP_MAX = 35;
 
 	const key = $derived('map:' + step.id);
-	const raw = $derived(typeof params[key] === 'string' ? (params[key] as string) : null);
+	const raw = $derived(typeof params[key] === 'string' ? params[key] : null);
 
 	function parse(s: string | null, fallback: System[]): System[] {
 		if (s === null) return fallback;

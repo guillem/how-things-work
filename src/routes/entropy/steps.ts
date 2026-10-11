@@ -17,7 +17,7 @@ const tRight: Control = {
 	id: 'tRight',
 	label: 'Right half: temperature',
 	default: 1
-} as Control;
+};
 
 const restart: Control = {
 	type: 'action',
@@ -61,7 +61,7 @@ const countRight: Control = {
 	...countLeft,
 	id: 'countRight',
 	label: 'Particles on the right'
-} as Control;
+};
 
 const reverse: Control = {
 	type: 'action',

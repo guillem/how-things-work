@@ -70,9 +70,10 @@
 	/** A round axis maximum ≥ v (1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8 × 10ⁿ), so the curves fill the chart. */
 	function niceTop(v: number) {
 		const mag = Math.pow(10, Math.floor(Math.log10(v)));
-		return ([1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]
-			.map((m) => m * mag)
-			.find((n) => n >= v - 1e-9) ?? 10 * mag) as number;
+		return (
+			[1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10].map((m) => m * mag).find((n) => n >= v - 1e-9) ??
+			10 * mag
+		);
 	}
 
 	// ---- the run (recomputed only when the rates change) ---------------------------

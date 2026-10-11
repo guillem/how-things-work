@@ -43,7 +43,7 @@ const rate: Control = {
 	format: (v) => v.toFixed(3)
 };
 
-const rateCascade: Control = { ...rate, id: 'rateCascade', default: 3.5 } as Control;
+const rateCascade: Control = { ...rate, id: 'rateCascade', default: 3.5 };
 
 const place: Control = {
 	type: 'select',

@@ -44,7 +44,7 @@
 
 	// ---- inputs ------------------------------------------------------------------------
 	type Phase = 'curve' | 'data';
-	const phase = $derived((step.hints?.phase === 'data' ? 'data' : 'curve') as Phase);
+	const phase = $derived(step.hints?.phase === 'data' ? 'data' : 'curve');
 	const offered = $derived(new Set((step.controls ?? []).map((c) => c.id)));
 	const count = $derived(
 		offered.has('count') ? Math.round(clamp(Number(params.count ?? 21), 8, 80)) : 21

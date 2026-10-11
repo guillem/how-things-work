@@ -11,7 +11,7 @@ const speed: Control = {
 	unit: ' hops/s'
 };
 
-const speedFast: Control = { ...speed, id: 'speedFast', default: 60 } as Control;
+const speedFast: Control = { ...speed, id: 'speedFast', default: 60 };
 
 const damping: Control = {
 	type: 'range',

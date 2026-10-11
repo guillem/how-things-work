@@ -53,9 +53,7 @@
 	const period = $derived(searchEnd + 6);
 	const su = $derived(reduced ? Infinity : cycle(t, period) * period);
 	/** Exponent being tried now (or the answer once found). */
-	const trying = $derived(
-		Math.min((found.x ?? 99) as number, Math.max(0, Math.floor((su - 0.6) * RATE)))
-	);
+	const trying = $derived(Math.min(found.x ?? 99, Math.max(0, Math.floor((su - 0.6) * RATE))));
 	const searching = $derived(su >= 0.6);
 	const hit = $derived(su >= searchEnd);
 	const nTries = $derived(hit ? found.tries : searching ? trying + 1 : 0);

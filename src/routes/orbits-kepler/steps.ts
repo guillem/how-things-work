@@ -35,7 +35,7 @@ const direction: Control = {
 	help: '0° is straight across; positive tilts outwards, away from the Sun.'
 };
 
-const ellipseSpeed: Control = { ...speed, id: 'ellipseSpeed', default: 0.75 } as Control;
+const ellipseSpeed: Control = { ...speed, id: 'ellipseSpeed', default: 0.75 };
 
 const launch: Control = {
 	type: 'action',

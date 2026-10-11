@@ -40,7 +40,7 @@ export function ticks(lo: number, hi: number, count = 5): number[] {
 export function niceMax(v: number): number {
 	if (!(v > 0)) return 1;
 	const mag = Math.pow(10, Math.floor(Math.log10(v)));
-	return ([1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => s >= v - 1e-12) ?? 10 * mag) as number;
+	return [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => s >= v - 1e-12) ?? 10 * mag;
 }
 
 /** SVG path through the data points (x, y) mapped by the scales. */

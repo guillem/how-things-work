@@ -50,7 +50,7 @@ const samplePace: Control = {
 	id: 'samplePace',
 	label: 'Samples per second',
 	default: 8
-} as Control;
+};
 
 const restart: Control = {
 	type: 'action',
