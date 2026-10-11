@@ -40,8 +40,8 @@ const explainers: Explainer[] = [
 		summary:
 			'Follow a photon from sunlight into a leaf and watch it split water, power an electron transport chain and build sugar out of thin air.',
 		accent: '#2f9e5d',
-		steps: 16,
-		minutes: 20
+		steps: 17,
+		minutes: 22
 	},
 	{
 		slug: 'epidemics',

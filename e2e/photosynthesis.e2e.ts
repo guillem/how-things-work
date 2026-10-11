@@ -65,3 +65,34 @@ test('rubisco: switching off "Count the carbons" labels molecules with carbon co
 	await expect(label.first()).toBeAttached();
 	await expect(stage(page).getByText('3C', { exact: true }).first()).toBeAttached();
 });
+
+test('limits: light, colour and CO₂ change the rate and what limits it', async ({ page }) => {
+	await open(page, './photosynthesis/#limits', 'Limited by RuBisCO and CO₂');
+	// Full sun at today's CO₂: RuBisCO sets the pace, so more light hardly helps...
+	await expect(stage(page)).toContainText('14.1 µmol per m² per second');
+	await range(page, 'light').fill('100');
+	await expect(stage(page)).toContainText('14.1 µmol per m² per second');
+	// ...but more CO₂ does, until light limits again.
+	await range(page, 'co2').fill('1000');
+	await expect(stage(page)).toContainText('Limited by light');
+	await expect(stage(page)).toContainText('19.1 µmol per m² per second');
+	// In dim light the light reactions are the bottleneck, and green light
+	// (less of it absorbed) drives the leaf less than red.
+	await range(page, 'co2').fill('420');
+	await range(page, 'light').fill('15');
+	await expect(stage(page)).toContainText('Limited by light');
+	await page.locator('button[data-control=colour][data-value="660"]').click();
+	await expect(stage(page)).toContainText('10.7 µmol per m² per second');
+	await page.locator('button[data-control=colour][data-value="550"]').click();
+	await expect(stage(page)).toContainText('9.2 µmol per m² per second');
+	// In the dark the leaf only respires: O₂ goes in, sugar is used up.
+	await range(page, 'light').fill('0');
+	await expect(stage(page)).toContainText('Dark: respiration only');
+	await expect(stage(page)).toContainText('-0.9 µmol per m² per second');
+});
+
+test('limits: below the CO₂ compensation point the leaf loses carbon', async ({ page }) => {
+	await open(page, './photosynthesis/#limits', 'Limited by RuBisCO and CO₂');
+	await range(page, 'co2').fill('60');
+	await expect(stage(page)).toContainText('Too little CO₂: the leaf loses carbon');
+});

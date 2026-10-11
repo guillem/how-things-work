@@ -10,7 +10,8 @@
 		membrane: () => import('./scenes/MembraneScene.svelte'),
 		zscheme: () => import('./scenes/ZSchemeScene.svelte'),
 		calvin: () => import('./scenes/CalvinScene.svelte'),
-		summary: () => import('./scenes/SummaryScene.svelte')
+		summary: () => import('./scenes/SummaryScene.svelte'),
+		rate: () => import('./scenes/RateScene.svelte')
 	};
 </script>
 

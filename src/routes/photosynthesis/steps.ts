@@ -239,6 +239,56 @@ export const spec: ExplainerSpec = {
 <p>Turn the light down and watch the carriers run out: the Calvin cycle soon stalls. Turn it up and the cycle speeds up — until RuBisCO and CO<sub>2</sub> supply become the bottleneck.</p>`
 		},
 		{
+			id: 'limits',
+			chapter: 'wrap',
+			title: 'What limits the rate?',
+			scene: 'rate',
+			duration: 24,
+			controls: [
+				light,
+				{
+					type: 'select',
+					id: 'colour',
+					label: 'Colour of the light',
+					default: 'white',
+					options: [
+						{ value: 'white', label: 'White' },
+						{ value: '450', label: 'Blue' },
+						{ value: '550', label: 'Green' },
+						{ value: '600', label: 'Orange' },
+						{ value: '660', label: 'Red' }
+					],
+					help: 'The same number of photons per second, of one colour or of all of them.'
+				},
+				{
+					type: 'range',
+					id: 'co2',
+					label: 'CO₂ in the air',
+					min: 50,
+					max: 1200,
+					step: 10,
+					default: 420,
+					unit: ' ppm',
+					help: 'Today’s air holds about 420 ppm; greenhouses are often enriched to 800–1000 ppm.'
+				},
+				{
+					type: 'range',
+					id: 'temp',
+					label: 'Leaf temperature',
+					min: 0,
+					max: 45,
+					step: 1,
+					default: 25,
+					unit: ' °C'
+				}
+			],
+			body: `
+<p>A real leaf doesn't run at one fixed speed. On the right is a model of one leaf: set the light, its colour, the CO<sub>2</sub> in the air and the temperature, and watch how fast it releases oxygen and makes sugar.</p>
+<p>Whichever supply runs short sets the pace. In dim light the light reactions can't make ATP and NADPH fast enough, so more light helps at once. In bright light the Calvin cycle becomes the bottleneck: RuBisCO is slow and can only use the CO<sub>2</sub> that diffuses into the leaf, so now more CO<sub>2</sub> helps and more light hardly does. Warmth speeds the enzymes up, until the heat starts to damage them and RuBisCO grabs O<sub>2</sub> by mistake more often.</p>
+<p>Colour matters less than you might expect: a leaf absorbs most green light too, so green drives photosynthesis only a little more slowly than red or blue. And in the dark the numbers drop below zero: the leaf still respires, using up sugar and oxygen like any other living cell.</p>`,
+			notes: `<p>The model chains two standard ones. <strong>PROSPECT-D</strong> (Féret et al., 2017) computes how much light of each colour a typical leaf absorbs from its pigment contents, using measured absorption coefficients. The <strong>Farquhar–von Caemmerer–Berry model</strong> (1980) of C<sub>3</sub> photosynthesis then takes the smaller of two rates — what electron transport (light) can support and what RuBisCO can fix with the CO<sub>2</sub> available — and subtracts the leaf's own respiration. Its constants and their temperature responses are measured ones (Bernacchi et al., 2001; Kattge &amp; Knorr, 2007).</p><p>Simplifications: one typical C<sub>3</sub> leaf (C<sub>4</sub> plants such as maize saturate much less with CO<sub>2</sub>), at steady state; the CO<sub>2</sub> inside the leaf is taken as a fixed 70% of the air's, so the stomata are not modelled; every absorbed photon counts the same, whatever its colour (blue light absorbed by carotenoids is in fact used somewhat less efficiently); and one O<sub>2</sub> is released per CO<sub>2</sub> fixed, with sugar counted as glucose.</p>`
+		},
+		{
 			id: 'bigpicture',
 			chapter: 'wrap',
 			title: 'Why it matters',
