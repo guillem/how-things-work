@@ -89,7 +89,7 @@ export const partAt = (b: Board, p: number, q: number) =>
 /** Places a part on an edge, replacing whatever was there. */
 export function place(b: Board, part: Part): Board {
 	if (!adjacent(b, part.a, part.b)) return b;
-	const parts = b.parts.filter((x, i) => i !== partAt(b, part.a, part.b));
+	const parts = b.parts.filter((_, i) => i !== partAt(b, part.a, part.b));
 	return { ...b, parts: [...parts, part] };
 }
 

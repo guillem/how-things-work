@@ -337,7 +337,7 @@ export function solve(
 	const grounded = new Set(s.joints.flatMap((j, i) => (isAnchor(j) ? [find(i)] : [])));
 	const keep = s.members.map((m) => grounded.has(find(m.a)));
 	if (keep.some((k) => !k)) {
-		const sub = s.members.flatMap((m, i) => (keep[i] ? [i] : []));
+		const sub = s.members.flatMap((_, i) => (keep[i] ? [i] : []));
 		// Keep only the joints the grounded members use (a joint with nothing attached
 		// would leave the equations without a solution).
 		const used = [...new Set(sub.flatMap((i) => [s.members[i].a, s.members[i].b]))];

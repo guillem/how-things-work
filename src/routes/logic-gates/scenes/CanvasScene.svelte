@@ -387,7 +387,10 @@
 		const near = circuit.nodes.some(
 			(n) => Math.abs(X(n.x) - X(at.x)) < 76 && Math.abs(Y(n.y) - Y(at.y)) < 56
 		);
-		if (near) return say('Too close to another part: click some empty space');
+		if (near) {
+			say('Too close to another part: click some empty space');
+			return;
+		}
 		let k = 1;
 		while (circuit.nodes.some((n) => n.id === `g${k}`)) k++;
 		commit({
@@ -409,10 +412,15 @@
 	function connect(p: PortRef, q: PortRef) {
 		const [o, i] = p.side === 'out' ? [p, q] : [q, p];
 		if (o.side !== 'out' || i.side !== 'in') return;
-		if (o.node === i.node) return say("A gate can't feed its own input");
+		if (o.node === i.node) {
+			say("A gate can't feed its own input");
+			return;
+		}
 		const w: Wire = { from: o.node, to: i.node, slot: i.slot };
-		if (makesLoop(circuit, w))
-			return say("That would make a loop: here, outputs can't feed back into earlier gates");
+		if (makesLoop(circuit, w)) {
+			say("That would make a loop: here, outputs can't feed back into earlier gates");
+			return;
+		}
 		const replaced = circuit.wires.some((x) => x.to === w.to && x.slot === w.slot);
 		commit({
 			nodes: circuit.nodes,
