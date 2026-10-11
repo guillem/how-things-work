@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-11 UTC.
+Last updated: 2026-10-12 UTC.
 
 ## How we work
 
@@ -39,8 +39,8 @@ Last updated: 2026-10-11 UTC.
   v0.1.0). All merged topic/site branches were deleted, local and remote. Rulesets: `main` can't be
   force-pushed or deleted; `v*` tags can't be moved or deleted. The `github-pages` environment
   deploys from `v*` tags and `main` (rollbacks run from main).
-- `main` (deployed): photosynthesis (ticked 2026-10-11 after its review and rate model, not
-  yet released) and 16 ticked topics: epidemics, unit-circle, sorting, newtons-laws, sun-earth-moon,
+- `main` (deployed): photosynthesis (ticked 2026-10-11 after its review and rate model,
+  released in v0.1.2 on 2026-10-12) and 16 ticked topics: epidemics, unit-circle, sorting, newtons-laws, sun-earth-moon,
   learning-from-data, pagerank, electric-circuits, bridges-structures, binary,
   atmosphere-weather, graph-search, chaos-fractals, orbits-kepler, ecosystems, bayes-theorem.
   PRs #1–#18 merged (merge commits); #15 removed CI (see "Validate once, locally").
@@ -66,7 +66,7 @@ Last updated: 2026-10-11 UTC.
 
 ## Current development
 
-None in progress. 2026-10-11, from cloud sessions, on `main` but not released: the
+None in progress. Released in v0.1.2 (2026-10-12), built in cloud sessions on 2026-10-11: the
 photosynthesis review fixes, then its rate model and "What limits the rate?" step (PROSPECT-D
 leaf optics + FvCB C₃ model, `src/routes/photosynthesis/model.ts`); photosynthesis is ticked and
 its review report deleted. Built-state params in use: `web:<step>`, `board:build`,
