@@ -66,10 +66,10 @@ Last updated: 2026-10-11 UTC.
 
 ## Current development
 
-- photosynthesis review fixes (cloud session, branch `claude/gifted-ptolemy-7dedp1`): factual,
-  narrative and clarity fixes applied; outcomes in `docs/reviews/photosynthesis.md`; the rate
-  model and limiting-factors step are next (BACKLOG "Known gaps"). Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<step>`,
-  `map:<step>`, `view:zoom`.
+None in progress. 2026-10-11: the photosynthesis review fixes landed on `main` from a cloud
+session (outcomes in `docs/reviews/photosynthesis.md`; not released yet). Next for that page:
+the rate model and limiting-factors step (BACKLOG "Known gaps"). Built-state params in use:
+`web:<step>`, `board:build`, `bridge:build`, `bits:<step>`, `map:<step>`, `view:zoom`.
 
 ## Open questions for the user
 

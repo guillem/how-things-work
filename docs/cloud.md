@@ -82,8 +82,9 @@ branch rebased and passing. Merge it from the GitHub app, or ask a local session
   `make review` / `make review-fetch`.
 - **Screenshots:** start the dev server in the background (`npx vite dev --port 5173 &`) and
   write the shots to the session's scratch directory. `scripts/shot.mjs` works unchanged.
-- **Pushing:** `git push --dry-run` doesn't prove write access. The session's own branch always
-  takes pushes, and the pre-push hook runs `make check` first (about 100 s).
+- **Pushing:** `git push --dry-run` doesn't prove write access. A real `git push origin HEAD:main`
+  from the cloud session worked (the proxy didn't restrict it to the session's branch). The
+  pre-push hook runs `make check` first (about 100 s).
 
 ## What costs what
 
