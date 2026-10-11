@@ -83,7 +83,12 @@ function numbered(file: string) {
 	return lines.map((l, i) => `${String(i + 1).padStart(4)}  ${l}`).join('\n');
 }
 
-function buildRequest(slug: string, model: string, effort: Effort): Request {
+function buildRequest(
+	slug: string,
+	model: string,
+	effort: Effort,
+	paused?: Anthropic.Messages.ContentBlockParam[]
+): Request {
 	const catalogue = fs.readFileSync('docs/TOPICS.md', 'utf8');
 	const source = topicFiles(slug)
 		.map((f) => `<file path="${f}">\n${numbered(f)}\n</file>`)
@@ -109,7 +114,9 @@ function buildRequest(slug: string, model: string, effort: Effort): Request {
 				{
 					role: 'user',
 					content: `Review the topic "${slug}" (its catalogue entry is under "#### ${slug}").\n\n${source}`
-				}
+				},
+				// A turn the server paused (pause_turn): resending it resumes where it stopped.
+				...(paused ? [{ role: 'assistant' as const, content: paused }] : [])
 			]
 		}
 	};
@@ -123,7 +130,29 @@ function arg(args: string[], name: string) {
 	return value;
 }
 
-function pendingBatches(): { id: string; slugs: string[]; model: string; submitted: string }[] {
+/** A batch not fetched yet, saved in docs/reviews/batches/<id>.json (commit it). */
+interface Pending {
+	id: string;
+	slugs: string[];
+	model: string;
+	effort?: Effort;
+	submitted: string;
+	/** Continuation round (0 for the first batch). */
+	round?: number;
+	/** For reviews being continued after a pause: the assistant content so far. */
+	paused?: Record<
+		string,
+		{ content: Anthropic.Messages.ContentBlockParam[]; dollars: number; searches: number }
+	>;
+}
+const MAX_ROUNDS = 5;
+
+function savePending(p: Pending) {
+	fs.mkdirSync(PENDING, { recursive: true });
+	fs.writeFileSync(path.join(PENDING, `${p.id}.json`), JSON.stringify(p, null, '\t') + '\n');
+}
+
+function pendingBatches(): Pending[] {
 	if (!fs.existsSync(PENDING)) return [];
 	return fs
 		.readdirSync(PENDING)
@@ -151,16 +180,11 @@ async function submit(args: string[]) {
 	}
 	const client = new Anthropic();
 	const batch = await client.messages.batches.create({ requests });
-	fs.mkdirSync(PENDING, { recursive: true });
-	fs.writeFileSync(
-		path.join(PENDING, `${batch.id}.json`),
-		JSON.stringify(
-			{ id: batch.id, slugs: args, model, submitted: new Date().toISOString() },
-			null,
-			'\t'
-		) + '\n'
+	savePending({ id: batch.id, slugs: args, model, effort, submitted: new Date().toISOString() });
+	console.log(`Submitted ${batch.id} (${args.join(', ')}).`);
+	console.log(
+		'Commit and push docs/reviews/batches/ now, so another session can fetch it; then: make review-fetch'
 	);
-	console.log(`Submitted ${batch.id} (${args.join(', ')}). Fetch later: make review-fetch`);
 }
 
 async function status() {
@@ -177,8 +201,7 @@ async function status() {
 }
 
 function costOf(model: string, usage: Anthropic.Messages.Usage) {
-	const price = PRICES[model];
-	if (!price) return 'cost: unknown model';
+	const price = PRICES[model] ?? { input: NaN, output: NaN, cacheRead: NaN };
 	const cacheWrite = (usage.cache_creation_input_tokens ?? 0) * 1.25 * price.input;
 	const dollars =
 		(usage.input_tokens * price.input +
@@ -186,13 +209,15 @@ function costOf(model: string, usage: Anthropic.Messages.Usage) {
 			(usage.cache_read_input_tokens ?? 0) * price.cacheRead +
 			usage.output_tokens * price.output) /
 		1e6;
-	const searches = usage.server_tool_use?.web_search_requests ?? 0;
-	return `~$${dollars.toFixed(2)} in tokens + ${searches} web searches`;
+	return { dollars, searches: usage.server_tool_use?.web_search_requests ?? 0 };
 }
 
-function reportText(message: Anthropic.Messages.Message) {
-	return message.content
-		.filter((b): b is Anthropic.Messages.TextBlock => b.type === 'text')
+const costText = (c: { dollars: number; searches: number }) =>
+	`~$${c.dollars.toFixed(2)} in tokens + ${c.searches} web searches`;
+
+function reportText(content: readonly { type: string }[]) {
+	return content
+		.filter((b): b is Anthropic.Messages.TextBlockParam => b.type === 'text')
 		.map((b) => b.text)
 		.join('');
 }
@@ -210,27 +235,61 @@ async function fetchResults(args: string[]) {
 				console.log(`${p.id} (${p.slugs.join(', ')}): ${b.processing_status}`);
 				continue;
 			}
+			const resume: NonNullable<Pending['paused']> = {};
 			for await (const r of await client.messages.batches.results(p.id)) {
-				const file = path.join(REVIEWS, `${r.custom_id}.md`);
-				const header = (cost: string) =>
-					`<!-- batch ${p.id}, ${p.model}, submitted ${p.submitted}${cost} -->\n`;
-				if (r.result.type === 'succeeded') {
-					const m = r.result.message;
-					let note = '';
-					if (m.stop_reason === 'refusal')
-						note = `\n> Declined (${m.stop_details?.category ?? 'no category'}); resubmit or review by hand.\n`;
-					else if (m.stop_reason === 'pause_turn' || m.stop_reason === 'max_tokens')
-						note = `\n> Incomplete (${m.stop_reason}); resubmit this topic.\n`;
-					fs.writeFileSync(
-						file,
-						header(`, ${costOf(p.model, m.usage)}`) + note + reportText(m) + '\n'
-					);
-					console.log(
-						`${r.custom_id}: ${file} (${costOf(p.model, m.usage)})${note ? ' INCOMPLETE' : ''}`
-					);
-				} else {
-					console.log(`${r.custom_id}: ${r.result.type}; resubmit it.`);
+				const slug = r.custom_id;
+				if (r.result.type !== 'succeeded') {
+					console.log(`${slug}: ${r.result.type}; resubmit it.`);
+					continue;
 				}
+				const m = r.result.message;
+				const before = p.paused?.[slug];
+				const cost = costOf(p.model, m.usage);
+				const total = {
+					dollars: cost.dollars + (before?.dollars ?? 0),
+					searches: cost.searches + (before?.searches ?? 0)
+				};
+				const content = [
+					...(before?.content ?? []),
+					...(m.content as Anthropic.Messages.ContentBlockParam[])
+				];
+				if (m.stop_reason === 'pause_turn' && (p.round ?? 0) + 1 < MAX_ROUNDS) {
+					resume[slug] = { content, ...total };
+					console.log(`${slug}: paused by the server's tool loop; continuing in a new batch.`);
+					continue;
+				}
+				let note = '';
+				if (m.stop_reason === 'refusal')
+					note = `\n> Declined (${m.stop_details?.category ?? 'no category'}); resubmit or review by hand.\n`;
+				else if (m.stop_reason === 'pause_turn' || m.stop_reason === 'max_tokens')
+					note = `\n> Incomplete (${m.stop_reason}); resubmit this topic.\n`;
+				const file = path.join(REVIEWS, `${slug}.md`);
+				fs.writeFileSync(
+					file,
+					`<!-- batch ${p.id}, ${p.model}, submitted ${p.submitted}, ${costText(total)} -->\n` +
+						note +
+						reportText(content) +
+						'\n'
+				);
+				console.log(`${slug}: ${file} (${costText(total)})${note ? ' INCOMPLETE' : ''}`);
+			}
+			const slugs = Object.keys(resume);
+			if (slugs.length > 0) {
+				const effort = p.effort ?? 'high';
+				const next = await client.messages.batches.create({
+					requests: slugs.map((slug) => buildRequest(slug, p.model, effort, resume[slug].content))
+				});
+				savePending({
+					id: next.id,
+					slugs,
+					model: p.model,
+					effort,
+					submitted: p.submitted,
+					round: (p.round ?? 0) + 1,
+					paused: resume
+				});
+				open++;
+				console.log(`Continuing ${slugs.join(', ')} in ${next.id}; commit docs/reviews/batches/.`);
 			}
 			fs.rmSync(path.join(PENDING, `${p.id}.json`));
 		}

@@ -20,7 +20,8 @@ https://guillem.github.io/how-things-work/. One developer, working with agents. 
 - **Rollback:** `make rollback` redeploys the release before the live one (`TO=v1.2.3` picks one).
   Tags are never moved or deleted.
 - Parallel work (e.g. one agent per topic) happens in local git worktrees. Merge their branches
-  into `main` locally, delete them, push `main`. Don't push topic branches. In a worktree,
+  into `main` locally, delete them, push `main`; local worktree branches aren't pushed (cloud
+  sessions do push theirs: see below). In a worktree,
   `node_modules` must be a copy-on-write clone, not a symlink:
   `cp -cR <main checkout>/node_modules node_modules` (a symlink makes svelte-check type-check the
   other checkout; `make check` refuses it).
@@ -49,9 +50,12 @@ pushed work survives, so:
   `main` (the cloud proxy may only allow its own branch), leave the branch rebased and passing,
   and say so: the user merges it.
 - Don't release. The user releases after validating (`make release`), or asks you to.
-- Reviews through the Batch API: `make review TOPICS="<slug>"` and later `make review-fetch`
-  (needs `ANTHROPIC_API_KEY`). Apply a report in `docs/reviews/<slug>.md` by checking each fix
-  against its source, then delete the report.
+- Reviews through the Batch API: `make review TOPICS="<slug>"`, then **commit and push
+  `docs/reviews/batches/` right away** (the batch id lives there; a reclaimed VM would lose it),
+  and later `make review-fetch`, from any session (needs `ANTHROPIC_API_KEY`). A review the server
+  pauses is continued automatically in a follow-up batch; commit `docs/reviews/batches/` again.
+  Apply a report in `docs/reviews/<slug>.md` by checking each fix against its source, then delete
+  the report.
 
 ## Testing philosophy
 

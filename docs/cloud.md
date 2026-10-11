@@ -7,8 +7,10 @@ for these sessions are in `CLAUDE.md` ("Cloud sessions").
 
 At claude.ai/code, create or edit the environment for this repository:
 
-- **Setup script:** `bash scripts/cloud-setup.sh`. It installs the dependencies and a Chromium
-  for the browser tests. The environment snapshots the result, so later sessions start warm.
+- **Setup script:** `bash scripts/cloud-setup.sh`. It checks for Node 22 (switching with nvm if
+  needed), installs the dependencies and a Chromium for the browser tests, and stops with an
+  error rather than snapshot a broken install. The environment snapshots the result, so later
+  sessions start warm.
 - **Network access:** _Trusted_ allows npm and GitHub. Playwright's own Chromium downloads from
   hosts that aren't in that list. Either choose _Custom_ with the defaults plus
   `cdn.playwright.dev` and `playwright.download.prss.microsoft.com`, or leave _Trusted_: the setup
@@ -32,8 +34,12 @@ At claude.ai/code, create or edit the environment for this repository:
 
    ```sh
    make review TOPICS="slug-a slug-b slug-c"   # half price; results usually within an hour
+   git add docs/reviews/batches && git commit -m "Review batch" && git push
    make review-fetch WAIT=1                    # writes docs/reviews/<slug>.md
    ```
+
+   The batch id is saved in `docs/reviews/batches/`; pushing it lets any later session fetch the
+   results, even if the one that submitted them is gone.
 
 3. One session applies the reviews: "Apply the reports in docs/reviews/, then release."
 4. Check the live site after the release; if something is wrong, ask for `make rollback`.
