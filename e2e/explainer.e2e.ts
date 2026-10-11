@@ -76,3 +76,127 @@ test('keyboard help overlay', async ({ page }) => {
 	await page.keyboard.press('Escape');
 	await expect(page.getByRole('dialog', { name: /keyboard shortcuts/i })).toHaveCount(0);
 });
+
+test.describe('keyboard shortcuts', () => {
+	test('J / K and PageDown / PageUp move between steps', async ({ page }) => {
+		await open(page, './photosynthesis/');
+		await page.keyboard.press('j');
+		await expect(stepTitle(page)).toHaveText(/inside the leaf/i);
+		await page.keyboard.press('PageDown');
+		await expect(stepTitle(page)).toHaveText(/chloroplast/i);
+		await page.keyboard.press('k');
+		await expect(stepTitle(page)).toHaveText(/inside the leaf/i);
+		await page.keyboard.press('PageUp');
+		await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
+	});
+
+	test('Space pauses and resumes the animation', async ({ page }) => {
+		await open(page, './photosynthesis/');
+		const play = page.locator('.controls .play');
+		await expect(play).toHaveAttribute('aria-pressed', 'true');
+		await page.keyboard.press(' ');
+		await expect(play).toHaveAttribute('aria-pressed', 'false');
+		await page.keyboard.press(' ');
+		await expect(play).toHaveAttribute('aria-pressed', 'true');
+	});
+
+	test('R goes back to the first step and plays', async ({ page }) => {
+		await open(page, './photosynthesis/#chloroplast');
+		await page.keyboard.press(' ');
+		await expect(page.locator('.controls .play')).toHaveAttribute('aria-pressed', 'false');
+		await page.keyboard.press('r');
+		await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
+		await expect(page).toHaveURL(/#equation$/);
+		await expect(page.locator('.controls .play')).toHaveAttribute('aria-pressed', 'true');
+	});
+
+	test('A toggles auto-advance and F toggles full screen', async ({ page }) => {
+		await open(page, './photosynthesis/');
+		const auto = page.getByRole('button', { name: 'Auto-advance steps' });
+		await expect(auto).toHaveAttribute('aria-pressed', 'false');
+		await page.keyboard.press('a');
+		await expect(auto).toHaveAttribute('aria-pressed', 'true');
+		await page.keyboard.press('a');
+		await expect(auto).toHaveAttribute('aria-pressed', 'false');
+		await page.keyboard.press('f');
+		await expect(page.getByRole('button', { name: 'Exit full screen' })).toBeVisible();
+		expect(await page.evaluate(() => document.fullscreenElement?.className)).toContain('explainer');
+		await page.keyboard.press('f');
+		await expect(page.getByRole('button', { name: 'Full screen', exact: true })).toBeVisible();
+	});
+
+	test('the help overlay closes on a click outside it', async ({ page }) => {
+		await open(page, './photosynthesis/');
+		await page.getByRole('button', { name: 'Keyboard shortcuts' }).click();
+		await expect(page.getByRole('dialog', { name: /keyboard shortcuts/i })).toBeVisible();
+		await page.locator('.help-backdrop').click({ position: { x: 5, y: 5 } });
+		await expect(page.getByRole('dialog', { name: /keyboard shortcuts/i })).toHaveCount(0);
+	});
+});
+
+// The animation clock runs on requestAnimationFrame; Playwright's fake clock
+// drives it deterministically. The first photosynthesis step lasts 16 s.
+test.describe('auto-advance and speed', () => {
+	test('auto-advance moves on when the step has played for its duration', async ({ page }) => {
+		await page.clock.install();
+		await open(page, './photosynthesis/');
+		await page.keyboard.press('a');
+		await page.clock.runFor(15_000);
+		await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
+		await page.clock.runFor(2_000);
+		await expect(stepTitle(page)).toHaveText(/inside the leaf/i);
+		await expect(page).toHaveURL(/#leaf$/);
+	});
+
+	test('at 2× a step plays out in half the time; the speed choice is a radio group', async ({
+		page
+	}) => {
+		await page.clock.install();
+		await open(page, './photosynthesis/');
+		const speed = page.getByRole('radiogroup', { name: 'Playback speed' });
+		await expect(speed.getByRole('radio', { name: '1×' })).toHaveAttribute('aria-checked', 'true');
+		await speed.getByRole('radio', { name: '2×' }).click();
+		await expect(speed.getByRole('radio', { name: '2×' })).toHaveAttribute('aria-checked', 'true');
+		await expect(speed.getByRole('radio', { name: '1×' })).toHaveAttribute('aria-checked', 'false');
+		await page.getByRole('button', { name: 'Auto-advance steps' }).click();
+		await page.clock.runFor(7_000);
+		await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
+		await page.clock.runFor(2_000);
+		await expect(stepTitle(page)).toHaveText(/inside the leaf/i);
+	});
+
+	test('auto-advance waits while paused', async ({ page }) => {
+		await page.clock.install();
+		await open(page, './photosynthesis/');
+		await page.keyboard.press('a');
+		await page.keyboard.press(' ');
+		await page.clock.runFor(30_000);
+		await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
+	});
+});
+
+test('glossary terms are focusable and show their definition on hover', async ({ page }) => {
+	await open(page, './photosynthesis/#leaf');
+	const term = page.locator('aside .body dfn[data-def]').first();
+	await expect(term).toHaveText('epidermis');
+	await expect(term).toHaveAttribute('tabindex', '0');
+	await expect(term).toHaveAttribute('role', 'note');
+	await expect(term).toHaveAttribute('aria-description', /outermost layer of cells of a leaf/);
+	const tooltip = () =>
+		term.evaluate((el) => {
+			const s = getComputedStyle(el, '::after');
+			return { display: s.display, content: s.content };
+		});
+	expect((await tooltip()).display).toBe('none');
+	await term.hover();
+	await expect.poll(async () => (await tooltip()).display).toBe('block');
+	expect((await tooltip()).content).toContain('outermost layer of cells of a leaf');
+});
+
+test('"Go deeper" notes open on demand', async ({ page }) => {
+	await open(page, './photosynthesis/');
+	const notes = page.locator('aside details.notes');
+	await expect(notes.getByText(/dozens of enzymes/)).toBeHidden();
+	await notes.locator('summary').click();
+	await expect(notes.getByText(/dozens of enzymes/)).toBeVisible();
+});
