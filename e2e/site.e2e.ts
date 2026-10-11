@@ -2,7 +2,8 @@ import { expect, test, type Page } from '@playwright/test';
 import fs from 'node:fs';
 
 // Site-level behaviour, checked on the production build served under the
-// /how-things-work/ sub-path the way GitHub Pages serves it.
+// /how-things-work/ sub-path the way GitHub Pages serves it. Tests tagged
+// @smoke make up `make e2e`: the critical paths, in a few seconds.
 
 const BASE = '/how-things-work/';
 const slugs = [
@@ -24,51 +25,65 @@ function watchRequests(page: Page) {
 	return failed;
 }
 
-test('the index has one card per built topic and counts them against the catalogue', async ({
-	page
-}) => {
-	await page.goto('./');
-	for (const slug of slugs) {
-		await expect(page.locator(`main a[href$="${slug}/"]`)).toHaveCount(1);
+test(
+	'the index has one card per built topic and counts them against the catalogue',
+	{ tag: '@smoke' },
+	async ({ page }) => {
+		await page.goto('./');
+		for (const slug of slugs) {
+			await expect(page.locator(`main a[href$="${slug}/"]`)).toHaveCount(1);
+		}
+		await expect(page.locator('main .grid > *')).toHaveCount(slugs.length);
+		await expect(page.locator('.progress')).toContainText(
+			`${slugs.length} of the 100 planned topics are written so far`
+		);
 	}
-	await expect(page.locator('main .grid > *')).toHaveCount(slugs.length);
-	await expect(page.locator('.progress')).toContainText(
-		`${slugs.length} of the 100 planned topics are written so far`
-	);
-});
+);
 
 for (const slug of slugs) {
-	test(`${slug}: title, assets and links to other topics all resolve`, async ({ page }) => {
-		const failed = watchRequests(page);
-		await page.goto(`./${slug}/`);
-		await expect(page.locator('.stage svg > g')).toBeAttached();
-		const h1 = await page.getByRole('heading', { level: 1 }).textContent();
-		await expect(page).toHaveTitle(`${h1?.trim()} — How Things Work`);
-		const links = page.getByRole('navigation', { name: 'Related topics' }).getByRole('link');
-		for (const href of await links.evaluateAll((as) =>
-			as.map((a) => (a as HTMLAnchorElement).href)
-		)) {
-			expect(new URL(href).pathname.startsWith(BASE), href).toBe(true);
-			const res = await page.request.get(href);
-			expect(res.status(), href).toBe(200);
+	test(
+		`${slug}: title, assets and links to other topics all resolve`,
+		{ tag: '@smoke' },
+		async ({ page }) => {
+			const failed = watchRequests(page);
+			const errors: string[] = [];
+			page.on('pageerror', (e) => errors.push(e.message));
+			page.on('console', (m) => {
+				if (m.type() === 'error') errors.push(m.text());
+			});
+			await page.goto(`./${slug}/`);
+			await expect(page.locator('.stage svg > g')).toBeAttached();
+			const h1 = await page.getByRole('heading', { level: 1 }).textContent();
+			await expect(page).toHaveTitle(`${h1?.trim()} — How Things Work`);
+			const links = page.getByRole('navigation', { name: 'Related topics' }).getByRole('link');
+			for (const href of await links.evaluateAll((as) =>
+				as.map((a) => (a as HTMLAnchorElement).href)
+			)) {
+				expect(new URL(href).pathname.startsWith(BASE), href).toBe(true);
+				const res = await page.request.get(href);
+				expect(res.status(), href).toBe(200);
+			}
+			await page.waitForLoadState('networkidle');
+			expect(failed).toEqual([]);
+			expect(errors).toEqual([]);
 		}
-		await page.waitForLoadState('networkidle');
-		expect(failed).toEqual([]);
-	});
+	);
 }
 
-test('an unknown URL one level down gets the 404 page, and its home link works', async ({
-	page
-}) => {
-	const failed = watchRequests(page);
-	const res = await page.goto('./no-such-topic');
-	expect(res?.status()).toBe(404);
-	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/nothing here/i);
-	await page.getByRole('link', { name: /back to all explainers/i }).click();
-	await expect(page).toHaveURL(new RegExp(`${BASE}$`));
-	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/how things work/i);
-	expect(failed).toEqual([]);
-});
+test(
+	'an unknown URL one level down gets the 404 page, and its home link works',
+	{ tag: '@smoke' },
+	async ({ page }) => {
+		const failed = watchRequests(page);
+		const res = await page.goto('./no-such-topic');
+		expect(res?.status()).toBe(404);
+		await expect(page.getByRole('heading', { level: 1 })).toHaveText(/nothing here/i);
+		await page.getByRole('link', { name: /back to all explainers/i }).click();
+		await expect(page).toHaveURL(new RegExp(`${BASE}$`));
+		await expect(page.getByRole('heading', { level: 1 })).toHaveText(/how things work/i);
+		expect(failed).toEqual([]);
+	}
+);
 
 // Current behaviour, recorded as-is (suspected bug, reported, not fixed): the
 // 404 page uses relative URLs (./_app/…, ./), so at a nested unknown URL its

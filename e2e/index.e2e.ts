@@ -14,7 +14,7 @@ test('index lists the built explainers under their catalogue category', async ({
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/photosynthesis/i);
 });
 
-test('theme toggle switches and persists the theme', async ({ page }) => {
+test('theme toggle switches and persists the theme', { tag: '@smoke' }, async ({ page }) => {
 	await page.emulateMedia({ colorScheme: 'light' });
 	await page.goto('./');
 	const html = page.locator('html');

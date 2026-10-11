@@ -8,25 +8,29 @@ async function open(page: Page, url: string) {
 	await expect(page.locator('.stage svg > g')).toBeAttached();
 }
 
-test('steps through the explainer with buttons and keyboard', async ({ page }) => {
-	await open(page, './photosynthesis/');
-	await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
+test(
+	'steps through the explainer with buttons and keyboard',
+	{ tag: '@smoke' },
+	async ({ page }) => {
+		await open(page, './photosynthesis/');
+		await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
 
-	await page.getByRole('button', { name: 'Next step' }).click();
-	await expect(stepTitle(page)).toHaveText(/inside the leaf/i);
-	await expect(page).toHaveURL(/#leaf$/);
+		await page.getByRole('button', { name: 'Next step' }).click();
+		await expect(stepTitle(page)).toHaveText(/inside the leaf/i);
+		await expect(page).toHaveURL(/#leaf$/);
 
-	await page.keyboard.press('ArrowRight');
-	await expect(stepTitle(page)).toHaveText(/chloroplast/i);
-	await page.keyboard.press('ArrowLeft');
-	await expect(stepTitle(page)).toHaveText(/inside the leaf/i);
+		await page.keyboard.press('ArrowRight');
+		await expect(stepTitle(page)).toHaveText(/chloroplast/i);
+		await page.keyboard.press('ArrowLeft');
+		await expect(stepTitle(page)).toHaveText(/inside the leaf/i);
 
-	await page.keyboard.press('End');
-	await expect(stepTitle(page)).toHaveText(/why it matters/i);
-	await expect(page.getByRole('button', { name: 'Next step' })).toBeDisabled();
-	await page.keyboard.press('Home');
-	await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
-});
+		await page.keyboard.press('End');
+		await expect(stepTitle(page)).toHaveText(/why it matters/i);
+		await expect(page.getByRole('button', { name: 'Next step' })).toBeDisabled();
+		await page.keyboard.press('Home');
+		await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
+	}
+);
 
 test('after opening a deep link, the step buttons still move between steps', async ({ page }) => {
 	await open(page, './photosynthesis/#pigments');

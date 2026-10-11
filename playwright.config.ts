@@ -11,6 +11,8 @@ const PORT = Number(process.env.PW_PORT ?? 4180);
 export default defineConfig({
 	testDir: 'e2e',
 	testMatch: '**/*.e2e.{ts,js}',
+	// The model tests run in Node without a browser: playwright.models.config.ts.
+	testIgnore: '**/*-model.e2e.ts',
 	fullyParallel: true,
 	reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
 	use: {
