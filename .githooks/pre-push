@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Runs `make check` before anything is pushed (skipped when nothing changed
+# since the last pass). Enabled by `npm install` (the prepare script sets
+# core.hooksPath to .githooks).
+exec scripts/check-if-changed.sh
