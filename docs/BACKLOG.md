@@ -99,6 +99,26 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   parallel run (passes alone and on rerun): the step's page load sometimes exceeds the 5 s
   expectation. Give that test more time or lighten the step's first render.
 
+- **Suspected bugs found while adding characterization tests (2026-10-11; recorded, not fixed):**
+  - **404 page at a nested URL** (confirmed on the live site). At
+    `/how-things-work/no/such/page/` the 404 page loads its CSS and JS from `./_app/…`, which
+    resolves under the missing path (404), so it shows unstyled. Its "Back to all explainers" link
+    (`./`) points at the same missing URL. One level down (`/how-things-work/nope`) works.
+    Pinned by the nested-URL test in `e2e/site.e2e.ts`; update that test when this is fixed
+    (likely: absolute paths on the 404 page, `paths.relative: false`).
+  - **sun-earth-moon `#tilt`.** The June-solstice label says "14 h 51 min of daylight" and the
+    chart footer says "14 h 50 min" for the same day. Probably rounding, or two slightly different
+    days.
+  - **photosynthesis `#summary`.** The light slider changes no text on the stage: both captions
+    ("no light → … stalls" and "bright light: … set the pace") are always shown. Possibly only
+    visual by design.
+  - **photosynthesis `#water` with no light.** The lumen reads "pH ≈ 8.0", the same as the stroma,
+    while "about 1000× more acidic than the stroma in bright light" stays on screen. Probably
+    intended ("in bright light").
+  - **Weak tests worth strengthening.** `entropy` "reversing every velocity…" accepts "every
+    velocity reversed", which shows the moment you click, so the return to the start is never
+    checked. `sorting` "pausing after stepping…" passes even if playback never moved.
+
 ## Site and framework work
 
 - **Stage text is unreadable on phones (site-wide, found 2026-10-07).** At 390 px wide the

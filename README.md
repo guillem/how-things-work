@@ -14,16 +14,17 @@ light and dark themes.
 ```sh
 npm install
 npm run dev          # http://localhost:5173
-npm run check        # type-check (svelte-check)
-npm run lint         # prettier + eslint
-npm run format       # prettier --write
+make check          # prettier, eslint, svelte-check and the model tests (~20 s)
+make e2e            # smoke tests of the critical paths on the production build (~8 s)
+make e2e-full       # every browser test (~45 s)
+make format         # prettier --write
 npm run build        # static site in ./build
-npm run preview      # serve ./build on http://localhost:4173
-npm run test:e2e     # Playwright tests against the production build
-npm run verify:deploy # after a merge: wait for the Pages deploy, check every page is live
 ```
 
-The first time you run the tests locally you need the browser: `npx playwright install chromium`.
+The first time you run the browser tests you need the browser: `npx playwright install chromium`.
+They build the site for the `/how-things-work/` sub-path and serve it the way GitHub Pages does
+(`scripts/serve-pages.mjs`) on port `PW_PORT` (default 4180). How we work and test is in
+[`CLAUDE.md`](CLAUDE.md).
 
 To look at a scene the way a visitor sees it, run the dev server and take screenshots of the stage
 with the helper (every step, both themes, at two different animation times):
@@ -40,18 +41,21 @@ console errors.
 
 ## Deploy
 
-Pushes to `main` run `.github/workflows/deploy.yml`, which builds the site and publishes it with
-GitHub Pages. One-time setup in the repository settings:
+Releases happen by tag only: `make release` tags `main` (the next patch version, or
+`V=v1.2.3`) and pushes it. The tag runs `.github/workflows/release.yml`. On a clean machine it
+runs `make check` and every browser test, builds the site for the `/how-things-work/` base path
+and deploys it with GitHub Pages. Then `scripts/verify-live.mjs` waits until the live site
+serves the new build and checks every page and asset. `make verify` follows the run. Pushing to
+`main` deploys nothing.
 
-1. **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions**.
-2. Push to `main` (or run the workflow manually from the Actions tab).
+`make rollback` redeploys the release before the live one (`TO=v1.2.3` picks one) by running
+the same workflow by hand for that tag; tests are skipped, tags are not moved.
 
-The site is served from `https://<user>.github.io/<repo>/`, so the build is given the base path
-`/<repo>` through the `BASE_PATH` environment variable. If you add a custom domain, or rename the
-repository to `<user>.github.io`, set `BASE_PATH` to an empty string in the workflow.
-
-There is no CI workflow: checks and tests run locally once before a merge, and
-`npm run verify:deploy` confirms the deployed site afterwards (see `docs/STATUS.md`).
+One-time repository settings: **Settings → Pages → Source: GitHub Actions**; **Settings →
+Environments → github-pages**: allow the tags `v*` and the branch `main`. The site is served from
+`https://<user>.github.io/<repo>/`, so the build is given the base path `/<repo>` through
+`BASE_PATH`; with a custom domain, set it to an empty string in the workflow and in
+`playwright.config.ts`.
 
 ## Project layout
 
@@ -81,6 +85,9 @@ docs/BACKLOG.md            what to build next, known gaps
 docs/TIMELOG.md            how long each development took
 docs/scene-guide.md        the contract every animated scene follows
 scripts/shot.mjs           screenshot helper for checking scenes in both themes
+scripts/serve-pages.mjs    serves ./build like GitHub Pages, for the browser tests
+scripts/release.sh         `make release`; rollback.sh: `make rollback`; verify-live.mjs: live smoke test
+CLAUDE.md                  the workflow and testing philosophy
 e2e/                       Playwright tests (navigation, controls, theme, a render check of every step)
 ```
 
@@ -104,7 +111,8 @@ come for free.
 ### Adding a new explainer
 
 Topics come from the catalogue in `docs/TOPICS.md`: read its preamble and the topic's entry
-first. Work on a branch `topic/<slug>` and keep `docs/STATUS.md` current as you go.
+first. Work on `main` (or in a local worktree for parallel work, see `CLAUDE.md`) and keep
+`docs/STATUS.md` current as you go.
 
 1. Copy `src/routes/photosynthesis/` to `src/routes/<slug>/`, where `<slug>` is the catalogue
    slug.
@@ -117,7 +125,8 @@ first. Work on a branch `topic/<slug>` and keep `docs/STATUS.md` current as you 
    catalogue category, and the page shell (`ExplainerPage.svelte`) shows its category, level and
    links to its prerequisites, related topics and the topics that build on it.
 5. `e2e/scenes.e2e.ts` renders every step of every explainer automatically; add a test in
-   `e2e/` for any behaviour worth guarding (controls, a model's results).
+   `e2e/` for any behaviour worth guarding (controls, a model's results), following the testing
+   philosophy in `CLAUDE.md`.
 6. When it meets the catalogue's definition of done, tick it in the `docs/TOPICS.md` checklist
    and log the time in `docs/TIMELOG.md`.
 
