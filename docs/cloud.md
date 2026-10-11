@@ -14,7 +14,8 @@ At claude.ai/code, create or edit the environment for this repository:
 - **Network access:** _Trusted_ allows npm and GitHub. Playwright's own Chromium downloads from
   hosts that aren't in that list. Either choose _Custom_ with the defaults plus
   `cdn.playwright.dev` and `playwright.download.prss.microsoft.com`, or leave _Trusted_: the setup
-  script then falls back to a Chromium already on the machine, if there is one. Check the setup
+  script then falls back to a Chromium already on the machine (the cloud image has one in
+  `/opt/pw-browsers`, older than Playwright expects). Check the setup
   log the first time.
 - **Environment variables:**
   - `BASH_DEFAULT_TIMEOUT_MS=300000` and `BASH_MAX_TIMEOUT_MS=900000`, so the full test suite

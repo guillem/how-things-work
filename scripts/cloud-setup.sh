@@ -38,7 +38,9 @@ set -e
 if [ "$ok" -eq 0 ]; then
 	rm -f .playwright-chromium
 else
-	for b in chromium chromium-browser google-chrome google-chrome-stable; do
+	# The cloud image ships one at $PLAYWRIGHT_BROWSERS_PATH/chromium.
+	for b in "${PLAYWRIGHT_BROWSERS_PATH:-/opt/pw-browsers}/chromium" chromium chromium-browser \
+		google-chrome google-chrome-stable; do
 		if command -v "$b" >/dev/null; then
 			command -v "$b" >.playwright-chromium
 			echo "Using the system browser $(cat .playwright-chromium) for the tests."
