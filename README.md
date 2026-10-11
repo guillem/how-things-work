@@ -24,7 +24,8 @@ npm run build        # static site in ./build
 The first time you run the browser tests you need the browser: `npx playwright install chromium`.
 They build the site for the `/how-things-work/` sub-path and serve it the way GitHub Pages does
 (`scripts/serve-pages.mjs`) on port `PW_PORT` (default 4180). How we work and test is in
-[`CLAUDE.md`](CLAUDE.md).
+[`CLAUDE.md`](CLAUDE.md); building topics in cloud sessions and reviewing them through the Batch API
+is in [`docs/cloud.md`](docs/cloud.md).
 
 To look at a scene the way a visitor sees it, run the dev server and take screenshots of the stage
 with the helper (every step, both themes, at two different animation times):

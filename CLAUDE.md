@@ -27,6 +27,32 @@ https://guillem.github.io/how-things-work/. One developer, working with agents. 
 - Stage files by path, never `git add -A`: the local `package-lock.json` has drift that must not
   be committed.
 
+## Cloud sessions
+
+Topics are often built in Claude Code cloud sessions (setup in `docs/cloud.md`): one topic per
+session, several sessions in parallel. The VM can be reclaimed when the session idles, and only
+pushed work survives, so:
+
+- Work on one branch for the topic (the session's own branch, or `topic/<slug>`). **Commit and
+  push after every meaningful step** (model and tests, narrative, each scene, review fixes). An
+  unpushed hour is an hour that can vanish.
+- Commands time out after 2 minutes by default. Run `make e2e-full` in the background, or check
+  with `make e2e` plus the topic's own tests while working. The machine has 4 cores: don't start
+  parallel subagents that each run the browser suite.
+- Write the topic's progress into its commits and a short note in `docs/STATUS.md` under
+  "Current development" (one line per topic, to keep merge conflicts small).
+- **Finishing:** `git fetch origin && git rebase origin/main`. Resolve the shared registries by
+  keeping both sides (`src/lib/topics.ts`, `src/lib/components/TopicArt.svelte`, `src/app.css`,
+  the `docs/TOPICS.md` checklist). Run `make check` and `make e2e-full`, then
+  `git push origin HEAD:main`; if it is rejected because another session pushed first, rebase
+  again and retry. Delete the topic branch on the remote afterwards. If the session can't push to
+  `main` (the cloud proxy may only allow its own branch), leave the branch rebased and passing,
+  and say so: the user merges it.
+- Don't release. The user releases after validating (`make release`), or asks you to.
+- Reviews through the Batch API: `make review TOPICS="<slug>"` and later `make review-fetch`
+  (needs `ANTHROPIC_API_KEY`). Apply a report in `docs/reviews/<slug>.md` by checking each fix
+  against its source, then delete the report.
+
 ## Testing philosophy
 
 - **Test behaviour, not implementation.** Assert what a visitor sees and does (text on the stage,

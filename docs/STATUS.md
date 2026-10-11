@@ -29,6 +29,11 @@ Last updated: 2026-10-11 UTC.
 
 ## Current state
 
+- **Cloud and batch tooling (2026-10-11, not yet tried for real):** `scripts/cloud-setup.sh`
+  and `docs/cloud.md` for building topics in cloud sessions; `make review` / `make review-fetch`
+  (`scripts/batch-review.ts`) for fact-check reviews through the Batch API. The first real cloud
+  topic and the first real batch should be watched: setup log, push to main from the cloud,
+  review cost.
 - **Lean workflow live since 2026-10-11** (see `CLAUDE.md`). First release `v0.1.0` deployed
   from its tag and passed the live smoke test; the rollback path was exercised once (redeploying
   v0.1.0). All merged topic/site branches were deleted, local and remote. Rulesets: `main` can't be

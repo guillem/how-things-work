@@ -27,3 +27,4 @@ playwright-report
 
 # Batch review dry runs
 docs/reviews/dry-run.json
+.playwright-chromium

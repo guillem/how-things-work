@@ -212,7 +212,8 @@ async function fetchResults(args: string[]) {
 			}
 			for await (const r of await client.messages.batches.results(p.id)) {
 				const file = path.join(REVIEWS, `${r.custom_id}.md`);
-				const header = `<!-- batch ${p.id}, ${p.model}, submitted ${p.submitted} -->\n`;
+				const header = (cost: string) =>
+					`<!-- batch ${p.id}, ${p.model}, submitted ${p.submitted}${cost} -->\n`;
 				if (r.result.type === 'succeeded') {
 					const m = r.result.message;
 					let note = '';
@@ -220,7 +221,10 @@ async function fetchResults(args: string[]) {
 						note = `\n> Declined (${m.stop_details?.category ?? 'no category'}); resubmit or review by hand.\n`;
 					else if (m.stop_reason === 'pause_turn' || m.stop_reason === 'max_tokens')
 						note = `\n> Incomplete (${m.stop_reason}); resubmit this topic.\n`;
-					fs.writeFileSync(file, header + note + reportText(m) + '\n');
+					fs.writeFileSync(
+						file,
+						header(`, ${costOf(p.model, m.usage)}`) + note + reportText(m) + '\n'
+					);
 					console.log(
 						`${r.custom_id}: ${file} (${costOf(p.model, m.usage)})${note ? ' INCOMPLETE' : ''}`
 					);
