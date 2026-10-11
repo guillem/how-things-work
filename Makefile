@@ -6,7 +6,7 @@
 PW_PORT ?= 4180
 export PW_PORT
 
-.PHONY: check format-check lint typecheck test format e2e e2e-full
+.PHONY: check format-check lint typecheck test format e2e e2e-full release rollback verify
 
 ## Fast checks, under a minute: formatting, lint, types and the model tests.
 check: format-check lint typecheck test
@@ -35,3 +35,16 @@ e2e:
 ## Every browser test (also run by the release workflow).
 e2e-full:
 	npx playwright test
+
+## Tag main and push it: the tag runs the release workflow (checks, tests,
+## deploy, live smoke test). V=v1.2.3 to choose the version (default: next patch).
+release:
+	scripts/release.sh $(V)
+
+## Redeploy the release before the one that is live; TO=v1.2.3 to pick one.
+rollback:
+	scripts/rollback.sh $(TO)
+
+## Follow the latest release run to its end (it ends with a check of the live site).
+verify:
+	gh run watch "$$(gh run list --workflow release.yml --limit 1 --json databaseId --jq '.[0].databaseId')" --exit-status

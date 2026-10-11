@@ -1,0 +1,117 @@
+# The only workflow. Releases happen by pushing a v* tag (`make release`):
+# checks and every test on a clean machine, a build for the /how-things-work/
+# sub-path, the GitHub Pages deploy, then a smoke test of the live site.
+#
+# Rollback (`make rollback`) runs it by hand for an earlier tag: the tests are
+# skipped (that tag passed them when it was released); build, deploy and the
+# live smoke test run as usual. Tags are never moved.
+#
+# Repository settings this needs: Settings → Pages → Source: GitHub Actions;
+# Settings → Environments → github-pages → deployment rules allowing the tags
+# v* and the branch main (the rollback runs from main). No secrets: Pages
+# deploys with the workflow's OIDC token.
+name: Release
+run-name: ${{ github.event_name == 'workflow_dispatch' && format('Rollback to {0}', inputs.tag) || format('Release {0}', github.ref_name) }}
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to redeploy (rollback), e.g. v0.3.0
+        required: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; let a running one finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  REF: ${{ inputs.tag || github.ref }}
+
+jobs:
+  verify:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: make check (format, lint, types, model tests)
+        run: make check
+      - run: npx playwright install --with-deps chromium
+      - name: make e2e-full (every browser test, on the sub-path build)
+        run: make e2e-full
+      - if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
+
+  build:
+    needs: verify
+    # Runs after a passing verify, or with verify skipped for a rollback.
+    if: ${{ !cancelled() && (needs.verify.result == 'success' || needs.verify.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.REF }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+      - id: version
+        run: echo "version=$(node -p "require('./build/_app/version.json').version")" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: build
+
+  deploy:
+    needs: build
+    if: ${{ !cancelled() && needs.build.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
+
+  smoke:
+    needs: [build, deploy]
+    if: ${{ !cancelled() && needs.deploy.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # The script comes from the workflow's own ref (the tag, or main for a
+      # rollback), so it is there even when an old tag is redeployed.
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Smoke test of the live site
+        run: node scripts/verify-live.mjs "${{ needs.build.outputs.version }}"
+        env:
+          SITE_URL: ${{ needs.deploy.outputs.page_url }}
