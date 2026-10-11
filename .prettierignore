@@ -10,3 +10,8 @@ bun.lockb
 
 # Hand-written planning docs, kept exactly as authored
 /docs/TOPICS.md
+
+# Machine-written: batch review state and the reports themselves (docs/reviews/README.md is ours)
+/docs/reviews/batches/
+/docs/reviews/*.md
+!/docs/reviews/README.md
