@@ -55,7 +55,8 @@ verify:
 	gh run watch "$$(gh run list --workflow release.yml --limit 1 --json databaseId --jq '.[0].databaseId')" --exit-status
 
 ## Review and fact-check topics through the Batch API (half price, results within
-## 24 h, usually 1): make review TOPICS="entropy internet". Needs ANTHROPIC_API_KEY.
+## 24 h, usually 1): make review TOPICS="entropy internet". Needs ANTHROPIC_API_KEY
+## (REVIEW_ANTHROPIC_API_KEY in cloud sessions).
 review:
 	node --env-file-if-exists=.env --experimental-strip-types scripts/batch-review.ts submit $(TOPICS)
 

@@ -11,7 +11,8 @@
 //   node scripts/batch-review.ts submit --dry-run <slug>...   write the requests, send nothing
 //
 // Options for submit: --model <id> (default claude-opus-5-5), --effort <level>
-// (default high). Needs ANTHROPIC_API_KEY (or an `ant auth login` profile).
+// (default high). Needs ANTHROPIC_API_KEY, REVIEW_ANTHROPIC_API_KEY (the name for cloud
+// sessions, which hide ANTHROPIC_API_KEY from commands) or an `ant auth login` profile.
 // `make review TOPICS="a b"` and `make review-fetch` wrap the first and third.
 import Anthropic from '@anthropic-ai/sdk';
 import fs from 'node:fs';
@@ -21,6 +22,12 @@ type Effort = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
 type Request = Anthropic.Messages.Batches.BatchCreateParams.Request;
 
 const REVIEWS = 'docs/reviews';
+
+/** Falls back to REVIEW_ANTHROPIC_API_KEY: cloud sessions don't pass ANTHROPIC_API_KEY on. */
+const newClient = () =>
+	new Anthropic({
+		apiKey: process.env.ANTHROPIC_API_KEY ?? process.env.REVIEW_ANTHROPIC_API_KEY
+	});
 /** Shared modules that carry data or maths the topics draw from (part of the cached prefix). */
 const SHARED = ['src/lib/draw/palette.ts', 'src/lib/draw/math.ts', 'src/lib/draw/chart.ts'];
 const PENDING = path.join(REVIEWS, 'batches');
@@ -184,7 +191,7 @@ async function submit(args: string[]) {
 		console.log(`Wrote ${out} (not sent).`);
 		return;
 	}
-	const client = new Anthropic();
+	const client = newClient();
 	const batch = await client.messages.batches.create({ requests });
 	savePending({ id: batch.id, slugs: args, model, effort, submitted: new Date().toISOString() });
 	console.log(`Submitted ${batch.id} (${args.join(', ')}).`);
@@ -196,7 +203,7 @@ async function submit(args: string[]) {
 async function status() {
 	const pending = pendingBatches();
 	if (pending.length === 0) return console.log('No pending review batches.');
-	const client = new Anthropic();
+	const client = newClient();
 	for (const p of pending) {
 		const b = await client.messages.batches.retrieve(p.id);
 		const c = b.request_counts;
@@ -231,7 +238,7 @@ function reportText(content: readonly { type: string }[]) {
 async function fetchResults(args: string[]) {
 	const wait = args.includes('--wait');
 	if (pendingBatches().length === 0) return console.log('No pending review batches.');
-	const client = new Anthropic();
+	const client = newClient();
 	for (;;) {
 		let open = 0;
 		for (const p of pendingBatches()) {

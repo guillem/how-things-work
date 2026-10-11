@@ -21,8 +21,9 @@ At claude.ai/code, create or edit the environment for this repository:
 - **Environment variables:**
   - `BASH_DEFAULT_TIMEOUT_MS=300000` and `BASH_MAX_TIMEOUT_MS=900000`, so the full test suite
     doesn't hit the 2-minute default.
-  - Optional: `ANTHROPIC_API_KEY=<key>` to run batch reviews from the cloud. The key is visible
-    to the sessions, so use one only for this.
+  - Optional: `REVIEW_ANTHROPIC_API_KEY=<key>` to run batch reviews from the cloud. Not
+    `ANTHROPIC_API_KEY`: cloud sessions keep that name for Claude Code and hide it from commands.
+    The key is visible to the sessions, so use one only for this.
 
 ## API key on the laptop
 

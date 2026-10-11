@@ -52,8 +52,9 @@ pushed work survives, so:
 - Don't release. The user releases after validating (`make release`), or asks you to.
 - Reviews through the Batch API: `make review TOPICS="<slug>"`, then **commit and push
   `docs/reviews/batches/` right away** (the batch id lives there; a reclaimed VM would lose it),
-  and later `make review-fetch`, from any session (needs `ANTHROPIC_API_KEY`). A review the server
-  pauses is continued automatically in a follow-up batch; commit `docs/reviews/batches/` again.
+  and later `make review-fetch`, from any session (needs `ANTHROPIC_API_KEY`, or
+  `REVIEW_ANTHROPIC_API_KEY` in the cloud). A review the server pauses is continued automatically
+  in a follow-up batch; commit `docs/reviews/batches/` again.
   Apply a report in `docs/reviews/<slug>.md` by checking each fix against its source, then delete
   the report.
 
