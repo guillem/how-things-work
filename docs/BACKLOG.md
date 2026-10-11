@@ -19,19 +19,19 @@ checklist); this file is about **order and open work**. Where we are right now i
 
 ## Wave 1 — one topic per category
 
-| Category                | Topic                  | Kind       | Level | Why this one                                                            | State           |
-| ----------------------- | ---------------------- | ---------- | ----- | ----------------------------------------------------------------------- | --------------- |
-| Biology                 | `photosynthesis`       | simulate   | 1     | Already built — the quality reference                                   | published, gaps |
-| Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot        | done            |
-| Mathematics             | `unit-circle`          | manipulate | 1     | No prerequisites; first draggable handle + linked graph; unlocks 3      | done            |
-| Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.     | done            |
-| Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy         | done            |
-| Space                   | `sun-earth-moon`       | manipulate | 1     | No prerequisites, no data                                               | done            |
-| Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`     | done            |
-| Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning   | done            |
-| Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs`   | done            |
-| Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; element data from mendeleev (PubChem blocked) | done            |
-| Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton         | done            |
+| Category                | Topic                  | Kind       | Level | Why this one                                                            | State |
+| ----------------------- | ---------------------- | ---------- | ----- | ----------------------------------------------------------------------- | ----- |
+| Biology                 | `photosynthesis`       | simulate   | 1     | Already built — the quality reference                                   | done  |
+| Body & Medicine         | `epidemics`            | simulate   | 1     | No prerequisites, no data; first agent-based model and live plot        | done  |
+| Mathematics             | `unit-circle`          | manipulate | 1     | No prerequisites; first draggable handle + linked graph; unlocks 3      | done  |
+| Computing               | `sorting`              | step       | 1     | No prerequisites; first algorithm-stepping topic; unlocks Turing m.     | done  |
+| Physics                 | `newtons-laws`         | simulate   | 1     | No prerequisites; unlocks 6 topics in Physics, Space and Energy         | done  |
+| Space                   | `sun-earth-moon`       | manipulate | 1     | No prerequisites, no data                                               | done  |
+| Information & Networks  | `pagerank`             | build      | 2     | The only topic in the category without prerequisites; first `build`     | done  |
+| Artificial Intelligence | `learning-from-data`   | manipulate | 1     | No prerequisites; unlocks gradient descent and reinforcement learning   | done  |
+| Earth & Climate         | `atmosphere-weather`   | simulate   | 2     | The only topic in the category with neither prerequisites nor `Needs`   | done  |
+| Chemistry & Materials   | `atoms-periodic-table` | build      | 1     | The root of the category; element data from mendeleev (PubChem blocked) | done  |
+| Energy & Machines       | `bridges-structures`   | build      | 1     | Every topic here has a prerequisite; this one needs only Newton         | done  |
 
 Batch 2 also takes `electric-circuits` (unlocks 4) and `binary` (unlocks 7), per rule 3.
 
@@ -41,17 +41,13 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 
 ## Known gaps in built topics
 
-- **photosynthesis** — published before the catalogue existed and not ticked in the checklist.
-  Against its entry it still lacks: **CO₂ level and temperature controls** and a readout or plot
-  of the **rate of sugar and oxygen production** responding to intensity, colour, CO₂ and
-  temperature (limiting factors). Light intensity and colour exist on separate steps. The links
-  to prerequisites, related topics and dependents now come from the shared page shell. To finish
-  it: add a "limiting factors" step (a rate model checked against a reference), then tick it.
-  The fact-check review (`docs/reviews/photosynthesis.md`, 2026-10-11) is applied except the
-  items marked "Left for the rate-model session": an FvCB leaf model (Bernacchi 2001 constants)
-  with CO₂/temperature/colour controls and a live rate plot, driving the summary scene's rotor
-  and gauges; measured leaf absorptance (McCree 1972) and pigment spectra in place of the
-  Gaussian fits.
+- **photosynthesis** — ticked 2026-10-11, after the fact-check review and the rate model
+  ("What limits the rate?": PROSPECT-D leaf optics + FvCB, `src/routes/photosynthesis/model.ts`).
+  Smaller, left as is: the three pigment curves of the spectrum scene are smooth Gaussian
+  approximations of solvent spectra (`absorbance()` in `palette.ts`, labelled relative); measured
+  spectra (e.g. PhotochemCAD, chlorophyll a/b in diethyl ether) would be better. The model treats
+  every absorbed photon alike (McCree's lower yield for blue is not modelled) and fixes the
+  leaf's internal CO₂ at 70% of the air's (no stomata); both are stated on the page.
 
 - **learning-from-data** — ticked: the user accepted dragging only (2026-10-08). Still to do:
   move the duplicated `params.pts` parser from both scenes into `fit.ts`.

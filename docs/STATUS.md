@@ -39,8 +39,8 @@ Last updated: 2026-10-11 UTC.
   v0.1.0). All merged topic/site branches were deleted, local and remote. Rulesets: `main` can't be
   force-pushed or deleted; `v*` tags can't be moved or deleted. The `github-pages` environment
   deploys from `v*` tags and `main` (rollbacks run from main).
-- `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps") and 16
-  ticked topics: epidemics, unit-circle, sorting, newtons-laws, sun-earth-moon,
+- `main` (deployed): photosynthesis (ticked 2026-10-11 after its review and rate model, not
+  yet released) and 16 ticked topics: epidemics, unit-circle, sorting, newtons-laws, sun-earth-moon,
   learning-from-data, pagerank, electric-circuits, bridges-structures, binary,
   atmosphere-weather, graph-search, chaos-fractals, orbits-kepler, ecosystems, bayes-theorem.
   PRs #1–#18 merged (merge commits); #15 removed CI (see "Validate once, locally").
@@ -50,7 +50,7 @@ Last updated: 2026-10-11 UTC.
   builds a whole topic (model, tests, narrative, scenes) in its own worktree off `main`, a second
   agent reviews, fact-checks and ticks it; then all are merged into `batch/<n>`. The shared files
   (`src/lib/topics.ts`, `TopicArt.svelte`) don't survive a union merge: rebuild them from main
-  plus each branch's own entry. Nothing in progress; 29 topics ticked.
+  plus each branch's own entry. Nothing in progress; 30 topics ticked (photosynthesis on 2026-10-11).
 - Reading progress (branch `claude/explainer-progress-tracking-qqmcph`): each explainer records
   the reader's current step in `localStorage` (`src/lib/progress.svelte.ts`); reaching the last
   step marks it done. The index shows Done (red) / Continue (yellow, opens the saved step) /
@@ -66,10 +66,11 @@ Last updated: 2026-10-11 UTC.
 
 ## Current development
 
-None in progress. 2026-10-11: the photosynthesis review fixes landed on `main` from a cloud
-session (outcomes in `docs/reviews/photosynthesis.md`; not released yet). Next for that page:
-the rate model and limiting-factors step (BACKLOG "Known gaps"). Built-state params in use:
-`web:<step>`, `board:build`, `bridge:build`, `bits:<step>`, `map:<step>`, `view:zoom`.
+None in progress. 2026-10-11, from cloud sessions, on `main` but not released: the
+photosynthesis review fixes, then its rate model and "What limits the rate?" step (PROSPECT-D
+leaf optics + FvCB C₃ model, `src/routes/photosynthesis/model.ts`); photosynthesis is ticked and
+its review report deleted. Built-state params in use: `web:<step>`, `board:build`,
+`bridge:build`, `bits:<step>`, `map:<step>`, `view:zoom`.
 
 ## Open questions for the user
 
