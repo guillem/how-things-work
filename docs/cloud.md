@@ -62,6 +62,26 @@ Don't export it in your shell profile or put it in Claude Code's settings: Claud
 If a session can't push to `main` (the cloud proxy may only allow its own branch), it leaves its
 branch rebased and passing. Merge it from the GitHub app, or ask a local session to.
 
+## What we learned (first cloud session, 2026-10-11)
+
+- **Setup:** Node 22.22 was already there. With _Trusted_ network access, Playwright's own
+  Chromium still installed (into `PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers`, next to the image's
+  older one), so no `.playwright-chromium` fallback was needed. The setup script ran (the git
+  hooks were set), and the session started warm.
+- **Speed:** `make check` takes about 100 s (about 1m45 cold): format 17 s, lint 48 s, types 20 s,
+  model tests 12 s. That is roughly 5× the laptop's time, but under the Stop hook's 300 s timeout.
+  `make e2e` takes about 33 s. Run `make e2e-full` in the background (`… > log 2>&1 &`) and read the
+  log afterwards.
+- **Network:** with _Trusted_ access, WebFetch and `curl` to arbitrary sites are refused by the
+  proxy (403), and only WebSearch works, so fact-checking reads search excerpts, not the papers. Add
+  hosts under _Custom_ if a session needs full pages (for example `pmc.ncbi.nlm.nih.gov`,
+  `link.springer.com`). The Anthropic API is reachable: `REVIEW_ANTHROPIC_API_KEY` works for
+  `make review` / `make review-fetch`.
+- **Screenshots:** start the dev server in the background (`npx vite dev --port 5173 &`) and
+  write the shots to the session's scratch directory. `scripts/shot.mjs` works unchanged.
+- **Pushing:** `git push --dry-run` doesn't prove write access. The session's own branch always
+  takes pushes, and the pre-push hook runs `make check` first (about 100 s).
+
 ## What costs what
 
 - **Cloud sessions** use the cloud credits. Each one is its own 4-core VM, so parallel sessions

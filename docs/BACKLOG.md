@@ -47,6 +47,11 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   temperature (limiting factors). Light intensity and colour exist on separate steps. The links
   to prerequisites, related topics and dependents now come from the shared page shell. To finish
   it: add a "limiting factors" step (a rate model checked against a reference), then tick it.
+  The fact-check review (`docs/reviews/photosynthesis.md`, 2026-10-11) is applied except the
+  items marked "Left for the rate-model session": an FvCB leaf model (Bernacchi 2001 constants)
+  with CO₂/temperature/colour controls and a live rate plot, driving the summary scene's rotor
+  and gauges; measured leaf absorptance (McCree 1972) and pigment spectra in place of the
+  Gaussian fits.
 
 - **learning-from-data** — ticked: the user accepted dragging only (2026-10-08). Still to do:
   move the duplicated `params.pts` parser from both scenes into `fit.ts`.
