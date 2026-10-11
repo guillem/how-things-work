@@ -85,6 +85,10 @@ branch rebased and passing. Merge it from the GitHub app, or ask a local session
 - **Pushing:** `git push --dry-run` doesn't prove write access. A real `git push origin HEAD:main`
   from the cloud session worked (the proxy didn't restrict it to the session's branch). The
   pre-push hook runs `make check` first (about 100 s).
+- **Deleting branches:** the session can't delete a remote branch. `git push origin --delete`
+  is cut off by the proxy, and the GitHub API answers 403. So the "delete the topic branch"
+  step of finishing (CLAUDE.md) is yours: once the session says its branch is on `main`, delete
+  it from GitHub's Branches page or with `git push origin --delete <branch>` on the laptop.
 
 ## What costs what
 
