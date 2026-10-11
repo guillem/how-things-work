@@ -29,6 +29,11 @@ Last updated: 2026-10-11 UTC.
 
 ## Current state
 
+- **Lean workflow live since 2026-10-11** (see `CLAUDE.md`). First release `v0.1.0` deployed
+  from its tag and passed the live smoke test; the rollback path was exercised once (redeploying
+  v0.1.0). All merged topic/site branches were deleted, local and remote. Rulesets: `main` can't be
+  force-pushed or deleted; `v*` tags can't be moved or deleted. The `github-pages` environment
+  deploys from `v*` tags and `main` (rollbacks run from main).
 - `main` (deployed): photosynthesis (published, not ticked — BACKLOG "Known gaps") and 16
   ticked topics: epidemics, unit-circle, sorting, newtons-laws, sun-earth-moon,
   learning-from-data, pagerank, electric-circuits, bridges-structures, binary,
