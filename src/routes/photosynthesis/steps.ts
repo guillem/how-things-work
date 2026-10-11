@@ -83,14 +83,14 @@ export const spec: ExplainerSpec = {
 					step: 5,
 					default: 550,
 					unit: ' nm',
-					help: 'Drag across the spectrum to see how strongly the leaf pigments absorb each colour.'
+					help: 'Drag across the spectrum to see how strongly the leaf pigments, extracted into a thin layer, absorb each colour.'
 				}
 			],
 			body: `
 <p>Light arrives as <dfn data-def="A particle of light. Its energy is inversely proportional to its wavelength: blue photons carry more energy than red ones.">photons</dfn>, and a pigment molecule can only absorb a photon whose energy matches one of its electronic jumps.</p>
-<p><strong>Chlorophyll <i>a</i></strong>, the main pigment, absorbs strongly in the blue-violet (around 430 nm) and the red (around 660 nm). <strong>Chlorophyll <i>b</i></strong> and the yellow-orange <strong>carotenoids</strong> widen the net a little. In between, green light (around 500–570 nm) is absorbed only weakly, so more of it is reflected or passed through than any other colour — which is why leaves look green.</p>
+<p><strong>Chlorophyll <i>a</i></strong>, the main pigment, absorbs strongly in the blue-violet (around 430 nm) and the red (around 660 nm). <strong>Chlorophyll <i>b</i></strong> and the yellow-orange <strong>carotenoids</strong> widen the net a little. In between, green light (around 500–570 nm) is absorbed least. Pigments in solution barely take it, and even a whole leaf, which absorbs most of it, reflects and transmits more green than any other colour — which is why leaves look green.</p>
 <p>Try sliding through the spectrum.</p>`,
-			notes: `<p>The absorption peaks quoted are for chlorophyll in solvent; bound to proteins in the membrane, the red peak shifts by some 15–20 nm to around 675–680 nm (the reaction-centre pairs P680 and P700 are named after their absorption peaks in nm). An intact leaf still absorbs most of the green light that enters it, because the light is scattered back and forth through many layers of cells — but far less of it than red or blue. The classic evidence that red and blue light drive photosynthesis is Engelmann's 1882 experiment: oxygen-seeking bacteria crowded around the parts of an alga lit by red and blue light.</p>`
+			notes: `<p>The absorption peaks quoted are for chlorophyll in solvent; bound to proteins in the membrane, the red peak shifts by some 15–20 nm to around 675–680 nm (the reaction-centre pairs P680 and P700 are named after their absorption peaks in nm). The curves and the photon demo show a thin pigment extract. An intact leaf absorbs far more, because the light is scattered back and forth through many layers of cells: 80–95% of blue and red light, and 50% (lettuce) to 90% (evergreen leaves) of green, about three quarters for a typical crop leaf (Inada 1976; McCree 1972; Terashima et al. 2009) — still less than red or blue. The classic evidence that red and blue light drive photosynthesis is Engelmann's 1882 experiment: oxygen-seeking bacteria crowded around the parts of an alga lit by red and blue light.</p>`
 		},
 		{
 			id: 'antenna',

@@ -4,12 +4,16 @@
 	 *
 	 * One composition in three parts, all driven by the `wavelength` control:
 	 *   (a) the visible spectrum with a marker and a readout (colour, photon energy);
-	 *   (b) the absorption spectra of chlorophyll a, chlorophyll b and the
-	 *       carotenoids, with a cursor at the current wavelength and a legend
-	 *       that doubles as a live readout of the three curves;
-	 *   (c) a leaf hit by a stream of photons of that wavelength. Each photon is
-	 *       absorbed (it fades out just inside the leaf with a glow), reflected,
-	 *       or passes through the leaf, in proportion to the combined absorption.
+	 *   (b) the relative absorbance of chlorophyll a, chlorophyll b and the
+	 *       carotenoids (in solvent), with a cursor at the current wavelength and
+	 *       a legend that doubles as a live readout of the three curves, plus
+	 *       the fraction a thin film of the mixed pigments absorbs;
+	 *   (c) a leaf hit by a stream of photons of that wavelength, coloured like
+	 *       that thin pigment film. Each photon is absorbed (it fades out just
+	 *       inside with a glow), reflected, or passes through, in proportion to
+	 *       the extract's absorption. A real leaf absorbs far more, especially in
+	 *       the green (about three quarters at 550 nm, McCree 1972): the labels
+	 *       and the caption say "extract", and the narrative says so too.
 	 * A caption at the bottom puts the drawn numbers into words: its wording
 	 * follows the "N% absorbed" pill, the legend readout and the photon count.
 	 */
@@ -53,17 +57,23 @@
 								: 'red'
 	);
 	const pct = (v: number) => `${Math.round(v * 100)}%`;
+	/** Relative absorbance is not a percentage: shown as a number from 0 to 1. */
+	const rel = (v: number) => v.toFixed(2);
 
 	/**
 	 * Abundance weights of the three pigments — the same ones `absorbance().total`
-	 * in palette.ts uses to mix the curves (chlorophyll a : b : carotenoids ≈ 3 : 1 : 1).
+	 * in palette.ts uses to mix the curves (chlorophyll a : b : carotenoids =
+	 * 2.4 : 1 : 1; in leaves chlorophyll a/b is typically about 3).
 	 */
 	const WEIGHTS = { chlA: 0.6, chlB: 0.25, car: 0.25 };
 	/**
-	 * Fraction of the light of a given wavelength that the leaf absorbs. The
-	 * palette's `total` is the weighted mixture kept below 1 for plotting; a leaf
-	 * is thick enough to absorb essentially all the light at chlorophyll a's main
-	 * peak, so the same mixture is rescaled to saturate there.
+	 * Fraction of the light of a given wavelength that a thin film of pigment
+	 * extract absorbs. The palette's `total` is the weighted mixture kept below
+	 * 1 for plotting; the film is taken just thick enough to absorb all the
+	 * light at chlorophyll a's main peak, so the mixture is rescaled to
+	 * saturate there. This is NOT a whole leaf: scattering makes a leaf's light
+	 * path many times longer, so a leaf absorbs 80–95% in the blue and red and
+	 * 50–90% in the green (Inada 1976, quoted by Terashima et al. 2009).
 	 */
 	const combined = (nm: number) => Math.min(1, absorbance(nm).total / WEIGHTS.chlA);
 	const absorbed = $derived(combined(wavelength));
@@ -112,7 +122,7 @@
 	const LEGEND = { x: 272, y: PLOT.y + 6, w: 240, h: 84, row: 18, pad: 14 };
 	const legendY = (i: number) => LEGEND.pad + i * LEGEND.row;
 	const cursorX = $derived(cx(wavelength));
-	const cursorPillX = $derived(clamp(cursorX, PLOT.x + 56, PLOT.x + PLOT.w - 56));
+	const cursorPillX = $derived(clamp(cursorX, PLOT.x + 78, PLOT.x + PLOT.w - 78));
 	/**
 	 * The three pigment dots on the cursor line. Where two curves cross (or one
 	 * coincides with the combined curve) the dots would hide each other, so a dot
@@ -314,12 +324,12 @@
 		return names.length === 3 ? 'all three pigments' : names.join(' and ');
 	});
 	// The bands follow the drawn fraction (the "N% absorbed" pill and the photon
-	// count), not the real leaf: at 680 nm the model gives about a half.
+	// count), which is the extract's, not a real leaf's: at 680 nm it is about a half.
 	const caption = $derived.by(() => {
 		const Colour = band[0].toUpperCase() + band.slice(1);
 		if (absorbed <= 0.2) {
 			if (band === 'green')
-				return 'Green light is absorbed only weakly — more of it is reflected or passed through, so leaves look green.';
+				return 'Green is absorbed least: an extract barely takes it, and even a real leaf (~¾ absorbed) sends back more green than any other colour.';
 			if (wavelength > 662)
 				return `At ${wavelength} nm we are past chlorophyll's red peak — most of this light is reflected or passed through.`;
 			return `${Colour} light falls between the pigments' peaks — most of it is reflected or passed through.`;
@@ -496,7 +506,14 @@
 			anchor="end"
 			muted
 		/>
-		<Label x={PLOT.x - 28} y={PLOT.y + PLOT.h / 2} text="absorption" size={11} rotate={-90} muted />
+		<Label
+			x={PLOT.x - 28}
+			y={PLOT.y + PLOT.h / 2}
+			text="relative absorbance"
+			size={11}
+			rotate={-90}
+			muted
+		/>
 		<!-- cursor (drawn before the legend so that it passes behind it) -->
 		<line
 			x1={cursorX}
@@ -528,7 +545,7 @@
 					stroke-linecap="round"
 				/>
 				<Label x={35} y={y + 4} text={item.label} size={12} anchor="start" />
-				<Label x={LEGEND.w - 12} y={y + 4} text={pct(abs[item.key])} size={12} anchor="end" />
+				<Label x={LEGEND.w - 12} y={y + 4} text={rel(abs[item.key])} size={12} anchor="end" />
 			{/each}
 			<rect
 				x="10"
@@ -548,11 +565,11 @@
 				stroke-width="1.2"
 				stroke-dasharray="3 3"
 			/>
-			<!-- the dashed curve is the leaf's absorbed fraction, not an average of the three -->
+			<!-- the dashed curve is a thin extract's absorbed fraction, not an average of the three -->
 			<Label
 				x={35}
 				y={legendY(3) + 4}
-				text="whole leaf (all three combined)"
+				text="% absorbed by a thin extract"
 				size={12}
 				anchor="start"
 				muted
@@ -578,7 +595,13 @@
 			/>
 		{/each}
 		<!-- 4 px clear of the cursor ring when the combined curve is at 1 -->
-		<Label x={cursorPillX} y={PLOT.y - 18} text="{pct(absorbed)} absorbed" size={12} pill />
+		<Label
+			x={cursorPillX}
+			y={PLOT.y - 18}
+			text="{pct(absorbed)} absorbed by the extract"
+			size={12}
+			pill
+		/>
 	</g>
 
 	<!-- ================= (c) leaf and photons ================= -->
@@ -709,6 +732,14 @@
 		text="{absorbedCount} of {N} absorbed"
 		size={12}
 		pill
+	/>
+	<!-- the demo shows the extract's absorption, not a whole leaf's (see `combined`) -->
+	<Label
+		x={LEAF.cx}
+		y={PLOT.y - 18}
+		text="photons meeting a thin pigment extract"
+		size={12}
+		muted
 	/>
 	<Label
 		x={throughLabel.x}

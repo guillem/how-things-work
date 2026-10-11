@@ -13,7 +13,8 @@ async function open(page: Page, url: string, text: string) {
 
 test('pigments: the wavelength slider moves the readout and the absorption', async ({ page }) => {
 	await open(page, './photosynthesis/#pigments', '550 nm · green · 2.25 eV per photon');
-	await expect(stage(page)).toContainText('10% absorbed');
+	await expect(stage(page)).toContainText('10% absorbed by the extract');
+	await expect(stage(page)).toContainText('even a real leaf (~¾ absorbed)');
 	await range(page, 'wavelength').fill('430');
 	await expect(stage(page)).toContainText('430 nm · violet · 2.88 eV per photon');
 	await expect(stage(page)).toContainText('100% absorbed');
