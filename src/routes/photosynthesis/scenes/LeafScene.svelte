@@ -758,7 +758,7 @@
 			<Label x={858} y={428} text="membrane: light reactions" size={11} muted />
 			<Label x={858} y={444} text="inside: the lumen" size={11} muted />
 			<Label x={STARCH.x} y={STARCH.y - 39} text="starch grain" size={12} muted />
-			<Label x={430} y={525} text="ATP & NADPH out, ADP & NADP⁺ back" size={12} muted />
+			<Label x={430} y={525} text="ATP & NADPH out; ADP, Pi & NADP⁺ back" size={12} muted />
 			<Label x={60} y={420} text="CO₂" anchor="start" size={12} />
 			<Label x={900} y={532} text="G3P (sugar)" anchor="end" size={12} />
 		</g>

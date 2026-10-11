@@ -119,7 +119,9 @@
 		untrack(() => gradient.set(target, { duration }));
 	});
 	const g = $derived(gradient.current);
-	const lumenPH = $derived((8 - 3 * g).toFixed(1));
+	// Lumen pH 5.8 at full light: in vivo it stays around 5.8–6.5 in normal light
+	// (Kramer, Sacksteder & Cruz 1999), 1.5–2.5 units below the stroma.
+	const lumenPH = $derived((8 - 2.2 * g).toFixed(1));
 	const cloudCount = $derived(Math.round(lerp(6, 30, g)));
 	const cloud = $derived(Array.from({ length: cloudCount }, (_, i) => i));
 
@@ -349,7 +351,8 @@
 
 	// Plastoquinone: three molecules looping between PSII (where they pick up
 	// 2 e⁻ and 2 H⁺ from the stroma) and cyt b₆f (which releases the H⁺ into the lumen).
-	const PQ_PERIOD = 6;
+	// Three trips of 2 e⁻ per 12 s = 0.5 e⁻/s, the rate electrons leave P680.
+	const PQ_PERIOD = 12;
 	const PQ_OFF = 0.15;
 	const pqLoop: Point[] = [
 		{ x: 300, y: 284 },
@@ -386,9 +389,14 @@
 	]);
 
 	// ATP synthase: protons stream up through CF₀ (lumen → stroma); ADP + Pi meet at CF₁; ATP leaves.
-	const ROTOR_TURN = 7; // seconds per full turn at the default light (14 H⁺)
+	// The fluxes balance at the default light: 0.5 e⁻/s pushes 1 H⁺/s into the
+	// lumen (0.5 from water, 0.5 through b₆f; the body text has no Q-cycle), and
+	// ATP synthase lets the same 1 H⁺/s back out. That makes 3 ATP per 14 H⁺ ≈
+	// 0.21 ATP/s against 0.25 NADPH/s: linear flow alone falls short of the
+	// Calvin cycle's 3 ATP : 2 NADPH, which the Q-cycle and cyclic flow make up.
+	const ROTOR_TURN = 14; // seconds per full turn at the default light (14 H⁺)
 	const ATP_PERIOD = (ROTOR_TURN / 3) * 2; // two ATP particles → 3 ATP per turn
-	const H_PERIOD = 2.5; // five protons → 2 H⁺/s = 14 per turn
+	const H_PERIOD = 5; // five protons → 1 H⁺/s = 14 per turn
 	const protonStream = smooth([
 		{ x: 792, y: 414 },
 		{ x: 797, y: 350 },
@@ -741,9 +749,10 @@
 		<Flow d="M316 236 L316 268" color={protonInk} width={1.5} arrow opacity={0.85} />
 		<Flow d="M{B6F.x} 342 L{B6F.x} 376" color={protonInk} width={1.5} arrow opacity={0.85} />
 
-		<!-- plastocyanin: copper protein ferrying electrons along the lumen -->
+		<!-- plastocyanin: copper protein ferrying electrons along the lumen (one e⁻ per
+		     round trip: two discs every 4 s = 0.5 e⁻/s, the flow through the chain) -->
 		{#each [0, 1] as k (k)}
-			{@const x = lerp(445, 515, pingpong(tc, 5, k / 2))}
+			{@const x = lerp(445, 515, pingpong(tc, 4, k / 2))}
 			<circle
 				cx={x}
 				cy="352"
@@ -986,7 +995,7 @@
 	<Label
 		x={24}
 		y={580}
-		text="about 1000× more acidic than the stroma in bright light"
+		text="tens to hundreds of times more acidic than the stroma in bright light"
 		anchor="start"
 		size={11}
 		muted

@@ -39,7 +39,7 @@ test('pigments: arrow keys on the slider change the wavelength, not the step', a
 test('water: with no light the lumen loses its acidity, and the light level carries over', async ({
 	page
 }) => {
-	await open(page, './photosynthesis/#water', 'thylakoid lumen · pH ≈ 5.5');
+	await open(page, './photosynthesis/#water', 'thylakoid lumen · pH ≈ 6.2');
 	await range(page, 'light').fill('0');
 	await expect(stage(page)).toContainText('thylakoid lumen · pH ≈ 8.0');
 	// The next step shares the light slider and keeps its value...

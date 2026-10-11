@@ -10,7 +10,7 @@ const light: Control = {
 	step: 5,
 	default: 70,
 	unit: '%',
-	help: 'More photons per second means faster electron flow — until the machinery saturates.'
+	help: 'More photons per second means faster electron flow.'
 };
 
 export const spec: ExplainerSpec = {
@@ -112,7 +112,7 @@ export const spec: ExplainerSpec = {
 			hints: { focus: 'psii', phase: 'water' },
 			controls: [light],
 			body: `
-<p>Having lost an electron, P680<sup>+</sup> is one of the strongest oxidising agents in biology — strong enough to steal electrons from water.</p>
+<p>Having lost an electron, P680<sup>+</sup> is one of the strongest <dfn data-def="Something that pulls electrons away from other molecules.">oxidising agents</dfn> in biology — strong enough to steal electrons from water.</p>
 <p>It does so through the <dfn data-def="A cluster of four manganese ions and one calcium ion (Mn₄CaO₅) on the lumen side of photosystem II, which binds two water molecules and strips four electrons from them.">oxygen-evolving complex</dfn>, a tiny cluster of manganese and calcium. After four photons have pulled four electrons out of the cluster, it in turn takes four electrons from two water molecules:</p>
 <p class="formula"><strong>2 H<sub>2</sub>O → O<sub>2</sub> + 4 H<sup>+</sup> + 4 e<sup>−</sup></strong></p>
 <p>The oxygen is a by-product: the plant uses some of it in its own respiration, and the surplus diffuses out through the stomata. The protons are released into the lumen, where they will matter later. The electrons replace the ones P680 keeps giving away.</p>`,
@@ -140,10 +140,10 @@ export const spec: ExplainerSpec = {
 			controls: [light],
 			body: `
 <p>By the time an electron reaches <strong>photosystem I</strong> it has spent most of its energy. So the reaction centre here, <strong>P700</strong>, absorbs a second photon to kick it back up — higher than before.</p>
-<p>The re-energised electron passes through a chlorophyll (A<sub>0</sub>), a phylloquinone (A<sub>1</sub>) and three iron–sulfur clusters to <strong>ferredoxin</strong>, a small protein on the stroma side. An enzyme then uses two such electrons to charge up the second energy carrier:</p>
+<p>The re-energised electron is passed along to <strong>ferredoxin</strong>, a small protein on the stroma side, and an enzyme (ferredoxin–NADP<sup>+</sup> reductase, <strong>FNR</strong>) uses two such electrons to charge up the second energy carrier:</p>
 <p class="formula"><strong>NADP<sup>+</sup> + H<sup>+</sup> + 2 e<sup>−</sup> → NADPH</strong></p>
-<p>NADPH is “reducing power”: a portable pair of high-energy electrons that the Calvin cycle will use to turn CO<sub>2</sub> into sugar. Taking a proton from the stroma also deepens the gradient across the membrane.</p>`,
-			notes: `<p>When the cell needs extra ATP, ferredoxin can send its electron back into the plastoquinone pool — and so through cytochrome b<sub>6</sub>f again — instead of to NADP<sup>+</sup>. This <em>cyclic electron flow</em> pumps more protons (more ATP) without producing NADPH.</p>`
+<p>NADPH is “reducing power” (able to <em>reduce</em> — add electrons to — other molecules): a portable pair of high-energy electrons that the Calvin cycle will use to turn CO<sub>2</sub> into sugar. Taking a proton from the stroma also deepens the gradient across the membrane.</p>`,
+			notes: `<p>On its way from P700 to ferredoxin the electron passes through a chlorophyll (A<sub>0</sub>), a phylloquinone (A<sub>1</sub>) and three iron–sulfur clusters inside photosystem I.</p><p>When the cell needs extra ATP, ferredoxin can send its electron back into the plastoquinone pool — and so through cytochrome b<sub>6</sub>f again — instead of to NADP<sup>+</sup>. This <em>cyclic electron flow</em> pumps more protons (more ATP) without producing NADPH.</p>`
 		},
 		{
 			id: 'atp',
@@ -153,7 +153,7 @@ export const spec: ExplainerSpec = {
 			hints: { focus: 'atp', phase: 'atp' },
 			controls: [light],
 			body: `
-<p>Water splitting and cytochrome b<sub>6</sub>f keep pushing protons into the lumen, while NADPH formation removes them from the stroma. In bright light the lumen becomes roughly a thousand times more acidic than the stroma — a difference of about three pH units.</p>
+<p>Water splitting and cytochrome b<sub>6</sub>f keep pushing protons into the lumen, while NADPH formation removes them from the stroma. In bright light the lumen becomes some 30–300 times more acidic than the stroma (1.5–2.5 pH units; part of the push also comes from a voltage across the membrane).</p>
 <p>The main way back out is through <strong>ATP synthase</strong>, a molecular turbine. Protons flowing through it spin a rotor in the membrane; the rotor's shaft forces the enzyme's catalytic head through shape changes that snap ADP and phosphate together into <strong>ATP</strong>.</p>
 <p>This is <dfn data-def="Peter Mitchell's 1961 hypothesis (Nobel Prize 1978): a proton gradient across a membrane drives ATP synthesis.">chemiosmosis</dfn>, and it is the same mechanism your mitochondria use. One full turn of the rotor makes three ATP.</p>`,
 			notes: `<p>In spinach chloroplasts the rotor ring has 14 subunits, so one rotation lets 14 protons through and yields 3 ATP — about 4.7 protons per ATP. Together with NADPH, this ATP now carries the captured light energy into the stroma.</p>`
@@ -211,7 +211,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Only <strong>one</strong> of the six G3P leaves the cycle as product. The other five — fifteen carbon atoms — are shuffled through a series of enzymes and rebuilt into three molecules of five-carbon RuBP, ready to catch the next three CO<sub>2</sub>. This rearrangement costs three more ATP.</p>
 <p>The carbon bookkeeping balances: 3 RuBP (15 C) + 3 CO<sub>2</sub> (3 C) = 6 G3P (18 C) = 1 G3P out (3 C) + 3 RuBP back (15 C).</p>
-<p>For each G3P produced — three CO<sub>2</sub> fixed — the cycle consumes <strong>9 ATP and 6 NADPH</strong>. The “dark” reactions are not really dark: they run in daylight and stop within minutes without the light reactions feeding them.</p>`
+<p>For each G3P produced — three CO<sub>2</sub> fixed — the cycle consumes <strong>9 ATP and 6 NADPH</strong>. The Calvin cycle is sometimes called the “dark” reactions, but it is not really dark: it runs in daylight and stalls within seconds to minutes once the light reactions stop feeding it.</p>`
 		},
 		{
 			id: 'sugar',
@@ -235,7 +235,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			body: `
 <p>Two machines, coupled by two shuttles. In the thylakoid membrane, light splits water, releases O<sub>2</sub> and charges ATP and NADPH. In the stroma, the Calvin cycle spends them to fix CO<sub>2</sub> into G3P, returning ADP, phosphate and NADP<sup>+</sup> to be recharged.</p>
-<p>Turn the light down and watch the carriers run out: the Calvin cycle stalls within moments. Turn it up and the cycle speeds up — until RuBisCO and CO<sub>2</sub> supply become the bottleneck.</p>`
+<p>Turn the light down and watch the carriers run out: the Calvin cycle soon stalls. Turn it up and the cycle speeds up — until RuBisCO and CO<sub>2</sub> supply become the bottleneck.</p>`
 		},
 		{
 			id: 'bigpicture',
