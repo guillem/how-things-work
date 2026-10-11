@@ -58,7 +58,6 @@ test('sieve of Eratosthenes up to 100', () => {
 	// Stages for 2, 3, 5 and 7 only: the next prime, 11, has 11² = 121 > 100.
 	expect(s.stages.map((st) => st.prime)).toEqual([2, 3, 5, 7]);
 	expect(s.stopPrime).toBe(11);
-	expect(s.stopPrime ** 2).toBe(121);
 	// Multiples struck, and how many are new at each stage.
 	expect(s.stages.map((st) => st.multiples.length)).toEqual([49, 32, 19, 13]);
 	expect(s.stages.map((st) => st.fresh.length)).toEqual([49, 16, 6, 3]);
@@ -169,7 +168,6 @@ test('square-and-multiply', () => {
 	expect(digitsOfPowerOfTwo(2047)).toBe(617);
 	// A 600-digit exponent has at most 1994 bits: a few thousand multiplications.
 	const bits600 = Math.ceil(600 * Math.log2(10));
-	expect(bits600).toBe(1994);
 	expect(fastCostMax(bits600)).toBe(3986);
 	// 3 × 5 = 15 ≡ 3 on 12 hours (the multiply step's example).
 	expect(multiplyHops(3, 5, 12).at(-1)).toBe(3);

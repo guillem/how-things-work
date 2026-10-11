@@ -42,8 +42,6 @@ test('value iteration satisfies the Bellman equation: Q* = r + γ · max Q*(next
 	// A square d moves from the reward (with no pit in between) is worth 10 · γ^(d − 1).
 	expect(d[goal(w)]).toBe(13);
 	expect(bestValue(q, w.start)).toBeCloseTo(10 * 0.9 ** 12, 10);
-	expect(10 * 0.9 ** 12).toBeCloseTo(2.82, 2);
-	expect(10 * 0.5 ** 12).toBeCloseTo(0.002, 3);
 	// Next to the reward 10, then 9, then 8.1.
 	expect(bestValue(q, 3 * 10 + 7)).toBeCloseTo(10, 10);
 	expect(bestValue(q, 3 * 10 + 6)).toBeCloseTo(9, 10);

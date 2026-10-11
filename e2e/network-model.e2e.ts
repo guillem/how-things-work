@@ -51,8 +51,6 @@ test('an IPv4 address is 32 bits, written as four bytes', () => {
 	expect(addressBits('192.0.2.10')).toEqual(['11000000', '00000000', '00000010', '00001010']);
 	expect(addressBits('198.51.100.20').join('')).toHaveLength(32);
 	expect(() => addressBits('256.1.1.1')).toThrow();
-	// 2^32 possible addresses: about 4.3 billion.
-	expect(2 ** 32).toBe(4_294_967_296);
 });
 
 test('the best route runs along the middle, and no single cut disconnects Ada from Ben', () => {

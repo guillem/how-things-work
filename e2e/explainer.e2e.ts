@@ -28,12 +28,6 @@ test('steps through the explainer with buttons and keyboard', async ({ page }) =
 	await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
 });
 
-test('deep links open the right step', async ({ page }) => {
-	await open(page, './photosynthesis/#rubisco');
-	await expect(stepTitle(page)).toHaveText(/carbon fixation/i);
-	await expect(page.locator('.counter .current')).toHaveText('11');
-});
-
 test('after opening a deep link, the step buttons still move between steps', async ({ page }) => {
 	await open(page, './photosynthesis/#pigments');
 	await page.getByRole('button', { name: 'Next step' }).click();

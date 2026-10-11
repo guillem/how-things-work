@@ -50,9 +50,6 @@ test('counting: binomial coefficients and the numbers quoted in the text', () =>
 	expect(formatCount(16n)).toBe('16');
 	// "all of them on the left is one arrangement out of 16"
 	expect(choose(4, 4)).toBe(1n);
-	expect(2 ** 4).toBe(16);
-	// A litre of air (≈ 2.5 × 10²² molecules): all in one half ≈ 1 in 10^(7.5 × 10²¹).
-	expect(2.5e22 * Math.log10(2)).toBeCloseTo(7.5e21, -20);
 });
 
 test('sharing energy: C(q + n − 1, q) ways, the peak at equal temperatures', () => {

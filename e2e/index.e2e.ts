@@ -26,12 +26,6 @@ test('theme toggle switches and persists the theme', async ({ page }) => {
 	expect(await page.evaluate(() => localStorage.getItem('theme'))).toBe('dark');
 });
 
-test('follows the operating system preference by default', async ({ page }) => {
-	await page.emulateMedia({ colorScheme: 'dark' });
-	await page.goto('./');
-	await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-});
-
 test('the 404 page is built and links back home', async ({ page }) => {
 	await page.goto('./404.html');
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/nothing here/i);

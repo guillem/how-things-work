@@ -45,9 +45,6 @@ test('seasons: declination, day length and noon altitude', () => {
 test('distance: perihelion in January, and only a ~3% change', () => {
 	expect(sunDistance(3)).toBeCloseTo(0.9833, 4);
 	expect(sunDistance(3 + 365.2422 / 2)).toBeCloseTo(1.0167, 4);
-	const ratio = (1.0167 / 0.9833) ** 2; // sunlight goes as 1/distance²
-	expect(ratio).toBeGreaterThan(1.06);
-	expect(ratio).toBeLessThan(1.08);
 });
 
 test('Moon: phases and eclipse limits', () => {

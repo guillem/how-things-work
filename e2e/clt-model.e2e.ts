@@ -25,12 +25,11 @@ test('Galton board: the bins follow the binomial chances', () => {
 });
 
 test('sample means centre on the mean, with spread σ/√n', () => {
-	for (const [name, shape] of Object.entries(SHAPES)) {
+	for (const shape of Object.values(SHAPES)) {
 		for (const n of [1, 4, 16]) {
 			const m = sampleMeans(shape, n, 20000, 7);
 			expect(Math.abs(avg(m) - mean(shape))).toBeLessThan(0.01);
 			expect(spread(m) / (sd(shape) / Math.sqrt(n))).toBeCloseTo(1, 1);
-			expect(name).toBeTruthy();
 		}
 	}
 });

@@ -44,7 +44,6 @@ test('16 codewords, all at least 3 flips apart, and the code is perfect', () => 
 		const w = [6, 5, 4, 3, 2, 1, 0].map((i) => (v >> i) & 1);
 		expect(words.filter((c) => distance(c, w) <= 1).length).toBe(1);
 	}
-	expect(16 * 8).toBe(2 ** 7);
 });
 
 test('any single flip is located by the syndrome and repaired', () => {
@@ -125,18 +124,6 @@ test('the odds quoted in the text', () => {
 	// 20 % noise: 17 % vs 33 %
 	expect(charOkPlain(0.2)).toBeCloseTo(0.168, 3);
 	expect(charOkCoded(0.2)).toBeCloseTo(0.333, 3);
-	// cost: 7 bits sent for every 4 → 75 % more; (15, 11): 36 % more
-	expect(7 / 4 - 1).toBe(0.75);
-	expect(Math.round((15 / 11 - 1) * 100)).toBe(36);
-	// ECC memory: 64 data bits need 7 check bits (2⁷ ≥ 64 + 7 + 1), plus one for double detection = 72
-	const checkBitsFor = (k: number) => {
-		let r = 1;
-		while (2 ** r < k + r + 1) r++;
-		return r;
-	};
-	expect(checkBitsFor(64)).toBe(7);
-	expect(checkBitsFor(4)).toBe(3);
-	expect(checkBitsFor(11)).toBe(4);
 });
 
 test('the channel: same dice, more noise only adds flips; decoding fails only on 2+ flips in a block', () => {

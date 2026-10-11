@@ -34,7 +34,6 @@ test('i² = −1, i⁴ = 1, and the arithmetic quoted in the text', () => {
 	expect(abs(c(1.5, 2))).toBeCloseTo(2.5, 12);
 	expect(abs(c(1, 1))).toBeCloseTo(1.41, 2);
 	expect(arg(c(1, 1))).toBeCloseTo(45, 12);
-	expect(Math.E).toBeCloseTo(2.718, 3);
 });
 
 test('multiplying by i turns any point a quarter turn: (a, b) → (−b, a)', () => {
