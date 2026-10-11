@@ -7,7 +7,8 @@ for these sessions are in `CLAUDE.md` ("Cloud sessions").
 
 At claude.ai/code, create or edit the environment for this repository:
 
-- **Setup script:** `bash scripts/cloud-setup.sh`. It checks for Node 22 (switching with nvm if
+- **Setup script:** `bash /home/user/how-things-work/scripts/cloud-setup.sh`. The script runs in
+  `/home/user`, after the clone, so the path must be absolute. It checks for Node 22 (switching with nvm if
   needed), installs the dependencies and a Chromium for the browser tests, and stops with an
   error rather than snapshot a broken install. The environment snapshots the result, so later
   sessions start warm.
