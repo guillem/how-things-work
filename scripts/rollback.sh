@@ -11,10 +11,18 @@ TO="${1:-}"
 git fetch -q origin --tags
 
 if [ -z "$TO" ]; then
-	# What is live: the newest release run that deployed successfully. Its title
-	# is "Release vX.Y.Z" or "Rollback to vX.Y.Z" (see run-name in release.yml).
-	live=$(gh run list --workflow release.yml --status success --limit 1 \
-		--json displayTitle --jq '.[0].displayTitle' | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' || true)
+	# What is live: the newest release run whose deploy job succeeded (even if
+	# the live smoke test after it failed, the usual reason to roll back). Its
+	# title is "Release vX.Y.Z" or "Rollback to vX.Y.Z" (run-name in release.yml).
+	live=""
+	while read -r id title; do
+		deployed=$(gh run view "$id" --json jobs --jq '.jobs[] | select(.name == "deploy") | .conclusion')
+		if [ "$deployed" = success ]; then
+			live=$(grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' <<<"$title" || true)
+			break
+		fi
+	done < <(gh run list --workflow release.yml --limit 20 --json databaseId,displayTitle \
+		--jq '.[] | "\(.databaseId) \(.displayTitle)"')
 	[ -n "$live" ] || {
 		echo "rollback: can't tell which release is live; pass one: make rollback TO=vX.Y.Z" >&2
 		exit 1
