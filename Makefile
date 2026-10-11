@@ -6,7 +6,7 @@
 PW_PORT ?= 4180
 export PW_PORT
 
-.PHONY: check format-check lint typecheck test format e2e e2e-full release rollback verify
+.PHONY: check format-check lint typecheck test format e2e e2e-full release rollback verify review review-fetch
 
 ## Fast checks, under a minute: formatting, lint, types and the model tests.
 check: format-check lint typecheck test
@@ -48,3 +48,12 @@ rollback:
 ## Follow the latest release run to its end (it ends with a check of the live site).
 verify:
 	gh run watch "$$(gh run list --workflow release.yml --limit 1 --json databaseId --jq '.[0].databaseId')" --exit-status
+
+## Review and fact-check topics through the Batch API (half price, results within
+## 24 h, usually 1): make review TOPICS="entropy internet". Needs ANTHROPIC_API_KEY.
+review:
+	node --experimental-strip-types scripts/batch-review.ts submit $(TOPICS)
+
+## Write the reviews of finished batches to docs/reviews/<slug>.md (WAIT=1 to wait).
+review-fetch:
+	node --experimental-strip-types scripts/batch-review.ts fetch $(if $(WAIT),--wait)
