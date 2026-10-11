@@ -64,6 +64,6 @@ branch rebased and passing. Merge it from the GitHub app, or ask a local session
 - **Cloud sessions** use the cloud credits. Each one is its own 4-core VM, so parallel sessions
   don't slow each other down.
 - **Batch reviews** use API credits. They cost half the normal API price, and the cached
-  catalogue is shared within a batch. Estimate: $0.30–0.60 per topic with Claude Opus 5.5 (not yet
-  measured; each report ends with its cost).
+  catalogue is shared within a batch. Measured: about $1.10 for photosynthesis, the largest topic (74k tokens of input,
+  15 web searches, ~25 minutes); smaller topics cost less. Each report records its cost.
 - **Releases** run on GitHub Actions, about 7 minutes each. That's free for a public repository.
