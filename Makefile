@@ -57,8 +57,8 @@ verify:
 ## Review and fact-check topics through the Batch API (half price, results within
 ## 24 h, usually 1): make review TOPICS="entropy internet". Needs ANTHROPIC_API_KEY.
 review:
-	node --experimental-strip-types scripts/batch-review.ts submit $(TOPICS)
+	node --env-file-if-exists=.env --experimental-strip-types scripts/batch-review.ts submit $(TOPICS)
 
 ## Write the reviews of finished batches to docs/reviews/<slug>.md (WAIT=1 to wait).
 review-fetch:
-	node --experimental-strip-types scripts/batch-review.ts fetch $(if $(WAIT),--wait)
+	node --env-file-if-exists=.env --experimental-strip-types scripts/batch-review.ts fetch $(if $(WAIT),--wait)

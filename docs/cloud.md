@@ -22,6 +22,18 @@ At claude.ai/code, create or edit the environment for this repository:
   - Optional: `ANTHROPIC_API_KEY=<key>` to run batch reviews from the cloud. The key is visible
     to the sessions, so use one only for this.
 
+## API key on the laptop
+
+Put the key in a git-ignored `.env` file at the repository root, which only `make review` and
+`make review-fetch` read. With the key copied from the Console:
+
+```sh
+printf 'ANTHROPIC_API_KEY=%s\n' "$(pbpaste)" > .env && chmod 600 .env
+```
+
+Don't export it in your shell profile or put it in Claude Code's settings: Claude Code also reads
+`ANTHROPIC_API_KEY`, and would bill the key instead of the subscription.
+
 ## A batch of topics
 
 1. Start one cloud session per topic (3–4 at a time), each with:
