@@ -47,7 +47,7 @@ test('an explainer links to its catalogue neighbours, linking only built topics'
 });
 
 test('the index tracks reading progress in this browser and can clear it', async ({ page }) => {
-	await page.goto('/');
+	await page.goto('./');
 	const tally = page.getByRole('region', { name: 'Your progress' });
 	const total = Number((await tally.getByText(/^Total:/).textContent())!.replace(/\D/g, ''));
 	expect(total).toBeGreaterThan(1);
@@ -63,7 +63,7 @@ test('the index tracks reading progress in this browser and can clear it', async
 	await page.getByRole('button', { name: 'Next step' }).click();
 	await expect(page).toHaveURL(/#.+$/);
 	const step = new URL(page.url()).hash;
-	await page.goto('/');
+	await page.goto('./');
 	await expect(tally.getByText(/^Started:/)).toHaveText('Started: 1');
 	await expect(tally.getByText(/^New:/)).toHaveText(`New: ${total - 1}`);
 	await expect(card()).toContainText('Continue');
@@ -73,7 +73,7 @@ test('the index tracks reading progress in this browser and can clear it', async
 	await card().click();
 	await expect(page).toHaveURL(new RegExp(`${step}$`));
 	await page.keyboard.press('End');
-	await page.goto('/');
+	await page.goto('./');
 	await expect(tally.getByText(/^Done:/)).toHaveText('Done: 1');
 	await expect(tally.getByText(/^Started:/)).toHaveText('Started: 0');
 	await expect(card()).toContainText('Done');
