@@ -21,6 +21,8 @@ type Effort = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
 type Request = Anthropic.Messages.Batches.BatchCreateParams.Request;
 
 const REVIEWS = 'docs/reviews';
+/** Shared modules that carry data or maths the topics draw from (part of the cached prefix). */
+const SHARED = ['src/lib/draw/palette.ts', 'src/lib/draw/math.ts', 'src/lib/draw/chart.ts'];
 const PENDING = path.join(REVIEWS, 'batches');
 
 /** Batch prices in $ per million tokens (half the standard price). */
@@ -30,6 +32,8 @@ const PRICES: Record<string, { input: number; output: number; cacheRead: number 
 };
 
 const INSTRUCTIONS = `You review and fact-check one explainer of "How Things Work", a site of interactive, animated explanations (SvelteKit, every graphic drawn from a real model). Below is the catalogue that defines every topic: read its preamble (it applies to every page, including the definition of done) and the entry of the topic you are given.
+
+The site's framework is not under review. The page shell generates the "Read first", "Related" and "Leads on to" links from the catalogue, linking only topics that are built; shared drawing helpers (colours, the pigment absorbance spectra, maths, charts) are given below the catalogue.
 
 You will receive the topic's source: steps.ts (the narrative: chapters, steps with HTML bodies, "Go deeper" notes and the controls), the model (plain TypeScript), the scenes (Svelte components drawing SVG; their text labels and readouts are what the reader sees) and the model's tests. Lines are numbered.
 
@@ -90,6 +94,7 @@ function buildRequest(
 	paused?: Anthropic.Messages.ContentBlockParam[]
 ): Request {
 	const catalogue = fs.readFileSync('docs/TOPICS.md', 'utf8');
+	const shared = SHARED.map((f) => `<file path="${f}">\n${numbered(f)}\n</file>`).join('\n\n');
 	const source = topicFiles(slug)
 		.map((f) => `<file path="${f}">\n${numbered(f)}\n</file>`)
 		.join('\n\n');
@@ -103,9 +108,10 @@ function buildRequest(
 			// at a tenth of the price by the other requests in the batch.
 			system: [
 				{ type: 'text', text: INSTRUCTIONS },
+				{ type: 'text', text: `<catalogue>\n${catalogue}\n</catalogue>` },
 				{
 					type: 'text',
-					text: `<catalogue>\n${catalogue}\n</catalogue>`,
+					text: `<shared-code>\n${shared}\n</shared-code>`,
 					cache_control: { type: 'ephemeral', ttl: '1h' }
 				}
 			],
