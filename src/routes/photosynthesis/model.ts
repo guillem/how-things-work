@@ -206,14 +206,18 @@ export const leafAbsorptance = (nm: number, leaf: Leaf = TYPICAL_LEAF) =>
  * in photons across this range).
  */
 export function whiteAbsorptance(leaf: Leaf = TYPICAL_LEAF): number {
+	if (leaf === TYPICAL_LEAF && typicalWhite !== undefined) return typicalWhite;
 	let sum = 0;
 	let n = 0;
 	for (let nm = NM0; nm <= NM1; nm += 1) {
 		sum += leafAbsorptance(nm, leaf);
 		n++;
 	}
+	if (leaf === TYPICAL_LEAF) typicalWhite = sum / n;
 	return sum / n;
 }
+/** Cached white-light absorptance of the typical leaf (the scenes ask every frame). */
+let typicalWhite: number | undefined;
 
 // ---- leaf biochemistry: FvCB ------------------------------------------------
 

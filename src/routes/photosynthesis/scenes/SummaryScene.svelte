@@ -29,6 +29,7 @@
 		TAU
 	} from '#lib/draw/index.ts';
 	import type { Point } from '#lib/draw/index.ts';
+	import { rate, FULL_SUN } from '../model';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -127,11 +128,25 @@
 		return samples[lo].v;
 	}
 	/**
-	 * Calvin-cycle rate for a given carrier supply: nearly proportional while
-	 * carriers are scarce, flattening towards full light, where RuBisCO and the
-	 * CO₂ supply set the pace (0.7 → 0.84, 1 → 1).
+	 * The leaf model (`../model.ts`) at today's CO₂ and 25 °C in white light,
+	 * for a light level x (0–1 of full sunlight). The rotor and the gauges
+	 * follow electron transport J (the ATP and NADPH supply), the Calvin ring
+	 * follows the CO₂ actually fixed: min(Wc, Wj), which stops rising once
+	 * RuBisCO and the CO₂ supply set the pace (at about half of full sunlight).
+	 * Both are relative to full sunlight.
 	 */
-	const saturate = (x: number) => (x * 1.8) / (x + 0.8);
+	const leafAt = (x: number) => rate({ ppfd: x * FULL_SUN, light: 'white', co2: 420, tempC: 25 });
+	const FULL = leafAt(1);
+	const electrons = (x: number) => leafAt(x).j / FULL.j;
+	const fixation = (x: number) => {
+		const r = leafAt(x);
+		return Math.max(0, Math.min(r.wc, r.wj)) / Math.min(FULL.wc, FULL.wj);
+	};
+	/** How far the Calvin cycle is past the light limit (µmol m⁻² s⁻¹ of spare light capacity). */
+	const spareLight = (x: number) => {
+		const r = leafAt(x);
+		return r.wj - r.wc;
+	};
 	const frame = $derived.by(() => {
 		const dt = t - lastT;
 		if (reduced || lastT < 0 || dt < 0) {
@@ -142,8 +157,8 @@
 			hist.push({ t, v: supply });
 			while (hist.length > 1 && hist[1].t <= t - HISTORY) hist.shift();
 			if (dt < 0.5) {
-				rotorAcc += dt * supply;
-				ringAcc += dt * saturate(lookup(hist, t, LANE_TIME));
+				rotorAcc += dt * electrons(supply);
+				ringAcc += dt * fixation(lookup(hist, t, LANE_TIME));
 			}
 		}
 		lastT = t;
@@ -154,6 +169,8 @@
 	const levelAt = (age: number) => lookup(frame.hist, t, age);
 	/** Carriers arriving at the Calvin cycle now: what left the membrane LANE_TIME ago. */
 	const arrived = $derived(levelAt(LANE_TIME));
+	/** Gauge level: the ATP and NADPH supply (electron transport) the arriving carriers stand for. */
+	const gauge = $derived(electrons(arrived));
 	/** 0 → 1 as a level goes from "nothing" to "clearly running". */
 	const on = (level: number) => smoothstep(0.03, 0.25, level);
 	const lit = $derived(on(supply));
@@ -163,12 +180,12 @@
 	 * agree with the ring and the gauges. The stall caption's window sits
 	 * between two slider stops (running 0.03 → 0.2, i.e. arrived ≈ 5 % → 10 %:
 	 * fully on at 5 %, fully off at 10 %); the bottleneck caption only comes in
-	 * once bright-light carriers arrive (arrived 0.9 → 0.97: fully off at 90 %
-	 * on the slider, clearly on at 95 %). The two sentences share a spot and are
-	 * never drawn on top of each other.
+	 * once the arriving carriers could fix more CO₂ than RuBisCO manages, per
+	 * the leaf model (from about 55 % on the slider, clearly on at 65 %). The
+	 * two sentences share a spot and are never drawn on top of each other.
 	 */
 	const stalled = $derived(1 - smoothstep(0.03, 0.2, running));
-	const bottleneck = $derived(smoothstep(0.9, 0.97, arrived));
+	const bottleneck = $derived(smoothstep(0.05, 0.4, spareLight(arrived)));
 
 	const fadeEnds = (u: number) => smoothstep(0, 0.08, u) * (1 - smoothstep(0.9, 1, u));
 	/**
@@ -620,9 +637,9 @@
 				/>
 				<rect
 					x={g.x - 7}
-					y={334 - 72 * arrived}
+					y={334 - 72 * gauge}
 					width="14"
-					height={72 * arrived}
+					height={72 * gauge}
 					rx="4"
 					fill={g.c}
 					opacity="0.9"
