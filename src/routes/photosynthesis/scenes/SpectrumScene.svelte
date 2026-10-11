@@ -6,16 +6,16 @@
 	 *   (a) the visible spectrum with a marker and a readout (colour, photon energy);
 	 *   (b) the relative absorbance of chlorophyll a, chlorophyll b and the
 	 *       carotenoids (in solvent), with a cursor at the current wavelength and
-	 *       a legend that doubles as a live readout of the three curves, plus
-	 *       the fraction a thin film of the mixed pigments absorbs;
-	 *   (c) a leaf hit by a stream of photons of that wavelength, coloured like
-	 *       that thin pigment film. Each photon is absorbed (it fades out just
-	 *       inside with a glow), reflected, or passes through, in proportion to
-	 *       the extract's absorption. A real leaf absorbs far more, especially in
-	 *       the green (about three quarters at 550 nm, McCree 1972): the labels
-	 *       and the caption say "extract", and the narrative says so too.
+	 *       a legend that doubles as a live readout of the three curves; plus
+	 *       the fraction the same pigments absorb dissolved in a solution (dashed) and
+	 *       the fraction a whole leaf absorbs (solid), from the PROSPECT-D leaf
+	 *       model in `../model.ts` — far more, because scattering inside the
+	 *       leaf sends the light back and forth through many layers of cells;
+	 *   (c) a leaf hit by a stream of photons of that wavelength. Each photon is
+	 *       absorbed (it fades out just inside with a glow), reflected, or passes
+	 *       through, in the proportions the leaf model gives.
 	 * A caption at the bottom puts the drawn numbers into words: its wording
-	 * follows the "N% absorbed" pill, the legend readout and the photon count.
+	 * follows the "leaf N%" pill and the photon count.
 	 */
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
@@ -33,6 +33,7 @@
 		pathFrom,
 		type Point
 	} from '#lib/draw/index.ts';
+	import { leafOptics, solutionAbsorptance } from '../model';
 
 	let { t, params }: StageProps = $props();
 
@@ -61,22 +62,19 @@
 	const rel = (v: number) => v.toFixed(2);
 
 	/**
-	 * Abundance weights of the three pigments — the same ones `absorbance().total`
-	 * in palette.ts uses to mix the curves (chlorophyll a : b : carotenoids =
-	 * 2.4 : 1 : 1; in leaves chlorophyll a/b is typically about 3).
+	 * Fraction of the light that the leaf's pigments absorb once dissolved in a
+	 * clear solution (no scattering, one straight pass) — about half of what
+	 * the leaf itself absorbs in the green (Kume 2018 measured 38% against 75%).
 	 */
-	const WEIGHTS = { chlA: 0.6, chlB: 0.25, car: 0.25 };
+	const combined = (nm: number) => solutionAbsorptance(nm);
+	const extract = $derived(combined(wavelength));
 	/**
-	 * Fraction of the light of a given wavelength that a thin film of pigment
-	 * extract absorbs. The palette's `total` is the weighted mixture kept below
-	 * 1 for plotting; the film is taken just thick enough to absorb all the
-	 * light at chlorophyll a's main peak, so the mixture is rescaled to
-	 * saturate there. This is NOT a whole leaf: scattering makes a leaf's light
-	 * path many times longer, so a leaf absorbs 80–95% in the blue and red and
-	 * 50–90% in the green (Inada 1976, quoted by Terashima et al. 2009).
+	 * What a typical whole leaf does with the light (PROSPECT-D): it absorbs
+	 * 80–95% in the blue and red and about 70% in the green, within the
+	 * measured ranges (McCree 1972; Inada 1976 via Terashima et al. 2009).
 	 */
-	const combined = (nm: number) => Math.min(1, absorbance(nm).total / WEIGHTS.chlA);
-	const absorbed = $derived(combined(wavelength));
+	const leaf = $derived(leafOptics(wavelength));
+	const absorbed = $derived(leaf.absorptance);
 
 	// ---- (a) spectrum bar ------------------------------------------------------
 	const BAR = { x: 80, y: 70, w: 800, h: 36 };
@@ -88,18 +86,19 @@
 	const readoutX = $derived(clamp(markerX, BAR.x + 150, BAR.x + BAR.w - 150));
 
 	// ---- (b) absorption chart --------------------------------------------------
-	// The chart runs down to the axis title at y ≈ 460, so that it spans the same
-	// height as the leaf demo on the right (the caption rule is at y = 504).
-	const PLOT = { x: 110, y: 164, w: 500, h: 260 };
+	// The chart, its axis title and the legend below it run down to y ≈ 480,
+	// beside the leaf demo on the right (the caption rule is at y = 504).
+	const PLOT = { x: 110, y: 164, w: 500, h: 200 };
 	const cx = (nm: number) => PLOT.x + ((nm - 400) / 300) * PLOT.w;
 	const cy = (a: number) => PLOT.y + PLOT.h - a * PLOT.h;
 	type Pigment = 'chlA' | 'chlB' | 'car';
 	const samples = Array.from({ length: 61 }, (_, i) => ({
 		nm: 400 + i * 5,
 		...absorbance(400 + i * 5),
-		leaf: combined(400 + i * 5)
+		extract: combined(400 + i * 5),
+		leaf: leafOptics(400 + i * 5).absorptance
 	}));
-	const curve = (key: Pigment | 'leaf') =>
+	const curve = (key: Pigment | 'extract' | 'leaf') =>
 		pathFrom(
 			smooth(
 				samples.map((s) => ({ x: cx(s.nm), y: cy(s[key]) })),
@@ -109,20 +108,20 @@
 	const pathA = curve('chlA');
 	const pathB = curve('chlB');
 	const pathCar = curve('car');
+	const pathExtract = curve('extract');
 	const pathLeaf = curve('leaf');
-	const areaLeaf = `${pathLeaf} L${cx(700)} ${cy(0)} L${cx(400)} ${cy(0)} Z`;
+	const areaExtract = `${pathExtract} L${cx(700)} ${cy(0)} L${cx(400)} ${cy(0)} Z`;
 	const legend: { key: Pigment; label: string; color: string }[] = [
 		{ key: 'chlA', label: 'chlorophyll a', color: colors.chlorophyllA },
 		{ key: 'chlB', label: 'chlorophyll b', color: colors.chlorophyllB },
 		{ key: 'car', label: 'carotenoids', color: colors.carotenoid }
 	];
-	// The legend sits in the green gap of the chart (≈ 497–641 nm), where no
-	// curve rises above 0.5 (its bottom edge is at 0.65); it has an opaque
-	// backing so the cursor line passes cleanly behind it.
-	const LEGEND = { x: 272, y: PLOT.y + 6, w: 240, h: 84, row: 18, pad: 14 };
+	// The legend sits below the chart in two columns: the pigments on the
+	// left, the dissolved mixture and the whole leaf on the right.
+	const LEGEND = { x: PLOT.x - 30, y: PLOT.y + PLOT.h + 58, w: 530, col: 250, row: 18, pad: 0 };
 	const legendY = (i: number) => LEGEND.pad + i * LEGEND.row;
 	const cursorX = $derived(cx(wavelength));
-	const cursorPillX = $derived(clamp(cursorX, PLOT.x + 78, PLOT.x + PLOT.w - 78));
+	const cursorPillX = $derived(clamp(cursorX, PLOT.x + 125, PLOT.x + PLOT.w - 125));
 	/**
 	 * The three pigment dots on the cursor line. Where two curves cross (or one
 	 * coincides with the combined curve) the dots would hide each other, so a dot
@@ -284,14 +283,21 @@
 	type Fate = 'absorb' | 'reflect' | 'through';
 	const fates: Fate[] = $derived.by(() => {
 		const out: Fate[] = photons.map(() => 'absorb');
-		// The escaping photons alternate between passing through and bouncing off
-		// in the order they arrive, so that both streams are evenly spaced in time
-		// rather than clustered. (Passing through goes first so that the frozen
-		// reduced-motion frame at t = 2.5 s shows all three fates at 550 nm.)
-		photons
+		// The escaping photons split between passing through and bouncing off in
+		// the leaf's proportions, spread evenly over their arrival order so that
+		// neither stream is clustered in time. (Passing through goes first so that
+		// the frozen reduced-motion frame at t = 2.5 s shows all three fates at
+		// 550 nm, where the two are equal.)
+		const escaping = photons
 			.filter((p) => rank[p.i] >= absorbedCount)
-			.sort((a, b) => a.offset - b.offset)
-			.forEach((p, j) => (out[p.i] = j % 2 === 0 ? 'through' : 'reflect'));
+			.sort((a, b) => a.offset - b.offset);
+		const back = leaf.reflectance + leaf.transmittance;
+		const through = Math.round((escaping.length * leaf.transmittance) / (back || 1));
+		escaping.forEach((p, j) => {
+			const due = Math.floor(((j + 1) * through) / escaping.length);
+			const done = Math.floor((j * through) / escaping.length);
+			out[p.i] = due > done ? 'through' : 'reflect';
+		});
 		return out;
 	});
 	const reflectedCount = $derived(fates.filter((f) => f === 'reflect').length);
@@ -323,22 +329,21 @@
 			.map((item) => (item.key === 'car' ? 'the carotenoids' : item.label));
 		return names.length === 3 ? 'all three pigments' : names.join(' and ');
 	});
-	// The bands follow the drawn fraction (the "N% absorbed" pill and the photon
-	// count), which is the extract's, not a real leaf's: at 680 nm it is about a half.
+	// The bands follow the leaf's absorbed fraction (the "leaf N%" pill and the
+	// photon count).
 	const caption = $derived.by(() => {
 		const Colour = band[0].toUpperCase() + band.slice(1);
-		if (absorbed <= 0.2) {
+		const leafPct = pct(absorbed);
+		if (absorbed < 0.8) {
 			if (band === 'green')
-				return 'Green is absorbed least: an extract barely takes it, and even a real leaf (~¾ absorbed) sends back more green than any other colour.';
-			if (wavelength > 662)
-				return `At ${wavelength} nm we are past chlorophyll's red peak — most of this light is reflected or passed through.`;
-			return `${Colour} light falls between the pigments' peaks — most of it is reflected or passed through.`;
+				return `Green is absorbed least: a leaf takes ${leafPct} and sends back more green than any other colour.`;
+			if (wavelength > 680)
+				return `At ${wavelength} nm we are past chlorophyll's red peak: a leaf absorbs only ${leafPct}.`;
+			return `${Colour} light falls between the pigments' peaks: a leaf still absorbs ${leafPct}.`;
 		}
-		if (absorbed <= 0.4) return `${Colour} light is partly absorbed, mainly by ${dominant}.`;
-		if (absorbed <= 0.6)
-			return `At ${wavelength} nm about half of the light is absorbed, mainly by ${dominant}.`;
-		if (absorbed <= 0.8) return `${Colour} light is mostly absorbed, mainly by ${dominant}.`;
-		return `${Colour} light is strongly absorbed, mainly by ${dominant}.`;
+		if (absorbed < 0.9)
+			return `${Colour} light is mostly absorbed (${leafPct} by a leaf), mainly by ${dominant}.`;
+		return `${Colour} light is strongly absorbed (${leafPct} by a leaf), mainly by ${dominant}.`;
 	});
 	const CAPTION_Y = 504;
 </script>
@@ -437,14 +442,21 @@
 		{/each}
 		<!-- area under the combined curve, tinted by the spectrum -->
 		<g clip-path="url(#spectrum-plot)">
-			<path d={areaLeaf} fill="url(#spectrum-bar)" opacity="0.16" />
+			<path d={areaExtract} fill="url(#spectrum-bar)" opacity="0.1" />
 			<path
-				d={pathLeaf}
+				d={pathExtract}
 				fill="none"
 				stroke="var(--stage-ink-muted)"
 				stroke-width="1.2"
 				stroke-dasharray="3 3"
 				opacity="0.9"
+			/>
+			<path
+				d={pathLeaf}
+				fill="none"
+				stroke="var(--stage-ink)"
+				stroke-width="1.8"
+				stroke-linejoin="round"
 			/>
 			<path
 				d={pathCar}
@@ -509,7 +521,7 @@
 		<Label
 			x={PLOT.x - 28}
 			y={PLOT.y + PLOT.h / 2}
-			text="relative absorbance"
+			text="fraction absorbed"
 			size={11}
 			rotate={-90}
 			muted
@@ -524,56 +536,85 @@
 			stroke-width="1"
 			opacity="0.55"
 		/>
-		<!-- legend, doubling as a readout of the three curves at the cursor -->
+		<!-- legend below the chart, doubling as a readout of the curves at the cursor -->
 		<g transform="translate({LEGEND.x} {LEGEND.y})">
-			<rect
-				width={LEGEND.w}
-				height={LEGEND.h}
-				rx="8"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
 			{#each legend as item, i (item.key)}
 				{@const y = legendY(i)}
 				<line
-					x1="10"
+					x1="0"
 					y1={y}
-					x2="28"
+					x2="18"
 					y2={y}
 					stroke={item.color}
 					stroke-width="2.2"
 					stroke-linecap="round"
 				/>
-				<Label x={35} y={y + 4} text={item.label} size={12} anchor="start" />
-				<Label x={LEGEND.w - 12} y={y + 4} text={rel(abs[item.key])} size={12} anchor="end" />
+				<Label x={25} y={y + 4} text={item.label} size={12} anchor="start" />
+				<Label x={LEGEND.col - 24} y={y + 4} text={rel(abs[item.key])} size={12} anchor="end" />
 			{/each}
-			<rect
-				x="10"
-				y={legendY(3)}
-				width="18"
-				height="7"
-				rx="2"
-				fill="url(#spectrum-bar)"
-				opacity="0.5"
-			/>
-			<line
-				x1="10"
-				y1={legendY(3)}
-				x2="28"
-				y2={legendY(3)}
-				stroke="var(--stage-ink-muted)"
-				stroke-width="1.2"
-				stroke-dasharray="3 3"
-			/>
-			<!-- the dashed curve is a thin extract's absorbed fraction, not an average of the three -->
-			<Label
-				x={35}
-				y={legendY(3) + 4}
-				text="% absorbed by a thin extract"
-				size={12}
-				anchor="start"
-				muted
-			/>
+			<g transform="translate({LEGEND.col} 0)">
+				<rect
+					x="0"
+					y={legendY(0) - 3}
+					width="18"
+					height="7"
+					rx="2"
+					fill="url(#spectrum-bar)"
+					opacity="0.5"
+				/>
+				<line
+					x1="0"
+					y1={legendY(0)}
+					x2="18"
+					y2={legendY(0)}
+					stroke="var(--stage-ink-muted)"
+					stroke-width="1.2"
+					stroke-dasharray="3 3"
+				/>
+				<!-- the dashed curve: the same pigments in a clear solution (no scattering) -->
+				<Label
+					x={25}
+					y={legendY(0) + 4}
+					text="same pigments, dissolved"
+					size={12}
+					anchor="start"
+					muted
+				/>
+				<Label
+					x={LEGEND.w - LEGEND.col}
+					y={legendY(0) + 4}
+					text={pct(extract)}
+					size={12}
+					anchor="end"
+					muted
+				/>
+				<line
+					x1="0"
+					y1={legendY(1)}
+					x2="18"
+					y2={legendY(1)}
+					stroke="var(--stage-ink)"
+					stroke-width="1.8"
+					stroke-linecap="round"
+				/>
+				<Label x={25} y={legendY(1) + 4} text="whole leaf (model)" size={12} anchor="start" />
+				<Label
+					x={LEGEND.w - LEGEND.col}
+					y={legendY(1) + 4}
+					text={pct(absorbed)}
+					size={12}
+					anchor="end"
+					weight={600}
+				/>
+				<Label
+					x={0}
+					y={legendY(2) + 4}
+					text="pigment curves: relative absorbance"
+					size={11}
+					anchor="start"
+					muted
+				/>
+			</g>
 		</g>
 		<!-- cursor markers: a ring on the combined curve, a dot on each pigment curve -->
 		<circle
@@ -598,7 +639,7 @@
 		<Label
 			x={cursorPillX}
 			y={PLOT.y - 18}
-			text="{pct(absorbed)} absorbed by the extract"
+			text="leaf {pct(absorbed)} · dissolved {pct(extract)} absorbed"
 			size={12}
 			pill
 		/>
@@ -733,14 +774,7 @@
 		size={12}
 		pill
 	/>
-	<!-- the demo shows the extract's absorption, not a whole leaf's (see `combined`) -->
-	<Label
-		x={LEAF.cx}
-		y={PLOT.y - 18}
-		text="photons meeting a thin pigment extract"
-		size={12}
-		muted
-	/>
+	<Label x={LEAF.cx} y={PLOT.y - 18} text="photons meeting a leaf" size={12} muted />
 	<Label
 		x={throughLabel.x}
 		y={throughLabel.y}

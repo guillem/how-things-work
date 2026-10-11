@@ -195,6 +195,18 @@ export function leafOptics(nm: number, leaf: Leaf = TYPICAL_LEAF): Optics {
 	return { reflectance, transmittance, absorptance: 1 - reflectance - transmittance };
 }
 
+/**
+ * Fraction of the light that the same amounts of chlorophyll and carotenoids
+ * absorb in a clear solution (no scattering, one straight pass: Beer–Lambert
+ * with the PROSPECT coefficients, which are natural-log absorption per µg cm⁻²).
+ * Comparing it with `leafOptics` shows how much scattering inside a leaf adds,
+ * most of all in the weakly absorbed green.
+ */
+export function solutionAbsorptance(nm: number, leaf: Leaf = TYPICAL_LEAF): number {
+	const k = leaf.chlorophyll * table(K_CHL, nm) + leaf.carotenoids * table(K_CAR, nm, 0);
+	return 1 - Math.exp(-k);
+}
+
 /** Fraction of the photons a leaf absorbs at wavelength `nm`. */
 export const leafAbsorptance = (nm: number, leaf: Leaf = TYPICAL_LEAF) =>
 	leafOptics(nm, leaf).absorptance;

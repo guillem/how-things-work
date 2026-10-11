@@ -13,19 +13,24 @@ async function open(page: Page, url: string, text: string) {
 
 test('pigments: the wavelength slider moves the readout and the absorption', async ({ page }) => {
 	await open(page, './photosynthesis/#pigments', '550 nm · green · 2.25 eV per photon');
-	await expect(stage(page)).toContainText('10% absorbed by the extract');
-	await expect(stage(page)).toContainText('even a real leaf (~¾ absorbed)');
+	// Green: the leaf absorbs about twice what its pigments absorb in solution.
+	await expect(stage(page)).toContainText('leaf 70% · dissolved 34% absorbed');
+	await expect(stage(page)).toContainText('7 of 10 absorbed');
+	await expect(stage(page)).toContainText(
+		'Green is absorbed least: a leaf takes 70% and sends back more green than any other colour.'
+	);
 	await range(page, 'wavelength').fill('430');
 	await expect(stage(page)).toContainText('430 nm · violet · 2.88 eV per photon');
-	await expect(stage(page)).toContainText('100% absorbed');
-	await expect(stage(page)).toContainText('10 of 10 absorbed');
+	await expect(stage(page)).toContainText('leaf 96% · dissolved 99% absorbed');
+	await expect(stage(page)).toContainText('9 of 10 absorbed');
 	await expect(stage(page)).toContainText(
-		'Violet light is strongly absorbed, mainly by chlorophyll a and the carotenoids.'
+		'Violet light is strongly absorbed (96% by a leaf), mainly by chlorophyll a and the carotenoids.'
 	);
-	await range(page, 'wavelength').fill('680');
-	await expect(stage(page)).toContainText('680 nm · red · 1.82 eV per photon');
-	await expect(stage(page)).toContainText('53% absorbed');
-	await expect(stage(page)).toContainText('At 680 nm about half of the light is absorbed');
+	await range(page, 'wavelength').fill('700');
+	await expect(stage(page)).toContainText('700 nm · red · 1.77 eV per photon');
+	await expect(stage(page)).toContainText(
+		"At 700 nm we are past chlorophyll's red peak: a leaf absorbs only 74%."
+	);
 });
 
 test('pigments: arrow keys on the slider change the wavelength, not the step', async ({ page }) => {

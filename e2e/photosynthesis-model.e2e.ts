@@ -7,6 +7,7 @@ import {
 	FULL_SUN,
 	expint1,
 	leafOptics,
+	solutionAbsorptance,
 	rate,
 	whiteAbsorptance,
 	type Conditions
@@ -37,6 +38,16 @@ test('a leaf absorbs most green light, but less than red or blue', () => {
 	// Typical leaves absorb about 85% of white light (≈ 10% reflected, 5% transmitted).
 	expect(whiteAbsorptance()).toBeGreaterThan(0.8);
 	expect(whiteAbsorptance()).toBeLessThan(0.92);
+});
+
+test('scattering inside a leaf doubles its absorption of green light', () => {
+	// Kume 2018 (J. Plant Res. 131:13): at 550 nm a fuchsia leaf absorbs about
+	// 75%, the same pigments in solution about 38%.
+	const ratio = leafOptics(550).absorptance / solutionAbsorptance(550);
+	expect(ratio).toBeGreaterThan(1.6);
+	expect(ratio).toBeLessThan(2.4);
+	// Where the pigments absorb strongly, scattering adds little.
+	expect(leafOptics(440).absorptance / solutionAbsorptance(440)).toBeLessThan(1.05);
 });
 
 test('in darkness the leaf only respires: it gives off CO₂ and takes up O₂', () => {
