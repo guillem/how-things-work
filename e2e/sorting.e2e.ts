@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g');
 const scrubber = (page: Page) => page.getByRole('slider', { name: 'Replay position' });
@@ -9,10 +10,11 @@ async function open(page: Page, url: string) {
 }
 
 test('the replay plays by itself and finishes sorted', async ({ page }) => {
+	await page.clock.install();
 	await open(page, './sorting/#bubble');
 	await page.locator('input[type=range][data-control=size]').fill('6');
 	await page.locator('input[type=range][data-control=pace]').fill('60');
-	await expect(stage(page)).toContainText('Sorted!', { timeout: 10_000 });
+	await playUntil(page, stage(page), 'Sorted!', 10_000);
 });
 
 test('the scrubber pauses the replay and steps one operation at a time', async ({ page }) => {
@@ -31,23 +33,25 @@ test('the scrubber pauses the replay and steps one operation at a time', async (
 });
 
 test('turning "Run by itself" off freezes the replay where it is', async ({ page }) => {
+	await page.clock.install();
 	await open(page, './sorting/#merge');
-	await page.waitForTimeout(1500);
+	await page.clock.runFor(1500);
 	await page.locator('input[type=checkbox][data-control=play]').uncheck({ force: true });
 	const at = Number(await scrubber(page).getAttribute('aria-valuenow'));
 	expect(at).toBeGreaterThan(0);
-	await page.waitForTimeout(800);
+	await page.clock.runFor(800);
 	await expect(scrubber(page)).toHaveAttribute('aria-valuenow', String(at));
 });
 
 test('pausing after stepping does not jump back', async ({ page }) => {
+	await page.clock.install();
 	await open(page, './sorting/#bubble');
 	await scrubber(page).focus();
 	await page.keyboard.press('ArrowRight');
 	await page.keyboard.press('ArrowRight');
 	const play = page.locator('input[type=checkbox][data-control=play]');
 	await play.check({ force: true });
-	await page.waitForTimeout(2000);
+	await page.clock.runFor(2000);
 	const reached = Number(await scrubber(page).getAttribute('aria-valuenow'));
 	await play.uncheck({ force: true });
 	expect(Number(await scrubber(page).getAttribute('aria-valuenow'))).toBeGreaterThanOrEqual(

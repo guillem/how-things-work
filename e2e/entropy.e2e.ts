@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g');
 
@@ -27,12 +28,11 @@ test('sharing energy: the even split is the peak, ten million times the start', 
 });
 
 test('reversing every velocity runs the film backward', async ({ page }) => {
+	await page.clock.install();
 	await page.goto('./entropy/#backward');
 	await expect(stage(page)).toContainText('▶ forward in time');
-	await page.waitForTimeout(2500); // let the wall lift
+	await page.clock.runFor(2500); // let the wall lift
 	await page.locator('button[data-control=reverse]').click();
 	// Backward until it is back at the start, about 1.5 s later.
-	await expect(stage(page)).toContainText(/every velocity reversed|back at the start/, {
-		timeout: 3000
-	});
+	await playUntil(page, stage(page), /every velocity reversed|back at the start/, 3000);
 });

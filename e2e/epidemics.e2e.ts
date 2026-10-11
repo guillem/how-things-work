@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g');
 
@@ -17,9 +18,10 @@ test('"Run again" restarts the crowd with different luck', async ({ page }) => {
 });
 
 test('with R₀ below 1 the outbreak dies out', async ({ page }) => {
+	await page.clock.install();
 	await open(page, './epidemics/#curves');
 	await page.locator('input[type=range][data-control=r0]').fill('0.5');
-	await expect(stage(page)).toContainText(/Died out on day \d+/, { timeout: 15_000 });
+	await playUntil(page, stage(page), /Died out on day \d+/, 15_000);
 });
 
 test('controls only affect the steps that show them', async ({ page }) => {

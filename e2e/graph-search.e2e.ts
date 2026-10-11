@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g');
 const scrubber = (page: Page) => page.getByRole('slider', { name: 'Replay position' });
@@ -10,15 +11,17 @@ async function open(page: Page, url: string) {
 }
 
 test('breadth-first search wades through the mud: 15 steps, cost 39', async ({ page }) => {
+	await page.clock.install();
 	await open(page, './graph-search/#mud');
-	await expect(stage(page)).toContainText('Fewest steps: 15 steps · cost 39', { timeout: 15_000 });
+	await playUntil(page, stage(page), 'Fewest steps: 15 steps · cost 39', 15_000);
 	// …next to the cheapest route round the marsh.
 	await expect(stage(page)).toContainText('Cheapest: 21 steps · cost 21');
 });
 
 test('Dijkstra’s algorithm goes round the marsh: cost 21', async ({ page }) => {
+	await page.clock.install();
 	await open(page, './graph-search/#dijkstra');
-	await expect(stage(page)).toContainText('Route found: 21 steps · cost 21', { timeout: 15_000 });
+	await playUntil(page, stage(page), 'Route found: 21 steps · cost 21', 15_000);
 });
 
 test('the replay scrubber steps one square at a time', async ({ page }) => {
@@ -36,19 +39,20 @@ test('the replay scrubber steps one square at a time', async ({ page }) => {
 });
 
 test('painting a wall with the keyboard changes the route', async ({ page }) => {
+	await page.clock.install();
 	await open(page, './graph-search/#mud');
-	await expect(stage(page)).toContainText('cost 39', { timeout: 15_000 });
+	await playUntil(page, stage(page), 'cost 39', 15_000);
 	// The map cursor starts on the square right of S; Space paints a wall there.
 	const editor = page.getByRole('button', { name: /^Map editor/ });
 	await editor.focus();
 	await expect(editor).toHaveAttribute('aria-label', /column 5, row 6: ground/);
 	await page.keyboard.press('Space');
 	await expect(editor).toHaveAttribute('aria-label', /column 5, row 6: wall/);
-	await expect(stage(page)).toContainText('Fewest steps: 17 steps · cost 41', { timeout: 15_000 });
+	await playUntil(page, stage(page), 'Fewest steps: 17 steps · cost 41', 15_000);
 	await expect(page).toHaveURL(/#mud$/);
 	// "Start again" restores the marsh.
 	await page.locator('button[data-control=resetMap]').click();
-	await expect(stage(page)).toContainText('Fewest steps: 15 steps · cost 39', { timeout: 15_000 });
+	await playUntil(page, stage(page), 'Fewest steps: 15 steps · cost 39', 15_000);
 });
 
 test('S moves with the arrow keys', async ({ page }) => {
