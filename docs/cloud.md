@@ -70,8 +70,11 @@ branch rebased and passing. Merge it from the GitHub app, or ask a local session
   hooks were set), and the session started warm.
 - **Speed:** `make check` takes about 100 s (about 1m45 cold): format 17 s, lint 48 s, types 20 s,
   model tests 12 s. That is roughly 5× the laptop's time, but under the Stop hook's 300 s timeout.
-  `make e2e` takes about 33 s. Run `make e2e-full` in the background (`… > log 2>&1 &`) and read the
-  log afterwards.
+  `make e2e` takes about 33 s and `make e2e-full` about 4m40 (446 tests; ~45 s locally). Run it in
+  the background (`… > log 2>&1 &`) and read the log afterwards, but start **no other Playwright
+  command meanwhile**, and that includes `git push`, whose pre-push hook runs the model tests. Each run
+  clears `test-results/`, and the background run then fails with `ENOENT … .trace` errors that look
+  like test failures.
 - **Network:** with _Trusted_ access, WebFetch and `curl` to arbitrary sites are refused by the
   proxy (403), and only WebSearch works, so fact-checking reads search excerpts, not the papers. Add
   hosts under _Custom_ if a session needs full pages (for example `pmc.ncbi.nlm.nih.gov`,
