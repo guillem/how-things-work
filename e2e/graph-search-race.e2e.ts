@@ -9,7 +9,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('the race shows a route cost for each of the three methods', async ({ page }) => {
-	await page.goto('/graph-search/#compare');
+	await page.goto('./graph-search/#compare');
 	await expect(stage(page)).toContainText('Breadth-first');
 	await expect(readout(page, 'route')).toHaveCount(3);
 	await expect(readout(page, 'cost')).toHaveCount(3);
@@ -18,7 +18,7 @@ test('the race shows a route cost for each of the three methods', async ({ page 
 });
 
 test('switching the road method changes the towns looked at', async ({ page }) => {
-	await page.goto('/graph-search/#roads');
+	await page.goto('./graph-search/#roads');
 	await expect(readout(page, 'looked')).toHaveText('Dijkstra looked at 9 towns');
 	await expect(readout(page, 'both')).toHaveText('towns looked at: 9 (Dijkstra) / 7 (A*)');
 	await page.locator('button[data-control=roadAlgo][data-value=astar]').click();

@@ -10,7 +10,7 @@ async function open(page: Page, url: string) {
 }
 
 test('adding a low puts a new low-pressure marker on the map', async ({ page }) => {
-	await open(page, '/atmosphere-weather/#pressure');
+	await open(page, './atmosphere-weather/#pressure');
 	await expect(lows(page)).toHaveCount(1);
 	await expect(centres(page)).toHaveCount(2);
 	await action(page, 'addLow').click();
@@ -20,7 +20,7 @@ test('adding a low puts a new low-pressure marker on the map', async ({ page }) 
 });
 
 test('clearing the map removes every system, and the map is kept per step', async ({ page }) => {
-	await open(page, '/atmosphere-weather/#pressure');
+	await open(page, './atmosphere-weather/#pressure');
 	await action(page, 'clearMap').click();
 	await expect(centres(page)).toHaveCount(0);
 	await expect(page.locator('.stage svg')).toContainText('An empty map');

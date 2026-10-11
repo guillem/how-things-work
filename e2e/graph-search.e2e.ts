@@ -10,19 +10,19 @@ async function open(page: Page, url: string) {
 }
 
 test('breadth-first search wades through the mud: 15 steps, cost 39', async ({ page }) => {
-	await open(page, '/graph-search/#mud');
+	await open(page, './graph-search/#mud');
 	await expect(stage(page)).toContainText('Fewest steps: 15 steps · cost 39', { timeout: 15_000 });
 	// …next to the cheapest route round the marsh.
 	await expect(stage(page)).toContainText('Cheapest: 21 steps · cost 21');
 });
 
 test('Dijkstra’s algorithm goes round the marsh: cost 21', async ({ page }) => {
-	await open(page, '/graph-search/#dijkstra');
+	await open(page, './graph-search/#dijkstra');
 	await expect(stage(page)).toContainText('Route found: 21 steps · cost 21', { timeout: 15_000 });
 });
 
 test('the replay scrubber steps one square at a time', async ({ page }) => {
-	await open(page, '/graph-search/#bfs');
+	await open(page, './graph-search/#bfs');
 	await scrubber(page).focus();
 	await page.keyboard.press('Home');
 	await expect(page.locator('input[type=checkbox][data-control=play]')).not.toBeChecked();
@@ -36,7 +36,7 @@ test('the replay scrubber steps one square at a time', async ({ page }) => {
 });
 
 test('painting a wall with the keyboard changes the route', async ({ page }) => {
-	await open(page, '/graph-search/#mud');
+	await open(page, './graph-search/#mud');
 	await expect(stage(page)).toContainText('cost 39', { timeout: 15_000 });
 	// The map cursor starts on the square right of S; Space paints a wall there.
 	const editor = page.getByRole('button', { name: /^Map editor/ });
@@ -52,7 +52,7 @@ test('painting a wall with the keyboard changes the route', async ({ page }) => 
 });
 
 test('S moves with the arrow keys', async ({ page }) => {
-	await page.goto('/graph-search/#map');
+	await page.goto('./graph-search/#map');
 	const start = page.getByRole('button', { name: /^Start \(S\)/ });
 	await expect(start).toHaveAttribute('aria-label', /column 4, row 6/);
 	await start.focus();
@@ -64,7 +64,7 @@ test('S moves with the arrow keys', async ({ page }) => {
 test.describe('reduced motion', () => {
 	test.use({ reducedMotion: 'reduce' });
 	test('shows the finished search, and the scrubber still steps', async ({ page }) => {
-		await page.goto('/graph-search/#dijkstra');
+		await page.goto('./graph-search/#dijkstra');
 		await expect(stage(page)).toContainText('Route found: 21 steps · cost 21');
 		await scrubber(page).focus();
 		await page.keyboard.press('Home');

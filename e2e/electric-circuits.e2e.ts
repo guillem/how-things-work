@@ -7,7 +7,7 @@ const tool = (page: Page, value: string) =>
 	page.locator(`button[data-control=part][data-value=${value}]`).click();
 
 async function open(page: Page, hash: string) {
-	await page.goto(`/electric-circuits/#${hash}`);
+	await page.goto(`./electric-circuits/#${hash}`);
 	await expect(page.getByRole('button', { name: /^Battery/ }).first()).toBeAttached();
 }
 

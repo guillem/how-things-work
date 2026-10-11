@@ -4,7 +4,7 @@ const stage = (page: Page) => page.locator('.stage svg > g');
 const picture = (page: Page) => page.getByRole('application', { name: /Mandelbrot set/ });
 
 async function open(page: Page) {
-	await page.goto('/chaos-fractals/#zoom');
+	await page.goto('./chaos-fractals/#zoom');
 	await expect(stage(page)).toContainText('magnification');
 	await expect(stage(page)).toContainText('× 1');
 }

@@ -15,7 +15,7 @@ async function open(page: Page, url: string) {
 }
 
 test('without wolves the elk multiply', async ({ page }) => {
-	await open(page, '/ecosystems/#web');
+	await open(page, './ecosystems/#web');
 	await expect(stage(page)).toContainText('In balance');
 	await page.getByRole('switch', { name: 'Wolves' }).uncheck({ force: true });
 	await expect(stage(page)).toContainText('Following the ripples');
@@ -25,7 +25,7 @@ test('without wolves the elk multiply', async ({ page }) => {
 
 test('deer arriving push the elk out', async ({ page }) => {
 	test.setTimeout(90_000);
-	await open(page, '/ecosystems/#newcomer');
+	await open(page, './ecosystems/#newcomer');
 	await expect(stage(page)).toContainText('not here yet');
 	await page.getByRole('switch', { name: 'Deer (newcomers)' }).check({ force: true });
 	await expect(stage(page)).toContainText(/With deer: .*elk gone/, { timeout: 60_000 });

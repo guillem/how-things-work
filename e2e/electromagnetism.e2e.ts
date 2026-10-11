@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 const stage = (page: Page) => page.locator('.stage svg > g');
 
 test('Coulomb: the force falls to a quarter at twice the distance', async ({ page }) => {
-	await page.goto('/electromagnetism/#force');
+	await page.goto('./electromagnetism/#force');
 	await expect(stage(page)).toContainText('8.99 µN');
 	await expect(stage(page)).toContainText('10.0 cm');
 	// Move the test charge 10 cm further away with the keyboard (0.5 cm per press).
@@ -17,7 +17,7 @@ test('Coulomb: the force falls to a quarter at twice the distance', async ({ pag
 });
 
 test('charges can be added, flipped and removed', async ({ page }) => {
-	await page.goto('/electromagnetism/#field');
+	await page.goto('./electromagnetism/#field');
 	const charges = page.getByRole('slider', { name: /charge \d/ });
 	await expect(charges).toHaveCount(2);
 	await page.locator('button[data-control=addPlus]').click();
@@ -31,17 +31,17 @@ test('charges can be added, flipped and removed', async ({ page }) => {
 });
 
 test('a current turns the compasses; a still magnet induces nothing', async ({ page }) => {
-	await page.goto('/electromagnetism/#wire');
+	await page.goto('./electromagnetism/#wire');
 	await expect(stage(page)).toContainText('50 µT');
 	await page.locator('input[type=range][data-control=wireCurrent]').fill('10');
 	await expect(stage(page)).toContainText('100 µT');
 
-	await page.goto('/electromagnetism/#magnet');
+	await page.goto('./electromagnetism/#magnet');
 	await page.locator('button[data-control=motion][data-value=hand]').click();
 	await expect(stage(page)).toContainText('still: no current');
 	await expect(stage(page)).toContainText('0.0 mA');
 
-	await page.goto('/electromagnetism/#neighbour');
+	await page.goto('./electromagnetism/#neighbour');
 	await page.locator('input[type=range][data-control=acFreq]').fill('0');
 	await expect(stage(page)).toContainText('steady 2 A');
 	await expect(stage(page)).toContainText('0.0 µA');

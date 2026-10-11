@@ -10,7 +10,7 @@ async function open(page: Page, url: string) {
 }
 
 test('dragging the point sets the angle and the slider follows', async ({ page }) => {
-	await open(page, '/unit-circle/#circle');
+	await open(page, './unit-circle/#circle');
 	const svg = page.locator('.stage svg');
 	const box = (await svg.boundingBox())!;
 	// Scene coordinates → screen: the stage is 960 × 600 units, letterboxed.
@@ -30,7 +30,7 @@ test('dragging the point sets the angle and the slider follows', async ({ page }
 });
 
 test('the point can be moved with the keyboard without changing the step', async ({ page }) => {
-	await open(page, '/unit-circle/#coordinates');
+	await open(page, './unit-circle/#coordinates');
 	await handle(page).focus();
 	await page.keyboard.press('ArrowRight');
 	await page.keyboard.press('Shift+ArrowRight');
@@ -42,7 +42,7 @@ test('the point can be moved with the keyboard without changing the step', async
 });
 
 test('snap visits the special angles', async ({ page }) => {
-	await open(page, '/unit-circle/#quadrants');
+	await open(page, './unit-circle/#quadrants');
 	await page.locator('input[type=checkbox][data-control=snap]').check({ force: true });
 	await handle(page).focus();
 	await page.keyboard.press('ArrowRight');

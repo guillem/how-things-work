@@ -13,7 +13,7 @@ async function finish(page: Page) {
 test('after training, the start square is worth 10 × 0.9¹² ≈ 2.82, as the exact solution says', async ({
 	page
 }) => {
-	await page.goto('/reinforcement-learning/#discount');
+	await page.goto('./reinforcement-learning/#discount');
 	await finish(page);
 	await expect(stage(page)).toContainText('learnt so far: 2.82');
 	await expect(stage(page)).toContainText('exact: 2.82');
@@ -24,7 +24,7 @@ test('after training, the start square is worth 10 × 0.9¹² ≈ 2.82, as the e
 test('little exploration settles for the +1; exploring less and less finds the +10', async ({
 	page
 }) => {
-	await page.goto('/reinforcement-learning/#explore');
+	await page.goto('./reinforcement-learning/#explore');
 	await finish(page);
 	await expect(stage(page)).toContainText('the +1, in 4 moves');
 	await page.locator('input[type=range][data-control=epsilon]').fill('1');
@@ -35,7 +35,7 @@ test('little exploration settles for the +1; exploring less and less finds the +
 });
 
 test('painting a reward next to the start changes what the agent learns', async ({ page }) => {
-	await page.goto('/reinforcement-learning/#paint');
+	await page.goto('./reinforcement-learning/#paint');
 	await finish(page);
 	await expect(stage(page)).toContainText('the +10, in 10 moves');
 	await page.locator('button[data-control=brush][data-value=reward]').click();

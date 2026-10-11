@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test('colouring the table by another property changes the legend and its unit', async ({
 	page
 }) => {
-	await page.goto('/atoms-periodic-table/#trends');
+	await page.goto('./atoms-periodic-table/#trends');
 	const stage = page.locator('.stage svg > g');
 	await expect(stage).toContainText('Atomic radius (covalent, pm)');
 	await page.locator('button[data-control=colourBy][data-value=ionization]').click();

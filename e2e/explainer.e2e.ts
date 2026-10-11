@@ -9,7 +9,7 @@ async function open(page: Page, url: string) {
 }
 
 test('steps through the explainer with buttons and keyboard', async ({ page }) => {
-	await open(page, '/photosynthesis/');
+	await open(page, './photosynthesis/');
 	await expect(stepTitle(page)).toHaveText(/sunlight, water and air/i);
 
 	await page.getByRole('button', { name: 'Next step' }).click();
@@ -29,13 +29,13 @@ test('steps through the explainer with buttons and keyboard', async ({ page }) =
 });
 
 test('deep links open the right step', async ({ page }) => {
-	await open(page, '/photosynthesis/#rubisco');
+	await open(page, './photosynthesis/#rubisco');
 	await expect(stepTitle(page)).toHaveText(/carbon fixation/i);
 	await expect(page.locator('.counter .current')).toHaveText('11');
 });
 
 test('after opening a deep link, the step buttons still move between steps', async ({ page }) => {
-	await open(page, '/photosynthesis/#pigments');
+	await open(page, './photosynthesis/#pigments');
 	await page.getByRole('button', { name: 'Next step' }).click();
 	await expect(stepTitle(page)).toHaveText(/catching a photon/i);
 	await expect(page).toHaveURL(/#antenna$/);
@@ -46,7 +46,7 @@ test('after opening a deep link, the step buttons still move between steps', asy
 });
 
 test('contents list jumps to a step', async ({ page }) => {
-	await open(page, '/photosynthesis/');
+	await open(page, './photosynthesis/');
 	await page.getByRole('navigation', { name: 'Steps' }).locator('summary').click();
 	await page.getByRole('button', { name: /ATP synthase/ }).click();
 	await expect(stepTitle(page)).toHaveText(/ATP synthase/);
@@ -54,7 +54,7 @@ test('contents list jumps to a step', async ({ page }) => {
 });
 
 test('play / pause and interactive controls', async ({ page }) => {
-	await open(page, '/photosynthesis/#pigments');
+	await open(page, './photosynthesis/#pigments');
 	const toggle = page.getByRole('button', { name: /pause animation/i });
 	await expect(toggle).toHaveAttribute('aria-pressed', 'true');
 	await toggle.click();
@@ -70,7 +70,7 @@ test('play / pause and interactive controls', async ({ page }) => {
 });
 
 test('keyboard help overlay', async ({ page }) => {
-	await open(page, '/photosynthesis/');
+	await open(page, './photosynthesis/');
 	await page.keyboard.press('?');
 	await expect(page.getByRole('dialog', { name: /keyboard shortcuts/i })).toBeVisible();
 	await page.keyboard.press('Escape');

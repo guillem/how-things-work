@@ -10,7 +10,7 @@ async function open(page: Page, url: string) {
 }
 
 test('a bit toggled with the keyboard changes the number', async ({ page }) => {
-	await open(page, '/binary/#place');
+	await open(page, './binary/#place');
 	await expect(stage(page)).toContainText('64 + 1 = 65');
 	await bit(page, '1').focus();
 	await page.keyboard.press('Enter');
@@ -25,7 +25,7 @@ test('a bit toggled with the keyboard changes the number', async ({ page }) => {
 });
 
 test('Add 1 counts up, and 255 + 1 wraps round to 0', async ({ page }) => {
-	await open(page, '/binary/#place');
+	await open(page, './binary/#place');
 	const plus1 = page.locator('button[data-control=plus1]');
 	await plus1.click();
 	await expect(stage(page)).toContainText('64 + 2 = 66');
@@ -38,14 +38,14 @@ test('Add 1 counts up, and 255 + 1 wraps round to 0', async ({ page }) => {
 });
 
 test('the signed reading shows −56 next to the unsigned 200', async ({ page }) => {
-	await open(page, '/binary/#signed');
+	await open(page, './binary/#signed');
 	await expect(stage(page)).toContainText('= −56');
 	await expect(stage(page)).toContainText('= 200');
 	await expect(bit(page, '−128')).toHaveAttribute('aria-checked', 'true');
 });
 
 test('a 32-bit word reads as four characters', async ({ page }) => {
-	await open(page, '/binary/#text');
+	await open(page, './binary/#text');
 	await page.locator('button[data-control=width][data-value="32"]').click();
 	await expect(page.getByRole('switch')).toHaveCount(32);
 	for (const n of [1, 2, 3, 4]) await expect(stage(page)).toContainText(`byte ${n}`);
@@ -55,7 +55,7 @@ test('a 32-bit word reads as four characters', async ({ page }) => {
 });
 
 test('the 0.1 preset shows that 0.1 is not stored exactly', async ({ page }) => {
-	await open(page, '/binary/#float');
+	await open(page, './binary/#float');
 	await expect(stage(page)).toContainText('= 0.15625');
 	await page.getByRole('button', { name: 'Set the bits to 0.1', exact: true }).click();
 	await expect(stage(page)).toContainText('0.100000001490116119384765625');

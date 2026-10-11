@@ -6,7 +6,7 @@ const range = (page: Page, id: string) => page.locator(`input[type=range][data-c
 test('the gyre squeezes against the west only when the Coriolis effect grows northwards', async ({
 	page
 }) => {
-	await page.goto('/ocean-currents/#gulf-stream');
+	await page.goto('./ocean-currents/#gulf-stream');
 	await expect(stage(page)).toContainText('20 Sv');
 	await expect(stage(page)).toContainText('46× faster');
 	await page.locator('button[data-control=spin][data-value=uniform]').click();
@@ -22,7 +22,7 @@ test('the gyre squeezes against the west only when the Coriolis effect grows nor
 test('freshening the far north past the tipping point collapses the overturning', async ({
 	page
 }) => {
-	await page.goto('/ocean-currents/#tipping');
+	await page.goto('./ocean-currents/#tipping');
 	await expect(stage(page)).toContainText('17.0 Sv');
 	await expect(stage(page)).toContainText('1.39 PW');
 	await range(page, 'fresh').fill('2.5');
@@ -31,11 +31,11 @@ test('freshening the far north past the tipping point collapses the overturning'
 });
 
 test('a lull in the trade winds sets off an El Niño, then a La Niña', async ({ page }) => {
-	await page.goto('/ocean-currents/#pacific');
+	await page.goto('./ocean-currents/#pacific');
 	await expect(stage(page)).toContainText('193 → 47 m');
 	await range(page, 'pacTrades').fill('0');
 	await expect(stage(page)).toContainText('120 → 120 m');
-	await page.goto('/ocean-currents/#el-nino');
+	await page.goto('./ocean-currents/#el-nino');
 	// the weather far away: drought in the west during El Niño, heavy rain there in La Niña
 	await expect(stage(page)).toContainText('drought, bushfires', { timeout: 10_000 });
 	await expect(stage(page)).toContainText('extra-heavy rain', { timeout: 30_000 });

@@ -9,13 +9,13 @@ async function open(page: Page, url: string) {
 }
 
 test('200 + 100 overflows a byte and leaves 44', async ({ page }) => {
-	await open(page, '/binary/#overflow');
+	await open(page, './binary/#overflow');
 	await expect(stage(page)).toContainText('200 + 100 = 300');
 	await expect(stage(page)).toContainText("300 doesn't fit in 8 bits → 300 − 256 = 44");
 });
 
 test('read as signed, 100 + 100 overflows to −56', async ({ page }) => {
-	await open(page, '/binary/#overflow');
+	await open(page, './binary/#overflow');
 	await slider(page, 'oa').fill('100');
 	await page.locator('button[data-control=view][data-value=signed]').click();
 	await expect(stage(page)).toContainText('100 + 100 = 200');
@@ -24,7 +24,7 @@ test('read as signed, 100 + 100 overflows to −56', async ({ page }) => {
 });
 
 test('−1 + 1 loses a carry but the signed answer is right', async ({ page }) => {
-	await open(page, '/binary/#overflow');
+	await open(page, './binary/#overflow');
 	await slider(page, 'oa').fill('255');
 	await slider(page, 'ob').fill('1');
 	await page.locator('button[data-control=view][data-value=signed]').click();

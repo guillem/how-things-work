@@ -10,7 +10,7 @@ async function switchOn(page: Page, label: string) {
 }
 
 test('turning both inputs of an AND gate on lights the lamp', async ({ page }) => {
-	await page.goto('/logic-gates/#gates');
+	await page.goto('./logic-gates/#gates');
 	await expect(stage(page)).toContainText('Out = A AND B');
 	await switchOn(page, 'A');
 	await switchOn(page, 'B');
@@ -19,7 +19,7 @@ test('turning both inputs of an AND gate on lights the lamp', async ({ page }) =
 });
 
 test('the 4-bit adder adds 11 + 6 = 17', async ({ page }) => {
-	await page.goto('/logic-gates/#four');
+	await page.goto('./logic-gates/#four');
 	await expect(stage(page)).toContainText('11 + 6 = 17');
 	await expect(stage(page)).toContainText('1011 + 0110 = 10001 in binary');
 });

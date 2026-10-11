@@ -5,7 +5,7 @@ const stage = (page: Page) => page.locator('.stage svg > g');
 test('counting arrangements: C(N, k) microstates and the chance of all on the left', async ({
 	page
 }) => {
-	await page.goto('/entropy/#spread');
+	await page.goto('./entropy/#spread');
 	await expect(stage(page)).toContainText('microstates for each macrostate, C(40, k)');
 	await expect(stage(page)).toContainText('every arrangement: 2⁴⁰ = 1.1 × 10¹²');
 	await page.locator('input[type=range][data-control=particles]').fill('4');
@@ -15,7 +15,7 @@ test('counting arrangements: C(N, k) microstates and the chance of all on the le
 test('sharing energy: the even split is the peak, ten million times the start', async ({
 	page
 }) => {
-	await page.goto('/entropy/#share');
+	await page.goto('./entropy/#share');
 	await expect(stage(page)).toContainText('the peak has 2.4 × 10⁷ times as many');
 	await page.locator('input[type=range][data-control=share]').fill('50');
 	await expect(stage(page)).toContainText('this is the most likely share');
@@ -27,7 +27,7 @@ test('sharing energy: the even split is the peak, ten million times the start', 
 });
 
 test('reversing every velocity runs the film backward', async ({ page }) => {
-	await page.goto('/entropy/#backward');
+	await page.goto('./entropy/#backward');
 	await expect(stage(page)).toContainText('▶ forward in time');
 	await page.waitForTimeout(2500); // let the wall lift
 	await page.locator('button[data-control=reverse]').click();

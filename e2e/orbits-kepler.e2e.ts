@@ -8,7 +8,7 @@ async function open(page: Page, url: string) {
 }
 
 test('launched slower than circular speed, the planet goes round an ellipse', async ({ page }) => {
-	await open(page, '/orbits-kepler/#launch');
+	await open(page, './orbits-kepler/#launch');
 	await expect(stage(page)).toContainText('Your launch');
 	await page.locator('input[type=range][data-control=speed]').fill('0.8');
 	await expect(stage(page)).toContainText(/Path\s*ellipse/);
@@ -17,7 +17,7 @@ test('launched slower than circular speed, the planet goes round an ellipse', as
 });
 
 test('launched above the escape speed, the planet escapes on a hyperbola', async ({ page }) => {
-	await open(page, '/orbits-kepler/#launch');
+	await open(page, './orbits-kepler/#launch');
 	await page.locator('input[type=range][data-control=speed]').fill('1.6');
 	await expect(stage(page)).toContainText(/Path\s*escape \(hyperbola\)/);
 	await expect(stage(page)).toContainText('never comes back');

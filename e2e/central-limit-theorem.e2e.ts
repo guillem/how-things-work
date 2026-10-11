@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 const stage = (page: Page) => page.locator('.stage svg > g');
 
 test('the Galton board counts the paths into the end and middle bins', async ({ page }) => {
-	await page.goto('/central-limit-theorem/#why');
+	await page.goto('./central-limit-theorem/#why');
 	await expect(stage(page)).toContainText('924 paths');
 	await expect(stage(page)).toContainText('1 path out of 4,096');
 	await page.locator('input[type=range][data-control=rows]').fill('16');
@@ -11,7 +11,7 @@ test('the Galton board counts the paths into the end and middle bins', async ({ 
 });
 
 test('drawing the starting shape and averaging bigger samples', async ({ page }) => {
-	await page.goto('/central-limit-theorem/#clt');
+	await page.goto('./central-limit-theorem/#clt');
 	await expect(stage(page)).toContainText('Two humps');
 	await page.locator('input[type=range][data-control=sampleSize]').fill('30');
 	await expect(stage(page)).toContainText('√30');

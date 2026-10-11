@@ -7,7 +7,7 @@ const pageButton = (page: Page, name: string) =>
 const action = (page: Page, id: string) => page.locator(`.action button[data-control="${id}"]`);
 
 async function open(page: Page, hash: string) {
-	await page.goto(`/pagerank/#${hash}`);
+	await page.goto(`./pagerank/#${hash}`);
 	await expect(pages(page).first()).toBeAttached({ timeout: 15_000 });
 }
 
@@ -95,7 +95,7 @@ test('build and boost keep their own webs', async ({ page }) => {
 	await open(page, 'build');
 	await action(page, 'addPage').click();
 	await expect(pages(page)).toHaveCount(6);
-	await page.goto('/pagerank/#boost');
+	await page.goto('./pagerank/#boost');
 	await expect(pages(page)).toHaveCount(5);
 	await expect(stage(page)).toContainText('×1.0');
 });

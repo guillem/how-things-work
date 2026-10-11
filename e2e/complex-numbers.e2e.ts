@@ -4,7 +4,7 @@ const stage = (page: Page) => page.locator('.stage svg > g');
 const slider = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
 test('the product: lengths multiply and angles add', async ({ page }) => {
-	await page.goto('/complex-numbers/#multiply');
+	await page.goto('./complex-numbers/#multiply');
 	await expect(stage(page)).toContainText('1.40 × 1.25 = 1.75');
 	await expect(stage(page)).toContainText('20° + 45° = 65°');
 	await slider(page, 'zLen').fill('1.5');
@@ -22,7 +22,7 @@ test('the product: lengths multiply and angles add', async ({ page }) => {
 });
 
 test('multiplying by i turns z a quarter turn; the arrow keys move z', async ({ page }) => {
-	await page.goto('/complex-numbers/#times-i');
+	await page.goto('./complex-numbers/#times-i');
 	await expect(stage(page)).toContainText('= −1 + 2i');
 	const z = page.getByRole('slider', { name: 'The point z' });
 	await z.focus();
@@ -35,11 +35,11 @@ test('multiplying by i turns z a quarter turn; the arrow keys move z', async ({ 
 });
 
 test("Euler's formula: e^(iθ) at 180° is −1", async ({ page }) => {
-	await page.goto('/complex-numbers/#euler');
+	await page.goto('./complex-numbers/#euler');
 	await expect(stage(page)).toContainText('0.50 + 0.87i');
 	await slider(page, 'theta').fill('180');
 	await expect(stage(page)).toContainText('−1.00 + 0.00i');
-	await page.goto('/complex-numbers/#compound');
+	await page.goto('./complex-numbers/#compound');
 	await slider(page, 'theta').fill('180');
 	await slider(page, 'n').fill('10');
 	await expect(stage(page)).toContainText('−1.59 + 0.16i');

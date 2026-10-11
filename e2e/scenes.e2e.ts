@@ -28,7 +28,7 @@ for (const spec of specs) {
 			for (const step of spec.steps) {
 				test(`#${step.id} (${step.scene} scene) renders without errors`, async ({ page }) => {
 					const errors = watchErrors(page);
-					await page.goto(`/${spec.slug}/#${step.id}`);
+					await page.goto(`./${spec.slug}/#${step.id}`);
 					await expect(page.locator('aside h2')).toHaveText(step.title);
 					// The scene is lazy-loaded: wait until it has drawn something.
 					await expect(stage(page).locator('g').first()).toBeAttached();
@@ -43,7 +43,7 @@ for (const spec of specs) {
 		test('walking through all steps in dark mode stays error-free', async ({ page }) => {
 			await page.emulateMedia({ colorScheme: 'dark' });
 			const errors = watchErrors(page);
-			await page.goto(`/${spec.slug}/`);
+			await page.goto(`./${spec.slug}/`);
 			await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 			await expect(stage(page).locator('g').first()).toBeAttached();
 			for (let i = 1; i < spec.steps.length; i++) {
@@ -61,7 +61,7 @@ for (const spec of specs) {
 test('reduced motion starts paused and still shows a complete frame', async ({ page }) => {
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	const errors = watchErrors(page);
-	await page.goto('/photosynthesis/#etc');
+	await page.goto('./photosynthesis/#etc');
 	await expect(stage(page).locator('text').first()).toBeAttached();
 	await expect(page.getByRole('button', { name: /play animation/i })).toHaveAttribute(
 		'aria-pressed',

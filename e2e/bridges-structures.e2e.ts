@@ -9,7 +9,7 @@ async function open(page: Page, url: string, text: string) {
 }
 
 test('compare: choosing a design shows it and its readout', async ({ page }) => {
-	await open(page, '/bridges-structures/#compare', 'Beam bridge');
+	await open(page, './bridges-structures/#compare', 'Beam bridge');
 	await expect(stage(page)).toContainText('Busiest member over a crossing');
 	await page.locator('button[data-control=design][data-value=truss]').click();
 	await expect(stage(page)).toContainText('Truss bridge');
@@ -25,7 +25,7 @@ test('compare: choosing a design shows it and its readout', async ({ page }) => 
 });
 
 test('build: the keyboard adds a pier and the readout follows', async ({ page }) => {
-	await open(page, '/bridges-structures/#build', 'shared by 8 members');
+	await open(page, './bridges-structures/#build', 'shared by 8 members');
 	await page.getByRole('button', { name: 'Joint at 20 m, 0 m', exact: true }).focus();
 	await page.keyboard.press('Enter');
 	for (let k = 0; k < 5; k++) await page.keyboard.press('ArrowDown');
@@ -40,7 +40,7 @@ test('build: the keyboard adds a pier and the readout follows', async ({ page })
 });
 
 test('build: Delete erases a member, and Start again restores the road', async ({ page }) => {
-	await open(page, '/bridges-structures/#build', 'shared by 8 members');
+	await open(page, './bridges-structures/#build', 'shared by 8 members');
 	await page.locator('button[data-control=tool][data-value=erase]').click();
 	await page
 		.getByRole('button', { name: /^Beam,/ })

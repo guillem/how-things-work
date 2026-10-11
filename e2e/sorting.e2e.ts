@@ -9,14 +9,14 @@ async function open(page: Page, url: string) {
 }
 
 test('the replay plays by itself and finishes sorted', async ({ page }) => {
-	await open(page, '/sorting/#bubble');
+	await open(page, './sorting/#bubble');
 	await page.locator('input[type=range][data-control=size]').fill('6');
 	await page.locator('input[type=range][data-control=pace]').fill('60');
 	await expect(stage(page)).toContainText('Sorted!', { timeout: 10_000 });
 });
 
 test('the scrubber pauses the replay and steps one operation at a time', async ({ page }) => {
-	await open(page, '/sorting/#insertion');
+	await open(page, './sorting/#insertion');
 	await scrubber(page).focus();
 	await page.keyboard.press('Home');
 	await expect(page.locator('input[type=checkbox][data-control=play]')).not.toBeChecked();
@@ -31,7 +31,7 @@ test('the scrubber pauses the replay and steps one operation at a time', async (
 });
 
 test('turning "Run by itself" off freezes the replay where it is', async ({ page }) => {
-	await open(page, '/sorting/#merge');
+	await open(page, './sorting/#merge');
 	await page.waitForTimeout(1500);
 	await page.locator('input[type=checkbox][data-control=play]').uncheck({ force: true });
 	const at = Number(await scrubber(page).getAttribute('aria-valuenow'));
@@ -41,7 +41,7 @@ test('turning "Run by itself" off freezes the replay where it is', async ({ page
 });
 
 test('pausing after stepping does not jump back', async ({ page }) => {
-	await open(page, '/sorting/#bubble');
+	await open(page, './sorting/#bubble');
 	await scrubber(page).focus();
 	await page.keyboard.press('ArrowRight');
 	await page.keyboard.press('ArrowRight');
@@ -58,7 +58,7 @@ test('pausing after stepping does not jump back', async ({ page }) => {
 test.describe('reduced motion', () => {
 	test.use({ reducedMotion: 'reduce' });
 	test('the scrubber still steps', async ({ page }) => {
-		await open(page, '/sorting/#insertion');
+		await open(page, './sorting/#insertion');
 		await scrubber(page).focus();
 		await page.keyboard.press('Home');
 		await expect(scrubber(page)).toHaveAttribute('aria-valuenow', '0');
@@ -67,7 +67,7 @@ test.describe('reduced motion', () => {
 		await expect(scrubber(page)).toHaveAttribute('aria-valuenow', '1');
 	});
 	test('the race can be stepped too', async ({ page }) => {
-		await page.goto('/sorting/#race');
+		await page.goto('./sorting/#race');
 		const race = page.getByRole('slider', { name: 'Race position' });
 		await race.focus();
 		await page.keyboard.press('Home');
