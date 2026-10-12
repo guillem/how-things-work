@@ -62,7 +62,7 @@ const SCALES: Record<Model, Scale> = {
 		gas: 0.85,
 		gasMax: 1.4,
 		condensedP: 0.3,
-		gasP: 0.08
+		gasP: 0.35
 	},
 	mb: {
 		solid: 0.1,
@@ -71,7 +71,7 @@ const SCALES: Record<Model, Scale> = {
 		gas: 0.45,
 		gasMax: 0.7,
 		condensedP: 0.19,
-		gasP: 0.01
+		gasP: 0.15
 	}
 };
 

@@ -78,6 +78,7 @@
 			let r = reducedRuns.get(rk);
 			if (!r) {
 				r = new BoxRun(model, startFor(setpoint.phase), setpoint);
+				if (reducedRuns.size > 12) reducedRuns.clear();
 				reducedRuns.set(rk, r);
 			}
 			return { run: r, fi: REDUCED_FRAME };
@@ -148,16 +149,23 @@
 
 	// ---- the tracked molecule (the three-states steps) --------------------------------
 	/** The tracked molecule: the one nearest the middle of the bottom layers at the run's start. */
+	const trackedOf = new WeakMap<BoxRun, number>();
 	const tracked = $derived.by(() => {
-		const f = current.run.frame(0);
-		let best = 0;
-		let bd = Infinity;
-		for (let i = 0; i < f.x.length; i++) {
-			const d = (f.x[i] - spec.width / 2) ** 2 + (f.y[i] - 3) ** 2;
-			if (d < bd) {
-				bd = d;
-				best = i;
+		const r = current.run;
+		let best = trackedOf.get(r);
+		if (best === undefined) {
+			// picked once per run, from its first frame
+			const f = r.frame(0);
+			let bd = Infinity;
+			best = 0;
+			for (let i = 0; i < f.x.length; i++) {
+				const d = (f.x[i] - spec.width / 2) ** 2 + (f.y[i] - 3) ** 2;
+				if (d < bd) {
+					bd = d;
+					best = i;
+				}
 			}
+			trackedOf.set(r, best);
 		}
 		return best;
 	});
