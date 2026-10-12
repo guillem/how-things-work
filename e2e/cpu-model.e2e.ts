@@ -146,3 +146,25 @@ test('bad programs give errors with line numbers instead of crashing', () => {
 	const ok = assemble('; hello\n\nstart:\n  ldi r0, 0x0A ; ten\n  jz START\n  halt');
 	expect(ok.ok).toBe(true);
 });
+
+test('the addresses and bytes the narrative quotes', () => {
+	const first = exec(PROGRAMS.first);
+	expect(first.labels.sum).toBe(10);
+	const fetchAdd = first.phases.find((p) => p.kind === 'fetch' && p.instr?.op === 'ADD')!;
+	expect(fetchAdd.at).toBe(4);
+	expect(fetchAdd.after.ir).toEqual([65, 0]);
+	expect(fetchAdd.after.pc).toBe(6);
+	const countdown = exec(PROGRAMS.countdown);
+	expect([countdown.labels.loop, countdown.labels.done, countdown.labels.out]).toEqual([4, 12, 16]);
+	const sum = exec(PROGRAMS.sum);
+	expect(sum.labels.sum).toBe(18);
+	expect(sum.phases.length).toBe(132);
+	const max = exec(maxProgram(1, 2));
+	expect([max.labels.a, max.labels.b]).toEqual([16, 17]);
+	// Editing the sum: up to 22 the total fits in a byte; 1 + … + 23 = 276 wraps to 20.
+	expect(at(exec(PROGRAMS.sum.replace('R1, 10', 'R1, 22')), 'sum')).toBe(253);
+	expect(at(exec(PROGRAMS.sum.replace('R1, 10', 'R1, 23')), 'sum')).toBe(20);
+	// 23 − 42 borrows and leaves 237 in the register.
+	const sub = exec(maxProgram(42, 23)).phases.find((p) => p.alu)!.alu!;
+	expect(sub).toMatchObject({ a: 23, b: 42, result: 237, c: true });
+});

@@ -1250,6 +1250,46 @@
 			<path d="M100 60 L{a.x} {a.y}" stroke={a.c} stroke-width="3" stroke-linecap="round" />
 			<circle cx={a.x} cy={a.y} r="4" fill={a.c} />
 		{/each}
+	{:else if slug === 'cpu'}
+		<!-- a chip with its pins, and the fetch → decode → execute cycle going round inside it -->
+		{#each [0, 1, 2, 3, 4] as i (i)}
+			<path
+				d="M{72 + i * 14} 18 V26 M{72 + i * 14} 94 V102 M58 {32 + i * 14} H66 M134 {32 +
+					i * 14} H142"
+				stroke="currentColor"
+				stroke-opacity="0.45"
+				stroke-width="2.5"
+				stroke-linecap="round"
+			/>
+		{/each}
+		<rect
+			x="66"
+			y="26"
+			width="68"
+			height="68"
+			rx="7"
+			fill={accent}
+			fill-opacity="0.12"
+			stroke="currentColor"
+			stroke-opacity="0.7"
+			stroke-width="2"
+		/>
+		<path
+			d="M100 42 A18 18 0 1 1 84.4 69 M115.6 69 A18 18 0 0 1 100 78"
+			fill="none"
+			stroke={accent}
+			stroke-width="3"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M84.4 69 l-1 -7 M84.4 69 l6.5 -2.5"
+			stroke={accent}
+			stroke-width="3"
+			stroke-linecap="round"
+		/>
+		{#each [{ x: 100, y: 42 }, { x: 115.6, y: 69 }, { x: 84.4, y: 69 }] as d (d.x)}
+			<circle cx={d.x} cy={d.y} r="4.5" fill={accent} />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
