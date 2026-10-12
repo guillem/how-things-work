@@ -108,10 +108,10 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 - **radioactivity** (batch 7) — control changes snap rather than ease; at a 2 s half-life the
   plot's half-life marks crowd together.
 
-- **linear-transformations** (batch 7) — in "Mirror in the diagonal" the λ = −1 label sits on the
-  F; the F is clipped under "Stretch" and in the reduced-motion `compose` frame; with the zero
-  matrix both handles overlap at the origin (only ĵ can be grabbed); near a flat matrix the moved
-  grid becomes a dense hatch.
+- **linear-transformations** (batch 7) — the F is clipped in the reduced-motion `compose` frame;
+  with the zero matrix both handles overlap at the origin (only ĵ can be grabbed); near a flat
+  matrix the moved grid becomes a dense hatch (denser since the review raised the line cap so the
+  grid always fills the plane).
 
 - **fourier-transform** (batch 7) — `#square` and `#spectrum` are mostly static frames; extreme
   bar edits can clip the rebuilt signal at the top of the graph; a 0 Hz bar below −0.75 is drawn

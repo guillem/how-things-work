@@ -23,6 +23,11 @@ const vy: Control = {
 	default: 1,
 	format: (v) => num(v)
 };
+/** v on the "follow" step, where v is drawn but has no handle. */
+const vxFollow: Control = {
+	...vx,
+	help: 'Here v is set with the sliders; drag î and ĵ on the stage.'
+};
 
 // ---- the matrix [[a, b], [c, d]]: î lands on (a, c), ĵ on (b, d) --------------------------
 const entry = (id: string, label: string, def: number, help?: string): Control => ({
@@ -156,8 +161,8 @@ export const spec: ExplainerSpec = {
 			scene: 'transform',
 			hints: { phase: 'drag' },
 			body: `
-<p>A <dfn data-def="A way of moving every point of the plane at once that keeps the origin in place and keeps grid lines straight, parallel and evenly spaced.">linear transformation</dfn> moves every point of the plane at once, following three rules: the origin stays put, straight lines stay straight, and parallel, evenly spaced lines stay parallel and evenly spaced.</p>
-<p>Watch the grid move at the start: the squares become identical <dfn data-def="A four-sided shape whose opposite sides are parallel and equal in length.">parallelograms</dfn>. The faint grid behind is where the plane was.</p>
+<p>A <dfn data-def="A way of moving every point of the plane at once that keeps the origin in place and keeps grid lines straight, parallel and evenly spaced.">linear transformation</dfn> moves every point of the plane at once, following three rules: the origin stays put, straight lines stay straight, and parallel, evenly spaced lines stay parallel and evenly spaced. Equivalently, it respects scaling and adding: transforming s·v gives s times the transformed v, and transforming v + w gives the sum of the transformed v and w.</p>
+<p>When you arrive from the previous chapter, the grid moves: the squares become identical <dfn data-def="A four-sided shape whose opposite sides are parallel and equal in length.">parallelograms</dfn>. The faint grid behind is where the plane was.</p>
 <p>Now drag the tips of <strong class="tag i">î</strong> and <strong class="tag j">ĵ</strong> (or focus one with Tab and use the arrow keys; Shift for bigger steps). The grid and the <strong class="tag f">F</strong> drawn on it go along. You can turn the plane, stretch it, lean it over or flip it, but never bend it.</p>`,
 			notes: `<p>Why “linear”? Because these are exactly the moves that respect scaling and adding: transforming s·v gives s times the transformed v, and transforming v + w gives the sum of the transformed vectors. That is what keeps grid lines straight and evenly spaced. Moves that also shift the origin, such as sliding the whole plane sideways, are called <em>affine</em>; they are a linear transformation followed by a shift.</p>`
 		},
@@ -167,7 +172,7 @@ export const spec: ExplainerSpec = {
 			title: 'Where î and ĵ land decides everything',
 			scene: 'transform',
 			hints: { phase: 'follow' },
-			controls: [vx, vy],
+			controls: [vxFollow, vy],
 			body: `
 <p>Before the move, <strong class="tag v">v</strong> = x·î + y·ĵ. A linear transformation keeps scaling and adding intact, so afterwards v is still “x of î plus y of ĵ” — only with î and ĵ where they have landed:</p>
 <p class="formula"><strong>v lands on x·(where î lands) + y·(where ĵ lands)</strong></p>
@@ -186,7 +191,7 @@ export const spec: ExplainerSpec = {
 <p>Multiplying the matrix by a vector is the recipe of the last step, in numbers:</p>
 <p class="formula">${m('a', 'b', 'c', 'd')} ${col('x', 'y')} = x ${col('a', 'c')} + y ${col('b', 'd')} = ${col('ax + by', 'cx + dy')}</p>
 <p>The stage works it out for v. Change the entries with the sliders and watch î, ĵ and the grid move — or drag the arrows and watch the numbers change. It is the same thing either way: a matrix is a transformation, written down.</p>`,
-			notes: `<p>The same idea works in any number of dimensions. A 3 × 3 matrix holds where the three basis vectors of space land, one per column. Computer graphics moves every corner of a 3D scene this way, many millions of times a second; it uses 4 × 4 matrices so that the same multiplication can also shift objects and add perspective.</p>`
+			notes: `<p>The same idea works in any number of dimensions. A 3 × 3 matrix holds where the three basis vectors of space land, one per column. Computer graphics moves every corner of a 3D scene this way, many millions of times a second; it uses 4 × 4 matrices so that the same multiplication can also shift objects and, followed by a division by the fourth coordinate, add perspective.</p>`
 		},
 		{
 			id: 'gallery',
@@ -246,7 +251,7 @@ export const spec: ExplainerSpec = {
 <p>But some directions are special: a vector along them lands on its own line, only stretched, shrunk or reversed. These are the <dfn data-def="A non-zero vector that a transformation only scales: Mv = λv.">eigenvectors</dfn> of the matrix, and the stretch factor is the <dfn data-def="The factor λ by which a transformation scales its eigenvector. A negative λ reverses it.">eigenvalue</dfn> λ (lambda):</p>
 <p class="formula"><strong>M v = λ v</strong></p>
 <p>With <em>Show eigenvectors</em> on, the dashed lines are the eigen-directions. The stage starts with ${m('2', '1', '0.5', '1.5')}: arrows along (2, 1) are stretched 2.5 times, and arrows along (1, −1) are left exactly as they are (λ = 1). When the sweeping arrow passes over one of these lines, its image lines up with it. Drag î and ĵ and the eigen-directions move.</p>`,
-			notes: `<p>To find them, look for the λ for which M − λI squashes some direction to zero, which means det(M − λI) = 0. For a 2 × 2 matrix that is λ² − (a + d)λ + (ad − bc) = 0. Here: λ² − 3.5λ + 2.5 = 0, so λ = 2.5 or λ = 1. A quadratic can have two, one or no real solutions — which is the next step.</p>`
+			notes: `<p>To find them, look for the λ for which M − λI (I is the identity matrix) squashes some direction to zero, which means det(M − λI) = 0. For a 2 × 2 matrix that is λ² − (a + d)λ + (ad − bc) = 0. Here: λ² − 3.5λ + 2.5 = 0, so λ = 2.5 or λ = 1. A quadratic can have two, one or no real solutions — which is the next step — and when there is one repeated solution, the matrix has either one eigen-direction or, if it scales everything equally, all of them.</p>`
 		},
 		{
 			id: 'no-eigen',
@@ -273,7 +278,7 @@ export const spec: ExplainerSpec = {
 			controls: [eigenToggle],
 			body: `
 <p>Apply a matrix to a vector, then apply it again to the result, and again: v, Mv, M²v, … The lengths soon grow too fast to draw, so the stage draws each one's <em>direction</em> at the same length and lists the lengths beside it.</p>
-<p>Any starting vector is a mix of the two eigenvectors. Each round stretches its part along (2, 1) by 2.5 but its part along (1, −1) only by 1, so the first part soon swamps the second: after a few rounds the arrow lies along the eigen-direction with the biggest stretch, and from then on simply grows 2.5 times per round. This is the <dfn data-def="Finding the eigenvector with the biggest eigenvalue by applying the matrix over and over to a starting vector.">power method</dfn>.</p>
+<p>Any starting vector is a mix of the two eigenvectors. Each round stretches its part along (2, 1) by 2.5 but its part along (1, −1) only by 1, so the first part soon swamps the second (unless there is none: a start lying exactly along (1, −1) stays there): after a few rounds the arrow lies along the eigen-direction with the biggest stretch, and from then on simply grows 2.5 times per round. This is the <dfn data-def="Finding the eigenvector whose eigenvalue is biggest in size (ignoring its sign) by applying the matrix over and over to a starting vector.">power method</dfn>.</p>
 <p>It is how Google's <strong>PageRank</strong> is computed: the ranks of all the pages of the web form an eigenvector of one enormous matrix built from the links between them, found by applying that matrix over and over. Drag î and ĵ into a rotation and the arrow never settles: there is no eigen-direction to find.</p>`
 		},
 		// ------------------------------------------------------------------ combine
@@ -288,7 +293,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Do one transformation and then another, and the result is again a linear transformation, with its own matrix: the <dfn data-def="The matrix of “first N, then M”, written MN: the one applied first stands on the right, next to the vector.">product</dfn> of the two.</p>
 <p>The stage rotates the plane a quarter turn, R = ${m('0', '−1', '1', '0')}, then shears it, S = ${m('1', '1', '0', '1')}. To find the product SR, follow î and ĵ: the rotation sends î to (0, 1) and the shear sends that on to (1, 1); ĵ goes to (−1, 0), which the shear leaves where it is. So SR = ${m('1', '−1', '1', '0')}.</p>
-<p>Now switch the order. Shear first: î stays at (1, 0) and ĵ goes to (1, 1); the rotation then sends them to (0, 1) and (−1, 1), so RS = ${m('0', '−1', '1', '1')} — a different transformation. Order matters. Determinants, on the other hand, simply multiply, det(SR) = det S × det R, because areas are scaled by one and then by the other.</p>`
+<p>Now switch the order. Shear first: î stays at (1, 0) and ĵ goes to (1, 1); the rotation then sends them to (0, 1) and (−1, 1), so RS = ${m('0', '−1', '1', '1')} — a different transformation. Order matters. Determinants, on the other hand, simply multiply, det(SR) = det S × det R, because areas are scaled by one and then by the other (here both are 1: a rotation and a shear keep areas, so the product does too).</p>`
 		},
 		{
 			id: 'takeaway',

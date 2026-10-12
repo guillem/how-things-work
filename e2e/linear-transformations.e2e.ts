@@ -88,3 +88,19 @@ test('composing: the order of two transformations matters', async ({ page }) => 
 	await expect(stage(page)).toContainText('î ends on (0, 1)');
 	await expect(stage(page)).toContainText('ĵ ends on (−1, 1)');
 });
+
+test('where v lands: a negative step reads as a subtraction', async ({ page }) => {
+	await page.goto('./linear-transformations/#follow');
+	await slider(page, 'vy').fill('-1');
+	await expect(stage(page)).toContainText('= 2·î − 1·ĵ');
+	await expect(stage(page)).not.toContainText('+ −');
+});
+
+test('repeating the matrix: the verdict names the limit direction as the table does', async ({
+	page
+}) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('./linear-transformations/#repeat');
+	// (2, 1) points 26.6° above the x-axis: the angle the last rows of the table approach.
+	await expect(stage(page)).toContainText('heading for (2, 1) (26.6°)');
+});
