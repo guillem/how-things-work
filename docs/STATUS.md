@@ -66,6 +66,8 @@ Last updated: 2026-10-12 UTC.
 
 ## Current development
 
+**states-of-matter** (branch `topic/states-of-matter`): built, 12 steps, model + browser tests; not yet reviewed.
+
 **Batch 8 (2026-10-12):** light-optics, semiconductors, special-relativity, cryptography, cpu,
 motors-generators. Same process as batch 7 (one builder agent each in a local worktree, fact-check
 via `make review` ~$4.35, one agent each applying its report). All merged into `main` locally and
