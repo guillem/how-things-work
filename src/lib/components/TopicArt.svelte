@@ -1542,6 +1542,35 @@
 		{#each [[124, 96], [146, 104], [168, 84], [108, 108], [176, 106], [152, 72]] as [x, y], i (i)}
 			<circle cx={x} cy={y} r="4" fill={accent} opacity="0.55" />
 		{/each}
+	{:else if slug === 'black-holes'}
+		<!-- a black hole with its photon sphere: one ray bent on its way past, one captured -->
+		<circle
+			cx="104"
+			cy="62"
+			r="21"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.4"
+			stroke-dasharray="3 3"
+			opacity="0.7"
+		/>
+		<circle cx="104" cy="62" r="14" fill="currentColor" opacity="0.85" />
+		<path
+			d="M14 30 L60 30 C86 30 104 32 124 40 C142 47 160 64 186 84"
+			fill="none"
+			stroke="var(--bh-light)"
+			stroke-width="2"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M14 52 L58 52 C78 52 96 48 110 48 C126 50 124 70 108 72"
+			fill="none"
+			stroke="var(--bh-light)"
+			stroke-width="2"
+			stroke-linecap="round"
+			opacity="0.6"
+		/>
+		<path d="M14 30 H186" stroke="currentColor" stroke-dasharray="2 4" opacity="0.3" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
