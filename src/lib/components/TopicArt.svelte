@@ -1250,6 +1250,41 @@
 			<path d="M100 60 L{a.x} {a.y}" stroke={a.c} stroke-width="3" stroke-linecap="round" />
 			<circle cx={a.x} cy={a.y} r="4" fill={a.c} />
 		{/each}
+	{:else if slug === 'special-relativity'}
+		<!-- a spacetime diagram: the platform's axes, the 45° light line and the train's
+		     axes tilted towards it (β = 0.5), with ticks of the train's clock -->
+		<line x1="60" y1="104" x2="60" y2="14" stroke="currentColor" opacity="0.45" />
+		<line x1="60" y1="104" x2="176" y2="104" stroke="currentColor" opacity="0.45" />
+		<line
+			x1="60"
+			y1="104"
+			x2="150"
+			y2="14"
+			stroke="var(--rel-light)"
+			stroke-width="2"
+			stroke-dasharray="4 3"
+		/>
+		<line x1="60" y1="104" x2="105" y2="14" stroke={accent} stroke-width="2.4" />
+		<line x1="60" y1="104" x2="176" y2="46" stroke={accent} stroke-width="2.4" />
+		{#each [1, 2, 3] as k (k)}
+			<circle cx={60 + k * 13.86} cy={104 - k * 27.71} r="3.2" fill={accent} />
+			<line
+				x1="60"
+				x2={60 + k * 13.86}
+				y1={104 - k * 27.71}
+				y2={104 - k * 27.71}
+				stroke="currentColor"
+				opacity="0.25"
+				stroke-dasharray="2 3"
+			/>
+		{/each}
+		<rect x="24" y="22" width="22" height="14" rx="3" fill="var(--rel-car)" stroke={accent} />
+		<path
+			d="M28 33 L32 25 L36 33 L40 25"
+			fill="none"
+			stroke="var(--rel-light)"
+			stroke-width="1.4"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
