@@ -8,7 +8,10 @@
 	 *              column cases with the active one highlighted
 	 *   overflow — controls `oa`, `ob`, `view` (unsigned | signed); the carry out
 	 *              of the leftmost column flies out and is lost; the readout
-	 *              explains the wrap-round; a small odometer rolls 999 → 000
+	 *              explains the wrap-round; a small odometer rolls 999 → 000.
+	 *              The sliders hold the numbers as read in the current view, so
+	 *              switching the view moves each slider to the other reading of
+	 *              the same byte (200 ↔ −56): see the reconcile effect below.
 	 *
 	 * The ripple is a pure function of the time since the two numbers last
 	 * changed (a frame-to-frame memo inside a $derived, the guide's sanctioned
@@ -26,7 +29,7 @@
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { add, placeValue, signed, toBits, unsigned } from '../binary';
 
-	let { step, t, params, reduced }: StageProps = $props();
+	let { step, t, params, setParam, reduced }: StageProps = $props();
 
 	// ---- geometry ----------------------------------------------------------------
 	const TILE = 52;
@@ -53,10 +56,30 @@
 	// ---- phase and inputs ------------------------------------------------------------
 	const phase = $derived(String(step.hints?.phase ?? 'add') === 'overflow' ? 'overflow' : 'add');
 	const over = $derived(phase === 'overflow');
-	const num = (v: unknown, d: number) => Math.round(clamp(Number(v ?? d), 0, 255));
+	// A slider value is the number as read in the current view, so it can be
+	// negative; toBits takes it modulo 256 either way.
+	const num = (v: unknown, d: number) => Math.round(clamp(Number(v ?? d), -128, 255));
 	const A = $derived(over ? num(params.oa, 200) : num(params.a, 45));
 	const B = $derived(over ? num(params.ob, 100) : num(params.b, 27));
 	const isSigned = $derived(over && params.view === 'signed');
+	// Switching the view keeps the bytes: each slider moves to the other reading
+	// of its pattern (255 ↔ −1). Runs on the view change and on entry, so a
+	// persisted param left over from the other view is reconciled too.
+	$effect(() => {
+		const sg = isSigned;
+		if (!over) return;
+		untrack(() => {
+			for (const [id, dflt] of [
+				['oa', 200],
+				['ob', 100]
+			] as const) {
+				const raw = num(params[id], dflt);
+				const byte = ((raw % 256) + 256) % 256;
+				const read = sg && byte > 127 ? byte - 256 : byte;
+				if (read !== raw) setParam(id, read);
+			}
+		});
+	});
 	const aBits = $derived(toBits(A, 8));
 	const bBits = $derived(toBits(B, 8));
 	const sum = $derived(add(aBits, bBits));

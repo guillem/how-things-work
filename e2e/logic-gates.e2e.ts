@@ -23,3 +23,16 @@ test('the 4-bit adder adds 11 + 6 = 17', async ({ page }) => {
 	await expect(stage(page)).toContainText('11 + 6 = 17');
 	await expect(stage(page)).toContainText('1011 + 0110 = 10001 in binary');
 });
+
+test('switching the challenge clears a canvas message', async ({ page }) => {
+	await page.goto('./logic-gates/#build');
+	await expect(page.getByRole('switch', { name: 'Switch A' })).toBeAttached();
+	// Click empty canvas near switch A: too close to it to add a gate.
+	const box = await page.locator('.stage svg').boundingBox();
+	if (!box) throw new Error('stage not drawn');
+	await page.mouse.click(box.x + (130 / 960) * box.width, box.y + (210 / 600) * box.height);
+	await expect(stage(page)).toContainText('Too close to another part');
+	await page.locator('button[data-control=challenge][data-value=half]').click();
+	await expect(stage(page)).toContainText('Sum = 0');
+	await expect(stage(page)).not.toContainText('Too close to another part');
+});

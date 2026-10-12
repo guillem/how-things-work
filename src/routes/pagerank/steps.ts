@@ -183,7 +183,7 @@ export const spec: ExplainerSpec = {
 			controls: [tool, addPage, resetWeb, speedFast, restart],
 			body: `
 <p>Page E is new: it links to A, but nobody links to E, so it gets only its share of random jumps. Your job: <strong>raise E's rank</strong>.</p>
-<p>First add links <em>from</em> E to other pages. Nothing happens to E: its links give its vote away, but no surfer arrives at E by a link, so its own rank cannot change. Now add pages that link to E — a little "link farm". It helps, but each new page has hardly any rank to give. Finally, get A, the top page, to link to E: one vote from a page that matters beats a whole farm.</p>
+<p>First add links <em>from</em> E to other pages. Nothing happens to E: its links give its vote away, but no surfer arrives at E by a link, so its own rank cannot change. Now add pages that link to E — a little "link farm". It helps, but each new page has hardly any rank to give, and the random jumps are shared by all pages equally: every added page spreads them thinner, so the share E is guaranteed (15% ÷ the number of pages) dips as the web grows. Finally, get A, the top page, to link to E: one vote from a page that matters beats a whole farm.</p>
 <p>(Once some page does link to E, E's own links start to matter a little: rank sent to a page that links back to E comes back round. Search engines learned to discount such link swaps and farms long ago.)</p>`,
 			notes: `<p>This is the real lesson of PageRank: the only reliable way to rank highly is to be linked to by pages that are themselves well linked — by earning recommendations. Modern search engines combine PageRank-like link scores with hundreds of other signals, partly because people did try to game it.</p>`
 		},

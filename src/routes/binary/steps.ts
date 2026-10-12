@@ -1,4 +1,4 @@
-import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
+import type { Control, ExplainerSpec, Params } from '#lib/explainer/index.ts';
 
 const width: Control = {
 	type: 'select',
@@ -57,6 +57,9 @@ const b: Control = {
 	default: 27
 };
 // Separate ids: control values persist across steps, and this step starts from its own sum.
+// The sliders read the numbers as the `view` control does — signed (−128…127) or unsigned
+// (0…255); the scene keeps the byte when the view changes (200 becomes −56).
+const signedView = (params: Params) => params.view === 'signed';
 const a2: Control = {
 	type: 'range',
 	id: 'oa',
@@ -64,7 +67,9 @@ const a2: Control = {
 	min: 0,
 	max: 255,
 	step: 1,
-	default: 200
+	default: 200,
+	bounds: (params: Params) => (signedView(params) ? [-128, 127] : [0, 255]),
+	format: (v) => String(v).replace('-', '−')
 };
 const b2: Control = {
 	type: 'range',
@@ -73,7 +78,9 @@ const b2: Control = {
 	min: 0,
 	max: 255,
 	step: 1,
-	default: 100
+	default: 100,
+	bounds: (params: Params) => (signedView(params) ? [-128, 127] : [0, 255]),
+	format: (v) => String(v).replace('-', '−')
 };
 
 const view: Control = {

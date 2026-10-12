@@ -58,6 +58,7 @@
 	{#each controls as control (control.id)}
 		{#if control.type === 'range'}
 			{@const value = Number(params[control.id] ?? control.default)}
+			{@const [min, max] = control.bounds?.(params) ?? [control.min, control.max]}
 			<label class="control range">
 				<span class="label">
 					<span>{control.label}</span>
@@ -66,8 +67,8 @@
 				<input
 					type="range"
 					data-control={control.id}
-					min={control.min}
-					max={control.max}
+					{min}
+					{max}
 					step={control.step ?? 1}
 					{value}
 					oninput={(e) => rangeInput(e, control)}

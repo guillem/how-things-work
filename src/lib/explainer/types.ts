@@ -19,6 +19,12 @@ export interface RangeControl extends ControlBase {
 	type: 'range';
 	min: number;
 	max: number;
+	/**
+	 * Bounds that follow the other controls (e.g. a unit switch on the same
+	 * step). When present it overrides `min`/`max`, which stay the outermost
+	 * bounds for readers that only look at the static ones.
+	 */
+	bounds?: (params: Params) => readonly [number, number];
 	step?: number;
 	default: number;
 	unit?: string;

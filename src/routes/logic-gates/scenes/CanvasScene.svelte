@@ -362,11 +362,20 @@
 
 	const commit = (c: Circuit) => setParam('circuit:build', serializeCircuit(c));
 
-	// "Start again": react to a change of the press count.
+	// "Start again": react to a change of the press count. A message or a
+	// half-finished wire belongs to the step and challenge it started on, so
+	// either changing clears it (the same scene serves every canvas step).
 	let seenReset = untrack(() => params.resetCanvas);
+	let seenContext = untrack(() => `${step.id}|${challenge}`);
 	$effect(() => {
 		const n = params.resetCanvas;
+		const context = `${step.id}|${challenge}`;
 		untrack(() => {
+			if (context !== seenContext) {
+				seenContext = context;
+				msg = null;
+				pending = null;
+			}
 			if (n === seenReset) return;
 			seenReset = n;
 			commit(blank);
@@ -744,7 +753,7 @@
 				{@render txt(on ? cx - 9 : cx + 5, cy + 4, on ? '1' : '0', 11, {
 					anchor: 'middle',
 					weight: 700,
-					color: 'var(--stage-bg)',
+					color: on ? 'var(--stage-bg)' : 'var(--stage-ink)',
 					halo: false
 				})}
 			</g>

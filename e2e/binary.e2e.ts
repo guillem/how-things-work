@@ -86,6 +86,23 @@ test('read as signed, 100 + 100 overflows to −56', async ({ page }) => {
 	await expect(stage(page)).toContainText('signed overflow: two positives gave a negative');
 });
 
+test('the overflow sliders follow the view, keeping the bytes', async ({ page }) => {
+	await openAdder(page, './binary/#overflow');
+	await expect(slider(page, 'oa')).toHaveAttribute('min', '0');
+	await expect(slider(page, 'oa')).toHaveAttribute('max', '255');
+	await slider(page, 'oa').fill('255');
+	await page.locator('button[data-control=view][data-value=signed]').click();
+	await expect(slider(page, 'oa')).toHaveAttribute('min', '-128');
+	await expect(slider(page, 'oa')).toHaveAttribute('max', '127');
+	// The same byte: 255 read as signed is −1.
+	await expect(slider(page, 'oa')).toHaveValue('-1');
+	await expect(stage(page)).toContainText('−1 + 100 = 99');
+	// And back.
+	await page.locator('button[data-control=view][data-value=unsigned]').click();
+	await expect(slider(page, 'oa')).toHaveValue('255');
+	await expect(stage(page)).toContainText('255 + 100 = 355');
+});
+
 test('−1 + 1 loses a carry but the signed answer is right', async ({ page }) => {
 	await openAdder(page, './binary/#overflow');
 	await slider(page, 'oa').fill('255');
