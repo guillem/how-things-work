@@ -295,8 +295,8 @@ function arrange(groups: number[], angles: (number | null)[]): Vec[] {
 	if (n === 1) return [[0, 0, -1]];
 	if (n === 2)
 		return [
-			[0, 0, -1],
-			[0, 0, 1]
+			[-1, 0, 0],
+			[1, 0, 0]
 		];
 	if (n === 3) {
 		// In the xz plane. A pair at ±θ/2 from −z, the third along +z.
