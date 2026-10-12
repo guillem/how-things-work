@@ -38,7 +38,11 @@ env:
 jobs:
   verify:
     if: github.event_name == 'push'
-    runs-on: ubuntu-latest
+    # Ubicloud runner (premium tier, enabled in the Ubicloud console): 8 vCPU
+    # = 4 fast physical cores, so 4 Playwright workers. GitHub's free runner
+    # was too slow for the browser suite. The other jobs are short and stay on
+    # GitHub (the Pages deploy runs on its own runner).
+    runs-on: ubicloud-standard-8-ubuntu-2404
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
