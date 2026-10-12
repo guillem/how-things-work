@@ -46,8 +46,14 @@ test('water: with no light the lumen loses its acidity, and the light level carr
 	page
 }) => {
 	await open(page, './photosynthesis/#water', 'thylakoid lumen · pH ≈ 6.2');
+	await expect(stage(page)).toContainText(
+		'tens to hundreds of times more acidic than the stroma in bright light'
+	);
 	await range(page, 'light').fill('0');
 	await expect(stage(page)).toContainText('thylakoid lumen · pH ≈ 8.0');
+	// The caption follows the light: with the pump stalled it says the gradient
+	// has run down, not that the lumen is still more acidic.
+	await expect(stage(page)).toContainText('no light: the pump stalls');
 	// The next step shares the light slider and keeps its value...
 	await page.getByRole('button', { name: 'Next step' }).click();
 	await expect(page).toHaveURL(/#etc$/);

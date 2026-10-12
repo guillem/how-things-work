@@ -122,6 +122,15 @@
 	// Lumen pH 5.8 at full light: in vivo it stays around 5.8–6.5 in normal light
 	// (Kramer, Sacksteder & Cruz 1999), 1.5–2.5 units below the stroma.
 	const lumenPH = $derived((8 - 2.2 * g).toFixed(1));
+	// The acidity claim holds only while light pumps protons in; with the light
+	// off the gradient runs down and the caption says so instead.
+	const lumenNote = $derived(
+		g < 0.06
+			? 'no light: the pump stalls, and the gradient runs down to the stroma’s own pH'
+			: g < 0.6
+				? 'still more acidic than the stroma: light keeps pumping protons in'
+				: 'tens to hundreds of times more acidic than the stroma in bright light'
+	);
 	const cloudCount = $derived(Math.round(lerp(6, 30, g)));
 	const cloud = $derived(Array.from({ length: cloudCount }, (_, i) => i));
 
@@ -992,14 +1001,7 @@
 		size={14}
 		weight={600}
 	/>
-	<Label
-		x={24}
-		y={580}
-		text="tens to hundreds of times more acidic than the stroma in bright light"
-		anchor="start"
-		size={11}
-		muted
-	/>
+	<Label x={24} y={580} text={lumenNote} anchor="start" size={11} muted />
 	<Label
 		x={940}
 		y={580}
