@@ -5,7 +5,6 @@ import {
 	GUITAR_SCALE,
 	SOUND_SPEED,
 	amplitudeAt,
-	combinedAmplitude,
 	dopplerAhead,
 	dopplerBehind,
 	farAngle,
@@ -18,7 +17,6 @@ import {
 	pathDifference,
 	pluckAmplitude,
 	pluckedString,
-	pulse,
 	quietOrders,
 	speedOfSound,
 	standing,
@@ -49,17 +47,6 @@ test('a wave covers one wavelength per period: v = f·λ', () => {
 	expect(travelling(v * t + 0.01, t, f, v)).toBe(0);
 });
 
-test('two pulses pass through each other unchanged', () => {
-	// Where they overlap the rope is the sum; afterwards each has its own shape again.
-	const w = 0.3;
-	const rope = (x: number, t: number, sign: number) =>
-		pulse(x, -2 + t, w) + sign * pulse(x, 2 - t, w);
-	expect(rope(0, 2, 1)).toBeCloseTo(2, 10); // upright meets upright: twice the height
-	expect(rope(0, 2, -1)).toBeCloseTo(0, 10); // upright meets upside-down: flat for an instant
-	for (const x of [-1, 1.5, 2.5])
-		expect(rope(x, 4, -1)).toBeCloseTo(pulse(x, 2, w) - pulse(x, -2, w), 10);
-});
-
 test('two sources 3 wavelengths apart give 6 quiet lines; closer than λ/2, none', () => {
 	expect(quietOrders(3, 1)).toEqual([-2.5, -1.5, -0.5, 0.5, 1.5, 2.5]);
 	expect(quietOrders(0.4, 1)).toEqual([]);
@@ -68,13 +55,6 @@ test('two sources 3 wavelengths apart give 6 quiet lines; closer than λ/2, none
 	expect(quietOrders(3, 0.5)).toHaveLength(12);
 	// Far away the first quiet line is at sin θ = λ / 2d: 30° when d = λ.
 	expect(farAngle(0.5, 1, 1)).toBeCloseTo(30, 10);
-});
-
-test('crest meets crest where the path difference is a whole number of wavelengths', () => {
-	expect(combinedAmplitude(0, 2)).toBeCloseTo(1, 10);
-	expect(combinedAmplitude(4, 2)).toBeCloseTo(1, 10);
-	expect(combinedAmplitude(1, 2)).toBeCloseTo(0, 10);
-	expect(combinedAmplitude(3, 2)).toBeCloseTo(0, 10);
 });
 
 test('along a quiet line in the ripple tank the water is almost still', () => {

@@ -175,7 +175,7 @@ export const spec: ExplainerSpec = {
 <li>a <strong>whole number</strong> of wavelengths (0, 1, 2…): crest arrives with crest, trough with trough, and the water moves twice as much — <dfn data-def="Two waves adding up in step to a bigger wave.">constructive interference</dfn>;</li>
 <li>a <strong>half-integer</strong> number (½, 1½, 2½…): crest arrives with trough, and the two cancel — <dfn data-def="Two waves arriving out of step, one's crest on the other's trough, so that they cancel.">destructive interference</dfn>.</li>
 </ul>
-<p>The two traces under the readout are the two waves arriving at the probe, and their sum. The dashed lines join all the points of half-integer path difference: those are the calm bands. The water there is <em>almost</em> still rather than perfectly still, because the nearer source's ripple is a little stronger.</p>`,
+<p>The two traces under the readout are the two waves arriving at the probe, and their sum. The dashed lines join all the points of half-integer path difference: those are the calm bands. The thin yellow lines join the points of whole-number path difference, where the water heaves most. The water there is <em>almost</em> still rather than perfectly still, because the nearer source's ripple is a little stronger.</p>`,
 			notes: `<p>Every curve of constant path difference is a <em>hyperbola</em> with the two sources as its foci, which is why the bands bend near the sources and straighten out further away. The same argument with light is Thomas Young's double-slit experiment (1801), the first strong evidence that light is a wave.</p>`
 		},
 		{
@@ -263,7 +263,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [speed, passby],
 			body: `
-<p>Stand 10 m from a road while the car sounds its 440 Hz horn. While it's far off and coming straight at you, you hear the full high pitch. As it passes, it moves across your line of sight rather than towards you, and the pitch slides down through 440 Hz; driving away, it settles at the low pitch. The plot is the pitch you hear, moment by moment.</p>
+<p>Stand 10 m from a road while the car sounds its 440 Hz horn. While it's far off and coming straight at you, you hear the full high pitch. As it passes, it moves across your line of sight rather than towards you, and the pitch slides down through 440 Hz; driving away, it settles at the low pitch. The plot shows the pitch you hear against where the car is on the road at that moment.</p>
 <p>Press <em>Hear it go past</em> to listen at the speed you've set — the familiar drop of a passing siren or a race car.</p>
 <p>The Doppler effect measures speed from a distance: police radar guns and weather radars bounce waves off cars and raindrops, ultrasound scanners measure blood flow, and astronomers find planets around other stars from the tiny shifts in their starlight as each star is tugged towards and away from us.</p>
 <p><strong>Waves pass through each other and add, so they can reinforce or cancel; and a wave trapped between two ends can only vibrate at certain frequencies.</strong></p>`,
