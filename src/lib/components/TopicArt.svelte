@@ -17,7 +17,7 @@
 		return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
 	}).join(' ');
 
-	// Radioactivity: 8 × 10 nuclei, a seeded-looking third of them decayed, and
+	// Radioactivity: 8 × 10 nuclei, about half of them decayed (a fixed pattern), and
 	// the curve 104 − 80·2^(−h) over four half-lives of 20 px each from x 112.
 	const radArt = {
 		cells: Array.from({ length: 80 }, (_, k) => ({

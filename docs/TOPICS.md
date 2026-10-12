@@ -122,7 +122,7 @@ A topic is done when:
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
-- [ ] radioactivity
+- [x] radioactivity
 - [ ] chemical-bonds
 - [ ] states-of-matter
 - [ ] reaction-rates-equilibrium
