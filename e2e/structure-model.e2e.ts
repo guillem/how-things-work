@@ -13,6 +13,9 @@ import {
 	yieldLoad,
 	deckComplete,
 	envelope,
+	isAnchor,
+	jointAt,
+	memberBetween,
 	parseStructure,
 	removeMember,
 	serializeStructure,
@@ -119,6 +122,39 @@ test('in the arch the curved rib is pushed (compression) and the banks are pushe
 		.filter(({ m }) => a.joints[m.a].y < -0.1 && a.joints[m.b].y < -0.1);
 	expect(rib.length).toBeGreaterThan(4);
 	for (const { i } of rib) expect(sol.members[i].axial).toBeLessThan(0);
+});
+
+test('a member drawn through a joint is split and joined there', () => {
+	// A long beam over the whole road replaces the pieces without duplicating them.
+	const s = addMember(beam(8), 'beam', { x: 0, y: 0 }, { x: 40, y: 0 });
+	expect(s.members).toHaveLength(8);
+	// A pier to the middle of a single long beam splits it and holds it.
+	const t = addMember(beam(1), 'beam', { x: 20, y: 0 }, { x: 20, y: -12.5 });
+	const at = (x: number, y: number) => jointAt(t, { x, y });
+	expect(memberBetween(t, at(0, 0), at(40, 0))).toBe(-1);
+	expect(memberBetween(t, at(0, 0), at(20, 0))).toBeGreaterThanOrEqual(0);
+	expect(memberBetween(t, at(20, 0), at(40, 0))).toBeGreaterThanOrEqual(0);
+	expect(memberBetween(t, at(20, 0), at(20, -12.5))).toBeGreaterThanOrEqual(0);
+});
+
+test('the ground carries the bridge: the pushes on the banks add up to the whole load', () => {
+	const s = DESIGNS.beam;
+	const areas = size(s);
+	const sol = solve(s, 20, areas);
+	let fx = 0;
+	let fy = 0;
+	s.joints.forEach((j, ji) => {
+		if (!isAnchor(j)) return;
+		s.members.forEach((m, i) => {
+			if (m.a !== ji && m.b !== ji) return;
+			const e = m.a === ji ? sol.members[i].endA : sol.members[i].endB;
+			fx += e[0];
+			fy += e[1];
+		});
+	});
+	const load = steelMass(s, areas) * G + P;
+	expect(-fy / load).toBeCloseTo(1, 3);
+	expect(Math.abs(fx) / load).toBeLessThan(0.01);
 });
 
 test('a gap in the road, and a loose member', () => {

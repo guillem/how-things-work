@@ -479,21 +479,19 @@
 			})
 	);
 
-	// ---- arch and suspension: forces on the ground ------------------------------------------
-	/** Force (N, world) the structure's non-deck members exert on an anchor joint. */
-	function forceOn(jx: number, jy: number, kind?: MemberKind) {
+	// ---- forces on the ground (support reactions) ---------------------------------------
+	/** Force (N, world) the structure exerts on the ground at an anchor joint. */
+	function forceOn(jx: number, jy: number, kind?: MemberKind, deck = false) {
 		const ji = s.joints.findIndex((j) => j.x === jx && Math.abs(j.y - jy) < 1e-6);
 		if (ji < 0) return null;
 		let fx = 0;
 		let fy = 0;
 		s.members.forEach((m, i) => {
-			if ((m.a !== ji && m.b !== ji) || isDeck(s, m) || (kind && m.kind !== kind)) return;
-			const o = s.joints[m.a === ji ? m.b : m.a];
-			const j = s.joints[ji];
-			const len = Math.hypot(o.x - j.x, o.y - j.y);
-			const ax = sol.members[i].axial;
-			fx += ((o.x - j.x) / len) * ax;
-			fy += ((o.y - j.y) / len) * ax;
+			if ((m.a !== ji && m.b !== ji) || (!deck && isDeck(s, m)) || (kind && m.kind !== kind))
+				return;
+			const e = m.a === ji ? sol.members[i].endA : sol.members[i].endB;
+			fx += e[0];
+			fy += e[1];
 		});
 		const mag = Math.hypot(fx, fy);
 		return mag < 1 ? null : { ux: fx / mag, uy: fy / mag, mag };
@@ -514,6 +512,31 @@
 			anchor: 'start' | 'end';
 			color: string;
 		}[] = [];
+		if (designId === 'beam' || designId === 'truss') {
+			// The whole load reaches the ground through the road's two ends.
+			for (const [x, side] of [
+				[0, -1],
+				[SPAN, 1]
+			] as const) {
+				const f = forceOn(x, 0, undefined, true);
+				if (!f) continue;
+				const sx = PX(x);
+				const sy = PY(0);
+				// Arrow tip pressing down into the bank, along the push.
+				out.push({
+					key: `bank${x}`,
+					x1: sx + 3 * f.ux,
+					y1: sy - 3 * f.uy,
+					x2: sx + 40 * f.ux,
+					y2: sy - 40 * f.uy,
+					lines: ['pushes down on the bank', kN(f.mag)],
+					lx: sx + side * 24,
+					ly: sy + 56,
+					anchor: side < 0 ? 'end' : 'start',
+					color: 'var(--struct-compression)'
+				});
+			}
+		}
 		if (designId === 'arch') {
 			for (const [x, side] of [
 				[0, -1],
@@ -777,44 +800,11 @@
 	function commit(next: typeof built) {
 		setParam('bridge:build', serializeStructure(next));
 	}
-	/**
-	 * Joins members that pass straight through a joint at that joint: a pier drawn up to
-	 * the middle of a road segment holds the road, and a long beam drawn over existing
-	 * joints is connected to them. (`addMember` only connects at a member's two ends.)
-	 */
-	function joinThrough(st: Structure): Structure {
-		for (let guard = 0; guard < 200; guard++) {
-			let split: { i: number; j: Joint } | null = null;
-			for (let i = 0; i < st.members.length && !split; i++) {
-				const m = st.members[i];
-				const pa = st.joints[m.a];
-				const pb = st.joints[m.b];
-				const vx = pb.x - pa.x;
-				const vy = pb.y - pa.y;
-				const len2 = vx * vx + vy * vy;
-				for (const j of st.joints) {
-					const wx = j.x - pa.x;
-					const wy = j.y - pa.y;
-					const u = (wx * vx + wy * vy) / len2;
-					if (u > 1e-6 && u < 1 - 1e-6 && Math.abs(wx * vy - wy * vx) < 1e-6 * len2) {
-						split = { i, j };
-						break;
-					}
-				}
-			}
-			if (!split) return st;
-			const m = st.members[split.i];
-			const pa = st.joints[m.a];
-			const pb = st.joints[m.b];
-			st = removeMember(st, split.i);
-			st = addMember(st, m.kind, pa, split.j);
-			st = addMember(st, m.kind, split.j, pb);
-		}
-		return st;
-	}
 	function addBetween(p: Joint, q: Joint) {
 		if (p.x === q.x && p.y === q.y) return;
-		commit(joinThrough(addMember(built, tool === 'cable' ? 'cable' : 'beam', p, q)));
+		// addMember splits members at the joints they pass through, so a pier
+		// drawn up to the middle of a road segment holds the road.
+		commit(addMember(built, tool === 'cable' ? 'cable' : 'beam', p, q));
 	}
 	function eraseAt(i: number) {
 		commit(removeMember(built, i));

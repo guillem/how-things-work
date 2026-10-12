@@ -157,7 +157,11 @@ export const snap = (p: Joint): Joint => ({
 	y: Math.round(p.y / GRID) * GRID
 });
 
-/** Adds a member between two points (creating joints as needed); replaces an existing one. */
+/** Adds a member between two points (creating joints as needed). Members are
+ * split where a joint lies part-way along them — both ways: the new member at
+ * every joint it passes through, and existing members at the new member's
+ * ends — so a pier drawn up to the middle of a road segment holds the road. A
+ * piece that lands on an existing member replaces it. */
 export function addMember(s: Structure, kind: MemberKind, p: Joint, q: Joint): Structure {
 	const P = snap(p);
 	const Q = snap(q);
@@ -169,10 +173,46 @@ export function addMember(s: Structure, kind: MemberKind, p: Joint, q: Joint): S
 		joints.push(pt);
 		return joints.length - 1;
 	};
+	/** Does joint `j` lie strictly inside member `m`? */
+	const crosses = (m: Member, j: Joint) => {
+		const pa = joints[m.a];
+		const pb = joints[m.b];
+		const vx = pb.x - pa.x;
+		const vy = pb.y - pa.y;
+		const wx = j.x - pa.x;
+		const wy = j.y - pa.y;
+		const len2 = vx * vx + vy * vy;
+		const u = (wx * vx + wy * vy) / len2;
+		return u > 1e-6 && u < 1 - 1e-6 && Math.abs(wx * vy - wy * vx) < 1e-6 * len2;
+	};
+	let members = [...s.members];
+	// Split existing members that the new member's ends land in the middle of.
+	for (const pt of [P, Q])
+		for (let i = 0; i < members.length; i++) {
+			const m = members[i];
+			if (!crosses(m, pt)) continue;
+			const j = idx(pt);
+			members.splice(i, 1, { kind: m.kind, a: m.a, b: j }, { kind: m.kind, a: j, b: m.b });
+		}
+	// The new member, split at every joint it passes through; each piece
+	// replaces an existing member between the same joints.
 	const a = idx(P);
 	const b = idx(Q);
-	const members = s.members.filter((m) => !((m.a === a && m.b === b) || (m.a === b && m.b === a)));
-	return { joints, members: [...members, { kind, a, b }] };
+	const mid = joints
+		.map((_, i) => i)
+		.filter((i) => i !== a && i !== b && crosses({ kind, a, b }, joints[i]))
+		.sort(
+			(m, n) =>
+				Math.hypot(joints[m].x - P.x, joints[m].y - P.y) -
+				Math.hypot(joints[n].x - P.x, joints[n].y - P.y)
+		);
+	const chain = [a, ...mid, b];
+	for (let k = 0; k + 1 < chain.length; k++) {
+		const [u, v] = [chain[k], chain[k + 1]];
+		members = members.filter((m) => !((m.a === u && m.b === v) || (m.a === v && m.b === u)));
+		members.push({ kind, a: u, b: v });
+	}
+	return { joints, members };
 }
 
 /** Removes member i and any joint left without members. */
@@ -227,6 +267,10 @@ export function parseStructure(str: unknown): Structure | null {
 export interface MemberResult {
 	/** Axial force (N), positive = tension (pulling), negative = compression (pushing). */
 	axial: number;
+	/** Force (N, world coordinates) this member exerts on the joint at end a. */
+	endA: [number, number];
+	/** Force (N, world coordinates) this member exerts on the joint at end b. */
+	endB: [number, number];
 	/** Largest bending moment along the member (N·m, magnitude). */
 	moment: number;
 	/** Bending moment at the member's ends and at sample points (N·m, sagging positive), for drawing. */
@@ -372,6 +416,8 @@ export function solve(
 
 const IDLE: MemberResult = {
 	axial: 0,
+	endA: [0, 0],
+	endB: [0, 0],
 	moment: 0,
 	momentAt: [],
 	utilisation: 0,
@@ -495,10 +541,16 @@ function solveConnected(s: Structure, truckX: number | null, areas: readonly num
 			const fe = kd.map((v, i) => v - feq[k][i]); // forces on the member at its ends
 			// Tension positive: the pull at end b along +x, averaged with end a's.
 			const axial = (fe[3] - fe[0]) / 2;
+			// What the member pushes or pulls on its joints with, in world coordinates
+			// (local → global is Tᵀ, and the joint feels the opposite of the member).
+			const endA: [number, number] = [-(c * fe[0] - sn * fe[1]), -(sn * fe[0] + c * fe[1])];
+			const endB: [number, number] = [-(c * fe[3] - sn * fe[4]), -(sn * fe[3] + c * fe[4])];
 			if (m.kind === 'cable') {
 				const slack = !active[k];
 				return {
 					axial: slack ? 0 : axial,
+					endA: slack ? ([0, 0] as [number, number]) : endA,
+					endB: slack ? ([0, 0] as [number, number]) : endB,
 					moment: 0,
 					momentAt: [],
 					utilisation: slack ? 0 : Math.max(0, axial) / (A * CABLE_STRENGTH),
@@ -534,7 +586,17 @@ function solveConnected(s: Structure, truckX: number | null, areas: readonly num
 							: axial < 0
 								? 'compression'
 								: 'tension';
-			return { axial, moment, momentAt, utilisation, mode, slack: false, unsupported: false };
+			return {
+				axial,
+				endA,
+				endB,
+				moment,
+				momentAt,
+				utilisation,
+				mode,
+				slack: false,
+				unsupported: false
+			};
 		});
 
 		result = {
