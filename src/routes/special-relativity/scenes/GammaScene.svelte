@@ -158,9 +158,9 @@
 		stroke-width="2.5"
 	/>
 	<T
-		x={M.x - 12}
+		x={M.x < 280 ? M.x + 12 : M.x - 12}
 		y={M.y - 12}
-		anchor="end"
+		anchor={M.x < 280 ? 'start' : 'end'}
 		text="{num(beta)} c → γ = {num(g, 3)}"
 		size={14}
 		weight={650}

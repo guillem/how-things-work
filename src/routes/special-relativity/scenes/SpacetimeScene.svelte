@@ -469,8 +469,8 @@
 				stroke-linecap="round"
 			/>
 			<T
-				x={P(0, 0).x + 8}
-				y={P(0, 0).y + 36}
+				x={P(0, 0).x}
+				y={P(0, 0).y + 54}
 				text="platform: {m(2 * half)}"
 				size={12}
 				anchor="middle"
