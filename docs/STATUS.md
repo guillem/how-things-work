@@ -75,6 +75,7 @@ its review report deleted. Built-state params in use: `web:<step>`, `board:build
 
 - waves-interference: merged; ticked; built-state param `probe:tank`. Not reviewed yet.
 - chemical-bonds: built in worktree branch `topic/chemical-bonds` (model, 11 steps, 5 scenes, tests), ticked; awaiting merge and review.
+- radioactivity: merged; ticked. Not reviewed yet.
 
 ## Open questions for the user
 

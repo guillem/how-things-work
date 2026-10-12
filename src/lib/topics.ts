@@ -321,6 +321,15 @@ const explainers: Explainer[] = [
 		accent: '#3b5bdb',
 		steps: 10,
 		minutes: 16
+	},
+	{
+		slug: 'radioactivity',
+		title: 'Radioactivity and half-life',
+		summary:
+			'Watch 1,000 unstable nuclei decay at random while their count follows a perfect curve, meet alpha, beta and gamma radiation, and date a sample from its carbon-14.',
+		accent: '#e8590c',
+		steps: 11,
+		minutes: 15
 	}
 ];
 
