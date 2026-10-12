@@ -10,9 +10,14 @@
 	 *            where it was sent, growing at the (drawn) speed of sound. The
 	 *            ratio of the two speeds is the real one. The source crosses the
 	 *            stage in at most 20 s and starts again (a short fade hides the
-	 *            jump); the reduced-motion frame has it in the middle. Brackets mark
-	 *            the squeezed spacing ahead and the stretched one behind; the card
-	 *            gives the pitch heard ahead and behind.
+	 *            jump); the reduced-motion frame has it in the middle. It is also
+	 *            a handle: while it is held, the picture follows the pointer and
+	 *            crests are sent from wherever it is, and on release the source's
+	 *            speed becomes the drag's own speed (the average of the last half
+	 *            second of the drag, rounded to the control's steps). Brackets
+	 *            mark the squeezed spacing ahead and the stretched one behind
+	 *            (uniform motion only); the card gives the pitch heard ahead and
+	 *            behind.
 	 *   passby — in real time: a car on a road passes a listener 10 m away. Below
 	 *            the road, on the same horizontal scale, the pitch the listener
 	 *            hears against where the car is (`passBy`, which accounts for the
@@ -27,14 +32,14 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { SOUND_SPEED, dopplerAhead, dopplerBehind, passBy } from '../waves';
 	import Card from './Card.svelte';
 	import { playNote, playSweep, stopAll } from './sound';
 	import { fmt, pathOf, type Cell } from './ui';
 
-	let { step, t, params, reduced }: StageProps = $props();
+	let { step, t, params, setParam, reduced }: StageProps = $props();
 
 	const F = 440; // Hz, the tone sent out
 	const C = SOUND_SPEED;
@@ -96,38 +101,125 @@
 	const travel = $derived(vPx > 0 ? Math.min(680, vPx * 20) : 0);
 	const loop = $derived(vPx > 0 ? travel / vPx : 20);
 	const xStart = $derived(480 - travel / 2);
-	/** Time since this crossing began; the reduced frame has the source in the middle. */
-	const s = $derived.by(() => {
-		const tt = reduced ? 2.5 : t;
-		return (((tt - 2.5 + loop / 2) % loop) + loop) % loop;
+
+	// Crests are emitted as the stage clock runs: from the automatic crossing,
+	// or from wherever the reader is holding the source. Their list is plain
+	// state mutated by the effect below (the sanctioned clock memo, as elsewhere);
+	// `crestVer` marks it for the deriveds that draw from it. Each crossing
+	// begins mid-stage (the reduced frame lands there too).
+	let dragX = $state<number | null>(null);
+	let crestVer = $state(0);
+	let phase0 = $state(0); // stage time the current crossing began
+	let crests: { at: number; x: number }[] = [];
+	let clock = { last: -1, emit: -Infinity, loopStart: 0, v: -1, held: false };
+	// The pointer's recent x, ms timestamps, for the release speed.
+	let hist: { at: number; x: number }[] = [];
+	$effect(() => {
+		const tt = t;
+		const drag = dragX;
+		const vv = v;
+		const lp = loop;
+		untrack(() => {
+			const restart = tt < clock.last; // the stage clock went back: a new scene run
+			if (restart || vv !== clock.v || (drag !== null) !== clock.held) {
+				// the speed changed, or the source was grabbed or let go: a
+				// crossing begins anew (in-flight crests keep expanding; only the
+				// source jumps, behind its fade). A fresh run also replays the
+				// crossing's earlier crests, so the first frame is complete.
+				const seed = tt - lp / 2;
+				if (restart) crests = [];
+				clock = {
+					last: tt,
+					emit: Math.max(restart ? -Infinity : clock.emit, seed),
+					loopStart: seed,
+					v: vv,
+					held: drag !== null
+				};
+				phase0 = seed;
+				crestVer++;
+			}
+			clock.last = tt;
+			while (drag === null && tt - clock.loopStart >= lp) clock.loopStart += lp;
+			if (clock.emit < clock.loopStart) clock.emit = clock.loopStart;
+			while (clock.emit <= tt + 1e-9) {
+				crests.push({
+					at: clock.emit,
+					x: drag ?? xStart + vPx * (clock.emit - clock.loopStart)
+				});
+				clock.emit += T_VIS;
+			}
+			if (crests.length && tt - crests[0].at > AGE) crests = crests.filter((c) => tt - c.at <= AGE);
+			crestVer++;
+		});
 	});
 	const xs = (tau: number) => xStart + vPx * tau;
-	const srcX = $derived(xs(s));
+	/** Phase within the current automatic crossing; the reduced frame has the source mid-crossing. */
+	const s = $derived.by(() => {
+		void crestVer; // the crossing restarts are logged through the same counter
+		const tt = reduced ? 2.5 : t;
+		return (((tt - phase0) % loop) + loop) % loop;
+	});
+	const srcX = $derived(dragX ?? xs(s));
 	const loopFade = $derived(
-		vPx > 0 ? smoothstep(0, 0.4, s) * (1 - smoothstep(loop - 0.4, loop, s)) : 1
+		dragX !== null ? 1 : vPx > 0 ? smoothstep(0, 0.4, s) * (1 - smoothstep(loop - 0.4, loop, s)) : 1
 	);
 	const fronts = $derived.by(() => {
+		void crestVer;
+		const tt = reduced ? 2.5 : t;
 		const out: { k: number; x: number; r: number; o: number }[] = [];
-		const k1 = Math.floor(s / T_VIS);
-		const k0 = Math.ceil((s - AGE) / T_VIS);
-		for (let k = k0; k <= k1; k++) {
-			const tau = k * T_VIS;
-			const r = C_PX * (s - tau);
-			out.push({ k, x: xs(tau), r, o: Math.max(0, 1 - r / (C_PX * AGE)) });
+		for (const c of crests) {
+			if (tt <= c.at) continue; // a step change can leave one not-yet-sent crest
+			const r = C_PX * (tt - c.at);
+			out.push({ k: c.at, x: c.x, r, o: Math.max(0, 1 - r / (C_PX * AGE)) });
 		}
 		return out;
 	});
-	/** Brackets between the 2nd and 3rd newest crests, ahead and behind, on the line of motion. */
+	/** Brackets between the 2nd and 3rd newest crests, ahead and behind, on the line of motion (uniform motion only). */
 	const brackets = $derived.by(() => {
-		const n = fronts.length;
-		if (n < 3) return null;
-		const a = fronts[n - 2];
-		const b = fronts[n - 3];
+		void crestVer;
+		if (dragX !== null || crests.length < 3) return null;
+		const a = crests[crests.length - 2];
+		const b = crests[crests.length - 3];
+		const ra = C_PX * ((reduced ? 2.5 : t) - a.at);
+		const rb = C_PX * ((reduced ? 2.5 : t) - b.at);
 		return {
-			ahead: [a.x + a.r, b.x + b.r],
-			behind: [a.x - a.r, b.x - b.r]
+			ahead: [a.x + ra, b.x + rb],
+			behind: [a.x - ra, b.x - rb]
 		};
 	});
+	/** The source handle: grab, follow the pointer, release with the drag's own speed. */
+	const grabSource = () => {
+		hist = [];
+		dragX = srcX;
+	};
+	const moveSource = (p: Point) => {
+		dragX = clamp(p.x, 24, 936);
+		hist.push({ at: performance.now(), x: dragX });
+	};
+	const releaseSource = () => {
+		setParam('speed', dragSpeed());
+		dragX = null;
+	};
+	const keySource = (k: number | 'start' | 'end') =>
+		setParam(
+			'speed',
+			k === 'start'
+				? 0
+				: k === 'end'
+					? 240
+					: Math.max(0, Math.min(240, Math.round((v + 5 * k) / 5) * 5))
+		);
+	/** The speed the pointer has been moving at (m/s), for the release. */
+	function dragSpeed() {
+		const now = performance.now();
+		hist = hist.filter((h) => now - h.at < 500);
+		if (hist.length < 2) return 0;
+		const a = hist[0];
+		const b = hist[hist.length - 1];
+		const px = (b.x - a.x) / ((b.at - a.at) / 1000); // px/s
+		const ms = (px / C_PX) * C;
+		return Math.max(0, Math.min(240, Math.round(ms / 5) * 5));
+	}
 
 	// ---- the pass-by drawing (real time) -------------------------------------------------------
 	const RX0 = 40;
@@ -263,7 +355,7 @@
 				fill="var(--sky)"
 				stroke="var(--border)"
 			/>
-			<g clip-path="url(#doppler-clip)" opacity={loopFade}>
+			<g clip-path="url(#doppler-clip)">
 				{#each fronts as f (f.k)}
 					<circle
 						cx={f.x}
@@ -276,70 +368,63 @@
 					/>
 				{/each}
 				<line x1="16" x2="944" y1={SY} y2={SY} stroke="var(--stage-line)" stroke-dasharray="3 5" />
-				{#if brackets && vPx > 0}
-					{@const [a1, a2] = brackets.ahead}
-					{@const [b1, b2] = brackets.behind}
-					<g transform="translate(0 {SY + 22})">
+				<g opacity={loopFade}>
+					{#if brackets && vPx > 0}
+						{@const [a1, a2] = brackets.ahead}
+						{@const [b1, b2] = brackets.behind}
+						<g transform="translate(0 {SY + 22})">
+							<line
+								x1={a1 - 2}
+								x2={a2 + 2}
+								y1="0"
+								y2="0"
+								stroke="var(--wav-b)"
+								stroke-width="2"
+								marker-start="url(#arrowhead)"
+								marker-end="url(#arrowhead)"
+							/>
+							<line
+								x1={b1 + 2}
+								x2={b2 - 2}
+								y1="0"
+								y2="0"
+								stroke="var(--wav-a)"
+								stroke-width="2"
+								marker-start="url(#arrowhead)"
+								marker-end="url(#arrowhead)"
+							/>
+						</g>
+						<text
+							x={(a1 + a2) / 2}
+							y={SY + 42}
+							text-anchor="middle"
+							class="halo"
+							style:font-size="12px"
+							style:fill="var(--wav-b)"
+							font-weight="600">squeezed</text
+						>
+						<text
+							x={(b1 + b2) / 2}
+							y={SY + 42}
+							text-anchor="middle"
+							class="halo"
+							style:font-size="12px"
+							style:fill="var(--wav-a)"
+							font-weight="600">stretched</text
+						>
+					{/if}
+					{#if vPx > 0 && dragX === null}
 						<line
-							x1={a1 - 2}
-							x2={a2 + 2}
-							y1="0"
-							y2="0"
-							stroke="var(--wav-b)"
+							x1={srcX + 16}
+							x2={srcX + 50}
+							y1={SY - 22}
+							y2={SY - 22}
+							stroke="var(--wav-bead)"
 							stroke-width="2"
-							marker-start="url(#arrowhead)"
 							marker-end="url(#arrowhead)"
 						/>
-						<line
-							x1={b1 + 2}
-							x2={b2 - 2}
-							y1="0"
-							y2="0"
-							stroke="var(--wav-a)"
-							stroke-width="2"
-							marker-start="url(#arrowhead)"
-							marker-end="url(#arrowhead)"
-						/>
-					</g>
-					<text
-						x={(a1 + a2) / 2}
-						y={SY + 42}
-						text-anchor="middle"
-						class="halo"
-						style:font-size="12px"
-						style:fill="var(--wav-b)"
-						font-weight="600">squeezed</text
-					>
-					<text
-						x={(b1 + b2) / 2}
-						y={SY + 42}
-						text-anchor="middle"
-						class="halo"
-						style:font-size="12px"
-						style:fill="var(--wav-a)"
-						font-weight="600">stretched</text
-					>
-				{/if}
-				<!-- the source -->
-				<circle
-					cx={srcX}
-					cy={SY}
-					r="11"
-					fill="var(--wav-bead)"
-					stroke="var(--stage-bg)"
-					stroke-width="2.5"
-				/>
-				{#if vPx > 0}
-					<line
-						x1={srcX + 16}
-						x2={srcX + 50}
-						y1={SY - 22}
-						y2={SY - 22}
-						stroke="var(--wav-bead)"
-						stroke-width="2"
-						marker-end="url(#arrowhead)"
-					/>
-				{/if}
+					{/if}
+				</g>
 			</g>
 			<!-- listeners -->
 			{#each [{ x: 66, f: fBehind, l: 'behind', c: 'var(--wav-a)', a: 'start' as const }, { x: 894, f: fAhead, l: 'ahead', c: 'var(--wav-b)', a: 'end' as const }] as e (e.l)}
@@ -367,6 +452,24 @@
 				>seen from above · crests drawn hugely slowed down; the speeds’ ratio is real</text
 			>
 		</g>
+	{/if}
+	<!-- the source, draggable: its speed follows the hand that moves it -->
+	{#if oF > 0.5}
+		<Handle
+			x={srcX}
+			y={SY}
+			r={11}
+			label="The source (drag it: its speed follows your hand)"
+			value={v}
+			min={0}
+			max={240}
+			valuetext="moving at {v} m/s"
+			color="var(--wav-bead)"
+			ondragstart={grabSource}
+			onmove={moveSource}
+			ondragend={releaseSource}
+			onkey={keySource}
+		/>
 	{/if}
 
 	<!-- ---- pass-by ---- -->

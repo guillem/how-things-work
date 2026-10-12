@@ -15,8 +15,11 @@
 	 * function of the simulated time. "Run again" changes the seed and replays
 	 * from zero at the current `t` (the same documented exception as the
 	 * epidemics crowd); the half-life slider does not restart, it shows the same
-	 * nuclei at the same moment with the new pace.
+	 * nuclei at the same moment with the new pace — eased over a few hundred
+	 * milliseconds rather than snapped.
 	 */
+	import { Tween } from 'svelte/motion';
+	import { cubicInOut } from 'svelte/easing';
 	import { Axes, Label, linePath, areaPath, scale, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { expected, makeSample, spread, survivors, lastDecay } from '../model';
@@ -31,6 +34,10 @@
 	const seed = $derived(Number(step.hints?.seed ?? 1) + 7919 * rerun);
 	const stopAt = $derived(step.hints?.stopAt === undefined ? Infinity : Number(step.hints.stopAt));
 	const sample = $derived(makeSample(n0, seed));
+
+	// The half-life the picture is drawn for: the slider's value, eased.
+	const halfT = Tween.of(() => halfLife, { duration: 400, easing: cubicInOut });
+	const half = $derived(reduced ? halfLife : halfT.current);
 
 	/** Length of a run, in simulated seconds (the plot's x axis). */
 	const END = 60;
@@ -49,14 +56,14 @@
 		return Math.max(0, t - startedAt);
 	});
 
-	const stopTime = $derived(Math.min(END, stopAt * halfLife));
+	const stopTime = $derived(Math.min(END, stopAt * half));
 	/** Simulated seconds. Reduced motion: a complete frame at 2 (or 3) half-lives. */
 	const sec = $derived(
 		reduced
-			? Math.min(stopTime, (view === 'halflife' ? 3 : view === 'random' ? 1.5 : 2) * halfLife)
+			? Math.min(stopTime, (view === 'halflife' ? 3 : view === 'random' ? 1.5 : 2) * half)
 			: Math.min(stopTime, Math.max(0, tRun - LEAD))
 	);
-	const halves = $derived(sec / halfLife);
+	const halves = $derived(sec / half);
 	const left = $derived(survivors(sample, halves));
 	const over = $derived(sec >= stopTime);
 	const pct = $derived(view === 'many');
@@ -89,7 +96,7 @@
 		const flashFor = reduced ? 0 : 0.6; // simulated seconds a ring stays visible
 		for (let k = 0; k < n0; k++) {
 			const c = cells[k];
-			const lifeSec = sample.life[k] * halfLife;
+			const lifeSec = sample.life[k] * half;
 			if (lifeSec > sec) on += square(c.x, c.y, size);
 			else {
 				off += square(c.x, c.y, size);
@@ -108,7 +115,7 @@
 	// The circled nucleus (random view): a fixed place in the grid, so its fate is pure luck.
 	const FOCUS = 492;
 	const focusCell = $derived(layout.cells[Math.min(FOCUS, n0 - 1)]);
-	const focusLife = $derived(sample.life[Math.min(FOCUS, n0 - 1)] * halfLife);
+	const focusLife = $derived(sample.life[Math.min(FOCUS, n0 - 1)] * half);
 	const focusGone = $derived(focusLife <= sec);
 
 	// ---- the plot --------------------------------------------------------------
@@ -127,7 +134,7 @@
 		let d = `M${sx(0).toFixed(1)} ${sy(toY(n0)).toFixed(1)}`;
 		let n = n0;
 		for (let i = 0; i < s.length; i++) {
-			const at = s[i] * halfLife;
+			const at = s[i] * half;
 			if (at > sec) break;
 			const x = sx(at).toFixed(1);
 			d += `H${x}V${sy(toY(--n)).toFixed(1)}`;
@@ -137,7 +144,7 @@
 	const curve = $derived(
 		Array.from({ length: 121 }, (_, i) => {
 			const at = (i / 120) * END;
-			return { at, n: expected(n0, at, halfLife), s: spread(n0, at, halfLife) };
+			return { at, n: expected(n0, at, half), s: spread(n0, at, half) };
 		})
 	);
 	const expectedPath = $derived(
@@ -161,25 +168,36 @@
 	);
 	const showExpected = $derived(view !== 'random');
 
-	// Marks at whole half-lives that fit on the axis (at most three).
-	const marks = $derived(
+	// Whole half-lives that fit on the axis (at most three): the cards under
+	// the grid take them all; the plot's marks are thinned when they would
+	// crowd (a short half-life puts them a few pixels apart).
+	const cardMarks = $derived(
 		[1, 2, 3]
-			.filter((k) => k * halfLife <= END && k <= stopAt)
+			.filter((k) => k * half <= END && k <= stopAt)
 			.map((k) => ({
 				k,
-				at: k * halfLife,
-				exp: expected(n0, k * halfLife, halfLife),
+				at: k * half,
+				exp: expected(n0, k * half, half),
 				got: survivors(sample, k),
-				reached: sec >= k * halfLife - 1e-9
+				reached: sec >= k * half - 1e-9
 			}))
 	);
+	const marks = $derived.by(() => {
+		const gap = (36 / (PX1 - PX0)) * END; // seconds spanning 36 px of the axis
+		const out: typeof cardMarks = [];
+		for (const m of cardMarks) {
+			if (out.length && m.at - out[out.length - 1].at < gap) continue;
+			out.push(m);
+		}
+		return out;
+	});
 	const fractions = ['½', '¼', '⅛'];
 	const fmt = (n: number) => Math.round(n).toLocaleString('en-US');
 	const showCount = (n: number) =>
 		pct ? `${Number(((100 * n) / n0).toFixed(1)).toLocaleString('en-US')}%` : fmt(n);
 
 	// Decays in the last simulated second (random view).
-	const lastSecond = $derived(survivors(sample, Math.max(0, sec - 1) / halfLife) - left);
+	const lastSecond = $derived(survivors(sample, Math.max(0, sec - 1) / half) - left);
 
 	/** Two lines under the plot: what is happening, and how it compares. */
 	const status = $derived.by((): [string, string] => {
@@ -189,10 +207,10 @@
 				`expected ${fmt(expected(n0, 2, 1))}: a quarter, not zero`
 			];
 		if (left === 0)
-			return ['All decayed', `the last one after ${(lastDecay(sample) * halfLife).toFixed(1)} s`];
+			return ['All decayed', `the last one after ${(lastDecay(sample) * half).toFixed(1)} s`];
 		const line1 = `${halves.toFixed(1)} half-lives: ${fmt(left)} left${pct ? ` (${showCount(left)})` : ''}`;
 		if (!showExpected) return [line1, over ? `after ${END} s` : ''];
-		return [line1, `expected ${showCount(expected(n0, sec, halfLife))}`];
+		return [line1, `expected ${showCount(expected(n0, sec, half))}`];
 	});
 
 	const legend = $derived([
@@ -237,7 +255,7 @@
 		font-weight="600"
 		style:font-variant-numeric="tabular-nums">{sec.toFixed(1)} s</text
 	>
-	<text x={GX + 76} y={52} class="muted">half-life {halfLife} s</text>
+	<text x={GX + 76} y={52} class="muted">half-life {half} s</text>
 	<g style:font-variant-numeric="tabular-nums">
 		<rect x={GX} y={70} width="11" height="11" rx="2" fill="var(--rad-parent)" />
 		<text x={GX + 18} y={80}>Intact</text>
@@ -282,7 +300,7 @@
 		<!-- what is left after each half-life -->
 		<g style:font-variant-numeric="tabular-nums">
 			<text x={GX} y={444} style:font-size="15px" font-weight="600">After each half-life</text>
-			{#each marks as m (m.k)}
+			{#each cardMarks as m (m.k)}
 				{@const x = GX + (m.k - 1) * 164}
 				{@const hot = view === 'quarter' && m.k === 2}
 				<rect
@@ -309,7 +327,7 @@
 					{m.reached ? `this sample: ${showCount(m.got)}` : 'this sample: …'}
 				</text>
 			{/each}
-			{#if marks.length === 0}
+			{#if cardMarks.length === 0}
 				<text x={GX} y={480} class="muted">The first half-life ends after the 60 s shown.</text>
 			{/if}
 		</g>
@@ -353,7 +371,7 @@
 		<line
 			x1={sx(0)}
 			y1={sy(1000)}
-			x2={sx(2 * halfLife)}
+			x2={sx(2 * half)}
 			y2={sy(0)}
 			stroke="var(--rad-alpha)"
 			stroke-width="1.6"
