@@ -79,6 +79,16 @@ test('edit: lowering a bar reshapes the signal, and reset brings it back', async
 	await expect(bar3).toHaveAttribute('aria-valuetext', '3 hertz: 0.42');
 	await expect(bar2).toHaveAttribute('aria-valuetext', '2 hertz: 0.00');
 	expect(await rebuiltPath(page).getAttribute('d')).toBe(before);
+	// Edits belong to their waveform: changing it on another step drops them.
+	await bar3.focus();
+	await page.keyboard.press('Home');
+	await expect(stage(page)).toContainText('(edited)');
+	await page.goto('./fourier-transform/#wind');
+	await option(page, 'shape', 'sawtooth').click();
+	await expect(stage(page)).toContainText('8 seconds of the sawtooth');
+	await page.goto('./fourier-transform/#edit');
+	await expect(bar3).toHaveAttribute('aria-valuetext', '3 hertz: 0.21');
+	await expect(stage(page)).not.toContainText('(edited)');
 });
 
 test('the spectrum names what each waveform is missing', async ({ page }) => {

@@ -9,7 +9,8 @@
 	 * Phases (`step.hints.phase`):
 	 *   view — the waveform and its bars.
 	 *   edit — each bar has a handle; the edited heights live in
-	 *          `params['ft:bars']` (empty: the waveform's own bars). The signal
+	 *          `params['ft:bars']` as "<waveform>|<heights>" (empty, or made for
+	 *          another waveform: the waveform's own bars). The signal
 	 *          is rebuilt from the 17 bars (inverse transform), over the
 	 *          original (dashed). Changing the waveform or "Reset the bars"
 	 *          clears the edits.
@@ -39,7 +40,7 @@
 	const TOP = 52; // the signal panel's top and bottom (clipped)
 	const BOTTOM = 292;
 	const BY = 512; // baseline of the bars
-	const BU = 110; // px per unit on the bars
+	const BU = 95; // px per unit on the bars
 	const BMAX = 1.6; // tallest bar the editor allows
 	const SLOT = (X1 - X0) / (BARS + 1);
 	const barX = (n: number) => X0 + SLOT * (n + 0.5);
@@ -57,7 +58,13 @@
 		spectrum ? spectrum.slice(0, BARS + 1).map((h) => h.amp) : new Array<number>(BARS + 1).fill(0)
 	);
 	const editedText = $derived(String(params['ft:bars'] ?? ''));
-	const edits = $derived(unpack(editedText, BARS + 1));
+	// Stored as "<waveform>|<heights>": edits made to another waveform (the
+	// waveform can also be changed on the circles and winding steps, where
+	// this scene is not mounted to clear them) are ignored.
+	const edits = $derived.by(() => {
+		const [owner, heights] = editedText.split('|');
+		return owner === shape && heights !== undefined ? unpack(heights, BARS + 1) : null;
+	});
 	const bars = $derived(editing && edits ? edits : baseBars);
 	const termsN = $derived(Math.max(1, Math.min(50, Math.round(Number(params.terms ?? 5)))));
 
@@ -121,12 +128,15 @@
 	});
 
 	// ---- the bar editor ----------------------------------------------------------------
-	const MIN0 = -1.5; // the 0 Hz bar is the average and may be negative
+	// The 0 Hz bar is the average and may be negative; below the baseline there
+	// is room for 0.75, so a deeper bar is drawn cut off at that depth (its
+	// label still gives the value) and the editor stops there.
+	const MIN0 = -0.75;
 	function setBar(n: number, v: number) {
 		const lo = n === 0 ? MIN0 : 0;
 		const next = [...bars];
 		next[n] = Math.round(Math.max(lo, Math.min(BMAX, v)) * 100) / 100;
-		setParam('ft:bars', pack(next));
+		setParam('ft:bars', `${shape}|${pack(next)}`);
 	}
 	const barMove = (n: number) => (p: Point) => setBar(n, (BY - p.y) / BU);
 	const barKey = (n: number) => (k: number | 'start' | 'end') => {
@@ -152,7 +162,7 @@
 			const raw = (p.x - X0) / (X1 - X0);
 			if (raw < -0.03 || raw > 1.03) return;
 			const u = Math.max(0, Math.min(0.9999, raw));
-			const y = Math.max(-1.25, Math.min(1.25, (CY - p.y) / U));
+			const y = Math.max(-1.2, Math.min(1.2, (CY - p.y) / U));
 			stroke.push({ u, y });
 		};
 		// startDrag reports the first point too.
@@ -326,7 +336,7 @@
 		{@const used = !drawPhase || n <= termsN}
 		{@const x = barX(n)}
 		{@const top = BY - BU * Math.max(0, v)}
-		{@const h = BU * Math.abs(v)}
+		{@const h = BU * (v >= 0 ? v : Math.min(-v, -MIN0))}
 		<rect
 			x={x - BW / 2}
 			y={v >= 0 ? top : BY}
@@ -337,11 +347,19 @@
 			opacity={used ? 0.9 : 0.25}
 		/>
 		{#if Math.abs(v) > 0.005 && !editing}
-			{@render txt(x, v >= 0 ? top - 6 : BY + h + 14, num(v), 11, {
-				anchor: 'middle',
-				muted: !used,
-				opacity: grow(n)
-			})}
+			<!-- a negative bar's value goes under it, or beside it when the bar is too deep -->
+			{@const beside = v < 0 && h > BU / 2}
+			{@render txt(
+				beside ? x + BW / 2 + 4 : x,
+				v >= 0 ? top - 6 : beside ? BY + h / 2 + 4 : BY + h + 14,
+				num(v),
+				11,
+				{
+					anchor: beside ? 'start' : 'middle',
+					muted: !used,
+					opacity: grow(n)
+				}
+			)}
 		{/if}
 		{@render txt(x, v < -0.005 ? BY - 8 : BY + 18, `${n}`, 12, {
 			anchor: 'middle',
@@ -350,14 +368,15 @@
 		})}
 	{/each}
 	<line x1={X0} x2={X1} y1={BY} y2={BY} stroke="var(--stage-line)" stroke-width="1.5" />
-	{@render txt(X1, BY + 42, 'frequency (Hz) →', 12, { anchor: 'end', muted: true })}
-	{@render txt(barX(0) + 26, BY + 42, '0 Hz: the average, which can be negative', 12, {
+	{@render txt(X1, BY + 38, 'frequency (Hz) →', 12, { anchor: 'end', muted: true })}
+	{@render txt(X1, BY + 55, '0 Hz: the average, which can be negative', 12, {
+		anchor: 'end',
 		muted: true
 	})}
 	{#if drawPhase && termsN > BARS}
 		{@render txt(
 			X1,
-			BY + 62,
+			BY + 72,
 			`+ ${termsN - BARS} more frequencies (17–${termsN} Hz) not shown`,
 			12,
 			{
