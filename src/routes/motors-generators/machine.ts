@@ -60,7 +60,7 @@ export const MACHINE = {
 	/** Moment of inertia of the coil, shaft and a flywheel on it, kg·m². */
 	J: 0.02,
 	/** Viscous friction in the bearings, N·m per rad/s. */
-	friction: 0.005,
+	friction: 0.012,
 	/** Dry friction of the brushes, N·m (smoothed below 0.05 rad/s). */
 	dryFriction: 0.01
 } as const;
@@ -71,10 +71,11 @@ export const AREA = MACHINE.L * MACHINE.w;
 export const NBA = MACHINE.turns * MACHINE.B * AREA;
 
 /**
- * Mains frequencies: 50 Hz in most of the world (Europe, Africa, most of Asia),
- * 60 Hz in the Americas and parts of Asia. Source: IEC 60038:2009, "IEC
- * standard voltages", which lists separate standard voltages for 50 Hz and
- * 60 Hz systems.
+ * Mains frequencies: 50 Hz in Europe and most of the world, 60 Hz in North
+ * America (and some other countries). Source: IEC 60038:2009, "IEC standard
+ * voltages", which lists standard voltages for 50 Hz and for 60 Hz systems;
+ * the US grid runs at 60 Hz (ANSI C84.1), the European grid at 50 Hz
+ * (EN 50160).
  */
 export const MAINS_HZ = [50, 60] as const;
 

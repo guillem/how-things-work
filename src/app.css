@@ -524,6 +524,10 @@ kbd {
 	--ft-p1: #2f9e44;
 	--ft-p2: #e8590c;
 	--ft-p3: #7048e8;
+	/* motors-generators: the coil's two sides (a copper, b raspberry), the lamp's glow */
+	--mg-a: #c76b1c;
+	--mg-b: #a61e4d;
+	--mg-lamp: #f59f00;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -812,4 +816,7 @@ kbd {
 	--ft-p1: #69db7c;
 	--ft-p2: #ff922b;
 	--ft-p3: #b197fc;
+	--mg-a: #e8a15a;
+	--mg-b: #f06595;
+	--mg-lamp: #ffd43b;
 }

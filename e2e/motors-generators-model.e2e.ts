@@ -69,11 +69,14 @@ test('a motor with a commutator keeps turning; with slip rings it rocks and stop
 	expect(dead.at(10).theta).toBe(0);
 });
 
-test('back emf: a free motor speeds up until its own voltage cancels most of the battery', () => {
+test('back emf: a free motor speeds up until its own voltage cancels over half the battery', () => {
 	const free = steadyRunning({ V: 3, connection: 'commutator' });
-	// The stalled motor would draw V/R = 0.75 A; turning, it draws far less.
-	expect(free.current).toBeLessThan(0.3);
-	expect(free.backEmf).toBeGreaterThan(1.8);
+	// Numbers the narrative quotes: about 0.84 turns a second, drawing about 0.32 A on
+	// average, against the 0.75 A (3 V across 4 Ω) the battery drives through the coil held still.
+	expect(free.speed).toBeCloseTo(0.84, 2);
+	expect(free.current).toBeCloseTo(0.32, 2);
+	expect(3 / MACHINE.R).toBe(0.75);
+	expect(free.backEmf).toBeGreaterThan(1.5);
 	// Twice the voltage, about twice the speed.
 	const fast = steadyRunning({ V: 6, connection: 'commutator' });
 	expect(fast.speed / free.speed).toBeCloseTo(2, 1);
@@ -81,6 +84,9 @@ test('back emf: a free motor speeds up until its own voltage cancels most of the
 	const braked = steadyRunning({ V: 3, connection: 'commutator', load: 0.05 });
 	expect(braked.speed).toBeLessThan(free.speed / 2);
 	expect(braked.current).toBeGreaterThan(free.current * 1.5);
+	// With the commutator the battery's current never runs backwards, so the push never reverses.
+	const run = new MotorRun({ V: 3, connection: 'commutator' });
+	for (let t = 0; t < 15; t += 0.01) expect(run.readings(t).torque).toBeGreaterThanOrEqual(0);
 });
 
 test('generator: the emf is −dΦ/dt, peaking at N·B·A·ω', () => {

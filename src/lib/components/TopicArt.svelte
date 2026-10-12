@@ -1185,6 +1185,26 @@
 			stroke-linejoin="round"
 		/>
 		<circle cx={fourierArt.tip.x} cy={fourierArt.tip.y} r="4" fill={accent} />
+	{:else if slug === 'motors-generators'}
+		<!-- a coil seen end-on between two magnet poles, turning -->
+		<path d="M18 22 H52 V40 Q42 60 52 80 V98 H18 Z" fill="var(--em-north)" opacity="0.85" />
+		<path d="M182 22 H148 V40 Q158 60 148 80 V98 H182 Z" fill="var(--em-south)" opacity="0.85" />
+		<text x="31" y="65" fill="#fff" font-size="14" font-weight="800">N</text>
+		<text x="160" y="65" fill="#fff" font-size="14" font-weight="800">S</text>
+		{#each [40, 50, 60, 70, 80] as y (y)}
+			<path d="M60 {y} H140" stroke={accent} stroke-width="1" opacity="0.3" />
+		{/each}
+		<path d="M82 92 L118 28" stroke={accent} stroke-width="3" stroke-linecap="round" />
+		<circle cx="82" cy="92" r="7" fill={accent} />
+		<circle cx="118" cy="28" r="7" fill={accent} />
+		<path
+			d="M128 70 A34 34 0 0 1 96 96"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.8"
+			opacity="0.6"
+		/>
+		<path d="M96 96 l7 -6 l1 8 z" fill="currentColor" opacity="0.6" />
 	{:else if slug === 'ocean-currents'}
 		<!-- an ocean basin: a warm gyre squeezed against the west, a cold gyre north of it -->
 		<rect

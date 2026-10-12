@@ -348,6 +348,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 10,
 		minutes: 16
+	},
+	{
+		slug: 'motors-generators',
+		title: 'Electric motors and generators',
+		summary:
+			'Send a current through a coil between two magnets and watch the forces turn it, then crank the same coil by hand and watch it make alternating or direct current.',
+		accent: '#b5651d',
+		steps: 9,
+		minutes: 15
 	}
 ];
 
