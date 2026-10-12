@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-12 UTC.
+Last updated: 2026-10-13 UTC.
 
 ## How we work
 
@@ -69,6 +69,18 @@ Last updated: 2026-10-12 UTC.
 
 ## Current development
 
+**Gap round (2026-10-12/13):** the "Known gaps in built topics" backlog, worked in seven local
+worktrees (`fix/gaps-a`…`-g`) merged into `main`. Kimi started a–e and g; ZCode finished them,
+built the never-started f (waves-interference: sources draggable anywhere in the tank +
+`sources:tank` param, frame-cache pre-warm, the Doppler source as a handle whose speed becomes
+the drag's; radioactivity: eased half-life slider, thinned marks) and b (oscillations-resonance's
+pendulum label), completed fourier-transform (chart range, signal clipping, deep 0 Hz bar, live
+sweeps on `#square`/`#spectrum`), and committed the main-checkout work (ecosystems' off-balance
+web opening and aligned y-axes; sun-earth-moon's tilt footer/sketch agreement; chemical-bonds'
+angle-arc fade and δ-label placement; the photosynthesis `#summary` captions recorded as fading
+by design). Full suite green after the merge (766 tests, 427 model tests). Not pushed — awaiting
+the user's local validation, then push and release.
+
 **Maintenance (2026-10-12):** fixed nested-URL 404 assets and home navigation by setting
 `paths.relative: false`; replaced the characterization test with a regression test. Both focused
 404 browser tests pass. Also fixed unit-circle slider snapping with optional permitted range
@@ -94,7 +106,8 @@ Released in v0.1.2 (2026-10-12): the photosynthesis review fixes, rate model and
 rate?" step (built in cloud sessions on 2026-10-11).
 
 Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<step>`,
-`map:<step>`, `view:zoom`, `mol:<step>`, `probe:tank`, `ft:wave`, `ft:bars`, `ft:curve`, `dope:<step>`, `pick:<step>`.
+`map:<step>`, `view:zoom`, `mol:<step>`, `probe:tank`, `sources:tank`, `ft:wave`, `ft:bars`,
+`ft:curve`, `dope:<step>`, `pick:<step>`.
 
 ## Open questions for the user
 

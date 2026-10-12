@@ -342,6 +342,8 @@ interaction kind (new shared components), less once components exist. 97 topics 
 | compression            | review fixes (fact-check report: 10 findings, all applied; own-picture loader, emoji-safe message box)                                 | 2026-10-12 07:24  | 2026-10-12 07:40  | 16 min                 | one worktree agent; captions, Morse, table caveat, decodable floor, DC = 8 × (average − 128); file input decodes in the browser, with e2e tests                                                                                         |
 | batch 9                | calculus, black-holes, states-of-matter, homeostasis, compression                                                                      | 2026-10-12 06:19  | 2026-10-12 07:55  | ~1 h 35 min wall-clock | 5 builder agents (~30–48 min), Batch API review (~$3.50), 5 review-apply agents (~5–12 min); weekly usage 83% → 88%                                                                                                                     |
 
+| gap round | 20 backlog gaps across 13 built topics, in 7 worktrees merged to main | 2026-10-12 22:40 | 2026-10-13 01:10 | ~2 h 30 min | Kimi (interrupted) started 5 worktrees + the main checkout; ZCode finished them, built waves-interference/radioactivity and oscillations-resonance from scratch, completed fourier; full suite green after merge (766 tests) |
+
 ## Site work (not counted in topic estimates)
 
 | Work                                                | Start            | End              | Active | Notes                                                |

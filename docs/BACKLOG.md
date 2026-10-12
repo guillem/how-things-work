@@ -49,95 +49,36 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   every absorbed photon alike (McCree's lower yield for blue is not modelled) and fixes the
   leaf's internal CO₂ at 70% of the air's (no stomata); both are stated on the page.
 
-- **learning-from-data** — ticked: the user accepted dragging only (2026-10-08). Still to do:
-  move the duplicated `params.pts` parser from both scenes into `fit.ts`.
+- **learning-from-data** — ticked: the user accepted dragging only (2026-10-08).
 
 - **atmosphere-weather** — ticked: the user accepted that fronts form from the placed lows and
   that the reader sets heat transport and spin rather than the heating pattern (2026-10-08).
-  Smaller: sharp temperature boundaries along the wind get no front symbol (no stationary
-  fronts); the Cells globe keeps Earth's temperatures at every spin; at spin 0.4 the Coriolis
-  loops overflow their panels; the Held–Hou height is tuned (15 km).
 
-- **bridges-structures** — beam and truss steps show no support reactions (arch and suspension
-  do): add reaction arrows so "loads to the ground" shows on every design. In the arch the posts
-  carry little axial force (the continuous deck spans between banks): check against a deck-arch
-  reference. A cable from a post on the sliding bearing goes slack (the text now says "on the
-  bank"). `addMember` doesn't split a member at a joint it passes through (the build scene does).
-
-- **pagerank** — with 9–10 pages E's starting rank drops (more pages share the jumps), not mentioned.
-
-- **electric-circuits** — a board full of wires reaches ~520 SVG nodes (one focusable shape per
-  gap instead of a group would save ~60).
-
-- **binary** — on the overflow step, the sliders show 0–255 even in the signed view.
-
-- **graph-search** — Dijkstra's cost numbers are 10 px (small on screen); the race maps are
-  small (three panels across); on the estimate step the dotted cheapest route runs under the
-  found route for two squares.
-
-- **chaos-fractals** — `period(r)` in `chaos.ts` is unreliable right at the splitting points
-  (the scene works around it with `DOUBLINGS` and the Lyapunov exponent): make it robust.
-  Corner radii differ between the three scenes.
-
-- **orbits-kepler** — on `second` at low speed the wedge labels crowd near aphelion; small
-  label overlaps ("Sun (a focus)", orbit lines over "Sun" at 30 Jupiters).
-
-- **ecosystems** — the web step's starting frame is static until the reader switches a species
-  off; the cycles chart's two y-axes have unaligned gridlines.
-
-- **oscillations-resonance** — the "10°" label in the pendulum scene is crossed by the rod on
-  left swings.
-
-- **logic-gates** — the switches' "0" has low contrast; a challenge message lingers briefly after
-  switching challenge.
-
-- **central-limit-theorem** — at 2 rows the landed balls are thin columns in wide bins. The `clt`
-  step sets n to 30 on arrival when it is 1 (a scene-side default; a per-step control would be
-  cleaner).
+- **bridges-structures** — in the arch the posts carry little axial force (the continuous deck
+  spans between banks): check against a deck-arch reference.
 
 - **chemical-bonds** (batch 7) — the builder makes single-centre molecules only, with lone pairs
-  drawn only on the centre atom (the text says so); the angle arc looks odd when a bond is seen
-  nearly edge-on; in CO₂ the centre's δ+ label sits close to a bond line; the slow auto-turn makes
-  clicking an atom fiddly (it pauses on hover).
-
-- **waves-interference** (batch 7) — sources can only be dragged vertically (spacing), not placed
-  anywhere in the tank; "move a source" is a speed slider, not a drag. On a slow machine the ripple
-  tank's first period paints before its frame cache fills.
-
-- **radioactivity** (batch 7) — control changes snap rather than ease; at a 2 s half-life the
-  plot's half-life marks crowd together.
-
-- **linear-transformations** (batch 7) — the F is clipped in the reduced-motion `compose` frame;
-  with the zero matrix both handles overlap at the origin (only ĵ can be grabbed); near a flat
-  matrix the moved grid becomes a dense hatch (denser since the review raised the line cap so the
-  grid always fills the plane).
-
-- **fourier-transform** (batch 7) — `#square` and `#spectrum` are mostly static frames; extreme
-  bar edits can clip the rebuilt signal at the top of the graph; a 0 Hz bar below −0.75 is drawn
-  cut off (its label is right); the circle-size chart shows k = −20…20 only.
+  drawn only on the centre atom (the text says so); the slow auto-turn makes clicking an atom
+  fiddly (it pauses on hover).
 
 - **states-of-matter** (batch 9) — the box is chaotic, so its frames differ between machines
   (V8 version, CPU). Water's density anomaly holds on average over starts (~6–7% more room for
   ice) but not in every single run: seed 2 locally shows ice slightly denser. The page uses seed 1
   (3.5–12% more room depending on the machine). Water's freezing is a scripted lattice shortcut.
 
-- **e2e flake** — `scenes.e2e.ts` › orbits-kepler › `#two` occasionally fails under the full
-  parallel run (passes alone and on rerun): the step's page load sometimes exceeds the 5 s
-  expectation. Give that test more time or lighten the step's first render.
+- **photosynthesis `#water` with no light.** The lumen reads "pH ≈ 8.0", the same as the stroma,
+  while "about 1000× more acidic than the stroma in bright light" stays on screen. Probably
+  intended ("in bright light").
 
-- **Suspected bugs found while adding characterization tests (2026-10-11; recorded, not fixed):**
-  - **sun-earth-moon `#tilt`.** The June-solstice label says "14 h 51 min of daylight" and the
-    chart footer says "14 h 50 min" for the same day. Probably rounding, or two slightly different
-    days.
-  - **photosynthesis `#summary`.** The light slider changes no text on the stage: both captions
-    ("no light → … stalls" and "bright light: … set the pace") are always shown. Possibly only
-    visual by design.
-  - **photosynthesis `#water` with no light.** The lumen reads "pH ≈ 8.0", the same as the stroma,
-    while "about 1000× more acidic than the stroma in bright light" stays on screen. Probably
-    intended ("in bright light").
-  - **Weak tests worth strengthening.** `entropy` "reversing every velocity…" accepts "every
-    velocity reversed", which shows the moment you click, so the return to the start is never
-    checked. `sorting` "pausing after stepping…" passes even if playback never moved.
+(The gap round of 2026-10-12/13 cleared the rest of this list: chaos-fractals `period(r)`,
+orbits-kepler labels and the `#two` flake, ecosystems' static web opening and y-axes,
+oscillations-resonance's pendulum label, logic-gates, central-limit-theorem, binary's signed
+sliders, electric-circuits' node count, pagerank's note, graph-search, waves-interference's
+placeable/draggable sources and frame cache, radioactivity, linear-transformations,
+fourier-transform, bridges-structures' reactions and `addMember`, atmosphere-weather's stationary
+fronts and Coriolis panels, learning-from-data's parser, the sun-earth-moon tilt mismatch, the
+photosynthesis `#summary` captions (fading by design, now tested), and the weak entropy/sorting
+tests.)
 
 ## Site and framework work
 
