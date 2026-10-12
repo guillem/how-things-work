@@ -484,6 +484,15 @@ kbd {
 	--oc-dip: #3b5bdb;
 	--oc-sky: #f1f6fb;
 	--oc-mid: #f4e3c1;
+	/* fourier transform: the target signal, the rebuilt sum, spectrum bars, the wound curve, the pen, the ingredient waves */
+	--ft-target: #495057;
+	--ft-sum: #1971c2;
+	--ft-bar: #e8590c;
+	--ft-wind: #7048e8;
+	--ft-pen: #d6336c;
+	--ft-p1: #2f9e44;
+	--ft-p2: #e8590c;
+	--ft-p3: #7048e8;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -736,4 +745,12 @@ kbd {
 	--oc-dip: #748ffc;
 	--oc-sky: #191c22;
 	--oc-mid: #7a6a52;
+	--ft-target: #adb5bd;
+	--ft-sum: #4dabf7;
+	--ft-bar: #ff922b;
+	--ft-wind: #b197fc;
+	--ft-pen: #f06595;
+	--ft-p1: #69db7c;
+	--ft-p2: #ff922b;
+	--ft-p3: #b197fc;
 }
