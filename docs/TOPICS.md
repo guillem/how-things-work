@@ -98,7 +98,7 @@ A topic is done when:
 
 **Mathematics**
 - [x] unit-circle
-- [ ] calculus
+- [x] calculus
 - [x] linear-transformations
 - [ ] tensors
 - [x] complex-numbers

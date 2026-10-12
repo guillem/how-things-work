@@ -86,7 +86,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Calculus is the mathematics of change. Its first question sounds simple: <strong>how steep is a curve at a point?</strong></p>
 <p>For a straight line the answer is its <dfn data-def="How much a line rises for each step to the right: rise ÷ run. Negative when the line goes down.">slope</dfn>: go some distance to the right (the <em>run</em>), see how far the line goes up (the <em>rise</em>), and divide, <strong>slope = rise ÷ run</strong>. A slope of 3 means 3 up for every 1 across; a negative slope means the line goes down. On a straight line it is the same wherever you measure.</p>
-<p>A curve is different. On the parabola <i>y</i> = <i>x</i>², join the point at <i>x</i> = 1 to the point one step to the right with a straight <dfn data-def="A straight line segment joining two points of a curve.">chord</dfn>: it rises from 1 to 4, a slope of 3. Drag the point along the curve: further right the chord gets steeper, at the bottom of the curve it is almost flat. The steepness changes from place to place.</p>`,
+<p>A curve is different. On the parabola <i>y</i> = <i>x</i>², join the point at <i>x</i> = 1 to the point one step to the right with a straight <dfn data-def="A straight line segment joining two points of a curve.">chord</dfn>: it rises from 1 to 4, a slope of 3. Drag the point along the curve: further right the chord gets steeper, near the bottom of the curve it is much flatter. The steepness changes from place to place.</p>`,
 			notes: `<p>Every graph in this explainer uses different scales on its two axes, so that the whole curve fits. A slope of 1 then does not look like 45°: trust the numbers, not the angle on the screen.</p>`
 		},
 		{
