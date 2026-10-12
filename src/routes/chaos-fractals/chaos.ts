@@ -139,10 +139,40 @@ export function attractor(r: number, transient = 2000, keep = 256, x0 = 0.5, tol
 	return vals.sort((a, b) => a - b);
 }
 
-/** Period of the attractor (number of distinct values), or Infinity if it looks chaotic (more than 64). */
+/**
+ * Period of the attractor: the smallest p (up to 128) with x(k + p) ≈ x(k)
+ * throughout a window measured after a long transient, or Infinity when no such
+ * p shows (chaos, or a cycle longer than 128). Comparing the orbit with itself
+ * — instead of collecting settled values, as `attractor` does — is what keeps
+ * it right at the splitting points, where the approach to the cycle is so slow
+ * that no fixed transient settles within any tight tolerance, yet the orbit is
+ * already periodic to a tolerance small against the spread of its branches.
+ */
 export function period(r: number) {
-	const n = attractor(r).length;
-	return n > 64 ? Infinity : n;
+	let x = 0.4; // not 0.5: at r = 4 that lands on 0 for ever (a rounding artefact)
+	for (let i = 0; i < 100000; i++) x = logistic(r, x);
+	const N = 512;
+	const w = new Float64Array(N);
+	let lo = Infinity;
+	let hi = -Infinity;
+	for (let i = 0; i < N; i++) {
+		x = logistic(r, x);
+		w[i] = x;
+		if (x < lo) lo = x;
+		if (x > hi) hi = x;
+	}
+	const tol = Math.max(1e-9, (hi - lo) * 1e-3);
+	for (let p = 1; p <= 128; p++) {
+		let match = true;
+		for (let k = 0; k + p < N; k++) {
+			if (Math.abs(w[k + p] - w[k]) > tol) {
+				match = false;
+				break;
+			}
+		}
+		if (match) return p;
+	}
+	return Infinity;
 }
 
 /** The first period-doubling points of the logistic map (known values): 2 → 4 → 8 → 16 → 32. */

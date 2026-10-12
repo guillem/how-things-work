@@ -17,10 +17,10 @@
 	 *                 shows a small copy of the cascade; a mini time series runs
 	 *                 through the attractor year by year.
 	 *
-	 * The behaviour readout does not trust `period(r)` near the splits (it converges
-	 * very slowly there): below the onset of chaos the period is 2^(number of
-	 * `DOUBLINGS` passed); above it, a positive Lyapunov exponent is chaos, otherwise
-	 * `period(r)` ("many values" for a long cycle still being approached).
+	 * The behaviour readout shows exact powers of two below the onset of chaos
+	 * (2^(number of `DOUBLINGS` passed), steady as the slider moves); above it, a
+	 * positive Lyapunov exponent is chaos, otherwise `period(r)` ("many values"
+	 * for a long cycle still being approached).
 	 *
 	 * Text sizes and colours are set with `style:` because the stage's CSS
 	 * overrides SVG presentation attributes.
@@ -333,7 +333,15 @@
 	{#if showCobweb}
 		<g opacity={1 - mix.current}>
 			<!-- frame and grid -->
-			<rect x={CL} y={CT} width={S} height={S} fill="var(--surface)" stroke="var(--border)" />
+			<rect
+				x={CL}
+				y={CT}
+				width={S}
+				height={S}
+				rx="10"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
 			{#each [0.25, 0.5, 0.75] as g (g)}
 				<line x1={cx(g)} x2={cx(g)} y1={CT} y2={CT + S} stroke="var(--stage-grid)" />
 				<line x1={CL} x2={CL + S} y1={cy(g)} y2={cy(g)} stroke="var(--stage-grid)" />
@@ -420,6 +428,7 @@
 				y={ST}
 				width={SR - SL}
 				height={SB - ST}
+				rx="10"
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
@@ -472,7 +481,15 @@
 	{#if showCascade}
 		<g opacity={mix.current}>
 			<!-- the diagram -->
-			<rect x={DL} y={DT} width={DW} height={DH} fill="var(--surface)" stroke="var(--border)" />
+			<rect
+				x={DL}
+				y={DT}
+				width={DW}
+				height={DH}
+				rx="10"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
 			<line x1={DL} x2={DR} y1={dy(0.5)} y2={dy(0.5)} stroke="var(--stage-grid)" />
 			{#each [...DOUBLINGS.slice(0, 3), CHAOS_ONSET] as r (r)}
 				<line
@@ -490,6 +507,7 @@
 				y={DT}
 				width={DW}
 				height={DH}
+				rx="10"
 				fill="var(--chaos-curve)"
 				mask="url(#logistic-bif-mask)"
 			/>
@@ -568,6 +586,7 @@
 				y={ZT}
 				width={ZR - ZL}
 				height={ZB - ZT}
+				rx="6"
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
@@ -576,6 +595,7 @@
 				y={ZT}
 				width={ZR - ZL}
 				height={ZB - ZT}
+				rx="6"
 				fill="var(--chaos-curve)"
 				mask="url(#logistic-zoom-mask)"
 			/>
@@ -635,6 +655,7 @@
 				y={MT - 6}
 				width={MR - ML}
 				height={MB - MT + 12}
+				rx="6"
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>

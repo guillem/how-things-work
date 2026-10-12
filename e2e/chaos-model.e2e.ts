@@ -64,6 +64,14 @@ test('the doublings close in at Feigenbaum’s ratio', () => {
 	// Just either side of each doubling the period really does double.
 	expect(period(DOUBLINGS[1] - 0.005)).toBe(2);
 	expect(period(DOUBLINGS[1] + 0.005)).toBe(4);
+	// …for every measured split, and right at them the count stays finite (the
+	// orbit is still the old cycle, approached ever more slowly).
+	const expected = [1, 2, 4, 8, 16];
+	DOUBLINGS.forEach((d, i) => {
+		expect(period(d - 0.001)).toBe(expected[i]);
+		expect(period(d + 0.001)).toBe(i === 4 ? 64 : expected[i] * 2); // the cascade accelerates
+		expect(Number.isFinite(period(d))).toBe(true);
+	});
 });
 
 test('Mandelbrot: known points in and out of the set', () => {
