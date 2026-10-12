@@ -66,9 +66,11 @@ Last updated: 2026-10-12 UTC.
 
 ## Current development
 
-- compression (2026-10-12): built in a local worktree (`topic/compression`), 11 steps, 4 scenes; ticked, not reviewed or merged yet.
+**Batch 9 (2026-10-12):** calculus, black-holes, states-of-matter, homeostasis, compression. Same
+process (builder agent each, `make review` ~$3.50, review-apply agent each). Merged into `main`
+locally and ticked; `make e2e-full` green (758 tests). Not pushed until the user validates.
 
-**Batch 8 (2026-10-12):** light-optics, semiconductors, special-relativity, cryptography, cpu,
+Batch 8 (2026-10-12, released in v0.1.4): light-optics, semiconductors, special-relativity, cryptography, cpu,
 motors-generators. Same process as batch 7 (one builder agent each in a local worktree, fact-check
 via `make review` ~$4.35, one agent each applying its report). All merged into `main` locally and
 ticked; `make e2e-full` green (662 tests). Released in v0.1.4 (2026-10-12).
@@ -81,11 +83,6 @@ rate?" step (built in cloud sessions on 2026-10-11).
 
 Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<step>`,
 `map:<step>`, `view:zoom`, `mol:<step>`, `probe:tank`, `ft:wave`, `ft:bars`, `ft:curve`, `dope:<step>`, `pick:<step>`.
-
-- calculus: merged; ticked. Not reviewed yet.
-- states-of-matter: merged; ticked. Not reviewed yet.
-- black-holes: merged; ticked. Not reviewed yet.
-- homeostasis: merged; ticked. Not reviewed yet.
 
 ## Open questions for the user
 
