@@ -12,12 +12,12 @@ test('holding the coil: the torque is zero at the dead points and largest along 
 	const crank = page.getByRole('slider', { name: /Coil angle/ });
 	await crank.focus();
 	await page.keyboard.press('Home');
-	await expect(stage(page)).toContainText('0°');
+	await expect(crank).toHaveAttribute('aria-valuenow', '0');
 	await expect(stage(page)).toContainText('dead point: no torque');
 	await expect(stage(page)).toContainText('0.00 N·m');
 	// 18 presses of 5°: the coil lies along the field, and the torque is N·B·I·A = 0.50 N·m.
 	for (let i = 0; i < 18; i++) await page.keyboard.press('ArrowRight');
-	await expect(stage(page)).toContainText('90°');
+	await expect(crank).toHaveAttribute('aria-valuenow', '90');
 	await expect(stage(page)).toContainText('0.50 N·m ↺');
 	// Past 180° the same current turns it backwards.
 	await page.locator('input[type=range][data-control=angle]').fill('270');
@@ -58,7 +58,26 @@ test('the commutator gives a voltage that never reverses; slip rings an alternat
 	};
 	const dc = await readings();
 	expect(dc.some((v) => v.startsWith('−'))).toBe(false);
+	expect(dc.some((v) => parseFloat(v) > 1)).toBe(true);
 	await page.locator('button[data-control=connection][data-value=slip]').click();
 	const ac = await readings();
 	expect(ac.some((v) => v.startsWith('−'))).toBe(true);
+});
+
+test('turning the crank by hand makes a voltage; stopping it, none', async ({ page }) => {
+	await page.clock.install();
+	await page.goto('./motors-generators/#crank');
+	await page.locator('button[data-control=turning][data-value=hand]').click();
+	const voltage = stage(page).getByText(/ V$/).nth(0);
+	await expect(voltage).toHaveText('0.00 V');
+	await page.getByRole('slider', { name: /Crank/ }).focus();
+	let seen = false;
+	for (let i = 0; i < 20; i++) {
+		await page.keyboard.press('ArrowRight');
+		await page.clock.runFor(50);
+		if ((await voltage.textContent()) !== '0.00 V') seen = true;
+	}
+	expect(seen).toBe(true);
+	await page.clock.runFor(1500);
+	await expect(voltage).toHaveText('0.00 V');
 });

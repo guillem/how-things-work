@@ -764,7 +764,7 @@
 			opacity: torqueArrow ? 1 : 0.5
 		})}
 	{/if}
-	{#if (isHold || isMotor) && !torqueArrow && Math.abs(Math.sin(theta)) < 0.05}
+	{#if (isHold || (isMotor && Math.abs(omega) < 0.3)) && !torqueArrow && Math.abs(Math.sin(theta)) < 0.05}
 		{@render txt(C.x + 22, C.y - RC - 44, 'dead point: no torque', 13, {
 			weight: 700
 		})}

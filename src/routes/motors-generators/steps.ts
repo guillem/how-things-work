@@ -171,7 +171,7 @@ export const spec: ExplainerSpec = {
 			controls: [connection, voltage, start, restart],
 			body: `
 <p>The fix is a <dfn data-def="A ring on the shaft split into two halves, one joined to each end of the coil. As the coil turns, each brush slides from one half onto the other, which reverses the current in the coil.">split-ring commutator</dfn>: one ring cut into two halves, each joined to one end of the coil. Every half-turn, just as the coil passes a dead point, the brushes slide across the gaps onto the other halves — and the <strong>current in the coil reverses</strong>.</p>
-<p>Now whichever side is on the left always carries current into the page, and whichever is on the right carries it out. The push is always the same way round, and the coil keeps turning. Watch the trace: the torque rises and falls twice a turn but never goes below zero. Switch to slip rings to compare.</p>
+<p>Now whichever side is on the left always carries current into the page, and whichever is on the right carries it out. The push is always the same way round, and the coil keeps turning. Watch the trace: with a steady battery the torque rises and falls twice a turn but never goes below zero. Switch to slip rings to compare.</p>
 <p>Start the coil standing across the field, though, and it never moves: at a dead point there is no torque to start it. Real motors have three or more coils at different angles, so one of them is always ready to push.</p>`,
 			notes: `<p>Averaged over a turn, the torque with the commutator is 2/π, about 64%, of its peak; with slip rings it averages exactly zero. The word commutator comes from the Latin <em>commutare</em>, to exchange. Many motors no longer have one: in a "brushless" motor, electronics switch the current in fixed coils around a spinning magnet instead.</p>`
 		},
@@ -198,7 +198,7 @@ export const spec: ExplainerSpec = {
 			controls: [turning, speed],
 			body: `
 <p>Now take the battery away, connect a voltmeter to the brushes, and turn the coil yourself. Grab the crank and turn it: <strong>while the coil turns, a voltage appears</strong>. Stop, and it is zero. Turn faster, and it is bigger.</p>
-<p>This is <dfn data-def="Making a voltage with a changing magnetic field: the voltage equals the rate of change of the flux through the circuit.">electromagnetic induction</dfn>, the effect that made the meter kick when a magnet moved through a coil. As the coil turns, the <dfn data-def="How much magnetic field passes through a loop: the field times the area it crosses, in webers (Wb).">magnetic flux</dfn> through it keeps changing — the most when it stands across the field, none when it lies along it — and a changing flux induces a voltage.</p>`,
+<p>This is <dfn data-def="Making a voltage with a changing magnetic field: the voltage equals the rate of change of the flux through the circuit.">electromagnetic induction</dfn>, the effect that made the meter kick when a magnet moved through a coil. As the coil turns, the <dfn data-def="How much magnetic field passes through a loop: the field times the area it crosses, in webers (Wb).">magnetic flux</dfn> through it keeps changing, from the most when it stands across the field to none when it lies along it, and back. A changing flux induces a voltage.</p>`,
 			notes: `<p>You can see it as a force on the charges too: as side a moves through the field, the field pushes the electrons in it along the wire, the same force that turns a motor, now acting on charges that are carried along with the wire.</p>`
 		},
 		{
