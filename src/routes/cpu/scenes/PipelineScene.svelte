@@ -80,8 +80,7 @@
 		{@render txt(24, tb.y - 30, tb.title, 15, { weight: 600 })}
 		{@render txt(936, tb.y - 30, `${done} of ${ROWS} instructions finished`, 14, {
 			anchor: 'end',
-			weight: 700,
-			color: 'var(--explainer-accent)'
+			weight: 700
 		})}
 		{#each Array.from({ length: TICKS }, (_, c) => c) as c (c)}
 			{@render txt(X0 + c * CW + CW / 2, tb.y - 8, String(c + 1), 10, {

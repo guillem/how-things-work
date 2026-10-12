@@ -440,10 +440,20 @@
 		const byLine = new Map(asm.items.map((it) => [it.line, it]));
 		const lines = source.split(/\r?\n/);
 		return lines.flatMap((raw, i) => {
-			const text = raw.replace(/;.*$/, '').trimEnd();
-			if (!text.trim()) return [];
+			const text = raw.replace(/;.*$/, '').trim();
+			if (!text) return [];
+			// Columns: label, mnemonic, operands (SVG text collapses runs of spaces).
+			const m = /^(?:([^:\s]+):)?\s*(\S*)\s*(.*)$/.exec(text);
 			const it = byLine.get(i + 1);
-			return [{ line: i + 1, text, addr: it?.addr }];
+			return [
+				{
+					line: i + 1,
+					label: m?.[1] ? `${m[1]}:` : '',
+					op: (m?.[2] ?? '').toUpperCase(),
+					args: (m?.[3] ?? '').replace(/\s+/g, ' '),
+					addr: it?.addr
+				}
+			];
 		});
 	});
 	/** The instruction being worked on, and where the PC points. */
@@ -500,7 +510,10 @@
 	}
 	const words = $derived.by(() => {
 		if (!rec) return 'The program has mistakes, so nothing can run yet.';
-		if (tour) return TOUR[tourIndex].words;
+		if (tour)
+			return reduced
+				? 'Memory holds the program and its data; the CPU has a PC, an IR and control unit, four registers and an ALU'
+				: TOUR[tourIndex].words;
 		if (!phase)
 			return 'Ready: the PC is 0, so the first instruction will be fetched from address 0.';
 		const m = before;
@@ -841,13 +854,19 @@
 					halo: false
 				})}
 				<g opacity={on ? reveal : reveal * 0.5}>
-					{@render txt(x0 + f.w / 2, CU.y + 66, on ? f.label : 'unused', on ? 12 : 10, {
-						anchor: 'middle',
-						weight: on ? 700 : 400,
-						muted: !on,
-						color: on ? 'var(--cpu-decode)' : undefined,
-						halo: false
-					})}
+					{@render txt(
+						x0 + f.w / 2,
+						CU.y + 66,
+						on ? f.label : i === 3 ? 'unused' : '–',
+						on ? 12 : 10,
+						{
+							anchor: 'middle',
+							weight: on ? 700 : 400,
+							muted: !on,
+							color: on ? 'var(--cpu-decode)' : undefined,
+							halo: false
+						}
+					)}
 				</g>
 			{/each}
 		{:else}
@@ -1057,7 +1076,9 @@
 				<rect x="12" y={y - 13} width="288" height={LINE_H - 1} rx="5" fill={pcol} opacity="0.16" />
 				<rect x="12" y={y - 13} width="4" height={LINE_H - 1} rx="2" fill={pcol} />
 			{/if}
-			{@render txt(24, y, l.text, 12, { mono: true, weight: cur ? 700 : 500, halo: false })}
+			{@render txt(22, y, l.label, 12, { mono: true, muted: true, halo: false })}
+			{@render txt(70, y, l.op, 12, { mono: true, weight: cur ? 700 : 600, halo: false })}
+			{@render txt(120, y, l.args, 12, { mono: true, weight: cur ? 700 : 500, halo: false })}
 			{#if l.addr !== undefined}
 				{@render txt(296, y, String(l.addr), 11, {
 					anchor: 'end',
