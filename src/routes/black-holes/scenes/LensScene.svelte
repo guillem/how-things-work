@@ -2,9 +2,11 @@
 	/**
 	 * A black hole in front of a field of stars, as a camera 30 r_s (60 GM/c²)
 	 * away sees it. For every pixel the camera looks at angle θ from the hole;
-	 * that light passed the hole with impact parameter b = D sin θ, was bent by
-	 * the exact angle α(b) (a table traced once with the model's tracer) and so
-	 * came from the sky at β = θ − α (`skyAngle`). Pixels with b inside the
+	 * that light passed the hole with impact parameter b = D sin θ / √(1 − 2/D)
+	 * (`cameraImpact`, for a camera held at rest), was bent by α(b) (a table
+	 * traced once with the model's tracer; the ~1% of the bend that falls
+	 * beyond the camera is not removed) and so came from the sky at β = θ − α
+	 * (`skyAngle`). Pixels with b inside the
 	 * critical 2.6 r_s see nothing: the shadow. The sky is a seeded star field
 	 * (stars on a jittered grid plus soft glowing clouds) at infinity, painted
 	 * into a canvas and shown as an SVG `<image>`, as in waves-interference.
@@ -27,6 +29,7 @@
 	import {
 		B_CRIT,
 		alphaAt,
+		cameraImpact,
 		deflectionTable,
 		einsteinAngle,
 		images,
@@ -180,7 +183,7 @@
 					const dx = (X - hx) / pxrad;
 					const dy = (Y - hy) / pxrad;
 					const th = Math.hypot(dx, dy);
-					const b = D * Math.sin(th);
+					const b = cameraImpact(D, th);
 					if (b <= B_CRIT * 1.00001) {
 						px[k] = 0;
 						px[k + 1] = 0;
@@ -257,7 +260,7 @@
 
 	const ringR = $derived(thetaE * PXRAD);
 	const shadowR = $derived(thetaSh * PXRAD);
-	const horizonR = $derived(Math.asin(2 / D) * PXRAD);
+	const horizonR = $derived(Math.asin((2 * Math.sqrt(1 - 2 / D)) / D) * PXRAD);
 
 	function onkey(k: number | 'start' | 'end') {
 		if (k === 'start') moveHole({ x: PX0, y: hole.y });
@@ -361,7 +364,7 @@
 		{#if phase === 'lens'}
 			{@render onSky(H.x, Math.max(PY0 + 16, H.y - ringR - 8), 'Einstein ring', 12)}
 		{:else}
-			{@render onSky(H.x, H.y + shadowR + 18, 'edge of the shadow: 2.6 r_s', 12.5)}
+			{@render onSky(H.x, H.y + shadowR + 18, 'edge of the shadow: 2.6 rₛ', 12.5)}
 			{@render onSky(H.x, H.y + 4, 'horizon size', 11, 'middle', 500)}
 		{/if}
 	{/if}
@@ -411,21 +414,21 @@
 		<T x={CX + 16} y={PY0 + 304} text="a second, fainter image inside the" size={12.5} />
 		<T x={CX + 16} y={PY0 + 324} text="dashed ring, on the other side." size={12.5} />
 		<Card x={CX} y={PY1 - 96} w={CW} h={96} />
-		<T x={CX + 16} y={PY1 - 70} text="Camera 30 r_s from the hole;" size={12} muted />
-		<T x={CX + 16} y={PY1 - 50} text="exact bending of every ray; the" size={12} muted />
+		<T x={CX + 16} y={PY1 - 70} text="Camera 30 rₛ from the hole; every" size={12} muted />
+		<T x={CX + 16} y={PY1 - 50} text="ray’s bend traced from the model. The" size={12} muted />
 		<T x={CX + 16} y={PY1 - 30} text="ring’s size depends on that distance." size={12} muted />
 	{:else}
 		<Card x={CX} y={PY0} w={CW} h={186} />
 		<T x={CX + 16} y={PY0 + 28} text="The shadow" size={15} weight={700} />
-		{@render row(PY0 + 60, 'Horizon radius', '1 r_s')}
-		{@render row(PY0 + 88, 'Shadow radius', `${f1(B_CRIT / 2)} r_s`, 'var(--bh-sphere)')}
-		<T x={CX + 16} y={PY0 + 118} text="Every ray aimed inside 2.6 r_s falls" size={12.5} />
+		{@render row(PY0 + 60, 'Horizon radius', '1 rₛ')}
+		{@render row(PY0 + 88, 'Shadow radius', `${f1(B_CRIT / 2)} rₛ`, 'var(--bh-sphere)')}
+		<T x={CX + 16} y={PY0 + 118} text="Every ray aimed inside 2.6 rₛ falls" size={12.5} />
 		<T x={CX + 16} y={PY0 + 138} text="in, so the dark disc is 2.6 times" size={12.5} />
 		<T x={CX + 16} y={PY0 + 158} text="wider than the horizon itself." size={12.5} />
 		<Card x={CX} y={PY0 + 202} w={CW} h={178} />
 		<T x={CX + 16} y={PY0 + 228} text="Event Horizon Telescope" size={13.5} weight={700} />
 		{@render row(PY0 + 254, 'M87* (2019)', '')}
-		<T x={CX + 16} y={PY0 + 274} text="6.5 billion suns; predicted 40 µas," size={12} />
+		<T x={CX + 16} y={PY0 + 274} text="6.2 billion suns; predicted 38 µas," size={12} />
 		<T x={CX + 16} y={PY0 + 292} text="ring measured 42 ± 3 µas" size={12} weight={600} />
 		{@render row(PY0 + 318, 'Sgr A* (2022)', '')}
 		<T x={CX + 16} y={PY0 + 338} text="4.15 million suns; predicted 52 µas," size={12} />

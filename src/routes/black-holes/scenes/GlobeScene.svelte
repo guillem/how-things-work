@@ -177,7 +177,7 @@
 	<T
 		x={fb.X + 14}
 		y={flatY + 4}
-		text="{Math.round(KM_APART).toLocaleString('en')} km"
+		text="{Math.round(KM_APART).toLocaleString('en').replace(/,/g, ' ')} km"
 		size={12.5}
 		weight={600}
 	/>
@@ -243,7 +243,7 @@
 		<T
 			x={b.X + 14}
 			y={b.Y + 4}
-			text="{Math.round(gapGlobe).toLocaleString('en')} km"
+			text="{Math.round(gapGlobe).toLocaleString('en').replace(/,/g, ' ')} km"
 			size={12.5}
 			weight={600}
 		/>

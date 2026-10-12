@@ -34,11 +34,11 @@
 		circularL,
 		escapeCone,
 		flashRay,
-		newtonCircularL,
 		newtonU,
 		periapses,
 		probe,
 		ray,
+		sidewaysL,
 		type Fate,
 		type Trace
 	} from '../blackhole';
@@ -77,18 +77,22 @@
 	const probeRun = $derived.by(() => {
 		if (phase !== 'probe' && phase !== 'isco') return null;
 		const r0 = phase === 'probe' ? 2 * probeR : 2 * iscoR;
-		const L = phase === 'probe' ? probeK * newtonCircularL(r0) : circularL(r0) * 0.997;
+		// The probe step launches at probeK × Newton's circular speed √(GM/r0), measured
+		// on the spot; the same speed gives Newton's L = r0 v and the real L = r0 γ v.
+		const v = probeK * Math.sqrt(1 / r0);
+		const L = phase === 'probe' ? sidewaysL(r0, v) : circularL(r0) * 0.997;
+		const LN = phase === 'probe' ? r0 * v : L;
 		const pr = probe(r0, L, {
 			maxSweep: phase === 'probe' ? 8 * Math.PI : 12 * Math.PI,
 			dphi: 0.003
 		});
 		// Newton's path for the same launch: u = 1/L² + (1/r0 − 1/L²) cos φ.
 		const newton: { x: number; y: number }[] = [];
-		const p = 1 / (L * L);
+		const p = 1 / (LN * LN);
 		const ecc = Math.abs(1 / r0 - p) / p;
 		for (let k = 0; k <= 360; k++) {
 			const phi = (k / 360) * 2 * Math.PI;
-			const u = newtonU(r0, L, phi);
+			const u = newtonU(r0, LN, phi);
 			if (u <= 1e-4) continue;
 			newton.push({ x: Math.cos(phi) / u, y: Math.sin(phi) / u });
 		}
@@ -321,6 +325,8 @@
 	const FLASH_PERIOD = 4.5;
 	const flashS = $derived(reduced ? 4000 : (since % FLASH_PERIOD) * LIGHT_SPEED * 0.8);
 	const lamp = $derived(flash ? { X: cx, Y: cy - flash.r0 * S } : null);
+	/** Share of all directions (the whole sky round the lamp, not just this plane) that escape. */
+	const skyShare = $derived(flash ? (1 - Math.cos(flash.cone)) / 2 : 0);
 	const coneWedge = $derived.by(() => {
 		if (!flash || !lamp) return '';
 		const R = 64;
@@ -673,7 +679,7 @@
 			<T
 				x={cx}
 				y={cy + 3 * S + 16}
-				text="photon sphere 1.5 r_s"
+				text="photon sphere 1.5 rₛ"
 				size={11.5}
 				color="var(--bh-sphere)"
 				weight={600}
@@ -692,7 +698,7 @@
 			<T
 				x={PX0 + 12}
 				y={cy + B_CRIT * S + 18}
-				text="2.6 r_s either side"
+				text="2.6 rₛ either side"
 				size={11.5}
 				color="var(--bh-captured)"
 			/>
@@ -731,14 +737,14 @@
 	{#if phase === 'weak' && current}
 		<Card x={CX} y={PY0} w={CW} h={196} />
 		<T x={CX + 16} y={PY0 + 28} text="Light passing a mass" size={15} weight={700} />
-		{@render row(PY0 + 60, 'Passes at', `${bendB.toFixed(1)} r_s`)}
+		{@render row(PY0 + 60, 'Passes at', `${bendB.toFixed(1)} rₛ`)}
 		{@render row(PY0 + 88, 'Bend (traced)', `${(bendAngle * DEG).toFixed(2)}°`, 'var(--bh-light)')}
 		{@render row(PY0 + 116, 'Einstein’s 4GM/(c²b)', `${((2 / bendB) * DEG).toFixed(2)}°`)}
 		{@render row(PY0 + 144, 'Light as a bullet', `${((1 / bendB) * DEG).toFixed(2)}°`)}
 		<T x={CX + 16} y={PY0 + 176} text="Close in, the real bend grows faster." size={12} muted />
 		<Card x={CX} y={PY0 + 212} w={CW} h={112} />
 		<T x={CX + 16} y={PY0 + 240} text="The Sun, 1919" size={14} weight={700} />
-		<T x={CX + 16} y={PY0 + 262} text="Grazing its edge (236 000 r_s):" size={12.5} />
+		<T x={CX + 16} y={PY0 + 262} text="Grazing its edge (236 000 rₛ):" size={12.5} />
 		<T
 			x={CX + 16}
 			y={PY0 + 284}
@@ -746,7 +752,7 @@
 			size={12.5}
 			weight={600}
 		/>
-		<T x={CX + 16} y={PY0 + 306} text="as a bullet: 0.87″" size={12.5} muted />
+		<T x={CX + 16} y={PY0 + 306} text="as a bullet: 0.88″" size={12.5} muted />
 	{:else if (phase === 'light' || phase === 'sphere') && current}
 		<Card x={CX} y={PY0} w={CW} h={phase === 'sphere' ? 196 : 170} />
 		<T
@@ -759,12 +765,12 @@
 		{@render row(
 			PY0 + 60,
 			'Aim',
-			`${(current.b / 2).toFixed(phase === 'sphere' ? Math.min(11, aimDigits + 1) : 2)} r_s`
+			`${(current.b / 2).toFixed(phase === 'sphere' ? Math.min(11, aimDigits + 1) : 2)} rₛ`
 		)}
 		{@render row(
 			PY0 + 88,
 			'Closest to the centre',
-			current.fate === 'captured' ? 'crosses the horizon' : `${(current.rmin / 2).toFixed(2)} r_s`
+			current.fate === 'captured' ? 'crosses the horizon' : `${(current.rmin / 2).toFixed(2)} rₛ`
 		)}
 		{#if phase === 'sphere'}
 			{@render row(PY0 + 116, 'Times round the hole', loops.toFixed(1))}
@@ -778,13 +784,13 @@
 						: 'still circling',
 				rayColor(current.fate)
 			)}
-			<T x={CX + 16} y={PY0 + 176} text="Critical aim: 2.598 076 211… r_s" size={12} muted />
+			<T x={CX + 16} y={PY0 + 176} text="Critical aim: 2.598 076 211… rₛ" size={12} muted />
 		{:else}
 			{@render row(PY0 + 116, 'Fate', fateText(current), rayColor(current.fate))}
-			<T x={CX + 16} y={PY0 + 150} text="Captured if aimed inside 2.6 r_s" size={12} muted />
+			<T x={CX + 16} y={PY0 + 150} text="Captured if aimed inside 2.6 rₛ" size={12} muted />
 		{/if}
 		<Card x={CX} y={PY1 - 124} w={CW} h={124} />
-		<T x={CX + 16} y={PY1 - 98} text="Distances in r_s = 2GM/c²," size={12.5} weight={600} />
+		<T x={CX + 16} y={PY1 - 98} text="Distances in rₛ = 2GM/c²," size={12.5} weight={600} />
 		<T x={CX + 16} y={PY1 - 78} text="the radius of the horizon:" size={12.5} weight={600} />
 		<T x={CX + 16} y={PY1 - 56} text="3 km for the Sun’s mass" size={12.5} muted />
 		<T x={CX + 16} y={PY1 - 36} text="9 mm for the Earth’s" size={12.5} muted />
@@ -792,20 +798,20 @@
 	{:else if flash}
 		<Card x={CX} y={PY0} w={CW} h={170} />
 		<T x={CX + 16} y={PY0 + 28} text="A lamp held still" size={15} weight={700} />
-		{@render row(PY0 + 60, 'Height', `${lampR.toFixed(2)} r_s`)}
+		{@render row(PY0 + 60, 'Height', `${lampR.toFixed(2)} rₛ`)}
 		{@render row(
 			PY0 + 88,
-			'Directions that escape',
-			`${((flash.cone / Math.PI) * 100).toFixed(0)}%`,
+			'Light that escapes',
+			`${(skyShare * 100).toFixed(0)}%`,
 			'var(--bh-light)'
 		)}
 		{@render row(
 			PY0 + 116,
-			'Directions that fall in',
-			`${(100 - (flash.cone / Math.PI) * 100).toFixed(0)}%`,
+			'Light that falls in',
+			`${(100 - Number((skyShare * 100).toFixed(0))).toFixed(0)}%`,
 			'var(--bh-captured)'
 		)}
-		<T x={CX + 16} y={PY0 + 150} text="Half the sky at 1.5 r_s; none at 1 r_s" size={12} muted />
+		<T x={CX + 16} y={PY0 + 150} text="Half the sky at 1.5 rₛ; none at 1 rₛ" size={12} muted />
 		<Card x={CX} y={PY1 - 116} w={CW} h={116} />
 		<T x={CX + 16} y={PY1 - 90} text="Inside the horizon" size={13.5} weight={700} />
 		<T x={CX + 16} y={PY1 - 68} text="every direction, even light’s," size={12.5} />
@@ -821,7 +827,7 @@
 			weight={700}
 		/>
 		{#if phase === 'probe'}
-			{@render row(PY0 + 60, 'Launched at', `${probeR.toFixed(1)} r_s`)}
+			{@render row(PY0 + 60, 'Launched at', `${probeR.toFixed(1)} rₛ`)}
 			{@render row(
 				PY0 + 88,
 				'Real path',
@@ -832,16 +838,16 @@
 			{@render row(
 				PY0 + 144,
 				'Closest (real)',
-				probeRun.pr.fate === 'captured' ? 'the horizon' : `${(probeRun.rmin / 2).toFixed(2)} r_s`
+				probeRun.pr.fate === 'captured' ? 'the horizon' : `${(probeRun.rmin / 2).toFixed(2)} rₛ`
 			)}
-			{@render row(PY0 + 172, 'Closest (Newton)', `${(probeRun.nPeri / 2).toFixed(2)} r_s`)}
+			{@render row(PY0 + 172, 'Closest (Newton)', `${(probeRun.nPeri / 2).toFixed(2)} rₛ`)}
 			{@render row(
 				PY0 + 200,
 				'Closest point turns',
 				Number.isFinite(probeRun.turn) ? `${(probeRun.turn * DEG).toFixed(0)}° per orbit` : '—'
 			)}
 		{:else}
-			{@render row(PY0 + 60, 'Radius', `${iscoR.toFixed(2)} r_s`)}
+			{@render row(PY0 + 60, 'Radius', `${iscoR.toFixed(2)} rₛ`)}
 			{@render row(PY0 + 88, 'Speed', '0.3% below a circle')}
 			{@render row(
 				PY0 + 116,
@@ -853,10 +859,10 @@
 				x={CX + 16}
 				y={PY0 + 150}
 				text={iscoR < 3
-					? 'Inside 3 r_s: no nudge is small enough'
+					? 'Inside 3 rₛ: no nudge is small enough'
 					: probeRun.pr.fate === 'captured'
-						? 'Just outside 3 r_s: needs a gentler nudge'
-						: 'Outside 3 r_s: stable'}
+						? 'Just outside 3 rₛ: needs a gentler nudge'
+						: 'Outside 3 rₛ: stable'}
 				size={12}
 				muted
 			/>
@@ -882,13 +888,13 @@
 			phase === 'probe' ? PY1 - 68 : PY1 - 90,
 			'var(--bh-isco)',
 			'6 5',
-			'last stable orbit, 3 r_s'
+			'last stable orbit, 3 rₛ'
 		)}
 		{@render key(
 			phase === 'probe' ? PY1 - 46 : PY1 - 68,
 			'var(--bh-sphere)',
 			'3 4',
-			'photon sphere, 1.5 r_s'
+			'photon sphere, 1.5 rₛ'
 		)}
 		<T x={CX + 16} y={PY1 - 18} text="Paced by the probe’s own clock" size={12} muted />
 	{/if}

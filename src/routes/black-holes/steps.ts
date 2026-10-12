@@ -3,7 +3,7 @@ import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
 // ---- controls ------------------------------------------------------------------------
 // Distances are given in Schwarzschild radii (r_s), the radius of the horizon.
 
-const rs = (v: number, d = 2) => `${v.toFixed(d)} r_s`;
+const rs = (v: number, d = 2) => `${v.toFixed(d)} rₛ`;
 /** An integer as a superscript: −4 → ⁻⁴. */
 const sup = (n: number) =>
 	String(n)
@@ -53,8 +53,8 @@ const aimDigits: Control = {
 	max: 10,
 	step: 1,
 	default: 4,
-	format: (v) => `off by 10${sup(-v)} r_s`,
-	help: 'The critical aim is 2.598 076 211… r_s.'
+	format: (v) => `off by 10${sup(-v)} rₛ`,
+	help: 'The critical aim is 2.598 076 211… rₛ.'
 };
 const aimInside: Control = {
 	type: 'toggle',
@@ -72,7 +72,7 @@ const lampR: Control = {
 	max: 4,
 	step: 0.01,
 	default: 1.4,
-	format: (v) => `${v.toFixed(2)} r_s from the centre`
+	format: (v) => `${v.toFixed(2)} rₛ from the centre`
 };
 
 const squeeze: Control = {
@@ -102,7 +102,7 @@ const probeK: Control = {
 	step: 0.01,
 	default: 0.9,
 	format: (v) => `${v.toFixed(2)} × Newton’s circular speed`,
-	help: 'Sideways. 1 would be a circle under Newton’s gravity; above 1.41 Newton says it escapes.'
+	help: 'Sideways, measured on the spot. 1 would be a circle under Newton’s gravity; above 1.41 (√2) it escapes, in both theories.'
 };
 const launch: Control = { type: 'action', id: 'launch', label: 'Launch', action: 'Launch again' };
 
@@ -128,7 +128,7 @@ const clockR: Control = {
 	max: 6,
 	step: 0.01,
 	default: 2,
-	format: (v) => `${v.toFixed(2)} r_s from the centre`
+	format: (v) => `${v.toFixed(2)} rₛ from the centre`
 };
 const edgeR: Control = { ...clockR, id: 'edgeR', default: 1.05 };
 
@@ -186,9 +186,9 @@ export const spec: ExplainerSpec = {
 			controls: [bendB],
 			body: `
 <p>If gravity is geometry, it must bend light too: light also follows the straightest path through spacetime. Here a ray of light passes a compact mass. Far from it the bend is tiny. General relativity predicts an angle of <strong>4GM/(c²b)</strong> for light passing at distance <i>b</i> from a mass <i>M</i> (G is Newton's constant, c the speed of light) — twice what you would get by treating light as a Newtonian bullet.</p>
-<p>For starlight grazing the Sun that is <strong>1.75 arcseconds</strong>, the width of a one-euro coin seen from 2.7 km. During the solar eclipse of 1919, expeditions led by Frank Dyson and Arthur Eddington photographed the stars next to the darkened Sun and found them shifted by 1.98″ ± 0.12″ (Sobral, Brazil) and 1.61″ ± 0.30″ (Príncipe): Einstein's value, not Newton's half. It made him world-famous overnight.</p>
-<p>Move the ray closer: the bend grows faster than 1/<i>b</i>, and it is no longer small.</p>`,
-			notes: `<p>The distances here are in units of the <dfn data-def="r_s = 2GM/c²: the radius of the horizon of a black hole of mass M. About 3 km for the mass of the Sun.">Schwarzschild radius</dfn> r_s = 2GM/c² of the mass, which you will meet in the next step. The Sun's own radius is 236 000 r_s, so light grazing it is in the far, gentle regime. The path drawn is computed from Einstein's equations (the exact solution Karl Schwarzschild found in 1916 for a single round mass), not from the formula; the readout compares the two.</p>`
+<p>For starlight grazing the Sun that is <strong>1.75 arcseconds</strong>, the width of a one-euro coin seen from 2.7 km. During the solar eclipse of 1919, expeditions organised by Frank Dyson and Arthur Eddington photographed the stars next to the darkened Sun and found them shifted by 1.98″ ± 0.12″ (Sobral, Brazil) and 1.61″ ± 0.30″ (Príncipe): Einstein's value, not Newton's half. It made him world-famous overnight.</p>
+<p>Distances are measured in r<sub>s</sub> = 2GM/c², a length set by the mass (3 km for the Sun), explained in the next step. Move the ray closer: the bend grows faster than 1/<i>b</i>, and it is no longer small.</p>`,
+			notes: `<p>The distances here are in units of the <dfn data-def="rₛ = 2GM/c²: the radius of the horizon of a black hole of mass M. About 3 km for the mass of the Sun.">Schwarzschild radius</dfn> r<sub>s</sub> = 2GM/c² of the mass, which you will meet in the next step. The Sun's own radius is 236 000 r<sub>s</sub>, so light grazing it is in the far, gentle regime. The path drawn is computed from Einstein's equations (the exact solution Karl Schwarzschild found in 1916 for a single round mass), not from the formula; the readout compares the two.</p>`
 		},
 		// ------------------------------------------------------------------ hole
 		{
@@ -203,7 +203,7 @@ export const spec: ExplainerSpec = {
 <p>Now squeeze the mass into a smaller and smaller ball. Schwarzschild's solution says that if a mass <i>M</i> fits inside a radius <strong>r<sub>s</sub> = 2GM/c²</strong>, nothing can hold it up and it collapses into a <dfn data-def="A region of spacetime that nothing, not even light, can leave: it is bounded by the event horizon.">black hole</dfn>. That radius is the <dfn data-def="The boundary of a black hole, at the Schwarzschild radius for a non-spinning one: a one-way surface that light and matter can cross inwards but never outwards.">event horizon</dfn>. For the mass of the Sun it is 3 km; for the Earth, 9 mm.</p>
 <p>Fire light rays at it. Aimed wide, a ray bends and flies on. Aimed closer, it swings right round. Aimed inside <strong>2.6 r<sub>s</sub></strong>, it spirals in and crosses the horizon — and once inside, there is no path back out.</p>
 <p>Notice that the line of capture is far wider than the horizon itself: the hole catches light it would never touch if it went straight.</p>`,
-			notes: `<p>That capture distance is exactly √27 GM/c² ≈ 2.598 r_s. A black hole made by a collapsing star typically has 5 to a few tens of solar masses, so its horizon is tens to hundreds of kilometres across. This page uses a non-spinning hole; real ones usually spin, which drags spacetime round with them and makes the picture lopsided, but none of the ideas here change.</p>`
+			notes: `<p>That capture distance is exactly √27 GM/c² ≈ 2.598 r<sub>s</sub>. A black hole made by a collapsing star typically has 5 to a few tens of solar masses, so its horizon is tens to hundreds of kilometres across. This page uses a non-spinning hole; real ones usually spin, which drags spacetime round with them and makes the picture lopsided, but none of the ideas here change.</p>`
 		},
 		{
 			id: 'photon-sphere',
@@ -214,7 +214,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [aimDigits, aimInside],
 			body: `
-<p>Between flying past and falling in lies a knife edge. Aim at exactly 2.598 r<sub>s</sub> and the light ends up circling the hole at <strong>1.5 r<sub>s</sub></strong>, on the <dfn data-def="The radius, 1.5 r_s for a non-spinning black hole, at which light can travel round the hole in a circle. The orbit is unstable.">photon sphere</dfn>. Gravity there is strong enough to bend light into a circle.</p>
+<p>Between flying past and falling in lies a knife edge. Aim at exactly 2.598 r<sub>s</sub> and the light ends up circling the hole at <strong>1.5 r<sub>s</sub></strong>, on the <dfn data-def="The radius, 1.5 rₛ for a non-spinning black hole, at which light can travel round the hole in a circle. The orbit is unstable.">photon sphere</dfn>. Gravity there is strong enough to bend light into a circle.</p>
 <p>Aim closer and closer to the critical value: the ray loops round once, twice or more before it leaves or falls in. Every three more correct digits of aim buy about one more loop. The orbit is <strong>unstable</strong>, like a pencil balanced on its tip: any tiny difference grows, and the light peels away, outwards or inwards.</p>`
 		},
 		{
@@ -243,7 +243,7 @@ export const spec: ExplainerSpec = {
 <p>A common myth says that black holes suck everything in. They don't. Squeeze the Sun into a black hole of the same mass, 6 km across: the Earth goes on round the same orbit, at the same 29.8 km/s, in the same year.</p>
 <p>Outside a round body, its gravity depends only on its mass, not on its size or what it is made of (in general relativity this is <dfn data-def="Birkhoff's theorem (1923): outside any round, non-spinning body, spacetime is exactly Schwarzschild's, set by the mass alone.">Birkhoff's theorem</dfn>). So from far away, a black hole is just another mass, and things orbit it as <a href="../orbits-kepler/#launch">Kepler and Newton</a> would predict.</p>
 <p>The difference is how close you can get. The Sun's surface stops you 695 700 km from its centre. A black hole lets you go all the way down, to where gravity becomes overwhelming.</p>`,
-			notes: `<p>Even the Earth's orbit feels general relativity: its closest point to the Sun turns by an extra 3.8″ per century. Mercury, closer in, gains 43″ per century — the anomaly that had puzzled astronomers since Urbain Le Verrier measured it in 1859, and that Einstein explained in 1915. Both numbers would be exactly the same around a black hole of one solar mass.</p>`
+			notes: `<p>Even the Earth's orbit feels general relativity: its closest point to the Sun turns by an extra 3.8″ per century. Mercury, closer in, gains 43″ per century — the anomaly that had puzzled astronomers since Urbain Le Verrier found it in 1859 (he put it at 38″; the modern value is 43″), and that Einstein explained in 1915. Both numbers would be exactly the same around a black hole of one solar mass.</p>`
 		},
 		{
 			id: 'close-orbits',
@@ -255,7 +255,7 @@ export const spec: ExplainerSpec = {
 			controls: [probeR, probeK, launch],
 			body: `
 <p>Now launch a probe sideways near the hole and compare its real path (solid) with Newton's prediction for the same launch (dashed). Far out, at 40 r<sub>s</sub>, they nearly match: the real orbit only turns slowly. Closer in, the probe's orbit no longer closes: each time round, its closest point moves on, and the path draws a rosette. That is the same turning that shows up as Mercury's 43″ per century, here hugely magnified.</p>
-<p>Closer still, the difference is not small at all. Launches that Newton says would give a safe ellipse dive into the horizon instead. Launch fast, at 1.5 times Newton's circular speed: far out, the probe flies off for good, as Newton says. Launch it the same way at 4 r<sub>s</sub> and Newton still says it escapes, but the real probe is held and comes back round.</p>`,
+<p>Closer still, the difference is not small at all. Launches that Newton says would give a safe ellipse dive into the horizon instead. At 4 r<sub>s</sub>, a probe launched at exactly Newton's circular speed does not circle: it dives into the horizon. It needs about 1.13 times that speed to stay out, and 1.15 times for a circle. Only the escape speed, √(2GM/r) measured on the spot, is the same in both theories: 1.41 times the circular speed.</p>`,
 			notes: `<p>For a body moving round the hole, general relativity adds one term to Newton's gravity: an extra inward pull that grows as 1/r⁴ instead of 1/r². It is tiny far away and grows quickly close in. Time on the probe's own clock sets the pace of the animation.</p>`
 		},
 		{
@@ -268,8 +268,8 @@ export const spec: ExplainerSpec = {
 			controls: [iscoR],
 			body: `
 <p>Around a star, a planet can circle at any distance, as long as it moves at the right speed, and a small nudge only makes its circle slightly oval. Near a black hole, that stops being true. Launch a probe on a circular orbit, but 0.3% too slowly.</p>
-<p>Well outside <strong>3 r<sub>s</sub></strong>, the probe wobbles a little and stays. Closer to 3 r<sub>s</sub> the hold weakens, and only smaller and smaller nudges are survived (this one already tips the probe in at 3.1 r<sub>s</sub>). Inside 3 r<sub>s</sub> — the <dfn data-def="Innermost stable circular orbit: for a non-spinning black hole, at 3 r_s (6GM/c²). Inside it, circular orbits exist but the slightest disturbance sends the body into the hole.">innermost stable circular orbit</dfn> — no nudge is small enough: the probe spirals into the hole. And inside 1.5 r<sub>s</sub> no circular orbit exists at all: only light could go round there.</p>
-<p>Gas swirling around a black hole feels this edge. It spirals slowly inwards, heating up to millions of degrees, until it reaches 3 r<sub>s</sub> and plunges. That hot, glowing disk is one of the main ways black holes are found.</p>`
+<p>Well outside <strong>3 r<sub>s</sub></strong>, the probe wobbles a little and stays. Closer to 3 r<sub>s</sub> the hold weakens, and only smaller and smaller nudges are survived (this one already tips the probe in at 3.1 r<sub>s</sub>). Inside 3 r<sub>s</sub> — the <dfn data-def="Innermost stable circular orbit: for a non-spinning black hole, at 3 rₛ (6GM/c²). Inside it, circular orbits exist but the slightest disturbance moves the body away from its circle for good, and a slight slowing sends it into the hole.">innermost stable circular orbit</dfn> — no nudge is small enough: the probe spirals into the hole. And at 1.5 r<sub>s</sub> only light can go round in a circle; inside that, nothing can, not even light.</p>
+<p>Gas swirling around a black hole feels this edge. It spirals slowly inwards, heating up to millions of degrees around star-sized holes (hundreds of thousands around giant ones), until it reaches 3 r<sub>s</sub> and plunges. That hot, glowing disk is one of the main ways black holes are found.</p>`
 		},
 		// ------------------------------------------------------------------ time
 		{
@@ -283,7 +283,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Lower a clock on a long cable towards the hole and compare it with an identical clock far away. The lower clock ticks slower: by a factor <strong>√(1 − r<sub>s</sub>/r)</strong>. At 2 r<sub>s</sub> it ticks 71 times while the far one ticks 100; at 1.1 r<sub>s</sub>, only 30. This is <dfn data-def="Clocks deeper in a gravitational field run slower than clocks higher up, compared side by side afterwards or by light signals.">gravitational time dilation</dfn>.</p>
 <p>Nobody at the lower clock feels anything odd: their heart, their watch and their thoughts all slow together. It shows when signals are compared. The lower clock sends a flash of green light with every tick. They arrive far away spread out, and redder: each wave is stretched by the same factor. This is the <strong>gravitational redshift</strong>.</p>
-<p>It is measured on Earth too. The clocks on GPS satellites, 20 200 km up, gain about 45 microseconds a day on the ground from gravity alone (their speed takes off 7). Without correction, positions would drift by kilometres a day.</p>`,
+<p>It is measured on Earth too. The clocks on GPS satellites, 20 200 km up, gain about 45 microseconds a day on the ground from gravity alone (their speed takes off 7). Uncorrected, the net gain of about 38 µs a day would add about 11 km a day to every measured satellite range.</p>`,
 			notes: `<p>Unlike the slowing of moving clocks in <a href="../special-relativity/#time-dilation">special relativity</a>, which each observer sees in the other, this effect is not mutual: the high clock sees the low clock slow, and the low clock sees the high clock fast. GPS figures: N. Ashby, <i>Relativity in the Global Positioning System</i>, Living Reviews in Relativity (2003).</p>`
 		},
 		{
@@ -298,7 +298,7 @@ export const spec: ExplainerSpec = {
 <p>Lower the clock to just above the horizon. Its ticks reach the distant observer ever more slowly, ever redder, until the light shifts beyond visible red and fades. As the height approaches r<sub>s</sub>, the slowing has no limit.</p>
 <p>So someone watching from far away never quite sees anything cross the horizon: a falling probe seems to slow, redden and fade out just above it. The probe itself notices nothing special at the horizon. On its own clock it crosses in a short, finite time, and keeps going inwards.</p>
 <p>Both stories are true. They are two observers' descriptions of the same curved spacetime, linked by the light that passes between them — and from inside, no light gets out to tell the story.</p>`,
-			notes: `<p>Nothing can be held at rest at or inside the horizon: the cable would need infinite strength. The slider stops just outside. For a black hole of a few solar masses the difference in pull between your head and your feet would tear you apart before you reached the horizon; for a giant one like Sgr A* you would cross it without feeling anything.</p>`
+			notes: `<p>Nothing can be held at rest at or inside the horizon: the cable would need infinite strength. The slider stops just outside. The numbers shown are for a clock held in place; a falling one reddens faster still (it is moving away), but fades out the same way. For a black hole of a few solar masses the difference in pull between your head and your feet would tear you apart before you reached the horizon; for a giant one like Sgr A* you would cross it without feeling anything.</p>`
 		},
 		// ------------------------------------------------------------------ seeing
 		{
@@ -313,7 +313,7 @@ export const spec: ExplainerSpec = {
 <p>Place a field of stars behind a black hole and look at it. Every ray reaching you bent on its way past, so the sky around the hole is distorted: stars are pushed outwards and stretched into arcs, and each star appears <strong>twice</strong>, once on each side of the hole. This is <dfn data-def="The bending of light from a distant source by the gravity of a mass in between, which shifts, stretches, brightens and multiplies its images.">gravitational lensing</dfn>.</p>
 <p>Watch the bright star drift behind the hole. Its outer image skirts the dashed circle while the inner image, on the opposite side, rises from the shadow's edge. When the star is exactly behind, the two images merge into a complete circle of light: an <dfn data-def="The ring image of a source exactly behind a lensing mass, predicted by Orest Chwolson (1924) and Einstein (1936).">Einstein ring</dfn>. Make it pass a little to one side and the ring never closes: you see two arcs. Drag the hole across the sky.</p>
 <p>Astronomers see this every day: galaxies bent into arcs by clusters in front of them, and stars briefly brightening as an unseen mass passes in front.</p>`,
-			notes: `<p>The picture is computed for a camera 30 r_s from the hole, using the exact bending angle for every ray traced from the camera, with the stars treated as infinitely far away. The size of the Einstein ring depends on the distances involved: the farther the camera, the bigger the ring compared with the shadow. Rays that loop round the hole once or more make further, thinner images hugging the shadow's edge; they are too thin to show at this resolution.</p>`
+			notes: `<p>The picture is computed for a camera 30 r<sub>s</sub> from the hole, using the bending of every ray traced from Einstein's equations, with the stars treated as infinitely far away (the last percent or so of each bend, which the ray would pick up beyond the camera, is not taken off). The size of the Einstein ring depends on the distances involved: the farther the camera, the bigger the ring compared with the shadow. Rays that loop round the hole once or more make further, thinner images hugging the shadow's edge; they are too thin to show at this resolution.</p>`
 		},
 		{
 			id: 'shadow',
@@ -325,9 +325,9 @@ export const spec: ExplainerSpec = {
 			controls: [unlensed],
 			body: `
 <p>In the middle of the picture is a dark disc with no stars in it: the <strong>shadow</strong>. Every ray that would come from there passed inside the critical 2.6 r<sub>s</sub> and fell in. So the shadow is <strong>2.6 times wider than the horizon</strong>: the photon sphere, magnified by its own lensing.</p>
-<p>In 2019 the <dfn data-def="A network of radio telescopes around the world combined into one Earth-sized telescope.">Event Horizon Telescope</dfn> imaged the shadow of M87*, a black hole of 6.5 billion suns, against its glowing gas: a ring 42 millionths of an arcsecond across. In 2022 it imaged Sagittarius A*, the 4-million-sun hole at the centre of our Galaxy: a ring of 52. Both match the shadow size Einstein's equations predict for their masses.</p>
+<p>In 2019 the <dfn data-def="A network of radio telescopes around the world combined into one Earth-sized telescope.">Event Horizon Telescope</dfn> imaged the shadow of M87*, a black hole of over 6 billion suns, against its glowing gas: a ring 42 millionths of an arcsecond across. In 2022 it imaged Sagittarius A*, the 4-million-sun hole at the centre of our Galaxy: a ring of 52. Both match the shadow size Einstein's equations predict from masses measured by the motions of stars around them.</p>
 <p>Gravity is the curvature of spacetime. Far away, a black hole is just a mass. Up close, its curvature turns every path, even light's, inwards — and leaves a hole in the sky.</p>`,
-			notes: `<p>Sgr A*: 4.152 million solar masses at 27 000 light years (GRAVITY Collaboration, 2019), predicted shadow 52 µas, EHT ring 51.8 ± 2.3 µas (2022). M87*: 6.5 ± 0.7 billion solar masses at 55 million light years, predicted shadow 40 µas, ring 42 ± 3 µas (EHT 2019). The rings are glowing gas just outside the shadow, so they are slightly larger than it.</p>`
+			notes: `<p>Sgr A*: 4.152 million solar masses at 27 000 light years (GRAVITY Collaboration, 2019), predicted shadow 52 µas, EHT ring 51.8 ± 2.3 µas (2022). M87*: the motions of its stars give about 6.2 billion solar masses at 55 million light years, predicting a shadow of about 38 µas. The ring is 42 ± 3 µas, and the EHT's own fit to it gives 6.5 ± 0.7 billion (EHT 2019). The rings are glowing gas just outside the shadow, so they are slightly larger than it.</p>`
 		}
 	]
 };

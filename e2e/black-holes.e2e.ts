@@ -39,9 +39,10 @@ test('lowering the lamp shrinks the cone of light that escapes: half at 1.5 r_s'
 }) => {
 	await open(page, './black-holes/#no-way-out');
 	await range(page, 'lampR').fill('1.5');
-	await expect(stage(page)).toContainText(/Directions that escape\s*50%/);
+	await expect(stage(page)).toContainText(/Light that escapes\s*50%/);
+	// Of all the directions round the lamp (the whole sky, not just this plane).
 	await range(page, 'lampR').fill('1.02');
-	await expect(stage(page)).toContainText(/Directions that escape\s*12%/);
+	await expect(stage(page)).toContainText(/Light that escapes\s*3%/);
 });
 
 test('squeezing the Sun into a black hole leaves the Earth’s orbit unchanged', async ({ page }) => {
@@ -64,6 +65,13 @@ test('close to the hole a probe falls in where Newton predicts a safe ellipse', 
 	await range(page, 'probeR').fill('4');
 	await expect(stage(page)).toContainText(/Real path\s*falls into the hole/);
 	await expect(stage(page)).toContainText(/Newton’s path\s*a closed ellipse/);
+	// Launched at 4 r_s at Newton's circular speed, it still dives in; at 1.5× it escapes in both.
+	await range(page, 'probeK').fill('1');
+	await expect(stage(page)).toContainText(/Real path\s*falls into the hole/);
+	await expect(stage(page)).toContainText(/Newton’s path\s*a circle/);
+	await range(page, 'probeK').fill('1.5');
+	await expect(stage(page)).toContainText(/Real path\s*flies off for good/);
+	await expect(stage(page)).toContainText(/Newton’s path\s*escapes/);
 });
 
 test('circular orbits survive a nudge outside 3 r_s, not inside', async ({ page }) => {
