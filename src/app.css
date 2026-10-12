@@ -431,6 +431,17 @@ kbd {
 	--pm-walk: #9c36b5;
 	--pm-ok: #2f9e44;
 	--pm-bad: #e03131;
+	/* compression: symbol counts, surprise in bits, the entropy line, Huffman bits 0/1, DCT
+	   coefficients (positive, negative), empty cells, the picked block, the error */
+	--cmp-count: #1971c2;
+	--cmp-bits: #e8590c;
+	--cmp-h: #2f9e44;
+	--cmp-zero: #5f3dc4;
+	--cmp-one: #c2255c;
+	--cmp-pos: #1971c2;
+	--cmp-neg: #e03131;
+	--cmp-cell: #eceef1;
+	--cmp-pick: #f08c00;
 	/* cryptography: Alice, Bob, Eve, the shared key, checks passed or failed, hash bits (set, flipped), cells */
 	--cr-alice: #5f3dc4;
 	--cr-bob: #0b7285;
@@ -789,6 +800,16 @@ kbd {
 	--pm-walk: #da77f2;
 	--pm-ok: #69db7c;
 	--pm-bad: #ff8787;
+	/* compression */
+	--cmp-count: #74c0fc;
+	--cmp-bits: #ffa94d;
+	--cmp-h: #69db7c;
+	--cmp-zero: #b197fc;
+	--cmp-one: #f783ac;
+	--cmp-pos: #74c0fc;
+	--cmp-neg: #ff8787;
+	--cmp-cell: #2a2d33;
+	--cmp-pick: #ffd43b;
 	/* cryptography */
 	--cr-alice: #9775fa;
 	--cr-bob: #3bc9db;

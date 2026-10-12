@@ -184,6 +184,8 @@ test.describe('8 × 8 DCT and quantisation', () => {
 		const land = jpeg(makeImage('landscape'), 50).bits;
 		const noise = jpeg(makeImage('noise'), 50).bits;
 		expect(noise / land).toBeGreaterThan(4);
+		// The narrative: at quality 50 the hills shrink about 13 times.
+		expect((96 * 96 * 8) / land).toBeCloseTo(13, -0.5);
 	});
 
 	test('the BMP of an image is a valid data URL of the right size', () => {

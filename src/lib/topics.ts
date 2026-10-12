@@ -402,6 +402,15 @@ const explainers: Explainer[] = [
 		accent: '#1098ad',
 		steps: 10,
 		minutes: 18
+	},
+	{
+		slug: 'compression',
+		title: 'Information and compression',
+		summary:
+			'Type a message and see how many bits each letter deserves, build its Huffman code, then squeeze an image the JPEG way and turn the quality down until the damage shows.',
+		accent: '#3b5bdb',
+		steps: 11,
+		minutes: 18
 	}
 ];
 
