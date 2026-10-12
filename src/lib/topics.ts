@@ -411,6 +411,15 @@ const explainers: Explainer[] = [
 		accent: '#3b5bdb',
 		steps: 11,
 		minutes: 18
+	},
+	{
+		slug: 'calculus',
+		title: 'Calculus: slopes, areas and how they undo each other',
+		summary:
+			'Slide a point along a curve you shape yourself to see its slope, pile up rectangles to measure the area beneath it, and watch the two ideas turn out to be each other in reverse.',
+		accent: '#7950f2',
+		steps: 12,
+		minutes: 16
 	}
 ];
 

@@ -17,6 +17,18 @@
 		return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
 	}).join(' ');
 
+	// Calculus: y = 100 − 70u² for u in 0…1 over x 24…180, six left-edge rectangles under
+	// it, and the tangent at u = 0.6 (screen slope −140u/156).
+	const calcY = (u: number) => 100 - 70 * u * u;
+	const calcArt = {
+		curve: Array.from({ length: 41 }, (_, i) => {
+			const u = i / 40;
+			return `${i ? 'L' : 'M'}${(24 + 156 * u).toFixed(1)} ${calcY(u).toFixed(1)}`;
+		}).join(' '),
+		rects: Array.from({ length: 6 }, (_, i) => ({ x: 24 + 26 * i, y: calcY(i / 6) })),
+		tangent: { x: 117.6, y: calcY(0.6), k: (-140 * 0.6) / 156 }
+	};
+
 	// Light & optics: the spectrum fanning out of a prism (fixed colours of the
 	// rainbow, red bent least).
 	const opticsArt = ['#e03131', '#f76707', '#fab005', '#40c057', '#228be6', '#7048e8'].map(
@@ -1481,6 +1493,32 @@
 				opacity={r + c < 4 ? 0.95 - (r + c) * 0.18 : 0.12}
 			/>
 		{/each}
+	{:else if slug === 'calculus'}
+		<!-- rectangles under a rising curve, and the tangent at one point -->
+		{#each calcArt.rects as r (r.x)}
+			<rect
+				x={r.x}
+				y={r.y}
+				width="26"
+				height={104 - r.y}
+				fill={accent}
+				fill-opacity="0.16"
+				stroke={accent}
+				stroke-opacity="0.5"
+			/>
+		{/each}
+		<line x1="18" x2="186" y1="104" y2="104" stroke="currentColor" opacity="0.35" />
+		<path d={calcArt.curve} fill="none" stroke="var(--calc-curve)" stroke-width="2.6" />
+		<line
+			x1={calcArt.tangent.x - 40}
+			y1={calcArt.tangent.y - 40 * calcArt.tangent.k}
+			x2={calcArt.tangent.x + 40}
+			y2={calcArt.tangent.y + 40 * calcArt.tangent.k}
+			stroke="var(--calc-slope)"
+			stroke-width="2.4"
+			stroke-linecap="round"
+		/>
+		<circle cx={calcArt.tangent.x} cy={calcArt.tangent.y} r="4.5" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

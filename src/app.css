@@ -596,6 +596,11 @@ kbd {
 	--lo-lamp: #343a40;
 	--lo-crest: #1c7ed6;
 	--lo-image: #2f9e44;
+	/* calculus: the curve, its slope (derivative), positive and negative area */
+	--calc-curve: #1864ab;
+	--calc-slope: #e8590c;
+	--calc-area: #2b8a3e;
+	--calc-neg: #e03131;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -951,4 +956,8 @@ kbd {
 	--lo-lamp: #adb5bd;
 	--lo-crest: #74c0fc;
 	--lo-image: #69db7c;
+	--calc-curve: #74c0fc;
+	--calc-slope: #ff922b;
+	--calc-area: #69db7c;
+	--calc-neg: #ff8787;
 }

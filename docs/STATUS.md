@@ -82,6 +82,8 @@ rate?" step (built in cloud sessions on 2026-10-11).
 Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<step>`,
 `map:<step>`, `view:zoom`, `mol:<step>`, `probe:tank`, `ft:wave`, `ft:bars`, `ft:curve`, `dope:<step>`, `pick:<step>`.
 
+- calculus: merged; ticked. Not reviewed yet.
+
 ## Open questions for the user
 
 None. Answered 2026-10-08: learning-from-data — dragging only is fine (ticked);
