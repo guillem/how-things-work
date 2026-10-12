@@ -85,25 +85,17 @@ test(
 	}
 );
 
-// Current behaviour, recorded as-is (suspected bug, reported, not fixed): the
-// 404 page uses relative URLs (./_app/…, ./), so at a nested unknown URL its
-// styles and scripts don't load and "Back to all explainers" points at the
-// missing URL itself. If this test starts failing, the bug may have been fixed:
-// update it to the new behaviour.
-test('an unknown nested URL: the 404 text shows, but assets and home link resolve under the missing path', async ({
-	page
-}) => {
+test('an unknown nested URL loads the 404 assets and its home link works', async ({ page }) => {
 	const failed = watchRequests(page);
 	const res = await page.goto('./no/such/page/');
 	expect(res?.status()).toBe(404);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/nothing here/i);
-	const home = await page
-		.getByRole('link', { name: /back to all explainers/i })
-		.evaluate((a) => (a as HTMLAnchorElement).href);
-	expect(new URL(home).pathname).toBe(`${BASE}no/such/page/`);
 	await page.waitForLoadState('networkidle');
-	expect(failed.length).toBeGreaterThan(0);
-	expect(failed.every((f) => f.includes(`${BASE}no/such/page/_app/`))).toBe(true);
+	expect(failed).toEqual([]);
+	await page.getByRole('link', { name: /back to all explainers/i }).click();
+	await expect(page).toHaveURL(new RegExp(`${BASE}$`));
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/how things work/i);
+	expect(failed).toEqual([]);
 });
 
 test.describe('theme', () => {

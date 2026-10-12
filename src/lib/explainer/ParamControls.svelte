@@ -12,6 +12,46 @@
 		const decimals = control.step && control.step < 1 ? Math.ceil(-Math.log10(control.step)) : 0;
 		return `${value.toFixed(decimals)}${control.unit ?? ''}`;
 	}
+
+	function rangeInput(event: Event, control: Extract<Control, { type: 'range' }>) {
+		const input = event.currentTarget as HTMLInputElement;
+		const raw = Number(input.value);
+		const values = control.values?.(params) ?? [];
+		const value = values.length
+			? values.reduce((a, b) => (Math.abs(b - raw) < Math.abs(a - raw) ? b : a))
+			: raw;
+		params[control.id] = value;
+		input.value = String(value);
+	}
+
+	function rangeKey(event: KeyboardEvent, control: Extract<Control, { type: 'range' }>) {
+		const values = control.values?.(params) ?? [];
+		if (!values.length) return;
+		const current = Number(params[control.id] ?? control.default);
+		let value: number | undefined;
+		switch (event.key) {
+			case 'ArrowRight':
+			case 'ArrowUp':
+			case 'PageUp':
+				value = values.find((v) => v > current) ?? values.at(-1);
+				break;
+			case 'ArrowLeft':
+			case 'ArrowDown':
+			case 'PageDown':
+				value = values.findLast((v) => v < current) ?? values[0];
+				break;
+			case 'Home':
+				value = values[0];
+				break;
+			case 'End':
+				value = values.at(-1);
+				break;
+			default:
+				return;
+		}
+		event.preventDefault();
+		if (value !== undefined) params[control.id] = value;
+	}
 </script>
 
 <div class="controls">
@@ -30,7 +70,8 @@
 					max={control.max}
 					step={control.step ?? 1}
 					{value}
-					oninput={(e) => (params[control.id] = Number(e.currentTarget.value))}
+					oninput={(e) => rangeInput(e, control)}
+					onkeydown={(e) => rangeKey(e, control)}
 				/>
 				{#if control.help}<span class="help">{control.help}</span>{/if}
 			</label>

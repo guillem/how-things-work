@@ -64,8 +64,7 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   reference. A cable from a post on the sliding bearing goes slack (the text now says "on the
   bank"). `addMember` doesn't split a member at a joint it passes through (the build scene does).
 
-- **pagerank** — letter shortcuts (r, j, k…) still reach the explainer while a page is focused;
-  with 9–10 pages E's starting rank drops (more pages share the jumps), not mentioned.
+- **pagerank** — with 9–10 pages E's starting rank drops (more pages share the jumps), not mentioned.
 
 - **electric-circuits** — a board full of wires reaches ~520 SVG nodes (one focusable shape per
   gap instead of a group would save ~60).
@@ -127,12 +126,6 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   expectation. Give that test more time or lighten the step's first render.
 
 - **Suspected bugs found while adding characterization tests (2026-10-11; recorded, not fixed):**
-  - **404 page at a nested URL** (confirmed on the live site). At
-    `/how-things-work/no/such/page/` the 404 page loads its CSS and JS from `./_app/…`, which
-    resolves under the missing path (404), so it shows unstyled. Its "Back to all explainers" link
-    (`./`) points at the same missing URL. One level down (`/how-things-work/nope`) works.
-    Pinned by the nested-URL test in `e2e/site.e2e.ts`; update that test when this is fixed
-    (likely: absolute paths on the 404 page, `paths.relative: false`).
   - **sun-earth-moon `#tilt`.** The June-solstice label says "14 h 51 min of daylight" and the
     chart footer says "14 h 50 min" for the same day. Probably rounding, or two slightly different
     days.
@@ -170,9 +163,6 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   threshold/SIR scenes use local snippets with `style:font-size`/`style:fill`; switch them back to
   `<Label>` after the fix.
 
-- **Snap and the slider (unit-circle):** with "snap to special angles" on, the angle slider can
-  still set a non-special angle (only the handle and keys snap). Fix in the framework: let a
-  control declare allowed values, or round a range while a toggle is on.
 - Shared components still to create as their first topic needs them: an algorithm stepper / bar chart (`sorting`), a build palette (`pagerank` or
   `graph-search`), pan/zoom (`chaos-fractals`).
 - `rng` (mulberry32) now lives in `src/lib/draw/math.ts`; epidemics, sorting and

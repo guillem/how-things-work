@@ -22,6 +22,7 @@
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
 		angleParam,
+		SPECIAL_ANGLES,
 		degText,
 		exact,
 		isSpecial,
@@ -82,7 +83,7 @@
 	const segs = $derived(Math.max(w.coords, w.triangle, w.quadrants));
 
 	// ---- interaction -----------------------------------------------------------
-	const SPECIAL = [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360];
+	const SPECIAL = SPECIAL_ANGLES;
 	const snapping = $derived(
 		Boolean(params.snap) && (step.controls ?? []).some((c) => c.id === 'snap')
 	);

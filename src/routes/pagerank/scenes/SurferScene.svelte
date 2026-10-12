@@ -355,6 +355,9 @@
 	}
 	function onpagekey(event: KeyboardEvent, i: number) {
 		if (!editable) return;
+		// While editing a page, keys belong to the graph rather than the
+		// explainer's window-level navigation and playback shortcuts.
+		event.stopPropagation();
 		const key = event.key;
 		if (key === 'Enter' || key === ' ') {
 			event.preventDefault();

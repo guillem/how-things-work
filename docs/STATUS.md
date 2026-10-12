@@ -69,6 +69,14 @@ Last updated: 2026-10-12 UTC.
 
 ## Current development
 
+**Maintenance (2026-10-12):** fixed nested-URL 404 assets and home navigation by setting
+`paths.relative: false`; replaced the characterization test with a regression test. Both focused
+404 browser tests pass. Also fixed unit-circle slider snapping with optional permitted range
+values, including keyboard navigation; all four unit-circle browser tests pass. `make check`
+passes (424 model tests); the full browser suite after the 404 and slider changes passes (759
+tests). PageRank keeps keyboard events inside editable graph nodes; all 10 focused PageRank
+tests pass, including the new shortcut regression. Released in the next tag.
+
 **Batch 9 (2026-10-12):** calculus, black-holes, states-of-matter, homeostasis, compression. Same
 process (builder agent each, `make review` ~$3.50, review-apply agent each). Merged into `main`
 locally and ticked; `make e2e-full` green (758 tests). Released in v0.1.7 (v0.1.5 and v0.1.6

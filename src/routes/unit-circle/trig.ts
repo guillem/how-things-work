@@ -101,3 +101,6 @@ export function angleParam(step: Step, params: Params, fallback = 30) {
 	const span = max - min;
 	return min + ((((v - min) % span) + span) % span);
 }
+export const SPECIAL_ANGLES = [
+	0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360
+];

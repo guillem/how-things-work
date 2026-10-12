@@ -24,6 +24,8 @@ export interface RangeControl extends ControlBase {
 	unit?: string;
 	/** Custom value formatter for the read-out next to the slider. */
 	format?: (value: number) => string;
+	/** Optional ascending permitted values; an empty list leaves the range continuous. */
+	values?: (params: Params) => readonly number[];
 }
 
 export interface ToggleControl extends ControlBase {

@@ -41,6 +41,20 @@ test('a link made with the keyboard changes the ranks, and toggles off again', a
 	await expect(page).toHaveURL(/#build$/);
 });
 
+test('explainer letter shortcuts do not run while an editable page has focus', async ({ page }) => {
+	await open(page, 'build');
+	await pageButton(page, 'A').focus();
+	for (const key of ['j', 'k', 'r', 'Home', 'End']) {
+		await page.keyboard.press(key);
+		await expect(page).toHaveURL(/#build$/);
+		await expect(pageButton(page, 'A')).toBeFocused();
+	}
+	// Leaving the graph restores the explainer's normal keyboard navigation.
+	await pageButton(page, 'A').evaluate((node: SVGElement) => node.blur());
+	await page.keyboard.press('j');
+	await expect(page).not.toHaveURL(/#build$/);
+});
+
 test('boost: links from E change nothing for E, a link from A lifts it six-fold', async ({
 	page
 }) => {

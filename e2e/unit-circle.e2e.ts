@@ -49,3 +49,28 @@ test('snap visits the special angles', async ({ page }) => {
 	await expect(slider(page)).toHaveValue('45');
 	await expect(stage(page)).toContainText('√2/2');
 });
+
+test('the angle slider snaps pointer input and visits special angles with the keyboard', async ({
+	page
+}) => {
+	await open(page, './unit-circle/#quadrants');
+	const snap = page.locator('input[type=checkbox][data-control=snap]');
+	await snap.check({ force: true });
+	await slider(page).evaluate((input: HTMLInputElement) => {
+		input.value = '43';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+	});
+	await expect(slider(page)).toHaveValue('45');
+	await expect(handle(page)).toHaveAttribute('aria-valuetext', /45°/);
+	await slider(page).press('ArrowRight');
+	await expect(slider(page)).toHaveValue('60');
+	await slider(page).press('ArrowLeft');
+	await expect(slider(page)).toHaveValue('45');
+	await expect(page).toHaveURL(/#quadrants$/);
+	await snap.uncheck({ force: true });
+	await slider(page).evaluate((input: HTMLInputElement) => {
+		input.value = '43';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+	});
+	await expect(slider(page)).toHaveValue('43');
+});

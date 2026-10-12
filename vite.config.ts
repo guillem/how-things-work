@@ -17,7 +17,9 @@ export default defineConfig({
 				assets: 'build',
 				strict: true
 			}),
-			paths: { base: base as '' | `/${string}` },
+			// The static 404 page can be served at any depth, so its assets and
+			// navigation must resolve from the site root rather than the missing URL.
+			paths: { base: base as '' | `/${string}`, relative: false },
 			prerender: {
 				handleHttpError: 'fail',
 				handleMissingId: 'warn'

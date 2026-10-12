@@ -1,5 +1,5 @@
-import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
-import { radText } from './trig';
+import type { Control, ExplainerSpec, Params } from '#lib/explainer/index.ts';
+import { radText, SPECIAL_ANGLES } from './trig';
 
 /** The angle of the point, in degrees; the scenes' handles write to it too. */
 const angle: Control = {
@@ -138,7 +138,10 @@ export const spec: ExplainerSpec = {
 			title: 'Past 90°: signs and special angles',
 			scene: 'circle',
 			hints: { phase: 'quadrants' },
-			controls: [angle, snap],
+			controls: [
+				{ ...angle, values: (params: Params) => (params.snap ? SPECIAL_ANGLES : []) },
+				snap
+			],
 			body: `
 <p>A right triangle can only hold angles below 90°, but the circle keeps going, and that is how sine and cosine are defined for any angle. The axes split the circle into four <dfn data-def="One of the four regions into which the x- and y-axes divide the plane, numbered anticlockwise from the top right.">quadrants</dfn>. In each one the coordinates have their own signs:</p>
 <ul>
