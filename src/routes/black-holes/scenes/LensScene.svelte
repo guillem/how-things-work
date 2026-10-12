@@ -53,7 +53,7 @@
 
 	const phase = $derived(String(step.hints?.phase ?? 'lens'));
 	const unlensed = $derived(Boolean(params.unlensed));
-	const pass = $derived(Number(params.pass ?? 0.25));
+	const pass = $derived(Number(params.pass ?? 0));
 
 	// The bending table is traced once per page (≈ 400 rays).
 	let table: DeflectionTable | null = null;
@@ -209,7 +209,7 @@
 	const DRIFT = 16; // seconds per pass
 	const star = $derived.by(() => {
 		if (phase !== 'lens') return null;
-		const u = reduced ? 0.47 : cycle(t, DRIFT);
+		const u = reduced ? 0.5 : cycle(t, DRIFT);
 		const rx = (-1.9 + 3.8 * u) * thetaE;
 		const ry = -pass * thetaE;
 		const beta = Math.hypot(rx, ry);
@@ -222,9 +222,15 @@
 		const im2 = images(tab(), D, b + h);
 		const radialOuter = Math.abs(im2.outer - im.outer) / h;
 		const radialInner = Math.abs(im2.inner - im.inner) / h;
-		// Brightening of each image: (θ/β) · |dθ/dβ| (area of image ÷ area of star).
-		const magOuter = (im.outer / b) * radialOuter;
-		const magInner = (im.inner / b) * radialInner;
+		// Brightening of each image: (θ/β) · |dθ/dβ| (area of image ÷ area of star),
+		// for a point star. A star of radius ρ right behind the hole is brightened
+		// about as much as a point star at β = ρ/2 (weak-field point lens:
+		// √(1 + 4θ_E²/ρ²) ≈ 2θ_E/ρ), so β is held at ρ/2 or more for this readout.
+		const bm = Math.max(beta, RHO / 2);
+		const imm = bm === b ? im : images(tab(), D, bm);
+		const imm2 = bm === b ? im2 : images(tab(), D, bm + h);
+		const magOuter = (imm.outer / bm) * (Math.abs(imm2.outer - imm.outer) / h);
+		const magInner = (imm.inner / bm) * (Math.abs(imm2.inner - imm.inner) / h);
 		const half = beta < RHO ? Math.PI : Math.asin(RHO / beta);
 		return {
 			beta,

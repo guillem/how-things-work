@@ -255,20 +255,21 @@
 	const pulse = $derived(current ? pointAt(current.line, travelled) : null);
 	const arrived = $derived(current ? travelled >= current.line.len - 0.5 : false);
 
-	// Earlier shots on the `light` step, kept faded: a new aim or a press of "Fire"
-	// files the previous aim away. Depends only on params, never on t.
+	// Rays kept on the `light` step: each press of "Fire" keeps the current aim,
+	// drawn faded once the aim moves on (dragging the slider keeps nothing).
+	// Depends only on params, never on t.
 	let history = $state<{ key: number; b: number }[]>([]);
-	let previous: { aim: number; fired: number } | null = null;
+	let lastFired = 0;
 	let counter = 0;
 	$effect(() => {
-		const now = { aim, fired };
+		const f = fired;
+		const b = aim;
 		if (phase !== 'light') return;
 		untrack(() => {
-			const prev = previous;
-			previous = now;
-			if (!prev || (prev.aim === now.aim && prev.fired === now.fired)) return;
-			if (history.some((h) => h.b === prev.aim)) return;
-			history = [...history, { key: counter++, b: prev.aim }].slice(-5);
+			if (f === lastFired) return;
+			lastFired = f;
+			if (history.some((h) => h.b === b)) return;
+			history = [...history, { key: counter++, b }].slice(-6);
 		});
 	});
 	const ghosts = $derived(

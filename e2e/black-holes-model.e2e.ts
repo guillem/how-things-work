@@ -79,7 +79,8 @@ test('far from the hole, light bends by 4GM/(c²b), as Einstein predicted', () =
 });
 
 test('starlight grazing the Sun bends 1.75″: what the 1919 eclipse measured', () => {
-	const bendSun = (4 * GM_SUN) / (C * C * R_SUN) / ARCSEC;
+	// The Sun's radius in units of its GM/c², traced like any other ray.
+	const bendSun = deflection(R_SUN / (GM_SUN / (C * C))) / ARCSEC;
 	expect(bendSun).toBeCloseTo(1.75, 2);
 	// Within the measurement errors of both 1919 expeditions (2σ for Sobral).
 	expect(Math.abs(bendSun - ECLIPSE_1919.sobral)).toBeLessThan(2 * ECLIPSE_1919.sobralError);
@@ -113,8 +114,8 @@ test('a clock held near the hole ticks slower: √(1 − r_s/r) of a distant one
 });
 
 test('GPS: clocks in orbit gain about 45 µs a day on the ground from gravity alone', () => {
-	const rate = (gm: number, r: number) => Math.sqrt(1 - (2 * gm) / (C * C * r));
-	const gain = (rate(GM_EARTH, R_GPS) - rate(GM_EARTH, R_EARTH)) * 86400 * 1e6;
+	const m = GM_EARTH / (C * C); // the Earth's GM/c², in metres
+	const gain = (clockRate(R_GPS / m) - clockRate(R_EARTH / m)) * 86400 * 1e6;
 	// Ashby 2003: 45.7 µs per day.
 	expect(gain).toBeCloseTo(45.7, 0);
 });

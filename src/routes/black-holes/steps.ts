@@ -36,7 +36,13 @@ const aim: Control = {
 	format: (v) => rs(v),
 	help: 'Where the ray would pass if it went straight.'
 };
-const fire: Control = { type: 'action', id: 'fire', label: 'Fire', action: 'Fire a light ray' };
+const fire: Control = {
+	type: 'action',
+	id: 'fire',
+	label: 'Fire',
+	action: 'Fire a light ray',
+	help: 'Fires again and keeps the ray on screen, faded, when you change the aim.'
+};
 
 /** Fine aim close to the critical value √27 GM/c² = 2.598 076 211 r_s. */
 const aimDigits: Control = {
@@ -134,7 +140,7 @@ const pass: Control = {
 	min: 0,
 	max: 1.5,
 	step: 0.01,
-	default: 0.25,
+	default: 0,
 	format: (v) => (v === 0 ? 'exactly behind' : `${v.toFixed(2)} ring radii`)
 };
 const unlensed: Control = {
@@ -249,7 +255,7 @@ export const spec: ExplainerSpec = {
 			controls: [probeR, probeK, launch],
 			body: `
 <p>Now launch a probe sideways near the hole and compare its real path (solid) with Newton's prediction for the same launch (dashed). Far out, at 40 r<sub>s</sub>, they nearly match: the real orbit only turns slowly. Closer in, the probe's orbit no longer closes: each time round, its closest point moves on, and the path draws a rosette. That is the same turning that shows up as Mercury's 43″ per century, here hugely magnified.</p>
-<p>Closer still, the difference is not small at all. Launches that Newton says would give a safe ellipse dive into the horizon instead. Fast launches that fly past are flung round in a sharp hairpin.</p>`,
+<p>Closer still, the difference is not small at all. Launches that Newton says would give a safe ellipse dive into the horizon instead. Launch fast, at 1.5 times Newton's circular speed: far out, the probe flies off for good, as Newton says. Launch it the same way at 4 r<sub>s</sub> and Newton still says it escapes, but the real probe is held and comes back round.</p>`,
 			notes: `<p>For a body moving round the hole, general relativity adds one term to Newton's gravity: an extra inward pull that grows as 1/r⁴ instead of 1/r². It is tiny far away and grows quickly close in. Time on the probe's own clock sets the pace of the animation.</p>`
 		},
 		{
@@ -277,7 +283,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Lower a clock on a long cable towards the hole and compare it with an identical clock far away. The lower clock ticks slower: by a factor <strong>√(1 − r<sub>s</sub>/r)</strong>. At 2 r<sub>s</sub> it ticks 71 times while the far one ticks 100; at 1.1 r<sub>s</sub>, only 30. This is <dfn data-def="Clocks deeper in a gravitational field run slower than clocks higher up, compared side by side afterwards or by light signals.">gravitational time dilation</dfn>.</p>
 <p>Nobody at the lower clock feels anything odd: their heart, their watch and their thoughts all slow together. It shows when signals are compared. The lower clock sends a flash of green light with every tick. They arrive far away spread out, and redder: each wave is stretched by the same factor. This is the <strong>gravitational redshift</strong>.</p>
-<p>It is measured on Earth too. The clocks on GPS satellites, 20 000 km up, gain about 45 microseconds a day on the ground from gravity alone (their speed takes off 7). Without correction, positions would drift by kilometres a day.</p>`,
+<p>It is measured on Earth too. The clocks on GPS satellites, 20 200 km up, gain about 45 microseconds a day on the ground from gravity alone (their speed takes off 7). Without correction, positions would drift by kilometres a day.</p>`,
 			notes: `<p>Unlike the slowing of moving clocks in <a href="../special-relativity/#time-dilation">special relativity</a>, which each observer sees in the other, this effect is not mutual: the high clock sees the low clock slow, and the low clock sees the high clock fast. GPS figures: N. Ashby, <i>Relativity in the Global Positioning System</i>, Living Reviews in Relativity (2003).</p>`
 		},
 		{
@@ -305,7 +311,7 @@ export const spec: ExplainerSpec = {
 			controls: [pass, unlensed],
 			body: `
 <p>Place a field of stars behind a black hole and look at it. Every ray reaching you bent on its way past, so the sky around the hole is distorted: stars are pushed outwards and stretched into arcs, and each star appears <strong>twice</strong>, once on each side of the hole. This is <dfn data-def="The bending of light from a distant source by the gravity of a mass in between, which shifts, stretches, brightens and multiplies its images.">gravitational lensing</dfn>.</p>
-<p>Watch the bright star drift behind the hole. Its outer image skirts the dashed circle while the inner image, on the opposite side, rises from the shadow's edge. When the star is exactly behind, the two images merge into a complete circle of light: an <dfn data-def="The ring image of a source exactly behind a lensing mass, predicted by Orest Chwolson (1924) and Einstein (1936).">Einstein ring</dfn>. Drag the hole across the sky.</p>
+<p>Watch the bright star drift behind the hole. Its outer image skirts the dashed circle while the inner image, on the opposite side, rises from the shadow's edge. When the star is exactly behind, the two images merge into a complete circle of light: an <dfn data-def="The ring image of a source exactly behind a lensing mass, predicted by Orest Chwolson (1924) and Einstein (1936).">Einstein ring</dfn>. Make it pass a little to one side and the ring never closes: you see two arcs. Drag the hole across the sky.</p>
 <p>Astronomers see this every day: galaxies bent into arcs by clusters in front of them, and stars briefly brightening as an unseen mass passes in front.</p>`,
 			notes: `<p>The picture is computed for a camera 30 r_s from the hole, using the exact bending angle for every ray traced from the camera, with the stars treated as infinitely far away. The size of the Einstein ring depends on the distances involved: the farther the camera, the bigger the ring compared with the shadow. Rays that loop round the hole once or more make further, thinner images hugging the shadow's edge; they are too thin to show at this resolution.</p>`
 		},
