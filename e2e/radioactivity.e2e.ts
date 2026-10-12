@@ -16,6 +16,9 @@ test('carbon-14 dating reads the age off the amount left', async ({ page }) => {
 	const slider = page.locator('input[type=range][data-control=fraction]');
 	await slider.fill('50');
 	await expect(stage(page)).toContainText('≈ 5,700 years old');
+	// The slider reaches the "too little to measure" region: 0.1% left is ten halvings.
+	await slider.fill('0.1');
+	await expect(stage(page)).toContainText('≈ 56,805 years old');
 	await slider.fill('100');
 	await expect(stage(page)).toContainText('Alive, or only just dead');
 });
