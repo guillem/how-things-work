@@ -178,9 +178,9 @@
 			x={40}
 			y={540}
 			text={quality >= 90
-				? 'High quality: almost every coefficient kept, and the file grows quickly.'
+				? 'High quality: small steps keep much more fine detail, and the file grows quickly.'
 				: quality >= 40
-					? 'Middle quality: most fine detail dropped, and it is hard to see the difference.'
+					? 'Middle quality: most fine detail dropped; on smooth pictures the difference is hard to see.'
 					: 'Low quality: the blocks start to show.'}
 			size={15}
 			weight={600}

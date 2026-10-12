@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { bmpDataUrl } from '../src/routes/compression/compression';
 
 const stage = (page: Page) => page.locator('.stage svg > g');
 
@@ -81,4 +82,45 @@ test('the block picker moves with the arrow keys without changing step', async (
 	await page.keyboard.press('Home');
 	await expect(stage(page)).toContainText('Block at column 1, row 1');
 	await expect(page).toHaveURL(/#pixels$/);
+});
+
+test('the message box counts emoji as one character each, up to 40', async ({ page }) => {
+	await page.goto('./compression/#bits');
+	const box = page.getByRole('textbox', { name: 'Message' });
+	await box.fill('😀'.repeat(45));
+	await expect(box).toHaveValue('😀'.repeat(40));
+	await expect(stage(page)).toContainText('40 of 40 characters');
+});
+
+test('a loaded picture is cropped to its centred square and turned grey', async ({ page }) => {
+	// A 160 × 96 picture: black on the left 64 columns, white elsewhere. Its centred square
+	// starts at column 32, so the first 4 block columns are black and the 5th is white.
+	const width = 160;
+	const height = 96;
+	const data = new Uint8Array(width * height);
+	for (let y = 0; y < height; y++)
+		for (let x = 0; x < width; x++) data[y * width + x] = x < 64 ? 0 : 255;
+	const url = bmpDataUrl({ width, height, data });
+	await page.goto('./compression/#pixels');
+	await page.getByLabel('Load your own picture').setInputFiles({
+		name: 'wide.bmp',
+		mimeType: 'image/bmp',
+		buffer: Buffer.from(url.split(',')[1], 'base64')
+	});
+	await expect(page.locator('button[data-control=image][data-value=own]')).toHaveAttribute(
+		'aria-checked',
+		'true'
+	);
+	const picker = page.getByRole('slider', { name: /Block of the picture/ });
+	await picker.focus();
+	await page.keyboard.press('Home');
+	await page.keyboard.press('ArrowRight');
+	await page.keyboard.press('ArrowRight');
+	await page.keyboard.press('ArrowRight');
+	await expect(stage(page)).toContainText('Block at column 4, row 1');
+	const cells = (v: string) => stage(page).locator('text', { hasText: new RegExp(`^${v}$`) });
+	await expect(cells('0')).toHaveCount(64);
+	await page.keyboard.press('ArrowRight');
+	await expect(stage(page)).toContainText('Block at column 5, row 1');
+	await expect(cells('255')).toHaveCount(64);
 });

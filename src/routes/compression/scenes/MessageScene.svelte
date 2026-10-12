@@ -332,7 +332,7 @@
 				text="{n} symbols × {fmt(H)} bits = {fmt(
 					n * H,
 					1
-				)} bits: the least any code of single symbols can use"
+				)} bits: the least any decodable code of single symbols can use"
 				size={14}
 				weight={600}
 				color="var(--cmp-h)"
