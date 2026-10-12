@@ -600,12 +600,13 @@
 
 	// Fronts: the middle isotherm where the temperature changes faster than
 	// GRAD_MIN. Cold front where the wind blows across it from the cold side to
-	// the warm side (cold air advancing), warm front the other way.
+	// the warm side (cold air advancing), warm front the other way, and a
+	// stationary front where the wind blows along it (neither side advancing).
 	const GRAD_MIN = 4.5; // °C per 100 km
 	const DKX = MW / TNX / K; // km between grid points
 	const DKY = MH / TNY / K;
 	interface FrontRun {
-		kind: 'cold' | 'warm';
+		kind: 'cold' | 'warm' | 'stationary';
 		pts: { x: number; y: number; nx: number; ny: number }[];
 	}
 	const frontRuns = $derived.by(() => {
@@ -641,7 +642,7 @@
 				const g = Math.hypot(ex, ey);
 				const x = tgx(line[k]);
 				const y = tgy(line[k + 1]);
-				let kind: 'cold' | 'warm' | null = null;
+				let kind: 'cold' | 'warm' | 'stationary' | null = null;
 				let nx = 0;
 				let ny = 0;
 				// Not in the tightly wound middle of a system, where the spiral arms
@@ -658,6 +659,12 @@
 						const s = Math.sign(across);
 						nx = (s * ex) / g;
 						ny = (-s * ey) / g;
+					} else {
+						// The wind blows along the boundary: a stationary front, its
+						// normal pointing towards the warm side.
+						kind = 'stationary';
+						nx = ex / g;
+						ny = -ey / g;
 					}
 				}
 				if (kind && cur && cur.kind === kind) cur.pts.push({ x, y, nx, ny });
@@ -676,12 +683,19 @@
 		});
 	});
 	const frontGfx = $derived.by(() => {
-		const out = { cold: { line: '', marks: '' }, warm: { line: '', marks: '' } };
+		// Stationary marks go with the cold/warm ones: blue triangles pointing
+		// towards the warm side, red semicircles towards the cold side.
+		const out = {
+			cold: { line: '', marks: '' },
+			warm: { line: '', marks: '' },
+			stationary: { line: '' }
+		};
 		const SPACING = 34;
 		for (const r of frontRuns) {
-			const g = out[r.kind];
+			const g = r.kind === 'stationary' ? out.stationary : out[r.kind];
 			g.line += r.pts.map((p, k) => `${k ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join('');
 			let acc = SPACING / 2;
+			let mark = 0;
 			for (let k = 1; k < r.pts.length; k++) {
 				const p = r.pts[k - 1];
 				const q = r.pts[k];
@@ -692,10 +706,18 @@
 					const y = p.y + (q.y - p.y) * u;
 					const tx = (q.x - p.x) / seg;
 					const ty = (q.y - p.y) / seg;
-					// Normal on the side the front moves towards.
+					// Normal on the side the front moves towards (for a stationary
+					// front: towards the warm side).
 					let nx = -ty;
 					let ny = tx;
 					if (nx * p.nx + ny * p.ny < 0) {
+						nx = -nx;
+						ny = -ny;
+					}
+					// A stationary front alternates triangles (towards the warm air)
+					// and semicircles (towards the cold air).
+					const triangle = r.kind === 'cold' || (r.kind === 'stationary' && mark % 2 === 0);
+					if (r.kind === 'stationary' && !triangle) {
 						nx = -nx;
 						ny = -ny;
 					}
@@ -704,14 +726,15 @@
 					const ay = (y - ty * w).toFixed(1);
 					const bx = (x + tx * w).toFixed(1);
 					const by = (y + ty * w).toFixed(1);
-					if (r.kind === 'cold') {
-						g.marks += `M${ax} ${ay}L${(x + nx * 10).toFixed(1)} ${(y + ny * 10).toFixed(1)}L${bx} ${by}Z`;
+					if (triangle) {
+						out.cold.marks += `M${ax} ${ay}L${(x + nx * 10).toFixed(1)} ${(y + ny * 10).toFixed(1)}L${bx} ${by}Z`;
 					} else {
 						// Arc from a to b bulging towards n: sweep 1 bulges to the left of a→b
 						// in screen coordinates (y down) when (−ty, tx)·n < 0.
 						const sweep = -ty * nx + tx * ny > 0 ? 0 : 1;
-						g.marks += `M${ax} ${ay}A${w} ${w} 0 0 ${sweep} ${bx} ${by}Z`;
+						out.warm.marks += `M${ax} ${ay}A${w} ${w} 0 0 ${sweep} ${bx} ${by}Z`;
 					}
+					mark++;
 					acc += SPACING;
 				}
 				acc -= seg;
@@ -725,7 +748,7 @@
 		hours < 0.5 ? 'Start: warm air south, cold north' : `After ${Math.round(hours)} hours`
 	);
 	const full = $derived(systems.length >= MAX_SYSTEMS);
-	const cardH = $derived((fronts ? 126 : 118) + (full ? 18 : 0));
+	const cardH = $derived((fronts ? 152 : 118) + (full ? 18 : 0));
 	const cloud = (x: number, y: number) =>
 		`M${x - 15} ${y + 6}a7 7 0 0 1 3 -12a9 9 0 0 1 16 -4a7 7 0 0 1 11 6a6 6 0 0 1 0 10z`;
 	const pw = $derived(1 - fw.current);
@@ -852,6 +875,22 @@
 					stroke-linecap="round"
 					stroke-linejoin="round"
 					opacity="0.7"
+				/>
+				<path
+					d={frontGfx.stationary.line}
+					fill="none"
+					stroke="var(--atm-cloud)"
+					stroke-width="16"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					opacity="0.55"
+				/>
+				<path
+					d={frontGfx.stationary.line}
+					fill="none"
+					stroke="var(--stage-ink)"
+					stroke-width="2.5"
+					stroke-linejoin="round"
 				/>
 				<path
 					d={frontGfx.cold.line}
@@ -1049,6 +1088,10 @@
 				fill="var(--atm-low)"
 			/>
 			{@render txt(CX + 58, CY + 112, 'warm front: warm air advancing', 12)}
+			<path d="M{CX + 14} {CY + 134}h34" stroke="var(--stage-ink)" stroke-width="2.5" fill="none" />
+			<path d="M{CX + 18} {CY + 134}l6 -9l6 9z" fill="var(--atm-high)" />
+			<path d="M{CX + 34} {CY + 134}a6 6 0 0 0 12 0z" fill="var(--atm-low)" />
+			{@render txt(CX + 58, CY + 138, 'stationary: neither advancing', 12)}
 		{:else}
 			{@render txt(
 				CX + 14,

@@ -3,8 +3,9 @@
 	 * The Coriolis effect, and why it does not reach your sink.
 	 *
 	 * Phases (`step.hints.phase`):
-	 *   coriolis — three square patches of ground (600 × 600 km) at 60° N, the
-	 *              equator and 45° S. From the centre of each, parcels of air are
+	 *   coriolis — three square patches of ground (600 × 600 km at Earth's spin;
+	 *              the patch grows as the spin slows, so the loops fit) at
+	 *              60° N, the equator and 45° S. From the centre of each, parcels of air are
 	 *              pushed off at 10 m/s to the N, E, S and W and coast freely
 	 *              (`parcel()`); their paths grow with time (1 day ≈ 10 s), next
 	 *              to dashed straight lines (where they would go on a planet that
@@ -49,9 +50,19 @@
 	const STILL = 5; // reduced motion: half a day, most of a loop at 60° N and at 45° S, so the turn shows
 	const DT = 300; // model time step, s
 	const STEPS = Math.ceil(((RUN / DAY_S) * 86400) / DT) + 1;
-	const HALF_KM = 300; // the patch is 600 × 600 km
 	const S = 270; // panel size in stage units
-	const K = S / (2 * HALF_KM); // stage units per km
+	/**
+	 * Half the patch width (km). The inertial loops grow like speed ÷ |f| as the
+	 * spin slows (about 2.3 radii with their drift over the run), so the patch
+	 * grows to keep them inside their panel — capped, so a barely-turning
+	 * planet keeps a readable close-up instead.
+	 */
+	const halfKm = $derived.by(() => {
+		const f = Math.abs(coriolis(45, spin));
+		if (f === 0) return 300;
+		return clamp(Math.ceil((2.3 * SPEED) / f / 1000 / 50) * 50, 300, 1500);
+	});
+	const K = $derived(S / (2 * halfKm)); // stage units per km
 	const PANEL_TOP = 52;
 	const HEADINGS = [0, 90, 180, 270];
 
@@ -150,7 +161,12 @@
 		})
 	);
 
-	const GRID = [-200, -100, 0, 100, 200];
+	// The grid spacing and the scale bar follow the patch size (100 km steps on
+	// the smallest patch, up to 500 km on the widest).
+	const barKm = $derived(halfKm <= 350 ? 100 : halfKm <= 700 ? 200 : 500);
+	const GRID = $derived(
+		[-2, -1, 0, 1, 2].map((m) => m * barKm).filter((g) => Math.abs(g) < halfKm)
+	);
 
 	// Mini globe (bottom left).
 	const G = { cx: 96, cy: 500, r: 58 };
@@ -265,24 +281,24 @@
 				<!-- scale bar -->
 				<line
 					x1={x0 + 12}
-					x2={x0 + 12 + 100 * K}
+					x2={x0 + 12 + barKm * K}
 					y1={y0 + S - 12}
 					y2={y0 + S - 12}
 					stroke="var(--stage-ink-muted)"
 					stroke-width="2"
 				/>
-				{@render txt(x0 + 12, y0 + S - 18, '100 km', 11, { muted: true })}
+				{@render txt(x0 + 12, y0 + S - 18, `${barKm} km`, 11, { muted: true })}
 
 				<g clip-path="url(#coriolis-clip-{p.i})">
 					<!-- straight on, on a planet that does not spin -->
 					{#each HEADINGS as h (h)}
 						{@const a = (h * Math.PI) / 180}
-						{@const ghost = Math.min((SPEED * tSim) / 1000, 2 * HALF_KM) * K}
+						{@const ghost = Math.min((SPEED * tSim) / 1000, 2 * halfKm) * K}
 						<line
 							x1={p.cx}
 							y1={p.cy}
-							x2={p.cx + Math.sin(a) * HALF_KM * 1.5 * K}
-							y2={p.cy - Math.cos(a) * HALF_KM * 1.5 * K}
+							x2={p.cx + Math.sin(a) * halfKm * 1.5 * K}
+							y2={p.cy - Math.cos(a) * halfKm * 1.5 * K}
 							stroke="var(--stage-ink-muted)"
 							stroke-width="1.3"
 							stroke-dasharray="5 5"
@@ -460,9 +476,15 @@
 				15,
 				{ weight: 600, tabular: true }
 			)}
-			{@render txt(0, 88, '1 day ≈ 10 s of animation · each patch is 600 km across', 11, {
-				muted: true
-			})}
+			{@render txt(
+				0,
+				88,
+				`1 day ≈ 10 s of animation · each patch is ${spaced(2 * halfKm)} km across`,
+				11,
+				{
+					muted: true
+				}
+			)}
 			{#if spin === 0}
 				{@render txt(0, 116, 'The planet is not spinning: the air goes straight.', 13, {
 					weight: 600
