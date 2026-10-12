@@ -568,6 +568,10 @@ kbd {
 	--semi-acceptor: #ae3ec9;
 	--semi-field: #c2255c;
 	--semi-ion: #868e96;
+	/* motors-generators: the coil's two sides (a copper, b raspberry), the lamp's glow */
+	--mg-a: #c76b1c;
+	--mg-b: #a61e4d;
+	--mg-lamp: #f59f00;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -898,4 +902,7 @@ kbd {
 	--semi-acceptor: #da77f2;
 	--semi-field: #f06595;
 	--semi-ion: #adb5bd;
+	--mg-a: #e8a15a;
+	--mg-b: #f06595;
+	--mg-lamp: #ffd43b;
 }
