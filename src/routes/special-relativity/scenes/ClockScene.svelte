@@ -21,7 +21,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, cycle, pingpong, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { addVelocities, gamma, num, tickAtRest } from '../relativity';
+	import { addVelocities, flashHits, gamma, num, tickAtRest } from '../relativity';
 	import { C_PX, duration, edgeFade, wrap, wrapShift } from './shared';
 	import T from './T.svelte';
 	import Train from './Train.svelte';
@@ -76,35 +76,51 @@
 	const flash = (time: number, period: number) =>
 		reduced ? 0 : 1 - smoothstep(0, 0.12, cycle(time, period));
 
+	// How far the train has moved, and how many ticks (with the fraction) the moving clock
+	// has made. Both are added up as time passes, so moving the slider mid-step changes the
+	// speed and the tick rate from then on: the train doesn't jump and the count never
+	// goes back. Starting over, scrubbing back, or a frozen frame take the closed form.
+	let acc = { t: 0, d: 0, ph: 0 };
+	const motion = $derived.by(() => {
+		const dt = t - acc.t;
+		acc =
+			reduced || t <= 0 || dt < 0
+				? { t, d: v * t, ph: t / (g * T0) }
+				: { t, d: acc.d + v * dt, ph: acc.ph + dt / (g * T0) };
+		return acc;
+	});
+	/** The moving clock's time argument for `lift`/`flash` with period g·T0. */
+	const movingTime = $derived(motion.ph * g * T0);
+
 	// Top row: the train moves right; the station clock stands at XS.
-	const carU = $derived(XS + v * t); // unwrapped
+	const carU = $derived(XS + motion.d); // unwrapped
 	const carX = $derived(wrap(carU, XA, XB));
 	const carShift = $derived(wrapShift(carU, XA, XB));
 	// Bottom row: the platform moves left; the station clock starts above the train.
-	const stU = $derived(XT - v * t);
+	const stU = $derived(XT - motion.d);
 	const stX = $derived(wrap(stU, XA, XB));
 	const stShift = $derived(wrapShift(stU, XA, XB));
 
 	const ticksRest = $derived(Math.floor(t / T0 + 1e-9));
-	const ticksMoving = $derived(Math.floor(t / (g * T0) + 1e-9));
+	const ticksMoving = $derived(Math.floor(motion.ph + 1e-9));
 
 	/** The zig-zag of a moving clock's light over the last 1.5 ticks, in one row. */
-	function trail(u0: number, vel: number, shift: number, top: number) {
+	function trail(uNow: number, vel: number, shift: number, top: number) {
 		const period = g * T0;
-		const span = Math.min(1.5 * period, t);
+		const span = Math.min(1.5 * period, movingTime);
 		const n = 36;
 		let d = '';
 		for (let i = 0; i <= n; i++) {
-			const time = t - span + (span * i) / n;
-			const x = u0 + vel * time - shift;
+			const ago = span - (span * i) / n;
+			const x = uNow - vel * ago - shift;
 			if (x < XA - 1 || x > XB + 1) continue;
-			const y = top + G - lift(time, period);
+			const y = top + G - lift(movingTime - ago, period);
 			d += `${d ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)} `;
 		}
 		return d;
 	}
-	const trailTop = $derived(beta > 0.005 ? trail(XS, v, carShift, ROWS[0] + CM_TOP) : '');
-	const trailBottom = $derived(beta > 0.005 ? trail(XT, -v, stShift, ROWS[1] + SM_TOP) : '');
+	const trailTop = $derived(beta > 0.005 ? trail(carU, v, carShift, ROWS[0] + CM_TOP) : '');
+	const trailBottom = $derived(beta > 0.005 ? trail(stU, -v, stShift, ROWS[1] + SM_TOP) : '');
 
 	// ---- the lamp and the ball (phase light) -----------------------------------------
 	const P = 4.2; // loop
@@ -133,8 +149,7 @@
 		let ball: number | null = null;
 		if (s >= 0) {
 			// Front pulse x = xe + c s meets the front wall xe + hw + vel s.
-			const sf = hw / (C_PX - vel);
-			const sb = hw / (C_PX + vel);
+			const { front: sf, back: sb } = flashHits(hw / C_PX, vel / C_PX);
 			if (s < sf) pulses.push({ x: xe + C_PX * s, o: 1, key: 'f' });
 			else hits.push({ x: xe + hw + vel * s, o: 1 - smoothstep(sf + 0.6, sf + 1.2, s), key: 'f' });
 			if (s < sb) pulses.push({ x: xe - C_PX * s, o: 1, key: 'b' });
@@ -168,7 +183,7 @@
 
 	// Deck marks (posts every 80 units), sliding left in the bottom row.
 	const POSTS = Array.from({ length: 13 }, (_, i) => i);
-	const postOffset = $derived(-((((v * t) % 80) + 80) % 80));
+	const postOffset = $derived(-(((motion.d % 80) + 80) % 80));
 </script>
 
 {#snippet deck(top: number, offset: number)}
@@ -271,7 +286,7 @@
 				carX,
 				ROWS[0] + CM_TOP,
 				g * T0,
-				t,
+				movingTime,
 				'var(--rel-train)',
 				false,
 				1,
@@ -359,7 +374,7 @@
 				stX,
 				ROWS[1] + SM_TOP,
 				g * T0,
-				t,
+				movingTime,
 				'var(--rel-plat)',
 				true,
 				1,

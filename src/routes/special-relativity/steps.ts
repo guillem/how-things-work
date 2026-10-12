@@ -61,7 +61,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [beta],
 			body: `
-<p>On a smooth train moving at a steady speed, a ball you drop falls straight down and a ball you throw flies as it would at home. Newton's laws work the same way in every frame of reference that moves steadily, without speeding up or turning (an <dfn data-def="A frame of reference that is not accelerating: an object with no force on it keeps moving at constant velocity, as Newton's first law says.">inertial frame</dfn>). No experiment inside the train can tell whether the train is moving. Galileo saw this in 1632. Only motion <em>relative</em> to something else means anything.</p>
+<p>On a smooth train moving at a steady speed, a ball you drop falls straight down and a ball you throw flies as it would at home. Newton's laws work the same way in every frame of reference that moves steadily, without speeding up or turning (an <dfn data-def="A frame of reference that is not accelerating: an object with no force on it keeps moving at constant velocity, as Newton's first law says.">inertial frame</dfn>). No experiment with moving objects inside the train can tell whether the train is moving: Galileo made this point in 1632, with a ship's cabin. Only motion <em>relative</em> to something else means anything.</p>
 <p>Speeds add up as you would expect: throw a ball forwards at 20 m/s on a train going at 30 m/s, and someone on the platform clocks it at 50 m/s.</p>
 <p>Light breaks the rule. A lamp in the middle of the carriage flashes, and both the passengers and the people on the platform measure the flash moving at the same speed, <strong>c ≈ 300 000 km/s</strong>, forwards and backwards. The train's speed is not added. This is Einstein's second <dfn data-def="Einstein's 1905 starting points: (1) the laws of physics are the same in every inertial frame; (2) light in a vacuum moves at the same speed c in every inertial frame, whatever the motion of its source.">postulate</dfn> (1905). Experiments have confirmed it again and again.</p>
 <p>The ball now follows the rule that keeps everything below c. Thrown at 0.5 c on a train going at 0.6 c, it moves at 0.85 c relative to the platform, not 1.1 c. Move the slider and watch both rows.</p>
@@ -78,7 +78,7 @@ export const spec: ExplainerSpec = {
 			duration: 16,
 			body: `
 <p>Since everyone agrees on the speed of light, build a clock out of it. A <dfn data-def="A thought-experiment clock: a pulse of light bouncing between two parallel mirrors. Each round trip is one tick.">light clock</dfn> is a pulse of light bouncing between two mirrors. Every round trip, up and back down, is one tick.</p>
-<p>Here the mirrors are 1.5 m apart, so the light travels 3 m per tick, and one tick lasts 3 m ÷ c ≈ <strong>10 nanoseconds</strong>. The animation is slowed down about 100 million times.</p>
+<p>Here the mirrors are 1.5 m apart, so the light travels 3 m per tick, and one tick lasts 3 m ÷ c ≈ <strong>10 nanoseconds</strong>. The animation is slowed down about 80 million times.</p>
 <p>There is one clock on the train and an identical one on the platform. For now the train is standing still, so the two rows (the platform's frame on top, the train's frame below) look the same, and the two clocks tick in step.</p>`,
 			notes: `<p>Any good clock would do: a quartz watch, a caesium atomic clock, your heartbeat. If moving light clocks ran slow but moving atomic clocks did not, a passenger could compare the two and find out that she was moving. That would break the first postulate. So whatever happens to the light clock happens to every clock, and to time itself.</p>`
 		},
@@ -108,9 +108,9 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The stretch factor has a name, the <dfn data-def="γ = 1 / √(1 − v²/c²), the factor by which moving clocks run slow and moving lengths shrink. It is 1 at rest and grows without limit as v approaches c.">Lorentz factor</dfn>, γ (gamma):</p>
 <p class="formula"><strong>γ = 1 / √(1 − v²/c²)</strong></p>
-<p>At everyday speeds γ is 1 to many decimal places. For a jet airliner at 250 m/s it is 1.00000000000035. That is why nobody noticed for so long. It reaches 1.25 at 0.6 c, 5/3 ≈ 1.67 at 0.8 c and 7.09 at 0.99 c. At the speed of light it would be infinite, which is one way to see that nothing with mass can get there.</p>
+<p>At everyday speeds γ is 1 to many decimal places. For a jet airliner at 250 m/s it is 1.00000000000035. That is why nobody noticed for so long. It reaches 1.25 at 0.6 c, 5/3 ≈ 1.67 at 0.8 c and 7.09 at 0.99 c. At the speed of light it would be infinite, which is one way to see that nothing with mass can get there (the energy needed to reach it, γmc², would be infinite).</p>
 <p>Push the slider towards the right-hand end and watch the curve rise steeply.</p>`,
-			notes: `<p>Satellite navigation has to allow for this. A GPS satellite moves at about 3.9 km/s, so its atomic clock falls behind clocks on the ground by about 7 microseconds a day. Gravity has the opposite and larger effect, from general relativity. Left uncorrected, the total error would build up to kilometres of position error within a day (N. Ashby, “Relativity in the Global Positioning System”, <i>Living Reviews in Relativity</i> 6, 2003).</p>`
+			notes: `<p>Satellite navigation has to allow for this. A GPS satellite moves at about 3.9 km/s, so its atomic clock falls behind clocks on the ground by about 7 microseconds a day. Gravity has the opposite and larger effect (about 45 µs a day), from general relativity, so uncorrected the satellite clocks would gain about 38 µs a day, worth about 11 km of light-travel distance. Because every satellite clock would drift together, a receiver that solves for its own clock error would turn most of this into a wrong time rather than a wrong position (N. Ashby, “Relativity in the Global Positioning System”, <i>Living Reviews in Relativity</i> 6, 2003).</p>`
 		},
 		{
 			id: 'muons',
@@ -123,7 +123,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Nature runs this experiment every second. Cosmic rays hitting the top of the atmosphere make <dfn data-def="An unstable elementary particle, a heavier cousin of the electron. At rest it lives on average 2.2 microseconds before decaying into an electron and two neutrinos.">muons</dfn>, which rush down at close to the speed of light.</p>
 <p>A muon at rest lives on average only <strong>2.2 microseconds</strong>. Even at almost c, that gives it time to cover only about 660 m, far too little to reach the ground from high in the atmosphere. Yet plenty of them arrive at sea level.</p>
-<p>Time dilation explains it. The muon's own clock still gives it 2.2 µs, but on our clocks its life lasts γ times longer. At 0.99 c that is 15.6 µs, and the muon travels about 4.6 km on average. Move the slider and compare the two tracks.</p>`,
+<p>Time dilation explains it. The muon's own clock still gives it 2.2 µs, but on our clocks its life lasts γ times longer. At 0.99 c that is 15.6 µs, and the muon travels about 4.6 km on average. Real cosmic-ray muons are faster still. Most are made about 15 km up, and a typical one reaching the ground has γ ≈ 38 (about 0.9997 c), which stretches its average range to about 25 km. Move the slider and compare the two tracks.</p>`,
 			notes: `<p>The mean lifetime of the muon at rest is 2.1969811 µs (Particle Data Group, <i>Review of Particle Physics</i>). Muons decay at random, so these are average distances: some go much further. The effect has been measured directly with muons in particle accelerators. In 1977 the muon storage ring at CERN found muons circling at γ ≈ 29 living 29 times longer than muons at rest, as predicted (J. Bailey et al., <i>Nature</i> 268, 1977).</p>`
 		},
 		// ------------------------------------------------------------------ length
@@ -165,10 +165,10 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [beta],
 			body: `
-<p>Now take the passenger's side, in the bottom row. She is sitting still in the middle of her train, with scorch marks at its two ends. Light from each end travelled half the train, 100 m, at c (in her frame too). Yet the front flash reached her first.</p>
+<p>Now take the passenger's side, in the bottom row. (t′, read “t prime”, is time on the train's clocks.) She is sitting still in the middle of her train, with scorch marks at its two ends. Light from each end travelled half the train, 100 m, at c (in her frame too). Yet the front flash reached her first.</p>
 <p>So, allowing for the travel time just as carefully, she concludes that <strong>the front was struck first</strong>. For a 200 m train at 0.6 c, it was struck 400 nanoseconds earlier than the back.</p>
 <p>Both are right. Whether two separate events happen “at the same time” depends on the frame: this is the <dfn data-def="Two events at different places that are simultaneous in one inertial frame are not simultaneous in another frame moving along the line joining them.">relativity of simultaneity</dfn>. What every frame agrees on is what happens at a single place and time: the two flashes meet at the platform observer, and they reach the passenger front first.</p>`,
-			notes: `<p>For events a distance <i>L</i> apart (measured in the train), simultaneous on the platform, the train frame puts them <i>vL</i>/<i>c</i>² apart in time, with the front one first. That is β·L/c = 0.6 × 200 m ÷ c ≈ 400 ns here. This is the key to the other two effects. To time the moving clock, the platform compares it with two of its own clocks at two places, which the train thinks are out of sync. To measure the moving train, the platform marks both ends “at the same time”, which the train thinks were done at different times.</p>`
+			notes: `<p>For events a distance <i>L</i> apart (measured in the train), simultaneous on the platform, the train frame puts them <i>vL</i>/<i>c</i>² apart in time, with the front one first. That is β·L/c, with β = v/c: 0.6 × 200 m ÷ c ≈ 400 ns here. This is the key to the other two effects. To time the moving clock, the platform compares it with two of its own clocks at two places, which the train thinks are out of sync. To measure the moving train, the platform marks both ends “at the same time”, which the train thinks were done at different times.</p>`
 		},
 		// ------------------------------------------------------------------ spacetime
 		{
@@ -229,7 +229,7 @@ export const spec: ExplainerSpec = {
 <li><strong>Simultaneity:</strong> the two strikes lie on the platform's “now” but not on the train's.</li>
 </ul>
 <p>All three come from one fact: <strong>every observer measures the same speed of light</strong>. To keep c the same for everyone, observers in relative motion have to disagree about durations, lengths and which distant events happen at the same time. What they share is spacetime itself, and the interval measured across it.</p>`,
-			notes: `<p>These effects are everyday engineering in particle physics: accelerators keep unstable particles alive γ times longer, and their beams are designed with relativistic formulas. Special relativity assumes no gravity and no acceleration. Gravity needs Einstein's general relativity (1915), in which spacetime itself curves.</p>`
+			notes: `<p>These effects are everyday engineering in particle physics: accelerators keep unstable particles alive γ times longer, and their beams are designed with relativistic formulas. This page keeps to inertial frames: the train coasts at a steady speed along one straight line. Special relativity can also handle accelerating objects; what it leaves out is gravity, which needs Einstein's general relativity (1915), in which spacetime itself curves.</p>`
 		}
 	]
 };

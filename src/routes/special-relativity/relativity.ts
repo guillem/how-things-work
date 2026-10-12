@@ -115,6 +115,16 @@ export function clockTicks(beta: number, count: number, gap = 1): Event[] {
 	return Array.from({ length: count }, (_, k) => toPlatform({ ct: k * 2 * gap, x: 0 }, beta));
 }
 
+/**
+ * A flash from the middle of a carriage moving at β, timed in a frame where the
+ * carriage's half length (contracted, if it moves) is `half`, in light units:
+ * when the light reaches the front wall, which runs away from it, and the back
+ * wall, which runs into it. Equal (`half`) when the carriage is at rest.
+ */
+export function flashHits(half: number, beta: number) {
+	return { front: half / (1 - beta), back: half / (1 + beta) };
+}
+
 // ------------------------------------------------------------------ lengths
 
 /**
