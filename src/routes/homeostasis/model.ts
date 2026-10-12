@@ -108,10 +108,12 @@ export const KE = 0.138;
  * Topp's (insulin 10 µU/mL at 100 mg/dL). CALIBRATED, not published: Topp's
  * own response (n = 2, K = √α = 141 mg/dL with α = 20 000 mg²/dL²) was built
  * for changes over months, and in a meal it lets glucose stay above 250
- * mg/dL for two hours. The steeper response used here makes the healthy
+ * mg/dL for an hour and a half, and leaves it near 270 at two hours. The steeper response used here makes the healthy
  * virtual adult pass a 75 g glucose tolerance test, with a 2-hour value below
  * the ADA's 140 mg/dL and insulin rising several-fold, as it does in people
- * with normal glucose tolerance; the model test checks both.
+ * with normal glucose tolerance; the model test checks both. Even so, insulin acts more slowly here than
+ * in real people: a healthy adult's glucose peaks near 190 mg/dL, higher and
+ * later than usual (the page says so).
  */
 const HILL_N = 5;
 const HILL_K = 200;
@@ -315,7 +317,10 @@ function rates(s: State, sc: Scenario, t: number) {
 	const boost = 1 + EXERCISE_SENSITIVITY * exertion(s.p);
 	const uptake = (EG0 + SI * sc.sensitivity * boost * s.x) * s.g + exercise;
 	const injected = s.s2 / TMAX_I / VI;
-	const di = sec + sc.basal + injected - KE * s.i - Math.min(1, sc.production) * s.ie;
+	// The exercise cut stands for the pancreas secreting less, so it can
+	// remove at most what the pancreas is secreting.
+	const cut = Math.min(sec, Math.min(1, sc.production) * s.ie);
+	const di = sec - cut + sc.basal + injected - KE * s.i;
 	return {
 		sample: { liver, gut, urine, uptake },
 		d: {

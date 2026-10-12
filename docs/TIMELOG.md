@@ -342,3 +342,4 @@ interaction kind (new shared components), less once components exist. 97 topics 
 | Work                                                | Start            | End              | Active | Notes                                                |
 | --------------------------------------------------- | ---------------- | ---------------- | ------ | ---------------------------------------------------- |
 | Catalogue-driven index, cross-links, status/backlog | 2026-10-07 18:20 | 2026-10-07 18:27 | 7 min  | Includes reading the codebase and planning epidemics |
+| homeostasis: review fixes                           | 2026-10-12 07:24 | 2026-10-12 07:30 | —      | Fact-check report applied                            |

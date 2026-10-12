@@ -166,7 +166,9 @@
 							? 'diabetes (126 or more)'
 							: fast >= THRESHOLDS.fastingNormal + 0.5
 								? 'prediabetes (100–125)'
-								: 'normal (under 100)',
+								: fast >= THRESHOLDS.fastingNormal - 0.5
+									? 'edge of normal (under 100)'
+									: 'normal (under 100)',
 					ok: fast < THRESHOLDS.fastingDiabetes
 				};
 			default: {
@@ -640,7 +642,7 @@
 		yTicks={[0, 1, 2, 3]}
 		xFormat={hourText}
 		yFormat={(v) => `×${v}`}
-		xLabel="time after the meal"
+		xLabel={sc.carbs > 0 ? 'time after the meal' : 'time'}
 		yLabel="glucagon, × fasting level"
 	/>
 	{#if ghost}

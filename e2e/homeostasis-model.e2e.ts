@@ -38,6 +38,9 @@ test('after a 75 g glucose drink, negative feedback brings glucose back down', (
 	const peakInsulin = Math.max(...s.map((p) => p.i));
 	expect(peakInsulin).toBeGreaterThan(4 * f.i);
 	expect(at(s, 60).gcg).toBeLessThan(0.8);
+	// The page says the peak is near 190 mg/dL, higher than in real people;
+	// a recalibration must not push it further.
+	expect(hi.g).toBeLessThan(200);
 });
 
 test('with no insulin production (type 1) glucose stays high', () => {
@@ -48,6 +51,19 @@ test('with no insulin production (type 1) glucose stays high', () => {
 	expect(at(s, 360).g).toBeGreaterThan(f.g);
 	// Above the kidneys' threshold glucose spills into urine.
 	expect(Math.max(...s.map((p) => p.urine))).toBeGreaterThan(0);
+});
+
+test('below about a quarter of normal insulin production, fasting glucose is diabetic', () => {
+	expect(fasting({ ...healthy, production: 0.2 }).g).toBeGreaterThanOrEqual(
+		THRESHOLDS.fastingDiabetes
+	);
+	expect(fasting({ ...healthy, production: 0.3 }).g).toBeLessThan(THRESHOLDS.fastingDiabetes);
+});
+
+test('with no insulin at all, a meal sends glucose to about 600 and it stays above 400 for hours', () => {
+	const s = meal({ production: 0 });
+	expect(extremes(s, 0, 360).hi.g).toBeGreaterThan(550);
+	expect(at(s, 360).g).toBeGreaterThan(400);
 });
 
 test('with insulin resistance insulin rises but glucose still falls, only more slowly', () => {
@@ -79,6 +95,12 @@ test('a run lowers glucose after a meal, and a healthy body keeps it in range', 
 	expect(extremes(fastingRun).lo.g).toBeGreaterThan(THRESHOLDS.hypo);
 	expect(at(fastingRun, 40).i).toBeLessThan(0.5 * fasting(healthy).i);
 	expect(at(fastingRun, 40).gcg).toBeGreaterThan(1.5);
+	// The page: on an empty stomach glucose dips by only about 10–15 mg/dL.
+	const dip = fasting(healthy).g - extremes(fastingRun).lo.g;
+	expect(dip).toBeGreaterThanOrEqual(10);
+	expect(dip).toBeLessThanOrEqual(15);
+	// Even a run an hour after the meal keeps a healthy body out of hypoglycaemia.
+	expect(extremes(meal({ ...run, runAt: 60 })).lo.g).toBeGreaterThan(THRESHOLDS.hypo);
 });
 
 test('with injected insulin, a run lowers glucose much more', () => {
@@ -101,6 +123,17 @@ test('dosing insulin by hand: too little leaves glucose high, too much causes hy
 	expect(extremes(t1(12)).lo.g).toBeLessThan(THRESHOLDS.hypo);
 	// Insulin without food: level 2 hypoglycaemia (ADA: under 54 mg/dL).
 	expect(extremes(t1(8, 0)).lo.g).toBeLessThan(THRESHOLDS.severeHypo);
+});
+
+test('timing matters: a dose that works before the meal soars, then crashes, an hour after it', () => {
+	const basal = basalFor(100);
+	const t1 = (doseAt: number) => simulate({ production: 0, basal, carbs: 75, dose: 7, doseAt });
+	const onTime = extremes(t1(-15));
+	expect(onTime.lo.g).toBeGreaterThan(THRESHOLDS.hypo);
+	const late = extremes(t1(60));
+	expect(late.hi.g).toBeGreaterThan(onTime.hi.g + 80);
+	expect(late.lo.g).toBeLessThan(THRESHOLDS.hypo);
+	expect(late.lo.t).toBeGreaterThan(late.hi.t);
 });
 
 test('glucagon defends against a low only while the islets work', () => {
