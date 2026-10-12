@@ -210,6 +210,19 @@
 		return { coil, wave };
 	})();
 
+	// Waves & interference: crests (half circles, 15 apart) spreading to the right
+	// from two sources 30 apart; where they cross, the moiré shows the bands.
+	const waveArt = [44, 76].flatMap((cy) =>
+		Array.from({ length: 11 }, (_, i) => {
+			const r = 15 * (i + 1);
+			return {
+				id: `${cy}-${i}`,
+				d: `M40 ${cy - r} A${r} ${r} 0 0 1 40 ${cy + r}`,
+				o: 0.75 - i * 0.05
+			};
+		})
+	);
+
 	// Central limit theorem: a small triangle of pins over a bell-shaped
 	// histogram of 11 bars (binomial, 10 rows), with the normal curve over it.
 	const cltArt = (() => {
@@ -1060,6 +1073,13 @@
 			{/each}
 		{/each}
 		<path d="M36 74 L40 66 L44 74 Z" fill="var(--oc-warm)" />
+	{:else if slug === 'waves-interference'}
+		<!-- two sources in a ripple tank: their crests cross in bands -->
+		{#each waveArt as a (a.id)}
+			<path d={a.d} fill="none" stroke={accent} stroke-width="1.6" opacity={a.o} />
+		{/each}
+		<circle cx="40" cy="44" r="4.5" fill="currentColor" opacity="0.75" />
+		<circle cx="40" cy="76" r="4.5" fill="currentColor" opacity="0.75" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

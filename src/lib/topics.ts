@@ -303,6 +303,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 8,
 		minutes: 16
+	},
+	{
+		slug: 'waves-interference',
+		title: 'Waves, sound and interference',
+		summary:
+			'Send waves through each other, find the bands where two ripples cancel, pluck a string to hear the only notes it can play, and listen to the pitch drop as a sound races past.',
+		accent: '#3b5bdb',
+		steps: 10,
+		minutes: 16
 	}
 ];
 
