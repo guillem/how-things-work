@@ -318,7 +318,7 @@
 		return { r0, rays, cone: escapeCone(r0) };
 	});
 	const FLASH_PERIOD = 4.5;
-	const flashS = $derived(reduced ? 170 : (since % FLASH_PERIOD) * LIGHT_SPEED * 0.8);
+	const flashS = $derived(reduced ? 4000 : (since % FLASH_PERIOD) * LIGHT_SPEED * 0.8);
 	const lamp = $derived(flash ? { X: cx, Y: cy - flash.r0 * S } : null);
 	const coneWedge = $derived.by(() => {
 		if (!flash || !lamp) return '';

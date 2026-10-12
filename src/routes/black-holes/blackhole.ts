@@ -196,8 +196,8 @@ export function ray(b: number, opts: TraceOptions = {}): Trace {
 }
 
 /** Total bending of a light ray with impact parameter b (radians); Infinity if it is captured. */
-export function deflection(b: number) {
-	const tr = ray(b, { dphi: b > 50 ? 0.0005 : 0.001, maxSweep: 40 * Math.PI });
+export function deflection(b: number, maxSweep = 40 * Math.PI) {
+	const tr = ray(b, { dphi: b > 50 ? 0.0005 : 0.001, maxSweep });
 	if (tr.fate !== 'escaped') return Infinity;
 	return tr.sweep - Math.PI;
 }
@@ -309,7 +309,7 @@ export function deflectionTable(bMax = 200, n = 400) {
 		// Spacing that crowds towards B_CRIT (1e-5 above it) and spreads out to bMax.
 		const s = i / (n - 1);
 		b[i] = B_CRIT + 1e-5 * Math.pow((bMax - B_CRIT) / 1e-5, s);
-		a[i] = deflection(b[i]);
+		a[i] = deflection(b[i], 12 * Math.PI); // ≤ 2 loops at 1e-5 above critical
 	}
 	return { b, a, bMax };
 }
