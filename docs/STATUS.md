@@ -78,6 +78,10 @@ its review report deleted. Built-state params in use: `web:<step>`, `board:build
 - radioactivity: merged; ticked. Not reviewed yet.
 - linear-transformations: merged; ticked. Not reviewed yet.
 
+- fourier-transform: built and ticked on branch `topic/fourier-transform` (local worktree), not yet
+  merged; built-state params `ft:wave`, `ft:bars`, `ft:curve`.
+- fourier-transform: merged; ticked. Not reviewed yet.
+
 ## Open questions for the user
 
 None. Answered 2026-10-08: learning-from-data — dragging only is fine (ticked);

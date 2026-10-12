@@ -51,6 +51,32 @@
 		return { square, moved, unit, arrows };
 	})();
 
+	// Fourier transform: a 1 Hz circle carrying a 3 Hz circle (a square wave's
+	// first two ingredients, at time 0.07 of a period) and, level with the last
+	// point, the wave it has traced: newest at the left, older to the right.
+	const fourierArt = (() => {
+		const A = 26 / (4 / Math.PI);
+		const u0 = 0.07;
+		const height = (u: number) =>
+			A * (4 / Math.PI) * (Math.sin(2 * Math.PI * u) + Math.sin(6 * Math.PI * u) / 3);
+		const wave = Array.from({ length: 81 }, (_, i) => {
+			const x = 110 + i;
+			const y = 60 - height(u0 - i / 80);
+			return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+		}).join(' ');
+		const r1 = A * (4 / Math.PI);
+		const r3 = r1 / 3;
+		const c2 = {
+			x: 50 + r1 * Math.cos(2 * Math.PI * u0),
+			y: 60 - r1 * Math.sin(2 * Math.PI * u0)
+		};
+		const tip = {
+			x: c2.x + r3 * Math.cos(6 * Math.PI * u0),
+			y: c2.y - r3 * Math.sin(6 * Math.PI * u0)
+		};
+		return { wave, r1, r3, c2, tip };
+	})();
+
 	// Sorting: ten bars, the last four already in place, two being compared.
 	const sortArt = [5, 2, 6, 1, 4, 3, 7, 8, 9, 10].map((v, i) => ({
 		i,
@@ -1118,6 +1144,47 @@
 			fill="none"
 		/>
 		<circle cx="47" cy="59" r="5" fill={accent} />
+	{:else if slug === 'fourier-transform'}
+		<!-- a 1 Hz circle carrying a 3 Hz circle; the last point's height traces a near-square wave -->
+		<circle
+			cx="50"
+			cy="60"
+			r={fourierArt.r1}
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.45"
+		/>
+		<circle
+			cx={fourierArt.c2.x}
+			cy={fourierArt.c2.y}
+			r={fourierArt.r3}
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.45"
+		/>
+		<path
+			d="M50 60 L{fourierArt.c2.x} {fourierArt.c2.y} L{fourierArt.tip.x} {fourierArt.tip.y}"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			opacity="0.7"
+		/>
+		<path
+			d="M{fourierArt.tip.x} {fourierArt.tip.y} H110"
+			stroke={accent}
+			stroke-dasharray="2 3"
+			opacity="0.7"
+		/>
+		<path
+			d={fourierArt.wave}
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linejoin="round"
+		/>
+		<circle cx={fourierArt.tip.x} cy={fourierArt.tip.y} r="4" fill={accent} />
 	{:else if slug === 'ocean-currents'}
 		<!-- an ocean basin: a warm gyre squeezed against the west, a cold gyre north of it -->
 		<rect

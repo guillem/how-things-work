@@ -339,6 +339,15 @@ const explainers: Explainer[] = [
 		accent: '#3b5bdb',
 		steps: 13,
 		minutes: 16
+	},
+	{
+		slug: 'fourier-transform',
+		title: 'The Fourier transform',
+		summary:
+			'Build a square wave out of sine waves, see the bar chart of frequencies that makes up any signal, reshape a signal by editing its bars, and draw a curve with a chain of spinning circles.',
+		accent: '#e8590c',
+		steps: 10,
+		minutes: 16
 	}
 ];
 

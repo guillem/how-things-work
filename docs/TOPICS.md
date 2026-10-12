@@ -102,7 +102,7 @@ A topic is done when:
 - [x] linear-transformations
 - [ ] tensors
 - [x] complex-numbers
-- [ ] fourier-transform
+- [x] fourier-transform
 - [x] bayes-theorem
 - [x] central-limit-theorem
 - [x] primes-modular-arithmetic
