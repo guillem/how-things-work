@@ -136,6 +136,12 @@
 				: { x: (loopPts[5].x + loopPts[6].x) / 2, y: loopPts[5].y };
 
 	const r = linkMid(2);
+	/** Where a broken link is marked: the middle of the link, or near the sensor on the way back. */
+	const markX = boxX(0) + BW / 2 + 44;
+	const markOf = (k: number): Point => (k === 2 ? { x: markX, y: loopPts[5].y } : linkMid(k));
+	/** The mark's position along the loop, as a fraction. */
+	const markU = (k: number) =>
+		k === 2 ? (cum[5] + (loopPts[5].x - markX)) / total : (links[k][0] + links[k][1]) / 2;
 
 	const pulses = $derived(
 		cards.map((c, k) => {
@@ -143,8 +149,7 @@
 			const p = along(loopPts, u);
 			let o = 1;
 			if (c.broken >= 0) {
-				const [, end] = links[c.broken];
-				const mid = (links[c.broken][0] + end) / 2;
+				const mid = markU(c.broken);
 				o = 1 - smoothstep(mid - 0.04, mid + 0.01, u);
 			}
 			return { k, x: p.x, y: p.y, o };
@@ -165,7 +170,7 @@
 		{@const o = origin(k)}
 		<g transform="translate({o.x} {o.y})">
 			<rect width={CW} height={CH} rx="14" fill="var(--surface)" stroke="var(--border)" />
-			<text x={16} y={30} font-size="15" font-weight="600"
+			<text x={16} y={30} style:font-size="15px" font-weight="600"
 				>{c.title}<tspan class="muted" font-size="12" font-weight="400" dx="8">{c.sub}</tspan></text
 			>
 
@@ -186,7 +191,7 @@
 				stroke="var(--stage-line)"
 				stroke-width="1.5"
 			/>
-			<text x={r.x} y={r.y + 16} font-size="11" class="muted" text-anchor="middle"
+			<text x={r.x} y={r.y + 16} style:font-size="11px" class="muted" text-anchor="middle"
 				>the effect is measured again</text
 			>
 
@@ -200,20 +205,24 @@
 					fill="var(--stage-bg)"
 					stroke="var(--border)"
 				/>
-				<text x={boxX(j) + BW / 2} y={BY + 18} font-size="11" class="muted" text-anchor="middle"
-					>{role}</text
+				<text
+					x={boxX(j) + BW / 2}
+					y={BY + 18}
+					style:font-size="11px"
+					class="muted"
+					text-anchor="middle">{role}</text
 				>
 				<text
 					x={boxX(j) + BW / 2}
 					y={BY + 35}
-					font-size="12.5"
+					style:font-size="12.5px"
 					font-weight="600"
 					text-anchor="middle">{name}</text
 				>
 			{/each}
 
 			{#if c.broken >= 0}
-				{@const m = linkMid(c.broken)}
+				{@const m = markOf(c.broken)}
 				<circle
 					cx={m.x}
 					cy={m.y}
@@ -231,7 +240,7 @@
 				<text
 					x={boxX(0) + BW / 2}
 					y={BY - 8}
-					font-size="11"
+					style:font-size="11px"
 					font-weight="600"
 					text-anchor="middle"
 					style:fill="var(--hm-glucose)">{c.note} ↑</text
@@ -248,7 +257,7 @@
 
 			<!-- what goes wrong -->
 			{#each c.lines as line, j (j)}
-				<text x={16} y={186 + j * 20} font-size="12.5"
+				<text x={16} y={186 + j * 20} style:font-size="12.5px"
 					>{#if line.head}<tspan
 							font-weight="600"
 							style:fill={c.broken >= 0 ? 'var(--hm-hypo)' : 'var(--hm-glucose)'}>{line.head}</tspan

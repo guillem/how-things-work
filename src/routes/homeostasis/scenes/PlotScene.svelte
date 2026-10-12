@@ -47,6 +47,8 @@
 	const I = { y0: 352, y1: 434 };
 	const C = { y0: 486, y1: 548 };
 	const sx = scale([FROM, TO], [X0, X1]);
+	/** The three chart areas, for lines that run through all of them but not across their titles. */
+	const panels = [G, I, C];
 	const peakOf = (s: readonly Sample[] | null, f: (p: Sample) => number) =>
 		s ? Math.max(...s.map(f)) : 0;
 	const gTop = Tween.of(
@@ -189,14 +191,17 @@
 			}
 		}
 	});
-	const verdictShow = $derived(reduced ? 1 : smoothstep(0, 8, minute - verdict.at));
+	const verdictShow = $derived(reduced || done ? 1 : smoothstep(0, 8, minute - verdict.at));
 
 	// ---- the tank ----------------------------------------------------------------------------
 	const TX = 128;
-	const TW = 104;
-	const TY0 = 196;
+	const TW = 100;
+	const TY0 = 178;
 	const TY1 = 396;
-	const TANK_MAX = 400; // mg/dL at the brim
+	const GUT_Y = 216;
+	const LIVER_Y = 338;
+	const CELLS_Y = 280;
+	const TANK_MAX = 300; // mg/dL at the brim (higher values fill it to the top)
 	const level = $derived(TY1 - (TY1 - TY0) * clamp(now.g / TANK_MAX));
 	const tankY = (g: number) => TY1 - ((TY1 - TY0) * g) / TANK_MAX;
 
@@ -230,10 +235,12 @@
 				color: 'var(--hm-gut)',
 				rate: now.gut,
 				pts: [
-					[24, 150],
-					[TX + 30, 150],
-					[TX + 30, TY0 - 4]
-				]
+					[24, GUT_Y],
+					[TX - 4, GUT_Y]
+				],
+				lx: 24,
+				ly: GUT_Y - 12,
+				anchor: 'start'
 			},
 			{
 				id: 'liver',
@@ -241,9 +248,12 @@
 				color: 'var(--hm-liver)',
 				rate: now.liver,
 				pts: [
-					[24, 330],
-					[TX - 4, 330]
-				]
+					[24, LIVER_Y],
+					[TX - 4, LIVER_Y]
+				],
+				lx: 24,
+				ly: LIVER_Y - 12,
+				anchor: 'start'
 			},
 			{
 				id: 'uptake',
@@ -251,9 +261,12 @@
 				color: 'var(--hm-muscle)',
 				rate: now.uptake,
 				pts: [
-					[TX + TW + 4, 330],
-					[316, 330]
-				]
+					[TX + TW + 4, CELLS_Y],
+					[318, CELLS_Y]
+				],
+				lx: 318,
+				ly: CELLS_Y - 12,
+				anchor: 'end'
 			},
 			{
 				id: 'urine',
@@ -262,8 +275,11 @@
 				rate: now.urine,
 				pts: [
 					[TX + TW / 2, TY1 + 4],
-					[TX + TW / 2, 452]
-				]
+					[TX + TW / 2, 446]
+				],
+				lx: TX + TW / 2 + 14,
+				ly: 424,
+				anchor: 'start'
 			}
 		].map((p) => {
 			const pts = p.pts as [number, number][];
@@ -309,10 +325,10 @@
 <g style:font-variant-numeric="tabular-nums">
 	<!-- ===================== left: the readout and the tank ===================== -->
 	<Label x={24} y={36} text={fmtMin(minute)} size={13} anchor="start" muted />
-	<text x={24} y={72} font-size="30" font-weight="600" style:fill={z.color}
+	<text x={24} y={76} style:font-size="30px" font-weight="600" style:fill={z.color}
 		>{Math.round(now.g)}<tspan font-size="14" font-weight="500" dx="6">mg/dL</tspan></text
 	>
-	<text x={24} y={94} font-size="13" class="muted"
+	<text x={24} y={100} class="muted"
 		>{mmol(now.g)} mmol/L ·<tspan
 			dx="4"
 			font-weight={z.strong ? 600 : 400}
@@ -374,25 +390,33 @@
 		stroke-width="2.5"
 	/>
 	{#each [70, 180] as g (g)}
-		<line x1={TX - 6} x2={TX} y1={tankY(g)} y2={tankY(g)} stroke="var(--stage-line)" />
-		<text x={TX - 9} y={tankY(g) + 4} font-size="11" class="muted" text-anchor="end">{g}</text>
+		<line
+			x1={TX + TW - 16}
+			x2={TX + TW - 6}
+			y1={tankY(g)}
+			y2={tankY(g)}
+			stroke="var(--stage-ink-muted)"
+		/>
+		<text
+			x={TX + TW - 19}
+			y={tankY(g) + 4}
+			style:font-size="10px"
+			class="muted halo"
+			text-anchor="end">{g}</text
+		>
 	{/each}
-	<Label x={TX + TW / 2} y={TY0 - 12} text="glucose in the blood" size={12} weight={600} />
+	<Label x={TX + TW / 2} y={TY0 - 10} text="glucose in the blood" size={12} weight={600} />
 
 	{#each pipes as p (p.id)}
-		{@const lx =
-			p.id === 'gut' ? 24 : p.id === 'liver' ? 24 : p.id === 'uptake' ? 316 : TX + TW / 2 + 14}
-		{@const ly = p.id === 'gut' ? 136 : p.id === 'liver' ? 316 : p.id === 'uptake' ? 316 : 444}
-		{@const anchor = p.id === 'uptake' ? 'end' : 'start'}
+		{@const anchor = p.anchor as 'start' | 'end'}
 		<g opacity={p.id === 'urine' && p.w === 0 ? 0.45 : 1}>
-			<text x={lx} y={ly} font-size="12" font-weight="600" text-anchor={anchor} style:fill={p.color}
+			<text x={p.lx} y={p.ly} font-weight="600" text-anchor={anchor} style:fill={p.color}
 				>{p.label}</text
 			>
 			<text
-				x={lx}
-				y={ly + (p.id === 'gut' || p.id === 'urine' ? 0 : 36)}
-				dx={p.id === 'gut' ? 92 : p.id === 'urine' ? 72 : 0}
-				font-size="11"
+				x={p.lx}
+				y={p.id === 'urine' ? p.ly + 16 : p.ly + 34}
+				style:font-size="11px"
 				class="muted"
 				text-anchor={anchor}>{fmtRate(p.rate)} mg/dL/min</text
 			>
@@ -402,7 +426,7 @@
 	<!-- hormones now -->
 	<g>
 		<circle cx={30} cy={496} r="5" fill="var(--hm-insulin)" />
-		<text x={42} y={500} font-size="13"
+		<text x={42} y={500} style:font-size="13px"
 			>insulin <tspan font-weight="600">{now.i.toFixed(now.i < 10 ? 1 : 0)}</tspan><tspan
 				class="muted"
 				font-size="11"
@@ -410,7 +434,7 @@
 			></text
 		>
 		<circle cx={30} cy={520} r="5" fill="var(--hm-glucagon)" />
-		<text x={42} y={524} font-size="13"
+		<text x={42} y={524} style:font-size="13px"
 			>glucagon <tspan font-weight="600">×{now.gcg.toFixed(1)}</tspan><tspan
 				class="muted"
 				font-size="11"
@@ -420,13 +444,13 @@
 	</g>
 
 	<!-- the step's key result -->
-	<g opacity={0.25 + 0.75 * verdictShow}>
-		<text x={24} y={560} font-size="14" font-weight="600">{verdict.text}</text>
+	<g opacity={verdictShow}>
+		<text x={24} y={560} style:font-size="14px" font-weight="600">{verdict.text}</text>
 		{#if verdict.sub}
 			<text
 				x={24}
 				y={578}
-				font-size="12"
+				style:font-size="12px"
 				font-weight={verdict.ok ? 400 : 600}
 				style:fill={verdict.ok ? 'var(--stage-ink-muted)' : 'var(--hm-hypo)'}>{verdict.sub}</text
 			>
@@ -446,7 +470,7 @@
 		/>
 		<Label
 			x={(sx(runSpan.a) + sx(runSpan.b)) / 2}
-			y={G.y0 + 14}
+			y={G.y0 + 30}
 			text={runLabel}
 			size={11}
 			weight={600}
@@ -464,11 +488,14 @@
 	/>
 	<Axes {sx} sy={syG} xTicks={[]} yTicks={gTicks} yLabel="blood glucose, mg/dL" />
 	<text
-		x={X1}
-		y={syG(THRESHOLDS.hypo) - 5}
-		font-size="11"
-		text-anchor="end"
-		style:fill="var(--hm-hypo)">below 70: hypoglycaemia</text
+		x={sx(0) + 6}
+		y={syG(lines === 'hypo' ? 54 : THRESHOLDS.hypo) + 13}
+		style:font-size="11px"
+		class="halo"
+		style:fill="var(--hm-hypo)"
+		>{lines === 'hypo'
+			? 'below 70: hypoglycaemia · below 54 (dashed): dangerous'
+			: 'below 70: hypoglycaemia'}</text
 	>
 	{#if lines === 'ogtt'}
 		<line
@@ -530,17 +557,16 @@
 			stroke-dasharray="5 4"
 		/>
 		<Label x={X1 - 4} y={syG(180) - 6} text="target 70–180" size={11} anchor="end" muted />
-		<text x={X1} y={syG(54) + 14} font-size="11" text-anchor="end" style:fill="var(--hm-hypo)"
-			>below 54: dangerous</text
-		>
 	{/if}
 
 	<!-- meal and injection markers -->
 	{#if sc.carbs > 0}
-		<line x1={sx(0)} x2={sx(0)} y1={G.y0} y2={C.y1} stroke="var(--hm-gut)" stroke-width="1.2" />
+		{#each panels as pn (pn.y0)}
+			<line x1={sx(0)} x2={sx(0)} y1={pn.y0} y2={pn.y1} stroke="var(--hm-gut)" stroke-width="1.2" />
+		{/each}
 		<Label
 			x={sx(0) + 5}
-			y={G.y0 - 8}
+			y={G.y0 + 12}
 			text="meal: {sc.carbs} g"
 			size={11}
 			weight={600}
@@ -549,14 +575,14 @@
 	{/if}
 	{#if sc.dose > 0}
 		{@const dx = sx(sc.doseAt)}
-		<path d="M{dx} {I.y0 - 2} l-6 -10 h12 Z" fill="var(--hm-insulin)" />
+		<path d="M{dx - 6} {I.y0} h12 l-6 10 Z" fill="var(--hm-insulin)" />
 		<Label
-			x={dx + (sc.doseAt <= 0 ? -8 : 8)}
-			y={I.y0 - 6}
+			x={dx + 9}
+			y={I.y0 + 10}
 			text="{sc.dose} U injected"
 			size={11}
 			weight={600}
-			anchor={sc.doseAt <= 0 ? 'end' : 'start'}
+			anchor="start"
 		/>
 	{/if}
 
@@ -638,20 +664,22 @@
 			stroke-width="1.5"
 			stroke-dasharray="4 3"
 		/>
-		<text x={X1 - 122} y={40} font-size="12" class="muted">{cfg.ghostLabel}</text>
+		<text x={X1 - 122} y={40} style:font-size="12px" class="muted">{cfg.ghostLabel}</text>
 	{/if}
 
 	<!-- cursor -->
 	{#if !done}
-		<line
-			x1={sx(minute)}
-			x2={sx(minute)}
-			y1={G.y0}
-			y2={C.y1}
-			stroke="var(--stage-ink-muted)"
-			stroke-dasharray="2 3"
-			opacity="0.7"
-		/>
+		{#each panels as pn (pn.y0)}
+			<line
+				x1={sx(minute)}
+				x2={sx(minute)}
+				y1={pn.y0}
+				y2={pn.y1}
+				stroke="var(--stage-ink-muted)"
+				stroke-dasharray="2 3"
+				opacity="0.7"
+			/>
+		{/each}
 		<circle cx={sx(minute)} cy={syG(now.g)} r="4" fill="var(--hm-glucose)" />
 		<circle cx={sx(minute)} cy={syI(now.i)} r="3.5" fill="var(--hm-insulin)" />
 		<circle cx={sx(minute)} cy={syC(Math.min(3, now.gcg))} r="3.5" fill="var(--hm-glucagon)" />

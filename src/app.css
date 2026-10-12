@@ -597,8 +597,8 @@ kbd {
 	--hm-liver: #a5523a;
 	--hm-pancreas: #e8b04b;
 	--hm-muscle: #c2255c;
-	--hm-gut: #f59f00;
-	--hm-urine: #e0b100;
+	--hm-gut: #e67700;
+	--hm-urine: #b08900;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
