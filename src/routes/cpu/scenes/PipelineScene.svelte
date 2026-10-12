@@ -150,9 +150,15 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	{@render txt(44, 528, 'This page’s processor: a few ticks a second, so you can follow it.', 13, {
-		muted: true
-	})}
+	{@render txt(
+		44,
+		528,
+		'This page’s processor: 1 to 60 ticks a second, so you can follow it.',
+		13,
+		{
+			muted: true
+		}
+	)}
 	{@render txt(
 		44,
 		554,

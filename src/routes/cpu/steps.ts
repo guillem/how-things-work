@@ -70,6 +70,14 @@ const example: Control = {
 	help: 'Loading an example replaces the text in the editor.'
 };
 
+const reload: Control = {
+	type: 'action',
+	id: 'reload',
+	label: 'Reset',
+	action: 'Reset to example',
+	help: 'Puts the chosen example back in the editor, undoing your edits.'
+};
+
 const stepper = [play, pace, tick, rewind];
 
 export const spec: ExplainerSpec = {
@@ -98,7 +106,7 @@ export const spec: ExplainerSpec = {
 <li>The <strong>program counter</strong> (PC) holds the address of the next instruction.</li>
 <li>The <strong>instruction register</strong> (IR) holds the instruction being carried out, and the <strong>control unit</strong> works out what it means.</li>
 <li>Four <dfn data-def="A few bytes of very fast storage inside the processor, where it keeps the numbers it is working on.">registers</dfn>, R0 to R3, hold the numbers being worked on.</li>
-<li>The <dfn data-def="Arithmetic logic unit: the circuit that adds, subtracts and compares. It is built from adders like the ones made of logic gates.">ALU</dfn> (arithmetic logic unit) does the sums. It is the <a href="../logic-gates/#four">adder you can build from logic gates</a>, plus a little more.</li>
+<li>The <dfn data-def="Arithmetic logic unit: the circuit that does arithmetic (add, subtract) and logic operations (AND, OR, NOT) on bytes, and compares them. It is built from gates, like the adders made of logic gates.">ALU</dfn> (arithmetic logic unit) does the sums. It is the <a href="../logic-gates/#four">adder you can build from logic gates</a>, plus a little more. This one only adds and subtracts.</li>
 </ul>
 <p>On the left is the program, written as <dfn data-def="A way of writing a processor's instructions as short words (ADD, JMP…) instead of numbers. An assembler translates it into the bytes the processor runs.">assembly language</dfn>: one line per instruction. It adds 7 and 5.</p>`,
 			notes: `<p>The design follows the classic teaching computers, such as the SAP-1 (“Simple As Possible”) of A. P. Malvino’s <em>Digital Computer Electronics</em> and the Little Man Computer. Keeping program and data in one memory is called the <em>von Neumann</em> design, after John von Neumann’s 1945 report on the EDVAC; most general-purpose computers since work this way.</p>`
@@ -112,7 +120,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			body: `
 <p>The processor has already loaded 7 into R0 and 5 into R1. Now it needs its next instruction, and it only knows one place to look: the address in the program counter, 4.</p>
-<p>The PC sends that address to memory along the <dfn data-def="The wires that carry an address from the processor to memory.">address bus</dfn>. Memory answers with the two bytes stored there, 65 and 0, which travel back on the <dfn data-def="The wires that carry bytes between the processor and memory, in either direction.">data bus</dfn> into the instruction register.</p>
+<p>The PC sends that address to memory along the <dfn data-def="The wires that carry an address from the processor to memory.">address bus</dfn>. Memory answers with the two bytes stored there, 65 and 0, which travel back on the <dfn data-def="The wires that carry bytes between the processor and memory, in either direction.">data bus</dfn> into the instruction register. (To keep things simple, this machine fetches both bytes in one tick; a real 8-bit processor would make two trips to memory.)</p>
 <p>Then the PC moves on by 2, to 6, so it already points at the instruction after this one. The processor has not yet looked at what the bytes mean.</p>`
 		},
 		{
@@ -166,7 +174,7 @@ export const spec: ExplainerSpec = {
 			controls: stepper,
 			body: `
 <p>So far the PC has only moved forward. A <dfn data-def="An instruction that writes a new address into the program counter, so the next fetch comes from somewhere else.">jump</dfn> changes that: <strong>JMP loop</strong> writes the address of <code>loop</code> into the PC, and the next fetch comes from there. The program goes round again.</p>
-<p>Going round forever is no use, so the loop needs a way out. <strong>JZ</strong> (“jump if zero”) jumps only if the Z flag is on, that is, if the last result was 0. This countdown stores the count, subtracts 1, and leaves the loop when the count reaches 0.</p>
+<p>Going round forever is no use, so the loop needs a way out. <strong>JZ</strong> (“jump if zero”) jumps only if the Z flag is on, that is, if the last ADD or SUB gave 0. This countdown stores the count, subtracts 1, and leaves the loop when the count reaches 0.</p>
 <p>Watch the PC: fetching the JMP moves it on to 12, then the JMP sets it back to 4, and round it goes until the count is 0 and JZ jumps to 12 instead. Memory box 16 shows 5, 4, 3, 2, 1 and finally 0.</p>`
 		},
 		{
@@ -195,7 +203,7 @@ export const spec: ExplainerSpec = {
 <p>“If” in a program is also a conditional jump. This program keeps the larger of two numbers, <i>a</i> and <i>b</i>, stored in memory boxes 16 and 17.</p>
 <p>It guesses that <i>b</i> is larger and stores it. Then it works out <i>b</i> − <i>a</i>. If <i>a</i> is bigger, the subtraction has to borrow (a byte can’t go below 0: the result wraps round to the top of the range, and the C flag comes on), and <strong>JC</strong> (“jump if carry”) jumps to code that stores <i>a</i> instead. If not, the jump is skipped and the program stops.</p>
 <p>Change <i>a</i> and <i>b</i> and watch which path the PC takes.</p>`,
-			notes: `<p>Wrapping round is the same <a href="../binary/#overflow">overflow</a> as in 8-bit binary addition: with <i>a</i> = 42 and <i>b</i> = 23, <i>b</i> − <i>a</i> = 23 − 42 leaves 237 in the register, which is 23 − 42 + 256. Real processors have more flags (negative, overflow…) and many conditional jumps, but each one is the same idea: test a flag, and either write a new address into the PC or don’t.</p>`
+			notes: `<p>Wrapping round is the same <a href="../binary/#overflow">overflow</a> as in 8-bit binary addition: with <i>a</i> = 42 and <i>b</i> = 23, <i>b</i> − <i>a</i> = 23 − 42 leaves 237 in the register, which is 23 − 42 + 256. Real processors have more flags (negative; overflow, which flags wrap-round for <em>signed</em> numbers the way C does for unsigned ones…) and many conditional jumps, but each one is the same idea: test a flag, and either write a new address into the PC or don’t.</p>`
 		},
 		// ------------------------------------------------------------------- yours
 		{
@@ -205,7 +213,7 @@ export const spec: ExplainerSpec = {
 			scene: 'machine',
 			hints: { edit: true },
 			duration: 60,
-			controls: [example, play, pace, tick, rewind],
+			controls: [example, reload, play, pace, tick, rewind],
 			body: `
 <p>Now edit the program on the left. It is assembled into memory as you type, and the processor starts again from address 0. Mistakes are reported with their line number.</p>
 <p>The instructions (R and S are registers R0–R3, n is a number 0–255, a is an address 0–31 or a label):</p>
@@ -213,7 +221,7 @@ export const spec: ExplainerSpec = {
 <li><code>LDI R, n</code>: put n in R</li>
 <li><code>LOAD R, [a]</code> and <code>STORE R, [a]</code>: copy a byte from memory to R, or from R to memory</li>
 <li><code>ADD R, S</code> and <code>SUB R, S</code>: R = R + S or R − S, setting the Z and C flags</li>
-<li><code>JMP a</code>, <code>JZ a</code>, <code>JC a</code>: jump always, if zero, if carry</li>
+<li><code>JMP a</code>, <code>JZ a</code>, <code>JC a</code>: jump always, if zero, if carry (the flags are set only by ADD and SUB)</li>
 <li><code>HALT</code>: stop; <code>DATA n</code>: one byte of data</li>
 </ul>
 <p>Write <code>name:</code> before a line to label it, and <code>;</code> for a comment. Try changing the 10 in the sum to 22 (the total, 253, still fits in a byte) or to 23 (276 doesn’t, and wraps round to 20).</p>`,
@@ -229,7 +237,7 @@ export const spec: ExplainerSpec = {
 			scene: 'pipeline',
 			duration: 30,
 			body: `
-<p>This page’s processor manages a few ticks a second so you can follow it. A real one is the same cycle, very fast: the Intel Core i9-14900K, a desktop processor from 2023, runs its fastest cores at up to <strong>6 GHz</strong>, six billion clock ticks every second.</p>
+<p>This page’s processor runs at 1 to 60 ticks a second, so you can follow it. A real one is the same cycle, very fast: the Intel Core i9-14900K, a desktop processor from 2023, runs its fastest cores at up to <strong>6 GHz</strong>, six billion clock ticks every second.</p>
 <p>And it doesn’t wait for one instruction to finish before fetching the next. Like an assembly line, it fetches one instruction while it decodes the one before and executes the one before that: a <dfn data-def="Overlapping the phases of consecutive instructions, so that each part of the processor is busy on every tick.">pipeline</dfn>. With three phases, a pipeline finishes up to one instruction per tick instead of one every three.</p>
 <p>Real cores go further, with longer pipelines, several instructions side by side and several cores on one chip. But underneath, each is still fetching an instruction, decoding it and executing it, billions of times a second. <strong>Every program reduces to that one small cycle.</strong></p>`,
 			notes: `<p>Clock rates from Intel’s specification page for the Core i9-14900K (performance-core base frequency 3.2 GHz, maximum turbo frequency 6 GHz, 24 cores). Ticks and instructions are not the same thing: a long pipeline adds ticks between fetching an instruction and finishing it, and jumps or waits for memory can stall it, while executing several instructions at once lets a core finish more than one per tick.</p>`

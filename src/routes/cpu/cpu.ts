@@ -65,8 +65,8 @@ export const MEANINGS: Record<Mnemonic, string> = {
 	ADD: 'ADD R, S — R = R + S (sets Z and C)',
 	SUB: 'SUB R, S — R = R − S (sets Z and C)',
 	JMP: 'JMP a — continue at address a',
-	JZ: 'JZ a — jump to a if the last result was zero',
-	JC: 'JC a — jump to a if the last result carried or borrowed',
+	JZ: 'JZ a — jump to a if the last ADD or SUB gave zero',
+	JC: 'JC a — jump to a if the last ADD or SUB carried or borrowed',
 	HALT: 'HALT — stop'
 };
 
@@ -159,7 +159,7 @@ export function assemble(source: string): Assembled {
 	const lines = source.split(/\r?\n/);
 	type Parsed = { line: number; word: string; args: string[]; addr: number };
 	const parsed: Parsed[] = [];
-	const labels: Record<string, number> = {};
+	const labels: Record<string, number> = Object.create(null) as Record<string, number>;
 	let addr = 0;
 
 	// Pass 1: labels and sizes.
@@ -207,7 +207,7 @@ export function assemble(source: string): Assembled {
 	function value(text: string, line: number, what: 'n' | 'a'): number | null {
 		const bare = text.replace(/^\[(.*)\]$/, '$1').trim();
 		if (what === 'n' && bare !== text) {
-			errors.push({ line, message: `LDI takes a number, not an address: ${q(text)}` });
+			errors.push({ line, message: `Expected a number, not an address: ${q(text)}` });
 			return null;
 		}
 		const num = parseNumber(bare);
@@ -221,6 +221,10 @@ export function assemble(source: string): Assembled {
 				return null;
 			}
 			return num;
+		}
+		if (/^r[0-3]$/i.test(bare)) {
+			errors.push({ line, message: `${q(bare)} is a register; this needs a number or an address` });
+			return null;
 		}
 		if (LABEL.test(bare)) {
 			const at = labels[bare.toLowerCase()];
