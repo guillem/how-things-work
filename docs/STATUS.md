@@ -87,6 +87,7 @@ Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<s
 - special-relativity: merged; ticked. Not reviewed yet.
 - semiconductors: merged; ticked. Not reviewed yet.
 - motors-generators: merged; ticked. Not reviewed yet.
+- light-optics: merged; ticked. Not reviewed yet.
 
 ## Open questions for the user
 
