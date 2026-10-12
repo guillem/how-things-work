@@ -146,7 +146,10 @@
 	$effect(() => {
 		void step.id;
 		untrack(() => {
-			introFrom = mounted ? shown.current : I2;
+			// "flip" must cross det 0 to show the flip: from an already flipped matrix,
+			// start from the square grid instead.
+			const flipBad = step.hints?.phase === 'flip' && det(shown.current) <= 0;
+			introFrom = mounted && !flipBad ? shown.current : I2;
 			mounted = true;
 		});
 	});
@@ -227,7 +230,7 @@
 		const q = M.b * M.b + M.d * M.d;
 		const r = M.a * M.b + M.c * M.d;
 		const smin = Math.sqrt(Math.max(0, (p + q) / 2 - Math.sqrt(((p - q) / 2) ** 2 + r * r)));
-		const K = Math.min(30, Math.ceil(7.4 / Math.max(smin, 0.05)));
+		const K = Math.min(150, Math.ceil(7.4 / Math.max(smin, 0.05)));
 		const L = K;
 		const seg = (a: Vec, b: Vec) => {
 			const A = P(apply(M, a));
@@ -275,11 +278,16 @@
 	/** A factor in a product: negatives in brackets. */
 	const f = (v: number) => (n2(v).startsWith('−') ? `(${n2(v)})` : n2(v));
 	const pt = (v: Vec) => `(${n2(v.x)}, ${n2(v.y)})`;
+	/** A term after the first: “+ 2” or “− 2”, never “+ −2”. */
+	const plusMinus = (v: number) => `${v < 0 ? '−' : '+'} ${n2(Math.abs(v))}`;
 	/** A direction as friendly numbers: (2, 1) rather than (0.89, 0.45). */
 	function dir(v: Vec): string {
 		if (Math.abs(v.x) < 1e-6) return '(0, 1)';
 		if (Math.abs(v.y) < 1e-6) return '(1, 0)';
-		const k = 1 / Math.min(Math.abs(v.x), Math.abs(v.y));
+		const lo = Math.min(Math.abs(v.x), Math.abs(v.y));
+		const hi = Math.max(Math.abs(v.x), Math.abs(v.y));
+		// Nearly along an axis: scale the big component to 1, not the tiny one.
+		const k = 1 / (lo / hi < 0.2 ? hi : lo);
 		const s = v.x < 0 ? -1 : 1;
 		return `(${n2(s * v.x * k)}, ${n2(s * v.y * k)})`;
 	}
@@ -323,14 +331,39 @@
 			};
 		})
 	);
-	/** Where an eigenvalue label goes: beyond the longer arrow, beside the line. */
+	/** The moved F's bounding box, on the stage. */
+	const Fbox = $derived.by(() => {
+		const pts = F0.map((p) => P(apply(M, p)));
+		const xs = pts.map((p) => p.x);
+		const ys = pts.map((p) => p.y);
+		return { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) };
+	});
+	/**
+	 * Where an eigenvalue label goes: beyond the longer arrow, beside the line, and
+	 * further out along the line while it would sit on the F.
+	 */
 	const eigenLabel = (l: (typeof eigenLines)[number]) => {
-		const reach = Math.max(1.2, 1.2 * Math.abs(l.value)) + 0.5;
+		const base = Math.max(1.2, 1.2 * Math.abs(l.value)) + 0.5;
 		const sgn = l.value < 0 && Math.abs(l.value) > 1 ? -1 : 1;
-		const p = P(vec(sgn * reach * l.vector.x, sgn * reach * l.vector.y));
 		const nx = -l.vector.y;
 		const ny = l.vector.x;
-		return { x: p.x + nx * 14, y: p.y - ny * 14 + 4, right: nx >= 0 };
+		const right = nx >= 0;
+		const at = (reach: number) => {
+			const p = P(vec(sgn * reach * l.vector.x, sgn * reach * l.vector.y));
+			return { x: p.x + nx * 14, y: p.y - ny * 14 + 4, right };
+		};
+		const onF = (q: { x: number; y: number }) => {
+			const xa = right ? q.x : q.x - 60;
+			return (
+				xa < Fbox.x1 + 4 && xa + 60 > Fbox.x0 - 4 && q.y - 14 < Fbox.y1 + 4 && q.y + 4 > Fbox.y0 - 4
+			);
+		};
+		for (let reach = base; reach < base + 4; reach += 0.25) {
+			const q = at(reach);
+			if (!onPlane(q, 10)) break;
+			if (!onF(q)) return q;
+		}
+		return at(base);
 	};
 	const eigenSummary = $derived.by((): string[] => {
 		switch (E.kind) {
@@ -394,6 +427,11 @@
 	const powers = ['v', 'Mv', 'M²v', 'M³v', 'M⁴v', 'M⁵v', 'M⁶v', 'M⁷v'];
 	const iterates = $derived(iterate(M, V0, 7));
 	const shownCount = $derived(reduced ? 8 : clamp(Math.floor((t - 0.6) / 0.9) + 1, 0, 8));
+	/** The angle of an eigen-direction, pointing the way the last repeat points (as in the table). */
+	const headingAngle = (v: Vec) => {
+		const last = iterates[iterates.length - 1];
+		return angleOf(last.x * v.x + last.y * v.y < 0 ? vec(-v.x, -v.y) : v);
+	};
 	/** Where the repeats are heading, from the eigenvalues (the limit, not the last row). */
 	const verdict = $derived.by((): string[] => {
 		switch (E.kind) {
@@ -403,7 +441,7 @@
 					return ['no single direction wins:', 'both stretch by the same amount'];
 				if (Math.abs(big.value) < 1e-9) return ['squashed to zero'];
 				return [
-					`heading for ${dir(big.vector)}, the`,
+					`heading for ${dir(big.vector)} (${num(headingAngle(big.vector), 1)}°), the`,
 					`direction with the biggest stretch:`,
 					`× ${n2(big.value)} each round`
 				];
@@ -774,7 +812,7 @@
 			<T
 				x={PX}
 				y={98}
-				text="v = ({n2(vx)}, {n2(vy)}) = {n2(vx)}·î + {n2(vy)}·ĵ"
+				text="v = ({n2(vx)}, {n2(vy)}) = {n2(vx)}·î {plusMinus(vy)}·ĵ"
 				size={17}
 				weight={700}
 				color="var(--lt-v)"
@@ -783,7 +821,7 @@
 			<T x={PX} y={178} text="with î and ĵ where they landed" size={13} muted />
 			<T x={PX} y={214} text="{n2(vx)}·" size={16} weight={600} />
 			<T x={PX + 34} y={214} text={pt(iL)} size={16} weight={600} color="var(--lt-i)" />
-			<T x={PX} y={242} text="+ {n2(vy)}·" size={16} weight={600} />
+			<T x={PX} y={242} text="{plusMinus(vy)}·" size={16} weight={600} />
 			<T x={PX + 46} y={242} text={pt(jL)} size={16} weight={600} color="var(--lt-j)" />
 			<T x={PX} y={276} text="= {pt(Mv)}" size={20} weight={700} color="var(--lt-v)" />
 			<T x={PX} y={350} text="Four numbers pin the whole" size={14} weight={600} />

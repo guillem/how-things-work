@@ -57,6 +57,8 @@
 	const vy = $derived(snap(Number(params.vy ?? 1)));
 	const V = $derived(P(vx, vy));
 	const vText = $derived(`(${num(vx)}, ${num(vy)})`);
+	/** A factor in a product: negatives in brackets. */
+	const fb = (n: number, d = 2) => (num(n, d).startsWith('−') ? `(${num(n, d)})` : num(n, d));
 
 	function onmove(p: Point) {
 		setParam('vx', snap((p.x - CX) / U));
@@ -247,7 +249,7 @@
 			<T x={PX} y={110} text="v = {vText}" size={30} weight={700} color="var(--lt-v)" />
 			<T x={PX} y={140} text={words} size={14} muted />
 			<T x={PX} y={210} text="Scaling by a number s:" size={14} weight={600} />
-			<T x={PX} y={236} text="s·v = ({num(s, 1)} × {num(vx)}, {num(s, 1)} × {num(vy)})" size={15} />
+			<T x={PX} y={236} text="s·v = ({fb(s, 1)} × {fb(vx)}, {fb(s, 1)} × {fb(vy)})" size={15} />
 			<T
 				x={PX}
 				y={260}
