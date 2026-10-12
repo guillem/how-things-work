@@ -40,7 +40,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Two hydrogen atoms each have one electron. When they come close, their electron clouds overlap and both electrons settle <strong>between the two nuclei</strong>, attracted by both at once. That shared pair is a <dfn data-def="A bond made by two atoms sharing a pair of electrons (or two or three pairs, in double and triple bonds).">covalent bond</dfn>, drawn as a line: H–H.</p>
 <p>Each hydrogen now counts both shared electrons as its own, so each has a full shell of two, like helium. The bonded pair has less energy than two separate atoms, which is why the molecule holds together: pulling it apart takes energy.</p>`,
-			notes: `<p>The bond is a balance. Closer than the bond length, the two positive nuclei repel each other strongly; further apart, the shared electrons hold them less. In H₂ the balance falls at about 74 picometres between the nuclei.</p>`
+			notes: `<p>The bond is a balance. Closer than the bond length, the two positive nuclei repel each other strongly; further apart, the shared electrons hold them less. In H₂ the balance puts the two nuclei much closer together than the size of two separate hydrogen atoms: their clouds overlap.</p>`
 		},
 		{
 			id: 'tug',
@@ -103,8 +103,8 @@ export const spec: ExplainerSpec = {
 			hints: { mode: 'build', start: 'C:O,O' },
 			duration: 26,
 			body: `
-<p>Oxygen needs two more electrons, not one. When it bonds to carbon it shares <strong>two pairs</strong>: a <dfn data-def="Two pairs of electrons shared between the same two atoms, drawn as two lines.">double bond</dfn>, O=C=O. Here is carbon dioxide: carbon shares two pairs with each oxygen, so it again has eight electrons around it, and each oxygen has eight too (two shared pairs and two lone pairs).</p>
-<p>Nitrogen, three electrons short, can share three pairs: a <dfn data-def="Three pairs of electrons shared between the same two atoms, drawn as three lines.">triple bond</dfn>. Try a nitrogen centre with another nitrogen (N≡N, the nitrogen that makes up 78% of the air), or a carbon with one hydrogen and one nitrogen: H–C≡N, hydrogen cyanide.</p>`,
+<p>Oxygen needs two more electrons, not one. When it bonds to carbon it shares <strong>two pairs</strong>: a <dfn data-def="Two pairs of electrons shared between the same two atoms, drawn as two lines.">double bond</dfn>, O=C=O. Here is carbon dioxide: carbon shares two pairs with each oxygen, so it again has eight electrons around it, and each oxygen has eight too (two shared pairs and two lone pairs of its own; the builder draws lone pairs only on the centre atom).</p>
+<p>Nitrogen, three electrons short, can share three pairs: a <dfn data-def="Three pairs of electrons shared between the same two atoms, drawn as three lines.">triple bond</dfn>. Try a nitrogen centre with another nitrogen (N≡N, the nitrogen that makes up most of the air), or a carbon with one hydrogen and one nitrogen: H–C≡N, hydrogen cyanide.</p>`,
 			notes: `<p>Multiple bonds are shorter and stronger than single bonds between the same atoms. The N≡N triple bond is one of the strongest there is, which is why the nitrogen in the air is so unreactive and why making fertiliser from it takes so much energy.</p>`
 		},
 		// ------------------------------------------------------------------ shape
@@ -199,7 +199,7 @@ export const spec: ExplainerSpec = {
 <p>Polar molecules stick to each other, positive end to negative end, and the stickier the molecules, the more heat it takes to pull them apart into a gas. Four molecules of almost the same mass show how much this matters: non-polar methane boils at −162 °C, ammonia at −33 °C, hydrogen fluoride at 20 °C, and water at <strong>100 °C</strong>.</p>
 <p>Water's bent shape, with two δ+ hydrogens on one side and two lone pairs on the other, lets each molecule cling to four neighbours (through <dfn data-def="An especially strong attraction between a δ+ hydrogen on one molecule and a lone pair on an N, O or F atom of another.">hydrogen bonds</dfn>). A straight water molecule would not be polar at all, like CO₂, and its molecules would cling to each other far less.</p>
 <p>That is the whole story: <strong>atoms bond by sharing or transferring outer electrons, and the repulsion between electron pairs gives each molecule the shape that decides its properties</strong>.</p>`,
-			notes: `<p>Boiling points at normal atmospheric pressure from the NIST Chemistry WebBook (ammonia: −33.34 °C, its accepted value). Polarity also decides what dissolves in what: polar water dissolves salt and sugar, but not oil, whose molecules are long non-polar chains of carbon and hydrogen ("like dissolves like").</p>`
+			notes: `<p>Boiling points at normal atmospheric pressure from the NIST Chemistry WebBook (for ammonia, from the WebBook's vapour-pressure equation). Polarity also decides what dissolves in what: polar water dissolves salt and sugar, but not oil, whose molecules are long non-polar chains of carbon and hydrogen ("like dissolves like").</p>`
 		}
 	]
 };

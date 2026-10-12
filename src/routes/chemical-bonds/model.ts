@@ -134,7 +134,18 @@ export const canAdd = (m: Molecule, sym: Sym) => refusal(m, sym) === null;
 // acids, centre first for the rest), with subscripts.
 const SUB = '₀₁₂₃₄₅₆₇₈₉';
 const sub = (n: number) => (n > 1 ? [...String(n)].map((d) => SUB[+d]).join('') : '');
+// Formulas usually written another way than the rule below gives.
+const FORMULA: Record<string, string> = {
+	'C:H,N': 'HCN',
+	'C:F,N': 'FCN',
+	'C:Cl,N': 'ClCN',
+	'O:Cl,Cl': 'Cl₂O',
+	'F:Cl': 'ClF',
+	'N:H,O': 'HNO'
+};
 export function formula(m: Molecule): string {
+	const fixed = FORMULA[`${m.centre}:${[...m.ligands].sort().join(',')}`];
+	if (fixed) return fixed;
 	const counts = new Map<Sym, number>();
 	const add = (s: Sym) => counts.set(s, (counts.get(s) ?? 0) + 1);
 	add(m.centre);
@@ -510,13 +521,14 @@ export const molarMass = (m: Molecule) =>
  * Normal boiling points (K) of four small molecules of similar mass, from the NIST
  * Chemistry WebBook (webbook.nist.gov, phase-change data, accessed 2026-10-12):
  * CH4 111 ± 2 K (average of 13 values); HF 292.7 K (Streng 1971); H2O 373.17 K
- * (average of 7 values). NH3: the WebBook gives no Tboil; 239.81 K (−33.34 °C) is the
- * value in Wikipedia's ammonia infobox, consistent with the WebBook's enthalpy of
- * vaporization measured at the boiling point, 239 K (Overstreet and Giauque 1937).
+ * (average of 7 values). The WebBook gives no boiling point for NH3; it is computed here
+ * from the WebBook's Antoine vapour-pressure equation for ammonia (Stull 1947,
+ * 164.0–239.6 K: log10 P/bar = 3.18757 − 506.713 / (T/K − 80.78)) at 1 atm, 240.0 K.
  */
+const ammoniaBoiling = 506.713 / (3.18757 - Math.log10(1.01325)) + 80.78;
 export const BOILING: { molecule: Molecule; kelvin: number }[] = [
 	{ molecule: { centre: 'C', ligands: ['H', 'H', 'H', 'H'] }, kelvin: 111 },
-	{ molecule: { centre: 'N', ligands: ['H', 'H', 'H'] }, kelvin: 239.81 },
+	{ molecule: { centre: 'N', ligands: ['H', 'H', 'H'] }, kelvin: ammoniaBoiling },
 	{ molecule: { centre: 'O', ligands: ['H', 'H'] }, kelvin: 373.17 },
 	{ molecule: { centre: 'F', ligands: ['H'] }, kelvin: 292.7 }
 ];

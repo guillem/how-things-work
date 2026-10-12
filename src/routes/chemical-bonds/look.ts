@@ -15,7 +15,7 @@ export interface AtomLook {
 
 export const ATOM: Record<Sym, AtomLook> = {
 	H: { fill: '#f3f4f6', edge: '#9ca3af', ink: '#1f2937' },
-	C: { fill: '#4b5563', edge: '#9ca3af', ink: '#ffffff' },
+	C: { fill: 'var(--carbon)', edge: '#9ca3af', ink: '#ffffff' },
 	N: { fill: '#3b82f6', edge: '#1d4ed8', ink: '#ffffff' },
 	O: { fill: '#e5484d', edge: '#b3262b', ink: '#ffffff' },
 	F: { fill: '#9fd356', edge: '#5f8f22', ink: '#1f2937' },

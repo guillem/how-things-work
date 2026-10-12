@@ -66,7 +66,7 @@ Last updated: 2026-10-12 UTC.
 
 ## Current development
 
-None in progress. Released in v0.1.2 (2026-10-12), built in cloud sessions on 2026-10-11: the
+In progress: the topics listed at the end of this section. Released in v0.1.2 (2026-10-12), built in cloud sessions on 2026-10-11: the
 photosynthesis review fixes, then its rate model and "What limits the rate?" step (PROSPECT-D
 leaf optics + FvCB C₃ model, `src/routes/photosynthesis/model.ts`); photosynthesis is ticked and
 its review report deleted. Built-state params in use: `web:<step>`, `board:build`,

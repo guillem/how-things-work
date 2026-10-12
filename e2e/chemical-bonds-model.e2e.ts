@@ -74,6 +74,14 @@ test('names of familiar molecules', () => {
 	expect(analyse(mol('C', 'Cl', 'H', 'H', 'H')).formula).toBe('CH₃Cl');
 	expect(analyse(mol('H', 'Cl')).name).toBe('hydrogen chloride');
 	expect(analyse(mol('C', 'H', 'H', 'O')).name).toBe('formaldehyde');
+	expect(analyse(mol('C', 'N', 'H')).formula).toBe('HCN');
+	expect(analyse(mol('C', 'H', 'N')).name).toBe('hydrogen cyanide');
+	expect(analyse(mol('O', 'Cl', 'Cl')).formula).toBe('Cl₂O');
+	expect(analyse(mol('O', 'H', 'Cl')).formula).toBe('HOCl');
+	expect(analyse(mol('Cl', 'F')).formula).toBe('ClF');
+	expect(analyse(mol('F', 'Cl')).formula).toBe('ClF');
+	expect(analyse(mol('Cl', 'H')).formula).toBe('HCl');
+	expect(analyse(mol('H', 'Cl')).formula).toBe('HCl');
 });
 
 test('VSEPR shapes of known molecules', () => {
@@ -136,4 +144,7 @@ test('similar masses, very different boiling points: water boils highest', () =>
 	const methane = BOILING.find((b) => analyse(b.molecule).name === 'methane')!;
 	expect(water.kelvin - 273.15).toBeCloseTo(100, 0);
 	expect(methane.kelvin - 273.15).toBeLessThan(-150);
+	// Ammonia, from the vapour-pressure equation at 1 atm: −33 °C.
+	const ammonia = BOILING.find((b) => analyse(b.molecule).name === 'ammonia')!;
+	expect(Math.round(ammonia.kelvin - 273.15)).toBe(-33);
 });
