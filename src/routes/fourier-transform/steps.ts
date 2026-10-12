@@ -159,9 +159,9 @@ export const spec: ExplainerSpec = {
 			controls: [terms],
 			body: `
 <p>Look closely at the jump (magnified on the stage). Just before it the sum overshoots the square wave, rising above 1, and wiggles as it settles.</p>
-<p>Add more frequencies. The wiggles get narrower and squeeze up against the jump, but the first peak does <em>not</em> shrink away: from 5 Hz on it stays about <strong>9% of the jump</strong> too high (the jump is from +1 to −1, a drop of 2, so the peak sits near 1.18), slowly settling to 8.9%. This is the <dfn data-def="The overshoot of about 9% of the jump that a sum of sine waves always makes next to a sudden jump, however many terms are added.">Gibbs phenomenon</dfn>.</p>
+<p>Add more frequencies. The wiggles get narrower and squeeze up against the jump, but the first peak does <em>not</em> shrink away: from 5 Hz on it stays about <strong>9% of the jump</strong> too high (the jump is from +1 to −1, a drop of 2, so the peak sits near 1.18), slowly settling towards 8.95%. This is the <dfn data-def="The overshoot of about 9% of the jump that a sum of sine waves always makes next to a sudden jump, however many terms are added.">Gibbs phenomenon</dfn>.</p>
 <p>So a finite number of smooth sine waves can never draw a perfect jump. What does go to zero is the average gap: the overshoot takes up less and less time.</p>`,
-			notes: `<p>The limit is (1/π)∫₀^π (sin x / x) dx − ½ ≈ 0.0895 of the jump. Henry Wilbraham noticed it in 1848; it became famous in 1898–99, when Albert Michelson, whose mechanical harmonic analyser added up to 80 sine waves, asked about it in <i>Nature</i> and Josiah Willard Gibbs answered. It shows up in practice as “ringing” next to sharp edges in compressed images and filtered sound.</p>`
+			notes: `<p>The limit is (1/π)∫₀^π (sin x / x) dx − ½ ≈ 0.0895 of the jump. Henry Wilbraham noticed it in 1848; it became famous in 1898–99, when Albert Michelson, whose mechanical harmonic analyser added up to 80 sine waves, questioned in <i>Nature</i> how a Fourier series behaves at a jump; Josiah Willard Gibbs replied, and in a correction of 1899 described the overshoot. It shows up in practice as “ringing” next to sharp edges in compressed images and filtered sound.</p>`
 		},
 		{
 			id: 'circles',
@@ -173,7 +173,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A sine wave is the height of a point going round a circle (see <em>Sine, cosine and the unit circle</em>). So each ingredient can be drawn as a circle: its <strong>radius</strong> is the amplitude, and it turns as many times per second as its frequency.</p>
 <p>Now stack the circles: put the centre of each on the turning point of the one before. The heights add up, so the height of the <strong>last point</strong> is the sum of all the sine waves. Its trail, drawn to the right as time passes, is the rebuilt <strong class="tag sum">signal</strong>.</p>
-<p>For the square wave the 1 Hz circle is the biggest and turns slowest; the higher frequencies are small and fast. Add circles with the slider, or pick another waveform: every one of them is just circles of the right sizes, turning at the right speeds, from the right starting angles.</p>`,
+<p>For the square wave the 1 Hz circle is the biggest and turns slowest; the higher frequencies are small and fast. Add circles with the slider, or pick another waveform: every one of them is just circles of the right sizes, turning at the right speeds, from the right starting angles (plus a fixed offset, the 0 Hz average, where the chain starts).</p>`,
 			notes: `<p>The starting angle of each circle is its <dfn data-def="Where in its cycle a wave is at time zero, as an angle.">phase</dfn>. For the square wave every circle starts at angle 0; for the sawtooth every one starts at 180° (upside down); the triangle's alternate between 0° and 180°, and the pulse and your drawings need all sorts of angles. Amplitude and phase together are all you need to know about each ingredient.</p>`
 		},
 		// ------------------------------------------------------------------ transform
@@ -203,10 +203,10 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [windK, shape],
 			body: `
-<p>How do you measure how much of, say, 3 Hz is hidden in a signal? Take a stretch of it (here eight seconds) and <strong>wind it round a circle</strong>, 3 turns per second. At each moment, put a point at the angle the winding has reached and at a distance equal to the signal's value (a negative value lands on the opposite side). That is multiplying the signal by e<sup>−iθ</sup> from <em>Complex numbers</em>: a turn, clockwise.</p>
+<p>How do you measure how much of, say, 3 Hz is hidden in a signal? Take a stretch of it (here eight seconds) and <strong>wind it round a circle</strong>, 3 turns per second. At each moment, put a point at the angle the winding has reached and at a distance equal to the signal's value (a negative value lands on the opposite side). That is multiplying the signal by e<sup>−iθ</sup> from <em>Complex numbers and Euler's formula</em>: a turn, clockwise.</p>
 <p>Then find the <strong>centre of mass</strong> of the wound curve, the average of all its points. If the signal has a 3 Hz ingredient, its highs keep landing on the same side of the circle and the centre is pulled off the middle: <strong>twice its distance from the middle is the amplitude</strong>. Any other frequency goes round at the wrong speed, so it lands on every side equally and cancels out.</p>
-<p>Change the winding speed. The graph at the bottom plots the strength found at every speed: it peaks at the signal's own frequencies, and at those whole numbers it equals the bars of the spectrum.</p>`,
-			notes: `<p>In symbols, the amount of frequency <i>k</i> is the average of <i>x</i>(<i>t</i>) · e<sup>−2πi<i>kt</i></sup> over one second: the centre of mass of the wound curve, a complex number whose length gives the amplitude and whose angle gives the phase. Between whole frequencies the strength is small but not zero, with ripples beside each peak, because eight seconds is a finite stretch: a longer recording makes the peaks narrower, a shorter one wider (with a single second they would blur into each other).</p>`
+<p>Change the winding speed. The graph at the bottom plots the strength found at every speed: it peaks at the signal's own frequencies, and at those whole numbers it equals the bars of the spectrum (at 0 Hz, the size of the average).</p>`,
+			notes: `<p>In symbols, the amount of frequency <i>k</i> is the average of <i>x</i>(<i>t</i>) · e<sup>−2πi<i>kt</i></sup> over one second: the centre of mass of the wound curve, a complex number whose length is half the amplitude (for <i>k</i> ≥ 1; at 0 Hz it is the average itself) and whose angle is the phase minus a quarter turn (because this page measures phase on sine waves). Between whole frequencies the strength is small but not zero, with ripples beside each peak, because eight seconds is a finite stretch: a longer recording makes the peaks narrower, a shorter one wider (with a single second they would blur into each other).</p>`
 		},
 		{
 			id: 'edit',
@@ -219,7 +219,7 @@ export const spec: ExplainerSpec = {
 <p>The transform also runs backwards. Given the bars (and the phases), add up the sine waves and the signal comes back: the <dfn data-def="Turning a spectrum back into a signal by adding up its sine waves.">inverse Fourier transform</dfn>.</p>
 <p>Drag any bar up or down (or focus it with Tab and use the arrow keys). The <strong class="tag sum">signal</strong> above is rebuilt from all the bars on the chart (0 to 16 Hz) at once, over the faint original. Try it:</p>
 <ul>
-<li>pull every bar but the first down to zero, and a pure sine wave is left;</li>
+<li>pull every bar except the 1 Hz one down to zero, and a pure sine wave is left;</li>
 <li>remove the 3 Hz bar from the square wave, and its flat top bulges in the middle;</li>
 <li>lower the high bars and the corners soften. That is what a <dfn data-def="A filter that lets low frequencies through and removes high ones, smoothing a signal.">low-pass filter</dfn>, or the treble knob on a stereo, does.</li>
 </ul>`,
@@ -233,7 +233,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'draw' },
 			controls: [terms, shapeDraw],
 			body: `
-<p>Now draw your own: <strong>drag across the top graph</strong>, from left to right, any shape you like. A gap is filled with a straight line, and the end of the second joins the start of the next, because the signal repeats.</p>
+<p>Now draw your own: <strong>drag across the top graph</strong>, from left to right, any shape you like (on a touch screen, tap <strong>Draw</strong> first, so that the page still scrolls). A gap is filled with a straight line, and the end of the second joins the start of the next, because the signal repeats.</p>
 <p>The page samples your drawing and takes its transform. The bars below are its spectrum, and the <strong class="tag sum">signal</strong> is rebuilt from the frequencies the slider lets in (the bars that take part are highlighted). Start from 1 Hz and add one frequency at a time: a rough outline first, then the details.</p>
 <p>Whatever you draw, it works: <strong>any</strong> repeating signal is a sum of sine waves. Smooth curves settle after a few frequencies; scribbles and jumps keep needing more.</p>`
 		},
@@ -261,10 +261,10 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [circles, curveDraw],
 			body: `
-<p><strong>Draw a loop on the stage</strong>; when you let go it closes with a straight line back to the start. Your drawing is sampled 200 times, transformed, and redrawn by a chain of circles. Turn the circles down to a handful and up again.</p>
+<p><strong>Draw a loop on the stage</strong> (on a touch screen, tap <strong>Draw</strong> first); when you let go it closes with a straight line back to the start. Your drawing is sampled 200 times, transformed, and redrawn by a chain of circles. Turn the circles down to a handful and up again.</p>
 <p>That is the takeaway of this page: <strong>any signal can be written as a sum of sine waves, and the Fourier transform says how much of each frequency it contains</strong>. A wave on a graph, a drawing, a sound, an image: they are all a recipe of frequencies.</p>
 <p>That recipe is often easier to work with than the signal itself: it shows the notes in a chord, the hum in a recording or the vibration in a bridge, and it is what equalisers, compression and many medical scanners work on.</p>`,
-			notes: `<p>Computers compute the transform with the <dfn data-def="A fast algorithm for the discrete Fourier transform, popularised by Cooley and Tukey in 1965.">fast Fourier transform</dfn> (FFT), which needs about <i>N</i> log <i>N</i> steps instead of <i>N</i>²: a million samples take a few million operations rather than a trillion. MRI scanners measure the transform of the image directly and turn it into a picture with an inverse transform.</p>`
+			notes: `<p>Computers compute the transform with the <dfn data-def="A fast algorithm for the discrete Fourier transform, popularised by Cooley and Tukey in 1965.">fast Fourier transform</dfn> (FFT), which needs about <i>N</i> log <i>N</i> steps instead of <i>N</i>²: a million samples take some twenty million operations rather than a trillion. MRI scanners measure the transform of the image directly and turn it into a picture with an inverse transform.</p>`
 		}
 	]
 };

@@ -63,6 +63,20 @@ test('a sawtooth has every frequency, 2/(πn); a triangle only odd ones, 8/(π²
 	}
 });
 
+test('sawtooth circles all start at 180°; triangle circles alternate 0° and 180°', () => {
+	const saw = waveSpectrum(shapeSamples('sawtooth', 1024));
+	const tri = waveSpectrum(shapeSamples('triangle', 1024));
+	const wrap = (p: number) => Math.abs(Math.atan2(Math.sin(p), Math.cos(p)));
+	for (const n of [1, 2, 3, 4]) expect(wrap(saw[n].phase)).toBeCloseTo(Math.PI, 9);
+	for (const [n, p] of [
+		[1, 0],
+		[3, Math.PI],
+		[5, 0],
+		[7, Math.PI]
+	] as const)
+		expect(wrap(tri[n].phase)).toBeCloseTo(p, 9);
+});
+
 test('a pulse high for a fifth of the period has no 5th or 10th frequency', () => {
 	const x = shapeSamples('pulse', 1000);
 	expect(amp(x, 5)).toBeLessThan(1e-9);

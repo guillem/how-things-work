@@ -52,10 +52,13 @@ test('gibbs: the overshoot stays near 9% of the jump as frequencies are added', 
 	page
 }) => {
 	await open(page, './fourier-transform/#gibbs', 'The jump: from +1 down to −1');
+	// Already with 1 to 3 Hz the highest point (1.20) is the overshoot next to the jump.
+	await range(page, 'terms').fill('3');
+	await expect(stage(page)).toContainText('= 10.0% of the jump');
 	await range(page, 'terms').fill('11');
 	await expect(stage(page)).toContainText('= 9.1% of the jump');
 	await range(page, 'terms').fill('49');
-	await expect(stage(page)).toContainText('= 8.9% of the jump');
+	await expect(stage(page)).toContainText('= 9.0% of the jump');
 	await expect(stage(page)).toContainText('The peak is 10 ms before the jump');
 });
 
@@ -145,4 +148,54 @@ test('epicycles: the circles slider and a drawn loop', async ({ page }) => {
 	await expect(stage(page)).toContainText('3 circles drawing your drawing');
 	await expect(stage(page)).toContainText('1 turn clockwise per trip');
 	await expect(option(page, 'curve', 'drawn')).toHaveAttribute('aria-checked', 'true');
+});
+
+test.describe('on a touch screen', () => {
+	test.use({ hasTouch: true });
+
+	/** A real finger stroke through scene points (Chromium touch events). */
+	async function swipe(page: Page, points: { x: number; y: number }[]) {
+		const box = (await page.locator('.stage svg').boundingBox())!;
+		const k = Math.min(box.width / 960, box.height / 600);
+		const ox = box.x + (box.width - 960 * k) / 2;
+		const oy = box.y + (box.height - 600 * k) / 2;
+		const at = (p: { x: number; y: number }) => [{ x: ox + p.x * k, y: oy + p.y * k }];
+		const cdp = await page.context().newCDPSession(page);
+		const touch = (
+			type: 'touchStart' | 'touchMove' | 'touchEnd',
+			touchPoints: { x: number; y: number }[]
+		) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints });
+		await touch('touchStart', at(points[0]));
+		for (const p of points.slice(1)) await touch('touchMove', at(p));
+		await touch('touchEnd', []);
+	}
+	const loop = Array.from({ length: 61 }, (_, i) => {
+		const a = (i / 60) * 2 * Math.PI;
+		return { x: 318 + 170 * Math.cos(a), y: 318 + 120 * Math.sin(a) };
+	});
+
+	test('a finger draws a loop only after the Draw button', async ({ page }) => {
+		await open(page, './fourier-transform/#draw-curve', '12 circles drawing the heart');
+		// Without the button, a swipe over the stage leaves the heart alone (it scrolls the page).
+		await swipe(page, loop);
+		await expect(stage(page)).toContainText('12 circles drawing the heart');
+		await page.getByRole('button', { name: 'Draw with a finger' }).click();
+		await swipe(page, loop);
+		await expect(stage(page)).toContainText('12 circles drawing your drawing');
+		// One stroke per press: the button is ready again.
+		await expect(page.getByRole('button', { name: 'Draw with a finger' })).toBeVisible();
+	});
+
+	test('a finger draws a waveform only after the Draw button', async ({ page }) => {
+		await open(page, './fourier-transform/#draw-wave', 'The square wave rebuilt from 1 to 5 Hz');
+		const wave = Array.from({ length: 41 }, (_, i) => ({
+			x: 120 + i * 19.5,
+			y: 170 - 70 * Math.sin((i / 40) * 2 * Math.PI)
+		}));
+		await swipe(page, wave);
+		await expect(stage(page)).toContainText('The square wave rebuilt from 1 to 5 Hz');
+		await page.getByRole('button', { name: 'Draw with a finger' }).click();
+		await swipe(page, wave);
+		await expect(stage(page)).toContainText('Your drawing rebuilt from 1 to 5 Hz');
+	});
 });
