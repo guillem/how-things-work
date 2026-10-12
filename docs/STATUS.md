@@ -66,28 +66,19 @@ Last updated: 2026-10-12 UTC.
 
 ## Current development
 
-**Batch 7 (2026-10-12):** chemical-bonds, waves-interference, radioactivity,
-linear-transformations, fourier-transform. One builder agent per topic in a local worktree, no
-reviewer agents (fact-check via `make review` instead); all merged into `main` locally and ticked,
-`make e2e-full` green (543 tests). Fact-check reviews (Batch API, ~$3.30 for the five) applied by one agent per topic and the
-reports deleted; `make e2e-full` green again (547 tests). Not pushed until the user validates.
+**Batch 8 (2026-10-12):** light-optics, semiconductors, special-relativity, cryptography, cpu,
+motors-generators. Same process as batch 7 (one builder agent each in a local worktree, fact-check
+via `make review` ~$4.35, one agent each applying its report). All merged into `main` locally and
+ticked; `make e2e-full` green (662 tests). Not pushed until the user validates.
 
-**cpu (2026-10-12):** built in a local worktree (`topic/cpu`): 8-bit teaching machine with an
-editable program (textarea in the stage), Step/scrubber replay reusing `sorting/playback.ts`.
+Batch 7 (chemical-bonds, waves-interference, radioactivity, linear-transformations,
+fourier-transform) released in v0.1.3 (2026-10-12).
 
 Released in v0.1.2 (2026-10-12): the photosynthesis review fixes, rate model and "What limits the
 rate?" step (built in cloud sessions on 2026-10-11).
 
-**special-relativity** (topic/special-relativity, 2026-10-12): built and ticked: 12 steps, 5 scenes, model + browser tests; not merged.
-
 Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<step>`,
 `map:<step>`, `view:zoom`, `mol:<step>`, `probe:tank`, `ft:wave`, `ft:bars`, `ft:curve`, `dope:<step>`, `pick:<step>`.
-
-- cryptography: merged; ticked. Not reviewed yet.
-- special-relativity: merged; ticked. Not reviewed yet.
-- semiconductors: merged; ticked. Not reviewed yet.
-- motors-generators: merged; ticked. Not reviewed yet.
-- light-optics: merged; ticked. Not reviewed yet.
 
 ## Open questions for the user
 

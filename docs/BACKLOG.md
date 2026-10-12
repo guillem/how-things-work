@@ -143,6 +143,9 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 
 ## Site and framework work
 
+- **Promote `sorting/playback.ts`** to `src/lib`: `cpu` imports it across routes for its replay.
+- **`Label`'s `size` has no effect** (found by cryptography, 2026-10-12): the stage CSS fixes all
+  stage text at 13 px, so topics roll their own text helpers (`Txt`, `T`).
 - **Promote `VectorHandle`** (linear-transformations' `scenes/VectorHandle.svelte`, copied from
   complex-numbers' `PointHandle`) into `src/lib/draw`: a 2D draggable point with arrow keys on both
   axes; the shared `Handle` only has one-dimensional keys.
