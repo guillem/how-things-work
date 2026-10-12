@@ -31,11 +31,12 @@ for (const spec of specs) {
 					// orbits-kepler #two occasionally exceeds the default 5 s expectation
 					// for the first render under the full parallel run (passes alone and
 					// on rerun): its 30-year replay is the heaviest first frame.
-					if (spec.slug === 'orbits-kepler' && step.id === 'two') expect.setTimeout(15_000);
+					const slow = spec.slug === 'orbits-kepler' && step.id === 'two';
+					const wait = { timeout: slow ? 15_000 : 5_000 };
 					await page.goto(`./${spec.slug}/#${step.id}`);
-					await expect(page.locator('aside h2')).toHaveText(step.title);
+					await expect(page.locator('aside h2')).toHaveText(step.title, wait);
 					// The scene is lazy-loaded: wait until it has drawn something.
-					await expect(stage(page).locator('g').first()).toBeAttached();
+					await expect(stage(page).locator('g').first()).toBeAttached(wait);
 					await expect(stage(page).locator('text').first()).toBeAttached();
 					// Let a couple of animation frames run before checking the console.
 					await page.waitForTimeout(500);
