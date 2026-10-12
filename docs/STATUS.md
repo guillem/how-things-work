@@ -72,6 +72,8 @@ reviewer agents (fact-check via `make review` instead); all merged into `main` l
 `make e2e-full` green (543 tests). Fact-check reviews (Batch API, ~$3.30 for the five) applied by one agent per topic and the
 reports deleted; `make e2e-full` green again (547 tests). Not pushed until the user validates.
 
+motors-generators (2026-10-12): built in a local worktree (`topic/motors-generators`), 9 steps, ticked; awaiting merge and `make e2e-full`.
+
 Released in v0.1.2 (2026-10-12): the photosynthesis review fixes, rate model and "What limits the
 rate?" step (built in cloud sessions on 2026-10-11).
 
