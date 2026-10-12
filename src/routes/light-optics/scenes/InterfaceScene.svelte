@@ -239,7 +239,7 @@
 
 	{#if tir}
 		<Card
-			x={604}
+			x={24}
 			y={24}
 			w={328}
 			h={84}
@@ -261,16 +261,16 @@
 			]}
 		/>
 		{#if theta2 === null}
-			{@render label(768, 134, 'Total internal reflection', { weight: 700, size: 15 })}
+			{@render label(188, 134, 'Total internal reflection', { weight: 700, size: 15 })}
 		{/if}
 		{#if crit !== null}
-			{@render label(768, theta2 === null ? 156 : 134, `critical angle ${fmt(crit, 1)}° (dashed)`, {
+			{@render label(188, theta2 === null ? 156 : 134, `critical angle ${fmt(crit, 1)}° (dashed)`, {
 				color: 'var(--lo-theta2)',
 				size: 13,
 				weight: 600
 			})}
 		{:else}
-			{@render label(768, 134, 'no critical angle: n is 1, the same as air', {
+			{@render label(188, 134, 'no critical angle: n is 1, the same as air', {
 				muted: true,
 				size: 12
 			})}

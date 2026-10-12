@@ -199,7 +199,7 @@
 	<Card
 		x={24}
 		y={24}
-		w={520}
+		w={600}
 		h={84}
 		cells={[
 			{
@@ -215,6 +215,11 @@
 				color: rayColour(404.7, dark)
 			},
 			{
+				id: 'd',
+				label: white ? 'Yellow is turned by' : 'This colour turns by',
+				value: devHere === null ? '—' : `${fmt(devHere, 1)}°`
+			},
+			{
 				id: 's',
 				label: 'Spread of the colours',
 				value: devRed !== null && devViolet !== null ? `${fmt(devViolet - devRed, 1)}°` : '—',
@@ -223,26 +228,17 @@
 		]}
 	/>
 	{#if devHere === null}
-		{@render label(
-			284,
-			134,
-			'The light cannot get out through the far face: total internal reflection',
-			{
-				size: 13,
-				weight: 600,
-				color: 'var(--lo-theta2)'
-			}
-		)}
-	{:else}
-		{@render label(
-			284,
-			134,
-			`${white ? 'Yellow light' : 'This light'} is turned through ${fmt(devHere, 1)}°`,
-			{
-				size: 13,
-				muted: true
-			}
-		)}
+		{@render label(932, 48, 'Total internal reflection:', {
+			size: 13,
+			weight: 700,
+			anchor: 'end',
+			color: 'var(--lo-theta2)'
+		})}
+		{@render label(932, 68, 'the light cannot get out through the far face', {
+			size: 13,
+			anchor: 'end',
+			color: 'var(--lo-theta2)'
+		})}
 	{/if}
 	{@render label(lampAt.x + 10, lampAt.y + 48, 'drag the lamp', { muted: true, size: 12 })}
 </g>

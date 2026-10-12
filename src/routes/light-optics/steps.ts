@@ -110,8 +110,8 @@ const lensType: Control = {
 	label: 'Lens',
 	default: 'convex',
 	options: [
-		{ value: 'convex', label: 'Converging (thicker in the middle)' },
-		{ value: 'concave', label: 'Diverging (thinner in the middle)' }
+		{ value: 'convex', label: 'Converging' },
+		{ value: 'concave', label: 'Diverging' }
 	]
 };
 
@@ -133,10 +133,10 @@ const material: Control = {
 	label: 'Material',
 	default: 'flint',
 	options: [
-		{ value: 'water', label: 'Water (n = 1.33)' },
-		{ value: 'crown', label: 'Crown glass (n = 1.52)' },
-		{ value: 'flint', label: 'Flint glass (n = 1.78)' },
-		{ value: 'diamond', label: 'Diamond (n = 2.42)' }
+		{ value: 'water', label: 'Water' },
+		{ value: 'crown', label: 'Crown glass' },
+		{ value: 'flint', label: 'Flint glass' },
+		{ value: 'diamond', label: 'Diamond' }
 	]
 };
 
@@ -302,7 +302,7 @@ export const spec: ExplainerSpec = {
 <li>violet light (405 nm): n = 1.842</li>
 </ul>
 <p>White light is a mix of all the colours. A <dfn data-def="A block of glass with flat faces at an angle to each other, usually a triangle.">prism</dfn> bends it twice, going in and coming out, in the same direction, so the small differences add up and the colours fan out into a spectrum: red, orange, yellow, green, blue, violet. Isaac Newton did this in 1666 and showed that a second prism could not split any one colour further.</p>
-<p>Turn white light off and pick one colour: it goes through on its own path. Try crown glass (less dispersion, a narrower fan), and diamond, whose light can't get out through the far face at all: it always meets it beyond diamond's small critical angle and bounces back inside.</p>`,
+<p>Drag the lamp to change the angle at which the light meets the prism. Turn white light off and pick one colour: it goes through on its own path. Try crown glass (less dispersion, a narrower fan), and diamond, whose light can't get out through the far face at all: it always meets it beyond diamond's small critical angle and bounces back inside.</p>`,
 			notes: `<p>The indices come from the glass makers' published Sellmeier fits (SCHOTT N-SF11 and N-BK7), from Daimon and Masumura's measurements for water and Peter's for diamond. Light of a single wavelength can't be split further because its frequency is fixed: dispersion sorts colours, it doesn't create them. Dispersion also blurs simple lenses (each colour focuses at a slightly different distance), and achromatic lenses pair crown and flint glass to cancel it.</p>`
 		},
 		{
