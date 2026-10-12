@@ -4,7 +4,8 @@ import { colourName } from './optics';
 // Every number quoted in the text is computed by optics.ts from the sourced
 // refractive indices there (SCHOTT N-BK7 and N-SF11, Daimon & Masumura 2007 for
 // water, Malitson 1965 for fused silica, Peter 1923 for diamond), and checked
-// in e2e/light-optics-model.e2e.ts.
+// in e2e/light-optics-model.e2e.ts. The critical angles in the TIR step are for
+// the rounded indices on the slider (1.33, 1.52, 2.42), as the scene shows them.
 
 /** Named materials on the index slider (n at 589 nm, from optics.ts). */
 const MARKS: [number, string][] = [
@@ -251,8 +252,8 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [entry, bend],
 			body: `
-<p>An <dfn data-def="A thin strand of very pure glass that guides light along its length by total internal reflection.">optical fibre</dfn> is a strand of very pure glass. Light that enters one end meets the side wall at a grazing angle, far beyond the critical angle (43° for fused silica), so it is totally reflected, crosses to the other wall, is reflected again, and zig-zags along. The fibre can curve and the light follows.</p>
-<p>Bend it too tightly, though, and the light meets the outside of the bend at a steeper angle, less than the critical one. Some of it gets out at each bounce, and the fibre leaks. The readout shows how much of the light reaches the far end.</p>
+<p>An <dfn data-def="A thin strand of very pure glass that guides light along its length by total internal reflection.">optical fibre</dfn> is a strand of very pure glass. Light that enters one end meets the side wall at a slanting angle, well beyond the critical angle (between 54° and 90° here, against 43° for fused silica), so it is totally reflected, crosses to the other wall, is reflected again, and zig-zags along. The fibre can curve and the light follows.</p>
+<p>Bend it too tightly, though, and the light meets the outside of the bend more nearly head-on, at an angle from the normal smaller than the critical one. Some of it gets out at each bounce, and the fibre leaks. The readout shows how much of the light reaches the far end.</p>
 <p>Fibres carry the internet. A pulse of infrared light sent down a fibre still has half its power after more than 15 km, and the cables under the oceans carry most of the data between continents.</p>`,
 			notes: `<p>This fibre is drawn as a bare glass rod in air, and many times too thick. A real telecom fibre is a glass core about 8 µm across inside a cladding of slightly lower index, 125 µm across; the reflection happens at the clean, protected boundary between the two glasses. With so small a difference in index the critical angle is close to 90°, so a real fibre only accepts light within about 8° of its axis (a numerical aperture of 0.14, in Corning's SMF-28 data sheet), and its loss is about 0.2 dB per km at 1550 nm. Each end of the drawn rod reflects about 3.5% of the light back.</p>`
 		},
@@ -270,7 +271,7 @@ export const spec: ExplainerSpec = {
 <p>The <dfn data-def="The distance from a lens to its focus. A short focal length means a strongly bending lens.">focal length</dfn> depends on how curved the faces are and on how strongly the glass bends light (the lensmaker's equation):</p>
 <p class="formula"><strong>1 ÷ f = (n − 1) × (2 ÷ R)</strong> &nbsp; for two faces of radius R</p>
 <p>Curve the faces more, or use glass of higher index, and the focus comes closer. Drag the lens along the bench and the focus moves with it. Switch to a <dfn data-def="A lens thinner in the middle than at the edge. It spreads parallel rays apart as if they came from a point in front of it.">diverging lens</dfn> and the rays spread out instead, as if they came from a point in front of it.</p>`,
-			notes: `<p>The rays here are traced through the real curved surfaces with Snell's law. Look closely at the converging lens: the rays near its edge cross a little before the ones near the middle. Spherical faces don't focus perfectly; this is <em>spherical aberration</em>, and camera lenses combine several elements to cancel it. The formula is for a thin lens; a thick one focuses a little differently, so the traced focus and f can differ by a few per cent.</p>`
+			notes: `<p>The rays here are traced through the real curved surfaces with Snell's law. Look closely at the converging lens: the rays near its edge cross a little before the ones near the middle. Spherical faces don't focus perfectly; this is <em>spherical aberration</em>, and camera lenses combine several elements to cancel it. The formula is for a thin lens. This lens is thick, so rays near the axis cross further out than f: a few per cent for gently curved faces, but up to half as far again for the most curved faces in diamond-like glass, where the outermost rays are even totally reflected inside the lens before they get out.</p>`
 		},
 		{
 			id: 'image',
@@ -282,10 +283,10 @@ export const spec: ExplainerSpec = {
 			controls: [distance],
 			body: `
 <p>Every point of a lit object sends out light in all directions. A converging lens collects a cone of that light and bends it back together to a single point on the other side. Every point of the object gets its own image point, and together they make an <dfn data-def="A copy of an object made by light: where the rays from each point of the object meet again (a real image) or seem to come from (a virtual image).">image</dfn>, upside down.</p>
-<p>Drag the object, the orange arrow. Far away, its image forms close to the focus and small. Bring it closer and the image moves away and grows; at twice the focal length the image is the same size. The distances obey the thin-lens equation:</p>
+<p>Drag the object, the orange arrow. Far away, its image forms between f and 2f, smaller than the object; the further away the object, the closer the image gets to the focus. Bring it closer and the image moves away and grows; at twice the focal length the image is the same size. The distances obey the thin-lens equation:</p>
 <p class="formula"><strong>1 ÷ f = 1 ÷ u + 1 ÷ v</strong> &nbsp; (object at u, image at v)</p>
 <p>This is how your eye, a camera and a projector work: a lens forms a real image on the retina, the sensor or the screen. Bring the object inside the focal length and the rays no longer meet. They spread out as if from a bigger, upright object behind it: a <em>virtual</em> image, the one you see through a magnifying glass.</p>`,
-			notes: `<p>The lens here is crown glass with faces of radius 85 mm, so f = 82 mm. The rays are traced through the real lens; the image arrow is drawn where the thin-lens equation puts it. Spherical aberration makes the traced rays cross in a small blur rather than a perfect point, more so for wide cones of light; cameras close down the aperture to sharpen it. Your eye focuses on near and far things by changing the shape of its lens, which changes f.</p>`
+			notes: `<p>The lens here is crown glass with faces of radius 85 mm, so f = 82 mm. The rays are traced through the real lens; the image arrow is drawn where the thin-lens equation puts it. Real spherical lenses don't focus perfectly, especially for points off the axis and wide cones of light, so the traced rays cross in a small blur near the drawn image; cameras close down the aperture to sharpen it. The lens is also 7.5 mm thick, so its true focus is about 84 mm from its centre rather than 82: with the object close to the focus, where the image runs far away, the rays meet a little away from the drawn arrow. Your eye focuses on near and far things by changing the shape of its lens, which changes f.</p>`
 		},
 		// ------------------------------------------------------------------ colour
 		{
@@ -316,7 +317,7 @@ export const spec: ExplainerSpec = {
 <p>A raindrop is a tiny ball of water. Sunlight enters it and bends, reflects off the back of the drop, and bends again on the way out, heading back towards the sun's side. Follow the rays entering at different heights: they come out at different angles, but no ray is turned back by less than about 138°, and close to that limit the rays crowd together. That bunch of light comes out at about <strong>42°</strong> from the direction exactly opposite the sun.</p>
 <p>Water bends violet slightly more than red, so violet's bunch comes out at 40.6° and red's at 42.3°. Stand with the sun at your back: every drop 42° from the shadow of your head sends you red, every drop 40.6° from it violet. The drops at the same angle make a circle, and that is the rainbow, red on the outside.</p>
 <p>The reflection at the back of the drop is <em>not</em> total: only a few per cent of the light reflects there; most goes straight out through the back. The bright rays drawn here carry only a few per cent of the sunlight.</p>`,
-			notes: `<p>René Descartes worked out the 42° in 1637 by tracing thousands of rays by hand. The rainbow's angle is set by the refractive index alone, not by the size of the drops; with two reflections inside the drop light comes out at about 51°, making the fainter secondary bow with its colours reversed. The sky between the two bows is darker (Alexander's band) because no once- or twice-reflected light comes from there.</p>`
+			notes: `<p>René Descartes worked out the 42° in 1637: using the law of refraction, he calculated the paths of rays entering a drop at a series of heights and found where they bunch together. The rainbow's angle is set by the refractive index alone, not by the size of the drops; with two reflections inside the drop light comes out at about 51°, making the fainter secondary bow with its colours reversed. The sky between the two bows is darker (Alexander's band) because no once- or twice-reflected light comes from there.</p>`
 		},
 		// ------------------------------------------------------------------ bench
 		{

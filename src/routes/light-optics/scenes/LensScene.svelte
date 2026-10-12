@@ -20,6 +20,7 @@
 		concaveLens,
 		convexLens,
 		exitDirection,
+		IMAGE_LENS,
 		imageDistance,
 		thinLensFocal,
 		trace,
@@ -35,14 +36,13 @@
 	const image = $derived(step.hints?.phase === 'image');
 	const AX = 310; // the optical axis
 	const H_FOCUS = 100; // half the lens's height
-	const H_IMAGE = 70;
 	const MM = 2; // stage units per millimetre
 	const BOX: [number, number, number, number] = [16, 16, 944, 584];
 
 	// The image step uses one fixed lens: crown glass (n = 1.52), faces of radius 85 mm.
-	const n = $derived(image ? 1.52 : clamp(Number(params.n ?? 1.52), 1, 2.42));
-	const R = $derived(image ? 170 : clamp(Number(params.radius ?? 300), 150, 500));
-	const H = $derived(image ? H_IMAGE : H_FOCUS);
+	const n = $derived(image ? IMAGE_LENS.n : clamp(Number(params.n ?? 1.52), 1, 2.42));
+	const R = $derived(image ? IMAGE_LENS.radius : clamp(Number(params.radius ?? 300), 150, 500));
+	const H = $derived(image ? IMAGE_LENS.halfHeight : H_FOCUS);
 	const concave = $derived(!image && params.lens === 'concave');
 	// Lensmaker (thin lens): 1/f = (n − 1)(1/R₁ − 1/R₂), R₁ = R, R₂ = −R for the convex lens.
 	const f = $derived(n <= 1.0001 ? Infinity : thinLensFocal(n, concave ? -R : R, concave ? R : -R));
@@ -87,12 +87,12 @@
 
 	// ---------------------------------------------------------------- image phase
 	const u = $derived(clamp(Number(params.u ?? 400), 90, 440));
-	const OBJ = 64; // height of the object arrow
+	const OBJ = IMAGE_LENS.object; // height of the object arrow
 	const tip = $derived({ x: LX - u, y: AX - OBJ });
 	const v = $derived(imageDistance(f, u));
 	const fan = $derived(
 		image
-			? [-50, -25, 0, 25, 50].map((h) => {
+			? IMAGE_LENS.fan.map((h) => {
 					const aim = { x: LX - tip.x, y: AX + h - tip.y };
 					return trace([lens], tip, aim, { box: BOX, minPower: 0.1 })[0];
 				})
@@ -248,10 +248,11 @@
 			onmove={moveObject}
 			onkey={keyObject}
 		/>
-		{@render label(tip.x - 12, tip.y + 4, 'object', {
+		<!-- beside the arrow, or above it when that would run off the stage's left edge -->
+		{@render label(tip.x < 90 ? tip.x : tip.x - 12, tip.x < 90 ? tip.y - 12 : tip.y + 4, 'object', {
 			color: 'var(--lo-theta1)',
 			weight: 600,
-			anchor: 'end'
+			anchor: tip.x < 90 ? 'middle' : 'end'
 		})}
 		{#if imgOnStage}
 			<path
@@ -302,7 +303,7 @@
 				132,
 				real
 					? 'The image forms beyond the edge of the stage'
-					: 'The rays come out parallel: no image',
+					: 'The virtual image is far in front, off the stage',
 				{
 					muted: true,
 					size: 12
