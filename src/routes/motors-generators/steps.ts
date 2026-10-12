@@ -9,7 +9,7 @@ const current: Control = {
 	step: 0.05,
 	default: 0.75,
 	unit: ' A',
-	help: 'Positive: out of the page in side a, into it in side b.'
+	help: 'Positive: into the page in side a, out of it in side b.'
 };
 
 const angle: Control = {
