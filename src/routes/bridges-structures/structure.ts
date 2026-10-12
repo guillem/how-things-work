@@ -8,6 +8,9 @@
  *   ends: it can pull, push and bend (a 2-D frame element with axial and
  *   bending stiffness). Its cross-section is a square steel box whose walls
  *   are a tenth of its width.
+ * - A **post** is a pin-ended column: it can pull and push, but not bend (a
+ *   two-force member — the spandrel posts that stand a road on an arch rib).
+ *   Buckling is checked with the same pinned-end Euler load as for beams.
  * - A **cable** is a steel wire rope: it can only pull. A cable that the
  *   solution says would push goes slack and is removed, and the frame is
  *   solved again until no cable pushes.
@@ -45,7 +48,7 @@ export const BUDGET = 25_000;
 /** The truck: 30 tonnes. */
 export const TRUCK_MASS = 30_000;
 
-export type MemberKind = 'beam' | 'cable';
+export type MemberKind = 'beam' | 'post' | 'cable';
 
 export interface Joint {
 	x: number;
@@ -236,10 +239,12 @@ function prune(s: Structure): Structure {
 
 // ------------------------------------------------------------ text form (for params)
 
-/** `x,y;x,y|b a b;c a b` (beams `b`, cables `c`), coordinates in metres. */
+/** `x,y;x,y|b a b;p a b;c a b` (beams `b`, posts `p`, cables `c`), coordinates in metres. */
 export function serializeStructure(s: Structure): string {
 	const j = s.joints.map((p) => `${+p.x.toFixed(2)},${+p.y.toFixed(2)}`).join(';');
-	const m = s.members.map((x) => `${x.kind === 'beam' ? 'b' : 'c'} ${x.a} ${x.b}`).join(';');
+	const m = s.members
+		.map((x) => `${x.kind === 'beam' ? 'b' : x.kind === 'post' ? 'p' : 'c'} ${x.a} ${x.b}`)
+		.join(';');
 	return `${j}|${m}`;
 }
 
@@ -255,9 +260,14 @@ export function parseStructure(str: unknown): Structure | null {
 	const members: Member[] = [];
 	for (const item of ms ? ms.split(';') : []) {
 		const [k, a, b] = item.split(' ');
-		if ((k !== 'b' && k !== 'c') || !((+a) in joints) || !((+b) in joints) || +a === +b)
+		if (
+			(k !== 'b' && k !== 'p' && k !== 'c') ||
+			!((+a) in joints) ||
+			!((+b) in joints) ||
+			+a === +b
+		)
 			return null;
-		members.push({ kind: k === 'b' ? 'beam' : 'cable', a: +a, b: +b });
+		members.push({ kind: k === 'b' ? 'beam' : k === 'p' ? 'post' : 'cable', a: +a, b: +b });
 	}
 	return { joints, members };
 }
@@ -560,7 +570,8 @@ function solveConnected(s: Structure, truckX: number | null, areas: readonly num
 				};
 			}
 			// Bending moment along the beam (sagging positive), from end a's forces and the loads.
-			const qy = -weightPerMetre * c;
+			// A post is pin-ended: only axial force, no moments anywhere.
+			const qy = m.kind === 'post' ? 0 : -weightPerMetre * c;
 			const tA = k === truck ? Math.abs(truckX! - s.joints[m.a].x) : -1;
 			const Py = -P * c;
 			const M = (x: number) =>
@@ -568,8 +579,8 @@ function solveConnected(s: Structure, truckX: number | null, areas: readonly num
 			const samples = [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1].map((u) => u * L);
 			if (tA >= 0) samples.push(tA);
 			samples.sort((p, q) => p - q);
-			const momentAt = samples.map((x) => ({ u: x / L, m: M(x) }));
-			const moment = Math.max(...momentAt.map((p) => Math.abs(p.m)));
+			const momentAt = m.kind === 'post' ? [] : samples.map((x) => ({ u: x / L, m: M(x) }));
+			const moment = m.kind === 'post' ? 0 : Math.max(...momentAt.map((p) => Math.abs(p.m)));
 			const bendStress = (moment * (width / 2)) / I;
 			const axialStress = Math.abs(axial) / A;
 			const strength = (axialStress + bendStress) / YIELD;
@@ -672,7 +683,11 @@ const mulVec = (a: number[][], v: ArrayLike<number>) =>
 // ------------------------------------------------------------ the designs on the page
 
 /** A structure from members given by their end points (not snapped: designs may use curves). */
-const build = (beams: [number, number][][], cables: [number, number][][] = []): Structure => {
+const build = (
+	beams: [number, number][][],
+	cables: [number, number][][] = [],
+	posts: [number, number][][] = []
+): Structure => {
 	const joints: Joint[] = [];
 	const members: Member[] = [];
 	const idx = ([x, y]: [number, number]) => {
@@ -683,6 +698,7 @@ const build = (beams: [number, number][][], cables: [number, number][][] = []): 
 	};
 	for (const [p, q] of beams) members.push({ kind: 'beam', a: idx(p), b: idx(q) });
 	for (const [p, q] of cables) members.push({ kind: 'cable', a: idx(p), b: idx(q) });
+	for (const [p, q] of posts) members.push({ kind: 'post', a: idx(p), b: idx(q) });
 	return { joints, members };
 };
 
@@ -726,20 +742,26 @@ export const TRUSS = build([
 		)
 ]);
 
-/** A deck arch: an arch springing from the faces of the gap, holding up the road on posts. */
+/** A deck arch: an arch springing from the faces of the gap, holding up the road
+ * on pin-ended posts, as real spandrel columns: the road's load reaches the rib
+ * through them (a rigidly framed deck would instead span between the banks and
+ * leave the posts idle). */
 /** The arch: a parabola from the gap's faces 10 m below the road up to 2.5 m below it. */
 const archY = (x: number) => -10 + 7.5 * (1 - ((x - 20) / 20) ** 2);
-export const ARCH = build([
-	...DECK,
-	...chain(...[0, 5, 10, 15, 20, 25, 30, 35, 40].map((x) => [x, archY(x)] as [number, number])),
-	...[5, 10, 15, 20, 25, 30, 35].map(
+export const ARCH = build(
+	[
+		...DECK,
+		...chain(...[0, 5, 10, 15, 20, 25, 30, 35, 40].map((x) => [x, archY(x)] as [number, number]))
+	],
+	[],
+	[5, 10, 15, 20, 25, 30, 35].map(
 		(x) =>
 			[
 				[x, archY(x)],
 				[x, 0]
 			] as [number, number][]
 	)
-]);
+);
 
 /** A suspension bridge: towers on the banks, a main cable over them, hangers holding the road. */
 /** The main cable: a parabola from the tower tops (15 m) down to 2.5 m above the road. */

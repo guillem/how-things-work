@@ -124,6 +124,25 @@ test('in the arch the curved rib is pushed (compression) and the banks are pushe
 	for (const { i } of rib) expect(sol.members[i].axial).toBeLessThan(0);
 });
 
+test('the arch holds the road on its posts: they are pushed, and the truck loads them', () => {
+	const a = DESIGNS.arch;
+	const areas = size(a);
+	const posts = a.members.map((m, i) => ({ m, i })).filter(({ m }) => m.kind === 'post');
+	expect(posts).toHaveLength(7);
+	// The road's weight reaches the rib through the posts (a rigidly framed deck
+	// would span between the banks and leave them idle): every post pushed, none bent.
+	const dead = solve(a, null, areas);
+	for (const { i } of posts) {
+		expect(dead.members[i].axial).toBeLessThan(-10_000);
+		expect(dead.members[i].moment).toBe(0);
+	}
+	// A truck at midspan more than doubles the push on the posts around it.
+	const live = solve(a, 20, areas);
+	for (const { m, i } of posts)
+		if (Math.abs(a.joints[m.b].x - 20) <= 5)
+			expect(live.members[i].axial).toBeLessThan(2 * dead.members[i].axial);
+});
+
 test('a member drawn through a joint is split and joined there', () => {
 	// A long beam over the whole road replaces the pieces without duplicating them.
 	const s = addMember(beam(8), 'beam', { x: 0, y: 0 }, { x: 40, y: 0 });

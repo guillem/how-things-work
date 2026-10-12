@@ -354,7 +354,7 @@
 			if (unstable || r.unsupported) {
 				return {
 					...base,
-					hw: m.kind === 'beam' ? 4 : 2,
+					hw: m.kind === 'cable' ? 2 : 4,
 					color: 'var(--struct-steel)',
 					dash: '5 4',
 					opacity: 0.6
@@ -726,7 +726,7 @@
 	function describe(i: number, long: boolean) {
 		const m = s.members[i];
 		const r = sol.members[i];
-		const kind = m.kind === 'beam' ? 'Beam' : 'Cable';
+		const kind = m.kind === 'beam' ? 'Beam' : m.kind === 'post' ? 'Post' : 'Cable';
 		if (unstable) return `${kind} — the structure can't stand`;
 		if (r.unsupported) return `${kind} — not joined to the ground: carries nothing`;
 		if (r.slack) return `${kind} — slack: it would have to push, so it carries nothing`;
