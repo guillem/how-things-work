@@ -25,8 +25,13 @@ export const fmt = (v: number, digits = 1) => v.toFixed(digits).replace('-', 'âˆ
  */
 export function rayColour(nm: number, dark: boolean): string {
 	const c = wavelengthToColor(nm);
-	if (dark) return c;
 	const [r, g, b] = (c.match(/\d+/g) ?? ['0', '0', '0']).map(Number);
+	if (dark) {
+		// Deep violet is too dim on the dark stage: lift it towards white a little.
+		const w = nm < 440 ? (440 - nm) / 120 : 0;
+		const up = (v: number) => Math.round(v + (255 - v) * w);
+		return `rgb(${up(r)}, ${up(g)}, ${up(b)})`;
+	}
 	const k = 0.78;
 	return `rgb(${Math.round(r * k)}, ${Math.round(g * k)}, ${Math.round(b * k)})`;
 }

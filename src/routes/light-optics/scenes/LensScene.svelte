@@ -135,7 +135,7 @@
 	}
 	function keyObject(k: number | 'start' | 'end') {
 		// Right arrow moves the object right, towards the lens.
-		setParam('u', k === 'start' ? 440 : k === 'end' ? 60 : clamp(u - k * 2, 90, 440));
+		setParam('u', k === 'start' ? 440 : k === 'end' ? 90 : clamp(u - k * 2, 90, 440));
 	}
 	const mm = (x: number) => `${fmt(x / MM, 0)} mm`;
 	const arrow = (x: number, y0: number, y1: number) => {
