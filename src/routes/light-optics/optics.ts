@@ -214,7 +214,15 @@ export interface Mirror {
 	b: Vec;
 }
 
-export type Element = Body | Mirror;
+/** A screen: a line segment that stops light (to show where it lands). */
+export interface Screen {
+	kind: 'screen';
+	id: string;
+	a: Vec;
+	b: Vec;
+}
+
+export type Element = Body | Mirror | Screen;
 
 const TOL = 1e-6;
 
@@ -256,13 +264,13 @@ interface Hit {
 	s: number;
 	q: Vec;
 	normal: Vec;
-	mirror: boolean;
+	kind: 'body' | 'mirror' | 'screen';
 }
 
 function firstHit(elements: Element[], o: Vec, d: Vec, minS: number): Hit | null {
 	let best: Hit | null = null;
 	for (const el of elements) {
-		if (el.kind === 'mirror') {
+		if (el.kind !== 'body') {
 			const e = sub(el.b, el.a);
 			const den = d.x * e.y - d.y * e.x;
 			if (Math.abs(den) < 1e-12) continue;
@@ -270,7 +278,7 @@ function firstHit(elements: Element[], o: Vec, d: Vec, minS: number): Hit | null
 			const s = (ao.x * e.y - ao.y * e.x) / den;
 			const u = (ao.x * d.y - ao.y * d.x) / den;
 			if (s > minS && u >= 0 && u <= 1 && (!best || s < best.s)) {
-				best = { s, q: add(o, mul(d, s)), normal: unit({ x: -e.y, y: e.x }), mirror: true };
+				best = { s, q: add(o, mul(d, s)), normal: unit({ x: -e.y, y: e.x }), kind: el.kind };
 			}
 			continue;
 		}
@@ -279,7 +287,7 @@ function firstHit(elements: Element[], o: Vec, d: Vec, minS: number): Hit | null
 				if (s <= minS || (best && s >= best.s)) continue;
 				const q = add(o, mul(d, s));
 				if (el.regions.every((other, j) => j === i || inRegion(other, q))) {
-					best = { s, q, normal: normalOf(r, q), mirror: false };
+					best = { s, q, normal: normalOf(r, q), kind: 'body' };
 				}
 			}
 		});
@@ -323,8 +331,8 @@ export interface RayPath {
 	parent: number;
 	/** Number of the parent's legs before this branch splits off. */
 	from: number;
-	/** Why it ended: it left the box, hit nothing more, or the bounce limit. */
-	end: 'out' | 'limit';
+	/** Why it ended: it left the box (or faded out), landed on a screen, or hit the bounce limit. */
+	end: 'out' | 'screen' | 'limit';
 }
 
 export interface TraceOptions {
@@ -399,7 +407,12 @@ export function trace(
 			if (dot(N, d) > 0) N = mul(N, -1);
 			const cosi = -dot(d, N);
 			const reflected = add(d, mul(N, 2 * cosi));
-			if (hit.mirror) {
+			if (hit.kind === 'screen') {
+				legs.push({ a: o, b: q, n: n1, power, opl });
+				end = 'screen';
+				break;
+			}
+			if (hit.kind === 'mirror') {
 				legs.push({ a: o, b: q, n: n1, power, opl });
 				events.push('mirror');
 				opl += n1 * hit.s;
@@ -572,6 +585,9 @@ export function concaveLens(
 		]
 	};
 }
+
+/** A screen from a to b. */
+export const screen = (id: string, a: Vec, b: Vec): Screen => ({ kind: 'screen', id, a, b });
 
 /** A disc (a raindrop, a glass ball). */
 export function ball(id: string, c: Vec, r: number, n: Body['n']): Body {
