@@ -506,14 +506,6 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-dasharray="5 4"
 		/>
-		<Label
-			x={X1 - 4}
-			y={syG(140) - 6}
-			text="140: normal limit 2 h after"
-			size={11}
-			anchor="end"
-			muted
-		/>
 		<line
 			x1={sx(120)}
 			x2={sx(120)}
@@ -530,14 +522,6 @@
 			y2={syG(126)}
 			stroke="var(--hm-glucose)"
 			stroke-dasharray="5 4"
-		/>
-		<Label
-			x={X1 - 4}
-			y={syG(126) - 6}
-			text="126: diabetes if fasting"
-			size={11}
-			anchor="end"
-			color="var(--hm-glucose)"
 		/>
 	{:else if lines === 'hypo'}
 		<rect
@@ -556,7 +540,6 @@
 			stroke="var(--hm-hypo)"
 			stroke-dasharray="5 4"
 		/>
-		<Label x={X1 - 4} y={syG(180) - 6} text="target 70–180" size={11} anchor="end" muted />
 	{/if}
 
 	<!-- meal and injection markers -->
@@ -603,6 +586,31 @@
 		stroke-width="2.6"
 		stroke-linejoin="round"
 	/>
+
+	<!-- reference-line labels, above the curves so that their halo keeps them legible -->
+	{#if lines === 'ogtt'}
+		<Label
+			x={X1 - 4}
+			y={syG(140) - 6}
+			text="140: normal limit 2 h after"
+			size={11}
+			anchor="end"
+			muted
+		/>
+	{/if}
+	{#if lines === 'diagnosis'}
+		<Label
+			x={X1 - 4}
+			y={syG(126) - 6}
+			text="126: diabetes if fasting"
+			size={11}
+			anchor="end"
+			color="var(--hm-glucose)"
+		/>
+	{/if}
+	{#if lines === 'hypo'}
+		<Label x={X1 - 4} y={syG(180) - 6} text="target 70–180" size={11} anchor="end" muted />
+	{/if}
 
 	<!-- insulin -->
 	<Axes {sx} sy={syI} xTicks={[]} yTicks={iTicks} yLabel="insulin, µU/mL" />

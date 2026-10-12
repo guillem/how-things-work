@@ -52,6 +52,12 @@ const production: Control = {
 	help: 'How much insulin the pancreas can make, compared with a healthy adult.'
 };
 
+/**
+ * The same slider on the type 2 step, under its own id so that turning
+ * production off on the type 1 step does not carry over.
+ */
+const production2: Control = { ...production, id: 'production2' };
+
 /** How strongly cells respond to insulin, relative to normal. */
 const sensitivity: Control = {
 	type: 'range',
@@ -77,6 +83,9 @@ const dose: Control = {
 	format: (v) => `${v} unit${v === 1 ? '' : 's'}`,
 	help: 'Injected under the skin. It takes about an hour to act fully.'
 };
+
+/** The meal on the dosing step, under its own id (the run step suggests a 0 g meal). */
+const dosingCarbs: Control = { ...carbs, id: 'dosingCarbs' };
 
 /** A run during the dosing step (its own control, off by default). */
 const dosingRun: Control = {
@@ -168,7 +177,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now the same person goes for a 45-minute run after the meal. Working muscles burn glucose fast, and during exercise they can take it in even without much insulin. The faint curves show the same day without the run.</p>
 <p>A run soon after the meal lowers the glucose peak. The loop reacts to the extra demand: insulin falls, so that the cells take up less glucose and the liver releases more, and glucagon rises, which makes the liver release even more. Glucose dips, but stays in the normal range. When the run stops, the rest of the meal is still arriving and insulin has to climb again, so glucose bounces back up for a while before it settles.</p>
-<p>Set the meal to 0 g to send them running on an empty stomach: glucose dips by only a few mg/dL, because the liver tops it up almost as fast as the muscles take it out. Holding glucose steady while the demand changes is what the loop is for.</p>`,
+<p>Set the meal to 0 g to send them running on an empty stomach: glucose dips by only about 10–15 mg/dL, because the liver tops it up almost as fast as the muscles take it out. Holding glucose steady while the demand changes is what the loop is for.</p>`,
 			notes: `<p>The exercise terms follow Roy &amp; Parker (ADCHEM 2006), who extended Bergman's minimal model with the measured fall of insulin during exercise. In healthy volunteers glucose stayed nearly level for the first 40 minutes of exercise (Ahlborg et al., <i>Journal of Clinical Investigation</i>, 1974). The size of the muscles' extra glucose uptake in this model is illustrative. On runs of several hours the liver's glycogen runs out and glucose does fall; this model does not include that.</p>`
 		},
 		// ------------------------------------------------------------------ broken
@@ -194,7 +203,7 @@ export const spec: ExplainerSpec = {
 			scene: 'plot',
 			hints: { case: 'type2', lines: 'diagnosis' },
 			duration: 24,
-			controls: [sensitivity, production],
+			controls: [sensitivity, production2],
 			body: `
 <p>In <dfn data-def="The most common form of diabetes (about 90–95% of cases), in which the body's cells respond weakly to insulin and the pancreas can no longer make enough extra insulin to compensate.">type 2 diabetes</dfn> the pancreas still makes insulin, but the body's cells respond to it less: they have become <dfn data-def="A state in which a given amount of insulin moves less glucose into cells than normal. It is linked to excess body fat, inactivity, genes and age.">insulin resistant</dfn>.</p>
 <p>Turn insulin sensitivity down. The β-cells notice that glucose is staying high and make more insulin — look how high the insulin curve climbs — and glucose still comes down after the meal, only more slowly. The loop is straining, but it is still closed.</p>
@@ -208,7 +217,7 @@ export const spec: ExplainerSpec = {
 			scene: 'plot',
 			hints: { case: 'dosing', lines: 'hypo' },
 			duration: 30,
-			controls: [dose, doseAt, carbs, dosingRun],
+			controls: [dose, doseAt, dosingCarbs, dosingRun],
 			body: `
 <p>A person with type 1 diabetes has to be the missing part of the loop: measure their glucose, and inject insulin to match what they eat and do. This person already has a long-acting background insulin that holds their fasting glucose near 100 mg/dL. Now they eat 75 g of carbohydrate. Try to keep their glucose as close as you can to the range 70–180 mg/dL.</p>
 <p>Start with no injection and the glucose soars. Add rapid-acting insulin before the meal. Too little and it still soars. Too much, or a dose meant for a bigger meal, and a few hours later glucose falls below 70 mg/dL: <strong>hypoglycaemia</strong>, the red band. Below 54 mg/dL it is dangerous. Injected insulin cannot be switched off when glucose falls, and in type 1 diabetes glucagon does not rise to rescue it either: compare the glucagon chart with the healthy faint curve. A run makes the insulin already injected work harder, and glucose falls faster.</p>

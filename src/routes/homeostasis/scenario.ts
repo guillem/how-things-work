@@ -20,7 +20,9 @@ const DEFAULTS = {
 	exercise: 'run',
 	runAt: 30,
 	production: 100,
+	production2: 100,
 	sensitivity: 100,
+	dosingCarbs: 75,
 	dose: 0,
 	doseAt: -15
 };
@@ -64,26 +66,27 @@ export function setup(step: Step, params: Params): Setup {
 				kind,
 				scenario: {
 					...meal,
-					production: num('production') / 100,
+					production: num(kind === 'type2' ? 'production2' : 'production') / 100,
 					sensitivity: num('sensitivity') / 100
 				},
 				ghost: meal,
 				ghostLabel: 'healthy'
 			};
 		case 'dosing': {
+			const dosingMeal: Scenario = { ...meal, carbs: num('dosingCarbs') };
 			const running = offered.has('dosingRun') && Boolean(params.dosingRun);
 			const dosingRun = { intensity: running ? INTENSITY.run : 0, runAt: 30, runFor: RUN_FOR };
 			return {
 				kind,
 				scenario: {
-					...meal,
+					...dosingMeal,
 					...dosingRun,
 					production: 0,
 					basal: BASAL,
 					dose: num('dose'),
 					doseAt: num('doseAt')
 				},
-				ghost: { ...meal, ...dosingRun },
+				ghost: { ...dosingMeal, ...dosingRun },
 				ghostLabel: 'healthy'
 			};
 		}
