@@ -27,6 +27,7 @@
 		intervalKind,
 		lightning,
 		num,
+		toPlatform,
 		toTrain,
 		TRAIN_LENGTH,
 		type Event
@@ -78,10 +79,7 @@
 		return line(P(e.x - k * dx, e.ct - k * dct), P(e.x + k * dx, e.ct + k * dct));
 	};
 	/** A train-frame event (c·t′, x′) in platform coordinates. */
-	const fromTrain = (ctp: number, xp: number): Event => ({
-		ct: g * (ctp + beta * xp),
-		x: g * (xp + beta * ctp)
-	});
+	const fromTrain = (ctp: number, xp: number): Event => toPlatform({ ct: ctp, x: xp }, beta);
 	/** Metres of c·t as nanoseconds. */
 	const ns = (ctm: number) => `${num((ctm / C) * 1e9, 0)} ns`;
 	const m = (v: number) => `${num(v, 0)} m`;
@@ -141,6 +139,7 @@
 	const evT = $derived(toTrain(ev, beta));
 	const s2 = $derived(interval(ev));
 	const kind = $derived(intervalKind(s2));
+	const atOrigin = $derived(ev.ct === 0 && ev.x === 0);
 	const E = $derived(P(ev.x, ev.ct));
 	// Projections onto the train's axes: along x′ to the c·t′ axis, along c·t′ to the x′ axis.
 	const onTime = $derived(P(...xy(fromTrain(evT.ct, 0))));
@@ -657,11 +656,13 @@
 			<T
 				x={PX}
 				y={240}
-				text={kind === 'timelike'
-					? 'timelike: something slower than light'
-					: kind === 'spacelike'
-						? 'spacelike: not even light can get'
-						: 'lightlike: a light ray joins the origin'}
+				text={atOrigin
+					? 'this is the origin itself: s² = 0'
+					: kind === 'timelike'
+						? 'timelike: something slower than light'
+						: kind === 'spacelike'
+							? 'spacelike: not even light can get'
+							: 'lightlike: a light ray joins the origin'}
 				size={13}
 				color="var(--rel-strike)"
 				weight={650}
@@ -669,11 +670,13 @@
 			<T
 				x={PX}
 				y={258}
-				text={kind === 'timelike'
-					? 'can go from one event to the other;'
-					: kind === 'spacelike'
-						? 'from one event to the other;'
-						: 'and the event'}
+				text={atOrigin
+					? ''
+					: kind === 'timelike'
+						? 'can go from one event to the other;'
+						: kind === 'spacelike'
+							? 'from one event to the other;'
+							: 'and the event'}
 				size={13}
 				color="var(--rel-strike)"
 				weight={650}
@@ -725,6 +728,9 @@
 					: "but on two different slices of the train's"}
 				size={12}
 			/>
+			{#if beta >= 0.005}
+				<T x={PX + 12} y={268} text="“now”." size={12} />
+			{/if}
 			<T x={PX} y={296} text="One cause: the same c for everyone." size={14} weight={650} />
 		</g>
 	{/if}

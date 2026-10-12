@@ -4,6 +4,7 @@ import {
 	addVelocities,
 	C,
 	clockTicks,
+	flashHits,
 	gamma,
 	interval,
 	intervalKind,
@@ -15,6 +16,7 @@ import {
 	tickMoving,
 	toPlatform,
 	toTrain,
+	TRAIN_LENGTH,
 	velocity,
 	type Event
 } from '../src/routes/special-relativity/relativity';
@@ -86,8 +88,11 @@ test('the 200 m train measures 160 m on the platform at 0.6 c, and the platform 
 	expect(measuredLength(0.6)).toBeCloseTo(160, 9);
 	// Measured at any platform time, the answer is the same.
 	expect(measuredLength(0.6, 200, 37)).toBeCloseTo(160, 9);
-	// Reciprocity: from the train, the platform (rest length 200 m) moves at −0.6 c.
-	expect(measuredLength(-0.6)).toBeCloseTo(160, 9);
+	// Reciprocity: the platform's ends (x = ±100 m, at rest on the platform), taken at the
+	// same train time t′ = 0, are 160 m apart in the train frame.
+	const ends = [-100, 100].map((x) => toTrain({ ct: 0.6 * x, x }, 0.6));
+	for (const e of ends) expect(e.ct).toBeCloseTo(0, 9);
+	expect(ends[1].x - ends[0].x).toBeCloseTo(160, 9);
 	// The front and back ends, taken at the same train time, are 200 m apart again.
 	const l = lightning(0.6);
 	expect(toTrain(l.front, 0.6).x - toTrain(l.back, 0.6).x).toBeCloseTo(200, 9);
@@ -134,4 +139,22 @@ test('a muon at 0.99 c lives about 15.6 µs on Earth clocks and goes about 4.6 k
 	expect(r.naive).toBeCloseTo(652, 0);
 	expect(r.dilated / 1000).toBeCloseTo(4.62, 2);
 	expect(r.lifetime * 1e6).toBeCloseTo(15.57, 2);
+});
+
+test('a flash from mid-carriage reaches both ends together on the train, the back end first on the platform', () => {
+	const beta = 0.6;
+	const half = TRAIN_LENGTH / 2 / gamma(beta); // the moving carriage, measured on the platform
+	const hits = flashHits(half, beta);
+	expect(hits.back).toBeLessThan(hits.front);
+	// The light (at c) and each wall (at β) are at the same place at the hit.
+	expect(hits.front).toBeCloseTo(half + beta * hits.front, 9);
+	expect(-hits.back).toBeCloseTo(-half + beta * hits.back, 9);
+	// In the train frame the two hits happen at the same time, 100 m from the lamp.
+	const front = toTrain({ ct: hits.front, x: hits.front }, beta);
+	const back = toTrain({ ct: hits.back, x: -hits.back }, beta);
+	expect(front.ct).toBeCloseTo(back.ct, 9);
+	expect(front.ct).toBeCloseTo(100, 9);
+	expect(front.x - back.x).toBeCloseTo(TRAIN_LENGTH, 9);
+	// At rest: half the carriage at c, both ways.
+	expect(flashHits(100, 0)).toEqual({ front: 100, back: 100 });
 });

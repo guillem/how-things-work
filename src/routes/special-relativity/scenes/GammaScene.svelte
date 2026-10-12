@@ -14,7 +14,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { gamma, MUON_LIFETIME, muonRange, num, tickAtRest } from '../relativity';
+	import { C, gamma, MUON_LIFETIME, muonRange, num, tickAtRest } from '../relativity';
 	import { duration } from './shared';
 	import T from './T.svelte';
 
@@ -133,7 +133,14 @@
 		color="var(--rel-light)"
 		weight={600}
 	/>
-	<T x={(X0 + X1) / 2} y={Y0 + 42} text="speed of the train" size={13} anchor="middle" muted />
+	<T
+		x={(X0 + X1) / 2}
+		y={Y0 + 42}
+		text={wm > 0.5 ? 'speed of the muon' : 'speed of the train'}
+		size={13}
+		anchor="middle"
+		muted
+	/>
 	<T x={X0 - 10} y={Y1 - 20} text="γ" size={16} anchor="end" italic weight={600} />
 	<T x={X0 + 8} y={Y1 - 20} text="Lorentz factor" size={12} muted />
 
@@ -194,9 +201,9 @@
 			/>
 			<T x={BX} y={340} text="at everyday speeds γ is almost exactly 1:" size={13} muted />
 			<T x={BX} y={364} text="jet airliner, 250 m/s:" size={13} />
-			<T x={BX + 16} y={384} text="γ = 1.00000000000035" size={13} weight={600} />
+			<T x={BX + 16} y={384} text="γ = {num(gamma(250 / C), 14)}" size={13} weight={600} />
 			<T x={BX} y={410} text="GPS satellite, 3.9 km/s:" size={13} />
-			<T x={BX + 16} y={430} text="γ = 1.00000000008" size={13} weight={600} />
+			<T x={BX + 16} y={430} text="γ = {num(gamma(3900 / C), 11)}" size={13} weight={600} />
 		</g>
 	{/if}
 
