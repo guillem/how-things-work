@@ -155,7 +155,13 @@ test('a rotation keeps areas (det 1) and has no real eigenvector', () => {
 		}
 	}
 	// A half turn is the exception: every arrow is reversed, λ = −1 in every direction.
-	expect(eigen(mat(-1, 0, 0, -1))).toEqual({ kind: 'all', value: -1 });
+	const half = rotation(180);
+	const e = eigen(half);
+	expect(e.kind).toBe('all');
+	if (e.kind === 'all') {
+		expect(e.value).toBeCloseTo(-1, 12);
+		for (const v of [vec(1, 0), vec(0.3, 2), vec(-1, -1)]) close(apply(half, v), scale(v, e.value));
+	}
 });
 
 test('a shear has only one eigen-direction; a uniform scale has every direction', () => {
@@ -168,9 +174,14 @@ test('a shear has only one eigen-direction; a uniform scale has every direction'
 	const j = apply(shear(1), vec(0, 1));
 	expect(j.x).toBeCloseTo(1, 12);
 
-	const s = eigen(mat(1.5, 0, 0, 1.5));
-	expect(s).toEqual({ kind: 'all', value: 1.5 });
-	close(apply(mat(1.5, 0, 0, 1.5), vec(-0.4, 2)), vec(-0.6, 3));
+	const grow = mat(1.5, 0, 0, 1.5);
+	const s = eigen(grow);
+	expect(s.kind).toBe('all');
+	if (s.kind === 'all') {
+		expect(s.value).toBe(1.5);
+		for (const v of [vec(-0.4, 2), vec(1, 1), vec(3, -0.2)])
+			close(apply(grow, v), scale(v, s.value));
+	}
 });
 
 test('eigenvectors only stretch: Mv = λv', () => {

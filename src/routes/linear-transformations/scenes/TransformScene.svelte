@@ -137,6 +137,20 @@
 		setParam('c', m.c);
 		setParam('d', m.d);
 	}
+	// Where the intro of "drag" and "flip" starts: the square grid when the scene has just
+	// opened (a deep link, or coming from the plane scene), otherwise the matrix that was
+	// on screen, so moving between steps never snaps. (Declared before the loading effect
+	// below, so it reads the matrix from before any example is loaded.)
+	let introFrom = $state<Mat>(I2);
+	let mounted = false;
+	$effect(() => {
+		void step.id;
+		untrack(() => {
+			introFrom = mounted ? shown.current : I2;
+			mounted = true;
+		});
+	});
+
 	// Example matrices: loaded when a step that names one opens, or when its menu changes.
 	$effect(() => {
 		const load = step.hints?.load;
@@ -177,7 +191,7 @@
 	const other = $derived(composeOrder === 'rs' ? compose(R, S) : compose(S, R));
 
 	/** What is drawn now. */
-	const M = $derived(lerpMat(lerpMat(I2, shown.current, intro), composeM, w.compose));
+	const M = $derived(lerpMat(lerpMat(introFrom, shown.current, intro), composeM, w.compose));
 	const iL = $derived(col1(M));
 	const jL = $derived(col2(M));
 	const dM = $derived(det(M));

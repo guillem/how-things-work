@@ -245,7 +245,7 @@ export const spec: ExplainerSpec = {
 <p>Most vectors are knocked off their own line by a transformation. On the stage a thin arrow sweeps round, and the bold arrow is where the matrix sends it: they usually point in different directions.</p>
 <p>But some directions are special: a vector along them lands on its own line, only stretched, shrunk or reversed. These are the <dfn data-def="A non-zero vector that a transformation only scales: Mv = λv.">eigenvectors</dfn> of the matrix, and the stretch factor is the <dfn data-def="The factor λ by which a transformation scales its eigenvector. A negative λ reverses it.">eigenvalue</dfn> λ (lambda):</p>
 <p class="formula"><strong>M v = λ v</strong></p>
-<p>Turn on <em>Show eigenvectors</em>. The stage starts with ${m('2', '1', '0.5', '1.5')}: arrows along (2, 1) are stretched 2.5 times, and arrows along (1, −1) are left exactly as they are (λ = 1). When the sweeping arrow passes over one of these lines, its image lines up with it. Drag î and ĵ and the eigen-directions move.</p>`,
+<p>With <em>Show eigenvectors</em> on, the dashed lines are the eigen-directions. The stage starts with ${m('2', '1', '0.5', '1.5')}: arrows along (2, 1) are stretched 2.5 times, and arrows along (1, −1) are left exactly as they are (λ = 1). When the sweeping arrow passes over one of these lines, its image lines up with it. Drag î and ĵ and the eigen-directions move.</p>`,
 			notes: `<p>To find them, look for the λ for which M − λI squashes some direction to zero, which means det(M − λI) = 0. For a 2 × 2 matrix that is λ² − (a + d)λ + (ad − bc) = 0. Here: λ² − 3.5λ + 2.5 = 0, so λ = 2.5 or λ = 1. A quadratic can have two, one or no real solutions — which is the next step.</p>`
 		},
 		{
