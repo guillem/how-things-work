@@ -1315,9 +1315,6 @@
 		/>
 		<circle cx="151" cy="36" r="3.5" fill={accent} />
 		<path d="M118 44 V76" stroke="currentColor" stroke-opacity="0.5" marker-start="none" />
-		<text x="114" y="64" text-anchor="end" font-size="10" fill="currentColor" opacity="0.7"
-			>gap</text
-		>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

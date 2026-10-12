@@ -129,7 +129,7 @@ A topic is done when:
 - [ ] acids-bases
 - [ ] redox-batteries
 - [ ] carbon-polymers
-- [ ] semiconductors
+- [x] semiconductors
 
 **Biology**
 - [ ] the-cell
