@@ -484,6 +484,19 @@ kbd {
 	--oc-dip: #3b5bdb;
 	--oc-sky: #f1f6fb;
 	--oc-mid: #f4e3c1;
+	/* radioactivity: intact and decayed nuclei, decay flash, expected curve, protons, neutrons, alpha/beta/gamma, shields */
+	--rad-parent: #f08c00;
+	--rad-daughter: #c9ccd1;
+	--rad-flash: #e8590c;
+	--rad-expected: #495057;
+	--rad-proton: #e03131;
+	--rad-neutron: #8d99a6;
+	--rad-alpha: #d9480f;
+	--rad-beta: #1c7ed6;
+	--rad-gamma: #7048e8;
+	--rad-paper: #efe6cf;
+	--rad-alu: #c3cad1;
+	--rad-lead: #5c636b;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -736,4 +749,16 @@ kbd {
 	--oc-dip: #748ffc;
 	--oc-sky: #191c22;
 	--oc-mid: #7a6a52;
+	--rad-parent: #ffa94d;
+	--rad-daughter: #3d4148;
+	--rad-flash: #ffd43b;
+	--rad-expected: #ced4da;
+	--rad-proton: #ff6b6b;
+	--rad-neutron: #74808c;
+	--rad-alpha: #ff922b;
+	--rad-beta: #4dabf7;
+	--rad-gamma: #b197fc;
+	--rad-paper: #57513f;
+	--rad-alu: #626a73;
+	--rad-lead: #9aa1a9;
 }

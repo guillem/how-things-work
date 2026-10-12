@@ -17,6 +17,21 @@
 		return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
 	}).join(' ');
 
+	// Radioactivity: 8 × 10 nuclei, a seeded-looking third of them decayed, and
+	// the curve 104 − 80·2^(−h) over four half-lives of 20 px each from x 112.
+	const radArt = {
+		cells: Array.from({ length: 80 }, (_, k) => ({
+			k,
+			x: 16 + (k % 8) * 10,
+			y: 16 + Math.floor(k / 8) * 9.2,
+			on: (k * 37) % 100 >= 45
+		})),
+		curve: Array.from({ length: 41 }, (_, i) => {
+			const h = (i / 40) * 4;
+			return `${i ? 'L' : 'M'}${(112 + h * 20).toFixed(1)} ${(104 - 80 * 2 ** -h).toFixed(1)}`;
+		}).join(' ')
+	};
+
 	// Sorting: ten bars, the last four already in place, two being compared.
 	const sortArt = [5, 2, 6, 1, 4, 3, 7, 8, 9, 10].map((v, i) => ({
 		i,
@@ -1060,6 +1075,22 @@
 			{/each}
 		{/each}
 		<path d="M36 74 L40 66 L44 74 Z" fill="var(--oc-warm)" />
+	{:else if slug === 'radioactivity'}
+		<!-- a grid of nuclei, some decayed, beside the halving curve -->
+		{#each radArt.cells as c (c.k)}
+			<rect
+				x={c.x}
+				y={c.y}
+				width="7"
+				height="7"
+				rx="1.5"
+				fill={c.on ? 'var(--rad-parent)' : 'var(--rad-daughter)'}
+			/>
+		{/each}
+		<path d={radArt.curve} fill="none" stroke={accent} stroke-width="2.4" stroke-linecap="round" />
+		{#each [1, 2, 3] as h (h)}
+			<circle cx={112 + h * 20} cy={104 - 80 / 2 ** h} r="2.6" fill={accent} />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
