@@ -31,6 +31,25 @@
 			return `${i ? 'L' : 'M'}${(112 + h * 20).toFixed(1)} ${(104 - 80 * 2 ** -h).toFixed(1)}`;
 		}).join(' ')
 	};
+	// Linear transformations: î ↦ (1.3, 0.5), ĵ ↦ (0.4, 1.1), 20 px per unit, origin (100, 60).
+	const linearArt = (() => {
+		const P = (x: number, y: number) => {
+			const px = 100 + 20 * (1.3 * x + 0.4 * y);
+			const py = 60 - 20 * (0.5 * x + 1.1 * y);
+			return `${px.toFixed(1)} ${py.toFixed(1)}`;
+		};
+		const ks = [-2, -1, 0, 1, 2];
+		const square = ks.map((k) => `M${100 + 20 * k} 14 V106 M40 ${60 + 20 * k} H160`).join(' ');
+		const moved = ks
+			.map((k) => `M${P(k, -2.2)} L${P(k, 2.2)} M${P(-2.4, k)} L${P(2.4, k)}`)
+			.join(' ');
+		const unit = `M${P(0, 0)} L${P(1, 0)} L${P(1, 1)} L${P(0, 1)} Z`;
+		const arrows = [
+			{ x: 126, y: 50, c: 'var(--lt-i)' },
+			{ x: 108, y: 38, c: 'var(--lt-j)' }
+		];
+		return { square, moved, unit, arrows };
+	})();
 
 	// Sorting: ten bars, the last four already in place, two being compared.
 	const sortArt = [5, 2, 6, 1, 4, 3, 7, 8, 9, 10].map((v, i) => ({
@@ -1154,6 +1173,15 @@
 		<path d={radArt.curve} fill="none" stroke={accent} stroke-width="2.4" stroke-linecap="round" />
 		{#each [1, 2, 3] as h (h)}
 			<circle cx={112 + h * 20} cy={104 - 80 / 2 ** h} r="2.6" fill={accent} />
+		{/each}
+	{:else if slug === 'linear-transformations'}
+		<!-- the square grid, the same grid moved by a matrix, and where î and ĵ landed -->
+		<path d={linearArt.square} stroke="currentColor" stroke-width="1" opacity="0.18" fill="none" />
+		<path d={linearArt.moved} stroke={accent} stroke-width="1.2" opacity="0.55" fill="none" />
+		<path d={linearArt.unit} fill={accent} fill-opacity="0.18" />
+		{#each linearArt.arrows as a (a.c)}
+			<path d="M100 60 L{a.x} {a.y}" stroke={a.c} stroke-width="3" stroke-linecap="round" />
+			<circle cx={a.x} cy={a.y} r="4" fill={a.c} />
 		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />

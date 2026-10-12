@@ -506,6 +506,15 @@ kbd {
 	--rad-paper: #efe6cf;
 	--rad-alu: #c3cad1;
 	--rad-lead: #5c636b;
+	/* linear-transformations: î, ĵ, the vector v, the F, areas (flipped), eigen-directions, the moved grid */
+	--lt-i: #2f9e44;
+	--lt-j: #e03131;
+	--lt-v: #1971c2;
+	--lt-shape: #7048e8;
+	--lt-area: #f08c00;
+	--lt-neg: #c2255c;
+	--lt-eigen: #0c8599;
+	--lt-grid: #4c6ef5;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -778,4 +787,12 @@ kbd {
 	--rad-paper: #57513f;
 	--rad-alu: #626a73;
 	--rad-lead: #9aa1a9;
+	--lt-i: #69db7c;
+	--lt-j: #ff8787;
+	--lt-v: #4dabf7;
+	--lt-shape: #b197fc;
+	--lt-area: #ffa94d;
+	--lt-neg: #f06595;
+	--lt-eigen: #3bc9db;
+	--lt-grid: #748ffc;
 }
