@@ -69,10 +69,8 @@ Last updated: 2026-10-12 UTC.
 **Batch 7 (2026-10-12):** chemical-bonds, waves-interference, radioactivity,
 linear-transformations, fourier-transform. One builder agent per topic in a local worktree, no
 reviewer agents (fact-check via `make review` instead); all merged into `main` locally and ticked,
-`make e2e-full` green (543 tests). Not pushed until the user validates. Review batches submitted:
-`msgbatch_01ByHp9mtCYJjYKNcyp3dSWD` (waves-interference, chemical-bonds) and
-`msgbatch_01KVdrkijDgMqYk6t9gq8uub` (the other three); run `make review-fetch`, then apply the
-reports in `docs/reviews/`.
+`make e2e-full` green (543 tests). Fact-check reviews (Batch API, ~$3.30 for the five) applied by one agent per topic and the
+reports deleted; `make e2e-full` green again (547 tests). Not pushed until the user validates.
 
 Released in v0.1.2 (2026-10-12): the photosynthesis review fixes, rate model and "What limits the
 rate?" step (built in cloud sessions on 2026-10-11).
