@@ -348,6 +348,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 10,
 		minutes: 16
+	},
+	{
+		slug: 'cryptography',
+		title: 'How cryptography keeps secrets in the open',
+		summary:
+			'Agree on a secret with a stranger while an eavesdropper hears every word, fingerprint any text with a hash, and sign a message so nobody can forge it — all on one idea: some things are easy to do and practically impossible to undo.',
+		accent: '#5f3dc4',
+		steps: 14,
+		minutes: 20
 	}
 ];
 
