@@ -203,7 +203,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [n, angle],
 			body: `
-<p>In empty space light travels at 299,792 km/s, a speed called <em>c</em>. In a material it goes slower: in water at about 225,000 km/s, in ordinary glass at about 198,000. The ratio is the material's <dfn data-def="How many times slower light travels in a material than in empty space: n = c ÷ v. Water 1.33, glass about 1.5, diamond 2.42.">refractive index</dfn>:</p>
+<p>In empty space light travels at 299,792 km/s, a speed called <em>c</em>. In a material it goes slower: in water at about 225,000 km/s, in ordinary glass at about 197,000. The ratio is the material's <dfn data-def="How many times slower light travels in a material than in empty space: n = c ÷ v. Water 1.33, glass about 1.5, diamond 2.42.">refractive index</dfn>:</p>
 <p class="formula"><strong>n = c ÷ (speed in the material)</strong></p>
 <p>The lines are the crests of the light wave, as in the ripple tank. The wave keeps its frequency when it crosses into the glass (the crests arrive at the boundary as often as they leave it), so by <em>v = f·λ</em> slower crests come closer together: the wavelength shrinks to λ ÷ n.</p>
 <p>Now watch a crest arriving at an angle. One end reaches the glass first and slows down first, while the other end is still racing through the air, so the crest <strong>swivels</strong>, like a line of marchers stepping from a road into mud. The ray, at right angles to the crests, turns towards the normal. Light changes direction <em>because</em> its speed changes.</p>`,
@@ -236,12 +236,12 @@ export const spec: ExplainerSpec = {
 <p>Now the lamp is inside the glass, shining up into air. Leaving the glass, light speeds up and bends <em>away</em> from the normal, so the angle outside is bigger than the angle inside. Drag the lamp further from the normal and the ray outside swings down towards the surface…</p>
 <p>…until it lies flat along it, at 90°. Beyond that, sin θ₂ would have to be more than 1: there is no way out, and <strong>all</strong> the light is reflected back into the glass. This is <dfn data-def="The complete reflection of light trying to leave a material for one where it travels faster, when it meets the boundary beyond the critical angle.">total internal reflection</dfn>. It starts at the <dfn data-def="The angle of incidence beyond which light cannot leave a material: sin θc = n₂ ÷ n₁.">critical angle</dfn>, where sin θc = 1 ÷ n:</p>
 <ul>
-<li>water (1.33): 48.6°</li>
-<li>crown glass (1.52): 41.2°</li>
+<li>water (1.33): 48.8°</li>
+<li>crown glass (1.52): 41.1°</li>
 <li>diamond (2.42): 24.4°</li>
 </ul>
 <p>Watch the reflected ray as you approach the critical angle: it brightens smoothly from a few per cent to all of it. A diamond's tiny critical angle traps light that enters it, bouncing it around inside until it comes out of the top. That's the sparkle.</p>`,
-			notes: `<p>"Total" is meant literally: a glass prism used this way reflects better than any silvered mirror, which is why binoculars and periscopes use prisms. Look up at the surface from under water and you'll see it: beyond 48.6° from straight up, the surface becomes a mirror.</p>`
+			notes: `<p>"Total" is meant literally: a glass prism used this way reflects better than any silvered mirror, which is why binoculars and periscopes use prisms. Look up at the surface from under water and you'll see it: beyond about 49° from straight up, the surface becomes a mirror.</p>`
 		},
 		{
 			id: 'fibre',
