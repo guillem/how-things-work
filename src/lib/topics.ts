@@ -224,6 +224,15 @@ const explainers: Explainer[] = [
 		minutes: 12
 	},
 	{
+		slug: 'chemical-bonds',
+		title: 'Chemical bonds and the shapes of molecules',
+		summary:
+			'Snap atoms together into molecules, watch electron pairs push each other into 3D shapes, and switch on a charge map to see which molecules are polar.',
+		accent: '#1c7ed6',
+		steps: 11,
+		minutes: 15
+	},
+	{
 		slug: 'error-correction',
 		title: 'How error-correcting codes repair data',
 		summary:

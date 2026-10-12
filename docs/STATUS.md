@@ -66,13 +66,15 @@ Last updated: 2026-10-12 UTC.
 
 ## Current development
 
-- waves-interference: built in worktree `topic/waves-interference` (2026-10-12), ticked; awaiting merge and validation. Built-state param in use: `probe:tank`.
-
-None in progress. Released in v0.1.2 (2026-10-12), built in cloud sessions on 2026-10-11: the
+Batch 7 (2026-10-12, local worktrees, one builder agent each): the topics listed at the end of
+this section, merged into `main` locally, not pushed until the user validates. Released in v0.1.2 (2026-10-12), built in cloud sessions on 2026-10-11: the
 photosynthesis review fixes, then its rate model and "What limits the rate?" step (PROSPECT-D
 leaf optics + FvCB C₃ model, `src/routes/photosynthesis/model.ts`); photosynthesis is ticked and
 its review report deleted. Built-state params in use: `web:<step>`, `board:build`,
-`bridge:build`, `bits:<step>`, `map:<step>`, `view:zoom`.
+`bridge:build`, `bits:<step>`, `map:<step>`, `view:zoom`, `mol:<step>`.
+
+- waves-interference: merged; ticked; built-state param `probe:tank`. Not reviewed yet.
+- chemical-bonds: built in worktree branch `topic/chemical-bonds` (model, 11 steps, 5 scenes, tests), ticked; awaiting merge and review.
 
 ## Open questions for the user
 
