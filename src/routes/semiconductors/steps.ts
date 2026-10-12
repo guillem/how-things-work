@@ -189,7 +189,7 @@ export const spec: ExplainerSpec = {
 			chapter: 'junction',
 			title: 'Forward: lower the hill, current flows',
 			scene: 'junction',
-			hints: { phase: 'bias' },
+			hints: { phase: 'bias', param: 'vf' },
 			duration: 24,
 			controls: [
 				{
@@ -214,7 +214,7 @@ export const spec: ExplainerSpec = {
 			chapter: 'junction',
 			title: 'Reverse: raise the hill, current stops',
 			scene: 'junction',
-			hints: { phase: 'bias' },
+			hints: { phase: 'bias', param: 'vr' },
 			duration: 22,
 			controls: [
 				{
@@ -239,7 +239,7 @@ export const spec: ExplainerSpec = {
 			chapter: 'junction',
 			title: 'A material you can switch',
 			scene: 'junction',
-			hints: { phase: 'curve' },
+			hints: { phase: 'curve', param: 'v' },
 			duration: 30,
 			controls: [
 				{
