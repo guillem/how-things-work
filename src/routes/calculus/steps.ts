@@ -86,7 +86,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Calculus is the mathematics of change. Its first question sounds simple: <strong>how steep is a curve at a point?</strong></p>
 <p>For a straight line the answer is its <dfn data-def="How much a line rises for each step to the right: rise ÷ run. Negative when the line goes down.">slope</dfn>: go some distance to the right (the <em>run</em>), see how far the line goes up (the <em>rise</em>), and divide, <strong>slope = rise ÷ run</strong>. A slope of 3 means 3 up for every 1 across; a negative slope means the line goes down. On a straight line it is the same wherever you measure.</p>
-<p>A curve is different. On the parabola <i>y</i> = <i>x</i>², join the point at <i>x</i> = 1 to the point one step to the right with a straight <dfn data-def="A straight line segment joining two points of a curve.">chord</dfn>: it rises from 1 to 4, a slope of 3. Drag the point along the curve: further right the chord gets steeper, near the bottom of the curve it is much flatter. The steepness changes from place to place.</p>`,
+<p>A curve is different. On the parabola <i>y</i> = <i>x</i>², join the point at <i>x</i> = 1 to the point one step to the right with a straight <dfn data-def="A straight line segment joining two points of a curve.">chord</dfn>: it rises from 1 to 4, a slope of 3. Drag the point along the curve: further right the chord gets steeper, near the bottom of the curve it is much flatter (near the right end, the chord goes to the point one step to the left). The steepness changes from place to place.</p>`,
 			notes: `<p>Every graph in this explainer uses different scales on its two axes, so that the whole curve fits. A slope of 1 then does not look like 45°: trust the numbers, not the angle on the screen.</p>`
 		},
 		{
@@ -125,7 +125,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Every point of the curve has its own slope. Plot that slope, point by point, on a second graph underneath, with the same <i>x</i> axis: you get a new curve, the <strong>derivative f′</strong>.</p>
 <p>For the parabola <i>y</i> = <i>x</i>² the slope at <i>x</i> is always 2<i>x</i>: 0 at the bottom, 2 at <i>x</i> = 1, 6 at <i>x</i> = 3. So the derivative of <i>x</i>² is the straight line <strong>2<i>x</i></strong>. Drag the point and check the two readings against each other.</p>
-<p>Switch the curve to the cubic or the sine wave. Wherever the top curve has a hilltop or a valley floor, the slope curve crosses zero; where the top curve is steepest, the slope curve peaks. The derivative of a sine wave is another wave, shifted a quarter of a period: a cosine.</p>`,
+<p>Switch the curve to the cubic or the sine wave. Wherever the top curve has a hilltop or a valley floor, the slope curve crosses zero; where the top curve is steepest, uphill or downhill, the slope curve reaches its highest or lowest value. The derivative of a sine wave is another wave, shifted a quarter of a period: a cosine (taller here, because this wave is squeezed to fit one period into 0–3).</p>`,
 			notes: `<p>A few derivatives worth knowing: a constant has slope 0; <i>x</i> has slope 1; <i>x</i>² has 2<i>x</i>; <i>x</i>³ has 3<i>x</i>²; in general <i>x</i><sup><i>n</i></sup> has <i>n</i><i>x</i><sup><i>n</i>−1</sup>. And sin <i>x</i> has slope cos <i>x</i> when <i>x</i> is in radians (<a href="../unit-circle/#radians">why radians</a>). With these and a few rules for combining them, the derivative of almost any formula can be worked out by hand.</p>`
 		},
 		{
@@ -138,7 +138,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now drag the hollow round <em>knots</em> up and down to shape a curve of your own (a smooth curve is drawn through them), or focus one and use the arrow keys. The slope curve follows every change.</p>
 <p>Try to predict it before you look. A curve that climbs steadily has a slope curve that stays above zero. Make a hill: the slope is positive on its way up, zero on top, negative on its way down. Make a stretch nearly straight: the slope curve goes flat there, because a straight line has the same slope everywhere.</p>
-<p>That is all a derivative is: <strong>the slope of a curve at each point</strong>, which is a rate of change — how fast the height changes as you move along. Position changing over time has a speed; a population changing over time has a growth rate. Both are derivatives.</p>`
+<p>That is all a derivative is: <strong>the slope of a curve at each point</strong>, which is a rate of change — how fast the height changes as you move along. Position changing over time has a velocity; a population changing over time has a growth rate. Both are derivatives.</p>`
 		},
 		// ------------------------------------------------------------------ area
 		{
@@ -151,7 +151,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The second question of calculus: <strong>how much area lies between a curve and the <i>x</i> axis?</strong> For a rectangle or a triangle there is a formula; a curved edge has none.</p>
 <p>So approximate. Cut the stretch from <i>x</i> = 0 to 3 into <i>n</i> strips of equal width and replace each strip by a rectangle as tall as the curve at the strip's left edge. Rectangles are easy: width × height. Add them up.</p>
-<p>Under the parabola <i>y</i> = <i>x</i>², four rectangles give about 5.9. That is too little: each rectangle stops below the rising curve and leaves a sliver uncovered. Add more rectangles with the slider and watch the slivers shrink.</p>`,
+<p>Under the parabola <i>y</i> = <i>x</i>² (pick it again if you changed the curve), four rectangles give about 5.9. That is too little: each rectangle stops below the rising curve and leaves a sliver uncovered. Add more rectangles with the slider and watch the slivers shrink.</p>`,
 			notes: `<p>A sum of rectangles like this is called a <dfn data-def="An approximation of the area under a curve by a sum of thin rectangles, named after the mathematician Bernhard Riemann (1826–1866).">Riemann sum</dfn>.</p>`
 		},
 		{
@@ -163,7 +163,7 @@ export const spec: ExplainerSpec = {
 			controls: [n, rule, curve],
 			body: `
 <p>The graph underneath plots the total of the rectangles against their number <i>n</i> (on a scale where each step is a doubling). With more and thinner rectangles the total creeps up on one value and stays there: under <i>y</i> = <i>x</i>², 100 rectangles give about 8.87, and the totals close in on <strong>exactly 9</strong>.</p>
-<p>The gap shrinks in a regular way: <strong>double the rectangles and the error halves</strong>. The leftover slivers each get half as wide and about half as tall, and there are twice as many of them.</p>
+<p>Under <i>x</i>², the gap shrinks in a regular way: <strong>double the rectangles and the error halves</strong>. The leftover slivers each get half as wide and about half as tall, and there are twice as many of them. (On a curve that ends at the same height it started, like the thrown ball, the slivers on the way up and on the way down cancel, and the error drops much faster: to a quarter with each doubling. On the wave they cancel exactly.)</p>
 <p>Change how each rectangle meets the curve. Right edges overshoot the rising parabola instead of falling short, and close in from above. Midpoints are far better: their small overshoot and undershoot within each strip nearly cancel, and doubling <i>n</i> cuts their error to a quarter.</p>`
 		},
 		{
@@ -177,7 +177,7 @@ export const spec: ExplainerSpec = {
 <p>The value the rectangle sums close in on is the <strong><dfn data-def="The exact area between a curve and the x axis over a stretch: the limit of the rectangle sums as they get thinner and more numerous. Area below the axis counts as negative.">integral</dfn></strong> of the curve:</p>
 <p class="formula"><strong>∫₀³ x² dx = 9</strong></p>
 <p>The tall S, ∫, is an old long <i>s</i> for “sum”: the integral is a sum of infinitely many infinitely thin rectangles, each <i>f</i>(<i>x</i>) tall and <i>dx</i> wide. The 0 and the 3 say where the area starts and ends.</p>
-<p>Pick the sine wave. Where the curve dips below the axis, its rectangles have negative heights, so that area counts as <strong>negative</strong>. Over its full wave the area above (about 2.86) and the area below (about −2.86) cancel: the integral is 0. An integral is a <em>signed</em> area — the total of what was added and taken away.</p>`
+<p>Pick the sine wave. Where the curve dips below the axis, its rectangles (one step back) have negative heights, so that area counts as <strong>negative</strong>. Over its full wave the area above (about 2.86) and the area below (about −2.86) cancel: the integral is 0. An integral is a <em>signed</em> area — the total of what was added and taken away.</p>`
 		},
 		// ------------------------------------------------------------------ ftc
 		{
@@ -204,7 +204,7 @@ export const spec: ExplainerSpec = {
 <p class="formula"><strong>slope of A at x = f(x)</strong></p>
 <p>The slope of the running area is the height of the original curve. Where the curve is tall the area grows fast; where the curve is at zero the area stops growing; where the curve is below the axis the area shrinks. Drag the point and compare the two numbers: they agree everywhere, on every curve.</p>
 <p>This is the <strong><dfn data-def="The two halves of one result: the slope of the running area under f is f itself, and adding up the slopes f′ from a to b gives back the change f(b) − f(a).">fundamental theorem of calculus</dfn></strong>: taking the slope undoes adding up the area.</p>`,
-			notes: `<p>Under <i>y</i> = <i>x</i>² the running area is <i>A</i>(<i>x</i>) = <i>x</i>³ ÷ 3, and the slope of <i>x</i>³ ÷ 3 is 3<i>x</i>² ÷ 3 = <i>x</i>², the curve itself. That is how integrals are worked out exactly: find a function whose derivative is the curve. That is how ∫₀³ <i>x</i>² d<i>x</i> = 3³ ÷ 3 = 9.</p>`
+			notes: `<p>Under <i>y</i> = <i>x</i>² the running area is <i>A</i>(<i>x</i>) = <i>x</i>³ ÷ 3, and the slope of <i>x</i>³ ÷ 3 is 3<i>x</i>² ÷ 3 = <i>x</i>², the curve itself. That is how integrals are worked out exactly: find a function <i>F</i> whose derivative is the curve; the area from <i>a</i> to <i>b</i> is then <i>F</i>(<i>b</i>) − <i>F</i>(<i>a</i>). For <i>x</i>², <i>F</i> = <i>x</i>³ ÷ 3, so ∫₀³ <i>x</i>² d<i>x</i> = 3³ ÷ 3 − 0 = 9.</p>`
 		},
 		{
 			id: 'undo',
@@ -222,12 +222,12 @@ export const spec: ExplainerSpec = {
 		{
 			id: 'motion',
 			chapter: 'ftc',
-			title: 'Speed and distance',
+			title: 'Velocity and height',
 			scene: 'ftc',
 			hints: { phase: 'motion', curve: 'ball' },
 			controls: [x],
 			body: `
-<p>Calculus was invented, by Isaac Newton and Gottfried Leibniz in the late 17th century, largely to describe motion. Throw a ball straight up at 14.7 m/s. Gravity takes away 9.8 m/s of its speed every second, so its height after <i>t</i> seconds is <strong>h = 14.7 t − 4.9 t²</strong>.</p>
+<p>Calculus was developed independently by Isaac Newton (from the 1660s) and Gottfried Leibniz (from the 1670s); Newton built his version to describe motion. Throw a ball straight up at 14.7 m/s. Ignoring air resistance, gravity takes 9.8 m/s off its upward velocity every second (once that reaches zero, the ball falls ever faster), so its height after <i>t</i> seconds is <strong>h = 14.7 t − 4.9 t²</strong>.</p>
 <p>The slope of the height curve is the <dfn data-def="How fast the position changes, with a direction: here positive going up, negative coming down. Measured in metres per second.">velocity</dfn>: 14.7 m/s at the throw, 0 at the top after 1.5 s, −14.7 m/s when the ball lands at 3 s. Underneath, the area under the velocity curve is the height gained: by 1.5 s it adds up to about 11.0 m, the top of the throw.</p>
 <p>Position → slope → velocity; velocity → area → position. The same pair links velocity and acceleration, and it is how <a href="../newtons-laws/">Newton's laws</a> turn forces into motion.</p>`
 		}
