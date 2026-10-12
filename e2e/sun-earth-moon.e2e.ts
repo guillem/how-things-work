@@ -48,12 +48,19 @@ test('orbit: arrow keys on the date slider change the date, not the step', async
 test('tilt: with no tilt there are no seasons', async ({ page }) => {
 	await open(page, './sun-earth-moon/#tilt', 'Daily sunshine at 40° N with the axis tilted 23.4°');
 	await expect(stage(page)).toContainText('Sunniest day ÷ darkest: 3.3×');
+	// The June-solstice sketch and the chart footer agree on the day length
+	// (recorded mismatch: the footer rounded the slider's 23.4° to 14 h 50 min
+	// while the sketch used the exact 23.44° tilt for 14 h 51 min).
+	await expect(stage(page)).toContainText('14 h 51 min of daylight');
+	await expect(stage(page)).not.toContainText('14 h 50 min');
 	await range(page, 'tilt').fill('0');
 	await expect(stage(page)).toContainText('Daily sunshine at 40° N with no tilt');
 	await expect(stage(page)).toContainText(
 		'No seasons: every day like an equinox, with 12 hours of daylight everywhere'
 	);
-	await expect(stage(page)).toContainText('21 Jun: 0.77 × the equator at an equinox');
+	await expect(stage(page)).toContainText(
+		'21 Jun: 0.77 × the equator at an equinox · 12 h of daylight'
+	);
 });
 
 test('phases: half a month after new Moon the Moon is full and eclipsed', async ({ page }) => {

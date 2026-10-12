@@ -542,12 +542,14 @@
 			real: yearPath((d) => dailySunshine(L, decOn(d)), tsx, tsy)
 		};
 	});
-	const dTilt = $derived(decOn(drift, tilt));
+	const noTilt = $derived(tilt < 0.25);
+	const nearReal = $derived(Math.abs(tiltTarget - TILT) < 0.3);
+	// The solstice sketch uses the exact TILT at the real setting (so it matches the
+	// day-length step); the footer follows suit, or the two day lengths disagree on screen.
+	const dTilt = $derived(decOn(drift, nearReal ? TILT : tilt));
 	const tiltToday = $derived(dailySunshine(lat, dTilt));
 	const tiltRange = $derived(yearRange(Math.round(latTarget), tiltTarget));
 	const realRange = $derived(yearRange(Math.round(latTarget), TILT));
-	const noTilt = $derived(tilt < 0.25);
-	const nearReal = $derived(Math.abs(tiltTarget - TILT) < 0.3);
 	const tiltName = (e: number) => (e < 0.25 ? 'no tilt' : `${Number(e.toFixed(1))}° tilt`);
 	const tiltTitle = $derived(
 		noTilt
