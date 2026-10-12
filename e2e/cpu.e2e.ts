@@ -104,3 +104,10 @@ test('loading an example replaces the program', async ({ page }) => {
 	await page.getByRole('button', { name: 'Next step' }).click();
 	await expect(editor(page)).toHaveValue('HALT');
 });
+
+test('resetting puts the chosen example back after edits', async ({ page }) => {
+	await page.goto('./cpu/#editor');
+	await editor(page).fill('HALT');
+	await page.getByRole('button', { name: 'Reset to example' }).click();
+	await expect(editor(page)).toHaveValue(/Add up 1 \+ 2 \+ \.\.\. \+ 10/);
+});

@@ -118,6 +118,12 @@ test('running into data that is not an instruction stops the machine', () => {
 	expect(r.stop).toBe('bad-opcode');
 });
 
+test('labels may use any valid name, even ones JavaScript objects inherit', () => {
+	const r = exec('JMP constructor\nLDI R0, 1\nconstructor: HALT');
+	expect(r.stop).toBe('halt');
+	expect(r.final.regs[0]).toBe(0);
+});
+
 test('bad programs give errors with line numbers instead of crashing', () => {
 	const cases: [string, number, RegExp][] = [
 		['', 1, /no instructions/],
@@ -133,6 +139,9 @@ test('bad programs give errors with line numbers instead of crashing', () => {
 		['HALT R0', 1, /takes no operands/],
 		['a: HALT\na: HALT', 2, /defined twice/],
 		['LDI R0, banana!', 1, /not a number or a label/],
+		['JMP constructor', 1, /Unknown label "constructor"/],
+		['LDI R0, R1', 1, /"R1" is a register/],
+		['x: DATA [5]', 1, /Expected a number, not an address/],
 		[Array.from({ length: 17 }, () => 'HALT').join('\n'), 17, /needs 34 bytes/]
 	];
 	for (const [src, line, message] of cases) {

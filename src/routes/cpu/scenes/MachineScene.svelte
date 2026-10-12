@@ -68,6 +68,15 @@
 			lastExample = ex;
 		});
 	});
+	// "Reset to example": put the chosen example back, even if it is the one already chosen.
+	let lastReload: number | undefined;
+	$effect(() => {
+		const n = Number(params.reload ?? 0);
+		untrack(() => {
+			if (lastReload !== undefined && n !== lastReload) setParam('source', PROGRAMS[example]);
+			lastReload = n;
+		});
+	});
 
 	const asm = $derived(assemble(source));
 	const rec = $derived(asm.ok ? run(asm.memory) : null);
