@@ -283,19 +283,27 @@
 			let d = `M${SX} ${SY}`;
 			for (let s = s0; s <= s1; s += 5) d += `L${X[s].toFixed(1)} ${Y[s].toFixed(1)}`;
 			d += 'Z';
-			// Label just outside the orbit, at the middle of the wedge's arc; pushed
-			// further out when it would crowd the previous one.
+			// Label just outside the orbit, at the middle of the wedge's arc. When it
+			// would crowd a label already placed (near aphelion, where the equal-time
+			// wedges bunch up at low speed) it slides round the Sun, alternating
+			// sides, and only then moves further out.
 			const m = s0 + PER_WEDGE / 2;
-			const ux = X[m] - SX;
-			const uy = Y[m] - SY;
-			const len = Math.hypot(ux, uy) || 1;
+			const phi = Math.atan2(Y[m] - SY, X[m] - SX);
+			const rho = Math.hypot(X[m] - SX, Y[m] - SY);
 			let off = 22;
-			let lx = X[m] + (ux / len) * off;
-			let ly = Y[m] + (uy / len) * off;
-			while (placed.some((p) => Math.abs(p.x - lx) < 70 && Math.abs(p.y - ly) < 18) && off < 120) {
-				off += 18;
-				lx = X[m] + (ux / len) * off;
-				ly = Y[m] + (uy / len) * off;
+			let dp = 0;
+			let lx = 0;
+			let ly = 0;
+			for (let attempt = 0; attempt < 60; attempt++) {
+				lx = SX + (rho + off) * Math.cos(phi + dp);
+				ly = SY + (rho + off) * Math.sin(phi + dp);
+				if (!placed.some((p) => Math.abs(p.x - lx) < 70 && Math.abs(p.y - ly) < 18)) break;
+				if ((attempt + 1) % 26 === 0) {
+					off += 20;
+					dp = 0;
+				} else {
+					dp = (attempt % 2 === 0 ? 1 : -1) * (Math.floor(attempt / 2) + 1) * 0.04;
+				}
 			}
 			placed.push({ x: lx, y: ly });
 			out.push({ k, d, area: sweptArea(track, 0, s0, s1), lx, ly });
