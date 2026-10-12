@@ -93,8 +93,10 @@
 	const CY = 292;
 	let yawOff = $state(0);
 	let pitch = $state(0.3);
-	// The slow turn pauses while the pointer is over the molecule, so atoms hold still to be
-	// clicked (event handlers may read t; effects never do).
+	// The slow turn pauses while the pointer is anywhere in the molecule's pad, so
+	// atoms hold still to be clicked — including while the pointer crosses one
+	// atom on its way to another (the pad's leave is the only release; per-atom
+	// leave would un-pause mid-aim). Event handlers may read t; effects never do.
 	let pausedAt = $state<number | null>(null);
 	let shift = $state(0);
 	const hold = () => {
@@ -630,8 +632,6 @@
 					tabindex="0"
 					aria-label="Remove this {it.sym} atom"
 					onclick={() => removeAt(li)}
-					onpointerenter={hold}
-					onpointerleave={release}
 					onkeydown={(e) => onKey(e, () => removeAt(li))}
 				>
 					{@render ball(it.x, it.y, it.r ?? 20, it.sym)}
