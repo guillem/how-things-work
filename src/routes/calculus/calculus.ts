@@ -100,8 +100,11 @@ export function accumulate(f: Fn, a: number, b: number, count: number): number[]
 
 // ---- the editable curve: a natural cubic spline ----------------------------------------------
 
-/** Knot positions of the editable curve: every half unit from 0 to 3. */
-export const KNOT_X = [0, 0.5, 1, 1.5, 2, 2.5, 3];
+/**
+ * Knot positions of the editable curve: six, 0.6 apart, so that none sits
+ * under the point at x = 1 or 1.5, where the narrative puts it.
+ */
+export const KNOT_X = [0, 0.6, 1.2, 1.8, 2.4, 3];
 
 /**
  * The natural cubic spline through the points (xs[i], ys[i]): the smoothest
@@ -208,9 +211,9 @@ export const presets: Record<Exclude<CurveId, 'custom'>, Curve> = {
 	},
 	wave: {
 		id: 'wave',
-		formula: 'y = 4 sin(2πx / 3)',
-		f: (x) => 4 * Math.sin((2 * Math.PI * x) / 3),
-		df: (x) => ((8 * Math.PI) / 3) * Math.cos((2 * Math.PI * x) / 3),
+		formula: 'y = 3 sin(2πx / 3)',
+		f: (x) => 3 * Math.sin((2 * Math.PI * x) / 3),
+		df: (x) => 2 * Math.PI * Math.cos((2 * Math.PI * x) / 3),
 		...plain
 	},
 	ball: {
@@ -226,13 +229,13 @@ export const presets: Record<Exclude<CurveId, 'custom'>, Curve> = {
 };
 
 /** The editable curve's knot heights before the reader moves any. */
-export const DEFAULT_KNOTS = [2, 5, 6.5, 4, 1.5, 3, 8];
+export const DEFAULT_KNOTS = [1.5, 5, 6.5, 3, 2, 8];
 
 /** Lowest and highest a knot can be dragged (the plot shows −4 … 12). */
 export const KNOT_MIN = -3.5;
 export const KNOT_MAX = 11.5;
 
-/** Knot heights from a param string ("2,5,6.5,4,1.5,3,8"), or null if it is not one. */
+/** Knot heights from a param string ("1.5,5,6.5,3,2,8"), or null if it is not one. */
 export function parseKnots(value: unknown): number[] | null {
 	if (typeof value !== 'string') return null;
 	const ys = value.split(',').map(Number);

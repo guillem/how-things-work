@@ -45,7 +45,7 @@ test('every curve on the page has the derivative it claims', () => {
 	expect(presets.ball.f(3)).toBeCloseTo(0, 9);
 	expect(presets.ball.df(V0 / G)).toBeCloseTo(0, 9); // at the top it stops rising
 	// The sine wave's slope is the cosine (scaled by the chain rule).
-	expect(presets.wave.df(0)).toBeCloseTo((8 * Math.PI) / 3, 9);
+	expect(presets.wave.df(0)).toBeCloseTo(2 * Math.PI, 9);
 	expect(presets.wave.df(0.75)).toBeCloseTo(0, 9); // its peak
 });
 
@@ -53,7 +53,7 @@ test('the editable curve passes through its knots smoothly', () => {
 	const s = spline(KNOT_X, DEFAULT_KNOTS);
 	KNOT_X.forEach((x, i) => expect(s.f(x)).toBeCloseTo(DEFAULT_KNOTS[i], 9));
 	// No corner at the knots: the slope just left and right of each one agrees.
-	for (const x of KNOT_X.slice(1, -1)) expect(s.df(x - 1e-7)).toBeCloseTo(s.df(x + 1e-7), 5);
+	for (const x of KNOT_X.slice(1, -1)) expect(s.df(x - 1e-9)).toBeCloseTo(s.df(x + 1e-9), 5);
 	// Knots on a straight line give that straight line.
 	const line = spline(
 		KNOT_X,
@@ -84,8 +84,8 @@ test('Riemann sums converge to the exact integral', () => {
 test('area below the axis counts as negative', () => {
 	// One whole period of the sine wave: as much below the axis as above.
 	expect(integral(presets.wave.f, 0, 3)).toBeCloseTo(0, 9);
-	expect(integral(presets.wave.f, 0, 1.5)).toBeCloseTo(12 / Math.PI, 9);
-	expect(integral(presets.wave.f, 1.5, 3)).toBeCloseTo(-12 / Math.PI, 9);
+	expect(integral(presets.wave.f, 0, 1.5)).toBeCloseTo(9 / Math.PI, 9);
+	expect(integral(presets.wave.f, 1.5, 3)).toBeCloseTo(-9 / Math.PI, 9);
 });
 
 test('the slope of the running area is the curve (the fundamental theorem)', () => {
