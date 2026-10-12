@@ -27,14 +27,15 @@
 	let { step, t, params, reduced }: StageProps = $props();
 
 	const TAU = 2 * Math.PI;
-	// A finely sampled square wave: its transform gives the ingredients up to
-	// 50 Hz to well within a pixel.
+	// A finely sampled square wave, for the average gap between it and the sum.
 	const SQ_N = 2048;
 	const SQ = shapeSamples('square', SQ_N);
 	const SQ_SPEC = waveSpectrum(SQ);
-	const amp = (n: number) => SQ_SPEC[n]?.amp ?? 0;
-	const phaseOf = (n: number) => SQ_SPEC[n]?.phase ?? 0;
-	const term = (n: number, u: number) => amp(n) * Math.sin(TAU * n * u + phaseOf(n));
+	// The ingredients themselves: the exact series, 4/(πn) for odd n, all in phase
+	// (the sampled transform is a little low at high n, which would make the
+	// overshoot readout dip below its limit, 8.95%).
+	const amp = (n: number) => (n % 2 ? 4 / (Math.PI * n) : 0);
+	const term = (n: number, u: number) => amp(n) * Math.sin(TAU * n * u);
 	/** The sum of 1 … T Hz; a fractional T adds that part of the next frequency (while the slider tweens). */
 	function sumAt(u: number, T: number) {
 		const whole = Math.floor(T);
@@ -150,7 +151,7 @@
 	});
 
 	// The inset: the top of the jump at u = 0.5, magnified.
-	const IN = { x0: 540, x1: 910, y0: 458, y1: 586, u0: 0.38, u1: 0.5, v0: 0.82, v1: 1.32 };
+	const IN = { x0: 540, x1: 910, y0: 458, y1: 586, u0: 0.36, u1: 0.5, v0: 0.82, v1: 1.32 };
 	const ix = (u: number) => IN.x0 + ((IN.x1 - IN.x0) * (u - IN.u0)) / (IN.u1 - IN.u0);
 	const iy = (v: number) => IN.y1 - ((IN.y1 - IN.y0) * (v - IN.v0)) / (IN.v1 - IN.v0);
 	const insetPath = $derived.by(() => {
@@ -165,7 +166,7 @@
 		return d;
 	});
 	const peakX = $derived(ix(over.at));
-	/** Whether the highest point is next to the jump (with 1 or 2 frequencies it is the hump at 0.25 s). */
+	/** Whether the highest point is next to the jump (with 1 or 2 Hz only, the highest point is the hump at 0.25 s). */
 	const nearJump = $derived(over.at > IN.u0);
 	const ticks = [0, 0.25, 0.5, 0.75, 1];
 </script>

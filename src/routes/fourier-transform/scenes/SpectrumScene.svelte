@@ -26,6 +26,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, smoothstep, startDrag, type Point } from '#lib/draw/index.ts';
+	import DrawButton from '../DrawButton.svelte';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { num, pack, partialSamples, unpack, waveFromStroke, waveSpectrum } from '../fourier';
 	import { BARS, N_WAVE, WAVE_NAMES, editedSpectrum, samplesPath, waveSource } from '../signals';
@@ -155,7 +156,10 @@
 			)
 			.join(' ')
 	);
+	/** A finger draws only after the Draw button; otherwise it scrolls the page. */
+	let armed = $state(false);
 	function ondraw(event: PointerEvent) {
+		if (event.pointerType === 'touch' && !armed) return;
 		stroke = [];
 		const add = (p: Point) => {
 			// A little beyond either end still counts as the start or the end of the second.
@@ -167,6 +171,7 @@
 		};
 		// startDrag reports the first point too.
 		startDrag(event, add, () => {
+			armed = false;
 			const wave = waveFromStroke(stroke, N_WAVE);
 			stroke = [];
 			if (!wave) return;
@@ -222,15 +227,22 @@
 		weight: 600,
 		color: rebuilt ? 'var(--ft-sum)' : 'var(--stage-ink)'
 	})}
-	{@render txt(
-		X1,
-		34,
-		ghostPath
-			? 'dashed: the original · drag across to draw your own'
-			: 'drag across this graph to draw your own',
-		12,
-		{ anchor: 'end', muted: true }
-	)}
+	<g class="fine-only">
+		{@render txt(
+			X1,
+			34,
+			ghostPath
+				? 'dashed: the original · drag across to draw your own'
+				: 'drag across this graph to draw your own',
+			12,
+			{ anchor: 'end', muted: true }
+		)}
+	</g>
+	{#if ghostPath}
+		<g class="coarse-only">
+			{@render txt(X1 - 124, 34, 'dashed: the original', 12, { anchor: 'end', muted: true })}
+		</g>
+	{/if}
 	{#each [-1, 1] as v (v)}
 		<line x1={X0} x2={X1} y1={CY - U * v} y2={CY - U * v} stroke="var(--stage-grid)" />
 		{@render txt(X0 - 10, CY - U * v + 4, v > 0 ? '+1' : '−1', 12, { anchor: 'end', muted: true })}
@@ -300,11 +312,32 @@
 				muted: true
 			}
 		)}
+		<g class="coarse-only">
+			{@render txt((X0 + X1) / 2, CY + 42, 'with a finger: tap Draw first', 13, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</g>
+	{/if}
+
+	{#if armed}
+		<rect
+			x={X0 - 4}
+			y={TOP + 2}
+			width={X1 - X0 + 8}
+			height={BOTTOM - TOP - 4}
+			rx="8"
+			fill="none"
+			stroke="var(--ft-bar)"
+			stroke-width="2"
+			stroke-dasharray="8 6"
+		/>
 	{/if}
 
 	<!-- the drawing surface over the signal -->
 	<rect
 		class="draw"
+		class:armed
 		x={X0 - 14}
 		y={TOP}
 		width={X1 - X0 + 28}
@@ -313,6 +346,7 @@
 		role="presentation"
 		onpointerdown={ondraw}
 	/>
+	<DrawButton x={X1} y={12} {armed} ontoggle={() => (armed = !armed)} />
 
 	<!-- ================= the spectrum ================= -->
 	{@render txt(
@@ -408,6 +442,20 @@
 <style>
 	.draw {
 		cursor: crosshair;
+	}
+	/* A finger scrolls the page unless the Draw button was pressed. */
+	.draw.armed {
 		touch-action: none;
+	}
+	.coarse-only {
+		display: none;
+	}
+	@media (any-pointer: coarse) {
+		.coarse-only {
+			display: inline;
+		}
+		.fine-only {
+			display: none;
+		}
 	}
 </style>

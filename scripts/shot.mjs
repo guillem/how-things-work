@@ -8,6 +8,7 @@
 //        GOTO=stepId     after SET, jump to another step (controls keep their values across steps,
 //                        so a control that only exists on one step can be tested on the others)
 //        REDUCED=1       emulate prefers-reduced-motion (the stage renders its frozen t = 2.5 s frame)
+//        TOUCH=1         emulate a touch screen (pointer: coarse)
 //        PW_CHROMIUM_PATH=/path/to/chrome   use a specific Chromium binary
 // Example: WAIT=3000 CLIP=stage node scripts/shot.mjs shots "http://localhost:5173/photosynthesis/#atp" dark 1280 800 0 atp
 //          SET=carbons:false GOTO=reduction CLIP=stage node scripts/shot.mjs shots "http://localhost:5173/photosynthesis/#rubisco" light 1280 800 0 reduction-compact
@@ -31,7 +32,8 @@ const context = await browser.newContext({
 	viewport: { width: Number(w), height: Number(h) },
 	deviceScaleFactor: 1,
 	colorScheme: theme === 'dark' ? 'dark' : 'light',
-	reducedMotion: process.env.REDUCED ? 'reduce' : 'no-preference'
+	reducedMotion: process.env.REDUCED ? 'reduce' : 'no-preference',
+	hasTouch: Boolean(process.env.TOUCH)
 });
 const page = await context.newPage();
 const errors = [];

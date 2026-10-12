@@ -18,6 +18,7 @@
 	 * and the curve switched to "Your drawing" when the pointer is released.
 	 */
 	import { cycle, startDrag, type Point } from '#lib/draw/index.ts';
+	import DrawButton from '../DrawButton.svelte';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { chain, curveCircles, num, pack, pen, type Complex } from '../fourier';
 	import { curveSource, normaliseLoop } from '../signals';
@@ -108,7 +109,10 @@
 	// ---- drawing a loop ----------------------------------------------------------------
 	let stroke = $state<Point[]>([]);
 	const strokePath = $derived(pathOf(stroke, false));
+	/** A finger draws only after the Draw button; otherwise it scrolls the page. */
+	let armed = $state(false);
 	function ondraw(event: PointerEvent) {
+		if (event.pointerType === 'touch' && !armed) return;
 		stroke = [];
 		startDrag(
 			event,
@@ -119,6 +123,7 @@
 				});
 			},
 			() => {
+				armed = false;
 				const loop = normaliseLoop(stroke.map((p) => ({ re: (p.x - CX) / S, im: (CY - p.y) / S })));
 				stroke = [];
 				if (!loop) return;
@@ -245,10 +250,16 @@
 			weight: 600,
 			color: 'var(--ft-pen)'
 		})}
-		{@render txt(CX, CY + 18, 'with the mouse or a finger; it closes when you let go', 13, {
+		{@render txt(CX, CY + 18, 'it closes when you let go', 13, {
 			anchor: 'middle',
 			muted: true
 		})}
+		<g class="coarse-only">
+			{@render txt(CX, CY + 40, 'with a finger: tap Draw first', 13, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</g>
 	{/if}
 
 	{#if strokePath}
@@ -262,9 +273,24 @@
 		/>
 	{/if}
 
+	{#if armed}
+		<rect
+			x={AREA.x0 + 4}
+			y={AREA.y0 + 4}
+			width={AREA.x1 - AREA.x0 - 8}
+			height={AREA.y1 - AREA.y0 - 8}
+			rx="10"
+			fill="none"
+			stroke="var(--ft-bar)"
+			stroke-width="2"
+			stroke-dasharray="8 6"
+		/>
+	{/if}
+
 	<!-- the drawing surface -->
 	<rect
 		class="draw"
+		class:armed
 		x={AREA.x0}
 		y={AREA.y0}
 		width={AREA.x1 - AREA.x0}
@@ -273,6 +299,7 @@
 		role="presentation"
 		onpointerdown={ondraw}
 	/>
+	<DrawButton x={AREA.x1} y={18} {armed} ontoggle={() => (armed = !armed)} />
 
 	<!-- ================= the circles by frequency ================= -->
 	{#if circles}
@@ -331,12 +358,24 @@
 				{ weight: 600 }
 			)}
 		{/if}
+		{@render txt(BX0, 580, `Slowed down: one trip takes ${PERIOD} s here`, 12, { muted: true })}
 	{/if}
 </g>
 
 <style>
 	.draw {
 		cursor: crosshair;
+	}
+	/* A finger scrolls the page unless the Draw button was pressed. */
+	.draw.armed {
 		touch-action: none;
+	}
+	.coarse-only {
+		display: none;
+	}
+	@media (any-pointer: coarse) {
+		.coarse-only {
+			display: inline;
+		}
 	}
 </style>
