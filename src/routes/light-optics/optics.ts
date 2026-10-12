@@ -4,8 +4,9 @@
  * 1. Materials. The refractive index n(λ) of each material comes from a
  *    published Sellmeier fit, n² = 1 + Σ Bᵢ λ² ÷ (λ² − Cᵢ), λ in micrometres
  *    (sources next to each set of coefficients). Air is taken as n = 1
- *    (really 1.0003 at sea level, which moves no angle in this explainer by
- *    more than 0.02°).
+ *    (really 1.0003 at sea level, which moves the angles quoted on the page
+ *    by less than 0.1°, except rays leaving just short of the critical
+ *    angle, which skim the surface).
  * 2. Light in a material travels at v = c ÷ n; its frequency doesn't change,
  *    so its wavelength inside is λ ÷ n.
  * 3. A 2-D ray tracer. Glass, water and so on are "bodies": intersections of
@@ -155,6 +156,21 @@ export function acceptanceAngle(n1: number, n2: number): number {
 export function thinLensFocal(n: number, r1: number, r2: number): number {
 	return 1 / ((n - 1) * (1 / r1 - 1 / r2));
 }
+
+/**
+ * The lens and object of the "lenses make images" step (stage units, 2 = 1 mm):
+ * crown glass (n = 1.52) with faces of radius 85 mm, 50 mm tall, an object
+ * 20 mm tall, and the heights on the lens (from the axis) that the fan of rays
+ * from the object's tip is aimed at. Small enough that the traced rays meet
+ * close to where the thin-lens equation puts the image.
+ */
+export const IMAGE_LENS = {
+	n: 1.52,
+	radius: 170,
+	halfHeight: 50,
+	object: 40,
+	fan: [-20, -10, 0, 10, 20]
+} as const;
 
 /** Image distance from the thin-lens equation 1/f = 1/u + 1/v (v < 0: virtual image). */
 export function imageDistance(f: number, u: number): number {

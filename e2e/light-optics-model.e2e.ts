@@ -1,6 +1,7 @@
 // Checks the optics model behind the light-optics explainer. Runs in Node.
 import { expect, test } from '@playwright/test';
 import {
+	IMAGE_LENS,
 	MATERIALS,
 	acceptanceAngle,
 	ball,
@@ -102,6 +103,8 @@ test('critical angles: glass 41°, water 49°, diamond 24°', () => {
 	expect(reflectance(crown.n(589.3), 1, 0)).toBeCloseTo(0.042, 3);
 	expect(reflectance(crown.n(589.3), 1, 40)).toBeGreaterThan(0.2);
 	expect(reflectance(crown.n(589.3), 1, 42)).toBe(1);
+	// At Brewster's angle, tan θ = n, none of the p-polarised half is reflected: 7.4% in all.
+	expect(reflectance(1, 1.5, toDeg(Math.atan(1.5)))).toBeCloseTo(0.074, 3);
 });
 
 test('an optical fibre traps light by total internal reflection, until the bend is too tight', () => {
@@ -166,6 +169,33 @@ test('the thin-lens equation: an object at 2f makes an image at 2f; inside f, a 
 	expect(imageDistance(100, 200)).toBeCloseTo(200, 9);
 	expect(imageDistance(100, 150)).toBeCloseTo(300, 9);
 	expect(imageDistance(100, 50)).toBeLessThan(0);
+});
+
+test("the image step's traced rays meet where the thin-lens equation puts the image", () => {
+	const { n, radius, halfHeight, object, fan } = IMAGE_LENS;
+	const f = thinLensFocal(n, radius, -radius);
+	const lens = convexLens('l', { x: 0, y: 0 }, radius, halfHeight, () => n);
+	// Height (+ below the axis) at which each ray from the object's tip, or its backward
+	// extension for a virtual image, crosses the image plane x = v.
+	const heights = (u: number) => {
+		const tip = { x: -u, y: -object };
+		const v = imageDistance(f, u);
+		return fan.map((h) => {
+			const p = trace([lens], tip, { x: u, y: h + object }, { minPower: 0.1 })[0];
+			const l = p.legs[p.legs.length - 1];
+			const d = exitDirection(p);
+			return l.a.y + ((v - l.a.x) / d.x) * d.y;
+		});
+	};
+	// Real images, upside down: the rays meet within 3 units (1.5 mm) of the arrow's tip.
+	for (const u of [250, 2 * f, 440]) {
+		const tipY = (object * imageDistance(f, u)) / u;
+		for (const y of heights(u)) expect(Math.abs(y - tipY)).toBeLessThan(3);
+	}
+	// Inside f, a virtual image: traced back, the rays seem to come from near its tip.
+	const tipY = (object * imageDistance(f, 90)) / 90;
+	expect(tipY).toBeLessThan(-object);
+	for (const y of heights(90)) expect(Math.abs(y - tipY)).toBeLessThan(10);
 });
 
 test('a prism bends blue light more than red: crown glass at minimum deviation', () => {
