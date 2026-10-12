@@ -4,6 +4,12 @@ import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
 // Distances are given in Schwarzschild radii (r_s), the radius of the horizon.
 
 const rs = (v: number, d = 2) => `${v.toFixed(d)} r_s`;
+/** An integer as a superscript: −4 → ⁻⁴. */
+const sup = (n: number) =>
+	String(n)
+		.split('')
+		.map((c) => (c === '-' ? '⁻' : '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(c)]))
+		.join('');
 
 /** How far from the hole a ray passes, on the weak-bending step. */
 const bendB: Control = {
@@ -32,17 +38,23 @@ const aim: Control = {
 };
 const fire: Control = { type: 'action', id: 'fire', label: 'Fire', action: 'Fire a light ray' };
 
-/** Fine aim close to the critical value √27 GM/c² = 2.598 r_s. */
-const aimFine: Control = {
+/** Fine aim close to the critical value √27 GM/c² = 2.598 076 211 r_s. */
+const aimDigits: Control = {
 	type: 'range',
-	id: 'aimFine',
-	label: 'Aim, finely',
-	min: 2.58,
-	max: 2.68,
-	step: 0.0001,
-	default: 2.5985,
-	format: (v) => rs(v, 4),
-	help: 'The critical aim is 2.5981 r_s.'
+	id: 'aimDigits',
+	label: 'How close to the critical aim',
+	min: 1,
+	max: 10,
+	step: 1,
+	default: 4,
+	format: (v) => `off by 10${sup(-v)} r_s`,
+	help: 'The critical aim is 2.598 076 211… r_s.'
+};
+const aimInside: Control = {
+	type: 'toggle',
+	id: 'aimInside',
+	label: 'Aim just inside it',
+	default: false
 };
 
 /** Height of the lamp that flashes in every direction. */
@@ -194,10 +206,10 @@ export const spec: ExplainerSpec = {
 			scene: 'rays',
 			hints: { phase: 'sphere' },
 			duration: 26,
-			controls: [aimFine],
+			controls: [aimDigits, aimInside],
 			body: `
 <p>Between flying past and falling in lies a knife edge. Aim at exactly 2.598 r<sub>s</sub> and the light ends up circling the hole at <strong>1.5 r<sub>s</sub></strong>, on the <dfn data-def="The radius, 1.5 r_s for a non-spinning black hole, at which light can travel round the hole in a circle. The orbit is unstable.">photon sphere</dfn>. Gravity there is strong enough to bend light into a circle.</p>
-<p>Adjust the aim by a ten-thousandth: the ray loops round once, twice or more before it leaves or falls in. The closer to the critical value, the more loops. The orbit is <strong>unstable</strong>, like a pencil balanced on its tip: any tiny difference grows, and the light peels away, outwards or inwards.</p>`
+<p>Aim closer and closer to the critical value: the ray loops round once, twice or more before it leaves or falls in. Every three more correct digits of aim buy about one more loop. The orbit is <strong>unstable</strong>, like a pencil balanced on its tip: any tiny difference grows, and the light peels away, outwards or inwards.</p>`
 		},
 		{
 			id: 'no-way-out',
@@ -250,7 +262,7 @@ export const spec: ExplainerSpec = {
 			controls: [iscoR],
 			body: `
 <p>Around a star, a planet can circle at any distance, as long as it moves at the right speed, and a small nudge only makes its circle slightly oval. Near a black hole, that stops being true. Launch a probe on a circular orbit, but 0.3% too slowly.</p>
-<p>Farther out than <strong>3 r<sub>s</sub></strong>, the probe wobbles a little and stays. Inside 3 r<sub>s</sub> — the <dfn data-def="Innermost stable circular orbit: for a non-spinning black hole, at 3 r_s (6GM/c²). Inside it, circular orbits exist but the slightest disturbance sends the body into the hole.">innermost stable circular orbit</dfn> — the same nudge sends it spiralling into the hole. And inside 1.5 r<sub>s</sub> no circular orbit exists at all: only light could go round there.</p>
+<p>Well outside <strong>3 r<sub>s</sub></strong>, the probe wobbles a little and stays. Closer to 3 r<sub>s</sub> the hold weakens, and only smaller and smaller nudges are survived (this one already tips the probe in at 3.1 r<sub>s</sub>). Inside 3 r<sub>s</sub> — the <dfn data-def="Innermost stable circular orbit: for a non-spinning black hole, at 3 r_s (6GM/c²). Inside it, circular orbits exist but the slightest disturbance sends the body into the hole.">innermost stable circular orbit</dfn> — no nudge is small enough: the probe spirals into the hole. And inside 1.5 r<sub>s</sub> no circular orbit exists at all: only light could go round there.</p>
 <p>Gas swirling around a black hole feels this edge. It spirals slowly inwards, heating up to millions of degrees, until it reaches 3 r<sub>s</sub> and plunges. That hot, glowing disk is one of the main ways black holes are found.</p>`
 		},
 		// ------------------------------------------------------------------ time

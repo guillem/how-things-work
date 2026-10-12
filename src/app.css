@@ -564,6 +564,7 @@ kbd {
 	--bh-isco: #2f9e44;
 	--bh-sky: #05070c;
 	--bh-star: #f59f00;
+	--bh-on-hole: #ced4da;
 	/* semiconductors: electrons, holes, n and p regions, bands, atoms, dopants, field */
 	--semi-electron: #1971c2;
 	--semi-hole: #e8590c;
@@ -923,6 +924,7 @@ kbd {
 	--bh-isco: #69db7c;
 	--bh-sky: #05070c;
 	--bh-star: #ffd43b;
+	--bh-on-hole: #ced4da;
 	--semi-electron: #4dabf7;
 	--semi-hole: #ff922b;
 	--semi-n: #142838;
