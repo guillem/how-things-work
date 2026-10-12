@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 
 const stage = (page: Page) => page.locator('.stage svg > g');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
@@ -58,6 +58,26 @@ test('water: with no light the lumen loses its acidity, and the light level carr
 	await expect(page).toHaveURL(/#water$/);
 	await expect(range(page, 'light')).toHaveValue('0');
 	await expect(stage(page)).toContainText('thylakoid lumen · pH ≈ 8.0');
+});
+
+test('summary: the captions fade with the light level', async ({ page }) => {
+	await open(page, './photosynthesis/#summary', '6 CO₂ + 6 H₂O + light → C₆H₁₂O₆ + 6 O₂');
+	// Both captions are always in the DOM; the slider fades them (opacity on the
+	// label's group), so a text check alone cannot tell them apart.
+	const stall = page.getByText('no light → no ATP or NADPH → the Calvin cycle stalls');
+	const pace = page.getByText('bright light: RuBisCO and the CO₂ supply set the pace');
+	const opacity = (loc: Locator) =>
+		loc.evaluate((el) => Number(el.closest('g[opacity]')?.getAttribute('opacity') ?? 1));
+	// At the default (bright) light: the bottleneck caption is on, the stall one off.
+	await expect.poll(() => opacity(stall)).toBe(0);
+	await expect.poll(() => opacity(pace)).toBe(1);
+	await range(page, 'light').fill('0');
+	await expect.poll(() => opacity(stall)).toBe(1);
+	await expect.poll(() => opacity(pace)).toBe(0);
+	// Dim but lit: the cycle just runs light-limited, no caption.
+	await range(page, 'light').fill('30');
+	await expect.poll(() => opacity(stall)).toBe(0);
+	await expect.poll(() => opacity(pace)).toBe(0);
 });
 
 test('rubisco: switching off "Count the carbons" labels molecules with carbon counts', async ({
