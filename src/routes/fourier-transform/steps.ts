@@ -203,10 +203,10 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [windK, shape],
 			body: `
-<p>How do you measure how much of, say, 3 Hz is hidden in a signal? <strong>Wind the signal round a circle</strong>, 3 turns per second. At each moment, put a point at the angle the winding has reached and at a distance equal to the signal's value (a negative value lands on the opposite side). That is multiplying the signal by e<sup>−iθ</sup> from <em>Complex numbers</em>: a turn, clockwise.</p>
+<p>How do you measure how much of, say, 3 Hz is hidden in a signal? Take a stretch of it (here eight seconds) and <strong>wind it round a circle</strong>, 3 turns per second. At each moment, put a point at the angle the winding has reached and at a distance equal to the signal's value (a negative value lands on the opposite side). That is multiplying the signal by e<sup>−iθ</sup> from <em>Complex numbers</em>: a turn, clockwise.</p>
 <p>Then find the <strong>centre of mass</strong> of the wound curve, the average of all its points. If the signal has a 3 Hz ingredient, its highs keep landing on the same side of the circle and the centre is pulled off the middle: <strong>twice its distance from the middle is the amplitude</strong>. Any other frequency goes round at the wrong speed, so it lands on every side equally and cancels out.</p>
-<p>Change the winding speed. The graph at the bottom plots the strength found at every speed: it peaks exactly at the signal's own frequencies, and there it equals the bars of the spectrum.</p>`,
-			notes: `<p>In symbols, the amount of frequency <i>k</i> is the average of <i>x</i>(<i>t</i>) · e<sup>−2πi<i>kt</i></sup> over one second: the centre of mass of the wound curve, a complex number whose length gives the amplitude and whose angle gives the phase. Between whole frequencies the strength is small but not zero, because one second of signal is a finite sample; a longer recording makes the peaks sharper.</p>`
+<p>Change the winding speed. The graph at the bottom plots the strength found at every speed: it peaks at the signal's own frequencies, and at those whole numbers it equals the bars of the spectrum.</p>`,
+			notes: `<p>In symbols, the amount of frequency <i>k</i> is the average of <i>x</i>(<i>t</i>) · e<sup>−2πi<i>kt</i></sup> over one second: the centre of mass of the wound curve, a complex number whose length gives the amplitude and whose angle gives the phase. Between whole frequencies the strength is small but not zero, with ripples beside each peak, because eight seconds is a finite stretch: a longer recording makes the peaks narrower, a shorter one wider (with a single second they would blur into each other).</p>`
 		},
 		{
 			id: 'edit',

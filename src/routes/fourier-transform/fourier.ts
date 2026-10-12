@@ -216,34 +216,39 @@ export function waveFromStroke(
 // ---- winding: how the transform measures one frequency --------------------------------
 
 /**
- * Wrap the waveform round a circle at `k` turns per period: the sample at
- * time u is placed at distance x(u) from the centre, at angle −2π k u
- * (clockwise, the e^{−2πiku} of the transform). Returns the points and their
- * centre of mass, (1/N) Σ x_j e^{−2πi k j/N}. For a whole k ≥ 1, twice the
- * distance of that centre from the origin is the amplitude A_k of frequency k;
- * for k = 0 it is the average. `k` need not be whole.
+ * Wind `periods` repeats of the waveform round a circle at `k` turns per
+ * period: the sample at time u (in periods) is placed at distance x(u) from
+ * the centre, at angle −2π k u (clockwise, the e^{−2πiku} of the transform).
+ * Returns the points and their centre of mass, the average of
+ * x(u) e^{−2πiku}. For a whole k ≥ 1, twice the distance of that centre from
+ * the origin is the amplitude A_k of frequency k; for k = 0 it is the
+ * average. `k` need not be whole: between whole frequencies the centre is
+ * small but not zero, and smaller the more periods are wound.
  */
 export function wind(
 	samples: readonly number[],
-	k: number
+	k: number,
+	periods = 1
 ): { points: Complex[]; centre: Complex } {
 	const N = samples.length;
+	const M = N * periods;
 	const points: Complex[] = [];
 	let re = 0;
 	let im = 0;
-	for (let j = 0; j < N; j++) {
+	for (let j = 0; j < M; j++) {
 		const a = (-TAU * k * j) / N;
-		const p = { re: samples[j] * Math.cos(a), im: samples[j] * Math.sin(a) };
+		const x = samples[j % N];
+		const p = { re: x * Math.cos(a), im: x * Math.sin(a) };
 		points.push(p);
 		re += p.re;
 		im += p.im;
 	}
-	return { points, centre: { re: re / N, im: im / N } };
+	return { points, centre: { re: re / M, im: im / M } };
 }
 
 /** The strength the winding finds at frequency k: 2 × |centre| (k > 0), the average's size at k = 0. */
-export function strengthAt(samples: readonly number[], k: number): number {
-	const { centre } = wind(samples, k);
+export function strengthAt(samples: readonly number[], k: number, periods = 1): number {
+	const { centre } = wind(samples, k, periods);
 	return (Math.abs(k) < 1e-9 ? 1 : 2) * Math.hypot(centre.re, centre.im);
 }
 

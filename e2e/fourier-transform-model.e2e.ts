@@ -121,8 +121,19 @@ test('winding finds each frequency: twice the centre of mass is its amplitude', 
 	expect(strengthAt(x, 3)).toBeCloseTo(4 / (3 * Math.PI), 2);
 	expect(strengthAt(x, 2)).toBeLessThan(1e-9);
 	expect(strengthAt(x, 0)).toBeLessThan(1e-9); // the average of a square wave is 0
-	// Between whole frequencies a one-period signal gives small, non-zero leftovers.
-	expect(strengthAt(x, 1.5)).toBeLessThan(0.5 * strengthAt(x, 1));
+	// Between whole frequencies one period leaves sizeable leftovers; winding
+	// more periods shrinks them, and the strength then peaks at the whole frequencies.
+	expect(strengthAt(x, 1.5)).toBeGreaterThan(0.25);
+	expect(strengthAt(x, 1.5, 8)).toBeLessThan(0.05);
+	expect(strengthAt(x, 3, 8)).toBeCloseTo(strengthAt(x, 3), 9);
+	const ks = Array.from({ length: 801 }, (_, i) => i / 200);
+	const s8 = ks.map((k) => strengthAt(x, k, 8));
+	const peaks = ks.filter(
+		(_, i) => i > 0 && i < 800 && s8[i] > s8[i - 1] && s8[i] >= s8[i + 1] && s8[i] > 0.35
+	);
+	expect(peaks).toHaveLength(2);
+	expect(peaks[0]).toBeCloseTo(1, 1);
+	expect(peaks[1]).toBeCloseTo(3, 1);
 });
 
 test('a hand-drawn stroke becomes a periodic waveform, gaps joined across the period end', () => {
