@@ -47,7 +47,7 @@ const digits: Control = {
 	min: 1,
 	max: 4,
 	step: 1,
-	default: 2,
+	default: 3,
 	help: 'Each extra digit makes the search about 16 times longer.'
 };
 
