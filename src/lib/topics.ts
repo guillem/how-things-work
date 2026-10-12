@@ -348,6 +348,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 10,
 		minutes: 16
+	},
+	{
+		slug: 'cpu',
+		title: 'How a processor runs a program',
+		summary:
+			'Step a tiny 8-bit processor through its programs one tick at a time: fetch an instruction, decode it, execute it, and watch loops, decisions and your own code reduce to that one cycle.',
+		accent: '#0b7285',
+		steps: 10,
+		minutes: 16
 	}
 ];
 

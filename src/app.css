@@ -524,6 +524,16 @@ kbd {
 	--ft-p1: #2f9e44;
 	--ft-p2: #e8590c;
 	--ft-p3: #7048e8;
+	/* cpu: the three phases, the chip body, program and data bytes in memory, errors */
+	--cpu-fetch: #1c7ed6;
+	--cpu-decode: #7048e8;
+	--cpu-execute: #e8590c;
+	--cpu-chip: #f1f3f5;
+	--cpu-chip-edge: #868e96;
+	--cpu-code: #d0ebff;
+	--cpu-data: #ffe3bf;
+	--cpu-ok: #2f9e44;
+	--cpu-error: #e03131;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -812,4 +822,14 @@ kbd {
 	--ft-p1: #69db7c;
 	--ft-p2: #ff922b;
 	--ft-p3: #b197fc;
+	/* cpu */
+	--cpu-fetch: #4dabf7;
+	--cpu-decode: #9775fa;
+	--cpu-execute: #ff922b;
+	--cpu-chip: #1d2125;
+	--cpu-chip-edge: #5c636a;
+	--cpu-code: #1c3550;
+	--cpu-data: #453015;
+	--cpu-ok: #51cf66;
+	--cpu-error: #ff6b6b;
 }

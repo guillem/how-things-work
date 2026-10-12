@@ -72,6 +72,9 @@ reviewer agents (fact-check via `make review` instead); all merged into `main` l
 `make e2e-full` green (543 tests). Fact-check reviews (Batch API, ~$3.30 for the five) applied by one agent per topic and the
 reports deleted; `make e2e-full` green again (547 tests). Not pushed until the user validates.
 
+**cpu (2026-10-12):** built in a local worktree (`topic/cpu`): 8-bit teaching machine with an
+editable program (textarea in the stage), Step/scrubber replay reusing `sorting/playback.ts`.
+
 Released in v0.1.2 (2026-10-12): the photosynthesis review fixes, rate model and "What limits the
 rate?" step (built in cloud sessions on 2026-10-11).
 
