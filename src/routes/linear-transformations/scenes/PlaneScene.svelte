@@ -308,7 +308,7 @@
 			<Arrow from={O} to={P(0, 1)} color="var(--lt-j)" width={5} head={16} />
 			<T
 				x={sx(0.5)}
-				y={CY + (vy < 0 ? -12 : 26)}
+				y={CY + (vx > 0 && vy < 0 ? -12 : 26)}
 				text="î"
 				size={18}
 				weight={700}
@@ -316,12 +316,12 @@
 				color="var(--lt-i)"
 			/>
 			<T
-				x={CX + (vx < 0 ? 14 : -14)}
+				x={CX + (vx < 0 && vy > 0 ? 14 : -14)}
 				y={sy(0.5) + 6}
 				text="ĵ"
 				size={18}
 				weight={700}
-				anchor={vx < 0 ? 'start' : 'end'}
+				anchor={vx < 0 && vy > 0 ? 'start' : 'end'}
 				color="var(--lt-j)"
 			/>
 		</g>
