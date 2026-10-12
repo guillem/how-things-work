@@ -96,7 +96,7 @@
 	const allDone = $derived(runs.every((u) => k >= u.total));
 
 	// ---- geometry ---------------------------------------------------------------------------
-	const CELL = 13;
+	const CELL = 16;
 	const PANEL_X = [24, 337, 650];
 	const GY = 62;
 	const gw = $derived(grid.cols * CELL);
@@ -365,7 +365,7 @@
 			x={X - 8}
 			y={20}
 			width={gw + 16}
-			height={252}
+			height={262}
 			rx="10"
 			fill="var(--surface)"
 			stroke="var(--border)"

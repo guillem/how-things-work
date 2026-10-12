@@ -33,6 +33,7 @@ test('reversing every velocity runs the film backward', async ({ page }) => {
 	await expect(stage(page)).toContainText('▶ forward in time');
 	await page.clock.runFor(2500); // let the wall lift
 	await page.locator('button[data-control=reverse]').click();
-	// Backward until it is back at the start, about 1.5 s later.
-	await playUntil(page, stage(page), /every velocity reversed|back at the start/, 3000);
+	await expect(stage(page)).toContainText('every velocity reversed');
+	// …and about 1.5 s later the backward film reaches the start again.
+	await playUntil(page, stage(page), 'back at the start: hot left, cold right', 3000);
 });

@@ -13,8 +13,10 @@ test('the Galton board counts the paths into the end and middle bins', async ({ 
 test('drawing the starting shape and averaging bigger samples', async ({ page }) => {
 	await page.goto('./central-limit-theorem/#clt');
 	await expect(stage(page)).toContainText('Two humps');
-	await page.locator('input[type=range][data-control=sampleSize]').fill('30');
+	// The clt step's sample-size control starts at n = 30 (n = 1 shows no bell).
 	await expect(stage(page)).toContainText('√30');
+	await page.locator('input[type=range][data-control="sampleSize:clt"]').fill('10');
+	await expect(stage(page)).toContainText('√10');
 
 	// Dragging over the top chart reshapes it: tall bars on the left move the mean down.
 	const chart = stage(page).locator('[role=slider]');

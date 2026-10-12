@@ -256,6 +256,31 @@
 			.join('')
 	);
 	const linePath = (cs: number[]) => cs.map((c, j) => `${j ? 'L' : 'M'}${cx(c)} ${cy(c)}`).join('');
+	// The cheapest-route comparison (dotted) is drawn a little beside the squares'
+	// centres, so it stays visible where the found route covers the same squares:
+	// each vertex shifts along the average of its segments' normals.
+	const offsetPath = (cs: number[]) => {
+		const pts = cs.map((c) => ({ x: cx(c), y: cy(c) }));
+		return pts
+			.map((p, i) => {
+				let nx = 0;
+				let ny = 0;
+				for (const [a, b] of [
+					[i - 1, i],
+					[i, i + 1]
+				]) {
+					if (!pts[a] || !pts[b]) continue;
+					const dx = pts[b].x - pts[a].x;
+					const dy = pts[b].y - pts[a].y;
+					const len = Math.hypot(dx, dy) || 1;
+					nx += -dy / len;
+					ny += dx / len;
+				}
+				const l = Math.hypot(nx, ny) || 1;
+				return `${i ? 'L' : 'M'}${(p.x + (nx / l) * 6).toFixed(1)} ${(p.y + (ny / l) * 6).toFixed(1)}`;
+			})
+			.join('');
+	};
 	// The route is traced back from the goal: the last `traced` cells of the path.
 	const routePath = $derived(traced > 1 ? linePath(route.slice(route.length - traced)) : '');
 	const showCheapest = $derived(
@@ -282,7 +307,7 @@
 				const grp = groups[onDark ? 'bg' : 'ink'];
 				const x0 = GX + c * CS + 11;
 				[...text].forEach((ch, j) => {
-					grp.xs.push(x0 + (j - (text.length - 1) / 2) * 6);
+					grp.xs.push(x0 + (j - (text.length - 1) / 2) * 8);
 					grp.s += ch;
 				});
 			}
@@ -290,7 +315,7 @@
 				if (grp.s)
 					rows.push({
 						key: `${r}-${name}`,
-						y: GY + r * CS + 14,
+						y: GY + r * CS + 15,
 						xs: grp.xs.map((x) => x.toFixed(1)).join(' '),
 						s: grp.s,
 						color: name === 'bg' ? 'var(--stage-bg)' : 'var(--stage-ink)'
@@ -686,7 +711,7 @@
 			y={n.y}
 			text-anchor="middle"
 			opacity="0.85"
-			style:font-size="10px"
+			style:font-size="13px"
 			style:fill={n.color}
 			style:font-variant-numeric="tabular-nums">{n.s}</text
 		>
@@ -725,7 +750,7 @@
 	<!-- routes -->
 	{#if showCheapest && cheapest}
 		<path
-			d={linePath(cheapest.path)}
+			d={offsetPath(cheapest.path)}
 			fill="none"
 			stroke="var(--stage-ink)"
 			stroke-width="3"

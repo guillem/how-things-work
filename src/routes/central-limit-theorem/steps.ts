@@ -45,6 +45,14 @@ const sampleSize: Control = {
 	default: 1
 };
 
+// The clt step gets its own sample-size control starting at 30: n = 1 (the
+// samples step's start) shows no bell.
+const sampleSizeClt: Control = {
+	...sampleSize,
+	id: 'sampleSize:clt',
+	default: 30
+};
+
 const samplePace: Control = {
 	...pace,
 	id: 'samplePace',
@@ -113,7 +121,7 @@ export const spec: ExplainerSpec = {
 			scene: 'means',
 			hints: { phase: 'clt' },
 			duration: 30,
-			controls: [shape, sampleSize, samplePace, restart],
+			controls: [shape, sampleSizeClt, samplePace, restart],
 			body: `
 <p>This is the <dfn data-def="Averages of many independent random values with the same distribution (of finite spread) are approximately normally distributed, whatever that distribution is; the approximation improves as more values are averaged.">central limit theorem</dfn>: averages of many independent random values pile up in a bell curve, <strong>almost regardless of the distribution they came from</strong>. The bell is centred on the starting distribution's mean, and it gets narrower as <i>n</i> grows — its width shrinks like 1 ÷ √<i>n</i>: four times the sample, half the spread.</p>
 <p>That is why polls of a thousand people can estimate a whole country's opinion to within a few percent, and why scientists average repeated measurements: the average is far more predictable than any single value.</p>`,

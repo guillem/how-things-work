@@ -16,7 +16,7 @@
 	 * "New examples". The averaged sets are seeds `1 + fresh + 1000·k`,
 	 * k = 0…AVERAGE − 1, so k = 0 is the set drawn in the inset. When that set is
 	 * FitScene's (21 examples, noise 0.15), the examples the reader dragged there
-	 * (`params.pts`, same format as in FitScene) are applied to it, so both
+	 * (`params.pts`, see `parseMoved` in ../fit.ts) are applied to it, so both
 	 * scenes show the same examples and the same errors.
 	 *
 	 * Degrees above (training examples − 1) have more settings than examples:
@@ -33,7 +33,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, easeInOut, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { errorCurve, fitPolynomial, makeData } from '../fit';
+	import { errorCurve, fitPolynomial, makeData, parseMoved } from '../fit';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -54,18 +54,9 @@
 	const degree = $derived(Math.round(clamp(Number(params.degree ?? 3), 0, MAX_DEGREE)));
 	const seed = $derived(1 + fresh);
 	/** FitScene's set of examples: the only one the reader can have dragged. */
-	const moved = $derived.by(() => {
-		const out: Record<number, { x: number; y: number }> = {};
-		if (count !== 21 || noise !== 0.15) return out;
-		const raw = typeof params.pts === 'string' ? params.pts : '';
-		const [s, list] = raw.split('|');
-		if (Number(s) !== seed || !list) return out;
-		for (const item of list.split(';')) {
-			const [id, xy] = item.split(':');
-			const [x, y] = (xy ?? '').split(',').map(Number);
-			if (Number.isFinite(x) && Number.isFinite(y)) out[Number(id)] = { x, y };
-		}
-		return out;
+	const moved = $derived.by((): Record<number, { x: number; y: number }> => {
+		if (count !== 21 || noise !== 0.15) return {};
+		return parseMoved(params.pts, seed);
 	});
 
 	// ---- the data and the error curves ---------------------------------------------------

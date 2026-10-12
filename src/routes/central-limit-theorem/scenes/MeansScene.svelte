@@ -8,8 +8,8 @@
 	 *   samples — the averages accumulate; readouts n, samples, means, spreads
 	 *   clt     — same, plus the bell curve normalDensity(x, μ, σ/√n) scaled to
 	 *             the count, the ±σ span above the top chart and the ±σ/√n
-	 *             span on the bell; arriving here with n = 1, n is set to 30
-	 *             once (n = 1 shows no bell)
+	 *             span on the bell; its sample size is a separate control
+	 *             (`sampleSize:clt`) starting at 30 (n = 1 shows no bell)
 	 *
 	 * The run: `COUNT` samples of n draws from `sampler(shape, seed)` (seed =
 	 * 1 + restart presses); averaging each n draws gives exactly the sequence of
@@ -50,17 +50,6 @@
 		const v = phase === 'clt' ? 1 : 0;
 		untrack(() => cltAmt.set(v));
 	});
-	// Arriving at the clt step with n = 1 would show two humps under a flat
-	// bell, the opposite of what the step says: bump n once, on arrival only
-	// (never in reaction to n, so the reader can still slide back to 1).
-	let prevPhase = '';
-	$effect(() => {
-		const p = phase;
-		untrack(() => {
-			if (p === 'clt' && prevPhase !== 'clt' && n === 1) setParam('sampleSize', 30);
-			prevPhase = p;
-		});
-	});
 
 	// ---- the starting distribution --------------------------------------------------
 	const NAMES: Record<string, string> = {
@@ -89,7 +78,8 @@
 	const mu = $derived(mean(heights));
 	const sigma = $derived(sd(heights));
 
-	const n = $derived(clamp(Math.round(Number(params.sampleSize ?? 1)), 1, 50));
+	const nKey = $derived(phase === 'clt' ? 'sampleSize:clt' : 'sampleSize');
+	const n = $derived(clamp(Math.round(Number(params[nKey] ?? 1)), 1, 50));
 	const pace = $derived(clamp(Number(params.samplePace ?? 8), 1, 200));
 	const restarts = $derived(Number(params.restart ?? 0));
 

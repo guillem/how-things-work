@@ -13,9 +13,9 @@
 	 *             the solid ones; training error vs test error
 	 *
 	 * The data come from `makeData(21, 0.15, seed)` with seed = 1 + the number of
-	 * "New examples" presses. Dragged examples are stored in `params.pts` as
-	 * "seed|id:x,y;id:x,y…" (only the moved ones), so they survive step changes
-	 * and are forgotten when the seed changes.
+	 * "New examples" presses. Dragged examples are stored in `params.pts` (see
+	 * `parseMoved` in ../fit.ts), so they survive step changes and are forgotten
+	 * when the seed changes.
 	 *
 	 * The curve morphs when the degree changes: only the degree is tweened, and
 	 * every frame the fits of the two neighbouring whole degrees are blended, so
@@ -29,7 +29,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { fitPolynomial, makeData, mse, truth, type Model } from '../fit';
+	import { fitPolynomial, makeData, mse, parseMoved, truth, type Model } from '../fit';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -103,18 +103,7 @@
 	// ---- data -----------------------------------------------------------------------
 	const seed = $derived(1 + Number(params.fresh ?? 0));
 	const base = $derived(makeData(21, 0.15, seed));
-	const moved = $derived.by(() => {
-		const out: Record<number, Point> = {};
-		const raw = typeof params.pts === 'string' ? params.pts : '';
-		const [s, list] = raw.split('|');
-		if (Number(s) !== seed || !list) return out;
-		for (const item of list.split(';')) {
-			const [id, xy] = item.split(':');
-			const [x, y] = (xy ?? '').split(',').map(Number);
-			if (Number.isFinite(x) && Number.isFinite(y)) out[Number(id)] = { x, y };
-		}
-		return out;
-	});
+	const moved = $derived(parseMoved(params.pts, seed));
 	const points = $derived(base.map((p) => ({ ...p, ...(moved[p.id] ?? {}) })));
 	const train = $derived(points.filter((p) => !p.test));
 	const held = $derived(points.filter((p) => p.test));

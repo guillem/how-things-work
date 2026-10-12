@@ -55,6 +55,24 @@ export function makeData(n: number, noise: number, seed = 1, testEvery = 3) {
 	return pts;
 }
 
+/**
+ * The examples the reader dragged, stored in `params.pts` as
+ * "seed|id:x,y;id:x,y…" (only the moved ones). Parsed only when the seed
+ * matches, so moved examples are forgotten when the data are regenerated.
+ */
+export function parseMoved(raw: unknown, seed: number): Record<number, Point> {
+	const out: Record<number, Point> = {};
+	const text = typeof raw === 'string' ? raw : '';
+	const [s, list] = text.split('|');
+	if (Number(s) !== seed || !list) return out;
+	for (const item of list.split(';')) {
+		const [id, xy] = item.split(':');
+		const [x, y] = (xy ?? '').split(',').map(Number);
+		if (Number.isFinite(x) && Number.isFinite(y)) out[Number(id)] = { x, y };
+	}
+	return out;
+}
+
 /** Legendre polynomials P0…Pd at x, by the three-term recurrence. */
 export function legendre(x: number, d: number): number[] {
 	const p = [1, x];

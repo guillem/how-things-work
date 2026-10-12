@@ -18,6 +18,8 @@
 	 * is the only remembered value, kept in a plain variable inside a `$derived`.
 	 * Only the few balls in flight are circles; landed balls are stacks of
 	 * circles while there are few, then bar heights (keeps the node count low).
+	 * Stacks spread across the bin, several balls per level, when the bins are
+	 * wide (few rows).
 	 * Reduced motion: the whole run has landed; ball 0's path is traced.
 	 *
 	 * Text sizes and colours are set with `style:` because the stage's CSS
@@ -107,13 +109,25 @@
 	});
 	const maxCount = $derived(Math.max(1, ...counts));
 	const peakFrac = $derived(binomial(rows, Math.floor(rows / 2)));
-	/** Height of one ball in a bin: a ball diameter, squeezed once a bin would overflow. */
+	/** Balls side by side on one level of a bin's stack (wide bins, few rows, only). */
+	const perLevel = $derived(Math.max(1, Math.floor(dx / (4 * ballR))));
+	/** Height of one level of stacked balls: a ball diameter, squeezed once a bin would overflow. */
 	const unit = $derived(
-		Math.min(2 * ballR, (BIN_BOT - BIN_TOP - 14) / Math.max(maxCount, peakFrac * landed * 1.04, 1))
+		Math.min(
+			2 * ballR,
+			(BIN_BOT - BIN_TOP - 14) /
+				Math.max(
+					Math.ceil(maxCount / perLevel),
+					Math.ceil((peakFrac * landed * 1.04) / perLevel),
+					1
+				)
+		)
 	);
+	/** The height one ball adds to a pile: a level holds perLevel balls. */
+	const ballH = $derived(unit / perLevel);
 	const stacks = $derived(unit >= 5 && landed <= 150);
 
-	const pileTop = (k: number) => BIN_BOT - counts[k] * unit;
+	const pileTop = (k: number) => BIN_BOT - counts[k] * ballH;
 
 	/** Position of ball i at `age` seconds after its release; `seg` = pin row it is leaving (−1 before the first). */
 	function ballAt(i: number, age: number) {
@@ -208,8 +222,16 @@
 		if (!stacks) return [];
 		const out: { id: string; x: number; y: number }[] = [];
 		counts.forEach((c, k) => {
-			for (let j = 0; j < c; j++)
-				out.push({ id: `${k}-${j}`, x: binX(k), y: BIN_BOT - ballR - j * unit });
+			for (let j = 0; j < c; j++) {
+				const lvl = Math.floor(j / perLevel);
+				const onLevel = Math.min(perLevel, c - lvl * perLevel);
+				const col = j % perLevel;
+				out.push({
+					id: `${k}-${j}`,
+					x: binX(k) + (col - (onLevel - 1) / 2) * (2 * ballR + 2),
+					y: BIN_BOT - ballR - lvl * unit
+				});
+			}
 		});
 		return out;
 	});
@@ -220,7 +242,7 @@
 		Array.from({ length: rows + 1 }, (_, k) => ({
 			k,
 			x: binX(k),
-			y: BIN_BOT - binomial(rows, k) * landed * unit
+			y: BIN_BOT - binomial(rows, k) * landed * ballH
 		}))
 	);
 	const expectedPath = $derived(
@@ -232,7 +254,7 @@
 		const N = 90;
 		for (let i = 0; i <= N; i++) {
 			const k = -0.5 + ((rows + 1) * i) / N;
-			const y = BIN_BOT - normalDensity(k, rows / 2, sigma) * landed * unit;
+			const y = BIN_BOT - normalDensity(k, rows / 2, sigma) * landed * ballH;
 			d += `${i ? 'L' : 'M'}${binX(k).toFixed(1)} ${y.toFixed(1)}`;
 		}
 		return d;
@@ -355,9 +377,9 @@
 		{#each counts as c, k (k)}
 			<rect
 				x={binX(k) - dx * 0.4}
-				y={BIN_BOT - c * unit}
+				y={BIN_BOT - c * ballH}
 				width={dx * 0.8}
-				height={c * unit}
+				height={c * ballH}
 				rx="2"
 				fill="var(--clt-bin)"
 				opacity="0.85"
