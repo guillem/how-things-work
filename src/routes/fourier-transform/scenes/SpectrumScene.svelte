@@ -148,8 +148,10 @@
 	function ondraw(event: PointerEvent) {
 		stroke = [];
 		const add = (p: Point) => {
-			const u = (p.x - X0) / (X1 - X0);
-			if (u < 0 || u > 1) return;
+			// A little beyond either end still counts as the start or the end of the second.
+			const raw = (p.x - X0) / (X1 - X0);
+			if (raw < -0.03 || raw > 1.03) return;
+			const u = Math.max(0, Math.min(0.9999, raw));
 			const y = Math.max(-1.25, Math.min(1.25, (CY - p.y) / U));
 			stroke.push({ u, y });
 		};
@@ -293,9 +295,9 @@
 	<!-- the drawing surface over the signal -->
 	<rect
 		class="draw"
-		x={X0}
+		x={X0 - 14}
 		y={TOP}
-		width={X1 - X0}
+		width={X1 - X0 + 28}
 		height={BOTTOM - TOP}
 		fill="transparent"
 		role="presentation"

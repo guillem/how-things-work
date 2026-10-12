@@ -217,7 +217,7 @@ export const spec: ExplainerSpec = {
 			controls: [shape, resetBars],
 			body: `
 <p>The transform also runs backwards. Given the bars (and the phases), add up the sine waves and the signal comes back: the <dfn data-def="Turning a spectrum back into a signal by adding up its sine waves.">inverse Fourier transform</dfn>.</p>
-<p>Drag any bar up or down (or focus it with Tab and use the arrow keys). The <strong class="tag sum">signal</strong> above is rebuilt from the first 16 bars at once, over the faint original. Try it:</p>
+<p>Drag any bar up or down (or focus it with Tab and use the arrow keys). The <strong class="tag sum">signal</strong> above is rebuilt from all the bars on the chart (0 to 16 Hz) at once, over the faint original. Try it:</p>
 <ul>
 <li>pull every bar but the first down to zero, and a pure sine wave is left;</li>
 <li>remove the 3 Hz bar from the square wave, and its flat top bulges in the middle;</li>

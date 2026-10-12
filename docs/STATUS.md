@@ -72,6 +72,9 @@ leaf optics + FvCB C₃ model, `src/routes/photosynthesis/model.ts`); photosynth
 its review report deleted. Built-state params in use: `web:<step>`, `board:build`,
 `bridge:build`, `bits:<step>`, `map:<step>`, `view:zoom`.
 
+- fourier-transform: built and ticked on branch `topic/fourier-transform` (local worktree), not yet
+  merged; built-state params `ft:wave`, `ft:bars`, `ft:curve`.
+
 ## Open questions for the user
 
 None. Answered 2026-10-08: learning-from-data — dragging only is fine (ticked);
