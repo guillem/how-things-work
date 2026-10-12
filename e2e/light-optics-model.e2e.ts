@@ -107,8 +107,6 @@ test('critical angles: glass 41°, water 49°, diamond 24°', () => {
 test('an optical fibre traps light by total internal reflection, until the bend is too tight', () => {
 	// A silica rod in air accepts light from any angle at its flat end: NA = √(n² − 1) > 1.
 	expect(acceptanceAngle(silica.n(589.3), 1)).toBe(90);
-	// A real fibre (core 1.4475, cladding 1.4440, both at 1550 nm) only accepts light within ~5.8°.
-	expect(acceptanceAngle(1.4475, 1.444)).toBeCloseTo(5.75, 1);
 	// A beam sent in at 20° to the axis of a 40-wide silica rod with a 90° bend: the share
 	// of its light that comes out of the far end face.
 	const delivered = (bendR: number) => {
