@@ -530,8 +530,8 @@ kbd {
 	--cpu-execute: #e8590c;
 	--cpu-chip: #f1f3f5;
 	--cpu-chip-edge: #868e96;
-	--cpu-code: #e7f5ff;
-	--cpu-data: #fff4e6;
+	--cpu-code: #d0ebff;
+	--cpu-data: #ffe3bf;
 	--cpu-ok: #2f9e44;
 	--cpu-error: #e03131;
 }
@@ -828,8 +828,8 @@ kbd {
 	--cpu-execute: #ff922b;
 	--cpu-chip: #1d2125;
 	--cpu-chip-edge: #5c636a;
-	--cpu-code: #172a3d;
-	--cpu-data: #33261a;
+	--cpu-code: #1c3550;
+	--cpu-data: #453015;
 	--cpu-ok: #51cf66;
 	--cpu-error: #ff6b6b;
 }

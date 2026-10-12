@@ -21,7 +21,7 @@
 	const LETTER = { fetch: 'F', decode: 'D', execute: 'E' };
 	const X0 = 150;
 	const CW = 42;
-	const RH = 24;
+	const RH = 22;
 	const PERIOD = TICKS * 0.75 + 3;
 
 	// One tick every 0.75 s, then a pause with everything shown, then again.
@@ -43,7 +43,7 @@
 		{
 			id: 'piped',
 			title: 'Pipelined: the next fetch starts while this one decodes',
-			y: 300,
+			y: 314,
 			f: piped
 		}
 	]);
@@ -133,7 +133,7 @@
 			/>
 		{/if}
 	{/each}
-	{@render txt(X0, 268, 'clock ticks →', 11, { muted: true })}
+	{@render txt(X0, 252, 'clock ticks →', 11, { muted: true })}
 
 	<!-- legend -->
 	{#each PHASES as ph, i (ph)}

@@ -134,6 +134,9 @@ export type Assembled =
 
 const LABEL = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
+/** The reader's text, quoted and shortened so that a message fits under the editor. */
+const q = (text: string) => `"${text.length > 14 ? `${text.slice(0, 13)}…` : text}"`;
+
 function parseNumber(text: string): number | null {
 	const t = text.trim().toLowerCase();
 	if (/^-?\d+$/.test(t)) return Number(t);
@@ -167,15 +170,15 @@ export function assemble(source: string): Assembled {
 		if (colon >= 0) {
 			const name = text.slice(0, colon).trim();
 			if (!LABEL.test(name)) {
-				errors.push({ line, message: `"${name}" is not a valid label name` });
+				errors.push({ line, message: `${q(name)} is not a valid label name` });
 				return;
 			}
 			if (/^r[0-3]$/i.test(name) || name.toUpperCase() in OPCODES || /^data$/i.test(name)) {
-				errors.push({ line, message: `"${name}" is a reserved word and can't be a label` });
+				errors.push({ line, message: `${q(name)} is a reserved word, not a label` });
 				return;
 			}
 			if (name.toLowerCase() in labels) {
-				errors.push({ line, message: `The label "${name}" is defined twice` });
+				errors.push({ line, message: `The label ${q(name)} is defined twice` });
 				return;
 			}
 			labels[name.toLowerCase()] = addr;
@@ -204,7 +207,7 @@ export function assemble(source: string): Assembled {
 	function value(text: string, line: number, what: 'n' | 'a'): number | null {
 		const bare = text.replace(/^\[(.*)\]$/, '$1').trim();
 		if (what === 'n' && bare !== text) {
-			errors.push({ line, message: `LDI takes a number, not a memory address: "${text}"` });
+			errors.push({ line, message: `LDI takes a number, not an address: ${q(text)}` });
 			return null;
 		}
 		const num = parseNumber(bare);
@@ -222,19 +225,19 @@ export function assemble(source: string): Assembled {
 		if (LABEL.test(bare)) {
 			const at = labels[bare.toLowerCase()];
 			if (at === undefined) {
-				errors.push({ line, message: `Unknown label "${bare}"` });
+				errors.push({ line, message: `Unknown label ${q(bare)}` });
 				return null;
 			}
 			return at;
 		}
-		errors.push({ line, message: `"${text}" is not a number or a label` });
+		errors.push({ line, message: `${q(text)} is not a number or a label` });
 		return null;
 	}
 
 	function register(text: string, line: number): number | null {
 		const m = /^r([0-9]+)$/i.exec(text);
 		if (m && Number(m[1]) < REGISTERS) return Number(m[1]);
-		errors.push({ line, message: `"${text}" is not a register (R0–R3)` });
+		errors.push({ line, message: `${q(text)} is not a register (R0–R3)` });
 		return null;
 	}
 
@@ -250,7 +253,7 @@ export function assemble(source: string): Assembled {
 			continue;
 		}
 		if (!(p.word in OPCODES)) {
-			errors.push({ line: p.line, message: `Unknown instruction "${p.word}"` });
+			errors.push({ line: p.line, message: `Unknown instruction ${q(p.word)}` });
 			continue;
 		}
 		const op = p.word as Mnemonic;
@@ -484,40 +487,40 @@ export function stateAt(r: Run, k: number): Machine {
 /** The programs the page loads. Each one is quoted in the narrative. */
 export const PROGRAMS = {
 	first: `; Add two numbers
-      LDI   R0, 7     ; R0 = 7
-      LDI   R1, 5     ; R1 = 5
+      LDI   R0, 7
+      LDI   R1, 5
       ADD   R0, R1    ; R0 = R0 + R1
-      STORE R0, [sum] ; write R0 to memory
+      STORE R0, [sum] ; R0 to memory
       HALT
 sum:  DATA  0`,
 	countdown: `; Count down from 5 to 0
-      LDI   R0, 5     ; the counter
-      LDI   R1, 1     ; the constant 1
-loop: STORE R0, [out] ; show the count
-      SUB   R0, R1    ; count - 1, sets Z at 0
-      JZ    done      ; reached 0? leave
-      JMP   loop      ; else go round again
+      LDI   R0, 5     ; the count
+      LDI   R1, 1
+loop: STORE R0, [out] ; show it
+      SUB   R0, R1    ; Z on at 0
+      JZ    done      ; 0? leave
+      JMP   loop      ; go round
 done: STORE R0, [out]
       HALT
 out:  DATA  0`,
 	sum: `; Add up 1 + 2 + ... + 10
-      LDI   R0, 0     ; R0: the total
-      LDI   R1, 10    ; R1: next number, n
-      LDI   R2, 1     ; R2: the constant 1
-loop: ADD   R0, R1    ; total = total + n
-      SUB   R1, R2    ; n = n - 1, sets Z
-      JZ    done      ; n is 0? leave
-      JMP   loop      ; else go round again
+      LDI   R0, 0     ; the total
+      LDI   R1, 10    ; n
+      LDI   R2, 1
+loop: ADD   R0, R1    ; total + n
+      SUB   R1, R2    ; n - 1
+      JZ    done      ; n = 0? leave
+      JMP   loop      ; go round
 done: STORE R0, [sum]
       HALT
 sum:  DATA  0`,
-	multiply: `; Multiply 6 x 7 by repeated adding
+	multiply: `; Multiply 6 x 7 by adding
       LDI   R0, 0     ; the product
-      LDI   R1, 6     ; add this...
-      LDI   R2, 7     ; ...this many times
+      LDI   R1, 6
+      LDI   R2, 7     ; times
       LDI   R3, 1
 loop: ADD   R0, R1
-      SUB   R2, R3    ; one addition fewer
+      SUB   R2, R3
       JZ    done
       JMP   loop
 done: STORE R0, [out]
@@ -530,11 +533,11 @@ export function maxProgram(a: number, b: number): string {
 	return `; Keep the larger of a and b
       LOAD  R0, [a]
       LOAD  R1, [b]
-      STORE R1, [max] ; guess: b
-      SUB   R1, R0    ; b - a borrows if b < a
-      JC    abig      ; borrowed? a is bigger
+      STORE R1, [max] ; guess b
+      SUB   R1, R0    ; b - a
+      JC    abig      ; borrow?
       HALT
-abig: STORE R0, [max] ; correct the guess
+abig: STORE R0, [max] ; it's a
       HALT
 a:    DATA  ${a}
 b:    DATA  ${b}

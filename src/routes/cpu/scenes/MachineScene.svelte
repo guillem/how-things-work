@@ -327,8 +327,8 @@
 						id: 'y',
 						path: [...regToBus(s, 300).slice(0, 2), ...aluIn(IN_B)],
 						text: String(res.b),
-						from: 0.04,
-						to: 0.4,
+						from: 0.12,
+						to: 0.46,
 						color: c
 					},
 					{
@@ -341,8 +341,8 @@
 							regMid(r)
 						],
 						text: String(res.result),
-						from: 0.44,
-						to: 0.78,
+						from: 0.5,
+						to: 0.8,
 						color: c
 					}
 				];
@@ -453,17 +453,24 @@
 	const LINE_H = 19;
 
 	// ---- editor -----------------------------------------------------------------------------------
-	const ED = { x: 34, y: 100, w: 266, h: 330 };
-	const ED_PAD = 6;
+	const ED = { x: 16, y: 100, w: 292, h: 330 };
+	const ED_PAD = 7;
 	const ED_LINE = 18;
 	let edScroll = $state(0);
 	const lineOfAddr = $derived(new Map(asm.ok ? asm.items.map((it) => [it.addr, it.line]) : []));
-	const edMarkY = (addr: number) => {
-		const line = lineOfAddr.get(addr);
+	const edLineY = (line: number | undefined) => {
 		if (line === undefined) return null;
 		const y = ED.y + ED_PAD + (line - 1) * ED_LINE + ED_LINE / 2 - edScroll;
 		return y > ED.y + 4 && y < ED.y + ED.h - 4 ? y : null;
 	};
+	const edHighlights = $derived.by(() => {
+		const out: { id: string; y: number; color: string }[] = [];
+		const cur = rec && currentAt >= 0 ? edLineY(lineOfAddr.get(currentAt)) : null;
+		if (cur !== null) out.push({ id: 'cur', y: cur, color: pcol });
+		const err = asm.ok ? null : edLineY(asm.errors[0].line);
+		if (err !== null) out.push({ id: 'err', y: err, color: 'var(--cpu-error)' });
+		return out;
+	});
 
 	// ---- words ------------------------------------------------------------------------------------
 	const bin = (v: number, w: number) => v.toString(2).padStart(w, '0');
@@ -686,6 +693,19 @@
 	{/each}
 	{@render txt(16, 70, words, 14, { color: kind && !tour ? pcol : undefined })}
 
+	<!-- the CPU -->
+	<rect
+		x="312"
+		y="128"
+		width="316"
+		height="362"
+		rx="12"
+		fill="var(--cpu-chip)"
+		stroke="var(--cpu-chip-edge)"
+		stroke-width="1.5"
+	/>
+	{@render txt(620, 482, 'CPU', 13, { anchor: 'end', weight: 700, muted: true, halo: false })}
+
 	<!-- buses -->
 	<g opacity={dimFor('alu')}>
 		<path
@@ -719,37 +739,26 @@
 		<path
 			d="M{BUS_X} {DATA_Y} V474 H{ALU.cx} V{ALU.bottom}"
 			fill="none"
-			stroke="var(--stage-grid)"
+			stroke="var(--cpu-chip-edge)"
+			stroke-opacity="0.45"
 			stroke-width="3"
 		/>
 		<path
 			d="M{BUS_X} 300 H{IN_B} V{ALU.top} M{IN_A} 300 V{ALU.top}"
 			fill="none"
-			stroke="var(--stage-grid)"
+			stroke="var(--cpu-chip-edge)"
+			stroke-opacity="0.45"
 			stroke-width="3"
 		/>
 		{#each REG_Y as y (y)}
 			<path
 				d="M{REG.x + REG.w} {y + REG.h / 2} H{BUS_X}"
-				stroke="var(--stage-grid)"
+				stroke="var(--cpu-chip-edge)"
+				stroke-opacity="0.45"
 				stroke-width="3"
 			/>
 		{/each}
 	</g>
-
-	<!-- the CPU -->
-	<rect
-		x="312"
-		y="128"
-		width="316"
-		height="362"
-		rx="12"
-		fill="var(--cpu-chip)"
-		stroke="var(--cpu-chip-edge)"
-		stroke-width="1.5"
-		opacity="0.9"
-	/>
-	{@render txt(620, 482, 'CPU', 13, { anchor: 'end', weight: 700, muted: true, halo: false })}
 
 	<g opacity={dimFor('pc')}>
 		{@render box(
@@ -988,7 +997,28 @@
 
 	<!-- the program: a listing, or the editor -->
 	{#if edit}
-		{@render txt(ED.x, 92, 'Program (edit me)', 12, { weight: 600, muted: true })}
+		{@render txt(ED.x, 92, 'Program: edit me', 12, { weight: 600, muted: true })}
+		<!-- the editor's background, with the current line (or the first error) highlighted behind the text -->
+		<rect
+			x={ED.x}
+			y={ED.y}
+			width={ED.w}
+			height={ED.h}
+			rx="8"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+		{#each edHighlights as hl (hl.id)}
+			<rect
+				x={ED.x + 2}
+				y={hl.y - ED_LINE / 2}
+				width={ED.w - 4}
+				height={ED_LINE}
+				fill={hl.color}
+				opacity="0.18"
+			/>
+			<rect x={ED.x + 2} y={hl.y - ED_LINE / 2} width="4" height={ED_LINE} fill={hl.color} />
+		{/each}
 		<foreignObject x={ED.x} y={ED.y} width={ED.w} height={ED.h}>
 			<textarea
 				class="cpu-editor"
@@ -1001,15 +1031,9 @@
 				onkeydown={(e) => e.stopPropagation()}
 				onscroll={(e) => (edScroll = e.currentTarget.scrollTop)}></textarea>
 		</foreignObject>
-		{#if rec && currentAt >= 0}
-			{@const y = edMarkY(currentAt)}
-			{#if y !== null}
-				<path d="M18 {y - 6} L28 {y} L18 {y + 6} Z" fill={pcol} />
-			{/if}
-		{/if}
 		{#if !asm.ok}
 			{#each asm.errors.slice(0, 3) as err, i (i)}
-				{@render txt(16, 452 + i * 17, `Line ${err.line}: ${err.message}`, 12, {
+				{@render txt(16, 452 + i * 17, `Line ${err.line}: ${err.message}`, 11, {
 					color: 'var(--cpu-error)',
 					weight: 600
 				})}
@@ -1145,11 +1169,11 @@
 		padding: 6px 8px;
 		resize: none;
 		font-family: var(--font-mono);
-		font-size: 13px;
+		font-size: 12px;
 		line-height: 18px;
 		color: var(--text);
-		background: var(--surface);
-		border: 1px solid var(--border);
+		background: transparent;
+		border: 1px solid transparent;
 		border-radius: 8px;
 		tab-size: 4;
 		user-select: text;
