@@ -70,7 +70,18 @@ test('A* visits far fewer cells than Dijkstra', () => {
 	for (const g of [OPEN, MARSH]) {
 		expect(search(g, 'astar').expanded * 3).toBeLessThan(search(g, 'dijkstra').expanded);
 	}
-	expect(search(MIXED, 'astar').expanded).toBeLessThan(search(MIXED, 'dijkstra').expanded);
+	// The race step's map: A* finds the cheapest route after half of Dijkstra's
+	// expansions (75 of 150), the number the narrative quotes.
+	expect(search(MIXED, 'astar').expanded * 2).toBe(search(MIXED, 'dijkstra').expanded);
+});
+
+test('the mixed map: fewest steps crosses the mud, cheapest goes round', () => {
+	const bfs = search(MIXED, 'bfs');
+	const dij = search(MIXED, 'dijkstra');
+	expect(bfs.path.length - 1).toBe(22);
+	expect(bfs.cost).toBe(30);
+	expect(dij.path.length - 1).toBe(24);
+	expect(dij.cost).toBe(24);
 });
 
 test('an estimate that overestimates can miss the cheapest path', () => {

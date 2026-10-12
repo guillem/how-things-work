@@ -163,7 +163,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [pace, brush, resetMap],
 			body: `
-<p>The same map searched three ways, side by side. Breadth-first search finds the route with the fewest steps, whatever it costs. Dijkstra's algorithm finds the cheapest route but explores in every direction. A* finds the cheapest route too, while skipping about a third of the squares Dijkstra visits — here the walls force it to search around.</p>
+<p>The same map searched three ways, side by side. Breadth-first search finds the route with the fewest steps, whatever it costs. Dijkstra's algorithm finds the cheapest route but explores in every direction. A* finds the cheapest route too, while skipping about half of the squares Dijkstra visits — here the walls force it to search around.</p>
 <p>Paint walls and mud on any of the three maps — they share one map — and compare the squares visited and the cost of each route.</p>`
 		},
 		// ------------------------------------------------------------------ roads

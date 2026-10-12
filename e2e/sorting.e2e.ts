@@ -53,6 +53,8 @@ test('pausing after stepping does not jump back', async ({ page }) => {
 	await play.check({ force: true });
 	await page.clock.runFor(2000);
 	const reached = Number(await scrubber(page).getAttribute('aria-valuenow'));
+	// Playback really advanced from the stepped position (2).
+	expect(reached).toBeGreaterThan(2);
 	await play.uncheck({ force: true });
 	expect(Number(await scrubber(page).getAttribute('aria-valuenow'))).toBeGreaterThanOrEqual(
 		reached
