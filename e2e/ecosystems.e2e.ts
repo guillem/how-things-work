@@ -19,7 +19,9 @@ async function open(page: Page, url: string) {
 
 test('without wolves the elk multiply', async ({ page }) => {
 	await open(page, './ecosystems/#web');
-	await expect(stage(page)).toContainText('In balance');
+	// The web arrives off balance and settles in the first few seconds.
+	await expect(stage(page)).toContainText('Finding its balance');
+	await playUntil(page, stage(page), /In balance/, 15_000);
 	await page.getByRole('switch', { name: 'Wolves' }).uncheck({ force: true });
 	await expect(stage(page)).toContainText('Following the ripples');
 	await playUntil(page, stage(page), /Without wolves: .*elk \+\d+%/, 20_000);

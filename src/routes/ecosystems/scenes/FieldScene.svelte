@@ -67,13 +67,11 @@
 		}
 	}
 
-	/** A round axis maximum ≥ v (1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8 × 10ⁿ), so the curves fill the chart. */
+	/** A round axis top with four equal intervals (1, 2, 2.5, 5 × 10ⁿ each): the curves fill the chart, and both y-axes of the cycles chart share the same gridline heights. */
 	function niceTop(v: number) {
-		const mag = Math.pow(10, Math.floor(Math.log10(v)));
-		return (
-			[1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10].map((m) => m * mag).find((n) => n >= v - 1e-9) ??
-			10 * mag
-		);
+		const mag = Math.pow(10, Math.floor(Math.log10(v / 4)));
+		const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => s >= v / 4 - 1e-9) ?? 10 * mag;
+		return 4 * step;
 	}
 
 	// ---- the run (recomputed only when the rates change) ---------------------------
@@ -164,6 +162,10 @@
 	// Phase plot: rabbits across, foxes up.
 	const qx = $derived(scale([0, hTop.current], [PX0, PX1]));
 	const qy = $derived(scale([0, pTop.current], [PY1, PY0]));
+	// Both tops are four equal intervals (niceTop), so the two y-axes tick at the same
+	// heights and the fox ticks line up with the rabbit gridlines.
+	const hTicks = $derived([0, 1, 2, 3, 4].map((k) => (k * hTop.current) / 4));
+	const pTicks = $derived([0, 1, 2, 3, 4].map((k) => (k * pTop.current) / 4));
 
 	/** Path of a series against time from `from` to `to` years (≤ ~300 points). */
 	function seriesPath(arr: number[], from: number, to: number, x: Scale, y: Scale) {
@@ -529,11 +531,11 @@
 			{sx}
 			sy={syH}
 			xLabel="years"
-			yTicks={growth ? [0, 250, 500, 750, 1000] : undefined}
+			yTicks={growth ? [0, 250, 500, 750, 1000] : hTicks}
 			xFormat={(v) => String(v)}
 		/>
 		{#if !growth}
-			<Axes {sx} sy={syP} yRight grid={false} />
+			<Axes {sx} sy={syP} yRight grid={false} yTicks={pTicks} />
 		{/if}
 
 		{#if growth}

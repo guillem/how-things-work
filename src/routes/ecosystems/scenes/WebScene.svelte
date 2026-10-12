@@ -56,6 +56,9 @@
 	const REF = [WEB_START[0], WEB_START[1], WEB_START[2], WEB_START[3], WEB_START[1]];
 	/** "Settled" tolerance per species: 2% of its usual size (absolute, so a species heading to 0 settles). */
 	const TOL = REF.map((v) => 0.02 * Math.max(v, 10));
+	/** The community on arrival: off balance (too many elk, too little willow), so the
+	 *  opening seconds show the web pulling itself back to the balance at WEB_START. */
+	const OPENING: State = [70, 60, 18, 9, 0];
 
 	const newcomer = $derived(step.id === 'newcomer');
 	const present = $derived([
@@ -163,7 +166,7 @@
 				stepId: step.id,
 				key: presentKey,
 				reduced,
-				segs: [makeSegment(t, 0, WEB_START, DEFAULT_PRESENT, present)]
+				segs: [makeSegment(t, 0, OPENING, DEFAULT_PRESENT, present)]
 			};
 		} else if (presentKey !== memo.key) {
 			const years = elapsed(last, t);
@@ -270,6 +273,11 @@
 	const summary = $derived.by(() => {
 		const seg = current;
 		if (seg.sources.length === 0) {
+			if (tau < seg.settle)
+				return {
+					line: 'Finding its balance…',
+					sub: 'Each species is held in check by its food and its predators.'
+				};
 			return {
 				line: newcomer
 					? 'In balance. Switch the deer on and watch for a few decades.'
