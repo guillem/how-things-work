@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>How Things Work — the full picture</title>
+		<style>
+			:root {
+				--bg: #0b0f14;
+				--panel: #12181f;
+				--panel-2: #0e141b;
+				--line: #212a35;
+				--ink: #e6edf3;
+				--muted: #93a4b3;
+				--faint: #5c6b7a;
+				--green: #3fb950;
+				--green-deep: #238636;
+				--amber: #d29922;
+				--red: #f85149;
+				--blue: #58a6ff;
+				--purple: #bc8cff;
+				--mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+				background: var(--bg);
+				color: var(--ink);
+				font:
+					15px/1.55 system-ui,
+					-apple-system,
+					'Segoe UI',
+					Roboto,
+					sans-serif;
+			}
+			.wrap {
+				max-width: 1180px;
+				margin: 0 auto;
+				padding: 28px 22px 60px;
+			}
+			a {
+				color: var(--blue);
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+
+			/* ---- header ---- */
+			header {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: baseline;
+				gap: 6px 14px;
+				margin-bottom: 4px;
+			}
+			h1 {
+				font-size: 26px;
+				margin: 0;
+				letter-spacing: -0.02em;
+			}
+			h1 .accent {
+				color: var(--green);
+			}
+			.updated {
+				color: var(--faint);
+				font-size: 13px;
+				margin-left: auto;
+			}
+			.sub {
+				color: var(--muted);
+				margin: 0 0 18px;
+				font-size: 13.5px;
+			}
+			.badges {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px;
+				margin-bottom: 26px;
+			}
+			.badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 7px;
+				background: var(--panel);
+				border: 1px solid var(--line);
+				border-radius: 999px;
+				padding: 5px 13px;
+				font-size: 13px;
+			}
+			.dot {
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				flex: none;
+			}
+			.dot.green {
+				background: var(--green);
+				box-shadow: 0 0 8px rgba(63, 185, 80, 0.7);
+			}
+			.dot.amber {
+				background: var(--amber);
+				box-shadow: 0 0 8px rgba(210, 153, 34, 0.6);
+			}
+			.mono {
+				font-family: var(--mono);
+			}
+
+			/* ---- hero ---- */
+			.hero {
+				background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+				border: 1px solid var(--line);
+				border-radius: 14px;
+				padding: 20px 22px 18px;
+				margin-bottom: 26px;
+			}
+			.hero .row {
+				display: flex;
+				align-items: baseline;
+				gap: 12px;
+				margin-bottom: 10px;
+			}
+			.hero .big {
+				font-size: 34px;
+				font-weight: 700;
+				letter-spacing: -0.02em;
+			}
+			.hero .of {
+				color: var(--muted);
+				font-size: 17px;
+			}
+			.hero .pct {
+				margin-left: auto;
+				color: var(--green);
+				font-family: var(--mono);
+				font-size: 19px;
+				font-weight: 600;
+			}
+			.track {
+				height: 18px;
+				border-radius: 9px;
+				background: #1b232d;
+				overflow: hidden;
+				border: 1px solid var(--line);
+			}
+			.fill {
+				height: 100%;
+				border-radius: 8px;
+				background: linear-gradient(90deg, var(--green-deep), var(--green));
+				box-shadow: 0 0 14px rgba(63, 185, 80, 0.35);
+			}
+			.stats {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+				gap: 10px;
+				margin-top: 16px;
+			}
+			.stat {
+				background: rgba(255, 255, 255, 0.025);
+				border: 1px solid var(--line);
+				border-radius: 10px;
+				padding: 9px 13px;
+			}
+			.stat .n {
+				font-family: var(--mono);
+				font-size: 19px;
+				font-weight: 600;
+			}
+			.stat .l {
+				color: var(--muted);
+				font-size: 12px;
+			}
+
+			/* ---- sections ---- */
+			section {
+				margin-bottom: 30px;
+			}
+			h2 {
+				font-size: 16px;
+				margin: 0 0 12px;
+				display: flex;
+				align-items: center;
+				gap: 9px;
+				letter-spacing: 0.01em;
+			}
+			h2::before {
+				content: '';
+				width: 4px;
+				height: 17px;
+				border-radius: 2px;
+				background: var(--green);
+			}
+			h2.amber::before {
+				background: var(--amber);
+			}
+			h2.blue::before {
+				background: var(--blue);
+			}
+			h2.grey::before {
+				background: var(--faint);
+			}
+			h2 .count {
+				color: var(--faint);
+				font-weight: 400;
+				font-size: 13px;
+			}
+
+			/* ---- category cards ---- */
+			.cats {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+				gap: 12px;
+			}
+			.cat {
+				background: var(--panel);
+				border: 1px solid var(--line);
+				border-left: 3px solid var(--amber);
+				border-radius: 11px;
+				padding: 12px 14px 11px;
+			}
+			.cat.full {
+				border-left-color: var(--green);
+			}
+			.cat .head {
+				display: flex;
+				align-items: baseline;
+				gap: 8px;
+				margin-bottom: 7px;
+			}
+			.cat .name {
+				font-weight: 600;
+				font-size: 14.5px;
+			}
+			.cat .frac {
+				margin-left: auto;
+				font-family: var(--mono);
+				color: var(--muted);
+				font-size: 13px;
+			}
+			.cat .mini {
+				height: 7px;
+				border-radius: 4px;
+				background: #1b232d;
+				overflow: hidden;
+				margin-bottom: 10px;
+			}
+			.cat .mini i {
+				display: block;
+				height: 100%;
+				background: linear-gradient(90deg, var(--green-deep), var(--green));
+			}
+			.chips {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 5px;
+			}
+			.chip {
+				font-size: 12px;
+				font-family: var(--mono);
+				padding: 2.5px 9px;
+				border-radius: 999px;
+				border: 1px solid rgba(210, 153, 34, 0.45);
+				color: var(--amber);
+				background: rgba(210, 153, 34, 0.08);
+			}
+			.chip.star {
+				border-color: rgba(188, 140, 255, 0.55);
+				color: var(--purple);
+				background: rgba(188, 140, 255, 0.09);
+			}
+			details.done-list {
+				margin-top: 9px;
+			}
+			details.done-list summary {
+				cursor: pointer;
+				color: var(--faint);
+				font-size: 12px;
+				list-style: none;
+				user-select: none;
+			}
+			details.done-list summary::before {
+				content: '▸ ';
+			}
+			details.done-list[open] summary::before {
+				content: '▾ ';
+			}
+			.done-items {
+				color: var(--faint);
+				font-size: 12px;
+				font-family: var(--mono);
+				text-decoration: line-through;
+				text-decoration-color: rgba(92, 107, 122, 0.6);
+				margin-top: 5px;
+				line-height: 1.9;
+			}
+
+			/* ---- three columns ---- */
+			.cols3 {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 12px;
+				align-items: start;
+			}
+			.col {
+				background: var(--panel);
+				border: 1px solid var(--line);
+				border-radius: 11px;
+				padding: 14px 16px 13px;
+			}
+			.col h3 {
+				margin: 0 0 10px;
+				font-size: 13px;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+			.col.now h3 {
+				color: var(--green);
+			}
+			.col.next h3 {
+				color: var(--amber);
+			}
+			.col.decide h3 {
+				color: var(--purple);
+			}
+			.task {
+				display: flex;
+				gap: 9px;
+				padding: 6.5px 0;
+				border-top: 1px solid rgba(33, 42, 53, 0.6);
+				font-size: 13.5px;
+			}
+			.task:first-of-type {
+				border-top: none;
+			}
+			.task .mark {
+				flex: none;
+				width: 17px;
+				text-align: center;
+				color: var(--green);
+				font-weight: 700;
+			}
+			.task.todo .mark {
+				color: var(--amber);
+			}
+			.task .small {
+				display: block;
+				color: var(--muted);
+				font-size: 12px;
+			}
+			.task .why {
+				color: var(--purple);
+				font-size: 12px;
+			}
+
+			/* ---- unlock map ---- */
+			.map {
+				background: var(--panel);
+				border: 1px solid var(--line);
+				border-radius: 11px;
+				padding: 14px 18px;
+				font-size: 13.5px;
+			}
+			.chain {
+				padding: 5px 0;
+				border-top: 1px solid rgba(33, 42, 53, 0.6);
+				display: flex;
+				flex-wrap: wrap;
+				gap: 4px 10px;
+				align-items: baseline;
+			}
+			.chain:first-child {
+				border-top: none;
+			}
+			.chain .key {
+				color: var(--purple);
+				font-family: var(--mono);
+				font-size: 12.5px;
+				font-weight: 600;
+			}
+			.chain .arrow {
+				color: var(--faint);
+			}
+			.chain .locks {
+				color: var(--muted);
+				font-family: var(--mono);
+				font-size: 12px;
+			}
+
+			/* ---- site work ---- */
+			.site-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+				gap: 12px;
+			}
+			.site-box {
+				background: var(--panel);
+				border: 1px solid var(--line);
+				border-radius: 11px;
+				padding: 12px 15px;
+			}
+			ul.tight {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			ul.tight li {
+				padding: 4.5px 0 4.5px 24px;
+				position: relative;
+				border-top: 1px solid rgba(33, 42, 53, 0.45);
+				font-size: 13.5px;
+			}
+			ul.tight li:first-child {
+				border-top: none;
+			}
+			ul.tight li::before {
+				position: absolute;
+				left: 2px;
+				color: var(--faint);
+			}
+			ul.tight li.open::before {
+				content: '○';
+				color: var(--amber);
+			}
+			ul.tight li.big::before {
+				content: '★';
+				color: var(--purple);
+			}
+			ul.tight li .small {
+				color: var(--muted);
+				font-size: 12px;
+			}
+
+			/* ---- releases ---- */
+			.releases {
+				background: var(--panel);
+				border: 1px solid var(--line);
+				border-radius: 11px;
+				padding: 12px 18px;
+			}
+			.rel {
+				display: flex;
+				gap: 14px;
+				align-items: baseline;
+				padding: 5.5px 0;
+				border-top: 1px solid rgba(33, 42, 53, 0.6);
+				font-size: 13.5px;
+			}
+			.rel:first-child {
+				border-top: none;
+			}
+			.rel .tag {
+				font-family: var(--mono);
+				color: var(--green);
+				flex: none;
+				width: 64px;
+			}
+			.rel .date {
+				font-family: var(--mono);
+				color: var(--faint);
+				flex: none;
+				width: 92px;
+				font-size: 12.5px;
+			}
+			.rel.latest .tag {
+				font-weight: 700;
+				text-shadow: 0 0 10px rgba(63, 185, 80, 0.5);
+			}
+
+			footer {
+				margin-top: 36px;
+				padding-top: 14px;
+				border-top: 1px solid var(--line);
+				color: var(--faint);
+				font-size: 12.5px;
+			}
+			footer .rule {
+				color: var(--muted);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<header>
+				<h1>How Things Work <span class="accent">— the full picture</span></h1>
+				<span class="updated"
+					>updated 2026-10-13 ·
+					<a href="https://guillem.github.io/how-things-work/">live site</a></span
+				>
+			</header>
+			<p class="sub">
+				The one-glance status for humans. The full books — kept current at every commit — are
+				<a href="https://github.com/guillem/how-things-work/blob/main/docs/TOPICS.md">TOPICS.md</a>
+				(catalogue &amp; checklist),
+				<a href="https://github.com/guillem/how-things-work/blob/main/docs/STATUS.md">STATUS.md</a>
+				(where work stands) and
+				<a href="https://github.com/guillem/how-things-work/blob/main/docs/BACKLOG.md"
+					>BACKLOG.md</a
+				>
+				(what is next).
+			</p>
+
+			<div class="badges">
+				<span class="badge"
+					><span class="dot green"></span>v0.1.10 deployed &amp; smoke-tested</span
+				>
+				<span class="badge"
+					><span class="dot green"></span>make check <span class="mono">428</span> model tests</span
+				>
+				<span class="badge"
+					><span class="dot green"></span>browser suite <span class="mono">766</span> tests</span
+				>
+				<span class="badge"><span class="dot amber"></span>3 fixes on main, ship in v0.1.11</span>
+			</div>
+
+			<div class="hero">
+				<div class="row">
+					<span class="big">46</span><span class="of">of 100 topics built</span>
+					<span class="pct">46%</span>
+				</div>
+				<div class="track"><div class="fill" style="width: 46%"></div></div>
+				<div class="stats">
+					<div class="stat">
+						<div class="n">11</div>
+						<div class="l">categories</div>
+					</div>
+					<div class="stat">
+						<div class="n">26</div>
+						<div class="l">topics ready to build now</div>
+					</div>
+					<div class="stat">
+						<div class="n">9</div>
+						<div class="l">ready, but need a data source</div>
+					</div>
+					<div class="stat">
+						<div class="n">19</div>
+						<div class="l">waiting on prerequisites</div>
+					</div>
+					<div class="stat">
+						<div class="n">1,194</div>
+						<div class="l">automated tests, green</div>
+					</div>
+					<div class="stat">
+						<div class="n">10</div>
+						<div class="l">releases since 2026-10-11</div>
+					</div>
+				</div>
+			</div>
+
+			<section>
+				<h2>
+					Topics by category
+					<span class="count">amber chips = not built yet · purple = unlock key</span>
+				</h2>
+				<div class="cats">
+					<div class="cat">
+						<div class="head">
+							<span class="name">Mathematics</span><span class="frac">9/10</span>
+						</div>
+						<div class="mini"><i style="width: 90%"></i></div>
+						<div class="chips"><span class="chip">tensors</span></div>
+						<details class="done-list">
+							<summary>9 built</summary>
+							<div class="done-items">
+								unit-circle calculus linear-transformations complex-numbers fourier-transform
+								bayes-theorem central-limit-theorem primes-modular-arithmetic chaos-fractals
+							</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head"><span class="name">Physics</span><span class="frac">8/10</span></div>
+						<div class="mini"><i style="width: 80%"></i></div>
+						<div class="chips">
+							<span class="chip">quantum-mechanics</span><span class="chip">standard-model</span>
+						</div>
+						<details class="done-list">
+							<summary>8 built</summary>
+							<div class="done-items">
+								newtons-laws oscillations-resonance waves-interference electric-circuits
+								electromagnetism light-optics entropy special-relativity
+							</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head">
+							<span class="name">Chemistry &amp; Materials</span><span class="frac">5/9</span>
+						</div>
+						<div class="mini"><i style="width: 56%"></i></div>
+						<div class="chips">
+							<span class="chip">reaction-rates-equilibrium</span
+							><span class="chip">acids-bases</span><span class="chip">redox-batteries</span
+							><span class="chip">carbon-polymers</span>
+						</div>
+						<details class="done-list">
+							<summary>5 built</summary>
+							<div class="done-items">
+								atoms-periodic-table radioactivity chemical-bonds states-of-matter semiconductors
+							</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head"><span class="name">Biology</span><span class="frac">2/9</span></div>
+						<div class="mini"><i style="width: 22%"></i></div>
+						<div class="chips">
+							<span class="chip star">the-cell</span><span class="chip">dna-to-protein</span
+							><span class="chip">protein-folding</span><span class="chip">respiration-atp</span
+							><span class="chip">meiosis-inheritance</span><span class="chip">evolution</span
+							><span class="chip">crispr</span>
+						</div>
+						<details class="done-list">
+							<summary>2 built</summary>
+							<div class="done-items">photosynthesis ecosystems</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head">
+							<span class="name">Body &amp; Medicine</span><span class="frac">3/9</span>
+						</div>
+						<div class="mini"><i style="width: 33%"></i></div>
+						<div class="chips">
+							<span class="chip star">vision-color</span><span class="chip">neurons</span
+							><span class="chip">immune-system</span><span class="chip">mrna-vaccines</span
+							><span class="chip">cancer</span><span class="chip">medical-imaging</span>
+						</div>
+						<details class="done-list">
+							<summary>3 built</summary>
+							<div class="done-items">heart-circulation homeostasis epidemics</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head">
+							<span class="name">Earth &amp; Climate</span><span class="frac">2/8</span>
+						</div>
+						<div class="mini"><i style="width: 25%"></i></div>
+						<div class="chips">
+							<span class="chip star">plate-tectonics</span><span class="chip">earthquakes</span
+							><span class="chip">deep-time</span><span class="chip star">ice-ages</span
+							><span class="chip star">carbon-cycle</span
+							><span class="chip">greenhouse-effect</span>
+						</div>
+						<details class="done-list">
+							<summary>2 built</summary>
+							<div class="done-items">atmosphere-weather ocean-currents</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head"><span class="name">Space</span><span class="frac">3/9</span></div>
+						<div class="mini"><i style="width: 33%"></i></div>
+						<div class="chips">
+							<span class="chip">rockets</span><span class="chip star">stars</span
+							><span class="chip">gravitational-waves</span
+							><span class="chip star">dark-matter</span><span class="chip">big-bang</span
+							><span class="chip">exoplanets</span>
+						</div>
+						<details class="done-list">
+							<summary>3 built</summary>
+							<div class="done-items">sun-earth-moon orbits-kepler black-holes</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head">
+							<span class="name">Computing</span><span class="frac">5/10</span>
+						</div>
+						<div class="mini"><i style="width: 50%"></i></div>
+						<div class="chips">
+							<span class="chip">transistors-chipmaking</span><span class="chip">gpu</span
+							><span class="chip">graphics-3d</span><span class="chip">turing-machines</span
+							><span class="chip">quantum-computing</span>
+						</div>
+						<details class="done-list">
+							<summary>5 built</summary>
+							<div class="done-items">binary logic-gates cpu sorting graph-search</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head">
+							<span class="name">Information &amp; Networks</span><span class="frac">5/8</span>
+						</div>
+						<div class="mini"><i style="width: 63%"></i></div>
+						<div class="chips">
+							<span class="chip">wireless-signals</span><span class="chip">gps</span
+							><span class="chip">consensus-blockchains</span>
+						</div>
+						<details class="done-list">
+							<summary>5 built</summary>
+							<div class="done-items">
+								compression error-correction cryptography internet pagerank
+							</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head">
+							<span class="name">Artificial Intelligence</span><span class="frac">2/9</span>
+						</div>
+						<div class="mini"><i style="width: 22%"></i></div>
+						<div class="chips">
+							<span class="chip star">gradient-descent</span
+							><span class="chip">neural-networks</span><span class="chip">convolution-vision</span
+							><span class="chip star">embeddings</span><span class="chip">transformers</span
+							><span class="chip">language-models</span><span class="chip">diffusion-models</span>
+						</div>
+						<details class="done-list">
+							<summary>2 built</summary>
+							<div class="done-items">learning-from-data reinforcement-learning</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head">
+							<span class="name">Energy &amp; Machines</span><span class="frac">2/9</span>
+						</div>
+						<div class="mini"><i style="width: 22%"></i></div>
+						<div class="chips">
+							<span class="chip">heat-engines</span><span class="chip">power-grid</span
+							><span class="chip star">solar-cells</span><span class="chip">nuclear-fission</span
+							><span class="chip">nuclear-fusion</span><span class="chip">flight</span
+							><span class="chip">feedback-control</span>
+						</div>
+						<details class="done-list">
+							<summary>2 built</summary>
+							<div class="done-items">motors-generators bridges-structures</div>
+						</details>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2 class="amber">Now · next · decisions wanted</h2>
+				<div class="cols3">
+					<div class="col now">
+						<h3>Now — bug round on main (→ v0.1.11)</h3>
+						<div class="task">
+							<span class="mark">✓</span>
+							<div>
+								Arch bridge: posts carry the road
+								<span class="small"
+									>pin-ended spandrel posts; 24 kN push each, 103 kN under the truck —
+									model-tested</span
+								>
+							</div>
+						</div>
+						<div class="task">
+							<span class="mark">✓</span>
+							<div>
+								chemical-bonds: pause-on-hover held only between atoms
+								<span class="small"
+									>crossing one atom un-paused the turn mid-aim — verified frozen while
+									hovering</span
+								>
+							</div>
+						</div>
+						<div class="task">
+							<span class="mark">✓</span>
+							<div>
+								photosynthesis #water: caption follows the light level
+								<span class="small"
+									>no light now says the gradient runs down, not “more acidic … in bright
+									light”</span
+								>
+							</div>
+						</div>
+						<div class="task todo">
+							<span class="mark">→</span>
+							<div>Release v0.1.11 (validate → push → tag)</div>
+						</div>
+					</div>
+					<div class="col next">
+						<h3>Next — batch 10 (26 topics ready)</h3>
+						<div class="task todo">
+							<span class="mark">★</span>
+							<div>
+								gradient-descent first
+								<span class="small"
+									>unlocks neural-networks, then transformers, language-models, convolution-vision,
+									diffusion-models</span
+								>
+							</div>
+						</div>
+						<div class="task todo">
+							<span class="mark">2</span>
+							<div>
+								a suggested six: gradient-descent, turing-machines, gps, exoplanets,
+								nuclear-fission, wireless-signals
+								<span class="small"
+									>one builder per topic in a worktree + Batch-API fact-check, as batches 6–9</span
+								>
+							</div>
+						</div>
+						<div class="task todo">
+							<span class="mark">3</span>
+							<div>same process scales to the other 20 ready topics</div>
+						</div>
+					</div>
+					<div class="col decide">
+						<h3>Decisions wanted from Guillem</h3>
+						<div class="task todo">
+							<span class="mark">★</span>
+							<div>
+								Data sources for 9 ready topics
+								<span class="small"
+									>the-cell (unlocks all of biology), stars, dark-matter, vision-color,
+									plate-tectonics, carbon-cycle, ice-ages, solar-cells, embeddings</span
+								>
+							</div>
+						</div>
+						<div class="task todo">
+							<span class="mark">★</span>
+							<div>
+								Stage text on phones (4–5 px at 390 px wide)
+								<span class="small"
+									>narrow-screen layouts, minimum text size, or steer to landscape — needs a
+									call</span
+								>
+							</div>
+						</div>
+						<div class="task todo">
+							<span class="mark">★</span>
+							<div>
+								Stage CSS overrides SVG text attributes
+								<span class="small"
+									>the fix changes every scene’s look; needs its own branch + full two-theme
+									re-review</span
+								>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2 class="blue">
+					The unlock map <span class="count">19 topics waiting behind two chains</span>
+				</h2>
+				<div class="map">
+					<div class="chain">
+						<span class="key">the-cell</span><span class="arrow">→</span>
+						<span class="locks"
+							>dna-to-protein → protein-folding · crispr · immune-system → mrna-vaccines · neurons ·
+							respiration-atp · meiosis-inheritance → evolution → cancer</span
+						>
+						<span class="why">one data decision unlocks 13 topics</span>
+					</div>
+					<div class="chain">
+						<span class="key">gradient-descent</span><span class="arrow">→</span>
+						<span class="locks"
+							>neural-networks → convolution-vision · diffusion-models · transformers →
+							language-models (needs embeddings)</span
+						>
+						<span class="why">ready now, no data needed</span>
+					</div>
+					<div class="chain">
+						<span class="key">plate-tectonics</span><span class="arrow">→</span>
+						<span class="locks">earthquakes · deep-time</span>
+					</div>
+					<div class="chain">
+						<span class="key">carbon-cycle</span><span class="arrow">→</span>
+						<span class="locks">greenhouse-effect</span>
+					</div>
+					<div class="chain">
+						<span class="key">quantum-mechanics</span><span class="arrow">→</span>
+						<span class="locks">quantum-computing</span>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2 class="amber">Known gaps &amp; bugs</h2>
+				<div class="cols3">
+					<div class="col">
+						<h3 style="color: var(--amber)">Open</h3>
+						<div class="task todo">
+							<span class="mark">○</span>
+							<div>
+								states-of-matter: frames differ between machines
+								<span class="small"
+									>chaotic box — documented on the page, not fixable, closed as by-design</span
+								>
+							</div>
+						</div>
+						<div class="task todo">
+							<span class="mark">○</span>
+							<div>
+								chemical-bonds: builder is single-centre only
+								<span class="small"
+									>by design — the text says so; multi-centre would need a new geometry engine</span
+								>
+							</div>
+						</div>
+					</div>
+					<div class="col" style="grid-column: span 2">
+						<h3 style="color: var(--faint)">Cleared in the gap round (v0.1.10)</h3>
+						<details class="done-list" open>
+							<summary>20 fixes across 13 topics — click to collapse</summary>
+							<div class="done-items" style="font-size: 12.5px; text-decoration: none">
+								<div style="text-decoration: line-through">
+									chaos-fractals period(r) at the splitting points · corner radii
+								</div>
+								<div style="text-decoration: line-through">
+									orbits-kepler wedge labels near aphelion · #two test flake
+								</div>
+								<div style="text-decoration: line-through">
+									ecosystems static web opening · cycles-chart y-axes
+								</div>
+								<div style="text-decoration: line-through">
+									oscillations-resonance pendulum “10°” label crossed by the rod
+								</div>
+								<div style="text-decoration: line-through">
+									logic-gates “0” contrast · challenge message lingering
+								</div>
+								<div style="text-decoration: line-through">
+									central-limit-theorem thin columns · clt step n = 30
+								</div>
+								<div style="text-decoration: line-through">
+									binary signed sliders on the overflow step
+								</div>
+								<div style="text-decoration: line-through">
+									electric-circuits ~520 SVG nodes on a full board
+								</div>
+								<div style="text-decoration: line-through">pagerank jumps-shared-thinner note</div>
+								<div style="text-decoration: line-through">
+									graph-search cost numbers · race maps · dotted route hidden
+								</div>
+								<div style="text-decoration: line-through">
+									waves-interference sources placeable anywhere · Doppler source draggable · frame
+									cache
+								</div>
+								<div style="text-decoration: line-through">
+									radioactivity snapping controls · crowded half-life marks
+								</div>
+								<div style="text-decoration: line-through">
+									linear-transformations F off-plane · coincident handles · grid hatch
+								</div>
+								<div style="text-decoration: line-through">
+									fourier-transform chart range · clipped signal · cut-off 0 Hz bar · static
+									#square/#spectrum
+								</div>
+								<div style="text-decoration: line-through">
+									bridges-structures reactions on every design · addMember splitting
+								</div>
+								<div style="text-decoration: line-through">
+									atmosphere-weather stationary fronts · Coriolis panels at low spin · Held–Hou
+									notes
+								</div>
+								<div style="text-decoration: line-through">
+									learning-from-data params.pts parser deduplicated
+								</div>
+								<div style="text-decoration: line-through">
+									sun-earth-moon tilt footer vs solstice sketch day length
+								</div>
+								<div style="text-decoration: line-through">
+									photosynthesis #summary captions (fade by design — now tested)
+								</div>
+								<div style="text-decoration: line-through">
+									weak entropy &amp; sorting tests strengthened
+								</div>
+							</div>
+						</details>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2 class="grey">
+					Site &amp; framework work <span class="count">shared groundwork for future topics</span>
+				</h2>
+				<div class="site-grid">
+					<div class="site-box">
+						<ul class="tight">
+							<li class="big">
+								Stage text on phones
+								<span class="small">needs a design decision — see “decisions wanted”</span>
+							</li>
+							<li class="big">
+								Stage CSS overriding SVG text attributes
+								<span class="small">fix = every scene re-reviewed, both themes</span>
+							</li>
+							<li class="open">
+								Label’s <span class="mono">size</span> prop has no effect (scenes roll their own
+								text helpers)
+							</li>
+							<li class="open">
+								Promote <span class="mono">VectorHandle</span> into
+								<span class="mono">src/lib/draw</span> (2-D keys on both axes)
+							</li>
+						</ul>
+					</div>
+					<div class="site-box">
+						<ul class="tight">
+							<li class="open">
+								Promote <span class="mono">sorting/playback.ts</span> into
+								<span class="mono">src/lib</span> (cpu imports it cross-route)
+							</li>
+							<li class="open">
+								Consolidate the three local <span class="mono">rng</span> copies onto
+								<span class="mono">src/lib/draw/math.ts</span>
+							</li>
+							<li class="open">Hand-drawn card vignettes for topics that lack one</li>
+							<li class="open">
+								Shared components still to come: algorithm stepper / bar chart, build palette,
+								pan/zoom
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2>Releases</h2>
+				<div class="releases">
+					<div class="rel latest">
+						<span class="tag">v0.1.10</span><span class="date">2026-10-13</span
+						><span>the gap round — 20 fixes across 13 built topics</span>
+					</div>
+					<div class="rel">
+						<span class="tag">v0.1.9</span><span class="date">2026-10-12</span
+						><span
+							>nested-URL 404 assets · unit-circle slider snapping · pagerank keyboard
+							shortcuts</span
+						>
+					</div>
+					<div class="rel">
+						<span class="tag">v0.1.8</span><span class="date">2026-10-12</span
+						><span>release verify job on an 8-vCPU runner</span>
+					</div>
+					<div class="rel">
+						<span class="tag">v0.1.7</span><span class="date">2026-10-12</span
+						><span
+							>batch 9 — calculus, black-holes, states-of-matter, homeostasis, compression</span
+						>
+					</div>
+					<div class="rel">
+						<span class="tag">v0.1.4</span><span class="date">2026-10-12</span
+						><span
+							>batch 8 — light-optics, semiconductors, special-relativity, cryptography, cpu,
+							motors-generators</span
+						>
+					</div>
+					<div class="rel">
+						<span class="tag">v0.1.3</span><span class="date">2026-10-12</span
+						><span
+							>batch 7 — chemical-bonds, waves-interference, radioactivity, linear-transformations,
+							fourier-transform</span
+						>
+					</div>
+					<div class="rel">
+						<span class="tag">v0.1.2</span><span class="date">2026-10-11</span
+						><span>photosynthesis review fixes, rate model, “What limits the rate?” step</span>
+					</div>
+					<div class="rel">
+						<span class="tag">v0.1.0</span><span class="date">2026-10-11</span
+						><span>first lean-workflow release (v0.1.1 docs, v0.1.5/6 were CI-fix retags)</span>
+					</div>
+				</div>
+			</section>
+
+			<footer>
+				<div class="rule">
+					★ Kept up to date at every milestone — releases, batches and gap rounds (rule in
+					CLAUDE.md). Refresh this page instead of asking.
+				</div>
+				<div>
+					Numbers come from the repo’s own books: the TOPICS.md checklist, STATUS.md, BACKLOG.md and
+					the git tags. Last updated 2026-10-13 after the bug round, before v0.1.11.
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

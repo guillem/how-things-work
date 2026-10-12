@@ -13,6 +13,8 @@ Last updated: 2026-10-13 UTC.
   it meets the catalogue's definition of done. Prettier is told to leave it alone.
 - [`BACKLOG.md`](BACKLOG.md) says what to build next and lists known gaps.
   [`TIMELOG.md`](TIMELOG.md) records how long each development took (log each phase as it ends).
+- [`full-picture.html`](full-picture.html) is the user's one-glance dashboard; keep it in sync at
+  every milestone (rule in [`CLAUDE.md`](../CLAUDE.md)).
 - **The workflow is in [`CLAUDE.md`](../CLAUDE.md)** (since 2026-10-11): trunk-based, commit to
   `main`, `make check` (run by the Stop and pre-push hooks), releases only by tag
   (`make release`), `make rollback` to undo one. No PRs. Pushing `main` deploys nothing.
@@ -42,11 +44,11 @@ Last updated: 2026-10-13 UTC.
   v0.1.0). All merged topic/site branches were deleted, local and remote. Rulesets: `main` can't be
   force-pushed or deleted; `v*` tags can't be moved or deleted. The `github-pages` environment
   deploys from `v*` tags and `main` (rollbacks run from main).
-- `main` (deployed): photosynthesis (ticked 2026-10-11 after its review and rate model,
-  released in v0.1.2 on 2026-10-12) and 16 ticked topics: epidemics, unit-circle, sorting, newtons-laws, sun-earth-moon,
-  learning-from-data, pagerank, electric-circuits, bridges-structures, binary,
-  atmosphere-weather, graph-search, chaos-fractals, orbits-kepler, ecosystems, bayes-theorem.
-  PRs #1–#18 merged (merge commits); #15 removed CI (see "Validate once, locally").
+- `main` (deployed as v0.1.10): **46 of the 100 catalogue topics ticked** — photosynthesis
+  (ticked 2026-10-11, the quality reference), 16 early topics (the list below the wave-1 table),
+  and the 29 of batches 6–9, built one agent per topic in local worktrees (the process that
+  worked for batches 2–6, still current). PRs #1–#18 were the early merge-commit flow; #15
+  removed CI (see "Validate once, locally"); everything since is trunk-based.
 - Batch 6 (9 topics: complex-numbers, electromagnetism, heart-circulation, internet,
   reinforcement-learning, ocean-currents, entropy, primes-modular-arithmetic, error-correction)
   merged via the integration branch `batch/6` (one PR). New process that worked: one agent
@@ -68,6 +70,13 @@ Last updated: 2026-10-13 UTC.
   rebuild those registries from `main` plus each branch's own entry) and deleted.
 
 ## Current development
+
+**Bug round (2026-10-13, on `main`, ships in the next tag):** the arch bridge's posts now carry
+the road (pin-ended spandrel posts — a new member kind, serialized as `p`; model-tested), the
+chemical-bonds pause-on-hover no longer stops between atoms, and the photosynthesis `#water`
+caption follows the light level. states-of-matter's between-machine variance is closed as
+by-design (chaotic, documented on the page). `docs/full-picture.html` is the new one-glance
+dashboard for the user (rule in `CLAUDE.md`: keep it in sync at milestones).
 
 **Gap round (2026-10-12/13):** the "Known gaps in built topics" backlog, worked in seven local
 worktrees (`fix/gaps-a`…`-g`) merged into `main`. Kimi started a–e and g; ZCode finished them,

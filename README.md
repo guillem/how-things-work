@@ -16,7 +16,7 @@ npm install
 npm run dev          # http://localhost:5173
 make check          # prettier, eslint, svelte-check and the model tests (~20 s)
 make e2e            # smoke tests of the critical paths on the production build (~8 s)
-make e2e-full       # every browser test (~45 s)
+make e2e-full       # every browser test (766 of them, ~1.5 min)
 make format         # prettier --write
 npm run build        # static site in ./build
 ```
@@ -83,6 +83,7 @@ src/
 docs/TOPICS.md             the topic catalogue: 100 topics in 11 categories (content only)
 docs/STATUS.md             where the work stands and how to resume it (the self-handover)
 docs/BACKLOG.md            what to build next, known gaps
+docs/full-picture.html     the one-glance status dashboard (open in a browser)
 docs/TIMELOG.md            how long each development took
 docs/scene-guide.md        the contract every animated scene follows
 scripts/shot.mjs           screenshot helper for checking scenes in both themes

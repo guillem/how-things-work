@@ -106,9 +106,9 @@ tests.)
 
 - Shared components still to create as their first topic needs them: an algorithm stepper / bar chart (`sorting`), a build palette (`pagerank` or
   `graph-search`), pan/zoom (`chaos-fractals`).
-- `rng` (mulberry32) now lives in `src/lib/draw/math.ts`; epidemics, sorting and
-  learning-from-data still carry their own copies — switch them over.
+- `rng` (mulberry32) now lives in `src/lib/draw/math.ts`; epidemics, sorting,
+  learning-from-data and compression still carry their own copies — switch them over.
 - Cards on the index have hand-drawn art only for topics that have a vignette in
-  `src/lib/components/TopicArt.svelte`; give each new topic one.
-- When a second explainer exists, consider a short "how to use the controls" note shared by all
-  pages (keyboard shortcuts are behind `?`).
+  `src/lib/components/TopicArt.svelte` (45 of the 46 built topics do); give each new topic one.
+- ~~A short "how to use the controls" note shared by all pages~~ — done: the `?` keyboard
+  shortcuts overlay in the explainer shell.

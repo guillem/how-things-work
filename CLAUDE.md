@@ -3,6 +3,8 @@
 A static SvelteKit site of animated explainers, deployed to GitHub Pages at
 https://guillem.github.io/how-things-work/. One developer, working with agents. Read
 `docs/STATUS.md` (where the work stands) before starting, and `README.md` for the architecture.
+`docs/full-picture.html` is the human's one-glance dashboard (open it in a browser); the
+markdown files remain the detailed books.
 
 ## Workflow: trunk-based, releases by tag
 
@@ -27,6 +29,10 @@ https://guillem.github.io/how-things-work/. One developer, working with agents. 
   other checkout; `make check` refuses it).
 - Stage files by path, never `git add -A`: the local `package-lock.json` has drift that must not
   be committed.
+- **Keep `docs/full-picture.html` in sync** whenever a milestone lands — a release, a merged batch
+  or gap round, or a change to what is now/next. Counts come from the `docs/TOPICS.md` checklist,
+  release lines from the git tags; update its "updated" date. The user refreshes that page instead
+  of asking for status.
 
 ## Cloud sessions
 
