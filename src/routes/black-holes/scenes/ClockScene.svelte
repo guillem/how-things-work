@@ -215,9 +215,9 @@
 	</g>
 
 	{#each [2, 3, 4, 5, 6] as r (r)}
-		<T x={PX1 - 20} y={yOf(r) - 5} text="{r} r_s" size={11} anchor="end" muted />
+		<T x={PX1 - 20} y={yOf(r) - 5} text="{r} rₛ" size={11} anchor="end" muted />
 	{/each}
-	<T x={HX + 100} y={HY - PER_RS + 32} text="horizon, 1 r_s" size={12} weight={600} />
+	<T x={HX + 100} y={HY - PER_RS + 32} text="horizon, 1 rₛ" size={12} weight={600} />
 
 	<!-- the far clock -->
 	<rect
@@ -233,6 +233,8 @@
 	{@render dial(FAR.X, FAR.Y, hand(farTime), 'var(--stage-ink)')}
 	<T x={FAR.X} y={FAR.Y - 44} text="far away" size={12.5} anchor="middle" weight={700} />
 	<T x={FAR.X} y={FAR.Y + 50} text="{farTicks} ticks" size={12.5} anchor="middle" weight={600} />
+	<!-- Really much higher up than the cable's top: the flash keeps reddening on its way. -->
+	<T x={FAR.X} y={FAR.Y + 78} text="(much higher: not to scale)" size={11} anchor="middle" muted />
 
 	<!-- the lowered clock -->
 	{@render dial(HX, clockY, hand(ownTime), 'var(--bh-probe)')}
@@ -268,7 +270,7 @@
 		size={15}
 		weight={700}
 	/>
-	{@render row(PY0 + 60, 'Height', `${rRs.toFixed(2)} r_s`)}
+	{@render row(PY0 + 60, 'Height', `${rRs.toFixed(2)} rₛ`)}
 	{@render row(
 		PY0 + 88,
 		'Ticks per 100 far ticks',
@@ -302,7 +304,7 @@
 		<T x={CX + 16} y={PY0 + 302} text="The clock itself: nothing special; it" size={12.5} />
 		<T x={CX + 16} y={PY0 + 322} text="crosses in a short time and goes on." size={12.5} />
 	{:else}
-		<T x={CX + 16} y={PY0 + 210} text="Rate: √(1 − r_s / r)" size={13.5} weight={700} />
+		<T x={CX + 16} y={PY0 + 210} text="Rate: √(1 − rₛ / r)" size={13.5} weight={700} />
 		<!-- the rate curve -->
 		<line x1={G.x} x2={G.x + G.w} y1={G.y + G.h} y2={G.y + G.h} stroke="var(--stage-line)" />
 		<line x1={G.x} x2={G.x} y1={G.y} y2={G.y + G.h} stroke="var(--stage-line)" />
@@ -310,8 +312,8 @@
 		<circle cx={gx(shown.current)} cy={gy(shownRate)} r="5" fill="var(--bh-probe)" />
 		<T x={G.x - 6} y={G.y + 4} text="1" size={11} anchor="end" muted />
 		<T x={G.x - 6} y={G.y + G.h + 4} text="0" size={11} anchor="end" muted />
-		<T x={G.x} y={G.y + G.h + 16} text="1 r_s" size={11} anchor="middle" muted />
-		<T x={G.x + G.w} y={G.y + G.h + 16} text="6 r_s" size={11} anchor="middle" muted />
+		<T x={G.x} y={G.y + G.h + 16} text="1 rₛ" size={11} anchor="middle" muted />
+		<T x={G.x + G.w} y={G.y + G.h + 16} text="6 rₛ" size={11} anchor="middle" muted />
 	{/if}
 
 	<Card x={CX} y={PY1 - 76} w={CW} h={76} />

@@ -32,6 +32,7 @@ import {
 	schwarzschildRadius,
 	shadowAngle,
 	shadowMicroarcsec,
+	sidewaysL,
 	skyAngle,
 	trace
 } from '../src/routes/black-holes/blackhole';
@@ -155,6 +156,22 @@ test('Mercury: general relativity’s extra 43″ per century', () => {
 	expect(perCentury).toBeCloseTo(43, 0);
 });
 
+test('launched sideways at 4 r_s: Newton’s circular speed falls in; the escape speed is Newton’s', () => {
+	const r0 = 8;
+	const fate = (k: number) =>
+		probe(r0, sidewaysL(r0, k * Math.sqrt(1 / r0)), { maxSweep: 8 * Math.PI }).fate;
+	expect(fate(1)).toBe('captured');
+	expect(fate(1.12)).toBe('captured');
+	expect(fate(1.14)).toBe('orbiting');
+	// A circle needs √(r/(r − r_s)) = 1.15 times Newton's circular speed.
+	const L = circularL(r0); // speed on the spot from L = r v / √(1 − v²)
+	const kCircle = L / Math.sqrt(r0 * r0 + L * L) / Math.sqrt(1 / r0);
+	expect(kCircle).toBeCloseTo(1.155, 3);
+	// √(2GM/r) measured on the spot, as for Newton: just below it the probe stays, just above it leaves.
+	expect(fate(Math.SQRT2 * 0.995)).toBe('orbiting');
+	expect(fate(Math.SQRT2 * 1.005)).toBe('escaped');
+});
+
 test('the innermost stable circular orbit is at 3 r_s', () => {
 	// Circular orbits nudged a little slower: they stay near their circle outside
 	// r = 6 GM/c² and plunge into the hole inside it.
@@ -164,7 +181,7 @@ test('the innermost stable circular orbit is at 3 r_s', () => {
 	expect(Math.min(...Array.from(outside.u, (u) => 1 / u))).toBeGreaterThan(5.5);
 	expect(nudged(5.5).fate).toBe('captured');
 	expect(nudged(4).fate).toBe('captured');
-	// No circular orbit at all inside 1.5 r_s.
+	// No circular orbit for matter at 1.5 r_s (only light's) or inside it.
 	expect(circularL(3)).toBeNaN();
 });
 
@@ -181,10 +198,13 @@ test('the shadows of Sgr A* and M87* match the rings the Event Horizon Telescope
 	const sgr = shadowMicroarcsec(SGR_A.mass, SGR_A.distance);
 	expect(sgr).toBeCloseTo(52, 0);
 	expect(Math.abs(sgr - SGR_A.ring)).toBeLessThan(SGR_A.ringError);
+	// M87*: from the mass its stars give (not the EHT's own fit to the ring).
 	const m87 = shadowMicroarcsec(M87.mass, M87.distance);
-	expect(m87).toBeCloseTo(40, 0);
-	// The mass is only known to ±11%; the prediction sits within that of the ring.
-	expect(Math.abs(m87 / M87.ring - 1)).toBeLessThan(0.11);
+	expect(m87).toBeCloseTo(38, 0);
+	// The ring is glowing gas just outside the shadow (EHT: about 5-10% wider), and that
+	// mass is uncertain by +18/−10%: the ring is wider than the shadow, by less than a fifth.
+	expect(M87.ring / m87).toBeGreaterThan(1);
+	expect(M87.ring / m87).toBeLessThan(1.2);
 });
 
 test('a star exactly behind the hole becomes a ring at θ_E ≈ 2√(GM/(c²D))', () => {

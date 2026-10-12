@@ -53,10 +53,20 @@ export const ARCSEC = Math.PI / 180 / 3600;
  */
 export const SGR_A = { mass: 4.152e6, distance: 8178 * PARSEC, ring: 51.8, ringError: 2.3 };
 /**
- * M87*, in the galaxy Messier 87: 6.5 ± 0.7 billion solar masses at 16.8 Mpc;
- * ring 42 ± 3 µas across (EHT Collaboration 2019, ApJL 875, L1 and L6).
+ * M87*, in the galaxy Messier 87, at 16.8 Mpc. Its mass from the motions of
+ * the galaxy's stars: 6.6 ± 0.4 billion solar masses at the 17.9 Mpc Gebhardt
+ * et al. (2011, ApJ 729, 119) adopted, so about 6.2 billion at 16.8 Mpc (the
+ * mass scales with the distance; EHT Collaboration 2019, ApJL 875, L1). Its
+ * ring, 42 ± 3 µas across, and the EHT's own mass fitted to that ring,
+ * 6.5 ± 0.7 billion (ApJL 875, L1 and L6): not an independent check.
  */
-export const M87 = { mass: 6.5e9, distance: 16.8e6 * PARSEC, ring: 42, ringError: 3 };
+export const M87 = {
+	mass: 6.2e9,
+	ehtMass: 6.5e9,
+	distance: 16.8e6 * PARSEC,
+	ring: 42,
+	ringError: 3
+};
 /**
  * The 1919 eclipse: starlight grazing the Sun measured to bend 1.98 ± 0.12″
  * (Sobral) and 1.61 ± 0.30″ (Príncipe) (Dyson, Eddington & Davidson 1920,
@@ -66,8 +76,9 @@ export const ECLIPSE_1919 = { sobral: 1.98, sobralError: 0.12, principe: 1.61, p
 /**
  * Mercury's orbit (NASA Mercury fact sheet): semi-major axis 0.387 098 AU,
  * eccentricity 0.205 630, period 87.969 days. Its perihelion turns 43″ per
- * century more than Newton's gravity and the other planets explain
- * (Le Verrier 1859; Einstein 1915).
+ * century more than Newton's gravity and the other planets explain (found by
+ * Le Verrier in 1859, who put it at 38″; 43″ is Newcomb's 1882 value;
+ * explained by Einstein in 1915).
  */
 export const MERCURY = { a: 0.387098 * AU, e: 0.20563, periodDays: 87.9691 };
 /** The Earth's orbit (NASA Earth fact sheet): a = 1.000 001 AU, e = 0.0167. */
@@ -95,6 +106,16 @@ export function circularL(r: number) {
 }
 /** Newton's circular orbit at r has L = √(GM r). */
 export const newtonCircularL = (r: number) => Math.sqrt(r);
+
+/**
+ * Angular momentum per unit mass of a probe launched sideways at r with speed
+ * v (a fraction of c) as measured on the spot by an observer held at rest
+ * there: L = r v / √(1 − v²). (Newton's is r v.) It escapes if and only if
+ * v ≥ √(2GM/r), the same escape speed as Newton's.
+ */
+export function sidewaysL(r: number, v: number) {
+	return (r * v) / Math.sqrt(1 - v * v);
+}
 
 /**
  * The extra turn of an orbit's closest point per orbit predicted by general
@@ -222,8 +243,8 @@ export const B_CRIT = Math.sqrt(27);
 /**
  * Light emitted from a lamp held at rest at radius r0, at angle psi (radians)
  * from straight up (outwards), turning anticlockwise if `side` is +1. The
- * lamp's own angle measurement, so aberration from the lamp's acceleration is
- * included through b = r0 sin ψ / √(1 − 2/r0).
+ * angle is the one measured by the lamp, held at rest (a static observer),
+ * through b = r0 sin ψ / √(1 − 2/r0).
  */
 export function flashRay(r0: number, psi: number, opts: TraceOptions = {}) {
 	const u0 = 1 / r0;
@@ -334,14 +355,19 @@ export function alphaAt(tab: DeflectionTable, b: number) {
 }
 
 /**
- * Where a camera at distance D from the hole sees the sky: looking at angle
- * θ from the hole, the light it receives passed the hole with impact
- * parameter b = D sin θ and was bent by α(b), so it came from the sky at
- * angle β = θ − α (the lens equation for a sky far behind the hole; negative
- * means the other side of the hole). NaN inside the shadow.
+ * Where a camera held at rest at distance D from the hole sees the sky:
+ * looking at angle θ from the hole, the light it receives has impact
+ * parameter b = D sin θ / √(1 − 2/D) (as for the lamp in `flashRay`) and was
+ * bent by α(b), so it came from the sky at angle β = θ − α (the lens
+ * equation for a sky far behind the hole; negative means the other side of
+ * the hole). NaN inside the shadow. α is the whole bend, including the small
+ * part (about b/D²) the ray would still pick up beyond the camera.
  */
+export function cameraImpact(D: number, theta: number) {
+	return (D * Math.sin(theta)) / Math.sqrt(1 - 2 / D);
+}
 export function skyAngle(tab: DeflectionTable, D: number, theta: number) {
-	const b = D * Math.sin(theta);
+	const b = cameraImpact(D, theta);
 	const a = alphaAt(tab, b);
 	return Number.isFinite(a) ? theta - a : NaN;
 }
