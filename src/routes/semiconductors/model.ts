@@ -132,7 +132,8 @@ export function patchCarriers(sites: Site[]) {
 /**
  * Electron and hole densities (cm⁻³) in silicon with donor density nd and acceptor
  * density na, all dopants ionised (true at room temperature for these shallow
- * dopants up to ~10¹⁸ cm⁻³). Charge neutrality plus the mass-action law n·p = nᵢ².
+ * dopants up to ~10¹⁸ cm⁻³; above that the donor levels merge with the band, so their
+ * electrons still conduct). Charge neutrality plus the mass-action law n·p = nᵢ².
  */
 export function carriers(nd: number, na: number, ni = NI_SI) {
 	const net = nd - na;

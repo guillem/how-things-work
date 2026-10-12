@@ -16,10 +16,13 @@
 	 * - Donors and acceptors pair off (compensation): the donor's electron moves straight
 	 *   into the acceptor's empty place, and neither leaves a free carrier.
 	 * - With `params.field` (− left, + right) electrons drift right and holes left.
+	 * - Each dopant's animation runs from the moment the reader places it, not from the step's
+	 *   start, so a dopant added later still shows its electron leave or pair off.
 	 *
 	 * Level spacings are to scale (gap 1.12 eV, donor and acceptor levels 45–54 meV);
 	 * the patch is not: real doping is far sparser.
 	 */
+	import { SvelteMap } from 'svelte/reactivity';
 	import { hash, lerp, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
@@ -42,8 +45,7 @@
 		wander
 	} from '../lattice';
 
-	let { step, t, params, setParam, reduced }: StageProps = $props();
-	const time = $derived(reduced ? 2.5 : t);
+	let { step, t, params, setParam, playing }: StageProps = $props();
 	const drift = $derived(params.field !== false ? 22 : 0);
 	const holeDir = $derived(params.field !== false ? -1 : 0);
 
@@ -73,12 +75,31 @@
 	});
 	const counts = $derived(patchCarriers(sites));
 
+	/**
+	 * When the reader placed each dopant (step time, keyed `<step id>:<site>`), so that its
+	 * animation starts then rather than with the step. Sites never placed by a click, or
+	 * placed before the step's clock restarted, count from the step's start.
+	 */
+	const placed = new SvelteMap<string, number>();
+	const placedAt = (i: number) => {
+		const p = placed.get(`${step.id}:${i}`);
+		return p === undefined || p > t ? undefined : p;
+	};
+	/** Seconds since this site's dopant arrived. In reduced motion `t` is a frozen, finished frame
+	 * and nothing is recorded (`playing` is false), so every dopant shows its end state. */
+	const age = (i: number) => t - (placedAt(i) ?? 0);
+
 	function toggle(i: number) {
 		const next = sites.slice();
 		next[i] = next[i] === 'Si' ? pick : 'Si';
+		if (next[i] !== 'Si' && playing) placed.set(`${step.id}:${i}`, t);
+		else placed.delete(`${step.id}:${i}`);
 		setParam(key, next.map((s) => CHAR[s]).join(''));
 	}
-	const reset = () => setParam(key, startSites.map((s) => CHAR[s]).join(''));
+	const reset = () => {
+		for (const k of [...placed.keys()]) if (k.startsWith(`${step.id}:`)) placed.delete(k);
+		setParam(key, startSites.map((s) => CHAR[s]).join(''));
+	};
 	const onKey = (e: KeyboardEvent, act: () => void) => {
 		if (e.key !== 'Enter' && e.key !== ' ') return;
 		e.preventDefault();
@@ -86,10 +107,14 @@
 	};
 
 	// ---- carriers ----------------------------------------------------------------------------
-	const donors = $derived(L.atoms.filter((a) => role(sites[a.i]) === 'donor').map((a) => a.i));
-	const acceptors = $derived(
-		L.atoms.filter((a) => role(sites[a.i]) === 'acceptor').map((a) => a.i)
-	);
+	/** Dopants of one role, oldest first, so that a new dopant never re-pairs older ones. */
+	const ofRole = (r: 'donor' | 'acceptor') =>
+		L.atoms
+			.filter((a) => role(sites[a.i]) === r)
+			.map((a) => a.i)
+			.sort((a, b) => (placedAt(a) ?? -1) - (placedAt(b) ?? -1) || a - b);
+	const donors = $derived(ofRole('donor'));
+	const acceptors = $derived(ofRole('acceptor'));
 	const paired = $derived(Math.min(donors.length, acceptors.length));
 	/** The bond of an acceptor that starts one electron short. */
 	const emptyBond = (atom: number) => {
@@ -102,17 +127,18 @@
 	const electrons = $derived(
 		donors.slice(paired).map((d) => {
 			const a = L.atoms[d];
-			const ang = time * 3.2 + d;
+			const s = age(d);
+			const ang = s * 3.2 + d;
 			const orbit = { x: a.x + 27 * Math.cos(ang), y: a.y + 27 * Math.sin(ang) };
 			const start = {
 				x: a.x + 27 * Math.cos(FREE_AT * 3.2 + d),
 				y: a.y + 27 * Math.sin(FREE_AT * 3.2 + d)
 			};
-			const w = wander(L, start, Math.max(0, time - FREE_AT), d + 5, drift);
-			const bound = time < FREE_AT;
+			const w = wander(L, start, Math.max(0, s - FREE_AT), d + 5, drift);
+			const bound = s < FREE_AT;
 			return {
 				d,
-				free: smoothstep(FREE_AT - 0.3, FREE_AT, time),
+				free: smoothstep(FREE_AT - 0.3, FREE_AT, s),
 				x: bound ? orbit.x : w.x,
 				y: bound ? orbit.y : w.y,
 				opacity: bound ? 1 : w.opacity
@@ -121,7 +147,7 @@
 	);
 	const holes = $derived(
 		acceptors.slice(paired).map((acc) => {
-			const h = holeAt(L, emptyBond(acc), acc + 2, time, HOP, holeDir);
+			const h = holeAt(L, emptyBond(acc), acc + 2, age(acc), HOP, holeDir);
 			const a = bondDot(L, h.cur, 0);
 			const b = bondDot(L, h.next, 0);
 			const near = Math.hypot(a.x - b.x, a.y - b.y) < L.gap * 1.2;
@@ -141,7 +167,7 @@
 		Array.from({ length: paired }, (_, k) => {
 			const d = L.atoms[donors[k]];
 			const slot = bondDot(L, emptyBond(acceptors[k]), 0);
-			const u = smoothstep(0.4, 1.6, time);
+			const u = smoothstep(0.4, 1.6, Math.min(age(donors[k]), age(acceptors[k])));
 			return {
 				k,
 				d: donors[k],
@@ -164,9 +190,9 @@
 	/** Is this dopant a fixed ion yet? */
 	const ionised = (atom: number) => {
 		const di = donors.indexOf(atom);
-		if (di >= 0) return di < paired ? transfers[di].u >= 1 : time >= FREE_AT;
+		if (di >= 0) return di < paired ? transfers[di].u >= 1 : age(atom) >= FREE_AT;
 		const ai = acceptors.indexOf(atom);
-		return ai < paired ? transfers[ai].u >= 1 : time >= HOP;
+		return ai < paired ? transfers[ai].u >= 1 : age(atom) >= HOP;
 	};
 
 	// ---- bands ---------------------------------------------------------------------------------
@@ -464,7 +490,7 @@
 		/>
 	{/each}
 	{#each holes as h (h.acc)}
-		{#if time >= HOP}
+		{#if age(h.acc) >= HOP}
 			<circle
 				cx={toBand(h.x)}
 				cy={EV + 14 + 26 * hash(h.acc, 8)}

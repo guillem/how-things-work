@@ -4,6 +4,7 @@ import { expect, test } from '@playwright/test';
 import {
 	GAPS,
 	INTRINSIC,
+	JUNCTION_DOPING,
 	KT,
 	NI_SI,
 	N_SI,
@@ -106,6 +107,19 @@ test('junction doped 10¹⁷ cm⁻³ each side: built-in voltage ~0.8 V, depleti
 		6
 	);
 	expect(depletionWidth(0.6)).toBeLessThan(depletionWidth(0) / 1.5);
+});
+
+test('at 10¹⁷ cm⁻³ the Fermi level stays well inside the gap (non-degenerate)', () => {
+	// The junction scene draws E_F this far below the conduction band on the n side.
+	expect(GAPS.Si.gap / 2 - KT * Math.log(JUNCTION_DOPING / NI_SI)).toBeGreaterThan(0.1);
+});
+
+test('boron-doped silicon is two to three times more resistive than phosphorus-doped', () => {
+	for (const c of [1e15, 1e16, 1e17]) {
+		const ratio = conductivity(0, c).rho / conductivity(c, 0).rho;
+		expect(ratio).toBeGreaterThan(2);
+		expect(ratio).toBeLessThan(3.2);
+	}
 });
 
 test('band edges: the p side sits higher, and forward voltage lowers the step', () => {
