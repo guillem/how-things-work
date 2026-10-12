@@ -146,6 +146,8 @@
 	const iceLine = $derived(
 		model === 'mb' ? py(Math.max(...lattice('mb').y) + spec.wallRange - off) : null
 	);
+	/** The piston's labels; below the piston for water, so the ice level's label fits above. */
+	const pistonLabelY = $derived(iceLine === null ? pistonY - 10 : pistonY + 10);
 
 	// ---- the tracked molecule (the three-states steps) --------------------------------
 	/** The tracked molecule: the one nearest the middle of the bottom layers at the run's start. */
@@ -220,6 +222,7 @@
 			stroke-width="1.2"
 			stroke-dasharray="5 5"
 		/>
+		<Label x={BX + BW + 12} y={iceLine - 10} text="ice level" size={11} anchor="start" muted />
 	{/if}
 
 	{#if model === 'mb'}
@@ -293,7 +296,7 @@
 	{/if}
 	<Label
 		x={BX + BW + 12}
-		y={pistonY - 10}
+		y={pistonLabelY}
 		text={atStop ? 'piston at' : 'piston'}
 		size={12}
 		anchor="start"
@@ -301,7 +304,7 @@
 	/>
 	<Label
 		x={BX + BW + 12}
-		y={pistonY + 6}
+		y={pistonLabelY + 16}
 		text={atStop ? 'its stop' : formatAtm(P / ATM)}
 		size={12}
 		anchor="start"
@@ -350,7 +353,7 @@
 	{#if panel === 'states'}
 		<StatesPanel phase={sp.phase} />
 	{:else if panel === 'energy'}
-		<EnergyPanel kinetic={sp.T} phase={sp.phase} />
+		<EnergyPanel kinetic={frame.kinetic} phase={sp.phase} />
 	{:else if panel === 'ring'}
 		<RingPanel {t} />
 	{:else}

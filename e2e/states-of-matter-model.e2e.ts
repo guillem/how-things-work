@@ -152,6 +152,27 @@ test.describe('the box of molecules', () => {
 		expect(after.area).toBeGreaterThan(before.area * 1.04);
 	});
 
+	test('the box changes smoothly across the dashed line above the critical point, where no phase line is', () => {
+		for (const sub of ['co2', 'water'] as const) {
+			const { critical } = SUBSTANCES[sub];
+			const P = critical.P * 1.4;
+			const below = setpointFor(sub, critical.T - 0.01, P);
+			const above = setpointFor(sub, critical.T + 0.01, P);
+			expect(below.phase).toBe('liquid');
+			expect(above.phase).toBe('supercritical');
+			expect(Math.abs(above.T - below.T)).toBeLessThan(0.05);
+			expect(Math.abs(above.P - below.P)).toBeLessThan(0.05);
+		}
+	});
+
+	test('squeezing CO₂ gas at 0 °C past 34.4 atm condenses it', () => {
+		const run = new BoxRun('lj', 'gas', setpointFor('co2', C(0), 20 * ATM));
+		expect(measure(run, 1, 3).free).toBeGreaterThan(0.35);
+		run.frame(3 * FPS);
+		run.set(setpointFor('co2', C(0), 40 * ATM));
+		expect(measure(run, 12, 15).free).toBeLessThan(0.1);
+	});
+
 	test('the same history gives the same frames', () => {
 		const sp = setpointFor('co2', C(-20), 5e6);
 		const a = new BoxRun('lj', 'liquid', sp).frame(120);

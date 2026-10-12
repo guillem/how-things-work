@@ -2,7 +2,8 @@
 	/**
 	 * The real phase diagram of the substance (see ../phase.ts), temperature
 	 * (−100 … 400 °C, linear) against pressure (0.001 … 1000 atm, logarithmic),
-	 * with the box's temperature and pressure as a dot.
+	 * with the temperature and pressure the reader set as a dot (the box runs at
+	 * its own set point in the same state: see ../mapping.ts).
 	 */
 	import { Label } from '#lib/draw/index.ts';
 	import {
