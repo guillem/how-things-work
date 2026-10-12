@@ -221,6 +221,19 @@
 	const pulse = $derived(reduced ? 0 : (1 - smoothstep(2.5, 4, t)) * (0.5 + 0.5 * Math.sin(t * 5)));
 	const handlesOn = $derived(1 - w.compose);
 
+	// When î and ĵ land on (nearly) the same point — the zero matrix puts both on
+	// the origin — one handle would cover the other: draw them a little apart so
+	// both can be seen and grabbed. Frozen while a drag is in flight, so the
+	// handle under the pointer doesn't jump mid-drag.
+	const coincide = $derived(Math.hypot(P(iL).x - P(jL).x, P(iL).y - P(jL).y) < 12);
+	let splitFrozen = $state(false);
+	const split = $derived(dragging ? splitFrozen : coincide);
+	const grabStart = () => {
+		splitFrozen = coincide;
+		dragging = true;
+	};
+	const grabEnd = () => (dragging = false);
+
 	// ---- the grids -------------------------------------------------------------------
 	/** The moved grid as two paths: images of the lines x = k and y = k. */
 	const grid = $derived.by(() => {
@@ -242,11 +255,16 @@
 			if (k === 0) continue;
 			lines += seg(vec(k, -L), vec(k, L)) + seg(vec(-L, k), vec(L, k));
 		}
-		return { lines, axes: seg(vec(-L, 0), vec(L, 0)) + seg(vec(0, -L), vec(0, L)) };
+		// Near a flat matrix the lines pile up into a dense hatch: fade them out as the
+		// plane collapses, leaving the axes (which become the line it collapses onto).
+		return { lines, axes: seg(vec(-L, 0), vec(L, 0)) + seg(vec(0, -L), vec(0, L)), smin };
 	});
+	const gridFade = $derived(smoothstep(0.06, 0.18, grid.smin));
 
 	// ---- the F and the unit square -----------------------------------------------------
-	// An F with no mirror symmetry (so a flip shows), area 2.25, in the top-left quarter.
+	// An F with no mirror symmetry (so a flip shows), area 2.25, in the top-left
+	// quarter. Placed so that the compose step's end state (SR) keeps it on the
+	// plane: its corner (−2.3, 2.65) lands on (−4.95, −2.3), inside the edge.
 	const F0 = [
 		[0, 0],
 		[0.6, 0],
@@ -258,7 +276,7 @@
 		[1.65, 1.95],
 		[1.65, 2.4],
 		[0, 2.4]
-	].map(([x, y]) => vec(x - 2.4, y + 0.4));
+	].map(([x, y]) => vec(x - 2.3, y + 0.25));
 	const F0area = signedArea(F0);
 	const square = [vec(0, 0), vec(1, 0), vec(1, 1), vec(0, 1)];
 	const pathOf = (pts: Vec[]) =>
@@ -269,7 +287,7 @@
 	const square0 = pathOf(square);
 	const areaColor = $derived(dM < -1e-9 ? 'var(--lt-neg)' : 'var(--lt-area)');
 	const centreOfSquare = $derived(P(apply(M, vec(0.5, 0.5))));
-	const Fcentre = $derived(P(apply(M, vec(-1.9, 1.6))));
+	const Fcentre = $derived(P(apply(M, vec(-1.8, 1.45))));
 	const onPlane = (p: Point, m = 30) =>
 		p.x > EDGE + m && p.x < 600 - EDGE - m && p.y > EDGE + m && p.y < 600 - EDGE - m;
 
@@ -463,8 +481,8 @@
 		if (L < 1e-6) return { x: q.x + 16, y: q.y - 14 };
 		return { x: q.x + (p.x / L) * 30, y: q.y - (p.y / L) * 30 + 7 };
 	};
-	const iLabel = $derived(tipLabel(iL));
-	const jLabel = $derived(tipLabel(jL));
+	const iLabel = $derived(split ? { x: P(iL).x - 22, y: P(iL).y - 24 } : tipLabel(iL));
+	const jLabel = $derived(split ? { x: P(jL).x + 22, y: P(jL).y + 32 } : tipLabel(jL));
 </script>
 
 {#snippet bracket(x: number, y: number, rows: string[][], colors: string[], size = 18, gap = 64)}
@@ -522,7 +540,15 @@
 
 		<!-- the moved grid -->
 		<g opacity={1 - 0.55 * w.repeat}>
-			<path d={grid.lines} stroke="var(--lt-grid)" stroke-width="1" opacity="0.42" fill="none" />
+			{#if gridFade > 0.01}
+				<path
+					d={grid.lines}
+					stroke="var(--lt-grid)"
+					stroke-width="1"
+					opacity={0.42 * gridFade}
+					fill="none"
+				/>
+			{/if}
 			<path d={grid.axes} stroke="var(--lt-grid)" stroke-width="2" opacity="0.85" fill="none" />
 		</g>
 
@@ -763,26 +789,30 @@
 			<VectorHandle
 				x={P(iL).x}
 				y={P(iL).y}
+				dx={split ? -9 : 0}
+				dy={split ? -9 : 0}
 				label="Where î lands"
 				value={angleOf(col1(target))}
 				valuetext="î lands on {pt(col1(target))}"
 				color="var(--lt-i)"
 				onmove={moveI}
 				onkey={keyI}
-				ondragstart={() => (dragging = true)}
-				ondragend={() => (dragging = false)}
+				ondragstart={grabStart}
+				ondragend={grabEnd}
 			/>
 			<VectorHandle
 				x={P(jL).x}
 				y={P(jL).y}
+				dx={split ? 9 : 0}
+				dy={split ? 9 : 0}
 				label="Where ĵ lands"
 				value={angleOf(col2(target))}
 				valuetext="ĵ lands on {pt(col2(target))}"
 				color="var(--lt-j)"
 				onmove={moveJ}
 				onkey={keyJ}
-				ondragstart={() => (dragging = true)}
-				ondragend={() => (dragging = false)}
+				ondragstart={grabStart}
+				ondragend={grabEnd}
 			/>
 		</g>
 	{/if}

@@ -61,6 +61,33 @@ test('dragging î reshapes the unit square, and the area readout follows', async
 	await expect(stage(page)).toContainText('(× 0.5)');
 });
 
+test('with the zero matrix both handles overlap at the origin; the split î handle still grabs', async ({
+	page
+}) => {
+	// Reduced motion: the shown matrix snaps to the sliders, no easing.
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('./linear-transformations/#matrix');
+	for (const id of ['a', 'b', 'c', 'd']) await slider(page, id).fill('0');
+	await expect(handle(page, 'î')).toHaveAttribute('aria-valuetext', 'î lands on (0, 0)');
+	await expect(handle(page, 'ĵ')).toHaveAttribute('aria-valuetext', 'ĵ lands on (0, 0)');
+	// The handles are drawn a little apart: î's floats up-left of the origin
+	// (300, 300), 56 stage units per unit.
+	const box = (await page.locator('.stage svg').boundingBox())!;
+	const k = Math.min(box.width / 960, box.height / 600);
+	const ox = box.x + (box.width - 960 * k) / 2;
+	const oy = box.y + (box.height - 600 * k) / 2;
+	const at = (x: number, y: number) => ({ x: ox + x * k, y: oy + y * k });
+	const from = at(291, 291);
+	const to = at(356, 300);
+	await page.mouse.move(from.x, from.y);
+	await page.mouse.down();
+	await page.mouse.move(to.x, to.y, { steps: 8 });
+	await page.mouse.up();
+	await expect(handle(page, 'î')).toHaveAttribute('aria-valuetext', 'î lands on (1, 0)');
+	// ĵ never moved.
+	await expect(handle(page, 'ĵ')).toHaveAttribute('aria-valuetext', 'ĵ lands on (0, 0)');
+});
+
 test('a negative determinant flips the plane over', async ({ page }) => {
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await page.goto('./linear-transformations/#flip');
