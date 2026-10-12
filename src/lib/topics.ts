@@ -402,6 +402,15 @@ const explainers: Explainer[] = [
 		accent: '#1098ad',
 		steps: 10,
 		minutes: 18
+	},
+	{
+		slug: 'black-holes',
+		title: 'Black holes and curved spacetime',
+		summary:
+			'Fire light rays and probes past a black hole and watch them bend, loop or fall in, lower a clock towards the horizon and see it slow down, and drag a black hole across the stars to watch it bend them into rings.',
+		accent: '#364fc7',
+		steps: 12,
+		minutes: 20
 	}
 ];
 

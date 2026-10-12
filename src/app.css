@@ -552,6 +552,18 @@ kbd {
 	--rel-car: #fbe4ec;
 	--rel-deck: #e3e7eb;
 	--rel-muon: #2f9e44;
+	/* black holes: space, the hole, its horizon, light, captured light, probes, Newton's path, photon sphere, ISCO, the night sky, a star */
+	--bh-space: #f1f3f7;
+	--bh-hole: #16181d;
+	--bh-horizon: #495057;
+	--bh-light: #e67700;
+	--bh-captured: #c92a2a;
+	--bh-probe: #1c7ed6;
+	--bh-newton: #495057;
+	--bh-sphere: #ae3ec9;
+	--bh-isco: #2f9e44;
+	--bh-sky: #05070c;
+	--bh-star: #f59f00;
 	/* semiconductors: electrons, holes, n and p regions, bands, atoms, dopants, field */
 	--semi-electron: #1971c2;
 	--semi-hole: #e8590c;
@@ -900,6 +912,17 @@ kbd {
 	--rel-car: #47212f;
 	--rel-deck: #343a40;
 	--rel-muon: #69db7c;
+	--bh-space: #0b0d12;
+	--bh-hole: #000000;
+	--bh-horizon: #adb5bd;
+	--bh-light: #ffd43b;
+	--bh-captured: #ff6b6b;
+	--bh-probe: #4dabf7;
+	--bh-newton: #adb5bd;
+	--bh-sphere: #da77f2;
+	--bh-isco: #69db7c;
+	--bh-sky: #05070c;
+	--bh-star: #ffd43b;
 	--semi-electron: #4dabf7;
 	--semi-hole: #ff922b;
 	--semi-n: #142838;
