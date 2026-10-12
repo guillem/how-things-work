@@ -348,6 +348,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 10,
 		minutes: 16
+	},
+	{
+		slug: 'light-optics',
+		title: 'Light and optics',
+		summary:
+			'Bounce light off mirrors, bend it into glass, trap it inside a fibre, focus it with a lens and split it into a rainbow, all on an optical bench you can rearrange.',
+		accent: '#1098ad',
+		steps: 10,
+		minutes: 18
 	}
 ];
 

@@ -17,6 +17,12 @@
 		return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
 	}).join(' ');
 
+	// Light & optics: the spectrum fanning out of a prism (fixed colours of the
+	// rainbow, red bent least).
+	const opticsArt = ['#e03131', '#f76707', '#fab005', '#40c057', '#228be6', '#7048e8'].map(
+		(c, i) => ({ c, y1: 60 + i * 1.6, y2: 66 + i * 9 })
+	);
+
 	// Radioactivity: 8 × 10 nuclei, about half of them decayed (a fixed pattern), and
 	// the curve 104 − 80·2^(−h) over four half-lives of 20 px each from x 112.
 	const radArt = {
@@ -1250,6 +1256,20 @@
 			<path d="M100 60 L{a.x} {a.y}" stroke={a.c} stroke-width="3" stroke-linecap="round" />
 			<circle cx={a.x} cy={a.y} r="4" fill={a.c} />
 		{/each}
+	{:else if slug === 'light-optics'}
+		<!-- a beam of white light split by a prism into a fan of colours -->
+		<path d="M18 74 L84 62" stroke="currentColor" stroke-width="2.4" opacity="0.6" />
+		{#each opticsArt as r (r.c)}
+			<path d="M84 62 L116 {r.y1} L184 {r.y2}" fill="none" stroke={r.c} stroke-width="2.2" />
+		{/each}
+		<path
+			d="M100 22 L134 86 L66 86 Z"
+			fill={accent}
+			fill-opacity="0.16"
+			stroke={accent}
+			stroke-width="1.6"
+			stroke-linejoin="round"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

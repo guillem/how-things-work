@@ -524,6 +524,19 @@ kbd {
 	--ft-p1: #2f9e44;
 	--ft-p2: #e8590c;
 	--ft-p3: #7048e8;
+	/* light-optics: glass and water bodies, mirrors, the light ray, white light, angles, lamp, crests */
+	--lo-glass: #a5d8ff59;
+	--lo-glass-edge: #339af0;
+	--lo-water: #99e9f259;
+	--lo-water-edge: #15aabf;
+	--lo-mirror: #495057;
+	--lo-ray: #e03131;
+	--lo-white: #5c636a;
+	--lo-theta1: #e8590c;
+	--lo-theta2: #7048e8;
+	--lo-lamp: #343a40;
+	--lo-crest: #1c7ed6;
+	--lo-image: #2f9e44;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -812,4 +825,16 @@ kbd {
 	--ft-p1: #69db7c;
 	--ft-p2: #ff922b;
 	--ft-p3: #b197fc;
+	--lo-glass: #4dabf733;
+	--lo-glass-edge: #74c0fc;
+	--lo-water: #3bc9db2e;
+	--lo-water-edge: #66d9e8;
+	--lo-mirror: #ced4da;
+	--lo-ray: #ff6b6b;
+	--lo-white: #f1f3f5;
+	--lo-theta1: #ff922b;
+	--lo-theta2: #b197fc;
+	--lo-lamp: #adb5bd;
+	--lo-crest: #74c0fc;
+	--lo-image: #69db7c;
 }
