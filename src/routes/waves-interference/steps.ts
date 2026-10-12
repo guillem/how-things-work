@@ -43,7 +43,7 @@ const spacing: Control = {
 	step: 0.5,
 	default: 6,
 	unit: ' cm',
-	help: 'You can also drag either source in the tank.'
+	help: 'You can also drag either source anywhere in the tank.'
 };
 
 const harmonic: Control = {
@@ -158,7 +158,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A <dfn data-def="A shallow glass-bottomed tray of water lit from above, so that the crests of ripples show as bright lines and the troughs as dark ones on a screen below.">ripple tank</dfn> is a shallow tray of water. Two dippers, side by side, bob up and down in step, and each sends out circular ripples: bright where the water is lifted into a crest, dark in a trough.</p>
 <p>Where the two sets of ripples cross, they add. Look for the pattern fanning out from between the sources: lines where the water heaves twice as hard, and between them lines where it hardly moves at all — <strong>bands of reinforcement and cancellation</strong>.</p>
-<p>Change the wavelength and the spacing and watch the bands swing round. Ripples of these sizes travel at nearly the same speed, so a shorter wavelength also means the dippers bob faster.</p>`,
+<p>Change the wavelength and the spacing and watch the bands swing round — or simply drag a dipper anywhere in the tank: the bands always fan out from between the two. Ripples of these sizes travel at nearly the same speed, so a shorter wavelength also means the dippers bob faster.</p>`,
 			notes: `<p>The picture is computed: each source sends circular waves whose height falls off as 1/√(distance) (a ring's energy spreads around a circumference that grows with its radius), and the two are added point by point. Reflections from the tank's walls and the slow loss of energy to friction are left out; real tanks have sloping, absorbing edges for the same reason. The motion is slowed down: at a wavelength of 2 cm the dippers bob once a second; real ripple tanks run ten or more times faster. Very close to each dipper the 1/√r rule is capped, since it would grow without limit, and every wavelength is given the same speed.</p>`
 		},
 		{
@@ -251,7 +251,7 @@ export const spec: ExplainerSpec = {
 <p>A source sends out a crest, moves on a little, sends the next one, moves on again. Each crest spreads out as a circle around the point it was sent from, so ahead of a moving source the crests are squeezed together and behind it they're stretched apart.</p>
 <p>Sound travels at 343 m/s whatever the source does, so squeezed crests reach your ear more often: a higher pitch. This is the <dfn data-def="The change in the frequency of a wave heard by a listener when the source and the listener move towards or away from each other.">Doppler effect</dfn>. For a source moving at speed v,</p>
 <p class="formula"><strong>f<sub>ahead</sub> = f × 343 ÷ (343 − v)</strong> &nbsp; <strong>f<sub>behind</sub> = f × 343 ÷ (343 + v)</strong></p>
-<p>A 440 Hz horn on a car at 30 m/s (108 km/h) is heard at 482 Hz as it approaches and 405 Hz as it leaves. Raise the speed and watch the crests pile up in front.</p>`,
+<p>A 440 Hz horn on a car at 30 m/s (108 km/h) is heard at 482 Hz as it approaches and 405 Hz as it leaves. Raise the speed and watch the crests pile up in front — or take hold of the source and move it yourself: when you let go, it keeps the speed of your hand.</p>`,
 			notes: `<p>The drawing is slowed down so that you can follow the crests; the speed of the source compared with the speed of sound is the real one. At the speed of sound the crests pile up into a single shock wave, heard as a sonic boom; the slider stops at 240 m/s, 70% of the speed of sound. The listener's own motion also shifts the pitch, by a slightly different formula.</p>`
 		},
 		{

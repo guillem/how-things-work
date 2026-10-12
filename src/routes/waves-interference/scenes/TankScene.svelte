@@ -25,7 +25,12 @@
 	 *             own sizes added: 1 where they always add in step, 0 where they
 	 *             always cancel), with each calm line labelled by its path difference
 	 *
-	 * The sources are draggable (vertically) and write `params.spacing`.
+	 * The sources are draggable anywhere in the tank: their places live in
+	 * `params['sources:tank']` ("x,y;x,y", cm from the tank's top-left) once
+	 * moved, with `params.spacing` (the slider, and the keyboard on a source)
+	 * always kept to their actual distance, so the slider follows a drag and a
+	 * drag follows the slider (which rescales the pair about its midpoint along
+	 * the line joining them).
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -64,10 +69,123 @@
 
 	const phase = $derived(String(step.hints?.phase ?? 'ripples'));
 	const lam = $derived(Math.max(0.5, Number(params.lambda ?? 2)));
-	const d = $derived(Math.max(0.5, Number(params.spacing ?? 6)));
+	const dWanted = $derived(Math.max(1, Math.min(12, Number(params.spacing ?? 6))));
 	const lamPx = $derived(lam * PX);
-	const s1 = $derived<Point>({ x: SX, y: SY - (d * PX) / 2 });
-	const s2 = $derived<Point>({ x: SX, y: SY + (d * PX) / 2 });
+
+	// ---- the sources: draggable anywhere in the tank -------------------------------------
+	const clampIntoTank = (p: Point): Point => ({
+		x: Math.max(TX + 12, Math.min(TX + TW - 12, p.x)),
+		y: Math.max(TY + 12, Math.min(TY + TH - 12, p.y))
+	});
+	/** The pair stored in `params['sources:tank']` (px), or null. */
+	const storedPair = $derived.by(() => {
+		const raw = params['sources:tank'];
+		if (typeof raw !== 'string') return null;
+		const pair = raw.split(';').map((half) => half.split(',').map(Number));
+		if (pair.length !== 2 || pair.some((p) => p.length !== 2 || p.some((v) => !Number.isFinite(v))))
+			return null;
+		return pair.map((p) => clampIntoTank({ x: TX + p[0] * PX, y: TY + p[1] * PX }));
+	});
+	/**
+	 * The pair as placed — the stored pair, rescaled about its midpoint when the
+	 * spacing control has moved beyond it — or, before the first drag, the
+	 * slider's symmetric pair in the tank's left half.
+	 */
+	const pair = $derived.by<[Point, Point]>(() => {
+		if (storedPair) {
+			const [a, b] = storedPair;
+			const dist = Math.hypot(a.x - b.x, a.y - b.y) / PX;
+			if (Math.abs(dist - dWanted) < 0.26) return [a, b]; // the slider's 0.5 cm steps
+			const mx = (a.x + b.x) / 2;
+			const my = (a.y + b.y) / 2;
+			const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+			const hx = ((b.x - a.x) / len) * ((dWanted * PX) / 2);
+			const hy = ((b.y - a.y) / len) * ((dWanted * PX) / 2);
+			return [
+				{ x: mx - hx, y: my - hy },
+				{ x: mx + hx, y: my + hy }
+			];
+		}
+		return [
+			{ x: SX, y: SY - (dWanted * PX) / 2 },
+			{ x: SX, y: SY + (dWanted * PX) / 2 }
+		];
+	});
+	const s1 = $derived<Point>(pair[0]);
+	const s2 = $derived<Point>(pair[1]);
+	/** Their actual distance, cm: what the readouts and the model use. */
+	const d = $derived(Math.hypot(s2.x - s1.x, s2.y - s1.y) / PX);
+	/** Write a placement and its distance to the spacing control. */
+	const dOf = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y) / PX;
+	function writePair(a: Point, b: Point) {
+		const cm = (p: Point) =>
+			`${Math.round(((p.x - TX) / PX) * 10) / 10},${Math.round(((p.y - TY) / PX) * 10) / 10}`;
+		setParam('sources:tank', `${cm(a)};${cm(b)}`);
+		setParam('spacing', Math.round(Math.max(1, Math.min(12, dOf(a, b))) * 2) / 2);
+	}
+	const setSpacing = (v: number) => {
+		const dd = Math.round(Math.max(1, Math.min(12, v)) * 2) / 2;
+		const [a, b] = pair;
+		const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+		const mx = (a.x + b.x) / 2;
+		const my = (a.y + b.y) / 2;
+		const hx = ((b.x - a.x) / len) * ((dd * PX) / 2);
+		const hy = ((b.y - a.y) / len) * ((dd * PX) / 2);
+		writePair({ x: mx - hx, y: my - hy }, { x: mx + hx, y: my + hy });
+	};
+	/**
+	 * Drag source `i` anywhere in the tank, kept between 1 and 12 cm from the
+	 * other (the spacing control's range — the tank allows more, the control
+	 * does not).
+	 */
+	const dragSource = (i: 0 | 1) => (p: Point) => {
+		const here = clampIntoTank(p);
+		const [a, b] = pair;
+		const other = i === 0 ? b : a;
+		let dx = here.x - other.x;
+		let dy = here.y - other.y;
+		const dd = Math.hypot(dx, dy);
+		if (dd < 1e-6) {
+			dx = 0;
+			dy = i === 0 ? -PX : PX;
+		} else {
+			const clamped = Math.max(PX, Math.min(12 * PX, dd));
+			dx = (dx / dd) * clamped;
+			dy = (dy / dd) * clamped;
+		}
+		const moved = { x: other.x + dx, y: other.y + dy };
+		writePair(i === 0 ? moved : other, i === 0 ? other : moved);
+	};
+	const keySource = (k: number | 'start' | 'end') =>
+		setSpacing(k === 'start' ? 1 : k === 'end' ? 12 : d + 0.5 * k);
+
+	/** The spacing bracket: beside the pair, on the side away from the tank's centre. */
+	const bracket = $derived.by(() => {
+		const mx = (s1.x + s2.x) / 2;
+		const my = (s1.y + s2.y) / 2;
+		const ux = (s2.x - s1.x) / (d * PX || 1);
+		const uy = (s2.y - s1.y) / (d * PX || 1);
+		const nx = -uy;
+		const ny = ux;
+		const s = (TX + TW / 2 - mx) * nx + (TY + TH / 2 - my) * ny < 0 ? 1 : -1;
+		const ox = s * nx;
+		const oy = s * ny;
+		const at = (p: Point, off: number, along: number) => ({
+			x: p.x + ox * off + ux * along,
+			y: p.y + oy * off + uy * along
+		});
+		return {
+			ticks: [at(s1, 6, 0), at(s1, 34, 0), at(s2, 6, 0), at(s2, 34, 0)].map((p, i, all) => ({
+				x1: i % 2 === 0 ? p.x : all[i - 1].x,
+				y1: i % 2 === 0 ? p.y : all[i - 1].y,
+				x2: p.x,
+				y2: p.y
+			})),
+			a: at(s1, 30, 3),
+			b: at(s2, 30, -3),
+			label: at({ x: mx, y: my }, 44, 0)
+		};
+	});
 
 	// cross-fade of the overlays between phases
 	const wProbe = new Tween(0, { duration: 700, easing: cubicInOut });
@@ -182,6 +300,26 @@
 	}
 	// a new palette invalidates the cache too
 	const painted = $derived(lut ? { field, lut } : null);
+
+	// Pre-warm the frame cache, a few frames per animation tick, so the first
+	// period plays from cache: painted lazily, on a slow machine each new phase
+	// janked the picture for the whole first period.
+	$effect(() => {
+		const p = painted;
+		if (!p) return;
+		const fill = () => {
+			if (framesFor !== p.field) return;
+			let paintedNow = 0;
+			for (let k = 0; k < NPH && paintedNow < 4; k++) {
+				if (!frames.has(k)) {
+					frame(k, p.field, p.lut);
+					paintedNow++;
+				}
+			}
+			if (paintedNow) requestAnimationFrame(fill);
+		};
+		requestAnimationFrame(fill);
+	});
 
 	const freq = $derived(V_TANK / lam); // Hz, as drawn
 	const tt = $derived(reduced ? 2.5 : t);
@@ -336,13 +474,6 @@
 		];
 	});
 
-	// ---- sources (draggable) -----------------------------------------------------------------
-	const setSpacing = (v: number) =>
-		setParam('spacing', Math.round(Math.max(1, Math.min(12, v)) * 2) / 2);
-	const dragSource = (p: Point) => setSpacing((2 * Math.abs(p.y - SY)) / PX);
-	const keySource = (k: number | 'start' | 'end') =>
-		setSpacing(k === 'start' ? 1 : k === 'end' ? 12 : d + 0.5 * k);
-
 	const nQuiet = $derived(quiet.length);
 	const firstAngle = $derived(nQuiet ? farAngle(0.5, d, lam) : null);
 
@@ -431,22 +562,32 @@
 		{/each}
 	</g>
 
-	<!-- the spacing -->
+	<!-- the spacing, measured beside the pair (outside it, whatever their angle) -->
 	<g style:pointer-events="none">
+		{#each bracket.ticks as tk, i (i)}
+			<line
+				x1={tk.x1}
+				y1={tk.y1}
+				x2={tk.x2}
+				y2={tk.y2}
+				stroke="var(--stage-ink-muted)"
+				stroke-width="1"
+			/>
+		{/each}
 		<line
-			x1={SX - 30}
-			x2={SX - 30}
-			y1={s1.y + 3}
-			y2={s2.y - 3}
+			x1={bracket.a.x}
+			y1={bracket.a.y}
+			x2={bracket.b.x}
+			y2={bracket.b.y}
 			stroke="var(--stage-ink)"
 			stroke-width="1.5"
 			marker-start="url(#arrowhead)"
 			marker-end="url(#arrowhead)"
 		/>
 		<text
-			x={SX - 38}
-			y={SY + 4}
-			text-anchor="end"
+			x={bracket.label.x}
+			y={bracket.label.y}
+			text-anchor="middle"
 			class="halo"
 			style:font-size="12px"
 			font-weight="600">{fmt(d, 1)} cm</text
@@ -500,27 +641,27 @@
 	<Handle
 		x={s1.x}
 		y={s1.y}
-		label="Source 1 (sets the spacing)"
+		label="Source 1 (drag it anywhere in the tank)"
 		value={d}
 		min={1}
 		max={12}
 		valuetext="{fmt(d, 1)} cm apart"
 		color="var(--wav-a)"
 		r={8}
-		onmove={dragSource}
+		onmove={dragSource(0)}
 		onkey={keySource}
 	/>
 	<Handle
 		x={s2.x}
 		y={s2.y}
-		label="Source 2 (sets the spacing)"
+		label="Source 2 (drag it anywhere in the tank)"
 		value={d}
 		min={1}
 		max={12}
 		valuetext="{fmt(d, 1)} cm apart"
 		color="var(--wav-b)"
 		r={8}
-		onmove={dragSource}
+		onmove={dragSource(1)}
 		onkey={keySource}
 	/>
 

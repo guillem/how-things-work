@@ -36,13 +36,52 @@ test('a source can be dragged with the keyboard, and the spacing slider follows'
 	page
 }) => {
 	await page.goto('./waves-interference/#ripple-tank');
-	const source = page.getByRole('slider', { name: 'Source 1 (sets the spacing)' });
+	const source = page.getByRole('slider', { name: 'Source 1 (drag it anywhere in the tank)' });
 	await source.focus();
 	await page.keyboard.press('ArrowRight');
 	await expect(slider(page, 'spacing')).toHaveValue('6.5');
 	await page.keyboard.press('End');
 	await expect(slider(page, 'spacing')).toHaveValue('12');
 	await expect(stage(page)).toContainText('12.0 cm');
+});
+
+test('a source can be dragged anywhere in the tank, the spacing following', async ({ page }) => {
+	await page.goto('./waves-interference/#ripple-tank');
+	const source = page.getByRole('slider', { name: 'Source 2 (drag it anywhere in the tank)' });
+	const at = await scene(page);
+	// Drag source 2 up and to the right (source 1 stays put): the pair is no
+	// longer vertical, and the spacing reads their true distance — source 1 is
+	// at (100, 240), so (325, 200) is 11.4 cm from it.
+	const box = (await source.boundingBox())!;
+	const to = at(325, 200);
+	await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+	await page.mouse.down();
+	await page.mouse.move(to.x, to.y, { steps: 8 });
+	await page.mouse.up();
+	await expect(stage(page)).toContainText('11.4 cm');
+	await expect(slider(page, 'spacing')).toHaveValue('11.5');
+});
+
+test('the moving source is a handle: its speed follows the drag', async ({ page }) => {
+	await page.goto('./waves-interference/#doppler');
+	const src = page.getByRole('slider', { name: /The source \(drag it/ });
+	await expect(stage(page)).toContainText('Heard ahead');
+	// A quick rightward drag is far faster than the control's 240 m/s: the
+	// release clamps there.
+	const at = await scene(page);
+	const box = (await src.boundingBox())!;
+	const to = at(700, 360);
+	await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+	await page.mouse.down();
+	await page.mouse.move(to.x, to.y, { steps: 6 });
+	await page.mouse.up();
+	await expect(slider(page, 'speed')).toHaveValue('240');
+	// Home stops the source; an arrow key steps its speed.
+	await src.focus();
+	await page.keyboard.press('Home');
+	await expect(slider(page, 'speed')).toHaveValue('0');
+	await page.keyboard.press('ArrowRight');
+	await expect(slider(page, 'speed')).toHaveValue('5');
 });
 
 test('the probe reads cancellation on a calm line and reinforcement on the centre line', async ({
