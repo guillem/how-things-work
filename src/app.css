@@ -524,6 +524,22 @@ kbd {
 	--ft-p1: #2f9e44;
 	--ft-p2: #e8590c;
 	--ft-p3: #7048e8;
+	/* semiconductors: electrons, holes, n and p regions, bands, atoms, dopants, field */
+	--semi-electron: #1971c2;
+	--semi-hole: #e8590c;
+	--semi-n: #e3f0fb;
+	--semi-p: #fdeee4;
+	--semi-filled: #a5d8ff;
+	--semi-band: #f1f3f5;
+	--semi-band-edge: #868e96;
+	--semi-si: #ced4da;
+	--semi-si-edge: #868e96;
+	--semi-bond: #adb5bd;
+	--semi-donor: #2f9e44;
+	--semi-arsenic: #0c8599;
+	--semi-acceptor: #ae3ec9;
+	--semi-field: #c2255c;
+	--semi-ion: #868e96;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -812,4 +828,19 @@ kbd {
 	--ft-p1: #69db7c;
 	--ft-p2: #ff922b;
 	--ft-p3: #b197fc;
+	--semi-electron: #4dabf7;
+	--semi-hole: #ff922b;
+	--semi-n: #142838;
+	--semi-p: #36231a;
+	--semi-filled: #1f4f7a;
+	--semi-band: #212529;
+	--semi-band-edge: #868e96;
+	--semi-si: #495057;
+	--semi-si-edge: #868e96;
+	--semi-bond: #5c636a;
+	--semi-donor: #51cf66;
+	--semi-arsenic: #3bc9db;
+	--semi-acceptor: #da77f2;
+	--semi-field: #f06595;
+	--semi-ion: #adb5bd;
 }

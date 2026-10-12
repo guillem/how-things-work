@@ -348,6 +348,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 10,
 		minutes: 16
+	},
+	{
+		slug: 'semiconductors',
+		title: 'Crystals, semiconductors and the p–n junction',
+		summary:
+			'See why metals conduct and diamond does not, add a few phosphorus or boron atoms to silicon to make it conduct a million times better, then join two kinds of silicon into a diode that lets current through one way only.',
+		accent: '#1971c2',
+		steps: 11,
+		minutes: 16
 	}
 ];
 
