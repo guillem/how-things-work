@@ -308,7 +308,7 @@ export class BoxRun {
 			freezing: this.freezeStep >= 0 ? this.freezeStep / FREEZE_FRAMES : -1
 		});
 		// keep the last few seconds only
-		if (this.frames.length > 4 * FPS) {
+		if (this.frames.length > 8 * FPS) {
 			this.frames.splice(0, FPS);
 			this.first += FPS;
 		}

@@ -1,4 +1,4 @@
-import type { Control, ExplainerSpec, RangeControl } from '#lib/explainer/index.ts';
+import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
 import { formatCelsius, formatPressureSlider } from './format';
 
 /**
@@ -8,6 +8,8 @@ import { formatCelsius, formatPressureSlider } from './format';
  * them (`tParam`, `pParam`, `subParam`), and what the side panel shows
  * (`panel`: `states`, `energy`, `diagram`, `ring`).
  */
+
+type RangeControl = Extract<Control, { type: 'range' }>;
 
 const temperature = (
 	id: string,
@@ -73,7 +75,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			body: `
 <p>This box holds 80 molecules of carbon dioxide, at −100 °C and normal air pressure, <dfn data-def="The pressure of the air at sea level on an average day: 101,325 pascals (101 kPa). Pressure is force per area.">1 atmosphere</dfn>. A heavy lid, the <strong>piston</strong>, presses down on them with that pressure. At this temperature carbon dioxide is a solid: dry ice.</p>
-<p>The molecules sit in neat rows, a <dfn data-def="A regular, repeating arrangement of particles in a solid.">crystal</dfn>. They are not still: each one <strong>vibrates</strong> about its place. Follow the highlighted molecule; its trail shows where it was in the last two seconds. It shakes, but its neighbours hold it where it is.</p>
+<p>The molecules sit in neat rows, a <dfn data-def="A regular, repeating arrangement of particles in a solid.">crystal</dfn>. They are not still: each one <strong>vibrates</strong> about its place. Follow the highlighted molecule; its trail shows where it was in the last six seconds. It shakes, but its neighbours hold it where it is.</p>
 <p>That is why a solid keeps its shape: every molecule stays next to the same neighbours.</p>`,
 			notes: `<p>The box is a <dfn data-def="A computer simulation that moves every molecule with Newton's laws, step by tiny step, using the forces the molecules exert on each other.">molecular dynamics</dfn> simulation, simplified on purpose: it is flat (2D), it holds 80 molecules instead of the about 10²³ in a lump of dry ice, and each carbon dioxide molecule (really a straight O=C=O) is drawn as a round particle. A weak gravity pulls the molecules to the bottom of the box, as in a real container.</p>`
 		},
@@ -86,7 +88,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			body: `
 <p>Now the same molecules at −20 °C, squeezed at 50 atmospheres: carbon dioxide is a <strong>liquid</strong>, as it is inside a fire extinguisher.</p>
-<p>The molecules are still packed against each other, almost as closely as in the solid, but the rows are gone. They jostle and <strong>slide past each other</strong>: the highlighted molecule wanders off through the crowd, changing neighbours as it goes.</p>
+<p>The molecules are still packed against each other, almost as closely as in the solid, but the rows are gone. They jostle and <strong>slide past each other</strong>: the trail of the highlighted molecule (the last six seconds) shows it slowly working its way through the crowd, squeezing between neighbours, something the molecules of a solid hardly ever do.</p>
 <p>That is why a liquid flows and takes the shape of its container, but keeps its <strong>volume</strong>: the molecules still touch, so you can hardly squeeze it.</p>`
 		},
 		{
