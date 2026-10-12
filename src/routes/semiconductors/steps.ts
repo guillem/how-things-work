@@ -101,6 +101,7 @@ export const spec: ExplainerSpec = {
 			scene: 'dope',
 			hints: { start: 'P', pick: 'P' },
 			duration: 26,
+			controls: [field],
 			body: `
 <p>Waiting for heat to free electrons gives very few. Instead, replace a few silicon atoms with something else: <dfn data-def="Adding a tiny, controlled amount of another element to a semiconductor's crystal to change how it conducts.">doping</dfn>.</p>
 <p><strong>Phosphorus</strong> (and arsenic) is in group 15: five outer electrons, one more than silicon. Four of them make the four bonds; the fifth has no bond to join. It is held only weakly, by just 0.045 eV, and at room temperature it breaks free and wanders the crystal as a conduction electron, leaving a fixed P<sup>+</sup> ion behind. Phosphorus is a <dfn data-def="An impurity atom that gives an extra electron to the crystal (phosphorus, arsenic in silicon).">donor</dfn>; in the band picture its level sits just below the conduction band.</p>
@@ -114,6 +115,7 @@ export const spec: ExplainerSpec = {
 			scene: 'dope',
 			hints: { start: 'B', pick: 'B' },
 			duration: 26,
+			controls: [field],
 			body: `
 <p><strong>Boron</strong> is in group 13: three outer electrons, one fewer than silicon. One of its four bonds is left with a single electron, a hole. A neighbouring bond's electron easily hops in (that costs only 0.045 eV), making boron a fixed B<sup>−</sup> ion and moving the hole one bond further on. Boron is an <dfn data-def="An impurity atom that takes an electron from the crystal's bonds, creating a hole (boron in silicon).">acceptor</dfn>; its level sits just above the valence band.</p>
 <p>Hop after hop, the hole wanders through the crystal like a bubble in water. Apply a voltage and the electrons hop towards +, so the hole moves towards −, just like a positive charge. Silicon doped with acceptors is <dfn data-def="A semiconductor doped with acceptors, so that most of its moving charges are positive holes.">p-type</dfn>, for positive carriers.</p>

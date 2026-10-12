@@ -191,3 +191,6 @@ export function holeAt(
 export function missingDots(cur: number, next: number | null): Set<string> {
 	return new Set(next === null ? [`${cur}:0`] : [`${cur}:0`, `${next}:0`]);
 }
+
+/** A set of "bond:k" keys of missing bond electrons. */
+export const keySet = (keys: string[]): Set<string> => new Set(keys);
