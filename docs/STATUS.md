@@ -26,6 +26,9 @@ Last updated: 2026-10-12 UTC.
   npm run); stage files by path, not with `git add -A`.
 - Suspected bugs recorded by characterization tests, not fixed yet: see BACKLOG "Known gaps".
 - Screenshots go to a scratch directory outside the repository.
+- CI runs Node 22 on a slower Linux machine; the laptop runs Node 26. Chaotic simulations
+  (states-of-matter) differ between them, and heavy scenes can lose forced clicks there. Before a
+  release with new topics, also run `npx playwright test --workers=2` locally.
 
 ## Current state
 
@@ -68,7 +71,8 @@ Last updated: 2026-10-12 UTC.
 
 **Batch 9 (2026-10-12):** calculus, black-holes, states-of-matter, homeostasis, compression. Same
 process (builder agent each, `make review` ~$3.50, review-apply agent each). Merged into `main`
-locally and ticked; `make e2e-full` green (758 tests). Not pushed until the user validates.
+locally and ticked; `make e2e-full` green (758 tests). Released in v0.1.7 (v0.1.5 and v0.1.6
+failed on CI before deploying: see the two test fixes after them).
 
 Batch 8 (2026-10-12, released in v0.1.4): light-optics, semiconductors, special-relativity, cryptography, cpu,
 motors-generators. Same process as batch 7 (one builder agent each in a local worktree, fact-check
