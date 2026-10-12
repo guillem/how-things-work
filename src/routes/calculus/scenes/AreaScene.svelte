@@ -137,7 +137,22 @@
 		return Math.abs(next) < 1e-9 || Math.abs(error) < 1e-9 ? null : Math.abs(error / next);
 	});
 	const nLabelRight = $derived(nDot.x < RIGHT - 150);
-	const exactLabelAbove = $derived(syN(exact) - boxes.lower.top > 24);
+	// Below the dot when the totals come up from below, above it otherwise (and never
+	// on the axis labels or above the plot).
+	const nLabelY = $derived.by(() => {
+		const below = nDot.y + 22;
+		const above = nDot.y - 12;
+		if (total <= exact) return below < boxes.lower.bottom - 6 ? below : above;
+		return above > boxes.lower.top + 14 ? above : below;
+	});
+	// The exact-area label goes on the side of the line away from the totals' curve.
+	const exactLabelY = $derived.by(() => {
+		const y = syN(exact);
+		const fromBelow = sums[NMAX - 1] <= exact;
+		if (fromBelow && y - boxes.lower.top > 14) return y - 7;
+		if (!fromBelow && boxes.lower.bottom - y > 20) return y + 17;
+		return fromBelow ? y + 17 : y - 7;
+	});
 </script>
 
 <g>
@@ -152,7 +167,7 @@
 		</clipPath>
 	</defs>
 
-	<Txt x={LEFT + 24} y={30} text={curve.formula} size={15} weight={600} color="var(--calc-curve)" />
+	<Txt x={LEFT + 44} y={28} text={curve.formula} size={15} weight={600} color="var(--calc-curve)" />
 	<Frame
 		{sx}
 		{sy}
@@ -229,7 +244,7 @@
 			/>
 			<Txt
 				x={RIGHT - 4}
-				y={syN(exact) + (exactLabelAbove ? -9 : 18)}
+				y={exactLabelY}
 				text="exact area {num(exact)}"
 				anchor="end"
 				size={12}
@@ -252,7 +267,7 @@
 			/>
 			<Txt
 				x={nDot.x + (nLabelRight ? 14 : -14)}
-				y={nDot.y + (total <= exact ? 22 : -12)}
+				y={nLabelY}
 				text="n = {n}: {num(total)}"
 				anchor={nLabelRight ? 'start' : 'end'}
 				size={13}

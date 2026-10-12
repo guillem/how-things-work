@@ -7,13 +7,13 @@ const curve: Control = {
 	label: 'Curve',
 	default: 'parabola',
 	options: [
-		{ value: 'parabola', label: 'Parabola: y = x²' },
-		{ value: 'cubic', label: 'Cubic: a hill and a valley' },
-		{ value: 'wave', label: 'Sine wave' },
-		{ value: 'ball', label: 'Height of a ball thrown upwards' },
-		{ value: 'custom', label: 'Your own (drag the round knots)' }
+		{ value: 'parabola', label: 'x²' },
+		{ value: 'cubic', label: 'Cubic' },
+		{ value: 'wave', label: 'Wave' },
+		{ value: 'ball', label: 'Thrown ball' },
+		{ value: 'custom', label: 'Your own' }
 	],
-	help: 'Pick “your own”, or drag one of the hollow knots, to shape the curve yourself.'
+	help: 'The parabola y = x², a cubic with a hill and a valley, a sine wave, the height of a ball thrown upwards, or your own: pick it, or drag one of the hollow knots, to shape the curve yourself.'
 };
 
 /** The point on the curve (or the right edge of the area); the scenes' handles write to it. */

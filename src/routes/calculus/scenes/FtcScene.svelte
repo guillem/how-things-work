@@ -182,7 +182,7 @@
 	</defs>
 
 	<!-- ============ the curve ============ -->
-	<Txt x={LEFT + 24} y={30} text={curve.formula} size={15} weight={600} color="var(--calc-curve)" />
+	<Txt x={LEFT + 44} y={28} text={curve.formula} size={15} weight={600} color="var(--calc-curve)" />
 	<Frame {sx} {sy} yName={isBall ? 'h (m)' : 'y'} />
 	<g clip-path="url(#calc-ftc-upper)">
 		{#if wArea.current > 0.01}

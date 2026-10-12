@@ -36,19 +36,19 @@
 	const bottom = $derived(Math.max(...sy.range));
 	const ys = $derived(niceTicks(sy.domain[0], sy.domain[1], bottom - top > 300 ? 8 : 4));
 	const zeroY = $derived(sy(0));
+	// As many decimals as the tick spacing needs (0.25 → 2, 2.5 → 1, 5 → 0).
+	const decimals = $derived.by(() => {
+		const gap = ys.length > 1 ? ys[1] - ys[0] : 1;
+		for (let d = 0; d < 3; d++)
+			if (Math.abs(gap * 10 ** d - Math.round(gap * 10 ** d)) < 1e-6) return d;
+		return 3;
+	});
 </script>
 
 <g {opacity} style:pointer-events="none">
 	{#each ys as v (v)}
 		<line x1={left} x2={right} y1={sy(v)} y2={sy(v)} stroke="var(--stage-grid)" />
-		<Txt
-			x={left - 8}
-			y={sy(v) + 4}
-			text={num(v, Number.isInteger(v) ? 0 : 1)}
-			size={11}
-			anchor="end"
-			muted
-		/>
+		<Txt x={left - 8} y={sy(v) + 4} text={num(v, decimals)} size={11} anchor="end" muted />
 	{/each}
 	{#each xTicks as v (v)}
 		<line x1={sx(v)} x2={sx(v)} y1={bottom} y2={bottom + 4} stroke="var(--stage-line)" />
