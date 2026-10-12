@@ -85,6 +85,7 @@ Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<s
 - calculus: merged; ticked. Not reviewed yet.
 - states-of-matter: merged; ticked. Not reviewed yet.
 - black-holes: merged; ticked. Not reviewed yet.
+- homeostasis: merged; ticked. Not reviewed yet.
 
 ## Open questions for the user
 

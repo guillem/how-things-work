@@ -438,6 +438,15 @@ const explainers: Explainer[] = [
 		accent: '#364fc7',
 		steps: 12,
 		minutes: 20
+	},
+	{
+		slug: 'homeostasis',
+		title: 'How the body keeps its blood sugar steady',
+		summary:
+			'Feed a virtual person or send them for a run and watch insulin and glucagon hold their blood glucose in a narrow range. Then break the loop the two ways diabetes does, and try dosing insulin by hand.',
+		accent: '#d9480f',
+		steps: 8,
+		minutes: 15
 	}
 ];
 

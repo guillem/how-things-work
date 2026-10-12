@@ -629,6 +629,20 @@ kbd {
 	--calc-slope: #e8590c;
 	--calc-area: #2b8a3e;
 	--calc-neg: #e03131;
+	/* homeostasis: glucose, insulin, glucagon, hypoglycaemia band, high band, blood, liver, pancreas, muscle, gut, urine */
+	--hm-glucose: #e8590c;
+	--hm-insulin: #1971c2;
+	--hm-glucagon: #2f9e44;
+	--hm-hypo: #e03131;
+	--hm-hypo-bg: #ffe3e3;
+	--hm-high-bg: #fff4e6;
+	--hm-blood: #fbe9e7;
+	--hm-blood-edge: #c92a2a;
+	--hm-liver: #a5523a;
+	--hm-pancreas: #e8b04b;
+	--hm-muscle: #c2255c;
+	--hm-gut: #e67700;
+	--hm-urine: #b08900;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -1014,4 +1028,18 @@ kbd {
 	--calc-slope: #ff922b;
 	--calc-area: #69db7c;
 	--calc-neg: #ff8787;
+	/* homeostasis */
+	--hm-glucose: #ff922b;
+	--hm-insulin: #4dabf7;
+	--hm-glucagon: #69db7c;
+	--hm-hypo: #ff6b6b;
+	--hm-hypo-bg: #3b1d1f;
+	--hm-high-bg: #33261a;
+	--hm-blood: #2e1c1c;
+	--hm-blood-edge: #e57373;
+	--hm-liver: #d0805f;
+	--hm-pancreas: #f0c36d;
+	--hm-muscle: #f06595;
+	--hm-gut: #fcc419;
+	--hm-urine: #ffe066;
 }

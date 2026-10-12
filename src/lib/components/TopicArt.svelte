@@ -1135,6 +1135,41 @@
 			stroke-linejoin="round"
 			stroke-linecap="round"
 		/>
+	{:else if slug === 'homeostasis'}
+		<!-- a feedback loop beside a glucose curve that rises after a meal and comes back, with insulin below -->
+		<g transform="translate(50 60)">
+			<path
+				d="M0 -30 A30 30 0 1 1 -26 15"
+				fill="none"
+				stroke={accent}
+				stroke-width="3"
+				stroke-linecap="round"
+			/>
+			<path
+				d="M-33 6 L-26 17 L-15 10"
+				fill="none"
+				stroke={accent}
+				stroke-width="3"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			/>
+			<circle cx="0" cy="0" r="7" fill="var(--hm-insulin)" />
+		</g>
+		<rect x="100" y="64" width="92" height="16" fill="var(--hm-glucagon)" opacity="0.15" />
+		<path
+			d="M100 72 C 112 72, 116 30, 128 30 S 146 62, 160 70 S 180 72, 192 72"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M100 104 C 114 104, 120 84, 132 84 S 148 102, 162 103 S 182 104, 192 104"
+			fill="none"
+			stroke="var(--hm-insulin)"
+			stroke-width="1.8"
+			stroke-linecap="round"
+		/>
 	{:else if slug === 'reinforcement-learning'}
 		<!-- a small grid world: squares shaded by learnt value, a route of arrows to the reward -->
 		{#each [0, 1, 2, 3, 4, 5] as c (c)}
