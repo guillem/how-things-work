@@ -1452,6 +1452,35 @@
 			stroke-width="1.6"
 			stroke-linejoin="round"
 		/>
+	{:else if slug === 'compression'}
+		<!-- a small Huffman tree with 0/1 branches beside an 8 × 8 block of DCT coefficients, strong
+		     at the top left (slow patterns) and fading towards the fast ones -->
+		<path
+			d="M52 26 L30 54 M52 26 L74 54 M74 54 L60 86 M74 54 L88 86"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.5"
+			stroke-width="2"
+		/>
+		{#each [{ x: 52, y: 26 }, { x: 74, y: 54 }] as n (n.x)}
+			<circle cx={n.x} cy={n.y} r="5" fill="currentColor" opacity="0.55" />
+		{/each}
+		{#each [{ x: 30, y: 54 }, { x: 60, y: 86 }, { x: 88, y: 86 }] as n (n.x)}
+			<circle cx={n.x} cy={n.y} r="7" fill={accent} />
+		{/each}
+		{#each Array.from({ length: 64 }, (_, k) => k) as k (k)}
+			{@const r = Math.floor(k / 8)}
+			{@const c = k % 8}
+			<rect
+				x={112 + c * 9}
+				y={24 + r * 9}
+				width="7.5"
+				height="7.5"
+				rx="1.2"
+				fill={r + c < 4 ? accent : 'currentColor'}
+				opacity={r + c < 4 ? 0.95 - (r + c) * 0.18 : 0.12}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
