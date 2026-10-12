@@ -7,7 +7,8 @@
 	 * each frequency from 0 Hz (the average, which can be negative) to 16 Hz.
 	 *
 	 * Phases (`step.hints.phase`):
-	 *   view — the waveform and its bars.
+	 *   view — the waveform and its bars; a line sweeps across the waveform with
+	 *          its value at that moment of the second.
 	 *   edit — each bar has a handle; the edited heights live in
 	 *          `params['ft:bars']` as "<waveform>|<heights>" (empty, or made for
 	 *          another waveform: the waveform's own bars). The signal
@@ -25,7 +26,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Handle, smoothstep, startDrag, type Point } from '#lib/draw/index.ts';
+	import { cycle, Handle, smoothstep, startDrag, type Point } from '#lib/draw/index.ts';
 	import DrawButton from '../DrawButton.svelte';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { num, pack, partialSamples, unpack, waveFromStroke, waveSpectrum } from '../fourier';
@@ -75,6 +76,15 @@
 		reduced || editing ? 1 : smoothstep(0.15 + 0.06 * n, 0.55 + 0.06 * n, t);
 	const barValue = (n: number) => (editing ? bars[n] : (reduced ? baseBars : shownBars.current)[n]);
 
+	// The 0 Hz bar is the average and may be negative. The editor stops at −0.75
+	// (MIN0), but a drawn waveform hugging the bottom of the graph can average
+	// lower still (a wave flat at −1.2 averages −1.2), and that bar used to be
+	// drawn cut off. Instead the chart's unit shrinks so the deepest value fits
+	// between the baseline and the stage floor; the editor's own range never goes
+	// deeper than the waveform it started from, so the scale holds while editing.
+	const MIN0 = -0.75;
+	const unit = $derived(baseBars[0] < MIN0 ? Math.min(BU, 80 / -baseBars[0]) : BU);
+
 	// The signal drawn thick: the original (view), rebuilt from the bars (edit) or from 1 … terms Hz (draw).
 	const rebuilt = $derived.by(() => {
 		if (!spectrum || !samples) return null;
@@ -82,14 +92,34 @@
 		if (drawPhase) return partialSamples(spectrum, termsN, N_WAVE);
 		return null;
 	});
+	// Extreme bar edits can rebuild a signal taller than the panel: zoom the
+	// vertical scale out (signal, ghost and the ±1 gridlines together) so it is
+	// never clipped.
+	const FIT = (CY - TOP) / U - 0.03; // units that fit above (and below) the middle line
+	const yZoom = $derived.by(() => {
+		if (!rebuilt) return 1;
+		let top = 1;
+		for (const v of rebuilt) top = Math.max(top, Math.abs(v));
+		return Math.max(1, top / FIT);
+	});
+	const US = $derived(U / yZoom);
 	const mainPath = $derived(
 		rebuilt
-			? samplesPath(rebuilt, X0, X1, CY, U)
+			? samplesPath(rebuilt, X0, X1, CY, US)
 			: samples
-				? samplesPath(samples, X0, X1, CY, U)
+				? samplesPath(samples, X0, X1, CY, US)
 				: ''
 	);
-	const ghostPath = $derived(rebuilt && samples ? samplesPath(samples, X0, X1, CY, U) : '');
+	const ghostPath = $derived(rebuilt && samples ? samplesPath(samples, X0, X1, CY, US) : '');
+
+	// A line sweeps across the signal on the spectrum step (the bars are still;
+	// the wave runs through its second), so the frame is not a static picture.
+	const sweep = $derived(cycle(reduced ? 2.5 : t, 8));
+	const sweepV = $derived(
+		!editing && !drawPhase && samples
+			? samples[Math.min(N_WAVE - 1, Math.floor(sweep * N_WAVE))]
+			: null
+	);
 	const edited = $derived(
 		editing && edits !== null && edits.some((v, i) => Math.abs(v - baseBars[i]) > 5e-4)
 	);
@@ -129,17 +159,13 @@
 	});
 
 	// ---- the bar editor ----------------------------------------------------------------
-	// The 0 Hz bar is the average and may be negative; below the baseline there
-	// is room for 0.75, so a deeper bar is drawn cut off at that depth (its
-	// label still gives the value) and the editor stops there.
-	const MIN0 = -0.75;
 	function setBar(n: number, v: number) {
 		const lo = n === 0 ? MIN0 : 0;
 		const next = [...bars];
 		next[n] = Math.round(Math.max(lo, Math.min(BMAX, v)) * 100) / 100;
 		setParam('ft:bars', `${shape}|${pack(next)}`);
 	}
-	const barMove = (n: number) => (p: Point) => setBar(n, (BY - p.y) / BU);
+	const barMove = (n: number) => (p: Point) => setBar(n, (BY - p.y) / unit);
 	const barKey = (n: number) => (k: number | 'start' | 'end') => {
 		if (k === 'start') return setBar(n, n === 0 ? MIN0 : 0);
 		if (k === 'end') return setBar(n, BMAX);
@@ -152,7 +178,7 @@
 		stroke
 			.map(
 				(p, i) =>
-					`${i ? 'L' : 'M'}${(X0 + (X1 - X0) * p.u).toFixed(1)} ${(CY - U * p.y).toFixed(1)}`
+					`${i ? 'L' : 'M'}${(X0 + (X1 - X0) * p.u).toFixed(1)} ${(CY - US * p.y).toFixed(1)}`
 			)
 			.join(' ')
 	);
@@ -166,7 +192,7 @@
 			const raw = (p.x - X0) / (X1 - X0);
 			if (raw < -0.03 || raw > 1.03) return;
 			const u = Math.max(0, Math.min(0.9999, raw));
-			const y = Math.max(-1.2, Math.min(1.2, (CY - p.y) / U));
+			const y = Math.max(-1.2, Math.min(1.2, (CY - p.y) / US));
 			stroke.push({ u, y });
 		};
 		// startDrag reports the first point too.
@@ -244,8 +270,8 @@
 		</g>
 	{/if}
 	{#each [-1, 1] as v (v)}
-		<line x1={X0} x2={X1} y1={CY - U * v} y2={CY - U * v} stroke="var(--stage-grid)" />
-		{@render txt(X0 - 10, CY - U * v + 4, v > 0 ? '+1' : '−1', 12, { anchor: 'end', muted: true })}
+		<line x1={X0} x2={X1} y1={CY - US * v} y2={CY - US * v} stroke="var(--stage-grid)" />
+		{@render txt(X0 - 10, CY - US * v + 4, v > 0 ? '+1' : '−1', 12, { anchor: 'end', muted: true })}
 	{/each}
 	<line x1={X0} x2={X1} y1={CY} y2={CY} stroke="var(--stage-line)" />
 	<line x1={X0} x2={X0} y1={TOP} y2={BOTTOM} stroke="var(--stage-line)" />
@@ -284,7 +310,31 @@
 				stroke-linecap="round"
 			/>
 		{/if}
+		{#if sweepV !== null}
+			<!-- the sweep: the signal's value at this moment of its second -->
+			<line
+				x1={X0 + (X1 - X0) * sweep}
+				x2={X0 + (X1 - X0) * sweep}
+				y1={TOP}
+				y2={BOTTOM}
+				stroke="var(--stage-ink-muted)"
+				stroke-dasharray="3 4"
+			/>
+			<circle
+				cx={X0 + (X1 - X0) * sweep}
+				cy={CY - US * sweepV}
+				r="6"
+				fill="var(--stage-ink)"
+				stroke="var(--stage-bg)"
+				stroke-width="2"
+			/>
+		{/if}
 	</g>
+	{#if sweepV !== null}
+		{@render txt(X0, 338, `at ${num(sweep, 2)} s the signal is at ${num(sweepV)}`, 13, {
+			weight: 600
+		})}
+	{/if}
 	{#if !samples && !stroke.length}
 		<rect
 			x={X0 + 6}
@@ -360,17 +410,17 @@
 		{@render txt(X1, 338, summary, 13, { anchor: 'end', weight: 600 })}
 	{/if}
 	{#each [0.5, 1, 1.5] as v (v)}
-		<line x1={X0} x2={X1} y1={BY - BU * v} y2={BY - BU * v} stroke="var(--stage-grid)" />
-		{@render txt(X0 - 10, BY - BU * v + 4, num(v, 1), 12, { anchor: 'end', muted: true })}
+		<line x1={X0} x2={X1} y1={BY - unit * v} y2={BY - unit * v} stroke="var(--stage-grid)" />
+		{@render txt(X0 - 10, BY - unit * v + 4, num(v, 1), 12, { anchor: 'end', muted: true })}
 	{/each}
-	<line x1={X0} x2={X0} y1={BY - BU * BMAX} y2={BY + 4} stroke="var(--stage-line)" />
+	<line x1={X0} x2={X0} y1={BY - unit * BMAX} y2={BY + 4} stroke="var(--stage-line)" />
 
 	{#each IDX as n (n)}
 		{@const v = barValue(n) * grow(n)}
 		{@const used = !drawPhase || n <= termsN}
 		{@const x = barX(n)}
-		{@const top = BY - BU * Math.max(0, v)}
-		{@const h = BU * (v >= 0 ? v : Math.min(-v, -MIN0))}
+		{@const top = BY - unit * Math.max(0, v)}
+		{@const h = unit * Math.abs(v)}
 		<rect
 			x={x - BW / 2}
 			y={v >= 0 ? top : BY}
@@ -382,7 +432,7 @@
 		/>
 		{#if Math.abs(v) > 0.005 && !editing}
 			<!-- a negative bar's value goes under it, or beside it when the bar is too deep -->
-			{@const beside = v < 0 && h > BU / 2}
+			{@const beside = v < 0 && h > unit / 2}
 			{@render txt(
 				beside ? x + BW / 2 + 4 : x,
 				v >= 0 ? top - 6 : beside ? BY + h / 2 + 4 : BY + h + 14,
@@ -424,7 +474,7 @@
 		{#each bars as v, n (n)}
 			<Handle
 				x={barX(n)}
-				y={BY - BU * v}
+				y={BY - unit * v}
 				r={7}
 				color="var(--ft-bar)"
 				label="Amount of {n} Hz"

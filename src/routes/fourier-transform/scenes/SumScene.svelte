@@ -9,7 +9,8 @@
 	 *            tail, to the height of the sum. `params.parts` adds 1–3 of them.
 	 *   square — the square wave (dashed) and its rebuilt sum from 1 to
 	 *            `params.terms` Hz, the newest ingredient drawn thin, and the
-	 *            average (root-mean-square) gap between them.
+	 *            average (root-mean-square) gap between them; a line sweeps
+	 *            across with the momentary sum, square and local gap.
 	 *   gibbs  — the same, with the top of the jump magnified in an inset and
 	 *            the overshoot measured: about 9% of the jump at any number of terms.
 	 *
@@ -131,6 +132,13 @@
 	);
 	const oddCount = $derived(Math.ceil(termsN / 2));
 	const gap = $derived(rmsError(partialSamples(SQ_SPEC, termsN, SQ_N), SQ));
+
+	// A line sweeps across, as on the sines step, with the sum's and the square's
+	// values at that moment and their gap: the frame stays alive, and the local
+	// gap (largest at the corners) sits next to the average one below.
+	const sqSweep = $derived(cycle(reduced ? 2.5 : t, 8));
+	const sqTarget = $derived(sqSweep < 0.5 ? 1 : -1);
+	const sqSweepV = $derived(wSquare > 0.01 ? sumAt(sqSweep, T) : 0);
 
 	// The overshoot before the jump at 0.5 s: the highest point of the sum
 	// between 0.25 s and the jump, on a fine grid (by symmetry the peak after
@@ -347,6 +355,41 @@
 				stroke-width="3"
 				stroke-linejoin="round"
 			/>
+
+			<!-- the sweep: the sum and the square at this moment of the second -->
+			<line
+				x1={xOf(sqSweep)}
+				x2={xOf(sqSweep)}
+				y1={yOf(1.3)}
+				y2={yOf(-1.3)}
+				stroke="var(--stage-ink-muted)"
+				stroke-dasharray="3 4"
+			/>
+			<circle
+				cx={xOf(sqSweep)}
+				cy={yOf(sqTarget)}
+				r="4.5"
+				fill="var(--ft-target)"
+				stroke="var(--stage-bg)"
+				stroke-width="1.5"
+			/>
+			<circle
+				cx={xOf(sqSweep)}
+				cy={yOf(sqSweepV)}
+				r="6"
+				fill="var(--ft-sum)"
+				stroke="var(--stage-bg)"
+				stroke-width="2"
+			/>
+			{@render txt(
+				X1,
+				88,
+				`at ${num(sqSweep, 2)} s: sum ${num(sqSweepV)} · square ${sqTarget > 0 ? '+1' : '−1'} · gap ${num(
+					Math.abs(sqSweepV - sqTarget)
+				)}`,
+				13,
+				{ anchor: 'end', weight: 600 }
+			)}
 
 			<!-- readouts -->
 			{@render txt(

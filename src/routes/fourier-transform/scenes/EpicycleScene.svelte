@@ -31,7 +31,6 @@
 	const S = 215; // px per unit
 	const AREA = { x0: 40, x1: 596, y0: 84, y1: 586 };
 	const MAX_DRAWN = 60; // circles drawn as circles; smaller ones only as arms
-	const KMAX = 20; // frequencies shown on the chart: −KMAX … KMAX
 	const BX0 = 640;
 	const BX1 = 930;
 	const BY = 440;
@@ -92,18 +91,26 @@
 	// ---- the chart of circle sizes -----------------------------------------------------
 	const used = $derived(new Set(circles ? circles.slice(1, count + 1).map((c) => c.k) : []));
 	const chartMax = $derived(circles ? Math.max(...circles.slice(1).map((c) => c.radius), 0.05) : 1);
-	/** Radius of the circle of each frequency −KMAX … KMAX (index k + KMAX). */
+	/**
+	 * The frequencies the chart shows, −kShow … kShow (at least ±20): wide enough
+	 * that every circle with a noticeable bar (over 1.5 px tall) is on it.
+	 */
+	const kShow = $derived.by(() => {
+		let k = 20;
+		for (const c of circles ?? [])
+			if ((BH * c.radius) / chartMax > 1.5) k = Math.max(k, Math.abs(c.k));
+		return Math.ceil(k / 10) * 10;
+	});
+	/** Radius of the circle of each frequency −kShow … kShow (index k + kShow). */
 	const byK = $derived.by(() => {
-		const a = new Array<number>(2 * KMAX + 1).fill(0);
-		for (const c of circles ?? []) if (Math.abs(c.k) <= KMAX) a[c.k + KMAX] = c.radius;
+		const a = new Array<number>(2 * kShow + 1).fill(0);
+		for (const c of circles ?? []) if (Math.abs(c.k) <= kShow) a[c.k + kShow] = c.radius;
 		return a;
 	});
-	const slot = (BX1 - BX0) / (2 * KMAX + 1);
-	const bx = (k: number) => BX0 + slot * (k + KMAX + 0.5);
-	const KS = Array.from({ length: 2 * KMAX + 1 }, (_, i) => i - KMAX);
-	const beyond = $derived(
-		circles ? circles.slice(1, count + 1).filter((c) => Math.abs(c.k) > KMAX).length : 0
-	);
+	const slot = $derived((BX1 - BX0) / (2 * kShow + 1));
+	const bx = (k: number) => BX0 + slot * (k + kShow + 0.5);
+	const KS = $derived(Array.from({ length: 2 * kShow + 1 }, (_, i) => i - kShow));
+	const kTicks = $derived([-kShow, -kShow / 2, 0, kShow / 2, kShow]);
 	const biggest = $derived(circles && circles.length > 1 ? circles[1] : null);
 
 	// ---- drawing a loop ----------------------------------------------------------------
@@ -312,7 +319,7 @@
 			color: 'var(--ft-sum)'
 		})}
 		{#each KS as k (k)}
-			{@const r = byK[k + KMAX]}
+			{@const r = byK[k + kShow]}
 			{@const h = k === 0 ? 0 : (BH * r) / chartMax}
 			{@const on = used.has(k)}
 			{#if h > 0.3}
@@ -328,7 +335,7 @@
 			{/if}
 		{/each}
 		<line x1={BX0} x2={BX1} y1={BY} y2={BY} stroke="var(--stage-line)" stroke-width="1.5" />
-		{#each [-20, -10, 0, 10, 20] as k (k)}
+		{#each kTicks as k (k)}
 			<line x1={bx(k)} x2={bx(k)} y1={BY} y2={BY + 5} stroke="var(--stage-line)" />
 			{@render txt(bx(k), BY + 20, `${k}`.replace('-', '−'), 12, { anchor: 'middle', muted: true })}
 		{/each}
@@ -336,12 +343,6 @@
 			anchor: 'middle',
 			muted: true
 		})}
-		{#if beyond > 0}
-			{@render txt(BX1, BY + 60, `+ ${beyond} in use beyond ±${KMAX}, not shown`, 12, {
-				anchor: 'end',
-				muted: true
-			})}
-		{/if}
 		{#if biggest}
 			{@render txt(
 				BX0,
