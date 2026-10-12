@@ -21,12 +21,12 @@
 	let { t, params, reduced }: StageProps = $props();
 
 	const n = $derived(clamp(Math.round(Number(params.pairs ?? 4)), 2, 6));
-	const FRAMES = 70;
+	const FRAMES = 100;
 	const cache: Record<number, Vec[][]> = {};
 	const frames = $derived.by(() => {
 		let f = cache[n];
 		if (!f) {
-			f = relax(n, FRAMES);
+			f = relax(n, FRAMES, 3);
 			cache[n] = f;
 		}
 		return f;
@@ -45,7 +45,8 @@
 		});
 	});
 	const progress = $derived(reduced ? 1 : Math.min(smoothstep(0.3, 3.5, t), replay.current));
-	const pts = $derived(frames[Math.round(progress * (FRAMES - 1))]);
+	// Squared, so the fast first spreading is shown slowly and the settling quickly.
+	const pts = $derived(frames[Math.round(progress * progress * (FRAMES - 1))]);
 	const settled = $derived(smoothstep(0.9, 1, progress));
 
 	const CX = 360;

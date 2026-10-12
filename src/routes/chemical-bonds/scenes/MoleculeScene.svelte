@@ -93,7 +93,19 @@
 	const CY = 292;
 	let yawOff = $state(0);
 	let pitch = $state(0.3);
-	const yaw = $derived(yawOff + 0.55 + (reduced ? 0 : 0.12 * t));
+	// The slow turn pauses while the pointer is over the molecule, so atoms hold still to be
+	// clicked (event handlers may read t; effects never do).
+	let pausedAt = $state<number | null>(null);
+	let shift = $state(0);
+	const hold = () => {
+		if (pausedAt === null) pausedAt = t;
+	};
+	const release = () => {
+		if (pausedAt === null) return;
+		shift += 0.12 * (t - pausedAt);
+		pausedAt = null;
+	};
+	const yaw = $derived(yawOff + 0.55 + (reduced ? 0 : 0.12 * (pausedAt ?? t) - shift));
 	const project = $derived(projector(yaw, pitch, CX, CY));
 
 	// ---- transitions between molecules ---------------------------------------------------------
@@ -231,13 +243,14 @@
 					opacity: op
 				});
 			} else {
-				const L = centreR + (d.kind === 'lone' ? 30 : 15);
+				const L = centreR + (d.kind === 'lone' ? 30 : 20);
 				const s = project([dir[0] * L, dir[1] * L, dir[2] * L]);
 				const dx = s.x - c.x;
 				const dy = s.y - c.y;
 				items.push({
 					key: d.id,
-					depth: s.depth,
+					// Drawn over the centre atom unless well behind it: they sit on its surface.
+					depth: s.depth + L * 0.7,
 					kind: d.kind,
 					x: s.x,
 					y: s.y,
@@ -478,6 +491,8 @@
 		aria-valuenow={Math.round((((yaw * 180) / Math.PI) % 360) + 360) % 360}
 		onpointerdown={turn}
 		onkeydown={turnKey}
+		onpointerenter={hold}
+		onpointerleave={release}
 	/>
 
 	<!-- the charge map: a soft coloured patch around every atom -->
@@ -531,9 +546,9 @@
 					rx={10 + 16 * (it.stretch ?? 1)}
 					ry="15"
 					fill={charges && a.complete ? NEG : 'var(--stage-ink-muted)'}
-					fill-opacity={charges && a.complete ? 0.35 : 0.2}
+					fill-opacity={charges && a.complete ? 0.35 : 0.28}
 					stroke="var(--stage-ink-muted)"
-					stroke-opacity="0.5"
+					stroke-opacity="0.8"
 					stroke-dasharray="3 3"
 				/>
 				<circle cx="0" cy="-4.5" r="3" fill="var(--stage-ink)" />
@@ -554,6 +569,8 @@
 					tabindex="0"
 					aria-label="Remove this {it.sym} atom"
 					onclick={() => removeAt(li)}
+					onpointerenter={hold}
+					onpointerleave={release}
 					onkeydown={(e) => onKey(e, () => removeAt(li))}
 				>
 					{@render ball(it.x, it.y, it.r ?? 20, it.sym)}
@@ -569,8 +586,8 @@
 				{@const ol = Math.hypot(ox, oy)}
 				{@const out = ol > 8 && it.ligand !== undefined}
 				{@render txt(
-					out ? it.x + (ox / ol) * ((it.r ?? 20) + 16) : it.x - (it.r ?? 20) - 22,
-					out ? it.y + (oy / ol) * ((it.r ?? 20) + 16) + 5 : it.y - (it.r ?? 20) * 0.5,
+					out ? it.x + (ox / ol) * ((it.r ?? 20) + 16) : it.x + (it.r ?? 20) * 0.7,
+					out ? it.y + (oy / ol) * ((it.r ?? 20) + 16) + 5 : it.y - (it.r ?? 20) * 0.45,
 					(it.charge ?? 0) < 0 ? 'δ−' : 'δ+',
 					14,
 					{ weight: 700, anchor: 'middle', color: (it.charge ?? 0) < 0 ? NEG : POS }
