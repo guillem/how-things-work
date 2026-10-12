@@ -356,6 +356,15 @@ kbd {
 	--osc-trace: #1971c2;
 	--osc-push: #e8590c;
 	--osc-curve: #ae3ec9;
+	/* waves: ripple-tank water (trough, still, crest), the two waves, their sum, bead, probe */
+	--wav-trough: #1c4f80;
+	--wav-still: #5b93c7;
+	--wav-crest: #e3f1fc;
+	--wav-a: #1971c2;
+	--wav-b: #e8590c;
+	--wav-sum: #343a40;
+	--wav-bead: #e03131;
+	--wav-probe: #f59f00;
 	/* logic gates: wires on/off, gate bodies, lamps */
 	--lg-on: #f08c00;
 	--lg-off: #868e96;
@@ -621,6 +630,14 @@ kbd {
 	--osc-trace: #4dabf7;
 	--osc-push: #ff922b;
 	--osc-curve: #da77f2;
+	--wav-trough: #0a1c2e;
+	--wav-still: #1d4b75;
+	--wav-crest: #8cc8f5;
+	--wav-a: #4dabf7;
+	--wav-b: #ff922b;
+	--wav-sum: #e9ecef;
+	--wav-bead: #ff6b6b;
+	--wav-probe: #ffd43b;
 	--lg-on: #ffa94d;
 	--lg-off: #5c636a;
 	--lg-gate: #1b2a3a;
