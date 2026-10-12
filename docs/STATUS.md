@@ -71,7 +71,7 @@ Last updated: 2026-10-13 UTC.
 
 ## Current development
 
-**Bug round (2026-10-13, on `main`, ships in the next tag):** the arch bridge's posts now carry
+**Bug round (2026-10-13, released in v0.1.11):** the arch bridge's posts now carry
 the road (pin-ended spandrel posts — a new member kind, serialized as `p`; model-tested), the
 chemical-bonds pause-on-hover no longer stops between atoms, and the photosynthesis `#water`
 caption follows the light level. states-of-matter's between-machine variance is closed as
