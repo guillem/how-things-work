@@ -166,7 +166,7 @@ export const spec: ExplainerSpec = {
 			title: 'What Eve would have to do',
 			scene: 'dlog',
 			duration: 26,
-			controls: [secretA, secretB],
+			controls: [secretA],
 			body: `
 <p>Eve knows 2<sup>a</sup> mod 101 = 59 and wants a. That is the <dfn data-def="Given g, p and the remainder of gˣ divided by p, finding the exponent x.">discrete logarithm</dfn> problem: on the clock the powers jump around with no pattern, so she tries a = 0, 1, 2, … until one lands on 59. Here that takes her 30 tries — trivial, because the clock is tiny. <strong>These small numbers are for illustration only.</strong></p>
 <p>Real Diffie–Hellman uses a prime of at least 2048 bits, a number with 617 digits. Alice's work grows only with the number of digits (a few thousand multiplications); Eve's trial search would have to wade through numbers up to 10<sup>616</sup>. The best known attacks are far cleverer than trying, yet the record is a 240-digit prime, broken in 2019 after thousands of years of computer time spread over many machines.</p>`,
