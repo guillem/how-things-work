@@ -164,12 +164,12 @@
 		color: COLOR.p
 	})}
 	{@render txt(
-		sx(14.2),
-		sy(Math.log10(doped(10 ** 14.2, 'n').rho)) + 30,
+		sx(14.0),
+		sy(Math.log10(doped(10 ** 14.0, 'n').rho)) + 26,
 		'phosphorus (n-type)',
 		12,
 		{
-			anchor: 'start',
+			anchor: 'end',
 			weight: 600,
 			color: COLOR.n
 		}

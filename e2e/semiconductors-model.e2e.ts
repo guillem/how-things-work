@@ -77,7 +77,7 @@ test('mass-action law: n·p = nᵢ² whatever the doping, and n ≈ N_D in n-typ
 });
 
 test('resistivity against doping matches measured silicon (Irvin curves)', () => {
-	// Irvin, Bell Syst. Tech. J. 41, 387 (1962), as plotted in Sze & Ng: n-type 10¹⁶ cm⁻³
+	// Approximate values read from the classic measured curves (Irvin 1962, reproduced in Sze & Ng): n-type 10¹⁶ cm⁻³
 	// ≈ 0.5 Ω·cm, p-type ≈ 1.4–1.5 Ω·cm; 10¹⁵ cm⁻³: ≈ 4.5 and ≈ 13–14 Ω·cm.
 	expect(conductivity(1e16, 0).rho).toBeGreaterThan(0.45);
 	expect(conductivity(1e16, 0).rho).toBeLessThan(0.6);

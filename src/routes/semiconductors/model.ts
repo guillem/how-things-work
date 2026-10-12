@@ -6,18 +6,18 @@
  * - Constants: CODATA 2018 (Boltzmann constant in eV/K, elementary charge, vacuum
  *   permittivity).
  * - Band gaps at 300 K: silicon 1.12 eV, germanium 0.66 eV, diamond 5.47 eV (S. M. Sze and
- *   K. K. Ng, Physics of Semiconductor Devices, 3rd ed., Wiley 2007, Appendix G; Kittel,
+ *   K. K. Ng, Physics of Semiconductor Devices, 3rd ed., Wiley 2007, appendix tables; Kittel,
  *   Introduction to Solid State Physics, Table 8.1, gives the same for Si and Ge and
  *   5.4 eV for diamond).
  * - Intrinsic carrier density of silicon at 300 K: 9.65 × 10⁹ cm⁻³ (Sze & Ng 2007,
- *   Appendix G; P. P. Altermatt et al., J. Appl. Phys. 93, 1598 (2003)); germanium
- *   2.0 × 10¹³ cm⁻³ (Sze & Ng 2007, Appendix G).
+ *   P. P. Altermatt et al., J. Appl. Phys. 93, 1598 (2003)); germanium
+ *   2.0 × 10¹³ cm⁻³ (Sze & Ng 2007).
  * - Silicon's lattice constant 5.431 Å (CODATA 2018: 5.431 020 511 Å), 8 atoms per cubic
  *   cell (diamond structure): 5.0 × 10²² atoms per cm³.
  * - Relative permittivity of silicon 11.7 (Ioffe Institute, NSM semiconductor archive).
  * - Ionisation energies of dopants in silicon: phosphorus 45 meV, arsenic 54 meV (donors),
- *   boron 45 meV (acceptor) (Sze & Ng 2007, chapter 1, the figure of measured ionisation
- *   energies of impurities in Si and GaAs).
+ *   boron 45 meV (acceptor) (Sze & Ng 2007, measured ionisation energies of impurities
+ *   in Si).
  * - Mobility against doping: G. Masetti, M. Severi and S. Solmi, IEEE Trans. Electron
  *   Devices ED-30, 764 (1983), Table I: phosphorus-doped (electrons) and boron-doped
  *   (holes) silicon. The parameters were checked against the Allpix Squared
@@ -60,14 +60,14 @@ export interface Gap {
 	gap: number;
 }
 
-/** Band gaps at 300 K (Sze & Ng 2007, Appendix G). */
+/** Band gaps at 300 K (Sze & Ng 2007). */
 export const GAPS: Record<'Ge' | 'Si' | 'C', Gap> = {
 	Ge: { name: 'germanium', symbol: 'Ge', gap: 0.66 },
 	Si: { name: 'silicon', symbol: 'Si', gap: 1.12 },
 	C: { name: 'diamond', symbol: 'C', gap: 5.47 }
 };
 
-/** Intrinsic carrier densities at 300 K (cm⁻³; Sze & Ng 2007, Appendix G). */
+/** Intrinsic carrier densities at 300 K (cm⁻³; Sze & Ng 2007). */
 export const NI_SI = 9.65e9;
 export const NI_GE = 2.0e13;
 

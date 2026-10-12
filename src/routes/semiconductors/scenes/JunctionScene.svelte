@@ -54,7 +54,10 @@
 
 	// Joining: a tween driven by the toggle (instant under reduced motion).
 	const joinedTarget = $derived(phase !== 'join' || params.joined === true ? 1 : 0);
-	const join = new Tween(0, { easing: cubicInOut });
+	const join = new Tween(
+		untrack(() => joinedTarget),
+		{ easing: cubicInOut }
+	);
 	$effect(() => {
 		const target = joinedTarget;
 		const r = reduced;
