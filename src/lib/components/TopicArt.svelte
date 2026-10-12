@@ -1452,6 +1452,29 @@
 			stroke-width="1.6"
 			stroke-linejoin="round"
 		/>
+	{:else if slug === 'states-of-matter'}
+		<!-- a phase diagram (sublimation, boiling and melting lines meeting at the triple point),
+		     with a crystal, a liquid and a gas in its three regions -->
+		<path
+			d="M28 108 Q66 98 88 74 Q122 52 162 28 M88 74 L98 14"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			stroke-linecap="round"
+			opacity="0.5"
+		/>
+		<circle cx="162" cy="28" r="3" fill="currentColor" opacity="0.5" />
+		{#each [0, 1, 2] as r (r)}
+			{#each [0, 1, 2, 3] as c (c)}
+				<circle cx={36 + c * 10 + (r % 2) * 5} cy={34 + r * 9} r="4" fill={accent} />
+			{/each}
+		{/each}
+		{#each [[108, 44], [116, 50], [107, 53], [117, 41], [125, 46], [114, 59]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="4" fill={accent} opacity="0.8" />
+		{/each}
+		{#each [[124, 96], [146, 104], [168, 84], [108, 108], [176, 106], [152, 72]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="4" fill={accent} opacity="0.55" />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

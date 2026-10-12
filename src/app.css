@@ -404,6 +404,21 @@ kbd {
 	--ent-box: #fdfcf9;
 	--ent-entropy: #7048e8;
 	--ent-ways: #0ca678;
+	/* states-of-matter: molecules, water's bonds, the box, the regions of the phase diagram, the dot */
+	--som-co2: #4c6ef5;
+	--som-co2-edge: #364fc7;
+	--som-water: #e03131;
+	--som-arm: #343a40;
+	--som-bond: #1971c2;
+	--som-trail: #f08c00;
+	--som-box: #fdfcf9;
+	--som-piston: #868e96;
+	--som-solid: #d0ebff;
+	--som-liquid: #c3fae8;
+	--som-gas: #fff3bf;
+	--som-super: #f3d9fa;
+	--som-line: #495057;
+	--som-dot: #e8590c;
 	/* internet: data packets, acknowledgements, other traffic, losses, news of a cut, routes, links, routers, computers, web phases */
 	--net-packet: #1c7ed6;
 	--net-ack: #2b8a3e;
@@ -764,6 +779,20 @@ kbd {
 	--ent-box: #15181d;
 	--ent-entropy: #9775fa;
 	--ent-ways: #38d9a9;
+	--som-co2: #748ffc;
+	--som-co2-edge: #91a7ff;
+	--som-water: #ff6b6b;
+	--som-arm: #dee2e6;
+	--som-bond: #74c0fc;
+	--som-trail: #ffc078;
+	--som-box: #15181d;
+	--som-piston: #868e96;
+	--som-solid: #1c2f45;
+	--som-liquid: #133a33;
+	--som-gas: #3a3416;
+	--som-super: #3b2442;
+	--som-line: #ced4da;
+	--som-dot: #ff922b;
 	--net-packet: #4dabf7;
 	--net-ack: #69db7c;
 	--net-other: #5c646d;

@@ -402,6 +402,15 @@ const explainers: Explainer[] = [
 		accent: '#1098ad',
 		steps: 10,
 		minutes: 18
+	},
+	{
+		slug: 'states-of-matter',
+		title: 'States of matter and phase changes',
+		summary:
+			'Heat, cool and squeeze a box of molecules and watch it freeze, melt, boil and condense while a phase diagram tracks its state. Then switch to water and find out why ice floats.',
+		accent: '#4c6ef5',
+		steps: 12,
+		minutes: 18
 	}
 ];
 
