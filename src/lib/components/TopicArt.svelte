@@ -1275,19 +1275,16 @@
 			stroke-width="2"
 		/>
 		<path
-			d="M100 42 A18 18 0 1 1 84.4 69 M115.6 69 A18 18 0 0 1 100 78"
+			d="M106.2 41 A20 20 0 0 1 119.6 64.2 M113.4 74.9 A20 20 0 0 1 86.6 74.9 M80.4 64.2 A20 20 0 0 1 93.8 41"
 			fill="none"
 			stroke={accent}
-			stroke-width="3"
-			stroke-linecap="round"
+			stroke-width="2.5"
 		/>
 		<path
-			d="M84.4 69 l-1 -7 M84.4 69 l6.5 -2.5"
-			stroke={accent}
-			stroke-width="3"
-			stroke-linecap="round"
+			d="M119 67.1 L122.9 62.8 L117.1 61.6 Z M84.4 72.9 L86.1 78.4 L90.1 74 Z M96.7 40.1 L91 38.8 L92.8 44.5 Z"
+			fill={accent}
 		/>
-		{#each [{ x: 100, y: 42 }, { x: 115.6, y: 69 }, { x: 84.4, y: 69 }] as d (d.x)}
+		{#each [{ x: 100, y: 40 }, { x: 117.3, y: 70 }, { x: 82.7, y: 70 }] as d (d.x)}
 			<circle cx={d.x} cy={d.y} r="4.5" fill={accent} />
 		{/each}
 	{:else}

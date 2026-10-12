@@ -98,7 +98,7 @@ export const spec: ExplainerSpec = {
 <li>The <strong>program counter</strong> (PC) holds the address of the next instruction.</li>
 <li>The <strong>instruction register</strong> (IR) holds the instruction being carried out, and the <strong>control unit</strong> works out what it means.</li>
 <li>Four <dfn data-def="A few bytes of very fast storage inside the processor, where it keeps the numbers it is working on.">registers</dfn>, R0 to R3, hold the numbers being worked on.</li>
-<li>The <dfn data-def="Arithmetic logic unit: the circuit that adds, subtracts and compares. It is built from adders like the ones made of logic gates.">ALU</dfn> (arithmetic logic unit) does the sums. It is the adder you can build from logic gates, plus a little more.</li>
+<li>The <dfn data-def="Arithmetic logic unit: the circuit that adds, subtracts and compares. It is built from adders like the ones made of logic gates.">ALU</dfn> (arithmetic logic unit) does the sums. It is the <a href="../logic-gates/#four">adder you can build from logic gates</a>, plus a little more.</li>
 </ul>
 <p>On the left is the program, written as <dfn data-def="A way of writing a processor's instructions as short words (ADD, JMP…) instead of numbers. An assembler translates it into the bytes the processor runs.">assembly language</dfn>: one line per instruction. It adds 7 and 5.</p>`,
 			notes: `<p>The design follows the classic teaching computers, such as the SAP-1 (“Simple As Possible”) of A. P. Malvino’s <em>Digital Computer Electronics</em> and the Little Man Computer. Keeping program and data in one memory is called the <em>von Neumann</em> design, after John von Neumann’s 1945 report on the EDVAC; almost every computer since works this way.</p>`
@@ -219,6 +219,9 @@ export const spec: ExplainerSpec = {
 <p>Write <code>name:</code> before a line to label it, and <code>;</code> for a comment. Try changing the 10 in the sum to 22 (the total, 253, still fits in a byte) or to 23 (276 doesn’t, and wraps round to 20).</p>`,
 			notes: `<p>The machine stops after ${MAX_INSTRUCTIONS.toLocaleString('en')} instructions, so a program that loops forever can’t hang the page. Real processors have no such limit: an endless loop just keeps the processor busy until something interrupts it.</p>`
 		},
+		// Clock rates: Intel, "Intel Core i9-14900K Processor (36M Cache, up to 6.00 GHz)",
+		// specifications: Performance-core Base Frequency 3.2 GHz, Max Turbo Frequency 6 GHz,
+		// Total Cores 24, Launch Date Q4'23. https://www.intel.com/content/www/us/en/products/sku/236773/intel-core-i9-processor-14900k-36m-cache-up-to-6-00-ghz/specifications.html
 		{
 			id: 'speed',
 			chapter: 'yours',
