@@ -14,6 +14,13 @@
 	interface Props {
 		x: number;
 		y: number;
+		/**
+		 * Drawn offset from (x, y), for when two handles would sit on the same
+		 * spot: the handle floats a little off the tip so both stay grabbable.
+		 * Grabbing it reports the true tip first, so a click moves nothing.
+		 */
+		dx?: number;
+		dy?: number;
 		label: string;
 		/** For assistive technology: the vector's angle in degrees (valuetext says the rest). */
 		value: number;
@@ -28,6 +35,8 @@
 	let {
 		x,
 		y,
+		dx = 0,
+		dy = 0,
 		label,
 		value,
 		valuetext,
@@ -44,10 +53,20 @@
 	function onpointerdown(event: PointerEvent) {
 		dragging = true;
 		ondragstart?.();
-		startDrag(event, onmove, () => {
-			dragging = false;
-			ondragend?.();
-		});
+		// The first point maps back to the true tip (grabbing a floated handle
+		// doesn't move the vector); after that the pointer position is the position.
+		let first = true;
+		startDrag(
+			event,
+			(p) => {
+				onmove(first ? { x: p.x - dx, y: p.y - dy } : p);
+				first = false;
+			},
+			() => {
+				dragging = false;
+				ondragend?.();
+			}
+		);
 	}
 
 	function onkeydown(event: KeyboardEvent) {
@@ -79,10 +98,18 @@
 	{onpointerdown}
 	{onkeydown}
 >
-	<circle cx={x} cy={y} r={r + 12} fill="transparent" />
-	<circle class="grab-halo" cx={x} cy={y} {r} fill={color} />
-	<circle cx={x} cy={y} {r} fill="none" stroke={color} stroke-width="1.5" opacity="0.7" />
-	<circle class="ring" cx={x} cy={y} r={r + 4} fill="none" stroke="var(--focus)" stroke-width="2" />
+	<circle cx={x + dx} cy={y + dy} r={r + 12} fill="transparent" />
+	<circle class="grab-halo" cx={x + dx} cy={y + dy} {r} fill={color} />
+	<circle cx={x + dx} cy={y + dy} {r} fill="none" stroke={color} stroke-width="1.5" opacity="0.7" />
+	<circle
+		class="ring"
+		cx={x + dx}
+		cy={y + dy}
+		r={r + 4}
+		fill="none"
+		stroke="var(--focus)"
+		stroke-width="2"
+	/>
 </g>
 
 <style>
