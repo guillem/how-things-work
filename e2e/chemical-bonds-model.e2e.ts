@@ -7,6 +7,7 @@ import {
 	angleBetween,
 	bond,
 	capacity,
+	celsius,
 	lonePairs,
 	molarMass,
 	pairAngles,
@@ -17,6 +18,7 @@ import {
 	type Molecule,
 	type Sym
 } from '../src/routes/chemical-bonds/model';
+import { bondLength } from '../src/routes/chemical-bonds/look';
 
 const mol = (centre: Sym, ...ligands: Sym[]): Molecule => ({ centre, ligands });
 const H2O = mol('O', 'H', 'H');
@@ -135,6 +137,17 @@ test('repulsion alone spreads 2–6 electron pairs into the VSEPR geometries', (
 	expect(settled(4)).toEqual([109.5]);
 	expect(settled(5)).toEqual([90, 120, 180]); // trigonal bipyramid
 	expect(settled(6)).toEqual([90, 180]); // octahedron
+	// The scene's own run (61 frames, as RepelScene draws it) has settled by its last frame,
+	// read with the scene's half-degree rounding.
+	const shown = (n: number) =>
+		[...new Set(pairAngles(relax(n, 61, 6, 0.02).at(-1)!).map((a) => Math.round(a * 2) / 2))].sort(
+			(a, b) => a - b
+		);
+	expect(shown(2)).toEqual([180]);
+	expect(shown(3)).toEqual([120]);
+	expect(shown(4)).toEqual([109.5]);
+	expect(shown(5)).toEqual([90, 120, 180]);
+	expect(shown(6)).toEqual([90, 180]);
 });
 
 test('similar masses, very different boiling points: water boils highest', () => {
@@ -144,7 +157,20 @@ test('similar masses, very different boiling points: water boils highest', () =>
 	const methane = BOILING.find((b) => analyse(b.molecule).name === 'methane')!;
 	expect(water.kelvin - 273.15).toBeCloseTo(100, 0);
 	expect(methane.kelvin - 273.15).toBeLessThan(-150);
-	// Ammonia, from the vapour-pressure equation at 1 atm: −33 °C.
-	const ammonia = BOILING.find((b) => analyse(b.molecule).name === 'ammonia')!;
-	expect(Math.round(ammonia.kelvin - 273.15)).toBe(-33);
+	// The whole degrees the page quotes: methane −162 °C (−161.5), ammonia −33 °C,
+	// hydrogen fluoride 20 °C, water 100 °C.
+	const shown: Record<string, number> = {};
+	for (const b of BOILING) shown[analyse(b.molecule).name ?? ''] = celsius(b.kelvin);
+	expect(shown).toEqual({ methane: -162, ammonia: -33, 'hydrogen fluoride': 20, water: 100 });
+});
+
+test('double and triple bonds are drawn shorter than single bonds, near their real lengths', () => {
+	// Measured: C–O 143 pm (methanol), C=O 116 pm (CO₂); N–N 145 pm (hydrazine), N≡N 110 pm.
+	const pm = (a: Sym, b: Sym, order: number) => bondLength(a, b, 1, order);
+	expect(pm('C', 'O', 2)).toBeLessThan(pm('C', 'O', 1));
+	expect(pm('N', 'N', 3)).toBeLessThan(pm('N', 'N', 2));
+	expect(pm('N', 'N', 2)).toBeLessThan(pm('N', 'N', 1));
+	expect(Math.abs(pm('C', 'O', 2) - 116) / 116).toBeLessThan(0.08);
+	expect(Math.abs(pm('N', 'N', 3) - 110) / 110).toBeLessThan(0.03);
+	expect(Math.abs(pm('C', 'O', 1) - 143) / 143).toBeLessThan(0.03);
 });
