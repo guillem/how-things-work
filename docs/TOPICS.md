@@ -187,7 +187,7 @@ A topic is done when:
 - [ ] quantum-computing
 
 **Information & Networks**
-- [ ] compression
+- [x] compression
 - [x] error-correction
 - [x] cryptography
 - [ ] wireless-signals

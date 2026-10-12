@@ -66,6 +66,8 @@ Last updated: 2026-10-12 UTC.
 
 ## Current development
 
+- compression (2026-10-12): built in a local worktree (`topic/compression`), 11 steps, 4 scenes; ticked, not reviewed or merged yet.
+
 **Batch 8 (2026-10-12):** light-optics, semiconductors, special-relativity, cryptography, cpu,
 motors-generators. Same process as batch 7 (one builder agent each in a local worktree, fact-check
 via `make review` ~$4.35, one agent each applying its report). All merged into `main` locally and
