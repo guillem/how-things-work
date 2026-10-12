@@ -575,8 +575,8 @@
 			<g transform="translate({PL} 262)">
 				<text class="muted" style:font-size="12px">Calm lines</text>
 				<text y="26" style:font-size="22px" font-weight="700">{nQuiet}</text>
-				<text y="48" class="muted" style:font-size="11px">one for each half-wavelength step</text>
-				<text y="63" class="muted" style:font-size="11px">that fits between the sources</text>
+				<text y="48" class="muted" style:font-size="11px">one pair for each ½λ, 1½λ, 2½λ…</text>
+				<text y="63" class="muted" style:font-size="11px">that is shorter than the spacing</text>
 				{#if oBands > 0.5}
 					<text y="98" class="muted" style:font-size="12px">First calm line, far away</text>
 					<text y="122" style:font-size="18px" font-weight="700"

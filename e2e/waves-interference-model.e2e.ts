@@ -57,6 +57,20 @@ test('two sources 3 wavelengths apart give 6 quiet lines; closer than λ/2, none
 	expect(farAngle(0.5, 1, 1)).toBeCloseTo(30, 10);
 });
 
+test('quiet lines come in pairs: one each side for every ½, 1½, 2½… wavelengths shorter than the spacing', () => {
+	// 6 cm apart, 1.6 cm wavelength: 7 half-wavelengths fit, but ½…3½ λ are all
+	// shorter than 6 cm, so there are 4 pairs.
+	expect(quietOrders(6, 1.6)).toHaveLength(8);
+	// 3 cm apart, 4 cm wavelength: only ½λ = 2 cm is shorter, so one pair.
+	expect(quietOrders(3, 4)).toHaveLength(2);
+	for (const d of [1, 2.5, 3, 4.7, 6, 9.3])
+		for (const lambda of [1, 1.6, 2, 2.7, 4]) {
+			const orders = quietOrders(d, lambda);
+			expect(orders.length % 2).toBe(0);
+			expect(orders.map((o) => -o).sort((x, y) => x - y)).toEqual(orders);
+		}
+});
+
 test('along a quiet line in the ripple tank the water is almost still', () => {
 	const lambda = 2; // cm
 	const s1 = { x: 0, y: -3 };

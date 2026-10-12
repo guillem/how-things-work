@@ -16,7 +16,8 @@
  *
  * Simplifications, stated on the page: ideal (lossless, perfectly flexible)
  * string; water waves without damping or reflections from the tank walls;
- * near a source the 1/√r rule is capped (it would grow without limit).
+ * near a source the 1/√r rule is capped (it would grow without limit);
+ * every ripple wavelength travels at the same speed.
  */
 
 // ---- constants --------------------------------------------------------------------------
