@@ -100,7 +100,7 @@ const radius: Control = {
 	max: 500,
 	step: 5,
 	default: 300,
-	format: (v) => `${v} px`,
+	format: (v) => `${v / 2} mm`,
 	help: 'A smaller radius means more strongly curved faces.'
 };
 
@@ -119,12 +119,12 @@ const distance: Control = {
 	type: 'range',
 	id: 'u',
 	label: 'Distance from the object to the lens',
-	min: 60,
-	max: 400,
+	min: 90,
+	max: 440,
 	step: 1,
-	default: 330,
-	format: (v) => `${v} px`,
-	help: 'You can also drag the candle.'
+	default: 400,
+	format: (v) => `${v / 2} mm`,
+	help: 'You can also drag the object.'
 };
 
 const material: Control = {
@@ -279,13 +279,13 @@ export const spec: ExplainerSpec = {
 			scene: 'lens',
 			hints: { phase: 'image' },
 			duration: 24,
-			controls: [distance, n, radius],
+			controls: [distance],
 			body: `
 <p>Every point of a lit object sends out light in all directions. A converging lens collects a cone of that light and bends it back together to a single point on the other side. Every point of the object gets its own image point, and together they make an <dfn data-def="A copy of an object made by light: where the rays from each point of the object meet again (a real image) or seem to come from (a virtual image).">image</dfn>, upside down.</p>
-<p>Drag the candle. Far away, its image forms close to the focus and small. Bring it closer and the image moves away and grows; at twice the focal length the image is the same size. The distances obey the thin-lens equation:</p>
+<p>Drag the object, the orange arrow. Far away, its image forms close to the focus and small. Bring it closer and the image moves away and grows; at twice the focal length the image is the same size. The distances obey the thin-lens equation:</p>
 <p class="formula"><strong>1 ÷ f = 1 ÷ u + 1 ÷ v</strong> &nbsp; (object at u, image at v)</p>
-<p>This is how your eye, a camera and a projector work: a lens forms a real image on the retina, the sensor or the screen. Bring the candle inside the focal length and the rays no longer meet. They spread out as if from a bigger, upright candle behind it: a <em>virtual</em> image, the one you see through a magnifying glass.</p>`,
-			notes: `<p>The rays are traced through the real lens; the dashed image is where the thin-lens equation puts it. Spherical aberration makes the traced rays cross in a small blur rather than a perfect point, more so for wide cones of light; cameras close down the aperture to sharpen it. Your eye focuses on near and far things by changing the shape of its lens, which changes f.</p>`
+<p>This is how your eye, a camera and a projector work: a lens forms a real image on the retina, the sensor or the screen. Bring the object inside the focal length and the rays no longer meet. They spread out as if from a bigger, upright object behind it: a <em>virtual</em> image, the one you see through a magnifying glass.</p>`,
+			notes: `<p>The lens here is crown glass with faces of radius 85 mm, so f = 82 mm. The rays are traced through the real lens; the image arrow is drawn where the thin-lens equation puts it. Spherical aberration makes the traced rays cross in a small blur rather than a perfect point, more so for wide cones of light; cameras close down the aperture to sharpen it. Your eye focuses on near and far things by changing the shape of its lens, which changes f.</p>`
 		},
 		// ------------------------------------------------------------------ colour
 		{
