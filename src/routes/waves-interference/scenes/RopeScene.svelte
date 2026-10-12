@@ -7,9 +7,9 @@
 	 *            wave runs right at 2 m/s from t = 0 (the rope ahead of the front
 	 *            is still). A red bead 3 m along only moves up and down; a
 	 *            bracket marks one wavelength between two crests. Card: f, λ, v.
-	 *   pulses — the ends are clamped; a pulse enters from each end every 5 s and
-	 *            they cross in the middle at 2.5 s (so the reduced-motion frame is
-	 *            the moment of overlap). `params.second` turns the right one
+	 *   pulses — the ends are clamped; a pulse enters from each end every 3.6 s
+	 *            and they cross in the middle half-way through (the reduced-motion
+	 *            frame is that moment of overlap). `params.second` turns the right one
 	 *            upside down. Dashed: each pulse alone; solid: the rope (their sum).
 	 *
 	 * Everything is a pure function of t (`travelling`, `pulse` from the model).
@@ -31,7 +31,7 @@
 	const Y = 330; // rope at rest
 	const AMP = 74; // px: the hand's swing
 	const BEAD_M = 3; // m from the hand
-	const PERIOD = 5; // s between pulse passes
+	const PERIOD = 3.6; // s between pulse passes; they meet half-way through
 	const PW = 0.32; // m: pulse half-width
 	const MID = (X0 + X1) / 2;
 
@@ -85,9 +85,9 @@
 	});
 
 	// ---- the two pulses ----------------------------------------------------------------
-	const ps = $derived(reduced ? 2.5 : t % PERIOD);
-	const cA = $derived(MID - V * PXM * (2.5 - ps));
-	const cB = $derived(MID + V * PXM * (2.5 - ps));
+	const ps = $derived(reduced ? PERIOD / 2 : t % PERIOD);
+	const cA = $derived(MID - V * PXM * (PERIOD / 2 - ps));
+	const cB = $derived(MID + V * PXM * (PERIOD / 2 - ps));
 	const wpx = PW * PXM;
 	// pulses fade in from the clamps and out into them
 	const edgeFade = (c: number) =>
