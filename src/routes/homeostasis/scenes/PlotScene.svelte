@@ -110,7 +110,7 @@
 		const h = Math.floor(a / 60);
 		const mm = a % 60;
 		const txt = h > 0 ? `${h} h ${String(mm).padStart(2, '0')} min` : `${mm} min`;
-		if (sc.carbs <= 0) return m < 0 ? `${txt} before minute 0` : `${txt} in`;
+		if (sc.carbs <= 0) return `time: ${m < 0 ? '−' : ''}${txt}`;
 		return m < 0 ? `${txt} before the meal` : a === 0 ? 'the meal' : `${txt} after the meal`;
 	};
 	/**

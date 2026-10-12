@@ -69,8 +69,9 @@
  *      threshold for counter-regulation (Schwartz et al., J. Clin. Invest.
  *      79:777, 1987), and it rises during exercise;
  *    - in type 1 diabetes the glucagon response to low glucose is lost
- *      (Gerich et al., Science 182:171, 1973). The model removes it in
- *      proportion to the lost insulin production.
+ *      (Gerich et al., Science 182:171, 1973). The model removes it, and
+ *      the rise during exercise, in proportion to the lost insulin
+ *      production.
  *    Glucagon makes the liver release more glucose (it scales R0).
  *
  * Simplifications, stated on the page: one average adult; a meal is only its
@@ -279,7 +280,7 @@ export function glucagonTarget(g: number, sec: number, production: number, effor
 	const counter = Math.min(1, production);
 	const low = Math.min(1.5, Math.max(0, (GLUCAGON_THRESHOLD - g) / (GLUCAGON_THRESHOLD - 50)));
 	const hypo = counter * (GLUCAGON_HYPO - 1) * low;
-	const run = GLUCAGON_EXERCISE * exertion(effort);
+	const run = counter * GLUCAGON_EXERCISE * exertion(effort);
 	return Math.max(0, 1 - brake + hypo + run);
 }
 
