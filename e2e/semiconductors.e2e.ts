@@ -39,6 +39,26 @@ test('boron makes p-type silicon with a hole', async ({ page }) => {
 	await expect(stage(page)).toContainText('acceptor level (B): 45 meV above the band');
 });
 
+test('a phosphorus added later hands its electron to the boron over time, not instantly', async ({
+	page
+}) => {
+	await page.clock.install();
+	await page.goto('./semiconductors/#acceptor');
+	await expect(stage(page)).toContainText(/Free electrons: 0\s+·\s+Holes: 1/);
+	await page.clock.runFor(5000); // the starting boron has long since become a B⁻ ion
+	const plus = stage(page).getByText('+', { exact: true }); // ions and the battery's + plate
+	const before = await plus.count();
+	await stage(page).getByRole('button', { name: 'Choose phosphorus' }).click();
+	await stage(page)
+		.getByRole('button', { name: 'Silicon atom, row 1, column 1: replace with phosphorus' })
+		.click();
+	await expect(stage(page)).toContainText('donors and acceptors cancel');
+	// The electron is still on its way: the phosphorus is not yet a P⁺ ion.
+	await expect(plus).toHaveCount(before);
+	await page.clock.runFor(2000);
+	await expect(plus).toHaveCount(before + 2); // P⁺ in the crystal and on the donor level
+});
+
 test('the doping slider sets the resistivity, and boron conducts less than phosphorus', async ({
 	page
 }) => {

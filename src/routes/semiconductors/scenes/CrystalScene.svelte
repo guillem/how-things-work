@@ -312,10 +312,10 @@
 			480,
 			568,
 			N >= 16
-				? 'So many levels, so close together: a continuous band. Its width does not grow.'
+				? 'So many levels, so close together: a continuous band. Its width has stopped growing.'
 				: N === 1
 					? 'A single atom: sharp energy levels.'
-					: `${N} atoms: each level splits into ${N}. The band keeps the same width.`,
+					: `${N} atoms: each level splits into ${N}. The band widens towards a fixed limit.`,
 			14,
 			{ weight: 600 }
 		)}
