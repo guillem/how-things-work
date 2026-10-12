@@ -733,7 +733,7 @@
 			{@render txt(sv(-1), syLog(-15) - 12, 'reverse: stuck at 10⁻¹⁵ A', 12, { weight: 600 })}
 		{:else}
 			{@render txt(sv(-1), syLin(0) - 12, 'reverse: practically zero', 12, { weight: 600 })}
-			{@render txt(sv(0.6), syLin(0.02), 'forward: shoots up', 12, { anchor: 'end', weight: 600 })}
+			{@render txt(sv(0.72), syLin(0.02), 'forward: shoots up', 12, { anchor: 'end', weight: 600 })}
 		{/if}
 		{@render txt(PX1 + 6, PY1 + 30, 'voltage', 11, { anchor: 'end', muted: true })}
 		<Handle
