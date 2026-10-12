@@ -3,6 +3,13 @@ import { expect, test, type Page } from '@playwright/test';
 const stage = (page: Page) => page.locator('.stage svg > g');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const toggle = (page: Page, id: string) => page.locator(`input[type=checkbox][data-control=${id}]`);
+/** Switch a toggle on from the keyboard. A forced click can be lost while the scene is busy
+ * tracing rays (it failed that way on the slower CI machine); a key press is queued instead. */
+async function switchOn(page: Page, id: string) {
+	await toggle(page, id).focus();
+	await page.keyboard.press('Space');
+	await expect(toggle(page, id)).toBeChecked();
+}
 
 async function open(page: Page, url: string) {
 	await page.goto(url);
@@ -30,7 +37,7 @@ test('the closer the aim to the critical value, the more loops round the photon 
 	await expect(stage(page)).toContainText(/Times round the hole\s*0\.8/);
 	await range(page, 'aimDigits').fill('10');
 	await expect(stage(page)).toContainText(/Times round the hole\s*3\.\d/);
-	await toggle(page, 'aimInside').check({ force: true });
+	await switchOn(page, 'aimInside');
 	await expect(stage(page)).toContainText(/Then\s*falls in/);
 });
 
@@ -49,7 +56,7 @@ test('squeezing the Sun into a black hole leaves the Earth’s orbit unchanged',
 	await open(page, './black-holes/#same-mass');
 	await expect(stage(page)).toContainText('Round the Sun');
 	await expect(stage(page)).toContainText('365.25 days');
-	await toggle(page, 'squeeze').check({ force: true });
+	await switchOn(page, 'squeeze');
 	await expect(stage(page)).toContainText('Round a black hole');
 	await expect(stage(page)).toContainText('5.9 km across');
 	await expect(stage(page)).toContainText('29.8 km/s');
@@ -110,6 +117,6 @@ test('a black hole in front of the stars bends them; moving it repaints the sky'
 	await page.keyboard.press('Shift+ArrowRight');
 	await expect(sky).not.toHaveAttribute('href', before ?? '');
 	await expect(stage(page)).toContainText(/Images seen\s*(2|a ring)/);
-	await toggle(page, 'unlensed').check({ force: true });
+	await switchOn(page, 'unlensed');
 	await expect(stage(page)).toContainText(/Images seen\s*1 \(no hole\)/);
 });
