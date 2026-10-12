@@ -1347,6 +1347,71 @@
 			stroke="var(--rel-light)"
 			stroke-width="1.4"
 		/>
+	{:else if slug === 'semiconductors'}
+		<!-- a silicon lattice with one phosphorus atom and its spare electron, beside two bands and a gap -->
+		{#each [0, 1, 2] as r (r)}
+			{#each [0, 1, 2] as c (c)}
+				{#if c < 2}
+					<line
+						x1={28 + c * 30}
+						y1={30 + r * 30}
+						x2={58 + c * 30}
+						y2={30 + r * 30}
+						stroke="currentColor"
+						stroke-opacity="0.35"
+						stroke-width="2"
+					/>
+				{/if}
+				{#if r < 2}
+					<line
+						x1={28 + c * 30}
+						y1={30 + r * 30}
+						x2={28 + c * 30}
+						y2={60 + r * 30}
+						stroke="currentColor"
+						stroke-opacity="0.35"
+						stroke-width="2"
+					/>
+				{/if}
+			{/each}
+		{/each}
+		{#each [0, 1, 2] as r (r)}
+			{#each [0, 1, 2] as c (c)}
+				{@const p = r === 1 && c === 1}
+				<circle
+					cx={28 + c * 30}
+					cy={30 + r * 30}
+					r="9"
+					fill={p ? '#2f9e44' : 'var(--surface)'}
+					stroke={p ? '#2f9e44' : 'currentColor'}
+					stroke-opacity={p ? 1 : 0.5}
+					stroke-width="1.5"
+				/>
+			{/each}
+		{/each}
+		<circle cx="74" cy="46" r="4" fill={accent} />
+		<rect
+			x="128"
+			y="18"
+			width="46"
+			height="26"
+			rx="3"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.5"
+		/>
+		<rect
+			x="128"
+			y="76"
+			width="46"
+			height="26"
+			rx="3"
+			fill={accent}
+			fill-opacity="0.35"
+			stroke={accent}
+		/>
+		<circle cx="151" cy="36" r="3.5" fill={accent} />
+		<path d="M118 44 V76" stroke="currentColor" stroke-opacity="0.5" marker-start="none" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
