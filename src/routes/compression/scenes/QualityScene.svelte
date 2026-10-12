@@ -1,14 +1,16 @@
 <script lang="ts">
 	/**
 	 * The whole picture through JPEG at a chosen quality (`step.hints.phase`):
-	 *   quality — the original and the decoded picture side by side (the decoded one is revealed
-	 *             top to bottom as the step starts), with the coded size against the raw size,
-	 *             the coefficients kept and the PSNR. Quality: `params.quality`.
+	 *   quality — the original and the decoded picture side by side, with the coded size against
+	 *             the raw size, the coefficients kept and the PSNR. A divider sweeps slowly over
+	 *             the decoded picture with the original on its left, for a before/after
+	 *             comparison (none under reduced motion). Quality: `params.quality`.
 	 *   damage  — a loupe of 4 × 4 blocks around the picked block: original, decoded and the
-	 *             error made 4 times stronger (mid-grey = no error); the block grid fades in.
+	 *             error made 4 times stronger (mid-grey = no error); the block grid fades in and
+	 *             then pulses gently.
 	 *             Quality: `params.qlow`.
 	 */
-	import { clamp, easeInOut } from '#lib/draw/index.ts';
+	import { clamp, easeInOut, pingpong, wave } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { SIZE, bmpDataUrl, jpeg, psnr } from '../compression';
 	import BlockPicker from './BlockPicker.svelte';
@@ -44,7 +46,8 @@
 
 	// ---- quality --------------------------------------------------------------------------------
 	const PX = 3;
-	const wipe = $derived(easeInOut(clamp((tv - 0.3) / 1.6)));
+	/** Where the before/after divider is, as a share of the picture's width (0: all JPEG). */
+	const split = $derived(reduced ? 0 : 0.5 * easeInOut(pingpong(t, 9)));
 	const grow = $derived(easeInOut(clamp((tv - 0.6) / 1.2)));
 
 	// ---- damage ---------------------------------------------------------------------------------
@@ -62,7 +65,7 @@
 	const loupeErr = $derived(loupeDec.map((v, i) => 128 + 4 * (v - loupeOrig[i])));
 	const maxErr = $derived(Math.max(...loupeDec.map((v, i) => Math.abs(v - loupeOrig[i]))));
 	const ZP = 6.5; // stage units per pixel in the loupe
-	const grid = $derived(clamp((tv - 1) / 1));
+	const grid = $derived(reduced ? 1 : clamp(t - 1) * (0.55 + 0.45 * wave(t, 3, 0.25)));
 	const panels = $derived([
 		{ x: 256, title: 'Original', url: greyUrl(L, L, loupeOrig) },
 		{ x: 480, title: `Decoded at quality ${quality}`, url: greyUrl(L, L, loupeDec) },
@@ -78,27 +81,47 @@
 		<Txt x={360} y={112} text="After JPEG at quality {quality}" size={13} weight={700} />
 		<defs>
 			<clipPath id="quality-wipe">
-				<rect x={360} y={128} width={SIZE * PX} height={SIZE * PX * wipe} />
+				<rect x={360} y={128} width={SIZE * PX * split} height={SIZE * PX} />
 			</clipPath>
 		</defs>
-		<rect
-			x={360}
-			y={128}
-			width={SIZE * PX}
-			height={SIZE * PX}
-			fill="none"
-			stroke="var(--border)"
-			stroke-dasharray="4 4"
-		/>
-		<image
-			href={decUrl}
-			x={360}
-			y={128}
-			width={SIZE * PX}
-			height={SIZE * PX}
-			class="cmp-px"
-			clip-path="url(#quality-wipe)"
-		/>
+		<image href={decUrl} x={360} y={128} width={SIZE * PX} height={SIZE * PX} class="cmp-px" />
+		{#if split > 0.01}
+			<image
+				href={origUrl}
+				x={360}
+				y={128}
+				width={SIZE * PX}
+				height={SIZE * PX}
+				class="cmp-px"
+				clip-path="url(#quality-wipe)"
+			/>
+			{@const lx2 = 360 + SIZE * PX * split}
+			<line
+				x1={lx2}
+				x2={lx2}
+				y1={124}
+				y2={132 + SIZE * PX}
+				stroke="var(--cmp-pick)"
+				stroke-width="2.5"
+			/>
+			<Txt
+				x={lx2 - 6}
+				y={128 + SIZE * PX + 18}
+				text="← original"
+				size={11}
+				anchor="end"
+				color="var(--cmp-pick)"
+				opacity={clamp(split * 8)}
+			/>
+			<Txt
+				x={lx2 + 6}
+				y={128 + SIZE * PX + 18}
+				text="JPEG →"
+				size={11}
+				color="var(--cmp-pick)"
+				opacity={clamp(split * 8)}
+			/>
+		{/if}
 
 		{@const bx = 680}
 		{@const bw = 240}

@@ -151,7 +151,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [image],
 			body: `
-<p>Lossless coding can only remove what is predictable. A photograph is full of tiny, random-looking variations, so lossless methods typically shrink a photo only about two times. To go further, you have to throw information away, choosing what the viewer won't miss: <dfn data-def="Compression that gives back only an approximation of the original, in exchange for a much smaller size.">lossy</dfn> compression. JPEG, the standard behind most photos since 1992, shows how.</p>
+<p>Lossless coding can only remove what is predictable. A photograph is full of tiny, random-looking variations, so lossless methods can only shrink it modestly. To go further, you have to throw information away, choosing what the viewer won't miss: <dfn data-def="Compression that gives back only an approximation of the original, in exchange for a much smaller size.">lossy</dfn> compression. JPEG, the standard behind most photos since 1992, shows how.</p>
 <p>The images here are 96 × 96 grey pixels, each a brightness from 0 (black) to 255 (white): 9,216 pixels × 8 bits = <strong>73,728 bits</strong>. JPEG cuts the picture into <strong>8 × 8 blocks</strong> and treats each one on its own. Click any block, or focus the picture with Tab and move with the arrow keys, to see its 64 numbers.</p>`,
 			notes: `<p>The three pictures are drawn by this page's code (no photographs, so no copyright). Colour JPEG first splits each pixel into a brightness and two colour-difference values. The eye sees fine detail in colour far less sharply than in brightness, so the colour values are usually stored at half the resolution in each direction and quantised with a coarser table. This page shows the brightness part only.</p>`
 		},
@@ -191,9 +191,9 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [quality, image],
 			body: `
-<p>Do the same to every block and decode the result: the left picture is the original, the right one what the JPEG decoder gives back. The bars compare the sizes. The quantised coefficients are coded the way JPEG does it: zigzag order, runs of zeros, then a Huffman code like the one in the previous chapter.</p>
+<p>Do the same to every block and decode the result: the left picture is the original, the right one what the JPEG decoder gives back (a sliding line shows the original to its left, for a before-and-after look). The bars compare the sizes. The quantised coefficients are coded the way JPEG does it: zigzag order, runs of zeros, then a Huffman code like the one in the previous chapter.</p>
 <p>At quality 50, the hills shrink about 13 times and you can hardly see the difference. Try the line drawing: sharp edges need fast patterns, so it costs more bits. Random noise is the worst case: there is nothing to predict, so lossless coding gains nothing, and JPEG can only shrink it by throwing much of it away. At quality 100 it even comes out slightly larger than the raw pixels.</p>`,
-			notes: `<p>The sizes count only the coded coefficients; a real file adds a few hundred bytes of headers and tables. The <dfn data-def="Peak signal-to-noise ratio: 10 · log₁₀(255² / mean squared error), in decibels. Higher means closer to the original; above about 40 dB the difference is usually invisible.">PSNR</dfn> shown is a standard measure of how close the decoded picture is to the original.</p>`
+			notes: `<p>The sizes count only the coded coefficients; a real file adds a few hundred bytes of headers and tables. The <dfn data-def="Peak signal-to-noise ratio: 10 · log₁₀(255² / mean squared error), in decibels. Higher means closer to the original.">PSNR</dfn> shown is a standard measure of how close the decoded picture is to the original.</p>`
 		},
 		{
 			id: 'damage',
