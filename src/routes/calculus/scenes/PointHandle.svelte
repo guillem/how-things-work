@@ -13,6 +13,8 @@
 	interface Props {
 		/** The point's x (data units) and its height on screen. */
 		x: number;
+		/** Where the arrow keys move from, if not x (while x is a display-only sweep). */
+		from?: number;
 		y: number;
 		label: string;
 		/** Unit of x in the accessible value ("" or "seconds"). */
@@ -21,14 +23,14 @@
 		reduced: boolean;
 		setParam: StageProps['setParam'];
 	}
-	let { x, y, label, unit = '', t, reduced, setParam }: Props = $props();
+	let { x, from, y, label, unit = '', t, reduced, setParam }: Props = $props();
 
 	const pulse = $derived(reduced ? 0 : (1 - smoothstep(2.5, 4, t)) * (0.5 + 0.5 * Math.sin(t * 5)));
 	const onmove = (p: Point) => setParam('x', toX(sx.invert(p.x)));
 	function onkey(k: number | 'start' | 'end') {
 		if (k === 'start') return setParam('x', X0);
 		if (k === 'end') return setParam('x', X1);
-		setParam('x', toX(x + k * 0.05));
+		setParam('x', toX((from ?? x) + k * 0.05));
 	}
 </script>
 

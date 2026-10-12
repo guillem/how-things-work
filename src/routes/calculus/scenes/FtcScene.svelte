@@ -19,7 +19,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { scale, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { X0, X1, accumulate, integral, runningArea } from '../calculus';
+	import { X0, X1, accumulate, integral, numericSlope, runningArea } from '../calculus';
 	import Frame from './Frame.svelte';
 	import KnotHandles from './KnotHandles.svelte';
 	import PointHandle from './PointHandle.svelte';
@@ -140,7 +140,12 @@
 	};
 	const Adot = $derived({ x: sx(x), y: syL(A) });
 	const slopeDot = $derived({ x: sx(x), y: syL(dfx) });
-	const tangentA = $derived(tangentAt(Adot.x, Adot.y, fx, syL));
+	// The slope of the running area, measured on A itself (not copied from f): that it
+	// matches the height of the curve is the fundamental theorem.
+	const slopeA = $derived(
+		phase === 'strip' ? numericSlope((v) => runningArea(curve.f, X0, v), x, 1e-4) : 0
+	);
+	const tangentA = $derived(tangentAt(Adot.x, Adot.y, slopeA, syL));
 	const tangentF = $derived(tangentAt(P.x, P.y, dfx, sy));
 
 	const rise = $derived(fx - f0);
@@ -340,6 +345,7 @@
 	{/if}
 	<PointHandle
 		{x}
+		from={pointX(params)}
 		y={P.y}
 		label={phase === 'running' || phase === 'strip'
 			? 'Right edge of the area'
@@ -387,7 +393,7 @@
 			<Txt x={PANEL} y={180} text="height f(x) = {num(fx)}" size={13} muted />
 		{:else if phase === 'strip'}
 			<Txt x={PANEL} y={124} text="slope of A at x" size={12} muted />
-			<Txt x={PANEL} y={150} text={num(fx)} size={22} weight={700} color="var(--calc-curve)" />
+			<Txt x={PANEL} y={150} text={num(slopeA)} size={22} weight={700} color="var(--calc-curve)" />
 			<Txt x={PANEL} y={186} text="height of the curve" size={12} muted />
 			<Txt
 				x={PANEL}

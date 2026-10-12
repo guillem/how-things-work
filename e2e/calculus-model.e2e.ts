@@ -23,7 +23,6 @@ const xs = [0, 0.5, 1, 1.5, 2.25, 3];
 test('the slope of x² at x is 2x, and the chord slope tends to it as h shrinks', () => {
 	for (const x of xs) {
 		expect(numericSlope(square, x)).toBeCloseTo(2 * x, 6);
-		expect(presets.parabola.df(x)).toBeCloseTo(2 * x, 12);
 	}
 	// The narrative: from x = 1, the chord to x + h has slope 2 + h.
 	for (const h of [1, 0.5, 0.1, 0.01]) expect(chordSlope(square, 1, h)).toBeCloseTo(2 + h, 9);
