@@ -69,7 +69,7 @@ Last updated: 2026-10-12 UTC.
 **Batch 8 (2026-10-12):** light-optics, semiconductors, special-relativity, cryptography, cpu,
 motors-generators. Same process as batch 7 (one builder agent each in a local worktree, fact-check
 via `make review` ~$4.35, one agent each applying its report). All merged into `main` locally and
-ticked; `make e2e-full` green (662 tests). Not pushed until the user validates.
+ticked; `make e2e-full` green (662 tests). Released in v0.1.4 (2026-10-12).
 
 Batch 7 (chemical-bonds, waves-interference, radioactivity, linear-transformations,
 fourier-transform) released in v0.1.3 (2026-10-12).
