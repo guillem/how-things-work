@@ -189,7 +189,7 @@ A topic is done when:
 **Information & Networks**
 - [ ] compression
 - [x] error-correction
-- [ ] cryptography
+- [x] cryptography
 - [ ] wireless-signals
 - [x] internet
 - [ ] gps

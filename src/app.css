@@ -431,6 +431,16 @@ kbd {
 	--pm-walk: #9c36b5;
 	--pm-ok: #2f9e44;
 	--pm-bad: #e03131;
+	/* cryptography: Alice, Bob, Eve, the shared key, checks passed or failed, hash bits (set, flipped), cells */
+	--cr-alice: #5f3dc4;
+	--cr-bob: #0b7285;
+	--cr-eve: #c2255c;
+	--cr-key: #e67700;
+	--cr-ok: #2f9e44;
+	--cr-bad: #e03131;
+	--cr-bit: #495057;
+	--cr-flip: #e67700;
+	--cr-cell: #eceef1;
 	/* complex-numbers: the points z and w, their product, real and imaginary parts */
 	--cx-z: #0c8599;
 	--cx-w: #e8590c;
@@ -738,6 +748,16 @@ kbd {
 	--pm-walk: #da77f2;
 	--pm-ok: #69db7c;
 	--pm-bad: #ff8787;
+	/* cryptography */
+	--cr-alice: #9775fa;
+	--cr-bob: #3bc9db;
+	--cr-eve: #f06595;
+	--cr-key: #ffa94d;
+	--cr-ok: #69db7c;
+	--cr-bad: #ff8787;
+	--cr-bit: #ced4da;
+	--cr-flip: #ffa94d;
+	--cr-cell: #2a2d33;
 	--cx-z: #3bc9db;
 	--cx-w: #ff922b;
 	--cx-prod: #9775fa;
