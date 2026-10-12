@@ -429,6 +429,8 @@ export function analyse(m: Molecule): Analysis {
 			? 'polar: the shape is lopsided, so charge is uneven'
 			: 'polar: the bonds pull one way';
 	else if (!anyPolarBond) polarity = 'not polar: the bonds share equally';
+	else if (m.ligands.every((l) => bond(m.centre, l).kind === 'nonpolar'))
+		polarity = 'not polar: the bonds share almost equally and cancel out';
 	else polarity = 'not polar: the polar bonds cancel out by symmetry';
 
 	return {
@@ -458,7 +460,7 @@ export function analyse(m: Molecule): Analysis {
  * `n` points on a sphere pushing each other apart (Coulomb, 1/r²), from a fixed scrambled
  * start, by damped gradient steps. Returns `frames` snapshots, the last one settled.
  */
-export function relax(n: number, frames = 120, stepsPerFrame = 2): Vec[][] {
+export function relax(n: number, frames = 120, stepsPerFrame = 2, maxStep = 0.08): Vec[][] {
 	// A fixed, deliberately lopsided start (all in one hemisphere) so the spreading shows.
 	let pts: Vec[] = Array.from({ length: n }, (_, i) => {
 		const phi = 0.9 + i * 2.39996; // golden angle
@@ -480,7 +482,7 @@ export function relax(n: number, frames = 120, stepsPerFrame = 2): Vec[][] {
 				// Keep only the part along the sphere, and cap the step.
 				const tangent = addv(force, scale(p, -dot(force, p)));
 				const t = len(tangent);
-				const stepLen = Math.min(0.08, 0.15 * t);
+				const stepLen = Math.min(maxStep, 0.15 * t);
 				return unit(addv(p, scale(tangent, t ? stepLen / t : 0)));
 			});
 		}

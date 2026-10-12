@@ -21,12 +21,35 @@
 	let { t, params, reduced }: StageProps = $props();
 
 	const n = $derived(clamp(Math.round(Number(params.pairs ?? 4)), 2, 6));
-	const FRAMES = 100;
+	// 60 frames of 6 small steps each: settled (to 0.5°) for every n by the last frame.
+	const FRAMES = 61;
 	const cache: Record<number, Vec[][]> = {};
+	/** Rotation (Rodrigues) taking unit vector a onto b, applied to v. */
+	function turnOnto(a: Vec, b: Vec, v: Vec): Vec {
+		const k: Vec = [
+			a[1] * b[2] - a[2] * b[1],
+			a[2] * b[0] - a[0] * b[2],
+			a[0] * b[1] - a[1] * b[0]
+		];
+		const s = Math.hypot(...k);
+		const c = a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+		if (s < 1e-9) return c > 0 ? v : [-v[0], -v[1], -v[2]];
+		const u: Vec = [k[0] / s, k[1] / s, k[2] / s];
+		const d = u[0] * v[0] + u[1] * v[1] + u[2] * v[2];
+		const x: Vec = [
+			u[1] * v[2] - u[2] * v[1],
+			u[2] * v[0] - u[0] * v[2],
+			u[0] * v[1] - u[1] * v[0]
+		];
+		return [0, 1, 2].map((i) => v[i] * c + x[i] * s + u[i] * d * (1 - c)) as Vec;
+	}
 	const frames = $derived.by(() => {
 		let f = cache[n];
 		if (!f) {
-			f = relax(n, FRAMES, 3);
+			const raw = relax(n, FRAMES, 6, 0.02);
+			// Turn the whole run so the settled first pair points straight up: a clear first view.
+			const a = raw[FRAMES - 1][0];
+			f = raw.map((pts) => pts.map((v) => turnOnto(a, [0, 0, 1], v)));
 			cache[n] = f;
 		}
 		return f;
@@ -45,8 +68,7 @@
 		});
 	});
 	const progress = $derived(reduced ? 1 : Math.min(smoothstep(0.3, 3.5, t), replay.current));
-	// Squared, so the fast first spreading is shown slowly and the settling quickly.
-	const pts = $derived(frames[Math.round(progress * progress * (FRAMES - 1))]);
+	const pts = $derived(frames[Math.round(progress * (FRAMES - 1))]);
 	const settled = $derived(smoothstep(0.9, 1, progress));
 
 	const CX = 360;

@@ -70,7 +70,9 @@ None in progress. Released in v0.1.2 (2026-10-12), built in cloud sessions on 20
 photosynthesis review fixes, then its rate model and "What limits the rate?" step (PROSPECT-D
 leaf optics + FvCB C₃ model, `src/routes/photosynthesis/model.ts`); photosynthesis is ticked and
 its review report deleted. Built-state params in use: `web:<step>`, `board:build`,
-`bridge:build`, `bits:<step>`, `map:<step>`, `view:zoom`.
+`bridge:build`, `bits:<step>`, `map:<step>`, `view:zoom`, `mol:<step>`.
+
+- chemical-bonds: built in worktree branch `topic/chemical-bonds` (model, 11 steps, 5 scenes, tests), ticked; awaiting merge and review.
 
 ## Open questions for the user
 

@@ -113,6 +113,7 @@ test('polarity: water, ammonia, HCl, HCN, CH3Cl are polar; CO2, CH4, CCl4, N2, C
 	for (const m of not) expect(analyse(m).polar, analyse(m).formula).toBe(false);
 	expect(analyse(CO2).polarity).toContain('cancel');
 	expect(analyse(mol('Cl', 'Cl')).polarity).toContain('share equally');
+	expect(analyse(CH4).polarity).toContain('almost equally');
 	// In water the oxygen end is negative, the hydrogens positive.
 	const w = analyse(H2O);
 	expect(w.charges[0]).toBeLessThan(0);

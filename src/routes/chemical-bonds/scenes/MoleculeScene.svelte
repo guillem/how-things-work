@@ -586,8 +586,8 @@
 				{@const ol = Math.hypot(ox, oy)}
 				{@const out = ol > 8 && it.ligand !== undefined}
 				{@render txt(
-					out ? it.x + (ox / ol) * ((it.r ?? 20) + 16) : it.x + (it.r ?? 20) * 0.7,
-					out ? it.y + (oy / ol) * ((it.r ?? 20) + 16) + 5 : it.y - (it.r ?? 20) * 0.45,
+					out ? it.x + (ox / ol) * ((it.r ?? 20) + 16) : it.x + (it.r ?? 20) + 12,
+					out ? it.y + (oy / ol) * ((it.r ?? 20) + 16) + 5 : it.y - (it.r ?? 20) * 0.75,
 					(it.charge ?? 0) < 0 ? 'δ−' : 'δ+',
 					14,
 					{ weight: 700, anchor: 'middle', color: (it.charge ?? 0) < 0 ? NEG : POS }
