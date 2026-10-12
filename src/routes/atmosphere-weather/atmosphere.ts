@@ -152,8 +152,9 @@ export function tempAt(c: Climate, lat: number) {
  * Poleward edge of the Hadley cell (°) for a planet spinning `spin` times as
  * fast as Earth, from Held & Hou (1980): φ_H = √(5/3 · gHΔ/(Ω²a²)) radians,
  * with equator-to-pole contrast Δ = 1/3 of the mean potential temperature (as
- * in the paper) and a height H = 15 km chosen here (the paper's value is lower):
- * about 35° for Earth, close to the observed 30°.
+ * in the paper) and a height H = 15 km chosen here (the tropical tropopause;
+ * the paper used 10 km): about 35° for Earth, close to the observed 30°, with
+ * three cells per hemisphere.
  * Capped at 90°: a slowly spinning planet has one cell from equator to pole.
  */
 export function hadleyEdge(spin: number) {
