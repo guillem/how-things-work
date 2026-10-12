@@ -303,6 +303,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 8,
 		minutes: 16
+	},
+	{
+		slug: 'linear-transformations',
+		title: 'Vectors, matrices and linear transformations',
+		summary:
+			'Drag two arrows and watch the whole plane follow: a matrix is a transformation of space, fully determined by where it sends the basis vectors.',
+		accent: '#3b5bdb',
+		steps: 13,
+		minutes: 16
 	}
 ];
 
