@@ -81,7 +81,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'open' },
 			duration: 16,
 			body: `
-<p>When your phone talks to your bank, its messages cross Wi-Fi, cables and routers owned by strangers. Any of them could copy every bit. Cryptographers call the two people who want to talk <strong>Alice</strong> and <strong>Bob</strong>, and the one listening in <strong>Eve</strong>, the <dfn data-def="Someone who can read every message on the channel but cannot change the people at either end.">eavesdropper</dfn>.</p>
+<p>When your phone talks to your bank, its messages cross Wi-Fi, cables and routers owned by strangers. Any of them could copy every bit. Cryptographers call the two people who want to talk <strong>Alice</strong> and <strong>Bob</strong>, and the one listening in <strong>Eve</strong>, the <dfn data-def="Someone who can read every message on the channel. Later on this page, Eve will also try to change messages on the way.">eavesdropper</dfn>.</p>
 <p>On the internet, Eve doesn't need to break in: the <dfn data-def="A communication line that anyone may be listening to, such as the internet or a radio link.">public channel</dfn> is open by design. Every message Alice sends, Eve sees as well. The question of this page: can Alice and Bob keep anything secret when <em>every word they say is overheard</em>?</p>`
 		},
 		{
@@ -94,7 +94,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>If Alice and Bob already share a secret <dfn data-def="A secret string of bits that scrambles and unscrambles messages. Whoever has the key can read them.">key</dfn>, hiding messages is easy. Write the message in <a href="../binary/">binary</a>, then flip every bit where the key has a 1: that is <dfn data-def="Exclusive or: 1 if exactly one of the two bits is 1, otherwise 0. Applying the same key twice gives back the original.">XOR</dfn>. "HI" becomes a jumble of bits; Bob XORs the same key again and every flipped bit flips back.</p>
 <p>Eve sees only the jumble. If the key is truly random, as long as the message and never reused (a <dfn data-def="A random key as long as the message, used once. Claude Shannon proved in 1949 that it cannot be broken.">one-time pad</dfn>), the jumble tells her nothing at all. Real systems use a short key and a cipher such as AES to stretch it, but the problem is the same: <strong>how do Alice and Bob agree on a key, if every message they exchange is overheard?</strong></p>`,
-			notes: `<p>For most of history, keys travelled by courier. A cipher that uses the same key to lock and unlock is called <em>symmetric</em>; AES, standardised in 2001, is the one that encrypts almost all internet traffic today. It is fast, but it needs a key both sides already have.</p>`
+			notes: `<p>For most of history, keys travelled by courier. A cipher that uses the same key to lock and unlock is called <em>symmetric</em>; AES, standardised in 2001, encrypts most internet traffic today. It is fast, but it needs a key both sides already have.</p>`
 		},
 		// ---------------------------------------------------------------- paint
 		{
@@ -118,7 +118,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [alicePaint, bobPaint],
 			body: `
-<p>Each mixes one part of their secret colour into one part of yellow and sends the mixture across the open channel. Alice sends orange, Bob sends a green.</p>
+<p>Each mixes one part of their secret colour into one part of yellow and sends the mixture across the open channel. With red and blue, Alice sends orange and Bob sends a green.</p>
 <p>Eve now has yellow, the orange and the green. But to learn Alice's secret she would have to take the yellow back out of the orange. She can't.</p>`
 		},
 		{
@@ -130,9 +130,9 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [alicePaint, bobPaint],
 			body: `
-<p>Now each adds their own secret colour to the mixture they received. Alice adds red to Bob's green; Bob adds blue to Alice's orange. Both pots now hold <strong>equal parts of yellow, red and blue</strong>, poured in a different order, so they are <strong>the same colour</strong>. That colour is their shared secret.</p>
+<p>Now each adds their own secret colour to the mixture they received. With red and blue, Alice adds red to Bob's green; Bob adds blue to Alice's orange. Both pots now hold <strong>equal parts of yellow, red and blue</strong>, poured in a different order, so they are <strong>the same colour</strong>. That colour is their shared secret.</p>
 <p>Eve's best move is to pour the two mixtures she saw together. But that gives two parts yellow to one each of red and blue: too much yellow, a different colour. Try other secret colours: Alice and Bob always match, Eve never does.</p>`,
-			notes: `<p>The drawing mixes colours with a simple model (each colour channel's reflectance is averaged geometrically, part for part), not real pigment physics. All that matters is that the result depends only on the proportions, not on the order of pouring. Real paint could be analysed with a spectrometer; the numbers in the next chapter have no such loophole that anyone knows of.</p>`
+			notes: `<p>The drawing mixes colours with a simple model (each colour channel's reflectance is averaged geometrically, part for part), not real pigment physics. All that matters is that the result depends only on the proportions, not on the order of pouring. Real paint could be analysed with a spectrometer; the numbers in the next chapter have no such loophole that anyone knows of. In this drawing's model, Eve could even compute the shared colour by arithmetic on the three colours she saw; paint is only a picture of the idea.</p>`
 		},
 		// ---------------------------------------------------------------- numbers
 		{
@@ -153,11 +153,12 @@ export const spec: ExplainerSpec = {
 			title: 'The same key on both sides',
 			scene: 'dh',
 			hints: { phase: 'shared' },
-			duration: 24,
+			duration: 32,
 			controls: [secretA, secretB],
 			body: `
-<p>Alice raises Bob's number to her secret: 79<sup>29</sup> mod 101 = 37. Bob raises Alice's number to his: 59<sup>64</sup> mod 101 = 37. The same number, because both are really 2<sup>29 × 64</sup>: (2<sup>b</sup>)<sup>a</sup> = (2<sup>a</sup>)<sup>b</sup>, just as the paint ended up with the same parts.</p>
-<p>That is the <dfn data-def="A method for two parties to agree on a shared secret key over a public channel, published by Whitfield Diffie and Martin Hellman in 1976.">Diffie–Hellman key exchange</dfn>. Move the sliders: whatever secrets they pick, the two keys always agree. Alice and Bob now share a key they never sent.</p>`,
+<p>With a = 29 and b = 64, Alice raises Bob's number to her secret: 79<sup>29</sup> mod 101 = 37. Bob raises Alice's number to his: 59<sup>64</sup> mod 101 = 37. The same number, because both are really 2<sup>29 × 64</sup>: (2<sup>b</sup>)<sup>a</sup> = (2<sup>a</sup>)<sup>b</sup>, just as the paint ended up with the same parts.</p>
+<p>That is the <dfn data-def="A method for two parties to agree on a shared secret key over a public channel, published by Whitfield Diffie and Martin Hellman in 1976.">Diffie–Hellman key exchange</dfn>. Move the sliders: whatever secrets they pick, the two keys always agree. Alice and Bob now share a key they never sent.</p>
+<p>This beats an Eve who only listens. An Eve who can also change messages could run one exchange with Alice and another with Bob, posing as each to the other. Stopping her needs a way to prove who sent a number: the signatures of the last chapter.</p>`,
 			notes: `<p>Whitfield Diffie and Martin Hellman published it in 1976 in "New Directions in Cryptography". Malcolm Williamson at the British intelligence agency GCHQ had found the same idea a couple of years earlier, but it stayed classified until 1997. Every time your browser opens an HTTPS connection (TLS 1.3), it runs a Diffie–Hellman exchange, today usually on an elliptic curve rather than a clock, but on the same principle.</p>`
 		},
 		{
@@ -168,8 +169,8 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [secretA],
 			body: `
-<p>Eve knows 2<sup>a</sup> mod 101 = 59 and wants a. That is the <dfn data-def="Given g, p and the remainder of gˣ divided by p, finding the exponent x.">discrete logarithm</dfn> problem: on the clock the powers jump around with no pattern, so she tries a = 0, 1, 2, … until one lands on 59. Here that takes her 30 tries — trivial, because the clock is tiny. <strong>These small numbers are for illustration only.</strong></p>
-<p>Real Diffie–Hellman uses a prime of at least 2048 bits, a number with 617 digits. Alice's work grows only with the number of digits (a few thousand multiplications); Eve's trial search would have to wade through numbers up to 10<sup>616</sup>. The best known attacks are far cleverer than trying, yet the record is a 240-digit prime, broken in 2019 after thousands of years of computer time spread over many machines.</p>`,
+<p>With a = 29, Eve knows 2<sup>a</sup> mod 101 = 59 and wants a. That is the <dfn data-def="Given g, p and the remainder of gˣ divided by p, finding the exponent x.">discrete logarithm</dfn> problem: on the clock the powers jump around with no pattern, so she tries a = 0, 1, 2, … until one lands on 59. Here that takes her 30 tries (the counter shows the count for the slider's value) — trivial, because the clock is tiny. <strong>These small numbers are for illustration only.</strong></p>
+<p>Real Diffie–Hellman uses a prime of at least 2048 bits, a number with 617 digits. Alice's work grows only with the number of digits (a few thousand multiplications); Eve's trial search would have to wade through numbers up to 10<sup>616</sup>. The best known attacks are far cleverer than trying, yet the record is a discrete logarithm modulo a 240-digit prime, computed in 2019 after thousands of years of computer time spread over many machines.</p>`,
 			notes: `<p>Key sizes: NIST (SP 800-57 Part 1, Rev. 5, 2020) rates 2048-bit Diffie–Hellman and RSA keys at about 112 bits of security and requires at least that size; elliptic-curve versions get the same or better protection from 256-bit keys. The 795-bit discrete-logarithm record and the 829-bit RSA-250 factoring record (February 2020) are by Boudot, Gaudry, Guillevic, Heninger, Thomé and Zimmermann. Nobody has proved that a fast method cannot exist, and a large quantum computer running Shor's algorithm would solve both problems quickly. That is why new "post-quantum" standards were published in 2024.</p>`
 		},
 		// ---------------------------------------------------------------- hash
@@ -194,7 +195,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			body: `
 <p>Here are two texts that differ in a single letter: "noon" and "moon". Their digests have nothing in common. Of the 256 bits, about half flip — exactly what you'd expect from two unrelated random strings. This is the <dfn data-def="The property that a tiny change in the input changes about half of the output bits, unpredictably.">avalanche effect</dfn>.</p>
-<p>Edit either box, by one character or many: the count of differing bits always hovers around 128. Nothing in the digest points back towards the text, so similar texts can't be found by nudging one until the digest looks close.</p>`
+<p>Edit either box, by one character or many: as long as the two texts differ, the count of differing bits hovers around 128. Nothing in the digest points back towards the text, so similar texts can't be found by nudging one until the digest looks close.</p>`
 		},
 		{
 			id: 'hash-oneway',
@@ -218,9 +219,9 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'keys' },
 			duration: 24,
 			body: `
-<p>Bob gets a message "from Alice". How does he know Eve didn't write it? With a <dfn data-def="A pair of numbers: a private key kept secret, and a public key published for anyone to use.">key pair</dfn>, as in <dfn data-def="A public-key system published by Rivest, Shamir and Adleman in 1977, based on the difficulty of factoring a product of two large primes.">RSA</dfn>. Alice picks two primes, p = 61 and q = 53, and multiplies them: n = 3233. That is easy.</p>
+<p>Now give Eve more power: she can change messages on the way. Bob gets a message "from Alice". How does he know Eve didn't write it? With a <dfn data-def="A pair of numbers: a private key kept secret, and a public key published for anyone to use.">key pair</dfn>, as in <dfn data-def="A public-key system published by Rivest, Shamir and Adleman in 1977, based on the difficulty of factoring a product of two large primes.">RSA</dfn>. Alice picks two primes, p = 61 and q = 53, and multiplies them: n = 3233. That is easy.</p>
 <p>From p and q she works out two exponents that undo each other on the n-hour clock: e = 17 and d = 2753, because 17 × 2753 is one more than a multiple of (p − 1)(q − 1) = 3120. She publishes n and e (the <strong>public key</strong>) and keeps d (the <strong>private key</strong>). Finding d needs p and q, and getting them back from n means <dfn data-def="Writing a number as a product of primes; for a product of two large primes, no fast method is known.">factoring</dfn>: here Eve finds 53 after 52 trial divisions, but for a 617-digit n nobody can.</p>`,
-			notes: `<p>Why e and d undo each other: by Euler's theorem, x<sup>(p−1)(q−1)</sup> ≡ 1 mod n for x sharing no factor with n, so x<sup>e·d</sup> = x<sup>1 + k·3120</sup> ≡ x. The record for factoring an RSA modulus is RSA-250, 829 bits (250 digits), in February 2020; real keys are 2048 bits or more. Clifford Cocks at GCHQ found the same scheme in 1973, kept secret until 1997.</p>`
+			notes: `<p>Why e and d undo each other: by Euler's theorem, x<sup>(p−1)(q−1)</sup> ≡ 1 mod n for x sharing no factor with n, so x<sup>e·d</sup> = x<sup>1 + k·3120</sup> ≡ x (it also holds for the few x that do share a factor, by a slightly longer argument). The record for factoring an RSA modulus is RSA-250, 829 bits (250 digits), in February 2020; real keys are 2048 bits or more. Clifford Cocks at GCHQ found the same scheme in 1973, kept secret until 1997.</p>`
 		},
 		{
 			id: 'sign',
