@@ -17,7 +17,7 @@
 	import { cycle } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { num, strengthAt, wind } from '../fourier';
-	import { WAVE_NAMES, samplesPath, waveSource } from '../signals';
+	import { samplesPath, theWave, waveSource } from '../signals';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -143,7 +143,7 @@
 		})}
 	{:else}
 		<!-- ================= the signal ================= -->
-		{@render txt(SX0, 40, `${SECONDS} seconds of the ${WAVE_NAMES[shape] ?? shape}`, 17, {
+		{@render txt(SX0, 40, `${SECONDS} seconds of ${theWave(shape)}`, 17, {
 			weight: 600
 		})}
 		{#each [-1, 1] as v (v)}

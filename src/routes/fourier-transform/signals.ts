@@ -31,6 +31,11 @@ export const WAVE_NAMES: Record<string, string> = {
 	drawn: 'your drawing'
 };
 
+/** "the square wave", "your drawing": the waveform's name after a verb or preposition. */
+export function theWave(shape: string): string {
+	return shape === 'drawn' ? 'your drawing' : `the ${WAVE_NAMES[shape] ?? shape}`;
+}
+
 /**
  * The samples of the chosen waveform: a preset, or the reader's drawing from
  * `params['ft:wave']`. Null for "Your drawing" before anything has been drawn.

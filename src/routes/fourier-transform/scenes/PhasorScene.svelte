@@ -16,7 +16,7 @@
 	import { cycle } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { num, partialSamples, waveSpectrum } from '../fourier';
-	import { N_WAVE, WAVE_NAMES, waveSource } from '../signals';
+	import { N_WAVE, theWave, waveSource } from '../signals';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -217,7 +217,7 @@
 		{@render txt(
 			32,
 			68,
-			`rebuilding the ${WAVE_NAMES[shape] ?? shape} from 1 Hz to ${termsN} Hz (frequencies with no amount are left out)`,
+			`rebuilding ${theWave(shape)} from 1 Hz to ${termsN} Hz (frequencies with no amount are left out)`,
 			13,
 			{ muted: true }
 		)}
