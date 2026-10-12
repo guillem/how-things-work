@@ -34,6 +34,10 @@
 	const result = $derived(jpeg(img, quality));
 	const RAW = SIZE * SIZE * 8;
 	const ratio = $derived(RAW / Math.max(1, result.bits));
+	/** "12.9 × smaller", or "1.05 × larger" when coding costs more than the raw pixels. */
+	const sizeText = $derived(
+		ratio >= 1 ? `${fmt(ratio, 1)} × smaller` : `${fmt(1 / ratio, 2)} × larger`
+	);
 	const db = $derived(psnr(img, result.image));
 	const origUrl = $derived(bmpDataUrl(img));
 	const decUrl = $derived(bmpDataUrl(result.image));
@@ -66,7 +70,8 @@
 	]);
 </script>
 
-<g>
+<!-- no message box on these steps: everything moves up to balance the stage -->
+<g transform="translate(0 -44)">
 	{#if phase === 'quality'}
 		<Txt x={40} y={112} text="Original" size={13} weight={700} />
 		<image href={origUrl} x={40} y={128} width={SIZE * PX} height={SIZE * PX} class="cmp-px" />
@@ -124,7 +129,7 @@
 			weight={700}
 			color="var(--explainer-accent, var(--accent))"
 		/>
-		<Txt x={bx} y={296} text="{fmt(ratio, 1)} × smaller" size={22} weight={700} />
+		<Txt x={bx} y={296} text={sizeText} size={22} weight={700} />
 		<Txt
 			x={bx}
 			y={340}
@@ -206,9 +211,9 @@
 		<Txt
 			x={256}
 			y={400}
-			text="Quality {quality}: {fmt(ratio, 1)} × smaller, PSNR {Number.isFinite(db)
+			text="Quality {quality}: {sizeText}, PSNR {Number.isFinite(db)
 				? fmt(db, 1)
-				: '∞'} dB, largest error here {maxErr} levels"
+				: '∞'} dB, largest error here {maxErr} level{maxErr === 1 ? '' : 's'}"
 			size={14}
 			weight={700}
 		/>

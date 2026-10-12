@@ -180,31 +180,33 @@
 			{/if}
 		{/if}
 
-		<Txt
-			x={40}
-			y={538}
-			text="UTF-8: {n} character{n === 1 ? '' : 's'}{utf8 !== n * 8
-				? ` in ${utf8 / 8} bytes`
-				: ''} × 8 bits = {utf8} bits"
-			size={15}
-			weight={600}
-		/>
-		<Txt
-			x={40}
-			y={566}
-			text="Fixed {fixed}-bit code: {n} × {fixed} = {n * fixed} bits (2{[
-				'⁰',
-				'¹',
-				'²',
-				'³',
-				'⁴',
-				'⁵',
-				'⁶'
-			][fixed]} = {2 ** fixed} patterns ≥ {k} symbols)"
-			size={15}
-			weight={600}
-			color="var(--cmp-count)"
-		/>
+		{#if n > 0}
+			<Txt
+				x={40}
+				y={538}
+				text="UTF-8: {n} character{n === 1 ? '' : 's'}{utf8 !== n * 8
+					? ` in ${utf8 / 8} bytes`
+					: ''} × 8 bits = {utf8} bits"
+				size={15}
+				weight={600}
+			/>
+			<Txt
+				x={40}
+				y={566}
+				text="Fixed {fixed}-bit code: {n} × {fixed} = {n * fixed} bits (2{[
+					'⁰',
+					'¹',
+					'²',
+					'³',
+					'⁴',
+					'⁵',
+					'⁶'
+				][fixed]} = {2 ** fixed} patterns ≥ {k} symbols)"
+				size={15}
+				weight={600}
+				color="var(--cmp-count)"
+			/>
+		{/if}
 	{:else}
 		<!-- count bars -->
 		<Txt x={40} y={142} text="How often" size={12} weight={700} color="var(--cmp-count)" />
@@ -260,7 +262,7 @@
 			</g>
 		{/each}
 
-		{#if phase === 'entropy' && level > 0}
+		{#if phase === 'entropy' && level > 0 && n > 0}
 			{@const ly = TOP + H * bitScale * level}
 			<line
 				x1={X0}
@@ -296,7 +298,9 @@
 			/>
 		{/if}
 
-		{#if phase === 'surprise'}
+		{#if n === 0}
+			<!-- nothing to measure -->
+		{:else if phase === 'surprise'}
 			<Txt
 				x={40}
 				y={540}

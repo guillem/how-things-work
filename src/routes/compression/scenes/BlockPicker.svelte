@@ -4,7 +4,6 @@
 	 * or drag over the picture, or focus it (Tab) and move with the arrow keys (Home / End for
 	 * the first and last block). Draws the picked block's outline.
 	 */
-	import { startDrag } from '#lib/draw/pointer.ts';
 	import { BLOCKS } from './shared';
 
 	interface Props {
@@ -22,13 +21,32 @@
 	const by = $derived(Math.floor(index / BLOCKS));
 	const clampB = (v: number) => Math.min(BLOCKS - 1, Math.max(0, v));
 
+	/**
+	 * Picks the block under the pointer. Positions are converted with this element's own
+	 * transform (not the root SVG's, as `startDrag` does), so the picker also works inside a
+	 * translated group.
+	 */
+	function pickAt(event: PointerEvent, el: SVGGraphicsElement) {
+		const ctm = el.getScreenCTM();
+		if (!ctm) return;
+		const p = new DOMPoint(event.clientX, event.clientY).matrixTransform(ctm.inverse());
+		const c = clampB(Math.floor((p.x - x) / (8 * px)));
+		const r = clampB(Math.floor((p.y - y) / (8 * px)));
+		if (r * BLOCKS + c !== index) onpick(r * BLOCKS + c);
+	}
+
 	function onpointerdown(event: PointerEvent) {
-		(event.currentTarget as SVGGElement).focus();
-		startDrag(event, (p) => {
-			const c = clampB(Math.floor((p.x - x) / (8 * px)));
-			const r = clampB(Math.floor((p.y - y) / (8 * px)));
-			if (r * BLOCKS + c !== index) onpick(r * BLOCKS + c);
-		});
+		if (event.button !== 0) return;
+		const el = event.currentTarget as SVGGElement;
+		event.preventDefault();
+		el.focus();
+		el.setPointerCapture?.(event.pointerId);
+		pickAt(event, el);
+	}
+
+	function onpointermove(event: PointerEvent) {
+		const el = event.currentTarget as SVGGElement;
+		if (el.hasPointerCapture?.(event.pointerId)) pickAt(event, el);
 	}
 
 	function onkeydown(event: KeyboardEvent) {
@@ -61,6 +79,7 @@
 	aria-valuemax={BLOCKS * BLOCKS - 1}
 	aria-valuetext="column {bx + 1}, row {by + 1}"
 	{onpointerdown}
+	{onpointermove}
 	{onkeydown}
 >
 	<rect {x} {y} width={size} height={size} fill="transparent" />

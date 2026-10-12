@@ -135,6 +135,7 @@
 			{ label: 'Entropy floor n × H', bits: n * H, color: 'var(--cmp-h)' }
 		];
 	});
+	const barsY = $derived(Math.max(300, (groups.at(-1)?.y ?? 180) + 70));
 	const maxBar = $derived(Math.max(1, ...bars.map((b) => b.bits)));
 	const grow = $derived(easeOut(clamp((tv - 0.3) / 1.2)));
 </script>
@@ -161,7 +162,7 @@
 						stroke-width={on ? 3 : 1.5}
 						opacity={a}
 					/>
-					{#if phase === 'codes'}
+					{#if phase === 'codes' && (spacing >= 30 || on)}
 						<Txt
 							x={(p.x + q.x) / 2}
 							y={p.y - 6}
@@ -361,7 +362,7 @@
 		{/each}
 
 		{#each bars as b, i (b.label)}
-			{@const y = 372 + i * 44}
+			{@const y = barsY + i * 44}
 			{@const w = (b.bits / maxBar) * 520 * grow}
 			<g>
 				<Txt x={40} y={y + 15} text={b.label} size={13} weight={600} />
@@ -389,7 +390,9 @@
 		<Txt
 			x={40}
 			y={566}
-			text="Huffman: {fmt(avg)} bits per symbol, between H = {fmt(H)} and H + 1 = {fmt(H + 1)}"
+			text={k === 1
+				? 'Only one symbol: H = 0, but a code still needs 1 bit per symbol'
+				: `Huffman: ${fmt(avg)} bits per symbol, between H = ${fmt(H)} and H + 1 = ${fmt(H + 1)}`}
 			size={14}
 			weight={600}
 		/>

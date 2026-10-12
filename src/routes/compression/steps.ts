@@ -192,7 +192,7 @@ export const spec: ExplainerSpec = {
 			controls: [quality, image],
 			body: `
 <p>Do the same to every block and decode the result: the left picture is the original, the right one what the JPEG decoder gives back. The bars compare the sizes. The quantised coefficients are coded the way JPEG does it: zigzag order, runs of zeros, then a Huffman code like the one in the previous chapter.</p>
-<p>At quality 50, the hills shrink about 13 times and you can hardly see the difference. Try the line drawing: sharp edges need fast patterns, so it costs more bits. Random noise is the worst case: there is nothing to predict, so lossless coding gains nothing, and JPEG can only shrink it by throwing much of it away.</p>`,
+<p>At quality 50, the hills shrink about 13 times and you can hardly see the difference. Try the line drawing: sharp edges need fast patterns, so it costs more bits. Random noise is the worst case: there is nothing to predict, so lossless coding gains nothing, and JPEG can only shrink it by throwing much of it away. At quality 100 it even comes out slightly larger than the raw pixels.</p>`,
 			notes: `<p>The sizes count only the coded coefficients; a real file adds a few hundred bytes of headers and tables. The <dfn data-def="Peak signal-to-noise ratio: 10 · log₁₀(255² / mean squared error), in decibels. Higher means closer to the original; above about 40 dB the difference is usually invisible.">PSNR</dfn> shown is a standard measure of how close the decoded picture is to the original.</p>`
 		},
 		{

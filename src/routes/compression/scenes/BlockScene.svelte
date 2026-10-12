@@ -96,7 +96,8 @@
 	const fmtSigned = (v: number) => (v < 0 ? `−${Math.abs(v)}` : String(v));
 </script>
 
-<g>
+<!-- no message box on these steps: everything moves up to balance the stage -->
+<g transform="translate(0 -44)">
 	{#if phase === 'pixels'}
 		{@const zx = 420}
 		{@const zy = 128}
@@ -133,7 +134,8 @@
 		<Txt
 			x={zx}
 			y={112}
-			text="Block {block.bx + 1}, {block.by + 1}: 64 numbers from 0 (black) to 255 (white)"
+			text="Block at column {block.bx + 1}, row {block.by +
+				1}: 64 numbers, 0 (black) to 255 (white)"
 			size={13}
 			weight={700}
 		/>
@@ -253,7 +255,7 @@
 			y={326}
 			text={partialErr < 0.5
 				? 'Exactly the block again'
-				: `Off by up to ${Math.round(partialErr)} levels`}
+				: `Off by up to ${Math.round(partialErr)} level${Math.round(partialErr) === 1 ? '' : 's'}`}
 			size={13}
 			weight={600}
 			color={partialErr < 0.5 ? 'var(--cmp-h)' : undefined}
@@ -375,7 +377,7 @@
 			<Txt
 				x={920}
 				y={112}
-				text="{fmt(coef[work], 1).replace('-', '−')} ÷ {table[work]} = {fmt(
+				text="{fmt(coef[work], 2).replace('-', '−')} ÷ {table[work]} = {fmt(
 					coef[work] / table[work],
 					2
 				).replace('-', '−')} → {fmtSigned(q[work])}"
@@ -402,7 +404,9 @@
 		<Txt
 			x={290}
 			y={510}
-			text="then one end-of-block symbol stands for the {63 - lastNonZero} zeros that follow"
+			text={lastNonZero === 63
+				? 'no zeros at the end: every value is stored'
+				: `then one end-of-block symbol stands for the ${63 - lastNonZero} zero${63 - lastNonZero === 1 ? '' : 's'} that follow${63 - lastNonZero === 1 ? 's' : ''}`}
 			size={13}
 			muted
 		/>

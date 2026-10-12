@@ -44,7 +44,7 @@ export function imageOf(params: Params): { id: ImageId; img: Grey } {
 }
 
 /** A block worth looking at first in each image: the sun's edge, the ring, anywhere. */
-const FIRST_BLOCK: Record<ImageId, number> = { landscape: 31, drawing: 26, noise: 65 };
+const FIRST_BLOCK: Record<ImageId, number> = { landscape: 19, drawing: 26, noise: 65 };
 
 /** The picked block of an image (each image remembers its own, in `params['block-' + id]`). */
 export function blockOf(params: Params, id: ImageId): { index: number; bx: number; by: number } {

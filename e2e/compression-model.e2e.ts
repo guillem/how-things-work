@@ -186,6 +186,8 @@ test.describe('8 × 8 DCT and quantisation', () => {
 		expect(noise / land).toBeGreaterThan(4);
 		// The narrative: at quality 50 the hills shrink about 13 times.
 		expect((96 * 96 * 8) / land).toBeCloseTo(13, -0.5);
+		// … and noise at quality 100 costs more than its raw 8 bits per pixel.
+		expect(jpeg(makeImage('noise'), 100).bits).toBeGreaterThan(96 * 96 * 8);
 	});
 
 	test('the BMP of an image is a valid data URL of the right size', () => {
