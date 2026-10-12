@@ -1250,6 +1250,31 @@
 			<path d="M100 60 L{a.x} {a.y}" stroke={a.c} stroke-width="3" stroke-linecap="round" />
 			<circle cx={a.x} cy={a.y} r="4" fill={a.c} />
 		{/each}
+	{:else if slug === 'cryptography'}
+		<!-- a padlock beside an 8 × 8 grid of hash bits (a fixed pattern) -->
+		<path
+			d="M38 52 V40 a18 18 0 0 1 36 0 V52"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.45"
+			stroke-width="5"
+			stroke-linecap="round"
+		/>
+		<rect x="28" y="50" width="56" height="48" rx="7" fill={accent} />
+		<circle cx="56" cy="69" r="6" fill="var(--surface)" />
+		<rect x="53.5" y="71" width="5" height="14" rx="2" fill="var(--surface)" />
+		{#each Array.from({ length: 64 }, (_, k) => k) as k (k)}
+			{@const on = (k * 53 + 11) % 100 >= 50}
+			<rect
+				x={104 + (k % 8) * 10}
+				y={22 + Math.floor(k / 8) * 10}
+				width="8"
+				height="8"
+				rx="1.5"
+				fill={on ? accent : 'currentColor'}
+				opacity={on ? 0.9 : 0.16}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
