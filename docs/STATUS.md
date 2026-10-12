@@ -83,6 +83,7 @@ Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<s
 `map:<step>`, `view:zoom`, `mol:<step>`, `probe:tank`, `ft:wave`, `ft:bars`, `ft:curve`, `dope:<step>`, `pick:<step>`.
 
 - calculus: merged; ticked. Not reviewed yet.
+- states-of-matter: merged; ticked. Not reviewed yet.
 
 ## Open questions for the user
 

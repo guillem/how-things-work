@@ -124,7 +124,7 @@ A topic is done when:
 - [x] atoms-periodic-table
 - [x] radioactivity
 - [x] chemical-bonds
-- [ ] states-of-matter
+- [x] states-of-matter
 - [ ] reaction-rates-equilibrium
 - [ ] acids-bases
 - [ ] redox-batteries
