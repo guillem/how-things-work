@@ -261,6 +261,26 @@
 		activate(e);
 	}
 
+	/**
+	 * The interactive props of a slot's target, spread onto the hit shape itself
+	 * (a rect, or a circle for a round part) rather than wrapping it in a <g>:
+	 * one node per target instead of two.
+	 */
+	const target = (e: Edge) => ({
+		role: 'button',
+		tabindex: 0,
+		'aria-label': ariaFor(e),
+		onclick: () => activate(e),
+		onkeydown: (ev: KeyboardEvent) => onkey(ev, e),
+		onpointerenter: () => (hovered = e.key),
+		onpointerleave: () => hovered === e.key && (hovered = null),
+		onfocus: (ev: FocusEvent) => {
+			// Tooltip for keyboard focus only: a click also focuses.
+			if ((ev.currentTarget as Element).matches(':focus-visible')) focused = e.key;
+		},
+		onblur: () => focused === e.key && (focused = null)
+	});
+
 	// ---- parts, with their solution -----------------------------------------------------------
 	interface Item {
 		i: number;
@@ -1011,34 +1031,29 @@
 		{@const it = byKey.get(e.key)}
 		{@const clickable = edit || (it !== undefined && switchParams.has(it.i))}
 		{@const round = it && ['bulb', 'ammeter', 'voltmeter'].includes(it.part.kind)}
-		<g
-			class="hit"
-			class:clickable
-			class:empty={edit && !it}
-			role="button"
-			tabindex="0"
-			aria-label={ariaFor(e)}
-			onclick={() => activate(e)}
-			onkeydown={(ev) => onkey(ev, e)}
-			onpointerenter={() => (hovered = e.key)}
-			onpointerleave={() => hovered === e.key && (hovered = null)}
-			onfocus={(ev) => {
-				// Tooltip for keyboard focus only: a click also focuses.
-				if ((ev.currentTarget as Element).matches(':focus-visible')) focused = e.key;
-			}}
-			onblur={() => focused === e.key && (focused = null)}
-		>
+		{#if round}
+			<circle
+				class="hit"
+				class:clickable
+				cx={e.cx}
+				cy={e.cy}
+				r="26"
+				fill="transparent"
+				{...target(e)}
+			/>
+		{:else}
 			<rect
+				class="hit"
+				class:clickable
+				class:empty={edit && !it}
 				x={e.cx - (e.vertical ? 13 : 30)}
 				y={e.cy - (e.vertical ? 30 : 13)}
 				width={e.vertical ? 26 : 60}
 				height={e.vertical ? 60 : 26}
 				fill="transparent"
+				{...target(e)}
 			/>
-			{#if round}
-				<circle cx={e.cx} cy={e.cy} r="26" fill="transparent" />
-			{/if}
-		</g>
+		{/if}
 	{/each}
 
 	<!-- hover and focus feedback, drawn once: a ring, and on an empty gap a faint placeholder -->
