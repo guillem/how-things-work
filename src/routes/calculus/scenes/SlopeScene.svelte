@@ -328,7 +328,7 @@
 				/>
 				<Txt x={PANEL} y={214} text="slope of the chord" size={12} muted />
 				<Txt x={PANEL} y={244} text="rise ÷ run = {num(chord.slope)}" size={20} weight={600} />
-				{#if phase === 'secant'}
+				{#if phase === 'secant' || back}
 					<Txt
 						x={PANEL}
 						y={278}

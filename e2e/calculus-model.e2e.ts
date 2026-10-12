@@ -80,6 +80,15 @@ test('Riemann sums converge to the exact integral', () => {
 	expect(riemann(square, 0, 3, 100, 'left')).toBeCloseTo(8.865, 3);
 });
 
+test('on a curve that ends where it started, the left-sum error falls faster than 1/n', () => {
+	// The thrown ball lands at the height it left from: ∫₀³ = 14.7·4.5 − 4.9·9 = 22.05 m·s.
+	const ballErr = (n: number) => Math.abs(riemann(presets.ball.f, 0, 3, n, 'left') - 22.05);
+	expect(ballErr(100) / ballErr(200)).toBeCloseTo(4, 1);
+	// One full period of the wave: the left sums are exactly 0 for every n.
+	for (const n of [1, 2, 3, 4, 7, 50, 100])
+		expect(riemann(presets.wave.f, 0, 3, n, 'left')).toBeCloseTo(0, 9);
+});
+
 test('area below the axis counts as negative', () => {
 	// One whole period of the sine wave: as much below the axis as above.
 	expect(integral(presets.wave.f, 0, 3)).toBeCloseTo(0, 9);
