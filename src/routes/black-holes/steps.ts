@@ -236,7 +236,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A common myth says that black holes suck everything in. They don't. Squeeze the Sun into a black hole of the same mass, 6 km across: the Earth goes on round the same orbit, at the same 29.8 km/s, in the same year.</p>
 <p>Outside a round body, its gravity depends only on its mass, not on its size or what it is made of (in general relativity this is <dfn data-def="Birkhoff's theorem (1923): outside any round, non-spinning body, spacetime is exactly Schwarzschild's, set by the mass alone.">Birkhoff's theorem</dfn>). So from far away, a black hole is just another mass, and things orbit it as <a href="../orbits-kepler/#launch">Kepler and Newton</a> would predict.</p>
-<p>The difference is how close you can get. The Sun's surface stops you at 696 000 km. A black hole lets you go all the way down, to where gravity becomes overwhelming.</p>`,
+<p>The difference is how close you can get. The Sun's surface stops you 695 700 km from its centre. A black hole lets you go all the way down, to where gravity becomes overwhelming.</p>`,
 			notes: `<p>Even the Earth's orbit feels general relativity: its closest point to the Sun turns by an extra 3.8″ per century. Mercury, closer in, gains 43″ per century — the anomaly that had puzzled astronomers since Urbain Le Verrier measured it in 1859, and that Einstein explained in 1915. Both numbers would be exactly the same around a black hole of one solar mass.</p>`
 		},
 		{
