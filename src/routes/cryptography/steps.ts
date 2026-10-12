@@ -164,8 +164,7 @@ export const spec: ExplainerSpec = {
 			id: 'dh-eve',
 			chapter: 'numbers',
 			title: 'What Eve would have to do',
-			scene: 'dh',
-			hints: { phase: 'eve' },
+			scene: 'dlog',
 			duration: 26,
 			controls: [secretA, secretB],
 			body: `

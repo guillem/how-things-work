@@ -8,6 +8,7 @@
 		channel: () => import('./scenes/ChannelScene.svelte'),
 		paint: () => import('./scenes/PaintScene.svelte'),
 		dh: () => import('./scenes/DhScene.svelte'),
+		dlog: () => import('./scenes/DlogScene.svelte'),
 		hash: () => import('./scenes/HashScene.svelte'),
 		rsa: () => import('./scenes/RsaScene.svelte'),
 		summary: () => import('./scenes/SummaryScene.svelte')
