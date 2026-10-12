@@ -267,6 +267,13 @@
 	});
 
 	// ---- the angle arc --------------------------------------------------------------------------
+	// Screen-space angle of a 3D direction from the centre.
+	const dirAngle = (v: Vec) => {
+		const s = project(v);
+		return Math.atan2(s.y - CY, s.x - CX);
+	};
+	const wrap = (x: number) =>
+		((((x + Math.PI) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)) - Math.PI;
 	const arc = $derived.by(() => {
 		if (!a.complete || molecule.ligands.length < 2 || prog.current < 0.98) return null;
 		const m = a.measured[0];
@@ -289,13 +296,29 @@
 		}
 		const mid = slerpish(ui, uj, 0.5);
 		const lab = project([mid[0] * (R + 30), mid[1] * (R + 30), mid[2] * (R + 30)]);
+		const chord = Math.hypot(pts[0].x - pts[16].x, pts[0].y - pts[16].y);
+		// How far the nearest other domain sits from the projected wedge (radians;
+		// negative when one falls inside it: the arc would cross its bond or blob).
+		const ai = dirAngle(ui);
+		const am = wrap(dirAngle(mid) - ai);
+		let span = wrap(dirAngle(uj) - ai);
+		if (Math.sign(am) !== Math.sign(span) || Math.abs(am) > Math.abs(span))
+			span += span > 0 ? -2 * Math.PI : 2 * Math.PI;
+		let room = Infinity;
+		for (const d of targets) {
+			if (d.kind === 'bond' && (d.ligand === i || d.ligand === j)) continue;
+			const rel = wrap(dirAngle(d.dir) - ai);
+			const inside = span > 0 ? Math.min(rel, span - rel) : Math.min(-rel, rel - span);
+			room = Math.min(room, inside);
+		}
 		return {
 			d: 'M' + pts.map((q) => `${q.x.toFixed(1)} ${q.y.toFixed(1)}`).join('L'),
 			x: lab.x,
 			y: lab.y + 4,
 			label: `${value === 180 ? '180' : value.toFixed(1)}°`,
-			// Hide the arc when it is seen edge-on (hard to read).
-			visible: Math.hypot(pts[0].x - pts[16].x, pts[0].y - pts[16].y) > 20
+			// Fade out when the arc is seen edge-on (a thin sliver) or when another bond or
+			// lone pair projects into the wedge (the arc would cross it).
+			opacity: smoothstep(14, 32, chord) * smoothstep(0.05, 0.22, room)
 		};
 	});
 
@@ -321,6 +344,42 @@
 	// Colour of an atom's patch on the charge map.
 	const chargeFill = (q: number) => (q < 0 ? NEG : POS);
 	const chargeOpacity = (q: number) => 0.12 + 0.6 * clamp(Math.abs(q) / 1.4);
+
+	/** Distance from (px, py) to the segment (x1, y1)–(x2, y2). */
+	const segDist = (px: number, py: number, x1: number, y1: number, x2: number, y2: number) => {
+		const dx = x2 - x1;
+		const dy = y2 - y1;
+		const l2 = dx * dx + dy * dy;
+		const u = l2 ? clamp(((px - x1) * dx + (py - y1) * dy) / l2) : 0;
+		return Math.hypot(px - (x1 + u * dx), py - (y1 + u * dy));
+	};
+
+	// Where the centre atom's charge label goes: the direction around the ball with the
+	// most room, so it lands neither on a bond line nor on a lone pair.
+	const centreLabel = $derived.by(() => {
+		const bonds = scene.items.filter((it) => it.kind === 'bond');
+		const blobs = scene.items.filter((it) => it.kind !== 'bond' && it.key !== 'centre');
+		let best = -Math.PI / 2;
+		let room = -Infinity;
+		for (let k = 0; k < 24; k++) {
+			const a0 = (k / 24) * 2 * Math.PI;
+			const px = CX + Math.cos(a0) * (centreR + 15);
+			const py = CY + Math.sin(a0) * (centreR + 15);
+			let clear = 1.5 * Math.cos(a0 + Math.PI / 2); // prefer up on ties
+			for (const b of bonds)
+				clear = Math.min(clear, segDist(px, py, b.x, b.y, b.x2 ?? b.x, b.y2 ?? b.y) - 5);
+			for (const bl of blobs)
+				clear = Math.min(
+					clear,
+					Math.hypot(px - bl.x, py - bl.y) - (bl.kind === 'lone' ? 24 : (bl.r ?? 20))
+				);
+			if (clear > room) {
+				room = clear;
+				best = a0;
+			}
+		}
+		return { x: CX + Math.cos(best) * (centreR + 15), y: CY + Math.sin(best) * (centreR + 15) };
+	});
 
 	// ---- dragging: turning the view, and atoms from the palette ---------------------------------
 	let last: Point | null = null;
@@ -588,8 +647,8 @@
 				{@const ol = Math.hypot(ox, oy)}
 				{@const out = ol > 8 && it.ligand !== undefined}
 				{@render txt(
-					out ? it.x + (ox / ol) * ((it.r ?? 20) + 16) : it.x + (it.r ?? 20) + 12,
-					out ? it.y + (oy / ol) * ((it.r ?? 20) + 16) + 5 : it.y - (it.r ?? 20) * 0.75,
+					out ? it.x + (ox / ol) * ((it.r ?? 20) + 16) : centreLabel.x,
+					out ? it.y + (oy / ol) * ((it.r ?? 20) + 16) + 5 : centreLabel.y + 5,
 					(it.charge ?? 0) < 0 ? 'δ−' : 'δ+',
 					14,
 					{ weight: 700, anchor: 'middle', color: (it.charge ?? 0) < 0 ? NEG : POS }
@@ -599,9 +658,11 @@
 	{/each}
 
 	<!-- the angle between two bonds -->
-	{#if arc?.visible && !charges}
-		<path d={arc.d} fill="none" stroke="var(--stage-ink)" stroke-width="1.5" />
-		{@render txt(arc.x, arc.y, arc.label, 13, { anchor: 'middle', weight: 700 })}
+	{#if arc && arc.opacity > 0.02 && !charges}
+		<g opacity={arc.opacity} style:pointer-events="none">
+			<path d={arc.d} fill="none" stroke="var(--stage-ink)" stroke-width="1.5" />
+			{@render txt(arc.x, arc.y, arc.label, 13, { anchor: 'middle', weight: 700 })}
+		</g>
 	{/if}
 
 	<!-- polarity arrow (points to the negative end; the cross marks the positive end) -->
