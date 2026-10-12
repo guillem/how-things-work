@@ -75,6 +75,8 @@ reports deleted; `make e2e-full` green again (547 tests). Not pushed until the u
 Released in v0.1.2 (2026-10-12): the photosynthesis review fixes, rate model and "What limits the
 rate?" step (built in cloud sessions on 2026-10-11).
 
+**special-relativity** (topic/special-relativity, 2026-10-12): built and ticked: 12 steps, 5 scenes, model + browser tests; not merged.
+
 Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<step>`,
 `map:<step>`, `view:zoom`, `mol:<step>`, `probe:tank`, `ft:wave`, `ft:bars`, `ft:curve`.
 

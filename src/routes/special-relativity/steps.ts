@@ -66,7 +66,7 @@ export const spec: ExplainerSpec = {
 <p>Light breaks the rule. A lamp in the middle of the carriage flashes, and both the passengers and the people on the platform measure the flash moving at the same speed, <strong>c ≈ 300 000 km/s</strong>, forwards and backwards. The train's speed is not added. This is Einstein's second <dfn data-def="Einstein's 1905 starting points: (1) the laws of physics are the same in every inertial frame; (2) light in a vacuum moves at the same speed c in every inertial frame, whatever the motion of its source.">postulate</dfn> (1905). Experiments have confirmed it again and again.</p>
 <p>The ball now follows the rule that keeps everything below c. Thrown at 0.5 c on a train going at 0.6 c, it moves at 0.85 c relative to the platform, not 1.1 c. Move the slider and watch both rows.</p>
 <p>Notice also where the flash lands. In the bottom row it reaches both ends of the carriage together. In the top row the back of the carriage runs into the flash while the front runs away from it, so the back is lit first. Remember this for chapter 4.</p>`,
-			notes: `<p>The relativistic rule for adding a velocity <i>u</i> (measured in the train) to the train's speed <i>v</i> is <i>w</i> = (<i>u</i> + <i>v</i>) / (1 + <i>uv</i>/<i>c</i>²). At everyday speeds <i>uv</i>/<i>c</i>² is tiny and it gives <i>u</i> + <i>v</i>. With <i>u</i> = <i>c</i> it gives exactly <i>c</i>, whatever <i>v</i> is. Since 1983 the metre has been defined from c: light covers exactly 299 792 458 metres in one second. The animation is slowed down enormously. In real time the flash would cross a 25 m carriage in less than a ten-millionth of a second.</p>`
+			notes: `<p>The relativistic rule for adding a velocity <i>u</i> (measured in the train) to the train's speed <i>v</i> is <i>w</i> = (<i>u</i> + <i>v</i>) / (1 + <i>uv</i>/<i>c</i>²). At everyday speeds <i>uv</i>/<i>c</i>² is tiny and it gives <i>u</i> + <i>v</i>. With <i>u</i> = <i>c</i> it gives exactly <i>c</i>, whatever <i>v</i> is. Since 1983 the metre has been defined from c: light covers exactly 299 792 458 metres in one second. The animation is slowed down enormously. In real time the flash would cross a 25 m carriage in less than a ten-millionth of a second. The moving carriage is drawn shorter than the one at rest: chapter 3 explains why.</p>`
 		},
 		// ------------------------------------------------------------------ time
 		{
@@ -225,7 +225,7 @@ export const spec: ExplainerSpec = {
 <p>All three effects appear on one map:</p>
 <ul>
 <li><strong>Time:</strong> the dots on the passenger's worldline are her clock's ticks, every 100 m of c·t′. Read them on the platform's time axis and they are spaced γ times wider.</li>
-<li><strong>Length:</strong> the platform measures the train along its own “now”, the x axis, and gets L/γ. The train measures along its x′ axis and gets the full 200 m.</li>
+<li><strong>Length:</strong> the platform measures the train along its own “now”, the x axis, and gets 200 m ÷ γ. The train measures along its x′ axis and gets the full 200 m.</li>
 <li><strong>Simultaneity:</strong> the two strikes lie on the platform's “now” but not on the train's.</li>
 </ul>
 <p>All three come from one fact: <strong>every observer measures the same speed of light</strong>. To keep c the same for everyone, observers in relative motion have to disagree about durations, lengths and which distant events happen at the same time. What they share is spacetime itself, and the interval measured across it.</p>`,
