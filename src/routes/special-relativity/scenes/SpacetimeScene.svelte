@@ -162,7 +162,9 @@
 
 	// ---- phase all: ticks and lengths -----------------------------------------------
 	const clockTicks = $derived(
-		[1, 2].map((n) => ({ n, e: fromTrain(100 * n, 0) })).filter((c) => c.e.ct <= 220)
+		[-2, -1, 1, 2]
+			.map((n) => ({ n, e: fromTrain(100 * n, 0) }))
+			.filter((c) => Math.abs(c.e.ct) <= 220)
 	);
 	const ruler = $derived({ a: fromTrain(0, -100), b: fromTrain(0, 100) });
 
@@ -447,7 +449,7 @@
 				<T
 					x={p.x + 10}
 					y={p.y + 4}
-					text="tick {c.n}: c·t′ = {c.n * 100} m"
+					text="tick {num(c.n)}: c·t′ = {num(c.n * 100)} m"
 					size={11}
 					weight={600}
 				/>

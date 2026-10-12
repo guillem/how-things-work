@@ -75,8 +75,12 @@
 	const ctStart = $derived(ev.t.front.ct - 70);
 	const ctEnd = $derived(Math.max(ev.p.meet.ct, ev.t.pBack.ct) + 90);
 	const period = $derived((ctEnd - ctStart) / C_PX + 0.6);
-	const tau = $derived(reduced ? 2.5 : t % period);
-	const ct = $derived(Math.min(ctStart + C_PX * tau, ctEnd));
+	const tau = $derived(t % period);
+	// The reduced-motion frame: after both strikes in both rows, the back flash on its way
+	// to the passenger.
+	const ct = $derived(
+		reduced ? (ev.t.back.ct + ev.t.pBack.ct) / 2 : Math.min(ctStart + C_PX * tau, ctEnd)
+	);
 	const fade = $derived(
 		reduced ? 1 : smoothstep(0, 0.25, tau) * (1 - smoothstep(period - 0.35, period, tau))
 	);
@@ -228,7 +232,7 @@
 		<T
 			x={24}
 			y={ROWS[0] + 18}
-			text="Seen from the platform"
+			text="Platform frame"
 			size={15}
 			weight={650}
 			color="var(--rel-plat)"
@@ -303,14 +307,7 @@
 
 	<!-- ===================== bottom row: the train frame ===================== -->
 	<g opacity={dimBottom}>
-		<T
-			x={24}
-			y={ROWS[1] + 18}
-			text="Seen from the train"
-			size={15}
-			weight={650}
-			color="var(--rel-train)"
-		/>
+		<T x={24} y={ROWS[1] + 18} text="Train frame" size={15} weight={650} color="var(--rel-train)" />
 		<T x={24} y={ROWS[1] + 36} text="train clocks: t′ = {ns(ct)}" size={12} muted />
 		<T
 			x={936}

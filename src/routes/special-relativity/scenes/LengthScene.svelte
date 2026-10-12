@@ -172,7 +172,7 @@
 		<T
 			x={24}
 			y={ROWS[0] + 18}
-			text="Seen from the platform"
+			text="Platform frame"
 			size={15}
 			weight={650}
 			color="var(--rel-plat)"
@@ -232,14 +232,7 @@
 		</g>
 
 		<!-- ===================== bottom row: the train frame ===================== -->
-		<T
-			x={24}
-			y={ROWS[1] + 18}
-			text="Seen from the train"
-			size={15}
-			weight={650}
-			color="var(--rel-train)"
-		/>
+		<T x={24} y={ROWS[1] + 18} text="Train frame" size={15} weight={650} color="var(--rel-train)" />
 		<T
 			x={232}
 			y={ROWS[1] + 18}

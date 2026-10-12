@@ -247,14 +247,7 @@
 <g>
 	<!-- ===================== top row: the platform frame ===================== -->
 	{@render deck(ROWS[0], 0)}
-	<T
-		x={24}
-		y={ROWS[0] + 18}
-		text="Seen from the platform"
-		size={15}
-		weight={650}
-		color="var(--rel-plat)"
-	/>
+	<T x={24} y={ROWS[0] + 18} text="Platform frame" size={15} weight={650} color="var(--rel-plat)" />
 
 	<!-- the station clock, at rest -->
 	{@render clock(XS, ROWS[0] + SM_TOP, T0, t, 'var(--rel-plat)', true, wc, 'platform clock')}
@@ -342,14 +335,7 @@
 
 	<!-- ===================== bottom row: the train frame ===================== -->
 	{@render deck(ROWS[1], postOffset)}
-	<T
-		x={24}
-		y={ROWS[1] + 18}
-		text="Seen from the train"
-		size={15}
-		weight={650}
-		color="var(--rel-train)"
-	/>
+	<T x={24} y={ROWS[1] + 18} text="Train frame" size={15} weight={650} color="var(--rel-train)" />
 
 	{#if wc > 0.01}
 		<g opacity={wc}>
@@ -434,7 +420,7 @@
 		size={13}
 		muted
 		text={beta < 0.005
-			? 'train at rest: both views agree'
+			? 'train at rest: both frames agree'
 			: `train at ${num(beta)} c · γ = ${num(g, 3)}`}
 	/>
 </g>

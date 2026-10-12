@@ -79,7 +79,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Since everyone agrees on the speed of light, build a clock out of it. A <dfn data-def="A thought-experiment clock: a pulse of light bouncing between two parallel mirrors. Each round trip is one tick.">light clock</dfn> is a pulse of light bouncing between two mirrors. Every round trip, up and back down, is one tick.</p>
 <p>Here the mirrors are 1.5 m apart, so the light travels 3 m per tick, and one tick lasts 3 m ÷ c ≈ <strong>10 nanoseconds</strong>. The animation is slowed down about 100 million times.</p>
-<p>There is one clock on the train and an identical one on the platform. For now the train is standing still, so the two rows (the platform's view and the passenger's view) look the same, and the two clocks tick in step.</p>`,
+<p>There is one clock on the train and an identical one on the platform. For now the train is standing still, so the two rows (the platform's frame on top, the train's frame below) look the same, and the two clocks tick in step.</p>`,
 			notes: `<p>Any good clock would do: a quartz watch, a caesium atomic clock, your heartbeat. If moving light clocks ran slow but moving atomic clocks did not, a passenger could compare the two and find out that she was moving. That would break the first postulate. So whatever happens to the light clock happens to every clock, and to time itself.</p>`
 		},
 		{
@@ -92,7 +92,7 @@ export const spec: ExplainerSpec = {
 			controls: [beta],
 			body: `
 <p>Now set the train moving. For the passenger nothing changes: her clock's light still goes straight up and down, one tick every 10 ns.</p>
-<p>Seen from the platform, the mirrors move sideways while the light is in flight, so the light follows a longer, zig-zag path. It still moves at c (the postulate), so a longer path takes longer. <strong>The platform times each tick of the train's clock as longer than its own.</strong> The moving clock runs slow: this is <dfn data-def="The slowing of a moving clock, as timed from a frame in which it moves: one of its ticks lasts γ times longer.">time dilation</dfn>.</p>
+<p>In the platform's frame, the mirrors move sideways while the light is in flight, so the light follows a longer, zig-zag path. It still moves at c (the postulate), so a longer path takes longer. <strong>The platform times each tick of the train's clock as longer than its own.</strong> The moving clock runs slow: this is <dfn data-def="The slowing of a moving clock, as timed from a frame in which it moves: one of its ticks lasts γ times longer.">time dilation</dfn>.</p>
 <p>Look at the bottom row too. For the passenger, the platform is the thing that moves, and the platform's clock is the one with the zig-zag light. Each observer finds the <em>other's</em> clock slow. Neither is wrong: there is no favoured frame that is really at rest.</p>
 <p>At 0.6 c each tick of the moving clock lasts 1.25 times longer: four of its ticks for every five of the clock at rest.</p>`,
 			notes: `<p>Pythagoras gives the factor. During half a tick, lasting <i>T</i>/2 on the platform, the light runs along the slanted side, <i>c</i><i>T</i>/2. The mirrors move <i>v</i><i>T</i>/2 sideways and the gap between them is <i>d</i>. So (<i>cT</i>/2)² = <i>d</i>² + (<i>vT</i>/2)², and <i>T</i> = (2<i>d</i>/<i>c</i>) / √(1 − <i>v</i>²/<i>c</i>²), the tick at rest stretched by the factor γ of the next step. The mirror gap is across the motion, which is why both frames agree on it.</p>`
@@ -122,7 +122,7 @@ export const spec: ExplainerSpec = {
 			controls: [beta],
 			body: `
 <p>Nature runs this experiment every second. Cosmic rays hitting the top of the atmosphere make <dfn data-def="An unstable elementary particle, a heavier cousin of the electron. At rest it lives on average 2.2 microseconds before decaying into an electron and two neutrinos.">muons</dfn>, which rush down at close to the speed of light.</p>
-<p>A muon at rest lives on average only <strong>2.2 microseconds</strong>. Even at almost c, that gives it time to cover only about 650 m, far too little to reach the ground from high in the atmosphere. Yet plenty of them arrive at sea level.</p>
+<p>A muon at rest lives on average only <strong>2.2 microseconds</strong>. Even at almost c, that gives it time to cover only about 660 m, far too little to reach the ground from high in the atmosphere. Yet plenty of them arrive at sea level.</p>
 <p>Time dilation explains it. The muon's own clock still gives it 2.2 µs, but on our clocks its life lasts γ times longer. At 0.99 c that is 15.6 µs, and the muon travels about 4.6 km on average. Move the slider and compare the two tracks.</p>`,
 			notes: `<p>The mean lifetime of the muon at rest is 2.1969811 µs (Particle Data Group, <i>Review of Particle Physics</i>). Muons decay at random, so these are average distances: some go much further. The effect has been measured directly with muons in particle accelerators. In 1977 the muon storage ring at CERN found muons circling at γ ≈ 29 living 29 times longer than muons at rest, as predicted (J. Bailey et al., <i>Nature</i> 268, 1977).</p>`
 		},
