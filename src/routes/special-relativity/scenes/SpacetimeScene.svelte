@@ -158,7 +158,7 @@
 		setParam('ex', snap(ev.x + 10 * dx));
 		setParam('ect', snap(ev.ct + 10 * dy));
 	}
-	const sq = (v: number) => `${num(v, 0)}²`;
+	const sq = (v: number) => (v < -0.5 ? `(${num(v, 0)})²` : `${num(v, 0)}²`);
 
 	// ---- phase all: ticks and lengths -----------------------------------------------
 	const clockTicks = $derived(
