@@ -28,7 +28,7 @@ export const spec: ExplainerSpec = {
 <p>Chemistry happens at the edge of an atom, among its outer electrons, the <dfn data-def="The electrons in an atom's outermost shell. They are the ones that take part in bonds.">valence electrons</dfn>. Here they are drawn as dots around each element's symbol, a <dfn data-def="A drawing of an atom or molecule that shows only the outer electrons, as dots (and shared pairs as lines). Invented by Gilbert N. Lewis in 1916.">Lewis diagram</dfn>.</p>
 <p>The noble gases, like neon, have a full outer shell of <strong>eight</strong> (helium: two) and hardly react. Other atoms get there by <strong>sharing</strong> or <strong>handing over</strong> electrons. The number of bonds an atom forms is the number of electrons it is short of a full shell: hydrogen <strong>1</strong>, carbon <strong>4</strong>, nitrogen <strong>3</strong>, oxygen <strong>2</strong>, fluorine and chlorine <strong>1</strong>.</p>
 <p>Look at the dots: single dots are <strong>unpaired electrons</strong>, ready to pair up in a bond; pairs that never bond are called <dfn data-def="A pair of outer electrons that belongs to one atom and is not shared in a bond.">lone pairs</dfn>.</p>`,
-			notes: `<p>"Eight" is the <dfn data-def="The tendency of atoms to gain, lose or share electrons until they have eight in their outer shell.">octet rule</dfn>: an s subshell (2) plus a p subshell (6). It works very well for carbon, nitrogen, oxygen and fluorine. Atoms from the third row down, like phosphorus and sulfur, can hold more than eight around them (sulfur has twelve in SF₆), and a few, like boron, are stable with fewer. The valence electrons and electronegativities on this page come from the same element data as <a href="../atoms-periodic-table/">Atoms and the periodic table</a>.</p>`
+			notes: `<p>"Eight" is the <dfn data-def="The tendency of atoms to gain, lose or share electrons until they have eight in their outer shell.">octet rule</dfn>: an s subshell (2) plus a p subshell (6). It works very well for carbon, nitrogen, oxygen and fluorine. Atoms from the third row down, like phosphorus and sulfur, can hold more than eight around them (sulfur has twelve in SF₆), and a few, like boron, are stable with fewer. Carbon is drawn with four single dots because it makes four bonds. In the lone atom two of them are paired (2s²); when carbon bonds, its four outer electrons rearrange so that all four can pair up with partners (in later courses: hybridisation). The valence electrons and electronegativities on this page come from the same element data as <a href="../atoms-periodic-table/">Atoms and the periodic table</a>.</p>`
 		},
 		{
 			id: 'share',
@@ -79,7 +79,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			body: `
 <p>Sodium has a single outer electron and holds it loosely (electronegativity 0.93); chlorine is one electron short of eight (3.16). Instead of sharing, the electron moves across: sodium becomes a positive <dfn data-def="An atom that has lost or gained electrons, so it carries an electric charge.">ion</dfn>, Na⁺, with a full shell underneath, and chlorine becomes Cl⁻, with a full shell of eight.</p>
-<p>Opposite charges attract. That attraction is the <dfn data-def="The electrical attraction between positive and negative ions.">ionic bond</dfn>. It pulls in every direction, so the ions don't form separate molecules but stack into a crystal, each Na⁺ surrounded by Cl⁻ and each Cl⁻ by Na⁺: table salt.</p>`
+<p>Opposite charges attract. Moving the electron on its own actually costs energy; it is the strong attraction between the ions, packed into a crystal, that more than repays it. That attraction is the <dfn data-def="The electrical attraction between positive and negative ions.">ionic bond</dfn>. It pulls in every direction, so the ions don't form separate molecules but stack into a crystal, each Na⁺ surrounded by Cl⁻ and each Cl⁻ by Na⁺: table salt.</p>`
 		},
 		// ------------------------------------------------------------------ build
 		{
@@ -91,7 +91,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			body: `
 <p>Now build molecules yourself. A carbon atom sits in the middle with two hydrogens already attached; its two remaining dots are unpaired electrons. <strong>Drag an atom from the left onto the carbon</strong> (or click it) and it snaps onto an unpaired electron, making a bond.</p>
-<p>Add two more hydrogens and every atom has a full shell: carbon has eight electrons around it (four shared pairs), each hydrogen two. That is <strong>methane</strong>, CH₄, natural gas. The builder refuses atoms that don't fit, so you can only make molecules in which every atom's shell ends up full.</p>
+<p>Add two more hydrogens and every atom has a full shell: carbon has eight electrons around it (four shared pairs), each hydrogen two. That is <strong>methane</strong>, CH₄, the main ingredient of natural gas. The builder refuses atoms that don't fit, so you can only make molecules in which every atom's shell ends up full.</p>
 <p>Change the centre atom with the row of symbols at the top, click an outer atom to take it off, and drag the empty space to turn the molecule round.</p>`,
 			notes: `<p>The builder makes molecules with one central atom, which covers most small molecules. Larger ones, like ethanol or DNA, are chains and rings of the same kind of bonds; each carbon in them still makes four bonds and each oxygen two.</p>`
 		},
@@ -118,7 +118,7 @@ export const spec: ExplainerSpec = {
 				{
 					type: 'range',
 					id: 'pairs',
-					label: 'Electron pairs around the atom',
+					label: 'Electron domains around the atom',
 					min: 2,
 					max: 6,
 					step: 1,
@@ -197,9 +197,9 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			body: `
 <p>Polar molecules stick to each other, positive end to negative end, and the stickier the molecules, the more heat it takes to pull them apart into a gas. Four molecules of almost the same mass show how much this matters: non-polar methane boils at −162 °C, ammonia at −33 °C, hydrogen fluoride at 20 °C, and water at <strong>100 °C</strong>.</p>
-<p>Water's bent shape, with two δ+ hydrogens on one side and two lone pairs on the other, lets each molecule cling to four neighbours (through <dfn data-def="An especially strong attraction between a δ+ hydrogen on one molecule and a lone pair on an N, O or F atom of another.">hydrogen bonds</dfn>). A straight water molecule would not be polar at all, like CO₂, and its molecules would cling to each other far less.</p>
+<p>Water's bent shape, with two δ+ hydrogens on one side and two lone pairs on the other, lets each molecule cling to up to four neighbours (through <dfn data-def="An especially strong attraction between a hydrogen bonded to N, O or F on one molecule (strongly δ+) and a lone pair on an N, O or F atom of another.">hydrogen bonds</dfn>). A straight water molecule would not be polar at all, like CO₂, and its molecules would cling to each other far less.</p>
 <p>That is the whole story: <strong>atoms bond by sharing or transferring outer electrons, and the repulsion between electron pairs gives each molecule the shape that decides its properties</strong>.</p>`,
-			notes: `<p>Boiling points at normal atmospheric pressure from the NIST Chemistry WebBook (for ammonia, from the WebBook's vapour-pressure equation). Polarity also decides what dissolves in what: polar water dissolves salt and sugar, but not oil, whose molecules are long non-polar chains of carbon and hydrogen ("like dissolves like").</p>`
+			notes: `<p>Boiling points at normal atmospheric pressure from the NIST Chemistry WebBook (for ammonia, which the WebBook doesn't list, the standard value of 239.8 K). Polarity also decides what dissolves in what: polar water dissolves salt and sugar, but not oil, whose molecules are long non-polar chains of carbon and hydrogen ("like dissolves like").</p>`
 		}
 	]
 };

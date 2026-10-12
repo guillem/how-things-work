@@ -214,7 +214,9 @@
 			const op = isNew ? smoothstep(0, 0.35, p) : 1;
 			if (d.kind === 'bond' && d.ligand !== undefined) {
 				const sym = molecule.ligands[d.ligand];
-				const L = bondLength(molecule.centre, sym, zoom.current) * (isNew ? lerp(1.9, 1, p) : 1);
+				const L =
+					bondLength(molecule.centre, sym, zoom.current, a.orders[d.ligand]) *
+					(isNew ? lerp(1.9, 1, p) : 1);
 				const v: Vec = [dir[0] * L, dir[1] * L, dir[2] * L];
 				ligandPos[d.ligand] = v;
 				const s = project(v);

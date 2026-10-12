@@ -12,7 +12,7 @@
 	 */
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { BOILING, analyse, molarMass, type Molecule, type Sym } from '../model';
+	import { BOILING, analyse, celsius, molarMass, type Molecule, type Sym } from '../model';
 	import { ATOM, NEG, POS, atomRadius, bondLength, projector } from '../look';
 
 	let { t, reduced }: StageProps = $props();
@@ -31,7 +31,7 @@
 				i,
 				x: 130 + i * 128,
 				kelvin: b.kelvin,
-				celsius: Math.round(b.kelvin - 273.15),
+				celsius: celsius(b.kelvin),
 				formula: r.formula,
 				name: r.name ?? '',
 				polar: r.polar,

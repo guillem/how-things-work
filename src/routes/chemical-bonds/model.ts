@@ -520,15 +520,23 @@ export const molarMass = (m: Molecule) =>
 /**
  * Normal boiling points (K) of four small molecules of similar mass, from the NIST
  * Chemistry WebBook (webbook.nist.gov, phase-change data, accessed 2026-10-12):
- * CH4 111 ± 2 K (average of 13 values); HF 292.7 K (Streng 1971); H2O 373.17 K
- * (average of 7 values). The WebBook gives no boiling point for NH3; it is computed here
- * from the WebBook's Antoine vapour-pressure equation for ammonia (Stull 1947,
- * 164.0–239.6 K: log10 P/bar = 3.18757 − 506.713 / (T/K − 80.78)) at 1 atm, 240.0 K.
+ * CH4 111.65 K (Pavese et al. 1976); HF 292.7 K (Streng 1971); H2O 373.17 K (average of
+ * 7 values). The WebBook lists no boiling point for NH3, and its Antoine vapour-pressure
+ * fit (Stull 1947) ends at 239.6 K, just below it; this is the standard normal boiling
+ * point, 239.82 K (−33.3 °C).
  */
-const ammoniaBoiling = 506.713 / (3.18757 - Math.log10(1.01325)) + 80.78;
+/**
+ * Whole degrees Celsius, as usually quoted: halves round away from zero (methane's
+ * −161.5 °C is −162 °C). Rounding to 0.1 first removes floating-point noise.
+ */
+export function celsius(kelvin: number) {
+	const c = Math.round((kelvin - 273.15) * 10) / 10;
+	return Math.sign(c) * Math.round(Math.abs(c));
+}
+
 export const BOILING: { molecule: Molecule; kelvin: number }[] = [
-	{ molecule: { centre: 'C', ligands: ['H', 'H', 'H', 'H'] }, kelvin: 111 },
-	{ molecule: { centre: 'N', ligands: ['H', 'H', 'H'] }, kelvin: ammoniaBoiling },
+	{ molecule: { centre: 'C', ligands: ['H', 'H', 'H', 'H'] }, kelvin: 111.65 },
+	{ molecule: { centre: 'N', ligands: ['H', 'H', 'H'] }, kelvin: 239.82 },
 	{ molecule: { centre: 'O', ligands: ['H', 'H'] }, kelvin: 373.17 },
 	{ molecule: { centre: 'F', ligands: ['H'] }, kelvin: 292.7 }
 ];

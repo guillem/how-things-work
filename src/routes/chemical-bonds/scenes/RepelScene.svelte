@@ -123,8 +123,8 @@
 		2: { shape: 'linear', example: 'CO₂, HCN' },
 		3: { shape: 'trigonal planar', example: 'formaldehyde, CH₂O' },
 		4: { shape: 'tetrahedral', example: 'methane, CH₄' },
-		5: { shape: 'trigonal bipyramidal', example: 'PCl₅', note: 'third-row atoms only' },
-		6: { shape: 'octahedral', example: 'SF₆', note: 'third-row atoms only' }
+		5: { shape: 'trigonal bipyramidal', example: 'PCl₅', note: 'atoms from the third row down' },
+		6: { shape: 'octahedral', example: 'SF₆', note: 'atoms from the third row down' }
 	};
 	const info = $derived(INFO[n]);
 
@@ -241,12 +241,12 @@
 	</g>
 
 	<!-- readout -->
-	{@render txt(PX, 70, `${n} electron pairs`, 22, { weight: 700 })}
+	{@render txt(PX, 70, `${n} electron domains`, 22, { weight: 700 })}
 	{@render txt(PX, 96, settled > 0.5 ? info.shape : 'spreading out…', 17, {
 		weight: 600,
 		muted: settled <= 0.5
 	})}
-	{@render txt(PX, 130, 'Angles between pairs now:', 13, { weight: 600 })}
+	{@render txt(PX, 130, 'Angles between domains now:', 13, { weight: 600 })}
 	{@render txt(
 		PX,
 		150,
@@ -282,7 +282,7 @@
 	</g>
 	{@render txt(PX, 400, 'The spreading is computed: charges on a', 11, { muted: true })}
 	{@render txt(PX, 415, 'sphere pushing each other apart (1/r²).', 11, { muted: true })}
-	{@render txt(CX, 584, 'Drag to turn · change the number of pairs to replay', 11, {
+	{@render txt(CX, 584, 'Drag to turn · change the number of domains to replay', 11, {
 		anchor: 'middle',
 		muted: true
 	})}

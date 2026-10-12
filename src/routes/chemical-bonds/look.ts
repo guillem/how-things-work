@@ -31,9 +31,29 @@ export const POS = '#1c7ed6';
 /** Drawn radius (stage px) of an atom: grows with its covalent radius (pm). */
 export const atomRadius = (s: Sym, k = 1) => k * (9 + 0.17 * (data(s).radius ?? 70));
 
-/** Bond length (stage px) between two atoms: the sum of their covalent radii. */
-export const bondLength = (a: Sym, b: Sym, pxPerPm = 1.05) =>
-	pxPerPm * ((data(a).radius ?? 70) + (data(b).radius ?? 70));
+/**
+ * Double- and triple-bond covalent radii (pm) from Pyykkö & Atsumi, Chem. Eur. J. 15,
+ * 12770 (2009), for the atoms the builder can join by a multiple bond (C, N, O).
+ */
+const MULTIPLE_RADIUS: Partial<Record<Sym, { 2: number; 3: number }>> = {
+	C: { 2: 67, 3: 60 },
+	N: { 2: 60, 3: 54 },
+	O: { 2: 57, 3: 53 }
+};
+
+/** Covalent radius (pm) of an atom in a bond of the given order. */
+function bondRadius(s: Sym, order: number) {
+	const multiple = MULTIPLE_RADIUS[s];
+	if (multiple && (order === 2 || order === 3)) return multiple[order];
+	return data(s).radius ?? 70;
+}
+
+/**
+ * Bond length (stage px) between two atoms: the sum of their covalent radii for that bond
+ * order (single by default), so double and triple bonds come out shorter.
+ */
+export const bondLength = (a: Sym, b: Sym, pxPerPm = 1.05, order = 1) =>
+	pxPerPm * (bondRadius(a, order) + bondRadius(b, order));
 
 export interface Projected {
 	x: number;
