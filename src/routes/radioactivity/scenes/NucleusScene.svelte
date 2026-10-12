@@ -403,15 +403,15 @@
 		</g>
 		<Label
 			x={DX + 40}
-			y={128}
+			y={110}
 			text={emitted.text}
 			color={emitted.color}
 			weight={600}
 			anchor="start"
 		/>
-		<Label x={DX + 40} y={146} text={emitted.sub} muted anchor="start" />
+		<Label x={DX + 40} y={128} text={emitted.sub} muted anchor="start" />
 		{#if mode === 'beta'}
-			<Label x={DX + 40} y={164} text="(and an antineutrino)" muted anchor="start" />
+			<Label x={DX + 40} y={146} text="(and an antineutrino)" muted anchor="start" />
 		{/if}
 
 		<!-- chart of nuclides around the parent -->

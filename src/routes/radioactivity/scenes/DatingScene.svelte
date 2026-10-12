@@ -167,10 +167,14 @@
 		/>
 		<Label x={244} y={66} text="cosmic ray" anchor="end" />
 		<circle cx={316} cy={108} r="10" fill="var(--rad-beta)" />
-		<text x={316} y={112} text-anchor="middle" style:fill="#fff" style:font-size="10px">N</text>
+		<text x={316} y={112} text-anchor="middle" style:fill="var(--stage-bg)" style:font-size="10px"
+			>N</text
+		>
 		<text x={336} y={113} class="muted">→</text>
 		<circle cx={364} cy={108} r="10" fill="var(--rad-parent)" />
-		<text x={364} y={112} text-anchor="middle" style:fill="#fff" style:font-size="10px">C</text>
+		<text x={364} y={112} text-anchor="middle" style:fill="var(--stage-bg)" style:font-size="10px"
+			>C</text
+		>
 		<text x={340} y={138} text-anchor="middle" class="muted">nitrogen-14 → carbon-14</text>
 
 		<!-- carbon-14 in CO₂, taken in by the tree while it lives -->
