@@ -96,6 +96,27 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   step sets n to 30 on arrival when it is 1 (a scene-side default; a per-step control would be
   cleaner).
 
+- **chemical-bonds** (batch 7) — the builder makes single-centre molecules only, with lone pairs
+  drawn only on the centre atom (the text says so); the angle arc looks odd when a bond is seen
+  nearly edge-on; in CO₂ the centre's δ+ label sits close to a bond line; the slow auto-turn makes
+  clicking an atom fiddly (it pauses on hover).
+
+- **waves-interference** (batch 7) — sources can only be dragged vertically (spacing), not placed
+  anywhere in the tank; "move a source" is a speed slider, not a drag. On a slow machine the ripple
+  tank's first period paints before its frame cache fills.
+
+- **radioactivity** (batch 7) — control changes snap rather than ease; at a 2 s half-life the
+  plot's half-life marks crowd together.
+
+- **linear-transformations** (batch 7) — in "Mirror in the diagonal" the λ = −1 label sits on the
+  F; the F is clipped under "Stretch" and in the reduced-motion `compose` frame; with the zero
+  matrix both handles overlap at the origin (only ĵ can be grabbed); near a flat matrix the moved
+  grid becomes a dense hatch.
+
+- **fourier-transform** (batch 7) — `#square` and `#spectrum` are mostly static frames; extreme
+  bar edits can clip the rebuilt signal at the top of the graph; a 0 Hz bar below −0.75 is drawn
+  cut off (its label is right); the circle-size chart shows k = −20…20 only.
+
 - **e2e flake** — `scenes.e2e.ts` › orbits-kepler › `#two` occasionally fails under the full
   parallel run (passes alone and on rerun): the step's page load sometimes exceeds the 5 s
   expectation. Give that test more time or lighten the step's first render.
@@ -121,6 +142,10 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
     checked. `sorting` "pausing after stepping…" passes even if playback never moved.
 
 ## Site and framework work
+
+- **Promote `VectorHandle`** (linear-transformations' `scenes/VectorHandle.svelte`, copied from
+  complex-numbers' `PointHandle`) into `src/lib/draw`: a 2D draggable point with arrow keys on both
+  axes; the shared `Handle` only has one-dimensional keys.
 
 - **Stage text is unreadable on phones (site-wide, found 2026-10-07).** At 390 px wide the
   960-unit stage is drawn at ~0.37 scale, so 11–13 px labels end up ~4–5 px. Needs a design
