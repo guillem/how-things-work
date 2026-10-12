@@ -66,21 +66,19 @@ Last updated: 2026-10-12 UTC.
 
 ## Current development
 
-Batch 7 (2026-10-12, local worktrees, one builder agent each): the topics listed at the end of
-this section, merged into `main` locally, not pushed until the user validates. Released in v0.1.2 (2026-10-12), built in cloud sessions on 2026-10-11: the
-photosynthesis review fixes, then its rate model and "What limits the rate?" step (PROSPECT-D
-leaf optics + FvCB C₃ model, `src/routes/photosynthesis/model.ts`); photosynthesis is ticked and
-its review report deleted. Built-state params in use: `web:<step>`, `board:build`,
-`bridge:build`, `bits:<step>`, `map:<step>`, `view:zoom`, `mol:<step>`.
+**Batch 7 (2026-10-12):** chemical-bonds, waves-interference, radioactivity,
+linear-transformations, fourier-transform. One builder agent per topic in a local worktree, no
+reviewer agents (fact-check via `make review` instead); all merged into `main` locally and ticked,
+`make e2e-full` green (543 tests). Not pushed until the user validates. Review batches submitted:
+`msgbatch_01ByHp9mtCYJjYKNcyp3dSWD` (waves-interference, chemical-bonds) and
+`msgbatch_01KVdrkijDgMqYk6t9gq8uub` (the other three); run `make review-fetch`, then apply the
+reports in `docs/reviews/`.
 
-- waves-interference: merged; ticked; built-state param `probe:tank`. Not reviewed yet.
-- chemical-bonds: built in worktree branch `topic/chemical-bonds` (model, 11 steps, 5 scenes, tests), ticked; awaiting merge and review.
-- radioactivity: merged; ticked. Not reviewed yet.
-- linear-transformations: merged; ticked. Not reviewed yet.
+Released in v0.1.2 (2026-10-12): the photosynthesis review fixes, rate model and "What limits the
+rate?" step (built in cloud sessions on 2026-10-11).
 
-- fourier-transform: built and ticked on branch `topic/fourier-transform` (local worktree), not yet
-  merged; built-state params `ft:wave`, `ft:bars`, `ft:curve`.
-- fourier-transform: merged; ticked. Not reviewed yet.
+Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<step>`,
+`map:<step>`, `view:zoom`, `mol:<step>`, `probe:tank`, `ft:wave`, `ft:bars`, `ft:curve`.
 
 ## Open questions for the user
 
