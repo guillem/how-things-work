@@ -366,6 +366,15 @@ const explainers: Explainer[] = [
 		accent: '#5f3dc4',
 		steps: 14,
 		minutes: 20
+	},
+	{
+		slug: 'special-relativity',
+		title: 'Special relativity: why moving clocks run slow',
+		summary:
+			'Speed a train with a light clock towards the speed of light and compare what the passengers and the platform measure: clocks that tick slower, a train that gets shorter, and two lightning strikes that happen at once for one observer and one after the other for the other.',
+		accent: '#c2255c',
+		steps: 12,
+		minutes: 18
 	}
 ];
 

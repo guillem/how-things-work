@@ -544,6 +544,14 @@ kbd {
 	--cpu-data: #ffe3bf;
 	--cpu-ok: #2f9e44;
 	--cpu-error: #e03131;
+	/* special relativity: the platform frame, the train frame, light, lightning, the carriage, the platform deck, muons */
+	--rel-plat: #1971c2;
+	--rel-train: #c2255c;
+	--rel-light: #e67700;
+	--rel-strike: #7048e8;
+	--rel-car: #fbe4ec;
+	--rel-deck: #e3e7eb;
+	--rel-muon: #2f9e44;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -852,4 +860,11 @@ kbd {
 	--cpu-data: #453015;
 	--cpu-ok: #51cf66;
 	--cpu-error: #ff6b6b;
+	--rel-plat: #4dabf7;
+	--rel-train: #f06595;
+	--rel-light: #ffd43b;
+	--rel-strike: #b197fc;
+	--rel-car: #47212f;
+	--rel-deck: #343a40;
+	--rel-muon: #69db7c;
 }
