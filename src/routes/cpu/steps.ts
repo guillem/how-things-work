@@ -92,7 +92,7 @@ export const spec: ExplainerSpec = {
 			hints: { program: 'first', tour: true },
 			duration: 24,
 			body: `
-<p>This is a whole computer, cut down to the bone: a <dfn data-def="The central processing unit: the part of a computer that carries out a program's instructions one after another.">processor</dfn> (CPU) on the left and a <strong>memory</strong> of 32 bytes on the right. It is a teaching machine, but every part has a counterpart in the chip in your phone.</p>
+<p>This is a whole computer, cut down to the bone: a <dfn data-def="The central processing unit: the part of a computer that carries out a program's instructions one after another.">processor</dfn> (CPU) in the middle and a <strong>memory</strong> of 32 bytes on the right. It is a teaching machine, but every part has a counterpart in the chip in your phone.</p>
 <ul>
 <li><strong>Memory</strong> is a row of numbered boxes, each holding one byte (0–255). The number of a box is its <dfn data-def="The number that identifies a box of memory, so the processor can ask for exactly that byte.">address</dfn>. The <em>program itself</em> is stored here, as bytes, next to the data it works on.</li>
 <li>The <strong>program counter</strong> (PC) holds the address of the next instruction.</li>
@@ -101,7 +101,7 @@ export const spec: ExplainerSpec = {
 <li>The <dfn data-def="Arithmetic logic unit: the circuit that adds, subtracts and compares. It is built from adders like the ones made of logic gates.">ALU</dfn> (arithmetic logic unit) does the sums. It is the <a href="../logic-gates/#four">adder you can build from logic gates</a>, plus a little more.</li>
 </ul>
 <p>On the left is the program, written as <dfn data-def="A way of writing a processor's instructions as short words (ADD, JMP…) instead of numbers. An assembler translates it into the bytes the processor runs.">assembly language</dfn>: one line per instruction. It adds 7 and 5.</p>`,
-			notes: `<p>The design follows the classic teaching computers, such as the SAP-1 (“Simple As Possible”) of A. P. Malvino’s <em>Digital Computer Electronics</em> and the Little Man Computer. Keeping program and data in one memory is called the <em>von Neumann</em> design, after John von Neumann’s 1945 report on the EDVAC; almost every computer since works this way.</p>`
+			notes: `<p>The design follows the classic teaching computers, such as the SAP-1 (“Simple As Possible”) of A. P. Malvino’s <em>Digital Computer Electronics</em> and the Little Man Computer. Keeping program and data in one memory is called the <em>von Neumann</em> design, after John von Neumann’s 1945 report on the EDVAC; most general-purpose computers since work this way.</p>`
 		},
 		{
 			id: 'fetch',
@@ -167,7 +167,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>So far the PC has only moved forward. A <dfn data-def="An instruction that writes a new address into the program counter, so the next fetch comes from somewhere else.">jump</dfn> changes that: <strong>JMP loop</strong> writes the address of <code>loop</code> into the PC, and the next fetch comes from there. The program goes round again.</p>
 <p>Going round forever is no use, so the loop needs a way out. <strong>JZ</strong> (“jump if zero”) jumps only if the Z flag is on, that is, if the last result was 0. This countdown stores the count, subtracts 1, and leaves the loop when the count reaches 0.</p>
-<p>Watch the PC: it climbs to 10, jumps back to 4 and climbs again, until JZ sends it to 12. Memory box 16 shows 5, 4, 3, 2, 1 and finally 0.</p>`
+<p>Watch the PC: fetching the JMP moves it on to 12, then the JMP sets it back to 4, and round it goes until the count is 0 and JZ jumps to 12 instead. Memory box 16 shows 5, 4, 3, 2, 1 and finally 0.</p>`
 		},
 		{
 			id: 'sum',
@@ -193,9 +193,9 @@ export const spec: ExplainerSpec = {
 			controls: [a, b, play, pace, tick, rewind],
 			body: `
 <p>“If” in a program is also a conditional jump. This program keeps the larger of two numbers, <i>a</i> and <i>b</i>, stored in memory boxes 16 and 17.</p>
-<p>It guesses that <i>b</i> is larger and stores it. Then it works out <i>b</i> − <i>a</i>. If <i>a</i> is bigger, the subtraction has to borrow (a byte can’t go below 0, it wraps round to 255 and the C flag comes on), and <strong>JC</strong> (“jump if carry”) jumps to code that stores <i>a</i> instead. If not, the jump is skipped and the program stops.</p>
+<p>It guesses that <i>b</i> is larger and stores it. Then it works out <i>b</i> − <i>a</i>. If <i>a</i> is bigger, the subtraction has to borrow (a byte can’t go below 0: the result wraps round to the top of the range, and the C flag comes on), and <strong>JC</strong> (“jump if carry”) jumps to code that stores <i>a</i> instead. If not, the jump is skipped and the program stops.</p>
 <p>Change <i>a</i> and <i>b</i> and watch which path the PC takes.</p>`,
-			notes: `<p>Wrapping round is the same <a href="../binary/#overflow">overflow</a> as in 8-bit binary addition: 23 − 42 leaves 237 in the register, which is 23 − 42 + 256. Real processors have more flags (negative, overflow…) and many conditional jumps, but each one is the same idea: test a flag, and either write a new address into the PC or don’t.</p>`
+			notes: `<p>Wrapping round is the same <a href="../binary/#overflow">overflow</a> as in 8-bit binary addition: with <i>a</i> = 42 and <i>b</i> = 23, <i>b</i> − <i>a</i> = 23 − 42 leaves 237 in the register, which is 23 − 42 + 256. Real processors have more flags (negative, overflow…) and many conditional jumps, but each one is the same idea: test a flag, and either write a new address into the PC or don’t.</p>`
 		},
 		// ------------------------------------------------------------------- yours
 		{

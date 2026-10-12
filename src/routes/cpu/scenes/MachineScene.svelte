@@ -148,8 +148,8 @@
 		kind ? `var(--cpu-${kind})` : 'var(--explainer-accent)';
 	const pcol = $derived(col(kind));
 	const instr = $derived<Decoded | null>(phase?.instr ?? null);
-	/** The instruction being worked on is known from decode on (its bytes from fetch). */
-	const known = $derived(phase && (kind !== 'fetch' || post) ? phase : undefined);
+	/** The instruction's meaning is known from decode on: during fetch the IR holds bytes only. */
+	const known = $derived(phase && kind !== 'fetch' ? phase : undefined);
 	const instructionsDone = $derived(
 		rec
 			? rec.phases.slice(0, Math.max(0, p + (post ? 1 : 0))).filter((q) => q.kind === 'execute')

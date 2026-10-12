@@ -4,7 +4,7 @@
  *
  * This is a teaching machine, in the spirit of the SAP-1 ("Simple As
  * Possible") computer of A. P. Malvino, *Digital Computer Electronics*
- * (McGraw-Hill, 1977) and the Little Man Computer: real enough that programs
+ * (McGraw-Hill) and the Little Man Computer: real enough that programs
  * are bytes in memory and every step is what a real processor does, small
  * enough to see all of it at once.
  *

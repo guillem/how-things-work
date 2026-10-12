@@ -63,6 +63,10 @@ test('typing in the editor never triggers the explainer shortcuts', async ({ pag
 	await expect(page.locator('aside h2')).toHaveText(title ?? '');
 	await expect(editor(page)).toHaveValue(/; r f a \? j k/);
 	await expect(page.getByRole('dialog')).toHaveCount(0);
+	// The caret stays where the reader types: the text is not re-rendered under it.
+	await editor(page).evaluate((el: HTMLTextAreaElement) => el.setSelectionRange(0, 0));
+	await page.keyboard.type('AB');
+	await expect(editor(page)).toHaveValue(/^AB/);
 });
 
 test('a mistake in the editor shows an error with its line, and fixing it runs again', async ({
