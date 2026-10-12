@@ -168,7 +168,7 @@ A topic is done when:
 - [x] orbits-kepler
 - [ ] rockets
 - [ ] stars
-- [ ] black-holes
+- [x] black-holes
 - [ ] gravitational-waves
 - [ ] dark-matter
 - [ ] big-bang

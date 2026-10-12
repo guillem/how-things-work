@@ -248,7 +248,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [probeR, probeK, launch],
 			body: `
-<p>Now launch a probe sideways near the hole and compare its real path (solid) with Newton's prediction for the same launch (dashed). Far out, at 40 r<sub>s</sub>, they nearly match. Closer in, the probe's orbit no longer closes: each time round, its closest point moves on, and the path draws a rosette. That is the same turning that shows up as Mercury's 43″ per century, here hugely magnified.</p>
+<p>Now launch a probe sideways near the hole and compare its real path (solid) with Newton's prediction for the same launch (dashed). Far out, at 40 r<sub>s</sub>, they nearly match: the real orbit only turns slowly. Closer in, the probe's orbit no longer closes: each time round, its closest point moves on, and the path draws a rosette. That is the same turning that shows up as Mercury's 43″ per century, here hugely magnified.</p>
 <p>Closer still, the difference is not small at all. Launches that Newton says would give a safe ellipse dive into the horizon instead. Fast launches that fly past are flung round in a sharp hairpin.</p>`,
 			notes: `<p>For a body moving round the hole, general relativity adds one term to Newton's gravity: an extra inward pull that grows as 1/r⁴ instead of 1/r². It is tiny far away and grows quickly close in. Time on the probe's own clock sets the pace of the animation.</p>`
 		},

@@ -659,7 +659,14 @@
 				style:pointer-events="none">horizon</text
 			>
 		{:else}
-			<T x={cx} y={cy + 2 * S + 18} text="black hole" size={12} anchor="middle" muted />
+			<T
+				x={cx}
+				y={cy + 2 * S + 18}
+				text={phase === 'weak' ? 'a compact mass' : 'black hole'}
+				size={12}
+				anchor="middle"
+				muted
+			/>
 		{/if}
 		{#if phase === 'light' || phase === 'sphere'}
 			<T
