@@ -252,16 +252,18 @@
 		{#if mirrorPath}
 			<Rays paths={[{ key: 'm', legs: mirrorPath.legs, color: 'var(--lo-ray)', width: 3 }]} {t} />
 		{/if}
-		{@render label(M.x + midIn.x * 104, M.y + midIn.y * 104 + 5, `${fmt(incidence, 0)}°`, {
-			color: 'var(--lo-theta1)',
-			weight: 700,
-			size: 15
-		})}
-		{@render label(M.x + midOut.x * 118, M.y + midOut.y * 118 + 5, `${fmt(reflection, 0)}°`, {
-			color: 'var(--lo-theta2)',
-			weight: 700,
-			size: 15
-		})}
+		{#if incidence >= 12}
+			{@render label(M.x + midIn.x * 104, M.y + midIn.y * 104 + 5, `${fmt(incidence, 0)}°`, {
+				color: 'var(--lo-theta1)',
+				weight: 700,
+				size: 15
+			})}
+			{@render label(M.x + midOut.x * 118, M.y + midOut.y * 118 + 5, `${fmt(reflection, 0)}°`, {
+				color: 'var(--lo-theta2)',
+				weight: 700,
+				size: 15
+			})}
+		{/if}
 
 		<Grip x={lamp1.x} y={lamp1.y} label="Lamp" onmove={placeLamp1}>
 			<circle cx={lamp1.x} cy={lamp1.y} r="30" fill="transparent" />

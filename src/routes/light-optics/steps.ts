@@ -332,7 +332,7 @@ export const spec: ExplainerSpec = {
 <p>Some things to try: aim the lamp through the lens and put the prism at its focus. Bounce the beam off the mirror into the prism. Turn the prism until the light can't get out of it. Change the material and the colour.</p>
 <p>Every bend you see is the same rule at work, n₁ sin θ₁ = n₂ sin θ₂, applied at each surface the light meets.</p>
 <p><strong>Light changes direction when its speed changes between materials. That one rule makes lenses focus, prisms and raindrops spread white light into rainbows, and optical fibres trap light by total internal reflection.</strong></p>`,
-			notes: `<p>The bench traces each ray through the real geometry, the way optical-design software does (in two dimensions here), with Snell's law at every surface, the Fresnel share reflected (shown only when it is at least 5% of the light), and total internal reflection. Ray tracing in computer graphics works the same way, for rendering glass and water in films and games.</p>`
+			notes: `<p>The bench traces each ray through the real geometry, the way optical-design software does (in two dimensions here), with Snell's law at every surface, the Fresnel share reflected (shown only when it is at least a tenth of the light), and total internal reflection. Ray tracing in computer graphics works the same way, for rendering glass and water in films and games.</p>`
 		}
 	]
 };

@@ -114,7 +114,7 @@ A topic is done when:
 - [x] waves-interference
 - [x] electric-circuits
 - [x] electromagnetism
-- [ ] light-optics
+- [x] light-optics
 - [x] entropy
 - [ ] special-relativity
 - [ ] quantum-mechanics

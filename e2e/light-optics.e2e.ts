@@ -40,6 +40,7 @@ test('the mirror reflects at the angle the light arrives at', async ({ page }) =
 		const all = await cells.allTextContents();
 		return all.filter((s) => /^\s*\d+\.\d°\s*$/.test(s)).map((s) => s.trim());
 	};
+	await expect(stage(page)).toContainText('Angle of reflection');
 	const before = await angles();
 	expect(before).toHaveLength(2);
 	expect(before[0]).toBe(before[1]);
@@ -95,7 +96,7 @@ test('the rainbow: red at 42.3°, violet at 40.6°', async ({ page }) => {
 	await page.goto('./light-optics/#rainbow');
 	await expect(stage(page)).toContainText('42.3°');
 	await expect(stage(page)).toContainText('40.6°');
-	await page.locator('input[data-control=white]').uncheck();
+	await page.getByRole('switch', { name: 'White light (all colours)' }).uncheck({ force: true });
 	await slider(page, 'nm').fill('450');
 	await expect(stage(page)).toContainText('The bow for 450 nm');
 });
