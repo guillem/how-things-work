@@ -17,9 +17,19 @@
 	 * Everything is computed by the model's SHA-256 (`crypto.ts`). Reduced motion shows the
 	 * finished frame.
 	 */
+	import { untrack } from 'svelte';
 	import { clamp, cycle, easeInOut } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { bitDistance, prefixSearch, sha256, sha256Hex, toBits, toHex, utf8 } from '../crypto';
+	import {
+		SEARCH_LIMIT,
+		bitDistance,
+		prefixSearch,
+		sha256,
+		sha256Hex,
+		toBits,
+		toHex,
+		utf8
+	} from '../crypto';
 	import Txt from './Txt.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -47,17 +57,36 @@
 	const b1 = $derived(toBits(d1));
 	const b2 = $derived(toBits(d2));
 	const flips = $derived(bitDistance(d1, d2));
+	/** Edit distance: the fewest characters inserted, deleted or replaced to turn one into the other. */
 	const charDiff = $derived.by(() => {
 		const a = [...aval1];
 		const b = [...aval2];
-		let n = Math.abs(a.length - b.length);
-		for (let i = 0; i < Math.min(a.length, b.length); i++) if (a[i] !== b[i]) n++;
-		return n;
+		let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+		for (let i = 1; i <= a.length; i++) {
+			const row = [i];
+			for (let j = 1; j <= b.length; j++)
+				row[j] = Math.min(
+					prev[j] + 1,
+					row[j - 1] + 1,
+					prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+				);
+			prev = row;
+		}
+		return prev[b.length];
 	});
 
 	// ---- search -------------------------------------------------------------------------------
 	const k = $derived(clamp(Math.round(Number(params.digits ?? 3)), 1, 4));
-	const found = $derived(phase === 'search' ? prefixSearch(hex, k) : null);
+	// The search can take hundreds of milliseconds at 4 digits, so it waits until typing pauses.
+	// The first search runs straight away, so the opening frame is complete.
+	let searchHex = $state(untrack(() => hex));
+	$effect(() => {
+		const h = hex;
+		if (h === untrack(() => searchHex)) return;
+		const id = setTimeout(() => (searchHex = h), 250);
+		return () => clearTimeout(id);
+	});
+	const found = $derived(phase === 'search' ? prefixSearch(searchHex, k) : null);
 	const tries = $derived(found?.tries ?? 0);
 	const SEARCH = 4.5;
 	const period = $derived(SEARCH + 4);
@@ -71,7 +100,7 @@
 			const i = done - 1 - j;
 			const h = sha256Hex(`try ${i}`);
 			let pre = 0;
-			while (pre < k && h[pre] === hex[pre]) pre++;
+			while (pre < k && h[pre] === searchHex[pre]) pre++;
 			return { i, h, pre, match: pre === k };
 		})
 	);
@@ -269,8 +298,9 @@
 		<Txt x={40} y={322} text="about half the" size={14} weight={700} />
 		<Txt x={40} y={344} text="bits out" size={14} weight={700} />
 		<Txt x={40} y={380} text="Edit either box:" size={12} muted />
-		<Txt x={40} y={398} text="the count stays" size={12} muted />
-		<Txt x={40} y={416} text="near 128." size={12} muted />
+		<Txt x={40} y={398} text="if the texts differ," size={12} muted />
+		<Txt x={40} y={416} text="the count stays" size={12} muted />
+		<Txt x={40} y={434} text="near 128." size={12} muted />
 	{:else}
 		<Txt x={40} y={38} text="Your text" size={13} weight={700} />
 		{@render field(40, 48, 880, msg, 'msg', 'Text whose digest Eve tries to match')}
@@ -340,7 +370,11 @@
 		<Txt
 			x={580}
 			y={256}
-			text={hit ? `found one; about ${fmt(16 ** k)} expected, luck varies` : 'searching…'}
+			text={!found
+				? `not found within ${fmt(SEARCH_LIMIT)} tries`
+				: hit
+					? `found one; about ${fmt(16 ** k)} expected, luck varies`
+					: 'searching…'}
 			size={13}
 			muted
 			halo={false}

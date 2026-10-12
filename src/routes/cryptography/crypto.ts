@@ -15,8 +15,9 @@
  *   112 bits of security).
  * - SHA-256 is implemented exactly as in FIPS 180-4 (August 2015) and checked against its
  *   published examples and Node's own implementation.
- * - RSA: the textbook example p = 61, q = 53 (n = 3233, e = 17, d = 2753, as in the
- *   Wikipedia article on RSA). The message's SHA-256 digest is reduced mod n and signed
+ * - RSA: the classic textbook example p = 61, q = 53 (n = 3233, e = 17, d = 2753, using
+ *   φ(n) = 3120, as in older editions of the Wikipedia article on RSA; it now uses
+ *   λ(n) = 780, d = 413). The message's SHA-256 digest is reduced mod n and signed
  *   directly ("textbook RSA"); real signatures use 2048-bit or larger n and a padding scheme
  *   such as RSA-PSS (RFC 8017).
  * - All products stay below 2⁵³, so plain JavaScript numbers are exact.
@@ -157,12 +158,15 @@ export function sha256(input: Uint8Array | string): Uint8Array {
 /** SHA-256 as 64 hex digits. */
 export const sha256Hex = (input: Uint8Array | string) => toHex(sha256(input));
 
+/** How many texts the prefix search tries before giving up. */
+export const SEARCH_LIMIT = 1 << 20;
+
 /**
  * Brute-force "reversal" of a hash, one prefix at a time: try the texts `${base} 0`,
  * `${base} 1`, … until one's SHA-256 starts with the same `digits` hex digits as `target`.
  * Each digit matches by luck 1 time in 16, so about 16^digits tries are expected.
  */
-export function prefixSearch(target: string, digits: number, base = 'try', limit = 1 << 20) {
+export function prefixSearch(target: string, digits: number, base = 'try', limit = SEARCH_LIMIT) {
 	const want = target.slice(0, digits);
 	for (let i = 0; i < limit; i++) {
 		const text = `${base} ${i}`;
@@ -293,7 +297,7 @@ export const eveSearch = (A: number, p: number = DH.p, g: number = DH.g) => disc
 
 // ---------------------------------------------------------------- RSA
 
-/** The textbook RSA key (Wikipedia, "RSA (cryptosystem)", worked example). */
+/** The classic textbook RSA key with φ(n) = 3120 (older editions of Wikipedia's "RSA (cryptosystem)"; it now uses λ(n) = 780, d = 413). */
 export const RSA = { p: 61, q: 53, n: 3233, phi: 3120, e: 17, d: 2753 } as const;
 
 /** The SHA-256 digest of a message, read as one big number and reduced mod n. */

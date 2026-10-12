@@ -37,6 +37,9 @@ test('one letter changed flips about half of the 256 bits', async ({ page }) => 
 	await page.getByRole('textbox', { name: 'Second text' }).fill('Meet me at noon');
 	await expect(stage(page)).toContainText('0 characters apart');
 	await expect(count).toHaveText('0 of 256');
+	// One character inserted at the front is one edit, not a shift of every position.
+	await page.getByRole('textbox', { name: 'Second text' }).fill('XMeet me at noon');
+	await expect(stage(page)).toContainText('1 character apart');
 });
 
 test('both sides of the key exchange derive the same key', async ({ page }) => {

@@ -147,6 +147,14 @@ test.describe('Diffie–Hellman on the 101-hour clock', () => {
 	});
 });
 
+test('the numbers the narrative quotes for the default secrets and key', () => {
+	// a = 29, b = 64: A = 59, B = 79, both keys 37; Eve needs 30 tries; 52 trial divisions find 53.
+	const k = diffieHellman(29, 64);
+	expect([k.A, k.B, k.aliceKey, k.bobKey]).toEqual([59, 79, 37, 37]);
+	expect(eveSearch(59).tries).toBe(30);
+	expect(trialFactor(RSA.n).tries).toBe(52);
+});
+
 test.describe('RSA signatures', () => {
 	test('the textbook key is consistent: n = pq, e·d ≡ 1 mod (p−1)(q−1)', () => {
 		expect(RSA.p * RSA.q).toBe(RSA.n);
