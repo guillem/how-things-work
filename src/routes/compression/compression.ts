@@ -356,8 +356,8 @@ export function jpeg(img: Grey, quality: number): JpegResult {
  * plus SSSS extra bits; the AC terms are read in zigzag order as (run of zeros, category)
  * symbols plus extra bits, with ZRL for 16 zeros and EOB once only zeros are left. The symbols
  * are Huffman-coded with tables built for this image (as libjpeg's "optimize" option does), one
- * for DC and one for AC. Headers and the tables themselves are not counted, and the 16-bit limit
- * on code length is ignored (it never binds at these sizes).
+ * for DC and one for AC. Headers and the tables themselves are not counted; the 16-bit limit
+ * on code length (it never binds at these sizes) and the reserved all-ones code word are ignored.
  */
 export function jpegBits(blocks: number[][]): number {
 	const dc = new Map<string, number>();
@@ -499,6 +499,19 @@ export function makeImage(id: ImageId): Grey {
 			}
 	}
 	return { width: w, height: h, data };
+}
+
+/**
+ * A colour picture (RGBA bytes, as a canvas gives them) as grey: the brightness JPEG keeps,
+ * Y = 0.299 R + 0.587 G + 0.114 B (the JFIF definition), rounded to 0–255.
+ */
+export function lumaOf(width: number, height: number, rgba: ArrayLike<number>): Grey {
+	const data = new Uint8Array(width * height);
+	for (let i = 0; i < data.length; i++)
+		data[i] = Math.round(
+			Math.min(255, 0.299 * rgba[4 * i] + 0.587 * rgba[4 * i + 1] + 0.114 * rgba[4 * i + 2])
+		);
+	return { width, height, data };
 }
 
 // ===================================================================================== drawing

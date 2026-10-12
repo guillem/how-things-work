@@ -28,6 +28,17 @@
 		});
 	});
 
+	/**
+	 * Keeps at most MAX_LENGTH symbols. Counted in code points like the counter (an HTML
+	 * `maxlength` counts UTF-16 units, so an emoji would count twice).
+	 */
+	function oninput(event: Event & { currentTarget: HTMLInputElement }) {
+		const box = event.currentTarget;
+		const v = [...box.value].slice(0, MAX_LENGTH).join('');
+		if (v !== box.value) box.value = v;
+		setParam('msg', v);
+	}
+
 	function onkeydown(event: KeyboardEvent, v: string) {
 		if (event.key !== 'Enter' && event.key !== ' ') return;
 		// Handled here, so the explainer does not also take Space as play/pause.
@@ -41,11 +52,10 @@
 		class="cmp-text"
 		type="text"
 		{value}
-		maxlength={MAX_LENGTH}
 		spellcheck="false"
 		autocomplete="off"
 		aria-label="Message"
-		oninput={(e) => setParam('msg', e.currentTarget.value)}
+		{oninput}
 	/>
 </foreignObject>
 <Txt

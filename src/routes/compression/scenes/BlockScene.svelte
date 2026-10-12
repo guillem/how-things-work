@@ -27,6 +27,7 @@
 		bmpDataUrl
 	} from '../compression';
 	import BlockPicker from './BlockPicker.svelte';
+	import PictureInput from './PictureInput.svelte';
 	import { BLOCKS, blockOf, fmt, greyUrl, imageOf } from './shared';
 	import Txt from './Txt.svelte';
 
@@ -176,6 +177,7 @@
 		<Txt x={740} y={286} text="144 blocks × 64 pixels" size={13} />
 		<Txt x={740} y={308} text="= 9,216 pixels × 8 bits" size={13} />
 		<Txt x={740} y={332} text="= 73,728 bits" size={15} weight={700} />
+		<PictureInput x={740} y={372} w={180} missing={chosen.missing} {setParam} />
 		<Txt
 			x={40}
 			y={470}
@@ -232,7 +234,7 @@
 			stroke-opacity="0.7"
 			stroke-linejoin="round"
 		/>
-		<Txt x={cx} y={128 + 8 * cell + 18} text="DC: the average" size={11} muted />
+		<Txt x={cx} y={128 + 8 * cell + 18} text="DC: 8 × (average − 128)" size={11} muted />
 		<Txt
 			x={cx + 8 * cell - 2}
 			y={128 + 8 * cell + 18}
