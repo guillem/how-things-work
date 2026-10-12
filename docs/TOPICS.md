@@ -99,7 +99,7 @@ A topic is done when:
 **Mathematics**
 - [x] unit-circle
 - [ ] calculus
-- [ ] linear-transformations
+- [x] linear-transformations
 - [ ] tensors
 - [x] complex-numbers
 - [ ] fourier-transform
