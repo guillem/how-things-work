@@ -43,10 +43,11 @@ const mode: Control = {
 	label: 'Kind of decay',
 	default: 'alpha',
 	options: [
-		{ value: 'alpha', label: 'Alpha (americium-241)' },
-		{ value: 'beta', label: 'Beta (carbon-14)' },
-		{ value: 'gamma', label: 'Gamma (technetium-99m)' }
-	]
+		{ value: 'alpha', label: 'Alpha' },
+		{ value: 'beta', label: 'Beta' },
+		{ value: 'gamma', label: 'Gamma' }
+	],
+	help: 'Alpha: americium-241. Beta: carbon-14. Gamma: technetium-99m.'
 };
 
 /** Share of a sample's original carbon-14 that is left. */
