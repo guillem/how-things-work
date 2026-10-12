@@ -159,7 +159,7 @@ export const spec: ExplainerSpec = {
 			controls: [terms],
 			body: `
 <p>Look closely at the jump (magnified on the stage). Just before it the sum overshoots the square wave, rising above 1, and wiggles as it settles.</p>
-<p>Add more frequencies. The wiggles get narrower and squeeze up against the jump, but the first peak does <em>not</em> get lower: it stays about <strong>9% of the jump</strong> too high (the jump is from −1 to +1, so the peak sits near 1.18). This is the <dfn data-def="The overshoot of about 9% of the jump that a sum of sine waves always makes next to a sudden jump, however many terms are added.">Gibbs phenomenon</dfn>.</p>
+<p>Add more frequencies. The wiggles get narrower and squeeze up against the jump, but the first peak does <em>not</em> shrink away: from 5 Hz on it stays about <strong>9% of the jump</strong> too high (the jump is from +1 to −1, a drop of 2, so the peak sits near 1.18), slowly settling to 8.9%. This is the <dfn data-def="The overshoot of about 9% of the jump that a sum of sine waves always makes next to a sudden jump, however many terms are added.">Gibbs phenomenon</dfn>.</p>
 <p>So a finite number of smooth sine waves can never draw a perfect jump. What does go to zero is the average gap: the overshoot takes up less and less time.</p>`,
 			notes: `<p>The limit is (1/π)∫₀^π (sin x / x) dx − ½ ≈ 0.0895 of the jump. Henry Wilbraham noticed it in 1848; it became famous in 1898–99, when Albert Michelson, whose mechanical harmonic analyser added up to 80 sine waves, asked about it in <i>Nature</i> and Josiah Willard Gibbs answered. It shows up in practice as “ringing” next to sharp edges in compressed images and filtered sound.</p>`
 		},
