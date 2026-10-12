@@ -77,7 +77,17 @@
 		const a = rad(a0);
 		return `M${p} ${PIV + arcR} A${arcR} ${arcR} 0 0 0 ${p + arcR * Math.sin(a)} ${PIV + arcR * Math.cos(a)}`;
 	});
-	const arcLabel = $derived({ x: COL_X - GAP - 6, y: PIV + arcR + 14 });
+	// The release-angle label sits left of the arc, pushed out of the swing's
+	// reach (its depth below the pivot times the tangent of the angle): the rod
+	// on left swings used to cross it. Clamped at the stage's left edge — past
+	// about 66° the bob swings too high to reach the label's depth anyway.
+	const arcLabel = $derived.by(() => {
+		const reach = Math.tan(rad(Math.min(a0, 66)));
+		return {
+			x: Math.max(44, COL_X - GAP - 14 - (arcR + 16) * reach),
+			y: PIV + arcR + 14
+		};
+	});
 
 	// ---- trace ------------------------------------------------------------------------
 	const amax = $derived(a0 * 1.2);
