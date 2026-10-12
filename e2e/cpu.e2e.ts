@@ -54,8 +54,10 @@ test('the conditional jump follows the data', async ({ page }) => {
 
 test('typing in the editor never triggers the explainer shortcuts', async ({ page }) => {
 	await page.goto('./cpu/#editor');
-	const title = await page.locator('aside h2').textContent();
 	await editor(page).click();
+	// Read the title once the editor (client-rendered) is up: before hydration the server-rendered
+	// title is the first step's.
+	const title = await page.locator('aside h2').textContent();
 	await page.keyboard.type('\n; r f a ? j k');
 	for (const key of ['Space', 'ArrowRight', 'ArrowLeft', 'Home', 'End', 'PageDown'])
 		await page.keyboard.press(key);
