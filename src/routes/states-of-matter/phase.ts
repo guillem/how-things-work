@@ -6,7 +6,7 @@
  *   - triple point 273.16 K, 611.657 Pa; critical point 647.096 K, 22.064 MPa
  *     (IAPWS R6-95(2018), the IAPWS-95 formulation);
  *   - liquid–vapour line: Wagner & Pruß, J. Phys. Chem. Ref. Data 22, 783
- *     (1993), eq. 2.5, as adopted in IAPWS-95;
+ *     (1993), eq. 2.5, the saturation equation used alongside IAPWS-95;
  *   - melting (ice Ih) and sublimation lines: IAPWS R14-08(2011), "Revised
  *     release on the pressure along the melting and sublimation curves of
  *     ordinary water substance", eqs. 1 and 6. The ice Ih melting line is valid

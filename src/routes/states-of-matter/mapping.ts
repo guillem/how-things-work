@@ -19,7 +19,10 @@
  *     by itself), with the piston pressure proportional to the real pressure
  *     divided by the boiling (or sublimation) pressure at that temperature:
  *     squeezing a gas towards its boiling line pushes the piston down;
- *   - supercritical: hot, under a pressure proportional to the real one.
+ *   - supercritical: between the hot liquid's set point (next to the liquid,
+ *     at the critical temperature) and the gas's (next to the gas, at the
+ *     critical pressure), so the box changes smoothly there, as the real
+ *     substance does, going round its own critical point.
  *
  * The set points were chosen by running the box (see the model tests, which
  * check that the box ends up ordered or disordered, dense or spread out, as
@@ -118,12 +121,21 @@ export function setpointFor(sub: Substance, T: number, P: number): Setpoint & { 
 				P: s.gasP * clamp(P / Psat, 0, 1)
 			};
 		}
-		case 'supercritical':
+		case 'supercritical': {
+			// Blend from the hot liquid's set point (on the T = Tc edge, next to the liquid) to the
+			// gas's (on the P = Pc edge, next to the gas), so the box also goes round its own
+			// critical point and changes smoothly where the real substance does.
+			const a = T / critical.T - 1;
+			const b = Math.log10(P / critical.P);
+			const w = a + b === 0 ? 0.5 : a / (a + 0.2 * b);
+			const gasT = clamp(s.gas * (T / critical.T), s.gas, s.gasMax);
+			const gasP = clamp(s.gasP * (P / critical.P), s.gasP, 2 * s.condensedP);
 			return {
 				phase,
 				solid: false,
-				T: clamp(s.gas * (T / critical.T), s.gas, s.gasMax),
-				P: clamp(s.gasP * (P / critical.P), s.gasP, 2 * s.condensedP)
+				T: s.liquid[1] + (gasT - s.liquid[1]) * w,
+				P: s.condensedP + (gasP - s.condensedP) * w
 			};
+		}
 	}
 }
