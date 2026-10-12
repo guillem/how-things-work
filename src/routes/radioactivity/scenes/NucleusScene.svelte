@@ -107,7 +107,7 @@
 	const turnIndex = outerNeutron(C14, 14);
 	const intro14b = nucleus(C14, 700, 270, 64, 14, { turned: turnIndex });
 
-	/** Intro loop: 8 s; the decay happens at 3 s, the nitrogen holds, then fades back. */
+	/** Intro loop: 8 s; the decay happens at 3 s, the nitrogen holds, then fades out and a fresh carbon-14 fades in. */
 	const INTRO = 8;
 	const ip = $derived(reduced ? 0.2 : cycle(t, INTRO));
 	const decayed = $derived(!reduced && ip > 3 / INTRO && ip < 7.4 / INTRO);
@@ -125,6 +125,14 @@
 		};
 	});
 	const flash = $derived(decayed ? 1 - smoothstep(0, 0.35, sinceDecay) : 0);
+	/** The nitrogen fades out before 7.4 s and a new carbon-14 fades in: decay never runs backwards. */
+	const introFade = $derived(
+		reduced
+			? 1
+			: ip * INTRO < 7.4
+				? 1 - smoothstep(6.9, 7.4, ip * INTRO)
+				: smoothstep(7.4, 7.9, ip * INTRO)
+	);
 
 	// ---- mode: one decay -------------------------------------------------------------
 
@@ -238,7 +246,7 @@
 	const BARRIERS = [
 		{ id: 'paper', x: 330, w: 6, label: 'paper', fill: 'var(--rad-paper)' },
 		{ id: 'alu', x: 560, w: 14, label: 'aluminium, a few mm', fill: 'var(--rad-alu)' },
-		{ id: 'lead', x: 790, w: 40, label: 'lead, several cm', fill: 'var(--rad-lead)' }
+		{ id: 'lead', x: 790, w: 40, label: 'lead (mm to cm, by energy)', fill: 'var(--rad-lead)' }
 	];
 	const STREAM = 8;
 	const streams = $derived(
@@ -266,7 +274,7 @@
 		mode === 'alpha'
 			? 'a sheet of paper is enough'
 			: mode === 'beta'
-				? 'passes paper; a few millimetres of aluminium'
+				? "typical betas pass paper; a few mm of aluminium stops them (carbon-14's weak ones barely pass paper)"
 				: 'passes paper and aluminium; lead absorbs most, not all'
 	);
 </script>
@@ -294,38 +302,40 @@
 		<Label x={250} y={384} text="stable: lasts for ever" />
 
 		<!-- carbon-14, which decays now and then -->
-		<text x={700} y={128} text-anchor="middle" style:font-size="18px" font-weight="600">
-			{decayed ? 'Nitrogen-14' : 'Carbon-14'}
-		</text>
-		<text x={700} y={152} text-anchor="middle" class="muted">
-			{decayed ? '7 protons · 7 neutrons' : '6 protons · 8 neutrons'}
-		</text>
-		{@render drawn(decayed ? intro14b : intro14)}
-		{#if decayed}
-			{@const b = intro14.balls[turnIndex]}
-			<circle
-				cx={b.x}
-				cy={b.y}
-				r={intro14.r + 4 + 10 * (1 - flash)}
-				fill="none"
-				stroke="var(--rad-flash)"
-				stroke-width="2"
-				opacity={Math.max(flash, 0.7)}
-			/>
-			{#if electronAt.o > 0.01}
-				<g opacity={electronAt.o}>
-					<circle cx={electronAt.x} cy={electronAt.y} r="6" fill="var(--rad-beta)" />
-					<Label x={electronAt.x + 12} y={electronAt.y - 10} text="e⁻" anchor="start" />
-				</g>
+		<g opacity={introFade}>
+			<text x={700} y={128} text-anchor="middle" style:font-size="18px" font-weight="600">
+				{decayed ? 'Nitrogen-14' : 'Carbon-14'}
+			</text>
+			<text x={700} y={152} text-anchor="middle" class="muted">
+				{decayed ? '7 protons · 7 neutrons' : '6 protons · 8 neutrons'}
+			</text>
+			{@render drawn(decayed ? intro14b : intro14)}
+			{#if decayed}
+				{@const b = intro14.balls[turnIndex]}
+				<circle
+					cx={b.x}
+					cy={b.y}
+					r={intro14.r + 4 + 10 * (1 - flash)}
+					fill="none"
+					stroke="var(--rad-flash)"
+					stroke-width="2"
+					opacity={Math.max(flash, 0.7)}
+				/>
+				{#if electronAt.o > 0.01}
+					<g opacity={electronAt.o}>
+						<circle cx={electronAt.x} cy={electronAt.y} r="6" fill="var(--rad-beta)" />
+						<Label x={electronAt.x + 12} y={electronAt.y - 10} text="e⁻" anchor="start" />
+					</g>
+				{/if}
 			{/if}
-		{/if}
-		<Label
-			x={700}
-			y={384}
-			text={decayed
-				? 'a neutron became a proton: now nitrogen'
-				: 'radioactive: half-life 5,700 years'}
-		/>
+			<Label
+				x={700}
+				y={384}
+				text={decayed
+					? 'a neutron became a proton: now nitrogen'
+					: 'radioactive: half-life 5,700 years'}
+			/>
+		</g>
 
 		<text x={480} y={456} text-anchor="middle" class="muted">
 			Stable isotopes of {carbon.name.toLowerCase()} (mendeleev data): {carbon.stable
@@ -415,7 +425,7 @@
 		{/if}
 
 		<!-- chart of nuclides around the parent -->
-		<text x={CX0} y={CY0 - 14} class="muted">each square: one nucleus</text>
+		<text x={CX0} y={CY0 - 14} class="muted">each square: one kind of nucleus</text>
 		{#each chart.cells as c (c.key)}
 			{@const hot = isParent(c) || isDaughter(c)}
 			<rect

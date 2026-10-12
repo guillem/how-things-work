@@ -113,7 +113,7 @@
 	);
 
 	// ---- date ------------------------------------------------------------------------
-	const f = $derived(clamp(Number(params.fraction ?? 25), 1, 100) / 100);
+	const f = $derived(clamp(Number(params.fraction ?? 25), 0.1, 100) / 100);
 	const age = $derived(radiocarbonAge(f));
 	const err = $derived(ageUncertainty(f));
 	const AGE_MAX = 60_000;
@@ -165,7 +165,7 @@
 			stroke-width="2"
 			marker-end="url(#arrowhead)"
 		/>
-		<Label x={244} y={66} text="cosmic ray" anchor="end" />
+		<Label x={244} y={66} text="cosmic-ray neutron" anchor="end" />
 		<circle cx={316} cy={108} r="10" fill="var(--rad-beta)" />
 		<text x={316} y={112} text-anchor="middle" style:fill="var(--stage-bg)" style:font-size="10px"
 			>N</text
@@ -219,7 +219,9 @@
 		/>
 
 		<!-- the level over time -->
-		<text x={LX} y={100} style:font-size="15px" font-weight="600">Carbon-14 in the wood</text>
+		<text x={LX} y={100} style:font-size="15px" font-weight="600"
+			>Carbon-14 in the tree's newest growth</text
+		>
 		<text x={LX} y={120} class="muted">compared with living things</text>
 		<Axes
 			sx={lsx}
@@ -345,7 +347,9 @@
 			</text>
 			{#if f < 1}
 				<text x={DX0} y={544}>
-					{halvings.toFixed(2)} half-lives: 5,700 years × log₂(1 / {f.toFixed(2)})
+					{halvings.toFixed(2)} half-lives: 5,700 years × log₂(1 / {f < 0.01
+						? f.toFixed(3)
+						: f.toFixed(2)})
 				</text>
 			{/if}
 		</g>

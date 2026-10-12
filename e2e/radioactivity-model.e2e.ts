@@ -41,6 +41,14 @@ test('a simulated sample follows the exponential curve within a few σ', () => {
 	}
 });
 
+test('a nucleus lives 1 / ln 2 ≈ 1.44 half-lives on average', () => {
+	// Exponential lifetimes: the mean lifetime is T½ / ln 2, and its spread equals its mean.
+	const life = makeSample(200_000, 9).life;
+	const mean = life.reduce((sum, x) => sum + x, 0) / life.length;
+	const tau = 1 / Math.LN2;
+	expect(Math.abs(mean - tau)).toBeLessThan((4 * tau) / Math.sqrt(life.length));
+});
+
 test('the same seed gives the same sample, a different seed a different one', () => {
 	const a = makeSample(1000, 5);
 	expect(Array.from(makeSample(1000, 5).life)).toEqual(Array.from(a.life));
