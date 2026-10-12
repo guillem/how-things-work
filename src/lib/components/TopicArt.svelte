@@ -787,6 +787,50 @@
 				stroke-width="0.8"
 			/>
 		{/each}
+	{:else if slug === 'chemical-bonds'}
+		<!-- a bent water molecule: two bonds, two lone-pair lobes, δ− oxygen and δ+ hydrogens -->
+		{#each [-1, 1] as k (k)}
+			<ellipse
+				cx={100 + k * 13}
+				cy="34"
+				rx="9"
+				ry="16"
+				transform="rotate({k * 28} {100 + k * 13} 34)"
+				fill={accent}
+				fill-opacity="0.18"
+				stroke={accent}
+				stroke-opacity="0.5"
+			/>
+			<line
+				x1="100"
+				y1="62"
+				x2={100 + k * 40}
+				y2="93"
+				stroke="currentColor"
+				stroke-opacity="0.45"
+				stroke-width="5"
+				stroke-linecap="round"
+			/>
+			<circle
+				cx={100 + k * 40}
+				cy="93"
+				r="11"
+				fill="var(--surface)"
+				stroke="currentColor"
+				stroke-opacity="0.5"
+				stroke-width="1.5"
+			/>
+			<text
+				x={100 + k * 40}
+				y="97"
+				text-anchor="middle"
+				font-size="11"
+				font-weight="700"
+				fill="currentColor">H</text
+			>
+		{/each}
+		<circle cx="100" cy="62" r="18" fill="#e5484d" stroke="var(--surface)" stroke-width="1.5" />
+		<text x="100" y="67" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">O</text>
 	{:else if slug === 'error-correction'}
 		<!-- three overlapping parity circles; one flipped bit where two of them fail -->
 		{#each [{ x: 82, y: 50, bad: true }, { x: 118, y: 50, bad: false }, { x: 100, y: 81, bad: true }] as c (c.x + c.y)}

@@ -40,7 +40,7 @@ import { ELEMENTS, type Element } from '../atoms-periodic-table/atom';
 // ------------------------------------------------------------------ atoms
 
 /** The elements the explainer works with. */
-export const SYMBOLS = ['H', 'C', 'N', 'O', 'F', 'Na', 'Cl'] as const;
+export const SYMBOLS = ['H', 'C', 'N', 'O', 'F', 'Ne', 'Na', 'Cl'] as const;
 export type Sym = (typeof SYMBOLS)[number];
 
 const BY_SYMBOL = new Map(ELEMENTS.map((e) => [e.symbol, e]));
