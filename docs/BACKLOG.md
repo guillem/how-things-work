@@ -117,6 +117,11 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   bar edits can clip the rebuilt signal at the top of the graph; a 0 Hz bar below −0.75 is drawn
   cut off (its label is right); the circle-size chart shows k = −20…20 only.
 
+- **states-of-matter** (batch 9) — the box is chaotic, so its frames differ between machines
+  (V8 version, CPU). Water's density anomaly holds on average over starts (~6–7% more room for
+  ice) but not in every single run: seed 2 locally shows ice slightly denser. The page uses seed 1
+  (3.5–12% more room depending on the machine). Water's freezing is a scripted lattice shortcut.
+
 - **e2e flake** — `scenes.e2e.ts` › orbits-kepler › `#two` occasionally fails under the full
   parallel run (passes alone and on rerun): the step's page load sometimes exceeds the 5 s
   expectation. Give that test more time or lighten the step's first render.

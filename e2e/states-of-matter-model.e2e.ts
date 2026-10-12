@@ -79,6 +79,9 @@ test.describe('phase diagrams', () => {
 	});
 });
 
+const SEEDS = [1, 2, 3, 4, 5];
+const mean = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;
+
 /** Averages of the measured quantities over frames from..to (seconds), every quarter second. */
 function measure(run: BoxRun, from: number, to: number) {
 	let order = 0;
@@ -107,8 +110,17 @@ test.describe('the box of molecules', () => {
 		expect(ice.order).toBeGreaterThan(0.5);
 		expect(liquid.order).toBeLessThan(0.15);
 		expect(gas.order).toBeLessThan(0.1);
-		// ice takes more room than the liquid (the density anomaly), the gas far more
-		expect(ice.area).toBeGreaterThan(liquid.area * 1.04);
+		// ice takes more room than the liquid (the density anomaly), the gas far more. One run of 80
+		// molecules is too noisy for this (and chaotic, so it differs between machines): average
+		// over several starts.
+		const areaAt = (celsius: number, seed: number) => {
+			const sp = setpointFor('water', C(celsius), ATM);
+			const start = sp.phase === 'solid' ? 'solid' : 'liquid';
+			return measure(new BoxRun('mb', start, sp, seed), 6, 10).area;
+		};
+		expect(mean(SEEDS.map((s) => areaAt(-10, s)))).toBeGreaterThan(
+			mean(SEEDS.map((s) => areaAt(25, s))) * 1.04
+		);
 		expect(gas.free).toBeGreaterThan(0.4);
 		expect(liquid.free).toBeLessThan(0.15);
 	});
@@ -140,16 +152,21 @@ test.describe('the box of molecules', () => {
 
 	test('freezing water takes the lattice shortcut, and the ice takes more room than the liquid', () => {
 		const model: Model = MODEL_OF.water;
-		const run = new BoxRun(model, 'liquid', setpointFor('water', C(20), ATM));
-		const before = measure(run, 1, 3);
 		const t = 3 * FPS;
-		run.frame(t);
-		run.set(setpointFor('water', C(-10), ATM));
-		expect(run.frame(t + 1).freezing).toBeGreaterThan(0);
-		const after = measure(run, (t + FREEZE_FRAMES) / FPS + 2, (t + FREEZE_FRAMES) / FPS + 5);
-		expect(before.order).toBeLessThan(0.15);
-		expect(after.order).toBeGreaterThan(0.5);
-		expect(after.area).toBeGreaterThan(before.area * 1.04);
+		const freeze = (seed: number) => {
+			const run = new BoxRun(model, 'liquid', setpointFor('water', C(20), ATM), seed);
+			const before = measure(run, 1, 3);
+			run.frame(t);
+			run.set(setpointFor('water', C(-10), ATM));
+			expect(run.frame(t + 1).freezing).toBeGreaterThan(0);
+			const after = measure(run, (t + FREEZE_FRAMES) / FPS + 2, (t + FREEZE_FRAMES) / FPS + 5);
+			expect(before.order).toBeLessThan(0.15);
+			expect(after.order).toBeGreaterThan(0.5);
+			return { before: before.area, after: after.area };
+		};
+		// Averaged over several starts, as in the test above: one run is too noisy for the 4%.
+		const runs = SEEDS.map(freeze);
+		expect(mean(runs.map((r) => r.after))).toBeGreaterThan(mean(runs.map((r) => r.before)) * 1.04);
 	});
 
 	test('the box changes smoothly across the dashed line above the critical point, where no phase line is', () => {
