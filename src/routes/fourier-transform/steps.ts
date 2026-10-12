@@ -169,7 +169,7 @@ export const spec: ExplainerSpec = {
 			title: 'Sine waves are turning circles',
 			scene: 'phasors',
 			duration: 20,
-			controls: [terms, shapeDraw],
+			controls: [terms, shape],
 			body: `
 <p>A sine wave is the height of a point going round a circle (see <em>Sine, cosine and the unit circle</em>). So each ingredient can be drawn as a circle: its <strong>radius</strong> is the amplitude, and it turns as many times per second as its frequency.</p>
 <p>Now stack the circles: put the centre of each on the turning point of the one before. The heights add up, so the height of the <strong>last point</strong> is the sum of all the sine waves. Its trail, drawn to the right as time passes, is the rebuilt <strong class="tag sum">signal</strong>.</p>
