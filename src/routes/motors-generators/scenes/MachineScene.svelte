@@ -19,7 +19,7 @@
 	 *             `params.speed` turns/s (θ = 2π f t) or by hand (`mg:crank`,
 	 *             radians, unwrapped); the trace is the voltage.
 	 *   same    — `params.role`: the motor (commutator, `params.voltage`) or the
-	 *             generator turned at 1 turn/s lighting a lamp, whose current
+	 *             generator turned at 2 turns/s lighting a lamp, whose current
 	 *             makes forces that oppose the turning.
 	 *
 	 * Motor runs are pure functions of the time since they started. When the

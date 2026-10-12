@@ -47,7 +47,7 @@
 	});
 
 	const RING = { dx: 30, ry: 40, rx: 9 };
-	/** Where the coil's wire joins each slip ring: on the near face while cos > 0. */
+	/** Where the coil's wire joins each slip ring: on the near face while cos φ < 0. */
 	const marks = $derived(
 		[
 			{ id: 'a', cx: x - RING.dx, phi: theta + Math.PI / 2, color: 'var(--mg-a)' },

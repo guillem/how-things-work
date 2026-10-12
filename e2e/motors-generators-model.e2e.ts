@@ -62,6 +62,19 @@ test('a motor with a commutator keeps turning; with slip rings it rocks and stop
 	const stuck = new MotorRun({ V: 3, connection: 'slip' });
 	const end = stuck.at(20);
 	expect(Math.abs(end.omega)).toBeLessThan(0.01);
+	// It overshoots the dead point and rocks back: it swings well past 180° and crosses it
+	// several times before it settles.
+	let maxTheta = 0;
+	let crossings = 0;
+	let prev = stuck.at(0).theta;
+	for (let t = 0.01; t <= 20; t += 0.01) {
+		const th = stuck.at(t).theta;
+		maxTheta = Math.max(maxTheta, th);
+		if ((prev - Math.PI) * (th - Math.PI) < 0) crossings++;
+		prev = th;
+	}
+	expect(maxTheta).toBeGreaterThan(Math.PI + 10 * deg);
+	expect(crossings).toBeGreaterThanOrEqual(3);
 	// It comes to rest with its plane across the field (θ = 180°): no torque there.
 	expect(Math.abs(wrap(end.theta) - Math.PI)).toBeLessThan(2 * deg);
 	// Started at a dead point, even the commutator motor never moves.
@@ -84,6 +97,22 @@ test('back emf: a free motor speeds up until its own voltage cancels over half t
 	const braked = steadyRunning({ V: 3, connection: 'commutator', load: 0.05 });
 	expect(braked.speed).toBeLessThan(free.speed / 2);
 	expect(braked.current).toBeGreaterThan(free.current * 1.5);
+	// Energy is conserved in steady running: the battery's power goes into heat in the coil
+	// and work against friction (mean V·I = mean I²R + mean friction power).
+	const steady = new MotorRun({ V: 3, connection: 'commutator' });
+	let battery = 0;
+	let heat = 0;
+	let rubbing = 0;
+	const n = 2000;
+	for (let i = 0; i < n; i++) {
+		const r = steady.readings(15 + (i * 5) / n);
+		battery += (3 * r.I) / n;
+		heat += (r.I * r.I * MACHINE.R) / n;
+		rubbing +=
+			((MACHINE.friction * r.omega + MACHINE.dryFriction * Math.tanh(r.omega / 0.05)) * r.omega) /
+			n;
+	}
+	expect((heat + rubbing) / battery).toBeCloseTo(1, 2);
 	// With the commutator the battery's current never runs backwards, so the push never reverses.
 	const run = new MotorRun({ V: 3, connection: 'commutator' });
 	for (let t = 0; t < 15; t += 0.01) expect(run.readings(t).torque).toBeGreaterThanOrEqual(0);
