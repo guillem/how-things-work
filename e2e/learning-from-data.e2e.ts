@@ -61,7 +61,7 @@ test('more data: the noise floor is drawn at the noise squared and follows the n
 	page
 }) => {
 	await open(page, './learning-from-data/#moredata', 'With 21 examples, noise 0.15');
-	await expect(stage(page)).toContainText('noise floor (noise² = 0.0225)');
+	await expect(stage(page)).toContainText('dashed: noise floor (noise² = 0.0225)');
 	await page.locator('input[type=range][data-control=noise]').fill('0.3');
-	await expect(stage(page)).toContainText('noise floor (noise² = 0.0900)');
+	await expect(stage(page)).toContainText('dashed: noise floor (noise² = 0.0900)');
 });

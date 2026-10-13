@@ -12,8 +12,9 @@
 	 *   swings to 10⁴, which would hide the typical behaviour. A dashed line marks
 	 *   the noise floor, noise²: the test error no model can beat on average. (A
 	 *   geometric mean of test MSEs over k points is biased low, by about
-	 *   exp(ψ(k/2) − ln(k/2)): 0.86 for 7 points. The averaged sweet-spot error
-	 *   still stays above noise² for the counts and noises offered.)
+	 *   exp(ψ(k/2) − ln(k/2)): 0.86 for 7 points. Over the slider ranges the
+	 *   averaged sweet-spot error dips at most ~5% under noise², except with 10
+	 *   examples (3 test points) at high noise, ~0.66 noise²; the text says so.)
 	 *
 	 * Seeding (shared with FitScene): the set of examples shown is
 	 * `makeData(count, noise, 1 + fresh)`, where `fresh` counts presses of
@@ -364,9 +365,8 @@
 				stroke-width="1.5"
 				stroke-dasharray="6 5"
 			/>
-			{@render txt(CX0 + 8, ly + 16, `noise floor (noise² = ${(noise ** 2).toFixed(4)})`, 11, {
-				muted: true
-			})}
+			<!-- named beyond the chart's right edge, where no curve runs -->
+			{@render txt(CX1 + 6, ly + 4, 'noise²', 11, { muted: true })}
 		</g>
 	{/if}
 
@@ -588,10 +588,15 @@
 		{#if noise === 0}
 			{@render txt(IX0 + 96, 526, '(no noise: nothing to overfit)', 11, { muted: true })}
 		{/if}
-		{@render txt(IX0, 546, `typical errors over ${AVERAGE} random sets of examples`, 11, {
+		{#if noise > 0}
+			{@render txt(IX0, 546, `dashed: noise floor (noise² = ${(noise ** 2).toFixed(4)})`, 11, {
+				muted: true
+			})}
+		{/if}
+		{@render txt(IX0, 564, `typical errors over ${AVERAGE} random sets of examples`, 11, {
 			muted: true
 		})}
-		{@render txt(IX0, 560, '(one wild set can’t dominate); the inset shows one', 11, {
+		{@render txt(IX0, 578, '(one wild set can’t dominate); the inset shows one', 11, {
 			muted: true
 		})}
 	</g>

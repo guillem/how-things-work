@@ -170,7 +170,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [count, noise, degree, fresh],
 			body: `
-<p>Overfitting happens when a model has more freedom than its examples can pin down. Add examples and each wiggle of a flexible curve has to agree with more dots, so the noise averages out: the sweet spot moves to the right, and the test error of the flexible curves drops a long way — though never below the size of the noise itself (the noise squared, shown as a dashed line), which no model can predict.</p>
+<p>Overfitting happens when a model has more freedom than its examples can pin down. Add examples and each wiggle of a flexible curve has to agree with more dots, so the noise averages out: the sweet spot moves to the right, and the test error of the flexible curves drops a long way — though not, on average, below the size of the noise itself (the noise squared, shown as a dashed line), which no model can predict. (With only a handful of test examples, luck can put the plotted error a little under the line.)</p>
 <p>Noise works the other way: the noisier the examples, the more there is to mistake for pattern, and the simpler the best model — turn the noise down and watch the sweet spot move right.</p>
 <p>That is the heart of learning from data: <strong>fit the examples, but only as closely as the amount and quality of the data justify</strong> — and judge the result on examples the model has never seen.</p>`
 		}
