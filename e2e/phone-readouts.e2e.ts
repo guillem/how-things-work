@@ -175,6 +175,35 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Total\s*98 J/);
 	});
 
+	test('orbits cannon: the outcome is text and follows the firing speed', async ({ page }) => {
+		await page.goto('./orbits-kepler/#cannon');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Firing speed\s*5\.0 km\/s/);
+		await expect(panel).toContainText(/The ball\s*lands after/);
+		await expect(drawing(page)).not.toContainText('Firing speed');
+		await range(page, 'cannonSpeed').fill('12');
+		await expect(panel).toContainText(/The ball\s*escapes/);
+	});
+
+	test('orbits first law: the focal distances are text and follow the speed', async ({ page }) => {
+		await page.goto('./orbits-kepler/#first');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Aphelion\s*1\.00 AU/);
+		await expect(panel).toContainText('Distances to the two foci');
+		await expect(drawing(page)).not.toContainText('perihelion');
+		await range(page, 'ellipseSpeed').fill('1');
+		await expect(panel).toContainText(/Path\s*circle/);
+	});
+
+	test('orbits third law: T² and a³ are text and follow the speed', async ({ page }) => {
+		await page.goto('./orbits-kepler/#third');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/T² and a³\s*0\.337 = 0\.337/);
+		await expect(drawing(page)).not.toContainText('Your orbit');
+		await range(page, 'ellipseSpeed').fill('1');
+		await expect(panel).toContainText('a = 1.00 AU, T = 365 days');
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');
