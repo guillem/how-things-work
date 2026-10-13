@@ -254,32 +254,35 @@
 			{ id: 'rf', i: ext.maxP, text: 'rabbits fall', side: 'above' },
 			{ id: 'ff', i: ext.minH, text: 'foxes fall', side: 'left' }
 		] as const;
-		return items.map((q) => {
-			const x = qx(H[q.i]);
-			const y = qy(P[q.i]);
-			const ang =
-				(Math.atan2(qy(P[q.i + 1]) - qy(P[q.i - 1]), qx(H[q.i + 1]) - qx(H[q.i - 1])) * 180) /
-				Math.PI;
-			const w = q.text.length * 6.6;
-			let lx = x;
-			let ly: number;
-			let anchor: 'start' | 'middle' | 'end' = 'middle';
-			if (q.side === 'below') ly = y + 22 > PY1 - 6 ? y - 12 : y + 22;
-			else if (q.side === 'above') ly = y - 14 < PY0 + 6 ? y + 24 : y - 14;
-			else if (q.side === 'right') {
-				ly = y + 4;
-				// No room outside: inside the loop, off the balance line (clear of the cross).
-				if (x + 14 + w < PX1) [lx, anchor] = [x + 14, 'start'];
-				else [lx, ly, anchor] = [x - 14, y + 22, 'end'];
-			} else {
-				ly = y + 4;
-				if (x - 14 - w > PX0 + 4) [lx, anchor] = [x - 14, 'end'];
-				else [lx, ly, anchor] = [x + 14, y - 14, 'start'];
-			}
-			if (anchor === 'middle') lx = clamp(lx, PX0 + w / 2 + 4, PX1 - w / 2 - 4);
-			const show = smoothstep(0, 0.8, seen - q.i * SAMPLE);
-			return { ...q, x, y, ang, lx, ly, anchor, show };
-		});
+		// Once the rabbits have died out there is no next lap: they never rise again.
+		return items
+			.filter((q) => !(sim.extinct !== null && q.id === 'rr'))
+			.map((q) => {
+				const x = qx(H[q.i]);
+				const y = qy(P[q.i]);
+				const ang =
+					(Math.atan2(qy(P[q.i + 1]) - qy(P[q.i - 1]), qx(H[q.i + 1]) - qx(H[q.i - 1])) * 180) /
+					Math.PI;
+				const w = q.text.length * 6.6;
+				let lx = x;
+				let ly: number;
+				let anchor: 'start' | 'middle' | 'end' = 'middle';
+				if (q.side === 'below') ly = y + 22 > PY1 - 6 ? y - 12 : y + 22;
+				else if (q.side === 'above') ly = y - 14 < PY0 + 6 ? y + 24 : y - 14;
+				else if (q.side === 'right') {
+					ly = y + 4;
+					// No room outside: inside the loop, off the balance line (clear of the cross).
+					if (x + 14 + w < PX1) [lx, anchor] = [x + 14, 'start'];
+					else [lx, ly, anchor] = [x - 14, y + 22, 'end'];
+				} else {
+					ly = y + 4;
+					if (x - 14 - w > PX0 + 4) [lx, anchor] = [x - 14, 'end'];
+					else [lx, ly, anchor] = [x + 14, y - 14, 'start'];
+				}
+				if (anchor === 'middle') lx = clamp(lx, PX0 + w / 2 + 4, PX1 - w / 2 - 4);
+				const show = smoothstep(0, 0.8, seen - q.i * SAMPLE);
+				return { ...q, x, y, ang, lx, ly, anchor, show };
+			});
 	});
 
 	// The balance point slides to its new place when a rate changes; the old one
