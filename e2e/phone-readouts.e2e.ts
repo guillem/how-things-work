@@ -922,6 +922,36 @@ test.describe('on a phone', () => {
 		await page.locator('button[data-control="material"][data-value="water"]').click();
 		await expect(panel).toContainText(/Lens and prism\s*Water, n = 1\.33/);
 	});
+
+	test('motor parts: the part names are numbered badges, named under the stage', async ({
+		page
+	}) => {
+		await page.goto('./motors-generators/#parts');
+		const panel = readouts(page);
+		await expect(panel).toContainText('split-ring commutator');
+		await expect(panel).toContainText('brushes');
+		await expect(drawing(page)).not.toContainText('split-ring commutator');
+	});
+
+	test('motor and generator: the card’s values are text and follow the controls', async ({
+		page
+	}) => {
+		await page.goto('./motors-generators/#force');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/force on each side\s*3\.75 N/);
+		await expect(panel).toContainText(/Graph: torque on the coil/);
+		await expect(drawing(page)).not.toContainText('force on each side');
+		await range(page, 'current').fill('0.5');
+		await expect(panel).toContainText(/force on each side\s*2\.50 N/);
+		await page.goto('./motors-generators/#ac');
+		await expect(panel).toContainText(/peak, N·B·A·ω\s*3\.14 V/);
+		await range(page, 'speed').fill('2');
+		await expect(panel).toContainText(/peak, N·B·A·ω\s*6\.28 V/);
+		await page.goto('./motors-generators/#same');
+		await expect(panel).toContainText('electrical energy → motion');
+		await page.locator('button[data-control="role"][data-value="generator"]').click();
+		await expect(panel).toContainText('motion → electrical energy');
+	});
 });
 
 test.describe('on a wide screen', () => {

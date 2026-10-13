@@ -12,7 +12,7 @@
 	 * the commutator, brushes and battery in front.
 	 */
 	import { Label, cycle } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 
 	let { t, reduced }: StageProps = $props();
 
@@ -274,26 +274,77 @@
 	<circle cx={eye.x} cy={eye.y} r="4.5" fill="var(--stage-ink)" />
 
 	<!-- labels -->
-	<Label x={P(-190, 105, -MZ).x} y={P(-190, 105, -MZ).y - 14} text="magnet (north pole)" />
-	<Label x={P(190, 105, MZ).x} y={P(190, 105, MZ).y - 14} text="magnet (south pole)" />
-	<Label
-		x={CX - 60}
-		y={CY - 150}
-		pill
-		text="coil: 200 turns of wire; long sides a and b"
-		color="var(--em-copper)"
-		weight={600}
-	/>
-	<Label x={shaft1.x + 12} y={shaft1.y + 4} text="shaft" anchor="start" muted />
-	<Label
-		x={comFront.x - 34}
-		y={comFront.y - 28}
-		text="split-ring commutator"
-		pill
-		anchor="end"
-		weight={600}
-	/>
-	<Label x={brushR.x + 22} y={brushR.y + 4} text="brushes" anchor="start" />
-	<Label x={BAT.x} y={BAT.y + 36} text="battery" />
-	<Label x={eye.x} y={eye.y + 30} text="from the next step on, we look along the shaft from here" />
+	<!-- <Readout>: on narrow screens the part names become numbered badges, listed under the stage -->
+	<Readout
+		id="north"
+		order={1}
+		label="magnet (north pole)"
+		marker={1}
+		at={[P(-190, 105, -MZ).x, P(-190, 105, -MZ).y - 19]}
+	>
+		<Label x={P(-190, 105, -MZ).x} y={P(-190, 105, -MZ).y - 14} text="magnet (north pole)" />
+	</Readout>
+	<Readout
+		id="south"
+		order={2}
+		label="magnet (south pole)"
+		marker={2}
+		at={[P(190, 105, MZ).x, P(190, 105, MZ).y - 19]}
+	>
+		<Label x={P(190, 105, MZ).x} y={P(190, 105, MZ).y - 14} text="magnet (south pole)" />
+	</Readout>
+	<Readout
+		id="coil"
+		order={3}
+		label="coil: 200 turns of wire; long sides a and b"
+		marker={3}
+		at={[CX - 60, CY - 155]}
+	>
+		<Label
+			x={CX - 60}
+			y={CY - 150}
+			pill
+			text="coil: 200 turns of wire; long sides a and b"
+			color="var(--em-copper)"
+			weight={600}
+		/>
+	</Readout>
+	<Readout id="shaft" order={4} label="shaft" marker={4} at={[shaft1.x + 34, shaft1.y]}>
+		<Label x={shaft1.x + 12} y={shaft1.y + 4} text="shaft" anchor="start" muted />
+	</Readout>
+	<Readout
+		id="commutator"
+		order={5}
+		label="split-ring commutator"
+		marker={5}
+		at={[comFront.x - 56, comFront.y - 33]}
+	>
+		<Label
+			x={comFront.x - 34}
+			y={comFront.y - 28}
+			text="split-ring commutator"
+			pill
+			anchor="end"
+			weight={600}
+		/>
+	</Readout>
+	<Readout id="brushes" order={6} label="brushes" marker={6} at={[brushR.x + 44, brushR.y]}>
+		<Label x={brushR.x + 22} y={brushR.y + 4} text="brushes" anchor="start" />
+	</Readout>
+	<Readout id="battery" order={7} label="battery" marker={7} at={[BAT.x, BAT.y + 40]}>
+		<Label x={BAT.x} y={BAT.y + 36} text="battery" />
+	</Readout>
+	<Readout
+		id="eye"
+		order={8}
+		label="eye: from the next step on, we look along the shaft from here"
+		marker={8}
+		at={[eye.x, eye.y + 34]}
+	>
+		<Label
+			x={eye.x}
+			y={eye.y + 30}
+			text="from the next step on, we look along the shaft from here"
+		/>
+	</Readout>
 </g>

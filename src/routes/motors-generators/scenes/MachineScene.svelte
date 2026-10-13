@@ -36,7 +36,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, clamp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import Contacts from './Contacts.svelte';
 	import {
 		MACHINE,
@@ -507,7 +507,7 @@
 	);
 </script>
 
-{#snippet txt(
+{#snippet txtText(
 	x: number,
 	y: number,
 	text: string,
@@ -518,6 +518,7 @@
 		weight?: number;
 		muted?: boolean;
 		opacity?: number;
+		keep?: boolean;
 	} = {}
 )}
 	<text
@@ -531,6 +532,29 @@
 		style:font-size="{size}px"
 		style:fill={opts.color}>{text}</text
 	>
+{/snippet}
+
+<!-- Stage text leaves the drawing on phones (see <Readout>), unless `keep`. -->
+{#snippet txt(
+	x: number,
+	y: number,
+	text: string,
+	size: number,
+	opts: {
+		anchor?: string;
+		color?: string;
+		weight?: number;
+		muted?: boolean;
+		opacity?: number;
+		keep?: boolean;
+	} = {}
+)}
+	<Readout id="txt">
+		{#snippet narrow()}
+			{#if opts.keep}{@render txtText(x, y, text, size, opts)}{/if}
+		{/snippet}
+		{@render txtText(x, y, text, size, opts)}
+	</Readout>
 {/snippet}
 
 {#snippet arrow(x: number, y: number, dy: number, color: string)}
@@ -687,10 +711,12 @@
 	{@render side(sideB, 'var(--mg-b)', -markSign)}
 	{@render txt(sideA.x + (C.x - sideA.x) * 0.3 + 10, sideA.y + (C.y - sideA.y) * 0.3 - 8, 'a', 14, {
 		weight: 800,
+		keep: true,
 		color: 'var(--mg-a)'
 	})}
 	{@render txt(sideB.x + (C.x - sideB.x) * 0.3 + 10, sideB.y + (C.y - sideB.y) * 0.3 - 8, 'b', 14, {
 		weight: 800,
+		keep: true,
 		color: 'var(--mg-b)'
 	})}
 
@@ -782,18 +808,26 @@
 	)}
 	<Contacts x={K.x} y={K.y} {theta} kind={conn} leadY={DEV_Y} flow={leadI} />
 	{#if phase === 'same'}
-		{@render txt(
-			K.x,
-			DEV_Y + 74,
-			lamp ? 'motion → electrical energy' : 'electrical energy → motion',
-			14,
-			{ anchor: 'middle', weight: 700 }
-		)}
-		{@render txt(K.x, K.y - 100, torqueLabel, 13, {
-			anchor: 'middle',
-			weight: 700,
-			color: 'var(--em-force)'
-		})}
+		<Readout
+			id="energy"
+			order={20}
+			label={lamp ? 'motion → electrical energy' : 'electrical energy → motion'}
+		>
+			{@render txt(
+				K.x,
+				DEV_Y + 74,
+				lamp ? 'motion → electrical energy' : 'electrical energy → motion',
+				14,
+				{ anchor: 'middle', weight: 700 }
+			)}
+		</Readout>
+		<Readout id="torque-sense" order={21} label={torqueLabel} color="var(--em-force)">
+			{@render txt(K.x, K.y - 100, torqueLabel, 13, {
+				anchor: 'middle',
+				weight: 700,
+				color: 'var(--em-force)'
+			})}
+		</Readout>
 	{/if}
 	{#if reversing}
 		{@render txt(K.x, K.y + 72, 'brushes cross the gaps: current reverses', 12, {
@@ -914,7 +948,12 @@
 			stroke-linecap="round"
 		/>
 		<circle cx={K.x} cy={DEV_Y + 10} r="3.5" fill="var(--stage-ink)" />
-		{@render txt(K.x, DEV_Y + 27, 'V', 11, { anchor: 'middle', weight: 700, muted: true })}
+		{@render txt(K.x, DEV_Y + 27, 'V', 11, {
+			anchor: 'middle',
+			weight: 700,
+			muted: true,
+			keep: true
+		})}
 		{@render txt(K.x - 46, DEV_Y - 10, '+', 14, { anchor: 'middle', weight: 700 })}
 		{@render txt(K.x, DEV_Y + 52, 'voltmeter', 12, { anchor: 'middle', weight: 600 })}
 	{/if}
@@ -935,11 +974,19 @@
 			stroke-dasharray="6 5"
 			opacity="0.7"
 		/>
-		{@render txt(PLOT.x1 - 4, sy(stall) - 6, `held still: ${stall.toFixed(2)} A`, 11, {
-			anchor: 'end',
-			color: 'var(--em-current)',
-			weight: 600
-		})}
+		<Readout
+			id="stall"
+			order={20}
+			label="Held still"
+			value="{stall.toFixed(2)} A"
+			color="var(--em-current)"
+		>
+			{@render txt(PLOT.x1 - 4, sy(stall) - 6, `held still: ${stall.toFixed(2)} A`, 11, {
+				anchor: 'end',
+				color: 'var(--em-current)',
+				weight: 600
+			})}
+		</Readout>
 		{#if avgI !== null}
 			<line
 				x1={PLOT.x0}
@@ -950,9 +997,11 @@
 				stroke-dasharray="2 4"
 				opacity="0.7"
 			/>
-			{@render txt(PLOT.x0 + 6, sy(avgI) - 6, `average, last 2 s: ${avgI.toFixed(2)} A`, 11, {
-				weight: 600
-			})}
+			<Readout id="average" order={21} label="Average, last 2 s" value="{avgI.toFixed(2)} A">
+				{@render txt(PLOT.x0 + 6, sy(avgI) - 6, `average, last 2 s: ${avgI.toFixed(2)} A`, 11, {
+					weight: 600
+				})}
+			</Readout>
 		{/if}
 	{:else}
 		<line x1={PLOT.x0} x2={PLOT.x1} y1={sy(-yMax)} y2={sy(-yMax)} stroke="var(--stage-grid)" />
@@ -1010,52 +1059,69 @@
 			stroke-linejoin="round"
 		/>
 	{/if}
-	{@render txt(PLOT.x0, PLOT.top - 12, traceTitle, 12, { weight: 600, color: traceColor })}
+	<Readout id="graph" order={30} label="Graph: {traceTitle}" color={traceColor}>
+		{@render txt(PLOT.x0, PLOT.top - 12, traceTitle, 12, { weight: 600, color: traceColor })}
+	</Readout>
 	{#if showGhost}
-		{@render txt(PLOT.x1, PLOT.top - 12, 'dashed: the coil’s own voltage', 11, {
-			anchor: 'end',
-			color: 'var(--em-field)'
-		})}
+		<Readout id="ghost" order={31} label="dashed: the coil’s own voltage" color="var(--em-field)">
+			{@render txt(PLOT.x1, PLOT.top - 12, 'dashed: the coil’s own voltage', 11, {
+				anchor: 'end',
+				color: 'var(--em-field)'
+			})}
+		</Readout>
 	{/if}
 	{#if hand && traces.n < 2}
-		{@render txt(
-			(PLOT.x0 + PLOT.x1) / 2,
-			mid - 12,
-			reduced
+		<Readout
+			id="hint"
+			order={32}
+			label={reduced
 				? 'Reduced motion is on: choose “Turns steadily” to see the voltage'
-				: 'Grab the crank and turn it',
-			13,
-			{ anchor: 'middle', muted: true }
-		)}
+				: 'Grab the crank and turn it'}
+		>
+			{@render txt(
+				(PLOT.x0 + PLOT.x1) / 2,
+				mid - 12,
+				reduced
+					? 'Reduced motion is on: choose “Turns steadily” to see the voltage'
+					: 'Grab the crank and turn it',
+				13,
+				{ anchor: 'middle', muted: true }
+			)}
+		</Readout>
 	{/if}
 </g>
 
 <!-- readout card -->
 <g style:pointer-events="none">
-	<rect
-		x={CARD.x}
-		y={CARD.y}
-		width={CARD.w}
-		height={CARD.h}
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<!-- <Readout>: on narrow screens the card is listed as HTML under the stage -->
+	<Readout id="card-bg">
+		<rect
+			x={CARD.x}
+			y={CARD.y}
+			width={CARD.w}
+			height={CARD.h}
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	{#each cards as c, i (c.id)}
 		{@const w = CARD.w / cards.length}
 		{@const x = CARD.x + 16 + i * w}
-		{#if i > 0}
-			<line
-				x1={CARD.x + i * w}
-				x2={CARD.x + i * w}
-				y1={CARD.y + 14}
-				y2={CARD.y + CARD.h - 14}
-				stroke="var(--border)"
-			/>
-		{/if}
-		<text {x} y={CARD.y + 24} class="muted" style:font-size="12px">{c.label}</text>
-		<text {x} y={CARD.y + 49} font-weight="700" style:font-size="18px" style:fill={c.color}
-			>{c.value}</text
-		>
+		<Readout id="card-{c.id}" order={10 + i} label={c.label} value={c.value} color={c.color}>
+			{#if i > 0}
+				<line
+					x1={CARD.x + i * w}
+					x2={CARD.x + i * w}
+					y1={CARD.y + 14}
+					y2={CARD.y + CARD.h - 14}
+					stroke="var(--border)"
+				/>
+			{/if}
+			<text {x} y={CARD.y + 24} class="muted" style:font-size="12px">{c.label}</text>
+			<text {x} y={CARD.y + 49} font-weight="700" style:font-size="18px" style:fill={c.color}
+				>{c.value}</text
+			>
+		</Readout>
 	{/each}
 </g>
