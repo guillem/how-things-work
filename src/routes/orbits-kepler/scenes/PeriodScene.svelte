@@ -11,7 +11,7 @@
 	 * Under reduced motion t is frozen and the frame is a static chart.
 	 */
 	import { clamp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { EARTH_SPEED_KMS, circularSpeed, elements, PLANETS } from '../orbits';
 
 	let { t, params }: StageProps = $props();
@@ -130,13 +130,17 @@
 	{#each TICKS as v (v)}
 		<line x1={LX(v)} x2={LX(v)} y1={YT} y2={YB} stroke="var(--stage-line)" opacity="0.35" />
 		<line x1={X0} x2={XR} y1={LY(v)} y2={LY(v)} stroke="var(--stage-line)" opacity="0.35" />
-		{@render txt(LX(v), YB + 18, fmt(v), 12, { anchor: 'middle', muted: true })}
-		{@render txt(X0 - 8, LY(v) + 4, fmt(v), 12, { anchor: 'end', muted: true })}
+		<Readout id="tick">
+			{@render txt(LX(v), YB + 18, fmt(v), 12, { anchor: 'middle', muted: true })}
+			{@render txt(X0 - 8, LY(v) + 4, fmt(v), 12, { anchor: 'end', muted: true })}
+		</Readout>
 	{/each}
 	<line x1={X0} x2={XR} y1={YB} y2={YB} stroke="var(--stage-line)" />
 	<line x1={X0} x2={X0} y1={YT} y2={YB} stroke="var(--stage-line)" />
-	{@render txt(XR, YB + 38, 'size of the orbit, a (AU) →', 12, { anchor: 'end', muted: true })}
-	{@render txt(X0 - 4, YT - 12, '↑ year, T (years)', 12, { muted: true })}
+	<Readout id="axis-titles">
+		{@render txt(XR, YB + 38, 'size of the orbit, a (AU) →', 12, { anchor: 'end', muted: true })}
+		{@render txt(X0 - 4, YT - 12, '↑ year, T (years)', 12, { muted: true })}
+	</Readout>
 
 	<!-- T² = a³ -->
 	<line
@@ -148,17 +152,27 @@
 		stroke-width="2"
 		clip-path="url(#period-chart)"
 	/>
-	{@render txt(LX(5) - 40, LY(11.2) - 30, 'T² = a³', 15, { weight: 700, anchor: 'end' })}
-	{@render txt(LX(5) - 40, LY(11.2) - 12, 'slope 3/2', 11, { muted: true, anchor: 'end' })}
+	<!-- phones: the law alone, in larger type -->
+	<Readout id="law">
+		{#snippet narrow()}
+			{@render txt(LX(5) - 30, LY(11.2) - 16, 'T² = a³', 32, { weight: 700, anchor: 'end' })}
+		{/snippet}
+		{@render txt(LX(5) - 40, LY(11.2) - 30, 'T² = a³', 15, { weight: 700, anchor: 'end' })}
+		{@render txt(LX(5) - 40, LY(11.2) - 12, 'slope 3/2', 11, { muted: true, anchor: 'end' })}
+	</Readout>
 
 	<!-- planets -->
 	{#each PLANETS as p (p.name)}
 		{@const o = OFF[p.name]}
 		<circle cx={LX(p.a)} cy={LY(p.period)} r="5" fill="var(--stage-ink)" />
-		{@render txt(LX(p.a) + o[0], LY(p.period) + o[1], p.name, 12, { anchor: o[2] })}
+		<Readout id="planet-name">
+			{@render txt(LX(p.a) + o[0], LY(p.period) + o[1], p.name, 12, { anchor: o[2] })}
+		</Readout>
 	{/each}
-	{@render txt(LX(0.387) - 20, LY(0.241) + 19, '88 days', 11, { muted: true, anchor: 'end' })}
-	{@render txt(LX(30.07) - 10, LY(164.8) + 10, '165 years', 11, { muted: true, anchor: 'end' })}
+	<Readout id="extremes">
+		{@render txt(LX(0.387) - 20, LY(0.241) + 19, '88 days', 11, { muted: true, anchor: 'end' })}
+		{@render txt(LX(30.07) - 10, LY(164.8) + 10, '165 years', 11, { muted: true, anchor: 'end' })}
+	</Readout>
 
 	<!-- your orbit -->
 	{#if bound}
@@ -189,18 +203,20 @@
 			stroke="var(--stage-bg)"
 			stroke-width="2"
 		/>
-		{#if onChart}
-			{@render txt(dot.x + 16, dot.y + 22, 'your orbit', 13, {
-				weight: 700,
-				color: 'var(--orb-planet)'
-			})}
-		{:else}
-			{@render txt(dot.x - 16, dot.y + 22, 'your orbit: off the chart ↗', 13, {
-				weight: 700,
-				anchor: 'end',
-				color: 'var(--orb-planet)'
-			})}
-		{/if}
+		<Readout id="your-label">
+			{#if onChart}
+				{@render txt(dot.x + 16, dot.y + 22, 'your orbit', 13, {
+					weight: 700,
+					color: 'var(--orb-planet)'
+				})}
+			{:else}
+				{@render txt(dot.x - 16, dot.y + 22, 'your orbit: off the chart ↗', 13, {
+					weight: 700,
+					anchor: 'end',
+					color: 'var(--orb-planet)'
+				})}
+			{/if}
+		</Readout>
 	{/if}
 
 	<!-- ===================================================== side panel -->
@@ -253,7 +269,9 @@
 			{@const x = OCX + Math.cos(ang) * p.a * PX}
 			{@const y = OCY - Math.sin(ang) * p.a * PX}
 			<circle cx={x} cy={y} r="5" fill="var(--stage-ink)" />
-			{@render txt(x + 8, y - 7, p.name, 11, { muted: true })}
+			<Readout id="orbit-name">
+				{@render txt(x + 8, y - 7, p.name, 11, { muted: true })}
+			</Readout>
 		{/each}
 		{#if yours && (yours.py < PANEL.y || yours.py > PANEL.y + 384 || yours.px < PANEL.x || yours.px > PANEL.x + PANEL.w)}
 			<!-- marked below, outside the clip -->
@@ -268,63 +286,112 @@
 			/>
 		{/if}
 	</g>
-	{#if yours && (yours.py < PANEL.y || yours.py > PANEL.y + 384 || yours.px < PANEL.x || yours.px > PANEL.x + PANEL.w)}
-		{@render txt(PANEL.x + PANEL.w - 16, PANEL.y + 372, 'your planet: out of view, far out', 11, {
-			anchor: 'end',
-			color: 'var(--orb-planet)'
+	<Readout id="out-of-view">
+		{#if yours && (yours.py < PANEL.y || yours.py > PANEL.y + 384 || yours.px < PANEL.x || yours.px > PANEL.x + PANEL.w)}
+			{@render txt(PANEL.x + PANEL.w - 16, PANEL.y + 372, 'your planet: out of view, far out', 11, {
+				anchor: 'end',
+				color: 'var(--orb-planet)'
+			})}
+		{/if}
+	</Readout>
+	<Readout id="panel-title">
+		{@render txt(PANEL.x + 16, PANEL.y + 26, 'Bigger orbits, longer years', 14, { weight: 700 })}
+		{@render txt(PANEL.x + 16, PANEL.y + 44, 'true relative speeds · 1 year ≈ 6 s', 11, {
+			muted: true
 		})}
-	{/if}
-	{@render txt(PANEL.x + 16, PANEL.y + 26, 'Bigger orbits, longer years', 14, { weight: 700 })}
-	{@render txt(PANEL.x + 16, PANEL.y + 44, 'true relative speeds · 1 year ≈ 6 s', 11, {
-		muted: true
-	})}
+	</Readout>
 
-	<!-- readout -->
-	<circle cx={RX + 6} cy="424" r="6.5" fill="var(--orb-planet)" />
-	{@render txt(RX + 20, 429, 'Your orbit (launched across at 1 AU)', 13, { weight: 700 })}
-	{@render txt(RX, 456, 'launch speed', 12, { muted: true })}
-	{@render txt(
-		RR,
-		456,
-		`${(s * EARTH_SPEED_KMS).toFixed(1)} km/s (${s.toFixed(2)} × circular)`,
-		13,
-		{
-			anchor: 'end',
-			tabular: true
-		}
-	)}
-	{@render txt(RX, 480, yourText, 13, {
-		weight: 600,
-		color: bound ? undefined : 'var(--orb-planet)',
-		tabular: true
-	})}
+	<!-- phones: the readout, listed under the stage -->
+	<Readout
+		id="yours"
+		order={1}
+		label="Your orbit"
+		value={yourText}
+		note={yours &&
+		(yours.py < PANEL.y ||
+			yours.py > PANEL.y + 384 ||
+			yours.px < PANEL.x ||
+			yours.px > PANEL.x + PANEL.w)
+			? 'out of view, far out'
+			: !onChart && bound
+				? 'off the chart ↗'
+				: undefined}
+		color="var(--orb-planet)"
+	/>
+	<Readout
+		id="launch-speed"
+		order={2}
+		label="Launch speed"
+		value="{(s * EARTH_SPEED_KMS).toFixed(1)} km/s"
+		note="{s.toFixed(2)} × circular"
+	/>
 	{#if bound}
-		{@render txt(RX, 508, 'T²', 12, { muted: true })}
-		{@render txt(
-			RX + 30,
-			508,
-			yourT ** 2 < 1000 ? (yourT ** 2).toFixed(3) : Math.round(yourT ** 2).toLocaleString('en-US'),
-			14,
-			{
-				weight: 700,
-				tabular: true
-			}
-		)}
-		{@render txt(RX + 150, 508, 'a³', 12, { muted: true })}
-		{@render txt(
-			RX + 180,
-			508,
-			yourA ** 3 < 1000 ? (yourA ** 3).toFixed(3) : Math.round(yourA ** 3).toLocaleString('en-US'),
-			14,
-			{
-				weight: 700,
-				tabular: true
-			}
-		)}
-		{@render txt(RR, 508, 'equal', 12, { anchor: 'end', color: 'var(--orb-area)', weight: 700 })}
+		<Readout
+			id="t2a3"
+			order={3}
+			label="T² and a³"
+			value="{yourT ** 2 < 1000
+				? (yourT ** 2).toFixed(3)
+				: Math.round(yourT ** 2).toLocaleString('en-US')} = {yourA ** 3 < 1000
+				? (yourA ** 3).toFixed(3)
+				: Math.round(yourA ** 3).toLocaleString('en-US')}"
+			note="equal for every orbit round the Sun"
+			color="var(--orb-area)"
+		/>
 	{/if}
-	{@render txt(RX, 540, 'In years and AU, every orbit round the Sun', 12, { muted: true })}
-	{@render txt(RX, 558, 'has T² = a³, whatever its shape.', 12, { muted: true })}
+	<Readout id="key-planets" order={20} label="dots: the eight planets" />
+	<Readout id="readout-text">
+		<!-- readout -->
+		<circle cx={RX + 6} cy="424" r="6.5" fill="var(--orb-planet)" />
+		{@render txt(RX + 20, 429, 'Your orbit (launched across at 1 AU)', 13, { weight: 700 })}
+		{@render txt(RX, 456, 'launch speed', 12, { muted: true })}
+		{@render txt(
+			RR,
+			456,
+			`${(s * EARTH_SPEED_KMS).toFixed(1)} km/s (${s.toFixed(2)} × circular)`,
+			13,
+			{
+				anchor: 'end',
+				tabular: true
+			}
+		)}
+		{@render txt(RX, 480, yourText, 13, {
+			weight: 600,
+			color: bound ? undefined : 'var(--orb-planet)',
+			tabular: true
+		})}
+		{#if bound}
+			{@render txt(RX, 508, 'T²', 12, { muted: true })}
+			{@render txt(
+				RX + 30,
+				508,
+				yourT ** 2 < 1000
+					? (yourT ** 2).toFixed(3)
+					: Math.round(yourT ** 2).toLocaleString('en-US'),
+				14,
+				{
+					weight: 700,
+					tabular: true
+				}
+			)}
+			{@render txt(RX + 150, 508, 'a³', 12, { muted: true })}
+			{@render txt(
+				RX + 180,
+				508,
+				yourA ** 3 < 1000
+					? (yourA ** 3).toFixed(3)
+					: Math.round(yourA ** 3).toLocaleString('en-US'),
+				14,
+				{
+					weight: 700,
+					tabular: true
+				}
+			)}
+			{@render txt(RR, 508, 'equal', 12, { anchor: 'end', color: 'var(--orb-area)', weight: 700 })}
+		{/if}
+		{@render txt(RX, 540, 'In years and AU, every orbit round the Sun', 12, { muted: true })}
+		{@render txt(RX, 558, 'has T² = a³, whatever its shape.', 12, { muted: true })}
+	</Readout>
 </g>
 
 {#snippet txt(

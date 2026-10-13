@@ -12,7 +12,7 @@
 	 * fits; the ruler keeps it honest. Reduced motion: the complete 10 s trace.
 	 */
 	import { scale } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { measuredPeriod, pendulumMotion, pendulumPeriod } from '../oscillator';
 	import Card from './Card.svelte';
 	import Plot from './Plot.svelte';
@@ -206,7 +206,9 @@
 		opacity="0.6"
 	/>
 	<path d={arc} fill="none" stroke="var(--stage-ink-muted)" stroke-width="1.3" />
-	{@render txt(arcLabel.x, arcLabel.y, `${a0}°`, 12, { anchor: 'end', weight: 600 })}
+	<Readout id="label-1">
+		{@render txt(arcLabel.x, arcLabel.y, `${a0}°`, 12, { anchor: 'end', weight: 600 })}
+	</Readout>
 
 	<!-- ghosts at the release point -->
 	{#each BOBS as b (b.id)}
@@ -244,23 +246,33 @@
 			stroke="var(--stage-ink)"
 			stroke-width="1.2"
 		/>
-		{@render txt(p.x, p.y + b.r + 15, b.label, 11, { anchor: 'middle', weight: 600 })}
+		<Readout id="label-2">
+			{@render txt(p.x, p.y + b.r + 15, b.label, 11, { anchor: 'middle', weight: 600 })}
+		</Readout>
 	{/each}
 	{#if held}
-		{@render txt(COL_X, PIV + R + 52, 'hold… let go', 12, { anchor: 'middle', weight: 600 })}
+		<Readout id="label-3">
+			{@render txt(COL_X, PIV + R + 52, 'hold… let go', 12, { anchor: 'middle', weight: 600 })}
+		</Readout>
 	{/if}
 
 	<!-- caption and ruler -->
-	{@render txt(24, 532, 'Same length, bobs of 0.2 kg and 2 kg:', 12, { muted: true })}
-	{@render txt(24, 547, 'they swing in step — the mass makes no difference.', 12, {
-		muted: true
-	})}
+	<Readout id="label-4">
+		{@render txt(24, 532, 'Same length, bobs of 0.2 kg and 2 kg:', 12, { muted: true })}
+	</Readout>
+	<Readout id="label-5">
+		{@render txt(24, 547, 'they swing in step — the mass makes no difference.', 12, {
+			muted: true
+		})}
+	</Readout>
 	<g stroke="var(--stage-ink)" stroke-width="1.5">
 		<line x1={ruler.x} x2={ruler.x + ruler.w} y1={ruler.y} y2={ruler.y} />
 		<line x1={ruler.x} x2={ruler.x} y1={ruler.y - 5} y2={ruler.y + 5} />
 		<line x1={ruler.x + ruler.w} x2={ruler.x + ruler.w} y1={ruler.y - 5} y2={ruler.y + 5} />
 	</g>
-	{@render txt(ruler.x + ruler.w + 8, ruler.y + 4, '1 m, to scale', 11, { muted: true })}
+	<Readout id="label-6">
+		{@render txt(ruler.x + ruler.w + 8, ruler.y + 4, '1 m, to scale', 11, { muted: true })}
+	</Readout>
 
 	<!-- trace -->
 	<Plot
@@ -271,7 +283,9 @@
 		xFormat={(v) => `${v} s`}
 		yFormat={(v) => (v === 0 ? '0°' : `${v > 0 ? '' : '−'}${Math.abs(v)}°`)}
 	/>
-	{@render txt(PLOT_X0, MID - HALF - 14, 'angle of the swing (right is up)', 12, { muted: true })}
+	<Readout id="label-7">
+		{@render txt(PLOT_X0, MID - HALF - 14, 'angle of the swing (right is up)', 12, { muted: true })}
+	</Readout>
 	<path
 		d={tracePath}
 		fill="none"
@@ -294,18 +308,25 @@
 			<line x1={bracket.x1} x2={bracket.x1} y1={bracket.y - 5} y2={bracket.y + 5} />
 			<line x1={bracket.x2} x2={bracket.x2} y1={bracket.y - 5} y2={bracket.y + 5} />
 		</g>
-		{@render txt(
-			Math.min(PLOT_X1 - 50, Math.max(PLOT_X0 + 50, (bracket.x1 + bracket.x2) / 2)),
-			bracket.y - 8,
-			bracket.text,
-			12,
-			{ anchor: 'middle', weight: 600 }
-		)}
+		<Readout id="label-8">
+			{@render txt(
+				Math.min(PLOT_X1 - 50, Math.max(PLOT_X0 + 50, (bracket.x1 + bracket.x2) / 2)),
+				bracket.y - 8,
+				bracket.text,
+				12,
+				{ anchor: 'middle', weight: 600 }
+			)}
+		</Readout>
 	{/if}
-	{@render txt(PLOT_X1, MID + HALF + 36, 'a longer pendulum swings more slowly', 11, {
-		anchor: 'end',
-		muted: true
-	})}
+	<Readout id="label-9">
+		{@render txt(PLOT_X1, MID + HALF + 36, 'a longer pendulum swings more slowly', 11, {
+			anchor: 'end',
+			muted: true
+		})}
+	</Readout>
 
+	<!-- phones: the captions, as keys -->
+	<Readout id="caption-mass" order={20} label="0.2 kg and 2 kg bobs swing in step" />
+	<Readout id="caption-length" order={21} label="a longer pendulum swings more slowly" />
 	<Card {cells} />
 </g>

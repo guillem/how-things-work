@@ -23,7 +23,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		AU_PER_YEAR_KMS,
 		EARTH_MASS,
@@ -809,259 +809,390 @@
 		{/if}
 	</g>
 
-	<!-- labels on the drawing (outside the clip so halos stay whole) -->
-	{#if showOrbit}
-		{#if phase === 'launch'}
-			{@render txt(arrow.X1 + 10, arrow.Y1 + 4, `${KMS(speed * V1).toFixed(1)} km/s`, 12.5, {
-				weight: 600
-			})}
-			{#if pull && pull.label && !offFrame && !(launch.crashed && crashedNow)}
-				{@render txt(pull.LX, pull.LY, 'gravity', 11.5, { anchor: 'middle', weight: 600 })}
-			{/if}
-		{/if}
-		{@render txt(SX, SY + 26, phase === 'first' ? 'Sun (a focus)' : 'Sun', 12, {
-			anchor: 'middle',
-			muted: true
-		})}
-
-		{#if phase === 'first' && launch.bound && apsides.aph && foci && labels}
-			<g opacity={fade.current}>
-				{#each labels.apsis as l, i (i)}
-					{@render txt(l.x, l.y, l.text, 12, { anchor: l.anchor })}
-				{/each}
-				{#if isCircle}
-					{@render txt(SX, SY - 22, 'both foci at the centre', 12, { anchor: 'middle' })}
-				{:else}
-					{@render txt(foci.F2X, foci.F2Y + 24, 'other focus', 12, {
-						anchor: 'middle',
-						muted: true
-					})}
+	<Readout id="drawing-labels">
+		<!-- labels on the drawing (outside the clip so halos stay whole) -->
+		{#if showOrbit}
+			{#if phase === 'launch'}
+				{@render txt(arrow.X1 + 10, arrow.Y1 + 4, `${KMS(speed * V1).toFixed(1)} km/s`, 12.5, {
+					weight: 600
+				})}
+				{#if pull && pull.label && !offFrame && !(launch.crashed && crashedNow)}
+					{@render txt(pull.LX, pull.LY, 'gravity', 11.5, { anchor: 'middle', weight: 600 })}
 				{/if}
-				<!-- the two lengths, beside their lines, on the side away from the other -->
-				{#each labels.lengths as l (l.color)}
-					{@render txt(l.x, l.y, l.text, 12.5, {
-						color: l.color,
-						weight: 700,
-						anchor: l.anchor,
-						tabular: true
-					})}
-				{/each}
-			</g>
-		{/if}
+			{/if}
+			{@render txt(SX, SY + 26, phase === 'first' ? 'Sun (a focus)' : 'Sun', 12, {
+				anchor: 'middle',
+				muted: true
+			})}
 
-		{#if phase === 'second' && wedges.length}
-			<g opacity={fade.current}>
-				{#each wedges as w (w.k)}
-					{#if w.k < currentWedge}
-						{@render txt(w.lx, w.ly + 4, `${w.area.toFixed(3)} AU²`, 11.5, {
+			{#if phase === 'first' && launch.bound && apsides.aph && foci && labels}
+				<g opacity={fade.current}>
+					{#each labels.apsis as l, i (i)}
+						{@render txt(l.x, l.y, l.text, 12, { anchor: l.anchor })}
+					{/each}
+					{#if isCircle}
+						{@render txt(SX, SY - 22, 'both foci at the centre', 12, { anchor: 'middle' })}
+					{:else}
+						{@render txt(foci.F2X, foci.F2Y + 24, 'other focus', 12, {
 							anchor: 'middle',
-							weight: 600,
-							tabular: true
+							muted: true
 						})}
 					{/if}
-				{/each}
-			</g>
-		{/if}
+					<!-- the two lengths, beside their lines, on the side away from the other -->
+					{#each labels.lengths as l (l.color)}
+						{@render txt(l.x, l.y, l.text, 12.5, {
+							color: l.color,
+							weight: 700,
+							anchor: l.anchor,
+							tabular: true
+						})}
+					{/each}
+				</g>
+			{/if}
 
-		{#if launch.crashed && crashedNow}
-			{@render txt(SX, SY - 40, 'Crashed into the Sun', 14, { anchor: 'middle', weight: 700 })}
-		{:else if !launch.bound && offFrame && escapeLabel}
-			{@render txt(escapeLabel.X, escapeLabel.Y, 'escaping…', 14, {
-				anchor: 'middle',
-				weight: 700,
-				color: 'var(--orb-planet)'
-			})}
-		{/if}
-	{:else if twoView}
-		{@render txt(SX, SY + 26, 'Sun', 12, { anchor: 'middle', muted: true })}
-		{#if neighbour > 0}
-			<!-- above or below the planet, on the side it is heading for (its trail is behind it),
+			{#if phase === 'second' && wedges.length}
+				<g opacity={fade.current}>
+					{#each wedges as w (w.k)}
+						{#if w.k < currentWedge}
+							{@render txt(w.lx, w.ly + 4, `${w.area.toFixed(3)} AU²`, 11.5, {
+								anchor: 'middle',
+								weight: 600,
+								tabular: true
+							})}
+						{/if}
+					{/each}
+				</g>
+			{/if}
+
+			{#if launch.crashed && crashedNow}
+				{@render txt(SX, SY - 40, 'Crashed into the Sun', 14, { anchor: 'middle', weight: 700 })}
+			{:else if !launch.bound && offFrame && escapeLabel}
+				{@render txt(escapeLabel.X, escapeLabel.Y, 'escaping…', 14, {
+					anchor: 'middle',
+					weight: 700,
+					color: 'var(--orb-planet)'
+				})}
+			{/if}
+		{:else if twoView}
+			{@render txt(SX, SY + 26, 'Sun', 12, { anchor: 'middle', muted: true })}
+			{#if neighbour > 0}
+				<!-- above or below the planet, on the side it is heading for (its trail is behind it),
 			     kept inside the space panel -->
-			{@const ux = (twoView.p2.X - SX) / (Math.hypot(twoView.p2.X - SX, twoView.p2.Y - SY) || 1)}
-			{@const uy = (twoView.p2.Y - SY) / (Math.hypot(twoView.p2.X - SX, twoView.p2.Y - SY) || 1)}
-			{@const off = 12 + 2.2 * Math.sqrt(neighbour)}
-			{@const below = uy - ux > -0.01 && twoView.p2.Y + off + 10 < PY1 - 8}
-			{@const half = 40}
-			{@render txt(
-				clamp(twoView.p2.X, PX0 + half + 6, PX1 - half - 6),
-				below ? twoView.p2.Y + off + 10 : twoView.p2.Y - off,
-				`${neighbour} × Jupiter`,
-				12,
-				{ anchor: 'middle', color: 'var(--orb-second)', weight: 600 }
-			)}
+				{@const ux = (twoView.p2.X - SX) / (Math.hypot(twoView.p2.X - SX, twoView.p2.Y - SY) || 1)}
+				{@const uy = (twoView.p2.Y - SY) / (Math.hypot(twoView.p2.X - SX, twoView.p2.Y - SY) || 1)}
+				{@const off = 12 + 2.2 * Math.sqrt(neighbour)}
+				{@const below = uy - ux > -0.01 && twoView.p2.Y + off + 10 < PY1 - 8}
+				{@const half = 40}
+				{@render txt(
+					clamp(twoView.p2.X, PX0 + half + 6, PX1 - half - 6),
+					below ? twoView.p2.Y + off + 10 : twoView.p2.Y - off,
+					`${neighbour} × Jupiter`,
+					12,
+					{ anchor: 'middle', color: 'var(--orb-second)', weight: 600 }
+				)}
+			{/if}
+		{/if}
+	</Readout>
+	<!-- phones: the card's numbers and the step's key fact, listed under the stage -->
+	{#if phase === 'two' && twoView}
+		<Readout
+			id="years"
+			order={1}
+			label="Years so far"
+			value="{twoView.years.toFixed(1)} of {TWO_YEARS}"
+		/>
+		<Readout
+			id="neighbour"
+			order={2}
+			label="Second planet"
+			value={neighbour > 0 ? `${neighbour} × Jupiter` : 'none'}
+			color="var(--orb-second)"
+		/>
+		<Readout id="closest" order={3} label="Closest so far" value="{f2(twoView.lo)} AU" />
+		<Readout
+			id="farthest"
+			order={4}
+			label="Farthest so far"
+			value="{f2(twoView.hi)} AU"
+			note={twoView.hi > 2.2 ? 'flung out of the frame!' : undefined}
+		/>
+		<Readout id="key-undisturbed" order={20} label="dashed: the undisturbed orbits" />
+	{:else if showOrbit}
+		{#if phase === 'launch'}
+			<Readout
+				id="launch-speed"
+				order={1}
+				label="Launch speed"
+				value="{KMS(speed * V1).toFixed(1)} km/s"
+			/>
+			<Readout id="key-gravity" order={20} label="gravity" color="var(--orb-star)" />
+		{/if}
+		{#if phase !== 'first'}
+			<Readout
+				id="speed-now"
+				order={2}
+				label="Speed now"
+				value="{KMS(vNow).toFixed(1)} km/s"
+				color="var(--orb-planet)"
+			/>
+		{/if}
+		{#if phase !== 'second'}
+			<Readout id="path" order={3} label="Path" value={kindText} />
+		{/if}
+		<Readout
+			id="period"
+			order={4}
+			label="Period"
+			value={launch.bound
+				? `${launch.el.period.toFixed(launch.el.period < 10 ? 2 : 0)} years`
+				: '—'}
+		/>
+		{#if phase === 'first'}
+			<Readout id="perihelion" order={5} label="Perihelion" value="{f2(launch.el.perihelion)} AU" />
+			<Readout
+				id="aphelion"
+				order={6}
+				label="Aphelion"
+				value={launch.bound ? `${f2(launch.el.aphelion)} AU` : 'never comes back'}
+			/>
+			{#if launch.bound && foci}
+				<Readout
+					id="foci"
+					order={7}
+					label="Distances to the two foci"
+					value="{f2(foci.d1)} + {f2(foci.d2)} = {f2(foci.d1 + foci.d2)} AU"
+					note="always the same: the long axis, 2a"
+					opacity={fade.current}
+				/>
+				<Readout
+					id="key-sun-focus"
+					order={20}
+					label="to the Sun (a focus)"
+					color="var(--orb-star)"
+				/>
+				{#if !isCircle}
+					<Readout
+						id="key-other-focus"
+						order={21}
+						label="to the other focus"
+						color="var(--orb-planet)"
+					/>
+				{/if}
+			{/if}
+		{/if}
+		{#if phase === 'second' && wedges.length}
+			<Readout
+				id="wedge"
+				order={7}
+				label="Each wedge"
+				value="{wedges[0].area.toFixed(3)} AU²"
+				note="⅛ of the orbit, {(launch.el.period / N_WEDGES).toFixed(3)} years: equal areas"
+				opacity={fade.current}
+			/>
+			<Readout
+				id="speed-range"
+				order={8}
+				label="Speed"
+				value="{KMS(speedRange.min).toFixed(1)} to {KMS(speedRange.max).toFixed(1)} km/s"
+				note="slowest at aphelion, fastest at perihelion"
+				opacity={fade.current}
+			/>
+		{/if}
+		{#if status || (phase !== 'launch' && !launch.bound)}
+			<Readout
+				id="status"
+				order={9}
+				label="Now"
+				value={phase !== 'launch' && !launch.bound
+					? phase === 'first'
+						? 'This speed escapes: no ellipse to show.'
+						: 'This speed escapes: no orbit to divide.'
+					: status}
+				note={phase !== 'launch' && !launch.bound
+					? 'Choose under 42.1 km/s (√2 × 29.8)'
+					: undefined}
+			/>
 		{/if}
 	{/if}
 
-	<!-- readout card -->
-	<g>
-		<rect
-			x={CX}
-			y={PY0}
-			width={CW}
-			height={cardH}
-			rx="12"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
-		{#if phase === 'two' && twoView}
-			{@render txt(CX + 16, PY0 + 28, 'Inner planet (like the Earth)', 15, { weight: 700 })}
-			{@render txt(CX + 16, PY0 + cardH + 36, 'Dashed: the undisturbed orbits', 12, {
-				muted: true
-			})}
-			{@render row(PY0 + 60, 'Years so far', `${twoView.years.toFixed(1)} of ${TWO_YEARS}`)}
-			{@render row(PY0 + 88, 'Closest to the Sun so far', `${f2(twoView.lo)} AU`)}
-			{@render row(PY0 + 116, 'Farthest so far', `${f2(twoView.hi)} AU`)}
-			{@render row(
-				PY0 + 144,
-				'Second planet',
-				neighbour > 0 ? `${neighbour} × Jupiter, 1.6 AU` : 'none',
-				'var(--orb-second)'
-			)}
-			{@render txt(CX + 16, PY0 + 176, `Replayed fast: 1 year ≈ ${TWO_SEC_PER_YEAR} s here`, 12, {
-				muted: true
-			})}
-		{:else}
-			{@render txt(
-				CX + 16,
-				PY0 + 28,
-				phase === 'first' ? 'First law' : phase === 'second' ? 'Second law' : 'Your launch',
-				15,
-				{ weight: 700 }
-			)}
-			{@render row(PY0 + 58, 'Launch speed', `${KMS(speed * V1).toFixed(1)} km/s`)}
-			{@render row(PY0 + 84, 'Speed now', `${KMS(vNow).toFixed(1)} km/s`, 'var(--orb-planet)')}
-			{@render row(PY0 + 110, 'Path', kindText, undefined, 700)}
-			{@render row(
-				PY0 + 136,
-				'Period',
-				launch.bound ? `${launch.el.period.toFixed(launch.el.period < 10 ? 2 : 0)} years` : '—'
-			)}
-			{@render row(PY0 + 162, 'Perihelion', `${f2(launch.el.perihelion)} AU`)}
-			{@render row(
-				PY0 + 188,
-				'Aphelion',
-				launch.bound ? `${f2(launch.el.aphelion)} AU` : '— (never comes back)'
-			)}
-			{#if phase === 'second' && wedges.length}
+	<Readout id="card">
+		<!-- readout card -->
+		<g>
+			<rect
+				x={CX}
+				y={PY0}
+				width={CW}
+				height={cardH}
+				rx="12"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			{#if phase === 'two' && twoView}
+				{@render txt(CX + 16, PY0 + 28, 'Inner planet (like the Earth)', 15, { weight: 700 })}
+				{@render txt(CX + 16, PY0 + cardH + 36, 'Dashed: the undisturbed orbits', 12, {
+					muted: true
+				})}
+				{@render row(PY0 + 60, 'Years so far', `${twoView.years.toFixed(1)} of ${TWO_YEARS}`)}
+				{@render row(PY0 + 88, 'Closest to the Sun so far', `${f2(twoView.lo)} AU`)}
+				{@render row(PY0 + 116, 'Farthest so far', `${f2(twoView.hi)} AU`)}
+				{@render row(
+					PY0 + 144,
+					'Second planet',
+					neighbour > 0 ? `${neighbour} × Jupiter, 1.6 AU` : 'none',
+					'var(--orb-second)'
+				)}
+				{@render txt(CX + 16, PY0 + 176, `Replayed fast: 1 year ≈ ${TWO_SEC_PER_YEAR} s here`, 12, {
+					muted: true
+				})}
+			{:else}
 				{@render txt(
 					CX + 16,
-					PY0 + 216,
-					`Each wedge: ⅛ of the orbit, ${(launch.el.period / N_WEDGES).toFixed(3)} years`,
+					PY0 + 28,
+					phase === 'first' ? 'First law' : phase === 'second' ? 'Second law' : 'Your launch',
+					15,
+					{ weight: 700 }
+				)}
+				{@render row(PY0 + 58, 'Launch speed', `${KMS(speed * V1).toFixed(1)} km/s`)}
+				{@render row(PY0 + 84, 'Speed now', `${KMS(vNow).toFixed(1)} km/s`, 'var(--orb-planet)')}
+				{@render row(PY0 + 110, 'Path', kindText, undefined, 700)}
+				{@render row(
+					PY0 + 136,
+					'Period',
+					launch.bound ? `${launch.el.period.toFixed(launch.el.period < 10 ? 2 : 0)} years` : '—'
+				)}
+				{@render row(PY0 + 162, 'Perihelion', `${f2(launch.el.perihelion)} AU`)}
+				{@render row(
+					PY0 + 188,
+					'Aphelion',
+					launch.bound ? `${f2(launch.el.aphelion)} AU` : '— (never comes back)'
+				)}
+				{#if phase === 'second' && wedges.length}
+					{@render txt(
+						CX + 16,
+						PY0 + 216,
+						`Each wedge: ⅛ of the orbit, ${(launch.el.period / N_WEDGES).toFixed(3)} years`,
+						12,
+						{ muted: true }
+					)}
+				{/if}
+				{@render txt(
+					CX + 16,
+					PY0 + cardH - 14,
+					launch.long ? `${paceText} (sped up)` : paceText,
 					12,
 					{ muted: true }
 				)}
 			{/if}
+		</g>
+	</Readout>
+	<Readout id="fact">
+		<!-- below the card: the step's key fact -->
+		{#if phase === 'first' && launch.bound && foci}
+			<g opacity={fade.current}>
+				<rect
+					x={CX}
+					y={PY0 + cardH + 16}
+					width={CW}
+					height="96"
+					rx="12"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+				{@render txt(CX + 16, PY0 + cardH + 42, 'Distances to the two foci', 12.5, { muted: true })}
+				<text
+					x={CX + 16}
+					y={PY0 + cardH + 72}
+					class="halo"
+					font-weight="700"
+					style:font-size="18px"
+					style:font-variant-numeric="tabular-nums"
+					><tspan style:fill="var(--orb-star)">{f2(foci.d1)}</tspan> +
+					<tspan style:fill="var(--orb-planet)">{f2(foci.d2)}</tspan>
+					= {f2(foci.d1 + foci.d2)} AU</text
+				>
+				{@render txt(CX + 16, PY0 + cardH + 96, 'always the same: the long axis, 2a', 12, {
+					muted: true
+				})}
+			</g>
+		{:else if phase === 'second' && wedges.length}
+			<g opacity={fade.current}>
+				<rect
+					x={CX}
+					y={PY0 + cardH + 16}
+					width={CW}
+					height="110"
+					rx="12"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+				{@render txt(CX + 16, PY0 + cardH + 42, 'Speed round the orbit', 12.5, { muted: true })}
+				<rect x={bx} y={by} width={bw} height="8" rx="4" fill="var(--stage-line)" opacity="0.35" />
+				<rect
+					x={bx}
+					y={by}
+					width={Math.max(8, bw * Math.min(1, Math.max(0, u)))}
+					height="8"
+					rx="4"
+					fill="var(--orb-planet)"
+				/>
+				{@render txt(bx, by + 30, `slowest ${KMS(speedRange.min).toFixed(1)}`, 12, { muted: true })}
+				{@render txt(bx + bw, by + 30, `fastest ${KMS(speedRange.max).toFixed(1)} km/s`, 12, {
+					anchor: 'end',
+					muted: true
+				})}
+				{@render txt(bx, by + 50, 'at aphelion', 11, { muted: true })}
+				{@render txt(bx + bw, by + 50, 'at perihelion', 11, { anchor: 'end', muted: true })}
+			</g>
+		{/if}
+	</Readout>
+	<Readout id="status-line">
+		<!-- status line under the cards -->
+		{#if showOrbit && (status || (phase !== 'launch' && !launch.bound))}
 			{@render txt(
-				CX + 16,
-				PY0 + cardH - 14,
-				launch.long ? `${paceText} (sped up)` : paceText,
-				12,
-				{ muted: true }
+				CX + CW / 2,
+				statusY,
+				phase !== 'launch' && !launch.bound
+					? phase === 'first'
+						? 'This speed escapes: no ellipse to show.'
+						: 'This speed escapes: no orbit to divide.'
+					: status,
+				13.5,
+				{ anchor: 'middle', weight: 600 }
 			)}
+			{#if phase !== 'launch' && !launch.bound}
+				{@render txt(CX + CW / 2, statusY + 22, 'Choose under 42.1 km/s (√2 × 29.8)', 12, {
+					anchor: 'middle',
+					muted: true
+				})}
+			{/if}
 		{/if}
-	</g>
-
-	<!-- below the card: the step's key fact -->
-	{#if phase === 'first' && launch.bound && foci}
-		<g opacity={fade.current}>
-			<rect
-				x={CX}
-				y={PY0 + cardH + 16}
-				width={CW}
-				height="96"
-				rx="12"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			{@render txt(CX + 16, PY0 + cardH + 42, 'Distances to the two foci', 12.5, { muted: true })}
-			<text
-				x={CX + 16}
-				y={PY0 + cardH + 72}
-				class="halo"
-				font-weight="700"
-				style:font-size="18px"
-				style:font-variant-numeric="tabular-nums"
-				><tspan style:fill="var(--orb-star)">{f2(foci.d1)}</tspan> +
-				<tspan style:fill="var(--orb-planet)">{f2(foci.d2)}</tspan>
-				= {f2(foci.d1 + foci.d2)} AU</text
-			>
-			{@render txt(CX + 16, PY0 + cardH + 96, 'always the same: the long axis, 2a', 12, {
-				muted: true
-			})}
-		</g>
-	{:else if phase === 'second' && wedges.length}
-		<g opacity={fade.current}>
-			<rect
-				x={CX}
-				y={PY0 + cardH + 16}
-				width={CW}
-				height="110"
-				rx="12"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			{@render txt(CX + 16, PY0 + cardH + 42, 'Speed round the orbit', 12.5, { muted: true })}
-			<rect x={bx} y={by} width={bw} height="8" rx="4" fill="var(--stage-line)" opacity="0.35" />
-			<rect
-				x={bx}
-				y={by}
-				width={Math.max(8, bw * Math.min(1, Math.max(0, u)))}
-				height="8"
-				rx="4"
-				fill="var(--orb-planet)"
-			/>
-			{@render txt(bx, by + 30, `slowest ${KMS(speedRange.min).toFixed(1)}`, 12, { muted: true })}
-			{@render txt(bx + bw, by + 30, `fastest ${KMS(speedRange.max).toFixed(1)} km/s`, 12, {
-				anchor: 'end',
-				muted: true
-			})}
-			{@render txt(bx, by + 50, 'at aphelion', 11, { muted: true })}
-			{@render txt(bx + bw, by + 50, 'at perihelion', 11, { anchor: 'end', muted: true })}
-		</g>
-	{/if}
-
-	<!-- status line under the cards -->
-	{#if showOrbit && (status || (phase !== 'launch' && !launch.bound))}
-		{@render txt(
-			CX + CW / 2,
-			statusY,
-			phase !== 'launch' && !launch.bound
-				? phase === 'first'
-					? 'This speed escapes: no ellipse to show.'
-					: 'This speed escapes: no orbit to divide.'
-				: status,
-			13.5,
-			{ anchor: 'middle', weight: 600 }
-		)}
-		{#if phase !== 'launch' && !launch.bound}
-			{@render txt(CX + CW / 2, statusY + 22, 'Choose under 42.1 km/s (√2 × 29.8)', 12, {
+	</Readout>
+	<Readout id="takeaway">
+		<!-- the takeaway, in the picture: always falling (launch); one law for all (two) -->
+		{#if takeaway}
+			<g>
+				<rect
+					x={CX}
+					y={PY1 - 116}
+					width={CW}
+					height="116"
+					rx="12"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+				{@render txt(CX + 16, PY1 - 90, takeaway.title, 13.5, { weight: 700 })}
+				{#each takeaway.lines as line, i (i)}
+					{@render txt(CX + 16, PY1 - 68 + i * 18, line, 12.5)}
+				{/each}
+			</g>
+		{/if}
+	</Readout>
+	<Readout id="flung">
+		{#if phase === 'two' && twoView && twoView.hi > 2.2}
+			{@render txt(CX + CW / 2, PY0 + cardH + 64, 'Flung out of the frame!', 13.5, {
 				anchor: 'middle',
-				muted: true
+				weight: 600
 			})}
 		{/if}
-	{/if}
-	<!-- the takeaway, in the picture: always falling (launch); one law for all (two) -->
-	{#if takeaway}
-		<g>
-			<rect
-				x={CX}
-				y={PY1 - 116}
-				width={CW}
-				height="116"
-				rx="12"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			{@render txt(CX + 16, PY1 - 90, takeaway.title, 13.5, { weight: 700 })}
-			{#each takeaway.lines as line, i (i)}
-				{@render txt(CX + 16, PY1 - 68 + i * 18, line, 12.5)}
-			{/each}
-		</g>
-	{/if}
-	{#if phase === 'two' && twoView && twoView.hi > 2.2}
-		{@render txt(CX + CW / 2, PY0 + cardH + 64, 'Flung out of the frame!', 13.5, {
-			anchor: 'middle',
-			weight: 600
-		})}
-	{/if}
-</g>
+	</Readout></g
+>

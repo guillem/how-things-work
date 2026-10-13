@@ -20,7 +20,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { G, ride, trackThrough } from '../physics';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -407,10 +407,12 @@
 	<!-- height grid and scale -->
 	{#each [0, 2, 4, 6, 8, 10, 12] as h (h)}
 		<line x1={X0 - 24} x2={X1} y1={sy(h)} y2={sy(h)} stroke="var(--stage-grid)" />
-		{@render txt(X0 - 30, sy(h) + 4, h === 12 ? '12 m' : String(h), 11, {
-			anchor: 'end',
-			muted: true
-		})}
+		<Readout id="grid-label">
+			{@render txt(X0 - 30, sy(h) + 4, h === 12 ? '12 m' : String(h), 11, {
+				anchor: 'end',
+				muted: true
+			})}
+		</Readout>
 	{/each}
 
 	<!-- ground -->
@@ -431,9 +433,17 @@
 		stroke-width="1.3"
 		stroke-dasharray="6 5"
 	/>
-	{#each releaseLines as line, i (i)}
-		{@render txt(releaseLabel.x, releaseLabel.y + i * 15, line, 12, { muted: true })}
-	{/each}
+	<Readout
+		id="release"
+		order={6}
+		label="Released from"
+		value="{h0.toFixed(1)} m"
+		note={mu > 0 ? undefined : 'the car never climbs above this line'}
+	>
+		{#each releaseLines as line, i (i)}
+			{@render txt(releaseLabel.x, releaseLabel.y + i * 15, line, 12, { muted: true })}
+		{/each}
+	</Readout>
 
 	<!-- rails, run-outs and buffers -->
 	<path
@@ -457,7 +467,9 @@
 		<g transform="translate({e.q.x} {e.q.y}) rotate({e.angle})">
 			<rect x="-3.5" y="-24" width="7" height="27" rx="2.5" fill="var(--stage-ink-muted)" />
 		</g>
-		{@render txt(e.q.x, GY + 28, 'buffer', 11, { anchor: 'middle', muted: true })}
+		<Readout id="buffer">
+			{@render txt(e.q.x, GY + 28, 'buffer', 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/each}
 
 	<!-- turning points: where the car stopped climbing and rolled back -->
@@ -471,11 +483,13 @@
 			stroke-width="2"
 		/>
 		{#if p.label}
-			{@render txt(p.lx, p.ly, `${p.h.toFixed(1)} m`, 12, {
-				anchor: p.anchor,
-				weight: 600,
-				opacity: clearOfCar(p)
-			})}
+			<Readout id="turn-label">
+				{@render txt(p.lx, p.ly, `${p.h.toFixed(1)} m`, 12, {
+					anchor: p.anchor,
+					weight: 600,
+					opacity: clearOfCar(p)
+				})}
+			</Readout>
 		{/if}
 	{/each}
 
@@ -505,22 +519,25 @@
 			{/if}
 		{/each}
 	</g>
-	{#if atRest > 0.01 && motion.pinned}
-		{@render txt(X0 - 30, 92, restText, 13, { weight: 600, opacity: atRest })}
-	{:else if atRest > 0.01}
-		{@render txt(
-			Math.min(944 - restPill.w / 2, Math.max(16 + restPill.w / 2, restPill.x)),
-			restPill.y,
-			restText,
-			12,
-			{
-				anchor: 'middle',
-				weight: 600,
-				opacity: atRest,
-				pill: true
-			}
-		)}
-	{/if}
+	<Readout id="rest" order={7} label="Now" value={restText} opacity={atRest} />
+	<Readout id="rest-label">
+		{#if atRest > 0.01 && motion.pinned}
+			{@render txt(X0 - 30, 92, restText, 13, { weight: 600, opacity: atRest })}
+		{:else if atRest > 0.01}
+			{@render txt(
+				Math.min(944 - restPill.w / 2, Math.max(16 + restPill.w / 2, restPill.x)),
+				restPill.y,
+				restText,
+				12,
+				{
+					anchor: 'middle',
+					weight: 600,
+					opacity: atRest,
+					pill: true
+				}
+			)}
+		{/if}
+	</Readout>
 
 	<!-- handles -->
 	{#each heights as h, i (i)}
@@ -550,28 +567,35 @@
 	{/each}
 
 	<!-- legend -->
-	{#if !friction}
-		{@render txt(X0 - 30, 40, 'Drag the round handles up or down to reshape the track', 12, {
+	<Readout id="hint">
+		{#if !friction}
+			{@render txt(X0 - 30, 40, 'Drag the round handles up or down to reshape the track', 12, {
+				muted: true
+			})}
+		{/if}
+	</Readout>
+	<Readout id="key-turns" order={20} label="rings: where it turned back" />
+	<Readout id="turns-legend">
+		<circle
+			cx={X0 - 26}
+			cy={60}
+			r="4"
+			fill="var(--stage-bg)"
+			stroke="var(--mech-heat)"
+			stroke-width="2"
+		/>
+		{@render txt(X0 - 16, 64, 'where the car turned back, and the height it reached', 12, {
 			muted: true
 		})}
-	{/if}
-	<circle
-		cx={X0 - 26}
-		cy={60}
-		r="4"
-		fill="var(--stage-bg)"
-		stroke="var(--mech-heat)"
-		stroke-width="2"
-	/>
-	{@render txt(X0 - 16, 64, 'where the car turned back, and the height it reached', 12, {
-		muted: true
-	})}
+	</Readout>
 
 	<!-- ================= energy bars ================= -->
-	{@render txt(716, 40, 'Energy of the 1 kg car', 15, { weight: 600 })}
-	{@render txt(716, 60, friction ? 'kinetic + potential + heat' : 'kinetic + potential', 12, {
-		muted: true
-	})}
+	<Readout id="energy-title">
+		{@render txt(716, 40, 'Energy of the 1 kg car', 15, { weight: 600 })}
+		{@render txt(716, 60, friction ? 'kinetic + potential + heat' : 'kinetic + potential', 12, {
+			muted: true
+		})}
+	</Readout>
 
 	{#each columns as c (c.id)}
 		<g opacity={c.id === 'heat' ? 0.4 + 0.6 * heatW : 1}>
@@ -584,7 +608,9 @@
 				fill="var(--stage-grid)"
 			/>
 			<rect x={c.x - BW / 2} y={BASE - bar(c.j)} width={BW} height={bar(c.j)} fill={c.color} />
-			{@render txt(c.x, BASE + 20, c.id, 12, { anchor: 'middle', color: c.color, weight: 600 })}
+			<Readout id="column-name">
+				{@render txt(c.x, BASE + 20, c.id, 12, { anchor: 'middle', color: c.color, weight: 600 })}
+			</Readout>
 		</g>
 	{/each}
 
@@ -630,24 +656,39 @@
 		stroke-dasharray="6 5"
 	/>
 	<!-- the values go over the dashed line, so its dashes never strike them through -->
-	{#each columns as c (c.id)}
-		{@render txt(c.x, BASE - bar(c.j) - 8, `${c.n} J`, 13, {
-			anchor: 'middle',
-			weight: 600,
-			opacity: c.id === 'heat' ? 0.4 + 0.6 * heatW : 1
-		})}
+	{#each columns as c, i (c.id)}
+		<Readout
+			id="energy-{c.id}"
+			order={1 + i}
+			label={c.id[0].toUpperCase() + c.id.slice(1)}
+			value="{c.n} J"
+			color={c.color}
+			opacity={c.id === 'heat' ? heatW : 1}
+		>
+			{@render txt(c.x, BASE - bar(c.j) - 8, `${c.n} J`, 13, {
+				anchor: 'middle',
+				weight: 600,
+				opacity: c.id === 'heat' ? 0.4 + 0.6 * heatW : 1
+			})}
+		</Readout>
 	{/each}
-	{@render txt(cols.total, BASE - bar(E0) - 8, `${shown.total} J`, 13, {
-		anchor: 'middle',
-		weight: 700
-	})}
-	{@render txt(cols.total, BASE + 20, 'total', 12, { anchor: 'middle', weight: 600 })}
-	{@render txt(cols.total, BASE + 35, 'never changes', 11, { anchor: 'middle', muted: true })}
+	<Readout id="energy-total" order={4} label="Total" value="{shown.total} J" note="never changes">
+		{@render txt(cols.total, BASE - bar(E0) - 8, `${shown.total} J`, 13, {
+			anchor: 'middle',
+			weight: 700
+		})}
+		{@render txt(cols.total, BASE + 20, 'total', 12, { anchor: 'middle', weight: 600 })}
+		{@render txt(cols.total, BASE + 35, 'never changes', 11, { anchor: 'middle', muted: true })}
+	</Readout>
 
 	<!-- readout -->
-	{@render txt(716, 540, `speed ${fmt(now.speed)} m/s`, 13, { weight: 600 })}
-	{@render txt(716, 560, `height ${fmt(track.h(now.x))} m`, 13, { weight: 600 })}
-	{#if friction}
-		{@render txt(944, 560, `μ = ${mu.toFixed(2)}`, 13, { anchor: 'end', muted: true })}
-	{/if}
+	<Readout id="speed" order={5} label="Speed" value="{fmt(now.speed)} m/s">
+		{@render txt(716, 540, `speed ${fmt(now.speed)} m/s`, 13, { weight: 600 })}
+	</Readout>
+	<Readout id="height">
+		{@render txt(716, 560, `height ${fmt(track.h(now.x))} m`, 13, { weight: 600 })}
+		{#if friction}
+			{@render txt(944, 560, `μ = ${mu.toFixed(2)}`, 13, { anchor: 'end', muted: true })}
+		{/if}
+	</Readout>
 </g>

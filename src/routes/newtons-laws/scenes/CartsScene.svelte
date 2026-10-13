@@ -21,7 +21,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, clamp, niceMax, scale, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { G, carts, kinetic, push } from '../physics';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -432,14 +432,27 @@
 	{@const w = cartW(m)}
 	{@const h = cartH(m)}
 	<rect x={cx - w / 2} y={ty - 13 - h} width={w} height={h} rx="8" fill="var(--mech-cart)" />
-	<text
-		x={cx}
-		y={ty - 13 - h / 2 + 5}
-		text-anchor="middle"
-		font-weight="600"
-		style:font-size="14px"
-		style:fill="#fff">{fmtN(m)} kg</text
-	>
+	<!-- phones: the mass in larger type -->
+	<Readout id="cart-mass">
+		{#snippet narrow()}
+			<text
+				x={cx}
+				y={ty - 13 - h / 2 + 8}
+				text-anchor="middle"
+				font-weight="700"
+				style:font-size="22px"
+				style:fill="#fff">{fmtN(m)} kg</text
+			>
+		{/snippet}
+		<text
+			x={cx}
+			y={ty - 13 - h / 2 + 5}
+			text-anchor="middle"
+			font-weight="600"
+			style:font-size="14px"
+			style:fill="#fff">{fmtN(m)} kg</text
+		>
+	</Readout>
 	{#each [-1, 1] as side (side)}
 		{@const wx = cx + side * (w / 2 - 17)}
 		<circle
@@ -497,9 +510,14 @@
 {/snippet}
 
 {#snippet legend(x: number, y: number, items: { c: string; l: string }[])}
-	{#each items as item, i (item.l)}
-		{@render arrow(x + i * 110, y, x + i * 110 + 26, item.c, 2.5)}
-		{@render txt(x + i * 110 + 32, y + 4, item.l, 12, { muted: true })}
+	<Readout id="legend">
+		{#each items as item, i (item.l)}
+			{@render arrow(x + i * 110, y, x + i * 110 + 26, item.c, 2.5)}
+			{@render txt(x + i * 110 + 32, y + 4, item.l, 12, { muted: true })}
+		{/each}
+	</Readout>
+	{#each items as item (item.l)}
+		<Readout id="key-{item.l}" order={20} label={item.l} color={item.c} />
 	{/each}
 {/snippet}
 
@@ -536,7 +554,9 @@
 					{@const x = sxW(v)}
 					<g opacity={smoothstep(20, 60, x) * (1 - smoothstep(900, 940, x))}>
 						<line x1={x} x2={x} y1={ty + 7} y2={ty + 13} stroke="var(--stage-line)" />
-						{@render txt(x, ty + 28, `${v} m`, 11, { anchor: 'middle', muted: true })}
+						<Readout id="tick">
+							{@render txt(x, ty + 28, `${v} m`, 11, { anchor: 'middle', muted: true })}
+						</Readout>
 					</g>
 				{/each}
 			</g>
@@ -549,68 +569,113 @@
 					{@const y = bodyTop(mass) - 18}
 					{@const len = vis(vNow * VA1)}
 					{@render arrow(cx1, y, cx1 + len, 'var(--mech-velocity)')}
-					{@render txt(cx1 + len / 2, y - 10, `${fmtV(vNow)} m/s`, 13, {
-						anchor: 'middle',
-						color: 'var(--mech-velocity)',
-						weight: 600
-					})}
+					<Readout id="v-label">
+						{@render txt(cx1 + len / 2, y - 10, `${fmtV(vNow)} m/s`, 13, {
+							anchor: 'middle',
+							color: 'var(--mech-velocity)',
+							weight: 600
+						})}
+					</Readout>
 				{/if}
 				{#if pushNow > 0}
 					{@const x = cx1 + cartW(mass) / 2 + 4}
 					{@const y = bodyMid(mass)}
 					{@const len = Math.max(pushNow * FA1, 14)}
 					{@render arrow(x, y, x + len, 'var(--mech-force)')}
-					{@render txt(x + len + 8, y + 4, `push ${fmtN(pushNow)} N`, 13, {
-						color: 'var(--mech-force)',
-						weight: 600
-					})}
+					<Readout id="push-label">
+						{@render txt(x + len + 8, y + 4, `push ${fmtN(pushNow)} N`, 13, {
+							color: 'var(--mech-force)',
+							weight: 600
+						})}
+					</Readout>
 				{/if}
 				{#if fricNow > 0}
 					{@const x = cx1 - cartW(mass) / 2 - 2}
 					{@const y = ty - WHEEL}
 					{@const len = Math.max(fricNow * FA1, 14)}
 					{@render arrow(x, y, x - len, 'var(--mech-force)', 2.5)}
-					{@render txt(x - len - 6, y + 4, `friction ${fmt(fricNow, 2)} N`, 12, {
-						anchor: 'end',
-						color: 'var(--mech-force)',
-						weight: 600
-					})}
+					<Readout id="friction-label">
+						{@render txt(x - len - 6, y + 4, `friction ${fmt(fricNow, 2)} N`, 12, {
+							anchor: 'end',
+							color: 'var(--mech-force)',
+							weight: 600
+						})}
+					</Readout>
 				{/if}
 			</g>
 
 			<!-- readouts -->
-			{@render txt(944 - 16, 48, `speed ${fmtV(vNow)} m/s`, 16, {
-				anchor: 'end',
-				weight: 600,
-				color: 'var(--mech-velocity)'
-			})}
-			{@render txt(944 - 16, 70, `distance ${fmt(xNow)} m`, 12, { anchor: 'end', muted: true })}
+			<Readout
+				id="speed"
+				order={1}
+				label="Speed"
+				value="{fmtV(vNow)} m/s"
+				color="var(--mech-velocity)"
+				opacity={fadeIn}
+			>
+				{@render txt(944 - 16, 48, `speed ${fmtV(vNow)} m/s`, 16, {
+					anchor: 'end',
+					weight: 600,
+					color: 'var(--mech-velocity)'
+				})}
+			</Readout>
+			<Readout id="distance" order={2} label="Distance" value="{fmt(xNow)} m" opacity={fadeIn}>
+				{@render txt(944 - 16, 70, `distance ${fmt(xNow)} m`, 12, { anchor: 'end', muted: true })}
+			</Readout>
 
 			{#if phase === 'inertia'}
 				{@render legend(32, 44, [
 					{ c: 'var(--mech-velocity)', l: 'velocity' },
 					{ c: 'var(--mech-force)', l: 'force' }
 				])}
-				{@render txt(32, 70, mu ? 'Friction on (μ = 0.05)' : 'Friction off', 12, { muted: true })}
-				<g opacity={life}>
-					{@render txt(480, 418, status1.big, 22, {
-						anchor: 'middle',
-						weight: 600,
-						color: pushing || mu > 0 ? 'var(--mech-force)' : 'var(--mech-velocity)'
-					})}
-					{@render txt(480, 448, status1.small, 14, { anchor: 'middle', muted: true })}
-				</g>
+				<Readout
+					id="friction"
+					order={3}
+					label="Friction"
+					value={mu ? 'on, μ = 0.05' : 'off'}
+					opacity={fadeIn}
+				>
+					{@render txt(32, 70, mu ? 'Friction on (μ = 0.05)' : 'Friction off', 12, { muted: true })}
+				</Readout>
+				<Readout
+					id="status"
+					order={4}
+					label="Now"
+					value={status1.big}
+					note={status1.small}
+					opacity={fadeIn}
+				>
+					<g opacity={life}>
+						{@render txt(480, 418, status1.big, 22, {
+							anchor: 'middle',
+							weight: 600,
+							color: pushing || mu > 0 ? 'var(--mech-force)' : 'var(--mech-velocity)'
+						})}
+						{@render txt(480, 448, status1.small, 14, { anchor: 'middle', muted: true })}
+					</g>
+				</Readout>
 			{:else}
-				{@render txt(32, 48, formula, 16, { weight: 600 })}
-				<g opacity={life}>
-					{@render txt(
-						32,
-						72,
-						`${status1.big}${/[.…]$/.test(status1.big) ? '' : '.'} ${status1.small}`,
-						13,
-						{ muted: true }
-					)}
-				</g>
+				<Readout id="formula" order={3} label="Acceleration" value={formula} opacity={fadeIn}>
+					{@render txt(32, 48, formula, 16, { weight: 600 })}
+				</Readout>
+				<Readout
+					id="status"
+					order={4}
+					label="Now"
+					value={status1.big}
+					note={status1.small}
+					opacity={fadeIn}
+				>
+					<g opacity={life}>
+						{@render txt(
+							32,
+							72,
+							`${status1.big}${/[.…]$/.test(status1.big) ? '' : '.'} ${status1.small}`,
+							13,
+							{ muted: true }
+						)}
+					</g>
+				</Readout>
 			{/if}
 
 			<!-- v–t graph -->
@@ -624,12 +689,19 @@
 						fill="var(--mech-force)"
 						opacity="0.1"
 					/>
-					{@render txt((gx(T0) + gx(T0 + PUSH)) / 2, gy.range[1] + 16, 'push', 12, {
-						anchor: 'middle',
-						color: 'var(--mech-force)',
-						weight: 600
-					})}
-					<Axes sx={gx} sy={gy} xLabel="time (s)" yLabel="speed (m/s)" />
+					<Readout id="push-band">
+						{@render txt((gx(T0) + gx(T0 + PUSH)) / 2, gy.range[1] + 16, 'push', 12, {
+							anchor: 'middle',
+							color: 'var(--mech-force)',
+							weight: 600
+						})}
+					</Readout>
+					<Readout id="axes">
+						{#snippet narrow()}
+							<Axes sx={gx} sy={gy} />
+						{/snippet}
+						<Axes sx={gx} sy={gy} xLabel="time (s)" yLabel="speed (m/s)" />
+					</Readout>
 					<g opacity={life}>
 						<path
 							d={curve}
@@ -654,7 +726,9 @@
 				{@const x = 30 + v * SP}
 				<line x1={x} x2={x} y1={ty + 7} y2={ty + 13} stroke="var(--stage-line)" />
 				{#if v % 2 === 0}
-					{@render txt(x, ty + 28, `${v} m`, 11, { anchor: 'middle', muted: true })}
+					<Readout id="tick">
+						{@render txt(x, ty + 28, `${v} m`, 11, { anchor: 'middle', muted: true })}
+					</Readout>
 				{/if}
 			{/each}
 
@@ -683,28 +757,32 @@
 						rx="2.5"
 						fill="var(--stage-ink-muted)"
 					/>
-					{@render txt(
-						480,
-						Math.min(bodyTop(pm1), bodyTop(pm2)) - 14,
-						'held together, spring squashed',
-						13,
-						{ anchor: 'middle', muted: true }
-					)}
+					<Readout id="held">
+						{@render txt(
+							480,
+							Math.min(bodyTop(pm1), bodyTop(pm2)) - 14,
+							'held together, spring squashed',
+							13,
+							{ anchor: 'middle', muted: true }
+						)}
+					</Readout>
 				{/if}
 				{#if springing}
 					{@const y = Math.max(bodyTop(pm1), bodyTop(pm2)) - 22}
 					{@render arrow(leftFront - 4, y, leftFront - 4 - 70, 'var(--mech-force)')}
 					{@render arrow(rightRear + 4, y, rightRear + 4 + 70, 'var(--mech-force)')}
-					{@render txt(leftFront - 40, y - 12, `${fmtN(FP)} N`, 13, {
-						anchor: 'middle',
-						color: 'var(--mech-force)',
-						weight: 600
-					})}
-					{@render txt(rightRear + 40, y - 12, `${fmtN(FP)} N`, 13, {
-						anchor: 'middle',
-						color: 'var(--mech-force)',
-						weight: 600
-					})}
+					<Readout id="spring-forces">
+						{@render txt(leftFront - 40, y - 12, `${fmtN(FP)} N`, 13, {
+							anchor: 'middle',
+							color: 'var(--mech-force)',
+							weight: 600
+						})}
+						{@render txt(rightRear + 40, y - 12, `${fmtN(FP)} N`, 13, {
+							anchor: 'middle',
+							color: 'var(--mech-force)',
+							weight: 600
+						})}
+					</Readout>
 				{/if}
 				{#each [{ cx: leftFront - cartW(pm1) / 2, m: pm1, v: pvl }, { cx: rightRear + cartW(pm2) / 2, m: pm2, v: pvr }] as c, i (i)}
 					{#if Math.abs(c.v) > 1e-3 && !springing}
@@ -717,61 +795,87 @@
 							)}
 						>
 							{@render arrow(c.cx, y, c.cx + len, 'var(--mech-velocity)')}
-							{@render txt(c.cx + len / 2, y - 10, `${fmtV(Math.abs(c.v))} m/s`, 13, {
-								anchor: 'middle',
-								color: 'var(--mech-velocity)',
-								weight: 600
-							})}
+							<Readout id="v-label">
+								{@render txt(c.cx + len / 2, y - 10, `${fmtV(Math.abs(c.v))} m/s`, 13, {
+									anchor: 'middle',
+									color: 'var(--mech-velocity)',
+									weight: 600
+								})}
+							</Readout>
 						</g>
 					{/if}
 				{/each}
 			</g>
 
 			<!-- words -->
-			<g opacity={life}>
-				{#if tr <= 0}
-					{@render txt(480, 352, 'The catch is about to let go…', 16, {
-						anchor: 'middle',
-						weight: 600
-					})}
-				{:else}
-					{@render txt(
-						480,
-						352,
-						`Each cart pushed the other equally hard (${fmtN(FP)} N for ${DP} s), in opposite directions`,
-						15,
-						{ anchor: 'middle', weight: 600, color: 'var(--mech-force)' }
-					)}
-					{@render txt(480, 378, ratioWords, 14, { anchor: 'middle' })}
-				{/if}
-			</g>
+			<Readout
+				id="pair-words"
+				order={1}
+				label="Third law"
+				value={tr <= 0
+					? 'The catch is about to let go…'
+					: `equal and opposite pushes, ${fmtN(FP)} N for ${DP} s`}
+				note={tr <= 0 ? undefined : ratioWords}
+				opacity={fadeIn}
+			>
+				<g opacity={life}>
+					{#if tr <= 0}
+						{@render txt(480, 352, 'The catch is about to let go…', 16, {
+							anchor: 'middle',
+							weight: 600
+						})}
+					{:else}
+						{@render txt(
+							480,
+							352,
+							`Each cart pushed the other equally hard (${fmtN(FP)} N for ${DP} s), in opposite directions`,
+							15,
+							{ anchor: 'middle', weight: 600, color: 'var(--mech-force)' }
+						)}
+						{@render txt(480, 378, ratioWords, 14, { anchor: 'middle' })}
+					{/if}
+				</g>
+			</Readout>
 
 			<!-- momenta, equal and opposite -->
-			{@render txt(
-				480,
-				424,
-				'mass × velocity (kg·m/s); motion to the left counts as negative',
-				12,
-				{ anchor: 'middle', muted: true }
-			)}
+			<Readout id="mom-caption">
+				{@render txt(
+					480,
+					424,
+					'mass × velocity (kg·m/s); motion to the left counts as negative',
+					12,
+					{ anchor: 'middle', muted: true }
+				)}
+			</Readout>
 			<line x1="480" x2="480" y1="436" y2="566" stroke="var(--stage-line)" />
 			{#each [{ l: `left: ${fmtN(pm1)} kg × ${fmtV(pvl)} m/s`, p: pm1 * pvl }, { l: `right: ${fmtN(pm2)} kg × ${fmtV(pvr)} m/s`, p: pm2 * pvr }, { l: 'total', p: pm1 * pvl + pm2 * pvr }] as row, i (i)}
 				{@const y = 452 + i * 40}
 				{@const len = (row.p / J) * 200}
-				{@render txt(row.p < 0 ? 480 + 8 : 480 - 8, y + 13, row.l, 12, {
-					anchor: row.p < 0 ? 'start' : 'end',
-					muted: true,
-					weight: i === 2 ? 600 : 500
-				})}
+				<Readout id="pair-row-{i}">
+					{@render txt(row.p < 0 ? 480 + 8 : 480 - 8, y + 13, row.l, 12, {
+						anchor: row.p < 0 ? 'start' : 'end',
+						muted: true,
+						weight: i === 2 ? 600 : 500
+					})}
+				</Readout>
 				<g opacity={life}>
 					{@render bar(480, y, len, 18, 'var(--mech-momentum)', i === 2 ? 1 : 0.85)}
 				</g>
-				{@render txt(row.p < 0 ? 480 + len - 8 : 480 + len + 8, y + 14, fmt(row.p), 13, {
-					anchor: row.p < 0 ? 'end' : 'start',
-					weight: 600,
-					color: 'var(--mech-momentum)',
-					opacity: life
-				})}
+				<Readout
+					id="pair-mom-{i}"
+					order={2 + i}
+					label={['Left cart', 'Right cart', 'Total momentum'][i]}
+					value="{fmt(row.p)} kg·m/s"
+					color="var(--mech-momentum)"
+					opacity={fadeIn}
+				>
+					{@render txt(row.p < 0 ? 480 + len - 8 : 480 + len + 8, y + 14, fmt(row.p), 13, {
+						anchor: row.p < 0 ? 'end' : 'start',
+						weight: 600,
+						color: 'var(--mech-momentum)',
+						opacity: life
+					})}
+				</Readout>
 			{/each}
 		</g>
 	{:else}
@@ -781,18 +885,74 @@
 				{@const x = 30 + v * SC}
 				<line x1={x} x2={x} y1={ty + 7} y2={ty + 13} stroke="var(--stage-line)" />
 				{#if v % 2 === 0}
-					{@render txt(x, ty + 28, `${v} m`, 11, { anchor: 'middle', muted: true })}
+					<Readout id="tick">
+						{@render txt(x, ty + 28, `${v} m`, 11, { anchor: 'middle', muted: true })}
+					</Readout>
 				{/if}
 			{/each}
 
-			{@render txt(32, 48, outcome, 16, { weight: 600, opacity: life })}
-			{@render txt(
-				32,
-				72,
-				`Bounciness ${fmtN(e)}${e === 1 ? ' (perfectly elastic)' : e === 0 ? ' (they stick)' : ''}`,
-				12,
-				{ muted: true }
-			)}
+			<Readout id="outcome" order={1} label="Outcome" value={outcome} opacity={fadeIn}>
+				{@render txt(32, 48, outcome, 16, { weight: 600, opacity: life })}
+			</Readout>
+			<Readout
+				id="bounciness"
+				order={2}
+				label="Bounciness"
+				value={fmtN(e)}
+				note={e === 1 ? 'perfectly elastic' : e === 0 ? 'they stick' : undefined}
+				opacity={fadeIn}
+			>
+				{@render txt(
+					32,
+					72,
+					`Bounciness ${fmtN(e)}${e === 1 ? ' (perfectly elastic)' : e === 0 ? ' (they stick)' : ''}`,
+					12,
+					{ muted: true }
+				)}
+			</Readout>
+			<Readout
+				id="mom-before"
+				order={3}
+				label="Momentum before"
+				value="{fmt(pShow.B[0])} + {fmt(pShow.B[1])} = {fmt(pShow.B[2])}"
+				color="var(--mech-momentum)"
+				opacity={fadeIn * momView}
+			/>
+			<Readout
+				id="mom-after"
+				order={4}
+				label={meets ? 'Momentum after' : 'Momentum later'}
+				value={meets && !crashed
+					? 'waiting for the crash…'
+					: `${fmt(pShow.A[0])} + ${fmt(pShow.A[1])} = ${fmt(pShow.A[2])}`}
+				color="var(--mech-momentum)"
+				opacity={fadeIn * momView}
+			/>
+			<Readout
+				id="ke-before"
+				order={3}
+				label="Kinetic energy before"
+				value="{fmt(kShow.B[0], 2)} + {fmt(kShow.B[1], 2)} = {fmt(kShow.B[2], 2)} J"
+				color="var(--mech-kinetic)"
+				opacity={fadeIn * enView}
+			/>
+			<Readout
+				id="ke-after"
+				order={4}
+				label={meets ? 'Kinetic energy after' : 'Kinetic energy later'}
+				value={meets && !crashed
+					? 'waiting for the crash…'
+					: `${fmt(kShow.A[0], 2)} + ${fmt(kShow.A[1], 2)} = ${fmt(kShow.A[2], 2)} J`}
+				note={meets && !crashed
+					? undefined
+					: lost > 0.005
+						? `+ ${fmt(kShow.lost, 2)} J to denting, heat and sound`
+						: meets
+							? 'nothing lost'
+							: 'no crash'}
+				color="var(--mech-kinetic)"
+				opacity={fadeIn * enView}
+			/>
 			{@render legend(726, 44, [
 				{ c: 'var(--mech-velocity)', l: 'velocity' },
 				{ c: 'var(--mech-force)', l: 'force' }
@@ -806,11 +966,13 @@
 					<g opacity={bang}>
 						{@render arrow(XC - 4, y, XC - 64, 'var(--mech-force)')}
 						{@render arrow(XC + 4, y, XC + 64, 'var(--mech-force)')}
-						{@render txt(XC, y - 14, 'equal and opposite forces', 13, {
-							anchor: 'middle',
-							color: 'var(--mech-force)',
-							weight: 600
-						})}
+						<Readout id="bang-label">
+							{@render txt(XC, y - 14, 'equal and opposite forces', 13, {
+								anchor: 'middle',
+								color: 'var(--mech-force)',
+								weight: 600
+							})}
+						</Readout>
 					</g>
 				{/if}
 				{#each [{ cx: cxa, m: cm1, v: cv1 }, { cx: cxb, m: cm2, v: cv2 }] as c, i (i)}
@@ -824,18 +986,22 @@
 							)}
 						>
 							{@render arrow(c.cx, y, c.cx + len, 'var(--mech-velocity)')}
-							{@render txt(c.cx + len / 2, y - 10, `${fmtV(Math.abs(c.v))} m/s`, 13, {
-								anchor: 'middle',
-								color: 'var(--mech-velocity)',
-								weight: 600
-							})}
+							<Readout id="v-label">
+								{@render txt(c.cx + len / 2, y - 10, `${fmtV(Math.abs(c.v))} m/s`, 13, {
+									anchor: 'middle',
+									color: 'var(--mech-velocity)',
+									weight: 600
+								})}
+							</Readout>
 						</g>
 					{:else if bang < 0.02}
-						{@render txt(c.cx, y - 4, 'at rest', 12, {
-							anchor: 'middle',
-							muted: true,
-							opacity: edgeFade(c.cx - 22, c.cx + 22)
-						})}
+						<Readout id="at-rest">
+							{@render txt(c.cx, y - 4, 'at rest', 12, {
+								anchor: 'middle',
+								muted: true,
+								opacity: edgeFade(c.cx - 22, c.cx + 22)
+							})}
+						</Readout>
 					{/if}
 				{/each}
 			</g>
@@ -847,15 +1013,25 @@
 				{@const zero = (panel.x0 + panel.x1) / 2}
 				{@const pTot = pB[2]}
 				{@const pTotText = fmt(pShow.B[2])}
-				{@render txt(panel.x0, 338, after && !meets ? 'Later (no crash)' : panel.label, 14, {
-					weight: 600
-				})}
-				{#if after && meets && !crashed}
-					{@render txt((panel.x0 + panel.x1) / 2, 430, 'waiting for the crash…', 13, {
-						anchor: 'middle',
-						muted: true,
-						opacity: life
+				<!-- phones: one large word over each panel -->
+				<Readout id="panel-title-{pi}">
+					{#snippet narrow()}
+						{@render txt(panel.x0, 336, after ? (meets ? 'After' : 'Later') : 'Before', 30, {
+							weight: 700
+						})}
+					{/snippet}
+					{@render txt(panel.x0, 338, after && !meets ? 'Later (no crash)' : panel.label, 14, {
+						weight: 600
 					})}
+				</Readout>
+				{#if after && meets && !crashed}
+					<Readout id="waiting-{pi}">
+						{@render txt((panel.x0 + panel.x1) / 2, 430, 'waiting for the crash…', 13, {
+							anchor: 'middle',
+							muted: true,
+							opacity: life
+						})}
+					</Readout>
 				{/if}
 				<line
 					x1={panel.x0}
@@ -869,10 +1045,12 @@
 				<!-- momentum view -->
 				<g opacity={momView}>
 					{#if pi === 0}
-						{@render txt(panel.x1, 338, 'momentum, kg·m/s', 12, {
-							anchor: 'end',
-							color: 'var(--mech-momentum)'
-						})}
+						<Readout id="mom-unit">
+							{@render txt(panel.x1, 338, 'momentum, kg·m/s', 12, {
+								anchor: 'end',
+								color: 'var(--mech-momentum)'
+							})}
+						</Readout>
 					{/if}
 					<line
 						x1={zero}
@@ -886,23 +1064,27 @@
 						{@const p = after ? pA[r] : pB[r]}
 						{@const shownP = after ? pShow.A[r] : pShow.B[r]}
 						{@const len = (p / pScale.current) * PHALF}
-						{@render txt(panel.x0, ROW[r] - 6, ROWNAME[r], 11, {
-							muted: true,
-							weight: r === 2 ? 600 : 500
-						})}
+						<Readout id="mom-name-{pi}-{r}">
+							{@render txt(panel.x0, ROW[r] - 6, ROWNAME[r], 11, {
+								muted: true,
+								weight: r === 2 ? 600 : 500
+							})}
+						</Readout>
 						<g opacity={show}>
 							{@render bar(zero, ROW[r], len, ROWH[r], 'var(--mech-momentum)', r === 2 ? 1 : 0.8)}
-							{@render txt(
-								p < 0 ? zero + len - 6 : zero + len + 6,
-								ROW[r] + ROWH[r] / 2 + 5,
-								fmt(shownP),
-								13,
-								{
-									anchor: p < 0 ? 'end' : 'start',
-									weight: 600,
-									color: 'var(--mech-momentum)'
-								}
-							)}
+							<Readout id="mom-value-{pi}-{r}">
+								{@render txt(
+									p < 0 ? zero + len - 6 : zero + len + 6,
+									ROW[r] + ROWH[r] / 2 + 5,
+									fmt(shownP),
+									13,
+									{
+										anchor: p < 0 ? 'end' : 'start',
+										weight: 600,
+										color: 'var(--mech-momentum)'
+									}
+								)}
+							</Readout>
 						</g>
 					{/each}
 				</g>
@@ -910,10 +1092,12 @@
 				<!-- energy view -->
 				<g opacity={enView}>
 					{#if pi === 0}
-						{@render txt(panel.x1, 338, 'kinetic energy, J', 12, {
-							anchor: 'end',
-							color: 'var(--mech-kinetic)'
-						})}
+						<Readout id="ke-unit">
+							{@render txt(panel.x1, 338, 'kinetic energy, J', 12, {
+								anchor: 'end',
+								color: 'var(--mech-kinetic)'
+							})}
+						</Readout>
 					{/if}
 					<line
 						x1={panel.x0}
@@ -929,10 +1113,12 @@
 						{@const heat = after && r === 2 ? (lost / kScale.current) * KLEN : 0}
 						{@const shownK = after ? kShow.A[r] : kShow.B[r]}
 						<!-- clear of the axis line at x0 -->
-						{@render txt(panel.x0 + 6, ROW[r] - 6, ROWNAME[r], 11, {
-							muted: true,
-							weight: r === 2 ? 600 : 500
-						})}
+						<Readout id="ke-name-{pi}-{r}">
+							{@render txt(panel.x0 + 6, ROW[r] - 6, ROWNAME[r], 11, {
+								muted: true,
+								weight: r === 2 ? 600 : 500
+							})}
+						</Readout>
 						<g opacity={show}>
 							{@render bar(
 								panel.x0,
@@ -946,54 +1132,62 @@
 								{@render bar(panel.x0 + len + 1, ROW[r], heat, ROWH[r], 'var(--mech-heat)', 0.85)}
 							{/if}
 							<!-- after a lossy crash: the kinetic energy left, then the part turned to heat -->
-							<text
-								x={panel.x0 + len + heat + 6}
-								y={ROW[r] + ROWH[r] / 2 + 5}
-								class="halo"
-								font-weight="600"
-								style:font-size="13px"
-								><tspan style:fill="var(--mech-kinetic)">{fmt(shownK, 2)} J</tspan
-								>{#if heat > 0.5}<tspan style:fill="var(--mech-heat)"
-										>{` + ${fmt(kShow.lost, 2)} J`}</tspan
-									>{/if}</text
-							>
+							<Readout id="ke-value-{pi}-{r}">
+								<text
+									x={panel.x0 + len + heat + 6}
+									y={ROW[r] + ROWH[r] / 2 + 5}
+									class="halo"
+									font-weight="600"
+									style:font-size="13px"
+									><tspan style:fill="var(--mech-kinetic)">{fmt(shownK, 2)} J</tspan
+									>{#if heat > 0.5}<tspan style:fill="var(--mech-heat)"
+											>{` + ${fmt(kShow.lost, 2)} J`}</tspan
+										>{/if}</text
+								>
+							</Readout>
 						</g>
 					{/each}
 					{#if after}
 						<g opacity={show}>
-							{@render txt(
-								panel.x0,
-								520,
-								lost > 0.005
-									? `${fmt(kShow.lost, 2)} J of kinetic energy went into denting, heat and sound`
-									: meets
-										? 'nothing lost: perfectly elastic'
-										: 'no crash, so nothing changes',
-								12,
-								{
-									color: lost > 0.005 ? 'var(--mech-heat)' : undefined,
-									muted: lost <= 0.005,
-									weight: 600
-								}
-							)}
+							<Readout id="lost-caption">
+								{@render txt(
+									panel.x0,
+									520,
+									lost > 0.005
+										? `${fmt(kShow.lost, 2)} J of kinetic energy went into denting, heat and sound`
+										: meets
+											? 'nothing lost: perfectly elastic'
+											: 'no crash, so nothing changes',
+									12,
+									{
+										color: lost > 0.005 ? 'var(--mech-heat)' : undefined,
+										muted: lost <= 0.005,
+										weight: 600
+									}
+								)}
+							</Readout>
 						</g>
 					{/if}
 					<!-- total momentum, smaller -->
-					{@render txt(panel.x0, 540, 'momentum (total)', 11, { muted: true })}
+					<Readout id="mom-total-name">
+						{@render txt(panel.x0, 540, 'momentum (total)', 11, { muted: true })}
+					</Readout>
 					<line x1={zero} x2={zero} y1="538" y2="564" stroke="var(--stage-line)" />
 					<g opacity={show}>
 						{@render bar(zero, 545, (pTot / pScale.current) * 90, 10, 'var(--mech-momentum)')}
-						{@render txt(
-							zero + (pTot / pScale.current) * 90 + (pTot < 0 ? -6 : 6),
-							554,
-							`${pTotText} kg·m/s`,
-							11,
-							{
-								anchor: pTot < 0 ? 'end' : 'start',
-								weight: 600,
-								color: 'var(--mech-momentum)'
-							}
-						)}
+						<Readout id="mom-total-value">
+							{@render txt(
+								zero + (pTot / pScale.current) * 90 + (pTot < 0 ? -6 : 6),
+								554,
+								`${pTotText} kg·m/s`,
+								11,
+								{
+									anchor: pTot < 0 ? 'end' : 'start',
+									weight: 600,
+									color: 'var(--mech-momentum)'
+								}
+							)}
+						</Readout>
 					</g>
 				</g>
 			{/each}

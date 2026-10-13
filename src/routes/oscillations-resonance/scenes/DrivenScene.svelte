@@ -21,7 +21,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { scale } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { naturalFrequency, peakFrequency, springMotion, steadyAmplitude } from '../oscillator';
 	import Card from './Card.svelte';
 	import Plot from './Plot.svelte';
@@ -268,12 +268,16 @@
 		stroke="var(--stage-ink)"
 		stroke-width="1.2"
 	/>
-	{@render txt(COL_X - 38, HAND - 2, 'your push', 12, {
-		anchor: 'end',
-		weight: 600,
-		color: 'var(--osc-push)'
-	})}
-	{@render txt(COL_X - 38, HAND + 13, `${f.toFixed(2)} Hz`, 11, { anchor: 'end', muted: true })}
+	<Readout id="label-1">
+		{@render txt(COL_X - 38, HAND - 2, 'your push', 12, {
+			anchor: 'end',
+			weight: 600,
+			color: 'var(--osc-push)'
+		})}
+	</Readout>
+	<Readout id="label-2">
+		{@render txt(COL_X - 38, HAND + 13, `${f.toFixed(2)} Hz`, 11, { anchor: 'end', muted: true })}
+	</Readout>
 	{#if !reduced}
 		{@const len = 26 * pushNow}
 		{#if Math.abs(len) > 3}
@@ -305,7 +309,9 @@
 		stroke-dasharray="4 5"
 		opacity="0.6"
 	/>
-	{@render txt(COL_X - 76, REST + 4, 'rest', 12, { anchor: 'end', muted: true })}
+	<Readout id="label-3">
+		{@render txt(COL_X - 76, REST + 4, 'rest', 12, { anchor: 'end', muted: true })}
+	</Readout>
 
 	<!-- spring and mass -->
 	<path
@@ -326,16 +332,20 @@
 		stroke="var(--stage-ink)"
 		stroke-width="1.2"
 	/>
-	<text
-		x={COL_X}
-		y={yMass + 5}
-		text-anchor="middle"
-		font-weight="700"
-		style:font-size="13px"
-		style:fill="#fff">1 kg</text
-	>
+	<Readout id="mass-label">
+		<text
+			x={COL_X}
+			y={yMass + 5}
+			text-anchor="middle"
+			font-weight="700"
+			style:font-size="13px"
+			style:fill="#fff">1 kg</text
+		>
+	</Readout>
 	{#if offScale}
-		{@render txt(COL_X, 566, 'swing larger than drawn', 11, { anchor: 'middle', muted: true })}
+		<Readout id="label-4">
+			{@render txt(COL_X, 566, 'swing larger than drawn', 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/if}
 
 	<!-- trace -->
@@ -347,7 +357,9 @@
 		xFormat={(v) => `${v} s`}
 		yFormat={(v) => (v === 0 ? 'rest' : v < 0 ? '50 cm ↑' : '50 cm ↓')}
 	/>
-	{@render txt(PLOT_X0, TR.top - 12, 'position of the mass, from rest', 12, { muted: true })}
+	<Readout id="label-5">
+		{@render txt(PLOT_X0, TR.top - 12, 'position of the mass, from rest', 12, { muted: true })}
+	</Readout>
 	{#if !growing && (A * (TR.bottom - TR.top)) / (2 * TR.max) > 12 && A < TR.max}
 		{#each [-A, A] as a (a)}
 			<line
@@ -359,10 +371,12 @@
 				stroke-dasharray="5 5"
 			/>
 		{/each}
-		{@render txt(PLOT_X1, sy(-A) - 6, 'steady swing, predicted', 11, {
-			anchor: 'end',
-			muted: true
-		})}
+		<Readout id="label-6">
+			{@render txt(PLOT_X1, sy(-A) - 6, 'steady swing, predicted', 11, {
+				anchor: 'end',
+				muted: true
+			})}
+		</Readout>
 	{/if}
 	<g clip-path="url(#driven-trace)">
 		<path
@@ -385,10 +399,16 @@
 	<!-- push step: how far the hand and the mass move -->
 	{#if curveOn.current < 0.99}
 		<g opacity={1 - curveOn.current}>
-			{@render txt(PLOT_X0, CV.top - 14, 'How far each one moves, each way from rest', 12, {
-				muted: true
-			})}
-			{@render txt(PLOT_X0, CV.top + 18, 'the top of the spring (your push)', 12, { weight: 600 })}
+			<Readout id="label-7">
+				{@render txt(PLOT_X0, CV.top - 14, 'How far each one moves, each way from rest', 12, {
+					muted: true
+				})}
+			</Readout>
+			<Readout id="label-8">
+				{@render txt(PLOT_X0, CV.top + 18, 'the top of the spring (your push)', 12, {
+					weight: 600
+				})}
+			</Readout>
 			<rect
 				x={PLOT_X0}
 				y={CV.top + 26}
@@ -405,8 +425,12 @@
 				rx="6"
 				fill="var(--osc-push)"
 			/>
-			{@render txt(bx(hand) + 8, CV.top + 37, fmtLen(hand), 12, { weight: 600 })}
-			{@render txt(PLOT_X0, CV.top + 72, 'the mass', 12, { weight: 600 })}
+			<Readout id="label-9">
+				{@render txt(bx(hand) + 8, CV.top + 37, fmtLen(hand), 12, { weight: 600 })}
+			</Readout>
+			<Readout id="label-10">
+				{@render txt(PLOT_X0, CV.top + 72, 'the mass', 12, { weight: 600 })}
+			</Readout>
 			<rect
 				x={PLOT_X0}
 				y={CV.top + 80}
@@ -434,11 +458,15 @@
 					stroke-dasharray="3 2"
 				/>
 			{/if}
-			{@render txt(barLabel.x, barLabel.y, barText, 12, { weight: 600, anchor: barLabel.anchor })}
+			<Readout id="label-11">
+				{@render txt(barLabel.x, barLabel.y, barText, 12, { weight: 600, anchor: barLabel.anchor })}
+			</Readout>
 			{#if !growing && A < CV.max}
-				{@render txt(PLOT_X0, CV.top + 120, '┆ the steady swing it settles at', 11, {
-					muted: true
-				})}
+				<Readout id="label-12">
+					{@render txt(PLOT_X0, CV.top + 120, '┆ the steady swing it settles at', 11, {
+						muted: true
+					})}
+				</Readout>
 			{/if}
 		</g>
 	{/if}
@@ -454,10 +482,12 @@
 				xFormat={(v) => (v === 2.5 ? '2.5 Hz' : String(v))}
 				yFormat={(v) => `${Math.round(v * 100)} cm`}
 			/>
-			{@render txt(PLOT_X1, CV.top - 14, 'steady swing against push frequency', 12, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout id="label-13">
+				{@render txt(PLOT_X1, CV.top - 14, 'steady swing against push frequency', 12, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 			<g clip-path="url(#driven-curve)">
 				<path
 					d={curvePath}
@@ -487,36 +517,67 @@
 				<!-- on the axis: the label sits just above it, on the side away from the peak (and
 				     from the stage's right edge) -->
 				{@const left = f < fp || f > 1.9}
-				{@render txt(marker.x + (left ? -10 : 10), CV.bottom - 24, 'your push: never settles', 12, {
-					anchor: left ? 'end' : 'start',
-					weight: 600,
-					color: 'var(--osc-push)'
-				})}
+				<Readout id="label-14">
+					{@render txt(
+						marker.x + (left ? -10 : 10),
+						CV.bottom - 24,
+						'your push: never settles',
+						12,
+						{
+							anchor: left ? 'end' : 'start',
+							weight: 600,
+							color: 'var(--osc-push)'
+						}
+					)}
+				</Readout>
 			{:else if !atPeak}
-				{@render txt(
-					marker.x + (f > 1.6 ? -10 : 10),
-					Math.min(marker.y - 10, CV.bottom - 24),
-					'your push',
-					12,
-					{
-						anchor: f > 1.6 ? 'end' : 'start',
+				<Readout id="label-15">
+					{@render txt(
+						marker.x + (f > 1.6 ? -10 : 10),
+						Math.min(marker.y - 10, CV.bottom - 24),
+						'your push',
+						12,
+						{
+							anchor: f > 1.6 ? 'end' : 'start',
+							weight: 600,
+							color: 'var(--osc-push)'
+						}
+					)}
+				</Readout>
+			{/if}
+			<Readout id="label-16">
+				{@render txt(peakLabel.x, peakLabel.y, peakText, 12, {
+					weight: 600,
+					color: 'var(--osc-curve)'
+				})}
+			</Readout>
+			{#if atPeak}
+				<Readout id="label-17">
+					{@render txt(peakLabel.x, peakLabel.y + 15, 'your push is right on it', 12, {
 						weight: 600,
 						color: 'var(--osc-push)'
-					}
-				)}
-			{/if}
-			{@render txt(peakLabel.x, peakLabel.y, peakText, 12, {
-				weight: 600,
-				color: 'var(--osc-curve)'
-			})}
-			{#if atPeak}
-				{@render txt(peakLabel.x, peakLabel.y + 15, 'your push is right on it', 12, {
-					weight: 600,
-					color: 'var(--osc-push)'
-				})}
+					})}
+				</Readout>
 			{/if}
 		</g>
 	{/if}
 
+	<!-- phones: the bars' and the curve's key numbers -->
+	<Readout
+		id="mass-moves"
+		order={10}
+		label="The mass moves"
+		value="{(swing / hand).toFixed(1)}× your hand"
+		color="var(--osc-trace)"
+		opacity={1 - curveOn.current}
+	/>
+	<Readout
+		id="peak"
+		order={10}
+		label="Resonance"
+		value={peakText}
+		note={atPeak ? 'your push is right on it' : undefined}
+		opacity={curveOn.current}
+	/>
 	<Card {cells} />
 </g>

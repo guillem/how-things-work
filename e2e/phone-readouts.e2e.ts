@@ -249,6 +249,98 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Towns looked at\s*A\*: 7/);
 	});
 
+	test("newton's laws carts: the acceleration is text and follows the mass", async ({ page }) => {
+		await page.goto('./newtons-laws/#force');
+		const panel = readouts(page);
+		await expect(panel).toContainText('a = F ÷ m = 6 ÷ 2 = 3 m/s²');
+		await expect(panel).toContainText(/Speed\s*3\.0 m\/s/);
+		await expect(drawing(page)).not.toContainText('a = F ÷ m');
+		await range(page, 'mass').fill('3');
+		await expect(panel).toContainText('a = F ÷ m = 6 ÷ 3 = 2 m/s²');
+	});
+
+	test("newton's laws projectile: the range is text and follows the speed", async ({ page }) => {
+		await page.goto('./newtons-laws/#projectile');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Range\s*33\.0 m/);
+		await expect(panel).toContainText(/Horizontal speed\s*12\.7 m\/s/);
+		await expect(drawing(page)).not.toContainText('Launched at');
+		await range(page, 'speed').fill('9');
+		await expect(panel).toContainText(/Range\s*8\.3 m/);
+	});
+
+	test("newton's laws track: the energies are text and follow friction", async ({ page }) => {
+		await page.goto('./newtons-laws/#heat');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Total\s*98 J/);
+		await expect(panel).toContainText(/Heat\s*[1-9]\d* J/);
+		await expect(drawing(page)).not.toContainText('never changes');
+		await range(page, 'mu').fill('0');
+		await expect(panel).toContainText(/Heat\s*0 J/);
+		await expect(panel).toContainText(/Total\s*98 J/);
+	});
+
+	test('orbits cannon: the outcome is text and follows the firing speed', async ({ page }) => {
+		await page.goto('./orbits-kepler/#cannon');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Firing speed\s*5\.0 km\/s/);
+		await expect(panel).toContainText(/The ball\s*lands after/);
+		await expect(drawing(page)).not.toContainText('Firing speed');
+		await range(page, 'cannonSpeed').fill('12');
+		await expect(panel).toContainText(/The ball\s*escapes/);
+	});
+
+	test('orbits first law: the focal distances are text and follow the speed', async ({ page }) => {
+		await page.goto('./orbits-kepler/#first');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Aphelion\s*1\.00 AU/);
+		await expect(panel).toContainText('Distances to the two foci');
+		await expect(drawing(page)).not.toContainText('perihelion');
+		await range(page, 'ellipseSpeed').fill('1');
+		await expect(panel).toContainText(/Path\s*circle/);
+	});
+
+	test('orbits third law: T² and a³ are text and follow the speed', async ({ page }) => {
+		await page.goto('./orbits-kepler/#third');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/T² and a³\s*0\.337 = 0\.337/);
+		await expect(drawing(page)).not.toContainText('Your orbit');
+		await range(page, 'ellipseSpeed').fill('1');
+		await expect(panel).toContainText('a = 1.00 AU, T = 365 days');
+	});
+
+	test('oscillations spring: the natural frequency is text and follows the mass', async ({
+		page
+	}) => {
+		await page.goto('./oscillations-resonance/#spring');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Natural frequency\s*0\.99 Hz/);
+		await expect(drawing(page)).not.toContainText('natural frequency');
+		await range(page, 'mass').fill('4');
+		await expect(panel).toContainText(/Natural frequency\s*0\.50 Hz/);
+	});
+
+	test('oscillations pendulum: the period is text and follows the length', async ({ page }) => {
+		await page.goto('./oscillations-resonance/#pendulum');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Small swings\s*2\.01 s/);
+		await expect(drawing(page)).not.toContainText('small swings');
+		await range(page, 'length').fill('4');
+		await expect(panel).toContainText(/Small swings\s*4\.01 s/);
+	});
+
+	test('oscillations driven: the push and the swing are text and follow the push', async ({
+		page
+	}) => {
+		await page.goto('./oscillations-resonance/#push');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Push\s*0\.60 Hz/);
+		await expect(panel).toContainText(/The mass moves\s*\d+\.\d× your hand/);
+		await expect(drawing(page)).not.toContainText('your hand');
+		await range(page, 'pushFreq').fill('1.2');
+		await expect(panel).toContainText(/Push\s*1\.20 Hz/);
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');

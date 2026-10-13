@@ -16,7 +16,7 @@
 	 * newtons-laws/scenes/TrackScene.svelte).
 	 */
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { cannon, EARTH_RADIUS_KM, SURFACE_G } from '../orbits';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -286,10 +286,12 @@
 	<!-- ghost labels (outside the clip so they stay whole) -->
 	{#each GHOSTS as g (g.v)}
 		{#if Math.abs(g.v - speed) >= 0.05 && g.ly > PANEL.y + 12 && g.ly < PANEL.y + PANEL.h - 4}
-			{@render txt(g.lx, g.ly, `${g.v} km/s`, 11, {
-				muted: true,
-				anchor: g.anchor
-			})}
+			<Readout id="ghost-label">
+				{@render txt(g.lx, g.ly, `${g.v} km/s`, 11, {
+					muted: true,
+					anchor: g.anchor
+				})}
+			</Readout>
 		{/if}
 	{/each}
 
@@ -315,7 +317,9 @@
 		<rect x="-9" y="-6" width="20" height="7" rx="3" fill="var(--stage-ink)" />
 		<circle cx="-4" cy="2" r="4" fill="var(--stage-ink-muted)" />
 	</g>
-	{@render txt(CX - 52, CY - TOP + 2, 'cannon, 300 km up', 12, { anchor: 'end', muted: true })}
+	<Readout id="cannon-label">
+		{@render txt(CX - 52, CY - TOP + 2, 'cannon, 300 km up', 12, { anchor: 'end', muted: true })}
+	</Readout>
 
 	<!-- landing puff -->
 	{#if puff > 0 && puff < 1}
@@ -353,15 +357,17 @@
 	<!-- outcome label next to the end of the path -->
 	{#if flight.outcome === 'lands'}
 		{@const ang = Math.atan2(lastPt.y - CY, lastPt.x - CX)}
-		<g opacity={outcomeShown}>
-			{@render txt(
-				lastPt.x + Math.cos(ang) * 22,
-				lastPt.y + Math.sin(ang) * 22 - 6,
-				outcomeText,
-				13,
-				{ weight: 600, anchor: 'start' }
-			)}
-		</g>
+		<Readout id="outcome-label">
+			<g opacity={outcomeShown}>
+				{@render txt(
+					lastPt.x + Math.cos(ang) * 22,
+					lastPt.y + Math.sin(ang) * 22 - 6,
+					outcomeText,
+					13,
+					{ weight: 600, anchor: 'start' }
+				)}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- card -->
@@ -374,28 +380,43 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	{@render txt(CL, 50, "Newton's cannon", 16, { weight: 700 })}
-	{@render txt(CL, 72, 'no air; Earth to scale, heights stretched', 11, { muted: true })}
+	<Readout id="card-title">
+		{@render txt(CL, 50, "Newton's cannon", 16, { weight: 700 })}
+		{@render txt(CL, 72, 'no air; Earth to scale, heights stretched', 11, { muted: true })}
+	</Readout>
 
-	{@render txt(CL, 112, 'Firing speed', 12, { muted: true })}
-	{@render txt(CARD.x + CARD.w - 20, 112, `${speed.toFixed(1)} km/s`, 16, {
-		weight: 700,
-		anchor: 'end',
-		color: 'var(--orb-planet)',
-		tabular: true
-	})}
-	{@render txt(CL, 140, 'Circular speed at 300 km', 12, { muted: true })}
-	{@render txt(CARD.x + CARD.w - 20, 140, `${LOW.toFixed(1)} km/s`, 14, {
-		weight: 600,
-		anchor: 'end',
-		tabular: true
-	})}
-	{@render txt(CL, 166, 'Escape speed from 300 km', 12, { muted: true })}
-	{@render txt(CARD.x + CARD.w - 20, 166, `${ESCAPE.toFixed(1)} km/s`, 14, {
-		weight: 600,
-		anchor: 'end',
-		tabular: true
-	})}
+	<Readout
+		id="firing"
+		order={1}
+		label="Firing speed"
+		value="{speed.toFixed(1)} km/s"
+		color="var(--orb-planet)"
+	>
+		{@render txt(CL, 112, 'Firing speed', 12, { muted: true })}
+		{@render txt(CARD.x + CARD.w - 20, 112, `${speed.toFixed(1)} km/s`, 16, {
+			weight: 700,
+			anchor: 'end',
+			color: 'var(--orb-planet)',
+			tabular: true
+		})}
+	</Readout>
+	<Readout id="flight-time" order={2} label="Flight time" value={minutes(ball.secs)} />
+	<Readout id="circular" order={3} label="Orbit at" value="{LOW.toFixed(1)} km/s" note="circular">
+		{@render txt(CL, 140, 'Circular speed at 300 km', 12, { muted: true })}
+		{@render txt(CARD.x + CARD.w - 20, 140, `${LOW.toFixed(1)} km/s`, 14, {
+			weight: 600,
+			anchor: 'end',
+			tabular: true
+		})}
+	</Readout>
+	<Readout id="escape" order={4} label="Escape at" value="{ESCAPE.toFixed(1)} km/s">
+		{@render txt(CL, 166, 'Escape speed from 300 km', 12, { muted: true })}
+		{@render txt(CARD.x + CARD.w - 20, 166, `${ESCAPE.toFixed(1)} km/s`, 14, {
+			weight: 600,
+			anchor: 'end',
+			tabular: true
+		})}
+	</Readout>
 
 	<!-- speed bar with the two thresholds -->
 	<rect x={CL} y="186" width={CARD.w - 40} height="8" rx="4" fill="var(--stage-grid)" />
@@ -416,39 +437,55 @@
 			stroke="var(--stage-ink)"
 			stroke-width="1.5"
 		/>
-		{@render txt(bx(m.v), 213, m.label, 11, { muted: true, anchor: 'middle' })}
+		<Readout id="bar-label">
+			{@render txt(bx(m.v), 213, m.label, 11, { muted: true, anchor: 'middle' })}
+		</Readout>
 	{/each}
 
-	{@render txt(CL, 252, 'Flight time', 12, { muted: true })}
-	{@render txt(CARD.x + CARD.w - 20, 252, minutes(ball.secs), 14, {
-		weight: 600,
-		anchor: 'end',
-		tabular: true
-	})}
-	{@render txt(CL, 284, outcomeShown ? outcomeText : 'in flight…', 14, {
-		weight: 700,
-		color: !outcomeShown
-			? undefined
-			: flight.outcome === 'lands'
-				? 'var(--stage-ink)'
-				: 'var(--orb-planet)',
-		muted: !outcomeShown
-	})}
-	{#if flight.outcome === 'orbit' || flight.outcome === 'loop'}
-		{@render txt(
-			CL,
-			306,
-			`highest point ${Math.round(flight.apogeeKm).toLocaleString('en-US')} km up`,
-			12,
-			{
-				muted: true
-			}
-		)}
-	{/if}
+	<Readout id="flight-time-text">
+		{@render txt(CL, 252, 'Flight time', 12, { muted: true })}
+		{@render txt(CARD.x + CARD.w - 20, 252, minutes(ball.secs), 14, {
+			weight: 600,
+			anchor: 'end',
+			tabular: true
+		})}
+	</Readout>
+	<Readout
+		id="outcome"
+		order={5}
+		label="The ball"
+		value={outcomeShown ? outcomeText : 'in flight…'}
+		note={flight.outcome === 'orbit' || flight.outcome === 'loop'
+			? `highest point ${Math.round(flight.apogeeKm).toLocaleString('en-US')} km up`
+			: undefined}
+	>
+		{@render txt(CL, 284, outcomeShown ? outcomeText : 'in flight…', 14, {
+			weight: 700,
+			color: !outcomeShown
+				? undefined
+				: flight.outcome === 'lands'
+					? 'var(--stage-ink)'
+					: 'var(--orb-planet)',
+			muted: !outcomeShown
+		})}
+		{#if flight.outcome === 'orbit' || flight.outcome === 'loop'}
+			{@render txt(
+				CL,
+				306,
+				`highest point ${Math.round(flight.apogeeKm).toLocaleString('en-US')} km up`,
+				12,
+				{
+					muted: true
+				}
+			)}
+		{/if}
+	</Readout>
 
 	<!-- inset: the ground curves away about 5 m for every 8 km -->
 	<line x1={CL} x2={CARD.x + CARD.w - 20} y1="340" y2="340" stroke="var(--border)" />
-	{@render txt(CL, 366, 'Why about 8 km/s?', 13, { weight: 700 })}
+	<Readout id="why-title">
+		{@render txt(CL, 366, 'Why about 8 km/s?', 13, { weight: 700 })}
+	</Readout>
 	<line
 		x1={INSET.x}
 		x2={INSET.x + INSET.w}
@@ -466,20 +503,22 @@
 		y2={INSET.y + INSET.drop}
 		stroke="var(--stage-ink)"
 	/>
-	{@render txt(INSET.x + INSET.w / 2, INSET.y - 8, 'level: 8 km', 11, {
-		muted: true,
-		anchor: 'middle'
-	})}
-	{@render txt(INSET.x + INSET.w, INSET.y + INSET.drop / 2 + 4, '5 m', 12, {
-		weight: 600,
-		anchor: 'end'
-	})}
-	{@render txt(INSET.x + 4, INSET.y + 30, 'ground', 11, { muted: true })}
-	{@render txt(CL, 488, 'The ground curves away about 5 m', 12)}
-	{@render txt(CL, 506, 'for every 8 km. A ball falls 5 m in its', 12)}
-	{@render txt(CL, 524, 'first second — so at 8 km/s it falls', 12)}
-	{@render txt(CL, 542, 'exactly as fast as the ground drops away.', 12)}
-	{@render txt(CL, 566, '(drop not to scale)', 11, { muted: true })}
+	<Readout id="why-text">
+		{@render txt(INSET.x + INSET.w / 2, INSET.y - 8, 'level: 8 km', 11, {
+			muted: true,
+			anchor: 'middle'
+		})}
+		{@render txt(INSET.x + INSET.w, INSET.y + INSET.drop / 2 + 4, '5 m', 12, {
+			weight: 600,
+			anchor: 'end'
+		})}
+		{@render txt(INSET.x + 4, INSET.y + 30, 'ground', 11, { muted: true })}
+		{@render txt(CL, 488, 'The ground curves away about 5 m', 12)}
+		{@render txt(CL, 506, 'for every 8 km. A ball falls 5 m in its', 12)}
+		{@render txt(CL, 524, 'first second — so at 8 km/s it falls', 12)}
+		{@render txt(CL, 542, 'exactly as fast as the ground drops away.', 12)}
+		{@render txt(CL, 566, '(drop not to scale)', 11, { muted: true })}
+	</Readout>
 </g>
 
 {#snippet txt(
