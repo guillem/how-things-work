@@ -25,7 +25,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut, cubicOut } from 'svelte/easing';
 	import { Axes, areaPath, clamp, easeOut, linePath, scale, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { bucklingLoad, pushLimit, yieldLoad } from '../structure';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -180,24 +180,75 @@
 	{#if wAxial.current > 0.01}
 		<g opacity={wAxial.current}>
 			<!-- titles -->
-			{@render txt(LCX, 46, 'Pulled: tension', 17, {
-				anchor: 'middle',
-				weight: 650,
-				color: 'var(--struct-tension)'
-			})}
-			{@render txt(LCX, 68, 'a steel tube hanging from a beam', 12, {
-				anchor: 'middle',
-				muted: true
-			})}
-			{@render txt(RCX, 46, 'Pushed: compression', 17, {
-				anchor: 'middle',
-				weight: 650,
-				color: 'var(--struct-compression)'
-			})}
-			{@render txt(RCX, 68, 'the same tube standing on the ground', 12, {
-				anchor: 'middle',
-				muted: true
-			})}
+			<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+			<Readout id="titles">
+				{@render txt(LCX, 46, 'Pulled: tension', 17, {
+					anchor: 'middle',
+					weight: 650,
+					color: 'var(--struct-tension)'
+				})}
+				{@render txt(LCX, 68, 'a steel tube hanging from a beam', 12, {
+					anchor: 'middle',
+					muted: true
+				})}
+				{@render txt(RCX, 46, 'Pushed: compression', 17, {
+					anchor: 'middle',
+					weight: 650,
+					color: 'var(--struct-compression)'
+				})}
+				{@render txt(RCX, 68, 'the same tube standing on the ground', 12, {
+					anchor: 'middle',
+					muted: true
+				})}
+				{#snippet narrow()}
+					{@render txt(LCX, 56, 'pulled', 34, {
+						anchor: 'middle',
+						weight: 700,
+						color: 'var(--struct-tension)'
+					})}
+					{@render txt(RCX, 56, 'pushed', 34, {
+						anchor: 'middle',
+						weight: 700,
+						color: 'var(--struct-compression)'
+					})}
+				{/snippet}
+			</Readout>
+			<Readout
+				id="a-load"
+				order={1}
+				label="Load"
+				value={kn(load)}
+				note={tonnes(load)}
+				opacity={wAxial.current}
+			/>
+			<Readout
+				id="a-forces"
+				order={2}
+				label="Forces on each tube"
+				value="{kn(load)} at each end"
+				note="balanced: they add up to zero"
+				opacity={wAxial.current}
+			/>
+			<Readout
+				id="a-pull"
+				order={3}
+				label="Pulled"
+				value="{Math.round(100 * uPull)}% of its limit"
+				note="limit {kn(YIELD_KN)}"
+				color="var(--struct-tension)"
+				opacity={wAxial.current}
+			/>
+			<Readout
+				id="a-push"
+				order={4}
+				label="Pushed (a 2 m post)"
+				value={pushBuckled
+					? 'over its limit: buckles!'
+					: `${Math.round(100 * uPush)}% of its limit`}
+				note="limit {kn(PUSH_KN_AXIAL)}"
+				color="var(--struct-compression)"
+				opacity={wAxial.current}
+			/>
 
 			<!-- left: beam overhead -->
 			<rect
@@ -211,12 +262,14 @@
 				stroke="var(--struct-cable)"
 			/>
 			<rect x={LCX - 16} y={CEIL - 2} width="32" height="6" rx="1.5" fill="var(--struct-cable)" />
-			<g opacity={forcesOn}>
-				{@render txt(LCX - 18, CEIL + TUBE_LEN / 2 + 4, 'slightly stretched', 11, {
-					anchor: 'end',
-					muted: true
-				})}
-			</g>
+			<Readout id="stretched">
+				<g opacity={forcesOn}>
+					{@render txt(LCX - 18, CEIL + TUBE_LEN / 2 + 4, 'slightly stretched', 11, {
+						anchor: 'end',
+						muted: true
+					})}
+				</g>
+			</Readout>
 			<rect
 				x={LCX - TUBE_W / 2}
 				y={CEIL + 4}
@@ -238,16 +291,18 @@
 			<!-- left: the two forces ON the tube, pointing away from its middle = pulled -->
 			<g opacity={forcesOn}>
 				{@render arrow(LCX + 40, CEIL + 60, CEIL + 60 - arrowLen)}
-				{@render txt(LCX + 54, CEIL + 30, 'the beam pulls up on the tube', 12, { muted: true })}
-				{@render txt(LCX + 54, CEIL + 46, kn(load), 13, { weight: 600 })}
 				{@render arrow(LCX + 40, CEIL + TUBE_LEN - 60, CEIL + TUBE_LEN - 60 + arrowLen)}
-				{@render txt(LCX + 54, CEIL + TUBE_LEN - 30, 'the weight pulls down on the tube', 12, {
-					muted: true
-				})}
-				{@render txt(LCX + 54, CEIL + TUBE_LEN - 14, kn(load), 13, { weight: 600 })}
-				{@render txt(LCX + 54, CEIL + TUBE_LEN / 2 + 4, 'balanced: they add up to zero', 12, {
-					weight: 600
-				})}
+				<Readout id="pull-forces">
+					{@render txt(LCX + 54, CEIL + 30, 'the beam pulls up on the tube', 12, { muted: true })}
+					{@render txt(LCX + 54, CEIL + 46, kn(load), 13, { weight: 600 })}
+					{@render txt(LCX + 54, CEIL + TUBE_LEN - 30, 'the weight pulls down on the tube', 12, {
+						muted: true
+					})}
+					{@render txt(LCX + 54, CEIL + TUBE_LEN - 14, kn(load), 13, { weight: 600 })}
+					{@render txt(LCX + 54, CEIL + TUBE_LEN / 2 + 4, 'balanced: they add up to zero', 12, {
+						weight: 600
+					})}
+				</Readout>
 			</g>
 
 			<!-- right: ground -->
@@ -261,12 +316,14 @@
 				stroke-width="2"
 			/>
 			{#if !pushBuckled}
-				<g opacity={forcesOn}>
-					{@render txt(RCX - 18, (rightTop + GROUND) / 2 + 4, 'slightly squashed', 11, {
-						anchor: 'end',
-						muted: true
-					})}
-				</g>
+				<Readout id="squashed">
+					<g opacity={forcesOn}>
+						{@render txt(RCX - 18, (rightTop + GROUND) / 2 + 4, 'slightly squashed', 11, {
+							anchor: 'end',
+							muted: true
+						})}
+					</g>
+				</Readout>
 			{/if}
 			{#if pushBuckled}
 				<path
@@ -298,32 +355,40 @@
 			<!-- right: the two forces ON the post, pointing into its middle = pushed -->
 			<g opacity={forcesOn}>
 				{@render arrow(RCX + 40, rightTop, rightTop + arrowLen)}
-				{@render txt(RCX + 54, rightTop + 24, 'the weight pushes down', 12, { muted: true })}
-				{@render txt(RCX + 54, rightTop + 39, 'on the post', 12, { muted: true })}
-				{@render txt(RCX + 54, rightTop + 55, kn(load), 13, { weight: 600 })}
+				<Readout id="push-forces-top">
+					{@render txt(RCX + 54, rightTop + 24, 'the weight pushes down', 12, { muted: true })}
+					{@render txt(RCX + 54, rightTop + 39, 'on the post', 12, { muted: true })}
+					{@render txt(RCX + 54, rightTop + 55, kn(load), 13, { weight: 600 })}
+				</Readout>
 				{@render arrow(RCX + 40, GROUND - 4, GROUND - 4 - arrowLen)}
-				{@render txt(RCX + 54, GROUND - 54, 'the ground pushes up', 12, { muted: true })}
-				{@render txt(RCX + 54, GROUND - 39, 'on the post', 12, { muted: true })}
-				{@render txt(RCX + 54, GROUND - 23, kn(load), 13, { weight: 600 })}
-				{@render txt(RCX + 54, (rightTop + GROUND) / 2 + 4, 'balanced: they add up to zero', 12, {
-					weight: 600
-				})}
+				<Readout id="push-forces">
+					{@render txt(RCX + 54, GROUND - 54, 'the ground pushes up', 12, { muted: true })}
+					{@render txt(RCX + 54, GROUND - 39, 'on the post', 12, { muted: true })}
+					{@render txt(RCX + 54, GROUND - 23, kn(load), 13, { weight: 600 })}
+					{@render txt(RCX + 54, (rightTop + GROUND) / 2 + 4, 'balanced: they add up to zero', 12, {
+						weight: 600
+					})}
+				</Readout>
 				<!-- Newton's third law: the post pushes on the ground, a different body -->
 				{@render arrow(RCX - 26, GROUND + 3, GROUND + 3 + arrowLen)}
-				{@render txt(RCX - 110, GROUND + 15, 'the post pushes down', 12, {
-					anchor: 'end',
-					muted: true
-				})}
-				{@render txt(RCX - 110, GROUND + 30, 'on the ground', 12, { anchor: 'end', muted: true })}
-				{@render txt(RCX - 110, GROUND + 45, "(Newton's third law: just as hard)", 11, {
-					anchor: 'end',
-					muted: true
-				})}
+				<Readout id="third-law">
+					{@render txt(RCX - 110, GROUND + 15, 'the post pushes down', 12, {
+						anchor: 'end',
+						muted: true
+					})}
+					{@render txt(RCX - 110, GROUND + 30, 'on the ground', 12, { anchor: 'end', muted: true })}
+					{@render txt(RCX - 110, GROUND + 45, "(Newton's third law: just as hard)", 11, {
+						anchor: 'end',
+						muted: true
+					})}
+				</Readout>
 			</g>
 			{#if pushBuckled}
-				<g opacity={smoothstep(0.2, 0.7, bowAxial.current)}>
-					{@render pill(RCX - 26, (rightTop + GROUND) / 2 + 4, 'buckles! (next step)', 'end')}
-				</g>
+				<Readout id="buckles-pill">
+					<g opacity={smoothstep(0.2, 0.7, bowAxial.current)}>
+						{@render pill(RCX - 26, (rightTop + GROUND) / 2 + 4, 'buckles! (next step)', 'end')}
+					</g>
+				</Readout>
 			{/if}
 
 			<!-- gauges: load ÷ limit -->
@@ -358,13 +423,42 @@
 			{#each [0, 1, 2, 3, 4, 5, 6] as m (m)}
 				<line x1="60" x2="66" y1={BG - m * S} y2={BG - m * S} stroke="var(--stage-line)" />
 				{#if m > 0}
-					{@render txt(56, BG - m * S + 4, `${m} m`, 11, { anchor: 'end', muted: true })}
+					<Readout id="metre-{m}">
+						{@render txt(56, BG - m * S + 4, `${m} m`, 11, { anchor: 'end', muted: true })}
+					</Readout>
 				{/if}
 			{/each}
 
 			<!-- a person for size (1.75 m) -->
 			{@render person(150, BG, 1.75 * S)}
-			{@render txt(150, BG + 40, 'person, 1.75 m', 11, { anchor: 'middle', muted: true })}
+			<Readout id="person">
+				{@render txt(150, BG + 40, 'person, 1.75 m', 11, { anchor: 'middle', muted: true })}
+			</Readout>
+			<Readout
+				id="b-length"
+				order={1}
+				label="Post"
+				value="{length.toFixed(1)} m long"
+				note="can take {kn(limitKn)}"
+				opacity={wBuckle.current}
+			/>
+			<Readout
+				id="b-load"
+				order={2}
+				label="Load"
+				value={kn(load)}
+				note={overBuckle ? 'too much: it buckles' : `${Math.round(100 * uB)}% of its limit`}
+				color={overBuckle ? 'var(--struct-fail)' : undefined}
+				opacity={wBuckle.current}
+			/>
+			<Readout
+				id="b-pulled"
+				order={3}
+				label="Pulled instead"
+				value="{kn(YIELD_KN)} at any length"
+				color="var(--struct-tension)"
+				opacity={wBuckle.current}
+			/>
 
 			<!-- the post -->
 			{#if overBuckle}
@@ -393,26 +487,35 @@
 				<line x1="357" x2="367" y1={BG} y2={BG} stroke="var(--stage-ink-muted)" />
 				<line x1="357" x2="367" y1={BG - lenPx} y2={BG - lenPx} stroke="var(--stage-ink-muted)" />
 			</g>
-			{@render txt(372, BG - lenPx / 2 + 5, `${length.toFixed(1)} m`, 14, { weight: 600 })}
-			{#if overBuckle}
-				<g opacity={smoothstep(0.2, 0.7, bowBuckle.current)}>
-					{@render pill(372, BG - lenPx / 2 + 30, 'buckled', 'start')}
-				</g>
-			{:else}
-				{@render txt(372, BG - lenPx / 2 + 26, `${Math.round(100 * uB)}% of its limit`, 12, {
-					muted: true
-				})}
-			{/if}
+			<Readout id="len-label">
+				{@render txt(372, BG - lenPx / 2 + 5, `${length.toFixed(1)} m`, 14, { weight: 600 })}
+				{#if overBuckle}
+					<g opacity={smoothstep(0.2, 0.7, bowBuckle.current)}>
+						{@render pill(372, BG - lenPx / 2 + 30, 'buckled', 'start')}
+					</g>
+				{:else}
+					{@render txt(372, BG - lenPx / 2 + 26, `${Math.round(100 * uB)}% of its limit`, 12, {
+						muted: true
+					})}
+				{/if}
+				{#snippet narrow()}
+					{@render txt(372, BG - lenPx / 2 + 10, `${length.toFixed(1)} m`, 30, { weight: 700 })}
+				{/snippet}
+			</Readout>
 
 			<!-- note: pulled, length does not matter -->
-			{@render txt(24, 578, `Pulled, the same tube holds ${kn(YIELD_KN)} at any length.`, 13, {
-				color: 'var(--struct-tension)',
-				weight: 600
-			})}
+			<Readout id="pulled-note">
+				{@render txt(24, 578, `Pulled, the same tube holds ${kn(YIELD_KN)} at any length.`, 13, {
+					color: 'var(--struct-tension)',
+					weight: 600
+				})}
+			</Readout>
 
 			<!-- chart -->
-			{@render txt(CL - 40, 44, 'The largest push the post can take', 16, { weight: 650 })}
-			{@render txt(CL - 40, 64, 'before it is crushed or buckles', 12, { muted: true })}
+			<Readout id="chart-title">
+				{@render txt(CL - 40, 44, 'The largest push the post can take', 16, { weight: 650 })}
+				{@render txt(CL - 40, 64, 'before it is crushed or buckles', 12, { muted: true })}
+			</Readout>
 			<path d={failD} fill="var(--struct-compression)" opacity="0.1" />
 			<Axes
 				{sx}
@@ -422,16 +525,25 @@
 				xLabel="length of the post (m)"
 				yLabel="kN"
 			/>
-			{@render txt(sx(4.2), sy(88), 'fails', 15, {
-				anchor: 'middle',
-				weight: 650,
-				color: 'var(--struct-compression)'
-			})}
-			<!-- kept clear of the load line -->
-			{@render txt(sx(0.75), sy(Math.abs(load - 75) < 14 ? 40 : 75), 'holds', 13, {
-				anchor: 'middle',
-				muted: true
-			})}
+			<Readout id="fails-holds">
+				{@render txt(sx(4.2), sy(88), 'fails', 15, {
+					anchor: 'middle',
+					weight: 650,
+					color: 'var(--struct-compression)'
+				})}
+				<!-- kept clear of the load line -->
+				{@render txt(sx(0.75), sy(Math.abs(load - 75) < 14 ? 40 : 75), 'holds', 13, {
+					anchor: 'middle',
+					muted: true
+				})}
+				{#snippet narrow()}
+					{@render txt(sx(4.2), sy(88), 'fails', 30, {
+						anchor: 'middle',
+						weight: 700,
+						color: 'var(--struct-compression)'
+					})}
+				{/snippet}
+			</Readout>
 
 			<!-- 2 m and 4 m: twice as long, a quarter of the load -->
 			{#each [{ L: 2, k: G2, label: `2 m: ${kn(G2)}` }, { L: 4, k: G4, label: `4 m: ${kn(G4)} (¼)` }] as g (g.L)}
@@ -443,20 +555,24 @@
 						stroke-dasharray="2 4"
 					/>
 					<circle cx={sx(g.L)} cy={sy(g.k)} r="3.5" fill="var(--stage-ink-muted)" />
-					{@render txt(
-						sx(g.L) + (g.L === 4 ? -9 : 9),
-						sy(g.k) + (g.L === 4 ? 18 : -9),
-						g.label,
-						12,
-						{ muted: true, anchor: g.L === 4 ? 'end' : 'start' }
-					)}
+					<Readout id="guide-{g.L}">
+						{@render txt(
+							sx(g.L) + (g.L === 4 ? -9 : 9),
+							sy(g.k) + (g.L === 4 ? 18 : -9),
+							g.label,
+							12,
+							{ muted: true, anchor: g.L === 4 ? 'end' : 'start' }
+						)}
+					</Readout>
 				</g>
 			{/each}
 
 			<path d={curveD} fill="none" stroke="var(--struct-compression)" stroke-width="2.5" />
-			{@render txt(sx(0.15), sy(YIELD_KN) - 9, `crushed: ${kn(YIELD_KN)}`, 11, {
-				color: 'var(--struct-compression)'
-			})}
+			<Readout id="crushed">
+				{@render txt(sx(0.15), sy(YIELD_KN) - 9, `crushed: ${kn(YIELD_KN)}`, 11, {
+					color: 'var(--struct-compression)'
+				})}
+			</Readout>
 
 			<!-- current length and load -->
 			<line
@@ -478,10 +594,12 @@
 				opacity="0.8"
 			/>
 			<!-- on the right, unless the curve comes down there -->
-			{@render txt(load < 30 ? CL + 8 : CR, sy(load) - 7, `load ${kn(load)}`, 12, {
-				anchor: load < 30 ? 'start' : 'end',
-				weight: 600
-			})}
+			<Readout id="load-line">
+				{@render txt(load < 30 ? CL + 8 : CR, sy(load) - 7, `load ${kn(load)}`, 12, {
+					anchor: load < 30 ? 'start' : 'end',
+					weight: 600
+				})}
+			</Readout>
 			<circle
 				cx={sx(length)}
 				cy={sy(limitKn)}
@@ -500,20 +618,22 @@
 			/>
 
 			<!-- readout -->
-			{@render txt(
-				CL - 40,
-				530,
-				`At ${length.toFixed(1)} m it can take ${kn(limitKn)}; the load is ${kn(load)}.`,
-				13,
-				{ weight: 600 }
-			)}
-			{@render txt(
-				CL - 40,
-				550,
-				overBuckle ? 'Too much: the post bows out sideways and folds.' : 'It holds.',
-				12,
-				{ weight: overBuckle ? 600 : 500, muted: !overBuckle }
-			)}
+			<Readout id="verdict">
+				{@render txt(
+					CL - 40,
+					530,
+					`At ${length.toFixed(1)} m it can take ${kn(limitKn)}; the load is ${kn(load)}.`,
+					13,
+					{ weight: 600 }
+				)}
+				{@render txt(
+					CL - 40,
+					550,
+					overBuckle ? 'Too much: the post bows out sideways and folds.' : 'It holds.',
+					12,
+					{ weight: overBuckle ? 600 : 500, muted: !overBuckle }
+				)}
+			</Readout>
 		</g>
 	{/if}
 </g>
@@ -529,18 +649,20 @@
 		fill="var(--stage-bg)"
 		opacity="0.25"
 	/>
-	<text
-		x={cx}
-		y={y + h / 2 + 5}
-		text-anchor="middle"
-		font-weight="650"
-		style:font-size="14px"
-		style:fill="var(--stage-bg)">{kn(load)}</text
-	>
-	{@render txt(cx - w / 2 - 10, y + h / 2 + 4, tonnes(load), 12, {
-		anchor: 'end',
-		muted: true
-	})}
+	<Readout id="weight-{cx}">
+		<text
+			x={cx}
+			y={y + h / 2 + 5}
+			text-anchor="middle"
+			font-weight="650"
+			style:font-size="14px"
+			style:fill="var(--stage-bg)">{kn(load)}</text
+		>
+		{@render txt(cx - w / 2 - 10, y + h / 2 + 4, tonnes(load), 12, {
+			anchor: 'end',
+			muted: true
+		})}
+	</Readout>
 {/snippet}
 
 {#snippet arrow(x: number, y1: number, y2: number)}
@@ -552,7 +674,9 @@
 {#snippet gauge(cx: number, y: number, u: number, color: string, label: string, failed: boolean)}
 	{@const w = 220}
 	{@const x0 = cx - w / 2}
-	{@render txt(cx, y, label, 12, { anchor: 'middle', muted: true })}
+	<Readout id="gauge-label-{cx}">
+		{@render txt(cx, y, label, 12, { anchor: 'middle', muted: true })}
+	</Readout>
 	<rect x={x0} y={y + 8} width={w} height="9" rx="4.5" fill="var(--stage-line)" opacity="0.35" />
 	<rect
 		x={x0}
@@ -562,11 +686,19 @@
 		rx="4.5"
 		fill={failed ? 'var(--struct-fail)' : color}
 	/>
-	{@render txt(cx, y + 34, failed ? 'over its limit' : `${Math.round(100 * u)}% of its limit`, 12, {
-		anchor: 'middle',
-		weight: 600,
-		color: undefined
-	})}
+	<Readout id="gauge-value-{cx}">
+		{@render txt(
+			cx,
+			y + 34,
+			failed ? 'over its limit' : `${Math.round(100 * u)}% of its limit`,
+			12,
+			{
+				anchor: 'middle',
+				weight: 600,
+				color: undefined
+			}
+		)}
+	</Readout>
 {/snippet}
 
 {#snippet pill(x: number, y: number, text: string, anchor: 'start' | 'end')}

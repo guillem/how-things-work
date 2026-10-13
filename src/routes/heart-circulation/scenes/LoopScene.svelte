@@ -14,7 +14,7 @@
 	 * Time: the beat clock (`beatClock`); reduced motion freezes mid-ejection.
 	 */
 	import { along, pathFrom, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { steadyBeat, valveEvents } from '../circulation';
 	import Heart from './Heart.svelte';
 	import { at, beatClock, passedAt, settingsFor } from './heart';
@@ -218,8 +218,14 @@
 		fill="var(--hc-lung)"
 		stroke="var(--border)"
 	/>
-	{@render txt(LUNGS.x + 24, LUNGS.y + 26, 'lungs', 14, { weight: 700 })}
-	{@render txt(LUNGS.x + 24, LUNGS.y + 46, 'O₂ in, CO₂ out', 12, { muted: true })}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="lungs">
+		{@render txt(LUNGS.x + 24, LUNGS.y + 26, 'lungs', 14, { weight: 700 })}
+		{@render txt(LUNGS.x + 24, LUNGS.y + 46, 'O₂ in, CO₂ out', 12, { muted: true })}
+		{#snippet narrow()}
+			{@render txt(LUNGS.x + 24, LUNGS.y + 44, 'lungs', 32, { weight: 700 })}
+		{/snippet}
+	</Readout>
 	<rect
 		x={BODY.x}
 		y={BODY.y}
@@ -229,11 +235,16 @@
 		fill="var(--hc-tissue)"
 		stroke="var(--border)"
 	/>
-	{@render txt(BODY.x + 26, BODY.y + BODY.h - 14, 'the rest of the body', 14, { weight: 700 })}
-	{@render txt(BODY.x + BODY.w - 26, BODY.y + BODY.h - 14, 'organs use O₂', 12, {
-		anchor: 'end',
-		muted: true
-	})}
+	<Readout id="body">
+		{@render txt(BODY.x + 26, BODY.y + BODY.h - 14, 'the rest of the body', 14, { weight: 700 })}
+		{@render txt(BODY.x + BODY.w - 26, BODY.y + BODY.h - 14, 'organs use O₂', 12, {
+			anchor: 'end',
+			muted: true
+		})}
+		{#snippet narrow()}
+			{@render txt(BODY.x + 26, BODY.y + BODY.h - 14, 'body', 32, { weight: 700 })}
+		{/snippet}
+	</Readout>
 
 	<!-- vessels (pale, so the blood cells in them stand out) -->
 	<g fill="none" stroke-linejoin="round" stroke-linecap="round" opacity="0.45">
@@ -271,38 +282,52 @@
 		vessels={false}
 		tubes={0.45}
 	/>
-	<text
-		x={X(126)}
-		y={Y(318)}
-		text-anchor="middle"
-		font-weight="700"
-		style:font-size="11px"
-		style:fill="var(--surface)">right</text
-	>
-	<text
-		x={X(126)}
-		y={Y(318) + 13}
-		text-anchor="middle"
-		font-weight="700"
-		style:font-size="11px"
-		style:fill="var(--surface)">pump</text
-	>
-	<text
-		x={X(312)}
-		y={Y(318)}
-		text-anchor="middle"
-		font-weight="700"
-		style:font-size="11px"
-		style:fill="var(--surface)">left</text
-	>
-	<text
-		x={X(312)}
-		y={Y(318) + 13}
-		text-anchor="middle"
-		font-weight="700"
-		style:font-size="11px"
-		style:fill="var(--surface)">pump</text
-	>
+	<Readout id="pump-names">
+		{#snippet narrow()}
+			{#each [{ id: 'r', x: X(126), s: 'R' }, { id: 'l', x: X(312), s: 'L' }] as p (p.id)}
+				<text
+					x={p.x}
+					y={Y(318) + 14}
+					text-anchor="middle"
+					font-weight="800"
+					style:font-size="36px"
+					style:fill="var(--surface)">{p.s}</text
+				>
+			{/each}
+		{/snippet}
+		<text
+			x={X(126)}
+			y={Y(318)}
+			text-anchor="middle"
+			font-weight="700"
+			style:font-size="11px"
+			style:fill="var(--surface)">right</text
+		>
+		<text
+			x={X(126)}
+			y={Y(318) + 13}
+			text-anchor="middle"
+			font-weight="700"
+			style:font-size="11px"
+			style:fill="var(--surface)">pump</text
+		>
+		<text
+			x={X(312)}
+			y={Y(318)}
+			text-anchor="middle"
+			font-weight="700"
+			style:font-size="11px"
+			style:fill="var(--surface)">left</text
+		>
+		<text
+			x={X(312)}
+			y={Y(318) + 13}
+			text-anchor="middle"
+			font-weight="700"
+			style:font-size="11px"
+			style:fill="var(--surface)">pump</text
+		>
+	</Readout>
 
 	<!-- blood cells -->
 	{#each lungCells as c (c.i)}
@@ -312,28 +337,55 @@
 		<circle cx={c.x} cy={c.y} r="6" fill={mix(c.oxy)} stroke="var(--stage-bg)" stroke-width="1.5" />
 	{/each}
 
-	<!-- saturations and pressures -->
-	{@render chip(708, 214, `${Math.round(m.arterialO2 * 100)}% O₂`, 'var(--hc-oxy)')}
-	{@render chip(222, 330, `${Math.round(m.venousO2 * 100)}% O₂`, 'var(--hc-deoxy)')}
-	{@render txt(X(194) + 12, 158, `lung artery ${bp(m.lungArtery)} mmHg`, 12, { muted: true })}
-	{@render txt(752, 330, 'aorta', 12, { muted: true })}
-	{@render txt(752, 346, `${bp(m.aorta)} mmHg`, 12, { muted: true })}
+	<Readout id="numbers">
+		<!-- saturations and pressures -->
+		{@render chip(708, 214, `${Math.round(m.arterialO2 * 100)}% O₂`, 'var(--hc-oxy)')}
+		{@render chip(222, 330, `${Math.round(m.venousO2 * 100)}% O₂`, 'var(--hc-deoxy)')}
+		{@render txt(X(194) + 12, 158, `lung artery ${bp(m.lungArtery)} mmHg`, 12, { muted: true })}
+		{@render txt(752, 330, 'aorta', 12, { muted: true })}
+		{@render txt(752, 346, `${bp(m.aorta)} mmHg`, 12, { muted: true })}
 
-	<!-- each pump, each beat -->
-	{@render txt(776, 52, 'Every beat', 15, { weight: 700 })}
+		<!-- each pump, each beat -->
+		{@render txt(776, 52, 'Every beat', 15, { weight: 700 })}
+		{#each rows as r, i (r.id)}
+			{@const y = 80 + i * 52}
+			{@render txt(776, y, r.label, 12, { muted: true })}
+			{@render txt(776, y + 24, r.value, 20, { weight: 700, color: r.color })}
+		{/each}
+		{@render txt(776, 200, `${m.hr} beats/min →`, 12, { muted: true })}
+		{@render txt(776, 224, `${m.output.toFixed(1)} L/min each`, 18, { weight: 700 })}
+	</Readout>
 	{#each rows as r, i (r.id)}
-		{@const y = 80 + i * 52}
-		{@render txt(776, y, r.label, 12, { muted: true })}
-		{@render txt(776, y + 24, r.value, 20, { weight: 700, color: r.color })}
+		<Readout
+			id="pump-{r.id}"
+			order={i + 1}
+			label={r.label === 'right pump → lungs' ? 'Right pump → lungs' : 'Left pump → body'}
+			value="{r.value} a beat"
+			note={i === 0 ? `lung artery ${bp(m.lungArtery)} mmHg` : `aorta ${bp(m.aorta)} mmHg`}
+			color={r.color}
+		/>
 	{/each}
-	{@render txt(776, 200, `${m.hr} beats/min →`, 12, { muted: true })}
-	{@render txt(776, 224, `${m.output.toFixed(1)} L/min each`, 18, { weight: 700 })}
+	<Readout
+		id="output"
+		order={3}
+		label="Each pump"
+		value="{m.output.toFixed(1)} L/min"
+		note="at {m.hr} beats/min"
+	/>
+	<Readout
+		id="o2"
+		order={4}
+		label="Blood O₂"
+		value="{Math.round(m.arterialO2 * 100)}% out, {Math.round(m.venousO2 * 100)}% back"
+	/>
 
 	{#if phase === 'summary'}
-		{@render txt(E.x0, E.top - 22, 'one signal, both pumps', 13, {
-			weight: 600,
-			color: 'var(--hc-ecg)'
-		})}
+		<Readout id="ecg-title">
+			{@render txt(E.x0, E.top - 22, 'one signal, both pumps', 13, {
+				weight: 600,
+				color: 'var(--hc-ecg)'
+			})}
+		</Readout>
 		<rect
 			x={E.x0}
 			y={E.top - 8}
@@ -345,9 +397,11 @@
 		/>
 		<path d={ecgPath} fill="none" stroke="var(--hc-ecg)" stroke-width="2" stroke-linejoin="round" />
 	{:else}
-		{@render txt(24, 60, 'In series:', 13, { weight: 700 })}
-		{@render txt(24, 80, 'every drop goes', 12, { muted: true })}
-		{@render txt(24, 96, 'through both pumps,', 12, { muted: true })}
-		{@render txt(24, 112, 'one after the other.', 12, { muted: true })}
+		<Readout id="series">
+			{@render txt(24, 60, 'In series:', 13, { weight: 700 })}
+			{@render txt(24, 80, 'every drop goes', 12, { muted: true })}
+			{@render txt(24, 96, 'through both pumps,', 12, { muted: true })}
+			{@render txt(24, 112, 'one after the other.', 12, { muted: true })}
+		</Readout>
 	{/if}
 </g>

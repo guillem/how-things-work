@@ -86,7 +86,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, lerp, smoothstep, startDrag, toSvg, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		BUDGET,
 		DEPTH,
@@ -596,6 +596,24 @@
 		return out;
 	});
 
+	/** Phone panel: the forces on the ground, one row per kind (both sides). */
+	const groundRows = $derived.by(() => {
+		const rows: { id: string; label: string; values: string[]; color: string }[] = [];
+		for (const ga of groundArrows) {
+			const label = ga.lines.slice(0, -1).join(' ');
+			const row = rows.find((r) => r.label === label);
+			if (row) row.values.push(ga.lines[ga.lines.length - 1]);
+			else
+				rows.push({
+					id: ga.key.replace(/[\d.-]+$/, ''),
+					label,
+					values: [ga.lines[ga.lines.length - 1]],
+					color: ga.color
+				});
+		}
+		return rows;
+	});
+
 	// ---- readouts --------------------------------------------------------------------------
 	const pct = (u: number) => `${Math.round(u * 100)}%`;
 	const nowWorst = $derived(unstable ? NaN : sol.worst);
@@ -1064,7 +1082,10 @@
 				stroke-width="1.5"
 			/>
 		{/each}
-		{@render txt(-17, -23, '30 t', 13, { anchor: 'middle', weight: 700 })}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="truck-label">
+			{@render txt(-17, -23, '30 t', 13, { anchor: 'middle', weight: 700 })}
+		</Readout>
 	</g>
 
 	<!-- the structure -->
@@ -1143,39 +1164,65 @@
 			opacity={fade.current}
 		/>
 		{@const w = Math.max(...ga.lines.map((l) => l.length)) * 6.5 + 14}
-		<!-- a card behind the label: it sits on the rock -->
-		<rect
-			x={ga.anchor === 'end' ? ga.lx - w + 7 : ga.lx - 7}
-			y={ga.ly - 14}
-			width={w}
-			height={ga.lines.length * 15 + 6}
-			rx="6"
-			fill="var(--surface)"
-			opacity={0.9 * fade.current}
+		<Readout id="ground-label-{ga.key}">
+			<!-- a card behind the label: it sits on the rock -->
+			<rect
+				x={ga.anchor === 'end' ? ga.lx - w + 7 : ga.lx - 7}
+				y={ga.ly - 14}
+				width={w}
+				height={ga.lines.length * 15 + 6}
+				rx="6"
+				fill="var(--surface)"
+				opacity={0.9 * fade.current}
+			/>
+			{#each ga.lines as line, k (k)}
+				{@render txt(ga.lx, ga.ly + k * 15, line, k === ga.lines.length - 1 ? 11 : 12, {
+					anchor: ga.anchor,
+					weight: k === ga.lines.length - 1 ? 500 : 600,
+					muted: k === ga.lines.length - 1,
+					opacity: fade.current
+				})}
+			{/each}
+		</Readout>
+	{/each}
+	{#each groundRows as gr, k (gr.id)}
+		<Readout
+			id="ground-{gr.id}"
+			order={5 + k}
+			label={gr.label[0].toUpperCase() + gr.label.slice(1)}
+			value={gr.values.join(' · ')}
+			color={gr.color}
 		/>
-		{#each ga.lines as line, k (k)}
-			{@render txt(ga.lx, ga.ly + k * 15, line, k === ga.lines.length - 1 ? 11 : 12, {
-				anchor: ga.anchor,
-				weight: k === ga.lines.length - 1 ? 500 : 600,
-				muted: k === ga.lines.length - 1,
-				opacity: fade.current
-			})}
-		{/each}
 	{/each}
 
 	{#if failTag}
 		<g style:pointer-events="none">
-			<rect
-				x={failTag.x - 40}
-				y={failTag.y - 13}
-				width="80"
-				height="20"
-				rx="10"
-				fill="var(--surface)"
-				stroke="var(--struct-fail)"
-				stroke-width="2"
-			/>
-			{@render txt(failTag.x, failTag.y + 1, 'would fail', 12, { anchor: 'middle', weight: 700 })}
+			<Readout id="fail-tag">
+				<rect
+					x={failTag.x - 40}
+					y={failTag.y - 13}
+					width="80"
+					height="20"
+					rx="10"
+					fill="var(--surface)"
+					stroke="var(--struct-fail)"
+					stroke-width="2"
+				/>
+				{@render txt(failTag.x, failTag.y + 1, 'would fail', 12, { anchor: 'middle', weight: 700 })}
+				{#snippet narrow()}
+					<rect
+						x={failTag.x - 50}
+						y={failTag.y - 26}
+						width="100"
+						height="38"
+						rx="19"
+						fill="var(--surface)"
+						stroke="var(--struct-fail)"
+						stroke-width="3"
+					/>
+					{@render txt(failTag.x, failTag.y + 3, 'fails', 26, { anchor: 'middle', weight: 800 })}
+				{/snippet}
+			</Readout>
 		</g>
 	{/if}
 
@@ -1291,155 +1338,194 @@
 
 	<!-- ===================== bottom strip ===================== -->
 	<!-- readout card -->
-	<g>
-		<rect
-			x={L}
-			y="436"
-			width="336"
-			height="148"
-			rx="10"
-			fill="var(--surface)"
-			stroke="var(--border)"
+	<Readout
+		id="status"
+		order={1}
+		label={NAMES[designId] ?? 'Bridge'}
+		value={note.text}
+		note={note.sub}
+		color={note.bad ? 'var(--struct-fail)' : undefined}
+	/>
+	{#if phase !== 'compare'}
+		<Readout
+			id="now"
+			order={2}
+			label="Busiest member now"
+			value={Number.isFinite(nowWorst) ? pct(nowWorst) : '—'}
 		/>
-		{@render txt(L + 16, 458, NAMES[designId] ?? 'Bridge', 15, { weight: 700 })}
-		{@render txt(L + 16, 475, subtitle, 11, { muted: true })}
-		{@render meter(L + 18, 497, 'Busiest member now', nowWorst)}
-		{@render meter(L + 18, 527, 'Busiest member as the truck crosses', envWorst)}
-		{#if note.bad}
-			<circle cx={L + 8} cy="556" r="4" fill="var(--struct-fail)" />
-		{/if}
-		{@render txt(L + 16, 560, note.text, 12, { weight: 700 })}
-		{@render txt(L + 16, 576, note.sub, 11, { muted: true })}
-	</g>
-
-	<!-- middle: captions, the comparison chart or the build tool -->
-	{#if phase === 'compare'}
-		<g>
-			{@render txt(368, 452, 'Busiest member over a crossing', 13, { weight: 700 })}
-			<line
-				x1={CMP_X0 + (CMP_W * 1) / CMP_MAX}
-				x2={CMP_X0 + (CMP_W * 1) / CMP_MAX}
-				y1="460"
-				y2="560"
-				stroke="var(--stage-ink)"
-				stroke-width="1.2"
-				stroke-dasharray="3 3"
-			/>
-			{@render txt(CMP_X0 + (CMP_W * 1) / CMP_MAX + 4, 470, 'limit', 11, { muted: true })}
-			{#each compareRows as row, k (row.id)}
-				{@const y = 474 + k * 22}
-				{@const on = row.id === designId}
-				<g
-					class="pick"
-					role="button"
-					tabindex="0"
-					aria-label="Show the {SHORT[row.id].toLowerCase()} bridge: busiest member {pct(
-						row.worst
-					)} of its limit"
-					aria-pressed={on}
-					onclick={() => setParam('design', row.id)}
-					onkeydown={(e) => {
-						if (e.key === 'Enter' || e.key === ' ') {
-							e.preventDefault();
-							setParam('design', row.id);
-						}
-					}}
-				>
-					<rect
-						x="364"
-						y={y - 2}
-						width="320"
-						height="20"
-						rx="4"
-						fill="transparent"
-						class="pick-bg"
-					/>
-					{@render txt(370, y + 12, SHORT[row.id], 12, { weight: on ? 700 : 500, muted: !on })}
-					<rect
-						x={CMP_X0}
-						y={y + 2}
-						width={Math.max(3, (CMP_W * Math.min(row.worst, CMP_MAX)) / CMP_MAX)}
-						height="12"
-						rx="3"
-						fill={row.worst > 1 ? 'var(--struct-fail)' : 'var(--stage-ink-muted)'}
-						opacity={on ? 1 : 0.45}
-					/>
-					{@render txt(CMP_X0 + CMP_W + 8, y + 12, pct(row.worst), 12, {
-						weight: on ? 700 : 500,
-						tabular: true,
-						muted: !on
-					})}
-				</g>
-			{/each}
-			{@render txt(368, 576, 'Same gap, same 25 t of steel: only the shape differs.', 12, {
-				weight: 600
-			})}
-		</g>
-	{:else if editing}
-		<g>
-			{@render txt(
-				368,
-				458,
-				tool === 'erase' ? 'Eraser' : tool === 'cable' ? 'Cable tool' : 'Beam tool',
-				13,
-				{
-					weight: 700
-				}
-			)}
-			{@render txt(368, 478, toolLines[0], 12)}
-			{@render txt(368, 496, toolLines[1], 11, { muted: true })}
-			{@render txt(368, 522, 'Ground points (dark) hold whatever touches them.', 11, {
-				muted: true
-			})}
-			{@render txt(368, 540, 'Cables can only pull; beams pull, push and bend.', 11, {
-				muted: true
-			})}
-			{@render txt(368, 566, 'Same 25 t of steel, however many members.', 12, { weight: 600 })}
-		</g>
-	{:else}
-		<g>
-			{#each captions[phase] ?? [] as line, k (k)}
-				{@render txt(368, 458 + k * 18, line, 12, { weight: k === 0 ? 600 : 500 })}
-			{/each}
-			{@render txt(368, 520, 'Point at a member to see its force.', 11, { muted: true })}
-			{@render txt(368, 566, 'Same 25 t of steel, same 40 m gap for every design.', 12, {
-				weight: 600
-			})}
-		</g>
+		<Readout
+			id="crossing"
+			order={3}
+			label="Over a crossing"
+			value={Number.isFinite(envWorst) ? pct(envWorst) : '—'}
+		/>
 	{/if}
-
-	<!-- legend -->
-	<g style:pointer-events="none">
-		<path d="M{LG_X} 452h26" stroke="var(--struct-tension)" stroke-width="5" />
-		{@render txt(LG_X + 34, 456, 'pulled (tension)', 12)}
-		<path d="M{LG_X} 474h26" stroke="var(--struct-compression)" stroke-width="5" />
-		{@render txt(LG_X + 34, 478, 'pushed (compression)', 12)}
-		<path
-			d="M{LG_X} 496h26"
-			stroke="var(--struct-fail)"
-			stroke-width="11"
-			stroke-linecap="round"
-			opacity="0.55"
+	{#if editing}
+		<Readout id="steel" order={4} label="Steel" value={subtitle} />
+	{/if}
+	{#each compareRows as row, k (row.id)}
+		<Readout
+			id="cmp-{row.id}"
+			order={10 + k}
+			label="{SHORT[row.id]}{row.id === designId ? ' (shown)' : ''}"
+			value="{pct(row.worst)} of its limit"
+			color={row.worst > 1 ? 'var(--struct-fail)' : undefined}
 		/>
-		<path d="M{LG_X} 496h26" stroke="var(--struct-compression)" stroke-width="4" />
-		{@render txt(LG_X + 34, 500, 'would fail (over 100%)', 12)}
-		{@render txt(LG_X, 524, 'how hard it works', 11, { muted: true })}
-		<rect x={LG_X} y="530" width="120" height="5" rx="2" fill="url(#bridge-scale-tension)" />
-		<rect x={LG_X} y="537" width="120" height="5" rx="2" fill="url(#bridge-scale-compression)" />
-		{@render txt(LG_X, 556, '0%', 11, { muted: true })}
-		{@render txt(LG_X + 120, 556, '100% of its limit', 11, { muted: true, anchor: 'middle' })}
-		{@render txt(
-			LG_X,
-			578,
-			unstable
-				? 'no bent shape: it would fold up'
-				: editing
-					? `dashed: bent shape × ${an.factor} (sag ${sagText})`
-					: `bending drawn × ${an.factor} (real sag ${sagText})`,
-			11,
-			{ muted: true }
-		)}
-	</g>
+	{/each}
+	<Readout id="k-pulled" order={20} label="pulled" color="var(--struct-tension)" />
+	<Readout id="k-pushed" order={21} label="pushed" color="var(--struct-compression)" />
+	<Readout id="k-fail" order={22} label="over its limit" color="var(--struct-fail)" />
+	<Readout id="card">
+		<g>
+			<rect
+				x={L}
+				y="436"
+				width="336"
+				height="148"
+				rx="10"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			{@render txt(L + 16, 458, NAMES[designId] ?? 'Bridge', 15, { weight: 700 })}
+			{@render txt(L + 16, 475, subtitle, 11, { muted: true })}
+			{@render meter(L + 18, 497, 'Busiest member now', nowWorst)}
+			{@render meter(L + 18, 527, 'Busiest member as the truck crosses', envWorst)}
+			{#if note.bad}
+				<circle cx={L + 8} cy="556" r="4" fill="var(--struct-fail)" />
+			{/if}
+			{@render txt(L + 16, 560, note.text, 12, { weight: 700 })}
+			{@render txt(L + 16, 576, note.sub, 11, { muted: true })}
+		</g>
+
+		<!-- middle: captions, the comparison chart or the build tool -->
+		{#if phase === 'compare'}
+			<g>
+				{@render txt(368, 452, 'Busiest member over a crossing', 13, { weight: 700 })}
+				<line
+					x1={CMP_X0 + (CMP_W * 1) / CMP_MAX}
+					x2={CMP_X0 + (CMP_W * 1) / CMP_MAX}
+					y1="460"
+					y2="560"
+					stroke="var(--stage-ink)"
+					stroke-width="1.2"
+					stroke-dasharray="3 3"
+				/>
+				{@render txt(CMP_X0 + (CMP_W * 1) / CMP_MAX + 4, 470, 'limit', 11, { muted: true })}
+				{#each compareRows as row, k (row.id)}
+					{@const y = 474 + k * 22}
+					{@const on = row.id === designId}
+					<g
+						class="pick"
+						role="button"
+						tabindex="0"
+						aria-label="Show the {SHORT[row.id].toLowerCase()} bridge: busiest member {pct(
+							row.worst
+						)} of its limit"
+						aria-pressed={on}
+						onclick={() => setParam('design', row.id)}
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								e.preventDefault();
+								setParam('design', row.id);
+							}
+						}}
+					>
+						<rect
+							x="364"
+							y={y - 2}
+							width="320"
+							height="20"
+							rx="4"
+							fill="transparent"
+							class="pick-bg"
+						/>
+						{@render txt(370, y + 12, SHORT[row.id], 12, { weight: on ? 700 : 500, muted: !on })}
+						<rect
+							x={CMP_X0}
+							y={y + 2}
+							width={Math.max(3, (CMP_W * Math.min(row.worst, CMP_MAX)) / CMP_MAX)}
+							height="12"
+							rx="3"
+							fill={row.worst > 1 ? 'var(--struct-fail)' : 'var(--stage-ink-muted)'}
+							opacity={on ? 1 : 0.45}
+						/>
+						{@render txt(CMP_X0 + CMP_W + 8, y + 12, pct(row.worst), 12, {
+							weight: on ? 700 : 500,
+							tabular: true,
+							muted: !on
+						})}
+					</g>
+				{/each}
+				{@render txt(368, 576, 'Same gap, same 25 t of steel: only the shape differs.', 12, {
+					weight: 600
+				})}
+			</g>
+		{:else if editing}
+			<g>
+				{@render txt(
+					368,
+					458,
+					tool === 'erase' ? 'Eraser' : tool === 'cable' ? 'Cable tool' : 'Beam tool',
+					13,
+					{
+						weight: 700
+					}
+				)}
+				{@render txt(368, 478, toolLines[0], 12)}
+				{@render txt(368, 496, toolLines[1], 11, { muted: true })}
+				{@render txt(368, 522, 'Ground points (dark) hold whatever touches them.', 11, {
+					muted: true
+				})}
+				{@render txt(368, 540, 'Cables can only pull; beams pull, push and bend.', 11, {
+					muted: true
+				})}
+				{@render txt(368, 566, 'Same 25 t of steel, however many members.', 12, { weight: 600 })}
+			</g>
+		{:else}
+			<g>
+				{#each captions[phase] ?? [] as line, k (k)}
+					{@render txt(368, 458 + k * 18, line, 12, { weight: k === 0 ? 600 : 500 })}
+				{/each}
+				{@render txt(368, 520, 'Point at a member to see its force.', 11, { muted: true })}
+				{@render txt(368, 566, 'Same 25 t of steel, same 40 m gap for every design.', 12, {
+					weight: 600
+				})}
+			</g>
+		{/if}
+
+		<!-- legend -->
+		<g style:pointer-events="none">
+			<path d="M{LG_X} 452h26" stroke="var(--struct-tension)" stroke-width="5" />
+			{@render txt(LG_X + 34, 456, 'pulled (tension)', 12)}
+			<path d="M{LG_X} 474h26" stroke="var(--struct-compression)" stroke-width="5" />
+			{@render txt(LG_X + 34, 478, 'pushed (compression)', 12)}
+			<path
+				d="M{LG_X} 496h26"
+				stroke="var(--struct-fail)"
+				stroke-width="11"
+				stroke-linecap="round"
+				opacity="0.55"
+			/>
+			<path d="M{LG_X} 496h26" stroke="var(--struct-compression)" stroke-width="4" />
+			{@render txt(LG_X + 34, 500, 'would fail (over 100%)', 12)}
+			{@render txt(LG_X, 524, 'how hard it works', 11, { muted: true })}
+			<rect x={LG_X} y="530" width="120" height="5" rx="2" fill="url(#bridge-scale-tension)" />
+			<rect x={LG_X} y="537" width="120" height="5" rx="2" fill="url(#bridge-scale-compression)" />
+			{@render txt(LG_X, 556, '0%', 11, { muted: true })}
+			{@render txt(LG_X + 120, 556, '100% of its limit', 11, { muted: true, anchor: 'middle' })}
+			{@render txt(
+				LG_X,
+				578,
+				unstable
+					? 'no bent shape: it would fold up'
+					: editing
+						? `dashed: bent shape × ${an.factor} (sag ${sagText})`
+						: `bending drawn × ${an.factor} (real sag ${sagText})`,
+				11,
+				{ muted: true }
+			)}
+		</g>
+	</Readout>
 </g>
 
 <style>
