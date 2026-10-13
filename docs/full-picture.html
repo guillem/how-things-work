@@ -986,20 +986,13 @@
 								Label’s <span class="mono">size</span> prop has no effect (scenes roll their own
 								text helpers)
 							</li>
-							<li class="open">
-								Promote <span class="mono">VectorHandle</span> into
-								<span class="mono">src/lib/draw</span> (2-D keys on both axes)
-							</li>
 						</ul>
 					</div>
 					<div class="site-box">
 						<ul class="tight">
 							<li class="open">
-								Promote <span class="mono">sorting/playback.ts</span> into
-								<span class="mono">src/lib</span> (cpu imports it cross-route)
-							</li>
-							<li class="open">
-								Consolidate the three local <span class="mono">rng</span> copies onto
+								<span class="mono">compression</span> keeps its own
+								<span class="mono">rng</span> (no seed-0 fallback); the other copies now use
 								<span class="mono">src/lib/draw/math.ts</span>
 							</li>
 							<li class="open">Hand-drawn card vignettes for topics that lack one</li>

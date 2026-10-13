@@ -25,6 +25,8 @@
  * (parameters, seed, simulated day) and can be recomputed at will.
  */
 
+import { rng } from '#lib/draw/math.ts';
+
 export const State = {
 	Susceptible: 0,
 	Infectious: 1,
@@ -87,18 +89,6 @@ export const CONTACTS_PER_DAY = 4;
 /** Probability that one meeting with a susceptible person passes the infection on. */
 export const transmissionChance = (o: Pick<CrowdOptions, 'r0' | 'days'>) =>
 	Math.min(1, o.r0 / (CONTACTS_PER_DAY * o.days));
-
-/** Small, fast, seedable PRNG (mulberry32). Returns numbers in [0, 1). */
-export function rng(seed: number) {
-	let a = seed >>> 0 || 0x9e3779b9;
-	return () => {
-		a = (a + 0x6d2b79f5) >>> 0;
-		let t = a;
-		t = Math.imul(t ^ (t >>> 15), t | 1);
-		t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-	};
-}
 
 const wrap = (v: number, size: number) => ((v % size) + size) % size;
 
