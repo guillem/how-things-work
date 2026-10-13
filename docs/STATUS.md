@@ -44,7 +44,7 @@ Last updated: 2026-10-13 UTC.
   v0.1.0). All merged topic/site branches were deleted, local and remote. Rulesets: `main` can't be
   force-pushed or deleted; `v*` tags can't be moved or deleted. The `github-pages` environment
   deploys from `v*` tags and `main` (rollbacks run from main).
-- `main` (deployed as v0.1.11; the review round below is not yet released): **46 of the 100 catalogue topics ticked** — photosynthesis
+- `main` (deployed as v0.1.12): **46 of the 100 catalogue topics ticked** — photosynthesis
   (ticked 2026-10-11, the quality reference), 16 early topics (the list below the wave-1 table),
   and the 29 of batches 6–9, built one agent per topic in local worktrees (the process that
   worked for batches 2–6, still current). PRs #1–#18 were the early merge-commit flow; #15
@@ -71,12 +71,12 @@ Last updated: 2026-10-13 UTC.
 
 ## Current development
 
-**Review round (2026-10-13, not yet released):** a review of the gap and bug rounds (made with
+**Review round (2026-10-13, released in v0.1.12):** a review of the gap and bug rounds (made with
 Kimi and ZCode) found three live bugs and a dozen smaller problems; fixed in four local worktrees
 merged into `main`, each fix with a test that failed first (list at the end of BACKLOG's "Known
 gaps"). Also: `.claude/worktrees/` is git-ignored so lint and Prettier skip agent worktrees; the
 atmosphere note no longer claims a layer height for Held and Hou that no source confirmed.
-Deferred items are in BACKLOG. Awaiting the user's local validation, then push and release.
+Deferred items are in BACKLOG.
 
 **Bug round (2026-10-13, released in v0.1.11):** the arch bridge's posts now carry
 the road (pin-ended spandrel posts — a new member kind, serialized as `p`; model-tested), the
