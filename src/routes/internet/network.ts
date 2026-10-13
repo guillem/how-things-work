@@ -155,7 +155,7 @@ export const BUSY = 'G';
 /** Ada starts sending at this time. */
 export const START = 0.3;
 /** Nothing is simulated after this time. */
-export const HORIZON = 60;
+export const HORIZON = 120;
 
 // ---------------------------------------------------------------------------
 // Routing: each router's own shortest-path table
@@ -533,13 +533,14 @@ export function simulate(sc: Partial<Scenario> = {}): SimResult {
 		forward(ack, 'ben', t, 0);
 	};
 
-	// Other people's traffic through BUSY: arrives from F, leaves towards E.
+	// Other people's traffic through BUSY: arrives from F and leaves towards H, so it competes
+	// with Ada's packets for the G–H link.
 	if (scenario.load > 0) {
 		const rate = scenario.load / SERVICE;
 		let time = 0;
 		let k = 0;
 		const from = 'F';
-		const to = 'E';
+		const to = 'H';
 		const l = linkById.get(linkId(from, BUSY))!;
 		for (;;) {
 			// Exponential gaps (a random stream), drawn from the seed.
