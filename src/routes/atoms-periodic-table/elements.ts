@@ -16,7 +16,8 @@ export default {
 		radius: 'covalent radius (pm; Cordero et al. 2008)',
 		ionization: 'first ionization energy (eV; NIST Atomic Spectra Database)',
 		electronegativity: 'Pauling scale (CRC Handbook of Chemistry and Physics)',
-		stable: 'mass numbers of the isotopes found in nature with no decay ever observed (empty: none)'
+		stable:
+			'mass numbers of the isotopes found in nature taken as stable; any whose decay has been observed are left out (empty: none)'
 	},
 	elements: [
 		{

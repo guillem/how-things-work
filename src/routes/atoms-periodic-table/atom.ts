@@ -33,7 +33,7 @@ export interface Element {
 	ionization: number | null;
 	/** Pauling electronegativity. */
 	electronegativity: number | null;
-	/** Mass numbers of the isotopes found in nature with no decay ever observed. */
+	/** Mass numbers of the natural isotopes taken as stable (none whose decay has been observed). */
 	stable: number[];
 }
 

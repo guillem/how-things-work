@@ -120,7 +120,7 @@ test('every subshell in the measured configurations is in the filling order', ()
 		for (const k of parseConfig(e.config).keys()) expect(known).toContain(k);
 });
 
-test('stable isotopes: only those with no decay ever observed', () => {
+test('stable isotopes: none whose decay has been observed', () => {
 	// Decay observed: Kr-78 (double electron capture), Xe-124 (XENON1T, 2019), Ba-130
 	// (geochemical), like Te-128/130 and Bi-209, which the data already leaves out.
 	expect(element(36).stable).not.toContain(78);
