@@ -44,7 +44,7 @@ Last updated: 2026-10-13 UTC.
   v0.1.0). All merged topic/site branches were deleted, local and remote. Rulesets: `main` can't be
   force-pushed or deleted; `v*` tags can't be moved or deleted. The `github-pages` environment
   deploys from `v*` tags and `main` (rollbacks run from main).
-- `main` (deployed as v0.1.15): **46 of the 100 catalogue topics ticked** — photosynthesis
+- `main` (deployed as v0.1.16): **46 of the 100 catalogue topics ticked** — photosynthesis
   (ticked 2026-10-11, the quality reference), 16 early topics (the list below the wave-1 table),
   and the 29 of batches 6–9, built one agent per topic in local worktrees (the process that
   worked for batches 2–6, still current). PRs #1–#18 were the early merge-commit flow; #15
@@ -81,7 +81,7 @@ full-adder challenge and a wire-the-carries task; the CLT means histogram uses t
 the hurricane growth rate halved; sun-earth-moon's tilt step got a date control; the bridges arch
 text now says the road takes the bending. Full suite green twice (810 browser, 467 model tests),
 including orbits-kepler `#two` without its old 15 s allowance. Released in v0.1.14. Phone stage
-text: option B landed in v0.1.15 on two scenes; the rest to convert (see BACKLOG).
+text: option B landed in v0.1.15; photosynthesis and epidemics fully converted in v0.1.16; ~137 scenes to convert (see BACKLOG).
 
 **Review round (2026-10-13, released in v0.1.12):** a review of the gap and bug rounds (made with
 Kimi and ZCode) found three live bugs and a dozen smaller problems; fixed in four local worktrees
