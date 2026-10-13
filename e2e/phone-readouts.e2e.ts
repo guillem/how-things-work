@@ -663,6 +663,109 @@ test.describe('on a phone', () => {
 		await range(page, 'epsilon').fill('0.3');
 		await expect(panel).toContainText(/Random moves\s*30%/);
 	});
+
+	test('entropy box: the arrangement count is text under the stage', async ({ page }) => {
+		await page.goto('./entropy/#entropy');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Arrangements now, in multiples of the start\s*× \d/);
+		await expect(panel).toContainText(/Highest possible\s*× \d/);
+		await expect(panel).toContainText(/Wall\s*lifted at/);
+		await expect(drawing(page)).not.toContainText('microstates (arrangements) now');
+		await page.goto('./entropy/#mix');
+		await expect(panel).toContainText(/Left half\s*T = \d\.\d/);
+		await expect(drawing(page)).not.toContainText('temperature of each half');
+	});
+
+	test('entropy sharing: the energy split is text and follows the share', async ({ page }) => {
+		await page.goto('./entropy/#share');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Energy on the left\s*80%/);
+		await expect(panel).toContainText(/Ways to share the packets \(left × right\)\s*\d/);
+		await expect(panel).toContainText(/the peak has .* times as many/);
+		await expect(drawing(page)).not.toContainText('together (left × right)');
+		await range(page, 'share').fill('50');
+		await expect(panel).toContainText(/Energy on the left\s*50%/);
+		await expect(panel).toContainText('this is the most likely share');
+	});
+
+	test('chaos pendulum: the release angle and energy are text and follow the angle', async ({
+		page
+	}) => {
+		await page.goto('./chaos-fractals/#pendulum');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Released from\s*120°/);
+		await expect(panel).toContainText(/Energy\s*-?\d+\.\d+ J/);
+		await expect(drawing(page)).not.toContainText('Time since release');
+		await range(page, 'angle').fill('60');
+		await expect(panel).toContainText(/Released from\s*60°/);
+		await page.goto('./chaos-fractals/#twins');
+		await expect(panel).toContainText(/Starting difference\s*0\.001°/);
+		await expect(drawing(page)).not.toContainText('Starting difference');
+		await page.locator('button[data-control="nudge"][data-value="1"]').click();
+		await expect(panel).toContainText(/Starting difference\s*1°/);
+	});
+
+	test('chaos logistic map: the growth rate and its outcome are text and follow r', async ({
+		page
+	}) => {
+		await page.goto('./chaos-fractals/#logistic');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Growth rate\s*r = 2\.800/);
+		await expect(panel).toContainText(/The population\s*settles at/);
+		await expect(drawing(page)).not.toContainText('The population');
+		await range(page, 'rate').fill('3.9');
+		await expect(panel).toContainText(/Growth rate\s*r = 3\.900/);
+		await expect(panel).toContainText('no year ever repeats an earlier one');
+		await page.goto('./chaos-fractals/#cascade');
+		await expect(panel).toContainText(/Lyapunov exponent\s*−?\d/);
+		await expect(drawing(page)).not.toContainText('Lyapunov exponent');
+	});
+
+	test('mandelbrot: the orbits and the magnification are text and follow the place', async ({
+		page
+	}) => {
+		await page.goto('./chaos-fractals/#mandelbrot');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Rule\s*z → z² \+ c/);
+		await expect(panel).toContainText(/stays bounded|escapes after/);
+		await expect(drawing(page)).not.toContainText('start at z₀ = 0');
+		await page.goto('./chaos-fractals/#zoom');
+		await expect(panel).toContainText(/Magnification\s*× 1\s*Repetitions/);
+		await expect(drawing(page)).not.toContainText('repetitions per point');
+		await page.locator('button[data-control="place"][data-value="minibrot"]').click();
+		await expect(panel).not.toContainText(/Magnification\s*× 1\s*Repetitions/);
+	});
+
+	test('calculus slope: the tangent slope is text and follows the point', async ({ page }) => {
+		await page.goto('./calculus/#tangent');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Curve\s*y = x²/);
+		await expect(panel).toContainText(/Slope of the tangent\s*f′\(x\) = 2\.00/);
+		await expect(drawing(page)).not.toContainText('slope of the tangent');
+		await range(page, 'x').fill('2');
+		await expect(panel).toContainText(/Point\s*x = 2\.00/);
+		await expect(panel).toContainText(/f′\(x\) = 4\.00/);
+	});
+
+	test('calculus area: the rectangles’ total is text and follows n', async ({ page }) => {
+		await page.goto('./calculus/#rectangles');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Rectangles\s*n = 4/);
+		await expect(panel).toContainText(/Total of the rectangles\s*5\.91/);
+		await expect(drawing(page)).not.toContainText('total of the rectangles');
+		await range(page, 'n').fill('100');
+		await expect(panel).toContainText(/Rectangles\s*n = 100/);
+		await expect(panel).toContainText(/Total of the rectangles\s*8\.8\d/);
+	});
+
+	test('calculus running area: A(x) is text and follows the edge', async ({ page }) => {
+		await page.goto('./calculus/#running');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Area from 0 to x\s*A\(x\) = 0\.33/);
+		await expect(drawing(page)).not.toContainText('area from 0 to x');
+		await range(page, 'x').fill('3');
+		await expect(panel).toContainText(/A\(x\) = 9\.00/);
+	});
 });
 
 test.describe('on a wide screen', () => {

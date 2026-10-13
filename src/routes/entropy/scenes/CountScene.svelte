@@ -24,7 +24,7 @@
 	 * overrides SVG presentation attributes.
 	 */
 	import { Handle, clamp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		FPS,
 		GasRun,
@@ -253,15 +253,20 @@
 <g>
 	{#if phase === 'positions'}
 		<!-- the small box -->
-		{@render txt(bx(W / 4), BY - 12, `left half: ${k}`, 13, {
-			anchor: 'middle',
-			weight: 600,
-			color: 'var(--ent-ways)'
-		})}
-		{@render txt(bx((3 * W) / 4), BY - 12, `right half: ${N - k}`, 13, {
-			anchor: 'middle',
-			weight: 600
-		})}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="left-k" order={1} label="Left half" value={String(k)} color="var(--ent-ways)">
+			{@render txt(bx(W / 4), BY - 12, `left half: ${k}`, 13, {
+				anchor: 'middle',
+				weight: 600,
+				color: 'var(--ent-ways)'
+			})}
+		</Readout>
+		<Readout id="right-k" order={2} label="Right half" value={String(N - k)}>
+			{@render txt(bx((3 * W) / 4), BY - 12, `right half: ${N - k}`, 13, {
+				anchor: 'middle',
+				weight: 600
+			})}
+		</Readout>
 		<rect
 			x={BX - 3}
 			y={BY - 3}
@@ -305,7 +310,11 @@
 		{/each}
 
 		<!-- k over time -->
-		{@render txt(KX0 - 24, KY1 - 16, 'particles in the left half, over time', 12, { muted: true })}
+		<Readout id="k-title">
+			{@render txt(KX0 - 24, KY1 - 16, 'particles in the left half, over time', 12, {
+				muted: true
+			})}
+		</Readout>
 		<line x1={KX0} x2={KX1} y1={KY0} y2={KY0} stroke="var(--stage-line)" stroke-width="1.2" />
 		<line x1={KX0} x2={KX0} y1={KY1} y2={KY0} stroke="var(--stage-line)" stroke-width="1.2" />
 		{#each [N, N / 2] as v (v)}
@@ -318,20 +327,28 @@
 				stroke-width="1"
 				stroke-dasharray={v === N / 2 ? '5 4' : undefined}
 			/>
-			{@render txt(KX0 - 8, ky(v) + 4, Number.isInteger(v) ? String(v) : v.toFixed(1), 11, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout id="ktick-{v}">
+				{@render txt(KX0 - 8, ky(v) + 4, Number.isInteger(v) ? String(v) : v.toFixed(1), 11, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 		{/each}
-		{@render txt(KX0 - 8, KY0 + 4, '0', 11, { anchor: 'end', muted: true })}
-		{@render txt(KX1, ky(N) - 6, 'all on the left', 11, { anchor: 'end', muted: true })}
-		{@render txt(KX1, ky(N / 2) - 6, 'half', 11, { anchor: 'end', muted: true })}
+		<Readout id="k-labels">
+			{@render txt(KX0 - 8, KY0 + 4, '0', 11, { anchor: 'end', muted: true })}
+			{@render txt(KX1, ky(N) - 6, 'all on the left', 11, { anchor: 'end', muted: true })}
+			{@render txt(KX1, ky(N / 2) - 6, 'half', 11, { anchor: 'end', muted: true })}
+		</Readout>
 		<path d={kPath} fill="none" stroke="var(--ent-ways)" stroke-width="2" stroke-linejoin="round" />
-		{@render txt(KX1, KY0 + 18, `${Math.floor(tTo)} s`, 11, { anchor: 'end', muted: true })}
-		{@render txt(KX0, KY0 + 18, `${Math.floor(tFrom)} s`, 11, { muted: true })}
+		<Readout id="k-times">
+			{@render txt(KX1, KY0 + 18, `${Math.floor(tTo)} s`, 11, { anchor: 'end', muted: true })}
+			{@render txt(KX0, KY0 + 18, `${Math.floor(tFrom)} s`, 11, { muted: true })}
+		</Readout>
 
 		<!-- bars: microstates per macrostate -->
-		{@render txt(CX0, 60, `microstates for each macrostate, C(${N}, k)`, 13, { muted: true })}
+		<Readout id="bars-title">
+			{@render txt(CX0, 60, `microstates for each macrostate, C(${N}, k)`, 13, { muted: true })}
+		</Readout>
 		{#each bars as b (b.j)}
 			<rect
 				x={b.x + Math.min(1, barW * 0.1)}
@@ -343,52 +360,97 @@
 				opacity={b.j === k ? 1 : 0.35}
 			/>
 			{#if smallN}
-				{@render txt(b.x + barW / 2, CY0 - b.h - 6, fmt(Number(choose(N, b.j))), 11, {
-					anchor: 'middle',
-					weight: b.j === k ? 700 : 500,
-					muted: b.j !== k
-				})}
+				<Readout id="bar-{b.j}">
+					{@render txt(b.x + barW / 2, CY0 - b.h - 6, fmt(Number(choose(N, b.j))), 11, {
+						anchor: 'middle',
+						weight: b.j === k ? 700 : 500,
+						muted: b.j !== k
+					})}
+				</Readout>
 			{/if}
 		{/each}
 		<line x1={CX0} x2={CX1} y1={CY0} y2={CY0} stroke="var(--stage-line)" stroke-width="1.2" />
 		<path d="M{CX0 + (k + 0.5) * barW} {CY0 + 3} l-6 9 h12 Z" fill="var(--ent-ways)" />
-		{#each barTicks as j (j)}
-			{@render txt(CX0 + (j + 0.5) * barW, CY0 + 26, String(j), 11, {
-				anchor: 'middle',
-				muted: true
-			})}
-		{/each}
-		{@render txt((CX0 + CX1) / 2, CY0 + 44, 'k = particles in the left half (the macrostate)', 12, {
-			anchor: 'middle',
-			muted: true
-		})}
+		<Readout id="bar-axis">
+			{#each barTicks as j (j)}
+				{@render txt(CX0 + (j + 0.5) * barW, CY0 + 26, String(j), 11, {
+					anchor: 'middle',
+					muted: true
+				})}
+			{/each}
+			{@render txt(
+				(CX0 + CX1) / 2,
+				CY0 + 44,
+				'k = particles in the left half (the macrostate)',
+				12,
+				{
+					anchor: 'middle',
+					muted: true
+				}
+			)}
+		</Readout>
 
 		<!-- readouts -->
-		{@render txt(CX0, 446, `now: ${k} on the left → C(${N}, ${k}) =`, 13)}
-		{@render txt(
-			CX0,
-			474,
-			`${formatCount(choose(N, k))} microstate${choose(N, k) === 1n ? '' : 's'}`,
-			20,
-			{
-				weight: 600,
-				color: 'var(--ent-ways)',
-				tabular: true
-			}
-		)}
-		{@render txt(CX0, 506, `all ${N} on the left: 1 microstate`, 13)}
-		{@render txt(CX0, 528, `every arrangement: 2${sup(N)} = ${formatCount(total)}`, 13, {
-			muted: true
-		})}
-		{@render txt(CX0, 550, `chance of all on the left: 1 in ${formatCount(total)}`, 13, {
-			muted: true
-		})}
+		<Readout
+			id="micro-now"
+			order={3}
+			label="Microstates now, C({N}, {k})"
+			value="{formatCount(choose(N, k))} microstate{choose(N, k) === 1n ? '' : 's'}"
+			color="var(--ent-ways)"
+		>
+			{@render txt(CX0, 446, `now: ${k} on the left → C(${N}, ${k}) =`, 13)}
+			{@render txt(
+				CX0,
+				474,
+				`${formatCount(choose(N, k))} microstate${choose(N, k) === 1n ? '' : 's'}`,
+				20,
+				{
+					weight: 600,
+					color: 'var(--ent-ways)',
+					tabular: true
+				}
+			)}
+		</Readout>
+		<Readout
+			id="all-left"
+			order={4}
+			label="All {N} on the left"
+			value="1 microstate"
+			note="chance 1 in {formatCount(total)} (2{sup(N)} arrangements)"
+		>
+			{@render txt(CX0, 506, `all ${N} on the left: 1 microstate`, 13)}
+			{@render txt(CX0, 528, `every arrangement: 2${sup(N)} = ${formatCount(total)}`, 13, {
+				muted: true
+			})}
+			{@render txt(CX0, 550, `chance of all on the left: 1 in ${formatCount(total)}`, 13, {
+				muted: true
+			})}
+		</Readout>
 	{:else}
 		<!-- two groups sharing packets of energy -->
-		{@render txt(52, 60, 'left', 13, { weight: 600 })}
-		{@render txt(252, 60, 'right', 13, { weight: 600 })}
-		{@render txt(52, 78, `${nL} particles · ${fmt(qL)} packets`, 12, { muted: true })}
-		{@render txt(252, 78, `${nR} particles · ${fmt(qR)} packets`, 12, { muted: true })}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout
+			id="group-l"
+			order={2}
+			label="Left"
+			value="{nL} particles"
+			note="{fmt(qL)} packets"
+			color={heat(tL)}
+		>
+			{@render txt(52, 60, 'left', 13, { weight: 600 })}
+			{@render txt(52, 78, `${nL} particles · ${fmt(qL)} packets`, 12, { muted: true })}
+		</Readout>
+		<Readout
+			id="group-r"
+			order={3}
+			label="Right"
+			value="{nR} particles"
+			note="{fmt(qR)} packets"
+			color={heat(tR)}
+		>
+			{@render txt(252, 60, 'right', 13, { weight: 600 })}
+			{@render txt(252, 78, `${nR} particles · ${fmt(qR)} packets`, 12, { muted: true })}
+		</Readout>
 		{#each [{ id: 'l', x: 44 }, { id: 'r', x: 244 }] as g (g.id)}
 			<rect
 				x={g.x}
@@ -407,54 +469,75 @@
 		{#each rightDots as d (d.i)}
 			<circle cx={d.x} cy={d.y} r={dotR} style:fill={heat(tR)} />
 		{/each}
-		{@render txt(140, 282, `${each(qL / nL)} packets each`, 13, { anchor: 'middle' })}
-		{@render txt(340, 282, `${each(qR / nR)} packets each`, 13, { anchor: 'middle' })}
+		<Readout id="each">
+			{@render txt(140, 282, `${each(qL / nL)} packets each`, 13, { anchor: 'middle' })}
+			{@render txt(340, 282, `${each(qR / nR)} packets each`, 13, { anchor: 'middle' })}
+		</Readout>
 
-		{@render txt(52, 330, 'ways to share the packets', 13, { muted: true })}
-		{@render txt(52, 356, `left:  ${lnWaysText(lnEnergyWays(qL, nL))}`, 15, { tabular: true })}
-		{@render txt(52, 380, `right: ${lnWaysText(lnEnergyWays(qR, nR))}`, 15, { tabular: true })}
+		<Readout id="ways-each">
+			{@render txt(52, 330, 'ways to share the packets', 13, { muted: true })}
+			{@render txt(52, 356, `left:  ${lnWaysText(lnEnergyWays(qL, nL))}`, 15, { tabular: true })}
+			{@render txt(52, 380, `right: ${lnWaysText(lnEnergyWays(qR, nR))}`, 15, { tabular: true })}
+		</Readout>
 		<line x1={52} x2={420} y1={394} y2={394} stroke="var(--stage-line)" stroke-width="1" />
-		{@render txt(52, 422, `together (left × right): ${lnWaysText(lnNow)}`, 18, {
-			weight: 600,
-			color: 'var(--ent-ways)',
-			tabular: true
-		})}
-		{@render txt(
-			52,
-			452,
-			peakRatio < 0.05
+		<Readout
+			id="ways-together"
+			order={4}
+			label="Ways to share the packets (left × right)"
+			value={lnWaysText(lnNow)}
+			note={peakRatio < 0.05
 				? 'this is the most likely share'
-				: `the peak has ${formatCount({ log10: peakRatio })} times as many`,
-			13
-		)}
-		{@render txt(52, 480, `${PACKETS_PER_PARTICLE} packets per particle on average`, 12, {
-			muted: true
-		})}
+				: `the peak has ${formatCount({ log10: peakRatio })} times as many`}
+			color="var(--ent-ways)"
+		>
+			{@render txt(52, 422, `together (left × right): ${lnWaysText(lnNow)}`, 18, {
+				weight: 600,
+				color: 'var(--ent-ways)',
+				tabular: true
+			})}
+			{@render txt(
+				52,
+				452,
+				peakRatio < 0.05
+					? 'this is the most likely share'
+					: `the peak has ${formatCount({ log10: peakRatio })} times as many`,
+				13
+			)}
+		</Readout>
+		<Readout id="packets-avg">
+			{@render txt(52, 480, `${PACKETS_PER_PARTICLE} packets per particle on average`, 12, {
+				muted: true
+			})}
 
-		<!-- the curve -->
-		{@render txt(EX0, 60, 'ways to share the energy, for every split', 13, { muted: true })}
-		{@render txt(EX0, 78, '(relative to the most likely split)', 12, { muted: true })}
+			<!-- the curve -->
+			{@render txt(EX0, 60, 'ways to share the energy, for every split', 13, { muted: true })}
+			{@render txt(EX0, 78, '(relative to the most likely split)', 12, { muted: true })}
+		</Readout>
 		<path d={eArea} fill="var(--ent-ways)" opacity="0.18" />
 		<path d={ePath} fill="none" stroke="var(--ent-ways)" stroke-width="2.5" />
 		<line x1={EX0} x2={EX1} y1={EY0} y2={EY0} stroke="var(--stage-line)" stroke-width="1.2" />
-		{#each [0, 25, 50, 75, 100] as p (p)}
-			{@render txt(ex(p), EY0 + 18, `${p}%`, 11, { anchor: 'middle', muted: true })}
-		{/each}
-		{@render txt((EX0 + EX1) / 2, EY0 + 38, 'share of the energy on the left', 12, {
-			anchor: 'middle',
-			muted: true
-		})}
-		<!-- peak marker -->
-		{@render txt(
-			clamp(ex((100 * peakQ) / Q), EX0 + 60, EX1 - 60),
-			EY1 - 10,
-			'equal temperatures',
-			12,
-			{
+		<Readout id="e-axis">
+			{#each [0, 25, 50, 75, 100] as p (p)}
+				{@render txt(ex(p), EY0 + 18, `${p}%`, 11, { anchor: 'middle', muted: true })}
+			{/each}
+			{@render txt((EX0 + EX1) / 2, EY0 + 38, 'share of the energy on the left', 12, {
 				anchor: 'middle',
-				weight: 600
-			}
-		)}
+				muted: true
+			})}
+		</Readout>
+		<!-- peak marker -->
+		<Readout id="peak-label">
+			{@render txt(
+				clamp(ex((100 * peakQ) / Q), EX0 + 60, EX1 - 60),
+				EY1 - 10,
+				'equal temperatures',
+				12,
+				{
+					anchor: 'middle',
+					weight: 600
+				}
+			)}
+		</Readout>
 		<!-- where the gas started -->
 		<line
 			x1={startLabelX}
@@ -465,14 +548,21 @@
 			stroke-width="1.5"
 			stroke-dasharray="3 3"
 		/>
-		{@render txt(startLabelX + startSide * 8, EY0 - 82, 'the gas’s start', 11, {
-			anchor: startSide > 0 ? 'start' : 'end',
-			color: 'var(--ent-hot)'
-		})}
-		{@render txt(startLabelX + startSide * 8, EY0 - 68, '(hot left, cold right)', 11, {
-			anchor: startSide > 0 ? 'start' : 'end',
-			color: 'var(--ent-hot)'
-		})}
+		<Readout
+			id="start-key"
+			order={7}
+			label="Dashed line: the gas’s start (hot left, cold right)"
+			color="var(--ent-hot)"
+		>
+			{@render txt(startLabelX + startSide * 8, EY0 - 82, 'the gas’s start', 11, {
+				anchor: startSide > 0 ? 'start' : 'end',
+				color: 'var(--ent-hot)'
+			})}
+			{@render txt(startLabelX + startSide * 8, EY0 - 68, '(hot left, cold right)', 11, {
+				anchor: startSide > 0 ? 'start' : 'end',
+				color: 'var(--ent-hot)'
+			})}
+		</Readout>
 		<!-- current split -->
 		<line
 			x1={ex(share)}
@@ -507,14 +597,22 @@
 					s === 'start' ? 0 : s === 'end' ? 100 : clamp(Math.round(share + s), 0, 100)
 				)}
 		/>
-		{@render txt(
-			ex(share),
-			EY0 + 56,
-			`${Math.round(share)}% · temperatures ${tL.toFixed(1)} and ${tR.toFixed(1)}`,
-			12,
-			{
-				anchor: ex(share) < 600 ? 'start' : ex(share) > 800 ? 'end' : 'middle'
-			}
-		)}
+		<Readout
+			id="share"
+			order={1}
+			label="Energy on the left"
+			value="{Math.round(share)}%"
+			note="temperatures {tL.toFixed(1)} and {tR.toFixed(1)}"
+		>
+			{@render txt(
+				ex(share),
+				EY0 + 56,
+				`${Math.round(share)}% · temperatures ${tL.toFixed(1)} and ${tR.toFixed(1)}`,
+				12,
+				{
+					anchor: ex(share) < 600 ? 'start' : ex(share) > 800 ? 'end' : 'middle'
+				}
+			)}
+		</Readout>
 	{/if}
 </g>
