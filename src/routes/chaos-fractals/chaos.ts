@@ -140,37 +140,63 @@ export function attractor(r: number, transient = 2000, keep = 256, x0 = 0.5, tol
 }
 
 /**
- * Period of the attractor: the smallest p (up to 128) with x(k + p) ≈ x(k)
- * throughout a window measured after a long transient, or Infinity when no such
- * p shows (chaos, or a cycle longer than 128). Comparing the orbit with itself
- * — instead of collecting settled values, as `attractor` does — is what keeps
- * it right at the splitting points, where the approach to the cycle is so slow
- * that no fixed transient settles within any tight tolerance, yet the orbit is
- * already periodic to a tolerance small against the spread of its branches.
+ * Period of the attractor: the smallest p (up to 128) with a stable p-cycle the
+ * orbit has settled near, or Infinity when there is none (chaos, or a cycle
+ * longer than 128).
+ *
+ * A tolerance on the orbit alone can't decide it next to a split. Just below
+ * one the orbit creeps towards its cycle so slowly that a wobble of the next
+ * period survives any transient (at r = 3 − 1e-5, ~1e-4 after 100 000 steps),
+ * while just above it the new cycle's branches are barely further apart (~2e-3
+ * at 3 + 1e-5). So each p whose orbit roughly repeats is checked exactly: the
+ * p-cycle nearby is found by Newton's method on f^p(x) = x, and it is the
+ * attractor if it is stable, its multiplier (the product of f′ round the cycle)
+ * no larger than 1 in size. Right at a split the multiplier is exactly −1, so
+ * there the old cycle is still reported.
  */
 export function period(r: number) {
 	let x = 0.4; // not 0.5: at r = 4 that lands on 0 for ever (a rounding artefact)
 	for (let i = 0; i < 100000; i++) x = logistic(r, x);
 	const N = 512;
 	const w = new Float64Array(N);
-	let lo = Infinity;
-	let hi = -Infinity;
-	for (let i = 0; i < N; i++) {
-		x = logistic(r, x);
-		w[i] = x;
-		if (x < lo) lo = x;
-		if (x > hi) hi = x;
-	}
-	const tol = Math.max(1e-9, (hi - lo) * 1e-3);
+	for (let i = 0; i < N; i++) w[i] = x = logistic(r, x);
+	/** f^p(x) − x and the multiplier (f^p)′(x). */
+	const cycle = (x0: number, p: number) => {
+		let y = x0;
+		let m = 1;
+		for (let i = 0; i < p; i++) {
+			m *= r * (1 - 2 * y);
+			y = logistic(r, y);
+		}
+		return { g: y - x0, m };
+	};
+	/** The multiplier of the p-cycle Newton's method finds from x0, or NaN if it finds none. */
+	const multiplier = (x0: number, p: number) => {
+		let y = x0;
+		for (let it = 0; it < 60; it++) {
+			const { g, m } = cycle(y, p);
+			if (Math.abs(g) < 1e-13) return m;
+			if (m === 1) return NaN;
+			y -= g / (m - 1);
+			if (!(y >= 0 && y <= 1)) return NaN;
+		}
+		return NaN;
+	};
 	for (let p = 1; p <= 128; p++) {
-		let match = true;
+		// Only a p the orbit roughly repeats with is worth the exact check.
+		let near = true;
 		for (let k = 0; k + p < N; k++) {
-			if (Math.abs(w[k + p] - w[k]) > tol) {
-				match = false;
+			if (Math.abs(w[k + p] - w[k]) > 0.02) {
+				near = false;
 				break;
 			}
 		}
-		if (match) return p;
+		if (!near) continue;
+		// Start Newton from a few of the cycle's points, in case one lands on a
+		// neighbouring unstable cycle.
+		for (let j = 1; j <= Math.min(p, 4); j++) {
+			if (Math.abs(multiplier(w[N - j], p)) <= 1 + 1e-9) return p;
+		}
 	}
 	return Infinity;
 }

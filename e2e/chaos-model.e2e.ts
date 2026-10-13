@@ -64,14 +64,30 @@ test('the doublings close in at Feigenbaum’s ratio', () => {
 	// Just either side of each doubling the period really does double.
 	expect(period(DOUBLINGS[1] - 0.005)).toBe(2);
 	expect(period(DOUBLINGS[1] + 0.005)).toBe(4);
-	// …for every measured split, and right at them the count stays finite (the
-	// orbit is still the old cycle, approached ever more slowly).
+	// …for every measured split. Right at one the old cycle is still the attractor
+	// (it has only just stopped being stable, approached ever more slowly), so at
+	// r = 3 exactly the steady state is reported. The other DOUBLINGS are rounded to
+	// 1e-9 and may fall a hair either side of the true split: there the count need
+	// only be finite.
+	expect(period(3)).toBe(1);
 	const expected = [1, 2, 4, 8, 16];
 	DOUBLINGS.forEach((d, i) => {
 		expect(period(d - 0.001)).toBe(expected[i]);
 		expect(period(d + 0.001)).toBe(i === 4 ? 64 : expected[i] * 2); // the cascade accelerates
 		expect(Number.isFinite(period(d))).toBe(true);
 	});
+});
+
+test('logistic map: just below a split the old cycle still holds, however slowly it is reached', () => {
+	// Close to a split the orbit creeps towards its cycle (at r = 3 − 1e-5 a
+	// leftover wobble of ~1e-4 survives 100 000 steps), yet the cycle is the attractor.
+	for (const eps of [1e-4, 3e-5, 1e-5, 1e-6]) expect(period(3 - eps)).toBe(1);
+	const expected = [1, 2, 4, 8, 16];
+	DOUBLINGS.forEach((d, i) => {
+		for (const eps of [1e-4, 1e-5]) expect(period(d - eps)).toBe(expected[i]);
+	});
+	// …and just above one the new cycle is already there, however small.
+	DOUBLINGS.forEach((d, i) => expect(period(d + 1e-5)).toBe(expected[i] * 2));
 });
 
 test('Mandelbrot: known points in and out of the set', () => {
