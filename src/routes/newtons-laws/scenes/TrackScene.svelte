@@ -46,7 +46,7 @@
 	const phase = $derived(String(step.hints?.phase ?? 'free'));
 	const friction = $derived(phase === 'friction');
 	// `params.mu` holds the slider's value on every step: the first step has none.
-	const mu = $derived(friction ? Math.max(0, Number(params.mu ?? 0.04)) : 0);
+	const mu = $derived(friction ? Math.max(0, Number(params.mu ?? 0.08)) : 0);
 
 	const heights = $derived.by(() => {
 		const raw = String(params.track ?? '')
@@ -143,8 +143,8 @@
 		const x = bounce ? (u < 0.5 ? a.x : b.x) : a.x + (b.x - a.x) * u;
 		const kinetic = 0.5 * MASS * speed * speed;
 		const potential = MASS * G * track.h(x);
-		// Whatever is missing went into heat (the same bookkeeping as ride()).
-		const heat = mu > 0 ? Math.max(0, E0 - kinetic - potential) : 0;
+		// The work done against friction so far (computed by ride()).
+		const heat = mu > 0 ? a.dissipated + (b.dissipated - a.dissipated) * u : 0;
 		return { x, speed, kinetic, potential, heat };
 	});
 
