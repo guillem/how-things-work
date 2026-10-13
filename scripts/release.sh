@@ -37,5 +37,6 @@ fi
 
 make check
 git tag -a "$V" -m "Release $V"
+date -u +%Y-%m-%dT%H:%M:%SZ >.release-started
 git push --atomic origin main "refs/tags/$V"
 echo "Released $V. Follow it with: make verify"

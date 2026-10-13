@@ -39,6 +39,6 @@ git rev-parse -q --verify "refs/tags/$TO" >/dev/null || {
 	exit 1
 }
 
+date -u +%Y-%m-%dT%H:%M:%SZ >.release-started
 gh workflow run release.yml --ref main -f tag="$TO"
-sleep 3
 echo "Started. Follow it with: make verify"

@@ -50,9 +50,10 @@ release:
 rollback:
 	scripts/rollback.sh $(TO)
 
-## Follow the latest release run to its end (it ends with a check of the live site).
+## Follow the run started by the last release or rollback to its end (it ends with a check of
+## the live site).
 verify:
-	gh run watch "$$(gh run list --workflow release.yml --limit 1 --json databaseId --jq '.[0].databaseId')" --exit-status
+	scripts/verify.sh
 
 ## Review and fact-check topics through the Batch API (half price, results within
 ## 24 h, usually 1): make review TOPICS="entropy internet". Needs ANTHROPIC_API_KEY

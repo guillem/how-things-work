@@ -31,3 +31,6 @@ docs/reviews/dry-run.json
 
 # Agent worktrees (Claude Code)
 .claude/worktrees/
+
+# When the last release/rollback started (scripts/verify.sh)
+.release-started
