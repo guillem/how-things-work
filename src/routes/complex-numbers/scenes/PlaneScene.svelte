@@ -21,7 +21,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { I, abs, add, arg, c, fmt, mul, num, pow, reduce, short } from '../complex';
 	import PointHandle from './PointHandle.svelte';
 
@@ -221,18 +221,23 @@
 	/>
 	{#each GRID as g (g)}
 		<line x1={sx(g)} x2={sx(g)} y1={CY - 5} y2={CY + 5} stroke="var(--stage-line)" />
-		{@render txt(sx(g), CY + 20, num(g, 0), 12, {
-			anchor: 'middle',
-			muted: true,
-			opacity: Math.abs(g) === 1 ? 1 - w.i : 1
-		})}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="re-tick-{g}">
+			{@render txt(sx(g), CY + 20, num(g, 0), 12, {
+				anchor: 'middle',
+				muted: true,
+				opacity: Math.abs(g) === 1 ? 1 - w.i : 1
+			})}
+		</Readout>
 	{/each}
-	{@render txt(CX - 8, CY + 20, '0', 12, { anchor: 'end', muted: true })}
-	{@render txt(CX + E, CY - 10, 'real', 12, {
-		anchor: 'end',
-		muted: true,
-		opacity: clearOf(CX + E - 14, CY - 14)
-	})}
+	<Readout id="axis-re">
+		{@render txt(CX - 8, CY + 20, '0', 12, { anchor: 'end', muted: true })}
+		{@render txt(CX + E, CY - 10, 'real', 12, {
+			anchor: 'end',
+			muted: true,
+			opacity: clearOf(CX + E - 14, CY - 14)
+		})}
+	</Readout>
 
 	<!-- the imaginary axis, grown from 0 -->
 	<line
@@ -246,16 +251,20 @@
 	<g opacity={grow}>
 		{#each GRID as g (g)}
 			<line x1={CX - 5} x2={CX + 5} y1={sy(g)} y2={sy(g)} stroke="var(--stage-line)" />
-			{@render txt(CX - 9, sy(g) + 4, g === 1 ? 'i' : g === -1 ? '−i' : `${num(g, 0)}i`, 12, {
-				anchor: 'end',
-				muted: true,
-				opacity: Math.abs(g) === 1 ? 1 - w.i : 1
-			})}
+			<Readout id="im-tick-{g}">
+				{@render txt(CX - 9, sy(g) + 4, g === 1 ? 'i' : g === -1 ? '−i' : `${num(g, 0)}i`, 12, {
+					anchor: 'end',
+					muted: true,
+					opacity: Math.abs(g) === 1 ? 1 - w.i : 1
+				})}
+			</Readout>
 		{/each}
-		{@render txt(CX + 10, CY - E + 8, 'imaginary', 12, {
-			muted: true,
-			opacity: clearOf(CX + 34, CY - E + 4)
-		})}
+		<Readout id="axis-im">
+			{@render txt(CX + 10, CY - E + 8, 'imaginary', 12, {
+				muted: true,
+				opacity: clearOf(CX + 34, CY - E + 4)
+			})}
+		</Readout>
 	</g>
 
 	<!-- ============ phase i: 1, i, −1, −i ============ -->
@@ -286,20 +295,45 @@
 				</g>
 			{/each}
 		</g>
-		<g opacity={panel(w.i)}>
-			{@render txt(PX, 120, 'i² = −1', 34, { weight: 700, color: 'var(--cx-im)' })}
-			{@render txt(PX, 150, 'the one new rule', 13, { muted: true })}
-			{@render txt(PX, 210, 'On the number line, squares are never negative:', 13)}
-			{#each ['2² = 4', '(−2)² = 4', '0² = 0'] as sq, k (sq)}
-				{@render txt(PX + k * 104, 240, sq, 15, { weight: 600 })}
-			{/each}
-			{@render txt(PX, 300, 'So i is not on the line. It gets its own', 13)}
-			{@render txt(PX, 320, 'direction: an axis at right angles to it.', 13)}
-			<g opacity={grow}>
-				{@render txt(PX, 380, '−i is the other square root of −1:', 13, { muted: true })}
-				{@render txt(PX, 404, '(−i)² = i² = −1', 15, { weight: 600 })}
+		<Readout
+			id="rule"
+			order={1}
+			label="The one new rule"
+			value="i² = −1"
+			color="var(--cx-im)"
+			opacity={panel(w.i)}
+		/>
+		<Readout
+			id="squares"
+			order={2}
+			label="On the number line"
+			value="squares are never negative"
+			note="2² = 4, (−2)² = 4, 0² = 0: so i gets its own axis, at right angles"
+			opacity={panel(w.i)}
+		/>
+		<Readout
+			id="minus-i"
+			order={3}
+			label="The other square root of −1"
+			value="(−i)² = i² = −1"
+			opacity={panel(w.i) * grow}
+		/>
+		<Readout id="i-panel">
+			<g opacity={panel(w.i)}>
+				{@render txt(PX, 120, 'i² = −1', 34, { weight: 700, color: 'var(--cx-im)' })}
+				{@render txt(PX, 150, 'the one new rule', 13, { muted: true })}
+				{@render txt(PX, 210, 'On the number line, squares are never negative:', 13)}
+				{#each ['2² = 4', '(−2)² = 4', '0² = 0'] as sq, k (sq)}
+					{@render txt(PX + k * 104, 240, sq, 15, { weight: 600 })}
+				{/each}
+				{@render txt(PX, 300, 'So i is not on the line. It gets its own', 13)}
+				{@render txt(PX, 320, 'direction: an axis at right angles to it.', 13)}
+				<g opacity={grow}>
+					{@render txt(PX, 380, '−i is the other square root of −1:', 13, { muted: true })}
+					{@render txt(PX, 404, '(−i)² = i² = −1', 15, { weight: 600 })}
+				</g>
 			</g>
-		</g>
+		</Readout>
 	{/if}
 
 	<!-- ============ phase plane: the parts of z ============ -->
@@ -370,31 +404,66 @@
 				})}
 			{/if}
 		</g>
-		<g opacity={panel(w.plane)}>
-			{@render txt(PX, 112, `z = ${zText}`, 30, { weight: 700, color: 'var(--cx-z)' })}
-			{@render txt(PX, 140, `the point (${short(z.re, 1)}, ${short(z.im, 1)})`, 14, {
-				muted: true
-			})}
-			{@render txt(PX, 196, `real part  a = ${short(z.re, 1)}`, 15, {
-				weight: 600,
-				color: 'var(--cx-re)'
-			})}
-			{@render txt(PX, 216, 'how far along the real axis', 12, { muted: true })}
-			{@render txt(PX, 256, `imaginary part  b = ${short(z.im, 1)}`, 15, {
-				weight: 600,
-				color: 'var(--cx-im)'
-			})}
-			{@render txt(PX, 276, 'how far up the imaginary axis', 12, { muted: true })}
-			{@render txt(PX, 340, 'Adding works part by part:', 13)}
-			{@render txt(PX, 366, `(${zText}) + (1 + 2i) = ${fmt(zs, 1)}`, 15, { weight: 600 })}
-			{@render txt(
-				PX,
-				388,
-				slideFits ? 'the dashed arrow: a slide by 1 + 2i' : '(off this piece of the plane)',
-				12,
-				{ muted: true }
-			)}
-		</g>
+		<Readout
+			id="z"
+			order={1}
+			label="z"
+			value={zText}
+			note="the point ({short(z.re, 1)}, {short(z.im, 1)})"
+			color="var(--cx-z)"
+			opacity={panel(w.plane)}
+		/>
+		<Readout
+			id="re"
+			order={2}
+			label="Real part"
+			value="a = {short(z.re, 1)}"
+			color="var(--cx-re)"
+			opacity={panel(w.plane)}
+		/>
+		<Readout
+			id="im"
+			order={3}
+			label="Imaginary part"
+			value="b = {short(z.im, 1)}"
+			color="var(--cx-im)"
+			opacity={panel(w.plane)}
+		/>
+		<Readout
+			id="sum"
+			order={4}
+			label="Adding works part by part"
+			value="({zText}) + (1 + 2i) = {fmt(zs, 1)}"
+			note={slideFits ? 'the dashed arrow: a slide by 1 + 2i' : '(off this piece of the plane)'}
+			opacity={panel(w.plane)}
+		/>
+		<Readout id="plane-panel">
+			<g opacity={panel(w.plane)}>
+				{@render txt(PX, 112, `z = ${zText}`, 30, { weight: 700, color: 'var(--cx-z)' })}
+				{@render txt(PX, 140, `the point (${short(z.re, 1)}, ${short(z.im, 1)})`, 14, {
+					muted: true
+				})}
+				{@render txt(PX, 196, `real part  a = ${short(z.re, 1)}`, 15, {
+					weight: 600,
+					color: 'var(--cx-re)'
+				})}
+				{@render txt(PX, 216, 'how far along the real axis', 12, { muted: true })}
+				{@render txt(PX, 256, `imaginary part  b = ${short(z.im, 1)}`, 15, {
+					weight: 600,
+					color: 'var(--cx-im)'
+				})}
+				{@render txt(PX, 276, 'how far up the imaginary axis', 12, { muted: true })}
+				{@render txt(PX, 340, 'Adding works part by part:', 13)}
+				{@render txt(PX, 366, `(${zText}) + (1 + 2i) = ${fmt(zs, 1)}`, 15, { weight: 600 })}
+				{@render txt(
+					PX,
+					388,
+					slideFits ? 'the dashed arrow: a slide by 1 + 2i' : '(off this piece of the plane)',
+					12,
+					{ muted: true }
+				)}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- ============ phase times: quarter turns ============ -->
@@ -480,25 +549,45 @@
 		</g>
 	{/if}
 	{#if w.times > 0.01}
-		<g opacity={panel(w.times)}>
-			{@render txt(PX, 104, 'Multiply by i again and again', 15, { weight: 600 })}
-			{@render txt(PX, 126, 'each time a quarter turn, 90° anticlockwise', 12, { muted: true })}
-			{#each turns as p, k (k)}
-				{@const y = 172 + k * 44}
-				{@render txt(PX, y, turnNames[k], 15, {
-					weight: 600,
-					color: 'var(--cx-z)',
-					opacity: k === 0 ? 1 : 0.85
-				})}
-				{@render txt(PX + 300, y, `= ${fmt(p, 1)}`, 16, { anchor: 'end', weight: 600 })}
-			{/each}
-			{@render txt(PX, 172 + 4 * 44, 'i⁴z = z', 15, { weight: 600, color: 'var(--cx-z)' })}
-			{@render txt(PX + 300, 172 + 4 * 44, 'back home', 13, { anchor: 'end', muted: true })}
-			{@render txt(PX, 418, '(a, b)  →  (−b, a)', 16, { weight: 600 })}
-			{@render txt(PX, 440, 'what ×i does to every point', 12, { muted: true })}
-			{@render txt(PX, 486, 'Two quarter turns make a half turn:', 13)}
-			{@render txt(PX, 508, 'i² = −1', 16, { weight: 700, color: 'var(--cx-turn)' })}
-		</g>
+		{#each turns as p, k (k)}
+			<Readout
+				id="turn-{k}"
+				order={k + 1}
+				label={turnNames[k]}
+				value={fmt(p, 1)}
+				color="var(--cx-z)"
+				opacity={panel(w.times)}
+			/>
+		{/each}
+		<Readout
+			id="times-i"
+			order={5}
+			label="What ×i does to every point"
+			value="(a, b) → (−b, a)"
+			note="a quarter turn, 90° anticlockwise; two make i² = −1"
+			opacity={panel(w.times)}
+		/>
+		<Readout id="times-panel">
+			<g opacity={panel(w.times)}>
+				{@render txt(PX, 104, 'Multiply by i again and again', 15, { weight: 600 })}
+				{@render txt(PX, 126, 'each time a quarter turn, 90° anticlockwise', 12, { muted: true })}
+				{#each turns as p, k (k)}
+					{@const y = 172 + k * 44}
+					{@render txt(PX, y, turnNames[k], 15, {
+						weight: 600,
+						color: 'var(--cx-z)',
+						opacity: k === 0 ? 1 : 0.85
+					})}
+					{@render txt(PX + 300, y, `= ${fmt(p, 1)}`, 16, { anchor: 'end', weight: 600 })}
+				{/each}
+				{@render txt(PX, 172 + 4 * 44, 'i⁴z = z', 15, { weight: 600, color: 'var(--cx-z)' })}
+				{@render txt(PX + 300, 172 + 4 * 44, 'back home', 13, { anchor: 'end', muted: true })}
+				{@render txt(PX, 418, '(a, b)  →  (−b, a)', 16, { weight: 600 })}
+				{@render txt(PX, 440, 'what ×i does to every point', 12, { muted: true })}
+				{@render txt(PX, 486, 'Two quarter turns make a half turn:', 13)}
+				{@render txt(PX, 508, 'i² = −1', 16, { weight: 700, color: 'var(--cx-turn)' })}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- ============ phase polar: length and angle ============ -->
@@ -513,7 +602,9 @@
 				stroke-width="1.4"
 				opacity="0.55"
 			/>
-			{@render txt(sx(-0.72), sy(-0.82), 'unit circle', 11, { anchor: 'end', muted: true })}
+			<Readout id="unit-label">
+				{@render txt(sx(-0.72), sy(-0.82), 'unit circle', 11, { anchor: 'end', muted: true })}
+			</Readout>
 			{#if r > 0}
 				<line
 					x1={CX}
@@ -568,40 +659,76 @@
 				{/if}
 			{/if}
 		</g>
-		<g opacity={panel(w.polar)}>
-			{@render txt(PX, 112, `z = ${zText}`, 26, { weight: 700, color: 'var(--cx-z)' })}
-			{@render txt(PX, 172, 'length (Pythagoras)', 12, { muted: true })}
-			{@render txt(
-				PX,
-				198,
-				`|z| = √(${short(z.re, 1)}² + ${short(z.im, 1)}²) = ${num(r)}`
-					.replace(/√\(−([\d.]+)²/, '√((−$1)²')
-					.replace(/\+ −([\d.]+)²/, '+ (−$1)²'),
-				16,
-				{ weight: 600 }
-			)}
-			{@render txt(PX, 250, 'angle from the positive real axis', 12, { muted: true })}
-			{@render txt(PX, 276, r > 0 ? `φ ≈ ${num(phi, 1)}°` : 'φ: none (0 has no direction)', 16, {
-				weight: 600,
-				color: 'var(--cx-turn)'
-			})}
-			{@render txt(PX, 330, 'shrunk to length 1, on the unit circle:', 12, { muted: true })}
-			{@render txt(
-				PX,
-				356,
-				r > 0 ? `(cos φ, sin φ) = (${num(z.re / r)}, ${num(z.im / r)})` : '—',
-				15,
-				{ weight: 600 }
-			)}
-			{@render txt(PX, 420, 'so  z = |z| · (cos φ + i sin φ)', 15, { weight: 600 })}
-			{@render txt(
-				PX,
-				446,
-				r > 0 ? `= ${num(r)} · (${num(z.re / r)} + ${num(z.im / r)}i)`.replace('+ −', '− ') : '',
-				14,
-				{ muted: true }
-			)}
-		</g>
+		<Readout
+			id="polar-z"
+			order={1}
+			label="z"
+			value={zText}
+			color="var(--cx-z)"
+			opacity={panel(w.polar)}
+		/>
+		<Readout
+			id="angle"
+			order={2}
+			label="Angle"
+			value={r > 0 ? `φ ≈ ${num(phi, 1)}°` : 'none'}
+			color="var(--cx-turn)"
+			opacity={panel(w.polar)}
+		/>
+		<Readout
+			id="length"
+			order={3}
+			label="Length (Pythagoras)"
+			value="|z| = {num(r)}"
+			note={`√(${short(z.re, 1)}² + ${short(z.im, 1)}²)`
+				.replace(/√\(−([\d.]+)²/, '√((−$1)²')
+				.replace(/\+ −([\d.]+)²/, '+ (−$1)²')}
+			opacity={panel(w.polar)}
+		/>
+		<Readout
+			id="unit"
+			order={4}
+			label="Shrunk onto the unit circle"
+			value={r > 0 ? `(cos φ, sin φ) = (${num(z.re / r)}, ${num(z.im / r)})` : '—'}
+			note="so z = |z| · (cos φ + i sin φ)"
+			opacity={panel(w.polar)}
+		/>
+		<Readout id="polar-panel">
+			<g opacity={panel(w.polar)}>
+				{@render txt(PX, 112, `z = ${zText}`, 26, { weight: 700, color: 'var(--cx-z)' })}
+				{@render txt(PX, 172, 'length (Pythagoras)', 12, { muted: true })}
+				{@render txt(
+					PX,
+					198,
+					`|z| = √(${short(z.re, 1)}² + ${short(z.im, 1)}²) = ${num(r)}`
+						.replace(/√\(−([\d.]+)²/, '√((−$1)²')
+						.replace(/\+ −([\d.]+)²/, '+ (−$1)²'),
+					16,
+					{ weight: 600 }
+				)}
+				{@render txt(PX, 250, 'angle from the positive real axis', 12, { muted: true })}
+				{@render txt(PX, 276, r > 0 ? `φ ≈ ${num(phi, 1)}°` : 'φ: none (0 has no direction)', 16, {
+					weight: 600,
+					color: 'var(--cx-turn)'
+				})}
+				{@render txt(PX, 330, 'shrunk to length 1, on the unit circle:', 12, { muted: true })}
+				{@render txt(
+					PX,
+					356,
+					r > 0 ? `(cos φ, sin φ) = (${num(z.re / r)}, ${num(z.im / r)})` : '—',
+					15,
+					{ weight: 600 }
+				)}
+				{@render txt(PX, 420, 'so  z = |z| · (cos φ + i sin φ)', 15, { weight: 600 })}
+				{@render txt(
+					PX,
+					446,
+					r > 0 ? `= ${num(r)} · (${num(z.re / r)} + ${num(z.im / r)}i)`.replace('+ −', '− ') : '',
+					14,
+					{ muted: true }
+				)}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- ============ the point z ============ -->

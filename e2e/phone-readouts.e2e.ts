@@ -178,6 +178,41 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText('2¹ ≡ 2 (mod 101)');
 	});
 
+	test('complex plane: the parts of z are text under the stage and follow the slider', async ({
+		page
+	}) => {
+		await page.goto('./complex-numbers/#plane');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Real part\s*a = 2/);
+		await expect(panel).toContainText('(2 + i) + (1 + 2i) = 3 + 3i');
+		await expect(drawing(page)).not.toContainText('Adding works part by part');
+		await range(page, 'zRe').fill('-1');
+		await expect(panel).toContainText(/Real part\s*a = −1/);
+	});
+
+	test('complex product: lengths and angles are text under the stage and follow w', async ({
+		page
+	}) => {
+		await page.goto('./complex-numbers/#multiply');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Lengths multiply\s*\|zw\| = 1\.40 × 1\.25 = 1\.75/);
+		await expect(panel).toContainText(/Angles add\s*20° \+ 45° = 65°/);
+		await expect(drawing(page)).not.toContainText('lengths multiply');
+		await range(page, 'wAng').fill('90');
+		await expect(panel).toContainText('20° + 90° = 110°');
+	});
+
+	test('complex Euler: cos θ and sin θ are text under the stage and follow θ', async ({ page }) => {
+		await page.goto('./complex-numbers/#euler');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Angle\s*θ = 60° = π\/3 rad/);
+		await expect(panel).toContainText(/cos θ\s*0\.50/);
+		await expect(drawing(page)).not.toContainText('real part');
+		await range(page, 'theta').fill('90');
+		await expect(panel).toContainText(/cos θ\s*0\.00/);
+		await expect(panel).toContainText(/sin θ\s*1\.00/);
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');
