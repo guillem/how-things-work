@@ -59,3 +59,48 @@ test('the decay switch changes the element as each kind of decay should', async 
 	await expect(stage(page)).toContainText('Technetium-99');
 	await expect(stage(page)).toContainText('Z, A same');
 });
+
+test('while the half-life eases to a new value, the header reads whole seconds', async ({
+	page
+}) => {
+	await page.clock.install({ time: 0 });
+	await open(page, './radioactivity/#halflife');
+	await page.clock.pauseAt(20_000); // time moves only when the test says so
+	const header = stage(page)
+		.locator('text')
+		.filter({ hasText: /^half-life / });
+	await expect(header).toHaveText('half-life 8 s');
+	await page.locator('input[type=range][data-control=halflife]').fill('20');
+	await page.clock.runFor(150); // part-way through the easing
+	expect(await header.textContent()).toMatch(/^half-life \d+ s$/);
+	await page.clock.runFor(1000);
+	await expect(header).toHaveText('half-life 20 s');
+});
+
+test('at a short half-life the plot keeps the quarter mark, the cards all three', async ({
+	page
+}) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await open(page, './radioactivity/#halflife');
+	await page.locator('input[type=range][data-control=halflife]').fill('2');
+	await expect(stage(page)).toContainText('1 half-life · 2 s');
+	await expect(stage(page)).toContainText('2 half-lives · 4 s');
+	await expect(stage(page)).toContainText('3 half-lives · 6 s');
+	// The labels on the plot itself (right of its y axis, at x = 600 of 960):
+	// 2, 4 and 6 s are a few pixels apart there, so only one is labelled —
+	// the quarter left after two half-lives.
+	const svg = (await page.locator('.stage svg').boundingBox())!;
+	const k = Math.min(svg.width / 960, svg.height / 600);
+	const left = svg.x + (svg.width - 960 * k) / 2 + 600 * k;
+	const onPlot = async (text: string) => {
+		const found = stage(page)
+			.locator('text')
+			.filter({ hasText: new RegExp(`^\\s*${text}\\s*$`) });
+		for (const box of await Promise.all((await found.all()).map((t) => t.boundingBox())))
+			if (box && box.x > left) return true;
+		return false;
+	};
+	expect(await onPlot('250')).toBe(true);
+	expect(await onPlot('500')).toBe(false);
+	expect(await onPlot('125')).toBe(false);
+});

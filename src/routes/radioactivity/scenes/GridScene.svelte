@@ -170,7 +170,8 @@
 
 	// Whole half-lives that fit on the axis (at most three): the cards under
 	// the grid take them all; the plot's marks are thinned when they would
-	// crowd (a short half-life puts them a few pixels apart).
+	// crowd (a short half-life puts them a few pixels apart), keeping the
+	// quarter left after two half-lives first.
 	const cardMarks = $derived(
 		[1, 2, 3]
 			.filter((k) => k * half <= END && k <= stopAt)
@@ -185,11 +186,9 @@
 	const marks = $derived.by(() => {
 		const gap = (36 / (PX1 - PX0)) * END; // seconds spanning 36 px of the axis
 		const out: typeof cardMarks = [];
-		for (const m of cardMarks) {
-			if (out.length && m.at - out[out.length - 1].at < gap) continue;
-			out.push(m);
-		}
-		return out;
+		const byPreference = [2, 1, 3].flatMap((k) => cardMarks.filter((m) => m.k === k));
+		for (const m of byPreference) if (out.every((o) => Math.abs(m.at - o.at) >= gap)) out.push(m);
+		return out.sort((a, b) => a.k - b.k);
 	});
 	const fractions = ['½', '¼', '⅛'];
 	const fmt = (n: number) => Math.round(n).toLocaleString('en-US');
@@ -255,7 +254,7 @@
 		font-weight="600"
 		style:font-variant-numeric="tabular-nums">{sec.toFixed(1)} s</text
 	>
-	<text x={GX + 76} y={52} class="muted">half-life {half} s</text>
+	<text x={GX + 76} y={52} class="muted">half-life {Math.round(half)} s</text>
 	<g style:font-variant-numeric="tabular-nums">
 		<rect x={GX} y={70} width="11" height="11" rx="2" fill="var(--rad-parent)" />
 		<text x={GX + 18} y={80}>Intact</text>

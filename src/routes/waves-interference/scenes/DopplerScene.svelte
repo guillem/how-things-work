@@ -12,9 +12,11 @@
 	 *            stage in at most 20 s and starts again (a short fade hides the
 	 *            jump); the reduced-motion frame has it in the middle. It is also
 	 *            a handle: while it is held, the picture follows the pointer and
-	 *            crests are sent from wherever it is, and on release the source's
-	 *            speed becomes the drag's own speed (the average of the last half
-	 *            second of the drag, rounded to the control's steps). Brackets
+	 *            crests are sent from wherever it is, and on release the source
+	 *            carries on from there at the drag's own speed (the average of
+	 *            the last half second of the drag, rounded to the control's
+	 *            steps; a tap leaves the speed alone). A new speed from the
+	 *            slider or the keys also carries on from where it is. Brackets
 	 *            mark the squeezed spacing ahead and the stretched one behind
 	 *            (uniform motion only); the card gives the pitch heard ahead and
 	 *            behind.
@@ -98,78 +100,93 @@
 	const T_VIS = 0.5; // s between crests, as drawn
 	const AGE = 9; // s: crests older than this have left the stage
 	const vPx = $derived(beta * C_PX);
-	const travel = $derived(vPx > 0 ? Math.min(680, vPx * 20) : 0);
-	const loop = $derived(vPx > 0 ? travel / vPx : 20);
-	const xStart = $derived(480 - travel / 2);
 
-	// Crests are emitted as the stage clock runs: from the automatic crossing,
-	// or from wherever the reader is holding the source. Their list is plain
-	// state mutated by the effect below (the sanctioned clock memo, as elsewhere);
-	// `crestVer` marks it for the deriveds that draw from it. Each crossing
-	// begins mid-stage (the reduced frame lands there too).
+	// Crests are emitted as the stage clock runs: from the source's own
+	// motion, or from wherever the reader is holding it. Their list is plain
+	// state mutated by the effect below (the sanctioned clock memo, as
+	// elsewhere); `crestVer` marks it for the deriveds that draw from it.
+	//
+	// The source's motion is a pure function of the stage time and `run`: the
+	// current run began at stage time `at` at `x0`, moving at `vpx` (px/s), and
+	// goes on to the end of the crossing (or a crossing's length further, when
+	// it began past that end); then crossings repeat from the left, each fading
+	// in and out so that the jump back does not show. A fresh scene run begins
+	// mid-crossing (the reduced frame lands there too). A release, or a change
+	// of speed, begins a new run from where the source is, with no fade: it
+	// carries on from its place at the new speed.
+	type Run = { at: number; x0: number; vpx: number; fadeIn: boolean };
+	/** A crossing's length (px), its duration (s) and its left end, at a drawn speed. */
+	const crossing = (vpx: number) => {
+		const travel = vpx > 0 ? Math.min(680, vpx * 20) : 0;
+		return { travel, loop: vpx > 0 ? travel / vpx : 20, x0: 480 - travel / 2 };
+	};
+	/** Where the source is at stage time `tau` on run `r`, and how opaque it is drawn. */
+	function where(r: Run, tau: number): { x: number; o: number } {
+		if (r.vpx <= 0) return { x: r.x0, o: 1 };
+		const c = crossing(r.vpx);
+		const x1 = Math.max(c.x0 + c.travel, Math.min(936, r.x0 + c.travel));
+		const dur = Math.max(0, (x1 - r.x0) / r.vpx);
+		const u = tau - r.at;
+		if (u < dur)
+			return {
+				x: r.x0 + r.vpx * u,
+				o: (r.fadeIn ? smoothstep(0, 0.4, u) : 1) * (1 - smoothstep(dur - 0.4, dur, u))
+			};
+		const s = (u - dur) % c.loop;
+		return {
+			x: c.x0 + r.vpx * s,
+			o: smoothstep(0, 0.4, s) * (1 - smoothstep(c.loop - 0.4, c.loop, s))
+		};
+	}
+	/** A run already half-way through an automatic crossing. */
+	const fresh = (tt: number, vpx: number): Run => {
+		const c = crossing(vpx);
+		return { at: tt - c.loop / 2, x0: c.x0, vpx, fadeIn: true };
+	};
 	let dragX = $state<number | null>(null);
 	let crestVer = $state(0);
-	let phase0 = $state(0); // stage time the current crossing began
+	let run = $state<Run>(untrack(() => fresh(t, vPx)));
 	let crests: { at: number; x: number }[] = [];
-	let clock = { last: -1, emit: -Infinity, loopStart: 0, v: -1, held: false };
+	let clock = { last: Infinity, emit: -Infinity, held: false, x: 480 };
 	// The pointer's recent x, ms timestamps, for the release speed.
 	let hist: { at: number; x: number }[] = [];
 	$effect(() => {
 		const tt = t;
 		const drag = dragX;
-		const vv = v;
-		const lp = loop;
+		const vpx = vPx;
 		untrack(() => {
-			const restart = tt < clock.last; // the stage clock went back: a new scene run
-			if (restart || vv !== clock.v || (drag !== null) !== clock.held) {
-				// the speed changed, or the source was grabbed or let go: a
-				// crossing begins anew (in-flight crests keep expanding; only the
-				// source jumps, behind its fade). A fresh run also replays the
-				// crossing's earlier crests, so the first frame is complete.
-				const seed = tt - lp / 2;
-				if (restart) crests = [];
-				clock = {
-					last: tt,
-					emit: Math.max(restart ? -Infinity : clock.emit, seed),
-					loopStart: seed,
-					v: vv,
-					held: drag !== null
-				};
-				phase0 = seed;
-				crestVer++;
+			if (tt < clock.last) {
+				// a new scene run (or the first): begin mid-crossing, replaying the
+				// crossing's earlier crests so that the first frame is complete
+				run = fresh(tt, vpx);
+				crests = [];
+				clock = { last: tt, emit: run.at, held: drag !== null, x: clock.x };
+			} else if (drag === null && (clock.held || vpx !== run.vpx)) {
+				// let go, or a new speed: carry on from where it is (in-flight
+				// crests keep expanding)
+				run = { at: tt, x0: clock.held ? clock.x : where(run, tt).x, vpx, fadeIn: false };
 			}
+			clock.held = drag !== null;
 			clock.last = tt;
-			while (drag === null && tt - clock.loopStart >= lp) clock.loopStart += lp;
-			if (clock.emit < clock.loopStart) clock.emit = clock.loopStart;
 			while (clock.emit <= tt + 1e-9) {
-				crests.push({
-					at: clock.emit,
-					x: drag ?? xStart + vPx * (clock.emit - clock.loopStart)
-				});
+				crests.push({ at: clock.emit, x: drag ?? where(run, clock.emit).x });
 				clock.emit += T_VIS;
 			}
+			clock.x = drag ?? where(run, tt).x;
 			if (crests.length && tt - crests[0].at > AGE) crests = crests.filter((c) => tt - c.at <= AGE);
 			crestVer++;
 		});
 	});
-	const xs = (tau: number) => xStart + vPx * tau;
-	/** Phase within the current automatic crossing; the reduced frame has the source mid-crossing. */
-	const s = $derived.by(() => {
-		void crestVer; // the crossing restarts are logged through the same counter
-		const tt = reduced ? 2.5 : t;
-		return (((tt - phase0) % loop) + loop) % loop;
-	});
-	const srcX = $derived(dragX ?? xs(s));
-	const loopFade = $derived(
-		dragX !== null ? 1 : vPx > 0 ? smoothstep(0, 0.4, s) * (1 - smoothstep(loop - 0.4, loop, s)) : 1
-	);
+	const here = $derived(where(run, t));
+	const srcX = $derived(dragX ?? here.x);
+	/** The fade at the automatic jump back to the left; none while held. */
+	const loopFade = $derived(dragX !== null ? 1 : here.o);
 	const fronts = $derived.by(() => {
 		void crestVer;
-		const tt = reduced ? 2.5 : t;
 		const out: { k: number; x: number; r: number; o: number }[] = [];
 		for (const c of crests) {
-			if (tt <= c.at) continue; // a step change can leave one not-yet-sent crest
-			const r = C_PX * (tt - c.at);
+			if (t <= c.at) continue; // a step change can leave one not-yet-sent crest
+			const r = C_PX * (t - c.at);
 			out.push({ k: c.at, x: c.x, r, o: Math.max(0, 1 - r / (C_PX * AGE)) });
 		}
 		return out;
@@ -180,24 +197,32 @@
 		if (dragX !== null || crests.length < 3) return null;
 		const a = crests[crests.length - 2];
 		const b = crests[crests.length - 3];
-		const ra = C_PX * ((reduced ? 2.5 : t) - a.at);
-		const rb = C_PX * ((reduced ? 2.5 : t) - b.at);
+		const ra = C_PX * (t - a.at);
+		const rb = C_PX * (t - b.at);
 		return {
 			ahead: [a.x + ra, b.x + rb],
 			behind: [a.x - ra, b.x - rb]
 		};
 	});
-	/** The source handle: grab, follow the pointer, release with the drag's own speed. */
+	/**
+	 * The source handle: grab, follow the pointer (keeping the offset of the
+	 * grab, so that a tap does not move it), release with the drag's own speed.
+	 */
+	let grab = { x: 0, off: Number.NaN, moved: false };
 	const grabSource = () => {
 		hist = [];
 		dragX = srcX;
+		grab = { x: srcX, off: Number.NaN, moved: false };
 	};
 	const moveSource = (p: Point) => {
-		dragX = clamp(p.x, 24, 936);
+		if (Number.isNaN(grab.off)) grab.off = grab.x - p.x;
+		dragX = clamp(p.x + grab.off, 24, 936);
+		if (Math.abs(dragX - grab.x) > 3) grab.moved = true;
 		hist.push({ at: performance.now(), x: dragX });
 	};
 	const releaseSource = () => {
-		setParam('speed', dragSpeed());
+		const speed = dragSpeed();
+		if (speed !== null) setParam('speed', speed);
 		dragX = null;
 	};
 	const keySource = (k: number | 'start' | 'end') =>
@@ -209,13 +234,18 @@
 					? 240
 					: Math.max(0, Math.min(240, Math.round((v + 5 * k) / 5) * 5))
 		);
-	/** The speed the pointer has been moving at (m/s), for the release. */
-	function dragSpeed() {
+	/**
+	 * The speed the pointer has been moving at (m/s), for the release: 0 when
+	 * the hand stopped before letting go, null (no change) when it never moved.
+	 */
+	function dragSpeed(): number | null {
+		if (!grab.moved) return null;
 		const now = performance.now();
 		hist = hist.filter((h) => now - h.at < 500);
 		if (hist.length < 2) return 0;
 		const a = hist[0];
 		const b = hist[hist.length - 1];
+		if (b.at <= a.at) return 0;
 		const px = (b.x - a.x) / ((b.at - a.at) / 1000); // px/s
 		const ms = (px / C_PX) * C;
 		return Math.max(0, Math.min(240, Math.round(ms / 5) * 5));
@@ -453,23 +483,26 @@
 			>
 		</g>
 	{/if}
-	<!-- the source, draggable: its speed follows the hand that moves it -->
+	<!-- the source, draggable: its speed follows the hand that moves it; it
+	     fades with the crossing's jump back to the left -->
 	{#if oF > 0.5}
-		<Handle
-			x={srcX}
-			y={SY}
-			r={11}
-			label="The source (drag it: its speed follows your hand)"
-			value={v}
-			min={0}
-			max={240}
-			valuetext="moving at {v} m/s"
-			color="var(--wav-bead)"
-			ondragstart={grabSource}
-			onmove={moveSource}
-			ondragend={releaseSource}
-			onkey={keySource}
-		/>
+		<g opacity={loopFade}>
+			<Handle
+				x={srcX}
+				y={SY}
+				r={11}
+				label="The source (drag it: its speed follows your hand)"
+				value={v}
+				min={0}
+				max={240}
+				valuetext="moving at {v} m/s"
+				color="var(--wav-bead)"
+				ondragstart={grabSource}
+				onmove={moveSource}
+				ondragend={releaseSource}
+				onkey={keySource}
+			/>
+		</g>
 	{/if}
 
 	<!-- ---- pass-by ---- -->

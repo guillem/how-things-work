@@ -30,7 +30,8 @@
 	 * moved, with `params.spacing` (the slider, and the keyboard on a source)
 	 * always kept to their actual distance, so the slider follows a drag and a
 	 * drag follows the slider (which rescales the pair about its midpoint along
-	 * the line joining them).
+	 * the line joining them, moving the midpoint inwards when a source would
+	 * leave the tank).
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -87,6 +88,25 @@
 		return pair.map((p) => clampIntoTank({ x: TX + p[0] * PX, y: TY + p[1] * PX }));
 	});
 	/**
+	 * The pair `a`, `b` set `cm` apart along the line joining them, about their
+	 * midpoint — moved inwards as far as it takes to keep both in the tank (12
+	 * cm always fits).
+	 */
+	function fit(a: Point, b: Point, cm: number): [Point, Point] {
+		const len = Math.hypot(b.x - a.x, b.y - a.y);
+		const [ux, uy] = len > 1e-6 ? [(b.x - a.x) / len, (b.y - a.y) / len] : [0, 1];
+		const hx = ux * ((cm * PX) / 2);
+		const hy = uy * ((cm * PX) / 2);
+		const inside = (m: number, h: number, lo: number, hi: number) =>
+			Math.max(lo + Math.abs(h), Math.min(hi - Math.abs(h), m));
+		const mx = inside((a.x + b.x) / 2, hx, TX + 12, TX + TW - 12);
+		const my = inside((a.y + b.y) / 2, hy, TY + 12, TY + TH - 12);
+		return [
+			{ x: mx - hx, y: my - hy },
+			{ x: mx + hx, y: my + hy }
+		];
+	}
+	/**
 	 * The pair as placed — the stored pair, rescaled about its midpoint when the
 	 * spacing control has moved beyond it — or, before the first drag, the
 	 * slider's symmetric pair in the tank's left half.
@@ -96,15 +116,7 @@
 			const [a, b] = storedPair;
 			const dist = Math.hypot(a.x - b.x, a.y - b.y) / PX;
 			if (Math.abs(dist - dWanted) < 0.26) return [a, b]; // the slider's 0.5 cm steps
-			const mx = (a.x + b.x) / 2;
-			const my = (a.y + b.y) / 2;
-			const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
-			const hx = ((b.x - a.x) / len) * ((dWanted * PX) / 2);
-			const hy = ((b.y - a.y) / len) * ((dWanted * PX) / 2);
-			return [
-				{ x: mx - hx, y: my - hy },
-				{ x: mx + hx, y: my + hy }
-			];
+			return fit(a, b, dWanted);
 		}
 		return [
 			{ x: SX, y: SY - (dWanted * PX) / 2 },
@@ -125,13 +137,7 @@
 	}
 	const setSpacing = (v: number) => {
 		const dd = Math.round(Math.max(1, Math.min(12, v)) * 2) / 2;
-		const [a, b] = pair;
-		const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
-		const mx = (a.x + b.x) / 2;
-		const my = (a.y + b.y) / 2;
-		const hx = ((b.x - a.x) / len) * ((dd * PX) / 2);
-		const hy = ((b.y - a.y) / len) * ((dd * PX) / 2);
-		writePair({ x: mx - hx, y: my - hy }, { x: mx + hx, y: my + hy });
+		writePair(...fit(pair[0], pair[1], dd));
 	};
 	/**
 	 * Drag source `i` anywhere in the tank, kept between 1 and 12 cm from the
@@ -301,24 +307,26 @@
 	// a new palette invalidates the cache too
 	const painted = $derived(lut ? { field, lut } : null);
 
-	// Pre-warm the frame cache, a few frames per animation tick, so the first
-	// period plays from cache: painted lazily, on a slow machine each new phase
-	// janked the picture for the whole first period.
+	// Pre-warm the frame cache, a few milliseconds of painting per animation
+	// frame, so the first period plays from cache: painted lazily, on a slow
+	// machine each new phase janked the picture for the whole first period.
+	// Not while a handle is held (a drag changes the field every move; the
+	// cache fills once it is let go), nor in reduced motion (one frame shows).
+	// This is a background job, not animation: the one raw requestAnimationFrame
+	// in the scenes, cancelled when the field changes or the scene goes.
+	let held = $state(0);
 	$effect(() => {
 		const p = painted;
-		if (!p) return;
-		const fill = () => {
+		if (!p || held > 0 || reduced) return;
+		let id = requestAnimationFrame(function fill() {
 			if (framesFor !== p.field) return;
-			let paintedNow = 0;
-			for (let k = 0; k < NPH && paintedNow < 4; k++) {
-				if (!frames.has(k)) {
-					frame(k, p.field, p.lut);
-					paintedNow++;
-				}
-			}
-			if (paintedNow) requestAnimationFrame(fill);
-		};
-		requestAnimationFrame(fill);
+			const until = performance.now() + 4;
+			const before = frames.size;
+			for (let k = 0; k < NPH && performance.now() < until; k++)
+				if (!frames.has(k)) frame(k, p.field, p.lut);
+			if (frames.size > before && frames.size < NPH) id = requestAnimationFrame(fill);
+		});
+		return () => cancelAnimationFrame(id);
 	});
 
 	const freq = $derived(V_TANK / lam); // Hz, as drawn
@@ -626,6 +634,8 @@
 					valuetext="path difference {fmt(delta, 2)} wavelengths"
 					color="var(--wav-probe)"
 					onmove={moveProbe}
+					ondragstart={() => held++}
+					ondragend={() => held--}
 					onkey={(k) =>
 						typeof k === 'number'
 							? moveProbe({ x: probe.x, y: probe.y - 4 * k })
@@ -649,6 +659,8 @@
 		color="var(--wav-a)"
 		r={8}
 		onmove={dragSource(0)}
+		ondragstart={() => held++}
+		ondragend={() => held--}
 		onkey={keySource}
 	/>
 	<Handle
@@ -662,6 +674,8 @@
 		color="var(--wav-b)"
 		r={8}
 		onmove={dragSource(1)}
+		ondragstart={() => held++}
+		ondragend={() => held--}
 		onkey={keySource}
 	/>
 
