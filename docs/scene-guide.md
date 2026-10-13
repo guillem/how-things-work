@@ -94,6 +94,35 @@ Run the dev server with `npm run dev` (http://localhost:5173, hot reload).
 - Labels must never overlap each other or sit on top of important shapes, and must never be
   crossed by moving particles; text anchored at the right edge must use `anchor="end"`.
 
+## Phone readouts
+
+On a 390 px phone the stage is drawn at ~0.4 scale, so 13-unit text is ~5 px tall. Wrap a scene's
+readouts and captions in `<Readout>` (`import { Readout } from '#lib/explainer/index.ts'`): on
+viewports wider than 640 px it renders its children unchanged; at ≤ 640 px the children leave the
+SVG and the text is listed in an HTML panel under the stage, in real 12–15 px type. Examples:
+`photosynthesis/scenes/MembraneScene.svelte`, `epidemics/scenes/SirScene.svelte`.
+
+```svelte
+<Readout id="lumen" order={2} label="Thylakoid lumen" value="pH ≈ {lumenPH}" note={lumenNote}>
+	<Label x={24} y={562} text="thylakoid lumen · pH ≈ {lumenPH}" />
+</Readout>
+<Readout id="psii" order={10} label="Photosystem II" marker={1} at={[150, 230]} opacity={o.psii}>
+	<Label x={124} y={196} text="Photosystem II" />
+</Readout>
+<Readout id="minor"><Label … /></Readout>
+```
+
+- `label` + `value` (+ `note`): a row. Short rows share the width two by two; longer ones take a
+  line of their own. `order` sorts the panel; `color` adds a dot (and colours the value).
+- `label` without `value`: a key chip; with `marker` + `at` the SVG gets a numbered badge there,
+  so a long part name becomes "1" in the drawing and "1 Photosystem II" in the panel.
+- No `label`: the content just hides on phones (a minor label). `narrow` is an optional snippet
+  drawn instead of the children on phones (a shorter label).
+- `opacity` follows the scene's own fade: a row under 0.05 leaves the panel, so readouts of
+  other steps in a shared scene don't take room. Ids are unique within the scene.
+- Keep each step's panel short (≤ ~4 rows): it adds to the pinned stage card. Desktop must stay
+  pixel-identical; check phones at 390 × 844 with `TOUCH=1`.
+
 ## Verification loop (required)
 
 1. Type-check only your scene (other scenes may be in flux while you work):
