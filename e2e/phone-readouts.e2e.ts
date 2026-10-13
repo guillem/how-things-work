@@ -341,6 +341,98 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Push\s*1\.20 Hz/);
 	});
 
+	test('primes sieve: the factorisation is text under the stage and follows the number', async ({
+		page
+	}) => {
+		await page.goto('./primes-modular-arithmetic/#primes');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Number\s*60 = 2² × 3 × 5/);
+		await expect(panel).toContainText(/Divisor pairs\s*12 divisors/);
+		await expect(drawing(page)).not.toContainText('in pairs that multiply');
+		await range(page, 'pick').fill('13');
+		await expect(panel).toContainText(/Number\s*13 is prime/);
+	});
+
+	test('primes clock: the sum mod m is text under the stage and follows the hours added', async ({
+		page
+	}) => {
+		await page.goto('./primes-modular-arithmetic/#clock');
+		const panel = readouts(page);
+		await expect(panel).toContainText('9 + 5 ≡ 2 (mod 12)');
+		await expect(drawing(page)).not.toContainText('(mod 12)');
+		await range(page, 'addB').fill('10');
+		await expect(panel).toContainText('9 + 10 ≡ 7 (mod 12)');
+	});
+
+	test('primes power: the fast power is text under the stage and follows the exponent', async ({
+		page
+	}) => {
+		await page.goto('./primes-modular-arithmetic/#fast');
+		const panel = readouts(page);
+		await expect(panel).toContainText('2⁷⁷ ≡ 61 (mod 101)');
+		await expect(drawing(page)).not.toContainText('square-and-multiply');
+		await range(page, 'exponent').fill('1');
+		await expect(panel).toContainText('2¹ ≡ 2 (mod 101)');
+	});
+
+	test('complex plane: the parts of z are text under the stage and follow the slider', async ({
+		page
+	}) => {
+		await page.goto('./complex-numbers/#plane');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Real part\s*a = 2/);
+		await expect(panel).toContainText('(2 + i) + (1 + 2i) = 3 + 3i');
+		await expect(drawing(page)).not.toContainText('Adding works part by part');
+		await range(page, 'zRe').fill('-1');
+		await expect(panel).toContainText(/Real part\s*a = −1/);
+	});
+
+	test('complex product: lengths and angles are text under the stage and follow w', async ({
+		page
+	}) => {
+		await page.goto('./complex-numbers/#multiply');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Lengths multiply\s*\|zw\| = 1\.40 × 1\.25 = 1\.75/);
+		await expect(panel).toContainText(/Angles add\s*20° \+ 45° = 65°/);
+		await expect(drawing(page)).not.toContainText('lengths multiply');
+		await range(page, 'wAng').fill('90');
+		await expect(panel).toContainText('20° + 90° = 110°');
+	});
+
+	test('complex Euler: cos θ and sin θ are text under the stage and follow θ', async ({ page }) => {
+		await page.goto('./complex-numbers/#euler');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Angle\s*θ = 60° = π\/3 rad/);
+		await expect(panel).toContainText(/cos θ\s*0\.50/);
+		await expect(drawing(page)).not.toContainText('real part');
+		await range(page, 'theta').fill('90');
+		await expect(panel).toContainText(/cos θ\s*0\.00/);
+		await expect(panel).toContainText(/sin θ\s*1\.00/);
+	});
+
+	test('error correction channel: letters intact are text and follow the noise', async ({
+		page
+	}) => {
+		await page.goto('./error-correction/#compare');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Without coding\s*\d+ of 47 letters intact/);
+		await expect(panel).toContainText('at 5.0% noise');
+		await expect(drawing(page)).not.toContainText('letters intact');
+		await range(page, 'noise').fill('0');
+		await expect(panel).toContainText('100% without code, 100% with');
+		await expect(panel).toContainText(/With the Hamming \(7, 4\) code\s*47 of 47 letters intact/);
+	});
+
+	test('error correction code: the verdict is text and follows the flips', async ({ page }) => {
+		await page.goto('./error-correction/#repair');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Verdict\s*check 1 \+ check 4 fail → position 5/);
+		await expect(panel).toContainText('The receiver flips bit 5 back.');
+		await expect(drawing(page)).not.toContainText('The receiver flips');
+		await page.getByRole('button', { name: 'Undo all flips' }).click();
+		await expect(panel).toContainText(/Verdict\s*all checks even: no error/);
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');

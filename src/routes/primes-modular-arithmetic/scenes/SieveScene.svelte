@@ -20,7 +20,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { clamp, smoothstep, toSvg, wave } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { divisors, factorText, isPrime, sieve, struckAfter } from '../modular';
 
 	let { step, t, params, setParam, reduced, playing }: StageProps = $props();
@@ -273,51 +273,71 @@
 	{/each}
 
 	{#if phase === 'divisors'}
-		<!-- divisor pairs: the side panel -->
-		{@render txt(PX, 92, String(pick), 44, { weight: 700, color: 'var(--pm-walk)' })}
-		{@render txt(
-			PX + 30 + String(pick).length * 24,
-			92,
-			isPrime(pick) ? 'is prime' : `= ${factorText(pick)}`,
-			22,
-			{
-				weight: 600
-			}
-		)}
-		{@render txt(
-			PX,
-			132,
-			`${plural(divs.length, 'divisor')}, in pairs that multiply to ${pick}:`,
-			14,
-			{
-				muted: true
-			}
-		)}
-		{#each pairs as q (q.d)}
-			{@const on = Math.min(divOn(q.i), divOn(divs.length - 1 - q.i))}
+		<!-- divisor pairs: the side panel (<Readout>: listed under the stage on phones) -->
+		<Readout
+			id="number"
+			order={1}
+			label="Number"
+			value={isPrime(pick) ? `${pick} is prime` : `${pick} = ${factorText(pick)}`}
+			note={isPrime(pick)
+				? 'Only 1 and itself: a prime.'
+				: 'More than two divisors: composite, built from primes.'}
+		>
+			{@render txt(PX, 92, String(pick), 44, { weight: 700, color: 'var(--pm-walk)' })}
 			{@render txt(
-				PX + 12,
-				166 + q.i * 28,
-				q.d === q.e ? `${q.d} × ${q.e}` : `${q.d} × ${q.e}`,
-				17,
+				PX + 30 + String(pick).length * 24,
+				92,
+				isPrime(pick) ? 'is prime' : `= ${factorText(pick)}`,
+				22,
 				{
-					weight: 600,
-					opacity: 0.25 + 0.75 * on
+					weight: 600
 				}
 			)}
-		{/each}
-		{@render txt(
-			PX,
-			166 + pairs.length * 28 + 22,
-			isPrime(pick)
-				? 'Only 1 and itself: a prime.'
-				: `More than two divisors: composite, built from primes.`,
-			14,
-			{ weight: 600, color: isPrime(pick) ? 'var(--pm-prime)' : undefined }
-		)}
-		{@render txt(PX, 560, 'Click a number, or Tab to the grid and use the arrow keys', 11, {
-			muted: true
-		})}
+		</Readout>
+		<Readout
+			id="pairs"
+			order={2}
+			label="Divisor pairs"
+			value={plural(divs.length, 'divisor')}
+			note={pairs.map((q) => `${q.d} × ${q.e}`).join(' · ')}
+		>
+			{@render txt(
+				PX,
+				132,
+				`${plural(divs.length, 'divisor')}, in pairs that multiply to ${pick}:`,
+				14,
+				{
+					muted: true
+				}
+			)}
+			{#each pairs as q (q.d)}
+				{@const on = Math.min(divOn(q.i), divOn(divs.length - 1 - q.i))}
+				{@render txt(
+					PX + 12,
+					166 + q.i * 28,
+					q.d === q.e ? `${q.d} × ${q.e}` : `${q.d} × ${q.e}`,
+					17,
+					{
+						weight: 600,
+						opacity: 0.25 + 0.75 * on
+					}
+				)}
+			{/each}
+			{@render txt(
+				PX,
+				166 + pairs.length * 28 + 22,
+				isPrime(pick)
+					? 'Only 1 and itself: a prime.'
+					: `More than two divisors: composite, built from primes.`,
+				14,
+				{ weight: 600, color: isPrime(pick) ? 'var(--pm-prime)' : undefined }
+			)}
+		</Readout>
+		<Readout id="grid-hint">
+			{@render txt(PX, 560, 'Click a number, or Tab to the grid and use the arrow keys', 11, {
+				muted: true
+			})}
+		</Readout>
 
 		{#if focused}
 			<rect
@@ -389,7 +409,18 @@
 		{/if}
 
 		<!-- panel -->
-		{@render txt(PX, 80, 'Strike out the multiples of', 15, { weight: 600 })}
+		<Readout id="strike-title">
+			{@render txt(PX, 80, 'Strike out the multiples of', 15, { weight: 600 })}
+		</Readout>
+		<Readout
+			id="sieved"
+			order={1}
+			label="Struck out the multiples of"
+			value={foundPrimes.length ? foundPrimes.join(', ') : 'nothing yet'}
+			note={cur
+				? `${cur.prime}: ${cur.multiples.length} multiples, ${cur.fresh.length === cur.multiples.length ? 'all' : cur.fresh.length} new`
+				: undefined}
+		/>
 		{#each S.stages as st, i (st.prime)}
 			{@const y = 120 + i * 46}
 			{@const done = i < k}
@@ -410,31 +441,53 @@
 					color: COLOR[st.prime],
 					halo: false
 				})}
-				{@render txt(
-					PX + 44,
-					y + 4,
-					done
-						? st.fresh.length === st.multiples.length
-							? `${st.multiples.length} multiples, all new`
-							: `${st.multiples.length} multiples, ${st.fresh.length} new`
-						: 'not yet',
-					14
-				)}
+				<Readout id="stage-{st.prime}">
+					{@render txt(
+						PX + 44,
+						y + 4,
+						done
+							? st.fresh.length === st.multiples.length
+								? `${st.multiples.length} multiples, all new`
+								: `${st.multiples.length} multiples, ${st.fresh.length} new`
+							: 'not yet',
+						14
+					)}
+				</Readout>
 			</g>
 		{/each}
-		{@render txt(PX, 330, `Still standing: ${standing} numbers (besides 1)`, 15, { weight: 600 })}
-		{#if k < 4}
-			{@render txt(PX, 362, `Next: ${nextCandidate} — the smallest number left.`, 14)}
-			{@render txt(PX, 384, 'Nothing smaller divides it, so it is prime.', 14, { muted: true })}
-		{:else}
-			{@render txt(PX, 362, `Next would be 11, but 11 × 11 = 121 > 100:`, 14)}
-			{@render txt(PX, 384, 'every number left is prime.', 14, {
-				weight: 700,
-				color: 'var(--pm-prime)'
-			})}
-		{/if}
-		{@render txt(PX, 430, 'Colour = the prime that struck it first', 12, { muted: true })}
-		{@render txt(PX, 448, '(its smallest prime factor)', 12, { muted: true })}
+		<Readout
+			id="standing"
+			order={2}
+			label="Still standing"
+			value="{standing} numbers"
+			note="besides 1"
+		>
+			{@render txt(PX, 330, `Still standing: ${standing} numbers (besides 1)`, 15, { weight: 600 })}
+		</Readout>
+		<Readout
+			id="next"
+			order={3}
+			label="Next"
+			value={k < 4 ? String(nextCandidate) : '11, but 11 × 11 = 121 > 100'}
+			note={k < 4
+				? 'The smallest number left: nothing smaller divides it, so it is prime.'
+				: 'Every number left is prime.'}
+		>
+			{#if k < 4}
+				{@render txt(PX, 362, `Next: ${nextCandidate} — the smallest number left.`, 14)}
+				{@render txt(PX, 384, 'Nothing smaller divides it, so it is prime.', 14, { muted: true })}
+			{:else}
+				{@render txt(PX, 362, `Next would be 11, but 11 × 11 = 121 > 100:`, 14)}
+				{@render txt(PX, 384, 'every number left is prime.', 14, {
+					weight: 700,
+					color: 'var(--pm-prime)'
+				})}
+			{/if}
+		</Readout>
+		<Readout id="colour-key">
+			{@render txt(PX, 430, 'Colour = the prime that struck it first', 12, { muted: true })}
+			{@render txt(PX, 448, '(its smallest prime factor)', 12, { muted: true })}
+		</Readout>
 	{:else}
 		<!-- done: 11's multiples are already gone, then the primes light up -->
 		<rect
@@ -464,31 +517,56 @@
 				/>
 			{/if}
 		{/each}
-		{@render txt(PX, 80, '11 × 11 = 121 is off the grid,', 15, { weight: 600 })}
-		{@render txt(PX, 102, 'and 22, 33, … 99 are already struck', 14)}
-		{@render txt(PX, 122, '(22 = 2 × 11, 33 = 3 × 11, …).', 14, { muted: true })}
-		{@render txt(
-			PX,
-			172,
-			shownPrimes > 0
-				? `${shownPrimes} prime${shownPrimes === 1 ? '' : 's'} up to 100`
-				: 'Primes up to 100: …',
-			22,
-			{
-				weight: 700,
-				color: 'var(--pm-prime)',
-				opacity: shownPrimes > 0 ? 1 : 0.4
-			}
-		)}
-		{#each lines(S.primes, 7) as line, i (i)}
-			{@const firstIdx = i * 7}
-			{@render txt(PX, 206 + i * 26, line, 16, {
-				weight: 600,
-				opacity: smoothstep(0, 1, primeOn(firstIdx))
-			})}
-		{/each}
-		{@render txt(PX, 330, '1 is neither prime nor composite.', 13, { muted: true })}
-		{@render txt(PX, 372, 'Sieving with 2, 3, 5 and 7 — the primes up to', 13)}
-		{@render txt(PX, 392, '√100 = 10 — is enough for every number to 100.', 13)}
+		<Readout
+			id="eleven"
+			order={1}
+			label="Multiples of 11"
+			value="already struck"
+			note="22 = 2 × 11, 33 = 3 × 11, …; 11 × 11 = 121 is off the grid"
+		>
+			{@render txt(PX, 80, '11 × 11 = 121 is off the grid,', 15, { weight: 600 })}
+			{@render txt(PX, 102, 'and 22, 33, … 99 are already struck', 14)}
+			{@render txt(PX, 122, '(22 = 2 × 11, 33 = 3 × 11, …).', 14, { muted: true })}
+		</Readout>
+		<Readout
+			id="primes"
+			order={2}
+			label="Primes up to 100"
+			value={String(shownPrimes)}
+			note={S.primes.filter((_, i) => primeOn(i) > 0).join(' ')}
+			opacity={shownPrimes > 0 ? 1 : 0}
+		>
+			{@render txt(
+				PX,
+				172,
+				shownPrimes > 0
+					? `${shownPrimes} prime${shownPrimes === 1 ? '' : 's'} up to 100`
+					: 'Primes up to 100: …',
+				22,
+				{
+					weight: 700,
+					color: 'var(--pm-prime)',
+					opacity: shownPrimes > 0 ? 1 : 0.4
+				}
+			)}
+			{#each lines(S.primes, 7) as line, i (i)}
+				{@const firstIdx = i * 7}
+				{@render txt(PX, 206 + i * 26, line, 16, {
+					weight: 600,
+					opacity: smoothstep(0, 1, primeOn(firstIdx))
+				})}
+			{/each}
+		</Readout>
+		<Readout
+			id="enough"
+			order={3}
+			label="Enough to sieve with"
+			value="2, 3, 5, 7"
+			note="the primes up to √100 = 10"
+		>
+			{@render txt(PX, 330, '1 is neither prime nor composite.', 13, { muted: true })}
+			{@render txt(PX, 372, 'Sieving with 2, 3, 5 and 7 — the primes up to', 13)}
+			{@render txt(PX, 392, '√100 = 10 — is enough for every number to 100.', 13)}
+		</Readout>
 	{/if}
 </g>

@@ -23,7 +23,7 @@
 	 * overrides SVG presentation attributes.
 	 */
 	import { clamp, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		abs,
 		arg,
@@ -241,23 +241,28 @@
 	{#each [-2, -1, 1, 2] as g (g)}
 		<line x1={sx(g)} x2={sx(g)} y1={CY - E} y2={CY + E} stroke="var(--stage-grid)" />
 		<line x1={CX - E} x2={CX + E} y1={sy(g)} y2={sy(g)} stroke="var(--stage-grid)" />
-		{@render txt(sx(g), CY + 18, num(g, 0), 12, { anchor: 'middle', muted: true })}
-		{@render txt(CX - 8, sy(g) + 4, g === 1 ? 'i' : g === -1 ? '−i' : `${num(g, 0)}i`, 12, {
-			anchor: 'end',
-			muted: true
-		})}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="tick-{g}">
+			{@render txt(sx(g), CY + 18, num(g, 0), 12, { anchor: 'middle', muted: true })}
+			{@render txt(CX - 8, sy(g) + 4, g === 1 ? 'i' : g === -1 ? '−i' : `${num(g, 0)}i`, 12, {
+				anchor: 'end',
+				muted: true
+			})}
+		</Readout>
 	{/each}
 	<line x1={CX - E} x2={CX + E} y1={CY} y2={CY} stroke="var(--stage-line)" stroke-width="1.5" />
 	<line x1={CX} x2={CX} y1={CY - E} y2={CY + E} stroke="var(--stage-line)" stroke-width="1.5" />
-	{@render txt(CX + E, CY - 8, 'real', 12, {
-		anchor: 'end',
-		muted: true,
-		opacity: clearOf(CX + E - 14, CY - 12)
-	})}
-	{@render txt(CX + 8, CY - E + 10, 'imaginary', 12, {
-		muted: true,
-		opacity: clearOf(CX + 34, CY - E + 6)
-	})}
+	<Readout id="axis-names">
+		{@render txt(CX + E, CY - 8, 'real', 12, {
+			anchor: 'end',
+			muted: true,
+			opacity: clearOf(CX + E - 14, CY - 12)
+		})}
+		{@render txt(CX + 8, CY - E + 10, 'imaginary', 12, {
+			muted: true,
+			opacity: clearOf(CX + 34, CY - E + 6)
+		})}
+	</Readout>
 	<circle
 		cx={CX}
 		cy={CY}
@@ -385,35 +390,49 @@
 	{/each}
 
 	<!-- ================= readout panel ================= -->
-	<g>
-		{#each [{ id: 'z', v: z, len: zLen, ang: zAng, color: 'var(--cx-z)', y: 92 }, { id: 'w', v: w, len: wLen, ang: wAng, color: 'var(--cx-w)', y: 158 }, { id: 'zw', v: zw, len: zwLen, ang: zwAng, color: 'var(--cx-prod)', y: 224 }] as row (row.id)}
-			{@render txt(PX, row.y, `${row.id} ${approx(row.v)} ${fmt(row.v)}`, 19, {
-				weight: 700,
-				color: row.color
-			})}
-			{@render txt(PX, row.y + 22, `length ${lenNum(row.len)}, angle ${row.ang}°`, 13, {
-				muted: true
-			})}
-		{/each}
+	{#each [{ id: 'z', v: z, len: zLen, ang: zAng, color: 'var(--cx-z)' }, { id: 'w', v: w, len: wLen, ang: wAng, color: 'var(--cx-w)' }, { id: 'zw', v: zw, len: zwLen, ang: zwAng, color: 'var(--cx-prod)' }] as row, k (row.id)}
+		<Readout
+			id={row.id}
+			order={k + 1}
+			label={row.id}
+			value="{approx(row.v)} {fmt(row.v)}"
+			note="length {lenNum(row.len)}, angle {row.ang}°"
+			color={row.color}
+		/>
+	{/each}
+	<Readout id="lengths" order={4} label="Lengths multiply" value="|zw| = {lenText}" />
+	<Readout id="angles" order={5} label="Angles add" value={angText} note={turnsNote || undefined} />
+	<Readout id="panel">
+		<g>
+			{#each [{ id: 'z', v: z, len: zLen, ang: zAng, color: 'var(--cx-z)', y: 92 }, { id: 'w', v: w, len: wLen, ang: wAng, color: 'var(--cx-w)', y: 158 }, { id: 'zw', v: zw, len: zwLen, ang: zwAng, color: 'var(--cx-prod)', y: 224 }] as row (row.id)}
+				{@render txt(PX, row.y, `${row.id} ${approx(row.v)} ${fmt(row.v)}`, 19, {
+					weight: 700,
+					color: row.color
+				})}
+				{@render txt(PX, row.y + 22, `length ${lenNum(row.len)}, angle ${row.ang}°`, 13, {
+					muted: true
+				})}
+			{/each}
 
-		<line x1={PX} x2={PX + 320} y1={278} y2={278} stroke="var(--border)" />
-		{@render txt(PX, 312, 'lengths multiply', 13, { muted: true })}
-		{@render txt(PX, 338, `|zw| = ${lenText}`, 18, { weight: 700 })}
-		{@render txt(PX, 384, 'angles add', 13, { muted: true })}
-		{@render txt(PX, 410, angText, 18, { weight: 700 })}
-		{#if turnsNote}
-			{@render txt(PX, 432, turnsNote, 12, { color: 'var(--cx-turn)' })}
-		{/if}
+			<line x1={PX} x2={PX + 320} y1={278} y2={278} stroke="var(--border)" />
+			{@render txt(PX, 312, 'lengths multiply', 13, { muted: true })}
+			{@render txt(PX, 338, `|zw| = ${lenText}`, 18, { weight: 700 })}
+			{@render txt(PX, 384, 'angles add', 13, { muted: true })}
+			{@render txt(PX, 410, angText, 18, { weight: 700 })}
+			{#if turnsNote}
+				{@render txt(PX, 432, turnsNote, 12, { color: 'var(--cx-turn)' })}
+			{/if}
 
-		<line x1={PX} x2={PX + 320} y1={458} y2={458} stroke="var(--border)" />
-		{@render txt(PX, 490, `Multiplying by w turns by ${wAng}°`, 14, {
-			weight: 600,
-			color: 'var(--cx-w)'
-		})}
-		{@render txt(PX, 512, `and stretches by ${num(wLen)}:`, 14, {
-			weight: 600,
-			color: 'var(--cx-w)'
-		})}
-		{@render txt(PX, 536, 'triangle 0, 1, z  →  triangle 0, w, zw', 13, { muted: true })}
-	</g>
+			<line x1={PX} x2={PX + 320} y1={458} y2={458} stroke="var(--border)" />
+			{@render txt(PX, 490, `Multiplying by w turns by ${wAng}°`, 14, {
+				weight: 600,
+				color: 'var(--cx-w)'
+			})}
+			{@render txt(PX, 512, `and stretches by ${num(wLen)}:`, 14, {
+				weight: 600,
+				color: 'var(--cx-w)'
+			})}
+			{@render txt(PX, 536, 'triangle 0, 1, z  →  triangle 0, w, zw', 13, { muted: true })}
+		</g>
+	</Readout>
 </g>

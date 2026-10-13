@@ -28,7 +28,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { untrack } from 'svelte';
 	import { rng, wave } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		checkPasses,
 		covered,
@@ -297,16 +297,19 @@
 
 <g>
 	<!-- ============================== the diagram ============================== -->
-	{@render txt(24, 40, 'What the receiver got', 16, { weight: 700 })}
-	{@render txt(
-		24,
-		62,
-		isParity
-			? 'one circle: its 1s must be even'
-			: 'three circles: each must hold an even number of 1s',
-		12,
-		{ muted: true }
-	)}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="title">
+		{@render txt(24, 40, 'What the receiver got', 16, { weight: 700 })}
+		{@render txt(
+			24,
+			62,
+			isParity
+				? 'one circle: its 1s must be even'
+				: 'three circles: each must hold an even number of 1s',
+			12,
+			{ muted: true }
+		)}
+	</Readout>
 
 	<!-- the single parity circle -->
 	{#if mix.current < 0.99}
@@ -321,10 +324,12 @@
 				stroke={shown ? statusColor(parityPass) : 'var(--stage-line)'}
 				stroke-width={activeCheck === 0 ? 3 : 2}
 			/>
-			{@render txt(BIG.x + BIG.r * 0.74, BIG.y - BIG.r * 0.8, 'parity check', 14, {
-				weight: 700,
-				color: 'var(--ec-check)'
-			})}
+			<Readout id="parity-name">
+				{@render txt(BIG.x + BIG.r * 0.74, BIG.y - BIG.r * 0.8, 'parity check', 14, {
+					weight: 700,
+					color: 'var(--ec-check)'
+				})}
+			</Readout>
 			<!-- the count, in the middle of the circle -->
 			{#if shown}
 				{@render txt(BIG.x, BIG.y + 4, String(parityOnes), 30, {
@@ -332,14 +337,18 @@
 					weight: 700,
 					color: statusColor(parityPass)
 				})}
-				{@render txt(BIG.x, BIG.y + 24, parityPass ? '1s: even ✓' : '1s: odd ✗', 12, {
-					anchor: 'middle',
-					weight: 700,
-					color: statusColor(parityPass)
-				})}
+				<Readout id="parity-count">
+					{@render txt(BIG.x, BIG.y + 24, parityPass ? '1s: even ✓' : '1s: odd ✗', 12, {
+						anchor: 'middle',
+						weight: 700,
+						color: statusColor(parityPass)
+					})}
+				</Readout>
 			{:else}
 				{@render txt(BIG.x, BIG.y + 4, '?', 30, { anchor: 'middle', weight: 700, muted: true })}
-				{@render txt(BIG.x, BIG.y + 24, 'counting 1s', 12, { anchor: 'middle', muted: true })}
+				<Readout id="parity-counting">
+					{@render txt(BIG.x, BIG.y + 24, 'counting 1s', 12, { anchor: 'middle', muted: true })}
+				</Readout>
 			{/if}
 		</g>
 	{/if}
@@ -367,20 +376,33 @@
 				{@const lx = k === 1 ? 176 : k === 2 ? 444 : 310}
 				{@const ly = k === 4 ? 486 : 110}
 				{@const anchor = k === 1 ? 'end' : k === 2 ? 'start' : 'middle'}
-				{@render txt(lx, ly, `check ${k}`, 14, { anchor, weight: 700, color: 'var(--ec-check)' })}
-				{@render txt(
-					lx,
-					ly + 18,
-					shown ? (ok ? `${word(ones(k))} 1s: even ✓` : `${word(ones(k))} 1s: odd ✗`) : 'checking…',
-					12,
-					{
-						anchor,
-						weight: 600,
-						color: shown ? statusColor(ok) : undefined,
-						muted: !shown,
-						opacity: shown || activeCheck === j ? 1 : 0.5
-					}
-				)}
+				<Readout id="circle-{k}">
+					{@render txt(lx, ly, `check ${k}`, 14, { anchor, weight: 700, color: 'var(--ec-check)' })}
+					{@render txt(
+						lx,
+						ly + 18,
+						shown
+							? ok
+								? `${word(ones(k))} 1s: even ✓`
+								: `${word(ones(k))} 1s: odd ✗`
+							: 'checking…',
+						12,
+						{
+							anchor,
+							weight: 600,
+							color: shown ? statusColor(ok) : undefined,
+							muted: !shown,
+							opacity: shown || activeCheck === j ? 1 : 0.5
+						}
+					)}
+					{#snippet narrow()}
+						{@render txt(lx, ly + 8, `check ${k}`, 24, {
+							anchor,
+							weight: 700,
+							color: 'var(--ec-check)'
+						})}
+					{/snippet}
+				</Readout>
 			{/each}
 		</g>
 	{/if}
@@ -442,50 +464,69 @@
 			})}
 		</g>
 		<!-- position number (Hamming) or name (parity), under the bit -->
-		{@render txt(
-			b.x,
-			b.y + 37,
-			isParity
-				? b.name
-				: addr.current > 0.5
-					? (b.pos >>> 0).toString(2).padStart(3, '0')
-					: String(b.pos),
-			11,
-			{ anchor: 'middle', muted: true, weight: 600, opacity: hidden }
-		)}
+		<Readout id="name-{b.key}">
+			{@render txt(
+				b.x,
+				b.y + 37,
+				isParity
+					? b.name
+					: addr.current > 0.5
+						? (b.pos >>> 0).toString(2).padStart(3, '0')
+						: String(b.pos),
+				11,
+				{ anchor: 'middle', muted: true, weight: 600, opacity: hidden }
+			)}
+		</Readout>
 		{#if isSuspect}
 			{@const off = FIX_LABEL[b.pos] ?? { dx: 0, dy: -32, anchor: 'middle' }}
-			{@render txt(b.x + off.dx, b.y + off.dy, `fix: ${bit} → ${bit ^ 1}`, 12, {
-				anchor: off.anchor,
-				weight: 700,
-				color: 'var(--ec-fix)'
-			})}
+			<Readout id="fix-label">
+				{@render txt(b.x + off.dx, b.y + off.dy, `fix: ${bit} → ${bit ^ 1}`, 12, {
+					anchor: off.anchor,
+					weight: 700,
+					color: 'var(--ec-fix)'
+				})}
+			</Readout>
 		{/if}
 	{/each}
 
 	<!-- legend -->
 	<g transform="translate(24 548)">
-		<circle cx="8" cy="0" r="7" fill="var(--ec-data)" />
-		{@render txt(22, 4, 'data bit', 12)}
-		<circle cx="100" cy="0" r="7" fill="var(--ec-check)" />
-		{@render txt(114, 4, isParity ? 'parity bit' : 'check bit', 12)}
-		<circle
-			cx="208"
-			cy="0"
-			r="7"
-			fill="var(--surface)"
-			stroke="var(--ec-bad)"
-			stroke-width="2"
-			stroke-dasharray="3 2"
-		/>
-		{@render txt(222, 4, 'flipped by noise', 12)}
-		{@render txt(0, 28, 'Click a bit in the diagram or in the received row to flip it.', 12, {
-			muted: true
-		})}
+		<Readout id="key-data" order={20} label="data bit" color="var(--ec-data)">
+			<circle cx="8" cy="0" r="7" fill="var(--ec-data)" />
+			{@render txt(22, 4, 'data bit', 12)}
+		</Readout>
+		<Readout
+			id="key-check"
+			order={21}
+			label={isParity ? 'parity bit' : 'check bit'}
+			color="var(--ec-check)"
+		>
+			<circle cx="100" cy="0" r="7" fill="var(--ec-check)" />
+			{@render txt(114, 4, isParity ? 'parity bit' : 'check bit', 12)}
+		</Readout>
+		<Readout id="key-flip" order={22} label="flipped by noise" color="var(--ec-bad)">
+			<circle
+				cx="208"
+				cy="0"
+				r="7"
+				fill="var(--surface)"
+				stroke="var(--ec-bad)"
+				stroke-width="2"
+				stroke-dasharray="3 2"
+			/>
+			{@render txt(222, 4, 'flipped by noise', 12)}
+		</Readout>
+		<Readout id="hint">
+			{@render txt(0, 28, 'Click a bit in the diagram or in the received row to flip it.', 12, {
+				muted: true
+			})}
+		</Readout>
 	</g>
 
 	<!-- ============================== the panel ============================== -->
-	{@render txt(PX, 44, 'Message (data bits) — click to change', 12, { muted: true, weight: 600 })}
+	<Readout id="msg-title">
+		{@render txt(PX, 44, 'Message (data bits) — click to change', 12, { muted: true, weight: 600 })}
+	</Readout>
 	{#each data as bit, i (i)}
 		<g
 			class="focusable"
@@ -510,19 +551,31 @@
 			/>
 			{@render cell(cellX(i), ROW_MSG, bit, 'var(--ec-data)')}
 		</g>
-		{@render txt(cellX(i), ROW_MSG + 34, `d${i + 1}`, 11, { anchor: 'middle', muted: true })}
+		<Readout id="msg-name-{i}">
+			{@render txt(cellX(i), ROW_MSG + 34, `d${i + 1}`, 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/each}
 
-	{@render txt(PX, ROW_SENT - 34, isParity ? 'Sent: data + parity bit' : 'Sent: 7-bit block', 12, {
-		muted: true,
-		weight: 600
-	})}
+	<Readout id="sent-title">
+		{@render txt(
+			PX,
+			ROW_SENT - 34,
+			isParity ? 'Sent: data + parity bit' : 'Sent: 7-bit block',
+			12,
+			{
+				muted: true,
+				weight: 600
+			}
+		)}
+	</Readout>
 	{#each sent as bit, i (i)}
 		{@const pos = i + 1}
 		{@render cell(cellX(i), ROW_SENT, bit, bitColor(pos))}
 	{/each}
 
-	{@render txt(PX, ROW_RECV - 34, 'Received — click to flip', 12, { muted: true, weight: 600 })}
+	<Readout id="recv-title">
+		{@render txt(PX, ROW_RECV - 34, 'Received — click to flip', 12, { muted: true, weight: 600 })}
+	</Readout>
 	{#each received as bit, i (i)}
 		{@const pos = i + 1}
 		{@const flipped = flips[i] === 1}
@@ -552,124 +605,201 @@
 				fixed: suspect === pos
 			})}
 		</g>
-		{@render txt(
-			cellX(i),
-			ROW_RECV + 34,
-			isParity
-				? i < 4
-					? `d${i + 1}`
-					: 'P'
-				: addr.current > 0.5
-					? pos.toString(2).padStart(3, '0')
-					: String(pos),
-			11,
-			{ anchor: 'middle', muted: true, weight: 600 }
-		)}
+		<Readout id="recv-name-{i}">
+			{@render txt(
+				cellX(i),
+				ROW_RECV + 34,
+				isParity
+					? i < 4
+						? `d${i + 1}`
+						: 'P'
+					: addr.current > 0.5
+						? pos.toString(2).padStart(3, '0')
+						: String(pos),
+				11,
+				{ anchor: 'middle', muted: true, weight: 600 }
+			)}
+		</Readout>
 	{/each}
 
 	<!-- verdict -->
 	{#if isParity}
-		{#if verdict}
-			{@render txt(PX, 350, parityPass ? 'Even: the receiver accepts it.' : 'Odd: an error!', 15, {
-				weight: 700,
-				color: statusColor(parityPass)
-			})}
-			{@render txt(
-				PX,
-				376,
-				parityPass
+		<Readout
+			id="parity"
+			order={1}
+			label="Parity check"
+			value={verdict
+				? parityPass
+					? `${parityOnes} 1s, even: accepted`
+					: `${parityOnes} 1s, odd: an error!`
+				: 'counting the 1s…'}
+			note={!verdict
+				? undefined
+				: parityPass
 					? nFlips > 0
-						? `But ${word(nFlips)} bits are wrong: the damage slipped through.`
+						? `But ${word(nFlips)} bits are wrong: an even number of flips can’t be seen.`
 						: 'Nothing was flipped. All good.'
-					: 'But which bit? Every one of them would give this count.',
-				13
-			)}
-			{@render txt(
-				PX,
-				400,
-				parityPass
-					? nFlips > 0
-						? 'An even number of flips can’t be seen.'
-						: ''
-					: 'All it can do is ask for the data again.',
-				13,
-				{ muted: true }
-			)}
-		{:else}
-			{@render txt(PX, 350, 'Counting the 1s…', 15, { weight: 700, muted: true })}
-		{/if}
+					: 'But which bit? Every one would give this count: all it can do is ask again.'}
+			color={verdict ? statusColor(parityPass) : undefined}
+		/>
+		<Readout id="parity-verdict">
+			{#if verdict}
+				{@render txt(
+					PX,
+					350,
+					parityPass ? 'Even: the receiver accepts it.' : 'Odd: an error!',
+					15,
+					{
+						weight: 700,
+						color: statusColor(parityPass)
+					}
+				)}
+				{@render txt(
+					PX,
+					376,
+					parityPass
+						? nFlips > 0
+							? `But ${word(nFlips)} bits are wrong: the damage slipped through.`
+							: 'Nothing was flipped. All good.'
+						: 'But which bit? Every one of them would give this count.',
+					13
+				)}
+				{@render txt(
+					PX,
+					400,
+					parityPass
+						? nFlips > 0
+							? 'An even number of flips can’t be seen.'
+							: ''
+						: 'All it can do is ask for the data again.',
+					13,
+					{ muted: true }
+				)}
+			{:else}
+				{@render txt(PX, 350, 'Counting the 1s…', 15, { weight: 700, muted: true })}
+			{/if}
+		</Readout>
 	{:else}
 		{@const ax = addr.current}
 		{#each checkOrder as k, j (k)}
 			{@const shown = checksShown > j}
-			{@const ok = passes(k)}
-			{@const y = 336 + j * 24}
-			{@render txt(PX, y, `check ${k}`, 13, { weight: 700, color: 'var(--ec-check)' })}
-			{@render txt(PX + 66, y, `covers ${covered(k).join(' ')}`, 13, { muted: true })}
-			{#if shown}
-				{@render txt(PX + 196, y, ok ? 'even ✓' : 'odd ✗', 13, {
-					weight: 700,
-					color: statusColor(ok)
-				})}
-				{#if ax > 0.01}
-					{@render txt(PX + 264, y, ok ? '→ 0' : '→ 1', 13, { weight: 700, opacity: ax })}
-				{/if}
-			{/if}
+			<Readout
+				id="check-{k}"
+				order={1 + j}
+				label="Check {k}"
+				value={shown ? (passes(k) ? 'even ✓' : 'odd ✗') : 'checking…'}
+				note="covers {covered(k).join(' ')}"
+				color={shown ? statusColor(passes(k)) : undefined}
+			/>
 		{/each}
 		{#if verdict}
 			{@const pos = dec.position}
-			{@render txt(
-				PX,
-				428,
-				pos === 0
-					? 'All checks even: no error.'
+			<Readout
+				id="verdict"
+				order={4}
+				label="Verdict"
+				value={pos === 0
+					? 'all checks even: no error'
 					: ax > 0.5
-						? `Checks 4 2 1 → ${pos.toString(2).padStart(3, '0')} in binary = ${pos}`
-						: `Failing: ${failing.map((k) => `check ${k}`).join(' + ')} → position ${pos}`,
-				15,
-				{ weight: 700, color: pos === 0 ? 'var(--ec-ok)' : undefined }
-			)}
-			{@render txt(
-				PX,
-				452,
-				pos === 0
+						? `checks 4 2 1 → ${pos.toString(2).padStart(3, '0')} in binary = ${pos}`
+						: `${failing.map((k) => `check ${k}`).join(' + ')} fail → position ${pos}`}
+				note={pos === 0
 					? nFlips > 0
 						? 'But bits were flipped: too many for this code.'
 						: 'The message is read straight from the data bits.'
-					: `The receiver flips bit ${pos} back.`,
-				13,
-				{ color: pos > 0 ? 'var(--ec-fix)' : undefined, weight: 600 }
-			)}
-			<!-- decoded message -->
-			{@render txt(PX, 492, 'Decoded message', 12, { muted: true, weight: 600 })}
-			{#each dec.data as bit, i (i)}
-				{@render cell(PX + 140 + i * 44, 488, bit, 'var(--ec-data)', { wrong: bit !== data[i] })}
-			{/each}
-			{@render txt(
-				PX,
-				534,
-				wrongBits === 0
+					: `The receiver flips bit ${pos} back.`}
+				color={pos === 0 ? 'var(--ec-ok)' : 'var(--ec-fix)'}
+			/>
+			<Readout
+				id="decoded"
+				order={5}
+				label="Decoded message"
+				value="{dec.data.join('')} {wrongBits === 0 ? '✓' : '✗'}"
+				note={wrongBits === 0
 					? nFlips > 0
-						? '✓ same as the message: repaired'
-						: '✓ same as the message'
-					: `✗ ${word(wrongBits)} bit${wrongBits > 1 ? 's' : ''} wrong — and the receiver can’t tell`,
-				13,
-				{ weight: 700, color: statusColor(wrongBits === 0) }
-			)}
-			{#if wrongBits > 0 && nFlips === 2}
+						? 'repaired'
+						: 'same as the message'
+					: `${word(wrongBits)} bit${wrongBits > 1 ? 's' : ''} wrong` +
+						(nFlips === 2
+							? `: flips ${flips.flatMap((f, i) => (f ? [i + 1] : [])).join(', ')} look like ${pos}`
+							: '')}
+				color={statusColor(wrongBits === 0)}
+			/>
+		{:else}
+			<Readout id="verdict" order={4} label="Verdict" value="checking the circles…" />
+		{/if}
+		<Readout id="hamming-panel">
+			{#each checkOrder as k, j (k)}
+				{@const shown = checksShown > j}
+				{@const ok = passes(k)}
+				{@const y = 336 + j * 24}
+				{@render txt(PX, y, `check ${k}`, 13, { weight: 700, color: 'var(--ec-check)' })}
+				{@render txt(PX + 66, y, `covers ${covered(k).join(' ')}`, 13, { muted: true })}
+				{#if shown}
+					{@render txt(PX + 196, y, ok ? 'even ✓' : 'odd ✗', 13, {
+						weight: 700,
+						color: statusColor(ok)
+					})}
+					{#if ax > 0.01}
+						{@render txt(PX + 264, y, ok ? '→ 0' : '→ 1', 13, { weight: 700, opacity: ax })}
+					{/if}
+				{/if}
+			{/each}
+			{#if verdict}
+				{@const pos = dec.position}
 				{@render txt(
 					PX,
-					556,
-					`Two flips (${flips.flatMap((f, i) => (f ? [i + 1] : [])).join(' and ')}) look like one at ${pos}.`,
-					12,
-					{
-						muted: true
-					}
+					428,
+					pos === 0
+						? 'All checks even: no error.'
+						: ax > 0.5
+							? `Checks 4 2 1 → ${pos.toString(2).padStart(3, '0')} in binary = ${pos}`
+							: `Failing: ${failing.map((k) => `check ${k}`).join(' + ')} → position ${pos}`,
+					15,
+					{ weight: 700, color: pos === 0 ? 'var(--ec-ok)' : undefined }
 				)}
+				{@render txt(
+					PX,
+					452,
+					pos === 0
+						? nFlips > 0
+							? 'But bits were flipped: too many for this code.'
+							: 'The message is read straight from the data bits.'
+						: `The receiver flips bit ${pos} back.`,
+					13,
+					{ color: pos > 0 ? 'var(--ec-fix)' : undefined, weight: 600 }
+				)}
+				<!-- decoded message -->
+				{@render txt(PX, 492, 'Decoded message', 12, { muted: true, weight: 600 })}
+				{#each dec.data as bit, i (i)}
+					{@render cell(PX + 140 + i * 44, 488, bit, 'var(--ec-data)', { wrong: bit !== data[i] })}
+				{/each}
+				{@render txt(
+					PX,
+					534,
+					wrongBits === 0
+						? nFlips > 0
+							? '✓ same as the message: repaired'
+							: '✓ same as the message'
+						: `✗ ${word(wrongBits)} bit${wrongBits > 1 ? 's' : ''} wrong — and the receiver can’t tell`,
+					13,
+					{ weight: 700, color: statusColor(wrongBits === 0) }
+				)}
+				{#if wrongBits > 0 && nFlips === 2}
+					{@render txt(
+						PX,
+						556,
+						`Two flips (${flips.flatMap((f, i) => (f ? [i + 1] : [])).join(' and ')}) look like one at ${pos}.`,
+						12,
+						{
+							muted: true
+						}
+					)}
+				{/if}
+			{:else}
+				{@render txt(PX, 428, 'Checking the circles…', 15, { weight: 700, muted: true })}
 			{/if}
-		{:else}
-			{@render txt(PX, 428, 'Checking the circles…', 15, { weight: 700, muted: true })}
-		{/if}
+		</Readout>
 	{/if}
 </g>
 

@@ -16,7 +16,7 @@
 	 * drawing. Text uses `style:` (the stage CSS overrides presentation attributes).
 	 */
 	import { clamp, cycle, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { addOnClock, isPrime, factorText, mod, powerWalk, sup, timesMap } from '../modular';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -279,55 +279,81 @@
 		/>
 		<circle cx={CX} cy={CY} r="6" fill="var(--stage-ink)" />
 
-		<!-- working -->
-		{@render txt(PX, 96, `${m}-hour clock`, 14, { muted: true, weight: 600 })}
-		{@render txt(PX, 140, `${a} + ${b} = ${sum.total}`, 30, { weight: 700 })}
+		<!-- working (<Readout>: listed under the stage on phones) -->
+		<Readout id="sum" order={1} label="On a {m}-hour clock" value="{a} + {b} = {sum.total}">
+			{@render txt(PX, 96, `${m}-hour clock`, 14, { muted: true, weight: 600 })}
+			{@render txt(PX, 140, `${a} + ${b} = ${sum.total}`, 30, { weight: 700 })}
+		</Readout>
 		<g opacity={addDone ? 1 : 0.25}>
-			{@render txt(
-				PX,
-				184,
-				sum.laps === 0
-					? `${sum.total} is less than ${m}: no wrap`
-					: `${sum.total} = ${sum.laps} × ${m} + ${sum.result}`,
-				18
-			)}
-			{@render txt(
-				PX,
-				210,
-				sum.laps === 0
+			<Readout
+				id="wrap"
+				order={2}
+				label="Wrap"
+				value={sum.laps === 0
+					? `${sum.total} < ${m}: no wrap`
+					: `${sum.total} = ${sum.laps} × ${m} + ${sum.result}`}
+				note={sum.laps === 0
 					? 'the hand stays within one lap'
-					: `the hand goes ${sum.laps} full lap${sum.laps === 1 ? '' : 's'} round, then ${sum.result} more`,
-				13,
-				{ muted: true }
-			)}
-			{@render txt(PX, 262, `${a} + ${b} ≡ ${sum.result}  (mod ${m})`, 24, {
-				weight: 700,
-				color: 'var(--pm-walk)'
-			})}
+					: `the hand goes ${sum.laps} full lap${sum.laps === 1 ? '' : 's'} round, then ${sum.result} more`}
+				opacity={addDone ? 1 : 0.25}
+			>
+				{@render txt(
+					PX,
+					184,
+					sum.laps === 0
+						? `${sum.total} is less than ${m}: no wrap`
+						: `${sum.total} = ${sum.laps} × ${m} + ${sum.result}`,
+					18
+				)}
+				{@render txt(
+					PX,
+					210,
+					sum.laps === 0
+						? 'the hand stays within one lap'
+						: `the hand goes ${sum.laps} full lap${sum.laps === 1 ? '' : 's'} round, then ${sum.result} more`,
+					13,
+					{ muted: true }
+				)}
+			</Readout>
+			<Readout
+				id="result"
+				order={3}
+				label="Result"
+				value="{a} + {b} ≡ {sum.result} (mod {m})"
+				color="var(--pm-walk)"
+				opacity={addDone ? 1 : 0.25}
+			>
+				{@render txt(PX, 262, `${a} + ${b} ≡ ${sum.result}  (mod ${m})`, 24, {
+					weight: 700,
+					color: 'var(--pm-walk)'
+				})}
+			</Readout>
 		</g>
 		<!-- legend -->
-		<line
-			x1={PX}
-			y1={326}
-			x2={PX + 26}
-			y2={326}
-			stroke="var(--pm-p2)"
-			stroke-width="3"
-			stroke-linecap="round"
-		/>
-		{@render txt(PX + 36, 331, `start at ${a}`, 13)}
-		<line
-			x1={PX}
-			y1={352}
-			x2={PX + 26}
-			y2={352}
-			stroke="var(--pm-walk)"
-			stroke-width="3"
-			stroke-linecap="round"
-		/>
-		{@render txt(PX + 36, 357, `add ${b} hours`, 13)}
-		{@render txt(PX, 400, 'Only the remainder after dividing by', 13, { muted: true })}
-		{@render txt(PX, 418, `${m} matters: that is where the hand stops.`, 13, { muted: true })}
+		<Readout id="legend">
+			<line
+				x1={PX}
+				y1={326}
+				x2={PX + 26}
+				y2={326}
+				stroke="var(--pm-p2)"
+				stroke-width="3"
+				stroke-linecap="round"
+			/>
+			{@render txt(PX + 36, 331, `start at ${a}`, 13)}
+			<line
+				x1={PX}
+				y1={352}
+				x2={PX + 26}
+				y2={352}
+				stroke="var(--pm-walk)"
+				stroke-width="3"
+				stroke-linecap="round"
+			/>
+			{@render txt(PX + 36, 357, `add ${b} hours`, 13)}
+			{@render txt(PX, 400, 'Only the remainder after dividing by', 13, { muted: true })}
+			{@render txt(PX, 418, `${m} matters: that is where the hand stops.`, 13, { muted: true })}
+		</Readout>
 	{:else if phase === 'times'}
 		<!-- chords k → k × mult -->
 		{#each HOURS as k (k)}
@@ -386,67 +412,102 @@
 		{/each}
 
 		<!-- panel -->
-		{@render txt(PX, 86, `× ${mult} on a ${m}-hour clock`, 22, { weight: 700 })}
-		{#if mult >= m}
-			{@render txt(PX, 110, `(${mult} ≡ ${mod(mult, m)} on ${m} hours)`, 13, { muted: true })}
-		{/if}
-		{#if tm.shuffles}
-			{@render txt(PX, 146, `Lands on every hour exactly once:`, 15, {
-				weight: 600,
-				color: 'var(--pm-ok)'
-			})}
-			{@render txt(PX, 168, 'a shuffle, so it can be undone.', 15, {
-				weight: 600,
-				color: 'var(--pm-ok)'
-			})}
-			{#if tm.inverse !== null}
+		<Readout
+			id="times"
+			order={1}
+			label="Every hour on a {m}-hour clock"
+			value="× {mult}"
+			note={mult >= m ? `${mult} ≡ ${mod(mult, m)} on ${m} hours` : undefined}
+		/>
+		<Readout
+			id="lands"
+			order={2}
+			label="Lands on"
+			value={tm.shuffles ? 'every hour exactly once' : `only ${tm.reached.length} of ${m} hours`}
+			color={tm.shuffles ? 'var(--pm-ok)' : 'var(--pm-bad)'}
+			note={tm.shuffles
+				? tm.inverse !== null
+					? `A shuffle: undo it with × ${tm.inverse}: ${mod(mult, m)} × ${tm.inverse} = ${mod(mult, m) * tm.inverse} ≡ 1`
+					: 'A shuffle, so it can be undone.'
+				: `${tm.reached.join(', ')}. ` +
+					(tm.zeroPartner !== null
+						? `${mod(mult, m)} × ${tm.zeroPartner} = ${mod(mult, m) * tm.zeroPartner} ≡ 0, though neither is 0: no dividing by ${mod(mult, m)}.`
+						: 'Everything lands on 0.')}
+		/>
+		<Readout
+			id="multipliers"
+			order={3}
+			label="Multipliers on {m} hours"
+			value={isPrime(m) ? 'every one shuffles' : `${shuffleCount} of ${m - 1} shuffle`}
+			note={isPrime(m) ? `${m} is prime` : undefined}
+		/>
+		<Readout id="times-panel">
+			{@render txt(PX, 86, `× ${mult} on a ${m}-hour clock`, 22, { weight: 700 })}
+			{#if mult >= m}
+				{@render txt(PX, 110, `(${mult} ≡ ${mod(mult, m)} on ${m} hours)`, 13, { muted: true })}
+			{/if}
+			{#if tm.shuffles}
+				{@render txt(PX, 146, `Lands on every hour exactly once:`, 15, {
+					weight: 600,
+					color: 'var(--pm-ok)'
+				})}
+				{@render txt(PX, 168, 'a shuffle, so it can be undone.', 15, {
+					weight: 600,
+					color: 'var(--pm-ok)'
+				})}
+				{#if tm.inverse !== null}
+					{@render txt(
+						PX,
+						200,
+						`Undo it with × ${tm.inverse}: ${mod(mult, m)} × ${tm.inverse} = ${mod(mult, m) * tm.inverse} ≡ 1`,
+						14
+					)}
+				{/if}
+			{:else}
+				{@render txt(PX, 146, `Lands on only ${tm.reached.length} of ${m} hours:`, 15, {
+					weight: 600,
+					color: 'var(--pm-bad)'
+				})}
 				{@render txt(
 					PX,
-					200,
-					`Undo it with × ${tm.inverse}: ${mod(mult, m)} × ${tm.inverse} = ${mod(mult, m) * tm.inverse} ≡ 1`,
-					14
+					168,
+					tm.reached.length <= 10
+						? tm.reached.join(', ')
+						: `${tm.reached.slice(0, 9).join(', ')}, …`,
+					15,
+					{ weight: 600, color: 'var(--pm-bad)' }
 				)}
+				{#if tm.zeroPartner !== null}
+					{@render txt(
+						PX,
+						200,
+						`${mod(mult, m)} × ${tm.zeroPartner} = ${mod(mult, m) * tm.zeroPartner} ≡ 0, though neither is 0.`,
+						14
+					)}
+					{@render txt(PX, 220, `Information is lost: no dividing by ${mod(mult, m)}.`, 14, {
+						muted: true
+					})}
+				{:else}
+					{@render txt(PX, 200, 'Everything lands on 0.', 14)}
+				{/if}
 			{/if}
-		{:else}
-			{@render txt(PX, 146, `Lands on only ${tm.reached.length} of ${m} hours:`, 15, {
-				weight: 600,
-				color: 'var(--pm-bad)'
-			})}
+
 			{@render txt(
 				PX,
-				168,
-				tm.reached.length <= 10 ? tm.reached.join(', ') : `${tm.reached.slice(0, 9).join(', ')}, …`,
-				15,
-				{ weight: 600, color: 'var(--pm-bad)' }
+				296,
+				isPrime(m)
+					? `${m} is prime: every multiplier shuffles`
+					: `Multipliers on ${m} hours: ${shuffleCount} of ${m - 1} shuffle`,
+				14,
+				{
+					weight: 600,
+					color: isPrime(m) ? 'var(--pm-ok)' : undefined
+				}
 			)}
-			{#if tm.zeroPartner !== null}
-				{@render txt(
-					PX,
-					200,
-					`${mod(mult, m)} × ${tm.zeroPartner} = ${mod(mult, m) * tm.zeroPartner} ≡ 0, though neither is 0.`,
-					14
-				)}
-				{@render txt(PX, 220, `Information is lost: no dividing by ${mod(mult, m)}.`, 14, {
-					muted: true
-				})}
-			{:else}
-				{@render txt(PX, 200, 'Everything lands on 0.', 14)}
-			{/if}
-		{/if}
-
-		{@render txt(
-			PX,
-			296,
-			isPrime(m)
-				? `${m} is prime: every multiplier shuffles`
-				: `Multipliers on ${m} hours: ${shuffleCount} of ${m - 1} shuffle`,
-			14,
-			{
-				weight: 600,
-				color: isPrime(m) ? 'var(--pm-ok)' : undefined
-			}
-		)}
-		{@render txt(PX, 316, 'green: shuffles · red: loses hours · click to try', 12, { muted: true })}
+			{@render txt(PX, 316, 'green: shuffles · red: loses hours · click to try', 12, {
+				muted: true
+			})}
+		</Readout>
 		{#each MULTS as c, i (c)}
 			{@const p = chipAt(i)}
 			{@const ok = timesMap(c, m).shuffles}
@@ -535,38 +596,75 @@
 		{/each}
 
 		<!-- panel -->
-		{@render txt(PX, 86, `Powers of ${g} on a ${m}-hour clock`, 20, { weight: 700 })}
-		{@render txt(PX, 110, g >= m ? `${mNote(m)} · ${g} ≡ ${mod(g, m)} here` : mNote(m), 13, {
-			muted: true
-		})}
-		{@render txt(PX, 150, `${g}⁰, ${g}¹, ${g}², … =`, 14, { muted: true })}
-		{#each seqLines as line, i (i)}
-			{@render txt(PX, 176 + i * 24, line, 16, { weight: 600 })}
-		{/each}
-		<g opacity={powDone ? 1 : 0}>
-			{@render txt(PX, 268, powVerdict[0], 15, {
-				weight: 700,
-				color: pw.returnsToOne ? 'var(--pm-walk)' : 'var(--pm-bad)'
+		<Readout
+			id="powers"
+			order={1}
+			label="Powers of {g} on {m} hours"
+			value={seqLines.join(', ')}
+			note={g >= m ? `${mNote(m)} · ${g} ≡ ${mod(g, m)} here` : mNote(m)}
+		/>
+		<Readout
+			id="verdict"
+			order={2}
+			label="Cycle"
+			value={powVerdict[0].replace(/:$/, '')}
+			note={powVerdict[1].replace(/^— /, '')}
+			color={pw.returnsToOne ? 'var(--pm-walk)' : 'var(--pm-bad)'}
+			opacity={powDone ? 1 : 0}
+		/>
+		{#if isPrime(m) && mod(g, m) !== 0}
+			<Readout
+				id="fermat"
+				order={3}
+				label="Fermat's little theorem"
+				value="{g}{sup(m - 1)} ≡ 1 (mod {m})"
+				note="On a prime clock the powers always return to 1."
+				opacity={powDone ? 1 : 0}
+			/>
+		{:else if !isPrime(m)}
+			<Readout
+				id="not-prime"
+				order={3}
+				label="Not a prime clock"
+				value="powers can get stuck or collapse"
+				note="On a prime clock they return to 1, unless the base is a multiple of the hours."
+				opacity={powDone ? 1 : 0}
+			/>
+		{/if}
+		<Readout id="powers-panel">
+			{@render txt(PX, 86, `Powers of ${g} on a ${m}-hour clock`, 20, { weight: 700 })}
+			{@render txt(PX, 110, g >= m ? `${mNote(m)} · ${g} ≡ ${mod(g, m)} here` : mNote(m), 13, {
+				muted: true
 			})}
-			{@render txt(PX, 290, powVerdict[1], 15, {
-				weight: 700,
-				color: pw.returnsToOne ? 'var(--pm-walk)' : 'var(--pm-bad)'
-			})}
-			{#if isPrime(m) && mod(g, m) !== 0}
-				{@render txt(PX, 330, `${g}${sup(m - 1)} ≡ 1 (mod ${m}): Fermat's little theorem.`, 13)}
-				{@render txt(PX, 350, `On a prime clock the powers always return to 1.`, 13, {
-					muted: true
+			{@render txt(PX, 150, `${g}⁰, ${g}¹, ${g}², … =`, 14, { muted: true })}
+			{#each seqLines as line, i (i)}
+				{@render txt(PX, 176 + i * 24, line, 16, { weight: 600 })}
+			{/each}
+			<g opacity={powDone ? 1 : 0}>
+				{@render txt(PX, 268, powVerdict[0], 15, {
+					weight: 700,
+					color: pw.returnsToOne ? 'var(--pm-walk)' : 'var(--pm-bad)'
 				})}
-			{:else if !isPrime(m)}
-				{@render txt(PX, 330, `On a clock that isn't prime, powers can get stuck`, 13)}
-				{@render txt(PX, 350, `or collapse. On a prime clock they return to 1,`, 13, {
-					muted: true
+				{@render txt(PX, 290, powVerdict[1], 15, {
+					weight: 700,
+					color: pw.returnsToOne ? 'var(--pm-walk)' : 'var(--pm-bad)'
 				})}
-				{@render txt(PX, 370, `unless the base is a multiple of the hours.`, 13, { muted: true })}
-			{/if}
-		</g>
-		{@render txt(PX, 420, 'Each hop multiplies by', 13, { muted: true })}
-		{@render txt(PX, 438, `${g} and keeps the remainder.`, 13, { muted: true })}
+				{#if isPrime(m) && mod(g, m) !== 0}
+					{@render txt(PX, 330, `${g}${sup(m - 1)} ≡ 1 (mod ${m}): Fermat's little theorem.`, 13)}
+					{@render txt(PX, 350, `On a prime clock the powers always return to 1.`, 13, {
+						muted: true
+					})}
+				{:else if !isPrime(m)}
+					{@render txt(PX, 330, `On a clock that isn't prime, powers can get stuck`, 13)}
+					{@render txt(PX, 350, `or collapse. On a prime clock they return to 1,`, 13, {
+						muted: true
+					})}
+					{@render txt(PX, 370, `unless the base is a multiple of the hours.`, 13, { muted: true })}
+				{/if}
+			</g>
+			{@render txt(PX, 420, 'Each hop multiplies by', 13, { muted: true })}
+			{@render txt(PX, 438, `${g} and keeps the remainder.`, 13, { muted: true })}
+		</Readout>
 	{/if}
 </g>
 

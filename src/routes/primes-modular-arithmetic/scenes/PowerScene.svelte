@@ -16,7 +16,7 @@
 	 * presentation attributes).
 	 */
 	import { clamp, cycle } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { discreteLog, fastPower, slowPower, sup } from '../modular';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -100,11 +100,16 @@
 <g>
 	{#if phase === 'fast'}
 		<!-- the ladder of squares -->
-		{@render txt(LX, 72, `2ˣ on a 101-hour clock, x = ${x} = ${binary}₂`, 18, { weight: 700 })}
-		{@render txt(LX + 10, 108, 'square', 12, { muted: true, weight: 600 })}
-		{@render txt(LX + 110, 108, '= row above, squared', 12, { muted: true, weight: 600 })}
-		{@render txt(LX + 300, 108, 'mod 101', 12, { muted: true, weight: 600 })}
-		{@render txt(LX + 400, 108, 'bit', 12, { muted: true, weight: 600, anchor: 'middle' })}
+		<!-- <Readout>: listed under the stage on phones -->
+		<Readout id="exponent" order={1} label="2ˣ on a 101-hour clock" value="x = {x} = {binary}₂">
+			{@render txt(LX, 72, `2ˣ on a 101-hour clock, x = ${x} = ${binary}₂`, 18, { weight: 700 })}
+		</Readout>
+		<Readout id="ladder-heads">
+			{@render txt(LX + 10, 108, 'square', 12, { muted: true, weight: 600 })}
+			{@render txt(LX + 110, 108, '= row above, squared', 12, { muted: true, weight: 600 })}
+			{@render txt(LX + 300, 108, 'mod 101', 12, { muted: true, weight: 600 })}
+			{@render txt(LX + 400, 108, 'bit', 12, { muted: true, weight: 600, anchor: 'middle' })}
+		</Readout>
 		{#each fp.rungs as r (r.k)}
 			{@const on = rowOn(r.k)}
 			{@const pick = r.used && resultOn > 0}
@@ -146,66 +151,97 @@
 		{/each}
 
 		<!-- the product and the counts -->
-		<g opacity={resultOn}>
-			{@render txt(
-				PX,
-				140,
-				`${x} = ${used
-					.map((r) => r.power)
-					.reverse()
-					.join(' + ')}`,
-				15,
-				{ weight: 600 }
-			)}
-			{@render txt(PX, 172, `2${sup(x)} = ${used.map((r) => `2${sup(r.power)}`).join(' × ')}`, 15)}
-			{@render txt(PX, 198, `≡ ${used.map((r) => r.value).join(' × ')}`, 15)}
-			{@render txt(PX, 236, `2${sup(x)} ≡ ${fp.result}  (mod 101)`, 24, {
-				weight: 700,
-				color: 'var(--pm-walk)'
-			})}
-			{@render txt(PX, 262, 'remainder taken after every multiplication', 12, { muted: true })}
+		<Readout
+			id="result"
+			order={2}
+			label="Result"
+			value="2{sup(x)} ≡ {fp.result} (mod 101)"
+			note="{x} = {used
+				.map((r) => r.power)
+				.reverse()
+				.join(' + ')}, so multiply the rows {used.map((r) => r.value).join(' × ')}"
+			color="var(--pm-walk)"
+			opacity={resultOn}
+		/>
+		<Readout
+			id="count"
+			order={3}
+			label="Multiplications"
+			value="{fp.total} instead of {fp.naive}"
+			note="{fp.squarings} squarings + {fp.multiplications} products, not one at a time"
+			opacity={resultOn}
+		/>
+		<Readout id="product-panel">
+			<g opacity={resultOn}>
+				{@render txt(
+					PX,
+					140,
+					`${x} = ${used
+						.map((r) => r.power)
+						.reverse()
+						.join(' + ')}`,
+					15,
+					{ weight: 600 }
+				)}
+				{@render txt(
+					PX,
+					172,
+					`2${sup(x)} = ${used.map((r) => `2${sup(r.power)}`).join(' × ')}`,
+					15
+				)}
+				{@render txt(PX, 198, `≡ ${used.map((r) => r.value).join(' × ')}`, 15)}
+				{@render txt(PX, 236, `2${sup(x)} ≡ ${fp.result}  (mod 101)`, 24, {
+					weight: 700,
+					color: 'var(--pm-walk)'
+				})}
+				{@render txt(PX, 262, 'remainder taken after every multiplication', 12, { muted: true })}
 
-			{@render txt(PX, 318, 'Multiplications needed', 14, { weight: 700 })}
-			{@render txt(PX, 346, `one at a time: ${fp.naive}`, 13)}
-			<rect
-				x={PX}
-				y={354}
-				width={Math.max(2, fp.naive * barScale)}
-				height="16"
-				rx="4"
-				fill="var(--pm-bad)"
-				fill-opacity="0.75"
-			/>
-			{@render txt(
-				PX,
-				396,
-				`square-and-multiply: ${fp.squarings} squarings + ${fp.multiplications} products = ${fp.total}`,
-				13
-			)}
-			<rect
-				x={PX}
-				y={404}
-				width={Math.max(2, fp.total * barScale)}
-				height="16"
-				rx="4"
-				fill="var(--pm-ok)"
-			/>
-			{@render txt(PX, 456, 'Doubling x adds just one more squaring.', 13, { muted: true })}
-		</g>
+				{@render txt(PX, 318, 'Multiplications needed', 14, { weight: 700 })}
+				{@render txt(PX, 346, `one at a time: ${fp.naive}`, 13)}
+				<rect
+					x={PX}
+					y={354}
+					width={Math.max(2, fp.naive * barScale)}
+					height="16"
+					rx="4"
+					fill="var(--pm-bad)"
+					fill-opacity="0.75"
+				/>
+				{@render txt(
+					PX,
+					396,
+					`square-and-multiply: ${fp.squarings} squarings + ${fp.multiplications} products = ${fp.total}`,
+					13
+				)}
+				<rect
+					x={PX}
+					y={404}
+					width={Math.max(2, fp.total * barScale)}
+					height="16"
+					rx="4"
+					fill="var(--pm-ok)"
+				/>
+				{@render txt(PX, 456, 'Doubling x adds just one more squaring.', 13, { muted: true })}
+			</g>
+		</Readout>
 	{:else}
 		<!-- axes -->
 		{#each TICKS as v (v)}
 			<line x1={AX.x0} x2={AX.x1} y1={sy(v)} y2={sy(v)} stroke="var(--stage-grid)" />
-			{@render txt(AX.x0 - 8, sy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
-			{@render txt(sx(v), AX.y0 + 20, String(v), 11, { anchor: 'middle', muted: true })}
+			<Readout id="tick-{v}">
+				{@render txt(AX.x0 - 8, sy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+				{@render txt(sx(v), AX.y0 + 20, String(v), 11, { anchor: 'middle', muted: true })}
+			</Readout>
 		{/each}
 		<line x1={AX.x0} x2={AX.x0} y1={AX.y0} y2={AX.y1} stroke="var(--stage-line)" />
 		<line x1={AX.x0} x2={AX.x1} y1={AX.y0} y2={AX.y0} stroke="var(--stage-line)" />
-		{@render txt((AX.x0 + AX.x1) / 2, AX.y0 + 44, 'exponent x', 13, {
-			anchor: 'middle',
-			weight: 600
-		})}
-		{@render txt(AX.x0 - 40, AX.y1 - 24, '2ˣ mod 101', 13, { weight: 600 })}
+		<Readout id="axis-names">
+			{@render txt((AX.x0 + AX.x1) / 2, AX.y0 + 44, 'exponent x', 13, {
+				anchor: 'middle',
+				weight: 600
+			})}
+			{@render txt(AX.x0 - 40, AX.y1 - 24, '2ˣ mod 101', 13, { weight: 600 })}
+		</Readout>
 
 		<!-- 2^x without the clock: smooth and rising -->
 		<path
@@ -215,7 +251,9 @@
 			stroke-width="2"
 			stroke-dasharray="5 4"
 		/>
-		{@render txt(sx(7.5), AX.y1 - 6, '2ˣ without the clock', 12, { muted: true })}
+		<Readout id="curve-label">
+			{@render txt(sx(7.5), AX.y1 - 6, '2ˣ without the clock', 12, { muted: true })}
+		</Readout>
 
 		<!-- target line -->
 		<line
@@ -283,42 +321,77 @@
 		{/if}
 
 		<!-- panel -->
-		{@render txt(PX + 20, 92, `Find x with 2ˣ ≡ ${target} (mod 101)`, 18, { weight: 700 })}
-		{@render txt(PX + 20, 116, 'No pattern to follow: try x = 0, 1, 2, …', 13, { muted: true })}
-		{@render txt(
-			PX + 20,
-			160,
-			hit
+		<Readout
+			id="search"
+			order={1}
+			label="Find x with 2ˣ ≡ {target} (mod 101)"
+			value={hit
 				? `Found: 2${sup(found.x ?? 0)} ≡ ${target}`
 				: searching
 					? `Trying x = ${trying}: 2${sup(trying)} ≡ ${slowPower(G, trying, P)}`
-					: 'Trying x = 0, 1, 2, …',
-			17,
-			{ weight: 600, color: hit ? 'var(--pm-p5)' : undefined }
-		)}
-		{@render txt(PX + 20, 210, 'Backwards, by trying', 14, { weight: 700 })}
-		{@render txt(PX + 20, 232, `${nTries} ${nTries === 1 ? 'try' : 'tries'}`, 22, {
-			weight: 700,
-			color: 'var(--pm-bad)'
-		})}
-		{@render txt(PX + 20, 280, 'Forwards, by square-and-multiply', 14, { weight: 700 })}
-		{@render txt(PX + 20, 302, `${fwd.total} multiplication${fwd.total === 1 ? '' : 's'}`, 22, {
-			weight: 700,
-			color: 'var(--pm-ok)'
-		})}
-		<rect
-			x={PX + 20}
-			y={344}
-			width="340"
-			height="128"
-			rx="10"
-			fill="var(--surface)"
-			stroke="var(--border)"
+					: 'Trying x = 0, 1, 2, …'}
+			note="No pattern to follow: try x = 0, 1, 2, …"
+			color={hit ? 'var(--pm-p5)' : undefined}
 		/>
-		{@render txt(PX + 36, 370, 'With a 2048-bit (617-digit) prime:', 13, { weight: 700 })}
-		{@render txt(PX + 36, 396, 'forwards: at most 4,094 multiplications', 13)}
-		{@render txt(PX + 36, 418, 'backwards by trying: up to about 10⁶¹⁶ tries', 13)}
-		{@render txt(PX + 36, 446, 'Cleverer methods exist, but none is known', 12, { muted: true })}
-		{@render txt(PX + 36, 462, 'that makes it anywhere near feasible.', 12, { muted: true })}
+		<Readout
+			id="backwards"
+			order={2}
+			label="Backwards, by trying"
+			value="{nTries} {nTries === 1 ? 'try' : 'tries'}"
+			color="var(--pm-bad)"
+		/>
+		<Readout
+			id="forwards"
+			order={3}
+			label="Forwards, by square-and-multiply"
+			value="{fwd.total} multiplication{fwd.total === 1 ? '' : 's'}"
+			color="var(--pm-ok)"
+		/>
+		<Readout
+			id="big"
+			order={4}
+			label="With a 2048-bit (617-digit) prime"
+			value="forwards: at most 4,094 multiplications"
+			note="backwards by trying: up to about 10⁶¹⁶ tries; cleverer methods exist, but none comes near feasible"
+		/>
+		<Readout id="search-panel">
+			{@render txt(PX + 20, 92, `Find x with 2ˣ ≡ ${target} (mod 101)`, 18, { weight: 700 })}
+			{@render txt(PX + 20, 116, 'No pattern to follow: try x = 0, 1, 2, …', 13, { muted: true })}
+			{@render txt(
+				PX + 20,
+				160,
+				hit
+					? `Found: 2${sup(found.x ?? 0)} ≡ ${target}`
+					: searching
+						? `Trying x = ${trying}: 2${sup(trying)} ≡ ${slowPower(G, trying, P)}`
+						: 'Trying x = 0, 1, 2, …',
+				17,
+				{ weight: 600, color: hit ? 'var(--pm-p5)' : undefined }
+			)}
+			{@render txt(PX + 20, 210, 'Backwards, by trying', 14, { weight: 700 })}
+			{@render txt(PX + 20, 232, `${nTries} ${nTries === 1 ? 'try' : 'tries'}`, 22, {
+				weight: 700,
+				color: 'var(--pm-bad)'
+			})}
+			{@render txt(PX + 20, 280, 'Forwards, by square-and-multiply', 14, { weight: 700 })}
+			{@render txt(PX + 20, 302, `${fwd.total} multiplication${fwd.total === 1 ? '' : 's'}`, 22, {
+				weight: 700,
+				color: 'var(--pm-ok)'
+			})}
+			<rect
+				x={PX + 20}
+				y={344}
+				width="340"
+				height="128"
+				rx="10"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			{@render txt(PX + 36, 370, 'With a 2048-bit (617-digit) prime:', 13, { weight: 700 })}
+			{@render txt(PX + 36, 396, 'forwards: at most 4,094 multiplications', 13)}
+			{@render txt(PX + 36, 418, 'backwards by trying: up to about 10⁶¹⁶ tries', 13)}
+			{@render txt(PX + 36, 446, 'Cleverer methods exist, but none is known', 12, { muted: true })}
+			{@render txt(PX + 36, 462, 'that makes it anywhere near feasible.', 12, { muted: true })}
+		</Readout>
 	{/if}
 </g>
