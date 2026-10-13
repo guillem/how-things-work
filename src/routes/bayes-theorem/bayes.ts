@@ -66,15 +66,49 @@ export const secondTest = (t: Test) => ppv({ ...t, prevalence: ppv(t) });
 
 /**
  * Which group each of the n people in the grid belongs to, in a fixed order
- * that keeps the groups in solid blocks: sick first (true positives, then false
- * negatives), then healthy (false positives, then true negatives).
+ * that keeps the groups in solid blocks: the ill first (false negatives, then
+ * true positives), then the healthy (false positives, then true negatives). So
+ * the ill are one run (the first `sick` cells) and the positives are the next.
  */
 export function grid(c: Counts): ('tp' | 'fn' | 'fp' | 'tn')[] {
 	return [
-		...Array(c.truePos).fill('tp'),
-		...Array(c.falseNeg).fill('fn'),
-		...Array(c.falsePos).fill('fp'),
-		...Array(c.trueNeg).fill('tn')
+		...Array<'fn'>(c.falseNeg).fill('fn'),
+		...Array<'tp'>(c.truePos).fill('tp'),
+		...Array<'fp'>(c.falsePos).fill('fp'),
+		...Array<'tn'>(c.trueNeg).fill('tn')
+	];
+}
+
+/**
+ * The outline of the cells [a, b) of a grid filled row by row, `cols` wide:
+ * closed polygons with corners on grid lines, as (column, row) points.
+ */
+export function runOutline(a: number, b: number, cols: number): [number, number][][] {
+	if (b <= a) return [];
+	const ra = Math.floor(a / cols);
+	const ca = a % cols;
+	const rb = Math.floor((b - 1) / cols);
+	const cb = ((b - 1) % cols) + 1;
+	const box = (c0: number, r0: number, c1: number, r1: number): [number, number][] => [
+		[c0, r0],
+		[c1, r0],
+		[c1, r1],
+		[c0, r1]
+	];
+	if (ra === rb) return [box(ca, ra, cb, ra + 1)];
+	// two rows that don't overlap: two separate pieces
+	if (rb === ra + 1 && cb <= ca) return [box(ca, ra, cols, ra + 1), box(0, rb, cb, rb + 1)];
+	return [
+		[
+			[ca, ra],
+			[cols, ra],
+			[cols, rb],
+			[cb, rb],
+			[cb, rb + 1],
+			[0, rb + 1],
+			[0, ra + 1],
+			[ca, ra + 1]
+		]
 	];
 }
 
