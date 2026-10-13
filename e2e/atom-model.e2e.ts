@@ -5,6 +5,7 @@ import {
 	ORDER,
 	cell,
 	cloud,
+	density,
 	element,
 	identify,
 	isException,
@@ -100,4 +101,31 @@ test('orbital clouds: 90% of the 1s electron lies within ~2.7 Bohr radii; p has 
 	const p = cloud('2p', 2000, 5);
 	expect(p.filter((q) => q.sign > 0).length / p.length).toBeCloseTo(0.5, 1);
 	expect(p.every((q) => Math.sign(q.z) === q.sign || q.z === 0)).toBe(true);
+});
+
+test("orbital nodes: hydrogen's 2s and 3p have a zero-density sphere, 3d a zero-density cone", () => {
+	// Textbook nodes: 2s at r = 2 a₀, 3p at r = 6 a₀, 3d_z² where cos²θ = 1/3.
+	expect(density('2s', 2, 0, 0)).toBeCloseTo(0, 12);
+	expect(density('2s', 1, 0, 0)).toBeGreaterThan(0.01);
+	expect(density('3p', 0, 0, 6)).toBeCloseTo(0, 12);
+	expect(density('3p', 0, 0, 3)).toBeGreaterThan(0.01);
+	const theta = Math.acos(1 / Math.sqrt(3));
+	expect(density('3d', 5 * Math.sin(theta), 0, 5 * Math.cos(theta))).toBeCloseTo(0, 12);
+	expect(density('3d', 0, 0, 5)).toBeGreaterThan(0.01);
+});
+
+test('every subshell in the measured configurations is in the filling order', () => {
+	const known = new Set(ORDER.map((s) => s.label));
+	for (const e of ELEMENTS)
+		for (const k of parseConfig(e.config).keys()) expect(known).toContain(k);
+});
+
+test('stable isotopes: only those with no decay ever observed', () => {
+	// Decay observed: Kr-78 (double electron capture), Xe-124 (XENON1T, 2019), Ba-130
+	// (geochemical), like Te-128/130 and Bi-209, which the data already leaves out.
+	expect(element(36).stable).not.toContain(78);
+	expect(element(54).stable).not.toContain(124);
+	expect(element(56).stable).not.toContain(130);
+	expect(element(52).stable).not.toContain(130);
+	expect(element(54).stable).toContain(132);
 });

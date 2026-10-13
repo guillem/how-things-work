@@ -25,6 +25,7 @@ export interface Element {
 	/** Group 1–18, or null for the lanthanides and actinides (f-block). */
 	group: number | null;
 	block: 's' | 'p' | 'd' | 'f';
+	/** Standard atomic weight (Da), or a long-lived isotope's mass (see `hasStandardWeight`). */
 	mass: number | null;
 	/** Covalent radius (pm). */
 	radius: number | null;
@@ -32,13 +33,32 @@ export interface Element {
 	ionization: number | null;
 	/** Pauling electronegativity. */
 	electronegativity: number | null;
-	/** Mass numbers of the stable isotopes found in nature. */
+	/** Mass numbers of the isotopes found in nature with no decay ever observed. */
 	stable: number[];
 }
 
 export const ELEMENTS = data.elements as Element[];
 export const SOURCES = data.fields as Record<string, string>;
 export const element = (z: number) => ELEMENTS[z - 1];
+
+/**
+ * False for the elements with no standard atomic weight (Tc, Pm, Po–Ac, Np onwards): their
+ * `mass` is that of a long-lived isotope, shown as its mass number in brackets.
+ */
+export const hasStandardWeight = (z: number) =>
+	!(z === 43 || z === 61 || (z >= 84 && z <= 89) || z >= 93);
+
+/** The mass as shown: "12.01", or "[209]" where there is no standard atomic weight. */
+export function massText(e: Element, digits = 2) {
+	if (e.mass === null) return '';
+	return hasStandardWeight(e.z) ? e.mass.toFixed(digits) : `[${Math.round(e.mass)}]`;
+}
+
+/**
+ * Calculated, not measured: the configurations from rutherfordium (Z = 104) on, and the
+ * ionization energies there (Rf–Hs; the rest have none in the data).
+ */
+export const isPredicted = (z: number) => z >= 104;
 
 // ------------------------------------------------------------ subshells
 

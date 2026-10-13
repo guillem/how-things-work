@@ -27,7 +27,7 @@ test('filling 24 electrons shows chromium and its exception to the filling rule'
 
 test('the orbital cloud turns with the arrow keys without leaving the step', async ({ page }) => {
 	await page.goto('./atoms-periodic-table/#orbitals');
-	await expect(stage(page)).toContainText('90% of the time inside here');
+	await expect(stage(page)).toContainText('90% of the timeinside this sphere');
 	const turn = stage(page).locator('[role=slider]');
 	await turn.focus();
 	await page.keyboard.press('ArrowRight');
@@ -53,4 +53,40 @@ test('colouring the table by another property changes the legend and its unit', 
 	await page.keyboard.press('ArrowRight');
 	await expect(stage).toContainText('Magnesium');
 	await expect(page).toHaveURL(/#trends$/);
+});
+
+test('an atom can hold one extra electron, but not two', async ({ page }) => {
+	await page.goto('./atoms-periodic-table/#build');
+	const add = page.locator('.action button[data-control=addElectron]');
+	await add.click();
+	await expect(stage(page)).toContainText('ion: −1');
+	await expect(stage(page)).not.toContainText("can't hold");
+	await add.click();
+	await expect(stage(page)).toContainText('ion: −2');
+	await expect(stage(page)).toContainText("An isolated atom can't hold this many extra");
+});
+
+test('the atom built in the first step is the one whose electrons fill in the next', async ({
+	page
+}) => {
+	await page.goto('./atoms-periodic-table/#build');
+	// Carbon, neutral: its shells hold 2 and 4.
+	await expect(stage(page)).toContainText('Shells, if neutral: 2 · 4');
+	await page.locator('.action button[data-control=addProton]').click();
+	await expect(stage(page)).toContainText('Shells, if neutral: 2 · 5');
+	await page.getByRole('button', { name: 'Next step' }).click();
+	await expect(page).toHaveURL(/#shells$/);
+	await expect(page.locator('input[type=range][data-control=fillTo]')).toHaveValue('7');
+	await expect(stage(page)).toContainText('Nitrogen (N)');
+});
+
+test('the card marks predicted values, and mass numbers where there is no standard weight', async ({
+	page
+}) => {
+	await page.goto('./atoms-periodic-table/#trends');
+	await page.getByRole('slider', { name: /Periodic table/ }).focus();
+	await page.keyboard.press('End');
+	await expect(stage(page)).toContainText('Oganesson');
+	await expect(stage(page)).toContainText('[294]');
+	await expect(stage(page)).toContainText('(predicted)');
 });

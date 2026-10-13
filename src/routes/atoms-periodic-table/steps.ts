@@ -93,7 +93,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [addProton, removeProton, addNeutron, removeNeutron, addElectron, removeElectron],
 			body: `
-<p>Every atom has a tiny, heavy <dfn data-def="The centre of an atom, made of protons and neutrons, about 25,000 to 60,000 times smaller than the atom itself.">nucleus</dfn> of <strong>protons</strong> (positive) and <strong>neutrons</strong> (no charge), surrounded by much lighter <strong>electrons</strong> (negative).</p>
+<p>Every atom has a tiny, heavy <dfn data-def="The centre of an atom, made of protons and neutrons, about 25,000 to 60,000 times smaller than the atom itself.">nucleus</dfn> of <strong>protons</strong> (positive) and, in all but ordinary hydrogen, <strong>neutrons</strong> (no charge), surrounded by much lighter <strong>electrons</strong> (negative).</p>
 <p>Add protons and watch the element change: the number of protons — the <dfn data-def="The number of protons in an atom's nucleus. It decides which element the atom is.">atomic number</dfn> — is what makes an atom carbon or iron or gold. Neutrons change only the mass (different <dfn data-def="Atoms of the same element with different numbers of neutrons.">isotopes</dfn>, some stable and some radioactive). Electrons balance the charge: one more or fewer than the protons and the atom becomes an <strong>ion</strong>.</p>`,
 			notes: `<p>The drawing can't be to scale: if the nucleus were the size of a pea, the atom would be the size of a football stadium. Element data on this page comes from the open mendeleev database: ionization energies from NIST, covalent radii from Cordero et al. (2008), standard atomic weights from IUPAC, electronegativities on the Pauling scale (from the CRC Handbook of Chemistry and Physics).</p>`
 		},
@@ -107,8 +107,9 @@ export const spec: ExplainerSpec = {
 			controls: [fillTo],
 			body: `
 <p>Electrons are arranged in <strong>shells</strong> around the nucleus, and each shell is made of <dfn data-def="Groups of orbitals within a shell, labelled s, p, d and f, holding up to 2, 6, 10 and 14 electrons.">subshells</dfn> called s, p, d and f, holding 2, 6, 10 and 14 electrons. The first shell has only an s subshell (2 electrons); the second has s and p (2 + 6 = 8); the third s, p and d.</p>
-<p>Electrons fill the subshells in a set order: 1s, 2s, 2p, 3s, 3p, then <strong>4s before 3d</strong>, and so on. Slide the number of electrons up and watch each element's place in the table light up as its last electron goes in.</p>`,
-			notes: `<p>The order follows the "n + ℓ" (Madelung) rule. A score or so of elements break it slightly — chromium and copper, for example, move one electron from 4s to 3d, because half-filled and filled d subshells are especially stable. The page always shows each element's measured configuration (predicted, for a few of the heaviest) and marks these exceptions.</p>
+<p>Electrons fill the subshells in a set order: 1s, 2s, 2p, 3s, 3p, then <strong>4s before 3d</strong>, and so on. Slide the number of electrons up and watch each element's place in the table light up as its last electron goes in.</p>
+<p>In the diagram each box is one orbital, a place for two electrons, drawn ↑ and ↓ because their spins are opposite. Within a subshell, electrons spread out one per box before they pair up.</p>`,
+			notes: `<p>The order follows the "n + ℓ" (Madelung) rule, where n is the shell number and ℓ is 0, 1, 2, 3 for s, p, d, f: subshells fill in order of n + ℓ, lower n first on a tie. A score or so of elements break it slightly — chromium and copper, for example, move one electron from 4s to 3d, because half-filled and filled d subshells are especially stable. The page always shows each element's measured configuration (predicted, for a few of the heaviest) and marks these exceptions.</p>
 <p>The order is a rule for filling, not a fixed energy ladder: once 3d holds electrons it lies below 4s, which is why iron loses its 4s electrons first when it becomes Fe²⁺.</p>`
 		},
 		{
@@ -132,9 +133,10 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'blocks' },
 			duration: 26,
 			body: `
-<p>Now look at the whole periodic table, coloured by which subshell each element's last electron goes into. The pattern is the filling order: two columns of s on the left, six of p on the right, ten of d in the middle — and the fourteen f columns usually printed below so that the table fits on a page.</p>
+<p>Now look at the whole periodic table, coloured by block: the kind of subshell (s, p, d or f) that is filling across that stretch of the table. The pattern is the filling order: two columns of s on the left, six of p on the right, ten of d in the middle — and the fourteen f columns usually printed below so that the table fits on a page.</p>
 <p>Each <strong>row</strong> (period) starts a new shell. Each <strong>column</strong> (group) collects elements with the same arrangement of outer electrons. The table's shape isn't a convention; it is <strong>how electrons fill shells</strong>.</p>`,
-			notes: `<p>Dmitri Mendeleev published his table in 1869 by ordering the elements by mass and grouping similar ones, leaving gaps for elements not yet discovered — and predicting their properties. Why it worked was only understood once electron shells were, in the 1920s.</p>`
+			notes: `<p>Dmitri Mendeleev published his table in 1869 by ordering the elements by mass and grouping similar ones, leaving gaps for elements not yet discovered — and predicting their properties. Why it worked was only understood once electron shells were, in the 1920s.</p>
+<p>Which elements belong under scandium and yttrium is still debated; IUPAC's Group 3 project leans towards lutetium and lawrencium. This table follows the common school layout, with lanthanum and actinium starting the two f rows.</p>`
 		},
 		{
 			id: 'trends',
