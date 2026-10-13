@@ -24,7 +24,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { clamp, smoothstep, startDrag, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		PRESETS,
 		parseGrid,
@@ -370,14 +370,27 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		{@render txt(X, 46, u.name, 16, { weight: 600 })}
-		{#if u.done}
-			{@render txt(X + gw, 46, u.r.path.length ? 'goal reached' : 'no route', 12, {
-				anchor: 'end',
-				color: u.r.path.length ? 'var(--gs-path)' : undefined,
-				muted: !u.r.path.length
-			})}
-		{/if}
+		<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+		<Readout
+			id="panel-{u.algo}"
+			order={1 + p}
+			label="{p + 1} · {u.name}"
+			value="{u.count} visited"
+			note={u.done && u.r.path.length
+				? `cost ${u.r.cost} · ${u.r.path.length - 1} steps${u.r.cost === cheapest ? ' · cheapest' : ''}`
+				: routeText(u)}
+			marker={p + 1}
+			at={[X + gw / 2, 40]}
+		>
+			{@render txt(X, 46, u.name, 16, { weight: 600 })}
+			{#if u.done}
+				{@render txt(X + gw, 46, u.r.path.length ? 'goal reached' : 'no route', 12, {
+					anchor: 'end',
+					color: u.r.path.length ? 'var(--gs-path)' : undefined,
+					muted: !u.r.path.length
+				})}
+			{/if}
+		</Readout>
 
 		<!-- map -->
 		<rect x={X} y={GY} width={gw} height={gh} fill="var(--gs-ground)" />
@@ -510,38 +523,44 @@
 		/>
 
 		<!-- readouts -->
-		{@render txt(X, GY + gh + 30, `visited ${plural(u.count, 'square')}`, 15, {
-			weight: 600,
-			color: 'var(--gs-visited-far)',
-			data: 'visited'
-		})}
-		{@render txt(X, GY + gh + 54, routeText(u), 13, {
-			muted: !u.done,
-			data: u.done && u.r.path.length ? 'route' : undefined
-		})}
+		<Readout id="under-{u.algo}">
+			{@render txt(X, GY + gh + 30, `visited ${plural(u.count, 'square')}`, 15, {
+				weight: 600,
+				color: 'var(--gs-visited-far)',
+				data: 'visited'
+			})}
+			{@render txt(X, GY + gh + 54, routeText(u), 13, {
+				muted: !u.done,
+				data: u.done && u.r.path.length ? 'route' : undefined
+			})}
+		</Readout>
 	{/each}
 
 	<!-- legend -->
 	{#each [{ c: 'var(--gs-start)', l: 'start' }, { c: 'var(--gs-goal)', l: 'goal' }, { c: 'var(--gs-mud)', l: 'mud (costs 5)' }, { c: 'var(--gs-wall)', l: 'wall' }, { c: frontierFill(false), l: 'frontier' }, { c: 'var(--gs-path)', l: 'route' }] as item, i (item.l)}
 		{@const lx = 24 + [0, 62, 120, 234, 290, 368][i]}
-		<rect
-			x={lx}
-			y={288}
-			width="12"
-			height="12"
-			rx={i < 2 ? 6 : 3}
-			style:fill={item.c}
-			stroke={item.l === 'frontier' ? 'var(--gs-frontier)' : 'none'}
-			stroke-width="1.5"
-		/>
-		{@render txt(lx + 17, 299, item.l, 12, { muted: true })}
+		<Readout id="legend-{i}" order={20 + i} label={i < 2 ? undefined : item.l} color={item.c}>
+			<rect
+				x={lx}
+				y={288}
+				width="12"
+				height="12"
+				rx={i < 2 ? 6 : 3}
+				style:fill={item.c}
+				stroke={item.l === 'frontier' ? 'var(--gs-frontier)' : 'none'}
+				stroke-width="1.5"
+			/>
+			{@render txt(lx + 17, 299, item.l, 12, { muted: true })}
+		</Readout>
 	{/each}
-	{#each [0, 2, 4, 6] as b (b)}
-		<rect x={452 + b * 7} y={288} width="7" height="12" style:fill={shade(b)} />
-	{/each}
-	{@render txt(506, 299, `visited: ${dark ? 'brighter' : 'darker'} = costlier to reach`, 12, {
-		muted: true
-	})}
+	<Readout id="shades">
+		{#each [0, 2, 4, 6] as b (b)}
+			<rect x={452 + b * 7} y={288} width="7" height="12" style:fill={shade(b)} />
+		{/each}
+		{@render txt(506, 299, `visited: ${dark ? 'brighter' : 'darker'} = costlier to reach`, 12, {
+			muted: true
+		})}
+	</Readout>
 
 	<!-- summary -->
 	<rect
@@ -553,12 +572,16 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	{@render txt(SX, SY + 32, 'Squares visited before reaching the goal', 15, { weight: 600 })}
-	{@render txt(700, SY + 32, 'Route found', 15, { weight: 600 })}
+	<Readout id="summary-titles">
+		{@render txt(SX, SY + 32, 'Squares visited before reaching the goal', 15, { weight: 600 })}
+		{@render txt(700, SY + 32, 'Route found', 15, { weight: 600 })}
+	</Readout>
 	{#each panels as u, p (u.algo)}
 		{@const y = SY + 74 + p * 46}
 		{@const w = ((BAR1 - BAR0) * u.count) / barMax}
-		{@render txt(SX, y + 5, u.name, 14, { weight: 600 })}
+		<Readout id="summary-name-{u.algo}">
+			{@render txt(SX, y + 5, u.name, 14, { weight: 600 })}
+		</Readout>
 		<rect
 			x={BAR0}
 			y={y - 11}
@@ -576,37 +599,43 @@
 			rx="4"
 			fill="var(--gs-visited-far)"
 		/>
-		{@render txt(BAR0 + w + 8, y + 5, String(u.count), 14, { weight: 600 })}
-		{#if u.done && u.r.path.length}
-			{@render txt(700, y + 5, `cost ${u.r.cost}`, 14, {
-				weight: 600,
-				color: 'var(--gs-path)',
-				data: 'cost'
-			})}
-			{@render txt(
-				772,
-				y + 5,
-				`${u.r.path.length - 1} steps${u.r.cost === cheapest ? ' · cheapest' : ''}`,
-				13,
-				{ muted: true }
-			)}
-		{:else}
-			{@render txt(700, y + 5, u.done ? 'none' : 'searching…', 14, { muted: true })}
-		{/if}
+		<Readout id="summary-text-{u.algo}">
+			{@render txt(BAR0 + w + 8, y + 5, String(u.count), 14, { weight: 600 })}
+			{#if u.done && u.r.path.length}
+				{@render txt(700, y + 5, `cost ${u.r.cost}`, 14, {
+					weight: 600,
+					color: 'var(--gs-path)',
+					data: 'cost'
+				})}
+				{@render txt(
+					772,
+					y + 5,
+					`${u.r.path.length - 1} steps${u.r.cost === cheapest ? ' · cheapest' : ''}`,
+					13,
+					{ muted: true }
+				)}
+			{:else}
+				{@render txt(700, y + 5, u.done ? 'none' : 'searching…', 14, { muted: true })}
+			{/if}
+		</Readout>
 	{/each}
 	<line x1={SX} x2={920} y1={SY + 200} y2={SY + 200} stroke="var(--border)" />
 	{#if allDone}
-		{@render txt(SX, SY + 228, takeaway[0], 14)}
-		{@render txt(SX, SY + 252, takeaway[1], 14)}
+		<Readout id="takeaway" order={10} label="In short" value={takeaway[0]}>
+			{@render txt(SX, SY + 228, takeaway[0], 14)}
+			{@render txt(SX, SY + 252, takeaway[1], 14)}
+		</Readout>
 	{:else}
-		{@render txt(
-			SX,
-			SY + 240,
-			'The three searches run at the same speed, one square at a time…',
-			14,
-			{
-				muted: true
-			}
-		)}
+		<Readout id="running">
+			{@render txt(
+				SX,
+				SY + 240,
+				'The three searches run at the same speed, one square at a time…',
+				14,
+				{
+					muted: true
+				}
+			)}
+		</Readout>
 	{/if}
 </g>

@@ -216,6 +216,39 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText('200 fits in 8 bits');
 	});
 
+	test('graph-search grid: the search counts and the route are text and follow the estimate', async ({
+		page
+	}) => {
+		await page.goto('./graph-search/#estimate');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/A\*\s*46 squares visited/);
+		await expect(panel).toContainText(/Route found\s*21 steps · cost 21/);
+		await expect(drawing(page)).not.toContainText('squares visited');
+		await range(page, 'estimate').fill('5');
+		await expect(panel).toContainText(/A\* · estimate × 5\s*\d+ squares visited/);
+	});
+
+	test('graph-search race: each search’s count and the takeaway are text', async ({ page }) => {
+		await page.goto('./graph-search/#compare');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/1 · Breadth-first.*\s*\d+ visited/);
+		await expect(panel).toContainText(/3 · A\*\s*\d+ visited\s*cost \d+ · \d+ steps · cheapest/);
+		await expect(panel).toContainText(/In short\s*A\* looked at \d+ squares/);
+		await expect(drawing(page)).not.toContainText('Squares visited before reaching the goal');
+	});
+
+	test('graph-search roads: the route and the towns looked at are text and follow the method', async ({
+		page
+	}) => {
+		await page.goto('./graph-search/#roads');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Shortest route\s*Ashford → .* = \d+ km/);
+		await expect(panel).toContainText(/Towns looked at\s*Dijkstra: 9/);
+		await expect(drawing(page)).not.toContainText('looked at');
+		await page.locator('button[data-control=roadAlgo][data-value=astar]').click();
+		await expect(panel).toContainText(/Towns looked at\s*A\*: 7/);
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');
