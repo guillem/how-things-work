@@ -40,6 +40,9 @@ test('air resistance shortens the flight and lowers the best angle', () => {
 	const k = 0.02;
 	expect(summary(flight(30, 45, k)).range).toBeLessThan(summary(flight(30, 45, 0)).range * 0.8);
 	expect(bestAngle(30, k)).toBeLessThan(45);
+	// "the best angle drops to the mid-30s" (30 m/s, the slider's strong drag)
+	expect(bestAngle(30, 0.05)).toBeGreaterThanOrEqual(34);
+	expect(bestAngle(30, 0.05)).toBeLessThanOrEqual(38);
 	// Energy only decreases with drag.
 	const path = flight(30, 45, k);
 	const e = path.map((p) => 0.5 * (p.vx ** 2 + p.vy ** 2) + G * p.y);
@@ -78,6 +81,9 @@ test('a push follows F = m·a, and without friction the cart keeps going', () =>
 	const f = push(2, 10, 1, 0.1);
 	expect(f.a).toBeCloseTo((10 - 0.1 * 2 * G) / 2, 10);
 	expect(f.v(100)).toBe(0); // friction stops it
+	// A push weaker than friction's grip doesn't move the cart at all.
+	expect(push(5, 2, 1, 0.05).a).toBe(0);
+	expect(push(5, 2, 1, 0.05).x(10)).toBe(0);
 });
 
 test('on a frictionless track energy is conserved; with friction the loss is heat', () => {
@@ -87,7 +93,9 @@ test('on a frictionless track energy is conserved; with friction the loss is hea
 	const e0 = free[0].kinetic + free[0].potential;
 	for (const s of free) expect((s.kinetic + s.potential) / e0).toBeCloseTo(1, 2); // within 0.5%
 	const rough = ride(track, m, 0.05, 20);
-	for (const s of rough) expect((s.kinetic + s.potential + s.dissipated) / e0).toBeCloseTo(1, 2);
+	// Heat is the work done against friction; with it, the total stays the same.
+	for (const s of rough)
+		expect(Math.abs(e0 - s.kinetic - s.potential - s.dissipated) / e0).toBeLessThan(0.005);
 	expect(rough[rough.length - 1].dissipated).toBeGreaterThan(0.2 * e0);
 	// The track passes through its control heights.
 	expect(track.h(0)).toBeCloseTo(10, 10);

@@ -10,7 +10,7 @@
 	 *   pressure — the pressure plot in focus, with the moments the aortic
 	 *              valve is open (blood out) and the mitral valve is open
 	 *              (filling) shaded; blood pressure readouts
-	 *   rate     — heart rate from the slider; stroke volume, output, oxygen
+	 *   rate     — heart rate from the slider; blood pressure, stroke volume, output, oxygen
 	 *   narrow   — artery width from the slider; the healthy curves dashed
 	 *   leak     — leaky valve and its gap from the controls; the backward jet
 	 *              on the heart; the healthy curves dashed
@@ -167,7 +167,7 @@
 						id: 'qt',
 						label: 'QRS to end of T',
 						value: `${T.qt.toFixed(2)} s`,
-						sub: 'ventricles on'
+						sub: 'ventricles active'
 					},
 					{
 						id: 'sync',
@@ -204,7 +204,13 @@
 				];
 			case 'rate':
 				return [
-					{ id: 'hr', label: 'heart rate', value: `${m.hr}/min`, sub: 'beats per minute' },
+					{
+						id: 'bp',
+						label: 'blood pressure',
+						value: bp(m.aorta),
+						sub: 'systolic/diastolic',
+						color: 'var(--hc-oxy)'
+					},
 					{
 						id: 'sv',
 						label: 'stroke volume',

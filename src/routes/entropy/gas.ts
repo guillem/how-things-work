@@ -431,6 +431,15 @@ export function mostLikelyShare(nL: number, nR: number, Q: number) {
 }
 
 /**
+ * Temperature (on the box's scale, where the average is 2.5) of a group of n
+ * of the nTotal particles holding q packets. Counting gives Ω ∝ q^(n−1), so
+ * 1/kT = d ln Ω/dq makes the temperature ∝ q/(n − 1); the factor
+ * (nTotal − 2)/nTotal keeps two equal groups at the box's scale.
+ */
+export const shareTemperature = (q: number, n: number, nTotal: number) =>
+	((2.5 * q) / (PACKETS_PER_PARTICLE * (n - 1))) * ((nTotal - 2) / nTotal);
+
+/**
  * ln Ω of the gas's macrostate (k particles in the left half holding energy
  * eL, the rest holding eR), up to a constant that is the same for every
  * macrostate of the same gas: which particles are on the left, C(N, k), times

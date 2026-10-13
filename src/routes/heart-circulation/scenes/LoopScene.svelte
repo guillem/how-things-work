@@ -261,7 +261,16 @@
 		opacity="0.45"
 	/>
 
-	<Heart {beat} {beats} x={HX} y={HY} scale={HS} signal={0} vessels={false} tubes={0.45} />
+	<Heart
+		{beat}
+		{beats}
+		x={HX}
+		y={HY}
+		scale={HS}
+		signal={phase === 'summary' ? 1 : 0}
+		vessels={false}
+		tubes={0.45}
+	/>
 	<text
 		x={X(126)}
 		y={Y(318)}

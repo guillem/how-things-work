@@ -24,6 +24,20 @@ test('with R₀ below 1 the outbreak dies out', async ({ page }) => {
 	await playUntil(page, stage(page), /Died out on day \d+/, 15_000);
 });
 
+test('in a vaccinated crowd the tally counts the unvaccinated who never caught it', async ({
+	page
+}) => {
+	await page.clock.install();
+	await open(page, './epidemics/#vaccination');
+	await page.locator('input[type=range][data-control=vaccinated]').fill('30');
+	await playUntil(
+		page,
+		stage(page),
+		/Over by day \d+: \d+ caught it, \d+ unvaccinated never did/,
+		90_000
+	);
+});
+
 test('controls only affect the steps that show them', async ({ page }) => {
 	await open(page, './epidemics/#vaccination');
 	await page.locator('input[type=range][data-control=vaccinated]').fill('80');

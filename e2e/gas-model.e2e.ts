@@ -17,6 +17,7 @@ import {
 	lnWaysGasMax,
 	mostLikelyShare,
 	shareCurve,
+	shareTemperature,
 	temperature,
 	toLog10
 } from '../src/routes/entropy/gas';
@@ -106,7 +107,7 @@ test('with the wall in place the temperatures stay apart; without it they equali
 		const l = mean(10, 24, (s) => temps(run, s).left);
 		const r = mean(10, 24, (s) => temps(run, s).right);
 		expect(Math.abs(l - r)).toBeLessThan(0.35);
-		expect((l + r) / 2).toBeCloseTo(2.45, 0);
+		expect((l + r) / 2).toBeCloseTo(2.45, 1);
 	}
 });
 
@@ -154,4 +155,37 @@ test('reversing every velocity retraces the past exactly; a tiny nudge spoils it
 		expect(t.left).toBeLessThan(3.4);
 		expect(t.right).toBeGreaterThan(1.6);
 	}
+});
+
+test('the most likely share of energy sits at equal temperatures, whatever the group sizes', () => {
+	for (const [nL, nR] of [
+		[40, 40],
+		[5, 100],
+		[20, 60],
+		[100, 5]
+	]) {
+		const N = nL + nR;
+		const Q = PACKETS_PER_PARTICLE * N;
+		const q = mostLikelyShare(nL, nR, Q);
+		const tL = shareTemperature(q, nL, N);
+		const tR = shareTemperature(Q - q, nR, N);
+		expect(Math.abs(tL - tR), `${nL} vs ${nR}`).toBeLessThan(0.02);
+	}
+	// The 40/40 start: four times the energy per particle on the left, 4.0 against 1.0.
+	expect(shareTemperature((4 / 5) * 4000, 40, 80)).toBeCloseTo(4, 10);
+	expect(shareTemperature((1 / 5) * 4000, 40, 80)).toBeCloseTo(1, 10);
+});
+
+test('once mixed, single-particle energies follow the 2D Maxwell–Boltzmann law', () => {
+	// In a plane that law is exponential: the spread of the energies equals their mean, kT.
+	const kes: number[] = [];
+	for (const seed of [1, 2, 3]) {
+		const run = new GasRun({ ...DEFAULT_GAS, wallUntil: 1.5, seed });
+		for (let s = 10; s <= 24; s += 0.5) kes.push(...run.frame(at(s)).ke);
+	}
+	const m = kes.reduce((a, b) => a + b, 0) / kes.length;
+	const sdev = Math.sqrt(kes.reduce((a, b) => a + (b - m) ** 2, 0) / kes.length);
+	expect(m / E0).toBeCloseTo(2.45, 1);
+	expect(sdev / m).toBeGreaterThan(0.9);
+	expect(sdev / m).toBeLessThan(1.1);
 });

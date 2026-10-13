@@ -244,12 +244,16 @@ export class Crowd {
 				// Anyone else, chosen at random ("well mixed").
 				let j = Math.floor(this.#rand() * (n - 1));
 				if (j >= k) j++;
+				// A meeting after the case's infectious period ended (within this
+				// step) doesn't happen: recovery is only counted at the step's end.
+				const when = day + this.#rand() * DT;
+				if (when >= this.recoversAt[k]) continue;
 				const infected =
 					this.state[j] === State.Susceptible &&
 					this.#rand() < this.#chance &&
 					!newly.some(([w]) => w === j);
 				if (infected) newly.push([j, k]);
-				this.contacts.push({ from: k, to: j, day: day + this.#rand() * DT, infected });
+				this.contacts.push({ from: k, to: j, day: when, infected });
 			}
 		}
 
@@ -360,7 +364,7 @@ export function finalSize(r0: number, vaccinated = 0) {
 /** Share of the population that must be immune for an outbreak to shrink: 1 − 1/R0. */
 export const herdThreshold = (r0: number) => Math.max(0, 1 - 1 / r0);
 
-/** Effective reproduction number when a share `immune` of people cannot be infected. */
+/** Effective reproduction number when a share `susceptibleShare` of people can still be infected. */
 export const effectiveR = (r0: number, susceptibleShare: number) => r0 * susceptibleShare;
 
 /**

@@ -104,6 +104,16 @@ test('vaccinating above the threshold protects the unvaccinated', () => {
 	expect(total / 100).toBeLessThan(15);
 });
 
+test('a case meets people only while infectious, not after recovering', () => {
+	for (const days of [2, 7]) {
+		const c = crowd({ days, population: 2000, initial: 20 });
+		c.advanceTo(1000);
+		const late = c.contacts.filter((m) => m.day >= c.recoversAt[m.from]);
+		expect(late.length, `infectious for ${days} days`).toBe(0);
+		expect(c.contacts.length).toBeGreaterThan(100);
+	}
+});
+
 test('a run is deterministic for a given seed', () => {
 	const a = crowd({ seed: 42 });
 	const b = crowd({ seed: 42 });

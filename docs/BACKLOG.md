@@ -77,9 +77,6 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 
 - **logic-gates** — the catalogue's 4-bit-adder challenge is a "connect the carries" task on the ripple step (wire three carry links; a checker counts the pairs added right), not a build from gates; a gate-level build would need a multi-output full-adder block on the canvas and a 9-input checker (~4–6 h).
 
-- **central-limit-theorem** — on small Galton boards (2–10 rows) a falling ball lands at the bin's
-  centre, then snaps sideways to its slot in the level; balls on that level re-centre as it fills.
-
 - **atmosphere-weather** — the cold/warm/stationary front classification lives in `MapScene`
   and has no test; moving it into `atmosphere.ts` would allow a model test.
 

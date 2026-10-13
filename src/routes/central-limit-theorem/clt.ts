@@ -108,3 +108,57 @@ export const SHAPES: Record<string, Shape> = {
 	twoHumps: Array.from({ length: BINS }, (_, i) => (i < 4 || i > 15 ? 5 : 0.2)),
 	dice: Array.from({ length: BINS }, (_, i) => (i % 3 === 1 && i < 18 ? 1 : 0))
 };
+
+const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : Math.abs(a));
+
+/**
+ * The bars of the histogram of sample means (averages of n draws from w),
+ * each `width` wide in value units, bar b starting at `left(b)`.
+ *
+ * An average of n bar centres is (i₁ + … + iₙ + n/2) / (BINS·n). If the
+ * non-empty bars are i0 + g·k, the sums lie on the lattice n·i0 + g·j, so
+ * each bar holds exactly c lattice points (no aliasing stripes, e.g. from
+ * the Spiky shape, whose bars are 3 apart). c gives about four bars per
+ * σ/√n, and bars at least 0.01 wide. With n = 1 every average is one bar's
+ * value, so the bars are the starting shape's own 20 (gaps included).
+ */
+export function meanBars(w: Shape, n: number) {
+	if (n <= 1)
+		return {
+			count: BINS,
+			width: 1 / BINS,
+			barOf: (m: number) => Math.min(BINS - 1, Math.floor(m * BINS)),
+			left: (b: number) => b / BINS
+		};
+	const idx = w.flatMap((h, i) => (h > 0 ? [i] : []));
+	const i0 = idx[0] ?? 0;
+	const g = Math.max(
+		1,
+		idx.reduce((q, i) => gcd(q, i - i0), 0)
+	);
+	const sdN = sd(w) / Math.sqrt(n);
+	const c = Math.max(1, Math.ceil((Math.max(sdN / 4, 0.01) * BINS * n) / g));
+	const span = Math.max(0, (idx.at(-1) ?? i0) - i0) * n; // sums from n·i0 to n·i_last
+	const scale = BINS * n;
+	return {
+		count: Math.floor(span / g / c) + 1,
+		width: (c * g) / scale,
+		barOf: (m: number) => Math.floor(Math.round((m * scale - n / 2 - n * i0) / g) / c),
+		left: (b: number) => (n * i0 + n / 2 + g * (b * c - 0.5)) / scale
+	};
+}
+
+/** The error function (Abramowitz & Stegun 7.1.26, error below 1.5·10⁻⁷). */
+export function erf(x: number) {
+	const t = 1 / (1 + 0.3275911 * Math.abs(x));
+	const y =
+		1 -
+		((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) *
+			t *
+			Math.exp(-x * x);
+	return x < 0 ? -y : y;
+}
+
+/** The chance that a normal value with mean mu and spread sigma lies in [a, b). */
+export const normalChance = (a: number, b: number, mu: number, sigma: number) =>
+	0.5 * (erf((b - mu) / (sigma * Math.SQRT2)) - erf((a - mu) / (sigma * Math.SQRT2)));

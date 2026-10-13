@@ -223,7 +223,7 @@
 				: `Day ${Math.floor(day)}: ${infectedTotal} caught it so far`
 			: fizzled
 				? `Died out on day ${Math.floor(end)} after ${crowd.counts.r} case${crowd.counts.r === 1 ? '' : 's'}`
-				: `Over by day ${Math.floor(end)}: ${crowd.counts.r} caught it, ${crowd.counts.s} never did`
+				: `Over by day ${Math.floor(end)}: ${crowd.counts.r} caught it, ${crowd.counts.s} ${crowd.counts.v > 0 ? 'unvaccinated ' : ''}never did`
 	);
 
 	const legend = $derived([

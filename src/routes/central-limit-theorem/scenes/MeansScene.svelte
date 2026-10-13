@@ -26,9 +26,9 @@
 	 * `params['shape:drawn']` as 20 comma-separated heights (0–1) and the
 	 * `shape` control switches to "drawn".
 	 *
-	 * Bottom-chart bins: the averages of n grid values lie on a grid of spacing
-	 * 1 / (20 n); the bin count is 20·d with d | n (d ≤ 4) so each bin covers the
-	 * same number of grid points (no aliasing stripes).
+	 * Bottom-chart bars: `meanBars` (clt.ts) puts the same number of possible
+	 * averages in every bar (no aliasing stripes). The bell is scaled to the
+	 * expected count per bar; a shape with no spread (one bar) shows no bell.
 	 *
 	 * Reduced motion: every sample has been taken; sample 0 rests in the strip.
 	 */
@@ -37,7 +37,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, lerp, smoothstep, scale, startDrag, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { BINS, SHAPES, mean, normalDensity, sampler, sd } from '../clt';
+	import { BINS, SHAPES, mean, meanBars, normalChance, normalDensity, sampler, sd } from '../clt';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -80,7 +80,7 @@
 
 	const nKey = $derived(phase === 'clt' ? 'sampleSize:clt' : 'sampleSize');
 	const n = $derived(clamp(Math.round(Number(params[nKey] ?? 1)), 1, 50));
-	const pace = $derived(clamp(Number(params.samplePace ?? 8), 1, 200));
+	const pace = $derived(clamp(Number(params.samplePace ?? 8), 0.25, 200));
 	const restarts = $derived(Number(params.restart ?? 0));
 
 	// ---- the run (draws and their averages) ---------------------------------------------
@@ -134,20 +134,27 @@
 	const barH = (i: number) => heights[i] * (TOP_BOT - TOP_Y - 6);
 
 	// ---- bottom histogram --------------------------------------------------------------------
+	const bars = $derived(meanBars(heights, n));
+	const barOf = (m: number) => clamp(bars.barOf(m), 0, bars.count - 1);
 	const counts = $derived.by(() => {
-		const c: number[] = new Array(B).fill(0);
-		for (let k = 0; k < taken; k++) c[Math.min(B - 1, Math.floor(run.means[k] * B + 1e-9))]++;
+		const c: number[] = new Array(bars.count).fill(0);
+		for (let k = 0; k < taken; k++) c[barOf(run.means[k])]++;
 		return c;
 	});
 	const sdN = $derived(sigma / Math.sqrt(n));
-	/** Bins: 20·d with d dividing n, about four per σ/√n, at most 100. */
-	const B = $derived.by(() => {
-		const target = clamp(4 / Math.max(sdN, 1e-6), BINS, 100);
-		let d = 1;
-		for (let q = 1; q <= n && BINS * q <= target; q++) if (n % q === 0) d = q;
-		return BINS * d;
-	});
-	const bellPeak = $derived((taken / B) * normalDensity(mu, mu, Math.max(sdN, 1e-6)));
+	/** No spread: every value the same (the reader drew a single bar). */
+	const flatLine = $derived(sigma < 1e-9);
+	/** Expected count in a bar centred on the mean (never more than all the samples). */
+	const bellPeak = $derived(
+		flatLine ? taken : taken * normalChance(mu - bars.width / 2, mu + bars.width / 2, mu, sdN)
+	);
+	/** The bell's expected count per bar at x. */
+	const bellAt = (x: number) => taken * bars.width * normalDensity(x, mu, Math.max(sdN, 1e-6));
+	/** A bar's left and right edges in pixels, clipped to the axis. */
+	const barX = (b: number) => {
+		const a = bars.left(b);
+		return [Math.max(X0, sx(a)), Math.min(X1, sx(a + bars.width))];
+	};
 	const H = BOT_BOT - BOT_TOP;
 	const unit = $derived(Math.min(H / 12, (H * 0.9) / Math.max(1, ...counts, bellPeak)));
 	const bellPath = $derived.by(() => {
@@ -155,22 +162,21 @@
 		const N = 160;
 		for (let i = 0; i <= N; i++) {
 			const x = i / N;
-			const y = BOT_BOT - (taken / B) * normalDensity(x, mu, Math.max(sdN, 1e-6)) * unit;
+			const y = BOT_BOT - bellAt(x) * unit;
 			d += `${i ? 'L' : 'M'}${sx(x).toFixed(1)} ${Math.max(BOT_TOP - 10, y).toFixed(1)}`;
 		}
 		return d;
 	});
 	/** Height of the bell at ±1 standard deviation (where its slope is steepest). */
-	const bellAtSd = $derived(
-		BOT_BOT - (taken / B) * normalDensity(mu + sdN, mu, Math.max(sdN, 1e-6)) * unit
-	);
+	const bellAtSd = $derived(BOT_BOT - bellAt(mu + sdN) * unit);
 
 	/** Highest bar (smallest y) of the bottom histogram over the pixel range [x0, x1]. */
 	function barTop(x0: number, x1: number) {
-		const w = (X1 - X0) / B;
 		let top = BOT_BOT;
-		for (let b = Math.max(0, Math.floor((x0 - X0) / w)); b < B && X0 + b * w < x1; b++)
-			if (counts[b] > 0) top = Math.min(top, BOT_BOT - counts[b] * unit);
+		counts.forEach((c, b) => {
+			const [a, e] = barX(b);
+			if (c > 0 && e > x0 && a < x1) top = Math.min(top, BOT_BOT - c * unit);
+		});
 		return top;
 	}
 	const LABEL_W = 34;
@@ -231,7 +237,7 @@
 		const m = run.means[k];
 		const markAmt = smoothstep(1.15, 1.4, u) * fade;
 		const slide = clamp((u - 1.6) / 0.6);
-		const binTop = BOT_BOT - counts[Math.min(B - 1, Math.floor(m * B + 1e-9))] * unit;
+		const binTop = BOT_BOT - counts[barOf(m)] * unit;
 		return {
 			k,
 			dots,
@@ -248,6 +254,8 @@
 	let focused = $state(false);
 	let last = -1;
 	function setHeights(next: number[]) {
+		// an empty chart has no distribution to draw from: keep the bar being changed
+		if (next.every((v) => v <= 0)) next[sel] = 0.05;
 		setParam('shape:drawn', next.map((v) => v.toFixed(2)).join(','));
 		if (shapeId !== 'drawn') setParam('shape', 'drawn');
 	}
@@ -409,7 +417,7 @@
 	{@render txt(sx(mu), TOP_Y - 18, `mean ${f2(mu)}`, 12, { anchor: 'middle', weight: 600 })}
 
 	<!-- ±σ on the starting distribution (clt) -->
-	{#if cltAmt.current > 0.01}
+	{#if cltAmt.current > 0.01 && !flatLine}
 		<g opacity={cltAmt.current}>
 			{@render span(mu, sigma, TOP_Y - 3, 'var(--clt-source)')}
 			{@render txt(sdLabel.x, TOP_Y + 1, 'σ', 12, {
@@ -454,10 +462,11 @@
 	<!-- the histogram of averages -->
 	{#each counts as c, b (b)}
 		{#if c > 0}
+			{@const [a, e] = barX(b)}
 			<rect
-				x={X0 + (b * (X1 - X0)) / B + 0.5}
+				x={a + 0.5}
 				y={BOT_BOT - c * unit}
-				width={(X1 - X0) / B - 1}
+				width={Math.max(1, e - a - 1)}
 				height={c * unit}
 				rx="1.5"
 				fill="var(--clt-means)"
@@ -479,7 +488,7 @@
 		/>
 	{/if}
 
-	{#if cltAmt.current > 0.01}
+	{#if cltAmt.current > 0.01 && !flatLine}
 		<g opacity={cltAmt.current}>
 			<path d={bellPath} fill="none" stroke="var(--clt-bell)" stroke-width="2.5" />
 			{@render span(mu, sdN, bellAtSd, 'var(--clt-bell)')}
@@ -522,9 +531,13 @@
 	})}
 	{#if cltAmt.current > 0.01}
 		<g opacity={cltAmt.current}>
-			<line x1={PL} x2={PL + 26} y1={496} y2={496} stroke="var(--clt-bell)" stroke-width="2.5" />
-			{@render txt(PL + 36, 500, 'bell curve: centre μ, width σ/√n', 12)}
-			{@render txt(PL, 524, '4 × the sample → ½ the spread', 12, { muted: true })}
+			{#if flatLine}
+				{@render txt(PL, 500, 'every value the same: no spread', 12, { muted: true })}
+			{:else}
+				<line x1={PL} x2={PL + 26} y1={496} y2={496} stroke="var(--clt-bell)" stroke-width="2.5" />
+				{@render txt(PL + 36, 500, 'bell curve: centre = mean, width σ/√n', 12)}
+				{@render txt(PL, 524, '4 × the sample → ½ the spread', 12, { muted: true })}
+			{/if}
 		</g>
 	{/if}
 </g>

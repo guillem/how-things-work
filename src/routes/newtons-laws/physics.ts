@@ -262,7 +262,6 @@ export function ride(
 	dt = 0.002
 ): RideSample[] {
 	const out: RideSample[] = [];
-	const h0 = track.h(0);
 	let x = 0;
 	let v = 0; // speed along the track
 	let dissipated = 0;
@@ -275,6 +274,9 @@ export function ride(
 	};
 	// dx/dt = v·cos(slope)
 	const dxdt = (x: number, v: number) => v / Math.sqrt(1 + track.dh(x) ** 2);
+	// Heat: the work done against friction, μ·m·g·cos(slope) × speed per second.
+	const dwdt = (x: number, v: number) =>
+		(mu * m * G * Math.abs(v)) / Math.sqrt(1 + track.dh(x) ** 2);
 	let t = 0;
 	const record = () =>
 		out.push({
@@ -295,12 +297,17 @@ export function ride(
 		} else {
 			const k1x = dxdt(x, v);
 			const k1v = accel(x, v);
+			const k1w = dwdt(x, v);
 			const k2x = dxdt(x + (k1x * dt) / 2, v + (k1v * dt) / 2);
 			const k2v = accel(x + (k1x * dt) / 2, v + (k1v * dt) / 2);
+			const k2w = dwdt(x + (k1x * dt) / 2, v + (k1v * dt) / 2);
 			const k3x = dxdt(x + (k2x * dt) / 2, v + (k2v * dt) / 2);
 			const k3v = accel(x + (k2x * dt) / 2, v + (k2v * dt) / 2);
+			const k3w = dwdt(x + (k2x * dt) / 2, v + (k2v * dt) / 2);
 			const k4x = dxdt(x + k3x * dt, v + k3v * dt);
 			const k4v = accel(x + k3x * dt, v + k3v * dt);
+			const k4w = dwdt(x + k3x * dt, v + k3v * dt);
+			dissipated += (dt / 6) * (k1w + 2 * k2w + 2 * k3w + k4w);
 			const nx = x + (dt / 6) * (k1x + 2 * k2x + 2 * k3x + k4x);
 			let nv = v + (dt / 6) * (k1v + 2 * k2v + 2 * k3v + k4v);
 			// Friction can stop the cart but never push it backwards.
@@ -317,9 +324,6 @@ export function ride(
 			}
 		}
 		t += dt;
-		// Whatever mechanical energy is missing went to heat (exact bookkeeping;
-		// with μ = 0 this stays at the integrator's tiny error).
-		dissipated = Math.max(0, m * G * h0 - 0.5 * m * v * v - m * G * track.h(x));
 		if (i % every === 0) record();
 	}
 	return out;

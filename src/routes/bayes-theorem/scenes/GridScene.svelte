@@ -2,10 +2,10 @@
 	/**
 	 * A crowd of 1,000 people as a 40 × 25 grid, coloured by who is ill and who
 	 * tests positive, with a readout card on the right. One <path> per group keeps
-	 * the node count tiny. Cells are filled row by row in the order false
-	 * negatives, true positives, false positives, true negatives: the ill stay one
-	 * block (the first `sick` cells) and so do the positives (the next run), so
-	 * each can be outlined as a single shape.
+	 * the node count tiny. Cells are filled row by row in the order of `grid()`
+	 * (false negatives, true positives, false positives, true negatives): the ill
+	 * stay one block (the first `sick` cells) and so do the positives (the next
+	 * run), so each can be outlined (`runOutline`).
 	 *
 	 * Phases (step.hints.phase): crowd (ill vs healthy), test (a sweep colours the
 	 * four groups), positives (negatives fade, positives outlined, readout), sliders
@@ -16,7 +16,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { EXAMPLE, counts, ppv, secondTest, type Test } from '../bayes';
+	import { EXAMPLE, counts, grid, ppv, runOutline, secondTest, type Test } from '../bayes';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -62,15 +62,9 @@
 	);
 	const c = $derived(counts(test, N));
 
-	/** Group of cell i, in the block order fn, tp, fp, tn. */
-	const groupOf = (i: number): Group =>
-		i < c.falseNeg
-			? 'fn'
-			: i < c.falseNeg + c.truePos
-				? 'tp'
-				: i < c.falseNeg + c.truePos + c.falsePos
-					? 'fp'
-					: 'tn';
+	/** Group of each cell, in the block order fn, tp, fp, tn. */
+	const cells = $derived(grid(c));
+	const groupOf = (i: number): Group => cells[i];
 
 	// The test sweeps across the grid column by column (only in the test step).
 	const SWEEP_START = 0.6;
@@ -112,19 +106,15 @@
 
 	/** Outline of the row-major run of cells [a, b), on the half-gap boundaries. */
 	function outline(a: number, b: number) {
-		if (b <= a) return '';
-		const ra = Math.floor(a / COLS);
-		const ca = a % COLS;
-		const rb = Math.floor((b - 1) / COLS);
-		const cb = ((b - 1) % COLS) + 1;
 		const h = (PITCH - CELL) / 2;
-		const X = (col: number) => GX - h + col * PITCH;
-		const Y = (row: number) => GY - h + row * PITCH;
-		if (ra === rb) return `M${X(ca)} ${Y(ra)}H${X(cb)}V${Y(ra + 1)}H${X(ca)}Z`;
-		return (
-			`M${X(ca)} ${Y(ra)}H${X(COLS)}V${Y(rb)}H${X(cb)}V${Y(rb + 1)}H${X(0)}` +
-			`V${Y(ra + 1)}H${X(ca)}Z`
-		);
+		return runOutline(a, b, COLS)
+			.map(
+				(poly) =>
+					poly
+						.map(([x, y], k) => `${k ? 'L' : 'M'}${GX - h + x * PITCH} ${GY - h + y * PITCH}`)
+						.join('') + 'Z'
+			)
+			.join('');
 	}
 	const ring = $derived(
 		phase === 'crowd'
@@ -139,8 +129,8 @@
 	/** Percentage with `digits` decimals. */
 	const pct = (v: number, digits: number) =>
 		Number.isFinite(v) ? `${(v * 100).toFixed(digits)}%` : '—';
-	/** Short percentage for prose: whole numbers, one decimal below 1%. */
-	const pp = (v: number) => `${+(v * 100).toFixed(v < 0.01 ? 1 : 0)}%`;
+	/** Short percentage for prose: one decimal below 10% (1.5%), whole numbers above. */
+	const pp = (v: number) => `${+(v * 100).toFixed(v < 0.1 ? 1 : 0)}%`;
 	const share = $derived(c.positives ? c.truePos / c.positives : NaN);
 	const exact = $derived(ppv(test));
 	const second = $derived(secondTest(test));
@@ -336,8 +326,8 @@
 				{ weight: 700, tabular: true }
 			)}
 			{@render txt(CX + 20, CY + 256, `exact: ${pct(exact, 1)}`, 12, { muted: true })}
-			{@render txt(CX + 20, CY + 296, 'After a second positive from an', 12.5)}
-			{@render txt(CX + 20, CY + 314, 'independent test:', 12.5)}
+			{@render txt(CX + 20, CY + 296, 'After a second positive from an equally', 12.5)}
+			{@render txt(CX + 20, CY + 314, 'accurate, independent test:', 12.5)}
 			{@render txt(CX + 20, CY + 336, `${pct(exact, 1)} → ${pct(second, 1)}`, 16, {
 				weight: 700,
 				color: COLOR.tp,

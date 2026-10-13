@@ -152,8 +152,8 @@ export const spec: ExplainerSpec = {
 			controls: [friction],
 			body: `
 <p>Push a cart along a smooth track and let go. What keeps it moving?</p>
-<p>For two thousand years, since Aristotle, the answer seemed obvious: nothing — moving things naturally slow down and stop, so something must keep pushing them. Galileo, Descartes and then Isaac Newton saw it the other way round. <strong>An object keeps moving at the same speed in a straight line (the same <dfn data-def="Speed together with direction.">velocity</dfn>) unless the forces on it are unbalanced.</strong> This is Newton's <dfn data-def="Newton's first law, or the law of inertia: without a net force, an object at rest stays at rest and a moving object keeps moving at constant velocity.">first law</dfn>.</p>
-<p>Real carts do slow down — because of <strong>friction</strong>, a force. Switch it off and the cart rolls on for ever; switch it on and the same push dies away. The force is what changes the motion, not what keeps it going.</p>`,
+<p>For nearly two thousand years after Aristotle, most thinkers held that the answer was nothing: moving things naturally slow down and stop, so something must keep them going. Galileo, Descartes and then Isaac Newton saw it the other way round. <strong>An object keeps moving at the same speed in a straight line (the same <dfn data-def="Speed together with direction.">velocity</dfn>) unless the forces on it are unbalanced.</strong> This is Newton's <dfn data-def="Newton's first law, or the law of inertia: without a net force, an object at rest stays at rest and a moving object keeps moving at constant velocity.">first law</dfn>.</p>
+<p>Real carts do slow down — because of <strong>friction</strong>, a force. Switch it off and the cart rolls on for ever; switch it on and, after the same push, the cart slows and stops. The force is what changes the motion, not what keeps it going.</p>`,
 			notes: `<p>The tendency to keep moving is called <dfn data-def="The resistance of an object to changes in its motion; it is measured by its mass.">inertia</dfn>. Spacecraft show it: once a probe has been launched it coasts for years between planets with no engine running — nothing has to push it along; only gravity bends its path.</p>`
 		},
 		{
@@ -168,7 +168,7 @@ export const spec: ExplainerSpec = {
 <p>So what does a force do? It changes the velocity: it <dfn data-def="The rate at which velocity changes, in metres per second per second (m/s²).">accelerates</dfn> the object. How much depends on the object's mass:</p>
 <p class="formula"><strong>F = m × a</strong></p>
 <p>Newton's <strong>second law</strong>. A force of 6 newtons (the newton, N, is the unit of force: 1 N gives 1 kg an acceleration of 1 m/s²) on a 2 kg cart gives it an acceleration of 3 m/s²: every second the push lasts, the cart goes 3 m/s faster. Double the mass and the same push gives half the acceleration.</p>
-<p>The graph shows the speed. It climbs while the hand pushes and stays level once it lets go — with no friction there is no force, so no change in speed. Switch friction on and it slopes back down to zero: friction is now the only force.</p>`,
+<p>The graph shows the speed. It climbs while the hand pushes and stays level once it lets go — with no friction there is no force, so no change in speed. Switch friction on and it slopes back down towards zero: friction is now the only force.</p>`,
 			notes: `<p>The newton (N) is defined by this law: 1 N is the force that gives 1 kg an acceleration of 1 m/s². Holding up a 100 g apple takes about 1 N. Strictly, F is the <em>net</em> force — all the forces added together, with directions. With friction on, the cart only accelerates by (push − friction) ÷ mass.</p>`
 		},
 		{
@@ -183,7 +183,7 @@ export const spec: ExplainerSpec = {
 <p>Two carts are held together with a squashed spring between them. Release it, and both move off — in opposite directions.</p>
 <p>Through the spring, the left cart pushes the right cart to the right, and the right cart pushes the left cart to the left — exactly as hard. Forces always come in such pairs: when one object pushes on another, the other pushes back equally hard in the opposite direction. That is Newton's <strong>third law</strong>.</p>
 <p>Equal forces for the same time, but not equal speeds: the heavier cart picks up less speed (F = m × a again). Make one cart three times heavier and it moves off at a third of the speed. Mass × speed comes out the same for both carts, in opposite directions — a quantity we will meet again as momentum.</p>`,
-			notes: `<p>This is how rockets work: the engine pushes exhaust gas backwards and the gas pushes the rocket forwards: it needs no air or ground to push against. It is also why a gun recoils.</p>`
+			notes: `<p>This is how rockets work: the engine pushes exhaust gas backwards and the gas pushes the rocket forwards: it needs no air or ground to push against. It is also why a gun recoils. The spring here is simplified to push with a steady force for 0.3 s.</p>`
 		},
 		// ------------------------------------------------------------------ flight
 		{
@@ -281,9 +281,10 @@ export const spec: ExplainerSpec = {
 			duration: 36,
 			controls: [trackFriction],
 			body: `
-<p>Real tracks have friction, and now the car never quite gets back up: each hill it climbs is a little lower than the last. Soon it can no longer get over the hills and is trapped in a valley, rocking back and forth less and less until it stops.</p>
+<p>Real tracks have friction, and now the car never quite gets back up: each time it climbs, it gets a little less high than the time before. Soon it can no longer get over the hills and is trapped in a valley, rocking back and forth less and less until it stops.</p>
 <p>The energy it loses appears in a third bar: <strong>heat</strong>, warming the wheels, the rails and the air. Add the three bars together and the total is still exactly what the car started with.</p>
-<p>This is the <dfn data-def="Energy cannot be created or destroyed, only converted from one form into another.">conservation of energy</dfn>, one of the deepest rules in physics: energy changes form, but the total stays the same. Together with the conservation of momentum, it lets us predict how a motion ends — a crash, a ride — without following every force along the way.</p>`
+<p>This is the <dfn data-def="Energy cannot be created or destroyed, only converted from one form into another.">conservation of energy</dfn>, one of the deepest rules in physics: energy changes form, but the total stays the same. Together with the conservation of momentum, it lets us work out a lot about a motion — the speed at any height on a frictionless track, or what a crash must conserve — without following every force along the way.</p>`,
+			notes: `<p>Friction here is taken as μ × weight × cos(slope); the extra push of the rails in dips and over crests is ignored.</p>`
 		}
 	]
 };

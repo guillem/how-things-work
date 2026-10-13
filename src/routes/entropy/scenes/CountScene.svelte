@@ -38,6 +38,7 @@
 		lnChoose,
 		lnEnergyWays,
 		shareCurve,
+		shareTemperature,
 		sup,
 		toLog10
 	} from '../gas';
@@ -152,8 +153,8 @@
 	const total = $derived(2n ** BigInt(N));
 
 	// ================================================================ energy
-	const nL = $derived(clamp(Math.round(Number(params.countLeft ?? 40)), 2, 100));
-	const nR = $derived(clamp(Math.round(Number(params.countRight ?? 40)), 2, 100));
+	const nL = $derived(clamp(Math.round(Number(params.countLeft ?? 40)), 5, 100));
+	const nR = $derived(clamp(Math.round(Number(params.countRight ?? 40)), 5, 100));
 	const share = $derived(clamp(Number(params.share ?? 80), 0, 100));
 	const Q = $derived(PACKETS_PER_PARTICLE * (nL + nR));
 	const qL = $derived(Math.round((share / 100) * Q));
@@ -166,8 +167,8 @@
 	});
 	const lnMax = $derived(curve.length ? curve[peakQ] : 0);
 	const lnNow = $derived(curve.length ? curve[qL] : 0);
-	/** Temperature (on the box's scale) of a group: 2.5 × its energy per particle ÷ the average. */
-	const tempOf = (q: number, n: number) => (2.5 * (q / n)) / PACKETS_PER_PARTICLE;
+	/** Temperature (on the box's scale) of a group holding q packets. */
+	const tempOf = (q: number, n: number) => shareTemperature(q, n, nL + nR);
 	const startShare = $derived((100 * 4 * nL) / (4 * nL + nR));
 
 	const EX0 = 486;

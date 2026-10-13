@@ -57,6 +57,8 @@ const samplePace: Control = {
 	...pace,
 	id: 'samplePace',
 	label: 'Samples per second',
+	min: 0.25,
+	step: 0.25,
 	default: 8
 };
 
@@ -123,9 +125,9 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [shape, sampleSizeClt, samplePace, restart],
 			body: `
-<p>This is the <dfn data-def="Averages of many independent random values with the same distribution (of finite spread) are approximately normally distributed, whatever that distribution is; the approximation improves as more values are averaged.">central limit theorem</dfn>: averages of many independent random values pile up in a bell curve, <strong>almost regardless of the distribution they came from</strong>. The bell is centred on the starting distribution's mean, and it gets narrower as <i>n</i> grows — its width shrinks like 1 ÷ √<i>n</i>: four times the sample, half the spread.</p>
+<p>This is the <dfn data-def="Averages of many independent random values with the same distribution (of finite spread) are approximately normally distributed, whatever that distribution is; the approximation improves as more values are averaged.">central limit theorem</dfn>: averages of many independent random values pile up in a bell curve, <strong>almost regardless of the distribution they came from</strong>. The bell is centred on the starting distribution's mean, and it gets narrower as <i>n</i> grows — its width shrinks like 1 ÷ √<i>n</i>: four times the sample, half the spread. Width here means the <dfn data-def="The standard deviation: roughly the typical distance of a value from the mean.">standard deviation</dfn> σ of the starting distribution (the ±σ bar on the top chart); the bell's width is σ/√<i>n</i>.</p>
 <p>That is why polls of a thousand people can estimate a whole country's opinion to within a few percent, and why scientists average repeated measurements: the average is far more predictable than any single value.</p>`,
-			notes: `<p>"Almost regardless": the values must be independent, and their distribution must not have extremely heavy tails (its spread must be finite). How large <i>n</i> must be depends on the shape: for very lopsided starting distributions the bell takes longer to appear. The theorem was found in special cases by de Moivre (1733) and Laplace (1810), and proved in general in the early 20th century.</p>`
+			notes: `<p>"Almost regardless": the values must be independent, and their distribution must not have extremely heavy tails (its spread must be finite). How large <i>n</i> must be depends on the shape: for very lopsided starting distributions the bell takes longer to appear. The theorem was found in special cases by de Moivre (1733) and Laplace (1810), and proved in general in the early 20th century.</p><p>In this model each value drawn is the centre of one of the 20 bars, so the starting distribution is discrete; the theorem works the same way for continuous ones.</p>`
 		}
 	]
 };

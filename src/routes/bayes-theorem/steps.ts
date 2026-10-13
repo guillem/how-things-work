@@ -1,6 +1,6 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
 
-const pct = (v: number) => `${(v * 100).toFixed(v < 0.01 ? 1 : 0)}%`;
+const pct = (v: number) => `${+(v * 100).toFixed(v < 0.1 ? 1 : 0)}%`;
 
 const prevalence: Control = {
 	type: 'range',
@@ -56,7 +56,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			body: `
 <p>A disease affects 1 person in 100. A test for it catches 90% of the people who have it and correctly clears 91% of those who don't. You test positive. How likely is it that you are ill?</p>
-<p>Most people — doctors included, in many studies — guess around 90%. Let's count instead. Here are 1,000 people. About 1% of them, <strong>10 people</strong>, have the disease (highlighted); the other 990 are healthy.</p>`
+<p>Most people — doctors included, in many studies — guess 80–90%. Let's count instead. Here are 1,000 people. About 1% of them, <strong>10 people</strong>, have the disease (highlighted); the other 990 are healthy.</p>`
 		},
 		{
 			id: 'test',
@@ -101,10 +101,10 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [prevalence, sensitivity, specificity],
 			body: `
-<p>The counting you just did is <dfn data-def="P(A | B) = P(B | A) × P(A) ÷ P(B): how to update the chance of A after seeing evidence B. Published after the death of Thomas Bayes, in 1763.">Bayes' theorem</dfn>, published in 1763 from the notes of the minister Thomas Bayes:</p>
+<p>The counting you just did is <dfn data-def="P(A | B) = P(B | A) × P(A) ÷ P(B) (read P(A | B) as 'the probability of A given B'): how to update the chance of A after seeing evidence B. Named after Thomas Bayes (essay read posthumously in 1763); the general form is due to Laplace.">Bayes' theorem</dfn>, named after the minister Thomas Bayes, whose essay on it was read to the Royal Society in 1763, two years after his death; Laplace later gave it its general form:</p>
 <p class="formula">chance ill, given positive = (chance positive if ill × chance ill) ÷ chance of a positive</p>
-<p>Each part is one of the groups in the grid: true positives on top, all positives below. Counting people — "natural frequencies" — makes it easy to see.</p>
-<p>What a piece of evidence means depends on the base rate: <strong>a positive result from an accurate test for a rare condition can still be more likely false than true</strong>. That is why doctors confirm a positive screening result with a second, different test: after one positive, the base rate for a second test is no longer 1% but 9% — and a second positive from an independent test raises the chance to about 50%.</p>`,
+<p>Each side is a group in the grid: the top, chance positive if ill × chance ill, is the share of all the people who are true positives (9 in 1,000); the bottom is the share who test positive (98 in 1,000). Counting people — "natural frequencies" — makes it easy to see.</p>
+<p>What a piece of evidence means depends on the base rate: <strong>a positive result from an accurate test for a rare condition can still be more likely false than true</strong>. That is why doctors confirm a positive screening result with a second, different test: after one positive, the base rate for a second test is no longer 1% but 9% — and a second positive from an independent test that is just as accurate raises the chance to about 50%.</p>`,
 			notes: `<p>The example is the classic one used by Gerd Gigerenzer to show how much easier these problems become with counts of people than with percentages. Real screening tests have their own numbers, and "independent" second tests are an idealisation.</p>`
 		}
 	]

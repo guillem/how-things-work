@@ -10,6 +10,33 @@ test('the Galton board counts the paths into the end and middle bins', async ({ 
 	await expect(stage(page)).toContainText('12,870 paths');
 });
 
+test('on a small board, landed balls stay where they fell as the bins fill', async ({ page }) => {
+	await page.clock.install();
+	await page.goto('./central-limit-theorem/#board');
+	await page.locator('input[type=range][data-control=rows]').fill('4');
+	const landed = () =>
+		stage(page)
+			.locator('circle[fill="var(--clt-bin)"]')
+			.evaluateAll((cs) => cs.map((c) => `${c.getAttribute('cx')},${c.getAttribute('cy')}`));
+	await page.clock.runFor(3000);
+	const before = await landed();
+	expect(before.length).toBeGreaterThan(5);
+	await page.clock.runFor(3000);
+	const after = new Set(await landed());
+	for (const p of before) expect(after.has(p), `ball at ${p}`).toBe(true);
+});
+
+test('at the slowest pace every sample can be followed: one every four seconds', async ({
+	page
+}) => {
+	await page.clock.install();
+	await page.goto('./central-limit-theorem/#samples');
+	await page.locator('input[type=range][data-control=samplePace]').fill('0.25');
+	await page.clock.runFor(8500);
+	// samples 0, 4 s and 8 s
+	await expect(stage(page).locator('text', { hasText: /^3$/ })).toHaveCount(1);
+});
+
 test('drawing the starting shape and averaging bigger samples', async ({ page }) => {
 	await page.goto('./central-limit-theorem/#clt');
 	await expect(stage(page)).toContainText('Two humps');
@@ -36,4 +63,28 @@ test('drawing the starting shape and averaging bigger samples', async ({ page })
 	await page.keyboard.press('ArrowUp');
 	await expect(chart).toHaveAttribute('aria-valuenow', String(before + 5));
 	await expect(page).toHaveURL(/#clt$/);
+});
+
+test('lowering every bar leaves one value with no spread, its averages in one tall bar', async ({
+	page
+}) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' }); // every sample already taken
+	await page.goto('./central-limit-theorem/#clt');
+	const chart = stage(page).locator('[role=slider]');
+	await chart.focus();
+	await page.keyboard.press('Home');
+	for (let i = 0; i < 20; i++) {
+		for (let k = 0; k < 4; k++) await page.keyboard.press('Shift+ArrowDown');
+		if (i < 19) await page.keyboard.press('ArrowRight');
+	}
+	// An empty chart can't be drawn from: the last bar keeps a little height.
+	await expect(chart).toHaveAttribute('aria-valuenow', '5');
+	await expect(stage(page)).toContainText('spread σ = 0.00');
+	await expect(stage(page)).toContainText('every value the same: no spread');
+	// Every average is the same value, so one bar holds them all and stands tall.
+	const tall = await stage(page)
+		.locator('rect[fill="var(--clt-means)"]')
+		.evaluateAll((rs) => Math.max(...rs.map((r) => r.getBoundingClientRect().height)));
+	const box = (await stage(page).boundingBox())!;
+	expect(tall).toBeGreaterThan(box.height * 0.2);
 });

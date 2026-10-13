@@ -79,7 +79,7 @@ const nudge: Control = {
 	max: -3,
 	step: 1,
 	default: -9,
-	format: (v) => `10${sup(v)} of the box`
+	format: (v) => `10${sup(v)} of the box height`
 };
 
 export const spec: ExplainerSpec = {
@@ -129,8 +129,8 @@ export const spec: ExplainerSpec = {
 			controls: [particles, restart],
 			body: `
 <p>Start simpler: put every particle in the left half and let them go. They spread out, and soon about half are on each side. To see why, separate two kinds of description. A <dfn data-def="The complete detail of a system: exactly where every particle is and how it is moving.">microstate</dfn> says where every single particle is. A <dfn data-def="What we can actually measure about a system, such as its temperature, or how many particles are in each half; many microstates share the same macrostate.">macrostate</dfn> only says how many are in the left half.</p>
-<p>Count the microstates behind each macrostate. All 40 on the left can happen in just <strong>one way</strong>. Twenty on each side can happen in 137,846,528,820 ways: that many different choices of which 20 particles are on the left. The particles wander at random among all these arrangements, so they almost always end up in the macrostates with the most of them. Try 4 particles: all of them on the left is one arrangement out of 16, and you'll see it happen.</p>`,
-			notes: `<p>The number of ways to choose which k of N particles are on the left is the binomial coefficient C(N, k) = N! ÷ (k! (N − k)!), the same count as for the paths through a Galton board. Each particle is on one side or the other, so there are 2ᴺ arrangements in all: 2⁸⁰ ≈ 1.2 × 10²⁴ for 80 particles. For the roughly 2.5 × 10²² molecules in a litre of air at room temperature, the chance of finding them all in one half at a given moment is about 1 in 10 to the power 7.5 × 10²¹: a number with seven and a half thousand billion billion digits.</p>`
+<p>Count the microstates behind each macrostate. All 40 on the left can happen in just <strong>one way</strong>. Twenty on each side can happen in 137,846,528,820 ways: that many different choices of which 20 particles are on the left. The collisions shuffle the particles so thoroughly that they wander, in effect at random, among all these arrangements, so they almost always end up in the macrostates with the most of them. Try 4 particles: all of them on the left is one arrangement out of 16, and you'll see it happen.</p>`,
+			notes: `<p>The number of ways to choose which k of N particles are on the left is the binomial coefficient C(N, k) = N! ÷ (k! (N − k)!), the same count as for the paths through a <a href="../central-limit-theorem/#why">Galton board</a>. Each particle is on one side or the other, so there are 2ᴺ arrangements in all: 2⁸⁰ ≈ 1.2 × 10²⁴ for 80 particles. For the roughly 2.5 × 10²² molecules in a litre of air at room temperature, the chance of finding them all in one half at a given moment is about 1 in 10 to the power 7.5 × 10²¹: a number with seven and a half thousand billion billion digits.</p>`
 		},
 		{
 			id: 'share',
@@ -142,8 +142,8 @@ export const spec: ExplainerSpec = {
 			controls: [share, countLeft, countRight],
 			body: `
 <p>Energy can be counted the same way. Imagine it comes in many tiny, equal packets. Three packets can be shared between two particles in 4 ways (3 + 0, 2 + 1, 1 + 2, 0 + 3); with more packets and more particles the number of ways grows enormously. For two halves together, multiply: every way of sharing the left's energy can go with every way of sharing the right's.</p>
-<p>Drag the share of energy on the left. Where the gas started, with 80% of the energy among the left's 40 particles, is a rare macrostate. The peak is where the energy <strong>per particle</strong> is (very nearly) the same on both sides, that is, at equal temperatures, and it has <strong>more than ten million times as many</strong> microstates. Give the two sides different numbers of particles: the peak moves, but it still sits at equal temperatures.</p>`,
-			notes: `<p>The number of ways to share q packets among n particles is C(q + n − 1, q). Here there are 50 packets per particle; the smaller the packets, the closer the count gets to that of real, smoothly varying energies. For particles moving in a plane this counting is exact in that limit: each way corresponds to an equal slice of the possible velocities.</p>`
+<p>Drag the share of energy on the left. Where the gas started, with 80% of the energy among the left's 40 particles, is a rare macrostate. The peak is where the two sides have the same temperature — for groups of more than a few dozen particles, very nearly the same energy <strong>per particle</strong> — and it has <strong>more than ten million times as many</strong> microstates. Give the two sides different numbers of particles: the peak moves, but it still sits at equal temperatures.</p>`,
+			notes: `<p>The number of ways to share q packets among n particles is C(q + n − 1, q). Here there are 50 packets per particle; the smaller the packets, the closer the count gets to that of real, smoothly varying energies. For particles moving in a plane this counting is exact in that limit: each way corresponds to an equal slice of the possible velocities. For a small group the temperature is set by its energy divided by one less than its number of particles; for large groups this is the same as the energy per particle.</p>`
 		},
 		{
 			id: 'entropy',
@@ -180,8 +180,8 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [nudge, reverse],
 			body: `
-<p>Now do the same, but at the moment of reversal move one particle by a billionth of the box. The un-mixing starts, then fails: after a few collisions the tiny error has grown and spread to every particle, and the gas mixes again. Make the nudge as small as you like; it only delays the failure.</p>
-<p>The states that un-mix are possible, but they are needles in a haystack: among all the microstates of a mixed gas, only a vanishingly small fraction are arranged so precisely that they would sort themselves out. <strong>Heat flows and things mix because mixed states vastly outnumber ordered ones</strong>, so almost any change leads from a rarer macrostate to a more common one. That one-way drift is what gives time its direction: we remember the past and not the future because the past had lower entropy.</p>`,
+<p>Now do the same, but at the moment of reversal move one particle by a billionth of the box's height. The un-mixing starts, then fails: after a few collisions the tiny error has grown and spread to every particle, and the gas mixes again. Make the nudge as small as you like; it only delays the failure.</p>
+<p>The states that un-mix are possible, but they are needles in a haystack: among all the microstates of a mixed gas, only a vanishingly small fraction are arranged so precisely that they would sort themselves out. <strong>Heat flows and things mix because mixed states vastly outnumber ordered ones</strong>, so almost any change leads from a rarer macrostate to a more common one. That one-way drift is what gives time its direction, and many physicists think this is also why we remember the past and not the future: the past had lower entropy.</p>`,
 			notes: `<p>Why was the past ordered at all? The trail of ever-lower entropy leads back to the early universe, which began in a state of remarkably low entropy. Why it did is still an open question in physics.</p>`
 		}
 	]
