@@ -65,7 +65,7 @@ test('the doublings close in at Feigenbaum’s ratio', () => {
 	expect(period(DOUBLINGS[1] - 0.005)).toBe(2);
 	expect(period(DOUBLINGS[1] + 0.005)).toBe(4);
 	// …for every measured split. Right at one the old cycle is still the attractor
-	// (it has only just stopped being stable, approached ever more slowly), so at
+	// (on the edge of losing its stability, approached ever more slowly), so at
 	// r = 3 exactly the steady state is reported. The other DOUBLINGS are rounded to
 	// 1e-9 and may fall a hair either side of the true split: there the count need
 	// only be finite.
