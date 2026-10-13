@@ -21,7 +21,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, clamp, scale, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { SUN_TIDE_RATIO, SYNODIC_MONTH, phaseName, tidalRange, tideHeight } from '../sky';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -298,10 +298,13 @@
 <g>
 	<!-- ============================================================ the view from above -->
 	<rect x="16" y="16" width="536" height="568" rx="14" fill="var(--sky-space)" />
-	{@render txt(32, 44, 'Seen from above the North Pole', 15, { weight: 600 })}
-	{@render txt(32, 64, 'Water layer and bulges hugely exaggerated · not to scale', 12, {
-		muted: true
-	})}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="view-title">
+		{@render txt(32, 44, 'Seen from above the North Pole', 15, { weight: 600 })}
+		{@render txt(32, 64, 'Water layer and bulges hugely exaggerated · not to scale', 12, {
+			muted: true
+		})}
+	</Readout>
 
 	<!-- Moon's orbit and the direction lines -->
 	<circle
@@ -341,7 +344,9 @@
 		{/each}
 		<circle cx="44" cy={EY} r="12" fill="var(--sky-sun)" />
 		{@render txt(44, EY + 42, 'Sun', 12, { anchor: 'middle' })}
-		{@render txt(44, EY + 57, '(far off)', 11, { anchor: 'middle', muted: true })}
+		<Readout id="far-off">
+			{@render txt(44, EY + 57, '(far off)', 11, { anchor: 'middle', muted: true })}
+		</Readout>
 		<line
 			x1="70"
 			y1={EY}
@@ -430,64 +435,90 @@
 	{/if}
 
 	<!-- Moon only: the two bulges and the uneven pull -->
-	<g opacity={swap(1 - w)}>
-		{@render txt(446, 196, 'near-side bulge', 12, { anchor: 'middle' })}
-		{@render txt(122, 196, 'far-side bulge', 12, { anchor: 'middle' })}
-		{@render txt(
-			EX,
-			516,
-			"The Moon's pull: stronger on the near side, weaker on the far side",
-			12,
-			{ anchor: 'middle' }
-		)}
-		{#each [{ x: EX - 94, len: 20, name: 'far side' }, { x: EX, len: 30, name: 'centre' }, { x: EX + 94, len: 44, name: 'near side' }] as a (a.name)}
-			<circle cx={a.x} cy={538} r="3" fill={ink} />
-			{@render arrowH(a.x + 4, 538, a.len, 'var(--stage-ink)')}
-			{@render txt(a.x, 557, a.name, 11, { anchor: 'middle', muted: true })}
-		{/each}
-		{@render txt(EX, 576, 'the difference stretches the oceans into two bulges', 12, {
-			anchor: 'middle',
-			muted: true
-		})}
-	</g>
+	<Readout
+		id="pull"
+		order={2}
+		label="The Moon's pull"
+		value="stronger on the near side, weaker on the far side"
+		note="the difference stretches the oceans into two bulges"
+		opacity={1 - w}
+	>
+		<g opacity={swap(1 - w)}>
+			{@render txt(446, 196, 'near-side bulge', 12, { anchor: 'middle' })}
+			{@render txt(122, 196, 'far-side bulge', 12, { anchor: 'middle' })}
+			{@render txt(
+				EX,
+				516,
+				"The Moon's pull: stronger on the near side, weaker on the far side",
+				12,
+				{ anchor: 'middle' }
+			)}
+			{#each [{ x: EX - 94, len: 20, name: 'far side' }, { x: EX, len: 30, name: 'centre' }, { x: EX + 94, len: 44, name: 'near side' }] as a (a.name)}
+				<circle cx={a.x} cy={538} r="3" fill={ink} />
+				{@render arrowH(a.x + 4, 538, a.len, 'var(--stage-ink)')}
+				{@render txt(a.x, 557, a.name, 11, { anchor: 'middle', muted: true })}
+			{/each}
+			{@render txt(EX, 576, 'the difference stretches the oceans into two bulges', 12, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</g>
+	</Readout>
 
 	<!-- Moon and Sun: phase and what it does -->
-	<g opacity={swap(w)}>
-		{@render txt(EX, 528, `${cap(phaseName(elong))} · ${markDay.toFixed(1)} days`, 14, {
-			anchor: 'middle',
-			weight: 600
-		})}
-		{@render txt(EX, 550, geometry, 12, { anchor: 'middle' })}
-		{@render txt(EX, 570, `The Sun's tide is about half the Moon's (${sunHalf}×)`, 12, {
-			anchor: 'middle',
-			muted: true
-		})}
-	</g>
+	<Readout
+		id="moon-phase"
+		order={1}
+		label={cap(phaseName(elong))}
+		value="{markDay.toFixed(1)} days"
+		note={geometry}
+		opacity={w}
+	>
+		<g opacity={swap(w)}>
+			{@render txt(EX, 528, `${cap(phaseName(elong))} · ${markDay.toFixed(1)} days`, 14, {
+				anchor: 'middle',
+				weight: 600
+			})}
+			{@render txt(EX, 550, geometry, 12, { anchor: 'middle' })}
+			{@render txt(EX, 570, `The Sun's tide is about half the Moon's (${sunHalf}×)`, 12, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</g>
+	</Readout>
 
 	<!-- ============================================================ tide gauge -->
-	{@render txt(584, 44, 'Water height at the town', 15, { weight: 600 })}
-	{@render txt(928, 44, hm(reduced ? FROZEN_HOURS : tau), 13, {
-		anchor: 'end',
-		muted: true
-	})}
-	<g opacity={swap(1 - w)}>
-		{@render txt(584, 64, "Moon only (the Sun's tide left out)", 12, { muted: true })}
-	</g>
-	<g opacity={swap(w)}>
-		{@render txt(584, 64, 'Moon and Sun together · dotted: the Moon alone', 12, { muted: true })}
-	</g>
+	<Readout id="gauge-title">
+		{@render txt(584, 44, 'Water height at the town', 15, { weight: 600 })}
+		{@render txt(928, 44, hm(reduced ? FROZEN_HOURS : tau), 13, {
+			anchor: 'end',
+			muted: true
+		})}
+		<g opacity={swap(1 - w)}>
+			{@render txt(584, 64, "Moon only (the Sun's tide left out)", 12, { muted: true })}
+		</g>
+		<g opacity={swap(w)}>
+			{@render txt(584, 64, 'Moon and Sun together · dotted: the Moon alone', 12, { muted: true })}
+		</g>
+	</Readout>
 
 	<line x1={GX0} x2={GX1} y1={gy(0)} y2={gy(0)} stroke="var(--stage-line)" stroke-dasharray="3 4" />
-	{@render txt(GX0 - 6, gy(0) + 4, 'mean', 11, { anchor: 'end', muted: true })}
+	<Readout id="mean">
+		{@render txt(GX0 - 6, gy(0) + 4, 'mean', 11, { anchor: 'end', muted: true })}
+	</Readout>
 	<line x1={GX0} x2={GX1} y1={GY1 + 14} y2={GY1 + 14} stroke="var(--stage-line)" />
 	{#each [0, 6, 12, 18, 24] as h (h)}
 		<line x1={gx(h)} x2={gx(h)} y1={GY1 + 14} y2={GY1 + 18} stroke="var(--stage-line)" />
-		{@render txt(gx(h), GY1 + 32, `${h} h`, 11, { anchor: 'middle', muted: true })}
+		<Readout id="hour-{h}">
+			{@render txt(gx(h), GY1 + 32, `${h} h`, 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/each}
-	{@render txt((GX0 + GX1) / 2, GY1 + 50, 'hours since the town passed under the Moon', 11, {
-		anchor: 'middle',
-		muted: true
-	})}
+	<Readout id="hours-caption">
+		{@render txt((GX0 + GX1) / 2, GY1 + 50, 'hours since the town passed under the Moon', 11, {
+			anchor: 'middle',
+			muted: true
+		})}
+	</Readout>
 
 	<!-- Moon alone, for comparison once the Sun joins in -->
 	<g opacity={w * 0.9}>
@@ -542,9 +573,11 @@
 			stroke={ink}
 			stroke-width="1"
 		/>
-		{@render txt((gx(a) + gx(b)) / 2, bracketY - 5, `highs ${hm(b - a)} apart`, 12, {
-			anchor: 'middle'
-		})}
+		<Readout id="highs-apart">
+			{@render txt((gx(a) + gx(b)) / 2, bracketY - 5, `highs ${hm(b - a)} apart`, 12, {
+				anchor: 'middle'
+			})}
+		</Readout>
 	{/if}
 	{#each extrema.highs as h, i (i)}
 		<circle cx={gx(h)} cy={gy(extrema.max)} r="3" fill={ink} />
@@ -566,40 +599,59 @@
 		/>
 		<line x1="899" x2="909" y1={gy(extrema.max)} y2={gy(extrema.max)} stroke="var(--sky-ocean)" />
 		<line x1="899" x2="909" y1={gy(extrema.min)} y2={gy(extrema.min)} stroke="var(--sky-ocean)" />
-		{@render txt(926, gy(0) + 4, 'range', 11, { anchor: 'middle', muted: true })}
+		<Readout id="range-label">
+			{@render txt(926, gy(0) + 4, 'range', 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	</g>
 
 	<!-- ============================================================ lower right -->
-	<g opacity={swap(1 - w)}>
-		{@render txt(584, 370, 'Two high tides and two low tides', 15, { weight: 600 })}
-		{@render txt(584, 392, `every ${hm(LUNAR_DAY)}, one lunar day`, 15, { weight: 600 })}
-		{@render txt(584, 424, 'The Earth turns once in 24 h, but meanwhile the', 12, {
-			muted: true
-		})}
-		{@render txt(584, 442, 'Moon moves on along its orbit: the town needs', 12, {
-			muted: true
-		})}
-		{@render txt(584, 460, `${hm(LUNAR_DAY)} to come back under it, so`, 12, {
-			muted: true
-		})}
-		{@render txt(584, 478, `high tides are ${hm(LUNAR_DAY / 2)} apart.`, 12, { muted: true })}
-	</g>
+	<Readout
+		id="two-tides"
+		order={1}
+		label="Two high tides and two low tides"
+		value="every {hm(LUNAR_DAY)}, one lunar day"
+		note="The Moon moves on while the Earth turns, so high tides are {hm(LUNAR_DAY / 2)} apart."
+		opacity={1 - w}
+	>
+		<g opacity={swap(1 - w)}>
+			{@render txt(584, 370, 'Two high tides and two low tides', 15, { weight: 600 })}
+			{@render txt(584, 392, `every ${hm(LUNAR_DAY)}, one lunar day`, 15, { weight: 600 })}
+			{@render txt(584, 424, 'The Earth turns once in 24 h, but meanwhile the', 12, {
+				muted: true
+			})}
+			{@render txt(584, 442, 'Moon moves on along its orbit: the town needs', 12, {
+				muted: true
+			})}
+			{@render txt(584, 460, `${hm(LUNAR_DAY)} to come back under it, so`, 12, {
+				muted: true
+			})}
+			{@render txt(584, 478, `high tides are ${hm(LUNAR_DAY / 2)} apart.`, 12, { muted: true })}
+		</g>
+	</Readout>
 
 	<g opacity={swap(w)}>
-		{@render txt(584, 350, 'Tidal range through the month', 14, { weight: 600 })}
-		{@render txt(928, 350, '× the Moon alone', 11, { anchor: 'end', muted: true })}
+		<Readout id="month-title">
+			{@render txt(584, 350, 'Tidal range through the month', 14, { weight: 600 })}
+			{@render txt(928, 350, '× the Moon alone', 11, { anchor: 'end', muted: true })}
+		</Readout>
 		{#each [0, 0.5, 1, 1.5] as v (v)}
 			<line x1={MX0} x2={MX1} y1={my(v)} y2={my(v)} stroke="var(--stage-grid)" stroke-width="1" />
-			{@render txt(MX0 - 6, my(v) + 4, `${v}×`, 11, { anchor: 'end', muted: true })}
+			<Readout id="range-tick-{v}">
+				{@render txt(MX0 - 6, my(v) + 4, `${v}×`, 11, { anchor: 'end', muted: true })}
+			</Readout>
 		{/each}
 		<path d={monthPath} fill="none" stroke="var(--sky-ocean)" stroke-width="2" />
 		{#each [0, 7, 15, 22, 29] as d (d)}
-			{@render txt(mx(d), MY1 + 18, `${d}`, 11, { anchor: 'middle', muted: true })}
+			<Readout id="day-tick-{d}">
+				{@render txt(mx(d), MY1 + 18, `${d}`, 11, { anchor: 'middle', muted: true })}
+			</Readout>
 		{/each}
-		{@render txt((MX0 + MX1) / 2, MY1 + 36, 'days since new Moon', 11, {
-			anchor: 'middle',
-			muted: true
-		})}
+		<Readout id="days-caption">
+			{@render txt((MX0 + MX1) / 2, MY1 + 36, 'days since new Moon', 11, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</Readout>
 		{#each [0, 0.5, 1] as f (f)}
 			{@render txt(mx(f * SYNODIC_MONTH), my(rangeAt(0)) - 8, 'spring', 11, {
 				anchor: f === 0 ? 'start' : f === 1 ? 'end' : 'middle',
@@ -629,9 +681,18 @@
 			stroke="var(--stage-bg)"
 			stroke-width="1.5"
 		/>
-		{@render txt(584, 552, `Spring tides ≈ ${springNeap}× neap tides`, 14, { weight: 600 })}
-		{@render txt(584, 572, `Range now: ${rangeNow.toFixed(2)}× the Moon's alone`, 12, {
-			muted: true
-		})}
+		<Readout
+			id="range-now"
+			order={2}
+			label="Tidal range now"
+			value="{rangeNow.toFixed(2)}× the Moon's alone"
+			note="Spring tides ≈ {springNeap}× neap tides; the Sun's tide is about half the Moon's ({sunHalf}×)"
+			opacity={w}
+		>
+			{@render txt(584, 552, `Spring tides ≈ ${springNeap}× neap tides`, 14, { weight: 600 })}
+			{@render txt(584, 572, `Range now: ${rangeNow.toFixed(2)}× the Moon's alone`, 12, {
+				muted: true
+			})}
+		</Readout>
 	</g>
 </g>

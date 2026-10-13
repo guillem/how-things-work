@@ -791,6 +791,52 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/det = ad − bc\s*.* = 3/);
 		await expect(drawing(page)).not.toContainText('det = ad − bc');
 	});
+
+	test('seasons: the Sun’s overhead latitude is text and follows the date', async ({ page }) => {
+		await page.goto('./sun-earth-moon/#orbit');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Sun overhead at noon\s*23\.4° N \(Tropic of Cancer\)/);
+		await expect(drawing(page)).not.toContainText('Sun overhead at noon');
+		await range(page, 'day').fill('354');
+		await expect(panel).toContainText(/Sun overhead at noon\s*23\.4° S \(Tropic of Capricorn\)/);
+		await page.goto('./sun-earth-moon/#distance');
+		await expect(panel).toContainText(/From the Sun\s*\d+\.\d million km/);
+		await expect(drawing(page)).not.toContainText('million km from the Sun');
+	});
+
+	test('sunlight: the day length is text and follows the latitude', async ({ page }) => {
+		await page.goto('./sun-earth-moon/#daylength');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Day length\s*40° N on 21 Jun: 14 h 51 min of daylight/);
+		await expect(panel).toContainText(/One day at 40° N\s*sunrise/);
+		await expect(drawing(page)).not.toContainText('of the 24 hours in daylight');
+		await range(page, 'latitude').fill('80');
+		await expect(panel).toContainText(/One day at 80° N\s*daylight all 24 hours/);
+	});
+
+	test('moon: the phase and the lit fraction are text and follow the Moon', async ({ page }) => {
+		await page.goto('./sun-earth-moon/#phases');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Waxing crescent\s*\d+% of the face lit/);
+		await expect(panel).toContainText('Phases are not a shadow');
+		await expect(drawing(page)).not.toContainText('days since new Moon');
+		await range(page, 'moon').fill('7.5');
+		await expect(panel).toContainText(/First quarter/i);
+		await page.goto('./sun-earth-moon/#tilted');
+		await expect(panel).toContainText(/This month\s*New Moon on/);
+		await expect(drawing(page)).not.toContainText('New Moon on');
+	});
+
+	test('tides: the tidal range is text and follows the Moon', async ({ page }) => {
+		await page.goto('./sun-earth-moon/#spring');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Tidal range now\s*1\.04× the Moon's alone/);
+		await expect(drawing(page)).not.toContainText('Range now');
+		await range(page, 'moon').fill('0');
+		await expect(panel).toContainText(/Tidal range now\s*1\.[3-6]\d× the Moon's alone/);
+		await page.goto('./sun-earth-moon/#tides');
+		await expect(panel).toContainText(/Two high tides and two low tides\s*every 24 h 50 min/);
+	});
 });
 
 test.describe('on a wide screen', () => {

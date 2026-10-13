@@ -39,7 +39,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		LUNAR_LIMIT,
 		MARCH_EQUINOX_DAY,
@@ -621,14 +621,8 @@
 	const shade = (k: number) => Math.min(1, dark ? k * 4.5 : k * 1.8);
 
 	const pillW = (text: string, size: number) => text.length * size * 0.56 + 18;
-</script>
 
-{#snippet txt(
-	x: number,
-	y: number,
-	text: string,
-	size: number,
-	opts: {
+	type TxtOpts = {
 		anchor?: string;
 		color?: string;
 		weight?: number;
@@ -636,8 +630,26 @@
 		opacity?: number;
 		halo?: boolean;
 		pill?: { fill: string; stroke?: string };
-	} = {}
+	};
+</script>
+
+<!-- <Readout>: on narrow screens `minor` labels are hidden, and the captions are
+     listed as HTML under the stage -->
+{#snippet txt(
+	x: number,
+	y: number,
+	text: string,
+	size: number,
+	opts: TxtOpts & { minor?: boolean } = {}
 )}
+	{#if opts.minor}
+		<Readout id="minor">{@render plain(x, y, text, size, opts)}</Readout>
+	{:else}
+		{@render plain(x, y, text, size, opts)}
+	{/if}
+{/snippet}
+
+{#snippet plain(x: number, y: number, text: string, size: number, opts: TxtOpts)}
 	{#if opts.pill}
 		{@const pw = pillW(text, size)}
 		<rect
@@ -736,7 +748,7 @@
 			<rect x="0" y="0" width="700" height="600" fill="url(#moon-sunwash)" />
 			<circle cx="56" cy={EY} r="30" fill="var(--sky-sun)" />
 			{@render txt(56, EY + 52, 'Sun', 13, { anchor: 'middle', weight: 600 })}
-			{@render txt(24, EY + 68, 'far off to the left', 11, { muted: true })}
+			{@render txt(24, EY + 68, 'far off to the left', 11, { muted: true, minor: true })}
 			{#each RAYS as y (y)}
 				<line
 					x1="104"
@@ -751,7 +763,7 @@
 				/>
 				<path d="M154 {y - 5} L163 {y} L154 {y + 5} Z" fill="var(--sky-sun)" />
 			{/each}
-			{@render txt(104, RAYS[0] - 14, 'sunlight', 11, { muted: true })}
+			{@render txt(104, RAYS[0] - 14, 'sunlight', 11, { muted: true, minor: true })}
 
 			<!-- Earth's shadow, pointing away from the Sun -->
 			<polygon points={umbraPoly} fill="url(#moon-umbra)" />
@@ -798,6 +810,7 @@
 						</g>
 					{/each}
 					{@render txt(EX, EY - GR - 24, 'how each looks from Earth', 11, {
+						minor: true,
 						anchor: 'middle',
 						muted: true
 					})}
@@ -832,7 +845,11 @@
 				/>
 			{/if}
 			{@render txt(EX, EY + ER + 18, 'Earth', 12, { anchor: 'middle', weight: 600 })}
-			{@render txt(EX, EY + ER + 32, 'North Pole up', 11, { anchor: 'middle', muted: true })}
+			{@render txt(EX, EY + ER + 32, 'North Pole up', 11, {
+				anchor: 'middle',
+				muted: true,
+				minor: true
+			})}
 
 			<!-- Earth's shadow label -->
 			{@render txt(EX + 100, EY + 4, "Earth's shadow", 12, {
@@ -843,11 +860,13 @@
 				{@const clear =
 					1 - 0.85 * smoothstep(90, 50, Math.hypot(moonTop.x - (EX + 100), moonTop.y - EY))}
 				{@render txt(EX + 100, EY + 21, 'the Moon usually passes', 11, {
+					minor: true,
 					anchor: 'middle',
 					muted: true,
 					opacity: swap(w.phases) * clear
 				})}
 				{@render txt(EX + 100, EY + 34, 'above or below it', 11, {
+					minor: true,
 					anchor: 'middle',
 					muted: true,
 					opacity: swap(w.phases) * clear
@@ -910,13 +929,19 @@
 
 		<!-- titles -->
 		<g opacity={oTop} pointer-events="none">
-			{@render txt(24, 34, 'Seen from above the North Pole (not to scale)', 12, { muted: true })}
+			{@render txt(24, 34, 'Seen from above the North Pole (not to scale)', 12, {
+				muted: true,
+				minor: true
+			})}
 			<g opacity={swap(w.phases)}>
-				{@render txt(24, 54, 'The half facing the Sun is always lit', 15, { weight: 600 })}
+				{@render txt(24, 54, 'The half facing the Sun is always lit', 15, {
+					weight: 600,
+					minor: true
+				})}
 			</g>
 			<g opacity={swap(w.eclipses)}>
-				{@render txt(24, 54, "If the Moon's orbit were flat,", 15, { weight: 600 })}
-				{@render txt(24, 73, 'this would happen every month', 15, { weight: 600 })}
+				{@render txt(24, 54, "If the Moon's orbit were flat,", 15, { weight: 600, minor: true })}
+				{@render txt(24, 73, 'this would happen every month', 15, { weight: 600, minor: true })}
 			</g>
 		</g>
 
@@ -932,6 +957,7 @@
 				stroke="var(--border)"
 			/>
 			{@render txt(IX, 50, 'As seen from Earth', 12, {
+				minor: true,
 				anchor: 'middle',
 				muted: true,
 				halo: false
@@ -955,61 +981,99 @@
 				<circle cx={IX} cy={IY} r={IR} fill="var(--sky-moon-dark)" opacity={insetSun} />
 			{/if}
 			<circle cx={IX} cy={IY} r={IR} fill={COPPER} opacity={redW * 0.8} />
-			{@render txt(IX, 254, cap(name), 17, { anchor: 'middle', weight: 600, halo: false })}
-			{@render txt(IX, 276, redW > 0.5 ? "inside the Earth's shadow" : pctText, 13, {
-				anchor: 'middle',
-				halo: false
-			})}
-			{@render txt(IX, 296, `${days.toFixed(1)} days since new Moon`, 12, {
-				anchor: 'middle',
-				muted: true,
-				halo: false
-			})}
+			<Readout
+				id="moon-now"
+				order={1}
+				label={cap(name)}
+				value={redW > 0.5 ? "inside the Earth's shadow" : pctText}
+				note="{days.toFixed(1)} days since new Moon"
+				opacity={oTop}
+			>
+				{@render txt(IX, 254, cap(name), 17, { anchor: 'middle', weight: 600, halo: false })}
+				{@render txt(IX, 276, redW > 0.5 ? "inside the Earth's shadow" : pctText, 13, {
+					anchor: 'middle',
+					halo: false
+				})}
+				{@render txt(IX, 296, `${days.toFixed(1)} days since new Moon`, 12, {
+					anchor: 'middle',
+					muted: true,
+					halo: false
+				})}
+			</Readout>
 			{@render txt(IX, 326, 'from the northern hemisphere: a', 11, {
+				minor: true,
 				anchor: 'middle',
 				muted: true,
 				halo: false
 			})}
 			{@render txt(IX, 341, 'waxing Moon is lit on the right', 11, {
+				minor: true,
 				anchor: 'middle',
 				muted: true,
 				halo: false
 			})}
 
 			<!-- below the inset: the pitfall (phases) or the eclipse status -->
-			<g opacity={swap(w.phases)}>
-				{@render txt(698, 392, 'Phases are not a shadow', 14, { weight: 600 })}
-				{@render txt(698, 414, "Earth's shadow points away from", 12)}
-				{@render txt(698, 431, 'the Sun. At the quarters it is', 12)}
-				{@render txt(698, 448, 'nowhere near the Moon, and at full', 12)}
-				{@render txt(698, 465, 'Moon the Moon usually passes just', 12)}
-				{@render txt(698, 482, 'above or below it.', 12)}
-			</g>
-			<g opacity={swap(w.eclipses)}>
-				{@render txt(698, 392, STATUS_TEXT[status].title, 15, {
-					weight: 600,
-					color: status === 'lunar' ? COPPER : status === 'solar' ? 'var(--stage-ink)' : undefined
-				})}
-				{#each STATUS_TEXT[status].lines as line, i (i)}
-					{@render txt(698, 414 + 17 * i, line, 12)}
-				{/each}
-			</g>
+			<Readout
+				id="not-shadow"
+				order={2}
+				label="Phases are not a shadow"
+				value="Earth's shadow points away from the Sun"
+				note="At the quarters it is nowhere near the Moon, and at full Moon the Moon usually passes just above or below it."
+				opacity={oTop * swap(w.phases)}
+			>
+				<g opacity={swap(w.phases)}>
+					{@render txt(698, 392, 'Phases are not a shadow', 14, { weight: 600 })}
+					{@render txt(698, 414, "Earth's shadow points away from", 12)}
+					{@render txt(698, 431, 'the Sun. At the quarters it is', 12)}
+					{@render txt(698, 448, 'nowhere near the Moon, and at full', 12)}
+					{@render txt(698, 465, 'Moon the Moon usually passes just', 12)}
+					{@render txt(698, 482, 'above or below it.', 12)}
+				</g>
+			</Readout>
+			<Readout
+				id="eclipse-status"
+				order={2}
+				label={STATUS_TEXT[status].title}
+				value={STATUS_TEXT[status].lines.join(' ')}
+				color={status === 'lunar' ? COPPER : undefined}
+				opacity={oTop * swap(w.eclipses)}
+			>
+				<g opacity={swap(w.eclipses)}>
+					{@render txt(698, 392, STATUS_TEXT[status].title, 15, {
+						weight: 600,
+						color: status === 'lunar' ? COPPER : status === 'solar' ? 'var(--stage-ink)' : undefined
+					})}
+					{#each STATUS_TEXT[status].lines as line, i (i)}
+						{@render txt(698, 414 + 17 * i, line, 12)}
+					{/each}
+				</g>
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- ============================================================ tilted -->
 	{#if oTilt > 0.001}
 		<g opacity={oTilt} pointer-events="none">
-			{@render txt(24, 34, "The Moon's orbit is tilted to the Earth's", 15, { weight: 600 })}
-			{@render txt(
-				24,
-				52,
-				`${MOON_INCLINATION.toFixed(1)}° in reality; tilt exaggerated ×3 here`,
-				11,
-				{
-					muted: true
-				}
-			)}
+			<Readout
+				id="tilt"
+				order={4}
+				label="The Moon's orbit is tilted to the Earth's"
+				value="{MOON_INCLINATION.toFixed(1)}° (exaggerated ×3 here)"
+				note="the line of nodes keeps its direction; the Sun's turns once a year"
+				opacity={oTilt}
+			>
+				{@render txt(24, 34, "The Moon's orbit is tilted to the Earth's", 15, { weight: 600 })}
+				{@render txt(
+					24,
+					52,
+					`${MOON_INCLINATION.toFixed(1)}° in reality; tilt exaggerated ×3 here`,
+					11,
+					{
+						muted: true
+					}
+				)}
+			</Readout>
 
 			<!-- the part of the Moon's orbit below Earth's orbital plane, seen through it -->
 			<path
@@ -1038,6 +1102,7 @@
 				stroke-width="1"
 			/>
 			{@render txt(C3.x - R3 * PLANE_K * 0.98, C3.y + planeRy + 30, 'plane of Earth’s orbit', 11, {
+				minor: true,
 				muted: true,
 				opacity: nearSun(C3.x - R3 * PLANE_K * 0.62, C3.y + planeRy + 26)
 			})}
@@ -1097,6 +1162,7 @@
 				opacity: nearSun(ascLabel.x, ascLabel.y)
 			})}
 			{@render txt(ascLabel.x, ascLabel.y + 14, '(Moon going up)', 11, {
+				minor: true,
 				anchor: 'middle',
 				muted: true,
 				opacity: nearSun(ascLabel.x, ascLabel.y + 14)
@@ -1107,6 +1173,7 @@
 				opacity: nearSun(descLabel.x, descLabel.y)
 			})}
 			{@render txt(descLabel.x, descLabel.y + 14, '(Moon going down)', 11, {
+				minor: true,
 				anchor: 'middle',
 				muted: true,
 				opacity: nearSun(descLabel.x, descLabel.y + 14)
@@ -1143,7 +1210,9 @@
 				stroke-width="1.2"
 				stroke-dasharray="6 4"
 			/>
-			{@render txt(70, 376, 'line of nodes: keeps pointing the same way all year', 12)}
+			{@render txt(70, 376, 'line of nodes: keeps pointing the same way all year', 12, {
+				minor: true
+			})}
 			<line
 				x1="34"
 				y1="394"
@@ -1153,7 +1222,15 @@
 				stroke-width="1.5"
 				stroke-dasharray="3 4"
 			/>
-			{@render txt(70, 398, `direction of the Sun on ${dateText(dayShown)}: turns once a year`, 12)}
+			{@render txt(
+				70,
+				398,
+				`direction of the Sun on ${dateText(dayShown)}: turns once a year`,
+				12,
+				{
+					minor: true
+				}
+			)}
 			<line
 				x1="34"
 				y1="416"
@@ -1164,7 +1241,7 @@
 				stroke-linecap="round"
 				opacity={shade(0.14)}
 			/>
-			{@render txt(70, 420, "Earth's shadow", 12)}
+			{@render txt(70, 420, "Earth's shadow", 12, { minor: true })}
 		</g>
 
 		<!-- the Moon (oblique view), draggable along its orbit -->
@@ -1221,8 +1298,12 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			{@render txt(SX0 + 16, 48, 'Seen side-on', 13, { weight: 600, halo: false })}
-			{@render txt(SX0 + 16, 64, 'heights exaggerated ×3', 11, { muted: true, halo: false })}
+			{@render txt(SX0 + 16, 48, 'Seen side-on', 13, { weight: 600, halo: false, minor: true })}
+			{@render txt(SX0 + 16, 64, 'heights exaggerated ×3', 11, {
+				muted: true,
+				halo: false,
+				minor: true
+			})}
 			{#if eclipseNow}
 				{@render txt(SX1 - 16, 52, eclipseNow === 'solar' ? 'SOLAR ECLIPSE' : 'LUNAR ECLIPSE', 12, {
 					anchor: 'end',
@@ -1304,12 +1385,14 @@
 			{@render txt(SEX, SEY + 52, 'Earth', 11, { anchor: 'middle', muted: true, halo: false })}
 			{@render txt(SEX - RP, SEY + 76, 'new Moon', 11, { anchor: 'middle', halo: false })}
 			{@render txt(SEX - RP, SEY + 90, `zone ±${SOLAR_TXT}°`, 11, {
+				minor: true,
 				anchor: 'middle',
 				muted: true,
 				halo: false
 			})}
 			{@render txt(SEX + RP - 6, SEY + 76, 'full Moon', 11, { anchor: 'middle', halo: false })}
 			{@render txt(SEX + RP - 6, SEY + 90, `zone ±${LUNAR_TXT}°`, 11, {
+				minor: true,
 				anchor: 'middle',
 				muted: true,
 				halo: false
@@ -1317,32 +1400,60 @@
 
 			<!-- readouts -->
 			<line x1={SX0 + 16} y1="292" x2={SX1 - 16} y2="292" stroke="var(--border)" />
-			{@render txt(SX0 + 16, 318, readout.a, 13, { weight: 600, halo: false })}
-			{@render txt(SX0 + 16, 338, readout.b, 13, {
-				halo: false,
-				weight: eclipseNow ? 600 : 500,
-				color: eclipseNow === 'lunar' ? COPPER : undefined
-			})}
-			{@render txt(SX0 + 16, 374, monthNew, 11, { muted: !solarThisMonth, halo: false })}
-			{@render txt(SX0 + 16, 392, monthFull, 11, { muted: !lunarThisMonth, halo: false })}
-			{@render txt(
-				SX0 + 16,
-				418,
-				inSeason
-					? 'Eclipse season: the line of nodes points at the Sun'
-					: 'Outside the eclipse seasons',
-				11,
-				{
-					muted: !inSeason,
-					weight: inSeason ? 600 : 500,
-					halo: false
-				}
-			)}
+			<Readout
+				id="tilt-now"
+				order={1}
+				label={dateText(dayShown)}
+				value={readout.a}
+				note={readout.b}
+				color={eclipseNow === 'lunar' ? COPPER : undefined}
+				opacity={oTilt}
+			/>
+			<Readout
+				id="tilt-month"
+				order={2}
+				label="This month"
+				value={monthNew}
+				note={monthFull}
+				opacity={oTilt}
+			/>
+			<Readout
+				id="tilt-season"
+				order={3}
+				label="Eclipse season"
+				value={inSeason ? 'yes: the line of nodes points at the Sun' : 'no'}
+				opacity={oTilt}
+			>
+				{@render txt(SX0 + 16, 318, readout.a, 13, { weight: 600, halo: false })}
+				{@render txt(SX0 + 16, 338, readout.b, 13, {
+					halo: false,
+					weight: eclipseNow ? 600 : 500,
+					color: eclipseNow === 'lunar' ? COPPER : undefined
+				})}
+				{@render txt(SX0 + 16, 374, monthNew, 11, { muted: !solarThisMonth, halo: false })}
+				{@render txt(SX0 + 16, 392, monthFull, 11, { muted: !lunarThisMonth, halo: false })}
+				{@render txt(
+					SX0 + 16,
+					418,
+					inSeason
+						? 'Eclipse season: the line of nodes points at the Sun'
+						: 'Outside the eclipse seasons',
+					11,
+					{
+						muted: !inSeason,
+						weight: inSeason ? 600 : 500,
+						halo: false
+					}
+				)}
+			</Readout>
 		</g>
 
 		<!-- year strip: the two eclipse seasons -->
 		<g opacity={oTilt} pointer-events="none">
-			{@render txt(YX0, 470, 'Eclipse seasons (nodes as in 2026)', 13, { weight: 600 })}
+			{@render txt(YX0, 470, 'Eclipse seasons (nodes as in 2026)', 13, {
+				weight: 600,
+				minor: true
+			})}
 			<rect
 				x={YX1 - 300}
 				y="461"
@@ -1352,9 +1463,9 @@
 				fill="var(--sky-sun)"
 				opacity="0.55"
 			/>
-			{@render txt(YX1 - 280, 470, 'solar eclipses possible', 11, { muted: true })}
+			{@render txt(YX1 - 280, 470, 'solar eclipses possible', 11, { muted: true, minor: true })}
 			<rect x={YX1 - 140} y="461" width="14" height="10" rx="2" fill={COPPER} opacity="0.6" />
-			{@render txt(YX1 - 120, 470, 'lunar too', 11, { muted: true })}
+			{@render txt(YX1 - 120, 470, 'lunar too', 11, { muted: true, minor: true })}
 
 			<rect
 				x={YX0}
@@ -1400,6 +1511,7 @@
 					stroke="var(--stage-line)"
 				/>
 				{@render txt(yx((MONTH_START[i] + MONTH_START[i + 1]) / 2), YT + YH + 18, m, 11, {
+					minor: true,
 					anchor: 'middle',
 					muted: true
 				})}
@@ -1422,7 +1534,7 @@
 				YT + YH + 40,
 				dateText(dayShown),
 				12,
-				{ anchor: 'middle', weight: 600 }
+				{ anchor: 'middle', weight: 600, minor: true }
 			)}
 		</g>
 	{/if}
