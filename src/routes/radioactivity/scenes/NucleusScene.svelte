@@ -15,7 +15,7 @@
 	 * a scale model: real nuclei are balls whose radius grows as A^(1/3).
 	 */
 	import { Label, Photon, TAU, clamp, cycle, rng, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { C14, EXAMPLE, decay, nameOf, type Isotope, type Mode, type Nuclide } from '../model';
 	import { element } from '../../atoms-periodic-table/atom';
 
@@ -284,31 +284,57 @@
 	<path d={d.protons} fill="var(--rad-proton)" stroke="var(--stage-bg)" stroke-width="1" />
 {/snippet}
 
+<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 {#snippet key(x: number, y: number)}
-	<circle cx={x + 6} cy={y - 4} r="6" fill="var(--rad-proton)" />
-	<text x={x + 18} {y}>proton</text>
-	<circle cx={x + 88} cy={y - 4} r="6" fill="var(--rad-neutron)" />
-	<text x={x + 100} {y}>neutron</text>
+	<Readout id="key-proton" order={20} label="proton" color="var(--rad-proton)">
+		<circle cx={x + 6} cy={y - 4} r="6" fill="var(--rad-proton)" />
+		<text x={x + 18} {y}>proton</text>
+	</Readout>
+	<Readout id="key-neutron" order={21} label="neutron" color="var(--rad-neutron)">
+		<circle cx={x + 88} cy={y - 4} r="6" fill="var(--rad-neutron)" />
+		<text x={x + 100} {y}>neutron</text>
+	</Readout>
 {/snippet}
 
 <g>
 	{#if view === 'intro'}
 		<!-- carbon-12 -->
-		<text x={250} y={128} text-anchor="middle" style:font-size="18px" font-weight="600"
-			>Carbon-12</text
+		<Readout
+			id="c12"
+			order={1}
+			label="Carbon-12"
+			value="6 protons · 6 neutrons"
+			note="stable: lasts for ever"
 		>
-		<text x={250} y={152} text-anchor="middle" class="muted">6 protons · 6 neutrons</text>
+			<text x={250} y={128} text-anchor="middle" style:font-size="18px" font-weight="600"
+				>Carbon-12</text
+			>
+			<text x={250} y={152} text-anchor="middle" class="muted">6 protons · 6 neutrons</text>
+		</Readout>
 		{@render drawn(intro12)}
-		<Label x={250} y={384} text="stable: lasts for ever" />
+		<Readout id="c12-stable">
+			<Label x={250} y={384} text="stable: lasts for ever" />
+		</Readout>
 
 		<!-- carbon-14, which decays now and then -->
 		<g opacity={introFade}>
-			<text x={700} y={128} text-anchor="middle" style:font-size="18px" font-weight="600">
-				{decayed ? 'Nitrogen-14' : 'Carbon-14'}
-			</text>
-			<text x={700} y={152} text-anchor="middle" class="muted">
-				{decayed ? '7 protons · 7 neutrons' : '6 protons · 8 neutrons'}
-			</text>
+			<Readout
+				id="c14"
+				order={2}
+				label={decayed ? 'Nitrogen-14' : 'Carbon-14'}
+				value={decayed ? '7 protons · 7 neutrons' : '6 protons · 8 neutrons'}
+				note={decayed
+					? 'a neutron became a proton: now nitrogen'
+					: 'radioactive: half-life 5,700 years'}
+				opacity={introFade}
+			>
+				<text x={700} y={128} text-anchor="middle" style:font-size="18px" font-weight="600">
+					{decayed ? 'Nitrogen-14' : 'Carbon-14'}
+				</text>
+				<text x={700} y={152} text-anchor="middle" class="muted">
+					{decayed ? '7 protons · 7 neutrons' : '6 protons · 8 neutrons'}
+				</text>
+			</Readout>
 			{@render drawn(decayed ? intro14b : intro14)}
 			{#if decayed}
 				{@const b = intro14.balls[turnIndex]}
@@ -328,28 +354,40 @@
 					</g>
 				{/if}
 			{/if}
-			<Label
-				x={700}
-				y={384}
-				text={decayed
-					? 'a neutron became a proton: now nitrogen'
-					: 'radioactive: half-life 5,700 years'}
-			/>
+			<Readout id="c14-note">
+				<Label
+					x={700}
+					y={384}
+					text={decayed
+						? 'a neutron became a proton: now nitrogen'
+						: 'radioactive: half-life 5,700 years'}
+				/>
+			</Readout>
 		</g>
 
-		<text x={480} y={456} text-anchor="middle" class="muted">
-			Stable isotopes of {carbon.name.toLowerCase()} (mendeleev data): {carbon.stable
-				.map((a) => `${carbon.name.toLowerCase()}-${a}`)
-				.join(' and ')}
-		</text>
-		<text x={480} y={480} text-anchor="middle" class="muted">
-			Carbon-14 → nitrogen-14 + an electron, at a moment nobody can predict
-		</text>
+		<Readout id="intro-notes">
+			<text x={480} y={456} text-anchor="middle" class="muted">
+				Stable isotopes of {carbon.name.toLowerCase()} (mendeleev data): {carbon.stable
+					.map((a) => `${carbon.name.toLowerCase()}-${a}`)
+					.join(' and ')}
+			</text>
+			<text x={480} y={480} text-anchor="middle" class="muted">
+				Carbon-14 → nitrogen-14 + an electron, at a moment nobody can predict
+			</text>
+		</Readout>
 		{@render key(400, 540)}
 	{:else}
 		<!-- title -->
-		<text x={40} y={50} style:font-size="18px" font-weight="600">{NAMES[mode]}</text>
-		<text x={40} y={74} class="muted">{halfLifeText} for {nameText(parent).toLowerCase()}</text>
+		<Readout
+			id="mode"
+			order={1}
+			label={NAMES[mode]}
+			value={halfLifeText}
+			note="for {nameText(parent).toLowerCase()}"
+		>
+			<text x={40} y={50} style:font-size="18px" font-weight="600">{NAMES[mode]}</text>
+			<text x={40} y={74} class="muted">{halfLifeText} for {nameText(parent).toLowerCase()}</text>
+		</Readout>
 
 		<!-- parent → daughter + particle -->
 		{@render drawn(parentDrawn)}
@@ -374,7 +412,16 @@
 			stroke-width="2"
 			marker-end="url(#arrowhead)"
 		/>
-		<Label x={(PX + DX) / 2} y={NY - 14} text={change} color={emitted.color} weight={600} />
+		<Readout
+			id="change"
+			order={2}
+			label="{nameText(parent)} → {nameText(daughter)}"
+			value={change}
+			note="Z {parent.z} · A {parent.a} → Z {daughter.z} · A {daughter.a}"
+			color={emitted.color}
+		>
+			<Label x={(PX + DX) / 2} y={NY - 14} text={change} color={emitted.color} weight={600} />
+		</Readout>
 		{@render drawn(daughterDrawn)}
 		{#if mode === 'beta'}
 			{@const b = daughterDrawn.balls[betaIndex]}
@@ -387,10 +434,12 @@
 				stroke-width="2"
 			/>
 		{/if}
-		<Label x={PX} y={NY + OUTER + 28} text={nameText(parent)} weight={600} />
-		<Label x={PX} y={NY + OUTER + 46} text="Z {parent.z} · A {parent.a}" muted />
-		<Label x={DX} y={NY + OUTER + 28} text={nameText(daughter)} weight={600} />
-		<Label x={DX} y={NY + OUTER + 46} text="Z {daughter.z} · A {daughter.a}" muted />
+		<Readout id="names">
+			<Label x={PX} y={NY + OUTER + 28} text={nameText(parent)} weight={600} />
+			<Label x={PX} y={NY + OUTER + 46} text="Z {parent.z} · A {parent.a}" muted />
+			<Label x={DX} y={NY + OUTER + 28} text={nameText(daughter)} weight={600} />
+			<Label x={DX} y={NY + OUTER + 46} text="Z {daughter.z} · A {daughter.a}" muted />
+		</Readout>
 
 		<!-- the emitted particle -->
 		<g opacity={particle.o}>
@@ -411,21 +460,32 @@
 				/>
 			{/if}
 		</g>
-		<Label
-			x={DX + 40}
-			y={110}
-			text={emitted.text}
+		<Readout
+			id="emitted"
+			order={3}
+			label="Emitted"
+			value={emitted.text}
+			note="{emitted.sub}{mode === 'beta' ? ' (and an antineutrino)' : ''}"
 			color={emitted.color}
-			weight={600}
-			anchor="start"
-		/>
-		<Label x={DX + 40} y={128} text={emitted.sub} muted anchor="start" />
-		{#if mode === 'beta'}
-			<Label x={DX + 40} y={146} text="(and an antineutrino)" muted anchor="start" />
-		{/if}
+		>
+			<Label
+				x={DX + 40}
+				y={110}
+				text={emitted.text}
+				color={emitted.color}
+				weight={600}
+				anchor="start"
+			/>
+			<Label x={DX + 40} y={128} text={emitted.sub} muted anchor="start" />
+			{#if mode === 'beta'}
+				<Label x={DX + 40} y={146} text="(and an antineutrino)" muted anchor="start" />
+			{/if}
+		</Readout>
 
 		<!-- chart of nuclides around the parent -->
-		<text x={CX0} y={CY0 - 14} class="muted">each square: one kind of nucleus</text>
+		<Readout id="chart-caption">
+			<text x={CX0} y={CY0 - 14} class="muted">each square: one kind of nucleus</text>
+		</Readout>
 		{#each chart.cells as c (c.key)}
 			{@const hot = isParent(c) || isDaughter(c)}
 			<rect
@@ -439,35 +499,43 @@
 				stroke-width={hot ? 2 : 1}
 				opacity={hot ? 1 : 0.6}
 			/>
+			<Readout id="cell-{c.key}">
+				<text
+					x={c.x + CELL / 2}
+					y={c.y + CELL / 2 + 4}
+					text-anchor="middle"
+					font-weight={hot ? 600 : 400}
+					class={hot ? '' : 'muted'}
+					style:font-size="12px"
+					opacity={hot ? 1 : underArrow(c) ? 0 : 0.7}
+					>{element(c.z).symbol}-{c.z + c.n}{isParent(c) && parent.meta ? 'm' : ''}</text
+				>
+			</Readout>
+		{/each}
+		<Readout id="chart-axes">
+			{#each chart.zs as z, row (z)}
+				<text x={CX0 - 8} y={CY0 + (row + 0.5) * CELL + 4} text-anchor="end" class="muted">{z}</text
+				>
+			{/each}
+			{#each chart.ns as n, col (n)}
+				<text
+					x={CX0 + (col + 0.5) * CELL}
+					y={CY0 + 4 * CELL + 18}
+					text-anchor="middle"
+					class="muted">{n}</text
+				>
+			{/each}
 			<text
-				x={c.x + CELL / 2}
-				y={c.y + CELL / 2 + 4}
+				x={CX0 - 40}
+				y={CY0 + 2 * CELL}
 				text-anchor="middle"
-				font-weight={hot ? 600 : 400}
-				class={hot ? '' : 'muted'}
-				style:font-size="12px"
-				opacity={hot ? 1 : underArrow(c) ? 0 : 0.7}
-				>{element(c.z).symbol}-{c.z + c.n}{isParent(c) && parent.meta ? 'm' : ''}</text
+				class="muted"
+				transform="rotate(-90 {CX0 - 40} {CY0 + 2 * CELL})">protons (Z)</text
 			>
-		{/each}
-		{#each chart.zs as z, row (z)}
-			<text x={CX0 - 8} y={CY0 + (row + 0.5) * CELL + 4} text-anchor="end" class="muted">{z}</text>
-		{/each}
-		{#each chart.ns as n, col (n)}
-			<text x={CX0 + (col + 0.5) * CELL} y={CY0 + 4 * CELL + 18} text-anchor="middle" class="muted"
-				>{n}</text
+			<text x={CX0 + 2 * CELL} y={CY0 + 4 * CELL + 38} text-anchor="middle" class="muted"
+				>neutrons (N)</text
 			>
-		{/each}
-		<text
-			x={CX0 - 40}
-			y={CY0 + 2 * CELL}
-			text-anchor="middle"
-			class="muted"
-			transform="rotate(-90 {CX0 - 40} {CY0 + 2 * CELL})">protons (Z)</text
-		>
-		<text x={CX0 + 2 * CELL} y={CY0 + 4 * CELL + 38} text-anchor="middle" class="muted"
-			>neutrons (N)</text
-		>
+		</Readout>
 		{#if mode === 'gamma'}
 			<!-- the same square: only energy leaves -->
 			<path
@@ -488,10 +556,14 @@
 		{/if}
 
 		<!-- what stops it -->
-		<text x={40} y={SY - 62} style:font-size="15px" font-weight="600">What stops it</text>
-		<text x={160} y={SY - 62} class="muted">{stoppedBy}</text>
+		<Readout id="stopped" order={4} label="What stops it" value={stoppedBy}>
+			<text x={40} y={SY - 62} style:font-size="15px" font-weight="600">What stops it</text>
+			<text x={160} y={SY - 62} class="muted">{stoppedBy}</text>
+		</Readout>
 		<circle cx={SRC - 16} cy={SY} r="12" fill="var(--rad-parent)" />
-		<text x={SRC - 16} y={SY + 66} text-anchor="middle" class="muted">source</text>
+		<Readout id="source-label">
+			<text x={SRC - 16} y={SY + 66} text-anchor="middle" class="muted">source</text>
+		</Readout>
 		{#each BARRIERS as b (b.id)}
 			<rect
 				x={b.x}
@@ -502,7 +574,9 @@
 				fill={b.fill}
 				stroke="var(--border)"
 			/>
-			<text x={b.x + b.w / 2} y={SY + 66} text-anchor="middle" class="muted">{b.label}</text>
+			<Readout id="barrier-{b.id}">
+				<text x={b.x + b.w / 2} y={SY + 66} text-anchor="middle" class="muted">{b.label}</text>
+			</Readout>
 		{/each}
 		{#each streams as s (s.k)}
 			<line

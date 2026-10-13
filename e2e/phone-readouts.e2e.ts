@@ -837,6 +837,48 @@ test.describe('on a phone', () => {
 		await page.goto('./sun-earth-moon/#tides');
 		await expect(panel).toContainText(/Two high tides and two low tides\s*every 24 h 50 min/);
 	});
+
+	test('radioactivity nucleus: the decay and its half-life are text and follow the mode', async ({
+		page
+	}) => {
+		await page.goto('./radioactivity/#nucleus');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Carbon-12\s*6 protons · 6 neutrons/);
+		await page.goto('./radioactivity/#compare');
+		await expect(panel).toContainText(/Alpha decay\s*half-life 432\.6/);
+		await expect(panel).toContainText(/Emitted\s*α particle/);
+		await expect(drawing(page)).not.toContainText('What stops it');
+		await page.locator('button[data-control="mode"][data-value="beta"]').click();
+		await expect(panel).toContainText(/Beta decay\s*half-life 5,700/);
+		await expect(panel).toContainText(/Carbon-14 → Nitrogen-14\s*Z \+ 1, A same/);
+	});
+
+	test('radioactivity grid: the counts and the half-life are text and follow the slider', async ({
+		page
+	}) => {
+		await page.goto('./radioactivity/#halflife');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/After each half-life\s*½: \d/);
+		await expect(panel).toContainText(/Intact\s*\d/);
+		await expect(panel).toContainText(/half-life 8 s\s*\d\.\d half-lives: \d+ left/);
+		await expect(drawing(page)).not.toContainText('After each half-life');
+		await range(page, 'halflife').fill('20');
+		await expect(panel).toContainText(/half-life 20 s/);
+		await page.goto('./radioactivity/#random');
+		await expect(panel).toContainText(/The circled nucleus\s*(still intact|decayed) after/);
+	});
+
+	test('carbon dating: the age is text and follows the carbon-14 left', async ({ page }) => {
+		await page.goto('./radioactivity/#dating');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/The sample\s*25% left/);
+		await expect(panel).toContainText(/Age\s*≈ 11,400 years old/);
+		await expect(drawing(page)).not.toContainText('years old');
+		await range(page, 'fraction').fill('50');
+		await expect(panel).toContainText(/Age\s*≈ 5,700 years old/);
+		await page.goto('./radioactivity/#carbon14');
+		await expect(panel).toContainText(/Upper atmosphere\s*nitrogen-14 → carbon-14/);
+	});
 });
 
 test.describe('on a wide screen', () => {

@@ -21,7 +21,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, Label, linePath, areaPath, scale, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { expected, makeSample, spread, survivors, lastDecay } from '../model';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -247,22 +247,28 @@
 
 <g opacity={fade}>
 	<!-- header -->
-	<text
-		x={GX}
-		y={52}
-		style:font-size="16px"
-		font-weight="600"
-		style:font-variant-numeric="tabular-nums">{sec.toFixed(1)} s</text
-	>
-	<text x={GX + 76} y={52} class="muted">half-life {Math.round(half)} s</text>
-	<g style:font-variant-numeric="tabular-nums">
-		<rect x={GX} y={70} width="11" height="11" rx="2" fill="var(--rad-parent)" />
-		<text x={GX + 18} y={80}>Intact</text>
-		<text x={GX + 70} y={80} font-weight="600">{fmt(left)}</text>
-		<rect x={GX + 130} y={70} width="11" height="11" rx="2" fill="var(--rad-daughter)" />
-		<text x={GX + 148} y={80}>Decayed</text>
-		<text x={GX + 212} y={80} font-weight="600">{fmt(n0 - left)}</text>
-	</g>
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="clock">
+		<text
+			x={GX}
+			y={52}
+			style:font-size="16px"
+			font-weight="600"
+			style:font-variant-numeric="tabular-nums">{sec.toFixed(1)} s</text
+		>
+		<text x={GX + 76} y={52} class="muted">half-life {Math.round(half)} s</text>
+	</Readout>
+	<Readout id="intact" order={1} label="Intact" value={fmt(left)} color="var(--rad-parent)" />
+	<Readout id="decayed" order={2} label="Decayed" value={fmt(n0 - left)}>
+		<g style:font-variant-numeric="tabular-nums">
+			<rect x={GX} y={70} width="11" height="11" rx="2" fill="var(--rad-parent)" />
+			<text x={GX + 18} y={80}>Intact</text>
+			<text x={GX + 70} y={80} font-weight="600">{fmt(left)}</text>
+			<rect x={GX + 130} y={70} width="11" height="11" rx="2" fill="var(--rad-daughter)" />
+			<text x={GX + 148} y={80}>Decayed</text>
+			<text x={GX + 212} y={80} font-weight="600">{fmt(n0 - left)}</text>
+		</g>
+	</Readout>
 
 	<!-- grid of nuclei -->
 	<path d={gridPaths.off} fill="var(--rad-daughter)" />
@@ -282,58 +288,96 @@
 			stroke-width="2"
 		/>
 		<Label x={focusCell.x + layout.size / 2} y={focusCell.y - pad - 10} text="this one" pill />
-		<g style:font-variant-numeric="tabular-nums">
-			<text x={GX} y={448} style:font-size="15px" font-weight="600">The circled nucleus</text>
-			<text x={GX} y={472}>
-				{focusGone
-					? `decayed after ${focusLife.toFixed(1)} s — nobody could have said when`
-					: `still intact after ${sec.toFixed(1)} s, and no more likely to decay now than at the start`}
-			</text>
-			<text x={GX} y={512} style:font-size="15px" font-weight="600">Decays in the last second</text>
-			<text x={GX} y={536}>
-				{lastSecond}
-				{lastSecond === 1 ? 'nucleus' : 'nuclei'}: fewer left, so fewer decays
-			</text>
-		</g>
+		<Readout
+			id="circled"
+			order={3}
+			label="The circled nucleus"
+			value={focusGone
+				? `decayed after ${focusLife.toFixed(1)} s`
+				: `still intact after ${sec.toFixed(1)} s`}
+			note={focusGone
+				? 'nobody could have said when'
+				: 'and no more likely to decay now than at the start'}
+		/>
+		<Readout
+			id="last-second"
+			order={4}
+			label="Decays in the last second"
+			value="{lastSecond} {lastSecond === 1 ? 'nucleus' : 'nuclei'}"
+			note="fewer left, so fewer decays"
+		>
+			<g style:font-variant-numeric="tabular-nums">
+				<text x={GX} y={448} style:font-size="15px" font-weight="600">The circled nucleus</text>
+				<text x={GX} y={472}>
+					{focusGone
+						? `decayed after ${focusLife.toFixed(1)} s — nobody could have said when`
+						: `still intact after ${sec.toFixed(1)} s, and no more likely to decay now than at the start`}
+				</text>
+				<text x={GX} y={512} style:font-size="15px" font-weight="600"
+					>Decays in the last second</text
+				>
+				<text x={GX} y={536}>
+					{lastSecond}
+					{lastSecond === 1 ? 'nucleus' : 'nuclei'}: fewer left, so fewer decays
+				</text>
+			</g>
+		</Readout>
 	{:else}
 		<!-- what is left after each half-life -->
-		<g style:font-variant-numeric="tabular-nums">
-			<text x={GX} y={444} style:font-size="15px" font-weight="600">After each half-life</text>
-			{#each cardMarks as m (m.k)}
-				{@const x = GX + (m.k - 1) * 164}
-				{@const hot = view === 'quarter' && m.k === 2}
-				<rect
-					{x}
-					y={458}
-					width="150"
-					height="96"
-					rx="10"
-					fill="var(--surface)"
-					stroke={hot ? 'var(--rad-flash)' : 'var(--border)'}
-					stroke-width={hot ? 2 : 1}
-				/>
-				<text x={x + 12} y={480} class="muted"
-					>{m.k} half-li{m.k === 1 ? 'fe' : 'ves'} · {fmt(m.at)} s</text
-				>
-				<text x={x + 12} y={508} style:font-size="20px" font-weight="600">{fractions[m.k - 1]}</text
-				>
-				<text x={x + 40} y={507}>expected {showCount(m.exp)}</text>
-				<text
-					x={x + 12}
-					y={538}
-					style:fill={m.reached ? 'var(--stage-ink)' : 'var(--stage-ink-muted)'}
-				>
-					{m.reached ? `this sample: ${showCount(m.got)}` : 'this sample: …'}
-				</text>
-			{/each}
-			{#if cardMarks.length === 0}
-				<text x={GX} y={480} class="muted">The first half-life ends after the 60 s shown.</text>
-			{/if}
-		</g>
+		<Readout
+			id="halves"
+			order={4}
+			label="After each half-life"
+			value={cardMarks.length === 0
+				? 'the first one ends after the 60 s shown'
+				: cardMarks
+						.map((m) => `${fractions[m.k - 1]}: ${m.reached ? showCount(m.got) : '…'}`)
+						.join(' · ')}
+			note={cardMarks.length === 0
+				? undefined
+				: `expected ${cardMarks.map((m) => showCount(m.exp)).join(' · ')}`}
+		>
+			<g style:font-variant-numeric="tabular-nums">
+				<text x={GX} y={444} style:font-size="15px" font-weight="600">After each half-life</text>
+				{#each cardMarks as m (m.k)}
+					{@const x = GX + (m.k - 1) * 164}
+					{@const hot = view === 'quarter' && m.k === 2}
+					<rect
+						{x}
+						y={458}
+						width="150"
+						height="96"
+						rx="10"
+						fill="var(--surface)"
+						stroke={hot ? 'var(--rad-flash)' : 'var(--border)'}
+						stroke-width={hot ? 2 : 1}
+					/>
+					<text x={x + 12} y={480} class="muted"
+						>{m.k} half-li{m.k === 1 ? 'fe' : 'ves'} · {fmt(m.at)} s</text
+					>
+					<text x={x + 12} y={508} style:font-size="20px" font-weight="600"
+						>{fractions[m.k - 1]}</text
+					>
+					<text x={x + 40} y={507}>expected {showCount(m.exp)}</text>
+					<text
+						x={x + 12}
+						y={538}
+						style:fill={m.reached ? 'var(--stage-ink)' : 'var(--stage-ink-muted)'}
+					>
+						{m.reached ? `this sample: ${showCount(m.got)}` : 'this sample: …'}
+					</text>
+				{/each}
+				{#if cardMarks.length === 0}
+					<text x={GX} y={480} class="muted">The first half-life ends after the 60 s shown.</text>
+				{/if}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- plot -->
-	<text x={PX0} y={100} style:font-size="15px" font-weight="600">Nuclei left</text>
+	<Readout id="plot-title">
+		<text x={PX0} y={100} style:font-size="15px" font-weight="600">Nuclei left</text>
+	</Readout>
 	<Axes
 		{sx}
 		{sy}
@@ -388,7 +432,15 @@
 	<circle cx={sx(sec)} cy={sy(toY(left))} r="4" fill="var(--rad-parent)" />
 	{#if showExpected && !pct}
 		{#each marks as m (m.k)}
-			<Label x={sx(m.at) + 8} y={sy(toY(m.exp)) - 8} text={showCount(m.exp)} anchor="start" muted />
+			<Readout id="mark-{m.k}">
+				<Label
+					x={sx(m.at) + 8}
+					y={sy(toY(m.exp)) - 8}
+					text={showCount(m.exp)}
+					anchor="start"
+					muted
+				/>
+			</Readout>
 		{/each}
 	{/if}
 
@@ -396,25 +448,41 @@
 	<g>
 		{#each legend as row, i (row.id)}
 			{@const y = 438 + i * 22}
-			{#if row.id === 'band'}
-				<rect x={PX0} y={y - 5} width="24" height="10" fill="var(--rad-parent)" opacity="0.16" />
-			{:else}
-				<line
-					x1={PX0}
-					x2={PX0 + 24}
-					y1={y}
-					y2={y}
-					stroke={row.color}
-					stroke-width={row.width}
-					stroke-dasharray={row.dash}
-					stroke-linecap={row.id === 'steady' ? 'round' : 'butt'}
-				/>
-			{/if}
-			<text x={PX0 + 34} y={y + 4}>{row.text}</text>
+			<Readout
+				id="legend-{row.id}"
+				order={10 + i}
+				label={row.text}
+				color={row.id === 'band' ? 'var(--rad-parent)' : row.color}
+			>
+				{#if row.id === 'band'}
+					<rect x={PX0} y={y - 5} width="24" height="10" fill="var(--rad-parent)" opacity="0.16" />
+				{:else}
+					<line
+						x1={PX0}
+						x2={PX0 + 24}
+						y1={y}
+						y2={y}
+						stroke={row.color}
+						stroke-width={row.width}
+						stroke-dasharray={row.dash}
+						stroke-linecap={row.id === 'steady' ? 'round' : 'butt'}
+					/>
+				{/if}
+				<text x={PX0 + 34} y={y + 4}>{row.text}</text>
+			</Readout>
 		{/each}
 	</g>
-	<g style:font-variant-numeric="tabular-nums">
-		<text x={PX0} y={statusY} font-weight="600">{status[0]}</text>
-		<text x={PX0} y={statusY + 20} class="muted">{status[1]}</text>
-	</g>
+	<Readout
+		id="status"
+		order={5}
+		label="{sec.toFixed(1)} s · half-life {Math.round(half)} s"
+		value={status[0]}
+		note={status[1] || undefined}
+		opacity={view === 'random' ? 0 : 1}
+	>
+		<g style:font-variant-numeric="tabular-nums">
+			<text x={PX0} y={statusY} font-weight="600">{status[0]}</text>
+			<text x={PX0} y={statusY + 20} class="muted">{status[1]}</text>
+		</g>
+	</Readout>
 </g>

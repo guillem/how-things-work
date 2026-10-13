@@ -15,7 +15,7 @@
 	 * curve says, so the drawing always matches the number shown.
 	 */
 	import { Axes, Label, clamp, cycle, linePath, rng, scale, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { C14, ageUncertainty, radiocarbonAge, surviving } from '../model';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -154,7 +154,16 @@
 	{#if view === 'life'}
 		<!-- sky -->
 		<rect x={40} y={40} width={440} height={110} rx="14" fill="var(--sky)" />
-		<text x={56} y={138} class="muted">upper atmosphere</text>
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout
+			id="atmosphere"
+			order={1}
+			label="Upper atmosphere"
+			value="nitrogen-14 → carbon-14"
+			note="when a cosmic-ray neutron hits it"
+		>
+			<text x={56} y={138} class="muted">upper atmosphere</text>
+		</Readout>
 		<!-- a cosmic ray hits nitrogen-14 and makes carbon-14 -->
 		<line
 			x1={250}
@@ -165,24 +174,30 @@
 			stroke-width="2"
 			marker-end="url(#arrowhead)"
 		/>
-		<Label x={244} y={66} text="cosmic-ray neutron" anchor="end" />
+		<Readout id="neutron-label">
+			<Label x={244} y={66} text="cosmic-ray neutron" anchor="end" />
+		</Readout>
 		<circle cx={316} cy={108} r="10" fill="var(--rad-beta)" />
 		<text x={316} y={112} text-anchor="middle" style:fill="var(--stage-bg)" style:font-size="10px"
 			>N</text
 		>
-		<text x={336} y={113} class="muted">→</text>
+		<Readout id="arrow-label"><text x={336} y={113} class="muted">→</text></Readout>
 		<circle cx={364} cy={108} r="10" fill="var(--rad-parent)" />
 		<text x={364} y={112} text-anchor="middle" style:fill="var(--stage-bg)" style:font-size="10px"
 			>C</text
 		>
-		<text x={340} y={138} text-anchor="middle" class="muted">nitrogen-14 → carbon-14</text>
+		<Readout id="n-to-c">
+			<text x={340} y={138} text-anchor="middle" class="muted">nitrogen-14 → carbon-14</text>
+		</Readout>
 
 		<!-- carbon-14 in CO₂, taken in by the tree while it lives -->
 		{#each inflow as p (p.k)}
 			<circle cx={p.x} cy={p.y} r="4" fill="var(--rad-parent)" opacity={p.o} />
 		{/each}
 		{#if alive}
-			<Label x={472} y={214} text="CO₂ with carbon-14" anchor="end" muted />
+			<Readout id="co2">
+				<Label x={472} y={214} text="CO₂ with carbon-14" anchor="end" muted />
+			</Readout>
 		{/if}
 
 		<!-- the tree, or its fallen trunk -->
@@ -212,17 +227,26 @@
 			/>
 		{/each}
 		<line x1={40} x2={480} y1={TREE.y + 58} y2={TREE.y + 58} stroke="var(--stage-line)" />
-		<Label
-			x={TREE.x}
-			y={TREE.y + 88}
-			text={alive ? 'alive: carbon-14 in, carbon-14 decaying' : 'dead: no new carbon-14 comes in'}
-		/>
+		<Readout
+			id="tree"
+			order={2}
+			label={alive ? 'Alive' : 'Dead'}
+			value={alive ? 'carbon-14 in, carbon-14 decaying' : 'no new carbon-14 comes in'}
+		>
+			<Label
+				x={TREE.x}
+				y={TREE.y + 88}
+				text={alive ? 'alive: carbon-14 in, carbon-14 decaying' : 'dead: no new carbon-14 comes in'}
+			/>
+		</Readout>
 
 		<!-- the level over time -->
-		<text x={LX} y={100} style:font-size="15px" font-weight="600"
-			>Carbon-14 in the tree's newest growth</text
-		>
-		<text x={LX} y={120} class="muted">compared with living things</text>
+		<Readout id="level-title">
+			<text x={LX} y={100} style:font-size="15px" font-weight="600"
+				>Carbon-14 in the tree's newest growth</text
+			>
+			<text x={LX} y={120} class="muted">compared with living things</text>
+		</Readout>
 		<Axes
 			sx={lsx}
 			sy={lsy}
@@ -239,8 +263,10 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-dasharray="3 3"
 		/>
-		<Label x={lsx(0) - 6} y={LY0 + 150} text="death" anchor="end" muted />
-		<Label x={lsx(-PRE / 2)} y={lsy(100) + 20} text="alive" muted />
+		<Readout id="death-alive">
+			<Label x={lsx(0) - 6} y={LY0 + 150} text="death" anchor="end" muted />
+			<Label x={lsx(-PRE / 2)} y={lsy(100) + 20} text="alive" muted />
+		</Readout>
 		<path
 			d={linePath(
 				lifeCurve,
@@ -254,15 +280,31 @@
 			stroke-width="2.6"
 		/>
 		<circle cx={lsx(years)} cy={lsy(100 * level)} r="5" fill="var(--rad-parent)" />
-		<text x={LX} y={470} font-weight="600" style:font-variant-numeric="tabular-nums"
-			>{lifeStatus}</text
+		<Readout
+			id="level"
+			order={3}
+			label="Carbon-14 in the newest growth"
+			value={lifeStatus}
+			note="it halves every 5,700 years (± 30)"
 		>
-		<text x={LX} y={492} class="muted">it halves every 5,700 years (± 30)</text>
+			<text x={LX} y={470} font-weight="600" style:font-variant-numeric="tabular-nums"
+				>{lifeStatus}</text
+			>
+			<text x={LX} y={492} class="muted">it halves every 5,700 years (± 30)</text>
+		</Readout>
 	{:else}
 		<!-- the sample -->
-		<text x={50} y={100} style:font-size="15px" font-weight="600">The sample</text>
-		<text x={50} y={124} class="muted">each dot: 1% of the carbon-14</text>
-		<text x={50} y={144} class="muted">it had while alive</text>
+		<Readout
+			id="sample"
+			order={1}
+			label="The sample"
+			value="{pctText(f)} left"
+			note="each dot: 1% of the carbon-14 it had while alive"
+		>
+			<text x={50} y={100} style:font-size="15px" font-weight="600">The sample</text>
+			<text x={50} y={124} class="muted">each dot: 1% of the carbon-14</text>
+			<text x={50} y={144} class="muted">it had while alive</text>
+		</Readout>
 		{#each dateDots as d (d.k)}
 			<circle
 				cx={d.x}
@@ -274,16 +316,20 @@
 				opacity={d.on ? 1 : 0.45}
 			/>
 		{/each}
-		<text
-			x={50}
-			y={472}
-			style:font-size="15px"
-			font-weight="600"
-			style:font-variant-numeric="tabular-nums">{pctText(f)} left</text
-		>
+		<Readout id="sample-left">
+			<text
+				x={50}
+				y={472}
+				style:font-size="15px"
+				font-weight="600"
+				style:font-variant-numeric="tabular-nums">{pctText(f)} left</text
+			>
+		</Readout>
 
 		<!-- the decay curve and the reading -->
-		<text x={DX0} y={92} style:font-size="15px" font-weight="600">Carbon-14 left</text>
+		<Readout id="curve-title">
+			<text x={DX0} y={92} style:font-size="15px" font-weight="600">Carbon-14 left</text>
+		</Readout>
 		<rect
 			x={dsx(LIMIT)}
 			y={DY0}
@@ -291,8 +337,10 @@
 			height={DY1 - DY0}
 			fill="var(--stage-grid)"
 		/>
-		<Label x={dsx(55_000)} y={DY0 + 22} text="too little" muted />
-		<Label x={dsx(55_000)} y={DY0 + 40} text="to measure" muted />
+		<Readout id="too-little">
+			<Label x={dsx(55_000)} y={DY0 + 22} text="too little" muted />
+			<Label x={dsx(55_000)} y={DY0 + 40} text="to measure" muted />
+		</Readout>
 		<Axes
 			sx={dsx}
 			sy={dsy}
@@ -336,22 +384,33 @@
 			stroke-width="2"
 		/>
 
-		<g style:font-variant-numeric="tabular-nums">
-			<text x={DX0} y={490} style:font-size="24px" font-weight="600"
-				>{f >= 1 ? 'Alive, or only just dead' : `≈ ${fmt(age)} years old`}</text
-			>
-			<text x={DX0} y={516} class="muted">
-				{f >= 1
-					? 'none of its carbon-14 has gone yet'
-					: `± ${fmt(err)} years from the ± 30 years on the half-life`}
-			</text>
-			{#if f < 1}
-				<text x={DX0} y={544}>
-					{halvings.toFixed(2)} half-lives: 5,700 years × log₂(1 / {f < 0.01
-						? f.toFixed(3)
-						: f.toFixed(2)})
+		<Readout
+			id="age"
+			order={2}
+			label="Age"
+			value={f >= 1 ? 'alive, or only just dead' : `≈ ${fmt(age)} years old`}
+			note={f >= 1
+				? 'none of its carbon-14 has gone yet'
+				: `± ${fmt(err)} years from the ± 30 years on the half-life; ${halvings.toFixed(2)} half-lives`}
+			color="var(--rad-parent)"
+		>
+			<g style:font-variant-numeric="tabular-nums">
+				<text x={DX0} y={490} style:font-size="24px" font-weight="600"
+					>{f >= 1 ? 'Alive, or only just dead' : `≈ ${fmt(age)} years old`}</text
+				>
+				<text x={DX0} y={516} class="muted">
+					{f >= 1
+						? 'none of its carbon-14 has gone yet'
+						: `± ${fmt(err)} years from the ± 30 years on the half-life`}
 				</text>
-			{/if}
-		</g>
+				{#if f < 1}
+					<text x={DX0} y={544}>
+						{halvings.toFixed(2)} half-lives: 5,700 years × log₂(1 / {f < 0.01
+							? f.toFixed(3)
+							: f.toFixed(2)})
+					</text>
+				{/if}
+			</g>
+		</Readout>
 	{/if}
 </g>
