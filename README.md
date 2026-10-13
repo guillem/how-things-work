@@ -16,7 +16,7 @@ npm install
 npm run dev          # http://localhost:5173
 make check          # prettier, eslint, svelte-check and the model tests (~20 s)
 make e2e            # smoke tests of the critical paths on the production build (~8 s)
-make e2e-full       # every browser test (779 of them, ~1.5 min)
+make e2e-full       # every browser test (810 of them, ~1.5 min)
 make format         # prettier --write
 npm run build        # static site in ./build
 ```
