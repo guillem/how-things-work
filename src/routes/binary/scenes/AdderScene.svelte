@@ -26,7 +26,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, norm, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { add, placeValue, signed, toBits, unsigned } from '../binary';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -287,21 +287,24 @@
 
 <g class="adder">
 	<!-- header, as in the byte scene -->
-	{@render txt(480, 32, over ? 'When the answer does not fit' : 'Adding two bytes', 17, {
-		anchor: 'middle',
-		weight: 650
-	})}
-	{@render txt(
-		480,
-		54,
-		over
-			? isSigned
-				? 'The same bytes read as signed numbers: −128 to 127'
-				: 'A byte holds 0 to 255: there is no 9th column for a carry'
-			: 'Column by column from the right, as on paper',
-		13,
-		{ anchor: 'middle', muted: true }
-	)}
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout id="header">
+		{@render txt(480, 32, over ? 'When the answer does not fit' : 'Adding two bytes', 17, {
+			anchor: 'middle',
+			weight: 650
+		})}
+		{@render txt(
+			480,
+			54,
+			over
+				? isSigned
+					? 'The same bytes read as signed numbers: −128 to 127'
+					: 'A byte holds 0 to 255: there is no 9th column for a carry'
+				: 'Column by column from the right, as on paper',
+			13,
+			{ anchor: 'middle', muted: true }
+		)}
+	</Readout>
 	<defs>
 		<clipPath id="adder-odo">
 			<rect x={ODO.x} y={ODO.y} width={ODO.dw * 3 + 8} height={ODO.dh} rx="6" />
@@ -373,7 +376,9 @@
 			stroke-dasharray="2 4"
 			opacity="0.6"
 		/>
-		{@render txt(OUT_X - 22, Y_CARRY + 4, 'no 9th bit', 11, { anchor: 'end', muted: true })}
+		<Readout id="no-9th">
+			{@render txt(OUT_X - 22, Y_CARRY + 4, 'no 9th bit', 11, { anchor: 'end', muted: true })}
+		</Readout>
 	{/if}
 
 	<!-- the two numbers -->
@@ -443,12 +448,14 @@
 				})}
 			</g>
 		{/if}
-		{@render txt(c.x, Y_PLACE, isSigned && c.i === 0 ? '−128' : String(placeValue(c.i, 8)), 12, {
-			anchor: 'middle',
-			muted: !(isSigned && c.i === 0),
-			color: isSigned && c.i === 0 ? 'var(--bit-sign)' : undefined,
-			tabular: true
-		})}
+		<Readout id="place-{c.i}">
+			{@render txt(c.x, Y_PLACE, isSigned && c.i === 0 ? '−128' : String(placeValue(c.i, 8)), 12, {
+				anchor: 'middle',
+				muted: !(isSigned && c.i === 0),
+				color: isSigned && c.i === 0 ? 'var(--bit-sign)' : undefined,
+				tabular: true
+			})}
+		</Readout>
 	{/each}
 
 	<!-- carries in flight and the lost one -->
@@ -490,39 +497,47 @@
 			})}
 		</g>
 		{#if out.tag > 0.01}
-			<g opacity={out.tag}>
-				{@render txt(LOST.x, LOST.y + 36, harmless ? 'dropped' : 'lost', 14, {
-					anchor: 'middle',
-					color: lostColor,
-					weight: 700
-				})}
-			</g>
+			<Readout id="lost">
+				<g opacity={out.tag}>
+					{@render txt(LOST.x, LOST.y + 36, harmless ? 'dropped' : 'lost', 14, {
+						anchor: 'middle',
+						color: lostColor,
+						weight: 700
+					})}
+				</g>
+			</Readout>
 		{/if}
 	{/if}
 
 	<!-- the column's little sum -->
-	<g opacity={reduced ? 1 : fade}>
-		<rect
-			x={MID - pillW / 2}
-			y={Y_PILL - 15}
-			width={pillW}
-			height="30"
-			rx="15"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
-		{@render txt(MID, Y_PILL + 5, pill, 13, { anchor: 'middle', weight: 500, halo: false })}
-	</g>
+	<Readout id="pill" order={2} label="Now" value={pill}>
+		<g opacity={reduced ? 1 : fade}>
+			<rect
+				x={MID - pillW / 2}
+				y={Y_PILL - 15}
+				width={pillW}
+				height="30"
+				rx="15"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			{@render txt(MID, Y_PILL + 5, pill, 13, { anchor: 'middle', weight: 500, halo: false })}
+		</g>
+	</Readout>
 
 	<!-- readouts -->
-	{@render txt(
-		RX,
-		Y_CARRY - 26,
-		isSigned ? 'read as signed' : over ? 'read as unsigned' : 'in decimal',
-		11,
-		{ muted: true }
-	)}
-	{@render txt(RX, Y_CARRY + 5, 'carries', 13, { color: 'var(--bit-carry)', weight: 600 })}
+	<Readout id="read-as">
+		{@render txt(
+			RX,
+			Y_CARRY - 26,
+			isSigned ? 'read as signed' : over ? 'read as unsigned' : 'in decimal',
+			11,
+			{ muted: true }
+		)}
+	</Readout>
+	<Readout id="carries" order={1} label="carries" color="var(--bit-carry)">
+		{@render txt(RX, Y_CARRY + 5, 'carries', 13, { color: 'var(--bit-carry)', weight: 600 })}
+	</Readout>
 	{@render txt(RX, Y_A + 8, minus(ra), 22, { weight: 600, tabular: true })}
 	{@render txt(RX, Y_B + 8, minus(rb), 22, { weight: 600, tabular: true })}
 	<g opacity={reduced ? 1 : smoothstep(END - 0.4, END + 0.2, tau) * fade}>
@@ -531,155 +546,175 @@
 			tabular: true,
 			color: over && lines.l2bad ? 'var(--bit-overflow)' : undefined
 		})}
-		{#if over}
-			{@render txt(RX, Y_SUM + 30, `true sum ${minus(trueSum)}`, 12, {
-				muted: true,
-				tabular: true
-			})}
-		{:else if sum.carryOut}
-			{@render txt(RX, Y_SUM + 30, `not ${A + B}: see next step`, 12, {
-				muted: true,
-				tabular: true
-			})}
-		{/if}
+		<Readout
+			id="sum-note"
+			order={3}
+			label="Result"
+			value="not {A + B}: see next step"
+			opacity={!over && sum.carryOut ? 1 : 0}
+		>
+			{#if over}
+				{@render txt(RX, Y_SUM + 30, `true sum ${minus(trueSum)}`, 12, {
+					muted: true,
+					tabular: true
+				})}
+			{:else if sum.carryOut}
+				{@render txt(RX, Y_SUM + 30, `not ${A + B}: see next step`, 12, {
+					muted: true,
+					tabular: true
+				})}
+			{/if}
+		</Readout>
 	</g>
 
 	<!-- add: the four cases -->
 	{#if wOver.current < 0.99}
-		<g opacity={1 - wOver.current}>
-			<rect
-				x="24"
-				y="470"
-				width="912"
-				height="112"
-				rx="12"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			{@render txt(44, 494, 'Two bits plus any carry make 0, 1, 2 or 3: four cases', 13, {
-				weight: 600,
-				halo: false
-			})}
-			{#each CASES as c, k (c.sum)}
-				{@const x = 44 + k * 222}
-				{@const on = activeCase === k}
+		<Readout id="cases">
+			<g opacity={1 - wOver.current}>
 				<rect
-					{x}
-					y="504"
-					width="206"
-					height="68"
-					rx="9"
-					fill={on ? 'var(--bit-on)' : 'none'}
-					fill-opacity={on ? 0.14 : 0}
-					stroke={on ? 'var(--bit-on)' : 'var(--border)'}
-					stroke-width={on ? 2 : 1}
+					x="24"
+					y="470"
+					width="912"
+					height="112"
+					rx="12"
+					fill="var(--surface)"
+					stroke="var(--border)"
 				/>
-				{@render txt(x + 103, 527, c.sum, 17, {
-					anchor: 'middle',
-					mono: true,
+				{@render txt(44, 494, 'Two bits plus any carry make 0, 1, 2 or 3: four cases', 13, {
 					weight: 600,
 					halo: false
 				})}
-				{@render txt(x + 103, 546, c.note, 12, {
-					anchor: 'middle',
-					color: on ? 'var(--bit-on)' : undefined,
-					halo: false,
-					weight: 600
-				})}
-				{@render txt(x + 103, 563, c.ways, 11, { anchor: 'middle', muted: true, halo: false })}
-			{/each}
-		</g>
+				{#each CASES as c, k (c.sum)}
+					{@const x = 44 + k * 222}
+					{@const on = activeCase === k}
+					<rect
+						{x}
+						y="504"
+						width="206"
+						height="68"
+						rx="9"
+						fill={on ? 'var(--bit-on)' : 'none'}
+						fill-opacity={on ? 0.14 : 0}
+						stroke={on ? 'var(--bit-on)' : 'var(--border)'}
+						stroke-width={on ? 2 : 1}
+					/>
+					{@render txt(x + 103, 527, c.sum, 17, {
+						anchor: 'middle',
+						mono: true,
+						weight: 600,
+						halo: false
+					})}
+					{@render txt(x + 103, 546, c.note, 12, {
+						anchor: 'middle',
+						color: on ? 'var(--bit-on)' : undefined,
+						halo: false,
+						weight: 600
+					})}
+					{@render txt(x + 103, 563, c.ways, 11, { anchor: 'middle', muted: true, halo: false })}
+				{/each}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- overflow: the verdict and the odometer -->
 	{#if wOver.current > 0.01}
-		<g opacity={wOver.current}>
-			<rect
-				x="24"
-				y="470"
-				width="652"
-				height="112"
-				rx="12"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			{@render txt(44, 500, lines.head, 17, { weight: 700, tabular: true, halo: false })}
-			{@render txt(44, 527, lines.l2, 14, {
-				weight: 600,
-				tabular: true,
-				halo: false,
-				color: lines.l2bad ? 'var(--bit-overflow)' : undefined
-			})}
-			{@render txt(44, 554, lines.l3, 13, {
-				halo: false,
-				weight: lines.l3bad ? 600 : 500,
-				muted: !lines.l3bad,
-				color: lines.l3bad ? 'var(--bit-overflow)' : undefined
-			})}
+		<Readout
+			id="verdict"
+			order={4}
+			label={lines.head}
+			value={lines.l2}
+			note={lines.l3}
+			color={lines.l2bad ? 'var(--bit-overflow)' : undefined}
+			opacity={wOver.current}
+		>
+			<g opacity={wOver.current}>
+				<rect
+					x="24"
+					y="470"
+					width="652"
+					height="112"
+					rx="12"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+				{@render txt(44, 500, lines.head, 17, { weight: 700, tabular: true, halo: false })}
+				{@render txt(44, 527, lines.l2, 14, {
+					weight: 600,
+					tabular: true,
+					halo: false,
+					color: lines.l2bad ? 'var(--bit-overflow)' : undefined
+				})}
+				{@render txt(44, 554, lines.l3, 13, {
+					halo: false,
+					weight: lines.l3bad ? 600 : 500,
+					muted: !lines.l3bad,
+					color: lines.l3bad ? 'var(--bit-overflow)' : undefined
+				})}
 
-			<rect
-				x="692"
-				y="470"
-				width="244"
-				height="112"
-				rx="12"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			{@render txt(814, 492, 'like a 3-digit odometer', 12, {
-				anchor: 'middle',
-				muted: true,
-				halo: false
-			})}
-			<rect
-				x={ODO.x - 4}
-				y={ODO.y - 4}
-				width={ODO.dw * 3 + 16}
-				height={ODO.dh + 8}
-				rx="9"
-				fill="var(--stage-ink)"
-			/>
-			<g clip-path="url(#adder-odo)">
-				{#each odo as d (d.d)}
-					{@const cx = ODO.x + 4 + d.d * ODO.dw + ODO.dw / 2}
-					<rect
-						x={cx - ODO.dw / 2 + 1}
-						y={ODO.y}
-						width={ODO.dw - 2}
-						height={ODO.dh}
-						fill="var(--stage-bg)"
-					/>
-					{@render txt(cx, ODO.y + 29 - d.r * ODO.dh, d.now, 24, {
-						anchor: 'middle',
-						mono: true,
-						weight: 700,
-						halo: false
-					})}
-					{#if d.r > 0}
-						{@render txt(cx, ODO.y + 29 + (1 - d.r) * ODO.dh, d.next, 24, {
+				<rect
+					x="692"
+					y="470"
+					width="244"
+					height="112"
+					rx="12"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+				{@render txt(814, 492, 'like a 3-digit odometer', 12, {
+					anchor: 'middle',
+					muted: true,
+					halo: false
+				})}
+				<rect
+					x={ODO.x - 4}
+					y={ODO.y - 4}
+					width={ODO.dw * 3 + 16}
+					height={ODO.dh + 8}
+					rx="9"
+					fill="var(--stage-ink)"
+				/>
+				<g clip-path="url(#adder-odo)">
+					{#each odo as d (d.d)}
+						{@const cx = ODO.x + 4 + d.d * ODO.dw + ODO.dw / 2}
+						<rect
+							x={cx - ODO.dw / 2 + 1}
+							y={ODO.y}
+							width={ODO.dw - 2}
+							height={ODO.dh}
+							fill="var(--stage-bg)"
+						/>
+						{@render txt(cx, ODO.y + 29 - d.r * ODO.dh, d.now, 24, {
 							anchor: 'middle',
 							mono: true,
 							weight: 700,
 							halo: false
 						})}
-					{/if}
-				{/each}
+						{#if d.r > 0}
+							{@render txt(cx, ODO.y + 29 + (1 - d.r) * ODO.dh, d.next, 24, {
+								anchor: 'middle',
+								mono: true,
+								weight: 700,
+								halo: false
+							})}
+						{/if}
+					{/each}
+				</g>
+				{@render txt(ODO.x + ODO.dw * 3 + 26, ODO.y + 18, '999 + 1', 13, {
+					tabular: true,
+					halo: false
+				})}
+				{@render txt(ODO.x + ODO.dw * 3 + 26, ODO.y + 36, '→ 000', 13, {
+					tabular: true,
+					halo: false,
+					weight: 700
+				})}
+				{@render txt(814, 572, 'no wheel for the 1000s', 11, {
+					anchor: 'middle',
+					muted: true,
+					halo: false
+				})}
 			</g>
-			{@render txt(ODO.x + ODO.dw * 3 + 26, ODO.y + 18, '999 + 1', 13, {
-				tabular: true,
-				halo: false
-			})}
-			{@render txt(ODO.x + ODO.dw * 3 + 26, ODO.y + 36, '→ 000', 13, {
-				tabular: true,
-				halo: false,
-				weight: 700
-			})}
-			{@render txt(814, 572, 'no wheel for the 1000s', 11, {
-				anchor: 'middle',
-				muted: true,
-				halo: false
-			})}
-		</g>
+		</Readout>
 	{/if}
 </g>
 

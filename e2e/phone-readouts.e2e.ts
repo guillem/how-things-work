@@ -144,6 +144,111 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText('loses carbon');
 	});
 
+	test('sorting bars: the counters are text under the stage and follow the starting order', async ({
+		page
+	}) => {
+		await page.goto('./sorting/#bubble');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Comparisons\s*120/);
+		await expect(panel).toContainText('in final place');
+		await expect(drawing(page)).not.toContainText('comparisons');
+		// Bubble sort stops after one walk without a swap: n − 1 comparisons on sorted bars.
+		await page.getByRole('radio', { name: 'Sorted', exact: true }).click();
+		await expect(panel).toContainText(/Comparisons\s*15\b/);
+	});
+
+	test('sorting race: the lane counts and places are text and follow the starting order', async ({
+		page
+	}) => {
+		await page.goto('./sorting/#race');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Tick\s*all finished after \d+/);
+		await expect(panel).toContainText(/Merge sort\s*\d+ comparisons · 1st/);
+		await expect(drawing(page)).not.toContainText('comparisons');
+		// Insertion sort on sorted bars: one comparison per bar after the first.
+		await page.getByRole('radio', { name: 'Sorted', exact: true }).click();
+		await expect(panel).toContainText(/Insertion sort\s*15 comparisons/);
+	});
+
+	test('sorting growth: the counts at 1,000 items are text and follow the starting order', async ({
+		page
+	}) => {
+		await page.goto('./sorting/#growth');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/At 1,000 items the slow pair needs\s*\d+ to \d+ times/);
+		await expect(drawing(page)).not.toContainText('slow pair');
+		await page.getByRole('radio', { name: 'Sorted', exact: true }).click();
+		await expect(panel).toContainText(/Bubble = insertion\s*999 each/);
+		// The same scene's later steps list their own readouts.
+		await page.goto('./sorting/#machine');
+		await expect(panel).toContainText(/Merge sort wins beyond\s*about [\d,]+ items/);
+		await page.getByRole('radio', { name: '×1', exact: true }).click();
+		await expect(panel).toContainText('merge sort is never slower');
+	});
+
+	test('binary byte: the hex reading is text under the stage and follows Add 1', async ({
+		page
+	}) => {
+		await page.goto('./binary/#place');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Bit values\s*128 64 32 16 8 4 2 1/);
+		await expect(panel).toContainText(/Hexadecimal\s*41/);
+		await expect(drawing(page)).not.toContainText('in hexadecimal');
+		await page.locator('button[data-control=plus1]').click();
+		await expect(panel).toContainText(/Hexadecimal\s*42/);
+	});
+
+	test('binary adder: the column sum and the overflow verdict are text and follow the numbers', async ({
+		page
+	}) => {
+		await page.goto('./binary/#add');
+		const panel = readouts(page);
+		await expect(panel).toContainText('carries');
+		await expect(panel).toContainText(/Now\s*45 \+ 27 = 72/);
+		await expect(drawing(page)).not.toContainText('four cases');
+		await range(page, 'a').fill('50');
+		await expect(panel).toContainText(/Now\s*50 \+ 27 = 77/);
+		await page.goto('./binary/#overflow');
+		await expect(panel).toContainText(
+			/200 \+ 100 = 300\s*300 doesn't fit in 8 bits → 300 − 256 = 44/
+		);
+		await range(page, 'oa').fill('100');
+		await expect(panel).toContainText('200 fits in 8 bits');
+	});
+
+	test('graph-search grid: the search counts and the route are text and follow the estimate', async ({
+		page
+	}) => {
+		await page.goto('./graph-search/#estimate');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/A\*\s*46 squares visited/);
+		await expect(panel).toContainText(/Route found\s*21 steps · cost 21/);
+		await expect(drawing(page)).not.toContainText('squares visited');
+		await range(page, 'estimate').fill('5');
+		await expect(panel).toContainText(/A\* · estimate × 5\s*\d+ squares visited/);
+	});
+
+	test('graph-search race: each search’s count and the takeaway are text', async ({ page }) => {
+		await page.goto('./graph-search/#compare');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/1 · Breadth-first.*\s*\d+ visited/);
+		await expect(panel).toContainText(/3 · A\*\s*\d+ visited\s*cost \d+ · \d+ steps · cheapest/);
+		await expect(panel).toContainText(/In short\s*A\* looked at \d+ squares/);
+		await expect(drawing(page)).not.toContainText('Squares visited before reaching the goal');
+	});
+
+	test('graph-search roads: the route and the towns looked at are text and follow the method', async ({
+		page
+	}) => {
+		await page.goto('./graph-search/#roads');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Shortest route\s*Ashford → .* = \d+ km/);
+		await expect(panel).toContainText(/Towns looked at\s*Dijkstra: 9/);
+		await expect(drawing(page)).not.toContainText('looked at');
+		await page.locator('button[data-control=roadAlgo][data-value=astar]').click();
+		await expect(panel).toContainText(/Towns looked at\s*A\*: 7/);
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');

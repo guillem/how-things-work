@@ -19,7 +19,7 @@
 	 * presentation attributes.
 	 */
 	import { smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { REGION, route } from '../search';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -177,16 +177,19 @@
 
 <g opacity={fadeIn}>
 	<!-- header -->
-	{@render txt(24, 36, 'Ashford → Juniper', 17, { weight: 600 })}
-	{@render txt(
-		936,
-		36,
-		algo === 'astar'
-			? 'A*: km so far + straight line to Juniper'
-			: "Dijkstra's algorithm: nearest first",
-		14,
-		{ anchor: 'end', muted: true }
-	)}
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout id="header">
+		{@render txt(24, 36, 'Ashford → Juniper', 17, { weight: 600 })}
+		{@render txt(
+			936,
+			36,
+			algo === 'astar'
+				? 'A*: km so far + straight line to Juniper'
+				: "Dijkstra's algorithm: nearest first",
+			14,
+			{ anchor: 'end', muted: true }
+		)}
+	</Readout>
 
 	<!-- roads -->
 	{#each roads as r, i (i)}
@@ -226,13 +229,15 @@
 
 	<!-- road lengths -->
 	{#each roads as r, i (i)}
-		{@render pill(
-			(P[r.a].x + P[r.b].x) / 2,
-			(P[r.a].y + P[r.b].y) / 2,
-			`${r.km}`,
-			11,
-			done && routeRoads.has(i) && routeIn > 0.5 ? 'var(--gs-path)' : undefined
-		)}
+		<Readout id="km-{i}">
+			{@render pill(
+				(P[r.a].x + P[r.b].x) / 2,
+				(P[r.a].y + P[r.b].y) / 2,
+				`${r.km}`,
+				11,
+				done && routeRoads.has(i) && routeIn > 0.5 ? 'var(--gs-path)' : undefined
+			)}
+		</Readout>
 	{/each}
 
 	<!-- A*: the straight-line estimate from the town just settled -->
@@ -251,7 +256,9 @@
 			/>
 			<!-- the line's length, just above the goal (every estimate line ends there; on the
 			     line itself it would cover towns and road lengths) -->
-			{@render pill(b.x + 44, b.y - 39, `${crow(current)} km straight`, 12, 'var(--stage-ink)')}
+			<Readout id="crow">
+				{@render pill(b.x + 44, b.y - 39, `${crow(current)} km straight`, 12, 'var(--stage-ink)')}
+			</Readout>
 		</g>
 	{/if}
 
@@ -306,58 +313,112 @@
 				>{/if}</text
 		>
 	{/each}
-	{@render txt(P[FROM].x, P[FROM].y - 16, 'start', 12, {
-		anchor: 'middle',
-		color: 'var(--gs-start)',
-		weight: 600
-	})}
-	{@render txt(P[TO].x, P[TO].y - 16, 'goal', 12, {
-		anchor: 'middle',
-		color: 'var(--gs-goal)',
-		weight: 600
-	})}
+	<Readout id="start" order={20} label="start: {towns[FROM].name}" color="var(--gs-start)">
+		{@render txt(P[FROM].x, P[FROM].y - 16, 'start', 12, {
+			anchor: 'middle',
+			color: 'var(--gs-start)',
+			weight: 600
+		})}
+	</Readout>
+	<Readout id="goal" order={21} label="goal: {towns[TO].name}" color="var(--gs-goal)">
+		{@render txt(P[TO].x, P[TO].y - 16, 'goal', 12, {
+			anchor: 'middle',
+			color: 'var(--gs-goal)',
+			weight: 600
+		})}
+	</Readout>
 	{#if done}
-		<g opacity={routeIn}>
-			{@render pill(592, 434, `${res.km} km`, 15, 'var(--gs-path)')}
-		</g>
+		<Readout id="km">
+			<g opacity={routeIn}>
+				{@render pill(592, 434, `${res.km} km`, 15, 'var(--gs-path)')}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- readout -->
-	<rect
-		x={16}
-		y={494}
-		width={928}
-		height={90}
-		rx="10"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
-	{@render txt(36, 519, line1, 15, {
-		weight: 600,
-		color: done ? 'var(--gs-path)' : undefined
-	})}
-	{#if done}
-		{@render txt(36, 544, `${NAME[algo]} looked at ${plural(res.order.length, 'town')}`, 13, {
+	<Readout id="card">
+		<rect
+			x={16}
+			y={494}
+			width={928}
+			height={90}
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
+	<Readout
+		id="line1"
+		order={1}
+		label={done ? 'Shortest route' : 'Now'}
+		value={done ? line1.replace(/^Shortest route: /, '') : line1}
+		color={done ? 'var(--gs-path)' : undefined}
+	>
+		{@render txt(36, 519, line1, 15, {
 			weight: 600,
-			data: 'looked'
+			color: done ? 'var(--gs-path)' : undefined
 		})}
-		{@render txt(
-			924,
-			544,
-			`towns looked at: ${results.dijkstra.order.length} (Dijkstra) / ${results.astar.order.length} (A*)`,
-			13,
-			{ anchor: 'end', muted: true, data: 'both' }
-		)}
-	{:else}
-		{@render txt(36, 544, `${NAME[algo]}: ${settledCount} of ${towns.length} towns looked at`, 13, {
-			muted: true
-		})}
-		{#if algo === 'astar'}
-			{@render txt(924, 544, 'the estimate is never too high: no road beats a straight line', 13, {
-				anchor: 'end',
-				muted: true
+	</Readout>
+	{#if done}
+		<Readout
+			id="looked"
+			order={2}
+			label="Towns looked at"
+			value="{NAME[algo]}: {res.order.length}"
+			note="{NAME[algo === 'astar' ? 'dijkstra' : 'astar']}: {results[
+				algo === 'astar' ? 'dijkstra' : 'astar'
+			].order.length}"
+		>
+			{@render txt(36, 544, `${NAME[algo]} looked at ${plural(res.order.length, 'town')}`, 13, {
+				weight: 600,
+				data: 'looked'
 			})}
+			{@render txt(
+				924,
+				544,
+				`towns looked at: ${results.dijkstra.order.length} (Dijkstra) / ${results.astar.order.length} (A*)`,
+				13,
+				{ anchor: 'end', muted: true, data: 'both' }
+			)}
+		</Readout>
+	{:else}
+		<Readout
+			id="looked"
+			order={2}
+			label="Towns looked at"
+			value="{settledCount} of {towns.length}"
+			note={NAME[algo]}
+		>
+			{@render txt(
+				36,
+				544,
+				`${NAME[algo]}: ${settledCount} of ${towns.length} towns looked at`,
+				13,
+				{
+					muted: true
+				}
+			)}
+		</Readout>
+		{#if algo === 'astar'}
+			<Readout id="never-high">
+				{@render txt(
+					924,
+					544,
+					'the estimate is never too high: no road beats a straight line',
+					13,
+					{
+						anchor: 'end',
+						muted: true
+					}
+				)}
+			</Readout>
 		{/if}
 	{/if}
-	{@render txt(36, 569, TAKEAWAY, 13, { weight: done ? 600 : 500, muted: !done, data: 'takeaway' })}
+	<Readout id="takeaway">
+		{@render txt(36, 569, TAKEAWAY, 13, {
+			weight: done ? 600 : 500,
+			muted: !done,
+			data: 'takeaway'
+		})}
+	</Readout>
 </g>

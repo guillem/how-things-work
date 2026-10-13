@@ -29,7 +29,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, clamp, startDrag, toSvg, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { createPlayback } from '#lib/explainer/playback.ts';
 	import {
 		PRESETS,
@@ -626,62 +626,110 @@
 
 <g>
 	<!-- readout card -->
-	<rect
-		x="16"
-		y="16"
-		width="928"
-		height="80"
-		rx="10"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
-	{@render txt(36, 46, title, 17, { weight: 600 })}
-	{@render txt(924, 46, stats, 14, { anchor: 'end', weight: 600, muted: !result })}
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout id="card">
+		<rect
+			x="16"
+			y="16"
+			width="928"
+			height="80"
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
+	<Readout id="stats" order={1} label={title} value={stats}>
+		{@render txt(36, 46, title, 17, { weight: 600 })}
+		{@render txt(924, 46, stats, 14, { anchor: 'end', weight: 600, muted: !result })}
+	</Readout>
 	{#if result && words === ''}
 		{#if result.path.length === 0}
-			{@render txt(36, 76, 'No route: walls cut the goal off from the start', 14, {
-				color: 'var(--gs-goal)',
-				weight: 600
-			})}
+			<Readout
+				id="no-route"
+				order={2}
+				label="No route"
+				value="walls cut the goal off from the start"
+				color="var(--gs-goal)"
+			>
+				{@render txt(36, 76, 'No route: walls cut the goal off from the start', 14, {
+					color: 'var(--gs-goal)',
+					weight: 600
+				})}
+			</Readout>
 		{:else if showCheapest && cheapest}
-			{@render swatch(38, 71, false)}
-			{@render txt(
-				74,
-				76,
-				`${algo === 'bfs' ? 'Fewest steps' : 'A* route'}: ${summary(result)}`,
-				14,
-				{ weight: 600 }
-			)}
-			{@render swatch(316, 71, true)}
-			{@render txt(352, 76, `Cheapest: ${summary(cheapest)}`, 14, { weight: 600 })}
-			{#if phase === 'estimate'}
+			<Readout
+				id="route"
+				order={2}
+				label={algo === 'bfs' ? 'Fewest steps' : 'A* route'}
+				value={summary(result)}
+				color="var(--gs-path)"
+			>
+				{@render swatch(38, 71, false)}
 				{@render txt(
-					924,
+					74,
 					76,
-					`estimate × ${fmt(weight)} can be too high → missed the cheapest route`,
-					13,
-					{ anchor: 'end', color: 'var(--gs-goal)', weight: 600 }
+					`${algo === 'bfs' ? 'Fewest steps' : 'A* route'}: ${summary(result)}`,
+					14,
+					{ weight: 600 }
 				)}
+			</Readout>
+			<Readout id="cheapest" order={3} label="Cheapest (dotted)" value={summary(cheapest)}>
+				{@render swatch(316, 71, true)}
+				{@render txt(352, 76, `Cheapest: ${summary(cheapest)}`, 14, { weight: 600 })}
+			</Readout>
+			{#if phase === 'estimate'}
+				<Readout
+					id="overestimate"
+					order={4}
+					label="Estimate × {fmt(weight)}"
+					value="can be too high → missed the cheapest route"
+					color="var(--gs-goal)"
+				>
+					{@render txt(
+						924,
+						76,
+						`estimate × ${fmt(weight)} can be too high → missed the cheapest route`,
+						13,
+						{ anchor: 'end', color: 'var(--gs-goal)', weight: 600 }
+					)}
+				</Readout>
 			{/if}
 		{:else}
-			{@render swatch(38, 71, false)}
-			{@render txt(74, 76, `Route found: ${summary(result)}`, 14, { weight: 600 })}
-			{#if cheapest && phase === 'astar' && cheapest.cost === result.cost}
-				{@render txt(316, 76, `— Dijkstra’s algorithm visited ${cheapest.expanded} squares`, 13, {
-					muted: true
-				})}
-			{:else if cheapest}
-				{@render txt(316, 76, '— also the cheapest route', 13, { muted: true })}
-			{/if}
+			<Readout
+				id="route"
+				order={2}
+				label="Route found"
+				value={summary(result)}
+				note={cheapest && phase === 'astar' && cheapest.cost === result.cost
+					? `Dijkstra visited ${cheapest.expanded} squares`
+					: cheapest
+						? 'also the cheapest'
+						: undefined}
+				color="var(--gs-path)"
+			>
+				{@render swatch(38, 71, false)}
+				{@render txt(74, 76, `Route found: ${summary(result)}`, 14, { weight: 600 })}
+				{#if cheapest && phase === 'astar' && cheapest.cost === result.cost}
+					{@render txt(316, 76, `— Dijkstra’s algorithm visited ${cheapest.expanded} squares`, 13, {
+						muted: true
+					})}
+				{:else if cheapest}
+					{@render txt(316, 76, '— also the cheapest route', 13, { muted: true })}
+				{/if}
+			</Readout>
 			{#if algo === 'astar'}
-				{@render txt(924, 76, 'point at a square: cost so far + estimate', 13, {
-					anchor: 'end',
-					muted: true
-				})}
+				<Readout id="point-hint">
+					{@render txt(924, 76, 'point at a square: cost so far + estimate', 13, {
+						anchor: 'end',
+						muted: true
+					})}
+				</Readout>
 			{/if}
 		{/if}
 	{:else}
-		{@render txt(36, 76, words, 14, { muted: !result })}
+		<Readout id="words" order={2} label="Now" value={words}>
+			{@render txt(36, 76, words, 14, { muted: !result })}
+		</Readout>
 	{/if}
 
 	<!-- the map: one rect per square -->
@@ -706,15 +754,17 @@
 	<rect x={GX} y={GY} width={GW} height={GH} fill="none" stroke="var(--stage-line)" rx="2" />
 
 	{#each numbers as n (n.key)}
-		<text
-			x={n.xs}
-			y={n.y}
-			text-anchor="middle"
-			opacity="0.85"
-			style:font-size="13px"
-			style:fill={n.color}
-			style:font-variant-numeric="tabular-nums">{n.s}</text
-		>
+		<Readout id="num-{n.key}">
+			<text
+				x={n.xs}
+				y={n.y}
+				text-anchor="middle"
+				opacity="0.85"
+				style:font-size="13px"
+				style:fill={n.color}
+				style:font-variant-numeric="tabular-nums">{n.s}</text
+			>
+		</Readout>
 	{/each}
 
 	{#if frontierPath}
@@ -846,15 +896,17 @@
 			stroke-linecap="round"
 			opacity="0.6"
 		/>
-		{@render txt(TL0 - 24, TLY + 4, 'start', 11, { anchor: 'end', muted: true })}
-		{@render txt(TL1 + 24, TLY + 4, 'end', 11, { muted: true })}
-		{@render txt(
-			(TL0 + TL1) / 2,
-			TLY + 30,
-			`${progressText}${playing && !reduced ? '' : playing ? ' · drag or use ← → to step through' : ' · paused: drag or use ← →'}`,
-			12,
-			{ anchor: 'middle', muted: true }
-		)}
+		<Readout id="timeline-text">
+			{@render txt(TL0 - 24, TLY + 4, 'start', 11, { anchor: 'end', muted: true })}
+			{@render txt(TL1 + 24, TLY + 4, 'end', 11, { muted: true })}
+			{@render txt(
+				(TL0 + TL1) / 2,
+				TLY + 30,
+				`${progressText}${playing && !reduced ? '' : playing ? ' · drag or use ← → to step through' : ' · paused: drag or use ← →'}`,
+				12,
+				{ anchor: 'middle', muted: true }
+			)}
+		</Readout>
 		<Handle
 			x={tlx}
 			y={TLY}
@@ -869,21 +921,25 @@
 		/>
 	{:else}
 		{#each LEGEND as item, j (item.l)}
-			<rect
-				x={GX + j * 170}
-				y="530"
-				width="16"
-				height="16"
-				rx="3"
-				style:fill={item.f}
-				stroke="var(--stage-line)"
-			/>
-			{@render txt(GX + 24 + j * 170, 543, item.l, 13, { muted: true })}
+			<Readout id="legend-{j}" order={10 + j} label={item.l} color={item.f}>
+				<rect
+					x={GX + j * 170}
+					y="530"
+					width="16"
+					height="16"
+					rx="3"
+					style:fill={item.f}
+					stroke="var(--stage-line)"
+				/>
+				{@render txt(GX + 24 + j * 170, 543, item.l, 13, { muted: true })}
+			</Readout>
 		{/each}
-		{@render txt(GX + GW, 543, 'moves: up, down, left or right — never through a wall', 13, {
-			anchor: 'end',
-			muted: true
-		})}
+		<Readout id="moves">
+			{@render txt(GX + GW, 543, 'moves: up, down, left or right — never through a wall', 13, {
+				anchor: 'end',
+				muted: true
+			})}
+		</Readout>
 	{/if}
 </g>
 

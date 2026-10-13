@@ -27,7 +27,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		add,
 		bitString,
@@ -701,11 +701,13 @@
 			stroke={sg.color}
 			stroke-width="1.5"
 		/>
-		{@render txt((sg.x0 + sg.x1) / 2, sg.y - 6, sg.label, 12, {
-			anchor: 'middle',
-			color: sg.color,
-			weight: 600
-		})}
+		<Readout id="br-{sg.key}-{sg.x0}">
+			{@render txt((sg.x0 + sg.x1) / 2, sg.y - 6, sg.label, 12, {
+				anchor: 'middle',
+				color: sg.color,
+				weight: 600
+			})}
+		</Readout>
 	{/each}
 {/snippet}
 
@@ -720,14 +722,20 @@
 	strong: boolean
 )}
 	{@const X = (n: number) => nlX(n, lo, hi)}
-	{@render txt(184, y + 4, name, 13, { anchor: 'end', muted: !strong })}
+	<Readout id="nl-name-{y}">
+		{@render txt(184, y + 4, name, 13, { anchor: 'end', muted: !strong })}
+	</Readout>
 	<line x1="200" x2="760" y1={y} y2={y} stroke="var(--stage-line)" stroke-width="1.5" />
 	{#each ticks as tk (tk)}
 		<line x1={X(tk)} x2={X(tk)} y1={y - 4} y2={y + 4} stroke="var(--stage-line)" />
-		{@render txt(X(tk), y + 20, int(tk), 11, { anchor: 'middle', muted: true })}
+		<Readout id="nl-{y}-{tk}">
+			{@render txt(X(tk), y + 20, int(tk), 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/each}
 	<circle cx={X(v)} cy={y} r="6.5" fill={color} stroke="var(--stage-bg)" stroke-width="2" />
-	{@render txt(X(v), y - 13, int(v), 14, { anchor: 'middle', color, weight: 700 })}
+	<Readout id="nl-v-{y}">
+		{@render txt(X(v), y - 13, int(v), 14, { anchor: 'middle', color, weight: 700 })}
+	</Readout>
 {/snippet}
 
 {#snippet keycap(
@@ -771,11 +779,13 @@
 			halo: false
 		})}
 		{#if !small}
-			{@render txt(x + size / 2, y + size * 0.82, 'control code', 11, {
-				anchor: 'middle',
-				muted: true,
-				halo: false
-			})}
+			<Readout id="kc-{x}">
+				{@render txt(x + size / 2, y + size * 0.82, 'control code', 11, {
+					anchor: 'middle',
+					muted: true,
+					halo: false
+				})}
+			</Readout>
 		{/if}
 	{:else if c.kind === 'space'}
 		{@render txt(x + size / 2, y + size * 0.55, '␣', size * 0.42, {
@@ -783,11 +793,13 @@
 			halo: false
 		})}
 		{#if !small}
-			{@render txt(x + size / 2, y + size * 0.82, c.text, 12, {
-				anchor: 'middle',
-				muted: true,
-				halo: false
-			})}
+			<Readout id="kc-{x}">
+				{@render txt(x + size / 2, y + size * 0.82, c.text, 12, {
+					anchor: 'middle',
+					muted: true,
+					halo: false
+				})}
+			</Readout>
 		{/if}
 	{:else}
 		{@render txt(x + size / 2, y + size * 0.67, c.text, size * 0.5, {
@@ -808,27 +820,39 @@
 	</defs>
 
 	<!-- ---------------------------------------------------------------- header -->
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
 	<g style:pointer-events="none">
-		{#each phases as p (p)}
-			{#if show(w[p]) > 0.01}
-				<g opacity={show(w[p])}>
-					{@render txt(480, 32, headers[p][0], 17, { anchor: 'middle', weight: 650 })}
-					{@render txt(480, 54, headers[p][1], p === 'all' ? 14 : 13, {
-						anchor: 'middle',
-						muted: p !== 'all',
-						weight: p === 'all' ? 600 : 500,
-						opacity: 1 - carryOn
-					})}
-				</g>
-			{/if}
-		{/each}
+		<Readout id="header">
+			{#each phases as p (p)}
+				{#if show(w[p]) > 0.01}
+					<g opacity={show(w[p])}>
+						{@render txt(480, 32, headers[p][0], 17, { anchor: 'middle', weight: 650 })}
+						{@render txt(480, 54, headers[p][1], p === 'all' ? 14 : 13, {
+							anchor: 'middle',
+							muted: p !== 'all',
+							weight: p === 'all' ? 600 : 500,
+							opacity: 1 - carryOn
+						})}
+					</g>
+				{/if}
+			{/each}
+		</Readout>
 		{#if carryOn > 0.01}
-			{@render txt(480, 54, carryNote, 13, {
-				anchor: 'middle',
-				color: 'var(--bit-carry)',
-				weight: 600,
-				opacity: carryOn
-			})}
+			<Readout
+				id="carry"
+				order={0}
+				label="Add 1"
+				value={carryNote.replace(/^\+1: /, '')}
+				color="var(--bit-carry)"
+				opacity={carryOn}
+			>
+				{@render txt(480, 54, carryNote, 13, {
+					anchor: 'middle',
+					color: 'var(--bit-carry)',
+					weight: 600,
+					opacity: carryOn
+				})}
+			</Readout>
 		{/if}
 	</g>
 
@@ -972,25 +996,34 @@
 
 	<!-- place values under the tiles -->
 	{#if placeW > 0.01}
-		<g opacity={placeW} style:pointer-events="none">
-			{#each placeLabels as pl (pl.i)}
-				{@const signBit = phase === 'signed' && pl.i === 0}
-				{@const [base, exp] = pl.text.split('^')}
-				<text
-					x={cx(pl.i)}
-					y={geo.placeY(geo.tiles[pl.i].row)}
-					class="halo"
-					class:muted={!pl.on && !signBit}
-					text-anchor="middle"
-					font-weight={pl.on ? 700 : 500}
-					opacity={pl.on || signBit ? 1 : 0.8}
-					style:font-size="{geo.placeSize}px"
-					style:fill={signBit ? 'var(--bit-sign)' : undefined}
-					>{base}{#if exp !== undefined}<tspan dy="-5" style:font-size="9px">{exp}</tspan
-						>{/if}</text
-				>
-			{/each}
-		</g>
+		<Readout
+			id="places"
+			order={2}
+			label="Bit values"
+			value={placeLabels.map((pl) => pl.text).join(' ')}
+			opacity={width === 8 ? show(w.unsigned) : 0}
+		/>
+		<Readout id="place-labels">
+			<g opacity={placeW} style:pointer-events="none">
+				{#each placeLabels as pl (pl.i)}
+					{@const signBit = phase === 'signed' && pl.i === 0}
+					{@const [base, exp] = pl.text.split('^')}
+					<text
+						x={cx(pl.i)}
+						y={geo.placeY(geo.tiles[pl.i].row)}
+						class="halo"
+						class:muted={!pl.on && !signBit}
+						text-anchor="middle"
+						font-weight={pl.on ? 700 : 500}
+						opacity={pl.on || signBit ? 1 : 0.8}
+						style:font-size="{geo.placeSize}px"
+						style:fill={signBit ? 'var(--bit-sign)' : undefined}
+						>{base}{#if exp !== undefined}<tspan dy="-5" style:font-size="9px">{exp}</tspan
+							>{/if}</text
+					>
+				{/each}
+			</g>
+		</Readout>
 	{/if}
 
 	<g style:pointer-events="none">
@@ -1006,22 +1039,33 @@
 					stroke="var(--bit-on)"
 					stroke-width="1.5"
 				/>
-				{@render txt(
-					(a.x + geo.x1) / 2,
-					by + 24,
-					`${kk} bit${kk > 1 ? 's' : ''}: ${2 ** kk} patterns`,
-					13,
-					{
-						anchor: 'middle',
-						color: 'var(--bit-on)',
-						weight: 600
-					}
-				)}
+				<Readout
+					id="lit"
+					order={1}
+					label="The {kk} lit bit{kk > 1 ? 's' : ''}"
+					value="{2 ** kk} patterns"
+					color="var(--bit-on)"
+					opacity={show(w.bits)}
+				>
+					{@render txt(
+						(a.x + geo.x1) / 2,
+						by + 24,
+						`${kk} bit${kk > 1 ? 's' : ''}: ${2 ** kk} patterns`,
+						13,
+						{
+							anchor: 'middle',
+							color: 'var(--bit-on)',
+							weight: 600
+						}
+					)}
+				</Readout>
 				{@render txt(480, 262, '2⁸ = 256 possible patterns', 28, { anchor: 'middle', weight: 700 })}
-				{@render txt(480, 290, 'every extra bit doubles the count', 14, {
-					anchor: 'middle',
-					muted: true
-				})}
+				<Readout id="doubles">
+					{@render txt(480, 290, 'every extra bit doubles the count', 14, {
+						anchor: 'middle',
+						muted: true
+					})}
+				</Readout>
 				{#each ladder as r (r.k)}
 					{@const top = 548 - r.h}
 					<rect
@@ -1048,17 +1092,21 @@
 						weight: 700,
 						opacity: 0.35 + 0.65 * r.on
 					})}
-					{@render txt(r.cx, 568, `${r.k} bit${r.k > 1 ? 's' : ''}`, 12, {
-						anchor: 'middle',
-						muted: true
-					})}
-					{#if r.k < 8}
-						{@render txt(r.cx + 42, top - 2, '×2', 11, {
+					<Readout id="ladder-{r.k}">
+						{@render txt(r.cx, 568, `${r.k} bit${r.k > 1 ? 's' : ''}`, 12, {
 							anchor: 'middle',
-							color: 'var(--bit-on)',
-							weight: 600,
-							opacity: ladder[r.k].on
+							muted: true
 						})}
+					</Readout>
+					{#if r.k < 8}
+						<Readout id="ladder-x2-{r.k}">
+							{@render txt(r.cx + 42, top - 2, '×2', 11, {
+								anchor: 'middle',
+								color: 'var(--bit-on)',
+								weight: 600,
+								opacity: ladder[r.k].on
+							})}
+						</Readout>
 					{/if}
 				{/each}
 			</g>
@@ -1067,16 +1115,18 @@
 		<!-- ------------------------------------------------------------ unsigned -->
 		{#if show(w.unsigned) > 0.01}
 			<g opacity={show(w.unsigned)}>
-				{#each [0, 1] as nb (nb)}
-					{@render txt(
-						(geo.tiles[nb * 4].x + geo.tiles[nb * 4 + 3].x + geo.s) / 2,
-						224,
-						hexText[nb] ?? '',
-						14,
-						{ anchor: 'middle', mono: true, muted: true, weight: 600 }
-					)}
-				{/each}
-				{@render txt(geo.x0 - 14, 224, 'hex', 12, { anchor: 'end', muted: true })}
+				<Readout id="hex-digits">
+					{#each [0, 1] as nb (nb)}
+						{@render txt(
+							(geo.tiles[nb * 4].x + geo.tiles[nb * 4 + 3].x + geo.s) / 2,
+							224,
+							hexText[nb] ?? '',
+							14,
+							{ anchor: 'middle', mono: true, muted: true, weight: 600 }
+						)}
+					{/each}
+					{@render txt(geo.x0 - 14, 224, 'hex', 12, { anchor: 'end', muted: true })}
+				</Readout>
 				<text
 					x="480"
 					y="272"
@@ -1096,21 +1146,32 @@
 					<tspan opacity={appear(terms.length)}> = {uValue}</tspan>
 				</text>
 				{@render txt(480, 356, String(uValue), 64, { anchor: 'middle', weight: 700 })}
-				{@render txt(480, 384, 'as a whole number from 0 to 255', 13, {
-					anchor: 'middle',
-					muted: true
-				})}
-				{@render numberLine(462, 0, 255, [0, 64, 128, 192, 255], uValue, 'var(--bit-on)', '', true)}
-				{@render txt(
-					480,
-					540,
-					`in hexadecimal: ${hexText} (one digit for each group of 4 bits)`,
-					13,
-					{
+				<Readout id="u-range">
+					{@render txt(480, 384, 'as a whole number from 0 to 255', 13, {
 						anchor: 'middle',
 						muted: true
-					}
-				)}
+					})}
+				</Readout>
+				{@render numberLine(462, 0, 255, [0, 64, 128, 192, 255], uValue, 'var(--bit-on)', '', true)}
+				<Readout
+					id="hex"
+					order={3}
+					label="Hexadecimal"
+					value={hexText}
+					note="one digit per 4 bits"
+					opacity={show(w.unsigned)}
+				>
+					{@render txt(
+						480,
+						540,
+						`in hexadecimal: ${hexText} (one digit for each group of 4 bits)`,
+						13,
+						{
+							anchor: 'middle',
+							muted: true
+						}
+					)}
+				</Readout>
 			</g>
 		{/if}
 
@@ -1132,26 +1193,37 @@
 						stroke={isSigned ? 'var(--bit-sign)' : 'var(--border)'}
 						stroke-width={isSigned ? 1.5 : 1}
 					/>
-					{@render txt(
-						x + 20,
-						252,
-						isSigned ? 'signed (two’s complement)' : 'unsigned: the same bits',
-						13,
-						{
-							color: tone,
-							weight: 600,
-							halo: false
-						}
-					)}
-					{@render txt(
-						x + 20,
-						288,
-						terms.length
+					<Readout
+						id="s-{side}"
+						order={1 + side}
+						label={isSigned ? 'Signed' : 'Unsigned'}
+						value="{terms.length
 							? (isSigned ? terms.map((tm) => int(tm.v)) : uTerms.map(String)).join(' + ')
-							: 'no bits on',
-						16,
-						{ halo: false, muted: !isSigned }
-					)}
+							: '0'} = {int(isSigned ? sValue : uValue)}"
+						color={isSigned ? 'var(--bit-sign)' : undefined}
+						opacity={show(w.signed)}
+					>
+						{@render txt(
+							x + 20,
+							252,
+							isSigned ? 'signed (two’s complement)' : 'unsigned: the same bits',
+							13,
+							{
+								color: tone,
+								weight: 600,
+								halo: false
+							}
+						)}
+						{@render txt(
+							x + 20,
+							288,
+							terms.length
+								? (isSigned ? terms.map((tm) => int(tm.v)) : uTerms.map(String)).join(' + ')
+								: 'no bits on',
+							16,
+							{ halo: false, muted: !isSigned }
+						)}
+					</Readout>
 					{@render txt(x + 20, 344, `= ${int(isSigned ? sValue : uValue)}`, 42, {
 						weight: 700,
 						halo: false,
@@ -1189,10 +1261,12 @@
 					'unsigned',
 					false
 				)}
-				{@render txt(480, 572, 'Patterns that start with 1 are the negative numbers.', 13, {
-					anchor: 'middle',
-					muted: true
-				})}
+				<Readout id="s-foot">
+					{@render txt(480, 572, 'Patterns that start with 1 are the negative numbers.', 13, {
+						anchor: 'middle',
+						muted: true
+					})}
+				</Readout>
 			</g>
 		{/if}
 
@@ -1202,31 +1276,50 @@
 				{#each chars as c (c.k)}
 					{@const x = keycaps.x(c.k)}
 					{@render keycap(x, keycaps.y, keycaps.size, c, false)}
-					{@render txt(
-						x + keycaps.size / 2,
-						keycaps.y + keycaps.size + 26,
-						`code ${c.code} · hex ${c.code.toString(16).toUpperCase().padStart(2, '0')}`,
-						13,
-						{ anchor: 'middle', muted: true }
-					)}
+					<Readout
+						id="code-{c.k}"
+						order={1 + c.k}
+						label={chars.length > 1 ? `Byte ${c.k + 1}` : 'Code'}
+						value="{c.code} · hex {c.code.toString(16).toUpperCase().padStart(2, '0')}"
+						opacity={show(w.text)}
+					>
+						{@render txt(
+							x + keycaps.size / 2,
+							keycaps.y + keycaps.size + 26,
+							`code ${c.code} · hex ${c.code.toString(16).toUpperCase().padStart(2, '0')}`,
+							13,
+							{ anchor: 'middle', muted: true }
+						)}
+					</Readout>
 				{/each}
-				{@render txt(480, 434, caseLine, 13, {
-					anchor: 'middle',
-					weight: 600,
-					color: 'var(--bit-carry)'
-				})}
+				<Readout
+					id="case"
+					order={6}
+					label="Upper and lower case"
+					value={caseLine}
+					color="var(--bit-carry)"
+					opacity={show(w.text)}
+				>
+					{@render txt(480, 434, caseLine, 13, {
+						anchor: 'middle',
+						weight: 600,
+						color: 'var(--bit-carry)'
+					})}
+				</Readout>
 
 				<!-- the code table, 0–255 -->
-				{@render txt(strip.x0 + 64 * strip.cw, 466, 'ASCII (0–127)', 12, {
-					anchor: 'middle',
-					muted: true,
-					weight: 600
-				})}
-				{@render txt(strip.x0 + 192 * strip.cw, 466, 'Latin-1 (128–255)', 12, {
-					anchor: 'middle',
-					muted: true,
-					weight: 600
-				})}
+				<Readout id="strip-titles">
+					{@render txt(strip.x0 + 64 * strip.cw, 466, 'ASCII (0–127)', 12, {
+						anchor: 'middle',
+						muted: true,
+						weight: 600
+					})}
+					{@render txt(strip.x0 + 192 * strip.cw, 466, 'Latin-1 (128–255)', 12, {
+						anchor: 'middle',
+						muted: true,
+						weight: 600
+					})}
+				</Readout>
 				{#each RANGES as r (r.a)}
 					<rect
 						x={strip.x0 + r.a * strip.cw}
@@ -1253,11 +1346,13 @@
 					stroke="var(--stage-ink-muted)"
 					stroke-width="1.5"
 				/>
-				{#each RANGE_LABELS as rl (rl.at)}
-					{@render txt(sx(rl.at), strip.y - 6, rl.text, 11, { anchor: 'middle', muted: true })}
-				{/each}
-				{@render txt(strip.x0 - 6, strip.y + 13, '0', 11, { anchor: 'end', muted: true })}
-				{@render txt(strip.x0 + 256 * strip.cw + 6, strip.y + 13, '255', 11, { muted: true })}
+				<Readout id="strip-labels">
+					{#each RANGE_LABELS as rl (rl.at)}
+						{@render txt(sx(rl.at), strip.y - 6, rl.text, 11, { anchor: 'middle', muted: true })}
+					{/each}
+					{@render txt(strip.x0 - 6, strip.y + 13, '0', 11, { anchor: 'end', muted: true })}
+					{@render txt(strip.x0 + 256 * strip.cw + 6, strip.y + 13, '255', 11, { muted: true })}
+				</Readout>
 				{#each markers as mk (mk.k)}
 					{@const my = strip.y + strip.h + 3}
 					<path
@@ -1266,13 +1361,15 @@
 						stroke="var(--stage-bg)"
 						stroke-width="1"
 					/>
-					{@render txt(
-						mk.x,
-						my + 24 + mk.level * 16,
-						`${mk.kind === 'printable' || mk.kind === 'latin1' ? mk.text : mk.kind === 'space' ? '␣' : mk.text} ${mk.code}`,
-						12,
-						{ anchor: 'middle', weight: 700, color: 'var(--bit-carry)' }
-					)}
+					<Readout id="marker-{mk.k}">
+						{@render txt(
+							mk.x,
+							my + 24 + mk.level * 16,
+							`${mk.kind === 'printable' || mk.kind === 'latin1' ? mk.text : mk.kind === 'space' ? '␣' : mk.text} ${mk.code}`,
+							12,
+							{ anchor: 'middle', weight: 700, color: 'var(--bit-carry)' }
+						)}
+					</Readout>
 				{/each}
 			</g>
 		{/if}
@@ -1293,17 +1390,29 @@
 					stroke="var(--stage-ink-muted)"
 					stroke-width="1.5"
 				/>
-				{@render txt(230, 504, col.css, 12, { anchor: 'middle', mono: true, muted: true })}
+				<Readout id="css">
+					{@render txt(230, 504, col.css, 12, { anchor: 'middle', mono: true, muted: true })}
+				</Readout>
 				{#each channels as ch, c (ch.id)}
 					{@const y = 300 + c * 48}
-					{@render txt(392, y, ch.id === 'A' ? 'Opacity' : ch.name, 15, {
-						color: ch.color,
-						weight: 700
-					})}
-					{@render txt(482, y, ch.field, 14, { mono: true, weight: 600 })}
-					{@render txt(482 + ch.n * 8.6 + 10, y, `${ch.raw} of ${2 ** ch.n - 1}`, 12, {
-						muted: true
-					})}
+					<Readout
+						id="ch-{ch.id}"
+						order={1 + c}
+						label={ch.id === 'A' ? 'Opacity' : ch.name}
+						value={ch.id === 'A' ? `${Math.round((ch.value / 255) * 100)} %` : String(ch.value)}
+						note="bits {ch.field}"
+						color={ch.color}
+						opacity={show(w.colour)}
+					>
+						{@render txt(392, y, ch.id === 'A' ? 'Opacity' : ch.name, 15, {
+							color: ch.color,
+							weight: 700
+						})}
+						{@render txt(482, y, ch.field, 14, { mono: true, weight: 600 })}
+						{@render txt(482 + ch.n * 8.6 + 10, y, `${ch.raw} of ${2 ** ch.n - 1}`, 12, {
+							muted: true
+						})}
+					</Readout>
 					<rect x="676" y={y - 11} width="140" height="12" rx="6" fill="var(--stage-grid)" />
 					<rect
 						x="676"
@@ -1313,30 +1422,42 @@
 						rx="6"
 						fill={ch.color}
 					/>
-					{@render txt(
-						870,
-						y,
-						ch.id === 'A' ? `${Math.round((ch.value / 255) * 100)} %` : String(ch.value),
-						15,
-						{
-							anchor: 'end',
-							weight: 700
-						}
-					)}
+					<Readout id="ch-v-{ch.id}">
+						{@render txt(
+							870,
+							y,
+							ch.id === 'A' ? `${Math.round((ch.value / 255) * 100)} %` : String(ch.value),
+							15,
+							{
+								anchor: 'end',
+								weight: 700
+							}
+						)}
+					</Readout>
 				{/each}
-				{@render txt(392, 300 + channels.length * 48 + 10, colourCount, 13, { muted: true })}
-				{#if width === 32}
-					{@render txt(
-						392,
-						300 + channels.length * 48 + 30,
-						'× 256 levels of opacity: on a checkerboard so you can see it',
-						12,
-						{
-							muted: true
-						}
-					)}
-				{/if}
-				{@render txt(392, 300 - 34, 'each channel: 0 (off) to 255 (full)', 12, { muted: true })}
+				<Readout
+					id="colours"
+					order={8}
+					label="Colours"
+					value={colourCount}
+					opacity={show(w.colour)}
+				>
+					{@render txt(392, 300 + channels.length * 48 + 10, colourCount, 13, { muted: true })}
+				</Readout>
+				<Readout id="colour-notes">
+					{#if width === 32}
+						{@render txt(
+							392,
+							300 + channels.length * 48 + 30,
+							'× 256 levels of opacity: on a checkerboard so you can see it',
+							12,
+							{
+								muted: true
+							}
+						)}
+					{/if}
+					{@render txt(392, 300 - 34, 'each channel: 0 (off) to 255 (full)', 12, { muted: true })}
+				</Readout>
 			</g>
 		{/if}
 
@@ -1374,80 +1495,123 @@
 								: flt.kind === 'infinity'
 									? 'infinity: exponent all 1, fraction 0'
 									: 'NaN, “not a number”: exponent all 1, fraction not 0'}
-					<rect
-						x={480 - (tag.length * 7 + 28) / 2}
-						y="322"
-						width={tag.length * 7 + 28}
-						height="26"
-						rx="13"
-						fill="var(--surface)"
-						stroke="var(--border)"
-					/>
-					{@render txt(480, 340, tag, 13, { anchor: 'middle', weight: 600, halo: false })}
+					<Readout id="f-tag" order={0} label="Special pattern" value={tag} opacity={show(w.float)}>
+						<rect
+							x={480 - (tag.length * 7 + 28) / 2}
+							y="322"
+							width={tag.length * 7 + 28}
+							height="26"
+							rx="13"
+							fill="var(--surface)"
+							stroke="var(--border)"
+						/>
+						{@render txt(480, 340, tag, 13, { anchor: 'middle', weight: 600, halo: false })}
+					</Readout>
 				{/if}
 
 				<!-- the three fields -->
-				{#each [0, 1, 2] as f (f)}
-					{@const x = [170, 460, 760][f]}
-					{@render txt(x, 384, ['sign', 'exponent', 'fraction'][f], 13, {
-						anchor: 'middle',
-						color: FIELD[f],
-						weight: 700
-					})}
-					{#if f === 0}
-						{@render txt(
-							x,
-							406,
-							`${flt.sign} → ${fp.signText === '+' ? 'positive' : 'negative'}`,
-							14,
-							{
-								anchor: 'middle'
-							}
-						)}
-					{:else if f === 1}
-						{@render txt(
-							x,
-							406,
-							flt.kind === 'normal'
-								? `stored ${flt.exponentBits} ${MINUS} ${fp.bias} = ${int(flt.exponent)}`
-								: flt.exponentBits === 0
-									? `stored 0: means ${int(flt.exponent)}, no hidden 1`
-									: `stored ${flt.exponentBits}: all ones, reserved`,
-							14,
-							{ anchor: 'middle' }
-						)}
-						{@render txt(x, 426, `${fp.bias} is added before storing (the bias)`, 11, {
+				<Readout
+					id="f-sign"
+					order={1}
+					label="Sign"
+					value="{flt.sign} → {fp.signText === '+' ? 'positive' : 'negative'}"
+					color={FIELD[0]}
+					opacity={show(w.float)}
+				/>
+				<Readout
+					id="f-exp"
+					order={2}
+					label="Exponent"
+					value={flt.kind === 'normal'
+						? `${flt.exponentBits} ${MINUS} ${fp.bias} = ${int(flt.exponent)}`
+						: flt.exponentBits === 0
+							? `0: means ${int(flt.exponent)}`
+							: `${flt.exponentBits}: reserved`}
+					color={FIELD[1]}
+					opacity={show(w.float)}
+				/>
+				<Readout
+					id="f-frac"
+					order={3}
+					label="Fraction"
+					value={fp.sigBinary}
+					note={flt.kind === 'normal' ? `= ${fp.sigDec}` : undefined}
+					color={FIELD[2]}
+					opacity={show(w.float)}
+				/>
+				<Readout id="f-fields">
+					{#each [0, 1, 2] as f (f)}
+						{@const x = [170, 460, 760][f]}
+						{@render txt(x, 384, ['sign', 'exponent', 'fraction'][f], 13, {
 							anchor: 'middle',
-							muted: true
+							color: FIELD[f],
+							weight: 700
 						})}
-					{:else}
-						{@render txt(x, 406, `${fp.sigBinary} in binary`, 14, {
-							anchor: 'middle',
-							mono: fp.sigBinary.length > 10,
-							color: undefined
-						})}
-						{@render txt(
-							x,
-							426,
-							flt.kind === 'normal'
-								? `= ${fp.sigDec}: the leading “1.” is not stored`
-								: 'the fraction bits after the binary point',
-							11,
-							{ anchor: 'middle', muted: true }
-						)}
-					{/if}
-				{/each}
+						{#if f === 0}
+							{@render txt(
+								x,
+								406,
+								`${flt.sign} → ${fp.signText === '+' ? 'positive' : 'negative'}`,
+								14,
+								{
+									anchor: 'middle'
+								}
+							)}
+						{:else if f === 1}
+							{@render txt(
+								x,
+								406,
+								flt.kind === 'normal'
+									? `stored ${flt.exponentBits} ${MINUS} ${fp.bias} = ${int(flt.exponent)}`
+									: flt.exponentBits === 0
+										? `stored 0: means ${int(flt.exponent)}, no hidden 1`
+										: `stored ${flt.exponentBits}: all ones, reserved`,
+								14,
+								{ anchor: 'middle' }
+							)}
+							{@render txt(x, 426, `${fp.bias} is added before storing (the bias)`, 11, {
+								anchor: 'middle',
+								muted: true
+							})}
+						{:else}
+							{@render txt(x, 406, `${fp.sigBinary} in binary`, 14, {
+								anchor: 'middle',
+								mono: fp.sigBinary.length > 10,
+								color: undefined
+							})}
+							{@render txt(
+								x,
+								426,
+								flt.kind === 'normal'
+									? `= ${fp.sigDec}: the leading “1.” is not stored`
+									: 'the fraction bits after the binary point',
+								11,
+								{ anchor: 'middle', muted: true }
+							)}
+						{/if}
+					{/each}
+				</Readout>
 
 				{#if fp.exact}
-					{@render txt(480, 466, `stored exactly: ${fp.exact}`, 14, {
-						anchor: 'middle',
-						mono: true,
-						weight: 600
-					})}
+					<Readout
+						id="f-exact"
+						order={4}
+						label="Stored exactly"
+						value={fp.exact}
+						opacity={show(w.float)}
+					>
+						{@render txt(480, 466, `stored exactly: ${fp.exact}`, 14, {
+							anchor: 'middle',
+							mono: true,
+							weight: 600
+						})}
+					</Readout>
 				{/if}
 
 				<!-- presets -->
-				{@render txt(480 - presetsW / 2 - 12, 518, 'try:', 13, { anchor: 'end', muted: true })}
+				<Readout id="f-try">
+					{@render txt(480 - presetsW / 2 - 12, 518, 'try:', 13, { anchor: 'end', muted: true })}
+				</Readout>
 			</g>
 		{/if}
 
@@ -1514,40 +1678,72 @@
 							stroke-width="2.5"
 							opacity={pulse.current}
 						/>
-						{@render txt(p.x + 18, p.y + 28, title, 13, { muted: true, weight: 600, halo: false })}
+						<Readout
+							id="all-{kind}"
+							order={1 + k}
+							label={title}
+							value={kind === 'unsigned'
+								? int(uValue)
+								: kind === 'signed'
+									? int(sValue)
+									: kind === 'hex'
+										? groups(hexText)
+										: kind === 'text'
+											? chars.map((c) => c.text).join(' ')
+											: kind === 'colour'
+												? col.css
+												: flt
+													? valueShort
+													: 'none at 8 bits'}
+							opacity={show(w.all)}
+						>
+							{@render txt(p.x + 18, p.y + 28, title, 13, {
+								muted: true,
+								weight: 600,
+								halo: false
+							})}
+						</Readout>
 						{#if kind === 'unsigned'}
 							{@render txt(p.x + 18, p.y + 90, int(uValue), uValue >= 1e8 ? 30 : 40, {
 								weight: 700,
 								halo: false
 							})}
-							{@render txt(p.x + 18, p.y + 128, range.u, 12, { muted: true, halo: false })}
+							<Readout id="all-u-range">
+								{@render txt(p.x + 18, p.y + 128, range.u, 12, { muted: true, halo: false })}
+							</Readout>
 						{:else if kind === 'signed'}
 							{@render txt(p.x + 18, p.y + 90, int(sValue), Math.abs(sValue) >= 1e8 ? 30 : 40, {
 								weight: 700,
 								halo: false,
 								color: sValue < 0 ? 'var(--bit-sign)' : undefined
 							})}
-							{@render txt(p.x + 18, p.y + 128, range.s, 12, { muted: true, halo: false })}
+							<Readout id="all-s-range">
+								{@render txt(p.x + 18, p.y + 128, range.s, 12, { muted: true, halo: false })}
+							</Readout>
 						{:else if kind === 'hex'}
 							{@render txt(p.x + 18, p.y + 90, groups(hexText), width === 32 ? 32 : 40, {
 								weight: 700,
 								mono: true,
 								halo: false
 							})}
-							{@render txt(p.x + 18, p.y + 128, 'one digit for each 4 bits', 12, {
-								muted: true,
-								halo: false
-							})}
+							<Readout id="all-hex-note">
+								{@render txt(p.x + 18, p.y + 128, 'one digit for each 4 bits', 12, {
+									muted: true,
+									halo: false
+								})}
+							</Readout>
 						{:else if kind === 'text'}
 							{#each chars as c (c.k)}
 								{@const size = 52}
 								{@const x0 = p.x + 18 + c.k * (size + 12)}
 								{@render keycap(x0, p.y + 50, size, c, true)}
-								{@render txt(x0 + size / 2, p.y + 132, String(c.code), 11, {
-									anchor: 'middle',
-									muted: true,
-									halo: false
-								})}
+								<Readout id="all-code-{c.k}">
+									{@render txt(x0 + size / 2, p.y + 132, String(c.code), 11, {
+										anchor: 'middle',
+										muted: true,
+										halo: false
+									})}
+								</Readout>
 							{/each}
 						{:else if kind === 'colour'}
 							<rect
@@ -1568,36 +1764,42 @@
 								stroke="var(--stage-ink-muted)"
 							/>
 							{#each channels as ch, c (ch.id)}
-								{@render txt(
-									p.x + 128,
-									p.y + 62 + c * (channels.length === 4 ? 21 : 26),
-									`${ch.id === 'A' ? 'opacity' : ch.name.toLowerCase()} ${ch.id === 'A' ? `${Math.round((ch.value / 255) * 100)} %` : ch.value}`,
-									13,
-									{ color: ch.color, weight: 600, halo: false }
-								)}
+								<Readout id="all-ch-{ch.id}">
+									{@render txt(
+										p.x + 128,
+										p.y + 62 + c * (channels.length === 4 ? 21 : 26),
+										`${ch.id === 'A' ? 'opacity' : ch.name.toLowerCase()} ${ch.id === 'A' ? `${Math.round((ch.value / 255) * 100)} %` : ch.value}`,
+										13,
+										{ color: ch.color, weight: 600, halo: false }
+									)}
+								</Readout>
 							{/each}
 						{:else if flt}
 							{@render txt(p.x + 18, p.y + 90, valueShort, valueShort.length > 11 ? 24 : 36, {
 								weight: 700,
 								halo: false
 							})}
-							{@render txt(
-								p.x + 18,
-								p.y + 128,
-								width === 16 ? '1 + 5 + 10 bits, IEEE 754' : '1 + 8 + 23 bits, IEEE 754',
-								12,
-								{ muted: true, halo: false }
-							)}
+							<Readout id="all-f-note">
+								{@render txt(
+									p.x + 18,
+									p.y + 128,
+									width === 16 ? '1 + 5 + 10 bits, IEEE 754' : '1 + 8 + 23 bits, IEEE 754',
+									12,
+									{ muted: true, halo: false }
+								)}
+							</Readout>
 						{:else}
 							{@render txt(p.x + 18, p.y + 84, 'no 8-bit float', 24, { weight: 700, halo: false })}
-							{@render txt(p.x + 18, p.y + 112, 'IEEE 754 starts at 16 bits:', 12, {
-								muted: true,
-								halo: false
-							})}
-							{@render txt(p.x + 18, p.y + 128, 'choose a longer word.', 12, {
-								muted: true,
-								halo: false
-							})}
+							<Readout id="all-f-none">
+								{@render txt(p.x + 18, p.y + 112, 'IEEE 754 starts at 16 bits:', 12, {
+									muted: true,
+									halo: false
+								})}
+								{@render txt(p.x + 18, p.y + 128, 'choose a longer word.', 12, {
+									muted: true,
+									halo: false
+								})}
+							</Readout>
 						{/if}
 					</g>
 				{/each}

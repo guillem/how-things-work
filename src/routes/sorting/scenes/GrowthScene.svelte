@@ -107,7 +107,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, lerp, niceMax, scale, smoothstep, type Scale } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -126,6 +126,8 @@
 	const fmt = (v: number) => Math.round(v).toLocaleString('en-US');
 	/** Two significant figures, for readouts that are approximate by nature. */
 	const sig2 = (v: number) => Number(v.toPrecision(2));
+	/** Compact count for the phone panel: 497,801 → 498k. */
+	const short = (v: number) => (v < 10000 ? fmt(v) : `${Math.round(v / 1000)}k`);
 	const about = (v: number) => (v < 10 ? Math.round(v) : sig2(v));
 	const last = NS.length - 1;
 
@@ -560,23 +562,32 @@
 	<!-- ============================================================ growth -->
 	{#if w.growth > 0.001}
 		<g opacity={w.growth}>
-			{@render header(
-				'Comparisons needed to sort n items',
-				`Measured on ${orderLabel[order]} · comparisons are the usual measure of sorting work`
-			)}
+			<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+			<Readout id="h-growth">
+				{@render header(
+					'Comparisons needed to sort n items',
+					`Measured on ${orderLabel[order]} · comparisons are the usual measure of sorting work`
+				)}
+			</Readout>
 			<!-- axes -->
 			{#each [0, 0.2, 0.4, 0.6, 0.8, 1].map((f) => f * gMax) as v (v)}
 				<line x1={GX0} x2={GX1} y1={gsy(v)} y2={gsy(v)} stroke="var(--stage-grid)" />
-				{@render txt(GX0 - 8, gsy(v) + 4, fmt(v), 12, { anchor: 'end', muted: true })}
+				<Readout id="gy-{v}">
+					{@render txt(GX0 - 8, gsy(v) + 4, fmt(v), 12, { anchor: 'end', muted: true })}
+				</Readout>
 			{/each}
 			{#each [0, 200, 400, 600, 800, 1000] as v (v)}
 				<line x1={gsx(v)} x2={gsx(v)} y1={GY1} y2={GY1 + 5} stroke="var(--stage-line)" />
-				{@render txt(gsx(v), GY1 + 20, fmt(v), 12, { anchor: 'middle', muted: true })}
+				<Readout id="gx-{v}">
+					{@render txt(gsx(v), GY1 + 20, fmt(v), 12, { anchor: 'middle', muted: true })}
+				</Readout>
 			{/each}
 			<line x1={GX0} x2={GX1} y1={GY1} y2={GY1} stroke="var(--stage-line)" />
 			<line x1={GX0} x2={GX0} y1={GY0} y2={GY1} stroke="var(--stage-line)" />
-			{@render txt(GX0 - 8, GY0 - 14, 'comparisons', 12, { anchor: 'end', muted: true })}
-			{@render txt(GX1, GY1 + 40, 'number of items, n →', 12, { anchor: 'end', muted: true })}
+			<Readout id="g-axes">
+				{@render txt(GX0 - 8, GY0 - 14, 'comparisons', 12, { anchor: 'end', muted: true })}
+				{@render txt(GX1, GY1 + 40, 'number of items, n →', 12, { anchor: 'end', muted: true })}
+			</Readout>
 
 			<!-- lines -->
 			<g clip-path="url(#growth-reveal-main)">
@@ -606,24 +617,33 @@
 						stroke-width="1"
 					/>
 				{/if}
-				<text x={x + 10} y={l.y} class="halo" font-weight="600" style:font-size="13px">
-					{#each l.group as a, i (a)}<tspan style:fill={COLOR[a]}
-							>{i === 0
-								? l.group.length === 1
-									? groupName([a])
-									: cap(SHORT[a])
-								: ` = ${SHORT[a]}`}</tspan
-						>{/each}
-				</text>
-				<g opacity={gDone}>
-					{@render txt(
-						x + 10,
-						l.y + 16,
-						`${fmt(l.value)}${l.group.length > 1 ? ' each' : ''}`,
-						12,
-						{ muted: true }
-					)}
-				</g>
+				<Readout
+					id="g-{l.key}"
+					order={1 + gLabels.indexOf(l)}
+					label={groupName(l.group)}
+					value="{fmt(l.value)}{l.group.length > 1 ? ' each' : ''}"
+					color={COLOR[l.group[0]]}
+					opacity={w.growth}
+				>
+					<text x={x + 10} y={l.y} class="halo" font-weight="600" style:font-size="13px">
+						{#each l.group as a, i (a)}<tspan style:fill={COLOR[a]}
+								>{i === 0
+									? l.group.length === 1
+										? groupName([a])
+										: cap(SHORT[a])
+									: ` = ${SHORT[a]}`}</tspan
+							>{/each}
+					</text>
+					<g opacity={gDone}>
+						{@render txt(
+							x + 10,
+							l.y + 16,
+							`${fmt(l.value)}${l.group.length > 1 ? ' each' : ''}`,
+							12,
+							{ muted: true }
+						)}
+					</g>
+				</Readout>
 			{/each}
 
 			<!-- the gap at 1,000 items -->
@@ -635,43 +655,65 @@
 						gsy(gap.fastTop) - 6,
 						'var(--stage-ink)'
 					)}
-					{@render txt(
-						GX1 - 26,
-						(gsy(gap.slowBottom) + gsy(gap.fastTop)) / 2 + 5,
-						`×${Math.round(gap.lo)}–×${Math.round(gap.hi)}`,
-						15,
-						{ anchor: 'end', weight: 600 }
-					)}
+					<Readout id="g-gap">
+						{@render txt(
+							GX1 - 26,
+							(gsy(gap.slowBottom) + gsy(gap.fastTop)) / 2 + 5,
+							`×${Math.round(gap.lo)}–×${Math.round(gap.hi)}`,
+							15,
+							{ anchor: 'end', weight: 600 }
+						)}
+					</Readout>
 				{/if}
 			</g>
 			<!-- what the chart says at 1,000 items -->
-			<g opacity={gDone}>
-				<rect
-					x={GX0 + 20}
-					y={GY0 + 8}
-					width="318"
-					height="70"
-					rx="10"
-					fill="var(--surface)"
-					stroke="var(--border)"
-				/>
-				{@render txt(GX0 + 36, GY0 + 30, orderNote[0], 13, { weight: 600, halo: false })}
-				{@render txt(GX0 + 36, GY0 + 49, orderNote[1], 13, { halo: false })}
-				{@render txt(GX0 + 36, GY0 + 67, orderNote[2], 13, { halo: false })}
-			</g>
+			<Readout
+				id="g-note"
+				order={6}
+				label={orderNote[0].replace(/:$/, '')}
+				value="{orderNote[1]} {orderNote[2]}"
+				opacity={w.growth}
+			>
+				<g opacity={gDone}>
+					<rect
+						x={GX0 + 20}
+						y={GY0 + 8}
+						width="318"
+						height="70"
+						rx="10"
+						fill="var(--surface)"
+						stroke="var(--border)"
+					/>
+					{@render txt(GX0 + 36, GY0 + 30, orderNote[0], 13, { weight: 600, halo: false })}
+					{@render txt(GX0 + 36, GY0 + 49, orderNote[1], 13, { halo: false })}
+					{@render txt(GX0 + 36, GY0 + 67, orderNote[2], 13, { halo: false })}
+				</g>
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- ============================================================ bigo -->
 	{#if w.bigo > 0.001}
 		<g opacity={w.bigo}>
-			{@render header(
-				'Double the input, and compare the work',
-				'Comparisons on shuffled rows of 125, 250, 500 and 1,000 items (average of 3 shuffles)'
-			)}
-			{#each bigo as p (p.a)}
-				{@render txt(p.x0, 108, p.title, 15, { weight: 600, color: COLOR[p.a] })}
-				{@render txt(p.x0 + (p.a === 'bubble' ? 96 : 88), 108, p.big, 15, { weight: 600 })}
+			<Readout id="h-bigo">
+				{@render header(
+					'Double the input, and compare the work',
+					'Comparisons on shuffled rows of 125, 250, 500 and 1,000 items (average of 3 shuffles)'
+				)}
+			</Readout>
+			{#each bigo as p, pk (p.a)}
+				<Readout
+					id="b-{p.a}"
+					order={1 + pk}
+					label="{p.title} · {p.big}"
+					value={p.ratios.map((r) => `×${r.toFixed(1)}`).join(' ')}
+					note="per doubling"
+					color={COLOR[p.a]}
+					opacity={w.bigo}
+				>
+					{@render txt(p.x0, 108, p.title, 15, { weight: 600, color: COLOR[p.a] })}
+					{@render txt(p.x0 + (p.a === 'bubble' ? 96 : 88), 108, p.big, 15, { weight: 600 })}
+				</Readout>
 				<line x1={p.x0} x2={p.x0 + PW} y1={BY} y2={BY} stroke="var(--stage-line)" />
 				{#each p.vals as v, k (k)}
 					{@const g = barGrow(k)}
@@ -685,34 +727,40 @@
 						fill={COLOR[p.a]}
 						opacity="0.85"
 					/>
-					<g opacity={smoothstep(0.6, 1, g)}>
-						{@render txt(x, BY - p.h(v) - 8, fmt(v), 12, { anchor: 'middle', weight: 600 })}
-					</g>
-					{@render txt(x, BY + 20, fmt(DOUBLINGS[k]), 12, { anchor: 'middle', muted: true })}
+					<Readout id="b-{p.a}-{k}">
+						<g opacity={smoothstep(0.6, 1, g)}>
+							{@render txt(x, BY - p.h(v) - 8, fmt(v), 12, { anchor: 'middle', weight: 600 })}
+						</g>
+						{@render txt(x, BY + 20, fmt(DOUBLINGS[k]), 12, { anchor: 'middle', muted: true })}
+					</Readout>
 				{/each}
-				{@render txt(p.x0 + PW / 2, BY + 48, 'items (doubling each time)', 12, {
-					anchor: 'middle',
-					muted: true
-				})}
+				<Readout id="b-{p.a}-axis">
+					{@render txt(p.x0 + PW / 2, BY + 48, 'items (doubling each time)', 12, {
+						anchor: 'middle',
+						muted: true
+					})}
+				</Readout>
 				<!-- ratio for each doubling, between the item counts -->
 				{#each p.ratios as r, k (k)}
 					{@const xm = (barX(p.x0, k) + barX(p.x0, k + 1)) / 2}
-					<g opacity={ratioShow(k)}>
-						<rect
-							x={xm - 27}
-							y={BY + 5}
-							width="54"
-							height="22"
-							rx="11"
-							fill="var(--surface)"
-							stroke={COLOR[p.a]}
-						/>
-						{@render txt(xm, BY + 21, `×${r.toFixed(1)}`, 13, {
-							anchor: 'middle',
-							weight: 700,
-							halo: false
-						})}
-					</g>
+					<Readout id="b-{p.a}-r{k}">
+						<g opacity={ratioShow(k)}>
+							<rect
+								x={xm - 27}
+								y={BY + 5}
+								width="54"
+								height="22"
+								rx="11"
+								fill="var(--surface)"
+								stroke={COLOR[p.a]}
+							/>
+							{@render txt(xm, BY + 21, `×${r.toFixed(1)}`, 13, {
+								anchor: 'middle',
+								weight: 700,
+								halo: false
+							})}
+						</g>
+					</Readout>
 				{/each}
 				<!-- reference shape, dashed -->
 				<g opacity={refShow}>
@@ -724,67 +772,95 @@
 						stroke-dasharray="5 5"
 						opacity="0.6"
 					/>
-					<line
-						x1={p.x0}
-						x2={p.x0 + 22}
-						y1={BY + 76}
-						y2={BY + 76}
-						stroke="var(--stage-ink)"
-						stroke-width="1.5"
-						stroke-dasharray="5 5"
-						opacity="0.6"
-					/>
-					{@render txt(
-						p.x0 + 30,
-						BY + 80,
-						`dashed: the shape ${p.shape}, matched at 125 items (×${p.refRatios
-							.map((x) => x.toFixed(1))
-							.join(', ×')})`,
-						12,
-						{ muted: true }
-					)}
+					<Readout id="b-{p.a}-ref">
+						<line
+							x1={p.x0}
+							x2={p.x0 + 22}
+							y1={BY + 76}
+							y2={BY + 76}
+							stroke="var(--stage-ink)"
+							stroke-width="1.5"
+							stroke-dasharray="5 5"
+							opacity="0.6"
+						/>
+						{@render txt(
+							p.x0 + 30,
+							BY + 80,
+							`dashed: the shape ${p.shape}, matched at 125 items (×${p.refRatios
+								.map((x) => x.toFixed(1))
+								.join(', ×')})`,
+							12,
+							{ muted: true }
+						)}
+					</Readout>
 				</g>
 			{/each}
-			<g opacity={reduced ? 1 : smoothstep(2.4, 3.0, t)}>
-				{@render txt(
-					480,
-					560,
-					'Double the items: bubble sort does ×4 the work, merge sort a bit more than ×2.',
-					15,
-					{ anchor: 'middle', weight: 600 }
-				)}
-				{@render txt(480, 582, 'Each chart has its own vertical scale.', 12, {
-					anchor: 'middle',
-					muted: true
-				})}
-			</g>
+			<Readout id="b-takeaway">
+				<g opacity={reduced ? 1 : smoothstep(2.4, 3.0, t)}>
+					{@render txt(
+						480,
+						560,
+						'Double the items: bubble sort does ×4 the work, merge sort a bit more than ×2.',
+						15,
+						{ anchor: 'middle', weight: 600 }
+					)}
+					{@render txt(480, 582, 'Each chart has its own vertical scale.', 12, {
+						anchor: 'middle',
+						muted: true
+					})}
+				</g>
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- ============================================================ inputs -->
 	{#if w.inputs > 0.001}
 		<g opacity={w.inputs}>
-			{@render header(
-				'Comparisons on three kinds of row',
-				'Same axes in all three: 10 to 1,000 items, 0 to 500,000 comparisons'
-			)}
+			<Readout id="h-inputs">
+				{@render header(
+					'Comparisons on three kinds of row',
+					'Same axes in all three: 10 to 1,000 items, 0 to 500,000 comparisons'
+				)}
+			</Readout>
+			{#each ALGORITHMS as a, i (a)}
+				<Readout
+					id="i-{a}"
+					order={10 + i}
+					label={groupName([a])}
+					value={inputs.map((p) => short(p.rows[i].v)).join(' · ')}
+					color={COLOR[a]}
+					opacity={w.inputs}
+				/>
+			{/each}
 			{#each inputs as p (p.o)}
 				{@const x0 = IX[p.k]}
-				{@render txt(x0, IY0 - 14, p.title, 14, { weight: 600 })}
+				<Readout
+					id="i-title-{p.o}"
+					order={1 + p.k}
+					label={p.title}
+					marker={1 + p.k}
+					at={[x0 + IW / 2, IY0 - 34]}
+				>
+					{@render txt(x0, IY0 - 14, p.title, 14, { weight: 600 })}
+				</Readout>
 				{#each [0, 250000, 500000] as v (v)}
 					<line x1={x0} x2={x0 + IW} y1={isy(v)} y2={isy(v)} stroke="var(--stage-grid)" />
 					{#if p.k === 0}
-						{@render txt(x0 - 8, isy(v) + 4, fmt(v), 12, { anchor: 'end', muted: true })}
+						<Readout id="iy-{v}">
+							{@render txt(x0 - 8, isy(v) + 4, fmt(v), 12, { anchor: 'end', muted: true })}
+						</Readout>
 					{/if}
 				{/each}
 				<line x1={x0} x2={x0 + IW} y1={IY1} y2={IY1} stroke="var(--stage-line)" />
 				<line x1={x0} x2={x0} y1={IY0} y2={IY1} stroke="var(--stage-line)" />
 				{#each [0, 500, 1000] as v (v)}
 					<line x1={p.sx(v)} x2={p.sx(v)} y1={IY1} y2={IY1 + 4} stroke="var(--stage-line)" />
-					{@render txt(p.sx(v), IY1 + 18, fmt(v), 12, {
-						anchor: v === 1000 ? 'end' : v === 0 ? 'start' : 'middle',
-						muted: true
-					})}
+					<Readout id="ix-{p.o}-{v}">
+						{@render txt(p.sx(v), IY1 + 18, fmt(v), 12, {
+							anchor: v === 1000 ? 'end' : v === 0 ? 'start' : 'middle',
+							muted: true
+						})}
+					</Readout>
 				{/each}
 				<g clip-path="url(#growth-reveal-inputs)">
 					{#each p.lines as l (l.a)}
@@ -800,65 +876,77 @@
 					{/each}
 				</g>
 				<!-- counts at 1,000 items -->
-				<g opacity={reduced ? 1 : smoothstep(2.6, 3.2, t)}>
-					{@render txt(x0, IY1 + 50, 'At 1,000 items:', 12, { muted: true })}
-					{#each p.rows as r, i (r.a)}
-						{@const y = IY1 + 72 + i * 22}
-						<line
-							x1={x0}
-							x2={x0 + 14}
-							y1={y - 4}
-							y2={y - 4}
-							stroke={COLOR[r.a]}
-							stroke-width="3"
-							stroke-linecap="round"
-						/>
-						{@render txt(x0 + 22, y, groupName([r.a]), 13)}
-						{@render txt(x0 + 172, y, fmt(r.v), 13, { anchor: 'end', weight: 600 })}
-						{#if r.note}
-							{@render txt(x0 + 180, y, r.note, 12, { muted: true })}
-						{/if}
-					{/each}
-				</g>
+				<Readout id="i-table-{p.o}">
+					<g opacity={reduced ? 1 : smoothstep(2.6, 3.2, t)}>
+						{@render txt(x0, IY1 + 50, 'At 1,000 items:', 12, { muted: true })}
+						{#each p.rows as r, i (r.a)}
+							{@const y = IY1 + 72 + i * 22}
+							<line
+								x1={x0}
+								x2={x0 + 14}
+								y1={y - 4}
+								y2={y - 4}
+								stroke={COLOR[r.a]}
+								stroke-width="3"
+								stroke-linecap="round"
+							/>
+							{@render txt(x0 + 22, y, groupName([r.a]), 13)}
+							{@render txt(x0 + 172, y, fmt(r.v), 13, { anchor: 'end', weight: 600 })}
+							{#if r.note}
+								{@render txt(x0 + 180, y, r.note, 12, { muted: true })}
+							{/if}
+						{/each}
+					</g>
+				</Readout>
 			{/each}
-			{@render txt(
-				480,
-				572,
-				'every pair = n(n − 1)/2 comparisons, 499,500 for 1,000 items — also quick sort’s worst case',
-				12,
-				{
-					anchor: 'middle',
-					muted: true
-				}
-			)}
+			<Readout id="i-foot">
+				{@render txt(
+					480,
+					572,
+					'every pair = n(n − 1)/2 comparisons, 499,500 for 1,000 items — also quick sort’s worst case',
+					12,
+					{
+						anchor: 'middle',
+						muted: true
+					}
+				)}
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- ============================================================ machine -->
 	{#if w.machine > 0.001 && mData && mPaths}
 		<g opacity={w.machine}>
-			{@render header(
-				speed === 1
-					? 'Running time: bubble sort and merge sort on the same ×1 computer'
-					: `Running time: bubble sort on a ×${speed} computer, merge sort on a ×1 one`,
-				'Shuffled rows. Log scales: equal steps mean equal multiples (×10 items across, ×1,000 in time up to 1 s).'
-			)}
+			<Readout id="h-machine">
+				{@render header(
+					speed === 1
+						? 'Running time: bubble sort and merge sort on the same ×1 computer'
+						: `Running time: bubble sort on a ×${speed} computer, merge sort on a ×1 one`,
+					'Shuffled rows. Log scales: equal steps mean equal multiples (×10 items across, ×1,000 in time up to 1 s).'
+				)}
+			</Readout>
 			{#each timeTicks as tk (tk.l)}
 				<line x1={MX0} x2={MX1} y1={msy(tk.us)} y2={msy(tk.us)} stroke="var(--stage-grid)" />
-				{@render txt(MX0 - 8, msy(tk.us) + 4, tk.l, 12, { anchor: 'end', muted: true })}
+				<Readout id="my-{tk.l}">
+					{@render txt(MX0 - 8, msy(tk.us) + 4, tk.l, 12, { anchor: 'end', muted: true })}
+				</Readout>
 			{/each}
 			{#each [10, 100, 1000, 10000, 100000] as v (v)}
 				<line x1={msx(v)} x2={msx(v)} y1={MY0} y2={MY1} stroke="var(--stage-grid)" />
 				<line x1={msx(v)} x2={msx(v)} y1={MY1} y2={MY1 + 5} stroke="var(--stage-line)" />
-				{@render txt(msx(v), MY1 + 20, fmt(v), 12, { anchor: 'middle', muted: true })}
+				<Readout id="mx-{v}">
+					{@render txt(msx(v), MY1 + 20, fmt(v), 12, { anchor: 'middle', muted: true })}
+				</Readout>
 			{/each}
 			<line x1={MX0} x2={MX1} y1={MY1} y2={MY1} stroke="var(--stage-line)" />
 			<line x1={MX0} x2={MX0} y1={MY0} y2={MY1} stroke="var(--stage-line)" />
-			{@render txt(MX0 - 60, MY0 - 16, 'time (log scale)', 12, { muted: true })}
-			{@render txt(MX1, MY1 + 40, 'number of items, n (log scale) →', 12, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout id="m-axes">
+				{@render txt(MX0 - 60, MY0 - 16, 'time (log scale)', 12, { muted: true })}
+				{@render txt(MX1, MY1 + 40, 'number of items, n (log scale) →', 12, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 
 			<g clip-path="url(#growth-reveal-machine)">
 				<!-- bubble sort on the ×1 computer, for reference -->
@@ -899,10 +987,19 @@
 			<!-- end labels -->
 			<g opacity={mDone}>
 				{#each mLabels as l (l.key)}
-					<g opacity={l.opacity}>
-						{@render txt(MX1 + 12, l.y, l.name, 13, { weight: 600, color: l.color })}
-						{@render txt(MX1 + 12, l.y + 16, l.sub, 12, { muted: true })}
-					</g>
+					<Readout
+						id="m-{l.key}"
+						order={1 + mLabels.indexOf(l)}
+						label={l.name}
+						value={l.sub}
+						color={l.color}
+						opacity={w.machine * l.opacity}
+					>
+						<g opacity={l.opacity}>
+							{@render txt(MX1 + 12, l.y, l.name, 13, { weight: 600, color: l.color })}
+							{@render txt(MX1 + 12, l.y + 16, l.sub, 12, { muted: true })}
+						</g>
+					</Readout>
 				{/each}
 			</g>
 
@@ -923,6 +1020,14 @@
 					y: clamp(lerp(cy + 22, cy - 22 - ch, k), MY0, MY1 - ch - 8)
 				}}
 				<g opacity={mDone}>
+					<Readout
+						id="m-cross"
+						order={5}
+						label={never ? 'At every size on the chart' : 'Merge sort wins beyond'}
+						value={never ? 'merge sort is never slower' : `about ${fmt(about(crossing.n))} items`}
+						note={crossing.est ? 'estimated: on the dashed part' : undefined}
+						opacity={w.machine}
+					/>
 					{#if !crossing.left}
 						<line
 							x1={cx}
@@ -942,53 +1047,57 @@
 							stroke-width="2"
 						/>
 					{/if}
-					<rect
-						x={card.x}
-						y={card.y}
-						width="236"
-						height={ch}
-						rx="10"
-						fill="var(--surface)"
-						stroke="var(--border)"
-					/>
-					{@render txt(
-						card.x + 14,
-						card.y + 20,
-						never ? 'At every size on the chart,' : 'Merge sort wins beyond',
-						13,
-						{ halo: false }
-					)}
-					{@render txt(
-						card.x + 14,
-						card.y + 39,
-						never ? 'merge sort is never slower' : `about ${fmt(about(crossing.n))} items`,
-						15,
-						{ weight: 700, halo: false }
-					)}
-					{#if crossing.est}
-						{@render txt(card.x + 14, card.y + 56, 'estimated: on the dashed part', 12, {
-							muted: true,
-							halo: false
-						})}
-					{/if}
+					<Readout id="m-card">
+						<rect
+							x={card.x}
+							y={card.y}
+							width="236"
+							height={ch}
+							rx="10"
+							fill="var(--surface)"
+							stroke="var(--border)"
+						/>
+						{@render txt(
+							card.x + 14,
+							card.y + 20,
+							never ? 'At every size on the chart,' : 'Merge sort wins beyond',
+							13,
+							{ halo: false }
+						)}
+						{@render txt(
+							card.x + 14,
+							card.y + 39,
+							never ? 'merge sort is never slower' : `about ${fmt(about(crossing.n))} items`,
+							15,
+							{ weight: 700, halo: false }
+						)}
+						{#if crossing.est}
+							{@render txt(card.x + 14, card.y + 56, 'estimated: on the dashed part', 12, {
+								muted: true,
+								halo: false
+							})}
+						{/if}
+					</Readout>
 				</g>
 			{/if}
-			<g opacity={mDone}>
-				{@render txt(
-					48,
-					544,
-					'Time if the ×1 computer makes a million comparisons per second; dashed: bubble sort beyond 2,500 items',
-					12,
-					{ muted: true }
-				)}
-				{@render txt(
-					48,
-					562,
-					'is too slow to run here, so it is drawn from n(n − 1)/2, which the runs from 500 to 2,500 items match within 1 %.',
-					12,
-					{ muted: true }
-				)}
-			</g>
+			<Readout id="m-foot">
+				<g opacity={mDone}>
+					{@render txt(
+						48,
+						544,
+						'Time if the ×1 computer makes a million comparisons per second; dashed: bubble sort beyond 2,500 items',
+						12,
+						{ muted: true }
+					)}
+					{@render txt(
+						48,
+						562,
+						'is too slow to run here, so it is drawn from n(n − 1)/2, which the runs from 500 to 2,500 items match within 1 %.',
+						12,
+						{ muted: true }
+					)}
+				</g>
+			</Readout>
 		</g>
 	{/if}
 </g>
