@@ -26,7 +26,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, scale, smoothstep, type Scale } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { dateText } from '../steps';
 	import {
 		TILT,
@@ -653,15 +653,33 @@
 		const h = dayLength(la, de);
 		return h >= 24 ? 'Sun never sets' : h <= 0 ? 'Sun never rises' : `${hm(h)} of daylight`;
 	};
+
+	type TxtOpts = {
+		anchor?: string;
+		color?: string;
+		weight?: number;
+		muted?: boolean;
+		halo?: boolean;
+	};
 </script>
 
+<!-- <Readout>: on narrow screens `minor` labels are hidden, and the headers and
+     captions are listed as HTML under the stage -->
 {#snippet txt(
 	x: number,
 	y: number,
 	text: string,
 	size: number,
-	opts: { anchor?: string; color?: string; weight?: number; muted?: boolean; halo?: boolean } = {}
+	opts: TxtOpts & { minor?: boolean } = {}
 )}
+	{#if opts.minor}
+		<Readout id="minor">{@render plain(x, y, text, size, opts)}</Readout>
+	{:else}
+		{@render plain(x, y, text, size, opts)}
+	{/if}
+{/snippet}
+
+{#snippet plain(x: number, y: number, text: string, size: number, opts: TxtOpts)}
 	<text
 		{x}
 		{y}
@@ -674,14 +692,16 @@
 	>
 {/snippet}
 
-{#snippet header(title: string, sub: string)}
-	{@render txt(48, 40, title, 16, { weight: 600 })}
-	{@render txt(48, 62, sub, 13, { muted: true })}
+{#snippet header(id: string, label: string, title: string, sub: string, opacity: number)}
+	<Readout {id} order={1} {label} value={title} note={sub} {opacity}>
+		{@render txt(48, 40, title, 16, { weight: 600 })}
+		{@render txt(48, 62, sub, 13, { muted: true })}
+	</Readout>
 {/snippet}
 
 {#snippet months(x0: number, x1: number, y: number, sx: Scale)}
 	{#each MONTHS as m, i (i)}
-		{@render txt(sx(MONTH_START[i] + 15), y, m, 11, { anchor: 'middle', muted: true })}
+		{@render txt(sx(MONTH_START[i] + 15), y, m, 11, { anchor: 'middle', muted: true, minor: true })}
 	{/each}
 	<line x1={x0} x2={x1} y1={y - 16} y2={y - 16} stroke="var(--stage-line)" stroke-width="1" />
 {/snippet}
@@ -695,7 +715,7 @@
 	<!-- ======================================================= day length -->
 	{#if show.day > 0.001}
 		<g opacity={show.day}>
-			{@render header(dayTitle, daySub)}
+			{@render header('day-title', 'Day length', dayTitle, daySub, show.day)}
 
 			<!-- Sun and sunlight -->
 			{@render sunGlyph(56, GY, 22)}
@@ -712,7 +732,7 @@
 					opacity="0.8"
 				/>
 			{/each}
-			{@render txt(56, GY + 46, 'sunlight', 12, { anchor: 'middle', muted: true })}
+			{@render txt(56, GY + 46, 'sunlight', 12, { anchor: 'middle', muted: true, minor: true })}
 
 			<!-- axis behind the globe -->
 			<line
@@ -812,12 +832,17 @@
 				stroke-width="2"
 				opacity={place.z > 0 ? 1 : 0.35}
 			/>
-			{@render txt(GX - GR - 6, GY + GR * 0.78, 'day side', 12, { anchor: 'end', muted: true })}
-			{@render txt(GX + GR + 6, GY + GR * 0.78, 'night side', 12, { muted: true })}
+			{@render txt(GX - GR - 6, GY + GR * 0.78, 'day side', 12, {
+				anchor: 'end',
+				muted: true,
+				minor: true
+			})}
+			{@render txt(GX + GR + 6, GY + GR * 0.78, 'night side', 12, { muted: true, minor: true })}
 
 			<!-- 24 hours at that latitude -->
 			{@render txt(BX0, BY - 15, `One day at ${latName(lat)} (local solar time)`, 12, {
-				muted: true
+				muted: true,
+				minor: true
 			})}
 			<rect x={BX0} y={BY} width={BX1 - BX0} height="16" rx="3" fill={DARK} />
 			{#if horizonDay}
@@ -843,7 +868,7 @@
 			/>
 			{#each [0, 6, 12, 18, 24] as h (h)}
 				<line x1={bx(h)} x2={bx(h)} y1={BY + 16} y2={BY + 21} stroke="var(--stage-line)" />
-				{@render txt(bx(h), BY + 34, `${h}:00`, 11, { anchor: 'middle', muted: true })}
+				{@render txt(bx(h), BY + 34, `${h}:00`, 11, { anchor: 'middle', muted: true, minor: true })}
 			{/each}
 			<line
 				x1={bx(localTime)}
@@ -861,25 +886,46 @@
 				stroke="var(--stage-ink)"
 				stroke-width="1"
 			/>
-			{@render txt(
-				(BX0 + BX1) / 2,
-				BY + 58,
-				horizonDay
-					? 'At the pole near an equinox the Sun circles along the horizon all day'
+			<Readout
+				id="one-day"
+				order={2}
+				label="One day at {latName(lat)}"
+				value={horizonDay
+					? 'the Sun circles along the horizon all day'
 					: lenDay >= 24
-						? 'Daylight all 24 hours: the Sun circles the sky without setting'
+						? 'daylight all 24 hours'
 						: lenDay <= 0
-							? 'Night all 24 hours: the Sun stays below the horizon'
-							: `Sunrise ${clock(12 - lenDay / 2)} · sunset ${clock(12 + lenDay / 2)}: ${hm(lenDay)} of the 24 hours in daylight`,
-				12,
-				{ anchor: 'middle' }
-			)}
+							? 'night all 24 hours'
+							: `sunrise ${clock(12 - lenDay / 2)} · sunset ${clock(12 + lenDay / 2)}`}
+				opacity={show.day}
+			>
+				{@render txt(
+					(BX0 + BX1) / 2,
+					BY + 58,
+					horizonDay
+						? 'At the pole near an equinox the Sun circles along the horizon all day'
+						: lenDay >= 24
+							? 'Daylight all 24 hours: the Sun circles the sky without setting'
+							: lenDay <= 0
+								? 'Night all 24 hours: the Sun stays below the horizon'
+								: `Sunrise ${clock(12 - lenDay / 2)} · sunset ${clock(12 + lenDay / 2)}: ${hm(lenDay)} of the 24 hours in daylight`,
+					12,
+					{ anchor: 'middle' }
+				)}
+			</Readout>
 
 			<!-- day length through the year -->
-			{@render txt(DX0 - 36, DY0 - 30, 'Hours of daylight through the year', 13, { weight: 600 })}
+			{@render txt(DX0 - 36, DY0 - 30, 'Hours of daylight through the year', 13, {
+				weight: 600,
+				minor: true
+			})}
 			{#each [0, 6, 12, 18, 24] as v (v)}
 				<line x1={DX0} x2={DX1} y1={dsy(v)} y2={dsy(v)} stroke="var(--stage-grid)" />
-				{@render txt(DX0 - 8, dsy(v) + 4, `${v} h`, 11, { anchor: 'end', muted: true })}
+				{@render txt(DX0 - 8, dsy(v) + 4, `${v} h`, 11, {
+					anchor: 'end',
+					muted: true,
+					minor: true
+				})}
 			{/each}
 			<line x1={DX0} x2={DX0} y1={DY0} y2={DY1} stroke="var(--stage-line)" />
 			{@render months(DX0, DX1, DY1 + 16, dsx)}
@@ -903,6 +949,7 @@
 			<path d={dayCurves.main} fill="none" stroke={ACC} stroke-width="3" stroke-linejoin="round" />
 			{#each dayLabels as l (l.key)}
 				{@render txt(DX1 + 8, l.y, l.text, l.main ? 13 : 11, {
+					minor: true,
 					weight: l.main ? 600 : 500,
 					muted: !l.main,
 					color: l.main ? ACC : undefined
@@ -928,7 +975,8 @@
 			/>
 			{@render txt(clamp(dsx(day), DX0 + 18, DX1 - 18), DY0 - 8, dateText(day), 12, {
 				anchor: 'middle',
-				weight: 600
+				weight: 600,
+				minor: true
 			})}
 		</g>
 	{/if}
@@ -936,7 +984,7 @@
 	<!-- ======================================================= Sun height -->
 	{#if show.angle > 0.001}
 		<g opacity={show.angle}>
-			{@render header(angleTitle, angleSub)}
+			{@render header('angle-title', 'Sunlight per m²', angleTitle, angleSub, show.angle)}
 
 			<!-- sky side: Sun and beam (clipped above the ground) -->
 			<g clip-path="url(#sunlight-sky)">
@@ -992,25 +1040,37 @@
 						stroke-width="0.75"
 					/>
 				</g>
-				{@render txt(beam.bl.x, beam.bl.y + 4, 'beam 1 m wide', 12)}
+				{@render txt(beam.bl.x, beam.bl.y + 4, 'beam 1 m wide', 12, { minor: true })}
 				<path d={arcPath} fill="none" stroke="var(--stage-ink)" stroke-width="1.2" />
 				{@render txt(arcLabel.x, arcLabel.y, altText(alt), 13, {
 					anchor: 'middle',
 					weight: 600
 				})}
-				{@render txt(
-					PX,
-					GROUND + 52,
-					`${patchText}${beam.hw > 200 ? ' (wider than the picture)' : ''}`,
-					12,
-					{ anchor: 'middle' }
-				)}
+				<Readout
+					id="patch"
+					order={2}
+					label="On the ground"
+					value={patchText}
+					opacity={show.angle * sunUp}
+				>
+					{@render txt(
+						PX,
+						GROUND + 52,
+						`${patchText}${beam.hw > 200 ? ' (wider than the picture)' : ''}`,
+						12,
+						{ anchor: 'middle' }
+					)}
+				</Readout>
 			</g>
-			{@render txt(44, GROUND + 52, sunSouth ? '← south' : '← north', 12, { muted: true })}
+			{@render txt(44, GROUND + 52, sunSouth ? '← south' : '← north', 12, {
+				muted: true,
+				minor: true
+			})}
 			{#if Math.abs(Math.round(lat)) < 90}
 				{@render txt(476, GROUND + 52, sunSouth ? 'north →' : 'south →', 12, {
 					anchor: 'end',
-					muted: true
+					muted: true,
+					minor: true
 				})}
 			{/if}
 			{#if alt <= 0}
@@ -1021,7 +1081,8 @@
 					14,
 					{
 						anchor: 'middle',
-						weight: 600
+						weight: 600,
+						minor: true
 					}
 				)}
 				{@render txt(
@@ -1031,14 +1092,23 @@
 					12,
 					{
 						anchor: 'middle',
-						muted: true
+						muted: true,
+						minor: true
 					}
 				)}
 			{/if}
 
 			<!-- energy per square metre at noon -->
-			{@render txt(EX + EW / 2, EY0 - 34, 'Each m²', 13, { anchor: 'middle', weight: 600 })}
-			{@render txt(EX + EW / 2, EY0 - 18, 'at noon', 11, { anchor: 'middle', muted: true })}
+			{@render txt(EX + EW / 2, EY0 - 34, 'Each m²', 13, {
+				anchor: 'middle',
+				weight: 600,
+				minor: true
+			})}
+			{@render txt(EX + EW / 2, EY0 - 18, 'at noon', 11, {
+				anchor: 'middle',
+				muted: true,
+				minor: true
+			})}
 			<rect
 				x={EX}
 				y={EY0}
@@ -1052,20 +1122,34 @@
 			{@render txt(EX + EW + 6, Math.min(ey(perM2) + 5, EY1 - 2), pctText(perM2), 13, {
 				weight: 600
 			})}
-			{@render txt(EX - 6, EY0 + 4, '100%', 11, { anchor: 'end', muted: true })}
-			{@render txt(EX + EW / 2, EY1 + 18, 'Sun overhead', 11, { anchor: 'middle', muted: true })}
-			{@render txt(EX + EW / 2, EY1 + 32, '= 100%', 11, { anchor: 'middle', muted: true })}
+			{@render txt(EX - 6, EY0 + 4, '100%', 11, { anchor: 'end', muted: true, minor: true })}
+			{@render txt(EX + EW / 2, EY1 + 18, 'Sun overhead', 11, {
+				anchor: 'middle',
+				muted: true,
+				minor: true
+			})}
+			{@render txt(EX + EW / 2, EY1 + 32, '= 100%', 11, {
+				anchor: 'middle',
+				muted: true,
+				minor: true
+			})}
 
 			<!-- daily total through the year -->
 			{@render txt(AX0 - 30, AY0 - 34, `Sunshine each day at ${latName(lat)}`, 13, {
-				weight: 600
+				weight: 600,
+				minor: true
 			})}
 			{@render txt(AX0 - 30, AY0 - 18, 'whole day; the equator at an equinox = 1', 11, {
-				muted: true
+				muted: true,
+				minor: true
 			})}
 			{#each [0, 0.5, 1] as v (v)}
 				<line x1={AX0} x2={AX1} y1={asy(v)} y2={asy(v)} stroke="var(--stage-grid)" />
-				{@render txt(AX0 - 8, asy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+				{@render txt(AX0 - 8, asy(v) + 4, String(v), 11, {
+					anchor: 'end',
+					muted: true,
+					minor: true
+				})}
 			{/each}
 			<line x1={AX0} x2={AX0} y1={AY0} y2={AY1} stroke="var(--stage-line)" />
 			{@render months(AX0, AX1, AY1 + 16, asx)}
@@ -1087,27 +1171,37 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			{@render txt(
-				AX0 - 30,
-				AY1 + 52,
-				`${dateText(day)}: ${x2(today)} × the equator at an equinox`,
-				12
-			)}
-			{@render txt(AX0 - 30, AY1 + 70, `Over the year: ${ratioText(angleRange)}`, 12, {
-				muted: true
-			})}
+			<Readout
+				id="sunshine-today"
+				order={3}
+				label="Sunshine that day"
+				value="{x2(today)} × the equator at an equinox"
+				note="Over the year: {ratioText(angleRange)}"
+				opacity={show.angle}
+			>
+				{@render txt(
+					AX0 - 30,
+					AY1 + 52,
+					`${dateText(day)}: ${x2(today)} × the equator at an equinox`,
+					12
+				)}
+				{@render txt(AX0 - 30, AY1 + 70, `Over the year: ${ratioText(angleRange)}`, 12, {
+					muted: true
+				})}
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- ======================================================= tilt -->
 	{#if show.tilt > 0.001}
 		<g opacity={show.tilt}>
-			{@render header(tiltTitle, tiltSub)}
+			{@render header('tilt-title', 'Tilt', tiltTitle, tiltSub, show.tilt)}
 
 			<!-- the two solstices, axis fixed in space -->
 			{@render txt(SX, 132, 'The axis keeps its direction all year', 12, {
 				anchor: 'middle',
-				muted: true
+				muted: true,
+				minor: true
 			})}
 			<ellipse
 				cx={SX}
@@ -1120,7 +1214,7 @@
 				stroke-dasharray="4 4"
 			/>
 			{@render sunGlyph(SX, SY, 22)}
-			{@render txt(SX, SY + 50, 'Sun', 12, { anchor: 'middle', muted: true })}
+			{@render txt(SX, SY + 50, 'Sun', 12, { anchor: 'middle', muted: true, minor: true })}
 			{#each solstices as g (g.key)}
 				<line
 					x1={g.cx}
@@ -1164,8 +1258,12 @@
 					stroke-width="1.5"
 				/>
 				{@render txt(g.nl.x, g.nl.y + 4, 'N', 12, { anchor: 'middle', weight: 600 })}
-				{@render txt(g.cx, SY + ER + 40, g.name, 11, { anchor: 'middle', muted: true })}
-				{@render txt(g.cx, SY + ER + 56, g.len, 12, { anchor: 'middle', weight: 600 })}
+				{@render txt(g.cx, SY + ER + 40, g.name, 11, {
+					anchor: 'middle',
+					muted: true,
+					minor: true
+				})}
+				{@render txt(g.cx, SY + ER + 56, g.len, 12, { anchor: 'middle', weight: 600, minor: true })}
 			{/each}
 			{#if !noTilt}
 				<path d={tiltArc.d} fill="none" stroke="var(--stage-ink)" stroke-width="1.2" />
@@ -1176,16 +1274,29 @@
 			{/if}
 			{@render txt(SX, SY + ER + 84, `day length at ${latName(lat)}`, 11, {
 				anchor: 'middle',
-				muted: true
+				muted: true,
+				minor: true
 			})}
+			<Readout
+				id="solstices"
+				order={2}
+				label="Day length at {latName(lat)}"
+				value={solstices.map((g) => `${g.name} ${g.len}`).join(' · ')}
+				opacity={show.tilt}
+			/>
 
 			<!-- daily sunshine through the year -->
 			{@render txt(TX0 - 36, TY0 - 30, 'Daily sunshine (the equator at an equinox = 1)', 13, {
-				weight: 600
+				weight: 600,
+				minor: true
 			})}
 			{#each tYTicks as v (v)}
 				<line x1={TX0} x2={TX1} y1={tsy(v)} y2={tsy(v)} stroke="var(--stage-grid)" />
-				{@render txt(TX0 - 8, tsy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+				{@render txt(TX0 - 8, tsy(v) + 4, String(v), 11, {
+					anchor: 'end',
+					muted: true,
+					minor: true
+				})}
 			{/each}
 			<line x1={TX0} x2={TX0} y1={TY0} y2={TY1} stroke="var(--stage-line)" />
 			{@render months(TX0, TX1, TY1 + 16, tsx)}
@@ -1201,6 +1312,7 @@
 			<path d={tiltCurves.main} fill="none" stroke={ACC} stroke-width="3" stroke-linejoin="round" />
 			{#each tiltLabels as l (l.key)}
 				{@render txt(TX1 + 8, l.y, l.text, l.main ? 13 : 11, {
+					minor: true,
 					weight: l.main ? 600 : 500,
 					muted: !l.main,
 					color: l.main ? ACC : undefined
@@ -1225,14 +1337,24 @@
 			/>
 			{@render txt(clamp(tsx(tDay), TX0 + 18, TX1 - 18), TY0 - 8, dateText(tDay), 12, {
 				anchor: 'middle',
-				weight: 600
+				weight: 600,
+				minor: true
 			})}
-			{@render txt(
-				TX0 - 36,
-				TY1 + 54,
-				`${dateText(tDay)}: ${x2(tiltToday)} × the equator at an equinox · ${lenText(lat, dTilt)} · noon Sun ${altText(noonAltitude(lat, dTilt))}`,
-				12
-			)}
+			<Readout
+				id="tilt-today"
+				order={3}
+				label={dateText(tDay)}
+				value="{x2(tiltToday)} × the equator at an equinox"
+				note="{lenText(lat, dTilt)} · noon Sun {altText(noonAltitude(lat, dTilt))}"
+				opacity={show.tilt}
+			>
+				{@render txt(
+					TX0 - 36,
+					TY1 + 54,
+					`${dateText(tDay)}: ${x2(tiltToday)} × the equator at an equinox · ${lenText(lat, dTilt)} · noon Sun ${altText(noonAltitude(lat, dTilt))}`,
+					12
+				)}
+			</Readout>
 		</g>
 	{/if}
 

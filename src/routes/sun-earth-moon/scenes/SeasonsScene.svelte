@@ -31,7 +31,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { dateText } from '../steps';
 	import {
 		dailySunshine,
@@ -533,9 +533,12 @@
 
 	<!-- ================= the orbit ================= -->
 	<path d={orbitPath} fill="none" stroke="var(--sky-orbit)" stroke-width="1.5" />
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	{#each months as m (m.name)}
 		<line {...m.tick} stroke="var(--sky-orbit)" stroke-width="1.2" />
-		{@render txt(m.x, m.y, m.name, 11, { anchor: 'middle', muted: true, opacity: m.opacity })}
+		<Readout id="month-{m.name}">
+			{@render txt(m.x, m.y, m.name, 11, { anchor: 'middle', muted: true, opacity: m.opacity })}
+		</Readout>
 	{/each}
 
 	<!-- the Sun -->
@@ -555,11 +558,13 @@
 						stroke-linecap="round"
 					/>
 				</g>
-				{@render txt(gh.label.x, gh.label.y, gh.name, 12, {
-					anchor: 'middle',
-					muted: true,
-					opacity: gh.labelOpacity
-				})}
+				<Readout id="ghost-{gh.id}">
+					{@render txt(gh.label.x, gh.label.y, gh.name, 12, {
+						anchor: 'middle',
+						muted: true,
+						opacity: gh.labelOpacity
+					})}
+				</Readout>
 			{/each}
 		</g>
 	{/if}
@@ -579,20 +584,22 @@
 					stroke-dasharray="4 4"
 				/>
 				<circle cx={m.p.x} cy={m.p.y} r="3.5" fill="var(--stage-ink-muted)" />
-				{@render txt(
-					lerp(SX, m.p.x, 0.62) + 12 * Math.sin(up * RAD),
-					lerp(SY, m.p.y, 0.62) - 12 * Math.cos(up * RAD),
-					`${m.km.toFixed(1)} million km`,
-					13,
-					{ anchor: 'middle', weight: 600, rotate: up }
-				)}
-				{@render txt(
-					lerp(SX, m.p.x, 0.62) - 12 * Math.sin(up * RAD),
-					lerp(SY, m.p.y, 0.62) + 12 * Math.cos(up * RAD),
-					m.name,
-					11,
-					{ anchor: 'middle', muted: true, rotate: up }
-				)}
+				<Readout id="{m.id}-label">
+					{@render txt(
+						lerp(SX, m.p.x, 0.62) + 12 * Math.sin(up * RAD),
+						lerp(SY, m.p.y, 0.62) - 12 * Math.cos(up * RAD),
+						`${m.km.toFixed(1)} million km`,
+						13,
+						{ anchor: 'middle', weight: 600, rotate: up }
+					)}
+					{@render txt(
+						lerp(SX, m.p.x, 0.62) - 12 * Math.sin(up * RAD),
+						lerp(SY, m.p.y, 0.62) + 12 * Math.cos(up * RAD),
+						m.name,
+						11,
+						{ anchor: 'middle', muted: true, rotate: up }
+					)}
+				</Readout>
 			{/each}
 			<!-- dark on the fixed Sun colour in both themes -->
 			<path
@@ -600,14 +607,16 @@
 				stroke="var(--sky-night-solid)"
 				stroke-width="1.4"
 			/>
-			{@render txt(SX, SY - 62, '+ centre of the orbit:', 11, {
-				anchor: 'middle',
-				muted: true
-			})}
-			{@render txt(SX, SY - 48, 'the Sun is only 1.7% of the radius off it', 11, {
-				anchor: 'middle',
-				muted: true
-			})}
+			<Readout id="centre-note">
+				{@render txt(SX, SY - 62, '+ centre of the orbit:', 11, {
+					anchor: 'middle',
+					muted: true
+				})}
+				{@render txt(SX, SY - 48, 'the Sun is only 1.7% of the radius off it', 11, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</Readout>
 		</g>
 	{/if}
 
@@ -657,180 +666,235 @@
 
 	<!-- footnote under the drawing -->
 	{#if orbitW > 0.01}
-		{@render txt(
-			24,
-			578,
-			'Perspective view, from slightly above the orbit. Sun and Earth hugely enlarged; not to scale.',
-			11,
-			{ muted: true, opacity: orbitW }
-		)}
+		<Readout id="orbit-footnote">
+			{@render txt(
+				24,
+				578,
+				'Perspective view, from slightly above the orbit. Sun and Earth hugely enlarged; not to scale.',
+				11,
+				{ muted: true, opacity: orbitW }
+			)}
+		</Readout>
 	{/if}
 	{#if distW > 0.01}
-		{@render txt(
-			24,
-			578,
-			'Seen from straight above. The orbit’s shape is to scale; the Sun and the Earth are enlarged.',
-			11,
-			{ muted: true, opacity: distW }
-		)}
+		<Readout id="dist-footnote">
+			{@render txt(
+				24,
+				578,
+				'Seen from straight above. The orbit’s shape is to scale; the Sun and the Earth are enlarged.',
+				11,
+				{ muted: true, opacity: distW }
+			)}
+		</Readout>
 	{/if}
 
 	<!-- ================= panel: orbit ================= -->
 	{#if orbitW > 0.01}
-		<g opacity={orbitW}>
-			{@render txt(PX, 92, dateText(day), 28, { weight: 600 })}
-			{@render txt(PX, 126, seasonLine, 16, { weight: 600 })}
-			{#if event}
-				{@render txt(PX, 148, `Northern ${north} and southern ${south} begin`, 13)}
-				{@render txt(PX, 166, leanLine, 13, { muted: true })}
-			{:else}
-				{@render txt(PX, 148, leanLine, 13, { muted: true })}
-			{/if}
+		<Readout
+			id="orbit-date"
+			order={1}
+			label={dateText(day)}
+			value={seasonLine}
+			note={event ? `Northern ${north} and southern ${south} begin` : leanLine}
+			opacity={orbitW}
+		/>
+		<Readout
+			id="overhead"
+			order={2}
+			label="Sun overhead at noon"
+			value={overhead}
+			color="var(--sky-sun)"
+			opacity={orbitW}
+		/>
+		<Readout
+			id="daylight"
+			order={3}
+			label="Daylight in one day"
+			value={rows.map((r) => `${r.name} ${r.value}`).join(' · ')}
+			opacity={orbitW}
+		>
+			<g opacity={orbitW}>
+				{@render txt(PX, 92, dateText(day), 28, { weight: 600 })}
+				{@render txt(PX, 126, seasonLine, 16, { weight: 600 })}
+				{#if event}
+					{@render txt(PX, 148, `Northern ${north} and southern ${south} begin`, 13)}
+					{@render txt(PX, 166, leanLine, 13, { muted: true })}
+				{:else}
+					{@render txt(PX, 148, leanLine, 13, { muted: true })}
+				{/if}
 
-			{@render txt(PX, 192, 'Sun overhead at noon', 12, { muted: true })}
-			<circle
-				cx={PX + 5}
-				cy={210}
-				r="4"
-				fill="var(--sky-sun)"
-				stroke="var(--stage-ink)"
-				stroke-width="0.8"
-			/>
-			{@render txt(PX + 16, 215, overhead, 15, { weight: 600 })}
-
-			{@render txt(PX, 258, 'Daylight in one day', 12, { muted: true })}
-			{#each rows as r, i (r.id)}
-				{@const y = 284 + i * 44}
-				{@const w = 290}
-				{@render txt(PX, y, r.name, 13, { weight: 600 })}
-				{@render txt(PX + w, y, r.value, 13, { anchor: 'end' })}
-				<rect
-					x={PX}
-					y={y + 8}
-					width={w}
-					height="9"
-					rx="4.5"
-					fill="var(--stage-line)"
-					opacity="0.7"
+				{@render txt(PX, 192, 'Sun overhead at noon', 12, { muted: true })}
+				<circle
+					cx={PX + 5}
+					cy={210}
+					r="4"
+					fill="var(--sky-sun)"
+					stroke="var(--stage-ink)"
+					stroke-width="0.8"
 				/>
-				{#if r.h > 0.05}
+				{@render txt(PX + 16, 215, overhead, 15, { weight: 600 })}
+
+				{@render txt(PX, 258, 'Daylight in one day', 12, { muted: true })}
+				{#each rows as r, i (r.id)}
+					{@const y = 284 + i * 44}
+					{@const w = 290}
+					{@render txt(PX, y, r.name, 13, { weight: 600 })}
+					{@render txt(PX + w, y, r.value, 13, { anchor: 'end' })}
 					<rect
-						x={PX + (w * (1 - r.h / 24)) / 2}
+						x={PX}
 						y={y + 8}
-						width={(w * r.h) / 24}
+						width={w}
 						height="9"
 						rx="4.5"
-						fill="var(--sky-sun)"
-						opacity={r.horizon ? 0.45 : 1}
+						fill="var(--stage-line)"
+						opacity="0.7"
 					/>
-				{/if}
-			{/each}
-			{@render txt(PX, 404, 'midnight', 10, { muted: true })}
-			{@render txt(PX + 145, 404, 'noon', 10, { muted: true, anchor: 'middle' })}
-			{@render txt(PX + 290, 404, 'midnight', 10, { muted: true, anchor: 'end' })}
+					{#if r.h > 0.05}
+						<rect
+							x={PX + (w * (1 - r.h / 24)) / 2}
+							y={y + 8}
+							width={(w * r.h) / 24}
+							height="9"
+							rx="4.5"
+							fill="var(--sky-sun)"
+							opacity={r.horizon ? 0.45 : 1}
+						/>
+					{/if}
+				{/each}
+				{@render txt(PX, 404, 'midnight', 10, { muted: true })}
+				{@render txt(PX + 145, 404, 'noon', 10, { muted: true, anchor: 'middle' })}
+				{@render txt(PX + 290, 404, 'midnight', 10, { muted: true, anchor: 'end' })}
 
-			{@render txt(PX, 456, 'The axis points the same way all year,', 13)}
-			{@render txt(PX, 474, 'towards the North Star, wherever the', 13)}
-			{@render txt(PX, 492, 'Earth is on its orbit.', 13)}
-		</g>
+				{@render txt(PX, 456, 'The axis points the same way all year,', 13)}
+				{@render txt(PX, 474, 'towards the North Star, wherever the', 13)}
+				{@render txt(PX, 492, 'Earth is on its orbit.', 13)}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- ================= panel: distance ================= -->
 	{#if distW > 0.01}
-		<g opacity={distW}>
-			{@render txt(QX, 92, dateText(day), 28, { weight: 600 })}
-			{@render txt(QX, 124, `${(AU_MKM * dist).toFixed(1)} million km from the Sun`, 16, {
-				weight: 600
-			})}
-			{@render txt(
-				QX,
-				146,
-				`Sunlight from distance: ${pct(sunlight - 1, 1)} vs average distance`,
-				13,
-				{ muted: true }
-			)}
-			{@render txt(QX, 186, `${FULL_MONTHS[monthIndex]}: ${closeness} —`, 14, { weight: 600 })}
-			{@render txt(
-				QX,
-				206,
-				event
-					? `and the ${event}: northern ${north} begins`
-					: `and ${north} in the north, ${south} in the south`,
-				14,
-				{
+		<Readout
+			id="dist-date"
+			order={1}
+			label={dateText(day)}
+			value="{FULL_MONTHS[monthIndex]}: {closeness}"
+			note={event
+				? `and the ${event}: northern ${north} begins`
+				: `and ${north} in the north, ${south} in the south`}
+			opacity={distW}
+		/>
+		<Readout
+			id="distance"
+			order={2}
+			label="From the Sun"
+			value="{(AU_MKM * dist).toFixed(1)} million km"
+			note="sunlight from distance: {pct(sunlight - 1, 1)} vs average distance"
+			opacity={distW}
+		/>
+		<Readout
+			id="sunshine"
+			order={3}
+			label="Daily sunshine vs its yearly average"
+			value={SERIES.map((s) => `${s.name} ${pct(now[s.id] - 1, s.id === 'f' ? 1 : 0)}`).join(' · ')}
+			note={spread}
+			opacity={distW}
+		>
+			<g opacity={distW}>
+				{@render txt(QX, 92, dateText(day), 28, { weight: 600 })}
+				{@render txt(QX, 124, `${(AU_MKM * dist).toFixed(1)} million km from the Sun`, 16, {
 					weight: 600
-				}
-			)}
+				})}
+				{@render txt(
+					QX,
+					146,
+					`Sunlight from distance: ${pct(sunlight - 1, 1)} vs average distance`,
+					13,
+					{ muted: true }
+				)}
+				{@render txt(QX, 186, `${FULL_MONTHS[monthIndex]}: ${closeness} —`, 14, { weight: 600 })}
+				{@render txt(
+					QX,
+					206,
+					event
+						? `and the ${event}: northern ${north} begins`
+						: `and ${north} in the north, ${south} in the south`,
+					14,
+					{
+						weight: 600
+					}
+				)}
 
-			{@render txt(QX, 232, spread, 12, { muted: true })}
-			{@render txt(QX, 262, 'Daily sunshine, compared with its yearly average', 12, {
-				muted: true
-			})}
-			<!-- chart grid -->
-			{#each [0.5, 1, 1.5] as v (v)}
-				<line
-					x1={CH.x0}
-					x2={CH.x1}
-					y1={cy(v)}
-					y2={cy(v)}
-					stroke={v === 1 ? 'var(--stage-line)' : 'var(--stage-grid)'}
-					stroke-width={v === 1 ? 1.2 : 1}
-				/>
-				{@render txt(CH.x0 - 6, cy(v) + 4, v === 1 ? 'average' : `×${v}`, 10, {
-					anchor: 'end',
+				{@render txt(QX, 232, spread, 12, { muted: true })}
+				{@render txt(QX, 262, 'Daily sunshine, compared with its yearly average', 12, {
 					muted: true
 				})}
-			{/each}
-			{#each MONTHS as m, i (m)}
-				{@render txt(cx(MONTH_START[i] + 15), CH.y1 + 16, m[0], 10, {
-					anchor: 'middle',
-					muted: true
-				})}
-			{/each}
-			<line
-				x1={cx(day)}
-				x2={cx(day)}
-				y1={CH.y0 - 6}
-				y2={CH.y1 + 2}
-				stroke="var(--stage-ink-muted)"
-				stroke-dasharray="3 3"
-			/>
-			{#each SERIES as s (s.id)}
-				<path
-					d={CURVES[s.id]}
-					fill="none"
-					stroke={s.color}
-					stroke-width={s.id === 'f' ? 3 : 2.2}
-					stroke-linejoin="round"
-				/>
-				<circle
-					cx={cx(day)}
-					cy={cy(now[s.id])}
-					r="4.5"
-					fill={s.color}
-					stroke="var(--stage-bg)"
-					stroke-width="1.5"
-				/>
-			{/each}
-			<!-- legend with today's values -->
-			{#each SERIES as s, i (s.id)}
-				{@const y = 512 + i * 20}
+				<!-- chart grid -->
+				{#each [0.5, 1, 1.5] as v (v)}
+					<line
+						x1={CH.x0}
+						x2={CH.x1}
+						y1={cy(v)}
+						y2={cy(v)}
+						stroke={v === 1 ? 'var(--stage-line)' : 'var(--stage-grid)'}
+						stroke-width={v === 1 ? 1.2 : 1}
+					/>
+					{@render txt(CH.x0 - 6, cy(v) + 4, v === 1 ? 'average' : `×${v}`, 10, {
+						anchor: 'end',
+						muted: true
+					})}
+				{/each}
+				{#each MONTHS as m, i (m)}
+					{@render txt(cx(MONTH_START[i] + 15), CH.y1 + 16, m[0], 10, {
+						anchor: 'middle',
+						muted: true
+					})}
+				{/each}
 				<line
-					x1={QX}
-					x2={QX + 18}
-					y1={y - 4}
-					y2={y - 4}
-					stroke={s.color}
-					stroke-width="3"
-					stroke-linecap="round"
+					x1={cx(day)}
+					x2={cx(day)}
+					y1={CH.y0 - 6}
+					y2={CH.y1 + 2}
+					stroke="var(--stage-ink-muted)"
+					stroke-dasharray="3 3"
 				/>
-				{@render txt(QX + 26, y, s.name, 12, { weight: 600 })}
-				{@render txt(QX + 120, y, s.where, 11, { muted: true })}
-				{@render txt(QX + 340, y, pct(now[s.id] - 1, s.id === 'f' ? 1 : 0), 12, {
-					anchor: 'end',
-					weight: 600
-				})}
-			{/each}
-		</g>
+				{#each SERIES as s (s.id)}
+					<path
+						d={CURVES[s.id]}
+						fill="none"
+						stroke={s.color}
+						stroke-width={s.id === 'f' ? 3 : 2.2}
+						stroke-linejoin="round"
+					/>
+					<circle
+						cx={cx(day)}
+						cy={cy(now[s.id])}
+						r="4.5"
+						fill={s.color}
+						stroke="var(--stage-bg)"
+						stroke-width="1.5"
+					/>
+				{/each}
+				<!-- legend with today's values -->
+				{#each SERIES as s, i (s.id)}
+					{@const y = 512 + i * 20}
+					<line
+						x1={QX}
+						x2={QX + 18}
+						y1={y - 4}
+						y2={y - 4}
+						stroke={s.color}
+						stroke-width="3"
+						stroke-linecap="round"
+					/>
+					{@render txt(QX + 26, y, s.name, 12, { weight: 600 })}
+					{@render txt(QX + 120, y, s.where, 11, { muted: true })}
+					{@render txt(QX + 340, y, pct(now[s.id] - 1, s.id === 'f' ? 1 : 0), 12, {
+						anchor: 'end',
+						weight: 600
+					})}
+				{/each}
+			</g>
+		</Readout>
 	{/if}
 </g>

@@ -766,6 +766,119 @@ test.describe('on a phone', () => {
 		await range(page, 'x').fill('3');
 		await expect(panel).toContainText(/A\(x\) = 9\.00/);
 	});
+
+	test('linear transformations plane: v is text and follows its sliders', async ({ page }) => {
+		await page.goto('./linear-transformations/#arrows');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Vector v\s*v = \(2, 1\)/);
+		await expect(panel).toContainText('2 steps right, 1 step up');
+		await expect(drawing(page)).not.toContainText('Scaling by a number');
+		await range(page, 'vx').fill('-3');
+		await expect(panel).toContainText(/v = \(−3, 1\)/);
+		await expect(panel).toContainText('3 steps left');
+	});
+
+	test('linear transformations: where v lands is text and follows v', async ({ page }) => {
+		await page.goto('./linear-transformations/#follow');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Before\s*v = \(2, 1\)/);
+		await expect(panel).toContainText(/After: the same recipe\s*= \(/);
+		await expect(panel).toContainText('î lands on');
+		await expect(drawing(page)).not.toContainText('v lands here');
+		await range(page, 'vy').fill('3');
+		await expect(panel).toContainText(/Before\s*v = \(2, 3\)/);
+		await page.goto('./linear-transformations/#determinant');
+		await expect(panel).toContainText(/det = ad − bc\s*.* = 3/);
+		await expect(drawing(page)).not.toContainText('det = ad − bc');
+	});
+
+	test('seasons: the Sun’s overhead latitude is text and follows the date', async ({ page }) => {
+		await page.goto('./sun-earth-moon/#orbit');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Sun overhead at noon\s*23\.4° N \(Tropic of Cancer\)/);
+		await expect(drawing(page)).not.toContainText('Sun overhead at noon');
+		await range(page, 'day').fill('354');
+		await expect(panel).toContainText(/Sun overhead at noon\s*23\.4° S \(Tropic of Capricorn\)/);
+		await page.goto('./sun-earth-moon/#distance');
+		await expect(panel).toContainText(/From the Sun\s*\d+\.\d million km/);
+		await expect(drawing(page)).not.toContainText('million km from the Sun');
+	});
+
+	test('sunlight: the day length is text and follows the latitude', async ({ page }) => {
+		await page.goto('./sun-earth-moon/#daylength');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Day length\s*40° N on 21 Jun: 14 h 51 min of daylight/);
+		await expect(panel).toContainText(/One day at 40° N\s*sunrise/);
+		await expect(drawing(page)).not.toContainText('of the 24 hours in daylight');
+		await range(page, 'latitude').fill('80');
+		await expect(panel).toContainText(/One day at 80° N\s*daylight all 24 hours/);
+	});
+
+	test('moon: the phase and the lit fraction are text and follow the Moon', async ({ page }) => {
+		await page.goto('./sun-earth-moon/#phases');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Waxing crescent\s*\d+% of the face lit/);
+		await expect(panel).toContainText('Phases are not a shadow');
+		await expect(drawing(page)).not.toContainText('days since new Moon');
+		await range(page, 'moon').fill('7.5');
+		await expect(panel).toContainText(/First quarter/i);
+		await page.goto('./sun-earth-moon/#tilted');
+		await expect(panel).toContainText(/This month\s*New Moon on/);
+		await expect(drawing(page)).not.toContainText('New Moon on');
+	});
+
+	test('tides: the tidal range is text and follows the Moon', async ({ page }) => {
+		await page.goto('./sun-earth-moon/#spring');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Tidal range now\s*1\.04× the Moon's alone/);
+		await expect(drawing(page)).not.toContainText('Range now');
+		await range(page, 'moon').fill('0');
+		await expect(panel).toContainText(/Tidal range now\s*1\.[3-6]\d× the Moon's alone/);
+		await page.goto('./sun-earth-moon/#tides');
+		await expect(panel).toContainText(/Two high tides and two low tides\s*every 24 h 50 min/);
+	});
+
+	test('radioactivity nucleus: the decay and its half-life are text and follow the mode', async ({
+		page
+	}) => {
+		await page.goto('./radioactivity/#nucleus');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Carbon-12\s*6 protons · 6 neutrons/);
+		await page.goto('./radioactivity/#compare');
+		await expect(panel).toContainText(/Alpha decay\s*half-life 432\.6/);
+		await expect(panel).toContainText(/Emitted\s*α particle/);
+		await expect(drawing(page)).not.toContainText('What stops it');
+		await page.locator('button[data-control="mode"][data-value="beta"]').click();
+		await expect(panel).toContainText(/Beta decay\s*half-life 5,700/);
+		await expect(panel).toContainText(/Carbon-14 → Nitrogen-14\s*Z \+ 1, A same/);
+	});
+
+	test('radioactivity grid: the counts and the half-life are text and follow the slider', async ({
+		page
+	}) => {
+		await page.goto('./radioactivity/#halflife');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/After each half-life\s*½: \d/);
+		await expect(panel).toContainText(/Intact\s*\d/);
+		await expect(panel).toContainText(/half-life 8 s\s*\d\.\d half-lives: \d+ left/);
+		await expect(drawing(page)).not.toContainText('After each half-life');
+		await range(page, 'halflife').fill('20');
+		await expect(panel).toContainText(/half-life 20 s/);
+		await page.goto('./radioactivity/#random');
+		await expect(panel).toContainText(/The circled nucleus\s*(still intact|decayed) after/);
+	});
+
+	test('carbon dating: the age is text and follows the carbon-14 left', async ({ page }) => {
+		await page.goto('./radioactivity/#dating');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/The sample\s*25% left/);
+		await expect(panel).toContainText(/Age\s*≈ 11,400 years old/);
+		await expect(drawing(page)).not.toContainText('years old');
+		await range(page, 'fraction').fill('50');
+		await expect(panel).toContainText(/Age\s*≈ 5,700 years old/);
+		await page.goto('./radioactivity/#carbon14');
+		await expect(panel).toContainText(/Upper atmosphere\s*nitrogen-14 → carbon-14/);
+	});
 });
 
 test.describe('on a wide screen', () => {
