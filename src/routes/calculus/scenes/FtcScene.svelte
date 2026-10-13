@@ -18,7 +18,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { scale, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { X0, X1, accumulate, integral, numericSlope, runningArea } from '../calculus';
 	import Frame from './Frame.svelte';
 	import KnotHandles from './KnotHandles.svelte';
@@ -187,7 +187,17 @@
 	</defs>
 
 	<!-- ============ the curve ============ -->
-	<Txt x={LEFT + 44} y={28} text={curve.formula} size={15} weight={600} color="var(--calc-curve)" />
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="formula" order={1} label="Curve" value={curve.formula} color="var(--calc-curve)">
+		<Txt
+			x={LEFT + 44}
+			y={28}
+			text={curve.formula}
+			size={15}
+			weight={600}
+			color="var(--calc-curve)"
+		/>
+	</Readout>
 	<Frame {sx} {sy} yName={isBall ? 'h (m)' : 'y'} />
 	<g clip-path="url(#calc-ftc-upper)">
 		{#if wArea.current > 0.01}
@@ -241,27 +251,31 @@
 		{/if}
 	</g>
 	{#if wStrip.current > 0.01 && strip.h > 4}
-		<Txt
-			x={labelRight ? strip.x + strip.w + 10 : strip.x - 10}
-			y={(sy(0) + P.y) / 2 + 5}
-			text="strip ≈ f(x) × dx"
-			anchor={labelRight ? 'start' : 'end'}
-			size={12}
-			weight={600}
-			opacity={wStrip.current}
-		/>
+		<Readout id="strip-label">
+			<Txt
+				x={labelRight ? strip.x + strip.w + 10 : strip.x - 10}
+				y={(sy(0) + P.y) / 2 + 5}
+				text="strip ≈ f(x) × dx"
+				anchor={labelRight ? 'start' : 'end'}
+				size={12}
+				weight={600}
+				opacity={wStrip.current}
+			/>
+		</Readout>
 	{/if}
 	{#if wUndo.current > 0.01 && Math.abs(sy(f0) - P.y) > 22}
-		<Txt
-			x={labelRight ? P.x + 12 : P.x - 12}
-			y={(sy(f0) + P.y) / 2 + 5}
-			text="rise {num(rise)}{yUnit}"
-			anchor={labelRight ? 'start' : 'end'}
-			size={13}
-			weight={600}
-			color={riseColor}
-			opacity={wUndo.current}
-		/>
+		<Readout id="rise-label">
+			<Txt
+				x={labelRight ? P.x + 12 : P.x - 12}
+				y={(sy(f0) + P.y) / 2 + 5}
+				text="rise {num(rise)}{yUnit}"
+				anchor={labelRight ? 'start' : 'end'}
+				size={13}
+				weight={600}
+				color={riseColor}
+				opacity={wUndo.current}
+			/>
+		</Readout>
 	{/if}
 
 	<!-- ============ the lower plot ============ -->
@@ -327,16 +341,18 @@
 		stroke-width="2"
 	/>
 	{#if wArea.current > 0.5}
-		<Txt
-			x={Adot.x + (labelRight ? 14 : -14)}
-			y={Adot.y - 12}
-			text="A = {num(A)}"
-			anchor={labelRight ? 'start' : 'end'}
-			size={13}
-			weight={600}
-			color="var(--calc-area)"
-			pill
-		/>
+		<Readout id="a-pill">
+			<Txt
+				x={Adot.x + (labelRight ? 14 : -14)}
+				y={Adot.y - 12}
+				text="A = {num(A)}"
+				anchor={labelRight ? 'start' : 'end'}
+				size={13}
+				weight={600}
+				color="var(--calc-area)"
+				pill
+			/>
+		</Readout>
 	{/if}
 
 	<!-- ============ handles ============ -->
@@ -379,58 +395,136 @@
 
 	<!-- ============ readout panel ============ -->
 	<g>
-		<Txt x={PANEL} y={84} text="{xName} = {num(x)}{xUnit}" size={15} weight={600} />
+		<Readout id="x" order={2} label="Point" value="{xName} = {num(x)}{xUnit}">
+			<Txt x={PANEL} y={84} text="{xName} = {num(x)}{xUnit}" size={15} weight={600} />
+		</Readout>
 		{#if phase === 'running'}
-			<Txt x={PANEL} y={124} text="area from 0 to x" size={12} muted />
-			<Txt
-				x={PANEL}
-				y={154}
-				text="A(x) = {num(A)}"
-				size={22}
-				weight={700}
+			<Readout
+				id="area"
+				order={3}
+				label="Area from 0 to x"
+				value="A(x) = {num(A)}"
+				note="height f(x) = {num(fx)}"
 				color="var(--calc-area)"
-			/>
-			<Txt x={PANEL} y={180} text="height f(x) = {num(fx)}" size={13} muted />
+			>
+				<Txt x={PANEL} y={124} text="area from 0 to x" size={12} muted />
+				<Txt
+					x={PANEL}
+					y={154}
+					text="A(x) = {num(A)}"
+					size={22}
+					weight={700}
+					color="var(--calc-area)"
+				/>
+				<Txt x={PANEL} y={180} text="height f(x) = {num(fx)}" size={13} muted />
+			</Readout>
 		{:else if phase === 'strip'}
-			<Txt x={PANEL} y={124} text="slope of A at x" size={12} muted />
-			<Txt x={PANEL} y={150} text={num(slopeA)} size={22} weight={700} color="var(--calc-curve)" />
-			<Txt x={PANEL} y={186} text="height of the curve" size={12} muted />
-			<Txt
-				x={PANEL}
-				y={212}
-				text="f(x) = {num(fx)}"
-				size={22}
-				weight={700}
+			<Readout
+				id="slope-a"
+				order={3}
+				label="Slope of A at x"
+				value={num(slopeA)}
 				color="var(--calc-curve)"
-			/>
-			<Txt x={PANEL} y={244} text="the same number" size={13} weight={600} />
-			<Txt x={PANEL} y={264} text="wherever x is" size={13} muted />
+			>
+				<Txt x={PANEL} y={124} text="slope of A at x" size={12} muted />
+				<Txt
+					x={PANEL}
+					y={150}
+					text={num(slopeA)}
+					size={22}
+					weight={700}
+					color="var(--calc-curve)"
+				/>
+			</Readout>
+			<Readout
+				id="height"
+				order={4}
+				label="Height of the curve"
+				value="f(x) = {num(fx)}"
+				color="var(--calc-curve)"
+			>
+				<Txt x={PANEL} y={186} text="height of the curve" size={12} muted />
+				<Txt
+					x={PANEL}
+					y={212}
+					text="f(x) = {num(fx)}"
+					size={22}
+					weight={700}
+					color="var(--calc-curve)"
+				/>
+			</Readout>
+			<Readout id="same" order={5} label="The same number" value="wherever x is">
+				<Txt x={PANEL} y={244} text="the same number" size={13} weight={600} />
+				<Txt x={PANEL} y={264} text="wherever x is" size={13} muted />
+			</Readout>
 		{:else if phase === 'undo'}
-			<Txt x={PANEL} y={124} text="area under f′, 0 to x" size={12} muted />
-			<Txt x={PANEL} y={150} text={num(areaDf)} size={22} weight={700} color="var(--calc-slope)" />
-			<Txt x={PANEL} y={186} text="rise of f since x = 0" size={12} muted />
-			<Txt
-				x={PANEL}
-				y={212}
-				text="f(x) − f(0) = {num(rise)}"
-				size={18}
-				weight={700}
-				color={riseColor}
-			/>
-		{:else}
-			<Txt x={PANEL} y={108} text="height h = {num(fx)} m" size={14} muted />
-			<Txt x={PANEL} y={146} text="velocity = slope of h" size={12} muted />
-			<Txt
-				x={PANEL}
-				y={172}
-				text="v = {num(dfx)}{vUnit}"
-				size={20}
-				weight={700}
+			<Readout
+				id="area-df"
+				order={3}
+				label="Area under f′, 0 to x"
+				value={num(areaDf)}
 				color="var(--calc-slope)"
-			/>
-			<Txt x={PANEL} y={208} text="area under v, 0 to t" size={12} muted />
-			<Txt x={PANEL} y={234} text="= {num(areaDf)} m" size={20} weight={700} color={riseColor} />
-			<Txt x={PANEL} y={258} text="the height gained" size={12} muted />
+			>
+				<Txt x={PANEL} y={124} text="area under f′, 0 to x" size={12} muted />
+				<Txt
+					x={PANEL}
+					y={150}
+					text={num(areaDf)}
+					size={22}
+					weight={700}
+					color="var(--calc-slope)"
+				/>
+			</Readout>
+			<Readout
+				id="rise"
+				order={4}
+				label="Rise of f since x = 0"
+				value="f(x) − f(0) = {num(rise)}"
+				color={riseColor}
+			>
+				<Txt x={PANEL} y={186} text="rise of f since x = 0" size={12} muted />
+				<Txt
+					x={PANEL}
+					y={212}
+					text="f(x) − f(0) = {num(rise)}"
+					size={18}
+					weight={700}
+					color={riseColor}
+				/>
+			</Readout>
+		{:else}
+			<Readout id="height-h" order={3} label="Height" value="h = {num(fx)} m">
+				<Txt x={PANEL} y={108} text="height h = {num(fx)} m" size={14} muted />
+			</Readout>
+			<Readout
+				id="velocity"
+				order={4}
+				label="Velocity = slope of h"
+				value="v = {num(dfx)}{vUnit}"
+				color="var(--calc-slope)"
+			>
+				<Txt x={PANEL} y={146} text="velocity = slope of h" size={12} muted />
+				<Txt
+					x={PANEL}
+					y={172}
+					text="v = {num(dfx)}{vUnit}"
+					size={20}
+					weight={700}
+					color="var(--calc-slope)"
+				/>
+			</Readout>
+			<Readout
+				id="gained"
+				order={5}
+				label="Area under v, 0 to t"
+				value="{num(areaDf)} m"
+				note="the height gained"
+				color={riseColor}
+			>
+				<Txt x={PANEL} y={208} text="area under v, 0 to t" size={12} muted />
+				<Txt x={PANEL} y={234} text="= {num(areaDf)} m" size={20} weight={700} color={riseColor} />
+				<Txt x={PANEL} y={258} text="the height gained" size={12} muted />
+			</Readout>
 		{/if}
 	</g>
 </g>

@@ -591,6 +591,37 @@ test.describe('on a phone', () => {
 		await page.locator('button[data-control="place"][data-value="minibrot"]').click();
 		await expect(panel).not.toContainText(/Magnification\s*× 1\s*Repetitions/);
 	});
+
+	test('calculus slope: the tangent slope is text and follows the point', async ({ page }) => {
+		await page.goto('./calculus/#tangent');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Curve\s*y = x²/);
+		await expect(panel).toContainText(/Slope of the tangent\s*f′\(x\) = 2\.00/);
+		await expect(drawing(page)).not.toContainText('slope of the tangent');
+		await range(page, 'x').fill('2');
+		await expect(panel).toContainText(/Point\s*x = 2\.00/);
+		await expect(panel).toContainText(/f′\(x\) = 4\.00/);
+	});
+
+	test('calculus area: the rectangles’ total is text and follows n', async ({ page }) => {
+		await page.goto('./calculus/#rectangles');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Rectangles\s*n = 4/);
+		await expect(panel).toContainText(/Total of the rectangles\s*5\.91/);
+		await expect(drawing(page)).not.toContainText('total of the rectangles');
+		await range(page, 'n').fill('100');
+		await expect(panel).toContainText(/Rectangles\s*n = 100/);
+		await expect(panel).toContainText(/Total of the rectangles\s*8\.8\d/);
+	});
+
+	test('calculus running area: A(x) is text and follows the edge', async ({ page }) => {
+		await page.goto('./calculus/#running');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Area from 0 to x\s*A\(x\) = 0\.33/);
+		await expect(drawing(page)).not.toContainText('area from 0 to x');
+		await range(page, 'x').fill('3');
+		await expect(panel).toContainText(/A\(x\) = 9\.00/);
+	});
 });
 
 test.describe('on a wide screen', () => {

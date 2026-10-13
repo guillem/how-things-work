@@ -19,7 +19,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { scale, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { X0, X1, chordSlope } from '../calculus';
 	import Frame from './Frame.svelte';
 	import KnotHandles from './KnotHandles.svelte';
@@ -166,7 +166,17 @@
 	</defs>
 
 	<!-- ============ the curve ============ -->
-	<Txt x={LEFT + 44} y={28} text={curve.formula} size={15} weight={600} color="var(--calc-curve)" />
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="formula" order={1} label="Curve" value={curve.formula} color="var(--calc-curve)">
+		<Txt
+			x={LEFT + 44}
+			y={28}
+			text={curve.formula}
+			size={15}
+			weight={600}
+			color="var(--calc-curve)"
+		/>
+	</Readout>
 	<Frame
 		{sx}
 		{sy}
@@ -223,26 +233,28 @@
 	<!-- run and rise labels (outside the clip so they are never cut) -->
 	{#if wChord.current > 0.01}
 		<g opacity={wChord.current}>
-			{#if runPx > 70}
-				<Txt
-					x={(P.x + chord.corner.x) / 2}
-					y={P.y + (runBelow ? 22 : -12)}
-					text={runLabel}
-					anchor="middle"
-					size={13}
-				/>
-			{/if}
-			{#if risePx > 22}
-				<Txt
-					x={chord.corner.x + (back ? -10 : 10)}
-					y={(chord.corner.y + chord.Q.y) / 2 + 5}
-					text={riseLabel}
-					anchor={back ? 'end' : 'start'}
-					size={13}
-					weight={600}
-					color="var(--explainer-accent)"
-				/>
-			{/if}
+			<Readout id="run-rise">
+				{#if runPx > 70}
+					<Txt
+						x={(P.x + chord.corner.x) / 2}
+						y={P.y + (runBelow ? 22 : -12)}
+						text={runLabel}
+						anchor="middle"
+						size={13}
+					/>
+				{/if}
+				{#if risePx > 22}
+					<Txt
+						x={chord.corner.x + (back ? -10 : 10)}
+						y={(chord.corner.y + chord.Q.y) / 2 + 5}
+						text={riseLabel}
+						anchor={back ? 'end' : 'start'}
+						size={13}
+						weight={600}
+						color="var(--explainer-accent)"
+					/>
+				{/if}
+			</Readout>
 		</g>
 	{/if}
 
@@ -283,16 +295,18 @@
 					stroke="var(--stage-bg)"
 					stroke-width="2"
 				/>
-				<Txt
-					x={slopeDot.x + (slopeLabelRight ? 14 : -14)}
-					y={slopeDot.y - 12}
-					text="slope {num(dfx)}{slopeUnit}"
-					anchor={slopeLabelRight ? 'start' : 'end'}
-					size={13}
-					weight={600}
-					color="var(--calc-slope)"
-					pill
-				/>
+				<Readout id="slope-pill">
+					<Txt
+						x={slopeDot.x + (slopeLabelRight ? 14 : -14)}
+						y={slopeDot.y - 12}
+						text="slope {num(dfx)}{slopeUnit}"
+						anchor={slopeLabelRight ? 'start' : 'end'}
+						size={13}
+						weight={600}
+						color="var(--calc-slope)"
+						pill
+					/>
+				</Readout>
 			{/if}
 		</g>
 	{/if}
@@ -313,68 +327,96 @@
 
 	<!-- ============ readout panel ============ -->
 	<g>
-		<Txt x={PANEL} y={84} text="{xName} = {num(x)}{xUnit}" size={15} weight={600} />
-		<Txt x={PANEL} y={108} text="{yName} = {num(fx)}{yUnit}" size={15} muted />
+		<Readout id="x" order={2} label="Point" value="{xName} = {num(x)}{xUnit}">
+			<Txt x={PANEL} y={84} text="{xName} = {num(x)}{xUnit}" size={15} weight={600} />
+		</Readout>
+		<Readout id="fx" order={3} label="Height" value="{yName} = {num(fx)}{yUnit}">
+			<Txt x={PANEL} y={108} text="{yName} = {num(fx)}{yUnit}" size={15} muted />
+		</Readout>
 		{#if wChord.current > 0.01}
-			<g opacity={smoothstep(0.5, 1, wChord.current)}>
-				<Txt x={PANEL} y={150} text={runLabel} size={14} />
-				<Txt
-					x={PANEL}
-					y={174}
-					text={riseLabel}
-					size={14}
-					color="var(--explainer-accent)"
-					weight={600}
-				/>
-				<Txt x={PANEL} y={214} text="slope of the chord" size={12} muted />
-				<Txt x={PANEL} y={244} text="rise ÷ run = {num(chord.slope)}" size={20} weight={600} />
-				{#if phase === 'secant' || back}
+			{@const fc = smoothstep(0.5, 1, wChord.current)}
+			<g opacity={fc}>
+				<Readout
+					id="chord"
+					order={4}
+					label="Slope of the chord"
+					value="rise ÷ run = {num(chord.slope)}"
+					note="{runLabel}, {riseLabel}{back
+						? ' (to a point on the left)'
+						: phase === 'secant'
+							? ` (x = ${num(x)} to ${num(x2)})`
+							: ''}"
+					opacity={fc}
+				>
+					<Txt x={PANEL} y={150} text={runLabel} size={14} />
 					<Txt
 						x={PANEL}
-						y={278}
-						text={back ? 'chord to a point on the left' : `from x = ${num(x)} to ${num(x2)}`}
-						size={12}
-						muted
+						y={174}
+						text={riseLabel}
+						size={14}
+						color="var(--explainer-accent)"
+						weight={600}
 					/>
-				{/if}
+					<Txt x={PANEL} y={214} text="slope of the chord" size={12} muted />
+					<Txt x={PANEL} y={244} text="rise ÷ run = {num(chord.slope)}" size={20} weight={600} />
+					{#if phase === 'secant' || back}
+						<Txt
+							x={PANEL}
+							y={278}
+							text={back ? 'chord to a point on the left' : `from x = ${num(x)} to ${num(x2)}`}
+							size={12}
+							muted
+						/>
+					{/if}
+				</Readout>
 			</g>
 		{/if}
 		{#if wTangent.current > 0.01}
-			<g opacity={smoothstep(0.5, 1, wTangent.current)}>
-				<Txt x={PANEL} y={150} text="slope of the tangent" size={12} muted />
-				<Txt
-					x={PANEL}
-					y={180}
-					text="f′({xName}) = {num(dfx)}{slopeUnit}"
-					size={22}
-					weight={600}
+			{@const ft = smoothstep(0.5, 1, wTangent.current)}
+			{@const trend =
+				Math.abs(dfx) < 0.005 ? 'flat: neither up nor down' : dfx > 0 ? 'going up' : 'going down'}
+			<g opacity={ft}>
+				<Readout
+					id="tangent"
+					order={4}
+					label="Slope of the tangent"
+					value="f′({xName}) = {num(dfx)}{slopeUnit}"
+					note={trend}
 					color="var(--calc-slope)"
-				/>
-				<Txt
-					x={PANEL}
-					y={208}
-					text={Math.abs(dfx) < 0.005
-						? 'flat: neither up nor down'
-						: dfx > 0
-							? 'going up'
-							: 'going down'}
-					size={12}
-					muted
-				/>
+					opacity={ft}
+				>
+					<Txt x={PANEL} y={150} text="slope of the tangent" size={12} muted />
+					<Txt
+						x={PANEL}
+						y={180}
+						text="f′({xName}) = {num(dfx)}{slopeUnit}"
+						size={22}
+						weight={600}
+						color="var(--calc-slope)"
+					/>
+					<Txt x={PANEL} y={208} text={trend} size={12} muted />
+				</Readout>
 			</g>
 		{/if}
 		{#if knotHint > 0.01}
 			<g opacity={knotHint}>
-				<Txt
-					x={PANEL}
-					y={250}
-					text="Drag the hollow knots"
-					size={13}
-					weight={600}
+				<Readout
+					id="knot-hint"
+					order={10}
+					label="Drag the hollow knots up and down to reshape the curve"
 					color="var(--calc-curve)"
-				/>
-				<Txt x={PANEL} y={270} text="up and down to reshape" size={13} muted />
-				<Txt x={PANEL} y={290} text="the curve." size={13} muted />
+				>
+					<Txt
+						x={PANEL}
+						y={250}
+						text="Drag the hollow knots"
+						size={13}
+						weight={600}
+						color="var(--calc-curve)"
+					/>
+					<Txt x={PANEL} y={270} text="up and down to reshape" size={13} muted />
+					<Txt x={PANEL} y={290} text="the curve." size={13} muted />
+				</Readout>
 			</g>
 		{/if}
 	</g>
