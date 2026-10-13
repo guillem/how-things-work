@@ -461,7 +461,7 @@
 			{@render txt(
 				AX,
 				578,
-				'Not to scale: the real nucleus is about 100,000 times smaller than the atom.',
+				'Not to scale: the real nucleus is tens of thousands of times smaller than the atom.',
 				11,
 				{ anchor: 'middle', muted: true }
 			)}
@@ -547,7 +547,7 @@
 				class="muted"
 				text-anchor="middle"
 				transform="translate(9 350) rotate(-90)"
-				style:font-size="11px">energy</text
+				style:font-size="11px">filling order (roughly, energy)</text
 			>
 
 			<!-- filling order -->

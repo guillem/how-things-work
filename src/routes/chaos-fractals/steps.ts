@@ -123,7 +123,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Plot where the population ends up for every growth rate and a famous picture appears. One steady value splits into 2 at <i>r</i> = 3, into 4 at about 3.449, into 8 at 3.544, then 16, 32… — the splits come faster and faster and pile up at about 3.5699. Beyond that, for most growth rates the population never settles or repeats: it is chaotic, and two populations starting a hair apart soon differ completely.</p>
 <p>Look closely inside the chaos: there are narrow windows of order, such as a cycle of 3 near <i>r</i> = 3.83, which then splits again in the same way. The chaotic region is full of such windows, each a smaller copy of the whole cascade.</p>`,
-			notes: `<p>The gaps between successive splits shrink by a factor that approaches 4.669… — Feigenbaum's constant (1975). Astonishingly, it is the same for every map with a single smooth hump like this one, and roughly the same number has been measured in very different systems, from electronic circuits to fluids heated from below.</p>`
+			notes: `<p>The gaps between successive splits shrink by a factor that approaches 4.669… — Feigenbaum's constant (1975). Astonishingly, it is the same for every map with a single rounded (quadratic) hump like this one, and roughly the same number has been measured in very different systems, from electronic circuits to fluids heated from below.</p>`
 		},
 		// ------------------------------------------------------------------ fractals
 		{

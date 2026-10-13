@@ -8,6 +8,7 @@ import {
 	element,
 	identify,
 	isException,
+	lastSubshell,
 	madelung,
 	outerShell,
 	parseConfig,
@@ -23,6 +24,23 @@ test('the data: 118 elements in order, with known values', () => {
 	expect(element(9).electronegativity).toBeCloseTo(3.98, 2); // fluorine, the highest
 	expect(element(26).stable).toEqual([54, 56, 57, 58]);
 	expect(element(43).stable).toEqual([]); // technetium: no stable isotope
+});
+
+test('electronegativity: the Pauling values of the CRC Handbook (Allred 1961)', () => {
+	expect(element(79).electronegativity).toBeCloseTo(2.54, 2); // gold
+	expect(element(74).electronegativity).toBeCloseTo(2.36, 2); // tungsten
+	expect(element(71).electronegativity).toBeCloseTo(1.27, 2); // lutetium, after thulium's 1.25
+	expect(element(82).electronegativity).toBeCloseTo(2.33, 2); // lead
+	expect(element(36).electronegativity).toBeCloseTo(3.0, 2); // krypton forms compounds
+});
+
+test('the last electron goes where the measured configurations say', () => {
+	expect(lastSubshell(24)).toBe('3d'); // chromium: 3d⁵ 4s¹
+	expect(lastSubshell(30)).toBe('4s'); // zinc completes 4s, not 3d
+	expect(lastSubshell(64)).toBe('5d'); // gadolinium
+	expect(lastSubshell(71)).toBe('5d'); // lutetium: 4f was full at ytterbium
+	expect(lastSubshell(90)).toBe('6d'); // thorium has no 5f electrons
+	expect(lastSubshell(103)).toBe('7p'); // lawrencium
 });
 
 test('Madelung order: 1s 2s 2p 3s 3p 4s 3d 4p 5s 4d 5p 6s 4f 5d 6p 7s 5f 6d 7p', () => {
