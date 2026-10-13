@@ -15,6 +15,8 @@
  *   exactly those of the usual merge through a temporary copy.
  */
 
+import { rng } from '#lib/draw/math.ts';
+
 export type Algorithm = 'bubble' | 'insertion' | 'merge' | 'quick';
 export type Order = 'shuffled' | 'sorted' | 'reversed' | 'nearly';
 
@@ -42,18 +44,6 @@ export interface Counts {
 	comparisons: number;
 	/** Bars moved: one per swap, one per merge "move". */
 	moves: number;
-}
-
-/** Deterministic PRNG (mulberry32). */
-export function rng(seed: number) {
-	let a = seed >>> 0 || 0x9e3779b9;
-	return () => {
-		a = (a + 0x6d2b79f5) >>> 0;
-		let t = a;
-		t = Math.imul(t ^ (t >>> 15), t | 1);
-		t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-	};
 }
 
 /** The values 1…n in the requested order. "nearly": sorted, with a few neighbours swapped. */
