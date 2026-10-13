@@ -14,10 +14,13 @@ import {
 	swing
 } from '../src/routes/chaos-fractals/chaos';
 
-test('double pendulum: energy is conserved', () => {
-	const run = swing(120, 120, 20);
-	const e0 = energy(run[0]);
-	for (const s of run) expect(Math.abs(energy(s) - e0)).toBeLessThan(1e-3 * Math.abs(e0));
+test('double pendulum: energy is conserved to better than a millionth', () => {
+	// The notes promise "better than a millionth", the readout "unchanged to 7 digits".
+	for (const a of [10, 120, 170]) {
+		const run = swing(a, a, 40);
+		const e0 = energy(run[0]);
+		for (const s of run) expect(Math.abs(energy(s) - e0)).toBeLessThan(1e-7 * Math.abs(e0));
+	}
 });
 
 test('double pendulum: small swings stay small and regular', () => {

@@ -14,7 +14,8 @@ test('choosing a place flies there and changes the magnification', async ({ page
 	await page.locator('button[data-control=place][data-value="seahorse"]').click();
 	await expect(stage(page)).toContainText('× 320');
 	await page.locator('button[data-control=place][data-value="minibrot"]').click();
-	await expect(stage(page)).toContainText('× 80');
+	// The copy of the set's view is 0.05 wide (3.2 / 0.05 = × 64), so the whole copy fits.
+	await expect(stage(page)).toContainText('× 64');
 });
 
 test('the keyboard pans and zooms the picture without changing the step', async ({ page }) => {

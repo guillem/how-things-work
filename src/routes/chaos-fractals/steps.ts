@@ -123,7 +123,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Plot where the population ends up for every growth rate and a famous picture appears. One steady value splits into 2 at <i>r</i> = 3, into 4 at about 3.449, into 8 at 3.544, then 16, 32… — the splits come faster and faster and pile up at about 3.5699. Beyond that, for most growth rates the population never settles or repeats: it is chaotic, and two populations starting a hair apart soon differ completely.</p>
 <p>Look closely inside the chaos: there are narrow windows of order, such as a cycle of 3 near <i>r</i> = 3.83, which then splits again in the same way. The chaotic region is full of such windows, each a smaller copy of the whole cascade.</p>`,
-			notes: `<p>The gaps between successive splits shrink by a factor that approaches 4.669… — Feigenbaum's constant (1975). Astonishingly, it is the same for every map with a single rounded (quadratic) hump like this one, and roughly the same number has been measured in very different systems, from electronic circuits to fluids heated from below.</p>`
+			notes: `<p>The gaps between successive splits shrink by a factor that approaches 4.669… — Feigenbaum's constant (1975). Astonishingly, it is the same for every map with a single rounded (quadratic) hump like this one, and roughly the same number has been measured in very different systems, from electronic circuits to fluids heated from below.</p>
+<p>The readout's Lyapunov exponent measures how fast two nearby starts separate: positive means they drift apart exponentially (chaos), negative means they converge (order).</p>`
 		},
 		// ------------------------------------------------------------------ fractals
 		{
@@ -134,7 +135,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'set' },
 			duration: 26,
 			body: `
-<p>Another one-line rule, now with <dfn data-def="Numbers with two parts, written a + bi, where i × i = −1. They can be pictured as points on a flat plane.">complex numbers</dfn>, which can be drawn as points on a plane. Pick a point <i>c</i>. Start with <i>z</i> = 0 and repeat: <i>z</i> → <i>z</i>² + <i>c</i>. Either <i>z</i> stays close by for ever, or it shoots off towards infinity.</p>
+<p>Another one-line rule, now with <dfn data-def="Numbers with two parts, written a + bi, where i × i = −1. They can be pictured as points on a flat plane.">complex numbers</dfn>, which can be drawn as points on a plane. Pick a point <i>c</i>. Start with <i>z</i> = 0 and repeat: <i>z</i> → <i>z</i>² + <i>c</i>. Either <i>z</i> stays close by for ever, or it shoots off towards infinity (once its distance from 0 passes 2, it is certain to escape).</p>
 <p>Colour <i>c</i> black if it stays, and by how quickly it escapes if it doesn't. The black points form the <dfn data-def="The set of complex numbers c for which z → z² + c, starting from z = 0, stays bounded. Its boundary has endless detail.">Mandelbrot set</dfn>, named after Benoît Mandelbrot, who studied it with computer pictures in 1980; it became famous in the mid-1980s. Its edge is where the interesting things happen: points just outside take longer and longer to escape.</p>`
 		},
 		{

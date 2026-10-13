@@ -3,8 +3,8 @@
  *
  * 1. The double pendulum: two rigid rods (massless, equal length), each with
  *    a point mass at its end, swinging without friction under gravity. The
- *    equations of motion are the standard ones (e.g. Taylor, "Classical
- *    Mechanics", §11), integrated with fourth-order Runge–Kutta.
+ *    equations of motion are the standard ones (derived e.g. at
+ *    myphysicslab.com/pendulum/double-pendulum-en.html), integrated with fourth-order Runge–Kutta.
  * 2. The logistic map x → r·x·(1 − x), a model of a population that grows
  *    but is held back by crowding (May 1976).
  * 3. The Mandelbrot set: the numbers c for which z → z² + c, starting from
@@ -260,5 +260,5 @@ export const TOUR = [
 	{ id: 'whole', label: 'The whole set', x: -0.6, y: 0, width: 3.2 },
 	{ id: 'seahorse', label: 'Seahorse valley', x: -0.7453, y: 0.1127, width: 0.01 },
 	{ id: 'spiral', label: 'A spiral', x: -0.76121, y: -0.08476, width: 0.0012 },
-	{ id: 'minibrot', label: 'A tiny copy of the set', x: -1.7549, y: 0, width: 0.04 }
+	{ id: 'minibrot', label: 'A tiny copy of the set', x: -1.768, y: 0, width: 0.05 }
 ];
