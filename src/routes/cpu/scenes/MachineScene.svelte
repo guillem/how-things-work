@@ -24,7 +24,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, along, clamp, cycle, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { createPlayback } from '#lib/explainer/playback.ts';
 	import {
 		MAX_INSTRUCTIONS,
@@ -660,6 +660,32 @@
 	>
 {/snippet}
 
+<!-- phone text: the same label, hidden on narrow screens or drawn at `nsize` (shifted down by `dy`) -->
+{#snippet pt(
+	x: number,
+	y: number,
+	text: string,
+	size: number,
+	opts: {
+		anchor?: string;
+		color?: string;
+		weight?: number;
+		muted?: boolean;
+		mono?: boolean;
+		halo?: boolean;
+	} = {},
+	nsize = 0,
+	dy = 0,
+	ntext = text
+)}
+	<Readout id="ph">
+		{@render txt(x, y, text, size, opts)}
+		{#snippet narrow()}
+			{#if nsize}{@render txt(x, y + dy, ntext, nsize, opts)}{/if}
+		{/snippet}
+	</Readout>
+{/snippet}
+
 {#snippet box(
 	x: number,
 	y: number,
@@ -683,7 +709,8 @@
 
 <g opacity={fadeIn}>
 	<!-- header: program name, the three phases, the words for this phase -->
-	{@render txt(16, 34, title, 16, { weight: 600 })}
+	<!-- <Readout>: on narrow screens these are hidden, enlarged or listed as HTML under the stage -->
+	{@render pt(16, 34, title, 16, { weight: 600 }, 26, 2)}
 	{#each PHASES as ph, i (ph)}
 		{@const on = kind === ph && !tour}
 		{@const x = 640 + i * 104}
@@ -698,12 +725,20 @@
 			stroke-width="1.5"
 			opacity={on ? 1 : 0.55}
 		/>
-		{@render txt(x + 44, 34, ph.toUpperCase(), 12, {
-			anchor: 'middle',
-			weight: 700,
-			color: on ? '#fff' : col(ph),
-			halo: false
-		})}
+		{@render pt(
+			x + 44,
+			34,
+			ph.toUpperCase(),
+			12,
+			{
+				anchor: 'middle',
+				weight: 700,
+				color: on ? '#fff' : col(ph),
+				halo: false
+			},
+			17,
+			2
+		)}
 		{#if i < 2}
 			<path
 				d="M{x + 91} 29 h10"
@@ -713,7 +748,15 @@
 			/>
 		{/if}
 	{/each}
-	{@render txt(16, 70, words, 14, { color: kind && !tour ? pcol : undefined })}
+	<Readout
+		id="words"
+		order={1}
+		label={tour ? 'The parts' : kind ? kind[0].toUpperCase() + kind.slice(1) : 'Now'}
+		value={words}
+		color={kind && !tour ? pcol : undefined}
+	>
+		{@render txt(16, 70, words, 14, { color: kind && !tour ? pcol : undefined })}
+	</Readout>
 
 	<!-- the CPU -->
 	<rect
@@ -726,7 +769,7 @@
 		stroke="var(--cpu-chip-edge)"
 		stroke-width="1.5"
 	/>
-	{@render txt(620, 482, 'CPU', 13, { anchor: 'end', weight: 700, muted: true, halo: false })}
+	{@render pt(620, 482, 'CPU', 13, { anchor: 'end', weight: 700, muted: true, halo: false })}
 
 	<!-- buses -->
 	<g opacity={dimFor('alu')}>
@@ -755,8 +798,8 @@
 			stroke="var(--stage-line)"
 			stroke-width="2"
 		/>
-		{@render txt(470, ADDR_Y - 5, 'address bus', 10, { muted: true, anchor: 'middle' })}
-		{@render txt(612, DATA_Y - 4, 'data bus', 10, { muted: true, anchor: 'end' })}
+		{@render pt(470, ADDR_Y - 5, 'address bus', 10, { muted: true, anchor: 'middle' })}
+		{@render pt(612, DATA_Y - 4, 'data bus', 10, { muted: true, anchor: 'end' })}
 		<!-- the CPU's internal bus: IR, registers, ALU -->
 		<path
 			d="M{BUS_X} {DATA_Y} V474 H{ALU.cx} V{ALU.bottom}"
@@ -791,12 +834,20 @@
 			touched.pc || tourPart === 'pc',
 			tourPart === 'pc' ? 'var(--explainer-accent)' : pcol
 		)}
-		{@render txt(PC.x + 8, PC.y + 15, 'PC', 10, { muted: true, weight: 600 })}
-		{@render txt(PC.x + PC.w / 2, PC.y + 37, String(shown.pc), 18, {
-			anchor: 'middle',
-			weight: 700,
-			mono: true
-		})}
+		{@render pt(PC.x + 8, PC.y + 15, 'PC', 10, { muted: true, weight: 600 }, 15, 1)}
+		{@render pt(
+			PC.x + PC.w / 2,
+			PC.y + 37,
+			String(shown.pc),
+			18,
+			{
+				anchor: 'middle',
+				weight: 700,
+				mono: true
+			},
+			26,
+			4
+		)}
 	</g>
 	<g opacity={dimFor('ir')}>
 		{@render box(
@@ -807,19 +858,35 @@
 			touched.ir || tourPart === 'ir',
 			tourPart === 'ir' ? 'var(--explainer-accent)' : pcol
 		)}
-		{@render txt(IR.x + 8, IR.y + 15, 'IR', 10, { muted: true, weight: 600 })}
-		{@render txt(IR.x + 90, IR.y + 37, String(shown.ir[0]), 18, {
-			anchor: 'middle',
-			weight: 700,
-			mono: true
-		})}
-		{@render txt(IR_BYTE2.x, IR.y + 37, String(shown.ir[1]), 18, {
-			anchor: 'middle',
-			weight: 700,
-			mono: true
-		})}
-		{@render txt(IR.x + 90, IR.y + 15, 'byte 1', 9, { anchor: 'middle', muted: true })}
-		{@render txt(IR_BYTE2.x, IR.y + 15, 'byte 2', 9, { anchor: 'middle', muted: true })}
+		{@render pt(IR.x + 8, IR.y + 15, 'IR', 10, { muted: true, weight: 600 }, 15, 1)}
+		{@render pt(
+			IR.x + 90,
+			IR.y + 37,
+			String(shown.ir[0]),
+			18,
+			{
+				anchor: 'middle',
+				weight: 700,
+				mono: true
+			},
+			26,
+			4
+		)}
+		{@render pt(
+			IR_BYTE2.x,
+			IR.y + 37,
+			String(shown.ir[1]),
+			18,
+			{
+				anchor: 'middle',
+				weight: 700,
+				mono: true
+			},
+			26,
+			4
+		)}
+		{@render pt(IR.x + 90, IR.y + 15, 'byte 1', 9, { anchor: 'middle', muted: true })}
+		{@render pt(IR_BYTE2.x, IR.y + 15, 'byte 2', 9, { anchor: 'middle', muted: true })}
 
 		<!-- control unit: the first byte split into its fields -->
 		{@render box(
@@ -830,7 +897,7 @@
 			touched.cu || tourPart === 'ir',
 			tourPart === 'ir' ? 'var(--explainer-accent)' : pcol
 		)}
-		{@render txt(CU.x + 8, CU.y + 15, 'Control unit', 10, { muted: true, weight: 600 })}
+		{@render pt(CU.x + 8, CU.y + 15, 'Control unit', 10, { muted: true, weight: 600 })}
 		{#if known && instr}
 			{@const fields = [
 				{ bits: opBits, label: instr.op, w: 46 },
@@ -856,14 +923,22 @@
 					fill={on ? 'var(--cpu-code)' : 'none'}
 					stroke="var(--border)"
 				/>
-				{@render txt(x0 + f.w / 2, CU.y + 42, f.bits, 12, {
-					anchor: 'middle',
-					mono: true,
-					weight: 600,
-					halo: false
-				})}
+				{@render pt(
+					x0 + f.w / 2,
+					CU.y + 42,
+					f.bits,
+					12,
+					{
+						anchor: 'middle',
+						mono: true,
+						weight: 600,
+						halo: false
+					},
+					14,
+					1
+				)}
 				<g opacity={on ? reveal : reveal * 0.5}>
-					{@render txt(
+					{@render pt(
 						x0 + f.w / 2,
 						CU.y + 66,
 						on ? f.label : i === 3 ? 'unused' : '–',
@@ -874,7 +949,9 @@
 							muted: !on,
 							color: on ? 'var(--cpu-decode)' : undefined,
 							halo: false
-						}
+						},
+						on ? 17 : 14,
+						3
 					)}
 				</g>
 			{/each}
@@ -901,13 +978,29 @@
 				on || tourPart === 'regs',
 				tourPart === 'regs' ? 'var(--explainer-accent)' : pcol
 			)}
-			{@render txt(REG.x + 10, y + 24, `R${r}`, 12, { weight: 600, muted: true, halo: false })}
-			{@render txt(REG.x + REG.w - 10, y + 26, String(shown.regs[r]), 18, {
-				anchor: 'end',
-				weight: 700,
-				mono: true,
-				halo: false
-			})}
+			{@render pt(
+				REG.x + 10,
+				y + 24,
+				`R${r}`,
+				12,
+				{ weight: 600, muted: true, halo: false },
+				19,
+				3
+			)}
+			{@render pt(
+				REG.x + REG.w - 10,
+				y + 26,
+				String(shown.regs[r]),
+				18,
+				{
+					anchor: 'end',
+					weight: 700,
+					mono: true,
+					halo: false
+				},
+				28,
+				3
+			)}
 		{/each}
 	</g>
 
@@ -925,19 +1018,35 @@
 			stroke-width={touched.alu || tourPart === 'alu' ? 2.5 : 1.2}
 			stroke-linejoin="round"
 		/>
-		{@render txt(ALU.cx, ALU.top + 40, 'ALU', 12, {
-			anchor: 'middle',
-			weight: 700,
-			muted: true,
-			halo: false
-		})}
-		{#if phase?.alu && kind === 'execute'}
-			{@render txt(ALU.cx, ALU.top + 60, phase.alu.op === 'ADD' ? 'add' : 'subtract', 11, {
+		{@render pt(
+			ALU.cx,
+			ALU.top + 40,
+			'ALU',
+			12,
+			{
 				anchor: 'middle',
-				color: 'var(--cpu-execute)',
-				weight: 600,
+				weight: 700,
+				muted: true,
 				halo: false
-			})}
+			},
+			20,
+			-2
+		)}
+		{#if phase?.alu && kind === 'execute'}
+			{@render pt(
+				ALU.cx,
+				ALU.top + 60,
+				phase.alu.op === 'ADD' ? 'add' : 'subtract',
+				11,
+				{
+					anchor: 'middle',
+					color: 'var(--cpu-execute)',
+					weight: 600,
+					halo: false
+				},
+				17,
+				2
+			)}
 		{/if}
 		{#each [{ f: 'Z', on: shown.z, x: 500, help: 'zero' }, { f: 'C', on: shown.c, x: 580, help: 'carry' }] as fl (fl.f)}
 			<circle
@@ -948,20 +1057,28 @@
 				stroke={touched.flags ? pcol : 'var(--border)'}
 				stroke-width={touched.flags ? 2.5 : 1.2}
 			/>
-			{@render txt(fl.x, 445, fl.f, 12, {
-				anchor: 'middle',
-				weight: 700,
-				color: fl.on ? '#fff' : 'var(--stage-ink-muted)',
-				halo: false
-			})}
-			{@render txt(fl.x + 16, 444, fl.help, 10, { muted: true, halo: false })}
+			{@render pt(
+				fl.x,
+				445,
+				fl.f,
+				12,
+				{
+					anchor: 'middle',
+					weight: 700,
+					color: fl.on ? '#fff' : 'var(--stage-ink-muted)',
+					halo: false
+				},
+				17,
+				1
+			)}
+			{@render pt(fl.x + 16, 444, fl.help, 10, { muted: true, halo: false })}
 		{/each}
 	</g>
 
 	<!-- memory -->
 	<g opacity={dimFor('mem')}>
-		{@render txt(MEM_X, 136, 'Memory', 13, { weight: 700, muted: true })}
-		{@render txt(944, 136, 'address · value', 10, { anchor: 'end', muted: true })}
+		{@render pt(MEM_X, 136, 'Memory', 13, { weight: 700, muted: true })}
+		{@render pt(944, 136, 'address · value', 10, { anchor: 'end', muted: true })}
 		{#each Array.from({ length: MEM_SIZE }, (_, i) => i) as a (a)}
 			{@const c = cellPos(a)}
 			{@const kd = layout.kindOf[a]}
@@ -981,20 +1098,36 @@
 				stroke={on ? (tourPart === 'mem' ? 'var(--explainer-accent)' : pcol) : 'var(--border)'}
 				stroke-width={on ? 2.5 : 1}
 			/>
-			{@render txt(c.x + CELL / 2, c.y - 3, String(a), 8, {
-				anchor: 'middle',
-				muted: true,
-				halo: false
-			})}
-			{@render txt(c.x + CELL / 2, c.y + (a in layout.names ? 16 : 21), String(shown.mem[a]), 12, {
-				anchor: 'middle',
-				weight: changed ? 700 : 500,
-				mono: true,
-				muted: kd === '' && shown.mem[a] === 0,
-				halo: false
-			})}
+			{@render pt(
+				c.x + CELL / 2,
+				c.y - 3,
+				String(a),
+				8,
+				{
+					anchor: 'middle',
+					muted: true,
+					halo: false
+				},
+				13,
+				0
+			)}
+			{@render pt(
+				c.x + CELL / 2,
+				c.y + (a in layout.names ? 16 : 21),
+				String(shown.mem[a]),
+				12,
+				{
+					anchor: 'middle',
+					weight: changed ? 700 : 500,
+					mono: true,
+					muted: kd === '' && shown.mem[a] === 0,
+					halo: false
+				},
+				17,
+				a in layout.names ? 7 : 2
+			)}
 			{#if a in layout.names}
-				{@render txt(c.x + CELL / 2, c.y + 28, layout.names[a] ?? '', 8, {
+				{@render pt(c.x + CELL / 2, c.y + 28, layout.names[a] ?? '', 8, {
 					anchor: 'middle',
 					muted: true,
 					halo: false
@@ -1010,7 +1143,7 @@
 			fill="var(--cpu-code)"
 			stroke="var(--border)"
 		/>
-		{@render txt(MEM_X + 18, 414, 'program bytes', 11, { muted: true })}
+		{@render pt(MEM_X + 18, 414, 'program bytes', 11, { muted: true }, 16, 2, 'program')}
 		<rect
 			x={MEM_X + 120}
 			y="404"
@@ -1020,12 +1153,12 @@
 			fill="var(--cpu-data)"
 			stroke="var(--border)"
 		/>
-		{@render txt(MEM_X + 138, 414, 'data', 11, { muted: true })}
+		{@render pt(MEM_X + 138, 414, 'data', 11, { muted: true }, 16, 2)}
 	</g>
 
 	<!-- the program: a listing, or the editor -->
 	{#if edit}
-		{@render txt(ED.x, 92, 'Program: edit me', 12, { weight: 600, muted: true })}
+		{@render pt(ED.x, 92, 'Program: edit me', 12, { weight: 600, muted: true })}
 		<!-- the editor's background, with the current line (or the first error) highlighted behind the text -->
 		<rect
 			x={ED.x}
@@ -1059,25 +1192,36 @@
 				onkeydown={(e) => e.stopPropagation()}
 				onscroll={(e) => (edScroll = e.currentTarget.scrollTop)}></textarea>
 		</foreignObject>
-		{#if !asm.ok}
-			{#each asm.errors.slice(0, 3) as err, i (i)}
-				{@render txt(16, 452 + i * 17, `Line ${err.line}: ${err.message}`, 11, {
-					color: 'var(--cpu-error)',
+		<Readout
+			id="asm"
+			order={3}
+			label="Assembler"
+			value={asm.ok
+				? `${bytesUsed} of ${MEM_SIZE} bytes`
+				: `line ${asm.errors[0]?.line}: ${asm.errors[0]?.message}`}
+			note={!asm.ok && asm.errors.length > 1 ? `and ${asm.errors.length - 1} more` : undefined}
+			color={asm.ok ? 'var(--cpu-ok)' : 'var(--cpu-error)'}
+		>
+			{#if !asm.ok}
+				{#each asm.errors.slice(0, 3) as err, i (i)}
+					{@render txt(16, 452 + i * 17, `Line ${err.line}: ${err.message}`, 11, {
+						color: 'var(--cpu-error)',
+						weight: 600
+					})}
+				{/each}
+				{#if asm.errors.length > 3}
+					{@render txt(16, 503, `and ${asm.errors.length - 3} more`, 11, { muted: true })}
+				{/if}
+			{:else}
+				{@render txt(16, 452, `Assembled: ${bytesUsed} of ${MEM_SIZE} bytes of memory`, 12, {
+					color: 'var(--cpu-ok)',
 					weight: 600
 				})}
-			{/each}
-			{#if asm.errors.length > 3}
-				{@render txt(16, 503, `and ${asm.errors.length - 3} more`, 11, { muted: true })}
 			{/if}
-		{:else}
-			{@render txt(16, 452, `Assembled: ${bytesUsed} of ${MEM_SIZE} bytes of memory`, 12, {
-				color: 'var(--cpu-ok)',
-				weight: 600
-			})}
-		{/if}
+		</Readout>
 	{:else}
-		{@render txt(16, 112, 'Program', 12, { weight: 600, muted: true })}
-		{@render txt(296, 112, 'address', 10, { anchor: 'end', muted: true })}
+		{@render pt(16, 112, 'Program', 12, { weight: 600, muted: true }, 17, 0)}
+		{@render pt(296, 112, 'address', 10, { anchor: 'end', muted: true })}
 		{#each listing as l, i (l.line)}
 			{@const y = LIST_Y + i * LINE_H}
 			{@const cur = l.addr !== undefined && l.addr === currentAt}
@@ -1085,19 +1229,27 @@
 				<rect x="12" y={y - 13} width="288" height={LINE_H - 1} rx="5" fill={pcol} opacity="0.16" />
 				<rect x="12" y={y - 13} width="4" height={LINE_H - 1} rx="2" fill={pcol} />
 			{/if}
-			{@render txt(22, y, l.label, 12, { mono: true, muted: true, halo: false })}
-			{@render txt(70, y, l.op, 12, { mono: true, weight: cur ? 700 : 600, halo: false })}
-			{@render txt(120, y, l.args, 12, { mono: true, weight: cur ? 700 : 500, halo: false })}
+			{@render pt(22, y, l.label, 12, { mono: true, muted: true, halo: false }, 14, 2)}
+			{@render pt(70, y, l.op, 12, { mono: true, weight: cur ? 700 : 600, halo: false }, 16, 2)}
+			{@render pt(120, y, l.args, 12, { mono: true, weight: cur ? 700 : 500, halo: false }, 16, 2)}
 			{#if l.addr !== undefined}
-				{@render txt(296, y, String(l.addr), 11, {
-					anchor: 'end',
-					muted: true,
-					mono: true,
-					halo: false
-				})}
+				{@render pt(
+					296,
+					y,
+					String(l.addr),
+					11,
+					{
+						anchor: 'end',
+						muted: true,
+						mono: true,
+						halo: false
+					},
+					15,
+					2
+				)}
 			{/if}
 			{#if l.addr !== undefined && l.addr === pcAt && !finished && !tour}
-				{@render txt(266, y, 'PC →', 10, {
+				{@render pt(266, y, 'PC →', 10, {
 					anchor: 'end',
 					weight: 700,
 					color: 'var(--cpu-fetch)',
@@ -1152,22 +1304,33 @@
 			stroke-linecap="round"
 			opacity="0.6"
 		/>
-		{@render txt(TL0 - 14, TLY + 4, 'start', 11, { anchor: 'end', muted: true })}
-		{@render txt(TL1 + 14, TLY + 4, 'end', 11, { muted: true })}
-		{@render txt(
-			(TL0 + TL1) / 2,
-			TLY + 30,
-			finished
-				? status
-				: `tick ${tickNow} of ${total} · ${instructionsDone} instruction${instructionsDone === 1 ? '' : 's'} done${playing && !reduced ? '' : ' · paused: Step, drag or use ← →'}`,
-			12,
-			{
-				anchor: 'middle',
-				muted: !finished,
-				weight: finished ? 600 : 500,
-				color: finished ? (rec.stop === 'halt' ? 'var(--cpu-ok)' : 'var(--cpu-error)') : undefined
-			}
-		)}
+		{@render pt(TL0 - 14, TLY + 4, 'start', 11, { anchor: 'end', muted: true })}
+		{@render pt(TL1 + 14, TLY + 4, 'end', 11, { muted: true })}
+		<Readout
+			id="run"
+			order={2}
+			label="Run"
+			value={finished ? status : `tick ${tickNow} of ${total}`}
+			note={finished
+				? undefined
+				: `${instructionsDone} instruction${instructionsDone === 1 ? '' : 's'} done`}
+			color={finished ? (rec.stop === 'halt' ? 'var(--cpu-ok)' : 'var(--cpu-error)') : undefined}
+		>
+			{@render txt(
+				(TL0 + TL1) / 2,
+				TLY + 30,
+				finished
+					? status
+					: `tick ${tickNow} of ${total} · ${instructionsDone} instruction${instructionsDone === 1 ? '' : 's'} done${playing && !reduced ? '' : ' · paused: Step, drag or use ← →'}`,
+				12,
+				{
+					anchor: 'middle',
+					muted: !finished,
+					weight: finished ? 600 : 500,
+					color: finished ? (rec.stop === 'halt' ? 'var(--cpu-ok)' : 'var(--cpu-error)') : undefined
+				}
+			)}
+		</Readout>
 		<Handle
 			x={tlx}
 			y={TLY}
@@ -1181,12 +1344,12 @@
 			{onkey}
 		/>
 	{:else if focus && instr}
-		{@render txt(480, 540, `The ${focus} of instruction 3, ${disassemble(instr)}, on a loop`, 12, {
+		{@render pt(480, 540, `The ${focus} of instruction 3, ${disassemble(instr)}, on a loop`, 12, {
 			anchor: 'middle',
 			muted: true
 		})}
 	{:else if !rec}
-		{@render txt(480, 540, 'Fix the program to run it', 12, { anchor: 'middle', muted: true })}
+		{@render pt(480, 540, 'Fix the program to run it', 12, { anchor: 'middle', muted: true })}
 	{/if}
 </g>
 
@@ -1210,6 +1373,13 @@
 		-webkit-user-select: text;
 		white-space: pre;
 		overflow: auto;
+	}
+	/* on phones the stage is drawn at ~0.4 scale: the largest type the 18-unit lines allow */
+	@media (max-width: 640px) {
+		.cpu-editor {
+			font-size: 16px;
+			font-weight: 600;
+		}
 	}
 	.cpu-editor:focus {
 		outline: 2px solid var(--explainer-accent, var(--accent));

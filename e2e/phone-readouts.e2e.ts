@@ -889,6 +889,30 @@ test.describe('on a phone', () => {
 		await range(page, 'quality').fill('10');
 		await expect(panel).toContainText(/Size\s*47\.1 × smaller/);
 	});
+
+	test('cpu machine: the phase and the assembler are text and follow the program', async ({
+		page
+	}) => {
+		await page.goto('./cpu/#execute');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Execute\s*Execute: the ALU works out 7 \+ 5 = 12/);
+		await expect(drawing(page)).not.toContainText('the ALU works out');
+		await page.goto('./cpu/#editor');
+		await expect(panel).toContainText(/Assembler\s*19 of 32 bytes/);
+		await expect(panel).toContainText(/Run\s*Halted after 44 instructions/);
+		await expect(drawing(page)).not.toContainText('Assembled:');
+		await page.getByLabel('Assembly program').fill('FOO');
+		await expect(panel).toContainText(/Assembler\s*line 1: /);
+	});
+
+	test('cpu pipeline: the instructions finished and the clock rate are text', async ({ page }) => {
+		await page.goto('./cpu/#speed');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/One at a time\s*6 of 6 finished/);
+		await expect(panel).toContainText(/Pipelined\s*6 of 6 finished/);
+		await expect(panel).toContainText(/Intel Core i9-14900K \(2023\)\s*up to 6 GHz/);
+		await expect(drawing(page)).not.toContainText('instructions finished');
+	});
 });
 
 test.describe('on a wide screen', () => {
