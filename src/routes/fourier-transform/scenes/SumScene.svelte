@@ -134,8 +134,9 @@
 	const gap = $derived(rmsError(partialSamples(SQ_SPEC, termsN, SQ_N), SQ));
 
 	// A line sweeps across, as on the sines step, with the sum's and the square's
-	// values at that moment and their gap: the frame stays alive, and the local
-	// gap (largest at the corners) sits next to the average one below.
+	// values at that moment and their gap: the frame stays alive. The local gap
+	// (largest at the corners) is read above the graph, top right; the average
+	// gap is below it.
 	const sqSweep = $derived(cycle(reduced ? 2.5 : t, 8));
 	const sqTarget = $derived(sqSweep < 0.5 ? 1 : -1);
 	const sqSweepV = $derived(wSquare > 0.01 ? sumAt(sqSweep, T) : 0);
