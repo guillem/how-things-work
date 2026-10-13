@@ -27,7 +27,6 @@ All claims I checked are correct:
 - **low**, model.ts:363: **the doc comment does not match the parameter.** It says "when a share `immune`…", but the parameter is `susceptibleShare`. **Fix:** "Effective reproduction number when a share `susceptibleShare` of people can still be infected."
 
 ## Narrative and scene mismatches
-- **medium**, ThresholdScene.svelte:125–137 and 334–337: **the flu marker sits on the R₀ axis.** The R₀ step's note (steps.ts:114) says flu's 1.3 is lower than a true R₀ because many people already have some immunity. The chart still puts 1.3 on the axis labelled "R₀: people each case infects when nobody is immune" and gives it a herd-immunity threshold of 23%. **Fix:** keep the ring, change line 334 to `'seasonal flu: R ≈ 1.3'`, and change line 335 to `'already net of existing immunity'`. Or drop the threshold line.
 - **low**, CrowdScene.svelte:226: **"never did" leaves out the vaccinated.** In a vaccinated crowd, "Over by day X: 87 caught it, 63 never did" ignores the 150 vaccinated people, who also never caught it. **Fix:** ``: `Over by day ${Math.floor(end)}: ${crowd.counts.r} caught it, ${crowd.counts.s} ${crowd.counts.v > 0 ? 'unvaccinated people ' : ''}never did` ``.
 
 Everything else matches. The quoted numbers (3, 9, 27, 81; the doubling time; 1/R₀; 6%; 1 in R₀) are what the scenes compute, and the controls behave as the text says.

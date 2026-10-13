@@ -122,8 +122,9 @@
 	const curveY = sy(0.77);
 	const curveBox = { x: LX - 90, y: curveY - 12, w: 90, h: 32 };
 
-	// Seasonal flu, R₀ ≈ 1.3: a ring on the curve with a leader to its label,
-	// which moves up if the point is on it.
+	// Seasonal flu, R ≈ 1.3: a ring on the curve with a leader to its label,
+	// which moves up if the point is on it. Flu's 1.3 is already net of existing
+	// immunity, so it is not a true R₀ and gets no threshold of its own.
 	const FLU = 1.3;
 	const flu = { x: sx(FLU), y: sy(herdThreshold(FLU)) };
 	const fluSpots = [
@@ -131,7 +132,7 @@
 		{ x: sx(2.3), y: sy(0.32) }
 	];
 	const fluLabel = $derived(
-		gap({ x: fluSpots[0].x - 6, y: fluSpots[0].y - 26, w: 136, h: 34 }) > 14
+		gap({ x: fluSpots[0].x - 6, y: fluSpots[0].y - 26, w: 190, h: 34 }) > 14
 			? fluSpots[0]
 			: fluSpots[1]
 	);
@@ -331,8 +332,8 @@
 			stroke="var(--stage-ink)"
 			stroke-width="1.5"
 		/>
-		{@render say(fluLabel.x, fluLabel.y, 'seasonal flu, about 1.3', 12)}
-		{@render say(fluLabel.x, fluLabel.y + 15, `threshold ${pct(herdThreshold(FLU))}`, 11, {
+		{@render say(fluLabel.x, fluLabel.y, 'seasonal flu: R ≈ 1.3', 12)}
+		{@render say(fluLabel.x, fluLabel.y + 15, 'already net of existing immunity', 11, {
 			muted: true
 		})}
 
