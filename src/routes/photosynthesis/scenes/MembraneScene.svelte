@@ -15,7 +15,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		Molecule,
 		Photon,
@@ -90,6 +90,16 @@
 		untrack(() => op.set(target, { duration }));
 	});
 	const o = $derived(op.current);
+	/** The step's callout (they cross-fade between steps): for the readout panel. */
+	const callout = $derived(
+		[
+			{ text: 'excitation hops pigment → pigment → P680', o: o.cAntenna },
+			{ text: '2 H₂O → O₂ + 4 H⁺ + 4 e⁻', o: o.cWater },
+			{ text: 'electrons downhill, protons pumped into the lumen', o: o.cEtc },
+			{ text: 'NADP⁺ + H⁺ + 2 e⁻ → NADPH', o: o.cPsi },
+			{ text: '~14 H⁺ per turn → 3 ATP', o: o.cAtp }
+		].reduce((a, b) => (b.o > a.o ? b : a))
+	);
 	/** 0 when a group is dimmed, 1 when it is the focus. */
 	const lit = (v: number) => clamp((v - DIM) / (1 - DIM));
 
@@ -991,93 +1001,152 @@
 	</g>
 
 	<!-- ================= labels ================= -->
-	<Label x={24} y={40} text="stroma · pH ≈ 8" anchor="start" size={14} weight={600} />
-	<Label x={24} y={58} text="the Calvin cycle runs here" anchor="start" size={11} muted />
-	<Label
-		x={24}
-		y={562}
-		text="thylakoid lumen · pH ≈ {lumenPH}"
-		anchor="start"
-		size={14}
-		weight={600}
-	/>
-	<Label x={24} y={580} text={lumenNote} anchor="start" size={11} muted />
-	<Label
-		x={940}
-		y={580}
-		text="no light: electron flow stops and the gradient drains away"
-		anchor="end"
-		size={11}
-		muted
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout id="stroma" order={1} label="Stroma" value="pH ≈ 8" note="the Calvin cycle runs here">
+		<Label x={24} y={40} text="stroma · pH ≈ 8" anchor="start" size={14} weight={600} />
+		<Label x={24} y={58} text="the Calvin cycle runs here" anchor="start" size={11} muted />
+	</Readout>
+	<Readout id="lumen" order={2} label="Thylakoid lumen" value="pH ≈ {lumenPH}" note={lumenNote}>
+		<Label
+			x={24}
+			y={562}
+			text="thylakoid lumen · pH ≈ {lumenPH}"
+			anchor="start"
+			size={14}
+			weight={600}
+		/>
+		<Label x={24} y={580} text={lumenNote} anchor="start" size={11} muted />
+	</Readout>
+	<Readout
+		id="nolight"
+		order={4}
+		label="No light"
+		value="electron flow stops"
+		note="the gradient drains away"
 		opacity={1 - flow}
-	/>
+	>
+		<Label
+			x={940}
+			y={580}
+			text="no light: electron flow stops and the gradient drains away"
+			anchor="end"
+			size={11}
+			muted
+			opacity={1 - flow}
+		/>
+	</Readout>
 
 	<!-- names and roles -->
 	<g opacity={o.psii}>
-		<Label x={124} y={196} text="Photosystem II" anchor="start" weight={600} />
-		<Label
-			x={124}
-			y={212}
-			text="splits water, fires electrons"
-			anchor="start"
-			size={lerp(11, 12.5, lit(o.psii))}
-			muted
-		/>
-		<Label x={246} y={348} text="antenna" size={11} muted />
-		<Label x={118} y={353} text="Mn₄CaO₅" anchor="end" size={11} muted />
-		<line x1="121" y1="350" x2="156" y2="343" stroke="var(--stage-ink-muted)" stroke-width="1" />
+		<Readout
+			opacity={o.psii}
+			id="psii"
+			order={10}
+			label="Photosystem II"
+			marker={1}
+			at={[PSII.x, 214]}
+		>
+			<Label x={124} y={196} text="Photosystem II" anchor="start" weight={600} />
+		</Readout>
+		<Readout id="psii-minor">
+			<Label
+				x={124}
+				y={212}
+				text="splits water, fires electrons"
+				anchor="start"
+				size={lerp(11, 12.5, lit(o.psii))}
+				muted
+			/>
+			<Label x={246} y={348} text="antenna" size={11} muted />
+			<Label x={118} y={353} text="Mn₄CaO₅" anchor="end" size={11} muted />
+			<line x1="121" y1="350" x2="156" y2="343" stroke="var(--stage-ink-muted)" stroke-width="1" />
+		</Readout>
 	</g>
 	<g opacity={o.etc}>
-		<Label x={B6F.x} y={196} text="Cytochrome b₆f" weight={600} />
-		<Label
-			x={B6F.x}
-			y={212}
-			text="pumps H⁺ into the lumen"
-			size={lerp(11, 12.5, lit(o.etc))}
-			muted
-		/>
-		<Label x={323} y={250} text="2 H⁺ from stroma" anchor="start" size={11} color={protonInk} />
-		<Label x={403} y={386} text="2 H⁺ into lumen" anchor="start" size={11} color={protonInk} />
-		<Label x={332} y={348} text="PQ pool" size={11} muted />
-		<!-- at the right end of the plastocyanin track, clear of the '2 H⁺ into lumen' label -->
-		<Label x={536} y={372} text="PC" anchor="start" size={11} muted />
+		<Readout
+			opacity={o.etc}
+			id="b6f"
+			order={11}
+			label="Cytochrome b₆f"
+			marker={2}
+			at={[B6F.x, 214]}
+		>
+			<Label x={B6F.x} y={196} text="Cytochrome b₆f" weight={600} />
+		</Readout>
+		<Readout id="b6f-minor">
+			<Label
+				x={B6F.x}
+				y={212}
+				text="pumps H⁺ into the lumen"
+				size={lerp(11, 12.5, lit(o.etc))}
+				muted
+			/>
+			<Label x={323} y={250} text="2 H⁺ from stroma" anchor="start" size={11} color={protonInk} />
+			<Label x={403} y={386} text="2 H⁺ into lumen" anchor="start" size={11} color={protonInk} />
+			<Label x={332} y={348} text="PQ pool" size={11} muted />
+			<!-- at the right end of the plastocyanin track, clear of the '2 H⁺ into lumen' label -->
+			<Label x={536} y={372} text="PC" anchor="start" size={11} muted />
+		</Readout>
 	</g>
 	<g opacity={o.psi}>
-		<Label x={PSI.x} y={196} text="Photosystem I" weight={600} />
-		<Label x={PSI.x} y={212} text="re-excites electrons" size={lerp(11, 12.5, lit(o.psi))} muted />
-		<Label x={592} y={247} text="Fd" anchor="end" size={11} muted />
-		<Label x={FNR.x} y={262} text="FNR" size={11} muted />
-		<Label x={646} y={348} text="antenna" size={11} muted />
+		<Readout opacity={o.psi} id="psi" order={12} label="Photosystem I" marker={3} at={[PSI.x, 214]}>
+			<Label x={PSI.x} y={196} text="Photosystem I" weight={600} />
+		</Readout>
+		<Readout id="psi-minor">
+			<Label
+				x={PSI.x}
+				y={212}
+				text="re-excites electrons"
+				size={lerp(11, 12.5, lit(o.psi))}
+				muted
+			/>
+			<Label x={592} y={247} text="Fd" anchor="end" size={11} muted />
+			<Label x={FNR.x} y={262} text="FNR" size={11} muted />
+			<Label x={646} y={348} text="antenna" size={11} muted />
+		</Readout>
 	</g>
 	<g opacity={o.atp}>
-		<Label x={940} y={150} text="ATP synthase" anchor="end" weight={600} />
-		<Label
-			x={940}
-			y={166}
-			text="proton turbine"
-			anchor="end"
-			size={lerp(11, 12.5, lit(o.atp))}
-			muted
-		/>
-		<Label x={840} y={348} text="CF₀ rotor" anchor="start" size={11} muted />
+		<Readout
+			opacity={o.atp}
+			id="atps"
+			order={13}
+			label="ATP synthase"
+			marker={4}
+			at={[ATP.x + 90, 150]}
+		>
+			<Label x={940} y={150} text="ATP synthase" anchor="end" weight={600} />
+		</Readout>
+		<Readout id="atps-minor">
+			<Label
+				x={940}
+				y={166}
+				text="proton turbine"
+				anchor="end"
+				size={lerp(11, 12.5, lit(o.atp))}
+				muted
+			/>
+			<Label x={840} y={348} text="CF₀ rotor" anchor="start" size={11} muted />
+		</Readout>
 	</g>
 
-	<!-- callouts -->
-	<Label
-		x={270}
-		y={150}
-		text="excitation hops pigment → pigment → P680"
-		pill
-		opacity={o.cAntenna}
-	/>
-	<Label x={330} y={412} text="2 H₂O → O₂ + 4 H⁺ + 4 e⁻" pill weight={600} opacity={o.cWater} />
-	<Label
-		x={440}
-		y={444}
-		text="electrons downhill, protons pumped into the lumen"
-		pill
-		opacity={o.cEtc}
-	/>
-	<Label x={620} y={40} text="NADP⁺ + H⁺ + 2 e⁻ → NADPH" pill weight={600} opacity={o.cPsi} />
-	<Label x={800} y={452} text="~14 H⁺ per turn → 3 ATP" pill weight={600} opacity={o.cAtp} />
+	<!-- callouts: one at a time, so the panel shows the current one -->
+	<Readout id="callout" order={3} label="This step" value={callout.text} opacity={callout.o}>
+		<Label
+			x={270}
+			y={150}
+			text="excitation hops pigment → pigment → P680"
+			pill
+			opacity={o.cAntenna}
+		/>
+		<Label x={330} y={412} text="2 H₂O → O₂ + 4 H⁺ + 4 e⁻" pill weight={600} opacity={o.cWater} />
+		<Label
+			x={440}
+			y={444}
+			text="electrons downhill, protons pumped into the lumen"
+			pill
+			opacity={o.cEtc}
+		/>
+		<Label x={620} y={40} text="NADP⁺ + H⁺ + 2 e⁻ → NADPH" pill weight={600} opacity={o.cPsi} />
+		<Label x={800} y={452} text="~14 H⁺ per turn → 3 ATP" pill weight={600} opacity={o.cAtp} />
+	</Readout>
 </g>

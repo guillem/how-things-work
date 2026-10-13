@@ -10,6 +10,8 @@
 	import Controls from './Controls.svelte';
 	import ParamControls from './ParamControls.svelte';
 	import type { ExplainerSpec, Params, ParamValue, StageProps } from './types';
+	import { Readouts, provideReadouts } from './readouts.svelte';
+	import ReadoutPanel from './ReadoutPanel.svelte';
 
 	interface Props {
 		spec: ExplainerSpec;
@@ -32,6 +34,10 @@
 	let bodyEl = $state<HTMLElement | null>(null);
 
 	const clock = new Clock();
+
+	// Scenes' <Readout>s, listed as HTML under the stage on narrow screens.
+	const readouts = new Readouts();
+	provideReadouts(readouts);
 
 	// Control values persist across steps so that a slider keeps its value when
 	// the reader comes back to it.
@@ -243,6 +249,9 @@
 		<div class="stage" role="group" aria-label="Animation: {step.title}">
 			{@render stage(stageProps)}
 		</div>
+		{#if readouts.out && readouts.size}
+			<ReadoutPanel {readouts} />
+		{/if}
 		<Controls
 			{index}
 			total={steps.length}

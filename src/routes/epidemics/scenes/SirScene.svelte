@@ -35,7 +35,7 @@
 		thin,
 		ticks
 	} from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { effectiveR, finalSize, solveSir, type Sample } from '../model';
 	import { settings } from '../run';
 
@@ -463,6 +463,10 @@
 	});
 </script>
 
+{#snippet peakShort()}
+	<Label x={sx(run.peakDay) - 4} y={box.y0 - 8} text="peak" size={12} weight={600} anchor="start" />
+{/snippet}
+
 {#snippet tint(
 	x: number,
 	y: number,
@@ -488,32 +492,56 @@
 
 <g style:font-variant-numeric="tabular-nums">
 	<!-- header -->
-	<Label x={32} y={48} text="Day {fmtDay(day)}" size={16} weight={600} anchor="start" />
-	{#if fNotPeak > 0.01}
-		<!-- the final count does not depend on D: show it on the final step too -->
-		<Label
-			x={928}
-			y={48}
-			text="R₀ = {r0.toFixed(1)} · infectious for {D} days"
-			size={13}
-			anchor="end"
-			muted
-			opacity={fNotPeak}
-		/>
-	{/if}
-	{#if fp > 0.01}
-		{@render tint(
-			928,
-			48,
-			outbreak
-				? `R = ${rNow < 0.005 ? 'under 0.01' : rNow.toFixed(2)} now: cases ${rNow > 1 ? 'rising' : 'falling'}`
-				: `R₀ = ${r0.toFixed(1)}: cases only fall`,
-			rNow > 1 ? 'var(--sir-i)' : 'var(--sir-s)',
-			14,
-			'end',
-			fp
-		)}
-	{/if}
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout id="day" order={1} label="Day" value={fmtDay(day)}>
+		<Label x={32} y={48} text="Day {fmtDay(day)}" size={16} weight={600} anchor="start" />
+	</Readout>
+	<Readout
+		id="settings"
+		order={2}
+		label="Settings"
+		value="R₀ = {r0.toFixed(1)} · {D} days"
+		note="infectious period"
+		opacity={fNotPeak}
+	>
+		{#if fNotPeak > 0.01}
+			<!-- the final count does not depend on D: show it on the final step too -->
+			<Label
+				x={928}
+				y={48}
+				text="R₀ = {r0.toFixed(1)} · infectious for {D} days"
+				size={13}
+				anchor="end"
+				muted
+				opacity={fNotPeak}
+			/>
+		{/if}
+	</Readout>
+	<Readout
+		id="rnow"
+		order={2}
+		label="Effective R now"
+		value={outbreak
+			? `R = ${rNow < 0.005 ? 'under 0.01' : rNow.toFixed(2)}`
+			: `R₀ = ${r0.toFixed(1)}`}
+		note={outbreak ? `cases ${rNow > 1 ? 'rising' : 'falling'}` : 'cases only fall'}
+		color={rNow > 1 ? 'var(--sir-i)' : 'var(--sir-s)'}
+		opacity={fp}
+	>
+		{#if fp > 0.01}
+			{@render tint(
+				928,
+				48,
+				outbreak
+					? `R = ${rNow < 0.005 ? 'under 0.01' : rNow.toFixed(2)} now: cases ${rNow > 1 ? 'rising' : 'falling'}`
+					: `R₀ = ${r0.toFixed(1)}: cases only fall`,
+				rNow > 1 ? 'var(--sir-i)' : 'var(--sir-s)',
+				14,
+				'end',
+				fp
+			)}
+		{/if}
+	</Readout>
 
 	<!-- boxes and arrows -->
 	{#if fb > 0.01}
@@ -587,8 +615,10 @@
 	<Axes {sx} {sy} xLabel="day" yLabel="% of people" yFormat={pct} />
 	{#each legend as item, k (item.id)}
 		{@const lx = 300 + k * 104}
-		<circle cx={lx} cy={44} r="5" fill={item.color} />
-		<text x={lx + 10} y={48} font-size="12">{item.label}</text>
+		<Readout id="legend-{item.id}" order={10 + k} label={item.label} color={item.color}>
+			<circle cx={lx} cy={44} r="5" fill={item.color} />
+			<text x={lx + 10} y={48} font-size="12">{item.label}</text>
+		</Readout>
 	{/each}
 
 	{#if outbreak && fChart > 0.01}
@@ -604,15 +634,25 @@
 				stroke-dasharray="6 4"
 			/>
 			<!-- near the top (R₀ close to 1) the S curve runs above the line: label below it -->
-			{@render tint(
-				box.x0 + 8,
-				sy(1 / r0) + (1 / r0 > 0.75 ? 16 : -7),
-				`1/R₀ = ${fmt(1 / r0)}`,
-				'var(--sir-s)',
-				12,
-				'start',
-				fp
-			)}
+			<Readout
+				id="threshold"
+				order={4}
+				label="1/R₀"
+				value={fmt(1 / r0)}
+				note="susceptible share at the peak"
+				color="var(--sir-s)"
+				opacity={fp * fChart}
+			>
+				{@render tint(
+					box.x0 + 8,
+					sy(1 / r0) + (1 / r0 > 0.75 ? 16 : -7),
+					`1/R₀ = ${fmt(1 / r0)}`,
+					'var(--sir-s)',
+					12,
+					'start',
+					fp
+				)}
+			</Readout>
 		</g>
 	{/if}
 
@@ -680,6 +720,14 @@
 	{/if}
 
 	<!-- the peak: S crosses 1/R₀, I is highest, R crosses 1 -->
+	<Readout
+		id="peak"
+		order={3}
+		label="Peak"
+		value={outbreak ? `day ${peakDayText}` : 'none'}
+		note="most people infectious at once"
+		opacity={outbreak ? peakShow : 0}
+	/>
 	{#if outbreak && peakShow > 0}
 		<g opacity={peakShow}>
 			<line
@@ -721,14 +769,16 @@
 				stroke-width="2"
 				opacity={fChart}
 			/>
-			<Label
-				x={sx(run.peakDay) - 4}
-				y={box.y0 - 8}
-				text="peak · day {peakDayText}"
-				size={12}
-				weight={600}
-				anchor="start"
-			/>
+			<Readout id="peak-label" narrow={peakShort}>
+				<Label
+					x={sx(run.peakDay) - 4}
+					y={box.y0 - 8}
+					text="peak · day {peakDayText}"
+					size={12}
+					weight={600}
+					anchor="start"
+				/>
+			</Readout>
 		</g>
 	{/if}
 
@@ -797,11 +847,13 @@
 					opacity={peakShow}
 				/>
 			{/if}
-			<text x={box.x1} y={RY0 - 10} font-size="11" text-anchor="end">
-				<tspan fill="var(--sir-i)" font-weight="600">above 1: cases rise</tspan>
-				<tspan fill="var(--stage-ink-muted)" dx="6">·</tspan>
-				<tspan fill="var(--sir-s)" font-weight="600" dx="6">below 1: cases fall</tspan>
-			</text>
+			<Readout id="r-key">
+				<text x={box.x1} y={RY0 - 10} font-size="11" text-anchor="end">
+					<tspan fill="var(--sir-i)" font-weight="600">above 1: cases rise</tspan>
+					<tspan fill="var(--stage-ink-muted)" dx="6">·</tspan>
+					<tspan fill="var(--sir-s)" font-weight="600" dx="6">below 1: cases fall</tspan>
+				</text>
+			</Readout>
 		</g>
 	{/if}
 

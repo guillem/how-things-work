@@ -115,19 +115,21 @@ label search; right-clicks leaving handles held; and a logic-gates test that gua
   complex-numbers' `PointHandle`) into `src/lib/draw`: a 2D draggable point with arrow keys on both
   axes; the shared `Handle` only has one-dimensional keys.
 
-- **Stage text on phones — decided 2026-10-13: option B, readouts out of the SVG.** At 390 px
-  wide the 960-unit stage is drawn at ~0.37 scale, so 13-unit labels end up ~5 px. Two prototypes
-  were tried (branch `worktree-agent-a4adc057170ea9048`, local only: `?phone=b` / `?phone=c`
-  flags); the user rejected landscape and chose B over C (zoomable stage). B: on screens ≤ 640 px
-  a scene's readouts and captions move into an HTML panel under the stage (14–16 px), the drawing
-  keeps short labels or numbered badges, minor labels hide. Mechanism: `<Readout id label value
-note color marker at opacity>` (`src/lib/explainer/Readout.svelte`) plus the panel in the
-  explainer shell; desktop renders pixel-identically. Applied so far to photosynthesis's membrane
-  scene and epidemics' SIR scene. Rollout plan: land the B mechanism without the flag (drop C,
-  `zoom.svelte.ts` and `e2e/phone-prototypes.e2e.ts`), then convert scenes topic by topic (149
-  scenes, ~720 text elements; each needs editorial choices: what moves, what becomes a badge, what
-  hides), plus axis ticks in the shared chart helpers. Watch the reading room: the panel made the
-  pinned card ~200 px taller on the two prototypes — keep each step's panel short.
+- **Stage text on phones — option B (decided 2026-10-13), mechanism landed.** At 390 px wide the
+  960-unit stage is drawn at ~0.4 scale, so 13-unit labels end up ~5 px. The user chose B
+  (readouts out of the SVG) over a zoomable stage and landscape. On viewports ≤ 640 px a scene's
+  `<Readout>`s leave the drawing and are listed in an HTML panel under the stage (12–15 px, short
+  rows two by two); the drawing keeps numbered badges or short labels, minor labels hide. Wider
+  screens render pixel-identically. Code: `src/lib/explainer/Readout.svelte`,
+  `readouts.svelte.ts`, `ReadoutPanel.svelte`; tests in `e2e/phone-readouts.e2e.ts`; how-to in
+  `docs/scene-guide.md` ("Phone readouts"). Converted: photosynthesis's membrane scene, epidemics'
+  SIR scene (the panel adds ~120–190 px to the pinned card there). To convert the next scene: wrap
+  each readout/caption in `<Readout id label value note>`, part names in `<Readout label marker
+at>` (badge), minor labels in a bare `<Readout>`; pass the scene's fade as `opacity`; check
+  phone shots (390 × 844, `TOUCH=1`, both themes) and a desktop pixel diff against main; extend
+  `e2e/phone-readouts.e2e.ts` with the scene's key readout. Still to do: the other ~147 scenes
+  (~720 text elements, each needing editorial choices), plus axis ticks in the shared chart
+  helpers.
 
 - **Stage text styling overrides SVG attributes (site-wide, found 2026-10-07).** In
   `src/lib/explainer/Explainer.svelte`, `.stage :global(text) { font-family; fill; font-size: 13px }`
