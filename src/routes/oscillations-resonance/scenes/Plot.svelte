@@ -5,6 +5,7 @@
 	 * attributes, so sizes are set with style).
 	 */
 	import type { Scale } from '#lib/draw/index.ts';
+	import { Readout } from '#lib/explainer/index.ts';
 
 	interface Props {
 		sx: Scale;
@@ -34,16 +35,21 @@
 <g {opacity} style:pointer-events="none">
 	{#each yTicks as v (v)}
 		<line x1={left} x2={right} y1={sy(v)} y2={sy(v)} stroke="var(--stage-grid)" />
-		<text x={left - 8} y={sy(v) + 4} text-anchor="end" class="muted" style:font-size="11px"
-			>{yFormat(v)}</text
-		>
+		<!-- tick labels: unreadable on phones -->
+		<Readout id="y-tick">
+			<text x={left - 8} y={sy(v) + 4} text-anchor="end" class="muted" style:font-size="11px"
+				>{yFormat(v)}</text
+			>
+		</Readout>
 	{/each}
 	<line x1={left} x2={right} y1={bottom} y2={bottom} stroke="var(--stage-line)" />
 	<line x1={left} x2={left} y1={top} y2={bottom} stroke="var(--stage-line)" />
 	{#each xTicks as v (v)}
 		<line x1={sx(v)} x2={sx(v)} y1={bottom} y2={bottom + 4} stroke="var(--stage-line)" />
-		<text x={sx(v)} y={bottom + 17} text-anchor="middle" class="muted" style:font-size="11px"
-			>{xFormat(v)}</text
-		>
+		<Readout id="x-tick">
+			<text x={sx(v)} y={bottom + 17} text-anchor="middle" class="muted" style:font-size="11px"
+				>{xFormat(v)}</text
+			>
+		</Readout>
 	{/each}
 </g>

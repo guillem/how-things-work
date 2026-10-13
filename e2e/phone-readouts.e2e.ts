@@ -204,6 +204,38 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText('a = 1.00 AU, T = 365 days');
 	});
 
+	test('oscillations spring: the natural frequency is text and follows the mass', async ({
+		page
+	}) => {
+		await page.goto('./oscillations-resonance/#spring');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Natural frequency\s*0\.99 Hz/);
+		await expect(drawing(page)).not.toContainText('natural frequency');
+		await range(page, 'mass').fill('4');
+		await expect(panel).toContainText(/Natural frequency\s*0\.50 Hz/);
+	});
+
+	test('oscillations pendulum: the period is text and follows the length', async ({ page }) => {
+		await page.goto('./oscillations-resonance/#pendulum');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Small swings\s*2\.01 s/);
+		await expect(drawing(page)).not.toContainText('small swings');
+		await range(page, 'length').fill('4');
+		await expect(panel).toContainText(/Small swings\s*4\.01 s/);
+	});
+
+	test('oscillations driven: the push and the swing are text and follow the push', async ({
+		page
+	}) => {
+		await page.goto('./oscillations-resonance/#push');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Push\s*0\.60 Hz/);
+		await expect(panel).toContainText(/The mass moves\s*\d+\.\d× your hand/);
+		await expect(drawing(page)).not.toContainText('your hand');
+		await range(page, 'pushFreq').fill('1.2');
+		await expect(panel).toContainText(/Push\s*1\.20 Hz/);
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');

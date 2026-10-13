@@ -18,7 +18,7 @@
 	 * 10 s trace, the mass at its end.
 	 */
 	import { scale } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		dampedFrequency,
 		dampingRatio,
@@ -247,7 +247,9 @@
 		stroke-dasharray="4 5"
 		opacity="0.6"
 	/>
-	{@render txt(COL_X - 76, REST + 4, 'rest', 12, { anchor: 'end', muted: true })}
+	<Readout id="label-1">
+		{@render txt(COL_X - 76, REST + 4, 'rest', 12, { anchor: 'end', muted: true })}
+	</Readout>
 	<line
 		x1={COL_X - 70}
 		x2={COL_X - 40}
@@ -256,8 +258,15 @@
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="4 4"
 	/>
-	{@render txt(COL_X - 76, REST + X0 * PXM - 4, 'let go', 12, { anchor: 'end', muted: true })}
-	{@render txt(COL_X - 76, REST + X0 * PXM + 11, '15 cm below', 11, { anchor: 'end', muted: true })}
+	<Readout id="label-2">
+		{@render txt(COL_X - 76, REST + X0 * PXM - 4, 'let go', 12, { anchor: 'end', muted: true })}
+	</Readout>
+	<Readout id="label-3">
+		{@render txt(COL_X - 76, REST + X0 * PXM + 11, '15 cm below', 11, {
+			anchor: 'end',
+			muted: true
+		})}
+	</Readout>
 
 	<!-- spring and mass -->
 	<path
@@ -278,16 +287,20 @@
 		stroke="var(--stage-ink)"
 		stroke-width="1.2"
 	/>
-	<text
-		x={COL_X}
-		y={yMass + 5}
-		text-anchor="middle"
-		font-weight="700"
-		style:font-size={m < 1 ? '11px' : '13px'}
-		style:fill="#fff">{m.toFixed(m < 1 ? 2 : 1)} kg</text
-	>
+	<Readout id="mass-label">
+		<text
+			x={COL_X}
+			y={yMass + 5}
+			text-anchor="middle"
+			font-weight="700"
+			style:font-size={m < 1 ? '11px' : '13px'}
+			style:fill="#fff">{m.toFixed(m < 1 ? 2 : 1)} kg</text
+		>
+	</Readout>
 	{#if held}
-		{@render txt(COL_X + size / 2 + 12, yMass + 4, 'hold… let go', 12, { weight: 600 })}
+		<Readout id="label-4">
+			{@render txt(COL_X + size / 2 + 12, yMass + 4, 'hold… let go', 12, { weight: 600 })}
+		</Readout>
 	{/if}
 
 	<!-- trace -->
@@ -299,7 +312,9 @@
 		xFormat={(v) => `${v} s`}
 		yFormat={(v) => (v === 0 ? 'rest' : v < 0 ? '10 cm ↑' : '10 cm ↓')}
 	/>
-	{@render txt(PLOT_X0, REST - YMAX * PXM - 14, 'position of the mass', 12, { muted: true })}
+	<Readout id="label-5">
+		{@render txt(PLOT_X0, REST - YMAX * PXM - 14, 'position of the mass', 12, { muted: true })}
+	</Readout>
 	<g clip-path="url(#spring-plot)">
 		{#if envelope}
 			<path
@@ -353,56 +368,78 @@
 			<line x1={bracket.x1} x2={bracket.x1} y1={bracket.y - 5} y2={bracket.y + 5} />
 			<line x1={bracket.x2} x2={bracket.x2} y1={bracket.y - 5} y2={bracket.y + 5} />
 		</g>
-		{@render txt(
-			Math.min(PLOT_X1 - 80, Math.max(PLOT_X0 + 80, (bracket.x1 + bracket.x2) / 2)),
-			bracket.y - 8,
-			bracket.text,
-			12,
-			{ anchor: 'middle', weight: 600 }
-		)}
+		<Readout id="label-6">
+			{@render txt(
+				Math.min(PLOT_X1 - 80, Math.max(PLOT_X0 + 80, (bracket.x1 + bracket.x2) / 2)),
+				bracket.y - 8,
+				bracket.text,
+				12,
+				{ anchor: 'middle', weight: 600 }
+			)}
+		</Readout>
 	{/if}
 
 	{#if damped}
 		{#if c === 0}
-			{@render txt(
-				PLOT_X1,
-				REST + YMAX * PXM + 36,
-				'no friction: it would swing like this for ever',
-				11,
-				{
-					anchor: 'end',
-					muted: true
-				}
-			)}
+			<Readout id="label-7">
+				{@render txt(
+					PLOT_X1,
+					REST + YMAX * PXM + 36,
+					'no friction: it would swing like this for ever',
+					11,
+					{
+						anchor: 'end',
+						muted: true
+					}
+				)}
+			</Readout>
 		{:else if envelope}
-			{@render txt(
-				PLOT_X1,
-				REST + YMAX * PXM + 36,
-				'dashed: the size of the swing, shrinking every second',
-				11,
-				{
-					anchor: 'end',
-					muted: true
-				}
-			)}
+			<Readout id="label-8">
+				{@render txt(
+					PLOT_X1,
+					REST + YMAX * PXM + 36,
+					'dashed: the size of the swing, shrinking every second',
+					11,
+					{
+						anchor: 'end',
+						muted: true
+					}
+				)}
+			</Readout>
 		{:else}
-			{@render txt(
-				PLOT_X1,
-				REST + YMAX * PXM + 36,
-				'too much friction to swing: it creeps back to rest',
-				11,
-				{
-					anchor: 'end',
-					muted: true
-				}
-			)}
+			<Readout id="label-9">
+				{@render txt(
+					PLOT_X1,
+					REST + YMAX * PXM + 36,
+					'too much friction to swing: it creeps back to rest',
+					11,
+					{
+						anchor: 'end',
+						muted: true
+					}
+				)}
+			</Readout>
 		{/if}
 	{:else}
-		{@render txt(PLOT_X1, REST + YMAX * PXM + 36, 'heavier → slower · stiffer → faster', 11, {
-			anchor: 'end',
-			muted: true
-		})}
+		<Readout id="label-10">
+			{@render txt(PLOT_X1, REST + YMAX * PXM + 36, 'heavier → slower · stiffer → faster', 11, {
+				anchor: 'end',
+				muted: true
+			})}
+		</Readout>
 	{/if}
 
+	<!-- phones: the caption under the plot, as a key -->
+	<Readout
+		id="caption"
+		order={20}
+		label={!damped
+			? 'heavier → slower · stiffer → faster'
+			: c === 0
+				? 'no friction: it would swing like this for ever'
+				: envelope
+					? 'dashed: the size of the swing, shrinking'
+					: 'too much friction to swing: it creeps back'}
+	/>
 	<Card {cells} />
 </g>
