@@ -15,7 +15,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { VectorHandle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { angleOf, num } from '../matrix';
 	import Arrow from './Arrow.svelte';
 	import T from './T.svelte';
@@ -153,29 +153,32 @@
 	{/each}
 	<line x1={sx(-LIM)} x2={sx(LIM)} y1={CY} y2={CY} stroke="var(--stage-line)" stroke-width="1.5" />
 	<line x1={CX} x2={CX} y1={sy(LIM)} y2={sy(-LIM)} stroke="var(--stage-line)" stroke-width="1.5" />
-	{#each GRID as g (g)}
-		<T x={sx(g)} y={CY + 18} text={num(g)} size={11} anchor="middle" muted />
-		<T x={CX - 8} y={sy(g) + 4} text={num(g)} size={11} anchor="end" muted />
-	{/each}
-	<T
-		x={sx(LIM)}
-		y={CY - 8}
-		text="x"
-		size={13}
-		anchor="end"
-		muted
-		italic
-		opacity={clearOf(sx(LIM) - 6, CY - 12)}
-	/>
-	<T
-		x={CX + 9}
-		y={sy(LIM) + 10}
-		text="y"
-		size={13}
-		muted
-		italic
-		opacity={clearOf(CX + 12, sy(LIM) + 6)}
-	/>
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="axes">
+		{#each GRID as g (g)}
+			<T x={sx(g)} y={CY + 18} text={num(g)} size={11} anchor="middle" muted />
+			<T x={CX - 8} y={sy(g) + 4} text={num(g)} size={11} anchor="end" muted />
+		{/each}
+		<T
+			x={sx(LIM)}
+			y={CY - 8}
+			text="x"
+			size={13}
+			anchor="end"
+			muted
+			italic
+			opacity={clearOf(sx(LIM) - 6, CY - 12)}
+		/>
+		<T
+			x={CX + 9}
+			y={sy(LIM) + 10}
+			text="y"
+			size={13}
+			muted
+			italic
+			opacity={clearOf(CX + 12, sy(LIM) + 6)}
+		/>
+	</Readout>
 
 	<!-- ============ phase arrows: v and s·v ============ -->
 	{#if w.arrows > 0.01}
@@ -203,13 +206,15 @@
 					stroke-width="3"
 					opacity="0.45"
 				/>
-				<T
-					x={(CX + V.x) / 2}
-					y={CY + (vy >= 0 ? 36 : -12)}
-					text="x = {num(vx)}"
-					anchor="middle"
-					weight={600}
-				/>
+				<Readout id="x-step">
+					<T
+						x={(CX + V.x) / 2}
+						y={CY + (vy >= 0 ? 36 : -12)}
+						text="x = {num(vx)}"
+						anchor="middle"
+						weight={600}
+					/>
+				</Readout>
 			{/if}
 			{#if vy !== 0}
 				<line
@@ -221,53 +226,77 @@
 					stroke-width="3"
 					opacity="0.45"
 				/>
-				<T
-					x={V.x + (vx >= 0 ? 10 : -10)}
-					y={(CY + V.y) / 2 + 4}
-					text="y = {num(vy)}"
-					anchor={vx >= 0 ? 'start' : 'end'}
-					weight={600}
-				/>
+				<Readout id="y-step">
+					<T
+						x={V.x + (vx >= 0 ? 10 : -10)}
+						y={(CY + V.y) / 2 + 4}
+						text="y = {num(vy)}"
+						anchor={vx >= 0 ? 'start' : 'end'}
+						weight={600}
+					/>
+				</Readout>
 			{/if}
 			{#if !isZero}
 				<Arrow from={O} to={SV} color="var(--lt-v)" width={2} opacity={0.45} dashed />
 				{#if svLabel}
-					<T
-						x={svLabel.x}
-						y={svLabel.y}
-						text="{num(s, 1)}·v"
-						anchor={svLabel.right ? 'start' : 'end'}
-						color="var(--lt-v)"
-						weight={600}
-						opacity={0.8}
-					/>
+					<Readout id="sv-label">
+						<T
+							x={svLabel.x}
+							y={svLabel.y}
+							text="{num(s, 1)}·v"
+							anchor={svLabel.right ? 'start' : 'end'}
+							color="var(--lt-v)"
+							weight={600}
+							opacity={0.8}
+						/>
+					</Readout>
 				{/if}
 			{/if}
 		</g>
-		<g opacity={panel(w.arrows)}>
-			<T x={PX} y={110} text="v = {vText}" size={30} weight={700} color="var(--lt-v)" />
-			<T x={PX} y={140} text={words} size={14} muted />
-			<T x={PX} y={210} text="Scaling by a number s:" size={14} weight={600} />
-			<T x={PX} y={236} text="s·v = ({fb(s, 1)} × {fb(vx)}, {fb(s, 1)} × {fb(vy)})" size={15} />
-			<T
-				x={PX}
-				y={260}
-				text="= ({num(s * vx)}, {num(s * vy)})"
-				size={15}
-				weight={600}
-				color="var(--lt-v)"
-			/>
-			<T x={PX} y={300} text="the same line through the origin," size={13} muted />
-			<T
-				x={PX}
-				y={320}
-				text={s < 0 ? 'turned round (s is negative)' : `${num(Math.abs(s), 1)} times as long`}
-				size={13}
-				muted
-			/>
-			<T x={PX} y={400} text="Drag the tip of v, or focus it" size={13} muted />
-			<T x={PX} y={420} text="and use the arrow keys." size={13} muted />
-		</g>
+		<Readout
+			id="v"
+			order={1}
+			label="Vector v"
+			value="v = {vText}"
+			note={words}
+			color="var(--lt-v)"
+			opacity={w.arrows}
+		/>
+		<Readout
+			id="sv"
+			order={2}
+			label="Scaled copy"
+			value="{num(s, 1)}·v = ({num(s * vx)}, {num(s * vy)})"
+			note="the same line through the origin, {s < 0
+				? 'turned round (s is negative)'
+				: `${num(Math.abs(s), 1)} times as long`}"
+			opacity={w.arrows}
+		>
+			<g opacity={panel(w.arrows)}>
+				<T x={PX} y={110} text="v = {vText}" size={30} weight={700} color="var(--lt-v)" />
+				<T x={PX} y={140} text={words} size={14} muted />
+				<T x={PX} y={210} text="Scaling by a number s:" size={14} weight={600} />
+				<T x={PX} y={236} text="s·v = ({fb(s, 1)} × {fb(vx)}, {fb(s, 1)} × {fb(vy)})" size={15} />
+				<T
+					x={PX}
+					y={260}
+					text="= ({num(s * vx)}, {num(s * vy)})"
+					size={15}
+					weight={600}
+					color="var(--lt-v)"
+				/>
+				<T x={PX} y={300} text="the same line through the origin," size={13} muted />
+				<T
+					x={PX}
+					y={320}
+					text={s < 0 ? 'turned round (s is negative)' : `${num(Math.abs(s), 1)} times as long`}
+					size={13}
+					muted
+				/>
+				<T x={PX} y={400} text="Drag the tip of v, or focus it" size={13} muted />
+				<T x={PX} y={420} text="and use the arrow keys." size={13} muted />
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- ============ phase basis: v = x·î + y·ĵ ============ -->
@@ -326,26 +355,53 @@
 				color="var(--lt-j)"
 			/>
 		</g>
-		<g opacity={panel(w.basis)}>
-			<T x={PX} y={70} text="the basis" size={13} muted />
-			<T x={PX} y={98} text="î = (1, 0)" size={20} weight={700} color="var(--lt-i)" />
-			<T x={PX + 150} y={98} text="ĵ = (0, 1)" size={20} weight={700} color="var(--lt-j)" />
-			<T x={PX} y={170} text="v = {vText}" size={26} weight={700} color="var(--lt-v)" />
-			<T x={PX} y={206} text="= {sumText}" size={22} weight={600} />
-			<T
-				x={PX}
-				y={248}
-				text="{num(Math.abs(vx))} step{Math.abs(vx) === 1 ? '' : 's'} of {vx < 0
-					? '−î'
-					: 'î'}, then {num(Math.abs(vy))} of {vy < 0 ? '−ĵ' : 'ĵ'}"
-				size={14}
-				muted
-			/>
-			<T x={PX} y={312} text="Adding tip to tail, number by number:" size={13} />
-			<T x={PX} y={338} text="({num(vx)}, 0) + (0, {num(vy)}) = {vText}" size={16} weight={600} />
-			<T x={PX} y={410} text="Every vector is built from î and ĵ" size={14} weight={600} />
-			<T x={PX} y={432} text="in exactly one way." size={14} weight={600} />
-		</g>
+		<Readout
+			id="basis"
+			order={1}
+			label="The basis"
+			value="î = (1, 0), ĵ = (0, 1)"
+			opacity={w.basis}
+		/>
+		<Readout
+			id="v-built"
+			order={2}
+			label="Vector v"
+			value="v = {vText} = {sumText}"
+			note="{num(Math.abs(vx))} step{Math.abs(vx) === 1 ? '' : 's'} of {vx < 0
+				? '−î'
+				: 'î'}, then {num(Math.abs(vy))} of {vy < 0 ? '−ĵ' : 'ĵ'}"
+			color="var(--lt-v)"
+			opacity={w.basis}
+		/>
+		<Readout
+			id="tip-to-tail"
+			order={3}
+			label="Tip to tail"
+			value="({num(vx)}, 0) + (0, {num(vy)}) = {vText}"
+			note="every vector is built from î and ĵ in exactly one way"
+			opacity={w.basis}
+		>
+			<g opacity={panel(w.basis)}>
+				<T x={PX} y={70} text="the basis" size={13} muted />
+				<T x={PX} y={98} text="î = (1, 0)" size={20} weight={700} color="var(--lt-i)" />
+				<T x={PX + 150} y={98} text="ĵ = (0, 1)" size={20} weight={700} color="var(--lt-j)" />
+				<T x={PX} y={170} text="v = {vText}" size={26} weight={700} color="var(--lt-v)" />
+				<T x={PX} y={206} text="= {sumText}" size={22} weight={600} />
+				<T
+					x={PX}
+					y={248}
+					text="{num(Math.abs(vx))} step{Math.abs(vx) === 1 ? '' : 's'} of {vx < 0
+						? '−î'
+						: 'î'}, then {num(Math.abs(vy))} of {vy < 0 ? '−ĵ' : 'ĵ'}"
+					size={14}
+					muted
+				/>
+				<T x={PX} y={312} text="Adding tip to tail, number by number:" size={13} />
+				<T x={PX} y={338} text="({num(vx)}, 0) + (0, {num(vy)}) = {vText}" size={16} weight={600} />
+				<T x={PX} y={410} text="Every vector is built from î and ĵ" size={14} weight={600} />
+				<T x={PX} y={432} text="in exactly one way." size={14} weight={600} />
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- ============ v and its handle ============ -->

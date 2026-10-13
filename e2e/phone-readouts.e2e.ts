@@ -766,6 +766,31 @@ test.describe('on a phone', () => {
 		await range(page, 'x').fill('3');
 		await expect(panel).toContainText(/A\(x\) = 9\.00/);
 	});
+
+	test('linear transformations plane: v is text and follows its sliders', async ({ page }) => {
+		await page.goto('./linear-transformations/#arrows');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Vector v\s*v = \(2, 1\)/);
+		await expect(panel).toContainText('2 steps right, 1 step up');
+		await expect(drawing(page)).not.toContainText('Scaling by a number');
+		await range(page, 'vx').fill('-3');
+		await expect(panel).toContainText(/v = \(−3, 1\)/);
+		await expect(panel).toContainText('3 steps left');
+	});
+
+	test('linear transformations: where v lands is text and follows v', async ({ page }) => {
+		await page.goto('./linear-transformations/#follow');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Before\s*v = \(2, 1\)/);
+		await expect(panel).toContainText(/After: the same recipe\s*= \(/);
+		await expect(panel).toContainText('î lands on');
+		await expect(drawing(page)).not.toContainText('v lands here');
+		await range(page, 'vy').fill('3');
+		await expect(panel).toContainText(/Before\s*v = \(2, 3\)/);
+		await page.goto('./linear-transformations/#determinant');
+		await expect(panel).toContainText(/det = ad − bc\s*.* = 3/);
+		await expect(drawing(page)).not.toContainText('det = ad − bc');
+	});
 });
 
 test.describe('on a wide screen', () => {
