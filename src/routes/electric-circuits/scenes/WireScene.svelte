@@ -321,7 +321,7 @@
 	{@render txt(
 		24,
 		48,
-		'magnified about 10 million times · not to scale: the jiggle is slowed down, the drift sped up',
+		'magnified tens of millions of times · not to scale: the jiggle is slowed down, the drift sped up',
 		11,
 		{ muted: true }
 	)}

@@ -105,7 +105,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A battery, a bulb, a switch and some wire. When the switch is closed the bulb lights; open it and the bulb goes out — at once, even though the switch is nowhere near the bulb.</p>
 <p>The bulb lights only when there is a <strong>complete loop</strong> from one end of the battery, through the bulb and back to the other end: a <dfn data-def="A closed path that electric charge can flow around.">circuit</dfn>. Opening the switch makes a gap in the loop, and everything stops everywhere.</p>
-<p>The dots are moving electric <dfn data-def="Electric charge: the property of particles such as electrons and protons that makes them push and pull on each other. In metal wires, the charges that move are electrons.">charge</dfn>. The flow of charge is the <dfn data-def="The amount of electric charge passing a point each second, measured in amperes (A).">current</dfn>.</p>`
+<p>The dots are moving electric <dfn data-def="Electric charge: the property of particles such as electrons and protons that makes them push and pull on each other. In metal wires, the charges that move are electrons.">charge</dfn>. The flow of charge is the <dfn data-def="The amount of electric charge passing a point each second, measured in amperes (A).">current</dfn>. (The dots follow the direction circuit diagrams use, out of the battery's + end; the electrons in the wire actually drift the other way, and far more slowly — see "Slow charges, instant light".)</p>`
 		},
 		{
 			id: 'current',
@@ -118,7 +118,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>An <dfn data-def="A meter that measures the current through it. It is put into the loop, so that the current has to pass through it.">ammeter</dfn> counts how much charge passes it each second, in <strong>amperes</strong> (A). Here there are three: before the bulb, after it, and on the way back to the battery.</p>
 <p>They all read the same, 0.50 A. The bulb does <em>not</em> use up current: every bit of charge that goes into it comes out the other side, and the same amount flows past every point of the loop. Charge is never created or destroyed; it just goes round.</p>
-<p>What the bulb does take is <strong>energy</strong>: the battery pushes charges all round the loop, and the bulb turns that push into light and heat — the next chapter is about that.</p>`
+<p>What the bulb does take is <strong>energy</strong>: the battery gives the charges energy as it pushes them round the loop, and the bulb turns that energy into light and heat — the next chapter is about that.</p>`
 		},
 		{
 			id: 'drift',
@@ -145,7 +145,7 @@ export const spec: ExplainerSpec = {
 			controls: [closed],
 			body: `
 <p>The battery gives energy to the charge passing through it; the bulb turns that energy into light and heat. <dfn data-def="The energy given to (or taken from) each coulomb of charge, measured in volts: 1 volt = 1 joule per coulomb.">Voltage</dfn> measures how much energy each unit of charge gains or loses: a 6-volt battery gives every <dfn data-def="The unit of electric charge: the charge of about 6.2 × 10¹⁸ electrons. One ampere is one coulomb per second.">coulomb</dfn> of charge 6 joules.</p>
-<p>The colours show the <em>electric potential</em> along the loop (measured from the battery's − end): the wire leaving the battery's + end is "high" (6 V), the wire back to its − end is "low" (0 V). A <dfn data-def="A meter connected across a part, alongside it, that measures the voltage between its two ends. It takes almost no current.">voltmeter</dfn>, connected across a part, reads the difference: 6 V across the battery, 6 V across the bulb, and practically nothing across a piece of wire.</p>
+<p>The colours show the <dfn data-def="How much energy each coulomb of charge has at a point in the circuit, measured from the battery's − end, in volts.">electric potential</dfn> along the loop (measured from the battery's − end): the wire leaving the battery's + end is "high" (6 V), the wire back to its − end is "low" (0 V). A <dfn data-def="A meter connected across a part, alongside it, that measures the voltage between its two ends. It takes almost no current.">voltmeter</dfn>, connected across a part, reads the difference: 6 V across the battery, 6 V across the bulb, and practically nothing across a piece of wire.</p>
 <p>Open the switch: no charge flows, the bulb has no voltage across it, and the whole 6 V now appears across the gap in the switch.</p>`
 		},
 		{
@@ -210,7 +210,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Your turn. Pick a part, then click the gap between two pegs to place it; place a part over another to replace it, or remove it with the eraser. Clicking a switch flips it and clicking a battery turns it round, so erase those first to replace them. Hover over or focus any part to read the current through it and the voltage across it.</p>
 <p>Some things to try: two bulbs in series, then in parallel. Two batteries one after the other — and then with one turned round. An ammeter in every branch of a parallel circuit, and check that the currents add up at each junction.</p>
-<p>And one thing not to do with a real battery: connect a plain wire straight from one end to the other. With almost no resistance in the way, a huge current flows — a <dfn data-def="A path with almost no resistance between the two ends of a supply, so a dangerously large current flows. Real wires and batteries heat up fast and can catch fire.">short circuit</dfn> — the battery heats up, and the bulbs, bypassed, go out.</p>`
+<p>And one thing not to do with a real battery: connect a plain wire straight from one end to the other. With almost no resistance in the way, a huge current flows — a <dfn data-def="A path with almost no resistance between the two ends of a supply, so a dangerously large current flows. Real wires and batteries heat up fast and can catch fire.">short circuit</dfn> — the battery heats up, and the bulbs, bypassed, go out. (The batteries here are almost ideal, with only 0.02 Ω inside, so the meters show hundreds of amps. A real pack of dry cells has around an ohm inside and gives several amps, still enough to get hot.)</p>`
 		}
 	]
 };
