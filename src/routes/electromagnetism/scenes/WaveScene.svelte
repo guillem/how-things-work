@@ -21,7 +21,7 @@
 	 * across the whole stage).
 	 */
 	import { smoothstep, wavelengthToColor } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { C, wavelength } from '../em';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -212,7 +212,10 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-dasharray="3 5"
 		/>
-		{@render txt(front + 8, AXY - AMP - 8, 'no wave here yet', 11, { muted: true })}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="no-wave">
+			{@render txt(front + 8, AXY - AMP - 8, 'no wave here yet', 11, { muted: true })}
+		</Readout>
 	{/if}
 
 	<!-- the antenna and its charge -->
@@ -241,24 +244,31 @@
 		style:font-size="15px"
 		style:fill="#fff">+</text
 	>
-	{@render txt(X0 - 30, AXY + 94, shaking ? 'shaken charge' : 'charge at rest', 12, {
-		anchor: 'middle',
-		weight: 600
-	})}
-
+	<Readout id="charge-label">
+		{@render txt(X0 - 30, AXY + 94, shaking ? 'shaken charge' : 'charge at rest', 12, {
+			anchor: 'middle',
+			weight: 600
+		})}
+	</Readout>
 	<!-- labels -->
-	{@render txt(X0 + 8, AXY - AMP - 22, 'electric field E', 13, {
-		weight: 700,
-		color: 'var(--em-field)'
-	})}
-	{@render txt(X0 + 70, AXY + AMP + 22, 'magnetic field B (out of and into the page)', 13, {
-		weight: 700,
-		color: 'var(--em-bfield)'
-	})}
-	{@render txt(X1, AXY + AMP + 22, 'travels at the speed of light →', 12, {
-		anchor: 'end',
-		muted: true
-	})}
+	<Readout id="e-label" order={10} label="Electric field E" color="var(--em-field)">
+		{@render txt(X0 + 8, AXY - AMP - 22, 'electric field E', 13, {
+			weight: 700,
+			color: 'var(--em-field)'
+		})}
+	</Readout>
+	<Readout id="b-label" order={11} label="Magnetic field B" color="var(--em-bfield)">
+		{@render txt(X0 + 70, AXY + AMP + 22, 'magnetic field B (out of and into the page)', 13, {
+			weight: 700,
+			color: 'var(--em-bfield)'
+		})}
+	</Readout>
+	<Readout id="speed-label">
+		{@render txt(X1, AXY + AMP + 22, 'travels at the speed of light →', 12, {
+			anchor: 'end',
+			muted: true
+		})}
+	</Readout>
 	{#if crest !== null}
 		{@const y = AXY - AMP - 34}
 		<path
@@ -267,27 +277,33 @@
 			stroke="var(--stage-ink)"
 			stroke-width="1.2"
 		/>
-		{@render txt(crest + LAMBDA / 2, y - 6, `one wavelength: ${fmtLen(lam)}`, 12, {
-			anchor: 'middle',
-			weight: 600
-		})}
+		<Readout id="crest-label">
+			{@render txt(crest + LAMBDA / 2, y - 6, `one wavelength: ${fmtLen(lam)}`, 12, {
+				anchor: 'middle',
+				weight: 600
+			})}
+		</Readout>
 	{/if}
-	{@render txt(
-		480,
-		388,
-		'A changing E makes B; a changing B makes E. They rise and fall together.',
-		13,
-		{
-			anchor: 'middle',
-			muted: true
-		}
-	)}
+	<Readout id="takeaway">
+		{@render txt(
+			480,
+			388,
+			'A changing E makes B; a changing B makes E. They rise and fall together.',
+			13,
+			{
+				anchor: 'middle',
+				muted: true
+			}
+		)}
+	</Readout>
 
 	<!-- spectrum -->
 	<g style:pointer-events="none">
-		{@render txt(SP.x0, SP.y - 26, 'the electromagnetic spectrum: longer waves to the left', 12, {
-			muted: true
-		})}
+		<Readout id="spectrum-title">
+			{@render txt(SP.x0, SP.y - 26, 'the electromagnetic spectrum: longer waves to the left', 12, {
+				muted: true
+			})}
+		</Readout>
 		{#each regions as r, i (r.id)}
 			<rect
 				x={spx(r.from)}
@@ -297,10 +313,12 @@
 				fill="var(--em-field)"
 				opacity={0.12 + 0.06 * (i % 2)}
 			/>
-			{@render txt((spx(r.from) + spx(r.to)) / 2, SP.y + SP.h + 16, r.label, 11, {
-				anchor: 'middle',
-				muted: true
-			})}
+			<Readout id="region-{r.id}">
+				{@render txt((spx(r.from) + spx(r.to)) / 2, SP.y + SP.h + 16, r.label, 11, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</Readout>
 		{/each}
 		{#each rainbow.slice(0, -1) as c (c.i)}
 			<rect
@@ -311,7 +329,12 @@
 				fill={wavelengthToColor(c.nm - 25)}
 			/>
 		{/each}
-		{@render txt(spx(550e-9), SP.y + SP.h + 30, 'visible', 11, { anchor: 'middle', muted: true })}
+		<Readout id="visible">
+			{@render txt(spx(550e-9), SP.y + SP.h + 30, 'visible', 11, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</Readout>
 		<path
 			d="M{mx} {SP.y - 2} L{mx - 7} {SP.y - 12} L{mx + 7} {SP.y - 12} Z"
 			fill="var(--stage-ink)"
@@ -321,31 +344,44 @@
 
 	<!-- readout card -->
 	<g style:pointer-events="none">
-		<rect
-			x={CARD.x}
-			y={CARD.y}
-			width={CARD.w}
-			height={CARD.h}
-			rx="12"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
+		<Readout id="card">
+			<rect
+				x={CARD.x}
+				y={CARD.y}
+				width={CARD.w}
+				height={CARD.h}
+				rx="12"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+		</Readout>
 		{#each cards as c, i (c.id)}
 			{@const w = CARD.w / cards.length}
 			{@const x = CARD.x + 16 + i * w}
-			{#if i > 0}
-				<line
-					x1={CARD.x + i * w}
-					x2={CARD.x + i * w}
-					y1={CARD.y + 14}
-					y2={CARD.y + CARD.h - 14}
-					stroke="var(--border)"
-				/>
-			{/if}
-			<text {x} y={CARD.y + 25} class="muted" style:font-size="12px">{c.label}</text>
-			<text {x} y={CARD.y + 51} font-weight="700" style:font-size="19px" style:fill={c.color}
-				>{c.value}</text
+			<Readout
+				id="card-{c.id}"
+				order={1 + i}
+				label={c.label[0].toUpperCase() + c.label.slice(1)}
+				value={c.value}
+				note={c.id === 'c'
+					? 'a changing E makes B; a changing B makes E: they rise and fall together'
+					: undefined}
+				color={c.color}
 			>
+				{#if i > 0}
+					<line
+						x1={CARD.x + i * w}
+						x2={CARD.x + i * w}
+						y1={CARD.y + 14}
+						y2={CARD.y + CARD.h - 14}
+						stroke="var(--border)"
+					/>
+				{/if}
+				<text {x} y={CARD.y + 25} class="muted" style:font-size="12px">{c.label}</text>
+				<text {x} y={CARD.y + 51} font-weight="700" style:font-size="19px" style:fill={c.color}
+					>{c.value}</text
+				>
+			</Readout>
 		{/each}
 	</g>
 </g>

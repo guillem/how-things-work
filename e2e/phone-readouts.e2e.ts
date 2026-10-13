@@ -1264,6 +1264,62 @@ test.describe('on a phone', () => {
 		await page.goto('./atoms-periodic-table/#chemistry');
 		await expect(panel).toContainText(/Group 17 · halogens\s*7 outer electrons/);
 	});
+
+	test('electromagnetism charges: the force and the field are text and follow the charges', async ({
+		page
+	}) => {
+		await page.goto('./electromagnetism/#force');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Big charge\s*\+10 nC/);
+		await expect(panel).toContainText(/Force on the test charge\s*8\.99 µN/);
+		await expect(drawing(page)).not.toContainText('force on the test charge');
+		await range(page, 'charge').fill('20');
+		await expect(panel).toContainText(/Big charge\s*\+20 nC/);
+		await expect(panel).not.toContainText('8.99 µN');
+		await page.goto('./electromagnetism/#field');
+		await expect(panel).toContainText(/Field at the test charge\s*[\d.]+ kN\/C/);
+	});
+
+	test('electromagnetism wire and coil: the fields are text and follow the current', async ({
+		page
+	}) => {
+		await page.goto('./electromagnetism/#wire');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Current\s*5\.0 A/);
+		await expect(panel).toContainText(/Wire’s field 2 cm away\s*50 µT/);
+		await expect(drawing(page)).not.toContainText('2 cm away');
+		await range(page, 'wireCurrent').fill('10');
+		await expect(panel).toContainText(/Wire’s field 2 cm away\s*100 µT/);
+		await page.goto('./electromagnetism/#coil');
+		await expect(panel).toContainText(/Field in the middle\s*[\d.]+ mT/);
+		await expect(panel).not.toContainText('Wire’s field');
+		await page.locator('button[data-control=source][data-value=magnet]').click();
+		await expect(panel).toContainText(/Source\s*bar magnet/);
+	});
+
+	test('electromagnetism induction: the induced voltage and current are text', async ({ page }) => {
+		await page.goto('./electromagnetism/#magnet');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Voltage induced\s*[−+]?\d+ mV/);
+		await expect(drawing(page)).not.toContainText('voltage induced');
+		await page.goto('./electromagnetism/#neighbour');
+		await expect(panel).toContainText(/Current in coil A\s*/);
+		await page.locator('button[data-control=drive][data-value=hand]').click();
+		await range(page, 'currentA').fill('1.5');
+		await expect(panel).toContainText(/Current in coil A\s*\+?1\.50 A/);
+	});
+
+	test('electromagnetism light: the wavelength is text and follows the kind of wave', async ({
+		page
+	}) => {
+		await page.goto('./electromagnetism/#light');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/FM radio\s*100 MHz/);
+		await expect(panel).toContainText(/Wavelength\s*3\.00 m/);
+		await expect(drawing(page)).not.toContainText('one wavelength');
+		await page.locator('button[data-control=band][data-value=micro]').click();
+		await expect(panel).toContainText(/Microwave oven\s*2\.45 GHz/);
+	});
 });
 
 test.describe('on a wide screen', () => {

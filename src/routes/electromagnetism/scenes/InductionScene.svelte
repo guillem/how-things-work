@@ -33,7 +33,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp } from '#lib/draw/index.ts';
 	import { startDrag } from '#lib/draw/pointer.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { PICKUP, R_PICKUP, linkageTable, neighbour, swing } from '../em';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -430,11 +430,14 @@
 			>
 		</g>
 		{#if hand && Math.abs(sim.v) < 1e-3}
-			{@render txt(magX, AX - MAG.h / 2 - 12, 'still: no current', 12, {
-				anchor: 'middle',
-				weight: 600,
-				opacity: mOn.current
-			})}
+			<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+			<Readout id="still">
+				{@render txt(magX, AX - MAG.h / 2 - 12, 'still: no current', 12, {
+					anchor: 'middle',
+					weight: 600,
+					opacity: mOn.current
+				})}
+			</Readout>
 		{/if}
 	{/if}
 
@@ -473,11 +476,20 @@
 				/>
 			{/if}
 			{@render coil(coilA_x, 'var(--em-drive)', 'front')}
-			{@render txt(coilA_x - 22, AX + COIL_R + 22, 'coil A', 13, {
-				anchor: 'end',
-				weight: 700,
-				color: 'var(--em-drive)'
-			})}
+			<Readout id="coil-a">
+				{@render txt(coilA_x - 22, AX + COIL_R + 22, 'coil A', 13, {
+					anchor: 'end',
+					weight: 700,
+					color: 'var(--em-drive)'
+				})}
+				{#snippet narrow()}
+					{@render txt(coilA_x - 22, AX + COIL_R + 34, 'A', 32, {
+						anchor: 'end',
+						weight: 700,
+						color: 'var(--em-drive)'
+					})}
+				{/snippet}
+			</Readout>
 			<circle
 				cx={coilA_x - 110}
 				cy={AX}
@@ -503,20 +515,22 @@
 					stroke-width="2.5"
 				/>
 			{/if}
-			{@render txt(
-				coilA_x - 110,
-				AX + 52,
-				setA
-					? `you set it: ${aHand.toFixed(1)} A`
-					: f === 0
-						? 'steady 2 A'
-						: `2 A, ${f.toFixed(2)} Hz`,
-				11,
-				{
-					anchor: 'middle',
-					muted: true
-				}
-			)}
+			<Readout id="source-a">
+				{@render txt(
+					coilA_x - 110,
+					AX + 52,
+					setA
+						? `you set it: ${aHand.toFixed(1)} A`
+						: f === 0
+							? 'steady 2 A'
+							: `2 A, ${f.toFixed(2)} Hz`,
+					11,
+					{
+						anchor: 'middle',
+						muted: true
+					}
+				)}
+			</Readout>
 		</g>
 	{/if}
 
@@ -537,21 +551,30 @@
 				color: rightPole === 'N' ? 'var(--em-north)' : 'var(--em-south)'
 			})}
 		{/if}
-		{@render txt(CX + 40, AX - COIL_R - 34, 'induced electric field', 11, {
-			color: 'var(--em-field)',
-			weight: 600
-		})}
+		<Readout id="induced-label">
+			{@render txt(CX + 40, AX - COIL_R - 34, 'induced electric field', 11, {
+				color: 'var(--em-field)',
+				weight: 600
+			})}
+		</Readout>
 	{/if}
-	{@render txt(
-		CX + 40,
-		AX + COIL_R + 20,
-		isMagnet ? `${turns} turns` : `coil B · ${turns} turns`,
-		12,
-		{
-			anchor: 'start',
-			weight: 600
-		}
-	)}
+	<Readout id="coil-b">
+		{@render txt(
+			CX + 40,
+			AX + COIL_R + 20,
+			isMagnet ? `${turns} turns` : `coil B · ${turns} turns`,
+			12,
+			{
+				anchor: 'start',
+				weight: 600
+			}
+		)}
+		{#snippet narrow()}
+			{#if !isMagnet}
+				{@render txt(CX + 40, AX + COIL_R + 34, 'B', 32, { anchor: 'start', weight: 700 })}
+			{/if}
+		{/snippet}
+	</Readout>
 
 	<!-- leads to the meter -->
 	<path
@@ -587,8 +610,10 @@
 				stroke-width={k === 0 ? 2 : 1.2}
 			/>
 		{/each}
-		{@render txt(METER.x - 50, METER.y - 4, `−${SCALE}`, 10, { anchor: 'middle', muted: true })}
-		{@render txt(METER.x + 50, METER.y - 4, `+${SCALE}`, 10, { anchor: 'middle', muted: true })}
+		<Readout id="meter-ends">
+			{@render txt(METER.x - 50, METER.y - 4, `−${SCALE}`, 10, { anchor: 'middle', muted: true })}
+			{@render txt(METER.x + 50, METER.y - 4, `+${SCALE}`, 10, { anchor: 'middle', muted: true })}
+		</Readout>
 		<line
 			x1={METER.x}
 			y1={METER.y}
@@ -599,7 +624,9 @@
 			stroke-linecap="round"
 		/>
 		<circle cx={METER.x} cy={METER.y} r="5" fill="var(--stage-ink)" />
-		{@render txt(METER.x, METER.y - 26, unit, 11, { anchor: 'middle', muted: true })}
+		<Readout id="meter-unit">
+			{@render txt(METER.x, METER.y - 26, unit, 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	</g>
 
 	<!-- trace -->
@@ -608,71 +635,88 @@
 		<line x1={PLOT.x0} x2={PLOT.x0} y1={PLOT.top} y2={PLOT.bottom} stroke="var(--stage-line)" />
 		<line x1={PLOT.x0} x2={PLOT.x1} y1={sy(1)} y2={sy(1)} stroke="var(--stage-grid)" />
 		<line x1={PLOT.x0} x2={PLOT.x1} y1={sy(-1)} y2={sy(-1)} stroke="var(--stage-grid)" />
-		{@render txt(PLOT.x0 - 8, mid + 4, '0', 11, { anchor: 'end', muted: true })}
-		{@render txt(PLOT.x0 - 8, sy(1) + 4, `+${SCALE}`, 11, { anchor: 'end', muted: true })}
-		{@render txt(PLOT.x0 - 8, sy(-1) + 4, `−${SCALE}`, 11, { anchor: 'end', muted: true })}
+		<Readout id="plot-ticks">
+			{@render txt(PLOT.x0 - 8, mid + 4, '0', 11, { anchor: 'end', muted: true })}
+			{@render txt(PLOT.x0 - 8, sy(1) + 4, `+${SCALE}`, 11, { anchor: 'end', muted: true })}
+			{@render txt(PLOT.x0 - 8, sy(-1) + 4, `−${SCALE}`, 11, { anchor: 'end', muted: true })}
+		</Readout>
 		{#if traces.a}
 			<path d={traces.a} fill="none" stroke="var(--em-drive)" stroke-width="2" opacity="0.85" />
 		{/if}
 		{#if traces.b}
 			<path d={traces.b} fill="none" stroke="var(--em-current)" stroke-width="2.2" />
 		{/if}
-		{@render txt(PLOT.x1, PLOT.top - 12, `last ${WIN} seconds`, 11, { anchor: 'end', muted: true })}
-		{@render txt(
-			PLOT.x0,
-			PLOT.top - 12,
-			isMagnet ? `current in the coil (${unit})` : `current in B (${unit})`,
-			12,
-			{ weight: 600, color: 'var(--em-current)' }
-		)}
-		{#if !isMagnet}
-			{@render txt(PLOT.x0 + 170, PLOT.top - 12, `current in A (±${I0} A)`, 12, {
-				weight: 600,
-				color: 'var(--em-drive)'
+		<Readout id="plot-labels">
+			{@render txt(PLOT.x1, PLOT.top - 12, `last ${WIN} seconds`, 11, {
+				anchor: 'end',
+				muted: true
 			})}
-		{/if}
-		{#if manual && traces.n < 2}
 			{@render txt(
-				(PLOT.x0 + PLOT.x1) / 2,
-				mid - 14,
-				reduced
-					? 'Reduced motion is on: choose “Swings through” to see the pulses'
-					: hand
-						? 'Drag the magnet through the coil'
-						: 'Move the slider for coil A’s current',
-				13,
-				{ anchor: 'middle', muted: true }
+				PLOT.x0,
+				PLOT.top - 12,
+				isMagnet ? `current in the coil (${unit})` : `current in B (${unit})`,
+				12,
+				{ weight: 600, color: 'var(--em-current)' }
 			)}
+			{#if !isMagnet}
+				{@render txt(PLOT.x0 + 170, PLOT.top - 12, `current in A (±${I0} A)`, 12, {
+					weight: 600,
+					color: 'var(--em-drive)'
+				})}
+			{/if}
+		</Readout>
+		{#if manual && traces.n < 2}
+			{@const hint = reduced
+				? 'Reduced motion is on: choose “Swings through” to see the pulses'
+				: hand
+					? 'Drag the magnet through the coil'
+					: 'Move the slider for coil A’s current'}
+			<Readout id="hint" order={0} label="Try" value={hint}>
+				{@render txt((PLOT.x0 + PLOT.x1) / 2, mid - 14, hint, 13, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</Readout>
 		{/if}
 	</g>
 
 	<!-- readout card -->
 	<g style:pointer-events="none">
-		<rect
-			x={CARD.x}
-			y={CARD.y}
-			width={CARD.w}
-			height={CARD.h}
-			rx="12"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
+		<Readout id="card">
+			<rect
+				x={CARD.x}
+				y={CARD.y}
+				width={CARD.w}
+				height={CARD.h}
+				rx="12"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+		</Readout>
 		{#each cards as c, i (c.id)}
 			{@const w = CARD.w / cards.length}
 			{@const x = CARD.x + 16 + i * w}
-			{#if i > 0}
-				<line
-					x1={CARD.x + i * w}
-					x2={CARD.x + i * w}
-					y1={CARD.y + 14}
-					y2={CARD.y + CARD.h - 14}
-					stroke="var(--border)"
-				/>
-			{/if}
-			<text {x} y={CARD.y + 25} class="muted" style:font-size="12px">{c.label}</text>
-			<text {x} y={CARD.y + 51} font-weight="700" style:font-size="19px" style:fill={c.color}
-				>{c.value}</text
+			<Readout
+				id="card-{c.id}"
+				order={1 + i}
+				label={c.label[0].toUpperCase() + c.label.slice(1)}
+				value={c.value}
+				color={c.color}
 			>
+				{#if i > 0}
+					<line
+						x1={CARD.x + i * w}
+						x2={CARD.x + i * w}
+						y1={CARD.y + 14}
+						y2={CARD.y + CARD.h - 14}
+						stroke="var(--border)"
+					/>
+				{/if}
+				<text {x} y={CARD.y + 25} class="muted" style:font-size="12px">{c.label}</text>
+				<text {x} y={CARD.y + 51} font-weight="700" style:font-size="19px" style:fill={c.color}
+					>{c.value}</text
+				>
+			</Readout>
 		{/each}
 	</g>
 </g>

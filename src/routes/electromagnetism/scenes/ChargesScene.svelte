@@ -16,7 +16,7 @@
 	import { untrack } from 'svelte';
 	import { clamp } from '#lib/draw/index.ts';
 	import { startDrag } from '#lib/draw/pointer.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { fieldAt, fieldLines, type Charge } from '../em';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -362,9 +362,12 @@
 				stroke-dasharray="4 6"
 			/>
 			<!-- labelled up and to the right, where both rings are on the stage -->
-			{@render txt(BIG.x + cm * 20 * 0.866 + 6, BIG.y - cm * 20 * 0.5 - 4, `${cm} cm`, 11, {
-				muted: true
-			})}
+			<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+			<Readout id="ring-{cm}">
+				{@render txt(BIG.x + cm * 20 * 0.866 + 6, BIG.y - cm * 20 * 0.5 - 4, `${cm} cm`, 11, {
+					muted: true
+				})}
+			</Readout>
 		{/each}
 	{/if}
 
@@ -417,7 +420,9 @@
 				style:font-size="19px"
 				style:fill="#fff">{c.q > 0 ? '+' : c.q < 0 ? '−' : '0'}</text
 			>
-			{@render txt(c.x, c.y + r + 18, fmtQ(c.q), 12, { anchor: 'middle', weight: 600, color })}
+			<Readout id="q-{i}">
+				{@render txt(c.x, c.y + r + 18, fmtQ(c.q), 12, { anchor: 'middle', weight: 600, color })}
+			</Readout>
 		{/if}
 	{/each}
 
@@ -481,52 +486,70 @@
 			style:fill="#000">+</text
 		>
 	</g>
-	{@render txt(
-		test.x + (arrow && Math.cos(arrow.ang) > 0.3 ? -16 : 16),
-		test.y + (arrow && Math.sin(arrow.ang) > 0.5 ? -14 : 26),
-		'test charge',
-		12,
-		{
-			anchor: arrow && Math.cos(arrow.ang) > 0.3 ? 'end' : 'start',
-			weight: 600,
-			color: 'var(--em-test)'
-		}
-	)}
-
+	<Readout id="test" order={10} label="Test charge (drag it)" color="var(--em-test)">
+		{@render txt(
+			test.x + (arrow && Math.cos(arrow.ang) > 0.3 ? -16 : 16),
+			test.y + (arrow && Math.sin(arrow.ang) > 0.5 ? -14 : 26),
+			'test charge',
+			12,
+			{
+				anchor: arrow && Math.cos(arrow.ang) > 0.3 ? 'end' : 'start',
+				weight: 600,
+				color: 'var(--em-test)'
+			}
+		)}
+	</Readout>
 	{#if phase === 'field' && charges.length === 0}
-		{@render txt(480, 300, 'No charges, no field: add some', 15, { anchor: 'middle', muted: true })}
+		<Readout id="empty" order={0} label="No charges" value="no field: add some">
+			{@render txt(480, 300, 'No charges, no field: add some', 15, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</Readout>
 	{/if}
 	{#if phase === 'field' && full}
-		{@render txt(944, 584, `at most ${MAX} charges`, 11, { anchor: 'end', muted: true })}
+		<Readout id="full" order={9} label="Charges" value="at most {MAX}">
+			{@render txt(944, 584, `at most ${MAX} charges`, 11, { anchor: 'end', muted: true })}
+		</Readout>
 	{/if}
 
 	<!-- readout card -->
 	<g style:pointer-events="none">
-		<rect
-			x={CARD.x}
-			y={CARD.y}
-			width={CARD.w}
-			height={CARD.h}
-			rx="12"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
+		<Readout id="card">
+			<rect
+				x={CARD.x}
+				y={CARD.y}
+				width={CARD.w}
+				height={CARD.h}
+				rx="12"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+		</Readout>
 		{#each cards as c, i (c.id)}
 			{@const w = CARD.w / cards.length}
 			{@const x = CARD.x + 16 + i * w}
-			{#if i > 0}
-				<line
-					x1={CARD.x + i * w}
-					x2={CARD.x + i * w}
-					y1={CARD.y + 14}
-					y2={CARD.y + CARD.h - 14}
-					stroke="var(--border)"
-				/>
-			{/if}
-			<text {x} y={CARD.y + 25} class="muted" style:font-size="12px">{c.label}</text>
-			<text {x} y={CARD.y + 51} font-weight="700" style:font-size="19px" style:fill={c.color}
-				>{c.value}</text
+			<Readout
+				id="card-{c.id}"
+				order={1 + i}
+				label={c.label[0].toUpperCase() + c.label.slice(1)}
+				value={c.value}
+				color={c.color}
 			>
+				{#if i > 0}
+					<line
+						x1={CARD.x + i * w}
+						x2={CARD.x + i * w}
+						y1={CARD.y + 14}
+						y2={CARD.y + CARD.h - 14}
+						stroke="var(--border)"
+					/>
+				{/if}
+				<text {x} y={CARD.y + 25} class="muted" style:font-size="12px">{c.label}</text>
+				<text {x} y={CARD.y + 51} font-weight="700" style:font-size="19px" style:fill={c.color}
+					>{c.value}</text
+				>
+			</Readout>
 		{/each}
 	</g>
 </g>
