@@ -87,7 +87,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>How does a sat-nav, a delivery robot or a character in a video game find its way? To a computer, a map is a <dfn data-def="A set of points (nodes) joined by connections (edges). A grid map is a graph whose nodes are the cells and whose edges join neighbouring cells.">graph</dfn>: a set of places, and connections between neighbouring places.</p>
 <p>Here the places are the squares of a grid. From any square you can step up, down, left or right — unless there is a wall. The computer can't see the whole map at a glance as you do; it can only look at one square and ask: where can I go from here?</p>
-<p>Paint some walls and move the start (S) and the goal (G). In the next steps, three different methods will search maps like this one; on each step you can paint and move S and G again.</p>`
+<p>Paint some walls and move the start (S) and the goal (G). In the next steps, three different methods will search maps like this one; on most steps you can paint and move S and G again.</p>`
 		},
 		{
 			id: 'bfs',
