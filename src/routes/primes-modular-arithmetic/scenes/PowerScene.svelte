@@ -315,7 +315,7 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		{@render txt(PX + 36, 370, 'With a 617-digit prime instead of 101:', 13, { weight: 700 })}
+		{@render txt(PX + 36, 370, 'With a 2048-bit (617-digit) prime:', 13, { weight: 700 })}
 		{@render txt(PX + 36, 396, 'forwards: at most 4,094 multiplications', 13)}
 		{@render txt(PX + 36, 418, 'backwards by trying: up to about 10⁶¹⁶ tries', 13)}
 		{@render txt(PX + 36, 446, 'Cleverer methods exist, but none is known', 12, { muted: true })}
