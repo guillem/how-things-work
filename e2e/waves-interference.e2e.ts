@@ -132,13 +132,16 @@ test('a source moving at 30 m/s is heard higher ahead and lower behind', async (
 });
 
 /** Where a handle's centre is, in scene coordinates. */
-async function sceneCentre(page: Page, handle: Locator) {
-	const box = (await page.locator('.stage svg').boundingBox())!;
-	const k = Math.min(box.width / 960, box.height / 600);
-	const ox = box.x + (box.width - 960 * k) / 2;
-	const oy = box.y + (box.height - 600 * k) / 2;
-	const h = (await handle.boundingBox())!;
-	return { x: (h.x + h.width / 2 - ox) / k, y: (h.y + h.height / 2 - oy) / k };
+async function sceneCentre(handle: Locator) {
+	// Both boxes in one go: measured separately, a scroll in between skews them.
+	return handle.evaluate((h) => {
+		const box = h.closest('svg')!.getBoundingClientRect();
+		const r = h.getBoundingClientRect();
+		const k = Math.min(box.width / 960, box.height / 600);
+		const ox = box.x + (box.width - 960 * k) / 2;
+		const oy = box.y + (box.height - 600 * k) / 2;
+		return { x: (r.x + r.width / 2 - ox) / k, y: (r.y + r.height / 2 - oy) / k };
+	});
 }
 
 async function drag(page: Page, handle: Locator, x: number, y: number) {
@@ -163,7 +166,7 @@ test('widening the spacing keeps both sources in the tank', async ({ page }) => 
 	await slider(page, 'spacing').fill('12');
 	await expect(stage(page)).toContainText('12.0 cm');
 	for (const s of [one, two]) {
-		const c = await sceneCentre(page, s);
+		const c = await sceneCentre(s);
 		// the tank spans x 16…656, y 16…584
 		expect(c.x).toBeGreaterThanOrEqual(16);
 		expect(c.x).toBeLessThanOrEqual(656);
@@ -181,7 +184,7 @@ test('a released source carries on from where it was let go, at the speed of the
 	await expect(stage(page)).toContainText('Heard ahead');
 	await page.clock.pauseAt(20_000); // time moves only when the test says so
 	const at = await scene(page);
-	const from = await sceneCentre(page, src);
+	const from = await sceneCentre(src);
 	// Carry it to x = 700, then move it 5 px every quarter second: 20 px/s on
 	// the stage, where sound's 343 m/s is drawn at 110 px/s — about 60 m/s.
 	let x = 700;
@@ -199,10 +202,10 @@ test('a released source carries on from where it was let go, at the speed of the
 	await page.mouse.up();
 	await expect(slider(page, 'speed')).toHaveValue('60');
 	// It is where the hand let it go, not back in the middle of the stage…
-	expect(Math.abs((await sceneCentre(page, src)).x - x)).toBeLessThan(3);
+	expect(Math.abs((await sceneCentre(src)).x - x)).toBeLessThan(3);
 	// …and goes on from there: 60 m/s is 19 px of stage a second.
 	await page.clock.runFor(1000);
-	expect(Math.abs((await sceneCentre(page, src)).x - (x + 19.2))).toBeLessThan(3);
+	expect(Math.abs((await sceneCentre(src)).x - (x + 19.2))).toBeLessThan(3);
 });
 
 test('a tap on the source leaves its speed alone', async ({ page }) => {
