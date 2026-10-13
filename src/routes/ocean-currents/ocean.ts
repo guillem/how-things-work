@@ -14,8 +14,10 @@
  *    wind-stress curl is expanded in a sine series in latitude and each mode
  *    has a closed-form solution in longitude. Without β the gyres are
  *    symmetric; with it they are squeezed against the western coast (the
- *    Gulf Stream). Away from that coast the flow obeys Sverdrup's balance
- *    β·(northward transport) = curl τ / ρ.
+ *    Gulf Stream). Away from that coast the flow is close to Sverdrup's
+ *    balance β·(northward transport) = curl τ / ρ, but only roughly: with the
+ *    model's strong friction (r/β = 100 km) the north–south part of r∇²ψ is
+ *    not small, and the interior transport is 0.5–1.1 times Sverdrup's.
  *    The wind's push on the sea comes from the bulk formula τ = ρ_air C_D U²,
  *    and the Ekman transport — the net drift of the wind-blown surface layer,
  *    at right angles to the wind — is τ / (ρ f).
@@ -311,17 +313,6 @@ export function gyreStreamlines(
 	return out;
 }
 
-/**
- * Sverdrup's interior transport (m³/s): the northward transport across the
- * whole basin's interior at latitude φ, (curl τ / ρβ) × width.
- */
-export function sverdrupTransport(winds: Winds, lat: number) {
-	const dl = 0.01;
-	const dtdy =
-		(stressAt(winds, lat + dl) - stressAt(winds, lat - dl)) / (2 * dl) / (rad(1) * EARTH_RADIUS);
-	return (-dtdy / (RHO * BETA)) * BASIN.width;
-}
-
 // ------------------------------------------------------------ 2. overturning
 
 export const BOX = {
@@ -579,6 +570,55 @@ export function runEnso(mu: number, burst: number, units = 48, dt = 0.02): Enso 
 		y += (dt / 6) * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]);
 	}
 	return { dt, T, h, tau };
+}
+
+/**
+ * El Niño (+1), La Niña (−1) or neutral (0) at each sample of a run, the way NOAA's index
+ * counts them: the eastern anomaly's 3-month running mean beyond ±0.5 °C, for at least five
+ * months in a row. A shorter warming is not an El Niño.
+ */
+export function ensoEpisodes({ dt, T }: Enso): Int8Array {
+	const months = dt * JIN.months;
+	const half = Math.round(1.5 / months); // samples in half of the 3-month window
+	const minRun = Math.round(5 / months);
+	const n = T.length;
+	const mean = new Float64Array(n);
+	for (let i = 0; i < n; i++) {
+		const lo = Math.max(0, i - half);
+		const hi = Math.min(n - 1, i + half);
+		let s = 0;
+		for (let k = lo; k <= hi; k++) s += T[k];
+		mean[i] = (s / (hi - lo + 1)) * JIN.degrees;
+	}
+	const out = new Int8Array(n);
+	for (let i = 0; i < n;) {
+		const sign = mean[i] > 0.5 ? 1 : mean[i] < -0.5 ? -1 : 0;
+		let j = i + 1;
+		while (
+			j < n &&
+			(sign > 0 ? mean[j] > 0.5 : sign < 0 ? mean[j] < -0.5 : Math.abs(mean[j]) <= 0.5)
+		)
+			j++;
+		if (sign !== 0 && j - i >= minRun) out.fill(sign, i, j);
+		i = j;
+	}
+	// The running mean lags the anomaly at an episode's edges: a sample beyond ±0.5 °C next
+	// to an episode of the same sign belongs to it (no "brief spell" flicker at either end).
+	const anomaly = (k: number) => T[k] * JIN.degrees;
+	for (let pass = 0; pass < 2; pass++) {
+		const fwd = pass === 0;
+		for (let k = fwd ? 1 : n - 2; fwd ? k < n : k >= 0; k += fwd ? 1 : -1) {
+			const prev = out[fwd ? k - 1 : k + 1];
+			if (
+				out[k] === 0 &&
+				prev !== 0 &&
+				Math.sign(anomaly(k)) === prev &&
+				Math.abs(anomaly(k)) > 0.5
+			)
+				out[k] = prev;
+		}
+	}
+	return out;
 }
 
 /** Growth rate (per unit time) and period (units) of the free coupled oscillation for coupling μ. */

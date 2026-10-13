@@ -145,6 +145,28 @@ export function boxSection(A: number) {
 	return { w, I };
 }
 
+/**
+ * Stresses (Pa, tension +) on a beam's two faces, where it bends most, and along its centre
+ * line: `plus` is the face on the member's local +y side. `peak` is where the bending peaks.
+ */
+export function faceStresses(r: MemberResult, area: number) {
+	const { I, w } = boxSection(area);
+	const axial = r.axial / area;
+	const peak = r.momentAt.reduce((x, y) => (Math.abs(y.m) > Math.abs(x.m) ? y : x), {
+		u: 0.5,
+		m: 0
+	});
+	const bend = (Math.abs(peak.m) * (w / 2)) / I;
+	const sm = Math.sign(peak.m); // sagging +: the local +y face is squashed
+	return { plus: axial - sm * bend, minus: axial + sm * bend, axial, peak };
+}
+
+/**
+ * How a face is drawn: +1 pulled (blue), −1 pushed (red), 0 plain steel when its stress is
+ * under 4 % of the yield stress (10 MPa), too little to matter.
+ */
+export const faceSign = (v: number) => (Math.abs(v) < 0.04 * YIELD ? 0 : Math.sign(v));
+
 // ------------------------------------------------------------ editing
 
 /** Index of the joint at a point, or −1. */
@@ -711,7 +733,7 @@ const DECK = chain(...deckXs.map((x) => [x, 0] as [number, number]));
 /** A plain beam across the gap (the road itself, in 5 m pieces joined rigidly). */
 export const BEAM = build(DECK);
 
-/** A Warren-style truss: the road, a top chord 5 m up and diagonals forming triangles. */
+/** A Howe-type truss: the road, a top chord 5 m up, verticals, and diagonals rising towards midspan. */
 export const TRUSS = build([
 	...DECK,
 	...chain(...[5, 10, 15, 20, 25, 30, 35].map((x) => [x, 5] as [number, number])),

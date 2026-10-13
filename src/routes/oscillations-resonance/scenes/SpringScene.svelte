@@ -37,13 +37,13 @@
 		crests,
 		lastTwo,
 		loopTime,
+		settleSeconds,
 		type Cell
 	} from './osc';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
 	const X0 = 0.15; // m below rest at release
-	const END = 120; // s computed
 	const W = 10; // s of trace on screen
 	const HOLD = 0.6; // s held at the release point
 	const REST = 300; // y of the mass's centre at rest
@@ -57,6 +57,7 @@
 	const k = $derived(Math.max(1, Number(params.stiffness ?? 39)));
 	const c = $derived(damped ? Math.max(0, Number(params.damping ?? 0.3)) : 0);
 	const spring = $derived({ m, k, c });
+	const END = $derived(settleSeconds(m, c, 120)); // s computed
 	const f0 = $derived(naturalFrequency(spring));
 	const zeta = $derived(dampingRatio(spring));
 	const fd = $derived(dampedFrequency(spring));

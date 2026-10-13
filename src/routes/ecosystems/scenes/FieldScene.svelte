@@ -52,7 +52,7 @@
 	const birth = $derived(Number(params.birth ?? 1));
 	const room = $derived(Number(params.room ?? 600));
 	const predation = $derived(Number(params.predation ?? 0.02));
-	const death = $derived(Number(params.death ?? 0.6));
+	const death = $derived(Number(params.death ?? 0.45));
 	const restarts = $derived(Number(params.restart ?? 0));
 	const WINDOW = $derived(growth ? 40 : 60); // years shown on the time chart
 	const RUN_YEARS = $derived(growth ? 120 : 300);
@@ -101,6 +101,21 @@
 			: run(lotkaVolterra({ a: birth, b: predation, c: C, d: death }), LV_START, RUN_YEARS, SAMPLE);
 		const H = states.map((s) => s[0]);
 		const P = states.map((s) => (growth ? 0 : s[1]));
+		// Below half a rabbit the population is gone: a real field has no fraction of a rabbit
+		// to rebound from (the "atto-fox" problem of smooth models). From then on the rabbits
+		// stay at zero and the foxes, with nothing to eat, die away at their death rate. (Within
+		// the slider ranges only the rabbits ever fall below one animal.)
+		let extinct: number | null = null;
+		if (!growth) {
+			const i0 = H.findIndex((h) => h < 0.5);
+			if (i0 >= 0) {
+				extinct = i0 * SAMPLE;
+				for (let i = i0; i < H.length; i++) {
+					H[i] = 0;
+					P[i] = P[i0] * Math.exp(-death * (i - i0) * SAMPLE);
+				}
+			}
+		}
 		let maxH = 0;
 		let minH = Infinity;
 		let maxP = 0;
@@ -135,7 +150,7 @@
 			if (H[i] < H[ext.minH]) ext.minH = i;
 		}
 		const n = nice(Math.max(maxH / MAX_RABBIT_ICONS, maxP / MAX_FOX_ICONS, 1));
-		return { H, P, maxH, maxP, still, peaks, period, ext, n };
+		return { H, P, maxH, maxP, still, peaks, period, ext, n, extinct };
 	});
 
 	const eq = $derived(lvEquilibrium({ a: birth, b: predation, c: C, d: death }));
@@ -155,7 +170,7 @@
 	// one representative year (the end of the window for growth, a late rabbit peak
 	// for the cycles).
 	const stillYear = $derived.by(() => {
-		if (growth || sim.peaks.length === 0) return WINDOW;
+		if (growth || sim.peaks.length === 0 || sim.extinct !== null) return WINDOW;
 		const late = sim.peaks.filter((p) => p <= WINDOW * 0.8);
 		return late.length ? late[late.length - 1] : WINDOW;
 	});
@@ -239,32 +254,35 @@
 			{ id: 'rf', i: ext.maxP, text: 'rabbits fall', side: 'above' },
 			{ id: 'ff', i: ext.minH, text: 'foxes fall', side: 'left' }
 		] as const;
-		return items.map((q) => {
-			const x = qx(H[q.i]);
-			const y = qy(P[q.i]);
-			const ang =
-				(Math.atan2(qy(P[q.i + 1]) - qy(P[q.i - 1]), qx(H[q.i + 1]) - qx(H[q.i - 1])) * 180) /
-				Math.PI;
-			const w = q.text.length * 6.6;
-			let lx = x;
-			let ly: number;
-			let anchor: 'start' | 'middle' | 'end' = 'middle';
-			if (q.side === 'below') ly = y + 22 > PY1 - 6 ? y - 12 : y + 22;
-			else if (q.side === 'above') ly = y - 14 < PY0 + 6 ? y + 24 : y - 14;
-			else if (q.side === 'right') {
-				ly = y + 4;
-				// No room outside: inside the loop, off the balance line (clear of the cross).
-				if (x + 14 + w < PX1) [lx, anchor] = [x + 14, 'start'];
-				else [lx, ly, anchor] = [x - 14, y + 22, 'end'];
-			} else {
-				ly = y + 4;
-				if (x - 14 - w > PX0 + 4) [lx, anchor] = [x - 14, 'end'];
-				else [lx, ly, anchor] = [x + 14, y - 14, 'start'];
-			}
-			if (anchor === 'middle') lx = clamp(lx, PX0 + w / 2 + 4, PX1 - w / 2 - 4);
-			const show = smoothstep(0, 0.8, seen - q.i * SAMPLE);
-			return { ...q, x, y, ang, lx, ly, anchor, show };
-		});
+		// Once the rabbits have died out there is no next lap: they never rise again.
+		return items
+			.filter((q) => !(sim.extinct !== null && q.id === 'rr'))
+			.map((q) => {
+				const x = qx(H[q.i]);
+				const y = qy(P[q.i]);
+				const ang =
+					(Math.atan2(qy(P[q.i + 1]) - qy(P[q.i - 1]), qx(H[q.i + 1]) - qx(H[q.i - 1])) * 180) /
+					Math.PI;
+				const w = q.text.length * 6.6;
+				let lx = x;
+				let ly: number;
+				let anchor: 'start' | 'middle' | 'end' = 'middle';
+				if (q.side === 'below') ly = y + 22 > PY1 - 6 ? y - 12 : y + 22;
+				else if (q.side === 'above') ly = y - 14 < PY0 + 6 ? y + 24 : y - 14;
+				else if (q.side === 'right') {
+					ly = y + 4;
+					// No room outside: inside the loop, off the balance line (clear of the cross).
+					if (x + 14 + w < PX1) [lx, anchor] = [x + 14, 'start'];
+					else [lx, ly, anchor] = [x - 14, y + 22, 'end'];
+				} else {
+					ly = y + 4;
+					if (x - 14 - w > PX0 + 4) [lx, anchor] = [x - 14, 'end'];
+					else [lx, ly, anchor] = [x + 14, y - 14, 'start'];
+				}
+				if (anchor === 'middle') lx = clamp(lx, PX0 + w / 2 + 4, PX1 - w / 2 - 4);
+				const show = smoothstep(0, 0.8, seen - q.i * SAMPLE);
+				return { ...q, x, y, ang, lx, ly, anchor, show };
+			});
 	});
 
 	// The balance point slides to its new place when a rate changes; the old one
@@ -349,6 +367,8 @@
 			return 'Growing faster and faster';
 		}
 		if (sim.still) return 'No cycle: the run starts at the balance point';
+		if (sim.extinct !== null && (reduced || year >= sim.extinct))
+			return 'Rabbits died out: in a real field the cycle ends here';
 		if (sim.peaks.length >= 2 && (reduced || year >= sim.peaks[1]))
 			return `One cycle ≈ ${sim.period.toFixed(1)} years`;
 		return 'Cycle length: measuring…';

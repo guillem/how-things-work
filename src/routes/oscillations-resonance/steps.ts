@@ -92,8 +92,8 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [mass, stiffness, release],
 			body: `
-<p>Pull a mass on a spring down and let go. The spring pulls it back up — but by the time it reaches the middle it is moving fast, so it overshoots, the spring pulls the other way, and so on. Any object pulled back towards a resting position by a force that grows with the distance <strong>oscillates</strong>.</p>
-<p>The trace on the right records its position over time: a smooth wave. Each oscillator has its own rhythm, its <dfn data-def="The frequency at which an oscillator swings when disturbed and left alone, in swings per second (hertz, Hz).">natural frequency</dfn>. A heavier mass swings more slowly; a stiffer spring, faster. Four times the mass halves the frequency.</p>`,
+<p>Pull a mass on a spring down and let go. The spring pulls it back up — but by the time it reaches the middle it is moving fast, so it overshoots, the spring pulls the other way, and so on. Any object pulled back towards a resting position by a force that grows with the distance <strong>oscillates</strong>, unless friction is strong enough to stop it.</p>
+<p>The trace on the right records its position over time: a smooth wave. Each oscillator has its own rhythm, its <dfn data-def="The frequency at which an oscillator swings when disturbed and left alone, without friction, in swings per second (hertz, Hz).">natural frequency</dfn>. A heavier mass swings more slowly; a stiffer spring, faster. Four times the mass halves the frequency.</p>`,
 			notes: `<p>For a mass <i>m</i> on a spring of stiffness <i>k</i> the natural frequency is (1/2π)·√(k/m), however far you pull it: a bigger pull gives a bigger swing, but not a slower one.</p>`
 		},
 		{
@@ -103,10 +103,11 @@ export const spec: ExplainerSpec = {
 			scene: 'spring',
 			hints: { phase: 'damping' },
 			duration: 22,
-			controls: [damping, release],
+			controls: [damping, mass, stiffness, release],
 			body: `
 <p>Real oscillators lose energy — to air, to friction, to heat in the spring — so each swing is a little smaller than the last. This is <dfn data-def="Anything that takes energy out of an oscillation, such as friction or air resistance, making it die away.">damping</dfn>.</p>
-<p>With a little damping the mass rings on for many swings. With more, it settles quickly. With a lot — like a door closer — it doesn't swing at all; it just creeps back to rest.</p>`
+<p>With a little damping the mass rings on for many swings. With more, it settles quickly. With a lot — like a door closer — it doesn't swing at all; it just creeps back to rest.</p>
+<p>The damping ratio compares the friction with the amount that just stops the swing: below 1 it swings, at 1 or more it creeps back.</p>`
 		},
 		{
 			id: 'pendulum',
@@ -117,9 +118,9 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [length, swing, release],
 			body: `
-<p>A pendulum is pulled back by gravity instead of a spring. Its natural frequency depends only on its <strong>length</strong> (and on gravity): a 1-metre pendulum takes about 2 seconds for a full swing, and making it four times longer doubles that. The mass of the bob doesn't matter at all.</p>
-<p>Nor, for small swings, does how far you pull it — which is why pendulums kept the world's time for three centuries. Release it from far out, though, and the swing slows: at 90° it takes about 18% longer.</p>`,
-			notes: `<p>For small swings the period is 2π√(L/g). Galileo described the regularity of pendulums around 1602 (legend has him timing a swinging lamp in Pisa cathedral twenty years earlier); Christiaan Huygens built the first pendulum clock in 1656.</p>`
+<p>A pendulum is pulled back by gravity instead of a spring. Its natural frequency depends only on its <strong>length</strong> (and on gravity): a 1-metre pendulum takes about 2 seconds for a full swing, there and back, and making it four times longer doubles that. The mass of the bob doesn't matter at all.</p>
+<p>Nor, for small swings, does how far you pull it — which is why pendulums kept the world's time for nearly three centuries. Release it from far out, though, and the swing slows: at 90° it takes about 18% longer.</p>`,
+			notes: `<p>For small swings the period is 2π√(L/g). Galileo described the regularity of pendulums around 1602 (legend has him timing a swinging lamp in Pisa cathedral twenty years earlier); Christiaan Huygens invented the pendulum clock in 1656, and the Hague clockmaker Salomon Coster built it the next year.</p>`
 		},
 		{
 			id: 'push',
@@ -142,8 +143,8 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [pushFreq, damping],
 			body: `
-<p>Plot how big the swing finally gets against the push frequency and you get a sharp peak at the natural frequency. Less friction makes the peak taller and narrower; more friction flattens it.</p>
-<p><strong>Every oscillator has a natural frequency, and pushing it at that frequency makes the motion build up.</strong> That is how a singer can shatter a wine glass, how a radio picks one station out of many, why soldiers break step on bridges — and why engineers add damping to tall buildings, so wind and earthquakes can't push them into resonance.</p>`,
+<p>Plot how big the swing finally gets against the push frequency and you get a sharp peak at the natural frequency. Less friction makes the peak taller and narrower; more friction flattens it and slides it a little lower.</p>
+<p><strong>Every oscillator has a natural frequency, and pushing it at that frequency makes the motion build up.</strong> That is how a singer can shatter a wine glass, how a radio picks one station out of many, why soldiers break step on bridges — and why engineers add damping to tall buildings, so that wind and earthquakes pushing at their natural frequency can't build up a large sway.</p>`,
 			notes: `<p>The steady swing for a push F₀ at frequency f is F₀ ÷ √((k − m ω²)² + (c ω)²), with ω = 2πf; at the natural frequency the first term vanishes and only friction limits it. London's Millennium Bridge swayed sideways on its opening day in 2000: as walkers adjusted their steps to the wobble, they fed it energy at its natural frequency. It closed, and dampers were fitted.</p>`
 		}
 	]

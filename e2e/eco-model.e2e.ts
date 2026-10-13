@@ -32,7 +32,7 @@ test('predator and prey: cycles that close on themselves', () => {
 	expect(still.at(-1)![0]).toBeCloseTo(eq.prey, 6);
 });
 
-test('the predators’ peaks come after the prey’s, about every 8–9 years', () => {
+test('the predators’ peaks come after the prey’s, about every ten years, like the hare–lynx records', () => {
 	const dt = 0.05;
 	const sim = run(lotkaVolterra(LV_DEFAULT), LV_START, 60, dt);
 	const peaks = (k: number) =>
@@ -42,9 +42,9 @@ test('the predators’ peaks come after the prey’s, about every 8–9 years', 
 	const prey = peaks(0);
 	const pred = peaks(1);
 	const gaps = prey.slice(1).map((t, i) => t - prey[i]);
-	for (const g of gaps) expect(g).toBeGreaterThan(7.5);
-	for (const g of gaps) expect(g).toBeLessThan(9.5);
-	expect(lvSmallPeriod(LV_DEFAULT)).toBeCloseTo(8.1, 1);
+	for (const g of gaps) expect(g).toBeGreaterThan(9);
+	for (const g of gaps) expect(g).toBeLessThan(10.5);
+	expect(lvSmallPeriod(LV_DEFAULT)).toBeCloseTo(9.4, 1);
 	// Each predator peak follows a prey peak by a fraction of a cycle.
 	const lag = pred.find((t) => t > prey[0])! - prey[0];
 	expect(lag).toBeGreaterThan(0.5);
@@ -68,4 +68,10 @@ test('adding deer: the elk disappear, though deer never eat elk', () => {
 	expect(end[4]).toBeGreaterThan(20); // deer established
 	expect(end[1]).toBeLessThan(1); // elk gone
 	expect(end[3]).toBeGreaterThan(WEB_START[3]); // more wolves
+});
+
+test('the deer push the elk out through the shared wolves, not by contact', () => {
+	// Apparent competition: with the wolves gone, elk and deer share the willow and both survive.
+	expect(webRun([true, true, true, true, true]).at(-1)![1]).toBeLessThan(1);
+	expect(webRun([true, true, true, false, true]).at(-1)![1]).toBeGreaterThan(2);
 });

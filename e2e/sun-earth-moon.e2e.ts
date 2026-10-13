@@ -73,3 +73,13 @@ test('phases: half a month after new Moon the Moon is full and eclipsed', async 
 	await expect(stage(page)).toContainText('Lunar eclipse');
 	await expect(stage(page)).not.toContainText('No eclipse now');
 });
+
+test('tilt: the reader picks the date and sees the noon Sun at any tilt', async ({ page }) => {
+	await open(page, './sun-earth-moon/#tilt', '21 Jun:');
+	await range(page, 'day').fill('355');
+	// 40° N at the December solstice: the noon Sun is 90 − 40 − 23.4 ≈ 27° high
+	await expect(stage(page)).toContainText('22 Dec:');
+	await expect(stage(page)).toContainText('noon Sun 27°');
+	await range(page, 'tilt').fill('0');
+	await expect(stage(page)).toContainText('noon Sun 50°');
+});

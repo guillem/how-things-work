@@ -1342,7 +1342,7 @@
 
 		<!-- year strip: the two eclipse seasons -->
 		<g opacity={oTilt} pointer-events="none">
-			{@render txt(YX0, 470, 'Eclipse seasons', 13, { weight: 600 })}
+			{@render txt(YX0, 470, 'Eclipse seasons (nodes as in 2026)', 13, { weight: 600 })}
 			<rect
 				x={YX1 - 300}
 				y="461"

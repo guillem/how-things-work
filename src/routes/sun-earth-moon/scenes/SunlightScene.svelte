@@ -10,8 +10,8 @@
 	 *   a patch 1/sin(altitude) long, the energy per m², and the daily total
 	 *   through the year;
 	 * - `tilt`: daily sunshine through the year for the chosen tilt against the
-	 *   real one, and the two solstices of a tilted Earth. The date drifts by
-	 *   itself (one year in 20 s) because this step has no date control.
+	 *   real one, and the two solstices of a tilted Earth, on the reader's date
+	 *   (with the noon Sun's height in the footer).
 	 *
 	 * All the astronomy comes from `sky.ts`. The globe is drawn in a frame that
 	 * turns with the Earth–Sun line (X towards the Sun, Z the upright of the
@@ -507,9 +507,8 @@
 	});
 
 	// =================================================================== tilt
-	/** One year in 20 s; the reduced-motion frame (t = 2.5 s) is the June solstice. */
-	const YEAR_S = 20;
-	const drift = $derived((((171 + ((t - 2.5) * 365) / YEAR_S) % 365) + 365) % 365);
+	/** The date shown: the reader's (the step's date control). */
+	const tDay = $derived(day);
 	const TX0 = 440;
 	const TX1 = 846;
 	const TY0 = 128;
@@ -546,7 +545,7 @@
 	const nearReal = $derived(Math.abs(tiltTarget - TILT) < 0.3);
 	// The solstice sketch uses the exact TILT at the real setting (so it matches the
 	// day-length step); the footer follows suit, or the two day lengths disagree on screen.
-	const dTilt = $derived(decOn(drift, nearReal ? TILT : tilt));
+	const dTilt = $derived(decOn(tDay, nearReal ? TILT : tilt));
 	const tiltToday = $derived(dailySunshine(lat, dTilt));
 	const tiltRange = $derived(yearRange(Math.round(latTarget), tiltTarget));
 	const realRange = $derived(yearRange(Math.round(latTarget), TILT));
@@ -1208,8 +1207,8 @@
 				})}
 			{/each}
 			<line
-				x1={tsx(drift)}
-				x2={tsx(drift)}
+				x1={tsx(tDay)}
+				x2={tsx(tDay)}
 				y1={TY0}
 				y2={TY1}
 				stroke="var(--stage-ink)"
@@ -1217,21 +1216,21 @@
 				opacity="0.6"
 			/>
 			<circle
-				cx={tsx(drift)}
+				cx={tsx(tDay)}
 				cy={tsy(tiltToday)}
 				r="6"
 				fill={ACC}
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			{@render txt(clamp(tsx(drift), TX0 + 18, TX1 - 18), TY0 - 8, dateText(drift), 12, {
+			{@render txt(clamp(tsx(tDay), TX0 + 18, TX1 - 18), TY0 - 8, dateText(tDay), 12, {
 				anchor: 'middle',
 				weight: 600
 			})}
 			{@render txt(
 				TX0 - 36,
 				TY1 + 54,
-				`${dateText(drift)}: ${x2(tiltToday)} × the equator at an equinox · ${lenText(lat, dTilt)}`,
+				`${dateText(tDay)}: ${x2(tiltToday)} × the equator at an equinox · ${lenText(lat, dTilt)} · noon Sun ${altText(noonAltitude(lat, dTilt))}`,
 				12
 			)}
 		</g>

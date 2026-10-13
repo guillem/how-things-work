@@ -2,6 +2,7 @@
 import { expect, test } from '@playwright/test';
 import {
 	D_EARTH,
+	STORM_SEED,
 	advectedTemperature,
 	canForm,
 	category,
@@ -87,7 +88,7 @@ test('Coriolis: deflected right in the north, left in the south, not on the equa
 	const period = (2 * Math.PI) / coriolis(45);
 	const steps = Math.round(period / 60);
 	const c = parcel(45, 0, 5, 1, steps, 60);
-	expect(Math.hypot(c.x[steps], c.y[steps])).toBeLessThan(15); // km, after a ~70 km wide loop
+	expect(Math.hypot(c.x[steps], c.y[steps])).toBeLessThan(15); // km, after a ~100 km wide loop
 });
 
 test('Rossby number: a sink is far too small and quick for the Coriolis effect', () => {
@@ -141,6 +142,15 @@ test('hurricanes: warmer seas allow stronger storms; none over cool water or at 
 	expect(category(stormIntensity(29, 15, 120))).toBeGreaterThanOrEqual(4);
 });
 
+test('hurricanes: a storm takes days, not hours, to grow', () => {
+	// "Rapid intensification" is 30 kt (15 m/s) in 24 h, reached by only a minority of storms:
+	// a typical storm over a warm sea gains well under 20 m/s (~40 kt) in its first day and is
+	// not yet a hurricane, and needs about two days to become a major one (category 3).
+	expect(stormIntensity(29, 15, 24) - STORM_SEED).toBeLessThan(20);
+	expect(category(stormIntensity(29, 15, 24))).toBe(0);
+	expect(category(stormIntensity(29, 15, 36))).toBeLessThan(3);
+});
+
 test('hurricanes: a running storm decays over cool water and regrows over warm water', () => {
 	// Moved over cool water at 70 m/s: one e-folding in a day, never below zero.
 	expect(stormEvolve(70, 25, 15, 0)).toBeCloseTo(70, 9);
@@ -149,7 +159,7 @@ test('hurricanes: a running storm decays over cool water and regrows over warm w
 	// Over warm water it grows from its current wind towards the ceiling…
 	expect(stormEvolve(20, 30, 15, 0)).toBeCloseTo(20, 9);
 	expect(stormEvolve(20, 30, 15, 12)).toBeGreaterThan(20);
-	expect(stormEvolve(20, 30, 15, 200)).toBeCloseTo(maxIntensity(30), 3);
+	expect(stormEvolve(20, 30, 15, 400)).toBeCloseTo(maxIntensity(30), 3);
 	// …and eases down to a lower ceiling without overshooting it.
 	const v = stormEvolve(80, 27, 15, 48);
 	expect(v).toBeLessThan(80);

@@ -36,8 +36,8 @@ const P2 = (x: number) => (3 * x * x - 1) / 2;
 
 /**
  * Yearly-average sunlight arriving at the top of the atmosphere at latitude
- * φ (W/m²), North's fit S0/4 · (1 − 0.482 P2(sin φ)): ~418 at the equator,
- * ~173 at the poles, 340 on average.
+ * φ (W/m²), North's fit S0/4 · (1 − 0.482 P2(sin φ)): ~422 at the equator,
+ * ~176 at the poles (exact annual means: ~417 and ~173), 340 on average.
  */
 export const insolation = (lat: number) =>
 	(SOLAR_CONSTANT / 4) * (1 - 0.482 * P2(Math.sin(rad(lat))));
@@ -416,7 +416,7 @@ export function category(v: number) {
 /** Wind (m/s) of the weak disturbance a hurricane starts from. */
 export const STORM_SEED = 15;
 /** Growth rate of a storm over warm sea (per hour, logistic). */
-const STORM_GROWTH = 1 / 12;
+const STORM_GROWTH = 1 / 24;
 /** E-folding time (hours) of a storm's decay over cool water, land or near the equator. */
 export const STORM_DECAY_HOURS = 24;
 
@@ -424,10 +424,11 @@ export const STORM_DECAY_HOURS = 24;
  * Wind speed of a storm `hours` after it had wind `v0` (m/s), if the sea
  * temperature and latitude then stay at `sst` and `lat`. Where a hurricane
  * can form, the wind grows (or, above the new ceiling, eases) towards the
- * maximum potential intensity by logistic growth at 1/12 per hour; where it
+ * maximum potential intensity by logistic growth at 1/24 per hour; where it
  * can't, it decays exponentially with a one-day e-folding time, as storms do
  * over cool water or land.
- * A sketch of typical intensification over 2–4 days; real storms vary a lot
+ * A sketch of typical intensification over 2–4 days (at most ~36 kt a day,
+ * about the 30 kt in 24 h of "rapid intensification"); real storms vary a lot
  * (wind shear, dry air, the ocean cooling under them).
  */
 export function stormEvolve(v0: number, sst: number, lat: number, hours: number) {

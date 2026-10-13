@@ -21,7 +21,7 @@
 
 	let { step, t, params, reduced }: StageProps = $props();
 
-	/** Simulated years per segment (deer need ~45 years to push the elk out); then the web holds. */
+	/** Simulated years per segment (deer need ~40 years to push the elk out); then the web holds. */
 	const SEG = 60;
 	/** Sampling interval of the runs, in years. */
 	const SAMPLE = 0.25;

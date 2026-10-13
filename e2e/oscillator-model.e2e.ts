@@ -44,6 +44,32 @@ test('pendulum: period 2π√(L/g), the same for small swings of any size; longe
 	for (const a of [2, 5, 10])
 		expect(measuredPeriod(pendulumMotion(1, a, 20, 0, S), S)).toBeCloseTo(2.006, 1);
 	expect(measuredPeriod(pendulumMotion(1, 90, 20, 0, S), S)).toBeGreaterThan(2.006 * 1.15); // +18% at 90°
+	// The exact large-swing periods (complete elliptic integral): ×1.18034 at 90°, ×1.0019 at 10°.
+	expect(measuredPeriod(pendulumMotion(1, 90, 20, 0, S), S) / pendulumPeriod(1)).toBeCloseTo(
+		1.18034,
+		3
+	);
+	expect(measuredPeriod(pendulumMotion(1, 10, 20, 0, S), S) / pendulumPeriod(1)).toBeCloseTo(
+		1.0019,
+		3
+	);
+});
+
+test("the page's spring (1 kg on 39 N/m): 0.99 Hz, and a peak about ζ·f₀ wide", () => {
+	const page = { m: 1, k: 39, c: 0.3 };
+	expect(naturalFrequency(page)).toBeCloseTo(0.99, 2);
+	// half-power width: at fp ± ζ·f₀ the swing is the peak's ÷ √2
+	const z = dampingRatio(page);
+	const fp = peakFrequency(page);
+	const Ap = steadyAmplitude(page, { F0: 1, f: fp });
+	const off = steadyAmplitude(page, { F0: 1, f: fp + z * naturalFrequency(page) });
+	expect(off / Ap).toBeCloseTo(Math.SQRT1_2, 1);
+	// less friction: narrower, so the same 0.05 Hz off the peak loses more of the swing
+	const light = { ...page, c: 0.1 };
+	const rel = (sp: typeof page) =>
+		steadyAmplitude(sp, { F0: 1, f: peakFrequency(sp) + 0.05 }) /
+		steadyAmplitude(sp, { F0: 1, f: peakFrequency(sp) });
+	expect(rel(light)).toBeLessThan(rel(page));
 });
 
 test('resonance: the steady amplitude peaks near the natural frequency', () => {

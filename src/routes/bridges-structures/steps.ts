@@ -21,7 +21,7 @@ const length: Control = {
 	step: 0.1,
 	default: 2,
 	unit: ' m',
-	help: 'The same steel bar: only its length changes.'
+	help: 'The same steel tube: only its length changes.'
 };
 
 const drive: Control = {
@@ -87,7 +87,7 @@ export const spec: ExplainerSpec = {
 			controls: [load],
 			body: `
 <p>A bridge has one job: to carry its own weight and the traffic on it across a gap, and pass all of that down into the ground. Every part of it does this in one of two ways.</p>
-<p>A rope holding up a weight is <strong>pulled</strong>: it is in <dfn data-def="Being pulled from both ends, so that it is slightly stretched.">tension</dfn>. A post holding up the same weight is <strong>pushed</strong>: it is in <dfn data-def="Being pushed from both ends, so that it is slightly squashed.">compression</dfn>. On this page, tension is drawn blue and compression red; the stronger the colour, the closer the part is to its limit.</p>
+<p>A steel tube hanging from a beam and holding up a weight is <strong>pulled</strong>: it is in <dfn data-def="Being pulled from both ends, so that it is slightly stretched.">tension</dfn>. The same tube standing on the ground under the same weight is <strong>pushed</strong>: it is in <dfn data-def="Being pushed from both ends, so that it is slightly squashed.">compression</dfn>. On this page, tension is drawn blue and compression red; the stronger the colour, the closer the part is to its limit.</p>
 <p>The post pushes down on the ground, and by Newton's third law the ground pushes back up on the post just as hard. The forces on the post add up to zero, so it stays still.</p>`
 		},
 		{
@@ -115,7 +115,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The simplest bridge is a single <dfn data-def="A straight member that carries loads across its length by bending.">beam</dfn> laid across the gap. Under a load it <strong>bends</strong>: its top is squashed (red) and its bottom stretched (blue), while the material in the middle of its depth does very little.</p>
 <p>All the bridges on this page use the same 25 tonnes of steel across the same 40-metre gap, shared out sensibly among their parts. As a beam, it is not enough: as soon as the 30-tonne truck is on it, the steel under the truck is stressed past its limit — about 1.3 times what it can take — and the parts that would fail are marked.</p>`,
-			notes: `<p>The drawing exaggerates how far the structures bend, so you can see it. Under its own weight a beam's bending stress grows with the square of the span (and the beam's weight grows too), which is why plain beams are used for short and medium spans. Our beam is a square steel box under half a metre deep; real 40 m beam bridges use deep I-shaped or box girders around 2 m deep — shape at work again, in the cross-section.</p>`
+			notes: `<p>The drawing exaggerates how far the structures bend, so you can see it. Under its own weight a beam's bending stress grows with the square of the span (and the beam's weight grows too), which is why plain beams are used for short and medium spans. Our beam is a square steel box about half a metre deep; real 40 m beam bridges use deep I-shaped or box girders around 2 m deep — shape at work again, in the cross-section.</p>`
 		},
 		{
 			id: 'truss',
@@ -127,7 +127,7 @@ export const spec: ExplainerSpec = {
 			controls: [drive],
 			body: `
 <p>Take the same steel and arrange it in <strong>triangles</strong>. A triangle cannot change shape without one of its sides changing length, so instead of bending, each member of a <dfn data-def="A framework of straight members joined in triangles, so that each member is mainly pulled or pushed.">truss</dfn> is mainly pulled or pushed along its length — the way steel works best.</p>
-<p>Drive the truck across. The top chord is pushed (red), the bottom chord is pulled (blue), and the diagonals take turns as the truck passes. The busiest member now uses only about a quarter of its strength: the same steel, five times better used.</p>`
+<p>Drive the truck across. The top chord (the upper row of members) is pushed (red), the bottom chord (the road) is pulled (blue) — only the piece of road directly under the truck bends a little — and the diagonals take turns as the truck passes. The busiest member, as the truck crosses, uses only about a quarter of its strength: the same steel, five times better used.</p>`
 		},
 		{
 			id: 'arch',
@@ -139,7 +139,7 @@ export const spec: ExplainerSpec = {
 			controls: [drive],
 			body: `
 <p>An <dfn data-def="A curved structure that carries loads mainly by compression, pushing down and outward on its supports.">arch</dfn> turns the weight on it into a push along its curve. Its rib is in compression all along (red), and at its ends it pushes down <em>and outwards</em> on the rock of the gap's walls — which must be strong enough to push back.</p>
-<p>That is why the Romans could build arches of stone, a material that is strong when squeezed but cracks when pulled. Here the road is held up on posts standing on the rib. A truck on one side bends the rib noticeably; the arch works best when the load is spread evenly.</p>`
+<p>That is why the Romans could build arches of stone, a material that is strong when squeezed but cracks when pulled. Here the road is held up on posts standing on the rib. A truck on one side makes the road bend between the posts, and even stretches one face of this thin steel rib slightly: the arch works best when the load is spread evenly. Stone arches are made thick and heavy so that their own weight keeps every part squeezed.</p>`
 		},
 		{
 			id: 'suspension',
@@ -163,8 +163,8 @@ export const spec: ExplainerSpec = {
 			controls: [design, drive],
 			body: `
 <p>Four bridges, one gap, the same 25 tonnes of steel each. The bars show how close each design's busiest member comes to failing as the truck crosses.</p>
-<p>The beam fails; the truss, the arch and the suspension bridge all carry the truck with steel to spare. What made the difference was not the amount of material but its <strong>shape</strong>: a good structure carries its loads to the ground mostly by pulling and pushing, not by bending.</p>`,
-			notes: `<p>Real bridges are also designed for wind, many vehicles at once, the shaking of moving traffic, fatigue and corrosion, with safety factors on top; none of that is included here. The model also treats the steel as perfectly elastic up to its limit, each member as a single straight piece that buckles on its own, and the truck as a single load at its centre. In this model the truss does best. Real 40 m bridges are usually deep steel or concrete girders: beams whose cross-section does the work a truss does with triangles. Suspension bridges only pay off over much longer spans.</p>`
+<p>The beam fails; the truss, the arch and the suspension bridge all carry the truck with steel to spare. In the arch and the suspension bridge the busiest member is the road, bending between its supports. To do as well as the truss, the beam would need about five times as much steel. What made the difference was not the amount of material but its <strong>shape</strong>: a good structure carries its loads to the ground mostly by pulling and pushing, not by bending.</p>`,
+			notes: `<p>Real bridges are also designed for wind, many vehicles at once, the shaking of moving traffic, fatigue and corrosion, with safety factors on top; none of that is included here. The model also treats the steel as perfectly elastic up to its limit, each member as a single, perfectly straight piece that buckles on its own (so it buckles later than a real one would), and the truck as a single load at its centre. In this model the truss does best. Real 40 m bridges are usually deep steel or concrete girders: beams whose cross-section does the work a truss does with triangles. Suspension bridges only pay off over much longer spans.</p>`
 		},
 		// ------------------------------------------------------------------ build
 		{
@@ -176,7 +176,7 @@ export const spec: ExplainerSpec = {
 			duration: 40,
 			controls: [tool, drive, resetBridge],
 			body: `
-<p>Your turn: the road alone sags under the truck. Drag between grid points to add beams or cables; anything that touches the ground — the banks, the walls of the gap or its floor — is fixed there. Then drive the truck across.</p>
+<p>Your turn: the road alone bends past its limit under the truck. Drag between grid points to add beams or cables; anything that touches the ground — the banks, the walls of the gap or its floor — is fixed there (only the road's right-hand end rests on a sliding bearing). Then drive the truck across.</p>
 <p>You always have the same 25 tonnes of steel. Every member you add makes the others thinner, so a member that does nothing is a waste. Try a single pier in the middle; a few triangles; or a cable from a tall post standing on the bank. Can you get every member out of the danger zone?</p>`
 		}
 	]

@@ -21,6 +21,7 @@ import {
 	dSdt,
 	ekmanTransport,
 	ensoEigen,
+	ensoEpisodes,
 	equilibria,
 	flowAt,
 	gyreExtremes,
@@ -138,6 +139,9 @@ test('western intensification comes from β: > 40× faster in the west, symmetri
 		expect(Math.abs(a - b)).toBeLessThan(1e-6 * Math.abs(a) + 1);
 	}
 	expect(westEastSpeeds(flat, m0.y).ratio).toBeLessThan(1.1);
+	// "without the squeeze, it actually turns more water, about 50 Sv in the model"
+	expect(m0.psi / SV).toBeGreaterThan(45);
+	expect(m0.psi / SV).toBeLessThan(55);
 });
 
 test('streamlines are closed lines of constant ψ', () => {
@@ -246,6 +250,22 @@ test("Jin's recharge oscillator: neutral at μ = 2/3, a damped ~3-year cycle at 
 	const off = Array.from(runEnso(0, 0.3 * MEAN_TILT).T, (v) => v * JIN.degrees);
 	expect(Math.max(...off)).toBeLessThan(peak / 2);
 	expect(Math.min(...off)).toBeGreaterThan(-0.5);
+	expect(Math.max(...off)).toBeLessThan(1.2);
+	// An El Niño (or La Niña) is a 3-month mean beyond ±0.5 °C lasting at least five months,
+	// as in NOAA's index: the brief warming without feedback never counts as one.
+	expect(Array.from(ensoEpisodes(runEnso(0, 0.3 * MEAN_TILT))).every((e) => e === 0)).toBe(true);
+	const episodes = Array.from(ensoEpisodes(run));
+	expect(episodes[iPeak]).toBe(1);
+	expect(episodes[iTrough]).toBe(-1);
+	// no flicker at the edges: every sample of the El Niño and of the La Niña beyond ±0.5 °C
+	// carries its label
+	for (const [k0, sign] of [
+		[iPeak, 1],
+		[iTrough, -1]
+	]) {
+		for (let k = k0; k < T.length && sign * T[k] > 0.5; k++) expect(episodes[k]).toBe(sign);
+		for (let k = k0; k >= 0 && sign * T[k] > 0.5; k--) expect(episodes[k]).toBe(sign);
+	}
 	// the recharge: the western thermocline shoals (heat drains) during El Niño
 	expect(Math.min(...Array.from(run.h))).toBeLessThan(0);
 });
