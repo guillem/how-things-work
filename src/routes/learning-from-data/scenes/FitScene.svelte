@@ -28,7 +28,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { fitPolynomial, makeData, mse, parseMoved, truth, type Model } from '../fit';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -447,8 +447,10 @@
 				stroke={v === 0 ? 'var(--stage-line)' : 'var(--stage-grid)'}
 				stroke-width={v === 0 ? 0.75 : 1}
 			/>
-			{@render txt(LEFT - 8, PY(v) + 4, minus(v), 11, { anchor: 'end', muted: true })}
-			{@render txt(PX(v), BOTTOM + 17, minus(v), 11, { anchor: 'middle', muted: true })}
+			<Readout id="tick-{v}">
+				{@render txt(LEFT - 8, PY(v) + 4, minus(v), 11, { anchor: 'end', muted: true })}
+				{@render txt(PX(v), BOTTOM + 17, minus(v), 11, { anchor: 'middle', muted: true })}
+			</Readout>
 		{/each}
 		<rect
 			x={LEFT}
@@ -458,12 +460,14 @@
 			fill="none"
 			stroke="var(--stage-line)"
 		/>
-		{@render txt(CENTER, BOTTOM + 37, 'input x', 13, { anchor: 'middle', muted: true })}
-		{@render txt(30, (TOP + BOTTOM) / 2, 'output y', 13, {
-			anchor: 'middle',
-			muted: true,
-			rotate: -90
-		})}
+		<Readout id="axes">
+			{@render txt(CENTER, BOTTOM + 37, 'input x', 13, { anchor: 'middle', muted: true })}
+			{@render txt(30, (TOP + BOTTOM) / 2, 'output y', 13, {
+				anchor: 'middle',
+				muted: true,
+				rotate: -90
+			})}
+		</Readout>
 	</g>
 
 	<g clip-path="url(#fit-plot-clip)" style:pointer-events="none">
@@ -554,13 +558,15 @@
 
 	<!-- the wildest swing (overfit phase) -->
 	{#if swing}
-		<g opacity={w.overfit} style:pointer-events="none">
-			{@render txt(swing.x, swing.y, swing.text, 12, {
-				anchor: swing.anchor,
-				color: 'var(--fit-model)',
-				weight: 600
-			})}
-		</g>
+		<Readout id="swing" order={9} label={swing.text} marker={1} at={[swing.x, swing.y - 4]}>
+			<g opacity={w.overfit} style:pointer-events="none">
+				{@render txt(swing.x, swing.y, swing.text, 12, {
+					anchor: swing.anchor,
+					color: 'var(--fit-model)',
+					weight: 600
+				})}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- the examples -->
@@ -619,153 +625,232 @@
 		<!-- points -->
 		{#if show(w.points) > 0.01}
 			<g opacity={show(w.points)}>
-				{@render txt(PL, 70, `${points.length} examples`, 24, { weight: 600 })}
-				{@render txt(PL, 102, 'Each dot is one example: an input x', 13)}
-				{@render txt(PL, 120, 'and the output y measured for it.', 13)}
-				{@render txt(PL, 152, 'generated: a hidden rule plus random noise', 12, {
-					muted: true
-				})}
+				<Readout
+					id="examples"
+					order={1}
+					label="Examples"
+					value={String(points.length)}
+					note="each dot: an input x and the output y measured for it (a hidden rule plus noise)"
+					opacity={show(w.points)}
+				>
+					{@render txt(PL, 70, `${points.length} examples`, 24, { weight: 600 })}
+					{@render txt(PL, 102, 'Each dot is one example: an input x', 13)}
+					{@render txt(PL, 120, 'and the output y measured for it.', 13)}
+					{@render txt(PL, 152, 'generated: a hidden rule plus random noise', 12, {
+						muted: true
+					})}
+				</Readout>
 			</g>
 		{/if}
 
 		<!-- line and error -->
 		{#if show(w.line + w.error) > 0.01}
 			<g opacity={show(w.line + w.error)}>
-				{@render txt(PL, 58, 'the best straight line', 13, { muted: true })}
-				{@render txt(PL, 92, equation, 24, {
-					weight: 600,
-					color: 'var(--fit-model)',
-					tabular: true
-				})}
-				{@render txt(
-					PL,
-					116,
-					`slope a = ${two(lineFit.coefficients[1])}, height b = ${two(lineFit.coefficients[0])}`,
-					12,
-					{ muted: true, tabular: true }
-				)}
+				<Readout
+					id="line"
+					order={1}
+					label="The best straight line"
+					value={equation}
+					note={w.line > 0.5 ? 'drag any dot: the line re-fits at once' : undefined}
+					color="var(--fit-model)"
+					opacity={show(w.line + w.error)}
+				>
+					{@render txt(PL, 58, 'the best straight line', 13, { muted: true })}
+					{@render txt(PL, 92, equation, 24, {
+						weight: 600,
+						color: 'var(--fit-model)',
+						tabular: true
+					})}
+					{@render txt(
+						PL,
+						116,
+						`slope a = ${two(lineFit.coefficients[1])}, height b = ${two(lineFit.coefficients[0])}`,
+						12,
+						{ muted: true, tabular: true }
+					)}
+				</Readout>
 			</g>
 		{/if}
 		{#if show(w.line) > 0.01}
 			<g opacity={show(w.line)}>
-				{@render txt(PL, 156, 'Drag any dot: the line re-fits at once.', 13)}
+				<Readout id="drag-hint">
+					{@render txt(PL, 156, 'Drag any dot: the line re-fits at once.', 13)}
+				</Readout>
 			</g>
 		{/if}
 		{#if show(w.error) > 0.01}
 			<g opacity={show(w.error)}>
-				{@render txt(PL, 166, 'mean squared error', 13)}
-				{@render txt(PR, 166, fmt(lineErr), 20, { anchor: 'end', weight: 600, tabular: true })}
+				<Readout
+					id="line-error"
+					order={2}
+					label="Mean squared error"
+					value={fmt(lineErr)}
+					note="the average area of the {points.length} squares"
+					opacity={show(w.error)}
+				>
+					{@render txt(PL, 166, 'mean squared error', 13)}
+					{@render txt(PR, 166, fmt(lineErr), 20, { anchor: 'end', weight: 600, tabular: true })}
+				</Readout>
 				{@render bar(176, lineErr, 'var(--fit-model)')}
-				{@render txt(PL, 206, `the average area of the ${points.length} squares:`, 12, {
-					muted: true
-				})}
-				{@render txt(PL, 222, 'each square’s side is one gap', 12, { muted: true })}
+				<Readout id="error-note">
+					{@render txt(PL, 206, `the average area of the ${points.length} squares:`, 12, {
+						muted: true
+					})}
+					{@render txt(PL, 222, 'each square’s side is one gap', 12, { muted: true })}
+				</Readout>
 			</g>
 		{/if}
 
 		<!-- degree, overfit, test -->
 		{#if show(w.degree + w.overfit + w.test) > 0.01}
 			<g opacity={show(w.degree + w.overfit + w.test)}>
-				{@render txt(PL, 58, 'flexibility', 13, { muted: true })}
-				{@render txt(PL, 86, `degree ${degreeTarget}: ${bends(degreeTarget)}`, 18, {
-					weight: 600,
-					color: 'var(--fit-model)'
-				})}
-				{@render txt(PL, 126, 'training error', 13)}
-				{@render txt(PR, 126, fmt(trainErr), 20, { anchor: 'end', weight: 600, tabular: true })}
+				<Readout
+					id="degree"
+					order={1}
+					label="Flexibility"
+					value="degree {degreeTarget}: {bends(degreeTarget)}"
+					color="var(--fit-model)"
+					opacity={show(w.degree + w.overfit + w.test)}
+				>
+					{@render txt(PL, 58, 'flexibility', 13, { muted: true })}
+					{@render txt(PL, 86, `degree ${degreeTarget}: ${bends(degreeTarget)}`, 18, {
+						weight: 600,
+						color: 'var(--fit-model)'
+					})}
+				</Readout>
+				<Readout
+					id="train-error"
+					order={2}
+					label="Training error"
+					value={fmt(trainErr)}
+					note={w.test > 0.5
+						? `on the ${train.length} solid dots it was fitted to`
+						: `on the ${points.length} examples it was fitted to`}
+					color="var(--fit-train)"
+					opacity={show(w.degree + w.overfit + w.test)}
+				>
+					{@render txt(PL, 126, 'training error', 13)}
+					{@render txt(PR, 126, fmt(trainErr), 20, { anchor: 'end', weight: 600, tabular: true })}
+				</Readout>
 				{@render bar(136, trainErr, 'var(--fit-train)')}
 			</g>
 		{/if}
 		{#if show(w.degree + w.overfit) > 0.01}
 			<g opacity={show(w.degree + w.overfit)}>
-				{@render txt(PL, 164, `on the ${points.length} examples it was fitted to`, 12, {
-					muted: true
-				})}
+				<Readout id="train-note">
+					{@render txt(PL, 164, `on the ${points.length} examples it was fitted to`, 12, {
+						muted: true
+					})}
+				</Readout>
 			</g>
 		{/if}
 		{#if show(w.overfit) > 0.01}
 			<g opacity={show(w.overfit)}>
-				{@render txt(PL, 210, overfitNote[0], 13)}
-				{@render txt(PL, 228, overfitNote[1], 13)}
+				<Readout
+					id="overfit"
+					order={3}
+					label="What it does"
+					value="{overfitNote[0]} {overfitNote[1]}"
+					opacity={show(w.overfit)}
+				>
+					{@render txt(PL, 210, overfitNote[0], 13)}
+					{@render txt(PL, 228, overfitNote[1], 13)}
+				</Readout>
 			</g>
 		{/if}
 		{#if show(w.test) > 0.01}
 			<g opacity={show(w.test)}>
-				{@render txt(PL, 164, `on the ${train.length} solid dots it was fitted to`, 12, {
-					muted: true
-				})}
-				{@render txt(PL, 206, 'test error', 13)}
-				{@render txt(PR, 206, fmt(testErr), 20, { anchor: 'end', weight: 600, tabular: true })}
+				<Readout id="test-train-note">
+					{@render txt(PL, 164, `on the ${train.length} solid dots it was fitted to`, 12, {
+						muted: true
+					})}
+				</Readout>
+				<Readout
+					id="test-error"
+					order={3}
+					label="Test error"
+					value={fmt(testErr)}
+					note="on the {held.length} hollow dots it never saw"
+					color="var(--fit-test)"
+					opacity={show(w.test)}
+				>
+					{@render txt(PL, 206, 'test error', 13)}
+					{@render txt(PR, 206, fmt(testErr), 20, { anchor: 'end', weight: 600, tabular: true })}
+				</Readout>
 				{@render bar(216, testErr, 'var(--fit-test)')}
-				{@render txt(PL, 244, `on the ${held.length} hollow dots it never saw`, 12, {
-					muted: true
-				})}
+				<Readout id="test-note">
+					{@render txt(PL, 244, `on the ${held.length} hollow dots it never saw`, 12, {
+						muted: true
+					})}
+				</Readout>
 			</g>
 		{/if}
 
 		<!-- legend -->
-		{#each legend as row (row.key)}
-			{#if row.w > 0.01}
-				<g opacity={smoothstep(0.3, 1, row.w)}>
-					{#if row.key === 'dot' || row.key === 'train'}
-						<circle cx={PL + 12} cy={row.y - 4} r="5.5" fill="var(--fit-train)" />
-					{:else if row.key === 'test'}
-						<circle
-							cx={PL + 12}
-							cy={row.y - 4}
-							r="4.5"
-							fill="var(--stage-bg)"
-							stroke="var(--fit-test)"
-							stroke-width="2.25"
-						/>
-					{:else if row.key === 'model'}
-						<line
-							x1={PL}
-							x2={PL + 24}
-							y1={row.y - 4}
-							y2={row.y - 4}
-							stroke="var(--fit-model)"
-							stroke-width="2.75"
-							stroke-linecap="round"
-						/>
-					{:else if row.key === 'square'}
-						<rect
-							x={PL + 4}
-							y={row.y - 12}
-							width="16"
-							height="16"
-							fill="var(--fit-model)"
-							fill-opacity="0.1"
-							stroke="var(--fit-model)"
-							stroke-opacity="0.6"
-						/>
-						<line
-							x1={PL + 4}
-							x2={PL + 4}
-							y1={row.y - 12}
-							y2={row.y + 4}
-							stroke="var(--fit-model)"
-							stroke-width="1.5"
-						/>
-					{:else if row.key === 'off'}
-						<path
-							d="M{PL + 6} {row.y - 1} L{PL + 12} {row.y - 9} L{PL + 18} {row.y - 1} Z"
-							fill="var(--fit-model)"
-						/>
-					{:else}
-						<line
-							x1={PL}
-							x2={PL + 24}
-							y1={row.y - 4}
-							y2={row.y - 4}
-							stroke="var(--fit-truth)"
-							stroke-width="2.5"
-							stroke-dasharray="7 5"
-						/>
-					{/if}
-					{@render txt(PL + 34, row.y, row.text, 12, { muted: true })}
-				</g>
-			{/if}
-		{/each}
+		<Readout id="legend">
+			{#each legend as row (row.key)}
+				{#if row.w > 0.01}
+					<g opacity={smoothstep(0.3, 1, row.w)}>
+						{#if row.key === 'dot' || row.key === 'train'}
+							<circle cx={PL + 12} cy={row.y - 4} r="5.5" fill="var(--fit-train)" />
+						{:else if row.key === 'test'}
+							<circle
+								cx={PL + 12}
+								cy={row.y - 4}
+								r="4.5"
+								fill="var(--stage-bg)"
+								stroke="var(--fit-test)"
+								stroke-width="2.25"
+							/>
+						{:else if row.key === 'model'}
+							<line
+								x1={PL}
+								x2={PL + 24}
+								y1={row.y - 4}
+								y2={row.y - 4}
+								stroke="var(--fit-model)"
+								stroke-width="2.75"
+								stroke-linecap="round"
+							/>
+						{:else if row.key === 'square'}
+							<rect
+								x={PL + 4}
+								y={row.y - 12}
+								width="16"
+								height="16"
+								fill="var(--fit-model)"
+								fill-opacity="0.1"
+								stroke="var(--fit-model)"
+								stroke-opacity="0.6"
+							/>
+							<line
+								x1={PL + 4}
+								x2={PL + 4}
+								y1={row.y - 12}
+								y2={row.y + 4}
+								stroke="var(--fit-model)"
+								stroke-width="1.5"
+							/>
+						{:else if row.key === 'off'}
+							<path
+								d="M{PL + 6} {row.y - 1} L{PL + 12} {row.y - 9} L{PL + 18} {row.y - 1} Z"
+								fill="var(--fit-model)"
+							/>
+						{:else}
+							<line
+								x1={PL}
+								x2={PL + 24}
+								y1={row.y - 4}
+								y2={row.y - 4}
+								stroke="var(--fit-truth)"
+								stroke-width="2.5"
+								stroke-dasharray="7 5"
+							/>
+						{/if}
+						{@render txt(PL + 34, row.y, row.text, 12, { muted: true })}
+					</g>
+				{/if}
+			{/each}
+		</Readout>
 	</g>
 </g>

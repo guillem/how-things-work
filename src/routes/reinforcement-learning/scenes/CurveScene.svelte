@@ -11,7 +11,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, clamp, cycle, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { PENALTY, REWARD, SMALL, WALL, distances, train, type Cell } from '../qlearning';
 	import { setup } from '../run';
 
@@ -161,35 +161,51 @@
 			<rect x={X0 - 4} y={Y0 - 10} width={(X1 - X0 + 8) * reveal} height={Y1 - Y0 + 40} />
 		</clipPath>
 	</defs>
-	<!-- readout card -->
-	<rect
-		x="16"
-		y="16"
-		width="928"
-		height="76"
-		rx="10"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
-	{@render txt(36, 45, `Moves per episode, ${E} episodes`, 17, { weight: 600 })}
-	{@render txt(924, 45, `random moves: ${pct(cfg.settings.epsilon)}`, 14, {
-		anchor: 'end',
-		weight: 600
-	})}
-	{@render txt(
-		36,
-		75,
-		`First 10 episodes: ${avg(0, 10).toFixed(0)} moves on average · episodes 51–100: ${avg(50, 100).toFixed(1)} · last 100: ${avg(E - 100, E).toFixed(1)}`,
-		14,
-		{ muted: true }
-	)}
+	<!-- readout card (its text is listed under the stage on phones) -->
+	<Readout id="card">
+		<rect
+			x="16"
+			y="16"
+			width="928"
+			height="76"
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
+	<Readout
+		id="moves"
+		order={1}
+		label="Moves per episode, {E} episodes"
+		value="first 10: {avg(0, 10).toFixed(0)} · last 100: {avg(E - 100, E).toFixed(1)}"
+		note={shortest !== null ? `shortest possible: ${shortest}` : undefined}
+	>
+		{@render txt(36, 45, `Moves per episode, ${E} episodes`, 17, { weight: 600 })}
+		{@render txt(
+			36,
+			75,
+			`First 10 episodes: ${avg(0, 10).toFixed(0)} moves on average · episodes 51–100: ${avg(50, 100).toFixed(1)} · last 100: ${avg(E - 100, E).toFixed(1)}`,
+			14,
+			{ muted: true }
+		)}
+	</Readout>
+	<Readout id="random" order={2} label="Random moves" value={pct(cfg.settings.epsilon)}>
+		{@render txt(924, 45, `random moves: ${pct(cfg.settings.epsilon)}`, 14, {
+			anchor: 'end',
+			weight: 600
+		})}
+	</Readout>
 
 	<!-- axes -->
 	{#each TICKS as v (v)}
 		<line x1={X0} x2={X1} y1={ly(v)} y2={ly(v)} stroke="var(--stage-grid)" />
-		{@render txt(X0 - 10, ly(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+		<Readout id="tick-{v}">
+			{@render txt(X0 - 10, ly(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+		</Readout>
 	{/each}
-	{@render txt(X0 - 44, (Y0 + Y1) / 2, 'moves', 12, { anchor: 'end', muted: true })}
+	<Readout id="y-caption">
+		{@render txt(X0 - 44, (Y0 + Y1) / 2, 'moves', 12, { anchor: 'end', muted: true })}
+	</Readout>
 	<line x1={X0} x2={X1} y1={Y1} y2={Y1} stroke="var(--stage-line)" />
 	{#if shortest !== null}
 		<line
@@ -201,10 +217,12 @@
 			stroke-dasharray="4 4"
 			opacity="0.7"
 		/>
-		{@render txt(X1 - 4, ly(shortest) + 16, `shortest possible: ${shortest}`, 12, {
-			anchor: 'end',
-			weight: 600
-		})}
+		<Readout id="shortest">
+			{@render txt(X1 - 4, ly(shortest) + 16, `shortest possible: ${shortest}`, 12, {
+				anchor: 'end',
+				weight: 600
+			})}
+		</Readout>
 	{/if}
 
 	<g clip-path="url(#curve-reveal)">
@@ -218,13 +236,15 @@
 		/>
 		<path d={pits} stroke="var(--rl-pit)" stroke-width="1.5" />
 	</g>
-	{@render txt(
-		(X0 + X1) / 2,
-		Y1 + 58,
-		`episodes 1 to ${E} · thick line: average of 10 episodes · red ticks: ended in a pit`,
-		11,
-		{ anchor: 'middle', muted: true }
-	)}
+	<Readout id="caption">
+		{@render txt(
+			(X0 + X1) / 2,
+			Y1 + 58,
+			`episodes 1 to ${E} · thick line: average of 10 episodes · red ticks: ended in a pit`,
+			11,
+			{ anchor: 'middle', muted: true }
+		)}
+	</Readout>
 
 	<!-- the two picks -->
 	{#each panels as p (p.id)}
@@ -310,22 +330,36 @@
 			stroke="var(--stage-bg)"
 			stroke-width="1.5"
 		/>
-		{@render txt(p.gx + COLS * CS + 14, MY + 14, `Episode ${p.e}`, 16, { weight: 600 })}
-		{@render txt(p.gx + COLS * CS + 14, MY + 40, `${p.ep.length} moves`, 14)}
-		{@render txt(p.gx + COLS * CS + 14, MY + 62, p.end, 12, {
-			color:
-				p.ep.end === PENALTY ? 'var(--rl-bad)' : p.ep.end === REWARD ? 'var(--rl-good)' : undefined,
-			weight: 600
-		})}
-		{@render txt(
-			p.gx + COLS * CS + 14,
-			MY + 150,
-			p.id === 'early' ? 'drag the left' : 'drag the right',
-			11,
-			{
-				muted: true
-			}
-		)}
-		{@render txt(p.gx + COLS * CS + 14, MY + 166, 'handle to pick', 11, { muted: true })}
+		<Readout
+			id="episode-{p.id}"
+			order={p.id === 'early' ? 3 : 4}
+			label="Episode {p.e}"
+			value="{p.ep.length} moves"
+			note={p.end}
+		>
+			{@render txt(p.gx + COLS * CS + 14, MY + 14, `Episode ${p.e}`, 16, { weight: 600 })}
+			{@render txt(p.gx + COLS * CS + 14, MY + 40, `${p.ep.length} moves`, 14)}
+			{@render txt(p.gx + COLS * CS + 14, MY + 62, p.end, 12, {
+				color:
+					p.ep.end === PENALTY
+						? 'var(--rl-bad)'
+						: p.ep.end === REWARD
+							? 'var(--rl-good)'
+							: undefined,
+				weight: 600
+			})}
+		</Readout>
+		<Readout id="drag-{p.id}">
+			{@render txt(
+				p.gx + COLS * CS + 14,
+				MY + 150,
+				p.id === 'early' ? 'drag the left' : 'drag the right',
+				11,
+				{
+					muted: true
+				}
+			)}
+			{@render txt(p.gx + COLS * CS + 14, MY + 166, 'handle to pick', 11, { muted: true })}
+		</Readout>
 	{/each}
 </g>

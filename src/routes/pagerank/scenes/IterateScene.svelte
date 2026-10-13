@@ -24,7 +24,7 @@
 	 * overrides SVG presentation attributes (see docs/BACKLOG.md).
 	 */
 	import { clamp, easeInOut, lerp, niceMax, norm, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		DAMPING,
 		EXAMPLE,
@@ -320,14 +320,40 @@
 	const lastChange = $derived(shownRound >= 1 ? change[shownRound] * 100 : NaN);
 	const dPct = $derived(Math.round(d * 100));
 	const jPct = $derived(100 - Math.round(d * 100));
+	const poolNote = $derived(
+		reduced ? `each page gets ${pct(finalPool / n)} from it` : `shared equally by all ${n} pages`
+	);
+	const changeLine = $derived(
+		shownRound >= 1
+			? `round ${shownRound}: ${lastChange.toFixed(lastChange < 1 ? 2 : 1)}% of all rank moved`
+			: 'starts with round 1'
+	);
 </script>
 
 <g>
 	<!-- legend -->
-	<circle cx={30} cy={30} r={6} fill="var(--rank-flow)" />
-	{@render txt(44, 34, `${dPct}% of each page’s rank flows along its links, split equally`, 12)}
-	<circle cx={30} cy={52} r={5} fill="var(--rank-jump)" />
-	{@render txt(44, 56, `${jPct}% goes to the jump pool and is shared equally by all pages`, 12)}
+	<Readout
+		id="flow"
+		order={1}
+		label="Along its links"
+		value="{dPct}%"
+		note="of each page’s rank, split equally"
+		color="var(--rank-flow)"
+	>
+		<circle cx={30} cy={30} r={6} fill="var(--rank-flow)" />
+		{@render txt(44, 34, `${dPct}% of each page’s rank flows along its links, split equally`, 12)}
+	</Readout>
+	<Readout
+		id="pool"
+		order={2}
+		label="To the jump pool"
+		value="{jPct}%"
+		note={poolNote}
+		color="var(--rank-jump)"
+	>
+		<circle cx={30} cy={52} r={5} fill="var(--rank-jump)" />
+		{@render txt(44, 56, `${jPct}% goes to the jump pool and is shared equally by all pages`, 12)}
+	</Readout>
 
 	<!-- jump pool: faint dashed spokes to every page while it is in use -->
 	{#if poolLines > 0.01}
@@ -362,17 +388,13 @@
 		stroke-width="1.5"
 		stroke-dasharray="4 3"
 	/>
-	{@render txt(POOL.x + 34, POOL.y - 4, 'jump pool', 12, {
-		weight: 600,
-		color: 'var(--rank-jump)'
-	})}
-	{@render txt(
-		POOL.x + 34,
-		POOL.y + 12,
-		reduced ? `each page gets ${pct(finalPool / n)} from it` : `shared equally by all ${n} pages`,
-		11,
-		{ muted: true }
-	)}
+	<Readout id="pool-label">
+		{@render txt(POOL.x + 34, POOL.y - 4, 'jump pool', 12, {
+			weight: 600,
+			color: 'var(--rank-jump)'
+		})}
+		{@render txt(POOL.x + 34, POOL.y + 12, poolNote, 11, { muted: true })}
+	</Readout>
 
 	<!-- pages -->
 	{#each web.pages as P, i (i)}
@@ -387,14 +409,18 @@
 		/>
 		{#if r >= 27}
 			{@render txt(P.x, P.y - 2, pageName(i), 16, { anchor: 'middle', weight: 700 })}
-			{@render txt(P.x, P.y + 15, pct(rank[i]), 12, { anchor: 'middle', tabular: true })}
+			<Readout id="page-pct-{i}">
+				{@render txt(P.x, P.y + 15, pct(rank[i]), 12, { anchor: 'middle', tabular: true })}
+			</Readout>
 		{:else}
 			{@const o = outside[i]}
 			{@render txt(P.x, P.y + 5, pageName(i), letterSize(r), { anchor: 'middle', weight: 700 })}
-			{@render txt(P.x + o.x * (r + 6), P.y + o.y * (r + 6) + 4 + o.y * 6, pct(rank[i]), 12, {
-				anchor: o.x > 0.5 ? 'start' : o.x < -0.5 ? 'end' : 'middle',
-				tabular: true
-			})}
+			<Readout id="page-pct-{i}">
+				{@render txt(P.x + o.x * (r + 6), P.y + o.y * (r + 6) + 4 + o.y * 6, pct(rank[i]), 12, {
+					anchor: o.x > 0.5 ? 'start' : o.x < -0.5 ? 'end' : 'middle',
+					tabular: true
+				})}
+			</Readout>
 		{/if}
 	{/each}
 
@@ -416,7 +442,9 @@
 
 	<!-- reduced motion: what each link carries in one round -->
 	{#each shareLabels as s (s.key)}
-		{@render pill(s.x, s.y + 4, s.text, 11, 'var(--rank-flow)')}
+		<Readout id="share-{s.key}">
+			{@render pill(s.x, s.y + 4, s.text, 11, 'var(--rank-flow)')}
+		</Readout>
 	{/each}
 
 	<!-- right panel -->
@@ -429,13 +457,21 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	{@render txt(PL + 16, 46, roundTitle, 16, { weight: 700, tabular: true })}
-	{#if settled}
-		{@render pill(PR - 52, 43, '✓ settled', 12, 'var(--rank-flow)')}
-	{:else if !reduced && !clock.slow && clock.k < ROUNDS}
-		{@render txt(PR - 18, 47, 'faster now', 11, { anchor: 'end', muted: true })}
-	{/if}
-	{@render txt(PL + 16, 68, 'Rank of each page · tick = exact PageRank', 12, { muted: true })}
+	<Readout
+		id="round"
+		order={3}
+		label="Ranks"
+		value={rank.map((v, i) => `${pageName(i)}\u00a0${pct(v)}`).join(' · ')}
+		note="{roundTitle}{settled ? ' · settled' : ''}"
+	>
+		{@render txt(PL + 16, 46, roundTitle, 16, { weight: 700, tabular: true })}
+		{#if settled}
+			{@render pill(PR - 52, 43, '✓ settled', 12, 'var(--rank-flow)')}
+		{:else if !reduced && !clock.slow && clock.k < ROUNDS}
+			{@render txt(PR - 18, 47, 'faster now', 11, { anchor: 'end', muted: true })}
+		{/if}
+		{@render txt(PL + 16, 68, 'Rank of each page · tick = exact PageRank', 12, { muted: true })}
+	</Readout>
 
 	{#each rank as v, i (i)}
 		{@const y = 96 + i * ROW}
@@ -457,28 +493,34 @@
 			stroke="var(--stage-ink)"
 			stroke-width="2"
 		/>
-		{@render txt(PR - 14, y + ROW / 2 + 4.5, pct(v), 12, { anchor: 'end', tabular: true })}
+		<Readout id="bar-pct-{i}">
+			{@render txt(PR - 14, y + ROW / 2 + 4.5, pct(v), 12, { anchor: 'end', tabular: true })}
+		</Readout>
 	{/each}
 
 	<!-- change per round -->
-	{@render txt(PL + 16, 314, 'Total change in this round', 13, { weight: 600 })}
-	{@render txt(
-		PL + 16,
-		333,
-		shownRound >= 1
-			? `round ${shownRound}: ${lastChange.toFixed(lastChange < 1 ? 2 : 1)}% of all rank moved`
-			: 'starts with round 1',
-		12,
-		{ muted: true, tabular: true }
-	)}
+	<Readout
+		id="change"
+		order={4}
+		label="Total change in this round"
+		value={shownRound >= 1 ? `${lastChange.toFixed(lastChange < 1 ? 2 : 1)}%` : '—'}
+		note={shownRound >= 1 ? `of all rank moved in round ${shownRound}` : 'starts with round 1'}
+	>
+		{@render txt(PL + 16, 314, 'Total change in this round', 13, { weight: 600 })}
+		{@render txt(PL + 16, 333, changeLine, 12, { muted: true, tabular: true })}
+	</Readout>
 	{#each [0, changeMax / 2, changeMax] as v (v)}
 		<line x1={CX0} x2={CX1} y1={cy(v)} y2={cy(v)} stroke="var(--stage-grid)" stroke-width="1" />
-		{@render txt(CX0 - 6, cy(v) + 4, `${v}%`, 11, { anchor: 'end', muted: true })}
+		<Readout id="tick-y-{v}">
+			{@render txt(CX0 - 6, cy(v) + 4, `${v}%`, 11, { anchor: 'end', muted: true })}
+		</Readout>
 	{/each}
-	{#each [0, 10, 20, 30] as k (k)}
-		{@render txt(cx(k), CY0 + 16, String(k), 11, { anchor: 'middle', muted: true })}
-	{/each}
-	{@render txt(CX1, CY0 + 30, 'round', 11, { anchor: 'end', muted: true })}
+	<Readout id="ticks-x">
+		{#each [0, 10, 20, 30] as k (k)}
+			{@render txt(cx(k), CY0 + 16, String(k), 11, { anchor: 'middle', muted: true })}
+		{/each}
+		{@render txt(CX1, CY0 + 30, 'round', 11, { anchor: 'end', muted: true })}
+	</Readout>
 	<path
 		d={changePath}
 		fill="none"

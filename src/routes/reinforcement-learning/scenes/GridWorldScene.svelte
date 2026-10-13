@@ -24,7 +24,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, clamp, easeInOut, startDrag, toSvg, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { createPlayback } from '#lib/explainer/playback.ts';
 	import {
 		MOVES,
@@ -636,6 +636,23 @@
 	const terminalFill = (c: Cell) =>
 		c === REWARD ? 'var(--rl-reward)' : c === SMALL ? 'var(--rl-small)' : 'var(--rl-pit)';
 	const SCALE = [-4, -3, -2, -1, 1, 2, 3, 4, 5, 6];
+
+	// Phone panel: the stat in the card, split into a label and a value.
+	const statRow = $derived.by(() => {
+		const s = cfg.settings;
+		if (phase === 'credit') return { l: 'Learning rate', v: `α = ${s.alpha.toFixed(2)}` };
+		if (phase === 'values') return { l: 'Discount factor', v: `γ = ${s.gamma.toFixed(2)}` };
+		if (phase === 'explore')
+			return {
+				l: 'Random moves',
+				v: `${pct(eps)}${s.decay ? ` (from ${pct(s.epsilon)}, falling)` : ''}`
+			};
+		if (phase === 'paint') return { l: 'Settings', v: stat };
+		return { l: 'Episodes so far', v: stat };
+	});
+	const tallyLine = $derived(
+		`ended at +10: ${tally.big[done]}${hasSmall ? ` · at +1: ${tally.small[done]}` : ''} · in a pit: ${tally.pit[done]} · cut off: ${tally.cut[done]}`
+	);
 </script>
 
 {#snippet txt(
@@ -660,40 +677,48 @@
 {/snippet}
 
 {#snippet scale(y: number)}
-	{@render txt(PX + 20, y, 'Estimates: four per square, one per move', 12, { muted: true })}
-	{#each SCALE as b, j (b)}
-		<rect
-			x={PX + 20 + j * 28.8}
-			y={y + 10}
-			width="28.8"
-			height="12"
-			style:fill={bandFill(b)}
-			stroke="var(--stage-grid)"
-			stroke-width="0.5"
-		/>
-	{/each}
-	{@render txt(PX + 20, y + 38, '−10', 11, { muted: true })}
-	{@render txt(PX + 20 + 4 * 28.8, y + 38, '0', 11, { muted: true, anchor: 'middle' })}
-	{@render txt(PX + PW - 20, y + 38, '+10', 11, { muted: true, anchor: 'end' })}
+	<Readout id="scale">
+		{@render txt(PX + 20, y, 'Estimates: four per square, one per move', 12, { muted: true })}
+		{#each SCALE as b, j (b)}
+			<rect
+				x={PX + 20 + j * 28.8}
+				y={y + 10}
+				width="28.8"
+				height="12"
+				style:fill={bandFill(b)}
+				stroke="var(--stage-grid)"
+				stroke-width="0.5"
+			/>
+		{/each}
+		{@render txt(PX + 20, y + 38, '−10', 11, { muted: true })}
+		{@render txt(PX + 20 + 4 * 28.8, y + 38, '0', 11, { muted: true, anchor: 'middle' })}
+		{@render txt(PX + PW - 20, y + 38, '+10', 11, { muted: true, anchor: 'end' })}
+	</Readout>
 {/snippet}
 
 <g>
-	<!-- readout card -->
-	<rect
-		x="16"
-		y="16"
-		width="928"
-		height="76"
-		rx="10"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
-	{@render txt(36, 45, title, 17, { weight: 600 })}
-	{@render txt(924, 45, stat, 14, { anchor: 'end', weight: 600 })}
-	{@render txt(36, 75, happening, 14, {
-		color: current?.explored && !fast ? 'var(--rl-explore)' : undefined,
-		muted: !current?.explored || fast
-	})}
+	<!-- readout card (its text is listed under the stage on phones) -->
+	<Readout id="card">
+		<rect
+			x="16"
+			y="16"
+			width="928"
+			height="76"
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
+	<Readout id="title" order={1} label="Now" value={title} note={happening}>
+		{@render txt(36, 45, title, 17, { weight: 600 })}
+		{@render txt(36, 75, happening, 14, {
+			color: current?.explored && !fast ? 'var(--rl-explore)' : undefined,
+			muted: !current?.explored || fast
+		})}
+	</Readout>
+	<Readout id="stat" order={2} label={statRow.l} value={statRow.v}>
+		{@render txt(924, 45, stat, 14, { anchor: 'end', weight: 600 })}
+	</Readout>
 
 	<!-- the squares -->
 	{#each world.cells as c, j (j)}
@@ -719,15 +744,17 @@
 		opacity="0.7"
 	/>
 	{#each numbers as n (n.r)}
-		<text
-			x={n.xs}
-			y={GY + n.r * CS + CS / 2 + 4}
-			text-anchor="middle"
-			font-weight="600"
-			class="halo"
-			style:font-size="11px"
-			style:font-variant-numeric="tabular-nums">{n.s}</text
-		>
+		<Readout id="numbers-{n.r}">
+			<text
+				x={n.xs}
+				y={GY + n.r * CS + CS / 2 + 4}
+				text-anchor="middle"
+				font-weight="600"
+				class="halo"
+				style:font-size="11px"
+				style:font-variant-numeric="tabular-nums">{n.s}</text
+			>
+		</Readout>
 	{/each}
 	{#each world.cells as c, j (j)}
 		{#if c >= 2}
@@ -910,19 +937,37 @@
 	{/if}
 
 	<!-- the side panel -->
-	<rect x={PX} y={GY} width={PW} height={GH} rx="10" fill="var(--surface)" stroke="var(--border)" />
+	<Readout id="side-panel">
+		<rect
+			x={PX}
+			y={GY}
+			width={PW}
+			height={GH}
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	{#if hover !== null && world.cells[hover] !== WALL && !isEnd(world, hover)}
 		{@const h = hover}
-		{@render txt(
-			PX + 20,
-			GY + 32,
-			`Square ${sq(h)}${h === world.start ? ' — the start' : ''}`,
-			15,
-			{
-				weight: 600
-			}
-		)}
-		{@render txt(PX + 20, GY + 54, 'what the agent expects from each move', 12, { muted: true })}
+		<Readout
+			id="hover"
+			order={3}
+			label="Square {sq(h)}{h === world.start ? ' — the start' : ''}"
+			value={[0, 1, 2, 3].map((a) => `${MOVE_NAMES[a]} ${f2(q[h * 4 + a])}`).join(' · ')}
+			note="what the agent expects from each move"
+		>
+			{@render txt(
+				PX + 20,
+				GY + 32,
+				`Square ${sq(h)}${h === world.start ? ' — the start' : ''}`,
+				15,
+				{
+					weight: 600
+				}
+			)}
+			{@render txt(PX + 20, GY + 54, 'what the agent expects from each move', 12, { muted: true })}
+		</Readout>
 		{#each [0, 1, 2, 3] as a (a)}
 			{@const ox = PX + PW / 2 + MOVES[a][0] * 78}
 			{@const oy = GY + 150 + MOVES[a][1] * 56}
@@ -936,167 +981,240 @@
 				stroke={best(h) === a ? 'var(--stage-ink)' : 'var(--stage-grid)'}
 				stroke-width={best(h) === a ? 2 : 1}
 			/>
-			{@render txt(ox, oy - 4, MOVE_NAMES[a], 11, { anchor: 'middle', muted: true })}
-			{@render txt(ox, oy + 13, f2(q[h * 4 + a]), 14, { anchor: 'middle', weight: 600 })}
+			<Readout id="hover-{a}">
+				{@render txt(ox, oy - 4, MOVE_NAMES[a], 11, { anchor: 'middle', muted: true })}
+				{@render txt(ox, oy + 13, f2(q[h * 4 + a]), 14, { anchor: 'middle', weight: 600 })}
+			</Readout>
 		{/each}
 		{@render txt(PX + PW / 2, GY + 154, '●', 14, { anchor: 'middle', color: 'var(--rl-agent)' })}
-		{@render txt(PX + 20, GY + 290, 'Each number is the reward it expects in the end,', 12, {
-			muted: true
-		})}
-		{@render txt(PX + 20, GY + 308, 'discounted by how many moves away it is.', 12, {
-			muted: true
-		})}
+		<Readout id="hover-note">
+			{@render txt(PX + 20, GY + 290, 'Each number is the reward it expects in the end,', 12, {
+				muted: true
+			})}
+			{@render txt(PX + 20, GY + 308, 'discounted by how many moves away it is.', 12, {
+				muted: true
+			})}
+		</Readout>
 	{:else if phase === 'credit'}
-		{@render txt(PX + 20, GY + 32, 'The latest change', 15, { weight: 600 })}
+		<Readout id="latest-title">
+			{@render txt(PX + 20, GY + 32, 'The latest change', 15, { weight: 600 })}
+		</Readout>
 		{#if lastChange && !fast}
 			{@const u = lastChange.m}
-			{@render txt(
-				PX + PW - 20,
-				GY + 32,
-				lastChange.ago === 0 ? 'just now' : `${plural(lastChange.ago, 'move')} ago`,
-				12,
-				{ muted: true, anchor: 'end' }
-			)}
-			{@const target = u.r + cfg.settings.gamma * u.bestNext}
-			{@render txt(
-				PX + 20,
-				GY + 56,
-				`square ${sq(u.s)}, move ${MOVE_NAMES[u.a]}${u.explored ? ' (random)' : ''}`,
-				13,
-				{ muted: true }
-			)}
-			{@render txt(PX + 20, GY + 86, `reward for this move: ${u.r}`, 13)}
-			{@render txt(PX + 20, GY + 108, `best estimate where it landed: ${f2(u.bestNext)}`, 13)}
-			{@render txt(
-				PX + 20,
-				GY + 134,
-				`target = ${u.r} + ${cfg.settings.gamma.toFixed(2)} × ${f2(u.bestNext)} = ${f2(target)}`,
-				13,
-				{ weight: 600 }
-			)}
-			{@render txt(
-				PX + 20,
-				GY + 160,
-				`old ${f2(u.before)} + ${cfg.settings.alpha.toFixed(2)} × (${f2(target)} − ${f2(u.before)})`,
-				13
-			)}
-			{@render txt(PX + 20, GY + 188, `estimate: ${f2(u.before)} → ${f2(u.after)}`, 16, {
-				weight: 700,
-				color:
-					u.after > u.before + 0.005
-						? 'var(--rl-good)'
-						: u.after < u.before - 0.005
-							? 'var(--rl-bad)'
-							: undefined
-			})}
+			<Readout
+				id="latest"
+				order={3}
+				label="The latest change"
+				value="{f2(u.before)} → {f2(u.after)}"
+				note="square {sq(u.s)}, move {MOVE_NAMES[u.a]}: target {u.r} + {cfg.settings.gamma.toFixed(
+					2
+				)} × {f2(u.bestNext)} = {f2(u.r + cfg.settings.gamma * u.bestNext)}"
+			/>
+			<Readout id="latest-detail">
+				{@render txt(
+					PX + PW - 20,
+					GY + 32,
+					lastChange.ago === 0 ? 'just now' : `${plural(lastChange.ago, 'move')} ago`,
+					12,
+					{ muted: true, anchor: 'end' }
+				)}
+				{@const target = u.r + cfg.settings.gamma * u.bestNext}
+				{@render txt(
+					PX + 20,
+					GY + 56,
+					`square ${sq(u.s)}, move ${MOVE_NAMES[u.a]}${u.explored ? ' (random)' : ''}`,
+					13,
+					{ muted: true }
+				)}
+				{@render txt(PX + 20, GY + 86, `reward for this move: ${u.r}`, 13)}
+				{@render txt(PX + 20, GY + 108, `best estimate where it landed: ${f2(u.bestNext)}`, 13)}
+				{@render txt(
+					PX + 20,
+					GY + 134,
+					`target = ${u.r} + ${cfg.settings.gamma.toFixed(2)} × ${f2(u.bestNext)} = ${f2(target)}`,
+					13,
+					{ weight: 600 }
+				)}
+				{@render txt(
+					PX + 20,
+					GY + 160,
+					`old ${f2(u.before)} + ${cfg.settings.alpha.toFixed(2)} × (${f2(target)} − ${f2(u.before)})`,
+					13
+				)}
+				{@render txt(PX + 20, GY + 188, `estimate: ${f2(u.before)} → ${f2(u.after)}`, 16, {
+					weight: 700,
+					color:
+						u.after > u.before + 0.005
+							? 'var(--rl-good)'
+							: u.after < u.before - 0.005
+								? 'var(--rl-bad)'
+								: undefined
+				})}
+			</Readout>
 		{:else}
-			{@render txt(
-				PX + 20,
-				GY + 60,
-				fast ? 'Too fast to follow: slow down to read' : 'Nothing has changed yet: every move so',
-				13,
-				{ muted: true }
-			)}
-			{@render txt(
-				PX + 20,
-				GY + 80,
-				fast ? 'each update.' : 'far paid 0 and led to a square worth 0.',
-				13,
-				{ muted: true }
-			)}
+			<Readout
+				id="latest"
+				order={3}
+				label="The latest change"
+				value={fast ? 'too fast to follow' : 'none yet'}
+				note={fast ? 'slow down to read each update' : 'every move so far paid 0'}
+			>
+				{@render txt(
+					PX + 20,
+					GY + 60,
+					fast ? 'Too fast to follow: slow down to read' : 'Nothing has changed yet: every move so',
+					13,
+					{ muted: true }
+				)}
+				{@render txt(
+					PX + 20,
+					GY + 80,
+					fast ? 'each update.' : 'far paid 0 and led to a square worth 0.',
+					13,
+					{ muted: true }
+				)}
+			</Readout>
 		{/if}
 		{@render scale(GY + 250)}
 	{:else if phase === 'values'}
-		{@render txt(PX + 20, GY + 32, 'What S is worth', 15, { weight: 600 })}
-		{@render txt(PX + 20, GY + 64, `learnt so far: ${fS(bestValue(q, world.start))}`, 14)}
-		{#if exact && shortest !== null}
-			{@render txt(PX + 20, GY + 90, `exact: ${fS(bestValue(exact, world.start))}`, 14, {
-				weight: 600
+		<Readout
+			id="worth"
+			order={3}
+			label="What S is worth"
+			value="learnt so far: {fS(bestValue(q, world.start))}"
+			note={exact && shortest !== null
+				? `exact: ${fS(bestValue(exact, world.start))} (the +10 is ${shortest} moves away)`
+				: undefined}
+		>
+			{@render txt(PX + 20, GY + 32, 'What S is worth', 15, { weight: 600 })}
+			{@render txt(PX + 20, GY + 64, `learnt so far: ${fS(bestValue(q, world.start))}`, 14)}
+		</Readout>
+		<Readout id="worth-detail">
+			{#if exact && shortest !== null}
+				{@render txt(PX + 20, GY + 90, `exact: ${fS(bestValue(exact, world.start))}`, 14, {
+					weight: 600
+				})}
+				{@render txt(
+					PX + 20,
+					GY + 112,
+					`the +10 is ${shortest} moves away: 10 × ${cfg.settings.gamma.toFixed(2)}${sup(shortest - 1)}`,
+					12,
+					{ muted: true }
+				)}
+			{/if}
+			{@render txt(PX + 20, GY + 150, 'Numbers: the best estimate in each square.', 12, {
+				muted: true
+			})}
+			{@render txt(PX + 20, GY + 168, 'Arrows: the best move in each square;', 12, { muted: true })}
+			{@render txt(PX + 20, GY + 186, 'follow them from S to reach the reward.', 12, {
+				muted: true
+			})}
+		</Readout>
+		{@render scale(GY + 250)}
+	{:else if phase === 'explore' || phase === 'paint'}
+		<Readout
+			id="route"
+			order={3}
+			label="Following its best moves, from S it goes to"
+			value={routeWords}
+		/>
+		<Readout
+			id="recent"
+			order={4}
+			label="Average reward per episode, last 50"
+			value={recent === null ? '—' : recent.toFixed(2)}
+			note={tallyLine}
+		/>
+		<Readout id="doing">
+			{@render txt(PX + 20, GY + 32, 'How it is doing', 15, { weight: 600 })}
+			{@render txt(PX + 20, GY + 60, 'Following its best moves, from S it goes to', 12, {
+				muted: true
+			})}
+			{@render txt(PX + 20, GY + 82, routeWords, 15, {
+				weight: 700,
+				color: routeOk
+					? routeEnd === REWARD
+						? 'var(--rl-good)'
+						: routeEnd === PENALTY
+							? 'var(--rl-bad)'
+							: undefined
+					: undefined
+			})}
+			{@render txt(PX + 20, GY + 114, 'Average reward per episode, last 50:', 12, { muted: true })}
+			{@render txt(PX + 20, GY + 136, recent === null ? '—' : recent.toFixed(2), 15, {
+				weight: 700
 			})}
 			{@render txt(
 				PX + 20,
-				GY + 112,
-				`the +10 is ${shortest} moves away: 10 × ${cfg.settings.gamma.toFixed(2)}${sup(shortest - 1)}`,
+				GY + 168,
+				`Episodes ended at +10: ${tally.big[done]}${hasSmall ? ` · at +1: ${tally.small[done]}` : ''}`,
 				12,
 				{ muted: true }
 			)}
-		{/if}
-		{@render txt(PX + 20, GY + 150, 'Numbers: the best estimate in each square.', 12, {
-			muted: true
-		})}
-		{@render txt(PX + 20, GY + 168, 'Arrows: the best move in each square;', 12, { muted: true })}
-		{@render txt(PX + 20, GY + 186, 'follow them from S to reach the reward.', 12, { muted: true })}
-		{@render scale(GY + 250)}
-	{:else if phase === 'explore' || phase === 'paint'}
-		{@render txt(PX + 20, GY + 32, 'How it is doing', 15, { weight: 600 })}
-		{@render txt(PX + 20, GY + 60, 'Following its best moves, from S it goes to', 12, {
-			muted: true
-		})}
-		{@render txt(PX + 20, GY + 82, routeWords, 15, {
-			weight: 700,
-			color: routeOk
-				? routeEnd === REWARD
-					? 'var(--rl-good)'
-					: routeEnd === PENALTY
-						? 'var(--rl-bad)'
-						: undefined
-				: undefined
-		})}
-		{@render txt(PX + 20, GY + 114, 'Average reward per episode, last 50:', 12, { muted: true })}
-		{@render txt(PX + 20, GY + 136, recent === null ? '—' : recent.toFixed(2), 15, {
-			weight: 700
-		})}
-		{@render txt(
-			PX + 20,
-			GY + 168,
-			`Episodes ended at +10: ${tally.big[done]}${hasSmall ? ` · at +1: ${tally.small[done]}` : ''}`,
-			12,
-			{ muted: true }
-		)}
-		{@render txt(
-			PX + 20,
-			GY + 186,
-			`in a pit: ${tally.pit[done]} · cut off after 400 moves: ${tally.cut[done]}`,
-			12,
-			{ muted: true }
-		)}
-		{@render txt(PX + 20, GY + 216, 'Point at a square to see its estimates.', 12, { muted: true })}
+			{@render txt(
+				PX + 20,
+				GY + 186,
+				`in a pit: ${tally.pit[done]} · cut off after 400 moves: ${tally.cut[done]}`,
+				12,
+				{ muted: true }
+			)}
+			{@render txt(PX + 20, GY + 216, 'Point at a square to see its estimates.', 12, {
+				muted: true
+			})}
+		</Readout>
 		{@render scale(GY + 250)}
 	{:else}
-		{@render txt(PX + 20, GY + 32, 'The world', 15, { weight: 600 })}
+		<Readout id="world-title">
+			{@render txt(PX + 20, GY + 32, 'The world', 15, { weight: 600 })}
+		</Readout>
 		{#each legend as item, j (item.l)}
-			<rect
-				x={PX + 20}
-				y={GY + 50 + j * 28}
-				width="18"
-				height="18"
-				rx="3"
-				style:fill={item.f}
-				stroke="var(--stage-line)"
-			/>
-			{@render txt(PX + 48, GY + 64 + j * 28, item.l, 13)}
+			<Readout id="legend-{item.k}" order={10 + j} label={item.l} color={item.f}>
+				<rect
+					x={PX + 20}
+					y={GY + 50 + j * 28}
+					width="18"
+					height="18"
+					rx="3"
+					style:fill={item.f}
+					stroke="var(--stage-line)"
+				/>
+				{@render txt(PX + 48, GY + 64 + j * 28, item.l, 13)}
+			</Readout>
 		{/each}
-		<circle cx={PX + 29} cy={ly0 + 9} r="9" fill="var(--rl-agent)" />
-		{@render txt(PX + 48, ly0 + 14, 'the agent; S: where it starts', 13)}
-		{@render txt(PX + 20, ly0 + 52, 'Moves: up, down, left or right.', 12, { muted: true })}
-		{@render txt(PX + 20, ly0 + 70, 'Into a wall or the edge: it stays put.', 12, { muted: true })}
-		{@render txt(PX + 20, ly0 + 114, 'Episodes so far', 12, { muted: true })}
-		{@render txt(
-			PX + 20,
-			ly0 + 138,
-			`${hasSmall ? `${tally.big[done]} at the +10 · ${tally.small[done]} at the +1` : `${tally.big[done]} reached the reward`} · ${tally.pit[done]} ${hasSmall ? 'in a pit' : 'fell in a pit'}${tally.cut[done] ? ` · ${tally.cut[done]} cut off` : ''}`,
-			13,
-			{ weight: 600 }
-		)}
+		<Readout
+			id="legend-agent"
+			order={20}
+			label="the agent; S: where it starts"
+			color="var(--rl-agent)"
+		>
+			<circle cx={PX + 29} cy={ly0 + 9} r="9" fill="var(--rl-agent)" />
+			{@render txt(PX + 48, ly0 + 14, 'the agent; S: where it starts', 13)}
+		</Readout>
+		<Readout id="world-notes">
+			{@render txt(PX + 20, ly0 + 52, 'Moves: up, down, left or right.', 12, { muted: true })}
+			{@render txt(PX + 20, ly0 + 70, 'Into a wall or the edge: it stays put.', 12, {
+				muted: true
+			})}
+			{@render txt(PX + 20, ly0 + 114, 'Episodes so far', 12, { muted: true })}
+			{@render txt(
+				PX + 20,
+				ly0 + 138,
+				`${hasSmall ? `${tally.big[done]} at the +10 · ${tally.small[done]} at the +1` : `${tally.big[done]} reached the reward`} · ${tally.pit[done]} ${hasSmall ? 'in a pit' : 'fell in a pit'}${tally.cut[done] ? ` · ${tally.cut[done]} cut off` : ''}`,
+				13,
+				{ weight: 600 }
+			)}
+		</Readout>
 	{/if}
 
 	<!-- the episode bar, with the moves each episode took -->
-	{@render txt(TL0 - 12, SB - SH + 4, '400', 10, { anchor: 'end', muted: true })}
-	{@render txt(TL0 - 12, SB + 4, '1', 10, { anchor: 'end', muted: true })}
-	{@render txt(TL0 - 30, SB - SH / 2 + 4, 'moves', 11, {
-		anchor: 'end',
-		muted: true
-	})}
+	<Readout id="spark-axis">
+		{@render txt(TL0 - 12, SB - SH + 4, '400', 10, { anchor: 'end', muted: true })}
+		{@render txt(TL0 - 12, SB + 4, '1', 10, { anchor: 'end', muted: true })}
+		{@render txt(TL0 - 30, SB - SH / 2 + 4, 'moves', 11, {
+			anchor: 'end',
+			muted: true
+		})}
+	</Readout>
 	<line x1={TL0} x2={TL1} y1={SB} y2={SB} stroke="var(--stage-grid)" />
 	{#if shortest !== null}
 		<line
@@ -1108,14 +1226,16 @@
 			stroke-dasharray="3 4"
 			opacity="0.7"
 		/>
-		{@render txt(TL1 + 10, ly(shortest) - 3, 'shortest', 11, { muted: true })}
-		{@render txt(
-			TL1 + 10,
-			ly(shortest) + 10,
-			`to ${world.cells.includes(REWARD) ? '+10' : '+1'}: ${shortest}`,
-			11,
-			{ muted: true }
-		)}
+		<Readout id="shortest">
+			{@render txt(TL1 + 10, ly(shortest) - 3, 'shortest', 11, { muted: true })}
+			{@render txt(
+				TL1 + 10,
+				ly(shortest) + 10,
+				`to ${world.cells.includes(REWARD) ? '+10' : '+1'}: ${shortest}`,
+				11,
+				{ muted: true }
+			)}
+		</Readout>
 	{/if}
 	{#if spark}
 		<path
@@ -1148,9 +1268,11 @@
 		stroke-linecap="round"
 		opacity="0.6"
 	/>
-	{@render txt(TL0 - 12, TLY + 4, 'episode 1', 11, { anchor: 'end', muted: true })}
-	{@render txt(TL1 + 10, TLY + 4, `${E}`, 11, { muted: true })}
-	{@render txt((TL0 + TL1) / 2, TLY + 30, barText, 12, { anchor: 'middle', muted: true })}
+	<Readout id="bar-labels">
+		{@render txt(TL0 - 12, TLY + 4, 'episode 1', 11, { anchor: 'end', muted: true })}
+		{@render txt(TL1 + 10, TLY + 4, `${E}`, 11, { muted: true })}
+		{@render txt((TL0 + TL1) / 2, TLY + 30, barText, 12, { anchor: 'middle', muted: true })}
+	</Readout>
 	<Handle
 		x={tlx}
 		y={TLY}

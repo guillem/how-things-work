@@ -37,7 +37,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, easeInOut, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { errorCurve, fitPolynomial, makeData, parseMoved } from '../fit';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -280,14 +280,16 @@
 
 <g>
 	<!-- title -->
-	{@render txt(48, 42, 'Error against flexibility', 16, { weight: 600 })}
-	{@render txt(
-		48,
-		64,
-		'Mean squared error on a log scale: each gridline up is ten times bigger.',
-		13,
-		{ muted: true }
-	)}
+	<Readout id="title">
+		{@render txt(48, 42, 'Error against flexibility', 16, { weight: 600 })}
+		{@render txt(
+			48,
+			64,
+			'Mean squared error on a log scale: each gridline up is ten times bigger.',
+			13,
+			{ muted: true }
+		)}
+	</Readout>
 
 	<!-- grid and axes -->
 	{#each Y_TICKS as tk (tk.l)}
@@ -299,18 +301,24 @@
 			stroke="var(--stage-grid)"
 			stroke-width="1"
 		/>
-		{@render txt(CX0 - 10, yOf(tk.l) + 4, tk.text, 11, { anchor: 'end', muted: true })}
+		<Readout id="tick-y-{tk.l}">
+			{@render txt(CX0 - 10, yOf(tk.l) + 4, tk.text, 11, { anchor: 'end', muted: true })}
+		</Readout>
 	{/each}
 	{#each DEGREES as d (d)}
 		<line x1={xOf(d)} x2={xOf(d)} y1={CY1} y2={CY1 + 5} stroke="var(--stage-line)" />
-		{@render txt(xOf(d), CY1 + 19, String(d), 11, { anchor: 'middle', muted: true })}
+		<Readout id="tick-x-{d}">
+			{@render txt(xOf(d), CY1 + 19, String(d), 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/each}
 	<line x1={CX0} x2={CX0} y1={CY0} y2={CY1} stroke="var(--stage-line)" stroke-width="1" />
 	<line x1={CX0} x2={CX1} y1={CY1} y2={CY1} stroke="var(--stage-line)" stroke-width="1" />
-	{@render txt((CX0 + CX1) / 2, 572, 'flexibility: degree of the curve', 12, {
-		anchor: 'middle',
-		muted: true
-	})}
+	<Readout id="x-caption">
+		{@render txt((CX0 + CX1) / 2, 572, 'flexibility: degree of the curve', 12, {
+			anchor: 'middle',
+			muted: true
+		})}
+	</Readout>
 
 	<!-- degrees with more settings than training examples -->
 	{#if maxDT.current < MAX_DEGREE - 0.01}
@@ -324,14 +332,16 @@
 			opacity={clamp(MAX_DEGREE - maxDT.current)}
 		/>
 		{#if maxD < MAX_DEGREE}
-			{@render txt((rx + CX1) / 2, CY1 - 44, 'more settings than', 11, {
-				anchor: 'middle',
-				muted: true
-			})}
-			{@render txt((rx + CX1) / 2, CY1 - 30, `training examples (${nTrain})`, 11, {
-				anchor: 'middle',
-				muted: true
-			})}
+			<Readout id="too-many">
+				{@render txt((rx + CX1) / 2, CY1 - 44, 'more settings than', 11, {
+					anchor: 'middle',
+					muted: true
+				})}
+				{@render txt((rx + CX1) / 2, CY1 - 30, `training examples (${nTrain})`, 11, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</Readout>
 		{/if}
 	{/if}
 
@@ -345,12 +355,20 @@
 		stroke-width="1.5"
 		stroke-dasharray="5 4"
 	/>
-	{@render pill(
-		clamp(xOf(degreeT.current), CX0 + pillW(modelText) / 2 - 30, CX1 - pillW(modelText) / 2 + 20),
-		CY0 - 22,
-		modelText,
-		'var(--fit-model)'
-	)}
+	<Readout
+		id="model"
+		order={1}
+		label="Your model"
+		value={degreeName(degree)}
+		color="var(--fit-model)"
+	>
+		{@render pill(
+			clamp(xOf(degreeT.current), CX0 + pillW(modelText) / 2 - 30, CX1 - pillW(modelText) / 2 + 20),
+			CY0 - 22,
+			modelText,
+			'var(--fit-model)'
+		)}
+	</Readout>
 
 	<!-- the noise floor: the smallest test error any model can expect -->
 	{#if noise > 0 && dataW.current > 0.01}
@@ -366,7 +384,9 @@
 				stroke-dasharray="6 5"
 			/>
 			<!-- named beyond the chart's right edge, where no curve runs -->
-			{@render txt(CX1 + 6, ly + 4, 'noise²', 11, { muted: true })}
+			<Readout id="noise-label">
+				{@render txt(CX1 + 6, ly + 4, 'noise²', 11, { muted: true })}
+			</Readout>
 		</g>
 	{/if}
 
@@ -404,33 +424,35 @@
 	{/each}
 
 	<!-- legend, above the chart (inside it, the curves can run through it) -->
-	<g opacity={clamp(reveal * 3)}>
-		{#each [{ x: CX0, color: 'var(--fit-test)', text: 'test error: examples held back' }, { x: CX0 + 232, color: 'var(--fit-train)', text: 'training error: examples it was fitted to' }] as row (row.x)}
-			<line
-				x1={row.x}
-				x2={row.x + 20}
-				y1={LEGEND_Y - 4}
-				y2={LEGEND_Y - 4}
-				stroke={row.color}
-				stroke-width="2.5"
-			/>
-			<circle cx={row.x + 10} cy={LEGEND_Y - 4} r="4" fill={row.color} />
-			{@render txt(row.x + 28, LEGEND_Y, row.text, 12)}
-		{/each}
-		{#if offChart.length || atFloor}
-			{@render txt(
-				CX0 + 28,
-				LEGEND_Y + 16,
-				offChart.length && atFloor
-					? `hollow dots: off the chart at the top (up to ${fmtErr(Math.max(...offChart))}), below 0.0001 at the bottom`
-					: offChart.length
-						? `hollow dot at the top: off the chart (up to ${fmtErr(Math.max(...offChart))})`
-						: 'hollow dot at the bottom: below 0.0001, almost zero',
-				11,
-				{ muted: true }
-			)}
-		{/if}
-	</g>
+	<Readout id="legend">
+		<g opacity={clamp(reveal * 3)}>
+			{#each [{ x: CX0, color: 'var(--fit-test)', text: 'test error: examples held back' }, { x: CX0 + 232, color: 'var(--fit-train)', text: 'training error: examples it was fitted to' }] as row (row.x)}
+				<line
+					x1={row.x}
+					x2={row.x + 20}
+					y1={LEGEND_Y - 4}
+					y2={LEGEND_Y - 4}
+					stroke={row.color}
+					stroke-width="2.5"
+				/>
+				<circle cx={row.x + 10} cy={LEGEND_Y - 4} r="4" fill={row.color} />
+				{@render txt(row.x + 28, LEGEND_Y, row.text, 12)}
+			{/each}
+			{#if offChart.length || atFloor}
+				{@render txt(
+					CX0 + 28,
+					LEGEND_Y + 16,
+					offChart.length && atFloor
+						? `hollow dots: off the chart at the top (up to ${fmtErr(Math.max(...offChart))}), below 0.0001 at the bottom`
+						: offChart.length
+							? `hollow dot at the top: off the chart (up to ${fmtErr(Math.max(...offChart))})`
+							: 'hollow dot at the bottom: below 0.0001, almost zero',
+					11,
+					{ muted: true }
+				)}
+			{/if}
+		</g>
+	</Readout>
 
 	<!-- the sweet spot -->
 	<g opacity={after}>
@@ -442,12 +464,24 @@
 			stroke="var(--fit-test)"
 			stroke-width="2"
 		/>
-		{@render pill(
-			pillX.current,
-			pillY.current,
-			`sweet spot: ${degreeName(best)}`,
-			'var(--fit-test)'
-		)}
+		<Readout
+			id="sweet"
+			order={2}
+			label="Sweet spot"
+			value={degreeName(best)}
+			note={dataW.current > 0.5
+				? `with ${count} examples, noise ${noise === 0 ? 'none (nothing to overfit)' : noise.toFixed(2)}`
+				: undefined}
+			color="var(--fit-test)"
+			opacity={after}
+		>
+			{@render pill(
+				pillX.current,
+				pillY.current,
+				`sweet spot: ${degreeName(best)}`,
+				'var(--fit-test)'
+			)}
+		</Readout>
 	</g>
 
 	<!-- regions under the axis, split at the sweet spot -->
@@ -460,11 +494,13 @@
 				stroke="var(--stage-line)"
 				stroke-width="1.5"
 			/>
-			{@render txt(x1, CY1 + 54, '← too stiff', 12, { anchor: 'end' })}
-			{@render txt(x1, CY1 + 68, '(underfitting)', 11, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout id="stiff">
+				{@render txt(x1, CY1 + 54, '← too stiff', 12, { anchor: 'end' })}
+				{@render txt(x1, CY1 + 68, '(underfitting)', 11, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 		{/if}
 		{#if best < maxD && xOf(maxD) - xOf(best) >= 70}
 			{@const x0 = sweetX + 8}
@@ -475,13 +511,17 @@
 				stroke="var(--stage-line)"
 				stroke-width="1.5"
 			/>
-			{@render txt(x0, CY1 + 54, 'too flexible →', 12)}
-			{@render txt(x0, CY1 + 68, '(overfitting)', 11, { muted: true })}
+			<Readout id="flexible">
+				{@render txt(x0, CY1 + 54, 'too flexible →', 12)}
+				{@render txt(x0, CY1 + 68, '(overfitting)', 11, { muted: true })}
+			</Readout>
 		{/if}
 	</g>
 
 	<!-- inset: what each point of the chart looks like -->
-	{@render txt(IX0, IY0 - 10, 'The examples and the fitted curves', 12, { weight: 600 })}
+	<Readout id="inset-title">
+		{@render txt(IX0, IY0 - 10, 'The examples and the fitted curves', 12, { weight: 600 })}
+	</Readout>
 	<rect
 		x={IX0}
 		y={IY0}
@@ -520,86 +560,108 @@
 			/>
 		{/each}
 	</g>
-	<line
-		x1={IX0 + 4}
-		x2={IX0 + 24}
-		y1={IY1 + 20}
-		y2={IY1 + 20}
-		stroke="var(--fit-model)"
-		stroke-width="2.5"
-	/>
-	{@render txt(
-		IX0 + 32,
-		IY1 + 24,
-		best === degree
-			? `your model, ${degreeName(degree)} = sweet spot`
-			: `your model, ${degreeName(degree)}`,
-		12
-	)}
-	{#if best !== degree}
+	<Readout id="inset-legend">
 		<line
 			x1={IX0 + 4}
 			x2={IX0 + 24}
-			y1={IY1 + 40}
-			y2={IY1 + 40}
-			stroke="var(--fit-test)"
-			stroke-width="2"
-			stroke-dasharray="5 4"
+			y1={IY1 + 20}
+			y2={IY1 + 20}
+			stroke="var(--fit-model)"
+			stroke-width="2.5"
 		/>
-		{@render txt(IX0 + 32, IY1 + 44, `sweet spot, ${degreeName(best)}`, 12)}
-	{/if}
-	{@render txt(
-		IX0,
-		IY1 + 66,
-		`fitted to the ${nTrain} solid dots, tested on the ${nTest} hollow ones`,
-		11,
-		{ muted: true }
-	)}
-
-	<!-- readouts -->
-	<g>
-		{@render txt(IX0, 420, `At ${degreeName(degree)}:`, 13, { weight: 600 })}
-		{#if atDegree.underdetermined}
-			{@render txt(IX0, 440, 'training error: zero (through every dot)', 13, {
-				color: 'var(--fit-train)'
-			})}
-			{@render txt(IX0, 460, 'test error: not charted', 13, { color: 'var(--fit-test)' })}
-			{@render txt(IX0, 478, 'more settings than examples: many curves fit them', 11, {
-				muted: true
-			})}
-		{:else}
-			{@render txt(IX0, 440, `training error ${fmtErr(atDegree.train)}`, 13, {
-				color: 'var(--fit-train)'
-			})}
-			{@render txt(IX0, 460, `test error ${fmtErr(atDegree.test)}`, 13, {
-				color: 'var(--fit-test)'
-			})}
+		{@render txt(
+			IX0 + 32,
+			IY1 + 24,
+			best === degree
+				? `your model, ${degreeName(degree)} = sweet spot`
+				: `your model, ${degreeName(degree)}`,
+			12
+		)}
+		{#if best !== degree}
+			<line
+				x1={IX0 + 4}
+				x2={IX0 + 24}
+				y1={IY1 + 40}
+				y2={IY1 + 40}
+				stroke="var(--fit-test)"
+				stroke-width="2"
+				stroke-dasharray="5 4"
+			/>
+			{@render txt(IX0 + 32, IY1 + 44, `sweet spot, ${degreeName(best)}`, 12)}
 		{/if}
-	</g>
-	<g opacity={dataW.current}>
 		{@render txt(
 			IX0,
-			506,
-			`With ${count} examples, noise ${noise === 0 ? 'none' : noise.toFixed(2)}:`,
-			13,
-			{ weight: 600 }
+			IY1 + 66,
+			`fitted to the ${nTrain} solid dots, tested on the ${nTest} hollow ones`,
+			11,
+			{ muted: true }
 		)}
-		{@render txt(IX0, 526, `best ${degreeName(best)}`, 13, { color: 'var(--fit-test)' })}
-		{#if noise === 0}
-			{@render txt(IX0 + 96, 526, '(no noise: nothing to overfit)', 11, { muted: true })}
-		{/if}
-		{#if noise > 0}
-			{@render txt(IX0, 546, `dashed: noise floor (noise² = ${(noise ** 2).toFixed(4)})`, 11, {
+	</Readout>
+
+	<!-- readouts -->
+	<Readout
+		id="train"
+		order={3}
+		label="Training error"
+		value={atDegree.underdetermined ? 'zero' : fmtErr(atDegree.train)}
+		note={atDegree.underdetermined ? 'through every dot' : undefined}
+		color="var(--fit-train)"
+	/>
+	<Readout
+		id="test"
+		order={4}
+		label="Test error"
+		value={atDegree.underdetermined ? 'not charted' : fmtErr(atDegree.test)}
+		note={atDegree.underdetermined ? 'more settings than examples' : undefined}
+		color="var(--fit-test)"
+	/>
+	<Readout id="at-degree">
+		<g>
+			{@render txt(IX0, 420, `At ${degreeName(degree)}:`, 13, { weight: 600 })}
+			{#if atDegree.underdetermined}
+				{@render txt(IX0, 440, 'training error: zero (through every dot)', 13, {
+					color: 'var(--fit-train)'
+				})}
+				{@render txt(IX0, 460, 'test error: not charted', 13, { color: 'var(--fit-test)' })}
+				{@render txt(IX0, 478, 'more settings than examples: many curves fit them', 11, {
+					muted: true
+				})}
+			{:else}
+				{@render txt(IX0, 440, `training error ${fmtErr(atDegree.train)}`, 13, {
+					color: 'var(--fit-train)'
+				})}
+				{@render txt(IX0, 460, `test error ${fmtErr(atDegree.test)}`, 13, {
+					color: 'var(--fit-test)'
+				})}
+			{/if}
+		</g>
+	</Readout>
+	<Readout id="data-notes">
+		<g opacity={dataW.current}>
+			{@render txt(
+				IX0,
+				506,
+				`With ${count} examples, noise ${noise === 0 ? 'none' : noise.toFixed(2)}:`,
+				13,
+				{ weight: 600 }
+			)}
+			{@render txt(IX0, 526, `best ${degreeName(best)}`, 13, { color: 'var(--fit-test)' })}
+			{#if noise === 0}
+				{@render txt(IX0 + 96, 526, '(no noise: nothing to overfit)', 11, { muted: true })}
+			{/if}
+			{#if noise > 0}
+				{@render txt(IX0, 546, `dashed: noise floor (noise² = ${(noise ** 2).toFixed(4)})`, 11, {
+					muted: true
+				})}
+			{/if}
+			{@render txt(IX0, 564, `typical errors over ${AVERAGE} random sets of examples`, 11, {
 				muted: true
 			})}
-		{/if}
-		{@render txt(IX0, 564, `typical errors over ${AVERAGE} random sets of examples`, 11, {
-			muted: true
-		})}
-		{@render txt(IX0, 578, '(one wild set can’t dominate); the inset shows one', 11, {
-			muted: true
-		})}
-	</g>
+			{@render txt(IX0, 578, '(one wild set can’t dominate); the inset shows one', 11, {
+				muted: true
+			})}
+		</g>
+	</Readout>
 </g>
 
 {#snippet txt(

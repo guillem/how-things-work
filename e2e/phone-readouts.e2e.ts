@@ -583,6 +583,86 @@ test.describe('on a phone', () => {
 		await range(page, 'rtt').fill('200');
 		await expect(panel).toContainText('3 round trips of 200 ms');
 	});
+
+	test('pagerank votes: the ranking and the A/B callouts are text', async ({ page }) => {
+		await page.goto('./pagerank/#weighted');
+		const panel = readouts(page);
+		await expect(panel).toContainText('C 36.5% · A 33.6% · B 20.3%');
+		await expect(panel).toContainText(/A\s*1 vote, 33\.6%/);
+		await expect(panel).toContainText(/B\s*4 votes, 20\.3%/);
+		await expect(drawing(page)).not.toContainText('with all of C’s share');
+	});
+
+	test('pagerank surfer: the damping readout is text and follows the slider', async ({ page }) => {
+		await page.goto('./pagerank/#damping');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Follows a link\s*85%/);
+		await expect(panel).toContainText('Trap: D ⇄ E');
+		await expect(drawing(page)).not.toContainText('Follows a link');
+		await range(page, 'damping').fill('0.6');
+		await expect(panel).toContainText(/Follows a link\s*60%/);
+		await expect(panel).toContainText('jumps at random 40%');
+	});
+
+	test('pagerank iteration: the split and the ranks are text and follow the damping', async ({
+		page
+	}) => {
+		await page.goto('./pagerank/#compute');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/To the jump pool\s*15%/);
+		await expect(panel).toContainText('C 36.5%');
+		await expect(drawing(page)).not.toContainText('jump pool');
+		await range(page, 'damping').fill('0.7');
+		await expect(panel).toContainText(/To the jump pool\s*30%/);
+		await expect(panel).toContainText(/Along its links\s*70%/);
+	});
+
+	test('learning from data fit: the errors are text and follow the degree', async ({ page }) => {
+		await page.goto('./learning-from-data/#test');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Flexibility\s*degree 3: up to 2 bends/);
+		await expect(panel).toContainText(/Test error\s*0\.047/);
+		await expect(drawing(page)).not.toContainText('test error');
+		await range(page, 'degree').fill('1');
+		await expect(panel).toContainText(/Flexibility\s*degree 1/);
+		await expect(panel).not.toContainText(/Test error\s*0\.047/);
+	});
+
+	test('learning from data curve: model and sweet spot are text and follow the degree', async ({
+		page
+	}) => {
+		await page.goto('./learning-from-data/#sweetspot');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Your model\s*degree 3/);
+		await expect(panel).toContainText(/Sweet spot\s*degree 6/);
+		await expect(drawing(page)).not.toContainText('sweet spot');
+		await range(page, 'degree').fill('6');
+		await expect(panel).toContainText(/Your model\s*degree 6/);
+	});
+
+	test('reinforcement learning grid: the discount and what S is worth are text', async ({
+		page
+	}) => {
+		await page.goto('./reinforcement-learning/#discount');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Discount factor\s*γ = 0\.90/);
+		await expect(panel).toContainText(/What S is worth\s*learnt so far/);
+		await expect(drawing(page)).not.toContainText('discount factor');
+		await range(page, 'gamma').fill('0.5');
+		await expect(panel).toContainText(/Discount factor\s*γ = 0\.50/);
+	});
+
+	test('reinforcement learning curve: the moves per episode are text and follow ε', async ({
+		page
+	}) => {
+		await page.goto('./reinforcement-learning/#progress');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Random moves\s*10%/);
+		await expect(panel).toContainText(/Episode 300\s*\d+ moves/);
+		await expect(drawing(page)).not.toContainText('Moves per episode');
+		await range(page, 'epsilon').fill('0.3');
+		await expect(panel).toContainText(/Random moves\s*30%/);
+	});
 });
 
 test.describe('on a wide screen', () => {
