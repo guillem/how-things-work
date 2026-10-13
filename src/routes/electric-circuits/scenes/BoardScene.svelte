@@ -40,7 +40,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, lerp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		PRESETS,
 		SHORT_CURRENT,
@@ -564,24 +564,42 @@
 	// ---- captions on the board, per phase ---------------------------------------------------------------
 	const nth = (kind: PartKind) => items.filter((it) => it.part.kind === kind);
 	const captions = $derived.by(() => {
-		const out: { key: string; text: string }[] = [];
-		const name = (list: Item[], names: string[]) =>
-			list.forEach((it, k) => names[k] && out.push({ key: it.e.key, text: names[k] }));
+		// On phones a caption becomes a panel row (`row`), with a numbered badge at its part (`mark`).
+		type Cap = { key: string; text: string; row?: string; value?: string; mark?: number };
+		const out: Cap[] = [];
+		const name = (list: Item[], names: string[], rows = false) =>
+			list.forEach(
+				(it, k) =>
+					names[k] &&
+					out.push({
+						key: it.e.key,
+						text: names[k],
+						...(rows ? { row: `${k + 1} · ${names[k]}`, value: fmtA(it.amps), mark: k + 1 } : {})
+					})
+			);
 		if (phase === 'current')
-			name(nth('ammeter'), ['before the bulb', 'after the bulb', 'back to the battery']);
+			name(nth('ammeter'), ['before the bulb', 'after the bulb', 'back to the battery'], true);
 		if (phase === 'parallel') {
-			name(nth('ammeter'), ['at the battery', 'branch 1', 'branch 2']);
+			name(nth('ammeter'), ['at the battery', 'branch 1', 'branch 2'], true);
 			name(nth('bulb'), ['bulb 1', 'bulb 2']);
 		}
 		if (phase === 'series')
 			nth('bulb').forEach((it, k) =>
-				out.push({ key: it.e.key, text: `bulb ${k + 1}: ${fmtV(it.volts)}` })
+				out.push({
+					key: it.e.key,
+					text: `bulb ${k + 1}: ${fmtV(it.volts)}`,
+					row: `Bulb ${k + 1}`,
+					value: fmtV(it.volts),
+					mark: k + 1
+				})
 			);
 		if (phase === 'switches')
 			nth('bulb').forEach((it, k) =>
 				out.push({
 					key: it.e.key,
-					text: `${k ? 'right' : 'left'} bulb: ${it.lit ? 'lit' : 'off'}`
+					text: `${k ? 'right' : 'left'} bulb: ${it.lit ? 'lit' : 'off'}`,
+					row: `${k ? 'Right' : 'Left'} bulb`,
+					value: it.lit ? `lit, ${fmtA(it.amps)}` : 'off'
 				})
 			);
 		return out.map((c) => {
@@ -590,11 +608,11 @@
 			const row = rowOf(e.p);
 			if (e.vertical)
 				return col <= 1
-					? { ...c, x: e.cx - 30, y: e.cy + 4, anchor: 'end' }
-					: { ...c, x: e.cx + 30, y: e.cy + 4, anchor: 'start' };
+					? { ...c, x: e.cx - 30, y: e.cy + 4, anchor: 'end', at: [e.cx - 52, e.cy] as const }
+					: { ...c, x: e.cx + 30, y: e.cy + 4, anchor: 'start', at: [e.cx + 52, e.cy] as const };
 			return row <= 1
-				? { ...c, x: e.cx, y: e.cy - 32, anchor: 'middle' }
-				: { ...c, x: e.cx, y: e.cy + 42, anchor: 'middle' };
+				? { ...c, x: e.cx, y: e.cy - 32, anchor: 'middle', at: [e.cx, e.cy - 52] as const }
+				: { ...c, x: e.cx, y: e.cy + 42, anchor: 'middle', at: [e.cx, e.cy + 52] as const };
 		});
 	});
 
@@ -986,43 +1004,59 @@
 		{/each}
 
 		<!-- captions -->
-		{#each captions as c (c.key)}
-			{@render txt(c.x, c.y, c.text, 12, {
-				anchor: c.anchor,
-				weight: 600,
-				halo: 'var(--circ-board)'
-			})}
+		{#each captions as c, k (c.key)}
+			<Readout
+				id="board-cap-{k}"
+				order={10 + k}
+				label={c.row}
+				value={c.value}
+				color={c.mark
+					? phase === 'series'
+						? 'var(--circ-high)'
+						: 'var(--circ-charge)'
+					: undefined}
+				marker={c.mark}
+				at={c.mark ? c.at : undefined}
+			>
+				{@render txt(c.x, c.y, c.text, 12, {
+					anchor: c.anchor,
+					weight: 600,
+					halo: 'var(--circ-board)'
+				})}
+			</Readout>
 		{/each}
 
 		<!-- potential labels (voltage step) -->
 		{#if potW.current > 0.01 && battery}
-			<g opacity={potW.current}>
-				{@render txt(196, 194, `high (${fmtV(maxV)})`, 12, {
-					anchor: 'middle',
-					weight: 650,
-					color: 'var(--circ-high)',
-					halo: 'var(--circ-board)'
-				})}
-				{@render txt(328, 420, `low (${fmtV(0)})`, 12, {
-					anchor: 'middle',
-					weight: 650,
-					color: 'var(--circ-low)',
-					halo: 'var(--circ-board)'
-				})}
-				{#if theSwitch && !theSwitch.part.closed}
-					{@render txt(
-						theSwitch.e.cx,
-						theSwitch.e.cy + 38,
-						`${fmtV(theSwitch.volts)} across the gap`,
-						12,
-						{
-							anchor: 'middle',
-							weight: 650,
-							halo: 'var(--circ-board)'
-						}
-					)}
-				{/if}
-			</g>
+			<Readout id="board-pot">
+				<g opacity={potW.current}>
+					{@render txt(196, 194, `high (${fmtV(maxV)})`, 12, {
+						anchor: 'middle',
+						weight: 650,
+						color: 'var(--circ-high)',
+						halo: 'var(--circ-board)'
+					})}
+					{@render txt(328, 420, `low (${fmtV(0)})`, 12, {
+						anchor: 'middle',
+						weight: 650,
+						color: 'var(--circ-low)',
+						halo: 'var(--circ-board)'
+					})}
+					{#if theSwitch && !theSwitch.part.closed}
+						{@render txt(
+							theSwitch.e.cx,
+							theSwitch.e.cy + 38,
+							`${fmtV(theSwitch.volts)} across the gap`,
+							12,
+							{
+								anchor: 'middle',
+								weight: 650,
+								halo: 'var(--circ-board)'
+							}
+						)}
+					{/if}
+				</g>
+			</Readout>
 		{/if}
 	</g>
 
@@ -1108,255 +1142,397 @@
 	</g>
 
 	<!-- ------------------------------------------------------------------ readout card -->
-	<g style:pointer-events="none">
-		<rect
-			x={PANEL.x}
-			y={PANEL.y}
-			width={PANEL.w}
-			height={PANEL.h}
-			rx="14"
-			style:fill="var(--surface)"
-			style:stroke="var(--border)"
-		/>
-		{#if phase === 'loop'}
-			{@const closed = loopAmps > 1e-4}
-			{@render txt(
-				PL,
-				124,
-				closed ? 'Switch closed: a complete loop' : 'Switch open: a gap in the loop',
-				15,
-				{ weight: 650 }
-			)}
-			{@render txt(PL, 166, 'current in the loop', 13, { muted: true })}
-			{@render txt(PL, 200, fmtA(loopAmps), 28, {
-				weight: 650,
-				tabular: true,
-				color: 'var(--circ-charge)'
-			})}
-			{@render row(244, 'bulb', bulbs[0]?.lit ? 'lit' : 'off')}
-			{#if closed}
-				{@render txt(PL, 290, 'Charge flows out of the battery’s +', 13)}
-				{@render txt(PL, 308, 'end, through the bulb and back', 13)}
-				{@render txt(PL, 326, 'into its − end.', 13)}
-			{:else}
-				{@render txt(PL, 290, 'One gap stops the charge', 13)}
-				{@render txt(PL, 308, 'everywhere in the loop, at once.', 13)}
-			{/if}
-			{@render txt(PL, 486, 'Click the switch on the board to flip it.', 12, { muted: true })}
-		{:else if phase === 'current'}
-			{@const ams = nth('ammeter')}
-			{@render txt(PL, 124, 'Three ammeters', 15, { weight: 650 })}
-			{@render txt(PL, 146, 'charge passing each second', 12, { muted: true })}
-			{#each ['before the bulb', 'after the bulb', 'back to the battery'] as label, k (label)}
-				{@render row(184 + k * 28, label, fmtA(ams[k]?.amps ?? 0), 'var(--circ-charge)')}
-			{/each}
-			{#if loopAmps > 1e-4}
-				{@render txt(PL, 290, 'All the same: the bulb does not', 13)}
-				{@render txt(PL, 308, 'use up current. It takes energy', 13)}
-				{@render txt(PL, 326, 'from the charge passing through.', 13)}
-			{:else}
-				{@render txt(PL, 290, 'Switch open: no current anywhere,', 13)}
-				{@render txt(PL, 308, 'so every ammeter reads zero.', 13)}
-			{/if}
-			{@render txt(PL, 486, 'Click the switch on the board to flip it.', 12, { muted: true })}
-		{:else if phase === 'voltage'}
-			{@const vms = nth('voltmeter')}
-			{@render txt(PL, 124, 'Electric potential', 15, { weight: 650 })}
-			<rect x={PL} y="140" width={PR - PL} height="12" rx="6" fill="url(#board-potential)" />
-			{@render txt(
-				PL,
-				170,
-				`${fmtV(maxV || valueOf(battery?.part ?? { kind: 'battery', a: 0, b: 0 }))} high`,
-				12,
-				{ color: 'var(--circ-high)', weight: 650 }
-			)}
-			{@render txt(PR, 170, 'low 0 V', 12, {
-				anchor: 'end',
-				color: 'var(--circ-low)',
-				weight: 650
-			})}
-			{@render txt(PL, 210, 'The voltage (difference in potential):', 13)}
-			{@render row(240, 'across the battery', fmtV(vms[0]?.volts ?? 0))}
-			{@render row(268, 'across the bulb', fmtV(vms[1]?.volts ?? 0))}
-			{#if theSwitch && !theSwitch.part.closed}
-				{@render row(296, 'across the switch gap', fmtV(theSwitch.volts))}
-				{@render txt(PL, 336, 'No current: the bulb has no voltage', 13)}
-				{@render txt(PL, 354, 'across it; all 6 V sits across the gap.', 13)}
-			{:else}
-				{@render row(296, 'across a wire', fmtV(loopWire?.volts ?? 0))}
-				{@render txt(PL, 336, 'The battery lifts each coulomb by', 13)}
-				{@render txt(PL, 354, '6 joules; the bulb takes it back.', 13)}
-			{/if}
-		{:else if phase === 'ohm'}
-			{@const V = resistor?.volts ?? 0}
-			{@const R = resistor ? valueOf(resistor.part) : 1}
-			{@render txt(PL, 124, 'Ohm’s law', 15, { weight: 650 })}
-			{@render row(166, 'voltage across the resistor, V', fmtV(V), 'var(--circ-high)')}
-			{@render row(194, 'resistance, R', fmtR(R))}
-			{@render txt(PL, 240, 'current I = V ÷ R', 13, { muted: true })}
-			{@render txt(PL, 268, `= ${fmtV(V)} ÷ ${fmtR(R)}`, 18, { weight: 600, tabular: true })}
-			{@render txt(PL, 306, `= ${fmtA(resistor?.amps ?? 0)}`, 28, {
-				weight: 650,
-				tabular: true,
-				color: 'var(--circ-charge)'
-			})}
-			{@render txt(PL, 350, 'Double the voltage: the current', 13)}
-			{@render txt(PL, 368, 'doubles. Double the resistance:', 13)}
-			{@render txt(PL, 386, 'it halves.', 13)}
-		{:else if phase === 'series'}
-			{@const sum = bulbs.reduce((s, b) => s + b.volts, 0)}
-			{@render txt(PL, 124, 'Two bulbs in series', 15, { weight: 650 })}
-			{@render txt(PL, 146, 'one path, so one current', 12, { muted: true })}
-			{@render row(178, 'current everywhere', fmtA(loopAmps), 'var(--circ-charge)')}
-			{@render txt(PL, 222, 'the battery’s voltage is shared:', 12, { muted: true })}
-			{#each bulbs as b, k (b.e.key)}
-				{@render row(250 + k * 28, `bulb ${k + 1}`, fmtV(b.volts), 'var(--circ-high)')}
-			{/each}
-			<line x1={PL} x2={PR} y1="312" y2="312" style:stroke="var(--border)" />
-			{@render row(334, 'together', `${fmtV(sum)}`)}
-			{@render txt(
-				PL,
-				378,
-				`Each bulb: ${(sol.power[bulbs[0]?.i ?? 0] ?? 0).toFixed(2)} W, a quarter of`,
-				13
-			)}
-			{@render txt(PL, 396, 'the 3 W of a bulb on its own: dim.', 13)}
-		{:else if phase === 'parallel'}
-			{@const ams = nth('ammeter')}
-			{@render txt(PL, 124, 'Two bulbs in parallel', 15, { weight: 650 })}
-			{@render txt(PL, 146, 'the current splits and joins again', 12, { muted: true })}
-			{@render row(182, 'branch 1', fmtA(ams[1]?.amps ?? 0), 'var(--circ-charge)')}
-			{@render row(210, 'branch 2', fmtA(ams[2]?.amps ?? 0), 'var(--circ-charge)')}
-			<line x1={PL} x2={PR} y1="226" y2="226" style:stroke="var(--border)" />
-			{@render row(250, 'at the battery', fmtA(ams[0]?.amps ?? 0), 'var(--circ-charge)')}
-			{@render txt(PL, 274, `= ${fmtA(ams[1]?.amps ?? 0)} + ${fmtA(ams[2]?.amps ?? 0)}`, 12, {
-				muted: true,
-				tabular: true
-			})}
-			{@render txt(PL, 318, `Each bulb gets the full ${fmtV(bulbs[0]?.volts ?? 0)}`, 13)}
-			{@render txt(PL, 336, 'and glows as brightly as one alone.', 13)}
-			{@render txt(PL, 368, 'The battery delivers twice the', 13)}
-			{@render txt(PL, 386, 'current, so it runs down twice as fast.', 13)}
-		{:else if phase === 'switches'}
-			{@render txt(PL, 124, 'Lights in a house', 15, { weight: 650 })}
-			{@render txt(PL, 146, 'each bulb on its own branch', 12, { muted: true })}
-			{#each bulbs as b, k (b.e.key)}
-				{@render row(
-					184 + k * 28,
-					`${k ? 'right' : 'left'} bulb`,
-					b.lit ? `lit, ${fmtA(b.amps)}` : 'off'
+	<!-- on phones the card leaves the stage: its rows are listed under it (the Readouts below) -->
+	<Readout id="board-card">
+		<g style:pointer-events="none">
+			<rect
+				x={PANEL.x}
+				y={PANEL.y}
+				width={PANEL.w}
+				height={PANEL.h}
+				rx="14"
+				style:fill="var(--surface)"
+				style:stroke="var(--border)"
+			/>
+			{#if phase === 'loop'}
+				{@const closed = loopAmps > 1e-4}
+				{@render txt(
+					PL,
+					124,
+					closed ? 'Switch closed: a complete loop' : 'Switch open: a gap in the loop',
+					15,
+					{ weight: 650 }
 				)}
-			{/each}
-			{@render row(254, 'from the battery', fmtA(loopAmps), 'var(--circ-charge)')}
-			{@const nLit = bulbs.filter((b) => b.lit).length}
-			{@render txt(PL, 298, 'Each branch is its own loop through', 13)}
-			{#if nLit === bulbs.length}
-				{@render txt(PL, 316, 'the battery. Open one switch: only', 13)}
-				{@render txt(PL, 334, 'its own bulb goes out.', 13)}
-			{:else if nLit > 0}
-				{@render txt(PL, 316, 'the battery: one switch put its bulb', 13)}
-				{@render txt(PL, 334, 'out; the other is just as bright.', 13)}
-			{:else}
-				{@render txt(PL, 316, 'the battery: both switches are open,', 13)}
-				{@render txt(PL, 334, 'so both bulbs are off.', 13)}
-			{/if}
-			{@render txt(PL, 486, 'Click a switch on the board to flip it.', 12, { muted: true })}
-		{:else}
-			{@const bats = nth('battery')}
-			{@const lit = bulbs.filter((b) => b.lit).length}
-			{@render txt(PL, 124, 'Your circuit', 15, { weight: 650 })}
-			{@render txt(PL, 146, `tool: ${TOOL_LABEL[tool] ?? tool}`, 12, { muted: true })}
-			{#if bats.length === 0}
-				{@render txt(PL, 182, 'Add a battery to drive a current.', 13)}
-			{:else}
-				{#each bats.slice(0, 3) as b, k (b.e.key)}
+				{@render txt(PL, 166, 'current in the loop', 13, { muted: true })}
+				{@render txt(PL, 200, fmtA(loopAmps), 28, {
+					weight: 650,
+					tabular: true,
+					color: 'var(--circ-charge)'
+				})}
+				{@render row(244, 'bulb', bulbs[0]?.lit ? 'lit' : 'off')}
+				{#if closed}
+					{@render txt(PL, 290, 'Charge flows out of the battery’s +', 13)}
+					{@render txt(PL, 308, 'end, through the bulb and back', 13)}
+					{@render txt(PL, 326, 'into its − end.', 13)}
+				{:else}
+					{@render txt(PL, 290, 'One gap stops the charge', 13)}
+					{@render txt(PL, 308, 'everywhere in the loop, at once.', 13)}
+				{/if}
+				{@render txt(PL, 486, 'Click the switch on the board to flip it.', 12, { muted: true })}
+			{:else if phase === 'current'}
+				{@const ams = nth('ammeter')}
+				{@render txt(PL, 124, 'Three ammeters', 15, { weight: 650 })}
+				{@render txt(PL, 146, 'charge passing each second', 12, { muted: true })}
+				{#each ['before the bulb', 'after the bulb', 'back to the battery'] as label, k (label)}
+					{@render row(184 + k * 28, label, fmtA(ams[k]?.amps ?? 0), 'var(--circ-charge)')}
+				{/each}
+				{#if loopAmps > 1e-4}
+					{@render txt(PL, 290, 'All the same: the bulb does not', 13)}
+					{@render txt(PL, 308, 'use up current. It takes energy', 13)}
+					{@render txt(PL, 326, 'from the charge passing through.', 13)}
+				{:else}
+					{@render txt(PL, 290, 'Switch open: no current anywhere,', 13)}
+					{@render txt(PL, 308, 'so every ammeter reads zero.', 13)}
+				{/if}
+				{@render txt(PL, 486, 'Click the switch on the board to flip it.', 12, { muted: true })}
+			{:else if phase === 'voltage'}
+				{@const vms = nth('voltmeter')}
+				{@render txt(PL, 124, 'Electric potential', 15, { weight: 650 })}
+				<rect x={PL} y="140" width={PR - PL} height="12" rx="6" fill="url(#board-potential)" />
+				{@render txt(
+					PL,
+					170,
+					`${fmtV(maxV || valueOf(battery?.part ?? { kind: 'battery', a: 0, b: 0 }))} high`,
+					12,
+					{ color: 'var(--circ-high)', weight: 650 }
+				)}
+				{@render txt(PR, 170, 'low 0 V', 12, {
+					anchor: 'end',
+					color: 'var(--circ-low)',
+					weight: 650
+				})}
+				{@render txt(PL, 210, 'The voltage (difference in potential):', 13)}
+				{@render row(240, 'across the battery', fmtV(vms[0]?.volts ?? 0))}
+				{@render row(268, 'across the bulb', fmtV(vms[1]?.volts ?? 0))}
+				{#if theSwitch && !theSwitch.part.closed}
+					{@render row(296, 'across the switch gap', fmtV(theSwitch.volts))}
+					{@render txt(PL, 336, 'No current: the bulb has no voltage', 13)}
+					{@render txt(PL, 354, 'across it; all 6 V sits across the gap.', 13)}
+				{:else}
+					{@render row(296, 'across a wire', fmtV(loopWire?.volts ?? 0))}
+					{@render txt(PL, 336, 'The battery lifts each coulomb by', 13)}
+					{@render txt(PL, 354, '6 joules; the bulb takes it back.', 13)}
+				{/if}
+			{:else if phase === 'ohm'}
+				{@const V = resistor?.volts ?? 0}
+				{@const R = resistor ? valueOf(resistor.part) : 1}
+				{@render txt(PL, 124, 'Ohm’s law', 15, { weight: 650 })}
+				{@render row(166, 'voltage across the resistor, V', fmtV(V), 'var(--circ-high)')}
+				{@render row(194, 'resistance, R', fmtR(R))}
+				{@render txt(PL, 240, 'current I = V ÷ R', 13, { muted: true })}
+				{@render txt(PL, 268, `= ${fmtV(V)} ÷ ${fmtR(R)}`, 18, { weight: 600, tabular: true })}
+				{@render txt(PL, 306, `= ${fmtA(resistor?.amps ?? 0)}`, 28, {
+					weight: 650,
+					tabular: true,
+					color: 'var(--circ-charge)'
+				})}
+				{@render txt(PL, 350, 'Double the voltage: the current', 13)}
+				{@render txt(PL, 368, 'doubles. Double the resistance:', 13)}
+				{@render txt(PL, 386, 'it halves.', 13)}
+			{:else if phase === 'series'}
+				{@const sum = bulbs.reduce((s, b) => s + b.volts, 0)}
+				{@render txt(PL, 124, 'Two bulbs in series', 15, { weight: 650 })}
+				{@render txt(PL, 146, 'one path, so one current', 12, { muted: true })}
+				{@render row(178, 'current everywhere', fmtA(loopAmps), 'var(--circ-charge)')}
+				{@render txt(PL, 222, 'the battery’s voltage is shared:', 12, { muted: true })}
+				{#each bulbs as b, k (b.e.key)}
+					{@render row(250 + k * 28, `bulb ${k + 1}`, fmtV(b.volts), 'var(--circ-high)')}
+				{/each}
+				<line x1={PL} x2={PR} y1="312" y2="312" style:stroke="var(--border)" />
+				{@render row(334, 'together', `${fmtV(sum)}`)}
+				{@render txt(
+					PL,
+					378,
+					`Each bulb: ${(sol.power[bulbs[0]?.i ?? 0] ?? 0).toFixed(2)} W, a quarter of`,
+					13
+				)}
+				{@render txt(PL, 396, 'the 3 W of a bulb on its own: dim.', 13)}
+			{:else if phase === 'parallel'}
+				{@const ams = nth('ammeter')}
+				{@render txt(PL, 124, 'Two bulbs in parallel', 15, { weight: 650 })}
+				{@render txt(PL, 146, 'the current splits and joins again', 12, { muted: true })}
+				{@render row(182, 'branch 1', fmtA(ams[1]?.amps ?? 0), 'var(--circ-charge)')}
+				{@render row(210, 'branch 2', fmtA(ams[2]?.amps ?? 0), 'var(--circ-charge)')}
+				<line x1={PL} x2={PR} y1="226" y2="226" style:stroke="var(--border)" />
+				{@render row(250, 'at the battery', fmtA(ams[0]?.amps ?? 0), 'var(--circ-charge)')}
+				{@render txt(PL, 274, `= ${fmtA(ams[1]?.amps ?? 0)} + ${fmtA(ams[2]?.amps ?? 0)}`, 12, {
+					muted: true,
+					tabular: true
+				})}
+				{@render txt(PL, 318, `Each bulb gets the full ${fmtV(bulbs[0]?.volts ?? 0)}`, 13)}
+				{@render txt(PL, 336, 'and glows as brightly as one alone.', 13)}
+				{@render txt(PL, 368, 'The battery delivers twice the', 13)}
+				{@render txt(PL, 386, 'current, so it runs down twice as fast.', 13)}
+			{:else if phase === 'switches'}
+				{@render txt(PL, 124, 'Lights in a house', 15, { weight: 650 })}
+				{@render txt(PL, 146, 'each bulb on its own branch', 12, { muted: true })}
+				{#each bulbs as b, k (b.e.key)}
 					{@render row(
-						182 + k * 28,
-						bats.length > 1 ? `battery ${k + 1} current` : 'current from the battery',
-						fmtA(b.amps),
-						'var(--circ-charge)'
+						184 + k * 28,
+						`${k ? 'right' : 'left'} bulb`,
+						b.lit ? `lit, ${fmtA(b.amps)}` : 'off'
 					)}
 				{/each}
-			{/if}
-			{@const y0 = 182 + Math.max(1, Math.min(3, bats.length)) * 28}
-			{#if bulbs.length}
-				{@render row(y0, 'bulbs lit', `${lit} of ${bulbs.length}`)}
-			{/if}
-			{#if bats.length && !sol.current.some((c) => Math.abs(c) > 1e-4)}
-				{#if solClosed.current.some((c) => Math.abs(c) > 1e-4)}
-					{@render txt(PL, y0 + 34, 'A switch is open: no current.', 13)}
-				{:else if canFlow.some((live, i) => live && board.parts[i].kind === 'battery')}
-					{@render txt(PL, y0 + 34, 'The batteries push against each', 13)}
-					{@render txt(PL, y0 + 52, 'other and cancel: no current.', 13)}
+				{@render row(254, 'from the battery', fmtA(loopAmps), 'var(--circ-charge)')}
+				{@const nLit = bulbs.filter((b) => b.lit).length}
+				{@render txt(PL, 298, 'Each branch is its own loop through', 13)}
+				{#if nLit === bulbs.length}
+					{@render txt(PL, 316, 'the battery. Open one switch: only', 13)}
+					{@render txt(PL, 334, 'its own bulb goes out.', 13)}
+				{:else if nLit > 0}
+					{@render txt(PL, 316, 'the battery: one switch put its bulb', 13)}
+					{@render txt(PL, 334, 'out; the other is just as bright.', 13)}
 				{:else}
-					{@render txt(PL, y0 + 34, 'No complete loop: no current.', 13)}
+					{@render txt(PL, 316, 'the battery: both switches are open,', 13)}
+					{@render txt(PL, 334, 'so both bulbs are off.', 13)}
 				{/if}
+				{@render txt(PL, 486, 'Click a switch on the board to flip it.', 12, { muted: true })}
+			{:else}
+				{@const bats = nth('battery')}
+				{@const lit = bulbs.filter((b) => b.lit).length}
+				{@render txt(PL, 124, 'Your circuit', 15, { weight: 650 })}
+				{@render txt(PL, 146, `tool: ${TOOL_LABEL[tool] ?? tool}`, 12, { muted: true })}
+				{#if bats.length === 0}
+					{@render txt(PL, 182, 'Add a battery to drive a current.', 13)}
+				{:else}
+					{#each bats.slice(0, 3) as b, k (b.e.key)}
+						{@render row(
+							182 + k * 28,
+							bats.length > 1 ? `battery ${k + 1} current` : 'current from the battery',
+							fmtA(b.amps),
+							'var(--circ-charge)'
+						)}
+					{/each}
+				{/if}
+				{@const y0 = 182 + Math.max(1, Math.min(3, bats.length)) * 28}
+				{#if bulbs.length}
+					{@render row(y0, 'bulbs lit', `${lit} of ${bulbs.length}`)}
+				{/if}
+				{#if bats.length && !sol.current.some((c) => Math.abs(c) > 1e-4)}
+					{#if solClosed.current.some((c) => Math.abs(c) > 1e-4)}
+						{@render txt(PL, y0 + 34, 'A switch is open: no current.', 13)}
+					{:else if canFlow.some((live, i) => live && board.parts[i].kind === 'battery')}
+						{@render txt(PL, y0 + 34, 'The batteries push against each', 13)}
+						{@render txt(PL, y0 + 52, 'other and cancel: no current.', 13)}
+					{:else}
+						{@render txt(PL, y0 + 34, 'No complete loop: no current.', 13)}
+					{/if}
+				{/if}
+				<circle cx={PL + 5} cy="382" r="4" style:fill={chargeColor} />
+				{@render txt(
+					PL + 16,
+					386,
+					electrons ? 'electron, drifting − to +' : 'charge, as conventional current + to −',
+					12,
+					{ muted: true }
+				)}
+				{@render txt(PL, 418, 'Hover over or focus a part to read', 12, { muted: true })}
+				{@render txt(PL, 434, 'its current and voltage.', 12, { muted: true })}
+				{@render txt(PL, 466, 'Click a gap to place the part.', 12, { muted: true })}
+				{@render txt(PL, 482, 'Click a switch to flip it, a battery', 12, { muted: true })}
+				{@render txt(PL, 498, 'to turn it round.', 12, { muted: true })}
 			{/if}
-			<circle cx={PL + 5} cy="382" r="4" style:fill={chargeColor} />
-			{@render txt(
-				PL + 16,
-				386,
-				electrons ? 'electron, drifting − to +' : 'charge, as conventional current + to −',
-				12,
-				{ muted: true }
-			)}
-			{@render txt(PL, 418, 'Hover over or focus a part to read', 12, { muted: true })}
-			{@render txt(PL, 434, 'its current and voltage.', 12, { muted: true })}
-			{@render txt(PL, 466, 'Click a gap to place the part.', 12, { muted: true })}
-			{@render txt(PL, 482, 'Click a switch to flip it, a battery', 12, { muted: true })}
-			{@render txt(PL, 498, 'to turn it round.', 12, { muted: true })}
+		</g>
+	</Readout>
+	{#if phase === 'loop'}
+		{@const closed = loopAmps > 1e-4}
+		<Readout id="board-loop" order={1} label="Loop" value={closed ? 'complete' : 'open: a gap'} />
+		<Readout
+			id="board-amps"
+			order={2}
+			label="Current in the loop"
+			value={fmtA(loopAmps)}
+			color="var(--circ-charge)"
+		/>
+		<Readout id="board-bulb" order={3} label="Bulb" value={bulbs[0]?.lit ? 'lit' : 'off'} />
+	{:else if phase === 'voltage'}
+		{@const vms = nth('voltmeter')}
+		{@const gap = theSwitch && !theSwitch.part.closed ? theSwitch : undefined}
+		<Readout
+			id="board-potential"
+			order={1}
+			label="Potential"
+			value="high {fmtV(
+				maxV || valueOf(battery?.part ?? { kind: 'battery', a: 0, b: 0 })
+			)} → low 0 V"
+		/>
+		<Readout
+			id="board-vbat"
+			order={2}
+			label="Across the battery"
+			value={fmtV(vms[0]?.volts ?? 0)}
+		/>
+		<Readout id="board-vbulb" order={3} label="Across the bulb" value={fmtV(vms[1]?.volts ?? 0)} />
+		<Readout
+			id="board-vrest"
+			order={4}
+			label={gap ? 'Across the switch gap' : 'Across a wire'}
+			value={fmtV(gap ? gap.volts : (loopWire?.volts ?? 0))}
+		/>
+	{:else if phase === 'ohm'}
+		{@const V = resistor?.volts ?? 0}
+		{@const R = resistor ? valueOf(resistor.part) : 1}
+		<Readout id="board-v" order={1} label="Voltage, V" value={fmtV(V)} color="var(--circ-high)" />
+		<Readout id="board-r" order={2} label="Resistance, R" value={fmtR(R)} />
+		<Readout
+			id="board-i"
+			order={3}
+			label="Current, I = V ÷ R"
+			value="{fmtV(V)} ÷ {fmtR(R)} = {fmtA(resistor?.amps ?? 0)}"
+			color="var(--circ-charge)"
+		/>
+	{:else if phase === 'series'}
+		<Readout
+			id="board-amps"
+			order={1}
+			label="Current everywhere"
+			value={fmtA(loopAmps)}
+			color="var(--circ-charge)"
+		/>
+		<Readout
+			id="board-power"
+			order={20}
+			label="Each bulb"
+			value="{(sol.power[bulbs[0]?.i ?? 0] ?? 0).toFixed(2)} W"
+			note="¼ of the 3 W of one alone: dim"
+		/>
+	{:else if phase === 'parallel'}
+		<Readout
+			id="board-each"
+			order={20}
+			label="Each bulb gets"
+			value={fmtV(bulbs[0]?.volts ?? 0)}
+			note="the full battery voltage"
+		/>
+	{:else if phase === 'switches'}
+		<Readout
+			id="board-amps"
+			order={20}
+			label="From the battery"
+			value={fmtA(loopAmps)}
+			color="var(--circ-charge)"
+		/>
+	{:else if phase !== 'current'}
+		{@const bats = nth('battery')}
+		{#each bats.slice(0, 3) as b, k (b.e.key)}
+			<Readout
+				id="board-bat-{k}"
+				order={1 + k}
+				label={bats.length > 1 ? `Battery ${k + 1} current` : 'Current from the battery'}
+				value={fmtA(b.amps)}
+				color="var(--circ-charge)"
+			/>
+		{/each}
+		{#if bulbs.length}
+			<Readout
+				id="board-lit"
+				order={5}
+				label="Bulbs lit"
+				value="{bulbs.filter((b) => b.lit).length} of {bulbs.length}"
+			/>
 		{/if}
-	</g>
+		{#if bats.length === 0}
+			<Readout id="board-status" order={6} label="No battery" value="add one to drive a current" />
+		{:else if !sol.current.some((c) => Math.abs(c) > 1e-4)}
+			<Readout
+				id="board-status"
+				order={6}
+				label="No current"
+				value={solClosed.current.some((c) => Math.abs(c) > 1e-4)
+					? 'a switch is open'
+					: canFlow.some((live, i) => live && board.parts[i].kind === 'battery')
+						? 'the batteries cancel'
+						: 'no complete loop'}
+			/>
+		{/if}
+		<Readout
+			id="board-legend"
+			label={electrons ? 'electron, drifting − to +' : 'charge, as conventional current + to −'}
+			color={chargeColor}
+		/>
+		<Readout
+			id="board-howto"
+			label="Tap a gap to place the part, a switch to flip it, a battery to turn it round."
+		/>
+	{/if}
 
 	<!-- short circuit warning -->
 	{#if shortNow}
-		<g style:pointer-events="none">
-			<rect
-				x={BOARD.x + BOARD.w / 2 - 196}
-				y="44"
-				width="392"
-				height="30"
-				rx="15"
-				style:fill="color-mix(in oklab, var(--circ-battery) 16%, var(--surface))"
-				style:stroke="var(--circ-battery)"
-				stroke-width="1.5"
-			/>
-			{@render txt(
-				BOARD.x + BOARD.w / 2,
-				64,
-				'Short circuit! huge current — the battery heats up',
-				13,
-				{
-					anchor: 'middle',
-					weight: 650,
-					color: 'var(--circ-battery)',
-					halo: 'color-mix(in oklab, var(--circ-battery) 16%, var(--surface))'
-				}
-			)}
-		</g>
+		<Readout
+			id="board-short"
+			order={-1}
+			label="Short circuit!"
+			value="huge current"
+			note="the battery heats up"
+			color="var(--circ-battery)"
+		>
+			<g style:pointer-events="none">
+				<rect
+					x={BOARD.x + BOARD.w / 2 - 196}
+					y="44"
+					width="392"
+					height="30"
+					rx="15"
+					style:fill="color-mix(in oklab, var(--circ-battery) 16%, var(--surface))"
+					style:stroke="var(--circ-battery)"
+					stroke-width="1.5"
+				/>
+				{@render txt(
+					BOARD.x + BOARD.w / 2,
+					64,
+					'Short circuit! huge current — the battery heats up',
+					13,
+					{
+						anchor: 'middle',
+						weight: 650,
+						color: 'var(--circ-battery)',
+						halo: 'color-mix(in oklab, var(--circ-battery) 16%, var(--surface))'
+					}
+				)}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- tooltip -->
 	{#if tip}
-		<g style:pointer-events="none">
-			<rect
-				x={tip.x}
-				y={tip.y}
-				width={tip.w}
-				height={tip.h}
-				rx="8"
-				style:fill="var(--surface)"
-				style:stroke="var(--border)"
-				filter="url(#soft-shadow)"
-			/>
-			{#each tip.lines as line, k (k)}
-				{@render txt(tip.x + 12, tip.y + 22 + k * 18, line, k === 0 ? 13 : 12, {
-					weight: k === 0 ? 600 : 500,
-					muted: k > 0,
-					tabular: true
-				})}
-			{/each}
-		</g>
+		{@const [head, ...rest] = tip.lines[0].split(' — ')}
+		<Readout
+			id="board-tip"
+			order={30}
+			label={head}
+			value={rest.length ? rest.join(' — ') : (tip.lines[1] ?? '')}
+			note={rest.length ? tip.lines[1] : undefined}
+		>
+			<g style:pointer-events="none">
+				<rect
+					x={tip.x}
+					y={tip.y}
+					width={tip.w}
+					height={tip.h}
+					rx="8"
+					style:fill="var(--surface)"
+					style:stroke="var(--border)"
+					filter="url(#soft-shadow)"
+				/>
+				{#each tip.lines as line, k (k)}
+					{@render txt(tip.x + 12, tip.y + 22 + k * 18, line, k === 0 ? 13 : 12, {
+						weight: k === 0 ? 600 : 500,
+						muted: k > 0,
+						tabular: true
+					})}
+				{/each}
+			</g>
+		</Readout>
 	{/if}
 </g>
 

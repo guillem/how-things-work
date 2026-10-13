@@ -34,7 +34,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, startDrag, toSvg, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		BLANK,
 		FULL_ADDER,
@@ -597,6 +597,14 @@
 				? 'Playing through every row of the table · click a switch to take over'
 				: 'Click a switch (or Tab to it and press Enter) to flip it'
 	);
+	/** The table row the switches are on, as text (phone readouts). */
+	const rowText = $derived.by(() => {
+		const r = table?.rows[rowIndex];
+		if (!table || !r) return '';
+		const pairs = (ls: string[], vs: boolean[]) =>
+			ls.map((l, i) => `${l} = ${vs[i] ? 1 : 0}`).join(', ');
+		return `${pairs(table.inputs, r.inputs)} → ${pairs(table.outputs, r.outputs)}`;
+	});
 	const wireCol = (on: boolean) => (on ? 'var(--lg-on)' : 'var(--lg-off)');
 	const HA_BOXES = [
 		{ k: 'ha1', x: 164, y: 140, w: 98, h: 244 },
@@ -691,12 +699,14 @@
 				stroke-dasharray="5 4"
 			/>
 		{/each}
-		{@render txt(213, 130, 'half adder 1', 12, { anchor: 'middle', muted: true, weight: 600 })}
-		{@render txt(372, 186, 'half adder 2', 12, { anchor: 'middle', muted: true, weight: 600 })}
-		{@render txt(X(690), Y(360) + 44, 'OR: either carry', 12, {
-			anchor: 'middle',
-			muted: true
-		})}
+		<Readout id="lg-ha-names">
+			{@render txt(213, 130, 'half adder 1', 12, { anchor: 'middle', muted: true, weight: 600 })}
+			{@render txt(372, 186, 'half adder 2', 12, { anchor: 'middle', muted: true, weight: 600 })}
+			{@render txt(X(690), Y(360) + 44, 'OR: either carry', 12, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</Readout>
 	{/if}
 
 	<!-- wires: the old colour underneath, the new value running along on top -->
@@ -950,59 +960,91 @@
 	{#if !edit && phase === 'gates'}
 		{@const g = byId.get('g')}
 		{#if g}
-			{@render txt(
-				X(g.x),
-				Y(g.y) + 62,
-				gateKind === 'NOT' ? 'Out = NOT A' : `Out = A ${gateKind} B`,
-				15,
-				{ anchor: 'middle', weight: 700 }
-			)}
-			{@render txt(X(g.x), Y(g.y) + 82, rule[gateKind], 12, { anchor: 'middle', muted: true })}
+			<Readout
+				id="lg-gate"
+				order={1}
+				label="The gate"
+				value={gateKind === 'NOT' ? 'Out = NOT A' : `Out = A ${gateKind} B`}
+				note={rule[gateKind]}
+			>
+				{@render txt(
+					X(g.x),
+					Y(g.y) + 62,
+					gateKind === 'NOT' ? 'Out = NOT A' : `Out = A ${gateKind} B`,
+					15,
+					{ anchor: 'middle', weight: 700 }
+				)}
+				{@render txt(X(g.x), Y(g.y) + 82, rule[gateKind], 12, { anchor: 'middle', muted: true })}
+			</Readout>
 		{/if}
 	{:else if !edit && phase === 'half'}
-		{@render txt(X(420), Y(200) - 38, 'Sum = A XOR B', 14, { anchor: 'middle', weight: 700 })}
-		{@render txt(X(420), Y(360) + 48, 'Carry = A AND B', 14, { anchor: 'middle', weight: 700 })}
-		{@render txt(
-			X(420),
-			500,
-			`${val('a')} + ${val('b')} = ${settled ? `${val('c')}${val('s')}` : '…'} in binary`,
-			15,
-			{
-				anchor: 'middle',
-				weight: 600,
-				opacity: settled ? 1 : 0.55
-			}
-		)}
-		{@render txt(
-			X(420),
-			520,
-			settled ? `carry ${val('c')}, sum ${val('s')}: ${val('a') + val('b')} in decimal` : 'adding…',
-			12,
-			{
-				anchor: 'middle',
-				muted: true,
-				opacity: settled ? 1 : 0.55
-			}
-		)}
+		<Readout id="lg-sum-rule" order={1} label="Sum = A XOR B">
+			{@render txt(X(420), Y(200) - 38, 'Sum = A XOR B', 14, { anchor: 'middle', weight: 700 })}
+		</Readout>
+		<Readout id="lg-carry-rule" order={2} label="Carry = A AND B">
+			{@render txt(X(420), Y(360) + 48, 'Carry = A AND B', 14, { anchor: 'middle', weight: 700 })}
+		</Readout>
+		<Readout
+			id="lg-adding"
+			order={3}
+			label="In binary"
+			value="{val('a')} + {val('b')} = {settled ? `${val('c')}${val('s')}` : '…'}"
+			note={settled
+				? `carry ${val('c')}, sum ${val('s')}: ${val('a') + val('b')} in decimal`
+				: 'adding…'}
+		>
+			{@render txt(
+				X(420),
+				500,
+				`${val('a')} + ${val('b')} = ${settled ? `${val('c')}${val('s')}` : '…'} in binary`,
+				15,
+				{
+					anchor: 'middle',
+					weight: 600,
+					opacity: settled ? 1 : 0.55
+				}
+			)}
+			{@render txt(
+				X(420),
+				520,
+				settled
+					? `carry ${val('c')}, sum ${val('s')}: ${val('a') + val('b')} in decimal`
+					: 'adding…',
+				12,
+				{
+					anchor: 'middle',
+					muted: true,
+					opacity: settled ? 1 : 0.55
+				}
+			)}
+		</Readout>
 	{:else if !edit && phase === 'full'}
-		{@render txt(
-			X(420),
-			500,
-			`${val('a')} + ${val('b')} + ${val('ci')} = ${settled ? `${val('co')}${val('s')}` : '…'} in binary`,
-			15,
-			{ anchor: 'middle', weight: 600, opacity: settled ? 1 : 0.55 }
-		)}
-		{@render txt(
-			X(420),
-			520,
-			settled ? `${val('a') + val('b') + val('ci')} in decimal` : 'adding…',
-			12,
-			{
-				anchor: 'middle',
-				muted: true,
-				opacity: settled ? 1 : 0.55
-			}
-		)}
+		<Readout
+			id="lg-adding"
+			order={3}
+			label="In binary"
+			value="{val('a')} + {val('b')} + {val('ci')} = {settled ? `${val('co')}${val('s')}` : '…'}"
+			note={settled ? `${val('a') + val('b') + val('ci')} in decimal` : 'adding…'}
+		>
+			{@render txt(
+				X(420),
+				500,
+				`${val('a')} + ${val('b')} + ${val('ci')} = ${settled ? `${val('co')}${val('s')}` : '…'} in binary`,
+				15,
+				{ anchor: 'middle', weight: 600, opacity: settled ? 1 : 0.55 }
+			)}
+			{@render txt(
+				X(420),
+				520,
+				settled ? `${val('a') + val('b') + val('ci')} in decimal` : 'adding…',
+				12,
+				{
+					anchor: 'middle',
+					muted: true,
+					opacity: settled ? 1 : 0.55
+				}
+			)}
+		</Readout>
 	{/if}
 
 	<!-- truth table -->
@@ -1017,20 +1059,35 @@
 			stroke={solved ? 'var(--lg-ok)' : 'var(--border)'}
 			stroke-width={solved ? 2 : 1}
 		/>
-		{@render txt(PANEL.x0 + 16, panel.y0 + 27, 'Truth table', 15, { weight: 700, halo: false })}
+		{#if edit || phase === 'gates'}
+			<Readout id="lg-row" order={2} label="This row of the table" value={rowText} />
+		{/if}
+		<Readout id="lg-table-title">
+			{@render txt(PANEL.x0 + 16, panel.y0 + 27, 'Truth table', 15, { weight: 700, halo: false })}
+		</Readout>
 		{#if challenge}
-			{@render txt(
-				PANEL.x0 + 16,
-				panel.y0 + 46,
-				solved ? `✓ Right: that is a ${goal} adder!` : 'Goal: make your columns match the target',
-				12,
-				{
-					weight: solved ? 700 : 500,
-					color: solved ? 'var(--lg-ok)' : undefined,
-					muted: !solved,
-					halo: false
-				}
-			)}
+			<Readout
+				id="lg-goal"
+				order={3}
+				label="Goal: match the target column"
+				value={solved
+					? `✓ Right: a ${goal} adder!`
+					: `${table.rows.filter((_, i) => rowOk(i)).length} of ${TARGET.length} rows match`}
+				color={solved ? 'var(--lg-ok)' : undefined}
+			>
+				{@render txt(
+					PANEL.x0 + 16,
+					panel.y0 + 46,
+					solved ? `✓ Right: that is a ${goal} adder!` : 'Goal: make your columns match the target',
+					12,
+					{
+						weight: solved ? 700 : 500,
+						color: solved ? 'var(--lg-ok)' : undefined,
+						muted: !solved,
+						halo: false
+					}
+				)}
+			</Readout>
 		{/if}
 		<!-- current row -->
 		<rect
@@ -1129,13 +1186,17 @@
 
 	<!-- messages and hint -->
 	{#if msg && msgOpacity > 0}
-		{@render txt((CANVAS.x0 + CANVAS.x1) / 2, 528, msg.text, 13, {
-			anchor: 'middle',
-			weight: 600,
-			opacity: msgOpacity
-		})}
+		<Readout id="lg-msg" order={-1} label="Note" value={msg.text} opacity={msgOpacity}>
+			{@render txt((CANVAS.x0 + CANVAS.x1) / 2, 528, msg.text, 13, {
+				anchor: 'middle',
+				weight: 600,
+				opacity: msgOpacity
+			})}
+		</Readout>
 	{/if}
-	{@render txt(24, 576, hint, 12, { muted: true })}
+	<Readout id="lg-hint" order={20} label={hint}>
+		{@render txt(24, 576, hint, 12, { muted: true })}
+	</Readout>
 </g>
 
 <style>

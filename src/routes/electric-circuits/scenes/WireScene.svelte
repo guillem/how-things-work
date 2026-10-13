@@ -26,7 +26,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { along, clamp, cycle, hash, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { BULB_R, brightness, driftSpeed } from '../circuit';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -317,17 +317,21 @@
 	</defs>
 
 	<!-- ============ title and legend ============ -->
-	{@render txt(24, 30, 'Inside a copper wire', 16, { weight: 650 })}
-	{@render txt(
-		24,
-		48,
-		'magnified tens of millions of times · not to scale: the jiggle is slowed down, the drift sped up',
-		11,
-		{ muted: true }
-	)}
+	<Readout id="wire-title">
+		{@render txt(24, 30, 'Inside a copper wire', 16, { weight: 650 })}
+		{@render txt(
+			24,
+			48,
+			'magnified tens of millions of times · not to scale: the jiggle is slowed down, the drift sped up',
+			11,
+			{ muted: true }
+		)}
+	</Readout>
 	<g>
 		<circle cx="560" cy="26" r="5" fill="var(--circ-electron)" />
-		{@render txt(571, 30, 'free electron', 12)}
+		<Readout id="wire-key-e" order={1} label="free electron" color="var(--circ-electron)">
+			{@render txt(571, 30, 'free electron', 12)}
+		</Readout>
 		<circle
 			cx="676"
 			cy="26"
@@ -337,10 +341,14 @@
 			stroke-width="1.3"
 			opacity="0.7"
 		/>
-		{@render txt(689, 30, 'copper ion (fixed)', 12)}
+		<Readout id="wire-key-ion">
+			{@render txt(689, 30, 'copper ion (fixed)', 12)}
+		</Readout>
 		<circle cx="814" cy="26" r="5" fill="var(--circ-electron)" />
 		<circle cx="814" cy="26" r="9" fill="none" stroke="var(--stage-ink)" stroke-width="1.5" />
-		{@render txt(828, 30, 'followed electron', 12)}
+		<Readout id="wire-key-tag" order={3} label="ringed: a followed electron">
+			{@render txt(828, 30, 'followed electron', 12)}
+		</Readout>
 	</g>
 
 	<!-- ============ the wire ============ -->
@@ -428,12 +436,19 @@
 	<!-- ============ directions ============ -->
 	<!-- the view not chosen dims its arrow only: its words stay readable -->
 	<g opacity={flowing.current}>
-		{@render txt(40, 271, 'electron drift', 13, {
-			color: 'var(--circ-electron)',
-			weight: 650,
-			opacity: 0.6 + 0.4 * elecEm.current
-		})}
-		{@render txt(136, 271, '− to +', 12, { muted: true })}
+		<Readout
+			id="wire-key-drift"
+			order={4}
+			label={flowing.current > 0.05 ? 'electron drift: − to +' : undefined}
+			color="var(--circ-electron)"
+		>
+			{@render txt(40, 271, 'electron drift', 13, {
+				color: 'var(--circ-electron)',
+				weight: 650,
+				opacity: 0.6 + 0.4 * elecEm.current
+			})}
+			{@render txt(136, 271, '− to +', 12, { muted: true })}
+		</Readout>
 		<line
 			opacity={elecEm.current}
 			x1="250"
@@ -445,15 +460,24 @@
 			stroke-linecap="round"
 			marker-end="url(#arrowhead)"
 		/>
-		{@render txt(684, 271, 'the way the electrons really move', 12, { muted: true })}
+		<Readout id="wire-dir-e">
+			{@render txt(684, 271, 'the way the electrons really move', 12, { muted: true })}
+		</Readout>
 	</g>
 	<g opacity={flowing.current}>
-		{@render txt(40, 301, 'conventional current', 13, {
-			color: 'var(--circ-charge)',
-			weight: 650,
-			opacity: 0.6 + 0.4 * convEm.current
-		})}
-		{@render txt(184, 301, '+ to −', 12, { muted: true })}
+		<Readout
+			id="wire-key-conv"
+			order={5}
+			label={flowing.current > 0.05 ? 'conventional current: + to −' : undefined}
+			color="var(--circ-charge)"
+		>
+			{@render txt(40, 301, 'conventional current', 13, {
+				color: 'var(--circ-charge)',
+				weight: 650,
+				opacity: 0.6 + 0.4 * convEm.current
+			})}
+			{@render txt(184, 301, '+ to −', 12, { muted: true })}
+		</Readout>
 		<line
 			opacity={convEm.current}
 			x1="660"
@@ -465,13 +489,17 @@
 			stroke-linecap="round"
 			marker-end="url(#arrowhead)"
 		/>
-		{@render txt(684, 301, 'the way circuit diagrams draw it', 12, { muted: true })}
+		<Readout id="wire-dir-c">
+			{@render txt(684, 301, 'the way circuit diagrams draw it', 12, { muted: true })}
+		</Readout>
 	</g>
 	<g opacity={1 - flowing.current}>
-		{@render txt(480, 287, '0 A: no current — the electrons only jiggle; no net drift', 13, {
-			anchor: 'middle',
-			muted: true
-		})}
+		<Readout id="wire-nodrift">
+			{@render txt(480, 287, '0 A: no current — the electrons only jiggle; no net drift', 13, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</Readout>
 	</g>
 
 	<!-- ============ drift speed and the snail race ============ -->
@@ -484,32 +512,47 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	{@render txt(36, 348, 'Drift speed', 12, { muted: true, weight: 600 })}
-	{@render txt(36, 382, vText, 24, { weight: 700, color: 'var(--circ-electron)', tabular: true })}
-	{@render txt(36, 404, `at ${ampsText}, in a 1 mm² copper wire`, 12, {
-		muted: true,
-		tabular: true
-	})}
-	{@render snail(400, 380)}
-	{@render txt(432, 404, 'snail ≈ 1 mm/s', 12, { anchor: 'end', muted: true })}
-	{@render txt(
-		36,
-		432,
-		on && vmm < 1
-			? 'Slower than a snail.'
+	<Readout
+		id="wire-drift"
+		order={10}
+		label="Drift speed"
+		value={vText}
+		note={on && vmm < 1
+			? 'slower than a snail (≈ 1 mm/s)'
 			: on
-				? 'Still only a snail’s pace.'
-				: 'No current: no drift at all.',
-		13,
-		{ weight: 600 }
-	)}
+				? 'still only a snail’s pace'
+				: 'no current: no drift at all'}
+		color="var(--circ-electron)"
+	>
+		{@render txt(36, 348, 'Drift speed', 12, { muted: true, weight: 600 })}
+		{@render txt(36, 382, vText, 24, { weight: 700, color: 'var(--circ-electron)', tabular: true })}
+		{@render txt(36, 404, `at ${ampsText}, in a 1 mm² copper wire`, 12, {
+			muted: true,
+			tabular: true
+		})}
+		{@render snail(400, 380)}
+		{@render txt(432, 404, 'snail ≈ 1 mm/s', 12, { anchor: 'end', muted: true })}
+		{@render txt(
+			36,
+			432,
+			on && vmm < 1
+				? 'Slower than a snail.'
+				: on
+					? 'Still only a snail’s pace.'
+					: 'No current: no drift at all.',
+			13,
+			{ weight: 600 }
+		)}
+	</Readout>
 
-	{@render txt(36, 462, 'A race over 10 seconds (real time)', 12, { muted: true, weight: 600 })}
-	{@render txt(432, 462, `${elapsed.toFixed(1)} s`, 12, {
-		anchor: 'end',
-		muted: true,
-		tabular: true
-	})}
+	<Readout id="wire-race">
+		{@render txt(36, 462, 'A race over 10 seconds (real time)', 12, { muted: true, weight: 600 })}
+		{@render txt(432, 462, `${elapsed.toFixed(1)} s`, 12, {
+			anchor: 'end',
+			muted: true,
+			tabular: true
+		})}
+	</Readout>
 	<!-- lanes -->
 	{@render txt(36, 494, 'snail', 11, { muted: true })}
 	<rect
@@ -523,7 +566,15 @@
 	/>
 	<rect x={RX0} y="487" width={snailMm * PX_PER_MM} height="4" rx="2" fill={SNAIL} opacity="0.8" />
 	{@render snail(RX0 + snailMm * PX_PER_MM + 2, 482)}
-	{@render txt(432, 494, `${snailMm.toFixed(1)} mm`, 12, { anchor: 'end', tabular: true })}
+	<Readout
+		id="wire-snail"
+		order={11}
+		label="Race: snail"
+		value="{snailMm.toFixed(1)} mm"
+		note="after {elapsed.toFixed(1)} s"
+	>
+		{@render txt(432, 494, `${snailMm.toFixed(1)} mm`, 12, { anchor: 'end', tabular: true })}
+	</Readout>
 
 	{@render txt(36, 526, 'e⁻', 12, { color: 'var(--circ-electron)', weight: 650 })}
 	<rect
@@ -544,10 +595,18 @@
 		fill="var(--circ-electron)"
 	/>
 	<circle cx={RX0 + elecMm * PX_PER_MM} cy="521" r="5" fill="var(--circ-electron)" />
-	{@render txt(432, 526, `${elecMm < 0.995 ? elecMm.toFixed(2) : elecMm.toFixed(1)} mm`, 12, {
-		anchor: 'end',
-		tabular: true
-	})}
+	<Readout
+		id="wire-elec"
+		order={12}
+		label="Race: electron"
+		value="{elecMm < 0.995 ? elecMm.toFixed(2) : elecMm.toFixed(1)} mm"
+		color="var(--circ-electron)"
+	>
+		{@render txt(432, 526, `${elecMm < 0.995 ? elecMm.toFixed(2) : elecMm.toFixed(1)} mm`, 12, {
+			anchor: 'end',
+			tabular: true
+		})}
+	</Readout>
 	<!-- ruler -->
 	<line x1={RX0} y1="544" x2={RX1} y2="544" stroke="var(--stage-ink-muted)" stroke-width="1" />
 	{#each Array.from({ length: 11 }, (_, k) => k) as k (k)}
@@ -560,9 +619,11 @@
 			stroke-width="1"
 		/>
 	{/each}
-	{@render txt(RX0, 568, '0', 11, { anchor: 'middle', muted: true })}
-	{@render txt(RX0 + 5 * PX_PER_MM, 568, '5', 11, { anchor: 'middle', muted: true })}
-	{@render txt(RX1, 568, '10 mm', 11, { anchor: 'middle', muted: true })}
+	<Readout id="wire-ruler">
+		{@render txt(RX0, 568, '0', 11, { anchor: 'middle', muted: true })}
+		{@render txt(RX0 + 5 * PX_PER_MM, 568, '5', 11, { anchor: 'middle', muted: true })}
+		{@render txt(RX1, 568, '10 mm', 11, { anchor: 'middle', muted: true })}
+	</Readout>
 
 	<!-- ============ the chain loop ============ -->
 	<rect
@@ -574,7 +635,9 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	{@render txt(484, 348, 'Why the bulb lights at once', 12, { muted: true, weight: 600 })}
+	<Readout id="wire-chain-title">
+		{@render txt(484, 348, 'Why the bulb lights at once', 12, { muted: true, weight: 600 })}
+	</Readout>
 
 	<path d={loopD} fill="none" stroke="var(--circ-wire)" stroke-width="3" stroke-linejoin="round" />
 	<!-- gap under the switch lever -->
@@ -642,7 +705,9 @@
 		weight: 700,
 		color: 'var(--circ-battery)'
 	})}
-	{@render txt(BAT.x + 28, BAT.y + 5, 'battery', 12, { muted: true })}
+	<Readout id="wire-name-battery">
+		{@render txt(BAT.x + 28, BAT.y + 5, 'battery', 12, { muted: true })}
+	</Readout>
 
 	<!-- switch, drawn as on the board -->
 	<line
@@ -670,7 +735,9 @@
 		stroke="var(--circ-wire)"
 		stroke-width="2"
 	/>
-	{@render txt((SW0 + SW1) / 2, LY0 + 24, 'switch', 12, { anchor: 'middle', muted: true })}
+	<Readout id="wire-name-switch">
+		{@render txt((SW0 + SW1) / 2, LY0 + 24, 'switch', 12, { anchor: 'middle', muted: true })}
+	</Readout>
 
 	<!-- bulb, drawn as on the board -->
 	<circle cx={BULB.x} cy={BULB.y} r="38" fill="url(#wire-bulb-glow)" opacity={glow} />
@@ -696,41 +763,68 @@
 			stroke-linejoin="round"
 		/>
 	</g>
-	{@render txt(BULB.x - 14, BULB.y + 34, 'bulb', 12, { anchor: 'end', muted: true })}
+	<Readout id="wire-name-bulb">
+		{@render txt(BULB.x - 14, BULB.y + 34, 'bulb', 12, { anchor: 'end', muted: true })}
+	</Readout>
 
 	<!-- what is happening -->
 	{#if on}
-		<g opacity={1 - closedText}>
-			{@render txt(730, 430, 'Switch open: the loop is broken,', 13, {
-				anchor: 'middle',
-				weight: 600
-			})}
-			{@render txt(730, 448, 'so nothing moves — but the wire is full of charges', 12, {
-				anchor: 'middle',
-				muted: true
-			})}
-		</g>
-		<g opacity={closedText}>
-			{@render txt(730, 430, 'Closed: every charge starts moving at once,', 13, {
-				anchor: 'middle',
-				weight: 600
-			})}
-			{@render txt(730, 448, 'so the bulb lights straight away — like a bike chain', 12, {
-				anchor: 'middle',
-				muted: true
-			})}
-		</g>
-		<g opacity={smoothstep(0.5, 3, tagRun)}>
-			{@render txt(730, 524, '…yet the ringed charge has moved only a little', 12, {
-				anchor: 'middle',
-				muted: true
-			})}
-		</g>
+		<Readout
+			id="wire-open"
+			order={20}
+			label="Switch open"
+			value="the loop is broken"
+			note="nothing moves, but the wire is full of charges"
+			opacity={1 - closedText}
+		/>
+		<Readout
+			id="wire-closed"
+			order={21}
+			label="Switch closed"
+			value="every charge starts moving at once"
+			note="so the bulb lights straight away, like a bike chain"
+			opacity={closedText}
+		/>
+		<Readout id="wire-open-svg">
+			<g opacity={1 - closedText}>
+				{@render txt(730, 430, 'Switch open: the loop is broken,', 13, {
+					anchor: 'middle',
+					weight: 600
+				})}
+				{@render txt(730, 448, 'so nothing moves — but the wire is full of charges', 12, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</g>
+			<g opacity={closedText}>
+				{@render txt(730, 430, 'Closed: every charge starts moving at once,', 13, {
+					anchor: 'middle',
+					weight: 600
+				})}
+				{@render txt(730, 448, 'so the bulb lights straight away — like a bike chain', 12, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</g>
+			<g opacity={smoothstep(0.5, 3, tagRun)}>
+				{@render txt(730, 524, '…yet the ringed charge has moved only a little', 12, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</g>
+		</Readout>
 	{:else}
-		{@render txt(730, 430, 'No current (0 A):', 13, { anchor: 'middle', weight: 600 })}
-		{@render txt(730, 448, 'nothing moves, and the bulb stays dark', 12, {
-			anchor: 'middle',
-			muted: true
-		})}
+		<Readout
+			id="wire-off"
+			order={20}
+			label="No current (0 A)"
+			value="nothing moves, and the bulb stays dark"
+		>
+			{@render txt(730, 430, 'No current (0 A):', 13, { anchor: 'middle', weight: 600 })}
+			{@render txt(730, 448, 'nothing moves, and the bulb stays dark', 12, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</Readout>
 	{/if}
 </g>

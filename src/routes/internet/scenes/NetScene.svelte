@@ -16,7 +16,7 @@
 	 * presentation attributes.
 	 */
 	import { smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		BUFFER,
 		BUSY,
@@ -326,14 +326,20 @@
 	<!-- legend and clock -->
 	<g style:pointer-events="none">
 		<rect x="24" y="22" width="20" height="13" rx="3" fill="var(--net-packet)" />
-		{@render txt(50, 33, 'packet of the message', 12, { muted: true })}
+		<Readout id="net-key-packet" order={1} label="packet of the message" color="var(--net-packet)">
+			{@render txt(50, 33, 'packet of the message', 12, { muted: true })}
+		</Readout>
 		{#if showAcks}
 			<circle cx="206" cy="28.5" r="6" fill="var(--net-ack)" />
-			{@render txt(218, 33, 'acknowledgement', 12, { muted: true })}
+			<Readout id="net-key-ack" order={2} label="acknowledgement" color="var(--net-ack)">
+				{@render txt(218, 33, 'acknowledgement', 12, { muted: true })}
+			</Readout>
 		{/if}
 		{#if useLoad && load > 0}
 			<rect x="340" y="23" width="16" height="11" rx="3" fill="var(--net-other)" />
-			{@render txt(362, 33, "other people's traffic", 12, { muted: true })}
+			<Readout id="net-key-other" order={3} label="other people’s traffic" color="var(--net-other)">
+				{@render txt(362, 33, "other people's traffic", 12, { muted: true })}
+			</Readout>
 		{/if}
 		{#if useLoad}
 			<rect
@@ -346,12 +352,16 @@
 				stroke="var(--net-router-edge)"
 				stroke-dasharray="3 3"
 			/>
-			{@render txt(530, 33, `G's queue (room for ${BUFFER})`, 12, { muted: true })}
+			<Readout id="net-key-queue" order={4} label="G’s queue (room for {BUFFER})">
+				{@render txt(530, 33, `G's queue (room for ${BUFFER})`, 12, { muted: true })}
+			</Readout>
 		{/if}
-		{@render txt(936, 33, `simulated time ${s.toFixed(1)} s (slowed down)`, 12, {
-			anchor: 'end',
-			muted: true
-		})}
+		<Readout id="net-clock">
+			{@render txt(936, 33, `simulated time ${s.toFixed(1)} s (slowed down)`, 12, {
+				anchor: 'end',
+				muted: true
+			})}
+		</Readout>
 	</g>
 
 	<!-- links -->
@@ -471,10 +481,14 @@
 	<!-- computers -->
 	{@render laptop(ADA.x, ADA.y)}
 	{@render txt(ADA.x, ADA.y + 40, 'Ada', 13, { anchor: 'middle', weight: 700 })}
-	{@render txt(ADA.x, ADA.y + 56, ADA.address!, 11, { anchor: 'middle', muted: true })}
+	<Readout id="net-ada-ip">
+		{@render txt(ADA.x, ADA.y + 56, ADA.address!, 11, { anchor: 'middle', muted: true })}
+	</Readout>
 	{@render laptop(BEN.x, BEN.y)}
 	{@render txt(BEN.x, BEN.y + 40, 'Ben', 13, { anchor: 'middle', weight: 700 })}
-	{@render txt(BEN.x - 6, BEN.y + 56, BEN.address!, 11, { anchor: 'middle', muted: true })}
+	<Readout id="net-ben-ip">
+		{@render txt(BEN.x - 6, BEN.y + 56, BEN.address!, 11, { anchor: 'middle', muted: true })}
+	</Readout>
 
 	<!-- routers -->
 	{#each NODES.filter((n) => n.kind === 'router') as n (n.id)}
@@ -510,7 +524,9 @@
 			</g>
 		{/if}
 		{#if n.id === BUSY && useLoad && load > 0}
-			{@render txt(n.x + 22, n.y - 18, 'busy', 11, { muted: true })}
+			<Readout id="net-busy">
+				{@render txt(n.x + 22, n.y - 18, 'busy', 11, { muted: true })}
+			</Readout>
 		{/if}
 	{/each}
 
@@ -583,11 +599,13 @@
 		<line x1="312" x2="312" y1={PANEL_Y + 16} y2={PANEL_Y + 116} stroke="var(--border)" />
 		<line x1="648" x2="648" y1={PANEL_Y + 16} y2={PANEL_Y + 116} stroke="var(--border)" />
 
-		{@render txt(LEFT_X, PANEL_Y + 26, "Ada's computer sends", 12, {
-			muted: true,
-			weight: 600,
-			halo: false
-		})}
+		<Readout id="net-ada-title">
+			{@render txt(LEFT_X, PANEL_Y + 26, "Ada's computer sends", 12, {
+				muted: true,
+				weight: 600,
+				halo: false
+			})}
+		</Readout>
 		{#each sim.chunks.map((_c, i) => i) as i (i)}
 			{@const x = LEFT_X + i * SLOT}
 			{@const sent = sentCount[i] > 0}
@@ -626,97 +644,154 @@
 				})}
 			{/if}
 		{/each}
-		{@render txt(
-			LEFT_X,
-			PANEL_Y + 104,
-			showAcks
+		<Readout
+			id="net-ada"
+			order={10}
+			label="Ada’s computer"
+			value={showAcks
+				? `${ackedNow.filter(Boolean).length} of ${sim.count} acknowledged`
+				: `${sentCount.reduce((a, b) => a + b, 0)} of ${sim.count} sent`}
+			note={showAcks
 				? `keeps a copy until ✓ · resends after ${sim.rto.toFixed(1)} s`
-				: `${sentCount.reduce((a, b) => a + b, 0)} sent, one every 0.4 s`,
-			11,
-			{ muted: true, halo: false }
-		)}
-
-		<!-- middle -->
-		{#if panel === 'header'}
-			{@const k = headerSeq}
-			{@render txt(330, PANEL_Y + 26, `Packet ${k + 1} of ${sim.count}: the header`, 12, {
-				muted: true,
-				weight: 600,
-				halo: false
-			})}
-			{@render txt(330, PANEL_Y + 48, 'From', 12, { muted: true, halo: false })}
-			{@render txt(372, PANEL_Y + 48, ADA.address!, 12, { weight: 600, halo: false })}
-			{@render txt(482, PANEL_Y + 48, 'No.', 12, { muted: true, halo: false })}
-			{@render txt(510, PANEL_Y + 48, `${k + 1}`, 12, { weight: 600, halo: false })}
-			{@render txt(540, PANEL_Y + 48, 'Data', 12, { muted: true, halo: false })}
-			{@render txt(576, PANEL_Y + 48, `“${sim.chunks[k]}”`, 12, { weight: 600, halo: false })}
-			{@render txt(330, PANEL_Y + 70, 'To', 12, { muted: true, halo: false })}
-			{@render txt(372, PANEL_Y + 70, BEN.address!, 12, { weight: 600, halo: false })}
-			{@render txt(330, PANEL_Y + 92, 'in bits', 11, { muted: true, halo: false })}
-			{@render txt(372, PANEL_Y + 92, benBits.join(' '), 11, { mono: true, halo: false })}
-			{@render txt(330, PANEL_Y + 112, 'Routers read only the “To” address.', 11, {
-				muted: true,
-				halo: false
-			})}
-		{:else if panel === 'table'}
-			{@render txt(330, PANEL_Y + 26, `Router ${selected}'s own table`, 12, {
-				muted: true,
-				weight: 600,
-				halo: false
-			})}
-			{@render txt(630, PANEL_Y + 26, 'to → send via', 11, {
-				muted: true,
-				anchor: 'end',
-				halo: false
-			})}
-			{#each tableRows as row, i (row.d)}
-				{@const col = Math.floor(i / 3)}
-				{@const x = 330 + col * 104}
-				{@const y = PANEL_Y + 50 + (i % 3) * 22}
-				{@render txt(x, y, row.label, 12, { weight: row.d === 'ben' ? 700 : 500, halo: false })}
-				{@render txt(x + 38, y, `→ ${row.nh ? P(row.nh).label : '—'}`, 12, {
-					weight: 700,
-					color: row.d === 'ben' ? 'var(--net-route)' : undefined,
-					halo: false
-				})}
-			{/each}
-			{@render txt(330, PANEL_Y + 118, 'Each router keeps its own, worked out from its map.', 11, {
-				muted: true,
-				halo: false
-			})}
-		{:else}
-			{@render txt(330, PANEL_Y + 26, 'So far', 12, { muted: true, weight: 600, halo: false })}
-			{#each [{ k: 'lost', label: 'lost on the way', v: lostSoFar, c: 'var(--net-lost)' }, { k: 'again', label: 'sent again', v: resentSoFar, c: 'var(--net-news)' }, { k: 'got', label: 'arrived at Ben', v: gotNow.filter(Boolean).length, c: 'var(--net-packet)' }] as cell, i (cell.k)}
-				{@const x = 330 + i * 104}
-				{@render txt(x, PANEL_Y + 62, String(cell.v), 22, {
-					weight: 700,
-					color: cell.c,
-					halo: false
-				})}
-				{@render txt(x, PANEL_Y + 80, cell.label, 11, { muted: true, halo: false })}
-			{/each}
+				: 'one every 0.4 s'}
+		>
 			{@render txt(
-				330,
-				PANEL_Y + 110,
-				cut && s >= CUT_AT
-					? `Link ${linkLabel(cut)} failed at ${CUT_AT} s${outOfOrder ? ' · packets arrived out of order' : ''}`
-					: outOfOrder
-						? 'Packets arrived out of order'
-						: useCut && cut
-							? `Link ${linkLabel(cut)} will fail at ${CUT_AT} s`
-							: lostSoFar > 0
-								? 'The routers will not resend what they lost'
-								: 'Nothing has gone wrong yet',
+				LEFT_X,
+				PANEL_Y + 104,
+				showAcks
+					? `keeps a copy until ✓ · resends after ${sim.rto.toFixed(1)} s`
+					: `${sentCount.reduce((a, b) => a + b, 0)} sent, one every 0.4 s`,
 				11,
 				{ muted: true, halo: false }
 			)}
-		{/if}
+		</Readout>
 
-		{@render txt(RIGHT_X, PANEL_Y + 26, "Ben's computer puts them in order", 12, {
-			muted: true,
-			weight: 600,
-			halo: false
-		})}
+		<!-- middle -->
+		{#if panel === 'header'}
+			<Readout
+				id="net-header"
+				order={11}
+				label="Packet {headerSeq + 1} of {sim.count}: the header"
+				value="To {BEN.address}"
+				note="from {ADA.address} · no. {headerSeq + 1} · “{sim.chunks[headerSeq]}”"
+			/>
+		{:else if panel === 'table'}
+			{@const toBen = tableRows.find((row) => row.d === 'ben')}
+			<Readout
+				id="net-table"
+				order={11}
+				label="Router {selected}’s own table"
+				value="Ben → send via {toBen?.nh ? P(toBen.nh).label : '—'}"
+				color="var(--net-route)"
+			/>
+		{:else}
+			<Readout
+				id="net-sofar"
+				order={11}
+				label="So far"
+				value="{lostSoFar} lost · {resentSoFar} sent again · {gotNow.filter(Boolean)
+					.length} arrived"
+				note={cut && s >= CUT_AT
+					? `link ${linkLabel(cut)} failed at ${CUT_AT} s${outOfOrder ? ' · packets arrived out of order' : ''}`
+					: outOfOrder
+						? 'packets arrived out of order'
+						: useCut && cut
+							? `link ${linkLabel(cut)} will fail at ${CUT_AT} s`
+							: lostSoFar > 0
+								? 'the routers will not resend what they lost'
+								: 'nothing has gone wrong yet'}
+			/>
+		{/if}
+		<Readout id="net-middle">
+			{#if panel === 'header'}
+				{@const k = headerSeq}
+				{@render txt(330, PANEL_Y + 26, `Packet ${k + 1} of ${sim.count}: the header`, 12, {
+					muted: true,
+					weight: 600,
+					halo: false
+				})}
+				{@render txt(330, PANEL_Y + 48, 'From', 12, { muted: true, halo: false })}
+				{@render txt(372, PANEL_Y + 48, ADA.address!, 12, { weight: 600, halo: false })}
+				{@render txt(482, PANEL_Y + 48, 'No.', 12, { muted: true, halo: false })}
+				{@render txt(510, PANEL_Y + 48, `${k + 1}`, 12, { weight: 600, halo: false })}
+				{@render txt(540, PANEL_Y + 48, 'Data', 12, { muted: true, halo: false })}
+				{@render txt(576, PANEL_Y + 48, `“${sim.chunks[k]}”`, 12, { weight: 600, halo: false })}
+				{@render txt(330, PANEL_Y + 70, 'To', 12, { muted: true, halo: false })}
+				{@render txt(372, PANEL_Y + 70, BEN.address!, 12, { weight: 600, halo: false })}
+				{@render txt(330, PANEL_Y + 92, 'in bits', 11, { muted: true, halo: false })}
+				{@render txt(372, PANEL_Y + 92, benBits.join(' '), 11, { mono: true, halo: false })}
+				{@render txt(330, PANEL_Y + 112, 'Routers read only the “To” address.', 11, {
+					muted: true,
+					halo: false
+				})}
+			{:else if panel === 'table'}
+				{@render txt(330, PANEL_Y + 26, `Router ${selected}'s own table`, 12, {
+					muted: true,
+					weight: 600,
+					halo: false
+				})}
+				{@render txt(630, PANEL_Y + 26, 'to → send via', 11, {
+					muted: true,
+					anchor: 'end',
+					halo: false
+				})}
+				{#each tableRows as row, i (row.d)}
+					{@const col = Math.floor(i / 3)}
+					{@const x = 330 + col * 104}
+					{@const y = PANEL_Y + 50 + (i % 3) * 22}
+					{@render txt(x, y, row.label, 12, { weight: row.d === 'ben' ? 700 : 500, halo: false })}
+					{@render txt(x + 38, y, `→ ${row.nh ? P(row.nh).label : '—'}`, 12, {
+						weight: 700,
+						color: row.d === 'ben' ? 'var(--net-route)' : undefined,
+						halo: false
+					})}
+				{/each}
+				{@render txt(
+					330,
+					PANEL_Y + 118,
+					'Each router keeps its own, worked out from its map.',
+					11,
+					{
+						muted: true,
+						halo: false
+					}
+				)}
+			{:else}
+				{@render txt(330, PANEL_Y + 26, 'So far', 12, { muted: true, weight: 600, halo: false })}
+				{#each [{ k: 'lost', label: 'lost on the way', v: lostSoFar, c: 'var(--net-lost)' }, { k: 'again', label: 'sent again', v: resentSoFar, c: 'var(--net-news)' }, { k: 'got', label: 'arrived at Ben', v: gotNow.filter(Boolean).length, c: 'var(--net-packet)' }] as cell, i (cell.k)}
+					{@const x = 330 + i * 104}
+					{@render txt(x, PANEL_Y + 62, String(cell.v), 22, {
+						weight: 700,
+						color: cell.c,
+						halo: false
+					})}
+					{@render txt(x, PANEL_Y + 80, cell.label, 11, { muted: true, halo: false })}
+				{/each}
+				{@render txt(
+					330,
+					PANEL_Y + 110,
+					cut && s >= CUT_AT
+						? `Link ${linkLabel(cut)} failed at ${CUT_AT} s${outOfOrder ? ' · packets arrived out of order' : ''}`
+						: outOfOrder
+							? 'Packets arrived out of order'
+							: useCut && cut
+								? `Link ${linkLabel(cut)} will fail at ${CUT_AT} s`
+								: lostSoFar > 0
+									? 'The routers will not resend what they lost'
+									: 'Nothing has gone wrong yet',
+					11,
+					{ muted: true, halo: false }
+				)}
+			{/if}
+		</Readout>
+
+		<Readout id="net-ben-title">
+			{@render txt(RIGHT_X, PANEL_Y + 26, "Ben's computer puts them in order", 12, {
+				muted: true,
+				weight: 600,
+				halo: false
+			})}
+		</Readout>
 		{#each sim.chunks as chunk, i (i)}
 			{@const x = RIGHT_X + i * SLOT}
 			<rect
@@ -745,29 +820,43 @@
 				}
 			)}
 		{/each}
-		{#if complete}
-			{@render txt(RIGHT_X, PANEL_Y + 90, sim.chunks.join(''), 18, {
-				weight: 700,
-				halo: false,
-				mono: true
-			})}
-			{@render txt(RIGHT_X, PANEL_Y + 110, 'Complete: every number is there.', 11, {
-				muted: true,
-				halo: false
-			})}
-		{:else}
-			{@render txt(
-				RIGHT_X,
-				PANEL_Y + 90,
-				gotNow.some(Boolean) ? `waiting for packet ${missingFirst + 1}…` : 'waiting…',
-				12,
-				{ muted: true, halo: false }
-			)}
-			{@render txt(RIGHT_X, PANEL_Y + 110, 'Delivers the message only when complete.', 11, {
-				muted: true,
-				halo: false
-			})}
-		{/if}
+		<Readout
+			id="net-ben"
+			order={12}
+			label="Ben’s computer"
+			value={complete
+				? `“${sim.chunks.join('')}”`
+				: gotNow.some(Boolean)
+					? `waiting for packet ${missingFirst + 1}…`
+					: 'waiting…'}
+			note={complete
+				? 'complete: every number is there'
+				: 'delivers the message only when complete'}
+		>
+			{#if complete}
+				{@render txt(RIGHT_X, PANEL_Y + 90, sim.chunks.join(''), 18, {
+					weight: 700,
+					halo: false,
+					mono: true
+				})}
+				{@render txt(RIGHT_X, PANEL_Y + 110, 'Complete: every number is there.', 11, {
+					muted: true,
+					halo: false
+				})}
+			{:else}
+				{@render txt(
+					RIGHT_X,
+					PANEL_Y + 90,
+					gotNow.some(Boolean) ? `waiting for packet ${missingFirst + 1}…` : 'waiting…',
+					12,
+					{ muted: true, halo: false }
+				)}
+				{@render txt(RIGHT_X, PANEL_Y + 110, 'Delivers the message only when complete.', 11, {
+					muted: true,
+					halo: false
+				})}
+			{/if}
+		</Readout>
 	</g>
 </g>
 
