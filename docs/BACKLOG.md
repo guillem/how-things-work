@@ -115,10 +115,19 @@ label search; right-clicks leaving handles held; and a logic-gates test that gua
   complex-numbers' `PointHandle`) into `src/lib/draw`: a 2D draggable point with arrow keys on both
   axes; the shared `Handle` only has one-dimensional keys.
 
-- **Stage text is unreadable on phones (site-wide, found 2026-10-07).** At 390 px wide the
-  960-unit stage is drawn at ~0.37 scale, so 11–13 px labels end up ~4–5 px. Needs a design
-  decision (a narrow-screen layout per scene, a larger minimum text size, or steering readers to
-  full screen / landscape). Affects photosynthesis and epidemics alike.
+- **Stage text on phones — decided 2026-10-13: option B, readouts out of the SVG.** At 390 px
+  wide the 960-unit stage is drawn at ~0.37 scale, so 13-unit labels end up ~5 px. Two prototypes
+  were tried (branch `worktree-agent-a4adc057170ea9048`, local only: `?phone=b` / `?phone=c`
+  flags); the user rejected landscape and chose B over C (zoomable stage). B: on screens ≤ 640 px
+  a scene's readouts and captions move into an HTML panel under the stage (14–16 px), the drawing
+  keeps short labels or numbered badges, minor labels hide. Mechanism: `<Readout id label value
+note color marker at opacity>` (`src/lib/explainer/Readout.svelte`) plus the panel in the
+  explainer shell; desktop renders pixel-identically. Applied so far to photosynthesis's membrane
+  scene and epidemics' SIR scene. Rollout plan: land the B mechanism without the flag (drop C,
+  `zoom.svelte.ts` and `e2e/phone-prototypes.e2e.ts`), then convert scenes topic by topic (149
+  scenes, ~720 text elements; each needs editorial choices: what moves, what becomes a badge, what
+  hides), plus axis ticks in the shared chart helpers. Watch the reading room: the panel made the
+  pinned card ~200 px taller on the two prototypes — keep each step's panel short.
 
 - **Stage text styling overrides SVG attributes (site-wide, found 2026-10-07).** In
   `src/lib/explainer/Explainer.svelte`, `.stage :global(text) { font-family; fill; font-size: 13px }`
