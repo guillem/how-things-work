@@ -501,8 +501,17 @@
 
 	// ---- words ------------------------------------------------------------------------------
 	const sq = (j: number) => `(${colOf(j) + 1}, ${rowOf(j) + 1})`;
-	// Two decimals; values too small for that (10 × 0.5¹² at S) keep two significant digits.
-	const f2 = (v: number) => (v === 0 ? '0' : Math.abs(v) < 0.005 ? v.toPrecision(2) : v.toFixed(2));
+	const f2 = (v: number) => (Math.abs(v) < 0.005 ? '0' : v.toFixed(2));
+	// What S is worth: values too small for two decimals (10 × 0.5¹² ≈ 0.0024) keep two
+	// significant digits; below 0.0001, "almost 0".
+	const fS = (v: number) =>
+		v === 0
+			? '0'
+			: Math.abs(v) < 0.0001
+				? 'almost 0'
+				: Math.abs(v) < 0.005
+					? v.toPrecision(2)
+					: v.toFixed(2);
 	const pct = (v: number) => `${Math.round(v * 100)}%`;
 	const plural = (n: number, w: string) => `${n} ${w}${n === 1 ? '' : 's'}`;
 	const sup = (n: number) => [...String(n)].map((d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]).join('');
@@ -999,9 +1008,9 @@
 		{@render scale(GY + 250)}
 	{:else if phase === 'values'}
 		{@render txt(PX + 20, GY + 32, 'What S is worth', 15, { weight: 600 })}
-		{@render txt(PX + 20, GY + 64, `learnt so far: ${f2(bestValue(q, world.start))}`, 14)}
+		{@render txt(PX + 20, GY + 64, `learnt so far: ${fS(bestValue(q, world.start))}`, 14)}
 		{#if exact && shortest !== null}
-			{@render txt(PX + 20, GY + 90, `exact: ${f2(bestValue(exact, world.start))}`, 14, {
+			{@render txt(PX + 20, GY + 90, `exact: ${fS(bestValue(exact, world.start))}`, 14, {
 				weight: 600
 			})}
 			{@render txt(
