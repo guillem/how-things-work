@@ -39,7 +39,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		ALGORITHMS,
 		NAMES,
@@ -285,15 +285,28 @@
 
 <g opacity={fadeIn}>
 	<!-- header -->
-	{@render txt(24, 36, `The same ${n} bars for all four · one operation each per tick`, 15, {
-		weight: 600
-	})}
-	{@render txt(24, 58, speedText, 12, { muted: true })}
-	{@render txt(936, 36, allDone ? `all finished after ${longest} ticks` : `tick ${tick}`, 14, {
-		anchor: 'end',
-		weight: 600
-	})}
-	{@render txt(C0, 70, 'comparisons so far (same scale)', 11, { muted: true })}
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout id="title">
+		{@render txt(24, 36, `The same ${n} bars for all four · one operation each per tick`, 15, {
+			weight: 600
+		})}
+		{@render txt(24, 58, speedText, 12, { muted: true })}
+	</Readout>
+	<Readout
+		id="tick"
+		order={1}
+		label="Tick"
+		value={allDone ? `all finished after ${longest}` : `${tick} of ${longest}`}
+		note="one operation each per tick"
+	>
+		{@render txt(936, 36, allDone ? `all finished after ${longest} ticks` : `tick ${tick}`, 14, {
+			anchor: 'end',
+			weight: 600
+		})}
+	</Readout>
+	<Readout id="chart-caption">
+		{@render txt(C0, 70, 'comparisons so far (same scale)', 11, { muted: true })}
+	</Readout>
 
 	{#each rows as r (r.algorithm)}
 		<!-- one lane per algorithm -->
@@ -307,31 +320,41 @@
 			stroke={r.finished ? r.color : 'var(--border)'}
 			stroke-opacity={r.finished ? 0.55 : 1}
 		/>
-		{@render txt(NAME_X, r.y0 + 30, NAMES[r.algorithm], 16, { color: r.color, weight: 650 })}
-		{#if r.finished}
-			{@const label = `finished: ${plural(r.comparisons, 'comparison')}`}
-			<rect
-				x={NAME_X - 6}
-				y={r.y0 + 42}
-				width={label.length * 6.3 + 12}
-				height="22"
-				rx="11"
-				fill={r.color}
-				fill-opacity="0.14"
-				stroke={r.color}
-			/>
-			{@render txt(NAME_X, r.y0 + 57, label, 12, { weight: 600, halo: false })}
-			<circle cx={MEDAL_X} cy={r.y0 + ROWH / 2} r="19" fill={r.color} />
-			{@render txt(MEDAL_X, r.y0 + ROWH / 2 + 5, ordinal(r.place), 13, {
-				anchor: 'middle',
-				weight: 700,
-				color: 'var(--stage-bg)',
-				halo: false
-			})}
-		{:else}
-			{@render txt(NAME_X, r.y0 + 57, plural(r.comparisons, 'comparison'), 14, { weight: 600 })}
-		{/if}
-		{@render txt(NAME_X, r.y0 + 84, plural(r.operations, 'operation'), 11, { muted: true })}
+		<Readout
+			id="lane-{r.algorithm}"
+			order={2 + rows.indexOf(r)}
+			label={NAMES[r.algorithm]}
+			value="{r.comparisons} comparisons{r.finished ? ` · ${ordinal(r.place)}` : ''}"
+			color={r.color}
+		>
+			{@render txt(NAME_X, r.y0 + 30, NAMES[r.algorithm], 16, { color: r.color, weight: 650 })}
+		</Readout>
+		<Readout id="lane-text-{r.algorithm}">
+			{#if r.finished}
+				{@const label = `finished: ${plural(r.comparisons, 'comparison')}`}
+				<rect
+					x={NAME_X - 6}
+					y={r.y0 + 42}
+					width={label.length * 6.3 + 12}
+					height="22"
+					rx="11"
+					fill={r.color}
+					fill-opacity="0.14"
+					stroke={r.color}
+				/>
+				{@render txt(NAME_X, r.y0 + 57, label, 12, { weight: 600, halo: false })}
+				<circle cx={MEDAL_X} cy={r.y0 + ROWH / 2} r="19" fill={r.color} />
+				{@render txt(MEDAL_X, r.y0 + ROWH / 2 + 5, ordinal(r.place), 13, {
+					anchor: 'middle',
+					weight: 700,
+					color: 'var(--stage-bg)',
+					halo: false
+				})}
+			{:else}
+				{@render txt(NAME_X, r.y0 + 57, plural(r.comparisons, 'comparison'), 14, { weight: 600 })}
+			{/if}
+			{@render txt(NAME_X, r.y0 + 84, plural(r.operations, 'operation'), 11, { muted: true })}
+		</Readout>
 
 		<!-- the bars, values hidden -->
 		<line x1={B0 - 6} x2={B1 + 6} y1={r.base} y2={r.base} stroke="var(--stage-line)" />
@@ -364,7 +387,9 @@
 		{@const w = ((C1 - C0) * r.comparisons) / maxCmp}
 		<rect x={C0} y={cy - 9} width={C1 - C0} height="18" rx="4" fill="var(--stage-grid)" />
 		<rect x={C0} y={cy - 9} width={Math.max(0, w)} height="18" rx="4" fill={r.color} />
-		{@render txt(C0 + w + 8, cy + 5, String(r.comparisons), 13, { weight: 600 })}
+		<Readout id="count-{r.algorithm}">
+			{@render txt(C0 + w + 8, cy + 5, String(r.comparisons), 13, { weight: 600 })}
+		</Readout>
 	{/each}
 
 	<!-- timeline of ticks: drag or use the keys to step the race -->
@@ -387,15 +412,17 @@
 		stroke-linecap="round"
 		opacity="0.6"
 	/>
-	{@render txt(TL0 - 14, TLY + 4, 'start', 11, { anchor: 'end', muted: true })}
-	{@render txt(TL1 + 14, TLY + 4, 'end', 11, { muted: true })}
-	{@render txt(
-		(TL0 + TL1) / 2,
-		TLY + 26,
-		`tick ${tick} of ${longest}${playing && !reduced ? '' : playing ? ' · drag or use ← → to step through' : ' · paused: drag or use ← →'}`,
-		12,
-		{ anchor: 'middle', muted: true }
-	)}
+	<Readout id="timeline-text">
+		{@render txt(TL0 - 14, TLY + 4, 'start', 11, { anchor: 'end', muted: true })}
+		{@render txt(TL1 + 14, TLY + 4, 'end', 11, { muted: true })}
+		{@render txt(
+			(TL0 + TL1) / 2,
+			TLY + 26,
+			`tick ${tick} of ${longest}${playing && !reduced ? '' : playing ? ' · drag or use ← → to step through' : ' · paused: drag or use ← →'}`,
+			12,
+			{ anchor: 'middle', muted: true }
+		)}
+	</Readout>
 	<Handle
 		x={tlx}
 		y={TLY}
@@ -410,15 +437,17 @@
 	/>
 
 	<!-- the rules of the race -->
-	{@render txt(
-		480,
-		572,
-		'Place = order of finishing: every comparison, swap or merge move takes one tick (a merge move slides a whole block of bars).',
-		12,
-		{ anchor: 'middle', muted: true }
-	)}
-	{@render txt(480, 588, 'The counters and the chart count comparisons only.', 12, {
-		anchor: 'middle',
-		muted: true
-	})}
+	<Readout id="rules">
+		{@render txt(
+			480,
+			572,
+			'Place = order of finishing: every comparison, swap or merge move takes one tick (a merge move slides a whole block of bars).',
+			12,
+			{ anchor: 'middle', muted: true }
+		)}
+		{@render txt(480, 588, 'The counters and the chart count comparisons only.', 12, {
+			anchor: 'middle',
+			muted: true
+		})}
+	</Readout>
 </g>

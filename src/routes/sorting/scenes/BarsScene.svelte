@@ -17,7 +17,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { createPlayback } from '#lib/explainer/playback.ts';
 	import { NAMES, makeInput, recording, type Algorithm, type Op, type Order } from '../sorts';
 
@@ -275,14 +275,33 @@
 
 <g opacity={fadeIn}>
 	<!-- header -->
-	{@render txt(X0, 48, NAMES[algorithm], 18, { weight: 600 })}
-	{@render txt(X0, 74, words, 14, { color: index >= total ? 'var(--sort-done)' : undefined })}
-	{@render txt(X1, 48, plural(counts.comparisons, 'comparison'), 16, {
-		anchor: 'end',
-		weight: 600,
-		color: 'var(--sort-compare)'
-	})}
-	{@render txt(X1, 72, plural(counts.moves, 'move'), 13, { anchor: 'end', muted: true })}
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout
+		id="now"
+		order={3}
+		label={NAMES[algorithm]}
+		value={words}
+		color={index >= total ? 'var(--sort-done)' : undefined}
+	>
+		{@render txt(X0, 48, NAMES[algorithm], 18, { weight: 600 })}
+		{@render txt(X0, 74, words, 14, { color: index >= total ? 'var(--sort-done)' : undefined })}
+	</Readout>
+	<Readout
+		id="comparisons"
+		order={1}
+		label="Comparisons"
+		value={String(counts.comparisons)}
+		color="var(--sort-compare)"
+	>
+		{@render txt(X1, 48, plural(counts.comparisons, 'comparison'), 16, {
+			anchor: 'end',
+			weight: 600,
+			color: 'var(--sort-compare)'
+		})}
+	</Readout>
+	<Readout id="moves" order={2} label="Moves" value={String(counts.moves)}>
+		{@render txt(X1, 72, plural(counts.moves, 'move'), 13, { anchor: 'end', muted: true })}
+	</Readout>
 
 	<!-- focus range (merge: the halves being merged; quick: the section being split;
 	     insertion: the sorted part and the bar being placed). The label stays
@@ -324,10 +343,18 @@
 				opacity="0.7"
 			/>
 		{/if}
-		{@render txt(clamp((xOf(f.lo) + xOf(f.hi)) / 2, 16 + half, 944 - half), BASE + 54, label, 12, {
-			anchor: 'middle',
-			color: 'var(--explainer-accent)'
-		})}
+		<Readout id="focus">
+			{@render txt(
+				clamp((xOf(f.lo) + xOf(f.hi)) / 2, 16 + half, 944 - half),
+				BASE + 54,
+				label,
+				12,
+				{
+					anchor: 'middle',
+					color: 'var(--explainer-accent)'
+				}
+			)}
+		</Readout>
 	{/if}
 
 	<!-- bars -->
@@ -356,24 +383,30 @@
 			/>
 		{/if}
 		{#if n <= 24}
-			{@render txt(b.x, BASE + 18, String(b.v), n <= 16 ? 12 : 10, {
-				anchor: 'middle',
-				muted: true
-			})}
+			<Readout id="value-{b.p}">
+				{@render txt(b.x, BASE + 18, String(b.v), n <= 16 ? 12 : 10, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</Readout>
 		{/if}
 	{/each}
 	{#if pivotBar}
-		{@render txt(pivotBar.x, BASE - pivotBar.h - pivotBar.lift - 12, 'pivot', 12, {
-			anchor: 'middle',
-			color: 'var(--sort-pivot)',
-			weight: 600
-		})}
+		<Readout id="pivot" order={13} label="pivot (outlined)" color="var(--sort-pivot)">
+			{@render txt(pivotBar.x, BASE - pivotBar.h - pivotBar.lift - 12, 'pivot', 12, {
+				anchor: 'middle',
+				color: 'var(--sort-pivot)',
+				weight: 600
+			})}
+		</Readout>
 	{/if}
 
 	<!-- legend -->
 	{#each [{ c: 'var(--sort-compare)', l: 'compared' }, { c: 'var(--sort-move)', l: 'moved' }, { c: 'var(--sort-done)', l: 'in final place' }] as item, i (item.l)}
-		<rect x={X0 + i * 130} y={92} width="12" height="12" rx="3" fill={item.c} />
-		{@render txt(X0 + 18 + i * 130, 103, item.l, 12, { muted: true })}
+		<Readout id="legend-{i}" order={10 + i} label={item.l} color={item.c}>
+			<rect x={X0 + i * 130} y={92} width="12" height="12" rx="3" fill={item.c} />
+			{@render txt(X0 + 18 + i * 130, 103, item.l, 12, { muted: true })}
+		</Readout>
 	{/each}
 
 	<!-- timeline -->
@@ -396,15 +429,19 @@
 		stroke-linecap="round"
 		opacity="0.6"
 	/>
-	{@render txt(TL0 - 14, TLY + 4, 'start', 11, { anchor: 'end', muted: true })}
-	{@render txt(TL1 + 14, TLY + 4, 'end', 11, { muted: true })}
-	{@render txt(
-		(TL0 + TL1) / 2,
-		TLY + 30,
-		`${workDone} of ${work} operations done${playing && !reduced ? '' : playing ? ' · drag or use ← → to step through' : ' · paused: drag or use ← →'}`,
-		12,
-		{ anchor: 'middle', muted: true }
-	)}
+	<Readout id="tl-ends">
+		{@render txt(TL0 - 14, TLY + 4, 'start', 11, { anchor: 'end', muted: true })}
+		{@render txt(TL1 + 14, TLY + 4, 'end', 11, { muted: true })}
+	</Readout>
+	<Readout id="ops" order={4} label="Operations done" value="{workDone} of {work}">
+		{@render txt(
+			(TL0 + TL1) / 2,
+			TLY + 30,
+			`${workDone} of ${work} operations done${playing && !reduced ? '' : playing ? ' · drag or use ← → to step through' : ' · paused: drag or use ← →'}`,
+			12,
+			{ anchor: 'middle', muted: true }
+		)}
+	</Readout>
 	<Handle
 		x={tlx}
 		y={TLY}

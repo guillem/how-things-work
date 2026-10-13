@@ -144,6 +144,48 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText('loses carbon');
 	});
 
+	test('sorting bars: the counters are text under the stage and follow the starting order', async ({
+		page
+	}) => {
+		await page.goto('./sorting/#bubble');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Comparisons\s*120/);
+		await expect(panel).toContainText('in final place');
+		await expect(drawing(page)).not.toContainText('comparisons');
+		// Bubble sort stops after one walk without a swap: n − 1 comparisons on sorted bars.
+		await page.getByRole('radio', { name: 'Sorted', exact: true }).click();
+		await expect(panel).toContainText(/Comparisons\s*15\b/);
+	});
+
+	test('sorting race: the lane counts and places are text and follow the starting order', async ({
+		page
+	}) => {
+		await page.goto('./sorting/#race');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Tick\s*all finished after \d+/);
+		await expect(panel).toContainText(/Merge sort\s*\d+ comparisons · 1st/);
+		await expect(drawing(page)).not.toContainText('comparisons');
+		// Insertion sort on sorted bars: one comparison per bar after the first.
+		await page.getByRole('radio', { name: 'Sorted', exact: true }).click();
+		await expect(panel).toContainText(/Insertion sort\s*15 comparisons/);
+	});
+
+	test('sorting growth: the counts at 1,000 items are text and follow the starting order', async ({
+		page
+	}) => {
+		await page.goto('./sorting/#growth');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/At 1,000 items the slow pair needs\s*\d+ to \d+ times/);
+		await expect(drawing(page)).not.toContainText('slow pair');
+		await page.getByRole('radio', { name: 'Sorted', exact: true }).click();
+		await expect(panel).toContainText(/Bubble = insertion\s*999 each/);
+		// The same scene's later steps list their own readouts.
+		await page.goto('./sorting/#machine');
+		await expect(panel).toContainText(/Merge sort wins beyond\s*about [\d,]+ items/);
+		await page.getByRole('radio', { name: '×1', exact: true }).click();
+		await expect(panel).toContainText('merge sort is never slower');
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');
