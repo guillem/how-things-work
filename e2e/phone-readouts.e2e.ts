@@ -766,6 +766,83 @@ test.describe('on a phone', () => {
 		await range(page, 'x').fill('3');
 		await expect(panel).toContainText(/A\(x\) = 9\.00/);
 	});
+
+	test('cryptography channel: what Eve copies is text under the stage', async ({ page }) => {
+		await page.goto('./cryptography/#open-line');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Eve’s copy of the traffic\s*every message/);
+		await expect(panel).toContainText('“Meet me at noon”');
+		await expect(drawing(page)).not.toContainText('Eve reads them all');
+		await page.goto('./cryptography/#shared-key');
+		await expect(panel).toContainText(/Eve’s copy\s*[01]{8} [01]{8}/);
+	});
+
+	test('cryptography paint: the secrets are text and follow the paint chosen', async ({ page }) => {
+		await page.goto('./cryptography/#paint-secrets');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Alice’s secret\s*red/);
+		await expect(panel).toContainText(/Mixing paint is easy/);
+		await expect(drawing(page)).not.toContainText('red: secret');
+		await page.locator('button[data-control="alicePaint"][data-value="teal"]').click();
+		await expect(panel).toContainText(/Alice’s secret\s*teal/);
+	});
+
+	test('cryptography key exchange: the public numbers are text and follow a', async ({ page }) => {
+		await page.goto('./cryptography/#dh-public');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Alice sends\s*A = 2²⁹ mod 101 = 59/);
+		await expect(drawing(page)).not.toContainText('square-and-multiply');
+		await range(page, 'a').fill('30');
+		await expect(panel).toContainText(/Alice’s secret\s*a = 30/);
+		await expect(panel).toContainText(/A = 2³⁰ mod 101 = 17/);
+	});
+
+	test('cryptography discrete log: Eve’s target is text and follows a', async ({ page }) => {
+		await page.goto('./cryptography/#dh-eve');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Eve wants a with\s*2ᵃ ≡ 59 \(mod 101\)/);
+		await expect(panel).toContainText(/Real keys\s*a prime of 2048 bits/);
+		await expect(drawing(page)).not.toContainText('Eve wants a');
+		await range(page, 'a').fill('30');
+		await expect(panel).toContainText(/2ᵃ ≡ 17 \(mod 101\)/);
+	});
+
+	test('cryptography hash: the sizes and the tries needed are text and follow the inputs', async ({
+		page
+	}) => {
+		await page.goto('./cryptography/#hash');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/In\s*15 characters = 120 bits/);
+		await expect(panel).toContainText(/Out\s*256 bits/);
+		await expect(drawing(page)).not.toContainText('whatever the length');
+		await page.locator('input[data-field="msg"]').fill('Hi');
+		await expect(panel).toContainText(/In\s*2 characters = 16 bits/);
+		await page.goto('./cryptography/#hash-oneway');
+		await expect(panel).toContainText(/Tries needed for 3 digits\s*16³ = 4,096/);
+		await range(page, 'digits').fill('2');
+		await expect(panel).toContainText(/Tries needed for 2 digits\s*16² = 256/);
+	});
+
+	test('cryptography signature: the verdict is text and follows Bob’s copy', async ({ page }) => {
+		await page.goto('./cryptography/#sign');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Alice’s signature\s*s = \d+/);
+		await expect(panel).toContainText(/✓ \d+ = \d+: valid/);
+		await expect(drawing(page)).not.toContainText('Signed by Alice');
+		await page.getByLabel('The message Bob received').fill('Pay Eve 10 €');
+		await expect(panel).toContainText(/✗ \d+ ≠ \d+: invalid/);
+		await expect(panel).toContainText(/Eve\s*changed it to “Pay Eve 10 €”/);
+		await page.locator('.action button[data-control="resend"]').click();
+		await expect(panel).toContainText(/✓ \d+ = \d+: valid/);
+	});
+
+	test('cryptography one-way streets: the streets are numbered and listed', async ({ page }) => {
+		await page.goto('./cryptography/#one-way');
+		const panel = readouts(page);
+		await expect(panel).toContainText('Multiplying primes');
+		await expect(panel).toContainText('Easy to do, practically impossible to undo');
+		await expect(drawing(page)).not.toContainText('Multiplying primes');
+	});
 });
 
 test.describe('on a wide screen', () => {

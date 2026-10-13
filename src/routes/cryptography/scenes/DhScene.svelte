@@ -14,7 +14,7 @@
 	 * `b` sliders. Reduced motion shows the complete frame.
 	 */
 	import { clamp, lerp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { fastPower, sup } from '../../primes-modular-arithmetic/modular';
 	import { DH, diffieHellman } from '../crypto';
 	import Person from './Person.svelte';
@@ -94,34 +94,73 @@
 		stroke-opacity="0.55"
 	/>
 	<g opacity={secretOn}>
-		<Txt
-			x={x + 20}
-			y={CARD.y + 36}
-			text="{who}’s secret: {secretName} = {secret}"
-			size={16}
-			weight={700}
+		<Readout
+			id="secret-{who}"
+			order={who === 'Alice' ? 1 : 2}
+			label="{who}’s secret"
+			value="{secretName} = {secret}"
 			{color}
-			halo={false}
-		/>
+			opacity={secretOn}
+		>
+			<Txt
+				x={x + 20}
+				y={CARD.y + 36}
+				text="{who}’s secret: {secretName} = {secret}"
+				size={16}
+				weight={700}
+				{color}
+				halo={false}
+			/>
+			{#snippet narrow()}
+				<Txt
+					x={x + 20}
+					y={CARD.y + 44}
+					text="{secretName} = {secret}"
+					size={32}
+					weight={700}
+					{color}
+					halo={false}
+				/>
+			{/snippet}
+		</Readout>
 		{@render lock(x + CARD.w - 26, CARD.y + 30)}
 	</g>
 	<g opacity={powerOn}>
-		<Txt
-			x={x + 20}
-			y={CARD.y + 78}
-			text="{pubName} = 2{sup(secret)} mod 101"
-			size={15}
-			halo={false}
-		/>
-		<Txt x={x + 20} y={CARD.y + 112} text="= {pubValue}" size={24} weight={700} halo={false} />
-		<Txt
-			x={x + 20}
-			y={CARD.y + 138}
-			text="{cost} multiplication{cost === 1 ? '' : 's'} (square-and-multiply)"
-			size={12}
-			muted
-			halo={false}
-		/>
+		<Readout
+			id="sends-{who}"
+			order={who === 'Alice' ? 3 : 4}
+			label="{who} sends"
+			value="{pubName} = 2{sup(secret)} mod 101 = {pubValue}"
+			note="{cost} multiplication{cost === 1 ? '' : 's'}"
+			opacity={pub ? powerOn : 0}
+		>
+			<Txt
+				x={x + 20}
+				y={CARD.y + 78}
+				text="{pubName} = 2{sup(secret)} mod 101"
+				size={15}
+				halo={false}
+			/>
+			<Txt x={x + 20} y={CARD.y + 112} text="= {pubValue}" size={24} weight={700} halo={false} />
+			<Txt
+				x={x + 20}
+				y={CARD.y + 138}
+				text="{cost} multiplication{cost === 1 ? '' : 's'} (square-and-multiply)"
+				size={12}
+				muted
+				halo={false}
+			/>
+			{#snippet narrow()}
+				<Txt
+					x={x + 20}
+					y={CARD.y + 110}
+					text="{pubName} = {pubValue}"
+					size={32}
+					weight={700}
+					halo={false}
+				/>
+			{/snippet}
+		</Readout>
 	</g>
 	<g opacity={travel >= 1 ? 1 : 0}>
 		<line
@@ -131,41 +170,73 @@
 			y2={CARD.y + 168}
 			stroke="var(--border)"
 		/>
-		<Txt
-			x={x + 20}
-			y={CARD.y + 198}
-			text="received {otherName} = {otherValue}"
-			size={15}
-			halo={false}
-		/>
-	</g>
-	{#if keyOn > 0}
-		<g opacity={keyOn}>
+		<Readout id="received-{who}">
 			<Txt
 				x={x + 20}
-				y={CARD.y + 236}
-				text="key = {otherValue}{sup(secret)} mod 101"
+				y={CARD.y + 198}
+				text="received {otherName} = {otherValue}"
 				size={15}
 				halo={false}
 			/>
-			<Txt
-				x={x + 20}
-				y={CARD.y + 276}
-				text="= {key}"
-				size={28}
-				weight={700}
+			{#snippet narrow()}
+				<Txt
+					x={x + 20}
+					y={CARD.y + 206}
+					text="got {otherName} = {otherValue}"
+					size={28}
+					halo={false}
+				/>
+			{/snippet}
+		</Readout>
+	</g>
+	{#if keyOn > 0}
+		<g opacity={keyOn}>
+			<Readout
+				id="key-{who}"
+				order={3}
+				label={who === 'Alice' ? 'Shared key' : undefined}
+				value={String(key)}
+				note="each computes it alone; it is never sent"
 				color="var(--cr-key)"
-				halo={false}
-			/>
-			{@render keyIcon(x + 112, CARD.y + 266)}
-			<Txt
-				x={x + 20}
-				y={CARD.y + 310}
-				text="never sent over the line"
-				size={12}
-				muted
-				halo={false}
-			/>
+				opacity={keyOn}
+			>
+				<Txt
+					x={x + 20}
+					y={CARD.y + 236}
+					text="key = {otherValue}{sup(secret)} mod 101"
+					size={15}
+					halo={false}
+				/>
+				<Txt
+					x={x + 20}
+					y={CARD.y + 276}
+					text="= {key}"
+					size={28}
+					weight={700}
+					color="var(--cr-key)"
+					halo={false}
+				/>
+				{@render keyIcon(x + 112, CARD.y + 266)}
+				<Txt
+					x={x + 20}
+					y={CARD.y + 310}
+					text="never sent over the line"
+					size={12}
+					muted
+					halo={false}
+				/>
+				{#snippet narrow()}
+					<Txt
+						x={x + 20}
+						y={CARD.y + 280}
+						text="key = {key}"
+						size={34}
+						weight={700}
+						color="var(--cr-key)"
+						halo={false}
+					/>
+				{/snippet}
+			</Readout>
 		</g>
 	{/if}
 {/snippet}
@@ -190,16 +261,40 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	<Txt x={480} y={62} text="Public: everyone knows" size={12} anchor="middle" muted halo={false} />
-	<Txt
-		x={480}
-		y={90}
-		text="clock p = 101,  base g = 2"
-		size={17}
-		weight={700}
-		anchor="middle"
-		halo={false}
-	/>
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="public-title">
+		<Txt
+			x={480}
+			y={62}
+			text="Public: everyone knows"
+			size={12}
+			anchor="middle"
+			muted
+			halo={false}
+		/>
+	</Readout>
+	<Readout id="public-numbers">
+		<Txt
+			x={480}
+			y={90}
+			text="clock p = 101,  base g = 2"
+			size={17}
+			weight={700}
+			anchor="middle"
+			halo={false}
+		/>
+		{#snippet narrow()}
+			<Txt
+				x={480}
+				y={82}
+				text="p = 101, g = 2"
+				size={30}
+				weight={700}
+				anchor="middle"
+				halo={false}
+			/>
+		{/snippet}
+	</Readout>
 
 	{@render card(AX, 'Alice', 'var(--cr-alice)', 'a', a, 'A', k.A, costA, 'B', k.B, k.aliceKey)}
 	{@render card(BX, 'Bob', 'var(--cr-bob)', 'b', b, 'B', k.B, costB, 'A', k.A, k.bobKey)}
@@ -249,52 +344,82 @@
 			stroke="var(--cr-eve)"
 			stroke-opacity="0.6"
 		/>
-		<Txt
-			x={NOTE.x + 16}
-			y={NOTE.y + 28}
-			text="Eve knows p = 101, g = 2"
-			size={13}
-			weight={600}
-			halo={false}
-		/>
-		<Txt
-			x={NOTE.x + 16}
-			y={NOTE.y + 52}
-			text="A = {k.A},  B = {k.B}"
-			size={13}
-			weight={600}
-			halo={false}
-		/>
-		<Txt
-			x={NOTE.x + 16}
-			y={NOTE.y + 82}
-			text={pub ? 'but not a or b' : 'but not a, b or the key'}
-			size={13}
-			weight={700}
-			color="var(--cr-eve)"
-			halo={false}
-		/>
+		<Readout id="eve-note">
+			<Txt
+				x={NOTE.x + 16}
+				y={NOTE.y + 28}
+				text="Eve knows p = 101, g = 2"
+				size={13}
+				weight={600}
+				halo={false}
+			/>
+			<Txt
+				x={NOTE.x + 16}
+				y={NOTE.y + 52}
+				text="A = {k.A},  B = {k.B}"
+				size={13}
+				weight={600}
+				halo={false}
+			/>
+			<Txt
+				x={NOTE.x + 16}
+				y={NOTE.y + 82}
+				text={pub ? 'but not a or b' : 'but not a, b or the key'}
+				size={13}
+				weight={700}
+				color="var(--cr-eve)"
+				halo={false}
+			/>
+			{#snippet narrow()}
+				<Txt
+					x={NOTE.x + 16}
+					y={NOTE.y + 46}
+					text="A = {k.A}, B = {k.B}"
+					size={26}
+					weight={700}
+					halo={false}
+				/>
+				<Txt
+					x={NOTE.x + 16}
+					y={NOTE.y + 92}
+					text={pub ? 'not a or b' : 'not a, b, key'}
+					size={26}
+					weight={700}
+					color="var(--cr-eve)"
+					halo={false}
+				/>
+			{/snippet}
+		</Readout>
 	</g>
 
 	{#if bannerOn > 0}
 		<g opacity={bannerOn}>
 			{#each [{ cx: AX + CARD.w / 2, got: k.B, own: a, other: b, o: 'B' }, { cx: BX + CARD.w / 2, got: k.A, own: b, other: a, o: 'A' }] as c (c.o)}
-				<Txt
-					x={c.cx}
-					y={CARD.y + CARD.h + 40}
-					text="{c.o} = {c.got} = 2{sup(c.other)}, so the key is (2{sup(c.other)}){sup(c.own)}"
-					size={13}
-					anchor="middle"
-					muted
-				/>
-				<Txt
-					x={c.cx}
-					y={CARD.y + CARD.h + 70}
-					text="= 2 to the power {a} × {b}, mod 101"
-					size={15}
-					weight={600}
-					anchor="middle"
-				/>
+				<Readout
+					id="why-{c.o}"
+					order={4}
+					label={c.o === 'B' ? 'Why they agree' : undefined}
+					value="2 to the power {a} × {b}, mod 101"
+					note="(2ᵇ)ᵃ = (2ᵃ)ᵇ: same exponent, either order"
+					opacity={bannerOn}
+				>
+					<Txt
+						x={c.cx}
+						y={CARD.y + CARD.h + 40}
+						text="{c.o} = {c.got} = 2{sup(c.other)}, so the key is (2{sup(c.other)}){sup(c.own)}"
+						size={13}
+						anchor="middle"
+						muted
+					/>
+					<Txt
+						x={c.cx}
+						y={CARD.y + CARD.h + 70}
+						text="= 2 to the power {a} × {b}, mod 101"
+						size={15}
+						weight={600}
+						anchor="middle"
+					/>
+				</Readout>
 			{/each}
 		</g>
 	{/if}

@@ -17,7 +17,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { clamp, cycle, lerp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { sup } from '../../primes-modular-arithmetic/modular';
 	import { REAL, RSA, hashToNumber, sha256Hex, sign, trialFactor, verify } from '../crypto';
 	import Person from './Person.svelte';
@@ -127,41 +127,66 @@
 			stroke="var(--cr-alice)"
 			stroke-opacity="0.5"
 		/>
-		<Txt
-			x={44}
-			y={56}
-			text="Alice makes a key pair"
-			size={16}
-			weight={700}
-			color="var(--cr-alice)"
-			halo={false}
-		/>
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="alice-title">
+			<Txt
+				x={44}
+				y={56}
+				text="Alice makes a key pair"
+				size={16}
+				weight={700}
+				color="var(--cr-alice)"
+				halo={false}
+			/>
+		</Readout>
 		<g opacity={lineOn(0)}>
-			<Txt x={44} y={96} text="Two secret primes:  p = 61,  q = 53" size={15} halo={false} />
+			<Readout id="primes">
+				<Txt x={44} y={96} text="Two secret primes:  p = 61,  q = 53" size={15} halo={false} />
+				{#snippet narrow()}
+					<Txt x={44} y={104} text="p = 61, q = 53" size={30} weight={700} halo={false} />
+				{/snippet}
+			</Readout>
 			{@render lock(440, 90)}
 		</g>
 		<g opacity={lineOn(1)}>
-			<Txt x={44} y={134} text="n = p × q = 3233" size={15} weight={700} halo={false} />
-			<Txt x={44} y={154} text="easy: one multiplication" size={12} muted halo={false} />
+			<Readout id="n">
+				<Txt x={44} y={134} text="n = p × q = 3233" size={15} weight={700} halo={false} />
+				<Txt x={44} y={154} text="easy: one multiplication" size={12} muted halo={false} />
+				{#snippet narrow()}
+					<Txt x={44} y={150} text="n = 3233" size={30} weight={700} halo={false} />
+				{/snippet}
+			</Readout>
 		</g>
 		<g opacity={lineOn(2)}>
-			<Txt x={44} y={190} text="(p − 1)(q − 1) = 60 × 52 = 3120" size={15} halo={false} />
+			<Readout id="phi">
+				<Txt x={44} y={190} text="(p − 1)(q − 1) = 60 × 52 = 3120" size={15} halo={false} />
+			</Readout>
 			{@render lock(440, 184)}
 		</g>
 		<g opacity={lineOn(3)}>
-			<Txt x={44} y={228} text="e = 17   (no factor in common with 3120)" size={15} halo={false} />
+			<Readout id="e">
+				<Txt
+					x={44}
+					y={228}
+					text="e = 17   (no factor in common with 3120)"
+					size={15}
+					halo={false}
+				/>
+			</Readout>
 		</g>
 		<g opacity={lineOn(4)}>
-			<Txt x={44} y={266} text="d = 2753, because" size={15} halo={false} />
-			<Txt x={44} y={290} text="17 × 2753 = 46,801 = 15 × 3120 + 1" size={15} halo={false} />
-			<Txt
-				x={44}
-				y={310}
-				text="so raising to e, then to d, gets back to the start"
-				size={12}
-				muted
-				halo={false}
-			/>
+			<Readout id="d">
+				<Txt x={44} y={266} text="d = 2753, because" size={15} halo={false} />
+				<Txt x={44} y={290} text="17 × 2753 = 46,801 = 15 × 3120 + 1" size={15} halo={false} />
+				<Txt
+					x={44}
+					y={310}
+					text="so raising to e, then to d, gets back to the start"
+					size={12}
+					muted
+					halo={false}
+				/>
+			</Readout>
 			{@render lock(440, 260)}
 		</g>
 		<g opacity={lineOn(5)}>
@@ -175,17 +200,39 @@
 				fill-opacity="0.1"
 				stroke="var(--cr-ok)"
 			/>
-			<Txt
-				x={60}
-				y={364}
-				text="PUBLIC KEY: published for everyone"
-				size={13}
-				weight={700}
+			<Readout
+				id="public"
+				order={1}
+				label="Public key"
+				value="n = 3233, e = 17"
+				note="used to check signatures"
 				color="var(--cr-ok)"
-				halo={false}
-			/>
-			<Txt x={60} y={398} text="n = 3233,  e = 17" size={22} weight={700} halo={false} />
-			<Txt x={60} y={422} text="used to check signatures" size={12} muted halo={false} />
+				opacity={lineOn(5)}
+			>
+				<Txt
+					x={60}
+					y={364}
+					text="PUBLIC KEY: published for everyone"
+					size={13}
+					weight={700}
+					color="var(--cr-ok)"
+					halo={false}
+				/>
+				<Txt x={60} y={398} text="n = 3233,  e = 17" size={22} weight={700} halo={false} />
+				<Txt x={60} y={422} text="used to check signatures" size={12} muted halo={false} />
+				{#snippet narrow()}
+					<Txt
+						x={60}
+						y={368}
+						text="PUBLIC"
+						size={22}
+						weight={700}
+						color="var(--cr-ok)"
+						halo={false}
+					/>
+					<Txt x={60} y={414} text="n = 3233, e = 17" size={34} weight={700} halo={false} />
+				{/snippet}
+			</Readout>
 			<rect
 				x="44"
 				y="452"
@@ -196,37 +243,66 @@
 				fill-opacity="0.08"
 				stroke="var(--cr-eve)"
 			/>
-			<Txt
-				x={60}
-				y={480}
-				text="PRIVATE KEY: Alice alone"
-				size={13}
-				weight={700}
+			<Readout
+				id="private"
+				order={2}
+				label="Private key"
+				value="d = 2753"
+				note="17 × 2753 = 15 × 3120 + 1"
 				color="var(--cr-eve)"
-				halo={false}
-			/>
+				opacity={lineOn(5)}
+			>
+				<Txt
+					x={60}
+					y={480}
+					text="PRIVATE KEY: Alice alone"
+					size={13}
+					weight={700}
+					color="var(--cr-eve)"
+					halo={false}
+				/>
+				{#snippet narrow()}
+					<Txt
+						x={60}
+						y={484}
+						text="PRIVATE"
+						size={22}
+						weight={700}
+						color="var(--cr-eve)"
+						halo={false}
+					/>
+					<Txt x={60} y={532} text="d = 2753" size={34} weight={700} halo={false} />
+				{/snippet}
+			</Readout>
 			{@render lock(424, 474)}
-			<Txt x={60} y={514} text="d = 2753" size={22} weight={700} halo={false} />
-			<Txt
-				x={60}
-				y={540}
-				text="used to sign; p, q and 3120 stay secret too"
-				size={12}
-				muted
-				halo={false}
-			/>
+			<Readout id="private-d">
+				<Txt x={60} y={514} text="d = 2753" size={22} weight={700} halo={false} />
+				<Txt
+					x={60}
+					y={540}
+					text="used to sign; p, q and 3120 stay secret too"
+					size={12}
+					muted
+					halo={false}
+				/>
+			</Readout>
 		</g>
 
 		<!-- Eve tries to factor n -->
 		<Person x={900} y={56} name="Eve" color="var(--cr-eve)" />
-		<Txt
-			x={500}
-			y={56}
-			text="Eve has n = 3233. To get d she needs p and q:"
-			size={14}
-			weight={700}
-		/>
-		<Txt x={500} y={80} text="she divides by 2, 3, 4, … up to √3233 ≈ 57" size={13} muted />
+		<Readout id="eve-has">
+			<Txt
+				x={500}
+				y={56}
+				text="Eve has n = 3233. To get d she needs p and q:"
+				size={14}
+				weight={700}
+			/>
+			<Txt x={500} y={80} text="she divides by 2, 3, 4, … up to √3233 ≈ 57" size={13} muted />
+			{#snippet narrow()}
+				<Txt x={500} y={86} text="Eve divides 3233 by" size={26} weight={700} />
+			{/snippet}
+		</Readout>
 		{#each CANDIDATES as k (k)}
 			{@const tried = k <= divisor && ks >= 1.2}
 			{@const hit = factored && k === factor.p}
@@ -241,91 +317,128 @@
 				stroke={k === divisor && !factored && ks >= 1.2 ? 'var(--cr-eve)' : 'none'}
 				stroke-width="2"
 			/>
-			<Txt
-				x={chipX(k) + CHIP.w / 2}
-				y={chipY(k) + 19}
-				text={String(k)}
-				size={13}
-				weight={hit ? 700 : 500}
-				anchor="middle"
-				color={hit ? '#fff' : undefined}
-				halo={false}
-			/>
+			<Readout id="chip-{k}">
+				<Txt
+					x={chipX(k) + CHIP.w / 2}
+					y={chipY(k) + 19}
+					text={String(k)}
+					size={13}
+					weight={hit ? 700 : 500}
+					anchor="middle"
+					color={hit ? '#fff' : undefined}
+					halo={false}
+				/>
+				{#snippet narrow()}
+					<Txt
+						x={chipX(k) + CHIP.w / 2}
+						y={chipY(k) + 22}
+						text={String(k)}
+						size={20}
+						weight={700}
+						anchor="middle"
+						color={hit ? '#fff' : undefined}
+						halo={false}
+					/>
+				{/snippet}
+			</Readout>
 		{/each}
-		<Txt
-			x={500}
-			y={312}
-			text={factored
-				? `3233 = 53 × 61, found after ${factor.tries} divisions`
+		<Readout
+			id="factor"
+			order={3}
+			label="Eve factors n"
+			value={factored
+				? '3233 = 53 × 61'
 				: ks >= 1.2
-					? `3233 ÷ ${divisor} leaves remainder ${RSA.n % divisor}`
-					: 'Trying divisors 2, 3, 4, …'}
-			size={15}
-			weight={700}
+					? `3233 ÷ ${divisor}: remainder ${RSA.n % divisor}`
+					: 'trying 2, 3, 4, …'}
+			note={factored
+				? `after ${factor.tries} divisions: with p and q she could work out d`
+				: undefined}
 			color={factored ? 'var(--cr-key)' : undefined}
-		/>
-		{#if factored}
+		>
 			<Txt
 				x={500}
-				y={336}
-				text="With p and q, Eve could work out d. Easy here: n is tiny."
-				size={13}
-				muted
+				y={312}
+				text={factored
+					? `3233 = 53 × 61, found after ${factor.tries} divisions`
+					: ks >= 1.2
+						? `3233 ÷ ${divisor} leaves remainder ${RSA.n % divisor}`
+						: 'Trying divisors 2, 3, 4, …'}
+				size={15}
+				weight={700}
+				color={factored ? 'var(--cr-key)' : undefined}
 			/>
-		{/if}
+			{#if factored}
+				<Txt
+					x={500}
+					y={336}
+					text="With p and q, Eve could work out d. Easy here: n is tiny."
+					size={13}
+					muted
+				/>
+			{/if}
+		</Readout>
 
-		<rect
-			x="490"
-			y="372"
-			width="446"
-			height="204"
-			rx="12"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
-		<Txt
-			x={508}
-			y={402}
-			text="Real keys: n of {REAL.keyBits} bits ({REAL.keyDigits} digits) or more"
-			size={14}
-			weight={700}
-			halo={false}
-		/>
-		<Txt
-			x={508}
-			y={434}
-			text="Multiplying p × q: a split second"
-			size={13}
-			color="var(--cr-ok)"
-			weight={600}
-			halo={false}
-		/>
-		<Txt
-			x={508}
-			y={460}
-			text="Trial division: up to about 10³⁰⁸ divisions"
-			size={13}
-			color="var(--cr-bad)"
-			weight={600}
-			halo={false}
-		/>
-		<Txt x={508} y={494} text="The best known method's record: RSA-250," size={13} halo={false} />
-		<Txt
-			x={508}
-			y={516}
-			text="{REAL.rsaRecordBits} bits ({REAL.rsaRecordDigits} digits), factored in {REAL.rsaRecordYear} after"
-			size={13}
-			halo={false}
-		/>
-		<Txt x={508} y={538} text="thousands of years of computer time." size={13} halo={false} />
-		<Txt
-			x={508}
-			y={562}
-			text="The numbers here are for illustration."
-			size={12}
-			muted
-			halo={false}
-		/>
+		<Readout
+			id="real"
+			order={4}
+			label="Real keys"
+			value="n of {REAL.keyBits} bits ({REAL.keyDigits} digits)"
+			note="trial division: up to about 10³⁰⁸ divisions"
+		>
+			<rect
+				x="490"
+				y="372"
+				width="446"
+				height="204"
+				rx="12"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			<Txt
+				x={508}
+				y={402}
+				text="Real keys: n of {REAL.keyBits} bits ({REAL.keyDigits} digits) or more"
+				size={14}
+				weight={700}
+				halo={false}
+			/>
+			<Txt
+				x={508}
+				y={434}
+				text="Multiplying p × q: a split second"
+				size={13}
+				color="var(--cr-ok)"
+				weight={600}
+				halo={false}
+			/>
+			<Txt
+				x={508}
+				y={460}
+				text="Trial division: up to about 10³⁰⁸ divisions"
+				size={13}
+				color="var(--cr-bad)"
+				weight={600}
+				halo={false}
+			/>
+			<Txt x={508} y={494} text="The best known method's record: RSA-250," size={13} halo={false} />
+			<Txt
+				x={508}
+				y={516}
+				text="{REAL.rsaRecordBits} bits ({REAL.rsaRecordDigits} digits), factored in {REAL.rsaRecordYear} after"
+				size={13}
+				halo={false}
+			/>
+			<Txt x={508} y={538} text="thousands of years of computer time." size={13} halo={false} />
+			<Txt
+				x={508}
+				y={562}
+				text="The numbers here are for illustration."
+				size={12}
+				muted
+				halo={false}
+			/>
+		</Readout>
 	{:else}
 		<!-- Alice signs -->
 		<rect
@@ -338,39 +451,81 @@
 			stroke="var(--cr-alice)"
 			stroke-opacity="0.5"
 		/>
-		<Txt
-			x={38}
-			y={50}
-			text="Alice signs her message"
-			size={16}
-			weight={700}
-			color="var(--cr-alice)"
-			halo={false}
-		/>
+		<Readout id="alice-signs">
+			<Txt
+				x={38}
+				y={50}
+				text="Alice signs her message"
+				size={16}
+				weight={700}
+				color="var(--cr-alice)"
+				halo={false}
+			/>
+		</Readout>
 		{@render field(38, 64, 404, signMsg, 'Alice’s message', editAlice)}
-		<Txt
-			x={38}
-			y={138}
-			text="SHA-256: {sha256Hex(signMsg).slice(0, 16)}…"
-			size={13}
-			mono
-			halo={false}
-		/>
-		<Txt x={38} y={164} text="as a number on the 3233-hour clock: h = {h}" size={14} halo={false} />
-		<Txt x={38} y={206} text="signature s = h{sup(RSA.d)} mod 3233" size={15} halo={false} />
-		<Txt x={38} y={232} text="= {h}{sup(RSA.d)} mod 3233" size={15} halo={false} />
-		<Txt
-			x={38}
-			y={276}
-			text="s = {s}"
-			size={28}
-			weight={700}
+		<Readout id="alice-hash">
+			<Txt
+				x={38}
+				y={138}
+				text="SHA-256: {sha256Hex(signMsg).slice(0, 16)}…"
+				size={13}
+				mono
+				halo={false}
+			/>
+			<Txt
+				x={38}
+				y={164}
+				text="as a number on the 3233-hour clock: h = {h}"
+				size={14}
+				halo={false}
+			/>
+			<Txt x={38} y={206} text="signature s = h{sup(RSA.d)} mod 3233" size={15} halo={false} />
+			<Txt x={38} y={232} text="= {h}{sup(RSA.d)} mod 3233" size={15} halo={false} />
+			{#snippet narrow()}
+				<Txt x={38} y={190} text="h = {h}" size={30} weight={600} halo={false} />
+			{/snippet}
+		</Readout>
+		<Readout
+			id="signature"
+			order={1}
+			label="Alice’s signature"
+			value="s = {s}"
+			note="h{sup(RSA.d)} mod 3233: needs the private d"
 			color="var(--cr-alice)"
-			halo={false}
-		/>
+		>
+			<Txt
+				x={38}
+				y={276}
+				text="s = {s}"
+				size={28}
+				weight={700}
+				color="var(--cr-alice)"
+				halo={false}
+			/>
+			{#snippet narrow()}
+				<Txt
+					x={38}
+					y={282}
+					text="s = {s}"
+					size={36}
+					weight={700}
+					color="var(--cr-alice)"
+					halo={false}
+				/>
+			{/snippet}
+		</Readout>
 		{@render lock(200, 266)}
-		<Txt x={216} y={272} text="needs the private d" size={12} muted halo={false} />
-		<Txt x={38} y={334} text="Edit the message: she signs it again." size={12} muted halo={false} />
+		<Readout id="alice-hints">
+			<Txt x={216} y={272} text="needs the private d" size={12} muted halo={false} />
+			<Txt
+				x={38}
+				y={334}
+				text="Edit the message: she signs it again."
+				size={12}
+				muted
+				halo={false}
+			/>
+		</Readout>
 
 		<!-- Bob checks -->
 		<rect
@@ -383,15 +538,17 @@
 			stroke={check.ok ? 'var(--cr-ok)' : 'var(--cr-bad)'}
 			stroke-width={verdictOn > 0.5 ? 2 : 1}
 		/>
-		<Txt
-			x={518}
-			y={50}
-			text="What Bob received"
-			size={16}
-			weight={700}
-			color="var(--cr-bob)"
-			halo={false}
-		/>
+		<Readout id="bob-title">
+			<Txt
+				x={518}
+				y={50}
+				text="What Bob received"
+				size={16}
+				weight={700}
+				color="var(--cr-bob)"
+				halo={false}
+			/>
+		</Readout>
 		{@render field(
 			518,
 			64,
@@ -401,69 +558,101 @@
 			(v) => setParam('recv', v),
 			tampered
 		)}
-		<Txt
-			x={518}
-			y={138}
-			text="SHA-256: {sha256Hex(recv).slice(0, 16)}…"
-			size={13}
-			mono
-			halo={false}
-		/>
-		<Txt x={518} y={164} text="as a number: {check.expected}" size={14} halo={false} />
-		<Txt
-			x={518}
-			y={206}
-			text="check with the public key: s{sup(RSA.e)} mod 3233"
-			size={15}
-			halo={false}
-		/>
-		<Txt
-			x={518}
-			y={232}
-			text="= {s}{sup(RSA.e)} mod 3233 = {check.recovered}"
-			size={15}
-			halo={false}
-		/>
+		<Readout id="bob-hash">
+			<Txt
+				x={518}
+				y={138}
+				text="SHA-256: {sha256Hex(recv).slice(0, 16)}…"
+				size={13}
+				mono
+				halo={false}
+			/>
+			<Txt x={518} y={164} text="as a number: {check.expected}" size={14} halo={false} />
+			<Txt
+				x={518}
+				y={206}
+				text="check with the public key: s{sup(RSA.e)} mod 3233"
+				size={15}
+				halo={false}
+			/>
+			<Txt
+				x={518}
+				y={232}
+				text="= {s}{sup(RSA.e)} mod 3233 = {check.recovered}"
+				size={15}
+				halo={false}
+			/>
+			{#snippet narrow()}
+				<Txt x={518} y={190} text="h = {check.expected}" size={30} weight={600} halo={false} />
+			{/snippet}
+		</Readout>
 		<g opacity={verdictOn}>
-			{#if check.ok}
-				<Txt
-					x={518}
-					y={276}
-					text="✓ {check.recovered} = {check.expected}: valid"
-					size={24}
-					weight={700}
-					color="var(--cr-ok)"
-					halo={false}
-				/>
-				<Txt
-					x={518}
-					y={302}
-					text="Signed by Alice's key, and not changed since."
-					size={12}
-					muted
-					halo={false}
-				/>
-			{:else}
-				<Txt
-					x={518}
-					y={276}
-					text="✗ {check.recovered} ≠ {check.expected}: invalid"
-					size={24}
-					weight={700}
-					color="var(--cr-bad)"
-					halo={false}
-				/>
-				<Txt
-					x={518}
-					y={302}
-					text="Changed in transit, or not signed by Alice."
-					size={12}
-					muted
-					halo={false}
-				/>
-			{/if}
+			<Readout
+				id="verdict"
+				order={2}
+				label="Bob checks: s{sup(RSA.e)} mod 3233"
+				value={check.ok
+					? `✓ ${check.recovered} = ${check.expected}: valid`
+					: `✗ ${check.recovered} ≠ ${check.expected}: invalid`}
+				note={check.ok
+					? 'Signed by Alice’s key, and not changed since.'
+					: 'Changed in transit, or not signed by Alice.'}
+				color={check.ok ? 'var(--cr-ok)' : 'var(--cr-bad)'}
+				opacity={verdictOn}
+			>
+				{#if check.ok}
+					<Txt
+						x={518}
+						y={276}
+						text="✓ {check.recovered} = {check.expected}: valid"
+						size={24}
+						weight={700}
+						color="var(--cr-ok)"
+						halo={false}
+					/>
+					<Txt
+						x={518}
+						y={302}
+						text="Signed by Alice's key, and not changed since."
+						size={12}
+						muted
+						halo={false}
+					/>
+				{:else}
+					<Txt
+						x={518}
+						y={276}
+						text="✗ {check.recovered} ≠ {check.expected}: invalid"
+						size={24}
+						weight={700}
+						color="var(--cr-bad)"
+						halo={false}
+					/>
+					<Txt
+						x={518}
+						y={302}
+						text="Changed in transit, or not signed by Alice."
+						size={12}
+						muted
+						halo={false}
+					/>
+				{/if}
+				{#snippet narrow()}
+					<Txt
+						x={518}
+						y={290}
+						text={check.ok ? '✓ valid' : '✗ invalid'}
+						size={40}
+						weight={700}
+						color={check.ok ? 'var(--cr-ok)' : 'var(--cr-bad)'}
+						halo={false}
+					/>
+				{/snippet}
+			</Readout>
 		</g>
-		<Txt x={518} y={334} text="Edit this copy to play Eve." size={12} muted halo={false} />
+		<Readout id="bob-hint">
+			<Txt x={518} y={334} text="Edit this copy to play Eve." size={12} muted halo={false} />
+		</Readout>
 
 		<!-- the transfer -->
 		<Person x={70} y={420} name="Alice" color="var(--cr-alice)" />
@@ -503,25 +692,36 @@
 			stroke-width="2"
 			stroke-dasharray="5 4"
 		/>
-		<Txt
-			x={540}
-			y={500}
-			text={tampered
-				? `Eve changed it to “${short(recv)}”`
-				: 'Eve can change the message on the way,'}
-			size={13}
-			weight={tampered ? 700 : 500}
-			color={tampered ? 'var(--cr-eve)' : undefined}
-		/>
-		<Txt
-			x={540}
-			y={520}
-			text={tampered
-				? 'but she can’t make a matching signature without d.'
-				: 'but without d she can’t sign the new one.'}
-			size={13}
-			muted
-		/>
+		<Readout
+			id="eve"
+			order={3}
+			label="Eve"
+			value={tampered ? `changed it to “${short(recv)}”` : 'can change the message on the way'}
+			note={tampered
+				? 'but she can’t make a matching signature without d'
+				: 'but without d she can’t sign the new one'}
+			color="var(--cr-eve)"
+		>
+			<Txt
+				x={540}
+				y={500}
+				text={tampered
+					? `Eve changed it to “${short(recv)}”`
+					: 'Eve can change the message on the way,'}
+				size={13}
+				weight={tampered ? 700 : 500}
+				color={tampered ? 'var(--cr-eve)' : undefined}
+			/>
+			<Txt
+				x={540}
+				y={520}
+				text={tampered
+					? 'but she can’t make a matching signature without d.'
+					: 'but without d she can’t sign the new one.'}
+				size={13}
+				muted
+			/>
+		</Readout>
 	{/if}
 </g>
 
@@ -538,6 +738,13 @@
 		font: 500 18px var(--font-mono);
 		user-select: text;
 		-webkit-user-select: text;
+	}
+	/* on phones the stage is drawn at ~0.4 scale: larger type keeps the field legible */
+	@media (max-width: 640px) {
+		.cr-text {
+			padding: 0 8px;
+			font-size: 32px;
+		}
 	}
 	.cr-text.warn {
 		border-color: var(--cr-eve);

@@ -19,7 +19,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { clamp, cycle, easeInOut } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		SEARCH_LIMIT,
 		bitDistance,
@@ -154,7 +154,10 @@
 
 <g>
 	{#if phase === 'digest'}
-		<Txt x={40} y={38} text="Type any text" size={13} weight={700} />
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="type-any">
+			<Txt x={40} y={38} text="Type any text" size={13} weight={700} />
+		</Readout>
 		{@render field(40, 48, 880, msg, 'msg', 'Text to hash')}
 		<line
 			x1="480"
@@ -175,16 +178,21 @@
 			fill-opacity="0.12"
 			stroke="var(--cr-alice)"
 		/>
-		<Txt x={480} y={152} text="SHA-256" size={17} weight={700} anchor="middle" halo={false} />
-		<Txt
-			x={480}
-			y={171}
-			text="64 rounds of shifts, XORs and additions"
-			size={11}
-			anchor="middle"
-			muted
-			halo={false}
-		/>
+		<Readout id="sha">
+			<Txt x={480} y={152} text="SHA-256" size={17} weight={700} anchor="middle" halo={false} />
+			<Txt
+				x={480}
+				y={171}
+				text="64 rounds of shifts, XORs and additions"
+				size={11}
+				anchor="middle"
+				muted
+				halo={false}
+			/>
+			{#snippet narrow()}
+				<Txt x={480} y={165} text="SHA-256" size={30} weight={700} anchor="middle" halo={false} />
+			{/snippet}
+		</Readout>
 		<line
 			x1="480"
 			x2="480"
@@ -195,76 +203,107 @@
 			marker-end="url(#arrowhead)"
 		/>
 
-		<Txt x={40} y={238} text="The digest, in hexadecimal" size={13} weight={700} />
+		<Readout id="digest-title">
+			<Txt x={40} y={238} text="The digest, in hexadecimal" size={13} weight={700} />
+		</Readout>
 		{#each hexLines(hex) as line, i (i)}
 			<g opacity={rowOn(i * 4 + 3)}>
 				<Txt x={40} y={278 + i * 34} text={line} size={24} weight={600} mono />
 			</g>
 		{/each}
-		<Txt
-			x={GRID.x}
-			y={GRID.y - 10}
-			text="… and as 256 bits (1 = coloured)"
-			size={13}
-			weight={700}
-		/>
+		<Readout id="grid-title">
+			<Txt
+				x={GRID.x}
+				y={GRID.y - 10}
+				text="… and as 256 bits (1 = coloured)"
+				size={13}
+				weight={700}
+			/>
+		</Readout>
 		{@render bitGrid(GRID.x, GRID.y, GRID.cell, (i) => bits[i] === 1, 'var(--cr-alice)', rowOn)}
 
-		<rect
-			x="40"
-			y="430"
-			width="520"
-			height="114"
-			rx="10"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
-		<Txt
-			x={58}
-			y={462}
-			text="In: {[...msg].length} character{[...msg].length === 1 ? '' : 's'} = {nBytes *
-				8} bits (UTF-8)"
-			size={14}
-			halo={false}
-		/>
-		<Txt
-			x={58}
-			y={490}
-			text="Out: 256 bits, whatever the length of the text"
-			size={14}
-			weight={700}
-			halo={false}
-		/>
-		<Txt
-			x={58}
-			y={518}
-			text="The same text always gives the same digest."
-			size={13}
-			muted
-			halo={false}
-		/>
+		<Readout
+			id="in"
+			order={1}
+			label="In"
+			value="{[...msg].length} character{[...msg].length === 1 ? '' : 's'} = {nBytes * 8} bits"
+		>
+			<rect
+				x="40"
+				y="430"
+				width="520"
+				height="114"
+				rx="10"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			<Txt
+				x={58}
+				y={462}
+				text="In: {[...msg].length} character{[...msg].length === 1 ? '' : 's'} = {nBytes *
+					8} bits (UTF-8)"
+				size={14}
+				halo={false}
+			/>
+		</Readout>
+		<Readout
+			id="out"
+			order={2}
+			label="Out"
+			value="256 bits"
+			note="whatever the length; the same text always gives the same digest"
+		>
+			<Txt
+				x={58}
+				y={490}
+				text="Out: 256 bits, whatever the length of the text"
+				size={14}
+				weight={700}
+				halo={false}
+			/>
+			<Txt
+				x={58}
+				y={518}
+				text="The same text always gives the same digest."
+				size={13}
+				muted
+				halo={false}
+			/>
+		</Readout>
 	{:else if phase === 'avalanche'}
-		<Txt x={40} y={38} text="Text 1" size={13} weight={700} />
-		<Txt x={500} y={38} text="Text 2" size={13} weight={700} />
+		<Readout id="text-titles">
+			<Txt x={40} y={38} text="Text 1" size={13} weight={700} />
+			<Txt x={500} y={38} text="Text 2" size={13} weight={700} />
+		</Readout>
 		{@render field(40, 48, 420, aval1, 'aval1', 'First text')}
 		{@render field(500, 48, 420, aval2, 'aval2', 'Second text')}
-		<Txt
-			x={480}
-			y={120}
-			text="{charDiff} character{charDiff === 1 ? '' : 's'} apart"
-			size={13}
-			weight={700}
-			anchor="middle"
+		<Readout
+			id="apart"
+			order={1}
+			label="The texts differ by"
+			value="{charDiff} character{charDiff === 1 ? '' : 's'}"
 			color="var(--cr-key)"
-		/>
+		>
+			<Txt
+				x={480}
+				y={120}
+				text="{charDiff} character{charDiff === 1 ? '' : 's'} apart"
+				size={13}
+				weight={700}
+				anchor="middle"
+				color="var(--cr-key)"
+			/>
+		</Readout>
 		{#each hexLines(toHex(d1)) as line, i (i)}
 			<Txt x={40} y={146 + i * 24} text={line} size={17} mono />
 		{/each}
 		{#each hexLines(toHex(d2)) as line, i (i)}
 			<Txt x={920} y={146 + i * 24} text={line} size={17} mono anchor="end" />
 		{/each}
-		<Txt x={40} y={252} text="SHA-256 of text 1" size={11} muted />
-		<Txt x={920} y={252} text="SHA-256 of text 2" size={11} muted anchor="end" />
+		<Readout id="sha-captions">
+			<Txt x={40} y={252} text="SHA-256 of text 1" size={11} muted />
+			<Txt x={920} y={252} text="SHA-256 of text 2" size={11} muted anchor="end" />
+		</Readout>
 
 		{@render bitGrid(
 			AGRID.x,
@@ -274,50 +313,85 @@
 			'var(--cr-flip)',
 			() => 1
 		)}
-		<Txt
-			x={AGRID.x + 8 * AGRID.cell}
-			y={AGRID.y + 16 * AGRID.cell + 22}
-			text="the 256 bit positions: coloured where the digests differ"
-			size={12}
-			anchor="middle"
-			muted
-		/>
+		<Readout id="grid-caption">
+			<Txt
+				x={AGRID.x + 8 * AGRID.cell}
+				y={AGRID.y + 16 * AGRID.cell + 22}
+				text="the 256 bit positions: coloured where the digests differ"
+				size={12}
+				anchor="middle"
+				muted
+			/>
+		</Readout>
 
-		<Txt x={680} y={300} text="Bits that differ" size={14} weight={700} />
-		<Txt x={680} y={342} text="{flips} of 256" size={32} weight={700} color="var(--cr-flip)" />
-		<Txt x={680} y={366} text="({Math.round((flips / 256) * 100)}%)" size={14} muted />
+		<Readout
+			id="flips"
+			order={2}
+			label="Bits that differ"
+			value="{flips} of 256 ({Math.round((flips / 256) * 100)}%)"
+			note="two unrelated random strings also differ in about half their bits"
+			color="var(--cr-flip)"
+		>
+			<Txt x={680} y={300} text="Bits that differ" size={14} weight={700} />
+			<Txt x={680} y={342} text="{flips} of 256" size={32} weight={700} color="var(--cr-flip)" />
+			<Txt x={680} y={366} text="({Math.round((flips / 256) * 100)}%)" size={14} muted />
+			{#snippet narrow()}
+				<Txt x={680} y={350} text="{flips} of 256" size={44} weight={700} color="var(--cr-flip)" />
+			{/snippet}
+		</Readout>
 		<!-- a bar from 0 to 256 with the half mark -->
 		<rect x="680" y="386" width="240" height="14" rx="4" fill="var(--cr-cell)" />
 		<rect x="680" y="386" width={(240 * flips) / 256} height="14" rx="4" fill="var(--cr-flip)" />
 		<line x1="800" x2="800" y1="380" y2="406" stroke="var(--stage-ink)" stroke-width="2" />
-		<Txt x={800} y={424} text="half" size={11} anchor="middle" muted />
-		<Txt x={680} y={460} text="Two unrelated random strings" size={12} muted />
-		<Txt x={680} y={478} text="also differ in about half their bits." size={12} muted />
+		<Readout id="half">
+			<Txt x={800} y={424} text="half" size={11} anchor="middle" muted />
+			<Txt x={680} y={460} text="Two unrelated random strings" size={12} muted />
+			<Txt x={680} y={478} text="also differ in about half their bits." size={12} muted />
+		</Readout>
 
-		<Txt x={40} y={300} text="One letter in," size={14} weight={700} />
-		<Txt x={40} y={322} text="about half the" size={14} weight={700} />
-		<Txt x={40} y={344} text="bits out" size={14} weight={700} />
-		<Txt x={40} y={380} text="Edit either box:" size={12} muted />
-		<Txt x={40} y={398} text="if the texts differ," size={12} muted />
-		<Txt x={40} y={416} text="the count stays" size={12} muted />
-		<Txt x={40} y={434} text="near 128." size={12} muted />
-	{:else}
-		<Txt x={40} y={38} text="Your text" size={13} weight={700} />
-		{@render field(40, 48, 880, msg, 'msg', 'Text whose digest Eve tries to match')}
-		<Txt x={40} y={130} text="Its digest:" size={13} weight={700} />
-		<text x="128" y="131" class="halo" style:font-size="15px" style:font-family="var(--font-mono)"
-			><tspan style:fill="var(--cr-key)" style:font-weight="700">{hex.slice(0, k)}</tspan><tspan
-				>{hex.slice(k)}</tspan
-			></text
+		<Readout
+			id="avalanche"
+			order={0}
+			label="One letter in"
+			value="about half the bits out"
+			note="Edit either box: if the texts differ, the count stays near 128."
 		>
+			<Txt x={40} y={300} text="One letter in," size={14} weight={700} />
+			<Txt x={40} y={322} text="about half the" size={14} weight={700} />
+			<Txt x={40} y={344} text="bits out" size={14} weight={700} />
+			<Txt x={40} y={380} text="Edit either box:" size={12} muted />
+			<Txt x={40} y={398} text="if the texts differ," size={12} muted />
+			<Txt x={40} y={416} text="the count stays" size={12} muted />
+			<Txt x={40} y={434} text="near 128." size={12} muted />
+		</Readout>
+	{:else}
+		<Readout id="your-text">
+			<Txt x={40} y={38} text="Your text" size={13} weight={700} />
+		</Readout>
+		{@render field(40, 48, 880, msg, 'msg', 'Text whose digest Eve tries to match')}
+		<Readout
+			id="target"
+			order={1}
+			label="Its digest starts"
+			value={hex.slice(0, k)}
+			note="Eve hashes texts until one starts with the same {k} hex digit{k === 1 ? '' : 's'}"
+			color="var(--cr-key)"
+		>
+			<Txt x={40} y={130} text="Its digest:" size={13} weight={700} />
+			<text x="128" y="131" class="halo" style:font-size="15px" style:font-family="var(--font-mono)"
+				><tspan style:fill="var(--cr-key)" style:font-weight="700">{hex.slice(0, k)}</tspan><tspan
+					>{hex.slice(k)}</tspan
+				></text
+			>
 
-		<Txt
-			x={40}
-			y={176}
-			text="Eve hashes texts until one starts with the same {k} hex digit{k === 1 ? '' : 's'}"
-			size={14}
-			weight={700}
-		/>
+			<Txt
+				x={40}
+				y={176}
+				text="Eve hashes texts until one starts with the same {k} hex digit{k === 1 ? '' : 's'}"
+				size={14}
+				weight={700}
+			/>
+		</Readout>
 		{#each recent as r, j (r.i)}
 			{@const y = 212 + j * 32}
 			{@const top = j === 0}
@@ -348,96 +422,117 @@
 			</g>
 		{/each}
 
-		<rect
-			x="560"
-			y="160"
-			width="360"
-			height="400"
-			rx="12"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
-		<Txt x={580} y={194} text="Texts tried" size={14} weight={700} halo={false} />
-		<Txt
-			x={580}
-			y={232}
-			text={fmt(done)}
-			size={32}
-			weight={700}
-			color={hit ? 'var(--cr-key)' : 'var(--cr-eve)'}
-			halo={false}
-		/>
-		<Txt
-			x={580}
-			y={256}
-			text={!found
+		<Readout
+			id="tried"
+			order={2}
+			label="Texts tried"
+			value={fmt(done)}
+			note={!found
 				? `not found within ${fmt(SEARCH_LIMIT)} tries`
 				: hit
 					? `found one; about ${fmt(16 ** k)} expected, luck varies`
 					: 'searching…'}
-			size={13}
-			muted
-			halo={false}
-		/>
-		<Txt
-			x={580}
-			y={294}
-			text="Digits matched → tries needed (on average)"
-			size={12}
-			weight={700}
-			halo={false}
-		/>
-		{#each [1, 2, 3, 4] as d (d)}
-			{@const y = 322 + (d - 1) * 26}
-			{#if d === k}
-				<rect
-					x="572"
-					y={y - 18}
-					width="336"
-					height="25"
-					rx="5"
-					fill="var(--cr-key)"
-					fill-opacity="0.15"
-				/>
-			{/if}
-			<Txt x={590} {y} text="{d} digit{d === 1 ? '' : 's'}" size={14} halo={false} />
+			color={hit ? 'var(--cr-key)' : 'var(--cr-eve)'}
+		>
+			<rect
+				x="560"
+				y="160"
+				width="360"
+				height="400"
+				rx="12"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			<Txt x={580} y={194} text="Texts tried" size={14} weight={700} halo={false} />
 			<Txt
-				x={900}
-				{y}
-				text={d === 1 ? '16' : `16${['', '', '²', '³', '⁴'][d]} = ${fmt(16 ** d)}`}
-				size={14}
-				anchor="end"
+				x={580}
+				y={232}
+				text={fmt(done)}
+				size={32}
+				weight={700}
+				color={hit ? 'var(--cr-key)' : 'var(--cr-eve)'}
 				halo={false}
 			/>
-		{/each}
-		<Txt x={590} y={430} text="⋮" size={14} muted halo={false} />
-		<Txt x={590} y={460} text="all 64 digits" size={14} weight={700} halo={false} />
-		<Txt
-			x={900}
-			y={460}
-			text="2²⁵⁶ ≈ 10⁷⁷"
-			size={14}
-			weight={700}
-			anchor="end"
-			color="var(--cr-bad)"
-			halo={false}
-		/>
-		<Txt
-			x={580}
-			y={500}
-			text="Each digit matches by luck 1 time in 16."
-			size={12}
-			muted
-			halo={false}
-		/>
-		<Txt
-			x={580}
-			y={520}
-			text="Matching all 64 would outlast the universe."
-			size={12}
-			muted
-			halo={false}
-		/>
+			<Txt
+				x={580}
+				y={256}
+				text={!found
+					? `not found within ${fmt(SEARCH_LIMIT)} tries`
+					: hit
+						? `found one; about ${fmt(16 ** k)} expected, luck varies`
+						: 'searching…'}
+				size={13}
+				muted
+				halo={false}
+			/>
+		</Readout>
+		<Readout
+			id="needed"
+			order={3}
+			label="Tries needed for {k} digit{k === 1 ? '' : 's'}"
+			value={k === 1 ? '16' : `16${['', '', '²', '³', '⁴'][k]} = ${fmt(16 ** k)}`}
+			note="all 64 digits: 2²⁵⁶ ≈ 10⁷⁷, longer than the universe will last"
+		>
+			<Txt
+				x={580}
+				y={294}
+				text="Digits matched → tries needed (on average)"
+				size={12}
+				weight={700}
+				halo={false}
+			/>
+			{#each [1, 2, 3, 4] as d (d)}
+				{@const y = 322 + (d - 1) * 26}
+				{#if d === k}
+					<rect
+						x="572"
+						y={y - 18}
+						width="336"
+						height="25"
+						rx="5"
+						fill="var(--cr-key)"
+						fill-opacity="0.15"
+					/>
+				{/if}
+				<Txt x={590} {y} text="{d} digit{d === 1 ? '' : 's'}" size={14} halo={false} />
+				<Txt
+					x={900}
+					{y}
+					text={d === 1 ? '16' : `16${['', '', '²', '³', '⁴'][d]} = ${fmt(16 ** d)}`}
+					size={14}
+					anchor="end"
+					halo={false}
+				/>
+			{/each}
+			<Txt x={590} y={430} text="⋮" size={14} muted halo={false} />
+			<Txt x={590} y={460} text="all 64 digits" size={14} weight={700} halo={false} />
+			<Txt
+				x={900}
+				y={460}
+				text="2²⁵⁶ ≈ 10⁷⁷"
+				size={14}
+				weight={700}
+				anchor="end"
+				color="var(--cr-bad)"
+				halo={false}
+			/>
+			<Txt
+				x={580}
+				y={500}
+				text="Each digit matches by luck 1 time in 16."
+				size={12}
+				muted
+				halo={false}
+			/>
+			<Txt
+				x={580}
+				y={520}
+				text="Matching all 64 would outlast the universe."
+				size={12}
+				muted
+				halo={false}
+			/>
+		</Readout>
 	{/if}
 </g>
 
@@ -454,6 +549,13 @@
 		font: 500 20px var(--font-mono);
 		user-select: text;
 		-webkit-user-select: text;
+	}
+	/* on phones the stage is drawn at ~0.4 scale: larger type keeps the field legible */
+	@media (max-width: 640px) {
+		.cr-text {
+			padding: 0 8px;
+			font-size: 34px;
+		}
 	}
 	.cr-text:focus {
 		outline: none;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	/** A simple figure (head and shoulders) with a name under it. */
+	import { Readout } from '#lib/explainer/index.ts';
 	import Txt from './Txt.svelte';
 
 	interface Props {
@@ -21,8 +22,16 @@
 		fill-opacity="0.85"
 	/>
 	<circle cx={x} cy={y - 18} r="15" fill={color} />
-	<Txt {x} y={y + 42} text={name} size={15} weight={700} anchor="middle" {color} />
+	<!-- on phones the name is drawn larger and the role line is hidden -->
+	<Readout id="person-{name}">
+		<Txt {x} y={y + 42} text={name} size={15} weight={700} anchor="middle" {color} />
+		{#snippet narrow()}
+			<Txt {x} y={y + 49} text={name} size={28} weight={700} anchor="middle" {color} />
+		{/snippet}
+	</Readout>
 	{#if role}
-		<Txt {x} y={y + 59} text={role} size={11} anchor="middle" muted />
+		<Readout id="person-role-{name}">
+			<Txt {x} y={y + 59} text={role} size={11} anchor="middle" muted />
+		</Readout>
 	{/if}
 </g>
