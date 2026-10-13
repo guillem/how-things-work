@@ -1212,6 +1212,58 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Intel Core i9-14900K \(2023\)\s*up to 6 GHz/);
 		await expect(drawing(page)).not.toContainText('instructions finished');
 	});
+
+	test('atoms build: the element and its charge are text and follow the buttons', async ({
+		page
+	}) => {
+		await page.goto('./atoms-periodic-table/#build');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Element\s*Carbon\s*carbon-12/);
+		await expect(panel).toContainText(/Charge\s*0/);
+		await expect(drawing(page)).not.toContainText('neutral atom');
+		await page.locator('.action button[data-control=addProton]').click();
+		await expect(panel).toContainText(/Element\s*Nitrogen/);
+		await expect(panel).toContainText(/Charge\s*\+1/);
+	});
+
+	test('atoms shells: the configuration is text and follows the electrons', async ({ page }) => {
+		await page.goto('./atoms-periodic-table/#shells');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Sodium \(Na\)\s*11 electrons/);
+		await expect(panel).toContainText(/Electrons per shell\s*2 · 8 · 1/);
+		await expect(drawing(page)).not.toContainText('Electrons per shell');
+		await range(page, 'fillTo').fill('24');
+		await expect(panel).toContainText(/Not the rule\s*measured/);
+	});
+
+	test('atoms orbitals: the orbital and its scale are text and follow the choice', async ({
+		page
+	}) => {
+		await page.goto('./atoms-periodic-table/#orbitals');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Orbital\s*1s orbital/);
+		await expect(panel).toContainText(/Scale bar\s*\d+ a₀/);
+		await expect(drawing(page)).not.toContainText('Bohr radius');
+		await page.locator('button[data-control=orbital][data-value="2p"]').click();
+		await expect(panel).toContainText(/Orbital\s*2p orbital/);
+		await expect(panel).toContainText('ψ negative');
+	});
+
+	test('atoms table: the chosen element and the trend scale are text', async ({ page }) => {
+		await page.goto('./atoms-periodic-table/#table');
+		const panel = readouts(page);
+		await expect(panel).toContainText('d block · 10 columns');
+		await expect(drawing(page)).not.toContainText('10 columns');
+		await page.getByRole('slider', { name: /Periodic table/ }).focus();
+		await page.keyboard.press('End');
+		await expect(panel).toContainText(/Oganesson\s*Og · Z = 118/);
+		await page.goto('./atoms-periodic-table/#trends');
+		await expect(panel).toContainText(/Atomic radius \(covalent, pm\)\s*\d+ to \d+ pm/);
+		await page.locator('button[data-control=colourBy][data-value=ionization]').click();
+		await expect(panel).toContainText(/First ionization energy \(eV\)\s*[\d.]+ to [\d.]+ eV/);
+		await page.goto('./atoms-periodic-table/#chemistry');
+		await expect(panel).toContainText(/Group 17 · halogens\s*7 outer electrons/);
+	});
 });
 
 test.describe('on a wide screen', () => {
