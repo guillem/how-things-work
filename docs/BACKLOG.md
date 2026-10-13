@@ -54,21 +54,38 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 - **atmosphere-weather** — ticked: the user accepted that fronts form from the placed lows and
   that the reader sets heat transport and spin rather than the heating pattern (2026-10-08).
 
-- **bridges-structures** — in the arch the posts carry little axial force (the continuous deck
-  spans between banks): check against a deck-arch reference.
+- **bridges-structures** — since the posts became pin-ended (v0.1.11) the deck does most of the
+  bending: with the truck at 12 m the rib's moment fell from ~204 to ~36 kNm and the deck's rose
+  from ~228 to ~913 kNm, while the arch step says the truck "bends the rib noticeably". Decide
+  whether the model (deck vs rib stiffness) or the text changes; check against a deck-arch
+  reference.
 
 - **chemical-bonds** (batch 7) — the builder makes single-centre molecules only, with lone pairs
-  drawn only on the centre atom (the text says so); the slow auto-turn makes clicking an atom
-  fiddly (it pauses on hover).
+  drawn only on the centre atom (the text says so); the slow auto-turn pauses while the pointer
+  is over the molecule or an atom. In NH₃'s still frame the angle arc joins two H atoms that
+  nearly overlap on screen, so it is small and faint.
 
 - **states-of-matter** (batch 9) — the box is chaotic, so its frames differ between machines
   (V8 version, CPU). Water's density anomaly holds on average over starts (~6–7% more room for
   ice) but not in every single run: seed 2 locally shows ice slightly denser. The page uses seed 1
   (3.5–12% more room depending on the machine). Water's freezing is a scripted lattice shortcut.
 
-- **photosynthesis `#water` with no light.** The lumen reads "pH ≈ 8.0", the same as the stroma,
-  while "about 1000× more acidic than the stroma in bright light" stays on screen. Probably
-  intended ("in bright light").
+- **photosynthesis** — at light 0 on `#water` two captions say the same thing on one line (the
+  lumen caption and "no light: electron flow stops…"); they may touch at 13 px. On `#summary`
+  both light captions stay in the accessibility tree at every light level (only their opacity
+  changes).
+
+- **central-limit-theorem** — on small Galton boards (2–10 rows) a falling ball lands at the bin's
+  centre, then snaps sideways to its slot in the level; balls on that level re-centre as it fills.
+
+- **atmosphere-weather** — the cold/warm/stationary front classification lives in `MapScene`
+  and has no test; moving it into `atmosphere.ts` would allow a model test.
+
+- **waves-interference** — if a step change unmounts a `Handle` mid-drag its end callback never
+  fires (Doppler keeps `dragX`; the tank keeps its pre-warm off for that mount).
+
+- **e2e** — `scenes.e2e.ts` gives orbits-kepler `#two` 15 s for its first render (9068ee7); the
+  step's model takes ~12 ms, so the cause of the slow load under the parallel run is unknown.
 
 (The gap round of 2026-10-12/13 cleared the rest of this list: chaos-fractals `period(r)`,
 orbits-kepler labels and the `#two` flake, ecosystems' static web opening and y-axes,
@@ -79,6 +96,15 @@ fourier-transform, bridges-structures' reactions and `addMember`, atmosphere-wea
 fronts and Coriolis panels, learning-from-data's parser, the sun-earth-moon tilt mismatch, the
 photosynthesis `#summary` captions (fading by design, now tested), and the weak entropy/sorting
 tests.)
+
+(A review of that round on 2026-10-13 fixed what it got wrong: the chemical-bonds angle arc,
+which never drew, and its hover pause, which released over atoms; the fourier-transform
+`#spectrum` readout drawn over the title and the draw-wave scale that moved with the slider; the
+pendulum label, still crossed at 56–90°; the Doppler source that jumped to mid-stage on release
+and stopped on a tap; tank sources pushed out by the spacing slider; the tank pre-warm's cost;
+radioactivity's raw half-life and lost quarter mark; ecosystems' fractional ticks and half-empty
+chart; the linear-transformations drag offset; `period(r)` near the splits; the orbits-kepler
+label search; right-clicks leaving handles held; and a logic-gates test that guarded nothing.)
 
 ## Site and framework work
 

@@ -506,13 +506,13 @@
 
 			<div class="badges">
 				<span class="badge"
-					><span class="dot green"></span>v0.1.10 deployed &amp; smoke-tested</span
+					><span class="dot green"></span>v0.1.11 deployed &amp; smoke-tested</span
 				>
 				<span class="badge"
-					><span class="dot green"></span>make check <span class="mono">428</span> model tests</span
+					><span class="dot green"></span>make check <span class="mono">432</span> model tests</span
 				>
 				<span class="badge"
-					><span class="dot green"></span>browser suite <span class="mono">766</span> tests</span
+					><span class="dot green"></span>browser suite <span class="mono">779</span> tests</span
 				>
 				<span class="badge"
 					><span class="dot amber"></span>next up: batch 10 — 26 topics ready</span
@@ -543,7 +543,7 @@
 						<div class="l">waiting on prerequisites</div>
 					</div>
 					<div class="stat">
-						<div class="n">1,194</div>
+						<div class="n">1,211</div>
 						<div class="l">automated tests, green</div>
 					</div>
 					<div class="stat">
@@ -733,46 +733,40 @@
 				<h2 class="amber">Now · next · decisions wanted</h2>
 				<div class="cols3">
 					<div class="col now">
-						<h3>Now — bug round, shipped in v0.1.11</h3>
+						<h3>Now — review round, awaiting validation</h3>
 						<div class="task">
 							<span class="mark">✓</span>
 							<div>
-								Arch bridge: posts carry the road
+								Reviewed the gap and bug rounds (made with Kimi and ZCode)
+								<span class="small">three live bugs, a dozen smaller problems</span>
+							</div>
+						</div>
+						<div class="task">
+							<span class="mark">✓</span>
+							<div>
+								chemical-bonds: the angle arc draws again; hovering an atom holds the turn
 								<span class="small"
-									>pin-ended spandrel posts; 24 kN push each, 103 kN under the truck —
-									model-tested</span
+									>v0.1.10's arc fade hid it always; v0.1.11's hover change un-paused it</span
 								>
 							</div>
 						</div>
 						<div class="task">
 							<span class="mark">✓</span>
 							<div>
-								chemical-bonds: pause-on-hover held only between atoms
-								<span class="small"
-									>crossing one atom un-paused the turn mid-aim — verified frozen while
-									hovering</span
-								>
+								fourier-transform #spectrum readout no longer over the title; steady draw-wave scale
 							</div>
 						</div>
 						<div class="task">
 							<span class="mark">✓</span>
 							<div>
-								photosynthesis #water: caption follows the light level
-								<span class="small"
-									>no light now says the gradient runs down, not “more acidic … in bright
-									light”</span
-								>
-							</div>
-						</div>
-						<div class="task">
-							<span class="mark">✓</span>
-							<div>
-								Released as v0.1.11 — full suite green locally (766), live smoke test passed
+								Smaller fixes: pendulum label, Doppler release and tap, tank sources, radioactivity
+								header, ecosystems ticks, vector-handle drag, period(r), right-clicks on handles
+								<span class="small">each with a test that failed first</span>
 							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">→</span>
-							<div>Nothing in flight — batch 10 is next (see the middle column)</div>
+							<div>Validate locally, then push and release v0.1.12</div>
 						</div>
 					</div>
 					<div class="col next">
@@ -882,10 +876,16 @@
 						<div class="task todo">
 							<span class="mark">○</span>
 							<div>
-								states-of-matter: frames differ between machines
-								<span class="small"
-									>chaotic box — documented on the page, not fixable, closed as by-design</span
-								>
+								bridges arch: the deck now does the bending the text gives the rib
+								<span class="small">decide: change the model or the text</span>
+							</div>
+						</div>
+						<div class="task todo">
+							<span class="mark">○</span>
+							<div>
+								small: CLT ball snap · photosynthesis duplicate caption · fronts untested · #two
+								slow-load cause
+								<span class="small">details in BACKLOG.md</span>
 							</div>
 						</div>
 						<div class="task todo">
@@ -1019,6 +1019,10 @@
 				<h2>Releases</h2>
 				<div class="releases">
 					<div class="rel latest">
+						<span class="tag">v0.1.11</span><span class="date">2026-10-13</span
+						><span>the bug round — arch posts · chemical-bonds hover · photosynthesis #water</span>
+					</div>
+					<div class="rel">
 						<span class="tag">v0.1.10</span><span class="date">2026-10-13</span
 						><span>the gap round — 20 fixes across 13 built topics</span>
 					</div>
@@ -1071,7 +1075,7 @@
 				</div>
 				<div>
 					Numbers come from the repo’s own books: the TOPICS.md checklist, STATUS.md, BACKLOG.md and
-					the git tags. Last updated 2026-10-13 after the bug round, before v0.1.11.
+					the git tags. Last updated 2026-10-13 after the review round, before v0.1.12.
 				</div>
 			</footer>
 		</div>

@@ -14,7 +14,7 @@ markdown files remain the detailed books.
   Stop hook runs it before every turn ends and hands failures back, and the git pre-push hook runs
   it before every push. Both skip it when nothing changed since the last pass.
 - `make e2e`: smoke tests of the critical paths (~8 s). `make e2e-full`: every browser test
-  (~45 s). Run `make e2e-full` before a release, and whenever a change touches the shared
+  (~1.5 min). Run `make e2e-full` before a release, and whenever a change touches the shared
   framework (`src/lib`) or a scene's behaviour.
 - **Release:** `make release` tags `main` (next patch version, or `V=v1.2.3`) and pushes it. The
   tag runs `.github/workflows/release.yml`: checks and all tests on a clean machine, build, deploy,
