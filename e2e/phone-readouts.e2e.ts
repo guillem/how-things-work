@@ -538,6 +538,27 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Drift speed\s*0 mm\/s/);
 		await expect(panel).toContainText(/No current \(0 A\)\s*nothing moves/);
 	});
+
+	test('logic gates: the gate and the table row are text and follow the gate picked', async ({
+		page
+	}) => {
+		await page.goto('./logic-gates/#gates');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/The gate\s*Out = A AND B\s*on only if both inputs are on/);
+		await expect(panel).toContainText(/This row of the table\s*A = [01], B = [01] → Out = [01]/);
+		await expect(drawing(page)).not.toContainText('Out = A AND B');
+		await page.locator('button[data-control=gateKind][data-value=OR]').click();
+		await expect(panel).toContainText(/The gate\s*Out = A OR B/);
+	});
+
+	test('logic gates 4-bit adder: the sum is text and follows A', async ({ page }) => {
+		await page.goto('./logic-gates/#four');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Sum\s*11 \+ 6 = 17\s*1011 \+ 0110 = 10001 in binary/);
+		await expect(drawing(page)).not.toContainText('in binary');
+		await range(page, 'a4').fill('3');
+		await expect(panel).toContainText(/Sum\s*3 \+ 6 = 9/);
+	});
 });
 
 test.describe('on a wide screen', () => {

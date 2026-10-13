@@ -19,7 +19,7 @@
 	 * presentation attributes.
 	 */
 	import { clamp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { pairsRight, ripple4 } from '../logic';
 
 	let { t, params, setParam, reduced, playing }: StageProps = $props();
@@ -64,6 +64,15 @@
 	const done = (i: number) => tr >= (i + 1) * STAGE_S;
 	const allDone = $derived(done(3));
 	const active = $derived(allDone ? -1 : clamp(Math.floor(tr / STAGE_S), 0, 3));
+	const rippleText = $derived(
+		allDone
+			? r.carryOut
+				? 'Too big for 4 bits: the last carry becomes a fifth bit, worth 16. A 4-bit register would drop it: an overflow.'
+				: building && right < 256
+					? 'An adder with no carry wire into it reads its carry in as 0.'
+					: 'Each column had to wait for the carry from the column on its right.'
+			: `The carry ripples right to left: bit ${active + 1} of 4 (counting from the right) is adding.`
+	);
 
 	// ---- layout -------------------------------------------------------------------------
 	/** Column centre of bit i (bit 0 on the right); column 4 is the carry out. */
@@ -147,12 +156,29 @@
 		/>
 		{@render txt(colX(i), 80, String(2 ** i), 12, { anchor: 'middle', muted: true, weight: 600 })}
 	{/each}
-	{@render txt(24, 80, 'place value', 12, { muted: true })}
+	<Readout id="rip-place">
+		{@render txt(24, 80, 'place value', 12, { muted: true })}
+	</Readout>
 
 	<!-- the numbers -->
-	{@render txt(24, ROW_A + 6, `A = ${a}`, 16, { weight: 700 })}
-	{@render txt(24, ROW_B + 6, `B = ${b}`, 16, { weight: 700 })}
-	{@render txt(24, ROW_S + 6, allDone ? `Sum = ${r.value}` : 'Sum = …', 16, { weight: 700 })}
+	<Readout id="rip-name-a">
+		{@render txt(24, ROW_A + 6, `A = ${a}`, 16, { weight: 700 })}
+		{#snippet narrow()}
+			{@render txt(24, ROW_A + 11, 'A', 30, { weight: 700 })}
+		{/snippet}
+	</Readout>
+	<Readout id="rip-name-b">
+		{@render txt(24, ROW_B + 6, `B = ${b}`, 16, { weight: 700 })}
+		{#snippet narrow()}
+			{@render txt(24, ROW_B + 11, 'B', 30, { weight: 700 })}
+		{/snippet}
+	</Readout>
+	<Readout id="rip-name-s">
+		{@render txt(24, ROW_S + 6, allDone ? `Sum = ${r.value}` : 'Sum = …', 16, { weight: 700 })}
+		{#snippet narrow()}
+			{@render txt(24, ROW_S + 11, 'Sum', 30, { weight: 700 })}
+		{/snippet}
+	</Readout>
 	{#each COLS as i (i)}
 		{@render square(colX(i), ROW_A, bit(a, i))}
 		{@render square(colX(i), ROW_B, bit(b, i))}
@@ -213,16 +239,22 @@
 		{/if}
 		{#if i === 0}
 			{@render txt(x1 - len / 2, MID - 10, '0', 13, { anchor: 'middle', weight: 700 })}
-			{@render txt(x1 - len / 2, MID + 22, 'carry in', 11, { anchor: 'middle', muted: true })}
+			<Readout id="rip-carry-0-{i}">
+				{@render txt(x1 - len / 2, MID + 22, 'carry in', 11, { anchor: 'middle', muted: true })}
+			</Readout>
 		{:else if i < 4 && !linked}
-			{@render txt(x1 - len / 2, MID + 22, 'no wire', 11, { anchor: 'middle', muted: true })}
+			<Readout id="rip-carry-1-{i}">
+				{@render txt(x1 - len / 2, MID + 22, 'no wire', 11, { anchor: 'middle', muted: true })}
+			</Readout>
 		{:else if i < 4}
 			{@render txt(x1 - len / 2, MID - 10, u >= 1 ? (on ? '1' : '0') : '', 13, {
 				anchor: 'middle',
 				weight: 700,
 				color: on ? 'var(--lg-on)' : undefined
 			})}
-			{@render txt(x1 - len / 2, MID + 22, 'carry', 11, { anchor: 'middle', muted: true })}
+			<Readout id="rip-carry-2-{i}">
+				{@render txt(x1 - len / 2, MID + 22, 'carry', 11, { anchor: 'middle', muted: true })}
+			</Readout>
 		{/if}
 	{/each}
 	<!-- the carry wires the reader connects ("Connect them yourself") -->
@@ -270,7 +302,9 @@
 		{/each}
 	{/if}
 	{@render square(colX(4), ROW_S, allDone ? r.carryOut : null, allDone ? 1 : 0.6)}
-	{@render txt(colX(4), ROW_S + 36, 'carry out', 11, { anchor: 'middle', muted: true })}
+	<Readout id="rip-cout">
+		{@render txt(colX(4), ROW_S + 36, 'carry out', 11, { anchor: 'middle', muted: true })}
+	</Readout>
 
 	<!-- the four full adders -->
 	{#each COLS as i (i)}
@@ -288,12 +322,14 @@
 			stroke={isActive ? 'var(--lg-on)' : 'var(--lg-gate-edge)'}
 			stroke-width={isActive ? 3 : 1.5}
 		/>
-		{@render txt(x, BOX_Y + 26, 'full adder', 13, {
-			anchor: 'middle',
-			weight: 700,
-			color: 'var(--lg-gate-edge)',
-			halo: false
-		})}
+		<Readout id="rip-fa-{i}">
+			{@render txt(x, BOX_Y + 26, 'full adder', 13, {
+				anchor: 'middle',
+				weight: 700,
+				color: 'var(--lg-gate-edge)',
+				halo: false
+			})}
+		</Readout>
 		{#if done(i)}
 			{@render txt(
 				x,
@@ -302,61 +338,72 @@
 				14,
 				{ anchor: 'middle', weight: 600, halo: false }
 			)}
-			{@render txt(x, BOX_Y + 78, `sum ${total & 1}, carry ${total >> 1}`, 11, {
-				anchor: 'middle',
-				muted: true,
-				halo: false
-			})}
+			<Readout id="rip-sc-{i}">
+				{@render txt(x, BOX_Y + 78, `sum ${total & 1}, carry ${total >> 1}`, 11, {
+					anchor: 'middle',
+					muted: true,
+					halo: false
+				})}
+			</Readout>
 		{:else}
-			{@render txt(x, BOX_Y + 60, isActive ? 'adding…' : 'waiting for carry', 12, {
-				anchor: 'middle',
-				muted: true,
-				halo: false,
-				opacity: isActive ? 0.6 + 0.4 * Math.sin(prog(i) * Math.PI) : 1
-			})}
+			<Readout id="rip-wait-{i}">
+				{@render txt(x, BOX_Y + 60, isActive ? 'adding…' : 'waiting for carry', 12, {
+					anchor: 'middle',
+					muted: true,
+					halo: false,
+					opacity: isActive ? 0.6 + 0.4 * Math.sin(prog(i) * Math.PI) : 1
+				})}
+			</Readout>
 		{/if}
 	{/each}
 
 	<!-- result -->
-	{@render txt(480, 452, allDone ? `${a} + ${b} = ${r.value}` : `${a} + ${b} = …`, 26, {
-		anchor: 'middle',
-		weight: 700
-	})}
-	{@render txt(
-		480,
-		482,
-		`${bin(a, 4)} + ${bin(b, 4)} = ${allDone ? bin(r.value, 5) : '·····'} in binary`,
-		15,
-		{ anchor: 'middle', muted: true }
-	)}
-	{@render txt(
-		480,
-		530,
-		allDone
-			? r.carryOut
-				? 'Too big for 4 bits: the last carry becomes a fifth bit, worth 16. A 4-bit register would drop it: an overflow.'
-				: building && right < 256
-					? 'An adder with no carry wire into it reads its carry in as 0.'
-					: 'Each column had to wait for the carry from the column on its right.'
-			: `The carry ripples right to left: bit ${active + 1} of 4 (counting from the right) is adding.`,
-		13,
-		{ anchor: 'middle' }
-	)}
-	{#if building}
+	<Readout
+		id="rip-sum"
+		order={1}
+		label="Sum"
+		value={allDone ? `${a} + ${b} = ${r.value}` : `${a} + ${b} = …`}
+		note="{bin(a, 4)} + {bin(b, 4)} = {allDone ? bin(r.value, 5) : '·····'} in binary"
+	/>
+	<Readout id="rip-now" order={2} label="Now" value={rippleText} />
+	<Readout id="rip-result">
+		{@render txt(480, 452, allDone ? `${a} + ${b} = ${r.value}` : `${a} + ${b} = …`, 26, {
+			anchor: 'middle',
+			weight: 700
+		})}
 		{@render txt(
 			480,
-			562,
-			right === 256
-				? '✓ Right: it adds all 256 pairs of 4-bit numbers'
-				: `Right for ${right} of the 256 pairs of 4-bit numbers · click a gap to wire a carry`,
-			13,
-			{
-				anchor: 'middle',
-				weight: 700,
-				color: right === 256 ? 'var(--lg-ok)' : undefined,
-				muted: right !== 256
-			}
+			482,
+			`${bin(a, 4)} + ${bin(b, 4)} = ${allDone ? bin(r.value, 5) : '·····'} in binary`,
+			15,
+			{ anchor: 'middle', muted: true }
 		)}
+		{@render txt(480, 530, rippleText, 13, { anchor: 'middle' })}
+	</Readout>
+	{#if building}
+		<Readout
+			id="rip-wiring"
+			order={3}
+			label="Your wiring"
+			value={right === 256 ? '✓ adds all 256 pairs' : `right for ${right} of 256 pairs`}
+			note={right === 256 ? undefined : 'tap a gap to wire a carry'}
+			color={right === 256 ? 'var(--lg-ok)' : undefined}
+		>
+			{@render txt(
+				480,
+				562,
+				right === 256
+					? '✓ Right: it adds all 256 pairs of 4-bit numbers'
+					: `Right for ${right} of the 256 pairs of 4-bit numbers · click a gap to wire a carry`,
+				13,
+				{
+					anchor: 'middle',
+					weight: 700,
+					color: right === 256 ? 'var(--lg-ok)' : undefined,
+					muted: right !== 256
+				}
+			)}
+		</Readout>
 	{/if}
 </g>
 
