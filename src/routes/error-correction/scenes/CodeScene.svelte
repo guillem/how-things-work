@@ -491,29 +491,29 @@
 
 	<!-- legend -->
 	<g transform="translate(24 548)">
-		<circle cx="8" cy="0" r="7" fill="var(--ec-data)" />
 		<Readout id="key-data" order={20} label="data bit" color="var(--ec-data)">
+			<circle cx="8" cy="0" r="7" fill="var(--ec-data)" />
 			{@render txt(22, 4, 'data bit', 12)}
 		</Readout>
-		<circle cx="100" cy="0" r="7" fill="var(--ec-check)" />
 		<Readout
 			id="key-check"
 			order={21}
 			label={isParity ? 'parity bit' : 'check bit'}
 			color="var(--ec-check)"
 		>
+			<circle cx="100" cy="0" r="7" fill="var(--ec-check)" />
 			{@render txt(114, 4, isParity ? 'parity bit' : 'check bit', 12)}
 		</Readout>
-		<circle
-			cx="208"
-			cy="0"
-			r="7"
-			fill="var(--surface)"
-			stroke="var(--ec-bad)"
-			stroke-width="2"
-			stroke-dasharray="3 2"
-		/>
 		<Readout id="key-flip" order={22} label="flipped by noise" color="var(--ec-bad)">
+			<circle
+				cx="208"
+				cy="0"
+				r="7"
+				fill="var(--surface)"
+				stroke="var(--ec-bad)"
+				stroke-width="2"
+				stroke-dasharray="3 2"
+			/>
 			{@render txt(222, 4, 'flipped by noise', 12)}
 		</Readout>
 		<Readout id="hint">
@@ -687,9 +687,7 @@
 				id="check-{k}"
 				order={1 + j}
 				label="Check {k}"
-				value={shown
-					? `${passes(k) ? 'even ✓' : 'odd ✗'}${ax > 0.01 ? (passes(k) ? ' → 0' : ' → 1') : ''}`
-					: 'checking…'}
+				value={shown ? (passes(k) ? 'even ✓' : 'odd ✗') : 'checking…'}
 				note="covers {covered(k).join(' ')}"
 				color={shown ? statusColor(passes(k)) : undefined}
 			/>
@@ -716,15 +714,15 @@
 				id="decoded"
 				order={5}
 				label="Decoded message"
-				value={dec.data.join('')}
-				note={(wrongBits === 0
+				value="{dec.data.join('')} {wrongBits === 0 ? '✓' : '✗'}"
+				note={wrongBits === 0
 					? nFlips > 0
-						? '✓ same as the message: repaired'
-						: '✓ same as the message'
-					: `✗ ${word(wrongBits)} bit${wrongBits > 1 ? 's' : ''} wrong, and the receiver can’t tell`) +
-					(wrongBits > 0 && nFlips === 2
-						? `: two flips (${flips.flatMap((f, i) => (f ? [i + 1] : [])).join(' and ')}) look like one at ${pos}`
-						: '')}
+						? 'repaired'
+						: 'same as the message'
+					: `${word(wrongBits)} bit${wrongBits > 1 ? 's' : ''} wrong` +
+						(nFlips === 2
+							? `: flips ${flips.flatMap((f, i) => (f ? [i + 1] : [])).join(', ')} look like ${pos}`
+							: '')}
 				color={statusColor(wrongBits === 0)}
 			/>
 		{:else}

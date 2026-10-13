@@ -119,8 +119,8 @@ label search; right-clicks leaving handles held; and a logic-gates test that gua
   `readouts.svelte.ts`, `ReadoutPanel.svelte`; tests in `e2e/phone-readouts.e2e.ts`; how-to in
   `docs/scene-guide.md` ("Phone readouts"). Converted: every scene of photosynthesis,
   epidemics, central-limit-theorem, bayes-theorem, unit-circle, primes-modular-arithmetic,
-  complex-numbers and error-correction (the panel adds ~70–190 px to
-  the pinned card; membrane and crowd are the tallest).
+  complex-numbers and error-correction (the panel adds ~70–195 px to
+  the pinned card; membrane, crowd and the error-correction code steps are the tallest).
   To convert the next scene: wrap each readout/caption in `<Readout id label value note>`, part names in `<Readout label marker
 at>` (badge), minor labels in a bare `<Readout>`; pass the scene's fade as `opacity`; check
   phone shots (390 × 844, `TOUCH=1`, both themes) and a desktop pixel diff against main; extend

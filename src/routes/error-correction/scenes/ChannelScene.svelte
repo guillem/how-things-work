@@ -386,45 +386,59 @@
 			<Readout id="cost-title">
 				{@render txt(LX, 486, 'Bits sent for the same message', 12, { muted: true, weight: 600 })}
 			</Readout>
-			<rect x={LX + 110} y="498" width={bw(plain.sent)} height="18" rx="4" fill="var(--ec-plain)" />
 			<Readout id="cost-plain">
+				<rect
+					x={LX + 110}
+					y="498"
+					width={bw(plain.sent)}
+					height="18"
+					rx="4"
+					fill="var(--ec-plain)"
+				/>
 				{@render txt(LX, 512, 'without code', 12)}
 				{@render txt(LX + 118 + bw(plain.sent), 512, `${plain.sent}`, 12, { weight: 700 })}
 			</Readout>
-			<rect x={LX + 110} y="526" width={bw(coded.sent)} height="18" rx="4" fill="var(--ec-coded)" />
 			<Readout id="cost-coded">
+				<rect
+					x={LX + 110}
+					y="526"
+					width={bw(coded.sent)}
+					height="18"
+					rx="4"
+					fill="var(--ec-coded)"
+				/>
 				{@render txt(LX, 540, 'with code', 12)}
 				{@render txt(LX + 118 + bw(coded.sent), 540, `${coded.sent}  (+75%)`, 12, { weight: 700 })}
 			</Readout>
 		</g>
 	{:else}
 		<g opacity={showCoded.current}>
-			<line
-				x1={LX}
-				x2={LX + 14}
-				y1="488"
-				y2="488"
-				stroke="var(--ec-fix)"
-				stroke-width="2"
-				transform="rotate(90 {LX + 7} 488)"
-			/>
 			{#if showCoded.current > 0.5}
 				<Readout id="key-fix" order={20} label="flip repaired" color="var(--ec-fix)" />
 				<Readout id="key-bad" order={21} label="flip not repairable" color="var(--ec-bad)" />
 			{/if}
 			<Readout id="key-fix-text">
+				<line
+					x1={LX}
+					x2={LX + 14}
+					y1="488"
+					y2="488"
+					stroke="var(--ec-fix)"
+					stroke-width="2"
+					transform="rotate(90 {LX + 7} 488)"
+				/>
 				{@render txt(LX + 18, 493, 'flip in a block hit once: repaired', 12)}
 			</Readout>
-			<line
-				x1={LX + 270}
-				x2={LX + 284}
-				y1="488"
-				y2="488"
-				stroke="var(--ec-bad)"
-				stroke-width="2"
-				transform="rotate(90 {LX + 277} 488)"
-			/>
 			<Readout id="key-bad-text">
+				<line
+					x1={LX + 270}
+					x2={LX + 284}
+					y1="488"
+					y2="488"
+					stroke="var(--ec-bad)"
+					stroke-width="2"
+					transform="rotate(90 {LX + 277} 488)"
+				/>
 				{@render txt(LX + 288, 493, 'flip the receiver can’t repair', 12)}
 			</Readout>
 		</g>
