@@ -1,5 +1,5 @@
 import type { Control, ExplainerSpec, Params } from '#lib/explainer/index.ts';
-import { radText, SPECIAL_ANGLES } from './trig';
+import { num, radText, SPECIAL_ANGLES } from './trig';
 
 /** The angle of the point, in degrees; the scenes' handles write to it too. */
 const angle: Control = {
@@ -12,7 +12,7 @@ const angle: Control = {
 	default: 30,
 	format: (v) => {
 		const r = radText(v);
-		return `${v}° ${r.includes('π') || v === 0 ? '=' : '≈'} ${r} rad`;
+		return `${num(v, 0)}° ${r.includes('π') || v === 0 ? '=' : '≈'} ${r} rad`;
 	},
 	help: 'Or drag the point on the circle (or focus it and use the arrow keys).'
 };
@@ -110,7 +110,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'coords' },
 			controls: [angle],
 			body: `
-<p>Here is the key idea. Drop a line from the point straight down to the <i>x</i>-axis, and another across to the <i>y</i>-axis. The point's two coordinates get names:</p>
+<p>Here is the key idea. Drop a line from the point straight to the <i>x</i>-axis, and another across to the <i>y</i>-axis. The point's two coordinates get names:</p>
 <ul>
 <li>its horizontal position is the <strong class="tag cos">cosine</strong> of the angle, <strong>cos θ</strong>;</li>
 <li>its height is the <strong class="tag sin">sine</strong> of the angle, <strong>sin θ</strong>.</li>
@@ -145,10 +145,10 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A right triangle can only hold angles below 90°, but the circle keeps going, and that is how sine and cosine are defined for any angle. The axes split the circle into four <dfn data-def="One of the four regions into which the x- and y-axes divide the plane, numbered anticlockwise from the top right.">quadrants</dfn>. In each one the coordinates have their own signs:</p>
 <ul>
-<li>top right (0°–90°): both positive;</li>
-<li>top left (90°–180°): cosine negative, sine positive;</li>
-<li>bottom left (180°–270°): both negative;</li>
-<li>bottom right (270°–360°): cosine positive, sine negative.</li>
+<li>top right (between 0° and 90°): both positive;</li>
+<li>top left (between 90° and 180°): cosine negative, sine positive;</li>
+<li>bottom left (between 180° and 270°): both negative;</li>
+<li>bottom right (between 270° and 360°): cosine positive, sine negative.</li>
 </ul>
 <p>Turn on <em>snap</em> to visit the special angles. At 30°, 45° and 60° the coordinates have exact values: ½ and √3/2 at 30° and 60° (swapped), and √2/2 for both at 45°. On the axes the values are 0 and ±1, and every other special angle is a mirror image of 30°, 45° or 60°.</p>`,
 			notes: `<p>Where do the exact values come from? At 45° the triangle has two equal sides, so cos 45° = sin 45° and, by Pythagoras, each is √(1/2) = √2/2 ≈ 0.71. At 30° and 60° the triangle is half of an equilateral triangle with sides 1, so the short side is ½ and the other is √(1 − ¼) = √3/2 ≈ 0.87.</p>`
@@ -206,7 +206,7 @@ export const spec: ExplainerSpec = {
 <p>(The angle 2π <i>f t</i> is in radians: <i>f t</i> turns, each worth 2π.)</p>
 <p>The radius sets the wave's <dfn data-def="The largest distance a wave reaches from its middle line.">amplitude</dfn>, how far it rises above its middle line; the turning speed sets its <dfn data-def="How many complete cycles happen per second, measured in hertz (Hz).">frequency</dfn>, in turns — cycles — per second, called hertz. One cycle lasts 1/<i>f</i> seconds.</p>
 <p>Anything that goes round and round, or back and forth smoothly, traces this shape over time: a weight bobbing on a spring, a swinging pendulum (for small swings), the voltage of mains electricity, the air pressure of a pure musical note. Sine waves are also the building blocks of sound, light and signals: any of them can be built by adding sine waves together.</p>`,
-			notes: `<p>Mains electricity alternates at 50 Hz in Europe and most of the world, and 60 Hz in most of the Americas and parts of Asia. The note A above middle C, used to tune orchestras, is a sound wave of 440 Hz — far too fast to draw at this speed, but the same curve.</p>`
+			notes: `<p>Mains electricity alternates at 50 Hz in Europe and most of the world, and 60 Hz in most of the Americas and parts of Asia. The note A above middle C is standardised at 440 Hz (many orchestras tune a little higher) — far too fast to draw at this speed, but the same curve.</p>`
 		}
 	]
 };
