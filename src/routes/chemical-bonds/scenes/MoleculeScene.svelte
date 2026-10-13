@@ -93,10 +93,10 @@
 	const CY = 292;
 	let yawOff = $state(0);
 	let pitch = $state(0.3);
-	// The slow turn pauses while the pointer is anywhere in the molecule's pad, so
-	// atoms hold still to be clicked — including while the pointer crosses one
-	// atom on its way to another (the pad's leave is the only release; per-atom
-	// leave would un-pause mid-aim). Event handlers may read t; effects never do.
+	// The slow turn pauses while the pointer is over the pad or an atom, so atoms hold still
+	// to be clicked. The atoms are drawn over the pad, not inside it: stepping onto one
+	// leaves the pad, so each atom holds too (leave-then-enter at the same t resumes
+	// nothing). Event handlers may read t; effects never do.
 	let pausedAt = $state<number | null>(null);
 	let shift = $state(0);
 	const hold = () => {
@@ -301,17 +301,28 @@
 		const chord = Math.hypot(pts[0].x - pts[16].x, pts[0].y - pts[16].y);
 		// How far the nearest other domain sits from the projected wedge (radians;
 		// negative when one falls inside it: the arc would cross its bond or blob).
+		// The wedge runs from ui's screen angle through mid's to uj's and can span more than
+		// half a turn on screen, so each domain's angle is counted from the wedge's start all
+		// the way round (`sense` makes the wedge's direction positive).
 		const ai = dirAngle(ui);
 		const am = wrap(dirAngle(mid) - ai);
 		let span = wrap(dirAngle(uj) - ai);
 		if (Math.sign(am) !== Math.sign(span) || Math.abs(am) > Math.abs(span))
 			span += span > 0 ? -2 * Math.PI : 2 * Math.PI;
+		const sense = span < 0 ? -1 : 1;
+		const width = Math.abs(span);
 		let room = Infinity;
 		for (const d of targets) {
 			if (d.kind === 'bond' && (d.ligand === i || d.ligand === j)) continue;
-			const rel = wrap(dirAngle(d.dir) - ai);
-			const inside = span > 0 ? Math.min(rel, span - rel) : Math.min(-rel, rel - span);
-			room = Math.min(room, inside);
+			// A domain pointing (nearly) at or away from the viewer has no meaningful screen
+			// angle, and it is drawn over or behind the centre atom, clear of the arc.
+			const s = project(d.dir);
+			if (Math.hypot(s.x - CX, s.y - CY) < 0.35) continue;
+			const rel =
+				(((sense * (dirAngle(d.dir) - ai)) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+			const clear =
+				rel < width ? -Math.min(rel, width - rel) : Math.min(rel - width, 2 * Math.PI - rel);
+			room = Math.min(room, clear);
 		}
 		return {
 			d: 'M' + pts.map((q) => `${q.x.toFixed(1)} ${q.y.toFixed(1)}`).join('L'),
@@ -632,6 +643,8 @@
 					tabindex="0"
 					aria-label="Remove this {it.sym} atom"
 					onclick={() => removeAt(li)}
+					onpointerenter={hold}
+					onpointerleave={release}
 					onkeydown={(e) => onKey(e, () => removeAt(li))}
 				>
 					{@render ball(it.x, it.y, it.r ?? 20, it.sym)}
@@ -659,7 +672,7 @@
 
 	<!-- the angle between two bonds -->
 	{#if arc && arc.opacity > 0.02 && !charges}
-		<g opacity={arc.opacity} style:pointer-events="none">
+		<g opacity={arc.opacity} style:pointer-events="none" data-testid="angle-arc">
 			<path d={arc.d} fill="none" stroke="var(--stage-ink)" stroke-width="1.5" />
 			{@render txt(arc.x, arc.y, arc.label, 13, { anchor: 'middle', weight: 700 })}
 		</g>
