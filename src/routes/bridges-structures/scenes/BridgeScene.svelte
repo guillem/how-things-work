@@ -93,10 +93,11 @@
 		GRID,
 		SPAN,
 		STARTER,
-		YIELD,
 		addMember,
 		boxSection,
 		deckMemberAt,
+		faceSign,
+		faceStresses,
 		isAnchor,
 		isDeck,
 		isRoller,
@@ -371,22 +372,8 @@
 				};
 			}
 			// A beam: stresses on its two faces (tension +).
-			const A = an.areas[i];
-			const { I, w } = boxSection(A);
-			const sa = r.axial / A;
-			const peak = r.momentAt.reduce((x, y) => (Math.abs(y.m) > Math.abs(x.m) ? y : x), {
-				u: 0.5,
-				m: 0
-			});
-			const sb = (Math.abs(peak.m) * (w / 2)) / I;
-			const sm = Math.sign(peak.m); // sagging +: the local +y face is squashed
-			const sPlus = sa - sm * sb;
-			const sMinus = sa + sm * sb;
+			const { plus: sPlus, minus: sMinus, axial: sa, peak } = faceStresses(r, an.areas[i]);
 			const big = Math.max(Math.abs(sPlus), Math.abs(sMinus), 1);
-			// A face whose stress is small next to the member's larger face is drawn as plain
-			// steel: an arch rib that is mainly pushed reads red, not red-and-blue.
-			const faceSign = (v: number) =>
-				Math.abs(v) < 0.004 * YIELD || Math.abs(v) < 0.3 * big ? 0 : Math.sign(v);
 			const hw = clamp(width * S * 1.8, 4, 12);
 			const L2 = Math.hypot(q.x - p.x, q.y - p.y);
 			const c = (q.x - p.x) / L2;

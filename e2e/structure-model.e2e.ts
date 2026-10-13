@@ -13,6 +13,8 @@ import {
 	yieldLoad,
 	deckComplete,
 	envelope,
+	faceSign,
+	faceStresses,
 	isAnchor,
 	jointAt,
 	memberBetween,
@@ -91,6 +93,20 @@ test('every design uses the same steel, and the plain beam is the one that fails
 	expect(worst.truss).toBeLessThan(0.5);
 	expect(worst.arch).toBeLessThan(0.8);
 	expect(worst.suspension).toBeLessThan(0.8);
+	// The numbers the page quotes: the beam at "about 1.3 times" its limit, the truss's busiest
+	// member at "about a quarter" of its strength, "five times better used".
+	expect(worst.beam).toBeGreaterThan(1.25);
+	expect(worst.beam).toBeLessThan(1.35);
+	expect(worst.truss).toBeGreaterThan(0.22);
+	expect(worst.truss).toBeLessThan(0.3);
+	expect(worst.truss / worst.beam).toBeCloseTo(0.2, 1);
+});
+
+test('to match the truss, the beam needs about five times the steel', () => {
+	const truss = envelope(DESIGNS.truss, size(DESIGNS.truss)).worst;
+	const beam = (k: number) => envelope(DESIGNS.beam, size(DESIGNS.beam, k * BUDGET)).worst;
+	expect(beam(4)).toBeGreaterThan(truss);
+	expect(beam(6)).toBeLessThan(truss);
 });
 
 test('truss chords: the top is pushed, the bottom pulled', () => {
@@ -107,9 +123,9 @@ test('in a truss the members mostly pull or push; in the beam they bend', () => 
 	const t = DESIGNS.truss;
 	const sol = solve(t, 20, size(t));
 	const axialShare = sol.members.filter(
-		(m) => m.mode === 'tension' || m.mode === 'compression'
+		(m) => m.mode === 'tension' || m.mode === 'compression' || m.mode === 'buckling'
 	).length;
-	expect(axialShare).toBeGreaterThan(t.members.length / 3);
+	expect(axialShare).toBeGreaterThan(0.8 * t.members.length);
 	const b = solve(DESIGNS.beam, 20, size(DESIGNS.beam));
 	expect(b.members.every((m) => m.mode === 'bending')).toBe(true);
 });
@@ -122,6 +138,34 @@ test('in the arch the curved rib is pushed (compression) and the banks are pushe
 		.filter(({ m }) => a.joints[m.a].y < -0.1 && a.joints[m.b].y < -0.1);
 	expect(rib.length).toBeGreaterThan(4);
 	for (const { i } of rib) expect(sol.members[i].axial).toBeLessThan(0);
+	// At its springings (on the gap's walls, 10 m down) the rib pushes into the rock: leftwards
+	// on the left wall, rightwards on the right one.
+	const push = (x: number) =>
+		a.members.reduce((sum, m, i) => {
+			const r = sol.members[i];
+			const at = (j: number) => a.joints[j].x === x && a.joints[j].y === -10;
+			return sum + (at(m.a) ? r.endA[0] : 0) + (at(m.b) ? r.endB[0] : 0);
+		}, 0);
+	expect(push(0)).toBeLessThan(0);
+	expect(push(40)).toBeGreaterThan(0);
+});
+
+test('the thin steel rib is squeezed all through under its own weight, but a truck on one side stretches one face', () => {
+	const a = DESIGNS.arch;
+	const areas = size(a);
+	const rib = a.members.flatMap((m, i) =>
+		a.joints[m.a].y < -0.1 && a.joints[m.b].y < -0.1 ? [i] : []
+	);
+	const faces = (truck: number | null) => {
+		const sol = solve(a, truck, areas);
+		return rib.flatMap((i) => {
+			const f = faceStresses(sol.members[i], areas[i]);
+			return [faceSign(f.plus), faceSign(f.minus)];
+		});
+	};
+	expect(faces(null).some((v) => v < 0)).toBe(true);
+	expect(faces(null).every((v) => v <= 0)).toBe(true);
+	expect(faces(10).some((v) => v > 0)).toBe(true);
 });
 
 test('the arch holds the road on its posts: they are pushed, and the truck loads them', () => {
@@ -201,4 +245,7 @@ test('the scaffolding tube: yields at about 113 kN, buckles far sooner when long
 	expect(bucklingLoad(2) / 1000).toBeLessThan(65);
 	expect(bucklingLoad(4) / bucklingLoad(2)).toBeCloseTo(0.25, 10); // twice as long, a quarter
 	expect(pushLimit(1)).toBe(yieldLoad()); // short: crushing, not buckling
+	// "beyond about 1.4 m here" the post buckles before it crushes.
+	expect(pushLimit(1.35)).toBe(yieldLoad());
+	expect(pushLimit(1.45)).toBeLessThan(yieldLoad());
 });

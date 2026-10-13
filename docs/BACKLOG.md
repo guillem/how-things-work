@@ -54,12 +54,6 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 - **atmosphere-weather** — ticked: the user accepted that fronts form from the placed lows and
   that the reader sets heat transport and spin rather than the heating pattern (2026-10-08).
 
-- **bridges-structures** — since the posts became pin-ended (v0.1.11) the deck does most of the
-  bending: with the truck at 12 m the rib's moment fell from ~204 to ~36 kNm and the deck's rose
-  from ~228 to ~913 kNm, while the arch step says the truck "bends the rib noticeably". Decide
-  whether the model (deck vs rib stiffness) or the text changes; check against a deck-arch
-  reference.
-
 - **chemical-bonds** (batch 7) — the builder makes single-centre molecules only, with lone pairs
   drawn only on the centre atom (the text says so); the slow auto-turn pauses while the pointer
   is over the molecule or an atom. In NH₃'s still frame the angle arc joins two H atoms that
