@@ -157,7 +157,7 @@ export const spec: ExplainerSpec = {
 			controls: [degree, fresh],
 			body: `
 <p>Plot both errors against flexibility and the story is plain. Training error never goes up. Test error makes a U: too stiff on the left, overfitting on the right, and a <strong>sweet spot</strong> in between — the model that predicts new cases best.</p>
-<p>This is how flexibility is chosen in practice, from simple fits like this one to neural networks with billions of settings: never by the training error, always by error on examples held back.</p>`,
+<p>This is how flexibility is chosen in practice: never by the training error, always by error on examples held back. (Very large models such as neural networks can behave more surprisingly than this U, but they too are judged on held-back examples.)</p>`,
 			notes: `<p>With few examples, which ones happen to land in the test set matters a lot: try <em>New examples</em> a few times and the sweet spot moves. Practitioners therefore repeat the split several ways and average (cross-validation). And once a test set has been used to choose the model, its error is a little optimistic — so a final, untouched set is kept for the very end (the set used for choosing is then usually called a validation set).</p>`
 		},
 		{
