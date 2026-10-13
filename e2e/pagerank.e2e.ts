@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g');
 const pages = (page: Page) => page.getByRole('button', { name: /^Page [A-J],/ });
@@ -146,4 +147,14 @@ test('the move tool: arrow keys move the focused page and stay on the step', asy
 	await page.mouse.move(box.x + 2000, box.y, { steps: 6 });
 	await page.mouse.up();
 	expect(Number(await circle.getAttribute('cx'))).toBeLessThanOrEqual(610);
+});
+
+test('compute: the first round moves 30.7% of all rank (each moved unit counted once)', async ({
+	page
+}) => {
+	await page.clock.install();
+	await page.goto('./pagerank/#compute');
+	// Round 1 on the example web: ranks go from 1/6 each to their first update; the rank that
+	// leaves some pages and arrives at others adds up to 30.7% of the total.
+	await playUntil(page, stage(page), 'round 1: 30.7% of all rank moved', 6000);
 });
