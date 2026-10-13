@@ -41,3 +41,11 @@ test('controls only affect the steps that show them', async ({ page }) => {
 	await expect(stage(page)).toContainText('People in each state');
 	await expect(stage(page)).not.toContainText('Vaccinated');
 });
+
+test('the flu marker gets no herd-immunity threshold of its own', async ({ page }) => {
+	// Flu's R ≈ 1.3 already includes existing immunity, so it is not a true R₀.
+	await open(page, './epidemics/#threshold');
+	await expect(stage(page)).toContainText('seasonal flu: R ≈ 1.3');
+	await expect(stage(page)).toContainText('already net of existing immunity');
+	await expect(stage(page)).not.toContainText('threshold 23%');
+});

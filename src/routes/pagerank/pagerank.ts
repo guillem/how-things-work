@@ -274,7 +274,9 @@ export const TRAPS = web(
  * nobody links to yet: its own links cannot lift it (no surfer arrives by a
  * link, so it keeps only its share of random jumps); a link from A, the top
  * page, lifts it about six-fold, while three new pages linking to it lift it
- * only about 2.2-fold.
+ * only about 2.2-fold. But once pages link to E, E's own links matter: five
+ * farm pages that E links back to lift it about 6.6-fold, and about 9.5-fold
+ * if E also stops linking to A (the classic link-farm loop).
  */
 export const STARTER = web(
 	[

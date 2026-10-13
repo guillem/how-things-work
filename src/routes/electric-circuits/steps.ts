@@ -172,7 +172,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Put two bulbs one after the other in the same loop — <dfn data-def="Parts connected one after another, so that the same current flows through all of them.">in series</dfn>. There is still only one path, so the same current flows through both. But now the charge must get through two resistances, so it flows round more slowly: 0.25 A instead of 0.5 A.</p>
 <p>The battery's 6 V is <strong>shared</strong>: each bulb gets 3 V. With half the voltage and half the current, each bulb gets a quarter of the power, and both glow dimly.</p>`,
-			notes: `<p>Here the bulbs are treated as fixed 12 Ω resistances. A real filament's resistance falls as it cools, so two real bulbs in series glow a little brighter than this — but still much dimmer than one bulb alone.</p>`
+			notes: `<p>Here the bulbs are treated as fixed 12 Ω resistances, and brightness as proportional to power. A real filament's resistance falls as it cools, so two real bulbs in series draw a little more current than this (about 0.33 A rather than 0.25 A). But a cooler filament turns far less of its power into visible light, so each gives only about a tenth of the light of one bulb alone: dimmer than shown here.</p>`
 		},
 		{
 			id: 'parallel',

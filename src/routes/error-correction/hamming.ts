@@ -29,9 +29,10 @@
  *
  * Simplifications: errors are independent (real channels often have bursts,
  * which real systems handle by interleaving); the coded and uncoded messages
- * face the same flip chance per bit even though the coded one sends 7/4 as
- * many bits (on a real link with a fixed power budget each coded bit would be
- * a little noisier).
+ * face the same flip chance per bit, as in a memory chip where every stored
+ * bit faces the same risk. On a radio link with a fixed power budget each
+ * coded bit gets only 4/7 of the energy and flips noticeably more often (at
+ * 5% uncoded noise, about 10.7%), which wipes out most of the gain.
  */
 
 import { rng } from '#lib/draw/math.ts';
