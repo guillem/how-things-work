@@ -575,6 +575,30 @@ test.describe('on a phone', () => {
 		await range(page, 'degree').fill('6');
 		await expect(panel).toContainText(/Your model\s*degree 6/);
 	});
+
+	test('reinforcement learning grid: the discount and what S is worth are text', async ({
+		page
+	}) => {
+		await page.goto('./reinforcement-learning/#discount');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Discount factor\s*γ = 0\.90/);
+		await expect(panel).toContainText(/What S is worth\s*learnt so far/);
+		await expect(drawing(page)).not.toContainText('discount factor');
+		await range(page, 'gamma').fill('0.5');
+		await expect(panel).toContainText(/Discount factor\s*γ = 0\.50/);
+	});
+
+	test('reinforcement learning curve: the moves per episode are text and follow ε', async ({
+		page
+	}) => {
+		await page.goto('./reinforcement-learning/#progress');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Random moves\s*10%/);
+		await expect(panel).toContainText(/Episode 300\s*\d+ moves/);
+		await expect(drawing(page)).not.toContainText('Moves per episode');
+		await range(page, 'epsilon').fill('0.3');
+		await expect(panel).toContainText(/Random moves\s*30%/);
+	});
 });
 
 test.describe('on a wide screen', () => {
