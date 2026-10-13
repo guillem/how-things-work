@@ -578,7 +578,7 @@ A topic is done when:
 - **Title:** Heart & circulation
 - **Level:** 1
 - **Kind:** simulate
-- **Interaction:** Watch a beating heart in cross-section with its valves, blood flow and oxygen levels, synchronized with an ECG trace and a pressure curve. Change the heart rate, narrow a vessel or make a valve leak.
+- **Interaction:** Watch a beating heart in cross-section with its valves, blood flow and oxygen levels, synchronized with an ECG trace and a pressure curve. Change the heart rate, narrow the body's small arteries or make a valve leak.
 - **Takeaway:** The heart is two pumps in series, one for the lungs and one for the rest of the body, kept in step by an electrical signal.
 - **Prerequisites:** none
 - **Related:** homeostasis, neurons

@@ -8,7 +8,9 @@ import {
 	NORMAL,
 	SA,
 	bodyResistance,
+	ecg,
 	ecgWaves,
+	leakFlow,
 	simulate,
 	steadyBeat,
 	summarize,
@@ -105,6 +107,31 @@ test('one electrical clock: P, then QRS, then the ventricles push, then T', () =
 	expect(atria).toBeLessThan(ventricles);
 });
 
+test('the ECG keeps a flat PR segment between P and QRS, even at 150 a minute', () => {
+	for (const hr of [40, 75, 150]) {
+		const T = timing(hr);
+		expect(T.pr, `PR at ${hr}/min`).toBeGreaterThanOrEqual(0.12); // normal PR 0.12–0.20 s
+		const w = ecgWaves(T);
+		let run = 0;
+		let longest = 0;
+		for (let tau = w.p; tau < w.r; tau += 0.0005) {
+			run = Math.abs(ecg(T, tau)) < 0.01 ? run + 0.0005 : 0;
+			longest = Math.max(longest, run);
+		}
+		expect(longest, `flat stretch between P and R at ${hr}/min`).toBeGreaterThan(0.02);
+	}
+});
+
+test('in a steady beat, as much blood comes back to the heart as leaves it', () => {
+	for (const hr of [75, 77, 113]) {
+		const beat = simulate({ ...NORMAL, hr });
+		const last = beat.t.length - 1;
+		const into = beat.passed.venous[last];
+		const out = beat.passed.aortic[last];
+		expect(Math.abs(into - out), `at ${hr}/min`).toBeLessThan(0.05);
+	}
+});
+
 test('heart rate: twice as fast does not pump twice as much', () => {
 	const slow = at({ hr: 40 }).summary;
 	const rest = at({}).summary;
@@ -120,6 +147,9 @@ test('heart rate: twice as fast does not pump twice as much', () => {
 	expect(slow.output).toBeLessThan(rest.output);
 	// Less flow → the body takes more oxygen from each litre.
 	expect(slow.venousO2).toBeLessThan(rest.venousO2);
+	// With no reflexes, the diastolic pressure at 40 a minute sinks to about 45.
+	expect(slow.aorta.dia).toBeGreaterThan(40);
+	expect(slow.aorta.dia).toBeLessThan(50);
 });
 
 test('narrowed arteries: resistance ∝ 1/r⁴, the pressure rises, the heart empties less', () => {
@@ -128,13 +158,23 @@ test('narrowed arteries: resistance ∝ 1/r⁴, the pressure rises, the heart em
 	expect(bodyResistance(0.8) / bodyResistance(1)).toBeCloseTo(2.441, 3);
 	const rest = at({}).summary;
 	const narrow = at({ width: 0.9 }).summary;
-	expect(rest.aorta.mean).toBeGreaterThan(95);
-	expect(rest.aorta.mean).toBeLessThan(105); // "about 100"
-	expect(narrow.aorta.mean).toBeGreaterThan(128);
-	expect(narrow.aorta.mean).toBeLessThan(142); // "about 135"
+	// "from about 120/80 to about 155/115 mmHg"
+	expect(narrow.aorta.sys).toBeGreaterThan(148);
+	expect(narrow.aorta.sys).toBeLessThan(162);
+	expect(narrow.aorta.dia).toBeGreaterThan(108);
+	expect(narrow.aorta.dia).toBeLessThan(122);
+	expect(narrow.aorta.mean).toBeGreaterThan(rest.aorta.mean + 25);
 	expect(narrow.esv).toBeGreaterThan(rest.esv + 8);
 	expect(narrow.stroke).toBeLessThan(rest.stroke);
 	expect(at({ width: 0.8 }).summary.output).toBeLessThan(0.85 * rest.output);
+	// "with arteries at 80% it reaches about 200 mmHg"
+	expect(at({ width: 0.8 }).summary.aorta.sys).toBeGreaterThan(190);
+	expect(at({ width: 0.8 }).summary.aorta.sys).toBeLessThan(210);
+});
+
+test('a leak follows Bernoulli: a 100 mmHg drop drives a 5 m/s jet, 500 mL/s through 1 cm²', () => {
+	expect(leakFlow(1, -100)).toBeCloseTo(-500, -1);
+	expect(leakFlow(0.5, 100)).toBeCloseTo(250, -1);
 });
 
 test('a leaking mitral valve: blood goes back to the lungs side, less goes forward', () => {

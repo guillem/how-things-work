@@ -167,7 +167,7 @@
 						id: 'qt',
 						label: 'QRS to end of T',
 						value: `${T.qt.toFixed(2)} s`,
-						sub: 'ventricles on'
+						sub: 'ventricles active'
 					},
 					{
 						id: 'sync',
@@ -204,7 +204,13 @@
 				];
 			case 'rate':
 				return [
-					{ id: 'hr', label: 'heart rate', value: `${m.hr}/min`, sub: 'beats per minute' },
+					{
+						id: 'bp',
+						label: 'blood pressure',
+						value: bp(m.aorta),
+						sub: 'systolic/diastolic',
+						color: 'var(--hc-oxy)'
+					},
 					{
 						id: 'sv',
 						label: 'stroke volume',

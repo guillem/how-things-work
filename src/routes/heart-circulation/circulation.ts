@@ -35,7 +35,8 @@
  *
  * The model is integrated with fourth-order Runge–Kutta (0.5 ms steps), beat
  * after beat, until each beat repeats the last one (a steady rhythm); one
- * such beat is returned, sampled every `SAMPLE` seconds.
+ * such beat is returned, sampled about every `SAMPLE` seconds (a whole
+ * number of samples per beat).
  */
 
 export const SAMPLE = 0.002;
@@ -134,7 +135,8 @@ export interface Timing {
 export function timing(hr: number): Timing {
 	const rr = 60 / hr;
 	const s = Math.sqrt(rr);
-	const pr = 0.16 * s;
+	// PR shortens a little with rate but stays within the normal 0.12–0.20 s
+	const pr = Math.max(0.12, 0.16 * s);
 	const qt = 0.4 * s;
 	return {
 		rr,
@@ -174,7 +176,7 @@ export function ecg(T: Timing, tau: number) {
 	const s = Math.sqrt(T.rr);
 	const q = T.pr;
 	return (
-		0.15 * gauss(tau, 0.05, 0.022) -
+		0.15 * gauss(tau, 0.4 * T.pr, 0.15 * T.pr) -
 		0.12 * gauss(tau, q + 0.012, 0.008) +
 		1.2 * gauss(tau, q + 0.035, 0.011) -
 		0.3 * gauss(tau, q + 0.06, 0.011) +
@@ -185,7 +187,7 @@ export function ecg(T: Timing, tau: number) {
 /** Centres of the ECG waves (s into the beat), for labelling. */
 export function ecgWaves(T: Timing) {
 	const s = Math.sqrt(T.rr);
-	return { p: 0.05, r: T.pr + 0.035, t: T.pr + T.qt - 0.09 * s };
+	return { p: 0.4 * T.pr, r: T.pr + 0.035, t: T.pr + T.qt - 0.09 * s };
 }
 
 // ------------------------------------------------------------ the circulation
@@ -271,7 +273,7 @@ export type Flow = (typeof FLOWS)[number];
 export interface Beat {
 	settings: Settings;
 	timing: Timing;
-	/** Sample times (s into the beat), every SAMPLE. */
+	/** Sample times (s into the beat), about every SAMPLE, the last at rr. */
 	t: Float64Array;
 	/** Pressures (mmHg) per compartment, per sample. */
 	p: Float64Array[];
@@ -305,10 +307,11 @@ function initialVolumes(): number[] {
 export function simulate(settings: Settings, maxBeats = 120): Beat {
 	const T = timing(settings.hr);
 	const rBody = bodyResistance(settings.width);
-	const steps = Math.round(T.rr / DT);
+	// A whole number of samples per beat, so the last one falls at τ = rr.
+	const every = Math.max(1, Math.round(SAMPLE / DT));
+	const steps = every * Math.max(1, Math.round(T.rr / SAMPLE));
 	const h = T.rr / steps;
-	const every = Math.max(1, Math.round(SAMPLE / h));
-	const n = Math.floor(steps / every) + 1;
+	const n = steps / every + 1;
 	let v = initialVolumes();
 	const beat: Beat = {
 		settings,
@@ -408,7 +411,7 @@ export function summarize(beat: Beat): Summary {
 	const esv = min(lv);
 	const stroke = net(beat.passed.aortic);
 	const strokeRight = net(beat.passed.pulmonary);
-	const backflow = Math.max(0, -backward(beat.flow[beat.settings.valve]));
+	const backflow = Math.max(0, -backward(beat.flow[beat.settings.valve], spacing(beat)));
 	const output = (stroke * beat.settings.hr) / 1000;
 	const venousO2 = venousSaturation(output);
 	return {
@@ -433,11 +436,11 @@ export function summarize(beat: Beat): Summary {
 }
 
 /** Volume (mL, ≤ 0) that went backwards through a valve during the beat. */
-function backward(flow: Float64Array) {
+function backward(flow: Float64Array, dt: number) {
 	let s = 0;
 	for (let i = 1; i < flow.length; i++) {
 		const q = (flow[i - 1] + flow[i]) / 2;
-		if (q < 0) s += q * SAMPLE;
+		if (q < 0) s += q * dt;
 	}
 	return s;
 }
@@ -448,10 +451,13 @@ export function venousSaturation(output: number) {
 	return Math.max(0, O2.arterial - O2.use / (output * O2.capacity));
 }
 
+/** Time between samples (s): rr split into whole samples of about SAMPLE. */
+const spacing = (beat: Beat) => beat.timing.rr / (beat.t.length - 1);
+
 /** Index of the sample at time τ into the beat (wrapping), and the fraction to the next. */
 export function sampleAt(beat: Beat, tau: number) {
 	const n = beat.t.length - 1;
-	const u = (((tau % beat.timing.rr) + beat.timing.rr) % beat.timing.rr) / SAMPLE;
+	const u = (((tau % beat.timing.rr) + beat.timing.rr) % beat.timing.rr) / spacing(beat);
 	const i = Math.min(n - 1, Math.floor(u));
 	return { i, f: Math.min(1, u - i) };
 }
