@@ -34,6 +34,7 @@
 		type Elements,
 		type Track
 	} from '../orbits';
+	import { placeLabel } from '../labels';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -42,6 +43,7 @@
 	const PY0 = 16;
 	const PX1 = 640;
 	const PY1 = 584;
+	const PANEL = { x0: PX0, y0: PY0, x1: PX1, y1: PY1 };
 	const SX0 = 340; // the Sun on `launch` (fixed during a step)
 	const PXC = (PX0 + PX1) / 2;
 	const SY = 300;
@@ -283,28 +285,14 @@
 			let d = `M${SX} ${SY}`;
 			for (let s = s0; s <= s1; s += 5) d += `L${X[s].toFixed(1)} ${Y[s].toFixed(1)}`;
 			d += 'Z';
-			// Label just outside the orbit, at the middle of the wedge's arc. When it
-			// would crowd a label already placed (near aphelion, where the equal-time
-			// wedges bunch up at low speed) it slides round the Sun, alternating
-			// sides, and only then moves further out.
+			// Label just outside the orbit, at the middle of the wedge's arc. Where
+			// that would crowd a label already placed (near aphelion the equal-time
+			// wedges bunch up) it takes the nearest free spot a little further out
+			// or a little round the Sun, and it always stays inside the panel.
 			const m = s0 + PER_WEDGE / 2;
 			const phi = Math.atan2(Y[m] - SY, X[m] - SX);
 			const rho = Math.hypot(X[m] - SX, Y[m] - SY);
-			let off = 22;
-			let dp = 0;
-			let lx = 0;
-			let ly = 0;
-			for (let attempt = 0; attempt < 60; attempt++) {
-				lx = SX + (rho + off) * Math.cos(phi + dp);
-				ly = SY + (rho + off) * Math.sin(phi + dp);
-				if (!placed.some((p) => Math.abs(p.x - lx) < 70 && Math.abs(p.y - ly) < 18)) break;
-				if ((attempt + 1) % 26 === 0) {
-					off += 20;
-					dp = 0;
-				} else {
-					dp = (attempt % 2 === 0 ? 1 : -1) * (Math.floor(attempt / 2) + 1) * 0.04;
-				}
-			}
+			const { x: lx, y: ly } = placeLabel({ x: SX, y: SY }, phi, rho, placed, PANEL);
 			placed.push({ x: lx, y: ly });
 			out.push({ k, d, area: sweptArea(track, 0, s0, s1), lx, ly });
 		}
