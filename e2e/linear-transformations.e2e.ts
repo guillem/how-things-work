@@ -61,7 +61,7 @@ test('dragging î reshapes the unit square, and the area readout follows', async
 	await expect(stage(page)).toContainText('(× 0.5)');
 });
 
-test('with the zero matrix both handles overlap at the origin; the split î handle still grabs', async ({
+test('with the zero matrix both handles overlap at the origin; the split î handle drags without a jump', async ({
 	page
 }) => {
 	// Reduced motion: the shown matrix snaps to the sliders, no easing.
@@ -77,8 +77,10 @@ test('with the zero matrix both handles overlap at the origin; the split î hand
 	const ox = box.x + (box.width - 960 * k) / 2;
 	const oy = box.y + (box.height - 600 * k) / 2;
 	const at = (x: number, y: number) => ({ x: ox + x * k, y: oy + y * k });
+	// Grab the floated handle and drag it one unit (56 stage units) right: the
+	// tip moves by the drag, from (0, 0) to (1, 0), and doesn't jump to the pointer.
 	const from = at(291, 291);
-	const to = at(356, 300);
+	const to = at(291 + 56, 291);
 	await page.mouse.move(from.x, from.y);
 	await page.mouse.down();
 	await page.mouse.move(to.x, to.y, { steps: 8 });

@@ -12,6 +12,7 @@ import {
 	lowOrbitSpeed,
 	sweptArea
 } from '../src/routes/orbits-kepler/orbits';
+import { LABEL_GAP, placeLabel } from '../src/routes/orbits-kepler/labels';
 
 const at1 = { x: 1, y: 0 };
 const launch = (f: number) => ({ x: 0, y: f * circularSpeed(1) });
@@ -101,4 +102,45 @@ test('Newton’s cannon: too slow falls back, about 8 km/s goes all the way roun
 	expect(lowOrbitSpeed()).toBeCloseTo(7.9, 1);
 	expect(cannon(6).hit).toBe(true);
 	expect(cannon(7.9).hit).toBe(false);
+});
+
+// ---- placing the second law's area labels ----------------------------------------
+
+const panel = { x0: 16, y0: 16, x1: 640, y1: 584 };
+const sun = { x: 300, y: 300 };
+const crowds = (p: { x: number; y: number }, q: { x: number; y: number }) =>
+	Math.abs(p.x - q.x) < LABEL_GAP.x && Math.abs(p.y - q.y) < LABEL_GAP.y;
+const around = (p: { x: number; y: number }) => Math.atan2(p.y - sun.y, p.x - sun.x);
+const polar = (r: number, a: number) => ({
+	x: sun.x + r * Math.cos(a),
+	y: sun.y + r * Math.sin(a)
+});
+
+test('an area label goes just outside its point of the orbit when there is room', () => {
+	const top = placeLabel(sun, -Math.PI / 2, 150, [], panel);
+	// Straight out from the Sun, a little beyond the orbit.
+	expect(top.x).toBeCloseTo(300, 6);
+	expect(300 - top.y).toBeGreaterThan(150);
+	expect(300 - top.y).toBeLessThan(150 + 40);
+});
+
+test('a crowded area label moves out, but stays by its own point of the orbit', () => {
+	// Straight above the Sun, 150 below the orbit point: the first spot and the
+	// slides round the Sun near it are all taken, and so is the first spot on the
+	// next two rings out.
+	const phi = -Math.PI / 2;
+	const placed = [-0.6, -0.3, 0, 0.3, 0.6].map((d) => polar(172, phi + d));
+	placed.push(polar(192, phi), polar(212, phi));
+	const p = placeLabel(sun, phi, 150, placed, panel);
+	for (const q of placed) expect(crowds(p, q)).toBe(false);
+	// Within 20° of the orbit point, seen from the Sun: still reads as this wedge's.
+	expect(Math.abs(around(p) - phi)).toBeLessThan((20 * Math.PI) / 180);
+});
+
+test('an area label near the edge of the panel stays inside it', () => {
+	// The orbit point is 10 short of the right edge: the label, 22 further out, is pulled in.
+	const p = placeLabel(sun, 0, 330, [], panel);
+	expect(p.x + 29).toBeLessThanOrEqual(panel.x1);
+	const q = placeLabel(sun, Math.PI / 2, 270, [], panel);
+	expect(q.y + 7).toBeLessThanOrEqual(panel.y1);
 });

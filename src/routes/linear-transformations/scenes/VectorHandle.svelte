@@ -17,7 +17,7 @@
 		/**
 		 * Drawn offset from (x, y), for when two handles would sit on the same
 		 * spot: the handle floats a little off the tip so both stay grabbable.
-		 * Grabbing it reports the true tip first, so a click moves nothing.
+		 * A drag moves the tip by the distance dragged, so a click moves nothing.
 		 */
 		dx?: number;
 		dy?: number;
@@ -53,14 +53,15 @@
 	function onpointerdown(event: PointerEvent) {
 		dragging = true;
 		ondragstart?.();
-		// The first point maps back to the true tip (grabbing a floated handle
-		// doesn't move the vector); after that the pointer position is the position.
-		let first = true;
+		// Keep the pointer's offset from the true tip for the whole drag: grabbing
+		// the handle anywhere (or a floated handle) moves nothing, and the tip then
+		// follows the pointer by exactly the distance dragged.
+		let off: Point | null = null;
 		startDrag(
 			event,
 			(p) => {
-				onmove(first ? { x: p.x - dx, y: p.y - dy } : p);
-				first = false;
+				off ??= { x: p.x - x, y: p.y - y };
+				onmove({ x: p.x - off.x, y: p.y - off.y });
 			},
 			() => {
 				dragging = false;
