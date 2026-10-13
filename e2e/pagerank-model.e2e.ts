@@ -9,6 +9,7 @@ import {
 	inCount,
 	pagerank,
 	parseWeb,
+	removeLink,
 	removePage,
 	rounds,
 	serializeWeb,
@@ -102,6 +103,23 @@ test('starter web: what lifts E, and what does not', () => {
 	const farmed = pagerank(farm).rank[E];
 	expect(farmed).toBeGreaterThan(base);
 	expect(farmed).toBeLessThan(fromA / 2);
+});
+
+test('starter web: a farm that E links back to beats A’s vote', () => {
+	const E = 4;
+	const base = pagerank(STARTER).rank[E];
+	const fromA = pagerank(addLink(STARTER, 0, E)).rank[E];
+	let loop = STARTER;
+	for (let k = 0; k < 5; k++) {
+		loop = addPage(loop, { x: 0, y: 0 });
+		const p = loop.pages.length - 1;
+		loop = addLink(addLink(loop, p, E), E, p);
+	}
+	const looped = pagerank(loop).rank[E];
+	expect(looped).toBeGreaterThan(fromA);
+	expect(looped / base).toBeGreaterThan(6);
+	// Dropping E's link to A keeps all of E's vote inside the loop.
+	expect(pagerank(removeLink(loop, E, 0)).rank[E]).toBeGreaterThan(looped);
 });
 
 test('the text form round-trips, and removing a page renames the rest', () => {

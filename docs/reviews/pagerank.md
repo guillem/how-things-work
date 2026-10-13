@@ -5,21 +5,6 @@
 The page is ready once the fixes below are made. The model is correct: it implements normalised PageRank with uniform teleportation and dead ends that spread their rank evenly, and the surfer, the power iteration and the hand-solved test all agree. I recomputed every number the narrative quotes (C 36.5%, A 33.6%, B 20.3%; the 2.5% floor; about six-fold from A's link; about 2.2-fold from a three-page farm; "about six links in a row"), and they all hold. The most important fix is in the "Can you game it?" step. It tells the reader that one vote from an important page "beats a whole farm" and that the farm's effect through E's own links is "a little". In the editor the page gives them, a farm that E links back to beats A's vote, and that loop is exactly how real link farms work.
 
 ## Factual errors
-- **high**, steps.ts:186–188 (boost body and notes), also pagerank.ts:272–278. The claims "one vote from a page that matters beats a whole farm", "E's own links start to matter a little" and "the only reliable way to rank highly is to be linked to by pages that are themselves well linked" are false under PageRank itself, and false in this page's own model. I computed these on STARTER with d = 0.85 (E starts at 3.0%):
-  - A → E alone lifts E 5.98-fold.
-  - Five farm pages that only link to E: 2.6-fold.
-  - The same five pages with E linking back to each of them (keeping E → A): 6.6-fold.
-  - The same, with E → A removed: 9.5-fold.
-
-  The reader can build all of these (10-page limit, erase tool). This is the standard spam-farm result: MMDS Example 5.11 shows that a farm's structure multiplies the target's external rank by 1/(1−β²) ≈ 3.6 at β = 0.85.
-
-  Fix, paragraph 2, last sentence: "Finally, get A, the top page, to link to E: that one vote lifts E about six-fold, far more than three farm pages that only link to E (about 2.2-fold)."
-
-  Fix, paragraph 3: "(There is a catch. Once pages link to E, E's own links matter: if E links back to its farm pages, the rank it gives them comes straight back. Try it: five farm pages that E links back to beat A's vote, and more so if E stops linking to A. That loop is how real link farms work, and it is why search engines learned to detect and discount them.)"
-
-  Fix, notes: "This is the real lesson of PageRank: rank flows along links, so a page gains by being linked to from pages that are themselves well linked — and also by trapping rank in a loop, which is why search engines treat link farms and link swaps as spam. Modern search engines combine…".
-
-  Also update the STARTER doc comment to match. Source: http://infolab.stanford.edu/~ullman/mmds/ch5.pdf (§5.4, spam farms).
 - **low**, steps.ts:203 (compute notes). "The 1998 paper" refers to two different papers.
   - The un-normalised PR(A) = (1−d) + d(…) is from "The Anatomy of a Large-Scale Hypertextual Web Search Engine" (Brin & Page, WWW7).
   - The 52 iterations on 322 million links, and setting dangling links aside ("we simply remove them from the system until all the PageRanks are calculated"), are from the technical report "The PageRank Citation Ranking: Bringing Order to the Web" (Page, Brin, Motwani, Winograd).
