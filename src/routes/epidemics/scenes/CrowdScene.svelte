@@ -15,7 +15,7 @@
 	 * day 0; a slider does not; documented exception to the scene guide).
 	 */
 	import { Axes, Label, clamp, linePath, scale, smoothstep, thin } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { State } from '../model';
 	import { FIELD, POPULATION, endDay, runCrowd, settings } from '../run';
 
@@ -244,25 +244,48 @@
 
 <g opacity={reduced ? 1 : fade}>
 	<!-- header: day and counts -->
-	<Label x={FX} y={64} text="Day {Math.floor(day)}" size={16} weight={600} anchor="start" />
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<!-- the case view lists the first case instead (its status line carries the day) -->
+	<Readout
+		id="day"
+		order={1}
+		label="Day"
+		value={String(Math.floor(day))}
+		opacity={view === 'case' ? 0 : 1}
+	>
+		<Label x={FX} y={64} text="Day {Math.floor(day)}" size={16} weight={600} anchor="start" />
+	</Readout>
 	{#each legend as item, i (item.id)}
 		{@const lx = FX + i * 112}
-		{#if item.id === 'v'}
-			<circle
-				cx={lx + 5}
-				cy={92}
-				r={4.5}
-				fill="var(--stage-bg)"
-				stroke={item.color}
-				stroke-width="2"
-			/>
-		{:else}
-			<circle cx={lx + 5} cy={92} r={5} fill={item.color} />
-		{/if}
-		<text x={lx + 15} y={96} font-size="12">{item.label}</text>
-		<text x={lx + 15} y={110} font-size="11" class="muted" style:font-variant-numeric="tabular-nums"
-			>{item.value}</text
+		<Readout
+			id="count-{item.id}"
+			order={2 + i}
+			label={item.label}
+			value={String(item.value)}
+			color={item.color}
+			opacity={view === 'case' ? 0 : 1}
 		>
+			{#if item.id === 'v'}
+				<circle
+					cx={lx + 5}
+					cy={92}
+					r={4.5}
+					fill="var(--stage-bg)"
+					stroke={item.color}
+					stroke-width="2"
+				/>
+			{:else}
+				<circle cx={lx + 5} cy={92} r={5} fill={item.color} />
+			{/if}
+			<text x={lx + 15} y={96} font-size="12">{item.label}</text>
+			<text
+				x={lx + 15}
+				y={110}
+				font-size="11"
+				class="muted"
+				style:font-variant-numeric="tabular-nums">{item.value}</text
+			>
+		</Readout>
 	{/each}
 
 	<!-- field -->
@@ -352,32 +375,73 @@
 	</g>
 
 	{#if view === 'case'}
-		<Label
-			x={clamp(people[focus].x, FX + 50, FX + FIELD - 50)}
-			y={people[focus].y > FY + 40 ? people[focus].y - 20 : people[focus].y + 30}
-			text="first case"
-			size={12}
-			pill
-		/>
+		<Readout
+			id="focus"
+			order={0}
+			label="First case"
+			marker={1}
+			at={[
+				people[focus].x,
+				people[focus].y > FY + 40 ? people[focus].y - 34 : people[focus].y + 34
+			]}
+		>
+			<Label
+				x={clamp(people[focus].x, FX + 50, FX + FIELD - 50)}
+				y={people[focus].y > FY + 40 ? people[focus].y - 20 : people[focus].y + 30}
+				text="first case"
+				size={12}
+				pill
+			/>
+		</Readout>
 	{/if}
 
 	<!-- right-hand panel -->
 	{#if view === 'case'}
-		<Label x={PX0} y={142} text="The first case" size={15} weight={600} anchor="start" />
-		<text x={PX0} y={166} font-size="12" class="muted">
-			{day < focusEnd
-				? `Infectious for ${caseDay.toFixed(1)} days so far`
-				: `Recovered after ${focusEnd.toFixed(1)} days`}
-		</text>
-		<g style:font-variant-numeric="tabular-nums">
-			<!-- style:, not attributes: the stage's text rule overrides font-size=/fill= (BACKLOG) -->
-			<text x={PX0} y={206} style:font-size="26px" font-weight="600">{meetingsSoFar.length}</text>
-			<text x={PX0} y={226} font-size="12" class="muted">people met</text>
-			<text x={PX0 + 150} y={206} style:font-size="26px" font-weight="600" style:fill="var(--sir-i)"
-				>{focusVictims.length}</text
-			>
-			<text x={PX0 + 150} y={226} font-size="12" class="muted">infected by them</text>
-		</g>
+		<Readout id="case-title"
+			><Label
+				x={PX0}
+				y={142}
+				text="The first case"
+				size={15}
+				weight={600}
+				anchor="start"
+			/></Readout
+		>
+		<Readout
+			id="case-days"
+			order={1}
+			label={day < focusEnd ? 'Infectious for' : 'Recovered after'}
+			value="{(day < focusEnd ? caseDay : focusEnd).toFixed(1)} days"
+		>
+			<text x={PX0} y={166} font-size="12" class="muted">
+				{day < focusEnd
+					? `Infectious for ${caseDay.toFixed(1)} days so far`
+					: `Recovered after ${focusEnd.toFixed(1)} days`}
+			</text>
+		</Readout>
+		<Readout id="case-met" order={2} label="People met" value={String(meetingsSoFar.length)} />
+		<Readout
+			id="case-infected"
+			order={3}
+			label="Infected by them"
+			value={String(focusVictims.length)}
+			color="var(--sir-i)"
+		/>
+		<Readout id="case-counts">
+			<g style:font-variant-numeric="tabular-nums">
+				<!-- style:, not attributes: the stage's text rule overrides font-size=/fill= (BACKLOG) -->
+				<text x={PX0} y={206} style:font-size="26px" font-weight="600">{meetingsSoFar.length}</text>
+				<text x={PX0} y={226} font-size="12" class="muted">people met</text>
+				<text
+					x={PX0 + 150}
+					y={206}
+					style:font-size="26px"
+					font-weight="600"
+					style:fill="var(--sir-i)">{focusVictims.length}</text
+				>
+				<text x={PX0 + 150} y={226} font-size="12" class="muted">infected by them</text>
+			</g>
+		</Readout>
 		<!-- timeline of the infectious period: one tick per meeting -->
 		<g>
 			<line x1={cx(0)} x2={cx(caseSpan)} y1={290} y2={290} stroke="var(--stage-line)" />
@@ -409,19 +473,35 @@
 					stroke="var(--sir-r)"
 					stroke-width="3"
 				/>
-				<Label x={cx(focusEnd)} y={324} text="recovered" size={11} muted />
+				<Readout id="case-recovered"
+					><Label x={cx(focusEnd)} y={324} text="recovered" size={11} muted /></Readout
+				>
 			{/if}
-			{#each [0, 7, 14, 21, 28].filter((d) => d <= caseSpan) as d (d)}
-				<text x={cx(d)} y={340} font-size="11" class="muted" text-anchor="middle">{d}</text>
-			{/each}
-			<text x={PX1} y={356} font-size="11" class="muted" text-anchor="end">days since infected</text
-			>
-			<text x={PX0} y={264} font-size="11" class="muted"
-				>each tick is a meeting; tall red ones passed it on</text
-			>
+			<Readout id="case-axis">
+				{#each [0, 7, 14, 21, 28].filter((d) => d <= caseSpan) as d (d)}
+					<text x={cx(d)} y={340} font-size="11" class="muted" text-anchor="middle">{d}</text>
+				{/each}
+				<text x={PX1} y={356} font-size="11" class="muted" text-anchor="end"
+					>days since infected</text
+				>
+			</Readout>
+			<Readout id="case-ticks">
+				<text x={PX0} y={264} font-size="11" class="muted"
+					>each tick is a meeting; tall red ones passed it on</text
+				>
+			</Readout>
 		</g>
 	{:else}
-		<Label x={PX0} y={112} text="People in each state" size={15} weight={600} anchor="start" />
+		<Readout id="chart-title"
+			><Label
+				x={PX0}
+				y={112}
+				text="People in each state"
+				size={15}
+				weight={600}
+				anchor="start"
+			/></Readout
+		>
 	{/if}
 
 	<Axes {sx} {sy} xLabel="day" yLabel={view === 'case' ? 'the whole crowd' : 'people'} />
@@ -435,14 +515,16 @@
 			stroke-width="1.5"
 			stroke-dasharray="4 4"
 		/>
-		<Label
-			x={PX1 - 4}
-			y={sy(sample.v) - 6}
-			text="vaccinated"
-			size={11}
-			anchor="end"
-			color="var(--sir-v)"
-		/>
+		<Readout id="v-line">
+			<Label
+				x={PX1 - 4}
+				y={sy(sample.v) - 6}
+				text="vaccinated"
+				size={11}
+				anchor="end"
+				color="var(--sir-v)"
+			/>
+		</Readout>
 	{/if}
 	{#each series as s (s.id)}
 		<path d={s.d} fill="none" stroke={s.color} stroke-width={s.width} stroke-linejoin="round" />
@@ -482,51 +564,64 @@
 	{#if view === 'full'}
 		<!-- each case now infects: R = R0 × share susceptible (hidden before R0 is introduced) -->
 		{#if showGauge}
-			<g>
-				<text x={PX0} y={436} font-size="13" font-weight="600">Each case now infects</text>
-				<text
-					x={PX1}
-					y={436}
-					font-size="13"
-					font-weight="600"
-					text-anchor="end"
-					style:fill={rColor}
-					style:font-variant-numeric="tabular-nums">{rShown.toFixed(1)} people</text
-				>
-				<rect x={PX0} y={448} width={PX1 - PX0} height="10" rx="5" fill="var(--stage-grid)" />
-				<rect
-					x={PX0}
-					y={448}
-					width={Math.max(0, gx(Math.min(rNow, gaugeMax)) - PX0)}
-					height="10"
-					rx="5"
-					fill={rColor}
-				/>
-				<line
-					x1={gx(1)}
-					x2={gx(1)}
-					y1={442}
-					y2={464}
-					stroke="var(--stage-ink)"
-					stroke-width="1.5"
-				/>
-				<text x={gx(1)} y={478} font-size="11" text-anchor="middle" class="muted">1</text>
-				<text x={PX0} y={496} font-size="11" class="muted">
-					R₀ {opts.r0.toFixed(1)} × {Math.round((100 * sample.s) / POPULATION)}% still susceptible
-				</text>
-				<text x={PX1} y={496} font-size="11" class="muted" text-anchor="end">
-					{sample.i === 0
-						? 'nobody is infectious now'
-						: rShown > 1
-							? 'above 1: growing'
-							: rShown < 1
-								? 'below 1: shrinking'
-								: 'about 1: the turning point'}
-				</text>
-			</g>
+			<Readout
+				id="r-now"
+				order={6}
+				label="Each case now infects"
+				value="{rShown.toFixed(1)} people"
+				note="R₀ {opts.r0.toFixed(1)} × {Math.round((100 * sample.s) / POPULATION)}% susceptible"
+				color={rColor}
+			>
+				<g>
+					<text x={PX0} y={436} font-size="13" font-weight="600">Each case now infects</text>
+					<text
+						x={PX1}
+						y={436}
+						font-size="13"
+						font-weight="600"
+						text-anchor="end"
+						style:fill={rColor}
+						style:font-variant-numeric="tabular-nums">{rShown.toFixed(1)} people</text
+					>
+					<rect x={PX0} y={448} width={PX1 - PX0} height="10" rx="5" fill="var(--stage-grid)" />
+					<rect
+						x={PX0}
+						y={448}
+						width={Math.max(0, gx(Math.min(rNow, gaugeMax)) - PX0)}
+						height="10"
+						rx="5"
+						fill={rColor}
+					/>
+					<line
+						x1={gx(1)}
+						x2={gx(1)}
+						y1={442}
+						y2={464}
+						stroke="var(--stage-ink)"
+						stroke-width="1.5"
+					/>
+					<text x={gx(1)} y={478} font-size="11" text-anchor="middle" class="muted">1</text>
+					<text x={PX0} y={496} font-size="11" class="muted">
+						R₀ {opts.r0.toFixed(1)} × {Math.round((100 * sample.s) / POPULATION)}% still susceptible
+					</text>
+					<text x={PX1} y={496} font-size="11" class="muted" text-anchor="end">
+						{sample.i === 0
+							? 'nobody is infectious now'
+							: rShown > 1
+								? 'above 1: growing'
+								: rShown < 1
+									? 'below 1: shrinking'
+									: 'about 1: the turning point'}
+					</text>
+				</g>
+			</Readout>
 		{/if}
-		<Label x={PX0} y={showGauge ? 540 : 436} text={status} size={13} anchor="start" />
+		<Readout id="status" order={7} label="So far" value={status}>
+			<Label x={PX0} y={showGauge ? 540 : 436} text={status} size={13} anchor="start" />
+		</Readout>
 	{:else}
-		<Label x={PX0} y={568} text={status} size={12} anchor="start" muted />
+		<Readout id="status" order={7} label="So far" value={status}>
+			<Label x={PX0} y={568} text={status} size={12} anchor="start" muted />
+		</Readout>
 	{/if}
 </g>

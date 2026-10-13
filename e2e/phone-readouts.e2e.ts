@@ -42,6 +42,108 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Thylakoid lumen\s*pH ≈ 8\.0/);
 	});
 
+	test('epidemics crowd: the counts are text under the stage and follow vaccination', async ({
+		page
+	}) => {
+		await page.goto('./epidemics/#vaccination');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Susceptible\s*\d+/);
+		await expect(panel).toContainText('Each case now infects');
+		await expect(drawing(page)).not.toContainText('Each case now infects');
+		await range(page, 'vaccinated').fill('50');
+		await expect(panel).toContainText(/Vaccinated\s*150/);
+	});
+
+	test('epidemics tree: R₀ and the generations are text and follow R₀', async ({ page }) => {
+		await page.goto('./epidemics/#r0');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Each case infects\s*R₀ = 3\.0/);
+		await expect(drawing(page)).not.toContainText('Each case infects');
+		await range(page, 'r0').fill('2');
+		await expect(panel).toContainText(/R₀ = 2\.0/);
+		await expect(panel).toContainText('1 → 2 → 4');
+	});
+
+	test('epidemics runs: the share that died out is text and follows R₀', async ({ page }) => {
+		await page.goto('./epidemics/#chance');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Died out early\s*\d+ of 40/);
+		await expect(panel).toContainText('1 in 3 = 33%');
+		await expect(drawing(page)).not.toContainText('Died out early');
+		await range(page, 'r0').fill('2');
+		await expect(panel).toContainText('1 in 2 = 50%');
+	});
+
+	test('epidemics threshold: the threshold is text and follows R₀', async ({ page }) => {
+		await page.goto('./epidemics/#threshold');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Threshold for R₀ = 3\.0\s*67% immune/);
+		await expect(drawing(page)).not.toContainText('% immune');
+		await range(page, 'r0').fill('2');
+		await expect(panel).toContainText(/Threshold for R₀ = 2\.0\s*50% immune/);
+	});
+
+	test('photosynthesis leaf: long part names become numbered keys under the stage', async ({
+		page
+	}) => {
+		await page.goto('./photosynthesis/#chloroplast');
+		const panel = readouts(page);
+		await expect(panel).toContainText('outer membrane');
+		await expect(panel).toContainText('stroma: the Calvin cycle runs here');
+		await expect(drawing(page)).not.toContainText('outer membrane');
+	});
+
+	test('photosynthesis spectrum: the wavelength readout is text and follows the slider', async ({
+		page
+	}) => {
+		await page.goto('./photosynthesis/#pigments');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Light\s*550 nm · green/);
+		await expect(panel).toContainText(/Whole leaf absorbs\s*\d+%/);
+		await expect(drawing(page)).not.toContainText('eV per photon');
+		await range(page, 'wavelength').fill('660');
+		await expect(panel).toContainText(/Light\s*660 nm/);
+	});
+
+	test('photosynthesis Z-scheme: the counters and the photon budget are text', async ({ page }) => {
+		await page.goto('./photosynthesis/#zscheme');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Photons absorbed\s*\d+/);
+		await expect(panel).toContainText(/Per O₂\s*at least 8 photons/);
+		await expect(drawing(page)).not.toContainText('photons absorbed');
+	});
+
+	test('photosynthesis Calvin cycle: the stage of the cycle follows the step', async ({ page }) => {
+		await page.goto('./photosynthesis/#rubisco');
+		const panel = readouts(page);
+		await expect(panel).toContainText('RuBP + CO₂ → unstable 6C → 2 × 3-PGA');
+		await expect(panel).toContainText('Carbon bookkeeping');
+		await expect(drawing(page)).not.toContainText('Carbon bookkeeping');
+		await page.keyboard.press('ArrowRight');
+		await expect(page).toHaveURL(/#reduction$/);
+		await expect(panel).toContainText('3-PGA + ATP + NADPH → G3P');
+		await expect(panel).not.toContainText('unstable 6C');
+	});
+
+	test('photosynthesis summary: the caption is text and follows the light', async ({ page }) => {
+		await page.goto('./photosynthesis/#summary');
+		const panel = readouts(page);
+		await expect(panel).toContainText('6 CO₂ + 6 H₂O + light → C₆H₁₂O₆ + 6 O₂');
+		await expect(drawing(page)).not.toContainText('6 CO₂ + 6 H₂O');
+		await range(page, 'light').fill('0');
+		await expect(panel).toContainText('the Calvin cycle stalls');
+	});
+
+	test('photosynthesis rate: the limiting factor is text and follows CO₂', async ({ page }) => {
+		await page.goto('./photosynthesis/#limits');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/O₂ released\s*[\d.]+ µmol/);
+		await expect(panel).toContainText(/What sets the pace\s*Limited by/);
+		await expect(drawing(page)).not.toContainText('What sets the pace');
+		await range(page, 'co2').fill('50');
+		await expect(panel).toContainText('loses carbon');
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');
@@ -49,10 +151,11 @@ test.describe('on a phone', () => {
 		await expect(page).toHaveURL(/#overshoot$/);
 		await expect(readouts(page)).toContainText(/Peak\s*day \d+/);
 		await expect(readouts(page)).not.toContainText('Effective R now');
-		// A scene without readouts shows no list.
+		// Another scene replaces the list with its own.
 		await page.keyboard.press('ArrowRight');
 		await expect(page).toHaveURL(/#chance$/);
-		await expect(readouts(page)).toHaveCount(0);
+		await expect(readouts(page)).toContainText('Died out early');
+		await expect(readouts(page)).not.toContainText('Peak');
 	});
 });
 

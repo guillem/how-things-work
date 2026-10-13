@@ -9,7 +9,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		Molecule,
 		Photon,
@@ -351,7 +351,14 @@
 				/>
 			{/each}
 
-			<!-- equation -->
+			<!-- equation (its labels are ~5 px on a phone: listed under the stage there too) -->
+			<Readout
+				id="equation"
+				order={0}
+				label="Overall"
+				value="6 CO₂ + 6 H₂O + light → C₆H₁₂O₆ + 6 O₂"
+				opacity={view === 'leaf' ? leafOpacity : 0}
+			/>
 			<g transform="translate(0 532)">
 				<Molecule kind="CO2" x={262} y={0} label="6 CO₂" />
 				<Label x={318} y={5} text="+" size={18} muted />
@@ -690,75 +697,290 @@
 	{#if view === 'leaf'}
 		<g opacity={settled}>
 			<Label x={SUN.x} y={SUN.y + 72} text="sunlight" muted />
-			<Label x={110} y={470} text="CO₂ from the air" anchor="start" />
-			<Label x={720} y={86} text="O₂ to the air" anchor="start" />
-			<Label x={30} y={566} text="water from the roots" anchor="start" muted size={12} />
-			<Label x={212} y={596} text="sugar to the rest of the plant" anchor="start" muted size={12} />
-			<Label x={SECTION.x} y={SECTION.y + 44} text="we'll zoom in here" size={12} muted />
+			<Readout
+				id="b-co2"
+				order={1}
+				label="CO₂ from the air"
+				marker={1}
+				at={[130, 466]}
+				opacity={settled}
+			>
+				<Label x={110} y={470} text="CO₂ from the air" anchor="start" />
+			</Readout>
+			<Readout
+				id="b-o2"
+				order={2}
+				label="O₂ to the air"
+				marker={2}
+				at={[740, 82]}
+				opacity={settled}
+			>
+				<Label x={720} y={86} text="O₂ to the air" anchor="start" />
+			</Readout>
+			<Readout
+				id="b-water"
+				order={3}
+				label="water from the roots"
+				marker={3}
+				at={[50, 562]}
+				opacity={settled}
+			>
+				<Label x={30} y={566} text="water from the roots" anchor="start" muted size={12} />
+			</Readout>
+			<Readout
+				id="b-sugar"
+				order={4}
+				label="sugar to the rest of the plant"
+				marker={4}
+				at={[232, 590]}
+				opacity={settled}
+			>
+				<Label
+					x={212}
+					y={596}
+					text="sugar to the rest of the plant"
+					anchor="start"
+					muted
+					size={12}
+				/>
+			</Readout>
+			<Readout
+				id="b-zoom"
+				order={5}
+				label="we'll zoom in here"
+				marker={5}
+				at={[SECTION.x, SECTION.y + 40]}
+				opacity={settled}
+			>
+				<Label x={SECTION.x} y={SECTION.y + 44} text="we'll zoom in here" size={12} muted />
+			</Readout>
 		</g>
 	{:else if view === 'section'}
 		<g opacity={settled}>
 			<Label x={14} y={48} text="light" anchor="start" muted />
-			<Label
-				x={14}
-				y={92}
-				text="upper epidermis (with waxy cuticle)"
-				anchor="start"
-				size={12}
-				pill
-			/>
-			<Label x={14} y={190} text="palisade mesophyll" anchor="start" size={12} pill />
-			<Label
-				x={14}
-				y={210}
-				text="tall cells packed with chloroplasts"
-				anchor="start"
-				size={11}
-				muted
-			/>
-			<Label x={945} y={345} text="spongy mesophyll" anchor="end" size={12} pill />
-			<Label x={945} y={365} text="loose cells, air spaces" anchor="end" size={11} muted />
-			<Label
-				x={VEIN.x}
-				y={VEIN.y + 80}
-				text="vein: xylem (water) & phloem (sugar)"
-				size={12}
-				pill
-			/>
-			<Label x={14} y={536} text="lower epidermis" anchor="start" size={12} pill />
-			<Label x={STOMA.x} y={586} text="stoma, flanked by two guard cells" size={12} pill />
+			<Readout
+				id="b-upper"
+				order={1}
+				label="upper epidermis (waxy cuticle)"
+				marker={1}
+				at={[36, 88]}
+				opacity={settled}
+			>
+				<Label
+					x={14}
+					y={92}
+					text="upper epidermis (with waxy cuticle)"
+					anchor="start"
+					size={12}
+					pill
+				/>
+			</Readout>
+			<Readout
+				id="b-palisade"
+				order={2}
+				label="palisade mesophyll"
+				marker={2}
+				at={[36, 186]}
+				opacity={settled}
+			>
+				<Label x={14} y={190} text="palisade mesophyll" anchor="start" size={12} pill />
+			</Readout>
+			<Readout id="n-palisade"
+				><Label
+					x={14}
+					y={210}
+					text="tall cells packed with chloroplasts"
+					anchor="start"
+					size={11}
+					muted
+				/></Readout
+			>
+			<Readout
+				id="b-spongy"
+				order={3}
+				label="spongy mesophyll"
+				marker={3}
+				at={[923, 341]}
+				opacity={settled}
+			>
+				<Label x={945} y={345} text="spongy mesophyll" anchor="end" size={12} pill />
+			</Readout>
+			<Readout id="n-spongy"
+				><Label
+					x={945}
+					y={365}
+					text="loose cells, air spaces"
+					anchor="end"
+					size={11}
+					muted
+				/></Readout
+			>
+			<Readout
+				id="b-vein"
+				order={4}
+				label="vein: xylem & phloem"
+				marker={4}
+				at={[VEIN.x, VEIN.y + 76]}
+				opacity={settled}
+			>
+				<Label
+					x={VEIN.x}
+					y={VEIN.y + 80}
+					text="vein: xylem (water) & phloem (sugar)"
+					size={12}
+					pill
+				/>
+			</Readout>
+			<Readout
+				id="b-lower"
+				order={5}
+				label="lower epidermis"
+				marker={5}
+				at={[36, 532]}
+				opacity={settled}
+			>
+				<Label x={14} y={536} text="lower epidermis" anchor="start" size={12} pill />
+			</Readout>
+			<Readout
+				id="b-stoma"
+				order={6}
+				label="stoma, between two guard cells"
+				marker={6}
+				at={[STOMA.x, 582]}
+				opacity={settled}
+			>
+				<Label x={STOMA.x} y={586} text="stoma, flanked by two guard cells" size={12} pill />
+			</Readout>
 			<Label x={STOMA.x - 70} y={470} text="CO₂ in" anchor="end" size={12} />
 			<Label x={STOMA.x + 70} y={470} text="O₂ out" anchor="start" size={12} />
-			<Label x={345} y={95} text="chloroplasts" size={12} />
+			<Readout
+				id="b-chloroplasts"
+				order={7}
+				label="chloroplasts"
+				marker={7}
+				at={[345, 91]}
+				opacity={settled}
+			>
+				<Label x={345} y={95} text="chloroplasts" size={12} />
+			</Readout>
 			<line x1="345" y1="100" x2="345" y2="128" stroke="var(--stage-ink-muted)" stroke-width="1" />
 		</g>
 	{:else}
 		<g opacity={settled}>
-			<Label x={100} y={60} text="outer membrane" anchor="start" size={12} pill />
-			<line x1="170" y1="68" x2="200" y2="110" stroke="var(--stage-ink-muted)" stroke-width="1" />
-			<Label x={110} y={118} text="inner membrane" anchor="start" size={12} pill />
+			<Readout
+				id="b-outer"
+				order={1}
+				label="outer membrane"
+				marker={1}
+				at={[122, 56]}
+				opacity={settled}
+			>
+				<Label x={100} y={60} text="outer membrane" anchor="start" size={12} pill />
+			</Readout>
+			<Readout id="l-outer"
+				><line
+					x1="170"
+					y1="68"
+					x2="200"
+					y2="110"
+					stroke="var(--stage-ink-muted)"
+					stroke-width="1"
+				/></Readout
+			>
+			<Readout
+				id="b-inner"
+				order={2}
+				label="inner membrane"
+				marker={2}
+				at={[132, 114]}
+				opacity={settled}
+			>
+				<Label x={110} y={118} text="inner membrane" anchor="start" size={12} pill />
+			</Readout>
 			<line x1="200" y1="124" x2="232" y2="150" stroke="var(--stage-ink-muted)" stroke-width="1" />
 			<!-- inside the stroma, clear of the membranes (the inner membrane passes x ≈ 795 at y = 160) -->
-			<Label x={786} y={142} text="stroma" anchor="end" size={12} pill />
-			<Label x={786} y={162} text="fluid: Calvin cycle runs here" anchor="end" size={11} muted />
-			<Label x={352} y={140} text="granum" size={12} pill />
-			<Label x={352} y={158} text="a stack of thylakoids" size={11} muted />
-			<!-- callout card: it straddles the chloroplast membranes, so it gets its own background -->
-			<rect
-				x="774"
-				y="390"
-				width="168"
-				height="64"
-				rx="8"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			<line x1="800" y1="390" x2="796" y2="358" stroke="var(--stage-ink-muted)" stroke-width="1" />
-			<Label x={858} y={409} text="thylakoid" size={12} weight={600} />
-			<Label x={858} y={428} text="membrane: light reactions" size={11} muted />
-			<Label x={858} y={444} text="inside: the lumen" size={11} muted />
-			<Label x={STARCH.x} y={STARCH.y - 39} text="starch grain" size={12} muted />
-			<Label x={430} y={515} text="ATP & NADPH out; ADP, Pi & NADP⁺ back" size={12} muted />
+			<Readout
+				id="b-stroma"
+				order={3}
+				label="stroma: the Calvin cycle runs here"
+				marker={3}
+				at={[764, 138]}
+				opacity={settled}
+			>
+				<Label x={786} y={142} text="stroma" anchor="end" size={12} pill />
+			</Readout>
+			<Readout id="n-stroma"
+				><Label
+					x={786}
+					y={162}
+					text="fluid: Calvin cycle runs here"
+					anchor="end"
+					size={11}
+					muted
+				/></Readout
+			>
+			<Readout
+				id="b-granum"
+				order={4}
+				label="granum: a stack of thylakoids"
+				marker={4}
+				at={[352, 136]}
+				opacity={settled}
+			>
+				<Label x={352} y={140} text="granum" size={12} pill />
+			</Readout>
+			<Readout id="n-granum"
+				><Label x={352} y={158} text="a stack of thylakoids" size={11} muted /></Readout
+			>
+			<Readout
+				id="b-thylakoid"
+				order={5}
+				label="thylakoid: light reactions in its membrane"
+				marker={5}
+				at={[796, 352]}
+				opacity={settled}
+			>
+				<!-- callout card: it straddles the chloroplast membranes, so it gets its own background -->
+				<rect
+					x="774"
+					y="390"
+					width="168"
+					height="64"
+					rx="8"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+				<line
+					x1="800"
+					y1="390"
+					x2="796"
+					y2="358"
+					stroke="var(--stage-ink-muted)"
+					stroke-width="1"
+				/>
+				<Label x={858} y={409} text="thylakoid" size={12} weight={600} />
+				<Label x={858} y={428} text="membrane: light reactions" size={11} muted />
+				<Label x={858} y={444} text="inside: the lumen" size={11} muted />
+			</Readout>
+			<Readout
+				id="b-starch"
+				order={6}
+				label="starch grain"
+				marker={6}
+				at={[STARCH.x, STARCH.y - 43]}
+				opacity={settled}
+			>
+				<Label x={STARCH.x} y={STARCH.y - 39} text="starch grain" size={12} muted />
+			</Readout>
+			<Readout id="n-exchange"
+				><Label
+					x={430}
+					y={515}
+					text="ATP & NADPH out; ADP, Pi & NADP⁺ back"
+					size={12}
+					muted
+				/></Readout
+			>
 			<Label x={60} y={420} text="CO₂" anchor="start" size={12} />
 			<Label x={900} y={532} text="G3P (sugar)" anchor="end" size={12} />
 		</g>

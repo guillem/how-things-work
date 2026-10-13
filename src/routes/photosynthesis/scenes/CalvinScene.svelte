@@ -29,7 +29,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		Molecule,
 		Label,
@@ -558,44 +558,49 @@
 			{/each}
 		</g>
 		<Label x={C.x} y={244} text="Calvin cycle" size={15} weight={600} />
-		<Label x={C.x} y={261} text="ATP & NADPH from the thylakoids" size={11} muted />
-		<Label x={C.x} y={275} text="ADP, Pi and NADP⁺ go back" size={11} muted />
+		<!-- <Readout>: minor labels are hidden on narrow screens, readouts listed under the stage -->
+		<Readout id="cycle-note">
+			<Label x={C.x} y={261} text="ATP & NADPH from the thylakoids" size={11} muted />
+			<Label x={C.x} y={275} text="ADP, Pi and NADP⁺ go back" size={11} muted />
+		</Readout>
 
 		<!-- what rides each stretch of the ring -->
-		<Label
-			x={at(0.0417, 140).x}
-			y={at(0.0417, 140).y + 4}
-			text="3 RuBP · 5C"
-			size={11}
-			muted
-			opacity={dimTo(arcEmph.fix)}
-		/>
-		<!-- sits between the granum captions and the ADP lane of the first road -->
-		<Label x={515} y={300} text="6 × 3-PGA · 3C" size={11} muted opacity={dimTo(arcEmph.red)} />
-		<Label
-			x={at(0.6, 142).x}
-			y={at(0.6, 142).y + 4}
-			text="6 × G3P · 3C"
-			size={11}
-			muted
-			opacity={dimTo(arcEmph.red)}
-		/>
-		<Label
-			x={at(0.75, 130).x}
-			y={at(0.75, 130).y + 4}
-			text="5 G3P"
-			size={11}
-			muted
-			opacity={dimTo(arcEmph.reg)}
-		/>
-		<Label
-			x={at(0.93, 138).x}
-			y={at(0.93, 138).y + 4}
-			text="→ 3 RuBP"
-			size={11}
-			muted
-			opacity={dimTo(arcEmph.reg)}
-		/>
+		<Readout id="ring-labels">
+			<Label
+				x={at(0.0417, 140).x}
+				y={at(0.0417, 140).y + 4}
+				text="3 RuBP · 5C"
+				size={11}
+				muted
+				opacity={dimTo(arcEmph.fix)}
+			/>
+			<!-- sits between the granum captions and the ADP lane of the first road -->
+			<Label x={515} y={300} text="6 × 3-PGA · 3C" size={11} muted opacity={dimTo(arcEmph.red)} />
+			<Label
+				x={at(0.6, 142).x}
+				y={at(0.6, 142).y + 4}
+				text="6 × G3P · 3C"
+				size={11}
+				muted
+				opacity={dimTo(arcEmph.red)}
+			/>
+			<Label
+				x={at(0.75, 130).x}
+				y={at(0.75, 130).y + 4}
+				text="5 G3P"
+				size={11}
+				muted
+				opacity={dimTo(arcEmph.reg)}
+			/>
+			<Label
+				x={at(0.93, 138).x}
+				y={at(0.93, 138).y + 4}
+				text="→ 3 RuBP"
+				size={11}
+				muted
+				opacity={dimTo(arcEmph.reg)}
+			/>
+		</Readout>
 
 		<!-- RuBisCO on the ring at one o'clock -->
 		<g
@@ -627,15 +632,17 @@
 			opacity={dimTo(arcEmph.fix)}
 		/>
 		<!-- anchored at its end so that it stays inside the stroma panel (x ≤ 620) -->
-		<Label
-			x={612}
-			y={80}
-			text="3 CO₂ in"
-			anchor="end"
-			size={11}
-			muted
-			opacity={dimTo(arcEmph.fix)}
-		/>
+		<Readout id="co2-in">
+			<Label
+				x={612}
+				y={80}
+				text="3 CO₂ in"
+				anchor="end"
+				size={11}
+				muted
+				opacity={dimTo(arcEmph.fix)}
+			/>
+		</Readout>
 
 		<!-- the molecules on the ring -->
 		{#each frame.chains as c (c.id)}
@@ -686,27 +693,58 @@
 			opacity={lerp(0.6, 1, clamp(w))}
 		/>
 	{/snippet}
-	{@render heading(300, 72, '1 · Carbon fixation', arcEmph.fix)}
-	<Label
-		x={300}
-		y={96}
-		text="RuBP + CO₂ → unstable 6C → 2 × 3-PGA"
-		anchor="start"
-		size={12}
+	<Readout id="h-fix" order={1} label="Carbon fixation" marker={1} at={[322, 67]}>
+		{@render heading(300, 72, '1 · Carbon fixation', arcEmph.fix)}
+	</Readout>
+	<Readout
+		id="fix"
+		order={5}
+		label="1 · Fixation"
+		value="RuBP + CO₂ → unstable 6C → 2 × 3-PGA"
 		opacity={e.fix}
-	/>
-	{@render heading(216, 540, '2 · Reduction', arcEmph.red)}
-	<Label
-		x={216}
-		y={563}
-		text="3-PGA + ATP + NADPH → G3P"
-		anchor="start"
-		size={12}
+	>
+		<Label
+			x={300}
+			y={96}
+			text="RuBP + CO₂ → unstable 6C → 2 × 3-PGA"
+			anchor="start"
+			size={12}
+			opacity={e.fix}
+		/>
+	</Readout>
+	<Readout id="h-red" order={2} label="Reduction" marker={2} at={[238, 535]}>
+		{@render heading(216, 540, '2 · Reduction', arcEmph.red)}
+	</Readout>
+	<Readout
+		id="red"
+		order={5}
+		label="2 · Reduction"
+		value="3-PGA + ATP + NADPH → G3P"
 		opacity={e.red}
-	/>
-	{@render heading(36, 240, '3 · Regeneration', arcEmph.reg)}
-	<Label x={36} y={264} text="5 G3P → 3 RuBP · 15 C" anchor="start" size={12} opacity={e.reg} />
-	<Label x={36} y={282} text="costs 3 more ATP" anchor="start" size={11} muted opacity={e.reg} />
+	>
+		<Label
+			x={216}
+			y={563}
+			text="3-PGA + ATP + NADPH → G3P"
+			anchor="start"
+			size={12}
+			opacity={e.red}
+		/>
+	</Readout>
+	<Readout id="h-reg" order={3} label="Regeneration" marker={3} at={[58, 235]}>
+		{@render heading(36, 240, '3 · Regeneration', arcEmph.reg)}
+	</Readout>
+	<Readout
+		id="reg"
+		order={5}
+		label="3 · Regeneration"
+		value="5 G3P → 3 RuBP · 15 C"
+		note="costs 3 more ATP"
+		opacity={e.reg}
+	>
+		<Label x={36} y={264} text="5 G3P → 3 RuBP · 15 C" anchor="start" size={12} opacity={e.reg} />
+		<Label x={36} y={282} text="costs 3 more ATP" anchor="start" size={11} muted opacity={e.reg} />
+	</Readout>
 
 	<!-- ================= export: G3P → sugars ================= -->
 	<g opacity={exitEmph}>
@@ -804,7 +842,16 @@
 		/>
 		<!-- captions to the left of the grain: its branch arrives from below -->
 		<Label x={STARCH.x - 52} y={318} text="starch grain" anchor="end" size={12} />
-		<Label x={STARCH.x - 52} y={333} text="built in the chloroplast" anchor="end" size={11} muted />
+		<Readout id="starch-note"
+			><Label
+				x={STARCH.x - 52}
+				y={333}
+				text="built in the chloroplast"
+				anchor="end"
+				size={11}
+				muted
+			/></Readout
+		>
 
 		<!-- sucrose in a phloem tube -->
 		<rect
@@ -838,7 +885,9 @@
 			</g>
 		{/each}
 		<Label x={STARCH.x} y={462} text="sucrose → phloem" size={12} />
-		<Label x={STARCH.x} y={477} text="built in the cytosol" size={11} muted />
+		<Readout id="sucrose-note"
+			><Label x={STARCH.x} y={477} text="built in the cytosol" size={11} muted /></Readout
+		>
 
 		<!-- cellulose: a fragment of cell wall -->
 		<rect
@@ -875,60 +924,73 @@
 			{/each}
 		{/each}
 		<Label x={STARCH.x} y={561} text="cellulose · cell walls" size={12} />
-		<Label x={STARCH.x} y={576} text="also fats, amino acids, fuel" size={11} muted />
+		<Readout id="cellulose-note"
+			><Label x={STARCH.x} y={576} text="also fats, amino acids, fuel" size={11} muted /></Readout
+		>
 	</g>
 
 	<!-- ================= ledger ================= -->
-	<rect
-		x={LEDGER.x}
-		y={LEDGER.y}
-		width={LEDGER.w}
-		height={LEDGER.h}
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
-	<Label
-		x={LEDGER.x + 14}
-		y={LEDGER.y + 25}
-		text="Carbon bookkeeping · 3 CO₂ → 1 G3P"
-		anchor="start"
-		size={13}
-		weight={600}
-	/>
-	<line
-		x1={LEDGER.x + 14}
-		y1={LEDGER.y + 36}
-		x2={LEDGER.x + LEDGER.w - 14}
-		y2={LEDGER.y + 36}
-		stroke="var(--border)"
-	/>
-	<line
-		x1={LEDGER.x + 14}
-		y1={lineY(COST_ROW) - 15.5}
-		x2={LEDGER.x + LEDGER.w - 14}
-		y2={lineY(COST_ROW) - 15.5}
-		stroke="var(--border)"
-	/>
-	{#each LINES as line, i (i)}
-		{@const h = clamp(hi.current[i] ?? 0)}
+	<!-- on narrow screens the ledger's highlighted lines are a row under the stage -->
+	<Readout
+		id="ledger"
+		order={6}
+		label="Carbon bookkeeping"
+		value="3 CO₂ → 1 G3P"
+		note={LINES.filter((_, i) => active[i])
+			.map((l) => l.text.replace(/ {2,}/g, ' '))
+			.join('; ')}
+	>
 		<rect
-			x={LEDGER.x + 7}
-			y={lineY(i) - 15}
-			width={LEDGER.w - 14}
-			height="21"
-			rx="5"
-			fill={colors.rubisco}
-			opacity={0.2 * h}
+			x={LEDGER.x}
+			y={LEDGER.y}
+			width={LEDGER.w}
+			height={LEDGER.h}
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
 		/>
 		<Label
 			x={LEDGER.x + 14}
-			y={lineY(i)}
-			text={line.text}
+			y={LEDGER.y + 25}
+			text="Carbon bookkeeping · 3 CO₂ → 1 G3P"
 			anchor="start"
-			size={12}
-			weight={h > 0.5 ? 600 : 500}
-			opacity={lerp(0.62, 1, h)}
+			size={13}
+			weight={600}
 		/>
-	{/each}
+		<line
+			x1={LEDGER.x + 14}
+			y1={LEDGER.y + 36}
+			x2={LEDGER.x + LEDGER.w - 14}
+			y2={LEDGER.y + 36}
+			stroke="var(--border)"
+		/>
+		<line
+			x1={LEDGER.x + 14}
+			y1={lineY(COST_ROW) - 15.5}
+			x2={LEDGER.x + LEDGER.w - 14}
+			y2={lineY(COST_ROW) - 15.5}
+			stroke="var(--border)"
+		/>
+		{#each LINES as line, i (i)}
+			{@const h = clamp(hi.current[i] ?? 0)}
+			<rect
+				x={LEDGER.x + 7}
+				y={lineY(i) - 15}
+				width={LEDGER.w - 14}
+				height="21"
+				rx="5"
+				fill={colors.rubisco}
+				opacity={0.2 * h}
+			/>
+			<Label
+				x={LEDGER.x + 14}
+				y={lineY(i)}
+				text={line.text}
+				anchor="start"
+				size={12}
+				weight={h > 0.5 ? 600 : 500}
+				opacity={lerp(0.62, 1, h)}
+			/>
+		{/each}
+	</Readout>
 </g>

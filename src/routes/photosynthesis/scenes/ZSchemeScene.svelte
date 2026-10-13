@@ -14,7 +14,7 @@
 	 * all of them are already on the path, with no flash active and one photon
 	 * in flight.
 	 */
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		Molecule,
 		Photon,
@@ -229,7 +229,10 @@
 			shape-rendering="crispEdges"
 		/>
 		<line x1={X0 - 4} y1={tick.y} x2={X0} y2={tick.y} stroke="var(--stage-line)" stroke-width="1" />
-		<Label x={X0 - 8} y={tick.y + 4} text={tick.text} size={11} anchor="end" muted />
+		<!-- <Readout>: minor labels are hidden on narrow screens, readouts listed under the stage -->
+		<Readout id="tick-{tick.v}"
+			><Label x={X0 - 8} y={tick.y + 4} text={tick.text} size={11} anchor="end" muted /></Readout
+		>
 	{/each}
 	<line
 		x1={X0}
@@ -249,17 +252,28 @@
 		stroke-width="1.2"
 		marker-end="url(#arrowhead)"
 	/>
-	<Label x={34} y={300} text="electron energy (redox potential)" size={12} muted rotate={-90} />
+	<Readout id="y-title"
+		><Label
+			x={34}
+			y={300}
+			text="electron energy (redox potential)"
+			size={12}
+			muted
+			rotate={-90}
+		/></Readout
+	>
 	<Label x={X0 + 8} y={Y_TOP - 8} text="high energy" size={11} anchor="start" muted />
 	<Label x={X0 - 8} y={Y_BOTTOM + 14} text="low energy" size={11} anchor="end" muted />
-	<Label
-		x={X1 - 10}
-		y={Y_BOTTOM - 7}
-		text="position along the chain"
-		size={11}
-		anchor="end"
-		muted
-	/>
+	<Readout id="x-title">
+		<Label
+			x={X1 - 10}
+			y={Y_BOTTOM - 7}
+			text="position along the chain"
+			size={11}
+			anchor="end"
+			muted
+		/>
+	</Readout>
 
 	<!-- complex bands along the horizontal axis -->
 	{#each bands as b (b.text)}
@@ -336,8 +350,10 @@
 
 	<!-- ================= annotations ================= -->
 	<!-- start: water -->
-	<Label x={X0 + 8} y={P.h2o.y - 35} text="4 e⁻ from 2 H₂O" size={11} anchor="start" muted />
-	<Label x={X0 + 8} y={P.h2o.y - 20} text="O₂ released" size={11} anchor="start" muted />
+	<Readout id="water-note">
+		<Label x={X0 + 8} y={P.h2o.y - 35} text="4 e⁻ from 2 H₂O" size={11} anchor="start" muted />
+		<Label x={X0 + 8} y={P.h2o.y - 20} text="O₂ released" size={11} anchor="start" muted />
+	</Readout>
 	<Label x={P.h2o.x - 11} y={P.h2o.y + 4} text="H₂O" size={12} anchor="end" />
 	<Label x={P.p680.x} y={P.p680.y + 18} text="P680" size={12} />
 
@@ -353,7 +369,9 @@
 	<Label x={P.p700.x} y={P.p700.y + 19} text="P700" size={12} />
 	<Label x={386} y={416} text="energy drop pumps H⁺ →" size={12} anchor="start" />
 	<Molecule kind="ATP" x={559} y={412} scale={0.8} />
-	<Label x={573} y={432} text="(via ATP synthase)" size={11} anchor="end" muted />
+	<Readout id="atp-note"
+		><Label x={573} y={432} text="(via ATP synthase)" size={11} anchor="end" muted /></Readout
+	>
 
 	<!-- PSI lift and the acceptor chain -->
 	<Label x={P.p700x.x} y={P.p700x.y - 16} text="P700*" size={12} />
@@ -363,7 +381,9 @@
 	<Label x={P.fd.x} y={P.fd.y + 23} text="ferredoxin" size={12} />
 	<Label x={P.nadp.x} y={P.nadp.y - 18} text="NADP⁺" size={12} />
 	<Molecule kind="NADPH" x={P.nadp.x + 49} y={P.nadp.y} scale={0.9} />
-	<Label x={P.nadp.x + 49} y={P.nadp.y + 26} text="energy stored" size={11} muted />
+	<Readout id="nadph-note"
+		><Label x={P.nadp.x + 49} y={P.nadp.y + 26} text="energy stored" size={11} muted /></Readout
+	>
 
 	<!-- ================= animation ================= -->
 	<!-- incoming photons, drawn before the caption pills so they emerge from behind them -->
@@ -384,22 +404,26 @@
 	{/each}
 
 	<!-- photon captions: the animated photons fly out of these into the reaction centres -->
-	<Label
-		x={300}
-		y={P.p680.y - 5}
-		text="1st photon · absorbed at PSII"
-		size={12}
-		anchor="start"
-		pill
-	/>
-	<Label
-		x={660}
-		y={P.p700.y - 5}
-		text="2nd photon · absorbed at PSI"
-		size={12}
-		anchor="start"
-		pill
-	/>
+	<Readout id="photon-1" order={10} label="1st photon, at PSII" marker={1} at={[322, P.p680.y - 9]}>
+		<Label
+			x={300}
+			y={P.p680.y - 5}
+			text="1st photon · absorbed at PSII"
+			size={12}
+			anchor="start"
+			pill
+		/>
+	</Readout>
+	<Readout id="photon-2" order={11} label="2nd photon, at PSI" marker={2} at={[682, P.p700.y - 9]}>
+		<Label
+			x={660}
+			y={P.p700.y - 5}
+			text="2nd photon · absorbed at PSI"
+			size={12}
+			anchor="start"
+			pill
+		/>
+	</Readout>
 
 	<!-- flashes at the reaction centres when a photon lands -->
 	{#each arrivals as a (a.key)}
@@ -432,18 +456,31 @@
 	{/each}
 
 	<!-- ================= readouts ================= -->
-	<Label
-		x={X1}
-		y={Y_TOP - 8}
-		text="photons absorbed {photonsAbsorbed} · e⁻ from water {electronsFromWater} · e⁻ to NADPH {electronsDelivered} · O₂ released {oxygenReleased}"
-		size={12}
-		anchor="end"
-	/>
-	<Label
-		x={(X0 + X1) / 2}
-		y={570}
-		text="2 photons per electron · 4 electrons per O₂ · at least 8 photons per O₂"
-		size={12}
-		pill
-	/>
+	<Readout id="photons" order={1} label="Photons absorbed" value={String(photonsAbsorbed)}>
+		<Label
+			x={X1}
+			y={Y_TOP - 8}
+			text="photons absorbed {photonsAbsorbed} · e⁻ from water {electronsFromWater} · e⁻ to NADPH {electronsDelivered} · O₂ released {oxygenReleased}"
+			size={12}
+			anchor="end"
+		/>
+	</Readout>
+	<Readout id="e-water" order={2} label="e⁻ from water" value={String(electronsFromWater)} />
+	<Readout id="e-nadph" order={3} label="e⁻ to NADPH" value={String(electronsDelivered)} />
+	<Readout id="o2" order={4} label="O₂ released" value={String(oxygenReleased)} />
+	<Readout
+		id="budget"
+		order={5}
+		label="Per O₂"
+		value="at least 8 photons"
+		note="2 photons per electron · 4 electrons per O₂"
+	>
+		<Label
+			x={(X0 + X1) / 2}
+			y={570}
+			text="2 photons per electron · 4 electrons per O₂ · at least 8 photons per O₂"
+			size={12}
+			pill
+		/>
+	</Readout>
 </g>

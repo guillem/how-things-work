@@ -117,13 +117,13 @@ label search; right-clicks leaving handles held; and a logic-gates test that gua
   rows two by two); the drawing keeps numbered badges or short labels, minor labels hide. Wider
   screens render pixel-identically. Code: `src/lib/explainer/Readout.svelte`,
   `readouts.svelte.ts`, `ReadoutPanel.svelte`; tests in `e2e/phone-readouts.e2e.ts`; how-to in
-  `docs/scene-guide.md` ("Phone readouts"). Converted: photosynthesis's membrane scene, epidemics'
-  SIR scene (the panel adds ~120–190 px to the pinned card there). To convert the next scene: wrap
-  each readout/caption in `<Readout id label value note>`, part names in `<Readout label marker
+  `docs/scene-guide.md` ("Phone readouts"). Converted: every scene of photosynthesis and
+  epidemics (the panel adds ~90–190 px to the pinned card; membrane and crowd are the tallest).
+  To convert the next scene: wrap each readout/caption in `<Readout id label value note>`, part names in `<Readout label marker
 at>` (badge), minor labels in a bare `<Readout>`; pass the scene's fade as `opacity`; check
   phone shots (390 × 844, `TOUCH=1`, both themes) and a desktop pixel diff against main; extend
-  `e2e/phone-readouts.e2e.ts` with the scene's key readout. Still to do: the other ~147 scenes
-  (~720 text elements, each needing editorial choices), plus axis ticks in the shared chart
+  `e2e/phone-readouts.e2e.ts` with the scene's key readout. Still to do: the other ~137 scenes
+  (several hundred text elements, each needing editorial choices), plus axis ticks in the shared chart
   helpers.
 
 - **Stage text styling overrides SVG attributes (site-wide, found 2026-10-07).** In

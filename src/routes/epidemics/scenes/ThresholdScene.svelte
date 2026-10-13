@@ -32,7 +32,7 @@
 		scale,
 		smoothstep
 	} from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { effectiveR, finalSize, herdThreshold } from '../model';
 	import { settings } from '../run';
 
@@ -225,6 +225,10 @@
 	presentation attributes, so text here sets both through `style:` (the
 	attributes are kept so that the drawing reads the same without that CSS).
 -->
+{#snippet measlesShort()}
+	{@render say(MX + 6, Y1 - 26, 'measles: 92–94%', 12, { anchor: 'end' })}
+{/snippet}
+
 {#snippet say(
 	x: number,
 	y: number,
@@ -254,10 +258,13 @@
 
 <g style:font-variant-numeric="tabular-nums">
 	<!-- title -->
-	{@render say(X0, 56, 'The herd-immunity threshold', 16, { weight: 600 })}
-	{@render say(X0, 78, 'An outbreak cannot grow once the immune share is above 1 − 1/R₀', 12, {
-		muted: true
-	})}
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout id="title">
+		{@render say(X0, 56, 'The herd-immunity threshold', 16, { weight: 600 })}
+		{@render say(X0, 78, 'An outbreak cannot grow once the immune share is above 1 − 1/R₀', 12, {
+			muted: true
+		})}
+	</Readout>
 
 	<!-- regions -->
 	<g opacity={shade}>
@@ -333,9 +340,11 @@
 			stroke-width="1.5"
 		/>
 		{@render say(fluLabel.x, fluLabel.y, 'seasonal flu: R ≈ 1.3', 12)}
-		{@render say(fluLabel.x, fluLabel.y + 15, 'already net of existing immunity', 11, {
-			muted: true
-		})}
+		<Readout id="flu-note">
+			{@render say(fluLabel.x, fluLabel.y + 15, 'already net of existing immunity', 11, {
+				muted: true
+			})}
+		</Readout>
 
 		<!-- measles: past the end of the axis -->
 		<line
@@ -361,9 +370,11 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-width="1"
 		/>
-		{@render say(MX + 6, Y1 - 26, 'measles (R₀ often 12–18, off the axis): 92–94%', 12, {
-			anchor: 'end'
-		})}
+		<Readout id="measles" narrow={measlesShort}>
+			{@render say(MX + 6, Y1 - 26, 'measles (R₀ often 12–18, off the axis): 92–94%', 12, {
+				anchor: 'end'
+			})}
+		</Readout>
 	</g>
 
 	<!-- the current point, and the threshold for its R₀ on the curve -->
@@ -391,27 +402,44 @@
 	<circle cx={px} cy={py} r="8" fill={pointColor} stroke="var(--stage-bg)" stroke-width="2" />
 
 	<!-- readouts -->
-	{@render say(PX0, 130, `Threshold for R₀ = ${r0.toFixed(1)}`, 12, { muted: true, halo: false })}
-	{@render say(PX0, 160, `${thresholdText} immune`, 26, {
-		weight: 600,
-		color: 'var(--sir-v)',
-		halo: false
-	})}
-	{@render say(
-		PX0,
-		180,
-		r0 > 1 + 1e-9 ? `1 − 1/R₀ = 1 − 1/${r0.toFixed(1)}` : 'R₀ of 1 or less: no immunity needed',
-		11,
-		{ muted: true, halo: false }
-	)}
+	<Readout
+		id="threshold"
+		order={1}
+		label="Threshold for R₀ = {r0.toFixed(1)}"
+		value="{thresholdText} immune"
+		color="var(--sir-v)"
+	>
+		{@render say(PX0, 130, `Threshold for R₀ = ${r0.toFixed(1)}`, 12, { muted: true, halo: false })}
+		{@render say(PX0, 160, `${thresholdText} immune`, 26, {
+			weight: 600,
+			color: 'var(--sir-v)',
+			halo: false
+		})}
+		{@render say(
+			PX0,
+			180,
+			r0 > 1 + 1e-9 ? `1 − 1/R₀ = 1 − 1/${r0.toFixed(1)}` : 'R₀ of 1 or less: no immunity needed',
+			11,
+			{ muted: true, halo: false }
+		)}
+	</Readout>
 
-	{@render say(PX0, 222, 'Each case now infects', 13, { weight: 600, halo: false })}
-	{@render say(PX1, 222, `${rText} people`, 13, {
-		weight: 600,
-		anchor: 'end',
-		color: pointColor,
-		halo: false
-	})}
+	<Readout
+		id="r-now"
+		order={2}
+		label="Each case now infects"
+		value="{rText} people"
+		note={verdict}
+		color={pointColor}
+	>
+		{@render say(PX0, 222, 'Each case now infects', 13, { weight: 600, halo: false })}
+		{@render say(PX1, 222, `${rText} people`, 13, {
+			weight: 600,
+			anchor: 'end',
+			color: pointColor,
+			halo: false
+		})}
+	</Readout>
 	<rect x={PX0} y={234} width={PX1 - PX0} height="10" rx="5" fill="var(--stage-grid)" />
 	<rect
 		x={PX0}
@@ -422,32 +450,42 @@
 		fill={pointColor}
 	/>
 	<line x1={gx(1)} x2={gx(1)} y1={228} y2={250} stroke="var(--stage-ink)" stroke-width="1.5" />
-	{@render say(gx(1), 264, '1', 11, { anchor: 'middle', muted: true, halo: false })}
-	{@render say(
-		PX0,
-		286,
-		`R = ${r0.toFixed(1)} × ${Math.round(100 * (1 - v))}% not immune = ${rText}`,
-		12,
-		{ halo: false }
-	)}
-	{@render say(PX0, 304, verdict, 12, { weight: 600, color: pointColor, halo: false })}
+	<Readout id="gauge-text">
+		{@render say(gx(1), 264, '1', 11, { anchor: 'middle', muted: true, halo: false })}
+		{@render say(
+			PX0,
+			286,
+			`R = ${r0.toFixed(1)} × ${Math.round(100 * (1 - v))}% not immune = ${rText}`,
+			12,
+			{ halo: false }
+		)}
+		{@render say(PX0, 304, verdict, 12, { weight: 600, color: pointColor, halo: false })}
+	</Readout>
 
 	<!-- 100 people -->
-	{@render say(PX0, 340, grows ? 'If an outbreak takes off' : 'If a case arrives', 13, {
-		weight: 600,
-		halo: false
-	})}
-	{@render say(
-		PX0,
-		356,
-		grows
-			? v < 0.005
-				? `${share(size)} of everyone`
-				: `${share(size)} of everyone, ${share(size / (1 - v))} of the unvaccinated`
-			: chainText,
-		11,
-		{ muted: true, halo: false }
-	)}
+	<Readout
+		id="outcome"
+		order={3}
+		label={grows ? 'If an outbreak takes off' : 'If a case arrives'}
+		value={grows ? `${share(size)} of everyone` : chainText}
+		note={grows && v >= 0.005 ? `${share(size / (1 - v))} of the unvaccinated` : undefined}
+	>
+		{@render say(PX0, 340, grows ? 'If an outbreak takes off' : 'If a case arrives', 13, {
+			weight: 600,
+			halo: false
+		})}
+		{@render say(
+			PX0,
+			356,
+			grows
+				? v < 0.005
+					? `${share(size)} of everyone`
+					: `${share(size)} of everyone, ${share(size / (1 - v))} of the unvaccinated`
+				: chainText,
+			11,
+			{ muted: true, halo: false }
+		)}
+	</Readout>
 	{#each people as p (p.k)}
 		{#if p.k < nv}
 			<circle cx={p.x} cy={p.y} r="4.3" fill="none" stroke="var(--sir-v)" stroke-width="2" />
@@ -465,7 +503,14 @@
 		{:else}
 			<circle cx={lx + 5} cy={ly - 4} r="5" fill={item.color} />
 		{/if}
-		{@render say(lx + 15, ly, `${item.n} ${item.label}`, 12, { halo: false })}
+		<Readout id="people-{item.id}" order={10 + i} label="{item.n} {item.label}" color={item.color}>
+			{@render say(lx + 15, ly, `${item.n} ${item.label}`, 12, { halo: false })}
+		</Readout>
 	{/each}
-	{@render say(GX - 5, GY + 10 * CELL + 8, 'out of 100 people', 11, { muted: true, halo: false })}
+	<Readout id="people-note">
+		{@render say(GX - 5, GY + 10 * CELL + 8, 'out of 100 people', 11, {
+			muted: true,
+			halo: false
+		})}
+	</Readout>
 </g>
