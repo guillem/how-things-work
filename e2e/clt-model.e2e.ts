@@ -2,6 +2,8 @@
 import { expect, test } from '@playwright/test';
 import {
 	SHAPES,
+	BINS,
+	binValue,
 	binomial,
 	galton,
 	mean,
@@ -90,5 +92,14 @@ test('the histogram of averages of 30 or more is a smooth bell, for every starti
 			// fine enough to show a bell: several bars across ±σ/√n
 			expect(within, `${name}, n = ${n}`).toBeGreaterThanOrEqual(4);
 		}
+	}
+});
+
+test('with n = 1 the histogram of averages has the same bars as the starting shape', () => {
+	for (const [name, shape] of Object.entries(SHAPES)) {
+		const bars = meanBars(shape, 1);
+		expect(bars.width, name).toBeCloseTo(1 / BINS, 12);
+		for (let i = 0; i < BINS; i++)
+			expect(bars.left(bars.barOf(binValue(i))), `${name}, bar ${i}`).toBeCloseTo(i / BINS, 12);
 	}
 });

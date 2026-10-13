@@ -119,9 +119,17 @@ const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : Math.abs(a));
  * non-empty bars are i0 + g·k, the sums lie on the lattice n·i0 + g·j, so
  * each bar holds exactly c lattice points (no aliasing stripes, e.g. from
  * the Spiky shape, whose bars are 3 apart). c gives about four bars per
- * σ/√n, and bars at least 0.01 wide.
+ * σ/√n, and bars at least 0.01 wide. With n = 1 every average is one bar's
+ * value, so the bars are the starting shape's own 20 (gaps included).
  */
 export function meanBars(w: Shape, n: number) {
+	if (n <= 1)
+		return {
+			count: BINS,
+			width: 1 / BINS,
+			barOf: (m: number) => Math.min(BINS - 1, Math.floor(m * BINS)),
+			left: (b: number) => b / BINS
+		};
 	const idx = w.flatMap((h, i) => (h > 0 ? [i] : []));
 	const i0 = idx[0] ?? 0;
 	const g = Math.max(
