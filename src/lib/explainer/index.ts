@@ -10,3 +10,4 @@ export type {
 	StageProps,
 	Step
 } from './types';
+export { default as Readout } from './Readout.svelte';
