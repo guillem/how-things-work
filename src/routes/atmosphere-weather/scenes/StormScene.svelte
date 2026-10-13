@@ -30,7 +30,7 @@
 	 * overrides SVG presentation attributes.
 	 */
 	import { clamp, smoothstep, cycle, hash, scale, linePath, Axes } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		GENESIS_LAT,
 		GENESIS_SST,
@@ -439,10 +439,44 @@
 			<circle r={eyeR * 1.5} fill="url(#storm-eye)" opacity={eyeClear} />
 		</g>
 	</g>
-	{@render txt(32, 40, 'The storm, seen from above', 14, { weight: 600 })}
-	{@render txt(32, 58, `sea surface ${sst.toFixed(1)} °C · latitude ${lat}° N`, 12, {
-		muted: true
-	})}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="above-title">
+		{@render txt(32, 40, 'The storm, seen from above', 14, { weight: 600 })}
+		{@render txt(32, 58, `sea surface ${sst.toFixed(1)} °C · latitude ${lat}° N`, 12, {
+			muted: true
+		})}
+	</Readout>
+	<Readout
+		id="state"
+		order={1}
+		label="Storm"
+		value={state}
+		note={reasons.length
+			? `${v >= 17.5 ? 'weakening' : 'no hurricane'}: ${reasons.join('; ')}`
+			: `${fmtTime(hours)} after it began`}
+	/>
+	<Readout
+		id="wind"
+		order={2}
+		label="Sustained wind"
+		value="{Math.floor(v)} m/s"
+		note="{Math.floor(v * 3.6)} km/h"
+	/>
+	<Readout
+		id="vmax"
+		order={3}
+		label="Max possible over this sea"
+		value={tooCool ? 'none: too cool' : `${Math.floor(vmax)} m/s (category ${category(vmax)})`}
+		note={!tooCool && tooNear ? 'but it can’t start spinning this near the equator' : undefined}
+		color={tooCool ? 'var(--atm-cold)' : 'var(--atm-warm)'}
+	/>
+	<Readout
+		id="sea"
+		order={4}
+		label="Sea surface"
+		value="{sst.toFixed(1)} °C"
+		note="latitude {lat}° N"
+	/>
 	<!-- sense of rotation -->
 	<g opacity={forms ? 0.4 + 0.6 * organised : 0.3 * alive}>
 		<path
@@ -453,8 +487,10 @@
 			stroke-width="1.6"
 			marker-end="url(#arrowhead)"
 		/>
-		{@render txt(560, 40, 'turns anticlockwise', 12, { anchor: 'end' })}
-		{@render txt(560, 56, '(northern hemisphere)', 11, { anchor: 'end', muted: true })}
+		<Readout id="turns">
+			{@render txt(560, 40, 'turns anticlockwise', 12, { anchor: 'end' })}
+			{@render txt(560, 56, '(northern hemisphere)', 11, { anchor: 'end', muted: true })}
+		</Readout>
 	</g>
 	{#if eyeClear > 0.3}
 		<g opacity={smoothstep(0.3, 0.7, eyeClear)}>
@@ -466,40 +502,47 @@
 				stroke="var(--stage-ink-muted)"
 				stroke-width="1"
 			/>
-			{@render txt(CX + 154, CY + 160, 'eye', 12)}
+			<Readout id="eye-label">
+				{@render txt(CX + 154, CY + 160, 'eye', 12)}
+				{#snippet narrow()}
+					{@render txt(CX + 154, CY + 172, 'eye', 28, { weight: 700 })}
+				{/snippet}
+			</Readout>
 		</g>
 	{/if}
 	<!-- state / reason tags -->
-	{#if reasons.length}
-		{#each reasons as r, k (r)}
-			{@const label = `${v >= 17.5 ? 'Weakening' : 'No hurricane'}: ${r}`}
-			{@const w = label.length * 6.5 + 24}
-			<g transform="translate({CX - w / 2} {360 - (reasons.length - 1 - k) * 28})">
+	<Readout id="tags">
+		{#if reasons.length}
+			{#each reasons as r, k (r)}
+				{@const label = `${v >= 17.5 ? 'Weakening' : 'No hurricane'}: ${r}`}
+				{@const w = label.length * 6.5 + 24}
+				<g transform="translate({CX - w / 2} {360 - (reasons.length - 1 - k) * 28})">
+					<rect
+						width={w}
+						height="22"
+						rx="11"
+						fill="var(--surface)"
+						stroke="var(--atm-low)"
+						stroke-width="1.2"
+					/>
+					{@render txt(w / 2, 15, label, 12, { anchor: 'middle', weight: 600 })}
+				</g>
+			{/each}
+		{:else}
+			{@const w = state.length * 7.2 + 28}
+			<g transform="translate({CX - w / 2} 360)">
 				<rect
 					width={w}
 					height="22"
 					rx="11"
 					fill="var(--surface)"
-					stroke="var(--atm-low)"
-					stroke-width="1.2"
+					stroke="var(--border)"
+					stroke-width="1"
 				/>
-				{@render txt(w / 2, 15, label, 12, { anchor: 'middle', weight: 600 })}
+				{@render txt(w / 2, 15, state, 12, { anchor: 'middle', weight: 600 })}
 			</g>
-		{/each}
-	{:else}
-		{@const w = state.length * 7.2 + 28}
-		<g transform="translate({CX - w / 2} 360)">
-			<rect
-				width={w}
-				height="22"
-				rx="11"
-				fill="var(--surface)"
-				stroke="var(--border)"
-				stroke-width="1"
-			/>
-			{@render txt(w / 2, 15, state, 12, { anchor: 'middle', weight: 600 })}
-		</g>
-	{/if}
+		{/if}
+	</Readout>
 
 	<!-- ============ cross-section ============ -->
 	<rect
@@ -516,7 +559,9 @@
 		L{SX + 10} {SBOT} Q{SX} {SBOT} {SX} {SBOT - 10} Z"
 		style:fill={sea}
 	/>
-	{@render txt(32, 430, 'Cross-section: the heat engine', 13, { weight: 600 })}
+	<Readout id="section-title">
+		{@render txt(32, 430, 'Cross-section: the heat engine', 13, { weight: 600 })}
+	</Readout>
 	<!-- towers -->
 	{#each [-1, 1] as sg (sg)}
 		<path
@@ -576,30 +621,32 @@
 		<circle cx={g.x} cy={g.y} r="2.6" fill="var(--atm-warm)" opacity={g.fade * engine} />
 	{/each}
 	<!-- labels -->
-	{@render txt(
-		32,
-		576,
-		tooCool ? 'cool sea: little evaporation' : 'evaporation from the warm sea',
-		12
-	)}
-	<g opacity={smoothstep(0.05, 0.4, engine)}>
-		{@render txt(CX - WALL - 12, condY, 'condensation', 12, {
-			anchor: 'end'
-		})}
-		{@render txt(CX - WALL - 12, condY + 15, 'releases heat', 12, {
-			anchor: 'end',
-			color: 'var(--atm-warm)',
-			weight: 600
-		})}
-		{@render txt(SX + SW - 16, Math.min(yTop - 4, 498), 'outflow', 12, { anchor: 'end' })}
-		{@render txt(SX + SW - 16, SURF - 22, 'moist air spirals in', 12, { anchor: 'end' })}
-	</g>
-	{#if eyeClear > 0}
-		{@render txt(CX, SBOT - 10, 'eye: sinking air', 11, {
-			anchor: 'middle',
-			opacity: eyeClear
-		})}
-	{/if}
+	<Readout id="section-labels">
+		{@render txt(
+			32,
+			576,
+			tooCool ? 'cool sea: little evaporation' : 'evaporation from the warm sea',
+			12
+		)}
+		<g opacity={smoothstep(0.05, 0.4, engine)}>
+			{@render txt(CX - WALL - 12, condY, 'condensation', 12, {
+				anchor: 'end'
+			})}
+			{@render txt(CX - WALL - 12, condY + 15, 'releases heat', 12, {
+				anchor: 'end',
+				color: 'var(--atm-warm)',
+				weight: 600
+			})}
+			{@render txt(SX + SW - 16, Math.min(yTop - 4, 498), 'outflow', 12, { anchor: 'end' })}
+			{@render txt(SX + SW - 16, SURF - 22, 'moist air spirals in', 12, { anchor: 'end' })}
+		</g>
+		{#if eyeClear > 0}
+			{@render txt(CX, SBOT - 10, 'eye: sinking air', 11, {
+				anchor: 'middle',
+				opacity: eyeClear
+			})}
+		{/if}
+	</Readout>
 
 	<!-- ============ readout card ============ -->
 	<rect
@@ -611,42 +658,44 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	{@render txt(CL + 20, 46, state, 18, { weight: 700 })}
-	{@render txt(CL + 20, 74, `${Math.floor(v)} m/s`, 16, { weight: 600, tabular: true })}
-	{@render txt(CL + 96, 74, `· ${Math.floor(v * 3.6)} km/h sustained wind`, 13, {
-		tabular: true
-	})}
-	{@render txt(
-		CL + 20,
-		94,
-		`${fmtTime(hours)} after it began${weakening ? ' · weakening' : ''}`,
-		12,
-		{
-			muted: true,
+	<Readout id="card-text">
+		{@render txt(CL + 20, 46, state, 18, { weight: 700 })}
+		{@render txt(CL + 20, 74, `${Math.floor(v)} m/s`, 16, { weight: 600, tabular: true })}
+		{@render txt(CL + 96, 74, `· ${Math.floor(v * 3.6)} km/h sustained wind`, 13, {
 			tabular: true
-		}
-	)}
-	{@render txt(CL + 20, 124, 'Max possible over this sea:', 12, { muted: true })}
-	{#if tooCool}
-		{@render txt(CL + 20, 144, 'none here — too cool to keep a hurricane going', 14, {
-			weight: 600,
-			color: 'var(--atm-cold)'
 		})}
-	{:else}
-		{@render txt(CL + 20, 144, `${Math.floor(vmax)} m/s (category ${category(vmax)})`, 14, {
-			weight: 600,
-			color: 'var(--atm-warm)',
-			opacity: tooNear ? 0.6 : 1
-		})}
-		{#if tooNear}
-			{@render txt(CL + 20, 162, '…but it can’t start spinning this near the equator', 12, {
-				muted: true
+		{@render txt(
+			CL + 20,
+			94,
+			`${fmtTime(hours)} after it began${weakening ? ' · weakening' : ''}`,
+			12,
+			{
+				muted: true,
+				tabular: true
+			}
+		)}
+		{@render txt(CL + 20, 124, 'Max possible over this sea:', 12, { muted: true })}
+		{#if tooCool}
+			{@render txt(CL + 20, 144, 'none here — too cool to keep a hurricane going', 14, {
+				weight: 600,
+				color: 'var(--atm-cold)'
 			})}
+		{:else}
+			{@render txt(CL + 20, 144, `${Math.floor(vmax)} m/s (category ${category(vmax)})`, 14, {
+				weight: 600,
+				color: 'var(--atm-warm)',
+				opacity: tooNear ? 0.6 : 1
+			})}
+			{#if tooNear}
+				{@render txt(CL + 20, 162, '…but it can’t start spinning this near the equator', 12, {
+					muted: true
+				})}
+			{/if}
 		{/if}
-	{/if}
 
-	<!-- sea temperature scale -->
-	{@render txt(CL + 20, 194, 'Sea temperature sets the ceiling', 12, { weight: 600 })}
+		<!-- sea temperature scale -->
+		{@render txt(CL + 20, 194, 'Sea temperature sets the ceiling', 12, { weight: 600 })}
+	</Readout>
 	<rect
 		x={sstX(20)}
 		y={SST_Y}
@@ -665,26 +714,33 @@
 			stroke-width="1.2"
 		/>
 	{/each}
-	{@render txt((sstX(20) + sstX(GENESIS_SST)) / 2, SST_Y + 26, 'no hurricanes', 11, {
-		anchor: 'middle',
-		muted: true
-	})}
-	{@render txt((sstX(GENESIS_SST) + sstX(cat5At)) / 2, SST_Y + 26, 'cat 3–4', 11, {
-		anchor: 'middle',
-		muted: true
-	})}
-	{@render txt((sstX(cat5At) + sstX(31)) / 2, SST_Y + 26, 'cat 5', 11, {
-		anchor: 'middle',
-		muted: true
-	})}
-	{@render txt(sstX(20), SST_Y + 42, '20 °C', 11, { muted: true })}
-	{@render txt(sstX(GENESIS_SST), SST_Y + 42, '26.5', 11, { anchor: 'middle' })}
-	{@render txt(sstX(cat5At), SST_Y + 42, cat5At.toFixed(1), 11, { anchor: 'middle', muted: true })}
-	{@render txt(sstX(31), SST_Y + 42, '31', 11, { anchor: 'end', muted: true })}
+	<Readout id="sst-labels">
+		{@render txt((sstX(20) + sstX(GENESIS_SST)) / 2, SST_Y + 26, 'no hurricanes', 11, {
+			anchor: 'middle',
+			muted: true
+		})}
+		{@render txt((sstX(GENESIS_SST) + sstX(cat5At)) / 2, SST_Y + 26, 'cat 3–4', 11, {
+			anchor: 'middle',
+			muted: true
+		})}
+		{@render txt((sstX(cat5At) + sstX(31)) / 2, SST_Y + 26, 'cat 5', 11, {
+			anchor: 'middle',
+			muted: true
+		})}
+		{@render txt(sstX(20), SST_Y + 42, '20 °C', 11, { muted: true })}
+		{@render txt(sstX(GENESIS_SST), SST_Y + 42, '26.5', 11, { anchor: 'middle' })}
+		{@render txt(sstX(cat5At), SST_Y + 42, cat5At.toFixed(1), 11, {
+			anchor: 'middle',
+			muted: true
+		})}
+		{@render txt(sstX(31), SST_Y + 42, '31', 11, { anchor: 'end', muted: true })}
+	</Readout>
 	<path d="M{sstX(sst)} {SST_Y - 1} l-5 -8 h10 z" fill="var(--stage-ink)" />
 
 	<!-- wind vs time -->
-	{@render txt(CL + 20, 300, 'Wind over 5 days', 12, { weight: 600 })}
+	<Readout id="chart-title">
+		{@render txt(CL + 20, 300, 'Wind over 5 days', 12, { weight: 600 })}
+	</Readout>
 	<Axes
 		{sx}
 		{sy}
@@ -703,10 +759,12 @@
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="2 3"
 	/>
-	{@render txt(sx(hEnd) - 4, sy(33) + 14, 'hurricane: 33 m/s', 11, {
-		anchor: 'end',
-		muted: true
-	})}
+	<Readout id="threshold">
+		{@render txt(sx(hEnd) - 4, sy(33) + 14, 'hurricane: 33 m/s', 11, {
+			anchor: 'end',
+			muted: true
+		})}
+	</Readout>
 	<!-- ceiling -->
 	{#if !tooCool}
 		<line
@@ -719,11 +777,13 @@
 			stroke-dasharray="6 4"
 			opacity={tooNear ? 0.45 : 1}
 		/>
-		{@render txt(sx(hEnd) - 4, sy(vmax) - 6, `max possible ${Math.floor(vmax)} m/s`, 11, {
-			anchor: 'end',
-			color: 'var(--atm-warm)',
-			opacity: tooNear ? 0.6 : 1
-		})}
+		<Readout id="ceiling">
+			{@render txt(sx(hEnd) - 4, sy(vmax) - 6, `max possible ${Math.floor(vmax)} m/s`, 11, {
+				anchor: 'end',
+				color: 'var(--atm-warm)',
+				opacity: tooNear ? 0.6 : 1
+			})}
+		</Readout>
 	{/if}
 	<path
 		d={fullPath}

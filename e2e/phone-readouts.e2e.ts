@@ -1277,6 +1277,65 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Arch bridge\s*Every member within its limit/);
 		await expect(panel).toContainText('outwards on the rock');
 	});
+
+	test('atmosphere balance: the heat flow and temperatures are text and follow the transport', async ({
+		page
+	}) => {
+		await page.goto('./atmosphere-weather/#sunlight');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Sunlight at the equator\s*\d+ W\/m²/);
+		await expect(drawing(page)).not.toContainText('at the poles');
+		await page.goto('./atmosphere-weather/#transport');
+		await expect(panel).toContainText(/Heat carried poleward\s*≈ \d\.\d PW/);
+		await expect(drawing(page)).not.toContainText('PW');
+		await range(page, 'transport').fill('0');
+		await expect(panel).toContainText(/Heat carried poleward\s*none/);
+	});
+
+	test('atmosphere cells: the cell count is text and follows the spin', async ({ page }) => {
+		await page.goto('./atmosphere-weather/#cells');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Cells\s*3 in each hemisphere/);
+		await expect(panel).toContainText('Hadley cell');
+		await expect(drawing(page)).not.toContainText('in each hemisphere');
+		await range(page, 'spin').fill('0');
+		await expect(panel).toContainText(/Cells\s*1 in each hemisphere/);
+	});
+
+	test('atmosphere Coriolis: each patch’s turn is text and follows the spin', async ({ page }) => {
+		await page.goto('./atmosphere-weather/#coriolis');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/60° N\s*turns right/);
+		await expect(drawing(page)).not.toContainText('turns right');
+		await range(page, 'spin').fill('0');
+		await expect(panel).toContainText(/60° N\s*no turn/);
+		await page.goto('./atmosphere-weather/#sink');
+		await expect(panel).toContainText(/Ro ≈/);
+		await expect(drawing(page)).not.toContainText('Rossby number');
+	});
+
+	test('atmosphere map: the centres’ pressures are text and follow the buttons', async ({
+		page
+	}) => {
+		await page.goto('./atmosphere-weather/#pressure');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Centres\s*L \d+ hPa · H \d+ hPa/);
+		await expect(drawing(page)).not.toContainText('hPa');
+		await page.locator('button[data-control=clearMap]').click();
+		await expect(panel).toContainText(/Centres\s*empty map/);
+	});
+
+	test('atmosphere storm: the wind and its ceiling are text and follow the sea', async ({
+		page
+	}) => {
+		await page.goto('./atmosphere-weather/#hurricane');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Max possible over this sea\s*\d+ m\/s \(category 5\)/);
+		await expect(panel).toContainText(/Sustained wind\s*\d+ m\/s/);
+		await expect(drawing(page)).not.toContainText('km/h');
+		await range(page, 'sst').fill('24');
+		await expect(panel).toContainText(/Max possible over this sea\s*none: too cool/);
+	});
 });
 
 test.describe('on a wide screen', () => {

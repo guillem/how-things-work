@@ -34,7 +34,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Label, along, cycle, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { D_EARTH, cells, climate, hadleyEdge, tempAt } from '../atmosphere';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -562,7 +562,9 @@
 					{/each}
 				</g>
 			{/each}
-			<Label x={desertN.x - 14} y={desertN.y + 4} text="deserts" size={11} anchor="start" pill />
+			<Readout id="deserts">
+				<Label x={desertN.x - 14} y={desertN.y + 4} text="deserts" size={11} anchor="start" pill />
+			</Readout>
 		</g>
 	{/if}
 
@@ -605,76 +607,106 @@
 	{/each}
 
 	<!-- labels -->
-	{#each cellTags as g (g.key)}
-		{@render txt(g.x, g.y, g.text, 13, { anchor: g.anchor, weight: 600, opacity: g.fade })}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	{#each cellTags as g, i (g.key)}
+		<Readout
+			id="tag-{g.key}"
+			order={10 + i}
+			label={g.text}
+			marker={i + 1}
+			at={[g.x + 16, g.y - 4]}
+			opacity={g.fade}
+		>
+			{@render txt(g.x, g.y, g.text, 13, { anchor: g.anchor, weight: 600, opacity: g.fade })}
+		</Readout>
 	{/each}
-	{#each windTags as g (g.key)}
-		{@render txt(g.x, g.y, g.text, 12, { anchor: g.anchor, weight: 600, opacity: g.fade })}
-		{#if g.sub}
-			{@render txt(g.x, g.y + 14, g.sub, 11, { anchor: g.anchor, muted: true, opacity: g.fade })}
+	{#each windTags as g, i (g.key)}
+		<Readout
+			id="tag-{g.key}"
+			order={20 + i}
+			label={g.sub ? `${g.text} (${g.sub})` : g.text}
+			marker={cellTags.length + i + 1}
+			at={[g.x - 16, g.y - 4]}
+			opacity={g.fade}
+		>
+			{@render txt(g.x, g.y, g.text, 12, { anchor: g.anchor, weight: 600, opacity: g.fade })}
+			{#if g.sub}
+				{@render txt(g.x, g.y + 14, g.sub, 11, { anchor: g.anchor, muted: true, opacity: g.fade })}
+			{/if}
+		</Readout>
+	{/each}
+	<Readout id="minor-labels">
+		{@render txt(CX - R - 10, CY + 16, 'equator', 11, { anchor: 'end', muted: true })}
+		{@render txt(CX + R + H + 8, CY - 4, 'warm air', 11, { muted: true })}
+		{@render txt(CX + R + H + 8, CY + 10, 'rises', 11, { muted: true })}
+		{#if hEdge < 88}
+			{@render txt(sinkLabel.x, sinkLabel.y + 8, 'cool, dry air sinks', 11, {
+				muted: true,
+				opacity: smoothstep(88, 80, hEdge)
+			})}
 		{/if}
-	{/each}
-	{@render txt(CX - R - 10, CY + 16, 'equator', 11, { anchor: 'end', muted: true })}
-	{@render txt(CX + R + H + 8, CY - 4, 'warm air', 11, { muted: true })}
-	{@render txt(CX + R + H + 8, CY + 10, 'rises', 11, { muted: true })}
-	{#if hEdge < 88}
-		{@render txt(sinkLabel.x, sinkLabel.y + 8, 'cool, dry air sinks', 11, {
-			muted: true,
-			opacity: smoothstep(88, 80, hEdge)
-		})}
-	{/if}
-	{@render txt(CX - 8, CY - R - H + 10, 'north pole', 11, { anchor: 'end', muted: true })}
+		{@render txt(CX - 8, CY - R - H + 10, 'north pole', 11, { anchor: 'end', muted: true })}
+	</Readout>
 
 	<!-- readout -->
-	<g transform="translate({PANEL_X} 28)">
-		<rect width={PANEL_W} height="96" rx="10" fill="var(--surface)" stroke="var(--border)" />
-		{@render txt(14, 28, edgeText, 15, { weight: 600, tabular: true })}
-		{@render txt(14, 54, countText, 13, { tabular: true })}
-		{@render txt(14, 78, dayText, 13, { tabular: true })}
-	</g>
+	<Readout id="card">
+		<g transform="translate({PANEL_X} 28)">
+			<rect width={PANEL_W} height="96" rx="10" fill="var(--surface)" stroke="var(--border)" />
+			{@render txt(14, 28, edgeText, 15, { weight: 600, tabular: true })}
+			{@render txt(14, 54, countText, 13, { tabular: true })}
+			{@render txt(14, 78, dayText, 13, { tabular: true })}
+		</g>
+	</Readout>
+	<Readout id="edge" order={1} label="Circulation" value={edgeText} />
+	<Readout id="count" order={2} label="Cells" value="{count} in each hemisphere" />
+	<Readout id="day" order={3} label="Day length" value={dayText.replace('Day length: ', '')} />
 
 	{#if phase === 'convection'}
-		<g transform="translate({PANEL_X} 140)">
-			<rect width={PANEL_W} height="198" rx="10" fill="var(--surface)" stroke="var(--border)" />
-			{@render txt(14, 26, "Halley and Hadley's picture", 14, { weight: 600 })}
-			{#each HALLEY_NOTE as line, i (i)}
-				{@render txt(14, 50 + i * 17 + (i >= 5 ? 8 : 0), line, 12, { muted: i >= 5 })}
-			{/each}
-		</g>
+		<Readout id="halley">
+			<g transform="translate({PANEL_X} 140)">
+				<rect width={PANEL_W} height="198" rx="10" fill="var(--surface)" stroke="var(--border)" />
+				{@render txt(14, 26, "Halley and Hadley's picture", 14, { weight: 600 })}
+				{#each HALLEY_NOTE as line, i (i)}
+					{@render txt(14, 50 + i * 17 + (i >= 5 ? 8 : 0), line, 12, { muted: i >= 5 })}
+				{/each}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- legend -->
-	<g transform="translate({PANEL_X} 486)">
-		<path
-			d="M4 8 L11 12 L4 16"
-			fill="none"
-			stroke="var(--atm-wind)"
-			stroke-width="2"
-			stroke-linecap="round"
-			stroke-linejoin="round"
-		/>
-		{@render txt(26, 16, 'air flow in the cells', 12)}
-		{@render txt(26, 31, '(height exaggerated over 100×)', 11, { muted: true })}
-		<line
-			x1="0"
-			y1="52"
-			x2="16"
-			y2="52"
-			stroke="var(--atm-wind)"
-			stroke-width="2.2"
-			stroke-linecap="round"
-			marker-end="url(#arrowhead)"
-		/>
-		{@render txt(26, 56, 'wind at the ground', 12)}
-		<path
-			d={CLOUD}
-			transform="translate(10 84) scale(0.65)"
-			fill="var(--atm-cloud)"
-			stroke="var(--stage-ink-muted)"
-			stroke-width="1.4"
-		/>
-		{@render txt(26, 82, 'rising air: clouds and rain', 12)}
-	</g>
+	<Readout id="legend">
+		<g transform="translate({PANEL_X} 486)">
+			<path
+				d="M4 8 L11 12 L4 16"
+				fill="none"
+				stroke="var(--atm-wind)"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			/>
+			{@render txt(26, 16, 'air flow in the cells', 12)}
+			{@render txt(26, 31, '(height exaggerated over 100×)', 11, { muted: true })}
+			<line
+				x1="0"
+				y1="52"
+				x2="16"
+				y2="52"
+				stroke="var(--atm-wind)"
+				stroke-width="2.2"
+				stroke-linecap="round"
+				marker-end="url(#arrowhead)"
+			/>
+			{@render txt(26, 56, 'wind at the ground', 12)}
+			<path
+				d={CLOUD}
+				transform="translate(10 84) scale(0.65)"
+				fill="var(--atm-cloud)"
+				stroke="var(--stage-ink-muted)"
+				stroke-width="1.4"
+			/>
+			{@render txt(26, 82, 'rising air: clouds and rain', 12)}
+		</g>
+	</Readout>
 </g>
 
 {#snippet txt(

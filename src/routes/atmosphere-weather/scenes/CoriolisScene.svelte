@@ -24,7 +24,7 @@
 	 * overrides SVG presentation attributes.
 	 */
 	import { clamp, cycle, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		D_EARTH,
 		climate,
@@ -241,8 +241,21 @@
 			{@const y0 = p.cy - S / 2}
 			{@const r = readouts[p.i]}
 			<g>
-				{@render txt(p.cx, 26, p.title, 16, { anchor: 'middle', weight: 700 })}
-				{@render txt(p.cx, 42, p.sub, 11, { anchor: 'middle', muted: true })}
+				<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+				<Readout id="title-{p.i}">
+					{@render txt(p.cx, 26, p.title, 16, { anchor: 'middle', weight: 700 })}
+					{@render txt(p.cx, 42, p.sub, 11, { anchor: 'middle', muted: true })}
+					{#snippet narrow()}
+						{@render txt(p.cx, 40, p.title, 32, { anchor: 'middle', weight: 700 })}
+					{/snippet}
+				</Readout>
+				<Readout
+					id="panel-{p.i}"
+					order={1 + p.i}
+					label={p.title}
+					value={`${r.turns} ${r.arrow}`.trim()}
+					note={r.loopText.split(' (')[0]}
+				/>
 				<rect
 					x={x0}
 					y={y0}
@@ -276,7 +289,9 @@
 				<!-- compass -->
 				<g transform="translate({x0 + S - 22} {y0 + 30})">
 					<path d="M0 -16 L5 0 L0 -4 L-5 0 Z" fill="var(--stage-ink)" />
-					{@render txt(0, 14, 'N', 11, { anchor: 'middle', weight: 700 })}
+					<Readout id="compass-{p.i}">
+						{@render txt(0, 14, 'N', 11, { anchor: 'middle', weight: 700 })}
+					</Readout>
 				</g>
 				<!-- scale bar -->
 				<line
@@ -287,7 +302,9 @@
 					stroke="var(--stage-ink-muted)"
 					stroke-width="2"
 				/>
-				{@render txt(x0 + 12, y0 + S - 18, `${barKm} km`, 11, { muted: true })}
+				<Readout id="bar-{p.i}">
+					{@render txt(x0 + 12, y0 + S - 18, `${barKm} km`, 11, { muted: true })}
+				</Readout>
 
 				<g clip-path="url(#coriolis-clip-{p.i})">
 					<!-- straight on, on a planet that does not spin -->
@@ -342,20 +359,22 @@
 				</g>
 				<circle cx={p.cx} cy={p.cy} r="3" fill="var(--stage-ink)" />
 
-				{@render txt(p.cx, y0 + S + 28, `${r.turns} ${r.arrow}`.trim(), 16, {
-					anchor: 'middle',
-					weight: 700
-				})}
-				{@render txt(p.cx, y0 + S + 50, `f = 2Ω sin φ = ${r.fText}`, 12, {
-					anchor: 'middle',
-					muted: true,
-					tabular: true
-				})}
-				{@render txt(p.cx, y0 + S + 68, r.loopText, 12, {
-					anchor: 'middle',
-					muted: true,
-					tabular: true
-				})}
+				<Readout id="under-{p.i}">
+					{@render txt(p.cx, y0 + S + 28, `${r.turns} ${r.arrow}`.trim(), 16, {
+						anchor: 'middle',
+						weight: 700
+					})}
+					{@render txt(p.cx, y0 + S + 50, `f = 2Ω sin φ = ${r.fText}`, 12, {
+						anchor: 'middle',
+						muted: true,
+						tabular: true
+					})}
+					{@render txt(p.cx, y0 + S + 68, r.loopText, 12, {
+						anchor: 'middle',
+						muted: true,
+						tabular: true
+					})}
+				</Readout>
 			</g>
 		{/each}
 
@@ -434,69 +453,85 @@
 					stroke="var(--stage-line)"
 					stroke-width="1"
 				/>
-				{@render txt(G.cx + G.r + 18, latY(p.lat) + 4, p.title, 11, { muted: true })}
+				<Readout id="globe-{p.i}">
+					{@render txt(G.cx + G.r + 18, latY(p.lat) + 4, p.title, 11, { muted: true })}
+				</Readout>
 			{/each}
 		</g>
 
 		<!-- legend -->
-		<g transform="translate(250 456)">
-			<line
-				x1="0"
-				x2="30"
-				y1="0"
-				y2="0"
-				stroke="var(--atm-wind)"
-				stroke-width="2.4"
-				stroke-linecap="round"
-			/>
-			<circle cx="30" cy="0" r="5" fill="var(--atm-wind)" />
-			{@render txt(46, 4, 'a parcel of air pushed off at 10 m/s, as seen from the ground', 12)}
-			<line
-				x1="0"
-				x2="30"
-				y1="26"
-				y2="26"
-				stroke="var(--stage-ink-muted)"
-				stroke-width="1.3"
-				stroke-dasharray="5 5"
-			/>
-			<circle
-				cx="30"
-				cy="26"
-				r="3.5"
-				fill="var(--surface)"
-				stroke="var(--stage-ink-muted)"
-				stroke-width="1.3"
-			/>
-			{@render txt(46, 30, 'where it would go if the Earth did not spin', 12)}
-			{@render txt(
-				0,
-				68,
-				reduced ? 'Paths over half a day' : `Time since launch: ${days.toFixed(2)} days`,
-				15,
-				{ weight: 600, tabular: true }
-			)}
-			{@render txt(
-				0,
-				88,
-				`1 day ≈ 10 s of animation · each patch is ${spaced(2 * halfKm)} km across`,
-				11,
-				{
-					muted: true
-				}
-			)}
-			{#if spin === 0}
-				{@render txt(0, 116, 'The planet is not spinning: the air goes straight.', 13, {
-					weight: 600
-				})}
-			{/if}
-		</g>
+		<Readout
+			id="time"
+			order={4}
+			label={reduced ? 'Paths' : 'Time since launch'}
+			value={reduced ? 'over half a day' : `${days.toFixed(2)} days`}
+		/>
+		<Readout id="k-path" order={20} label="air seen from the ground" color="var(--atm-wind)" />
+		<Readout id="k-ghost" order={21} label="dashed: if the Earth did not spin" />
+		<Readout id="legend">
+			<g transform="translate(250 456)">
+				<line
+					x1="0"
+					x2="30"
+					y1="0"
+					y2="0"
+					stroke="var(--atm-wind)"
+					stroke-width="2.4"
+					stroke-linecap="round"
+				/>
+				<circle cx="30" cy="0" r="5" fill="var(--atm-wind)" />
+				{@render txt(46, 4, 'a parcel of air pushed off at 10 m/s, as seen from the ground', 12)}
+				<line
+					x1="0"
+					x2="30"
+					y1="26"
+					y2="26"
+					stroke="var(--stage-ink-muted)"
+					stroke-width="1.3"
+					stroke-dasharray="5 5"
+				/>
+				<circle
+					cx="30"
+					cy="26"
+					r="3.5"
+					fill="var(--surface)"
+					stroke="var(--stage-ink-muted)"
+					stroke-width="1.3"
+				/>
+				{@render txt(46, 30, 'where it would go if the Earth did not spin', 12)}
+				{@render txt(
+					0,
+					68,
+					reduced ? 'Paths over half a day' : `Time since launch: ${days.toFixed(2)} days`,
+					15,
+					{ weight: 600, tabular: true }
+				)}
+				{@render txt(
+					0,
+					88,
+					`1 day ≈ 10 s of animation · each patch is ${spaced(2 * halfKm)} km across`,
+					11,
+					{
+						muted: true
+					}
+				)}
+				{#if spin === 0}
+					{@render txt(0, 116, 'The planet is not spinning: the air goes straight.', 13, {
+						weight: 600
+					})}
+				{/if}
+			</g>
+		</Readout>
 	{:else}
 		<!-- ======================================================== scale -->
-		{@render txt(24, 34, 'Rossby number  Ro = speed ÷ (f × size)', 16, { weight: 700 })}
-		{@render txt(24, 54, 'f taken at 45° latitude · log scale: each step is ×10', 11, {
-			muted: true
-		})}
+		<Readout id="scale-title">
+			{@render txt(24, 34, 'Rossby number  Ro = speed ÷ (f × size)', 16, { weight: 700 })}
+			{@render txt(24, 54, 'f taken at 45° latitude · log scale: each step is ×10', 11, {
+				muted: true
+			})}
+		</Readout>
+		<Readout id="k-spin" order={20} label="Earth's spin in control" color="var(--atm-cold)" />
+		<Readout id="k-nospin" order={21} label="spin negligible" color="var(--atm-warm)" />
 
 		<!-- the two regions -->
 		<rect
@@ -515,18 +550,20 @@
 			fill="var(--atm-warm)"
 			fill-opacity="0.1"
 		/>
-		{@render txt((CH_L + X1) / 2, ROW0 - 26, "Earth's spin", 13, {
-			anchor: 'middle',
-			weight: 700
-		})}
-		{@render txt((CH_L + X1) / 2, ROW0 - 10, 'in control', 13, {
-			anchor: 'middle',
-			weight: 700
-		})}
-		{@render txt((X1 + CH_R) / 2, ROW0 - 18, "Earth's spin negligible", 13, {
-			anchor: 'middle',
-			weight: 700
-		})}
+		<Readout id="regions">
+			{@render txt((CH_L + X1) / 2, ROW0 - 26, "Earth's spin", 13, {
+				anchor: 'middle',
+				weight: 700
+			})}
+			{@render txt((CH_L + X1) / 2, ROW0 - 10, 'in control', 13, {
+				anchor: 'middle',
+				weight: 700
+			})}
+			{@render txt((X1 + CH_R) / 2, ROW0 - 18, "Earth's spin negligible", 13, {
+				anchor: 'middle',
+				weight: 700
+			})}
+		</Readout>
 
 		<!-- rows -->
 		{#each rows as row (row.id)}
@@ -542,13 +579,23 @@
 				stroke-dasharray="2 4"
 			/>
 			{@render icon(row.id, 44, row.y)}
-			{@render txt(78, row.y - 3, row.label, 13, { weight: 600 })}
-			{@render txt(78, row.y + 14, row.detail, 11, { muted: true })}
-			{#if row.id === 'sink'}
-				{@render txt(78, row.y + 30, 'swirls either way, in either hemisphere', 11, {
-					weight: 600
-				})}
-			{/if}
+			<Readout
+				id="row-{row.id}"
+				order={1 + row.i}
+				label="{row.i + 1}. {row.label}"
+				value="Ro {row.text}"
+				color={row.ro > 3 ? 'var(--atm-warm)' : 'var(--atm-cold)'}
+				marker={row.i + 1}
+				at={[96, row.y]}
+			>
+				{@render txt(78, row.y - 3, row.label, 13, { weight: 600 })}
+				{@render txt(78, row.y + 14, row.detail, 11, { muted: true })}
+				{#if row.id === 'sink'}
+					{@render txt(78, row.y + 30, 'swirls either way, in either hemisphere', 11, {
+						weight: 600
+					})}
+				{/if}
+			</Readout>
 			<line
 				x1={X1}
 				x2={x}
@@ -567,12 +614,14 @@
 				stroke-width="2"
 			/>
 			{@const beside = Math.abs(Math.log10(row.ro)) < 0.3}
-			{@render txt(beside ? x + 13 : x, beside ? row.y + 4.5 : row.y - 13, row.text, 13, {
-				anchor: beside ? 'start' : 'middle',
-				weight: 700,
-				opacity: e,
-				tabular: true
-			})}
+			<Readout id="ro-{row.id}">
+				{@render txt(beside ? x + 13 : x, beside ? row.y + 4.5 : row.y - 13, row.text, 13, {
+					anchor: beside ? 'start' : 'middle',
+					weight: 700,
+					opacity: e,
+					tabular: true
+				})}
+			</Readout>
 		{/each}
 
 		<!-- Ro = 1 -->
@@ -591,30 +640,39 @@
 		{#each TICKS as e (e)}
 			{@const x = xRo(10 ** e)}
 			<line x1={x} x2={x} y1={AXIS_Y} y2={AXIS_Y + 5} stroke="var(--stage-ink-muted)" />
-			{@render txt(x, AXIS_Y + 19, e === 0 ? 'Ro = 1' : tickLabel(e), e === 0 ? 12 : 11, {
-				anchor: 'middle',
-				muted: e !== 0,
-				weight: e === 0 ? 700 : 500
-			})}
+			<Readout id="tick-{e}">
+				{@render txt(x, AXIS_Y + 19, e === 0 ? 'Ro = 1' : tickLabel(e), e === 0 ? 12 : 11, {
+					anchor: 'middle',
+					muted: e !== 0,
+					weight: e === 0 ? 700 : 500
+				})}
+				{#snippet narrow()}
+					{#if e === 0}
+						{@render txt(x, AXIS_Y + 32, 'Ro = 1', 28, { anchor: 'middle', weight: 700 })}
+					{/if}
+				{/snippet}
+			</Readout>
 		{/each}
 
 		<!-- note -->
-		<g transform="translate(24 {AXIS_Y + 50})">
-			{@render txt(
-				0,
-				0,
-				'A sink drains in seconds; in a minute the Earth turns only ¼ of a degree.',
-				13,
-				{ weight: 600 }
-			)}
-			{@render txt(
-				0,
-				18,
-				'The swirl in a plughole comes from the shape of the basin and how the water was already moving.',
-				11,
-				{ muted: true }
-			)}
-		</g>
+		<Readout id="note">
+			<g transform="translate(24 {AXIS_Y + 50})">
+				{@render txt(
+					0,
+					0,
+					'A sink drains in seconds; in a minute the Earth turns only ¼ of a degree.',
+					13,
+					{ weight: 600 }
+				)}
+				{@render txt(
+					0,
+					18,
+					'The swirl in a plughole comes from the shape of the basin and how the water was already moving.',
+					11,
+					{ muted: true }
+				)}
+			</g>
+		</Readout>
 	{/if}
 </g>
 

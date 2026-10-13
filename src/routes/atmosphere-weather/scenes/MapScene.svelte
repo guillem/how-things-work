@@ -34,7 +34,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, clamp, cycle, hash, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { advectedTemperature, pressure, wind, type System } from '../atmosphere';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -850,9 +850,12 @@
 			{/each}
 		</g>
 		{#if !fronts}
-			{#each isobarLabels as l (l.level)}
-				{@render txt(l.x, l.y + 4, String(l.level), 11, { anchor: 'middle', muted: true })}
-			{/each}
+			<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+			<Readout id="isobar-labels">
+				{#each isobarLabels as l (l.level)}
+					{@render txt(l.x, l.y + 4, String(l.level), 11, { anchor: 'middle', muted: true })}
+				{/each}
+			</Readout>
 		{/if}
 
 		<!-- fronts, with their cloud and rain bands -->
@@ -953,27 +956,38 @@
 			/>
 		{/each}
 
+		<Readout
+			id="systems"
+			order={1}
+			label="Centres"
+			value={markers.length
+				? markers.map((m) => `${m.s.kind === 'low' ? 'L' : 'H'} ${m.p} hPa`).join(' · ')
+				: 'empty map: 1013 hPa everywhere, no wind'}
+			note={full ? 'four systems at most' : undefined}
+		/>
 		{#if systems.length === 0}
-			{@render txt(
-				MX0 + MW / 2,
-				MY0 + MH / 2 - 6,
-				'An empty map: 1013 hPa everywhere, and no wind',
-				15,
-				{
-					anchor: 'middle',
-					weight: 600
-				}
-			)}
-			{@render txt(
-				MX0 + MW / 2,
-				MY0 + MH / 2 + 16,
-				'Add a low or a high with the buttons below the map.',
-				12,
-				{
-					anchor: 'middle',
-					muted: true
-				}
-			)}
+			<Readout id="empty">
+				{@render txt(
+					MX0 + MW / 2,
+					MY0 + MH / 2 - 6,
+					'An empty map: 1013 hPa everywhere, and no wind',
+					15,
+					{
+						anchor: 'middle',
+						weight: 600
+					}
+				)}
+				{@render txt(
+					MX0 + MW / 2,
+					MY0 + MH / 2 + 16,
+					'Add a low or a high with the buttons below the map.',
+					12,
+					{
+						anchor: 'middle',
+						muted: true
+					}
+				)}
+			</Readout>
 		{/if}
 
 		<!-- clouds over lows, clear skies under highs -->
@@ -987,13 +1001,15 @@
 						stroke-width="1"
 					/>
 				{/if}
-				{@render txt(
-					m.x,
-					m.y + 44,
-					m.s.kind === 'low' ? 'rising air → clouds, rain' : 'sinking air → clear skies',
-					11,
-					{ anchor: 'middle', muted: true }
-				)}
+				<Readout id="sky-{m.i}">
+					{@render txt(
+						m.x,
+						m.y + 44,
+						m.s.kind === 'low' ? 'rising air → clouds, rain' : 'sinking air → clear skies',
+						11,
+						{ anchor: 'middle', muted: true }
+					)}
+				</Readout>
 			{/each}
 		{/if}
 	</g>
@@ -1016,7 +1032,9 @@
 				color: m.color,
 				weight: 700
 			})}
-			{@render txt(m.x, m.y + 26, `${m.p} hPa`, 13, { anchor: 'middle', weight: 600 })}
+			<Readout id="hpa-{m.i}">
+				{@render txt(m.x, m.y + 26, `${m.p} hPa`, 13, { anchor: 'middle', weight: 600 })}
+			</Readout>
 		</g>
 		<Handle
 			x={m.edge.x}
@@ -1050,84 +1068,105 @@
 	{/each}
 
 	<!-- legend card -->
-	<g style:pointer-events="none">
-		<rect
-			x={CX}
-			y={CY}
-			width={CW}
-			height={cardH}
-			rx="10"
-			fill="var(--surface)"
-			stroke="var(--border)"
-			opacity="0.94"
+	{#if fronts}
+		<Readout id="hours" order={2} label="Time" value={hoursText} />
+		<Readout id="k-cold" order={20} label="cold front" color="var(--atm-high)" />
+		<Readout id="k-warm" order={21} label="warm front" color="var(--atm-low)" />
+		<Readout id="k-stat" order={22} label="stationary front" color="var(--stage-ink)" />
+	{:else}
+		<Readout
+			id="spin"
+			order={2}
+			label={south ? 'Southern hemisphere' : 'Northern hemisphere'}
+			value={south ? 'clockwise round lows' : 'anticlockwise round lows'}
+			note={south ? 'anticlockwise round highs' : 'clockwise round highs'}
 		/>
-		{#if fronts}
-			{@render txt(CX + 14, CY + 24, hoursText, 15, { weight: 650 })}
+	{/if}
+	<Readout id="legend">
+		<g style:pointer-events="none">
 			<rect
-				x={CX + 14}
-				y={CY + 36}
-				width={CW - 28}
-				height="9"
-				rx="4.5"
-				fill="url(#map-tscale)"
+				x={CX}
+				y={CY}
+				width={CW}
+				height={cardH}
+				rx="10"
+				fill="var(--surface)"
 				stroke="var(--border)"
-				stroke-width="0.5"
+				opacity="0.94"
 			/>
-			{@render txt(CX + 14, CY + 59, '−2 °C', 11, { muted: true })}
-			{@render txt(CX + CW / 2, CY + 59, '12 °C', 11, { muted: true, anchor: 'middle' })}
-			{@render txt(CX + CW - 14, CY + 59, '26 °C', 11, { muted: true, anchor: 'end' })}
-			<path d="M{CX + 14} {CY + 82}h34" stroke="var(--atm-high)" stroke-width="2.5" fill="none" />
-			<path
-				d="M{CX + 18} {CY + 82}l6 -9l6 9zM{CX + 34} {CY + 82}l6 -9l6 9z"
-				fill="var(--atm-high)"
-			/>
-			{@render txt(CX + 58, CY + 86, 'cold front: cold air advancing', 12)}
-			<path d="M{CX + 14} {CY + 108}h34" stroke="var(--atm-low)" stroke-width="2.5" fill="none" />
-			<path
-				d="M{CX + 18} {CY + 108}a6 6 0 0 1 12 0zM{CX + 34} {CY + 108}a6 6 0 0 1 12 0z"
-				fill="var(--atm-low)"
-			/>
-			{@render txt(CX + 58, CY + 112, 'warm front: warm air advancing', 12)}
-			<path d="M{CX + 14} {CY + 134}h34" stroke="var(--stage-ink)" stroke-width="2.5" fill="none" />
-			<path d="M{CX + 18} {CY + 134}l6 -9l6 9z" fill="var(--atm-high)" />
-			<path d="M{CX + 34} {CY + 134}a6 6 0 0 0 12 0z" fill="var(--atm-low)" />
-			{@render txt(CX + 58, CY + 138, 'stationary: neither advancing', 12)}
-		{:else}
-			{@render txt(
-				CX + 14,
-				CY + 24,
-				south ? 'Southern hemisphere, 45° S' : 'Northern hemisphere, 45° N',
-				14,
-				{ weight: 650 }
-			)}
-			{@render txt(
-				CX + 14,
-				CY + 44,
-				south ? 'clockwise round lows,' : 'anticlockwise round lows,',
-				12
-			)}
-			{@render txt(
-				CX + 14,
-				CY + 60,
-				south ? 'anticlockwise round highs' : 'clockwise round highs',
-				12
-			)}
-			<path
-				d="M{CX + 14} {CY + 82}h26m-6 -4l6 4l-6 4"
-				stroke="var(--atm-wind)"
-				stroke-width="1.5"
-				fill="none"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			/>
-			{@render txt(CX + 50, CY + 86, 'wind near the ground', 12)}
-			<path d="M{CX + 14} {CY + 104}h26" stroke="var(--stage-line)" stroke-width="1.5" />
-			{@render txt(CX + 50, CY + 108, 'isobars, every 4 hPa', 12)}
-		{/if}
-		{#if full}
-			{@render txt(CX + 14, CY + cardH - 10, 'The map holds four systems at most.', 11, {
-				muted: true
-			})}
-		{/if}
-	</g>
+			{#if fronts}
+				{@render txt(CX + 14, CY + 24, hoursText, 15, { weight: 650 })}
+				<rect
+					x={CX + 14}
+					y={CY + 36}
+					width={CW - 28}
+					height="9"
+					rx="4.5"
+					fill="url(#map-tscale)"
+					stroke="var(--border)"
+					stroke-width="0.5"
+				/>
+				{@render txt(CX + 14, CY + 59, '−2 °C', 11, { muted: true })}
+				{@render txt(CX + CW / 2, CY + 59, '12 °C', 11, { muted: true, anchor: 'middle' })}
+				{@render txt(CX + CW - 14, CY + 59, '26 °C', 11, { muted: true, anchor: 'end' })}
+				<path d="M{CX + 14} {CY + 82}h34" stroke="var(--atm-high)" stroke-width="2.5" fill="none" />
+				<path
+					d="M{CX + 18} {CY + 82}l6 -9l6 9zM{CX + 34} {CY + 82}l6 -9l6 9z"
+					fill="var(--atm-high)"
+				/>
+				{@render txt(CX + 58, CY + 86, 'cold front: cold air advancing', 12)}
+				<path d="M{CX + 14} {CY + 108}h34" stroke="var(--atm-low)" stroke-width="2.5" fill="none" />
+				<path
+					d="M{CX + 18} {CY + 108}a6 6 0 0 1 12 0zM{CX + 34} {CY + 108}a6 6 0 0 1 12 0z"
+					fill="var(--atm-low)"
+				/>
+				{@render txt(CX + 58, CY + 112, 'warm front: warm air advancing', 12)}
+				<path
+					d="M{CX + 14} {CY + 134}h34"
+					stroke="var(--stage-ink)"
+					stroke-width="2.5"
+					fill="none"
+				/>
+				<path d="M{CX + 18} {CY + 134}l6 -9l6 9z" fill="var(--atm-high)" />
+				<path d="M{CX + 34} {CY + 134}a6 6 0 0 0 12 0z" fill="var(--atm-low)" />
+				{@render txt(CX + 58, CY + 138, 'stationary: neither advancing', 12)}
+			{:else}
+				{@render txt(
+					CX + 14,
+					CY + 24,
+					south ? 'Southern hemisphere, 45° S' : 'Northern hemisphere, 45° N',
+					14,
+					{ weight: 650 }
+				)}
+				{@render txt(
+					CX + 14,
+					CY + 44,
+					south ? 'clockwise round lows,' : 'anticlockwise round lows,',
+					12
+				)}
+				{@render txt(
+					CX + 14,
+					CY + 60,
+					south ? 'anticlockwise round highs' : 'clockwise round highs',
+					12
+				)}
+				<path
+					d="M{CX + 14} {CY + 82}h26m-6 -4l6 4l-6 4"
+					stroke="var(--atm-wind)"
+					stroke-width="1.5"
+					fill="none"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+				{@render txt(CX + 50, CY + 86, 'wind near the ground', 12)}
+				<path d="M{CX + 14} {CY + 104}h26" stroke="var(--stage-line)" stroke-width="1.5" />
+				{@render txt(CX + 50, CY + 108, 'isobars, every 4 hPa', 12)}
+			{/if}
+			{#if full}
+				{@render txt(CX + 14, CY + cardH - 10, 'The map holds four systems at most.', 11, {
+					muted: true
+				})}
+			{/if}
+		</g>
+	</Readout>
 </g>

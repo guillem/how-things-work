@@ -36,7 +36,7 @@
 		scale,
 		smoothstep
 	} from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { D_EARTH, climate, insolation, tempAt } from '../atmosphere';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -328,15 +328,83 @@
 
 	<!-- temperature key -->
 	<g transform="translate({BEAM_X0} 40)">
-		{@render txt(0, 0, 'surface temperature, yearly average', 11, { muted: true })}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="key-title">
+			{@render txt(0, 0, 'surface temperature, yearly average', 11, { muted: true })}
+		</Readout>
 		<rect y="8" width={KEY_W} height="8" rx="2" fill="url(#balance-temp-key)" />
-		{#each [-30, 0, 30] as T (T)}
-			{@render txt(((T + 35) / 70) * KEY_W, 31, fmtT(T), 11, {
-				anchor: 'middle',
-				muted: true
-			})}
-		{/each}
+		<Readout id="key-ticks">
+			{#each [-30, 0, 30] as T (T)}
+				{@render txt(((T + 35) / 70) * KEY_W, 31, fmtT(T), 11, {
+					anchor: 'middle',
+					muted: true
+				})}
+			{/each}
+			{#snippet narrow()}
+				{@render txt(0, 44, 'cold', 24, { muted: true })}
+				{@render txt(KEY_W, 44, 'hot', 24, { anchor: 'end', muted: true })}
+			{/snippet}
+		</Readout>
 	</g>
+	{#if P < 0.95}
+		<Readout
+			id="eq-sun"
+			order={1}
+			label="Sunlight at the equator"
+			value="{Math.round(insolation(0))} W/m²"
+			color="var(--atm-sun)"
+			opacity={1 - P}
+		/>
+		<Readout
+			id="pole-sun"
+			order={2}
+			label="At the poles"
+			value="{Math.round(insolation(90))} W/m²"
+			color="var(--atm-sun)"
+			opacity={1 - P}
+		/>
+		<Readout
+			id="slant"
+			order={3}
+			label="At a slant"
+			value="the same beam covers twice the ground"
+			opacity={1 - P}
+		/>
+	{/if}
+	{#if P > 0.05}
+		<Readout
+			id="peak"
+			order={1}
+			label="Heat carried poleward"
+			value={strength > 0.5
+				? `≈ ${peak.pw.toFixed(1)} PW at ${Math.round(peak.lat)}°`
+				: 'none: each latitude on its own'}
+			note={strength > 0.5 ? 'each hemisphere' : undefined}
+			color="var(--atm-warm)"
+			opacity={P}
+		/>
+		<Readout
+			id="t-eq"
+			order={2}
+			label="Equator"
+			value={fmtT(tEq)}
+			note="{fmtT(tempAt(flat, 0))} without"
+			opacity={P}
+		/>
+		<Readout
+			id="t-pole"
+			order={3}
+			label="Pole"
+			value={fmtT(tPole)}
+			note="{fmtT(flat.T[89])} without"
+			opacity={P}
+		/>
+	{/if}
+	<Readout id="k-absorbed" order={20} label="absorbed sunlight" color="var(--atm-sun)" />
+	<Readout id="k-emitted" order={21} label="radiated to space" color="var(--atm-emit)" />
+	{#if P > 0.5}
+		<Readout id="k-flat" order={22} label="dashed: no transport" />
+	{/if}
 
 	<!-- ============================== globe ============================== -->
 	<g>
@@ -364,10 +432,18 @@
 				opacity={p.o}
 			/>
 		{/each}
-		{@render txt(BEAM_X0, GY - R - 26, 'sunlight →', 13, {
-			color: 'var(--atm-sun)',
-			weight: 600
-		})}
+		<Readout id="sunlight">
+			{@render txt(BEAM_X0, GY - R - 26, 'sunlight →', 13, {
+				color: 'var(--atm-sun)',
+				weight: 600
+			})}
+			{#snippet narrow()}
+				{@render txt(BEAM_X0, GY - R - 20, 'sun →', 28, {
+					color: 'var(--atm-sun)',
+					weight: 700
+				})}
+			{/snippet}
+		</Readout>
 
 		<!-- surface coloured by temperature -->
 		<circle cx={GX} cy={GY} r={R} fill="url(#balance-temp-grad)" />
@@ -398,11 +474,13 @@
 			/>
 			<path d={a.head} fill="var(--atm-emit)" />
 		{/each}
-		{@render txt(GX + R * 0.78 + 30, GY - R + 2, 'infrared out', 12, {
-			color: 'var(--atm-emit)',
-			weight: 600,
-			anchor: 'middle'
-		})}
+		<Readout id="infrared">
+			{@render txt(GX + R * 0.78 + 30, GY - R + 2, 'infrared out', 12, {
+				color: 'var(--atm-emit)',
+				weight: 600,
+				anchor: 'middle'
+			})}
+		</Readout>
 
 		<!-- the two highlighted beams and their footprints -->
 		<g opacity={1 - 0.75 * P}>
@@ -423,14 +501,16 @@
 				/>
 			{/each}
 		</g>
-		<g opacity={1 - P}>
-			{@render txt(beamEq.xc + 14, beamEq.yc - 26, 'straight down:', 12, { weight: 600 })}
-			{@render txt(beamEq.xc + 14, beamEq.yc - 11, 'a short strip', 12, {})}
-			{@render txt(beam60.xc - 6, beam60.y2 + 18, 'at a slant: the same beam', 12, {
-				weight: 600
-			})}
-			{@render txt(beam60.xc - 6, beam60.y2 + 33, 'is spread over twice the length', 12, {})}
-		</g>
+		<Readout id="beam-captions">
+			<g opacity={1 - P}>
+				{@render txt(beamEq.xc + 14, beamEq.yc - 26, 'straight down:', 12, { weight: 600 })}
+				{@render txt(beamEq.xc + 14, beamEq.yc - 11, 'a short strip', 12, {})}
+				{@render txt(beam60.xc - 6, beam60.y2 + 18, 'at a slant: the same beam', 12, {
+					weight: 600
+				})}
+				{@render txt(beam60.xc - 6, beam60.y2 + 33, 'is spread over twice the length', 12, {})}
+			</g>
+		</Readout>
 
 		<!-- poleward heat flow -->
 		<g opacity={P * strength}>
@@ -454,31 +534,35 @@
 				<circle cx={d.x} cy={d.y} r="2.4" fill="var(--stage-bg)" opacity={d.o} />
 			{/each}
 		</g>
-		{#each [60, 30, 0, -30, -60] as lat (lat)}
-			{@render txt(
-				GX + R * Math.cos(rad(lat)) - 8,
-				latY(lat) - 4,
-				lat === 0 ? 'equator' : `${Math.abs(lat)}°${lat < 0 ? 'S' : 'N'}`,
-				11,
-				{ anchor: 'end', muted: true }
-			)}
-		{/each}
-		<g opacity={P}>
-			{@render txt(
-				GX,
-				GY + R + 30,
-				strength > 0.5
-					? `peak heat flow ≈ ${peak.pw.toFixed(1)} PW at ${Math.round(peak.lat)}°, each hemisphere`
-					: 'no heat carried: each latitude balances its own books',
-				13,
-				{ anchor: 'middle', weight: 600 }
-			)}
-			{@render txt(GX, GY + R + 48, 'arrow width ∝ heat flow · 1 PW = 10¹⁵ W', 11, {
-				anchor: 'middle',
-				muted: true,
-				opacity: strength
-			})}
-		</g>
+		<Readout id="lat-labels">
+			{#each [60, 30, 0, -30, -60] as lat (lat)}
+				{@render txt(
+					GX + R * Math.cos(rad(lat)) - 8,
+					latY(lat) - 4,
+					lat === 0 ? 'equator' : `${Math.abs(lat)}°${lat < 0 ? 'S' : 'N'}`,
+					11,
+					{ anchor: 'end', muted: true }
+				)}
+			{/each}
+		</Readout>
+		<Readout id="flow-caption">
+			<g opacity={P}>
+				{@render txt(
+					GX,
+					GY + R + 30,
+					strength > 0.5
+						? `peak heat flow ≈ ${peak.pw.toFixed(1)} PW at ${Math.round(peak.lat)}°, each hemisphere`
+						: 'no heat carried: each latitude balances its own books',
+					13,
+					{ anchor: 'middle', weight: 600 }
+				)}
+				{@render txt(GX, GY + R + 48, 'arrow width ∝ heat flow · 1 PW = 10¹⁵ W', 11, {
+					anchor: 'middle',
+					muted: true,
+					opacity: strength
+				})}
+			</g>
+		</Readout>
 	</g>
 
 	<!-- ============================== radiation chart ============================== -->
@@ -533,61 +617,63 @@
 		stroke-dasharray={strength < 0.05 ? '7 5' : undefined}
 	/>
 	<!-- direct labels -->
-	{@render txt(
-		sx(0),
-		sy1(insolation(0)) - 8,
-		`arriving at the top of the atmosphere: ${Math.round(insolation(0))} W/m²`,
-		12,
-		{ anchor: 'middle', color: 'var(--atm-sun)' }
-	)}
-	<g opacity={1 - P}>
-		<line
-			x1={CX0 + 6}
-			x2={CX0 + 6}
-			y1={sy1(insolation(-90)) - 4}
-			y2={sy1(352)}
-			stroke="var(--atm-sun)"
-			stroke-dasharray="1.5 3"
-		/>
-		{@render txt(CX0 + 12, sy1(380), `${Math.round(insolation(90))} W/m²`, 12, {
-			color: 'var(--atm-sun)'
-		})}
-		{@render txt(CX0 + 12, sy1(380) + 15, 'at the poles', 12, { color: 'var(--atm-sun)' })}
-	</g>
-	{@render txt(sx(0), sy1(eqRow.a) - 8, 'absorbed (the rest is reflected)', 12, {
-		anchor: 'middle',
-		color: 'var(--atm-sun)',
-		weight: 600
-	})}
-	{@render txt(
-		sx(0),
-		lerp(sy1(240), sy1(Math.min(eqRow.a, eqRow.e)) + 22, strength),
-		'heat radiated to space',
-		12,
-		{
+	<Readout id="chart-labels">
+		{@render txt(
+			sx(0),
+			sy1(insolation(0)) - 8,
+			`arriving at the top of the atmosphere: ${Math.round(insolation(0))} W/m²`,
+			12,
+			{ anchor: 'middle', color: 'var(--atm-sun)' }
+		)}
+		<g opacity={1 - P}>
+			<line
+				x1={CX0 + 6}
+				x2={CX0 + 6}
+				y1={sy1(insolation(-90)) - 4}
+				y2={sy1(352)}
+				stroke="var(--atm-sun)"
+				stroke-dasharray="1.5 3"
+			/>
+			{@render txt(CX0 + 12, sy1(380), `${Math.round(insolation(90))} W/m²`, 12, {
+				color: 'var(--atm-sun)'
+			})}
+			{@render txt(CX0 + 12, sy1(380) + 15, 'at the poles', 12, { color: 'var(--atm-sun)' })}
+		</g>
+		{@render txt(sx(0), sy1(eqRow.a) - 8, 'absorbed (the rest is reflected)', 12, {
 			anchor: 'middle',
-			color: 'var(--atm-emit)',
-			weight: 600
-		}
-	)}
-	<g opacity={strength}>
-		{@render txt(sx(0), (sy1(eqRow.a) + sy1(eqRow.e)) / 2 + 4, 'surplus: heat to export', 12, {
-			anchor: 'middle',
-			weight: 600,
-			opacity: smoothstep(16, 26, sy1(eqRow.e) - sy1(eqRow.a))
-		})}
-		{@render txt(CX1, sy1(nRow.a) + 18, 'deficit: heat imported', 12, {
-			anchor: 'end',
+			color: 'var(--atm-sun)',
 			weight: 600
 		})}
-		{@render txt(CX0 + 10, sy1(nRow.a) + 18, 'deficit', 12, { weight: 600 })}
-	</g>
-	<g opacity={P * (1 - strength)}>
-		{@render txt(sx(0), sy1(175), 'absorbed = radiated at every latitude', 11, {
-			anchor: 'middle',
-			muted: true
-		})}
-	</g>
+		{@render txt(
+			sx(0),
+			lerp(sy1(240), sy1(Math.min(eqRow.a, eqRow.e)) + 22, strength),
+			'heat radiated to space',
+			12,
+			{
+				anchor: 'middle',
+				color: 'var(--atm-emit)',
+				weight: 600
+			}
+		)}
+		<g opacity={strength}>
+			{@render txt(sx(0), (sy1(eqRow.a) + sy1(eqRow.e)) / 2 + 4, 'surplus: heat to export', 12, {
+				anchor: 'middle',
+				weight: 600,
+				opacity: smoothstep(16, 26, sy1(eqRow.e) - sy1(eqRow.a))
+			})}
+			{@render txt(CX1, sy1(nRow.a) + 18, 'deficit: heat imported', 12, {
+				anchor: 'end',
+				weight: 600
+			})}
+			{@render txt(CX0 + 10, sy1(nRow.a) + 18, 'deficit', 12, { weight: 600 })}
+		</g>
+		<g opacity={P * (1 - strength)}>
+			{@render txt(sx(0), sy1(175), 'absorbed = radiated at every latitude', 11, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</g>
+	</Readout>
 
 	<!-- ============================== temperature chart ============================== -->
 	{#if P > 0.01}
@@ -626,33 +712,35 @@
 				stroke="var(--atm-warm)"
 				stroke-width="2.6"
 			/>
-			<g opacity={strength}>
+			<Readout id="temp-labels">
+				<g opacity={strength}>
+					{@render txt(
+						sx(0),
+						sy2(tempAt(flat, 0)) - 8,
+						`${fmtT(tempAt(flat, 0))} with no transport`,
+						11,
+						{ anchor: 'middle', muted: true }
+					)}
+					{@render txt(sx(0.86), sy2(-54), fmtT(flat.T[89]), 11, {
+						anchor: 'end',
+						muted: true
+					})}
+				</g>
 				{@render txt(
-					sx(0),
-					sy2(tempAt(flat, 0)) - 8,
-					`${fmtT(tempAt(flat, 0))} with no transport`,
-					11,
-					{ anchor: 'middle', muted: true }
+					tEq > 45 ? sx(0.14) : sx(0),
+					sy2(tEq) + (tEq > 45 ? 4 : 20),
+					`equator ${fmtT(tEq)}`,
+					12,
+					{
+						anchor: tEq > 45 ? 'start' : 'middle',
+						weight: 600
+					}
 				)}
-				{@render txt(sx(0.86), sy2(-54), fmtT(flat.T[89]), 11, {
+				{@render txt(sx(0.97), sy2(tPole) + (tPole > -35 ? 22 : -14), `pole ${fmtT(tPole)}`, 12, {
 					anchor: 'end',
-					muted: true
-				})}
-			</g>
-			{@render txt(
-				tEq > 45 ? sx(0.14) : sx(0),
-				sy2(tEq) + (tEq > 45 ? 4 : 20),
-				`equator ${fmtT(tEq)}`,
-				12,
-				{
-					anchor: tEq > 45 ? 'start' : 'middle',
 					weight: 600
-				}
-			)}
-			{@render txt(sx(0.97), sy2(tPole) + (tPole > -35 ? 22 : -14), `pole ${fmtT(tPole)}`, 12, {
-				anchor: 'end',
-				weight: 600
-			})}
+				})}
+			</Readout>
 		</g>
 	{/if}
 </g>
