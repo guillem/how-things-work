@@ -26,7 +26,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, scale, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { degText, num, radText, reduce, screenAngle, toRad, trigText, unwrap } from '../trig';
 
 	let { step, t, params, setParam, reduced, dark }: StageProps = $props();
@@ -360,6 +360,21 @@
 	const ext = $derived(Math.max(1, wAngle + w.time * Math.max(1, amp.current)));
 	const bottomY = $derived(CY + U * ext + 22);
 	const topY = $derived(CY - U * ext - 8);
+
+	// The periodic step's caption, as a panel row on phones.
+	const repeatLabel = $derived(
+		thetaR >= 0 && thetaR <= 360
+			? 'One period'
+			: thetaR > 360
+				? `${turns} full turn${turns > 1 ? 's' : ''} on`
+				: 'Clockwise'
+	);
+	const repeatValue = $derived(
+		thetaR >= 0 && thetaR <= 360 ? '360° = 2π' : `the same point as ${sameAs}°`
+	);
+	const repeatNote = $derived(
+		thetaR >= 0 && thetaR <= 360 ? 'past 360° the waves repeat' : 'same sin θ and cos θ'
+	);
 </script>
 
 {#snippet txt(
@@ -390,6 +405,7 @@
 	</defs>
 
 	<!-- ================= the graph frame ================= -->
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<!-- angle ticks and grid -->
 	{#if wAngle > 0.01}
 		<g opacity={wAngle}>
@@ -409,21 +425,25 @@
 					/>
 					<line x1={x} x2={x} y1={bottomY} y2={bottomY + 5} stroke="var(--stage-line)" />
 					{#if labelled}
-						{@render txt(x, bottomY + 19, `${a}°`.replace('-', '−'), 12, {
-							anchor: 'middle',
-							muted: true
-						})}
-						{@render txt(x, bottomY + 35, radText(a), 12, {
-							anchor: 'middle',
-							muted: true
-						})}
+						<Readout id="atick-{a}">
+							{@render txt(x, bottomY + 19, `${a}°`.replace('-', '−'), 12, {
+								anchor: 'middle',
+								muted: true
+							})}
+							{@render txt(x, bottomY + 35, radText(a), 12, {
+								anchor: 'middle',
+								muted: true
+							})}
+						</Readout>
 					{/if}
 				{/if}
 			{/each}
-			{@render txt(GX1, bottomY + 56, 'angle θ  (degrees, radians) →', 12, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout id="angle-axis-title">
+				{@render txt(GX1, bottomY + 56, 'angle θ  (degrees, radians) →', 12, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 		</g>
 	{/if}
 
@@ -434,9 +454,13 @@
 				{@const x = st(s)}
 				<line x1={x} x2={x} y1={topY} y2={bottomY} stroke="var(--stage-grid)" />
 				<line x1={x} x2={x} y1={bottomY} y2={bottomY + 5} stroke="var(--stage-line)" />
-				{@render txt(x, bottomY + 19, `${s} s`, 12, { anchor: 'middle', muted: true })}
+				<Readout id="ttick-{s}">
+					{@render txt(x, bottomY + 19, `${s} s`, 12, { anchor: 'middle', muted: true })}
+				</Readout>
 			{/each}
-			{@render txt(GX1, bottomY + 40, 'time t  (seconds) →', 12, { anchor: 'end', muted: true })}
+			<Readout id="time-axis-title">
+				{@render txt(GX1, bottomY + 40, 'time t  (seconds) →', 12, { anchor: 'end', muted: true })}
+			</Readout>
 		</g>
 	{/if}
 
@@ -461,10 +485,12 @@
 					stroke-dasharray="3 5"
 					opacity="0.55"
 				/>
-				{@render txt(GX1 + 12, yOf(s * amp.current) + 4, s > 0 ? 'A' : '−A', 12, {
-					color: 'var(--trig-sin)',
-					weight: 600
-				})}
+				<Readout id="amp-label{s}">
+					{@render txt(GX1 + 12, yOf(s * amp.current) + 4, s > 0 ? 'A' : '−A', 12, {
+						color: 'var(--trig-sin)',
+						weight: 600
+					})}
+				</Readout>
 			{/each}
 			<!-- one cycle = one turn of the point = 1/f seconds -->
 			{#if cycle}
@@ -476,13 +502,15 @@
 					stroke="var(--stage-ink)"
 					stroke-width="1.5"
 				/>
-				{@render txt(
-					cxl,
-					y - 7,
-					`one cycle: 1/f ${periodText.startsWith('≈') ? periodText : `= ${periodText}`}`,
-					13,
-					{ anchor: 'middle', weight: 600 }
-				)}
+				<Readout id="cycle-label">
+					{@render txt(
+						cxl,
+						y - 7,
+						`one cycle: 1/f ${periodText.startsWith('≈') ? periodText : `= ${periodText}`}`,
+						13,
+						{ anchor: 'middle', weight: 600 }
+					)}
+				</Readout>
 			{/if}
 		</g>
 	{/if}
@@ -526,11 +554,19 @@
 		opacity="0.7"
 	/>
 	{#if w.time > 0.01}
-		{@render txt(CX, CY + U * Math.max(1, amp.current) + 40, `radius A = ${num(amp.current)}`, 13, {
-			anchor: 'middle',
-			muted: true,
-			opacity: w.time
-		})}
+		<Readout id="radius-label">
+			{@render txt(
+				CX,
+				CY + U * Math.max(1, amp.current) + 40,
+				`radius A = ${num(amp.current)}`,
+				13,
+				{
+					anchor: 'middle',
+					muted: true,
+					opacity: w.time
+				}
+			)}
+		</Readout>
 	{/if}
 
 	<!-- the angle, as a spiral that keeps count of the turns -->
@@ -601,10 +637,12 @@
 	{/if}
 
 	<!-- value labels, drawn over the link line so it never hides them -->
-	{#each [-1, 1] as v (v)}
-		{@render txt(GX0 - 12, yOf(v) + 4, v > 0 ? '1' : '−1', 12, { anchor: 'end', muted: true })}
-	{/each}
-	{@render txt(GX0 - 12, CY + 4, '0', 12, { anchor: 'end', muted: true })}
+	<Readout id="value-labels">
+		{#each [-1, 1] as v (v)}
+			{@render txt(GX0 - 12, yOf(v) + 4, v > 0 ? '1' : '−1', 12, { anchor: 'end', muted: true })}
+		{/each}
+		{@render txt(GX0 - 12, CY + 4, '0', 12, { anchor: 'end', muted: true })}
+	</Readout>
 
 	<g clip-path="url(#wave-clip)">
 		{#if wAngle > 0.01}
@@ -720,7 +758,9 @@
 				stroke-width="1.5"
 				marker-end="url(#arrowhead)"
 			/>
-			{@render txt(sx(90) + 8, y + 4, '90° = π/2 to the left', 12, { weight: 600 })}
+			<Readout id="shift-label">
+				{@render txt(sx(90) + 8, y + 4, '90° = π/2 to the left', 12, { weight: 600 })}
+			</Readout>
 		</g>
 	{/if}
 
@@ -734,10 +774,12 @@
 				stroke="var(--stage-ink)"
 				stroke-width="1.5"
 			/>
-			{@render txt((sx(0) + sx(360)) / 2, y - 7, 'one period: 360° = 2π', 13, {
-				anchor: 'middle',
-				weight: 600
-			})}
+			<Readout id="period-label">
+				{@render txt((sx(0) + sx(360)) / 2, y - 7, 'one period: 360° = 2π', 13, {
+					anchor: 'middle',
+					weight: 600
+				})}
+			</Readout>
 		</g>
 	{/if}
 
@@ -769,60 +811,135 @@
 	<!-- ================= readouts ================= -->
 	{#if wAngle > 0.01}
 		<g opacity={wAngle}>
-			{@render txt(32, 58, `θ = ${degText(thetaR)} (${radLabel(thetaR)})`, 22, { weight: 600 })}
-			{@render txt(352, 58, `sin θ = ${trigText(thetaR, 'sin')}`, 18, {
-				weight: 600,
-				color: 'var(--trig-sin)'
-			})}
-			{#if wCos > 0.01}
-				{@render txt(604, 58, `cos θ = ${trigText(thetaR, 'cos')}`, 18, {
+			<Readout
+				id="theta"
+				order={1}
+				label="Angle"
+				value="θ = {degText(thetaR)}"
+				note={radLabel(thetaR)}
+				opacity={wAngle}
+			>
+				{@render txt(32, 58, `θ = ${degText(thetaR)} (${radLabel(thetaR)})`, 22, { weight: 600 })}
+			</Readout>
+			<Readout
+				id="sin"
+				order={2}
+				label="sin θ"
+				value={trigText(thetaR, 'sin')}
+				color="var(--trig-sin)"
+				opacity={wAngle}
+			>
+				{@render txt(352, 58, `sin θ = ${trigText(thetaR, 'sin')}`, 18, {
 					weight: 600,
-					color: 'var(--trig-cos)',
-					opacity: Math.min(1, wCos / 0.6)
+					color: 'var(--trig-sin)'
 				})}
+			</Readout>
+			{#if wCos > 0.01}
+				<Readout
+					id="cos"
+					order={3}
+					label="cos θ"
+					value={trigText(thetaR, 'cos')}
+					color="var(--trig-cos)"
+					opacity={Math.min(wAngle, wCos / 0.6)}
+				>
+					{@render txt(604, 58, `cos θ = ${trigText(thetaR, 'cos')}`, 18, {
+						weight: 600,
+						color: 'var(--trig-cos)',
+						opacity: Math.min(1, wCos / 0.6)
+					})}
+				</Readout>
 			{/if}
 			{#if w.sine > 0.01}
-				{@render txt(32, 86, 'the height of the point, plotted against the angle', 13, {
-					muted: true,
-					opacity: w.sine
-				})}
+				<Readout
+					id="caption-sine"
+					order={4}
+					label="The sine wave"
+					value="the point’s height against the angle"
+					opacity={Math.min(wAngle, w.sine)}
+				>
+					{@render txt(32, 86, 'the height of the point, plotted against the angle', 13, {
+						muted: true,
+						opacity: w.sine
+					})}
+				</Readout>
 			{/if}
 			{#if w.cosine > 0.01}
-				{@render txt(
-					32,
-					86,
-					'cos θ: the sideways position. Same shape, slid left: cos θ = sin(θ + 90°)',
-					13,
-					{ muted: true, opacity: w.cosine }
-				)}
+				<Readout
+					id="caption-cosine"
+					order={4}
+					label="cos θ: the sideways position"
+					value="cos θ = sin(θ + 90°)"
+					note="same shape, slid 90° left"
+					opacity={Math.min(wAngle, w.cosine)}
+				>
+					{@render txt(
+						32,
+						86,
+						'cos θ: the sideways position. Same shape, slid left: cos θ = sin(θ + 90°)',
+						13,
+						{ muted: true, opacity: w.cosine }
+					)}
+				</Readout>
 			{/if}
 			{#if w.periodic > 0.01}
-				{@render txt(
-					32,
-					86,
-					thetaR >= 0 && thetaR <= 360
-						? 'past 360° the point goes round again, and the waves repeat'
-						: thetaR > 360
-							? `${turns} full turn${turns > 1 ? 's' : ''} on: the same point as ${sameAs}°, so sin ${thetaR}° = sin ${sameAs}° and cos ${thetaR}° = cos ${sameAs}°`
-							: `clockwise: the same point as ${sameAs}°, so sin(${num(thetaR, 0)}°) = sin ${sameAs}° and cos(${num(thetaR, 0)}°) = cos ${sameAs}°`,
-					13,
-					{ muted: true, opacity: w.periodic }
-				)}
+				<Readout
+					id="caption-periodic"
+					order={4}
+					label={repeatLabel}
+					value={repeatValue}
+					note={repeatNote}
+					opacity={Math.min(wAngle, w.periodic)}
+				>
+					{@render txt(
+						32,
+						86,
+						thetaR >= 0 && thetaR <= 360
+							? 'past 360° the point goes round again, and the waves repeat'
+							: thetaR > 360
+								? `${turns} full turn${turns > 1 ? 's' : ''} on: the same point as ${sameAs}°, so sin ${thetaR}° = sin ${sameAs}° and cos ${thetaR}° = cos ${sameAs}°`
+								: `clockwise: the same point as ${sameAs}°, so sin(${num(thetaR, 0)}°) = sin ${sameAs}° and cos(${num(thetaR, 0)}°) = cos ${sameAs}°`,
+						13,
+						{ muted: true, opacity: w.periodic }
+					)}
+				</Readout>
 			{/if}
 		</g>
 	{/if}
 
 	{#if w.time > 0.01}
 		<g opacity={w.time}>
-			{@render txt(32, 58, 'height = A · sin(2π f t)', 22, { weight: 600 })}
-			{@render txt(400, 58, `amplitude A = ${num(ampParam)}`, 16, {
-				weight: 600,
-				color: 'var(--trig-sin)'
-			})}
-			{@render txt(400, 84, `frequency f = ${num(freq)} Hz → one cycle every ${periodText}`, 16, {
-				weight: 600
-			})}
-			{@render txt(32, 86, `t = ${num(tt, 1)} s`, 14, { muted: true })}
+			<Readout id="formula" order={1} label="Height" value="A · sin(2π f t)" opacity={w.time}>
+				{@render txt(32, 58, 'height = A · sin(2π f t)', 22, { weight: 600 })}
+			</Readout>
+			<Readout
+				id="amplitude"
+				order={3}
+				label="Amplitude"
+				value="A = {num(ampParam)}"
+				color="var(--trig-sin)"
+				opacity={w.time}
+			>
+				{@render txt(400, 58, `amplitude A = ${num(ampParam)}`, 16, {
+					weight: 600,
+					color: 'var(--trig-sin)'
+				})}
+			</Readout>
+			<Readout
+				id="frequency"
+				order={4}
+				label="Frequency"
+				value="f = {num(freq)} Hz"
+				note="one cycle every {periodText}"
+				opacity={w.time}
+			>
+				{@render txt(400, 84, `frequency f = ${num(freq)} Hz → one cycle every ${periodText}`, 16, {
+					weight: 600
+				})}
+			</Readout>
+			<Readout id="time" order={2} label="Time" value="t = {num(tt, 1)} s" opacity={w.time}>
+				{@render txt(32, 86, `t = ${num(tt, 1)} s`, 14, { muted: true })}
+			</Readout>
 		</g>
 	{/if}
 </g>

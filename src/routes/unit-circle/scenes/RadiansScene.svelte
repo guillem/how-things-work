@@ -22,7 +22,7 @@
 	 * overrides SVG presentation attributes (see docs/BACKLOG.md).
 	 */
 	import { Handle, easeInOut, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { angleParam, degText, num, radText, screenAngle, toRad } from '../trig';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
@@ -323,15 +323,18 @@
 		stroke="var(--stage-ink)"
 		stroke-width="1.6"
 	/>
-	{@render txt(CX + R + 12, CY - 24, '0', 12, {
-		muted: true,
-		opacity: (1 - done) * clearOf(CX + R + 16, CY - 24)
-	})}
-	{@render txt(CX + R + 12, CY - 24, '2π ≈ 6.28', 13, {
-		weight: 600,
-		color: INK_ORANGE,
-		opacity: done * clearOf(CX + R + 16, CY - 24)
-	})}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="start-label">
+		{@render txt(CX + R + 12, CY - 24, '0', 12, {
+			muted: true,
+			opacity: (1 - done) * clearOf(CX + R + 16, CY - 24)
+		})}
+		{@render txt(CX + R + 12, CY - 24, '2π ≈ 6.28', 13, {
+			weight: 600,
+			color: INK_ORANGE,
+			opacity: done * clearOf(CX + R + 16, CY - 24)
+		})}
+	</Readout>
 	{#each TICKS as tk (tk.n)}
 		{@const on = smoothstep(1.1, 1.5, local(tk.n - 1))}
 		{#if on > 0.01}
@@ -344,22 +347,35 @@
 					stroke="var(--stage-ink)"
 					stroke-width="1.6"
 				/>
-				{@render txt(tk.x, tk.y, tk.text, tk.n === 1 ? 13 : 14, {
-					anchor: tk.anchor,
-					weight: 600,
-					color: INK_ORANGE,
-					opacity: clearOf(tk.x, tk.y)
-				})}
+				<Readout id="tick-{tk.n}">
+					{@render txt(tk.x, tk.y, tk.text, tk.n === 1 ? 13 : 14, {
+						anchor: tk.anchor,
+						weight: 600,
+						color: INK_ORANGE,
+						opacity: clearOf(tk.x, tk.y)
+					})}
+					{#snippet narrow()}
+						<!-- just the number, large enough to read on a phone -->
+						{@const nl = at(tk.n, R + 40)}
+						{@render txt(nl.x, nl.y + 10, String(tk.n), 28, {
+							anchor: 'middle',
+							weight: 700,
+							color: INK_ORANGE
+						})}
+					{/snippet}
+				</Readout>
 			</g>
 		{/if}
 	{/each}
 	{#if done > 0.01}
 		{@const lp = at(6 + LEFTOVER / 2, R + 22)}
-		{@render txt(lp.x, lp.y + 8, '+ 0.28', 12, {
-			weight: 600,
-			color: INK_ORANGE,
-			opacity: done * clearOf(lp.x + 18, lp.y + 8)
-		})}
+		<Readout id="leftover-label">
+			{@render txt(lp.x, lp.y + 8, '+ 0.28', 12, {
+				weight: 600,
+				color: INK_ORANGE,
+				opacity: done * clearOf(lp.x + 18, lp.y + 8)
+			})}
+		</Readout>
 	{/if}
 
 	<!-- the reader's angle: its arc along the inside of the circle -->
@@ -439,75 +455,104 @@
 
 	<!-- ================= readout panel ================= -->
 	<g>
-		{@render txt(PX, 88, `θ = ${degText(theta)}`, 30, { weight: 600 })}
-		{@render txt(PX, 116, radLine, 15, { muted: true })}
-		{@render txt(PX, 144, arcLine, 15, { weight: 600, color: 'var(--explainer-accent)' })}
+		<Readout id="theta" order={1} label="Angle" value="θ = {degText(theta)}" note={radLine}>
+			{@render txt(PX, 88, `θ = ${degText(theta)}`, 30, { weight: 600 })}
+			{@render txt(PX, 116, radLine, 15, { muted: true })}
+		</Readout>
+		<Readout
+			id="arc"
+			order={2}
+			label="The arc"
+			value={theta === 0 ? 'no length' : `≈ ${num(rad)} radii long`}
+			color="var(--explainer-accent)"
+		>
+			{@render txt(PX, 144, arcLine, 15, { weight: 600, color: 'var(--explainer-accent)' })}
+		</Readout>
 
-		<!-- the circumference, unrolled -->
-		{@render txt(PX, RULER_Y - 20, 'The circumference, measured in radii', 12, { muted: true })}
-		<rect
-			x={PX}
-			y={RULER_Y}
-			width={TAU * RU}
-			height="10"
-			rx="2"
-			fill="var(--stage-grid)"
-			stroke="var(--stage-line)"
-		/>
-		{#each filled as f (f.k)}
-			<rect x={PX + f.k * RU} y={RULER_Y} width={f.w * RU} height="10" fill={ORANGE[f.k % 2]} />
-		{/each}
-		{#each [0, 1, 2, 3, 4, 5, 6] as n (n)}
-			<line
-				x1={PX + n * RU}
-				x2={PX + n * RU}
-				y1={RULER_Y + 10}
-				y2={RULER_Y + 15}
-				stroke="var(--stage-ink-muted)"
+		<Readout id="ruler">
+			<!-- the circumference, unrolled -->
+			{@render txt(PX, RULER_Y - 20, 'The circumference, measured in radii', 12, { muted: true })}
+			<rect
+				x={PX}
+				y={RULER_Y}
+				width={TAU * RU}
+				height="10"
+				rx="2"
+				fill="var(--stage-grid)"
+				stroke="var(--stage-line)"
 			/>
-			{@render txt(PX + n * RU, RULER_Y + 28, `${n}`, 11, { anchor: 'middle', muted: true })}
-		{/each}
-		<!-- where θ falls on it -->
-		{#if theta > 0}
-			{@const mx = PX + rad * RU}
-			<path
-				d="M{mx - 5} {RULER_Y - 9} L{mx + 5} {RULER_Y - 9} L{mx} {RULER_Y - 2} Z"
-				fill="var(--explainer-accent)"
-			/>
-		{/if}
-		{@render txt(
-			PX,
-			RULER_Y + 58,
-			settled >= 7 ? '6 radii and a bit: 2π ≈ 6.28' : `Radii laid end to end: ${settled}`,
-			settled >= 7 ? 15 : 13,
-			{ weight: settled >= 7 ? 600 : 500, muted: settled < 7 }
-		)}
-
-		<!-- degrees ↔ radians -->
-		{@render txt(PX, TABLE_Y, 'degrees', 12, { muted: true })}
-		{@render txt(PX + 84, TABLE_Y, 'radians', 12, { muted: true })}
-		{#each TABLE as row, i (row.deg)}
-			{@const y = TABLE_Y + 28 + i * 26}
-			{@const hit = theta === row.deg}
-			{#if hit}
-				<rect
-					x={PX - 8}
-					y={y - 18}
-					width="196"
-					height="25"
-					rx="5"
+			{#each filled as f (f.k)}
+				<rect x={PX + f.k * RU} y={RULER_Y} width={f.w * RU} height="10" fill={ORANGE[f.k % 2]} />
+			{/each}
+			{#each [0, 1, 2, 3, 4, 5, 6] as n (n)}
+				<line
+					x1={PX + n * RU}
+					x2={PX + n * RU}
+					y1={RULER_Y + 10}
+					y2={RULER_Y + 15}
+					stroke="var(--stage-ink-muted)"
+				/>
+				{@render txt(PX + n * RU, RULER_Y + 28, `${n}`, 11, { anchor: 'middle', muted: true })}
+			{/each}
+			<!-- where θ falls on it -->
+			{#if theta > 0}
+				{@const mx = PX + rad * RU}
+				<path
+					d="M{mx - 5} {RULER_Y - 9} L{mx + 5} {RULER_Y - 9} L{mx} {RULER_Y - 2} Z"
 					fill="var(--explainer-accent)"
-					opacity="0.14"
 				/>
 			{/if}
-			{@render txt(PX, y, `${row.deg}°`, 15, { weight: hit ? 700 : 500 })}
-			{@render txt(PX + 54, y, '=', 15, { muted: true })}
-			{@render txt(PX + 84, y, row.rad, 15, { weight: hit ? 700 : 500 })}
-			{@render txt(PX + 134, y, `≈ ${num(toRad(row.deg))}`, 13, { muted: true })}
-		{/each}
+		</Readout>
+		<Readout
+			id="circumference"
+			order={3}
+			label="Circumference"
+			value={settled >= 7 ? '6 radii and a bit: 2π ≈ 6.28' : `${settled} radii laid so far`}
+		>
+			{@render txt(
+				PX,
+				RULER_Y + 58,
+				settled >= 7 ? '6 radii and a bit: 2π ≈ 6.28' : `Radii laid end to end: ${settled}`,
+				settled >= 7 ? 15 : 13,
+				{ weight: settled >= 7 ? 600 : 500, muted: settled < 7 }
+			)}
+		</Readout>
 
-		<!-- the rule -->
-		{@render txt(PX, TABLE_Y + 192, '180° = π radians', 18, { weight: 600 })}
-		{@render txt(PX, TABLE_Y + 214, 'radians = degrees × π/180', 12, { muted: true })}
+		<Readout id="table">
+			<!-- degrees ↔ radians -->
+			{@render txt(PX, TABLE_Y, 'degrees', 12, { muted: true })}
+			{@render txt(PX + 84, TABLE_Y, 'radians', 12, { muted: true })}
+			{#each TABLE as row, i (row.deg)}
+				{@const y = TABLE_Y + 28 + i * 26}
+				{@const hit = theta === row.deg}
+				{#if hit}
+					<rect
+						x={PX - 8}
+						y={y - 18}
+						width="196"
+						height="25"
+						rx="5"
+						fill="var(--explainer-accent)"
+						opacity="0.14"
+					/>
+				{/if}
+				{@render txt(PX, y, `${row.deg}°`, 15, { weight: hit ? 700 : 500 })}
+				{@render txt(PX + 54, y, '=', 15, { muted: true })}
+				{@render txt(PX + 84, y, row.rad, 15, { weight: hit ? 700 : 500 })}
+				{@render txt(PX + 134, y, `≈ ${num(toRad(row.deg))}`, 13, { muted: true })}
+			{/each}
+		</Readout>
+
+		<Readout
+			id="rule"
+			order={4}
+			label="The rule"
+			value="180° = π radians"
+			note="radians = degrees × π/180"
+		>
+			<!-- the rule -->
+			{@render txt(PX, TABLE_Y + 192, '180° = π radians', 18, { weight: 600 })}
+			{@render txt(PX, TABLE_Y + 214, 'radians = degrees × π/180', 12, { muted: true })}
+		</Readout>
 	</g>
 </g>

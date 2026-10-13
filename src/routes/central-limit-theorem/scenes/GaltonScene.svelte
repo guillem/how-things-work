@@ -30,7 +30,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, lerp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { binomial, galton, normalDensity } from '../clt';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -285,6 +285,13 @@
 	const perRow = $derived(Math.ceil(rows / letterRows));
 	const binIds = $derived(Array.from({ length: rows + 1 }, (_, k) => k));
 	const hlBin = $derived(hl?.done ? hl.bin : -1);
+	const hlResult = $derived(
+		hl
+			? hl.done
+				? `${hl.bin} right${hl.bin === 1 ? '' : 's'} → bin ${hl.bin}`
+				: `${hl.rightsSoFar} right${hl.rightsSoFar === 1 ? '' : 's'} so far`
+			: ''
+	);
 </script>
 
 {#snippet txt(
@@ -415,22 +422,34 @@
 	{/if}
 
 	<!-- bin numbers = number of right bounces -->
-	{@render txt(left - 10, 558, 'rights', 11, { anchor: 'end', muted: true })}
-	{#each binIds as k (k)}
-		{@render txt(binX(k), 558, String(k), 11, {
-			anchor: 'middle',
-			muted: hlBin !== k,
-			color: hlBin === k ? 'var(--clt-ball)' : undefined,
-			weight: hlBin === k ? 700 : 500
-		})}
-	{/each}
-	{#if whyAmt.current > 0.01}
-		<g opacity={whyAmt.current}>
-			{#each pathLabels as l (l.k)}
-				{@render txt(binX(l.k), 580, l.text, 12, { anchor: 'middle', weight: 600 })}
-			{/each}
-		</g>
-	{/if}
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout id="bin-numbers">
+		{@render txt(left - 10, 558, 'rights', 11, { anchor: 'end', muted: true })}
+		{#each binIds as k (k)}
+			{@render txt(binX(k), 558, String(k), 11, {
+				anchor: 'middle',
+				muted: hlBin !== k,
+				color: hlBin === k ? 'var(--clt-ball)' : undefined,
+				weight: hlBin === k ? 700 : 500
+			})}
+		{/each}
+	</Readout>
+	<Readout
+		id="paths"
+		order={5}
+		label="Paths into a bin"
+		value="end bin: 1 of {fmt(2 ** rows)}"
+		note="middle bin: {fmt(paths(Math.floor(rows / 2)))}"
+		opacity={whyAmt.current}
+	>
+		{#if whyAmt.current > 0.01}
+			<g opacity={whyAmt.current}>
+				{#each pathLabels as l (l.k)}
+					{@render txt(binX(l.k), 580, l.text, 12, { anchor: 'middle', weight: 600 })}
+				{/each}
+			</g>
+		{/if}
+	</Readout>
 
 	<!-- the traced ball (why) -->
 	{#if hl}
@@ -471,64 +490,88 @@
 
 	<!-- panel -->
 	<g>
-		{@render txt(PL, 56, 'balls dropped', 13, { muted: true })}
-		{@render txt(PL, 90, fmt(released), 30, { weight: 600, tabular: true })}
-		{@render txt(PL, 118, `${rows} rows of pins → ${rows + 1} bins`, 13)}
-		{@render txt(PL, 137, 'bin = number of bounces to the right', 12, { muted: true })}
+		<Readout id="dropped" order={1} label="Balls dropped" value={fmt(released)}>
+			{@render txt(PL, 56, 'balls dropped', 13, { muted: true })}
+			{@render txt(PL, 90, fmt(released), 30, { weight: 600, tabular: true })}
+		</Readout>
+		<Readout
+			id="board"
+			order={2}
+			label="Board"
+			value="{rows} rows → {rows + 1} bins"
+			note="bin = bounces to the right"
+		>
+			{@render txt(PL, 118, `${rows} rows of pins → ${rows + 1} bins`, 13)}
+			{@render txt(PL, 137, 'bin = number of bounces to the right', 12, { muted: true })}
+		</Readout>
 
-		<g opacity={expectedAmt}>
-			<line
-				x1={PL}
-				x2={PL + 26}
-				y1={172}
-				y2={172}
-				stroke="var(--stage-ink)"
-				stroke-width="1.5"
-				stroke-dasharray="5 4"
-				opacity="0.75"
-			/>
-			<circle cx={PL + 13} cy={172} r="2.5" fill="var(--stage-ink)" />
-			{@render txt(PL + 36, 176, `expected shape for ${fmt(landed)} balls`, 12)}
-		</g>
-		<g opacity={expectedAmt}>
-			<line x1={PL} x2={PL + 26} y1={196} y2={196} stroke="var(--clt-bell)" stroke-width="2.5" />
-			{@render txt(PL + 36, 200, 'the normal (bell) curve', 12)}
-		</g>
+		<Readout
+			id="expected"
+			order={3}
+			label="Expected shape (dashed)"
+			value="{fmt(landed)} balls"
+			note="red: the normal (bell) curve"
+			opacity={expectedAmt}
+		>
+			<g opacity={expectedAmt}>
+				<line
+					x1={PL}
+					x2={PL + 26}
+					y1={172}
+					y2={172}
+					stroke="var(--stage-ink)"
+					stroke-width="1.5"
+					stroke-dasharray="5 4"
+					opacity="0.75"
+				/>
+				<circle cx={PL + 13} cy={172} r="2.5" fill="var(--stage-ink)" />
+				{@render txt(PL + 36, 176, `expected shape for ${fmt(landed)} balls`, 12)}
+			</g>
+			<g opacity={expectedAmt}>
+				<line x1={PL} x2={PL + 26} y1={196} y2={196} stroke="var(--clt-bell)" stroke-width="2.5" />
+				{@render txt(PL + 36, 200, 'the normal (bell) curve', 12)}
+			</g>
+		</Readout>
 
 		{#if hl}
-			<g opacity={whyAmt.current}>
-				{@render txt(PL, 250, 'one ball’s bounces, top to bottom', 13, { muted: true })}
-				{#each hl.letters as l (l.r)}
-					{@render txt(
-						PL + (l.r % perRow) * 24,
-						282 + Math.floor(l.r / perRow) * 26,
-						l.shown ? l.ch : '·',
-						17,
-						{
-							weight: 700,
-							color: l.ch === 'R' ? 'var(--clt-ball)' : 'var(--stage-ink-muted)',
-							opacity: l.shown ? 1 : 0.4
-						}
-					)}
-				{/each}
-				{@render txt(
-					PL,
-					282 + letterRows * 26 + 10,
-					hl.done
-						? `${hl.bin} right${hl.bin === 1 ? '' : 's'} → bin ${hl.bin}`
-						: `${hl.rightsSoFar} right${hl.rightsSoFar === 1 ? '' : 's'} so far`,
-					16,
-					{ weight: 600, color: 'var(--clt-ball)' }
-				)}
-				{@render txt(PL, 282 + letterRows * 26 + 32, 'number of rights = bin', 12, {
-					muted: true
-				})}
+			<Readout
+				id="bounces"
+				order={4}
+				label="One ball’s bounces"
+				value={hl.letters.map((l) => (l.shown ? l.ch : '·')).join(' ')}
+				note={hlResult}
+				color="var(--clt-ball)"
+				opacity={whyAmt.current}
+			>
+				<g opacity={whyAmt.current}>
+					{@render txt(PL, 250, 'one ball’s bounces, top to bottom', 13, { muted: true })}
+					{#each hl.letters as l (l.r)}
+						{@render txt(
+							PL + (l.r % perRow) * 24,
+							282 + Math.floor(l.r / perRow) * 26,
+							l.shown ? l.ch : '·',
+							17,
+							{
+								weight: 700,
+								color: l.ch === 'R' ? 'var(--clt-ball)' : 'var(--stage-ink-muted)',
+								opacity: l.shown ? 1 : 0.4
+							}
+						)}
+					{/each}
+					{@render txt(PL, 282 + letterRows * 26 + 10, hlResult, 16, {
+						weight: 600,
+						color: 'var(--clt-ball)'
+					})}
+					{@render txt(PL, 282 + letterRows * 26 + 32, 'number of rights = bin', 12, {
+						muted: true
+					})}
 
-				{@render txt(PL, 436, 'An end bin needs every bounce to go', 12)}
-				{@render txt(PL, 454, `the same way: 1 path out of ${fmt(2 ** rows)}.`, 12)}
-				{@render txt(PL, 478, 'The middle bin can be reached by', 12)}
-				{@render txt(PL, 496, `${fmt(paths(Math.floor(rows / 2)))} different paths.`, 12)}
-			</g>
+					{@render txt(PL, 436, 'An end bin needs every bounce to go', 12)}
+					{@render txt(PL, 454, `the same way: 1 path out of ${fmt(2 ** rows)}.`, 12)}
+					{@render txt(PL, 478, 'The middle bin can be reached by', 12)}
+					{@render txt(PL, 496, `${fmt(paths(Math.floor(rows / 2)))} different paths.`, 12)}
+				</g>
+			</Readout>
 		{/if}
 	</g>
 </g>

@@ -15,7 +15,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { EXAMPLE, counts, grid, ppv, runOutline, secondTest, type Test } from '../bayes';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -202,7 +202,10 @@
 
 <g>
 	<!-- the grid -->
-	{@render txt(GX, GY - 22, header, 15, { weight: 600 })}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="header">
+		{@render txt(GX, GY - 22, header, 15, { weight: 600 })}
+	</Readout>
 	<path d={paths.d.hn} fill="var(--stage-line)" opacity="0.45" />
 	<path d={paths.d.sn} fill="var(--stage-ink)" opacity="0.85" />
 	<path d={paths.d.tn} fill={COLOR.tn} opacity={negOpacity} />
@@ -238,101 +241,162 @@
 	<!-- legend under the grid -->
 	{#each legend as l, i (l.key)}
 		{@const lx = GX + i * (phase === 'crowd' ? 120 : 150)}
-		<rect x={lx} y={GY + GH + 22} width="12" height="12" rx="2" fill={l.color} />
-		{@render txt(lx + 18, GY + GH + 33, l.text, 12.5, { tabular: true })}
+		<Readout id="legend-{l.key}" order={10 + i} label={l.text} color={l.color}>
+			<rect x={lx} y={GY + GH + 22} width="12" height="12" rx="2" fill={l.color} />
+			{@render txt(lx + 18, GY + GH + 33, l.text, 12.5, { tabular: true })}
+		</Readout>
 	{/each}
 
 	<!-- readout card -->
-	<rect
-		x={CX}
-		y={CY}
-		width={CW}
-		height={CH}
-		rx="10"
-		fill="var(--surface)"
-		stroke="var(--border)"
-		stroke-width="1"
-	/>
+	<Readout id="card">
+		<rect
+			x={CX}
+			y={CY}
+			width={CW}
+			height={CH}
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+			stroke-width="1"
+		/>
+	</Readout>
 	{#if phase === 'crowd'}
-		{@render txt(CX + 20, CY + 34, 'Before anyone is tested', 13, { muted: true })}
-		{@render txt(CX + 20, CY + 92, `${fmt(c.sick)} ill`, 40, { weight: 700 })}
-		{@render txt(CX + 20, CY + 130, `${fmt(c.healthy)} healthy`, 22, { weight: 600, muted: true })}
-		{@render txt(CX + 20, CY + 190, 'The base rate: 1 person in 100', 13)}
-		{@render txt(CX + 20, CY + 210, 'has the disease.', 13)}
-		{@render txt(CX + 20, CY + 260, 'Each square is one person.', 12, { muted: true })}
-	{:else if phase === 'test'}
-		{@render txt(CX + 20, CY + 34, 'Test results, counted', 13, { muted: true })}
-		{@render txt(CX + 20, CY + 74, `Ill: ${fmt(c.sick)}`, 18, { weight: 700 })}
-		{@render txt(CX + 20, CY + 100, `${fmt(paths.tally.tp)} caught (true positives)`, 13, {
-			color: COLOR.tp,
-			weight: 600,
-			tabular: true
-		})}
-		{@render txt(CX + 20, CY + 122, `${fmt(paths.tally.fn)} missed (false negatives)`, 13, {
-			color: COLOR.fn,
-			weight: 600,
-			tabular: true
-		})}
-		{@render txt(CX + 20, CY + 172, `Healthy: ${fmt(c.healthy)}`, 18, { weight: 700 })}
-		{@render txt(CX + 20, CY + 198, `${fmt(paths.tally.fp)} flagged (false positives)`, 13, {
-			color: COLOR.fp,
-			weight: 600,
-			tabular: true
-		})}
-		{@render txt(CX + 20, CY + 220, `${fmt(paths.tally.tn)} cleared (true negatives)`, 13, {
-			weight: 600,
-			tabular: true
-		})}
-		{@render txt(CX + 20, CY + 280, 'Catches 90% of the ill;', 12, { muted: true })}
-		{@render txt(CX + 20, CY + 298, 'wrongly flags 9% of the healthy.', 12, { muted: true })}
-	{:else}
-		{@render txt(CX + 20, CY + 34, 'Of everyone who tested positive', 13, { muted: true })}
-		{@render txt(CX + 20, CY + 82, `${fmt(c.truePos)} of ${fmt(c.positives)}`, 38, {
-			weight: 700,
-			tabular: true
-		})}
-		{@render txt(CX + 20, CY + 108, 'positives are ill', 15, { weight: 600 })}
-		{@render txt(CX + CW - 20, CY + 108, `≈ ${pct(share, share < 0.02 ? 1 : 0)}`, 26, {
-			anchor: 'end',
-			weight: 700,
-			color: COLOR.tp,
-			tabular: true
-		})}
-		{@render bar(CY + 128)}
-		{#if phase === 'positives'}
-			{@render txt(CX + 20, CY + 210, 'A positive result is wrong', 13)}
-			{@render txt(CX + 20, CY + 230, 'far more often than right:', 13)}
-			{@render txt(CX + 20, CY + 250, 'the healthy far outnumber the ill.', 13)}
-		{:else if phase === 'sliders'}
-			{@render txt(CX + 20, CY + 212, "Exact, from Bayes' theorem", 13, { muted: true })}
-			{@render txt(CX + 20, CY + 248, pct(exact, 1), 30, { weight: 700, tabular: true })}
-			{@render txt(
-				CX + 20,
-				CY + 290,
-				`${pp(test.prevalence)} ill · test catches ${pp(test.sensitivity)}`,
-				12,
-				{ muted: true }
-			)}
-			{@render txt(CX + 20, CY + 308, `and clears ${pp(test.specificity)} of the healthy`, 12, {
+		<Readout
+			id="base"
+			order={1}
+			label="Base rate"
+			value="1 person in 100 is ill"
+			note="each square is one person"
+		>
+			{@render txt(CX + 20, CY + 34, 'Before anyone is tested', 13, { muted: true })}
+			{@render txt(CX + 20, CY + 92, `${fmt(c.sick)} ill`, 40, { weight: 700 })}
+			{@render txt(CX + 20, CY + 130, `${fmt(c.healthy)} healthy`, 22, {
+				weight: 600,
 				muted: true
 			})}
-		{:else}
-			{@render txt(CX + 20, CY + 206, 'true positives ÷ all positives', 12, { muted: true })}
-			{@render txt(
-				CX + 20,
-				CY + 234,
-				`${fmt(c.truePos)} ÷ (${fmt(c.truePos)} + ${fmt(c.falsePos)}) = ${pct(share, 1)}`,
-				18,
-				{ weight: 700, tabular: true }
-			)}
-			{@render txt(CX + 20, CY + 256, `exact: ${pct(exact, 1)}`, 12, { muted: true })}
-			{@render txt(CX + 20, CY + 296, 'After a second positive from an equally', 12.5)}
-			{@render txt(CX + 20, CY + 314, 'accurate, independent test:', 12.5)}
-			{@render txt(CX + 20, CY + 336, `${pct(exact, 1)} → ${pct(second, 1)}`, 16, {
+			{@render txt(CX + 20, CY + 190, 'The base rate: 1 person in 100', 13)}
+			{@render txt(CX + 20, CY + 210, 'has the disease.', 13)}
+			{@render txt(CX + 20, CY + 260, 'Each square is one person.', 12, { muted: true })}
+		</Readout>
+	{:else if phase === 'test'}
+		<Readout
+			id="accuracy"
+			order={1}
+			label="The test"
+			value="catches 90% of the ill"
+			note="wrongly flags 9% of the healthy"
+		>
+			{@render txt(CX + 20, CY + 34, 'Test results, counted', 13, { muted: true })}
+			{@render txt(CX + 20, CY + 74, `Ill: ${fmt(c.sick)}`, 18, { weight: 700 })}
+			{@render txt(CX + 20, CY + 100, `${fmt(paths.tally.tp)} caught (true positives)`, 13, {
+				color: COLOR.tp,
+				weight: 600,
+				tabular: true
+			})}
+			{@render txt(CX + 20, CY + 122, `${fmt(paths.tally.fn)} missed (false negatives)`, 13, {
+				color: COLOR.fn,
+				weight: 600,
+				tabular: true
+			})}
+			{@render txt(CX + 20, CY + 172, `Healthy: ${fmt(c.healthy)}`, 18, { weight: 700 })}
+			{@render txt(CX + 20, CY + 198, `${fmt(paths.tally.fp)} flagged (false positives)`, 13, {
+				color: COLOR.fp,
+				weight: 600,
+				tabular: true
+			})}
+			{@render txt(CX + 20, CY + 220, `${fmt(paths.tally.tn)} cleared (true negatives)`, 13, {
+				weight: 600,
+				tabular: true
+			})}
+			{@render txt(CX + 20, CY + 280, 'Catches 90% of the ill;', 12, { muted: true })}
+			{@render txt(CX + 20, CY + 298, 'wrongly flags 9% of the healthy.', 12, { muted: true })}
+		</Readout>
+	{:else}
+		<Readout
+			id="share"
+			order={1}
+			label="Positives who are ill"
+			value="{fmt(c.truePos)} of {fmt(c.positives)} ≈ {pct(share, share < 0.02 ? 1 : 0)}"
+			note={phase === 'positives' ? 'the healthy far outnumber the ill' : undefined}
+			color={COLOR.tp}
+		>
+			{@render txt(CX + 20, CY + 34, 'Of everyone who tested positive', 13, { muted: true })}
+			{@render txt(CX + 20, CY + 82, `${fmt(c.truePos)} of ${fmt(c.positives)}`, 38, {
+				weight: 700,
+				tabular: true
+			})}
+			{@render txt(CX + 20, CY + 108, 'positives are ill', 15, { weight: 600 })}
+			{@render txt(CX + CW - 20, CY + 108, `≈ ${pct(share, share < 0.02 ? 1 : 0)}`, 26, {
+				anchor: 'end',
 				weight: 700,
 				color: COLOR.tp,
 				tabular: true
 			})}
+			{@render bar(CY + 128)}
+		</Readout>
+		{#if phase === 'positives'}
+			<Readout id="wrong">
+				{@render txt(CX + 20, CY + 210, 'A positive result is wrong', 13)}
+				{@render txt(CX + 20, CY + 230, 'far more often than right:', 13)}
+				{@render txt(CX + 20, CY + 250, 'the healthy far outnumber the ill.', 13)}
+			</Readout>
+		{:else if phase === 'sliders'}
+			<Readout
+				id="exact"
+				order={2}
+				label="Exact, from Bayes’ theorem"
+				value={pct(exact, 1)}
+				note="{pp(test.prevalence)} ill · catches {pp(test.sensitivity)} · clears {pp(
+					test.specificity
+				)}"
+			>
+				{@render txt(CX + 20, CY + 212, "Exact, from Bayes' theorem", 13, { muted: true })}
+				{@render txt(CX + 20, CY + 248, pct(exact, 1), 30, { weight: 700, tabular: true })}
+				{@render txt(
+					CX + 20,
+					CY + 290,
+					`${pp(test.prevalence)} ill · test catches ${pp(test.sensitivity)}`,
+					12,
+					{ muted: true }
+				)}
+				{@render txt(CX + 20, CY + 308, `and clears ${pp(test.specificity)} of the healthy`, 12, {
+					muted: true
+				})}
+			</Readout>
+		{:else}
+			<Readout
+				id="formula"
+				order={2}
+				label="True ÷ all positives"
+				value="{fmt(c.truePos)} ÷ ({fmt(c.truePos)} + {fmt(c.falsePos)}) = {pct(share, 1)}"
+				note="exact: {pct(exact, 1)}"
+			>
+				{@render txt(CX + 20, CY + 206, 'true positives ÷ all positives', 12, { muted: true })}
+				{@render txt(
+					CX + 20,
+					CY + 234,
+					`${fmt(c.truePos)} ÷ (${fmt(c.truePos)} + ${fmt(c.falsePos)}) = ${pct(share, 1)}`,
+					18,
+					{ weight: 700, tabular: true }
+				)}
+				{@render txt(CX + 20, CY + 256, `exact: ${pct(exact, 1)}`, 12, { muted: true })}
+			</Readout>
+			<Readout
+				id="second"
+				order={3}
+				label="After a second positive"
+				value="{pct(exact, 1)} → {pct(second, 1)}"
+				note="equally accurate, independent test"
+				color={COLOR.tp}
+			>
+				{@render txt(CX + 20, CY + 296, 'After a second positive from an equally', 12.5)}
+				{@render txt(CX + 20, CY + 314, 'accurate, independent test:', 12.5)}
+				{@render txt(CX + 20, CY + 336, `${pct(exact, 1)} → ${pct(second, 1)}`, 16, {
+					weight: 700,
+					color: COLOR.tp,
+					tabular: true
+				})}
+			</Readout>
 		{/if}
 	{/if}
 </g>
