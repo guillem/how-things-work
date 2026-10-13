@@ -602,6 +602,22 @@ export function ensoEpisodes({ dt, T }: Enso): Int8Array {
 		if (sign !== 0 && j - i >= minRun) out.fill(sign, i, j);
 		i = j;
 	}
+	// The running mean lags the anomaly at an episode's edges: a sample beyond ±0.5 °C next
+	// to an episode of the same sign belongs to it (no "brief spell" flicker at either end).
+	const anomaly = (k: number) => T[k] * JIN.degrees;
+	for (let pass = 0; pass < 2; pass++) {
+		const fwd = pass === 0;
+		for (let k = fwd ? 1 : n - 2; fwd ? k < n : k >= 0; k += fwd ? 1 : -1) {
+			const prev = out[fwd ? k - 1 : k + 1];
+			if (
+				out[k] === 0 &&
+				prev !== 0 &&
+				Math.sign(anomaly(k)) === prev &&
+				Math.abs(anomaly(k)) > 0.5
+			)
+				out[k] = prev;
+		}
+	}
 	return out;
 }
 
