@@ -20,7 +20,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, cycle, lerp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { EXAMPLE, inCount, outLinks, pageName, pagerank } from '../pagerank';
 	import { PAGE_FILL, PAGE_STROKE, PANEL, letterSize, linkGeometry, pageRadius } from '../geometry';
 
@@ -189,6 +189,10 @@
 
 	// Late in the count step: the question that leads to the next step.
 	const askIn = $derived(reduced ? 1 : smoothstep(6, 7.5, t));
+
+	// Phone panel: the two rankings in one line each.
+	const votesLine = byVotes.map((p) => `${pageName(p)}\u00a0${votes[p]}`).join(' · ');
+	const rankLine = byRank.map((p) => `${pageName(p)}\u00a0${pct(rank[p])}`).join(' · ');
 </script>
 
 {#snippet txt(
@@ -249,11 +253,20 @@
 				stroke-width="1.8"
 				stroke-linecap="round"
 			/>
-			{@render txt(242, 43, 'how do plants make sugar', 13, { muted: true })}
-			{@render txt(370, 78, 'millions of matching pages — which first?', 12, {
-				anchor: 'middle',
-				muted: true
-			})}
+			<Readout
+				id="search"
+				order={3}
+				label="A search"
+				value="how do plants make sugar"
+				note="millions of matching pages — which first?"
+				opacity={wWeb}
+			>
+				{@render txt(242, 43, 'how do plants make sugar', 13, { muted: true })}
+				{@render txt(370, 78, 'millions of matching pages — which first?', 12, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</Readout>
 		</g>
 	{/if}
 
@@ -364,28 +377,46 @@
 	<!-- callouts (weighted step) -->
 	{#if wWeighted > 0.01}
 		<g opacity={wWeighted * (reduced ? 1 : smoothstep(1.2, 2, t))}>
-			<rect
-				x="36"
-				y="110"
-				width="196"
-				height="44"
-				rx="8"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			{@render txt(48, 128, `A: 1 vote, ${pct(rank[A])}`, 13, { weight: 700 })}
-			{@render txt(48, 145, 'from C, with all of C’s share', 12, { muted: true })}
-			<rect
-				x="24"
-				y="384"
-				width="214"
-				height="44"
-				rx="8"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			{@render txt(36, 402, `B: 4 votes, ${pct(rank[B])}`, 13, { weight: 700 })}
-			{@render txt(36, 419, '3 small votes + half of A’s share', 12, { muted: true })}
+			<Readout
+				id="callout-a"
+				order={2}
+				label="A"
+				value="1 vote, {pct(rank[A])}"
+				note="from C, with all of C’s share"
+				opacity={wWeighted}
+			>
+				<rect
+					x="36"
+					y="110"
+					width="196"
+					height="44"
+					rx="8"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+				{@render txt(48, 128, `A: 1 vote, ${pct(rank[A])}`, 13, { weight: 700 })}
+				{@render txt(48, 145, 'from C, with all of C’s share', 12, { muted: true })}
+			</Readout>
+			<Readout
+				id="callout-b"
+				order={3}
+				label="B"
+				value="4 votes, {pct(rank[B])}"
+				note="3 small votes + half of A’s share"
+				opacity={wWeighted}
+			>
+				<rect
+					x="24"
+					y="384"
+					width="214"
+					height="44"
+					rx="8"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+				{@render txt(36, 402, `B: 4 votes, ${pct(rank[B])}`, 13, { weight: 700 })}
+				{@render txt(36, 419, '3 small votes + half of A’s share', 12, { muted: true })}
+			</Readout>
 		</g>
 	{/if}
 
@@ -404,10 +435,18 @@
 	<!-- first step: the web in numbers -->
 	{#if wWeb > 0.01}
 		<g opacity={wWeb * (revealing ? smoothstep(0.4, 1.2, t) : 1)}>
-			{@render txt(CL + 20, CT + 38, `${N} pages, ${web.links.length} links`, 18, {
-				weight: 700
-			})}
-			{@render txt(CL + 20, CT + 62, 'a tiny web', 12, { muted: true })}
+			<Readout
+				id="web"
+				order={1}
+				label="A tiny web"
+				value="{N} pages, {web.links.length} links"
+				opacity={wWeb}
+			>
+				{@render txt(CL + 20, CT + 38, `${N} pages, ${web.links.length} links`, 18, {
+					weight: 700
+				})}
+				{@render txt(CL + 20, CT + 62, 'a tiny web', 12, { muted: true })}
+			</Readout>
 			<!-- a link, spelled out -->
 			<g transform="translate({CL + 20} {CT + 112})">
 				<circle
@@ -429,33 +468,62 @@
 				/>
 				{@render txt(136, 5, 'Y', 14, { anchor: 'middle', weight: 700 })}
 			</g>
-			{@render txt(CL + 20, CT + 162, 'X links to Y:', 13)}
-			{@render txt(CL + 20, CT + 184, 'a link ≈ a recommendation', 15, {
-				weight: 700,
-				color: 'var(--rank-page)'
-			})}
-			{@render txt(CL + 20, CT + 228, 'Which pages are worth', 13, { muted: true })}
-			{@render txt(CL + 20, CT + 246, 'reading first?', 13, { muted: true })}
+			<Readout
+				id="link"
+				order={2}
+				label="X links to Y"
+				value="a link ≈ a recommendation"
+				note="Which pages are worth reading first?"
+				color="var(--rank-page)"
+				opacity={wWeb}
+			>
+				{@render txt(CL + 20, CT + 162, 'X links to Y:', 13)}
+				{@render txt(CL + 20, CT + 184, 'a link ≈ a recommendation', 15, {
+					weight: 700,
+					color: 'var(--rank-page)'
+				})}
+				{@render txt(CL + 20, CT + 228, 'Which pages are worth', 13, { muted: true })}
+				{@render txt(CL + 20, CT + 246, 'reading first?', 13, { muted: true })}
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- count / weighted: the ranking -->
 	{#if wCount + wWeighted > 0.01}
 		<g opacity={clamp(wCount + wWeighted)}>
-			<g opacity={wCount}>
-				{@render txt(CL + 20, CT + 36, 'Ranked by votes', 16, { weight: 700 })}
-				{@render txt(CL + 20, CT + 56, 'votes = incoming links', 12, { muted: true })}
-			</g>
-			<g opacity={wWeighted}>
-				{@render txt(CL + 20, CT + 36, 'Ranked by PageRank', 16, { weight: 700 })}
-				{@render txt(CL + 20, CT + 56, 'votes weighted by who gives them', 12, {
-					muted: true
-				})}
-			</g>
-			{@render txt(CL + 76, ROW0 - 28, 'votes', 12, { muted: true })}
-			<g opacity={wWeighted}>
-				{@render txt(CR - 16, ROW0 - 28, 'PageRank', 12, { muted: true, anchor: 'end' })}
-			</g>
+			<Readout
+				id="by-votes"
+				order={1}
+				label="Ranked by votes (incoming links)"
+				value={votesLine}
+				note={askIn > 0.5 ? 'But should every vote count the same?' : undefined}
+				opacity={wCount}
+			>
+				<g opacity={wCount}>
+					{@render txt(CL + 20, CT + 36, 'Ranked by votes', 16, { weight: 700 })}
+					{@render txt(CL + 20, CT + 56, 'votes = incoming links', 12, { muted: true })}
+				</g>
+			</Readout>
+			<Readout
+				id="by-rank"
+				order={1}
+				label="Ranked by PageRank (votes weighted by who gives them)"
+				value={rankLine}
+				opacity={wWeighted}
+			>
+				<g opacity={wWeighted}>
+					{@render txt(CL + 20, CT + 36, 'Ranked by PageRank', 16, { weight: 700 })}
+					{@render txt(CL + 20, CT + 56, 'votes weighted by who gives them', 12, {
+						muted: true
+					})}
+				</g>
+			</Readout>
+			<Readout id="col-heads">
+				{@render txt(CL + 76, ROW0 - 28, 'votes', 12, { muted: true })}
+				<g opacity={wWeighted}>
+					{@render txt(CR - 16, ROW0 - 28, 'PageRank', 12, { muted: true, anchor: 'end' })}
+				</g>
+			</Readout>
 
 			<!-- tied pages share a place (count step) -->
 			{#each voteGroups as g (g.place)}
@@ -511,9 +579,11 @@
 							opacity={lerp(0.85, 0.5, wWeighted)}
 						/>
 					{/each}
-					<g opacity={wCount}>
-						{@render txt(CL + 136, y + 5, voteText(votes[p]), 13, { muted: votes[p] === 0 })}
-					</g>
+					<Readout id="votes-{p}">
+						<g opacity={wCount}>
+							{@render txt(CL + 136, y + 5, voteText(votes[p]), 13, { muted: votes[p] === 0 })}
+						</g>
+					</Readout>
 					<!-- PageRank bar and share -->
 					<g opacity={wWeighted}>
 						<rect
@@ -532,26 +602,30 @@
 							rx="5"
 							fill="var(--rank-page)"
 						/>
-						{@render txt(CR - 14, y + 5, pct(rank[p]), 13, {
-							anchor: 'end',
-							weight: 600,
-							tabular: true
-						})}
+						<Readout id="rank-{p}">
+							{@render txt(CR - 14, y + 5, pct(rank[p]), 13, {
+								anchor: 'end',
+								weight: 600,
+								tabular: true
+							})}
+						</Readout>
 					</g>
 				</g>
 			{/each}
 
 			<!-- footers -->
-			<g opacity={wCount * askIn}>
-				{@render txt(CL + 20, FOOT, 'But should every vote', 13, { weight: 600 })}
-				{@render txt(CL + 20, FOOT + 18, 'count the same?', 13, { weight: 600 })}
-			</g>
-			<g opacity={wWeighted}>
-				{@render txt(CL + 20, FOOT, 'page size = PageRank', 12, { muted: true })}
-				{@render txt(CL + 20, FOOT + 18, 'arrow width = share it passes on', 12, {
-					muted: true
-				})}
-			</g>
+			<Readout id="footers">
+				<g opacity={wCount * askIn}>
+					{@render txt(CL + 20, FOOT, 'But should every vote', 13, { weight: 600 })}
+					{@render txt(CL + 20, FOOT + 18, 'count the same?', 13, { weight: 600 })}
+				</g>
+				<g opacity={wWeighted}>
+					{@render txt(CL + 20, FOOT, 'page size = PageRank', 12, { muted: true })}
+					{@render txt(CL + 20, FOOT + 18, 'arrow width = share it passes on', 12, {
+						muted: true
+					})}
+				</g>
+			</Readout>
 		</g>
 	{/if}
 </g>

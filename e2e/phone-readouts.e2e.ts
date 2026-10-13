@@ -519,6 +519,39 @@ test.describe('on a phone', () => {
 		await range(page, 'amplitude').fill('0.5');
 		await expect(panel).toContainText(/Amplitude\s*A = 0\.50/);
 	});
+
+	test('pagerank votes: the ranking and the A/B callouts are text', async ({ page }) => {
+		await page.goto('./pagerank/#weighted');
+		const panel = readouts(page);
+		await expect(panel).toContainText('C 36.5% · A 33.6% · B 20.3%');
+		await expect(panel).toContainText(/A\s*1 vote, 33\.6%/);
+		await expect(panel).toContainText(/B\s*4 votes, 20\.3%/);
+		await expect(drawing(page)).not.toContainText('with all of C’s share');
+	});
+
+	test('pagerank surfer: the damping readout is text and follows the slider', async ({ page }) => {
+		await page.goto('./pagerank/#damping');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Follows a link\s*85%/);
+		await expect(panel).toContainText('Trap: D ⇄ E');
+		await expect(drawing(page)).not.toContainText('Follows a link');
+		await range(page, 'damping').fill('0.6');
+		await expect(panel).toContainText(/Follows a link\s*60%/);
+		await expect(panel).toContainText('jumps at random 40%');
+	});
+
+	test('pagerank iteration: the split and the ranks are text and follow the damping', async ({
+		page
+	}) => {
+		await page.goto('./pagerank/#compute');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/To the jump pool\s*15%/);
+		await expect(panel).toContainText('C 36.5%');
+		await expect(drawing(page)).not.toContainText('jump pool');
+		await range(page, 'damping').fill('0.7');
+		await expect(panel).toContainText(/To the jump pool\s*30%/);
+		await expect(panel).toContainText(/Along its links\s*70%/);
+	});
 });
 
 test.describe('on a wide screen', () => {

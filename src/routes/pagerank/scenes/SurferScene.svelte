@@ -25,7 +25,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { Label, along, clamp, easeInOut, type Point } from '#lib/draw/index.ts';
 	import { startDrag } from '#lib/draw/pointer.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		DAMPING,
 		MAX_PAGES,
@@ -416,6 +416,21 @@
 		return 'Drag from one page to another to add a link (or press Enter on two pages).';
 	});
 
+	// ---- phone panel: the most visited page --------------------------------------------
+	const top = $derived.by(() => {
+		if (!n || k === 0) return null;
+		let best = 0;
+		for (let i = 1; i < n; i++) if ((shares[i] ?? 0) > (shares[best] ?? 0)) best = i;
+		return best;
+	});
+	const hopsLine = $derived(
+		!n
+			? 'no pages yet'
+			: k === 0
+				? `the surfer starts on ${pageName(here)}`
+				: `after ${fmt(k)} hop${k === 1 ? '' : 's'}`
+	);
+
 	// ---- boost readout ------------------------------------------------------------
 	const boost = $derived.by(() => {
 		if (target < 0 || target >= n) return null;
@@ -588,47 +603,69 @@
 
 	<!-- trap tags -->
 	{#if capsule}
-		<Label
-			x={capsule.cx}
-			y={Math.abs(capsule.ang) > 45
-				? capsule.cy + capsule.len / 2 + capsule.R + 30
-				: capsule.cy - capsule.R - 12}
-			text="trap: D ⇄ E"
-			pill
-			color="var(--rank-jump)"
+		<Readout id="trap-tag">
+			<Label
+				x={capsule.cx}
+				y={Math.abs(capsule.ang) > 45
+					? capsule.cy + capsule.len / 2 + capsule.R + 30
+					: capsule.cy - capsule.R - 12}
+				text="trap: D ⇄ E"
+				pill
+				color="var(--rank-jump)"
+			/>
+		</Readout>
+		<Readout
+			id="trap"
+			order={5}
+			label="Trap: D ⇄ E"
+			marker={1}
+			at={[capsule.cx + capsule.R + 4, capsule.cy - capsule.len / 2 - capsule.R]}
 		/>
 	{/if}
 	{#if trapTags && n >= 6}
 		{@const f = web.pages[5]}
-		<Label x={f.x} y={f.y + rad(5) + 24} text="dead end: no links" pill />
+		<Readout id="dead-end-tag">
+			<Label x={f.x} y={f.y + rad(5) + 24} text="dead end: no links" pill />
+		</Readout>
+		<Readout
+			id="dead-end"
+			order={6}
+			label="Dead end: no links"
+			marker={2}
+			at={[f.x + rad(5) + 16, f.y + rad(5) + 6]}
+		/>
 	{/if}
 
 	<!-- bottom line: trail legend, or the tool hint -->
 	{#if editable}
-		{@render txt(24, 580, hint, 12, { muted: true })}
+		<Readout id="hint" order={9} label="How to edit" value={hint}>
+			{@render txt(24, 580, hint, 12, { muted: true })}
+		</Readout>
 	{:else}
-		<g pointer-events="none">
-			<line
-				x1="24"
-				x2="52"
-				y1="576"
-				y2="576"
-				stroke="var(--rank-surfer)"
-				stroke-width="3"
-				stroke-linecap="round"
-			/>
-			{@render txt(60, 580, 'followed a link', 12, { muted: true })}
-			<line
-				x1="172"
-				x2="200"
-				y1="576"
-				y2="576"
-				stroke="var(--rank-jump)"
-				stroke-width="2"
-				stroke-dasharray="5 5"
-			/>
-			{@render txt(208, 580, 'random jump', 12, { muted: true })}
-		</g>
+		<Readout id="legend">
+			<g pointer-events="none">
+				<line
+					x1="24"
+					x2="52"
+					y1="576"
+					y2="576"
+					stroke="var(--rank-surfer)"
+					stroke-width="3"
+					stroke-linecap="round"
+				/>
+				{@render txt(60, 580, 'followed a link', 12, { muted: true })}
+				<line
+					x1="172"
+					x2="200"
+					y1="576"
+					y2="576"
+					stroke="var(--rank-jump)"
+					stroke-width="2"
+					stroke-dasharray="5 5"
+				/>
+				{@render txt(208, 580, 'random jump', 12, { muted: true })}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- panel -->
@@ -642,27 +679,34 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		{@render txt(PX + 16, PY + 30, showMarks ? 'Share of visits' : 'Visits to each page', 16, {
-			weight: 700,
-			halo: false
-		})}
-		{@render txt(
-			PX + 16,
-			PY + 52,
-			!n
-				? 'no pages yet'
-				: k === 0
-					? `the surfer starts on ${pageName(here)}`
-					: `after ${fmt(k)} hop${k === 1 ? '' : 's'}`,
-			12,
-			{ muted: true, tabular: true, halo: false }
-		)}
-		{#if !showMarks}
-			{@render txt(PX + PW - 14, PY + 76, 'visits', 12, {
-				anchor: 'end',
-				muted: true,
+		<Readout id="hops" order={1} label="The surfer" value={hopsLine}>
+			{@render txt(PX + 16, PY + 30, showMarks ? 'Share of visits' : 'Visits to each page', 16, {
+				weight: 700,
 				halo: false
 			})}
+			{@render txt(PX + 16, PY + 52, hopsLine, 12, { muted: true, tabular: true, halo: false })}
+		</Readout>
+		{#if top !== null}
+			<Readout
+				id="top"
+				order={2}
+				label="Most visited"
+				value="{pageName(top)}: {showMarks
+					? `${pct(shares[top] ?? 0)} of visits`
+					: `${fmt(visits[top] ?? 0)} visits`}"
+				note={showMarks && exact[top] !== undefined
+					? `exact PageRank ${pct(exact[top])}`
+					: undefined}
+			/>
+		{/if}
+		{#if !showMarks}
+			<Readout id="visits-head">
+				{@render txt(PX + PW - 14, PY + 76, 'visits', 12, {
+					anchor: 'end',
+					muted: true,
+					halo: false
+				})}
+			</Readout>
 		{/if}
 
 		{#each web.pages.map((_, j) => j) as i (i)}
@@ -687,74 +731,78 @@
 				{@const mx = barX(exact[i])}
 				<line x1={mx} x2={mx} y1={y - 5} y2={y + 15} stroke="var(--stage-ink)" stroke-width="2" />
 			{/if}
-			{@render txt(PX + PW - 14, y + 9, showMarks ? pct(share) : fmt(visits[i] ?? 0), 12, {
-				anchor: 'end',
-				tabular: true,
-				halo: false
-			})}
-			<!-- the exact value in words while there is room for it (the tick always shows it) -->
-			{#if showMarks && exact[i] !== undefined && rowH >= 40}
-				{@render txt(PX + PW - 14, y + 25, `rank ${pct(exact[i])}`, 12, {
+			<Readout id="row-{i}">
+				{@render txt(PX + PW - 14, y + 9, showMarks ? pct(share) : fmt(visits[i] ?? 0), 12, {
 					anchor: 'end',
-					muted: true,
 					tabular: true,
 					halo: false
 				})}
-			{/if}
+				<!-- the exact value in words while there is room for it (the tick always shows it) -->
+				{#if showMarks && exact[i] !== undefined && rowH >= 40}
+					{@render txt(PX + PW - 14, y + 25, `rank ${pct(exact[i])}`, 12, {
+						anchor: 'end',
+						muted: true,
+						tabular: true,
+						halo: false
+					})}
+				{/if}
+			</Readout>
 		{/each}
 
 		<!-- legend -->
 		{#if n}
-			<rect x={TX} y={legendY} width="22" height="10" rx="5" fill="var(--rank-page)" />
-			{@render txt(
-				TX + 30,
-				legendY + 9,
-				showMarks ? 'share of the surfer’s visits' : 'visits so far',
-				12,
-				{
-					muted: true,
-					halo: false
-				}
-			)}
-			{#if showMarks}
-				<line
-					x1={TX + 11}
-					x2={TX + 11}
-					y1={legendY + 18}
-					y2={legendY + 38}
-					stroke="var(--stage-ink)"
-					stroke-width="2"
-				/>
-				{@render txt(TX + 30, legendY + 32, 'exact PageRank', 12, { muted: true, halo: false })}
-			{/if}
+			<Readout id="bar-legend">
+				<rect x={TX} y={legendY} width="22" height="10" rx="5" fill="var(--rank-page)" />
+				{@render txt(
+					TX + 30,
+					legendY + 9,
+					showMarks ? 'share of the surfer’s visits' : 'visits so far',
+					12,
+					{
+						muted: true,
+						halo: false
+					}
+				)}
+				{#if showMarks}
+					<line
+						x1={TX + 11}
+						x2={TX + 11}
+						y1={legendY + 18}
+						y2={legendY + 38}
+						stroke="var(--stage-ink)"
+						stroke-width="2"
+					/>
+					{@render txt(TX + 30, legendY + 32, 'exact PageRank', 12, { muted: true, halo: false })}
+				{/if}
+			</Readout>
 		{/if}
 
 		<!-- damping readout -->
 		{#if has('damping')}
 			{@const cy = PY + PH - 92}
 			<line x1={PX + 16} x2={PX + PW - 16} y1={cy} y2={cy} stroke="var(--border)" />
-			{@render txt(PX + 16, cy + 26, `Follows a link ${Math.round(d * 100)}%`, 13, {
-				weight: 600,
-				halo: false
-			})}
-			{@render txt(
-				PX + 16,
-				cy + 46,
+			{@const jumps =
 				d >= 1
 					? 'never jumps (except from a dead end)'
-					: `jumps at random ${Math.round((1 - d) * 100)}%`,
-				12,
-				{ color: 'var(--rank-jump)', halo: false }
-			)}
-			{@render txt(
-				PX + 16,
-				cy + 66,
+					: `jumps at random ${Math.round((1 - d) * 100)}%`}
+			{@const floor =
 				d >= 1
 					? 'no page is guaranteed any share'
-					: `every page gets at least ${pct((1 - d) / Math.max(1, n))}`,
-				12,
-				{ muted: true, halo: false }
-			)}
+					: `every page gets at least ${pct((1 - d) / Math.max(1, n))}`}
+			<Readout
+				id="damping"
+				order={3}
+				label="Follows a link"
+				value="{Math.round(d * 100)}%"
+				note="{jumps} · {floor}"
+			>
+				{@render txt(PX + 16, cy + 26, `Follows a link ${Math.round(d * 100)}%`, 13, {
+					weight: 600,
+					halo: false
+				})}
+				{@render txt(PX + 16, cy + 46, jumps, 12, { color: 'var(--rank-jump)', halo: false })}
+				{@render txt(PX + 16, cy + 66, floor, 12, { muted: true, halo: false })}
+			</Readout>
 		{/if}
 
 		<!-- boost readout -->
@@ -762,32 +810,51 @@
 			{@const cy = PY + PH - 92}
 			<line x1={PX + 16} x2={PX + PW - 16} y1={cy} y2={cy} stroke="var(--border)" />
 			{#if boost}
-				{@render txt(PX + 16, cy + 28, `${boost.name}’s rank now ${pct(boost.now)}`, 14, {
-					weight: 650,
-					color: 'var(--rank-target)',
-					halo: false
-				})}
-				{@render txt(PX + 16, cy + 50, `at the start ${pct(targetStart)}`, 12, {
-					muted: true,
-					halo: false
-				})}
-				{@render txt(PX + PW - 16, cy + 72, `×${boost.factor.toFixed(1)}`, 22, {
-					anchor: 'end',
-					weight: 700,
-					color: 'var(--rank-target)',
-					tabular: true,
-					halo: false
-				})}
-				{@render txt(PX + 16, cy + 72, 'change since the start', 12, { muted: true, halo: false })}
+				<Readout
+					id="boost"
+					order={3}
+					label="{boost.name}’s rank now"
+					value={pct(boost.now)}
+					note="at the start {pct(targetStart)} · ×{boost.factor.toFixed(1)}"
+					color="var(--rank-target)"
+				>
+					{@render txt(PX + 16, cy + 28, `${boost.name}’s rank now ${pct(boost.now)}`, 14, {
+						weight: 650,
+						color: 'var(--rank-target)',
+						halo: false
+					})}
+					{@render txt(PX + 16, cy + 50, `at the start ${pct(targetStart)}`, 12, {
+						muted: true,
+						halo: false
+					})}
+					{@render txt(PX + PW - 16, cy + 72, `×${boost.factor.toFixed(1)}`, 22, {
+						anchor: 'end',
+						weight: 700,
+						color: 'var(--rank-target)',
+						tabular: true,
+						halo: false
+					})}
+					{@render txt(PX + 16, cy + 72, 'change since the start', 12, {
+						muted: true,
+						halo: false
+					})}
+				</Readout>
 			{:else}
-				{@render txt(PX + 16, cy + 30, 'The page to boost is gone.', 13, {
-					weight: 600,
-					halo: false
-				})}
-				{@render txt(PX + 16, cy + 50, 'Press “Start again” to bring it back.', 12, {
-					muted: true,
-					halo: false
-				})}
+				<Readout
+					id="boost-gone"
+					order={3}
+					label="The page to boost is gone"
+					value="press “Start again”"
+				>
+					{@render txt(PX + 16, cy + 30, 'The page to boost is gone.', 13, {
+						weight: 600,
+						halo: false
+					})}
+					{@render txt(PX + 16, cy + 50, 'Press “Start again” to bring it back.', 12, {
+						muted: true,
+						halo: false
+					})}
+				</Readout>
 			{/if}
 		{/if}
 	</g>
