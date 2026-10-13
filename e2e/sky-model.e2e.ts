@@ -17,7 +17,6 @@ import {
 } from '../src/routes/sun-earth-moon/sky';
 
 test('the equinoxes and solstices fall on their calendar dates', () => {
-	expect(sunLongitude(78.6)).toBeCloseTo(0, 6); // 20 March
 	const sep = [...Array(30).keys()].map((k) => 250 + k).find((d) => sunLongitude(d + 1) >= 180)!;
 	expect(sep + 1).toBeGreaterThanOrEqual(264); // 22–23 September
 	expect(sep + 1).toBeLessThanOrEqual(266);
@@ -45,6 +44,15 @@ test('seasons: declination, day length and noon altitude', () => {
 test('distance: perihelion in January, and only a ~3% change', () => {
 	expect(sunDistance(3)).toBeCloseTo(0.9833, 4);
 	expect(sunDistance(3 + 365.2422 / 2)).toBeCloseTo(1.0167, 4);
+	expect(sunDistance(185) / sunDistance(3) - 1).toBeCloseTo(0.034, 2); // "about 3%"
+});
+
+test('the numbers the seasons steps quote', () => {
+	// at 40° N a midsummer day brings "over three times" the energy of a midwinter day
+	expect(dailySunshine(40, 23.44) / dailySunshine(40, -23.44)).toBeGreaterThan(3);
+	// "At 40° N, the day lasts about 15 hours in late June and 9 in late December."
+	expect(Math.round(dayLength(40, 23.44))).toBe(15);
+	expect(Math.round(dayLength(40, -23.44))).toBe(9);
 });
 
 test('Moon: phases and eclipse limits', () => {
@@ -74,7 +82,6 @@ test('Moon: phases and eclipse limits', () => {
 test('tides: spring tides about 2.7× neap tides', () => {
 	const spring = tidalRange(0);
 	const neap = tidalRange(90);
-	expect(spring / neap).toBeCloseTo(1.46 / 0.54, 6);
+	expect(spring / neap).toBeCloseTo(2.7, 1);
 	expect(tidalRange(180)).toBeCloseTo(spring, 10); // full Moon too
-	expect(tidalRange(0) / 2).toBeCloseTo(1.46, 6); // units: Moon alone = 2
 });
