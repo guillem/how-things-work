@@ -84,6 +84,11 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 - **waves-interference** — if a step change unmounts a `Handle` mid-drag its end callback never
   fires (Doppler keeps `dragX`; the tank keeps its pre-warm off for that mount).
 
+- **atoms-periodic-table** — the build step labels any neutron count "radioactive nucleus (it will
+  decay)", even far outside the known isotopes (carbon with 0 or 40 neutrons); needs a per-element
+  known-isotope range (e.g. mendeleev's isotopes table) to say "no such nucleus has ever been made"
+  (fact-check 2026-10-13).
+
 - **e2e** — `scenes.e2e.ts` gives orbits-kepler `#two` 15 s for its first render (9068ee7); the
   step's model takes ~12 ms, so the cause of the slow load under the parallel run is unknown.
 

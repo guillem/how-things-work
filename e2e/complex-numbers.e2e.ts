@@ -19,6 +19,11 @@ test('the product: lengths multiply and angles add', async ({ page }) => {
 	await slider(page, 'wAng').fill('350');
 	await expect(stage(page)).toContainText('30° + 350° = 380°');
 	await expect(stage(page)).toContainText('the same direction as 20°');
+	// The product's length is measured from zw itself, with every decimal it has.
+	await slider(page, 'zLen').fill('1.05');
+	await slider(page, 'wLen').fill('1.05');
+	await expect(stage(page)).toContainText('1.05 × 1.05 = 1.1025');
+	await expect(stage(page)).toContainText('length 1.1025');
 });
 
 test('multiplying by i turns z a quarter turn; the arrow keys move z', async ({ page }) => {

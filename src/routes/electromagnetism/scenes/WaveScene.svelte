@@ -1,14 +1,16 @@
 <script lang="ts">
 	/**
-	 * An electromagnetic wave leaving a shaken charge (`waveAt` of the model,
-	 * drawn slowed down and stretched: one wavelength is 260 px and one period
-	 * 2.2 s, whatever the band).
+	 * An electromagnetic wave leaving a shaken charge, drawn slowed down and
+	 * stretched: one wavelength is 260 px and one period 2.2 s, whatever the band.
+	 * It is computed here, not by `waveAt` of the model (the steady wave): the
+	 * field is the charge's own displacement at the retarded time (below), so it
+	 * also shows the shaking stopping. No fall-off with distance, no near field.
 	 *
 	 * The charge on the antenna at the left moves up and down; the electric
 	 * field it sends out (vertical, in the page) and the magnetic field (drawn
 	 * in perspective, out of and into the page) travel to the right, in phase, at right
 	 * angles to each other and to the direction of travel. Ahead of the front
-	 * there is no field yet. `params.shake` off stops the charge: the wave
+	 * there is no wave yet. `params.shake` off stops the charge: the wave
 	 * already sent keeps going on its own. `params.band` sets the frequency and
 	 * wavelength shown, and the marker on the spectrum.
 	 *
@@ -210,7 +212,7 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-dasharray="3 5"
 		/>
-		{@render txt(front + 8, AXY - AMP - 8, 'no field here yet', 11, { muted: true })}
+		{@render txt(front + 8, AXY - AMP - 8, 'no wave here yet', 11, { muted: true })}
 	{/if}
 
 	<!-- the antenna and its charge -->

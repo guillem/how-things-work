@@ -74,3 +74,40 @@ test('the angle slider snaps pointer input and visits special angles with the ke
 	});
 	await expect(slider(page)).toHaveValue('43');
 });
+
+for (const [set, shown, step] of [
+	['-30', '330', 'coordinates'],
+	['600', '240', 'radians']
+]) {
+	test(`an angle of ${set}° set on "periodic" reads ${shown}° on "${step}"`, async ({ page }) => {
+		const readout = page.locator('label.control.range', { has: slider(page) }).locator('output');
+		await open(page, './unit-circle/#periodic');
+		await slider(page).evaluate((input: HTMLInputElement, v) => {
+			input.value = v;
+			input.dispatchEvent(new Event('input', { bubbles: true }));
+		}, set);
+		await expect(readout).toContainText(`${set.replace('-', '−')}°`);
+		await page.evaluate((h) => (location.hash = h), `#${step}`);
+		await expect(page).toHaveURL(new RegExp(`#${step}$`));
+		// The slider's readout names the angle the point is drawn at. (The wave scene
+		// writes the wrapped angle back as the step changes, before it is replaced.)
+		await expect(readout).toHaveText(new RegExp(`^${shown}° `));
+	});
+}
+
+test('coming back to a circle step after setting −30° on "periodic" reads 330°', async ({
+	page
+}) => {
+	const readout = page.locator('label.control.range', { has: slider(page) }).locator('output');
+	await open(page, './unit-circle/#coordinates');
+	await page.evaluate(() => (location.hash = '#periodic'));
+	await expect(page).toHaveURL(/#periodic$/);
+	await slider(page).evaluate((input: HTMLInputElement) => {
+		input.value = '-30';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+	});
+	await expect(readout).toContainText('−30°');
+	await page.evaluate(() => (location.hash = '#coordinates'));
+	await expect(page).toHaveURL(/#coordinates$/);
+	await expect(readout).toHaveText(/^330° /);
+});

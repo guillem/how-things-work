@@ -412,7 +412,7 @@
 				146,
 				info.n === 1
 					? rate > 2.95
-						? 'right at the split: it settles, but very slowly'
+						? 'close to the split: it settles, but very slowly'
 						: 'the steady level is 1 − 1/r'
 					: Number.isFinite(info.n)
 						? 'boom and bust, repeating exactly'

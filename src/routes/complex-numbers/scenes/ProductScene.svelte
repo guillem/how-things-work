@@ -14,7 +14,9 @@
 	 *     made of z's angle followed by w's (a spiral, so sums past 360° show).
 	 *
 	 * z and w live in `params.zLen`, `zAng`, `wLen`, `wAng` (the sliders): the
-	 * handles write them rounded to the slider steps (0.05 and 1°), so the
+	 * handles write them rounded to the slider steps (0.05 and 1°). The product's
+	 * length and angle are measured from zw = mul(z, w), not from the rule; its
+	 * length is shown with up to four decimals (1.05 × 1.05 = 1.1025), so the
 	 * readouts "1.40 × 1.25 = 1.75" and "20° + 45° = 65°" are exact.
 	 *
 	 * Text sizes and colours are set with `style:` because the stage's CSS
@@ -22,7 +24,19 @@
 	 */
 	import { clamp, smoothstep, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { abs, c, fmt, fromPolar, mul, num, reduce, toDeg, type Complex } from '../complex';
+	import {
+		abs,
+		arg,
+		c,
+		fmt,
+		fromPolar,
+		mul,
+		num,
+		reduce,
+		short,
+		toDeg,
+		type Complex
+	} from '../complex';
 	import PointHandle from './PointHandle.svelte';
 
 	let { t, params, setParam, reduced }: StageProps = $props();
@@ -171,7 +185,11 @@
 	// z's colour shows round w. Drag w away (or use z's sliders) to separate them.
 	const together = $derived(Math.hypot(Z.x - W.x, Z.y - W.y) < 20);
 
-	const lenText = $derived(`${num(zLen)} × ${num(wLen)} = ${num(zLen * wLen)}`);
+	// Measured from the product itself: all its decimals, at least two (1.80, 1.1025).
+	const zwLen = $derived(abs(zw));
+	const zwAng = $derived(Math.round(reduce(arg(zw))) % 360);
+	const lenNum = (v: number) => (/\.\d\d/.test(short(v, 4)) ? short(v, 4) : num(v));
+	const lenText = $derived(`${num(zLen)} × ${num(wLen)} = ${lenNum(zwLen)}`);
 	const angText = $derived(`${zAng}° + ${wAng}° = ${sum}°`);
 	const turnsNote = $derived(
 		sum < 360
@@ -368,12 +386,12 @@
 
 	<!-- ================= readout panel ================= -->
 	<g>
-		{#each [{ id: 'z', v: z, len: zLen, ang: zAng, color: 'var(--cx-z)', y: 92 }, { id: 'w', v: w, len: wLen, ang: wAng, color: 'var(--cx-w)', y: 158 }, { id: 'zw', v: zw, len: zLen * wLen, ang: sum, color: 'var(--cx-prod)', y: 224 }] as row (row.id)}
+		{#each [{ id: 'z', v: z, len: zLen, ang: zAng, color: 'var(--cx-z)', y: 92 }, { id: 'w', v: w, len: wLen, ang: wAng, color: 'var(--cx-w)', y: 158 }, { id: 'zw', v: zw, len: zwLen, ang: zwAng, color: 'var(--cx-prod)', y: 224 }] as row (row.id)}
 			{@render txt(PX, row.y, `${row.id} ${approx(row.v)} ${fmt(row.v)}`, 19, {
 				weight: 700,
 				color: row.color
 			})}
-			{@render txt(PX, row.y + 22, `length ${num(row.len)}, angle ${row.ang}°`, 13, {
+			{@render txt(PX, row.y + 22, `length ${lenNum(row.len)}, angle ${row.ang}°`, 13, {
 				muted: true
 			})}
 		{/each}

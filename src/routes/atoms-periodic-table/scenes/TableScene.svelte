@@ -16,7 +16,16 @@
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { clamp } from '#lib/draw/math.ts';
 	import { toSvg } from '#lib/draw/pointer.ts';
-	import { ELEMENTS, cell, element, lastSubshell, outerShell, type Element as Elem } from '../atom';
+	import {
+		ELEMENTS,
+		cell,
+		element,
+		hasStandardWeight,
+		isPredicted,
+		lastSubshell,
+		outerShell,
+		type Element as Elem
+	} from '../atom';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -301,13 +310,21 @@
 	const card = $derived.by(() => {
 		if (shown === null) return null;
 		const e = element(shown);
+		const guess = isPredicted(e.z) ? ' (predicted)' : '';
 		return {
 			e,
 			rows: [
-				['Configuration', prettyConfig(e.config)],
-				['Atomic mass', e.mass === null ? 'no data' : `${+e.mass.toPrecision(5)} Da`],
+				['Configuration', prettyConfig(e.config) + guess],
+				[
+					'Atomic mass',
+					e.mass === null
+						? 'no data'
+						: hasStandardWeight(e.z)
+							? `${+e.mass.toPrecision(5)} Da`
+							: `[${Math.round(e.mass)}] (mass number)`
+				],
 				['Covalent radius', fmt(e.radius, 0, 'pm')],
-				['Ionization energy', fmt(e.ionization, 2, 'eV')],
+				['Ionization energy', fmt(e.ionization, 2, 'eV') + (e.ionization === null ? '' : guess)],
 				['Electronegativity', fmt(e.electronegativity, 2)]
 			]
 		};
@@ -673,8 +690,9 @@
 				halo: false
 			})}
 			{#each card.rows as r, i (r[0])}
-				{@const cx = GX + 16 + (i % 2) * (GW / 2)}
-				{@const cy = GY + 52 + Math.floor(i / 2) * 22}
+				<!-- the configuration has a line of its own; the rest go in two columns -->
+				{@const cx = GX + 16 + (i === 0 ? 0 : ((i - 1) % 2) * (GW / 2))}
+				{@const cy = GY + 52 + (i === 0 ? 0 : 1 + Math.floor((i - 1) / 2)) * 22}
 				<text x={cx} y={cy} style:font-size="12px"
 					><tspan class="muted">{r[0]}</tspan><tspan dx="6" font-weight="600">{r[1]}</tspan></text
 				>

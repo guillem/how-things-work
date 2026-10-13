@@ -81,7 +81,7 @@
 	const E = $derived(expi(th)); // e^(iθ) from the power series
 
 	// ---- compounding ---------------------------------------------------------------------
-	const n = $derived(clamp(Math.round(Number(params.n ?? 6)), 1, 100));
+	const n = $derived(clamp(Math.round(Number(params.n ?? 3)), 1, 100));
 	const path = $derived(compound(th, n));
 	const end = $derived(path[n]);
 	const reach = $derived(Math.max(1, ...path.map(abs)));

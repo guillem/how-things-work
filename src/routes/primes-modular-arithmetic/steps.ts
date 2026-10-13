@@ -151,7 +151,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>How do you find all the primes up to 100 without testing each one? Over 2,000 years ago the Greek scholar Eratosthenes used a <dfn data-def="A method that finds all primes up to a limit by repeatedly striking out the multiples of the smallest number not yet struck out.">sieve</dfn>: 2 is prime, so strike out every multiple of 2 — none of them can be prime. The smallest number left, 3, must be prime (nothing smaller divides it), so strike out its multiples. Then 5, then 7.</p>
 <p>Step through it. Each colour marks the prime that struck a number first: that is its smallest prime factor. Notice that each prime's first new victim is its own square — 4, 9, 25, 49 — because the smaller multiples were already struck by smaller primes.</p>`,
-			notes: `<p>That is why a computer running the sieve starts striking each prime p at p², not at 2p. Computers still use the sieve to list primes today. None of Eratosthenes' own writing survives: we know the method from Nicomachus of Gerasa, who described it about 300 years later.</p>`
+			notes: `<p>That is why a computer running the sieve starts striking each prime p at p², not at 2p. Computers still use the sieve to list primes today. None of Eratosthenes' own account of the sieve survives: we know the method from Nicomachus of Gerasa, who described it about 300 years later.</p>`
 		},
 		{
 			id: 'survivors',
@@ -174,7 +174,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [hours, addA, addB],
 			body: `
-<p>It's 9 o'clock; what time is it 5 hours later? Not 14 — it's 2. On a clock, numbers wrap around. This is <dfn data-def="Arithmetic in which numbers wrap around after reaching a fixed number m, the modulus: only the remainder after dividing by m counts.">modular arithmetic</dfn>: on a clock of m hours, only the remainder after dividing by m matters. We write 9 + 5 ≡ 2 (mod 12), where m = 12 is the <dfn data-def="The number of hours on the clock: the number at which counting wraps back to 0.">modulus</dfn>.</p>
+<p>It's 9 o'clock; what time is it 5 hours later? Not 14 — it's 2. On a clock, numbers wrap around. This is <dfn data-def="Arithmetic in which numbers wrap around after reaching a fixed number m, the modulus: only the remainder after dividing by m counts.">modular arithmetic</dfn>: on a clock of m hours, only the remainder after dividing by m matters. We write 9 + 5 ≡ 2 (mod 12), read “9 + 5 lands on the same hour as 2 on a 12-hour clock”, where m = 12 is the <dfn data-def="The number of hours on the clock: the number at which counting wraps back to 0.">modulus</dfn>.</p>
 <p>Mathematicians put 0 at the top instead of 12, so the hours are 0 to m − 1. Change the number of hours and the numbers to add. However many laps the hand makes, the answer is the remainder.</p>`,
 			notes: `<p>You use modular arithmetic all the time: days of the week are arithmetic mod 7, minutes mod 60, and the angle of a turning wheel mod 360°. Computers do it on every addition, since a 64-bit register wraps around at 2⁶⁴.</p>`
 		},
@@ -188,7 +188,7 @@ export const spec: ExplainerSpec = {
 			controls: [hours, times],
 			body: `
 <p>Multiplying works on a clock too: 3 × 5 = 15 ≡ 3 on 12 hours. The drawing multiplies <em>every</em> hour by the same number. On 12 hours, × 3 lands on only four hours — 0, 3, 6 and 9 — and 3 × 4 lands on 0, although neither is 0. Information is lost: you can't undo it, so there's no dividing by 3.</p>
-<p>× 5 is different: it shuffles all 12 hours, and multiplying by 5 again undoes it (5 × 5 = 25 ≡ 1). A multiplier shuffles the clock exactly when it shares no factor with the number of hours. The row of chips shows every multiplier. Now set a <strong>prime</strong> number of hours, like 13: every multiplier shuffles, so on a prime clock you can always divide.</p>`
+<p>× 5 is different: it shuffles all 12 hours, and multiplying by 5 again undoes it (5 × 5 = 25 ≡ 1). A multiplier shuffles the clock exactly when it shares no factor other than 1 with the number of hours. The row of chips shows every multiplier. Now set a <strong>prime</strong> number of hours, like 13: every multiplier shuffles, so on a prime clock you can divide by any hour except 0.</p>`
 		},
 		{
 			id: 'powers',
@@ -212,7 +212,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [exponent],
 			body: `
-<p>Take a bigger prime clock, 101 hours, and work out 2⁷⁷ on it. Multiplying 2 by itself 76 times would work, but there's a shortcut called <dfn data-def="Computing a power by squaring repeatedly (g, g², g⁴, g⁸, …) and multiplying together the squares that the binary form of the exponent picks out.">square-and-multiply</dfn>: square over and over to get 2¹, 2², 2⁴, 2⁸, 2¹⁶, 2³², 2⁶⁴, then multiply the ones that add up to 77 = 64 + 8 + 4 + 1. That's 9 multiplications instead of 76.</p>
+<p>Take a bigger prime clock, 101 hours, and work out 2⁷⁷ on it. Multiplying 2 by itself 76 times would work, but there's a shortcut called <dfn data-def="Computing a power by squaring repeatedly (g, g², g⁴, g⁸, …) and multiplying together the squares that the binary form of the exponent picks out.">square-and-multiply</dfn>: square over and over to get 2¹, 2², 2⁴, 2⁸, 2¹⁶, 2³², 2⁶⁴, then multiply the ones that add up to 77 = 64 + 8 + 4 + 1 (the bit column in the drawing: 77 written in binary is 1001101, and each 1 picks a square). That's 9 multiplications instead of 76.</p>
 <p>After every step you take the remainder, so the numbers never grow past 100 × 100. Doubling the exponent adds only one more squaring: an exponent with 600 digits needs only a few thousand multiplications.</p>`,
 			notes: `<p>The exponents are written in binary: each 1 in 77 = 1001101₂ picks a square to multiply in. For an exponent of n bits, square-and-multiply needs at most 2(n − 1) multiplications — 4,094 for a 2048-bit (617-digit) exponent, against more than 10⁶¹⁶ one at a time.</p>`
 		},

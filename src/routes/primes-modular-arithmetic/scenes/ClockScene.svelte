@@ -559,7 +559,10 @@
 				})}
 			{:else if !isPrime(m)}
 				{@render txt(PX, 330, `On a clock that isn't prime, powers can get stuck`, 13)}
-				{@render txt(PX, 350, `or collapse; on a prime clock they never do.`, 13, { muted: true })}
+				{@render txt(PX, 350, `or collapse. On a prime clock they return to 1,`, 13, {
+					muted: true
+				})}
+				{@render txt(PX, 370, `unless the base is a multiple of the hours.`, 13, { muted: true })}
 			{/if}
 		</g>
 		{@render txt(PX, 420, 'Each hop multiplies by', 13, { muted: true })}

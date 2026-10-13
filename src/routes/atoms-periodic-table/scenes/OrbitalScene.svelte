@@ -95,7 +95,7 @@
 		'1s': { title: '1s orbital', lines: ['A fuzzy sphere, densest', 'at the nucleus.'] },
 		'2s': {
 			title: '2s orbital',
-			lines: ['A sphere inside a sphere,', 'with an empty shell between.']
+			lines: ['A sphere inside a sphere,', 'with a surface of zero density between.']
 		},
 		'2p': {
 			title: '2p orbital',
@@ -193,15 +193,11 @@
 			stroke-width="1.5"
 			stroke-dasharray="6 5"
 		/>
-		{@render txt(
-			CX + r90 * scale * 0.72 + 8,
-			CY - r90 * scale * 0.72 - 8,
-			'90% of the time inside here',
-			12,
-			{
+		{#each ['90% of the time', 'inside this sphere'] as line, i (i)}
+			{@render txt(CX + r90 * scale * 0.72 + 8, CY - r90 * scale * 0.72 - 24 + i * 16, line, 12, {
 				weight: 600
-			}
-		)}
+			})}
+		{/each}
 	{/if}
 
 	<!-- drag / keyboard target over the cloud -->

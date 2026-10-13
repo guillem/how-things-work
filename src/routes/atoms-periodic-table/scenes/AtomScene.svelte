@@ -33,6 +33,7 @@
 		identify,
 		isException,
 		madelung,
+		massText,
 		parseConfig,
 		shellCounts
 	} from '../atom';
@@ -196,6 +197,28 @@
 		if (id.nearestStable === null) return `${el.name} has no stable isotope at all.`;
 		const d = id.nearestStable - id.massNumber;
 		return `Nearest stable: ${el.name.toLowerCase()}-${id.nearestStable} (${d > 0 ? 'add' : 'remove'} ${plural(Math.abs(d), 'neutron')})`;
+	});
+
+	// No free atom holds two or more extra electrons (multiply charged atomic anions are
+	// not bound in the gas phase).
+	const anionLines = $derived(
+		el && id.charge < -1
+			? ["An isolated atom can't hold this many extra", 'electrons: they would fly off.']
+			: []
+	);
+	const shellsText = $derived(el ? `Shells, if neutral: ${shellCounts(el.z).join(' · ')}` : '');
+
+	// The shells step starts from the atom built in the first step, when the reader built
+	// one (1–36 protons, the slider's range); otherwise it keeps its own value (sodium).
+	// 'atom:filled' remembers the build last copied, so coming back keeps the slider's value.
+	$effect(() => {
+		if (phase !== 'shells') return;
+		untrack(() => {
+			const built = params['atom:build'];
+			if (typeof built !== 'string' || built === params['atom:filled']) return;
+			setParam('atom:filled', built);
+			if (build.protons >= 1 && build.protons <= 36) setParam('fillTo', build.protons);
+		});
 	});
 
 	// ---- shells: energy-level diagram ---------------------------------------------------
@@ -481,7 +504,7 @@
 			{#if el}
 				{@render txt(TX + 10, 54, String(el.z), 13, { weight: 600 })}
 				{@render txt(TX + 48, 106, el.symbol, 46, { anchor: 'middle', weight: 700 })}
-				{@render txt(TX + 48, 129, el.mass ? el.mass.toFixed(2) : '', 11, {
+				{@render txt(TX + 48, 129, massText(el), 11, {
 					anchor: 'middle',
 					muted: true
 				})}
@@ -510,6 +533,12 @@
 			{@render txt(TX, 316, `Mass number ${id.massNumber} = protons + neutrons`, 12, {
 				muted: true
 			})}
+			{#if shellsText}
+				{@render txt(TX, 338, shellsText, 12, { muted: true })}
+			{/if}
+			{#each anionLines as line, i (i)}
+				{@render txt(TX, 364 + i * 17, line, 12, { color: 'var(--atom-electron)', weight: 600 })}
+			{/each}
 		</g>
 	{/if}
 

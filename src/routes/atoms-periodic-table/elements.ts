@@ -3,18 +3,21 @@
  * (version 1.3.0, MIT licence — see MENDELEEV-LICENSE.txt;
  * https://github.com/lmmentel/mendeleev). Generated, not edited by hand, except for the
  * electronegativities of Kr, Lu, W, Pt, Au, Hg, Tl, Pb, Bi and U, where mendeleev's values
- * differ from the CRC Handbook's (Allred 1961) and were corrected to them. The sources of each
- * field are listed in `fields`.
+ * differ from the CRC Handbook's (Allred 1961) and were corrected to them, and the stable
+ * isotopes of Kr, Xe and Ba, where Kr-78, Xe-124 and Ba-130 were removed: their decay has been
+ * observed, like that of Te-128/130 or Bi-209, which mendeleev already leaves out. The sources
+ * of each field are listed in `fields`.
  */
 export default {
 	source: 'mendeleev 1.3.0 (MIT licence, https://github.com/lmmentel/mendeleev), elements.db',
 	fields: {
 		config: 'ground-state electron configuration',
-		mass: 'standard atomic weight (Da; IUPAC, Meija et al. 2016)',
+		mass: 'standard atomic weight (Da; IUPAC, Meija et al. 2016); for elements without one, the mass of a long-lived isotope',
 		radius: 'covalent radius (pm; Cordero et al. 2008)',
 		ionization: 'first ionization energy (eV; NIST Atomic Spectra Database)',
 		electronegativity: 'Pauling scale (CRC Handbook of Chemistry and Physics)',
-		stable: 'mass numbers of the stable isotopes found in nature (empty: none is stable)'
+		stable:
+			'mass numbers of the isotopes found in nature taken as stable; any whose decay has been observed are left out (empty: none)'
 	},
 	elements: [
 		{
@@ -519,7 +522,7 @@ export default {
 			radius: 115.99999999999999,
 			ionization: 14.0,
 			electronegativity: 3.0,
-			stable: [78, 80, 82, 83, 84, 86]
+			stable: [80, 82, 83, 84, 86]
 		},
 		{
 			z: 37,
@@ -771,7 +774,7 @@ export default {
 			radius: 140.0,
 			ionization: 12.13,
 			electronegativity: 2.6,
-			stable: [124, 126, 128, 129, 130, 131, 132, 134]
+			stable: [126, 128, 129, 130, 131, 132, 134]
 		},
 		{
 			z: 55,
@@ -799,7 +802,7 @@ export default {
 			radius: 215.0,
 			ionization: 5.212,
 			electronegativity: 0.89,
-			stable: [130, 132, 134, 135, 136, 137, 138]
+			stable: [132, 134, 135, 136, 137, 138]
 		},
 		{
 			z: 57,
