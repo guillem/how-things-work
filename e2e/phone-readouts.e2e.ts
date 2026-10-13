@@ -197,6 +197,39 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Exact, from Bayes’ theorem\s*81\.1%/);
 		await expect(panel).toContainText('30% ill');
 	});
+
+	test('unit circle: cos θ and sin θ are text and follow the angle', async ({ page }) => {
+		await page.goto('./unit-circle/#coordinates');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Angle\s*θ = 30°/);
+		await expect(panel).toContainText(/cos θ\s*√3\/2 ≈ 0\.87/);
+		await expect(drawing(page)).not.toContainText('(0.87, 0.50)');
+		await range(page, 'angle').fill('60');
+		await expect(panel).toContainText(/cos θ\s*½ ≈ 0\.50/);
+		await expect(panel).toContainText(/sin θ\s*√3\/2 ≈ 0\.87/);
+	});
+
+	test('unit circle radians: the arc length is text and follows the angle', async ({ page }) => {
+		await page.goto('./unit-circle/#radians');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/The arc\s*≈ 0\.52 radii long/);
+		await expect(panel).toContainText(/The rule\s*180° = π radians/);
+		await expect(drawing(page)).not.toContainText('radii long');
+		await range(page, 'angle').fill('90');
+		await expect(panel).toContainText(/≈ 1\.57 radii long/);
+	});
+
+	test('unit circle waves: amplitude and frequency are text and follow the sliders', async ({
+		page
+	}) => {
+		await page.goto('./unit-circle/#oscillation');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Amplitude\s*A = 1\.00/);
+		await expect(panel).toContainText(/Frequency\s*f = 0\.25 Hz/);
+		await expect(drawing(page)).not.toContainText('frequency f');
+		await range(page, 'amplitude').fill('0.5');
+		await expect(panel).toContainText(/Amplitude\s*A = 0\.50/);
+	});
 });
 
 test.describe('on a wide screen', () => {

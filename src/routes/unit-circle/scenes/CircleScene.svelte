@@ -19,7 +19,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		angleParam,
 		SPECIAL_ANGLES,
@@ -247,6 +247,25 @@
 	const radLine = $derived(
 		`${theta === 0 || radText(theta).includes('π') ? '=' : '≈'} ${radText(theta)} radians`
 	);
+	const direction = $derived(
+		theta === 0
+			? 'Pointing right, along the x-axis'
+			: theta < 90
+				? 'Turned anticlockwise from the x-axis'
+				: theta === 90
+					? 'Straight up: a quarter turn'
+					: theta < 180
+						? 'Past a quarter turn'
+						: theta === 180
+							? 'Pointing left: a half turn'
+							: theta < 270
+								? 'Past a half turn'
+								: theta === 270
+									? 'Straight down: three quarters of a turn'
+									: theta < 360
+										? 'Past three quarters of a turn'
+										: 'A full turn: back to the start'
+	);
 	const sinSq = $derived(sin * sin);
 	const cosSq = $derived(cos * cos);
 	const special = $derived(exact(cos) !== null && exact(sin) !== null && Number.isInteger(theta));
@@ -310,16 +329,19 @@
 					fill={quadrant === qd.q ? 'var(--explainer-accent)' : 'transparent'}
 					opacity="0.08"
 				/>
-				{@render txt(qd.x, qd.y, qd.signs, 15, {
-					anchor: 'middle',
-					weight: 600,
-					opacity: quadrant === qd.q ? 1 : 0.55
-				})}
-				{@render txt(qd.x, qd.y + 18, `(cos, sin)`, 11, {
-					anchor: 'middle',
-					muted: true,
-					opacity: quadrant === qd.q ? 1 : 0.55
-				})}
+				<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+				<Readout id="signs-{qd.q}">
+					{@render txt(qd.x, qd.y, qd.signs, 15, {
+						anchor: 'middle',
+						weight: 600,
+						opacity: quadrant === qd.q ? 1 : 0.55
+					})}
+					{@render txt(qd.x, qd.y + 18, `(cos, sin)`, 11, {
+						anchor: 'middle',
+						muted: true,
+						opacity: quadrant === qd.q ? 1 : 0.55
+					})}
+				</Readout>
 			{/each}
 		</g>
 	{/if}
@@ -330,20 +352,24 @@
 	{#each [-1, 1] as v (v)}
 		<line x1={CX + v * R} x2={CX + v * R} y1={CY - 5} y2={CY + 5} stroke="var(--stage-line)" />
 		<line x1={CX - 5} x2={CX + 5} y1={CY - v * R} y2={CY - v * R} stroke="var(--stage-line)" />
-		{@render txt(CX + v * R + (v > 0 ? 8 : -8), CY + 18, v > 0 ? '1' : '−1', 12, {
-			anchor: v > 0 ? 'start' : 'end',
-			muted: true,
-			opacity: tickOpacity(CX + v * (R + 12), CY + 14, true)
-		})}
-		{@render txt(CX - 9, CY - v * R + (v > 0 ? -6 : 16), v > 0 ? '1' : '−1', 12, {
-			anchor: 'end',
-			muted: true,
-			opacity: tickOpacity(CX - 15, CY - v * R + (v > 0 ? -10 : 12))
-		})}
+		<Readout id="ticks{v}">
+			{@render txt(CX + v * R + (v > 0 ? 8 : -8), CY + 18, v > 0 ? '1' : '−1', 12, {
+				anchor: v > 0 ? 'start' : 'end',
+				muted: true,
+				opacity: tickOpacity(CX + v * (R + 12), CY + 14, true)
+			})}
+			{@render txt(CX - 9, CY - v * R + (v > 0 ? -6 : 16), v > 0 ? '1' : '−1', 12, {
+				anchor: 'end',
+				muted: true,
+				opacity: tickOpacity(CX - 15, CY - v * R + (v > 0 ? -10 : 12))
+			})}
+		</Readout>
 	{/each}
 	<!-- axis names: x below the axis (the 0° / 360° mark is above it), y left of it -->
-	{@render txt(CX + AX - 2, CY + 18, 'x', 13, { anchor: 'end', muted: true })}
-	{@render txt(CX - 9, CY - AX + 10, 'y', 13, { anchor: 'end', muted: true })}
+	<Readout id="axis-names">
+		{@render txt(CX + AX - 2, CY + 18, 'x', 13, { anchor: 'end', muted: true })}
+		{@render txt(CX - 9, CY - AX + 10, 'y', 13, { anchor: 'end', muted: true })}
+	</Readout>
 	<circle
 		cx={CX}
 		cy={CY}
@@ -365,13 +391,15 @@
 					r="3.5"
 					fill="var(--stage-ink-muted)"
 				/>
-				{@render txt(
-					CX + (R + 22) * Math.cos(r2) + (a === 0 ? 4 : a === 180 ? -4 : 12),
-					CY - (R + 22) * Math.sin(r2) + (a === 90 ? -2 : a === 270 ? 12 : -8),
-					a === 0 ? '0° / 360°' : `${a}°`,
-					12,
-					{ anchor: a === 0 ? 'start' : a === 180 ? 'end' : 'start', muted: true }
-				)}
+				<Readout id="compass-{a}">
+					{@render txt(
+						CX + (R + 22) * Math.cos(r2) + (a === 0 ? 4 : a === 180 ? -4 : 12),
+						CY - (R + 22) * Math.sin(r2) + (a === 90 ? -2 : a === 270 ? 12 : -8),
+						a === 0 ? '0° / 360°' : `${a}°`,
+						12,
+						{ anchor: a === 0 ? 'start' : a === 180 ? 'end' : 'start', muted: true }
+					)}
+				</Readout>
 			{/each}
 		</g>
 	{/if}
@@ -455,34 +483,36 @@
 				stroke-width="5"
 				stroke-linecap="round"
 			/>
-			{#if Math.abs(cos) > 0.12}
-				{@render txt(cosLabelX, CY + (cosBelow ? 22 : -12), 'cos θ', 13, {
-					anchor: 'middle',
-					weight: 600,
-					color: 'var(--trig-cos)'
-				})}
-				{#if sideNames > 0.01}
-					{@render txt(cosLabelX, CY + 36, '(adjacent)', 11, {
+			<Readout id="side-labels">
+				{#if Math.abs(cos) > 0.12}
+					{@render txt(cosLabelX, CY + (cosBelow ? 22 : -12), 'cos θ', 13, {
 						anchor: 'middle',
-						color: 'var(--trig-cos)',
-						opacity: sideNames
+						weight: 600,
+						color: 'var(--trig-cos)'
 					})}
+					{#if sideNames > 0.01}
+						{@render txt(cosLabelX, CY + 36, '(adjacent)', 11, {
+							anchor: 'middle',
+							color: 'var(--trig-cos)',
+							opacity: sideNames
+						})}
+					{/if}
 				{/if}
-			{/if}
-			{#if Math.abs(sin) > 0.12}
-				{@render txt(sinLabel.x, sinLabel.y, 'sin θ', 13, {
-					anchor: cos >= 0 ? 'start' : 'end',
-					weight: 600,
-					color: 'var(--trig-sin)'
-				})}
-				{#if sideNames > 0.01}
-					{@render txt(sinLabel.x, sinLabel.y + 14, '(opposite)', 11, {
+				{#if Math.abs(sin) > 0.12}
+					{@render txt(sinLabel.x, sinLabel.y, 'sin θ', 13, {
 						anchor: cos >= 0 ? 'start' : 'end',
-						color: 'var(--trig-sin)',
-						opacity: sideNames
+						weight: 600,
+						color: 'var(--trig-sin)'
 					})}
+					{#if sideNames > 0.01}
+						{@render txt(sinLabel.x, sinLabel.y + 14, '(opposite)', 11, {
+							anchor: cos >= 0 ? 'start' : 'end',
+							color: 'var(--trig-sin)',
+							opacity: sideNames
+						})}
+					{/if}
 				{/if}
-			{/if}
+			</Readout>
 		</g>
 	{/if}
 
@@ -497,22 +527,26 @@
 		stroke-linecap="round"
 	/>
 	{#if w.triangle > 0.01}
-		{@render txt(hypLabel.x, hypLabel.y, '1 (hypotenuse)', 12, {
-			anchor: 'middle',
-			rotate: hypLabel.rot,
-			opacity: w.triangle
-		})}
+		<Readout id="hyp-label">
+			{@render txt(hypLabel.x, hypLabel.y, '1 (hypotenuse)', 12, {
+				anchor: 'middle',
+				rotate: hypLabel.rot,
+				opacity: w.triangle
+			})}
+		</Readout>
 	{/if}
 	<circle cx={CX} cy={CY} r="3.5" fill="var(--stage-ink)" />
 
 	<!-- the point's coordinates -->
 	{#if segs > 0.01}
-		{@render txt(pointLabel.x, pointLabel.y, coordsText, 13, {
-			anchor: pointLabel.anchor,
-			weight: 600,
-			opacity: segs,
-			pill: true
-		})}
+		<Readout id="coords">
+			{@render txt(pointLabel.x, pointLabel.y, coordsText, 13, {
+				anchor: pointLabel.anchor,
+				weight: 600,
+				opacity: segs,
+				pill: true
+			})}
+		</Readout>
 	{/if}
 
 	<!-- invitation pulse, then the handle -->
@@ -541,171 +575,209 @@
 
 	<!-- ================= readout panel ================= -->
 	<g>
-		{@render txt(PX, 104, `θ = ${degText(theta)}`, 30, { weight: 600 })}
-		{@render txt(PX, 132, radLine, 15, { muted: true })}
+		<Readout id="theta" order={1} label="Angle" value="θ = {degText(theta)}" note={radLine}>
+			{@render txt(PX, 104, `θ = ${degText(theta)}`, 30, { weight: 600 })}
+			{@render txt(PX, 132, radLine, 15, { muted: true })}
+		</Readout>
 
 		{#if w.angle > 0.01}
-			<g opacity={panel.angle}>
-				{@render txt(
-					PX,
-					196,
-					theta === 0
-						? 'Pointing right, along the x-axis'
-						: theta < 90
-							? 'Turned anticlockwise from the x-axis'
-							: theta === 90
-								? 'Straight up: a quarter turn'
-								: theta < 180
-									? 'Past a quarter turn'
-									: theta === 180
-										? 'Pointing left: a half turn'
-										: theta < 270
-											? 'Past a half turn'
-											: theta === 270
-												? 'Straight down: three quarters of a turn'
-												: theta < 360
-													? 'Past three quarters of a turn'
-													: 'A full turn: back to the start',
-					14
-				)}
-				{@render txt(PX, 222, turnLine, 13, { muted: true })}
-			</g>
+			<Readout
+				id="turn"
+				order={2}
+				label="Turn"
+				value={turnLine}
+				note={direction}
+				opacity={panel.angle}
+			>
+				<g opacity={panel.angle}>
+					{@render txt(PX, 196, direction, 14)}
+					{@render txt(PX, 222, turnLine, 13, { muted: true })}
+				</g>
+			</Readout>
 		{/if}
 
 		{#if panel.segs > 0.01}
 			<g opacity={panel.segs}>
 				{#each [{ id: 'cos', v: cos, color: 'var(--trig-cos)', y: 196, label: 'cos θ', what: 'sideways position' }, { id: 'sin', v: sin, color: 'var(--trig-sin)', y: 262, label: 'sin θ', what: 'height' }] as row (row.id)}
-					{@render txt(
-						PX,
-						row.y,
-						`${row.label} ${isSpecial(theta) ? '=' : '≈'} ${trigText(theta, row.id as 'sin' | 'cos')}`,
-						16,
-						{ weight: 600, color: row.color }
-					)}
-					{@render txt(PX + 300, row.y, row.what, 12, { anchor: 'end', muted: true })}
-					<!-- a −1 … 1 bar -->
-					<line
-						x1={PX}
-						x2={PX + 300}
-						y1={row.y + 18}
-						y2={row.y + 18}
-						stroke="var(--stage-grid)"
-						stroke-width="8"
-						stroke-linecap="round"
-					/>
-					<line
-						x1={PX + 150}
-						x2={PX + 150}
-						y1={row.y + 11}
-						y2={row.y + 25}
-						stroke="var(--stage-line)"
-					/>
-					<line
-						x1={PX + 150}
-						x2={PX + 150 + 150 * row.v}
-						y1={row.y + 18}
-						y2={row.y + 18}
-						stroke={row.color}
-						stroke-width="8"
-						stroke-linecap="round"
-					/>
-					{@render txt(PX, row.y + 38, '−1', 11, { muted: true })}
-					{@render txt(PX + 150, row.y + 38, '0', 11, { anchor: 'middle', muted: true })}
-					{@render txt(PX + 300, row.y + 38, '1', 11, { anchor: 'end', muted: true })}
+					<Readout
+						id={row.id}
+						order={row.id === 'cos' ? 2 : 3}
+						label={row.label}
+						value={trigText(theta, row.id as 'sin' | 'cos')}
+						color={row.color}
+						opacity={panel.segs}
+					>
+						{@render txt(
+							PX,
+							row.y,
+							`${row.label} ${isSpecial(theta) ? '=' : '≈'} ${trigText(theta, row.id as 'sin' | 'cos')}`,
+							16,
+							{ weight: 600, color: row.color }
+						)}
+						{@render txt(PX + 300, row.y, row.what, 12, { anchor: 'end', muted: true })}
+						<!-- a −1 … 1 bar -->
+						<line
+							x1={PX}
+							x2={PX + 300}
+							y1={row.y + 18}
+							y2={row.y + 18}
+							stroke="var(--stage-grid)"
+							stroke-width="8"
+							stroke-linecap="round"
+						/>
+						<line
+							x1={PX + 150}
+							x2={PX + 150}
+							y1={row.y + 11}
+							y2={row.y + 25}
+							stroke="var(--stage-line)"
+						/>
+						<line
+							x1={PX + 150}
+							x2={PX + 150 + 150 * row.v}
+							y1={row.y + 18}
+							y2={row.y + 18}
+							stroke={row.color}
+							stroke-width="8"
+							stroke-linecap="round"
+						/>
+						{@render txt(PX, row.y + 38, '−1', 11, { muted: true })}
+						{@render txt(PX + 150, row.y + 38, '0', 11, { anchor: 'middle', muted: true })}
+						{@render txt(PX + 300, row.y + 38, '1', 11, { anchor: 'end', muted: true })}
+					</Readout>
 				{/each}
 			</g>
 		{/if}
 
 		{#if w.triangle > 0.01}
 			<g opacity={panel.triangle}>
-				<!-- lengths of a triangle with θ as a corner: only true for 0° < θ < 90° -->
-				{@render txt(PX, 350, 'sin θ = opposite ÷ hypotenuse', 13, {
-					opacity: firstQuadrant ? 1 : 0.4
-				})}
-				{@render txt(PX, 372, 'cos θ = adjacent ÷ hypotenuse', 13, {
-					opacity: firstQuadrant ? 1 : 0.4
-				})}
-				{@render txt(PX, 391, 'for 0° < θ < 90°, where θ is a corner of the triangle', 11, {
-					muted: firstQuadrant,
-					color: firstQuadrant ? undefined : 'var(--explainer-accent)'
-				})}
-				{@render txt(PX, 412, 'Pythagoras:', 13, { muted: true })}
-				{@render txt(
-					PX,
-					436,
-					`cos²θ + sin²θ = ${num(cosSq)} + ${num(sinSq)} = ${num(cosSq + sinSq)}`,
-					15,
-					{ weight: 600 }
-				)}
-				<!-- the two squares, side by side, adding up to the unit square -->
-				<rect x={PX} y={456} width={300} height={22} rx="4" fill="var(--stage-grid)" />
-				<rect
-					x={PX}
-					y={456}
-					width={300 * cosSq}
-					height={22}
-					rx="4"
-					fill="var(--trig-cos)"
-					opacity="0.75"
-				/>
-				<rect
-					x={PX + 300 * cosSq}
-					y={456}
-					width={300 * sinSq}
-					height={22}
-					rx="4"
-					fill="var(--trig-sin)"
-					opacity="0.75"
-				/>
-				{@render txt(PX, 496, 'cos²θ', 11, { color: 'var(--trig-cos)' })}
-				{@render txt(PX + 300, 496, 'sin²θ', 11, { anchor: 'end', color: 'var(--trig-sin)' })}
-				{@render txt(PX, 520, 'always exactly 1, whatever the angle', 12, { muted: true })}
+				<Readout
+					id="sides"
+					order={4}
+					label="For 0° < θ < 90°"
+					value="sin θ = opp ÷ hyp"
+					note="cos θ = adj ÷ hyp"
+					opacity={panel.triangle}
+				>
+					<!-- lengths of a triangle with θ as a corner: only true for 0° < θ < 90° -->
+					{@render txt(PX, 350, 'sin θ = opposite ÷ hypotenuse', 13, {
+						opacity: firstQuadrant ? 1 : 0.4
+					})}
+					{@render txt(PX, 372, 'cos θ = adjacent ÷ hypotenuse', 13, {
+						opacity: firstQuadrant ? 1 : 0.4
+					})}
+					{@render txt(PX, 391, 'for 0° < θ < 90°, where θ is a corner of the triangle', 11, {
+						muted: firstQuadrant,
+						color: firstQuadrant ? undefined : 'var(--explainer-accent)'
+					})}
+				</Readout>
+				<Readout
+					id="pythagoras"
+					order={5}
+					label="Pythagoras: cos²θ + sin²θ"
+					value="{num(cosSq)} + {num(sinSq)} = {num(cosSq + sinSq)}"
+					note="always exactly 1"
+					opacity={panel.triangle}
+				>
+					{@render txt(PX, 412, 'Pythagoras:', 13, { muted: true })}
+					{@render txt(
+						PX,
+						436,
+						`cos²θ + sin²θ = ${num(cosSq)} + ${num(sinSq)} = ${num(cosSq + sinSq)}`,
+						15,
+						{ weight: 600 }
+					)}
+					<!-- the two squares, side by side, adding up to the unit square -->
+					<rect x={PX} y={456} width={300} height={22} rx="4" fill="var(--stage-grid)" />
+					<rect
+						x={PX}
+						y={456}
+						width={300 * cosSq}
+						height={22}
+						rx="4"
+						fill="var(--trig-cos)"
+						opacity="0.75"
+					/>
+					<rect
+						x={PX + 300 * cosSq}
+						y={456}
+						width={300 * sinSq}
+						height={22}
+						rx="4"
+						fill="var(--trig-sin)"
+						opacity="0.75"
+					/>
+					{@render txt(PX, 496, 'cos²θ', 11, { color: 'var(--trig-cos)' })}
+					{@render txt(PX + 300, 496, 'sin²θ', 11, { anchor: 'end', color: 'var(--trig-sin)' })}
+					{@render txt(PX, 520, 'always exactly 1, whatever the angle', 12, { muted: true })}
+				</Readout>
 			</g>
 		{/if}
 
 		{#if w.quadrants > 0.01}
 			<g opacity={panel.quadrants}>
-				{@render txt(
-					PX,
-					350,
-					quadrant === 0
-						? `On an axis: ${theta % 180 === 0 ? 'sin θ = 0' : 'cos θ = 0'}`
-						: `Quadrant ${['I', 'II', 'III', 'IV'][quadrant - 1]}: cos ${cos > 0 ? 'positive' : 'negative'}, sin ${sin > 0 ? 'positive' : 'negative'}`,
-					14,
-					{ weight: 600 }
-				)}
-				{@render txt(
-					PX,
-					376,
-					special
-						? 'A special angle: exact values'
+				<Readout
+					id="quadrant"
+					order={4}
+					label={quadrant === 0
+						? 'On an axis'
+						: `Quadrant ${['I', 'II', 'III', 'IV'][quadrant - 1]}`}
+					value={quadrant === 0
+						? theta % 180 === 0
+							? 'sin θ = 0'
+							: 'cos θ = 0'
+						: `cos ${cos > 0 ? '+' : '−'}, sin ${sin > 0 ? '+' : '−'}`}
+					note={special
+						? 'a special angle: exact values'
 						: snapping
-							? ''
-							: 'Turn on snap to visit the special angles',
-					13,
-					{ muted: !special, color: special ? 'var(--explainer-accent)' : undefined }
-				)}
-				{@render txt(PX, 420, 'Special angles in the first quadrant', 12, { muted: true })}
-				{#each [{ a: 30, c: '√3/2', s: '½' }, { a: 45, c: '√2/2', s: '√2/2' }, { a: 60, c: '½', s: '√3/2' }] as row, i (row.a)}
-					<!-- the row whose mirror image the current angle is -->
-					{@const hit =
-						Number.isInteger(theta) &&
-						(reduce(theta) % 180 === row.a || 180 - (reduce(theta) % 180) === row.a)}
-					{#if hit}
-						<rect
-							x={PX - 8}
-							y={446 + i * 22 - 16}
-							width="250"
-							height="22"
-							rx="5"
-							fill="var(--explainer-accent)"
-							opacity="0.14"
-						/>
-					{/if}
-					{@render txt(PX, 446 + i * 22, `${row.a}°`, 13, { weight: hit ? 700 : 500 })}
-					{@render txt(PX + 60, 446 + i * 22, `cos ${row.c}`, 13, { color: 'var(--trig-cos)' })}
-					{@render txt(PX + 170, 446 + i * 22, `sin ${row.s}`, 13, { color: 'var(--trig-sin)' })}
-				{/each}
+							? undefined
+							: 'snap visits the special angles'}
+					opacity={panel.quadrants}
+				>
+					{@render txt(
+						PX,
+						350,
+						quadrant === 0
+							? `On an axis: ${theta % 180 === 0 ? 'sin θ = 0' : 'cos θ = 0'}`
+							: `Quadrant ${['I', 'II', 'III', 'IV'][quadrant - 1]}: cos ${cos > 0 ? 'positive' : 'negative'}, sin ${sin > 0 ? 'positive' : 'negative'}`,
+						14,
+						{ weight: 600 }
+					)}
+					{@render txt(
+						PX,
+						376,
+						special
+							? 'A special angle: exact values'
+							: snapping
+								? ''
+								: 'Turn on snap to visit the special angles',
+						13,
+						{ muted: !special, color: special ? 'var(--explainer-accent)' : undefined }
+					)}
+				</Readout>
+				<Readout id="special-table">
+					{@render txt(PX, 420, 'Special angles in the first quadrant', 12, { muted: true })}
+					{#each [{ a: 30, c: '√3/2', s: '½' }, { a: 45, c: '√2/2', s: '√2/2' }, { a: 60, c: '½', s: '√3/2' }] as row, i (row.a)}
+						<!-- the row whose mirror image the current angle is -->
+						{@const hit =
+							Number.isInteger(theta) &&
+							(reduce(theta) % 180 === row.a || 180 - (reduce(theta) % 180) === row.a)}
+						{#if hit}
+							<rect
+								x={PX - 8}
+								y={446 + i * 22 - 16}
+								width="250"
+								height="22"
+								rx="5"
+								fill="var(--explainer-accent)"
+								opacity="0.14"
+							/>
+						{/if}
+						{@render txt(PX, 446 + i * 22, `${row.a}°`, 13, { weight: hit ? 700 : 500 })}
+						{@render txt(PX + 60, 446 + i * 22, `cos ${row.c}`, 13, { color: 'var(--trig-cos)' })}
+						{@render txt(PX + 170, 446 + i * 22, `sin ${row.s}`, 13, { color: 'var(--trig-sin)' })}
+					{/each}
+				</Readout>
 			</g>
 		{/if}
 	</g>
