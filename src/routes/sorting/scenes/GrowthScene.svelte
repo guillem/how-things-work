@@ -5,17 +5,17 @@
 	 * Every count is what the algorithms in `sorts.ts` actually do on real rows
 	 * (`comparisonsFor`). Two documented exceptions, both in the `machine` chart,
 	 * where n reaches 100,000:
-	 * - merge sort above 1,000 items is counted with `mergeComparisons` below: the
+	 * - merge sort above 1,000 items is counted with `mergeComparisons` (sorts.ts): the
 	 *   same top-down merge sort, merging through a buffer instead of shifting the
 	 *   array (the recorded version in `sorts.ts` shifts, which is O(n²) in time and
 	 *   takes ~40 s at 100,000 items). Its comparisons are exactly those of
-	 *   `run('merge', …)` on the same rows — checked equal for n = 2…10,007 on
-	 *   several seeds;
+	 *   `run('merge', …)` on the same rows (checked in e2e/sorting-model.e2e.ts);
 	 * - bubble sort above 2,500 items (5·10⁹ comparisons at 100,000: too slow to
 	 *   run in a page) is drawn dashed from n(n − 1)/2. On shuffled rows the
 	 *   measured counts are within 1 % of it from n = 500 up: at the chart's own
 	 *   sizes 0.9962 at 447, 0.9934 at 595, 0.9988 at 790, 0.9969 at 1,051,
-	 *   0.9998 at 1,397 and 1,857, 0.9996 at 2,469; the gap shrinks as n grows.
+	 *   0.9998 at 1,397 and 1,857, 0.9996 at 2,469; the gap shrinks as n grows
+	 *   (the 1 % bound is checked in e2e/sorting-model.e2e.ts).
 	 *   Every number read off the dashed part (end labels, a crossing beyond
 	 *   2,500) is marked as an estimate on the chart.
 	 */
@@ -24,6 +24,7 @@
 		comparisonsFor,
 		growth,
 		makeInput,
+		mergeComparisons,
 		type Algorithm,
 		type Order
 	} from '../sorts';
@@ -47,31 +48,6 @@
 			byOrder[order] = s;
 		}
 		return s;
-	}
-
-	/** Top-down merge sort through a buffer: same comparisons as `run('merge', …)`. */
-	function mergeComparisons(input: readonly number[]) {
-		const a = input.slice();
-		const tmp = new Array<number>(a.length);
-		let c = 0;
-		const sort = (lo: number, hi: number) => {
-			if (hi - lo < 1) return;
-			const mid = (lo + hi) >> 1;
-			sort(lo, mid);
-			sort(mid + 1, hi);
-			let i = lo;
-			let j = mid + 1;
-			let k = lo;
-			while (i <= mid && j <= hi) {
-				c++;
-				tmp[k++] = a[j] < a[i] ? a[j++] : a[i++];
-			}
-			while (i <= mid) tmp[k++] = a[i++];
-			while (j <= hi) tmp[k++] = a[j++];
-			for (let q = lo; q <= hi; q++) a[q] = tmp[q];
-		};
-		sort(0, a.length - 1);
-		return c;
 	}
 
 	export const BUBBLE_EXACT_MAX = 2500;
@@ -584,7 +560,10 @@
 	<!-- ============================================================ growth -->
 	{#if w.growth > 0.001}
 		<g opacity={w.growth}>
-			{@render header('Comparisons needed to sort n items', `Measured on ${orderLabel[order]}`)}
+			{@render header(
+				'Comparisons needed to sort n items',
+				`Measured on ${orderLabel[order]} · comparisons are the usual measure of sorting work`
+			)}
 			<!-- axes -->
 			{#each [0, 0.2, 0.4, 0.6, 0.8, 1].map((f) => f * gMax) as v (v)}
 				<line x1={GX0} x2={GX1} y1={gsy(v)} y2={gsy(v)} stroke="var(--stage-grid)" />

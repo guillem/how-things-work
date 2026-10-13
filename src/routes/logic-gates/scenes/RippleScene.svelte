@@ -10,21 +10,39 @@
 	 * `$derived` (the restart pattern of pagerank's IterateScene). Reduced motion,
 	 * or a paused stage, shows the finished sum.
 	 *
+	 * `params.carryLinks === 'build'` takes the three carry wires between the
+	 * adders out: the reader clicks each gap to wire it (`params['links:four']`,
+	 * a string of 0/1 for bits 1→2, 2→3, 3→4), an unwired carry in reads 0, and a
+	 * checker counts how many of the 256 pairs the chain then adds right.
+	 *
 	 * Text sizes and colours use `style:` because the stage CSS overrides SVG
 	 * presentation attributes.
 	 */
 	import { clamp } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { ripple4 } from '../logic';
+	import { pairsRight, ripple4 } from '../logic';
 
-	let { t, params, reduced, playing }: StageProps = $props();
+	let { t, params, setParam, reduced, playing }: StageProps = $props();
 
 	const STAGE_S = 0.6;
 	const LEAD = 0.5;
 
 	const a = $derived(clamp(Math.round(Number(params.a4 ?? 11)), 0, 15));
 	const b = $derived(clamp(Math.round(Number(params.b4 ?? 6)), 0, 15));
-	const r = $derived(ripple4(a, b));
+	const building = $derived(params.carryLinks === 'build');
+	const linkStr = $derived(typeof params['links:four'] === 'string' ? params['links:four'] : '');
+	const links = $derived(building ? [0, 1, 2].map((k) => linkStr[k] === '1') : [true, true, true]);
+	const r = $derived(ripple4(a, b, false, links));
+	const right = $derived(building ? pairsRight(links) : 256);
+	function toggleLink(k: number) {
+		setParam('links:four', links.map((on, j) => ((j === k ? !on : on) ? '1' : '0')).join(''));
+	}
+	function onLinkKey(e: KeyboardEvent, k: number) {
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			toggleLink(k);
+		}
+	}
 	const bit = (v: number, i: number) => ((v >> i) & 1) === 1;
 
 	// ---- time since the numbers last changed (restart pattern) ------------------------
@@ -32,7 +50,7 @@
 	let t0 = 0;
 	let lastT = 0;
 	const tr = $derived.by(() => {
-		const key = `${a},${b}`;
+		const key = `${a},${b},${links.join()}`;
 		if (key !== lastKey) {
 			t0 = lastKey === '' ? 0 : t;
 			lastKey = key;
@@ -164,12 +182,18 @@
 	{#each [0, 1, 2, 3, 4] as i (i)}
 		{@const x1 = i === 0 ? 940 : colX(i - 1) - BOX_W / 2}
 		{@const x2 = i === 4 ? colX(4) : colX(i) + BOX_W / 2}
-		{@const on = r.carries[i]}
+		{@const linked = i === 0 || i === 4 || links[i - 1]}
+		{@const on = i === 0 ? r.carries[0] : r.couts[i - 1]}
 		{@const u = i === 0 ? 1 : prog(i - 1)}
 		{@const len = x1 - x2}
-		{@const path = i === 4 ? `M${x1} ${MID} H${x2} V${ROW_S - SQ / 2 - 2}` : `M${x1} ${MID} H${x2}`}
+		{@const path =
+			i === 4
+				? `M${x1} ${MID} H${x2} V${ROW_S - SQ / 2 - 2}`
+				: linked
+					? `M${x1} ${MID} H${x2}`
+					: `M${x1} ${MID} H${x1 - 14} M${x2 + 14} ${MID} H${x2}`}
 		<path d={path} fill="none" stroke="var(--lg-off)" stroke-width="2.5" opacity="0.55" />
-		{#if u > 0}
+		{#if u > 0 && linked}
 			<path
 				d={path}
 				pathLength="1"
@@ -180,7 +204,7 @@
 				stroke-linecap="round"
 			/>
 		{/if}
-		{#if i < 4}
+		{#if i < 4 && linked}
 			<path
 				d="M{x2 + 1} {MID} l9 -5 v10 Z"
 				fill={u >= 1 ? onCol(on) : 'var(--lg-off)'}
@@ -190,6 +214,8 @@
 		{#if i === 0}
 			{@render txt(x1 - len / 2, MID - 10, '0', 13, { anchor: 'middle', weight: 700 })}
 			{@render txt(x1 - len / 2, MID + 22, 'carry in', 11, { anchor: 'middle', muted: true })}
+		{:else if i < 4 && !linked}
+			{@render txt(x1 - len / 2, MID + 22, 'no wire', 11, { anchor: 'middle', muted: true })}
 		{:else if i < 4}
 			{@render txt(x1 - len / 2, MID - 10, u >= 1 ? (on ? '1' : '0') : '', 13, {
 				anchor: 'middle',
@@ -199,6 +225,50 @@
 			{@render txt(x1 - len / 2, MID + 22, 'carry', 11, { anchor: 'middle', muted: true })}
 		{/if}
 	{/each}
+	<!-- the carry wires the reader connects ("Connect them yourself") -->
+	{#if building}
+		{#each [1, 2, 3] as i (i)}
+			{@const x1 = colX(i - 1) - BOX_W / 2}
+			{@const x2 = colX(i) + BOX_W / 2}
+			{@const linked = links[i - 1]}
+			<g
+				class="focusable"
+				role="switch"
+				tabindex="0"
+				aria-checked={linked}
+				aria-label="Carry wire from bit {i} to bit {i + 1}"
+				style:cursor="pointer"
+				onclick={() => toggleLink(i - 1)}
+				onkeydown={(e) => onLinkKey(e, i - 1)}
+			>
+				<rect x={x2 + 4} y={MID - 22} width={x1 - x2 - 8} height="44" fill="transparent" />
+				{#if !linked}
+					<rect
+						x={x2 + 16}
+						y={MID - 9}
+						width={x1 - x2 - 32}
+						height="18"
+						rx="5"
+						fill="none"
+						stroke="var(--lg-gate-edge)"
+						stroke-dasharray="3 3"
+						stroke-opacity="0.7"
+					/>
+				{/if}
+				<rect
+					class="ring"
+					x={x2 + 1}
+					y={MID - 25}
+					width={x1 - x2 - 2}
+					height="50"
+					rx="12"
+					fill="none"
+					stroke="var(--focus)"
+					stroke-width="2"
+				/>
+			</g>
+		{/each}
+	{/if}
 	{@render square(colX(4), ROW_S, allDone ? r.carryOut : null, allDone ? 1 : 0.6)}
 	{@render txt(colX(4), ROW_S + 36, 'carry out', 11, { anchor: 'middle', muted: true })}
 
@@ -264,10 +334,40 @@
 		530,
 		allDone
 			? r.carryOut
-				? 'Too big for 4 bits: the last carry becomes a fifth bit, worth 16.'
-				: 'Each column had to wait for the carry from the column on its right.'
-			: `The carry ripples right to left: column ${active + 1} of 4 is adding.`,
+				? 'Too big for 4 bits: the last carry becomes a fifth bit, worth 16. A 4-bit register would drop it: an overflow.'
+				: building && right < 256
+					? 'An adder with no carry wire into it reads its carry in as 0.'
+					: 'Each column had to wait for the carry from the column on its right.'
+			: `The carry ripples right to left: bit ${active + 1} of 4 (counting from the right) is adding.`,
 		13,
 		{ anchor: 'middle' }
 	)}
+	{#if building}
+		{@render txt(
+			480,
+			562,
+			right === 256
+				? '✓ Right: it adds all 256 pairs of 4-bit numbers'
+				: `Right for ${right} of the 256 pairs of 4-bit numbers · click a gap to wire a carry`,
+			13,
+			{
+				anchor: 'middle',
+				weight: 700,
+				color: right === 256 ? 'var(--lg-ok)' : undefined,
+				muted: right !== 256
+			}
+		)}
+	{/if}
 </g>
+
+<style>
+	.focusable {
+		outline: none;
+	}
+	.focusable .ring {
+		opacity: 0;
+	}
+	.focusable:focus-visible .ring {
+		opacity: 1;
+	}
+</style>

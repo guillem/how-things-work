@@ -132,7 +132,7 @@ export const spec: ExplainerSpec = {
 			controls: stepper,
 			body: `
 <p>A different idea: <dfn data-def="Solving a problem by splitting it into smaller problems of the same kind, solving those, and combining the answers.">divide and conquer</dfn>. Split the row in half, sort each half, then <strong>merge</strong> the two sorted halves.</p>
-<p>Merging is cheap: look at the first bar of each half, take the smaller, and repeat — one comparison per bar placed. And how do you sort each half? The same way: split it, sort the quarters, merge. Keep splitting until each piece is a single bar, which is already sorted.</p>
+<p>Merging is cheap: look at the first bar of each half, take the smaller, and repeat — at most one comparison per bar placed. And how do you sort each half? The same way: split it, sort the quarters, merge. Keep splitting until each piece is a single bar, which is already sorted.</p>
 <p>Halving 16 bars takes 4 levels (16 → 8 → 4 → 2 → 1) — that number of halvings is written log₂ 16 = 4 — and each level of merging costs at most about <i>n</i> comparisons. So the total is about <i>n</i> × log₂ <i>n</i> — for a thousand bars, under 10,000 comparisons instead of half a million.</p>`,
 			notes: `<p>log₂ <i>n</i> (“log base 2 of <i>n</i>”) is the number of times you can halve <i>n</i> before reaching 1: log₂ 16 = 4, log₂ 1,024 = 10, log₂ of a million ≈ 20. It grows very slowly, which is the whole point.</p>`
 		},
@@ -147,7 +147,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Another divide-and-conquer recipe. Pick one bar as the <dfn data-def="The bar that the others are compared with when splitting the row.">pivot</dfn> (here, the last bar of the section). Compare every other bar with it: shorter ones go to its left, taller ones to its right. The pivot is now in its final place.</p>
 <p>Then do the same, separately, to the part on the left and the part on the right, and so on until every piece is a single bar.</p>
-<p>When the pivots split the sections roughly in half, this costs about <i>n</i> log₂ <i>n</i> comparisons — on average a few more than merge sort (about 30% more at 1,000 bars), but each step is so simple that in practice it is often the fastest of all. Try a <em>Sorted</em> start: the last bar is always the tallest, every split is lopsided, and quick sort slows to <i>n</i>²/2.</p>`,
+<p>When the pivots split the sections roughly in half, this costs about <i>n</i> log₂ <i>n</i> comparisons — on average about a quarter more comparisons than merge sort (roughly 11,000 against 8,700 at 1,000 bars), but each step is so simple that in practice it is often the fastest of all. Try a <em>Sorted</em> start: the last bar is always the tallest, every split is lopsided, and quick sort slows to <i>n</i>²/2.</p>`,
 			notes: `<p>Libraries that use quick sort avoid that trap by choosing the pivot more cleverly, for example at random or as the middle value of three bars. This page uses the simple textbook rule so the weakness is visible.</p>`
 		},
 		{
@@ -158,7 +158,7 @@ export const spec: ExplainerSpec = {
 			duration: 36,
 			controls: [play, pace, size, order, shuffle],
 			body: `
-<p>All four recipes, side by side, sorting the same row at the same speed: one operation each per tick. The counters show the comparisons each one has made so far.</p>
+<p>All four recipes, side by side, sorting the same row at the same speed: one operation each per tick. The counters show the comparisons each one has made so far. Places go by finishing time, where every comparison or move takes one tick (a merge move slides a whole block of bars at once).</p>
 <p>With a few bars the difference is small. Raise the number of bars and watch merge sort and quick sort pull away. Then try the starting orders: insertion and bubble sort win on a sorted row, and quick sort with its last-bar pivot is suddenly the slowest.</p>`
 		},
 		// ------------------------------------------------------------------ growth
@@ -183,7 +183,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'bigo' },
 			duration: 22,
 			body: `
-<p>Computer scientists describe that shape with <dfn data-def="A way of describing how an algorithm's cost grows with the size of its input, ignoring constant factors: O(n²), O(n log n)…">Big-O notation</dfn>. Bubble and insertion sort are <strong>O(<i>n</i>²)</strong>; merge sort is <strong>O(<i>n</i> log <i>n</i>)</strong>.</p>
+<p>Computer scientists describe that shape with <dfn data-def="A way of describing how an algorithm's cost grows with the size of its input, ignoring constant factors: O(n²), O(n log n)…">Big-O notation</dfn>. Bubble and insertion sort are <strong>O(<i>n</i>²)</strong>; merge sort is <strong>O(<i>n</i> log <i>n</i>)</strong> (in Big-O the base of the logarithm does not matter: it only changes a constant factor).</p>
 <p>The quickest way to feel the difference: <strong>double the input</strong>. An O(<i>n</i>²) algorithm then does about four times the work. An O(<i>n</i> log <i>n</i>) one does only a bit more than twice the work. Double again and again, and the first falls further behind every time.</p>
 <p>Big-O deliberately ignores constant factors — whether one comparison takes a nanosecond or a microsecond. Only the shape of the growth is kept, because for large inputs the shape wins.</p>`,
 			notes: `<p>Strictly, Big-O gives an upper bound on the growth: “O(<i>n</i>²)” means “grows no faster than some constant times <i>n</i>²”. It is usually quoted for the worst case: quick sort is O(<i>n</i>²) in the worst case but O(<i>n</i> log <i>n</i>) on average, and no method that sorts only by comparing pairs can manage with much fewer than <i>n</i> log₂ <i>n</i> comparisons in the worst case.</p>`

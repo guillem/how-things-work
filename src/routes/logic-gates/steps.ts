@@ -23,6 +23,7 @@ const tool: Control = {
 		{ value: 'OR', label: 'OR gate' },
 		{ value: 'NOT', label: 'NOT gate' },
 		{ value: 'XOR', label: 'XOR gate' },
+		{ value: 'NAND', label: 'NAND gate' },
 		{ value: 'erase', label: 'Eraser' }
 	],
 	help: 'Click empty space to add the gate; drag from an output to an input to wire; click a switch to flip it.'
@@ -35,7 +36,8 @@ const challenge: Control = {
 	default: 'free',
 	options: [
 		{ value: 'free', label: 'Free play' },
-		{ value: 'half', label: 'Build a half adder' }
+		{ value: 'half', label: 'Build a half adder' },
+		{ value: 'full', label: 'Build a full adder' }
 	]
 };
 
@@ -49,7 +51,7 @@ const resetCanvas: Control = {
 const a4: Control = {
 	type: 'range',
 	id: 'a4',
-	label: 'First number',
+	label: 'First number (A)',
 	min: 0,
 	max: 15,
 	step: 1,
@@ -58,11 +60,22 @@ const a4: Control = {
 const b4: Control = {
 	type: 'range',
 	id: 'b4',
-	label: 'Second number',
+	label: 'Second number (B)',
 	min: 0,
 	max: 15,
 	step: 1,
 	default: 6
+};
+const carryLinks: Control = {
+	type: 'select',
+	id: 'carryLinks',
+	label: 'Carry wires',
+	default: 'wired',
+	options: [
+		{ value: 'wired', label: 'Connected' },
+		{ value: 'build', label: 'Connect them yourself' }
+	],
+	help: 'Connect them yourself: click the gap between two full adders to wire one carry out to the next carry in.'
 };
 
 export const spec: ExplainerSpec = {
@@ -99,7 +112,8 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			body: `
 <p>How do you add two bits? 0 + 0 = 0, 0 + 1 = 1, 1 + 0 = 1, and 1 + 1 = 10 in binary: write 0, carry 1. Look at the two columns of that answer.</p>
-<p>The right-hand digit, the <strong>sum</strong>, is 1 when exactly one input is 1 — that's XOR. The left digit, the <strong>carry</strong>, is 1 only when both are — that's AND. Two gates side by side make a <dfn data-def="A circuit that adds two bits, giving a sum bit and a carry bit: Sum = A XOR B, Carry = A AND B.">half adder</dfn>. Flip the switches and watch the signals travel through the gates.</p>`
+<p>The right-hand digit, the <strong>sum</strong>, is 1 when exactly one input is 1 — that's XOR. The left digit, the <strong>carry</strong>, is 1 only when both are — that's AND. Two gates side by side make a <dfn data-def="A circuit that adds two bits, giving a sum bit and a carry bit: Sum = A XOR B, Carry = A AND B.">half adder</dfn>. Flip the switches and watch the signals travel through the gates.</p>`,
+			notes: `<p>The animation is slowed right down: a real gate switches in around ten trillionths of a second. Each gate here takes the same time, and outputs jump straight to their final value; in real circuits they can flicker briefly before settling.</p>`
 		},
 		{
 			id: 'full',
@@ -109,7 +123,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'full', circuit: 'full' },
 			duration: 28,
 			body: `
-<p>A half adder can't take a carry coming in from the column to its right. A <dfn data-def="A circuit that adds three bits — two digits and a carry in — giving a sum bit and a carry out.">full adder</dfn> can: it is two half adders and an OR gate. The first adds A and B; the second adds the carry in; if either produced a carry, the OR passes it on.</p>
+<p>A half adder can't take a carry coming in from the column to its right. A <dfn data-def="A circuit that adds three bits — two digits and a carry in — giving a sum bit and a carry out.">full adder</dfn> can: it is two half adders and an OR gate. The first adds A and B; the second adds the carry in to that sum; if either produced a carry, the OR passes it on.</p>
 <p>Five gates, and it adds three bits. Try all eight combinations of the switches and check the table.</p>`
 		},
 		{
@@ -119,10 +133,11 @@ export const spec: ExplainerSpec = {
 			scene: 'ripple',
 			hints: { phase: 'four' },
 			duration: 30,
-			controls: [a4, b4],
+			controls: [a4, b4, carryLinks],
 			body: `
 <p>Chain four full adders, each passing its carry out to the next one's carry in, and you can add two 4-bit numbers — 0 to 15 each. This is a <dfn data-def="An adder made of a chain of full adders, in which each carry passes ('ripples') to the next column.">ripple-carry adder</dfn>: the carries ripple from right to left, exactly as when you add on paper.</p>
-<p>Set two numbers and watch the carries ripple along. A processor adds 64-bit numbers the same way (with tricks to stop waiting for the ripple), and from adding it builds subtraction, multiplication and more.</p>`
+<p>Set two numbers and watch the carries ripple along. A processor adds 64-bit numbers the same way (with tricks to stop waiting for the ripple), and from adding it builds subtraction, multiplication and more.</p>
+<p>Choose <em>Connect them yourself</em> to take the carry wires out: each full adder then reads its carry in as 0, and many sums come out wrong. Wire the three carries back in and check that it adds every pair.</p>`
 		},
 		{
 			id: 'build',
@@ -133,9 +148,9 @@ export const spec: ExplainerSpec = {
 			duration: 40,
 			controls: [tool, challenge, resetCanvas],
 			body: `
-<p>Your turn: add gates, wire outputs to inputs, flip the switches, and the truth table updates as you build. Pick the challenge to rebuild a half adder from scratch: the table turns green when your circuit is right.</p>
-<p><strong>A few kinds of simple gate, combined, can compute any logical or arithmetic function.</strong> In fact one kind is enough: every gate here can be made from NAND gates alone ("not AND").</p>`,
-			notes: `<p>Circuits like these, with no loops, compute a fixed function of their inputs. Feeding outputs back into inputs makes circuits that can <em>remember</em> — the latches and flip-flops that store bits in a processor — which this page doesn't allow.</p>`
+<p>Your turn: add gates, wire outputs to inputs, flip the switches, and the truth table updates as you build. Pick a challenge to rebuild a half adder or a full adder from scratch: the table turns green when your circuit is right.</p>
+<p><strong>A few kinds of simple gate, combined, can compute any logical or arithmetic function.</strong> In fact one kind is enough: every gate here can be made from NAND gates alone ("not AND"). Try it: wire both inputs of a NAND to A and you get NOT A.</p>`,
+			notes: `<p>Here an input with no wire counts as 0. In a real chip every input has to be connected to something.</p><p>Circuits like these, with no loops, compute a fixed function of their inputs. Feeding outputs back into inputs makes circuits that can <em>remember</em> — the latches and flip-flops that store bits in a processor — which this page doesn't allow.</p>`
 		}
 	]
 };

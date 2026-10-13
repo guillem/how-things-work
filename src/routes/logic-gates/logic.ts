@@ -253,24 +253,48 @@ export const BLANK: Circuit = {
 	wires: []
 };
 
-/** Adds two 4-bit numbers bit by bit with a chain of full adders (what the 4-bit adder computes). */
-export function ripple4(a: number, b: number, carryIn = false) {
+/**
+ * Adds two 4-bit numbers bit by bit with a chain of full adders (what the 4-bit adder computes).
+ * `links[i]` says whether the carry out of bit i is wired to the carry in of bit i + 1; an
+ * unwired carry in reads 0, as any unwired input does here.
+ */
+export function ripple4(
+	a: number,
+	b: number,
+	carryIn = false,
+	links: readonly boolean[] = [true, true, true]
+) {
 	const sum: boolean[] = [];
 	const carries: boolean[] = [carryIn];
+	const couts: boolean[] = [];
 	let carry = carryIn;
 	for (let i = 0; i < 4; i++) {
 		const x = ((a >> i) & 1) === 1;
 		const y = ((b >> i) & 1) === 1;
-		const { value } = evaluate(FULL_ADDER, { a: x, b: y, ci: carry });
+		const cin = i === 0 ? carryIn : links[i - 1] !== false && carry;
+		if (i > 0) carries[i] = cin;
+		const { value } = evaluate(FULL_ADDER, { a: x, b: y, ci: cin });
 		sum.push(value.get('s')!);
 		carry = value.get('co')!;
-		carries.push(carry);
+		couts.push(carry);
 	}
+	carries.push(carry);
 	return {
 		/** Sum bits, least significant first. */
 		sum,
+		/** carries[i]: the carry into bit i (i < 4); carries[4]: the carry out of bit 3. */
 		carries,
+		/** couts[i]: the carry out of bit i. */
+		couts,
 		carryOut: carry,
 		value: sum.reduce((v, bit, i) => v + (bit ? 2 ** i : 0), 0) + (carry ? 16 : 0)
 	};
+}
+
+/** How many of the 256 pairs of 4-bit numbers the chain adds correctly, with these carry links. */
+export function pairsRight(links: readonly boolean[]) {
+	let n = 0;
+	for (let a = 0; a < 16; a++)
+		for (let b = 0; b < 16; b++) if (ripple4(a, b, false, links).value === a + b) n++;
+	return n;
 }

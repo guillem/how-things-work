@@ -49,7 +49,7 @@ const estimate: Control = {
 	step: 0.5,
 	default: 1,
 	format: (v) => (v === 1 ? '× 1: never too high' : `× ${v}: can be too high`),
-	help: 'How much A* multiplies its straight-line guess of the cost still to go.'
+	help: 'How much A* multiplies its guess of the cost still to go (steps to the goal, ignoring walls and mud).'
 };
 
 const roadAlgo: Control = {
@@ -87,7 +87,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>How does a sat-nav, a delivery robot or a character in a video game find its way? To a computer, a map is a <dfn data-def="A set of points (nodes) joined by connections (edges). A grid map is a graph whose nodes are the cells and whose edges join neighbouring cells.">graph</dfn>: a set of places, and connections between neighbouring places.</p>
 <p>Here the places are the squares of a grid. From any square you can step up, down, left or right — unless there is a wall. The computer can't see the whole map at a glance as you do; it can only look at one square and ask: where can I go from here?</p>
-<p>Paint some walls and move the start (S) and the goal (G). In the next steps, three different methods will search this map.</p>`
+<p>Paint some walls and move the start (S) and the goal (G). In the next steps, three different methods will search maps like this one; on most steps you can paint and move S and G again.</p>`
 		},
 		{
 			id: 'bfs',
@@ -124,7 +124,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [pace, play, brush, resetMap],
 			body: `
-<p>In 1956 Edsger Dijkstra worked out a fix in about twenty minutes, sitting at a café in Amsterdam: always expand the frontier square with the <strong>lowest cost so far</strong>. The ripple now spreads in rings of equal <em>cost</em> rather than equal steps — fast across open ground, slowly into the mud.</p>
+<p>In 1956 Edsger Dijkstra, looking for a problem to show off a new computer, worked out the answer in about twenty minutes on a café terrace in Amsterdam (he published it three years later): always <strong>expand</strong> (take off the frontier and look at the neighbours of) the frontier square with the <strong>lowest cost so far</strong>. The ripple now spreads in rings of equal <em>cost</em> rather than equal steps — fast across open ground, slowly into the mud.</p>
 <p>When the goal is taken off the frontier, no cheaper route to it can exist: every square still waiting already costs at least as much, and since no step costs less than zero, going on through one of them can only add cost. <dfn data-def="Finds the cheapest route in a graph whose connections have costs (none negative), by always expanding the place with the lowest cost so far.">Dijkstra's algorithm</dfn> finds the route round the marsh, cost 21.</p>
 <p>The shading shows the cost to reach each square. Paint more mud and watch the ripple bend round it.</p>`
 		},
@@ -151,7 +151,7 @@ export const spec: ExplainerSpec = {
 			controls: [estimate, pace, play, resetMap],
 			body: `
 <p>The guarantee comes from the estimate never being <em>too high</em>. Each step costs at least 1, so "steps to the goal, ignoring walls and mud" can only be equal to or less than the true cost. Such an estimate is called <dfn data-def="An estimate of the remaining cost that is never higher than the true cost. With it, A* is guaranteed to find the cheapest route.">admissible</dfn>.</p>
-<p>Trust the estimate more — multiply it by 3 or 5 — and A* rushes more directly at the goal, looking at fewer squares (36 or 16 instead of 46). But now the estimate can overestimate: going round the marsh <em>looks</em> too expensive, and A* ends up wading through the mud, on a route costing 39 instead of 21. Faster to find, worse to travel.</p>`,
+<p>Trust the estimate more — multiply it by 3 or 5 — and A* rushes more directly at the goal, looking at fewer squares (36 or 16 instead of 46; small multipliers such as × 1.5 or × 2 change little here). But now the estimate can overestimate: going round the marsh <em>looks</em> too expensive, and A* ends up wading through the mud, on a route costing 39 instead of 21. Faster to find, worse to travel.</p>`,
 			notes: `<p>With slow terrain, the estimate must be based on the <em>cheapest</em> terrain: counting each remaining step as a muddy one would often be too high. Games and robots sometimes accept the trade on purpose: a slightly worse route found much faster. Strictly, the version of A* used here, which never looks at a square twice, also needs the estimate to drop by no more than a step's cost from one square to the next; step counts and straight-line distances do.</p>`
 		},
 		{
@@ -178,7 +178,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A road map is a graph too: towns are the places, roads the connections, each with its own length. The same methods work unchanged. Dijkstra's algorithm grows outwards from Ashford in order of distance; A* uses the straight-line distance to Juniper as its estimate — no road can be shorter than a straight line, so the estimate is never too high.</p>
 <p>Both find the same shortest route, 473 km; A* gets there after looking at fewer towns. Route planners do this on maps with millions of junctions, with extra tricks such as pre-computed shortcuts between major junctions, mostly along motorways.</p>
-<p>Finding a route is a <strong>systematic exploration of a graph</strong>, and a good estimate of the distance still to go lets the search skip much of it — three quarters of the squares on the open marsh.</p>`
+<p>Finding a route is a <strong>systematic exploration of a graph</strong>, and a good estimate of the distance still to go lets the search skip much of it — nearly three quarters of the squares on the marsh map.</p>`
 		}
 	]
 };

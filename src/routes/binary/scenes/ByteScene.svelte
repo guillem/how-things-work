@@ -408,6 +408,15 @@
 			return `Fraction bit worth 1/${2 ** (i - eb)}`;
 		}
 		if (phase === 'signed' && i === 0) return `Bit worth ${MINUS}128`;
+		// Text and colour: the value within the byte or channel being read.
+		if (phase === 'text')
+			return (
+				`Bit worth ${placeValue(i % 8, 8)}` + (width > 8 ? ` in byte ${Math.floor(i / 8) + 1}` : '')
+			);
+		if (phase === 'colour') {
+			const { c, start, n } = channelOf(i);
+			return `${CHANNELS[c].name} bit worth ${placeValue(i - start, n)}`;
+		}
 		return `Bit worth ${placeValue(i, width)}`;
 	}
 
@@ -520,7 +529,7 @@
 		{ at: 78, text: 'A–Z' },
 		{ at: 110, text: 'a–z' },
 		{ at: 144, text: 'control' },
-		{ at: 208, text: 'accented letters (é = 233)' }
+		{ at: 208, text: 'symbols, accented letters (é = 233)' }
 	];
 	const sx = (code: number) => strip.x0 + (code + 0.5) * strip.cw;
 	const markers = $derived.by(() => {

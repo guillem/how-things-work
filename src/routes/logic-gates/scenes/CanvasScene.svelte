@@ -8,7 +8,10 @@
 	 *   half  — the half adder (Sum = A XOR B, Carry = A AND B)
 	 *   full  — the full adder, its two half adders boxed
 	 *   build — the reader's own circuit (`hints.edit`), kept in
-	 *           `params['circuit:build']` as `serializeCircuit` text
+	 *           `params['circuit:build']` as `serializeCircuit` text; the
+	 *           `challenge` control (half or full adder) starts from a blank with
+	 *           that adder's switches and lamps and checks the truth table against
+	 *           the reference circuit's
 	 *
 	 * Switch states are a string of 0/1 in input order in `params['sw:' + step.id]`.
 	 * Until the reader touches a switch, the guided steps play through the rows of
@@ -69,7 +72,11 @@
 	// ---- which circuit --------------------------------------------------------------
 	const phase = $derived(String(step.hints?.phase ?? 'gates'));
 	const edit = $derived(step.hints?.edit === true);
-	const challenge = $derived(edit && params.challenge === 'half');
+	/** The build step's challenge, if one is picked. */
+	const goal = $derived(
+		edit && (params.challenge === 'half' || params.challenge === 'full') ? params.challenge : null
+	);
+	const challenge = $derived(goal !== null);
 	const gateKind = $derived(String(params.gateKind ?? 'AND') as GateKind);
 
 	/** Blank canvas for the half-adder challenge: inputs A, B; outputs Sum, Carry. */
@@ -82,15 +89,36 @@
 		],
 		wires: []
 	};
-	const blank = $derived(challenge ? HALF_BLANK : BLANK);
-	/** A stored circuit belongs to the challenge whose outputs it has. */
-	const fits = (c: Circuit, half: boolean) => {
-		const outs = outputsOf(c).map((n) => n.label ?? n.id);
-		return half ? outs.join() === 'Sum,Carry' : outs.join() === 'Out';
+	/**
+	 * Blank canvas for the full-adder challenge: inputs A, B, Carry in; outputs Sum,
+	 * Carry out — in the same top-to-bottom order as FULL_ADDER, so the truth-table
+	 * rows and columns line up with the target's.
+	 */
+	const FULL_BLANK: Circuit = {
+		nodes: [
+			{ id: 'a', kind: 'in', x: 100, y: 140, label: 'A' },
+			{ id: 'b', kind: 'in', x: 100, y: 280, label: 'B' },
+			{ id: 'ci', kind: 'in', x: 100, y: 420, label: 'Carry in' },
+			{ id: 's', kind: 'out', x: 800, y: 200, label: 'Sum' },
+			{ id: 'co', kind: 'out', x: 800, y: 380, label: 'Carry out' }
+		],
+		wires: []
 	};
+	const blank = $derived(goal === 'full' ? FULL_BLANK : goal === 'half' ? HALF_BLANK : BLANK);
+	/** The circuit a challenge asks for: the target columns come from its truth table. */
+	const reference = $derived(goal === 'full' ? FULL_ADDER : HALF_ADDER);
+	const goalOuts = $derived(outputsOf(reference).map((n) => n.label ?? n.id));
+	/** A stored circuit belongs to the challenge whose outputs it has. */
+	const fits = (c: Circuit) =>
+		outputsOf(c)
+			.map((n) => n.label ?? n.id)
+			.join() ===
+		outputsOf(blank)
+			.map((n) => n.label ?? n.id)
+			.join();
 	const builtCircuit = $derived.by(() => {
 		const c = parseCircuit(params['circuit:build']);
-		return c && fits(c, challenge) ? c : blank;
+		return c && fits(c) ? c : blank;
 	});
 
 	const circuit: Circuit = $derived(
@@ -286,16 +314,15 @@
 	});
 	const rowIndex = $derived(parseInt(bits || '0', 2) || 0);
 	const rowTween = Tween.of(() => rowIndex, { duration: 260, easing: cubicInOut });
-	/** Target for the half-adder challenge: Sum, Carry for rows 00, 01, 10, 11. */
-	const TARGET = [
-		[false, false],
-		[true, false],
-		[true, false],
-		[false, true]
-	];
-	const rowOk = (i: number) => !!table && table.rows[i].outputs.every((v, j) => v === TARGET[i][j]);
+	/** The challenge's target: the outputs of the reference circuit, row by row. */
+	const TARGET = $derived(truthTable(reference).rows.map((r) => r.outputs));
+	const rowOk = (i: number) =>
+		!!table && !!TARGET[i] && table.rows[i].outputs.every((v, j) => v === TARGET[i][j]);
 	const solved = $derived(
-		challenge && !!table && table.rows.length === 4 && table.rows.every((_, i) => rowOk(i))
+		challenge &&
+			!!table &&
+			table.rows.length === TARGET.length &&
+			table.rows.every((_, i) => rowOk(i))
 	);
 
 	const panel = $derived.by(() => {
@@ -303,7 +330,7 @@
 		const cols = [
 			...table.inputs.map((l) => ({ l, kind: 'in' })),
 			...table.outputs.map((l) => ({ l, kind: 'out' })),
-			...(challenge ? ['Sum', 'Carry'].map((l) => ({ l, kind: 'want' })) : [])
+			...(challenge ? goalOuts.map((l) => ({ l, kind: 'want' })) : [])
 		];
 		const w = PANEL.x1 - PANEL.x0;
 		const tickW = challenge ? 30 : 0;
@@ -366,10 +393,10 @@
 	// half-finished wire belongs to the step and challenge it started on, so
 	// either changing clears it (the same scene serves every canvas step).
 	let seenReset = untrack(() => params.resetCanvas);
-	let seenContext = untrack(() => `${step.id}|${challenge}`);
+	let seenContext = untrack(() => `${step.id}|${goal}`);
 	$effect(() => {
 		const n = params.resetCanvas;
-		const context = `${step.id}|${challenge}`;
+		const context = `${step.id}|${goal}`;
 		untrack(() => {
 			if (context !== seenContext) {
 				seenContext = context;
@@ -565,7 +592,7 @@
 		edit
 			? tool === 'erase'
 				? 'Eraser: click a gate or a wire to remove it'
-				: `Click empty space to add ${tool === 'NOT' ? 'a' : 'an'} ${tool} gate · drag from an output dot to an input dot to wire`
+				: `Click empty space to add ${tool === 'AND' || tool === 'OR' || tool === 'XOR' ? 'an' : 'a'} ${tool} gate · drag from an output dot to an input dot to wire`
 			: auto
 				? 'Playing through every row of the table · click a switch to take over'
 				: 'Click a switch (or Tab to it and press Enter) to flip it'
@@ -935,15 +962,21 @@
 	{:else if !edit && phase === 'half'}
 		{@render txt(X(420), Y(200) - 38, 'Sum = A XOR B', 14, { anchor: 'middle', weight: 700 })}
 		{@render txt(X(420), Y(360) + 48, 'Carry = A AND B', 14, { anchor: 'middle', weight: 700 })}
-		{@render txt(X(420), 500, `${val('a')} + ${val('b')} = ${val('c')}${val('s')} in binary`, 15, {
-			anchor: 'middle',
-			weight: 600,
-			opacity: settled ? 1 : 0.55
-		})}
+		{@render txt(
+			X(420),
+			500,
+			`${val('a')} + ${val('b')} = ${settled ? `${val('c')}${val('s')}` : '…'} in binary`,
+			15,
+			{
+				anchor: 'middle',
+				weight: 600,
+				opacity: settled ? 1 : 0.55
+			}
+		)}
 		{@render txt(
 			X(420),
 			520,
-			`carry ${val('c')}, sum ${val('s')}: ${val('a') + val('b')} in decimal`,
+			settled ? `carry ${val('c')}, sum ${val('s')}: ${val('a') + val('b')} in decimal` : 'adding…',
 			12,
 			{
 				anchor: 'middle',
@@ -955,15 +988,21 @@
 		{@render txt(
 			X(420),
 			500,
-			`${val('a')} + ${val('b')} + ${val('ci')} = ${val('co')}${val('s')} in binary`,
+			`${val('a')} + ${val('b')} + ${val('ci')} = ${settled ? `${val('co')}${val('s')}` : '…'} in binary`,
 			15,
 			{ anchor: 'middle', weight: 600, opacity: settled ? 1 : 0.55 }
 		)}
-		{@render txt(X(420), 520, `${val('a') + val('b') + val('ci')} in decimal`, 12, {
-			anchor: 'middle',
-			muted: true,
-			opacity: settled ? 1 : 0.55
-		})}
+		{@render txt(
+			X(420),
+			520,
+			settled ? `${val('a') + val('b') + val('ci')} in decimal` : 'adding…',
+			12,
+			{
+				anchor: 'middle',
+				muted: true,
+				opacity: settled ? 1 : 0.55
+			}
+		)}
 	{/if}
 
 	<!-- truth table -->
@@ -983,7 +1022,7 @@
 			{@render txt(
 				PANEL.x0 + 16,
 				panel.y0 + 46,
-				solved ? '✓ Right: that is a half adder!' : 'Goal: make your columns match the target',
+				solved ? `✓ Right: that is a ${goal} adder!` : 'Goal: make your columns match the target',
 				12,
 				{
 					weight: solved ? 700 : 500,

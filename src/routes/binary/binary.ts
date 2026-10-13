@@ -96,6 +96,7 @@ export function char(byte: number): CharReading {
 	if (byte < 127) return { text: String.fromCharCode(byte), kind: 'printable' };
 	if (byte < 160) return { text: `C1 ${byte.toString(16).toUpperCase()}`, kind: 'control' };
 	if (byte === 160) return { text: 'nbsp', kind: 'space' };
+	if (byte === 173) return { text: 'SHY', kind: 'control' }; // soft hyphen: draws nothing
 	return { text: String.fromCharCode(byte), kind: 'latin1' };
 }
 

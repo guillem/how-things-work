@@ -412,9 +412,13 @@
 	<!-- the rules of the race -->
 	{@render txt(
 		480,
-		580,
-		'Place = order of finishing: every comparison or move takes one tick. The counters and the chart count comparisons only.',
+		572,
+		'Place = order of finishing: every comparison, swap or merge move takes one tick (a merge move slides a whole block of bars).',
 		12,
 		{ anchor: 'middle', muted: true }
 	)}
+	{@render txt(480, 588, 'The counters and the chart count comparisons only.', 12, {
+		anchor: 'middle',
+		muted: true
+	})}
 </g>

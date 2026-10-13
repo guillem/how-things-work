@@ -6,6 +6,7 @@ import {
 	HALF_ADDER,
 	evaluate,
 	makesLoop,
+	pairsRight,
 	parseCircuit,
 	ripple4,
 	serializeCircuit,
@@ -39,8 +40,57 @@ test('full adder: adds three bits', () => {
 });
 
 test('4-bit adder: every pair of 4-bit numbers', () => {
-	for (let a = 0; a < 16; a++) for (let b = 0; b < 16; b++) expect(ripple4(a, b).value).toBe(a + b);
+	for (let a = 0; a < 16; a++)
+		for (let b = 0; b < 16; b++) {
+			expect(ripple4(a, b).value).toBe(a + b);
+			expect(ripple4(a, b, true).value).toBe(a + b + 1);
+		}
 	expect(ripple4(15, 1).carryOut).toBe(true);
+});
+
+test('4-bit adder: adds every pair only once all three carries are connected', () => {
+	expect(pairsRight([true, true, true])).toBe(256);
+	for (let k = 0; k < 3; k++) {
+		const links = [true, true, true];
+		links[k] = false;
+		expect(pairsRight(links)).toBeLessThan(256);
+	}
+	// unconnected carries: 1 + 1 loses its carry and comes out 0
+	expect(ripple4(1, 1, false, [false, false, false]).value).toBe(0);
+});
+
+test('NAND alone makes NOT, AND and OR', () => {
+	const n = (id: string, kind: 'in' | 'out' | 'NAND', y = 0, label?: string) => ({
+		id,
+		kind,
+		x: 0,
+		y,
+		...(label ? { label } : {})
+	});
+	const w = (from: string, to: string, slot = 0) => ({ from, to, slot });
+	const a = n('a', 'in', 0, 'A');
+	const b = n('b', 'in', 1, 'B');
+	const q = n('q', 'out', 0, 'Out');
+	const not = { nodes: [a, n('g', 'NAND'), q], wires: [w('a', 'g'), w('a', 'g', 1), w('g', 'q')] };
+	const and = {
+		nodes: [a, b, n('g', 'NAND'), n('h', 'NAND'), q],
+		wires: [w('a', 'g'), w('b', 'g', 1), w('g', 'h'), w('g', 'h', 1), w('h', 'q')]
+	};
+	const or = {
+		nodes: [a, b, n('na', 'NAND'), n('nb', 'NAND'), n('g', 'NAND'), q],
+		wires: [
+			w('a', 'na'),
+			w('a', 'na', 1),
+			w('b', 'nb'),
+			w('b', 'nb', 1),
+			w('na', 'g'),
+			w('nb', 'g', 1),
+			w('g', 'q')
+		]
+	};
+	expect(outs(not)).toEqual(outs(singleGate('NOT')));
+	expect(outs(and)).toEqual(outs(singleGate('AND')));
+	expect(outs(or)).toEqual(outs(singleGate('OR')));
 });
 
 test('signals pass through gates in depth order', () => {

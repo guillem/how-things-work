@@ -1,7 +1,14 @@
 // Checks the sorting implementations and their operation counts against the
 // textbook results. Runs in Node; no browser.
 import { expect, test } from '@playwright/test';
-import { ALGORITHMS, comparisonsFor, makeInput, recording, run } from '../src/routes/sorting/sorts';
+import {
+	ALGORITHMS,
+	comparisonsFor,
+	makeInput,
+	mergeComparisons,
+	recording,
+	run
+} from '../src/routes/sorting/sorts';
 
 test('every algorithm sorts every kind of input, and the replay agrees', () => {
 	for (const algorithm of ALGORITHMS) {
@@ -46,8 +53,29 @@ test('growth: doubling n about quadruples the quadratic sorts and about doubles 
 	expect(ratio('quick')).toBeLessThan(2.7); // n log n doubles to ~2.2×; random noise on top
 	// Average insertion sort on shuffled input: about n²/4 comparisons.
 	expect(comparisonsFor('insertion', 400, 'shuffled', 10) / ((400 * 400) / 4)).toBeCloseTo(1, 1);
-	// Average quick sort: about 1.39 n log2 n comparisons.
-	const q = comparisonsFor('quick', 1000, 'shuffled', 10) / (1000 * Math.log2(1000));
-	expect(q).toBeGreaterThan(1.1);
-	expect(q).toBeLessThan(1.45);
+	// Average quick sort (last-bar pivot, n − 1 comparisons per split): exactly
+	// 2(n + 1)H_n − 4n on average, 10,986 at n = 1,000 (only for large n does it
+	// approach 1.39 n log2 n).
+	let H = 0;
+	for (let i = 1; i <= 1000; i++) H += 1 / i;
+	const quick = comparisonsFor('quick', 1000, 'shuffled', 10);
+	expect(Math.abs(quick / (2 * 1001 * H - 4 * 1000) - 1)).toBeLessThan(0.03);
+	// The page: "about a quarter more comparisons than merge sort (roughly 11,000
+	// against 8,700 at 1,000 bars)".
+	const merge = comparisonsFor('merge', 1000, 'shuffled', 10);
+	expect(Math.round(quick / 1000)).toBe(11);
+	expect(Math.round(merge / 100)).toBe(87);
+	expect(quick / merge).toBeGreaterThan(1.2);
+	expect(quick / merge).toBeLessThan(1.3);
+});
+
+test('the growth chart: fast merge counts match the recorded run; bubble ≈ n(n − 1)/2', () => {
+	for (const n of [2, 3, 17, 100, 257, 1000])
+		for (const seed of [1, 2, 3]) {
+			const input = makeInput(n, 'shuffled', seed);
+			expect(mergeComparisons(input)).toBe(run('merge', input, false).counts.comparisons);
+		}
+	// The dashed bubble-sort line beyond 2,500 items rests on this: within 1 % from 500 up.
+	for (const n of [500, 1000, 2000])
+		expect(comparisonsFor('bubble', n, 'shuffled', 2) / ((n * (n - 1)) / 2)).toBeGreaterThan(0.99);
 });

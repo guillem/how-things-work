@@ -38,6 +38,8 @@ test('text: ASCII and Latin-1', () => {
 	expect(char(10)).toEqual({ text: 'LF', kind: 'control' });
 	expect(char(32).kind).toBe('space');
 	expect(char(233).text).toBe('é');
+	// the soft hyphen draws nothing, so its keycap gets a name
+	expect(char(173)).toEqual({ text: 'SHY', kind: 'control' });
 	expect(
 		bytes(b('0100 1000 0110 1001'))
 			.map((x) => char(x).text)
@@ -74,6 +76,21 @@ test('floating point agrees with the hardware (32-bit) and the IEEE half format 
 	expect(float(toBits(0xc000, 16))!.value).toBe(-2);
 	expect(float(float16Bits(0.1))!.value).toBeCloseTo(0.0999755859375, 15);
 	expect(float(b('0000 0001'))).toBeNull();
+});
+
+test('half precision: every pattern round-trips, and rounding goes to the nearest even', () => {
+	const wrong: string[] = [];
+	for (let p = 0; p < 65536; p++) {
+		const f = float(toBits(p, 16))!;
+		if (f.kind !== 'nan' && hex(float16Bits(f.value)) !== hex(toBits(p, 16)))
+			wrong.push(hex(toBits(p, 16)));
+	}
+	expect(wrong).toEqual([]);
+	// halfway between 1 and the next half (1 + 2^-10): rounds to the even one, 1
+	expect(hex(float16Bits(1 + 2 ** -11))).toBe('3C00');
+	// halfway between 65504 (the largest) and 65536 rounds up to infinity
+	expect(hex(float16Bits(65520))).toBe('7C00');
+	expect(hex(float16Bits(65519))).toBe('7BFF');
 });
 
 test('0.1 cannot be stored exactly', () => {

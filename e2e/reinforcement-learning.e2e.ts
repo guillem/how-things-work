@@ -21,6 +21,28 @@ test('after training, the start square is worth 10 × 0.9¹² ≈ 2.82, as the e
 	await expect(page).toHaveURL(/#discount$/);
 });
 
+test('at a discount of 0.5 the route is still drawn from S, worth 10 × 0.5¹² ≈ 0.0024', async ({
+	page
+}) => {
+	await page.goto('./reinforcement-learning/#discount');
+	await page.locator('input[type=range][data-control=gamma]').fill('0.5');
+	await finish(page);
+	await expect(stage(page)).toContainText('exact: 0.0024');
+	await expect(stage(page)).toContainText('learnt so far: 0.0024');
+	// The best-move arrows: is one of them drawn in the start square?
+	const arrowAtStart = await stage(page).evaluate((g) => {
+		const s = [...g.querySelectorAll('text')].find((t) => t.textContent === 'S')!;
+		const box = (s.previousElementSibling as SVGRectElement).getBBox();
+		const arrows = g.querySelector<SVGPathElement>('path[stroke-linejoin=round][opacity="0.7"]');
+		const starts = [...(arrows?.getAttribute('d') ?? '').matchAll(/M(-?[\d.]+) (-?[\d.]+)/g)];
+		return starts.some(([, x, y]) => {
+			const [px, py] = [Number(x), Number(y)];
+			return px > box.x && px < box.x + box.width && py > box.y && py < box.y + box.height;
+		});
+	});
+	expect(arrowAtStart).toBe(true);
+});
+
 test('little exploration settles for the +1; exploring less and less finds the +10', async ({
 	page
 }) => {

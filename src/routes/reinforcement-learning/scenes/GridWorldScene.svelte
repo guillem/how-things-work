@@ -122,8 +122,8 @@
 	let lastK = 0;
 
 	/*
-	 * Credit step: early on, almost no move changes an estimate (they are all 0
-	 * and stay 0 until the agent first reaches the +10), and the first credits
+	 * Credit step: early on, almost no move changes an estimate (no estimate
+	 * becomes positive before the first +10; pits make some negative), and the first credits
 	 * are hundreds of moves apart. So that the step shows them at a readable
 	 * pace, the replay skips through the dull stretches 20 times faster: a move
 	 * plays at the chosen speed only within a few moves of a change. The
@@ -325,7 +325,9 @@
 	/** Index of the best move in square s, or -1 if nothing positive has been learnt there. */
 	function best(s: number): number {
 		const v = bestValue(q, s);
-		if (v <= 0.005) return -1;
+		// Any positive value, however small: at a discount of 0.5 the square S is
+		// worth only 10 × 0.5¹² ≈ 0.0024, and its arrow still shows the way.
+		if (v <= 0) return -1;
 		for (let a = 0; a < 4; a++) if (q[s * 4 + a] === v) return a;
 		return -1;
 	}
@@ -500,6 +502,16 @@
 	// ---- words ------------------------------------------------------------------------------
 	const sq = (j: number) => `(${colOf(j) + 1}, ${rowOf(j) + 1})`;
 	const f2 = (v: number) => (Math.abs(v) < 0.005 ? '0' : v.toFixed(2));
+	// What S is worth: values too small for two decimals (10 × 0.5¹² ≈ 0.0024) keep two
+	// significant digits; below 0.0001, "almost 0".
+	const fS = (v: number) =>
+		v === 0
+			? '0'
+			: Math.abs(v) < 0.0001
+				? 'almost 0'
+				: Math.abs(v) < 0.005
+					? v.toPrecision(2)
+					: v.toFixed(2);
 	const pct = (v: number) => `${Math.round(v * 100)}%`;
 	const plural = (n: number, w: string) => `${n} ${w}${n === 1 ? '' : 's'}`;
 	const sup = (n: number) => [...String(n)].map((d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]).join('');
@@ -996,9 +1008,9 @@
 		{@render scale(GY + 250)}
 	{:else if phase === 'values'}
 		{@render txt(PX + 20, GY + 32, 'What S is worth', 15, { weight: 600 })}
-		{@render txt(PX + 20, GY + 64, `learnt so far: ${f2(bestValue(q, world.start))}`, 14)}
+		{@render txt(PX + 20, GY + 64, `learnt so far: ${fS(bestValue(q, world.start))}`, 14)}
 		{#if exact && shortest !== null}
-			{@render txt(PX + 20, GY + 90, `exact: ${f2(bestValue(exact, world.start))}`, 14, {
+			{@render txt(PX + 20, GY + 90, `exact: ${fS(bestValue(exact, world.start))}`, 14, {
 				weight: 600
 			})}
 			{@render txt(
@@ -1096,7 +1108,14 @@
 			stroke-dasharray="3 4"
 			opacity="0.7"
 		/>
-		{@render txt(TL1 + 10, ly(shortest) + 4, `shortest: ${shortest}`, 11, { muted: true })}
+		{@render txt(TL1 + 10, ly(shortest) - 3, 'shortest', 11, { muted: true })}
+		{@render txt(
+			TL1 + 10,
+			ly(shortest) + 10,
+			`to ${world.cells.includes(REWARD) ? '+10' : '+1'}: ${shortest}`,
+			11,
+			{ muted: true }
+		)}
 	{/if}
 	{#if spark}
 		<path
