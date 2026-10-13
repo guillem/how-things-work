@@ -10,7 +10,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut, linear } from 'svelte/easing';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		Molecule,
 		Photon,
@@ -327,11 +327,21 @@
 	const co2In = [0, 1, 2, 3, 4, 5];
 	const o2Out = [0, 1, 2, 3, 4];
 	const TILE = { w: 210, h: 150, pad: 16 };
-	const tiles: { x: number; y: number; n: string; lines: string[]; note?: string; c: string }[] = [
+	/** `short`: the tile's label in the phone readout list. */
+	const tiles: {
+		x: number;
+		y: number;
+		n: string;
+		short: string;
+		lines: string[];
+		note?: string;
+		c: string;
+	}[] = [
 		{
 			x: 508,
 			y: 128,
 			n: '~105 Gt C',
+			short: 'Carbon fixed per year',
 			lines: ['of carbon into new biomass', 'every year, on land and at sea'],
 			note: '(net primary production)',
 			c: colors.sugar
@@ -340,6 +350,7 @@
 			x: 730,
 			y: 128,
 			n: '~50 %',
+			short: 'Of it at sea',
 			lines: ['of it at sea: microscopic', 'algae and cyanobacteria'],
 			c: '#3b7dd8'
 		},
@@ -347,6 +358,7 @@
 			x: 508,
 			y: 298,
 			n: '21 % O₂',
+			short: 'In the air',
 			lines: ['in the air: the accumulated', 'by-product of photosynthesis'],
 			c: colors.oxygen
 		},
@@ -354,6 +366,7 @@
 			x: 730,
 			y: 298,
 			n: '1–2 %',
+			short: 'Sunlight → crop biomass',
 			lines: ['of sunlight energy becomes', 'biomass in a crop field'],
 			note: 'theoretical ceiling ≈ 5 %',
 			c: '#d97706'
@@ -363,9 +376,28 @@
 	const tx = (bya: number) => 880 - (bya / 3) * 750;
 	const TL_Y = 530;
 	const milestones = [
-		{ b: 3, l1: '~3 billion years ago (?)', l2: 'first O₂-making life' },
-		{ b: 2.4, l1: '~2.4 billion years ago', l2: 'Great Oxidation Event' },
-		{ b: 0.47, l1: '~470 million years ago', l2: 'plants colonise land' }
+		// k, short: the badge and its key on phones
+		{
+			b: 3,
+			k: 1,
+			short: '~3 bn yr ago (?)',
+			l1: '~3 billion years ago (?)',
+			l2: 'first O₂-making life'
+		},
+		{
+			b: 2.4,
+			k: 2,
+			short: '~2.4 bn yr ago',
+			l1: '~2.4 billion years ago',
+			l2: 'Great Oxidation Event'
+		},
+		{
+			b: 0.47,
+			k: 3,
+			short: '~470 Myr ago',
+			l1: '~470 million years ago',
+			l2: 'plants colonise land'
+		}
 	];
 	/**
 	 * Atmospheric O₂, schematic (33 px = today's level), after the shape of the
@@ -390,6 +422,10 @@
 		{ x: tx(0), y: TL_Y - 33 }
 	]);
 </script>
+
+{#snippet sugarsShort()}
+	<Label x={RING.x} y={522} text="sugars" size={12} opacity={0.45 + 0.55 * running} />
+{/snippet}
 
 <g class="summary-scene">
 	<clipPath id="summary-globe-clip">
@@ -426,9 +462,12 @@
 				stroke-width="1.5"
 			/>
 			<Label x={245} y={150} text="Light reactions" size={14} weight={600} />
-			<Label x={245} y={168} text="thylakoid membrane" size={11} muted />
+			<!-- <Readout>: minor labels are hidden on narrow screens, readouts listed under the stage -->
+			<Readout id="left-note"
+				><Label x={245} y={168} text="thylakoid membrane" size={11} muted /></Readout
+			>
 			<Label x={715} y={150} text="Calvin cycle" size={14} weight={600} />
-			<Label x={715} y={168} text="stroma" size={11} muted />
+			<Readout id="right-note"><Label x={715} y={168} text="stroma" size={11} muted /></Readout>
 
 			<!-- ---- light reactions ---- -->
 			<!-- sun -->
@@ -460,8 +499,10 @@
 				stroke-width="1"
 			/>
 			<rect x="96" y="307" width="288" height="34" rx="17" fill="var(--lumen)" />
-			<Label x={240} y={329} text="lumen" size={11} muted />
-			<Label x={412} y={196} text="stroma" size={11} muted anchor="end" />
+			<Readout id="lumen"><Label x={240} y={329} text="lumen" size={11} muted /></Readout>
+			<Readout id="stroma"
+				><Label x={412} y={196} text="stroma" size={11} muted anchor="end" /></Readout
+			>
 			<!-- complexes -->
 			<rect
 				x={PSII.x - 17}
@@ -524,10 +565,12 @@
 					opacity="0.7"
 				/>
 			</g>
-			<Label x={PSII.x} y={378} text="PSII" size={11} muted />
-			<Label x={B6F.x} y={378} text="cyt b₆f" size={11} muted />
-			<Label x={PSI.x} y={378} text="PSI" size={11} muted />
-			<Label x={SYNTH.x} y={378} text="ATP synthase" size={11} muted />
+			<Readout id="complexes">
+				<Label x={PSII.x} y={378} text="PSII" size={11} muted />
+				<Label x={B6F.x} y={378} text="cyt b₆f" size={11} muted />
+				<Label x={PSI.x} y={378} text="PSI" size={11} muted />
+				<Label x={SYNTH.x} y={378} text="ATP synthase" size={11} muted />
+			</Readout>
 
 			<!-- photons from the sun to PSII and PSI (more of them in brighter light) -->
 			{#each photonPaths as p, pi (pi)}
@@ -669,10 +712,14 @@
 					/>
 				{/each}
 			</g>
-			<Label x={RING.x} y={293} text="fix · reduce" size={11} muted />
-			<Label x={RING.x} y={308} text="regenerate" size={11} muted />
-			<Label x={RING.x} y={330} text="9 ATP + 6 NADPH" size={11} />
-			<Label x={RING.x} y={345} text="per G3P" size={11} muted />
+			<Readout id="ring-note">
+				<Label x={RING.x} y={293} text="fix · reduce" size={11} muted />
+				<Label x={RING.x} y={308} text="regenerate" size={11} muted />
+			</Readout>
+			<Readout id="cost" order={2} label="Calvin cycle uses" value="9 ATP + 6 NADPH" note="per G3P">
+				<Label x={RING.x} y={330} text="9 ATP + 6 NADPH" size={11} />
+				<Label x={RING.x} y={345} text="per G3P" size={11} muted />
+			</Readout>
 			<ellipse
 				cx={RUBISCO.x}
 				cy={RUBISCO.y}
@@ -682,7 +729,16 @@
 				stroke="var(--protein-edge)"
 				stroke-width="1"
 			/>
-			<Label x={RUBISCO.x + 26} y={RUBISCO.y + 21} text="RuBisCO" size={11} muted anchor="start" />
+			<Readout id="rubisco"
+				><Label
+					x={RUBISCO.x + 26}
+					y={RUBISCO.y + 21}
+					text="RuBisCO"
+					size={11}
+					muted
+					anchor="start"
+				/></Readout
+			>
 			<!-- CO₂ is the supply, not the product: it keeps drifting in on t (dimmed while
 			     the cycle is stalled) instead of freezing with the ring, which left a
 			     half-faded molecule stuck under the label -->
@@ -720,32 +776,64 @@
 				anchor="start"
 				opacity={0.45 + 0.55 * running}
 			/>
-			<Label
-				x={RING.x}
-				y={522}
-				text="sugars (sucrose, starch, cellulose)"
-				size={12}
-				opacity={0.45 + 0.55 * running}
-			/>
+			<Readout id="sugars" narrow={sugarsShort}>
+				<Label
+					x={RING.x}
+					y={522}
+					text="sugars (sucrose, starch, cellulose)"
+					size={12}
+					opacity={0.45 + 0.55 * running}
+				/>
+			</Readout>
 
 			<!-- captions -->
-			<Label
-				x={245}
-				y={502}
-				text="no light → no ATP or NADPH → the Calvin cycle stalls"
-				size={12}
-				muted
+			<Readout
+				id="stalled"
+				order={3}
+				label="No light"
+				value="no ATP or NADPH: the Calvin cycle stalls"
 				opacity={stalled}
-			/>
-			<Label
-				x={245}
-				y={502}
-				text="bright light: RuBisCO and the CO₂ supply set the pace"
-				size={12}
-				muted
+			>
+				<Label
+					x={245}
+					y={502}
+					text="no light → no ATP or NADPH → the Calvin cycle stalls"
+					size={12}
+					muted
+					opacity={stalled}
+				/>
+			</Readout>
+			<Readout
+				id="bottleneck"
+				order={3}
+				label="Bright light"
+				value="RuBisCO and the CO₂ supply set the pace"
 				opacity={bottleneck}
-			/>
-			<Label x={480} y={568} text="6 CO₂ + 6 H₂O + light → C₆H₁₂O₆ + 6 O₂" size={15} weight={600} />
+			>
+				<Label
+					x={245}
+					y={502}
+					text="bright light: RuBisCO and the CO₂ supply set the pace"
+					size={12}
+					muted
+					opacity={bottleneck}
+				/>
+			</Readout>
+			<Readout
+				id="equation"
+				order={1}
+				label="Overall"
+				value="6 CO₂ + 6 H₂O + light → C₆H₁₂O₆ + 6 O₂"
+				opacity={systemOpacity}
+			>
+				<Label
+					x={480}
+					y={568}
+					text="6 CO₂ + 6 H₂O + light → C₆H₁₂O₆ + 6 O₂"
+					size={15}
+					weight={600}
+				/>
+			</Readout>
 		</g>
 	{/if}
 
@@ -857,13 +945,15 @@
 			{/each}
 			<Label x={470} y={122} text="CO₂ in" size={11} muted />
 			<Label x={62} y={462} text="O₂ out" size={11} muted />
-			<Label
-				x={GLOBE.x}
-				y={GLOBE.y + GLOBE.r + 42}
-				text="phytoplankton · forests · crops"
-				size={11}
-				muted
-			/>
+			<Readout id="globe-note">
+				<Label
+					x={GLOBE.x}
+					y={GLOBE.y + GLOBE.r + 42}
+					text="phytoplankton · forests · crops"
+					size={11}
+					muted
+				/>
+			</Readout>
 
 			<!-- stat tiles -->
 			{#each tiles as tile, i (tile.n)}
@@ -888,33 +978,51 @@
 						weight={700}
 						anchor="start"
 					/>
-					{#each tile.lines as line, li (li)}
-						<Label
-							x={tile.x + TILE.pad}
-							y={tile.y + 96 + li * 18}
-							text={line}
-							size={12}
-							muted
-							anchor="start"
-						/>
-					{/each}
-					{#if tile.note}
-						<Label
-							x={tile.x + TILE.pad}
-							y={tile.y + 134}
-							text={tile.note}
-							size={11}
-							muted
-							anchor="start"
-						/>
-					{/if}
+					<!-- the number stays drawn; its lines are listed under the stage on phones -->
+					<Readout
+						id="tile-{i}"
+						order={1 + i}
+						label={tile.short}
+						value={tile.n}
+						color={tile.c}
+						opacity={planetOpacity}
+					>
+						{#each tile.lines as line, li (li)}
+							<Label
+								x={tile.x + TILE.pad}
+								y={tile.y + 96 + li * 18}
+								text={line}
+								size={12}
+								muted
+								anchor="start"
+							/>
+						{/each}
+						{#if tile.note}
+							<Label
+								x={tile.x + TILE.pad}
+								y={tile.y + 134}
+								text={tile.note}
+								size={11}
+								muted
+								anchor="start"
+							/>
+						{/if}
+					</Readout>
 				</g>
 			{/each}
 
 			<!-- timeline -->
 			<path d="{o2Curve} L{tx(0)} {TL_Y} Z" fill={colors.oxygen} opacity="0.12" />
 			<path d={o2Curve} fill="none" stroke={colors.oxygen} stroke-width="1.5" opacity="0.7" />
-			<Label x={tx(1.5)} y={TL_Y - 24} text="oxygen in the air (schematic)" size={11} muted />
+			<Readout id="o2-curve"
+				><Label
+					x={tx(1.5)}
+					y={TL_Y - 24}
+					text="oxygen in the air (schematic)"
+					size={11}
+					muted
+				/></Readout
+			>
 			<Flow
 				d="M{tx(3)} {TL_Y} L{tx(0) + 14} {TL_Y}"
 				color="var(--stage-ink-muted)"
@@ -934,8 +1042,17 @@
 					stroke="var(--stage-ink)"
 					stroke-width="1.5"
 				/>
-				<Label x={tx(m.b)} y={TL_Y + 22} text={m.l1} size={11} />
-				<Label x={tx(m.b)} y={TL_Y + 37} text={m.l2} size={11} muted />
+				<Readout
+					id="milestone-{m.b}"
+					order={10 + m.k}
+					label="{m.short}: {m.l2}"
+					marker={m.k}
+					at={[tx(m.b), TL_Y - 26]}
+					opacity={planetOpacity}
+				>
+					<Label x={tx(m.b)} y={TL_Y + 22} text={m.l1} size={11} />
+					<Label x={tx(m.b)} y={TL_Y + 37} text={m.l2} size={11} muted />
+				</Readout>
 			{/each}
 			<circle cx={tx(0)} cy={TL_Y} r="4" fill="var(--stage-ink)" />
 			<Label x={tx(0)} y={TL_Y + 22} text="today" size={11} weight={600} />

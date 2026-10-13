@@ -18,7 +18,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		Photon,
 		Molecule,
@@ -173,36 +173,42 @@
 	</defs>
 
 	<!-- ================= (a) strip chart ================= -->
-	<Label
-		x={40}
-		y={40}
-		text="One square metre of leaf, the last 30 seconds"
-		anchor="start"
-		size={14}
-		weight={600}
-	/>
-	<g transform="translate(40 64)">
-		<line
-			x1="0"
-			y1="0"
-			x2="22"
-			y2="0"
-			stroke={colors.oxygen}
-			stroke-width="3"
-			stroke-linecap="round"
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout id="chart-title">
+		<Label
+			x={40}
+			y={40}
+			text="One square metre of leaf, the last 30 seconds"
+			anchor="start"
+			size={14}
+			weight={600}
 		/>
-		<Label x={30} y={4} text="O₂ released" anchor="start" size={12} />
-		<line
-			x1="140"
-			y1="0"
-			x2="162"
-			y2="0"
-			stroke={colors.sugar}
-			stroke-width="3"
-			stroke-linecap="round"
-		/>
-		<Label x={170} y={4} text="sugar made (as glucose)" anchor="start" size={12} />
-	</g>
+	</Readout>
+	<!-- on phones the coloured rows below the stage are the legend -->
+	<Readout id="chart-key">
+		<g transform="translate(40 64)">
+			<line
+				x1="0"
+				y1="0"
+				x2="22"
+				y2="0"
+				stroke={colors.oxygen}
+				stroke-width="3"
+				stroke-linecap="round"
+			/>
+			<Label x={30} y={4} text="O₂ released" anchor="start" size={12} />
+			<line
+				x1="140"
+				y1="0"
+				x2="162"
+				y2="0"
+				stroke={colors.sugar}
+				stroke-width="3"
+				stroke-linecap="round"
+			/>
+			<Label x={170} y={4} text="sugar made (as glucose)" anchor="start" size={12} />
+		</g>
+	</Readout>
 	<Axes
 		{sx}
 		{sy}
@@ -255,48 +261,67 @@
 
 	<!-- readouts -->
 	<g transform="translate(40 452)">
-		<Label x={0} y={0} text="O₂ released" anchor="start" size={12} muted />
-		<Label
-			x={150}
-			y={0}
-			text="{fmt(now.o2)} µmol per m² per second"
-			anchor="start"
-			size={15}
-			weight={600}
+		<Readout
+			id="o2"
+			order={1}
+			label="O₂ released"
+			value="{fmt(now.o2)} µmol/m²·s"
 			color={colors.oxygen}
-		/>
-		<Label x={0} y={32} text="sugar made" anchor="start" size={12} muted />
-		<Label
-			x={150}
-			y={32}
-			text="{fmt(sugar, 2)} µmol glucose per m² per second"
-			anchor="start"
-			size={15}
-			weight={600}
+		>
+			<Label x={0} y={0} text="O₂ released" anchor="start" size={12} muted />
+			<Label
+				x={150}
+				y={0}
+				text="{fmt(now.o2)} µmol per m² per second"
+				anchor="start"
+				size={15}
+				weight={600}
+				color={colors.oxygen}
+			/>
+		</Readout>
+		<Readout
+			id="sugar"
+			order={2}
+			label="Sugar made"
+			value="{fmt(sugar, 2)} µmol/m²·s"
 			color={colors.sugar}
-		/>
+		>
+			<Label x={0} y={32} text="sugar made" anchor="start" size={12} muted />
+			<Label
+				x={150}
+				y={32}
+				text="{fmt(sugar, 2)} µmol glucose per m² per second"
+				anchor="start"
+				size={15}
+				weight={600}
+				color={colors.sugar}
+			/>
+			<Label
+				x={150}
+				y={54}
+				text="≈ {fmt(gramsPerHour, 2)} g of sugar per m² of leaf per hour"
+				anchor="start"
+				size={11}
+				muted
+			/>
+		</Readout>
+		<!-- on phones: the note of the "What sets the pace" row -->
+		<Readout id="status"><Label x={0} y={92} text={status} anchor="start" size={13} /></Readout>
+	</g>
+
+	<!-- ================= (b) the leaf ================= -->
+	<Readout id="light">
 		<Label
-			x={150}
-			y={54}
-			text="≈ {fmt(gramsPerHour, 2)} g of sugar per m² of leaf per hour"
+			x={600}
+			y={40}
+			text="light: {Math.round(ppfd).toLocaleString(
+				'en-US'
+			)} µmol photons per m² per second · {Math.round(tempC)} °C"
 			anchor="start"
 			size={11}
 			muted
 		/>
-		<Label x={0} y={92} text={status} anchor="start" size={13} />
-	</g>
-
-	<!-- ================= (b) the leaf ================= -->
-	<Label
-		x={600}
-		y={40}
-		text="light: {Math.round(ppfd).toLocaleString(
-			'en-US'
-		)} µmol photons per m² per second · {Math.round(tempC)} °C"
-		anchor="start"
-		size={11}
-		muted
-	/>
+	</Readout>
 	<!-- photons from the upper left -->
 	{#each HITS as h, i (i)}
 		{#if i < photonsShown}
@@ -339,7 +364,16 @@
 			/>
 		{/if}
 	{/each}
-	<Label x={930} y={290} text="CO₂ in: {Math.round(co2)} ppm" anchor="end" size={11} muted />
+	<Readout id="co2-in"
+		><Label
+			x={930}
+			y={290}
+			text="CO₂ in: {Math.round(co2)} ppm"
+			anchor="end"
+			size={11}
+			muted
+		/></Readout
+	>
 	<!-- O₂ leaving upwards to the right (or going in, when the leaf only respires) -->
 	{#each [0, 1, 2, 3, 4, 5, 6, 7] as k (k)}
 		{#if k < o2Shown}
@@ -354,27 +388,46 @@
 			/>
 		{/if}
 	{/each}
-	<Label x={930} y={100} text={o2Out ? 'O₂ out' : 'O₂ in'} anchor="end" size={11} muted />
+	<Readout id="o2-dir"
+		><Label
+			x={930}
+			y={100}
+			text={o2Out ? 'O₂ out' : 'O₂ in'}
+			anchor="end"
+			size={11}
+			muted
+		/></Readout
+	>
 
 	<!-- ================= (c) what sets the pace ================= -->
-	<Label x={600} y={330} text="What sets the pace" anchor="start" size={14} weight={600} />
-	<Label
-		x={600}
-		y={348}
-		text="CO₂ the leaf could fix, µmol per m² per second"
-		anchor="start"
-		size={11}
-		muted
-	/>
-	{#each [{ key: 'light', label: 'light reactions (ATP, NADPH)', v: now.wj, c: colors.atp, y: 384, limiting: lightLimited }, { key: 'calvin', label: 'Calvin cycle (RuBisCO, CO₂)', v: now.wc, c: colors.rubisco, y: 432, limiting: !lightLimited }] as b (b.key)}
+	<Readout id="pace-title">
+		<Label x={600} y={330} text="What sets the pace" anchor="start" size={14} weight={600} />
 		<Label
-			x={BAR.x}
-			y={b.y - 8}
-			text={b.label}
+			x={600}
+			y={348}
+			text="CO₂ the leaf could fix, µmol per m² per second"
 			anchor="start"
-			size={12}
-			opacity={b.limiting ? 1 : 0.6}
+			size={11}
+			muted
 		/>
+	</Readout>
+	{#each [{ key: 'light', label: 'light reactions (ATP, NADPH)', v: now.wj, c: colors.atp, y: 384, limiting: lightLimited }, { key: 'calvin', label: 'Calvin cycle (RuBisCO, CO₂)', v: now.wc, c: colors.rubisco, y: 432, limiting: !lightLimited }] as b (b.key)}
+		<Readout
+			id="bar-{b.key}"
+			order={b.key === 'light' ? 3 : 4}
+			label={b.key === 'light' ? 'Light reactions' : 'Calvin cycle'}
+			value="could fix {fmt(Math.max(0, b.v))}"
+			color={b.c}
+		>
+			<Label
+				x={BAR.x}
+				y={b.y - 8}
+				text={b.label}
+				anchor="start"
+				size={12}
+				opacity={b.limiting ? 1 : 0.6}
+			/>
+		</Readout>
 		<rect x={BAR.x} y={b.y} width={BAR.w} height={BAR.h} rx="4" fill="var(--stage-grid)" />
 		<rect
 			x={BAR.x}
@@ -385,14 +438,16 @@
 			fill={b.c}
 			opacity={b.limiting ? 0.95 : 0.35}
 		/>
-		<Label
-			x={Math.min(bx(clamp(b.v, 0, 35)) + 6, BAR.x + BAR.w - 30)}
-			y={b.y + 11}
-			text={fmt(Math.max(0, b.v))}
-			anchor="start"
-			size={12}
-			weight={b.limiting ? 600 : 500}
-		/>
+		<Readout id="bar-value-{b.key}">
+			<Label
+				x={Math.min(bx(clamp(b.v, 0, 35)) + 6, BAR.x + BAR.w - 30)}
+				y={b.y + 11}
+				text={fmt(Math.max(0, b.v))}
+				anchor="start"
+				size={12}
+				weight={b.limiting ? 600 : 500}
+			/>
+		</Readout>
 	{/each}
 	<!-- the actual (gross) rate: the smaller of the two -->
 	{#if gross > 0.3}
@@ -406,13 +461,17 @@
 			stroke-dasharray="4 3"
 		/>
 	{/if}
-	<Label
-		x={600}
-		y={484}
-		text="actual: {fmt(Math.max(0, gross))} − respiration {fmt(now.rd)} = net {fmt(now.o2)}"
-		anchor="start"
-		size={12}
-		muted
-	/>
-	<Label x={600} y={520} text={verdict} anchor="start" size={13} weight={600} pill />
+	<Readout id="actual">
+		<Label
+			x={600}
+			y={484}
+			text="actual: {fmt(Math.max(0, gross))} − respiration {fmt(now.rd)} = net {fmt(now.o2)}"
+			anchor="start"
+			size={12}
+			muted
+		/>
+	</Readout>
+	<Readout id="verdict" order={5} label="What sets the pace" value={verdict} note={status}>
+		<Label x={600} y={520} text={verdict} anchor="start" size={13} weight={600} pill />
+	</Readout>
 </g>

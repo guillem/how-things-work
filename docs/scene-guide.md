@@ -119,7 +119,8 @@ SVG and the text is listed in an HTML panel under the stage, in real 12–15 px 
 - No `label`: the content just hides on phones (a minor label). `narrow` is an optional snippet
   drawn instead of the children on phones (a shorter label).
 - `opacity` follows the scene's own fade: a row under 0.05 leaves the panel, so readouts of
-  other steps in a shared scene don't take room. Ids are unique within the scene.
+  other steps in a shared scene don't take room. Ids are unique within the scene. Key chips (no
+  `value`) stay listed whatever their opacity: render them only while their part is drawn.
 - Keep each step's panel short (≤ ~4 rows): it adds to the pinned stage card. Desktop must stay
   pixel-identical; check phones at 390 × 844 with `TOUCH=1`.
 

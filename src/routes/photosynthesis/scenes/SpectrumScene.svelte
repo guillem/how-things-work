@@ -17,7 +17,7 @@
 	 * A caption at the bottom puts the drawn numbers into words: its wording
 	 * follows the "leaf N%" pill and the photon count.
 	 */
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		Photon,
 		Label,
@@ -383,7 +383,10 @@
 			stroke="var(--stage-line)"
 			stroke-width="1"
 		/>
-		<Label x={barX(nm)} y={BAR.y + BAR.h + 17} text={String(nm)} size={11} muted />
+		<!-- <Readout>: minor labels are hidden on narrow screens, readouts listed under the stage -->
+		<Readout id="bar-tick-{nm}"
+			><Label x={barX(nm)} y={BAR.y + BAR.h + 17} text={String(nm)} size={11} muted /></Readout
+		>
 	{/each}
 	<!-- marker -->
 	<line
@@ -409,13 +412,21 @@
 		stroke-width="1.2"
 		stroke-linejoin="round"
 	/>
-	<Label
-		x={readoutX}
-		y={BAR.y - 18}
-		text="{wavelength} nm · {band} · {energy.toFixed(2)} eV per photon"
-		size={14}
-		weight={600}
-	/>
+	<Readout
+		id="light"
+		order={1}
+		label="Light"
+		value="{wavelength} nm · {band} · {energy.toFixed(2)} eV"
+		note={caption}
+	>
+		<Label
+			x={readoutX}
+			y={BAR.y - 18}
+			text="{wavelength} nm · {band} · {energy.toFixed(2)} eV per photon"
+			size={14}
+			weight={600}
+		/>
+	</Readout>
 
 	<!-- ================= (b) absorption chart ================= -->
 	<g class="chart">
@@ -498,34 +509,40 @@
 			stroke-width="1"
 		/>
 		{#each ticks as nm (nm)}
-			<Label x={cx(nm)} y={PLOT.y + PLOT.h + 18} text={String(nm)} size={11} muted />
+			<Readout id="plot-tick-{nm}"
+				><Label x={cx(nm)} y={PLOT.y + PLOT.h + 18} text={String(nm)} size={11} muted /></Readout
+			>
 		{/each}
 		{#each [0, 0.5, 1] as a (a)}
+			<Readout id="plot-ytick-{a}">
+				<Label
+					x={PLOT.x - 6}
+					y={cy(a) + 4}
+					text={a === 0 ? '0' : a === 1 ? '1' : '0.5'}
+					size={11}
+					anchor="end"
+					muted
+				/>
+			</Readout>
+		{/each}
+		<Readout id="plot-titles">
 			<Label
-				x={PLOT.x - 6}
-				y={cy(a) + 4}
-				text={a === 0 ? '0' : a === 1 ? '1' : '0.5'}
+				x={PLOT.x + PLOT.w}
+				y={PLOT.y + PLOT.h + 36}
+				text="wavelength (nm)"
 				size={11}
 				anchor="end"
 				muted
 			/>
-		{/each}
-		<Label
-			x={PLOT.x + PLOT.w}
-			y={PLOT.y + PLOT.h + 36}
-			text="wavelength (nm)"
-			size={11}
-			anchor="end"
-			muted
-		/>
-		<Label
-			x={PLOT.x - 28}
-			y={PLOT.y + PLOT.h / 2}
-			text="fraction absorbed"
-			size={11}
-			rotate={-90}
-			muted
-		/>
+			<Label
+				x={PLOT.x - 28}
+				y={PLOT.y + PLOT.h / 2}
+				text="fraction absorbed"
+				size={11}
+				rotate={-90}
+				muted
+			/>
+		</Readout>
 		<!-- cursor (drawn before the legend so that it passes behind it) -->
 		<line
 			x1={cursorX}
@@ -549,8 +566,15 @@
 					stroke-width="2.2"
 					stroke-linecap="round"
 				/>
-				<Label x={25} y={y + 4} text={item.label} size={12} anchor="start" />
-				<Label x={LEGEND.col - 24} y={y + 4} text={rel(abs[item.key])} size={12} anchor="end" />
+				<Readout
+					id="pigment-{item.key}"
+					order={10 + i}
+					label="{item.label} {rel(abs[item.key])}"
+					color={item.color}
+				>
+					<Label x={25} y={y + 4} text={item.label} size={12} anchor="start" />
+					<Label x={LEGEND.col - 24} y={y + 4} text={rel(abs[item.key])} size={12} anchor="end" />
+				</Readout>
 			{/each}
 			<g transform="translate({LEGEND.col} 0)">
 				<rect
@@ -572,22 +596,30 @@
 					stroke-dasharray="3 3"
 				/>
 				<!-- the dashed curve: the same pigments in a clear solution (no scattering) -->
-				<Label
-					x={25}
-					y={legendY(0) + 4}
-					text="same pigments, dissolved"
-					size={12}
-					anchor="start"
-					muted
-				/>
-				<Label
-					x={LEGEND.w - LEGEND.col}
-					y={legendY(0) + 4}
-					text={pct(extract)}
-					size={12}
-					anchor="end"
-					muted
-				/>
+				<Readout
+					id="dissolved"
+					order={3}
+					label="Dissolved pigments"
+					value={pct(extract)}
+					note="dashed"
+				>
+					<Label
+						x={25}
+						y={legendY(0) + 4}
+						text="same pigments, dissolved"
+						size={12}
+						anchor="start"
+						muted
+					/>
+					<Label
+						x={LEGEND.w - LEGEND.col}
+						y={legendY(0) + 4}
+						text={pct(extract)}
+						size={12}
+						anchor="end"
+						muted
+					/>
+				</Readout>
 				<line
 					x1="0"
 					y1={legendY(1)}
@@ -597,23 +629,27 @@
 					stroke-width="1.8"
 					stroke-linecap="round"
 				/>
-				<Label x={25} y={legendY(1) + 4} text="whole leaf (model)" size={12} anchor="start" />
-				<Label
-					x={LEGEND.w - LEGEND.col}
-					y={legendY(1) + 4}
-					text={pct(absorbed)}
-					size={12}
-					anchor="end"
-					weight={600}
-				/>
-				<Label
-					x={0}
-					y={legendY(2) + 4}
-					text="pigment curves: relative absorbance"
-					size={11}
-					anchor="start"
-					muted
-				/>
+				<Readout id="leaf" order={2} label="Whole leaf absorbs" value={pct(absorbed)} note="solid">
+					<Label x={25} y={legendY(1) + 4} text="whole leaf (model)" size={12} anchor="start" />
+					<Label
+						x={LEGEND.w - LEGEND.col}
+						y={legendY(1) + 4}
+						text={pct(absorbed)}
+						size={12}
+						anchor="end"
+						weight={600}
+					/>
+				</Readout>
+				<Readout id="pigment-note">
+					<Label
+						x={0}
+						y={legendY(2) + 4}
+						text="pigment curves: relative absorbance"
+						size={11}
+						anchor="start"
+						muted
+					/>
+				</Readout>
 			</g>
 		</g>
 		<!-- cursor markers: a ring on the combined curve, a dot on each pigment curve -->
@@ -636,13 +672,15 @@
 			/>
 		{/each}
 		<!-- 4 px clear of the cursor ring when the combined curve is at 1 -->
-		<Label
-			x={cursorPillX}
-			y={PLOT.y - 18}
-			text="leaf {pct(absorbed)} · dissolved {pct(extract)} absorbed"
-			size={12}
-			pill
-		/>
+		<Readout id="cursor-pill">
+			<Label
+				x={cursorPillX}
+				y={PLOT.y - 18}
+				text="leaf {pct(absorbed)} · dissolved {pct(extract)} absorbed"
+				size={12}
+				pill
+			/>
+		</Readout>
 	</g>
 
 	<!-- ================= (c) leaf and photons ================= -->
@@ -774,7 +812,9 @@
 		size={12}
 		pill
 	/>
-	<Label x={LEAF.cx} y={PLOT.y - 18} text="photons meeting a leaf" size={12} muted />
+	<Readout id="leaf-title"
+		><Label x={LEAF.cx} y={PLOT.y - 18} text="photons meeting a leaf" size={12} muted /></Readout
+	>
 	<Label
 		x={throughLabel.x}
 		y={throughLabel.y}
@@ -794,5 +834,6 @@
 		stroke-width="1"
 		opacity="0.7"
 	/>
-	<Label x={480} y={CAPTION_Y + 34} text={caption} size={14} />
+	<!-- on phones: the note of the "Light" row -->
+	<Readout id="caption"><Label x={480} y={CAPTION_Y + 34} text={caption} size={14} /></Readout>
 </g>
