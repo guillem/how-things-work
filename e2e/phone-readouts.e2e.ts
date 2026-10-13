@@ -1246,6 +1246,37 @@ test.describe('on a phone', () => {
 		await range(page, 'hr').fill('140');
 		await expect(output).not.toHaveText(before!);
 	});
+
+	test('bridges pulled and pushed: the load and the limits are text and follow the load', async ({
+		page
+	}) => {
+		await page.goto('./bridges-structures/#pullpush');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Load\s*40 kN/);
+		await expect(panel).toContainText(/Pushed \(a 2 m post\)\s*70% of its limit/);
+		await expect(drawing(page)).not.toContainText('of its limit');
+		await range(page, 'load').fill('80');
+		await expect(panel).toContainText(/Pushed \(a 2 m post\)\s*over its limit: buckles!/);
+		await page.goto('./bridges-structures/#buckling');
+		await expect(panel).toContainText(/Post\s*2\.0 m long\s*can take 57 kN/);
+		await range(page, 'length').fill('4');
+		await expect(panel).toContainText(/Post\s*4\.0 m long/);
+		await expect(drawing(page)).not.toContainText('can take');
+	});
+
+	test('bridges: the verdict and the busiest member are text and follow the design', async ({
+		page
+	}) => {
+		await page.goto('./bridges-structures/#compare');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Beam bridge\s*Fails/);
+		await expect(panel).toContainText(/Arch\s*52% of its limit/);
+		await expect(panel).toContainText('Pushes down on the bank');
+		await expect(drawing(page)).not.toContainText('Busiest member');
+		await page.locator('button[data-control=design][data-value=arch]').click();
+		await expect(panel).toContainText(/Arch bridge\s*Every member within its limit/);
+		await expect(panel).toContainText('outwards on the rock');
+	});
 });
 
 test.describe('on a wide screen', () => {
