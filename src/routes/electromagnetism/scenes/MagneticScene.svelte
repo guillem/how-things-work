@@ -20,7 +20,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { EARTH_H, MU0, coilLoops, compassField, loopsField, magnetLoops, wireField } from '../em';
 	import { axialLines, type Frame } from './trace';
 
@@ -166,35 +166,54 @@
 	/>
 {/snippet}
 
-{#snippet card(cells: { id: string; label: string; value: string; color?: string }[], w: number)}
-	<g style:pointer-events="none">
-		<rect
-			x={CARD.x}
-			y={CARD.y}
-			width={w}
-			height={CARD.h}
-			rx="12"
-			fill="var(--surface)"
-			stroke="var(--border)"
+{#snippet card(
+	cells: { id: string; label: string; value: string; color?: string; note?: string }[],
+	w: number,
+	key: string,
+	op: number
+)}
+	<!-- <Readout>: on narrow screens the card is listed as HTML under the stage -->
+	{#each cells as c, i (c.id)}
+		<Readout
+			id="{key}-{c.id}"
+			order={1 + i}
+			label={c.label[0].toUpperCase() + c.label.slice(1)}
+			value={c.value}
+			note={c.note}
+			color={c.color}
+			opacity={op}
 		/>
-		{#each cells as c, i (c.id)}
-			{@const cw = w / cells.length}
-			{@const x = CARD.x + 16 + i * cw}
-			{#if i > 0}
-				<line
-					x1={CARD.x + i * cw}
-					x2={CARD.x + i * cw}
-					y1={CARD.y + 14}
-					y2={CARD.y + CARD.h - 14}
-					stroke="var(--border)"
-				/>
-			{/if}
-			<text {x} y={CARD.y + 25} class="muted" style:font-size="12px">{c.label}</text>
-			<text {x} y={CARD.y + 51} font-weight="700" style:font-size="19px" style:fill={c.color}
-				>{c.value}</text
-			>
-		{/each}
-	</g>
+	{/each}
+	<Readout id="{key}-card">
+		<g style:pointer-events="none">
+			<rect
+				x={CARD.x}
+				y={CARD.y}
+				width={w}
+				height={CARD.h}
+				rx="12"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			{#each cells as c, i (c.id)}
+				{@const cw = w / cells.length}
+				{@const x = CARD.x + 16 + i * cw}
+				{#if i > 0}
+					<line
+						x1={CARD.x + i * cw}
+						x2={CARD.x + i * cw}
+						y1={CARD.y + 14}
+						y2={CARD.y + CARD.h - 14}
+						stroke="var(--border)"
+					/>
+				{/if}
+				<text {x} y={CARD.y + 25} class="muted" style:font-size="12px">{c.label}</text>
+				<text {x} y={CARD.y + 51} font-weight="700" style:font-size="19px" style:fill={c.color}
+					>{c.value}</text
+				>
+			{/each}
+		</g>
+	</Readout>
 {/snippet}
 
 <g>
@@ -216,11 +235,13 @@
 				{@render head(W.x - c.r, W.y, I > 0 ? Math.PI / 2 : -Math.PI / 2, 6, 'var(--em-bfield)')}
 				{#if c.r > 60}
 					{@const lp = labelSpot(c.r)}
-					{@render txt(lp.x, lp.y, `${c.uT} µT`, 11, {
-						anchor: 'start',
-						color: 'var(--em-bfield)',
-						weight: 600
-					})}
+					<Readout id="ut-{c.uT}">
+						{@render txt(lp.x, lp.y, `${c.uT} µT`, 11, {
+							anchor: 'start',
+							color: 'var(--em-bfield)',
+							weight: 600
+						})}
+					</Readout>
 				{/if}
 			{/each}
 			{#each needles as n (n.id)}
@@ -249,13 +270,15 @@
 					stroke-width="2.5"
 				/>
 			{/if}
-			{@render txt(
-				W.x + 22,
-				W.y + 34,
-				I > 0 ? 'current out of the page' : I < 0 ? 'current into the page' : 'no current',
-				12,
-				{ weight: 600 }
-			)}
+			<Readout id="wire-dir">
+				{@render txt(
+					W.x + 22,
+					W.y + 34,
+					I > 0 ? 'current out of the page' : I < 0 ? 'current into the page' : 'no current',
+					12,
+					{ weight: 600 }
+				)}
+			</Readout>
 			<!-- north -->
 			<g transform="translate(905 {CARD.y + 12})">
 				<line x1="0" x2="0" y1="36" y2="4" stroke="var(--stage-ink)" stroke-width="2" />
@@ -264,7 +287,13 @@
 			</g>
 			{@render card(
 				[
-					{ id: 'i', label: 'current', value: `${I.toFixed(1)} A`, color: 'var(--em-copper)' },
+					{
+						id: 'i',
+						label: 'current',
+						value: `${I.toFixed(1)} A`,
+						color: 'var(--em-copper)',
+						note: I > 0 ? 'out of the page' : I < 0 ? 'into the page' : undefined
+					},
 					{
 						id: 'b',
 						label: 'wire’s field 2 cm away',
@@ -273,7 +302,9 @@
 					},
 					{ id: 'e', label: 'Earth’s field (north)', value: fmtB(EARTH_H) }
 				],
-				CARD.w
+				CARD.w,
+				'wire',
+				wA
 			)}
 		</g>
 	{/if}
@@ -370,22 +401,32 @@
 					>
 				{/each}
 			{:else}
-				{@render txt(C0.x, C0.y - A * S - 30, 'No current, no field', 15, {
-					anchor: 'middle',
-					muted: true
-				})}
+				<Readout id="coil-none">
+					{@render txt(C0.x, C0.y - A * S - 30, 'No current, no field', 15, {
+						anchor: 'middle',
+						muted: true
+					})}
+				</Readout>
 			{/if}
-			{@render txt(
-				C0.x,
-				584,
-				isMagnet ? 'a bar magnet, cut along its length' : 'a coil of wire, cut along its axis',
-				12,
-				{ anchor: 'middle', muted: true }
-			)}
+			<Readout id="coil-caption">
+				{@render txt(
+					C0.x,
+					584,
+					isMagnet ? 'a bar magnet, cut along its length' : 'a coil of wire, cut along its axis',
+					12,
+					{ anchor: 'middle', muted: true }
+				)}
+			</Readout>
 			{@render card(
 				isMagnet
 					? [
-							{ id: 's', label: 'source', value: 'bar magnet', color: 'var(--em-north)' },
+							{
+								id: 's',
+								label: 'source',
+								value: 'bar magnet',
+								color: 'var(--em-north)',
+								note: 'cut along its length'
+							},
 							{
 								id: 'b',
 								label: 'field in the middle',
@@ -398,7 +439,8 @@
 								id: 'i',
 								label: `current (${TURNS} turns)`,
 								value: `${Ic.toFixed(1)} A`,
-								color: 'var(--em-copper)'
+								color: 'var(--em-copper)',
+								note: Ic === 0 ? 'no current, no field' : 'a coil of wire, cut along its axis'
 							},
 							{
 								id: 'b',
@@ -407,7 +449,9 @@
 								color: 'var(--em-bfield)'
 							}
 						],
-				360
+				360,
+				'coil',
+				1 - wA
 			)}
 		</g>
 	{/if}

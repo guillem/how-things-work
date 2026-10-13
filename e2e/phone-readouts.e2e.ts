@@ -1212,6 +1212,150 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Intel Core i9-14900K \(2023\)\s*up to 6 GHz/);
 		await expect(drawing(page)).not.toContainText('instructions finished');
 	});
+
+	test('atoms build: the element and its charge are text and follow the buttons', async ({
+		page
+	}) => {
+		await page.goto('./atoms-periodic-table/#build');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Element\s*Carbon\s*carbon-12/);
+		await expect(panel).toContainText(/Charge\s*0/);
+		await expect(drawing(page)).not.toContainText('neutral atom');
+		await page.locator('.action button[data-control=addProton]').click();
+		await expect(panel).toContainText(/Element\s*Nitrogen/);
+		await expect(panel).toContainText(/Charge\s*\+1/);
+	});
+
+	test('atoms shells: the configuration is text and follows the electrons', async ({ page }) => {
+		await page.goto('./atoms-periodic-table/#shells');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Sodium \(Na\)\s*11 electrons/);
+		await expect(panel).toContainText(/Electrons per shell\s*2 · 8 · 1/);
+		await expect(drawing(page)).not.toContainText('Electrons per shell');
+		await range(page, 'fillTo').fill('24');
+		await expect(panel).toContainText(/Not the rule\s*measured/);
+	});
+
+	test('atoms orbitals: the orbital and its scale are text and follow the choice', async ({
+		page
+	}) => {
+		await page.goto('./atoms-periodic-table/#orbitals');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Orbital\s*1s orbital/);
+		await expect(panel).toContainText(/Scale bar\s*\d+ a₀/);
+		await expect(drawing(page)).not.toContainText('Bohr radius');
+		await page.locator('button[data-control=orbital][data-value="2p"]').click();
+		await expect(panel).toContainText(/Orbital\s*2p orbital/);
+		await expect(panel).toContainText('ψ negative');
+	});
+
+	test('atoms table: the chosen element and the trend scale are text', async ({ page }) => {
+		await page.goto('./atoms-periodic-table/#table');
+		const panel = readouts(page);
+		await expect(panel).toContainText('d block · 10 columns');
+		await expect(drawing(page)).not.toContainText('10 columns');
+		await page.getByRole('slider', { name: /Periodic table/ }).focus();
+		await page.keyboard.press('End');
+		await expect(panel).toContainText(/Oganesson\s*Og · Z = 118/);
+		await page.goto('./atoms-periodic-table/#trends');
+		await expect(panel).toContainText(/Atomic radius \(covalent, pm\)\s*\d+ to \d+ pm/);
+		await page.locator('button[data-control=colourBy][data-value=ionization]').click();
+		await expect(panel).toContainText(/First ionization energy \(eV\)\s*[\d.]+ to [\d.]+ eV/);
+		await page.goto('./atoms-periodic-table/#chemistry');
+		await expect(panel).toContainText(/Group 17 · halogens\s*7 outer electrons/);
+	});
+
+	test('electromagnetism charges: the force and the field are text and follow the charges', async ({
+		page
+	}) => {
+		await page.goto('./electromagnetism/#force');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Big charge\s*\+10 nC/);
+		await expect(panel).toContainText(/Force on the test charge\s*8\.99 µN/);
+		await expect(drawing(page)).not.toContainText('force on the test charge');
+		await range(page, 'charge').fill('20');
+		await expect(panel).toContainText(/Big charge\s*\+20 nC/);
+		await expect(panel).not.toContainText('8.99 µN');
+		await page.goto('./electromagnetism/#field');
+		await expect(panel).toContainText(/Field at the test charge\s*[\d.]+ kN\/C/);
+	});
+
+	test('electromagnetism wire and coil: the fields are text and follow the current', async ({
+		page
+	}) => {
+		await page.goto('./electromagnetism/#wire');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Current\s*5\.0 A/);
+		await expect(panel).toContainText(/Wire’s field 2 cm away\s*50 µT/);
+		await expect(drawing(page)).not.toContainText('2 cm away');
+		await range(page, 'wireCurrent').fill('10');
+		await expect(panel).toContainText(/Wire’s field 2 cm away\s*100 µT/);
+		await page.goto('./electromagnetism/#coil');
+		await expect(panel).toContainText(/Field in the middle\s*[\d.]+ mT/);
+		await expect(panel).not.toContainText('Wire’s field');
+		await page.locator('button[data-control=source][data-value=magnet]').click();
+		await expect(panel).toContainText(/Source\s*bar magnet/);
+	});
+
+	test('electromagnetism induction: the induced voltage and current are text', async ({ page }) => {
+		await page.goto('./electromagnetism/#magnet');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Voltage induced\s*[−+]?\d+ mV/);
+		await expect(drawing(page)).not.toContainText('voltage induced');
+		await page.goto('./electromagnetism/#neighbour');
+		await expect(panel).toContainText(/Current in coil A\s*/);
+		await page.locator('button[data-control=drive][data-value=hand]').click();
+		await range(page, 'currentA').fill('1.5');
+		await expect(panel).toContainText(/Current in coil A\s*\+?1\.50 A/);
+	});
+
+	test('electromagnetism light: the wavelength is text and follows the kind of wave', async ({
+		page
+	}) => {
+		await page.goto('./electromagnetism/#light');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/FM radio\s*100 MHz/);
+		await expect(panel).toContainText(/Wavelength\s*3\.00 m/);
+		await expect(drawing(page)).not.toContainText('one wavelength');
+		await page.locator('button[data-control=band][data-value=micro]').click();
+		await expect(panel).toContainText(/Microwave oven\s*2\.45 GHz/);
+	});
+
+	test('ecosystems field: the populations and the cycle are text and follow the controls', async ({
+		page
+	}) => {
+		await page.goto('./ecosystems/#growth');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Carrying capacity K\s*600/);
+		await expect(panel).toContainText(/Rabbits\s*\d+/);
+		await expect(drawing(page)).not.toContainText('carrying capacity K');
+		await range(page, 'room').fill('400');
+		await expect(panel).toContainText(/Carrying capacity K\s*400/);
+		await page.goto('./ecosystems/#cycles');
+		await expect(panel).toContainText(/Cycle\s*One cycle ≈ [\d.]+ years/);
+		await expect(panel).toContainText(/Foxes\s*\d+/);
+		await range(page, 'birth').press('End');
+		await range(page, 'predation').press('Home');
+		await range(page, 'death').press('Home');
+		await expect(panel).toContainText(/Cycle\s*Rabbits died out/);
+		await page.goto('./ecosystems/#loop');
+		await expect(panel).toContainText(/Balance point ✕\s*\d+ rabbits, \d+ foxes/);
+	});
+
+	test('ecosystems web: the counts are text and follow the switches', async ({ page }) => {
+		await page.goto('./ecosystems/#web');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Now\s*In balance/);
+		await expect(panel).toContainText(/Wolves\s*\d+/);
+		await expect(drawing(page)).not.toContainText('wolves');
+		const wolves = page.locator('input[type=checkbox][data-control=wolves]');
+		await wolves.focus();
+		await page.keyboard.press('Space');
+		await expect(wolves).not.toBeChecked();
+		await expect(panel).toContainText(/Wolves\s*switched off/);
+		await page.goto('./ecosystems/#newcomer');
+		await expect(panel).toContainText(/Deer\s*not here yet/);
+	});
 });
 
 test.describe('on a wide screen', () => {

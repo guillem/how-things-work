@@ -24,7 +24,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, clamp, scale, smoothstep, TAU, type Scale } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { LV_START, logisticGrowth, lotkaVolterra, lvEquilibrium, run } from '../eco';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -422,38 +422,55 @@
 	{/each}
 
 	<!-- readouts over the field -->
-	{@render txt(FX0 + 2, 40, `Rabbits ${fmt(rabbits)}`, 16, {
-		color: 'var(--eco-prey)',
-		weight: 650,
-		tabular: true
-	})}
-	{#if !growth}
-		{@render txt(FX0 + 150, 40, `Foxes ${fmt(foxes)}`, 16, {
-			color: 'var(--eco-predator)',
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout
+		id="rabbits"
+		order={1}
+		label="Rabbits"
+		value={fmt(rabbits)}
+		color="var(--eco-prey)"
+		note="each icon = {sim.n}"
+	>
+		{@render txt(FX0 + 2, 40, `Rabbits ${fmt(rabbits)}`, 16, {
+			color: 'var(--eco-prey)',
 			weight: 650,
 			tabular: true
 		})}
+	</Readout>
+	{#if !growth}
+		<Readout id="foxes" order={2} label="Foxes" value={fmt(foxes)} color="var(--eco-predator)">
+			{@render txt(FX0 + 150, 40, `Foxes ${fmt(foxes)}`, 16, {
+				color: 'var(--eco-predator)',
+				weight: 650,
+				tabular: true
+			})}
+		</Readout>
 	{/if}
-	{@render txt(FX0 + FW - 2, 40, `year ${Math.floor(year)}`, 14, {
-		anchor: 'end',
-		muted: true,
-		tabular: true
-	})}
-
-	<!-- legend under the field -->
-	<path d={RABBIT} transform="translate({FX0 + 12} 556)" fill="var(--eco-prey)" />
-	{#if growth}
-		{@render txt(FX0 + 28, 560, `each rabbit icon = ${sim.n} rabbits`, 13, { muted: true })}
-	{:else}
-		<path d={FOX} transform="translate({FX0 + 44} 556)" fill="var(--eco-predator)" />
-		{@render txt(FX0 + 66, 560, `each icon = ${sim.n} rabbits or ${sim.n} foxes`, 13, {
-			muted: true
+	<Readout id="year" order={3} label="Year" value={String(Math.floor(year))}>
+		{@render txt(FX0 + FW - 2, 40, `year ${Math.floor(year)}`, 14, {
+			anchor: 'end',
+			muted: true,
+			tabular: true
 		})}
-	{/if}
+	</Readout>
+	<!-- legend under the field -->
+	<Readout id="icon-legend">
+		<path d={RABBIT} transform="translate({FX0 + 12} 556)" fill="var(--eco-prey)" />
+		{#if growth}
+			{@render txt(FX0 + 28, 560, `each rabbit icon = ${sim.n} rabbits`, 13, { muted: true })}
+		{:else}
+			<path d={FOX} transform="translate({FX0 + 44} 556)" fill="var(--eco-predator)" />
+			{@render txt(FX0 + 66, 560, `each icon = ${sim.n} rabbits or ${sim.n} foxes`, 13, {
+				muted: true
+			})}
+		{/if}
+	</Readout>
 
 	<!-- ===================================================== chart -->
 	{#if loop}
-		{@render txt(PX0, 40, 'Foxes against rabbits', 16, { weight: 600 })}
+		<Readout id="loop-title">
+			{@render txt(PX0, 40, 'Foxes against rabbits', 16, { weight: 600 })}
+		</Readout>
 		<Axes sx={qx} sy={qy} xLabel="rabbits →" yLabel="foxes ↑" />
 		<!-- the balance point lines, where each population stops changing -->
 		<g opacity="0.5">
@@ -497,11 +514,13 @@
 					transform="translate({q.x.toFixed(1)} {q.y.toFixed(1)}) rotate({q.ang.toFixed(1)})"
 					fill="var(--stage-ink)"
 				/>
-				{@render txt(q.lx, q.ly, q.text, 13, {
-					anchor: q.anchor,
-					color: q.id.startsWith('r') ? 'var(--eco-prey)' : 'var(--eco-predator)',
-					weight: 600
-				})}
+				<Readout id="quarter-{q.id}">
+					{@render txt(q.lx, q.ly, q.text, 13, {
+						anchor: q.anchor,
+						color: q.id.startsWith('r') ? 'var(--eco-prey)' : 'var(--eco-predator)',
+						weight: 600
+					})}
+				</Readout>
 			</g>
 		{/each}
 		{@const ex = qx(eqT.current.prey)}
@@ -513,17 +532,25 @@
 			stroke-linecap="round"
 		/>
 		<!-- the balance point's key, in the header (the loop's inside is often too small) -->
-		<path
-			d="M{PX0 + 1} {57} l10 10 m0 -10 l-10 10"
-			stroke="var(--stage-ink)"
-			stroke-width="2.2"
-			stroke-linecap="round"
-		/>
-		{@render txt(PX0 + 20, 66, 'balance point:', 13, { weight: 650 })}
-		{@render txt(PX0 + 116, 66, `${fmt(eq.prey)} rabbits, ${fmt(eq.predators)} foxes`, 13, {
-			muted: true,
-			tabular: true
-		})}
+		<Readout
+			id="balance"
+			order={5}
+			label="Balance point ✕"
+			value="{fmt(eq.prey)} rabbits, {fmt(eq.predators)} foxes"
+			note="the loop turns: rabbits rise, foxes rise, rabbits fall, foxes fall"
+		>
+			<path
+				d="M{PX0 + 1} {57} l10 10 m0 -10 l-10 10"
+				stroke="var(--stage-ink)"
+				stroke-width="2.2"
+				stroke-linecap="round"
+			/>
+			{@render txt(PX0 + 20, 66, 'balance point:', 13, { weight: 650 })}
+			{@render txt(PX0 + 116, 66, `${fmt(eq.prey)} rabbits, ${fmt(eq.predators)} foxes`, 13, {
+				muted: true,
+				tabular: true
+			})}
+		</Readout>
 		<!-- now -->
 		<circle
 			cx={qx(rabbits)}
@@ -535,45 +562,47 @@
 		/>
 	{:else}
 		<!-- legend -->
-		<line
-			x1={PX0}
-			x2={PX0 + 22}
-			y1={35}
-			y2={35}
-			stroke="var(--eco-prey)"
-			stroke-width="3"
-			stroke-linecap="round"
-		/>
-		{@render txt(PX0 + 30, 40, growth ? 'rabbits' : 'rabbits (left scale)', 13, {
-			color: 'var(--eco-prey)',
-			weight: 600
-		})}
-		{#if growth}
+		<Readout id="chart-legend">
 			<line
-				x1={PX0 + 104}
-				x2={PX0 + 128}
+				x1={PX0}
+				x2={PX0 + 22}
 				y1={35}
 				y2={35}
-				stroke="var(--stage-ink-muted)"
-				stroke-width="1.5"
-				stroke-dasharray="5 4"
-			/>
-			{@render txt(PX0 + 136, 40, 'carrying capacity K', 13, { muted: true })}
-		{:else}
-			<line
-				x1={PX0 + 170}
-				x2={PX0 + 192}
-				y1={35}
-				y2={35}
-				stroke="var(--eco-predator)"
+				stroke="var(--eco-prey)"
 				stroke-width="3"
 				stroke-linecap="round"
 			/>
-			{@render txt(PX0 + 200, 40, 'foxes (right scale)', 13, {
-				color: 'var(--eco-predator)',
+			{@render txt(PX0 + 30, 40, growth ? 'rabbits' : 'rabbits (left scale)', 13, {
+				color: 'var(--eco-prey)',
 				weight: 600
 			})}
-		{/if}
+			{#if growth}
+				<line
+					x1={PX0 + 104}
+					x2={PX0 + 128}
+					y1={35}
+					y2={35}
+					stroke="var(--stage-ink-muted)"
+					stroke-width="1.5"
+					stroke-dasharray="5 4"
+				/>
+				{@render txt(PX0 + 136, 40, 'carrying capacity K', 13, { muted: true })}
+			{:else}
+				<line
+					x1={PX0 + 170}
+					x2={PX0 + 192}
+					y1={35}
+					y2={35}
+					stroke="var(--eco-predator)"
+					stroke-width="3"
+					stroke-linecap="round"
+				/>
+				{@render txt(PX0 + 200, 40, 'foxes (right scale)', 13, {
+					color: 'var(--eco-predator)',
+					weight: 600
+				})}
+			{/if}
+		</Readout>
 
 		<Axes
 			{sx}
@@ -596,11 +625,19 @@
 				stroke-width="1.5"
 				stroke-dasharray="6 5"
 			/>
-			{@render txt(PX1 - 4, syH(room) - 8, `carrying capacity K = ${fmt(room)}`, 13, {
-				anchor: 'end',
-				muted: true,
-				weight: 600
-			})}
+			<Readout
+				id="capacity"
+				order={5}
+				label="Carrying capacity K"
+				value={fmt(room)}
+				note="the dashed line"
+			>
+				{@render txt(PX1 - 4, syH(room) - 8, `carrying capacity K = ${fmt(room)}`, 13, {
+					anchor: 'end',
+					muted: true,
+					weight: 600
+				})}
+			</Readout>
 		{/if}
 
 		{#if bracket}
@@ -610,10 +647,12 @@
 				stroke="var(--stage-ink-muted)"
 				stroke-width="1.2"
 			/>
-			{@render txt((bracket.x0 + bracket.x1) / 2, PY0 - 15, 'one cycle', 12, {
-				anchor: 'middle',
-				muted: true
-			})}
+			<Readout id="one-cycle">
+				{@render txt((bracket.x0 + bracket.x1) / 2, PY0 - 15, 'one cycle', 12, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</Readout>
 		{/if}
 
 		<path
@@ -664,18 +703,20 @@
 
 	<!-- under the chart -->
 	<!-- the readout card (same style as the food-web scene's) -->
-	<rect
-		x={PX0 - 16}
-		y="518"
-		width={936 - PX0 + 16}
-		height="62"
-		rx="10"
-		fill="var(--surface)"
-		stroke="var(--border)"
-		stroke-width="1"
-	/>
-	{@render txt(PX0, 544, cycleText, 14, { weight: 600 })}
-	{@render txt(PX0, 566, '1 second ≈ 1 year', 11, { muted: true })}
+	<Readout id="cycle" order={4} label={growth ? 'Growth' : 'Cycle'} value={cycleText}>
+		<rect
+			x={PX0 - 16}
+			y="518"
+			width={936 - PX0 + 16}
+			height="62"
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+			stroke-width="1"
+		/>
+		{@render txt(PX0, 544, cycleText, 14, { weight: 600 })}
+		{@render txt(PX0, 566, '1 second ≈ 1 year', 11, { muted: true })}
+	</Readout>
 </g>
 
 {#snippet txt(

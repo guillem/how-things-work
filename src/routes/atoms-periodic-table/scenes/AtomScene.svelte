@@ -24,7 +24,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut, cubicOut } from 'svelte/easing';
 	import { clamp, hash, TAU } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		ELEMENTS,
 		ORDER,
@@ -384,6 +384,8 @@
 			? `${litEl.name} in the table: period ${litEl.period}, ${litEl.group ? `group ${litEl.group}, ` : ''}${litEl.block}-block`
 			: 'No element to light up: there are no protons'
 	);
+	const placeOf = (e: typeof litEl) =>
+		e ? `period ${e.period}, ${e.group ? `group ${e.group}, ` : ''}${e.block}-block` : '';
 	const nucleonRows = $derived([
 		{
 			k: 'p',
@@ -466,28 +468,31 @@
 				stroke="var(--stage-bg)"
 				stroke-width="0.8"
 			/>
-			{#if nucleus.capped}
-				{@render txt(AX, AY + nucR + 22, `×${nucleus.total} (40 drawn)`, 12, {
-					anchor: 'middle',
-					weight: 600
-				})}
-			{/if}
-			{#if build.electrons}
+			<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+			<Readout id="build-minor">
+				{#if nucleus.capped}
+					{@render txt(AX, AY + nucR + 22, `×${nucleus.total} (40 drawn)`, 12, {
+						anchor: 'middle',
+						weight: 600
+					})}
+				{/if}
+				{#if build.electrons}
+					{@render txt(
+						AX,
+						AY - CLOUD_R + 6,
+						`electron cloud: ${plural(build.electrons, 'electron')}`,
+						12,
+						{ anchor: 'middle', muted: true }
+					)}
+				{/if}
 				{@render txt(
 					AX,
-					AY - CLOUD_R + 6,
-					`electron cloud: ${plural(build.electrons, 'electron')}`,
-					12,
+					578,
+					'Not to scale: the real nucleus is tens of thousands of times smaller than the atom.',
+					11,
 					{ anchor: 'middle', muted: true }
 				)}
-			{/if}
-			{@render txt(
-				AX,
-				578,
-				'Not to scale: the real nucleus is tens of thousands of times smaller than the atom.',
-				11,
-				{ anchor: 'middle', muted: true }
-			)}
+			</Readout>
 
 			<!-- readout -->
 			<rect
@@ -504,61 +509,129 @@
 			{#if el}
 				{@render txt(TX + 10, 54, String(el.z), 13, { weight: 600 })}
 				{@render txt(TX + 48, 106, el.symbol, 46, { anchor: 'middle', weight: 700 })}
-				{@render txt(TX + 48, 129, massText(el), 11, {
-					anchor: 'middle',
-					muted: true
-				})}
+				<Readout id="build-mass">
+					{@render txt(TX + 48, 129, massText(el), 11, {
+						anchor: 'middle',
+						muted: true
+					})}
+				</Readout>
 			{:else}
 				{@render txt(TX + 48, 100, '—', 40, { anchor: 'middle', muted: true })}
 			{/if}
-			{@render txt(TX + 112, 64, el ? el.name : 'No element', 24, { weight: 700 })}
-			{@render txt(TX + 112, 90, isotope, 15, { weight: 600 })}
-			{@render txt(TX + 112, 113, chargeText, 13, {
-				color: id.charge === 0 ? undefined : 'var(--atom-electron)'
-			})}
-			{#if el}
-				{@render txt(TX + 112, 135, stableText, 13, {
-					color: id.stable ? 'var(--atom-p)' : 'var(--atom-proton)',
-					weight: 600
+			<Readout
+				id="build-element"
+				order={1}
+				label="Element"
+				value={el ? el.name : 'No element'}
+				note={el ? `${isotope} · ${placeOf(el)}` : hintText}
+				opacity={wBuild}
+			>
+				{@render txt(TX + 112, 64, el ? el.name : 'No element', 24, { weight: 700 })}
+				{@render txt(TX + 112, 90, isotope, 15, { weight: 600 })}
+			</Readout>
+			<Readout
+				id="build-charge"
+				order={2}
+				label="Charge"
+				value={id.charge === 0 ? '0' : signed(id.charge)}
+				note={[chargeText, ...anionLines].join(' ')}
+				color={id.charge === 0 ? undefined : 'var(--atom-electron)'}
+				opacity={wBuild}
+			>
+				{@render txt(TX + 112, 113, chargeText, 13, {
+					color: id.charge === 0 ? undefined : 'var(--atom-electron)'
 				})}
-			{/if}
-			{#if hintText}
-				{@render txt(TX, 166, hintText, 12, { muted: true })}
-			{/if}
-			{#each nucleonRows as row, i (row.k)}
-				<circle cx={TX + 8} cy={206 + i * 30} r={row.k === 'e' ? 4 : 7} fill={row.c} />
-				{@render txt(TX + 24, 211 + i * 30, plural(row.n, row.what), 14, { weight: 600 })}
-				{@render txt(TX + 140, 211 + i * 30, row.role, 12, { muted: true })}
-			{/each}
-			{@render txt(TX, 316, `Mass number ${id.massNumber} = protons + neutrons`, 12, {
-				muted: true
-			})}
-			{#if shellsText}
-				{@render txt(TX, 338, shellsText, 12, { muted: true })}
-			{/if}
-			{#each anionLines as line, i (i)}
-				{@render txt(TX, 364 + i * 17, line, 12, { color: 'var(--atom-electron)', weight: 600 })}
-			{/each}
+			</Readout>
+			<Readout
+				id="build-nucleus"
+				order={3}
+				label="Nucleus"
+				value={stableText}
+				note={hintText || undefined}
+				color={id.stable ? 'var(--atom-p)' : 'var(--atom-proton)'}
+				opacity={el ? wBuild : 0}
+			>
+				{#if el}
+					{@render txt(TX + 112, 135, stableText, 13, {
+						color: id.stable ? 'var(--atom-p)' : 'var(--atom-proton)',
+						weight: 600
+					})}
+				{/if}
+				{#if hintText}
+					{@render txt(TX, 166, hintText, 12, { muted: true })}
+				{/if}
+			</Readout>
+			<Readout
+				id="build-particles"
+				order={4}
+				label="Protons · neutrons · electrons"
+				value="{build.protons} · {build.neutrons} · {build.electrons}"
+				note="mass number {id.massNumber} = protons + neutrons"
+				opacity={wBuild}
+			>
+				{#each nucleonRows as row, i (row.k)}
+					<circle cx={TX + 8} cy={206 + i * 30} r={row.k === 'e' ? 4 : 7} fill={row.c} />
+					{@render txt(TX + 24, 211 + i * 30, plural(row.n, row.what), 14, { weight: 600 })}
+					{@render txt(TX + 140, 211 + i * 30, row.role, 12, { muted: true })}
+				{/each}
+				{@render txt(TX, 316, `Mass number ${id.massNumber} = protons + neutrons`, 12, {
+					muted: true
+				})}
+				{#if shellsText}
+					{@render txt(TX, 338, shellsText, 12, { muted: true })}
+				{/if}
+				{#each anionLines as line, i (i)}
+					{@render txt(TX, 364 + i * 17, line, 12, { color: 'var(--atom-electron)', weight: 600 })}
+				{/each}
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- ================= shells ================= -->
 	{#if wShells > 0.01}
 		<g opacity={wShells}>
-			{@render txt(30, 36, `${ez.name} (${ez.symbol}): ${plural(z, 'electron')}`, 17, {
-				weight: 700
-			})}
-			{@render txt(30, 60, configText, 15, { weight: 600 })}
-			{@render txt(30, 80, `written short: ${shortConfig}`, 12, { muted: true })}
-			{#if exception}
-				{@render txt(
-					30,
-					100,
-					`⚠ Measured configuration differs from the rule: ${exception.measured}, not ${exception.rule}`,
-					12,
-					{ color: 'var(--atom-proton)', weight: 600 }
-				)}
-			{/if}
+			<Readout
+				id="shells-element"
+				order={1}
+				label="{ez.name} ({ez.symbol})"
+				value={plural(z, 'electron')}
+				note={placeOf(ez)}
+				opacity={wShells}
+			>
+				{@render txt(30, 36, `${ez.name} (${ez.symbol}): ${plural(z, 'electron')}`, 17, {
+					weight: 700
+				})}
+			</Readout>
+			<Readout
+				id="shells-config"
+				order={2}
+				label="Configuration"
+				value={configText}
+				note="written short: {shortConfig}"
+				opacity={wShells}
+			>
+				{@render txt(30, 60, configText, 15, { weight: 600 })}
+				{@render txt(30, 80, `written short: ${shortConfig}`, 12, { muted: true })}
+			</Readout>
+			<Readout
+				id="shells-exception"
+				order={3}
+				label="⚠ Not the rule"
+				value={exception ? `measured ${exception.measured}` : ''}
+				note={exception ? `the filling order predicts ${exception.rule}` : undefined}
+				color="var(--atom-proton)"
+				opacity={exception ? wShells : 0}
+			>
+				{#if exception}
+					{@render txt(
+						30,
+						100,
+						`⚠ Measured configuration differs from the rule: ${exception.measured}, not ${exception.rule}`,
+						12,
+						{ color: 'var(--atom-proton)', weight: 600 }
+					)}
+				{/if}
+			</Readout>
 
 			<!-- energy axis -->
 			<line
@@ -570,14 +643,16 @@
 				stroke-width="1.2"
 				marker-end="url(#arrowhead)"
 			/>
-			<text
-				x="0"
-				y="0"
-				class="muted"
-				text-anchor="middle"
-				transform="translate(9 350) rotate(-90)"
-				style:font-size="11px">filling order (roughly, energy)</text
-			>
+			<Readout id="shells-axis">
+				<text
+					x="0"
+					y="0"
+					class="muted"
+					text-anchor="middle"
+					transform="translate(9 350) rotate(-90)"
+					style:font-size="11px">filling order (roughly, energy)</text
+				>
+			</Readout>
 
 			<!-- filling order -->
 			<path
@@ -596,10 +671,12 @@
 				stroke="var(--stage-ink-muted)"
 				stroke-width="1.3"
 			/>
-			{@render txt(route.tip.x, route.tip.y - 10, 'filling order', 11, {
-				muted: true,
-				anchor: 'middle'
-			})}
+			<Readout id="shells-order">
+				{@render txt(route.tip.x, route.tip.y - 10, 'filling order', 11, {
+					muted: true,
+					anchor: 'middle'
+				})}
+			</Readout>
 
 			{#each rows as r (r.label)}
 				{@const occ = occNow.get(r.label) ?? 0}
@@ -642,18 +719,25 @@
 				stroke-linejoin="round"
 				opacity={0.3 + 0.7 * drop.current}
 			/>
-			{#each [1, 2, 3, 4] as n (n)}
-				{@render txt(COL_LEFT[n - 1] + (n === 1 ? 11 : n === 3 ? 62 : 37), 590, `shell ${n}`, 11, {
+			<Readout id="shells-minor">
+				{#each [1, 2, 3, 4] as n (n)}
+					{@render txt(
+						COL_LEFT[n - 1] + (n === 1 ? 11 : n === 3 ? 62 : 37),
+						590,
+						`shell ${n}`,
+						11,
+						{
+							anchor: 'middle',
+							muted: true
+						}
+					)}
+				{/each}
+				<!-- shells as soft bands -->
+				{@render txt(SX, 30, 'Shells: fuzzy regions, not orbits', 12, {
 					anchor: 'middle',
 					muted: true
 				})}
-			{/each}
-
-			<!-- shells as soft bands -->
-			{@render txt(SX, 30, 'Shells: fuzzy regions, not orbits', 12, {
-				anchor: 'middle',
-				muted: true
-			})}
+			</Readout>
 			{#each counts as c, s (s)}
 				{@const m = bandMid(s + 1)}
 				{@const a = s === counts.length - 1 ? 0.3 : 0.2}
@@ -683,15 +767,24 @@
 			{#each shellDots as d (d.key)}
 				<circle cx={d.x} cy={d.y} r="3.4" fill="var(--atom-electron)" />
 			{/each}
-			{@render txt(SX, 370, `Electrons per shell: ${counts.join(' · ')}`, 12, {
-				anchor: 'middle',
-				muted: true
-			})}
+			<Readout
+				id="shells-counts"
+				order={4}
+				label="Electrons per shell"
+				value={counts.join(' · ')}
+				opacity={wShells}
+			>
+				{@render txt(SX, 370, `Electrons per shell: ${counts.join(' · ')}`, 12, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- ================= mini periodic table (both phases) ================= -->
-	{@render txt(TX, TY - 10, tableCaption, 12, { weight: 600 })}
+	<Readout id="table-caption">{@render txt(TX, TY - 10, tableCaption, 12, { weight: 600 })}</Readout
+	>
 	{#each blockPaths as bp (bp.b)}
 		<path
 			d={bp.d}

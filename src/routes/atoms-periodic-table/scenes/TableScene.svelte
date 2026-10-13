@@ -13,7 +13,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { untrack } from 'svelte';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { clamp } from '#lib/draw/math.ts';
 	import { toSvg } from '#lib/draw/pointer.ts';
 	import {
@@ -406,11 +406,14 @@
 			stroke-dasharray="3 3"
 			opacity="0.7"
 		/>
-		{@render txt(colX(3) + CW / 2, rowY(row) + 25, row === 6 ? '57–71' : '89–103', 10, {
-			anchor: 'middle',
-			muted: true,
-			halo: false
-		})}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="fblock-{row}">
+			{@render txt(colX(3) + CW / 2, rowY(row) + 25, row === 6 ? '57–71' : '89–103', 10, {
+				anchor: 'middle',
+				muted: true,
+				halo: false
+			})}
+		</Readout>
 	{/each}
 	<path
 		d="M{colX(3) + CW / 2} {rowY(7) + CH} V{rowY(9)}"
@@ -418,8 +421,10 @@
 		stroke-dasharray="2 3"
 		opacity="0.7"
 	/>
-	{@render txt(colX(3) - 10, rowY(9) + 26, 'lanthanides', 11, { anchor: 'end', muted: true })}
-	{@render txt(colX(3) - 10, rowY(10) + 26, 'actinides', 11, { anchor: 'end', muted: true })}
+	<Readout id="fblock-names">
+		{@render txt(colX(3) - 10, rowY(9) + 26, 'lanthanides', 11, { anchor: 'end', muted: true })}
+		{@render txt(colX(3) - 10, rowY(10) + 26, 'actinides', 11, { anchor: 'end', muted: true })}
+	</Readout>
 
 	<!-- blocks layer -->
 	{#if wB.current > 0.01}
@@ -444,20 +449,29 @@
 						stroke-width="1.5"
 						stroke-linecap="round"
 					/>
-					{@render txt(
-						(br.x1 + br.x2) / 2,
-						br.dir === 1 ? br.y - 11 : br.y + 22,
-						`${br.id} block · ${br.n} columns`,
-						12,
-						{ anchor: 'middle', weight: 600 }
-					)}
+					<Readout
+						id="brace-{br.id}"
+						order={10 + br.n}
+						label="{br.id} block · {br.n} columns"
+						color="var(--atom-{br.id})"
+					>
+						{@render txt(
+							(br.x1 + br.x2) / 2,
+							br.dir === 1 ? br.y - 11 : br.y + 22,
+							`${br.id} block · ${br.n} columns`,
+							12,
+							{ anchor: 'middle', weight: 600 }
+						)}
+					</Readout>
 				</g>
 			{/each}
-			{@render txt(34, (rowY(1) + rowY(7) + CH) / 2, 'each row starts a new shell', 12, {
-				anchor: 'middle',
-				muted: true,
-				rotate: -90
-			})}
+			<Readout id="row-shell">
+				{@render txt(34, (rowY(1) + rowY(7) + CH) / 2, 'each row starts a new shell', 12, {
+					anchor: 'middle',
+					muted: true,
+					rotate: -90
+				})}
+			</Readout>
 		</g>
 	{/if}
 
@@ -496,27 +510,38 @@
 				})}
 			{/each}
 			<!-- the takeaway -->
-			{@render txt(
-				480,
-				rowY(10) + CH + 36,
-				'The layout follows from how electrons fill shells;',
-				14,
-				{ anchor: 'middle', weight: 600 }
-			)}
-			{@render txt(
-				480,
-				rowY(10) + CH + 56,
-				'the chemistry is set by the outermost electrons.',
-				14,
-				{ anchor: 'middle', weight: 600 }
-			)}
+			<Readout
+				id="takeaway"
+				order={10}
+				label="Takeaway"
+				value="the outermost electrons set the chemistry"
+				note="the layout follows from how electrons fill shells"
+				opacity={wC.current}
+			>
+				{@render txt(
+					480,
+					rowY(10) + CH + 36,
+					'The layout follows from how electrons fill shells;',
+					14,
+					{ anchor: 'middle', weight: 600 }
+				)}
+				{@render txt(
+					480,
+					rowY(10) + CH + 56,
+					'the chemistry is set by the outermost electrons.',
+					14,
+					{ anchor: 'middle', weight: 600 }
+				)}
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- period numbers -->
-	{#each [1, 2, 3, 4, 5, 6, 7] as row (row)}
-		{@render txt(X0 - 10, rowY(row) + 26, `${row}`, 12, { anchor: 'end', muted: true })}
-	{/each}
+	<Readout id="periods">
+		{#each [1, 2, 3, 4, 5, 6, 7] as row (row)}
+			{@render txt(X0 - 10, rowY(row) + 26, `${row}`, 12, { anchor: 'end', muted: true })}
+		{/each}
+	</Readout>
 
 	<!-- symbols and atomic numbers -->
 	<g style:pointer-events="none">
@@ -562,28 +587,43 @@
 				stroke-width="2"
 				marker-end="url(#arrowhead)"
 			/>
-			{@render txt(480, Y0 - 25, P.across, 13, { anchor: 'middle', weight: 600 })}
+			<Readout id="trend-across">
+				{@render txt(480, Y0 - 25, P.across, 13, { anchor: 'middle', weight: 600 })}
+			</Readout>
 			<path
 				d="M52 {rowY(1)} V{rowY(7) + CH - 4}"
 				stroke="var(--stage-ink)"
 				stroke-width="2"
 				marker-end="url(#arrowhead)"
 			/>
-			{@render txt(40, (rowY(1) + rowY(7) + CH) / 2, P.down, 13, {
-				anchor: 'middle',
-				weight: 600,
-				rotate: -90
-			})}
+			<Readout id="trend-down">
+				{@render txt(40, (rowY(1) + rowY(7) + CH) / 2, P.down, 13, {
+					anchor: 'middle',
+					weight: 600,
+					rotate: -90
+				})}
+			</Readout>
 
-			{@render txt(LX, LY - 8, P.title, 13, { weight: 600 })}
+			<Readout
+				id="trend-scale"
+				order={1}
+				label={P.title}
+				value="{+R.min.toFixed(2)} to {+R.max.toFixed(2)}{P.unit ? ' ' + P.unit : ''}"
+				note="{P.across} (→), {P.down} (↓)"
+				opacity={wT.current}
+			>
+				{@render txt(LX, LY - 8, P.title, 13, { weight: 600 })}
+			</Readout>
 			<rect x={LX} y={LY} width={LW} height="12" rx="3" fill="url(#table-bar)" />
-			{@render txt(LX, LY + 28, `${+R.min.toFixed(2)}${P.unit ? ' ' + P.unit : ''}`, 11, {
-				muted: true
-			})}
-			{@render txt(LX + LW, LY + 28, `${+R.max.toFixed(2)}${P.unit ? ' ' + P.unit : ''}`, 11, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout id="trend-ends">
+				{@render txt(LX, LY + 28, `${+R.min.toFixed(2)}${P.unit ? ' ' + P.unit : ''}`, 11, {
+					muted: true
+				})}
+				{@render txt(LX + LW, LY + 28, `${+R.max.toFixed(2)}${P.unit ? ' ' + P.unit : ''}`, 11, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 			<rect
 				x={LX + LW + 36}
 				y={LY}
@@ -593,7 +633,9 @@
 				style:fill={NODATA}
 				stroke="var(--stage-line)"
 			/>
-			{@render txt(LX + LW + 64, LY + 10, 'no data', 12, { muted: true })}
+			<Readout id="nodata" order={2} label="no data" color={NODATA}>
+				{@render txt(LX + LW + 64, LY + 10, 'no data', 12, { muted: true })}
+			</Readout>
 		</g>
 	{/if}
 
@@ -602,55 +644,84 @@
 		<g style:pointer-events="none">
 			{#if wB.current > 0.01}
 				<g opacity={wB.current}>
-					<text x={480} y={Y0 + 26} text-anchor="middle" style:font-size="13px">
-						<tspan class="muted" style:font-size="12px">Filling order:</tspan>
-						{#each SEQUENCE as s (s)}
-							<tspan
-								dx="6"
-								font-weight={s === currentShell ? 800 : 600}
-								style:fill="var(--atom-{s[1]})"
-								opacity={!sweeping || doneShells.has(s) ? 1 : 0.3}>{s}</tspan
-							>
-						{/each}
-					</text>
-					{#if sweeping && front >= 1}
-						{@const e = element(current)}
+					<Readout
+						id="filling"
+						order={1}
+						label="Filling order"
+						value={sweeping && front >= 1
+							? `${element(current).name} (Z = ${current}): last electron into ${lastSubshell(current)}`
+							: 'subshells in order of atomic number'}
+						note={sweeping ? undefined : SEQUENCE.join(' ')}
+						opacity={wB.current}
+					>
+						<text x={480} y={Y0 + 26} text-anchor="middle" style:font-size="13px">
+							<tspan class="muted" style:font-size="12px">Filling order:</tspan>
+							{#each SEQUENCE as s (s)}
+								<tspan
+									dx="6"
+									font-weight={s === currentShell ? 800 : 600}
+									style:fill="var(--atom-{s[1]})"
+									opacity={!sweeping || doneShells.has(s) ? 1 : 0.3}>{s}</tspan
+								>
+							{/each}
+						</text>
+						{#if sweeping && front >= 1}
+							{@const e = element(current)}
+							{@render txt(
+								GC,
+								GY + 64,
+								`${e.name} (Z = ${e.z}): last electron into ${lastSubshell(e.z)}`,
+								14,
+								{ anchor: 'middle', weight: 600 }
+							)}
+						{:else if !sweeping}
+							{@render txt(GC, GY + 56, 'Fill the subshells in order of atomic number', 13, {
+								anchor: 'middle'
+							})}
+							{@render txt(GC, GY + 74, 'and the blocks build the shape of the table', 13, {
+								anchor: 'middle'
+							})}
+						{/if}
 						{@render txt(
 							GC,
-							GY + 64,
-							`${e.name} (Z = ${e.z}): last electron into ${lastSubshell(e.z)}`,
-							14,
-							{ anchor: 'middle', weight: 600 }
+							GY + 96,
+							'Helium (1s²) is an s element, set above the noble gases',
+							11,
+							{
+								anchor: 'middle',
+								muted: true
+							}
 						)}
-					{:else if !sweeping}
-						{@render txt(GC, GY + 56, 'Fill the subshells in order of atomic number', 13, {
-							anchor: 'middle'
-						})}
-						{@render txt(GC, GY + 74, 'and the blocks build the shape of the table', 13, {
-							anchor: 'middle'
-						})}
-					{/if}
-					{@render txt(GC, GY + 96, 'Helium (1s²) is an s element, set above the noble gases', 11, {
-						anchor: 'middle',
-						muted: true
-					})}
+					</Readout>
 				</g>
 			{/if}
 			{#if wT.current > 0.01}
 				<g opacity={wT.current}>
-					{@render txt(GC, GY + 64, 'Hover or focus an element to read its value', 12, {
-						anchor: 'middle',
-						muted: true
-					})}
+					<Readout id="hover-hint">
+						{@render txt(GC, GY + 64, 'Hover or focus an element to read its value', 12, {
+							anchor: 'middle',
+							muted: true
+						})}
+					</Readout>
 				</g>
 			{/if}
 			{#if wC.current > 0.01}
 				<g opacity={wC.current}>
 					{#each GROUPS as g, i (g.col)}
 						{@const y = GY + 22 + i * 38}
-						<rect x={GX + 8} y={y - 11} width="12" height="12" rx="3" style:fill={g.color} />
-						{@render txt(GX + 28, y, g.name, 13, { weight: 700 })}
-						{@render txt(GX + 28, y + 17, `${g.line} (${g.example})`, 12, { muted: true })}
+						<Readout
+							id="group-{g.col}"
+							order={1 + i}
+							label={g.name}
+							value={g.line}
+							note={g.example}
+							color={g.color}
+							opacity={wC.current}
+						>
+							<rect x={GX + 8} y={y - 11} width="12" height="12" rx="3" style:fill={g.color} />
+							{@render txt(GX + 28, y, g.name, 13, { weight: 700 })}
+							{@render txt(GX + 28, y + 17, `${g.line} (${g.example})`, 12, { muted: true })}
+						</Readout>
 					{/each}
 				</g>
 			{/if}
@@ -660,44 +731,52 @@
 	<!-- card for the hovered or focused element -->
 	{#if card}
 		{@const e = card.e}
-		<g style:pointer-events="none">
-			<rect
-				x={GX}
-				y={GY}
-				width={GW}
-				height="106"
-				rx="10"
-				style:fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			<text x={GX + 16} y={GY + 26} style:font-size="17px" font-weight="700"
-				>{e.name}<tspan dx="8" class="muted" style:font-size="13px" font-weight="500"
-					>{e.symbol} · Z = {e.z}</tspan
-				></text
-			>
-			<rect
-				x={GX + GW - 76}
-				y={GY + 12}
-				width="60"
-				height="20"
-				rx="10"
-				style:fill={blockFill(e.block)}
-				style:stroke="var(--atom-{e.block})"
-			/>
-			{@render txt(GX + GW - 46, GY + 26, `${e.block} block`, 11, {
-				anchor: 'middle',
-				weight: 600,
-				halo: false
-			})}
-			{#each card.rows as r, i (r[0])}
-				<!-- the configuration has a line of its own; the rest go in two columns -->
-				{@const cx = GX + 16 + (i === 0 ? 0 : ((i - 1) % 2) * (GW / 2))}
-				{@const cy = GY + 52 + (i === 0 ? 0 : 1 + Math.floor((i - 1) / 2)) * 22}
-				<text x={cx} y={cy} style:font-size="12px"
-					><tspan class="muted">{r[0]}</tspan><tspan dx="6" font-weight="600">{r[1]}</tspan></text
+		<Readout
+			id="card"
+			order={0}
+			label={e.name}
+			value="{e.symbol} · Z = {e.z} · {e.block} block"
+			note={card.rows.map((r) => `${r[0]} ${r[1]}`).join(' · ')}
+		>
+			<g style:pointer-events="none">
+				<rect
+					x={GX}
+					y={GY}
+					width={GW}
+					height="106"
+					rx="10"
+					style:fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+				<text x={GX + 16} y={GY + 26} style:font-size="17px" font-weight="700"
+					>{e.name}<tspan dx="8" class="muted" style:font-size="13px" font-weight="500"
+						>{e.symbol} · Z = {e.z}</tspan
+					></text
 				>
-			{/each}
-		</g>
+				<rect
+					x={GX + GW - 76}
+					y={GY + 12}
+					width="60"
+					height="20"
+					rx="10"
+					style:fill={blockFill(e.block)}
+					style:stroke="var(--atom-{e.block})"
+				/>
+				{@render txt(GX + GW - 46, GY + 26, `${e.block} block`, 11, {
+					anchor: 'middle',
+					weight: 600,
+					halo: false
+				})}
+				{#each card.rows as r, i (r[0])}
+					<!-- the configuration has a line of its own; the rest go in two columns -->
+					{@const cx = GX + 16 + (i === 0 ? 0 : ((i - 1) % 2) * (GW / 2))}
+					{@const cy = GY + 52 + (i === 0 ? 0 : 1 + Math.floor((i - 1) / 2)) * 22}
+					<text x={cx} y={cy} style:font-size="12px"
+						><tspan class="muted">{r[0]}</tspan><tspan dx="6" font-weight="600">{r[1]}</tspan></text
+					>
+				{/each}
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- hovered / keyboard cell outline -->
@@ -751,8 +830,10 @@
 		{onkeydown}
 	/>
 
-	{@render txt(944, 584, 'Hover an element, or Tab here and use the arrow keys', 11, {
-		anchor: 'end',
-		muted: true
-	})}
+	<Readout id="table-hint">
+		{@render txt(944, 584, 'Hover an element, or Tab here and use the arrow keys', 11, {
+			anchor: 'end',
+			muted: true
+		})}
+	</Readout>
 </g>

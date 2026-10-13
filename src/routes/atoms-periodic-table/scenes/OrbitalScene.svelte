@@ -11,7 +11,7 @@
 	 * overrides SVG presentation attributes.
 	 */
 	import { startDrag, clamp, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { EXTENT, cloud, radius90For1s, type OrbitalId } from '../atom';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -193,11 +193,19 @@
 			stroke-width="1.5"
 			stroke-dasharray="6 5"
 		/>
-		{#each ['90% of the time', 'inside this sphere'] as line, i (i)}
-			{@render txt(CX + r90 * scale * 0.72 + 8, CY - r90 * scale * 0.72 - 24 + i * 16, line, 12, {
-				weight: 600
-			})}
-		{/each}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="sphere">
+			{#each ['90% of the time', 'inside this sphere'] as line, i (i)}
+				{@render txt(CX + r90 * scale * 0.72 + 8, CY - r90 * scale * 0.72 - 24 + i * 16, line, 12, {
+					weight: 600
+				})}
+			{/each}
+			{#snippet narrow()}
+				{@render txt(CX + r90 * scale * 0.72 + 4, CY - r90 * scale * 0.72 - 4, '90%', 30, {
+					weight: 700
+				})}
+			{/snippet}
+		</Readout>
 	{/if}
 
 	<!-- drag / keyboard target over the cloud -->
@@ -221,24 +229,44 @@
 	/>
 
 	<!-- right panel -->
-	{@render txt(PX, 52, info.title, 20, { weight: 700 })}
-	{#each info.lines as line, i (i)}
-		{@render txt(PX, 78 + i * 19, line, 13)}
-	{/each}
-	{@render txt(PX, 132, 'Dense dots: the electron is likely there.', 12, { muted: true })}
-	{@render txt(PX, 150, 'Drag to turn it (or focus it and use arrows).', 12, { muted: true })}
+	<Readout
+		id="orbital"
+		order={1}
+		label="Orbital"
+		value={info.title}
+		note="{info.lines.join(' ')}{orbital === '1s'
+			? ' The dashed sphere holds it 90% of the time.'
+			: ''}"
+	>
+		{@render txt(PX, 52, info.title, 20, { weight: 700 })}
+		{#each info.lines as line, i (i)}
+			{@render txt(PX, 78 + i * 19, line, 13)}
+		{/each}
+	</Readout>
+	<Readout id="hints">
+		{@render txt(PX, 132, 'Dense dots: the electron is likely there.', 12, { muted: true })}
+		{@render txt(PX, 150, 'Drag to turn it (or focus it and use arrows).', 12, { muted: true })}
+	</Readout>
 
 	<!-- legend -->
 	{#if orbital === '1s'}
-		<rect x={PX} y="178" width="12" height="12" rx="2" fill="var(--atom-s)" />
-		{@render txt(PX + 20, 189, 'ψ has one sign everywhere', 13)}
+		<Readout id="psi-one" order={3} label="ψ has one sign everywhere" color="var(--atom-s)">
+			<rect x={PX} y="178" width="12" height="12" rx="2" fill="var(--atom-s)" />
+			{@render txt(PX + 20, 189, 'ψ has one sign everywhere', 13)}
+		</Readout>
 	{:else}
-		<rect x={PX} y="178" width="12" height="12" rx="2" fill="var(--atom-s)" />
-		{@render txt(PX + 20, 189, 'ψ positive', 13)}
-		<rect x={PX + 120} y="178" width="12" height="12" rx="2" fill="var(--atom-f)" />
-		{@render txt(PX + 140, 189, 'ψ negative', 13)}
+		<Readout id="psi-pos" order={3} label="ψ positive" color="var(--atom-s)">
+			<rect x={PX} y="178" width="12" height="12" rx="2" fill="var(--atom-s)" />
+			{@render txt(PX + 20, 189, 'ψ positive', 13)}
+		</Readout>
+		<Readout id="psi-neg" order={4} label="ψ negative" color="var(--atom-f)">
+			<rect x={PX + 120} y="178" width="12" height="12" rx="2" fill="var(--atom-f)" />
+			{@render txt(PX + 140, 189, 'ψ negative', 13)}
+		</Readout>
 	{/if}
-	{@render txt(PX, 210, 'Colours: sign of the wave function, not charge.', 12, { muted: true })}
+	<Readout id="colours-note">
+		{@render txt(PX, 210, 'Colours: sign of the wave function, not charge.', 12, { muted: true })}
+	</Readout>
 
 	<!-- scale bar -->
 	<g transform="translate({PX} 252)">
@@ -248,8 +276,16 @@
 			stroke="var(--stage-ink)"
 			stroke-width="1.5"
 		/>
-		{@render txt(bar.px + 10, 5, `${bar.a0} a₀ ≈ ${bar.nm} nm`, 13, { weight: 600 })}
-		{@render txt(0, 26, 'a₀ = Bohr radius ≈ 0.05 nm', 11, { muted: true })}
+		<Readout
+			id="scale"
+			order={2}
+			label="Scale bar"
+			value="{bar.a0} a₀ ≈ {bar.nm} nm"
+			note="a₀ = Bohr radius ≈ 0.05 nm"
+		>
+			{@render txt(bar.px + 10, 5, `${bar.a0} a₀ ≈ ${bar.nm} nm`, 13, { weight: 600 })}
+			{@render txt(0, 26, 'a₀ = Bohr radius ≈ 0.05 nm', 11, { muted: true })}
+		</Readout>
 	</g>
 
 	<!-- the pitfall: not a planet on an orbit -->
@@ -280,17 +316,27 @@
 			stroke-linecap="round"
 			opacity="0.85"
 		/>
-		{@render txt(116, 44, 'Not like this:', 13, { weight: 700 })}
-		{@render txt(116, 63, 'electrons follow no path', 12)}
-		{@render txt(116, 80, 'or orbit at all.', 12)}
+		<Readout
+			id="pitfall"
+			order={5}
+			label="Not like this: electrons follow no path or orbit"
+			marker={1}
+			at={[200, 52]}
+		>
+			{@render txt(116, 44, 'Not like this:', 13, { weight: 700 })}
+			{@render txt(116, 63, 'electrons follow no path', 12)}
+			{@render txt(116, 80, 'or orbit at all.', 12)}
+		</Readout>
 	</g>
 
-	{@render txt(PX, 470, 'Exact shapes for hydrogen; other atoms', 11, { muted: true })}
-	{@render txt(PX, 486, 'have orbitals of similar shapes.', 11, { muted: true })}
-	{@render txt(CX, 590, 'nucleus at the centre (far too small to see)', 11, {
-		anchor: 'middle',
-		muted: true
-	})}
+	<Readout id="footnotes">
+		{@render txt(PX, 470, 'Exact shapes for hydrogen; other atoms', 11, { muted: true })}
+		{@render txt(PX, 486, 'have orbitals of similar shapes.', 11, { muted: true })}
+		{@render txt(CX, 590, 'nucleus at the centre (far too small to see)', 11, {
+			anchor: 'middle',
+			muted: true
+		})}
+	</Readout>
 </g>
 
 <style>
