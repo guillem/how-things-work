@@ -552,6 +552,29 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/To the jump pool\s*30%/);
 		await expect(panel).toContainText(/Along its links\s*70%/);
 	});
+
+	test('learning from data fit: the errors are text and follow the degree', async ({ page }) => {
+		await page.goto('./learning-from-data/#test');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Flexibility\s*degree 3: up to 2 bends/);
+		await expect(panel).toContainText(/Test error\s*0\.047/);
+		await expect(drawing(page)).not.toContainText('test error');
+		await range(page, 'degree').fill('1');
+		await expect(panel).toContainText(/Flexibility\s*degree 1/);
+		await expect(panel).not.toContainText(/Test error\s*0\.047/);
+	});
+
+	test('learning from data curve: model and sweet spot are text and follow the degree', async ({
+		page
+	}) => {
+		await page.goto('./learning-from-data/#sweetspot');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Your model\s*degree 3/);
+		await expect(panel).toContainText(/Sweet spot\s*degree 6/);
+		await expect(drawing(page)).not.toContainText('sweet spot');
+		await range(page, 'degree').fill('6');
+		await expect(panel).toContainText(/Your model\s*degree 6/);
+	});
 });
 
 test.describe('on a wide screen', () => {
