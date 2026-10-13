@@ -12,7 +12,7 @@
 	 * "segment" per change, each integrated once with `eco.ts`). About one
 	 * simulated year passes per second of animation.
 	 */
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { scale, linePath, niceMax, smoothstep, clamp } from '#lib/draw/index.ts';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
@@ -417,8 +417,11 @@
 
 <g>
 	<!-- ===== the web ===== -->
-	{@render txt(32, 40, 'Who eats whom', 16, { weight: 600 })}
-	{@render txt(32, 60, 'Arrows: food → eater · circle size: population', 11, { muted: true })}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="web-title">
+		{@render txt(32, 40, 'Who eats whom', 16, { weight: 600 })}
+		{@render txt(32, 60, 'Arrows: food → eater · circle size: population', 11, { muted: true })}
+	</Readout>
 
 	{#each LEVELS as lv (lv.label)}
 		<line
@@ -430,7 +433,9 @@
 			stroke-width="1"
 			stroke-dasharray="2 5"
 		/>
-		{@render txt(530, lv.y - 6, lv.label, 11, { muted: true, anchor: 'end' })}
+		<Readout id="level-{lv.label}">
+			{@render txt(530, lv.y - 6, lv.label, 11, { muted: true, anchor: 'end' })}
+		</Readout>
 	{/each}
 
 	{#each links as l (l.id)}
@@ -520,47 +525,52 @@
 					/>
 				{/if}
 			{/if}
-			{@render txt(
-				n.x,
-				n.s === 'wolf' ? n.y - n.r - 10 : n.y + n.r + 17,
-				n.state === 'live'
-					? `${PLURAL[n.s]} · ${Math.round(n.n)}`
-					: n.state === 'gone'
-						? `${PLURAL[n.s]} · gone`
-						: n.state === 'off'
-							? `${PLURAL[n.s]} · switched off`
-							: 'deer · not here yet',
-				12,
-				{
-					anchor: 'middle',
-					muted: n.state !== 'live',
-					weight: n.state === 'live' ? 600 : 500,
-					tabular: true
-				}
-			)}
+			<Readout id="node-{n.s}">
+				{@render txt(
+					n.x,
+					n.s === 'wolf' ? n.y - n.r - 10 : n.y + n.r + 17,
+					n.state === 'live'
+						? `${PLURAL[n.s]} · ${Math.round(n.n)}`
+						: n.state === 'gone'
+							? `${PLURAL[n.s]} · gone`
+							: n.state === 'off'
+								? `${PLURAL[n.s]} · switched off`
+								: 'deer · not here yet',
+					12,
+					{
+						anchor: 'middle',
+						muted: n.state !== 'live',
+						weight: n.state === 'live' ? 600 : 500,
+						tabular: true
+					}
+				)}
+			</Readout>
 		</g>
 	{/each}
 
 	<!-- the readout -->
-	<rect
-		x="24"
-		y="510"
-		width="512"
-		height="70"
-		rx="10"
-		fill="var(--surface)"
-		stroke="var(--border)"
-		stroke-width="1"
-	/>
-	{@render txt(40, 538, summary.line, 14, { weight: 600 })}
-	{@render txt(40, 562, summary.sub, 11, { muted: true })}
-
+	<Readout id="summary" order={1} label="Now" value={summary.line} note={summary.sub}>
+		<rect
+			x="24"
+			y="510"
+			width="512"
+			height="70"
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+			stroke-width="1"
+		/>
+		{@render txt(40, 538, summary.line, 14, { weight: 600 })}
+		{@render txt(40, 562, summary.sub, 11, { muted: true })}
+	</Readout>
 	<!-- ===== the chart ===== -->
-	{@render txt(CX0 - 28, 40, 'Numbers over time', 16, { weight: 600 })}
-	{@render txt(CX0 - 28, 60, `Year ${Math.floor(year)} · 1 second ≈ 1 year`, 11, {
-		muted: true,
-		tabular: true
-	})}
+	<Readout id="chart-title">
+		{@render txt(CX0 - 28, 40, 'Numbers over time', 16, { weight: 600 })}
+		{@render txt(CX0 - 28, 60, `Year ${Math.floor(year)} · 1 second ≈ 1 year`, 11, {
+			muted: true,
+			tabular: true
+		})}
+	</Readout>
 
 	<defs>
 		{#each clips as c (c.j)}
@@ -590,12 +600,14 @@
 				stroke-dasharray="3 4"
 			/>
 		{/if}
-		{@render txt(CX0 + 4, row.top - 9, PLURAL[row.s], 12, { color: COLOR[row.s], weight: 600 })}
-		{@render txt(CX0 - 6, row.bottom + 4, '0', 11, { muted: true, anchor: 'end' })}
-		{@render txt(CX0 - 6, row.top + 4, String(row.yMax), 11, {
-			muted: true,
-			anchor: 'end'
-		})}
+		<Readout id="row-{row.s}">
+			{@render txt(CX0 + 4, row.top - 9, PLURAL[row.s], 12, { color: COLOR[row.s], weight: 600 })}
+			{@render txt(CX0 - 6, row.bottom + 4, '0', 11, { muted: true, anchor: 'end' })}
+			{@render txt(CX0 - 6, row.top + 4, String(row.yMax), 11, {
+				muted: true,
+				anchor: 'end'
+			})}
+		</Readout>
 		{#each row.paths as p (p.j)}
 			{#if !p.absent && clips[p.j].w > 0}
 				<path
@@ -618,19 +630,27 @@
 				stroke-width="1.5"
 			/>
 		{/if}
-		{@render txt(
-			CX1,
-			row.top - 9,
-			current.present[row.i]
-				? pops[row.i] < 0.5
-					? 'gone'
-					: String(Math.round(pops[row.i]))
-				: newcomer && row.s === 'deer'
-					? 'not here yet'
-					: 'switched off',
-			12,
-			{ anchor: 'end', tabular: true, muted: !current.present[row.i], weight: 600 }
-		)}
+		{@const now = current.present[row.i]
+			? pops[row.i] < 0.5
+				? 'gone'
+				: String(Math.round(pops[row.i]))
+			: newcomer && row.s === 'deer'
+				? 'not here yet'
+				: 'switched off'}
+		<Readout
+			id="count-{row.s}"
+			order={10 + row.i}
+			label={PLURAL[row.s][0].toUpperCase() + PLURAL[row.s].slice(1)}
+			value={now}
+			color={COLOR[row.s]}
+		>
+			{@render txt(CX1, row.top - 9, now, 12, {
+				anchor: 'end',
+				tabular: true,
+				muted: !current.present[row.i],
+				weight: 600
+			})}
+		</Readout>
 	{/each}
 
 	<!-- markers where the reader switched a species -->
@@ -644,13 +664,17 @@
 			stroke-width="1"
 			stroke-dasharray="3 3"
 		/>
-		{@render txt(m.x + 4, CY0 - 4 - m.row * 13, m.text, 11, { muted: true })}
+		<Readout id="marker-{m.j}">
+			{@render txt(m.x + 4, CY0 - 4 - m.row * 13, m.text, 11, { muted: true })}
+		</Readout>
 	{/each}
 
-	{#each yearTicks as v (v)}
-		{@render txt(sx(v), CY1 + 16, String(Math.round(v)), 11, { muted: true, anchor: 'middle' })}
-	{/each}
-	{@render txt(CX1, CY1 + 32, 'years', 11, { muted: true, anchor: 'end' })}
+	<Readout id="year-axis">
+		{#each yearTicks as v (v)}
+			{@render txt(sx(v), CY1 + 16, String(Math.round(v)), 11, { muted: true, anchor: 'middle' })}
+		{/each}
+		{@render txt(CX1, CY1 + 32, 'years', 11, { muted: true, anchor: 'end' })}
+	</Readout>
 </g>
 
 {#snippet txt(

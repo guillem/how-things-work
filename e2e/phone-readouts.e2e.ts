@@ -1320,6 +1320,42 @@ test.describe('on a phone', () => {
 		await page.locator('button[data-control=band][data-value=micro]').click();
 		await expect(panel).toContainText(/Microwave oven\s*2\.45 GHz/);
 	});
+
+	test('ecosystems field: the populations and the cycle are text and follow the controls', async ({
+		page
+	}) => {
+		await page.goto('./ecosystems/#growth');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Carrying capacity K\s*600/);
+		await expect(panel).toContainText(/Rabbits\s*\d+/);
+		await expect(drawing(page)).not.toContainText('carrying capacity K');
+		await range(page, 'room').fill('400');
+		await expect(panel).toContainText(/Carrying capacity K\s*400/);
+		await page.goto('./ecosystems/#cycles');
+		await expect(panel).toContainText(/Cycle\s*One cycle ≈ [\d.]+ years/);
+		await expect(panel).toContainText(/Foxes\s*\d+/);
+		await range(page, 'birth').press('End');
+		await range(page, 'predation').press('Home');
+		await range(page, 'death').press('Home');
+		await expect(panel).toContainText(/Cycle\s*Rabbits died out/);
+		await page.goto('./ecosystems/#loop');
+		await expect(panel).toContainText(/Balance point ✕\s*\d+ rabbits, \d+ foxes/);
+	});
+
+	test('ecosystems web: the counts are text and follow the switches', async ({ page }) => {
+		await page.goto('./ecosystems/#web');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Now\s*In balance/);
+		await expect(panel).toContainText(/Wolves\s*\d+/);
+		await expect(drawing(page)).not.toContainText('wolves');
+		const wolves = page.locator('input[type=checkbox][data-control=wolves]');
+		await wolves.focus();
+		await page.keyboard.press('Space');
+		await expect(wolves).not.toBeChecked();
+		await expect(panel).toContainText(/Wolves\s*switched off/);
+		await page.goto('./ecosystems/#newcomer');
+		await expect(panel).toContainText(/Deer\s*not here yet/);
+	});
 });
 
 test.describe('on a wide screen', () => {
