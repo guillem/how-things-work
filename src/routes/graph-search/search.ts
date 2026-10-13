@@ -168,7 +168,7 @@ export function search(g: Grid, algorithm: Algorithm, weight = 1): SearchResult 
 			steps.push({ current: cur, added });
 			order.push(cur);
 		}
-		return finish(); // here `done` means "discovered": the goal is reached once it is queued
+		return finish(); // here `done` means "discovered"; the search stops when the goal is dequeued
 	}
 
 	const heap = new Heap();

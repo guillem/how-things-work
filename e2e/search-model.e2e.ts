@@ -12,11 +12,12 @@ import {
 	route,
 	search,
 	serializeGrid,
+	type Cell,
 	type Grid
 } from '../src/routes/graph-search/search';
 
 /** Cheapest cost by brute force (Bellman–Ford style relaxation), to check the searches against. */
-function cheapest(g: Grid) {
+function cheapest(g: Grid, unit = false) {
 	const n = g.cols * g.rows;
 	const d = new Array(n).fill(Infinity);
 	d[g.start] = 0;
@@ -34,7 +35,7 @@ function cheapest(g: Grid) {
 			];
 			for (const j of nbs) {
 				if (j === false || g.cells[j] === 2) continue;
-				const v = d[i] + (g.cells[j] === 1 ? 5 : 1);
+				const v = d[i] + (g.cells[j] === 1 && !unit ? 5 : 1);
 				if (v < d[j]) {
 					d[j] = v;
 					changed = true;
@@ -135,7 +136,55 @@ test('roads: A* with straight-line distances agrees with Dijkstra and looks at f
 	for (const r of REGION.roads) {
 		const p = REGION.towns[r.a];
 		const q = REGION.towns[r.b];
-		expect(r.km).toBeGreaterThanOrEqual(Math.hypot(p.x - q.x, p.y - q.y) - 0.5);
+		expect(r.km).toBeGreaterThanOrEqual(Math.hypot(p.x - q.x, p.y - q.y));
+	}
+});
+
+test('numbers quoted in the narrative', () => {
+	// the marsh: A* looks at about a quarter of the squares Dijkstra does
+	expect(search(MARSH, 'astar').expanded).toBe(46);
+	expect(search(MARSH, 'dijkstra').expanded).toBe(173);
+	// trusting the estimate × 3 or × 5: fewer squares, a dearer route (39)
+	for (const [w, n] of [
+		[3, 36],
+		[5, 16]
+	] as const) {
+		const r = search(MARSH, 'astar', w);
+		expect(r.expanded).toBe(n);
+		expect(r.cost).toBe(39);
+	}
+	// small multipliers change little: more squares than × 1, same route
+	for (const w of [1.5, 2]) {
+		expect(search(MARSH, 'astar', w).expanded).toBeGreaterThanOrEqual(46);
+		expect(search(MARSH, 'astar', w).cost).toBe(21);
+	}
+	// the roads: 473 km; Dijkstra settles 9 towns, A* 7
+	const d = route(REGION, 0, 9, 'dijkstra');
+	const a = route(REGION, 0, 9, 'astar');
+	expect(d.km).toBe(473);
+	expect(d.order.length).toBe(9);
+	expect(a.order.length).toBe(7);
+});
+
+test('random maps: Dijkstra and A* find the cheapest route, BFS the fewest steps', () => {
+	let seed = 1;
+	const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+	for (let k = 0; k < 300; k++) {
+		const cols = 22;
+		const rows = 11;
+		const cells = Array.from({ length: cols * rows }, (): Cell => {
+			const u = rnd();
+			return u < 0.25 ? 2 : u < 0.4 ? 1 : 0;
+		});
+		const g: Grid = { cols, rows, cells, start: 0, goal: cols * rows - 1 };
+		g.cells[g.start] = 0;
+		g.cells[g.goal] = 0;
+		const best = cheapest(g);
+		expect(search(g, 'dijkstra').cost).toBe(best);
+		expect(search(g, 'astar').cost).toBe(best);
+		const steps = cheapest(g, true);
+		const bfs = search(g, 'bfs').path;
+		expect(bfs.length ? bfs.length - 1 : Infinity).toBe(steps);
 	}
 });
 

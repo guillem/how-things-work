@@ -321,7 +321,7 @@
 		if (!a.r.path.length)
 			return ['The goal cannot be reached: each method searches everything it can reach.', ''];
 		const pct = Math.round((100 * a.r.expanded) / Math.max(1, d.r.expanded));
-		const first = `A* looked at ${a.r.expanded} cells, ${pct}% of Dijkstra's ${d.r.expanded}, and found a route just as cheap.`;
+		const first = `A* looked at ${a.r.expanded} squares, ${pct}% of Dijkstra's ${d.r.expanded}, and found a route just as cheap.`;
 		const second =
 			b.r.cost > d.r.cost
 				? `Breadth-first's route has the fewest steps (${b.r.path.length - 1}) but costs ${b.r.cost}: ${b.r.cost - d.r.cost} more than the cheapest.`
@@ -510,7 +510,7 @@
 		/>
 
 		<!-- readouts -->
-		{@render txt(X, GY + gh + 30, `visited ${plural(u.count, 'cell')}`, 15, {
+		{@render txt(X, GY + gh + 30, `visited ${plural(u.count, 'square')}`, 15, {
 			weight: 600,
 			color: 'var(--gs-visited-far)',
 			data: 'visited'
@@ -553,7 +553,7 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	{@render txt(SX, SY + 32, 'Cells visited before reaching the goal', 15, { weight: 600 })}
+	{@render txt(SX, SY + 32, 'Squares visited before reaching the goal', 15, { weight: 600 })}
 	{@render txt(700, SY + 32, 'Route found', 15, { weight: 600 })}
 	{#each panels as u, p (u.algo)}
 		{@const y = SY + 74 + p * 46}
@@ -602,7 +602,7 @@
 		{@render txt(
 			SX,
 			SY + 240,
-			'The three searches run at the same speed, one cell at a time…',
+			'The three searches run at the same speed, one square at a time…',
 			14,
 			{
 				muted: true

@@ -130,7 +130,7 @@
 			: `${n}: ${d} km from Ashford, the nearest town not yet settled`;
 	});
 	const TAKEAWAY =
-		'A route is a systematic exploration of a graph — and a good estimate lets the search skip part of it.';
+		'Finding a route is a systematic exploration of a graph — and a good estimate lets the search skip much of it.';
 	const fadeIn = $derived(reduced ? 1 : smoothstep(0, 0.5, t));
 </script>
 
