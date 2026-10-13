@@ -543,6 +543,54 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Energy on the left\s*50%/);
 		await expect(panel).toContainText('this is the most likely share');
 	});
+
+	test('chaos pendulum: the release angle and energy are text and follow the angle', async ({
+		page
+	}) => {
+		await page.goto('./chaos-fractals/#pendulum');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Released from\s*120°/);
+		await expect(panel).toContainText(/Energy\s*-?\d+\.\d+ J/);
+		await expect(drawing(page)).not.toContainText('Time since release');
+		await range(page, 'angle').fill('60');
+		await expect(panel).toContainText(/Released from\s*60°/);
+		await page.goto('./chaos-fractals/#twins');
+		await expect(panel).toContainText(/Starting difference\s*0\.001°/);
+		await expect(drawing(page)).not.toContainText('Starting difference');
+		await page.locator('button[data-control="nudge"][data-value="1"]').click();
+		await expect(panel).toContainText(/Starting difference\s*1°/);
+	});
+
+	test('chaos logistic map: the growth rate and its outcome are text and follow r', async ({
+		page
+	}) => {
+		await page.goto('./chaos-fractals/#logistic');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Growth rate\s*r = 2\.800/);
+		await expect(panel).toContainText(/The population\s*settles at/);
+		await expect(drawing(page)).not.toContainText('The population');
+		await range(page, 'rate').fill('3.9');
+		await expect(panel).toContainText(/Growth rate\s*r = 3\.900/);
+		await expect(panel).toContainText('no year ever repeats an earlier one');
+		await page.goto('./chaos-fractals/#cascade');
+		await expect(panel).toContainText(/Lyapunov exponent\s*−?\d/);
+		await expect(drawing(page)).not.toContainText('Lyapunov exponent');
+	});
+
+	test('mandelbrot: the orbits and the magnification are text and follow the place', async ({
+		page
+	}) => {
+		await page.goto('./chaos-fractals/#mandelbrot');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Rule\s*z → z² \+ c/);
+		await expect(panel).toContainText(/stays bounded|escapes after/);
+		await expect(drawing(page)).not.toContainText('start at z₀ = 0');
+		await page.goto('./chaos-fractals/#zoom');
+		await expect(panel).toContainText(/Magnification\s*× 1\s*Repetitions/);
+		await expect(drawing(page)).not.toContainText('repetitions per point');
+		await page.locator('button[data-control="place"][data-value="minibrot"]').click();
+		await expect(panel).not.toContainText(/Magnification\s*× 1\s*Repetitions/);
+	});
 });
 
 test.describe('on a wide screen', () => {

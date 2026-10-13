@@ -34,7 +34,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, easeInOut, lerp, smoothstep, startDrag, toSvg } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { escape, iterationsFor, TOUR } from '../chaos';
 
 	let { step, t, params, setParam, reduced, dark }: StageProps = $props();
@@ -698,7 +698,12 @@
 						stroke="var(--stage-ink)"
 						stroke-width="1.25"
 					/>
-					{@render txt(INSET.x, INSET.y - 10, 'A tiny copy of the whole set', 13, { weight: 600 })}
+					<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+					<Readout id="inset" order={10} label="Inset: a tiny copy of the whole set">
+						{@render txt(INSET.x, INSET.y - 10, 'A tiny copy of the whole set', 13, {
+							weight: 600
+						})}
+					</Readout>
 				</g>
 			{/if}
 
@@ -721,21 +726,26 @@
 							<line x1={ax - 5} x2={ax + 5} y1={sy(tk.v, view)} y2={sy(tk.v, view)} />
 						{/each}
 					</g>
-					{#each REAL_TICKS as v (v)}
-						{@render txt(sx(v, view) + (v === 0 ? -6 : 0), ay + 20, minus(String(v)), 12, {
-							anchor: v === 0 ? 'end' : 'middle',
+					<Readout id="axes">
+						{#each REAL_TICKS as v (v)}
+							{@render txt(sx(v, view) + (v === 0 ? -6 : 0), ay + 20, minus(String(v)), 12, {
+								anchor: v === 0 ? 'end' : 'middle',
+								muted: true
+							})}
+						{/each}
+						{#each IM_TICKS as tk (tk.v)}
+							{@render txt(ax - 9, sy(tk.v, view) + 4, tk.label, 12, {
+								anchor: 'end',
+								muted: true,
+								italic: true
+							})}
+						{/each}
+						{@render txt(IMG.x + IMG.w - 10, ay - 10, 'real', 12, {
+							anchor: 'end',
 							muted: true
 						})}
-					{/each}
-					{#each IM_TICKS as tk (tk.v)}
-						{@render txt(ax - 9, sy(tk.v, view) + 4, tk.label, 12, {
-							anchor: 'end',
-							muted: true,
-							italic: true
-						})}
-					{/each}
-					{@render txt(IMG.x + IMG.w - 10, ay - 10, 'real', 12, { anchor: 'end', muted: true })}
-					{@render txt(ax + 9, IMG.y + 20, 'imaginary', 12, { muted: true })}
+						{@render txt(ax + 9, IMG.y + 20, 'imaginary', 12, { muted: true })}
+					</Readout>
 				</g>
 			{/if}
 
@@ -768,7 +778,9 @@
 						<circle {cx} {cy} r="2.5" fill="var(--stage-ink)" />
 						{@render txt(cx + 12, cy - 9, cName(k), 14, { weight: 700, italic: true })}
 					{/each}
-					{@render txt(sx(0, view) + 7, sy(0, view) - 8, 'z₀ = 0', 11, { muted: true })}
+					<Readout id="z0">
+						{@render txt(sx(0, view) + 7, sy(0, view) - 8, 'z₀ = 0', 11, { muted: true })}
+					</Readout>
 				</g>
 			{/if}
 		</g>
@@ -788,30 +800,48 @@
 	<!-- ---------------------------------------------------------------- panel -->
 	{#if show(wSet.current) > 0.01}
 		<g opacity={show(wSet.current)} style:pointer-events="none">
-			{@render txt(PL, 46, 'z → z² + c', 20, { weight: 600 })}
-			{@render txt(PL, 68, 'start at z₀ = 0, repeat', 12, { muted: true })}
+			<Readout
+				id="rule"
+				order={1}
+				label="Rule"
+				value="z → z² + c"
+				note="start at z₀ = 0, repeat"
+				opacity={show(wSet.current)}
+			>
+				{@render txt(PL, 46, 'z → z² + c', 20, { weight: 600 })}
+				{@render txt(PL, 68, 'start at z₀ = 0, repeat', 12, { muted: true })}
+			</Readout>
 			{#each orbits as o, k (k)}
 				{@const y0 = 112 + k * 78}
-				{@render txt(PL, y0, `${cName(k)} = ${complex(o.c.x, o.c.y)}`, 16, {
-					weight: 600,
-					tabular: true
-				})}
-				{@render txt(
-					PL,
-					y0 + 22,
+				{@const fate =
 					o.steps === Infinity
 						? 'stays bounded'
-						: `escapes after ${o.steps} step${o.steps === 1 ? '' : 's'}`,
-					13,
-					{ weight: 600, color: o.steps === Infinity ? 'var(--chaos-a)' : 'var(--chaos-b)' }
-				)}
-				{@render txt(
-					PL,
-					y0 + 40,
-					o.steps === Infinity ? 'in the set' : '|z| passes 2: off to infinity',
-					11,
-					{ muted: true }
-				)}
+						: `escapes after ${o.steps} step${o.steps === 1 ? '' : 's'}`}
+				<Readout
+					id="orbit-{k}"
+					order={2 + k}
+					label="{cName(k)} = {complex(o.c.x, o.c.y)}"
+					value={fate}
+					note={o.steps === Infinity ? 'in the set' : '|z| passes 2: off to infinity'}
+					color={o.steps === Infinity ? 'var(--chaos-a)' : 'var(--chaos-b)'}
+					opacity={show(wSet.current)}
+				>
+					{@render txt(PL, y0, `${cName(k)} = ${complex(o.c.x, o.c.y)}`, 16, {
+						weight: 600,
+						tabular: true
+					})}
+					{@render txt(PL, y0 + 22, fate, 13, {
+						weight: 600,
+						color: o.steps === Infinity ? 'var(--chaos-a)' : 'var(--chaos-b)'
+					})}
+					{@render txt(
+						PL,
+						y0 + 40,
+						o.steps === Infinity ? 'in the set' : '|z| passes 2: off to infinity',
+						11,
+						{ muted: true }
+					)}
+				</Readout>
 			{/each}
 
 			<!-- legend -->
@@ -824,13 +854,23 @@
 				stroke-width="2"
 			/>
 			<circle cx={PL + 8} cy={legendY - 4} r="2.5" fill="var(--stage-ink)" />
-			{@render txt(PL + 24, legendY, 'the point c', 12, { muted: true })}
+			<Readout id="key-c" order={10} label="Ring: the point c · dots: z₁, z₂, … (first 20)">
+				{@render txt(PL + 24, legendY, 'the point c', 12, { muted: true })}
+			</Readout>
 			<circle cx={PL + 4} cy={legendY + 20} r="3" fill="var(--chaos-a)" />
 			<circle cx={PL + 13} cy={legendY + 20} r="3" fill="var(--chaos-b)" />
-			{@render txt(PL + 24, legendY + 24, 'z₁, z₂, … (first 20)', 12, { muted: true })}
+			<Readout id="key-z">
+				{@render txt(PL + 24, legendY + 24, 'z₁, z₂, … (first 20)', 12, { muted: true })}
+			</Readout>
 
 			<rect x={PL} y={legendY + 52} width="18" height="14" rx="3" fill="var(--chaos-set)" />
-			{@render txt(PL + 24, legendY + 63, 'in the set', 12, { muted: true })}
+			<Readout
+				id="key-set"
+				order={11}
+				label="Black: in the set · outside, the colour shows how quickly z escapes"
+			>
+				{@render txt(PL + 24, legendY + 63, 'in the set', 12, { muted: true })}
+			</Readout>
 			<rect
 				x={PL}
 				y={legendY + 78}
@@ -841,61 +881,111 @@
 				stroke="var(--stage-line)"
 				stroke-width="0.5"
 			/>
-			{@render txt(PL, legendY + 104, 'at once', 11, { muted: true })}
-			{@render txt(PR, legendY + 104, 'more slowly →', 11, { anchor: 'end', muted: true })}
-			{@render txt(PL, legendY + 126, 'outside: the colour shows', 12, { muted: true })}
-			{@render txt(PL, legendY + 142, 'how quickly z escapes', 12, { muted: true })}
+			<Readout id="key-escape">
+				{@render txt(PL, legendY + 104, 'at once', 11, { muted: true })}
+				{@render txt(PR, legendY + 104, 'more slowly →', 11, { anchor: 'end', muted: true })}
+				{@render txt(PL, legendY + 126, 'outside: the colour shows', 12, { muted: true })}
+				{@render txt(PL, legendY + 142, 'how quickly z escapes', 12, { muted: true })}
+			</Readout>
 		</g>
 	{/if}
 
 	{#if show(wZoom.current) > 0.01}
 		<g opacity={show(wZoom.current)}>
 			<g style:pointer-events="none">
-				{@render txt(PL, 40, 'magnification', 12, { muted: true })}
-				{@render txt(PL, 70, magnification(target.width), 24, { weight: 600, tabular: true })}
-				{@render txt(PL, 100, 'repetitions per point', 12, { muted: true })}
-				{@render txt(PL, 122, String(iterationsFor(target.width)), 16, {
-					weight: 600,
-					tabular: true
-				})}
-				{@render txt(PL, 152, 'centre', 12, { muted: true })}
-				{@render txt(PL, 172, minus(target.x.toFixed(centreDigits)), 12, { tabular: true })}
-				{@render txt(
-					PL,
-					190,
-					`${target.y < 0 ? '−' : '+'} ${Math.abs(target.y).toFixed(centreDigits)}i`,
-					12,
-					{ tabular: true }
-				)}
+				<Readout
+					id="magnification"
+					order={1}
+					label="Magnification"
+					value={magnification(target.width)}
+					opacity={show(wZoom.current)}
+				>
+					{@render txt(PL, 40, 'magnification', 12, { muted: true })}
+					{@render txt(PL, 70, magnification(target.width), 24, { weight: 600, tabular: true })}
+				</Readout>
+				<Readout
+					id="repetitions"
+					order={2}
+					label="Repetitions per point"
+					value={String(iterationsFor(target.width))}
+					opacity={show(wZoom.current)}
+				>
+					{@render txt(PL, 100, 'repetitions per point', 12, { muted: true })}
+					{@render txt(PL, 122, String(iterationsFor(target.width)), 16, {
+						weight: 600,
+						tabular: true
+					})}
+				</Readout>
+				<Readout
+					id="centre"
+					order={3}
+					label="Centre"
+					value="{minus(target.x.toFixed(centreDigits))} {target.y < 0 ? '−' : '+'} {Math.abs(
+						target.y
+					).toFixed(centreDigits)}i"
+					opacity={show(wZoom.current)}
+				>
+					{@render txt(PL, 152, 'centre', 12, { muted: true })}
+					{@render txt(PL, 172, minus(target.x.toFixed(centreDigits)), 12, { tabular: true })}
+					{@render txt(
+						PL,
+						190,
+						`${target.y < 0 ? '−' : '+'} ${Math.abs(target.y).toFixed(centreDigits)}i`,
+						12,
+						{ tabular: true }
+					)}
+				</Readout>
 			</g>
 			{@render zbutton(PL, 'Zoom in', '+', zoomIn, atLimit(to))}
 			{@render zbutton(PL + 66, 'Zoom out', '−', zoomOut, to.width >= MAX_W)}
 			<g style:pointer-events="none">
 				{#if atLimit(to)}
-					{@render txt(PL, 292, 'The limit of ordinary', 12, {
-						color: 'var(--chaos-b)',
-						weight: 600
-					})}
-					{@render txt(PL, 308, 'computer numbers (about', 12, {
-						color: 'var(--chaos-b)',
-						weight: 600
-					})}
-					{@render txt(PL, 324, '16 digits): no deeper here.', 12, {
-						color: 'var(--chaos-b)',
-						weight: 600
-					})}
+					<Readout
+						id="limit"
+						order={4}
+						label="No deeper here"
+						value="the limit of ordinary computer numbers (about 16 digits)"
+						color="var(--chaos-b)"
+						opacity={show(wZoom.current)}
+					>
+						{@render txt(PL, 292, 'The limit of ordinary', 12, {
+							color: 'var(--chaos-b)',
+							weight: 600
+						})}
+						{@render txt(PL, 308, 'computer numbers (about', 12, {
+							color: 'var(--chaos-b)',
+							weight: 600
+						})}
+						{@render txt(PL, 324, '16 digits): no deeper here.', 12, {
+							color: 'var(--chaos-b)',
+							weight: 600
+						})}
+					</Readout>
 				{:else if allInside}
-					{@render txt(PL, 292, 'All black: you are inside', 12, { weight: 600 })}
-					{@render txt(PL, 308, 'the set. Zoom out (−) or', 12, { muted: true })}
-					{@render txt(PL, 324, 'drag towards an edge.', 12, { muted: true })}
+					<Readout
+						id="inside"
+						order={4}
+						label="All black"
+						value="you are inside the set"
+						note="zoom out (−) or drag towards an edge"
+						opacity={show(wZoom.current)}
+					>
+						{@render txt(PL, 292, 'All black: you are inside', 12, { weight: 600 })}
+						{@render txt(PL, 308, 'the set. Zoom out (−) or', 12, { muted: true })}
+						{@render txt(PL, 324, 'drag towards an edge.', 12, { muted: true })}
+					</Readout>
 				{:else}
-					{@render txt(PL, 292, 'Drag the picture to move;', 12, { muted: true })}
-					{@render txt(PL, 308, 'scroll, or press + and −,', 12, { muted: true })}
-					{@render txt(PL, 324, 'to zoom.', 12, { muted: true })}
+					<Readout id="how-to">
+						{@render txt(PL, 292, 'Drag the picture to move;', 12, { muted: true })}
+						{@render txt(PL, 308, 'scroll, or press + and −,', 12, { muted: true })}
+						{@render txt(PL, 324, 'to zoom.', 12, { muted: true })}
+					</Readout>
 				{/if}
 
 				<!-- mini-map -->
-				{@render txt(PL, MM.y - 10, 'where you are', 12, { muted: true })}
+				<Readout id="minimap-title">
+					{@render txt(PL, MM.y - 10, 'where you are', 12, { muted: true })}
+				</Readout>
 				<rect x={MM.x} y={MM.y} width={MM.w} height={MM.h} rx="6" fill="var(--stage-bg)" />
 				{#if minimapUrl}
 					<image
@@ -958,7 +1048,9 @@
 					{/if}
 				</g>
 				{#if busy}
-					{@render txt(PL, MM.y + MM.h + 22, 'drawing finer detail…', 11, { muted: true })}
+					<Readout id="busy">
+						{@render txt(PL, MM.y + MM.h + 22, 'drawing finer detail…', 11, { muted: true })}
+					</Readout>
 				{/if}
 			</g>
 		</g>

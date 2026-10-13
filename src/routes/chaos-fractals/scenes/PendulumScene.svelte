@@ -25,7 +25,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, lerp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { bobs, energy, separation, swing, type PendulumState } from '../chaos';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -370,36 +370,70 @@
 
 	<!-- single pendulum: readout card -->
 	{#if w.current < 0.5}
-		<g opacity={clamp(1 - 2 * w.current, 0, 1)}>
-			<rect
-				x="704"
-				y="220"
-				width="236"
-				height="160"
-				rx="10"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			{@render txt(722, 250, `Released from ${angle}°`, 15, { weight: 600 })}
-			{@render txt(722, 268, 'both rods, at rest (dashed)', 11, { muted: true })}
-			{@render txt(722, 298, `Time since release  ${elapsed.toFixed(1)} s`, 13, {
-				tabular: true
-			})}
-			{@render txt(722, 328, `Energy  ${eNow.toPrecision(7)} J`, 13, {
-				tabular: true,
-				color: 'var(--chaos-a)',
-				weight: 600
-			})}
-			{@render txt(722, 346, 'unchanged to 7 digits: a check', 11, { muted: true })}
-			{@render txt(722, 362, 'that the computation is accurate', 11, { muted: true })}
+		{@const fs = clamp(1 - 2 * w.current, 0, 1)}
+		<g opacity={fs}>
+			<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+			<Readout id="card">
+				<rect
+					x="704"
+					y="220"
+					width="236"
+					height="160"
+					rx="10"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+			</Readout>
+			<Readout
+				id="released"
+				order={1}
+				label="Released from"
+				value="{angle}°"
+				note="at rest (dashed)"
+				opacity={fs}
+			>
+				{@render txt(722, 250, `Released from ${angle}°`, 15, { weight: 600 })}
+				{@render txt(722, 268, 'both rods, at rest (dashed)', 11, { muted: true })}
+			</Readout>
+			<Readout
+				id="time"
+				order={2}
+				label="Time since release"
+				value="{elapsed.toFixed(1)} s"
+				opacity={fs}
+			>
+				{@render txt(722, 298, `Time since release  ${elapsed.toFixed(1)} s`, 13, {
+					tabular: true
+				})}
+			</Readout>
+			<Readout
+				id="energy"
+				order={3}
+				label="Energy"
+				value="{eNow.toPrecision(7)} J"
+				note="unchanged to 7 digits: a check that the computation is accurate"
+				color="var(--chaos-a)"
+				opacity={fs}
+			>
+				{@render txt(722, 328, `Energy  ${eNow.toPrecision(7)} J`, 13, {
+					tabular: true,
+					color: 'var(--chaos-a)',
+					weight: 600
+				})}
+				{@render txt(722, 346, 'unchanged to 7 digits: a check', 11, { muted: true })}
+				{@render txt(722, 362, 'that the computation is accurate', 11, { muted: true })}
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- twins: the graph and readouts -->
 	{#if curve && w.current > 0.5}
-		<g opacity={clamp(2 * w.current - 1, 0, 1)}>
-			{@render txt(GL, 46, 'Distance between the two lower weights', 14, { weight: 600 })}
-			{@render txt(GL, 64, 'each line is ten times the one below', 11, { muted: true })}
+		{@const ft = clamp(2 * w.current - 1, 0, 1)}
+		<g opacity={ft}>
+			<Readout id="graph-title">
+				{@render txt(GL, 46, 'Distance between the two lower weights', 14, { weight: 600 })}
+				{@render txt(GL, 64, 'each line is ten times the one below', 11, { muted: true })}
+			</Readout>
 
 			{#each DECADES as l (l)}
 				<line
@@ -412,12 +446,19 @@
 					opacity={DECADE_LABELS[l] ? 0.6 : 1}
 				/>
 				{#if DECADE_LABELS[l]}
-					{@render txt(GL - 8, gy(l) + 4, DECADE_LABELS[l], 11, { anchor: 'end', muted: true })}
+					<Readout id="decade-{l}">
+						{@render txt(GL - 8, gy(l) + 4, DECADE_LABELS[l], 11, {
+							anchor: 'end',
+							muted: true
+						})}
+					</Readout>
 				{/if}
 			{/each}
 			{#each TIME_TICKS as s (s)}
 				<line x1={gx(s)} x2={gx(s)} y1={GB} y2={GB + 5} stroke="var(--stage-line)" />
-				{@render txt(gx(s), GB + 18, `${s} s`, 11, { anchor: 'middle', muted: true })}
+				<Readout id="time-{s}">
+					{@render txt(gx(s), GB + 18, `${s} s`, 11, { anchor: 'middle', muted: true })}
+				</Readout>
 			{/each}
 			<line x1={GL} x2={GR} y1={GB} y2={GB} stroke="var(--stage-line)" />
 
@@ -431,8 +472,10 @@
 				stroke-width="1.2"
 				stroke-dasharray="6 4"
 			/>
-			{@render txt(GL - 8, gy(-1) + 4, '10 cm', 11, { anchor: 'end', muted: true })}
-			{@render txt(GR, gy(-1) - 6, 'visibly apart', 11, { anchor: 'end', muted: true })}
+			<Readout id="apart-line">
+				{@render txt(GL - 8, gy(-1) + 4, '10 cm', 11, { anchor: 'end', muted: true })}
+				{@render txt(GR, gy(-1) - 6, 'visibly apart', 11, { anchor: 'end', muted: true })}
+			</Readout>
 
 			<!-- the previous nudge, faint -->
 			{#if ghostShown}
@@ -509,57 +552,107 @@
 			{/if}
 
 			<!-- readouts -->
-			{@render txt(GL, 470, `Starting difference  ${deg(nudge)}`, 13, { weight: 600 })}
-			{@render txt(GL, 486, `lower weights ${metres(sep0)} apart`, 11, { muted: true })}
-			{@render txt(GR, 470, `t = ${elapsed.toFixed(1)} s`, 13, {
-				anchor: 'end',
-				tabular: true
-			})}
-			{@render txt(GR, 486, `now ${metres(sepNow)} apart`, 11, {
-				anchor: 'end',
-				tabular: true,
-				color: 'var(--chaos-b)'
-			})}
-			{#if isApart}
-				{@render txt(GL, 516, `Visibly apart after ${curve.apart.toFixed(1)} s`, 14, {
-					weight: 600,
+			<Readout
+				id="start-diff"
+				order={1}
+				label="Starting difference"
+				value={deg(nudge)}
+				note="weights {metres(sep0)} apart"
+				opacity={ft}
+			>
+				{@render txt(GL, 470, `Starting difference  ${deg(nudge)}`, 13, { weight: 600 })}
+				{@render txt(GL, 486, `lower weights ${metres(sep0)} apart`, 11, { muted: true })}
+			</Readout>
+			<Readout
+				id="now"
+				order={2}
+				label="At t = {elapsed.toFixed(1)} s"
+				value="{metres(sepNow)} apart"
+				color="var(--chaos-b)"
+				opacity={ft}
+			>
+				{@render txt(GR, 470, `t = ${elapsed.toFixed(1)} s`, 13, {
+					anchor: 'end',
+					tabular: true
+				})}
+				{@render txt(GR, 486, `now ${metres(sepNow)} apart`, 11, {
+					anchor: 'end',
+					tabular: true,
 					color: 'var(--chaos-b)'
 				})}
-				{#if curve.fit}
+			</Readout>
+			<Readout
+				id="apart"
+				order={3}
+				label="Visibly apart (10 cm)"
+				value={isApart ? `after ${curve.apart.toFixed(1)} s` : 'not yet: still moving as one'}
+				note={isApart && curve.fit
+					? `until then about ×${factor.toFixed(1)} further apart every second (dotted)`
+					: undefined}
+				color={isApart ? 'var(--chaos-b)' : undefined}
+				opacity={ft}
+			>
+				{#if isApart}
+					{@render txt(GL, 516, `Visibly apart after ${curve.apart.toFixed(1)} s`, 14, {
+						weight: 600,
+						color: 'var(--chaos-b)'
+					})}
+					{#if curve.fit}
+						{@render txt(
+							GL,
+							534,
+							`Until then: about ×${factor.toFixed(1)} further apart every second (dotted)`,
+							11,
+							{ muted: true }
+						)}
+					{/if}
+				{:else}
+					{@render txt(GL, 516, 'Still moving as one: less than 10 cm apart', 14, {
+						muted: true
+					})}
+				{/if}
+			</Readout>
+			{#if ghostShown}
+				<Readout
+					id="ghost"
+					order={4}
+					label="Grey curve: {deg(ghostShown.nudge)}"
+					value="apart after {ghostShown.apart.toFixed(1)} s"
+					note="{deg(nudge)} stays together {Math.abs(gap).toFixed(1)} s {gap >= 0
+						? 'longer'
+						: 'less'}"
+					opacity={ft}
+				>
 					{@render txt(
 						GL,
-						534,
-						`Until then: about ×${factor.toFixed(1)} further apart every second (dotted)`,
-						11,
-						{ muted: true }
+						560,
+						`Grey curve: ${deg(ghostShown.nudge)}, apart after ${ghostShown.apart.toFixed(1)} s`,
+						12
 					)}
-				{/if}
-			{:else}
-				{@render txt(GL, 516, 'Still moving as one: less than 10 cm apart', 14, {
-					muted: true
-				})}
-			{/if}
-			{#if ghostShown}
-				{@render txt(
-					GL,
-					560,
-					`Grey curve: ${deg(ghostShown.nudge)}, apart after ${ghostShown.apart.toFixed(1)} s`,
-					12
-				)}
-				{@render txt(
-					GL,
-					577,
-					`${deg(nudge)} stays together ${Math.abs(gap).toFixed(1)} s ${gap >= 0 ? 'longer' : 'less'}`,
-					12,
-					{ weight: 600 }
-				)}
+					{@render txt(
+						GL,
+						577,
+						`${deg(nudge)} stays together ${Math.abs(gap).toFixed(1)} s ${gap >= 0 ? 'longer' : 'less'}`,
+						12,
+						{ weight: 600 }
+					)}
+				</Readout>
 			{/if}
 
 			<!-- legend for the twins -->
 			<circle cx="30" cy="556" r="6" fill="var(--chaos-a)" />
-			{@render txt(42, 560, `released from ${TWIN_ANGLE}°`, 12)}
+			<Readout id="twin-a" order={10} label="released from {TWIN_ANGLE}°" color="var(--chaos-a)">
+				{@render txt(42, 560, `released from ${TWIN_ANGLE}°`, 12)}
+			</Readout>
 			<circle cx="30" cy="578" r="6" fill="var(--chaos-b)" />
-			{@render txt(42, 582, `released from ${TWIN_ANGLE}° + ${deg(nudge)}`, 12)}
+			<Readout
+				id="twin-b"
+				order={11}
+				label="released from {TWIN_ANGLE}° + {deg(nudge)}"
+				color="var(--chaos-b)"
+			>
+				{@render txt(42, 582, `released from ${TWIN_ANGLE}° + ${deg(nudge)}`, 12)}
+			</Readout>
 		</g>
 	{/if}
 </g>

@@ -29,7 +29,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, clamp, smoothstep, startDrag } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { CHAOS_ONSET, DOUBLINGS, attractor, logistic, lyapunov, orbit, period } from '../chaos';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -194,6 +194,22 @@
 	// =============================================================== bifurcation
 	const rc = $derived(r3(clamp(Number(params.rateCascade ?? 3.5), R_MIN, R_MAX)));
 	const infoC = $derived(behaviour(rc));
+	const infoNote = $derived(
+		info.n === 1
+			? rate > 2.95
+				? 'close to the split: it settles, but very slowly'
+				: 'the steady level is 1 − 1/r'
+			: Number.isFinite(info.n)
+				? 'boom and bust, repeating exactly'
+				: 'no year ever repeats an earlier one'
+	);
+	const lyapNote = $derived(
+		infoC.lyap > 0.005
+			? 'two nearby starts drift apart'
+			: infoC.lyap > -0.01
+				? 'nearby starts close in very slowly'
+				: 'two nearby starts come together'
+	);
 	/** The exponent, with a sign for its meaning and never a "−0.00". */
 	const lyapText = $derived.by(() => {
 		const l = infoC.lyap;
@@ -346,12 +362,18 @@
 				<line x1={cx(g)} x2={cx(g)} y1={CT} y2={CT + S} stroke="var(--stage-grid)" />
 				<line x1={CL} x2={CL + S} y1={cy(g)} y2={cy(g)} stroke="var(--stage-grid)" />
 			{/each}
-			{#each [0, 0.5, 1] as v (v)}
-				{@render txt(cx(v), CT + S + 18, String(v), 11, { anchor: 'middle', muted: true })}
-				{@render txt(CL - 8, cy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
-			{/each}
-			{@render txt(CL + S / 2, CT + S + 40, "this year's x", 13, { anchor: 'middle' })}
-			{@render txt(CL - 34, CT + S / 2, "next year's x", 13, { anchor: 'middle', rotate: -90 })}
+			<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+			<Readout id="web-axes">
+				{#each [0, 0.5, 1] as v (v)}
+					{@render txt(cx(v), CT + S + 18, String(v), 11, { anchor: 'middle', muted: true })}
+					{@render txt(CL - 8, cy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+				{/each}
+				{@render txt(CL + S / 2, CT + S + 40, "this year's x", 13, { anchor: 'middle' })}
+				{@render txt(CL - 34, CT + S / 2, "next year's x", 13, {
+					anchor: 'middle',
+					rotate: -90
+				})}
+			</Readout>
 
 			<!-- the diagonal and the rule -->
 			<line
@@ -363,13 +385,24 @@
 				stroke-width="1.25"
 				stroke-dasharray="5 4"
 			/>
-			{@render txt(cx(1) + 8, cy(1) + 4, 'next = this', 11, { muted: true })}
+			<Readout id="diagonal">
+				{@render txt(cx(1) + 8, cy(1) + 4, 'next = this', 11, { muted: true })}
+			</Readout>
 			<path d={parabola} fill="none" stroke="var(--chaos-curve)" stroke-width="2.75" />
-			{@render txt(cx(0.5), CT - 12, 'next = r · x · (1 − x)', 13, {
-				anchor: 'middle',
-				color: 'var(--chaos-curve)',
-				weight: 600
-			})}
+			<Readout
+				id="rule"
+				order={2}
+				label="Rule"
+				value="next = r · x · (1 − x)"
+				color="var(--chaos-curve)"
+				opacity={1 - mix.current}
+			>
+				{@render txt(cx(0.5), CT - 12, 'next = r · x · (1 − x)', 13, {
+					anchor: 'middle',
+					color: 'var(--chaos-curve)',
+					weight: 600
+				})}
+			</Readout>
 
 			<!-- the cobweb -->
 			<g opacity={webFade}>
@@ -390,7 +423,9 @@
 					stroke-linejoin="round"
 				/>
 				<circle cx={cx(X0)} cy={cy(0)} r="4" fill="var(--chaos-b)" />
-				{@render txt(cx(X0) + 8, CT + S - 8, 'start 0.2', 11, { muted: true })}
+				<Readout id="start">
+					{@render txt(cx(X0) + 8, CT + S - 8, 'start 0.2', 11, { muted: true })}
+				</Readout>
 				<circle
 					cx={head.x}
 					cy={head.y}
@@ -402,27 +437,35 @@
 			</g>
 
 			<!-- readout -->
-			{@render txt(SL, 92, `r = ${rate.toFixed(3)}`, 16, { weight: 700, tabular: true })}
-			{@render txt(SL, 122, `The population ${info.text}`, 15, {
-				weight: 600,
-				color: 'var(--chaos-b)'
-			})}
-			{@render txt(
-				SL,
-				146,
-				info.n === 1
-					? rate > 2.95
-						? 'close to the split: it settles, but very slowly'
-						: 'the steady level is 1 − 1/r'
-					: Number.isFinite(info.n)
-						? 'boom and bust, repeating exactly'
-						: 'no year ever repeats an earlier one',
-				12,
-				{ muted: true }
-			)}
+			<Readout
+				id="rate"
+				order={1}
+				label="Growth rate"
+				value="r = {rate.toFixed(3)}"
+				opacity={1 - mix.current}
+			>
+				{@render txt(SL, 92, `r = ${rate.toFixed(3)}`, 16, { weight: 700, tabular: true })}
+			</Readout>
+			<Readout
+				id="population"
+				order={3}
+				label="The population"
+				value={info.text}
+				note={infoNote}
+				color="var(--chaos-b)"
+				opacity={1 - mix.current}
+			>
+				{@render txt(SL, 122, `The population ${info.text}`, 15, {
+					weight: 600,
+					color: 'var(--chaos-b)'
+				})}
+				{@render txt(SL, 146, infoNote, 12, { muted: true })}
+			</Readout>
 
 			<!-- the same orbit, year by year -->
-			{@render txt(SL, ST - 20, 'Population x, year by year', 14, { weight: 600 })}
+			<Readout id="series-title">
+				{@render txt(SL, ST - 20, 'Population x, year by year', 14, { weight: 600 })}
+			</Readout>
 			<rect
 				x={SL}
 				y={ST}
@@ -433,13 +476,15 @@
 				stroke="var(--border)"
 			/>
 			<line x1={SL} x2={SR} y1={sy(0.5)} y2={sy(0.5)} stroke="var(--stage-grid)" />
-			{#each [0, 0.5, 1] as v (v)}
-				{@render txt(SL - 8, sy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
-			{/each}
-			{#each [0, 10, 20, 30, 40] as j (j)}
-				{@render txt(sx(j), SB + 18, String(j), 11, { anchor: 'middle', muted: true })}
-			{/each}
-			{@render txt((SL + SR) / 2, SB + 40, 'year', 13, { anchor: 'middle' })}
+			<Readout id="series-axes">
+				{#each [0, 0.5, 1] as v (v)}
+					{@render txt(SL - 8, sy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+				{/each}
+				{#each [0, 10, 20, 30, 40] as j (j)}
+					{@render txt(sx(j), SB + 18, String(j), 11, { anchor: 'middle', muted: true })}
+				{/each}
+				{@render txt((SL + SR) / 2, SB + 40, 'year', 13, { anchor: 'middle' })}
+			</Readout>
 			{#each levels as v, i (i)}
 				<line
 					x1={SL}
@@ -525,37 +570,49 @@
 			/>
 
 			<!-- axes -->
-			{#each [2.5, 3, 3.5, 4] as r (r)}
-				{@render txt(dx(r), DB + 18, String(r), 11, { anchor: 'middle', muted: true })}
-			{/each}
-			{@render txt((DL + DR) / 2, DB + 40, 'growth rate r', 13, { anchor: 'middle' })}
-			{#each [0, 0.5, 1] as v (v)}
-				{@render txt(DL - 8, dy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
-			{/each}
-			{@render txt(DL - 34, (DT + DB) / 2, 'where the population ends up', 13, {
-				anchor: 'middle',
-				rotate: -90
-			})}
+			<Readout id="bif-axes">
+				{#each [2.5, 3, 3.5, 4] as r (r)}
+					{@render txt(dx(r), DB + 18, String(r), 11, { anchor: 'middle', muted: true })}
+				{/each}
+				{@render txt((DL + DR) / 2, DB + 40, 'growth rate r', 13, { anchor: 'middle' })}
+				{#each [0, 0.5, 1] as v (v)}
+					{@render txt(DL - 8, dy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+				{/each}
+				{@render txt(DL - 34, (DT + DB) / 2, 'where the population ends up', 13, {
+					anchor: 'middle',
+					rotate: -90
+				})}
+			</Readout>
 
 			<!-- the splits, the onset of chaos and the window of 3 -->
-			{@render txt(dx(DOUBLINGS[0]) - 10, DT - 12, 'splits into', 12, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout
+				id="landmarks"
+				order={10}
+				label="Splits into 2, 4, 8 … then chaos from r ≈ 3.5699, with a window of 3"
+			>
+				{@render txt(dx(DOUBLINGS[0]) - 10, DT - 12, 'splits into', 12, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 			{#each doublingMarks as m (m.r)}
 				<line x1={dx(m.r)} x2={dx(m.r)} y1={DT - 8} y2={DT} stroke="var(--stage-ink-muted)" />
-				{@render txt(dx(m.r), DT - 12, m.text, 13, { weight: 700, anchor: 'middle' })}
+				<Readout id="split-{m.r}">
+					{@render txt(dx(m.r), DT - 12, m.text, 13, { weight: 700, anchor: 'middle' })}
+				</Readout>
 			{/each}
 			<line x1={dx(3.83)} x2={dx(3.83)} y1={DT - 8} y2={DT} stroke="var(--stage-ink-muted)" />
-			{@render txt(dx(3.83), DT - 12, 'cycle of 3', 12, { anchor: 'middle', weight: 600 })}
-			{@render txt(dx(CHAOS_ONSET) - 6, DB - 14, 'chaos from r ≈ 3.5699 →', 12, {
-				anchor: 'end',
-				weight: 600
-			})}
-			{@render txt(dx(2.75), dy(0.62) + 30, '1 steady value', 12, {
-				anchor: 'middle',
-				muted: true
-			})}
+			<Readout id="bif-labels">
+				{@render txt(dx(3.83), DT - 12, 'cycle of 3', 12, { anchor: 'middle', weight: 600 })}
+				{@render txt(dx(CHAOS_ONSET) - 6, DB - 14, 'chaos from r ≈ 3.5699 →', 12, {
+					anchor: 'end',
+					weight: 600
+				})}
+				{@render txt(dx(2.75), dy(0.62) + 30, '1 steady value', 12, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</Readout>
 
 			<!-- the zoomed piece, and where it comes from -->
 			<rect
@@ -577,10 +634,16 @@
 				opacity="0.7"
 				style:pointer-events="none"
 			/>
-			{@render txt(ZL, ZT - 26, 'Zoomed in on the window of 3', 14, { weight: 600 })}
-			{@render txt(ZL, ZT - 9, `r ${Z.r0} – ${Z.r1}: a small copy of the whole`, 11, {
-				muted: true
-			})}
+			<Readout
+				id="zoom-title"
+				order={11}
+				label="Inset: the window of 3, r {Z.r0} – {Z.r1}, a small copy of the whole"
+			>
+				{@render txt(ZL, ZT - 26, 'Zoomed in on the window of 3', 14, { weight: 600 })}
+				{@render txt(ZL, ZT - 9, `r ${Z.r0} – ${Z.r1}: a small copy of the whole`, 11, {
+					muted: true
+				})}
+			</Readout>
 			<rect
 				x={ZL}
 				y={ZT}
@@ -646,10 +709,18 @@
 			/>
 
 			<!-- year by year at this r -->
-			{@render txt(ML, MT - 22, `Year by year at r = ${rc.toFixed(3)}`, 14, {
-				weight: 600,
-				tabular: true
-			})}
+			<Readout
+				id="rate-c"
+				order={1}
+				label="Growth rate"
+				value="r = {rc.toFixed(3)}"
+				opacity={mix.current}
+			>
+				{@render txt(ML, MT - 22, `Year by year at r = ${rc.toFixed(3)}`, 14, {
+					weight: 600,
+					tabular: true
+				})}
+			</Readout>
 			<rect
 				x={ML}
 				y={MT - 6}
@@ -678,25 +749,35 @@
 				stroke="var(--stage-ink)"
 				stroke-width="2"
 			/>
-			{@render txt(ML, MB + 24, 'after the first 1000 years', 11, { muted: true })}
+			<Readout id="mini-caption">
+				{@render txt(ML, MB + 24, 'after the first 1000 years', 11, { muted: true })}
+			</Readout>
 
 			<!-- readout -->
-			{@render txt(ML, 452, infoC.text, 15, { weight: 600, color: 'var(--chaos-b)' })}
-			{@render txt(
-				ML,
-				474,
-				infoC.lyap > 0.005
-					? 'two nearby starts drift apart'
-					: infoC.lyap > -0.01
-						? 'nearby starts close in very slowly'
-						: 'two nearby starts come together',
-				12,
-				{ muted: true }
-			)}
-			{@render txt(ML, 491, `Lyapunov exponent ${lyapText}`, 11, {
-				muted: true,
-				tabular: true
-			})}
+			<Readout
+				id="population-c"
+				order={3}
+				label="The population"
+				value={infoC.text}
+				note={lyapNote}
+				color="var(--chaos-b)"
+				opacity={mix.current}
+			>
+				{@render txt(ML, 452, infoC.text, 15, { weight: 600, color: 'var(--chaos-b)' })}
+				{@render txt(ML, 474, lyapNote, 12, { muted: true })}
+			</Readout>
+			<Readout
+				id="lyapunov"
+				order={2}
+				label="Lyapunov exponent"
+				value={lyapText}
+				opacity={mix.current}
+			>
+				{@render txt(ML, 491, `Lyapunov exponent ${lyapText}`, 11, {
+					muted: true,
+					tabular: true
+				})}
+			</Readout>
 		</g>
 	{/if}
 </g>
