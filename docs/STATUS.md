@@ -71,13 +71,9 @@ Last updated: 2026-10-13 UTC.
 
 ## Current development
 
-**Phone readouts rollout (2026-10-13, on main, not yet released):** 32 of 46 topics converted
-(list in BACKLOG). A last round was started at 99% weekly usage on atoms-periodic-table,
-electromagnetism, ecosystems, atmosphere-weather, bridges-structures and heart-circulation, in
-local worktrees under `.claude/worktrees/` (branches `worktree-agent-*`, one commit per topic). If
-the session stopped before merging them: `git worktree list`, merge each branch with
-`--no-ff`, keep both sides of `e2e/phone-readouts.e2e.ts` conflicts, update the BACKLOG list,
-`make e2e-full`, push. Release v0.1.17 after the user checks phones.
+**Phone readouts rollout (2026-10-13, on main, not yet released):** 38 of 46 topics converted
+(list in BACKLOG); 8 topics left, then the shared `<Axes>` tick labels. Release v0.1.17 after the
+user checks phones.
 
 **Fact-check round (2026-10-13):** the 29 built topics never reviewed through the Batch API were
 reviewed (batch msgbatch_01RwbH2w8JY5g9dqUqigDc89, ~$18 + ~260 searches; all "ready after
