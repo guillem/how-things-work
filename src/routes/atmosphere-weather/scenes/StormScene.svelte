@@ -199,11 +199,11 @@
 	function stateName(w: number) {
 		const c = category(w);
 		if (c > 0) return `Category ${c} hurricane`;
-		if (w >= 17) return 'Tropical storm';
+		if (w >= 17.5) return 'Tropical storm';
 		return 'Tropical depression';
 	}
 	const state = $derived(
-		!forms && v < 10 ? 'Dying away' : !forms && v < 17 ? 'Disturbance, fading' : stateName(v)
+		!forms && v < 10 ? 'Dying away' : !forms && v < 17.5 ? 'Disturbance, fading' : stateName(v)
 	);
 	const reasons = $derived(
 		[
@@ -472,7 +472,7 @@
 	<!-- state / reason tags -->
 	{#if reasons.length}
 		{#each reasons as r, k (r)}
-			{@const label = `${v >= 17 ? 'Weakening' : 'No hurricane'}: ${r}`}
+			{@const label = `${v >= 17.5 ? 'Weakening' : 'No hurricane'}: ${r}`}
 			{@const w = label.length * 6.5 + 24}
 			<g transform="translate({CX - w / 2} {360 - (reasons.length - 1 - k) * 28})">
 				<rect
@@ -628,7 +628,7 @@
 	)}
 	{@render txt(CL + 20, 124, 'Max possible over this sea:', 12, { muted: true })}
 	{#if tooCool}
-		{@render txt(CL + 20, 144, 'none — too cool for a hurricane', 14, {
+		{@render txt(CL + 20, 144, 'none here — too cool to keep a hurricane going', 14, {
 			weight: 600,
 			color: 'var(--atm-cold)'
 		})}
