@@ -9,7 +9,11 @@
 	 *   averaged over AVERAGE random sets of examples so that the trend is stable.
 	 *   The average is taken on the log scale (a geometric mean): an arithmetic
 	 *   mean of squared errors is dominated by the odd set where a degree-12 curve
-	 *   swings to 10⁴, which would hide the typical behaviour.
+	 *   swings to 10⁴, which would hide the typical behaviour. A dashed line marks
+	 *   the noise floor, noise²: the test error no model can beat on average. (A
+	 *   geometric mean of test MSEs over k points is biased low, by about
+	 *   exp(ψ(k/2) − ln(k/2)): 0.86 for 7 points. The averaged sweet-spot error
+	 *   still stays above noise² for the counts and noises offered.)
 	 *
 	 * Seeding (shared with FitScene): the set of examples shown is
 	 * `makeData(count, noise, 1 + fresh)`, where `fresh` counts presses of
@@ -347,6 +351,25 @@
 		'var(--fit-model)'
 	)}
 
+	<!-- the noise floor: the smallest test error any model can expect -->
+	{#if noise > 0 && dataW.current > 0.01}
+		{@const ly = yOf(lg(noise ** 2))}
+		<g opacity={dataW.current}>
+			<line
+				x1={CX0}
+				x2={CX1}
+				y1={ly}
+				y2={ly}
+				stroke="var(--stage-ink-muted)"
+				stroke-width="1.5"
+				stroke-dasharray="6 5"
+			/>
+			{@render txt(CX0 + 8, ly + 16, `noise floor (noise² = ${(noise ** 2).toFixed(4)})`, 11, {
+				muted: true
+			})}
+		</g>
+	{/if}
+
 	<!-- the two error curves -->
 	{#each series as s (s.key)}
 		<path
@@ -565,8 +588,10 @@
 		{#if noise === 0}
 			{@render txt(IX0 + 96, 526, '(no noise: nothing to overfit)', 11, { muted: true })}
 		{/if}
-		{@render txt(IX0, 546, `errors averaged over ${AVERAGE} random sets of`, 11, { muted: true })}
-		{@render txt(IX0, 560, 'examples (on the log scale); the inset shows one', 11, {
+		{@render txt(IX0, 546, `typical errors over ${AVERAGE} random sets of examples`, 11, {
+			muted: true
+		})}
+		{@render txt(IX0, 560, '(one wild set can’t dominate); the inset shows one', 11, {
 			muted: true
 		})}
 	</g>

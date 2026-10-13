@@ -67,7 +67,9 @@ test('the sweet spot moves right with more examples and left with more noise', (
 			);
 			curve.forEach((e, i) => (sum[i] += Math.log(Math.max(1e-12, e.test))));
 		}
-		const maxDegree = Math.min(12, n - Math.ceil(n / 3) - 1);
+		// Degrees with more settings than training examples are never the sweet spot.
+		const nTrain = makeData(n, noise, 1).filter((p) => !p.test).length;
+		const maxDegree = Math.min(12, nTrain - 1);
 		let b = 0;
 		for (let i = 0; i <= maxDegree; i++) if (sum[i] < sum[b]) b = i;
 		return b;

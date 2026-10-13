@@ -56,3 +56,12 @@ test('arrow keys on the degree slider change the degree, not the step', async ({
 	await expect(stage(page)).toContainText('degree 4');
 	await expect(page).toHaveURL(/#test$/);
 });
+
+test('more data: the noise floor is drawn at the noise squared and follows the noise', async ({
+	page
+}) => {
+	await open(page, './learning-from-data/#moredata', 'With 21 examples, noise 0.15');
+	await expect(stage(page)).toContainText('noise floor (noise² = 0.0225)');
+	await page.locator('input[type=range][data-control=noise]').fill('0.3');
+	await expect(stage(page)).toContainText('noise floor (noise² = 0.0900)');
+});

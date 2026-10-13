@@ -37,7 +37,8 @@ const noise: Control = {
 	max: 0.4,
 	step: 0.01,
 	default: 0.15,
-	format: (v) => (v === 0 ? 'none' : v.toFixed(2))
+	format: (v) => (v === 0 ? 'none' : v.toFixed(2)),
+	help: 'Typical size of the random wobble of each example; its square is the smallest test error any model can expect.'
 };
 
 const truth: Control = {
@@ -115,7 +116,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [degree, fresh],
 			body: `
-<p>A straight line cannot follow a curved pattern. Give the model more settings and it can bend: a <dfn data-def="A curve made of powers of x: a + b·x + c·x² + …; its degree is the highest power. A degree-d polynomial can turn up to d − 1 times.">polynomial</dfn> of degree 2 can bend once, degree 3 twice, and so on.</p>
+<p>A straight line cannot follow a curved pattern. Give the model more settings and it can bend: a <dfn data-def="A curve made of powers of x: c₀ + c₁·x + c₂·x² + …; its degree is the highest power, and a degree-d curve has d + 1 settings. It can turn up to d − 1 times.">polynomial</dfn> of degree 2 can bend once, degree 3 twice, and so on.</p>
 <p>Slide the flexibility up. The training error — measured on the examples the model was fitted to — never goes up: a more flexible curve can always get at least as close to the dots (it could simply copy the stiffer one).</p>
 <p>So should we just use the most flexible model we can?</p>`
 		},
@@ -169,7 +170,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [count, noise, degree, fresh],
 			body: `
-<p>Overfitting happens when a model has more freedom than its examples can pin down. Add examples and each wiggle of a flexible curve has to agree with more dots, so the noise averages out: the sweet spot moves to the right, and the test error of the flexible curves drops a long way — though never below the noise itself, which no model can predict.</p>
+<p>Overfitting happens when a model has more freedom than its examples can pin down. Add examples and each wiggle of a flexible curve has to agree with more dots, so the noise averages out: the sweet spot moves to the right, and the test error of the flexible curves drops a long way — though never below the size of the noise itself (the noise squared, shown as a dashed line), which no model can predict.</p>
 <p>Noise works the other way: the noisier the examples, the more there is to mistake for pattern, and the simpler the best model — turn the noise down and watch the sweet spot move right.</p>
 <p>That is the heart of learning from data: <strong>fit the examples, but only as closely as the amount and quality of the data justify</strong> — and judge the result on examples the model has never seen.</p>`
 		}
