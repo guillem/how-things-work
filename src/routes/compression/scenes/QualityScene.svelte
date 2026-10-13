@@ -11,7 +11,7 @@
 	 *             Quality: `params.qlow`.
 	 */
 	import { clamp, easeInOut, pingpong, wave } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { SIZE, bmpDataUrl, jpeg, psnr } from '../compression';
 	import BlockPicker from './BlockPicker.svelte';
 	import { BLOCKS, blockOf, fmt, greyUrl, imageOf, int } from './shared';
@@ -76,9 +76,20 @@
 <!-- no message box on these steps: everything moves up to balance the stage -->
 <g transform="translate(0 -44)">
 	{#if phase === 'quality'}
-		<Txt x={40} y={112} text="Original" size={13} weight={700} />
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="original-title">
+			<Txt x={40} y={112} text="Original" size={13} weight={700} />
+			{#snippet narrow()}
+				<Txt x={40} y={114} text="Original" size={24} weight={700} />
+			{/snippet}
+		</Readout>
 		<image href={origUrl} x={40} y={128} width={SIZE * PX} height={SIZE * PX} class="cmp-px" />
-		<Txt x={360} y={112} text="After JPEG at quality {quality}" size={13} weight={700} />
+		<Readout id="jpeg-title">
+			<Txt x={360} y={112} text="After JPEG at quality {quality}" size={13} weight={700} />
+			{#snippet narrow()}
+				<Txt x={360} y={114} text="JPEG, quality {quality}" size={24} weight={700} />
+			{/snippet}
+		</Readout>
 		<defs>
 			<clipPath id="quality-wipe">
 				<rect x={360} y={128} width={SIZE * PX * split} height={SIZE * PX} />
@@ -104,28 +115,32 @@
 				stroke="var(--cmp-pick)"
 				stroke-width="2.5"
 			/>
-			<Txt
-				x={lx2 - 6}
-				y={128 + SIZE * PX + 18}
-				text="← original"
-				size={11}
-				anchor="end"
-				color="var(--cmp-pick)"
-				opacity={clamp(split * 8)}
-			/>
-			<Txt
-				x={lx2 + 6}
-				y={128 + SIZE * PX + 18}
-				text="JPEG →"
-				size={11}
-				color="var(--cmp-pick)"
-				opacity={clamp(split * 8)}
-			/>
+			<Readout id="wipe-labels">
+				<Txt
+					x={lx2 - 6}
+					y={128 + SIZE * PX + 18}
+					text="← original"
+					size={11}
+					anchor="end"
+					color="var(--cmp-pick)"
+					opacity={clamp(split * 8)}
+				/>
+				<Txt
+					x={lx2 + 6}
+					y={128 + SIZE * PX + 18}
+					text="JPEG →"
+					size={11}
+					color="var(--cmp-pick)"
+					opacity={clamp(split * 8)}
+				/>
+			</Readout>
 		{/if}
 
 		{@const bx = 680}
 		{@const bw = 240}
-		<Txt x={bx} y={140} text="Size" size={13} weight={700} />
+		<Readout id="size-title">
+			<Txt x={bx} y={140} text="Size" size={13} weight={700} />
+		</Readout>
 		<rect
 			x={bx}
 			y={152}
@@ -135,7 +150,9 @@
 			fill="var(--stage-ink-muted)"
 			opacity="0.8"
 		/>
-		<Txt x={bx} y={190} text="raw: {int(RAW)} bits" size={12} muted />
+		<Readout id="raw">
+			<Txt x={bx} y={190} text="raw: {int(RAW)} bits" size={12} muted />
+		</Readout>
 		<rect
 			x={bx}
 			y={202}
@@ -144,56 +161,100 @@
 			rx="4"
 			fill="var(--explainer-accent, var(--accent))"
 		/>
-		<Txt
-			x={bx}
-			y={240}
-			text="JPEG: {int(result.bits)} bits"
-			size={13}
-			weight={700}
+		<Readout
+			id="size"
+			order={1}
+			label="Size"
+			value={sizeText}
+			note="raw {int(RAW)} bits → JPEG {int(result.bits)} bits"
 			color="var(--explainer-accent, var(--accent))"
-		/>
-		<Txt x={bx} y={296} text={sizeText} size={22} weight={700} />
-		<Txt
-			x={bx}
-			y={340}
-			text="{int(result.kept)} of {int(result.total)} coefficients kept"
-			size={13}
-		/>
-		<Txt
-			x={bx}
-			y={380}
-			text="PSNR {Number.isFinite(db) ? fmt(db, 1) : '∞'} dB"
-			size={15}
-			weight={700}
-		/>
-		<Txt x={bx} y={400} text="higher = closer to the original" size={11} muted />
-		<Txt
-			x={40}
-			y={470}
-			text="Every block: DCT, divide by the table, round; then zigzag, runs of zeros and a Huffman code."
-			size={13}
-			muted
-		/>
-		<Txt
-			x={40}
-			y={540}
-			text={quality >= 90
-				? 'High quality: small steps keep much more fine detail, and the file grows quickly.'
+		>
+			<Txt
+				x={bx}
+				y={240}
+				text="JPEG: {int(result.bits)} bits"
+				size={13}
+				weight={700}
+				color="var(--explainer-accent, var(--accent))"
+			/>
+			<Txt x={bx} y={296} text={sizeText} size={22} weight={700} />
+			{#snippet narrow()}
+				<Txt x={bx} y={270} text={sizeText} size={30} weight={700} />
+			{/snippet}
+		</Readout>
+		<Readout
+			id="kept"
+			order={2}
+			label="Kept"
+			value="{int(result.kept)} of {int(result.total)} coefficients"
+		>
+			<Txt
+				x={bx}
+				y={340}
+				text="{int(result.kept)} of {int(result.total)} coefficients kept"
+				size={13}
+			/>
+		</Readout>
+		<Readout
+			id="psnr"
+			order={3}
+			label="PSNR"
+			value="{Number.isFinite(db) ? fmt(db, 1) : '∞'} dB"
+			note="higher = closer to the original"
+		>
+			<Txt
+				x={bx}
+				y={380}
+				text="PSNR {Number.isFinite(db) ? fmt(db, 1) : '∞'} dB"
+				size={15}
+				weight={700}
+			/>
+			<Txt x={bx} y={400} text="higher = closer to the original" size={11} muted />
+		</Readout>
+		<Readout id="pipeline">
+			<Txt
+				x={40}
+				y={470}
+				text="Every block: DCT, divide by the table, round; then zigzag, runs of zeros and a Huffman code."
+				size={13}
+				muted
+			/>
+		</Readout>
+		<Readout
+			id="verdict"
+			order={4}
+			label="Quality {quality}"
+			value={quality >= 90
+				? 'fine detail kept, the file grows quickly'
 				: quality >= 40
-					? 'Middle quality: most fine detail dropped; on smooth pictures the difference is hard to see.'
-					: 'Low quality: the blocks start to show.'}
-			size={15}
-			weight={600}
-		/>
-		<Txt
-			x={40}
-			y={566}
-			text="The size counts the coded coefficients only (no file headers or tables)."
-			size={12}
-			muted
-		/>
+					? 'fine detail dropped, hard to see'
+					: 'the blocks start to show'}
+		>
+			<Txt
+				x={40}
+				y={540}
+				text={quality >= 90
+					? 'High quality: small steps keep much more fine detail, and the file grows quickly.'
+					: quality >= 40
+						? 'Middle quality: most fine detail dropped; on smooth pictures the difference is hard to see.'
+						: 'Low quality: the blocks start to show.'}
+				size={15}
+				weight={600}
+			/>
+		</Readout>
+		<Readout id="footnote">
+			<Txt
+				x={40}
+				y={566}
+				text="The size counts the coded coefficients only (no file headers or tables)."
+				size={12}
+				muted
+			/>
+		</Readout>
 	{:else}
-		<Txt x={40} y={112} text="Pick where to look" size={13} weight={700} />
+		<Readout id="pick-title">
+			<Txt x={40} y={112} text="Pick where to look" size={13} weight={700} />
+		</Readout>
 		<image href={origUrl} x={40} y={128} width={SIZE * 2} height={SIZE * 2} class="cmp-px" />
 		<rect
 			x={40 + lx * 2}
@@ -208,7 +269,18 @@
 		<BlockPicker x={40} y={128} px={2} index={block.index} onpick={pick} />
 
 		{#each panels as p (p.x)}
-			<Txt x={p.x} y={112} text={p.title} size={13} weight={700} />
+			<Readout id="panel-title-{p.x}">
+				<Txt x={p.x} y={112} text={p.title} size={13} weight={700} />
+				{#snippet narrow()}
+					<Txt
+						x={p.x}
+						y={116}
+						text={p.title.replace(/ at quality \d+| \(grey = none\)/, '')}
+						size={24}
+						weight={700}
+					/>
+				{/snippet}
+			</Readout>
 			<image href={p.url} x={p.x} y={128} width={L * ZP} height={L * ZP} class="cmp-px" />
 			{#each [1, 2, 3] as i (i)}
 				<line
@@ -229,38 +301,75 @@
 				/>
 			{/each}
 		{/each}
-		<Txt x={256} y={366} text="Block edges" size={11} color="var(--cmp-pick)" opacity={grid} />
+		<Readout id="block-edges">
+			<Txt x={256} y={366} text="Block edges" size={11} color="var(--cmp-pick)" opacity={grid} />
+		</Readout>
 
-		<Txt
-			x={256}
-			y={400}
-			text="Quality {quality}: {sizeText}, PSNR {Number.isFinite(db)
+		<Readout
+			id="damage"
+			order={1}
+			label="Quality {quality}"
+			value={sizeText}
+			note="PSNR {Number.isFinite(db)
 				? fmt(db, 1)
-				: '∞'} dB, largest error here {maxErr} level{maxErr === 1 ? '' : 's'}"
-			size={14}
-			weight={700}
-		/>
-		<Txt x={40} y={460} text="Blocking:" size={14} weight={700} />
-		<Txt
-			x={130}
-			y={460}
-			text="with only the slowest patterns left, each block turns into a flat or gently shaded tile."
-			size={13}
-		/>
-		<Txt x={40} y={490} text="Ringing:" size={14} weight={700} />
-		<Txt
-			x={130}
-			y={490}
-			text="next to a sharp edge, the missing fast patterns leave ripples inside the block."
-			size={13}
-		/>
-		<Txt
-			x={40}
-			y={550}
-			text="Lossy formats keep what the eye notices and drop the rest, until there is too little left."
-			size={15}
-			weight={600}
-		/>
+				: '∞'} dB; largest error here {maxErr} level{maxErr === 1 ? '' : 's'}"
+			color="var(--explainer-accent, var(--accent))"
+		>
+			<Txt
+				x={256}
+				y={400}
+				text="Quality {quality}: {sizeText}, PSNR {Number.isFinite(db)
+					? fmt(db, 1)
+					: '∞'} dB, largest error here {maxErr} level{maxErr === 1 ? '' : 's'}"
+				size={14}
+				weight={700}
+			/>
+		</Readout>
+		<Readout
+			id="blocking"
+			order={2}
+			label="Blocking"
+			value="flat or gently shaded tiles"
+			note="only the slowest patterns are left"
+		>
+			<Txt x={40} y={460} text="Blocking:" size={14} weight={700} />
+			<Txt
+				x={130}
+				y={460}
+				text="with only the slowest patterns left, each block turns into a flat or gently shaded tile."
+				size={13}
+			/>
+		</Readout>
+		<Readout
+			id="ringing"
+			order={3}
+			label="Ringing"
+			value="ripples inside the block"
+			note="the missing fast patterns, next to a sharp edge"
+		>
+			<Txt x={40} y={490} text="Ringing:" size={14} weight={700} />
+			<Txt
+				x={130}
+				y={490}
+				text="next to a sharp edge, the missing fast patterns leave ripples inside the block."
+				size={13}
+			/>
+		</Readout>
+		<Readout
+			id="lossy"
+			order={4}
+			label="Lossy formats"
+			value="keep what the eye notices"
+			note="and drop the rest, until there is too little left"
+		>
+			<Txt
+				x={40}
+				y={550}
+				text="Lossy formats keep what the eye notices and drop the rest, until there is too little left."
+				size={15}
+				weight={600}
+			/>
+		</Readout>
 	{/if}
 </g>
 

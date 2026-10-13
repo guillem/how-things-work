@@ -9,7 +9,7 @@
 	 * `a` slider. Reduced motion shows the finished search.
 	 */
 	import { clamp, cycle } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { fastPower, slowPower, sup } from '../../primes-modular-arithmetic/modular';
 	import { DH, REAL, diffieHellman, eveSearch } from '../crypto';
 	import Txt from './Txt.svelte';
@@ -42,20 +42,33 @@
 	<!-- axes -->
 	{#each TICKS as v (v)}
 		<line x1={AX.x0} x2={AX.x1} y1={sy(v)} y2={sy(v)} stroke="var(--stage-grid)" />
-		<Txt x={AX.x0 - 8} y={sy(v) + 4} text={String(v)} size={11} anchor="end" muted />
-		<Txt x={sx(v)} y={AX.y0 + 20} text={String(v)} size={11} anchor="middle" muted />
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="tick-{v}">
+			<Txt x={AX.x0 - 8} y={sy(v) + 4} text={String(v)} size={11} anchor="end" muted />
+			<Txt x={sx(v)} y={AX.y0 + 20} text={String(v)} size={11} anchor="middle" muted />
+		</Readout>
 	{/each}
 	<line x1={AX.x0} x2={AX.x0} y1={AX.y0} y2={AX.y1} stroke="var(--stage-line)" />
 	<line x1={AX.x0} x2={AX.x1} y1={AX.y0} y2={AX.y0} stroke="var(--stage-line)" />
-	<Txt
-		x={(AX.x0 + AX.x1) / 2}
-		y={AX.y0 + 46}
-		text="exponent Eve tries"
-		size={13}
-		weight={600}
-		anchor="middle"
-	/>
-	<Txt x={AX.x0 - 40} y={AX.y1 - 22} text="2ˣ mod 101" size={13} weight={600} />
+	<Readout id="x-title">
+		<Txt
+			x={(AX.x0 + AX.x1) / 2}
+			y={AX.y0 + 46}
+			text="exponent Eve tries"
+			size={13}
+			weight={600}
+			anchor="middle"
+		/>
+		{#snippet narrow()}
+			<Txt x={(AX.x0 + AX.x1) / 2} y={AX.y0 + 40} text="x" size={28} weight={600} anchor="middle" />
+		{/snippet}
+	</Readout>
+	<Readout id="y-title">
+		<Txt x={AX.x0 - 40} y={AX.y1 - 22} text="2ˣ mod 101" size={13} weight={600} />
+		{#snippet narrow()}
+			<Txt x={AX.x0 - 40} y={AX.y1 - 22} text="2ˣ mod 101" size={26} weight={600} />
+		{/snippet}
+	</Readout>
 
 	<!-- target: Alice's public number -->
 	<line
@@ -67,7 +80,26 @@
 		stroke-width="1.5"
 		stroke-dasharray="6 4"
 	/>
-	<Txt x={AX.x1 + 14} y={sy(A) + 4} text="A = {A}" size={13} weight={700} color="var(--cr-alice)" />
+	<Readout id="a-line">
+		<Txt
+			x={AX.x1 + 14}
+			y={sy(A) + 4}
+			text="A = {A}"
+			size={13}
+			weight={700}
+			color="var(--cr-alice)"
+		/>
+		{#snippet narrow()}
+			<Txt
+				x={AX.x1 + 10}
+				y={sy(A) + 9}
+				text="A = {A}"
+				size={26}
+				weight={700}
+				color="var(--cr-alice)"
+			/>
+		{/snippet}
+	</Readout>
 
 	{#if searching && !hit}
 		<line
@@ -100,15 +132,28 @@
 			stroke="var(--cr-alice)"
 			stroke-width="3"
 		/>
-		<Txt
-			x={sx(found.x)}
-			y={sy(A) - 16}
-			text="a = {found.x}"
-			size={14}
-			weight={700}
-			anchor="middle"
-			color="var(--cr-alice)"
-		/>
+		<Readout id="found">
+			<Txt
+				x={sx(found.x)}
+				y={sy(A) - 16}
+				text="a = {found.x}"
+				size={14}
+				weight={700}
+				anchor="middle"
+				color="var(--cr-alice)"
+			/>
+			{#snippet narrow()}
+				<Txt
+					x={sx(found.x)}
+					y={sy(A) - 18}
+					text="a = {found.x}"
+					size={26}
+					weight={700}
+					anchor="middle"
+					color="var(--cr-alice)"
+				/>
+			{/snippet}
+		</Readout>
 	{:else if searching}
 		<circle
 			cx={sx(trying)}
@@ -121,104 +166,139 @@
 	{/if}
 
 	<!-- panel -->
-	<Txt x={PX} y={70} text="Eve wants a with 2ᵃ ≡ {A} (mod 101)" size={17} weight={700} />
-	<Txt x={PX} y={94} text="No pattern to follow: try a = 0, 1, 2, …" size={13} muted />
-	<Txt
-		x={PX}
-		y={134}
-		text={hit
-			? `Found: a = ${found.x ?? '?'}`
-			: searching
-				? `Trying ${trying}: 2${sup(trying)} ≡ ${slowPower(DH.g, trying, DH.p)}`
-				: 'Trying a = 0, 1, 2, …'}
-		size={16}
-		weight={600}
-		color={hit ? 'var(--cr-alice)' : undefined}
-	/>
-	<Txt x={PX} y={178} text="Eve, by trying" size={14} weight={700} />
-	<Txt
-		x={PX}
-		y={204}
-		text="{nTries} {nTries === 1 ? 'try' : 'tries'}"
-		size={22}
-		weight={700}
+	<Readout
+		id="eve-wants"
+		order={1}
+		label="Eve wants a with"
+		value="2ᵃ ≡ {A} (mod 101)"
+		note="no pattern to follow: try a = 0, 1, 2, …"
+	>
+		<Txt x={PX} y={70} text="Eve wants a with 2ᵃ ≡ {A} (mod 101)" size={17} weight={700} />
+		<Txt x={PX} y={94} text="No pattern to follow: try a = 0, 1, 2, …" size={13} muted />
+	</Readout>
+	<Readout id="status">
+		<Txt
+			x={PX}
+			y={134}
+			text={hit
+				? `Found: a = ${found.x ?? '?'}`
+				: searching
+					? `Trying ${trying}: 2${sup(trying)} ≡ ${slowPower(DH.g, trying, DH.p)}`
+					: 'Trying a = 0, 1, 2, …'}
+			size={16}
+			weight={600}
+			color={hit ? 'var(--cr-alice)' : undefined}
+		/>
+	</Readout>
+	<Readout
+		id="eve-tries"
+		order={2}
+		label="Eve, by trying"
+		value="{nTries} {nTries === 1 ? 'try' : 'tries'}"
 		color="var(--cr-bad)"
-	/>
-	<Txt x={PX + 190} y={178} text="Alice, forwards" size={14} weight={700} />
-	<Txt
-		x={PX + 190}
-		y={204}
-		text="{cost} multiplication{cost === 1 ? '' : 's'}"
-		size={22}
-		weight={700}
+	>
+		<Txt x={PX} y={178} text="Eve, by trying" size={14} weight={700} />
+		<Txt
+			x={PX}
+			y={204}
+			text="{nTries} {nTries === 1 ? 'try' : 'tries'}"
+			size={22}
+			weight={700}
+			color="var(--cr-bad)"
+		/>
+	</Readout>
+	<Readout
+		id="alice-mults"
+		order={3}
+		label="Alice, forwards"
+		value="{cost} multiplication{cost === 1 ? '' : 's'}"
 		color="var(--cr-ok)"
-	/>
-	<Txt x={PX} y={240} text="Easy for Eve here: the clock is tiny." size={13} muted />
-
-	<rect
-		x={PX - 14}
-		y={270}
-		width={960 - PX - 2}
-		height={250}
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
-	<Txt
-		x={PX + 4}
-		y={300}
-		text="Real keys: a prime of {REAL.keyBits} bits"
-		size={14}
-		weight={700}
-		halo={false}
-	/>
-	<Txt
-		x={PX + 4}
-		y={320}
-		text="({REAL.keyDigits} digits) or more"
-		size={14}
-		weight={700}
-		halo={false}
-	/>
-	<Txt
-		x={PX + 4}
-		y={354}
-		text="Alice: at most 4,094 multiplications"
-		size={13}
-		color="var(--cr-ok)"
-		weight={600}
-		halo={false}
-	/>
-	<Txt
-		x={PX + 4}
-		y={380}
-		text="Eve by trying: up to about 10⁶¹⁶ tries"
-		size={13}
-		color="var(--cr-bad)"
-		weight={600}
-		halo={false}
-	/>
-	<Txt x={PX + 4} y={416} text="Cleverer attacks exist. Their record:" size={13} halo={false} />
-	<Txt
-		x={PX + 4}
-		y={438}
-		text="a {REAL.dlogRecordBits}-bit ({REAL.dlogRecordDigits}-digit) prime, in 2019,"
-		size={13}
-		halo={false}
-	/>
-	<Txt
-		x={PX + 4}
-		y={460}
-		text="after thousands of years of computer time."
-		size={13}
-		halo={false}
-	/>
-	<Txt
-		x={PX + 4}
-		y={494}
-		text="The numbers here are for illustration."
-		size={12}
-		muted
-		halo={false}
-	/>
+	>
+		<Txt x={PX + 190} y={178} text="Alice, forwards" size={14} weight={700} />
+		<Txt
+			x={PX + 190}
+			y={204}
+			text="{cost} multiplication{cost === 1 ? '' : 's'}"
+			size={22}
+			weight={700}
+			color="var(--cr-ok)"
+		/>
+	</Readout>
+	<Readout id="tiny">
+		<Txt x={PX} y={240} text="Easy for Eve here: the clock is tiny." size={13} muted />
+	</Readout>
+	<Readout
+		id="real"
+		order={4}
+		label="Real keys"
+		value="a prime of {REAL.keyBits} bits"
+		note="Alice: at most 4,094 multiplications · Eve by trying: up to about 10⁶¹⁶ tries"
+	>
+		<rect
+			x={PX - 14}
+			y={270}
+			width={960 - PX - 2}
+			height={250}
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+		<Txt
+			x={PX + 4}
+			y={300}
+			text="Real keys: a prime of {REAL.keyBits} bits"
+			size={14}
+			weight={700}
+			halo={false}
+		/>
+		<Txt
+			x={PX + 4}
+			y={320}
+			text="({REAL.keyDigits} digits) or more"
+			size={14}
+			weight={700}
+			halo={false}
+		/>
+		<Txt
+			x={PX + 4}
+			y={354}
+			text="Alice: at most 4,094 multiplications"
+			size={13}
+			color="var(--cr-ok)"
+			weight={600}
+			halo={false}
+		/>
+		<Txt
+			x={PX + 4}
+			y={380}
+			text="Eve by trying: up to about 10⁶¹⁶ tries"
+			size={13}
+			color="var(--cr-bad)"
+			weight={600}
+			halo={false}
+		/>
+		<Txt x={PX + 4} y={416} text="Cleverer attacks exist. Their record:" size={13} halo={false} />
+		<Txt
+			x={PX + 4}
+			y={438}
+			text="a {REAL.dlogRecordBits}-bit ({REAL.dlogRecordDigits}-digit) prime, in 2019,"
+			size={13}
+			halo={false}
+		/>
+		<Txt
+			x={PX + 4}
+			y={460}
+			text="after thousands of years of computer time."
+			size={13}
+			halo={false}
+		/>
+		<Txt
+			x={PX + 4}
+			y={494}
+			text="The numbers here are for illustration."
+			size={12}
+			muted
+			halo={false}
+		/>
+	</Readout>
 </g>

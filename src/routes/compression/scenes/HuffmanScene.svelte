@@ -11,7 +11,7 @@
 	 * each merge at a height of one more than its taller child, so branches never cross.
 	 */
 	import { clamp, easeOut } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		encode,
 		fixedBits,
@@ -138,10 +138,29 @@
 	const barsY = $derived(Math.max(300, (groups.at(-1)?.y ?? 180) + 70));
 	const maxBar = $derived(Math.max(1, ...bars.map((b) => b.bits)));
 	const grow = $derived(easeOut(clamp((tv - 0.3) / 1.2)));
+
+	/** The build callout, as a phone readout row. */
+	const mergeRow = $derived.by(() => {
+		if (latest < 0)
+			return {
+				label: 'Symbols',
+				value: merges === 0 ? '1: nothing to merge' : String(k),
+				note: 'each weighted by its count'
+			};
+		const [a, b] = h.merges[latest];
+		return {
+			label: `Merge ${latest + 1} of ${merges}`,
+			value: `${h.nodes[a].weight} + ${h.nodes[b].weight} = ${h.nodes[k + latest].weight}`,
+			note: 'the two rarest nodes'
+		};
+	});
 </script>
 
 <g>
-	<Txt x={40} y={14} text="Your message" size={12} weight={700} />
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="your-message">
+		<Txt x={40} y={14} text="Your message" size={12} weight={700} />
+	</Readout>
 	<MessageInput x={40} y={22} w={600} value={msg} {setParam} presets />
 
 	{#if n === 0}
@@ -271,61 +290,96 @@
 		{/each}
 
 		{#if phase === 'build'}
-			{#if latest >= 0}
-				{@const [a, b] = h.merges[latest]}
+			<Readout id="merge" order={1} {...mergeRow}>
+				{#if latest >= 0}
+					{@const [a, b] = h.merges[latest]}
+					<Txt
+						x={920}
+						y={146}
+						text="Merge {latest + 1} of {merges}: the two rarest, {h.nodes[a].weight} + {h.nodes[b]
+							.weight} = {h.nodes[k + latest].weight}"
+						size={13}
+						weight={700}
+						anchor="end"
+					/>
+				{:else}
+					<Txt
+						x={920}
+						y={146}
+						text={merges === 0
+							? 'Only one symbol: nothing to merge'
+							: `${k} symbols, each weighted by its count`}
+						size={13}
+						weight={700}
+						anchor="end"
+					/>
+				{/if}
+			</Readout>
+			<Readout id="waiting">
+				<Txt x={40} y={146} text="◯ waiting to be merged" size={12} color="var(--cmp-pick)" />
+				{#snippet narrow()}
+					<Txt x={40} y={146} text="◯ waiting" size={26} color="var(--cmp-pick)" />
+				{/snippet}
+			</Readout>
+			<Readout
+				id="rule"
+				order={2}
+				label={done >= merges ? 'Done' : 'Repeat'}
+				value={done >= merges
+					? `${merges} merge${merges === 1 ? '' : 's'}, one tree`
+					: 'join the two rarest nodes'}
+				note={done >= merges ? undefined : 'and put the sum back'}
+			>
 				<Txt
-					x={920}
-					y={146}
-					text="Merge {latest + 1} of {merges}: the two rarest, {h.nodes[a].weight} + {h.nodes[b]
-						.weight} = {h.nodes[k + latest].weight}"
-					size={13}
-					weight={700}
-					anchor="end"
+					x={40}
+					y={566}
+					text={done >= merges
+						? `Done: ${merges} merge${merges === 1 ? '' : 's'} join ${k} symbol${k === 1 ? '' : 's'} into one tree`
+						: 'Repeat: take the two rarest nodes, join them, put the sum back'}
+					size={15}
+					weight={600}
 				/>
-			{:else}
-				<Txt
-					x={920}
-					y={146}
-					text={merges === 0
-						? 'Only one symbol: nothing to merge'
-						: `${k} symbols, each weighted by its count`}
-					size={13}
-					weight={700}
-					anchor="end"
-				/>
-			{/if}
-			<Txt x={40} y={146} text="◯ waiting to be merged" size={12} color="var(--cmp-pick)" />
-			<Txt
-				x={40}
-				y={566}
-				text={done >= merges
-					? `Done: ${merges} merge${merges === 1 ? '' : 's'} join ${k} symbol${k === 1 ? '' : 's'} into one tree`
-					: 'Repeat: take the two rarest nodes, join them, put the sum back'}
-				size={15}
-				weight={600}
-			/>
+			</Readout>
 		{:else if litSym}
 			{@const code = h.codes.get(litSym) ?? ''}
-			<Txt
-				x={920}
-				y={146}
-				text="“{show(litSym)}” = {code}: {code.length} bit{code.length === 1
-					? ''
-					: 's'} (surprise {fmt(bitsOf.get(litSym) ?? 0)} bits)"
-				size={13}
-				weight={700}
-				anchor="end"
-			/>
-			<Txt x={40} y={146} text="0 = left, 1 = right" size={12} muted />
+			<Readout
+				id="code"
+				order={1}
+				label="“{show(litSym)}”"
+				value={code}
+				note="{code.length} bit{code.length === 1 ? '' : 's'}; surprise {fmt(
+					bitsOf.get(litSym) ?? 0
+				)} bits"
+				color="var(--explainer-accent, var(--accent))"
+			>
+				<Txt
+					x={920}
+					y={146}
+					text="“{show(litSym)}” = {code}: {code.length} bit{code.length === 1
+						? ''
+						: 's'} (surprise {fmt(bitsOf.get(litSym) ?? 0)} bits)"
+					size={13}
+					weight={700}
+					anchor="end"
+				/>
+			</Readout>
+			<Readout id="left-right">
+				<Txt x={40} y={146} text="0 = left, 1 = right" size={12} muted />
+				{#snippet narrow()}
+					<Txt x={40} y={146} text="0 left · 1 right" size={26} muted />
+				{/snippet}
+			</Readout>
 		{/if}
 	{:else}
-		<Txt
-			x={40}
-			y={146}
-			text="The message in Huffman code: {coded.length} bits, decoded one symbol at a time"
-			size={13}
-			weight={700}
-		/>
+		<Readout id="coded-title">
+			<Txt
+				x={40}
+				y={146}
+				text="The message in Huffman code: {coded.length} bits, decoded one symbol at a time"
+				size={13}
+				weight={700}
+			/>
+		</Readout>
 		{#each groups as g (g.i)}
 			{@const on = g.i === cursor}
 			<g>
@@ -365,7 +419,16 @@
 			{@const y = barsY + i * 44}
 			{@const w = (b.bits / maxBar) * 520 * grow}
 			<g>
-				<Txt x={40} y={y + 15} text={b.label} size={13} weight={600} />
+				<Readout
+					id="bar-{i}"
+					order={1 + i}
+					label={b.label}
+					value="{fmt(b.bits, 1)} bits"
+					note={i === 2 && k > 1 ? `${fmt(avg)} bits per symbol, between H and H + 1` : undefined}
+					color={b.color}
+				>
+					<Txt x={40} y={y + 15} text={b.label} size={13} weight={600} />
+				</Readout>
 				<rect
 					x={220}
 					{y}
@@ -377,24 +440,38 @@
 					stroke={b.color}
 					stroke-dasharray={i === 3 ? '5 3' : undefined}
 				/>
-				<Txt
-					x={228 + w}
-					y={y + 16}
-					text="{fmt(b.bits, 1)} bits"
-					size={13}
-					weight={700}
-					color={b.color}
-				/>
+				<Readout id="bar-value-{i}">
+					<Txt
+						x={228 + w}
+						y={y + 16}
+						text="{fmt(b.bits, 1)} bits"
+						size={13}
+						weight={700}
+						color={b.color}
+					/>
+					{#snippet narrow()}
+						<Txt
+							x={228 + w}
+							y={y + 21}
+							text={fmt(b.bits, 1)}
+							size={28}
+							weight={700}
+							color={b.color}
+						/>
+					{/snippet}
+				</Readout>
 			</g>
 		{/each}
-		<Txt
-			x={40}
-			y={566}
-			text={k === 1
-				? 'Only one symbol: H = 0, but a code still needs 1 bit per symbol'
-				: `Huffman: ${fmt(avg)} bits per symbol, between H = ${fmt(H)} and H + 1 = ${fmt(H + 1)}`}
-			size={14}
-			weight={600}
-		/>
+		<Readout id="avg">
+			<Txt
+				x={40}
+				y={566}
+				text={k === 1
+					? 'Only one symbol: H = 0, but a code still needs 1 bit per symbol'
+					: `Huffman: ${fmt(avg)} bits per symbol, between H = ${fmt(H)} and H + 1 = ${fmt(H + 1)}`}
+				size={14}
+				weight={600}
+			/>
+		</Readout>
 	{/if}
 </g>

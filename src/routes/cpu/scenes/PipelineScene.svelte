@@ -11,7 +11,7 @@
 	 * presentation attributes.
 	 */
 	import { smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 
 	let { t, reduced }: StageProps = $props();
 
@@ -77,22 +77,48 @@
 <g opacity={fadeIn}>
 	{#each tables as tb (tb.id)}
 		{@const done = doneBy(tb.f, tick)}
-		{@render txt(24, tb.y - 30, tb.title, 15, { weight: 600 })}
-		{@render txt(936, tb.y - 30, `${done} of ${ROWS} instructions finished`, 14, {
-			anchor: 'end',
-			weight: 700
-		})}
-		{#each Array.from({ length: TICKS }, (_, c) => c) as c (c)}
-			{@render txt(X0 + c * CW + CW / 2, tb.y - 8, String(c + 1), 10, {
-				anchor: 'middle',
-				muted: true
+		<!-- <Readout>: on narrow screens these are hidden, shortened or listed as HTML under the stage -->
+		<Readout id="title-{tb.id}">
+			{@render txt(24, tb.y - 30, tb.title, 15, { weight: 600 })}
+			{#snippet narrow()}
+				{@render txt(24, tb.y - 24, tb.id === 'serial' ? 'One at a time' : 'Pipelined', 26, {
+					weight: 600
+				})}
+			{/snippet}
+		</Readout>
+		<Readout
+			id="done-{tb.id}"
+			order={tb.id === 'serial' ? 1 : 2}
+			label={tb.id === 'serial' ? 'One at a time' : 'Pipelined'}
+			value="{done} of {ROWS} finished"
+			note="after {tick} tick{tick === 1 ? '' : 's'}"
+		>
+			{@render txt(936, tb.y - 30, `${done} of ${ROWS} instructions finished`, 14, {
+				anchor: 'end',
+				weight: 700
 			})}
+		</Readout>
+		{#each Array.from({ length: TICKS }, (_, c) => c) as c (c)}
+			<Readout id="tick-{tb.id}-{c}">
+				{@render txt(X0 + c * CW + CW / 2, tb.y - 8, String(c + 1), 10, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</Readout>
 		{/each}
 		{#each Array.from({ length: ROWS }, (_, i) => i) as i (i)}
-			{@render txt(X0 - 12, tb.y + i * RH + 16, `instruction ${i + 1}`, 11, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout id="row-{tb.id}-{i}">
+				{@render txt(X0 - 12, tb.y + i * RH + 16, `instruction ${i + 1}`, 11, {
+					anchor: 'end',
+					muted: true
+				})}
+				{#snippet narrow()}
+					{@render txt(X0 - 12, tb.y + i * RH + 18, `#${i + 1}`, 18, {
+						anchor: 'end',
+						muted: true
+					})}
+				{/snippet}
+			</Readout>
 		{/each}
 		{#each cells as cell (cell.i * 100 + cell.c)}
 			{@const ph = tb.f(cell.i, cell.c)}
@@ -108,14 +134,26 @@
 					opacity={on ? 1 : 0.18}
 				/>
 				{#if on}
-					<text
-						x={X0 + cell.c * CW + CW / 2}
-						y={tb.y + cell.i * RH + 16}
-						text-anchor="middle"
-						font-weight="700"
-						style:font-size="11px"
-						style:fill="#fff">{LETTER[ph]}</text
-					>
+					<Readout id="letter">
+						<text
+							x={X0 + cell.c * CW + CW / 2}
+							y={tb.y + cell.i * RH + 16}
+							text-anchor="middle"
+							font-weight="700"
+							style:font-size="11px"
+							style:fill="#fff">{LETTER[ph]}</text
+						>
+						{#snippet narrow()}
+							<text
+								x={X0 + cell.c * CW + CW / 2}
+								y={tb.y + cell.i * RH + 17}
+								text-anchor="middle"
+								font-weight="700"
+								style:font-size="16px"
+								style:fill="#fff">{LETTER[ph]}</text
+							>
+						{/snippet}
+					</Readout>
 				{/if}
 			{/if}
 		{/each}
@@ -132,38 +170,55 @@
 			/>
 		{/if}
 	{/each}
-	{@render txt(X0, 252, 'clock ticks →', 11, { muted: true })}
+	<Readout id="ticks-axis">
+		{@render txt(X0, 252, 'clock ticks →', 11, { muted: true })}
+	</Readout>
 
 	<!-- legend -->
 	{#each PHASES as ph, i (ph)}
 		<rect x={X0 + i * 110} y="462" width="14" height="14" rx="3" fill={`var(--cpu-${ph})`} />
-		{@render txt(X0 + 20 + i * 110, 474, ph, 12, { muted: true })}
+		<Readout
+			id="legend-{ph}"
+			order={10 + i}
+			label={ph[0].toUpperCase() + ph.slice(1)}
+			color="var(--cpu-{ph})"
+		>
+			{@render txt(X0 + 20 + i * 110, 474, ph, 12, { muted: true })}
+		</Readout>
 	{/each}
 
 	<!-- the real clock rate -->
-	<rect
-		x="24"
-		y="500"
-		width="912"
-		height="72"
-		rx="10"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
-	{@render txt(
-		44,
-		528,
-		'This page’s processor: 1 to 60 ticks a second, so you can follow it.',
-		13,
-		{
-			muted: true
-		}
-	)}
-	{@render txt(
-		44,
-		554,
-		'Intel Core i9-14900K (2023), fastest cores: up to 6 GHz = 6,000,000,000 ticks a second.',
-		14,
-		{ weight: 700 }
-	)}
+	<Readout
+		id="clock"
+		order={3}
+		label="Intel Core i9-14900K (2023)"
+		value="up to 6 GHz"
+		note="6,000,000,000 ticks a second"
+	>
+		<rect
+			x="24"
+			y="500"
+			width="912"
+			height="72"
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+		{@render txt(
+			44,
+			528,
+			'This page’s processor: 1 to 60 ticks a second, so you can follow it.',
+			13,
+			{
+				muted: true
+			}
+		)}
+		{@render txt(
+			44,
+			554,
+			'Intel Core i9-14900K (2023), fastest cores: up to 6 GHz = 6,000,000,000 ticks a second.',
+			14,
+			{ weight: 700 }
+		)}
+	</Readout>
 </g>

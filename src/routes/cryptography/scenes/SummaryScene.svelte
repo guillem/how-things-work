@@ -9,7 +9,7 @@
 	 * motion shows the arrows without dots.
 	 */
 	import { cycle, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { RSA, diffieHellman, mixHex, sha256Hex } from '../crypto';
 	import Txt from './Txt.svelte';
 
@@ -64,30 +64,57 @@
 </script>
 
 <g>
-	<Txt x={40} y={46} text="One-way streets" size={18} weight={700} />
-	<Txt
-		x={A0 + (A1 - A0) / 2}
-		y={40}
-		text="quick →"
-		size={13}
-		weight={700}
-		anchor="middle"
-		color="var(--cr-ok)"
-	/>
-	<Txt
-		x={A0 + (A1 - A0) / 2}
-		y={60}
-		text="← practically impossible"
-		size={13}
-		weight={700}
-		anchor="middle"
-		color="var(--cr-bad)"
-	/>
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="title">
+		<Txt x={40} y={46} text="One-way streets" size={18} weight={700} />
+	</Readout>
+	<Readout id="directions">
+		<Txt
+			x={A0 + (A1 - A0) / 2}
+			y={40}
+			text="quick →"
+			size={13}
+			weight={700}
+			anchor="middle"
+			color="var(--cr-ok)"
+		/>
+		<Txt
+			x={A0 + (A1 - A0) / 2}
+			y={60}
+			text="← practically impossible"
+			size={13}
+			weight={700}
+			anchor="middle"
+			color="var(--cr-bad)"
+		/>
+		{#snippet narrow()}
+			<Txt
+				x={A0 + (A1 - A0) / 2}
+				y={34}
+				text="quick →"
+				size={22}
+				weight={700}
+				anchor="middle"
+				color="var(--cr-ok)"
+			/>
+			<Txt
+				x={A0 + (A1 - A0) / 2}
+				y={64}
+				text="← impossible"
+				size={22}
+				weight={700}
+				anchor="middle"
+				color="var(--cr-bad)"
+			/>
+		{/snippet}
+	</Readout>
 
 	{#each ROWS as r, i (r.id)}
 		{@const y = RY(i)}
-		<Txt x={40} y={y - 6} text={r.title} size={15} weight={700} />
-		<Txt x={40} y={y + 14} text={r.use} size={12} muted />
+		<Readout id="street-{r.id}" order={1 + i} label={r.title} marker={i + 1} at={[90, y - 4]}>
+			<Txt x={40} y={y - 6} text={r.title} size={15} weight={700} />
+			<Txt x={40} y={y + 14} text={r.use} size={12} muted />
+		</Readout>
 
 		<rect
 			x={IN - 80}
@@ -98,16 +125,30 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		<Txt
-			x={IN}
-			y={y + 1}
-			text={r.from}
-			size={14}
-			weight={600}
-			anchor="middle"
-			halo={false}
-			mono={r.id === 'hash'}
-		/>
+		<Readout id="from-{r.id}">
+			<Txt
+				x={IN}
+				y={y + 1}
+				text={r.from}
+				size={14}
+				weight={600}
+				anchor="middle"
+				halo={false}
+				mono={r.id === 'hash'}
+			/>
+			{#snippet narrow()}
+				<Txt
+					x={IN}
+					y={y + 4}
+					text={r.from}
+					size={r.id === 'hash' ? 15 : 20}
+					weight={600}
+					anchor="middle"
+					halo={false}
+					mono={r.id === 'hash'}
+				/>
+			{/snippet}
+		</Readout>
 		<rect
 			x={OUT - 110}
 			y={y - 24}
@@ -119,18 +160,37 @@
 		/>
 		{#if r.swatch}
 			<circle cx={OUT - 40} cy={y - 4} r="13" fill={r.swatch} stroke="var(--stage-line)" />
-			<Txt x={OUT - 20} y={y + 1} text={r.to} size={14} weight={600} halo={false} />
+			<Readout id="to-{r.id}">
+				<Txt x={OUT - 20} y={y + 1} text={r.to} size={14} weight={600} halo={false} />
+				{#snippet narrow()}
+					<Txt x={OUT - 20} y={y + 4} text={r.to} size={20} weight={600} halo={false} />
+				{/snippet}
+			</Readout>
 		{:else}
-			<Txt
-				x={OUT}
-				y={y + 1}
-				text={r.to}
-				size={14}
-				weight={600}
-				anchor="middle"
-				halo={false}
-				mono={r.id === 'hash'}
-			/>
+			<Readout id="to-{r.id}">
+				<Txt
+					x={OUT}
+					y={y + 1}
+					text={r.to}
+					size={14}
+					weight={600}
+					anchor="middle"
+					halo={false}
+					mono={r.id === 'hash'}
+				/>
+				{#snippet narrow()}
+					<Txt
+						x={OUT}
+						y={y + 4}
+						text={r.to}
+						size={r.id === 'hash' ? 17 : 20}
+						weight={600}
+						anchor="middle"
+						halo={false}
+						mono={r.id === 'hash'}
+					/>
+				{/snippet}
+			</Readout>
 		{/if}
 
 		<!-- easy forwards -->
@@ -172,42 +232,63 @@
 				opacity={bkOn}
 			/>
 		{/if}
-		<Txt
-			x={A0 + (A1 - A0) / 2}
-			y={y + 28}
-			text={r.back}
-			size={12}
-			anchor="middle"
-			color="var(--cr-bad)"
-			weight={600}
-		/>
+		<Readout id="back-{r.id}">
+			<Txt
+				x={A0 + (A1 - A0) / 2}
+				y={y + 28}
+				text={r.back}
+				size={12}
+				anchor="middle"
+				color="var(--cr-bad)"
+				weight={600}
+			/>
+			{#snippet narrow()}
+				<Txt
+					x={A0 + (A1 - A0) / 2}
+					y={y + 36}
+					text={r.back}
+					size={20}
+					anchor="middle"
+					color="var(--cr-bad)"
+					weight={600}
+				/>
+			{/snippet}
+		</Readout>
 	{/each}
 
-	<rect
-		x="40"
-		y="500"
-		width="880"
-		height="80"
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
-	<Txt
-		x={480}
-		y={532}
-		text="Easy to do, practically impossible to undo: that asymmetry lets strangers"
-		size={15}
-		weight={700}
-		anchor="middle"
-		halo={false}
-	/>
-	<Txt
-		x={480}
-		y={558}
-		text="share secrets and prove who they are over an open network."
-		size={15}
-		weight={700}
-		anchor="middle"
-		halo={false}
-	/>
+	<Readout
+		id="takeaway"
+		order={0}
+		label="Easy to do, practically impossible to undo"
+		value="lets strangers share secrets"
+		note="and prove who they are over an open network"
+	>
+		<rect
+			x="40"
+			y="500"
+			width="880"
+			height="80"
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+		<Txt
+			x={480}
+			y={532}
+			text="Easy to do, practically impossible to undo: that asymmetry lets strangers"
+			size={15}
+			weight={700}
+			anchor="middle"
+			halo={false}
+		/>
+		<Txt
+			x={480}
+			y={558}
+			text="share secrets and prove who they are over an open network."
+			size={15}
+			weight={700}
+			anchor="middle"
+			halo={false}
+		/>
+	</Readout>
 </g>

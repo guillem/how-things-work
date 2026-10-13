@@ -6,6 +6,7 @@
 	 */
 	import type { ParamValue } from '#lib/explainer/index.ts';
 	import { MAX_LENGTH, PRESETS } from './shared';
+	import { Readout } from '#lib/explainer/index.ts';
 	import Txt from './Txt.svelte';
 
 	interface Props {
@@ -58,15 +59,20 @@
 		{oninput}
 	/>
 </foreignObject>
-<Txt
-	x={x + w + 12}
-	y={y + 27}
-	text="{[...value].length} of {MAX_LENGTH} characters"
-	size={11}
-	muted
-/>
+<!-- hidden on phones, where they would be unreadable -->
+<Readout id="msg-length">
+	<Txt
+		x={x + w + 12}
+		y={y + 27}
+		text="{[...value].length} of {MAX_LENGTH} characters"
+		size={11}
+		muted
+	/>
+</Readout>
 {#if presets}
-	<Txt {x} y={y + 76} text="Try:" size={12} muted />
+	<Readout id="msg-try">
+		<Txt {x} y={y + 76} text="Try:" size={12} muted />
+	</Readout>
 	{#each chips as c (c.label)}
 		{@const on = c.value === value}
 		<g
@@ -112,6 +118,13 @@
 		font: 500 20px var(--font-mono);
 		user-select: text;
 		-webkit-user-select: text;
+	}
+	/* on phones the stage is drawn at ~0.4 scale: larger type keeps the field legible */
+	@media (max-width: 640px) {
+		.cmp-text {
+			padding: 0 8px;
+			font-size: 34px;
+		}
 	}
 	.cmp-text:focus {
 		outline: none;
