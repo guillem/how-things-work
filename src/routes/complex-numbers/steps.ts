@@ -214,7 +214,7 @@ export const spec: ExplainerSpec = {
 <p>— one line joining five of the most important numbers in mathematics: 0, 1, e, i and π.</p>
 <p>The rule for powers, e<sup>iα</sup> · e<sup>iβ</sup> = e<sup>i(α + β)</sup>, is the rule you saw for products: angles add. With lengths, (|z| e<sup>iα</sup>)(|w| e<sup>iβ</sup>) = |z||w| e<sup>i(α + β)</sup>.</p>
 <p><strong>The takeaway:</strong> multiplying by a complex number rotates and scales — turn by its angle, stretch by its length — and e<sup>iθ</sup> is simply the point at angle θ on the unit circle. That is why complex numbers are the natural language of everything that turns or oscillates: alternating current, waves, quantum mechanics, and the Fourier transform that splits a signal into frequencies.</p>`,
-			notes: `<p>Repeatedly squaring and adding complex numbers — z → z² + c — turns each point of the plane round and stretches it again and again. Whether the result stays bounded or flies off to infinity draws the Mandelbrot set (see chaos and fractals).</p>`
+			notes: `<p>Pick a number c, start at 0 and repeat z → z² + c. Each squaring turns z by its own angle and squares its length, then adding c slides it. The numbers c for which the result stays bounded, instead of flying off to infinity, form the Mandelbrot set (see chaos and fractals).</p>`
 		}
 	]
 };

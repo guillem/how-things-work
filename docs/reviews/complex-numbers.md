@@ -5,9 +5,6 @@
 The page is ready after a few small fixes. The arithmetic, the history dates and the numbers quoted in the text are all correct (I recomputed (1 + iπ/10)¹⁰ ≈ −1.593 + 0.156i and (1 + iπ/100)¹⁰⁰ ≈ −1.051 + 0.001i). The model really does compute e^(iθ) from the power series and from compounding rather than from cos and sin, and the catalogue's interaction and takeaway are both built. The most important fix is in the product scene: the length readout "|zw| = |z| × |w| = …" is worked out from the slider values, not from the model's product, and it shows "=" for values that are rounded (for example "1.05 × 1.05 = 1.10"). So the readout assumes the rule the page is trying to show, and it sometimes states a false equality.
 
 ## Factual errors
-- **medium**, steps.ts:217 (the identity step's note). The Mandelbrot description is wrong. It says the iteration acts on "each point of the plane" and that whether *the result* stays bounded "draws the Mandelbrot set". That describes Julia sets. The Mandelbrot set is the set of numbers c for which iterating from 0 stays bounded. The source puts it this way: "the set of all points c for which the sequence z'←z²+c starting at 0 is bounded" (https://cs.lmu.edu/~ray/notes/mandelbrotset/; also https://www.mathwords.com/m/mandelbrot_set.htm). Replace with:
-  `<p>Pick a number c, start at 0 and repeat z → z² + c. Each squaring turns z by its own angle and squares its length, then adding c slides it. The numbers c for which the result stays bounded, instead of flying off to infinity, form the Mandelbrot set (see chaos and fractals).</p>`
-
 Everything else checks out: Cardano 1545, Bombelli 1572, Descartes 1637, Wessel 1799 (presented 1797), Argand 1806, Cotes 1714, Euler 1748, and all the worked examples.
 
 ## Model issues
