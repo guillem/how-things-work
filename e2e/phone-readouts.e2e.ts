@@ -144,6 +144,40 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText('loses carbon');
 	});
 
+	test('primes sieve: the factorisation is text under the stage and follows the number', async ({
+		page
+	}) => {
+		await page.goto('./primes-modular-arithmetic/#primes');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Number\s*60 = 2² × 3 × 5/);
+		await expect(panel).toContainText(/Divisor pairs\s*12 divisors/);
+		await expect(drawing(page)).not.toContainText('in pairs that multiply');
+		await range(page, 'pick').fill('13');
+		await expect(panel).toContainText(/Number\s*13 is prime/);
+	});
+
+	test('primes clock: the sum mod m is text under the stage and follows the hours added', async ({
+		page
+	}) => {
+		await page.goto('./primes-modular-arithmetic/#clock');
+		const panel = readouts(page);
+		await expect(panel).toContainText('9 + 5 ≡ 2 (mod 12)');
+		await expect(drawing(page)).not.toContainText('(mod 12)');
+		await range(page, 'addB').fill('10');
+		await expect(panel).toContainText('9 + 10 ≡ 7 (mod 12)');
+	});
+
+	test('primes power: the fast power is text under the stage and follows the exponent', async ({
+		page
+	}) => {
+		await page.goto('./primes-modular-arithmetic/#fast');
+		const panel = readouts(page);
+		await expect(panel).toContainText('2⁷⁷ ≡ 61 (mod 101)');
+		await expect(drawing(page)).not.toContainText('square-and-multiply');
+		await range(page, 'exponent').fill('1');
+		await expect(panel).toContainText('2¹ ≡ 2 (mod 101)');
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');
