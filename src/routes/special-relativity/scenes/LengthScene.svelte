@@ -13,7 +13,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { gamma, measuredLength, num, TRAIN_LENGTH } from '../relativity';
 	import { C_PX } from './shared';
 	import T from './T.svelte';
@@ -90,14 +90,16 @@
 				opacity="0.8"
 			/>
 			{#if labelled(i, 60 * kk)}
-				<T
-					x={px}
-					y={top + DECK + 36}
-					text={i === 10 ? '200 m' : String(i * 20)}
-					size={11}
-					anchor="middle"
-					muted
-				/>
+				<Readout id="plat-{top}-{i}">
+					<T
+						x={px}
+						y={top + DECK + 36}
+						text={i === 10 ? '200 m' : String(i * 20)}
+						size={11}
+						anchor="middle"
+						muted
+					/>
+				</Readout>
 			{/if}
 		{/each}
 	</g>
@@ -114,14 +116,16 @@
 			stroke="var(--rel-train)"
 		/>
 		{#if labelled(i, 60 * kk)}
-			<T
-				x={px}
-				y={top + RAIL - BODY - 26}
-				text={i === 10 ? '200 m' : String(i * 20)}
-				size={11}
-				anchor="middle"
-				muted
-			/>
+			<Readout id="ruler-{top}-{i}">
+				<T
+					x={px}
+					y={top + RAIL - BODY - 26}
+					text={i === 10 ? '200 m' : String(i * 20)}
+					size={11}
+					anchor="middle"
+					muted
+				/>
+			</Readout>
 		{/if}
 	{/each}
 {/snippet}
@@ -158,8 +162,20 @@
 			marker-start="url(#arrowhead)"
 			marker-end="url(#arrowhead)"
 		/>
-		<T x={(a + b) / 2} y={top + DIM + 20} {text} size={14} weight={650} anchor="middle" />
-		<T x={(a + b) / 2} y={top + DIM + 36} text={sub} size={11} muted anchor="middle" />
+		<Readout id="dim-{top}"
+			>{#snippet narrow()}<T
+					x={(a + b) / 2}
+					y={top + DIM + 32}
+					{text}
+					size={30}
+					weight={700}
+					anchor="middle"
+				/>{/snippet}
+			<T x={(a + b) / 2} y={top + DIM + 20} {text} size={14} weight={650} anchor="middle" />
+		</Readout>
+		<Readout id="dim-sub-{top}">
+			<T x={(a + b) / 2} y={top + DIM + 36} text={sub} size={11} muted anchor="middle" />
+		</Readout>
 	</g>
 {/snippet}
 
@@ -169,37 +185,56 @@
 	</defs>
 	<g clip-path="url(#len-clip)">
 		<!-- ===================== top row: the platform frame ===================== -->
-		<T
-			x={24}
-			y={ROWS[0] + 18}
-			text="Platform frame"
-			size={15}
-			weight={650}
-			color="var(--rel-plat)"
-		/>
-		<T
-			x={232}
-			y={ROWS[0] + 18}
-			size={13}
-			muted
-			text={beta < 0.005 ? 'train at rest' : `train at ${num(beta)} c · γ = ${num(g, 3)}`}
-		/>
-		<T
-			x={936}
-			y={ROWS[0] + 18}
-			anchor="end"
-			weight={600}
-			text="the platform marks both ends of the train at once:"
-		/>
-		<T
-			x={936}
-			y={ROWS[0] + 35}
-			anchor="end"
-			weight={650}
-			size={14}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="row-top" order={1} label="Platform frame" marker={1} at={[40, ROWS[0] + 24]}>
+			<T
+				x={24}
+				y={ROWS[0] + 18}
+				text="Platform frame"
+				size={15}
+				weight={650}
+				color="var(--rel-plat)"
+			/>
+		</Readout>
+		<Readout
+			id="speed"
+			order={3}
+			label="Train speed"
+			value={beta < 0.005 ? 'at rest' : `${num(beta)} c · γ = ${num(g, 3)}`}
+		>
+			<T
+				x={232}
+				y={ROWS[0] + 18}
+				size={13}
+				muted
+				text={beta < 0.005 ? 'train at rest' : `train at ${num(beta)} c · γ = ${num(g, 3)}`}
+			/>
+		</Readout>
+		<Readout
+			id="measured-top"
+			order={4}
+			label="Measured on the platform"
+			value="train {metres(measured)} long"
+			note="both ends marked at the same platform time"
 			color="var(--rel-train)"
-			text="the train is {metres(measured)} long"
-		/>
+		>
+			<T
+				x={936}
+				y={ROWS[0] + 18}
+				anchor="end"
+				weight={600}
+				text="the platform marks both ends of the train at once:"
+			/>
+			<T
+				x={936}
+				y={ROWS[0] + 35}
+				anchor="end"
+				weight={650}
+				size={14}
+				color="var(--rel-train)"
+				text="the train is {metres(measured)} long"
+			/>
+		</Readout>
 		<line
 			x1="16"
 			x2="944"
@@ -232,30 +267,50 @@
 		</g>
 
 		<!-- ===================== bottom row: the train frame ===================== -->
-		<T x={24} y={ROWS[1] + 18} text="Train frame" size={15} weight={650} color="var(--rel-train)" />
-		<T
-			x={232}
-			y={ROWS[1] + 18}
-			size={13}
-			muted
-			text={beta < 0.005 ? 'platform at rest' : `platform at ${num(beta)} c · γ = ${num(g, 3)}`}
-		/>
-		<T
-			x={936}
-			y={ROWS[1] + 18}
-			anchor="end"
-			weight={600}
-			text="the train marks both ends of the platform at once:"
-		/>
-		<T
-			x={936}
-			y={ROWS[1] + 35}
-			anchor="end"
-			weight={650}
-			size={14}
+		<Readout id="row-bottom" order={2} label="Train frame" marker={2} at={[40, ROWS[1] + 24]}>
+			<T
+				x={24}
+				y={ROWS[1] + 18}
+				text="Train frame"
+				size={15}
+				weight={650}
+				color="var(--rel-train)"
+			/>
+		</Readout>
+		<Readout id="speed-bottom">
+			<T
+				x={232}
+				y={ROWS[1] + 18}
+				size={13}
+				muted
+				text={beta < 0.005 ? 'platform at rest' : `platform at ${num(beta)} c · γ = ${num(g, 3)}`}
+			/>
+		</Readout>
+		<Readout
+			id="measured-bottom"
+			order={5}
+			label="Measured on the train"
+			value="platform {metres(measured)} long"
+			note="both ends marked at the same train time"
 			color="var(--rel-plat)"
-			text="the platform is {metres(measured)} long"
-		/>
+		>
+			<T
+				x={936}
+				y={ROWS[1] + 18}
+				anchor="end"
+				weight={600}
+				text="the train marks both ends of the platform at once:"
+			/>
+			<T
+				x={936}
+				y={ROWS[1] + 35}
+				anchor="end"
+				weight={650}
+				size={14}
+				color="var(--rel-plat)"
+				text="the platform is {metres(measured)} long"
+			/>
+		</Readout>
 		<line
 			x1="16"
 			x2="944"

@@ -17,7 +17,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { C, gamma, lightning, num, toTrain, TRAIN_LENGTH } from '../relativity';
 	import { C_PX } from './shared';
 	import T from './T.svelte';
@@ -166,7 +166,9 @@
 	{/if}
 	<circle cx={x} cy={y} r={7 + 12 * glow} fill="var(--rel-light)" opacity={0.6 * glow} />
 	<circle cx={x} cy={y} r="7" fill={color} stroke="var(--stage-bg)" stroke-width="2" />
-	<T {x} y={onDeck ? y + 26 : y + 22} text={label} size={11} anchor="middle" weight={600} />
+	<Readout id="who-{rowTop}-{label}">
+		<T {x} y={onDeck ? y + 26 : y + 22} text={label} size={11} anchor="middle" weight={600} />
+	</Readout>
 {/snippet}
 
 {#snippet light(ps: { x: number; inward: boolean; key: string }[], rowTop: number, ox: number)}
@@ -229,40 +231,65 @@
 
 	<!-- ===================== top row: the platform frame ===================== -->
 	<g opacity={dimTop}>
-		<T
-			x={24}
-			y={ROWS[0] + 18}
-			text="Platform frame"
-			size={15}
-			weight={650}
-			color="var(--rel-plat)"
-		/>
-		<T x={24} y={ROWS[0] + 36} text="platform clocks: t = {ns(ct)}" size={12} muted />
-		<T
-			x={936}
-			y={ROWS[0] + 18}
-			anchor="end"
-			weight={650}
-			text="strikes: back at t = 0, front at t = 0 — the same moment"
-		/>
-		<T
-			x={936}
-			y={ROWS[0] + 35}
-			anchor="end"
-			size={12}
-			opacity={happened(ev.p.meet) ? 1 : 0.45}
-			text="the flashes meet at the observer at t = {ns(ev.p.meet.ct)}"
-		/>
-		<T
-			x={936}
-			y={ROWS[0] + 51}
-			anchor="end"
-			size={12}
-			opacity={happened(ev.p.pFront) ? 1 : 0.45}
-			text="the passenger meets the front flash at {ns(ev.p.pFront.ct)}, the back flash at {ns(
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="key-observer" order={3} label="observer (platform)" color="var(--rel-plat)" />
+		<Readout id="key-passenger" order={4} label="passenger (train)" color="var(--rel-train)" />
+		<Readout id="row-top" order={1} label="Platform frame" marker={1} at={[40, ROWS[0] + 24]}>
+			<T
+				x={24}
+				y={ROWS[0] + 18}
+				text="Platform frame"
+				size={15}
+				weight={650}
+				color="var(--rel-plat)"
+			/>
+		</Readout>
+		<Readout
+			id="clocks"
+			order={5}
+			label="Clocks of the frame shown"
+			value={topW.current > 0.5 ? `t = ${ns(ct)}` : `t′ = ${ns(ct)}`}
+		>
+			<T x={24} y={ROWS[0] + 36} text="platform clocks: t = {ns(ct)}" size={12} muted />
+		</Readout>
+		<Readout
+			id="strikes-top"
+			order={6}
+			label="1 · Platform frame: the strikes"
+			value="same moment, t = 0"
+			note="the flashes meet the observer at t = {ns(
+				ev.p.meet.ct
+			)} · the passenger meets the front flash at {ns(ev.p.pFront.ct)}, the back flash at {ns(
 				ev.p.pBack.ct
 			)}"
-		/>
+			opacity={topW.current}
+		>
+			<T
+				x={936}
+				y={ROWS[0] + 18}
+				anchor="end"
+				weight={650}
+				text="strikes: back at t = 0, front at t = 0 — the same moment"
+			/>
+			<T
+				x={936}
+				y={ROWS[0] + 35}
+				anchor="end"
+				size={12}
+				opacity={happened(ev.p.meet) ? 1 : 0.45}
+				text="the flashes meet at the observer at t = {ns(ev.p.meet.ct)}"
+			/>
+			<T
+				x={936}
+				y={ROWS[0] + 51}
+				anchor="end"
+				size={12}
+				opacity={happened(ev.p.pFront) ? 1 : 0.45}
+				text="the passenger meets the front flash at {ns(ev.p.pFront.ct)}, the back flash at {ns(
+					ev.p.pBack.ct
+				)}"
+			/>
+		</Readout>
 		<line
 			x1="16"
 			x2="944"
@@ -307,35 +334,61 @@
 
 	<!-- ===================== bottom row: the train frame ===================== -->
 	<g opacity={dimBottom}>
-		<T x={24} y={ROWS[1] + 18} text="Train frame" size={15} weight={650} color="var(--rel-train)" />
-		<T x={24} y={ROWS[1] + 36} text="train clocks: t′ = {ns(ct)}" size={12} muted />
-		<T
-			x={936}
-			y={ROWS[1] + 18}
-			anchor="end"
-			weight={650}
-			text={beta < 0.005
-				? 'strikes: both at t′ = 0 — the same moment'
-				: `strikes: front at t′ = ${ns(ev.t.front.ct)}, back at t′ = ${ns(ev.t.back.ct)} — front first`}
-		/>
-		<T
-			x={936}
-			y={ROWS[1] + 35}
-			anchor="end"
-			size={12}
-			opacity={happened(ev.t.meet) ? 1 : 0.45}
-			text="the flashes meet at the observer at t′ = {ns(ev.t.meet.ct)}"
-		/>
-		<T
-			x={936}
-			y={ROWS[1] + 51}
-			anchor="end"
-			size={12}
-			opacity={happened(ev.t.pFront) ? 1 : 0.45}
-			text="the passenger meets the front flash at {ns(ev.t.pFront.ct)}, the back flash at {ns(
+		<Readout id="row-bottom" order={2} label="Train frame" marker={2} at={[40, ROWS[1] + 24]}>
+			<T
+				x={24}
+				y={ROWS[1] + 18}
+				text="Train frame"
+				size={15}
+				weight={650}
+				color="var(--rel-train)"
+			/>
+		</Readout>
+		<Readout id="clock-bottom">
+			<T x={24} y={ROWS[1] + 36} text="train clocks: t′ = {ns(ct)}" size={12} muted />
+		</Readout>
+		<Readout
+			id="strikes-bottom"
+			order={7}
+			label="2 · Train frame: the strikes"
+			value={beta < 0.005 ? 'same moment, t′ = 0' : 'front first'}
+			note="{beta < 0.005
+				? ''
+				: `front t′ = ${ns(ev.t.front.ct)}, back t′ = ${ns(ev.t.back.ct)} · `}flashes meet the observer at t′ = {ns(
+				ev.t.meet.ct
+			)} · the passenger meets the front flash at {ns(ev.t.pFront.ct)}, the back flash at {ns(
 				ev.t.pBack.ct
 			)}"
-		/>
+			opacity={1 - topW.current}
+		>
+			<T
+				x={936}
+				y={ROWS[1] + 18}
+				anchor="end"
+				weight={650}
+				text={beta < 0.005
+					? 'strikes: both at t′ = 0 — the same moment'
+					: `strikes: front at t′ = ${ns(ev.t.front.ct)}, back at t′ = ${ns(ev.t.back.ct)} — front first`}
+			/>
+			<T
+				x={936}
+				y={ROWS[1] + 35}
+				anchor="end"
+				size={12}
+				opacity={happened(ev.t.meet) ? 1 : 0.45}
+				text="the flashes meet at the observer at t′ = {ns(ev.t.meet.ct)}"
+			/>
+			<T
+				x={936}
+				y={ROWS[1] + 51}
+				anchor="end"
+				size={12}
+				opacity={happened(ev.t.pFront) ? 1 : 0.45}
+				text="the passenger meets the front flash at {ns(ev.t.pFront.ct)}, the back flash at {ns(
+					ev.t.pBack.ct
+				)}"
+			/>
+		</Readout>
 		<line
 			x1="16"
 			x2="944"

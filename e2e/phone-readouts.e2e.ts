@@ -766,6 +766,67 @@ test.describe('on a phone', () => {
 		await range(page, 'x').fill('3');
 		await expect(panel).toContainText(/A\(x\) = 9\.00/);
 	});
+
+	test('relativity clocks: each frame’s tick is text and follows the speed', async ({ page }) => {
+		await page.goto('./special-relativity/#time-dilation');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Train speed\s*0\.6 c · γ = 1\.25/);
+		await expect(panel).toContainText(
+			/One tick, timed on the platform\s*platform clock 10\.0 ns · train clock 12\.5 ns/
+		);
+		await expect(drawing(page)).not.toContainText('one tick, timed on the platform');
+		await range(page, 'beta').fill('0.8');
+		await expect(panel).toContainText(/train clock 16\.7 ns/);
+	});
+
+	test('relativity γ: the moving clock’s tick and the muon ranges are text', async ({ page }) => {
+		await page.goto('./special-relativity/#gamma');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Speed of the train\s*0\.6 c → γ = 1\.25/);
+		await expect(panel).toContainText(/One tick, clock at 0\.6 c\s*12\.5 ns/);
+		await expect(drawing(page)).not.toContainText('One tick of the light clock');
+		await range(page, 'beta').fill('0.8');
+		await expect(panel).toContainText(/One tick, clock at 0\.8 c\s*16\.7 ns/);
+		await page.goto('./special-relativity/#muons');
+		await expect(panel).toContainText(/Solid: what happens\s*[\d.]+ k?m/);
+		await expect(drawing(page)).not.toContainText('what happens');
+	});
+
+	test('relativity length: each frame’s measurement is text and follows the speed', async ({
+		page
+	}) => {
+		await page.goto('./special-relativity/#length');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Measured on the platform\s*train 160 m long/);
+		await expect(panel).toContainText(/Measured on the train\s*platform 160 m long/);
+		await expect(drawing(page)).not.toContainText('the train is 160 m long');
+		await range(page, 'beta').fill('0.8');
+		await expect(panel).toContainText(/train 120 m long/);
+	});
+
+	test('relativity lightning: when the strikes happen is text and follows the speed', async ({
+		page
+	}) => {
+		await page.goto('./special-relativity/#train-view');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Train frame: the strikes\s*front first/);
+		await expect(drawing(page)).not.toContainText('strikes:');
+		await range(page, 'beta').fill('0');
+		await expect(panel).toContainText(/Train frame: the strikes\s*same moment, t′ = 0/);
+	});
+
+	test('relativity spacetime: the event’s interval is text and follows the event', async ({
+		page
+	}) => {
+		await page.goto('./special-relativity/#interval');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/The event is\s*timelike/);
+		await expect(panel).toContainText(/= 30000 m²/);
+		await expect(drawing(page)).not.toContainText('s² =');
+		await range(page, 'ex').fill('250');
+		await range(page, 'ect').fill('0');
+		await expect(panel).toContainText(/The event is\s*spacelike/);
+	});
 });
 
 test.describe('on a wide screen', () => {
