@@ -25,7 +25,7 @@
 	 * overrides SVG presentation attributes.
 	 */
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		E0,
 		FPS,
@@ -311,6 +311,20 @@
 	const ratioText = (l10: number) =>
 		l10 < 1 ? `${(10 ** l10).toFixed(1)}` : formatCount({ log10: l10 });
 	const nudgeLabel = $derived(`nudged by 10${sup(nudgeExp)}`);
+	/** The caption under the box, as a phone readout row. */
+	const caption = $derived(
+		canReverse
+			? { label: 'Film', value: status }
+			: {
+					label: 'Wall',
+					value:
+						phase === 'wall'
+							? 'keeps the two halves apart'
+							: wallLift >= 1
+								? `lifted at ${WALL_LIFT_MIX} s`
+								: 'about to lift'
+				}
+	);
 </script>
 
 {#snippet txt(
@@ -343,8 +357,11 @@
 
 <g>
 	<!-- the box -->
-	{@render txt(px(W / 4), BY - 12, 'left half', 12, { anchor: 'middle', muted: true })}
-	{@render txt(px((3 * W) / 4), BY - 12, 'right half', 12, { anchor: 'middle', muted: true })}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="box-halves">
+		{@render txt(px(W / 4), BY - 12, 'left half', 12, { anchor: 'middle', muted: true })}
+		{@render txt(px((3 * W) / 4), BY - 12, 'right half', 12, { anchor: 'middle', muted: true })}
+	</Readout>
 	<rect
 		x={BX - 3}
 		y={BY - 3}
@@ -392,28 +409,36 @@
 		/>
 	{/if}
 
-	{#if canReverse}
-		<g opacity={reduced ? 1 : 0.75 + 0.25 * flash}>
-			{@render txt(px(W / 2), BY + BH + 24, status, 13, {
+	<Readout
+		id="caption"
+		order={3}
+		label={caption.label}
+		value={caption.value}
+		color={canReverse && backward ? 'var(--ent-entropy)' : undefined}
+	>
+		{#if canReverse}
+			<g opacity={reduced ? 1 : 0.75 + 0.25 * flash}>
+				{@render txt(px(W / 2), BY + BH + 24, status, 13, {
+					anchor: 'middle',
+					weight: 600,
+					color: backward ? 'var(--ent-entropy)' : undefined
+				})}
+			</g>
+		{:else if phase === 'wall'}
+			{@render txt(px(W / 2), BY + BH + 24, 'the wall keeps the two halves apart', 12, {
 				anchor: 'middle',
-				weight: 600,
-				color: backward ? 'var(--ent-entropy)' : undefined
+				muted: true
 			})}
-		</g>
-	{:else if phase === 'wall'}
-		{@render txt(px(W / 2), BY + BH + 24, 'the wall keeps the two halves apart', 12, {
-			anchor: 'middle',
-			muted: true
-		})}
-	{:else}
-		{@render txt(
-			px(W / 2),
-			BY + BH + 24,
-			wallLift >= 1 ? `wall lifted at ${WALL_LIFT_MIX} s` : 'the wall is about to lift',
-			12,
-			{ anchor: 'middle', muted: true }
-		)}
-	{/if}
+		{:else}
+			{@render txt(
+				px(W / 2),
+				BY + BH + 24,
+				wallLift >= 1 ? `wall lifted at ${WALL_LIFT_MIX} s` : 'the wall is about to lift',
+				12,
+				{ anchor: 'middle', muted: true }
+			)}
+		{/if}
+	</Readout>
 
 	<!-- chart -->
 	<line x1={CX0} x2={CX1} y1={CY0} y2={CY0} stroke="var(--stage-line)" stroke-width="1.2" />
@@ -428,19 +453,23 @@
 			stroke-width="1"
 			opacity={v === 0 ? 0 : 0.8}
 		/>
-		{@render txt(CX0 - 8, cy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+		<Readout id="ytick-{v}">
+			{@render txt(CX0 - 8, cy(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+		</Readout>
 	{/each}
-	{#each xTicks as s (s)}
-		{@render txt(cx(s), CY0 + 16, `${s}`, 11, { anchor: 'middle', muted: true })}
-	{/each}
-	{@render txt(CX1 + 12, CY0 + 16, 's', 11, { anchor: 'start', muted: true })}
-	<text x={CX0 - 34} y={CY1 - 14} class="halo muted" style:font-size="12px">
-		{#if isEntropy}
-			entropy above the start, ΔS ÷ k<tspan baseline-shift="sub" style:font-size="9px">B</tspan>
-		{:else}
-			temperature (¼-second average)
-		{/if}
-	</text>
+	<Readout id="x-axis">
+		{#each xTicks as s (s)}
+			{@render txt(cx(s), CY0 + 16, `${s}`, 11, { anchor: 'middle', muted: true })}
+		{/each}
+		{@render txt(CX1 + 12, CY0 + 16, 's', 11, { anchor: 'start', muted: true })}
+		<text x={CX0 - 34} y={CY1 - 14} class="halo muted" style:font-size="12px">
+			{#if isEntropy}
+				entropy above the start, ΔS ÷ k<tspan baseline-shift="sub" style:font-size="9px">B</tspan>
+			{:else}
+				temperature (¼-second average)
+			{/if}
+		</text>
+	</Readout>
 
 	{#each passed as r (r)}
 		{#if r >= tFrom}
@@ -468,7 +497,9 @@
 			stroke-dasharray="6 5"
 			opacity="0.55"
 		/>
-		{@render txt(CX1, cy(sMax) - 6, 'highest possible', 11, { anchor: 'end', muted: true })}
+		<Readout id="smax-label">
+			{@render txt(CX1, cy(sMax) - 6, 'highest possible', 11, { anchor: 'end', muted: true })}
+		</Readout>
 		{#if pathExact}
 			<path
 				d={pathExact}
@@ -497,14 +528,21 @@
 				stroke-dasharray="6 5"
 				opacity="0.5"
 			/>
-			{@render txt(CX1, cy(tAvg) - 6, `average ${fmt1(tAvg)}`, 11, { anchor: 'end', muted: true })}
+			<Readout id="avg-label">
+				{@render txt(CX1, cy(tAvg) - 6, `average ${fmt1(tAvg)}`, 11, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 		{/if}
 		<path d={pathL} fill="none" style:stroke={heat(temps.l)} stroke-width="2.5" />
 		<path d={pathR} fill="none" style:stroke={heat(temps.r)} stroke-width="2.5" />
 	{/if}
 
 	<!-- panel: thermometers -->
-	{@render txt(PX, 64, 'temperature of each half', 13, { muted: true })}
+	<Readout id="thermo-title">
+		{@render txt(PX, 64, 'temperature of each half', 13, { muted: true })}
+	</Readout>
 	{#each thermo as th (th.id)}
 		<rect
 			x={th.x - 9}
@@ -532,15 +570,31 @@
 			rx="4"
 			style:fill={heat(th.T)}
 		/>
-		{@render txt(th.x, TH_BOT + 52, fmt1(th.T), 18, {
-			anchor: 'middle',
-			weight: 600,
-			tabular: true
-		})}
-		{@render txt(th.x, TH_BOT + 70, th.label, 12, { anchor: 'middle', muted: true })}
+		<Readout
+			id="temp-{th.id}"
+			order={th.id === 'l' ? 1 : 2}
+			opacity={isEntropy ? 0 : 1}
+			label={th.id === 'l' ? 'Left half' : 'Right half'}
+			value="T = {fmt1(th.T)}"
+			note={flowing
+				? th.T >= Math.max(tlNow, trNow)
+					? 'heat flows out'
+					: 'heat flows in'
+				: undefined}
+			color={heat(th.T)}
+		>
+			{@render txt(th.x, TH_BOT + 52, fmt1(th.T), 18, {
+				anchor: 'middle',
+				weight: 600,
+				tabular: true
+			})}
+			{@render txt(th.x, TH_BOT + 70, th.label, 12, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/each}
 	{#each [0, 2, 4, 6, 8] as v (v)}
-		{@render txt(PX + 10, thY(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+		<Readout id="thtick-{v}">
+			{@render txt(PX + 10, thY(v) + 4, String(v), 11, { anchor: 'end', muted: true })}
+		</Readout>
 		<line
 			x1={PX + 16}
 			x2={PX + 24}
@@ -552,7 +606,9 @@
 	{/each}
 	{#if flowing}
 		<g opacity={smoothstep(0.35, 0.8, Math.abs(tlNow - trNow))}>
-			{@render txt(777, 180, 'heat', 12, { anchor: 'middle', weight: 600 })}
+			<Readout id="heat-label">
+				{@render txt(777, 180, 'heat', 12, { anchor: 'middle', weight: 600 })}
+			</Readout>
 			<path
 				d={tlNow > trNow ? 'M752 192 L800 192' : 'M802 192 L754 192'}
 				fill="none"
@@ -565,18 +621,33 @@
 
 	<!-- panel: readout -->
 	{#if isEntropy}
-		{@render txt(PX, 424, 'microstates (arrangements) now,', 13, { muted: true })}
-		{@render txt(PX, 442, 'in multiples of the start', 13, { muted: true })}
-		{@render txt(PX, 480, `× ${ratioText(log10Now)}`, 28, {
-			weight: 600,
-			tabular: true,
-			color: 'var(--ent-entropy)'
-		})}
-		{@render txt(PX, 504, `highest possible: × ${ratioText(toLog10(sMax))}`, 12, { muted: true })}
-		{@render txt(PX, 522, `on the chart: ln(${ratioText(log10Now)}) = ${sNow.toFixed(1)}`, 12, {
-			muted: true,
-			tabular: true
-		})}
+		<Readout
+			id="ways"
+			order={4}
+			label="Arrangements now, in multiples of the start"
+			value="× {ratioText(log10Now)}"
+			note="on the chart: ln = {sNow.toFixed(1)}"
+			color="var(--ent-entropy)"
+		>
+			{@render txt(PX, 424, 'microstates (arrangements) now,', 13, { muted: true })}
+			{@render txt(PX, 442, 'in multiples of the start', 13, { muted: true })}
+			{@render txt(PX, 480, `× ${ratioText(log10Now)}`, 28, {
+				weight: 600,
+				tabular: true,
+				color: 'var(--ent-entropy)'
+			})}
+		</Readout>
+		<Readout id="ways-max" order={5} label="Highest possible" value="× {ratioText(toLog10(sMax))}">
+			{@render txt(PX, 504, `highest possible: × ${ratioText(toLog10(sMax))}`, 12, {
+				muted: true
+			})}
+		</Readout>
+		<Readout id="ways-ln">
+			{@render txt(PX, 522, `on the chart: ln(${ratioText(log10Now)}) = ${sNow.toFixed(1)}`, 12, {
+				muted: true,
+				tabular: true
+			})}
+		</Readout>
 		{#if phase === 'nudge'}
 			<line
 				x1={PX}
@@ -587,10 +658,20 @@
 				stroke-width="1.5"
 				stroke-dasharray="5 4"
 			/>
-			{@render txt(PX + 34, 540, 'exact reversal (no nudge)', 12, { muted: true })}
+			<Readout id="exact-key" order={6} label="Dashed line: exact reversal (no nudge)">
+				{@render txt(PX + 34, 540, 'exact reversal (no nudge)', 12, { muted: true })}
+			</Readout>
 		{/if}
 	{:else}
-		{@render txt(PX, 430, 'particle colour = its kinetic energy', 12, { muted: true })}
+		<Readout
+			id="colour-key"
+			order={6}
+			label="Particle colour"
+			value="its kinetic energy"
+			note="temperature = the average"
+		>
+			{@render txt(PX, 430, 'particle colour = its kinetic energy', 12, { muted: true })}
+		</Readout>
 		<defs>
 			<linearGradient id="box-heat" x1="0" x2="1" y1="0" y2="0">
 				<stop offset="0" style:stop-color="var(--ent-cold)" />
@@ -602,9 +683,11 @@
 			</linearGradient>
 		</defs>
 		<rect x={PX} y={444} width="240" height="12" rx="6" fill="url(#box-heat)" />
-		{@render txt(PX, 474, 'slow', 11, { muted: true })}
-		{@render txt(PX + 240, 474, 'fast', 11, { anchor: 'end', muted: true })}
-		{@render txt(PX, 510, 'temperature = average kinetic', 12)}
-		{@render txt(PX, 527, 'energy of the particles', 12)}
+		<Readout id="colour-texts">
+			{@render txt(PX, 474, 'slow', 11, { muted: true })}
+			{@render txt(PX + 240, 474, 'fast', 11, { anchor: 'end', muted: true })}
+			{@render txt(PX, 510, 'temperature = average kinetic', 12)}
+			{@render txt(PX, 527, 'energy of the particles', 12)}
+		</Readout>
 	{/if}
 </g>

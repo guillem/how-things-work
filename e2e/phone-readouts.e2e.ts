@@ -519,6 +519,30 @@ test.describe('on a phone', () => {
 		await range(page, 'amplitude').fill('0.5');
 		await expect(panel).toContainText(/Amplitude\s*A = 0\.50/);
 	});
+
+	test('entropy box: the arrangement count is text under the stage', async ({ page }) => {
+		await page.goto('./entropy/#entropy');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Arrangements now, in multiples of the start\s*× \d/);
+		await expect(panel).toContainText(/Highest possible\s*× \d/);
+		await expect(panel).toContainText(/Wall\s*lifted at/);
+		await expect(drawing(page)).not.toContainText('microstates (arrangements) now');
+		await page.goto('./entropy/#mix');
+		await expect(panel).toContainText(/Left half\s*T = \d\.\d/);
+		await expect(drawing(page)).not.toContainText('temperature of each half');
+	});
+
+	test('entropy sharing: the energy split is text and follows the share', async ({ page }) => {
+		await page.goto('./entropy/#share');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Energy on the left\s*80%/);
+		await expect(panel).toContainText(/Ways to share the packets \(left × right\)\s*\d/);
+		await expect(panel).toContainText(/the peak has .* times as many/);
+		await expect(drawing(page)).not.toContainText('together (left × right)');
+		await range(page, 'share').fill('50');
+		await expect(panel).toContainText(/Energy on the left\s*50%/);
+		await expect(panel).toContainText('this is the most likely share');
+	});
 });
 
 test.describe('on a wide screen', () => {
