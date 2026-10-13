@@ -1212,6 +1212,40 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Intel Core i9-14900K \(2023\)\s*up to 6 GHz/);
 		await expect(drawing(page)).not.toContainText('instructions finished');
 	});
+
+	test('heart: the chambers are numbered and the blood readouts are text', async ({ page }) => {
+		await page.goto('./heart-circulation/#heart');
+		const panel = readouts(page);
+		await expect(panel).toContainText('left ventricle');
+		await expect(panel).toContainText(/Oxygen-rich blood\s*98% O₂/);
+		await expect(panel).toContainText(/Each beat\s*both squeeze out ≈ \d+ mL/);
+		await expect(drawing(page)).not.toContainText('ventricle');
+		await page.goto('./heart-circulation/#valves');
+		await expect(panel).toContainText(/Valves open\s*\w/);
+		await expect(drawing(page)).not.toContainText('tricuspid');
+	});
+
+	test('heart loop: the output is text and follows the heart rate', async ({ page }) => {
+		await page.goto('./heart-circulation/#summary');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Each pump\s*\d\.\d L\/min\s*at 75 beats\/min/);
+		await expect(drawing(page)).not.toContainText('L/min');
+		await range(page, 'hr').fill('120');
+		await expect(panel).toContainText(/at 120 beats\/min/);
+	});
+
+	test('heart monitor: the readout card is text and follows the heart rate', async ({ page }) => {
+		await page.goto('./heart-circulation/#rate');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Blood pressure\s*\d+\/\d+/);
+		await expect(panel).toContainText('left atrium');
+		await expect(drawing(page)).not.toContainText('blood pressure');
+		await expect(drawing(page)).not.toContainText('cardiac output');
+		const output = panel.getByText(/L\/min/).first();
+		const before = await output.textContent();
+		await range(page, 'hr').fill('140');
+		await expect(output).not.toHaveText(before!);
+	});
 });
 
 test.describe('on a wide screen', () => {

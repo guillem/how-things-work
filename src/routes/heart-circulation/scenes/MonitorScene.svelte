@@ -24,7 +24,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { untrack } from 'svelte';
 	import { Label } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		LA,
 		LV,
@@ -347,7 +347,10 @@
 			y2={Y(20)}
 			stroke="var(--stage-ink-muted)"
 		/>
-		<Label x={30} y={Y(14)} text="sinoatrial node (pacemaker)" pill anchor="start" />
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="sa" order={10} label="sinoatrial node (pacemaker)" marker={1} at={[X(60), Y(20)]}>
+			<Label x={30} y={Y(14)} text="sinoatrial node (pacemaker)" pill anchor="start" />
+		</Readout>
 		<line
 			x1={X(NODES.av.x) + 4}
 			y1={Y(NODES.av.y) + 6}
@@ -355,15 +358,22 @@
 			y2={Y(300)}
 			stroke="var(--stage-ink-muted)"
 		/>
-		<Label x={X(222)} y={Y(316)} text="AV node" pill anchor="middle" />
+		<Readout id="av" order={11} label="AV node" marker={2} at={[X(222), Y(316)]}>
+			<Label x={X(222)} y={Y(316)} text="AV node" pill anchor="middle" />
+		</Readout>
 	{/if}
 
 	<!-- ECG -->
 	<g opacity={ecgFocus}>
-		{@render txt(P0, ECG.top - 16, 'ECG: the electrical signal', 13, {
-			weight: 600,
-			color: 'var(--hc-ecg)'
-		})}
+		<Readout id="ecg-title">
+			{@render txt(P0, ECG.top - 16, 'ECG: the electrical signal', 13, {
+				weight: 600,
+				color: 'var(--hc-ecg)'
+			})}
+			{#snippet narrow()}
+				{@render txt(P0, ECG.top - 8, 'ECG', 28, { weight: 700, color: 'var(--hc-ecg)' })}
+			{/snippet}
+		</Readout>
 		<rect
 			x={P0}
 			y={ECG.top}
@@ -377,15 +387,22 @@
 		<path d={ecgPath} fill="none" stroke="var(--hc-ecg)" stroke-width="2" stroke-linejoin="round" />
 		<circle cx={P1} cy={ey(ecgNow)} r="4" fill="var(--hc-ecg)" />
 		{#if phase === 'signal'}
-			{#each waveMarks as w (w.id)}
-				{@render txt(w.x, w.y, w.id, 12, { anchor: w.anchor, weight: 700 })}
-			{/each}
+			<Readout id="waves">
+				{#each waveMarks as w (w.id)}
+					{@render txt(w.x, w.y, w.id, 12, { anchor: w.anchor, weight: 700 })}
+				{/each}
+			</Readout>
 		{/if}
 	</g>
 
 	<!-- pressures -->
 	<g opacity={pressureFocus}>
-		{@render txt(P0, PR.top - 16, 'pressure (mmHg)', 13, { weight: 600 })}
+		<Readout id="pressure-title">
+			{@render txt(P0, PR.top - 16, 'pressure (mmHg)', 13, { weight: 600 })}
+			{#snippet narrow()}
+				{@render txt(P0, PR.top - 8, 'pressure', 28, { weight: 700 })}
+			{/snippet}
+		</Readout>
 		{#each ejecting as s (s.id)}
 			<rect
 				x={sx(s.b)}
@@ -408,9 +425,11 @@
 		{/each}
 		{#each yTicks as v (v)}
 			<line x1={P0} x2={P1} y1={py(v)} y2={py(v)} stroke="var(--stage-grid)" />
-			<text x={P0 - 8} y={py(v) + 4} text-anchor="end" class="muted" style:font-size="11px"
-				>{v}</text
-			>
+			<Readout id="tick-{v}">
+				<text x={P0 - 8} y={py(v) + 4} text-anchor="end" class="muted" style:font-size="11px"
+					>{v}</text
+				>
+			</Readout>
 		{/each}
 		<line x1={P0} x2={P0} y1={PR.top} y2={PR.bottom} stroke="var(--stage-line)" />
 		<line x1={P0} x2={P1} y1={PR.bottom} y2={PR.bottom} stroke="var(--stage-line)" />
@@ -435,29 +454,59 @@
 		<path d={laPath} fill="none" stroke="var(--hc-la)" stroke-width="2" stroke-dasharray="6 3" />
 		<path d={aoPath} fill="none" stroke="var(--hc-oxy)" stroke-width="2.5" />
 		<path d={lvPath} fill="none" stroke="var(--hc-lv)" stroke-width="2.5" />
-		{@render txt(P0 + 4, PR.bottom + 22, 'left ventricle', 12, {
-			weight: 600,
-			color: 'var(--hc-lv)'
-		})}
-		{@render txt(P0 + 100, PR.bottom + 22, 'aorta', 12, { weight: 600, color: 'var(--hc-oxy)' })}
-		{@render txt(P0 + 146, PR.bottom + 22, 'left atrium', 12, {
-			weight: 600,
-			color: 'var(--hc-la)'
-		})}
-		{#if compare}
-			{@render txt(P1, PR.bottom + 22, 'dashed: healthy heart', 12, { anchor: 'end', muted: true })}
-		{:else if phase === 'pressure'}
-			{@render txt(P1, PR.bottom + 22, 'shaded: valve open', 12, { anchor: 'end', muted: true })}
-		{/if}
+		<Readout id="trace-key">
+			{@render txt(P0 + 4, PR.bottom + 22, 'left ventricle', 12, {
+				weight: 600,
+				color: 'var(--hc-lv)'
+			})}
+			{@render txt(P0 + 100, PR.bottom + 22, 'aorta', 12, { weight: 600, color: 'var(--hc-oxy)' })}
+			{@render txt(P0 + 146, PR.bottom + 22, 'left atrium', 12, {
+				weight: 600,
+				color: 'var(--hc-la)'
+			})}
+			{#if compare}
+				{@render txt(P1, PR.bottom + 22, 'dashed: healthy heart', 12, {
+					anchor: 'end',
+					muted: true
+				})}
+			{:else if phase === 'pressure'}
+				{@render txt(P1, PR.bottom + 22, 'shaded: valve open', 12, { anchor: 'end', muted: true })}
+			{/if}
+		</Readout>
 	</g>
+	<Readout id="k-lv" order={20} label="left ventricle" color="var(--hc-lv)" />
+	<Readout id="k-ao" order={21} label="aorta" color="var(--hc-oxy)" />
+	<Readout id="k-la" order={22} label="left atrium" color="var(--hc-la)" />
+	{#if compare}
+		<Readout id="k-dashed" order={23} label="dashed: healthy heart" />
+	{:else if phase === 'pressure'}
+		<Readout id="k-shaded" order={23} label="shaded: valve open" />
+	{/if}
 
 	<!-- key to the heart drawing -->
-	{#each legend as k, i (k.id)}
-		{@const x = 30 + (i % 2) * 200}
-		{@const y = 532 + Math.floor(i / 2) * 26}
-		<rect {x} y={y - 11} width="14" height="14" rx="3" fill={k.color} />
-		{@render txt(x + 22, y + 1, k.label, 12, { muted: true })}
-	{/each}
+	<Readout id="heart-key">
+		{#each legend as k, i (k.id)}
+			{@const x = 30 + (i % 2) * 200}
+			{@const y = 532 + Math.floor(i / 2) * 26}
+			<rect {x} y={y - 11} width="14" height="14" rx="3" fill={k.color} />
+			{@render txt(x + 22, y + 1, k.label, 12, { muted: true })}
+		{/each}
+	</Readout>
+	{#if phase === 'leak'}
+		<Readout id="k-leak" order={24} label="blood leaking back" color="var(--hc-leak)" />
+	{/if}
 
-	<Card x={470} y={476} w={474} h={100} {cells} />
+	<Readout id="card">
+		<Card x={470} y={476} w={474} h={100} {cells} />
+	</Readout>
+	{#each cells as c, i (c.id)}
+		<Readout
+			id="cell-{c.id}"
+			order={i + 1}
+			label={c.label[0].toUpperCase() + c.label.slice(1)}
+			value={c.value}
+			note={c.sub}
+			color={c.color}
+		/>
+	{/each}
 </g>
