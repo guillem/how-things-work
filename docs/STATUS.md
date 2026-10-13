@@ -44,7 +44,7 @@ Last updated: 2026-10-13 UTC.
   v0.1.0). All merged topic/site branches were deleted, local and remote. Rulesets: `main` can't be
   force-pushed or deleted; `v*` tags can't be moved or deleted. The `github-pages` environment
   deploys from `v*` tags and `main` (rollbacks run from main).
-- `main` (deployed as v0.1.12): **46 of the 100 catalogue topics ticked** — photosynthesis
+- `main` (deployed as v0.1.13): **46 of the 100 catalogue topics ticked** — photosynthesis
   (ticked 2026-10-11, the quality reference), 16 early topics (the list below the wave-1 table),
   and the 29 of batches 6–9, built one agent per topic in local worktrees (the process that
   worked for batches 2–6, still current). PRs #1–#18 were the early merge-commit flow; #15
@@ -71,7 +71,7 @@ Last updated: 2026-10-13 UTC.
 
 ## Current development
 
-**Fact-check round (2026-10-13, not yet released):** the 29 built topics never reviewed through
+**Fact-check round (2026-10-13, factual fixes released in v0.1.13):** the 29 built topics never reviewed through
 the Batch API were reviewed (batch msgbatch_01RwbH2w8JY5g9dqUqigDc89, ~$18 + ~260 searches; all
 "ready after fixes"). Applied so far: every High/Medium factual error (27 items in 17 topics,
 each checked against a source, none rejected) and the epidemics flu-marker contradiction. The
