@@ -119,8 +119,8 @@ export const spec: ExplainerSpec = {
 			controls: [wolves, elk, beavers],
 			body: `
 <p>Real ecosystems have many species, linked by who eats whom: a <dfn data-def="The network of feeding relationships in an ecosystem; arrows show which way food energy flows.">food web</dfn>. Here is a small one, loosely inspired by Yellowstone National Park: willows by the rivers; elk and beavers that feed on them; wolves that hunt elk.</p>
-<p>Switch the <strong>wolves</strong> off. The elk, no longer hunted, multiply — and browse the willows down. With fewer willows, the beavers decline too, although wolves never touched a beaver. Switch the wolves back on and the web slowly recovers. A change at the top <strong>cascades</strong> down the web.</p>`,
-			notes: `<p>The species and links are real, but the numbers in this model are made up to show the kind of effect, not measured. In Yellowstone, wolves were reintroduced in 1995 after 70 years' absence; how much of the later recovery of willows and beavers is due to them is still debated by ecologists — the real web has many more players, from bison to drought.</p>`
+<p>Switch the <strong>wolves</strong> off. The elk, no longer hunted, multiply — and browse the willows down. With fewer willows, the beavers decline too, although in this model wolves never touch a beaver. Switch the wolves back on and the web slowly recovers. A change at the top <strong>cascades</strong> down the web.</p>`,
+			notes: `<p>The species are real and so are these links, though the real web has more (wolves also hunt beavers, for example); the numbers in this model are made up to show the kind of effect, not measured. In Yellowstone, wolves were reintroduced in 1995 after 70 years' absence; how much of the later recovery of willows and beavers is due to them is still debated by ecologists — the real web has many more players, from bison to drought.</p>`
 		},
 		{
 			id: 'newcomer',

@@ -153,8 +153,9 @@ export function tempAt(c: Climate, lat: number) {
  * fast as Earth, from Held & Hou (1980): φ_H = √(5/3 · gHΔ/(Ω²a²)) radians,
  * with equator-to-pole contrast Δ = 1/3 of the mean potential temperature (as
  * in the paper) and a height H = 15 km chosen here (the tropical tropopause;
- * the paper used 10 km): about 35° for Earth, close to the observed 30°, with
- * three cells per hemisphere.
+ * the paper used 10 km): about 35° for Earth, a little poleward of the observed
+ * 30°, with three cells per hemisphere (10 km gives 29° but, with the cell-count
+ * rule in `cells()`, four cells).
  * Capped at 90°: a slowly spinning planet has one cell from equator to pole.
  */
 export function hadleyEdge(spin: number) {

@@ -7,7 +7,7 @@
 	 * globe's face, arrows show the wind at the ground in each band.
 	 *
 	 * Phases (`step.hints.phase`):
-	 *   convection — Halley's 1686 picture: spin from `hints.spin` (0), one cell
+	 *   convection — Halley and Hadley's picture: spin from `hints.spin` (0), one cell
 	 *                per hemisphere, wind from pole to equator everywhere.
 	 *   cells      — spin from `params.spin`: `cells(spin)` bands, trade winds,
 	 *                westerlies, polar easterlies.
@@ -443,7 +443,7 @@
 		'the pole to the equator everywhere.',
 		'Hadley (1735) added the spin to',
 		'explain the easterly trade winds,',
-		'but still drew a single cell.'
+		'but still pictured a single cell.'
 	];
 </script>
 
@@ -636,7 +636,7 @@
 	{#if phase === 'convection'}
 		<g transform="translate({PANEL_X} 140)">
 			<rect width={PANEL_W} height="198" rx="10" fill="var(--surface)" stroke="var(--border)" />
-			{@render txt(14, 26, "Halley's picture, 1686", 14, { weight: 600 })}
+			{@render txt(14, 26, "Halley and Hadley's picture", 14, { weight: 600 })}
 			{#each HALLEY_NOTE as line, i (i)}
 				{@render txt(14, 50 + i * 17 + (i >= 5 ? 8 : 0), line, 12, { muted: i >= 5 })}
 			{/each}
@@ -654,7 +654,7 @@
 			stroke-linejoin="round"
 		/>
 		{@render txt(26, 16, 'air flow in the cells', 12)}
-		{@render txt(26, 31, '(height exaggerated ~50×)', 11, { muted: true })}
+		{@render txt(26, 31, '(height exaggerated over 100×)', 11, { muted: true })}
 		<line
 			x1="0"
 			y1="52"

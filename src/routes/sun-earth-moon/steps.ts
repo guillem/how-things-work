@@ -122,7 +122,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The second effect matters even more: the <strong>height of the Sun</strong>. In summer the noon Sun climbs high; in winter it stays low.</p>
 <p>A beam of sunlight falling steeply lands on a small patch of ground. The same beam arriving at a low angle is spread over a much larger patch, so each square metre gets less energy — like a torch shone straight down versus at a slant. Low winter sunlight also passes through more air.</p>
-<p>Longer days <em>and</em> steeper sunlight together mean that at 40° N a midsummer day brings over three times as much solar energy as a midwinter day, and the summer half of the Earth as a whole gets more than twice as much as the winter half. That is what seasons are.</p>`,
+<p>Longer days <em>and</em> steeper sunlight together mean that at 40° N a midsummer day brings over three times as much solar energy as a midwinter day, and on that day the summer hemisphere as a whole gets more than twice as much as the winter one. That is what seasons are.</p>`,
 			notes: `<p>The chart shows sunshine arriving at the top of the atmosphere. Low winter sunlight also crosses more air, which absorbs and scatters some of it, so at the ground the gap between summer and winter is larger still.</p>`
 		},
 		{
