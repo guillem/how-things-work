@@ -17,7 +17,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, clamp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		MATERIALS,
 		convexLens,
@@ -194,7 +194,7 @@
 	const mirrorKnob = $derived(knob(bmirror, MIRROR_L / 2 + 16, 0));
 </script>
 
-{#snippet label(
+{#snippet labelText(
 	x: number,
 	y: number,
 	s: string,
@@ -204,6 +204,7 @@
 		muted?: boolean;
 		color?: string;
 		weight?: number;
+		keep?: boolean;
 	} = {}
 )}
 	<text
@@ -216,6 +217,28 @@
 		style:fill={o.color}
 		font-weight={o.weight ?? 500}>{s}</text
 	>
+{/snippet}
+
+<!-- Stage labels leave the drawing on phones (see <Readout>), unless `keep`. -->
+{#snippet label(
+	x: number,
+	y: number,
+	s: string,
+	o: {
+		size?: number;
+		anchor?: 'start' | 'middle' | 'end';
+		muted?: boolean;
+		color?: string;
+		weight?: number;
+		keep?: boolean;
+	} = {}
+)}
+	<Readout id="label">
+		{#snippet narrow()}
+			{#if o.keep}{@render labelText(x, y, s, o)}{/if}
+		{/snippet}
+		{@render labelText(x, y, s, o)}
+	</Readout>
 {/snippet}
 
 <g>
@@ -430,17 +453,25 @@
 			onkey={(k: Key) => (bmirror = { ...bmirror, deg: turnKey(bmirror, k) })}
 		/>
 
-		{@render label(
-			32,
-			44,
-			`${material.name} lens and prism · ${white ? 'white light' : `${nm} nm light`}`,
-			{ anchor: 'start', size: 14, weight: 600 }
-		)}
-		{@render label(
-			32,
-			66,
-			`n = ${fmt(material.n(white ? 589.3 : nm), 3)}${white ? ' for yellow light' : ''}`,
-			{ anchor: 'start', muted: true, size: 12 }
-		)}
+		<Readout
+			id="glass"
+			order={1}
+			label="Lens and prism"
+			value="{material.name}, n = {fmt(material.n(white ? 589.3 : nm), 3)}"
+			note={white ? 'white light (n for yellow)' : `${nm} nm light`}
+		>
+			{@render label(
+				32,
+				44,
+				`${material.name} lens and prism · ${white ? 'white light' : `${nm} nm light`}`,
+				{ anchor: 'start', size: 14, weight: 600 }
+			)}
+			{@render label(
+				32,
+				66,
+				`n = ${fmt(material.n(white ? 589.3 : nm), 3)}${white ? ' for yellow light' : ''}`,
+				{ anchor: 'start', muted: true, size: 12 }
+			)}
+		</Readout>
 	{/if}
 </g>

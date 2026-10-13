@@ -20,7 +20,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, cycle, pingpong, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { addVelocities, flashHits, gamma, num, tickAtRest } from '../relativity';
 	import { C_PX, duration, edgeFade, wrap, wrapShift } from './shared';
 	import T from './T.svelte';
@@ -255,14 +255,26 @@
 			fill="var(--rel-light)"
 			filter="url(#glow)"
 		/>
-		<T x={x + 28} y={top + G / 2 + 4} text={name} size={12} muted />
+		<Readout id="clock-{name}-{top}">
+			<T x={x + 28} y={top + G / 2 + 4} text={name} size={12} muted />
+		</Readout>
 	</g>
 {/snippet}
 
 <g>
 	<!-- ===================== top row: the platform frame ===================== -->
 	{@render deck(ROWS[0], 0)}
-	<T x={24} y={ROWS[0] + 18} text="Platform frame" size={15} weight={650} color="var(--rel-plat)" />
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="row-top" order={1} label="Platform frame" marker={1} at={[40, ROWS[0] + 24]}>
+		<T
+			x={24}
+			y={ROWS[0] + 18}
+			text="Platform frame"
+			size={15}
+			weight={650}
+			color="var(--rel-plat)"
+		/>
+	</Readout>
 
 	<!-- the station clock, at rest -->
 	{@render clock(XS, ROWS[0] + SM_TOP, T0, t, 'var(--rel-plat)', true, wc, 'platform clock')}
@@ -293,32 +305,41 @@
 				'train clock'
 			)}
 		</g>
-		<g opacity={wc}>
-			<T
-				x={936}
-				y={ROWS[0] + 18}
-				anchor="end"
-				size={13}
-				text="one tick, timed on the platform:"
-				muted
-			/>
-			<T
-				x={936}
-				y={ROWS[0] + 33}
-				anchor="end"
-				size={13}
-				weight={600}
-				text="platform clock {restTick} · train clock {movingTick}"
-			/>
-			<T
-				x={936}
-				y={ROWS[0] + 47}
-				anchor="end"
-				size={12}
-				muted
-				text="count so far: platform {plural(ticksRest)}, train {plural(ticksMoving)}"
-			/>
-		</g>
+		<Readout
+			id="ticks-top"
+			order={4}
+			label="One tick, timed on the platform"
+			value="platform clock {restTick} · train clock {movingTick}"
+			note="count so far: platform {plural(ticksRest)}, train {plural(ticksMoving)}"
+			opacity={wc}
+		>
+			<g opacity={wc}>
+				<T
+					x={936}
+					y={ROWS[0] + 18}
+					anchor="end"
+					size={13}
+					text="one tick, timed on the platform:"
+					muted
+				/>
+				<T
+					x={936}
+					y={ROWS[0] + 33}
+					anchor="end"
+					size={13}
+					weight={600}
+					text="platform clock {restTick} · train clock {movingTick}"
+				/>
+				<T
+					x={936}
+					y={ROWS[0] + 47}
+					anchor="end"
+					size={12}
+					muted
+					text="count so far: platform {plural(ticksRest)}, train {plural(ticksMoving)}"
+				/>
+			</g>
+		</Readout>
 	{/if}
 
 	{#if wl > 0.01}
@@ -328,29 +349,42 @@
 			{@render lamp(s.car, ROWS[0])}
 			{@render light(s, ROWS[0], `${num(wBall, 3)} c`)}
 		</g>
-		<g opacity={wl}>
-			<T
-				x={936}
-				y={ROWS[0] + 18}
-				anchor="end"
-				text="the flash: c forwards, c backwards"
-				weight={600}
-			/>
-			<T
-				x={936}
-				y={ROWS[0] + 33}
-				anchor="end"
-				weight={600}
-				text="the ball: {num(wBall, 3)} c{beta >= 0.005
-					? ` — not 0.5 + ${num(beta)} = ${num(0.5 + beta)} c`
-					: ''}"
-			/>
-		</g>
+		<Readout
+			id="light-top"
+			order={4}
+			label="On the platform"
+			value="ball {num(wBall, 3)} c"
+			note="{beta >= 0.005
+				? `not 0.5 + ${num(beta)} = ${num(0.5 + beta)} c · `
+				: ''}the flash: c both ways"
+			opacity={wl}
+		>
+			<g opacity={wl}>
+				<T
+					x={936}
+					y={ROWS[0] + 18}
+					anchor="end"
+					text="the flash: c forwards, c backwards"
+					weight={600}
+				/>
+				<T
+					x={936}
+					y={ROWS[0] + 33}
+					anchor="end"
+					weight={600}
+					text="the ball: {num(wBall, 3)} c{beta >= 0.005
+						? ` — not 0.5 + ${num(beta)} = ${num(0.5 + beta)} c`
+						: ''}"
+				/>
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- ===================== bottom row: the train frame ===================== -->
 	{@render deck(ROWS[1], postOffset)}
-	<T x={24} y={ROWS[1] + 18} text="Train frame" size={15} weight={650} color="var(--rel-train)" />
+	<Readout id="row-bottom" order={2} label="Train frame" marker={2} at={[40, ROWS[1] + 24]}>
+		<T x={24} y={ROWS[1] + 18} text="Train frame" size={15} weight={650} color="var(--rel-train)" />
+	</Readout>
 
 	{#if wc > 0.01}
 		<g opacity={wc}>
@@ -381,32 +415,41 @@
 				'platform clock'
 			)}
 		</g>
-		<g opacity={wc}>
-			<T
-				x={936}
-				y={ROWS[1] + 18}
-				anchor="end"
-				size={13}
-				text="one tick, timed on the train:"
-				muted
-			/>
-			<T
-				x={936}
-				y={ROWS[1] + 33}
-				anchor="end"
-				size={13}
-				weight={600}
-				text="train clock {restTick} · platform clock {movingTick}"
-			/>
-			<T
-				x={936}
-				y={ROWS[1] + 47}
-				anchor="end"
-				size={12}
-				muted
-				text="count so far: train {plural(ticksRest)}, platform {plural(ticksMoving)}"
-			/>
-		</g>
+		<Readout
+			id="ticks-bottom"
+			order={5}
+			label="One tick, timed on the train"
+			value="train clock {restTick} · platform clock {movingTick}"
+			note="count so far: train {plural(ticksRest)}, platform {plural(ticksMoving)}"
+			opacity={wc}
+		>
+			<g opacity={wc}>
+				<T
+					x={936}
+					y={ROWS[1] + 18}
+					anchor="end"
+					size={13}
+					text="one tick, timed on the train:"
+					muted
+				/>
+				<T
+					x={936}
+					y={ROWS[1] + 33}
+					anchor="end"
+					size={13}
+					weight={600}
+					text="train clock {restTick} · platform clock {movingTick}"
+				/>
+				<T
+					x={936}
+					y={ROWS[1] + 47}
+					anchor="end"
+					size={12}
+					muted
+					text="count so far: train {plural(ticksRest)}, platform {plural(ticksMoving)}"
+				/>
+			</g>
+		</Readout>
 	{/if}
 
 	{#if wl > 0.01}
@@ -416,28 +459,45 @@
 			{@render lamp(XT, ROWS[1])}
 			{@render light(s, ROWS[1], '0.5 c')}
 		</g>
-		<g opacity={wl}>
-			<T
-				x={936}
-				y={ROWS[1] + 18}
-				anchor="end"
-				text="the flash: c forwards, c backwards"
-				weight={600}
-			/>
-			<T x={936} y={ROWS[1] + 33} anchor="end" weight={600} text="the ball: 0.5 c" />
-		</g>
+		<Readout
+			id="light-bottom"
+			order={5}
+			label="On the train"
+			value="ball 0.5 c"
+			note="the flash: c both ways"
+			opacity={wl}
+		>
+			<g opacity={wl}>
+				<T
+					x={936}
+					y={ROWS[1] + 18}
+					anchor="end"
+					text="the flash: c forwards, c backwards"
+					weight={600}
+				/>
+				<T x={936} y={ROWS[1] + 33} anchor="end" weight={600} text="the ball: 0.5 c" />
+			</g>
+		</Readout>
 	{/if}
 
 	<!-- the train's speed -->
-	<T
-		x={232}
-		y={ROWS[0] + 18}
-		size={13}
-		muted
-		text={beta < 0.005
-			? 'train at rest: both frames agree'
-			: `train at ${num(beta)} c · γ = ${num(g, 3)}`}
-	/>
+	<Readout
+		id="speed"
+		order={3}
+		label="Train speed"
+		value={beta < 0.005 ? 'at rest' : `${num(beta)} c · γ = ${num(g, 3)}`}
+		note={beta < 0.005 ? 'both frames agree' : undefined}
+	>
+		<T
+			x={232}
+			y={ROWS[0] + 18}
+			size={13}
+			muted
+			text={beta < 0.005
+				? 'train at rest: both frames agree'
+				: `train at ${num(beta)} c · γ = ${num(g, 3)}`}
+		/>
+	</Readout>
 </g>
 
 {#snippet lamp(x: number, top: number)}
@@ -467,7 +527,9 @@
 			fill="var(--rel-light)"
 			filter="url(#glow)"
 		/>
-		<T x={p.x - dir * 6} y={y - 9} text="c" size={13} weight={650} anchor="middle" italic />
+		<Readout id="c-{top}-{p.key}">
+			<T x={p.x - dir * 6} y={y - 9} text="c" size={13} weight={650} anchor="middle" italic />
+		</Readout>
 	{/each}
 	{#each s.hits as h (h.key)}
 		<circle cx={h.x} cy={y} r="11" fill="var(--rel-light)" opacity={0.55 * h.o} />
@@ -475,14 +537,16 @@
 	{#if s.ball !== null}
 		{@const bo = s.ballDone ? 0 : 1}
 		<circle cx={s.ball} cy={top + RAIL - 22} r="7" fill="var(--rel-strike)" />
-		<T
-			opacity={bo}
-			x={s.ball}
-			y={top + RAIL - 34}
-			text={ballText}
-			size={12}
-			weight={600}
-			anchor="middle"
-		/>
+		<Readout id="ball-{top}">
+			<T
+				opacity={bo}
+				x={s.ball}
+				y={top + RAIL - 34}
+				text={ballText}
+				size={12}
+				weight={600}
+				anchor="middle"
+			/>
+		</Readout>
 	{/if}
 {/snippet}

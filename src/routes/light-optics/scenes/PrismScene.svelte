@@ -10,7 +10,7 @@
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, clamp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		MATERIALS,
 		YELLOW,
@@ -126,7 +126,7 @@
 	const knob = $derived({ x: lampAt.x - beamDir.x * 52, y: lampAt.y - beamDir.y * 52 });
 </script>
 
-{#snippet label(
+{#snippet labelText(
 	x: number,
 	y: number,
 	s: string,
@@ -136,6 +136,7 @@
 		muted?: boolean;
 		color?: string;
 		weight?: number;
+		keep?: boolean;
 	} = {}
 )}
 	<text
@@ -150,6 +151,28 @@
 	>
 {/snippet}
 
+<!-- Stage labels leave the drawing on phones (see <Readout>), unless `keep`. -->
+{#snippet label(
+	x: number,
+	y: number,
+	s: string,
+	o: {
+		size?: number;
+		anchor?: 'start' | 'middle' | 'end';
+		muted?: boolean;
+		color?: string;
+		weight?: number;
+		keep?: boolean;
+	} = {}
+)}
+	<Readout id="label">
+		{#snippet narrow()}
+			{#if o.keep}{@render labelText(x, y, s, o)}{/if}
+		{/snippet}
+		{@render labelText(x, y, s, o)}
+	</Readout>
+{/snippet}
+
 <g>
 	<path
 		d={pathOf(corners, true)}
@@ -158,11 +181,13 @@
 		stroke-width="1.5"
 		stroke-linejoin="round"
 	/>
-	{@render label(C0.x + 14, corners[0].y - 4, `${material.name} prism`, {
-		muted: true,
-		size: 12,
-		anchor: 'start'
-	})}
+	<Readout id="key-prism" order={1} label="{material.name} prism">
+		{@render label(C0.x + 14, corners[0].y - 4, `${material.name} prism`, {
+			muted: true,
+			size: 12,
+			anchor: 'start'
+		})}
+	</Readout>
 	<path
 		d={pathOf(screenPts)}
 		fill="none"
@@ -228,17 +253,26 @@
 		]}
 	/>
 	{#if devHere === null}
-		{@render label(932, 48, 'Total internal reflection:', {
-			size: 13,
-			weight: 700,
-			anchor: 'end',
-			color: 'var(--lo-theta2)'
-		})}
-		{@render label(932, 68, 'the light cannot get out through the far face', {
-			size: 13,
-			anchor: 'end',
-			color: 'var(--lo-theta2)'
-		})}
+		<Readout
+			id="tir"
+			order={2}
+			label="Total internal reflection"
+			value="no light out"
+			note="it cannot get out through the far face"
+			color="var(--lo-theta2)"
+		>
+			{@render label(932, 48, 'Total internal reflection:', {
+				size: 13,
+				weight: 700,
+				anchor: 'end',
+				color: 'var(--lo-theta2)'
+			})}
+			{@render label(932, 68, 'the light cannot get out through the far face', {
+				size: 13,
+				anchor: 'end',
+				color: 'var(--lo-theta2)'
+			})}
+		</Readout>
 	{/if}
 	{@render label(lampAt.x + 10, lampAt.y + 48, 'drag the lamp', { muted: true, size: 12 })}
 </g>

@@ -13,7 +13,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { C, gamma, MUON_LIFETIME, muonRange, num, tickAtRest } from '../relativity';
 	import { duration } from './shared';
 	import T from './T.svelte';
@@ -100,18 +100,22 @@
 	<!-- ============ the γ curve ============ -->
 	{#each GAMMA_TICKS as gm (gm)}
 		<line x1={X0} x2={X1} y1={py(gm)} y2={py(gm)} stroke="var(--stage-grid)" />
-		<T x={X0 - 10} y={py(gm) + 4} text={String(gm)} size={11} anchor="end" muted />
+		<Readout id="gt-{gm}">
+			<T x={X0 - 10} y={py(gm) + 4} text={String(gm)} size={11} anchor="end" muted />
+		</Readout>
 	{/each}
 	{#each BETA_TICKS as b (b)}
 		<line x1={px(b)} x2={px(b)} y1={Y0} y2={Y1} stroke="var(--stage-grid)" />
-		<T
-			x={px(b)}
-			y={Y0 + 18}
-			text={b === 1 ? 'c' : b === 0 ? '0' : `${num(b, 1)} c`}
-			size={11}
-			anchor="middle"
-			muted
-		/>
+		<Readout id="bt-{b}">
+			<T
+				x={px(b)}
+				y={Y0 + 18}
+				text={b === 1 ? 'c' : b === 0 ? '0' : `${num(b, 1)} c`}
+				size={11}
+				anchor="middle"
+				muted
+			/>
+		</Readout>
 	{/each}
 	<line x1={X0} x2={X1} y1={Y0} y2={Y0} stroke="var(--stage-line)" stroke-width="1.5" />
 	<line x1={X0} x2={X0} y1={Y0} y2={Y1} stroke="var(--stage-line)" stroke-width="1.5" />
@@ -124,32 +128,50 @@
 		stroke-width="2"
 		stroke-dasharray="5 5"
 	/>
-	<T
-		x={X1}
-		y={Y1 - 18}
-		text="the speed of light"
-		size={12}
-		anchor="middle"
-		color="var(--rel-light)"
-		weight={600}
-	/>
-	<T
-		x={(X0 + X1) / 2}
-		y={Y0 + 42}
-		text={wm > 0.5 ? 'speed of the muon' : 'speed of the train'}
-		size={13}
-		anchor="middle"
-		muted
-	/>
+	<Readout id="light-label"
+		>{#snippet narrow()}<T
+				x={X1}
+				y={Y1 - 22}
+				text="c"
+				size={30}
+				anchor="middle"
+				color="var(--rel-light)"
+				weight={650}
+				italic
+			/>{/snippet}
+		<T
+			x={X1}
+			y={Y1 - 18}
+			text="the speed of light"
+			size={12}
+			anchor="middle"
+			color="var(--rel-light)"
+			weight={600}
+		/>
+	</Readout>
+	<Readout id="x-caption">
+		<T
+			x={(X0 + X1) / 2}
+			y={Y0 + 42}
+			text={wm > 0.5 ? 'speed of the muon' : 'speed of the train'}
+			size={13}
+			anchor="middle"
+			muted
+		/>
+	</Readout>
 	<T x={X0 - 10} y={Y1 - 20} text="γ" size={16} anchor="end" italic weight={600} />
-	<T x={X0 + 8} y={Y1 - 20} text="Lorentz factor" size={12} muted />
+	<Readout id="y-caption">
+		<T x={X0 + 8} y={Y1 - 20} text="Lorentz factor" size={12} muted />
+	</Readout>
 
 	<path d={curve} fill="none" stroke="var(--rel-train)" stroke-width="3" stroke-linejoin="round" />
 	{#each REFS as r (r.b)}
 		{@const ry = py(gamma(r.b))}
 		{#if Math.abs(r.b - beta) > 0.03}
 			<circle cx={px(r.b)} cy={ry} r="4" fill="var(--stage-ink-muted)" />
-			<T x={px(r.b) - 10} y={ry - 8} text={r.text} size={11} anchor="end" muted />
+			<Readout id="ref-{r.b}">
+				<T x={px(r.b) - 10} y={ry - 8} text={r.text} size={11} anchor="end" muted />
+			</Readout>
 		{/if}
 	{/each}
 
@@ -164,23 +186,45 @@
 		stroke="var(--stage-bg)"
 		stroke-width="2.5"
 	/>
-	<T
-		x={M.x < 280 ? M.x + 12 : M.x - 12}
-		y={M.y - 12}
-		anchor={M.x < 280 ? 'start' : 'end'}
-		text="{num(beta)} c → γ = {num(g, 3)}"
-		size={14}
-		weight={650}
-	/>
+	<Readout
+		id="speed"
+		order={1}
+		label={wm > 0.5 ? 'Speed of the muon' : 'Speed of the train'}
+		value="{num(beta)} c → γ = {num(g, 3)}"
+	>
+		<T
+			x={M.x < 280 ? M.x + 12 : M.x - 12}
+			y={M.y - 12}
+			anchor={M.x < 280 ? 'start' : 'end'}
+			text="{num(beta)} c → γ = {num(g, 3)}"
+			size={14}
+			weight={650}
+		/>
+	</Readout>
 
 	<!-- ============ phase gamma: the two ticks ============ -->
 	{#if wg > 0.01}
 		<g opacity={wg}>
-			<T x={BX} y={110} text="One tick of the light clock" size={15} weight={650} />
-			<T x={BX} y={156} text="the clock at rest:" size={13} muted />
+			<Readout id="tick-title">
+				<T x={BX} y={110} text="One tick of the light clock" size={15} weight={650} />
+			</Readout>
+			<Readout id="rest-caption">
+				<T x={BX} y={156} text="the clock at rest:" size={13} muted />
+			</Readout>
 			<rect x={BX} y={168} width={BW} height="22" rx="4" fill="var(--rel-plat)" />
-			<T x={BX + BW + 10} y={184} text={duration(tick0)} size={13} weight={600} />
-			<T x={BX} y={228} text="a clock moving at {num(beta)} c:" size={13} muted />
+			<Readout
+				id="tick-rest"
+				order={2}
+				label="One tick, clock at rest"
+				value={duration(tick0)}
+				color="var(--rel-plat)"
+				opacity={wg}
+			>
+				<T x={BX + BW + 10} y={184} text={duration(tick0)} size={13} weight={600} />
+			</Readout>
+			<Readout id="moving-caption">
+				<T x={BX} y={228} text="a clock moving at {num(beta)} c:" size={13} muted />
+			</Readout>
 			<rect x={BX} y={240} width={BW * g} height="22" rx="4" fill="var(--rel-train)" />
 			{#each Array.from({ length: Math.floor(g - 1e-9) }, (_, i) => i + 1) as i (i)}
 				<line
@@ -192,18 +236,40 @@
 					stroke-width="1.5"
 				/>
 			{/each}
-			<T
-				x={wide ? BX : BX + BW * g + 10}
-				y={wide ? 284 : 256}
-				text="{duration(tick0 * g)} = γ × {duration(tick0)}"
-				size={13}
-				weight={600}
-			/>
-			<T x={BX} y={340} text="at everyday speeds γ is almost exactly 1:" size={13} muted />
-			<T x={BX} y={364} text="jet airliner, 250 m/s:" size={13} />
-			<T x={BX + 16} y={384} text="γ = {num(gamma(250 / C), 14)}" size={13} weight={600} />
-			<T x={BX} y={410} text="GPS satellite, 3.9 km/s:" size={13} />
-			<T x={BX + 16} y={430} text="γ = {num(gamma(3900 / C), 11)}" size={13} weight={600} />
+			<Readout
+				id="tick-moving"
+				order={3}
+				label="One tick, clock at {num(beta)} c"
+				value={duration(tick0 * g)}
+				note="= γ × {duration(tick0)}"
+				color="var(--rel-train)"
+				opacity={wg}
+			>
+				<T
+					x={wide ? BX : BX + BW * g + 10}
+					y={wide ? 284 : 256}
+					text="{duration(tick0 * g)} = γ × {duration(tick0)}"
+					size={13}
+					weight={600}
+				/>
+			</Readout>
+			<Readout
+				id="everyday"
+				order={4}
+				label="At everyday speeds"
+				value="γ ≈ 1"
+				note="jet airliner, 250 m/s: γ = {num(
+					gamma(250 / C),
+					14
+				)} · GPS satellite, 3.9 km/s: γ = {num(gamma(3900 / C), 11)}"
+				opacity={wg}
+			>
+				<T x={BX} y={340} text="at everyday speeds γ is almost exactly 1:" size={13} muted />
+				<T x={BX} y={364} text="jet airliner, 250 m/s:" size={13} />
+				<T x={BX + 16} y={384} text="γ = {num(gamma(250 / C), 14)}" size={13} weight={600} />
+				<T x={BX} y={410} text="GPS satellite, 3.9 km/s:" size={13} />
+				<T x={BX + 16} y={430} text="γ = {num(gamma(3900 / C), 11)}" size={13} weight={600} />
+			</Readout>
 		</g>
 	{/if}
 
@@ -227,34 +293,57 @@
 					y2={TOP + km * KM}
 					stroke="var(--stage-grid)"
 				/>
-				<T x={CX0 - 68} y={TOP + km * KM + 4} text="{km} km" size={11} anchor="end" muted />
+				<Readout id="km-{km}">
+					<T x={CX0 - 68} y={TOP + km * KM + 4} text="{km} km" size={11} anchor="end" muted />
+				</Readout>
 			{/each}
-			<T
-				x={(CX0 + CX1) / 2}
-				y={TOP - 50}
-				text="A muon at {num(beta)} c: how far, on average,"
-				size={14}
-				weight={650}
-				anchor="middle"
-			/>
-			<T
-				x={(CX0 + CX1) / 2}
-				y={TOP - 32}
-				text="before it decays?"
-				size={14}
-				weight={650}
-				anchor="middle"
-			/>
-			<T x={CX0} y={TOP - 8} text="no time dilation" size={12} anchor="middle" muted />
-			<T
-				x={CX1}
-				y={TOP - 8}
-				text="what happens"
-				size={12}
-				anchor="middle"
+			<Readout id="muon-title">
+				<T
+					x={(CX0 + CX1) / 2}
+					y={TOP - 50}
+					text="A muon at {num(beta)} c: how far, on average,"
+					size={14}
+					weight={650}
+					anchor="middle"
+				/>
+				<T
+					x={(CX0 + CX1) / 2}
+					y={TOP - 32}
+					text="before it decays?"
+					size={14}
+					weight={650}
+					anchor="middle"
+				/>
+			</Readout>
+			<Readout
+				id="naive"
+				order={2}
+				label="Dashed: no time dilation"
+				value={metres(range.naive)}
+				note="after {duration(MUON_LIFETIME)}"
+				opacity={wm}
+			>
+				<T x={CX0} y={TOP - 8} text="no time dilation" size={12} anchor="middle" muted />
+			</Readout>
+			<Readout
+				id="dilated"
+				order={3}
+				label="Solid: what happens"
+				value={metres(range.dilated)}
+				note="after {duration(range.lifetime)}"
 				color="var(--rel-muon)"
-				weight={650}
-			/>
+				opacity={wm}
+			>
+				<T
+					x={CX1}
+					y={TOP - 8}
+					text="what happens"
+					size={12}
+					anchor="middle"
+					color="var(--rel-muon)"
+					weight={650}
+				/>
+			</Readout>
 
 			{#each tracks as track (track.x)}
 				{@const end = depth(track.d)}
@@ -276,8 +365,10 @@
 					stroke="var(--rel-muon)"
 					stroke-width="2"
 				/>
-				<T x={track.x + 16} y={end + 4} text={metres(track.d)} size={13} weight={650} />
-				<T x={track.x + 16} y={end + 20} text="after {duration(track.life)}" size={11} muted />
+				<Readout id="track-{track.x}">
+					<T x={track.x + 16} y={end + 4} text={metres(track.d)} size={13} weight={650} />
+					<T x={track.x + 16} y={end + 20} text="after {duration(track.life)}" size={11} muted />
+				</Readout>
 				{#if !track.m.decayed}
 					<circle cx={track.x} cy={track.m.y} r="6" fill="var(--rel-muon)" filter="url(#glow)" />
 				{:else if track.m.burst < 1 && !reduced}
@@ -292,22 +383,31 @@
 					/>
 				{/if}
 			{/each}
-			<T
-				x={(CX0 + CX1) / 2}
-				y={BOTTOM + 24}
-				text="on the muon's own clock: 2.2 µs in both"
-				size={12}
-				anchor="middle"
-				muted
-			/>
-			<T
-				x={(CX0 + CX1) / 2}
-				y={BOTTOM + 42}
-				text="(times on our clocks; animation slowed 250 000 times)"
-				size={11}
-				anchor="middle"
-				muted
-			/>
+			<Readout
+				id="own-clock"
+				order={4}
+				label="On the muon's own clock"
+				value="2.2 µs in both"
+				note="other times on our clocks"
+				opacity={wm}
+			>
+				<T
+					x={(CX0 + CX1) / 2}
+					y={BOTTOM + 24}
+					text="on the muon's own clock: 2.2 µs in both"
+					size={12}
+					anchor="middle"
+					muted
+				/>
+				<T
+					x={(CX0 + CX1) / 2}
+					y={BOTTOM + 42}
+					text="(times on our clocks; animation slowed 250 000 times)"
+					size={11}
+					anchor="middle"
+					muted
+				/>
+			</Readout>
 		</g>
 	{/if}
 </g>

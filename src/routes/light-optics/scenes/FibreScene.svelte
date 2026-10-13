@@ -9,7 +9,7 @@
 	 * the light that leaves through the far end face.
 	 */
 	import { Handle, clamp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { MATERIALS, criticalAngle, dir, fibre, toDeg, trace, type Vec } from '../optics';
 	import Card from './Card.svelte';
 	import Lamp from './Lamp.svelte';
@@ -81,7 +81,7 @@
 	const knob = $derived({ x: lampAt.x - beamDir.x * 52, y: lampAt.y - beamDir.y * 52 });
 </script>
 
-{#snippet label(
+{#snippet labelText(
 	x: number,
 	y: number,
 	s: string,
@@ -91,6 +91,7 @@
 		muted?: boolean;
 		color?: string;
 		weight?: number;
+		keep?: boolean;
 	} = {}
 )}
 	<text
@@ -103,6 +104,28 @@
 		style:fill={o.color}
 		font-weight={o.weight ?? 500}>{s}</text
 	>
+{/snippet}
+
+<!-- Stage labels leave the drawing on phones (see <Readout>), unless `keep`. -->
+{#snippet label(
+	x: number,
+	y: number,
+	s: string,
+	o: {
+		size?: number;
+		anchor?: 'start' | 'middle' | 'end';
+		muted?: boolean;
+		color?: string;
+		weight?: number;
+		keep?: boolean;
+	} = {}
+)}
+	<Readout id="label">
+		{#snippet narrow()}
+			{#if o.keep}{@render labelText(x, y, s, o)}{/if}
+		{/snippet}
+		{@render labelText(x, y, s, o)}
+	</Readout>
 {/snippet}
 
 <g>
@@ -155,16 +178,33 @@
 		]}
 	/>
 	{#if delivered < 0.8}
-		{@render label(220, 134, 'Too tight: light escapes at the bend', {
-			weight: 700,
-			size: 14,
-			color: 'var(--lo-ray)'
-		})}
+		<Readout
+			id="fate"
+			order={1}
+			label="The light"
+			value="escapes at the bend"
+			note="too tight"
+			color="var(--lo-ray)"
+		>
+			{@render label(220, 134, 'Too tight: light escapes at the bend', {
+				weight: 700,
+				size: 14,
+				color: 'var(--lo-ray)'
+			})}
+		</Readout>
 	{:else}
-		{@render label(220, 134, `Trapped: ${bounces} reflections on the way`, {
-			weight: 600,
-			size: 13,
-			muted: true
-		})}
+		<Readout
+			id="fate"
+			order={1}
+			label="The light"
+			value="trapped"
+			note="{bounces} reflections on the way"
+		>
+			{@render label(220, 134, `Trapped: ${bounces} reflections on the way`, {
+				weight: 600,
+				size: 13,
+				muted: true
+			})}
+		</Readout>
 	{/if}
 </g>

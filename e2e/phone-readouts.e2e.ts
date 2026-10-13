@@ -879,6 +879,192 @@ test.describe('on a phone', () => {
 		await page.goto('./radioactivity/#carbon14');
 		await expect(panel).toContainText(/Upper atmosphere\s*nitrogen-14 → carbon-14/);
 	});
+
+	test('relativity clocks: each frame’s tick is text and follows the speed', async ({ page }) => {
+		await page.goto('./special-relativity/#time-dilation');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Train speed\s*0\.6 c · γ = 1\.25/);
+		await expect(panel).toContainText(
+			/One tick, timed on the platform\s*platform clock 10\.0 ns · train clock 12\.5 ns/
+		);
+		await expect(drawing(page)).not.toContainText('one tick, timed on the platform');
+		await range(page, 'beta').fill('0.8');
+		await expect(panel).toContainText(/train clock 16\.7 ns/);
+	});
+
+	test('relativity γ: the moving clock’s tick and the muon ranges are text', async ({ page }) => {
+		await page.goto('./special-relativity/#gamma');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Speed of the train\s*0\.6 c → γ = 1\.25/);
+		await expect(panel).toContainText(/One tick, clock at 0\.6 c\s*12\.5 ns/);
+		await expect(drawing(page)).not.toContainText('One tick of the light clock');
+		await range(page, 'beta').fill('0.8');
+		await expect(panel).toContainText(/One tick, clock at 0\.8 c\s*16\.7 ns/);
+		await page.goto('./special-relativity/#muons');
+		await expect(panel).toContainText(/Solid: what happens\s*[\d.]+ k?m/);
+		await expect(drawing(page)).not.toContainText('what happens');
+	});
+
+	test('relativity length: each frame’s measurement is text and follows the speed', async ({
+		page
+	}) => {
+		await page.goto('./special-relativity/#length');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Measured on the platform\s*train 160 m long/);
+		await expect(panel).toContainText(/Measured on the train\s*platform 160 m long/);
+		await expect(drawing(page)).not.toContainText('the train is 160 m long');
+		await range(page, 'beta').fill('0.8');
+		await expect(panel).toContainText(/train 120 m long/);
+	});
+
+	test('relativity lightning: when the strikes happen is text and follows the speed', async ({
+		page
+	}) => {
+		await page.goto('./special-relativity/#train-view');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Train frame: the strikes\s*front first/);
+		await expect(drawing(page)).not.toContainText('strikes:');
+		await range(page, 'beta').fill('0');
+		await expect(panel).toContainText(/Train frame: the strikes\s*same moment, t′ = 0/);
+	});
+
+	test('relativity spacetime: the event’s interval is text and follows the event', async ({
+		page
+	}) => {
+		await page.goto('./special-relativity/#interval');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/The event is\s*timelike/);
+		await expect(panel).toContainText(/= 30000 m²/);
+		await expect(drawing(page)).not.toContainText('s² =');
+		await range(page, 'ex').fill('250');
+		await range(page, 'ect').fill('0');
+		await expect(panel).toContainText(/The event is\s*spacelike/);
+	});
+
+	test('optics mirror: both angles are text and follow the mirror', async ({ page }) => {
+		await page.goto('./light-optics/#mirror');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Angle of incidence\s*47\.7°/);
+		await expect(panel).toContainText(/Angle of reflection\s*47\.7°/);
+		await expect(drawing(page)).not.toContainText('Angle of incidence');
+		await range(page, 'mirror').fill('10');
+		await expect(panel).not.toContainText(/Angle of incidence\s*47\.7°/);
+	});
+
+	test('optics wavefronts: the speed inside is text and follows n', async ({ page }) => {
+		await page.goto('./light-optics/#slower');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Crown glass\s*n = 1\.52/);
+		await expect(panel).toContainText(/Speed inside\s*66%/);
+		await expect(drawing(page)).not.toContainText('Speed inside');
+		await range(page, 'n').fill('2');
+		await expect(panel).toContainText(/Speed inside\s*50%/);
+	});
+
+	test('optics boundary: the angles and Snell’s law are text and follow the ray', async ({
+		page
+	}) => {
+		await page.goto('./light-optics/#snell');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/In the material\s*25\.0°/);
+		await expect(panel).toContainText('1.00 × sin 40.0° = 1.52 × sin 25.0°');
+		await expect(drawing(page)).not.toContainText('1.00 × sin');
+		await range(page, 'angle').fill('30');
+		await expect(panel).toContainText(/In the air\s*30\.0°/);
+		await page.goto('./light-optics/#tir');
+		await expect(panel).toContainText(/Critical angle \(dashed\)\s*41\.1°/);
+		await range(page, 'inside').fill('50');
+		await expect(panel).toContainText(/Outside\s*none/);
+	});
+
+	test('optics fibre: what happens to the light is text and follows the bend', async ({ page }) => {
+		await page.goto('./light-optics/#fibre');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/The light\s*trapped/);
+		await expect(drawing(page)).not.toContainText('Trapped');
+		await range(page, 'bend').fill('5');
+		await expect(panel).toContainText(/The light\s*escapes at the bend/);
+	});
+
+	test('optics lens: the focal length and the image are text and follow the controls', async ({
+		page
+	}) => {
+		await page.goto('./light-optics/#lens');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Focal length \(formula\)\s*144 mm/);
+		await expect(drawing(page)).not.toContainText('Focal length');
+		await range(page, 'radius').fill('150');
+		await expect(panel).not.toContainText(/Focal length \(formula\)\s*144 mm/);
+		await page.goto('./light-optics/#image');
+		await expect(panel).toContainText(/Object at u\s*200 mm/);
+		await expect(panel).toContainText('real image');
+		await range(page, 'u').fill('300');
+		await expect(panel).toContainText(/Object at u\s*150 mm/);
+	});
+
+	test('optics prism: the refractive indices are text and follow the material', async ({
+		page
+	}) => {
+		await page.goto('./light-optics/#prism');
+		const panel = readouts(page);
+		await expect(panel).toContainText('Flint glass prism');
+		await expect(panel).toContainText(/n for red \(656 nm\)\s*1\.776/);
+		await expect(drawing(page)).not.toContainText('n for red');
+		await page.locator('button[data-control="material"][data-value="crown"]').click();
+		await expect(panel).toContainText('Crown glass prism');
+		await expect(panel).not.toContainText(/n for red \(656 nm\)\s*1\.776/);
+	});
+
+	test('optics rainbow: the bow’s angles are text and follow the light', async ({ page }) => {
+		await page.goto('./light-optics/#rainbow');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Red comes back at\s*42\.3°/);
+		await expect(drawing(page)).not.toContainText('Red comes back at');
+		const white = page.locator('input[type=checkbox][data-control=white]');
+		await white.focus();
+		await page.keyboard.press('Space');
+		await expect(white).not.toBeChecked();
+		await expect(panel).toContainText(/The bow for 650 nm\s*\d+\.\d°/);
+	});
+
+	test('optics bench: the glass is text and follows the material', async ({ page }) => {
+		await page.goto('./light-optics/#bench');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Lens and prism\s*Flint glass, n = 1\.784/);
+		await expect(drawing(page)).not.toContainText('lens and prism');
+		await page.locator('button[data-control="material"][data-value="water"]').click();
+		await expect(panel).toContainText(/Lens and prism\s*Water, n = 1\.33/);
+	});
+
+	test('motor parts: the part names are numbered badges, named under the stage', async ({
+		page
+	}) => {
+		await page.goto('./motors-generators/#parts');
+		const panel = readouts(page);
+		await expect(panel).toContainText('split-ring commutator');
+		await expect(panel).toContainText('brushes');
+		await expect(drawing(page)).not.toContainText('split-ring commutator');
+	});
+
+	test('motor and generator: the card’s values are text and follow the controls', async ({
+		page
+	}) => {
+		await page.goto('./motors-generators/#force');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/force on each side\s*3\.75 N/);
+		await expect(panel).toContainText(/Graph: torque on the coil/);
+		await expect(drawing(page)).not.toContainText('force on each side');
+		await range(page, 'current').fill('0.5');
+		await expect(panel).toContainText(/force on each side\s*2\.50 N/);
+		await page.goto('./motors-generators/#ac');
+		await expect(panel).toContainText(/peak, N·B·A·ω\s*3\.14 V/);
+		await range(page, 'speed').fill('2');
+		await expect(panel).toContainText(/peak, N·B·A·ω\s*6\.28 V/);
+		await page.goto('./motors-generators/#same');
+		await expect(panel).toContainText('electrical energy → motion');
+		await page.locator('button[data-control="role"][data-value="generator"]').click();
+		await expect(panel).toContainText('motion → electrical energy');
+	});
 });
 
 test.describe('on a wide screen', () => {

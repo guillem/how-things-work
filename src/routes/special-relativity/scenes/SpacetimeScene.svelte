@@ -19,7 +19,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		C,
 		gamma,
@@ -140,6 +140,16 @@
 	const s2 = $derived(interval(ev));
 	const kind = $derived(intervalKind(s2));
 	const atOrigin = $derived(ev.ct === 0 && ev.x === 0);
+	/** The interval's meaning, for the phone readouts (the stage says it in three lines). */
+	const kindNote = $derived(
+		atOrigin
+			? 's² = 0'
+			: kind === 'timelike'
+				? 'something slower than light can go from one event to the other; every frame agrees which came first'
+				: kind === 'spacelike'
+					? 'not even light can get from one event to the other; frames can disagree which came first'
+					: 'a light ray joins the origin and the event'
+	);
 	const E = $derived(P(ev.x, ev.ct));
 	// Projections onto the train's axes: along x′ to the c·t′ axis, along c·t′ to the x′ axis.
 	const onTime = $derived(P(...xy(fromTrain(evT.ct, 0))));
@@ -196,27 +206,35 @@
 			stroke="var(--rel-plat)"
 			stroke-width="1.5"
 		/>
-		<T x={P(v, 0).x} y={P(v, 0).y + 18} text={String(v)} size={10} anchor="middle" muted />
-		<T x={P(0, v).x - 8} y={P(0, v).y + 4} text={String(v)} size={10} anchor="end" muted />
+		<Readout id="xt-{v}">
+			<T x={P(v, 0).x} y={P(v, 0).y + 18} text={String(v)} size={10} anchor="middle" muted />
+		</Readout>
+		<Readout id="yt-{v}">
+			<T x={P(0, v).x - 8} y={P(0, v).y + 4} text={String(v)} size={10} anchor="end" muted />
+		</Readout>
 	{/each}
-	<T
-		x={P(R, 0).x - 4}
-		y={P(R, 0).y - 8}
-		text="x (m)"
-		size={13}
-		anchor="end"
-		color="var(--rel-plat)"
-		weight={650}
-	/>
-	<T
-		x={P(0, R).x - 8}
-		y={P(0, R).y + 16}
-		text="c·t (m)"
-		size={13}
-		anchor="end"
-		color="var(--rel-plat)"
-		weight={650}
-	/>
+	<Readout id="x-caption">
+		<T
+			x={P(R, 0).x - 4}
+			y={P(R, 0).y - 8}
+			text="x (m)"
+			size={13}
+			anchor="end"
+			color="var(--rel-plat)"
+			weight={650}
+		/>
+	</Readout>
+	<Readout id="ct-caption">
+		<T
+			x={P(0, R).x - 8}
+			y={P(0, R).y + 16}
+			text="c·t (m)"
+			size={13}
+			anchor="end"
+			color="var(--rel-plat)"
+			weight={650}
+		/>
+	</Readout>
 
 	<g clip-path="url(#st-clip)">
 		<line
@@ -244,7 +262,9 @@
 			{/each}
 		{/if}
 	</g>
-	<T x={BOX.x + 8} y={BOX.y + 60} text="light" size={12} color="var(--rel-light)" weight={650} />
+	<Readout id="light-label">
+		<T x={BOX.x + 8} y={BOX.y + 60} text="light" size={12} color="var(--rel-light)" weight={650} />
+	</Readout>
 
 	<!-- ============ the train: its world-strip and its axes ============ -->
 	{#if 1 - w.interval > 0.01}
@@ -426,8 +446,12 @@
 						: 0}
 				/>
 			{/each}
-			<T x={A.x - 6} y={A.y + 34} text="back strike" size={11} anchor="end" weight={600} />
-			<T x={B.x + 6} y={B.y + 34} text="front strike" size={11} weight={600} />
+			<Readout id="back-strike">
+				<T x={A.x - 6} y={A.y + 34} text="back strike" size={11} anchor="end" weight={600} />
+			</Readout>
+			<Readout id="front-strike">
+				<T x={B.x + 6} y={B.y + 34} text="front strike" size={11} weight={600} />
+			</Readout>
 		</g>
 	{/if}
 
@@ -445,22 +469,24 @@
 					stroke="var(--stage-bg)"
 					stroke-width="2"
 				/>
-				<T
-					x={p.x + 10}
-					y={p.y + 4}
-					text="tick {num(c.n)}: c·t′ = {num(c.n * 100)} m"
-					size={11}
-					weight={600}
-				/>
-				<T
-					x={P(0, c.e.ct).x - 8}
-					y={P(0, c.e.ct).y - 6}
-					text={m(c.e.ct)}
-					size={11}
-					anchor="end"
-					color="var(--rel-train)"
-					weight={650}
-				/>
+				<Readout id="tick-{c.n}">
+					<T
+						x={p.x + 10}
+						y={p.y + 4}
+						text="tick {num(c.n)}: c·t′ = {num(c.n * 100)} m"
+						size={11}
+						weight={600}
+					/>
+					<T
+						x={P(0, c.e.ct).x - 8}
+						y={P(0, c.e.ct).y - 6}
+						text={m(c.e.ct)}
+						size={11}
+						anchor="end"
+						color="var(--rel-train)"
+						weight={650}
+					/>
+				</Readout>
 			{/each}
 			<!-- the platform measures along its now (the x axis) -->
 			<line
@@ -469,15 +495,17 @@
 				stroke-width="5"
 				stroke-linecap="round"
 			/>
-			<T
-				x={P(0, 0).x}
-				y={P(0, 0).y + 54}
-				text="platform: {m(2 * half)}"
-				size={12}
-				anchor="middle"
-				color="var(--rel-plat)"
-				weight={650}
-			/>
+			<Readout id="platform-length">
+				<T
+					x={P(0, 0).x}
+					y={P(0, 0).y + 54}
+					text="platform: {m(2 * half)}"
+					size={12}
+					anchor="middle"
+					color="var(--rel-plat)"
+					weight={650}
+				/>
+			</Readout>
 			<!-- the train measures along its now (the x′ axis) -->
 			<g clip-path="url(#st-clip)">
 				<line
@@ -489,15 +517,17 @@
 				/>
 			</g>
 			{#if Math.abs(ruler.b.x) < R && ruler.b.ct < R}
-				<T
-					x={P(ruler.b.x, ruler.b.ct).x + 4}
-					y={P(ruler.b.x, ruler.b.ct).y - 12}
-					text="train: 200 m"
-					size={12}
-					anchor="end"
-					color="var(--rel-train)"
-					weight={650}
-				/>
+				<Readout id="train-length">
+					<T
+						x={P(ruler.b.x, ruler.b.ct).x + 4}
+						y={P(ruler.b.x, ruler.b.ct).y - 12}
+						text="train: 200 m"
+						size={12}
+						anchor="end"
+						color="var(--rel-train)"
+						weight={650}
+					/>
+				</Readout>
 			{/if}
 		</g>
 	{/if}
@@ -524,7 +554,9 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			<T x={E.x + 12} y={E.y - 10} text="event" size={12} weight={650} />
+			<Readout id="event-label">
+				<T x={E.x + 12} y={E.y - 10} text="event" size={12} weight={650} />
+			</Readout>
 			{#if w.interval > 0.5}
 				<EventHandle
 					x={E.x}
@@ -541,197 +573,331 @@
 	{/if}
 
 	<!-- ============ the panel ============ -->
-	<T x={PX} y={44} text="Train at {num(beta)} c · γ = {num(g, 3)}" size={15} weight={650} />
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="speed" order={1} label="Train speed" value="{num(beta)} c · γ = {num(g, 3)}">
+		<T x={PX} y={44} text="Train at {num(beta)} c · γ = {num(g, 3)}" size={15} weight={650} />
+	</Readout>
 	{#if w.axes > 0.01}
 		<g opacity={w.axes}>
-			<T
-				x={PX}
-				y={80}
-				text="platform: x across, c·t up"
-				size={13}
+			<Readout
+				id="axes-platform"
+				order={2}
+				label="Platform"
+				value="x across, c·t up"
+				note="the observer stays at x = 0: her worldline is the c·t axis"
 				color="var(--rel-plat)"
-				weight={650}
-			/>
-			<T
-				x={PX}
-				y={100}
-				text="the observer stays at x = 0: her worldline is the c·t axis"
-				size={12}
-				muted
-			/>
-			<T
-				x={PX}
-				y={132}
-				text="train: x′ and c·t′ tilted by {num(angle, 0)}°"
-				size={13}
+				opacity={w.axes}
+			>
+				<T
+					x={PX}
+					y={80}
+					text="platform: x across, c·t up"
+					size={13}
+					color="var(--rel-plat)"
+					weight={650}
+				/>
+				<T
+					x={PX}
+					y={100}
+					text="the observer stays at x = 0: her worldline is the c·t axis"
+					size={12}
+					muted
+				/>
+			</Readout>
+			<Readout
+				id="axes-train"
+				order={3}
+				label="Train"
+				value="x′ and c·t′ tilted {num(angle, 0)}°"
+				note="c·t′ is the passenger's worldline; the strip is the whole 200 m train"
 				color="var(--rel-train)"
-				weight={650}
-			/>
-			<T
-				x={PX}
-				y={152}
-				text="c·t′ is the passenger's worldline; the shaded strip"
-				size={12}
-				muted
-			/>
-			<T x={PX} y={168} text="is the whole 200 m train moving through time" size={12} muted />
-			<T
-				x={PX}
-				y={200}
-				text="light: always at 45°, in every frame"
-				size={13}
+				opacity={w.axes}
+			>
+				<T
+					x={PX}
+					y={132}
+					text="train: x′ and c·t′ tilted by {num(angle, 0)}°"
+					size={13}
+					color="var(--rel-train)"
+					weight={650}
+				/>
+				<T
+					x={PX}
+					y={152}
+					text="c·t′ is the passenger's worldline; the shaded strip"
+					size={12}
+					muted
+				/>
+				<T x={PX} y={168} text="is the whole 200 m train moving through time" size={12} muted />
+			</Readout>
+			<Readout
+				id="axes-light"
+				order={4}
+				label="Light"
+				value="always at 45°"
+				note="1 m of c·t: the time light takes to go 1 m, 3.34 ns"
 				color="var(--rel-light)"
-				weight={650}
-			/>
-			<T x={PX} y={232} text="the dashed line is the platform's “now”; dots:" size={12} muted />
-			<T x={PX} y={248} text="where the observer, the train and a flash are" size={12} muted />
-			<T x={PX} y={280} text="dotted curves: (c·t)² − x² = ±100², ±200²" size={12} muted />
-			<T x={PX} y={296} text="they mark 100 m and 200 m on the train's axes" size={12} muted />
-			<T
-				x={PX}
-				y={328}
-				text="1 m of c·t: the time light takes to go 1 m, 3.34 ns"
-				size={12}
-				muted
-			/>
+				opacity={w.axes}
+			>
+				<T
+					x={PX}
+					y={200}
+					text="light: always at 45°, in every frame"
+					size={13}
+					color="var(--rel-light)"
+					weight={650}
+				/>
+			</Readout>
+			<Readout id="axes-notes">
+				<T x={PX} y={232} text="the dashed line is the platform's “now”; dots:" size={12} muted />
+				<T x={PX} y={248} text="where the observer, the train and a flash are" size={12} muted />
+				<T x={PX} y={280} text="dotted curves: (c·t)² − x² = ±100², ±200²" size={12} muted />
+				<T x={PX} y={296} text="they mark 100 m and 200 m on the train's axes" size={12} muted />
+				<T
+					x={PX}
+					y={328}
+					text="1 m of c·t: the time light takes to go 1 m, 3.34 ns"
+					size={12}
+					muted
+				/>
+			</Readout>
 		</g>
 	{/if}
 	{#if w.now > 0.01}
 		<g opacity={w.now}>
-			<T
-				x={PX}
-				y={80}
-				text="On the platform (along the x axis):"
-				size={13}
-				color="var(--rel-plat)"
-				weight={650}
-			/>
-			<T x={PX + 12} y={100} text="both strikes at t = 0: simultaneous" size={13} />
-			<T
-				x={PX}
-				y={136}
-				text="On the train (along the dashed slices):"
-				size={13}
-				color="var(--rel-train)"
-				weight={650}
-			/>
-			<T x={PX + 12} y={156} text="front strike at t′ = {ns(strikeT.front.ct)}" size={13} />
-			<T x={PX + 12} y={174} text="back strike at t′ = {ns(strikeT.back.ct)}" size={13} />
-			<T
-				x={PX + 12}
-				y={196}
-				text={beta < 0.005
+			<Readout
+				id="now-platform"
+				order={2}
+				label="On the platform (along the x axis)"
+				value="both strikes at t = 0"
+				note="simultaneous"
+				opacity={w.now}
+			>
+				<T
+					x={PX}
+					y={80}
+					text="On the platform (along the x axis):"
+					size={13}
+					color="var(--rel-plat)"
+					weight={650}
+				/>
+				<T x={PX + 12} y={100} text="both strikes at t = 0: simultaneous" size={13} />
+			</Readout>
+			<Readout
+				id="now-train"
+				order={3}
+				label="On the train (along the dashed slices)"
+				value={beta < 0.005
 					? 'simultaneous too'
 					: `the front first, by ${ns(strikeT.back.ct - strikeT.front.ct)}`}
-				size={13}
-				weight={650}
-			/>
-			<T x={PX} y={236} text="The solid pink line is the train's “now”," size={12} muted />
-			<T x={PX} y={252} text="moving up: it reaches the front strike first." size={12} muted />
-			<T x={PX} y={284} text="The flashes (amber) meet on the observer's" size={12} muted />
-			<T x={PX} y={300} text="worldline, and cross the passenger's (c·t′)" size={12} muted />
-			<T x={PX} y={316} text="front flash first: events every frame agrees on." size={12} muted />
+				note="front strike at t′ = {ns(strikeT.front.ct)}, back at t′ = {ns(strikeT.back.ct)}"
+				opacity={w.now}
+			>
+				<T
+					x={PX}
+					y={136}
+					text="On the train (along the dashed slices):"
+					size={13}
+					color="var(--rel-train)"
+					weight={650}
+				/>
+				<T x={PX + 12} y={156} text="front strike at t′ = {ns(strikeT.front.ct)}" size={13} />
+				<T x={PX + 12} y={174} text="back strike at t′ = {ns(strikeT.back.ct)}" size={13} />
+				<T
+					x={PX + 12}
+					y={196}
+					text={beta < 0.005
+						? 'simultaneous too'
+						: `the front first, by ${ns(strikeT.back.ct - strikeT.front.ct)}`}
+					size={13}
+					weight={650}
+				/>
+			</Readout>
+			<Readout id="now-notes">
+				<T x={PX} y={236} text="The solid pink line is the train's “now”," size={12} muted />
+				<T x={PX} y={252} text="moving up: it reaches the front strike first." size={12} muted />
+				<T x={PX} y={284} text="The flashes (amber) meet on the observer's" size={12} muted />
+				<T x={PX} y={300} text="worldline, and cross the passenger's (c·t′)" size={12} muted />
+				<T x={PX} y={316} text="front flash first: events every frame agrees on." size={12} muted />
+			</Readout>
 		</g>
 	{/if}
 	{#if w.interval > 0.01}
 		<g opacity={w.interval}>
-			<T x={PX} y={84} text="Platform" size={13} color="var(--rel-plat)" weight={650} />
-			<T x={PX + 12} y={104} text="c·t = {m(ev.ct)}, x = {m(ev.x)}" size={13} />
-			<T
-				x={PX + 12}
-				y={124}
-				text="s² = {sq(ev.ct)} − {sq(ev.x)} = {num(s2, 0)} m²"
-				size={13}
-				weight={600}
-			/>
-			<T x={PX} y={160} text="Train" size={13} color="var(--rel-train)" weight={650} />
-			<T x={PX + 12} y={180} text="c·t′ = {m(evT.ct)}, x′ = {m(evT.x)}" size={13} />
-			<T
-				x={PX + 12}
-				y={200}
-				text="s² = {sq(evT.ct)} − {sq(evT.x)} = {num(interval(evT), 0)} m²"
-				size={13}
-				weight={600}
-			/>
-			<T
-				x={PX}
-				y={240}
-				text={atOrigin
-					? 'this is the origin itself: s² = 0'
-					: kind === 'timelike'
-						? 'timelike: something slower than light'
+			<Readout
+				id="ev-platform"
+				order={2}
+				label="Platform"
+				value="c·t = {m(ev.ct)}, x = {m(ev.x)}"
+				note="s² = {sq(ev.ct)} − {sq(ev.x)} = {num(s2, 0)} m²"
+				color="var(--rel-plat)"
+				opacity={w.interval}
+			>
+				<T x={PX} y={84} text="Platform" size={13} color="var(--rel-plat)" weight={650} />
+				<T x={PX + 12} y={104} text="c·t = {m(ev.ct)}, x = {m(ev.x)}" size={13} />
+				<T
+					x={PX + 12}
+					y={124}
+					text="s² = {sq(ev.ct)} − {sq(ev.x)} = {num(s2, 0)} m²"
+					size={13}
+					weight={600}
+				/>
+			</Readout>
+			<Readout
+				id="ev-train"
+				order={3}
+				label="Train"
+				value="c·t′ = {m(evT.ct)}, x′ = {m(evT.x)}"
+				note="s² = {sq(evT.ct)} − {sq(evT.x)} = {num(interval(evT), 0)} m²"
+				color="var(--rel-train)"
+				opacity={w.interval}
+			>
+				<T x={PX} y={160} text="Train" size={13} color="var(--rel-train)" weight={650} />
+				<T x={PX + 12} y={180} text="c·t′ = {m(evT.ct)}, x′ = {m(evT.x)}" size={13} />
+				<T
+					x={PX + 12}
+					y={200}
+					text="s² = {sq(evT.ct)} − {sq(evT.x)} = {num(interval(evT), 0)} m²"
+					size={13}
+					weight={600}
+				/>
+			</Readout>
+			<Readout
+				id="ev-kind"
+				order={4}
+				label="The event is"
+				value={atOrigin ? 'the origin' : kind}
+				note={kindNote}
+				opacity={w.interval}
+			>
+				<T
+					x={PX}
+					y={240}
+					text={atOrigin
+						? 'this is the origin itself: s² = 0'
+						: kind === 'timelike'
+							? 'timelike: something slower than light'
+							: kind === 'spacelike'
+								? 'spacelike: not even light can get'
+								: 'lightlike: a light ray joins the origin'}
+					size={13}
+					color="var(--rel-strike)"
+					weight={650}
+				/>
+				<T
+					x={PX}
+					y={258}
+					text={atOrigin
+						? ''
+						: kind === 'timelike'
+							? 'can go from one event to the other;'
+							: kind === 'spacelike'
+								? 'from one event to the other;'
+								: 'and the event'}
+					size={13}
+					color="var(--rel-strike)"
+					weight={650}
+				/>
+				<T
+					x={PX}
+					y={276}
+					text={kind === 'timelike'
+						? 'every frame agrees which came first'
 						: kind === 'spacelike'
-							? 'spacelike: not even light can get'
-							: 'lightlike: a light ray joins the origin'}
-				size={13}
-				color="var(--rel-strike)"
-				weight={650}
-			/>
-			<T
-				x={PX}
-				y={258}
-				text={atOrigin
-					? ''
-					: kind === 'timelike'
-						? 'can go from one event to the other;'
-						: kind === 'spacelike'
-							? 'from one event to the other;'
-							: 'and the event'}
-				size={13}
-				color="var(--rel-strike)"
-				weight={650}
-			/>
-			<T
-				x={PX}
-				y={276}
-				text={kind === 'timelike'
-					? 'every frame agrees which came first'
-					: kind === 'spacelike'
-						? 'frames can disagree which came first'
-						: ''}
-				size={13}
-				color="var(--rel-strike)"
-				weight={650}
-			/>
-			<T x={PX} y={312} text="Drag the event (or Tab to it and use the arrows)." size={12} muted />
-			<T x={PX} y={328} text="Its train coordinates change with the speed;" size={12} muted />
-			<T x={PX} y={344} text="it stays on its hyperbola, and s² stays the same." size={12} muted />
+							? 'frames can disagree which came first'
+							: ''}
+					size={13}
+					color="var(--rel-strike)"
+					weight={650}
+				/>
+			</Readout>
+			<Readout id="ev-notes">
+				<T
+					x={PX}
+					y={312}
+					text="Drag the event (or Tab to it and use the arrows)."
+					size={12}
+					muted
+				/>
+				<T x={PX} y={328} text="Its train coordinates change with the speed;" size={12} muted />
+				<T
+					x={PX}
+					y={344}
+					text="it stays on its hyperbola, and s² stays the same."
+					size={12}
+					muted
+				/>
+			</Readout>
 		</g>
 	{/if}
 	{#if w.all > 0.01}
 		<g opacity={w.all}>
-			<T x={PX} y={80} text="Time" size={13} color="var(--rel-train)" weight={650} />
-			<T x={PX + 12} y={100} text="the passenger's clock ticks every 100 m of c·t′;" size={12} />
-			<T
-				x={PX + 12}
-				y={116}
-				text="on the platform's clocks: every {m(100 * g)} (γ × 100 m)"
-				size={12}
-			/>
-			<T x={PX} y={148} text="Length" size={13} color="var(--rel-plat)" weight={650} />
-			<T x={PX + 12} y={168} text="along the platform's now (x axis): {m(2 * half)}" size={12} />
-			<T x={PX + 12} y={184} text="along the train's now (x′ axis): 200 m" size={12} />
-			<T x={PX} y={216} text="Simultaneity" size={13} color="var(--rel-strike)" weight={650} />
-			<T
-				x={PX + 12}
-				y={236}
-				text={beta < 0.005
-					? 'at rest, the two frames share one now:'
-					: "the strikes lie on the platform's now,"}
-				size={12}
-			/>
-			<T
-				x={PX + 12}
-				y={252}
-				text={beta < 0.005
+			<Readout
+				id="all-time"
+				order={2}
+				label="Time"
+				value="a tick every 100 m of c·t′"
+				note="on the platform's clocks: every {m(100 * g)} (γ × 100 m)"
+				color="var(--rel-train)"
+				opacity={w.all}
+			>
+				<T x={PX} y={80} text="Time" size={13} color="var(--rel-train)" weight={650} />
+				<T x={PX + 12} y={100} text="the passenger's clock ticks every 100 m of c·t′;" size={12} />
+				<T
+					x={PX + 12}
+					y={116}
+					text="on the platform's clocks: every {m(100 * g)} (γ × 100 m)"
+					size={12}
+				/>
+			</Readout>
+			<Readout
+				id="all-length"
+				order={3}
+				label="Length"
+				value="{m(2 * half)} · 200 m"
+				note="along the platform's now · along the train's now"
+				color="var(--rel-plat)"
+				opacity={w.all}
+			>
+				<T x={PX} y={148} text="Length" size={13} color="var(--rel-plat)" weight={650} />
+				<T x={PX + 12} y={168} text="along the platform's now (x axis): {m(2 * half)}" size={12} />
+				<T x={PX + 12} y={184} text="along the train's now (x′ axis): 200 m" size={12} />
+			</Readout>
+			<Readout
+				id="all-now"
+				order={4}
+				label="Simultaneity"
+				value={beta < 0.005 ? 'one shared now' : 'two different nows'}
+				note={beta < 0.005
 					? 'the strikes are simultaneous for both'
-					: "but on two different slices of the train's"}
-				size={12}
-			/>
-			{#if beta >= 0.005}
-				<T x={PX + 12} y={268} text="“now”." size={12} />
-			{/if}
-			<T x={PX} y={296} text="One cause: the same c for everyone." size={14} weight={650} />
+					: "the strikes lie on the platform's now, but on two slices of the train's"}
+				color="var(--rel-strike)"
+				opacity={w.all}
+			>
+				<T x={PX} y={216} text="Simultaneity" size={13} color="var(--rel-strike)" weight={650} />
+				<T
+					x={PX + 12}
+					y={236}
+					text={beta < 0.005
+						? 'at rest, the two frames share one now:'
+						: "the strikes lie on the platform's now,"}
+					size={12}
+				/>
+				<T
+					x={PX + 12}
+					y={252}
+					text={beta < 0.005
+						? 'the strikes are simultaneous for both'
+						: "but on two different slices of the train's"}
+					size={12}
+				/>
+				{#if beta >= 0.005}
+					<T x={PX + 12} y={268} text="“now”." size={12} />
+				{/if}
+			</Readout>
+			<Readout id="all-cause">
+				<T x={PX} y={296} text="One cause: the same c for everyone." size={14} weight={650} />
+			</Readout>
 		</g>
 	{/if}
 </g>
