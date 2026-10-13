@@ -186,6 +186,36 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText('merge sort is never slower');
 	});
 
+	test('binary byte: the hex reading is text under the stage and follows Add 1', async ({
+		page
+	}) => {
+		await page.goto('./binary/#place');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Bit values\s*128 64 32 16 8 4 2 1/);
+		await expect(panel).toContainText(/Hexadecimal\s*41/);
+		await expect(drawing(page)).not.toContainText('in hexadecimal');
+		await page.locator('button[data-control=plus1]').click();
+		await expect(panel).toContainText(/Hexadecimal\s*42/);
+	});
+
+	test('binary adder: the column sum and the overflow verdict are text and follow the numbers', async ({
+		page
+	}) => {
+		await page.goto('./binary/#add');
+		const panel = readouts(page);
+		await expect(panel).toContainText('carries');
+		await expect(panel).toContainText(/Now\s*45 \+ 27 = 72/);
+		await expect(drawing(page)).not.toContainText('four cases');
+		await range(page, 'a').fill('50');
+		await expect(panel).toContainText(/Now\s*50 \+ 27 = 77/);
+		await page.goto('./binary/#overflow');
+		await expect(panel).toContainText(
+			/200 \+ 100 = 300\s*300 doesn't fit in 8 bits → 300 − 256 = 44/
+		);
+		await range(page, 'oa').fill('100');
+		await expect(panel).toContainText('200 fits in 8 bits');
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');
