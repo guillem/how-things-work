@@ -51,6 +51,9 @@
 	let dragging = $state(false);
 
 	function onpointerdown(event: PointerEvent) {
+		// Only the main button drags (as `startDrag` decides): a right-click
+		// must not start a drag that never ends.
+		if (event.button !== 0) return;
 		dragging = true;
 		ondragstart?.();
 		// Keep the pointer's offset from the true tip for the whole drag: grabbing

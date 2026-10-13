@@ -133,3 +133,12 @@ test('repeating the matrix: the verdict names the limit direction as the table d
 	// (2, 1) points 26.6° above the x-axis: the angle the last rows of the table approach.
 	await expect(stage(page)).toContainText('heading for (2, 1) (26.6°)');
 });
+
+test('a right-click on an arrow tip does not leave it held', async ({ page }) => {
+	await page.goto('./linear-transformations/#matrix');
+	const tip = handle(page, 'î');
+	await tip.click({ button: 'right' });
+	await page.mouse.move(5, 5);
+	// A held tip shows the closed-hand cursor; a released one the open hand.
+	await expect(tip).toHaveCSS('cursor', 'grab');
+});

@@ -40,6 +40,9 @@
 	let dragging = $state(false);
 
 	function onpointerdown(event: PointerEvent) {
+		// Only the main button drags (as `startDrag` decides): a right-click
+		// must not start a drag that never ends.
+		if (event.button !== 0) return;
 		dragging = true;
 		ondragstart?.();
 		startDrag(event, onmove, () => {
