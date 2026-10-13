@@ -519,6 +519,25 @@ test.describe('on a phone', () => {
 		await range(page, 'amplitude').fill('0.5');
 		await expect(panel).toContainText(/Amplitude\s*A = 0\.50/);
 	});
+
+	test('circuits ohm: the current I = V ÷ R is text and follows the voltage', async ({ page }) => {
+		await page.goto('./electric-circuits/#ohm');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Current, I = V ÷ R\s*6\.0 V ÷ 12 Ω = 0\.50 A/);
+		await expect(drawing(page)).not.toContainText('Ohm’s law');
+		await range(page, 'emf').fill('12');
+		await expect(panel).toContainText('12.0 V ÷ 12 Ω = 1.00 A');
+	});
+
+	test('circuits drift: the drift speed is text and follows the current', async ({ page }) => {
+		await page.goto('./electric-circuits/#drift');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Drift speed\s*≈ 0\.037 mm\/s/);
+		await expect(drawing(page)).not.toContainText('Drift speed');
+		await range(page, 'amps').fill('0');
+		await expect(panel).toContainText(/Drift speed\s*0 mm\/s/);
+		await expect(panel).toContainText(/No current \(0 A\)\s*nothing moves/);
+	});
 });
 
 test.describe('on a wide screen', () => {
