@@ -183,6 +183,20 @@ test.describe('on a phone', () => {
 		await range(page, '"sampleSize:clt"').fill('10');
 		await expect(panel).toContainText('0.394/√10 = 0.125');
 	});
+
+	test('bayes: the share of positives who are ill is text and follows the prevalence', async ({
+		page
+	}) => {
+		await page.goto('./bayes-theorem/#sliders');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Positives who are ill\s*9 of 98/);
+		await expect(panel).toContainText(/Exact, from Bayes’ theorem\s*9\.2%/);
+		await expect(panel).toContainText('false positive 89');
+		await expect(drawing(page)).not.toContainText('positives are ill');
+		await range(page, 'prevalence').fill('0.3');
+		await expect(panel).toContainText(/Exact, from Bayes’ theorem\s*81\.1%/);
+		await expect(panel).toContainText('30% ill');
+	});
 });
 
 test.describe('on a wide screen', () => {
