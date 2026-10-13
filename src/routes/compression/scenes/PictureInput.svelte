@@ -6,6 +6,7 @@
 	 */
 	import type { ParamValue } from '#lib/explainer/index.ts';
 	import { loadPicture } from './shared';
+	import { Readout } from '#lib/explainer/index.ts';
 	import Txt from './Txt.svelte';
 
 	interface Props {
@@ -38,20 +39,24 @@
 <foreignObject {x} {y} width={w} height="40">
 	<label class="cmp-load">
 		<input type="file" accept="image/*" aria-label="Load your own picture" {onchange} />
-		<span>Load your own picture…</span>
+		<span class="wide">Load your own picture…</span>
+		<span class="narrow">Your picture…</span>
 	</label>
 </foreignObject>
-<Txt
-	{x}
-	y={y + 60}
-	text={failed
-		? 'That file could not be read as a picture.'
-		: missing
-			? 'No picture loaded: showing the hills.'
-			: 'It stays in your browser.'}
-	size={11}
-	muted
-/>
+<!-- hidden on phones, where it would be unreadable -->
+<Readout id="picture-status">
+	<Txt
+		{x}
+		y={y + 60}
+		text={failed
+			? 'That file could not be read as a picture.'
+			: missing
+				? 'No picture loaded: showing the hills.'
+				: 'It stays in your browser.'}
+		size={11}
+		muted
+	/>
+</Readout>
 
 <style>
 	.cmp-load {
@@ -68,6 +73,21 @@
 		font: 600 13px var(--font-sans, inherit);
 		cursor: pointer;
 		position: relative;
+	}
+	.cmp-load .narrow {
+		display: none;
+	}
+	/* on phones the stage is drawn at ~0.4 scale: a shorter, larger label */
+	@media (max-width: 640px) {
+		.cmp-load {
+			font-size: 26px;
+		}
+		.cmp-load .wide {
+			display: none;
+		}
+		.cmp-load .narrow {
+			display: inline;
+		}
 	}
 	.cmp-load:hover {
 		border-color: var(--explainer-accent, var(--accent));

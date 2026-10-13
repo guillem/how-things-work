@@ -843,6 +843,52 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText('Easy to do, practically impossible to undo');
 		await expect(drawing(page)).not.toContainText('Multiplying primes');
 	});
+
+	test('compression message: the sizes are text and follow the message', async ({ page }) => {
+		await page.goto('./compression/#bits');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/UTF-8\s*296 bits/);
+		await expect(panel).toContainText(/Fixed 4-bit code\s*148 bits/);
+		await expect(drawing(page)).not.toContainText('UTF-8:');
+		await page.getByLabel('Message', { exact: true }).fill('abab');
+		await expect(panel).toContainText(/UTF-8\s*32 bits/);
+		await expect(panel).toContainText(/Fixed 1-bit code\s*4 bits/);
+	});
+
+	test('compression Huffman: the coded sizes are text and follow the message', async ({ page }) => {
+		await page.goto('./compression/#size');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Huffman code\s*114 bits/);
+		await expect(panel).toContainText(/Entropy floor n × H\s*111\.4 bits/);
+		await expect(drawing(page)).not.toContainText('Entropy floor');
+		await page.getByLabel('Message', { exact: true }).fill('abab');
+		await expect(panel).toContainText(/Huffman code\s*4 bits/);
+	});
+
+	test('compression block: what quantising keeps is text and follows the quality', async ({
+		page
+	}) => {
+		await page.goto('./compression/#quantise');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Quality 50\s*steps from 10 to 121/);
+		await expect(panel).toContainText(/Kept\s*15 of 64 coefficients/);
+		await expect(drawing(page)).not.toContainText('coefficients kept');
+		await range(page, 'quality').fill('90');
+		await expect(panel).toContainText(/Quality 90\s*steps from/);
+		await expect(panel).not.toContainText('15 of 64');
+	});
+
+	test('compression quality: the size and PSNR are text and follow the quality', async ({
+		page
+	}) => {
+		await page.goto('./compression/#quality');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Size\s*12\.9 × smaller/);
+		await expect(panel).toContainText(/PSNR\s*35\.7 dB/);
+		await expect(drawing(page)).not.toContainText('PSNR');
+		await range(page, 'quality').fill('10');
+		await expect(panel).toContainText(/Size\s*47\.1 × smaller/);
+	});
 });
 
 test.describe('on a wide screen', () => {

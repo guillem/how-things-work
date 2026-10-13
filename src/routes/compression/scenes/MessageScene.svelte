@@ -14,7 +14,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, easeOut } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { fixedBits, messageEntropy, symbolStats, symbolsOf, utf8Bits } from '../compression';
 	import MessageInput from './MessageInput.svelte';
 	import { fmt, messageOf, show } from './shared';
@@ -96,7 +96,10 @@
 </script>
 
 <g>
-	<Txt x={40} y={14} text="Your message" size={12} weight={700} />
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="your-message">
+		<Txt x={40} y={14} text="Your message" size={12} weight={700} />
+	</Readout>
 	<MessageInput x={40} y={22} w={600} value={msg} {setParam} presets={phase !== 'fixed'} />
 
 	{#if phase === 'fixed'}
@@ -148,13 +151,15 @@
 
 		{@const rowY = n > PER_ROW ? 410 : 282}
 		{#if k > 0}
-			<Txt
-				x={40}
-				y={rowY}
-				text="Only {k} different symbol{k === 1 ? '' : 's'}: a fixed {fixed}-bit code is enough"
-				size={13}
-				weight={700}
-			/>
+			<Readout id="code-title">
+				<Txt
+					x={40}
+					y={rowY}
+					text="Only {k} different symbol{k === 1 ? '' : 's'}: a fixed {fixed}-bit code is enough"
+					size={13}
+					weight={700}
+				/>
+			</Readout>
 			{#each codeRow as s, i (s.symbol)}
 				<g>
 					<text
@@ -181,35 +186,56 @@
 		{/if}
 
 		{#if n > 0}
-			<Txt
-				x={40}
-				y={538}
-				text="UTF-8: {n} character{n === 1 ? '' : 's'}{utf8 !== n * 8
+			<Readout
+				id="utf8"
+				order={1}
+				label="UTF-8"
+				value="{utf8} bits"
+				note="{n} character{n === 1 ? '' : 's'}{utf8 !== n * 8
 					? ` in ${utf8 / 8} bytes`
-					: ''} × 8 bits = {utf8} bits"
-				size={15}
-				weight={600}
-			/>
-			<Txt
-				x={40}
-				y={566}
-				text="Fixed {fixed}-bit code: {n} × {fixed} = {n * fixed} bits (2{[
-					'⁰',
-					'¹',
-					'²',
-					'³',
-					'⁴',
-					'⁵',
-					'⁶'
-				][fixed]} = {2 ** fixed} patterns ≥ {k} symbols)"
-				size={15}
-				weight={600}
+					: ''} × 8 bits"
+			>
+				<Txt
+					x={40}
+					y={538}
+					text="UTF-8: {n} character{n === 1 ? '' : 's'}{utf8 !== n * 8
+						? ` in ${utf8 / 8} bytes`
+						: ''} × 8 bits = {utf8} bits"
+					size={15}
+					weight={600}
+				/>
+			</Readout>
+			<Readout
+				id="fixed"
+				order={2}
+				label="Fixed {fixed}-bit code"
+				value="{n * fixed} bits"
+				note="{k} different symbol{k === 1 ? '' : 's'}: {n} × {fixed} bits"
 				color="var(--cmp-count)"
-			/>
+			>
+				<Txt
+					x={40}
+					y={566}
+					text="Fixed {fixed}-bit code: {n} × {fixed} = {n * fixed} bits (2{[
+						'⁰',
+						'¹',
+						'²',
+						'³',
+						'⁴',
+						'⁵',
+						'⁶'
+					][fixed]} = {2 ** fixed} patterns ≥ {k} symbols)"
+					size={15}
+					weight={600}
+					color="var(--cmp-count)"
+				/>
+			</Readout>
 		{/if}
 	{:else}
 		<!-- count bars -->
-		<Txt x={40} y={142} text="How often" size={12} weight={700} color="var(--cmp-count)" />
+		<Readout id="how-often">
+			<Txt x={40} y={142} text="How often" size={12} weight={700} color="var(--cmp-count)" />
+		</Readout>
 		<!-- surprise gridlines, in bits -->
 		{#each Array.from({ length: Math.floor(maxBits) }, (_, b) => b + 1) as b (b)}
 			<line
@@ -219,9 +245,13 @@
 				y2={TOP + b * bitScale}
 				stroke="var(--stage-grid)"
 			/>
-			<Txt x={X0 - 10} y={TOP + b * bitScale + 4} text={String(b)} size={11} anchor="end" muted />
+			<Readout id="bit-tick-{b}">
+				<Txt x={X0 - 10} y={TOP + b * bitScale + 4} text={String(b)} size={11} anchor="end" muted />
+			</Readout>
 		{/each}
-		<Txt x={40} y={TOP + 14} text="bits" size={11} muted />
+		<Readout id="bits-axis">
+			<Txt x={40} y={TOP + 14} text="bits" size={11} muted />
+		</Readout>
 		{#each columns as c (c.symbol)}
 			{@const on = c.i === hi}
 			{@const h1 = c.count * countScale * grow}
@@ -240,24 +270,28 @@
 					>
 				{/if}
 				{#if showNums && c.w >= 22}
-					<Txt
-						x={c.x + c.w / 2}
-						y={BASE - h1 - 6}
-						text={String(c.count)}
-						size={11.5}
-						anchor="middle"
-						color="var(--cmp-count)"
-					/>
+					<Readout id="count-{c.i}">
+						<Txt
+							x={c.x + c.w / 2}
+							y={BASE - h1 - 6}
+							text={String(c.count)}
+							size={11.5}
+							anchor="middle"
+							color="var(--cmp-count)"
+						/>
+					</Readout>
 				{/if}
 				{#if showNums && c.w >= 22 && phase === 'surprise'}
-					<Txt
-						x={c.x + c.w / 2}
-						y={TOP + h2 + 14}
-						text={fmt(c.bits, 1)}
-						size={11.5}
-						anchor="middle"
-						color="var(--cmp-bits)"
-					/>
+					<Readout id="surprise-{c.i}">
+						<Txt
+							x={c.x + c.w / 2}
+							y={TOP + h2 + 14}
+							text={fmt(c.bits, 1)}
+							size={11.5}
+							anchor="middle"
+							color="var(--cmp-bits)"
+						/>
+					</Readout>
 				{/if}
 			</g>
 		{/each}
@@ -273,70 +307,117 @@
 				stroke-width="3"
 				stroke-dasharray="8 5"
 			/>
-			<Txt x={X0 + W + 14} y={ly - 4} text="average" size={12} weight={600} color="var(--cmp-h)" />
-			<Txt
-				x={X0 + W + 14}
-				y={ly + 13}
-				text="H = {fmt(H)}"
-				size={13}
-				weight={700}
-				color="var(--cmp-h)"
-			/>
+			<Readout id="h-label">
+				<Txt
+					x={X0 + W + 14}
+					y={ly - 4}
+					text="average"
+					size={12}
+					weight={600}
+					color="var(--cmp-h)"
+				/>
+				<Txt
+					x={X0 + W + 14}
+					y={ly + 13}
+					text="H = {fmt(H)}"
+					size={13}
+					weight={700}
+					color="var(--cmp-h)"
+				/>
+				{#snippet narrow()}
+					<Txt x={X0 + W + 14} y={ly + 10} text="H" size={30} weight={700} color="var(--cmp-h)" />
+				{/snippet}
+			</Readout>
 		{/if}
 
 		{#if hiCol}
-			<Txt
-				x={920}
-				y={142}
-				text="“{show(hiCol.symbol)}”: {hiCol.count} of {n} → p = {fmt(
-					hiCol.p,
-					3
-				)} → log₂(1/p) = {fmt(hiCol.bits)} bits"
-				size={13}
-				weight={600}
-				anchor="end"
-			/>
+			<Readout
+				id="callout"
+				order={1}
+				label="“{show(hiCol.symbol)}”: {hiCol.count} of {n}"
+				value="{fmt(hiCol.bits)} bits"
+				note="p = {fmt(hiCol.p, 3)} → log₂(1/p) = {fmt(hiCol.bits)} bits"
+				color="var(--cmp-bits)"
+			>
+				<Txt
+					x={920}
+					y={142}
+					text="“{show(hiCol.symbol)}”: {hiCol.count} of {n} → p = {fmt(
+						hiCol.p,
+						3
+					)} → log₂(1/p) = {fmt(hiCol.bits)} bits"
+					size={13}
+					weight={600}
+					anchor="end"
+				/>
+			</Readout>
 		{/if}
 
 		{#if n === 0}
 			<!-- nothing to measure -->
 		{:else if phase === 'surprise'}
-			<Txt
-				x={40}
-				y={540}
-				text="Surprise = log₂(1/p): the rarer the symbol, the more bits it is worth"
-				size={15}
-				weight={600}
-				color="var(--cmp-bits)"
-			/>
-			<Txt
-				x={40}
-				y={566}
-				text="Common symbols: few bits. Rare symbols: many bits."
-				size={13}
-				muted
-			/>
+			<Readout
+				id="surprise"
+				order={2}
+				label="Surprise"
+				value="log₂(1/p)"
+				note="the rarer the symbol, the more bits it is worth"
+			>
+				<Txt
+					x={40}
+					y={540}
+					text="Surprise = log₂(1/p): the rarer the symbol, the more bits it is worth"
+					size={15}
+					weight={600}
+					color="var(--cmp-bits)"
+				/>
+				<Txt
+					x={40}
+					y={566}
+					text="Common symbols: few bits. Rare symbols: many bits."
+					size={13}
+					muted
+				/>
+			</Readout>
 		{:else}
-			<Txt
-				x={40}
-				y={540}
-				text="Width = how often, height = surprise: spread the orange evenly and it fills up to H = {fmt(
-					H
-				)} bits"
-				size={14}
-				weight={600}
-			/>
-			<Txt
-				x={40}
-				y={566}
-				text="{n} symbols × {fmt(H)} bits = {fmt(
-					n * H,
-					1
-				)} bits: the least any decodable code of single symbols can use"
-				size={14}
-				weight={600}
+			<Readout
+				id="entropy"
+				order={2}
+				label="Entropy: average surprise"
+				value="H = {fmt(H)} bits"
+				note="width = how often, height = surprise"
 				color="var(--cmp-h)"
-			/>
+			>
+				<Txt
+					x={40}
+					y={540}
+					text="Width = how often, height = surprise: spread the orange evenly and it fills up to H = {fmt(
+						H
+					)} bits"
+					size={14}
+					weight={600}
+				/>
+			</Readout>
+			<Readout
+				id="least"
+				order={3}
+				label="The least any code of single symbols can use"
+				value="{fmt(n * H, 1)} bits"
+				note="{n} symbols × {fmt(H)} bits"
+				color="var(--cmp-h)"
+			>
+				<Txt
+					x={40}
+					y={566}
+					text="{n} symbols × {fmt(H)} bits = {fmt(
+						n * H,
+						1
+					)} bits: the least any decodable code of single symbols can use"
+					size={14}
+					weight={600}
+					color="var(--cmp-h)"
+				/>
+			</Readout>
 		{/if}
 		{#if n === 0}
 			<Txt x={480} y={240} text="Type something in the box" size={15} anchor="middle" muted />
