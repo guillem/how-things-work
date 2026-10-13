@@ -46,7 +46,7 @@
 		thin,
 		type Scale
 	} from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { finalSize, fizzleChance } from '../model';
 	import { POPULATION, endDay, runCrowd, settings } from '../run';
 
@@ -265,23 +265,32 @@
 		return `${done ? 'Runs that took off' : 'Took off, so far'}: ${pct(lo) === pct(hi) ? pct(lo) : `${pct(lo)}–${pct(hi)}`} infected`;
 	});
 
+	/** The same line split for the phone readout: "Runs that took off" | "55–70% infected". */
+	const sizeRow = $derived.by(() => {
+		const [label, value] = sizeText.split(': ');
+		return value ? { label, value } : { label: 'Took off', value: sizeText };
+	});
+
 	const fade = $derived(smoothstep(0, 0.6, Math.max(0, tRun - 0.1)));
 	const cursorX = $derived(sx(Math.min(day, xView)));
 </script>
 
 <g opacity={reduced ? 1 : fade}>
 	<!-- left: every run's infectious count -->
-	<Label
-		x={PX0 - 40}
-		y={52}
-		text="One crowd, 40 runs, one first case each"
-		size={15}
-		weight={600}
-		anchor="start"
-	/>
-	<text x={PX0 - 40} y={72} font-size="11" class="muted"
-		>Each line is one run: how many people are infectious, day by day (R₀ = {fmtR0})</text
-	>
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout id="title">
+		<Label
+			x={PX0 - 40}
+			y={52}
+			text="One crowd, 40 runs, one first case each"
+			size={15}
+			weight={600}
+			anchor="start"
+		/>
+		<text x={PX0 - 40} y={72} font-size="11" class="muted"
+			>Each line is one run: how many people are infectious, day by day (R₀ = {fmtR0})</text
+		>
+	</Readout>
 
 	<Axes {sx} {sy} xLabel="day" yLabel="infectious people (log scale)" yTicks={Y_TICKS} />
 
@@ -323,20 +332,39 @@
 				stroke-width={item.id === 'up' ? 2.2 : 1.6}
 			/>
 			<!-- once every run is decided, "not yet decided" describes nothing on the chart -->
-			<text
-				x={lx + 24}
-				y={550}
-				class="muted"
-				opacity={item.id === 'open' && pending === 0 ? 0.4 : 1}>{item.label}</text
+			<Readout
+				id="key-{item.id}"
+				order={10 + i}
+				label={item.label}
+				color={item.color}
+				opacity={item.id === 'open' && pending === 0 ? 0.4 : 1}
 			>
+				<text
+					x={lx + 24}
+					y={550}
+					class="muted"
+					opacity={item.id === 'open' && pending === 0 ? 0.4 : 1}>{item.label}</text
+				>
+			</Readout>
 		{/each}
 	</g>
-	<text x={PX0} y={572} font-size="11" class="muted"
-		>Died out early: fewer than {TOOK_OFF} of the {POPULATION} people (10%) ever infected.</text
-	>
+	<Readout id="definition">
+		<text x={PX0} y={572} font-size="11" class="muted"
+			>Died out early: fewer than {TOOK_OFF} of the {POPULATION} people (10%) ever infected.</text
+		>
+	</Readout>
 
 	<!-- right: one marker per run -->
-	<Label x={RX0} y={52} text="How each run turned out" size={15} weight={600} anchor="start" />
+	<Readout id="runs-title"
+		><Label
+			x={RX0}
+			y={52}
+			text="How each run turned out"
+			size={15}
+			weight={600}
+			anchor="start"
+		/></Readout
+	>
 	{#each runs as r (r.k)}
 		{@const m = settle(r)}
 		{#if m <= 0}
@@ -358,21 +386,33 @@
 			/>
 		{/if}
 	{/each}
-	<g font-size="11">
-		<circle cx={RX0 + 5} cy={234} r="5" fill="var(--sir-i)" fill-opacity="0.9" />
-		<text x={RX0 + 15} y={238} class="muted" style:font-variant-numeric="tabular-nums"
-			>{upLabel} ({tookOff})</text
-		>
-		<circle cx={RX0 + legend2} cy={234} r="5" fill="var(--stage-ink-muted)" fill-opacity="0.55" />
-		<text x={RX0 + legend2 + 10} y={238} class="muted" style:font-variant-numeric="tabular-nums"
-			>died out early ({died})</text
-		>
-	</g>
+	<Readout id="runs-key">
+		<g font-size="11">
+			<circle cx={RX0 + 5} cy={234} r="5" fill="var(--sir-i)" fill-opacity="0.9" />
+			<text x={RX0 + 15} y={238} class="muted" style:font-variant-numeric="tabular-nums"
+				>{upLabel} ({tookOff})</text
+			>
+			<circle cx={RX0 + legend2} cy={234} r="5" fill="var(--stage-ink-muted)" fill-opacity="0.55" />
+			<text x={RX0 + legend2 + 10} y={238} class="muted" style:font-variant-numeric="tabular-nums"
+				>died out early ({died})</text
+			>
+		</g>
+	</Readout>
 
 	<!-- died out early: measured vs 1/R0 -->
 	<g style:font-variant-numeric="tabular-nums">
-		<text x={RX0} y={292} font-size="13" font-weight="600">Died out early</text>
-		<text x={RX1} y={292} font-size="13" font-weight="600" text-anchor="end">{diedText}</text>
+		<Readout
+			id="died"
+			order={1}
+			label="Died out early"
+			value={diedText}
+			note={r0 <= 1
+				? 'model: with R₀ ≤ 1, every run dies out'
+				: `model (the tick): 1 in ${fmtR0} = ${Math.round(100 * predicted)}%`}
+		>
+			<text x={RX0} y={292} font-size="13" font-weight="600">Died out early</text>
+			<text x={RX1} y={292} font-size="13" font-weight="600" text-anchor="end">{diedText}</text>
+		</Readout>
 		<rect x={RX0} y={304} width={RX1 - RX0} height="10" rx="5" fill="var(--stage-grid)" />
 		<rect
 			x={RX0}
@@ -391,22 +431,27 @@
 			stroke="var(--stage-ink)"
 			stroke-width="2"
 		/>
-		<text x={RX0} y={340} font-size="12">{modelText}</text>
+		<Readout id="model"><text x={RX0} y={340} font-size="12">{modelText}</text></Readout>
 	</g>
 
 	<!-- final sizes -->
 	<!-- y 390, not lower: the ▼ for the SIR value sits at y ≈ 410–419 and, at R₀ ≈ 1.1–1.3, under the title -->
-	<text x={RX0} y={390} font-size="13" font-weight="600">How many each run infected</text>
+	<Readout id="sizes-title"
+		><text x={RX0} y={390} font-size="13" font-weight="600">How many each run infected</text
+		></Readout
+	>
 	<g>
 		<line x1={RX0} x2={RX1} y1={SY0} y2={SY0} stroke="var(--stage-line)" />
 		{#each [0, 0.25, 0.5, 0.75, 1] as v (v)}
 			<line x1={bar(v)} x2={bar(v)} y1={SY0} y2={SY0 + 4} stroke="var(--stage-line)" />
 		{/each}
-		<text x={RX0} y={SY0 + 17} font-size="11" class="muted">0%</text>
-		<text x={bar(0.5)} y={SY0 + 17} font-size="11" class="muted" text-anchor="middle">50%</text>
-		<text x={RX1} y={SY0 + 17} font-size="11" class="muted" text-anchor="end"
-			>100% of the crowd</text
-		>
+		<Readout id="sizes-axis">
+			<text x={RX0} y={SY0 + 17} font-size="11" class="muted">0%</text>
+			<text x={bar(0.5)} y={SY0 + 17} font-size="11" class="muted" text-anchor="middle">50%</text>
+			<text x={RX1} y={SY0 + 17} font-size="11" class="muted" text-anchor="end"
+				>100% of the crowd</text
+			>
+		</Readout>
 		{#if sir > 0}
 			<path
 				d="M{bar(sir)} {SY0 - 3} l-5 -9 h10 z"
@@ -424,10 +469,20 @@
 			/>
 		{/each}
 	</g>
-	<text x={RX0} y={502} font-size="12">{sizeText}</text>
-	{#if sir > 0}
-		<text x={RX0} y={520} font-size="11" class="muted"
-			>▼ the SIR equations: {pct(sir)} for R₀ = {fmtR0}</text
-		>
-	{/if}
+	<Readout
+		id="sizes"
+		order={2}
+		label={sizeRow.label}
+		value={sizeRow.value}
+		note={sir > 0 ? `▼ the SIR equations: ${pct(sir)}` : undefined}
+		opacity={sizeText ? 1 : 0}
+	>
+		0 ? 1 : 0} >
+		<text x={RX0} y={502} font-size="12">{sizeText}</text>
+		{#if sir > 0}
+			<text x={RX0} y={520} font-size="11" class="muted"
+				>▼ the SIR equations: {pct(sir)} for R₀ = {fmtR0}</text
+			>
+		{/if}
+	</Readout>
 </g>

@@ -42,6 +42,47 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/Thylakoid lumen\s*pH ≈ 8\.0/);
 	});
 
+	test('epidemics crowd: the counts are text under the stage and follow vaccination', async ({
+		page
+	}) => {
+		await page.goto('./epidemics/#vaccination');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Susceptible\s*\d+/);
+		await expect(panel).toContainText('Each case now infects');
+		await expect(drawing(page)).not.toContainText('Each case now infects');
+		await range(page, 'vaccinated').fill('50');
+		await expect(panel).toContainText(/Vaccinated\s*150/);
+	});
+
+	test('epidemics tree: R₀ and the generations are text and follow R₀', async ({ page }) => {
+		await page.goto('./epidemics/#r0');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Each case infects\s*R₀ = 3\.0/);
+		await expect(drawing(page)).not.toContainText('Each case infects');
+		await range(page, 'r0').fill('2');
+		await expect(panel).toContainText(/R₀ = 2\.0/);
+		await expect(panel).toContainText('1 → 2 → 4');
+	});
+
+	test('epidemics runs: the share that died out is text and follows R₀', async ({ page }) => {
+		await page.goto('./epidemics/#chance');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Died out early\s*\d+ of 40/);
+		await expect(panel).toContainText('1 in 3 = 33%');
+		await expect(drawing(page)).not.toContainText('Died out early');
+		await range(page, 'r0').fill('2');
+		await expect(panel).toContainText('1 in 2 = 50%');
+	});
+
+	test('epidemics threshold: the threshold is text and follows R₀', async ({ page }) => {
+		await page.goto('./epidemics/#threshold');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Threshold for R₀ = 3\.0\s*67% immune/);
+		await expect(drawing(page)).not.toContainText('% immune');
+		await range(page, 'r0').fill('2');
+		await expect(panel).toContainText(/Threshold for R₀ = 2\.0\s*50% immune/);
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');
@@ -49,10 +90,11 @@ test.describe('on a phone', () => {
 		await expect(page).toHaveURL(/#overshoot$/);
 		await expect(readouts(page)).toContainText(/Peak\s*day \d+/);
 		await expect(readouts(page)).not.toContainText('Effective R now');
-		// A scene without readouts shows no list.
+		// Another scene replaces the list with its own.
 		await page.keyboard.press('ArrowRight');
 		await expect(page).toHaveURL(/#chance$/);
-		await expect(readouts(page)).toHaveCount(0);
+		await expect(readouts(page)).toContainText('Died out early');
+		await expect(readouts(page)).not.toContainText('Peak');
 	});
 });
 

@@ -34,7 +34,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut, linear } from 'svelte/easing';
 	import { Axes, Label, clamp, linePath, niceMax, scale, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { doublingTime, growthRate } from '../model';
 	import { DEFAULTS, settings } from '../run';
 
@@ -381,16 +381,51 @@
 	<!-- ============================================================== tree -->
 	{#if treeOpacity > 0.001}
 		<g opacity={treeOpacity}>
-			<text x={36} y={62} font-size="16" font-weight="600"
-				>Each case infects <tspan fill="var(--sir-i)">R₀ = {r0.toFixed(1)}</tspan> people on average</text
+			<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+			<Readout
+				id="tree-r0"
+				order={1}
+				label="Each case infects"
+				value="R₀ = {r0.toFixed(1)}"
+				note="people on average"
+				color="var(--sir-i)"
+				opacity={treeOpacity}
 			>
-			<Label x={36} y={88} text={treeStatus} size={12} anchor="start" muted />
+				<text x={36} y={62} font-size="16" font-weight="600"
+					>Each case infects <tspan fill="var(--sir-i)">R₀ = {r0.toFixed(1)}</tspan> people on average</text
+				>
+			</Readout>
+			<Readout
+				id="tree-status"
+				order={2}
+				label="Generations"
+				value={treeStatus}
+				opacity={treeOpacity}
+			>
+				<Label x={36} y={88} text={treeStatus} size={12} anchor="start" muted />
+			</Readout>
 
 			<!-- legend -->
-			<circle cx={716} cy={58} r="5" fill="var(--sir-i)" />
-			<text x={727} y={62} font-size="12">infectious now</text>
-			<circle cx={838} cy={58} r="5" fill="var(--sir-r)" />
-			<text x={849} y={62} font-size="12">recovered</text>
+			<Readout
+				id="tree-key-i"
+				order={10}
+				label="infectious now"
+				color="var(--sir-i)"
+				opacity={treeOpacity}
+			>
+				<circle cx={716} cy={58} r="5" fill="var(--sir-i)" />
+				<text x={727} y={62} font-size="12">infectious now</text>
+			</Readout>
+			<Readout
+				id="tree-key-r"
+				order={11}
+				label="recovered"
+				color="var(--sir-r)"
+				opacity={treeOpacity}
+			>
+				<circle cx={838} cy={58} r="5" fill="var(--sir-r)" />
+				<text x={849} y={62} font-size="12">recovered</text>
+			</Readout>
 
 			<!-- edges, grown from parent to child -->
 			{#each edges as e (e.id)}
@@ -441,7 +476,10 @@
 								font-weight="600"
 								style:font-variant-numeric="tabular-nums">{fmt(gen.n)}</text
 							>
-							<text {x} y={YM + 20} text-anchor="middle" font-size="11" class="muted">cases</text>
+							<Readout id="block-unit-{gen.g}"
+								><text {x} y={YM + 20} text-anchor="middle" font-size="11" class="muted">cases</text
+								></Readout
+							>
 						</g>
 					{:else if gen.n === 0}
 						<circle
@@ -466,18 +504,22 @@
 			{/each}
 
 			<!-- generation numbers and counts -->
-			<text x={36} y={526} font-size="11" class="muted">generation</text>
-			<text x={36} y={552} font-size="12" class="muted">cases</text>
+			<Readout id="gen-axis">
+				<text x={36} y={526} font-size="11" class="muted">generation</text>
+				<text x={36} y={552} font-size="12" class="muted">cases</text>
+			</Readout>
 			{#each gens as gen (gen.g)}
 				{@const a = appear(gen.g)}
-				<text
-					x={colX(gen.g)}
-					y={526}
-					text-anchor="middle"
-					font-size="11"
-					class="muted"
-					opacity={0.4 + 0.6 * a}>{gen.g}</text
-				>
+				<Readout id="gen-{gen.g}">
+					<text
+						x={colX(gen.g)}
+						y={526}
+						text-anchor="middle"
+						font-size="11"
+						class="muted"
+						opacity={0.4 + 0.6 * a}>{gen.g}</text
+					>
+				</Readout>
 				<text
 					x={colX(gen.g)}
 					y={553}
@@ -495,32 +537,55 @@
 	<!-- ============================================================ growth -->
 	{#if chartOpacity > 0.001}
 		<g opacity={chartOpacity}>
-			<text x={36} y={60} font-size="22" font-weight="600"
-				>{headline.lead}
-				<tspan fill={growing || level ? 'var(--sir-i)' : 'var(--sir-s)'}>{headline.value}</tspan
-				></text
+			<Readout
+				id="growth-headline"
+				order={1}
+				label={headline.lead.replace(':', '')}
+				value={headline.value}
+				note={formula}
+				color={growing || level ? 'var(--sir-i)' : 'var(--sir-s)'}
+				opacity={chartOpacity}
 			>
-			<text x={36} y={88} font-size="12" class="muted">{formula}</text>
+				<text x={36} y={60} font-size="22" font-weight="600"
+					>{headline.lead}
+					<tspan fill={growing || level ? 'var(--sir-i)' : 'var(--sir-s)'}>{headline.value}</tspan
+					></text
+				>
+				<text x={36} y={88} font-size="12" class="muted">{formula}</text>
+			</Readout>
 
 			<!-- legend -->
-			<line x1={PX0} x2={PX0 + 22} y1={120} y2={120} stroke="var(--sir-i)" stroke-width="2.6" />
-			<text x={PX0 + 30} y={124} font-size="12"
-				>R₀ = {r0.toFixed(1)}, infectious for {days} days</text
-			>
-			{#if showRef}
-				<line
-					x1={PX0 + 290}
-					x2={PX0 + 312}
-					y1={120}
-					y2={120}
-					stroke="var(--stage-ink-muted)"
-					stroke-width="1.6"
-					stroke-dasharray="5 4"
-				/>
-				<text x={PX0 + 320} y={124} font-size="12" class="muted"
-					>R₀ = {DEFAULTS.r0.toFixed(1)}, {DEFAULTS.days} days, for comparison</text
+			<Readout id="growth-key">
+				<line x1={PX0} x2={PX0 + 22} y1={120} y2={120} stroke="var(--sir-i)" stroke-width="2.6" />
+				<text x={PX0 + 30} y={124} font-size="12"
+					>R₀ = {r0.toFixed(1)}, infectious for {days} days</text
 				>
+			</Readout>
+			{#if showRef}
+				<!-- key chips stay listed whatever their opacity: only while the line is drawn -->
+				<Readout
+					id="growth-ref"
+					order={10}
+					label="dashed: R₀ = {DEFAULTS.r0.toFixed(1)}, {DEFAULTS.days} days"
+					opacity={chartOpacity}
+				/>
 			{/if}
+			<Readout id="growth-ref-key">
+				{#if showRef}
+					<line
+						x1={PX0 + 290}
+						x2={PX0 + 312}
+						y1={120}
+						y2={120}
+						stroke="var(--stage-ink-muted)"
+						stroke-width="1.6"
+						stroke-dasharray="5 4"
+					/>
+					<text x={PX0 + 320} y={124} font-size="12" class="muted"
+						>R₀ = {DEFAULTS.r0.toFixed(1)}, {DEFAULTS.days} days, for comparison</text
+					>
+				{/if}
+			</Readout>
 
 			<Axes
 				{sx}
@@ -598,12 +663,23 @@
 				{/if}
 			</g>
 
-			<Label x={PX0} y={548} text={growthStatus} size={13} anchor="start" />
-			<text x={PX1} y={548} font-size="11" class="muted" text-anchor="end"
-				>{level
+			<Readout
+				id="growth-status"
+				order={2}
+				label="Day {dayText}"
+				value="{fmt(nowCases)} case{Math.round(nowCases) === 1 ? '' : 's'}"
+				note={level
 					? 'each case is replaced by exactly one'
-					: `${growing ? '×2' : '÷2'} every ${fmtDays(every)} days, whatever the size`}</text
+					: `${growing ? '×2' : '÷2'} every ${fmtDays(every)} days, whatever the size`}
+				opacity={chartOpacity}
 			>
+				<Label x={PX0} y={548} text={growthStatus} size={13} anchor="start" />
+				<text x={PX1} y={548} font-size="11" class="muted" text-anchor="end"
+					>{level
+						? 'each case is replaced by exactly one'
+						: `${growing ? '×2' : '÷2'} every ${fmtDays(every)} days, whatever the size`}</text
+				>
+			</Readout>
 		</g>
 	{/if}
 </g>
