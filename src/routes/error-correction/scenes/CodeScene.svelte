@@ -92,7 +92,10 @@
 			const free = flips.flatMap((f, i) => (f ? [] : [i + 1]));
 			const pool = free.length ? free : flips.map((_, i) => i + 1);
 			const pick = pool[Math.floor(rng(c * 977 + step.id.length * 31)() * pool.length)];
-			toggleFlip(pick);
+			// The repair and address steps are about one flip: move it rather than add a second.
+			if (phase === 'repair' || phase === 'address')
+				setParam(flipKey, flips.map((_, i) => (i + 1 === pick ? 1 : 0)).join(''));
+			else toggleFlip(pick);
 		});
 	});
 	$effect(() => {
@@ -121,6 +124,8 @@
 
 	/** Checks, in the order the receiver evaluates them. */
 	const CHECKS = [1, 2, 4];
+	/** The address step checks them in the order the binary number is written: 4s, 2s, 1s. */
+	const checkOrder = $derived(phase === 'address' ? [4, 2, 1] : CHECKS);
 	const checksShown = $derived(
 		isParity ? (tr >= CHECK_AT[0] ? 1 : 0) : CHECK_AT.filter((a) => tr >= a).length
 	);
@@ -342,7 +347,7 @@
 	<!-- the three Hamming circles -->
 	{#if mix.current > 0.01}
 		<g opacity={mix.current}>
-			{#each CHECKS as k, j (k)}
+			{#each checkOrder as k, j (k)}
 				{@const c = CIRCLE[k]}
 				{@const shown = checksShown > j}
 				{@const ok = passes(k)}
@@ -356,7 +361,7 @@
 					stroke-width={activeCheck === j ? 3.5 : shown && !ok ? 2.5 : 1.5}
 				/>
 			{/each}
-			{#each CHECKS as k, j (k)}
+			{#each checkOrder as k, j (k)}
 				{@const shown = checksShown > j}
 				{@const ok = passes(k)}
 				{@const lx = k === 1 ? 176 : k === 2 ? 444 : 310}
@@ -595,7 +600,7 @@
 		{/if}
 	{:else}
 		{@const ax = addr.current}
-		{#each CHECKS as k, j (k)}
+		{#each checkOrder as k, j (k)}
 			{@const shown = checksShown > j}
 			{@const ok = passes(k)}
 			{@const y = 336 + j * 24}

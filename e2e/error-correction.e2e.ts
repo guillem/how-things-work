@@ -13,6 +13,20 @@ test('the failing checks locate a flipped bit, wherever it is', async ({ page })
 	await expect(stage(page)).toContainText('repaired');
 });
 
+test('on the repair step, a random flip moves the error instead of adding a second', async ({
+	page
+}) => {
+	await page.goto('./error-correction/#repair');
+	await expect(stage(page)).toContainText('position 5');
+	await page.getByRole('button', { name: 'Flip a random bit' }).click();
+	await expect(page.getByRole('switch', { name: 'Flip received bit 5' })).toHaveAttribute(
+		'aria-checked',
+		'false'
+	);
+	await expect(stage(page)).not.toContainText('position 5');
+	await expect(stage(page)).toContainText('same as the message: repaired');
+});
+
 test('two flips are mistaken for one and give wrong data', async ({ page }) => {
 	await page.goto('./error-correction/#two');
 	await expect(stage(page)).toContainText('position 6');
