@@ -71,6 +71,13 @@ Last updated: 2026-10-13 UTC.
 
 ## Current development
 
+**Fact-check round (2026-10-13, not yet released):** the 29 built topics never reviewed through
+the Batch API were reviewed (batch msgbatch_01RwbH2w8JY5g9dqUqigDc89, ~$18 + ~260 searches; all
+"ready after fixes"). Applied so far: every High/Medium factual error (27 items in 17 topics,
+each checked against a source, none rejected) and the epidemics flu-marker contradiction. The
+rest of each report (Low items, model, narrative, catalogue, clarity) stays in
+`docs/reviews/<slug>.md` for the next pass. Phone stage text: option B chosen (see BACKLOG).
+
 **Review round (2026-10-13, released in v0.1.12):** a review of the gap and bug rounds (made with
 Kimi and ZCode) found three live bugs and a dozen smaller problems; fixed in four local worktrees
 merged into `main`, each fix with a test that failed first (list at the end of BACKLOG's "Known
