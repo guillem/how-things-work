@@ -102,6 +102,45 @@ test('the spectrum names what each waveform is missing', async ({ page }) => {
 	await expect(stage(page)).toContainText('every frequency from 1 Hz up');
 });
 
+test('the sweep readout and the spectrum title do not overlap', async ({ page }) => {
+	await open(page, './fourier-transform/#spectrum', 'the signal is at');
+	const readout = stage(page).locator('text', { hasText: 'the signal is at' });
+	const heading = stage(page).locator('text', { hasText: 'The spectrum: amplitude' });
+	const a = (await readout.boundingBox())!;
+	const b = (await heading.boundingBox())!;
+	const apart =
+		a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y;
+	expect(apart).toBe(true);
+});
+
+test('draw-wave: the scale holds while the number of frequencies changes', async ({ page }) => {
+	await open(page, './fourier-transform/#draw-wave', 'The square wave rebuilt from 1 to 5 Hz');
+	await option(page, 'shape', 'drawn').click();
+	// A square wave drawn as tall as the graph allows (±1.2): its rebuilt overshoot
+	// depends on how many frequencies are added.
+	await drag(
+		page,
+		Array.from({ length: 41 }, (_, i) => ({ x: 120 + i * 19.5, y: i < 20 ? 56 : 286 }))
+	);
+	await expect(stage(page)).toContainText('Your drawing rebuilt from 1 to 5 Hz');
+	const plusOne = stage(page).locator('text', { hasText: /^\+1$/ });
+	const at5 = await plusOne.getAttribute('y');
+	await range(page, 'terms').fill('1');
+	await expect(stage(page)).toContainText('Your drawing rebuilt from 1 Hz only');
+	expect(await plusOne.getAttribute('y')).toBe(at5);
+	await range(page, 'terms').fill('49');
+	await expect(stage(page)).toContainText('Your drawing rebuilt from 1 to 49 Hz');
+	expect(await plusOne.getAttribute('y')).toBe(at5);
+	// The tallest rebuilt signal still fits inside the graph (y 52 to 292).
+	await range(page, 'terms').fill('1');
+	const box = (await rebuiltPath(page).boundingBox())!;
+	const svg = (await page.locator('.stage svg').boundingBox())!;
+	const k = Math.min(svg.width / 960, svg.height / 600);
+	const oy = svg.y + (svg.height - 600 * k) / 2;
+	expect((box.y - oy) / k).toBeGreaterThanOrEqual(52);
+	expect((box.y + box.height - oy) / k).toBeLessThanOrEqual(292);
+});
+
 test('a drawn waveform is transformed, rebuilt, and carried to the circles', async ({ page }) => {
 	await open(page, './fourier-transform/#draw-wave', 'The square wave rebuilt from 1 to 5 Hz');
 	await option(page, 'shape', 'drawn').click();

@@ -68,7 +68,8 @@
 		return owner === shape && heights !== undefined ? unpack(heights, BARS + 1) : null;
 	});
 	const bars = $derived(editing && edits ? edits : baseBars);
-	const termsN = $derived(Math.max(1, Math.min(50, Math.round(Number(params.terms ?? 5)))));
+	const MAX_TERMS = 50; // the terms slider's top
+	const termsN = $derived(Math.max(1, Math.min(MAX_TERMS, Math.round(Number(params.terms ?? 5)))));
 
 	// Bars grow in when the step starts (a function of t) and tween when the waveform changes.
 	const shownBars = Tween.of(() => baseBars, { duration: 600, easing: cubicInOut });
@@ -77,11 +78,13 @@
 	const barValue = (n: number) => (editing ? bars[n] : (reduced ? baseBars : shownBars.current)[n]);
 
 	// The 0 Hz bar is the average and may be negative. The editor stops at −0.75
-	// (MIN0), but a drawn waveform hugging the bottom of the graph can average
-	// lower still (a wave flat at −1.2 averages −1.2), and that bar used to be
-	// drawn cut off. Instead the chart's unit shrinks so the deepest value fits
-	// between the baseline and the stage floor; the editor's own range never goes
-	// deeper than the waveform it started from, so the scale holds while editing.
+	// (MIN0), which fits at the full unit (71 px of the 80 below the baseline),
+	// but a drawn waveform hugging the bottom of the graph can average lower
+	// still (a wave flat at −1.2 averages −1.2), and that bar used to be drawn
+	// cut off. Instead the chart's unit shrinks so the waveform's own average
+	// fits between the baseline and the stage floor. The unit depends on the
+	// waveform only, never on the edits, so the scale holds while editing (and
+	// the editor's floor, shallower than such an average, fits too).
 	const MIN0 = -0.75;
 	const unit = $derived(baseBars[0] < MIN0 ? Math.min(BU, 80 / -baseBars[0]) : BU);
 
@@ -92,14 +95,32 @@
 		if (drawPhase) return partialSamples(spectrum, termsN, N_WAVE);
 		return null;
 	});
-	// Extreme bar edits can rebuild a signal taller than the panel: zoom the
-	// vertical scale out (signal, ghost and the ±1 gridlines together) so it is
-	// never clipped.
+	// A rebuilt signal can be taller than the panel (extreme bar edits, or the
+	// overshoot of a drawing that fills the graph): zoom the vertical scale out
+	// (signal, ghost and the ±1 gridlines together) so it is never clipped.
+	// While editing the zoom follows the edited signal. On the draw step it is
+	// the tallest rebuild over every number of frequencies the slider offers,
+	// so the scale holds steady per waveform as the slider moves.
 	const FIT = (CY - TOP) / U - 0.03; // units that fit above (and below) the middle line
+	const tallestRebuild = $derived.by(() => {
+		if (!spectrum) return 1;
+		let top = 1;
+		for (let i = 0; i < N_WAVE; i++) {
+			const u = i / N_WAVE;
+			let v = spectrum[0].amp;
+			for (let n = 1; n <= MAX_TERMS && n < spectrum.length; n++) {
+				const h = spectrum[n];
+				v += h.amp * Math.sin(2 * Math.PI * h.n * u + h.phase);
+				top = Math.max(top, Math.abs(v));
+			}
+		}
+		return top;
+	});
 	const yZoom = $derived.by(() => {
 		if (!rebuilt) return 1;
 		let top = 1;
-		for (const v of rebuilt) top = Math.max(top, Math.abs(v));
+		if (drawPhase) top = tallestRebuild;
+		else for (const v of rebuilt) top = Math.max(top, Math.abs(v));
 		return Math.max(1, top / FIT);
 	});
 	const US = $derived(U / yZoom);
@@ -331,7 +352,9 @@
 		{/if}
 	</g>
 	{#if sweepV !== null}
-		{@render txt(X0, 338, `at ${num(sweep, 2)} s the signal is at ${num(sweepV)}`, 13, {
+		<!-- in the title row, between the title and the drawing hint (or the Draw
+		     button); anchored at its start so it doesn't shift as the value changes -->
+		{@render txt(X0 + 290, 34, `at ${num(sweep, 2)} s the signal is at ${num(sweepV)}`, 13, {
 			weight: 600
 		})}
 	{/if}

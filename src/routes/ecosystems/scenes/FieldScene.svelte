@@ -57,21 +57,41 @@
 	const WINDOW = $derived(growth ? 40 : 60); // years shown on the time chart
 	const RUN_YEARS = $derived(growth ? 120 : 300);
 
-	/** "Nice" number of animals per icon: 1, 2, 3, 4, 5, 6, 8, 10, 15, 20, 25, 30, 40, 50, … */
-	function perIcon(v: number) {
+	/**
+	 * The smallest "nice" whole number of at least `v`: 1, 2, 3, 4, 5, 6, 8, 10, 15,
+	 * 20, 25, 30, 40, 50, … (animals per icon, and the steps between axis ticks).
+	 */
+	function nice(v: number) {
 		for (let mag = 1; ; mag *= 10) {
 			for (const m of [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8]) {
 				const n = m * mag;
-				if (Number.isInteger(n) && n >= v) return n;
+				if (Number.isInteger(n) && n >= v - 1e-9) return n;
 			}
 		}
 	}
 
-	/** A round axis top with four equal intervals (1, 2, 2.5, 5 × 10ⁿ each): the curves fill the chart, and both y-axes of the cycles chart share the same gridline heights. */
-	function niceTop(v: number) {
-		const mag = Math.pow(10, Math.floor(Math.log10(v / 4)));
-		const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => s >= v / 4 - 1e-9) ?? 10 * mag;
-		return 4 * step;
+	/**
+	 * The y-scales of the cycles chart: rabbits on the left, foxes on the right.
+	 * Both axes have the same number of intervals, so the fox ticks sit on the
+	 * rabbit gridlines, but each picks its own round step; the number of
+	 * intervals (3 to 6) is the one that lets the fuller-scaled curve leave the
+	 * least room unused, so both curves fill most of the chart.
+	 */
+	function sharedScales(maxH: number, maxP: number) {
+		let best = { intervals: 4, hStep: nice(maxH / 4), pStep: nice(maxP / 4), fill: 0 };
+		for (const intervals of [4, 5, 3, 6]) {
+			const hStep = nice(maxH / intervals);
+			const pStep = nice(maxP / intervals);
+			const fill = Math.min(maxH / (intervals * hStep), maxP / (intervals * pStep));
+			if (fill > best.fill + 1e-9) best = { intervals, hStep, pStep, fill };
+		}
+		const ticks = (step: number) => Array.from({ length: best.intervals + 1 }, (_, k) => k * step);
+		return {
+			hTop: best.intervals * best.hStep,
+			pTop: best.intervals * best.pStep,
+			hTicks: ticks(best.hStep),
+			pTicks: ticks(best.pStep)
+		};
 	}
 
 	// ---- the run (recomputed only when the rates change) ---------------------------
@@ -114,7 +134,7 @@
 			if (H[i] > H[ext.maxH]) ext.maxH = i;
 			if (H[i] < H[ext.minH]) ext.minH = i;
 		}
-		const n = perIcon(Math.max(maxH / MAX_RABBIT_ICONS, maxP / MAX_FOX_ICONS, 1));
+		const n = nice(Math.max(maxH / MAX_RABBIT_ICONS, maxP / MAX_FOX_ICONS, 1));
 		return { H, P, maxH, maxP, still, peaks, period, ext, n };
 	});
 
@@ -154,18 +174,26 @@
 
 	// ---- scales --------------------------------------------------------------------
 	const tw = { duration: 600, easing: cubicInOut };
-	const hTop = Tween.of(() => (growth ? 1100 : niceTop(sim.maxH * 1.04)), tw);
-	const pTop = Tween.of(() => niceTop(sim.maxP * 1.04 || 1), tw);
+	const scales = $derived(sharedScales(sim.maxH * 1.04, sim.maxP * 1.04 || 1));
+	const hTop = Tween.of(() => (growth ? 1100 : scales.hTop), tw);
+	const pTop = Tween.of(() => scales.pTop, tw);
 	const sx = $derived(scale([lo, lo + WINDOW], [PX0, PX1]));
 	const syH = $derived(scale([0, hTop.current], [PY1, PY0]));
 	const syP = $derived(scale([0, pTop.current], [PY1, PY0]));
 	// Phase plot: rabbits across, foxes up.
 	const qx = $derived(scale([0, hTop.current], [PX0, PX1]));
 	const qy = $derived(scale([0, pTop.current], [PY1, PY0]));
-	// Both tops are four equal intervals (niceTop), so the two y-axes tick at the same
-	// heights and the fox ticks line up with the rabbit gridlines.
-	const hTicks = $derived([0, 1, 2, 3, 4].map((k) => (k * hTop.current) / 4));
-	const pTicks = $derived([0, 1, 2, 3, 4].map((k) => (k * pTop.current) / 4));
+	// The tick values are those of the new scales (round numbers), placed on the
+	// rabbit scale as it tweens; a tick above the top while the chart grows is
+	// left out. The fox labels are placed on the rabbit scale too, converted at
+	// the new scales' ratio, so they stay on the rabbit gridlines throughout;
+	// at rest that is exactly the fox curve's scale, and while it tweens the
+	// labels lag the curve for a moment, as on any rescale.
+	const within = (ticks: number[], top: number) => ticks.filter((v) => v <= top * 1.001);
+	const pLabelTop = $derived((hTop.current * scales.pTop) / scales.hTop);
+	const syPLabels = $derived(scale([0, pLabelTop], [PY1, PY0]));
+	const hTicks = $derived(within(scales.hTicks, hTop.current));
+	const pTicks = $derived(within(scales.pTicks, pLabelTop));
 
 	/** Path of a series against time from `from` to `to` years (≤ ~300 points). */
 	function seriesPath(arr: number[], from: number, to: number, x: Scale, y: Scale) {
@@ -535,7 +563,7 @@
 			xFormat={(v) => String(v)}
 		/>
 		{#if !growth}
-			<Axes {sx} sy={syP} yRight grid={false} yTicks={pTicks} />
+			<Axes {sx} sy={syPLabels} yRight grid={false} yTicks={pTicks} />
 		{/if}
 
 		{#if growth}
