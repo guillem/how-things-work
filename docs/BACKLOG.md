@@ -121,13 +121,14 @@ label search; right-clicks leaving handles held; and a logic-gates test that gua
   epidemics, central-limit-theorem, bayes-theorem, unit-circle, sorting, binary, graph-search, newtons-laws, orbits-kepler,
   oscillations-resonance, primes-modular-arithmetic, complex-numbers, error-correction,
   electric-circuits, logic-gates, internet, pagerank, learning-from-data, reinforcement-learning,
-  entropy, chaos-fractals and calculus
+  entropy, chaos-fractals, calculus, linear-transformations, sun-earth-moon, radioactivity,
+  special-relativity, light-optics, motors-generators, cryptography, compression and cpu
   (the panel adds ~50–195 px to the pinned card;
   membrane, crowd and the graph-search race are the tallest).
   To convert the next scene: wrap each readout/caption in `<Readout id label value note>`, part names in `<Readout label marker
 at>` (badge), minor labels in a bare `<Readout>`; pass the scene's fade as `opacity`; check
   phone shots (390 × 844, `TOUCH=1`, both themes) and a desktop pixel diff against main; extend
-  `e2e/phone-readouts.e2e.ts` with the scene's key readout. Still to do: the other ~85 scenes (23 of 46 topics converted)
+  `e2e/phone-readouts.e2e.ts` with the scene's key readout. Still to do: the scenes of the remaining 14 topics (32 of 46 converted)
   (several hundred text elements, each needing editorial choices), plus axis ticks in the shared chart
   helpers.
 
