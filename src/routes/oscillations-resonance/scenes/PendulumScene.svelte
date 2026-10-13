@@ -77,15 +77,22 @@
 		const a = rad(a0);
 		return `M${p} ${PIV + arcR} A${arcR} ${arcR} 0 0 0 ${p + arcR * Math.sin(a)} ${PIV + arcR * Math.cos(a)}`;
 	});
-	// The release-angle label sits left of the arc, pushed out of the swing's
-	// reach (its depth below the pivot times the tangent of the angle): the rod
-	// on left swings used to cross it. Clamped at the stage's left edge — past
-	// about 66° the bob swings too high to reach the label's depth anyway.
+	// The release-angle label sits just outside the swing, beyond its far left
+	// end: the light pendulum's rod at −a0 is the edge of everything that moves
+	// on that side (the heavy one hangs 2·GAP further right). The label's lower
+	// right corner is placed a little past the arc's radius along that rod and
+	// pushed out square to it, by more than the light bob's radius; at wide
+	// swings (past ~73°) the heavy bob (r 15) pokes beyond that edge by
+	// 15 − 2·GAP·cos a0, and the push grows to clear it. Every point of the
+	// label is then at least that far from the rod line, whatever the length
+	// (checked by a sweep over 5–90° and 0.25–4 m).
 	const arcLabel = $derived.by(() => {
-		const reach = Math.tan(rad(Math.min(a0, 66)));
+		const a = rad(a0);
+		const along = arcR + 12;
+		const out = Math.max(11, 19.6 - 2 * GAP * Math.cos(a));
 		return {
-			x: Math.max(44, COL_X - GAP - 14 - (arcR + 16) * reach),
-			y: PIV + arcR + 14
+			x: COL_X - GAP - along * Math.sin(a) - out * Math.cos(a),
+			y: PIV + along * Math.cos(a) - out * Math.sin(a) - 2
 		};
 	});
 
