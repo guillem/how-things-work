@@ -36,7 +36,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, lerp, smoothstep, scale, startDrag, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { BINS, SHAPES, mean, meanBars, normalChance, normalDensity, sampler, sd } from '../clt';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -346,9 +346,14 @@
 			stroke="var(--stage-grid)"
 			stroke-width="1"
 		/>
-		{@render txt(sx(v), 566, String(v), 11, { anchor: 'middle', muted: true })}
+		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+		<Readout id="tick-{v}">
+			{@render txt(sx(v), 566, String(v), 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/each}
-	{@render txt((X0 + X1) / 2, 586, 'value', 11, { anchor: 'middle', muted: true })}
+	<Readout id="axis-title">
+		{@render txt((X0 + X1) / 2, 586, 'value', 11, { anchor: 'middle', muted: true })}
+	</Readout>
 
 	<!-- the starting distribution -->
 	<g
@@ -414,17 +419,21 @@
 		stroke-dasharray="4 4"
 		opacity="0.55"
 	/>
-	{@render txt(sx(mu), TOP_Y - 18, `mean ${f2(mu)}`, 12, { anchor: 'middle', weight: 600 })}
+	<Readout id="mean-label">
+		{@render txt(sx(mu), TOP_Y - 18, `mean ${f2(mu)}`, 12, { anchor: 'middle', weight: 600 })}
+	</Readout>
 
 	<!-- ±σ on the starting distribution (clt) -->
 	{#if cltAmt.current > 0.01 && !flatLine}
 		<g opacity={cltAmt.current}>
 			{@render span(mu, sigma, TOP_Y - 3, 'var(--clt-source)')}
-			{@render txt(sdLabel.x, TOP_Y + 1, 'σ', 12, {
-				anchor: sdLabel.anchor,
-				color: 'var(--clt-source)',
-				weight: 600
-			})}
+			<Readout id="sd-label">
+				{@render txt(sdLabel.x, TOP_Y + 1, 'σ', 12, {
+					anchor: sdLabel.anchor,
+					color: 'var(--clt-source)',
+					weight: 600
+				})}
+			</Readout>
 		</g>
 	{/if}
 
@@ -451,11 +460,13 @@
 				stroke="var(--clt-means)"
 				stroke-width="2.5"
 			/>
-			{@render txt(sx(show.mean), STRIP_TOP + 16, `average ${f2(show.mean)}`, 12, {
-				anchor: sx(show.mean) > X1 - 50 ? 'end' : sx(show.mean) < X0 + 50 ? 'start' : 'middle',
-				weight: 600,
-				color: 'var(--clt-means)'
-			})}
+			<Readout id="average-label">
+				{@render txt(sx(show.mean), STRIP_TOP + 16, `average ${f2(show.mean)}`, 12, {
+					anchor: sx(show.mean) > X1 - 50 ? 'end' : sx(show.mean) < X0 + 50 ? 'start' : 'middle',
+					weight: 600,
+					color: 'var(--clt-means)'
+				})}
+			</Readout>
 		</g>
 	{/if}
 
@@ -492,54 +503,102 @@
 		<g opacity={cltAmt.current}>
 			<path d={bellPath} fill="none" stroke="var(--clt-bell)" stroke-width="2.5" />
 			{@render span(mu, sdN, bellAtSd, 'var(--clt-bell)')}
-			{@render txt(sdnLabel.x, sdnLabel.y, 'σ/√n', 12, {
-				anchor: sdnLabel.anchor,
-				color: 'var(--clt-bell)',
-				weight: 600
-			})}
+			<Readout id="sdn-label">
+				{@render txt(sdnLabel.x, sdnLabel.y, 'σ/√n', 12, {
+					anchor: sdnLabel.anchor,
+					color: 'var(--clt-bell)',
+					weight: 600
+				})}
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- panel -->
-	{@render txt(PL, 52, 'starting distribution', 13, { muted: true })}
-	{@render txt(PL, 76, NAMES[shapeId] ?? 'Two humps', 17, { weight: 600 })}
-	{@render txt(PL, 98, `mean ${f2(mu)} · spread σ = ${f2(sigma)}`, 12, { tabular: true })}
-	{@render txt(PL, 120, 'Drag over the chart to draw your own.', 12, { muted: true })}
+	<Readout
+		id="source"
+		order={1}
+		label="Starting distribution"
+		value={NAMES[shapeId] ?? 'Two humps'}
+		note="mean {f2(mu)} · σ = {f2(sigma)}"
+	>
+		{@render txt(PL, 52, 'starting distribution', 13, { muted: true })}
+		{@render txt(PL, 76, NAMES[shapeId] ?? 'Two humps', 17, { weight: 600 })}
+		{@render txt(PL, 98, `mean ${f2(mu)} · spread σ = ${f2(sigma)}`, 12, { tabular: true })}
+	</Readout>
+	<Readout id="draw-hint">
+		{@render txt(PL, 120, 'Drag over the chart to draw your own.', 12, { muted: true })}
+	</Readout>
 
-	{@render txt(PL, 212, `one sample: n = ${n} value${n === 1 ? '' : 's'}`, 13, { muted: true })}
-	{@render txt(PL, 238, `their average ${f2(show.mean)}`, 16, {
-		weight: 600,
-		color: 'var(--clt-means)',
-		opacity: Math.max(0.6, show.markAmt)
-	})}
-	{#if n === 1}
-		{@render txt(PL, 260, 'n = 1: each average is just one value', 12, { muted: true })}
-	{/if}
+	<Readout
+		id="sample"
+		order={2}
+		label="One sample’s average"
+		value={f2(show.mean)}
+		note={n === 1 ? 'n = 1: just one value' : `n = ${n} values`}
+		color="var(--clt-means)"
+	>
+		{@render txt(PL, 212, `one sample: n = ${n} value${n === 1 ? '' : 's'}`, 13, { muted: true })}
+		{@render txt(PL, 238, `their average ${f2(show.mean)}`, 16, {
+			weight: 600,
+			color: 'var(--clt-means)',
+			opacity: Math.max(0.6, show.markAmt)
+		})}
+		{#if n === 1}
+			{@render txt(PL, 260, 'n = 1: each average is just one value', 12, { muted: true })}
+		{/if}
+	</Readout>
 
-	{@render txt(PL, 344, 'samples taken', 13, { muted: true })}
-	{@render txt(PL, 376, fmt(taken), 28, { weight: 600, tabular: true })}
-	{@render txt(PL, 400, `each one the average of ${n} value${n === 1 ? '' : 's'}`, 12, {
-		muted: true
-	})}
-	{@render txt(PL, 426, `mean of the averages ${f2(meanOfMeans)}`, 12, { tabular: true })}
-	{@render txt(PL, 446, `spread of the averages ${f3(sdOfMeans)}`, 12, { tabular: true })}
-	{@render txt(PL, 466, `σ/√n = ${f3(sigma)}/√${n} = ${f3(sdN)}`, 12, {
-		tabular: true,
-		muted: cltAmt.current < 0.5,
-		color: cltAmt.current >= 0.5 ? 'var(--clt-bell)' : undefined,
-		weight: cltAmt.current >= 0.5 ? 600 : 500
-	})}
-	{#if cltAmt.current > 0.01}
-		<g opacity={cltAmt.current}>
-			{#if flatLine}
-				{@render txt(PL, 500, 'every value the same: no spread', 12, { muted: true })}
-			{:else}
-				<line x1={PL} x2={PL + 26} y1={496} y2={496} stroke="var(--clt-bell)" stroke-width="2.5" />
-				{@render txt(PL + 36, 500, 'bell curve: centre = mean, width σ/√n', 12)}
-				{@render txt(PL, 524, '4 × the sample → ½ the spread', 12, { muted: true })}
-			{/if}
-		</g>
-	{/if}
+	<Readout id="taken" order={3} label="Samples taken" value={fmt(taken)}>
+		{@render txt(PL, 344, 'samples taken', 13, { muted: true })}
+		{@render txt(PL, 376, fmt(taken), 28, { weight: 600, tabular: true })}
+		{@render txt(PL, 400, `each one the average of ${n} value${n === 1 ? '' : 's'}`, 12, {
+			muted: true
+		})}
+	</Readout>
+	<Readout
+		id="averages"
+		order={4}
+		label="Spread of the averages"
+		value={f3(sdOfMeans)}
+		note="their mean {f2(meanOfMeans)}"
+	>
+		{@render txt(PL, 426, `mean of the averages ${f2(meanOfMeans)}`, 12, { tabular: true })}
+		{@render txt(PL, 446, `spread of the averages ${f3(sdOfMeans)}`, 12, { tabular: true })}
+	</Readout>
+	<Readout
+		id="sdn"
+		order={5}
+		label="Bell curve width σ/√n"
+		value="{f3(sigma)}/√{n} = {f3(sdN)}"
+		note={flatLine ? 'every value the same: no spread' : '4 × the sample → ½ the spread'}
+		color="var(--clt-bell)"
+		opacity={cltAmt.current}
+	>
+		{@render txt(PL, 466, `σ/√n = ${f3(sigma)}/√${n} = ${f3(sdN)}`, 12, {
+			tabular: true,
+			muted: cltAmt.current < 0.5,
+			color: cltAmt.current >= 0.5 ? 'var(--clt-bell)' : undefined,
+			weight: cltAmt.current >= 0.5 ? 600 : 500
+		})}
+		{#if cltAmt.current > 0.01}
+			<g opacity={cltAmt.current}>
+				{#if flatLine}
+					{@render txt(PL, 500, 'every value the same: no spread', 12, { muted: true })}
+				{:else}
+					<line
+						x1={PL}
+						x2={PL + 26}
+						y1={496}
+						y2={496}
+						stroke="var(--clt-bell)"
+						stroke-width="2.5"
+					/>
+					{@render txt(PL + 36, 500, 'bell curve: centre = mean, width σ/√n', 12)}
+					{@render txt(PL, 524, '4 × the sample → ½ the spread', 12, { muted: true })}
+				{/if}
+			</g>
+		{/if}
+	</Readout>
 </g>
 
 <style>

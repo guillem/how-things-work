@@ -157,6 +157,32 @@ test.describe('on a phone', () => {
 		await expect(readouts(page)).toContainText('Died out early');
 		await expect(readouts(page)).not.toContainText('Peak');
 	});
+
+	test('central limit theorem board: the board size is text and follows the rows', async ({
+		page
+	}) => {
+		await page.goto('./central-limit-theorem/#why');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Balls dropped\s*2,000/);
+		await expect(panel).toContainText(/12 rows → 13 bins/);
+		await expect(panel).toContainText(/end bin: 1 of 4,096/);
+		await expect(drawing(page)).not.toContainText('balls dropped');
+		await range(page, 'rows').fill('4');
+		await expect(panel).toContainText(/4 rows → 5 bins/);
+		await expect(panel).toContainText(/end bin: 1 of 16/);
+	});
+
+	test('central limit theorem means: σ/√n is text and follows the sample size', async ({
+		page
+	}) => {
+		await page.goto('./central-limit-theorem/#clt');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Starting distribution\s*Two humps/);
+		await expect(panel).toContainText('0.394/√30 = 0.072');
+		await expect(drawing(page)).not.toContainText('samples taken');
+		await range(page, '"sampleSize:clt"').fill('10');
+		await expect(panel).toContainText('0.394/√10 = 0.125');
+	});
 });
 
 test.describe('on a wide screen', () => {
