@@ -80,3 +80,39 @@ test('two to six electron pairs settle into the VSEPR arrangements', async ({ pa
 	await expect(stage(page)).toContainText('octahedral');
 	await expect(stage(page)).toContainText('90°, 180°');
 });
+
+test('the bond angle is drawn on the molecule in the still frame', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	// The arc's own label, not the readout (which quotes the same angle).
+	const arc = stage(page).getByTestId('angle-arc');
+	await page.goto('./chemical-bonds/#lonepairs');
+	await expect(arc).toHaveText('104.5°');
+	await page.locator('button[data-control=lpMol][data-value=NH3]').click();
+	await expect(arc).toHaveText('106.7°');
+	await page.locator('button[data-control=lpMol][data-value=CH4]').click();
+	await expect(arc).toHaveText('109.5°');
+	await page.goto('./chemical-bonds/#shapes');
+	await expect(arc).toHaveText('106.7°');
+	await stage(page).getByRole('button', { name: 'Build CH₂O' }).click();
+	await expect(arc).toHaveText('116.1°');
+});
+
+test('hovering an atom holds the turning molecule still to be clicked', async ({ page }) => {
+	await page.clock.install();
+	await page.goto('./chemical-bonds/#build');
+	const turn = stage(page).getByRole('slider', { name: /Turn the molecule/ });
+	await page.clock.runFor(1000);
+	// Across the empty pad, then onto an atom drawn over it (mouse moves rather than
+	// hover(), which would wait for animation frames the fake clock holds back).
+	const pad = await turn.boundingBox();
+	const atom = await stage(page)
+		.getByRole('button', { name: 'Remove this H atom' })
+		.first()
+		.boundingBox();
+	if (!pad || !atom) throw new Error('molecule not drawn');
+	await page.mouse.move(pad.x + 40, pad.y + pad.height - 40);
+	await page.mouse.move(atom.x + atom.width / 2, atom.y + atom.height / 2);
+	const held = await turn.getAttribute('aria-valuenow');
+	await page.clock.runFor(5000);
+	await expect(turn).toHaveAttribute('aria-valuenow', held ?? '');
+});

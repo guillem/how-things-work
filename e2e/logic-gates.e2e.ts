@@ -25,6 +25,9 @@ test('the 4-bit adder adds 11 + 6 = 17', async ({ page }) => {
 });
 
 test('switching the challenge clears a canvas message', async ({ page }) => {
+	// Under reduced motion a message stays until something clears it (it would
+	// otherwise fade on its own a few seconds later and pass without the fix).
+	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await page.goto('./logic-gates/#build');
 	await expect(page.getByRole('switch', { name: 'Switch A' })).toBeAttached();
 	// Click empty canvas near switch A: too close to it to add a gate.
