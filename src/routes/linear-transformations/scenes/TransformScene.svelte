@@ -28,7 +28,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { VectorHandle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
 		I2,
@@ -56,7 +56,6 @@
 	import { R, S, examples, loads, specials, type Preset } from '../presets';
 	import Arrow from './Arrow.svelte';
 	import T from './T.svelte';
-	import VectorHandle from './VectorHandle.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 

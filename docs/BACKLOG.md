@@ -110,10 +110,6 @@ label search; right-clicks leaving handles held; and a logic-gates test that gua
 
 - **`Label`'s `size` has no effect** (found by cryptography, 2026-10-12): the stage CSS fixes all
   stage text at 13 px, so topics roll their own text helpers (`Txt`, `T`).
-- **Promote `VectorHandle`** (linear-transformations' `scenes/VectorHandle.svelte`, copied from
-  complex-numbers' `PointHandle`) into `src/lib/draw`: a 2D draggable point with arrow keys on both
-  axes; the shared `Handle` only has one-dimensional keys.
-
 - **Stage text on phones — option B (decided 2026-10-13), mechanism landed.** At 390 px wide the
   960-unit stage is drawn at ~0.4 scale, so 13-unit labels end up ~5 px. The user chose B
   (readouts out of the SVG) over a zoomable stage and landscape. On viewports ≤ 640 px a scene's

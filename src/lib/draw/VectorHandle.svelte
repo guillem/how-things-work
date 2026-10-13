@@ -3,13 +3,14 @@
 	 * A grab handle on the tip of a vector arrow (the arrow itself is drawn by
 	 * the scene).
 	 *
-	 * Based on complex-numbers' `PointHandle`: like the shared `Handle`, but its
-	 * arrow keys are two-dimensional, which a vector needs. The scene gets
+	 * Like `Handle`, but its arrow keys are two-dimensional, which a vector
+	 * needs (first written for linear-transformations). The scene gets
 	 * (dx, dy) = (±1, 0) for ← →, (0, ±1) for ↑ ↓ (×5 with Shift) and decides
 	 * the step size. Every key it handles is default-prevented, so the
 	 * explainer's own arrow-key navigation leaves it alone.
 	 */
-	import { startDrag, type Point } from '#lib/draw/index.ts';
+	import type { Point } from './math';
+	import { startDrag } from './pointer';
 
 	interface Props {
 		x: number;

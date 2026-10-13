@@ -7,4 +7,5 @@ export * from './math';
 export { default as Axes } from './Axes.svelte';
 export * from './chart';
 export { default as Handle } from './Handle.svelte';
+export { default as VectorHandle } from './VectorHandle.svelte';
 export { toSvg, startDrag } from './pointer';
