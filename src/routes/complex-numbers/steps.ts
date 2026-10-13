@@ -185,7 +185,7 @@ export const spec: ExplainerSpec = {
 <p>Now a surprise. The number <i>e</i> ≈ 2.718 is the base of exponential growth: e<sup><i>x</i></sup> is what you get from growth that is always proportional to the amount already there. What could e raised to an <em>imaginary</em> power mean? Leonhard Euler found the answer, published in 1748:</p>
 <p class="formula"><strong>e<sup>iθ</sup> = <span class="tag re">cos θ</span> + i <span class="tag im">sin θ</span></strong></p>
 <p>(with θ in radians). Its real part is cos θ and its imaginary part is sin θ, so <strong>e<sup>iθ</sup> is the point at angle θ on the unit circle</strong>. Drag it round: the real part traces the cosine wave and the imaginary part the sine wave.</p>
-<p>So any complex number can be written by length and angle as z = |z| · e<sup>iφ</sup>.</p>`,
+<p>So any complex number can be written by length and angle as z = |z| · e<sup>iφ</sup> (φ in radians).</p>`,
 			notes: `<p>Radians matter here. The formula is only true with θ in radians: the point at 90° is e<sup>iπ/2</sup> = i, not e<sup>90i</sup>. Roger Cotes had found an equivalent result, in the language of logarithms, in 1714.</p>`
 		},
 		{
@@ -197,8 +197,8 @@ export const spec: ExplainerSpec = {
 			controls: [turns, theta],
 			body: `
 <p>Why should e have anything to do with circles? Recall how e arises from compound interest: grow by a fraction 1/<i>n</i>, <i>n</i> times over, and (1 + 1/<i>n</i>)<sup><i>n</i></sup> gets closer and closer to e as <i>n</i> grows. In the same way, e<sup><i>x</i></sup> is what (1 + <i>x</i>/<i>n</i>)<sup><i>n</i></sup> approaches.</p>
-<p>Put <i>x</i> = iθ. Each factor 1 + iθ/<i>n</i> is a point just above 1: a <strong>tiny turn</strong>, by about θ/<i>n</i>, with a length barely above 1. Multiplying by it <i>n</i> times adds up <i>n</i> tiny turns: about θ in total, while the length hardly grows.</p>
-<p>Raise <i>n</i> and watch the path of 1, 1 + iθ/<i>n</i>, (1 + iθ/<i>n</i>)², … With one step it shoots off to 1 + iθ. With more, smaller steps it hugs the circle and ends ever closer to the point at angle θ. For θ = 180°, 10 steps end at −1.59 + 0.16i, and 100 steps at −1.05.</p>`,
+<p>Put <i>x</i> = iθ. Each factor 1 + iθ/<i>n</i> is a point a short way straight up from 1 on the plane: a <strong>tiny turn</strong>, by about θ/<i>n</i>, with a length barely above 1. Multiplying by it <i>n</i> times adds up <i>n</i> tiny turns: about θ in total, while the length hardly grows.</p>
+<p>Raise <i>n</i> and watch the path of 1, 1 + iθ/<i>n</i>, (1 + iθ/<i>n</i>)², … With one step it shoots off to 1 + iθ. With more, smaller steps it hugs the circle and ends ever closer to the point at angle θ. For θ = 180°, 10 steps end at −1.59 + 0.16i, and 100 steps at −1.05 + 0.00i.</p>`,
 			notes: `<p>Another route to the same formula is the power series e<sup><i>x</i></sup> = 1 + <i>x</i> + <i>x</i>²/2! + <i>x</i>³/3! + …: put <i>x</i> = iθ and collect the real and imaginary terms, and out come the series of cos θ and sin θ. The model behind this page computes e<sup>iθ</sup> both ways — the series and the compounding — without using cosine or sine, and checks that both land on (cos θ, sin θ).</p>`
 		},
 		{
