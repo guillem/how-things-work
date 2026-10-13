@@ -21,6 +21,7 @@ import {
 	dSdt,
 	ekmanTransport,
 	ensoEigen,
+	ensoEpisodes,
 	equilibria,
 	flowAt,
 	gyreExtremes,
@@ -246,6 +247,13 @@ test("Jin's recharge oscillator: neutral at μ = 2/3, a damped ~3-year cycle at 
 	const off = Array.from(runEnso(0, 0.3 * MEAN_TILT).T, (v) => v * JIN.degrees);
 	expect(Math.max(...off)).toBeLessThan(peak / 2);
 	expect(Math.min(...off)).toBeGreaterThan(-0.5);
+	expect(Math.max(...off)).toBeLessThan(1.2);
+	// An El Niño (or La Niña) is a 3-month mean beyond ±0.5 °C lasting at least five months,
+	// as in NOAA's index: the brief warming without feedback never counts as one.
+	expect(Array.from(ensoEpisodes(runEnso(0, 0.3 * MEAN_TILT))).every((e) => e === 0)).toBe(true);
+	const episodes = Array.from(ensoEpisodes(run));
+	expect(episodes[iPeak]).toBe(1);
+	expect(episodes[iTrough]).toBe(-1);
 	// the recharge: the western thermocline shoals (heat drains) during El Niño
 	expect(Math.min(...Array.from(run.h))).toBeLessThan(0);
 });

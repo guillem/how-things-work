@@ -471,9 +471,22 @@
 			color: b.color
 		})}
 		{@render txt(b.x, 311, `salinity ${b.S.toFixed(2)}`, 12, { anchor: 'middle' })}
-		{@render txt(b.x, 336, `${b.rho.toFixed(2)} kg/m³`, 13, { anchor: 'middle', weight: 600 })}
-		{@render txt(b.x, 352, 'density', 11, { anchor: 'middle', muted: true })}
+		{@render txt(b.x, 336, `${b.rho.toFixed(1)} kg/m³`, 13, { anchor: 'middle', weight: 600 })}
+		{@render txt(b.x, 352, 'density (straight-line fit)', 11, { anchor: 'middle', muted: true })}
 	{/each}
+	{#if phase === 'tipping' && q < 0.5 * SV}
+		<!-- the far-away weather a stalled overturning brings, tied to the heat readout -->
+		{@render txt(boxes[1].x, 392, 'less heat for the North Atlantic:', 12, {
+			anchor: 'middle',
+			weight: 600,
+			color: 'var(--oc-cold)'
+		})}
+		{@render txt(boxes[1].x, 408, 'colder winters around it', 12, {
+			anchor: 'middle',
+			weight: 600,
+			color: 'var(--oc-cold)'
+		})}
+	{/if}
 	{#if q > 0.5 * SV}
 		{@render txt(TRACK.x1 - 22, 420, 'sinks', 12, {
 			anchor: 'end',

@@ -37,6 +37,7 @@
 		PACIFIC,
 		pacificPicture,
 		runEnso,
+		ensoEpisodes,
 		steadyPacific,
 		type PacificState
 	} from '../ocean';
@@ -205,7 +206,23 @@
 		}
 		return d;
 	});
-	const ensoState = $derived(anomaly > 0.5 ? 'El Niño' : anomaly < -0.5 ? 'La Niña' : 'neutral');
+	// El Niño / La Niña only when the warming (cooling) lasts, as NOAA counts them: a 3-month
+	// mean beyond ±0.5 °C for at least five months. A brief warming is just a warm spell.
+	const episodes = $derived(ensoEpisodes(run));
+	const episode = $derived(
+		phase === 'enso' ? episodes[Math.min(episodes.length - 1, Math.round(tau / run.dt))] : 0
+	);
+	const ensoState = $derived(
+		episode > 0
+			? 'El Niño'
+			: episode < 0
+				? 'La Niña'
+				: anomaly > 0.5
+					? 'brief warm spell'
+					: anomaly < -0.5
+						? 'brief cool spell'
+						: 'neutral'
+	);
 
 	// ---- focus tween between phases -------------------------------------------------------------
 	const ensoOn = new Tween(0, { duration: 800, easing: cubicInOut });
@@ -253,20 +270,20 @@
 			label: 'east Pacific vs normal',
 			value: fmtA(anomaly),
 			sub: ensoState,
-			color: anomaly > 0.5 ? 'var(--oc-warm)' : anomaly < -0.5 ? 'var(--oc-cold)' : undefined
+			color: episode > 0 ? 'var(--oc-warm)' : episode < 0 ? 'var(--oc-cold)' : undefined
 		},
 		{
 			id: 'tr',
 			label: 'trade winds',
-			value: `${Math.round(trades * 100)}%`,
-			sub: `month ${Math.floor(tau * JIN.months)}`,
+			value: pic.trades < 0 ? 'westerly' : `${Math.round(trades * 100)}%`,
+			sub: pic.trades < 0 ? 'trades reversed' : `month ${Math.floor(tau * JIN.months)}`,
 			color: 'var(--oc-wind)'
 		}
 	]);
 	const farAway = $derived(
-		phase !== 'enso' || Math.abs(anomaly) < 0.5
+		episode === 0
 			? null
-			: anomaly > 0
+			: episode > 0
 				? { west: 'drought, bushfires', east: 'floods' }
 				: { west: 'extra-heavy rain', east: 'drier than usual' }
 	);
@@ -364,12 +381,18 @@
 			opacity={c.o * tradesOp}
 		/>
 	{/each}
-	{@render txt(X1 - 30, surfY(X1) - 40, `← trade winds ${Math.round(trades * 100)}%`, 12, {
-		anchor: 'end',
-		weight: 600,
-		color: 'var(--oc-wind)',
-		opacity: 0.35 + 0.65 * Math.min(1, trades * 2)
-	})}
+	{@render txt(
+		X1 - 30,
+		surfY(X1) - 40,
+		pic.trades < 0 ? 'trades reversed: westerly' : `← trade winds ${Math.round(trades * 100)}%`,
+		12,
+		{
+			anchor: 'end',
+			weight: 600,
+			color: 'var(--oc-wind)',
+			opacity: 0.35 + 0.65 * Math.min(1, trades * 2)
+		}
+	)}
 
 	<!-- ===== ocean ===== -->
 	<rect x={X0} y={SURF - 20} width={X1 - X0} height={BOTTOM - SURF + 20} fill="var(--oc-deep)" />
@@ -486,7 +509,7 @@
 	{@render txt(
 		(X0 + X1) / 2,
 		BOTTOM + 18,
-		'along the equator · depths to scale, sea level exaggerated',
+		'along the equator · depths to scale with each other (about 20,000× stretched), sea level exaggerated more',
 		11,
 		{
 			anchor: 'middle',

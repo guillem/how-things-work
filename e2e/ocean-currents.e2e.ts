@@ -30,6 +30,8 @@ test('freshening the far north past the tipping point collapses the overturning'
 	await range(page, 'fresh').fill('2.5');
 	// 25 model years a second: collapsed within a few hundred years
 	await playUntil(page, stage(page), 'reversed, weak', 20_000);
+	// …and the weather far away changes with it
+	await expect(stage(page)).toContainText('colder winters');
 });
 
 test('a lull in the trade winds sets off an El Niño, then a La Niña', async ({ page }) => {
@@ -42,4 +44,16 @@ test('a lull in the trade winds sets off an El Niño, then a La Niña', async ({
 	// the weather far away: drought in the west during El Niño, heavy rain there in La Niña
 	await playUntil(page, stage(page), 'drought, bushfires', 10_000);
 	await playUntil(page, stage(page), 'extra-heavy rain', 30_000);
+});
+
+test('without the Bjerknes feedback the lull brings only a brief warm spell, not an El Niño', async ({
+	page
+}) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('./ocean-currents/#el-nino');
+	// the frozen frame is the peak, with the weather far away
+	await expect(stage(page)).toContainText('drought, bushfires');
+	await range(page, 'feedback').fill('0');
+	await expect(stage(page)).toContainText('brief warm spell');
+	await expect(stage(page)).not.toContainText('drought, bushfires');
 });
