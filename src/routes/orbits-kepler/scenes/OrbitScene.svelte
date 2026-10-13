@@ -11,7 +11,8 @@
 	 *   second — the same orbit cut into 8 equal-time wedges, each labelled with
 	 *            its (equal) area; the speed readout changes round the orbit
 	 *   two    — an Earth-like planet at 1 AU and a second planet of
-	 *            `params.neighbour` Jupiters at 1.6 AU, 30 years replayed fast
+	 *            `params.neighbour` Jupiters at 1.6 AU, each with a trail, 30 years
+	 *            replayed fast (positions from the Sun, which the planets pull too)
 	 *
 	 * Every launch is integrated once (a `$derived` keyed on the controls and the
 	 * "Launch again" count) and replayed from the moment it was launched (see
@@ -21,6 +22,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
+	import { clamp } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
 		AU_PER_YEAR_KMS,
@@ -320,13 +322,19 @@
 	const TWO_SAMPLE = 0.005;
 	const TWO_SEC_PER_YEAR = 1.5;
 	const TRAIL_YEARS = 4;
+	const NEIGHBOUR_TRAIL_YEARS = 1;
 	const two = $derived.by(() => {
 		if (phase !== 'two') return null;
 		const R2 = 1.6;
 		const track = integrate(
 			[
-				{ r: { x: 1, y: 0 }, v: { x: 0, y: V1 }, m: EARTH_MASS },
-				{ r: { x: -R2, y: 0 }, v: { x: 0, y: -circularSpeed(R2) }, m: neighbour * JUPITER_MASS }
+				// Each starts on its circular orbit; a planet of mass m circles at √(GM(1 + m)/r).
+				{ r: { x: 1, y: 0 }, v: { x: 0, y: Math.sqrt(GM * (1 + EARTH_MASS)) }, m: EARTH_MASS },
+				{
+					r: { x: -R2, y: 0 },
+					v: { x: 0, y: -Math.sqrt((GM * (1 + neighbour * JUPITER_MASS)) / R2) },
+					m: neighbour * JUPITER_MASS
+				}
 			],
 			TWO_YEARS,
 			TWO_SAMPLE,
@@ -361,7 +369,12 @@
 		const p1 = { X: sx(at(track.x[0], i)), Y: sy(at(track.y[0], i)) };
 		d += `L${p1.X.toFixed(1)} ${p1.Y.toFixed(1)}`;
 		const p2 = { X: sx(at(track.x[1], i)), Y: sy(at(track.y[1], i)) };
-		return { d, p1, p2, years: i * TWO_SAMPLE, lo: two.lo[k], hi: two.hi[k] };
+		// The neighbour's own trail (shorter: it barely strays from its circle).
+		let d2 = '';
+		for (let s = Math.max(0, k - Math.round(NEIGHBOUR_TRAIL_YEARS / TWO_SAMPLE)); s <= k; s += 2)
+			d2 += `${d2 ? 'L' : 'M'}${sx(track.x[1][s]).toFixed(1)} ${sy(track.y[1][s]).toFixed(1)}`;
+		d2 += `L${p2.X.toFixed(1)} ${p2.Y.toFixed(1)}`;
+		return { d, d2, p1, p2, years: i * TWO_SAMPLE, lo: two.lo[k], hi: two.hi[k] };
 	});
 
 	// ---- text helpers ---------------------------------------------------------------
@@ -709,6 +722,14 @@
 					stroke-dasharray="3 6"
 					opacity="0.55"
 				/>
+				<path
+					d={twoView.d2}
+					fill="none"
+					stroke="var(--orb-second)"
+					stroke-width="1.6"
+					stroke-linejoin="round"
+					opacity="0.8"
+				/>
 			{/if}
 			<path
 				d={twoView.d}
@@ -854,9 +875,16 @@
 	{:else if twoView}
 		{@render txt(SX, SY + 26, 'Sun', 12, { anchor: 'middle', muted: true })}
 		{#if neighbour > 0}
+			<!-- above or below the planet, on the side it is heading for (its trail is behind it),
+			     kept inside the space panel -->
+			{@const ux = (twoView.p2.X - SX) / (Math.hypot(twoView.p2.X - SX, twoView.p2.Y - SY) || 1)}
+			{@const uy = (twoView.p2.Y - SY) / (Math.hypot(twoView.p2.X - SX, twoView.p2.Y - SY) || 1)}
+			{@const off = 12 + 2.2 * Math.sqrt(neighbour)}
+			{@const below = uy - ux > -0.01 && twoView.p2.Y + off + 10 < PY1 - 8}
+			{@const half = 40}
 			{@render txt(
-				twoView.p2.X,
-				twoView.p2.Y - 12 - 2.2 * Math.sqrt(neighbour),
+				clamp(twoView.p2.X, PX0 + half + 6, PX1 - half - 6),
+				below ? twoView.p2.Y + off + 10 : twoView.p2.Y - off,
 				`${neighbour} × Jupiter`,
 				12,
 				{ anchor: 'middle', color: 'var(--orb-second)', weight: 600 }

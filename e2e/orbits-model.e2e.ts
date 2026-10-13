@@ -2,6 +2,7 @@
 import { expect, test } from '@playwright/test';
 import {
 	EARTH_MASS,
+	GM,
 	JUPITER_MASS,
 	PLANETS,
 	cannon,
@@ -73,18 +74,20 @@ test('third law: T² / a³ = 1 (in years and AU) for every planet', () => {
 	}
 });
 
-test('two planets: a heavy neighbour disturbs the orbit; an Earth-mass one barely does', () => {
-	const run = (m: number) =>
-		integrate(
-			[
-				{ r: at1, v: launch(1), m: EARTH_MASS },
-				{ r: { x: -1.6, y: 0 }, v: { x: 0, y: -circularSpeed(1.6) }, m }
-			],
-			20,
-			0.01
-		);
-	const spread = (m: number) => {
-		const t = run(m);
+// The page's two-planet step: an Earth-like planet at 1 AU, a neighbour at 1.6 AU, each
+// started on its circular orbit.
+const pair = (mJ: number, years: number, sample: number) => {
+	const m = mJ * JUPITER_MASS;
+	const bodies = [
+		{ r: at1, v: { x: 0, y: Math.sqrt(GM * (1 + EARTH_MASS)) }, m: EARTH_MASS },
+		{ r: { x: -1.6, y: 0 }, v: { x: 0, y: -Math.sqrt((GM * (1 + m)) / 1.6) }, m }
+	];
+	return { bodies, track: integrate(bodies, years, sample, 4) };
+};
+
+test('two planets: alone the orbit stays a circle; one Jupiter next door swings it 0.9–1.1 AU', () => {
+	const range = (mJ: number) => {
+		const t = pair(mJ, 30, 0.005).track;
 		let lo = Infinity;
 		let hi = 0;
 		for (let s = 0; s < t.x[0].length; s++) {
@@ -92,10 +95,48 @@ test('two planets: a heavy neighbour disturbs the orbit; an Earth-mass one barel
 			lo = Math.min(lo, d);
 			hi = Math.max(hi, d);
 		}
-		return hi - lo;
+		return { lo, hi };
 	};
-	expect(spread(EARTH_MASS)).toBeLessThan(0.001);
-	expect(spread(10 * JUPITER_MASS)).toBeGreaterThan(0.02);
+	const alone = range(0);
+	expect(alone.hi - alone.lo).toBeLessThan(0.001);
+	const one = range(1);
+	expect(one.lo).toBeGreaterThan(0.88);
+	expect(one.lo).toBeLessThan(0.95);
+	expect(one.hi).toBeGreaterThan(1.05);
+	expect(one.hi).toBeLessThan(1.12);
+	// A few Jupiters disturb it more.
+	const three = range(3);
+	expect(three.hi - three.lo).toBeGreaterThan(one.hi - one.lo);
+});
+
+test('two planets: the total energy of Sun and planets stays constant (the Sun is pulled too)', () => {
+	// Real gravity between three bodies conserves energy in the frame of their centre of
+	// mass, where the Sun moves too. Velocities from central differences of the samples.
+	const h = 0.0005;
+	const { bodies, track } = pair(10, 30, h);
+	const m = bodies.map((b) => b.m);
+	const total = 1 + m[0] + m[1];
+	const energy = (s: number) => {
+		const r = [0, 1].map((i) => ({ x: track.x[i][s], y: track.y[i][s] }));
+		const v = [0, 1].map((i) => ({
+			x: (track.x[i][s + 1] - track.x[i][s - 1]) / (2 * h),
+			y: (track.y[i][s + 1] - track.y[i][s - 1]) / (2 * h)
+		}));
+		// The Sun's velocity relative to the centre of mass (positions are measured from the Sun).
+		const sun = {
+			x: -(m[0] * v[0].x + m[1] * v[1].x) / total,
+			y: -(m[0] * v[0].y + m[1] * v[1].y) / total
+		};
+		let e = 0.5 * (sun.x ** 2 + sun.y ** 2);
+		for (const i of [0, 1]) {
+			e += 0.5 * m[i] * ((v[i].x + sun.x) ** 2 + (v[i].y + sun.y) ** 2);
+			e -= (GM * m[i]) / Math.hypot(r[i].x, r[i].y);
+		}
+		return e - (GM * m[0] * m[1]) / Math.hypot(r[0].x - r[1].x, r[0].y - r[1].y);
+	};
+	const e0 = energy(1);
+	for (let s = 1; s < track.x[0].length - 1; s += 200)
+		expect(Math.abs(energy(s) / e0 - 1)).toBeLessThan(1e-6);
 });
 
 test('Newton’s cannon: too slow falls back, about 8 km/s goes all the way round', () => {

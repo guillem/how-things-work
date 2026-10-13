@@ -84,9 +84,6 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 - **waves-interference** — if a step change unmounts a `Handle` mid-drag its end callback never
   fires (Doppler keeps `dragX`; the tank keeps its pre-warm off for that mount).
 
-- **e2e** — `scenes.e2e.ts` gives orbits-kepler `#two` 15 s for its first render (9068ee7); the
-  step's model takes ~12 ms, so the cause of the slow load under the parallel run is unknown.
-
 (The gap round of 2026-10-12/13 cleared the rest of this list: chaos-fractals `period(r)`,
 orbits-kepler labels and the `#two` flake, ecosystems' static web opening and y-axes,
 oscillations-resonance's pendulum label, logic-gates, central-limit-theorem, binary's signed
