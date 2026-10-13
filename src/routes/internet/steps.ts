@@ -121,7 +121,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now the link between D and G fails while the message is on its way. Packets on the wire are lost. D and G notice first; the news spreads router by router (the rings), and each router changes its own arrow only when the news reaches it. Until then it keeps sending packets towards the dead link.</p>
 <p>Packets sent later go round by another route, so <strong>packets of one message can take different routes</strong> and arrive out of order. Ben doesn't mind: he sorts them by their numbers. Click any link to make it fail instead.</p>`,
-			notes: `<p>When nothing changes, the packets of one conversation normally all follow the same path. Different routes appear when the routes change part-way through, as here, or when a network spreads traffic over several equally good paths.</p>`
+			notes: `<p>When nothing changes, the packets of one conversation normally all follow the same path. Different routes appear when the routes change part-way through, as here. Networks that spread traffic over several equally good paths usually keep each connection on one of them, precisely so its packets don't arrive out of order.</p>`
 		},
 		{
 			id: 'loss',
@@ -134,7 +134,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Links lose packets now and then: noise garbles some bits, the next router spots the damage and throws the packet away. A router keeps no copy of what it has passed on, so it can't send it again.</p>
 <p>Reliability is added by the two ends. Ben sends a small <dfn data-def="A short reply that says “I got packet number n”.">acknowledgement</dfn> back for every packet he gets. Ada keeps each packet until it is acknowledged, and if no acknowledgement arrives in time (a <dfn data-def="The time a sender waits for an acknowledgement before it sends a packet again.">timeout</dfn>), she sends it again. Watch the ✓ marks on her side. This is what <dfn data-def="Transmission Control Protocol: the rules much of the Internet's traffic uses to deliver data completely and in order.">TCP</dfn> does.</p>`,
-			notes: `<p>An acknowledgement can be lost too; then Ada resends a packet Ben already has, and he simply acknowledges it again. Real TCP acknowledges “everything up to n”, measures the round trip to set its timeout, and resends early when acknowledgements show a gap. Applications for which late data is useless, such as video calls, use UDP and skip the resending.</p>`
+			notes: `<p>An acknowledgement can be lost too; then Ada resends a packet Ben already has, and he simply acknowledges it again. Real TCP acknowledges “everything up to n”, measures the round trip to set its timeout, and resends early when acknowledgements show a gap. Applications for which late data is useless, such as video calls, use UDP and skip the resending.</p>
+<p>Real wired links lose far fewer packets to noise than this; the rate is exaggerated so you can see it. Most real losses happen at full queues, as in the next step.</p>`
 		},
 		{
 			id: 'congestion',
