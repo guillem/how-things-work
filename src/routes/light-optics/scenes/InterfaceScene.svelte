@@ -15,7 +15,7 @@
 	 * The rays are traced by optics.ts (the same tracer as everywhere else).
 	 */
 	import { Handle, clamp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		block,
 		criticalAngle,
@@ -112,7 +112,7 @@
 	const sinText = (nn: number, a: number) => fmt(nn * Math.sin(toRad(a)), 3);
 </script>
 
-{#snippet label(
+{#snippet labelText(
 	x: number,
 	y: number,
 	s: string,
@@ -122,6 +122,7 @@
 		muted?: boolean;
 		color?: string;
 		weight?: number;
+		keep?: boolean;
 	} = {}
 )}
 	<text
@@ -136,6 +137,28 @@
 	>
 {/snippet}
 
+<!-- Stage labels leave the drawing on phones (see <Readout>), unless `keep`. -->
+{#snippet label(
+	x: number,
+	y: number,
+	s: string,
+	o: {
+		size?: number;
+		anchor?: 'start' | 'middle' | 'end';
+		muted?: boolean;
+		color?: string;
+		weight?: number;
+		keep?: boolean;
+	} = {}
+)}
+	<Readout id="label">
+		{#snippet narrow()}
+			{#if o.keep}{@render labelText(x, y, s, o)}{/if}
+		{/snippet}
+		{@render labelText(x, y, s, o)}
+	</Readout>
+{/snippet}
+
 <g>
 	<rect
 		x={BOX[0]}
@@ -148,11 +171,14 @@
 	/>
 	<line x1={BOX[0]} y1={Y0} x2={BOX[2]} y2={Y0} stroke="var(--lo-glass-edge)" stroke-width="1.5" />
 	{@render label(32, Y0 - 16, 'air · n = 1.00', { anchor: 'start', muted: true, size: 13 })}
-	{@render label(32, Y0 + 28, `${name} · n = ${fmt(n, 2)}`, {
-		anchor: 'start',
-		muted: true,
-		size: 13
-	})}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="key-medium" order={1} label="Below the line: {name}, n = {fmt(n, 2)}">
+		{@render label(32, Y0 + 28, `${name} · n = ${fmt(n, 2)}`, {
+			anchor: 'start',
+			muted: true,
+			size: 13
+		})}
+	</Readout>
 
 	<!-- normal -->
 	<line
@@ -264,16 +290,37 @@
 			{@render label(188, 134, 'Total internal reflection', { weight: 700, size: 15 })}
 		{/if}
 		{#if crit !== null}
-			{@render label(188, theta2 === null ? 156 : 134, `critical angle ${fmt(crit, 1)}° (dashed)`, {
-				color: 'var(--lo-theta2)',
-				size: 13,
-				weight: 600
-			})}
+			<Readout
+				id="crit"
+				order={20}
+				label="Critical angle (dashed)"
+				value="{fmt(crit, 1)}°"
+				color="var(--lo-theta2)"
+			>
+				{@render label(
+					188,
+					theta2 === null ? 156 : 134,
+					`critical angle ${fmt(crit, 1)}° (dashed)`,
+					{
+						color: 'var(--lo-theta2)',
+						size: 13,
+						weight: 600
+					}
+				)}
+			</Readout>
 		{:else}
-			{@render label(188, 134, 'no critical angle: n is 1, the same as air', {
-				muted: true,
-				size: 12
-			})}
+			<Readout
+				id="crit"
+				order={20}
+				label="Critical angle"
+				value="none"
+				note="n is 1, the same as air"
+			>
+				{@render label(188, 134, 'no critical angle: n is 1, the same as air', {
+					muted: true,
+					size: 12
+				})}
+			</Readout>
 		{/if}
 	{:else}
 		<Card
@@ -292,20 +339,28 @@
 				{ id: 'r', label: 'Reflected', value: pct(R), sub: 'of the light' }
 			]}
 		/>
-		{@render label(768, 134, `1.00 × sin ${fmt(theta, 1)}° = ${sinText(1, theta)}`, {
-			size: 13,
-			color: 'var(--lo-theta1)',
-			weight: 600
-		})}
-		{@render label(
-			768,
-			154,
-			`${fmt(n, 2)} × sin ${fmt(theta2 ?? 0, 1)}° = ${sinText(n, theta2 ?? 0)}`,
-			{
+		<Readout
+			id="snell"
+			order={20}
+			label="n × sin θ, both sides"
+			value="{sinText(1, theta)} = {sinText(n, theta2 ?? 0)}"
+			note="1.00 × sin {fmt(theta, 1)}° = {fmt(n, 2)} × sin {fmt(theta2 ?? 0, 1)}°"
+		>
+			{@render label(768, 134, `1.00 × sin ${fmt(theta, 1)}° = ${sinText(1, theta)}`, {
 				size: 13,
-				color: 'var(--lo-theta2)',
+				color: 'var(--lo-theta1)',
 				weight: 600
-			}
-		)}
+			})}
+			{@render label(
+				768,
+				154,
+				`${fmt(n, 2)} × sin ${fmt(theta2 ?? 0, 1)}° = ${sinText(n, theta2 ?? 0)}`,
+				{
+					size: 13,
+					color: 'var(--lo-theta2)',
+					weight: 600
+				}
+			)}
+		</Readout>
 	{/if}
 </g>

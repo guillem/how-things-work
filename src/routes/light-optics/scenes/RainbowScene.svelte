@@ -12,7 +12,7 @@
 	 * (`params.white`): the rays in white, and the rainbow ray split into ten
 	 * colours. The inset shows why the bow is seen at 42°.
 	 */
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { clamp } from '#lib/draw/index.ts';
 	import {
 		MATERIALS,
@@ -171,7 +171,7 @@
 	const pv = toward(violet, 170);
 </script>
 
-{#snippet label(
+{#snippet labelText(
 	x: number,
 	y: number,
 	s: string,
@@ -181,6 +181,7 @@
 		muted?: boolean;
 		color?: string;
 		weight?: number;
+		keep?: boolean;
 	} = {}
 )}
 	<text
@@ -193,6 +194,28 @@
 		style:fill={o.color}
 		font-weight={o.weight ?? 500}>{s}</text
 	>
+{/snippet}
+
+<!-- Stage labels leave the drawing on phones (see <Readout>), unless `keep`. -->
+{#snippet label(
+	x: number,
+	y: number,
+	s: string,
+	o: {
+		size?: number;
+		anchor?: 'start' | 'middle' | 'end';
+		muted?: boolean;
+		color?: string;
+		weight?: number;
+		keep?: boolean;
+	} = {}
+)}
+	<Readout id="label">
+		{#snippet narrow()}
+			{#if o.keep}{@render labelText(x, y, s, o)}{/if}
+		{/snippet}
+		{@render labelText(x, y, s, o)}
+	</Readout>
 {/snippet}
 
 <g>

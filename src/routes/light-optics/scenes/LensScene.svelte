@@ -15,7 +15,7 @@
 	 *           magnification.
 	 */
 	import { Handle, clamp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		concaveLens,
 		convexLens,
@@ -144,7 +144,7 @@
 	};
 </script>
 
-{#snippet label(
+{#snippet labelText(
 	x: number,
 	y: number,
 	s: string,
@@ -154,6 +154,7 @@
 		muted?: boolean;
 		color?: string;
 		weight?: number;
+		keep?: boolean;
 	} = {}
 )}
 	<text
@@ -166,6 +167,28 @@
 		style:fill={o.color}
 		font-weight={o.weight ?? 500}>{s}</text
 	>
+{/snippet}
+
+<!-- Stage labels leave the drawing on phones (see <Readout>), unless `keep`. -->
+{#snippet label(
+	x: number,
+	y: number,
+	s: string,
+	o: {
+		size?: number;
+		anchor?: 'start' | 'middle' | 'end';
+		muted?: boolean;
+		color?: string;
+		weight?: number;
+		keep?: boolean;
+	} = {}
+)}
+	<Readout id="label">
+		{#snippet narrow()}
+			{#if o.keep}{@render labelText(x, y, s, o)}{/if}
+		{/snippet}
+		{@render labelText(x, y, s, o)}
+	</Readout>
 {/snippet}
 
 <g>
@@ -207,7 +230,12 @@
 			{@const fx = LX + s * Math.abs(f)}
 			{#if fx > 24 && fx < 936}
 				<circle cx={fx} cy={AX} r="5" fill="var(--lo-theta2)" />
-				{@render label(fx, AX + 24, 'F', { color: 'var(--lo-theta2)', weight: 700, size: 15 })}
+				{@render label(fx, AX + 24, 'F', {
+					color: 'var(--lo-theta2)',
+					weight: 700,
+					size: 15,
+					keep: true
+				})}
 			{/if}
 		{/each}
 	{/if}
@@ -249,11 +277,18 @@
 			onkey={keyObject}
 		/>
 		<!-- beside the arrow, or above it when that would run off the stage's left edge -->
-		{@render label(tip.x < 90 ? tip.x : tip.x - 12, tip.x < 90 ? tip.y - 12 : tip.y + 4, 'object', {
-			color: 'var(--lo-theta1)',
-			weight: 600,
-			anchor: tip.x < 90 ? 'middle' : 'end'
-		})}
+		<Readout id="key-object" order={1} label="object" color="var(--lo-theta1)">
+			{@render label(
+				tip.x < 90 ? tip.x : tip.x - 12,
+				tip.x < 90 ? tip.y - 12 : tip.y + 4,
+				'object',
+				{
+					color: 'var(--lo-theta1)',
+					weight: 600,
+					anchor: tip.x < 90 ? 'middle' : 'end'
+				}
+			)}
+		</Readout>
 		{#if imgOnStage}
 			<path
 				d={arrow(imgX, AX, AX + imgH)}
@@ -263,15 +298,22 @@
 				stroke-linecap="round"
 				stroke-dasharray={real ? 'none' : '7 6'}
 			/>
-			{@render label(
-				imgX,
-				real ? AX + imgH + 24 : AX + imgH - 14,
-				real ? 'real image' : 'virtual image',
-				{
-					color: 'var(--lo-image)',
-					weight: 600
-				}
-			)}
+			<Readout
+				id="key-image"
+				order={2}
+				label={real ? 'real image' : 'virtual image'}
+				color="var(--lo-image)"
+			>
+				{@render label(
+					imgX,
+					real ? AX + imgH + 24 : AX + imgH - 14,
+					real ? 'real image' : 'virtual image',
+					{
+						color: 'var(--lo-image)',
+						weight: 600
+					}
+				)}
+			</Readout>
 		{/if}
 		<Card
 			x={24}
@@ -298,17 +340,26 @@
 			]}
 		/>
 		{#if !imgOnStage}
-			{@render label(
-				259,
-				132,
-				real
-					? 'The image forms beyond the edge of the stage'
-					: 'The virtual image is far in front, off the stage',
-				{
-					muted: true,
-					size: 12
-				}
-			)}
+			<Readout
+				id="offstage"
+				order={20}
+				label="Image"
+				value="off the stage"
+				note={real ? 'it forms beyond the edge' : 'virtual, far in front'}
+				color="var(--lo-image)"
+			>
+				{@render label(
+					259,
+					132,
+					real
+						? 'The image forms beyond the edge of the stage'
+						: 'The virtual image is far in front, off the stage',
+					{
+						muted: true,
+						size: 12
+					}
+				)}
+			</Readout>
 		{/if}
 	{:else}
 		<Card

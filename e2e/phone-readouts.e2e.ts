@@ -827,6 +827,101 @@ test.describe('on a phone', () => {
 		await range(page, 'ect').fill('0');
 		await expect(panel).toContainText(/The event is\s*spacelike/);
 	});
+
+	test('optics mirror: both angles are text and follow the mirror', async ({ page }) => {
+		await page.goto('./light-optics/#mirror');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Angle of incidence\s*47\.7°/);
+		await expect(panel).toContainText(/Angle of reflection\s*47\.7°/);
+		await expect(drawing(page)).not.toContainText('Angle of incidence');
+		await range(page, 'mirror').fill('10');
+		await expect(panel).not.toContainText(/Angle of incidence\s*47\.7°/);
+	});
+
+	test('optics wavefronts: the speed inside is text and follows n', async ({ page }) => {
+		await page.goto('./light-optics/#slower');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Crown glass\s*n = 1\.52/);
+		await expect(panel).toContainText(/Speed inside\s*66%/);
+		await expect(drawing(page)).not.toContainText('Speed inside');
+		await range(page, 'n').fill('2');
+		await expect(panel).toContainText(/Speed inside\s*50%/);
+	});
+
+	test('optics boundary: the angles and Snell’s law are text and follow the ray', async ({
+		page
+	}) => {
+		await page.goto('./light-optics/#snell');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/In the material\s*25\.0°/);
+		await expect(panel).toContainText('1.00 × sin 40.0° = 1.52 × sin 25.0°');
+		await expect(drawing(page)).not.toContainText('1.00 × sin');
+		await range(page, 'angle').fill('30');
+		await expect(panel).toContainText(/In the air\s*30\.0°/);
+		await page.goto('./light-optics/#tir');
+		await expect(panel).toContainText(/Critical angle \(dashed\)\s*41\.1°/);
+		await range(page, 'inside').fill('50');
+		await expect(panel).toContainText(/Outside\s*none/);
+	});
+
+	test('optics fibre: what happens to the light is text and follows the bend', async ({ page }) => {
+		await page.goto('./light-optics/#fibre');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/The light\s*trapped/);
+		await expect(drawing(page)).not.toContainText('Trapped');
+		await range(page, 'bend').fill('5');
+		await expect(panel).toContainText(/The light\s*escapes at the bend/);
+	});
+
+	test('optics lens: the focal length and the image are text and follow the controls', async ({
+		page
+	}) => {
+		await page.goto('./light-optics/#lens');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Focal length \(formula\)\s*144 mm/);
+		await expect(drawing(page)).not.toContainText('Focal length');
+		await range(page, 'radius').fill('150');
+		await expect(panel).not.toContainText(/Focal length \(formula\)\s*144 mm/);
+		await page.goto('./light-optics/#image');
+		await expect(panel).toContainText(/Object at u\s*200 mm/);
+		await expect(panel).toContainText('real image');
+		await range(page, 'u').fill('300');
+		await expect(panel).toContainText(/Object at u\s*150 mm/);
+	});
+
+	test('optics prism: the refractive indices are text and follow the material', async ({
+		page
+	}) => {
+		await page.goto('./light-optics/#prism');
+		const panel = readouts(page);
+		await expect(panel).toContainText('Flint glass prism');
+		await expect(panel).toContainText(/n for red \(656 nm\)\s*1\.776/);
+		await expect(drawing(page)).not.toContainText('n for red');
+		await page.locator('button[data-control="material"][data-value="crown"]').click();
+		await expect(panel).toContainText('Crown glass prism');
+		await expect(panel).not.toContainText(/n for red \(656 nm\)\s*1\.776/);
+	});
+
+	test('optics rainbow: the bow’s angles are text and follow the light', async ({ page }) => {
+		await page.goto('./light-optics/#rainbow');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Red comes back at\s*42\.3°/);
+		await expect(drawing(page)).not.toContainText('Red comes back at');
+		const white = page.locator('input[type=checkbox][data-control=white]');
+		await white.focus();
+		await page.keyboard.press('Space');
+		await expect(white).not.toBeChecked();
+		await expect(panel).toContainText(/The bow for 650 nm\s*\d+\.\d°/);
+	});
+
+	test('optics bench: the glass is text and follows the material', async ({ page }) => {
+		await page.goto('./light-optics/#bench');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Lens and prism\s*Flint glass, n = 1\.784/);
+		await expect(drawing(page)).not.toContainText('lens and prism');
+		await page.locator('button[data-control="material"][data-value="water"]').click();
+		await expect(panel).toContainText(/Lens and prism\s*Water, n = 1\.33/);
+	});
 });
 
 test.describe('on a wide screen', () => {

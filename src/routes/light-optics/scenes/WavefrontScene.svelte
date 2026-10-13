@@ -10,7 +10,7 @@
 	 * broken line that swivels as it crosses. Every fifth crest is highlighted
 	 * so that the eye can follow one. All a function of t.
 	 */
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { clamp } from '#lib/draw/index.ts';
 	import { C, refractAngle, toRad, type Vec } from '../optics';
 	import Card from './Card.svelte';
@@ -128,7 +128,7 @@
 	const glassOpacity = $derived(clamp((n - 1) / 0.4, 0, 1));
 </script>
 
-{#snippet label(
+{#snippet labelText(
 	x: number,
 	y: number,
 	s: string,
@@ -138,6 +138,7 @@
 		muted?: boolean;
 		color?: string;
 		weight?: number;
+		keep?: boolean;
 	} = {}
 )}
 	<text
@@ -150,6 +151,28 @@
 		style:fill={o.color}
 		font-weight={o.weight ?? 500}>{s}</text
 	>
+{/snippet}
+
+<!-- Stage labels leave the drawing on phones (see <Readout>), unless `keep`. -->
+{#snippet label(
+	x: number,
+	y: number,
+	s: string,
+	o: {
+		size?: number;
+		anchor?: 'start' | 'middle' | 'end';
+		muted?: boolean;
+		color?: string;
+		weight?: number;
+		keep?: boolean;
+	} = {}
+)}
+	<Readout id="label">
+		{#snippet narrow()}
+			{#if o.keep}{@render labelText(x, y, s, o)}{/if}
+		{/snippet}
+		{@render labelText(x, y, s, o)}
+	</Readout>
 {/snippet}
 
 <g>
@@ -226,40 +249,57 @@
 	{/if}
 
 	<!-- the two media -->
-	<rect
-		x="28"
-		y="28"
-		width="292"
-		height="58"
-		rx="10"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
-	{@render label(44, 52, 'Air: n = 1.00', { anchor: 'start', size: 15, weight: 700 })}
-	{@render label(44, 74, 'light at 299,792 km/s · wavelength λ', {
-		anchor: 'start',
-		muted: true,
-		size: 12
-	})}
-	<rect
-		x="28"
-		y={BOTTOM - 74}
-		width="340"
-		height="58"
-		rx="10"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
-	{@render label(44, BOTTOM - 50, `${name[0].toUpperCase()}${name.slice(1)}: n = ${fmt(n, 2)}`, {
-		anchor: 'start',
-		size: 15,
-		weight: 700
-	})}
-	{@render label(44, BOTTOM - 28, `light at ${speed(n)} km/s · wavelength λ ÷ ${fmt(n, 2)}`, {
-		anchor: 'start',
-		muted: true,
-		size: 12
-	})}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout
+		id="air"
+		order={1}
+		label="Air"
+		value="n = 1.00"
+		note="light at 299,792 km/s · wavelength λ"
+	>
+		<rect
+			x="28"
+			y="28"
+			width="292"
+			height="58"
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+		{@render label(44, 52, 'Air: n = 1.00', { anchor: 'start', size: 15, weight: 700 })}
+		{@render label(44, 74, 'light at 299,792 km/s · wavelength λ', {
+			anchor: 'start',
+			muted: true,
+			size: 12
+		})}
+	</Readout>
+	<Readout
+		id="medium"
+		order={2}
+		label={`${name[0].toUpperCase()}${name.slice(1)}`}
+		value="n = {fmt(n, 2)}"
+		note="light at {speed(n)} km/s · wavelength λ ÷ {fmt(n, 2)}"
+	>
+		<rect
+			x="28"
+			y={BOTTOM - 74}
+			width="340"
+			height="58"
+			rx="10"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+		{@render label(44, BOTTOM - 50, `${name[0].toUpperCase()}${name.slice(1)}: n = ${fmt(n, 2)}`, {
+			anchor: 'start',
+			size: 15,
+			weight: 700
+		})}
+		{@render label(44, BOTTOM - 28, `light at ${speed(n)} km/s · wavelength λ ÷ ${fmt(n, 2)}`, {
+			anchor: 'start',
+			muted: true,
+			size: 12
+		})}
+	</Readout>
 
 	<Card
 		x={640}
