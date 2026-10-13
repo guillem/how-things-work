@@ -88,7 +88,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [rerun],
 			body: `
-<p>Follow the first case, circled. While infectious it keeps meeting people — four a day in this model. Each line is a meeting. Most meetings pass nothing on; now and then one does, and a blue dot turns red.</p>
+<p>Follow the first case, circled. While infectious it keeps meeting people — about four a day in this model, picked at random from the whole crowd wherever they stand. Each line is a meeting. Most meetings pass nothing on; now and then one does, and a blue dot turns red.</p>
 <p>Three things decide how many people one case infects:</p>
 <ul>
 <li>how many people they meet each day;</li>
@@ -124,7 +124,7 @@ export const spec: ExplainerSpec = {
 			controls: [r0, days],
 			body: `
 <p>Multiplying by the same factor again and again is <dfn data-def="Growth in which a quantity is multiplied by the same factor in each equal interval of time, so it doubles at regular intervals.">exponential growth</dfn>. The first few generations look harmless — 1, 3, 9 — which is why early outbreaks are easy to underestimate. Ten generations after the first case, at R<sub>0</sub> = 3, it would be 59,049 new cases.</p>
-<p>How fast the generations come depends on the infectious period. The chart follows the outbreak in days instead of generations: while almost everyone is still susceptible, the number of cases doubles every so many days, a fixed <strong>doubling time</strong>, whatever the size of the outbreak.</p>
+<p>How fast the generations come depends on the infectious period. The chart follows the outbreak in days instead of generations: while almost everyone is still susceptible, the number of cases doubles every so many days, a fixed <strong>doubling time</strong>, whatever the size of the outbreak (the chart's <i>r</i> is the growth rate per day).</p>
 <p>A larger R<sub>0</sub> makes the doublings come faster; so does a shorter infectious period with R<sub>0</sub> held fixed, because the same number of infections is packed into fewer days. Below R<sub>0</sub> = 1 there is a halving time instead.</p>`,
 			notes: `<p>In the SIR model, while almost everyone is susceptible, the number infectious grows as <i>e</i><sup><i>rt</i></sup> with growth rate <i>r</i> = (R<sub>0</sub> − 1) / D per day, where D is the mean infectious period. The doubling time is ln 2 / <i>r</i> ≈ 0.69 D / (R<sub>0</sub> − 1). With R<sub>0</sub> = 3 and D = 7 days, that is about 2.4 days. Why not one tripling per 7-day generation? Not all infections come one infectious period after the last: many happen early in a case's illness, so the generations overlap, and the doubling time is shorter than the “R<sub>0</sub> per D days” arithmetic suggests.</p>`
 		},
@@ -140,7 +140,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Forget the individual dots for a moment and count people instead. Everyone is in one of three boxes, and there are only two ways to move:</p>
 <ul>
-<li><strong>S → I</strong>, infection. Its speed depends on how often infectious and susceptible people meet: it is fastest when there are many of both.</li>
+<li><strong>S → I</strong>, infection. Its speed depends on how often infectious and susceptible people meet: it is fastest when there are many of both. The diagram writes this as β·S·I/N, where β = R<sub>0</sub>/D.</li>
 <li><strong>I → R</strong>, recovery. Each day, about one in D of the infectious recovers.</li>
 </ul>
 <p>That is the whole <strong>SIR model</strong>. Watch the boxes fill and empty: early on, infections far outpace recoveries; later, they cannot keep up, because too few susceptible people are left to infect.</p>`,
@@ -188,7 +188,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [r0, days],
 			body: `
-<p>At the peak, plenty of people are still infectious, and each of them still infects someone. So the epidemic keeps going downhill for a long time, pushing the susceptible share well below 1/R<sub>0</sub>.</p>
+<p>At the peak, plenty of people are still infectious, and each of them still infects someone. So the epidemic keeps infecting people on its way down, pushing the susceptible share well below 1/R<sub>0</sub>.</p>
 <p>The shaded part is that <strong>overshoot</strong>: people infected after the outbreak had already started to shrink. With R<sub>0</sub> = 3, the peak comes when a third of people are still susceptible, yet in the end only about 6% escape.</p>
 <p>For a given R<sub>0</sub>, the final count does not depend on how long cases stay infectious.</p>`,
 			notes: `<p>In the SIR model the share who escape infection, s<sub>∞</sub>, solves the <dfn data-def="The equation relating the total size of an SIR epidemic to R₀; it has no simple closed-form solution and is solved numerically.">final-size equation</dfn> s<sub>∞</sub> = e<sup>−R<sub>0</sub>(1 − s<sub>∞</sub>)</sup>. For R<sub>0</sub> = 2 about 80% are eventually infected; for R<sub>0</sub> = 3, about 94%.</p>`
@@ -217,7 +217,7 @@ export const spec: ExplainerSpec = {
 			controls: [vaccinated, r0, rerun],
 			body: `
 <p>In this model the vaccine works perfectly: a vaccinated person (a hollow ring) cannot catch the disease, so they cannot pass it on. A meeting with them is a dead end for the infection.</p>
-<p>Slide the vaccinated share up, a step at a time. At first the outbreak just gets smaller and slower. Then, from about 70% for R<sub>0</sub> = 3, something changes: the chains of infection die out after a handful of cases — sometimes a few dozen — and the outbreak never takes off.</p>
+<p>Slide the vaccinated share up, a step at a time. At first the outbreak just gets smaller and slower. Then, from about 70% for R<sub>0</sub> = 3, something changes: the chains of infection die out after a handful of cases — sometimes a few dozen — and the outbreak never takes off. In a crowd this small the change is gradual; the next step shows where the line really is.</p>
 <p>Notice who is protected: not only the vaccinated, but most of the <em>unvaccinated</em> too. That is <dfn data-def="Indirect protection of people who are not immune, because the people around them are.">herd immunity</dfn>.</p>`
 		},
 		{
