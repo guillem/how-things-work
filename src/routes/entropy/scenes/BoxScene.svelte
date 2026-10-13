@@ -218,7 +218,7 @@
 	);
 
 	const wallLift = $derived(
-		wallUntil === Infinity ? 0 : smoothstep(wallUntil - 0.45, wallUntil, elapsed)
+		wallUntil === Infinity ? 0 : smoothstep(wallUntil, wallUntil + 0.2, elapsed)
 	);
 
 	// reversals so far and the direction of the film
@@ -573,6 +573,10 @@
 			color: 'var(--ent-entropy)'
 		})}
 		{@render txt(PX, 504, `highest possible: × ${ratioText(toLog10(sMax))}`, 12, { muted: true })}
+		{@render txt(PX, 522, `on the chart: ln(${ratioText(log10Now)}) = ${sNow.toFixed(1)}`, 12, {
+			muted: true,
+			tabular: true
+		})}
 		{#if phase === 'nudge'}
 			<line
 				x1={PX}

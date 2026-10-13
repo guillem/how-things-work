@@ -27,6 +27,19 @@ test('sharing energy: the even split is the peak, ten million times the start', 
 	await expect(page.locator('input[type=range][data-control=share]')).toHaveValue('100');
 });
 
+test('the wall is drawn whole until it really lifts, then vanishes', async ({ page }) => {
+	await page.clock.install();
+	await page.goto('./entropy/#mix');
+	const wall = stage(page).locator('rect[fill="var(--ent-wall)"]');
+	await page.clock.runFor(200);
+	const full = Number(await wall.getAttribute('height'));
+	// The wall lifts 1.5 s into the run; just before, particles still bounce off it.
+	await page.clock.runFor(1200);
+	expect(Number(await wall.getAttribute('height'))).toBeCloseTo(full, 1);
+	await page.clock.runFor(1000);
+	await expect(wall).toHaveCount(0);
+});
+
 test('reversing every velocity runs the film backward', async ({ page }) => {
 	await page.clock.install();
 	await page.goto('./entropy/#backward');
