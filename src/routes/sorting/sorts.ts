@@ -236,3 +236,32 @@ export const growth = {
 	quadratic: (n: number) => (n * (n - 1)) / 2,
 	nlogn: (n: number) => (n > 1 ? n * Math.log2(n) : 0)
 };
+
+/**
+ * Top-down merge sort through a buffer: the same comparisons as `run('merge', …)`, fast
+ * enough for the 100,000-item rows of the growth scene (the recorded version shifts the
+ * array, which is O(n²) in time).
+ */
+export function mergeComparisons(input: readonly number[]) {
+	const a = input.slice();
+	const tmp = new Array<number>(a.length);
+	let c = 0;
+	const sort = (lo: number, hi: number) => {
+		if (hi - lo < 1) return;
+		const mid = (lo + hi) >> 1;
+		sort(lo, mid);
+		sort(mid + 1, hi);
+		let i = lo;
+		let j = mid + 1;
+		let k = lo;
+		while (i <= mid && j <= hi) {
+			c++;
+			tmp[k++] = a[j] < a[i] ? a[j++] : a[i++];
+		}
+		while (i <= mid) tmp[k++] = a[i++];
+		while (j <= hi) tmp[k++] = a[j++];
+		for (let q = lo; q <= hi; q++) a[q] = tmp[q];
+	};
+	sort(0, a.length - 1);
+	return c;
+}

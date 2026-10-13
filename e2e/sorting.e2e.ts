@@ -32,6 +32,22 @@ test('the scrubber pauses the replay and steps one operation at a time', async (
 	await expect(page).toHaveURL(/#insertion$/);
 });
 
+test('each arrow key press does one more operation, even where merge sort starts a new merge', async ({
+	page
+}) => {
+	await open(page, './sorting/#merge');
+	await scrubber(page).focus();
+	await page.keyboard.press('Home');
+	await expect(stage(page)).toContainText(/(?<!\d)0 of \d+ operations done/);
+	for (let i = 1; i <= 12; i++) {
+		await page.keyboard.press('ArrowRight');
+		await expect(stage(page)).toContainText(new RegExp(`(?<!\\d)${i} of \\d+ operations done`));
+		await expect(scrubber(page)).toHaveAttribute('aria-valuenow', String(i));
+	}
+	await page.keyboard.press('ArrowLeft');
+	await expect(stage(page)).toContainText(/(?<!\d)11 of \d+ operations done/);
+});
+
 test('turning "Run by itself" off freezes the replay where it is', async ({ page }) => {
 	await page.clock.install();
 	await open(page, './sorting/#merge');

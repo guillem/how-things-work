@@ -9,7 +9,8 @@
 	 * between step aside). `k` comes from `createPlayback`.
 	 *
 	 * The timeline at the bottom has a draggable marker (a Handle): dragging it
-	 * or using its keys pauses playback and moves one operation at a time.
+	 * or using its keys pauses playback; the keys move one real operation (a
+	 * comparison or a move) at a time, passing over the bookkeeping entries.
 	 *
 	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
 	 * presentation attributes (docs/BACKLOG.md).
@@ -227,9 +228,27 @@
 	function onmove(p: Point) {
 		scrubTo(((p.x - TL0) / (TL1 - TL0)) * total);
 	}
+	/** A comparison or a move; `focus` and `done` entries are bookkeeping. */
+	const isWork = (o: Op | undefined) => !!o && o.kind !== 'focus' && o.kind !== 'done';
+	/**
+	 * Keys step through real operations: each step passes bookkeeping entries
+	 * until it has crossed `steps` comparisons or moves (in either direction).
+	 */
 	function onkey(s: number | 'start' | 'end') {
-		const base = playing ? Math.round(lastK) : Math.round(manual);
-		scrubTo(s === 'start' ? 0 : s === 'end' ? total : base + s);
+		if (s === 'start' || s === 'end') return scrubTo(s === 'start' ? 0 : total);
+		let j = clamp(playing ? Math.round(lastK) : Math.round(manual), 0, total);
+		for (let left = Math.abs(s); left > 0; left--) {
+			if (s > 0) {
+				if (j >= total) break;
+				j++;
+				while (j < total && !isWork(rec.ops[j - 1])) j++;
+			} else {
+				if (j <= 0) break;
+				j--;
+				while (j > 0 && !isWork(rec.ops[j])) j--;
+			}
+		}
+		scrubTo(j);
 	}
 
 	const fadeIn = $derived(reduced ? 1 : smoothstep(0, 0.5, t));
@@ -391,9 +410,9 @@
 		y={TLY}
 		r={8}
 		label="Replay position"
-		value={index}
+		value={workDone}
 		min={0}
-		max={total}
+		max={work}
 		valuetext="{workDone} of {work} operations done"
 		{onmove}
 		{onkey}
