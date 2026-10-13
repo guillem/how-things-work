@@ -33,6 +33,7 @@
 		coilPath,
 		fmtLen,
 		loopTime,
+		settleSeconds,
 		valueAt,
 		type Cell
 	} from './osc';
@@ -40,7 +41,6 @@
 	let { step, t, params, reduced }: StageProps = $props();
 
 	const F0 = 1; // N: a gentle push
-	const END = 90;
 	const W = 30; // s of trace
 	const CEIL = 34;
 	const HAND = 70; // y of the hand at rest
@@ -55,6 +55,7 @@
 	const f = $derived(Math.max(0.05, Number(params.pushFreq ?? 0.6)));
 	const c = $derived(Math.max(0, Number(params.damping ?? 0.3)));
 	const spring = $derived({ m: 1, k: 39, c });
+	const END = $derived(settleSeconds(1, c, 90));
 	const f0 = $derived(naturalFrequency(spring));
 	const hand = F0 / 39; // m: how far the top moves for the same force
 	const A = $derived(steadyAmplitude(spring, { F0, f }));
@@ -137,7 +138,11 @@
 					? `peak at ${fp.toFixed(2)} Hz · ${fmtLen(Ap)} ↑`
 					: `peak at ${fp.toFixed(2)} Hz · ${fmtLen(Ap)}`
 	);
-	const atPeak = $derived(!noPeak && Math.abs(f - fp) < 0.12);
+	// Right on the peak: the steady swing within 10% of the peak's (the peak's half-width
+	// is only ζ·f₀, about 0.02 Hz at the default friction).
+	const atPeak = $derived(
+		!noPeak && (Number.isFinite(Ap) ? A >= 0.9 * Ap : Math.abs(f - fp) < 0.01)
+	);
 	const peakLabel = $derived(
 		noPeak
 			? { x: PLOT_X0 + 14, y: CV.top + 40 }
@@ -146,7 +151,9 @@
 					y: Math.max(CV.top + 14, Math.min(CV.bottom - 44, cy(Math.min(CV.max, Ap)) - 10))
 				}
 	);
-	const marker = $derived({ x: cx(f), y: cy(Math.min(CV.max, A)) });
+	// Without friction there is no steady swing to mark on the curve: the marker sits on the
+	// frequency axis instead.
+	const marker = $derived({ x: cx(f), y: c === 0 ? CV.bottom : cy(Math.min(CV.max, A)) });
 
 	// ---- bars: how far each one moves -------------------------------------------------------
 	const bx = scale([0, CV.max], [PLOT_X0, PLOT_X1 - 90]);
@@ -476,7 +483,16 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			{#if !atPeak}
+			{#if c === 0 && !atPeak}
+				<!-- on the axis: the label sits just above it, on the side away from the peak (and
+				     from the stage's right edge) -->
+				{@const left = f < fp || f > 1.9}
+				{@render txt(marker.x + (left ? -10 : 10), CV.bottom - 24, 'your push: never settles', 12, {
+					anchor: left ? 'end' : 'start',
+					weight: 600,
+					color: 'var(--osc-push)'
+				})}
+			{:else if !atPeak}
 				{@render txt(
 					marker.x + (f > 1.6 ? -10 : 10),
 					Math.min(marker.y - 10, CV.bottom - 24),

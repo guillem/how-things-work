@@ -15,6 +15,14 @@ export const CARD = { x: 440, y: 16, w: 504, h: 100 };
 export const PLOT_X0 = 516;
 export const PLOT_X1 = 920;
 
+/**
+ * How long (s) to compute a motion with friction c on mass m before replaying its
+ * last period: long enough for the start-up to die away (8 decay times 2m/c, at
+ * least `min`), and 10 minutes without friction, where it never does.
+ */
+export const settleSeconds = (m: number, c: number, min: number) =>
+	c > 0 ? Math.min(600, Math.max(min, (16 * m) / c)) : 600;
+
 /** Linear interpolation of a sampled series at time s (clamped to its ends). */
 export function valueAt(arr: Float64Array, s: number): number {
 	const f = Math.max(0, s / SAMPLE);

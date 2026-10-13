@@ -51,6 +51,11 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 
 - **learning-from-data** — ticked: the user accepted dragging only (2026-10-08).
 
+- **oscillations-resonance** — catalogue extras from the fact-check (2026-10-13), not built: a
+  stiffness control on the resonance-curve step (the driven spring is fixed at 1 kg on 39 N/m, so
+  the peak never moves; reading it there alone would leave the push step on a hidden value), and
+  dots at each push frequency tried, at the simulated steady swing, so the reader builds the curve.
+
 - **atmosphere-weather** — ticked: the user accepted that fronts form from the placed lows and
   that the reader sets heat transport and spin rather than the heating pattern (2026-10-08).
 
