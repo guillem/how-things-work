@@ -94,3 +94,20 @@ for (const [set, shown, step] of [
 		await expect(readout).toHaveText(new RegExp(`^${shown}° `));
 	});
 }
+
+test('coming back to a circle step after setting −30° on "periodic" reads 330°', async ({
+	page
+}) => {
+	const readout = page.locator('label.control.range', { has: slider(page) }).locator('output');
+	await open(page, './unit-circle/#coordinates');
+	await page.evaluate(() => (location.hash = '#periodic'));
+	await expect(page).toHaveURL(/#periodic$/);
+	await slider(page).evaluate((input: HTMLInputElement) => {
+		input.value = '-30';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+	});
+	await expect(readout).toContainText('−30°');
+	await page.evaluate(() => (location.hash = '#coordinates'));
+	await expect(page).toHaveURL(/#coordinates$/);
+	await expect(readout).toHaveText(/^330° /);
+});
