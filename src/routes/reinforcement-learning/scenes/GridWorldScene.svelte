@@ -122,8 +122,8 @@
 	let lastK = 0;
 
 	/*
-	 * Credit step: early on, almost no move changes an estimate (they are all 0
-	 * and stay 0 until the agent first reaches the +10), and the first credits
+	 * Credit step: early on, almost no move changes an estimate (no estimate
+	 * becomes positive before the first +10; pits make some negative), and the first credits
 	 * are hundreds of moves apart. So that the step shows them at a readable
 	 * pace, the replay skips through the dull stretches 20 times faster: a move
 	 * plays at the chosen speed only within a few moves of a change. The
@@ -325,7 +325,9 @@
 	/** Index of the best move in square s, or -1 if nothing positive has been learnt there. */
 	function best(s: number): number {
 		const v = bestValue(q, s);
-		if (v <= 0.005) return -1;
+		// Any positive value, however small: at a discount of 0.5 the square S is
+		// worth only 10 × 0.5¹² ≈ 0.0024, and its arrow still shows the way.
+		if (v <= 0) return -1;
 		for (let a = 0; a < 4; a++) if (q[s * 4 + a] === v) return a;
 		return -1;
 	}
@@ -499,7 +501,8 @@
 
 	// ---- words ------------------------------------------------------------------------------
 	const sq = (j: number) => `(${colOf(j) + 1}, ${rowOf(j) + 1})`;
-	const f2 = (v: number) => (Math.abs(v) < 0.005 ? '0' : v.toFixed(2));
+	// Two decimals; values too small for that (10 × 0.5¹² at S) keep two significant digits.
+	const f2 = (v: number) => (v === 0 ? '0' : Math.abs(v) < 0.005 ? v.toPrecision(2) : v.toFixed(2));
 	const pct = (v: number) => `${Math.round(v * 100)}%`;
 	const plural = (n: number, w: string) => `${n} ${w}${n === 1 ? '' : 's'}`;
 	const sup = (n: number) => [...String(n)].map((d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]).join('');
@@ -1096,7 +1099,14 @@
 			stroke-dasharray="3 4"
 			opacity="0.7"
 		/>
-		{@render txt(TL1 + 10, ly(shortest) + 4, `shortest: ${shortest}`, 11, { muted: true })}
+		{@render txt(TL1 + 10, ly(shortest) - 3, 'shortest', 11, { muted: true })}
+		{@render txt(
+			TL1 + 10,
+			ly(shortest) + 10,
+			`to ${world.cells.includes(REWARD) ? '+10' : '+1'}: ${shortest}`,
+			11,
+			{ muted: true }
+		)}
 	{/if}
 	{#if spark}
 		<path

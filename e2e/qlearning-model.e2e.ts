@@ -62,7 +62,7 @@ test('the first credit: 0.5 × 10 = 5, then 0.5 × (0 + 0.9 × 5) = 2.25', () =>
 	const first = run.moves.find((m) => m.r === 10)!;
 	expect(first.before).toBe(0);
 	expect(first.after).toBe(5);
-	// No move earns credit before the first reward: every estimate is still 0 until then.
+	// No estimate becomes positive before the first +10 (pits make some negative).
 	const i = run.moves.indexOf(first);
 	expect(run.moves.slice(0, i).every((m) => m.after <= 0)).toBe(true);
 	const passed = run.moves.find((m) => m.r === 0 && m.bestNext > 0)!;
