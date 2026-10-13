@@ -559,6 +559,30 @@ test.describe('on a phone', () => {
 		await range(page, 'a4').fill('3');
 		await expect(panel).toContainText(/Sum\s*3 \+ 6 = 9/);
 	});
+
+	test('internet routers: the route to Ben is text and follows the router picked', async ({
+		page
+	}) => {
+		await page.goto('./internet/#routers');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Router D’s own table\s*Ben → send via G/);
+		await expect(panel).toContainText(/Ben’s computer/);
+		await expect(drawing(page)).not.toContainText('own table');
+		await page.locator('button[data-control=router][data-value=A]').click();
+		await expect(panel).toContainText(/Router A’s own table\s*Ben → send via/);
+	});
+
+	test('internet web page: the arrival time is text and follows the round trip', async ({
+		page
+	}) => {
+		await page.goto('./internet/#web');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Page arrives after\s*\d+ ms/);
+		await expect(panel).toContainText('3 round trips of 80 ms');
+		await expect(drawing(page)).not.toContainText('Page arrives after');
+		await range(page, 'rtt').fill('200');
+		await expect(panel).toContainText('3 round trips of 200 ms');
+	});
 });
 
 test.describe('on a wide screen', () => {

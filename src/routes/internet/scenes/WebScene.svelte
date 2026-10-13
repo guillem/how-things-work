@@ -13,7 +13,7 @@
 	 * presentation attributes.
 	 */
 	import { clamp } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { webRequest, type Lane, type Phase } from '../network';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -117,7 +117,7 @@
 
 <g>
 	<!-- phase bands -->
-	{#each bands as b (b.phase)}
+	{#each bands as b, k (b.phase)}
 		<rect
 			x="24"
 			y={b.y0}
@@ -127,16 +127,24 @@
 			fill={PHASES[b.phase].color}
 			opacity={b.active ? 0.13 : 0.06}
 		/>
-		{@render txt(932, b.y0 + 16, PHASES[b.phase].name, 12, {
-			anchor: 'end',
-			weight: 600,
-			color: PHASES[b.phase].color
-		})}
-		{@render txt(932, b.y0 + 31, `${Math.round(b.t1 - b.t0)} ms`, 11, {
-			anchor: 'end',
-			muted: true,
-			opacity: b.done || reduced ? 1 : 0.5
-		})}
+		<Readout
+			id="web-phase-{b.phase}"
+			order={1 + k}
+			label={PHASES[b.phase].name}
+			value="{Math.round(b.t1 - b.t0)} ms"
+			color={PHASES[b.phase].color}
+		>
+			{@render txt(932, b.y0 + 16, PHASES[b.phase].name, 12, {
+				anchor: 'end',
+				weight: 600,
+				color: PHASES[b.phase].color
+			})}
+			{@render txt(932, b.y0 + 31, `${Math.round(b.t1 - b.t0)} ms`, 11, {
+				anchor: 'end',
+				muted: true,
+				opacity: b.done || reduced ? 1 : 0.5
+			})}
+		</Readout>
 	{/each}
 
 	<!-- lanes -->
@@ -145,7 +153,9 @@
 		<g opacity={dim ? 0.4 : 1}>
 			{@render txt(l.x, 62, l.title, 13, { anchor: 'middle', weight: 700 })}
 			{#if l.sub}
-				{@render txt(l.x, 78, l.sub, 11, { anchor: 'middle', muted: true })}
+				<Readout id="web-sub-{l.id}">
+					{@render txt(l.x, 78, l.sub, 11, { anchor: 'middle', muted: true })}
+				</Readout>
 			{/if}
 			<line
 				x1={l.x}
@@ -192,18 +202,22 @@
 		{#if r.p > 0 && r.p < 1}
 			<circle cx={xm} cy={ym} r="6" fill={color} stroke="var(--stage-bg)" stroke-width="1.5" />
 		{/if}
-		{@render txt(lx, ly, r.label, 12, {
-			anchor: 'middle',
-			weight: r.p > 0 ? 600 : 500,
-			opacity: r.p > 0 ? 1 : 0.45
-		})}
+		<Readout id="web-msg-{r.id}">
+			{@render txt(lx, ly, r.label, 12, {
+				anchor: 'middle',
+				weight: r.p > 0 ? 600 : 500,
+				opacity: r.p > 0 ? 1 : 0.45
+			})}
+		</Readout>
 	{/each}
 
 	<!-- time bar -->
-	{@render txt(BAR_X, BAR_Y - 16, 'Time from pressing Enter (real milliseconds)', 12, {
-		muted: true,
-		weight: 600
-	})}
+	<Readout id="web-bar-title">
+		{@render txt(BAR_X, BAR_Y - 16, 'Time from pressing Enter (real milliseconds)', 12, {
+			muted: true,
+			weight: 600
+		})}
+	</Readout>
 	<rect
 		x={BAR_X}
 		y={BAR_Y}
@@ -237,16 +251,30 @@
 	{/each}
 	{#each TICKS as v (v)}
 		<line x1={bx(v)} x2={bx(v)} y1={BAR_Y + 20} y2={BAR_Y + 25} stroke="var(--stage-line)" />
-		{@render txt(bx(v), BAR_Y + 38, `${v}`, 11, { anchor: 'middle', muted: true })}
+		<Readout id="web-tick-{v}">
+			{@render txt(bx(v), BAR_Y + 38, `${v}`, 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/each}
-	{@render txt(BAR_X + BAR_W + 8, BAR_Y + 38, 'ms', 11, { muted: true })}
-	{@render txt(
-		BAR_X,
-		BAR_Y + 66,
-		now >= req.total
-			? `Page arrives after ${Math.round(req.total)} ms: ${cached ? 'a quick lookup' : 'a full lookup'} + 3 round trips of ${rtt} ms`
-			: `${Math.round(now)} ms …`,
-		14,
-		{ weight: 700 }
-	)}
+	<Readout id="web-ms">
+		{@render txt(BAR_X + BAR_W + 8, BAR_Y + 38, 'ms', 11, { muted: true })}
+	</Readout>
+	<Readout
+		id="web-total"
+		order={10}
+		label={now >= req.total ? 'Page arrives after' : 'Since pressing Enter'}
+		value="{Math.round(now >= req.total ? req.total : now)} ms{now >= req.total ? '' : ' …'}"
+		note={now >= req.total
+			? `${cached ? 'a quick lookup' : 'a full lookup'} + 3 round trips of ${rtt} ms`
+			: undefined}
+	>
+		{@render txt(
+			BAR_X,
+			BAR_Y + 66,
+			now >= req.total
+				? `Page arrives after ${Math.round(req.total)} ms: ${cached ? 'a quick lookup' : 'a full lookup'} + 3 round trips of ${rtt} ms`
+				: `${Math.round(now)} ms …`,
+			14,
+			{ weight: 700 }
+		)}
+	</Readout>
 </g>
