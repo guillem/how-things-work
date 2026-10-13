@@ -24,7 +24,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { untrack } from 'svelte';
 	import { Axes, clamp, linePath, scale } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		charOkCoded,
 		charOkPlain,
@@ -161,7 +161,10 @@
 
 <g>
 	<!-- the message sent -->
-	{@render txt(LX, 34, 'Sent by the probe', 12, { muted: true, weight: 600 })}
+	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
+	<Readout id="sent-title">
+		{@render txt(LX, 34, 'Sent by the probe', 12, { muted: true, weight: 600 })}
+	</Readout>
 	{#each [...MESSAGE] as c, i (i)}
 		{@render txt(charX(i) + CW / 2, 62 + lineOf(i) * 26, c === ' ' ? '' : c, 17, {
 			anchor: 'middle',
@@ -185,11 +188,19 @@
 					fill="var(--stage-grid)"
 					opacity="0.35"
 				/>
-				{@render txt(LX, y, lane.title, 15, { weight: 700, color: lane.color })}
-				{@render txt(LX + STRIP_W, y, `${tx.sent} bits sent · ${tx.flips.length} flipped`, 12, {
-					anchor: 'end',
-					muted: true
-				})}
+				<Readout id="title-{lane.id}">
+					{@render txt(LX, y, lane.title, 15, { weight: 700, color: lane.color })}
+					{@render txt(LX + STRIP_W, y, `${tx.sent} bits sent · ${tx.flips.length} flipped`, 12, {
+						anchor: 'end',
+						muted: true
+					})}
+					{#snippet narrow()}
+						{@render txt(LX, y - 2, lane.id === 'plain' ? 'No code' : 'Hamming code', 24, {
+							weight: 700,
+							color: lane.color
+						})}
+					{/snippet}
+				</Readout>
 				<!-- the bit strip: every bit sent, ticks at flips -->
 				<rect
 					x={LX}
@@ -237,18 +248,32 @@
 						color: ok ? undefined : 'var(--ec-bad)'
 					})}
 				{/each}
-				{@render txt(
-					LX,
-					y + 126,
-					arrived < 1
+				<Readout
+					id="lane-{lane.id}"
+					order={lane.id === 'plain' ? 1 : 2}
+					label={lane.title}
+					value={arrived < 1
 						? 'arriving…'
-						: `${intactCount(tx)} of ${MESSAGE.length} letters intact` +
-								(lane.id === 'coded'
-									? ` · ${tx.repaired.length} flips repaired, ${tx.failed.length} not`
-									: ''),
-					13,
-					{ weight: 600, muted: arrived < 1 }
-				)}
+						: `${intactCount(tx)} of ${MESSAGE.length} letters intact`}
+					note="{tx.sent} bits sent · {tx.flips.length} flipped{lane.id === 'coded'
+						? ` · ${tx.repaired.length} repaired, ${tx.failed.length} not`
+						: ''}"
+					color={lane.color}
+					opacity={op}
+				>
+					{@render txt(
+						LX,
+						y + 126,
+						arrived < 1
+							? 'arriving…'
+							: `${intactCount(tx)} of ${MESSAGE.length} letters intact` +
+									(lane.id === 'coded'
+										? ` · ${tx.repaired.length} flips repaired, ${tx.failed.length} not`
+										: ''),
+						13,
+						{ weight: 600, muted: arrived < 1 }
+					)}
+				</Readout>
 			</g>
 		{/if}
 	{/each}
@@ -256,7 +281,9 @@
 	{#if showCoded.current < 0.99}
 		<g opacity={1 - showCoded.current}>
 			<!-- one letter, bit by bit: where the coded lane will appear -->
-			{@render txt(LX, 292, 'A closer look at one letter: 8 bits', 13, { weight: 700 })}
+			<Readout id="zoom-title">
+				{@render txt(LX, 292, 'A closer look at one letter: 8 bits', 13, { weight: 700 })}
+			</Readout>
 			{#if zoomHere}
 				<rect
 					x={charX(zoomI) - 1}
@@ -274,7 +301,12 @@
 				{@const bits = row === 0 ? zoomSent : zoomGot}
 				{@const ch = row === 0 ? MESSAGE[zoomI] : plain.text[zoomI]}
 				{@const show = row === 0 || zoomHere}
-				{@render txt(LX, y + 6, row === 0 ? 'sent' : 'received', 12, { muted: true, weight: 600 })}
+				<Readout id="zoom-row-{row}">
+					{@render txt(LX, y + 6, row === 0 ? 'sent' : 'received', 12, {
+						muted: true,
+						weight: 600
+					})}
+				</Readout>
 				{@render txt(LX + 110, y + 8, show ? `“${shown(ch) || '␣'}”` : '', 20, {
 					anchor: 'middle',
 					weight: 700,
@@ -304,37 +336,66 @@
 					{/if}
 				{/each}
 			{/each}
-			{@render txt(
-				LX,
-				434,
-				!zoomHere
-					? ''
+			<Readout
+				id="zoom"
+				order={3}
+				label="One letter, 8 bits"
+				value={!zoomHere
+					? '…'
+					: `“${shown(MESSAGE[zoomI]) || '␣'}” arrived as “${shown(plain.text[zoomI]) || '␣'}”`}
+				note={!zoomHere
+					? undefined
 					: zoomDamaged
-						? `${zoomSent.filter((b, i) => b !== zoomGot[i]).length === 1 ? 'One flipped bit' : 'A few flipped bits'} and “${MESSAGE[zoomI]}” becomes a different character.`
-						: 'No bit flipped: every letter arrived as sent.',
-				13,
-				{ weight: 600 }
-			)}
-			{@render txt(LX, 470, 'The receiver gets these letters and nothing else:', 13, {
-				muted: true
-			})}
-			{@render txt(LX, 492, 'it cannot tell which ones are wrong, let alone fix them.', 13, {
-				muted: true
-			})}
+						? `${zoomSent.filter((b, i) => b !== zoomGot[i]).length === 1 ? 'one flipped bit' : 'a few flipped bits'}: the receiver can’t tell which letters are wrong, let alone fix them`
+						: 'no bit flipped: every letter arrived as sent'}
+				opacity={1 - showCoded.current}
+			/>
+			<Readout id="zoom-text">
+				{@render txt(
+					LX,
+					434,
+					!zoomHere
+						? ''
+						: zoomDamaged
+							? `${zoomSent.filter((b, i) => b !== zoomGot[i]).length === 1 ? 'One flipped bit' : 'A few flipped bits'} and “${MESSAGE[zoomI]}” becomes a different character.`
+							: 'No bit flipped: every letter arrived as sent.',
+					13,
+					{ weight: 600 }
+				)}
+				{@render txt(LX, 470, 'The receiver gets these letters and nothing else:', 13, {
+					muted: true
+				})}
+				{@render txt(LX, 492, 'it cannot tell which ones are wrong, let alone fix them.', 13, {
+					muted: true
+				})}
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- the cost: bits sent -->
 	{#if showCost.current > 0.01}
 		{@const bw = (v: number) => (v / coded.sent) * 330}
+		<Readout
+			id="cost"
+			order={4}
+			label="Bits sent for the same message"
+			value="{plain.sent} without code, {coded.sent} with (+75%)"
+			opacity={showCost.current}
+		/>
 		<g opacity={showCost.current}>
-			{@render txt(LX, 486, 'Bits sent for the same message', 12, { muted: true, weight: 600 })}
+			<Readout id="cost-title">
+				{@render txt(LX, 486, 'Bits sent for the same message', 12, { muted: true, weight: 600 })}
+			</Readout>
 			<rect x={LX + 110} y="498" width={bw(plain.sent)} height="18" rx="4" fill="var(--ec-plain)" />
-			{@render txt(LX, 512, 'without code', 12)}
-			{@render txt(LX + 118 + bw(plain.sent), 512, `${plain.sent}`, 12, { weight: 700 })}
+			<Readout id="cost-plain">
+				{@render txt(LX, 512, 'without code', 12)}
+				{@render txt(LX + 118 + bw(plain.sent), 512, `${plain.sent}`, 12, { weight: 700 })}
+			</Readout>
 			<rect x={LX + 110} y="526" width={bw(coded.sent)} height="18" rx="4" fill="var(--ec-coded)" />
-			{@render txt(LX, 540, 'with code', 12)}
-			{@render txt(LX + 118 + bw(coded.sent), 540, `${coded.sent}  (+75%)`, 12, { weight: 700 })}
+			<Readout id="cost-coded">
+				{@render txt(LX, 540, 'with code', 12)}
+				{@render txt(LX + 118 + bw(coded.sent), 540, `${coded.sent}  (+75%)`, 12, { weight: 700 })}
+			</Readout>
 		</g>
 	{:else}
 		<g opacity={showCoded.current}>
@@ -347,7 +408,13 @@
 				stroke-width="2"
 				transform="rotate(90 {LX + 7} 488)"
 			/>
-			{@render txt(LX + 18, 493, 'flip in a block hit once: repaired', 12)}
+			{#if showCoded.current > 0.5}
+				<Readout id="key-fix" order={20} label="flip repaired" color="var(--ec-fix)" />
+				<Readout id="key-bad" order={21} label="flip not repairable" color="var(--ec-bad)" />
+			{/if}
+			<Readout id="key-fix-text">
+				{@render txt(LX + 18, 493, 'flip in a block hit once: repaired', 12)}
+			</Readout>
 			<line
 				x1={LX + 270}
 				x2={LX + 284}
@@ -357,13 +424,17 @@
 				stroke-width="2"
 				transform="rotate(90 {LX + 277} 488)"
 			/>
-			{@render txt(LX + 288, 493, 'flip the receiver can’t repair', 12)}
+			<Readout id="key-bad-text">
+				{@render txt(LX + 288, 493, 'flip the receiver can’t repair', 12)}
+			</Readout>
 		</g>
 	{/if}
 
 	<!-- the plot -->
-	{@render txt(650, 44, 'Chance a letter arrives intact', 14, { weight: 700 })}
-	{@render txt(650, 64, 'curves: the formulas · dots: this message', 12, { muted: true })}
+	<Readout id="plot-title">
+		{@render txt(650, 44, 'Chance a letter arrives intact', 14, { weight: 700 })}
+		{@render txt(650, 64, 'curves: the formulas · dots: this message', 12, { muted: true })}
+	</Readout>
 	<Axes
 		{sx}
 		{sy}
@@ -405,14 +476,24 @@
 		/>
 	{/if}
 	<!-- readouts at the current noise -->
-	{@render txt(650, 448, `At ${(p * 100).toFixed(1)}% noise, on average:`, 13, { weight: 600 })}
-	{@render txt(650, 474, `without coding ${pctFine(charOkPlain(p))} of letters`, 13, {
-		color: 'var(--ec-plain)',
-		weight: 700
-	})}
-	{@render txt(650, 498, `with the code ${pctFine(charOkCoded(p))}`, 13, {
-		color: 'var(--ec-coded)',
-		weight: 700,
-		opacity: showCoded.current
-	})}
+	<Readout
+		id="average"
+		order={0}
+		label="Letters intact on average at {(p * 100).toFixed(1)}% noise"
+		value={showCoded.current > 0.5
+			? `${pctFine(charOkPlain(p))} without code, ${pctFine(charOkCoded(p))} with`
+			: pctFine(charOkPlain(p))}
+	/>
+	<Readout id="average-text">
+		{@render txt(650, 448, `At ${(p * 100).toFixed(1)}% noise, on average:`, 13, { weight: 600 })}
+		{@render txt(650, 474, `without coding ${pctFine(charOkPlain(p))} of letters`, 13, {
+			color: 'var(--ec-plain)',
+			weight: 700
+		})}
+		{@render txt(650, 498, `with the code ${pctFine(charOkCoded(p))}`, 13, {
+			color: 'var(--ec-coded)',
+			weight: 700,
+			opacity: showCoded.current
+		})}
+	</Readout>
 </g>

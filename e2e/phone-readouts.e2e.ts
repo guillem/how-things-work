@@ -213,6 +213,29 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText(/sin θ\s*1\.00/);
 	});
 
+	test('error correction channel: letters intact are text and follow the noise', async ({
+		page
+	}) => {
+		await page.goto('./error-correction/#compare');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Without coding\s*\d+ of 47 letters intact/);
+		await expect(panel).toContainText('at 5.0% noise');
+		await expect(drawing(page)).not.toContainText('letters intact');
+		await range(page, 'noise').fill('0');
+		await expect(panel).toContainText('100% without code, 100% with');
+		await expect(panel).toContainText(/With the Hamming \(7, 4\) code\s*47 of 47 letters intact/);
+	});
+
+	test('error correction code: the verdict is text and follows the flips', async ({ page }) => {
+		await page.goto('./error-correction/#repair');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Verdict\s*check 1 \+ check 4 fail → position 5/);
+		await expect(panel).toContainText('The receiver flips bit 5 back.');
+		await expect(drawing(page)).not.toContainText('The receiver flips');
+		await page.getByRole('button', { name: 'Undo all flips' }).click();
+		await expect(panel).toContainText(/Verdict\s*all checks even: no error/);
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');
