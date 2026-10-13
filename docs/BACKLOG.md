@@ -108,7 +108,6 @@ label search; right-clicks leaving handles held; and a logic-gates test that gua
 
 ## Site and framework work
 
-- **Promote `sorting/playback.ts`** to `src/lib`: `cpu` imports it across routes for its replay.
 - **`Label`'s `size` has no effect** (found by cryptography, 2026-10-12): the stage CSS fixes all
   stage text at 13 px, so topics roll their own text helpers (`Txt`, `T`).
 - **Promote `VectorHandle`** (linear-transformations' `scenes/VectorHandle.svelte`, copied from

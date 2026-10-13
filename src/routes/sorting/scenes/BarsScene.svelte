@@ -18,7 +18,7 @@
 	import { untrack } from 'svelte';
 	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { createPlayback } from '../playback';
+	import { createPlayback } from '#lib/explainer/playback.ts';
 	import { NAMES, makeInput, recording, type Algorithm, type Op, type Order } from '../sorts';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();

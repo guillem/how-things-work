@@ -25,7 +25,7 @@
 	import { untrack } from 'svelte';
 	import { Handle, along, clamp, cycle, smoothstep, type Point } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { createPlayback } from '../../sorting/playback';
+	import { createPlayback } from '#lib/explainer/playback.ts';
 	import {
 		MAX_INSTRUCTIONS,
 		MEM_SIZE,
