@@ -54,6 +54,21 @@ test('a 32-bit word reads as four characters', async ({ page }) => {
 	await expect(stage(page)).toContainText('code 115');
 });
 
+test('bit names give the value within the character or colour channel being read', async ({
+	page
+}) => {
+	await open(page, './binary/#text');
+	await page.locator('button[data-control=width][data-value="16"]').click();
+	await expect(page.getByRole('switch')).toHaveCount(16);
+	await expect(page.getByRole('switch', { name: 'Bit worth 32 in byte 1' })).toHaveCount(1);
+	await expect(page.getByRole('switch', { name: 'Bit worth 32 in byte 2' })).toHaveCount(1);
+	await open(page, './binary/#colour');
+	await page.locator('button[data-control=width][data-value="8"]').click();
+	// 3-3-2: red's top bit is worth 4, blue's is worth 2
+	await expect(page.getByRole('switch', { name: 'Red bit worth 4' })).toHaveCount(1);
+	await expect(page.getByRole('switch', { name: 'Blue bit worth 2' })).toHaveCount(1);
+});
+
 test('the 0.1 preset shows that 0.1 is not stored exactly', async ({ page }) => {
 	await open(page, './binary/#float');
 	await expect(stage(page)).toContainText('= 0.15625');
