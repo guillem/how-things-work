@@ -107,6 +107,25 @@ export function isException(z: number) {
 	return false;
 }
 
+/**
+ * The subshell that gained the most electrons from element z − 1 to z in the measured
+ * configurations: where the "last electron" went (lutetium adds 5d, zinc completes 4s).
+ */
+export function lastSubshell(z: number) {
+	const now = parseConfig(element(z).config);
+	const before = z > 1 ? parseConfig(element(z - 1).config) : new Map<string, number>();
+	let best = '1s';
+	let gain = 0;
+	for (const s of ORDER) {
+		const d = (now.get(s.label) ?? 0) - (before.get(s.label) ?? 0);
+		if (d > gain) {
+			gain = d;
+			best = s.label;
+		}
+	}
+	return best;
+}
+
 /** Electrons in the outermost shell (highest n present): what sets an element's chemistry. */
 export function outerShell(z: number) {
 	const occ = parseConfig(element(z).config);

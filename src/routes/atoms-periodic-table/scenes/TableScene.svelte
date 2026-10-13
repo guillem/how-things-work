@@ -16,7 +16,7 @@
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { clamp } from '#lib/draw/math.ts';
 	import { toSvg } from '#lib/draw/pointer.ts';
-	import { ELEMENTS, cell, element, outerShell, type Element as Elem } from '../atom';
+	import { ELEMENTS, cell, element, lastSubshell, outerShell, type Element as Elem } from '../atom';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -90,19 +90,13 @@
 	const partial = $derived(CELLS.filter((c) => fillOf(c.z) > 0 && fillOf(c.z) < 1));
 	const blockFill = (b: string) => `color-mix(in oklab, var(--atom-${b}) 34%, var(--stage-bg))`;
 
-	/** The subshell an element's last electron went into, from its block (as in the data). */
-	function subshell(e: Elem) {
-		if (e.z <= 2) return '1s';
-		const n = e.block === 'd' ? e.period - 1 : e.block === 'f' ? e.period - 2 : e.period;
-		return `${n}${e.block}`;
-	}
 	const SEQUENCE = '1s 2s 2p 3s 3p 4s 3d 4p 5s 4d 5p 6s 4f 5d 6p 7s 5f 6d 7p'.split(' ');
 	const current = $derived(Math.max(1, Math.min(118, Math.floor(front))));
 	const sweeping = $derived(phase === 'blocks' && !reduced && front < 120);
 	const doneShells = $derived(
-		new Set(CELLS.filter((c) => c.z <= current && front >= 1).map((c) => subshell(c.e)))
+		new Set(CELLS.filter((c) => c.z <= current && front >= 1).map((c) => lastSubshell(c.z)))
 	);
-	const currentShell = $derived(sweeping && front >= 1 ? subshell(element(current)) : '');
+	const currentShell = $derived(sweeping && front >= 1 ? lastSubshell(current) : '');
 
 	// Braces: s over cols 1–2 and p over cols 13–18 above row 1; d over cols 3–12 above row 4;
 	// f under cols 4–17 of the f rows (lanthanum and actinium, in col 3, are d elements).
@@ -226,7 +220,7 @@
 			col: 18,
 			color: 'var(--atom-f)',
 			name: 'Group 18 · noble gases',
-			line: 'full outer shell: hardly reacts',
+			line: 'full outer s and p (8 e⁻): hardly reacts',
 			example: 'neon in glowing signs'
 		}
 	];
@@ -607,7 +601,7 @@
 						{@render txt(
 							GC,
 							GY + 64,
-							`${e.name} (Z = ${e.z}): last electron into ${subshell(e)}`,
+							`${e.name} (Z = ${e.z}): last electron into ${lastSubshell(e.z)}`,
 							14,
 							{ anchor: 'middle', weight: 600 }
 						)}

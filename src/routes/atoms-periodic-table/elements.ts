@@ -1,8 +1,10 @@
 /**
  * Element data for the atoms explainer, extracted from the mendeleev database
  * (version 1.3.0, MIT licence — see MENDELEEV-LICENSE.txt;
- * https://github.com/lmmentel/mendeleev). Generated, not edited by hand: the
- * sources of each field are listed in `fields`.
+ * https://github.com/lmmentel/mendeleev). Generated, not edited by hand, except for the
+ * electronegativities of Kr, Lu, W, Pt, Au, Hg, Tl, Pb, Bi and U, where mendeleev's values
+ * differ from the CRC Handbook's (Allred 1961) and were corrected to them. The sources of each
+ * field are listed in `fields`.
  */
 export default {
 	source: 'mendeleev 1.3.0 (MIT licence, https://github.com/lmmentel/mendeleev), elements.db',
@@ -516,7 +518,7 @@ export default {
 			mass: 83.798,
 			radius: 115.99999999999999,
 			ionization: 14.0,
-			electronegativity: null,
+			electronegativity: 3.0,
 			stable: [78, 80, 82, 83, 84, 86]
 		},
 		{
@@ -1006,7 +1008,7 @@ export default {
 			mass: 174.967,
 			radius: 187.0,
 			ionization: 5.426,
-			electronegativity: 1.0,
+			electronegativity: 1.27,
 			stable: [175]
 		},
 		{
@@ -1048,7 +1050,7 @@ export default {
 			mass: 183.84,
 			radius: 162.0,
 			ionization: 7.864,
-			electronegativity: 1.7,
+			electronegativity: 2.36,
 			stable: [182, 183, 184, 186]
 		},
 		{
@@ -1104,7 +1106,7 @@ export default {
 			mass: 195.084,
 			radius: 136.0,
 			ionization: 8.959,
-			electronegativity: 2.2,
+			electronegativity: 2.28,
 			stable: [192, 194, 195, 196, 198]
 		},
 		{
@@ -1118,7 +1120,7 @@ export default {
 			mass: 196.967,
 			radius: 136.0,
 			ionization: 9.226,
-			electronegativity: 2.4,
+			electronegativity: 2.54,
 			stable: [197]
 		},
 		{
@@ -1132,7 +1134,7 @@ export default {
 			mass: 200.592,
 			radius: 132.0,
 			ionization: 10.438,
-			electronegativity: 1.9,
+			electronegativity: 2.0,
 			stable: [196, 198, 199, 200, 201, 202, 204]
 		},
 		{
@@ -1146,7 +1148,7 @@ export default {
 			mass: 204.38,
 			radius: 145.0,
 			ionization: 6.108,
-			electronegativity: 1.8,
+			electronegativity: 1.62,
 			stable: [203, 205]
 		},
 		{
@@ -1160,7 +1162,7 @@ export default {
 			mass: 207.2,
 			radius: 146.0,
 			ionization: 7.417,
-			electronegativity: 1.8,
+			electronegativity: 2.33,
 			stable: [204, 206, 207, 208]
 		},
 		{
@@ -1174,7 +1176,7 @@ export default {
 			mass: 208.98,
 			radius: 148.0,
 			ionization: 7.286,
-			electronegativity: 1.9,
+			electronegativity: 2.02,
 			stable: []
 		},
 		{
@@ -1300,7 +1302,7 @@ export default {
 			mass: 238.029,
 			radius: 196.0,
 			ionization: 6.194,
-			electronegativity: 1.7,
+			electronegativity: 1.38,
 			stable: []
 		},
 		{
