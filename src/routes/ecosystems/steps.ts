@@ -25,12 +25,12 @@ const room: Control = {
 const predation: Control = {
 	type: 'range',
 	id: 'predation',
-	label: 'How well foxes hunt',
+	label: 'Rabbits each fox catches',
 	min: 0.01,
 	max: 0.04,
 	step: 0.001,
 	default: 0.02,
-	format: (v) => v.toFixed(3)
+	format: (v) => `${(v * 100).toFixed(1)}% a year`
 };
 
 const death: Control = {
@@ -40,7 +40,7 @@ const death: Control = {
 	min: 0.2,
 	max: 1.2,
 	step: 0.05,
-	default: 0.6,
+	default: 0.45,
 	format: (v) => `${v.toFixed(2)} per year`
 };
 
@@ -79,7 +79,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Put a few rabbits in an empty field. With plenty of grass, each year's rabbits have young, the young have young, and the population <strong>grows faster and faster</strong>: the more rabbits, the more births.</p>
 <p>But the field is not endless. As it fills up, food runs short and crowding sets in, so fewer young survive. Growth slows and the population levels off at the most the field can feed — its <dfn data-def="The largest population an environment can support for a long time, given its food, water and space.">carrying capacity</dfn>. Each rabbit icon stands for a few rabbits; the curve below counts them all.</p>`,
-			notes: `<p>This S-shaped curve is <dfn data-def="Growth in proportion to the population, slowed as it approaches the carrying capacity K: dN/dt = a·N·(1 − N/K).">logistic growth</dfn>, first described by Pierre-François Verhulst in 1838.</p>`
+			notes: `<p>This S-shaped curve is <dfn data-def="Growth in proportion to the population, slowed as it approaches the carrying capacity K: dN/dt = a·N·(1 − N/K).">logistic growth</dfn>, first described by Pierre-François Verhulst in 1838. Here a is the rabbits' growth rate: births minus natural deaths.</p>`
 		},
 		// ------------------------------------------------------------------ two
 		{
@@ -93,7 +93,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now add foxes, which eat rabbits. When rabbits are plentiful the foxes feast and raise many cubs, so the fox population climbs. But more foxes eat more rabbits, and the rabbits crash. With little to eat the foxes starve and dwindle, the surviving rabbits breed in peace, and the whole thing starts again.</p>
 <p>The two populations <strong>chase each other in cycles</strong>, the foxes' peaks always coming a little after the rabbits'. Nobody planned this: each species just responds to the other. That is <dfn data-def="When a change comes back round to affect its own cause: more rabbits → more foxes → fewer rabbits.">feedback</dfn>.</p>`,
-			notes: `<p>These are the Lotka–Volterra equations (1925–26): rabbits are born at a steady rate and eaten in proportion to how often rabbits and foxes meet; foxes grow from what they eat and die at a steady rate. To keep the cycle clean, crowding among rabbits is left out here. Records of hare and lynx pelts bought by the Hudson's Bay Company in Canada show similar ten-year swings.</p>`
+			notes: `<p>These are the Lotka–Volterra equations (1925–26): rabbits are born at a steady rate and eaten in proportion to how often rabbits and foxes meet; foxes grow from what they eat and die at a steady rate. To keep the cycle clean, crowding among rabbits is left out here; put it back and the swings slowly die down towards the balance point. Records of hare and lynx pelts bought by the Hudson's Bay Company in Canada show similar ten-year swings, though there the hares' food matters as well as their predators.</p>`
 		},
 		{
 			id: 'loop',
@@ -105,7 +105,7 @@ export const spec: ExplainerSpec = {
 			controls: [birth, predation, death, restart],
 			body: `
 <p>Plot foxes against rabbits instead of against time and the cycle becomes a <strong>loop</strong>: rabbits rise first (moving right), then foxes rise (moving up), then rabbits fall, then foxes fall — round and round, back to where it started.</p>
-<p>In the middle sits a <strong>balance point</strong> where births and deaths exactly cancel for both species. Start there and nothing changes; start anywhere else and the populations circle round it. Change the rates and the balance point moves — and some changes are surprising: make the foxes better hunters and the balance point has <em>fewer</em> rabbits — and fewer foxes too; make the rabbits breed faster and the balance point has more foxes, not more rabbits.</p>`,
+<p>In the middle sits a <strong>balance point</strong> where births and deaths exactly cancel for both species. If the run started there, nothing would change: try birth rate 0.60, each fox catching 2.0% of the rabbits a year, and fox death rate 0.40, which put the balance point exactly at the starting 200 rabbits and 30 foxes. Start anywhere else and the populations circle round it. Change the rates and the balance point moves — and some changes are surprising: make the foxes better hunters and the balance point has <em>fewer</em> rabbits — and fewer foxes too; make the rabbits breed faster and the balance point has more foxes, not more rabbits.</p>`,
 			notes: `<p>At the balance point, rabbits = fox death rate ÷ (efficiency × hunting rate), and foxes = rabbit birth rate ÷ hunting rate. Better hunting lowers both; a higher rabbit birth rate raises the number of foxes, not of rabbits.</p>`
 		},
 		// ------------------------------------------------------------------ web
@@ -134,7 +134,7 @@ export const spec: ExplainerSpec = {
 <p>Now let a new species in: deer, which eat willow like the elk, are hunted by wolves like the elk, and breed a little faster. Switch them on and watch for decades.</p>
 <p>The deer settle in. More prey means more wolves — and more wolves hunt the elk harder, while the deer also eat the elk's food. The elk slowly vanish, <strong>although no deer ever harmed an elk</strong>. Feedback through the web links species that never meet.</p>
 <p>That is the lesson: <strong>populations are tied together by feedback</strong>, so a change to one species ripples through the others in ways that are hard to guess.</p>`,
-			notes: `<p>Ecologists call the two effects at work <em>competition</em> (for the same food) and <em>apparent competition</em> (through a shared predator). Introduced species have reshaped many real ecosystems this way.</p>`
+			notes: `<p>Ecologists call the two effects at work <em>competition</em> (for the same food) and <em>apparent competition</em> (through a shared predator). Introduced species have reshaped many real ecosystems this way. In Yellowstone, deer are not newcomers (mule and white-tailed deer live there already); the newcomer here is a thought experiment.</p>`
 		}
 	]
 };

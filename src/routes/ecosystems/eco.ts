@@ -54,7 +54,7 @@ export const logisticExact = (N0: number, a: number, K: number, t: number) =>
 // ------------------------------------------------------------ 2. predator and prey
 
 export interface LV {
-	/** Prey birth rate (per year). */
+	/** Prey growth rate (per year): births minus natural deaths. */
 	a: number;
 	/** Predation rate (per predator per year). */
 	b: number;
@@ -65,7 +65,7 @@ export interface LV {
 }
 
 /** The default hares and lynx-like parameters: a cycle of about 10 years. */
-export const LV_DEFAULT: LV = { a: 1, b: 0.02, c: 0.1, d: 0.6 };
+export const LV_DEFAULT: LV = { a: 1, b: 0.02, c: 0.1, d: 0.45 };
 
 export const lotkaVolterra =
 	({ a, b, c, d }: LV) =>
@@ -99,10 +99,10 @@ export type Species = (typeof SPECIES)[number];
 const A: number[][] = [
 	// willow  elk     beaver  wolf    deer
 	[-0.01, -0.02, -0.015, 0, -0.02], // willow: crowded, browsed by elk, beavers and deer
-	[0.012, -0.004, 0, -0.06, -0.004], // elk: eat willow, crowded, eaten by wolves, compete with deer
+	[0.012, -0.004, 0, -0.06, 0], // elk: eat willow, crowded, eaten by wolves (no direct contact with deer)
 	[0.006, 0, -0.02, 0, 0], // beaver: need willow
 	[0, 0.012, 0, -0.04, 0.012], // wolf: eat elk (and deer)
-	[0.012, -0.004, 0, -0.06, -0.004] // deer: like elk
+	[0.012, 0, 0, -0.06, -0.004] // deer: like elk
 ];
 
 /**
@@ -115,7 +115,7 @@ const r: number[] = (() => {
 	const n = WEB_START.slice(0, 4);
 	const rr = [0, 1, 2, 3].map((i) => -n.reduce((s, Nj, j) => s + A[i][j] * Nj, 0));
 	// Deer eat and are eaten like elk, but breed a little faster (an adaptable newcomer).
-	return [...rr, rr[1] + 0.15];
+	return [...rr, rr[1] + 0.25];
 })();
 
 export const webRates = () => [...r];
