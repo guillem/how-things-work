@@ -19,7 +19,8 @@
 	 * Only the few balls in flight are circles; landed balls are stacks of
 	 * circles while there are few, then bar heights (keeps the node count low).
 	 * Stacks spread across the bin, several balls per level, when the bins are
-	 * wide (few rows).
+	 * wide (few rows): each ball has a fixed slot, filled from the centre out,
+	 * and falls straight into it (no re-centring as a level fills).
 	 * Reduced motion: the whole run has landed; ball 0's path is traced.
 	 *
 	 * Text sizes and colours are set with `style:` because the stage's CSS
@@ -50,6 +51,11 @@
 	const restarts = $derived(Number(params.restart ?? 0));
 	const run = $derived(galton(rows, COUNT, 1 + restarts));
 	const ballBin = $derived(run.paths.map((p) => p.reduce((a, b) => a + b, 0)));
+	/** Ball i is the rank[i]-th ball (from 0) to land in its bin. */
+	const rank = $derived.by(() => {
+		const seen = new Array(rows + 1).fill(0);
+		return ballBin.map((k) => seen[k]++);
+	});
 
 	// ---- run clock: restarts when the controls change ---------------------------
 	const runKey = $derived(`${rows}|${pace}|${restarts}`);
@@ -128,6 +134,14 @@
 	const stacks = $derived(unit >= 5 && landed <= 150);
 
 	const pileTop = (k: number) => BIN_BOT - counts[k] * ballH;
+	/** Offset (in ball widths) of the j-th slot on a level: centre first, then right, left, … */
+	const slotCol = (j: number) =>
+		(j % 2 ? 1 : -1) * (perLevel % 2 ? Math.ceil(j / 2) : Math.floor(j / 2) + 0.5);
+	/** Where the j-th ball of bin k rests in a stack. */
+	const slot = (k: number, j: number) => ({
+		x: binX(k) + slotCol(j % perLevel) * (2 * ballR + 2),
+		y: BIN_BOT - ballR - Math.floor(j / perLevel) * unit
+	});
 
 	/** Position of ball i at `age` seconds after its release; `seg` = pin row it is leaving (−1 before the first). */
 	function ballAt(i: number, age: number) {
@@ -152,6 +166,10 @@
 		}
 		const u = clamp((s - 1 - rows) / 1.5);
 		const a = level(rows, rights);
+		if (stacks) {
+			const b = slot(rights, rank[i]);
+			return { x: lerp(a.x, b.x, smoothstep(0, 1, u)), y: lerp(a.y, b.y, u * u), seg: rows };
+		}
 		return { x: a.x, y: lerp(a.y, pileTop(rights) - ballR, u * u), seg: rows };
 	}
 
@@ -222,16 +240,7 @@
 		if (!stacks) return [];
 		const out: { id: string; x: number; y: number }[] = [];
 		counts.forEach((c, k) => {
-			for (let j = 0; j < c; j++) {
-				const lvl = Math.floor(j / perLevel);
-				const onLevel = Math.min(perLevel, c - lvl * perLevel);
-				const col = j % perLevel;
-				out.push({
-					id: `${k}-${j}`,
-					x: binX(k) + (col - (onLevel - 1) / 2) * (2 * ballR + 2),
-					y: BIN_BOT - ballR - lvl * unit
-				});
-			}
+			for (let j = 0; j < c; j++) out.push({ id: `${k}-${j}`, ...slot(k, j) });
 		});
 		return out;
 	});

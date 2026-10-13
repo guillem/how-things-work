@@ -5,6 +5,8 @@ import {
 	binomial,
 	galton,
 	mean,
+	meanBars,
+	normalChance,
 	sampleMeans,
 	sd
 } from '../src/routes/central-limit-theorem/clt';
@@ -47,4 +49,46 @@ test('even from two humps, averages of 30 make one bell: most within ±2σ/√n'
 	const near =
 		Array.from(singles).filter((v) => Math.abs(v - mean(shape)) < 0.1).length / singles.length;
 	expect(near).toBeLessThan(0.1);
+});
+
+/** Exact chances of each sum of n bar indices (0 … 19n) for draws from w. */
+function sumChances(w: number[], n: number) {
+	const p = w.map((v) => Math.max(0, v));
+	const s = p.reduce((a, b) => a + b, 0);
+	const q = p.map((v) => v / s);
+	let dist = [1];
+	for (let k = 0; k < n; k++) {
+		const next = new Array<number>(dist.length + q.length - 1).fill(0);
+		dist.forEach((a, i) => q.forEach((b, j) => (next[i + j] += a * b)));
+		dist = next;
+	}
+	return dist;
+}
+test('the histogram of averages of 30 or more is a smooth bell, for every starting shape', () => {
+	for (const [name, shape] of Object.entries(SHAPES)) {
+		for (const n of [29, 30, 31, 50]) {
+			const mu = mean(shape);
+			const s = sd(shape) / Math.sqrt(n);
+			const bars = meanBars(shape, n);
+			const share = new Map<number, number>();
+			sumChances(shape, n).forEach((pr, sum) => {
+				if (pr === 0) return;
+				const b = bars.barOf((sum + n / 2) / (20 * n));
+				share.set(b, (share.get(b) ?? 0) + pr);
+			});
+			let within = 0;
+			for (const [b, pr] of share) {
+				const a = bars.left(b);
+				const c = a + bars.width / 2;
+				if (Math.abs(c - mu) > s) continue;
+				within++;
+				// the share in each bar near the centre is what the bell curve predicts
+				const bell = normalChance(a, a + bars.width, mu, s);
+				expect(pr / bell, `${name}, n = ${n}, bar at ${c.toFixed(3)}`).toBeGreaterThan(0.85);
+				expect(pr / bell, `${name}, n = ${n}, bar at ${c.toFixed(3)}`).toBeLessThan(1.15);
+			}
+			// fine enough to show a bell: several bars across ±σ/√n
+			expect(within, `${name}, n = ${n}`).toBeGreaterThanOrEqual(4);
+		}
+	}
 });

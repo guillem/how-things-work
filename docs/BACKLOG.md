@@ -75,9 +75,6 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   both light captions stay in the accessibility tree at every light level (only their opacity
   changes).
 
-- **central-limit-theorem** — on small Galton boards (2–10 rows) a falling ball lands at the bin's
-  centre, then snaps sideways to its slot in the level; balls on that level re-centre as it fills.
-
 - **atmosphere-weather** — the cold/warm/stationary front classification lives in `MapScene`
   and has no test; moving it into `atmosphere.ts` would allow a model test.
 
