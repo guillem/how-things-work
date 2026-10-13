@@ -28,3 +28,6 @@ playwright-report
 # Batch review dry runs
 docs/reviews/dry-run.json
 .playwright-chromium
+
+# Agent worktrees (Claude Code)
+.claude/worktrees/
