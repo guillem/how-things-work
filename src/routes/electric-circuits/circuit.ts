@@ -142,7 +142,11 @@ export function parseBoard(s: unknown): Board | null {
 		if (!kind) return null;
 		const part: Part = { kind, a: +a, b: +bb };
 		if (kind === 'switch') part.closed = closed === '1';
-		else if (value !== undefined) part.value = +value;
+		else if (value !== undefined) {
+			const x = +value;
+			if (!Number.isFinite(x)) return null;
+			part.value = x;
+		}
 		if (![part.a, part.b].every((x) => Number.isInteger(x) && x >= 0 && x < b.cols * b.rows))
 			return null;
 		b = place(b, part);

@@ -4,10 +4,13 @@
  * distance), time in years, so the Sun's GM = 4π² AU³/yr² and the Earth's
  * orbit (1 AU, circular speed 2π AU/yr) takes exactly one year.
  *
- * Bodies move under the Sun's pull (the Sun stays fixed: it is ~330 000
- * times heavier than the Earth) and, when there are several planets, each
- * other's pull too. Integrated with the velocity-Verlet (leapfrog) method,
- * which keeps orbits from slowly spiralling in or out.
+ * Positions are measured from the Sun (heliocentric). A lone massless body
+ * feels only the Sun's pull. A planet of mass m (in Sun masses) also pulls the
+ * Sun, so relative to the Sun it feels GM(1 + m)/r²; and when there are several
+ * planets, each feels the others' pull minus the pull they give the Sun (the
+ * "indirect" term: the Sun is pulled about too, and positions are measured from
+ * it). Integrated with the velocity-Verlet (leapfrog) method, which keeps orbits
+ * from slowly spiralling in or out.
  */
 
 export const GM = 4 * Math.PI ** 2; // AU³ / yr², the Sun
@@ -16,6 +19,8 @@ export const EARTH_MASS = 3.003e-6;
 export const JUPITER_MASS = 9.546e-4;
 /** 1 AU/yr in km/s. */
 export const AU_PER_YEAR_KMS = 4.74;
+/** The circular speed at 1 AU (the Earth's mean orbital speed) in km/s: 2π AU/yr ≈ 29.8. */
+export const EARTH_SPEED_KMS = 2 * Math.PI * AU_PER_YEAR_KMS;
 
 export interface Vec {
 	x: number;
@@ -77,7 +82,7 @@ export function elements(r: Vec, v: Vec): Elements {
 export interface Body {
 	r: Vec;
 	v: Vec;
-	/** Mass as a fraction of the Sun's (pulls on the other planets). */
+	/** Mass as a fraction of the Sun's (pulls on the Sun and on the other planets). */
 	m: number;
 }
 
@@ -111,15 +116,18 @@ export function integrate(bodies: Body[], years: number, sample = 0.005, sub = 8
 		r.map((ri, i) => {
 			if (crashed[i]) return { x: 0, y: 0 };
 			const d = Math.hypot(ri.x, ri.y);
-			let ax = (-GM * ri.x) / d ** 3;
-			let ay = (-GM * ri.y) / d ** 3;
+			const gi = GM * (1 + bodies[i].m);
+			let ax = (-gi * ri.x) / d ** 3;
+			let ay = (-gi * ri.y) / d ** 3;
 			for (let j = 0; j < n; j++) {
 				if (j === i || crashed[j] || bodies[j].m === 0) continue;
 				const dx = r[j].x - ri.x;
 				const dy = r[j].y - ri.y;
 				const dd = Math.hypot(dx, dy) + 1e-4; // softening: planets never quite collide
-				ax += (GM * bodies[j].m * dx) / dd ** 3;
-				ay += (GM * bodies[j].m * dy) / dd ** 3;
+				const dj = Math.hypot(r[j].x, r[j].y);
+				// Direct pull of planet j, minus the pull j gives the Sun (the Sun is pulled too).
+				ax += GM * bodies[j].m * (dx / dd ** 3 - r[j].x / dj ** 3);
+				ay += GM * bodies[j].m * (dy / dd ** 3 - r[j].y / dj ** 3);
 			}
 			return { x: ax, y: ay };
 		});
@@ -165,8 +173,8 @@ export function sweptArea(t: Track, i: number, s0: number, s1: number) {
 }
 
 /**
- * The planets (mean distance a in AU, period in years) — standard values
- * (NASA planetary fact sheet), for the third-law plot.
+ * The planets (mean distance a in AU, period in years) — JPL approximate
+ * Keplerian elements (Standish), J2000, for the third-law plot.
  */
 export const PLANETS = [
 	{ name: 'Mercury', a: 0.387, period: 0.241 },

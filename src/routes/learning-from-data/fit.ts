@@ -37,8 +37,8 @@ export const truth = (x: number) => 0.45 * Math.sin(5.5 * x + 0.6) + 0.2 * x;
 
 /**
  * `n` examples with x spread over [−0.95, 0.95] (jittered), y = truth + noise
- * of standard deviation `noise`. Every third point (from `offset`) is marked
- * as a test point when `testEvery` > 0.
+ * of standard deviation `noise`. Every `testEvery`-th point, starting at index 1,
+ * is marked as a test point (none when `testEvery` is 0).
  */
 export function makeData(n: number, noise: number, seed = 1, testEvery = 3) {
 	const rand = rng(seed);

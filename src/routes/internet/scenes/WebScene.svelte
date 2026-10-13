@@ -5,7 +5,7 @@
 	 * The messages and their times come from `webRequest` (round trip to the web
 	 * server from `params.rtt`, resolver cache from `params.cached`).
 	 *
-	 * Playback is 100× slower than real time, so a longer round trip visibly
+	 * Playback is 10× slower than real time, so a longer round trip visibly
 	 * takes longer; the bar below is drawn to a fixed scale in milliseconds.
 	 * Reduced motion shows the finished diagram.
 	 *

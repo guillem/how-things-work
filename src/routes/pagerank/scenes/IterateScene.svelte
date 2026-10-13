@@ -50,10 +50,14 @@
 	const ROUNDS = 30;
 	const history = $derived(rounds(web, ROUNDS, d));
 	const final = $derived(pagerank(web, d).rank);
-	/** Total change |r_k − r_(k−1)| summed over pages, for k = 1…ROUNDS. */
+	/**
+	 * Share of all rank that moved to other pages in round k: half of Σ|r_k − r_(k−1)|,
+	 * because rank is conserved and every unit that moves is counted where it leaves and
+	 * again where it arrives.
+	 */
 	const change = $derived(
 		history.map((r, k) =>
-			k === 0 ? 0 : r.reduce((s, v, i) => s + Math.abs(v - history[k - 1][i]), 0)
+			k === 0 ? 0 : 0.5 * r.reduce((s, v, i) => s + Math.abs(v - history[k - 1][i]), 0)
 		)
 	);
 	const changeMax = $derived(niceMax(Math.max(...change) * 100));

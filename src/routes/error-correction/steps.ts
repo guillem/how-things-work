@@ -82,9 +82,9 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'hamming', flips: '0000000' },
 			duration: 26,
 			body: `
-<p>In 1950 Richard Hamming, at Bell Labs, used <em>several</em> parity checks that overlap. Put the four data bits where three circles cross and give each circle its own check bit, numbered 1, 2 and 4. Each check bit is chosen so that <strong>its circle</strong> holds an even number of 1s.</p>
+<p>In the late 1940s Richard Hamming, at Bell Labs, used <em>several</em> parity checks that overlap (he published the idea in 1950). Put the four data bits in the overlaps of three circles and give each circle its own check bit, numbered 1, 2 and 4. Each check bit is chosen so that <strong>its circle</strong> holds an even number of 1s.</p>
 <p>That makes 7 bits in all, a <dfn data-def="A code that sends blocks of 7 bits, 4 of them data and 3 of them check bits, and can repair any single flipped bit in a block.">Hamming (7, 4) code</dfn>. Click the message bits at the top right and watch the three check bits follow, so that every circle stays even.</p>`,
-			notes: `<p>Hamming was running long jobs on Bell Labs' relay computers, unattended over nights and weekends. The machines could detect an error but not fix it, so they simply stopped. He set out to make a code that would repair the fault and carry on.</p>`
+			notes: `<p>Hamming was running long jobs on Bell Labs' relay computers, unattended over nights and weekends. The machines could detect an error but not fix it, so they abandoned his job and moved on to the next one, and he came back on Monday to nothing. He set out to make a code that would repair the fault and carry on.</p>`
 		},
 		{
 			id: 'repair',
@@ -96,7 +96,7 @@ export const spec: ExplainerSpec = {
 			controls: bitControls,
 			body: `
 <p>Noise flipped one bit on the way. The receiver checks each circle: two are now odd, one is still even. The damaged bit must be inside <strong>both odd circles</strong> and <strong>outside the even one</strong>, and exactly one spot in the diagram fits. The receiver flips it back. No resending needed.</p>
-<p>Click any other single bit, data or check, to move the error. Every one of the 7 positions has its own pattern of odd and even circles, so any single flip can be found and repaired.</p>`
+<p>Click the flipped bit to undo it (or press <em>Undo all flips</em>), then click any other single bit, data or check, to put the error there. Every one of the 7 positions has its own pattern of odd and even circles, so any single flip can be found and repaired.</p>`
 		},
 		{
 			id: 'address',
@@ -122,7 +122,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now two bits have flipped. The checks fail in a pattern that matches neither of them: it points to a third, <em>correct</em> bit. The decoder can't tell one error from two, so it confidently "repairs" that bit. Here the message comes out with three bits wrong instead of two.</p>
 <p>A Hamming code is built for at most one flip per block. Try other pairs: every pair of flips is mistaken for a single flip somewhere else.</p>`,
-			notes: `<p>One more parity bit over the whole block (the <em>extended</em> Hamming code) tells the two cases apart: one flip makes it odd, two flips leave it even. It still can't repair a double error, but it can raise the alarm instead of making things worse. Computer memory with ECC does exactly this, storing 8 check bits with every 64 data bits.</p>`
+			notes: `<p>One more parity bit over the whole block (the <em>extended</em> Hamming code) tells the two cases apart: one flip makes it odd, two flips leave it even. It still can't repair a double error, but it can raise the alarm instead of making things worse. Computer memory with error-correcting code (ECC) does exactly this, storing 8 check bits with every 64 data bits.</p>`
 		},
 		{
 			id: 'compare',

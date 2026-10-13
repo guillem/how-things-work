@@ -16,6 +16,15 @@ test('launched slower than circular speed, the planet goes round an ellipse', as
 	await expect(stage(page)).not.toContainText('escape (');
 });
 
+test('the slider and the card quote the same launch speed', async ({ page }) => {
+	await open(page, './orbits-kepler/#launch');
+	await page.locator('input[type=range][data-control=speed]').fill('1.7');
+	await expect(
+		page.locator('label.control', { has: page.locator('[data-control=speed]') })
+	).toContainText('50.6 km/s');
+	await expect(stage(page)).toContainText('50.6 km/s');
+});
+
 test('launched above the escape speed, the planet escapes on a hyperbola', async ({ page }) => {
 	await open(page, './orbits-kepler/#launch');
 	await page.locator('input[type=range][data-control=speed]').fill('1.6');

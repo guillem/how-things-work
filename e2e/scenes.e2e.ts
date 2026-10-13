@@ -28,11 +28,7 @@ for (const spec of specs) {
 			for (const step of spec.steps) {
 				test(`#${step.id} (${step.scene} scene) renders without errors`, async ({ page }) => {
 					const errors = watchErrors(page);
-					// orbits-kepler #two occasionally exceeds the default 5 s expectation
-					// for the first render under the full parallel run (passes alone and
-					// on rerun): its 30-year replay is the heaviest first frame.
-					const slow = spec.slug === 'orbits-kepler' && step.id === 'two';
-					const wait = { timeout: slow ? 15_000 : 5_000 };
+					const wait = { timeout: 5_000 };
 					await page.goto(`./${spec.slug}/#${step.id}`);
 					await expect(page.locator('aside h2')).toHaveText(step.title, wait);
 					// The scene is lazy-loaded: wait until it has drawn something.

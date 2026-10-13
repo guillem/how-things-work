@@ -80,7 +80,8 @@ export const spec: ExplainerSpec = {
 	chapters: [
 		{ id: 'packets', title: 'Packets' },
 		{ id: 'trouble', title: 'When things go wrong' },
-		{ id: 'web', title: 'A web page' }
+		{ id: 'web', title: 'A web page' },
+		{ id: 'summary', title: 'Nobody in charge' }
 	],
 	steps: [
 		{
@@ -119,8 +120,8 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [cut],
 			body: `
-<p>Now the link between D and G fails while the message is on its way. Packets on the wire are lost. D and G notice first; the news spreads router by router (the rings), and each router changes its own arrow only when the news reaches it. Until then it keeps sending packets towards the dead link.</p>
-<p>Packets sent later go round by another route, so <strong>packets of one message can take different routes</strong> and arrive out of order. Ben doesn't mind: he sorts them by their numbers. Click any link to make it fail instead.</p>`,
+<p>Now the link between D and G fails while the message is on its way. Packets on the wire are lost; Ada will notice they never arrived and send them again (the next step shows how). D and G notice first; the news spreads router by router (the rings), and each router changes its own arrow only when the news reaches it. Until then it keeps sending packets towards the dead link.</p>
+<p>Packets sent later go round by another route, so <strong>packets of one message can take different routes</strong> and arrive out of order. Ben doesn't mind: he sorts them by their numbers. Click any link to make it fail instead. Cut a side link such as B–F and the message isn't affected at all, though some arrows still change.</p>`,
 			notes: `<p>When nothing changes, the packets of one conversation normally all follow the same path. Different routes appear when the routes change part-way through, as here. Networks that spread traffic over several equally good paths usually keep each connection on one of them, precisely so its packets don't arrive out of order.</p>`
 		},
 		{
@@ -148,7 +149,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Router G also carries other people's traffic (grey). It forwards one packet at a time; the others wait in its <dfn data-def="The packets waiting in a router's memory for their turn to be sent on.">queue</dfn>, and its memory holds only a few. When the queue is full, any packet that arrives is thrown away.</p>
 <p>Ordinary routing doesn't steer round a busy router: routes depend on the links, not on how busy a router is. So again it's Ada's timeouts that put things right. Turn the other traffic up and down.</p>`,
-			notes: `<p>Real senders also slow down when packets go missing (TCP's congestion control), and speed up again when they get through. That polite back-off by millions of senders, not any central traffic control, is what keeps the Internet from jamming solid.</p>`
+			notes: `<p>Here a router handles one packet at a time; a real router keeps a queue for each outgoing link, and a jam forms where more traffic heads for one link than it can carry.</p>
+<p>Real senders also slow down when packets go missing (TCP's congestion control), and speed up again when they get through. That polite back-off by millions of senders, not any central traffic control, is what keeps the Internet from jamming solid.</p>`
 		},
 		{
 			id: 'web',
@@ -160,12 +162,12 @@ export const spec: ExplainerSpec = {
 			controls: [rtt, cached],
 			body: `
 <p>Type example.org and press Enter. First the browser needs the address: it asks a <dfn data-def="The Domain Name System: the Internet's directory, which turns names like example.org into addresses.">DNS</dfn> resolver, which asks a root server, then the .org servers, then example.org's own name server. Resolvers remember answers, so usually this step is short.</p>
-<p>Then three round trips to the web server: one to open a TCP connection, one to agree secret keys (<dfn data-def="Transport Layer Security: encrypts the connection; it is the S in https.">TLS</dfn>), and one to ask for the page (“GET /”) and receive it. Every message is packets, routed hop by hop as before. Change the round trip and see why a distant server feels slow.</p>`,
-			notes: `<p>Here the resolver is assumed 20 ms away and each name server 40 ms. The page itself usually needs many more packets and further requests for images and scripts, and browsers reuse connections to save the handshakes. Newer protocols (QUIC, used by HTTP/3) merge the connection and key handshakes into one round trip.</p>`
+<p>Then three round trips (there and back) to the web server: one to open a TCP connection, one to agree secret keys (<dfn data-def="Transport Layer Security: encrypts the connection; it is the S in https.">TLS</dfn>), and one to ask for the page (“GET /”) and receive it. Every message is packets, routed hop by hop as before. Change the round trip and see why a distant server feels slow.</p>`,
+			notes: `<p>Here the round trip to the resolver is assumed to be 20 ms, and to each name server 40 ms. Even without the answer, a resolver usually remembers where the .org servers are, so it skips the first two questions. The page itself usually needs many more packets and further requests for images and scripts, and browsers reuse connections to save the handshakes. Newer protocols (QUIC, used by HTTP/3) merge the connection and key handshakes into one round trip.</p>`
 		},
 		{
 			id: 'nocenter',
-			chapter: 'web',
+			chapter: 'summary',
 			title: 'Nobody in charge',
 			scene: 'net',
 			hints: {

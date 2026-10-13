@@ -82,27 +82,31 @@ test('example web: a link from an important page beats many links from unimporta
 	expect(c[0]).toBe(1); // A: one incoming link (from C)
 	expect(c[1]).toBe(4); // B: four
 	expect(r[0]).toBeGreaterThan(1.5 * r[1]);
+	// "A's one vote comes from C, the most important page."
+	expect(r.indexOf(Math.max(...r))).toBe(2);
 });
 
 test('starter web: what lifts E, and what does not', () => {
 	const E = 4;
 	const base = pagerank(STARTER).rank[E];
 	expect(base).toBeCloseTo(0.15 / 5, 10); // nobody links to E: only its share of jumps
+	// A is the top page (the step asks the reader to get "A, the top page" to link to E).
+	const start = pagerank(STARTER).rank;
+	expect(start.indexOf(Math.max(...start))).toBe(0);
 	// E's own links change nothing for E.
 	for (let j = 0; j < 4; j++)
 		expect(pagerank(addLink(STARTER, E, j)).rank[E]).toBeCloseTo(base, 10);
 	// A link from A (the top page) lifts it about six-fold.
 	const fromA = pagerank(addLink(STARTER, 0, E)).rank[E];
-	expect(fromA / base).toBeGreaterThan(5);
-	// Three new pages that link to E barely do better than double it.
+	expect(fromA / base).toBeCloseTo(6, 0);
+	// Three new pages that link to E: about 2.2-fold, as the page says.
 	let farm = STARTER;
 	for (let k = 0; k < 3; k++) {
 		farm = addPage(farm, { x: 0, y: 0 });
 		farm = addLink(farm, farm.pages.length - 1, E);
 	}
 	const farmed = pagerank(farm).rank[E];
-	expect(farmed).toBeGreaterThan(base);
-	expect(farmed).toBeLessThan(fromA / 2);
+	expect(farmed / base).toBeCloseTo(2.2, 1);
 });
 
 test('starter web: a farm that E links back to beats A’s vote', () => {

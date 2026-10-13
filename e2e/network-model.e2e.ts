@@ -109,8 +109,11 @@ test('cutting D–G mid-message: packets on it are lost, the rest go round, and 
 	expect(r.sends.some((s) => s.length === 2)).toBe(true);
 	expect(new Set(pathsOf(r)).size).toBeGreaterThanOrEqual(2);
 	expect(arrivalOrder(r)).not.toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
-	// Ben still gets the right message, by sorting on the numbers.
-	expect(reassemble(r.chunks, r.count)).toBe(MESSAGE);
+	// Ben still gets the right message, by sorting on the numbers of what he received.
+	const got: string[] = [];
+	for (const p of r.packets)
+		if (p.kind === 'data' && p.fate === 'delivered') got[p.seq] = r.chunks[p.seq];
+	expect(reassemble(got, r.count)).toBe(MESSAGE);
 	// No packet crosses D–G after the cut.
 	for (const p of r.packets)
 		for (const s of p.segments)
@@ -145,6 +148,11 @@ test('random loss is reproducible from the seed, and the message still gets thro
 		expect(u).toBeGreaterThanOrEqual(0);
 		expect(u).toBeLessThan(1);
 	}
+});
+
+test('even at the highest loss the page offers (10%), Ada keeps resending until the whole message arrives', () => {
+	for (let seed = 1; seed <= 1000; seed++)
+		expect(delivered(simulate({ loss: 0.1, seed })), `seed ${seed}`).toBe(true);
 });
 
 test('a busy router fills its queue and drops packets; the queue never exceeds its size', () => {

@@ -131,7 +131,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [speedFast, restart],
 			body: `
-<p>Now the surfer hops much faster. At first the counts are ragged — they depend on where it happened to wander. After thousands of hops, the <em>share</em> of time spent on each page stops changing, and restarting with a new surfer gives the same shares.</p>
+<p>Now the surfer hops much faster. At first the counts are ragged — they depend on where it happened to wander. After thousands of hops the <em>shares</em> of time spent on each page hardly change any more, and a new surfer ends up with nearly the same shares; the longer it runs, the closer they get.</p>
 <p>Those shares are the <strong>PageRank</strong>: the marks on the bars are the exact values. Pages that many links lead to get visited often, but so do pages that a frequently visited page links to — exactly the "important pages make you important" rule, with no circle in sight.</p>`,
 			notes: `<p>The shares settle because the surfer is a <dfn data-def="A random process where the next state depends only on the current one — here, the next page depends only on the page the surfer is on.">Markov chain</dfn>; the random jumps guarantee it has a single long-run distribution, which it approaches whatever page it starts on.</p>`
 		},
@@ -171,7 +171,7 @@ export const spec: ExplainerSpec = {
 			controls: [tool, addPage, resetWeb, speedFast, restart],
 			body: `
 <p>Now it is your web. Drag from one page to another to add a link; with the erase tool, click a link or a page to remove it; add pages with the button. The ranks — the marks on the bars, and the size of each page — are recomputed instantly, and the surfer starts again on the new web.</p>
-<p>Try a few experiments. Make a ring where each page links to the next: every page gets the same rank. Make one page link to all the others and nobody link back: it sinks to the bottom. Make a dead end and a trap, and see that the jumps still keep everyone above zero.</p>`
+<p>Try a few experiments. Make a ring through all the pages, with no other links: every page gets the same rank. Make one page link to all the others and nobody link back: it sinks to the bottom. Make a dead end and a trap, and see that the jumps still keep everyone above zero.</p>`
 		},
 		{
 			id: 'boost',
@@ -197,10 +197,10 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [damping],
 			body: `
-<p>Simulating a surfer for billions of hops would be slow. Instead, follow <em>all</em> possible surfers at once. Start every page with an equal share of rank. Then, in each round, every page passes 85% of its rank along its links, split equally, and the remaining 15% is spread evenly over all pages (a dead end spreads all of its rank). The slider changes the 85%. Each page's new rank is what it receives.</p>
+<p>Simulating a surfer for billions of hops would be slow. Instead, follow <em>all</em> possible surfers at once. Start every page with an equal share of rank. Then, in each round, every page passes a share of its rank along its links (85%, unless you moved the slider), split equally, and the rest is spread evenly over all pages (a dead end spreads all of its rank). The slider sets that share. Each page's new rank is what it receives.</p>
 <p>Watch the shares flow round the web. After a handful of rounds they barely change; a few dozen rounds give the ranks to many decimal places — the same values the surfer was slowly approaching.</p>
 <p>That is all PageRank is: <strong>the importance of a page, worked out from the link structure alone</strong>, by letting rank flow along the links until it settles.</p>`,
-			notes: `<p>Written out, page <i>p</i>'s new rank is (1 − d)/N + d × the sum, over pages <i>q</i> linking to <i>p</i>, of rank(<i>q</i>) ÷ (number of links on <i>q</i>) — plus, for every dead end, d × its rank ÷ N. The ranks that stay unchanged by this update form an <dfn data-def="A vector that a linear transformation only stretches, without changing its direction. PageRank is the eigenvector, with eigenvalue 1, of the web's 'Google matrix'.">eigenvector</dfn>, with eigenvalue 1, of the web's "Google matrix" — the link matrix with the random jumps and the dead-end rule built in — and repeating the update is the "power method" for finding it. Page, Brin and colleagues reported that about 52 rounds were enough for their 322-million-link web.</p><p>The 1998 paper writes (1 − d) without dividing by N, which gives the same ranks multiplied by N. It also set dead ends aside during the calculation; sharing their rank out evenly, as here, is the usual modern convention.</p>`
+			notes: `<p>Written out, page <i>p</i>'s new rank is (1 − d)/N + d × the sum, over pages <i>q</i> linking to <i>p</i>, of rank(<i>q</i>) ÷ (number of links on <i>q</i>) — plus, for every dead end, d × its rank ÷ N. The ranks that stay unchanged by this update form an <dfn data-def="A vector that a linear transformation only stretches, without changing its direction. PageRank is the eigenvector, with eigenvalue 1, of the web's 'Google matrix'.">eigenvector</dfn>, with eigenvalue 1, of the web's "Google matrix" — the link matrix with the random jumps and the dead-end rule built in — and repeating the update is the "power method" for finding it. Page, Brin and colleagues reported that about 52 rounds were enough for their 322-million-link web.</p><p>Brin and Page's 1998 paper on Google writes (1 − d) without dividing by N, which gives the same ranks multiplied by N. Their PageRank technical report set dead ends aside during the calculation; sharing their rank out evenly, as here, is the usual modern convention.</p>`
 		}
 	]
 };

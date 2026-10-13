@@ -113,18 +113,27 @@ test('energy: the battery delivers what the bulbs take', () => {
 test('a wire straight across the battery is a short circuit', () => {
 	const b = place(SIMPLE, { kind: 'wire', a: peg(SIMPLE, 0, 1), b: peg(SIMPLE, 1, 1) });
 	expect(solve(b).short).toBe(false); // a dangling wire changes nothing
-	const shorted = place(
-		place(place(b, { kind: 'wire', a: peg(b, 0, 1), b: peg(b, 0, 2) }), {
-			kind: 'wire',
-			a: peg(b, 0, 2),
-			b: peg(b, 1, 2)
-		}),
-		{ kind: 'wire', a: peg(b, 0, 2), b: peg(b, 1, 2) }
-	);
+	const shorted = place(place(b, { kind: 'wire', a: peg(b, 0, 1), b: peg(b, 0, 2) }), {
+		kind: 'wire',
+		a: peg(b, 0, 2),
+		b: peg(b, 1, 2)
+	});
 	const s = solve(shorted);
 	expect(s.short).toBe(true);
 	// Almost no current is left for the bulb.
 	expect(Math.abs(s.current[partAt(shorted, peg(b, 5, 1), peg(b, 5, 2))])).toBeLessThan(0.01);
+});
+
+test('two batteries in a row add their voltages; turned round, they cancel', () => {
+	// The build step's suggestion: a second 6 V battery in place of a wire on the bottom side
+	// of the loop, first pointing the same way round the loop, then turned round.
+	const bulb = idx(SIMPLE, 'bulb')[0];
+	const second = (a: [number, number], b: [number, number]) =>
+		place(SIMPLE, { kind: 'battery', a: peg(SIMPLE, ...a), b: peg(SIMPLE, ...b) });
+	const aiding = second([3, 3], [2, 3]);
+	expect(Math.abs(solve(aiding).current[bulb])).toBeCloseTo(1, 2); // 12 V / 12 Ω
+	const opposed = second([2, 3], [3, 3]);
+	expect(Math.abs(solve(opposed).current[bulb])).toBeCloseTo(0, 2);
 });
 
 test('an unconnected part sits at 0 V and nothing breaks', () => {
@@ -146,4 +155,6 @@ test('the text form round-trips', () => {
 		expect(serializeBoard(parseBoard(s)!)).toBe(s);
 	}
 	expect(parseBoard('junk')).toBeNull();
+	// A value that is not a number is rejected, rather than turning every reading into NaN.
+	expect(parseBoard('8x5|B 0 1 x;L 1 2 12')).toBeNull();
 });

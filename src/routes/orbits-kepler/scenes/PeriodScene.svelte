@@ -12,7 +12,7 @@
 	 */
 	import { clamp } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
-	import { circularSpeed, elements, PLANETS } from '../orbits';
+	import { EARTH_SPEED_KMS, circularSpeed, elements, PLANETS } from '../orbits';
 
 	let { t, params }: StageProps = $props();
 
@@ -283,10 +283,16 @@
 	<circle cx={RX + 6} cy="424" r="6.5" fill="var(--orb-planet)" />
 	{@render txt(RX + 20, 429, 'Your orbit (launched across at 1 AU)', 13, { weight: 700 })}
 	{@render txt(RX, 456, 'launch speed', 12, { muted: true })}
-	{@render txt(RR, 456, `${(s * 29.8).toFixed(1)} km/s (${s.toFixed(2)} × circular)`, 13, {
-		anchor: 'end',
-		tabular: true
-	})}
+	{@render txt(
+		RR,
+		456,
+		`${(s * EARTH_SPEED_KMS).toFixed(1)} km/s (${s.toFixed(2)} × circular)`,
+		13,
+		{
+			anchor: 'end',
+			tabular: true
+		}
+	)}
 	{@render txt(RX, 480, yourText, 13, {
 		weight: 600,
 		color: bound ? undefined : 'var(--orb-planet)',
