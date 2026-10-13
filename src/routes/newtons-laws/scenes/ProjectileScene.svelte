@@ -34,7 +34,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { G, at, bestAngle, flight, summary, type Sample2D } from '../physics';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -397,7 +397,9 @@
 	<line x1="16" x2="944" y1={GY} y2={GY} stroke="var(--stage-line)" stroke-width="1.5" />
 	{#each xTicks as v (v)}
 		<line x1={px(v)} x2={px(v)} y1={GY} y2={GY + 12} stroke="var(--stage-line)" />
-		{@render txt(px(v), GY + 27, tickText(v), 12, { anchor: 'middle', muted: true })}
+		<Readout id="x-tick">
+			{@render txt(px(v), GY + 27, tickText(v), 12, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/each}
 	<!-- height ruler (same scale as the ground) -->
 	{#if yTicks.length}
@@ -410,12 +412,16 @@
 		/>
 		{#each yTicks as v (v)}
 			<line x1={RULER - 5} x2={RULER + 5} y1={py(v)} y2={py(v)} stroke="var(--stage-line)" />
-			{@render txt(RULER - 8, py(v) + 4, tickText(v), 12, { anchor: 'end', muted: true })}
+			<Readout id="y-tick">
+				{@render txt(RULER - 8, py(v) + 4, tickText(v), 12, { anchor: 'end', muted: true })}
+			</Readout>
 		{/each}
-		{@render txt(RULER, py(yTicks[yTicks.length - 1]) - 14, 'height', 11, {
-			anchor: 'middle',
-			muted: true
-		})}
+		<Readout id="y-title">
+			{@render txt(RULER, py(yTicks[yTicks.length - 1]) - 14, 'height', 11, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</Readout>
 	{/if}
 
 	<!-- ================= range: other angles ================= -->
@@ -430,19 +436,23 @@
 					opacity="0.75"
 				/>
 				{#if g.a !== angle}
-					{@render txt(px(g.f.range / 2), py(g.f.height) - 7, `${g.a}°`, 11, {
-						anchor: 'middle',
-						muted: true
-					})}
+					<Readout id="ghost-angle">
+						{@render txt(px(g.f.range / 2), py(g.f.height) - 7, `${g.a}°`, 11, {
+							anchor: 'middle',
+							muted: true
+						})}
+					</Readout>
 				{/if}
 			{/each}
 			{#each pairs as m (m.id)}
 				<circle cx={px(m.x)} cy={GY} r="4" fill="var(--stage-ink-muted)" />
-				{@render txt(px(m.x), GY + (m.id === 'p45' ? 72 : 52), m.text, 12, {
-					anchor: 'middle',
-					weight: m.id === 'p45' ? 600 : 500,
-					opacity: smoothstep(0.5, 1, w.range) / Math.max(w.range, 0.01)
-				})}
+				<Readout id="pair-mark">
+					{@render txt(px(m.x), GY + (m.id === 'p45' ? 72 : 52), m.text, 12, {
+						anchor: 'middle',
+						weight: m.id === 'p45' ? 600 : 500,
+						opacity: smoothstep(0.5, 1, w.range) / Math.max(w.range, 0.01)
+					})}
+				</Readout>
 			{/each}
 		</g>
 	{/if}
@@ -513,20 +523,24 @@
 
 	<!-- landing mark and range -->
 	<circle cx={px(main.range)} cy={GY} r="4.5" fill="var(--stage-ink)" />
-	{@render txt(
-		clamp(px(main.range), 16 + pillW(rangePill, 13) / 2, 944 - pillW(rangePill, 13) / 2),
-		GY + 52,
-		rangePill,
-		13,
-		{ anchor: 'middle', weight: 600, pill: true, opacity: 1 - smoothstep(0, 0.5, w.range) }
-	)}
+	<Readout id="range-pill">
+		{@render txt(
+			clamp(px(main.range), 16 + pillW(rangePill, 13) / 2, 944 - pillW(rangePill, 13) / 2),
+			GY + 52,
+			rangePill,
+			13,
+			{ anchor: 'middle', weight: 600, pill: true, opacity: 1 - smoothstep(0, 0.5, w.range) }
+		)}
+	</Readout>
 	{#if w.drag > 0.01 && bestShown}
-		{@render txt(px(bestFlight.range), GY + 76, `best: ${best}°`, 12, {
-			anchor: 'middle',
-			weight: 600,
-			color: 'var(--explainer-accent)',
-			opacity: w.drag
-		})}
+		<Readout id="best-mark">
+			{@render txt(px(bestFlight.range), GY + 76, `best: ${best}°`, 12, {
+				anchor: 'middle',
+				weight: 600,
+				color: 'var(--explainer-accent)',
+				opacity: w.drag
+			})}
+		</Readout>
 	{/if}
 
 	<!-- ================= launcher, ball and arrows ================= -->
@@ -547,40 +561,42 @@
 			{@render arrow(B.x, B.y, B.x, B.y - vyLen, 'var(--mech-velocity)', o * vOn)}
 			{@render arrow(B.x - 12, B.y + 6, B.x - 12, B.y + 6 + wLen, 'var(--mech-force)', o * wOn)}
 			{#if o > 0.01}
-				{@render txt(hLabel.x, hLabel.y, ms(ball.vx), 12, {
-					anchor: hLabel.anchor,
-					weight: 600,
-					color: 'var(--mech-velocity)',
-					opacity: o
-				})}
-				{#if Math.abs(vyLen) > 10 && o * vOn > 0.01}
+				<Readout id="basic-arrow-labels">
+					{@render txt(hLabel.x, hLabel.y, ms(ball.vx), 12, {
+						anchor: hLabel.anchor,
+						weight: 600,
+						color: 'var(--mech-velocity)',
+						opacity: o
+					})}
+					{#if Math.abs(vyLen) > 10 && o * vOn > 0.01}
+						{@render txt(
+							vLabelLeft ? B.x - 9 : B.x + 9,
+							ball.vy >= 0
+								? Math.min(B.y - vyLen / 2 + 4, B.y - 12)
+								: Math.max(B.y - vyLen / 2 + 4, B.y + 22),
+							`${ms(ball.vy)} ${ball.vy >= 0 ? 'up' : 'down'}`,
+							12,
+							{
+								anchor: vLabelLeft ? 'end' : 'start',
+								weight: 600,
+								color: 'var(--mech-velocity)',
+								opacity: o * vOn
+							}
+						)}
+					{/if}
 					{@render txt(
-						vLabelLeft ? B.x - 9 : B.x + 9,
-						ball.vy >= 0
-							? Math.min(B.y - vyLen / 2 + 4, B.y - 12)
-							: Math.max(B.y - vyLen / 2 + 4, B.y + 22),
-						`${ms(ball.vy)} ${ball.vy >= 0 ? 'up' : 'down'}`,
+						weightLeft ? B.x - 18 : B.x - 12,
+						B.y + 6 + wLen + (weightLeft ? 0 : 16),
+						'weight',
 						12,
 						{
-							anchor: vLabelLeft ? 'end' : 'start',
+							anchor: weightLeft ? 'end' : 'middle',
 							weight: 600,
-							color: 'var(--mech-velocity)',
-							opacity: o * vOn
+							color: 'var(--mech-force)',
+							opacity: o * wOn
 						}
 					)}
-				{/if}
-				{@render txt(
-					weightLeft ? B.x - 18 : B.x - 12,
-					B.y + 6 + wLen + (weightLeft ? 0 : 16),
-					'weight',
-					12,
-					{
-						anchor: weightLeft ? 'end' : 'middle',
-						weight: 600,
-						color: 'var(--mech-force)',
-						opacity: o * wOn
-					}
-				)}
+				</Readout>
 			{/if}
 		{/if}
 		<!-- drag: the forces, weight and air -->
@@ -600,20 +616,22 @@
 			)}
 			{#if o > 0.01}
 				{@const wRight = !nearHandle(B.x + 8, B.y + 6 + wLen, 'start', 48)}
-				{@render txt(wRight ? B.x + 8 : B.x - 8, B.y + 6 + wLen, 'weight', 12, {
-					anchor: wRight ? 'start' : 'end',
-					weight: 600,
-					color: 'var(--mech-force)',
-					opacity: o * wOn
-				})}
-				{#if airLen > 6}
-					{@render txt(airLabel.x, airLabel.y, 'air', 12, {
-						anchor: airLabel.anchor,
+				<Readout id="drag-arrow-labels">
+					{@render txt(wRight ? B.x + 8 : B.x - 8, B.y + 6 + wLen, 'weight', 12, {
+						anchor: wRight ? 'start' : 'end',
 						weight: 600,
 						color: 'var(--mech-force)',
-						opacity: o * airOn
+						opacity: o * wOn
 					})}
-				{/if}
+					{#if airLen > 6}
+						{@render txt(airLabel.x, airLabel.y, 'air', 12, {
+							anchor: airLabel.anchor,
+							weight: 600,
+							color: 'var(--mech-force)',
+							opacity: o * airOn
+						})}
+					{/if}
+				</Readout>
 			{/if}
 		{/if}
 		<circle
@@ -642,121 +660,222 @@
 
 	<!-- ================= readout panel ================= -->
 	<g>
-		{@render txt(PX, 48, `Launched at ${speed} m/s, ${angle}°`, 16, { weight: 600 })}
-		{#if slow > 1.05}
-			{@render txt(PX, 68, `replayed ${slow.toFixed(slow < 10 ? 1 : 0)}× slower`, 11, {
-				muted: true
-			})}
+		<Readout
+			id="launch"
+			order={1}
+			label="Launched at"
+			value="{speed} m/s, {angle}°"
+			note={slow > 1.05 ? `${slow.toFixed(slow < 10 ? 1 : 0)}× slow motion` : undefined}
+		>
+			{@render txt(PX, 48, `Launched at ${speed} m/s, ${angle}°`, 16, { weight: 600 })}
+			{#if slow > 1.05}
+				{@render txt(PX, 68, `replayed ${slow.toFixed(slow < 10 ? 1 : 0)}× slower`, 11, {
+					muted: true
+				})}
+			{/if}
+		</Readout>
+		<!-- phones: what the line styles and arrow colours mean -->
+		{#if panel.basic > 0.01}
+			<Readout id="key-velocity" order={20} label="velocity" color="var(--mech-velocity)" />
+			<Readout id="key-weight" order={21} label="weight" color="var(--mech-force)" />
+		{/if}
+		{#if panel.drag > 0.01}
+			<Readout id="key-forces" order={20} label="weight, air" color="var(--mech-force)" />
+			{#if k > 0}
+				<Readout id="key-vacuum" order={21} label="dashed: vacuum" />
+			{/if}
+			{#if bestShown}
+				<Readout
+					id="key-best"
+					order={22}
+					label="dotted: best angle"
+					color="var(--explainer-accent)"
+				/>
+			{/if}
 		{/if}
 
 		<!-- table: with air | vacuum (drag); a single column otherwise -->
 		{#if panel.drag > 0.01}
-			<g opacity={panel.drag}>
-				<line
-					x1={COL1 - 82}
-					x2={COL1 - 60}
-					y1={88}
-					y2={88}
-					stroke="var(--stage-ink)"
-					stroke-width="2.6"
-				/>
-				{@render txt(COL1, 92, k > 0 ? 'with air' : 'air: none', 12, {
-					anchor: 'end',
-					muted: true
-				})}
-				<line
-					x1={COL2 - 76}
-					x2={COL2 - 54}
-					y1={88}
-					y2={88}
-					stroke="var(--stage-ink-muted)"
-					stroke-width="1.6"
-					stroke-dasharray="6 5"
-				/>
-				{@render txt(COL2, 92, 'vacuum', 12, { anchor: 'end', muted: true })}
-			</g>
+			<Readout id="table-head">
+				<g opacity={panel.drag}>
+					<line
+						x1={COL1 - 82}
+						x2={COL1 - 60}
+						y1={88}
+						y2={88}
+						stroke="var(--stage-ink)"
+						stroke-width="2.6"
+					/>
+					{@render txt(COL1, 92, k > 0 ? 'with air' : 'air: none', 12, {
+						anchor: 'end',
+						muted: true
+					})}
+					<line
+						x1={COL2 - 76}
+						x2={COL2 - 54}
+						y1={88}
+						y2={88}
+						stroke="var(--stage-ink-muted)"
+						stroke-width="1.6"
+						stroke-dasharray="6 5"
+					/>
+					{@render txt(COL2, 92, 'vacuum', 12, { anchor: 'end', muted: true })}
+				</g>
+			</Readout>
 		{/if}
 		{#each [{ id: 'range', label: 'range', a: m1(main.range), b: m1(vacuum.range) }, { id: 'peak', label: 'peak height', a: m1(main.height), b: m1(vacuum.height) }, { id: 'time', label: 'flight time', a: sec(main.time), b: sec(vacuum.time) }] as row, i (row.id)}
 			{@const y = 118 + 22 * i}
-			{@render txt(PX, y, row.label, 13, { muted: true })}
-			{@render txt(COL1, y, row.a, 14, { anchor: 'end', weight: 600 })}
-			{#if panel.drag > 0.01}
-				{@render txt(COL2, y, row.b, 14, { anchor: 'end', weight: 600, opacity: panel.drag })}
-			{/if}
+			<Readout
+				id="table-{row.id}"
+				order={2 + i}
+				label={row.label[0].toUpperCase() + row.label.slice(1)}
+				value={row.a}
+				note={panel.drag > 0.5 && k > 0 ? `vacuum ${row.b}` : undefined}
+				opacity={row.id === 'range' ? 1 : 1 - panel.range}
+			>
+				{@render txt(PX, y, row.label, 13, { muted: true })}
+				{@render txt(COL1, y, row.a, 14, { anchor: 'end', weight: 600 })}
+				{#if panel.drag > 0.01}
+					{@render txt(COL2, y, row.b, 14, { anchor: 'end', weight: 600, opacity: panel.drag })}
+				{/if}
+			</Readout>
 		{/each}
 		{#if panel.drag > 0.01}
-			<g opacity={panel.drag}>
-				{@render txt(PX, 184, 'comes down at', 13, { muted: true })}
-				{@render txt(COL1, 184, `${landAngle(main)}°`, 14, { anchor: 'end', weight: 600 })}
-				{@render txt(COL2, 184, `${landAngle(vacuum)}°`, 14, { anchor: 'end', weight: 600 })}
-			</g>
+			<Readout
+				id="land"
+				order={5}
+				label="Comes down at"
+				value="{landAngle(main)}°"
+				note={k > 0 ? `vacuum ${landAngle(vacuum)}°` : undefined}
+				opacity={panel.drag}
+			>
+				<g opacity={panel.drag}>
+					{@render txt(PX, 184, 'comes down at', 13, { muted: true })}
+					{@render txt(COL1, 184, `${landAngle(main)}°`, 14, { anchor: 'end', weight: 600 })}
+					{@render txt(COL2, 184, `${landAngle(vacuum)}°`, 14, { anchor: 'end', weight: 600 })}
+				</g>
+			</Readout>
 		{/if}
 
 		{#if panel.basic > 0.01}
-			<g opacity={panel.basic}>
-				{@render txt(PX, 196, `horizontal speed stays ${ms(main.raw[0].vx)}`, 14, {
-					weight: 600,
-					color: 'var(--mech-velocity)'
-				})}
-				{@render txt(PX, 218, `vertical speed changes by ${G.toFixed(1)} m/s`, 14, {
-					weight: 600,
-					color: 'var(--mech-velocity)'
-				})}
-				{@render txt(PX, 236, 'each second, always downwards', 13, {
-					weight: 600,
-					color: 'var(--mech-velocity)'
-				})}
-				{@render txt(
-					PX,
-					258,
-					`after ${tf.toFixed(1)} s: ${ms(ball.vy)} ${ball.vy >= 0 ? 'up' : 'down'}`,
-					13,
-					{ muted: true }
-				)}
-				<circle cx={PX + 4} cy={276} r="3.5" fill="var(--stage-ink-muted)" />
-				{@render txt(PX + 14, 280, `dots: ${dotLabel} — equal steps sideways`, 12, {
-					muted: true
-				})}
-			</g>
+			<Readout
+				id="horizontal"
+				order={6}
+				label="Horizontal speed"
+				value={ms(main.raw[0].vx)}
+				note="stays the same"
+				color="var(--mech-velocity)"
+				opacity={panel.basic}
+			/>
+			<Readout
+				id="vertical"
+				order={7}
+				label="Vertical speed"
+				value="{ms(ball.vy)} {ball.vy >= 0 ? 'up' : 'down'}"
+				note="−{G.toFixed(1)} m/s every second"
+				color="var(--mech-velocity)"
+				opacity={panel.basic}
+			/>
+			<Readout id="basic-text">
+				<g opacity={panel.basic}>
+					{@render txt(PX, 196, `horizontal speed stays ${ms(main.raw[0].vx)}`, 14, {
+						weight: 600,
+						color: 'var(--mech-velocity)'
+					})}
+					{@render txt(PX, 218, `vertical speed changes by ${G.toFixed(1)} m/s`, 14, {
+						weight: 600,
+						color: 'var(--mech-velocity)'
+					})}
+					{@render txt(PX, 236, 'each second, always downwards', 13, {
+						weight: 600,
+						color: 'var(--mech-velocity)'
+					})}
+					{@render txt(
+						PX,
+						258,
+						`after ${tf.toFixed(1)} s: ${ms(ball.vy)} ${ball.vy >= 0 ? 'up' : 'down'}`,
+						13,
+						{ muted: true }
+					)}
+					<circle cx={PX + 4} cy={276} r="3.5" fill="var(--stage-ink-muted)" />
+					{@render txt(PX + 14, 280, `dots: ${dotLabel} — equal steps sideways`, 12, {
+						muted: true
+					})}
+				</g>
+			</Readout>
 		{/if}
 
 		{#if panel.range > 0.01}
-			<g opacity={panel.range}>
-				{@render txt(PX, 216, 'range grows with speed²', 15, { weight: 600 })}
-				{@render txt(PX, 238, 'double the speed → 4× the range', 14)}
-				{@render txt(
-					PX,
-					260,
-					speed > 15
-						? `${vText(other.v)} m/s: ${m1(other.range)}  ·  ${speed} m/s: ${m1(main.range)}`
-						: `${speed} m/s: ${m1(main.range)}  ·  ${vText(other.v)} m/s: ${m1(other.range)}`,
-					13,
-					{ muted: true }
-				)}
-			</g>
+			<Readout
+				id="speed2"
+				order={6}
+				label="Range grows with speed²"
+				value={speed > 15
+					? `${vText(other.v)} m/s: ${m1(other.range)} · ${speed} m/s: ${m1(main.range)}`
+					: `${speed} m/s: ${m1(main.range)} · ${vText(other.v)} m/s: ${m1(other.range)}`}
+				note="double the speed → 4× the range"
+				opacity={panel.range}
+			/>
+			<Readout
+				id="pairs"
+				order={7}
+				label="Land together"
+				value="15° & 75° · 30° & 60°"
+				note="45° goes furthest"
+				opacity={panel.range}
+			/>
+			<Readout id="range-text">
+				<g opacity={panel.range}>
+					{@render txt(PX, 216, 'range grows with speed²', 15, { weight: 600 })}
+					{@render txt(PX, 238, 'double the speed → 4× the range', 14)}
+					{@render txt(
+						PX,
+						260,
+						speed > 15
+							? `${vText(other.v)} m/s: ${m1(other.range)}  ·  ${speed} m/s: ${m1(main.range)}`
+							: `${speed} m/s: ${m1(main.range)}  ·  ${vText(other.v)} m/s: ${m1(other.range)}`,
+						13,
+						{ muted: true }
+					)}
+				</g>
+			</Readout>
 		{/if}
 
 		{#if panel.drag > 0.01}
-			<g opacity={panel.drag}>
-				{#if bestShown}
-					<line
-						x1={PX}
-						x2={PX + 20}
-						y1={214}
-						y2={214}
-						stroke="var(--explainer-accent)"
-						stroke-width="1.8"
-						stroke-dasharray="1.5 4"
-						stroke-linecap="round"
-					/>
-				{/if}
-				{@render txt(PX + (bestShown ? 28 : 0), 218, bestText, 14, { weight: 600 })}
-				{#if k > 0 && best === angle}
-					{@render txt(PX, 240, 'this throw is already at the best angle', 13, {
-						muted: true
-					})}
-				{/if}
-			</g>
+			<Readout
+				id="best"
+				order={6}
+				label="Best angle"
+				value={k === 0 ? 'no air' : best >= 45 ? 'still 45°' : `${best}°`}
+				note={k === 0
+					? 'the same path as in a vacuum'
+					: best === angle
+						? 'this throw is already at it'
+						: 'vacuum: 45°'}
+				opacity={panel.drag}
+			/>
+			<Readout id="best-text">
+				<g opacity={panel.drag}>
+					{#if bestShown}
+						<line
+							x1={PX}
+							x2={PX + 20}
+							y1={214}
+							y2={214}
+							stroke="var(--explainer-accent)"
+							stroke-width="1.8"
+							stroke-dasharray="1.5 4"
+							stroke-linecap="round"
+						/>
+					{/if}
+					{@render txt(PX + (bestShown ? 28 : 0), 218, bestText, 14, { weight: 600 })}
+					{#if k > 0 && best === angle}
+						{@render txt(PX, 240, 'this throw is already at the best angle', 13, {
+							muted: true
+						})}
+					{/if}
+				</g>
+			</Readout>
 		{/if}
 	</g>
 </g>

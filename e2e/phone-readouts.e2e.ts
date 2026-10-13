@@ -144,6 +144,37 @@ test.describe('on a phone', () => {
 		await expect(panel).toContainText('loses carbon');
 	});
 
+	test("newton's laws carts: the acceleration is text and follows the mass", async ({ page }) => {
+		await page.goto('./newtons-laws/#force');
+		const panel = readouts(page);
+		await expect(panel).toContainText('a = F ÷ m = 6 ÷ 2 = 3 m/s²');
+		await expect(panel).toContainText(/Speed\s*3\.0 m\/s/);
+		await expect(drawing(page)).not.toContainText('a = F ÷ m');
+		await range(page, 'mass').fill('3');
+		await expect(panel).toContainText('a = F ÷ m = 6 ÷ 3 = 2 m/s²');
+	});
+
+	test("newton's laws projectile: the range is text and follows the speed", async ({ page }) => {
+		await page.goto('./newtons-laws/#projectile');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Range\s*33\.0 m/);
+		await expect(panel).toContainText(/Horizontal speed\s*12\.7 m\/s/);
+		await expect(drawing(page)).not.toContainText('Launched at');
+		await range(page, 'speed').fill('9');
+		await expect(panel).toContainText(/Range\s*8\.3 m/);
+	});
+
+	test("newton's laws track: the energies are text and follow friction", async ({ page }) => {
+		await page.goto('./newtons-laws/#heat');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Total\s*98 J/);
+		await expect(panel).toContainText(/Heat\s*[1-9]\d* J/);
+		await expect(drawing(page)).not.toContainText('never changes');
+		await range(page, 'mu').fill('0');
+		await expect(panel).toContainText(/Heat\s*0 J/);
+		await expect(panel).toContainText(/Total\s*98 J/);
+	});
+
 	test('keyboard step changes update the list', async ({ page }) => {
 		await page.goto('./epidemics/#peak');
 		await expect(readouts(page)).toContainText('Effective R now');
