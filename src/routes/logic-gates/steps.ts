@@ -113,7 +113,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>How do you add two bits? 0 + 0 = 0, 0 + 1 = 1, 1 + 0 = 1, and 1 + 1 = 10 in binary: write 0, carry 1. Look at the two columns of that answer.</p>
 <p>The right-hand digit, the <strong>sum</strong>, is 1 when exactly one input is 1 — that's XOR. The left digit, the <strong>carry</strong>, is 1 only when both are — that's AND. Two gates side by side make a <dfn data-def="A circuit that adds two bits, giving a sum bit and a carry bit: Sum = A XOR B, Carry = A AND B.">half adder</dfn>. Flip the switches and watch the signals travel through the gates.</p>`,
-			notes: `<p>The animation is slowed right down: a real gate switches in a few trillionths of a second. Each gate here takes the same time, and outputs jump straight to their final value; in real circuits they can flicker briefly before settling.</p>`
+			notes: `<p>The animation is slowed right down: a real gate switches in around ten trillionths of a second. Each gate here takes the same time, and outputs jump straight to their final value; in real circuits they can flicker briefly before settling.</p>`
 		},
 		{
 			id: 'full',
