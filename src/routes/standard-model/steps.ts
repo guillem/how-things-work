@@ -126,7 +126,7 @@ export const spec: ExplainerSpec = {
 			scene: 'zoom',
 			duration: 18,
 			body: `
-<p>An atom is a cloud of electrons around a nucleus of protons and neutrons, as the <a href="../atoms-periodic-table/">atoms explainer</a> builds it. Zoom in further. The nucleus is tens of thousands of times smaller than the atom, and a proton is under a femtometre across (10<sup>−15</sup> m).</p>
+<p>An atom is a cloud of electrons around a nucleus of protons and neutrons, as the <a href="../atoms-periodic-table/">atoms explainer</a> builds it. Zoom in further. The nucleus is tens of thousands of times smaller than the atom, and a proton's radius is under a femtometre (10<sup>−15</sup> m).</p>
 <p>Inside a proton are three <dfn data-def="Elementary particles that make up protons, neutrons and the other hadrons. They come in six kinds (flavours) and are never found alone.">quarks</dfn>: two <strong>up</strong> quarks and one <strong>down</strong>. A neutron has one up and two down. As far as anyone can tell, quarks and electrons are not made of anything smaller: experiments see no size at all, down to less than a thousandth of a proton's width.</p>
 <p>So everything you have ever touched is made of just <strong>three kinds of particle</strong>: up quarks, down quarks and electrons, held together by forces.</p>`,
 			notes: `<p>The proton's charge radius is 0.8407 ± 0.0006 fm (PDG 2026). The best limit on a quark's size comes from electron–proton collisions at HERA: the ZEUS experiment found quarks smaller than 0.43 × 10<sup>−18</sup> m (2016). The panels are not to scale: drawn to scale, the proton would be a speck you could not see in the nucleus, and the nucleus a speck in the atom.</p>
@@ -140,9 +140,9 @@ export const spec: ExplainerSpec = {
 			hints: { view: 'browse' },
 			duration: 26,
 			body: `
-<p>The <dfn data-def="The theory of the elementary particles and three of the four known forces (strong, electromagnetic and weak), completed in the 1970s and confirmed by every experiment since, including the 2012 discovery of the Higgs boson.">Standard Model</dfn> needs only 17 particles. Tap any one to see its mass, charge, spin and how long it lives.</p>
+<p>The <dfn data-def="The theory of the elementary particles and three of the four known forces (strong, electromagnetic and weak), completed in the 1970s and confirmed by almost every experiment since, including the 2012 discovery of the Higgs boson (neutrino masses are the clear exception).">Standard Model</dfn> needs only 17 particles. Tap any one to see its mass, charge, spin and how long it lives.</p>
 <ul>
-<li><strong class="tag sm-quark">Quarks</strong> (six) and <strong class="tag sm-lepton">leptons</strong> (six: the electron, its heavier cousins the muon and tau, and three <dfn data-def="Neutral leptons with a tiny mass that barely interact with anything; trillions pass through you every second, most of them from the Sun.">neutrinos</dfn>) are the matter particles. They come in three <dfn data-def="Copies of the same set of matter particles (two quarks, a charged lepton and a neutrino) with identical charges but larger masses.">generations</dfn>; only the first lasts, and it makes all ordinary matter.</li>
+<li><strong class="tag sm-quark">Quarks</strong> (six) and <strong class="tag sm-lepton">leptons</strong> (six: the electron, its heavier cousins the muon and tau, and three <dfn data-def="Neutral leptons with a tiny mass that barely interact with anything; trillions pass through you every second, most of them from the Sun.">neutrinos</dfn>) are the matter particles. They come in three <dfn data-def="Copies of the same set of matter particles (two quarks, a charged lepton and a neutrino) with identical charges but larger masses.">generations</dfn>: the heavier quarks and charged leptons decay within a fraction of a second, so ordinary matter is made of the first generation.</li>
 <li><strong class="tag sm-boson">Force carriers</strong> (four): the gluon, the photon, and the W and Z bosons.</li>
 <li>The <strong class="tag sm-higgs">Higgs boson</strong>, the trace of the field that gives the W, the Z, the quarks and the charged leptons their masses.</li>
 </ul>
@@ -164,7 +164,7 @@ export const spec: ExplainerSpec = {
 <p>Quarks have charges that are fractions of the electron's: an up quark carries <strong>+⅔</strong>, a down quark <strong>−⅓</strong>. Add them up for the proton, up + up + down: ⅔ + ⅔ − ⅓ = <strong>+1</strong>. The neutron, up + down + down: ⅔ − ⅓ − ⅓ = <strong>0</strong>.</p>
 <p>Swap a quark and see what you get: tap the d in the bag to take it out, then tap u in the palette. Three up quarks make the Δ⁺⁺, with a charge of +2. It exists, but lives only about 6 × 10<sup>−24</sup> s.</p>
 <p>Particles built from quarks are called <dfn data-def="Any particle made of quarks held together by the strong force: baryons (three quarks), mesons (a quark and an antiquark) and a few rarer, larger combinations.">hadrons</dfn>; those of three quarks are <dfn data-def="A hadron made of three quarks, such as the proton and neutron. Each quark has baryon number ⅓, so a baryon has baryon number 1.">baryons</dfn>. Each quark counts ⅓ towards the <dfn data-def="A count that no process has ever been seen to change: +⅓ for each quark, −⅓ for each antiquark. The proton and neutron have 1, electrons and photons 0.">baryon number</dfn>, so every baryon has baryon number 1.</p>`,
-			notes: `<p>The fractional charges were proposed in 1964 (Gell-Mann and Zweig) to explain the pattern of hadron masses and charges, and seen in 1968, when electrons fired at protons at SLAC bounced off hard, point-like parts inside. No experiment has found a free particle with a third of the electron's charge.</p>`
+			notes: `<p>The fractional charges were proposed in 1964 (Gell-Mann and Zweig) to explain the pattern of hadron masses and charges. The quarks themselves were first glimpsed in 1968, when electrons fired at protons at SLAC bounced off hard, point-like parts inside; comparing that with neutrino scattering at CERN in the early 1970s confirmed their ⅔ and ⅓ charges. No experiment has found a free particle with a third of the electron's charge.</p>`
 		},
 		{
 			id: 'colour',
@@ -176,7 +176,7 @@ export const spec: ExplainerSpec = {
 			controls: [preset],
 			body: `
 <p>Why three quarks, and not two or four? Quarks carry a second kind of charge, called <dfn data-def="The charge of the strong force. It comes in three kinds, called red, green and blue (just names: nothing to do with real colours), and each antiquark carries an anticolour.">colour</dfn>, in three kinds named red, green and blue. The strong force allows only <strong>colourless</strong> combinations to exist on their own: one quark of each colour (red + green + blue, like the three primary colours of light making white), or a quark and an antiquark of a colour and its <em>anti</em>colour.</p>
-<p>Try it. Take one quark out of the proton: two quarks can't be colourless, and the bag turns red. Try a quark and an antiquark (u and d̄): a colour and its anticolour, colourless again. That is a <dfn data-def="A hadron made of a quark and an antiquark, such as the pion (π) and the kaon (K). Its baryon number is ⅓ − ⅓ = 0.">meson</dfn>, here the pion π⁺.</p>
+<p>Try it. Take one quark out of the proton: two quarks can't be colourless, and the bag's outline breaks into a warning dash. Try a quark and an antiquark (u and d̄): a colour and its anticolour, colourless again. That is a <dfn data-def="A hadron made of a quark and an antiquark, such as the pion (π) and the kaon (K). Its baryon number is ⅓ − ⅓ = 0.">meson</dfn>, here the pion π⁺.</p>
 <p>And look at the charges: every colourless combination has a <strong>whole-number charge</strong>. The colour rule is why we never see ⅓ or ⅔ of a charge.</p>`,
 			notes: `<p>The rule is that the number of quarks minus the number of antiquarks must be a multiple of three. The builder holds three at most, so it makes baryons, antibaryons and mesons, but the same rule allows four- and five-quark particles. Since 2003 experiments have found several (tetraquarks such as the Z<sub>c</sub>(3900), pentaquarks such as the P<sub>c</sub> states seen at CERN's LHCb in 2015).</p>
 <p>Colour was invented partly because of the Δ⁺⁺ (uuu, spin 3/2): three identical quarks in the same state would break the Pauli exclusion principle, unless they differ in some hidden charge. They do: one is red, one green, one blue.</p>`
@@ -238,8 +238,9 @@ export const spec: ExplainerSpec = {
 <p>In the Standard Model a force is not a pull acting across empty space. Particles <strong>exchange other particles</strong>, the force carriers. Two electrons repel each other by exchanging a <dfn data-def="The particle of light and of every electromagnetic wave, and the carrier of the electromagnetic force: massless, neutral, spin 1.">photon</dfn>: one emits it and recoils, the other absorbs it and is pushed away.</p>
 <p>It is the same photon that the <a href="../quantum-mechanics/">quantum mechanics explainer</a> sends through two slits one at a time: light, and the electromagnetic force, come in these quanta.</p>
 <p>The drawing is a <dfn data-def="A drawing of a particle process as lines (particles) meeting at points (vertices), invented by Richard Feynman in 1948. Each one stands for a term in a calculation; the lines are not paths.">Feynman diagram</dfn>: time runs left to right, each line is a particle, and the particles meet at points called vertices. The lines are not paths through space; the diagram only records what turns into what.</p>
+<p>The exchanged photon is <dfn data-def="A particle that exists only as an intermediate step in a process, between two vertices. It does not have the mass a free particle of that kind would have, and it can never be detected on its own.">virtual</dfn>: it never travels free and can never be detected.</p>
 <p>The ledger below adds up everything present at the moment marked "now". Charge is the same at every moment: at each vertex, what comes in equals what goes out.</p>`,
-			notes: `<p>The exchanged photon is <dfn data-def="A particle that exists only as an intermediate step in a process, between two vertices. It does not have the mass a free particle of that kind would have, and it can never be detected on its own.">virtual</dfn>: it does not travel like a free photon and can never be detected; it is a disturbance of the electromagnetic field passing momentum from one electron to the other. Quantum electrodynamics, the theory of these exchanges, predicts the electron's magnetic strength to better than one part in a billion, the most precisely tested prediction in science.</p>`
+			notes: `<p>The virtual photon does not travel like a free photon; it is a disturbance of the electromagnetic field passing momentum from one electron to the other. Quantum electrodynamics, the theory of these exchanges, predicts the electron's magnetic strength to better than one part in a billion, the most precisely tested prediction in science.</p>`
 		},
 		{
 			id: 'beta',
@@ -255,7 +256,7 @@ export const spec: ExplainerSpec = {
 <li>One of the neutron's <strong>down</strong> quarks turns into an <strong>up</strong> quark by emitting a <dfn data-def="A carrier of the weak force with charge +1 or −1 and a mass of 80.4 GeV, about 86 times a proton.">W⁻ boson</dfn>. The quarks are now u u d: a proton.</li>
 <li>The W⁻ turns into an <strong>electron</strong> and an <strong>electron antineutrino</strong>.</li>
 </ol>
-<p>Step through the moments and watch the ledger. At every moment the charge is 0, the baryon number 1 and the electron number 0: the W⁻ carries the −1 charge from the quark to the electron, and the antineutrino (electron number −1) balances the electron (+1).</p>`,
+<p>Step through the moments and watch the ledger. At every moment the charge is 0, the baryon number 1 and the <dfn data-def="A count of +1 for each electron and electron neutrino, −1 for each positron and electron antineutrino. The muon and tau have counts of their own.">electron number</dfn> 0: the W⁻ carries the −1 charge from the quark to the electron, and the antineutrino (electron number −1) balances the electron (+1).</p>`,
 			notes: `<p>The decay releases m(n) − m(p) − m(e) = 0.782 MeV (from PDG masses), shared between the electron and the antineutrino as motion. That is about a hundred thousand times too little to make a real W, which weighs 80.4 GeV: the W here is virtual. A particle that can only exist this briefly can't reach far, which is why the weak force acts only over about 10<sup>−18</sup> m and why beta decay is so slow.</p>`
 		},
 		{
@@ -265,11 +266,12 @@ export const spec: ExplainerSpec = {
 			scene: 'clocks',
 			duration: 24,
 			body: `
-<p>Compare how long particles live, grouped by the force that makes them decay. Decays through the strong force take 10<sup>−24</sup> to 10<sup>−22</sup> s; through electromagnetism, 10<sup>−20</sup> to 10<sup>−16</sup> s; through the weak force, anything from a tenth of a nanosecond to a quarter of an hour.</p>
-<p>The weak force isn't feeble by nature. Its trouble is the mass of its carrier: a W boson weighs <strong>80.4 GeV</strong>, while a neutron's decay has only 0.78 MeV to spend. The heavier the carrier, the shorter its reach, ħ/(Mc): for the W about <strong>2.5 × 10<sup>−18</sup> m</strong>, a few hundred times less than a proton's radius. For two particles to interact this way they must almost touch, so it rarely happens, and decays take long.</p>
+<p>Compare how long particles live, grouped by the force that makes them decay. Decays through the strong force take 10<sup>−24</sup> to 10<sup>−22</sup> s; through electromagnetism, 10<sup>−20</sup> to 10<sup>−16</sup> s; through the weak force, for the particles shown, from a tenth of a nanosecond to a quarter of an hour.</p>
+<p>The weak force isn't feeble by nature. Its trouble is the mass of its carrier: a W boson weighs <strong>80.4 GeV</strong>, while a neutron's decay has only 0.78 MeV to spend. The heavier the carrier, the shorter its reach, ħ/(Mc) (ħ is Planck's constant divided by 2π): for the W about <strong>2.5 × 10<sup>−18</sup> m</strong>, a few hundred times less than a proton's radius. For two particles to interact this way they must almost touch, so it rarely happens, and decays take long.</p>
+<p>The rest of the spread comes from the energy a decay releases: the less it has to spend, the slower it goes, very roughly as the fifth power of that energy. The muon has 105 MeV to spend and lives 2.2 μs; the neutron has 0.78 MeV and lives 15 minutes.</p>
 <p>The photon and gluon are massless, so electromagnetism reaches across the universe, and the strong force is only held in by confinement.</p>`,
 			notes: `<p>At energies near the W's mass, as in the Large Hadron Collider, the weak force is as strong as electromagnetism: the two are aspects of one electroweak force, whose symmetry is hidden at low energy by the Higgs field (Glashow, Salam and Weinberg, Nobel Prize 1979). Particles heavy enough to make real W's decay through the weak force quickly: the top quark lives about 5 × 10<sup>−25</sup> s.</p>
-<p>Lifetimes are PDG mean lives; for the Δ, φ and Σ⁰ they come from the measured width Γ as τ = ħ/Γ (the Δ's width is a PDG estimate).</p>`
+<p>Lifetimes are PDG mean lives; for the Δ and φ they come from the measured width Γ as τ = ħ/Γ (the Δ's width is a PDG estimate).</p>`
 		},
 		{
 			id: 'processes',
@@ -280,7 +282,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [processControl, stage],
 			body: `
-<p>Every process in the Standard Model is made of the same kind of vertex: a matter particle emits or absorbs a force carrier. Pick one and step through it:</p>
+<p>Every process here is built from the same kind of vertex: a matter particle emits or absorbs a force carrier. (The Standard Model also has vertices where carriers meet each other, such as three gluons, possible because gluons carry colour.) Pick one and step through it:</p>
 <ul>
 <li><strong>Muon decay</strong>: the muon becomes a muon neutrino by emitting a W⁻, which becomes an electron and an electron antineutrino. It takes 2.2 μs on average.</li>
 <li><strong>Pion decay</strong>: the u and d̄ of a π⁺ annihilate into a W⁺, which becomes an antimuon and a muon neutrino (26 ns).</li>
@@ -299,7 +301,7 @@ export const spec: ExplainerSpec = {
 			controls: [resetDecay],
 			body: `
 <p>Because every vertex conserves them, whole decays must too. Here is the neutron's decay checked against the <dfn data-def="Quantities that are the same before and after any process: energy, momentum, angular momentum, charge, and (in every process ever observed) baryon number and lepton number.">conservation laws</dfn>: charge, baryon number, the electron and muon lepton numbers, energy (the products must weigh less than the parent), and spin.</p>
-<p>Now remove the antineutrino: tap ν̄e. Charge and baryon number still balance, but electron number doesn't (0 before, +1 after), and the spins can't add up (two spin-½ particles can't make the neutron's ½). This is how Wolfgang Pauli guessed, in 1930, that an unseen particle had to be there. The neutrino was detected 26 years later.</p>
+<p>Now remove the antineutrino: tap ν̄e. Charge and baryon number still balance, but electron number doesn't (0 before, +1 after), and the spins can't add up (two spin-½ particles can't make the neutron's ½). Wolfgang Pauli faced the same kind of gap in 1930: beta-decay electrons came out with a spread of energies, as if some went missing, and the spins of some nuclei didn't add up. He guessed that an unseen, neutral particle carried off the difference. It was detected 26 years later (lepton number itself was only proposed in 1953).</p>
 `,
 			notes: `<p>Lepton number counts +1 for each electron and electron neutrino, −1 for their antiparticles; the muon has its own count. The checker requires at least two products: a particle at rest can't turn into just one other particle and conserve both energy and momentum.</p>`
 		},
@@ -315,13 +317,13 @@ export const spec: ExplainerSpec = {
 <p>Pick a particle and build decays. Real ones pass every check, and the PDG's measured share of decays appears. Some that fail:</p>
 <ul>
 <li><strong>A free proton</strong> can't beta-decay, p → n e⁺ νe: every charge balances, but the neutron is heavier than the proton, so there isn't the energy.</li>
-<li><strong>Nor can it decay into lighter things</strong>: p → e⁺ π⁰ would break baryon number. Searches in a tank of 50,000 tonnes of water find that the proton, if it decays this way at all, lives more than <strong>2.4 × 10<sup>34</sup> years</strong>, 10<sup>24</sup> times the age of the universe.</li>
+<li><strong>Nor can it decay into lighter things</strong>: p → e⁺ π⁰ would break baryon number (and electron number). Searches in a tank of 50,000 tonnes of water find that the proton, if it decays this way at all, lives more than <strong>2.4 × 10<sup>34</sup> years</strong>, 10<sup>24</sup> times the age of the universe.</li>
 <li><strong>The muon</strong>: μ⁻ → e⁻ γ would turn muon number into electron number. It has never been seen: fewer than 1.5 in 10<sup>13</sup> muon decays, if any.</li>
 </ul>
 <p>Passing every check doesn't mean a decay happens. π⁰ → γγγ passes these laws, but another rule forbids it; Λ⁰ → p π⁻ passes, but changes <dfn data-def="Minus the number of strange quarks (plus the number of strange antiquarks). The strong and electromagnetic forces never change it; the weak force can.">strangeness</dfn>, which only the weak force can do, so the Λ⁰ lives a slow 2.6 × 10<sup>−10</sup> s.</p>`,
 			notes: `<p>Inside some nuclei a proton <em>can</em> turn into a neutron (beta-plus decay), because the nucleus as a whole supplies the energy.</p>
 <p>Limits from the PDG 2026 tables: τ/B(p → e⁺π⁰) > 2.4 × 10<sup>34</sup> years (Super-Kamiokande); B(μ⁻ → e⁻γ) < 1.5 × 10<sup>−13</sup> (MEG II). π⁰ → 3γ is forbidden by charge-conjugation symmetry (C-parity), which electromagnetism respects: B < 3.1 × 10<sup>−8</sup>.</p>
-<p>The separate electron, muon and tau numbers hold in every decay seen, but not exactly: neutrinos change flavour as they travel (oscillations), so only the total lepton number is believed to be conserved. Many theories that unify the forces predict that the proton does decay, extremely slowly.</p>`
+<p>The separate electron, muon and tau numbers hold in every decay seen, but not exactly: neutrinos change flavour as they travel (oscillations), so only the total lepton number might be exactly conserved, and experiments are testing even that. Many theories that unify the forces predict that the proton does decay, extremely slowly.</p>`
 		},
 		// ------------------------------------------------------------------ summary
 		{

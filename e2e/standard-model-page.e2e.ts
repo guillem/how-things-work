@@ -116,6 +116,17 @@ test('the particle table shows a particle’s PDG data when tapped', async ({ pa
 	await expect(stage(page)).toContainText('80.36 GeV');
 });
 
+test('the photon’s and a neutrino’s cards show their data', async ({ page }) => {
+	const errors: Error[] = [];
+	page.on('pageerror', (e) => errors.push(e));
+	await open(page, './standard-model/#seventeen');
+	await stage(page).getByRole('button', { name: 'photon: show details' }).click();
+	await expect(stage(page)).toContainText('below 1 × 10⁻¹⁸ eV');
+	await stage(page).getByRole('button', { name: 'electron neutrino: show details' }).click();
+	await expect(stage(page)).toContainText('the antineutrino');
+	expect(errors).toEqual([]);
+});
+
 test('gravity has no carrier in the Standard Model', async ({ page }) => {
 	await open(page, './standard-model/#four-forces');
 	await expect(stage(page)).toContainText('Three of the four forces come');

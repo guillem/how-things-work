@@ -10,7 +10,7 @@
  * Subset: Summary Table masses (MeV) and mean lives (s; from the width as τ = ħ/Γ where PDG
  * gives a width, flagged `fromWidth`) of the 17 Standard Model particles and 39 hadrons,
  * their charges (in thirds of e) and spins J, quark contents derived from the PDG Monte Carlo
- * numbers, and 21 decay modes (branching fractions, or upper limits). `limit` marks a bound,
+ * numbers, and 22 decay modes (branching fractions, or upper limits). `limit` marks a bound,
  * `estimate` a PDG estimate (Δ(1232)), `err` the larger of the two quoted errors.
  * Quark masses: u, d, s in the MS-bar scheme at 2 GeV, c and b at their own mass (MS-bar),
  * t from direct measurements.
@@ -996,6 +996,12 @@ export const modes: ModeData[] = [
 		parent: 'K+',
 		products: ['pi+', 'pi+', 'pi-'],
 		fraction: 0.0558347733897552
+	},
+	{
+		id: 'S010.4',
+		parent: 'K+',
+		products: ['pi+', 'pi0', 'pi0'],
+		fraction: 0.01759648564959143
 	},
 	{
 		id: 'S010.6',
