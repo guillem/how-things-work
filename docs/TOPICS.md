@@ -155,7 +155,7 @@ A topic is done when:
 
 **Earth & Climate**
 - [x] plate-tectonics
-- [ ] earthquakes
+- [x] earthquakes
 - [ ] deep-time
 - [x] atmosphere-weather
 - [x] ocean-currents
