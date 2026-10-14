@@ -1746,3 +1746,43 @@ kbd {
 	--dp-same: #3a3f45;
 	--dp-hl: #fab005;
 }
+
+/* ---------------------------------------------------------------------------
+   protein-folding: HP beads, contacts, lattice, structure traces (light, then dark)
+   --------------------------------------------------------------------------- */
+:root {
+	--pf-h: #f08c00;
+	--pf-h-edge: #a85d00;
+	--pf-p: #4dabf7;
+	--pf-p-edge: #1971c2;
+	--pf-bond: #495057;
+	--pf-contact: #e8590c;
+	--pf-clash: #e03131;
+	--pf-grid: #e3ded4;
+	--pf-water: #e7f3fb;
+	--pf-helix: #c2255c;
+	--pf-strand: #e8a400;
+	--pf-coil: #868e96;
+	--pf-trace: #5c677d;
+	--pf-haem: #c92a2a;
+	--pf-bar: #7950f2;
+	--pf-you: #e8590c;
+}
+:root[data-theme='dark'] {
+	--pf-h: #ffa94d;
+	--pf-h-edge: #e8590c;
+	--pf-p: #4dabf7;
+	--pf-p-edge: #a5d8ff;
+	--pf-bond: #ced4da;
+	--pf-contact: #ff922b;
+	--pf-clash: #ff6b6b;
+	--pf-grid: #2c2a27;
+	--pf-water: #14232f;
+	--pf-helix: #f06595;
+	--pf-strand: #fcc419;
+	--pf-coil: #adb5bd;
+	--pf-trace: #adb5bd;
+	--pf-haem: #ff6b6b;
+	--pf-bar: #9775fa;
+	--pf-you: #ff922b;
+}

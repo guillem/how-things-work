@@ -591,6 +591,15 @@ const explainers: Explainer[] = [
 		accent: '#a61e4d',
 		steps: 12,
 		minutes: 20
+	},
+	{
+		slug: 'protein-folding',
+		title: 'Protein folding',
+		summary:
+			'Fold a chain of water-loving and water-repelling beads by hand against an energy score, then let it fold itself. See why trying every shape would take longer than the age of the universe, and compare real proteins with the shapes AlphaFold predicts for them.',
+		accent: '#5f3dc4',
+		steps: 13,
+		minutes: 22
 	}
 ];
 

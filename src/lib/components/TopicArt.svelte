@@ -2147,6 +2147,26 @@
 				stroke-opacity="0.5"
 			/>
 		{/each}
+	{:else if slug === 'protein-folding'}
+		<!-- the HP model: a 14-bead chain in its one best fold, water-repelling beads in a core -->
+		<path
+			d="M100 71 L122 71 L144 71 L144 49 L122 49 L100 49 L100 27 L78 27 L78 49 L56 49 L56 71 L78 71 L78 93 L100 93"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.55"
+		/>
+		{#each [[100, 71, 1], [122, 71, 1], [144, 71, 0], [144, 49, 0], [122, 49, 1], [100, 49, 1], [100, 27, 0], [78, 27, 0], [78, 49, 1], [56, 49, 0], [56, 71, 0], [78, 71, 1], [78, 93, 0], [100, 93, 1]] as [x, y, h], i (i)}
+			<circle
+				cx={x}
+				cy={y}
+				r="7"
+				fill={h ? '#f08c00' : '#4dabf7'}
+				stroke="currentColor"
+				stroke-width="0.8"
+				stroke-opacity="0.5"
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
