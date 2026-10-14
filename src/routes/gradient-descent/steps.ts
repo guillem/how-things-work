@@ -125,7 +125,7 @@ export const spec: ExplainerSpec = {
 			chapter: 'landscape',
 			title: 'Which way is downhill? The gradient',
 			scene: 'descent',
-			hints: { phase: 'gradient', land: 'line', left: 'surface' },
+			hints: { phase: 'gradient', land: 'line', left: 'surface', start: '-1.2,0.9' },
 			duration: 20,
 			body: `
 <p>On a curve, the <a href="../calculus/#tangent">derivative</a> is the slope at a point. On a landscape there is a slope in each direction. Take the slope along <i>a</i>, keeping <i>b</i> fixed, and the slope along <i>b</i>, keeping <i>a</i> fixed: these are the two <dfn data-def="The slope of a function of several inputs along one of them, the others held fixed. Written ∂L/∂a.">partial derivatives</dfn>, ∂L/∂a and ∂L/∂b.</p>

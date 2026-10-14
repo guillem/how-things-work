@@ -150,6 +150,10 @@ test('in the ravine momentum reaches the bottom in far fewer steps', () => {
 	const heavy = descend(ravine, ravine.start, { lr: 0.9, momentum: 0.8 });
 	expect(plain.settledAt).toBeGreaterThan(150);
 	expect(heavy.settledAt).toBeLessThan(plain.settledAt / 4);
+	// The narrative: at η = 1.8 the zigzag reaches the bottom in about 100 steps.
+	const fast = descend(ravine, ravine.start, { lr: 1.8 }).settledAt;
+	expect(fast).toBeGreaterThan(80);
+	expect(fast).toBeLessThan(120);
 	// A bigger η without momentum zigzags across the floor: successive steps point opposite ways across.
 	const zig = descend(ravine, ravine.start, { lr: 1.8, steps: 10 }).path;
 	const across = (k: number) => {
@@ -165,8 +169,9 @@ test('on the plateau plain descent crawls; momentum gets off it sooner', () => {
 	const leaves = (momentum: number) =>
 		descend(plateau, plateau.start, { lr: 1, momentum }).path.findIndex((p) => p.loss < 0.45);
 	const plain = leaves(0);
-	expect(plain).toBeGreaterThan(80);
-	expect(leaves(0.8)).toBeLessThan(plain / 2);
+	// The narrative: more than a hundred steps on the plain, about a quarter of that with β = 0.8.
+	expect(plain).toBeGreaterThan(100);
+	expect(leaves(0.8)).toBeLessThan(plain / 3);
 	// The plain is nearly flat: at the start the slope is tiny compared with the well's walls.
 	const [gx, gy] = plateau.grad(...plateau.start);
 	const wall = plateau.grad(plateau.minima[0].x + 0.9, plateau.minima[0].y);

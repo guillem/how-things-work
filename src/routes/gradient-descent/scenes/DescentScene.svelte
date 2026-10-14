@@ -196,7 +196,7 @@
 			<Txt
 				x={RX}
 				y={RY + 40}
-				text="dashed: ∇L, uphill · solid and small: −∇L, downhill"
+				text="dashed: ∇L, uphill · solid: −∇L, downhill (the small arrows too)"
 				size={12}
 				muted
 			/>
