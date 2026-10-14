@@ -26,6 +26,7 @@
 		CONTINENT_CRUST,
 		HALF_WIDTH,
 		OCEAN_AGE,
+		airyElevation,
 		feature,
 		section,
 		type Column,
@@ -338,6 +339,24 @@
 		return out;
 	});
 
+	// ---- the asthenosphere creeping slowly (layers step) ------------------------------
+	const creep = $derived.by(() => {
+		if (phase !== 'layers') return [];
+		const out: { i: number; x: number; y: number; o: number }[] = [];
+		for (let i = 0; i < 12; i++) {
+			const u = reduced ? (i * 0.618) % 1 : cycle(t, 40, (i * 0.618) % 1);
+			const x = -HALF_WIDTH + 40 + u * (2 * HALF_WIDTH - 80);
+			const z = -205 - ((i * 37) % 85);
+			out.push({
+				i,
+				x: X(x),
+				y: Y(z),
+				o: 0.3 * smoothstep(0, 0.08, u) * (1 - smoothstep(0.92, 1, u))
+			});
+		}
+		return out;
+	});
+
 	// ---- earthquakes -------------------------------------------------------------------
 	const depthClass = (z: number) => (-z < 70 ? 'shallow' : -z <= 300 ? 'intermediate' : 'deep');
 	const quakes = $derived(
@@ -484,12 +503,12 @@
 		for (const side of ['left', 'right'] as const) {
 			const sg = side === 'left' ? -1 : 1;
 			let ax = (sg * n) / 2;
-			let ay = (-sg * s) / 2;
+			let ay = (sg * s) / 2; // northward (up in the top view)
 			if (sec.kind === 'subduction') {
 				// the overriding plate is held still; the sinking one moves towards the trench
 				if (slabSide === side) {
 					ax = -sg * Math.abs(n);
-					ay = -sg * s;
+					ay = sg * s;
 				} else {
 					ax = 0;
 					ay = 0;
@@ -502,6 +521,20 @@
 				y: PCY - 22,
 				ang: (Math.atan2(-ay * KS, ax * KN) * 180) / Math.PI
 			});
+		}
+		return out;
+	});
+
+	// sea-floor age labels on the right of a ridge, kept at least 70 px apart
+	const ageLabels = $derived.by(() => {
+		const out: { age: number; x: number }[] = [];
+		let last = 0;
+		for (const age of [10, 20, 40, 80]) {
+			const x = age * speed * 5;
+			if (x > HALF_WIDTH - 60) break;
+			if (x * KX < 60 || (x - last) * KX < 70) continue;
+			out.push({ age, x });
+			last = x;
 		}
 		return out;
 	});
@@ -551,7 +584,7 @@
 		let best = 20;
 		let bestD = Infinity;
 		for (let h = 20; h <= 70; h++) {
-			const z = 0.5 + (h - 35) * (1 - 2.8 / 3.3) - h;
+			const z = airyElevation(h) - h;
 			const d = Math.abs(Y(z) - p.y);
 			if (d < bestD) {
 				bestD = d;
@@ -728,6 +761,15 @@
 			fill="var(--pt-astheno)"
 		/>
 		<path d={waterPath} fill="var(--pt-sea)" />
+		{#each creep as c (c.i)}
+			<path
+				d="M{f1(c.x - 7)} {f1(c.y)} h14 m-4 -3 l4 3 l-4 3"
+				fill="none"
+				stroke="var(--stage-ink)"
+				stroke-width="1.2"
+				opacity={c.o}
+			/>
+		{/each}
 		{#if slabPaths}
 			<path d={slabPaths.litho} fill="var(--pt-litho)" />
 			<path d={slabPaths.crust} fill="var(--pt-ocean-crust)" />
@@ -823,11 +865,20 @@
 		>
 			<Label x={X(560)} y={Y(rightCol.moho) + 16} text="ocean crust · 7 km" size={12} />
 		</Readout>
-		<Readout id="l-land" order={3} label="Land stands" value="{km1(rootCol.z)} above sea level">
+		<Readout
+			id="l-land"
+			order={3}
+			label={rootCol.z >= 0 ? 'Land stands' : 'Under the sea'}
+			value={rootCol.z >= 0
+				? `${km1(rootCol.z)} above sea level`
+				: `${km1(-rootCol.z)} below sea level`}
+		>
 			<Label
 				x={X(-640)}
 				y={Y(Math.max(rootCol.z, 0)) - 8}
-				text="{km1(rootCol.z)} above sea level"
+				text={rootCol.z >= 0
+					? `${km1(rootCol.z)} above sea level`
+					: `${km1(-rootCol.z)} below sea level`}
 				size={12}
 				pill
 			/>
@@ -839,11 +890,13 @@
 			<Label x={X(560)} y={Y(-1.4)} text="sea" size={12} muted />
 		</Readout>
 		<Readout id="l-litho" order={5} label="Lithosphere (the plate)" color="var(--pt-litho)">
+			<Label x={X(560)} y={Y(-70)} text="lithosphere = the plate" size={12} weight={600} />
 			<Label
 				x={X(560)}
-				y={Y(-70)}
-				text="lithosphere: crust + stiff top of the mantle = the plate"
-				size={12}
+				y={Y(-70) + 16}
+				text="crust + the stiff top of the mantle"
+				size={11}
+				muted
 			/>
 		</Readout>
 		<Readout
@@ -854,7 +907,7 @@
 		>
 			<Label
 				x={X(300)}
-				y={Y(-220)}
+				y={Y(-160)}
 				text="asthenosphere: hot, solid rock that flows slowly"
 				size={12}
 			/>
@@ -883,13 +936,10 @@
 		</Readout>
 	{/if}
 	{#if phase === 'ridge'}
-		{#each [10, 20, 40] as age (age)}
-			{@const xa = age * speed * 5}
-			{#if xa < HALF_WIDTH - 60}
-				<Readout id="age-{age}">
-					<Label x={X(xa)} y={Y(colAt(xa).moho) + 14} text="{age} Myr" size={11} muted />
-				</Readout>
-			{/if}
+		{#each ageLabels as a (a.age)}
+			<Readout id="age-{a.age}">
+				<Label x={X(a.x)} y={Y(colAt(a.x).moho) + 14} text="{a.age} Myr" size={11} muted />
+			</Readout>
 		{/each}
 		<Readout id="r-new" order={3} label="New sea floor" value={km(sec.newOcean)}>
 			<Label x={X(0)} y={Y(-40)} text="hot mantle rises and melts" size={12} />
@@ -1034,7 +1084,7 @@
 			<Label x={X(0)} y={Y(-170)} text="no plate sinks: no volcanoes" size={12} muted />
 		</Readout>
 	{/if}
-	{#if transformF}
+	{#if transformF && sec.kind === 'transform'}
 		{@const zt = midCol.z}
 		<g transform="translate({X(0)} {Y(Math.max(zt, 0)) - 26})">
 			<!-- ⊙ coming towards you on one side, ⊗ going away on the other -->
@@ -1071,6 +1121,23 @@
 				y={Y(Math.max(zt, 0)) - 44}
 				text="transform fault: the plates slide past"
 				size={12}
+				pill
+			/>
+		</Readout>
+	{:else if transformF}
+		<Readout
+			id="f-transform"
+			order={2}
+			label="Also sliding past"
+			value="{km(Math.abs(transformF.value))}: a transform fault"
+			color="var(--pt-sideways)"
+		>
+			<Label
+				x={X(0) + 12}
+				y={PB - 12}
+				text="transform fault: also sliding past"
+				size={11}
+				anchor="start"
 				pill
 			/>
 		</Readout>
@@ -1123,14 +1190,16 @@
 			</g>
 		</Readout>
 	{/if}
-	<Readout id="q-legend" order={9} label="Earthquakes" color="var(--pt-shallow)">
-		<g transform="translate({cardRight ? LEFT + 10 : RIGHT - 120} {BOTTOM - 14})">
-			<path d={star(4, -4, 5)} fill="var(--pt-shallow)" />
-			<path d={star(15, -4, 5)} fill="var(--pt-intermediate)" />
-			<path d={star(26, -4, 5)} fill="var(--pt-deep)" />
-			<text x="34" y="0" font-size="11" class="muted">earthquakes</text>
-		</g>
-	</Readout>
+	{#if quakes.length}
+		<Readout id="q-legend" order={9} label="Earthquakes" color="var(--pt-shallow)">
+			<g transform="translate({cardRight ? LEFT + 10 : RIGHT - 120} {BOTTOM - 14})">
+				<path d={star(4, -4, 5)} fill="var(--pt-shallow)" />
+				<path d={star(15, -4, 5)} fill="var(--pt-intermediate)" />
+				<path d={star(26, -4, 5)} fill="var(--pt-deep)" />
+				<text x="34" y="0" font-size="11" class="muted">earthquakes</text>
+			</g>
+		</Readout>
+	{/if}
 </g>
 
 <style>

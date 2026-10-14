@@ -197,7 +197,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [moved('arcClose', 0, 1200, 700, 'How far the plates have moved together')],
 			body: `
-<p>When two ocean plates meet, one of them has to go down: the older one, because ocean floor gets colder and heavier as it ages. Here the left plate is 60 million years old and the right one 30, so the left one sinks.</p>
+<p>When two ocean plates meet, one of them has to go down: the older one, because ocean floor gets colder and heavier as it ages. Here the left plate's sea floor started out 60 million years old and the right one's 30, so the left one sinks.</p>
 <p>The same thing happens as under a continent: a trench, earthquakes going down with the sinking plate, and volcanoes where it reaches about 100 km depth. But now the volcanoes start on the sea floor. Keep pushing and watch them grow until they break the surface as a curved chain of volcanic islands, an <strong>island arc</strong>: the Aleutians, the Mariana Islands, Tonga. Next to the Marianas lies the deepest place in the oceans, the Challenger Deep, almost 11 km down.</p>`
 		},
 		{

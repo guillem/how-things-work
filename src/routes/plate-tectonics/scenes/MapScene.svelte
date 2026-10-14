@@ -303,17 +303,16 @@
 				</Readout>
 			{/each}
 		{:else if phase === 'hotspots'}
-			{#each [['subduction', 'together', 'subduction zone'], ['rift', 'apart', 'rift or ridge'], ['intraplate', 'intraplate', 'middle of a plate']] as [s, c, label], i (s)}
+			{#each [['subduction', 'together', 'at subduction zones'], ['rift', 'apart', 'at rifts and ridges'], ['intraplate', 'intraplate', 'in the middle of a plate']] as [s, c, label], i (s)}
 				<Readout
 					id="set-{s}"
 					order={i + 1}
-					label="Volcanoes: {label}"
+					label="Volcanoes {label}"
 					value={pct(shares[s as Setting])}
 					color="var(--pt-{c})"
 				>
 					<path d="M{i * 250} -6 l5.5 9.5 h-11 z" fill="var(--pt-{c})" transform="translate(6 0)" />
-					<text x={i * 250 + 18} y="4" font-size="13">{pct(shares[s as Setting])} at a {label}</text
-					>
+					<text x={i * 250 + 18} y="4" font-size="13">{pct(shares[s as Setting])} {label}</text>
 				</Readout>
 			{/each}
 		{:else}
@@ -321,7 +320,7 @@
 				id="legend-quake"
 				order={1}
 				label="Earthquakes, M ≥ 5.5"
-				value={fmt(quakes.length)}
+				value={phase === 'pattern' ? fmt(quakes.length) : undefined}
 				color="var(--pt-quake)"
 			>
 				<circle cx="5" cy="0" r="4" fill="var(--pt-quake)" />
@@ -333,7 +332,7 @@
 				id="legend-volcano"
 				order={2}
 				label="Volcanoes, last 12,000 years"
-				value={fmt(volcanoes.length)}
+				value={phase === 'pattern' ? fmt(volcanoes.length) : undefined}
 				color="var(--pt-volcano)"
 			>
 				<path d="M340 -6 l5.5 9.5 h-11 z" fill="var(--pt-volcano)" />
@@ -341,7 +340,12 @@
 					>{fmt(volcanoes.length)} volcanoes active in the last 12,000 years</text
 				>
 			</Readout>
-			<Readout id="date" order={3} label="Earthquakes up to" value={dateText}>
+			<Readout
+				id="date"
+				order={3}
+				label={phase === 'pattern' ? 'Earthquakes up to' : undefined}
+				value={dateText}
+			>
 				<text x="912" y="4" font-size="15" font-weight="600" text-anchor="end">{dateText}</text>
 			</Readout>
 		{/if}
@@ -352,12 +356,17 @@
 		{#if phase === 'plates'}
 			<g opacity={fBound.current}>
 				{#each [['apart', 'apart'], ['together', 'together'], ['sideways', 'sliding past']] as [g, label], i (g)}
-					<Readout id="b-{g}" order={10 + i} label="Plates moving {label}" color="var(--pt-{g})">
+					<Readout
+						id="b-{g}"
+						order={10 + i}
+						label={g === 'sideways' ? 'Plates sliding past' : `Plates moving ${label}`}
+						color="var(--pt-{g})"
+					>
 						<path d="M{i * 150} 0 h26" stroke="var(--pt-{g})" stroke-width="2.4" />
 						<text x={i * 150 + 34} y="4" font-size="13">{label}</text>
 					</Readout>
 				{/each}
-				<Readout id="b-teeth" order={13} label="Teeth: on the plate that stays on top">
+				<Readout id="b-teeth">
 					<path d="M450 0 h26" stroke="var(--pt-together)" stroke-width="2.4" />
 					{#each [0, 1, 2] as k (k)}
 						<path d="M{452 + k * 9} 0 l3 -5 l3 5 z" fill="var(--pt-together)" />

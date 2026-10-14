@@ -68,9 +68,11 @@ export function lithosphereThickness(age: number): number {
 	return Math.min(125, (2.32 * Math.sqrt(KAPPA * t)) / 1000);
 }
 
-/** Height above sea level, km, of continental crust `h` km thick (Airy isostasy). */
+/** Height above sea level (negative: below it), km, of continental crust `h` km thick (Airy isostasy). */
 export function airyElevation(h: number): number {
-	return CONTINENT_ELEVATION + (h - CONTINENT_CRUST) * (1 - RHO.continent / RHO.mantle);
+	const e = CONTINENT_ELEVATION + (h - CONTINENT_CRUST) * (1 - RHO.continent / RHO.mantle);
+	// Below sea level the column is loaded with water instead of air, and sinks further.
+	return e >= 0 ? e : (e * RHO.mantle) / (RHO.mantle - RHO.water);
 }
 
 // McKenzie (1978) with a 125 km lithosphere, 35 km crust, α = 3.28e-5 /K, Tm = 1333 °C.
