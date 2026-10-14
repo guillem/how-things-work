@@ -74,6 +74,19 @@ test('measured bit-error rates match the theory (BPSK: Q(√(2Eb/N₀)))', () =>
 	expect(berTheory('bpsk', 0)).toBeCloseTo(Q(Math.SQRT2), 10);
 });
 
+test('a neighbour’s overlapping signal acts as extra noise: BER follows the SINR', () => {
+	for (const [snrDb, power] of [
+		[20, 0.125],
+		[15, 0.1],
+		[25, 0.25]
+	]) {
+		const sinr = 1 / (1 / dbToLin(snrDb) + power);
+		const th = berTheory('qpsk', linToDb(sinr));
+		const m = measureBer('qpsk', snrDb, 400_000, 5, { power });
+		expect(Math.abs(m.ber - th)).toBeLessThan(5 * Math.sqrt(th / m.bits) + 0.02 * th);
+	}
+});
+
 test('QPSK has the BER of BPSK at the same energy per bit', () => {
 	for (const ebn0 of [0, 4, 8]) {
 		// QPSK carries 2 bits per symbol: Es/N₀ = Eb/N₀ + 3.01 dB

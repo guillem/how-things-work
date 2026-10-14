@@ -424,8 +424,13 @@ const popcount = (v: number) => {
 	return c;
 };
 
+/**
+ * A neighbouring Wi-Fi transmitter. Wi-Fi is OFDM: dozens of independently
+ * modulated subcarriers, so the part of its signal inside our channel reaches
+ * our receiver as practically Gaussian noise. It is modelled as such.
+ */
 export interface Interferer {
-	/** Interference power at the receiver, relative to our signal (linear). */
+	/** Its power inside our channel at the receiver, relative to our signal (linear). */
 	power: number;
 }
 
@@ -444,9 +449,9 @@ export interface Transmission {
 
 /**
  * Sends `n` random symbols through additive white Gaussian noise at the given
- * SNR (Es/N₀, dB), plus optionally a second transmitter: a carrier of the given
- * relative power with a random phase against ours at every symbol (it is not
- * synchronised with us), and decides each one by the nearest point.
+ * SNR (Es/N₀, dB), plus optionally a neighbouring transmitter (extra Gaussian
+ * noise of the given relative power, see `Interferer`), and decides each one by
+ * the nearest point.
  * `keep` false skips storing the points (for long BER measurements).
  */
 export function transmit(
@@ -461,7 +466,9 @@ export function transmit(
 	const u = rng(seed);
 	const g = gaussian(seed ^ 0x5bd1e995);
 	const sigma = Math.sqrt(1 / dbToLin(snrDb) / 2); // per dimension: N₀/2 with Es = 1
-	const ia = interferer ? Math.sqrt(interferer.power) : 0;
+	// the neighbour's noise has its own generator, so the thermal noise is the same with or without it
+	const gi = gaussian(seed ^ 0x27d4eb2f);
+	const sigmaI = interferer ? Math.sqrt(interferer.power / 2) : 0;
 	const sent = new Float32Array(keep ? 2 * n : 0);
 	const received = new Float32Array(keep ? 2 * n : 0);
 	const wrong = new Uint8Array(keep ? n : 0);
@@ -475,10 +482,9 @@ export function transmit(
 		const sq = scheme === 'bpsk' ? 0 : lvl(mq);
 		let ri = si + sigma * g();
 		let rq = sq + sigma * g();
-		if (ia > 0) {
-			const ph = 2 * Math.PI * u();
-			ri += ia * Math.cos(ph);
-			rq += ia * Math.sin(ph);
+		if (sigmaI > 0) {
+			ri += sigmaI * gi();
+			rq += sigmaI * gi();
 		}
 		const di = slice(ri, ax);
 		let e = popcount(gray(di) ^ gray(mi));

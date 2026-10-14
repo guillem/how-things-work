@@ -9,11 +9,14 @@ export function distanceText(logd: number) {
 	return `${Math.round(d / 1000)} km`;
 }
 
-/** Signed dB with one decimal: "+3.0 dB", "−12.5 dB" (true minus sign). */
-export const db = (v: number, digits = 1) => `${v < 0 ? '−' : ''}${Math.abs(v).toFixed(digits)} dB`;
+/** A decimal with a true minus sign, never "−0.0". */
+export function num(v: number, digits = 1) {
+	const r = Number(v.toFixed(digits));
+	return `${r < 0 ? '−' : ''}${Math.abs(r).toFixed(digits)}`;
+}
 
-/** Unsigned decimal with a true minus sign. */
-export const num = (v: number, digits = 1) => `${v < 0 ? '−' : ''}${Math.abs(v).toFixed(digits)}`;
+/** Decibels: "3.0 dB", "−12.5 dB". */
+export const db = (v: number, digits = 1) => `${num(v, digits)} dB`;
 
 /** An error rate: "0", "3.1 × 10⁻⁴", "12%", "1 in 3". */
 export function rate(v: number) {

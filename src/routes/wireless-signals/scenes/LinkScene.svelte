@@ -11,7 +11,7 @@
 	 * - `neighbour`: top, the 2.4 GHz channel map with ours (6) and the
 	 *   neighbour's (`params.nbCh`); the overlapping part of its power
 	 *   (`params.nbDb` relative to ours × the overlap) joins the noise. The
-	 *   symbols get the neighbour as an unsynchronised carrier (a ring).
+	 *   symbols get it as extra Gaussian noise (a Wi-Fi signal is OFDM, see `Interferer`).
 	 *
 	 * Wavefronts are a pure function of t; the cloud arrives as in ChannelScene.
 	 */
