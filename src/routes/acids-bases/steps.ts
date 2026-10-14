@@ -234,9 +234,9 @@ export const spec: ExplainerSpec = {
 				focus: 'jump'
 			},
 			duration: 30,
-			controls: [added('addedJump', 24.8, 20, 30), drop],
+			controls: [added('addedJump', 24.85, 20, 30), drop],
 			body: `
-<p>You are at 24.80 mL. Add the base yourself, <strong>one drop at a time</strong> (a drop from a burette is about 0.05 mL), and watch the panel of the last drops.</p>
+<p>You are at 24.85 mL, three drops short. Add the base yourself, <strong>one drop at a time</strong> (a drop from a burette is about 0.05 mL), and watch the panel of the last drops.</p>
 <p>Why the leap? The pH counts H⁺ by powers of ten. At 24.95 mL only one part in a thousand of the acid is left and the pH is 4.0. The next drop, at <strong>25.00 mL</strong>, matches the acid exactly: the moles of OH⁻ added equal the moles of H⁺ there were, the <dfn data-def="The point of a titration at which the base added exactly matches the acid in the flask, mole for mole.">equivalence point</dfn>. Only water's own ions remain: pH 7.0. One more drop leaves OH⁻ in excess, and the pH is 10.0. Two drops, six pH steps: <strong>a millionfold</strong> change in H⁺.</p>
 <p>That is why a titration is so precise: the equivalence point is marked by a cliff, not a gentle slope.</p>`,
 			notes: `<p>At equivalence the flask holds 50 mL of sodium chloride solution, salt water. The moles of acid are 0.025 L × 0.1 mol/L = 2.5 millimoles, so it takes 2.5 millimoles of NaOH: 25.00 mL. Knowing the base's concentration and reading the volume at the jump gives the amount of acid, which is how the acidity of wine, vinegar or a water sample is measured.</p>`
