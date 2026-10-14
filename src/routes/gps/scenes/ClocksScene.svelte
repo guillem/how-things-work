@@ -197,12 +197,7 @@
 			>{Math.abs(rangeKm).toFixed(1)} km</text
 		>
 	</Readout>
-	<Readout
-		id="factory"
-		order={4}
-		label="Factory setting at GPS height"
-		value="10.229 999 995 43 MHz"
-	>
+	<Readout id="factory">
 		<text x={PX + 18} y={520} class="muted" style:font-size="12px"
 			>GPS clocks are set to tick at</text
 		>

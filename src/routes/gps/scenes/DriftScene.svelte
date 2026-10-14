@@ -56,6 +56,8 @@
 
 	const km = (m: number) => `${(m / 1000).toFixed(1)} km`;
 	const len = (v: number[]) => norm(v);
+	/** A length in km, or in metres below 1 km. */
+	const size = (m: number) => (Math.abs(m) < 1000 ? `${m.toFixed(1)} m` : km(m));
 	const dist = (m: number) =>
 		m < 0.005 ? 'on the spot' : m < 1000 ? `${m.toFixed(m < 10 ? 1 : 0)} m off` : `${km(m)} off`;
 	const gainUs = $derived(drift * days);
@@ -191,7 +193,7 @@
 		<text x={PANEL + 40} y={194} class="muted" style:font-size="12px"
 			>{len(trust) < 5
 				? 'time: right'
-				: `${km(Math.hypot(trust[0], trust[1]))} across, ${km(trust[2])} up`}</text
+				: `${size(Math.hypot(trust[0], trust[1]))} across, ${size(trust[2])} up`}</text
 		>
 	</Readout>
 

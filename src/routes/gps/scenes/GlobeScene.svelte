@@ -96,14 +96,14 @@
 		}
 		return reps;
 	})();
-	const rings = $derived(
+	// The rings' points in space depend only on the hour; they are projected every frame.
+	const ringPoints = $derived(
 		planes.map((s) => {
 			const T = period(s.sqrtA ** 2);
-			return Array.from({ length: 73 }, (_, j) =>
-				project(satellite(s, hour * 3600 + (j * T) / 72).eci)
-			);
+			return Array.from({ length: 73 }, (_, j) => satellite(s, hour * 3600 + (j * T) / 72).eci);
 		})
 	);
+	const rings = $derived(ringPoints.map((pts) => pts.map(project)));
 	const ringPath = (pts: P[], front: boolean) => {
 		let d = '';
 		let pen = false;
@@ -119,20 +119,23 @@
 	};
 
 	// ---- a graticule on the Earth: the equator and meridians every 30° (front side only) ---------
-	const graticule = $derived.by(() => {
-		const lines: Vec[][] = [];
-		lines.push(Array.from({ length: 73 }, (_, j) => geodeticToEcef(0, j * 5)));
-		for (const la of [-60, -30, 30, 60])
-			lines.push(Array.from({ length: 73 }, (_, j) => geodeticToEcef(la, j * 5)));
-		for (let lo = 0; lo < 360; lo += 30)
-			lines.push(Array.from({ length: 37 }, (_, j) => geodeticToEcef(-90 + j * 5, lo)));
-		return lines.map((l) =>
+	const graticuleEcef: Vec[][] = [
+		Array.from({ length: 73 }, (_, j) => geodeticToEcef(0, j * 5)),
+		...[-60, -30, 30, 60].map((la) =>
+			Array.from({ length: 73 }, (_, j) => geodeticToEcef(la, j * 5))
+		),
+		...Array.from({ length: 12 }, (_, k) =>
+			Array.from({ length: 37 }, (_, j) => geodeticToEcef(-90 + j * 5, k * 30))
+		)
+	];
+	const graticule = $derived(
+		graticuleEcef.map((l) =>
 			ringPath(
 				l.map((p) => project(toEci(p))),
 				true
 			)
-		);
-	});
+		)
+	);
 
 	// ---- satellites and the receiver --------------------------------------------------------------
 	const sats = $derived(constellation(tk));
@@ -337,7 +340,12 @@
 			stroke="var(--border)"
 		/>
 	</Readout>
-	<Readout id="time" order={0} label="Time (GPS)" value={clockTime(tk / 3600)}>
+	<Readout
+		id="time"
+		order={0}
+		label={phase === 'fix' ? undefined : 'Time (GPS)'}
+		value={phase === 'fix' ? undefined : clockTime(tk / 3600)}
+	>
 		<text x={PX + 18} y={52} class="muted" style:font-size="12px">Time (GPS)</text>
 		<text x={PX + 18} y={74} style:font-size="15px" font-weight="600">{clockTime(tk / 3600)}</text>
 	</Readout>

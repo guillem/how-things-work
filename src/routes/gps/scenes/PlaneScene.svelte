@@ -474,11 +474,12 @@
 		</Readout>
 	{:else}
 		{#each used.map((_, j) => j) as i (i)}
+			<!-- On phones the ranges are listed only on the trilateration step (≤ 4 rows a step). -->
 			<Readout
 				id="range-{i}"
 				order={1 + i}
-				label="Range to {NAMES[i]}"
-				value="{km(measured[i])} km"
+				label={phase === 'tri' ? `Range to ${NAMES[i]}` : undefined}
+				value={phase === 'tri' ? `${km(measured[i])} km` : undefined}
 				color={COLORS[i]}
 			>
 				<circle cx={PX + 24} cy={92 + i * 28} r="5" fill={COLORS[i]} />
@@ -499,12 +500,7 @@
 				>
 			</Readout>
 		{:else}
-			<Readout
-				id="clk"
-				order={5}
-				label="Receiver clock"
-				value={clockMs === 0 ? 'exact' : `${signed(clockMs)} ms → +${km(bias.current)} km`}
-			>
+			<Readout id="clk" order={5}>
 				<text x={PX + 18} y={200} class="muted" style:font-size="12px"
 					>Receiver clock error → added to every range</text
 				>
