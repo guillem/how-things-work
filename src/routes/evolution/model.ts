@@ -42,7 +42,8 @@
  *    10^k times the wild type's MIC (each class one mutation further); a cell
  *    grows (logistically, one doubling per generation when there is room)
  *    only where the drug is below its MIC, and dies elsewhere. Cells move to
- *    neighbouring patches; each birth mutates to the next class with
+ *    neighbouring patches with room (and die on landing where the drug is too
+ *    strong for them); each birth mutates to the next class with
  *    probability μ (a Poisson number of mutants). Below one cell a class is
  *    kept or lost at random, so a patch never holds a fraction of a cell.
  *
@@ -539,15 +540,27 @@ export function runPlate(set: PlateSettings): PlateRun {
 			}
 			return next;
 		});
-		// Movement to the neighbouring patches.
-		n = grown.map((row, i) =>
-			row.map((x, k) => {
-				const left = i > 0 ? grown[i - 1][k] : 0;
-				const right = i < P - 1 ? grown[i + 1][k] : 0;
-				const stays = x * (1 - (i > 0 ? m : 0) - (i < P - 1 ? m : 0));
-				return stays + m * (left + right);
-			})
-		);
+		// Movement to the neighbouring patches. Cells spread into room: the flow into a patch
+		// is scaled by its free space (bacteria swim up the food gradient; a patch whose food is
+		// used up draws no one), and cells that land where the drug is above what they
+		// tolerate die there.
+		const room = grown.map((row) => Math.max(0, 1 - row.reduce((s, x) => s + x, 0) / K));
+		const out = grown.map(() => new Array<number>(CLASSES).fill(0));
+		for (let i = 0; i < P; i++) {
+			for (let k = 0; k < CLASSES; k++) {
+				const x = grown[i][k];
+				if (x <= 0) continue;
+				let left = 0;
+				for (const j of [i - 1, i + 1]) {
+					if (j < 0 || j >= P) continue;
+					const moving = m * x * room[j];
+					left += moving;
+					if (mic(k) > drug[j]) out[j][k] += moving;
+				}
+				out[i][k] += x - left;
+			}
+		}
+		n = out;
 		// No fraction of a cell: below one, a class is kept (as one cell) or lost at random.
 		for (const row of n) {
 			for (let k = 0; k < CLASSES; k++) {
