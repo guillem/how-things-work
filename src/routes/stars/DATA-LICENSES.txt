@@ -1,0 +1,21 @@
+Data used by the stars explainer, and their licences. Each data file's header gives the
+full source, citation and how the subset was made.
+
+tracks.ts — MIST v1.2 stellar evolution tracks (Choi et al. 2016, ApJ 823, 102;
+Dotter 2016, ApJS 222, 8), https://mist.science/. Free to use with citation of the
+papers above.
+
+origins.ts — "Origin of the elements in the Solar System" by Jennifer A. Johnson,
+licensed CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/), as encoded in
+"Nucleosynthesis periodic table.svg" by C. M. G. Lee, Wikimedia Commons, licensed
+CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/). The shares in
+origins.ts are a derivative of that work and are shared under the same terms
+(CC BY-SA 4.0).
+
+nearby.ts — derived from ESA Gaia data: Gaia Catalogue of Nearby Stars (Gaia
+Collaboration, Smart et al. 2021, A&A 649, A6) and Gaia EDR3 white dwarfs (Gentile
+Fusillo et al. 2021, MNRAS 508, 3877); Gaia data are © ESA/Gaia/DPAC, licensed
+CC BY-SA 3.0 IGO (https://creativecommons.org/licenses/by-sa/3.0/igo/). Colour–
+temperature relation and bolometric corrections from E. Mamajek's "A Modern Mean
+Dwarf Stellar Color and Effective Temperature Sequence" (Pecaut & Mamajek 2013,
+ApJS 208, 9). The values in nearby.ts are shared under CC BY-SA 3.0 IGO.
