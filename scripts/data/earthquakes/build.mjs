@@ -100,7 +100,6 @@ const [elon, elat, edepth] = event.geometry.coordinates;
 function decodeSteim2(buf, off, nframes, nsamp) {
 	const out = [];
 	let x0 = 0;
-	let last = 0;
 	const diffs = [];
 	for (let f = 0; f < nframes; f++) {
 		const base = off + f * 64;
@@ -131,7 +130,7 @@ function decodeSteim2(buf, off, nframes, nsamp) {
 			}
 		}
 	}
-	last = x0;
+	let last = x0;
 	out.push(x0);
 	for (let i = 1; i < nsamp; i++) {
 		last += diffs[i];
