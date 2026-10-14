@@ -5,7 +5,7 @@
 	 * Phases (`step.hints.phase`):
 	 *   packet — a free electron packet (energy `params.energy`, starting width
 	 *            `params.sigma`) from x = −14 nm, solved exactly with the
-	 *            model's free evolution (one FFT pair per frame) on a 2048-point
+	 *            model's free evolution (one FFT pair per frame) on an 8192-point
 	 *            grid. 1 s of animation = 4 fs; the run repeats once the packet
 	 *            has crossed the view (fading out and in at the ends). Readouts:
 	 *            ⟨x⟩, spread now vs at the start, total probability ∫|ψ|²dx.
@@ -25,6 +25,8 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		HBAR,
+		PACKET_GRID,
+		PACKET_RUN,
 		PLANCK,
 		boxEnergy,
 		boxState,
@@ -55,15 +57,15 @@
 	// ---- the free packet --------------------------------------------------------------
 	const E = $derived(clamp(Number(params.energy ?? 1), 0.2, 3));
 	const sigma0 = $derived(clamp(Number(params.sigma ?? 1), 0.4, 3));
-	const g = grid(2048, 0.05);
+	const g = grid(PACKET_GRID.n, PACKET_GRID.dx);
 	const XMIN = -20;
 	const XMAX = 30;
-	const X0 = -14;
+	const X0 = PACKET_RUN.x0;
 	const FS_PER_S = 4;
 	const psi0 = $derived(gaussian(g, X0, sigma0, waveNumber(E)));
 	const v = $derived(speed(E));
 	/** Simulated time: the packet runs until its centre is 6 nm past the right edge. */
-	const loopT = $derived((XMAX + 6 - X0) / v);
+	const loopT = $derived((PACKET_RUN.x1 - X0) / v);
 	const simT = $derived(isBox ? 0 : (t * FS_PER_S) % loopT);
 	const loopFade = $derived(
 		smoothstep(0, 1.2, simT) * (1 - smoothstep(loopT - 3 * (1 / v), loopT, simT))
