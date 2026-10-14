@@ -2204,3 +2204,22 @@ kbd {
 	--cp-link: #ffc078;
 	--cp-mirror: #868e96;
 }
+
+/* gpu: the fast core, the slow lanes, idle (switched-off) lanes, the serial part of a job,
+   memory (the sloping roof) and the path a warp takes through the shader */
+:root {
+	--gpu-fast: #1c7ed6;
+	--gpu-lane: #5c940d;
+	--gpu-idle: #dee2e6;
+	--gpu-serial: #e8590c;
+	--gpu-mem: #7048e8;
+	--gpu-path: #fff3bf;
+}
+:root[data-theme='dark'] {
+	--gpu-fast: #4dabf7;
+	--gpu-lane: #94d82d;
+	--gpu-idle: #343a40;
+	--gpu-serial: #ff922b;
+	--gpu-mem: #9775fa;
+	--gpu-path: #3d3a1f;
+}
