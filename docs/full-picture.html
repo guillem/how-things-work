@@ -265,6 +265,21 @@
 				color: var(--amber);
 				background: rgba(210, 153, 34, 0.08);
 			}
+			.chip.built {
+				border-color: rgba(63, 185, 80, 0.5);
+				color: var(--green);
+				background: rgba(63, 185, 80, 0.08);
+			}
+			.chip.wip {
+				border-color: rgba(88, 166, 255, 0.55);
+				color: var(--blue);
+				background: rgba(88, 166, 255, 0.09);
+			}
+			.chip.blocked {
+				border-color: rgba(92, 107, 122, 0.6);
+				color: var(--faint);
+				text-decoration: line-through;
+			}
 			.chip.star {
 				border-color: rgba(188, 140, 255, 0.55);
 				color: var(--purple);
@@ -488,67 +503,58 @@
 			<header>
 				<h1>How Things Work <span class="accent">— the full picture</span></h1>
 				<span class="updated"
-					>updated 2026-10-13 ·
+					>updated 2026-10-15 01:00 ·
 					<a href="https://guillem.github.io/how-things-work/">live site</a></span
 				>
 			</header>
 			<p class="sub">
-				The one-glance status for humans. The full books — kept current at every commit — are
+				The one-glance status for humans. The full books are
 				<a href="https://github.com/guillem/how-things-work/blob/main/docs/TOPICS.md">TOPICS.md</a>
 				(catalogue &amp; checklist),
 				<a href="https://github.com/guillem/how-things-work/blob/main/docs/STATUS.md">STATUS.md</a>
-				(where work stands) and
-				<a href="https://github.com/guillem/how-things-work/blob/main/docs/BACKLOG.md"
-					>BACKLOG.md</a
-				>
-				(what is next).
+				and
+				<a href="https://github.com/guillem/how-things-work/blob/main/docs/BACKLOG.md">BACKLOG.md</a
+				>.
 			</p>
 
 			<div class="badges">
 				<span class="badge"
-					><span class="dot green"></span>v0.1.16 deployed &amp; smoke-tested</span
+					><span class="dot green"></span>v0.1.16 live · 30 new topics on local main, not
+					pushed</span
 				>
+				<span class="badge"><span class="dot green"></span>make check green on main</span>
 				<span class="badge"
-					><span class="dot green"></span>make check <span class="mono">467</span> model tests</span
-				>
-				<span class="badge"
-					><span class="dot green"></span>browser suite <span class="mono">824</span> tests</span
-				>
-				<span class="badge"
-					><span class="dot amber"></span>next up: batch 10 — 26 topics ready</span
+					><span class="dot amber"></span>final push: ~13 builders in parallel, paced by the 5-hour
+					window</span
 				>
 			</div>
 
 			<div class="hero">
 				<div class="row">
-					<span class="big">46</span><span class="of">of 100 topics built</span>
-					<span class="pct">46%</span>
+					<span class="big">76</span><span class="of">of 100 topics built</span>
+					<span class="pct">76%</span>
 				</div>
-				<div class="track"><div class="fill" style="width: 46%"></div></div>
+				<div class="track"><div class="fill" style="width: 76%"></div></div>
 				<div class="stats">
 					<div class="stat">
-						<div class="n">11</div>
-						<div class="l">categories</div>
-					</div>
-					<div class="stat">
-						<div class="n">26</div>
-						<div class="l">topics ready to build now</div>
+						<div class="n">67</div>
+						<div class="l">built &amp; fact-checked (ticked)</div>
 					</div>
 					<div class="stat">
 						<div class="n">9</div>
-						<div class="l">ready, but need a data source</div>
+						<div class="l">built, fact-check pending</div>
 					</div>
 					<div class="stat">
-						<div class="n">19</div>
-						<div class="l">waiting on prerequisites</div>
+						<div class="n">12</div>
+						<div class="l">being built right now</div>
 					</div>
 					<div class="stat">
-						<div class="n">1,291</div>
-						<div class="l">automated tests, green</div>
+						<div class="n">11</div>
+						<div class="l">not started yet</div>
 					</div>
 					<div class="stat">
-						<div class="n">10</div>
-						<div class="l">releases since 2026-10-11</div>
+						<div class="n">1</div>
+						<div class="l">blocked (crispr)</div>
 					</div>
 				</div>
 			</div>
@@ -556,17 +562,20 @@
 			<section>
 				<h2>
 					Topics by category
-					<span class="count">amber chips = not built yet · purple = unlock key</span>
+					<span class="count"
+						>green = built, fact-check pending · blue = building now · amber = not started · grey =
+						blocked</span
+					>
 				</h2>
 				<div class="cats">
 					<div class="cat">
 						<div class="head">
-							<span class="name">Mathematics</span><span class="frac">9/10</span>
+							<span class="name">Mathematics</span><span class="frac">10/10</span>
 						</div>
-						<div class="mini"><i style="width: 90%"></i></div>
-						<div class="chips"><span class="chip">tensors</span></div>
+						<div class="mini"><i style="width: 100%"></i></div>
+						<div class="chips"><span class="chip built">tensors</span></div>
 						<details class="done-list">
-							<summary>9 built</summary>
+							<summary>9 built &amp; fact-checked</summary>
 							<div class="done-items">
 								unit-circle calculus linear-transformations complex-numbers fourier-transform
 								bayes-theorem central-limit-theorem primes-modular-arithmetic chaos-fractals
@@ -574,121 +583,122 @@
 						</details>
 					</div>
 					<div class="cat">
-						<div class="head"><span class="name">Physics</span><span class="frac">8/10</span></div>
-						<div class="mini"><i style="width: 80%"></i></div>
-						<div class="chips">
-							<span class="chip">quantum-mechanics</span><span class="chip">standard-model</span>
-						</div>
+						<div class="head"><span class="name">Physics</span><span class="frac">10/10</span></div>
+						<div class="mini"><i style="width: 100%"></i></div>
+						<div class="chips"></div>
 						<details class="done-list">
-							<summary>8 built</summary>
+							<summary>10 built &amp; fact-checked</summary>
 							<div class="done-items">
 								newtons-laws oscillations-resonance waves-interference electric-circuits
-								electromagnetism light-optics entropy special-relativity
+								electromagnetism light-optics entropy special-relativity quantum-mechanics
+								standard-model
 							</div>
 						</details>
 					</div>
 					<div class="cat">
 						<div class="head">
-							<span class="name">Chemistry &amp; Materials</span><span class="frac">5/9</span>
+							<span class="name">Chemistry &amp; Materials</span><span class="frac">9/9</span>
 						</div>
+						<div class="mini"><i style="width: 100%"></i></div>
+						<div class="chips">
+							<span class="chip built">redox-batteries</span
+							><span class="chip built">carbon-polymers</span>
+						</div>
+						<details class="done-list">
+							<summary>7 built &amp; fact-checked</summary>
+							<div class="done-items">
+								atoms-periodic-table radioactivity chemical-bonds states-of-matter
+								reaction-rates-equilibrium acids-bases semiconductors
+							</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head"><span class="name">Biology</span><span class="frac">8/9</span></div>
+						<div class="mini"><i style="width: 89%"></i></div>
+						<div class="chips">
+							<span class="chip built">protein-folding</span
+							><span class="chip built">evolution</span><span class="chip blocked">crispr</span>
+						</div>
+						<details class="done-list">
+							<summary>6 built &amp; fact-checked</summary>
+							<div class="done-items">
+								the-cell dna-to-protein photosynthesis respiration-atp meiosis-inheritance
+								ecosystems
+							</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head">
+							<span class="name">Body &amp; Medicine</span><span class="frac">6/9</span>
+						</div>
+						<div class="mini"><i style="width: 67%"></i></div>
+						<div class="chips">
+							<span class="chip built">neurons</span><span class="chip built">immune-system</span
+							><span class="chip wip">mrna-vaccines</span><span class="chip wip">cancer</span
+							><span class="chip wip">medical-imaging</span>
+						</div>
+						<details class="done-list">
+							<summary>4 built &amp; fact-checked</summary>
+							<div class="done-items">heart-circulation homeostasis vision-color epidemics</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head">
+							<span class="name">Earth &amp; Climate</span><span class="frac">7/8</span>
+						</div>
+						<div class="mini"><i style="width: 88%"></i></div>
+						<div class="chips">
+							<span class="chip built">deep-time</span><span class="chip wip">ice-ages</span>
+						</div>
+						<details class="done-list">
+							<summary>6 built &amp; fact-checked</summary>
+							<div class="done-items">
+								plate-tectonics earthquakes atmosphere-weather ocean-currents carbon-cycle
+								greenhouse-effect
+							</div>
+						</details>
+					</div>
+					<div class="cat">
+						<div class="head"><span class="name">Space</span><span class="frac">5/9</span></div>
 						<div class="mini"><i style="width: 56%"></i></div>
 						<div class="chips">
-							<span class="chip">reaction-rates-equilibrium</span
-							><span class="chip">acids-bases</span><span class="chip">redox-batteries</span
-							><span class="chip">carbon-polymers</span>
+							<span class="chip wip">stars</span><span class="chip wip">gravitational-waves</span
+							><span class="chip wip">dark-matter</span><span class="chip wip">big-bang</span>
 						</div>
 						<details class="done-list">
-							<summary>5 built</summary>
+							<summary>5 built &amp; fact-checked</summary>
 							<div class="done-items">
-								atoms-periodic-table radioactivity chemical-bonds states-of-matter semiconductors
+								sun-earth-moon orbits-kepler rockets black-holes exoplanets
 							</div>
 						</details>
 					</div>
 					<div class="cat">
-						<div class="head"><span class="name">Biology</span><span class="frac">2/9</span></div>
-						<div class="mini"><i style="width: 22%"></i></div>
-						<div class="chips">
-							<span class="chip star">the-cell</span><span class="chip">dna-to-protein</span
-							><span class="chip">protein-folding</span><span class="chip">respiration-atp</span
-							><span class="chip">meiosis-inheritance</span><span class="chip">evolution</span
-							><span class="chip">crispr</span>
-						</div>
-						<details class="done-list">
-							<summary>2 built</summary>
-							<div class="done-items">photosynthesis ecosystems</div>
-						</details>
-					</div>
-					<div class="cat">
 						<div class="head">
-							<span class="name">Body &amp; Medicine</span><span class="frac">3/9</span>
+							<span class="name">Computing</span><span class="frac">6/10</span>
 						</div>
-						<div class="mini"><i style="width: 33%"></i></div>
+						<div class="mini"><i style="width: 60%"></i></div>
 						<div class="chips">
-							<span class="chip star">vision-color</span><span class="chip">neurons</span
-							><span class="chip">immune-system</span><span class="chip">mrna-vaccines</span
-							><span class="chip">cancer</span><span class="chip">medical-imaging</span>
+							<span class="chip wip">transistors-chipmaking</span><span class="chip wip">gpu</span
+							><span class="chip wip">graphics-3d</span><span class="chip">turing-machines</span>
 						</div>
 						<details class="done-list">
-							<summary>3 built</summary>
-							<div class="done-items">heart-circulation homeostasis epidemics</div>
-						</details>
-					</div>
-					<div class="cat">
-						<div class="head">
-							<span class="name">Earth &amp; Climate</span><span class="frac">2/8</span>
-						</div>
-						<div class="mini"><i style="width: 25%"></i></div>
-						<div class="chips">
-							<span class="chip star">plate-tectonics</span><span class="chip">earthquakes</span
-							><span class="chip">deep-time</span><span class="chip star">ice-ages</span
-							><span class="chip star">carbon-cycle</span
-							><span class="chip">greenhouse-effect</span>
-						</div>
-						<details class="done-list">
-							<summary>2 built</summary>
-							<div class="done-items">atmosphere-weather ocean-currents</div>
-						</details>
-					</div>
-					<div class="cat">
-						<div class="head"><span class="name">Space</span><span class="frac">3/9</span></div>
-						<div class="mini"><i style="width: 33%"></i></div>
-						<div class="chips">
-							<span class="chip">rockets</span><span class="chip star">stars</span
-							><span class="chip">gravitational-waves</span
-							><span class="chip star">dark-matter</span><span class="chip">big-bang</span
-							><span class="chip">exoplanets</span>
-						</div>
-						<details class="done-list">
-							<summary>3 built</summary>
-							<div class="done-items">sun-earth-moon orbits-kepler black-holes</div>
-						</details>
-					</div>
-					<div class="cat">
-						<div class="head">
-							<span class="name">Computing</span><span class="frac">5/10</span>
-						</div>
-						<div class="mini"><i style="width: 50%"></i></div>
-						<div class="chips">
-							<span class="chip">transistors-chipmaking</span><span class="chip">gpu</span
-							><span class="chip">graphics-3d</span><span class="chip">turing-machines</span
-							><span class="chip">quantum-computing</span>
-						</div>
-						<details class="done-list">
-							<summary>5 built</summary>
-							<div class="done-items">binary logic-gates cpu sorting graph-search</div>
+							<summary>6 built &amp; fact-checked</summary>
+							<div class="done-items">
+								binary logic-gates cpu sorting graph-search quantum-computing
+							</div>
 						</details>
 					</div>
 					<div class="cat">
 						<div class="head">
 							<span class="name">Information &amp; Networks</span><span class="frac">5/8</span>
 						</div>
-						<div class="mini"><i style="width: 63%"></i></div>
+						<div class="mini"><i style="width: 62%"></i></div>
 						<div class="chips">
 							<span class="chip">wireless-signals</span><span class="chip">gps</span
 							><span class="chip">consensus-blockchains</span>
 						</div>
 						<details class="done-list">
-							<summary>5 built</summary>
+							<summary>5 built &amp; fact-checked</summary>
 							<div class="done-items">
 								compression error-correction cryptography internet pagerank
 							</div>
@@ -696,18 +706,19 @@
 					</div>
 					<div class="cat">
 						<div class="head">
-							<span class="name">Artificial Intelligence</span><span class="frac">2/9</span>
+							<span class="name">Artificial Intelligence</span><span class="frac">8/9</span>
 						</div>
-						<div class="mini"><i style="width: 22%"></i></div>
+						<div class="mini"><i style="width: 89%"></i></div>
 						<div class="chips">
-							<span class="chip star">gradient-descent</span
-							><span class="chip">neural-networks</span><span class="chip">convolution-vision</span
-							><span class="chip star">embeddings</span><span class="chip">transformers</span
-							><span class="chip">language-models</span><span class="chip">diffusion-models</span>
+							<span class="chip built">language-models</span
+							><span class="chip wip">diffusion-models</span>
 						</div>
 						<details class="done-list">
-							<summary>2 built</summary>
-							<div class="done-items">learning-from-data reinforcement-learning</div>
+							<summary>7 built &amp; fact-checked</summary>
+							<div class="done-items">
+								learning-from-data gradient-descent neural-networks convolution-vision embeddings
+								transformers reinforcement-learning
+							</div>
 						</details>
 					</div>
 					<div class="cat">
@@ -717,12 +728,12 @@
 						<div class="mini"><i style="width: 22%"></i></div>
 						<div class="chips">
 							<span class="chip">heat-engines</span><span class="chip">power-grid</span
-							><span class="chip star">solar-cells</span><span class="chip">nuclear-fission</span
+							><span class="chip">solar-cells</span><span class="chip">nuclear-fission</span
 							><span class="chip">nuclear-fusion</span><span class="chip">flight</span
 							><span class="chip">feedback-control</span>
 						</div>
 						<details class="done-list">
-							<summary>2 built</summary>
+							<summary>2 built &amp; fact-checked</summary>
 							<div class="done-items">motors-generators bridges-structures</div>
 						</details>
 					</div>
@@ -733,64 +744,51 @@
 				<h2 class="amber">Now · next · decisions wanted</h2>
 				<div class="cols3">
 					<div class="col now">
-						<h3>Now — fact-check round (v0.1.14) and phone readouts (v0.1.15)</h3>
+						<h3>Now — the final push (started 2026-10-14)</h3>
 						<div class="task">
 							<span class="mark">✓</span>
 							<div>
-								29 unreviewed topics fact-checked through the Batch API
-								<span class="small">~$18; all "ready after fixes"</span>
-							</div>
-						</div>
-						<div class="task">
-							<span class="mark">✓</span>
-							<div>
-								27 high/medium factual errors fixed in 17 topics, each checked against a source
-								<span class="small"
-									>atoms' electronegativities, pagerank's farm claim, epidemics' flu marker…</span
+								30 topics built and merged into local main since yesterday morning<span
+									class="small"
+									>one builder agent per topic in its own worktree</span
 								>
 							</div>
 						</div>
 						<div class="task">
 							<span class="mark">✓</span>
 							<div>
-								Phone stage text: option B chosen (readouts move under the stage)
-								<span class="small">prototype kept; rollout plan in BACKLOG</span>
+								21 of them fact-checked through the Batch API, reports applied, ticked<span
+									class="small"
+									>~$0.6–1.8 per topic</span
+								>
 							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">→</span>
 							<div>
-								All 29 reports applied in v0.1.14 (two-planet orbits, full-adder challenge, CLT
-								histogram…); phone readouts: photosynthesis and epidemics fully converted (v0.1.16);
-								next: the other ~137 scenes, batch 10
+								building now: big-bang, cancer, dark-matter, diffusion-models, gpu, graphics-3d,
+								gravitational-waves, ice-ages, medical-imaging, mrna-vaccines, stars,
+								transistors-chipmaking
 							</div>
 						</div>
 					</div>
 					<div class="col next">
-						<h3>Next — batch 10 (26 topics ready)</h3>
+						<h3>Next</h3>
 						<div class="task todo">
-							<span class="mark">★</span>
+							<span class="mark">1</span>
 							<div>
-								gradient-descent first
-								<span class="small"
-									>unlocks neural-networks, then transformers, language-models, convolution-vision,
-									diffusion-models</span
-								>
+								the 11 not started: turing-machines, wireless-signals, gps, consensus-blockchains,
+								heat-engines, power-grid, solar-cells, nuclear-fission, nuclear-fusion, flight,
+								feedback-control
 							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">2</span>
-							<div>
-								a suggested six: gradient-descent, turing-machines, gps, exoplanets,
-								nuclear-fission, wireless-signals
-								<span class="small"
-									>one builder per topic in a worktree + Batch-API fact-check, as batches 6–9</span
-								>
-							</div>
+							<div>fact-check the 9 built-but-unticked topics</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">3</span>
-							<div>same process scales to the other 20 ready topics</div>
+							<div>one full browser suite, then your validation, push and release</div>
 						</div>
 					</div>
 					<div class="col decide">
@@ -798,69 +796,42 @@
 						<div class="task todo">
 							<span class="mark">★</span>
 							<div>
-								Data sources for 9 ready topics
-								<span class="small"
-									>the-cell (unlocks all of biology), stars, dark-matter, vision-color,
-									plate-tectonics, carbon-cycle, ice-ages, solar-cells, embeddings</span
+								crispr<span class="small"
+									>a safety classifier stopped three builder attempts, the last with your
+									fixed-walkthrough scope; build it yourself, or a non-editing angle (CRISPR as
+									bacterial immunity)?</span
 								>
 							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">★</span>
 							<div>
-								Stage text on phones (4–5 px at 390 px wide)
-								<span class="small"
-									>narrow-screen layouts, minimum text size, or steer to landscape — needs a
-									call</span
+								catalogue wording vs what was built<span class="small"
+									>transformers &amp; language-models use fixed sentences (no in-browser GPT-2);
+									neural-networks steps through a fixed 2-2-1 net; convolution-vision has no upload
+									and shows "parts of digits", not textures</span
 								>
 							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">★</span>
 							<div>
-								Stage CSS overrides SVG text attributes
-								<span class="small"
-									>the fix changes every scene’s look; needs its own branch + full two-theme
-									re-review</span
+								data licences to confirm<span class="small"
+									>GVP volcanoes, HapMap genetic map, MNIST, RCMIP scenarios, PhanDA &amp; Mills
+									oxygen, LibreTexts potentials (BY-NC-SA), carbon budget via a CSV mirror, CVRL
+									cones via a library copy</span
 								>
 							</div>
 						</div>
-					</div>
-				</div>
-			</section>
-
-			<section>
-				<h2 class="blue">
-					The unlock map <span class="count">19 topics waiting behind two chains</span>
-				</h2>
-				<div class="map">
-					<div class="chain">
-						<span class="key">the-cell</span><span class="arrow">→</span>
-						<span class="locks"
-							>dna-to-protein → protein-folding · crispr · immune-system → mrna-vaccines · neurons ·
-							respiration-atp · meiosis-inheritance → evolution → cancer</span
-						>
-						<span class="why">one data decision unlocks 13 topics</span>
-					</div>
-					<div class="chain">
-						<span class="key">gradient-descent</span><span class="arrow">→</span>
-						<span class="locks"
-							>neural-networks → convolution-vision · diffusion-models · transformers →
-							language-models (needs embeddings)</span
-						>
-						<span class="why">ready now, no data needed</span>
-					</div>
-					<div class="chain">
-						<span class="key">plate-tectonics</span><span class="arrow">→</span>
-						<span class="locks">earthquakes · deep-time</span>
-					</div>
-					<div class="chain">
-						<span class="key">carbon-cycle</span><span class="arrow">→</span>
-						<span class="locks">greenhouse-effect</span>
-					</div>
-					<div class="chain">
-						<span class="key">quantum-mechanics</span><span class="arrow">→</span>
-						<span class="locks">quantum-computing</span>
+						<div class="task todo">
+							<span class="mark">★</span>
+							<div>
+								Stage CSS forces all stage text to 13 px<span class="small"
+									>three builders hit it and worked around it; fixing it changes every scene's
+									look</span
+								>
+							</div>
+						</div>
 					</div>
 				</div>
 			</section>
