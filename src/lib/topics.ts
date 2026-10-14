@@ -825,6 +825,15 @@ const explainers: Explainer[] = [
 		accent: '#d0343a',
 		steps: 11,
 		minutes: 20
+	},
+	{
+		slug: 'turing-machines',
+		title: 'Turing machines and the limits of computation',
+		summary:
+			'Program a tape-and-head machine with a small rule table, see why one such machine can run every other, then meet the limits: a question no program can answer, the busy beavers, and a puzzle whose search explodes.',
+		accent: '#5c940d',
+		steps: 12,
+		minutes: 22
 	}
 ];
 
