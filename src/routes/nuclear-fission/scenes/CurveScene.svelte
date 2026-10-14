@@ -337,21 +337,26 @@
 		<Readout id="w-title">
 			<text x={WX0} y={76} style:font-size="16px" font-weight="600">Energy of one fission</text>
 			<text x={WX0} y={94} class="muted">this split, from the masses (AME2020)</text>
-			<text x={WX0} y={rowY(2) - 34} class="muted"
-				>all splits, averaged (Ma et al. 2013)</text
-			>
+			<text x={WX0} y={rowY(2) - 34} class="muted">all splits, averaged (Ma et al. 2013)</text>
 		</Readout>
 		{#each rows as r, i (r.id)}
 			{@const y = rowY(i)}
 			{@const o = rowIn(i)}
-			<Readout id="row-{r.id}" order={10 + i} label={r.label} value={r.value} color={r.color} opacity={o}>
+			<Readout
+				id="row-{r.id}"
+				order={10 + i}
+				label={r.label}
+				value={r.value}
+				color={r.color}
+				opacity={o}
+			>
 				<g opacity={o}>
 					<text x={WX0} y={y - 6} class={r.strong ? '' : 'muted'} font-weight={r.strong ? 600 : 400}
 						>{r.label}</text
 					>
 					<rect
 						x={sw(Math.min(r.from, r.to))}
-						y={y}
+						{y}
 						width={Math.max(2, Math.abs(sw(r.to) - sw(r.from)))}
 						height="16"
 						rx="3"

@@ -186,7 +186,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Each fission frees two or three neutrons, <strong>2.43 on average</strong>. If one of them goes on to split another uranium-235 nucleus, that fission frees more, and so on: a <dfn data-def="A process in which each event triggers further events of the same kind.">chain reaction</dfn>. The tree follows a chain for a few generations.</p>
 <p>Most neutrons never split anything. In reactor fuel, some are <strong class="tag nf-captured">captured</strong>: swallowed by a nucleus that does not split, mostly uranium-238 or the hydrogen of the water. Others <strong class="tag nf-escaped">escape</strong> from the core. Only the <strong class="tag nf-fission">ones that split</strong> a nucleus carry the chain on.</p>
-<p>In this tree, of the 2.43 neutrons per fission, on average exactly one causes a new fission. The chain neither dies nor grows.</p>`,
+<p>This tree is drawn for a chain in which, of the 2.43 neutrons per fission, on average exactly one causes a new fission. Count them in the box: about one new fission per fission, a little more or less by chance in so short a run. The chain neither dies nor grows.</p>`,
 			notes: `<p>The number of neutrons per fission of uranium-235 by a slow neutron is ν̄ = 2.425 (IAEA neutron standards 2017). Any one fission frees anywhere from none to about seven; this page draws two or three, with the right average. The time between one generation and the next in a power reactor is about a ten-thousandth of a second: a neutron spends it slowing down and wandering until it is absorbed.</p>`
 		},
 		{

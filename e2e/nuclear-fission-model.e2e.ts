@@ -3,12 +3,14 @@
 // quotes. Runs in Node; no browser.
 import { expect, test } from '@playwright/test';
 import {
+	AVOGADRO,
 	BANK_WORTH,
 	BETA,
 	DESIGN,
 	FISSION_ENERGY,
 	GENERATION_TIME,
 	METHANE_J_PER_KG,
+	MEV,
 	SCRAM_REACTIVITY,
 	SPLITS,
 	U235,
@@ -20,6 +22,7 @@ import {
 	criticalRods,
 	decayHeat,
 	eta,
+	expectedChain,
 	factors,
 	fissionsPerSecond,
 	heatPerKgU235,
@@ -29,6 +32,8 @@ import {
 	perNucleon,
 	promptOnlyRate,
 	promptQ,
+	reactivity,
+	slowDown,
 	splitById,
 	steady,
 	totalQ,
@@ -255,4 +260,34 @@ test('decay heat: about 6% at shutdown, 1% after an hour, under 0.5% after a day
 	// It falls all the time, and never to zero.
 	expect(decayHeat(30 * 86400)).toBeGreaterThan(0.001);
 	expect(decayHeat(30 * 86400)).toBeLessThan(decayHeat(86400));
+});
+
+test('a simulated neutron in water takes about 20 collisions to slow down', () => {
+	let total = 0;
+	const runs = 4000;
+	for (let s = 1; s <= runs; s++) total += slowDown(s).energies.length - 1;
+	const mean = total / runs;
+	// ln(2 MeV / 0.025 eV) / ξ ≈ 19.6, plus about one for the last step past the line.
+	expect(mean).toBeGreaterThan(19);
+	expect(mean).toBeLessThan(22);
+});
+
+test('the numbers the narrative quotes for scale', () => {
+	// 1.1⁴⁰ ≈ 45: the supercritical chain after 40 generations.
+	expect(expectedChain(1.1, 1, 40)).toBeCloseTo(45.3, 1);
+	// k = 1.001 with no delayed neutrons: ×e every 0.1 s, ≈ ×22,000 every second.
+	expect(Math.exp(promptOnlyRate(reactivity(1.001)) * 1)).toBeGreaterThan(20_000);
+	expect(Math.exp(promptOnlyRate(reactivity(1.001)) * 1)).toBeLessThan(23_000);
+	// Heat per fission against one methane molecule (≈ 9.2 eV): some 20 million times.
+	const perMolecule = (890.71e3 / AVOGADRO / MEV) * 1e6; // eV
+	expect(perMolecule).toBeCloseTo(9.2, 1);
+	expect((FISSION_ENERGY.heat * 1e6) / perMolecule / 1e6).toBeCloseTo(22, 0);
+	// Fission neutrons at 2 MeV move at about 20,000 km/s; thermal ones at about 2.2 km/s.
+	const speed = (eV: number) => Math.sqrt((2 * eV * 1e-6 * MEV) / 1.674927e-27);
+	expect(speed(2e6) / 1e3).toBeCloseTo(19_600, -3);
+	expect(speed(0.0253)).toBeCloseTo(2200, -2);
+	// Decay heat at shutdown of a 3 GW plant: about 180 MW.
+	expect((decayHeat(1) * 3e9) / 1e6).toBeCloseTo(180, -1);
+	// The 50-generation look-ahead of the core plot spans 5 ms.
+	expect(50 * GENERATION_TIME).toBeCloseTo(0.005, 9);
 });

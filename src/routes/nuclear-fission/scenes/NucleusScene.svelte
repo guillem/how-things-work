@@ -249,7 +249,8 @@
 		id="equation"
 		order={1}
 		label="The split"
-		value="U-235 + n → {layout.H.element}-{layout.H.A} + {layout.L.element}-{layout.L.A} + {split.neutrons} n"
+		value="U-235 + n → {layout.H.element}-{layout.H.A} + {layout.L.element}-{layout.L
+			.A} + {split.neutrons} n"
 	>
 		<text x={480} y={56} text-anchor="middle" style:font-size="18px" font-weight="600">
 			uranium-235 + n → {name(layout.H)} + {name(layout.L)} + {split.neutrons} n
@@ -295,7 +296,13 @@
 			stroke-width={6 * (1 - flash)}
 			opacity={1 - flash}
 		/>
-		<circle cx={CX} cy={CY} r={40 * (1 - flash)} fill="var(--nf-flash)" opacity={0.6 * (1 - flash)} />
+		<circle
+			cx={CX}
+			cy={CY}
+			r={40 * (1 - flash)}
+			fill="var(--nf-flash)"
+			opacity={0.6 * (1 - flash)}
+		/>
 	{/if}
 
 	<!-- the nucleons -->

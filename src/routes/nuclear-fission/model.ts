@@ -498,3 +498,28 @@ export function decayHeat(t: number, operated = 365.25 * 86400): number {
 	const s = Math.max(1, t); // the formula diverges at t = 0; hold its 1 s value
 	return 0.0622 * (s ** -0.2 - (s + operated) ** -0.2);
 }
+
+/**
+ * One neutron slowing down in water, collision by collision (a small Monte
+ * Carlo): each collision is with hydrogen or oxygen in proportion to their
+ * scattering cross sections, and leaves the neutron a uniformly random share
+ * of its energy between α and 1, α = ((A − 1)/(A + 1))² (elastic scattering,
+ * isotropic in the centre of mass). Returns the energy after each collision,
+ * starting at `from`, until it falls below `to`.
+ */
+export function slowDown(seed: number, from = FAST_EV, to = THERMAL_EV) {
+	const r = rng(seed);
+	const sH = 2 * freeScatter(SCATTER_BOUND.H, 1);
+	const sO = freeScatter(SCATTER_BOUND.O, 16);
+	const energies = [from];
+	const hits: ('H' | 'O')[] = [];
+	let e = from;
+	while (e > to && energies.length < 500) {
+		const onH = r() < sH / (sH + sO);
+		const alpha = onH ? 0 : (15 / 17) ** 2;
+		e *= alpha + (1 - alpha) * r();
+		energies.push(e);
+		hits.push(onH ? 'H' : 'O');
+	}
+	return { energies, hits };
+}
