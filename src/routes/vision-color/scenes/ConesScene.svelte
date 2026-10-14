@@ -13,7 +13,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Handle, Label, clamp, wave } from '#lib/draw/index.ts';
+	import { Handle, Label, clamp, wave, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { cones, cssColour, exposureFor, response, spectralColour, type Cones } from '../colour';
 	import { colourName } from '../steps';
@@ -63,7 +63,9 @@
 	const focus = KINDS.map(() => new Tween(1, { duration: 600, easing: cubicInOut }));
 	$effect(() => {
 		const on = KINDS.map(({ k }) => (all ? 1 : k === kSel ? 1 : 0.25));
-		untrack(() => on.forEach((v, i) => focus[i].set(v)));
+		untrack(() => {
+			on.forEach((v, i) => void focus[i].set(v));
+		});
 	});
 
 	// ------------------------------------------------------------------ responses
@@ -140,14 +142,7 @@
 			stroke-linejoin="round"
 			opacity={focus[i].current}
 		/>
-		<Readout
-			id="name-{kd.id}"
-			label={kd.name}
-			value="peak {PEAKS[i]} nm"
-			color={kd.color}
-			order={i + 1}
-			opacity={focus[i].current}
-		>
+		<Readout id="name-{kd.id}">
 			<Label
 				x={xOf(PEAKS[i]) + (i === 0 ? 30 : i === 1 ? -34 : 0)}
 				y={yOf(1) - 10}
@@ -198,8 +193,8 @@
 			min={NMA}
 			max={NMB}
 			valuetext="{nm} nanometres, {colourName(nm)}"
-			onmove={(p) => setParam('nm', Math.round(clamp(nmOf(p.x), NMA, NMB)))}
-			onkey={(k) =>
+			onmove={(p: Point) => setParam('nm', Math.round(clamp(nmOf(p.x), NMA, NMB)))}
+			onkey={(k: number | 'start' | 'end') =>
 				setParam('nm', k === 'start' ? NMA : k === 'end' ? NMB : clamp(nm + k, NMA, NMB))}
 		/>
 
@@ -236,6 +231,7 @@
 				id="bar-{kd.id}"
 				label="{kd.id} signal"
 				value={fmt(here[kd.k])}
+				note="peak {PEAKS[i]} nm"
 				color={kd.color}
 				order={10 + i}
 			>
@@ -318,8 +314,8 @@
 			min={400}
 			max={680}
 			valuetext="{nmB} nanometres"
-			onmove={(p) => setParam('nmB', Math.round(clamp(nmOf(p.x), 400, 680)))}
-			onkey={(k) =>
+			onmove={(p: Point) => setParam('nmB', Math.round(clamp(nmOf(p.x), 400, 680)))}
+			onkey={(k: number | 'start' | 'end') =>
 				setParam('nmB', k === 'start' ? 400 : k === 'end' ? 680 : clamp(nmB + k, 400, 680))}
 		/>
 

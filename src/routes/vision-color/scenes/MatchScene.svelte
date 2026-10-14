@@ -263,8 +263,8 @@
 		/>
 		<Readout
 			id="cone-{kd.id}"
-			label="{kd.id} cones"
-			value="lamp {(tc[kd.k] / scale).toFixed(2)} · lasers {(mc[kd.k] / scale).toFixed(2)}"
+			label="{kd.id}: lamp vs lasers"
+			value="{(tc[kd.k] / scale).toFixed(2)} vs {(mc[kd.k] / scale).toFixed(2)}"
 			color={kd.color}
 			order={10 + kd.k}
 		>
@@ -341,7 +341,7 @@
 		<rect x={x0} y={SP.y0 + 4} width={SP.w} height="8" rx="2" fill="url(#match-spectrum)" />
 		<Readout id="sp-ticks-{x0}">
 			{#each [400, 500, 600, 700] as w (w)}
-				<Label x={xIn(x0, w)} y={SP.y0 + 28} text={w} size={10} muted />
+				<Label x={xIn(x0, w)} y={SP.y0 + 28} text={String(w)} size={10} muted />
 			{/each}
 		</Readout>
 	{/each}

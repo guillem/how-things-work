@@ -9,7 +9,7 @@
 	 *   opponent — as above.
 	 *   summary  — the same, numbered as the whole path from light to colour, with the eye in front.
 	 */
-	import { Handle, Label, clamp, cycle, smoothstep } from '#lib/draw/index.ts';
+	import { Handle, Label, clamp, cycle, smoothstep, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { cones, opponent, spectralColour } from '../colour';
 	import { colourName } from '../steps';
@@ -186,8 +186,9 @@
 		min={NMA}
 		max={NMB}
 		valuetext="{nm} nanometres, {looks}"
-		onmove={(p) => setParam('nm', Math.round(clamp(nmOf(p.x), NMA, NMB)))}
-		onkey={(k) => setParam('nm', k === 'start' ? NMA : k === 'end' ? NMB : clamp(nm + k, NMA, NMB))}
+		onmove={(p: Point) => setParam('nm', Math.round(clamp(nmOf(p.x), NMA, NMB)))}
+		onkey={(k: number | 'start' | 'end') =>
+			setParam('nm', k === 'start' ? NMA : k === 'end' ? NMB : clamp(nm + k, NMA, NMB))}
 	/>
 
 	{#if summary}
@@ -245,13 +246,7 @@
 			rx="5"
 			fill={kd.color}
 		/>
-		<Readout
-			id="cone-{kd.id}"
-			label="{kd.id} cones"
-			value={c[kd.k].toFixed(2)}
-			color={kd.color}
-			order={kd.k + 1}
-		>
+		<Readout id="cone-{kd.id}">
 			<Label
 				x={BAR.x - 14}
 				y={y + 5}

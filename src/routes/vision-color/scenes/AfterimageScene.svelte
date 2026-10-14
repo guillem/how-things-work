@@ -33,7 +33,7 @@
 	const grey = conesOfRGB(...GREY);
 	const predicted = DISCS.map((d) => ({
 		...d,
-		css: cssColour(afterimage(conesOfRGB(...d.rgb), grey, STRENGTH))
+		css: cssColour(afterimage(conesOfRGB(d.rgb[0], d.rgb[1], d.rgb[2]), grey, STRENGTH))
 	}));
 
 	const PANEL = { x: 180, y: 70, w: 600, h: 360 };

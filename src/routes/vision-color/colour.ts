@@ -93,7 +93,9 @@ const RGB_TO_LMS = (() => {
 	const toXYZ = inverse3(XYZ_TO_RGB);
 	const toLMS = inverse3(LMS_TO_XYZ);
 	return [0, 1, 2].map((i) =>
-		[0, 1, 2].map((j) => toLMS[i][0] * toXYZ[0][j] + toLMS[i][1] * toXYZ[1][j] + toLMS[i][2] * toXYZ[2][j])
+		[0, 1, 2].map(
+			(j) => toLMS[i][0] * toXYZ[0][j] + toLMS[i][1] * toXYZ[1][j] + toLMS[i][2] * toXYZ[2][j]
+		)
 	);
 })();
 const decode = (v: number) => {

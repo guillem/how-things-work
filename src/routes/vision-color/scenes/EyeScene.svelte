@@ -628,12 +628,12 @@
 			min={0}
 			max={100}
 			valuetext={a <= 0 ? 'relaxed' : `${Math.round(a * 100)} per cent rounded`}
-			onmove={(p) =>
+			onmove={(p: Point) =>
 				setParam(
 					'shape',
 					Math.round(clamp((TRACK_BOTTOM - p.y) / (TRACK_BOTTOM - TRACK_TOP)) * 100) / 100
 				)}
-			onkey={(k) =>
+			onkey={(k: number | 'start' | 'end') =>
 				setParam(
 					'shape',
 					k === 'start' ? 0 : k === 'end' ? 1 : clamp(Math.round((shape + k / 100) * 100) / 100)
@@ -647,9 +647,9 @@
 			min={0}
 			max={10}
 			valuetext={distanceValue}
-			onmove={(p) =>
+			onmove={(p: Point) =>
 				setParam('near', Math.round(clamp((p.x - OBJ_MIN) / (OBJ_MAX - OBJ_MIN)) * 40) / 4)}
-			onkey={(k) =>
+			onkey={(k: number | 'start' | 'end') =>
 				setParam('near', k === 'start' ? 0 : k === 'end' ? 10 : clamp(near + k / 4, 0, 10))}
 		/>
 	{/if}
