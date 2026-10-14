@@ -606,10 +606,10 @@
 	</Readout>
 
 	{#if phase === 'track'}
-		<!-- frequency, log scale -->
+		<!-- frequency, linear scale -->
 		{#each [0, 50, 100, 150, 200, 250] as f (f)}
 			<line x1={PX0} x2={sx(0)} y1={lf(f)} y2={lf(f)} stroke="var(--stage-grid)" />
-			<T x={PX0 - 8} y={lf(f) + 4} text={f} anchor="end" size={11.5} muted />
+			<T x={PX0 - 8} y={lf(f) + 4} text={String(f)} anchor="end" size={11.5} muted />
 		{/each}
 		<rect
 			x={PX0}

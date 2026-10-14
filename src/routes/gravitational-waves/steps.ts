@@ -114,9 +114,9 @@ const zoom: Control = {
 	id: 'zoom',
 	label: 'Zoom',
 	min: 0,
-	max: 22,
+	max: 21,
 	step: 0.1,
-	default: 22,
+	default: 18.4,
 	format: (v) => `view ${length(10 ** (4 - v))} across`,
 	help: 'Each step of 1 zooms in ten times.'
 };
@@ -285,7 +285,7 @@ export const spec: ExplainerSpec = {
 <p>LIGO compares two perpendicular arms, each 4 km long, with laser light. This is a <dfn data-def="An instrument that splits a beam of light in two, sends the halves along different paths and recombines them, so that a change in either path shows as a change in brightness.">Michelson interferometer</dfn>. A beam splitter sends half the light down each arm, mirrors at the far ends send it back, and the two halves recombine at a light sensor.</p>
 <p>The arms are set so that the returning waves arrive half a wavelength out of step: crest meets trough and they cancel, the <a href="../waves-interference/#path-difference">destructive interference</a> you met in the ripple tank. The sensor stays dark. When a gravitational wave passes, one arm stretches while the other squeezes, the two paths differ, the cancellation is no longer perfect and light leaks out to the sensor, flickering in time with the wave.</p>
 <p>The mirrors hang as pendulums, so they are free to move along the arms like the floating masses of the ring.</p>`,
-			notes: `<p>The drawing is exaggerated beyond all measure: the arms' change is drawn about a tenth of a wavelength of light, where the real change is 10⁻¹² of one. Real detectors add tricks to make that measurable: each arm is a resonant cavity in which the light bounces back and forth about 300 times, and the light leaving the detector is recycled back in, so that around 100 kW circulates in each arm from a 20 W laser. A cross-polarised wave lined up with the arms stretches along the diagonals and leaves both arms' lengths unchanged: the detector feels nothing, which is why its response depends on the source's direction and orientation.</p>`
+			notes: `<p>The drawing is exaggerated beyond all measure: the arms' change is drawn as a large fraction of a wavelength of light, where the real change is a few 10⁻¹² of one. Real detectors add tricks to make that measurable: each arm is a resonant cavity in which the light bounces back and forth about 300 times, and the light leaving the detector is recycled back in, so that around 100 kW circulates in each arm from a 20 W laser. A cross-polarised wave lined up with the arms stretches along the diagonals and leaves both arms' lengths unchanged: the detector feels nothing, which is why its response depends on the source's direction and orientation.</p>`
 		},
 		{
 			id: 'to-scale',
@@ -297,7 +297,7 @@ export const spec: ExplainerSpec = {
 			controls: [zoom, dive],
 			body: `
 <p>How small is a strain of 10⁻²¹ on a 4 km arm? The difference between the two arms is ΔL = h·L = 4 × 10⁻¹⁸ m. Dive in from the arm, ten times closer at every step: past a human hair, a cell, an atom, an atomic nucleus, down to a single proton, 1.7 × 10⁻¹⁵ m across.</p>
-<p>Still the change is out of sight. It is <strong>about 1/400 of the width of a proton</strong>. That is what LIGO measured in September 2015, with mirrors 34 cm across that are shaken by passing trucks, ocean waves on distant coasts and the jiggling of their own atoms.</p>
+<p>Even there the change is a single dot. It is <strong>about 1/400 of the width of a proton</strong>: zoom on, into the proton, to see it as a line. That is what LIGO measured in September 2015, with mirrors 34 cm across that are shaken by passing trucks, ocean waves on distant coasts and the jiggling of their own atoms.</p>
 <p>To make that possible the arms are kept in one of the largest high vacuums on Earth, the mirrors hang from four-stage pendulums on actively isolated platforms, and the laser light is so steady that its quantum graininess is the limit at high frequencies.</p>`,
 			notes: `<p>Everything is drawn to scale at each zoom; the labels give the true sizes. The width of a proton is twice its charge radius, 0.84 fm (CODATA). The light measures the mirrors' average surface, so the arms' length can be compared far more precisely than any atom on the mirror is placed: the light averages over some 10¹⁷ atoms.</p>`
 		},
