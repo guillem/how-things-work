@@ -39,7 +39,7 @@
 		size={13.5}
 		margin={30}
 		quiet
-		onpick={(c) => setParam('pick', c)}
+		onpick={(c: string) => setParam('pick', c)}
 	/>
 	<Readout id="first">
 		<Txt
