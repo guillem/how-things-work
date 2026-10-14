@@ -642,7 +642,7 @@ const explainers: Explainer[] = [
 		title: 'Carbon chemistry and polymers',
 		summary:
 			'Build carbon chains, rings and functional groups and watch the name and boiling point follow, turn a molecule against its mirror image, and tie chains into a rubber whose stiffness depends on chain length and cross-links.',
-		accent: '#5f3dc4',
+		accent: '#d9480f',
 		steps: 13,
 		minutes: 20
 	}
