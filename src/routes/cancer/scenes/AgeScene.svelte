@@ -12,7 +12,6 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { SEER_AGE } from '../data';
 	import { fitStages, interceptFor } from '../model';
-	import { pow10 } from '../../immune-system/run';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -85,6 +84,22 @@
 			'all-leukaemia': 'Peaks at ages 1–4: often started before birth, few hits needed.'
 		}[site.id] ?? ''
 	);
+	const SUP: Record<string, string> = {
+		'0': '⁰',
+		'1': '¹',
+		'2': '²',
+		'3': '³',
+		'4': '⁴',
+		'5': '⁵',
+		'6': '⁶',
+		'7': '⁷',
+		'8': '⁸',
+		'9': '⁹',
+		'-': '⁻'
+	};
+	/** 10 to the power n, with a superscript exponent. */
+	const pow10 = (n: number) =>
+		n === 0 ? '1' : n === 1 ? '10' : '10' + [...String(n)].map((c) => SUP[c] ?? c).join('');
 	const fmtK = (v: number) => v.toFixed(1);
 	/** Greedy word wrap into lines of at most `n` characters. */
 	function wrap(text: string, n: number): string[] {

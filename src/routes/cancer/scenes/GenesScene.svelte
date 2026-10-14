@@ -160,11 +160,20 @@
 				stroke="var(--ca-kras)"
 				stroke-width="2.5"
 			/>
-			<text x={200} y={row.y - 2} text-anchor="middle" style:font-size="12px" font-weight="600"
-				>KRAS</text
+			<text
+				x={200}
+				y={row.y - 2}
+				text-anchor="middle"
+				style:font-size="12px"
+				font-weight="600"
+				style:fill={on > 0.5 ? '#2a1f1c' : undefined}>KRAS</text
 			>
-			<text x={200} y={row.y + 14} text-anchor="middle" style:font-size="11px"
-				>{on > 0.5 ? 'ON' : 'off'}</text
+			<text
+				x={200}
+				y={row.y + 14}
+				text-anchor="middle"
+				style:font-size="11px"
+				style:fill={on > 0.5 ? '#2a1f1c' : undefined}>{on > 0.5 ? 'ON' : 'off'}</text
 			>
 			<!-- onward to division -->
 			<Flow

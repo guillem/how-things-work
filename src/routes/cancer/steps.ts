@@ -203,7 +203,7 @@ export const spec: ExplainerSpec = {
 			controls: [site, hits],
 			body: `
 <p>If a cancer needs several rare hits in one lineage, it should take a long time, and the risk should climb steeply with age. The dots are real: new cases per 100,000 people a year in the United States, by age, from the SEER cancer registries (2018–2022).</p>
-<p>Both axes are <dfn data-def="Each gridline is ten times the one before. A quantity that grows as a power of age, age², age³…, becomes a straight line whose slope is the power.">logarithmic</dfn>. In 1954 Armitage and Doll noticed that on such a chart many cancers fall on a straight line. That is what a sequence of <em>k</em> random steps predicts: the risk rises as age to the power k − 1. For colorectal cancer the best line has k ≈ <strong>5</strong>: double your age and the yearly risk rises about sixteenfold. Pancreatic cancer gives six or seven.</p>
+<p>Both axes are <dfn data-def="Each gridline is ten times the one before. A quantity that grows as a power of age, age², age³…, becomes a straight line whose slope is the power.">logarithmic</dfn>. In 1954 Armitage and Doll noticed that on such a chart many cancers fall on a straight line. That is what a sequence of <em>k</em> random steps predicts: the risk rises as age to the power k − 1. For colorectal cancer the best line has k ≈ <strong>5</strong> (4.7): from ages 35–39 to 70–74 the yearly rate rises about elevenfold. Pancreatic cancer gives six or seven.</p>
 <p>Change k and see the line tilt. Then look at childhood leukaemia: it does not fit at all.</p>`,
 			notes: `<p>Armitage &amp; Doll, “The age distribution of cancer and a multi-stage theory of carcinogenesis”, <i>British Journal of Cancer</i> 8:1 (1954). If each of k steps happens at a small constant rate u per year, the chance of having completed all of them by age t is about (ut)<sup>k</sup>/k!, so the yearly rate is about u<sup>k</sup>t<sup>k−1</sup>/(k−1)!. The line is fitted to ages 30–79. <em>k</em> counts the <em>rate-limiting</em> steps: clones that grow between hits, as in the simulation, make fewer steps look like more or fewer, so k is not a count of mutations. Reading the data: the 50–54 point is pushed up by screening, which in the US starts at 45–50 and finds tumours earlier; above about 85 the rates level off. Childhood leukaemia often starts with a change before birth, and needs only one or two more. Data: SEER*Explorer, National Cancer Institute (November 2024 submission), observed rates, both sexes, all races, all stages.</p>`
 		},
@@ -258,7 +258,7 @@ export const spec: ExplainerSpec = {
 			duration: 36,
 			controls: [again],
 			body: `
-<p>The whole story in one run, with every gene able to change and one drug given when the tumour is found. The chart marks the events.</p>
+<p>The whole story in one run: KRAS, TP53 and drug resistance can all change, and one drug is given when the tumour is found. The chart marks the events.</p>
 <ol>
 <li>Cells divide to keep a tissue in balance, and every division risks a mutation, blind to whether it helps or harms.</li>
 <li>A mutation in a gene that controls division lets a clone outgrow its neighbours: <strong>selection</strong>.</li>

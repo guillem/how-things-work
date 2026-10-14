@@ -7,6 +7,7 @@ import { expect, test } from '@playwright/test';
 import { SEER_AGE } from '../src/routes/cancer/data';
 import {
 	D0,
+	DEFAULT,
 	DETECT,
 	KRAS,
 	Kind,
@@ -89,6 +90,12 @@ test('one driver alone never makes a tumour; both together do', () => {
 		// Untreated, the tumour crowds out most of the patch within 200 generations.
 		expect(tumour(both, both.found! + 200) / SITES).toBeGreaterThan(0.8);
 	}
+});
+
+test('a higher mutation rate brings the tumour sooner', () => {
+	const at = (mu: number) =>
+		median(SEEDS.map((seed) => simulate({ seed, genes: DRIVERS, mu }).found ?? Infinity));
+	expect(at(2 * DEFAULT.mu)).toBeLessThan(0.8 * at(DEFAULT.mu));
 });
 
 test('a broken repair gene brings the tumour sooner', () => {
@@ -177,6 +184,11 @@ test('SEER incidence by age fits the multistage model: about five steps for colo
 	// Pancreatic cancer rises even more steeply: six or seven steps.
 	expect(fitOf('pancreas').k).toBeGreaterThan(6);
 	expect(fitOf('pancreas').k).toBeLessThan(7);
+	// From 35–39 to 70–74 the colorectal rate rises about elevenfold (the page says so).
+	const bands = SEER_AGE.find((s) => s.id === 'colorectal')!.bands;
+	const rateAt = (age: string) => bands.find((b) => b.age === age)!.rate;
+	expect(Math.round(rateAt('70-74') / rateAt('35-39'))).toBe(11);
+	expect(crc.k).toBeCloseTo(4.7, 1);
 	// A rate per 100,000 people a year: colorectal cancer at 70–74 is about 1 in 750 a year.
 	const crc70 = SEER_AGE.find((s) => s.id === 'colorectal')!.bands.find((b) => b.age === '70-74')!;
 	expect(crc70.rate).toBeGreaterThan(120);
