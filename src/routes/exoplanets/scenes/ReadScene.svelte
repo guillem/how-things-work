@@ -305,12 +305,13 @@
 			opacity="0.7"
 		/>
 		<T
-			x={LX0 + 110}
+			x={LX1 - 8}
 			y={y - 7}
 			text="your reading: ±{measK.toFixed(0)} m/s"
 			size={12}
 			weight={650}
 			color="var(--ex-measure)"
+			anchor="end"
 		/>
 		<Handle
 			x={vsx(0.75 * P)}
@@ -419,7 +420,7 @@
 		label="Density"
 		value={isFinite(dens) ? `${sig(dens, 2)} g/cm³` : 'needs both curves'}
 	>
-		<T x={CX + 16} y={210} text="Size + mass → density" size={12.5} muted />
+		<T x={CX + 16} y={210} text="Density" size={12.5} muted />
 		<T
 			x={CX + CW - 16}
 			y={210}

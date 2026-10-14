@@ -328,8 +328,8 @@
 		stroke-width="2"
 	/>
 	<T
-		x={youXY.x + (offChart === 'left' ? 12 : -10)}
-		y={youXY.y + (offChart ? 24 : 18)}
+		x={offChart === 'left' ? CX0 + 8 : offChart === 'right' ? CX1 - 8 : youXY.x - 10}
+		y={youXY.y + (offChart ? 40 : 18)}
 		text={offChart ? `yours: ${sig(S, 2)}× (off the chart)` : 'yours'}
 		size={11.5}
 		weight={700}
