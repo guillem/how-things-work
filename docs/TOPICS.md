@@ -199,7 +199,7 @@ A topic is done when:
 **Artificial Intelligence**
 - [x] learning-from-data
 - [x] gradient-descent
-- [ ] neural-networks
+- [x] neural-networks
 - [ ] convolution-vision
 - [x] embeddings
 - [ ] transformers
