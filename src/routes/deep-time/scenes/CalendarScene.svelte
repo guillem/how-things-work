@@ -91,13 +91,13 @@
 	const ON: Record<string, Placed[]> = {
 		year: [
 			place('earth', 1, 0, 'start'),
-			place('zircon', -1, 0, 'start'),
+			place('zircon', -1, 1, 'start'),
 			place('rocks', 1, 1, 'start'),
 			place('life', -1, 0),
 			place('oxygen', 1, 0),
 			place('eukaryotes', -1, 0),
 			place('snowball', 1, 0, 'end'),
-			place('animals', -1, 0, 'end')
+			place('animals', -1, 1, 'end')
 		],
 		weeks: [
 			place('animals', -1, 0, 'start'),
@@ -272,7 +272,7 @@
 					order={20}
 					label="A human life of 80 years"
 					value="{lifeSeconds} s"
-					opacity={o}
+					opacity={phase === 'midnight' ? 1 : 0}
 				>
 					<T
 						x={XB}
@@ -321,6 +321,12 @@
 	{/each}
 
 	<!-- readouts -->
+	{#if phase === 'midnight'}
+		{#each ['sapiens', 'farming', 'industry'] as id, i (id)}
+			{@const e = ev(id)}
+			<Readout id="m-{id}" order={10 + i} label={e.name} value="31 December, {timeOf(e.age)}" />
+		{/each}
+	{/if}
 	{#if phase === 'year'}
 		<Readout
 			id="picked"

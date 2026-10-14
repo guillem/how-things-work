@@ -344,13 +344,13 @@ export const EVENTS: LifeEvent[] = [
 	{ id: 'earth', name: 'The Earth forms', age: EARTH_AGE, source: 'Connelly et al. 2012; ICS' },
 	{
 		id: 'zircon',
-		name: 'Oldest mineral grain (a zircon)',
+		name: 'Oldest mineral grain',
 		age: 4404,
 		source: 'Wilde et al. 2001, Nature 409, 175'
 	},
 	{
 		id: 'rocks',
-		name: 'Oldest rocks (Acasta Gneiss)',
+		name: 'Oldest rocks',
 		age: 4030,
 		source: 'Wilde et al. 2001'
 	},

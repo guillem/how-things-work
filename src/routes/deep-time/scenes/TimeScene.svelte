@@ -143,6 +143,7 @@
 	const fExt = fade(() => (phase === 'extinctions' ? 1 : 0));
 	const fCover = fade(() => (phase === 'before' || phase === 'drift' ? 1 : 0));
 	const fZircon = fade(() => (phase === 'dating' ? 1 : 0));
+	const fSliver = fade(() => (phase === 'sliver' || phase === 'life' ? 1 : 0));
 
 	// ---- geometry of the tracks ------------------------------------------------------
 	const EON_Y = 40;
@@ -410,7 +411,9 @@
 				font-weight="700"
 				class="muted">?</text
 			>
-			<T x={G.cx} y={G.cy + 56} text="positions unknown" size={13} weight={600} />
+			<Readout id="unknown"
+				><T x={G.cx} y={G.cy + 56} text="positions unknown" size={13} weight={600} /></Readout
+			>
 		{/if}
 		<Readout
 			id="map"
@@ -465,15 +468,17 @@
 	</g>
 
 	<!-- ================= the card under the globe ================= -->
-	<rect
-		x={CARD.x}
-		y={CARD.y + 18}
-		width={CARD.w}
-		height={CARD.h - 18}
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<Readout id="card">
+		<rect
+			x={CARD.x}
+			y={CARD.y + 18}
+			width={CARD.w}
+			height={CARD.h - 18}
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	<Readout id="age" order={0} label="When" value={ageText(age)}>
 		<text x={CARD.x + 16} y={CARD.y + 46} style:font-size="18px" font-weight="700"
 			>{ageText(age)}</text
@@ -582,7 +587,18 @@
 					>
 				</Readout>
 			{/if}
-		{:else if phase === 'zoom' || phase === 'sliver'}
+		{:else if phase === 'sliver'}
+			{#each [['animals', 'Since the first large animals', 571], ['sapiens', 'Since Homo sapiens', 0.315], ['farming', 'Since farming began', 0.0115]] as [id, label, a], i (id)}
+				<Readout
+					id="share-{id}"
+					order={2 + i}
+					label={String(label)}
+					value="{shareText(Number(a))} of the history"
+				>
+					<text y={i * 22}>{label}: <tspan font-weight="700">{shareText(Number(a))}</tspan></text>
+				</Readout>
+			{/each}
+		{:else if phase === 'zoom'}
 			<Readout
 				id="window"
 				order={2}
@@ -774,6 +790,17 @@
 			<path d={o2Paths.mid} fill="none" stroke="var(--dt-o2)" stroke-width="1.8" />
 		</g>
 
+		<!-- the last sliver: complex life -->
+		<g opacity={fSliver.current}>
+			<rect
+				x={clampX(xOf(571, sp))}
+				y={LIFE_Y - 2}
+				width={X1 - clampX(xOf(571, sp))}
+				height={LIFE.length * ROW + 4}
+				fill="var(--dt-cursor)"
+				opacity="0.1"
+			/>
+		</g>
 		<!-- life -->
 		<g opacity={fLife.current}>
 			{#each lifeRows as r (r.g.id)}
@@ -787,16 +814,18 @@
 						fill={lifeColor(r.g)}
 						opacity={r.alive ? 0.95 : 0.55}
 					/>
-					<T
-						x={r.left ? r.a - 8 : Math.min(r.a + 6, X1 - 4)}
-						y={r.y + 4}
-						text={r.g.id === 'sapiens' && sp > 1000
-							? `${r.g.name}: ${((TW * r.g.from) / sp).toFixed(2)} px of this bar`
-							: r.g.name}
-						size={11}
-						weight={r.alive ? 600 : 500}
-						anchor={r.left ? 'end' : 'start'}
-					/>
+					<Readout id="row-{r.g.id}">
+						<T
+							x={r.left ? r.a - 8 : Math.min(r.a + 6, X1 - 4)}
+							y={r.y + 4}
+							text={r.g.id === 'sapiens' && sp > 1000
+								? `${r.g.name}: ${((TW * r.g.from) / sp).toFixed(2)} px of this bar`
+								: r.g.name}
+							size={11}
+							weight={r.alive ? 600 : 500}
+							anchor={r.left ? 'end' : 'start'}
+						/>
+					</Readout>
 				{/if}
 			{/each}
 		</g>
@@ -857,6 +886,27 @@
 				<text x={X1 + 4} y={oY(l.v) + 3.5} class="muted" style:font-size="9.5px">{l.text}</text>
 			{/each}
 		</g>
+		{#if fSliver.current > 0.01 && xOf(571, sp) > X0 + 260}
+			<Readout id="sliver-cap">
+				<T
+					x={X1}
+					y={LIFE_Y - 6}
+					text="large animals and plants: the last {shareText(571)} →"
+					size={11}
+					weight={600}
+					anchor="end"
+					color="var(--dt-cursor)"
+					opacity={fSliver.current}
+				/>
+			</Readout>
+		{/if}
+		<Readout
+			id="life-key"
+			order={9}
+			label="Life, rows from the top"
+			value={LIFE.map((g) => g.name).join(' · ')}
+			opacity={phase === 'life' || phase === 'extinctions' || phase === 'sliver' ? 1 : 0}
+		/>
 		<Readout id="life-title">
 			<text x={X0} y={LIFE_Y - 6} font-weight="600" opacity={Math.max(0.6, fLife.current)}
 				>Life: from the oldest fossils</text
