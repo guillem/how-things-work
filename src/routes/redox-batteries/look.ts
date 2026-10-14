@@ -31,12 +31,15 @@ export const fmtV = (v: number, digits = 2) => `${(Math.abs(v) < 5e-4 ? 0 : v).t
 export function fmtConc(c: number, logC?: number, unit = true): string {
 	const u = unit ? ' mol/L' : '';
 	const lg = logC ?? Math.log10(Math.max(c, 1e-300));
-	if (lg >= -3) {
+	if (lg >= -3 - 1e-9) {
 		const s = c >= 0.1 ? c.toFixed(2) : Number(c.toPrecision(2)).toString();
 		return `${s}${u}`;
 	}
-	const e = Math.floor(lg);
-	const m = 10 ** (lg - e);
-	const mm = Math.round(m);
+	let e = Math.floor(lg);
+	let mm = Math.round(10 ** (lg - e));
+	if (mm === 10) {
+		mm = 1;
+		e += 1;
+	}
 	return mm === 1 ? `10${superscript(e)}${u}` : `${mm} × 10${superscript(e)}${u}`;
 }

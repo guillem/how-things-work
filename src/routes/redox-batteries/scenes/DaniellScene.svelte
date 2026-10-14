@@ -341,11 +341,13 @@
 	{/if}
 
 	<!-- labels -->
-	<Readout id="anode" order={10} label="Zinc: the anode (−)" marker={1} at={[ZN_X + 15, 200]}>
-		<Label x={ZN_X + 15} y={206} text="zinc: anode (−)" size={13} weight={600} />
+	<Readout id="anode" order={10} label="Zinc: the anode (−)" marker={1} at={[ZN_X + 62, 258]}>
+		<Label x={ZN_X + STRIP_W + 10} y={250} text="zinc" size={13} weight={600} anchor="start" />
+		<Label x={ZN_X + STRIP_W + 10} y={268} text="anode (−)" size={13} anchor="start" />
 	</Readout>
-	<Readout id="cathode" order={11} label="Copper: the cathode (+)" marker={2} at={[CU_X + 15, 200]}>
-		<Label x={CU_X + 15} y={206} text="copper: cathode (+)" size={13} weight={600} />
+	<Readout id="cathode" order={11} label="Copper: the cathode (+)" marker={2} at={[CU_X - 50, 258]}>
+		<Label x={CU_X - 10} y={250} text="copper" size={13} weight={600} anchor="end" />
+		<Label x={CU_X - 10} y={268} text="cathode (+)" size={13} anchor="end" />
 	</Readout>
 	<Readout id="sol">
 		<Label

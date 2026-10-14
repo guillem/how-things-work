@@ -373,16 +373,16 @@
 		{/if}
 	</Readout>
 	<Readout id="key">
-		<circle cx={X0 + 6} cy={TOP - 26} r="5.5" fill="var(--rb-li)" />
-		<Label x={X0 + 18} y={TOP - 22} text="lithium ion, Li⁺" size={12} anchor="start" />
-		<circle cx={X0 + 150} cy={TOP - 26} r="5" fill="var(--rb-electron)" />
-		<Label x={X0 + 162} y={TOP - 22} text="electron, e⁻" size={12} anchor="start" />
+		<circle cx={X0 + 46} cy={TOP - 26} r="5.5" fill="var(--rb-li)" />
+		<Label x={X0 + 58} y={TOP - 22} text="lithium ion, Li⁺" size={12} anchor="start" />
+		<circle cx={X0 + 190} cy={TOP - 26} r="5" fill="var(--rb-electron)" />
+		<Label x={X0 + 202} y={TOP - 22} text="electron, e⁻" size={12} anchor="start" />
 	</Readout>
 
 	<!-- readouts -->
 	{#if !isCurve}
 		<Readout id="status" order={1} label="Now" value={status}>
-			<Label x={xEnd} y={TOP - 22} text={status} size={12} anchor="end" />
+			<Label x={(xAl + xEnd) / 2 - 14} y={TOP - 22} text={status} size={12} anchor="end" />
 		</Readout>
 	{/if}
 	{#if focus === 'inside'}
@@ -477,7 +477,7 @@
 				xLabel="state of charge (%)"
 				yLabel="voltage (V)"
 				xTicks={[0, 20, 40, 60, 80, 100]}
-				yTicks={[2.5, 3, 3.5, 4, 4.2]}
+				yTicks={[2.5, 3, 3.5, 4]}
 				yFormat={(v) => v.toFixed(1)}
 			/>
 			<path

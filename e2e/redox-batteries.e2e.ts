@@ -42,7 +42,7 @@ test('the higher rung is reduced, whichever electrode is picked first', async ({
 	await expect(stage(page)).toContainText('4.560 V');
 	// The same metal on both sides gives nothing.
 	await button(page, 'metalA', 'au').click();
-	await expect(stage(page)).toContainText('no step, no voltage');
+	await expect(stage(page)).toContainText('no step, 0 V');
 });
 
 test('Nernst: a thousandfold change in one concentration moves the voltage by 89 mV', async ({

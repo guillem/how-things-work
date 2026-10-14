@@ -71,7 +71,7 @@
 	const vText = $derived(fmtV(p.voltage, 3));
 	const sum = $derived(
 		same
-			? 'the same metal on both sides: no step, no voltage'
+			? 'same metal on both sides: no step, 0 V'
 			: `${e0s(p.cathode.e0)} − (${e0s(p.anode.e0)}) = ${vText}`
 	);
 </script>
