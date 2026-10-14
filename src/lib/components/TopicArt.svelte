@@ -2339,6 +2339,24 @@
 		<path d="M184 79 L184 93" stroke={accent} stroke-width="2.4" />
 		<text x="148" y="34" font-size="11" text-anchor="end" fill="currentColor" opacity="0.7">us</text
 		>
+	{:else if slug === 'redox-batteries'}
+		<!-- a cell in cross-section: two electrodes, a dashed separator, an ion crossing
+		     inside and an electron going round the wire through a lamp -->
+		<rect x="40" y="46" width="44" height="58" rx="4" fill="currentColor" opacity="0.18" />
+		<rect x="116" y="46" width="44" height="58" rx="4" fill={accent} opacity="0.35" />
+		<path d="M100 46 V104" stroke="currentColor" stroke-dasharray="3 3" opacity="0.5" />
+		<path
+			d="M62 46 V22 H138 V46"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			opacity="0.6"
+		/>
+		<circle cx="100" cy="22" r="7" fill="var(--rb-lamp)" stroke="currentColor" opacity="0.9" />
+		<circle cx="76" cy="22" r="3.2" fill="var(--rb-electron)" />
+		<circle cx="92" cy="76" r="4.2" fill="var(--rb-li)" />
+		<path d="M98 76 H110" stroke={accent} stroke-width="1.6" stroke-linecap="round" />
+		<path d="M106 72 L111 76 L106 80" fill="none" stroke={accent} stroke-width="1.6" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
