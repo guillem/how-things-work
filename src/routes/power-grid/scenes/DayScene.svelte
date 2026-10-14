@@ -79,7 +79,7 @@
 
 	// ---- the cursor
 	const cx = $derived(sx(hour + 0.5));
-	const hourRow = $derived(DAY[Math.max(0, Math.min(23, Math.floor(hour)))] as Hour);
+	const hourRow: Hour = $derived(DAY[Math.max(0, Math.min(23, Math.floor(hour)))]);
 	const hh = (h: number) => String(h).padStart(2, '0');
 	const span = $derived(`${hh(hourRow.hour)}:00–${hh((hourRow.hour + 1) % 24)}:00`);
 	const gw = (mw: number) => `${(mw / 1000).toFixed(1)} GW`;

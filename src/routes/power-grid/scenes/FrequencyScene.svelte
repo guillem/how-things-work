@@ -280,7 +280,7 @@
 		{xTicks}
 		{yTicks}
 		xLabel={cfg.minutes ? 'minutes' : 'seconds'}
-		yFormat={(v) => v.toFixed(yTicks.length > 1 && yTicks[1] - yTicks[0] < 0.15 ? 1 : 1)}
+		yFormat={(v: number) => v.toFixed(1)}
 	/>
 	<Txt x={CX0 - 8} y={CY0 - 16} text="frequency, Hz" anchor="start" muted size={12} />
 	<line x1={CX0} x2={CX1} y1={sy(F0)} y2={sy(F0)} stroke="var(--pg-ok)" stroke-dasharray="4 4" />
