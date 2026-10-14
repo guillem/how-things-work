@@ -46,7 +46,7 @@
 			years: PRE.atmosphere / (NATURAL.photosynthesis + NATURAL.oceanIn + NATURAL.weathering),
 			color: 'var(--cc-air)',
 			fill: 'var(--cc-air-fill)',
-			text: '≈ 4 years',
+			text: '≈ 3.5 years',
 			loop: 'fast'
 		},
 		{
@@ -170,8 +170,8 @@
 	<Readout
 		id="fast"
 		order={1}
-		label="Fast loop: air, surface ocean, plants, soils"
-		value="a few years to decades"
+		label="Fast loop: air, ocean, plants, soils"
+		value="a few years to centuries"
 	>
 		<Label
 			x={230}

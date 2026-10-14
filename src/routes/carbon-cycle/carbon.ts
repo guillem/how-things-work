@@ -343,15 +343,20 @@ export interface Year {
 /**
  * The observed atmosphere year by year, GtC above 1750. GCB 2025 gives 590 GtC
  * in 1750 and 898 in 2024, but the sum of its annual growth series over
- * 1751–2024 is 312 GtC (ice cores before 1959, air samples after); the series
- * is scaled by 308/312 so that the two agree.
+ * 1751–2024 is 312 GtC (ice cores before 1959, air samples after). The air
+ * samples are precise, so only the ice-core years are scaled to make the two
+ * agree.
  */
+const AIR_SAMPLES_FROM = 1959;
 function observedAir(): number[] {
 	const growth = gcb.atm.map((g) => g ?? 0);
-	const total = growth.reduce((a, b) => a + b, 0);
-	const k = (AIR_2024 - PRE.atmosphere) / total;
+	const sampled = (i: number) => gcb.FIRST_YEAR + i >= AIR_SAMPLES_FROM;
+	let pre = 0;
+	let post = 0;
+	growth.forEach((g, i) => (sampled(i) ? (post += g) : (pre += g)));
+	const k = (AIR_2024 - PRE.atmosphere - post) / pre;
 	let sum = 0;
-	return growth.map((g) => (sum += g * k));
+	return growth.map((g, i) => (sum += sampled(i) ? g : g * k));
 }
 
 /**
