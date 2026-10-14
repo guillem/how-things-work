@@ -73,7 +73,7 @@
 			years: PRE.deepOcean / NATURAL.obduction,
 			color: 'var(--cc-ocean)',
 			fill: 'var(--cc-deep-fill)',
-			text: '≈ 140 years (deepest: over 1,000)',
+			text: '≈ 140 years',
 			loop: 'fast'
 		},
 		{
@@ -209,12 +209,7 @@
 			/>
 		</Readout>
 	{/each}
-	<Readout
-		id="deep"
-		order={2}
-		label="Deep ocean"
-		value="about 140 years on average; over 1,000 for the deepest water"
-	/>
+	<Readout id="deep" order={2} label="Deep ocean" value="about 140 years on average" />
 	<Readout
 		id="slow"
 		order={3}

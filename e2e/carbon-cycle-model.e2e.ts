@@ -23,7 +23,7 @@ import { BUDGET, CUMULATIVE, PPM_2024 } from '../src/routes/carbon-cycle/data';
 test('seawater in balance with pre-industrial air has the pH and buffer factor of real surface water', () => {
 	const dic = dicFor(PPM0);
 	// Surface-ocean DIC ~2000 µmol/kg, pH ~8.2 before industrialisation (AR6 ch. 5),
-	// Revelle factor ~9–10 in warm-to-temperate water (Sabine et al. 2004).
+	// Revelle factor between 8 and 13 in today's ocean (IPCC AR4 WG1 §7.3.4.2).
 	expect(dic * 1e6).toBeGreaterThan(1900);
 	expect(dic * 1e6).toBeLessThan(2100);
 	expect(seawaterPH(dic)).toBeCloseTo(8.18, 1);

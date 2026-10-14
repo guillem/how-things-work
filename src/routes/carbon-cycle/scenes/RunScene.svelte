@@ -16,10 +16,10 @@
 		ticks,
 		type Scale
 	} from '#lib/draw/index.ts';
-	import { GTC_PER_PPM, PPM0, pHOf, ppmOf, totals } from '../carbon';
+	import { GTC_PER_PPM, PPM0, pHOf, ppmOf, sinks, totals } from '../carbon';
 	import { FOSSIL_RESERVES } from '../data';
 	import { HORIZON, defaultRun, runOf, setup } from '../scenario';
-	import { gtc } from './geometry';
+	import { band, gtc } from './geometry';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -118,8 +118,8 @@
 	const xTicks = [26, 76, 126, 176, 476, 976];
 
 	// ---- bars of the stores at the cursor
-	const BAR_X0 = 360;
-	const BAR_W = 420;
+	const BAR_X0 = 210;
+	const BAR_W = 250;
 	const barMax = $derived(
 		niceMax(Math.max(run[run.length - 1] ? totals(run[run.length - 1]).burnt : 1, 800))
 	);
@@ -147,11 +147,56 @@
 			v: tot.land,
 			color: 'var(--cc-plants)',
 			fill: 'var(--cc-plants-fill)',
-			note: tot.land < 0 ? 'net loss: clearing beats extra growth' : 'net gain'
+			note: tot.land < 0 ? 'net loss' : 'net gain'
 		}
 	]);
 	const burntLeft = $derived(FOSSIL_RESERVES - (tot.burnt - start.burnt));
 	const BURN_Y = 70 + 3 * 36;
+
+	// ---- flows at the cursor year
+	const FX = 680;
+	const FA = 790;
+	const FL = 90;
+	const flows = $derived.by(() => {
+		const k = sinks(now, s.params);
+		const fossil = emitting ? s.fossil : 0;
+		const luc = emitting ? s.luc : 0;
+		const rows = [
+			{ id: 'burn', name: 'burning', back: 'burning', v: fossil, color: 'var(--cc-human)' },
+			{ id: 'clear', name: 'clearing', back: 'clearing', v: luc, color: 'var(--cc-clearing)' },
+			{
+				id: 'ocean',
+				name: 'air → ocean',
+				back: 'ocean → air',
+				v: k.ocean,
+				color: 'var(--cc-ocean)'
+			},
+			{
+				id: 'land',
+				name: 'air → plants',
+				back: 'plants → air',
+				v: k.land,
+				color: 'var(--cc-plants)'
+			}
+		];
+		return rows.map((r, i) => {
+			const y = 82 + i * 30;
+			const w = Math.max(1, Math.abs(r.v));
+			const pts =
+				r.v < 0
+					? [
+							{ x: FA + FL, y },
+							{ x: FA + FL / 2, y },
+							{ x: FA, y }
+						]
+					: [
+							{ x: FA, y },
+							{ x: FA + FL / 2, y },
+							{ x: FA + FL, y }
+						];
+			return { ...r, d: band(pts, w).d };
+		});
+	});
 	const emitting = $derived(cursorYear <= s.years && s.years > 0 ? 1 : 0);
 	const yearText = $derived(String(2024 + cursorYear));
 </script>
@@ -236,6 +281,52 @@
 			muted
 		/>
 	</Readout>
+
+	<!-- flows at the cursor (arrow width ∝ flow) -->
+	<Label
+		x={FX}
+		y={58}
+		text="flows in {yearText}, GtC a year"
+		anchor="start"
+		size={12}
+		weight={700}
+	/>
+	{#each flows as f, i (f.id)}
+		{@const y = 82 + i * 30}
+		{#if Math.abs(f.v) > 0.005}
+			<path d={f.d} fill={f.color} fill-opacity="0.85" />
+		{:else}
+			<line x1={FA} x2={FA + FL} y1={y} y2={y} stroke="var(--stage-grid)" stroke-dasharray="3 3" />
+		{/if}
+		<Label x={FA - 8} y={y + 4} text={f.v < 0 ? f.back : f.name} anchor="end" size={11} />
+		<Label
+			x={FA + FL + 8}
+			y={y + 4}
+			text={Math.abs(f.v).toFixed(1)}
+			anchor="start"
+			size={12}
+			weight={700}
+			color={f.color}
+		/>
+	{/each}
+	<Readout id="flows">
+		<Label
+			x={FX}
+			y={206}
+			text="arrow width: 1 unit per GtC a year"
+			anchor="start"
+			size={10}
+			muted
+		/>
+	</Readout>
+	<Readout
+		id="flow-row"
+		order={5}
+		label="Flows in {yearText}"
+		value={flows
+			.map((f) => `${f.v < 0 ? f.back : f.name} ${Math.abs(f.v).toFixed(1)}`)
+			.join(' · ') + ' GtC a year'}
+	/>
 
 	<!-- chart -->
 	<Axes
