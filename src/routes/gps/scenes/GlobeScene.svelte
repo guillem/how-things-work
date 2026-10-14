@@ -282,6 +282,10 @@
 		{/if}
 	{/each}
 
+	{#if phase === 'summary' && fix}
+		<circle cx={rx.x} cy={rx.y} r="10" fill="none" stroke="var(--gps-fix)" stroke-width="2.5" />
+	{/if}
+
 	<!-- the guesses of the least-squares fix -->
 	{#if phase === 'fix'}
 		{#each guesses as g, i (i)}
