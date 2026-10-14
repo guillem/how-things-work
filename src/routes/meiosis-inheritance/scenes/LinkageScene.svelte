@@ -189,7 +189,7 @@
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="5 4"
 	/>
-	<Readout id="ceiling" order={5} label="Ceiling" value="never more than 50%">
+	<Readout id="ceiling">
 		<Label x={PX + PW} y={py(0.5) - 8} text="never more than 50%" size={11} muted anchor="end" />
 	</Readout>
 	<path

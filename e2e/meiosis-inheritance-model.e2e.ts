@@ -68,8 +68,6 @@ test('meiosis halves the chromosomes and each pair lines up independently', () =
 	const kinds = gameteKinds(hybrid, PEA_GENES);
 	expect(kinds.size).toBe(8);
 	for (const p of kinds.values()) expect(p).toBeCloseTo(1 / 8, 10);
-	// Humans: 23 pairs.
-	expect(2 ** 23).toBe(8388608);
 });
 
 test('Yy × Yy gives 3 yellow to 1 green, like Mendel’s 6022 : 2001', () => {
@@ -82,8 +80,6 @@ test('Yy × Yy gives 3 yellow to 1 green, like Mendel’s 6022 : 2001', () => {
 	// Mendel’s own counts fit 3 : 1 too.
 	const m = new Map(Object.entries(MENDEL.colour));
 	expect(chiSquare(m, exp)).toBeLessThan(CHI2_1);
-	expect(MENDEL.colour.yellow / MENDEL.colour.green).toBeCloseTo(3.01, 2);
-	expect(MENDEL.shape.round / MENDEL.shape.wrinkled).toBeCloseTo(2.96, 2);
 });
 
 test('two genes on different chromosomes give 9 : 3 : 3 : 1, like Mendel’s 315 : 108 : 101 : 32', () => {

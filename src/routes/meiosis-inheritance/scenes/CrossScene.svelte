@@ -11,7 +11,7 @@
 	 *    against 9 : 3 : 3 : 1 and Mendel's 315 : 108 : 101 : 32.
 	 * Reduced motion (t = 2.5 s) shows every box filled and every count final.
 	 */
-	import { Label, clamp, easeOut, smoothstep } from '#lib/draw/index.ts';
+	import { Label, clamp, cycle, easeOut, smoothstep } from '#lib/draw/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
@@ -272,12 +272,7 @@
 		{/each}
 	{:else}
 		<!-- the first 100 offspring -->
-		<Readout
-			id="grid-title"
-			order={1}
-			label="Cross"
-			value="{parentLabel} × {parentLabel}, {fmt(n)} offspring"
-		>
+		<Readout id="grid-title">
 			<Label
 				x={253}
 				y={84}
@@ -297,7 +292,16 @@
 	{/if}
 
 	<!-- shares: expected, bred, Mendel's -->
-	<Readout id="head" order={2} label="Expected" value={expRatio}>
+	<Readout
+		id="head"
+		order={2}
+		label={mode === 'punnett' ? 'Expected' : `Bred ${fmt(total)}`}
+		value={mode === 'punnett'
+			? expRatio
+			: mode === 'dihybrid'
+				? `${categories.map((k) => fmt(counts.get(k) ?? 0)).join(' : ')}, expected 9 : 3 : 3 : 1`
+				: `${ratio || '…'}, expected ${expRatio}`}
+	>
 		<text x={BAR_X} y={mode === 'dihybrid' ? 96 : 110} font-size="15" font-weight="600">
 			{mode === 'punnett' ? 'Expected seeds' : `Bred: ${fmt(total)} seeds`}
 		</text>
@@ -319,7 +323,7 @@
 		<Readout
 			id="row{i}"
 			order={3 + i}
-			label={cat}
+			label={mode === 'dihybrid' ? undefined : cat}
 			value={mode === 'punnett' ? pct(e) : `${fmt(c)} (${pct(obs)}), expected ${pct(e)}`}
 		>
 			<text x={BAR_X + 32} y={y - 17} font-size="13">{cat}</text>
@@ -345,6 +349,17 @@
 			stroke-width="0.6"
 		/>
 		{#if mode !== 'punnett'}
+			<!-- once the counts are in, the expected share pulses gently -->
+			<line
+				x1={BAR_X + BAR_W * e}
+				x2={BAR_X + BAR_W * e}
+				y1={y - 11}
+				y2={y + 19}
+				stroke="var(--stage-ink)"
+				stroke-width="7"
+				stroke-linecap="round"
+				opacity={t > 2.6 ? 0.25 * (1 - cycle(t - 2.6, 1.6)) : 0}
+			/>
 			<line
 				x1={BAR_X + BAR_W * e}
 				x2={BAR_X + BAR_W * e}

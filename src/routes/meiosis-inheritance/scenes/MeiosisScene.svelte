@@ -407,7 +407,7 @@
 			<Label x={160} y={300} text="2 × 2 × 2 = 8" size={16} weight={600} opacity={u} />
 			<Label x={160} y={322} text="possible line-ups" size={12} muted opacity={u} />
 			<Label x={160} y={350} text="humans: 2²³ ≈ 8.4 million" size={12} muted opacity={u} />
-			<Label x={480} y={50} text="click a pair to turn it round" size={11} muted opacity={u} />
+			<Label x={480} y={50} text="click a pair to turn it round" size={11} muted pill opacity={u} />
 		</Readout>
 	{/if}
 
@@ -426,6 +426,7 @@
 				size={12}
 				muted
 				opacity={u}
+				pill
 			/>
 		</Readout>
 	{/if}
