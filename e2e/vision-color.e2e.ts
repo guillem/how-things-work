@@ -60,6 +60,13 @@ test('one kind of cone: a matched brightness looks identical, three kinds tell t
 	await expect(stage(page)).toContainText('same signal: identical to this eye');
 	await option(page, 'cone', 'all').click();
 	await expect(stage(page)).toContainText('two different colours');
+	await expect(stage(page)).not.toContainText('the same');
+	// The right lamp set to the left one's light: the same to every eye.
+	await slider(page, 'nmB').fill('600');
+	await slider(page, 'powerB').fill('1');
+	await expect(stage(page)).toContainText('the same');
+	await slider(page, 'powerB').fill('2');
+	await expect(stage(page)).toContainText('same colour, different brightness');
 });
 
 test('red and green lasers match the sodium lamp; nothing matches the 490 nm laser', async ({

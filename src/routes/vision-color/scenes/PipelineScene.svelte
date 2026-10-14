@@ -30,10 +30,10 @@
 	const nm = $derived(clamp(Number(params.nm ?? 580), NMA, NMB));
 	const c = $derived(cones(nm));
 	const op = $derived(opponent(c));
-	/** The brightest single wavelength's L + M, for scaling the brightness channel. */
+	/** The brightest single wavelength's brightness signal, for scaling that channel. */
 	const MAX_BRIGHT = (() => {
 		let m = 0;
-		for (let w = NMA; w <= NMB; w++) m = Math.max(m, cones(w)[0] + cones(w)[1]);
+		for (let w = NMA; w <= NMB; w++) m = Math.max(m, opponent(cones(w)).bright);
 		return m;
 	})();
 	const bright = $derived(op.bright / MAX_BRIGHT);
@@ -50,7 +50,7 @@
 	const rows = $derived([
 		{
 			id: 'bright',
-			title: 'brightness: L + M',
+			title: 'brightness: mostly L, some M',
 			left: 'dark',
 			right: 'bright',
 			value: bright,

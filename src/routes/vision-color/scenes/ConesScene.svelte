@@ -82,6 +82,12 @@
 		return `rgb(${h}, ${h}, ${h})`;
 	};
 	const patch = (c: Cones) => (all ? cssColour(c, EXPOSE) : greyOf(c[kSel] / 1.1));
+	/** With all three kinds: the right lamp is the left one exactly, or only differs in brightness. */
+	const sameNm = $derived(nmB === NM_A);
+	const identical = $derived(sameNm && Math.abs(powerB - 1) <= 0.02);
+	const allVerdict = $derived(
+		identical ? 'the same' : sameNm ? 'same colour, different brightness' : 'two different colours'
+	);
 	const same = $derived(
 		!all && Math.abs(lampA[kSel] - lampB[kSel]) <= 0.02 * Math.max(lampA[kSel], 0.02)
 	);
@@ -391,20 +397,20 @@
 		<Readout
 			id="verdict"
 			label="To this eye"
-			value={all ? 'two different colours' : same ? 'the same' : 'different brightness'}
+			value={all ? allVerdict : same ? 'the same' : 'different brightness'}
 			order={0}
 		>
 			<Label
 				x={790}
 				y={462}
 				text={all
-					? 'two different colours'
+					? allVerdict
 					: same
 						? 'same signal: identical to this eye'
 						: 'one is brighter than the other'}
 				size={14}
 				weight={700}
-				color={!all && same ? 'var(--vc-good)' : undefined}
+				color={(all ? identical : same) ? 'var(--vc-good)' : undefined}
 			/>
 		</Readout>
 	{/if}

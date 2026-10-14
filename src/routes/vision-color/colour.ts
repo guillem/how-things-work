@@ -9,8 +9,8 @@
  * Display: L, M, S → CIE 2012 2° XYZ with the matrix of CIE 170-2:2015 (checked against CVRL's
  * XYZ table in the model tests) → linear sRGB with the IEC 61966-2-1 matrix → the sRGB curve.
  * sRGB is defined on the 1931 XYZ functions, so feeding it 2012 XYZ is an approximation, used
- * only to choose pixel colours. Colours outside the screen's range are clipped to the nearest
- * one it can show, the same way for every light, so two lights with equal cone responses always
+ * only to choose pixel colours. Colours outside the screen's range are brought into it (negative
+ * channels are set to zero), the same way for every light, so two lights with equal cone responses always
  * get identical pixels.
  */
 import { LMS, NM0, NM1 } from './cone-data';
@@ -224,7 +224,7 @@ function target(id: string, label: string, raw: Line[], continuous: boolean): Ta
 /** The lights to match. */
 export const TARGETS: Target[] = [
 	target('sun', 'Sunlight (a 5800 K glow)', blackBody(5800), true),
-	target('sodium', 'Sodium street lamp (589 nm)', [{ nm: 589, power: 1 }], false),
+	target('sodium', 'Low-pressure sodium lamp (589 nm)', [{ nm: 589, power: 1 }], false),
 	target('bulb', 'Light bulb (a 2700 K glow)', blackBody(2700), true),
 	target('cyan', 'Blue-green laser (490 nm)', [{ nm: 490, power: 1 }], false)
 ];
@@ -242,7 +242,8 @@ export const MATCHED = 0.02;
 
 /**
  * The best match the three lasers can make with zero or positive powers, on a 0.01 grid of the
- * sliders: the smallest `mismatch`. Exact for targets inside the lasers' range.
+ * sliders: the smallest `mismatch`, by trying every point of the grid (about a million
+ * mixtures). Exact, with no search, for targets inside the lasers' range.
  */
 export function bestMatch(c: Cones): { rgb: Cones; mismatch: number } {
 	const exact = matchFor(c);
@@ -253,7 +254,6 @@ export function bestMatch(c: Cones): { rgb: Cones; mismatch: number } {
 	let best = { rgb: [0, 0, 0] as Cones, mismatch: Infinity };
 	for (let r = 0; r <= 100; r++)
 		for (let g = 0; g <= 100; g++) {
-			// For each r, g the best b is found on a line; search it coarsely then finely.
 			for (let b = 0; b <= 100; b++) {
 				const rgb: Cones = [r / 100, g / 100, b / 100];
 				const m = mismatch(response(mixture(...rgb)), c);
@@ -267,7 +267,8 @@ export function bestMatch(c: Cones): { rgb: Cones; mismatch: number } {
 
 /**
  * The three channels the brain compares, built from the cone signals by the retina's ganglion
- * cells: brightness L + M; red–green, L against a·M; blue–yellow, S against b·(L + M). The
+ * cells: brightness, mostly L and some M (the CIE luminance ȳ = 0.690·L + 0.348·M, the middle row
+ * of LMS_TO_XYZ); red–green, L against a·M; blue–yellow, S against b·(L + M). The
  * weights a and b are set so that equal-energy white is neutral on both colour channels (as in
  * the Derrington–Krauskopf–Lennie axes). Each colour channel is returned as a contrast between
  * its two sides, from −1 (all green, all yellow) to +1 (all red, all blue).
@@ -275,12 +276,12 @@ export function bestMatch(c: Cones): { rgb: Cones; mismatch: number } {
 const A_RG = EQUAL_ENERGY[0] / EQUAL_ENERGY[1];
 const B_BY = EQUAL_ENERGY[2] / (EQUAL_ENERGY[0] + EQUAL_ENERGY[1]);
 export function opponent(c: Cones): { bright: number; redGreen: number; blueYellow: number } {
-	const bright = c[0] + c[1];
-	if (bright <= 0) return { bright: 0, redGreen: 0, blueYellow: 0 };
+	const lm = c[0] + c[1];
+	if (lm <= 0) return { bright: 0, redGreen: 0, blueYellow: 0 };
 	return {
-		bright,
+		bright: LMS_TO_XYZ[1][0] * c[0] + LMS_TO_XYZ[1][1] * c[1],
 		redGreen: (c[0] - A_RG * c[1]) / (c[0] + A_RG * c[1]),
-		blueYellow: (c[2] - B_BY * bright) / (c[2] + B_BY * bright)
+		blueYellow: (c[2] - B_BY * lm) / (c[2] + B_BY * lm)
 	};
 }
 

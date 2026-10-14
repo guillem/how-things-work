@@ -13,6 +13,7 @@ import {
 	defocus,
 	eyePower,
 	imageZ,
+	lensPower,
 	nearPoint,
 	prescription,
 	traceRay
@@ -34,6 +35,7 @@ import {
 	toXYZ
 } from '../src/routes/vision-color/colour';
 import { LMS, NM0, XYZ } from '../src/routes/vision-color/cone-data';
+import { AFTER_DISCS, afterimageOf } from '../src/routes/vision-color/scenes/ui';
 
 // ------------------------------------------------------------------ the eye
 
@@ -53,6 +55,18 @@ test('the cornea does about two-thirds of the focusing, and almost none under wa
 	expect(eyePower(0, N_WATER)).toBeLessThan(25);
 	// A distant object is then about 40 D out of focus, far beyond what the lens can make up.
 	expect(defocus(0, 1, NORMAL_LENGTH, 0, N_WATER)).toBeLessThan(-30);
+});
+
+test('the lens alone is about 21.8 D; rounded, it raises the eye by 9.2 D, about 8.6 D by the near point', () => {
+	expect(lensPower(0)).toBeCloseTo(21.8, 1);
+	expect(eyePower(1) - eyePower(0)).toBeCloseTo(9.2, 1);
+	// Amplitude of accommodation as clinicians measure it: 1 ÷ the near point in metres.
+	expect(100 / nearPoint(NORMAL_LENGTH)).toBeCloseTo(8.6, 1);
+});
+
+test('each extra millimetre of eye length adds about −2.7 D of short sight', () => {
+	expect(prescription(NORMAL_LENGTH + 1)).toBeGreaterThan(-2.8);
+	expect(prescription(NORMAL_LENGTH + 1)).toBeLessThan(-2.6);
 });
 
 test('a normal eye focuses far away relaxed, and as close as about 12 cm with a rounded lens', () => {
@@ -179,7 +193,8 @@ test('red and green laser light match a sodium lamp’s yellow to within a fract
 	expect(w[2]).toBeGreaterThan(-0.01);
 	const best = bestMatch(na.c);
 	expect(best.rgb[2]).toBe(0);
-	expect(best.mismatch).toBeLessThan(0.005);
+	expect(best.mismatch).toBeGreaterThan(0.0025); // "about 0.3%"
+	expect(best.mismatch).toBeLessThan(0.0035);
 	// The only difference left is in the S cones.
 	const mix = response(mixture(...best.rgb));
 	const d = [0, 1, 2].map((k) => Math.abs(mix[k] - na.c[k]));
@@ -190,7 +205,8 @@ test('red and green laser light match a sodium lamp’s yellow to within a fract
 test('no mixture of the three lasers matches the 490 nm blue-green laser', () => {
 	const cyan = target('cyan');
 	expect(matchFor(cyan.c)[0]).toBeLessThan(-0.1); // it would need negative red
-	expect(bestMatch(cyan.c).mismatch).toBeGreaterThan(0.04);
+	expect(bestMatch(cyan.c).mismatch).toBeGreaterThan(0.045); // "5% off"
+	expect(bestMatch(cyan.c).mismatch).toBeLessThan(0.055);
 });
 
 test('the opponent channels: white is neutral, red, green, blue and yellow on their sides', () => {
@@ -203,6 +219,27 @@ test('the opponent channels: white is neutral, red, green, blue and yellow on th
 	expect(opponent(cones(580)).blueYellow).toBeLessThan(-0.5);
 	// Yellow is not a reddish green: it sits near neutral on the red–green channel.
 	expect(Math.abs(opponent(cones(578)).redGreen)).toBeLessThan(0.1);
+});
+
+test('brightness is mostly L: it peaks near 555 nm, like the eye’s daylight sensitivity', () => {
+	let top = 400;
+	for (let nm = 400; nm <= 700; nm++)
+		if (opponent(cones(nm)).bright > opponent(cones(top)).bright) top = nm;
+	expect(Math.abs(top - 555)).toBeLessThanOrEqual(3);
+});
+
+test('the plain L-against-M channel reads blue light greenish, greener than green light', () => {
+	for (const nm of [440, 460, 475, 490]) expect(opponent(cones(nm)).redGreen).toBeLessThan(-0.1);
+	expect(opponent(cones(460)).redGreen).toBeLessThan(opponent(cones(520)).redGreen);
+});
+
+test('the afterimage scene’s predicted swatches lean the way its labels say', () => {
+	const channel = { reddish: 0, greenish: 1, bluish: 2 } as const;
+	for (const d of AFTER_DISCS) {
+		const rgb = cssColour(afterimageOf(d.rgb)).match(/\d+/g)!.map(Number);
+		const k = channel[d.after];
+		for (let j = 0; j < 3; j++) if (j !== k) expect(rgb[k], d.id).toBeGreaterThan(rgb[j] + 10);
+	}
 });
 
 test('after staring at a colour, a grey looks like its opposite', () => {

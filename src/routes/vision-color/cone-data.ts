@@ -9,7 +9,8 @@
 //   which CVRL derives from the LMS functions above.
 // Obtained from the colour-science library's verbatim copy of those CVRL tables (BSD-3-Clause,
 // colour/colorimetry/datasets/cmfs.py at commit 046ad1aa8a988d6d4033c604c1f2f7c2b5585845),
-// because cvrl.org was unreachable on 2026-10-14.
+// because cvrl.org was unreachable on 2026-10-14. Not yet checked against CVRL's own linss2_10e_1
+// file: a second attempt the same day (fact-check round) also failed to reach cvrl.org.
 // Subset: every nanometre from 390 to 780 nm. CVRL leaves S blank above 615 nm (stored as 0).
 
 /** First wavelength of the tables, in nm; row i is 390 + i nm. */

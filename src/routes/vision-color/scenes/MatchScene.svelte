@@ -43,9 +43,8 @@
 	const mixColour = $derived(cssColour(mc, expose));
 	const off = $derived(mismatch(mc, tc));
 	const matched = $derived(off < MATCHED);
-	// The best the three lasers can do (searched once per target).
-	const best = $derived(bestMatch(tc));
-	const reachable = $derived(best.mismatch < MATCHED);
+	// The best the three lasers can do (searched once per target, only where it is shown).
+	const best = $derived(screens ? bestMatch(tc) : null);
 
 	const KINDS = [
 		{ k: 0, id: 'L', color: 'var(--vc-l)' },
@@ -306,7 +305,7 @@
 			color={matched ? 'var(--vc-good)' : undefined}
 		/>
 	</Readout>
-	{#if screens && !reachable}
+	{#if best && best.mismatch >= MATCHED}
 		<Readout
 			id="best"
 			label="Best possible"

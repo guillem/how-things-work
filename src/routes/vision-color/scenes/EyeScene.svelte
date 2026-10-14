@@ -607,14 +607,14 @@
 			label="Lens"
 			value={a <= 0.005
 				? 'relaxed'
-				: `${Math.round(a * 100)}% rounded, ${signed(accommodation, 1)} D`}
+				: `${Math.round(a * 100)}% rounded, eye ${signed(accommodation, 1)} D`}
 		>
 			<Label x={TRACK_X + 16} y={TRACK_TOP + 4} text="rounder" anchor="start" size={11} muted />
 			<Label x={TRACK_X + 16} y={TRACK_BOTTOM + 4} text="flatter" anchor="start" size={11} muted />
 			<Label
 				x={TRACK_X + 16}
 				y={shapeY + 4}
-				text={a <= 0.005 ? 'lens relaxed' : `lens ${signed(accommodation, 1)} D`}
+				text={a <= 0.005 ? 'lens relaxed' : `eye ${signed(accommodation, 1)} D`}
 				anchor="start"
 				size={12}
 				opacity={Math.abs(shapeY - TRACK_TOP) > 12 && Math.abs(shapeY - TRACK_BOTTOM) > 12 ? 1 : 0}
