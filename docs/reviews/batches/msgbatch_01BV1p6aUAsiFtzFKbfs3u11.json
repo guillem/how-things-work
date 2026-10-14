@@ -1,0 +1,12 @@
+{
+	"id": "msgbatch_01BV1p6aUAsiFtzFKbfs3u11",
+	"slugs": [
+		"embeddings",
+		"carbon-cycle",
+		"rockets",
+		"plate-tectonics"
+	],
+	"model": "claude-opus-5-5",
+	"effort": "high",
+	"submitted": "2026-10-14T08:43:27.540Z"
+}
