@@ -43,7 +43,7 @@
 	// ---- playback --------------------------------------------------------------------
 	const LEAD = 0.5;
 	const PLAY = $derived(clamp(tEnd * 0.9, 5, 12)); // seconds of playback
-	const HOLD = 1;
+	const HOLD = 0.3;
 	const since = replayClock();
 	const elapsed = $derived(since(`${diameter}|${T}`, t));
 	/** Time when the spike is half way: shown under reduced motion. */

@@ -86,10 +86,11 @@
 	const since = replayClock();
 	const key = $derived(`${mode}|${small}|${amp}|${gap}|${steadyI}|${ttx}|${tea}`);
 	const elapsed = $derived(since(key, t));
-	/** Moment of the patch under reduced motion: the rising phase of the first spike, or the end. */
+	/** Moment of the patch under reduced motion: the sodium peak of the first spike, or the end. */
 	const stillAt = $derived.by(() => {
 		if (mode === 'charge') return PULSE_AT + 0.6;
-		if (spikes.length && mode !== 'steady') return spikes[0];
+		if (spikes.length && mode !== 'steady')
+			return series.reduce((a, b) => (b.t < spikes[0] + 3 && b.gNa > a.gNa ? b : a)).t;
 		return setup.tEnd;
 	});
 	const u = $derived.by(() => {
@@ -185,12 +186,18 @@
 	/** Gate states from the open probabilities: Na⁺ channel i is inactivated if i < N(1 − h), open by m³. */
 	const naState = $derived.by(() => {
 		const inact = Math.round(N * (1 - now.h));
-		const open = Math.round(N * now.m ** 3 * now.h);
+		// At least one symbol opens as soon as 5% of the channels are open.
+		const open = Math.min(
+			N - inact,
+			Math.max(now.m ** 3 * now.h > 0.05 ? 1 : 0, Math.round(N * now.m ** 3 * now.h))
+		);
 		return naX.map((_, i) =>
 			setup.block.na === 0 ? 'blocked' : i >= N - inact ? 'inactive' : i < open ? 'open' : 'closed'
 		);
 	});
-	const kOpen = $derived(setup.block.k === 0 ? -1 : Math.round(N * now.n ** 4));
+	const kOpen = $derived(
+		setup.block.k === 0 ? -1 : Math.max(now.n ** 4 > 0.05 ? 1 : 0, Math.round(N * now.n ** 4))
+	);
 	/** Ions streaming through open channels: Na⁺ down (in), K⁺ up (out). */
 	const streams = $derived.by(() => {
 		const out: { key: string; x: number; y: number; c: string; o: number }[] = [];
@@ -224,6 +231,7 @@
 	});
 	/** The charge on the inner face of the membrane: + when depolarised past 0 mV. */
 	const injecting = $derived(now.I > 0.05);
+	const pct = (p: number) => `${Math.round(100 * p)}%`;
 
 	// ---- readouts ---------------------------------------------------------------------
 	const fmt = (v: number) => `${v > 0.5 ? '+' : v < -0.5 ? '−' : ''}${Math.abs(Math.round(v))} mV`;
@@ -416,9 +424,9 @@
 			y={510}
 			anchor="start"
 			size={12}
-			text="Na⁺ channels: {naState.filter((s) => s === 'open').length} open, {naState.filter(
-				(s) => s === 'inactive'
-			).length} inactivated"
+			text="Na⁺ channels: {pct(setup.block.na === 0 ? 0 : now.m ** 3 * now.h)} open, {pct(
+				1 - now.h
+			)} inactivated"
 		/>
 	</Readout>
 	<Readout id="legend-k" order={11} label="Potassium channels" color="var(--nr-k)">
@@ -428,7 +436,7 @@
 			y={534}
 			anchor="start"
 			size={12}
-			text="K⁺ channels: {Math.max(0, kOpen)} open"
+			text="K⁺ channels: {pct(setup.block.k === 0 ? 0 : now.n ** 4)} open"
 		/>
 	</Readout>
 	<Readout id="symbols">
@@ -438,7 +446,7 @@
 			anchor="start"
 			size={11}
 			muted
-			text="channels drawn as symbols; numbers follow the model"
+			text="4 + 4 symbols stand for millions of channels"
 		/>
 	</Readout>
 
