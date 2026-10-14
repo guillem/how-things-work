@@ -78,6 +78,8 @@ test('S − P at Ankara gives its distance from the Nepal earthquake', async ({ 
 	await expect(stage(page)).toContainText('5 min 00 s');
 	await control(page, 'lagAnto').fill('392');
 	await expect(stage(page)).toContainText('44° round the Earth: 4,891 km');
+	// Beside it, the chart an Earth of the same rock all through would give.
+	await expect(stage(page)).toContainText('the same rock all through');
 	// The S marker moves with the keyboard too.
 	await page.getByRole('slider', { name: 'S arrival at Ankara' }).focus();
 	await page.keyboard.press('ArrowRight');

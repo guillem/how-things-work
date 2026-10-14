@@ -16,7 +16,7 @@
 	import { Handle, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { land } from '../../plate-tectonics/globe';
-	import { EARTH_R, sMinusP } from '../earth';
+	import { EARTH_R, arrivalOf, sMinusP } from '../earth';
 	import { ORIGIN, bestFit, distanceFor, gcDistance, smallCircle, stations } from '../locate';
 
 	let { step, params, setParam }: StageProps = $props();
@@ -95,6 +95,18 @@
 	const curve = Array.from({ length: 50 }, (_, i) => {
 		const d = 1 + i * 2;
 		return `${i ? 'L' : 'M'}${cx(d).toFixed(1)} ${cy(sMinusP(d, ORIGIN.depth) ?? 0).toFixed(1)}`;
+	}).join('');
+	// The same chart for an Earth of the same rock all through: the same gap, a different distance.
+	const lagUniform = (d: number) =>
+		arrivalOf('S', d, ORIGIN.depth, 'uniform')! - arrivalOf('P', d, ORIGIN.depth, 'uniform')!;
+	const uniformTo = (() => {
+		let d = 1;
+		while (lagUniform(d + 1) <= CH.lmax) d++;
+		return d;
+	})();
+	const curveUniform = Array.from({ length: uniformTo }, (_, i) => {
+		const d = 1 + i;
+		return `${i ? 'L' : 'M'}${cx(d).toFixed(1)} ${cy(lagUniform(d)).toFixed(1)}`;
 	}).join('');
 
 	// ---- map (locate) -----------------------------------------------------------------------
@@ -373,6 +385,31 @@
 				text-anchor="middle"
 				class="muted"
 				style:font-size="11px">distance round the Earth</text
+			>
+		</Readout>
+		<path
+			d={curveUniform}
+			stroke="var(--stage-ink-muted)"
+			stroke-width="1.6"
+			stroke-dasharray="6 4"
+			fill="none"
+		/>
+		<Readout
+			id="ch-uniform"
+			order={8}
+			label="Dashed line"
+			value="if the Earth were the same rock all through"
+		>
+			<text
+				x={cx(uniformTo) - 30}
+				y={CH.y0 + 16}
+				text-anchor="end"
+				class="muted"
+				style:font-size="11px"
+				><tspan x={cx(uniformTo) - 30}>if the Earth were</tspan><tspan
+					x={cx(uniformTo) - 30}
+					dy="14">the same rock all through</tspan
+				></text
 			>
 		</Readout>
 		<path d={curve} stroke="var(--stage-ink)" stroke-width="2.2" fill="none" />

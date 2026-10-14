@@ -191,7 +191,7 @@
 			order={1}
 			label="Earthquakes a year, 2015–2024"
 			value={countsText}
-			note="magnitude 5.5–6, 6–6.5, … 8–8.5: about ten times fewer per step"
+			note="half-magnitude bins: about three times fewer per bar, ten times fewer per whole magnitude"
 		>
 			<text x={LC.x0 - 50} y={LC.y0 - 40} style:font-size="14px" style:font-weight="600"
 				>How many a year (2015–2024)</text
