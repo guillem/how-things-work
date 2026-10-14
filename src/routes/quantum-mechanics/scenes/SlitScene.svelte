@@ -66,7 +66,7 @@
 	const rate = $derived(clamp(Math.round(Number(params.rate ?? 4)), 1, 400));
 	const restarts = $derived(Number(params.restart ?? 0));
 	const open = $derived(phase === 'one-slit' ? String(params.slit ?? 'both') : 'both');
-	const detectorOn = $derived(phase === 'detector' && Boolean(params.detector ?? true));
+	const detectorOn = $derived(phase === 'detector' && Boolean(params.detector ?? false));
 	const reading = $derived(detectorOn && Boolean(params.reading ?? false));
 	/** Distinguishability of the record: 1 for the detector, the slider on the partial step. */
 	const D = $derived(
@@ -209,6 +209,9 @@
 		const half = Math.round(lambdaL / 2 / g.dx);
 		return visibility(P, c0 - half, c0 + half);
 	});
+
+	/** The residual below 0.05 with a perfect record is the single-slit envelope's own slope. */
+	const visText = $derived(vis < 0.05 ? '≈ 0' : vis.toFixed(2));
 
 	// ---- colours ---------------------------------------------------------------------------
 	let colours = $state.raw<{ map: RGB[]; dot: RGB; top: RGB; bot: RGB } | null>(null);
@@ -483,7 +486,7 @@
 			fill="var(--qm-barrier)"
 			opacity="0.35"
 		/>
-		<Readout id="beam" label="Detector" value="a light beam behind the slits">
+		<Readout id="beam">
 			<T
 				x={MAP_X + 22}
 				y={Y(YMAX) + 18}
@@ -757,18 +760,13 @@
 		<Readout
 			id="legend-solid"
 			order={2}
-			label="Solid curve"
-			value="the pattern with these settings"
+			label="Curves"
+			value="solid: these settings · dashed: top alone + bottom alone"
 		>
 			<line x1={PL} x2={PL + 24} y1={150} y2={150} stroke="var(--qm-prob)" stroke-width="2.2" />
 			<T x={PL + 32} y={154} text="probability, these settings" size={12} />
 		</Readout>
-		<Readout
-			id="legend-dashed"
-			order={3}
-			label="Dashed curve"
-			value="one slit's pattern + the other's"
-		>
+		<Readout id="legend-dashed">
 			<line
 				x1={PL}
 				x2={PL + 24}
@@ -783,9 +781,9 @@
 	{/if}
 
 	{#if phase === 'detector' || phase === 'partial'}
-		<Readout id="visibility" order={4} label="Fringe visibility" value={vis.toFixed(2)}>
+		<Readout id="visibility" order={4} label="Fringe visibility" value={visText}>
 			<T x={PL} y={226} text="fringe visibility" size={13} muted />
-			<T x={PL} y={254} text={vis.toFixed(2)} size={24} weight={600} />
+			<T x={PL} y={254} text={visText} size={24} weight={600} />
 			<T x={PL} y={274} text="1 = perfect fringes, 0 = none" size={12} muted />
 		</Readout>
 	{/if}

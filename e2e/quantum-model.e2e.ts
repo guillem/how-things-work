@@ -174,6 +174,33 @@ test('a which-slit record removes the fringes, in proportion to how well it tell
 	for (const k of [c, c + 37, c - 90]) expect(inc[k]).toBeCloseTo(top[k] + bot[k], 12);
 });
 
+test('sending each electron through one slit at random gives the no-fringe pattern', () => {
+	// What the page does with a perfect detector: pick a slit, then a landing place from
+	// that slit's wave alone. Compare with |a|² + |b|² in the central fringe region.
+	const s = slits({ w: 0.25, lambdaL: 1 });
+	const zero = new Float64Array(s.g.n);
+	const pa = pattern(s.a, { re: zero, im: zero }, 0);
+	const pb = pattern({ re: zero, im: zero }, s.b, 0);
+	const ha = sample(pa, 20000, 1);
+	const hb = sample(pb, 20000, 2);
+	const coin = outcomes(0.5, 20000, 3);
+	const hits = coin.map((top, i) => (top ? ha[i] : hb[i]));
+	const inc = pattern(s.a, s.b, 0);
+	const c = s.g.n / 2;
+	const half = Math.round(0.5 / s.g.dx);
+	const inside = hits.filter((h) => Math.abs(h - c) < half).length / hits.length;
+	let p = 0;
+	let total = 0;
+	for (let k = 0; k < inc.length; k++) {
+		total += inc[k];
+		if (Math.abs(k - c) < half) p += inc[k];
+	}
+	expect(inside).toBeCloseTo(p / total, 2);
+	// And it is not the two-slit pattern: the dark fringe at y = ½ now gets hits.
+	const dark = hits.filter((h) => Math.abs(s.g.x[h] - 0.5) < 0.02).length / hits.length;
+	expect(dark).toBeGreaterThan(0.005);
+});
+
 test('single random hits pile up into the probability pattern', () => {
 	const s = slits({ w: 0.25, lambdaL: 1 });
 	const P = pattern(s.a, s.b);

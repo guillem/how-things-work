@@ -56,7 +56,7 @@ const detector: Control = {
 	type: 'toggle',
 	id: 'detector',
 	label: 'Which-slit detector',
-	default: true,
+	default: false,
 	help: 'A light beam behind the slits scatters a photon off each electron.'
 };
 const reading: Control = {
@@ -235,7 +235,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [detector, reading, rate],
 			body: `
-<p>Now try to catch the electron in the act. Shine light across the back of the slits: each electron scatters a photon, and the photon's direction records which slit it came through. The fringes <strong>disappear</strong>. What is left is the dashed curve: the two single-slit humps, added.</p>
+<p>Now try to catch the electron in the act. Switch on the detector: light shone across the back of the slits, so that each electron scatters a photon whose direction records which slit it came through. The fringes <strong>disappear</strong>. What is left is the dashed curve: the two single-slit humps, added.</p>
 <p>The cause is the record, not anyone looking at it. The electron and the photon are now <dfn data-def="Two systems whose joint state cannot be described as one state for each: what you would find for one depends on what you find for the other.">entangled</dfn>: “electron through the top slit, photon scattered one way” and “electron through the bottom, photon the other way”. These two possibilities no longer end in the same place, because the photons differ, so their amplitudes cannot cancel: their <em>probabilities</em> add instead.</p>
 <p>Switch <em>Someone reads the record</em> on and off. Reading it only colours each dot by its slit; the pattern is exactly the same either way. The fringes went the moment the record was made — by a photon flying off into the room, read by no one.</p>`,
 			notes: `<p>This is the textbook meaning of a <dfn data-def="In quantum mechanics: any interaction that leaves a lasting record of a quantity, whether or not anyone looks at it.">measurement</dfn>: an interaction that leaves a lasting trace somewhere. Anything will do — a photon, an air molecule bumping into the electron, a change in a nearby current. That is why big objects never show fringes: they are recorded by their surroundings all the time (<em>decoherence</em>).</p>
@@ -342,7 +342,7 @@ export const spec: ExplainerSpec = {
 <p>Because the chance falls exponentially with the gap, the current is exquisitely sensitive to it: here, with a 4.5 eV work function, each extra <strong>0.1 nm cuts the current about ninefold</strong>. Scan the tip across the surface, keeping the current fixed, and it rises and falls over every atom.</p>
 <p>The same tunnelling lets alpha particles escape from nuclei (radioactive decay), lets protons in the Sun fuse at temperatures too low to climb their mutual repulsion, and stores the charge in flash memory.</p>
 <p><strong>A quantum object is described by a wave of complex amplitudes that interferes with itself, as it did at the slits and the barrier; a measurement gives one random outcome, with odds set by |ψ|².</strong></p>`,
-			notes: `<p>The 4.5 eV work function is a typical value (tungsten, a common tip metal, has about 4.5 eV); the gaps are those of a real STM. Each 0.1 nm of gap multiplies the transmission by e<sup>−2κ × 0.1 nm</sup> with κ = 10.9 per nanometre, a factor of about 9. An atom on the surface is about 0.1–0.2 nm high, so atoms change the current several-fold. The page uses a one-dimensional rectangular barrier; a real tip's barrier is rounded by the image charge and the applied voltage.</p>`
+			notes: `<p>The 4.5 eV work function is a typical value (tungsten, a common tip metal, has about 4.5 eV); the gaps are those of a real STM. Each 0.1 nm of gap multiplies the transmission by e<sup>−2κ × 0.1 nm</sup> with κ = 10.9 per nanometre, a factor of about 9. An atom sticking up from the surface brings it a fraction of a nanometre closer to the tip, so the current jumps as the tip passes over it. The page uses a one-dimensional rectangular barrier; a real tip's barrier is rounded by the image charge and the applied voltage.</p>`
 		}
 	]
 };

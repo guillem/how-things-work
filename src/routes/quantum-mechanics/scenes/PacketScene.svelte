@@ -347,6 +347,12 @@
 			<T x={PL} y={404} text="(1 fs = 10⁻¹⁵ s)" size={12} muted />
 		</Readout>
 	{:else}
+		<Readout
+			id="levels"
+			order={2}
+			label="Energy levels"
+			value={ladder.map((l) => `E${['₁', '₂', '₃'][l.n - 1]} ${f2(l.e)}`).join(' · ') + ' eV'}
+		/>
 		<g opacity={focus.current}>
 			<T x={LAD_X} y={LAD_BASE - LAD_H - 40} text="energy levels" size={13} muted />
 			<line
@@ -365,12 +371,7 @@
 					stroke={l.on ? 'var(--qm-prob)' : 'var(--stage-line)'}
 					stroke-width={l.on ? 3 : 1.5}
 				/>
-				<Readout
-					id="level-{l.n}"
-					order={1 + l.n}
-					label="E{['₁', '₂', '₃'][l.n - 1]}"
-					value="{f2(l.e)} eV"
-				>
+				<Readout id="level-{l.n}">
 					<T
 						x={LAD_X + LAD_W + 6}
 						y={l.y + 4}

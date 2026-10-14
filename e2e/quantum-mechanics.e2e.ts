@@ -15,7 +15,7 @@ async function readout(page: Page, caption: string) {
 	const texts = await stage(page).locator('text').allTextContents();
 	const i = texts.findIndex((s) => s.trim() === caption);
 	expect(i, caption).toBeGreaterThanOrEqual(0);
-	return parseFloat(texts[i + 1].replace(/,/g, ''));
+	return parseFloat(texts[i + 1].replace(/[,≈\s]/g, ''));
 }
 
 test('electrons arrive one at a time, each as one dot', async ({ page }) => {
@@ -44,16 +44,17 @@ test.describe('finished pictures', () => {
 		page
 	}) => {
 		await open(page, './quantum-mechanics/#detector');
-		expect(await readout(page, 'fringe visibility')).toBeLessThan(0.05);
+		// No detector: fringes.
+		await expect(stage(page)).toContainText('none: the detector is off');
+		expect(await readout(page, 'fringe visibility')).toBeGreaterThan(0.95);
+		// Switch it on: the fringes go.
+		await toggle(page, 'detector').check({ force: true });
 		await expect(stage(page)).toContainText('made, but nobody reads it');
+		expect(await readout(page, 'fringe visibility')).toBeLessThan(0.05);
 		// Reading the record changes nothing about the pattern.
 		await toggle(page, 'reading').check({ force: true });
 		await expect(stage(page)).toContainText('T top · B bottom');
 		expect(await readout(page, 'fringe visibility')).toBeLessThan(0.05);
-		// No detector: the fringes are back.
-		await toggle(page, 'detector').uncheck({ force: true });
-		await expect(stage(page)).toContainText('none: the detector is off');
-		expect(await readout(page, 'fringe visibility')).toBeGreaterThan(0.95);
 	});
 
 	test('a partial record leaves partial fringes', async ({ page }) => {
@@ -78,7 +79,9 @@ test.describe('finished pictures', () => {
 		await open(page, './quantum-mechanics/#box');
 		await expect(stage(page)).toContainText('0.38 eV');
 		await range(page, 'boxL').fill('0.5');
-		await expect(stage(page)).toContainText('1.50 eV'); // 4 × 0.38 eV
+		// Half the width, four times the energies: E₁ = 1.50 eV, E₂ = 6.02 eV.
+		await expect(stage(page)).toContainText('6.02 eV');
+		await expect(stage(page)).not.toContainText('0.38 eV');
 	});
 
 	test('part of the packet tunnels, less through a wider or higher barrier', async ({ page }) => {
