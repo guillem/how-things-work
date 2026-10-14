@@ -23,12 +23,11 @@ const weak = standard(ACIDS.acetic);
 
 test('pure water at 25 °C is neutral, with pH + pOH = pKw', () => {
 	const ph = solvePH({});
-	expect(ph).toBeCloseTo(13.995 / 2, 6);
+	expect(ph).toBeCloseTo(7, 6);
 	const n = ionsInCube(ph);
 	expect(n.h).toBeCloseTo(n.oh, 6);
 	// About 60 of each in a 1 µm cube, among some 33 billion water molecules.
-	expect(n.h).toBeGreaterThan(60);
-	expect(n.h).toBeLessThan(61);
+	expect(Math.round(n.h)).toBe(60);
 	expect(WATER_IN_CUBE / 1e9).toBeCloseTo(33.3, 0);
 });
 

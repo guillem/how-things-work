@@ -21,9 +21,10 @@
  * activities (an ideal dilute solution), so pH = −log₁₀[H⁺] exactly.
  *
  * Constants:
- *   pKw = 13.995 at 25 °C and 0.1 MPa: A. V. Bandura and S. N. Lvov, "The ionization
- *   constant of water over wide ranges of temperature and density", J. Phys. Chem.
- *   Ref. Data 35, 15 (2006). (Neutral water is then pH 6.998, shown as 7.00.)
+ *   Kw = 1.0 × 10⁻¹⁴ at 25 °C (pKw = 14.00), the measured 1.01 × 10⁻¹⁴ (pKw 13.995 at
+ *   0.1 MPa: A. V. Bandura and S. N. Lvov, "The ionization constant of water over wide
+ *   ranges of temperature and density", J. Phys. Chem. Ref. Data 35, 15 (2006)) rounded
+ *   to the two figures textbooks use, so that neutral water is pH 7.00 exactly.
  *   Acid pKa values at 25 °C: CRC Handbook of Chemistry and Physics, 84th ed. (2004),
  *   "Dissociation constants of inorganic acids and bases" and "… of organic acids
  *   and bases", as reproduced in the LibreTexts table "Acid Dissociation Constants"
@@ -33,7 +34,7 @@
  *   (0.034 mol L⁻¹ atm⁻¹): R. Sander, Atmos. Chem. Phys. 15, 4399 (2015).
  */
 
-export const PKW = 13.995;
+export const PKW = 14;
 export const KW = 10 ** -PKW;
 /** Avogadro's constant, per mole (exact, SI 2019). */
 export const AVOGADRO = 6.02214076e23;
