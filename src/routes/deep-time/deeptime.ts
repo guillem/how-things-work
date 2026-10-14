@@ -79,8 +79,7 @@ export const PERIODS: Unit[] = [
 
 /** The unit of a list that contains `age` (the younger one on a boundary). */
 export const unitAt = (list: Unit[], age: number): Unit | undefined =>
-	list.find((x) => age >= x.top && age < x.base) ??
-	(age >= EARTH_AGE ? list[list.length - 1] : undefined);
+	list.find((x) => age >= x.top && (age < x.base || (age === x.base && x.base === EARTH_AGE)));
 
 /** "Cambrian period, Paleozoic era, Phanerozoic eon": the finest named units at `age`. */
 export function placeIn(age: number): { eon?: Unit; era?: Unit; period?: Unit } {
@@ -507,6 +506,7 @@ export function ageText(age: number): string {
 /** Share of Earth's history since `age`, as a percentage string. */
 export function shareText(age: number): string {
 	const p = (age / EARTH_AGE) * 100;
+	if (p <= 0) return '0%';
 	if (p >= 10) return `${Math.round(p)}%`;
 	if (p >= 1) return `${p.toFixed(1)}%`;
 	const digits = Math.max(1, -Math.floor(Math.log10(p)));

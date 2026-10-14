@@ -23,6 +23,7 @@
 		EARTH_AGE,
 		EONS,
 		ERAS,
+		EVENTS,
 		EXTINCTIONS,
 		GLACIATIONS,
 		LIFE,
@@ -249,11 +250,33 @@
 			const w = Math.max(1.6, clampX(xb) - a);
 			const alive = age <= g.from && age >= (g.to ?? 0);
 			// the name to the left of the bar's start if it fits there, else inside the bar
-			const left = a - 8 - X0 > g.name.length * 6.0 || g.id === 'sapiens';
+			const long = g.id === 'sapiens' && sp > 1000;
+			const left = a - 8 - X0 > (long ? 34 : g.name.length) * 6.0;
 			return { g, y, a, w, visible, alive, left };
 		})
 	);
 
+	// human history, on the Homo sapiens row, in the windows where it can be seen
+	const HUMAN = [
+		{ id: 'farming', text: 'farming' },
+		{ id: 'writing', text: 'writing' },
+		{ id: 'industry', text: 'steam engines' }
+	];
+	const humanMarks = $derived.by(() => {
+		if (sp > 0.5) return [];
+		const out: { id: string; x: number; text: string }[] = [];
+		let lastX = -Infinity;
+		for (const h of HUMAN) {
+			const e = EVENTS.find((x) => x.id === h.id)!;
+			const x = xOf(e.age, sp);
+			if (x < X0 || x - lastX < 70) continue;
+			out.push({ id: h.id, x, text: h.text });
+			lastX = x;
+		}
+		return out;
+	});
+	// the dinosaurs' row, empty in these windows
+	const humanY = LIFE_Y + LIFE.findIndex((g) => g.id === 'dinosaurs') * ROW + ROW / 2;
 	const extLines = $derived(
 		EXTINCTIONS.map((e, i) => ({ e, x: xOf(e.age, sp), i })).filter((l) => l.x >= X0 && l.x <= X1)
 	);
@@ -830,6 +853,24 @@
 			{/each}
 		</g>
 
+		{#each humanMarks as m (m.id)}
+			{@const right = m.x < X1 - 90}
+			<path
+				d="M{m.x} {humanY - 6} l4.5 6 l-4.5 6 l-4.5 -6 z"
+				fill="var(--dt-humans)"
+				stroke="var(--stage-bg)"
+			/>
+			<Readout id="human-{m.id}">
+				<T
+					x={right ? m.x + 8 : m.x - 8}
+					y={humanY + 4}
+					text={m.text}
+					size={11}
+					weight={600}
+					anchor={right ? 'start' : 'end'}
+				/>
+			</Readout>
+		{/each}
 		<!-- mass extinctions -->
 		<g opacity={fExt.current}>
 			{#each extLines as l (l.e.id)}

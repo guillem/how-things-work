@@ -96,6 +96,9 @@ test('the time scale is the ICS chart, with no gaps from the Earth’s birth to 
 	]);
 	expect(placeIn(100).period?.name).toBe('Cretaceous');
 	expect(placeIn(1).period?.name).toBe('Quaternary');
+	// the Earth's first moment is in the Hadean, which has no eras or periods
+	const first = placeIn(EARTH_AGE);
+	expect([first.eon?.name, first.era, first.period]).toEqual(['Hadean', undefined, undefined]);
 	expect(PERIODS.find((x) => x.name === 'Cambrian')?.base).toBe(538.8);
 	expect(EXTINCTIONS.map((e) => e.age)).toEqual([443.1, 372.15, 251.902, 201.4, 66]);
 });
