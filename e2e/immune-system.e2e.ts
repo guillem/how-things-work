@@ -60,3 +60,15 @@ test('in the tissue the virus is gone on day 9, and "Release the virus" starts a
 	await expect(stage(page)).toContainText('Day 0.0');
 	await expect(stage(page)).not.toContainText('the virus is gone');
 });
+
+test('infected again six months later, the tissue is clear of virus sooner than the first time', async ({
+	page
+}) => {
+	await page.clock.install();
+	await page.goto('./immune-system/#battle');
+	await page.locator('.action button[data-control=again]').click();
+	await playUntil(page, stage(page), 'of the second infection: the virus is gone', 20000);
+	await expect(stage(page)).toContainText('Day 5 of the second infection');
+	await expect(stage(page)).toContainText('the first time it took 9 days');
+	await expect(stage(page)).toContainText('memory T cells switched on');
+});

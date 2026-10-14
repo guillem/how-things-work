@@ -6,7 +6,16 @@ const release: Control = {
 	id: 'release',
 	label: 'Release the virus',
 	action: 'Release the virus',
-	help: 'Starts the infection again from day 0, as the same small dose landing in the airway.'
+	help: 'Replays the first infection from day 0, in a body that has never met this virus.'
+};
+
+/** Plays a second infection, six months after the first, in the tissue scene. */
+const again: Control = {
+	type: 'action',
+	id: 'again',
+	label: 'Infect again, six months later',
+	action: 'Infect again, six months later',
+	help: 'The same virus and dose, in the same body: now memory cells are waiting.'
 };
 
 /** The innate response on the "stand-off" step (its own id, so it does not carry over). */
@@ -77,7 +86,7 @@ export const spec: ExplainerSpec = {
 <p>Infected cells notice the intruder. Sensors inside them recognise molecules that only viruses make, such as their kind of RNA, and the cell sends out an alarm: <dfn data-def="Signalling proteins released by infected cells. Neighbouring cells that receive them switch on antiviral defences; interferons also call in and activate immune cells.">interferon</dfn>.</p>
 <p>The alarm does two things. Healthy neighbours that receive it switch on antiviral defences and become <strong>resistant</strong> (blue) for a while, so the virus cannot multiply in them. And it activates <dfn data-def="Immune cells that kill body cells showing signs of infection or stress, without needing to have met the pathogen before.">natural killer cells</dfn>, which kill infected cells before they release more virus. Other cells, <dfn data-def="Large white blood cells that swallow and digest pathogens and debris; they also raise the alarm with signalling proteins.">macrophages</dfn> and <dfn data-def="The most common white blood cells; they rush from the blood into infected tissue within hours and swallow pathogens.">neutrophils</dfn>, swallow virus and debris. The swelling, heat and fever of an infection are part of this response.</p>
 <p>This is <dfn data-def="The defences we are born with: barriers, alarm signals and immune cells that recognise features shared by many pathogens. Fast (hours), but the same every time.">innate immunity</dfn>. It is fast, within hours, and general: it reacts to <em>any</em> virus in much the same way, because it looks for features that many viruses share.</p>`,
-			notes: `<p>The sensors are pattern-recognition receptors: for example RIG-I, which detects the short double-stranded ends of viral RNA, and Toll-like receptors, which detect viral RNA and bacterial cell-wall molecules. Each kind recognises a feature shared by a whole class of pathogens. The innate response also includes the complement proteins of the blood, which punch holes in bacteria and tag them for swallowing. The model on this page includes the two effects of interferon described here (resistant cells and NK killing), with the rates Pawelek et al. measured in horses infected with flu (<i>PLoS Computational Biology</i>, 2012).</p>`
+			notes: `<p>The sensors are pattern-recognition receptors: for example RIG-I, which detects the short double-stranded ends of viral RNA, and Toll-like receptors, which detect viral RNA and bacterial cell-wall molecules. Each kind recognises a feature shared by a whole class of pathogens. The innate response also includes the complement proteins of the blood, which punch holes in bacteria and tag them for swallowing. The model on this page includes the two effects of interferon described here (resistant cells and NK killing), with rates that Cao et al. took from Pawelek et al.’s study of flu in horses (<i>PLoS Computational Biology</i>, 2012).</p>`
 		},
 		{
 			id: 'standoff',
@@ -103,7 +112,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			body: `
 <p>The second line of defence is built on a different idea. Its cells are <dfn data-def="White blood cells of the adaptive immune system: B cells, which make antibodies, and T cells, which kill infected cells or coordinate the response.">lymphocytes</dfn>: <strong>B cells</strong> and <strong>T cells</strong>. Each one carries on its surface many copies of a single <dfn data-def="A protein on the surface of a B or T cell that binds one particular molecular shape, its antigen. Every lymphocyte carries its own.">receptor</dfn>, and every cell’s receptor has a <em>different</em> shape.</p>
-<p>The receptors are not designed for any particular enemy. While each lymphocyte matures, it builds its receptor gene by cutting and joining pieces chosen at random from a few hundred gene segments, and the joints are trimmed and padded at random too. The result is a vast library of shapes. An adult has at least <strong>100 million</strong> different T-cell receptors, and more B-cell receptors still.</p>
+<p>The receptors are not designed for any particular enemy. While each lymphocyte matures, it builds its receptor gene by cutting and joining pieces chosen at random from a few hundred gene segments, and the joints are trimmed and padded at random too. The result is a vast library of shapes. An adult has at least <strong>100 million</strong> different T-cell receptors, and a similarly vast range of B-cell receptors.</p>
 <p>Before they are released, young lymphocytes whose receptor fits the body’s own molecules are mostly eliminated, so the library is tuned to <em>not</em> recognise you. Everything else is kept, just in case.</p>`,
 			notes: `<p>The joining of gene segments is called V(D)J recombination. A B-cell receptor heavy chain is built from one of about 40 working V segments, one of 23 D and one of 6 J; its light chain from about 40 V and 5 J (κ) or 30 V and 4 J (λ). That alone gives a few million combinations, and the random trimming and adding of letters at the joints multiplies it many times over. The figure of at least 100 million different T-cell receptor β chains in the naive T cells of a young adult is a lower bound from sequencing (Qi et al., <i>PNAS</i>, 2014). The removal of self-reactive T cells happens in the thymus, of B cells in the bone marrow; when it fails, the immune system can attack the body itself.</p>`
 		},
@@ -155,11 +164,12 @@ export const spec: ExplainerSpec = {
 			scene: 'tissue',
 			hints: { view: 'battle' },
 			duration: 30,
-			controls: [release],
+			controls: [release, again],
 			body: `
 <p>Now everything together, day by day. Release the virus and watch the tissue: in the first two days infected cells multiply; the interferon alarm turns neighbours resistant and NK cells start killing; then for a few days nothing seems to change.</p>
 <p>Out of sight, in the lymph node, the few matching B and T cells are multiplying. From day 5 antibodies arrive and catch free virus; from day 6 killer T cells pour in and kill infected cells. By day 9 the virus is gone.</p>
-<p>The counters on the left come from the model. Resistant and lost cells are drawn in proportion: each cell of the lining in the picture stands for about three million real ones. Infected cells, virus particles and immune cells are drawn on a logarithmic scale, because their numbers change a millionfold: one more drawn means ten times as many.</p>`,
+<p>Then infect the same body again, six months later, and compare: the memory cells in the lymph node switch on, and the virus is gone in about five days.</p>
+<p>The counters on the left come from the model. Resistant and lost cells are drawn in proportion: each cell of the lining in the picture stands for about three million real ones. Infected cells, virus particles, killer T cells and antibodies are drawn on a logarithmic scale, because their numbers change a millionfold: a few more appear each time the real number grows tenfold. The natural killer cells follow the strength of the interferon alarm.</p>`,
 			notes: `<p>The order of events matches real flu: in volunteers infected with flu the virus in nasal washes peaks on day 2–3 and is undetectable by day 7 or 8 (Baccam et al., 2006). The model's numbers come from mice, whose flu runs a similar course.</p>`
 		},
 		{
@@ -188,7 +198,7 @@ export const spec: ExplainerSpec = {
 <p>When the virus is gone, the army is not needed any more. Within a week more than nine in ten of the killer T cells die, and the short-lived plasma cells with them.</p>
 <p>But not all. About one in twenty of the expanded T cells stays on as a <dfn data-def="A long-lived lymphocyte left over from an earlier response. It carries the same receptor and responds faster and more strongly when it meets the same pathogen again.">memory cell</dfn>, and memory B cells and long-lived plasma cells remain too. In the model that leaves about <strong>3,000</strong> memory T cells: thirty times more than the 100 naive cells that fitted the virus at the start. And they react faster. Some long-lived plasma cells keep making antibodies, so the blood stays armed for a while.</p>
 <p>The library has changed. The rare shape that fitted this virus is now common.</p>`,
-			notes: `<p>That 5–10% of the expanded killer T cells survive as memory cells is a common finding (Harty &amp; Badovinac, <i>Nature Reviews Immunology</i>, 2008). Cao et al. use 5% for their memory simulations. Memory T cells start dividing sooner and produce effector cells faster than naive ones (Veiga-Fernandes et al., <i>Nature Immunology</i>, 2000). In people, long-lived plasma cells in the bone marrow can keep antibody levels up for decades: the half-life of antibodies to measles and mumps is estimated at hundreds of years (Amanna, Carlson &amp; Slifka, <i>New England Journal of Medicine</i>, 2007).</p>`
+			notes: `<p>That 5–10% of the expanded killer T cells survive as memory cells is a common finding (Harty &amp; Badovinac, <i>Nature Reviews Immunology</i>, 2008). Cao et al. use 5% for their memory simulations. Memory T cells start dividing sooner and produce effector cells faster than naive ones (Veiga-Fernandes et al., <i>Nature Immunology</i>, 2000). In people, long-lived plasma cells in the bone marrow can keep antibody levels up for decades: the half-lives of antibodies to mumps and measles are estimated at hundreds to thousands of years (Amanna, Carlson &amp; Slifka, <i>New England Journal of Medicine</i>, 2007).</p>`
 		},
 		{
 			id: 'second',
@@ -202,7 +212,7 @@ export const spec: ExplainerSpec = {
 <p>Now the same virus infects the same body again. The charts overlay the two infections, each counted from its own day 0: faint for the first, bold for the second.</p>
 <p>Six months later, the antibodies left from the first infection have faded to a tenth, too few to stop the virus, and it starts to grow. But this time memory cells meet it: thirty times more of them, starting a day sooner and multiplying faster. The virus is gone in about 5 days instead of 9, before it ever reaches the level of the first infection, and the new response is <strong>far larger</strong>: over a hundred times more killer T cells and about twenty times more antibody, sooner.</p>
 <p>Move the second infection earlier. Within about three months of the first, the leftover antibodies catch the virus before it can grow at all: you would not even notice.</p>`,
-			notes: `<p><strong>How memory is modelled.</strong> Cao et al. extend their model with memory killer T cells that start a day sooner (5 days instead of 6) and produce effectors 1.5 times faster, and whose number is 5% of the first infection's peak. They do not model B-cell memory; we gave B cells memory by the same rules, which is our addition. In this model antibodies fade with the half-life the authors fitted over the first weeks, about 46 days. In people, long-lived plasma cells usually keep them at a plateau for years, and most second flu infections happen because the virus has changed its coat, so that old antibodies fit it less well. Vaccines work by giving the body a first, harmless meeting: see <a href="../mrna-vaccines/">vaccines</a>.</p>`
+			notes: `<p><strong>How memory is modelled.</strong> Cao et al. extend their model with memory killer T cells that start a day sooner (5 days instead of 6) and produce effectors 1.5 times faster, and whose number is 5% of the first infection's peak. They do not model B-cell memory; we gave B cells memory by the same rules, which is our addition. In this model antibodies fade with the half-life the authors fitted over the first weeks, about 46 days. In people, long-lived plasma cells usually keep them at a plateau for years, and most second flu infections happen because the virus has changed its coat, so that old antibodies fit it less well. Vaccines work by giving the body a first, harmless meeting (the topic of the coming page on vaccines and mRNA).</p>`
 		},
 		{
 			id: 'recap',

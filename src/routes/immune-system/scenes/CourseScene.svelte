@@ -214,7 +214,7 @@
 	<Readout
 		id="lining"
 		order={2}
-		label="Airway lining"
+		label={r === null ? 'Airway lining' : undefined}
 		value="{pct(lining.healthy)}% healthy · {pct(lining.res)}% resistant · {pct(
 			lining.inf
 		)}% infected · {pct(lining.lost)}% lost"
@@ -251,7 +251,13 @@
 	</Readout>
 
 	{#each rows as row, i (row.id)}
-		<Readout id="now-{row.id}" order={3 + i} label={row.label} value={row.value} color={row.color}>
+		<Readout
+			id="now-{row.id}"
+			order={3 + i}
+			label={r !== null ? undefined : row.label}
+			value={row.value}
+			color={row.color}
+		>
 			<circle cx={30} cy={198 + i * 26} r="5" fill={row.color} />
 			<text x={42} y={202 + i * 26} font-size="13"
 				>{row.label}
@@ -276,12 +282,14 @@
 	</Readout>
 
 	{#if compare}
-		<g opacity={compareShow}>
-			<text x={24} y={378} font-size="12" class="muted">at its peak</text>
-			<text x={220} y={378} font-size="12" class="muted" text-anchor="end">first</text>
-			<text x={330} y={378} font-size="12" font-weight="600" text-anchor="end">second</text>
-			<line x1={24} x2={330} y1={386} y2={386} stroke="var(--stage-line)" />
-		</g>
+		<Readout id="cmp-head">
+			<g opacity={compareShow}>
+				<text x={24} y={378} font-size="12" class="muted">at its peak</text>
+				<text x={220} y={378} font-size="12" class="muted" text-anchor="end">first</text>
+				<text x={330} y={378} font-size="12" font-weight="600" text-anchor="end">second</text>
+				<line x1={24} x2={330} y1={386} y2={386} stroke="var(--stage-line)" />
+			</g>
+		</Readout>
 		{#each compare as row, i (row.id)}
 			<Readout
 				id={row.id}

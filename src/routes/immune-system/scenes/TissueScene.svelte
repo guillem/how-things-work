@@ -19,26 +19,40 @@
 	import { Label, clamp, cycle, hash, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { CAO, antibody, at, clearedDay, effectors } from '../model';
-	import { count, run } from '../run';
+	import { count, retime, run } from '../run';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
 	const view = $derived(String(step.hints?.view ?? 'battle'));
-	const series = $derived(run({ days: 30 }));
-
-	// ---- time: day as a pure function of t (replayed by "Release the virus") ---------
+	// ---- time: day as a pure function of t, replayed by the two actions --------------
+	// "Release the virus" replays the first infection; "Infect again" plays a
+	// second infection six months later (REINFECT), met by memory cells.
+	const REINFECT = 180;
 	const release = $derived(Number(params.release ?? 0));
+	const again = $derived(Number(params.again ?? 0));
 	let startedAt = 0;
-	let startedFor = -1;
+	let started = { release: -1, again: -1 };
+	let second = false;
 	let lastT = 0;
-	const tRun = $derived.by(() => {
-		if (release !== startedFor || t < lastT) {
-			startedAt = startedFor === -1 || t < lastT ? 0 : t;
-			startedFor = release;
+	const timing = $derived.by(() => {
+		if (release !== started.release || again !== started.again || t < lastT) {
+			const first = started.release === -1;
+			if (again !== started.again && !first) second = true;
+			if (release !== started.release && !first) second = false;
+			startedAt = first || t < lastT ? 0 : t;
+			started = { release, again };
 		}
 		lastT = t;
-		return Math.max(0, t - startedAt);
+		return { tRun: Math.max(0, t - startedAt), second };
 	});
+	const tRun = $derived(timing.tRun);
+	const isSecond = $derived(view === 'battle' && timing.second);
+	const series = $derived(
+		isSecond
+			? retime(run({ days: REINFECT + 20, reinfectAt: REINFECT }), REINFECT, 20)
+			: run({ days: 30 })
+	);
+	const firstGone = $derived(clearedDay(run({ days: 30 })));
 	const LEAD = 0.8;
 	const plan = $derived(
 		view === 'invasion'
@@ -119,8 +133,8 @@
 			const ph = cycle(t, 9 + hash(k, 8) * 5, hash(k, 9));
 			return {
 				k,
-				x: 90 + hash(k, 7) * 780 + 14 * Math.sin(ph * 6.283),
-				y: 70 + hash(k, 10) * 200 + 10 * Math.cos(ph * 6.283),
+				x: 240 + hash(k, 7) * 340 + 14 * Math.sin(ph * 6.283),
+				y: 90 + hash(k, 10) * 160 + 10 * Math.cos(ph * 6.283),
 				r: hash(k, 11) * 360
 			};
 		});
@@ -152,9 +166,9 @@
 		const nk = showInnate ? Math.min(6, Math.round(2 * s.F)) : 0;
 		const tc = showAdaptive ? Math.min(14, Math.round(2.2 * lg(effectors(s)))) : 0;
 		const place = (k: number, kind: 'nk' | 't', salt: number) => {
-			const tx = targets.length ? targets[k % targets.length] : 120 + hash(k, salt) * 600;
+			const tx = targets.length ? targets[k % targets.length] : 120 + hash(k, salt) * 480;
 			const ph = cycle(t, 5 + hash(k, salt + 1) * 3, hash(k, salt + 2));
-			const home = 120 + hash(k, salt + 3) * 600;
+			const home = 120 + hash(k, salt + 3) * 480;
 			const near = targets.length ? 0.75 : 0;
 			const x = home + (tx - home) * near + 12 * Math.sin(ph * 6.283);
 			const y =
@@ -170,26 +184,37 @@
 
 	// ---- cilia ---------------------------------------------------------------------------
 	const cilia = $derived.by(() => {
-		const out: { k: number; d: string }[] = [];
+		let d = '';
 		for (let i = 0; i < N; i++) {
+			const a = Math.sin((cycle(t, 0.9) + i * 0.08) * 6.283) * 6;
 			for (let j = 0; j < 4; j++) {
 				const x = CX0 + i * CW + 6 + j * 8;
-				const a = Math.sin((cycle(t, 0.9) + i * 0.08) * 6.283) * 6;
-				out.push({ k: i * 4 + j, d: `M${x} ${CY0} q ${a / 2} -8 ${a} -14` });
+				d += `M${x} ${CY0} q ${(a / 2).toFixed(1)} -8 ${a.toFixed(1)} -14`;
 			}
 		}
-		return out;
+		return d;
 	});
+	/** Spikes of a virion (8) or a T cell (6) as one path around (0, 0). */
+	const spikes = (n: number, r0: number, r1: number) =>
+		Array.from({ length: n }, (_, j) => {
+			const a = (j / n) * 6.283;
+			return `M${(r0 * Math.cos(a)).toFixed(1)} ${(r0 * Math.sin(a)).toFixed(1)}L${(r1 * Math.cos(a)).toFixed(1)} ${(r1 * Math.sin(a)).toFixed(1)}`;
+		}).join('');
+	const VIRION_SPIKES = spikes(8, 7, 10);
+	const TCELL_SPIKES = spikes(6, 10, 14);
 
 	// ---- the lymph node inset (battle) ------------------------------------------------------
-	const recruitedT = $derived(CAO.Cn0 - s.Cn);
-	const recruitedB = $derived(CAO.Bn0 - s.Bn);
+	/** Cells that fit the virus at the start of this infection: naive, or memory the second time. */
+	const poolT = $derived(isSecond ? series[0].Cm : CAO.Cn0);
+	const poolB = $derived(isSecond ? series[0].Bm : CAO.Bn0);
+	const recruitedT = $derived(poolT - (isSecond ? s.Cm : s.Cn));
+	const recruitedB = $derived(poolB - (isSecond ? s.Bm : s.Bn));
 	const nodeDots = $derived.by(() =>
 		Array.from({ length: 40 }, (_, k) => ({
 			k,
 			x: 680 + (hash(k, 30) - 0.5) * 110,
 			y: 108 + (hash(k, 31) - 0.5) * 54,
-			on: k < 20 ? k < (recruitedT / CAO.Cn0) * 20 : k - 20 < (recruitedB / CAO.Bn0) * 20,
+			on: k < 20 ? k < (recruitedT / poolT) * 20 : k - 20 < (recruitedB / poolB) * 20,
 			kind: k < 20 ? 't' : 'b'
 		}))
 	);
@@ -231,15 +256,13 @@
 <g>
 	<!-- air, mucus, lining, tissue -->
 	<rect x={24} y={252} width={912} height={40} rx="6" fill="var(--im-mucus)" opacity="0.8" />
-	{#each cilia as c (c.k)}
-		<path
-			d={c.d}
-			fill="none"
-			stroke="var(--im-cell-edge)"
-			stroke-width="1.2"
-			stroke-linecap="round"
-		/>
-	{/each}
+	<path
+		d={cilia}
+		fill="none"
+		stroke="var(--im-cell-edge)"
+		stroke-width="1.2"
+		stroke-linecap="round"
+	/>
 	{#each cells as c (c.k)}
 		<g>
 			<rect
@@ -348,18 +371,13 @@
 			<circle cx={h.x + 4} cy={h.y + 3} r="2" fill="var(--stage-bg)" />
 		{:else}
 			<circle cx={h.x} cy={h.y} r="10" fill="var(--im-tcell)" />
-			{#each [0, 1, 2, 3, 4, 5] as j (j)}
-				{@const a = (j / 6) * 6.283}
-				<line
-					x1={h.x + 10 * Math.cos(a)}
-					y1={h.y + 10 * Math.sin(a)}
-					x2={h.x + 14 * Math.cos(a)}
-					y2={h.y + 14 * Math.sin(a)}
-					stroke="var(--im-tcell)"
-					stroke-width="2"
-					stroke-linecap="round"
-				/>
-			{/each}
+			<path
+				d={TCELL_SPIKES}
+				transform="translate({h.x} {h.y})"
+				stroke="var(--im-tcell)"
+				stroke-width="2"
+				stroke-linecap="round"
+			/>
 		{/if}
 	{/each}
 
@@ -377,17 +395,7 @@
 	{/each}
 	{#each virions as v (v.k)}
 		<g transform="translate({v.x} {v.y})" opacity={v.o}>
-			{#each [0, 1, 2, 3, 4, 5, 6, 7] as j (j)}
-				{@const a = (j / 8) * 6.283}
-				<line
-					x1={7 * Math.cos(a)}
-					y1={7 * Math.sin(a)}
-					x2={10 * Math.cos(a)}
-					y2={10 * Math.sin(a)}
-					stroke="var(--im-virus)"
-					stroke-width="1.5"
-				/>
-			{/each}
+			<path d={VIRION_SPIKES} stroke="var(--im-virus)" stroke-width="1.5" />
 			<circle r="7" fill="var(--im-virus)" />
 			{#if v.ab}
 				<path
@@ -458,19 +466,31 @@
 			id="gone"
 			order={8}
 			label="Virus gone on day {Math.round(gone)}"
-			value="killer T cells now die off; antibodies stay"
+			value={isSecond
+				? `first time: day ${Math.round(firstGone ?? 0)}`
+				: 'killer T cells now die off; antibodies stay'}
 			opacity={goneShow}
 		>
 			<g opacity={goneShow}>
 				<Label
 					x={480}
 					y={200}
-					text="Day {Math.round(gone)}: the virus is gone"
+					text={isSecond
+						? `Day ${Math.round(gone)} of the second infection: the virus is gone`
+						: `Day ${Math.round(gone)}: the virus is gone`}
 					size={16}
 					weight={600}
 					pill
 				/>
-				<Label x={480} y={228} text="killer T cells now die off; antibodies stay" size={12} muted />
+				<Label
+					x={480}
+					y={228}
+					text={isSecond
+						? `the first time it took ${Math.round(firstGone ?? 0)} days`
+						: 'killer T cells now die off; antibodies stay'}
+					size={12}
+					muted
+				/>
 			</g>
 		</Readout>
 	{/if}
@@ -492,8 +512,15 @@
 	{/each}
 
 	<!-- counters -->
-	<Readout id="day" order={1} label="Day" value={fmtDay(day)}>
-		<text x={32} y={52} font-size="16" font-weight="600">Day {fmtDay(day)}</text>
+	<Readout
+		id="day"
+		order={1}
+		label={isSecond ? 'Day of the second infection' : 'Day'}
+		value={fmtDay(day)}
+	>
+		<text x={32} y={52} font-size="16" font-weight="600"
+			>Day {fmtDay(day)}{isSecond ? ' of the second infection' : ''}</text
+		>
 	</Readout>
 	<Readout
 		id="virus"
@@ -588,12 +615,12 @@
 			<Readout
 				id="node"
 				order={7}
-				label="Lymph node: matching cells switched on"
-				value="T {Math.round(recruitedT)} of 100 · B {Math.round(recruitedB)} of 100"
+				label="Lymph node: matching {isSecond ? 'memory ' : ''}cells switched on"
+				value="T {count(recruitedT)} of {count(poolT)} · B {count(recruitedB)} of {count(poolB)}"
 			>
 				<text x={682} y={52} font-size="12" font-weight="600" text-anchor="middle">lymph node</text>
 				<text x={928} y={96} font-size="11" text-anchor="end" style:fill="var(--im-tcell)"
-					>T cells switched on</text
+					>{isSecond ? 'memory ' : ''}T cells switched on</text
 				>
 				<text
 					x={928}
@@ -601,10 +628,10 @@
 					font-size="12"
 					font-weight="600"
 					text-anchor="end"
-					style:fill="var(--im-tcell)">{Math.round(recruitedT)} of 100</text
+					style:fill="var(--im-tcell)">{count(recruitedT)} of {count(poolT)}</text
 				>
 				<text x={928} y={134} font-size="11" text-anchor="end" style:fill="var(--im-bcell)"
-					>B cells switched on</text
+					>{isSecond ? 'memory ' : ''}B cells switched on</text
 				>
 				<text
 					x={928}
@@ -612,13 +639,16 @@
 					font-size="12"
 					font-weight="600"
 					text-anchor="end"
-					style:fill="var(--im-bcell)">{Math.round(recruitedB)} of 100</text
+					style:fill="var(--im-bcell)">{count(recruitedB)} of {count(poolB)}</text
 				>
 			</Readout>
 		</g>
 		<Readout id="scale-note">
-			<text x={928} y={530} font-size="11" class="muted" text-anchor="end"
-				>virus, infected and immune cells: one more drawn = ten times as many</text
+			<text x={928} y={524} font-size="11" class="muted" text-anchor="end"
+				>infected cells, virus, T cells, antibodies:</text
+			>
+			<text x={928} y={538} font-size="11" class="muted" text-anchor="end"
+				>log scale, a few more for each tenfold</text
 			>
 		</Readout>
 	{/if}
