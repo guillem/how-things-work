@@ -2896,6 +2896,21 @@
 		<circle cx="22" cy="74" r="6" fill="none" stroke="currentColor" stroke-width="2" />
 		<circle cx="22" cy="74" r="2.2" fill="currentColor" />
 		<circle cx="150" cy="60" r="3.5" fill={accent} />
+	{:else if slug === 'cancer'}
+		<!-- a sheet of cells with a red clone growing inside a yellow one -->
+		{#each Array.from({ length: 60 }, (_, i) => i) as i (i)}
+			{@const x = 40 + (i % 12) * 11}
+			{@const y = 28 + Math.floor(i / 12) * 14}
+			{@const d1 = Math.hypot((x - 112) / 11, (y - 56) / 14)}
+			<circle
+				cx={x}
+				cy={y}
+				r="4.6"
+				fill={d1 < 1.6 ? accent : d1 < 3.2 ? '#e9b730' : 'none'}
+				stroke={d1 < 3.2 ? 'none' : 'currentColor'}
+				stroke-opacity="0.4"
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
