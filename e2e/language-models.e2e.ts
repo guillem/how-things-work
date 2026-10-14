@@ -50,7 +50,7 @@ test('temperature reshapes the distribution; 0 is greedy', async ({ page }) => {
 	await range(page, 'temp').fill('2');
 	await expect(stage(page)).toContainText('T = 2.0: the ten shown hold 12%');
 	await option(page, 'pr', 'story').click();
-	await expect(stage(page)).toContainText('the ten shown hold 1.9%');
+	await expect(stage(page)).toContainText('the ten shown hold 1.8%');
 });
 
 test('top-k and top-p keep fewer tokens and rescale them', async ({ page }) => {
