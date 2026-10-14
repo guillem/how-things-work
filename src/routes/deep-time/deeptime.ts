@@ -152,8 +152,9 @@ export const GLACIATIONS = [
 		id: 'marinoan',
 		name: 'Marinoan “Snowball Earth”',
 		top: 635,
-		base: 639,
-		source: 'Prave et al. 2016, Geology 44, 631 (at least 4 Myr, ending 635 Ma)'
+		base: 650,
+		source:
+			'Nelson et al. 2020, Geology 48, 1083 (began after 651.7 Ma); Prave et al. 2016, Geology 44, 631 (ended 635 Ma)'
 	}
 ] as const;
 
@@ -220,8 +221,15 @@ export const PRECAMBRIAN_O2 = [
 		id: 'boring',
 		top: 800,
 		base: 1800,
-		lo: 1e-3,
-		hi: 4e-2,
+		// the box spans both published estimates, which are marked inside it (drawn between them,
+		// it would cover exactly the values that both exclude); its floor is the lasting bound
+		// after the Great Oxidation Event, its top is open
+		lo: 1e-5,
+		hi: 1e-1,
+		estimates: [
+			{ pal: 1e-3, text: 'Cr isotopes: < 0.1%' },
+			{ pal: 4e-2, text: 'trace metals: > 4%' }
+		],
 		text: 'disputed: estimates run from under 0.1% to over 4% of today’s level',
 		source: 'Planavsky et al. 2014, Science 346, 635; Zhang et al. 2016, PNAS 113, 1731'
 	},
@@ -269,7 +277,7 @@ export const LIFE: LifeGroup[] = [
 		id: 'animals',
 		name: 'Animals',
 		from: 571,
-		evidence: 'large Ediacaran fossils, Newfoundland',
+		evidence: 'large Ediacaran fossils, Newfoundland (probably animals)',
 		source: 'Pu et al. 2016, Geology 44, 955'
 	},
 	{
@@ -303,9 +311,9 @@ export const LIFE: LifeGroup[] = [
 	},
 	{
 		id: 'mammals',
-		name: 'Mammals',
-		from: 205.7,
-		evidence: 'early mammal relatives of the Late Triassic',
+		name: 'Mammals and close relatives',
+		from: 215,
+		evidence: 'Kalaallitkigun, Late Triassic, Greenland',
 		source: 'Sulej et al. 2020, PNAS 117, 26861'
 	},
 	{
@@ -351,7 +359,7 @@ export const EVENTS: LifeEvent[] = [
 		id: 'rocks',
 		name: 'Oldest rocks',
 		age: 4030,
-		source: 'Wilde et al. 2001'
+		source: 'Bowring & Williams 1999, Contrib. Mineral. Petrol. 134, 3 (Acasta Gneiss, Canada)'
 	},
 	{ id: 'life', name: 'First life', age: 3480, source: 'Djokic et al. 2017' },
 	{ id: 'oxygen', name: 'Oxygen in the air', age: 2430, source: 'Poulton et al. 2021' },
@@ -378,13 +386,14 @@ export const EVENTS: LifeEvent[] = [
 		id: 'writing',
 		name: 'Writing',
 		age: 0.0052,
-		source: 'Mesopotamia, about 3200 BCE (general history)'
+		source:
+			'Woods (ed.) 2010, Visible Language, Oriental Institute Museum Publications 32 (Uruk, Mesopotamia, about 3200 BCE)'
 	},
 	{
 		id: 'industry',
 		name: 'Industrial Revolution',
 		age: 0.00026,
-		source: 'Britain, 1760s (general history)'
+		source: 'Ashton 1948, The Industrial Revolution 1760–1830, Oxford University Press (Britain)'
 	}
 ];
 

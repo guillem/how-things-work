@@ -112,15 +112,28 @@ function inside([x, y]: LonLat, poly: LonLat[]): boolean {
 	return c;
 }
 
-/** Index of a ring that contains a present-day point (the smallest, if several), or −1. */
+/** Area of a ring on the unit sphere (steradians; the formula of the build script). */
+function ringArea(ring: LonLat[]): number {
+	const D2R = Math.PI / 180;
+	let s = 0;
+	for (let i = 0; i < ring.length; i++) {
+		const [x1, y1] = ring[i];
+		const [x2, y2] = ring[(i + 1) % ring.length];
+		let dx = x2 - x1;
+		if (dx > 180) dx -= 360;
+		if (dx < -180) dx += 360;
+		s += dx * D2R * (Math.sin(y1 * D2R) + Math.sin(y2 * D2R));
+	}
+	return Math.abs(s / 2);
+}
+let areas: number[] | undefined;
+
+/** Index of a ring that contains a present-day point (the smallest by area, if several), or −1. */
 export function ringAt(p: LonLat): number {
+	areas ??= rings.map((r) => ringArea(r.lonlat));
 	let best = -1;
-	let bestN = Infinity;
 	rings.forEach((r, i) => {
-		if (r.lonlat.length < bestN && inside(p, r.lonlat)) {
-			best = i;
-			bestN = r.lonlat.length;
-		}
+		if ((best < 0 || areas![i] < areas![best]) && inside(p, r.lonlat)) best = i;
 	});
 	return best;
 }

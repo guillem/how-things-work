@@ -46,7 +46,7 @@ const play: Control = {
 	id: 'driftPlay',
 	label: 'Play a billion years of drift',
 	default: false,
-	help: 'Runs the globe from 1,000 million years ago to today, over about 50 seconds.'
+	help: 'Runs the globe from 1,000 million years ago to today, over about 50 seconds. The slider takes over again when you switch it off.'
 };
 
 const calendarEvent: Control = {
@@ -88,7 +88,7 @@ export const spec: ExplainerSpec = {
 			controls: [scrub('tWhole', 3000, 'all')],
 			body: `
 <p>The bar on the right is the whole history of the Earth, from its birth <strong>4,567 million years ago</strong> on the left to today on the right. Drag the line along it (or use the slider) and watch the planet change.</p>
-<p>Geologists split this history into four <dfn data-def="The longest divisions of geological time, hundreds of millions to billions of years long.">eons</dfn>: the <strong>Hadean</strong>, when the young Earth was battered by asteroids; the <strong>Archean</strong>, when life began; the <strong>Proterozoic</strong>, when oxygen filled the air; and the <strong>Phanerozoic</strong>, the eon of visible animals and plants, which began 539 million years ago. Everything before it is often lumped together as the <dfn data-def="All of Earth's history before the Phanerozoic eon, from 4,567 to 539 million years ago: 88% of the total.">Precambrian</dfn>.</p>
+<p>Geologists split this history into four <dfn data-def="The longest divisions of geological time, hundreds of millions to billions of years long.">eons</dfn>: the <strong>Hadean</strong>, when the young Earth was battered by asteroids; the <strong>Archean</strong>, when life began; the <strong>Proterozoic</strong>, when oxygen first appeared in the air; and the <strong>Phanerozoic</strong>, the eon of visible animals and plants, which began 539 million years ago. Everything before it is often lumped together as the <dfn data-def="All of Earth's history before the Phanerozoic eon, from 4,567 to 539 million years ago: 88% of the total.">Precambrian</dfn>.</p>
 <p>Look at the widths. The Precambrian takes up <strong>88%</strong> of the bar. All the dinosaurs, all the forests, all the fish fit into the last eighth — and we will see that humans fit into a sliver too thin to draw.</p>`,
 			notes: `<p>The boundaries are those of the International Chronostratigraphic Chart of the International Commission on Stratigraphy (version 2024/12). The start, 4,567 million years ago, is the age of the oldest solid grains in meteorites, the first material of the Solar System (Connelly et al. 2012); the Earth itself was built up from such material over the next few tens of millions of years.</p>`
 		},
@@ -129,9 +129,9 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [scrub('tBefore', 1500, 'all')],
 			body: `
-<p>The further back, the less we know. For the last 180 million years or so the map is solid: the ocean floor still exists, and its magnetic stripes, which you saw form at the mid-ocean ridges, record how the plates moved apart. Older ocean floor has all gone back into the mantle at subduction zones.</p>
+<p>The further back, the less we know. For the last 180 million years or so the map is solid: the ocean floor still exists, and its magnetic stripes, which you saw form at the mid-ocean ridges, record how the plates moved apart. Almost all older ocean floor has gone back into the mantle at subduction zones.</p>
 <p>Before that, geologists work from the continents alone: the magnetism of their rocks gives their latitudes, matching rocks and mountain belts tell which ones touched. But a rock's magnetism says nothing about its <strong>longitude</strong>, so east–west positions are educated guesses. The coloured strip under the eras shows how good the map is: green where the ocean floor records it, orange where only latitudes are known, grey where there is no map.</p>
-<p>Before about a billion years ago, the continents' positions are too poorly known to draw. Move the line there: the globe goes blank. There was probably an even older supercontinent, Nuna (or Columbia), well over a billion years ago, but its shape is debated, and geologists still argue about when plate tectonics itself began.</p>`,
+<p>The plate model used here stops a billion years ago; older reconstructions exist, but they disagree so much that we do not draw them. Move the line there: the globe goes blank. There was probably an even older supercontinent, Nuna (or Columbia), well over a billion years ago, but its shape is debated, and geologists still argue about when plate tectonics itself began.</p>`,
 			notes: `<p>The oldest ocean floor today, in the western Pacific, is about 180 million years old. In the model of Merdith et al. (2021) the absolute longitudes of the continents are not constrained at all: the whole map could be turned east or west. Their positions relative to each other are better known, from shared geology and from the shapes of the magnetic paths ("polar wander paths") their rocks record.</p>`
 		},
 		{
@@ -147,9 +147,9 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>The red track is the average temperature at the Earth's surface over the last 487 million years, reconstructed from the chemistry of fossil shells and teeth together with climate models. Today's (before our own warming) is about <strong>14 °C</strong>. For most of the time the Earth was far hotter: a <dfn data-def="A climate with no ice sheets at the poles, warm even at high latitudes.">hothouse</dfn> with no ice at the poles, peaking at about <strong>36 °C</strong> some 92 million years ago, when dinosaurs roamed forests near the South Pole.</p>
-<p>The cold spells — <dfn data-def="A climate with ice sheets at one or both poles, like today's.">icehouses</dfn> — are the exception: one around 300 million years ago, and the one we live in, which started about 34 million years ago when Antarctica froze. The coldest stage of all is the last ice age, about 11 °C.</p>
+<p>The cold spells — <dfn data-def="A climate with ice sheets at one or both poles, like today's.">icehouses</dfn> — are the exception: a short one about 445 million years ago, a long one from about 340 to 290 million years ago, and the one we live in, which started about 34 million years ago when Antarctica froze. The coldest <dfn data-def="The smallest named division of geological time, usually a few million years long (the most recent ones are much shorter).">stage</dfn> of all is the one just before ours, from 129,000 to 12,000 years ago: its ice-age swings average about 11 °C.</p>
 <p>Before the record starts there is no temperature curve, only the marks of ice: rocks left by glaciers near the equator show that the whole planet froze over at least twice between 717 and 635 million years ago (the "Snowball Earth"), and that there were great ice ages earlier too, while oxygen was building up. The Sun, meanwhile, has been brightening: it started about 70% as bright as today.</p>`,
-			notes: `<p>The curve is PhanDA (Judd et al. 2024): one value for each geological stage, with the shaded bands showing the range that contains the true value with 68% and 90% probability. Each stage lasts a few million years, so the swings of the ice ages within the last 2.6 million years show up only as one cold average. The biggest driver of these changes is the amount of carbon dioxide in the air, set by the slow <a href="../carbon-cycle/">carbon cycle</a> — volcanoes adding it, weathering rocks removing it — and its <a href="../greenhouse-effect/">greenhouse effect</a>. The Sun's brightening follows Gough's (1981) formula for a star like the Sun.</p>`
+			notes: `<p>The curve is PhanDA (Judd et al. 2024): one value for each geological stage, with the shaded bands showing the range that contains the true value with 68% and 90% probability. Most stages last a few million years, so the swings of the ice ages within the last 2.6 million years show up only as a few stage averages. The biggest driver of these changes is the amount of carbon dioxide in the air, set by the slow <a href="../carbon-cycle/">carbon cycle</a> — volcanoes adding it, weathering rocks removing it — and its <a href="../greenhouse-effect/">greenhouse effect</a>. The Sun's brightening follows Gough's (1981) formula for a star like the Sun.</p>`
 		},
 		{
 			id: 'oxygen',
@@ -161,9 +161,9 @@ export const spec: ExplainerSpec = {
 			controls: [scrub('tO2', 2430, 'all')],
 			body: `
 <p>For the first half of its history the Earth's air had almost <strong>no oxygen</strong>: less than a hundred-thousandth of today's. Then microbes that make oxygen by <a href="../photosynthesis/">photosynthesis</a> began to win against everything that used it up, and about <strong>2,430 million years ago</strong> it started to build up: the <dfn data-def="The first lasting rise of oxygen in the atmosphere, between about 2,430 and 2,220 million years ago.">Great Oxidation Event</dfn>. It took some 200 million years of ups and downs to stay for good.</p>
-<p>Even then, for over a billion years oxygen stayed low. Exactly how low is disputed: estimates for 1,800 to 800 million years ago run from under 0.1% to over 4% of today's level, which is why the track shows a wide box rather than a line. Only in the last 540 million years can it be followed in detail: it rose in steps to about today's 21% of the air, and even higher, perhaps 30% or more, around 300 to 260 million years ago, when giant dragonflies flew.</p>
-<p>The scale is stretched: each faint line up the track is ten times more oxygen than the one below.</p>`,
-			notes: `<p>The early bounds come from sulfur in old sediments: its isotopes were sorted by sunlight in a way that only works in air with less than 10⁻⁵ of today's oxygen (Pavlov &amp; Kasting 2002), and the signal stops for good about 2,220 million years ago (Poulton et al. 2021). The mid-Proterozoic estimates are from chromium isotopes (Planavsky et al. 2014) and from trace metals in 1,400-million-year-old rocks (Zhang et al. 2016). The curve of the last 540 million years is the consensus of Mills et al. (2023), with its band of uncertainty. The early bounds are drawn as boxes on purpose: they are limits, not measurements.</p>`
+<p>Even then, for over a billion years oxygen stayed low. Exactly how low is disputed: estimates for 1,800 to 800 million years ago run from under 0.1% to over 4% of today's level, which is why the track shows a wide box rather than a line, with the two estimates marked inside it. Only in the last 540 million years can it be followed in detail: it rose in steps to about today's 21% of the air, and even higher, perhaps 30% or more, around 300 to 260 million years ago, when giant dragonflies flew.</p>
+<p>The scale is stretched: each line up the track, faint or dashed, is ten times more oxygen than the one below.</p>`,
+			notes: `<p>The early bounds come from sulfur in old sediments: its isotopes were sorted by sunlight in a way that only works in air with less than 10⁻⁵ of today's oxygen (Pavlov &amp; Kasting 2002), and the signal stops for good about 2,220 million years ago (Poulton et al. 2021). The mid-Proterozoic estimates are from chromium isotopes (Planavsky et al. 2014) and from trace metals in 1,400-million-year-old rocks (Zhang et al. 2016); the box is drawn around both, and each is marked inside it. The curve of the last 540 million years is the consensus of Mills et al. (2023), with its band of uncertainty. The early bounds are drawn as boxes on purpose: they are limits, not measurements.</p>`
 		},
 		// ------------------------------------------------------------------ life
 		{
@@ -193,9 +193,9 @@ export const spec: ExplainerSpec = {
 			controls: [scrub('tExt', 251.9, 'phanerozoic')],
 			body: `
 <p>Zoomed in on the last 540 million years, the story of life has five big breaks: <dfn data-def="A time when a large share of all species die out within a geologically short time.">mass extinctions</dfn>, when a large share of all species vanished within a geologically short time.</p>
-<p>The worst was the <strong>Great Dying</strong>, 252 million years ago, at the end of the Permian: huge volcanic eruptions in Siberia poured out carbon dioxide, the temperature track jumps by about 10 °C, and more than half of all the groups (genera) of animals died out. The most famous is the last, <strong>66 million years ago</strong>, when an asteroid hit Mexico and ended the dinosaurs — except their descendants, the birds — and made room for mammals.</p>
-<p>Notice how the boundaries of the time scale sit on the extinctions: geologists drew their lines where the fossils change.</p>`,
-			notes: `<p>The "big five" were picked out by Raup and Sepkoski (1982) from counts of fossil marine families; the dates are the boundaries of the ICS chart. The end-Permian extinction happened within about 60,000 years, 251.9 million years ago (Burgess et al. 2014), and removed about 56% of all genera (Mills et al. 2023). The end-Cretaceous impact, at Chicxulub, is dated to 66.0 million years ago (Renne et al. 2013).</p>`
+<p>The worst was the <strong>Great Dying</strong>, 252 million years ago, at the end of the Permian: huge volcanic eruptions in Siberia poured out carbon dioxide, the temperature track jumps by about 10 °C, and about four in five of the groups (genera) of sea animals died out. The most famous is the last, <strong>66 million years ago</strong>, when an asteroid hit Mexico and ended the dinosaurs — except their descendants, the birds — and made room for mammals.</p>
+<p>Notice how four of the five sit on the boundaries between periods: geologists drew their lines where the fossils change. The fifth, in the Late Devonian, marks a boundary between two stages inside the Devonian.</p>`,
+			notes: `<p>The "big five" were picked out by Raup and Sepkoski (1982) from counts of fossil marine families; the dates are the boundaries of the ICS chart. The end-Permian extinction happened within about 60,000 years, 251.9 million years ago (Burgess et al. 2014), and removed about 79% of the genera of marine invertebrates (Payne &amp; Clapham 2012). The end-Cretaceous impact, at Chicxulub, is dated to 66.0 million years ago (Renne et al. 2013).</p>`
 		},
 		// ------------------------------------------------------------------ zoom
 		{
@@ -208,8 +208,8 @@ export const spec: ExplainerSpec = {
 			controls: [zoom('zoom', 'quaternary'), scrub('tZoom', 0.315, 'zoom')],
 			body: `
 <p>Now zoom in step by step, from the whole history down to the time since farming began. Each window is a smaller and smaller sliver of the one before; the card under the globe says how much of the Earth's history it covers.</p>
-<p>The ice ages, the last 2.6 million years, are 0.06% of the total. Our species is 0.007%. Farming, towns and writing, the last 12,000 years, are 0.0003%. At this zoom the continents no longer move at all on the globe, and the temperature and oxygen records turn into flat steps: they are averages over millions of years, too coarse to show the ups and downs of the ice ages or of human history.</p>`,
-			notes: `<p>Each zoom divides the window by between 2 and 33. To see the last 12,000 years as wide as the whole 4,567 million you would need a bar about 380,000 times longer: if the whole history were 56 cm wide on your screen, the full bar at that scale would stretch for over 200 km.</p>`
+<p>The ice ages, the last 2.6 million years, are 0.06% of the total. Our species is 0.007%. Farming, towns and writing, the last 12,000 years, are 0.0003%. At this zoom the continents no longer move at all on the globe, and the temperature and oxygen records turn into flat steps: they are averages over whole geological stages, from thousands to millions of years long, too coarse to show the ups and downs of the ice ages or of human history.</p>`,
+			notes: `<p>Each zoom divides the window by between 2 and 33. To see the last 12,000 years as wide as the whole 4,567 million you would need a bar about 380,000 times longer: if the last 12,000 years filled a 56 cm screen, the whole history at that scale would stretch for over 200 km.</p>`
 		},
 		// ------------------------------------------------------------------ year
 		{
@@ -228,15 +228,15 @@ export const spec: ExplainerSpec = {
 		{
 			id: 'midnight',
 			chapter: 'year',
-			title: 'The last hour of the year',
+			title: 'The last day of the year',
 			scene: 'calendar',
 			hints: { phase: 'midnight' },
 			duration: 30,
 			body: `
 <p>Zoom into 31 December. The oldest known member of the human family, living soon after our ancestors split from the chimpanzees', appears around half past ten in the morning. Our species, <i>Homo sapiens</i>, appears at <strong>23:23</strong> — 36 minutes before midnight.</p>
 <p>Everything we call history happens in the last minute and a half. Farming begins at 23:58:40. Writing at 23:59:24. The Industrial Revolution, with its steam engines and burning of coal, 1.8 seconds before midnight. A whole human life, 80 years, lasts about half a second.</p>
-<p>That is the deepest lesson of deep time: the planet is so old that complex life arrives only in its last weeks, and humans in its last minutes. Yet in those 1.8 seconds we have raised the carbon dioxide in the air by half, a change that took thousands of years at the end of each ice age — the subject of <a href="../greenhouse-effect/">the greenhouse effect</a>.</p>`,
-			notes: `<p>The times come straight from the ages: a moment <i>t</i> million years ago falls <i>t</i> × 10⁶ / 144.8 seconds before midnight. The date of farming is for the first domesticated plants of the Near East, about 11,500 years ago (Zeder 2011); writing appears in Mesopotamia about 5,200 years ago.</p>`
+<p>That is the deepest lesson of deep time: the planet is so old that large, many-celled life arrives only in its last weeks, and humans in its last minutes. Yet in those 1.8 seconds we have raised the carbon dioxide in the air by half, a change that took thousands of years at the end of each ice age — the subject of <a href="../greenhouse-effect/">the greenhouse effect</a>.</p>`,
+			notes: `<p>The times come straight from the ages: a moment <i>t</i> million years ago falls <i>t</i> × 10⁶ / 144.8 seconds before midnight. The date of farming is for the first domesticated plants of the Near East, about 11,500 years ago (Zeder 2011); writing appears in Mesopotamia about 5,200 years ago (Woods 2010), and the Industrial Revolution is dated from the 1760s in Britain (Ashton 1948).</p>`
 		},
 		{
 			id: 'sliver',
@@ -248,7 +248,7 @@ export const spec: ExplainerSpec = {
 			controls: [scrub('tSliver', 0, 'all')],
 			body: `
 <p>Back to the full timeline, with everything on it: the continents gathering and splitting, the planet freezing and baking, the air filling with oxygen, and life staying small for most of the story.</p>
-<p>Earth's history is so long that complex life, and humans most of all, occupy only its last sliver. If the whole 4,567 million years were the length of a football pitch, our species would take up the last 7 millimetres, and everything since farming began would be about three sheets of paper thick, at the very end.</p>`,
+<p>Earth's history is so long that large, many-celled life, and humans most of all, occupy only its last sliver. If the whole 4,567 million years were the length of a football pitch, our species would take up the last 7 millimetres, and everything since farming began would be about three sheets of paper thick, at the very end.</p>`,
 			notes: `<p>A football pitch of 105 m: 12,000 / 4,567,000,000 × 105 m ≈ 0.28 mm, about three sheets of office paper; 315,000 years of <i>Homo sapiens</i> take 7.2 mm.</p>`
 		}
 	]
