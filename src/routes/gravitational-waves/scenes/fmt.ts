@@ -12,8 +12,7 @@ export const sup = (n: number) =>
 export function sci(v: number, digits = 2) {
 	if (v === 0 || !Number.isFinite(v)) return String(v);
 	const a = Math.abs(v);
-	if (a >= 0.01 && a < 1e4)
-		return v.toPrecision(digits).replace(/\.?0+$/, (m) => (m.includes('.') ? '' : m));
+	if (a >= 0.01 && a < 1e4) return String(Number(v.toPrecision(digits)));
 	let e = Math.floor(Math.log10(a));
 	let m = v / 10 ** e;
 	if (Math.abs(Number(m.toPrecision(digits))) >= 10) {

@@ -124,7 +124,7 @@
 		const Mn = (2 * Math.PI * time) / 6;
 		let E = Mn;
 		for (let i = 0; i < 8; i++) E -= (E - ht.e * Math.sin(E) - Mn) / (1 - ht.e * Math.cos(E));
-		const a = 130;
+		const a = 250;
 		const x = a * (Math.cos(E) - ht.e);
 		const y = a * Math.sqrt(1 - ht.e ** 2) * Math.sin(E);
 		const q = ht.companion / (ht.pulsar + ht.companion);
