@@ -18,8 +18,8 @@
 //     USGS ANSS Comprehensive Catalog (ComCat), public domain.
 //   gvp_holocene.json
 //     https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=GVP-VOTW:Smithsonian_VOTW_Holocene_Volcanoes&outputFormat=application/json
-//     Smithsonian Global Volcanism Program, Volcanoes of the World (v. 5.4),
-//     doi:10.5479/si.GVP.VOTW5-2026.5.4.
+//     Smithsonian Global Volcanism Program, Volcanoes of the World (5.4 series, as cited on GVP's
+//     site), doi:10.5479/si.GVP.VOTW5-2026.5.4; terms of use not retrievable (403), cited as asked.
 //
 // What the script does (all coordinates are degrees, rounded to 0.1°, i.e. ≈ 11 km):
 // - boundaries: PB2002's 5,819 digitisation steps, chained into polylines wherever consecutive
@@ -373,9 +373,11 @@ export const QUAKES: number[] = ${json(quakes)};
 writeFileSync(
 	join(out, 'volcanoes.ts'),
 	header(
-		`Volcanoes: every Holocene volcano (active in the last ~11,700 years) in Global Volcanism Program,
-// Volcanoes of the World (v. 5.4), Smithsonian Institution, doi:10.5479/si.GVP.VOTW5-2026.5.4,
-// downloaded 14 October 2026 from the GVP GeoServer:
+		`Volcanoes: every Holocene volcano (active in the last ~11,700 years) in the Smithsonian Global
+// Volcanism Program's Volcanoes of the World database, the release served by the GVP GeoServer on
+// 14 October 2026 (GVP's site cites the 5.4 series, doi:10.5479/si.GVP.VOTW5-2026.5.4; the exact
+// patch version could not be read). Licence: GVP's terms of use could not be retrieved (the site
+// returns 403 to scripted requests); the data are cited as GVP asks. Downloaded from:
 // https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=GVP-VOTW:Smithsonian_VOTW_Holocene_Volcanoes&outputFormat=application/json
 // Only position and VOTW's tectonic setting are kept.`
 	) +

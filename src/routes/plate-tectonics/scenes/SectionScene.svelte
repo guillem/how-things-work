@@ -6,9 +6,9 @@
 	 * its own distance in its own control (`ridgeOpen`, `subClose`, …; `sbNormal`/`sbSlide` in the
 	 * sandbox), so the slider under the stage follows the handle.
 	 *
-	 * The section's vertical scale is stretched 4.4 px/km in the top 30 km (the crust and the
-	 * shape of the sea floor would be invisible otherwise) and 0.85 px/km below 50 km, where the
-	 * horizontal scale is 0.49 px/km; the depth ticks on the left show it. Everything that moves
+	 * The section's vertical scale is stretched: 6 px/km near sea level (the crust and the shape of
+	 * the sea floor would be invisible otherwise), easing smoothly to 0.75 px/km at depth, against
+	 * a horizontal scale of 0.49 px/km; the depth ticks on the left show it. Everything that moves
 	 * (magma, earthquake flashes, markers carried by the plates) is a function of `t`; when a step
 	 * opens, the plates move from where they started to the set distance over 3 s.
 	 */
@@ -942,7 +942,7 @@
 			</Readout>
 		{/each}
 		<Readout id="r-new" order={3} label="New sea floor" value={km(sec.newOcean)}>
-			<Label x={X(0)} y={Y(-40)} text="hot mantle rises and melts" size={12} />
+			<Label x={X(0)} y={Y(-80)} text="hot mantle rises and melts" size={12} />
 		</Readout>
 	{/if}
 	{#if rift}
@@ -976,7 +976,7 @@
 	{/if}
 	{#if sec.kind === 'young-ocean'}
 		<Readout id="f-young" order={3} label="New ocean" value="{km(sec.newOcean)} wide">
-			<Label x={X(0)} y={Y(-40)} text="a new ocean · {km(sec.newOcean)} wide" size={12} />
+			<Label x={X(0)} y={Y(-80)} text="a new ocean · {km(sec.newOcean)} wide" size={12} />
 		</Readout>
 	{/if}
 	{#if trench}
