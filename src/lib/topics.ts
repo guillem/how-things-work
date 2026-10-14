@@ -627,6 +627,15 @@ const explainers: Explainer[] = [
 		accent: '#d9480f',
 		steps: 14,
 		minutes: 22
+	},
+	{
+		slug: 'standard-model',
+		title: 'Particle physics & the Standard Model',
+		summary:
+			'Open up an atom down to its quarks, build protons, pions and stranger particles under the real charge and colour rules, step through beta decay as the exchange of a W boson, and test which decays nature allows.',
+		accent: '#5f3dc4',
+		steps: 14,
+		minutes: 24
 	}
 ];
 

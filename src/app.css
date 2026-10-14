@@ -1839,3 +1839,46 @@ kbd {
 	--ra-matrix: #2a2118;
 	--ra-ims: #2b1a24;
 }
+
+/* standard model: particle families (quark, lepton, carrier, Higgs), the three colour charges
+   and their anticolours, the forces, and pass/fail marks */
+:root {
+	--sm-quark: #7048e8;
+	--sm-lepton: #0c8f6a;
+	--sm-boson: #d9480f;
+	--sm-higgs: #e67700;
+	--sm-red: #e03131;
+	--sm-green: #2f9e44;
+	--sm-blue: #1c7ed6;
+	--sm-antired: #15aabf;
+	--sm-antigreen: #d6336c;
+	--sm-antiblue: #e8890c;
+	--sm-strong: #c2255c;
+	--sm-em: #1971c2;
+	--sm-weak: #5c940d;
+	--sm-gravity: #868e96;
+	--sm-ok: #2b8a3e;
+	--sm-bad: #e03131;
+	--sm-field: #efe7fd;
+	--sm-ball-ink: #ffffff;
+}
+:root[data-theme='dark'] {
+	--sm-quark: #9775fa;
+	--sm-lepton: #38d9a9;
+	--sm-boson: #ff8a4c;
+	--sm-higgs: #ffc078;
+	--sm-red: #ff6b6b;
+	--sm-green: #69db7c;
+	--sm-blue: #4dabf7;
+	--sm-antired: #66d9e8;
+	--sm-antigreen: #f783ac;
+	--sm-antiblue: #ffd43b;
+	--sm-strong: #f06595;
+	--sm-em: #74c0fc;
+	--sm-weak: #a9e34b;
+	--sm-gravity: #adb5bd;
+	--sm-ok: #69db7c;
+	--sm-bad: #ff6b6b;
+	--sm-field: #2a2340;
+	--sm-ball-ink: #15141a;
+}
