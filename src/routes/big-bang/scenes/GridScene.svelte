@@ -178,8 +178,14 @@
 				vj={NAMED[v.key].j}
 				{a}
 				gap={58}
+				t={reduced ? 0 : t}
 			/>
-			<Readout id="split-title-{v.key}">
+			<Readout
+				id="split-title-{v.key}"
+				order={v.key === 'mw' ? 3 : 4}
+				label={v.key === 'mw' ? 'Left' : 'Right'}
+				value={v.key === 'mw' ? 'seen from the Milky Way' : 'seen from galaxy B'}
+			>
 				<T
 					x={v.x + 228}
 					y={38}
@@ -217,6 +223,7 @@
 			vj={vIdx.j}
 			{a}
 			onpick={phase === 'view' ? pick : undefined}
+			t={reduced ? 0 : t}
 		/>
 		<Readout id="time" order={1} label="Time" value={timeLabel}>
 			<rect

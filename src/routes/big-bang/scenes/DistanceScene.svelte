@@ -57,6 +57,7 @@
 		{ id: 'jades', name: 'JADES-GS-z14-0', z: 14.32 },
 		{ id: 'cmb', name: 'CMB', z: 1089.92 }
 	];
+	const zName = $derived(OBJECTS.find((o) => Math.abs(Math.log10(o.z) - lz) < 0.02)?.name);
 	const zTicks = [0.01, 0.1, 1, 10, 100, 1000];
 
 	// ---- the bars -----------------------------------------------------------------------
@@ -165,12 +166,12 @@
 
 	<!-- readouts -->
 	<Card x={632} y={16} w={312} h={370} />
-	<Readout id="z" order={1} label="Redshift" value={zText(z)}>
+	<Readout id="z" order={1} label="Redshift" value={zName ? `${zText(z)} (${zName})` : zText(z)}>
 		<T x={652} y={44} text="z = {zText(z)}" size={16} weight={700} />
 	</Readout>
 	{#each OBJECTS as o (o.id)}
 		{#if Math.abs(Math.log10(o.z) - lz) < 0.02}
-			<Readout id="obj" order={2} label="That is" value={o.name}>
+			<Readout id="obj">
 				<T x={924} y={44} text={o.name} size={13} weight={650} anchor="end" />
 			</Readout>
 		{/if}
@@ -197,7 +198,7 @@
 			/>
 		</Readout>
 	{/each}
-	<Readout id="speed" order={8} label="Receding now" value={speedText(vNow)}>
+	<Readout id="speed">
 		<T x={652} y={286} text="Receding now" size={12.5} muted />
 		<T x={924} y={286} text={speedText(vNow)} size={13.5} weight={700} anchor="end" />
 		<T x={652} y={310} text="when the light left" size={12.5} muted />

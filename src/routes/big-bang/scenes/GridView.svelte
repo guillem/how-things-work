@@ -28,10 +28,12 @@
 		/** Minimum spacing between arrows, px. */
 		gap?: number;
 		arrows?: boolean;
+		/** Animation time, s: the arrows' dashes march outwards. */
+		t?: number;
 		/** Called with a lattice index when the reader clicks a galaxy. */
 		onpick?: (i: number, j: number) => void;
 	}
-	let { id, x, y, w, h, cam, vi, vj, a, gap = 52, arrows = true, onpick }: Props = $props();
+	let { id, x, y, w, h, cam, vi, vj, a, gap = 52, arrows = true, t = 0, onpick }: Props = $props();
 
 	const CX = $derived(x + w / 2);
 	const CY = $derived(y + h / 2);
@@ -148,7 +150,8 @@
 				y2={s.y1 - s.uy * 3}
 				stroke="var(--bb-arrow)"
 				stroke-width="1.6"
-				stroke-linecap="round"
+				stroke-dasharray="7 3"
+				stroke-dashoffset={-((t * 14) % 10)}
 				opacity="0.85"
 			/>
 			<path
@@ -171,7 +174,15 @@
 					stroke-width="1.2"
 				/>
 				{#if px > 26}
-					<T x={n.X + r + 6} y={n.Y - r - 4} text={n.name} size={12} weight={650} />
+					{@const right = n.X > x + w - 90}
+					<T
+						x={right ? n.X - r - 6 : n.X + r + 6}
+						y={n.Y - r - 4}
+						text={n.name}
+						size={12}
+						weight={650}
+						anchor={right ? 'end' : 'start'}
+					/>
 				{/if}
 			{/if}
 		{/each}

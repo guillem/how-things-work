@@ -351,7 +351,7 @@
 	<Readout id="temp" order={3} label="Temperature" value={tempText(temp)}>
 		{@render row(76, 'Temperature', tempText(temp), 'var(--bb-arrow)')}
 	</Readout>
-	<Readout id="size" order={4} label="Distances, compared with today" value={sizeText}>
+	<Readout id="size">
 		{@render row(102, 'Distances, compared with today', sizeText)}
 	</Readout>
 	<Readout id="z" order={5} label="Its light reaches us at redshift" value={zLabel}>
