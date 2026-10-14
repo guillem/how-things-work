@@ -372,7 +372,7 @@
 				anchor="start"
 				text="slice {z === 0
 					? 'at the middle of the chest'
-					: `${Math.abs(z)} cm ${z < 0 ? 'higher' : 'lower'}`} · 180 shadows · window −250 to +250 HU"
+					: `${Math.abs(z)} cm ${z < 0 ? 'higher' : 'lower'}`} · 180 shadows · grey scale ±250 HU"
 			/>
 		</Readout>
 		<Readout
