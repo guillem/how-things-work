@@ -76,7 +76,7 @@
 </script>
 
 <g>
-	<Readout id="title" order={0} label="The next 100,000 years" value="computed from the orbit">
+	<Readout id="title">
 		<Label
 			x={X0}
 			y={40}

@@ -57,7 +57,7 @@
 </script>
 
 <g>
-	<Readout id="title" order={0} label="Antarctic ice" value="CO₂ in the bubbles and temperature">
+	<Readout id="title">
 		<Label
 			x={X0}
 			y={40}

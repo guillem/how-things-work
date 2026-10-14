@@ -103,6 +103,12 @@
 		const d = perihelionDay({ e: Math.max(e, 1e-4), tilt, peri: ((L % 360) + 360) % 360 });
 		setParam('closest', Math.round(d) % 365);
 	}
+	/** The December label goes above or below its point, away from a nearby closest/furthest label. */
+	const decDy = $derived.by(() => {
+		const dec = earthAt(orbit, 90);
+		const near = [peri, aph].find((q) => Math.hypot(q.x - dec.x, q.y - dec.y) < 60);
+		return near && near.y >= dec.y - 2 ? -14 : 24;
+	});
 	const sep = $derived(((1 + e) / (1 - e)) ** 2 - 1);
 
 	// ------------------------------------------------------------ globe (side view, June solstice)
@@ -159,12 +165,7 @@
 <g>
 	<!-- ===================== orbit ===================== -->
 	<g opacity={oOrbit.current}>
-		<Readout
-			id="orbit-title"
-			order={0}
-			label="Orbit"
-			value="seen from above the North Pole, to scale"
-		>
+		<Readout id="orbit-title">
 			<Label
 				x={32}
 				y={40}
@@ -199,7 +200,14 @@
 			{@const p = earthAt(orbit, s.L)}
 			<circle cx={p.x} cy={p.y} r="5" fill="var(--ia-temp)" opacity="0.7" />
 			<Readout id="season-{s.L}">
-				<Label x={p.x + s.dx} y={p.y + s.dy} text={s.name} anchor={s.anchor} size={11} muted />
+				<Label
+					x={p.x + s.dx}
+					y={p.y + (s.L === 90 ? decDy : s.dy)}
+					text={s.name}
+					anchor={s.anchor}
+					size={11}
+					muted
+				/>
 			</Readout>
 		{/each}
 		<!-- the Earth running round -->
@@ -303,7 +311,7 @@
 
 	<!-- ===================== globe ===================== -->
 	<g opacity={oGlobe.current}>
-		<Readout id="globe-title" order={3} label="Earth" value="at the June solstice, side view">
+		<Readout id="globe-title">
 			<Label x={GX} y={40} text="The Earth on the June solstice" size={15} weight={700} />
 		</Readout>
 		<!-- sunlight from the left -->

@@ -97,12 +97,7 @@
 	<!-- ===================== left: the shuffle ===================== -->
 	<g opacity={1 - loop.current} style:pointer-events="none">
 		{#if loop.current < 0.98}
-			<Readout
-				id="shuffle-title"
-				order={0}
-				label="The orbit shuffles sunlight"
-				value="127,000 → 116,000 years ago"
-			>
+			<Readout id="shuffle-title">
 				<Label
 					x={40}
 					y={60}
@@ -190,12 +185,7 @@
 	<!-- ===================== left: the ice–albedo loop ===================== -->
 	<g opacity={loop.current}>
 		{#if loop.current > 0.02}
-			<Readout
-				id="loop-title"
-				order={0}
-				label="Ice–albedo feedback"
-				value="a loop that amplifies cooling"
-			>
+			<Readout id="loop-title">
 				<Label
 					x={40}
 					y={60}
@@ -216,7 +206,7 @@
 					arrow
 				/>
 			{/each}
-			{#each nodes as n (n.a)}
+			{#each nodes as n, i (n.a)}
 				{@const p = pos(n.a)}
 				<circle
 					cx={p.x}
@@ -226,7 +216,7 @@
 					stroke="var(--ia-ice-edge)"
 					stroke-width="2"
 				/>
-				<Readout id="node-{n.a}">
+				<Readout id="node-{n.a}" order={10 + i} label={n.text} marker={i + 1} at={[p.x, p.y]}>
 					<Label
 						x={p.x}
 						y={p.y + (n.a === 90 ? 30 : -20)}
@@ -245,12 +235,7 @@
 	</g>
 
 	<!-- ===================== right: the energy balance at the LGM ===================== -->
-	<Readout
-		id="lgm-title"
-		order={2}
-		label="21,000 years ago"
-		value="changes in the energy balance vs pre-industrial"
-	>
+	<Readout id="lgm-title">
 		<Label
 			x={RX - 220}
 			y={60}
@@ -286,13 +271,7 @@
 				fill={b.color}
 				opacity="0.85"
 			/>
-			<Readout
-				id="bar-{b.id}"
-				order={3 + i}
-				label={b.name}
-				value="{fmt(b.v, b.id === 'orbit' ? 2 : 1)} W/m² ({b.note})"
-				color={b.color}
-			>
+			<Readout id="bar-{b.id}">
 				<Label x={RX + 12} y={y - 2} text={b.name} anchor="start" size={12} weight={700} />
 				<Label
 					x={RX + 12}
@@ -305,6 +284,12 @@
 			</Readout>
 		</g>
 	{/each}
+	<Readout
+		id="lgm"
+		order={3}
+		label="Energy balance 21,000 years ago"
+		value="orbit {fmt(lgmOrbit, 2)}, gases −2.8, ice sheets −3.2, dust and plants −2 W/m²"
+	/>
 	<Readout
 		id="total"
 		order={7}
