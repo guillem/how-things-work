@@ -2171,3 +2171,36 @@ kbd {
 	--pf-bar: #9775fa;
 	--pf-you: #ff922b;
 }
+
+/* carbon chemistry and polymers: the functional group, carbon numbers, warnings, boiling and
+   melting, the three states, polymer chains and cross-links */
+:root {
+	--cp-group: #7048e8;
+	--cp-number: #c2255c;
+	--cp-warn: #e8590c;
+	--cp-hot: #e03131;
+	--cp-cold: #1c7ed6;
+	--cp-gas: #e7f5ff;
+	--cp-liquid: #d0ebff;
+	--cp-solid: #e5dbff;
+	--cp-chain: #5f3dc4;
+	--cp-chain-2: #0c8599;
+	--cp-chain-3: #2f9e44;
+	--cp-link: #f08c00;
+	--cp-mirror: #868e96;
+}
+:root[data-theme='dark'] {
+	--cp-group: #9775fa;
+	--cp-number: #f06595;
+	--cp-warn: #ff922b;
+	--cp-hot: #ff6b6b;
+	--cp-cold: #4dabf7;
+	--cp-gas: #13212c;
+	--cp-liquid: #142c40;
+	--cp-solid: #241d3d;
+	--cp-chain: #9775fa;
+	--cp-chain-2: #3bc9db;
+	--cp-chain-3: #69db7c;
+	--cp-link: #ffc078;
+	--cp-mirror: #868e96;
+}

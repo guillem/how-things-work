@@ -2514,6 +2514,57 @@
 				stroke-opacity="0.5"
 			/>
 		{/each}
+	{:else if slug === 'carbon-polymers'}
+		<!-- a zigzag carbon chain running into a benzene ring, with one cross-link to a second chain -->
+		<path
+			d="M14 74 L32 62 L50 74 L68 62 L86 74 L104 62"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.55"
+			stroke-width="3"
+			stroke-linejoin="round"
+		/>
+		<path
+			d="M14 104 L32 92 L50 104 L68 92 L86 104"
+			fill="none"
+			stroke={accent}
+			stroke-opacity="0.7"
+			stroke-width="3"
+			stroke-linejoin="round"
+		/>
+		<line x1="50" y1="74" x2="50" y2="104" stroke="var(--cp-link)" stroke-width="3" />
+		<polygon
+			points="122,50 142,38 162,50 162,74 142,86 122,74"
+			fill={accent}
+			fill-opacity="0.12"
+			stroke="currentColor"
+			stroke-opacity="0.55"
+			stroke-width="3"
+			stroke-linejoin="round"
+		/>
+		<line
+			x1="104"
+			y1="62"
+			x2="122"
+			y2="62"
+			stroke="currentColor"
+			stroke-opacity="0.55"
+			stroke-width="3"
+		/>
+		<circle cx="142" cy="62" r="13" fill="none" stroke={accent} stroke-width="2" />
+		{#each [32, 68] as x (x)}
+			<circle cx={x} cy="62" r="4" fill={accent} />
+		{/each}
+		<text x="174" y="44" font-size="13" font-weight="700" fill={accent}>OH</text>
+		<line
+			x1="162"
+			y1="50"
+			x2="174"
+			y2="42"
+			stroke="currentColor"
+			stroke-opacity="0.55"
+			stroke-width="2.5"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
