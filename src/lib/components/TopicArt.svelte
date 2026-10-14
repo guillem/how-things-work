@@ -1919,6 +1919,50 @@
 			<circle cx="100" cy={y} r="8" fill={accent} opacity="0.85" />
 		{/each}
 		<circle cx="142" cy="60" r="9" fill="none" stroke={accent} stroke-width="2.2" />
+	{:else if slug === 'quantum-computing'}
+		<!-- a Bloch sphere with its state arrow, and Grover's amplitudes: one bar grown tall -->
+		<circle
+			cx="58"
+			cy="60"
+			r="38"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.6"
+		/>
+		<ellipse
+			cx="58"
+			cy="60"
+			rx="38"
+			ry="11"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1"
+			opacity="0.4"
+		/>
+		<path d="M58 60 L82 33" stroke={accent} stroke-width="2.5" stroke-linecap="round" />
+		<circle cx="82" cy="33" r="4" fill={accent} />
+		<circle cx="58" cy="60" r="2" fill="currentColor" opacity="0.6" />
+		<line
+			x1="112"
+			y1="96"
+			x2="188"
+			y2="96"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.5"
+		/>
+		{#each [0, 1, 2, 3, 4, 5, 6, 7] as k (k)}
+			<rect
+				x={114 + k * 9.5}
+				y={k === 5 ? 26 : 88}
+				width="6"
+				height={k === 5 ? 70 : 8}
+				rx="1.5"
+				fill={accent}
+				opacity={k === 5 ? 1 : 0.45}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

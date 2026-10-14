@@ -1462,3 +1462,31 @@ kbd {
 	--nn-fwd: #69db7c;
 	--nn-back: #f06595;
 }
+
+/* quantum-computing: outcomes 0 and 1, the state arrow, gate axes, qubits A and B, Grover's marked string */
+:root {
+	--qc-zero: #1971c2;
+	--qc-one: #e8590c;
+	--qc-state: #0c8599;
+	--qc-axis: #7048e8;
+	--qc-sphere: #0c85990f;
+	--qc-a: #0c8599;
+	--qc-b: #c2255c;
+	--qc-marked: #2f9e44;
+	--qc-neg: #e03131;
+	--qc-bar: #868e96;
+	--qc-click: #f08c00;
+}
+:root[data-theme='dark'] {
+	--qc-zero: #4dabf7;
+	--qc-one: #ff922b;
+	--qc-state: #3bc9db;
+	--qc-axis: #b197fc;
+	--qc-sphere: #3bc9db14;
+	--qc-a: #3bc9db;
+	--qc-b: #f06595;
+	--qc-marked: #69db7c;
+	--qc-neg: #ff8787;
+	--qc-bar: #adb5bd;
+	--qc-click: #ffd43b;
+}
