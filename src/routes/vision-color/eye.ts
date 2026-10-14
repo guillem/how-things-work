@@ -93,8 +93,8 @@ function bend(ray: Ray, power: number, n2: number): Ray {
 }
 
 /**
- * Traces a paraxial ray through glasses (power `glasses`, 0 for none) and the eye, to the plane
- * `zEnd`. Returns the ray at each surface it crosses, in order.
+ * Traces a paraxial ray through glasses (power `glasses`, 0 for none) and the eye, up to the
+ * plane `zEnd`. Returns the ray where it starts, at each surface it crosses, and at `zEnd`.
  */
 export function traceRay(
 	start: Ray,
@@ -105,12 +105,13 @@ export function traceRay(
 ): Ray[] {
 	const out: Ray[] = [start];
 	let ray = start;
-	if (glasses !== 0 && ray.z < -VERTEX) {
+	if (glasses !== 0 && ray.z < -VERTEX && zEnd > -VERTEX) {
 		ray = bend(move(ray, -VERTEX), glasses, ray.n);
 		out.push(ray);
 	}
 	for (const s of surfaces(shape, outside)) {
 		if (s.z <= ray.z) continue;
+		if (s.z >= zEnd) break;
 		ray = bend(move(ray, s.z), s.power, s.n2);
 		out.push(ray);
 	}

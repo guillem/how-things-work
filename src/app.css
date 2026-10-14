@@ -1241,6 +1241,7 @@ kbd {
 	--vc-glasses: #868e96;
 	--vc-good: #2f9e44;
 	--vc-bad: #e03131;
+	--vc-water: #d0ebff;
 }
 :root[data-theme='dark'] {
 	--vc-l: #ff922b;
@@ -1261,4 +1262,5 @@ kbd {
 	--vc-glasses: #adb5bd;
 	--vc-good: #69db7c;
 	--vc-bad: #ff6b6b;
+	--vc-water: #11324d;
 }
