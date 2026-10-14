@@ -32,7 +32,7 @@ export function playhead(
 }
 
 export const bool = (params: Params, id: string, def = true) =>
-	typeof params[id] === 'boolean' ? (params[id] as boolean) : def;
+	typeof params[id] === 'boolean' ? params[id] : def;
 export const num = (params: Params, id: string, def: number) => {
 	const v = Number(params[id]);
 	return Number.isFinite(v) ? v : def;

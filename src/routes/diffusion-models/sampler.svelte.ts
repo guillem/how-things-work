@@ -47,6 +47,7 @@ export function request(steps: number, seed: number, label: number | null, guida
 	// keep the last 8 runs (a 1000-step run is 3 MB)
 	while (order.length > 8) delete runs[order.shift() as string];
 	if (!worker) {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		worker = new Worker(new URL('./sampler.worker.ts', import.meta.url), { type: 'module' });
 		worker.onmessage = (e: MessageEvent<JobReply>) => {
 			const r = runs[e.data.key];

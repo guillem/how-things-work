@@ -1,0 +1,187 @@
+// Checks the diffusion-models model: Ho et al.'s noise schedule and the numbers the page quotes
+// from it; the step-by-step noising chain has the closed-form marginal and forgets where it
+// started; the trained 2-D network guesses the data's middle from pure noise and the nearest
+// moon from little noise; sampling lands on the moons, better with more steps; guidance sends
+// the points to the moon asked for and too much of it overshoots; and the shipped digit runs are
+// read as the digit asked for by the convolution-vision page's network. Runs in Node; no browser.
+import { expect, test } from '@playwright/test';
+import {
+	BETAS,
+	T,
+	alphaBar,
+	decodeWeights,
+	gaussian,
+	mulberry32,
+	noisy,
+	predict,
+	sample,
+	schedule
+} from '../src/routes/diffusion-models/ddpm';
+import { MOONS, WEIGHTS } from '../src/routes/diffusion-models/moons-model';
+import { moon, onMoons } from '../src/routes/diffusion-models/moons';
+import { CHECK, SEQUENCES } from '../src/routes/diffusion-models/mnist-sequences';
+import { decodeWeights as cnnWeights, forward as cnn } from '../src/routes/convolution-vision/cnn';
+import { WEIGHTS as CNN_WEIGHTS } from '../src/routes/convolution-vision/mnist-cnn';
+
+const wt = decodeWeights(MOONS, WEIGHTS);
+const pct = (v: number) => Math.round(v * 100);
+const moons = (n: number, seed: number) => {
+	const r = mulberry32(seed);
+	const g = gaussian(seed + 1);
+	const xy = new Float32Array(2 * n);
+	for (let i = 0; i < n; i++) xy.set(moon(r, g, i % 2), 2 * i);
+	return xy;
+};
+
+test('the schedule is Ho et al.’s, and the quoted signal and noise fractions follow from it', () => {
+	expect(BETAS[0]).toBeCloseTo(1e-4, 10);
+	expect(BETAS[T - 1]).toBeCloseTo(0.02, 10);
+	const s = (t: number) => Math.sqrt(alphaBar(t));
+	const n = (t: number) => Math.sqrt(1 - alphaBar(t));
+	expect(s(100)).toBeCloseTo(0.95, 2);
+	expect(n(100)).toBeCloseTo(0.32, 2);
+	expect(s(500)).toBeCloseTo(0.28, 2);
+	expect(s(1000)).toBeCloseTo(0.006, 3);
+	// the curves cross "around step 260"
+	let cross = 0;
+	while (s(cross) > n(cross)) cross++;
+	expect(cross).toBe(260);
+});
+
+test('step-by-step noising has the one-go distribution, and forgets its start', () => {
+	const g = gaussian(4);
+	const N = 20000;
+	for (const start of [
+		[1.2, 0.6],
+		[5, -3]
+	]) {
+		const at300 = { m: 0, v: 0 };
+		const atT = { m: 0, v: 0 };
+		for (let k = 0; k < N; k++) {
+			let x = start[0];
+			for (let t = 1; t <= T; t++) {
+				const b = 1 - alphaBar(t) / alphaBar(t - 1);
+				x = Math.sqrt(1 - b) * x + Math.sqrt(b) * g();
+				if (t === 300) {
+					at300.m += x / N;
+					at300.v += (x * x) / N;
+				}
+			}
+			atT.m += x / N;
+			atT.v += (x * x) / N;
+		}
+		const sd = (o: { m: number; v: number }) => Math.sqrt(o.v - o.m * o.m);
+		expect(at300.m).toBeCloseTo(Math.sqrt(alphaBar(300)) * start[0], 1);
+		expect(sd(at300)).toBeCloseTo(Math.sqrt(1 - alphaBar(300)), 1);
+		// at T, a standard normal whatever the start
+		// (the mean is √ᾱ_T · x₀, under 1% of the start)
+		expect(Math.abs(atT.m)).toBeLessThan(0.01 * Math.abs(start[0]) + 0.02);
+		expect(sd(atT)).toBeCloseTo(1, 1);
+	}
+});
+
+test('a sampler with fewer steps visits evenly spaced steps from T down to 1', () => {
+	expect(schedule(T)).toEqual(Array.from({ length: T }, (_, i) => T - i));
+	expect(schedule(1)).toEqual([T]);
+	const s5 = schedule(5);
+	expect(s5[0]).toBe(T);
+	expect(s5[s5.length - 1]).toBe(1);
+	expect(s5).toHaveLength(5);
+});
+
+test('the moon data are on the moons', () => {
+	expect(onMoons(moons(4000, 9)).any).toBeGreaterThan(0.99);
+});
+
+test('from pure noise the network guesses the middle; from little noise, the nearest moon', () => {
+	const x0 = moons(400, 21);
+	const e = gaussian(5);
+	const eps = Float32Array.from({ length: 800 }, () => e());
+	const spread = (p: Float32Array) => {
+		let mx = 0;
+		let my = 0;
+		for (let i = 0; i < 400; i++) {
+			mx += p[2 * i] / 400;
+			my += p[2 * i + 1] / 400;
+		}
+		let v = 0;
+		for (let i = 0; i < 400; i++) v += ((p[2 * i] - mx) ** 2 + (p[2 * i + 1] - my) ** 2) / 400;
+		return { mx, my, sd: Math.sqrt(v) };
+	};
+	// the data have spread about 1.2 around the origin; the t = 1000 guesses huddle near it
+	const far = spread(predict(wt, noisy(x0, eps, 1000), 1000, null, 0));
+	expect(far.sd).toBeLessThan(0.35);
+	expect(Math.hypot(far.mx, far.my)).toBeLessThan(0.35);
+	expect(spread(x0).sd).toBeGreaterThan(1);
+	// "by step 50, nine in ten of them lie on a moon"
+	expect(onMoons(predict(wt, noisy(x0, eps, 50), 50, null, 0)).any).toBeGreaterThan(0.85);
+});
+
+test('sampling lands on the moons, better with more steps (the page’s numbers)', () => {
+	const on = (steps: number) =>
+		onMoons(sample(wt, { steps, seed: 1, label: null, guidance: 0, count: 400 }));
+	const full = on(1000);
+	expect(pct(full.any)).toBe(92);
+	// both moons, in roughly equal parts
+	expect(full.upper).toBeGreaterThan(0.35);
+	expect(full.lower).toBeGreaterThan(0.35);
+	expect(pct(on(100).any)).toBe(87);
+	expect(pct(on(10).any)).toBe(62);
+	expect(on(1).any).toBeLessThan(0.5);
+});
+
+test('guidance sends the points to the moon asked for; too much overshoots', () => {
+	const run = (label: number | null, s: number) =>
+		onMoons(sample(wt, { steps: 100, seed: 1, label, guidance: s, count: 400 }));
+	const none = run(0, 0);
+	expect(none.upper).toBeGreaterThan(0.3);
+	expect(none.lower).toBeGreaterThan(0.3);
+	expect(run(0, 1).upper).toBe(1);
+	expect(run(1, 1).lower).toBe(1);
+	expect(pct(run(0, 3).upper)).toBe(92);
+	const s7 = run(0, 7);
+	expect(pct(s7.any)).toBe(60);
+	expect(s7.lower).toBeLessThan(0.01);
+});
+
+// ---- the precomputed digit runs ---------------------------------------------------------------
+
+const unpack4 = (b64: string) => {
+	const b = Buffer.from(b64, 'base64');
+	const out = new Float32Array(b.length * 2);
+	for (let i = 0; i < b.length; i++) {
+		out[2 * i] = (b[i] >> 4) / 15;
+		out[2 * i + 1] = (b[i] & 15) / 15;
+	}
+	return out; // 0 = paper, 1 = ink, as the digit reader expects
+};
+const reader = cnnWeights(CNN_WEIGHTS);
+const reads = (b64: string) => cnn(reader, unpack4(b64)).digit;
+
+test('every stored run starts from noise and ends at a digit that is read as stored', () => {
+	for (const s of SEQUENCES) {
+		const last = s.frames[s.frames.length - 1];
+		expect(last.t).toBe(0);
+		expect(last.k).toBe(s.steps);
+		expect(reads(last.x)).toBe(s.reads);
+	}
+});
+
+test('guided runs (s = 3, 1000 steps) are read as the digit asked for', () => {
+	const main = SEQUENCES.filter((s) => s.guidance === 3 && s.steps === T);
+	expect(main).toHaveLength(30);
+	const right = main.filter((s) => s.reads === s.digit).length;
+	expect(right).toBeGreaterThanOrEqual(27);
+});
+
+test('guidance raises how often a generated digit is read as the one asked for', () => {
+	const rate = (g: number) => {
+		const c = CHECK.find((x) => x.guidance === g);
+		if (!c) throw new Error(`no check for ${g}`);
+		return c.right / c.of;
+	};
+	// unguided, a digit matches the prompt only by chance (about 1 in 10)
+	expect(rate(0)).toBeLessThan(0.2);
+	expect(rate(1)).toBeGreaterThan(rate(0) + 0.4);
+	expect(rate(3)).toBeGreaterThan(0.9);
+});

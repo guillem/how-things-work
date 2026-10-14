@@ -10,8 +10,9 @@
  * What is stored (all images 28 × 28, 4 bits per pixel, two pixels per byte, high nibble
  * first; value v ↦ pixel (v / 15) · 2 − 1, so 0 = black paper, 15 = white ink; x_t is clipped to
  * [−1, 1] before quantising):
- * - SEQUENCES: denoising runs. Each keeps up to 11 frames: the noisy image x_t at chosen steps
- *   and the network's prediction of the clean image x̂₀ at that step. Runs: every digit × seeds
+ * - SEQUENCES: denoising runs. Each keeps up to 8 frames (the steps nearest t = 700, 500, 400,
+ *   300, 200, 100, 50, 0): the noisy image x_t, and for the main runs (guidance 3, 1000 steps)
+ *   the network's prediction x̂₀ of the clean image at that step ('' otherwise). Runs: every digit × seeds
  *   1–3 with guidance 3 and 1000 steps; guidance 0, 1, 3, 7 for the digits 4 and 7 (seed 1);
  *   1, 5, 20, 100 and 1000 steps for the digit 2 (seed 1, guidance 3).
  * - DIGITS: three real MNIST test digits (the first 2, 7 and 5 of the test set) for the noising.
@@ -40,7 +41,7 @@ const OUT = path.resolve(
 	import.meta.dirname,
 	'../../../src/routes/diffusion-models/mnist-sequences.ts'
 );
-const FRAME_TS = [1000, 800, 600, 500, 400, 300, 200, 150, 100, 50, 0];
+const FRAME_TS = [1000, 700, 500, 400, 300, 200, 100, 50, 0];
 
 const pack = (img) => {
 	const out = new Uint8Array(img.length / 2);
@@ -75,6 +76,8 @@ export async function sequences(cache) {
 
 	const started = Date.now();
 	const SEQUENCES = runs.map((r) => {
+		// the guess x̂₀ is shown for the main runs only (guidance 3, 1000 steps)
+		const main = r.guidance === 3 && r.steps === T;
 		const ts = schedule(r.steps);
 		// which steps to keep: all of them for short runs, else those nearest FRAME_TS
 		const keep = new Set();
@@ -100,7 +103,7 @@ export async function sequences(cache) {
 			count: 1,
 			onStart: (x) => (first = pack(x)),
 			onStep: (k, t, x, x0) => {
-				if (keep.has(k)) frames.push({ t, x: pack(x), x0: pack(x0) });
+				if (keep.has(k)) frames.push({ k: k + 1, t, x: pack(x), x0: main ? pack(x0) : '' });
 			}
 		});
 		const last = frames[frames.length - 1];
@@ -160,7 +163,9 @@ export async function sequences(cache) {
  */
 
 export interface Frame {
-	/** the step reached: x_t is the image after this frame's denoising step (0 = finished) */
+	/** denoising steps done (1 … steps) */
+	k: number;
+	/** the timestep reached after them (0 = finished): x is x_t */
 	t: number;
 	x: string;
 	x0: string;

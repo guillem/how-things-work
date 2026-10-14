@@ -104,7 +104,7 @@
 		<Label x={600} y={256} anchor="start" size={12} muted text="one embedding per token" />
 	</Readout>
 	<!-- cross-attention lines -->
-	{#each TOKENS as _, i (i)}
+	{#each TOKENS.keys() as i (i)}
 		<path
 			d="M {TX(i)} 284 C {TX(i)} 310, {NET.x + 40 + i * 44} 300, {NET.x + 40 + i * 44} {NET.y}"
 			fill="none"
