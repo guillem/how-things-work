@@ -2463,3 +2463,35 @@ kbd {
 	--st-sky-ink: #e9ecef;
 	--st-sky-grid: rgba(255, 255, 255, 0.09);
 }
+/* dark-matter: measured speeds, gas, stars, visible total, dark halo, total model, Kepler,
+   X-ray gas, cluster galaxies, lensing mass, approaching / receding sides */
+:root {
+	--dm-data: #212529;
+	--dm-gas: #1c7ed6;
+	--dm-stars: #e67700;
+	--dm-visible: #c2255c;
+	--dm-halo: #6741d9;
+	--dm-model: #2b8a3e;
+	--dm-kepler: #868e96;
+	--dm-xgas: #e64980;
+	--dm-galaxies: #f59f00;
+	--dm-mass: #4263eb;
+	--dm-approach: #1971c2;
+	--dm-recede: #e03131;
+	--dm-sky: #f1f3f5;
+}
+:root[data-theme='dark'] {
+	--dm-data: #f1f3f5;
+	--dm-gas: #4dabf7;
+	--dm-stars: #ffa94d;
+	--dm-visible: #f06595;
+	--dm-halo: #9775fa;
+	--dm-model: #51cf66;
+	--dm-kepler: #909296;
+	--dm-xgas: #f783ac;
+	--dm-galaxies: #ffd43b;
+	--dm-mass: #748ffc;
+	--dm-approach: #4dabf7;
+	--dm-recede: #ff6b6b;
+	--dm-sky: #141518;
+}

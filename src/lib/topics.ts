@@ -771,6 +771,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 14,
 		minutes: 25
+	},
+	{
+		slug: 'dark-matter',
+		title: 'Galaxies and dark matter',
+		summary:
+			'Spin a real galaxy with only its visible stars and gas and watch its outer stars lag far behind the measured speeds. Add an invisible halo until the rotation curve fits, weigh a colliding cluster by how it bends light, and find about five times more matter than we can see.',
+		accent: '#6741d9',
+		steps: 12,
+		minutes: 22
 	}
 ];
 
