@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Two genes on one chromosome, params.dist centimorgans apart. Top left:
-	 * the parent's two homologues (A B from one grandparent, a b from the
+	 * the parent's two homologues (D E from one grandparent, d e from the
 	 * other). Below: the first 80 of 2,000 gametes the model makes (a meiosis
 	 * each, crossovers at random), each a little chromosome coloured by where
 	 * its two genes came from; two-coloured ones are recombinants (ringed).
@@ -28,8 +28,8 @@
 	const geneX = (k: 0 | 1) => X0 + 30 + (k ? 20 + (d / 200) * (X1 - X0 - 80) : 0);
 	const colors = ['var(--mi-mom)', 'var(--mi-dad)'];
 	const letters = [
-		['A', 'B'],
-		['a', 'b']
+		['D', 'E'],
+		['d', 'e']
 	];
 
 	// Gamete grid.
@@ -66,11 +66,11 @@
 
 <g>
 	<!-- the parent's pair -->
-	<Readout id="parent" order={1} label="Parent" value="A B from one parent, a b from the other">
+	<Readout id="parent" order={1} label="Parent" value="D E from one parent, d e from the other">
 		<Label
 			x={X0}
 			y={52}
-			text="the parent’s pair: A B from one of its parents, a b from the other"
+			text="the parent’s pair: D E from one of its parents, d e from the other"
 			size={12}
 			muted
 			anchor="start"

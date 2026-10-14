@@ -160,7 +160,7 @@
 				id="plant"
 				order={4}
 				label="This plant"
-				value="Rr Yy Aa: round yellow seeds, purple flowers"
+				value="Rr Yy Aa: grew from a round, yellow seed; purple flowers"
 				opacity={panelA}
 			>
 				<text x="612" y="350" font-size="13" font-weight="600">This plant: Rr Yy Aa</text>
@@ -168,9 +168,8 @@
 					>one allele of each gene from each parent</text
 				>
 			</Readout>
-			<Pea x={650} y={420} r={16} />
-			<Pea x={690} y={426} r={16} />
-			<Label x={670} y={460} text="seeds: round, yellow" size={11} muted />
+			<Pea x={670} y={422} r={16} />
+			<Label x={670} y={460} text="grew from a round, yellow seed" size={11} muted />
 			<Flower x={830} y={420} r={20} />
 			<Label x={830} y={456} text="purple flowers" size={11} muted />
 			<Readout id="hint">

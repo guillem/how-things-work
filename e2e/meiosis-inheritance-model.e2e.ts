@@ -53,6 +53,16 @@ test('one crossover between two genes makes two parental and two recombinant chr
 	expect(q.chromatids.filter((c) => originAt(c, 0.3) !== originAt(c, 0.8)).length).toBe(0);
 });
 
+test('a crossover moves the genes beyond it (from the centromere) and leaves the ones before it', () => {
+	// Long pair: centromere at 0.5 M, seed-shape gene at 1.0 M; crossover between them.
+	const p = meiosisOfPair(PEA_CHROMOSOMES[0], rng(1), { crossovers: [0.806], flipped: false });
+	expect(originAt(p.chromatids[1], SHAPE.at)).toBe(1);
+	expect(originAt(p.chromatids[2], SHAPE.at)).toBe(0);
+	// On the other side of the centromere nothing moved.
+	expect(originAt(p.chromatids[1], 0.2)).toBe(0);
+	expect(originAt(p.chromatids[2], 0.2)).toBe(1);
+});
+
 test('meiosis halves the chromosomes and each pair lines up independently', () => {
 	const rand = rng(3);
 	// Fixed line-ups: flipping one pair changes which allele travels with which.
