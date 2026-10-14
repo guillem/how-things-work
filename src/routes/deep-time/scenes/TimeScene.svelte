@@ -52,6 +52,8 @@
 		graticulePath,
 		landAt,
 		landCentre,
+		projectPoint,
+		reconstruct,
 		ringsPath,
 		type View
 	} from '../globe';
@@ -306,6 +308,14 @@
 			.filter((r) => r.opacity < 0.99)
 			.map((r) => ({ id: r.id, o: r.opacity, d: ringsPath([r.pts], view) }))
 	);
+	// where Paris was, on the drift steps
+	const paris = $derived.by(() => {
+		if (phase !== 'drift' && phase !== 'before') return null;
+		const p = reconstruct([2.35, 48.86], age);
+		if (!p) return null;
+		const s = projectPoint(p, view);
+		return s.visible ? { ...s, lat: p[1] } : null;
+	});
 	const grat = $derived(graticulePath(view));
 	const equator = $derived(equatorPath(view));
 	/** How well the map is known: from the ocean floor, from the continents alone, or not at all. */
@@ -425,6 +435,17 @@
 			/>
 			<circle cx={G.cx} cy={G.cy} r={G.r} fill="var(--dt-fog)" opacity={unknownFog * 0.85} />
 		</g>
+		{#if paris}
+			<circle cx={paris.x} cy={paris.y} r="4" fill="var(--dt-cursor)" stroke="var(--stage-bg)" />
+			<Readout
+				id="paris"
+				order={6}
+				label="Paris was at"
+				value="{Math.abs(paris.lat).toFixed(0)}° {paris.lat >= 0 ? 'N' : 'S'}"
+			>
+				<T x={paris.x + 7} y={paris.y + 4} text="Paris" size={11} weight={600} anchor="start" />
+			</Readout>
+		{/if}
 		{#if unknownFog}
 			<text
 				x={G.cx}
@@ -443,7 +464,7 @@
 			order={5}
 			label="The map"
 			value={QUALITY_TEXT[quality]}
-			opacity={phase === 'drift' || phase === 'before' || phase === 'sliver' ? 1 : 0}
+			opacity={phase === 'drift' || phase === 'before' ? 1 : 0}
 		>
 			<T
 				x={G.cx}
@@ -652,7 +673,7 @@
 			{#if phase === 'drift' || phase === 'before'}
 				<Readout id="equator">
 					<text y="22" style:font-size="11px" class="muted"
-						>white line: the equator at the time</text
+						>the long curved line: the equator at the time</text
 					>
 				</Readout>
 			{/if}
@@ -699,7 +720,20 @@
 			{#each [['good', 0, 180], ['fair', 180, MAX_MA], ['none', MAX_MA, EARTH_AGE]] as [q, a, b] (q)}
 				{@const xa = clampX(xOf(Number(b), sp))}
 				{@const xb = clampX(xOf(Number(a), sp))}
+				{@const text = q === 'good' ? 'map solid' : q === 'fair' ? 'latitudes only' : 'no map'}
 				<rect x={xa} y={COVER_Y} width={Math.max(0, xb - xa)} height="6" fill="var(--dt-{q})" />
+				{#if labelFits(text, xb - xa, 10)}
+					<Readout id="cover-{q}">
+						<T
+							x={(xa + xb) / 2}
+							y={COVER_Y + 16}
+							{text}
+							size={10}
+							weight={600}
+							color="var(--dt-{q})"
+						/>
+					</Readout>
+				{/if}
 			{/each}
 		</g>
 
@@ -716,13 +750,14 @@
 					height="10"
 					rx="2"
 					fill="var(--dt-ice)"
+					opacity={b.g.id === 'paleoproterozoic' ? 0.45 : 1}
 				/>
 			{/each}
 			{#if iceBars.length && labelFits('ice', iceBars[0].w + 40, 10.5)}
 				<T
 					x={iceBars[0].x + iceBars[0].w / 2}
 					y={TEMP.y + TEMP.h - 18}
-					text={sp > 2000 ? 'ice ages' : 'Snowball Earth'}
+					text={sp > 2000 ? 'ice ages within this span' : 'Snowball Earth'}
 					size={10.5}
 					color="var(--dt-ice)"
 				/>
@@ -739,6 +774,14 @@
 		</g>
 		<!-- oxygen -->
 		<g opacity={fO2.current}>
+			{#each [1e-6, 1e-4, 1e-2] as v (v)}
+				<path
+					d="M{X0} {oY(v).toFixed(1)}H{X1}"
+					stroke="var(--stage-grid)"
+					stroke-width="0.6"
+					opacity="0.6"
+				/>
+			{/each}
 			{#each PAL_LINES as l (l.v)}
 				<path
 					d="M{X0} {oY(l.v).toFixed(1)}H{X1}"
@@ -946,7 +989,7 @@
 			order={9}
 			label="Life, rows from the top"
 			value={LIFE.map((g) => g.name).join(' · ')}
-			opacity={phase === 'life' || phase === 'extinctions' || phase === 'sliver' ? 1 : 0}
+			opacity={phase === 'life' ? 1 : 0}
 		/>
 		<Readout id="life-title">
 			<text x={X0} y={LIFE_Y - 6} font-weight="600" opacity={Math.max(0.6, fLife.current)}

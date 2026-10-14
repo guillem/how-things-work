@@ -294,3 +294,9 @@ function openLinesPath(lines: Vec[][], view: View): string {
 	}
 	return d;
 }
+
+/** Screen position of a point on the globe, and whether it is on the visible side. */
+export function projectPoint(p: LonLat, view: View): { x: number; y: number; visible: boolean } {
+	const v = toView(toVec(p), view.lon, view.lat);
+	return { x: view.cx + view.r * v[0], y: view.cy - view.r * v[1], visible: v[2] > 0.05 };
+}

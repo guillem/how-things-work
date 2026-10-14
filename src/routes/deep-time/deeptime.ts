@@ -152,8 +152,8 @@ export const GLACIATIONS = [
 		id: 'marinoan',
 		name: 'Marinoan “Snowball Earth”',
 		top: 635,
-		base: 650,
-		source: 'Rooney et al. 2015, Geology 43, 459 (its start is less well dated)'
+		base: 639,
+		source: 'Prave et al. 2016, Geology 44, 631 (at least 4 Myr, ending 635 Ma)'
 	}
 ] as const;
 
@@ -276,7 +276,7 @@ export const LIFE: LifeGroup[] = [
 		id: 'vertebrates',
 		name: 'Fish (vertebrates)',
 		from: 518,
-		evidence: 'Myllokunmingia, Chengjiang, China',
+		evidence: 'Myllokunmingia, Chengjiang, China (Early Cambrian, about 518 Ma)',
 		source: 'Shu et al. 1999, Nature 402, 42'
 	},
 	{
@@ -378,9 +378,14 @@ export const EVENTS: LifeEvent[] = [
 		id: 'writing',
 		name: 'Writing',
 		age: 0.0052,
-		source: 'Woods (ed.) 2010, Visible Language, Oriental Institute'
+		source: 'Mesopotamia, about 3200 BCE (general history)'
 	},
-	{ id: 'industry', name: 'Industrial Revolution', age: 0.00026, source: '1760s Britain' }
+	{
+		id: 'industry',
+		name: 'Industrial Revolution',
+		age: 0.00026,
+		source: 'Britain, 1760s (general history)'
+	}
 ];
 
 /** The "big five" mass extinctions (Raup & Sepkoski 1982), dated by the ICS chart. */
