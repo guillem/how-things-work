@@ -938,7 +938,7 @@
 	{#if phase === 'ridge'}
 		{#each ageLabels as a (a.age)}
 			<Readout id="age-{a.age}">
-				<Label x={X(a.x)} y={Y(colAt(a.x).moho) + 14} text="{a.age} Myr" size={11} muted />
+				<Label x={X(a.x)} y={Y(colAt(a.x).moho) + 14} text="{a.age} million yr" size={11} muted />
 			</Readout>
 		{/each}
 		<Readout id="r-new" order={3} label="New sea floor" value={km(sec.newOcean)}>
@@ -954,7 +954,7 @@
 		>
 			<Label
 				x={X(0)}
-				y={Y(Math.max(0.6, rift.z)) - 12}
+				y={Y(Math.max(0.6, rift.z, ...sec.volcanoes.map((v) => v.top))) - 14}
 				text={rift.z < 0 ? 'rift valley, flooded by the sea' : 'rift valley'}
 				size={12}
 				pill

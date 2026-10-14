@@ -10,15 +10,18 @@
  * - Ocean depth from the age of the sea floor (cooling plate): GDH1, Stein & Stein (1992),
  *   Nature 359, 123: d = 2600 + 365 √t m for t < 20 Myr, 5651 − 2473 e^(−0.0278 t) m after.
  * - Thickness of oceanic lithosphere from half-space cooling: 2.32 √(κ t), κ = 10⁻⁶ m²/s
- *   (Turcotte & Schubert, Geodynamics, eq. 4.93), capped at 125 km (the plate model's thickness).
+ *   (Turcotte & Schubert, Geodynamics, eq. 4.93), capped at 125 km (the thickness of
+ *   Parsons & Sclater's 1977 plate model, which GDH1 refines with 95 km; no visible difference).
  * - Continental rifting by uniform stretching (McKenzie 1978, EPSL 40, 25): a rift stretched by a
  *   factor β thins its crust and lithosphere to 1/β and subsides by the "initial subsidence"
  *   S = a[(ρm − ρc)(tc/a)(1 − αTm tc/2a) − αTm ρm/2](1 − 1/β) / [ρm(1 − αTm) − ρw].
  * - The bending of the sinking plate at a trench as an elastic plate (Turcotte & Schubert §3.17):
  *   w(x) = w₀ e^(−x/α) cos(x/α), which also makes the low "outer rise" seaward of the trench.
  * - Arc volcanoes sit where the top of the sinking plate is about 100 km deep (Syracuse & Abers
- *   2006, G³ 7, Q05017: 105 ± 19 km on average): there water released by the slab lowers the
- *   melting point of the mantle above it.
+ *   2006, G³ 7, Q05017: global average 105 km, range 72–173 km): there water released by the
+ *   slab lowers the melting point of the mantle above it.
+ * - A young continental rift stands on a broad dome raised by hot mantle beneath it (East Africa:
+ *   1–2 km); the stretched floor subsides from the top of that dome.
  *
  * Simplifications (stated on the page): the shapes of slabs, the width of mountain belts and the
  * sizes of volcanoes are schematic; the sea floor of an existing ocean plate is given one age; a
@@ -46,6 +49,10 @@ export const OCEAN_AGE = { left: 60, right: 30 } as const;
 export const HALF_WIDTH = 900;
 /** Width of the zone that starts to stretch in a continental rift, km. */
 export const RIFT_WIDTH = 80;
+/** Height of the broad dome under a young continental rift, raised by hot mantle, km. */
+export const RIFT_DOME = 1.5;
+/** Half-width of that dome (a Gaussian centred on the rift), km. */
+const DOME_HALF_WIDTH = 400;
 /** Stretching factor at which continental crust breaks and new ocean floor starts to form. */
 export const BREAKUP_BETA = 4;
 /** Depth of the top of the sinking plate beneath arc volcanoes, km. */
@@ -91,12 +98,22 @@ export function mckenzieSubsidence(beta: number): number {
 /**
  * Elevation of the floor of a rift stretched by `beta`, km: the subsidence is filled with air
  * while the floor is above sea level and with sea water below it (isostasy is linear in the load).
+ * `start` is the elevation the floor subsides from (the continent, raised by any dome).
  */
-export function riftFloorElevation(beta: number): number {
+export function riftFloorElevation(beta: number, start = CONTINENT_ELEVATION): number {
 	const airFactor = (RHO_HOT - RHO.water) / RHO_HOT;
 	const dropInAir = mckenzieSubsidence(beta) * airFactor;
-	if (dropInAir <= CONTINENT_ELEVATION) return CONTINENT_ELEVATION - dropInAir;
-	return -(dropInAir - CONTINENT_ELEVATION) / airFactor;
+	if (dropInAir <= start) return start - dropInAir;
+	return -(dropInAir - start) / airFactor;
+}
+
+/**
+ * Uplift of the dome under a continental rift at `x`, km, once the plates have moved `open` km
+ * apart: it grows in over the first 40 km and stays centred on the rift (the hot mantle), so the
+ * margins of a young ocean slide off it as they drift apart.
+ */
+export function riftDome(x: number, open: number): number {
+	return RIFT_DOME * smooth01(open / 40) * Math.exp(-((x / DOME_HALF_WIDTH) ** 2));
 }
 
 export interface P {
@@ -371,7 +388,8 @@ function diverge(input: SectionInput, open: number, myr: number): Section {
 		const ocean = open - breakAt;
 		const marginW = (RIFT_WIDTH * BREAKUP_BETA) / 2;
 		const thin = CONTINENT_CRUST / BREAKUP_BETA;
-		const floor = riftFloorElevation(BREAKUP_BETA);
+		// The margins subside from the dome where they now stand, sliding off it as they drift.
+		const floor = riftFloorElevation(BREAKUP_BETA, CONTINENT_ELEVATION + riftDome(ocean / 2, open));
 		const tMyr = myrFor(ocean, speed);
 		const columns = xs().map((x): Column => {
 			const ax = Math.abs(x);
@@ -382,11 +400,11 @@ function diverge(input: SectionInput, open: number, myr: number): Section {
 				// stretched margin, tapering to the normal continent over its landward 40 km
 				const u = smooth01((m - (marginW - 40)) / 40);
 				const h = thin + (CONTINENT_CRUST - thin) * u;
-				const z = floor + (CONTINENT_ELEVATION - floor) * u;
+				const z = floor + (CONTINENT_ELEVATION + riftDome(x, open) - floor) * u;
 				const litho = -(MCK.a / BREAKUP_BETA) + (-CONTINENT_LITHOSPHERE + MCK.a / BREAKUP_BETA) * u;
 				return { x, z, moho: z - h, litho, crust: 'stretched', age: NaN, plate };
 			}
-			return restColumn(x, 'continent', 0, CONTINENT_CRUST, plate);
+			return domed(restColumn(x, 'continent', 0, CONTINENT_CRUST, plate), x, open);
 		});
 		// The old sea floor at the edges of the new ocean meets the margins smoothly.
 		smoothEdges(columns, ocean / 2, 15);
@@ -451,18 +469,25 @@ function ridgeQuakes(): Quake[] {
 	}));
 }
 
+/** A continental column raised, crust and all, by the rift's dome. */
+function domed(c: Column, x: number, open: number): Column {
+	const d = riftDome(x, open);
+	return { ...c, z: c.z + d, moho: c.moho + d };
+}
+
 function rift(open: number, myr: number): Section {
 	const beta = (RIFT_WIDTH + open) / RIFT_WIDTH;
 	const w = (RIFT_WIDTH + open) / 2;
 	const thin = CONTINENT_CRUST / beta;
-	const floor = riftFloorElevation(beta);
+	const floor = riftFloorElevation(beta, CONTINENT_ELEVATION + riftDome(0, open));
 	const columns = xs().map((x): Column => {
 		const ax = Math.abs(x);
 		const plate = x < 0 ? 'left' : 'right';
 		const u = smooth01((ax - (w - 20)) / 40); // 0 in the rift, 1 outside
-		if (u >= 1) return restColumn(x, 'continent', 0, CONTINENT_CRUST, plate);
+		const top = CONTINENT_ELEVATION + riftDome(x, open);
+		if (u >= 1) return domed(restColumn(x, 'continent', 0, CONTINENT_CRUST, plate), x, open);
 		const h = thin + (CONTINENT_CRUST - thin) * u;
-		const z = floor + (CONTINENT_ELEVATION - floor) * u;
+		const z = floor + (top - floor) * u;
 		const litho = -(CONTINENT_LITHOSPHERE / beta) * (1 - u) - CONTINENT_LITHOSPHERE * u;
 		return { x, z, moho: z - h, litho, crust: 'stretched', age: NaN, plate };
 	});

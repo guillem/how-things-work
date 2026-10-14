@@ -303,7 +303,7 @@
 				</Readout>
 			{/each}
 		{:else if phase === 'hotspots'}
-			{#each [['subduction', 'together', 'at subduction zones'], ['rift', 'apart', 'at rifts and ridges'], ['intraplate', 'intraplate', 'in the middle of a plate']] as [s, c, label], i (s)}
+			{#each [['subduction', 'together', 'at subduction zones'], ['rift', 'apart', 'at rifts and ridges'], ['intraplate', 'intraplate', 'within a plate']] as [s, c, label], i (s)}
 				<Readout
 					id="set-{s}"
 					order={i + 1}

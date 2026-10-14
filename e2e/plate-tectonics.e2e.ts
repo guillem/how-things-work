@@ -65,7 +65,11 @@ test('a ridge makes ocean floor, and faster plates make it sooner', async ({ pag
 
 test('a continent pulled far enough apart breaks into a new ocean', async ({ page }) => {
 	await open(page, './plate-tectonics/#rift');
+	// A young rift is a dry valley on its dome (East Africa); pulled further, the sea floods in.
 	await expect(stage(page)).toContainText('rift valley');
+	await expect(stage(page)).not.toContainText('flooded');
+	await control(page, 'riftOpen').fill('220');
+	await expect(stage(page)).toContainText('rift valley, flooded by the sea');
 	await control(page, 'riftOpen').fill('600');
 	await expect(stage(page)).toContainText('a new ocean · 360 km wide');
 	await expect(stage(page)).toContainText('mid-ocean ridge');

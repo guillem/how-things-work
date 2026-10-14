@@ -83,7 +83,7 @@ test('ocean meets continent: the ocean plate sinks into a deep trench, volcanoes
 		const trench = feature(s, 'trench')!;
 		expect(trench.value).toBeGreaterThan(7); // ocean trenches are 7–11 km deep
 		expect(trench.value).toBeLessThan(11);
-		// The arc sits 150–300 km from the trench, on the continent, above the slab at ~100 km.
+		// The page: "typically 100–300 km inland"; the model's arc sits 150–300 km from the trench, on the continent, above the slab at ~100 km.
 		const arc = s.volcanoes.find((v) => v.kind === 'arc')!;
 		expect(Math.abs(arc.x)).toBeGreaterThan(150);
 		expect(Math.abs(arc.x)).toBeLessThan(300);
@@ -136,9 +136,18 @@ test('a continent pulled apart: a rift valley, then a new ocean once the crust b
 	const early = section(at('continent', 'continent', 40));
 	expect(early.kind).toBe('rift');
 	expect(early.beta).toBeCloseTo((RIFT_WIDTH + 40) / RIFT_WIDTH, 6);
-	expect(feature(early, 'rift')!.z).toBeLessThan(CONTINENT_ELEVATION);
+	// The valley floor drops between its shoulders.
+	expect(feature(early, 'rift')!.z).toBeLessThan(surfaceAt(early, 100).z - 0.5);
+	// The page's East Africa stage: a dry rift valley with volcanoes, held up by its dome
+	// (the step opens at 100 km).
+	const young = section(at('continent', 'continent', 100));
+	expect(feature(young, 'rift')!.z).toBeGreaterThan(0);
+	expect(young.volcanoes.filter((v) => v.kind === 'rift')).toHaveLength(2);
+	// "Keep pulling. The valley floor sinks below sea level": the Red Sea stage, before break-up.
 	const breakAt = RIFT_WIDTH * (BREAKUP_BETA - 1);
-	expect(section(at('continent', 'continent', breakAt - 1)).kind).toBe('rift');
+	const late = section(at('continent', 'continent', breakAt - 1));
+	expect(late.kind).toBe('rift');
+	expect(feature(late, 'rift')!.z).toBeLessThan(0);
 	const ocean = section(at('continent', 'continent', breakAt + 400));
 	expect(ocean.kind).toBe('young-ocean');
 	expect(ocean.newOcean).toBeCloseTo(400, 6);
@@ -168,7 +177,7 @@ test('the 52 plates of PB2002 tile the whole Earth', () => {
 });
 
 test('most big earthquakes happen in a narrow band along the plate boundaries', () => {
-	expect(quakes.length).toBeGreaterThan(4000); // M ≥ 5.5, 2015–2024
+	expect(quakes.length).toBe(4516); // M ≥ 5.5, 2015–2024: the number the page quotes
 	// The page: "86% … within 200 km of a plate boundary, a band covering 17% of the surface".
 	expect(Math.round(fractionNear(quakes, 200) * 100)).toBe(QUOTED.quakesWithin200km * 100);
 	expect(Math.round(areaFractionNear(200) * 100)).toBe(QUOTED.areaWithin200km * 100);
@@ -182,6 +191,7 @@ test('most big earthquakes happen in a narrow band along the plate boundaries', 
 
 test('volcanoes: most at subduction zones and rifts, a few in the middle of plates', () => {
 	const s = settingShares();
+	expect(volcanoes.length).toBe(1214); // the page: "the 1,214 volcanoes active since…"
 	expect(s.total).toBeGreaterThan(1200);
 	// The page: "69% … subduction zones, 18% … rifts, 12% … in the middle of a plate".
 	expect(Math.round(s.subduction * 100)).toBe(69);
