@@ -58,7 +58,7 @@ export const SHADER: Instruction[] = [
 	{ path: 'sphere', text: 'l = dx·Lx', flops: 1 },
 	{ path: 'sphere', text: 'l = dy·Ly + l', flops: 2 },
 	{ path: 'sphere', text: 'l = z·Lz + l', flops: 2 },
-	{ path: 'sphere', text: 'l = max(l / r, 0.1)', flops: 2 },
+	{ path: 'sphere', text: 'l = max(l / r, 0.25)', flops: 2 },
 	{ path: 'sphere', text: 's = l·l', flops: 1 },
 	{ path: 'sphere', text: 's = s·s', flops: 1 },
 	{ path: 'sphere', text: 's = s·s', flops: 1 },
@@ -111,7 +111,7 @@ export function shade(x: number, y: number): Shaded {
 	const r2 = BALL.r * BALL.r;
 	if (d2 < r2) {
 		const z = Math.sqrt(r2 - d2);
-		const l = Math.max((dx * LIGHT[0] + dy * LIGHT[1] + z * LIGHT[2]) / BALL.r, 0.1);
+		const l = Math.max((dx * LIGHT[0] + dy * LIGHT[1] + z * LIGHT[2]) / BALL.r, 0.25);
 		const s = l ** 16;
 		const c = BASE.map((b) => Math.min(1, l * b + s)) as [number, number, number];
 		return { on: true, rgb: c };

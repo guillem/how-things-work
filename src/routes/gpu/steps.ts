@@ -32,10 +32,13 @@ const mx16k = runLanes(mx, 16384);
 const mixedCost = Math.max(...px.warpCost);
 const [cpu, gpu] = CHIPS;
 
-/** Number of slow lanes, as a power of two (32 to 16,384). */
-const lanes = (dflt: number): Control => ({
+/**
+ * Number of slow lanes, as a power of two (32 to 16,384). Each step has its own
+ * id, so that the number suggested on one step doesn't carry into the next.
+ */
+const lanes = (id: string, dflt: number): Control => ({
 	type: 'range',
-	id: 'lanes',
+	id,
 	label: 'Slow lanes',
 	min: 5,
 	max: 14,
@@ -146,7 +149,7 @@ export const spec: ExplainerSpec = {
 			scene: 'race',
 			hints: { mode: 'race' },
 			duration: 24,
-			controls: [lanes(10)],
+			controls: [lanes('lanes', 10)],
 			body: `
 <p>Now the same job goes to a <dfn data-def="Graphics processing unit: a chip with thousands of simple arithmetic lanes, built to run the same small program on many pieces of data at once.">GPU</dfn>-like machine: ${n(1024)} slow <dfn data-def="A simple arithmetic unit that works on one piece of data. A GPU lane does what one core would do for one pixel, but has no control unit of its own.">lanes</dfn>. Each lane finishes just one instruction per tick, a quarter of the fast core’s pace, and the two machines run on the same clock.</p>
 <p>But a thousand of them work at the same time, each on its own pixel. The fast core has barely started its first rows when the lanes finish: ${n(px1024.cycles)} ticks against ${n(pxFast.cycles)}, about ${n(pxFast.cycles / px1024.cycles)} times faster.</p>
@@ -160,7 +163,7 @@ export const spec: ExplainerSpec = {
 			scene: 'race',
 			hints: { mode: 'race' },
 			duration: 24,
-			controls: [lanes(14)],
+			controls: [lanes('lanesMany', 14)],
 			body: `
 <p>With ${n(16384)} lanes, as many as a big graphics card has, the image takes ${n(px16k.cycles)} ticks: about ${n(pxFast.cycles / px16k.cycles)} times faster than the fast core.</p>
 <p>But look at the share of lanes kept busy. The ${n(px.tasks)} pixels make only ${n(px.warpCost.length)} groups of 32, for 512 warps: two rounds and a half-full third, so many lanes sit idle at the end. ${n(100 * efficiency(px16k))}% of the lanes’ ticks do work, against ${n(100 * efficiency(px1024))}% with ${n(1024)} lanes.</p>
@@ -202,7 +205,7 @@ export const spec: ExplainerSpec = {
 			scene: 'race',
 			hints: { mode: 'matrix' },
 			duration: 26,
-			controls: [lanes(14)],
+			controls: [lanes('lanesMatrix', 14)],
 			body: `
 <p>The second job: multiply two ${MATRIX_N} × ${MATRIX_N} <a href="../linear-transformations/#compose">matrices</a>, A·B = C. Each of the ${n(mx.tasks)} numbers of C is a row of A times a column of B: ${MATRIX_N} multiplications, added up (${n(elementCost(MATRIX_N))} instructions with the loads and the store).</p>
 <p>It is the ideal job for lanes. Every element can be worked out independently, all of them run exactly the same instructions, and there is no branch at all, so no lane ever idles. With ${n(16384)} lanes, all ${n(mx.tasks)} elements are worked out at once, in the time of one: ${n(mx16k.cycles)} ticks, against ${n(mxFast.cycles)} for the fast core. That is exactly ${n(16384 / FAST_IPC)} times faster: lanes ÷ ${FAST_IPC}.</p>
