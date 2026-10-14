@@ -72,7 +72,7 @@ export const KILL = 0.6;
  * Cancer Treatment Reports, 1979). A model tumour of a hundred cells needs a much higher rate
  * to match. Only cancer cells are followed for it: in other cells the change does nothing.
  */
-export const RES_MU = 0.004;
+export const RES_MU = 0.003;
 /** Harmless (passenger) mutations per cell per division. */
 export const PASSENGERS = 0.5;
 /** Chance that a cancer cell's division into an occupied site crowds the occupant out. */
@@ -107,6 +107,10 @@ export const enum Kind {
 export const KINDS = 7;
 /** Flag added to a snapshot cell whose repair gene is broken. */
 export const MUTATOR = 8;
+/** Flag added to a cancer cell that resists one of two drugs given together (not enough). */
+export const PARTIAL = 16;
+/** The Kind of a snapshot cell (without its flags). */
+export const KIND_MASK = 7;
 
 export type Therapy = 'one' | 'two';
 
@@ -131,7 +135,7 @@ export const DEFAULT: Scenario = {
 	genes: KRAS | P53 | MMR | RES_A | RES_B,
 	treat: false,
 	therapy: 'one',
-	passengers: PASSENGERS
+	passengers: 0
 };
 
 export interface Run {
@@ -166,7 +170,7 @@ export interface Run {
 	cleared: number | null;
 }
 
-const isCancer = (g: number) => (g & KRAS) !== 0 && (g & P53) === P53;
+const isCancer = (g: number) => g >= 0 && (g & KRAS) !== 0 && (g & P53) === P53;
 
 function kindOf(g: number, therapy: Therapy): Kind {
 	const cancer = isCancer(g);
@@ -182,6 +186,9 @@ function kindOf(g: number, therapy: Therapy): Kind {
 
 /** The genes, in the order they are drawn (resistance last). */
 const GENES = [KRAS, P53A, P53B, MMR, RES_A, RES_B] as const;
+
+/** Generations of turnover before generation 0. */
+const WARMUP = 30;
 
 /** Neighbour offsets (eight neighbours). */
 const DX = [-1, 0, 1, -1, 1, -1, 0, 1];
@@ -242,7 +249,8 @@ export function simulate(partial: Partial<Scenario> = {}): Run {
 				continue;
 			}
 			const k = kindOf(g, sc.therapy);
-			cells[base + i] = k | (g & MMR ? MUTATOR : 0);
+			const partial = k === Kind.Cancer && sc.therapy === 'two' && (g & (RES_A | RES_B)) !== 0;
+			cells[base + i] = k | (g & MMR ? MUTATOR : 0) | (partial ? PARTIAL : 0);
 			passengers[base + i] = Math.min(255, pass[i]);
 			counts[gen * KINDS + k]++;
 			if (g & MMR) mutators[gen]++;
@@ -253,8 +261,8 @@ export function simulate(partial: Partial<Scenario> = {}): Run {
 		meanPassengers[gen] = alive ? sumPass / alive : 0;
 	};
 
-	record(0);
-	for (let gen = 1; gen <= G; gen++) {
+	/** One generation of the rules above; returns the number of divisions. */
+	const generation = (mutating: boolean) => {
 		const treating = treatedAt !== null;
 		const need = sc.therapy === 'two' ? RES_A | RES_B : RES_A;
 		// Random order (Fisher–Yates).
@@ -279,21 +287,45 @@ export function simulate(partial: Partial<Scenario> = {}): Run {
 			}
 			const b = g & KRAS ? B_KRAS : B0;
 			if (rand() >= b) continue;
+			// A free neighbour if there is one (picked at random); otherwise a cancer cell may
+			// crowd out a random non-cancer neighbour.
 			const x = i % W;
 			const y = (i - x) / W;
-			const k = Math.floor(rand() * 8);
-			const nx = x + DX[k];
-			const ny = y + DY[k];
-			if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
-			const j = ny * W + nx;
-			const target = geno[j];
-			if (target >= 0 && !(cancer && !isCancer(target) && rand() < INVADE)) continue;
+			let free = 0;
+			let j = -1;
+			for (let k = 0; k < 8; k++) {
+				const nx = x + DX[k];
+				const ny = y + DY[k];
+				if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+				const m = ny * W + nx;
+				if (geno[m] < 0 && rand() * ++free < 1) j = m;
+			}
+			if (j < 0) {
+				if (!cancer || rand() >= INVADE) continue;
+				const k = Math.floor(rand() * 8);
+				const nx = x + DX[k];
+				const ny = y + DY[k];
+				if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+				j = ny * W + nx;
+				if (isCancer(geno[j])) continue;
+			}
 			geno[j] = g;
 			pass[j] = pass[i];
-			mutate(i);
-			mutate(j);
+			if (mutating) {
+				mutate(i);
+				mutate(j);
+			}
 			divs++;
 		}
+		return divs;
+	};
+
+	// Settle the tissue first (turnover only, nothing recorded or mutated), so that
+	// generation 0 already shows a tissue in its steady state, gaps and all.
+	for (let w = 0; w < WARMUP; w++) generation(false);
+	record(0);
+	for (let gen = 1; gen <= G; gen++) {
+		const divs = generation(true);
 		divisions[gen] = divs;
 		record(gen);
 		const c = counts[gen * KINDS + Kind.Cancer] + counts[gen * KINDS + Kind.Resistant];

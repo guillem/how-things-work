@@ -681,6 +681,15 @@ const explainers: Explainer[] = [
 		accent: '#4d7c32',
 		steps: 12,
 		minutes: 20
+	},
+	{
+		slug: 'cancer',
+		title: 'Cancer',
+		summary:
+			'Let the cells of a tissue divide and occasionally mutate. A cell whose growth controls break outdivides its neighbours, its descendants pick up more changes, and a tumour grows. Then treat it and watch which cells survive.',
+		accent: '#d0343a',
+		steps: 11,
+		minutes: 20
 	}
 ];
 

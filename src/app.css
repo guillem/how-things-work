@@ -2101,3 +2101,40 @@ kbd {
 	--ev-drug: #a68cf0;
 	--ev-panel: #1c1d20;
 }
+
+/* ---------------------------------------------------------------------------
+   Cancer: cells of a tissue by the drivers they carry, the drug, the eye */
+:root {
+	--ca-tissue: #f4ece4;
+	--ca-normal: #e7b8a8;
+	--ca-normal-edge: #c98f7d;
+	--ca-onehit: #b07fc4;
+	--ca-kras: #e9b730;
+	--ca-p53: #ee8a3c;
+	--ca-cancer: #d0343a;
+	--ca-resistant: #2f7fd0;
+	--ca-partial: #8fc3f2;
+	--ca-mutator: #2a1f1c;
+	--ca-pass: #8e4a3c;
+	--ca-drug: #7c5cbf;
+	--ca-eye: #fbf4ec;
+	--ca-iris: #8aa6c4;
+	--ca-panel: #fffdf8;
+}
+:root[data-theme='dark'] {
+	--ca-tissue: #241c1a;
+	--ca-normal: #8a5a4e;
+	--ca-normal-edge: #b07a6a;
+	--ca-onehit: #c79be0;
+	--ca-kras: #f0c43e;
+	--ca-p53: #f59a4e;
+	--ca-cancer: #ff5a5f;
+	--ca-resistant: #4da3f7;
+	--ca-partial: #a9d4fa;
+	--ca-mutator: #f6efe6;
+	--ca-pass: #f2b09d;
+	--ca-drug: #a68cf0;
+	--ca-eye: #2a2a30;
+	--ca-iris: #5d7da0;
+	--ca-panel: #1c1d20;
+}

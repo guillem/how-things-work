@@ -2450,6 +2450,21 @@
 		<path d="M40 100 H172" stroke="currentColor" stroke-opacity="0.5" />
 		<path d="M70 24 C 100 16, 130 16, 156 28" fill="none" stroke={accent} stroke-width="2" />
 		<path d="M150 22 L157 28 L149 33" fill="none" stroke={accent} stroke-width="2" />
+	{:else if slug === 'cancer'}
+		<!-- a sheet of cells with a red clone growing inside a yellow one -->
+		{#each Array.from({ length: 60 }, (_, i) => i) as i (i)}
+			{@const x = 40 + (i % 12) * 11}
+			{@const y = 28 + Math.floor(i / 12) * 14}
+			{@const d1 = Math.hypot((x - 112) / 11, (y - 56) / 14)}
+			<circle
+				cx={x}
+				cy={y}
+				r="4.6"
+				fill={d1 < 1.6 ? accent : d1 < 3.2 ? '#e9b730' : 'none'}
+				stroke={d1 < 3.2 ? 'none' : 'currentColor'}
+				stroke-opacity="0.4"
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
