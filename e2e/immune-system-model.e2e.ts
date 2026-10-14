@@ -6,6 +6,7 @@ import { expect, test } from '@playwright/test';
 import {
 	CAO,
 	HUMAN_FLU,
+	MEMORY,
 	antibody,
 	at,
 	clearedDay,
@@ -25,6 +26,8 @@ test('a first flu infection grows for two days and is cleared after about nine',
 	// Cleared (below 1 EID₅₀/mL) on day 9, as the page says; human flu is gone by day 7–8.
 	expect(clearedDay(primary)).toBeCloseTo(9, 0);
 	expect(clearedDay(primary)!).toBeGreaterThanOrEqual(HUMAN_FLU.goneByDay);
+	// Once the adaptive response arrives the virus falls a millionfold in five days.
+	expect(at(primary, 4).V / Math.max(at(primary, 9).V, 1e-9)).toBeGreaterThan(1e6);
 	// The innate response protects the lining: most of it stays healthy.
 	expect(Math.min(...primary.map(healthy))).toBeGreaterThan(0.8);
 });
@@ -62,6 +65,15 @@ test('killer T cells and antibodies arrive after about a week', () => {
 	expect(effectors(at(primary, 20))).toBeLessThan(0.01 * e.v);
 });
 
+test('memory T cells are 5% of the peak: about thirty times the naive cells that fitted', () => {
+	const memory = MEMORY.share * peak(primary, effectors).v;
+	expect(memory / CAO.Cn0).toBeGreaterThan(25);
+	expect(memory / CAO.Cn0).toBeLessThan(35);
+	// Within a week of the peak more than nine in ten effector T cells have died.
+	const e = peak(primary, effectors);
+	expect(effectors(at(primary, e.t + 7))).toBeLessThan(0.1 * e.v);
+});
+
 test('without killer T cells the virus is cleared later', () => {
 	// Cao et al.: CD8⁺ T cells speed clearance; antibodies finish it.
 	expect(clearedDay(simulate({ days: 40, tcells: false }))!).toBeGreaterThan(
@@ -72,6 +84,10 @@ test('without killer T cells the virus is cleared later', () => {
 test('a second infection after antibodies have faded is met faster and harder', () => {
 	const day = 180;
 	const s = simulate({ days: day + 40, reinfectAt: day });
+	// Six months on, the leftover long-lived antibody has faded to about a tenth.
+	const left = at(s, day - 0.05).AL / peak(primary, (x) => x.AL).v;
+	expect(left).toBeGreaterThan(0.05);
+	expect(left).toBeLessThan(0.15);
 	// Leftover antibodies are too few to stop it: the virus grows again.
 	expect(peak(s, (x) => x.V, day, day + 30).v).toBeGreaterThan(10 * CAO.V0);
 	// Cleared in about five days instead of nine.
@@ -88,7 +104,11 @@ test('a second infection after antibodies have faded is met faster and harder', 
 	expect(a2.t - day).toBeLessThan(a1.t - 2);
 });
 
-test('soon after the first infection, leftover antibodies stop the virus growing at all', () => {
+test('within about three months, leftover antibodies stop the virus growing at all', () => {
+	const grows = (day: number) =>
+		peak(simulate({ days: day + 30, reinfectAt: day }), (x) => x.V, day + 0.1, day + 30).v > CAO.V0;
+	expect(grows(90)).toBe(false);
+	expect(grows(150)).toBe(true);
 	const day = 30;
 	const s = simulate({ days: day + 30, reinfectAt: day });
 	expect(peak(s, (x) => x.V, day + 0.1, day + 30).v).toBeLessThan(CAO.V0);
