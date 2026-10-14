@@ -213,15 +213,46 @@
 	{#if fb < 0.5}
 		<g opacity={1 - 2 * fb}>
 			<Readout id="helix" order={2} label="α-helix" color="var(--pf-helix)">
-				<line x1="680" x2="708" y1="150" y2="150" stroke="var(--pf-helix)" stroke-width="7" stroke-linecap="round" />
+				<line
+					x1="680"
+					x2="708"
+					y1="150"
+					y2="150"
+					stroke="var(--pf-helix)"
+					stroke-width="7"
+					stroke-linecap="round"
+				/>
 				<Label x={720} y={155} text="α-helix" anchor="start" />
 			</Readout>
 			<Readout id="coil" order={3} label="Loop" color="var(--pf-coil)">
-				<line x1="680" x2="708" y1="180" y2="180" stroke="var(--pf-coil)" stroke-width="7" stroke-linecap="round" />
+				<line
+					x1="680"
+					x2="708"
+					y1="180"
+					y2="180"
+					stroke="var(--pf-coil)"
+					stroke-width="7"
+					stroke-linecap="round"
+				/>
 				<Label x={720} y={185} text="loop between helices" anchor="start" />
 			</Readout>
-			<Readout id="haem" order={4} label="Haem" value="its iron atom binds oxygen" color="var(--pf-haem)">
-				<rect x="682" y="200" width="24" height="18" rx="3" fill="var(--pf-haem)" fill-opacity="0.55" stroke="var(--pf-haem)" />
+			<Readout
+				id="haem"
+				order={4}
+				label="Haem"
+				value="its iron atom binds oxygen"
+				color="var(--pf-haem)"
+			>
+				<rect
+					x="682"
+					y="200"
+					width="24"
+					height="18"
+					rx="3"
+					fill="var(--pf-haem)"
+					fill-opacity="0.55"
+					stroke="var(--pf-haem)"
+				/>
 				<circle cx="694" cy="209" r="4" fill="#e8590c" stroke="#7a2e00" />
 				<Label x={720} y={214} text="haem: its iron binds O₂" anchor="start" />
 			</Readout>
@@ -232,10 +263,32 @@
 	{:else}
 		<g opacity={2 * fb - 1}>
 			{#each LEGEND as l, k (l.id)}
-				<Readout id="kind-{l.id}" order={2 + k} label={l.label} value={l.value} color={KIND_COLOR[l.color]}>
-					<circle cx="690" cy={154 + k * 46} r="7" fill={KIND_COLOR[l.color]} stroke="var(--stage-ink)" stroke-opacity="0.5" stroke-width="0.7" />
+				<Readout
+					id="kind-{l.id}"
+					order={2 + k}
+					label={l.label}
+					value={l.value}
+					color={KIND_COLOR[l.color]}
+				>
+					<circle
+						cx="690"
+						cy={154 + k * 46}
+						r="7"
+						fill={KIND_COLOR[l.color]}
+						stroke="var(--stage-ink)"
+						stroke-opacity="0.5"
+						stroke-width="0.7"
+					/>
 					{#if l.id === 'charged'}
-						<circle cx="706" cy={154 + k * 46} r="7" fill="var(--dp-negative)" stroke="var(--stage-ink)" stroke-opacity="0.5" stroke-width="0.7" />
+						<circle
+							cx="706"
+							cy={154 + k * 46}
+							r="7"
+							fill="var(--dp-negative)"
+							stroke="var(--stage-ink)"
+							stroke-opacity="0.5"
+							stroke-width="0.7"
+						/>
 					{/if}
 					<Label x={722} y={158 + k * 46} text={l.label} anchor="start" weight={600} />
 					<Label x={722} y={176 + k * 46} text={l.value} size={12} anchor="start" muted />
@@ -245,7 +298,11 @@
 				id="showing"
 				order={6}
 				label="Showing"
-				value={show === 'all' ? `all ${shownCount}` : show === 'buried' ? `${shownCount} buried` : `${shownCount} on the surface`}
+				value={show === 'all'
+					? `all ${shownCount}`
+					: show === 'buried'
+						? `${shownCount} buried`
+						: `${shownCount} on the surface`}
 			>
 				<Label
 					x={680}
@@ -260,10 +317,22 @@
 					weight={600}
 				/>
 			</Readout>
-			<Readout id="sickle" order={7} label="Ringed" value="Glu β6: valine in sickle cell, on the surface">
+			<Readout
+				id="sickle"
+				order={7}
+				label="Ringed"
+				value="Glu β6: valine in sickle cell, on the surface"
+			>
 				<circle cx="690" cy="354" r="9" fill="none" stroke="var(--stage-ink)" stroke-width="1.5" />
 				<Label x={708} y={350} text="β6 glutamic acid, on the surface:" size={12} anchor="start" />
-				<Label x={708} y={366} text="valine in sickle-cell disease" size={12} anchor="start" muted />
+				<Label
+					x={708}
+					y={366}
+					text="valine in sickle-cell disease"
+					size={12}
+					anchor="start"
+					muted
+				/>
 			</Readout>
 		</g>
 	{/if}

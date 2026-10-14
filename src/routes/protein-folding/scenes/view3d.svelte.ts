@@ -58,7 +58,10 @@ export function pieces(
 			// then straight to the last point. Bond j belongs to the piece that draws from the
 			// middle of bond j − 1 … to the middle of bond j, so neighbouring pieces meet.
 			const at = (m: number) => proj[run[m]]!;
-			const half = (m: number) => ({ x: (at(m).x + at(m + 1).x) / 2, y: (at(m).y + at(m + 1).y) / 2 });
+			const half = (m: number) => ({
+				x: (at(m).x + at(m + 1).x) / 2,
+				y: (at(m).y + at(m + 1).y) / 2
+			});
 			const f = (v: number) => v.toFixed(1);
 			const a = start === 0 ? at(0) : half(start - 1);
 			let d = `M${f(a.x)} ${f(a.y)}`;

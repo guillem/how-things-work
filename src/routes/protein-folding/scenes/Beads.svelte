@@ -27,7 +27,9 @@
 		letters = true
 	}: Props = $props();
 
-	const d = $derived(pts.map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(''));
+	const d = $derived(
+		pts.map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join('')
+	);
 
 	function key(e: KeyboardEvent, i: number) {
 		if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -81,7 +83,14 @@
 					stroke-width={clash.has(i) ? 3.5 : 1.5}
 				/>
 				{#if letters}
-					<text x={p.x} y={p.y + r * 0.36} text-anchor="middle" style:font-size="{r}px" font-weight="700" style:fill="#fff">
+					<text
+						x={p.x}
+						y={p.y + r * 0.36}
+						text-anchor="middle"
+						style:font-size="{r}px"
+						font-weight="700"
+						style:fill="#fff"
+					>
 						{seq[i]}
 					</text>
 				{/if}

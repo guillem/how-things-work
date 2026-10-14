@@ -16,8 +16,8 @@
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
 	import Label from './Text.svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { clashes, contacts, energy, fromTurns, landscape } from '../hp';
-	import { CHAINS, chainById } from '../folding';
+	import { clashes, contacts, energy, fromTurns } from '../hp';
+	import { CHAINS, chainById, landscapeOf } from '../folding';
 	import Beads from './Beads.svelte';
 	import { anglesOf, middleOf, pointsOf, straight } from './lattice';
 
@@ -28,13 +28,7 @@
 	const seq = $derived(chain.seq);
 	const N = 14;
 
-	// the full landscape of each chain (110,188 shapes; ~0.1 s each), computed when first needed
-	const lands = new Map<string, ReturnType<typeof landscape>>();
-	const land = (s: string) => {
-		let l = lands.get(s);
-		if (!l) lands.set(s, (l = landscape(s)));
-		return l;
-	};
+	const land = landscapeOf;
 
 	// ---- rules -------------------------------------------------------------------------------
 	const EXAMPLE = $derived(mode === 'rules' ? (land(CHAINS[0].seq).examples.get(-3) ?? '') : '');
@@ -101,7 +95,10 @@
 	/** In the rules frame, contacts appear one by one after the fold. */
 	const contactsShown = $derived(
 		mode === 'rules'
-			? touching.slice(0, reduced ? touching.length : clamp(Math.floor((t - 3.4) / 0.8) + 1, 0, touching.length))
+			? touching.slice(
+					0,
+					reduced ? touching.length : clamp(Math.floor((t - 3.4) / 0.8) + 1, 0, touching.length)
+				)
 			: valid
 				? touching
 				: []
@@ -173,17 +170,60 @@
 		<!-- the panel on the right -->
 		<g style:font-variant-numeric="tabular-nums">
 			<Readout id="key-h" order={1} label="H: water-repelling" color="var(--pf-h)">
-				<circle cx="738" cy="58" r="11" fill="var(--pf-h)" stroke="var(--pf-h-edge)" stroke-width="1.5" />
-				<text x="738" y="62" text-anchor="middle" style:font-size="11px" font-weight="700" style:fill="#fff">H</text>
+				<circle
+					cx="738"
+					cy="58"
+					r="11"
+					fill="var(--pf-h)"
+					stroke="var(--pf-h-edge)"
+					stroke-width="1.5"
+				/>
+				<text
+					x="738"
+					y="62"
+					text-anchor="middle"
+					style:font-size="11px"
+					font-weight="700"
+					style:fill="#fff">H</text
+				>
 				<Label x={758} y={62} text="water-repelling" anchor="start" />
 			</Readout>
 			<Readout id="key-p" order={2} label="P: water-loving" color="var(--pf-p)">
-				<circle cx="738" cy="90" r="11" fill="var(--pf-p)" stroke="var(--pf-p-edge)" stroke-width="1.5" />
-				<text x="738" y="94" text-anchor="middle" style:font-size="11px" font-weight="700" style:fill="#fff">P</text>
+				<circle
+					cx="738"
+					cy="90"
+					r="11"
+					fill="var(--pf-p)"
+					stroke="var(--pf-p-edge)"
+					stroke-width="1.5"
+				/>
+				<text
+					x="738"
+					y="94"
+					text-anchor="middle"
+					style:font-size="11px"
+					font-weight="700"
+					style:fill="#fff">P</text
+				>
 				<Label x={758} y={94} text="water-loving" anchor="start" />
 			</Readout>
-			<Readout id="key-c" order={3} label="Dotted: H–H contact" value="−1 each" color="var(--pf-contact)">
-				<line x1="727" x2="749" y1="120" y2="120" stroke="var(--pf-contact)" stroke-width="3" stroke-dasharray="2 5" stroke-linecap="round" />
+			<Readout
+				id="key-c"
+				order={3}
+				label="Dotted: H–H contact"
+				value="−1 each"
+				color="var(--pf-contact)"
+			>
+				<line
+					x1="727"
+					x2="749"
+					y1="120"
+					y2="120"
+					stroke="var(--pf-contact)"
+					stroke-width="3"
+					stroke-dasharray="2 5"
+					stroke-linecap="round"
+				/>
 				<Label x={758} y={124} text="H–H contact: −1" anchor="start" />
 			</Readout>
 
@@ -192,7 +232,7 @@
 					id="energy"
 					order={4}
 					label="Energy"
-					value="{contactsShown.length === 0 ? '0' : `−${contactsShown.length}`}"
+					value={contactsShown.length === 0 ? '0' : `−${contactsShown.length}`}
 					note={foldU > 0.99 ? `one of ${exampleShapes.toLocaleString('en-US')} shapes at −3` : ''}
 				>
 					<Label x={728} y={190} text="Energy" size={13} anchor="start" muted />
@@ -205,7 +245,14 @@
 						anchor="start"
 					/>
 					{#if foldU > 0.99}
-						<Label x={728} y={252} text="one of {exampleShapes.toLocaleString('en-US')}" size={12} anchor="start" muted />
+						<Label
+							x={728}
+							y={252}
+							text="one of {exampleShapes.toLocaleString('en-US')}"
+							size={12}
+							anchor="start"
+							muted
+						/>
 						<Label x={728} y={268} text="shapes at −3" size={12} anchor="start" muted />
 					{/if}
 				</Readout>
@@ -231,7 +278,13 @@
 						anchor="start"
 						color={solved ? 'var(--pf-contact)' : undefined}
 					/>
-					<Label x={728} y={254} text="best possible: −{-(best?.best ?? 0)}" size={13} anchor="start" />
+					<Label
+						x={728}
+						y={254}
+						text="best possible: −{-(best?.best ?? 0)}"
+						size={13}
+						anchor="start"
+					/>
 				</Readout>
 				<Readout
 					id="status"
@@ -244,16 +297,56 @@
 							: `${bestCount.toLocaleString('en-US')} at ${E === 0 ? '0' : `−${-E}`}`}
 				>
 					{#if !valid}
-						<Label x={728} y={300} text="Two beads on one" size={13} anchor="start" color="var(--pf-clash)" />
-						<Label x={728} y={318} text="grid point: not a" size={13} anchor="start" color="var(--pf-clash)" />
-						<Label x={728} y={336} text="real shape" size={13} anchor="start" color="var(--pf-clash)" />
+						<Label
+							x={728}
+							y={300}
+							text="Two beads on one"
+							size={13}
+							anchor="start"
+							color="var(--pf-clash)"
+						/>
+						<Label
+							x={728}
+							y={318}
+							text="grid point: not a"
+							size={13}
+							anchor="start"
+							color="var(--pf-clash)"
+						/>
+						<Label
+							x={728}
+							y={336}
+							text="real shape"
+							size={13}
+							anchor="start"
+							color="var(--pf-clash)"
+						/>
 					{:else if solved}
-						<Label x={728} y={300} text="You found the best fold:" size={13} weight={600} anchor="start" />
+						<Label
+							x={728}
+							y={300}
+							text="You found the best fold:"
+							size={13}
+							weight={600}
+							anchor="start"
+						/>
 						<Label x={728} y={318} text="the only one of 110,188" size={13} anchor="start" />
 						<Label x={728} y={336} text="shapes at −6" size={13} anchor="start" />
 					{:else}
-						<Label x={728} y={300} text="{bestCount.toLocaleString('en-US')} of the 110,188" size={13} anchor="start" />
-						<Label x={728} y={318} text="shapes score {E === 0 ? '0' : `−${-E}`}" size={13} anchor="start" />
+						<Label
+							x={728}
+							y={300}
+							text="{bestCount.toLocaleString('en-US')} of the 110,188"
+							size={13}
+							anchor="start"
+						/>
+						<Label
+							x={728}
+							y={318}
+							text="shapes score {E === 0 ? '0' : `−${-E}`}"
+							size={13}
+							anchor="start"
+						/>
 					{/if}
 				</Readout>
 				<Readout id="howto" order={21}>
@@ -265,7 +358,12 @@
 	{:else}
 		<g opacity={appear}>
 			{#each pair as p (p.c.id)}
-				<Readout id="seq-{p.c.id}" order={p.c.id === 'a' ? 1 : 2} label={p.c.label} value="{p.c.seq} · best −6, one shape">
+				<Readout
+					id="seq-{p.c.id}"
+					order={p.c.id === 'a' ? 1 : 2}
+					label={p.c.label}
+					value="{p.c.seq} · best −6, one shape"
+				>
 					<Label x={p.cx} y={72} text={p.c.label} size={16} weight={600} />
 					<g>
 						{#each p.c.seq.split('') as letter, i (i)}
@@ -275,7 +373,14 @@
 								r="9"
 								fill={letter === 'H' ? 'var(--pf-h)' : 'var(--pf-p)'}
 							/>
-							<text x={p.cx - 13 * 11.5 + i * 23} y={106} text-anchor="middle" style:font-size="10px" font-weight="700" style:fill="#fff">
+							<text
+								x={p.cx - 13 * 11.5 + i * 23}
+								y={106}
+								text-anchor="middle"
+								style:font-size="10px"
+								font-weight="700"
+								style:fill="#fff"
+							>
 								{letter}
 							</text>
 						{/each}

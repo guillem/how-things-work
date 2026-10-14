@@ -33,7 +33,7 @@ export function centroid(ps: readonly Vec3[]): Vec3 {
 export function eigenSymmetric(a: number[][]): { values: number[]; vectors: number[][] } {
 	const n = a.length;
 	const m = a.map((r) => r.slice());
-	const v = m.map((_, i) => m.map((__, j) => (i === j ? 1 : 0)));
+	const v: number[][] = m.map((_, i) => m.map((__, j) => (i === j ? 1 : 0)));
 	for (let sweep = 0; sweep < 100; sweep++) {
 		let off = 0;
 		for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) off += m[i][j] * m[i][j];

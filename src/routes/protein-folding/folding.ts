@@ -4,6 +4,7 @@
  */
 import { AMINO, type AminoKind } from '../dna-to-protein/genetics';
 import { PROTEINS, type ProteinRecord } from './proteins-data';
+import { landscape, type Landscape } from './hp';
 import { distance, type Vec3 } from './structure';
 
 export interface LatticeChain {
@@ -23,6 +24,14 @@ export const CHAINS: LatticeChain[] = [
 	{ id: 'b', label: 'Chain B', seq: 'HPHPPHHPPHPHPH' }
 ];
 export const chainById = (id: string) => CHAINS.find((c) => c.id === id) ?? CHAINS[0];
+
+const landscapes = new Map<string, Landscape>();
+/** The full landscape of a chain (every shape; ~0.1 s for 14 beads), computed once. */
+export function landscapeOf(seq: string): Landscape {
+	let l = landscapes.get(seq);
+	if (!l) landscapes.set(seq, (l = landscape(seq)));
+	return l;
+}
 
 // ---- Levinthal ----------------------------------------------------------------------------
 
@@ -87,3 +96,13 @@ export function runs(trace: readonly (Vec3 | null)[]): number[][] {
 	if (cur.length) out.push(cur);
 	return out;
 }
+
+// ---- the gap between sequences and structures --------------------------------------------
+
+/**
+ * Experimentally determined structures in the RCSB PDB, from its search service (query
+ * `rcsb_entry_info.structure_determination_methodology = experimental`), 14 October 2026.
+ */
+export const PDB_ENTRIES = 260_896;
+/** Protein sequences in UniProtKB, release 2026_03 (2 September 2026), from its REST API. */
+export const UNIPROT_SEQUENCES = 150_006_383;
