@@ -140,12 +140,7 @@
 	<Readout id="outl">
 		<Txt x={T.x + T.w + 8} y={T.top - 29} size={11} muted text="next token" />
 	</Readout>
-	<Readout
-		id="arcnote"
-		order={3}
-		label="Arcs"
-		value="in each block, the token the last one listens to most (12-head average, ⟨start⟩ left out)"
-	>
+	<Readout id="arcnote">
 		<Txt
 			x={T.x}
 			y={588}
@@ -212,6 +207,13 @@
 		/>
 		<Txt x={NX.x + nx.p * NX.w + 8} y={y + 15} size={12} text="{fix(nx.p * 100, 1)}%" />
 	{/each}
+	<Readout
+		id="block"
+		order={4}
+		label="Each block"
+		value="12 attention heads, then an MLP (768 → 3,072 → 768); each adds its result to the token’s vector"
+		><g></g></Readout
+	>
 	<Readout
 		id="next"
 		order={1}

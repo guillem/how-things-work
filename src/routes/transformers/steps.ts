@@ -5,14 +5,14 @@ import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
  * checks). Kept here, without the attention data, so the narrative does not load the weights.
  */
 export const SENTENCES = [
-	{ id: 'animal', label: 'The animal … it', n: 14 },
-	{ id: 'mary', label: 'Mary and John', n: 15 },
-	{ id: 'fox', label: 'Quick brown fox, twice', n: 15 },
-	{ id: 'keys', label: 'The keys … are', n: 12 },
-	{ id: 'dog', label: 'Dog bites man', n: 15 },
-	{ id: 'capital', label: 'Capital of', n: 14 },
-	{ id: 'count', label: '1, 2, 3', n: 13 },
-	{ id: 'tom', label: 'Tom … he', n: 8 }
+	{ id: 'animal', label: 'it', n: 14 },
+	{ id: 'mary', label: 'Mary', n: 15 },
+	{ id: 'fox', label: 'fox', n: 15 },
+	{ id: 'keys', label: 'keys', n: 12 },
+	{ id: 'dog', label: 'dog', n: 15 },
+	{ id: 'capital', label: 'Rome', n: 14 },
+	{ id: 'count', label: 'count', n: 13 },
+	{ id: 'tom', label: 'he', n: 8 }
 ] as const;
 
 /** GPT-2's tokens for the featured sentence, as the stage writes them (a model test checks). */
@@ -50,7 +50,7 @@ const sentence = (id = 's', def = 'animal'): Control => ({
 	label: 'Sentence',
 	default: def,
 	options: SENTENCES.map((s) => ({ value: s.id, label: s.label })),
-	help: 'Eight fixed sentences, run through GPT-2 small when the page was made.'
+	help: 'Eight fixed sentences, each named by a key word, run through GPT-2 small when the page was made.'
 });
 
 const layer: Control = {
@@ -266,7 +266,7 @@ export const spec: ExplainerSpec = {
 			controls: [sentence(), layer, head, token],
 			body: `
 <p>Point at a token (or tap it, or Tab to it) to see which earlier tokens it attends to in the chosen layer and head: the thicker the line, the larger the weight. The grid on the right shows the same token in all 144 heads at once, each cell a tiny bar chart of its weights; click a cell to pick that layer and head.</p>
-<p>Try <strong>Quick brown fox, twice</strong> at the second <em>fox</em>, or <strong>Mary and John</strong> at the last <em>to</em>, and look for the cells that light up away from ⟨start⟩.</p>
+<p>Try the sentence <strong>fox</strong> (“the quick brown fox …” twice) at the second <em>fox</em>, or <strong>Mary</strong> at the last <em>to</em>, and look for the cells that light up away from ⟨start⟩.</p>
 <p>The sentences are fixed. Typing your own would mean running GPT-2 in your browser, and downloading its 550 MB of weights; instead, these eight were run through it when the page was made.</p>`,
 			notes: `<p>Attention weights show where a head looks, not what the model does with what it finds. A head can attend strongly to a token whose value it then mostly ignores, and the same information can arrive by other paths. Researchers who want to know what a head is for switch it off or swap its output and watch what changes in the prediction.</p>`
 		},
