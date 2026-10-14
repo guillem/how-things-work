@@ -325,7 +325,6 @@
 				halo={false}
 			/>
 		</g>
-
 	</g>
 
 	<!-- the right-hand panel -->
@@ -343,7 +342,7 @@
 				x={560}
 				y={GY - 4}
 				width={384}
-				height={250}
+				height={190}
 				rx="10"
 				fill="var(--surface)"
 				stroke="var(--border)"
