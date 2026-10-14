@@ -75,7 +75,7 @@
 </script>
 
 <g class="myelin">
-	<Readout id="title" order={0} label="Fibre" value="{d} µm, {myelin ? 'myelinated' : 'bare'}">
+	<Readout id="title">
 		<Label
 			x={X0}
 			y={70}
@@ -208,12 +208,7 @@
 		/>
 	</Readout>
 	{#if myelin}
-		<Readout
-			id="internode"
-			order={4}
-			label="Internode"
-			value="{(L / 1000).toFixed(2)} mm of myelin"
-		>
+		<Readout id="internode">
 			<Label
 				x={X0 + 2.5 * seg}
 				y={Y + R + 42}

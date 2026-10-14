@@ -171,10 +171,15 @@
 	const SX = 700;
 	const SY0 = 80;
 	const SY1 = 520;
-	const VTOP = 60;
-	const VBOT = -100;
+	/** The nernst step's slider reaches −148 mV (K⁺ outside ÷ 10) and +105 mV (Na⁺ × 10). */
+	const VTOP = $derived(mode === 'nernst' ? 120 : 60);
+	const VBOT = $derived(mode === 'nernst' ? -160 : -100);
 	const sy = (v: number) => SY0 + ((VTOP - clamp(v, VBOT, VTOP)) / (VTOP - VBOT)) * (SY1 - SY0);
-	const ticks = [60, 40, 20, 0, -20, -40, -60, -80, -100];
+	const ticks = $derived(
+		mode === 'nernst'
+			? [120, 80, 40, 0, -40, -80, -120, -160]
+			: [60, 40, 20, 0, -20, -40, -60, -80, -100]
+	);
 	const marks = $derived(
 		ions.map((k) => ({
 			ion: k,
@@ -337,7 +342,7 @@
 		<Label x={X0 + 400} y={552} anchor="start" size={11} muted text="one dot ≈ 12 mM" />
 	</Readout>
 	{#if mode === 'nernst'}
-		<Readout id="open" order={4} label="Open channels" value="{ION_INFO[ion].symbol} only">
+		<Readout id="open">
 			<Label
 				x={X1 - 12}
 				y={OUT.y0 + 20}

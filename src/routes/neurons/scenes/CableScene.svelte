@@ -111,12 +111,7 @@
 
 <g class="cable">
 	<!-- the axon -->
-	<Readout
-		id="title"
-		order={0}
-		label="Squid giant axon"
-		value="{diameter} µm across, {T.toFixed(1)} °C"
-	>
+	<Readout id="title">
 		<Label
 			x={X0}
 			y={78}
@@ -255,7 +250,7 @@
 				text="← refractory behind"
 			/>
 		</Readout>
-		<Readout id="peak" order={2} label="Peak" value={fmt(V[peakAt])}>
+		<Readout id="peak">
 			<Label
 				x={sx(peakX) + 10}
 				y={syV(V[peakAt]) + 4}

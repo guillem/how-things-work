@@ -103,12 +103,13 @@ test('a steady current is coded as a firing rate that rises with the current', (
 });
 
 test('the propagated spike travels along the squid axon at HH’s computed 18.8 m/s', () => {
-	const v = velocity(cable(squidCable()));
+	// The grid the page uses: 0.5 mm compartments.
+	const v = velocity(cable(squidCable({ dx: 0.05, dt: 0.0025 })));
 	expect(Math.abs(v - SQUID_AXON.computed)).toBeLessThan(0.8);
 	// … within about 15% of the 21.2 m/s they measured on the same fibre.
 	expect(Math.abs(v - SQUID_AXON.measured) / SQUID_AXON.measured).toBeLessThan(0.15);
 	// Not an artefact of the grid: halving the compartments changes it by under 2%.
-	const fine = velocity(cable(squidCable({ dx: 0.02, dt: 0.0005, length: 6, tEnd: 5 })));
+	const fine = velocity(cable(squidCable({ dx: 0.025, dt: 0.0006, length: 6, tEnd: 5 })));
 	expect(Math.abs(fine - v) / fine).toBeLessThan(0.02);
 });
 
