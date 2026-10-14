@@ -227,6 +227,14 @@ export const freeSpread = (sigma0: number, t: number, u: Units = ELECTRON) => {
 	return sigma0 * Math.sqrt(1 + ((hOver2m * t) / (sigma0 * sigma0)) ** 2);
 };
 
+/**
+ * The free-packet scene's grid and run: the packet starts at x0 and the loop ends when its
+ * centre reaches x1. The grid is periodic, so it must be wide enough (±205 nm) that even the
+ * fastest-spreading packet the sliders allow never wraps round its edges before then.
+ */
+export const PACKET_GRID = { n: 8192, dx: 0.05 };
+export const PACKET_RUN = { x0: -14, x1: 36 };
+
 // ---------------------------------------------------------------- evolution
 
 function multiply(w: Wave, cr: Float64Array, ci: Float64Array) {

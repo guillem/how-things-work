@@ -89,7 +89,7 @@
 
 	// ---- measurement -------------------------------------------------------------------------
 	const verdicts = $derived(run ? outcomes(run.transmitted, 4000, 5) : []);
-	/** 0 → 1 over the click: the losing part of the wave fades, the winner shrinks to a dot. */
+	/** 0 → 1 over the click: the losing part of the wave fades. */
 	const collapse = $derived(
 		isMeasure && !fast && !reduced ? smoothstep(runS, runS + 0.5, inCycle) : 0
 	);
@@ -159,7 +159,7 @@
 		const X0 = 700;
 		const Y0 = 320;
 		const ix = (x: number) => X0 + ((x - xs0) / (xs1 - xs0)) * W;
-		// log10 |ψ|² from −6 to 0 (relative to the peak at the entrance)
+		// log10 |ψ|² from −4 to 1 (relative to the peak at the entrance)
 		const ref = bestV > 0 ? bestV : 1;
 		let d = '';
 		for (let j = lo; j <= hi; j++) {
@@ -205,7 +205,7 @@
 		}
 		return d;
 	});
-	/** STM plot: relative current from 10³ (top) to 10⁻³ (bottom). */
+	/** STM plot: relative current from 10² (top) to 10⁻⁵ (bottom). */
 	const SP = { y0: 300, y1: 560 };
 	const sy = (r: number) => SP.y0 + ((2 - clamp(Math.log10(r), -5, 2)) / 7) * (SP.y1 - SP.y0);
 
@@ -339,7 +339,11 @@
 				<Readout
 					id="click-{d.side}"
 					label="Click"
-					value={d.side ? 'right: it tunnelled' : 'left: it reflected'}
+					value={d.side
+						? V0 > E
+							? 'right: it tunnelled'
+							: 'right: it got through'
+						: 'left: it reflected'}
 					color="var(--qm-click)"
 					opacity={lit}
 				>
@@ -484,11 +488,11 @@
 			<Readout
 				id="share"
 				order={3}
-				label="Share of |ψ|² that tunnelled"
+				label="Share of |ψ|² that got through"
 				value={pct(run.transmitted)}
 				color="var(--qm-prob)"
 			>
-				<T x={PL} y={196} text="share of |ψ|² that tunnelled" size={13} muted />
+				<T x={PL} y={196} text="share of |ψ|² that got through" size={13} muted />
 				<T
 					x={PL}
 					y={222}
@@ -615,13 +619,14 @@
 				<Readout
 					id="exp-step"
 					order={4}
-					label="Each extra 0.1 nm"
+					label="Each extra 0.1 nm (plane wave, thick barrier)"
 					value="÷ {(barrierT(E, V0, 0.8) / barrierT(E, V0, 0.9)).toFixed(1)}"
 				>
-					<T x={PL} y={222} text="each extra 0.1 nm (thick barrier):" size={12} muted />
+					<T x={PL} y={216} text="each extra 0.1 nm" size={12} muted />
+					<T x={PL} y={232} text="(plane wave, thick barrier):" size={12} muted />
 					<T
 						x={PL}
-						y={244}
+						y={256}
 						text="chance ÷ {(barrierT(E, V0, 0.8) / barrierT(E, V0, 0.9)).toFixed(1)}"
 						size={16}
 						weight={600}

@@ -4,6 +4,8 @@ import { expect, test } from '@playwright/test';
 import {
 	ELECTRON,
 	NATURAL,
+	PACKET_GRID,
+	PACKET_RUN,
 	PLANCK,
 	barrierT,
 	boxEnergy,
@@ -87,6 +89,23 @@ test('a free electron packet moves at ħk/m and spreads as σ√(1 + (ħt/2mσ²
 	}
 	// The narrative's numbers: a 1 eV electron moves at about 590 km/s (0.59 nm/fs).
 	expect(speed(1)).toBeCloseTo(0.593, 3);
+});
+
+test('the packet scene measures the true spread over the whole run, for every slider setting', () => {
+	// The grid is periodic: too narrow a grid lets a spreading packet wrap round its edges, and
+	// the ⟨x⟩ and σ readouts then count the tail at the wrong end.
+	const g = grid(PACKET_GRID.n, PACKET_GRID.dx);
+	for (const E of [0.2, 1, 3]) {
+		for (const sigma0 of [0.4, 1, 3]) {
+			const psi0 = gaussian(g, PACKET_RUN.x0, sigma0, waveNumber(E));
+			const end = (PACKET_RUN.x1 - PACKET_RUN.x0) / speed(E);
+			for (const t of [end / 2, end]) {
+				const m = moments(g, freeEvolve(g, psi0, t, ELECTRON));
+				expect(m.mean).toBeCloseTo(PACKET_RUN.x0 + speed(E) * t, 2);
+				expect(Math.abs(m.spread / freeSpread(sigma0, t) - 1)).toBeLessThan(1e-3);
+			}
+		}
+	}
 });
 
 test('de Broglie wavelengths and box energies quoted in the text', () => {
