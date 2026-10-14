@@ -24,7 +24,7 @@ const clockErr: Control = {
 	min: -10,
 	max: 10,
 	step: 0.1,
-	default: 3,
+	default: 6,
 	format: (v) =>
 		v === 0
 			? 'exact'
@@ -183,7 +183,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>There is a catch. To time a signal, the receiver needs a clock that agrees with the satellites' clocks. The satellites carry <dfn data-def="Clocks that count the oscillations of atoms (rubidium or caesium on GPS satellites): stable to about a billionth of a second over a day.">atomic clocks</dfn>; a phone has a cheap quartz crystal, like a watch's, that can drift by a millionth of a second every second.</p>
 <p>And timing is distance: a clock <strong>1 millisecond</strong> fast makes every signal seem to have travelled 1 ms longer, which is <strong>300 km</strong> further. Give the receiver's clock an error. Every circle grows (clock fast) or shrinks (clock slow) by the <em>same</em> amount, and they no longer meet at one point.</p>
-<p>The distances measured this way are called <dfn data-def="A distance to a satellite worked out from the travel time of its signal using the receiver's own clock: the true distance plus the speed of light times the receiver's clock error.">pseudoranges</dfn>. The cross shows the receiver's best guess if it trusts its clock: the point that comes closest to all three circles. It is hundreds of kilometres out.</p>`
+<p>The distances measured this way are called <dfn data-def="A distance to a satellite worked out from the travel time of its signal using the receiver's own clock: the true distance plus the speed of light times the receiver's clock error.">pseudoranges</dfn>. The cross shows the receiver's best guess if it trusts its clock: the point that comes closest to all three circles. It is far out: hundreds of kilometres for a few milliseconds of error.</p>`
 		},
 		{
 			id: 'solve',
