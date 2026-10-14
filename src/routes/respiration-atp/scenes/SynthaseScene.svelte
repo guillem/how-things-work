@@ -324,6 +324,18 @@
 	<circle cx={TOP.x} cy={TOP.y} r="16" fill="color-mix(in srgb, {CHAIN.synthase} 45%, #000)" />
 	<circle cx={cam.x} cy={cam.y} r="8" fill="#fff" opacity="0.85" />
 
+	{#if C !== 8}
+		<Readout id="outline">
+			<Label
+				x={936}
+				y={510}
+				text="outline: the cow's enzyme (8); ring redrawn with {C} subunits"
+				anchor="end"
+				size={11}
+				muted
+			/>
+		</Readout>
+	{/if}
 	<!-- ================= counters ================= -->
 	<Readout id="card1">
 		<rect

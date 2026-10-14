@@ -28,7 +28,7 @@ const uncoupler: Control = {
 
 export const spec: ExplainerSpec = {
 	slug: 'respiration-atp',
-	title: 'How cells turn food into ATP',
+	title: 'Respiration: how cells make ATP',
 	summary:
 		'Follow one glucose molecule through glycolysis, the citric acid cycle and the electron transport chain, watch the electrons pump protons and the protons spin ATP synthase, then take the oxygen away and see the chain back up.',
 	chapters: [
@@ -50,7 +50,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Every cell in your body runs on the same reaction, the reverse of photosynthesis:</p>
 <p class="formula"><strong>C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6 O<sub>2</sub> → 6 CO<sub>2</sub> + 6 H<sub>2</sub>O</strong></p>
-<p>It is the same chemistry as burning sugar in a flame, and it releases the same energy: 2,840 kJ per mole of glucose (180 g). A flame lets it all go at once, as heat. A cell takes the glucose apart in some thirty small, enzyme-controlled steps and stores a large part of the energy in a molecule it can spend anywhere: <dfn data-def="Adenosine triphosphate. Splitting off its last phosphate (ATP → ADP + phosphate) releases about 50 kJ/mol in a living cell, enough to drive a muscle protein's stroke, a pump or a chemical synthesis.">ATP</dfn>.</p>
+<p>It is the same chemistry as burning sugar in a flame, and it releases the same energy: 2,840 kJ per mole of glucose (180 g). A flame lets it all go at once, as heat. A cell takes the glucose apart in a couple of dozen small, enzyme-controlled steps and stores a large part of the energy in a molecule it can spend anywhere: <dfn data-def="Adenosine triphosphate. Splitting off its last phosphate (ATP → ADP + phosphate) releases about 50 kJ/mol in a living cell, enough to drive a muscle protein's stroke, a pump or a chemical synthesis.">ATP</dfn>.</p>
 <p>The work is shared out between two places you met in the cell: the <strong>cytosol</strong>, where glucose is split in half, and the <strong>mitochondria</strong>, where the halves are burned to CO<sub>2</sub> and the energy is turned into ATP. Follow the glucose on the left.</p>`,
 			notes: `<p>2,840 kJ/mol is the standard free-energy change of the complete oxidation (Lehninger, <i>Principles of Biochemistry</i>). A resting adult turns over roughly their own body weight of ATP every day, yet holds only a tiny fraction of that at any moment: each ATP molecule is recharged from ADP over and over.</p><p>A mirror image: photosynthesis splits water and releases its oxygen; respiration takes oxygen and makes water again. The oxygen you breathe ends up in water, not in the CO<sub>2</sub> you breathe out — the carbon dioxide's oxygen comes from the glucose and from water.</p>`
 		},
@@ -183,7 +183,7 @@ export const spec: ExplainerSpec = {
 			controls: [synthase, uncoupler],
 			duration: 20,
 			body: `
-<p>Pumping protons out of the matrix charges the inner membrane like a battery: the intermembrane side becomes positive and slightly more acidic. Together the voltage and the acidity difference make the <dfn data-def="The energy, per unit charge, that pushes protons back into the matrix: the membrane voltage (≈ 150–180 mV) plus the pH difference (≈ 0.5–0.9 units, ≈ 30–50 mV).">proton-motive force</dfn>, about <strong>180 mV</strong> across a membrane only 5 nm thick: an electric field of some 35 million volts per metre.</p>
+<p>Pumping protons out of the matrix charges the inner membrane like a battery: the intermembrane side becomes positive and slightly more acidic. Together the voltage and the acidity difference make the <dfn data-def="The energy, per unit charge, that pushes protons back into the matrix: the membrane voltage (≈ 150–180 mV) plus the pH difference (≈ 0.5–0.9 units, ≈ 30–50 mV).">proton-motive force</dfn>, about <strong>180–200 mV</strong> across a membrane only 5 nm thick: an electric field of some 35 million volts per metre.</p>
 <p>Unlike in a chloroplast, most of it is voltage, not acidity. The protons' only easy way back is through <strong>ATP synthase</strong>, and it lets them through only while making ATP.</p>
 <p>Block the synthase (as the antibiotic <strong>oligomycin</strong> does). The gradient rises until pumping against it gets too hard, and the whole chain slows almost to a stop, even with plenty of NADH and oxygen. Respiration and ATP making are <em>coupled</em>: the cell burns its food only as fast as it spends ATP.</p>
 <p>Now punch a leak in the membrane with an <strong>uncoupler</strong>. The gradient collapses, the chain races and burns food as fast as it can, and no ATP is made: the energy all becomes heat. Brown fat does this on purpose, with a leak protein (UCP1), to keep newborns warm.</p>`,

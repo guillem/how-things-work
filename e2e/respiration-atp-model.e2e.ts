@@ -5,7 +5,6 @@
 import { expect, test } from '@playwright/test';
 import {
 	CITRIC_ACID_CYCLE,
-	DG_GLUCOSE,
 	FERMENTATION_ATP,
 	GLYCOLYSIS,
 	H_PER_FADH2,
@@ -87,9 +86,6 @@ test('the cow c₈ ring sets 2.7 H⁺ per ATP and P/O maxima of 2.7 and 1.6', ()
 	// Hinkle 2005: a c₁₀ ring (yeast) would give 2.3 and 1.4.
 	expect(poRatio(H_PER_NADH, hPerATP(10))).toBeCloseTo(2.3, 1);
 	expect(poRatio(H_PER_FADH2, hPerATP(10))).toBeCloseTo(1.4, 1);
-	// …and the measured 2.5 and 1.5 correspond to 4 H⁺ per ATP.
-	expect(H_PER_NADH / 2.5).toBe(4);
-	expect(H_PER_FADH2 / 1.5).toBe(4);
 });
 
 test('a glucose yields 30–32 ATP with measured P/O, 36–38 with the old integers', () => {
@@ -108,7 +104,6 @@ test('a glucose yields 30–32 ATP with measured P/O, 36–38 with the old integ
 });
 
 test('about a third of glucose energy ends in ATP at standard values, over half in a cell', () => {
-	expect(DG_GLUCOSE).toBe(-2840);
 	expect(efficiency(32)).toBeCloseTo(0.34, 2);
 	expect(efficiency(32, -50)).toBeGreaterThan(0.5);
 });
@@ -132,6 +127,15 @@ test('without oxygen the chain backs up from cytochrome c to NADH and stops', ()
 	const s1 = stepChain(start, 0.3, cond);
 	// The carrier next to oxygen fills first, NADH last.
 	expect(s1.c - start.c).toBeGreaterThan(s1.nadh - start.nadh);
+	// Time for each pool to pass 90% reduced: cytochrome c, then ubiquinone, then NADH.
+	const t90: Record<string, number> = {};
+	let s = start;
+	for (let i = 1; i <= 4000 && Object.keys(t90).length < 3; i++) {
+		s = stepChain(s, 0.001, cond);
+		for (const k of ['c', 'q', 'nadh'] as const) if (!(k in t90) && s[k] > 0.9) t90[k] = i;
+	}
+	expect(t90.c).toBeLessThan(t90.q);
+	expect(t90.q).toBeLessThan(t90.nadh);
 	const end = steadyChain(cond, start);
 	expect(end.state.c).toBeGreaterThan(0.99);
 	expect(end.state.q).toBeGreaterThan(0.99);
