@@ -132,7 +132,7 @@ A topic is done when:
 - [x] semiconductors
 
 **Biology**
-- [ ] the-cell
+- [x] the-cell
 - [ ] dna-to-protein
 - [ ] protein-folding
 - [x] photosynthesis
