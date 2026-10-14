@@ -370,6 +370,7 @@ export function bodyBySource(): Record<Source, number> {
 // ------------------------------------------------------------------ formatting
 
 export function years(y: number): string {
+	if (y >= 1e12) return `${Number((y / 1e12).toPrecision(2))} trillion years`;
 	if (y >= 1e9) return `${(y / 1e9).toFixed(y >= 1e10 ? 0 : 1)} billion years`;
 	if (y >= 1e6) return `${(y / 1e6).toFixed(y >= 1e7 ? 0 : 1)} million years`;
 	if (y >= 1e4) return `${Math.round(y / 1e3).toLocaleString('en-US')} thousand years`;
