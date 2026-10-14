@@ -211,7 +211,7 @@ const squares = (c: number, n: number) => Array.from({ length: n }, (_, i) => c 
 export const landscapes: Record<LandscapeId, Landscape> = {
 	line: {
 		id: 'line',
-		title: 'Fitting a line (real data)',
+		title: 'Fitting a line (21 examples)',
 		x: [-2, 2],
 		y: [-2, 2],
 		xName: 'slope a',

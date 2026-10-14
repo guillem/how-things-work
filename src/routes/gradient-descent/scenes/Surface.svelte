@@ -111,6 +111,12 @@
 	{/each}
 
 	<Readout id="surface-title">
-		<Txt x={LEFT.x + 4} y={LEFT.y + 14} text="height = loss" size={12} muted />
+		<Txt
+			x={LEFT.x + 4}
+			y={LEFT.y + 14}
+			text="height = loss (cut off flat at the top)"
+			size={12}
+			muted
+		/>
 	</Readout>
 </g>
