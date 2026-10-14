@@ -308,6 +308,8 @@
 	});
 
 	const fmt = (v: number) => v.toFixed(2).replace(/^-/, '−');
+	/** The baseline: mean cosine between the steps of random word pairs (−0.00 shown as 0.00). */
+	const randomCos = $derived(emb ? fmt(emb.randomStepCosine()).replace(/^−(0\.00)$/, '$1') : '');
 	function arrowEnd(a: Pt, b: Pt, u: number): Pt {
 		return { x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u };
 	}
@@ -415,11 +417,11 @@
 				</g>
 			</Readout>
 		{/each}
-		<Readout id="random" order={9} label="Two random word steps" value="cos ≈ 0.0">
+		<Readout id="random" order={9} label="Two random word steps" value="cos ≈ {randomCos}">
 			{@const y = 104 + pairView.length * 28 + 18}
 			<line x1={PL} x2={PR} y1={y - 16} y2={y - 16} stroke="var(--stage-line)" />
 			<Txt x={PL} y={y + 4} text="for comparison, the steps between" size={12} muted />
-			<Txt x={PL} y={y + 20} text="random words: cos ≈ 0.0" size={12} muted />
+			<Txt x={PL} y={y + 20} text="random words: cos ≈ {randomCos}" size={12} muted />
 		</Readout>
 	{:else if analogy}
 		<!-- ------------------------------------------------------------ analogy -->

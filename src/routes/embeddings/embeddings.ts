@@ -13,6 +13,8 @@
  * else on the site imports it.
  */
 
+import { rng } from '#lib/draw/math.ts';
+
 export interface GloveData {
 	DIMS: number;
 	WORDS: string;
@@ -89,7 +91,7 @@ export class Embeddings {
 		this.vectors = new Float32Array(q.length);
 		for (let i = 0; i < this.words.length; i++) {
 			const row = q.subarray(i * D, (i + 1) * D);
-			const n = length(row);
+			const n = length(row) || 1;
 			for (let j = 0; j < D; j++) this.vectors[i * D + j] = row[j] / n;
 		}
 		const map = (b64: string) =>
@@ -248,11 +250,29 @@ export class Embeddings {
 		});
 		return sums.map((s, c) => {
 			const members = this.words.filter((_, i) => this.clusters[i] === c);
-			return this.nearest(s, members.length, [])
-				.filter((n) => members.includes(n.word))
+			return members
+				.map((w) => ({ w, s: dot(this.vector(w)!, s) }))
+				.sort((x, y) => y.s - x.s)
 				.slice(0, k)
-				.map((n) => n.word);
+				.map((m) => m.w);
 		});
+	}
+
+	/**
+	 * The average cosine between the steps of random word pairs (b − a against d − c, four words
+	 * drawn with a fixed seed): the baseline the man → woman arrows are compared with.
+	 */
+	randomStepCosine(samples = 200, seed = 7): number {
+		const r = rng(seed);
+		const pick = () => this.vector(this.words[Math.floor(r() * this.words.length)])!;
+		const step = () => {
+			const a = pick();
+			const b = pick();
+			return Float32Array.from(b, (v, j) => v - a[j]);
+		};
+		let sum = 0;
+		for (let i = 0; i < samples; i++) sum += cosine(step(), step());
+		return sum / samples;
 	}
 
 	/**

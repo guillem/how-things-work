@@ -35,13 +35,13 @@ const relation: Control = {
 	type: 'select',
 	id: 'rel',
 	label: 'Relationship',
-	help: 'man → woman, country → capital, verb → past tense, adjective → comparative.',
+	help: 'Pairs such as king → queen, france → paris, walk → walked and small → smaller.',
 	default: 'gender',
 	options: [
-		{ value: 'gender', label: 'woman' },
-		{ value: 'capital', label: 'capital' },
-		{ value: 'tense', label: 'past' },
-		{ value: 'compare', label: 'bigger' }
+		{ value: 'gender', label: 'man → woman' },
+		{ value: 'capital', label: 'country → capital' },
+		{ value: 'tense', label: 'verb → past' },
+		{ value: 'compare', label: 'big → bigger' }
 	]
 };
 
@@ -103,9 +103,9 @@ export const spec: ExplainerSpec = {
 <p>A computer cannot do arithmetic with the word “king”. It can do arithmetic with numbers, so language programs turn every word into a list of numbers: a <dfn data-def="A list of numbers that stands for something (here a word), chosen so that similar things get similar lists. Also called a word vector.">word embedding</dfn>. On the stage are the real embeddings of two words, 100 numbers each, drawn as a strip of 100 bars: up for a positive number, down for a negative one.</p>
 <p>A list of 100 numbers is a <a href="../linear-transformations/">vector</a>, just like the arrows (2, 1) on a flat grid, only with 100 numbers instead of 2: an arrow in a space with 100 <dfn data-def="One of the independent directions of a space. A flat grid has two (across and up); a vector of 100 numbers lives in a space with 100.">dimensions</dfn>. Nobody can picture 100 dimensions, but the arithmetic is the same as in two.</p>
 <p>No single number means anything on its own: there is no “royalty” bar. But compare <strong>king</strong> and <strong>queen</strong>: many bars go up and down together. Now pick <strong>banana</strong> as the second word: the two strips have little in common.</p>`,
-			notes: `<p><strong>Where the numbers come from.</strong> These are <dfn data-def="Global Vectors for word representation: word embeddings from Stanford, learned from how often words appear near each other.">GloVe</dfn> vectors (Pennington, Socher &amp; Manning, Stanford, 2014). A program read 6 billion words of Wikipedia and news text and counted, for 400,000 words, how often each one appears within a few words of each other one. It then adjusted 100 numbers per word until the dot product of two words' vectors (next step) roughly matched the logarithm of how often they appear together. (Simplified: the real recipe also gives each word an extra number, weights rare and common pairs differently, and learns two vectors per word that are added up at the end.) Nobody chose what any number means: they are whatever made the counts come out right.</p>
+			notes: `<p><strong>Where the numbers come from.</strong> These are <dfn data-def="Global Vectors for word representation: word embeddings from Stanford, learned from how often words appear near each other.">GloVe</dfn> vectors (Pennington, Socher &amp; Manning, Stanford, 2014). A program read 6 billion words of Wikipedia and news text and counted, for 400,000 words, how often each one appears within ten words of each other one (nearer words counting more). It then adjusted 100 numbers per word until the dot product of two words' vectors (next step) roughly matched the logarithm of how often they appear together. (Simplified: the real recipe also gives each word an extra number, weights rare and common pairs differently, and learns two vectors per word that are added up at the end.) Nobody chose what any number means: they are whatever made the counts come out right.</p>
 <p>The idea behind it is old: “you shall know a word by the company it keeps” (the linguist J. R. Firth, 1957). Words used in similar sentences (<em>cat</em> and <em>dog</em> both get fed, stroked and taken to the vet) end up with similar vectors.</p>
-<p><strong>Our subset.</strong> This page carries 3,292 of the 400,000 words: the 3,200 most frequent ones, leaving out short “stop words” such as <em>the</em>, <em>of</em> and <em>she</em>, plus 92 everyday words (animals, food, family, capitals) so there are things to search for. The vectors are stored with 8 bits per number, which changes similarities by less than 0.01. The source data is public domain (PDDL).</p>`
+<p><strong>Our subset.</strong> This page carries 3,292 of the 400,000 words: the 3,200 most frequent ones, leaving out common “stop words” such as <em>the</em>, <em>of</em> and <em>she</em>, plus 92 everyday words (animals, food, family, capitals) so there are things to search for. The vectors are stored with 8 bits per number, which changes similarities by less than 0.01. The source data is public domain (PDDL).</p>`
 		},
 		{
 			id: 'angle',
@@ -132,9 +132,9 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			body: `
 <p>Here are all 3,292 words, one dot each. To fit 100 dimensions onto a flat screen they have been squashed down to two by <dfn data-def="t-distributed stochastic neighbour embedding (van der Maaten &amp; Hinton, 2008): a method that places points on a flat map so that points that are close in the full space stay close on the map. Distances between far-apart groups mean little.">t-SNE</dfn>, a method that tries to keep each word next to the words it is close to in the full space.</p>
-<p>Related words gather in clumps: months, first names, countries, American cities, sport, war, money, kings and queens. The colours were not painted on the map: a computer sorted the 100-number vectors into 12 groups (<dfn data-def="A method that sorts points into k groups by repeatedly assigning each point to the nearest group centre and moving each centre to the middle of its group.">k-means</dfn>) in the full space, and the groups come out together on the map.</p>
+<p>Related words gather in clumps: months, first names, countries, American cities, sport, war, money, kings and queens. The colours were not painted on the map: a computer sorted the 100-number vectors into 12 groups (<dfn data-def="A method that sorts points into k groups by repeatedly assigning each point to the group centre it makes the smallest angle with, and moving each centre to the middle of its group.">k-means</dfn>) in the full space, and the groups come out together on the map.</p>
 <p>Drag to move around, scroll or use the + and − buttons to zoom, and point at a dot to read its word. Zoom in on a clump to see more of its words.</p>`,
-			notes: `<p>The map was computed once, when the page was made: exact t-SNE with a perplexity of 30 (roughly, each word pays attention to its 30 nearest neighbours) and 1,000 rounds of adjustment, started from the PCA map you will meet in two steps. The script is in the site's repository (<code>scripts/data/embeddings/</code>). The clumps are labelled with the words closest to the centre of each k-means group.</p>`
+			notes: `<p>The map was computed once, when the page was made: exact t-SNE with a perplexity of 30 (roughly, each word pays attention to its 30 nearest neighbours) and 1,000 rounds of adjustment, started from the PCA map you will meet in two steps. The script is in the site's repository (<code>scripts/data/embeddings/</code>). The colour legend names each k-means group by the words closest to its centre.</p>`
 		},
 		{
 			id: 'search',
@@ -171,8 +171,8 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [relation],
 			body: `
-<p>Subtracting two vectors gives the arrow that leads from one to the other: woman − man is the step from <strong>man</strong> to <strong>woman</strong>. The surprise is that this step is nearly the same for many pairs: man → woman, king → queen, uncle → aunt, actor → actress.</p>
-<p>The stage is a flat view chosen for these pairs, and it is a linear map (2 × 100 numbers), so arrows stay arrows. Across is the average direction of the pair arrows; up is the direction in which the pairs differ most from each other. The arrows all point roughly the same way. The panel gives each arrow's cosine with the average direction, measured in the full space. For comparison, the step between two random pairs of words has a cosine of about 0.0 with another.</p>
+<p>Subtracting two vectors gives the arrow that leads from one to the other: woman − man is the step from <strong>man</strong> to <strong>woman</strong>. The surprise is that this step points roughly the same way for many pairs: man → woman, king → queen, uncle → aunt, actor → actress.</p>
+<p>The stage is a flat view chosen for these pairs, and it is a linear map (2 × 100 numbers), so arrows stay arrows. Across is the average direction of the pair arrows; up is the direction in which the pairs differ most from each other. The arrows all point roughly the same way. The panel gives each arrow's cosine with the average direction, measured in the full space. For comparison, the steps between two random pairs of words have a cosine of about 0 with each other.</p>
 <p>Choose another relationship: country → capital, present → past tense, big → bigger. Each has its own direction. The vectors were never told about gender, capitals or grammar; these directions come out of how the words are used.</p>`,
 			notes: `<p>The average direction is built from the pairs on the stage, which flatters them a little. Measured directly against man → woman, king → queen has a cosine of 0.44 and brother → sister 0.59: weaker, but still far from the near 0 of unrelated steps.</p>`
 		},
@@ -201,8 +201,8 @@ export const spec: ExplainerSpec = {
 			controls: [failCase],
 			body: `
 <p>Word arithmetic is impressive but not reliable. <strong>brother − man + woman</strong> should be sister, but lands closest to <strong>daughter</strong>, then wife and mother: family words are packed so tightly that several of them beat <em>sister</em>, which comes sixth. <strong>bigger − big + small</strong> gives <strong>larger</strong> before smaller, because <em>bigger</em> and <em>larger</em> mean the same.</p>
-<p>The vectors also learn the prejudices of the text they were trained on. In this data <strong>doctor − man + woman</strong> gives <strong>nurse</strong>, and <strong>nurse − woman + man</strong> gives <strong>doctor</strong>. The arithmetic is right; the 2014 news and encyclopaedia text it learned from wrote about men doctors and women nurses more often. Systems built on embeddings can carry such patterns into decisions about real people, so researchers measure and try to remove them.</p>`,
-			notes: `<p>Bolukbasi and colleagues (2016) showed such patterns in word2vec embeddings and proposed ways to remove a chosen direction from the vectors; Caliskan and colleagues (2017) found that word vectors reproduce many associations measured in people by psychology's implicit association tests. The examples on this page are computed from the GloVe vectors shown here.</p>`
+<p>The vectors also learn the prejudices of the text they were trained on. In this data <strong>doctor − man + woman</strong> gives <strong>nurse</strong>, and <strong>nurse − woman + man</strong> gives <strong>doctor</strong>. Part of this comes from the rule: with the input words allowed, the closest word to doctor − man + woman is <em>doctor</em> itself, and <em>nurse</em> only comes first once doctor is left out. So the analogy exaggerates, but the association is real: the encyclopaedia (2014) and newswire (1994–2010) text the vectors learned from wrote about men doctors and women nurses more often. Systems built on embeddings can carry such patterns into decisions about real people, so researchers measure and try to remove them.</p>`,
+			notes: `<p>Bolukbasi and colleagues (2016) showed such patterns in word2vec embeddings and proposed ways to remove a chosen direction from the vectors; Caliskan and colleagues (2017) found that word vectors reproduce many associations measured in people by psychology's implicit association tests. Nissim, van Noord and van der Goot (2020) showed that such analogies exaggerate bias, because they forbid the answer to be one of the input words. The examples on this page are computed from the GloVe vectors shown here.</p>`
 		},
 		// ------------------------------------------------------------------ sentences
 		{
@@ -226,7 +226,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [orderCase],
 			body: `
-<p>An average does not care about order. “The dog bit the man” and “the man bit the dog” contain the same words, so their averages are identical: cosine 1.00, an angle of 0°, although the news is very different. “The film was not good, it was bad” and “the film was not bad, it was good” say opposite things, and also score 1.00.</p>
+<p>An average does not care about order. “The dog bit the man” and “the man bit the dog” contain the same words, so their averages are identical: cosine 1.00, an angle of 0°, although the news is very different. “The film was not good, it was bad” and “the film was not bad, it was good” say opposite things, and also score 1.00 (and <em>not</em> itself is not even in our list).</p>
 <p>To understand a sentence, a program has to know which word does what to which. That is the job of the <dfn data-def="A neural network that updates each word's vector using the other words of the sentence, so that the vector of “bit” can depend on who bit whom.">transformer</dfn> networks behind modern language models: they start from word embeddings like these, and then let every word's vector take in information from the words around it.</p>`
 		},
 		{
@@ -239,7 +239,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>An embedding turns each word into a point in a space with many dimensions, learned only from which words keep company. In that space:</p>
 <ul>
-<li><strong>distance stands for similarity</strong>: the smaller the angle, the closer the meaning;</li>
+<li><strong>distance stands for similarity</strong>: the smaller the angle, the closer the meaning (for these length-1 vectors, a smaller angle is also a shorter distance);</li>
 <li><strong>directions stand for relationships</strong>: man → woman, country → capital, present → past;</li>
 <li>a flat map is only a picture of it, so measure in the full space.</li>
 </ul>
