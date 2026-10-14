@@ -303,7 +303,9 @@
 				: `${ratio || '…'}, expected ${expRatio}`}
 	>
 		<text x={BAR_X} y={mode === 'dihybrid' ? 96 : 110} font-size="15" font-weight="600">
-			{mode === 'punnett' ? 'Expected seeds' : `Bred: ${fmt(total)} seeds`}
+			{mode === 'punnett'
+				? 'Expected seeds'
+				: `Bred: ${fmt(total)} ${mode === 'breed' && gene.id === 'A' ? 'plants' : 'seeds'}`}
 		</text>
 		<text x={BAR_X} y={mode === 'dihybrid' ? 118 : 132} font-size="12" class="muted">
 			expected {expRatio}{mode === 'punnett' ? '' : ` · bred ${ratio || '…'}`}

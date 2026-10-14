@@ -402,10 +402,10 @@
 			id="ways"
 			order={6}
 			label="Line-ups"
-			value="2 × 2 × 2 = 8 possible; humans: 2²³ ≈ 8.4 million"
+			value="2 × 2 × 2 = 8 kinds of egg or pollen cell, crossovers aside; humans: 2²³ ≈ 8.4 million"
 		>
 			<Label x={160} y={300} text="2 × 2 × 2 = 8" size={16} weight={600} opacity={u} />
-			<Label x={160} y={322} text="possible line-ups" size={12} muted opacity={u} />
+			<Label x={160} y={322} text="kinds of cell, crossovers aside" size={12} muted opacity={u} />
 			<Label x={160} y={350} text="humans: 2²³ ≈ 8.4 million" size={12} muted opacity={u} />
 			<Label x={480} y={50} text="click a pair to turn it round" size={11} muted pill opacity={u} />
 		</Readout>

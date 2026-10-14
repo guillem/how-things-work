@@ -65,7 +65,7 @@ export const spec: ExplainerSpec = {
 			scene: 'cell',
 			hints: { focus: 'pairs' },
 			body: `
-<p>In <a href="../the-cell/">the cell</a> we met the <strong>nucleus</strong> and its <dfn data-def="One long DNA molecule with its packing proteins, carrying hundreds to thousands of genes.">chromosomes</dfn>: 46 in a human cell, 23 inherited from the mother and 23 from the father. They come in <strong>pairs</strong>: chromosome 1 from your mother and chromosome 1 from your father carry the same genes, in the same order.</p>
+<p>In <a href="../the-cell/">the cell</a> we met the <strong>nucleus</strong> and its <dfn data-def="One long DNA molecule with its packing proteins, carrying hundreds to thousands of genes.">chromosomes</dfn>: 46 in a human cell, 23 inherited from the mother and 23 from the father. They come in <strong>pairs</strong>: chromosome 1 from your mother and chromosome 1 from your father carry the same genes, in the same order (except X and Y in males).</p>
 <p>The two chromosomes of a pair are <dfn data-def="The two chromosomes of a pair, one from each parent: same genes in the same order, possibly different versions of them.">homologous</dfn>. They are not identical: each gene may come in different versions, and each parent passed on their own.</p>
 <p>This is a pea plant, the plant Gregor Mendel used to discover how inheritance works. A pea cell has 7 pairs; to keep the picture clear we draw 3 of them, each with one of Mendel’s genes. The copy from the plant’s mother is drawn <strong class="tag mom">red</strong>, the one from its father <strong class="tag dad">blue</strong>.</p>`,
 			notes: `<p>The three genes are real and do lie on different pea chromosomes: seed shape (<i>R</i>) on linkage group V, seed colour (Mendel’s yellow/green cotyledons, gene <i>I</i>, here written <i>Y</i> as in most textbooks) on linkage group I, and flower colour (<i>A</i>) on linkage group II (Reid &amp; Ross 2011, <i>Genetics</i> 189: 3–10; Hellens et al. 2010, <i>PLoS ONE</i> 5: e13230). Their positions along the chromosomes, and the chromosomes’ lengths, are drawn for clarity. Real chromosomes are this tidy only while a cell divides; the rest of the time they are long threads of chromatin filling the nucleus.</p>`
@@ -78,7 +78,7 @@ export const spec: ExplainerSpec = {
 			hints: { focus: 'alleles' },
 			body: `
 <p>The versions of a gene are its <dfn data-def="One version of a gene. The two copies of a gene in a cell can be the same allele or two different ones.">alleles</dfn>. For seed colour, a pea has two: <strong>Y</strong> makes the seeds yellow, <strong>y</strong> leaves them green. Since every cell has two copies, a plant can be <strong>YY</strong>, <strong>Yy</strong> or <strong>yy</strong>: its <dfn data-def="The alleles an individual carries for a gene, e.g. Yy.">genotype</dfn>.</p>
-<p>A <strong>Yy</strong> plant has yellow seeds, just like <strong>YY</strong>: one working copy is enough. <strong>Y</strong> is <dfn data-def="An allele whose effect shows even when only one copy is present.">dominant</dfn>, and <strong>y</strong> is <dfn data-def="An allele whose effect shows only when both copies are that allele.">recessive</dfn>: green shows only in <strong>yy</strong>. The y allele is a broken version of a gene that breaks down chlorophyll as the seed ripens.</p>
+<p>A <strong>Yy</strong> seed is yellow, just like a <strong>YY</strong> one: one working copy is enough. <strong>Y</strong> is <dfn data-def="An allele whose effect shows even when only one copy is present.">dominant</dfn>, and <strong>y</strong> is <dfn data-def="An allele whose effect shows only when both copies are that allele.">recessive</dfn>: green shows only in <strong>yy</strong>. The y allele is a broken version of a gene that breaks down chlorophyll as the seed ripens.</p>
 <p>“Dominant” does not mean stronger, better or more common. It only says which allele shows when a plant has one of each. A recessive allele can hide, unseen, in a plant that carries it.</p>`,
 			notes: `<p>Seed colour: the green (<i>i</i>) allele Mendel used is a 6-letter insertion in the <i>stay-green</i> gene, whose protein starts the breakdown of chlorophyll (Armstead et al. 2007; Sato et al. 2007). Seed shape: the wrinkled (<i>r</i>) allele is a 0.8 kb insertion that breaks starch-branching enzyme 1; the seeds hold more sugar and water and wrinkle as they dry (Bhattacharyya et al. 1990). Flower colour: white (<i>a</i>) flowers carry a broken switch gene for purple pigment (Hellens et al. 2010). Not every gene works this simply: many traits depend on many genes, and some alleles are only partly dominant.</p>`
 		},
@@ -104,7 +104,7 @@ export const spec: ExplainerSpec = {
 <p>Now something happens that never happens in an ordinary division: the two chromosomes of each pair find each other and lie side by side, gene against gene.</p>
 <p>Where they touch, two chromatids, one from each, break at the same point and swap ends. This is <dfn data-def="The exchange of matching pieces between the two chromosomes of a pair during meiosis. Its point of contact is a chiasma.">crossing over</dfn>. Every pair crosses over at least once; long chromosomes often two or three times. Afterwards, two of the four chromatids are a new mix: part grandmother, part grandfather.</p>
 <p><strong>Choose where each pair crosses over</strong> with the sliders, or drag the handles. Watch the letters: a gene beyond the crossover (counting from the centromere) changes chromatid; a gene between the centromere and the crossover stays put.</p>`,
-			notes: `<p>The crossover is drawn between the two inner chromatids. In a real cell any of the four combinations of non-sister chromatids can cross, at sites chosen by an enzyme (Spo11) that cuts the DNA on purpose; most of the cuts are repaired without a swap. The simulation that breeds offspring later on lets the crossovers fall at random, about one per 100 centimorgans of chromosome per chromatid (that is what a centimorgan means).</p>`
+			notes: `<p>The crossover is drawn between the two inner chromatids. In a real cell any of the four combinations of non-sister chromatids can cross, at places where an enzyme (Spo11) cuts the DNA on purpose; most of the cuts are repaired without a swap. The simulation that breeds offspring later on lets the crossovers fall at random, about one per 100 centimorgans of chromosome per chromatid (that is what a centimorgan means). Unlike real cells, it sometimes lets a pair go without a crossover.</p>`
 		},
 		{
 			id: 'lineup',
@@ -163,8 +163,8 @@ export const spec: ExplainerSpec = {
 				}
 			],
 			body: `
-<p>A pea seed starts when a pollen grain fertilises an egg cell. The seed gets one seed-colour allele from each. A <dfn data-def="A grid that lists one parent’s egg cells across the top and the other’s pollen down the side; each box is one way they can meet. Named after Reginald Punnett.">Punnett square</dfn> lists every way it can happen: the egg cells along one side, the pollen along the other, and in each box, the seed they would make.</p>
-<p>A <strong>Yy</strong> plant makes Y and y cells in equal numbers, because meiosis gives one allele of the pair to each. So two Yy parents give YY, Yy, yY and yy equally often: 3 boxes of 4 yellow, 1 green. <strong>Three yellow to one green.</strong></p>
+<p>A pea seed starts when a pollen grain fertilises an egg cell. The seed gets one seed-colour allele from each. A <dfn data-def="A grid that lists one parent’s pollen across the top and the other’s egg cells down the side; each box is one way they can meet. Named after Reginald Punnett.">Punnett square</dfn> lists every way it can happen: the egg cells along one side, the pollen along the other, and in each box, the seed they would make.</p>
+<p>A <strong>Yy</strong> plant makes Y and y cells in equal numbers, because meiosis gives one allele of the pair to each. So two Yy parents give YY, Yy (twice) and yy equally often: 3 boxes of 4 yellow, 1 green. <strong>Three yellow to one green.</strong></p>
 <p>Try other parents. Two yy plants can only have green seeds; a YY parent makes every seed yellow, whatever the other.</p>`
 		},
 		{
@@ -202,7 +202,7 @@ export const spec: ExplainerSpec = {
 			hints: { mode: 'dihybrid' },
 			controls: [count2, again],
 			body: `
-<p>Mendel also crossed plants that differ in two traits. A plant with round, yellow seeds (<strong>RrYy</strong>) makes four kinds of pollen and egg cells, <strong>RY, Ry, rY, ry</strong>, equally often, because the two genes sit on different chromosomes that line up independently.</p>
+<p>Mendel also crossed plants that differ in two traits: a line with round, yellow seeds (<strong>RRYY</strong>) with one with wrinkled, green seeds (<strong>rryy</strong>). Their hybrids are <strong>RrYy</strong>. A hybrid plant makes four kinds of pollen and egg cells, <strong>RY, Ry, rY, ry</strong>, equally often, because the two genes sit on different chromosomes that line up independently.</p>
 <p>The square now has 4 × 4 = 16 boxes: 9 round yellow, 3 round green, 3 wrinkled yellow, 1 wrinkled green. Mendel’s 556 seeds: <strong>315 : 108 : 101 : 32</strong>, close to 9 : 3 : 3 : 1. Notice the new combinations, round green and wrinkled yellow, that neither grandparent had.</p>`
 		},
 		{
@@ -226,7 +226,7 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>A chromosome carries hundreds or thousands of genes, so most genes share a chromosome with others. Two genes on the same chromosome stay together in a pollen grain unless a crossover falls <strong>between them</strong>.</p>
-<p>Here a parent got genes <strong>A</strong> and <strong>B</strong> together from one of its parents, and <strong>a</strong> and <strong>b</strong> from the other. Close genes almost always travel together: few <dfn data-def="A sex cell with a new combination of alleles (Ab or aB here), made by a crossover between the two genes.">recombinant</dfn> cells. The further apart they are, the more often they get separated, but never in more than <strong>half</strong> of the cells: a crossover swaps only two of the four chromatids, and two crossovers between the genes can undo each other.</p>
+<p>Here a parent got two genes, <strong>D</strong> and <strong>E</strong>, together from one of its parents, and <strong>d</strong> and <strong>e</strong> from the other. Close genes almost always travel together: few <dfn data-def="A sex cell with a new combination of alleles (De or dE here), made by a crossover between the two genes.">recombinant</dfn> cells. The further apart they are, the more often they get separated, but never in more than <strong>half</strong> of the cells: a crossover swaps only two of the four chromatids, and two crossovers between the genes can undo each other.</p>
 <p>Far apart on one long chromosome, genes behave as if they were on different ones. Measuring how often genes separate is how the first maps of chromosomes were drawn, by Alfred Sturtevant in 1913, from fruit flies.</p>`,
 			notes: `<p>The model lets crossovers fall at random and independently along the chromosome. Then the share of recombinant cells for two genes d Morgans apart (1 M = 100 cM) is Haldane’s formula r = ½ (1 − e<sup>−2d</sup>), the curve on the right: r ≈ d for close genes, and r → ½ for distant ones. Real crossovers keep their distance from each other (crossover interference), which makes double crossovers rarer than this; other map functions (Kosambi’s) allow for it. Bateson, Saunders and Punnett saw the first case of genes travelling together, in sweet peas, in 1905.</p>`
 		},
@@ -246,8 +246,8 @@ export const spec: ExplainerSpec = {
 				{ ...again, label: 'Another family', action: 'New family' }
 			],
 			body: `
-<p>Mendel crossed a plant from a line that always had yellow seeds (<strong>YY</strong>) with one from a green line (<strong>yy</strong>). All their offspring had yellow seeds: green seemed to have vanished.</p>
-<p>But every one of them was <strong>Yy</strong>, carrying the green allele unseen. When two of them were crossed, green came back in about one seed in four: a trait that <strong>skips a generation</strong>.</p>
+<p>Mendel crossed a plant from a line that always had yellow seeds (<strong>YY</strong>) with one from a green line (<strong>yy</strong>). All the seeds from that cross were yellow: green seemed to have vanished.</p>
+<p>But every one of them was <strong>Yy</strong>, carrying the green allele unseen. When the plants grown from them were left to pollinate themselves (the same as crossing two of them), green came back in about one seed in four: a trait that <strong>skips a generation</strong>.</p>
 <p>The same happens in families. Two parents who both carry one recessive allele, and show nothing of it, each pass it on to half their children; a child has a one-in-four chance of getting it from both. Switch on the alleles to see who carries it, and press <em>New family</em>: how many green seeds a family has is down to chance.</p>`,
 			notes: `<p>This is how recessive conditions such as cystic fibrosis run in families: carriers are healthy, and a child of two carriers has a 1 in 4 chance of being affected, independently for each child. The pedigree draws eight offspring of the two hybrids, bred by the same simulation.</p>`
 		},
