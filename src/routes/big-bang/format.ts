@@ -12,8 +12,10 @@ const sup = (n: number) =>
 /** A number in scientific notation with `digits` significant figures: 1.3 × 10¹⁰. */
 export function sci(v: number, digits = 2) {
 	if (v === 0) return '0';
-	const e = Math.floor(Math.log10(Math.abs(v)));
+	let e = Math.floor(Math.log10(Math.abs(v)));
 	if (e >= -2 && e < 5) return v.toLocaleString('en-GB', { maximumSignificantDigits: digits });
+	// 9.97 × 10⁴ rounded to two figures is 1.0 × 10⁵, not 10.0 × 10⁴
+	if (Number((v / 10 ** e).toFixed(digits - 1)) >= 10) e += 1;
 	const m = v / 10 ** e;
 	return `${m.toFixed(digits - 1)} × 10${sup(e)}`;
 }

@@ -1,5 +1,5 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
-import { AGE, GYR_S, T_MIN_S } from './cosmology';
+import { AGE, GYR_S, T_START_S } from './cosmology';
 import { gyrText, timeText, zText } from './format';
 
 // ---- controls ------------------------------------------------------------------------
@@ -44,7 +44,7 @@ const zLight: Control = {
 	format: (v) => `z = ${v.toFixed(2)}`
 };
 
-const LOG_T0 = Math.log10(T_MIN_S);
+const LOG_T0 = Math.log10(T_START_S);
 const LOG_NOW = Math.log10(AGE * GYR_S);
 /** The timeline scrubber of one step: its value is log₁₀ of the time since the Big Bang in s. */
 function scrub(id: string, seconds: number): Control {
@@ -253,7 +253,7 @@ export const spec: ExplainerSpec = {
 			controls: [zFar],
 			body: `
 <p>JADES-GS-z14-0's light set off 13.5 billion years ago. So is it 13.5 billion light years away? In an expanding universe, “how far” has three answers. When the light left it, the galaxy was only <strong>2.2 billion light years</strong> from the material that became the Milky Way. The light then travelled for <strong>13.5 billion years</strong>, while the space ahead of it kept stretching. The galaxy is now <strong>34 billion light years</strong> away: its <dfn data-def="The distance to something now, measured as if the expansion could be paused. It grows with the expansion.">comoving distance</dfn>.</p>
-<p>Choose any redshift. The three bars are computed by integrating the Friedmann equation along the light's path. Nearby they agree; far away they part ways. The microwave background's light set off when its source was just 41 million light years away; that matter is now 45 billion light years away. The <strong>observable universe</strong> is a sphere 46 billion light years in radius, even though nothing has had more than 13.8 billion years to travel.</p>`,
+<p>Choose any redshift. The three bars are computed by integrating the Friedmann equation along the light's path. Nearby they agree; far away they part ways. The microwave background's light set off when its source was just 42 million light years away; that matter is now 45 billion light years away. The <strong>observable universe</strong> is a sphere 46 billion light years in radius, even though nothing has had more than 13.8 billion years to travel.</p>`,
 			notes: `<p>No speed limit is broken. Beyond about 14.5 billion light years (c/H₀), distances grow faster than light travels, but nothing moves faster than light <em>through</em> space, the rule of <a href="../special-relativity/#same-light">special relativity</a>; space between the galaxies grows. Light from galaxies receding faster than light can still reach us: the redshift 14.3 galaxy was receding at about five times the speed of light when its light left (and is now receding at 2.3 times). Distances computed from the Planck 2018 parameters. Redshifts on the axis: the Coma cluster (0.023), the quasar 3C 273 (0.158), the galaxy GN-z11 (10.6).</p>`
 		}
 	]

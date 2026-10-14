@@ -24,7 +24,7 @@
 		T0,
 		T_FREEZE_S,
 		T_NUC_S,
-		T_MIN_S,
+		T_START_S,
 		heliumMassFraction,
 		neutronsPerProton,
 		pairsLeft,
@@ -47,7 +47,7 @@
 			phase
 		] ?? 'tSecond'
 	);
-	const LOG0 = Math.log10(T_MIN_S);
+	const LOG0 = Math.log10(T_START_S);
 	const LOGNOW = Math.log10(AGE * GYR_S);
 	const logT = $derived(Math.min(LOGNOW, Math.max(LOG0, Number(params[scrubId] ?? 0))));
 	const sec = $derived(10 ** logT);

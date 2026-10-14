@@ -229,8 +229,8 @@ const TABLE = (() => {
 	return { lnA, lnT: t.map(Math.log), lnEta: eta.map(Math.log), t, eta };
 })();
 
-/** Earliest time the model covers, s. */
-export const T_MIN_S = TABLE.t[0] * GYR_S;
+/** Earliest time shown, s: T ≈ 10¹¹ K, where the model's particle content stops being valid. */
+export const T_START_S = 0.01;
 
 /** Cosmic time (since the Big Bang) at scale factor a, Gyr. */
 export const timeAt = (a: number) => Math.exp(interp(TABLE.lnA, TABLE.lnT, Math.log(a)));
