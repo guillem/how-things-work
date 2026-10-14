@@ -183,14 +183,7 @@
 		<Txt x={A.x} y={A.y - 18} text="input · 28 × 28 pixels" size={14} weight={600} />
 		<Txt x={A.x} y={A.y + W + 22} text={caption} size={12} muted />
 	</Readout>
-	<rect
-		x={A.x - 1}
-		y={A.y - 1}
-		width={W + 2}
-		height={W + 2}
-		fill="none"
-		stroke="var(--border)"
-	/>
+	<rect x={A.x - 1} y={A.y - 1} width={W + 2} height={W + 2} fill="none" stroke="var(--border)" />
 	<image href={inUrl} x={A.x} y={A.y} width={W} height={W} class="cv-px" />
 
 	{#if mode === 'grid'}
@@ -307,14 +300,7 @@
 
 		<!-- the output -->
 		<Txt x={B.x} y={B.y - 18} text="feature map · 28 × 28" size={14} weight={600} />
-		<rect
-			x={B.x - 1}
-			y={B.y - 1}
-			width={W + 2}
-			height={W + 2}
-			fill="none"
-			stroke="var(--border)"
-		/>
+		<rect x={B.x - 1} y={B.y - 1} width={W + 2} height={W + 2} fill="none" stroke="var(--border)" />
 		<image href={outUrl} x={B.x} y={B.y} width={W} height={W} class="cv-px" />
 		{#each veils as v (v.key)}
 			<rect
@@ -408,7 +394,9 @@
 				id="cv-moved"
 				order={4}
 				label="Moved"
-				value={dx === 0 ? 'not moved' : `digit and map both ${Math.abs(dx)} px ${dx < 0 ? 'left' : 'right'}`}
+				value={dx === 0
+					? 'not moved'
+					: `digit and map both ${Math.abs(dx)} px ${dx < 0 ? 'left' : 'right'}`}
 			>
 				<Txt
 					x={480}
@@ -422,7 +410,12 @@
 				/>
 			</Readout>
 			<!-- the cost: one filter against a fully connected layer -->
-			<Readout id="cv-cost" order={5} label="Weights" value="this filter: 9 · fully connected: {int(dense)}">
+			<Readout
+				id="cv-cost"
+				order={5}
+				label="Weights"
+				value="this filter: 9 · fully connected: {int(dense)}"
+			>
 				<Txt x={A.x} y={500} text="weights needed to make this map" size={13} weight={600} />
 				<rect x={290} y={518} width={3} height={14} fill="var(--cv-window)" rx="1" />
 				<Txt x={A.x} y={530} text="this filter, used everywhere" size={12} />

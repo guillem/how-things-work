@@ -293,7 +293,7 @@ const m = zeros();
 const v = zeros();
 let tStep = 0;
 const started = Date.now();
-let trainAccuracy = 0;
+let trainAccuracy;
 for (let e = 0; e < epochs; e++) {
 	const order = Array.from({ length: nTrain }, (_, i) => i);
 	for (let i = order.length - 1; i > 0; i--) {
@@ -389,7 +389,11 @@ const pixels = (i) => b64(test.data.subarray(i * N, (i + 1) * N));
 const sampleIdx = [];
 for (let d = 0; d < CLASSES; d++) {
 	let n = 0;
-	for (let i = 0; i < nTest && n < 2; i++) if (testY.data[i] === d) (sampleIdx.push(i), n++);
+	for (let i = 0; i < nTest && n < 2; i++)
+		if (testY.data[i] === d) {
+			sampleIdx.push(i);
+			n++;
+		}
 }
 sampleIdx.sort((a, b) => a - b);
 const samples = [...sampleIdx, ...wrong.slice(0, 4)].map((i) => ({

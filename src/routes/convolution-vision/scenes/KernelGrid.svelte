@@ -33,7 +33,12 @@
 	}
 	function key(event: KeyboardEvent, i: number) {
 		if (!edit) return;
-		const step: Record<string, number> = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1 };
+		const step: Record<string, number> = {
+			ArrowUp: 1,
+			ArrowRight: 1,
+			ArrowDown: -1,
+			ArrowLeft: -1
+		};
 		if (event.key in step) edit(i, clamp(k[i] + step[event.key]));
 		else if (event.key === 'Home') edit(i, KMIN);
 		else if (event.key === 'End') edit(i, KMAX);

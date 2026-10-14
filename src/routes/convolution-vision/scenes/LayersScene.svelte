@@ -87,9 +87,7 @@
 		if (mode !== 'l2') return [];
 		const o = s2 * C1 * K * K;
 		const sc = maxAbs(WT.c2w, o, o + C1 * K * K) || 1;
-		return Array.from({ length: C1 }, (_, ci) =>
-			signedUrl(WT.c2w, K, K, sc, dark, o + ci * K * K)
-		);
+		return Array.from({ length: C1 }, (_, ci) => signedUrl(WT.c2w, K, K, sc, dark, o + ci * K * K));
 	});
 	/** The strongest unit of the selected filter on this digit, and the window it sees. */
 	const best = $derived.by(() => {
@@ -136,7 +134,12 @@
 		<rect x={39} y={83} width={198} height={198} fill="none" stroke="var(--border)" />
 		<image href={inUrl} x={40} y={84} width={196} height={196} class="cv-px" />
 
-		<Readout id="ly-sel" order={2} label="Filter {s1 + 1}" value="5 × 5 weights + a bias of {fmt(WT.c1b[s1])}">
+		<Readout
+			id="ly-sel"
+			order={2}
+			label="Filter {s1 + 1}"
+			value="5 × 5 weights + a bias of {fmt(WT.c1b[s1])}"
+		>
 			<Txt x={40} y={336} text="filter {s1 + 1}: its 25 weights" size={13} weight={600} />
 			<Txt x={40} y={548} text="+ bias {fmt(WT.c1b[s1])}" size={12} muted />
 		</Readout>
@@ -160,7 +163,13 @@
 			>
 		{/each}
 
-		<Txt x={G1.x} y={74} text="layer 1: 8 learnt filters and their feature maps" size={14} weight={600} />
+		<Txt
+			x={G1.x}
+			y={74}
+			text="layer 1: 8 learnt filters and their feature maps"
+			size={14}
+			weight={600}
+		/>
 		{#each kernels as url, c (c)}
 			{@const p = cell1(c)}
 			<g
@@ -187,18 +196,11 @@
 					stroke={c === s1 ? 'var(--cv-window)' : 'none'}
 					stroke-width="2"
 				/>
-				<Txt x={p.x} y={p.y + 12} text="{c + 1}" size={13} weight={700} />
+				<Txt x={p.x} y={p.y + 12} text={String(c + 1)} size={13} weight={700} />
 				<image href={url} x={p.x} y={p.y + 22} width={35} height={35} class="cv-px" />
 				<rect x={p.x} y={p.y + 22} width={35} height={35} fill="none" stroke="var(--border)" />
 				<image href={maps1[c]} x={p.x + 40} y={p.y} width={102} height={102} class="cv-px" />
-				<rect
-					x={p.x + 40}
-					y={p.y}
-					width={102}
-					height={102}
-					fill="none"
-					stroke="var(--border)"
-				/>
+				<rect x={p.x + 40} y={p.y} width={102} height={102} fill="none" stroke="var(--border)" />
 			</g>
 		{/each}
 		<Readout id="ly-key" order={3} label="Colours" value="blue: positive · orange: negative">
@@ -221,7 +223,14 @@
 		{@const Y = 96}
 		{#each ['input', `filter ${s1 + 1}`, 'ReLU: negatives → 0', 'max pool: 14 × 14'] as title, i (i)}
 			<Txt x={X[i]} y={Y - 16} text={title} size={13} weight={600} />
-			<rect x={X[i] - 1} y={Y - 1} width={S + 2} height={S + 2} fill="none" stroke="var(--border)" />
+			<rect
+				x={X[i] - 1}
+				y={Y - 1}
+				width={S + 2}
+				height={S + 2}
+				fill="none"
+				stroke="var(--border)"
+			/>
 			{#if i < 3}
 				<path
 					d="M {X[i] + S + 6} {Y + S / 2} L {X[i + 1] - 8} {Y + S / 2}"
@@ -315,7 +324,13 @@
 			</g>
 		{/each}
 	{:else if mode === 'l2'}
-		<Txt x={40} y={56} text="layer 2: 16 filters, each looking at all 8 first-layer maps" size={14} weight={600} />
+		<Txt
+			x={40}
+			y={56}
+			text="layer 2: 16 filters, each looking at all 8 first-layer maps"
+			size={14}
+			weight={600}
+		/>
 		{#each maps2 as url, c (c)}
 			{@const x = 40 + c * 55}
 			<g
@@ -332,7 +347,14 @@
 					}
 				}}
 			>
-				<Txt x={x + 24} y={80} text="{c + 1}" size={12} weight={c === s2 ? 700 : 500} anchor="middle" />
+				<Txt
+					x={x + 24}
+					y={80}
+					text={String(c + 1)}
+					size={12}
+					weight={c === s2 ? 700 : 500}
+					anchor="middle"
+				/>
 				<image href={url} {x} y={88} width={49} height={49} class="cv-px" />
 				<rect
 					x={x - 1}
@@ -347,7 +369,12 @@
 		{/each}
 
 		<!-- the selected filter on this digit -->
-		<Readout id="l2-in" order={1} label="Filter {s2 + 1} on this digit" value="strongest response {fmt(best.v)}">
+		<Readout
+			id="l2-in"
+			order={1}
+			label="Filter {s2 + 1} on this digit"
+			value="strongest response {fmt(best.v)}"
+		>
 			<Txt x={40} y={182} text="input" size={12} weight={600} />
 			<Txt x={232} y={182} text="filter {s2 + 1}'s map" size={12} weight={600} />
 		</Readout>
@@ -385,7 +412,7 @@
 				x={40}
 				y={380}
 				text={best.v > 0
-					? "box: the 14 × 14 window its strongest unit sees"
+					? 'box: the 14 × 14 window its strongest unit sees'
 					: 'this filter finds nothing in this digit'}
 				size={11}
 				muted
@@ -393,15 +420,32 @@
 		</Readout>
 
 		<!-- its 200 weights -->
-		<Readout id="l2-w" order={2} label="Its weights" value="5 × 5 × 8 = 200, one slice per first-layer map">
-			<Txt x={440} y={182} text="its 200 weights: a 5 × 5 slice for each first-layer map" size={12} weight={600} />
-			<Txt x={440} y={340} text="↑ applied to the map of the first-layer filter below it" size={11} muted />
+		<Readout
+			id="l2-w"
+			order={2}
+			label="Its weights"
+			value="5 × 5 × 8 = 200, one slice per first-layer map"
+		>
+			<Txt
+				x={440}
+				y={182}
+				text="its 200 weights: a 5 × 5 slice for each first-layer map"
+				size={12}
+				weight={600}
+			/>
+			<Txt
+				x={440}
+				y={340}
+				text="↑ applied to the map of the first-layer filter below it"
+				size={11}
+				muted
+			/>
 		</Readout>
 		{#each slices as url, ci (ci)}
 			<image href={url} x={440 + ci * 59} y={196} width={50} height={50} class="cv-px" />
 			<rect x={439 + ci * 59} y={195} width={52} height={52} fill="none" stroke="var(--border)" />
 			<image href={kernels[ci]} x={452 + ci * 59} y={270} width={25} height={25} class="cv-px" />
-			<Txt x={464 + ci * 59} y={316} text="{ci + 1}" size={11} anchor="middle" muted />
+			<Txt x={464 + ci * 59} y={316} text={String(ci + 1)} size={11} anchor="middle" muted />
 		{/each}
 
 		<!-- what excites it most -->

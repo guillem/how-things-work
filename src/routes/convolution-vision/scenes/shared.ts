@@ -3,15 +3,7 @@
  * reader's drawing), the editable filter, and pixel images drawn as data URLs.
  */
 import type { ParamValue, Params } from '#lib/explainer/index.ts';
-import {
-	SIDE,
-	decodeBytes,
-	decodeWeights,
-	drawAsIs,
-	prepare,
-	type Pt,
-	type Stroke
-} from '../cnn';
+import { SIDE, decodeBytes, decodeWeights, drawAsIs, prepare, type Pt, type Stroke } from '../cnn';
 import { PRESETS, type PresetId } from '../filters';
 import { SAMPLES, WEIGHTS } from '../mnist-cnn';
 
@@ -30,7 +22,8 @@ export const textWidth = (text: string, size: number) => text.length * size * 0.
 const pixelCache = new Map<number, Float32Array>();
 export function samplePixels(i: number): Float32Array {
 	let p = pixelCache.get(i);
-	if (!p) pixelCache.set(i, (p = Float32Array.from(decodeBytes(SAMPLES[i].pixels), (v) => v / 255)));
+	if (!p)
+		pixelCache.set(i, (p = Float32Array.from(decodeBytes(SAMPLES[i].pixels), (v) => v / 255)));
 	return p;
 }
 
@@ -123,7 +116,8 @@ export function setKernel(params: Params, setParam: Set, k: number[]) {
 
 type RGB = [number, number, number];
 const hex = (h: string): RGB => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)) as RGB;
-const mix = (a: RGB, b: RGB, u: number): RGB => [0, 1, 2].map((i) => a[i] + (b[i] - a[i]) * u) as RGB;
+const mix = (a: RGB, b: RGB, u: number): RGB =>
+	[0, 1, 2].map((i) => a[i] + (b[i] - a[i]) * u) as RGB;
 
 /**
  * Fixed colours of the pixel images (data URLs cannot read CSS variables), one set per theme,
@@ -174,7 +168,8 @@ function bmp(width: number, height: number, idx: Uint8Array, pal: RGB[]): string
 		buf[55 + i * 4] = Math.round(g);
 		buf[56 + i * 4] = Math.round(r);
 	});
-	for (let y = 0; y < height; y++) buf.set(idx.subarray(y * width, (y + 1) * width), offset + y * row);
+	for (let y = 0; y < height; y++)
+		buf.set(idx.subarray(y * width, (y + 1) * width), offset + y * row);
 	let bin = '';
 	for (let i = 0; i < buf.length; i += 0x8000)
 		bin += String.fromCharCode(...buf.subarray(i, i + 0x8000));
