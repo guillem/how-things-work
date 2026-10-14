@@ -3,7 +3,8 @@ import { playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g');
 const toggle = (page: Page, id: string) => page.locator(`input[type=checkbox][data-control=${id}]`);
-const select = (page: Page, id: string) => page.locator(`select[data-control=${id}]`);
+const choose = (page: Page, id: string, value: string) =>
+	page.locator(`button[data-control=${id}][data-value="${value}"]`).click();
 
 async function open(page: Page, url: string) {
 	await page.goto(url);
@@ -34,7 +35,7 @@ test.describe('finished pictures (reduced motion)', () => {
 	test('two drugs at once clear the tumour that one drug could not', async ({ page }) => {
 		await open(page, './cancer/#combo');
 		await expect(stage(page)).toContainText('back, resistant to the drug');
-		await select(page, 'therapy').selectOption('two');
+		await choose(page, 'therapy', 'two');
 		await expect(stage(page)).toContainText('tumour cleared');
 		await expect(stage(page)).toContainText('drugs A + B given');
 	});
@@ -45,7 +46,7 @@ test.describe('finished pictures (reduced motion)', () => {
 		await open(page, './cancer/#age');
 		await expect(stage(page)).toContainText('k ≈ 4.7');
 		await expect(stage(page)).toContainText('132 per 100,000 a year');
-		await select(page, 'site').selectOption('pancreas');
+		await choose(page, 'site', 'pancreas');
 		await expect(stage(page)).toContainText('k ≈ 6.6');
 		await page.locator('input[type=range][data-control=hits]').fill('7');
 		await expect(stage(page)).toContainText('×64 the yearly risk');
@@ -63,7 +64,7 @@ test.describe('finished pictures (reduced motion)', () => {
 	test('a one-letter change in KRAS codon 12 swaps one amino acid', async ({ page }) => {
 		await open(page, './cancer/#genes');
 		await expect(stage(page)).toContainText('GGT → GAT · glycine → aspartic acid');
-		await select(page, 'kras').selectOption('G12V');
+		await choose(page, 'kras', 'G12V');
 		await expect(stage(page)).toContainText('GGT → GTT · glycine → valine');
 	});
 });
