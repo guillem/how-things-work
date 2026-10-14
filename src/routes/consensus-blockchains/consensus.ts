@@ -30,11 +30,14 @@ import { sha256, toHex } from '../cryptography/crypto';
 
 // ================================================================ copies without consensus
 
-/** Seconds a write takes from each client to each of the five replicas (fixed, illustrative). */
+/**
+ * Seconds a write takes from each client to each of the five replicas (illustrative: roughly
+ * in proportion to the distances in the drawing).
+ */
 export const NAIVE = {
 	writes: [
-		{ label: 'x = 1', client: 'A', at: 0.6, delay: [0.6, 1.0, 1.9, 2.3, 1.5] },
-		{ label: 'x = 2', client: 'B', at: 0.9, delay: [2.0, 1.4, 0.6, 0.9, 1.9] }
+		{ label: 'x = 1', client: 'A', at: 0.6, delay: [1.1, 0.8, 1.6, 1.8, 1.7] },
+		{ label: 'x = 2', client: 'B', at: 0.9, delay: [1.9, 2.0, 1.5, 0.7, 1.3] }
 	]
 } as const;
 
@@ -84,6 +87,8 @@ interface OmResult {
 	decided: Map<number, Order>;
 	/** What each lieutenant received directly from this instance's commander. */
 	received: Map<number, Order>;
+	/** The values each lieutenant took the majority of: `votes.get(i).get(j)` came via j. */
+	votes: Map<number, Map<number, Order>>;
 	messages: number;
 }
 
@@ -104,7 +109,7 @@ export function om(
 		lieutenants.map((l) => [l, traitor(commander) ? lie(commander, l, value) : value] as const)
 	);
 	let messages = lieutenants.length;
-	if (m === 0) return { decided: received, received, messages };
+	if (m === 0) return { decided: received, received, votes: new Map(), messages };
 	const sub = new Map<number, OmResult>();
 	for (const j of lieutenants) {
 		const r = om(
@@ -119,13 +124,15 @@ export function om(
 		messages += r.messages;
 	}
 	const decided = new Map<number, Order>();
+	const votes = new Map<number, Map<number, Order>>();
 	for (const i of lieutenants) {
-		const votes = lieutenants.map((j) =>
-			j === i ? received.get(i)! : sub.get(j)!.decided.get(i)!
+		const mine = new Map(
+			lieutenants.map((j) => [j, j === i ? received.get(i)! : sub.get(j)!.decided.get(i)!] as const)
 		);
-		decided.set(i, majority(votes));
+		votes.set(i, mine);
+		decided.set(i, majority([...mine.values()]));
 	}
-	return { decided, received, messages };
+	return { decided, received, votes, messages };
 }
 
 /**
@@ -165,6 +172,7 @@ export function generals(
 		received: run.received,
 		relayed,
 		decided: run.decided,
+		votes: run.votes,
 		loyal,
 		agree,
 		obey,
