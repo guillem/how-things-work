@@ -2072,3 +2072,32 @@ kbd {
 	--im-node: #211c33;
 	--im-node-edge: #7c6bc4;
 }
+
+/* ---------------------------------------------------------------------------
+   Evolution: alleles, drift lines, resistance classes on the MEGA-plate */
+:root {
+	--ev-fixed: #2f8f5b;
+	--ev-lost: #c2553f;
+	--ev-wander: #8a8f98;
+	--ev-r0: #a7adb6;
+	--ev-r1: #3f8fd2;
+	--ev-r2: #2fa37a;
+	--ev-r3: #e0a030;
+	--ev-r4: #d5486b;
+	--ev-agar: #26262b;
+	--ev-drug: #7c5cbf;
+	--ev-panel: #fffdf8;
+}
+:root[data-theme='dark'] {
+	--ev-fixed: #4cc283;
+	--ev-lost: #ec7a62;
+	--ev-wander: #7d838d;
+	--ev-r0: #9aa1ab;
+	--ev-r1: #5aa7ec;
+	--ev-r2: #43c495;
+	--ev-r3: #f2b64a;
+	--ev-r4: #f06a8b;
+	--ev-agar: #0c0c0f;
+	--ev-drug: #a68cf0;
+	--ev-panel: #1c1d20;
+}
