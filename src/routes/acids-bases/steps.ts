@@ -251,7 +251,7 @@ export const spec: ExplainerSpec = {
 			controls: [added('added', 0), drop, ml, restart, indicator],
 			body: `
 <p>A chemist can't watch a pH curve: they watch a colour. An indicator is itself a weak acid whose two forms have different colours. Bromothymol blue is yellow while it holds its proton and blue once it has lost it; it changes over pH 6.0–7.6, the band shaded on the plot.</p>
-<p>Titrate the acid yourself: add a millilitre at a time, then go drop by drop near 25 mL. The colour changes inside a single drop. Then empty the flask and try the other two indicators. With a strong acid all three work: the jump is so tall, from pH 4 to 10, that each band sits inside it. Phenolphthalein, colourless until about pH 8.2, is the usual choice.</p>`,
+<p>Titrate the acid yourself: add a millilitre at a time, then go drop by drop near 25 mL. The colour changes inside a single drop. Then empty the flask and try the other two indicators. With a strong acid all three work: the curve is almost vertical from about pH 3.5 to 10.5, so each of them changes within a couple of drops of 25 mL. Phenolphthalein, colourless until about pH 8.2, is the usual choice.</p>`,
 			notes: `<p>Only a few drops of indicator go in, far too little to change the pH. The colour drawn here is the mix of the two forms in the proportions the indicator's own pKa sets (pKIn 3.7, 7.0 and 9.4; values from Imperial College's <i>Acid–Base Indicators and Titrations</i> by W. Locke). The eye sees a change once about a tenth of the dye has switched, which is why each range spans about two pH units.</p>`
 		},
 		// ------------------------------------------------------------------ weak
@@ -265,7 +265,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now titrate 25 mL of 0.1 mol/L <strong>acetic acid</strong> with the same base. The hydrochloric acid curve stays faintly in the background.</p>
 <p>The weak acid starts higher, at pH 2.88, because so few of its molecules are split. Then the curve climbs quickly and flattens into a long, gentle slope: each OH⁻ added takes a proton from a whole acetic acid molecule, and the CH₃COO⁻ left behind can take H⁺ back if the pH falls. A mixture of a weak acid and its partner like this resists changes in pH, a <dfn data-def="A mixture of a weak acid and the base it turns into, which keeps the pH steady when a little acid or base is added.">buffer</dfn>.</p>
-<p>Halfway, at 12.5 mL, half the acid has been turned into acetate, and the pH equals the acid's pKa: <strong>4.76</strong>.</p>`,
+<p>Halfway, at 12.5 mL, half the acid has been turned into acetate, and the pH equals the acid's <dfn data-def="pKa: the pH at which half of an acid's molecules have given away their proton. The lower it is, the stronger the acid.">pKa</dfn>: <strong>4.76</strong>.</p>`,
 			notes: `<p>Your blood is buffered the same way, by carbonic acid and hydrogencarbonate (HCO₃⁻), which is how it stays between pH 7.35 and 7.45 while your cells keep making acid. Leaves use the pH difference across a membrane in the opposite way, to store energy: see <a href="../photosynthesis/">photosynthesis</a>.</p>`
 		},
 		{
@@ -284,7 +284,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Look where the acetic acid's equivalence point sits: still at 25.00 mL, because the base matches the acid mole for mole whatever the acid. But the pH there is <strong>8.73</strong>, not 7.</p>
 <p>At that point the flask holds sodium acetate. Acetate ions are a weak base: a few of them take H⁺ from water, CH₃COO⁻ + H₂O ⇌ CH₃COOH + OH⁻, and leave OH⁻ behind. So the solution is basic even though not a single OH⁻ from the burette is left over.</p>
-<p>The rule "equivalence is at pH 7" holds only for a strong acid with a strong base. Try the even weaker hypochlorous acid, the active part of bleach: equivalence at pH 10.05, and almost no jump left.</p>`,
+<p>The rule "equivalence is at pH 7" holds only for a strong acid with a strong base. Try the even weaker hypochlorous acid, the acid behind household bleach: equivalence at pH 10.05, and almost no jump left.</p>`,
 			notes: `<p>The weaker the acid, the stronger the base it leaves behind, so the higher the equivalence pH. The opposite holds too: a weak base, such as ammonia, titrated with a strong acid has its equivalence point below 7.</p>`
 		},
 		{
@@ -302,7 +302,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [added('addedC', 0), drop, ml, restart, acidC, indicatorC],
 			body: `
-<p>Titrate the acetic acid with <strong>methyl orange</strong>. It is half-way to yellow after only 2 mL and fully yellow by about 8 mL, long before the acid is used up: its band lies in the weak acid's first climb, not in the jump. A chemist trusting it would think the vinegar held a third of the acid it really does.</p>
+<p>Titrate the acetic acid with <strong>methyl orange</strong>. It is half-way to yellow after only 2 mL and fully yellow by about 8 mL, long before the acid is used up: its band lies in the weak acid's first climb, not in the jump. A chemist stopping where its colour changes would think the vinegar held less than a tenth of the acid it really does.</p>
 <p>Switch to <strong>phenolphthalein</strong>: its band, 8.2–10, sits right in the weak acid's jump, and it turns pink at the drop that reaches 25 mL. The rule is to pick an indicator that changes colour <strong>at the equivalence pH</strong>, which depends on the acid.</p>
 <p>The takeaway, in one picture: pH counts hydrogen ions in powers of ten, so it leaps at the drop where the base matches the acid; and that leap is centred on pH 7 only when both are strong.</p>`
 		}

@@ -16,8 +16,9 @@
  * Computed entries come from the page's own model (`model.ts`) for the stated
  * recipe, so they are exact for an ideal solution at 25 °C:
  *   clean rain — pure water in equilibrium with 420 ppm of CO₂ (NOAA Global Monitoring
- *   Laboratory: global mean 419.3 ppm in 2023), Henry's constant 0.034 mol/(L·atm)
- *   (Sander 2015), carbonic acid pKa 6.35 and 10.33 (CRC);
+ *   Laboratory, April 2024 release: 2023 global surface mean 419.3 ppm, provisional),
+ *   Henry's constant 0.034 mol/(L·atm) (Sander compilation, see model.ts), carbonic
+ *   acid pKa 6.35 and 10.33 (CRC);
  *   baking soda — NaHCO₃ at 0.1 mol/L (a level teaspoon, ~5 g, in half a litre is
  *   about 0.12 mol/L); ammonia — NH₃ at 0.1 mol/L, pKa of NH₄⁺ 9.25 (CRC);
  *   hydrochloric acid and sodium hydroxide at 0.1 mol/L.

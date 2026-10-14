@@ -82,13 +82,13 @@ test('methyl orange changes colour far too early for acetic acid', async ({ page
 	await range(page, 'addedC').fill('10');
 	// Half the dye has switched after about 2 mL, and all of it by 8 mL: 25 mL are needed.
 	await expect(stage(page)).toContainText(/colour changed at [12]\.\d\d mL/);
-	await expect(stage(page)).toContainText('colour: yellow');
+	await expect(stage(page)).toContainText(/colour\s*yellow/);
 	// Phenolphthalein turns at the equivalence point instead.
 	await button(page, 'indicatorC', 'phenolphthalein').click();
-	await expect(stage(page)).toContainText('colour: colourless');
+	await expect(stage(page)).toContainText(/colour\s*colourless/);
 	await range(page, 'addedC').fill('26');
 	await expect(stage(page)).toContainText(/colour changed at 2[45]\.\d\d mL/);
-	await expect(stage(page)).toContainText('colour: pink');
+	await expect(stage(page)).toContainText(/colour\s*pink/);
 	// Emptying the flask starts again from nothing.
 	await button(page, 'restart').click();
 	await expect(stage(page)).toContainText('0.00 mL');

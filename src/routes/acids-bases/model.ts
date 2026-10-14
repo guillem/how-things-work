@@ -29,9 +29,11 @@
  *   "Dissociation constants of inorganic acids and bases" and "… of organic acids
  *   and bases", as reproduced in the LibreTexts table "Acid Dissociation Constants"
  *   (chem.libretexts.org, University of Toronto, Chemistry: Physical Principles,
- *   §12.3); NH₄⁺ 9.25 from the same CRC tables.
+ *   §12.3). NH₄⁺: pKa 9.25 = 14 − pKb of NH₃ (Kb 1.8 × 10⁻⁵, pKb 4.75, same CRC
+ *   edition, as reproduced in "Principles of General Chemistry" v1.0, Appendix D).
  *   Henry's law constant of CO₂ in water at 25 °C, 3.3 × 10⁻⁴ mol m⁻³ Pa⁻¹
- *   (0.034 mol L⁻¹ atm⁻¹): R. Sander, Atmos. Chem. Phys. 15, 4399 (2015).
+ *   (0.034 mol L⁻¹ atm⁻¹; Sander et al. 2011, as listed in R. Sander's compilation,
+ *   Atmos. Chem. Phys. 23, 10901 (2023), henrys-law.org, CAS 124-38-9).
  */
 
 export const PKW = 14;

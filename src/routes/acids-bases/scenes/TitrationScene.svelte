@@ -571,6 +571,7 @@
 		<Label x={150} y={584} text={flaskText} size={12} />
 	</Readout>
 	<Readout id="colour" order={5} label="Colour" value={colourName}>
-		<Label x={246} y={478} text="colour: {colourName}" size={12} anchor="start" muted />
+		<Label x={246} y={462} text="colour" size={11} anchor="start" muted />
+		<Label x={246} y={479} text={colourName} size={13} weight={600} anchor="start" />
 	</Readout>
 </g>
