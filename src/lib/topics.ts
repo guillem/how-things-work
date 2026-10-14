@@ -546,6 +546,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'exoplanets',
+		title: 'How we find planets round other stars',
+		summary:
+			'Set a planet’s size, mass, orbit and tilt and watch its star dim as it passes in front and wobble as it is tugged, then read the planet back from the two curves and see whether it lies in the habitable zone.',
+		accent: '#0b7285',
+		steps: 11,
+		minutes: 18
 	}
 ];
 

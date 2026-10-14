@@ -1513,3 +1513,49 @@ kbd {
 	--rr-vapour: #9775fa;
 	--rr-barrier: #ff6b6b;
 }
+
+/* exoplanets */
+:root {
+	--ex-space: #eef1f6;
+	--ex-star-g: #f59f00;
+	--ex-star-k: #f76707;
+	--ex-star-m: #e03131;
+	--ex-planet: #1c2a3a;
+	--ex-orbit: #495057;
+	--ex-light: #e67700;
+	--ex-rv: #1971c2;
+	--ex-blue: #1c7ed6;
+	--ex-red: #e03131;
+	--ex-hz: #8ce99a;
+	--ex-hz-opt: #d3f9d8;
+	--ex-hz-edge: #2b8a3e;
+	--ex-measure: #c2255c;
+	--ex-transit: #e8590c;
+	--ex-rv-method: #1971c2;
+	--ex-lens: #2f9e44;
+	--ex-imaging: #9c36b5;
+	--ex-other: #868e96;
+	--ex-absorb: #111418;
+}
+:root[data-theme='dark'] {
+	--ex-space: #0d1117;
+	--ex-star-g: #ffd43b;
+	--ex-star-k: #ffa94d;
+	--ex-star-m: #ff8787;
+	--ex-planet: #e9ecef;
+	--ex-orbit: #adb5bd;
+	--ex-light: #ffc078;
+	--ex-rv: #74c0fc;
+	--ex-blue: #4dabf7;
+	--ex-red: #ff6b6b;
+	--ex-hz: #2b6b3a;
+	--ex-hz-opt: #1d3b25;
+	--ex-hz-edge: #69db7c;
+	--ex-measure: #f783ac;
+	--ex-transit: #ff922b;
+	--ex-rv-method: #4dabf7;
+	--ex-lens: #69db7c;
+	--ex-imaging: #da77f2;
+	--ex-other: #adb5bd;
+	--ex-absorb: #111418;
+}
