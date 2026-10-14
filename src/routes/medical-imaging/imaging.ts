@@ -560,6 +560,31 @@ export function relativeError(recon: ArrayLike<number>, ref: ArrayLike<number>, 
 	return Math.sqrt(d2 / r2);
 }
 
+/**
+ * The same difference after scaling the reconstruction by the single factor
+ * that brings it closest to the true slice, so a blurred image whose numbers
+ * are not to scale (plain back-projection) is judged on its shape alone.
+ */
+export function fittedError(recon: ArrayLike<number>, ref: ArrayLike<number>, n = CT_N): number {
+	let rr = 0;
+	let rt = 0;
+	for (let r = 0; r < n; r++)
+		for (let c = 0; c < n; c++) {
+			const x = (c + 0.5) / n - 0.5;
+			const y = (r + 0.5) / n - 0.5;
+			if (x * x + y * y > 0.25) continue;
+			const i = r * n + c;
+			rr += recon[i] * recon[i];
+			rt += recon[i] * ref[i];
+		}
+	const k = rr > 0 ? rt / rr : 0;
+	return relativeError(
+		Array.from(recon, (v) => v * k),
+		ref,
+		n
+	);
+}
+
 /** Value of an N × N image at phantom coordinates (x, y down), nearest pixel. */
 export function imageAt(img: ArrayLike<number>, fov: number, x: number, y: number, n = CT_N) {
 	const c = Math.floor(((x + fov) / (2 * fov)) * n);

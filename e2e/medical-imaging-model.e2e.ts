@@ -10,6 +10,7 @@ import {
 	backgroundDays,
 	bodySlice,
 	discMean,
+	fittedError,
 	echoes,
 	gradientEcho,
 	halfValueLayer,
@@ -159,6 +160,16 @@ test.describe('CT: projections and filtered back-projection', () => {
 		expect(err(32)).toBeGreaterThan(err(180));
 		expect(err(180)).toBeLessThan(0.08);
 		expect(err(180, false)).toBeGreaterThan(1);
+	});
+
+	test('even scaled at its best, plain back-projection is far further from the slice than filtered', () => {
+		const ph = bodySlice(0);
+		const ref = truth(ph);
+		const s = scan(ph, 180);
+		const plain = fittedError(reconstruct(s, false), ref);
+		const filtered = fittedError(reconstruct(s, true), ref);
+		expect(plain).toBeGreaterThan(3 * filtered);
+		expect(filtered).toBeLessThan(0.08);
 	});
 
 	test('the Shepp–Logan head comes back with its 1% features', () => {

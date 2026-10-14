@@ -663,6 +663,15 @@ const explainers: Explainer[] = [
 		accent: '#a61e4d',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'medical-imaging',
+		title: 'Medical imaging',
+		summary:
+			'Turn an X-ray tube round a body and record its shadow from every side, then watch a CT scanner compute the slice that explains them all, sharpened by a filter and read in Hounsfield units. Compare it with a plain X-ray, then image the same body with echoes of sound and with protons in a magnet.',
+		accent: '#1971c2',
+		steps: 14,
+		minutes: 24
 	}
 ];
 
