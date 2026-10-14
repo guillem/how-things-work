@@ -3,6 +3,7 @@
 import { expect, test } from '@playwright/test';
 import {
 	GAAS_GAP,
+	Q,
 	GAPS,
 	SUN_FLUX,
 	SUN_POWER,
@@ -14,6 +15,7 @@ import {
 	monoCurrent,
 	photonEnergy,
 	photonsAbove,
+	powerAbove,
 	spectrumCeiling,
 	split,
 	wavelength
@@ -33,6 +35,10 @@ test('standard sunlight (AM1.5G) delivers 1000 W/m² in about 4.3 × 10²¹ phot
 	expect(SUN_POWER).toBeCloseTo(1000.4, 0);
 	expect(SUN_FLUX).toBeGreaterThan(4.2e21);
 	expect(SUN_FLUX).toBeLessThan(4.4e21);
+	// The average photon carries 1.45 eV, and more than half the power is outside 400–700 nm.
+	expect(SUN_POWER / SUN_FLUX / Q).toBeCloseTo(1.45, 2);
+	const visible = powerAbove(photonEnergy(700)) - powerAbove(photonEnergy(400));
+	expect(visible / SUN_POWER).toBeLessThan(0.5);
 });
 
 test('photon energy: 1240 eV·nm / wavelength; silicon absorbs out to 1107 nm', () => {
@@ -83,6 +89,7 @@ test('the ideal silicon cell: 43.8 mA/cm², 0.88 V, fill factor 0.87, 33.4%', ()
 	expect(mA(c.jsc)).toBeCloseTo(43.8, 1);
 	expect(c.voc).toBeCloseTo(0.88, 2);
 	expect(c.vmp).toBeCloseTo(0.79, 2);
+	expect(mA(c.jmp)).toBeCloseTo(42.4, 1);
 	expect(c.ff).toBeCloseTo(0.87, 2);
 	expect(c.efficiency).toBeCloseTo(0.334, 3);
 	// Its voltage is 0.24 V short of the gap.
@@ -118,9 +125,15 @@ test('the voltage is set by the cell’s glow: Voc = (kT/q) ln(Jsc/J₀ + 1), an
 	expect(v1 - cell(SI, { suns: 0.1 }).voc).toBeCloseTo(0.0595, 4);
 	// Current scales with the light; even 1000 suns leave Voc below the gap.
 	expect(cell(SI, { suns: 0.5 }).jsc).toBeCloseTo(cell(SI).jsc / 2, 9);
-	expect(cell(SI, { suns: 1000 }).voc).toBeLessThan(SI);
-	// A warm cell's glow above the gap is tiny compared with sunlight: 10⁻¹⁵ of it.
-	expect(blackbodyAbove(SI) / photonsAbove(SI)).toBeLessThan(1e-13);
+	const concentrated = cell(SI, { suns: 1000 });
+	expect(concentrated.voc).toBeCloseTo(1.06, 2);
+	expect(concentrated.voc).toBeLessThan(SI);
+	// Concentrated light raises the limit: 41% for silicon at 1000 suns.
+	expect(concentrated.efficiency).toBeCloseTo(0.41, 2);
+	// A warm cell's glow above the gap is tiny compared with sunlight: about 10⁻¹⁵ of it.
+	const glow = blackbodyAbove(SI) / photonsAbove(SI);
+	expect(glow).toBeGreaterThan(1e-15);
+	expect(glow).toBeLessThan(1e-14);
 });
 
 test('heat: the ideal silicon cell loses 0.9 mV and 0.15% of its power per °C', () => {
