@@ -185,6 +185,13 @@
 			muted
 		/>
 		<T x={PANEL.x + 120} y={PANEL.y + 84} text="Jupiter's motion" size={11} muted />
+		<T
+			x={CX + pxPerRJ + 8}
+			y={CY + pxPerRJ + 14}
+			text="Jupiter"
+			size={12}
+			color="var(--rk-jupiter)"
+		/>
 		<T x={inAt.x} y={inAt.y} text="comes in" size={12} anchor="end" muted />
 		<T x={outAt.x} y={outAt.y} text="leaves" size={12} anchor="end" muted />
 		<T

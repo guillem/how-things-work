@@ -292,7 +292,7 @@ export const spec: ExplainerSpec = {
 			controls: [depart, flight],
 			body: `
 <p>Now with the real orbits — Mars's is noticeably oval — and the planets where they really are. Choose a departure date and a flight time: the model finds the orbit that meets Mars on the arrival day (solving <dfn data-def="Finding the orbit that goes from one point to another in a given time. Johann Lambert studied it in the 1760s.">Lambert's problem</dfn>) and adds up the burns from a low Earth orbit into a low Mars orbit.</p>
-<p>The curve shows the cost for every departure date. It dips into a narrow valley every 26 months — the windows of late 2026, late 2028 and early 2031 — and between them the price soars. Space agencies plan their Mars missions years ahead around these dates: NASA's Perseverance rover left in the July 2020 window.</p>`,
+<p>The curve shows the cost for every departure date. It dips into a narrow valley every 26 months — the windows of late 2026, late 2028 and the turn of 2031 — and between them the price soars. Space agencies plan their Mars missions years ahead around these dates: NASA's Perseverance rover left in the July 2020 window.</p>`,
 			notes: `<p>The planet positions come from JPL's approximate orbital elements (Standish), flattened into one plane: Mars's orbit is tilted 1.85°, which makes real transfers near exactly half an orbit costlier than shown here. Each trip is coasting between two burns; the costs are from and into 200 km circular orbits.</p>`
 		},
 		{

@@ -116,7 +116,7 @@
 				? 'Geostationary: round, one turn a day'
 				: dv2 === 0
 					? 'No second burn: it falls back to the low point'
-					: finalOrbit && finalOrbit.e < 0.01
+					: finalOrbit && finalOrbit.e < 0.002
 						? `Round again, ${km(finalOrbit.peri)} km up`
 						: 'An ellipse: not yet round'
 	);

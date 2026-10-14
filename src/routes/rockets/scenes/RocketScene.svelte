@@ -152,21 +152,30 @@
 	);
 	const R = $derived(massRatio(target, ve));
 	const turns = $derived(target / ve);
+	const pct = (r: number) => {
+		const p = 100 * (1 - 1 / r);
+		return p > 99.95 ? fmt(p, 4) : fmt(p, 1);
+	};
 
 	// Nested squares: the inner one is the 1 t that arrives; each ring is one more exhaust
 	// speed of Δv, e times the mass (area) of what it holds. The scale shrinks to fit.
 	const SQ = $derived(
 		phase === 'budget' ? { x: 40, y: 560, max: 340 } : { x: 40, y: 560, max: 450 }
 	);
-	const base = $derived(Math.max(0.6, Math.min(64, SQ.max / Math.sqrt(R))));
+	const base = $derived(Math.min(64, SQ.max / Math.sqrt(R)));
 	const rings = $derived.by(() => {
 		const out: { j: number; side: number }[] = [];
 		const n = Math.floor(turns + 1e-9);
-		for (let j = 0; j <= n; j++) out.push({ j, side: base * Math.exp(j / 2) });
+		for (let j = 0; j <= n; j++) {
+			const side = base * Math.exp(j / 2);
+			// The payload is always drawn (at least as a dot); rings too small to see are skipped.
+			if (j === 0) out.push({ j, side: Math.max(4, side) });
+			else if (side >= 3) out.push({ j, side });
+		}
 		return out;
 	});
 	const outer = $derived(Math.min(SQ.max, base * Math.sqrt(R)));
-	const outerClipped = $derived(base * Math.sqrt(R) > SQ.max + 0.5);
+	const outerClipped = $derived(base < 4 / 1.0001);
 	const grow = new Tween(1, { duration: 700, easing: cubicInOut });
 	const growKey = $derived(`${phase}:${mission}`);
 	$effect(() => {
@@ -420,8 +429,8 @@
 			/>
 			<T
 				x={SQ.x + 8}
-				y={SQ.y - outer + 20}
-				text="{big(R)} t on the pad{outerClipped ? ' (not to scale)' : ''}"
+				y={outer < 60 ? SQ.y - outer - 8 : SQ.y - outer + 20}
+				text="{big(R)} t on the pad{outerClipped ? ' (the blue dot is drawn too big)' : ''}"
 				size={13}
 				weight={700}
 			/>
@@ -734,16 +743,9 @@
 				color="var(--rk-fuel)"
 			/>
 		</Readout>
-		<Readout id="ty-share" order={3} label="Propellant" value="{fmt(100 * (1 - 1 / R), 1)}%">
+		<Readout id="ty-share" order={3} label="Propellant" value="{pct(R)}%">
 			<T x={CL} y={CARD.y + 522} text="Share that is propellant" size={12} muted />
-			<T
-				x={CR}
-				y={CARD.y + 522}
-				text="{fmt(100 * (1 - 1 / R), 1)}%"
-				size={14}
-				weight={600}
-				anchor="end"
-			/>
+			<T x={CR} y={CARD.y + 522} text="{pct(R)}%" size={14} weight={600} anchor="end" />
 		</Readout>
 		<Readout id="ty-ve">
 			<T
