@@ -66,11 +66,10 @@ test('weak acid with strong base: half-way pH = pKa, equivalence above 7', () =>
 	expect(titrationPH(weak, 0)).toBeCloseTo(2.88, 2);
 	expect(Math.abs(titrationPH(weak, 12.5) - 4.756)).toBeLessThan(0.01);
 	const eq = titrationPH(weak, equivalenceVolume(weak));
-	expect(eq).toBeGreaterThan(8.7);
-	expect(eq).toBeLessThan(8.75);
-	expect(eq).toBeGreaterThan(7.5);
+	// The narrative quotes 8.73 for acetic acid and 10.05 for hypochlorous acid.
+	expect(eq).toBeCloseTo(8.73, 2);
 	// The hypochlorous acid is weaker still: a higher equivalence pH.
-	expect(titrationPH(standard(ACIDS.hocl), 25)).toBeGreaterThan(eq);
+	expect(titrationPH(standard(ACIDS.hocl), 25)).toBeCloseTo(10.05, 2);
 });
 
 test('the steepest point of each curve is the equivalence point', () => {
@@ -100,7 +99,10 @@ test('indicators change colour across their stated ranges', () => {
 	// point (pH 8.7); phenolphthalein turns pink right at it.
 	const veq = equivalenceVolume(weak);
 	const mo = INDICATORS.methylOrange;
-	const vMO = titrationCurve(weak, 50, 0.05).find((p) => p.ph >= mo.range[1])!.v;
+	const curve = titrationCurve(weak, 50, 0.05);
+	// Half-way to yellow (pH = pKIn) after about 2 mL, fully yellow by about 8 mL.
+	expect(curve.find((p) => p.ph >= mo.pKIn)!.v).toBeCloseTo(2, 0);
+	const vMO = curve.find((p) => p.ph >= mo.range[1])!.v;
 	expect(vMO).toBeLessThan(veq / 2);
 	const pp = INDICATORS.phenolphthalein;
 	const vPP = titrationCurve(weak, 50, 0.05).find((p) => p.ph >= pp.range[0])!.v;
@@ -109,8 +111,8 @@ test('indicators change colour across their stated ranges', () => {
 
 test('everyday liquids: computed ones match textbook values', () => {
 	const ph = (id: string) => LIQUIDS.find((l) => l.id === id)!.lo;
-	// Rain in equilibrium with today's CO₂: about 5.6.
-	expect(ph('rain')).toBeCloseTo(5.6, 1);
+	// Rain open to the air at today's CO₂: the textbook 5.60 (a closed system gives 5.64).
+	expect(ph('rain')).toBeCloseTo(5.6, 2);
 	// Sodium bicarbonate sits near (pKa₁ + pKa₂)/2 = 8.34.
 	expect(ph('soda')).toBeCloseTo(8.3, 1);
 	expect(ph('ammonia')).toBeCloseTo(11.1, 1);

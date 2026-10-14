@@ -15,15 +15,16 @@
  *
  * Computed entries come from the page's own model (`model.ts`) for the stated
  * recipe, so they are exact for an ideal solution at 25 °C:
- *   clean rain — pure water in equilibrium with 420 ppm of CO₂ (NOAA Global Monitoring
+ *   clean rain — pure water open to air with 420 ppm of CO₂ (NOAA Global Monitoring
  *   Laboratory, April 2024 release: 2023 global surface mean 419.3 ppm, provisional),
  *   Henry's constant 0.034 mol/(L·atm) (Sander compilation, see model.ts), carbonic
- *   acid pKa 6.35 and 10.33 (CRC);
+ *   acid pKa 6.35 and 10.33 (CRC). An open system: the air fixes the dissolved CO₂
+ *   (H₂CO₃*) at K_H · pCO₂, and the bicarbonate and carbonate come on top of it;
  *   baking soda — NaHCO₃ at 0.1 mol/L (a level teaspoon, ~5 g, in half a litre is
  *   about 0.12 mol/L); ammonia — NH₃ at 0.1 mol/L, pKa of NH₄⁺ 9.25 (CRC);
  *   hydrochloric acid and sodium hydroxide at 0.1 mol/L.
  */
-import { solvePH } from './model';
+import { fractions, solvePH } from './model';
 
 export interface Liquid {
 	id: string;
@@ -58,7 +59,17 @@ const measured = (id: string, name: string, lo: number, hi: number, source: stri
 	measured: true
 });
 
-const rain = solvePH({ systems: [{ c: HENRY_CO2 * CO2_PPM * 1e-6, z: 0, pKa: CARBONIC }] });
+/** Rain open to the air: find the total carbonate whose dissolved-CO₂ share is K_H · pCO₂. */
+function openRainPH(): number {
+	const co2aq = HENRY_CO2 * CO2_PPM * 1e-6;
+	let ph = 5.6;
+	for (let k = 0; k < 20; k++) {
+		const c = co2aq / fractions(CARBONIC, 10 ** -ph)[0];
+		ph = solvePH({ systems: [{ c, z: 0, pKa: CARBONIC }] });
+	}
+	return ph;
+}
+const rain = openRainPH();
 const soda = solvePH({ systems: [{ c: 0.1, z: 0, pKa: CARBONIC }], cations: 0.1 });
 const ammonia = solvePH({ systems: [{ c: 0.1, z: 1, pKa: AMMONIUM }] });
 
