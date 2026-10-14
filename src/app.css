@@ -2577,3 +2577,38 @@ kbd {
 	--mi-t-muscle: #ff6b6b;
 	--mi-t-blood: #4dabf7;
 }
+/* ---------------------------------------------------------------------------
+   gravitational-waves: space, horizons, wave crests, detectors, data (light, then dark)
+   --------------------------------------------------------------------------- */
+:root {
+	--gw-space: #eef1f8;
+	--gw-hole: #212529;
+	--gw-horizon: #5c677d;
+	--gw-crest: #4263eb;
+	--gw-trough: #e8590c;
+	--gw-laser: #e03131;
+	--gw-h1: #1971c2;
+	--gw-l1: #d9480f;
+	--gw-nr: #343a40;
+	--gw-compare: #ae3ec9;
+	--gw-mirror: #868e96;
+	--gw-proton: #e8590c;
+	--gw-dl: #c2255c;
+	--gw-blank: #e9ecef;
+}
+:root[data-theme='dark'] {
+	--gw-space: #12151f;
+	--gw-hole: #000000;
+	--gw-horizon: #adb5bd;
+	--gw-crest: #748ffc;
+	--gw-trough: #ff922b;
+	--gw-laser: #ff6b6b;
+	--gw-h1: #74c0fc;
+	--gw-l1: #ffa94d;
+	--gw-nr: #f1f3f5;
+	--gw-compare: #da77f2;
+	--gw-mirror: #adb5bd;
+	--gw-proton: #ff922b;
+	--gw-dl: #f783ac;
+	--gw-blank: #25262b;
+}
