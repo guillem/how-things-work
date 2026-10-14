@@ -73,8 +73,9 @@
 	const status = $derived.by(() => {
 		if (!edited) return 'All 4 blocks valid: each stores the hash of the one before';
 		if (!fix) {
-			const bad = checks.filter((c) => !c.valid).length;
-			return `Block 1 edited: ${bad === 3 ? 'blocks 1, 2 and 3' : `${bad} blocks`} no longer valid`;
+			const bad = checks.flatMap((c, i) => (c.valid ? [] : [String(i)]));
+			const names = bad.length > 1 ? `${bad.slice(0, -1).join(', ')} and ${bad.at(-1)}` : bad[0];
+			return `Block 1 edited: block${bad.length > 1 ? 's' : ''} ${names} no longer valid`;
 		}
 		if (!work) return 'Recomputed 3 hashes: the chain looks valid again';
 		if (shown.mining > 0) return `Re-mining block ${shown.mining}: ${fmt(triesShown)} tries so far`;

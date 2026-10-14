@@ -23,7 +23,7 @@
 	const delay = $derived(clamp(Number(params.delay ?? 120), 0, 300));
 	const seed = $derived(1 + Number(params.reforks ?? 0));
 	const BLOCKS = 30;
-	const RATE = 150;
+	const RATE = 200;
 	const run = $derived(forkRun({ delay, blocks: BLOCKS, seed }));
 	const period = $derived(run.end / RATE + delay / RATE + 4);
 	/** A long-run figure for this delay: 4000 more simulated blocks. */
@@ -81,7 +81,7 @@
 	// ---- geometry -------------------------------------------------------------------------------
 	const MX = (j: number) => 150 + j * 165;
 	const MY = 128;
-	const TREE = { x: 70, y: 470, col: 58, lane: 66, w: 40, h: 30 };
+	const TREE = { x: 70, y: 430, col: 58, lane: 62, w: 40, h: 30 };
 	const WINDOW = 14;
 	/** Horizontal scroll: keeps the newest blocks in view, easing as each new height appears. */
 	const scroll = $derived.by(() => {
@@ -141,7 +141,7 @@
 			y={58}
 			text="{simMin.toFixed(
 				0
-			)} minutes of mining (about 150 × faster than real) · one block every 10 min on average"
+			)} minutes of mining (200 × faster than real) · one block every 10 min on average"
 			size={12}
 			muted
 		/>
