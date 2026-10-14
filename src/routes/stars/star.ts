@@ -241,7 +241,7 @@ export interface GridPoint {
 	midPp: number;
 	midCno: number;
 }
-export const grid: readonly GridPoint[] = GRID as unknown as readonly GridPoint[];
+export const grid: readonly GridPoint[] = GRID;
 
 function gridInterp(mass: number, f: (g: GridPoint) => number): number {
 	const lm = Math.log10(mass);
