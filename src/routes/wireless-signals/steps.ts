@@ -186,7 +186,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [keyMode],
 			body: `
-<p>Data is sent the same way, except that the carrier jumps between a few fixed states instead of following a smooth sound. Here it sends the two letters “Hi” as 16 bits (see <em>Bits</em>), one bit per <dfn data-def="One fixed stretch of time during which the carrier holds one state. Each symbol stands for one or more bits.">symbol</dfn>, a million symbols per second.</p>
+<p>Data is sent the same way, except that the carrier jumps between a few fixed states instead of following a smooth sound. Here it sends the letter “H”, 01001000 in binary (see <em>Bits</em>), one bit per <dfn data-def="One fixed stretch of time during which the carrier holds one state. Each symbol stands for one or more bits.">symbol</dfn>, a million symbols per second.</p>
 <ul>
 <li><strong>Amplitude:</strong> strong for 1, weak for 0 (amplitude-shift keying).</li>
 <li><strong>Frequency:</strong> a little faster for 1, a little slower for 0 (frequency-shift keying, used by Bluetooth).</li>
@@ -217,7 +217,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [smooth],
 			body: `
-<p>Phase keying used two angles: half a turn apart. Use four angles, a quarter turn apart, and each symbol can stand for <strong>two bits</strong>: twice the data in the same bandwidth. This is <dfn data-def="Quadrature phase-shift keying: four phases a quarter turn apart, each standing for two bits.">QPSK</dfn>.</p>
+<p>Phase keying used two angles: half a turn apart. Use four angles, a quarter turn apart, and each symbol can stand for <strong>two bits</strong>: twice the data in the same bandwidth. The same 8 symbols now carry 16 bits: “Hi”. This is <dfn data-def="Quadrature phase-shift keying: four phases a quarter turn apart, each standing for two bits.">QPSK</dfn>.</p>
 <p>The four allowed pointer positions form the <dfn data-def="The set of allowed points for the carrier's pointer (amplitude and phase), each standing for a group of bits.">constellation</dfn>. Their two coordinates have names: <dfn data-def="In-phase: the part of the signal that follows the reference carrier (the horizontal coordinate of the pointer).">I</dfn> across and <dfn data-def="Quadrature: the part of the signal a quarter of a cycle behind the reference carrier (the vertical coordinate of the pointer).">Q</dfn> up. A transmitter really builds its signal this way: two carriers a quarter cycle apart, one set by I and one by Q, added together.</p>
 <p>Neighbouring points differ in only one bit (01 sits next to 00 and 11), so a small slip costs one bit, not two.</p>`,
 			notes: `<p>That labelling is a <dfn data-def="An ordering of binary numbers in which neighbours differ in exactly one bit: 00, 01, 11, 10.">Gray code</dfn>. Every constellation on this page uses one.</p>`
