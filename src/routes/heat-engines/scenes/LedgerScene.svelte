@@ -20,8 +20,8 @@
 	const share = $derived(Number(params.share ?? 30) / 100);
 	const L = $derived(ledger(Q, share, tHot, tCold));
 	const limit = $derived(carnotLimit(tHot, tCold));
-	/** At the limit within the slider's 1% resolution. */
-	const atLimit = $derived(Math.abs(share - limit) < 0.005);
+	/** At the limit, to the two decimals shown. */
+	const atLimit = $derived(Math.abs(L.dsTotal) < 0.005);
 	const verdict = $derived(
 		atLimit
 			? 'At the limit: total entropy unchanged'
@@ -100,7 +100,7 @@
 		fill="var(--he-hot-soft)"
 		stroke="var(--he-hot)"
 	/>
-	<Readout id="hot-side" order={1} label="Hot side" value="{fmt(tHot)} K" color="var(--he-hot)">
+	<Readout id="hot-side">
 		<Label x={HOT.x + HOT.w / 2} y={HOT.y + 30} text="hot side" color="var(--he-hot)" />
 		<Label x={HOT.x + HOT.w / 2} y={HOT.y + 52} text="T = {fmt(tHot)} K" size={14} weight={600} />
 	</Readout>
@@ -113,7 +113,7 @@
 		fill="var(--he-cold-soft)"
 		stroke="var(--he-cold)"
 	/>
-	<Readout id="cold-side" order={2} label="Cold side" value="{fmt(tCold)} K" color="var(--he-cold)">
+	<Readout id="cold-side">
 		<Label x={COLD.x + COLD.w / 2} y={COLD.y + 30} text="cold side" color="var(--he-cold)" />
 		<Label
 			x={COLD.x + COLD.w / 2}
@@ -171,7 +171,7 @@
 	/>
 	<Label x={ENG.x} y={ENG.y + 5} text="engine" size={13} weight={600} />
 
-	<Readout id="q-hot" order={3} label="Heat from the hot side" value="{fmt(Q)} J">
+	<Readout id="q-hot">
 		<Label
 			x={ENG.x + hotW / 2 + 10}
 			y={(HOT.y + HOT.h + ENG.y - ENG.r) / 2 + 5}
@@ -180,7 +180,7 @@
 			color="var(--he-hot)"
 		/>
 	</Readout>
-	<Readout id="q-cold" order={5} label="Heat to the cold side" value="{fmt(L.qCold)} J">
+	<Readout id="q-cold">
 		<Label
 			x={ENG.x + Math.max(coldW, 0) / 2 + 10}
 			y={(ENG.y + ENG.r + COLD.y) / 2 + 5}
@@ -223,7 +223,7 @@
 		<Readout
 			id="bar-{b.id}"
 			order={6 + (b.id === 'hot' ? 0 : b.id === 'cold' ? 1 : 2)}
-			label="Entropy change, {b.label}"
+			label={b.id === 'total' ? 'Total entropy change' : undefined}
 			value="{b.v >= 0 ? '+' : '−'}{fmt(Math.abs(b.v), 2)} J/K"
 		>
 			<Label

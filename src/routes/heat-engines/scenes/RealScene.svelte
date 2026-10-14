@@ -46,31 +46,39 @@
 		{@const y = rowY(i)}
 		{@const lo = typeof e.value === 'number' ? 0 : e.value[0]}
 		{@const hi = typeof e.value === 'number' ? e.value : e.value[1]}
-		<Readout id="r-{e.id}" order={i + 1} label={e.label} value={fmtV(e.value)} note={e.source}>
+		<Readout
+			id="r-{e.id}"
+			order={i + 1}
+			label={e.label}
+			value={fmtV(e.value)}
+			note={e.source}
+			marker={i + 1}
+			at={[400, y]}
+		>
 			<text x={410} y={y + 5} font-size="13" text-anchor="end">{e.label}</text>
 			<text x={410} y={y + 20} font-size="11" text-anchor="end" class="muted">{e.source}</text>
-			<rect
-				x={sx(lo * grow)}
-				y={y - 12}
-				width={Math.max(0, sx(hi * grow) - sx(lo * grow))}
-				height="24"
-				rx="4"
-				fill={e.id === 'record'
-					? 'var(--he-work)'
-					: e.group === 'car'
-						? 'var(--he-loop)'
-						: 'var(--he-cold)'}
-				opacity={typeof e.value === 'number' ? 0.8 : 0.45}
-			/>
-			<Label
-				x={sx(hi * grow) + 8}
-				y={y + 5}
-				text={fmtV(e.value)}
-				anchor="start"
-				size={13}
-				weight={600}
-			/>
 		</Readout>
+		<rect
+			x={sx(lo * grow)}
+			y={y - 12}
+			width={Math.max(0, sx(hi * grow) - sx(lo * grow))}
+			height="24"
+			rx="4"
+			fill={e.id === 'record'
+				? 'var(--he-work)'
+				: e.group === 'car'
+					? 'var(--he-loop)'
+					: 'var(--he-cold)'}
+			opacity={typeof e.value === 'number' ? 0.8 : 0.45}
+		/>
+		<Label
+			x={sx(hi * grow) + 8}
+			y={y + 5}
+			text={fmtV(e.value)}
+			anchor="start"
+			size={13}
+			weight={600}
+		/>
 	{/each}
 	<!-- the ideal cycle of the best petrol engine -->
 	<line

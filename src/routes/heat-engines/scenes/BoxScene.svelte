@@ -218,7 +218,7 @@
 				text={plate === -1
 					? 'cold water: heat out'
 					: plate === 2
-						? 'heat flows back into the flame'
+						? 'heat back out, as hot as it came in'
 						: plate === 1
 							? 'flame: heat in'
 							: 'flame off'}

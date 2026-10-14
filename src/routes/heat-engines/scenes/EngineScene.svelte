@@ -97,6 +97,8 @@
 		const a = c.states[leg === 0 ? 0 : 2];
 		return a.P * Math.pow(a.V / V, 1.4);
 	}
+	/** The top of the loop is too close to the axis title for a label above it. */
+	const highTop = $derived(Y(c.states[2].P) - 14 < 90);
 	/** Where the "work = area" pointer touches the loop: past the end of a Diesel burn. */
 	const workV = $derived(Math.max(0.105e-3, c.states[2].V * 1.3));
 	/** The path traced so far in this cycle (strokes phase). */
@@ -142,7 +144,6 @@
 	const rows: Row[] = $derived.by(() => {
 		if (phase === 'strokes') {
 			return [
-				{ id: 'stroke', label: 'Stroke', value: `${sn.n} ${sn.name}`, strong: true },
 				{ id: 'crank', label: 'Crank angle', value: `${fmt(now.crank)}°` },
 				{ id: 'p', label: 'Pressure', value: `${fmt(bar(now.gas.P), 1)} bar` },
 				{ id: 'T', label: 'Gas temperature', value: `${fmt(now.gas.T)} K` }
@@ -178,9 +179,9 @@
 		.join(' ');
 
 	const stateLabelOffsets = [
-		[-4, 20],
+		[12, 5],
 		[-14, 4],
-		[-16, -6],
+		[-14, 4],
 		[0, -14]
 	];
 	const showStates = $derived(phase !== 'strokes');
@@ -450,16 +451,17 @@
 		{/each}
 		<Readout id="heat-labels">
 			<Label
-				x={X(c.states[1].V) + (kind === 'diesel' ? (X(c.states[2].V) - X(c.states[1].V)) / 2 : 14)}
-				y={Math.max(Y(c.states[2].P) - 14, 64)}
+				x={X(c.states[1].V) +
+					(kind === 'diesel' ? (X(c.states[2].V) - X(c.states[1].V)) / 2 : highTop ? 8 : 0)}
+				y={highTop ? Y(c.states[2].P) + 14 : Y(c.states[2].P) - 14}
 				text="heat in"
 				size={12}
 				color="var(--he-hot)"
-				anchor={kind === 'diesel' ? 'middle' : 'start'}
+				anchor={highTop && kind === 'otto' ? 'start' : 'middle'}
 			/>
 			<Label
 				x={X(c.states[0].V) + 12}
-				y={Y(c.states[0].P) + 2}
+				y={Y(c.states[3].P) - 16}
 				text="heat out"
 				size={12}
 				color="var(--he-cold)"
@@ -502,7 +504,7 @@
 		<g>
 			<rect
 				x={IN.x0 - 44}
-				y={IN.y0 - 28}
+				y={IN.y0 - 34}
 				width={IN.x1 - IN.x0 + 56}
 				height={IN.y1 - IN.y0 + 58}
 				rx="8"
@@ -510,7 +512,7 @@
 				stroke="var(--border)"
 			/>
 			<Readout id="inset-title">
-				<text x={IN.x0 - 34} y={IN.y0 - 10} font-size="12" class="muted"
+				<text x={IN.x0 - 34} y={IN.y0 - 16} font-size="12" class="muted"
 					>efficiency against ratio</text
 				>
 			</Readout>
