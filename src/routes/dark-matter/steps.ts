@@ -101,7 +101,7 @@ export const spec: ExplainerSpec = {
 <p>That is exactly the free fall of a planet round the Sun (see <a href="../orbits-kepler/">Orbits and Kepler’s laws</a>), and it obeys the same law: a body in a circular orbit of radius <i>r</i> at speed <i>v</i> needs a mass</p>
 <p class="formula">M(&lt;r) = v² r / G</p>
 <p>inside its orbit. So <strong>measure how fast the stars go and you have weighed the galaxy</strong> — everything in it, whether it shines or not.</p>`,
-			notes: `<p>The galaxy is slow: an outer star of NGC 3198 takes about 1.8 billion years to go round once, so the animation runs at about 50 million years per second. The drawing is schematic (no galaxy has such tidy arms); the speeds of its stars are the measured ones. M = v²r/G is exact for a round (spherical) distribution of mass; for a flat disc it is off by a few tens of percent, which the fits later on take into account.</p>`
+			notes: `<p>The galaxy is slow: an outer star of NGC 3198 takes about 1.8 billion years to go round once, so the animation runs at about 40 million years per second. The drawing is schematic (no galaxy has such tidy arms); the speeds of its stars are the measured ones. M = v²r/G is exact for a round (spherical) distribution of mass; for a flat disc it is off by a few tens of percent, which the fits later on take into account.</p>`
 		},
 		{
 			id: 'expect',

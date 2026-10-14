@@ -284,3 +284,28 @@ export const cosmicBudget = () => {
 
 /** Eilers et al. (2019), ApJ 871, 120: the Milky Way's circular speed at the Sun. */
 export const MILKY_WAY = { vSun: 229.0, slope: -1.7, mVir: 7.25e11 } as const;
+
+/**
+ * Speed (km/s) at any radius inside the measured range, interpolated linearly
+ * between measured points: the measured speed, or the visible matter's.
+ * Inside the first point it falls linearly to 0 at the centre; beyond the last
+ * it keeps the last value.
+ */
+export function speedAt(
+	g: Galaxy,
+	r: number,
+	which: 'measured' | 'visible',
+	mlDisk = ML_DISK_DEFAULT
+) {
+	const pts = g.points;
+	const val = (i: number) =>
+		which === 'measured' ? pts[i].v : Math.max(0, visibleAt(pts[i], mlDisk).total);
+	if (r <= pts[0].r) return (val(0) * Math.max(0, r)) / pts[0].r;
+	for (let i = 1; i < pts.length; i++) {
+		if (r <= pts[i].r) {
+			const u = (r - pts[i - 1].r) / (pts[i].r - pts[i - 1].r);
+			return val(i - 1) + (val(i) - val(i - 1)) * u;
+		}
+	}
+	return val(pts.length - 1);
+}
