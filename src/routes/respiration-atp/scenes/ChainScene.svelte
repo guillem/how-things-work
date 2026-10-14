@@ -70,7 +70,7 @@
 		if (lastT >= 0 && dt > 0 && dt < 0.5) {
 			const f0 = chainFluxes(sim, cond);
 			sim = stepChain(sim, dt * SIM_SPEED, cond);
-			clocks.e += dt * rel(f0.IV, REF.IV);
+			clocks.e += dt * chainRate(f0);
 			clocks.n += dt * rel(f0.I, REF.I);
 			clocks.ii += dt * rel(f0.II, REF.II);
 			clocks.q += dt * rel(f0.III, REF.III);
@@ -82,6 +82,10 @@
 		lastT = t;
 		return { state: sim, fluxes: chainFluxes(sim, cond), clocks: { ...clocks } };
 	});
+	/** Electrons along the whole chain: the mean pace of complexes I, III and IV. */
+	function chainRate(f: ReturnType<typeof chainFluxes>) {
+		return (rel(f.I, REF.I) + rel(f.III, REF.III) + rel(f.IV, REF.IV)) / 3;
+	}
 	function rel(v: number, ref: number) {
 		return Math.max(0, v / ref);
 	}
@@ -93,7 +97,7 @@
 			state: s.state,
 			fluxes: f,
 			clocks: {
-				e: t * rel(f.IV, REF.IV),
+				e: t * chainRate(f),
 				n: t * rel(f.I, REF.I),
 				ii: t * rel(f.II, REF.II),
 				q: t * rel(f.III, REF.III),
@@ -110,9 +114,11 @@
 	/** 0 → 1 as a stream starts: a stopped process fades out instead of freezing. */
 	const on = (v: number, ref: number) => smoothstep(0.03, 0.2, v / ref);
 	const flowE = $derived(on(fx.IV, REF.IV));
+	/** The electron stream as a whole fades as the last complexes upstream stop. */
+	const flowChain = $derived(smoothstep(0.03, 0.2, chainRate(fx)));
+	const allLoaded = $derived(st.c > 0.97 && st.q > 0.97 && st.nadh > 0.95);
 	const flowI = $derived(on(fx.I, REF.I));
 	const flowII = $derived(on(fx.II, REF.II));
-	const flowIII = $derived(on(fx.III, REF.III));
 	const flowS = $derived(on(fx.throughSynthase, REF.throughSynthase));
 	const flowA = $derived(on(fx.atp, REF.atp));
 	const flowLeak = $derived(smoothstep(0.15, 0.5, fx.leak / REF.pumped));
@@ -148,9 +154,9 @@
 		if (focus === 'IV')
 			return cond.oxygen
 				? 'O₂ + 4 H⁺ + 4 e⁻ → 2 H₂O · complex IV pumps 2 H⁺ per pair'
-				: flowE > 0.05
-					? 'no oxygen: electrons pile up from complex IV backwards'
-					: 'no oxygen: every carrier is loaded, the chain has stopped';
+				: allLoaded
+					? 'no oxygen: every carrier is loaded, the chain has stopped'
+					: 'no oxygen: electrons pile up from complex IV backwards';
 		if (!cond.synthase && !cond.uncoupler)
 			return 'ATP synthase blocked: protons pile up and the chain slows';
 		if (cond.uncoupler) return 'leaky membrane: protons flow back without making ATP';
@@ -520,7 +526,7 @@
 	</g>
 
 	<!-- ================= pumped protons ================= -->
-	<g opacity={Math.max(flowI, flowIII, flowE) * 0.95}>
+	<g opacity={flowChain * 0.95}>
 		{#each lanes as l, i (i)}
 			{@const u = cycle(ck.p, P_PERIOD, l.off)}
 			<Molecule kind="proton" x={l.x} y={lerp(l.from, l.to, u)} opacity={fadeEnds(u)} glow />
@@ -542,7 +548,7 @@
 		speed={30}
 		opacity={0.35}
 	/>
-	<g opacity={flowE}>
+	<g opacity={flowChain}>
 		{#each Array.from({ length: E_COUNT }, (_, i) => i) as k (k)}
 			{@const u = cycle(ck.e, E_PERIOD, k / E_COUNT)}
 			{@const p = along(ePath, u)}
