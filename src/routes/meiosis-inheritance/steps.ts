@@ -12,7 +12,7 @@ const crossovers: Control[] = [0.62, 0.3, 0.55].map((d, i) => ({
 	step: 0.01,
 	default: d,
 	format: (v) => `${Math.round(v * 100)}% from the top`,
-	help: i === 0 ? 'Or drag the white rings along the chromosomes in the picture.' : undefined
+	help: i === 0 ? 'Or drag the round handles along the chromosomes in the picture.' : undefined
 }));
 
 /** Which way each pair faces at the equator. */
@@ -103,7 +103,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now something happens that never happens in an ordinary division: the two chromosomes of each pair find each other and lie side by side, gene against gene.</p>
 <p>Where they touch, two chromatids, one from each, break at the same point and swap ends. This is <dfn data-def="The exchange of matching pieces between the two chromosomes of a pair during meiosis. Its point of contact is a chiasma.">crossing over</dfn>. Every pair crosses over at least once; long chromosomes often two or three times. Afterwards, two of the four chromatids are a new mix: part grandmother, part grandfather.</p>
-<p><strong>Choose where each pair crosses over</strong> with the sliders, or drag the rings. Watch the letters: a gene beyond the crossover (counting from the centromere) changes chromatid; a gene between the centromere and the crossover stays put.</p>`,
+<p><strong>Choose where each pair crosses over</strong> with the sliders, or drag the handles. Watch the letters: a gene beyond the crossover (counting from the centromere) changes chromatid; a gene between the centromere and the crossover stays put.</p>`,
 			notes: `<p>The crossover is drawn between the two inner chromatids. In a real cell any of the four combinations of non-sister chromatids can cross, at sites chosen by an enzyme (Spo11) that cuts the DNA on purpose; most of the cuts are repaired without a swap. The simulation that breeds offspring later on lets the crossovers fall at random, about one per 100 centimorgans of chromosome per chromatid (that is what a centimorgan means).</p>`
 		},
 		{
