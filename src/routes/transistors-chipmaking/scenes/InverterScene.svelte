@@ -145,7 +145,12 @@
 			stroke-width="2"
 		/>
 	{/if}
-	<Readout id="mos-{name}">
+	<Readout
+		id="mos-{name}"
+		order={5}
+		label={name}
+		value={on > 0.97 ? 'on' : on > 0.05 ? 'partly on' : 'off'}
+	>
 		{@render txt(x + 14, ym - 4, name, 13, { anchor: 'start', weight: 700 })}
 		{@render txt(x + 14, ym + 14, on > 0.97 ? 'on' : on > 0.05 ? 'partly on' : 'off', 13, {
 			anchor: 'start',

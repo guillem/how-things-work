@@ -159,7 +159,7 @@
 			{/if}
 		{/if}
 	{/each}
-	<Readout id="caught" order={4} label="Beams caught per light spot" value={String(caught)}>
+	<Readout id="caught">
 		{@render txt(PCX, PCY + PR + 26, `beams caught from each light spot: ${caught}`, 13, {
 			weight: 700,
 			color: caught >= 2 ? 'var(--tc-on)' : 'var(--circ-high)'
