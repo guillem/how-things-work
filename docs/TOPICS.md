@@ -184,7 +184,7 @@ A topic is done when:
 - [x] sorting
 - [x] graph-search
 - [ ] turing-machines
-- [ ] quantum-computing
+- [x] quantum-computing
 
 **Information & Networks**
 - [x] compression
