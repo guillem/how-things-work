@@ -109,7 +109,7 @@ const delay: Control = {
 	min: 0,
 	max: 300,
 	step: 10,
-	default: 60,
+	default: 120,
 	unit: ' s'
 };
 const reforks: Control = {
@@ -291,7 +291,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A new block takes time to spread to all miners. If another miner finds a block before news of the first arrives, the chain <dfn data-def="Splits into two branches that both start from the same block. Each miner works on the branch it heard of first.">forks</dfn>: two blocks claim the same place. Each miner keeps mining on the branch it heard of first.</p>
 <p>The rule that settles it: <strong>follow the longest chain</strong> (strictly, the one with the most work). The next block lands on one branch, that branch is now longer, everyone switches to it, and the other block is <dfn data-def="A valid block that ended up off the winning chain. Its payments go back to waiting for the next block.">orphaned</dfn> (dimmed). Raise the delay and forks become frequent; at zero delay there are none. Agreement on the last few blocks is never certain, only increasingly likely as blocks pile up on top.</p>`,
-			notes: `<p>The simulation has five miners with 30, 25, 20, 15 and 10 % of the computing power, one block every 10 minutes on average (found at random times, as in the real lottery), and the delay you set (± 25 %). Time runs about 100 times faster than real. For small delays d, about d ÷ 600 s of blocks end up orphaned. Decker and Wattenhofer measured Bitcoin in 2013: a median of 6.5 s for a block to reach a node, and 1.69 % of blocks orphaned. Faster relay networks have since cut both.</p>`
+			notes: `<p>The simulation has five miners with 30, 25, 20, 15 and 10 % of the computing power, one block every 10 minutes on average (found at random times, as in the real lottery), and the delay you set (± 25 %). Time runs about 150 times faster than real. For small delays d, about d ÷ 600 s of blocks end up orphaned. Decker and Wattenhofer measured Bitcoin in 2013: a median of 6.5 s for a block to reach a node, and 1.69 % of blocks orphaned. Faster relay networks have since cut both.</p>`
 		},
 		{
 			id: 'double-spend',

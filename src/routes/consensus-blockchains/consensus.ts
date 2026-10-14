@@ -870,6 +870,24 @@ export function forkRun({
 	return { tree, main, stale, settled: settled.length, end: now };
 }
 
+/**
+ * Rows for drawing a block tree: the winning chain on row 0, every other block on row 1 or
+ * above (above its parent's row, and above any other losing block of the same height).
+ */
+export function forkLanes(tree: ForkBlock[], main: Set<number>) {
+	const lane = new Map<number, number>();
+	const used = new Map<number, number>();
+	for (const b of tree) {
+		if (main.has(b.id)) lane.set(b.id, 0);
+		else {
+			const k = Math.max(1, lane.get(b.parent) ?? 0, (used.get(b.height) ?? 0) + 1);
+			used.set(b.height, k);
+			lane.set(b.id, k);
+		}
+	}
+	return lane;
+}
+
 // ================================================================ the double-spend race
 
 /** Nakamoto 2008 §11, `AttackerSuccessProbability`, transcribed from the paper's C code. */

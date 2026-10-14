@@ -1,6 +1,19 @@
 <script lang="ts">
+	/**
+	 * The strangers chapter. Phases (`step.hints.phase`):
+	 * - `fork`: five miners, propagation delay `params.delay`; the block tree with orphans.
+	 * - `race`: the double-spend race and Nakamoto's attacker-success probability.
+	 */
 	import type { StageProps } from '#lib/explainer/index.ts';
-	let { step }: StageProps = $props();
+	import ForkView from './ForkView.svelte';
+	import RaceView from './RaceView.svelte';
+
+	let { step, t, params, reduced }: StageProps = $props();
+	const phase = $derived(String(step.hints?.phase ?? 'fork'));
 </script>
 
-<g><text x="480" y="300" text-anchor="middle">{step.id}</text></g>
+{#if phase === 'race'}
+	<RaceView {t} {params} {reduced} />
+{:else}
+	<ForkView {t} {params} {reduced} />
+{/if}
