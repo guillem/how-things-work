@@ -654,6 +654,15 @@ const explainers: Explainer[] = [
 		accent: '#2b8a3e',
 		steps: 12,
 		minutes: 20
+	},
+	{
+		slug: 'transistors-chipmaking',
+		title: 'Transistors and how chips are made',
+		summary:
+			'Raise the voltage on a transistor’s gate and watch a channel of electrons appear, pair two transistors into an inverter, then follow a chip through the factory: films, light through a mask, etching and doping, repeated layer after layer.',
+		accent: '#5c7cfa',
+		steps: 13,
+		minutes: 22
 	}
 ];
 

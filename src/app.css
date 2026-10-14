@@ -1996,3 +1996,47 @@ kbd {
 	--rb-cathode: #69db7c;
 	--rb-gap: #ffd43b;
 }
+
+/* transistors-chipmaking: films, resist, light, wafer */
+:root {
+	--tc-oxide: #c5f6fa;
+	--tc-oxide-edge: #3bc9db;
+	--tc-poly: #868e96;
+	--tc-poly-edge: #495057;
+	--tc-metal: #d9822b;
+	--tc-tungsten: #748ffc;
+	--tc-resist: #f783ac;
+	--tc-resist-exposed: #fcc2d7;
+	--tc-uv: #7048e8;
+	--tc-chrome: #343a40;
+	--tc-glass: #e7f5ff;
+	--tc-ild: #e9ecef;
+	--tc-wafer: #ced4da;
+	--tc-die: #5c7cfa;
+	--tc-on: #2f9e44;
+	--tc-off: #868e96;
+	--tc-ion: #e8590c;
+	--tc-plasma: #be4bdb;
+	--tc-curve: #1971c2;
+}
+:root[data-theme='dark'] {
+	--tc-oxide: #0b3a40;
+	--tc-oxide-edge: #3bc9db;
+	--tc-poly: #6c757d;
+	--tc-poly-edge: #ced4da;
+	--tc-metal: #e8a35a;
+	--tc-tungsten: #91a7ff;
+	--tc-resist: #c2255c;
+	--tc-resist-exposed: #5c1f36;
+	--tc-uv: #b197fc;
+	--tc-chrome: #ced4da;
+	--tc-glass: #102231;
+	--tc-ild: #2b2f33;
+	--tc-wafer: #495057;
+	--tc-die: #748ffc;
+	--tc-on: #51cf66;
+	--tc-off: #868e96;
+	--tc-ion: #ff922b;
+	--tc-plasma: #da77f2;
+	--tc-curve: #4dabf7;
+}

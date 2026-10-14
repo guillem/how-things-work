@@ -2357,8 +2357,26 @@
 		<circle cx="92" cy="76" r="4.2" fill="var(--rb-li)" />
 		<path d="M98 76 H110" stroke={accent} stroke-width="1.6" stroke-linecap="round" />
 		<path d="M106 72 L111 76 L106 80" fill="none" stroke={accent} stroke-width="1.6" />
-	{:else}
-		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
+	{:else if slug === 'transistors-chipmaking'}
+		<!-- a MOSFET in cross-section: source and drain islands, the gate on its oxide,
+		     a channel of electrons, and UV light coming down through a slit in a mask -->
+		<rect x="30" y="64" width="140" height="42" rx="4" fill="currentColor" opacity="0.12" />
+		<rect x="38" y="64" width="34" height="14" rx="3" fill={accent} opacity="0.45" />
+		<rect x="128" y="64" width="34" height="14" rx="3" fill={accent} opacity="0.45" />
+		<rect x="74" y="58" width="52" height="5" fill="var(--tc-oxide-edge)" opacity="0.8" />
+		<rect x="74" y="40" width="52" height="18" rx="2" fill="currentColor" opacity="0.45" />
+		{#each [80, 90, 100, 110, 120] as x (x)}
+			<circle cx={x} cy="68" r="2.4" fill={accent} />
+		{/each}
+		<path d="M40 12 H90 M110 12 H160" stroke="currentColor" stroke-width="3" opacity="0.6" />
+		{#each [100] as x (x)}
+			<path
+				d="M{x} 16 l-3 6 l6 4 l-6 4 l3 6"
+				fill="none"
+				stroke="var(--tc-uv)"
+				stroke-width="1.5"
+			/>
+		{/each}
 		<circle cx="100" cy="60" r="5" fill={accent} />
 	{/if}
 </svg>
