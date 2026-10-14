@@ -5,14 +5,14 @@ import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
  * checks). Kept here, without the attention data, so the narrative does not load the weights.
  */
 export const SENTENCES = [
-	{ id: 'animal', label: 'The animal … it' },
-	{ id: 'mary', label: 'Mary and John' },
-	{ id: 'fox', label: 'Quick brown fox, twice' },
-	{ id: 'keys', label: 'The keys … are' },
-	{ id: 'dog', label: 'Dog bites man' },
-	{ id: 'capital', label: 'Capital of' },
-	{ id: 'count', label: '1, 2, 3' },
-	{ id: 'tom', label: 'Tom … he' }
+	{ id: 'animal', label: 'The animal … it', n: 14 },
+	{ id: 'mary', label: 'Mary and John', n: 15 },
+	{ id: 'fox', label: 'Quick brown fox, twice', n: 15 },
+	{ id: 'keys', label: 'The keys … are', n: 12 },
+	{ id: 'dog', label: 'Dog bites man', n: 15 },
+	{ id: 'capital', label: 'Capital of', n: 14 },
+	{ id: 'count', label: '1, 2, 3', n: 13 },
+	{ id: 'tom', label: 'Tom … he', n: 8 }
 ] as const;
 
 /** GPT-2's tokens for the featured sentence, as the stage writes them (a model test checks). */
@@ -43,9 +43,10 @@ export const PATTERNS = {
 } as const;
 export type PatternId = keyof typeof PATTERNS;
 
-const sentence = (def = 'animal'): Control => ({
+/** Controls that share an id share their value (and must share their default). */
+const sentence = (id = 's', def = 'animal'): Control => ({
 	type: 'select',
-	id: 's',
+	id,
 	label: 'Sentence',
 	default: def,
 	options: SENTENCES.map((s) => ({ value: s.id, label: s.label })),
@@ -70,6 +71,19 @@ const head: Control = {
 	max: 12,
 	step: 1,
 	default: 4
+};
+
+const token: Control = {
+	type: 'range',
+	id: 'tok',
+	label: 'Token',
+	min: 1,
+	max: 15,
+	bounds: (p) => [1, (SENTENCES.find((x) => x.id === p.s) ?? SENTENCES[0]).n - 1],
+	step: 1,
+	default: 9,
+	format: (v) => `no. ${Math.round(v)}`,
+	help: 'Which token is looking: point at one on the stage, tap it, or use this slider.'
 };
 
 const query: Control = {
@@ -249,7 +263,7 @@ export const spec: ExplainerSpec = {
 			scene: 'explore',
 			hints: { phase: 'explore' },
 			duration: 30,
-			controls: [sentence(), layer, head],
+			controls: [sentence(), layer, head, token],
 			body: `
 <p>Point at a token (or tap it, or Tab to it) to see which earlier tokens it attends to in the chosen layer and head: the thicker the line, the larger the weight. The grid on the right shows the same token in all 144 heads at once, each cell a tiny bar chart of its weights; click a cell to pick that layer and head.</p>
 <p>Try <strong>Quick brown fox, twice</strong> at the second <em>fox</em>, or <strong>Mary and John</strong> at the last <em>to</em>, and look for the cells that light up away from ⟨start⟩.</p>
@@ -283,7 +297,7 @@ export const spec: ExplainerSpec = {
 			scene: 'stack',
 			hints: { phase: 'stack' },
 			duration: 28,
-			controls: [sentence('capital')],
+			controls: [sentence('stackS', 'capital')],
 			body: `
 <p>A layer of GPT-2, a <dfn data-def="One layer of a transformer: an attention step (tokens exchange information) followed by an MLP (each token processed on its own), each added back to the token's vector.">transformer block</dfn>, is two parts. First the 12 attention heads, where the tokens exchange information. Then a small <a href="../neural-networks/">neural network</a> (an MLP, 768 → 3,072 → 768 neurons) that works on each token's vector on its own. Both add their result to the token's vector.</p>
 <p>GPT-2 small stacks 12 such blocks. Each token's vector flows up through all of them, picking up a little more context at every layer. At the top, the vector of the last token is compared with all 50,257 token embeddings to give a probability for each possible next token: for “… Rome is the capital of”, GPT-2 says <em>Italy</em> (35%).</p>
@@ -297,7 +311,7 @@ export const spec: ExplainerSpec = {
 			scene: 'explore',
 			hints: { phase: 'summary' },
 			duration: 24,
-			controls: [sentence('mary')],
+			controls: [sentence('sumS', 'mary')],
 			body: `
 <p>Attention lets every token gather information from every earlier token in one step:</p>
 <ul>

@@ -159,11 +159,11 @@ export class Gpt2 {
 		this.sentences = data.sentences.map((s) => new Sentence(s, data.config.heads));
 		this.featured = data.featured;
 		const n = data.positions.n;
-		const c = new Int8Array(bytes(data.positions.cos).buffer);
+		const raw = new DataView(bytes(data.positions.cos).buffer);
 		this.positions = {
 			n,
 			cos: Array.from({ length: n }, (_, i) =>
-				Array.from({ length: n }, (_, j) => c[i * n + j] / 127)
+				Array.from({ length: n }, (_, j) => raw.getInt16(2 * (i * n + j), true) / 10000)
 			),
 			norms: data.positions.norms
 		};

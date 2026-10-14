@@ -40,7 +40,7 @@ Output: a TypeScript module exporting `data` (type GptData from attention.ts), f
   featured   one head on one sentence, unrounded enough to redo the attention by hand:
              { sentence, layer, head, q, k, v, out } with q, k, v, out: n × 64, 4 decimals
              (out = softmax(q kᵀ / 8 + causal mask) v, the head's output before W_O).
-  positions  { n: 64, cos: base64 of int8 round(127 · cos) of the learned position embeddings
+  positions  { n: 64, cos: base64 of little-endian int16 round(10000 · cos) of the learned position embeddings
              (wpe) of positions 0..63, n × n, row by row, norms: |wpe[p]| for p < n (2 dec.) }
 """
 
@@ -207,7 +207,7 @@ def main(src, out):
     wpe = f('wpe.weight')[:POSITIONS]
     norms = np.linalg.norm(wpe, axis=1)
     u = wpe / norms[:, None]
-    cos = np.rint(np.clip(u @ u.T, -1, 1) * 127).astype(np.int8)
+    cos = np.rint(np.clip(u @ u.T, -1, 1) * 10000).astype('<i2')
 
     params = sum(int(np.prod(t.shape)) for name, t in W.items() if not re.fullmatch(r'h\.\d+\.attn\.(masked_)?bias', name))
     assert params == 124439808, params

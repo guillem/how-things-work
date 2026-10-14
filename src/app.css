@@ -1499,7 +1499,7 @@ kbd {
 	--tf-att: #6741d9;
 	--tf-att-cell: #6741d9;
 	--tf-start: #868e96;
-	--tf-mask: #868e9626;
+	--tf-mask: #868e9659;
 	--tf-cell: #f1f3f5;
 	--tf-sel: #f08c00;
 }
@@ -1510,7 +1510,7 @@ kbd {
 	--tf-att: #b197fc;
 	--tf-att-cell: #b197fc;
 	--tf-start: #adb5bd;
-	--tf-mask: #adb5bd1f;
+	--tf-mask: #adb5bd40;
 	--tf-cell: #25262b;
 	--tf-sel: #ffd43b;
 }
