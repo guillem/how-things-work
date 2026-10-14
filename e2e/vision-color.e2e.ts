@@ -69,21 +69,23 @@ test('red and green lasers match the sodium lamp; nothing matches the 490 nm las
 	await expect(stage(page)).toContainText('L cones get too little from the mix');
 	await slider(page, 'r').fill('0.75');
 	await slider(page, 'g').fill('0.33');
-	await expect(stage(page)).toContainText('match: the cones can’t tell them apart');
+	await expect(stage(page)).toContainText('match: all three cone signals within 2%');
 	// Sunlight needs all three.
 	await option(page, 'target', 'sun').click();
-	await expect(stage(page)).not.toContainText('match: the cones');
+	await expect(stage(page)).not.toContainText('match: all three');
 	await slider(page, 'r').fill('0.7');
 	await slider(page, 'g').fill('0.75');
 	await slider(page, 'b').fill('0.74');
-	await expect(stage(page)).toContainText('match: the cones can’t tell them apart');
+	await expect(stage(page)).toContainText('match: all three cone signals within 2%');
 	// On the next step, the blue-green laser is out of reach.
 	await page.goto('./vision-color/#screens');
 	await option(page, 'target', 'cyan').click();
 	await expect(stage(page)).toContainText('closest the three lasers can get: 5% off');
 });
 
-test('the chessboard illusion: squares A and B are the same pixels', async ({ page }) => {
+test('the chessboard illusion’s reveal says squares A and B are the same grey', async ({
+	page
+}) => {
 	await page.goto('./vision-color/#illusions');
 	await option(page, 'illusion', 'shadow').click();
 	await expect(stage(page)).toContainText('Which is lighter, square A or square B?');

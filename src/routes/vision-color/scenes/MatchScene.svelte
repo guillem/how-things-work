@@ -57,7 +57,7 @@
 		KINDS.reduce((w, kd) => (Math.abs(mc[kd.k] - tc[kd.k]) > Math.abs(mc[w.k] - tc[w.k]) ? kd : w))
 	);
 	const verdict = $derived.by(() => {
-		if (matched) return 'match: the cones can’t tell them apart';
+		if (matched) return 'match: all three cone signals within 2%';
 		const kd = worst;
 		const more = mc[kd.k] > tc[kd.k];
 		return `${kd.id} cones get ${more ? 'too much' : 'too little'} from the mix`;
@@ -226,7 +226,7 @@
 	<Readout id="bars-title">
 		<Label
 			x={BARS.x + (3 * BARS.group) / 2 - 20}
-			y={BARS.top - 22}
+			y={BARS.top - 34}
 			text="cone signals: lamp (outline) and lasers (solid)"
 			size={12}
 			muted
@@ -235,7 +235,7 @@
 	{#each KINDS as kd (kd.id)}
 		{@const gx = BARS.x + kd.k * BARS.group}
 		{@const ht = (BARS.h * tc[kd.k]) / scale}
-		{@const hm = Math.min(BARS.h * 1.15, (BARS.h * mc[kd.k]) / scale)}
+		{@const hm = Math.min(BARS.h * 1.08, (BARS.h * mc[kd.k]) / scale)}
 		<line
 			x1={gx - 8}
 			y1={BARS.top + BARS.h}

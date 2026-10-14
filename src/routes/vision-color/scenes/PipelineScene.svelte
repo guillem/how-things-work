@@ -66,7 +66,7 @@
 			value: op.redGreen,
 			bipolar: true,
 			y: 330,
-			text: Math.abs(op.redGreen) < 0.08 ? 'neither' : op.redGreen > 0 ? 'reddish' : 'greenish'
+			text: Math.abs(op.redGreen) < 0.1 ? 'neither' : op.redGreen > 0 ? 'reddish' : 'greenish'
 		},
 		{
 			id: 'by',
@@ -76,7 +76,7 @@
 			value: op.blueYellow,
 			bipolar: true,
 			y: 430,
-			text: Math.abs(op.blueYellow) < 0.08 ? 'neither' : op.blueYellow > 0 ? 'bluish' : 'yellowish'
+			text: Math.abs(op.blueYellow) < 0.1 ? 'neither' : op.blueYellow > 0 ? 'bluish' : 'yellowish'
 		}
 	]);
 	const markX = (r: { value: number; bipolar: boolean }) =>

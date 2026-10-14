@@ -497,7 +497,7 @@
 		>
 	</g>
 	<Readout id="object-label">
-		<Label x={objX} y={AX + 30} text={live ? distanceValue : 'far away'} size={12} muted />
+		<Label x={objX} y={AX - OBJ_H - 12} text={live ? distanceValue : 'far away'} size={12} muted />
 	</Readout>
 
 	<!-- the image of the object's top, upside down on the retina (intro) -->

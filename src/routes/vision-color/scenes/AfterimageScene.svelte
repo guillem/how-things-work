@@ -1,7 +1,8 @@
 <script lang="ts">
 	/**
 	 * An afterimage experiment. Three coloured discs on a grey field for 20 s (stare at the cross),
-	 * then plain grey for 12 s, in a loop; `params.grey` switches to the grey at once. During the
+	 * then plain grey for 12 s, in a loop; `params.grey` switches to the grey at once. Under reduced
+	 * motion there is no countdown: the reader switches with the toggle. During the
 	 * grey, the bottom row shows the colours a von Kries model of cone adaptation (colour.ts
 	 * `afterimage`) predicts for the grey after the stare.
 	 *
@@ -12,7 +13,7 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { afterimage, conesOfRGB, cssColour } from '../colour';
 
-	let { t, params }: StageProps = $props();
+	let { t, params, reduced }: StageProps = $props();
 
 	const STARE = 20;
 	const LOOK = 12;
@@ -39,7 +40,9 @@
 	const PANEL = { x: 180, y: 70, w: 600, h: 360 };
 	const message = $derived(
 		greyAmt < 0.5
-			? `Stare at the cross without moving your eyes: ${left} s`
+			? reduced
+				? 'Stare at the cross for 20 s, then switch to the grey screen'
+				: `Stare at the cross without moving your eyes: ${left} s`
 			: 'Keep looking at the cross: what do you see?'
 	);
 </script>
@@ -80,6 +83,7 @@
 		x={PANEL.x + 20}
 		y={PANEL.y + PANEL.h - 18}
 		width={(PANEL.w - 40) * (forced ? 1 : Math.min(1, tc / STARE))}
+		visibility={reduced ? 'hidden' : undefined}
 		height="4"
 		rx="2"
 		fill="#1e1e1e"
