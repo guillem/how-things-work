@@ -1559,3 +1559,50 @@ kbd {
 	--ex-other: #adb5bd;
 	--ex-absorb: #111418;
 }
+
+/* greenhouse effect: sunlight, infrared, space, air, ground, ocean, ice, warming, the five
+   SSP scenarios (IPCC AR6 colours, lightened in dark mode) */
+:root {
+	--gh-sun: #f59f00;
+	--gh-sun-fill: #ffe8a1;
+	--gh-ir: #e8590c;
+	--gh-ir-fill: #ffc9a8;
+	--gh-space: #e7ebf3;
+	--gh-air: #d0ebff;
+	--gh-air-edge: #74c0fc;
+	--gh-ground: #c9b48e;
+	--gh-ocean: #4dabf7;
+	--gh-ice: #f8f9fa;
+	--gh-ice-edge: #adb5bd;
+	--gh-warm: #e03131;
+	--gh-cool: #1971c2;
+	--gh-co2: #1971c2;
+	--gh-glass: #96f2d7;
+	--gh-ssp119: #00a9cf;
+	--gh-ssp126: #173c66;
+	--gh-ssp245: #f69320;
+	--gh-ssp370: #df0000;
+	--gh-ssp585: #980002;
+}
+:root[data-theme='dark'] {
+	--gh-sun: #ffd43b;
+	--gh-sun-fill: #5c4813;
+	--gh-ir: #ff922b;
+	--gh-ir-fill: #5c3317;
+	--gh-space: #0b0f18;
+	--gh-air: #15283b;
+	--gh-air-edge: #3d6d99;
+	--gh-ground: #4a3f2e;
+	--gh-ocean: #1c4f7a;
+	--gh-ice: #dee2e6;
+	--gh-ice-edge: #868e96;
+	--gh-warm: #ff6b6b;
+	--gh-cool: #74c0fc;
+	--gh-co2: #74c0fc;
+	--gh-glass: #38d9a9;
+	--gh-ssp119: #3bc9db;
+	--gh-ssp126: #748ffc;
+	--gh-ssp245: #ffa94d;
+	--gh-ssp370: #ff6b6b;
+	--gh-ssp585: #e599f7;
+}

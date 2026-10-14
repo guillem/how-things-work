@@ -2002,6 +2002,42 @@
 			stroke-width="1.6"
 			opacity="0.55"
 		/>
+	{:else if slug === 'greenhouse-effect'}
+		<!-- sunlight down through a band of air to the ground; infrared up from the ground,
+		     one wave escaping, one absorbed in the air and sent back down -->
+		<rect x="18" y="96" width="164" height="12" rx="2" fill="currentColor" opacity="0.18" />
+		<rect x="18" y="40" width="164" height="26" rx="4" fill={accent} opacity="0.14" />
+		<circle cx="38" cy="16" r="9" fill="var(--gh-sun)" />
+		<path
+			d="M46 24 L78 94"
+			fill="none"
+			stroke="var(--gh-sun)"
+			stroke-width="3"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M112 94 q4 -6 0 -12 q-4 -6 0 -12 q4 -6 0 -12 q-4 -6 0 -12 q4 -6 0 -12 q-4 -6 0 -12 q4 -6 0 -10"
+			fill="none"
+			stroke="var(--gh-ir)"
+			stroke-width="2"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M150 94 q4 -6 0 -12 q-4 -6 0 -12 q4 -6 0 -12"
+			fill="none"
+			stroke="var(--gh-ir)"
+			stroke-width="2"
+			stroke-linecap="round"
+		/>
+		<circle cx="150" cy="54" r="5" fill={accent} />
+		<path
+			d="M160 60 q6 4 2 10 q-4 6 2 10 q6 4 2 12"
+			fill="none"
+			stroke="var(--gh-ir)"
+			stroke-width="2"
+			stroke-linecap="round"
+			opacity="0.75"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

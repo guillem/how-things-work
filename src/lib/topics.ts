@@ -555,6 +555,15 @@ const explainers: Explainer[] = [
 		accent: '#0b7285',
 		steps: 11,
 		minutes: 18
+	},
+	{
+		slug: 'greenhouse-effect',
+		title: 'The greenhouse effect & climate change',
+		summary:
+			'Follow sunlight in and infrared out and find the temperature where they balance. Add CO₂ and watch the planet warm until they balance again, switch the water-vapour and ice feedbacks on and off, then run the IPCC’s emission scenarios to 2100.',
+		accent: '#e8590c',
+		steps: 13,
+		minutes: 20
 	}
 ];
 
