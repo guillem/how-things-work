@@ -276,3 +276,23 @@ export function settingShares() {
 		total
 	};
 }
+
+/**
+ * Figures the page quotes, too slow to compute in the browser (a distance from every point to
+ * every boundary segment); `e2e/plate-tectonics-model.e2e.ts` recomputes them from the data.
+ */
+export const QUOTED = {
+	/** Share of the earthquakes within 200 km of a plate boundary. */
+	quakesWithin200km: 0.86,
+	/** Share of the Earth's surface within 200 km of a plate boundary. */
+	areaWithin200km: 0.17,
+	/** Share of the volcanoes within 300 km of a plate boundary. */
+	volcanoesWithin300km: 0.79
+} as const;
+
+/** Earthquakes per depth class. */
+export const depthCounts = (() => {
+	const n: Record<DepthClass, number> = { shallow: 0, intermediate: 0, deep: 0 };
+	for (const q of quakes) n[depthClass(q.depth)]++;
+	return n;
+})();

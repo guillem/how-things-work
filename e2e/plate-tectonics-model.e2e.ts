@@ -15,6 +15,7 @@ import {
 } from '../src/routes/plate-tectonics/section';
 import {
 	PLATES,
+	QUOTED,
 	EARTH_RADIUS,
 	areaFractionNear,
 	distanceToBoundary,
@@ -169,8 +170,8 @@ test('the 52 plates of PB2002 tile the whole Earth', () => {
 test('most big earthquakes happen in a narrow band along the plate boundaries', () => {
 	expect(quakes.length).toBeGreaterThan(4000); // M ≥ 5.5, 2015–2024
 	// The page: "86% … within 200 km of a plate boundary, a band covering 17% of the surface".
-	expect(Math.round(fractionNear(quakes, 200) * 100)).toBe(86);
-	expect(Math.round(areaFractionNear(200) * 100)).toBe(17);
+	expect(Math.round(fractionNear(quakes, 200) * 100)).toBe(QUOTED.quakesWithin200km * 100);
+	expect(Math.round(areaFractionNear(200) * 100)).toBe(QUOTED.areaWithin200km * 100);
 	// And the deep ones (> 300 km) lie within 1000 km of a subduction zone, down to ~700 km.
 	const deep = quakes.filter((q) => q.depth > 300);
 	expect(deep.length).toBeGreaterThan(200);
@@ -187,9 +188,9 @@ test('volcanoes: most at subduction zones and rifts, a few in the middle of plat
 	expect(Math.round(s.rift * 100)).toBe(18);
 	expect(Math.round(s.intraplate * 100)).toBe(12);
 	// The page: "79% … within 300 km of a plate boundary".
-	expect(Math.round(fractionNear(volcanoes, 300) * 100)).toBe(79);
-	// Hawaii is far from any boundary.
-	expect(distanceToBoundary(-155.3, 19.4)).toBeGreaterThan(2500);
+	expect(Math.round(fractionNear(volcanoes, 300) * 100)).toBe(QUOTED.volcanoesWithin300km * 100);
+	// The page: Hawaii is "more than 3,000 km from the nearest plate edge".
+	expect(distanceToBoundary(-155.3, 19.4)).toBeGreaterThan(3000);
 });
 
 test('plate speeds: the Mid-Atlantic Ridge spreads slowly, the East Pacific Rise fast', () => {
@@ -204,4 +205,19 @@ test('plate speeds: the Mid-Atlantic Ridge spreads slowly, the East Pacific Rise
 	expect(rate(mar)).toBeLessThan(3); // ~2.5 cm/yr
 	expect(rate(epr)).toBeGreaterThan(8);
 	expect(rate(epr)).toBeLessThan(12); // ~10 cm/yr
+});
+
+test('plate speeds quoted on the page: San Andreas ~4.5 cm/yr, Nazca under South America ~7 cm/yr', () => {
+	const california = (pts: [number, number][]) =>
+		pts.some(([lo, la]) => la > 32 && la < 40 && lo > -125 && lo < -114);
+	const sanAndreas = meanAlong(
+		(l) => l.group === 'transform' && california(l.pts),
+		(l) => l.speed
+	);
+	expect(Math.round(sanAndreas / 5) * 5).toBe(45); // mm/yr
+	const nazca = -meanAlong(
+		(l) => l.name === 'NZ\\SA',
+		(l) => l.divergent
+	);
+	expect(Math.round(nazca / 10)).toBe(7); // cm/yr
 });
