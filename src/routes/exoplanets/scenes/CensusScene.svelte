@@ -80,7 +80,7 @@
 		{sy}
 		xTicks={[1995, 2000, 2005, 2010, 2015, 2020, 2025]}
 		yTicks={[0, 400, 800, 1200, 1600]}
-		xFormat={(v) => String(v)}
+		xFormat={(v: number) => String(v)}
 	/>
 	{#each bars as b (b.year)}
 		{#each b.segs as s (s.id)}

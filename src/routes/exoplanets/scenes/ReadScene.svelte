@@ -195,8 +195,8 @@
 		sy={lsy}
 		xTicks={lxt.ticks}
 		yTicks={lyt.ticks}
-		xFormat={(v) => (Math.abs(v) < 1e-9 ? '0' : v.toFixed(lxt.decimals))}
-		yFormat={(v) => `${v.toFixed(lyt.decimals)}%`}
+		xFormat={(v: number) => (Math.abs(v) < 1e-9 ? '0' : v.toFixed(lxt.decimals))}
+		yFormat={(v: number) => `${v.toFixed(lyt.decimals)}%`}
 		xLabel="hours from mid-transit"
 	/>
 	<path d={lfull} fill="none" stroke="var(--ex-light)" stroke-width="1.5" opacity="0.25" />
@@ -262,8 +262,8 @@
 		sy={vsy}
 		xTicks={vxt.ticks}
 		yTicks={vyt.ticks}
-		xFormat={(v) => v.toFixed(vxt.decimals)}
-		yFormat={(v) => v.toFixed(vyt.decimals)}
+		xFormat={(v: number) => v.toFixed(vxt.decimals)}
+		yFormat={(v: number) => v.toFixed(vyt.decimals)}
 		xLabel="days"
 	/>
 	<line x1={LX0} x2={LX1} y1={vsy(0)} y2={vsy(0)} stroke="var(--stage-line)" />

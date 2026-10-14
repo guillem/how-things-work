@@ -392,7 +392,7 @@
 		{sy}
 		xTicks={xt.ticks}
 		yTicks={yt.ticks}
-		xFormat={(x) => x.toFixed(xt.decimals)}
+		xFormat={(x: number) => x.toFixed(xt.decimals)}
 		yFormat={yFmt}
 		xLabel="days"
 		yLabel=""

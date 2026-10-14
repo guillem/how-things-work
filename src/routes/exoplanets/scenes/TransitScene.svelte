@@ -301,8 +301,8 @@
 		{sy}
 		xTicks={xt.ticks}
 		yTicks={yt.ticks}
-		xFormat={(v) => (Math.abs(v) < 1e-9 ? '0' : v.toFixed(xt.decimals))}
-		yFormat={(v) => `${v.toFixed(yt.decimals)}%`}
+		xFormat={(v: number) => (Math.abs(v) < 1e-9 ? '0' : v.toFixed(xt.decimals))}
+		yFormat={(v: number) => `${v.toFixed(yt.decimals)}%`}
 		xLabel={slow ? 'hours from mid-transit' : 'days'}
 	/>
 	<path d={full} fill="none" stroke="var(--ex-light)" stroke-width="1.5" opacity="0.25" />
