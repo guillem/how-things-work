@@ -172,7 +172,7 @@ A topic is done when:
 - [ ] gravitational-waves
 - [ ] dark-matter
 - [ ] big-bang
-- [ ] exoplanets
+- [x] exoplanets
 
 **Computing**
 - [x] binary
