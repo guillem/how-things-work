@@ -45,10 +45,10 @@
 	const X0 = 80;
 	const X1 = 880;
 	const PERIODS = 3;
-	const MASK_Y = 360;
-	const IY0 = 388;
-	const IY1 = 482;
-	const RY = 520; // resist base line
+	const MASK_Y = 378;
+	const IY0 = 406;
+	const IY1 = 496;
+	const RY = 534; // resist base line
 	const RH = 30;
 	const N = 96;
 	const xAt = (period: number, s: number) => X0 + ((period + s) / PERIODS) * (X1 - X0);
@@ -169,7 +169,9 @@
 			PCY + PR + 44,
 			caught >= 2
 				? 'two or more beams interfere into an image'
-				: 'one beam alone carries no pattern',
+				: image.contrast > 0.02
+					? 'only the outer edge of each spot still gets two in'
+					: 'one beam alone carries no pattern',
 			12,
 			{ muted: true }
 		)}
