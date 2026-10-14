@@ -102,6 +102,13 @@ function buildRequest(
 ): Request {
 	const catalogue = fs.readFileSync('docs/TOPICS.md', 'utf8');
 	const shared = SHARED.map((f) => `<file path="${f}">\n${numbered(f)}\n</file>`).join('\n\n');
+	// The checklist only ticks fact-checked topics, so it under-reports what is built:
+	// list the explainers that exist, so links to them are not reported as dead.
+	const built = fs
+		.readdirSync('src/routes')
+		.filter((d) => fs.existsSync(path.join('src/routes', d, 'steps.ts')))
+		.sort()
+		.join(', ');
 	const source = topicFiles(slug)
 		.map((f) => `<file path="${f}">\n${numbered(f)}\n</file>`)
 		.join('\n\n');
@@ -126,7 +133,7 @@ function buildRequest(
 			messages: [
 				{
 					role: 'user',
-					content: `Review the topic "${slug}" (its catalogue entry is under "#### ${slug}").\n\n${source}`
+					content: `Review the topic "${slug}" (its catalogue entry is under "#### ${slug}").\n\nExplainers built on the site (links to these and their steps work, ticked or not): ${built}.\n\n${source}`
 				},
 				// A turn the server paused (pause_turn): resending it resumes where it stopped.
 				...(paused ? [{ role: 'assistant' as const, content: paused }] : [])
