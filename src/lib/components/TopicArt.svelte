@@ -2339,6 +2339,29 @@
 		<path d="M184 79 L184 93" stroke={accent} stroke-width="2.4" />
 		<text x="148" y="34" font-size="11" text-anchor="end" fill="currentColor" opacity="0.7">us</text
 		>
+	{:else if slug === 'big-bang'}
+		<!-- a patch of galaxies seen from one of them: all recede, the farther the faster and redder -->
+		{#each [[-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1], [-2, 0], [-1, 0], [1, 0], [2, 0], [-2, 1], [-1, 1], [0, 1], [1, 1], [2, 1]] as [i, j] (`${i},${j}`)}
+			{@const r = Math.hypot(i, j)}
+			<circle
+				cx={100 + i * 36}
+				cy={60 + j * 34}
+				r="3.2"
+				fill={r > 1.9 ? 'var(--bb-red)' : r > 1.2 ? 'var(--bb-mid)' : 'currentColor'}
+				opacity={r > 1.9 ? 0.9 : 0.75}
+			/>
+			<path
+				d="M{100 + i * 36 + (i / r) * 6} {60 + j * 34 + (j / r) * 6} l{(i / r) * r * 7} {(j / r) *
+					r *
+					7}"
+				stroke={accent}
+				stroke-width="1.6"
+				stroke-linecap="round"
+				opacity="0.8"
+			/>
+		{/each}
+		<circle cx="100" cy="60" r="5" fill={accent} />
+		<circle cx="100" cy="60" r="9" fill="none" stroke={accent} stroke-width="1.2" opacity="0.6" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
