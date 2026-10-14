@@ -2518,3 +2518,62 @@ kbd {
 	--gpu-ball: #ff922b;
 	--gpu-sky: #4dabf7;
 }
+/* medical imaging */
+:root {
+	--mi-xray: #7048e8;
+	--mi-tube: #495057;
+	--mi-detector: #343a40;
+	--mi-shadow: #1971c2;
+	--mi-filtered: #e8590c;
+	--mi-probe: #f08c00;
+	--mi-sound: #0c8599;
+	--mi-echo: #d6336c;
+	--mi-spin: #c2255c;
+	--mi-field: #1864ab;
+	--mi-fat: #f6e7b4;
+	--mi-soft: #f2c4bd;
+	--mi-muscle: #e8a39b;
+	--mi-liver: #c98b7d;
+	--mi-blood: #e03131;
+	--mi-bone: #f8f9fa;
+	--mi-bone-edge: #adb5bd;
+	--mi-lung: #e7f0f8;
+	--mi-skin: #f1c9a5;
+	--mi-water: #d0ebff;
+	--mi-gel: #c5f6fa;
+	--mi-panel: #101113;
+	--mi-t-fat: #e8a33d;
+	--mi-t-liver: #a0522d;
+	--mi-t-spleen: #9c36b5;
+	--mi-t-muscle: #e03131;
+	--mi-t-blood: #1c7ed6;
+}
+:root[data-theme='dark'] {
+	--mi-xray: #b197fc;
+	--mi-tube: #adb5bd;
+	--mi-detector: #ced4da;
+	--mi-shadow: #74c0fc;
+	--mi-filtered: #ffa94d;
+	--mi-probe: #ffd43b;
+	--mi-sound: #3bc9db;
+	--mi-echo: #f783ac;
+	--mi-spin: #f06595;
+	--mi-field: #74c0fc;
+	--mi-fat: #5c4f24;
+	--mi-soft: #5a3833;
+	--mi-muscle: #6e3b35;
+	--mi-liver: #5e3a30;
+	--mi-blood: #a32424;
+	--mi-bone: #b8bec4;
+	--mi-bone-edge: #868e96;
+	--mi-lung: #22303d;
+	--mi-skin: #6b4c33;
+	--mi-water: #1c3a52;
+	--mi-gel: #1b4a50;
+	--mi-panel: #000000;
+	--mi-t-fat: #ffc078;
+	--mi-t-liver: #e8925f;
+	--mi-t-spleen: #da77f2;
+	--mi-t-muscle: #ff6b6b;
+	--mi-t-blood: #4dabf7;
+}

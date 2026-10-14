@@ -2770,6 +2770,71 @@
 				fill-opacity={k % 12 > 8 && k > 23 ? 1 : 0.8}
 			/>
 		{/each}
+	{:else if slug === 'medical-imaging'}
+		<!-- a CT slice of a chest inside the scanner ring, an X-ray beam, and the sine waves of its sinogram -->
+		<circle
+			cx="62"
+			cy="60"
+			r="46"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.35"
+			stroke-width="6"
+		/>
+		<ellipse
+			cx="62"
+			cy="60"
+			rx="32"
+			ry="22"
+			fill="currentColor"
+			fill-opacity="0.12"
+			stroke="currentColor"
+			stroke-opacity="0.5"
+			stroke-width="1.4"
+		/>
+		<ellipse
+			cx="48"
+			cy="60"
+			rx="9"
+			ry="13"
+			fill="var(--stage-bg)"
+			stroke="currentColor"
+			stroke-opacity="0.45"
+		/>
+		<ellipse
+			cx="77"
+			cy="60"
+			rx="8"
+			ry="12"
+			fill="var(--stage-bg)"
+			stroke="currentColor"
+			stroke-opacity="0.45"
+		/>
+		<circle cx="62" cy="72" r="4" fill="currentColor" fill-opacity="0.7" />
+		<circle cx="80" cy="64" r="2.2" fill={accent} />
+		<path
+			d="M30 22 L94 98"
+			stroke={accent}
+			stroke-width="8"
+			stroke-opacity="0.25"
+			stroke-linecap="round"
+		/>
+		<circle cx="30" cy="22" r="5" fill={accent} />
+		<g fill="none" stroke-width="1.6" stroke-linecap="round">
+			<path d="M130 16 C150 16 150 104 170 104 S190 16 190 16" stroke={accent} />
+			<path d="M140 16 C155 16 160 104 175 104" stroke="currentColor" stroke-opacity="0.45" />
+			<path d="M160 16 C170 40 170 80 160 104" stroke="currentColor" stroke-opacity="0.3" />
+		</g>
+		<rect
+			x="126"
+			y="12"
+			width="68"
+			height="96"
+			rx="4"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.35"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
