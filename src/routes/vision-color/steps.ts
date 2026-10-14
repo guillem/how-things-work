@@ -317,7 +317,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The three signals don't go to the brain as they are. Already in the retina, nerve cells start <strong>comparing</strong> them. One channel adds L and M: how bright. One weighs L against M: reddish or greenish. One weighs S against L and M together: bluish or yellowish.</p>
 <p>Change the wavelength and watch the three channels. Red light pushes red–green one way, green light the other. Yellow light is near neutral on red–green and far over on the yellow side. These are <dfn data-def="Pairs of colours that are signalled as two ends of one channel: red against green, blue against yellow.">opponent colours</dfn>: a colour can be reddish-yellow (orange) or bluish-green (teal), but never reddish-green or yellowish-blue, because each pair shares one channel.</p>`,
-			notes: `<p>Ewald Hering proposed opponent colours in 1878 from how colours look; the cells that do it were found in the 1950s and 60s. The channels here are built from the cone signals with weights that make white neutral (equal energy at every wavelength); the real circuits of the retina and brain are more complicated, but follow the same plan.</p>`
+			notes: `<p>Ewald Hering proposed opponent colours in 1878 from how colours look; the cells that do it were found in the 1950s and 60s. The channels here are built from the cone signals with weights that make white neutral (equal energy at every wavelength); the real circuits of the retina and brain are more complicated, but follow the same plan. These cone-comparing channels also don't line up exactly with the colours we name: the blue that looks neither reddish nor greenish to most people, near 475 nm, still reads a little green here.</p>`
 		},
 		{
 			id: 'afterimage',
