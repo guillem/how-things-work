@@ -56,7 +56,7 @@ export function setup(step: Step, params: Params) {
 /**
  * Epochs trained τ seconds after a run started: after a short pause, three a second for the
  * first four seconds (so the first changes can be followed), then faster and faster, up to
- * MAX_EPOCHS after about 18 s.
+ * MAX_EPOCHS after about 20 s.
  */
 export function epochsAt(tau: number): number {
 	const s = tau - 0.6;
@@ -91,6 +91,7 @@ export function createSince() {
  * the neutral middle at 0. `strength` caps how saturated the far ends get.
  */
 export function shade(u: number, strength: number) {
+	if (!Number.isFinite(u)) return 'var(--nn-mid)';
 	const k = Math.round(100 * strength * Math.min(1, Math.abs(u)));
 	return `color-mix(in oklab, var(${u < 0 ? '--nn-a-fill' : '--nn-b-fill'}) ${k}%, var(--nn-mid))`;
 }

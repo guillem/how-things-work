@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * What one hidden layer does to the plane. A network with two hidden tanh neurons, trained
-	 * on the four corners, moves every point (and a grid) to its two hidden outputs, in three
+	 * on the two moons, moves every point (and a grid) to its two hidden outputs, in three
 	 * moves: multiply by the weight matrix W, add the biases b, squash with tanh. In the bent
 	 * plane the output neuron's straight line splits the classes; the inset shows that line
 	 * drawn back on the original plane, where it is curved.

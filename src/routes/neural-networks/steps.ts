@@ -133,7 +133,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Instead of moving sliders by hand, let the computer find the weights. It needs a <a href="../gradient-descent/#settings">loss</a>: a number that says how wrong the neuron is. For an answer given as a probability the usual choice is the <dfn data-def="The loss −log(probability given to the right answer), averaged over the examples. 0 for a confident right answer, ln 2 ≈ 0.693 for a 50/50 guess, large for a confident wrong one.">cross-entropy</dfn>: minus the logarithm of the probability the neuron gave to the right colour. A sure, right answer costs 0; a 50/50 guess costs 0.693; a sure, wrong answer costs a lot.</p>
 <p>The neuron has three parameters, <i>w</i>₁, <i>w</i>₂ and <i>b</i>, and they are trained by <a href="../gradient-descent/#descend">gradient descent</a>, exactly as the line was: measure which way the loss falls, step that way, repeat.</p>
-<p>On the two clusters it works at once: within a couple of passes through the data every point is on the right side. Now pick <strong>Four corners</strong> or <strong>Circle in a ring</strong>. The line turns and shifts, but no straight line can split these: the loss stays near 0.693, no better than guessing.</p>`,
+<p>On the two clusters it works at once: within a couple of <dfn data-def="One pass of training through all the examples. Training usually takes many epochs.">epochs</dfn> (passes through all the data) every point is on the right side. Now pick <strong>Four corners</strong> or <strong>Circle in a ring</strong>. The line turns and shifts, but no straight line can split these: the loss stays near 0.693, no better than guessing.</p>`,
 			notes: `<p>The four corners are the classic <em>XOR</em> problem: blue where <i>x</i>₁ and <i>x</i>₂ have the same sign, orange where they differ. Marvin Minsky and Seymour Papert's book <em>Perceptrons</em> (1969) made the limitation of single neurons famous; at best a line gets three corners of the four right.</p>`
 		},
 		// ------------------------------------------------------------------ layers
@@ -148,8 +148,9 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Put several neurons side by side, each one looking at the two inputs, and feed their outputs to a final neuron. The middle neurons form a <dfn data-def="A row of neurons that all take the same inputs. In a hidden layer the neurons feed the next layer instead of giving the final answer.">hidden layer</dfn>: hidden because we never see their outputs as the answer, only the final <dfn data-def="The last neuron (or neurons) of a network, whose output is its answer.">output neuron</dfn>'s.</p>
 <p>Each square in the diagram is one neuron, shaded by its output over the whole plane. Every hidden neuron still draws a straight edge, but at its own angle and place. The output neuron weighs and adds <em>their</em> outputs, and the sum of a few soft edges can be a closed shape.</p>
+<p>In these hidden layers the squashing curve is <dfn data-def="The hyperbolic tangent, an S-shaped curve from −1 to 1: a rescaled sigmoid, tanh z = 2σ(2z) − 1.">tanh</dfn>, a rescaled sigmoid that runs from −1 to 1.</p>
 <p>Three neurons are enough to trap the circle, at epoch 64. Slide down to two and the best they manage is a band, with some ring points always wrong. One is back to a single line. Four to eight get there faster, by epoch 26 to 45.</p>`,
-			notes: `<p>The lines between the squares are the weights: blue for positive, orange for negative, thicker for larger. In these hidden layers the squashing is done by tanh, the sigmoid stretched to run from −1 to 1, which suits neurons whose outputs feed other neurons.</p>`
+			notes: `<p>The lines between the squares are the weights: blue for positive, orange for negative, thicker for larger. tanh is the sigmoid rescaled, tanh <i>z</i> = 2σ(2<i>z</i>) − 1; centred on 0, it suits neurons whose outputs feed other neurons.</p>`
 		},
 		{
 			id: 'bend',
@@ -162,7 +163,7 @@ export const spec: ExplainerSpec = {
 <ol>
 <li>multiply by the layer's <dfn data-def="The table of a layer's weights: one row per neuron, one column per input. Multiplying a point by it is a linear transformation of the plane.">weight matrix</dfn> <i>W</i>: a <a href="../linear-transformations/#matrix">linear transformation</a> that turns, stretches and shears the grid but keeps its lines straight and parallel;</li>
 <li>add the biases: shift everything;</li>
-<li>squash both coordinates with tanh: the plane is <strong>bent</strong>, folded into a square from −1 to 1.</li>
+<li>squash both coordinates with tanh: the plane is <strong>bent</strong>, squeezed into the square from −1 to 1 without being torn or folded.</li>
 </ol>
 <p>In the bent plane the blue moon has been pulled to one side and the orange moon to the other, and a straight line, the output neuron's, splits them. Drawn back on the original plane, that line is the bent boundary. A network classifies by bending space until a straight cut works.</p>`,
 			notes: `<p>The view of layers as transformations of space is beautifully explained in Chris Olah's essay "Neural Networks, Manifolds, and Topology" (2014). The squash at step 3 is what makes the difference: without it, steps 1 and 2 would only move lines into other straight lines.</p>`
@@ -179,7 +180,7 @@ export const spec: ExplainerSpec = {
 <p>The squashing curve of a hidden neuron is its <dfn data-def="The function a neuron applies to its weighted sum, such as the sigmoid, tanh or ReLU. Without it, a network of any depth is equivalent to a single neuron.">activation function</dfn>. This network has two hidden layers of 8 neurons, and it starts with <strong>no activation</strong>: each neuron passes its sum on unchanged.</p>
 <p>It fails like a single neuron, with a straight boundary. Each layer is then a linear transformation plus a shift, and <a href="../linear-transformations/#compose">a chain of linear transformations is one linear transformation</a>: the 8 × 2, 8 × 8 and 1 × 8 weight tables multiply out to a single row of two weights, and the biases add up to a single bias. Sixteen neurons collapse into one.</p>
 <p>Switch to <strong>tanh</strong> and the same network traps the circle by epoch 40. <strong>ReLU</strong>, the <dfn data-def="Rectified linear unit: output = z when z is positive, 0 otherwise. The most common activation in modern networks.">rectified linear unit</dfn>, simply cuts the negative sums to 0; it is the commonest choice today, and here gets there by epoch 9. With ReLU the boundary is made of straight pieces joined at corners.</p>`,
-			notes: `<p>Any curve that is not a straight line will do in principle. ReLU is popular because it is cheap and its slope (1 for every positive sum) does not fade as the error is passed back through many layers, which tanh's and the sigmoid's slopes do.</p>`
+			notes: `<p>Almost any curve that is not a straight line will do in principle (for the theorem in the next step, any that is not a polynomial). ReLU is popular because it is cheap and its slope (1 for every positive sum) does not fade as the error is passed back through many layers, which tanh's and the sigmoid's slopes do.</p>`
 		},
 		{
 			id: 'depth',
@@ -236,8 +237,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A weight multiplies the input <i>a</i> that flows into it, and it feeds a neuron with error signal δ. So the slope of the loss for that weight is just</p>
 <p class="formula"><strong>∂L/∂<i>w</i> = <i>a</i><sub>in</sub> × δ<sub>out</sub></strong></p>
-<p>(and for a bias, just δ). One forward pass and one backward pass give the slope for <em>every</em> weight at once. Then each weight takes the <a href="../gradient-descent/#descend">gradient-descent step</a>, <i>w</i> ← <i>w</i> − η × ∂L/∂<i>w</i>, here with η = 0.5. Each weight's line shows its old and new value, and the readout works through the steepest one. Run the example forward again and its loss is lower.</p>
-<p>Check that the slopes are right: nudge one weight by 0.001 and the loss changes by the slope × 0.001 (the readout does it). Press <em>Next example</em> to make the update and move on to the next point, and watch the inset: one example at a time, it takes this network 165 steps to get every corner right.</p>`,
+<p>(and for a bias, just δ). One forward pass and one backward pass give the slope for <em>every</em> weight at once. Then each weight takes the <a href="../gradient-descent/#descend">gradient-descent step</a>, <i>w</i> ← <i>w</i> − η × ∂L/∂<i>w</i>, here with a <dfn data-def="The step size of gradient descent: every weight moves by η × its slope.">learning rate</dfn> (step size) η = 0.5. Each weight's line shows its old and new value, and the readout works through the steepest one. Run the example forward again and its loss is lower.</p>
+<p>Check that the slopes are right: nudge one weight by 0.001 and the loss changes by the slope × 0.001 (the readout does it). Press <em>Next example</em> to make the update and move on to the next point, and watch the inset: one example at a time, it takes this network 165 steps to get every point right.</p>`,
 			notes: `<p>Computing every slope by nudging, as the check does, would need one extra forward pass per weight: billions for a large model. Backpropagation gets all of them for about the cost of two passes. It was popularised for neural networks by David Rumelhart, Geoffrey Hinton and Ronald Williams in 1986.</p>`
 		},
 		// ------------------------------------------------------------------ training
@@ -250,10 +251,10 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [learningRate('lr-train', '0.3'), again('again-train')],
 			body: `
-<p>Real training does those three moves — forward, backward, step — over and over. Here, as in <a href="../gradient-descent/#train">stochastic gradient descent</a>, the 200 points are shuffled and taken in mini-batches of 10: the slopes are averaged over the batch, then every weight steps. One pass through all the examples is an <dfn data-def="One pass of training through all the examples. Training usually takes many epochs.">epoch</dfn>.</p>
+<p>Real training does those three moves — forward, backward, step — over and over. Here, as in <a href="../gradient-descent/#train">stochastic gradient descent</a>, the 200 points are shuffled and taken in mini-batches of 10: the slopes are averaged over the batch, then every weight steps. Each epoch is one pass through all 200 of them.</p>
 <p>Watch the loss fall and the boundary take shape, with each neuron's square changing as its weights move. With η = 0.3 this network gets every point right at epoch 45; with η = 0.03 it takes 387, and with η = 0.01 it has not got there after 500.</p>
-<p>Press <em>Train again</em> to start from other random weights: the network ends at the same answer by a different route, and its hidden neurons may share out the work differently. Sometimes a start is unlucky and training gets stuck in a <a href="../gradient-descent/#valleys">local minimum</a>.</p>`,
-			notes: `<p>The weights start random on purpose: if every neuron of a layer started with the same weights, they would all get the same error signals and stay identical forever. Their spread is scaled to the number of inputs (Glorot and He initialisation), so that sums stay a sensible size.</p>`
+<p>Press <em>Train again</em> to start from other random weights: the network ends at a similar boundary by a different route, and its hidden neurons may share out the work differently. Some starts are unlucky, and training gets stuck on a flat stretch of the loss or in a <a href="../gradient-descent/#valleys">local minimum</a>: in the last step, pick <strong>Four corners</strong> with one hidden layer of 2 neurons and press <em>Train again</em> once, and training stalls at 75%.</p>`,
+			notes: `<p>The weights start random on purpose: if every neuron of a layer started with the same weights, they would all get the same error signals and stay identical forever. Their spread is scaled to the number of inputs (LeCun initialisation, and He initialisation for ReLU layers), so that sums stay a sensible size.</p>`
 		},
 		{
 			id: 'playground',
@@ -271,7 +272,7 @@ export const spec: ExplainerSpec = {
 				again('again-play')
 			],
 			body: `
-<p>Everything together. It starts with two layers of 4 neurons on the two moons, solved by epoch 49. Pick another dataset, build the network layer by layer, and train it. Can you solve the spirals with the fewest neurons? What happens to the four corners with a single hidden neuron? Can you find a learning rate that is too big?</p>
+<p>Everything together. It starts with two layers of 4 neurons on the two moons, solved by epoch 49. Pick another dataset, build the network layer by layer, and train it. Can you solve the spirals with the narrowest network? What happens to the four corners with a single hidden neuron? Can you find a learning rate that is too big?</p>
 <p>That is a neural network: <strong>layers of simple units, each weighing, adding and squashing; a loss that says how wrong the output is; backpropagation to pass the error back to every weight; and gradient descent to nudge them all, over and over.</strong> Stacking layers is what lets it bend a straight line into almost any shape.</p>
 <p>Networks that recognise images, translate text or generate pictures are built from exactly these parts — with millions or billions of weights, inputs made of pixels or words instead of two coordinates, and many layers arranged in cleverer ways.</p>`,
 			notes: `<p>The simplifications here: the data are 200 points made up by the computer, the networks are tiny (at most 3 hidden layers of 8), and training is plain mini-batch gradient descent with no tricks. Real training also holds back examples the network never trains on, to check that it has learnt the pattern rather than memorised the points.</p>`
