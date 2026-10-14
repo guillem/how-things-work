@@ -375,7 +375,7 @@
 	<!-- title -->
 	<Readout id="cond" order={1} label="Flask" value={catText ? `${kText}, ${catText}` : kText}>
 		<text x={BX} y={40} style:font-size="16px" font-weight="600"
-			>The flask · {kText}{#if catText}<tspan fill="var(--rr-cat)" font-size="14">
+			>The flask · {kText}{#if catText}<tspan dx="6" fill="var(--rr-cat)" font-size="14">
 					· {catText}</tspan
 				>{/if}</text
 		>
@@ -459,17 +459,15 @@
 	<Readout id="flash-key">
 		<circle cx={BX + 6} cy={570} r="5" fill="none" stroke="var(--rr-forward)" stroke-width="2.5" />
 		<text x={BX + 16} y={574} style:font-size="12px">H₂ + I₂ → 2 HI</text>
-		{#if showReverse}
-			<circle
-				cx={BX + 146}
-				cy={570}
-				r="5"
-				fill="none"
-				stroke="var(--rr-reverse)"
-				stroke-width="2.5"
-			/>
-			<text x={BX + 156} y={574} style:font-size="12px">2 HI → H₂ + I₂</text>
-		{/if}
+		<circle
+			cx={BX + 146}
+			cy={570}
+			r="5"
+			fill="none"
+			stroke="var(--rr-reverse)"
+			stroke-width="2.5"
+		/>
+		<text x={BX + 156} y={574} style:font-size="12px">2 HI → H₂ + I₂</text>
 	</Readout>
 	{#if full && focus === 'add'}
 		<Readout id="full">
