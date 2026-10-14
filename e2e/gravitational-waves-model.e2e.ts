@@ -4,6 +4,10 @@
 import { expect, test } from '@playwright/test';
 import {
 	AU,
+	C,
+	GM_SUN,
+	PLANCK_POWER,
+	eccentricityFactor,
 	G,
 	GM_EARTH,
 	GW150914,
@@ -170,4 +174,20 @@ test('the frequency read off the data climbs from ~45 to ~140 Hz; leading order 
 	expect(fit.mc).toBeGreaterThan(30);
 	expect(fit.mc).toBeLessThan(40);
 	expect(fit.rms).toBeLessThan(0.15);
+});
+
+test('numbers quoted in the notes', () => {
+	// two black holes of 30 suns each at 0.3 c go round about 15 times a second
+	const M = 60;
+	const a = (M * GM_SUN) / (0.3 * C) ** 2;
+	expect(gwFrequency(M, a) / 2).toBeCloseTo(14.5, 0);
+	// at a third of the speed of light the waves are about ten times longer than the orbit
+	expect(Math.PI / (1 / 3)).toBeCloseTo(9.4, 1);
+	// Hulse–Taylor's eccentricity multiplies the power by 11.9
+	expect(eccentricityFactor(HULSE_TAYLOR.e)).toBeCloseTo(11.9, 1);
+	// c⁵/G = 3.6 × 10⁵² W; GW150914's peak was a thousandth of it
+	expect(PLANCK_POWER / 1e52).toBeCloseTo(3.63, 2);
+	expect(GW150914.peakPower / PLANCK_POWER).toBeCloseTo(1e-3, 4);
+	// 410 Mpc is 1.3 billion light years
+	expect((410 * MPC) / (C * 365.25 * 86400) / 1e9).toBeCloseTo(1.34, 2);
 });

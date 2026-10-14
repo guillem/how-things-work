@@ -198,6 +198,26 @@
 		];
 	});
 	const vOverC = $derived(Math.sqrt(((m1 + m2) * L_SUN) / orbit.a));
+	/**
+	 * Crests of the waves in the orbital plane, at their true scale: a crest at
+	 * distance r left the pair r/c earlier, so it points along half the wave phase
+	 * then (two arms). Waves emitted after the ISCO are not modelled: none drawn.
+	 */
+	const crests = $derived.by(() => {
+		const arms: { key: number; d: string }[] = [];
+		const r0 = Math.max(12, k * orbit.a * 0.6);
+		for (const n of [0, 1]) {
+			let d = '';
+			for (let r = r0; r <= 330; r += 6) {
+				const tr = ts - r / (k * C);
+				if (tr > 0 || tr < T0 - 0.2) continue;
+				const ph = (ins.phase(tr) + 2 * Math.PI * n) / 2;
+				d += `${d ? 'L' : 'M'}${(OCX + r * Math.cos(ph)).toFixed(1)} ${(OCY - r * Math.sin(ph)).toFixed(1)}`;
+			}
+			arms.push({ key: n, d });
+		}
+		return arms;
+	});
 	/** A scale bar: a round number of km near a fifth of the panel. */
 	const bar = $derived.by(() => {
 		const km = 90 / k / 1000;
@@ -230,6 +250,9 @@
 
 <g>
 	<defs>
+		<clipPath id="chirp-orbit">
+			<rect x={OX} y={OY} width={OW} height={OH} rx="14" />
+		</clipPath>
 		<clipPath id="chirp-reveal">
 			<rect
 				x={PX0 - 2}
@@ -250,6 +273,18 @@
 		fill="var(--gw-space)"
 		stroke="var(--border)"
 	/>
+	<g clip-path="url(#chirp-orbit)">
+		{#each crests as cr (cr.key)}
+			<path
+				d={cr.d}
+				fill="none"
+				stroke="var(--gw-crest)"
+				stroke-width="2"
+				stroke-linecap="round"
+				opacity="0.45"
+			/>
+		{/each}
+	</g>
 	{#if !merged}
 		<circle
 			cx={OCX}
@@ -301,7 +336,7 @@
 		<T
 			x={OX + 16}
 			y={OY + 26}
-			text="Seen from above, to scale (horizons drawn)"
+			text="From above, to scale: horizons and wave crests"
 			size={12.5}
 			weight={650}
 		/>
