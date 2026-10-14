@@ -279,8 +279,8 @@
 			max={600}
 			valuetext="{minSec(lags[tr.k])} after P"
 			color="var(--eq-s)"
-			onmove={(p) => dragS(tr.k, b, p.x)}
-			onkey={(k) => keyS(tr.k, k)}
+			onmove={(p: { x: number; y: number }) => dragS(tr.k, b, p.x)}
+			onkey={(k: number | 'start' | 'end') => keyS(tr.k, k)}
 		/>
 		<Label
 			x={xs + 14}

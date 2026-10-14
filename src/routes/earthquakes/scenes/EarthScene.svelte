@@ -127,6 +127,8 @@
 		}
 		return out;
 	}
+	// A plain cache of computed geometry, not state: nothing reacts to it.
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	const cache = new Map<EarthModel, Record<Wave, Drawn[]>>();
 	const raysFor = (m: EarthModel) => {
 		let r = cache.get(m);
@@ -478,7 +480,7 @@
 			valuetext="{stationDeg} degrees from the earthquake"
 			color="var(--eq-station)"
 			onmove={moveStation}
-			onkey={(k) =>
+			onkey={(k: number | 'start' | 'end') =>
 				setParam(
 					'station',
 					k === 'start' ? 0 : k === 'end' ? 180 : Math.max(0, Math.min(180, stationDeg + k))
