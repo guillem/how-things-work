@@ -18,6 +18,8 @@
  * by the angle of attack.
  */
 
+import { LADSON } from './naca0012.ts';
+
 export type Cx = readonly [number, number];
 
 const add = (a: Cx, b: Cx): Cx => [a[0] + b[0], a[1] + b[1]];
@@ -431,4 +433,46 @@ export function naca4ZeroLift(m: number, p: number, n = 2000) {
 		sum += naca4Slope(m, p, (1 - Math.cos(th)) / 2) * (Math.cos(th) - 1);
 	}
 	return (-1 / Math.PI) * sum * (Math.PI / n);
+}
+
+// ---- the measured NACA 0012 -----------------------------------------------------------
+
+/** Ladson's 80-grit run, the one used for readouts. */
+const RUN = LADSON[0].rows;
+
+/**
+ * Measured lift coefficient of the NACA 0012 at α (degrees), interpolated linearly in
+ * Ladson's 80-grit run. The section is symmetric, so negative angles mirror positive
+ * ones; beyond the last angle measured (19.1°) the last value is kept.
+ */
+export function measuredLift(alphaDeg: number) {
+	return Math.sign(alphaDeg) * interp(Math.abs(alphaDeg), 1);
+}
+/** Measured drag coefficient of the NACA 0012 at α (degrees), as `measuredLift`. */
+export const measuredDrag = (alphaDeg: number) => interp(Math.abs(alphaDeg), 2);
+
+function interp(a: number, col: 1 | 2) {
+	const rows = RUN.filter((r) => r[0] > 0);
+	// at zero angle: no lift, and the drag of the run's point nearest 0°
+	const near0 = RUN.reduce((m, r) => (Math.abs(r[0]) < Math.abs(m[0]) ? r : m));
+	const first: readonly number[] = [0, 0, near0[2]];
+	const pts = [first, ...rows];
+	if (a >= pts[pts.length - 1][0]) return pts[pts.length - 1][col];
+	let i = 0;
+	while (pts[i + 1][0] < a) i++;
+	const p = pts[i];
+	const q = pts[i + 1];
+	return p[col] + ((q[col] - p[col]) * (a - p[0])) / (q[0] - p[0]);
+}
+
+/** Least-squares lift slope (per degree) of a run between two angles. */
+export function measuredSlope(run = RUN, from = -4.5, to = 10.5) {
+	const lin = run.filter((r) => r[0] >= from && r[0] <= to);
+	const n = lin.length;
+	const mx = lin.reduce((s, r) => s + r[0], 0) / n;
+	const my = lin.reduce((s, r) => s + r[1], 0) / n;
+	return (
+		lin.reduce((s, r) => s + (r[0] - mx) * (r[1] - my), 0) /
+		lin.reduce((s, r) => s + (r[0] - mx) ** 2, 0)
+	);
 }
