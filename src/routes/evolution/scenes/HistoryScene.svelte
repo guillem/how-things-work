@@ -4,9 +4,9 @@
 	 *
 	 * Phases (`step.hints.phase`):
 	 *   moth   — left: the rise of the black peppered moth in Manchester, the
-	 *            model (`dominantSelection`, one generation a year) from Haldane's
-	 *            assumed 2% in 1848 with the advantage `params.rise`, against his
-	 *            assumed 95% and the reported 98% in 1895; the cortex mutation of
+	 *            model (`dominantSelection`, one generation a year) from an
+	 *            assumed 2% in 1848 with the advantage `params.rise`, against the
+	 *            reported 98% in 1895; the cortex mutation of
 	 *            about 1819 marked. Right: the fall near Cambridge, the model
 	 *            from 12% in 2001 with the disadvantage `params.fall`, against the
 	 *            Madingley shares (Cook et al. 2012, table 2)
@@ -34,7 +34,7 @@
 	// ---- moth: the rise
 	const Y0 = 110;
 	const Y1 = 470;
-	const rise = $derived(Number(params.rise ?? 0.22));
+	const rise = $derived(Number(params.rise ?? 0.32));
 	const fall = $derived(Number(params.fall ?? 0.27));
 	const ax = scale([1815, 1900], [80, 440]);
 	const ay = scale([0, 1], [Y1, Y0]);
@@ -161,17 +161,9 @@
 			x={ax(1848) + 8}
 			y={ay(0.02) - 10}
 			anchor="start"
-			text="1848: first one caught"
+			text="1848: first on record (start: 2%)"
 			size={11}
 			muted
-		/>
-		<circle
-			cx={ax(1895)}
-			cy={ay(0.95)}
-			r="5"
-			fill="none"
-			stroke="var(--stage-ink)"
-			stroke-width="1.5"
 		/>
 		<circle cx={ax(1895)} cy={ay(0.98)} r="4.5" fill="var(--stage-ink)" opacity={dataShown} />
 		<Label
@@ -204,7 +196,7 @@
 				x={80}
 				y={Y1 + 68}
 				anchor="start"
-				text="rings: Haldane’s assumed 2% and 95%"
+				text="ring: assumed start · dot: reported in 1895"
 				size={11}
 				muted
 			/>

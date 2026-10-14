@@ -11,7 +11,7 @@
  * https://doi.org/10.1126/science.1243357; data: Wiser, Ribeck & Lenski (2013),
  * Dryad, https://doi.org/10.5061/dryad.0hc2m, file Concatenated.LTEE.data.all.csv
  * (licence CC0 1.0). Dryad serves the file only to signed-in users, so by
- * default this script reads the identical copy kept by B. H. Good in
+ * default this script reads the copy kept by B. H. Good in
  * https://github.com/benjaminhgood/LTEE-metagenomic (additional_data/).
  *
  * Each row of the file is one competition of an evolved population against
@@ -21,8 +21,8 @@
  * Subset: for each population and generation, the mean of its replicate
  * competitions (rows without a fitness value are skipped), rounded to 3
  * decimals. The grand mean averages the nine populations whose record is
- * complete (`Complete` = Yes; Ara−2, Ara−3 and Ara+6 have gaps, as in the
- * paper). The power law w = (b·t + 1)^a is fitted here to those grand means
+ * complete (`Complete` = Yes; Ara−2, Ara−3 and Ara+6 have gaps; leaving
+ * them out is our choice). The power law w = (b·t + 1)^a is fitted here to those grand means
  * by least squares (grid search over b, ternary search over a):
  * it is our fit, in the form Wiser et al. used, not their published values.
  */

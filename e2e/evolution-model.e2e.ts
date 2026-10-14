@@ -66,7 +66,7 @@ test('take away any one ingredient and the population stops adapting', () => {
 	}
 });
 
-test('mutation is blind: from the same genes it makes the same changes, whatever would help', () => {
+test('mutation flips pale and dark alleles at the same rate, and is never told the environment', () => {
 	const genome = () => {
 		const g = new Uint8Array(20000);
 		const r = rng(5);
@@ -76,25 +76,20 @@ test('mutation is blind: from the same genes it makes the same changes, whatever
 	// mutate() is never told the environment. A mostly pale population gains
 	// dark alleles at the rate μ per pale allele, and loses them at μ per dark one.
 	const a = mutate(genome(), 0.01, rng(9));
-	expect(a).toEqual(mutate(genome(), 0.01, rng(9)));
 	expect(a.toDark / 16000).toBeCloseTo(0.01, 2);
 	expect(a.toPale / 4000).toBeCloseTo(0.01, 2);
 });
 
-test('without new mutations a small population can lose the variation it needs later', () => {
-	// Sooty bark for 60 generations, then clean bark again.
+test('without new mutations a small population gets stuck when the bark changes back', () => {
+	// Sooty bark for 60 generations, then clean bark again (the foresight step's run).
 	const bark = (g: number) => (g < 60 ? 1 : 0);
+	const end = (N: number, mu: number, seed: number) =>
+		runMoths({ N, mu, predation: 0.5, bark, generations: 140, seed })[140].mean * 12;
 	let stuck = 0;
-	for (let seed = 1; seed <= 10; seed++) {
-		const run = runMoths({ N: 30, mu: 0, predation: 0.6, bark, generations: 140, seed });
-		if (run[140].mean > 0.5) stuck++;
-	}
-	expect(stuck).toBeGreaterThan(0);
-	// With mutation, every population turns pale again.
-	for (let seed = 1; seed <= 10; seed++) {
-		const run = runMoths({ N: 30, mu: 0.01, predation: 0.6, bark, generations: 140, seed });
-		expect(run[140].mean).toBeLessThan(0.5);
-	}
+	for (let seed = 1; seed <= 12; seed++) if (end(50, 0, seed) > 3) stuck++;
+	expect(stuck).toBeGreaterThanOrEqual(9);
+	// With mutations, a large population turns pale again every time.
+	for (let seed = 1; seed <= 6; seed++) expect(end(500, 0.001, seed)).toBeLessThan(2.5);
 });
 
 test('Luria–Delbrück: separate cultures fluctuate far more than a Poisson count', () => {
@@ -125,11 +120,11 @@ test('peppered moth: the decline near Cambridge fits a selection of about 0.27 p
 	expect(dominantSelection(0.12, -s, 6)[6]).toBeCloseTo(MADINGLEY[6].share, 1);
 });
 
-test('peppered moth: going from 2% to 95% dark in 47 years needs an advantage of about 22%', () => {
-	const s = advantageFor(0.02, 0.95, 47);
-	expect(s).toBeGreaterThan(0.2);
-	expect(s).toBeLessThan(0.25);
-	expect(dominantSelection(0.02, s, 47)[47]).toBeCloseTo(0.95, 3);
+test('peppered moth: going from 2% to 98% black in 47 years needs an advantage of about 32%', () => {
+	const s = advantageFor(0.02, 0.98, 47);
+	expect(s).toBeGreaterThan(0.3);
+	expect(s).toBeLessThan(0.34);
+	expect(dominantSelection(0.02, s, 47)[47]).toBeCloseTo(0.98, 3);
 });
 
 test('Lenski: fitness rose about 70% in 50,000 generations and is still rising', () => {

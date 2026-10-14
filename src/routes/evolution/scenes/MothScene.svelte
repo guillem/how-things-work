@@ -46,14 +46,20 @@
 	const RX1 = 920;
 
 	// ---- settings
-	const env = $derived(String(params.env ?? 'sooty'));
+	// Only the controls a step shows apply to it: the ingredients step runs the default
+	// population (birds on sooty bark, 50%, 1 in 1,000, 500 moths) and the foresight step
+	// the default birds, whatever was set on the earlier steps.
+	const own = (id: string) => step.controls?.some((c) => c.id === id) ?? false;
+	const env = $derived(own('env') ? String(params.env ?? 'sooty') : 'sooty');
 	const birds = $derived(
 		phase === 'variation' || phase === 'inherit' ? false : env !== 'none' || phase === 'reverse'
 	);
-	const predation = $derived(birds ? Number(params.predation ?? 0.5) : 0);
+	const predation = $derived(
+		birds ? (own('predation') ? Number(params.predation ?? 0.5) : 0.5) : 0
+	);
 	const sootyNow = $derived(phase === 'variation' || phase === 'inherit' ? false : env !== 'pale');
-	const N = $derived(phase === 'run' || phase === 'reverse' ? Number(params.N ?? 500) : 500);
-	const mu = $derived(phase === 'run' || phase === 'reverse' ? Number(params.mu ?? 0.001) : 0.001);
+	const N = $derived(own('N') ? Number(params.N ?? 500) : 500);
+	const mu = $derived(own('mu') ? Number(params.mu ?? 0.001) : 0.001);
 	const runs = $derived(Number(params.again ?? 0));
 	const switches = $derived(
 		step.id === 'ingredients'
@@ -92,13 +98,18 @@
 	const VISIT = 6;
 	const visit = $derived(phase === 'survive' ? (reduced ? 1 : clamp((t - 1) / VISIT)) : 0);
 
-	// Bark shade, tweened when it changes (between steps, with the environment control, or
-	// when the air is cleaned).
-	const barkTarget = $derived(running ? gen.bark : sootyNow ? 1 : 0);
-	const bark = new Tween(0, { duration: 900, easing: cubicInOut });
+	// Bark shade. Between steps and when the environment control changes it is tweened
+	// (the effect depends only on the step and the control); in the foresight run the air
+	// is cleaned at generation SWITCH and the bark lightens over two generations of
+	// animation time (a pure function of t).
+	const barkTarget = $derived(sootyNow ? 1 : 0);
+	const barkTween = new Tween(0, { duration: 900, easing: cubicInOut });
 	$effect(() => {
 		const b = barkTarget;
-		untrack(() => bark.set(b, { duration: reduced ? 0 : 900 }));
+		untrack(() => barkTween.set(b, { duration: reduced ? 0 : 900 }));
+	});
+	const bark = $derived({
+		current: phase === 'reverse' ? 1 - smoothstep(SWITCH - 1, SWITCH + 1, clock) : barkTween.current
 	});
 	const barkFill = $derived.by(() => {
 		const pale = [205, 202, 186];
@@ -360,6 +371,12 @@
 			rx="14"
 			fill="var(--ev-panel)"
 			stroke="var(--border)"
+		/>
+		<Readout
+			id="families"
+			order={1}
+			label="Dark alleles, parents → offspring"
+			value={families.map((f) => `${f.a} × ${f.b} → ${f.c}`).join(' · ')}
 		/>
 		{#each families as f, i (i)}
 			{@const y = TY0 + 48 + i * 76}
