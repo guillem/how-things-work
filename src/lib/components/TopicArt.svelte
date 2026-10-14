@@ -2234,6 +2234,25 @@
 				opacity={x === 174 ? 0.9 : 0.6}
 			/>
 		{/each}
+	{:else if slug === 'respiration-atp'}
+		<!-- a membrane with a proton pump and ATP synthase: protons cross back through the rotor, ATP pops out -->
+		<rect x="16" y="56" width="168" height="16" rx="4" fill="currentColor" opacity="0.18" />
+		<rect x="40" y="48" width="28" height="32" rx="8" fill="currentColor" opacity="0.45" />
+		<rect x="122" y="52" width="36" height="24" rx="8" fill={accent} opacity="0.85" />
+		<path d="M140 52 V34" stroke={accent} stroke-width="5" stroke-linecap="round" />
+		<ellipse cx="140" cy="28" rx="20" ry="14" fill={accent} />
+		<path d="M54 90 V100 M54 44 V30" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
+		{#each [[54, 24], [104, 96], [92, 100], [116, 100]] as [x, y] (`${x}-${y}`)}
+			<circle cx={x} cy={y} r="4" fill="#f472b6" />
+		{/each}
+		<path
+			d="M104 90 C 112 84, 120 84, 126 78"
+			fill="none"
+			stroke="#f472b6"
+			stroke-width="1.6"
+			opacity="0.8"
+		/>
+		<rect x="164" y="10" width="26" height="13" rx="6.5" fill="#f97316" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -618,6 +618,15 @@ const explainers: Explainer[] = [
 		accent: '#6741d9',
 		steps: 12,
 		minutes: 24
+	},
+	{
+		slug: 'respiration-atp',
+		title: 'Respiration: how cells make ATP',
+		summary:
+			'Follow one glucose molecule through glycolysis, the citric acid cycle and the electron transport chain, watch the electrons pump protons and the protons spin ATP synthase, then take the oxygen away and see the chain back up.',
+		accent: '#d9480f',
+		steps: 14,
+		minutes: 22
 	}
 ];
 

@@ -1829,3 +1829,13 @@ kbd {
 .tf-v {
 	color: var(--tf-v);
 }
+
+/* respiration-atp: the mitochondrial matrix and intermembrane-space washes */
+:root {
+	--ra-matrix: #fff4e6;
+	--ra-ims: #fcebf3;
+}
+:root[data-theme='dark'] {
+	--ra-matrix: #2a2118;
+	--ra-ims: #2b1a24;
+}
