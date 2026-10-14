@@ -8,3 +8,11 @@ export const CHAIN = {
 	q: '#e67700',
 	synthase: '#ef7a5a'
 } as const;
+
+/** Electron carriers and GTP: fixed colours that read on both stage backgrounds, with white text. */
+export const CARRIER = {
+	nadh: '#1c7ed6',
+	fadh2: '#2f9e44',
+	gtp: '#f97316',
+	grey: '#6c757d'
+} as const;

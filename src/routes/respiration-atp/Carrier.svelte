@@ -1,14 +1,5 @@
-<script lang="ts" module>
-	/** Fixed colours that read on both stage backgrounds, with white text. */
-	export const CARRIER = {
-		nadh: '#1c7ed6',
-		fadh2: '#2f9e44',
-		gtp: '#f97316',
-		grey: '#6c757d'
-	} as const;
-</script>
-
 <script lang="ts">
+	import { CARRIER } from './colors';
 	/**
 	 * Respiration's own electron carriers and GTP, drawn as pills in the style
 	 * of the shared `<Molecule>` ATP/NADPH pills: filled when charged (NADH,

@@ -13,7 +13,7 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { Molecule, Label, clamp, lerp, smoothstep, easeInOut } from '#lib/draw/index.ts';
 	import { CHAIN } from '../colors';
-	import { CARRIER } from '../Carrier.svelte';
+	import { CARRIER } from '../colors';
 	import { DG_ATP_CELL, E, PUMPED, dropKJ, protonKJ } from '../model';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -263,7 +263,7 @@
 		value="{totalH} × {protonKJ(DP).toFixed(1)} = {Math.round(storedKJ)} kJ/mol"
 	>
 		<text x="44" y="532" font-size="12">stored in {totalH} protons at 180 mV</text>
-		<rect x="380" y="522" width={storedKJ * scale} height="13" rx="6" fill={'#f472b6'} />
+		<rect x="380" y="522" width={storedKJ * scale} height="13" rx="6" fill="#f472b6" />
 		<text x={388 + storedKJ * scale} y="533" font-size="12" font-weight="700"
 			>{Math.round(storedKJ)} kJ/mol ({Math.round((100 * storedKJ) / totalKJ)}%)</text
 		>

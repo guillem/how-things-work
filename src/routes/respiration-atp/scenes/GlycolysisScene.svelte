@@ -14,7 +14,8 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { Molecule, Label, Flow, clamp, lerp, smoothstep, easeInOut } from '#lib/draw/index.ts';
-	import Carrier, { CARRIER } from '../Carrier.svelte';
+	import Carrier from '../Carrier.svelte';
+	import { CARRIER } from '../colors';
 	import { GLYCOLYSIS, type Reaction } from '../model';
 
 	let { step, t, reduced }: StageProps = $props();

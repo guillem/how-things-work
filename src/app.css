@@ -1514,31 +1514,12 @@ kbd {
 	--rr-barrier: #ff6b6b;
 }
 
-/* respiration-atp: the chain's complexes I–IV, cytochrome c, ubiquinone, NADH and FADH₂ carriers,
-   the matrix and intermembrane-space washes, the lactate of fermentation */
+/* respiration-atp: the mitochondrial matrix and intermembrane-space washes */
 :root {
-	--ra-c1: #4c6ef5;
-	--ra-c2: #0ca678;
-	--ra-c3: #ae3ec9;
-	--ra-c4: #e8590c;
-	--ra-cytc: #c92a2a;
-	--ra-q: #b08900;
-	--ra-nadh: #1971c2;
-	--ra-fadh2: #2b8a3e;
 	--ra-matrix: #fff4e6;
 	--ra-ims: #fcebf3;
-	--ra-lactate: #868e96;
 }
 :root[data-theme='dark'] {
-	--ra-c1: #748ffc;
-	--ra-c2: #38d9a9;
-	--ra-c3: #da77f2;
-	--ra-c4: #ff922b;
-	--ra-cytc: #ff6b6b;
-	--ra-q: #ffd43b;
-	--ra-nadh: #4dabf7;
-	--ra-fadh2: #69db7c;
 	--ra-matrix: #2a2118;
 	--ra-ims: #2b1a24;
-	--ra-lactate: #adb5bd;
 }
