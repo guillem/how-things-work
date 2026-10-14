@@ -601,6 +601,8 @@ export const DEFAULT_RASTER: RasterOptions = {
 export interface RasterResult extends Image {
 	/** Depth of each pixel's surface, 0 (near plane) … 1 (far plane); 1 where only sky. */
 	depth: Float32Array;
+	/** Texture coordinates (u, v) used at each pixel, two numbers per pixel. */
+	uv: Float32Array;
 	stats: {
 		triangles: number;
 		/** Triangles dropped because a corner was behind the camera. */
@@ -668,6 +670,7 @@ export function rasterise(
 	const H = cam.height;
 	const img = newImage(W, H);
 	const depth = new Float32Array(W * H).fill(1);
+	const uvBuf = new Float32Array(W * H * 2);
 	fillSky(img, cam);
 	const stats = { triangles: 0, dropped: 0, pixelTests: 0, fragments: 0, hidden: 0, shaded: 0 };
 	const sx = new Float64Array(3);
@@ -746,12 +749,14 @@ export function rasterise(
 					const Nf = dot(N, sub(cam.eye, P)) < 0 ? scale(N, -1) : N;
 					put(img, idx, shade(mesh, P, Nf, uv, cam.eye, light, opts));
 					img.ids[idx] = obj.id;
+					uvBuf[2 * idx] = uv[0];
+					uvBuf[2 * idx + 1] = uv[1];
 					stats.shaded++;
 				}
 			}
 		}
 	}
-	return { ...img, depth, stats };
+	return { ...img, depth, uv: uvBuf, stats };
 }
 
 function interp3(a: Vec3, b: Vec3, c: Vec3, w0: number, w1: number, w2: number): Vec3 {
@@ -915,17 +920,18 @@ function nearest(
 	return best;
 }
 
-function blocked(world: TraceWorld, o: Vec3, d: Vec3, maxT: number, stats: TraceStats): boolean {
+/** Distance to the first thing between `o` and `maxT` along `d`, or −1 if nothing is in the way. */
+function blocked(world: TraceWorld, o: Vec3, d: Vec3, maxT: number, stats: TraceStats): number {
 	for (const b of world.bounds) {
 		if (b.tris[0].mesh.material === 'floor') continue; // the floor can't shade itself
 		if (!hitsBound(o, d, b, maxT)) continue;
 		for (const tri of b.tris) {
 			stats.triangleTests++;
 			const t = hitTri(o, d, tri, uvTmp);
-			if (t > EPS && t < maxT) return true;
+			if (t > EPS && t < maxT) return t;
 		}
 	}
-	return false;
+	return -1;
 }
 
 /** One straight piece of a traced ray, for drawing. */
@@ -937,6 +943,8 @@ export interface Segment {
 	depth: number;
 	/** Missed everything (`to` is just a point far along the ray). */
 	escaped?: boolean;
+	/** Id of the object hit at `to`, for eye, reflected and refracted rays. */
+	obj?: number;
 }
 
 interface TraceCtx {
@@ -976,7 +984,7 @@ function trace(
 		return { c: sky(d), id: ID.sky };
 	}
 	const { p, n, g, uv } = surface(h, o, d);
-	ctx.segments?.push({ from: o, to: p, kind, depth });
+	ctx.segments?.push({ from: o, to: p, kind, depth, obj: h.tri.obj });
 	const mesh = h.tri.mesh;
 	const front = dot(d, g) < 0;
 	const nf = front ? n : scale(n, -1);
@@ -988,8 +996,15 @@ function trace(
 		const ld = scale(toL, 1 / dist);
 		if (dot(ld, nf) > 0) {
 			stats.shadow++;
-			lit = blocked(world, add(p, scale(nf, EPS * 10)), ld, dist, stats) ? 0 : 1;
-			ctx.segments?.push({ from: p, to: lit ? light : p, kind: lit ? 'lit' : 'shadow', depth });
+			const o2 = add(p, scale(nf, EPS * 10));
+			const tb = blocked(world, o2, ld, dist, stats);
+			lit = tb < 0 ? 1 : 0;
+			ctx.segments?.push({
+				from: p,
+				to: tb < 0 ? light : add(o2, scale(ld, tb)),
+				kind: tb < 0 ? 'lit' : 'shadow',
+				depth
+			});
 		} else lit = 0;
 	}
 	const local = shade(mesh, p, nf, uv, o, light, opts, lit);
@@ -1079,4 +1094,33 @@ export function tracePixel(
 	const ctx: TraceCtx = { world, eye: cam.eye, light, opts, stats, segments };
 	const r = trace(ctx, cam.eye, pixelRay(cam, px + 0.5, py + 0.5), 0, 1, 'eye');
 	return { segments, id: r.id, stats };
+}
+
+/** What the eye sees through the centre of pixel (px, py): the surface point and its shading. */
+export function probe(
+	world: TraceWorld,
+	cam: Camera,
+	light: Vec3,
+	px: number,
+	py: number,
+	opts: ShadeOptions = DEFAULT_TRACE
+) {
+	const stats: TraceStats = { primary: 1, shadow: 0, secondary: 0, triangleTests: 0 };
+	const d = pixelRay(cam, px + 0.5, py + 0.5);
+	const h = nearest(world, cam.eye, d, stats);
+	if (!h) return null;
+	const { p, n, uv } = surface(h, cam.eye, d);
+	const l = normalize(sub(light, p));
+	const nf = dot(n, d) > 0 ? scale(n, -1) : n;
+	return {
+		id: h.tri.obj,
+		p,
+		n: nf,
+		uv,
+		depth: h.t,
+		nl: dot(nf, l),
+		highlight: highlight(h.tri.mesh, p, nf, cam.eye, light, { ...opts, shading: 'phong' }),
+		/** Angle between the normal and the lamp, degrees. */
+		angle: (Math.acos(Math.max(-1, Math.min(1, dot(nf, l)))) * 180) / Math.PI
+	};
 }

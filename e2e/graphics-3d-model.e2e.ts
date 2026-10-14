@@ -177,10 +177,15 @@ test('a ray tracer sends one ray per pixel and does far more work than a rasteri
 	const t = raytrace(world, cam, light);
 	expect(t.stats.primary).toBe(W * H);
 	expect(r.stats.triangles).toBe(654);
-	// The rasteriser tests each pixel against only the triangles that cover it…
-	expect(r.stats.pixelTests).toBeLessThan(80_000);
-	// …the ray tracer tests every ray against all the triangles of every object it might hit.
-	expect(t.stats.triangleTests).toBeGreaterThan(10 * r.stats.pixelTests);
+	// From the starting view (as the page says): about 50,000 pixel tests for the rasteriser…
+	expect(r.stats.pixelTests).toBeGreaterThan(45_000);
+	expect(r.stats.pixelTests).toBeLessThan(55_000);
+	// …and about 2.6 million ray–triangle tests for the ray tracer with 3 bounces.
+	expect(t.stats.triangleTests).toBeGreaterThan(2_400_000);
+	expect(t.stats.triangleTests).toBeLessThan(2_800_000);
+	// Every extra bounce adds work.
+	const more = raytrace(world, cam, light, { ...DEFAULT_TRACE, bounces: 4 });
+	expect(more.stats.triangleTests).toBeGreaterThan(t.stats.triangleTests);
 });
 
 test('a floor point behind the cube, seen from the light, is in shadow', () => {
