@@ -13,13 +13,16 @@ const closed: Control = {
 const closedCell: Control = { ...closed, id: 'closedCell' };
 const closedEnd: Control = { ...closed, id: 'closedEnd' };
 
-const metalOptions = COUPLES.map((c) => ({ value: c.id, label: `${c.name} (${c.symbol})` }));
+// Symbols only: eleven full names don't fit in one row of buttons.
+const metalOptions = COUPLES.map((c) => ({ value: c.id, label: c.symbol }));
+const metalHelp = COUPLES.map((c) => `${c.symbol} ${c.name}`).join(', ') + '.';
 const metalA: Control = {
 	type: 'select',
 	id: 'metalA',
 	label: 'Left electrode',
 	default: 'zn',
-	options: metalOptions
+	options: metalOptions,
+	help: metalHelp
 };
 const metalB: Control = {
 	type: 'select',
@@ -134,7 +137,7 @@ export const spec: ExplainerSpec = {
 <p>Dip a strip of zinc into a blue solution of copper sulfate. Within minutes the zinc is coated with reddish copper, the blue fades and the solution warms up. Zinc atoms are going into the solution as ions, and copper ions are coming out of it as metal:</p>
 <p class="formula"><strong>Zn + Cu²⁺ → Zn²⁺ + Cu</strong></p>
 <p>What actually moves is <strong>electrons</strong>. Each zinc atom gives two to a copper ion that bumps into the strip. Losing electrons is called <dfn data-def="Losing electrons. The substance that loses them is oxidised.">oxidation</dfn>; gaining them is <dfn data-def="Gaining electrons. The substance that gains them is reduced.">reduction</dfn>. They always happen together, since every electron given away is taken by something, so a reaction like this is a <dfn data-def="A reaction in which electrons pass from one substance to another: a reduction and an oxidation together.">redox</dfn> reaction.</p>
-<p class="formula">Zn → Zn²⁺ + 2e⁻ &nbsp; (oxidation) &nbsp;&nbsp;&nbsp; Cu²⁺ + 2e⁻ → Cu &nbsp; (reduction)</p>
+<p class="formula">Zn → Zn²⁺ + 2e⁻ &nbsp; (oxidation)<br>Cu²⁺ + 2e⁻ → Cu &nbsp; (reduction)</p>
 <p>It is the same handing-over of electrons you saw in the <a href="../chemical-bonds/#ionic">ionic bond</a>, only here the electrons jump straight from zinc to copper at the metal's surface. The energy released just warms the beaker.</p>`,
 			notes: `<p>A way to remember the names: <strong>OIL RIG</strong>, oxidation is loss, reduction is gain (of electrons). The sulfate ions, SO₄²⁻, take no part: they only keep the solution electrically neutral. Copper sulfate is blue because of its Cu²⁺ ions; zinc sulfate is colourless.</p>`
 		},
@@ -164,7 +167,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Why does copper take the electrons and not zinc? Every half-reaction has a <dfn data-def="E°: how strongly a half-reaction pulls electrons in when written as a reduction, in volts, measured against the hydrogen electrode with every concentration at 1 mol/L and 25 °C.">standard reduction potential</dfn>, E°: how hard its ions pull electrons in, measured in volts against a reference, the hydrogen electrode (0 V). Lined up, they make a ladder. Copper ions sit high, at +0.34 V; zinc ions sit lower, at −0.76 V.</p>
 <p>Electrons run <strong>uphill on this ladder</strong>: the metal lower down is oxidised, the ions higher up are reduced, and the cell's voltage is the height of the step between them:</p>
-<p class="formula">E°cell = E°(cathode) − E°(anode) = 0.34 − (−0.76) = <strong>1.10 V</strong></p>
+<p class="formula">E°cell = E°(cathode) − E°(anode)<br>= 0.34 − (−0.76) = <strong>1.10 V</strong></p>
 <p>Choose two electrodes. The farther apart they are, the higher the voltage. Lithium sits at the very bottom, at −3.04 V: no metal gives its electrons away more readily.</p>`,
 			notes: `<p>Values at 25 °C from the LibreTexts table <i>Standard Reduction Potentials by Element</i>, compiled from Bard, Parsons and Jordan, <i>Standard Potentials in Aqueous Solution</i> (1985), and Milazzo, Caroli and Sharma (1978). A volt is a joule per coulomb (see <a href="../electric-circuits/#voltage">voltage</a>), so the step is energy per charge: the Daniell reaction releases nFE° = 2 × 96 485 C/mol × 1.10 V = 213 kJ of free energy per mole of zinc, which the wire can deliver as electrical work. The shaded band is where water itself is stable (0 to 1.23 V at pH 0): beyond it water is split into hydrogen or oxygen, so lithium can't be used in water at all; it reacts with it.</p>`
 		},
@@ -178,7 +181,7 @@ export const spec: ExplainerSpec = {
 			controls: [znConc, cuConc],
 			body: `
 <p>The 1.10 V holds when both solutions are at 1 mol/L. Change them and the voltmeter moves. More copper ions push the reaction forward and raise the voltage; more zinc ions, the product, hold it back. The <dfn data-def="E = E° − (RT/nF)·ln Q: how a cell's voltage depends on the concentrations, through the reaction quotient Q.">Nernst equation</dfn> says by how much:</p>
-<p class="formula">E = E° − (0.0592 V ÷ n) × log₁₀ Q, &nbsp;&nbsp; Q = [Zn²⁺] ÷ [Cu²⁺]</p>
+<p class="formula">E = E° − (0.0592 V ÷ n) × log₁₀ Q<br>Q = [Zn²⁺] ÷ [Cu²⁺]</p>
 <p>Q is the same <a href="../reaction-rates-equilibrium/#equilibrium">reaction quotient</a> that decides which way a reaction goes, and n = 2 is the number of electrons each zinc atom passes on. Every tenfold change in Q shifts the voltage by 0.0592 ÷ 2 = <strong>0.030 V</strong>. Try copper ions at 0.001 mol/L: a thousand times fewer, and the voltage only falls to 1.015 V. As with <a href="../acids-bases/#ph">pH</a>, concentrations count in powers of ten.</p>`,
 			notes: `<p>The 0.0592 V is (RT/F)·ln 10 at 25 °C, from the gas constant R, the temperature T in kelvin and Faraday's constant F; it grows with temperature. Strictly the equation uses activities, effective concentrations; this page uses plain concentrations, as for an ideal dilute solution.</p>`
 		},
@@ -224,7 +227,7 @@ export const spec: ExplainerSpec = {
 			controls: [closedCell],
 			body: `
 <p>Connect a lamp. In the graphite, a lithium ion lets go of the electron it shared with the carbon, and the two part company. The <strong>ion</strong> crosses the electrolyte and the separator to the oxide; the <strong>electron</strong> can't go that way, since the separator doesn't conduct electrons, so it goes round through the copper foil, the wire, the lamp and the aluminium foil, and reaches the oxide from the other side. There the two meet again.</p>
-<p class="formula">− side: LiC₆ → C₆ + Li⁺ + e⁻ &nbsp;&nbsp;&nbsp;&nbsp; + side: Li⁺ + e⁻ + MO₂ → LiMO₂</p>
+<p class="formula">− side: LiC₆ → C₆ + Li⁺ + e⁻<br>+ side: Li⁺ + e⁻ + MO₂ → LiMO₂</p>
 <p>The lithium is an ion throughout, in the graphite and in the oxide alike. What is oxidised and reduced is the <em>host</em>: the graphite gives up electrons, and nickel ions in the oxide take them (Ni⁴⁺ back towards Ni²⁺).</p>
 <p>Count them: every second, as many electrons cross the lamp as lithium ions cross the separator. That is the <a href="../electric-circuits/#current">same current all the way round the loop</a>. Disconnect the wire, and the ions stop too.</p>`,
 			notes: `<p>The number of lithium ions in the electrolyte stays the same: for every ion that leaves the graphite, one enters the oxide. A battery isn't a tank of electrons that empties: its total charge doesn't change. What runs down is the chemical energy of lithium sitting in graphite rather than in the oxide. M stands for the metals of the oxide: 80 % nickel, 10 % manganese, 10 % cobalt; nickel does most of the redox, and the cobalt and manganese keep the layers stable.</p>`

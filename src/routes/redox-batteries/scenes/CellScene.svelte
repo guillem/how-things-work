@@ -415,11 +415,21 @@
 		</Readout>
 	{:else if focus === 'discharge' || focus === 'charge' || focus === 'summary'}
 		<g opacity={0.35 + 0.65 * flow}>
-			<Readout id="an" order={2} label={reactions.an} value={reactions.anNote}>
+			<Readout
+				id="an"
+				order={2}
+				label={reactions.anNote}
+				value={reactions.an.replace('− side: ', '')}
+			>
 				<Label x={(xAn + xSep) / 2} y={BOT + 76} text={reactions.an} size={13} weight={600} />
 				<Label x={(xAn + xSep) / 2} y={BOT + 96} text={reactions.anNote} size={11} muted />
 			</Readout>
-			<Readout id="ca" order={3} label={reactions.ca} value={reactions.caNote}>
+			<Readout
+				id="ca"
+				order={3}
+				label={reactions.caNote}
+				value={reactions.ca.replace('+ side: ', '')}
+			>
 				<Label x={(xCa + xAl) / 2} y={BOT + 76} text={reactions.ca} size={13} weight={600} />
 				<Label x={(xCa + xAl) / 2} y={BOT + 96} text={reactions.caNote} size={11} muted />
 			</Readout>
@@ -478,7 +488,7 @@
 				yLabel="voltage (V)"
 				xTicks={[0, 20, 40, 60, 80, 100]}
 				yTicks={[2.5, 3, 3.5, 4]}
-				yFormat={(v) => v.toFixed(1)}
+				yFormat={(v: number) => v.toFixed(1)}
 			/>
 			<path
 				d={linePath(

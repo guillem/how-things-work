@@ -467,7 +467,7 @@
 			yLabel="E (V)"
 			xTicks={[-3, -2, -1, 0, 1, 2, 3]}
 			yTicks={[1, 1.05, 1.1, 1.15, 1.2]}
-			yFormat={(v) => v.toFixed(2)}
+			yFormat={(v: number) => v.toFixed(2)}
 		/>
 		<path
 			d={linePath(
@@ -539,7 +539,7 @@
 			yLabel="E (V)"
 			xTicks={[0, 1, 2, 3, 4, 5, 6]}
 			yTicks={[0, 0.2, 0.4, 0.6, 0.8, 1, 1.2]}
-			yFormat={(v) => v.toFixed(1)}
+			yFormat={(v: number) => v.toFixed(1)}
 		/>
 		<path
 			d={linePath(
