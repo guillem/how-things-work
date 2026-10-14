@@ -636,6 +636,15 @@ const explainers: Explainer[] = [
 		accent: '#5f3dc4',
 		steps: 14,
 		minutes: 24
+	},
+	{
+		slug: 'ice-ages',
+		title: 'Ice ages and orbital cycles',
+		summary:
+			'Tilt the Earth, turn its wobble and stretch its orbit to change the summer sunshine in the far north, then play the three cycles forward against 800,000 years of ice-core temperature and CO₂, and see how ice and carbon turn a small push into an ice age.',
+		accent: '#3b6fb6',
+		steps: 13,
+		minutes: 22
 	}
 ];
 

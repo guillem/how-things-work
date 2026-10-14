@@ -1882,3 +1882,37 @@ kbd {
 	--sm-field: #2a2340;
 	--sm-ball-ink: #15141a;
 }
+
+/* ice-ages */
+:root {
+	--ia-tilt: #7048e8;
+	--ia-ecc: #0b7285;
+	--ia-prec: #c2255c;
+	--ia-sun: #e8590c;
+	--ia-sun-fill: #ffe8cc;
+	--ia-temp: #1864ab;
+	--ia-co2: #2b8a3e;
+	--ia-now: #e03131;
+	--ia-cold: #e7f1fb;
+	--ia-ice: #f1f6fb;
+	--ia-ice-edge: #8fb3d6;
+	--ia-ocean: #a5d8ff;
+	--ia-land: #c9b48e;
+	--ia-night: #c6ccd6;
+}
+:root[data-theme='dark'] {
+	--ia-tilt: #9775fa;
+	--ia-ecc: #3bc9db;
+	--ia-prec: #f06595;
+	--ia-sun: #ff922b;
+	--ia-sun-fill: #4a3015;
+	--ia-temp: #74c0fc;
+	--ia-co2: #69db7c;
+	--ia-now: #ff6b6b;
+	--ia-cold: #16263a;
+	--ia-ice: #dbe7f3;
+	--ia-ice-edge: #6f95ba;
+	--ia-ocean: #1f4f7a;
+	--ia-land: #7d6a4b;
+	--ia-night: #2b3038;
+}
