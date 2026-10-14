@@ -11,7 +11,7 @@
 	 * Phases (`step.hints.phase`):
 	 *   inspiral — the strain at 410 Mpc against time
 	 *   track    — the frequency against time (log scale); `params.sameMc` adds an
-	 *              equal-mass pair of the same chirp mass (dashed)
+	 *              pair of the same chirp mass (dashed: equal masses, or 1:4 if this pair is equal)
 	 *   merger   — the strain, the blank merger, and the remnant from fits to
 	 *              numerical relativity (mass, spin, ringing); after the ISCO the
 	 *              orbit is replaced by the remnant's horizon
@@ -160,19 +160,20 @@
 		const a = (mc * (1 + q) ** 0.2) / q ** 0.6;
 		const b = q * a;
 		const i = inspiral(a, b);
-		// same chirp mass, so same frequency at the same time before coalescence: shift
-		// its time axis so the two coalesce together
+		// same chirp mass, so same frequency at the same time before coalescence: on
+		// this plot's clock (0 at this pair's ISCO) the twin reaches its ISCO at −shift
 		const shift = i.tauIsco - ins.tauIsco;
+		const end = Math.min(T1, -shift);
 		let d = '';
 		for (let k = 0; k <= 200; k++) {
-			const tt = T0 + ((T1 + shift - T0) * k) / 200;
+			const tt = T0 + ((end - T0) * k) / 200;
 			const tau = ins.tauIsco - tt; // time to coalescence on this plot's clock
 			const ti = i.tauIsco - tau;
 			if (ti > 0) break;
 			const f = i.frequency(ti);
-			d += `${d ? 'L' : 'M'}${sx(Math.min(T1, tt)).toFixed(1)} ${lf(f).toFixed(1)}`;
+			d += `${d ? 'L' : 'M'}${sx(tt).toFixed(1)} ${lf(f).toFixed(1)}`;
 		}
-		return { a, b, d, fIsco: i.fIsco, tIsco: Math.min(T1, shift) };
+		return { a, b, d, fIsco: i.fIsco, tIsco: -shift };
 	});
 
 	// ---- the orbit at the playhead ----------------------------------------------------------
@@ -367,6 +368,7 @@
 		/>
 		<Row
 			id="fnow"
+			minor={phase === 'arrival'}
 			order={2}
 			x={KX + 18}
 			y={OY + 94}
@@ -377,6 +379,7 @@
 		/>
 		<Row
 			id="sep"
+			minor
 			order={3}
 			x={KX + 18}
 			y={OY + 124}
@@ -386,6 +389,7 @@
 		/>
 		<Row
 			id="v"
+			minor
 			order={4}
 			x={KX + 18}
 			y={OY + 154}
@@ -555,6 +559,7 @@
 		/>
 		<Row
 			id="spin"
+			minor
 			order={4}
 			x={KX + 18}
 			y={OY + 154}
@@ -676,7 +681,9 @@
 				stroke-width="2.2"
 				stroke-dasharray="6 5"
 			/>
-			<circle cx={sx(twin.tIsco)} cy={lf(twin.fIsco)} r="4" fill="var(--gw-compare)" />
+			{#if twin.tIsco <= T1}
+				<circle cx={sx(twin.tIsco)} cy={lf(twin.fIsco)} r="4" fill="var(--gw-compare)" />
+			{/if}
 		{/if}
 		<g clip-path="url(#chirp-reveal)">
 			<path d={track} fill="none" stroke="var(--gw-crest)" stroke-width="2.4" />

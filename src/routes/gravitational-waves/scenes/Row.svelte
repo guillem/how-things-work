@@ -15,11 +15,25 @@
 		note?: string;
 		color?: string;
 		opacity?: number;
+		/** Left out of the phone panel (a secondary row), drawn as usual on wide screens. */
+		minor?: boolean;
 	}
-	let { id, order = 0, x, y, w, label, value, note, color, opacity = 1 }: Props = $props();
+	let {
+		id,
+		order = 0,
+		x,
+		y,
+		w,
+		label,
+		value,
+		note,
+		color,
+		opacity = 1,
+		minor = false
+	}: Props = $props();
 </script>
 
-<Readout {id} {order} {label} {value} {note} {color} {opacity}>
+<Readout {id} {order} label={minor ? undefined : label} {value} {note} {color} {opacity}>
 	<g {opacity}>
 		<T {x} {y} text={label} size={12.5} muted />
 		<T x={x + w} {y} text={value} size={13.5} anchor="end" weight={650} {color} />

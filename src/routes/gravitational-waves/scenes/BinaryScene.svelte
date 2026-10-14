@@ -357,6 +357,7 @@
 			/>
 			<Row
 				id="p3"
+				minor
 				order={3}
 				x={KX + 16}
 				y={PY0 + 116}
@@ -394,6 +395,7 @@
 			/>
 			<Row
 				id="p3"
+				minor
 				order={3}
 				x={KX + 16}
 				y={PY0 + 116}
@@ -431,6 +433,7 @@
 			/>
 			<Row
 				id="p3"
+				minor
 				order={3}
 				x={KX + 16}
 				y={PY0 + 116}

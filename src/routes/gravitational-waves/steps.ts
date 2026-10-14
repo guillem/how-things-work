@@ -88,7 +88,7 @@ const pitch: Control = {
 const sameMc: Control = {
 	type: 'toggle',
 	id: 'sameMc',
-	label: 'Compare with an equal-mass pair of the same chirp mass',
+	label: 'Compare with another pair of the same chirp mass',
 	default: false
 };
 const dist: Control = {
