@@ -771,6 +771,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 14,
 		minutes: 25
+	},
+	{
+		slug: 'power-grid',
+		title: 'The power grid',
+		summary:
+			'Watch a real day of electricity demand and generation, then take the controls: keep the frequency at 50 Hz while demand rises and falls, trip a power station, send a cloud over the solar farms, and see why power travels at 400,000 volts.',
+		accent: '#f59f00',
+		steps: 13,
+		minutes: 22
 	}
 ];
 
