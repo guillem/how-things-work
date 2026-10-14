@@ -419,23 +419,39 @@ export function future(
 	return out;
 }
 
+export interface PulseShare {
+	air: number;
+	ocean: number;
+	land: number;
+}
+
 /**
- * The share of a pulse of `size` GtC still in the air after each year, up to
- * `horizon`, the way Joos et al. (2013) measure it: added on top of today's
- * air, held steady otherwise (a control run whose emissions just match the
- * sinks), and read as the difference between the two runs.
+ * Where a pulse of `size` GtC is after each year, up to `horizon`, as shares
+ * of the pulse, measured the way Joos et al. (2013) do: added on top of
+ * today's air, held steady otherwise (a control run whose emissions just
+ * match the sinks), and read as the difference between the two runs.
  */
-export function pulse(size: number, horizon: number, p: Params = DEFAULTS): number[] {
+export function pulseShares(size: number, horizon: number, p: Params = DEFAULTS): PulseShare[] {
 	const base = today();
 	let control = base;
 	let run: State = { ...base, atmosphere: base.atmosphere + size };
-	const out = [1];
+	const out: PulseShare[] = [{ air: 1, ocean: 0, land: 0 }];
 	for (let y = 1; y <= horizon; y++) {
 		const k = sinks(control, p);
 		const e = k.ocean + k.land;
 		control = stepYear(control, e, 0, p);
 		run = stepYear(run, e, 0, p);
-		out.push((run.atmosphere - control.atmosphere) / size);
+		const a = totals(run);
+		const c = totals(control);
+		out.push({
+			air: (a.air - c.air) / size,
+			ocean: (a.ocean - c.ocean) / size,
+			land: (a.landSink - c.landSink) / size
+		});
 	}
 	return out;
 }
+
+/** The share of a pulse still in the air after each year (see `pulseShares`). */
+export const pulse = (size: number, horizon: number, p: Params = DEFAULTS): number[] =>
+	pulseShares(size, horizon, p).map((s) => s.air);

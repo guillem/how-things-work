@@ -1606,6 +1606,39 @@
 			opacity="0.6"
 		/>
 		<path d="M14 30 H186" stroke="currentColor" stroke-dasharray="2 4" opacity="0.3" />
+	{:else if slug === 'carbon-cycle'}
+		<!-- a cross-section: air above land and sea, a deep ocean much bigger than the air,
+		     a two-way flow with plants and one with the sea surface, and a one-way arrow up
+		     from buried fossil fuels -->
+		<rect x="18" y="64" width="78" height="44" rx="3" fill="currentColor" opacity="0.12" />
+		<rect x="96" y="64" width="90" height="44" rx="3" fill={accent} opacity="0.35" />
+		<rect x="96" y="64" width="90" height="5" fill={accent} opacity="0.7" />
+		<rect x="80" y="14" width="40" height="14" rx="3" fill={accent} opacity="0.55" />
+		<circle cx="46" cy="52" r="10" fill="var(--cc-plants)" opacity="0.8" />
+		<rect x="44.5" y="56" width="3" height="8" fill="var(--cc-plants)" opacity="0.8" />
+		<path
+			d="M62 52 Q74 30 86 28 M92 30 Q80 40 66 56"
+			fill="none"
+			stroke="var(--cc-plants)"
+			stroke-width="2"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M120 28 Q140 40 146 62 M152 60 Q148 38 124 24"
+			fill="none"
+			stroke={accent}
+			stroke-width="2"
+			stroke-linecap="round"
+		/>
+		<rect x="30" y="86" width="26" height="14" rx="2" fill="currentColor" opacity="0.55" />
+		<path
+			d="M43 84 L43 34 L76 22"
+			fill="none"
+			stroke="var(--cc-human)"
+			stroke-width="2.6"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
