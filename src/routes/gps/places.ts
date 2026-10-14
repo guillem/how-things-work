@@ -13,7 +13,7 @@ export const PLACES: readonly Place[] = [
 	{ id: 'tokyo', name: 'Tokyo', lat: 35.68, lon: 139.69 },
 	{ id: 'sydney', name: 'Sydney', lat: -33.87, lon: 151.21 },
 	{ id: 'quito', name: 'Quito', lat: -0.18, lon: -78.47 },
-	{ id: 'mcmurdo', name: 'McMurdo Station, Antarctica', lat: -77.85, lon: 166.67 }
+	{ id: 'mcmurdo', name: 'Antarctica (McMurdo)', lat: -77.85, lon: 166.67 }
 ];
 
 export const placeById = (id: unknown): Place => PLACES.find((p) => p.id === id) ?? PLACES[0];
