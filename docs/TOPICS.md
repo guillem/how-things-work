@@ -200,7 +200,7 @@ A topic is done when:
 - [x] learning-from-data
 - [x] gradient-descent
 - [x] neural-networks
-- [ ] convolution-vision
+- [x] convolution-vision
 - [x] embeddings
 - [ ] transformers
 - [ ] language-models
