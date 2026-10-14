@@ -252,7 +252,7 @@
 
 	<!-- readouts -->
 	<Readout id="vol" order={1} label="NaOH added" value={ml(vb)}>
-		<text x={PX0} y={32} font-size="12" class="muted">added</text>
+		<text x={PX0} y={32} font-size="12" class="muted">NaOH added</text>
 		<text x={PX0} y={54} font-size="18" font-weight="600">{ml(vb)}</text>
 	</Readout>
 	<Readout id="ph" order={2} label="pH" value={ph.toFixed(2)} color={curveColor}>
