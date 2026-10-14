@@ -225,7 +225,7 @@ export const spec: ExplainerSpec = {
 <p>The reaction never runs to the end. Two HI molecules can also collide hard enough to swap partners back:</p>
 <p class="formula"><strong>2 HI → H₂ + I₂</strong>, &nbsp; rate = k<sub>r</sub> [HI]²</p>
 <p>It goes over the same barrier from the other side, which is higher from there: 171 + 12 = <strong>183 kJ/mol</strong>. Its rate constant k<sub>r</sub> is 52 times smaller than the forward one, but it grows as HI builds up.</p>
-<p>Watch the two rates on the plot: the forward rate falls as H₂ and I₂ are used up, the reverse rate rises as HI piles up. The orange flashes in the box are reverse reactions. Sooner or later the two rates must meet.</p>`,
+<p>Watch the two rates on the plot: the forward rate falls as H₂ and I₂ are used up, the reverse rate rises as HI piles up. The pink flashes in the box are reverse reactions. Sooner or later the two rates must meet.</p>`,
 			notes: `<p>Bodenstein measured this reaction too, starting from pure HI. Its own fit gives about 186 kJ/mol; this page derives k<sub>r</sub> from k<sub>f</sub> and the measured equilibrium (next step), which keeps the two directions consistent, within the scatter of his data. The reverse reaction is written with [HI]² because two HI molecules have to meet.</p>`
 		},
 		{
@@ -293,6 +293,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Finally, change the temperature of the flask at equilibrium. Both rates jump, but not equally: the reverse reaction has the higher barrier (183 against 171 kJ/mol), so heating helps it a little more. K falls from 61 at 650 K to 42 at 780 K, and the mixture shifts towards H₂ and I₂, as Le Chatelier predicts for a reaction that gives off heat.</p>
 <p>But see how little: from 650 to 780 K the share of iodine in HI only drops from 80 % to 76 %, while the rates grow 200 times. For this reaction, temperature mostly decides <strong>how fast</strong> the balance is reached, and only slightly <strong>where</strong> it lies.</p>
+<p>The catalyst and the hydrogen are here too: try them together, and see which ones move the balance and which only change how fast it is reached.</p>
 <p>That is the whole story: reactions happen when collisions carry enough energy over a barrier, and equilibrium is where the forward and reverse reactions run at the same rate.</p>`,
 			notes: `<p>The size of the shift is set by the reaction's heat: K changes as e<sup>−ΔH/RT</sup>, and −12 kJ/mol is small. For making ammonia, with ΔH = −92 kJ/mol, heating shifts the equilibrium strongly against the product, which is why the Haber–Bosch process needs a catalyst to run fast enough at a moderate temperature.</p>`
 		}

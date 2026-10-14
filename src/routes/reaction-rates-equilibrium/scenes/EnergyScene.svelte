@@ -178,7 +178,7 @@
 		<Label
 			x={L.x + L.w}
 			y={L.y + 74}
-			text="over 4 chart widths to the right"
+			text="more than 4 times this chart’s width"
 			size={12}
 			anchor="end"
 			color="var(--rr-barrier)"

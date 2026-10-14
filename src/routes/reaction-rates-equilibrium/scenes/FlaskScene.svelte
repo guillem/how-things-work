@@ -45,6 +45,7 @@
 		sampleAt,
 		simulate,
 		type Change,
+		type Sample,
 		type Mix
 	} from '../model';
 
@@ -172,7 +173,23 @@
 			lapse / 20
 		);
 	});
-	const now = $derived(sampleAt(run, Math.min(WINDOW, shownAt) * lapse));
+	/**
+	 * The run at animation time τ. Past the simulated window the mixture has long
+	 * settled, so the reactions carry on at the last rates (exact at equilibrium):
+	 * the clock keeps going and the box keeps flashing.
+	 */
+	const runAt = (r: Sample[], tau: number): Sample => {
+		if (tau <= WINDOW) return sampleAt(r, tau * lapse);
+		const last = r[r.length - 1];
+		const extra = (tau - WINDOW) * lapse;
+		return {
+			...last,
+			t: tau * lapse,
+			done: last.done + last.forward * extra,
+			undone: last.undone + last.reverse * extra
+		};
+	};
+	const now = $derived(runAt(run, shownAt));
 
 	// ---- the box -------------------------------------------------------------------
 	const startCounts = $derived.by(() => {
@@ -189,7 +206,7 @@
 		return new BoxRun(
 			startSpecies(startCounts.h2, startCounts.i2, startCounts.hi),
 			(tau) => {
-				const s = sampleAt(r, Math.min(WINDOW, tau) * lapse);
+				const s = runAt(r, tau);
 				return { forward: s.done / UNIT, reverse: s.undone / UNIT };
 			},
 			doses
@@ -373,7 +390,7 @@
 
 <g style:font-variant-numeric="tabular-nums">
 	<!-- title -->
-	<Readout id="cond" order={1} label="Flask" value={catText ? `${kText}, ${catText}` : kText}>
+	<Readout id="cond">
 		<text x={BX} y={40} style:font-size="16px" font-weight="600"
 			>The flask · {kText}{#if catText}<tspan dx="6" fill="var(--rr-cat)" font-size="14">
 					· {catText}</tspan
@@ -447,7 +464,7 @@
 		order={3}
 		label="Time in the flask"
 		value={fmtTime(now.t)}
-		note="1 s here = {fmtTime(lapse)}"
+		note="{kText}{catText ? `, ${catText}` : ''} · 1 s here = {fmtTime(lapse)}"
 	>
 		<text x={BX} y={526} style:font-size="14px"
 			>time in the flask: <tspan font-weight="600">{fmtTime(now.t)}</tspan></text
@@ -604,6 +621,9 @@
 			order={4}
 			label="Rate now"
 			value="{fmtRate(micro(now.forward))} µmol L⁻¹ s⁻¹"
+			note={focus === 'rate'
+				? `half of the H₂ gone after ${fmtTime(halfNow)}`
+				: `at the start: ${fmtRate(micro(run[0].forward))}`}
 			color="var(--rr-forward)"
 		>
 			<text x={PL.x - 4} y={556} style:font-size="14px"
@@ -612,12 +632,7 @@
 				> µmol L⁻¹ s⁻¹</text
 			>
 		</Readout>
-		<Readout
-			id="rate2"
-			order={5}
-			label={focus === 'rate' ? 'Half of the H₂ gone after' : 'Rate at the start'}
-			value={focus === 'rate' ? fmtTime(halfNow) : `${fmtRate(micro(run[0].forward))} µmol L⁻¹ s⁻¹`}
-		>
+		<Readout id="rate2">
 			<text x={PL.x - 4} y={580} style:font-size="13px" class="muted"
 				>{focus === 'rate'
 					? `k = ${sig(kForward(now.T))} L mol⁻¹ s⁻¹ · half of the H₂ gone after ${fmtTime(halfNow)}`
@@ -630,7 +645,9 @@
 			order={4}
 			label="Rate constant k"
 			value="{fmtRate(kForward(now.T, now.lowering))} L mol⁻¹ s⁻¹"
-			note="{sig(kRel, 2)} × the value at 700 K without a catalyst"
+			note="×{kRel >= 1000 ? fmtPow(kRel) : sig(kRel, 2)} vs 700 K{focus === 'catalyst'
+				? ' without a catalyst'
+				: ''} · half of the H₂ gone after {fmtTime(halfNow)}"
 		>
 			<text x={PL.x - 4} y={556} style:font-size="14px"
 				>k = <tspan font-weight="600">{fmtRate(kForward(now.T, now.lowering))}</tspan> L mol⁻¹ s⁻¹ ·
@@ -640,7 +657,7 @@
 				vs 700 K{focus === 'catalyst' ? ', no catalyst' : ''}</text
 			>
 		</Readout>
-		<Readout id="half" order={5} label="Half of the H₂ gone after" value={fmtTime(halfNow)}>
+		<Readout id="half">
 			<text x={PL.x - 4} y={580} style:font-size="13px" class="muted"
 				>half of the H₂ gone after {fmtTime(halfNow)}</text
 			>

@@ -18,7 +18,9 @@
  * its table of k for 2 HI → H₂ + I₂ in L mol⁻¹ s⁻¹ at 555, 575, 645, 700 and
  * 781 K is Bodenstein's decomposition data divided by 2.675 (the same factor at
  * all five temperatures, to ±0.2 %). It is therefore not an independent check, only
- * the unit.
+ * the unit. The page takes OpenStax's k as the constant of the reaction rate,
+ * rate = k[HI]² = −½ d[HI]/dt; if it were meant per d[HI]/dt instead, every absolute
+ * time on the page would halve (rates, barriers and K are unaffected).
  */
 
 /** Rate constant of 2 HI → H₂ + I₂: [temperature °C, k in Giunta's arbitrary units]. */
