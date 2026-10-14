@@ -39,8 +39,8 @@
 	const P = { x: 44, y: 40, size: 344 };
 	const px = (x: number) => P.x + ((x + 1) / 2) * P.size;
 	const py = (y: number) => P.y + ((1 - y) / 2) * P.size;
-	const grid = $derived(outputGrid(net, 44));
-	const shading = $derived(bands(grid, P.x, P.y, P.size, 5, 0.5));
+	const grid = $derived(outputGrid(net, 50));
+	const shading = $derived(bands(grid, P.x, P.y, P.size, 6, 0.5));
 	const boundary = $derived(zeroLine(grid, P.x, P.y, P.size));
 	const points = $derived(run.data.map((e) => ({ ...e, px: px(e.x), py: py(e.y) })));
 	const dotsA = $derived(
@@ -106,7 +106,8 @@
 					x2: colX[l + 1] - S / 2,
 					y2: nodeY(l + 1, j),
 					color: v >= 0 ? 'var(--nn-pos)' : 'var(--nn-neg)',
-					width: 0.6 + 3.4 * Math.min(1, Math.abs(v) / 3)
+					width: 0.6 + 3.4 * Math.min(1, Math.abs(v) / 3),
+					w: v
 				};
 			});
 		})
@@ -123,7 +124,7 @@
 	});
 	const right = $derived(Math.round(acc * run.data.length));
 	const verdict = $derived.by(() => {
-		if (solvedAt >= 0) return `every point right since epoch ${solvedAt}`;
+		if (solvedAt >= 0) return `first got every point right at epoch ${solvedAt}`;
 		if (k === 0) return 'random weights: training starts…';
 		if (k >= MAX_EPOCHS) {
 			const best = Math.round(100 * Math.max(...run.accuracies));
@@ -165,7 +166,7 @@
 		let d = '';
 		for (let i = 0; i <= 60; i++) {
 			const z = -3 + (6 * i) / 60;
-			const v = Math.max(-1.6, Math.min(1.6, activate(s.spec.act, z)));
+			const v = Math.max(-2.2, Math.min(2.2, activate(s.spec.act, z)));
 			const x = C.x + (i / 60) * C.w;
 			const y = C.y + C.h / 2 - (v / 1.6) * (C.h / 2);
 			d += `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
@@ -234,6 +235,29 @@
 			/>
 		</g>
 	{/each}
+	{#if edges.length <= 2}
+		<Readout id="single-weights">
+			{#each edges as e, i (e.key)}
+				<Txt
+					x={(e.x1 + e.x2) / 2}
+					y={(e.y1 + e.y2) / 2 + (i ? 22 : -12)}
+					text="w{i ? '₂' : '₁'} = {fmt(e.w)}"
+					anchor="middle"
+					size={12}
+					weight={600}
+					color={e.color}
+				/>
+			{/each}
+			<Txt
+				x={colX[1]}
+				y={nodeY(1, 0) - S / 2 - 10}
+				text="b = {fmt(net.b[0][0])}"
+				anchor="middle"
+				size={12}
+				muted
+			/>
+		</Readout>
+	{/if}
 	<Readout id="net-labels">
 		{#each colX as x, l (l)}
 			<Txt {x} y={34} text={heading(l)} anchor="middle" size={12} muted />
@@ -328,7 +352,16 @@
 				y2={C.y + C.h}
 				stroke="var(--stage-grid)"
 			/>
-			<path d={curvePath} fill="none" stroke="var(--nn-back)" stroke-width="2.4" />
+			<clipPath id="nn-curve-clip">
+				<rect x={C.x} y={C.y} width={C.w} height={C.h} />
+			</clipPath>
+			<path
+				d={curvePath}
+				fill="none"
+				stroke="var(--nn-back)"
+				stroke-width="2.4"
+				clip-path="url(#nn-curve-clip)"
+			/>
 			<Readout id="curve">
 				<Txt
 					x={C.x + C.w / 2}

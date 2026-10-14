@@ -91,7 +91,7 @@ export function createSince() {
  */
 export function shade(u: number, strength: number) {
 	const k = Math.round(100 * strength * Math.min(1, Math.abs(u)));
-	return `color-mix(in oklab, var(${u < 0 ? '--nn-a' : '--nn-b'}) ${k}%, var(--nn-mid))`;
+	return `color-mix(in oklab, var(${u < 0 ? '--nn-a-fill' : '--nn-b-fill'}) ${k}%, var(--nn-mid))`;
 }
 
 export interface Band {

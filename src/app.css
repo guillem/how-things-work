@@ -1131,11 +1131,13 @@ kbd {
 	--gd-min: #f8f9fa;
 }
 
-/* neural-networks: the two classes (orange, blue), the neutral middle of the shading, positive and
+/* neural-networks: the two classes (orange, blue) as points and as shading, the neutral middle of the shading, positive and
    negative weights, the boundary, the forward and backward pulses */
 :root {
 	--nn-a: #e8590c;
 	--nn-b: #1c7ed6;
+	--nn-a-fill: #f76707;
+	--nn-b-fill: #228be6;
 	--nn-mid: #fbfaf7;
 	--nn-pos: #1c7ed6;
 	--nn-neg: #e8590c;
@@ -1146,6 +1148,8 @@ kbd {
 :root[data-theme='dark'] {
 	--nn-a: #ff922b;
 	--nn-b: #4dabf7;
+	--nn-a-fill: #ffa94d;
+	--nn-b-fill: #74c0fc;
 	--nn-mid: #1a1b1e;
 	--nn-pos: #4dabf7;
 	--nn-neg: #ff922b;

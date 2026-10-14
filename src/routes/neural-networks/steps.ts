@@ -158,7 +158,7 @@ export const spec: ExplainerSpec = {
 			scene: 'bend',
 			duration: 24,
 			body: `
-<p>Another way to see it: a hidden layer moves every point of the plane. Here a network with two hidden neurons has learnt the four corners. For each point, the two hidden outputs are its new coordinates. Watch the grid and the points move there, in three moves:</p>
+<p>Another way to see it: a hidden layer moves every point of the plane. Here a network with two hidden neurons has learnt two interlocking half-moons, which no straight line can split (the inset shows its curved boundary). For each point, the two hidden outputs are its new coordinates. Watch the grid and the points move there, in three moves:</p>
 <ol>
 <li>multiply by the layer's <dfn data-def="The table of a layer's weights: one row per neuron, one column per input. Multiplying a point by it is a linear transformation of the plane.">weight matrix</dfn> <i>W</i>: a <a href="../linear-transformations/#matrix">linear transformation</a> that turns, stretches and shears the grid but keeps its lines straight and parallel;</li>
 <li>add the biases: shift everything;</li>
@@ -191,7 +191,7 @@ export const spec: ExplainerSpec = {
 			controls: [layers('layers-depth', 1, 1)],
 			body: `
 <p>Two spirals wound round each other are much harder. One hidden layer of 8 ReLU neurons gets about two thirds of the points right, then stalls: 8 straight cuts are not enough to follow the arms.</p>
-<p>Add layers. Each layer works on the outputs of the one before, so it can fold the already bent plane again. Look at the squares: in the first hidden layer every neuron is a single straight edge; in the second, combinations of edges; in the third, pieces of the spiral itself. With two layers the network separates the spirals by epoch 457, with three by epoch 231.</p>
+<p>Add layers. Each layer works on the outputs of the one before, so it can fold the already bent plane again. Look at the squares: in the first hidden layer every neuron is a single straight edge; in later layers they become combinations of edges, with corners, wedges and patches. With two layers the network separates the spirals by epoch 457, with three by epoch 231.</p>
 <p>This is the "deep" in <dfn data-def="Machine learning with neural networks of many layers.">deep learning</dfn>: stacking layers builds complicated shapes out of simple ones.</p>`,
 			notes: `<p>A single hidden layer can in theory draw any boundary if it is wide enough (the universal approximation theorem, George Cybenko 1989 and Kurt Hornik 1991), but it may need a great many neurons. Deep networks tend to get the same shapes with far fewer. Here the width is capped at 8 so that the diagram stays readable.</p>`
 		},
@@ -237,7 +237,7 @@ export const spec: ExplainerSpec = {
 <p>A weight multiplies the input <i>a</i> that flows into it, and it feeds a neuron with error signal δ. So the slope of the loss for that weight is just</p>
 <p class="formula"><strong>∂L/∂<i>w</i> = <i>a</i><sub>in</sub> × δ<sub>out</sub></strong></p>
 <p>(and for a bias, just δ). One forward pass and one backward pass give the slope for <em>every</em> weight at once. Then each weight takes the <a href="../gradient-descent/#descend">gradient-descent step</a>, <i>w</i> ← <i>w</i> − η × ∂L/∂<i>w</i>, here with η = 0.5. The diagram shows each weight's old value, its slope and its new value. Run the example forward again and its loss is lower.</p>
-<p>Check that the slopes are right: nudge one weight by 0.001 and the loss changes by the slope × 0.001 (the readout does it). Press <em>Next example</em> to make the update and move on to the next point; after enough of them the network solves the corners.</p>`,
+<p>Check that the slopes are right: nudge one weight by 0.001 and the loss changes by the slope × 0.001 (the readout does it). Press <em>Next example</em> to make the update and move on to the next point, and watch the inset: one example at a time, it takes this network 165 steps to get every corner right.</p>`,
 			notes: `<p>Computing every slope by nudging, as the check does, would need one extra forward pass per weight: billions for a large model. Backpropagation gets all of them for about the cost of two passes. It was popularised for neural networks by David Rumelhart, Geoffrey Hinton and Ronald Williams in 1986.</p>`
 		},
 		// ------------------------------------------------------------------ training
@@ -263,15 +263,15 @@ export const spec: ExplainerSpec = {
 			hints: {},
 			duration: 30,
 			controls: [
-				data('data-play', 'spiral'),
+				data('data-play', 'moons'),
 				layers('layers-play', 2),
-				neurons('neurons-play', 6),
+				neurons('neurons-play', 4),
 				activation('act-play', 'tanh'),
 				learningRate('lr-play', '0.3'),
 				again('again-play')
 			],
 			body: `
-<p>Everything together. Pick a dataset, build the network layer by layer, and train it. Can you solve the spirals with the fewest neurons? What happens to the four corners with a single hidden neuron? Can you find a learning rate that is too big?</p>
+<p>Everything together. It starts with two layers of 4 neurons on the two moons, solved by epoch 49. Pick another dataset, build the network layer by layer, and train it. Can you solve the spirals with the fewest neurons? What happens to the four corners with a single hidden neuron? Can you find a learning rate that is too big?</p>
 <p>That is a neural network: <strong>layers of simple units, each weighing, adding and squashing; a loss that says how wrong the output is; backpropagation to pass the error back to every weight; and gradient descent to nudge them all, over and over.</strong> Stacking layers is what lets it bend a straight line into almost any shape.</p>
 <p>Networks that recognise images, translate text or generate pictures are built from exactly these parts — with millions or billions of weights, inputs made of pixels or words instead of two coordinates, and many layers arranged in cleverer ways.</p>`,
 			notes: `<p>The simplifications here: the data are 200 points made up by the computer, the networks are tiny (at most 3 hidden layers of 8), and training is plain mini-batch gradient descent with no tricks. Real training also holds back examples the network never trains on, to check that it has learnt the pattern rather than memorised the points.</p>`

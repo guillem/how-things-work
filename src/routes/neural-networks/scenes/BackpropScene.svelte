@@ -416,7 +416,7 @@
 			id="slope"
 			order={2}
 			label="Weight {check.name}"
-			value="slope a × δ = {fix(check.aIn)} × {fix(check.delta, 3)} = {fix(
+			value="slope a × δ = {par(check.aIn)} × {par(check.delta, 3)} = {fix(
 				check.slope,
 				3
 			)}, new w = {fix(check.next)}"

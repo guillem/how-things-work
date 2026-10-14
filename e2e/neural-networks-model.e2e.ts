@@ -16,6 +16,9 @@ import {
 	forward,
 	gradient,
 	applyStep,
+	BEND_EPOCHS,
+	BEND_SPEC,
+	stepThrough,
 	predict,
 	sigmoid,
 	type Net
@@ -149,4 +152,51 @@ test('runs are deterministic, and the datasets are balanced and inside the plane
 			expect(Math.abs(e.y)).toBeLessThan(1);
 		}
 	}
+});
+
+test('the numbers the narrative quotes', () => {
+	const solved = (spec: ConstructorParameters<typeof Run>[0]) => new Run(spec).solvedAt(500);
+	// "Without the bend": two hidden layers of 8 on the circle, η = 0.1.
+	expect(solved({ data: 'circle', hidden: [8, 8], act: 'tanh', lr: 0.1, seed: 1 })).toBe(40);
+	expect(solved({ data: 'circle', hidden: [8, 8], act: 'relu', lr: 0.1, seed: 1 })).toBe(9);
+	expect(solved({ data: 'circle', hidden: [8, 8], act: 'linear', lr: 0.1, seed: 1 })).toBe(-1);
+	// "Deeper networks": the spirals with two layers of 8 ReLU neurons.
+	expect(solved({ data: 'spiral', hidden: [8, 8], act: 'relu', lr: 0.1, seed: 1 })).toBe(457);
+	const one = new Run({ data: 'spiral', hidden: [8], act: 'relu', lr: 0.1, seed: 1 });
+	one.at(500);
+	expect(one.accuracies[500]).toBeGreaterThan(0.6);
+	expect(one.accuracies[500]).toBeLessThan(0.72); // "about two thirds"
+	// "Training": the circle with 4 tanh neurons at three learning rates.
+	expect(solved({ data: 'circle', hidden: [4], act: 'tanh', lr: 0.3, seed: 1 })).toBe(45);
+	expect(solved({ data: 'circle', hidden: [4], act: 'tanh', lr: 0.03, seed: 1 })).toBe(387);
+	expect(solved({ data: 'circle', hidden: [4], act: 'tanh', lr: 0.01, seed: 1 })).toBe(-1);
+	// "Build your own network": the playground's starting network.
+	expect(solved({ data: 'moons', hidden: [4, 4], act: 'tanh', lr: 0.3, seed: 1 })).toBe(49);
+	// "A neuron": the clusters within a couple of epochs.
+	expect(solved({ data: 'clusters', hidden: [], act: 'tanh', lr: 0.3, seed: 1 })).toBe(2);
+});
+
+test('the bending network: two hidden neurons get the moons right, a single neuron cannot', () => {
+	const bend = new Run(BEND_SPEC);
+	expect(bend.solvedAt(BEND_EPOCHS)).toBe(BEND_EPOCHS);
+	const W = bend.at(BEND_EPOCHS).W[0];
+	// Its two neurons look in clearly different directions, so the layer really moves the plane in 2D.
+	const sin = (W[0] * W[3] - W[1] * W[2]) / Math.hypot(W[0], W[1]) / Math.hypot(W[2], W[3]);
+	expect(Math.abs(sin)).toBeGreaterThan(0.9);
+	const line = new Run({ ...BEND_SPEC, hidden: [] });
+	line.at(300);
+	expect(Math.max(...line.accuracies)).toBeLessThan(1);
+});
+
+test("stepping through one example at a time: each step lowers that example's loss, and 165 solve the corners", () => {
+	const data = dataset('xor');
+	let first = -1;
+	for (let n = 0; n < 200; n++) {
+		const { net, example } = stepThrough(n);
+		const next = stepThrough(n + 1).net;
+		const x = [example.x, example.y];
+		expect(lossOf(next, x, example.label)).toBeLessThan(lossOf(net, x, example.label));
+		if (first < 0 && accuracy(net, data) === 1) first = n;
+	}
+	expect(first).toBe(165);
 });
