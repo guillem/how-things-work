@@ -44,7 +44,7 @@
 	function eventAt(k: number, time: number): Event {
 		const u = cycle(time, P, k / SITES.length + 0.12);
 		const y = SITES[k];
-		const site = SURF + 16;
+		const site = SURF + 20;
 		const fadeIn = smoothstep(0, 0.06, u);
 		const fadeOut = 1 - smoothstep(0.92, 1, u);
 		// 0–0.35 the Cu²⁺ ion swims in; 0.35–0.5 two electrons hop; then it is a Cu atom.
@@ -59,7 +59,7 @@
 		const leave = easeInOut(clamp((u - 0.5) / 0.42));
 		const zn = {
 			// Up off the surface first, clear of the arriving copper, then out into the solution.
-			x: lerp(SURF - 14, ZX + 120, leave ** 1.5),
+			x: lerp(SURF - 17, ZX + 120, leave ** 1.5),
 			y: y - 70 * smoothstep(0, 0.25, leave) - 20 * leave,
 			o: u < 0.5 ? 1 : 1 - smoothstep(0.85, 0.97, u),
 			ion: u >= 0.5
@@ -77,11 +77,9 @@
 
 	// Spectator Cu²⁺ ions and sulfate ions drifting in the zoom (fixed spots, small wobble).
 	const SPECTATORS = [
-		{ x: 700, y: 172, kind: 'so4' },
-		{ x: 800, y: 196, kind: 'cu' },
-		{ x: 860, y: 300, kind: 'so4' },
-		{ x: 790, y: 478, kind: 'so4' },
-		{ x: 690, y: 500, kind: 'cu' }
+		{ x: 712, y: 522, kind: 'so4' },
+		{ x: 872, y: 372, kind: 'so4' },
+		{ x: 640, y: 500, kind: 'cu' }
 	] as const;
 	const wob = (i: number) => (reduced ? 0 : 6 * Math.sin((t / 2.3 + i * 1.7) * Math.PI));
 
@@ -90,7 +88,7 @@
 		const out: { x: number; y: number; key: string }[] = [];
 		for (let c = 0; c < 4; c++)
 			for (let r = 0; r < 9; r++) {
-				const x = SURF - 14 - c * 30;
+				const x = SURF - 17 - c * 34;
 				const y = 170 + r * 40 + (c % 2) * 20;
 				// The surface sites themselves are drawn by the events.
 				if (c === 0 && SITES.includes(y)) continue;
@@ -136,7 +134,7 @@
 			x={BX + 148}
 			y={470}
 			text={progress > 0.3 ? 'copper coat growing' : ''}
-			size={11}
+			size={12}
 			muted
 		/>
 	</Readout>
@@ -185,26 +183,26 @@
 			opacity="0.25"
 		/>
 		{#each lattice as a (a.key)}
-			<Ion x={a.x} y={a.y} r={14} fill="var(--rb-zn)" text="Zn" size={10} />
+			<Ion x={a.x} y={a.y} r={17} fill="var(--rb-zn)" text="Zn" size={12} />
 		{/each}
 		{#each SPECTATORS as s, i (i)}
 			{#if s.kind === 'cu'}
 				<Ion
 					x={s.x + wob(i)}
 					y={s.y - wob(i + 3)}
-					r={15}
+					r={17}
 					fill="var(--rb-cu-ion)"
 					text="Cu²⁺"
-					size={10}
+					size={12}
 				/>
 			{:else}
 				<Ion
 					x={s.x - wob(i)}
 					y={s.y + wob(i + 2)}
-					r={18}
+					r={20}
 					fill="var(--rb-anion)"
 					text="SO₄²⁻"
-					size={9}
+					size={10}
 				/>
 			{/if}
 		{/each}
@@ -212,19 +210,19 @@
 			<Ion
 				x={e.zn.x}
 				y={e.zn.y}
-				r={14}
+				r={17}
 				fill={e.zn.ion ? 'var(--rb-zn-ion)' : 'var(--rb-zn)'}
 				text={e.zn.ion ? 'Zn²⁺' : 'Zn'}
-				size={e.zn.ion ? 9.5 : 10}
+				size={12}
 				opacity={e.zn.o}
 			/>
 			<Ion
 				x={e.cu.x}
 				y={e.cu.y}
-				r={e.cu.atom ? 14 : 15}
+				r={17}
 				fill={e.cu.atom ? 'var(--rb-cu)' : 'var(--rb-cu-ion)'}
 				text={e.cu.atom ? 'Cu' : 'Cu²⁺'}
-				size={10}
+				size={12}
 				opacity={e.cu.o}
 			/>
 			{#each e.electrons as el, j (j)}

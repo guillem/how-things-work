@@ -258,7 +258,7 @@
 
 	<!-- ions in the solutions -->
 	{#each sulfates as s, i (i)}
-		<Ion x={s.x} y={s.y} r={13} fill="var(--rb-anion)" text="SO₄²⁻" size={7.5} opacity={0.55} />
+		<Ion x={s.x} y={s.y} r={17} fill="var(--rb-anion)" text="SO₄²⁻" size={10} opacity={0.6} />
 	{/each}
 	{#each znIons as z (z.k)}
 		<Ion x={z.x} y={z.y} r={16} fill="var(--rb-zn-ion)" text="Zn²⁺" size={11} opacity={z.o} />
