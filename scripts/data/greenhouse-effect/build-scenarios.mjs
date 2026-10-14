@@ -17,7 +17,8 @@
  *    (Gidden et al. 2019, GMD 12, 1443, https://doi.org/10.5194/gmd-12-1443-2019),
  *    historical emissions (CEDS / Global Carbon Project) and the SSP greenhouse-gas
  *    concentrations (Meinshausen et al. 2020, GMD 13, 3571,
- *    https://doi.org/10.5194/gmd-13-3571-2020), published under CC BY 4.0.
+ *    https://doi.org/10.5194/gmd-13-3571-2020). Licence of the RCMIP files not
+ *    verified (Zenodo was unreachable); cite Nicholls et al. 2020 and the two papers above.
  *    The marker scenarios: SSP1-1.9 and SSP1-2.6 (IMAGE), SSP2-4.5
  *    (MESSAGE-GLOBIOM), SSP3-7.0 (AIM/CGE), SSP5-8.5 (REMIND-MAGPIE).
  * 2. Effective radiative forcing (ERF) of every agent, AR6 WG1 Chapter 7

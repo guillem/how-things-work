@@ -359,12 +359,12 @@
 			<path d={real.down.d} fill="var(--gh-ir)" fill-opacity="0.3" />
 			<path d={real.out.d} fill="var(--gh-ir)" fill-opacity="0.6" />
 			<Readout id="r-up">
-				<Label x={345} y={GROUND - 40} text="398 up" size={12} weight={700} color="var(--gh-ir)" />
+				<Label x={345} y={GROUND + 24} text="398 up" size={12} weight={700} color="var(--gh-ir)" />
 			</Readout>
 			<Readout id="r-down">
 				<Label
 					x={510}
-					y={GROUND - 40}
+					y={GROUND + 24}
 					text="342 down"
 					size={12}
 					weight={700}

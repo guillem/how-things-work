@@ -12,7 +12,7 @@
 	 * planet time pass per second. Moving between the climate steps keeps the
 	 * planet's warming, so a feedback switched on warms it further from there.
 	 */
-	import { Label, Photon, hash, linePath, scale } from '#lib/draw/index.ts';
+	import { Label, Photon, colors, hash, linePath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { band } from '../../carbon-cycle/scenes/geometry';
 	import {
@@ -193,15 +193,29 @@
 	{#each POOL.slice(0, nCO2) as m (m.id)}
 		<g transform="translate({m.x} {m.y})">
 			<circle r="4.5" fill="var(--carbon)" />
-			<circle cx="-8" r="4" fill="#e5484d" />
-			<circle cx="8" r="4" fill="#e5484d" />
+			<circle cx="-8" r="4" fill={colors.oxygen} />
+			<circle cx="8" r="4" fill={colors.oxygen} />
 		</g>
 	{/each}
 	{#each POOL.slice(30, 30 + nH2O) as m (m.id)}
 		<g transform="translate({m.x} {m.y})">
-			<circle r="5" fill="#e5484d" />
-			<circle cx="-6" cy="4.5" r="3" fill="#f3f4f6" stroke="#9ca3af" stroke-width="0.8" />
-			<circle cx="6" cy="4.5" r="3" fill="#f3f4f6" stroke="#9ca3af" stroke-width="0.8" />
+			<circle r="5" fill={colors.oxygen} />
+			<circle
+				cx="-6"
+				cy="4.5"
+				r="3"
+				fill={colors.hydrogen}
+				stroke={colors.hydrogenEdge}
+				stroke-width="0.8"
+			/>
+			<circle
+				cx="6"
+				cy="4.5"
+				r="3"
+				fill={colors.hydrogen}
+				stroke={colors.hydrogenEdge}
+				stroke-width="0.8"
+			/>
 		</g>
 	{/each}
 

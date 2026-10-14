@@ -125,7 +125,7 @@
 			<Label x={157} y={L_TOP + 46} text="{f.ta.toFixed(0)} K" size={11} muted />
 		{/if}
 		<Label x={596} y={40} text="space" anchor="end" size={12} muted />
-		<Label x={596} y={GROUND + 24} text="ground" anchor="end" size={12} weight={600} />
+		<Label x={596} y={GROUND + 46} text="ground" anchor="end" size={12} weight={600} />
 	</Readout>
 
 	<!-- sunlight -->
@@ -166,7 +166,7 @@
 	<Readout id="surf" order={2} label="Infrared from the ground" value="{w0(f.surface)} W/m²">
 		<Label
 			x={geo.x0 + geo.w / 2}
-			y={GROUND - 12}
+			y={GROUND + 24}
 			text="{w0(f.surface)} from the ground"
 			size={12}
 			weight={700}
@@ -174,18 +174,12 @@
 		/>
 	</Readout>
 	<Readout id="win">
-		<Label x={geo.x0 + geo.ww + 8} y={130} text="{w0(f.window)} through" anchor="start" size={12} />
+		<Label x={geo.x0 + geo.ww / 2} y={27} text="{w0(f.window)} through" anchor="middle" size={12} />
 	</Readout>
 	{#if geo.up}
 		<Readout id="up" order={4} label="From the layer: up / down" value="{w0(f.up)} each">
-			<Label x={420 + geo.wu / 2 + 6} y={110} text="{w0(f.up)} up" anchor="start" size={12} />
-			<Label
-				x={530 - geo.wu / 2 - 6}
-				y={GROUND - 60}
-				text="{w0(f.down)} down"
-				anchor="end"
-				size={12}
-			/>
+			<Label x={420} y={27} text="{w0(f.up)} up" anchor="middle" size={12} />
+			<Label x={530} y={GROUND + 24} text="{w0(f.down)} down" anchor="middle" size={12} />
 		</Readout>
 	{/if}
 

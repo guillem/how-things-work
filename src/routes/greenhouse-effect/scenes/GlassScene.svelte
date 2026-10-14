@@ -6,7 +6,7 @@
 	 * surface is kept warm by greenhouse gases that absorb the ground's infrared
 	 * and give it off again in random directions.
 	 */
-	import { Label, Photon, along, cycle, smooth, smoothstep } from '#lib/draw/index.ts';
+	import { Label, Photon, along, colors, cycle, smooth, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { irPhoton, sunPhoton } from './ir';
 
@@ -122,7 +122,14 @@
 	{/each}
 	<Readout id="l-glass">
 		<Label x={BX1 - 4} y={BY + 22} text="glass" anchor="start" size={12} muted />
-		<Label x={160} y={GROUND - 50} text="warm air" size={12} weight={600} color="var(--gh-warm)" />
+		<Label
+			x={160}
+			y={GROUND + 26}
+			text="warm air circulates inside"
+			size={12}
+			weight={600}
+			color="var(--gh-warm)"
+		/>
 	</Readout>
 
 	<!-- right panel -->
@@ -149,8 +156,8 @@
 	{/each}
 	{#each MOLS as m, i (i)}
 		<circle cx={m.x} cy={m.y} r="6" fill="var(--carbon)" />
-		<circle cx={m.x - 10} cy={m.y} r="5.5" fill="#e5484d" />
-		<circle cx={m.x + 10} cy={m.y} r="5.5" fill="#e5484d" />
+		<circle cx={m.x - 10} cy={m.y} r="5.5" fill={colors.oxygen} />
+		<circle cx={m.x + 10} cy={m.y} r="5.5" fill={colors.oxygen} />
 	{/each}
 	{#each irR as p (p.key)}
 		{#if p.flash}
@@ -177,7 +184,7 @@
 	<Readout id="r-air">
 		<Label
 			x={RX1 + 14}
-			y={GROUND - 120}
+			y={GROUND + 26}
 			text="warm air rises freely"
 			anchor="end"
 			size={12}
