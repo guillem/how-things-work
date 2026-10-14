@@ -146,7 +146,7 @@ A topic is done when:
 - [x] heart-circulation
 - [x] homeostasis
 - [ ] neurons
-- [ ] vision-color
+- [x] vision-color
 - [ ] immune-system
 - [x] epidemics
 - [ ] mrna-vaccines
