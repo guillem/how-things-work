@@ -16,7 +16,8 @@
 		out.push({ k: 's', x: 14, y: 54, o: 0.6 });
 		for (let i = 0; i < 3; i++) out.push({ k: `v${i}`, x: 36 + i * 11, y: 54, o: 0.45 });
 		for (let r = 0; r < 3; r++)
-			for (let c = 0; c < 3; c++) out.push({ k: `m${r}${c}`, x: 82 + c * 11, y: 43 + r * 11, o: 0.35 });
+			for (let c = 0; c < 3; c++)
+				out.push({ k: `m${r}${c}`, x: 82 + c * 11, y: 43 + r * 11, o: 0.35 });
 		for (let d = 2; d >= 0; d--)
 			for (let r = 0; r < 3; r++)
 				for (let c = 0; c < 3; c++)
