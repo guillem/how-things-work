@@ -29,7 +29,7 @@ test('the air holds 590 GtC before industry and 898 GtC in 2024', async ({ page 
 
 test('the model matches the measured ocean and land sinks of 2015–2024', async ({ page }) => {
 	await open(page, './carbon-cycle/#history');
-	await expect(stage(page)).toContainText('ocean 2015–2024: model 3.1, GCB 3.2');
+	await expect(stage(page)).toContainText('ocean 2015–2024: model 3.2, GCB 3.2');
 	await expect(stage(page)).toContainText('plants 2015–2024: model 2.4, GCB 2.4');
 	await expect(stage(page)).toContainText('2024 · 423 ppm');
 });

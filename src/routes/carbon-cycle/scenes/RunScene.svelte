@@ -35,6 +35,8 @@
 	const R = 880;
 	const left = scale([0, 200], [L, SPLIT]);
 	const right = scale([200, HORIZON], [SPLIT, R]);
+	/** How many times more years each unit of axis holds right of the split. */
+	const SQUEEZE = Math.round((SPLIT - L) / 200 / ((R - SPLIT) / (HORIZON - 200)));
 	const xOf = (y: number) => (y <= 200 ? left(y) : right(y));
 	const sxAll: Scale = (() => {
 		const f = ((y: number) => xOf(y)) as Scale;
@@ -349,7 +351,7 @@
 		<Label
 			x={SPLIT + 6}
 			y={CHART_TOP + 14}
-			text="axis squeezed ×4 from here"
+			text="axis squeezed ×{SQUEEZE} from here"
 			anchor="start"
 			size={11}
 			muted

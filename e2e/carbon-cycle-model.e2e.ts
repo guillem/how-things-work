@@ -116,5 +116,25 @@ test('the numbers the narrative quotes', () => {
 	expect(f[20]).toBeCloseTo(0.6, 1);
 	expect(f[100]).toBeCloseTo(0.4, 1);
 	expect(f[1000]).toBeCloseTo(0.25, 1);
-	// The model's history: 3.1 and 2.4 GtC/yr into ocean and plants in 2015–2024 (see the history test).
+	// Stopping now, a thousand years on: about 330 ppm.
+	expect(ppmOf(future(0, 0, 0, 1000)[1000])).toBeCloseTo(330, -1);
+	// The model's history: 3.2 and 2.4 GtC/yr into ocean and plants in 2015–2024,
+	// about 140 GtC into plants since 1850 and a surface pH from 8.18 to 8.04.
+	const h = history();
+	const decade = h.filter((y) => y.year >= 2015);
+	const mean = (k: 'ocean' | 'land') => decade.reduce((a, y) => a + y[k], 0) / decade.length;
+	expect(mean('ocean')).toBeCloseTo(3.2, 1);
+	expect(mean('land')).toBeCloseTo(2.4, 1);
+	const land1850 = h.filter((y) => y.year >= 1850).reduce((a, y) => a + y.land, 0);
+	expect(land1850).toBeCloseTo(140, -1);
+	expect(seawaterPH(dicFor(PPM0))).toBeCloseTo(8.18, 2);
+	expect(pHOf(today())).toBeCloseTo(8.04, 2);
+	// "Unlocking the slow loop": what the fast loop holds in 2024, GtC.
+	const t = totals(today());
+	expect(t.burnt).toBeCloseTo(499, 0);
+	expect(today().cleared).toBeCloseTo(278, 0);
+	expect(t.air).toBeCloseTo(308, 0);
+	expect(t.ocean).toBeCloseTo(206, 0);
+	expect(t.landSink).toBeCloseTo(154, 0);
+	expect(t.land).toBeCloseTo(-123, 0);
 });

@@ -845,11 +845,14 @@
 				anchor="start"
 			/>
 		</Readout>
+	</g>
+	<!-- The clearing arrow is dashed too; the loop labels take this corner in the last view. -->
+	<g opacity={labelOpacity(Math.max(o.slow, o.human) * (1 - o.loops))}>
 		<Readout id="minwidth">
 			<Label
 				x={24}
 				y={538}
-				text="dashed: thinner than 1.5 units at scale, drawn wider"
+				text="dashed: too thin to draw to scale, shown wider"
 				anchor="start"
 				size={11}
 				muted
