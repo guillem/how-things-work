@@ -2147,6 +2147,39 @@
 				stroke-opacity="0.5"
 			/>
 		{/each}
+	{:else if slug === 'meiosis-inheritance'}
+		<!-- a crossed-over chromosome pair (mother's red, father's blue) dividing into four cells, each with one mixed chromatid -->
+		{#each [{ x: 30, top: 'var(--mi-mom)', bottom: 'var(--mi-dad)' }, { x: 42, top: 'var(--mi-mom)', bottom: 'var(--mi-mom)' }, { x: 56, top: 'var(--mi-dad)', bottom: 'var(--mi-dad)' }, { x: 68, top: 'var(--mi-dad)', bottom: 'var(--mi-mom)' }] as c (c.x)}
+			<path d="M{c.x} 22 V62" stroke={c.top} stroke-width="7" stroke-linecap="round" />
+			<path d="M{c.x} 62 V100" stroke={c.bottom} stroke-width="7" stroke-linecap="round" />
+		{/each}
+		<circle cx="36" cy="44" r="3" fill="currentColor" opacity="0.55" />
+		<circle cx="62" cy="44" r="3" fill="currentColor" opacity="0.55" />
+		<path d="M84 60 H108" stroke={accent} stroke-width="2" opacity="0.8" />
+		<path d="M104 55 L110 60 L104 65" fill="none" stroke={accent} stroke-width="2" />
+		{#each [{ cx: 136, cy: 34, top: 'var(--mi-mom)', bottom: 'var(--mi-dad)' }, { cx: 176, cy: 34, top: 'var(--mi-mom)', bottom: 'var(--mi-mom)' }, { cx: 136, cy: 86, top: 'var(--mi-dad)', bottom: 'var(--mi-dad)' }, { cx: 176, cy: 86, top: 'var(--mi-dad)', bottom: 'var(--mi-mom)' }] as c, i (i)}
+			<circle
+				cx={c.cx}
+				cy={c.cy}
+				r="19"
+				fill={accent}
+				fill-opacity="0.08"
+				stroke={accent}
+				stroke-width="1.6"
+			/>
+			<path
+				d="M{c.cx} {c.cy - 12} V{c.cy}"
+				stroke={c.top}
+				stroke-width="5"
+				stroke-linecap="round"
+			/>
+			<path
+				d="M{c.cx} {c.cy} V{c.cy + 12}"
+				stroke={c.bottom}
+				stroke-width="5"
+				stroke-linecap="round"
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

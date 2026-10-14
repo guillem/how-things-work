@@ -591,6 +591,15 @@ const explainers: Explainer[] = [
 		accent: '#a61e4d',
 		steps: 12,
 		minutes: 20
+	},
+	{
+		slug: 'meiosis-inheritance',
+		title: 'Meiosis and inheritance',
+		summary:
+			'Step through the cell division that makes eggs and pollen, choosing where the chromosomes cross over and how they line up. Then cross pea plants as Mendel did, breed thousands of offspring and watch his 3 : 1 and 9 : 3 : 3 : 1 appear, and see why brothers and sisters differ.',
+		accent: '#c0396b',
+		steps: 13,
+		minutes: 20
 	}
 ];
 
