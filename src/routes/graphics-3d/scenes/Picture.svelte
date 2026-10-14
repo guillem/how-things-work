@@ -87,7 +87,7 @@
 				y={y + shownRows * px}
 				width={w}
 				height={h - shownRows * px}
-				fill="var(--stage-grid)"
+				fill="var(--surface)"
 			/>
 			<rect {x} y={y + shownRows * px - 1} width={w} height="2" fill="var(--g3-eye)" />
 		{/if}

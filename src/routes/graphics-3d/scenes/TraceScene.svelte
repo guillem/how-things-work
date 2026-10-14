@@ -66,6 +66,7 @@
 	const SCAN = 8;
 	const reveal = $derived(phase === 'rays' && !reduced ? Math.min(1, (t % (SCAN + 3)) / SCAN) : 1);
 
+	const rowsDone = $derived(Math.round(reveal * IMG_H));
 	const R = { x: 352, y: 16, w: 592, h: 370 };
 
 	// ---- the picked pixel ----------------------------------------------------------------
@@ -155,11 +156,11 @@
 		<T x={BX + 16} {y} text={label} size={12.5} muted />
 		<T x={BX + 304} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
 	{/snippet}
-	<Readout id="primary" order={1} label="Rays from the eye" value={thousands(s.primary * reveal)}>
+	<Readout id="primary" order={1} label="Rays from the eye" value={thousands(rowsDone * IMG_W)}>
 		{@render row(
 			BY + 56,
 			'Rays from the eye (1 per pixel)',
-			thousands(Math.round(s.primary * reveal)),
+			thousands(rowsDone * IMG_W),
 			'var(--g3-eye)'
 		)}
 	</Readout>

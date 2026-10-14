@@ -410,7 +410,7 @@ export interface LightSpec {
 	/** Degrees above the floor, seen from the centre. */
 	el: number;
 }
-export const DEFAULT_LIGHT: LightSpec = { az: -70, el: 40 };
+export const DEFAULT_LIGHT: LightSpec = { az: -45, el: 40 };
 export const LIGHT_DIST = 6;
 export function lightPos(l: LightSpec): Vec3 {
 	const az = (l.az * Math.PI) / 180;
@@ -990,7 +990,8 @@ function trace(
 	const nf = front ? n : scale(n, -1);
 	// Local shading with a shadow ray (the eye position is where this ray came from).
 	let lit = 1;
-	if (opts.shadows && opts.shading !== 'none') {
+	// (Not needed inside the glass, where no local light is added.)
+	if (opts.shadows && opts.shading !== 'none' && (front || mesh.material !== 'glass')) {
 		const toL = sub(light, p);
 		const dist = length(toL);
 		const ld = scale(toL, 1 / dist);

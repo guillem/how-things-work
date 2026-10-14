@@ -52,7 +52,7 @@ export interface MapBox {
 	/** Stage units per world unit. */
 	scale: number;
 }
-export const MAP: MapBox = { x: 16, y: 16, size: 320, scale: 17 };
+export const MAP: MapBox = { x: 16, y: 16, size: 320, scale: 19 };
 
 /** World (x, z) → map point (+z, towards the starting camera, is down the map). */
 export const toMap = (m: MapBox, x: number, z: number) => ({
@@ -71,7 +71,7 @@ export function cameraFromMap(m: MapBox, p: { x: number; y: number }, el: number
 	const dz = w.z - TARGET[2];
 	const az = (Math.atan2(dx, dz) * 180) / Math.PI;
 	const dist = Math.hypot(dx, dz) / Math.cos((el * Math.PI) / 180);
-	return { az: Math.round(az), dist: Math.round(Math.min(9, Math.max(6.5, dist)) * 10) / 10 };
+	return { az: Math.round(az), dist: Math.round(Math.min(8, Math.max(6.5, dist)) * 10) / 10 };
 }
 
 /** Lamp azimuth and height from a point on the map (towards the middle = higher). */

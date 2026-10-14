@@ -30,7 +30,12 @@
 		traceWorld,
 		MIRROR_CENTRE,
 		MIRROR_R,
+		add,
+		normalize,
+		scale,
+		sub,
 		type RasterOptions,
+		type Vec3,
 		type Shading
 	} from '../render';
 	import {
@@ -82,16 +87,21 @@
 		const p =
 			phase === 'texture'
 				? projectPoint(camera, [1.6, 0, 2.3]).pixel
-				: projectPoint(camera, [
-						MIRROR_CENTRE[0] - 0.5 * MIRROR_R,
-						MIRROR_CENTRE[1] + 0.45 * MIRROR_R,
-						MIRROR_CENTRE[2] + 0.5 * MIRROR_R
-					]).pixel;
+				: projectPoint(camera, highlightPoint()).pixel;
 		return [
 			Math.min(IMG_W - 1, Math.max(0, Math.floor(p[0]))),
 			Math.min(IMG_H - 1, Math.max(0, Math.floor(p[1])))
 		];
 	});
+	/** Where the mirror ball's highlight is: its normal halfway between the lamp and the eye. */
+	function highlightPoint(): Vec3 {
+		const n = normalize(
+			add(normalize(sub(L, MIRROR_CENTRE)), normalize(sub(camera.eye, MIRROR_CENTRE)))
+		);
+		// A little off the peak, so the numbers are not all round.
+		const m = normalize(add(n, [0.08, -0.06, 0]));
+		return add(MIRROR_CENTRE, scale(m, MIRROR_R));
+	}
 	const pick = $derived(pickOf(params, pickKey, fallback));
 	const world = $derived(traceWorld(scene));
 	const hit = $derived(probe(world, camera, L, pick[0], pick[1]));

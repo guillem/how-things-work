@@ -29,7 +29,7 @@ const dist: Control = {
 	id: 'dist',
 	label: 'Camera: distance',
 	min: 6.5,
-	max: 9,
+	max: 8,
 	step: 0.1,
 	default: 7,
 	format: (v) => v.toFixed(1)
@@ -52,7 +52,7 @@ const lightAz: Control = {
 	min: -180,
 	max: 180,
 	step: 1,
-	default: -70,
+	default: -45,
 	format: deg,
 	help: 'Or drag the lamp on the map (towards the middle to raise it).'
 };
@@ -274,7 +274,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Turn the question round. Instead of asking where each triangle lands, ask, for each pixel: <strong>what would I see if I looked through it?</strong> Shoot a <dfn data-def="A half-line: a starting point and a direction. A ray tracer follows it until it hits the nearest surface.">ray</dfn> from the eye through the pixel's centre and find the nearest triangle it hits.</p>
 <p>Light really travels the other way, from the lamp to the eye. But light paths can be followed in either direction (<a href="../light-optics/">light and optics</a>), and almost all the light leaving a lamp misses the camera. Starting at the eye follows only the rays that matter.</p>
-<p>Watch the picture fill row by row: one ray per pixel, 23,040 rays. The map shows the ray through the pixel you picked (click the picture to pick another). With no shadows or bounces yet, this would give exactly the rasteriser's picture.</p>`,
+<p>Watch the picture fill row by row: one ray per pixel, 23,040 rays. The map shows the ray through the pixel you picked (click the picture to pick another). Every pixel finds the same surface as the rasteriser did, shaded with the same formula. Only the mirror and the glass look dark: their colour is meant to come from rays this tracer doesn't follow yet.</p>`,
 			notes: `<p>Testing a ray against a triangle is a few dozen multiplications (this page uses the Möller–Trumbore test). The hard part is the number of tests. Testing every ray against every triangle would be hopeless for a film scene, so ray tracers sort the triangles into nested boxes (a <dfn data-def="Bounding volume hierarchy: boxes inside boxes round groups of triangles. A ray that misses a box skips everything inside it.">BVH</dfn>). This page uses the simplest version: one invisible ball round each object, tested first.</p>`
 		},
 		{
@@ -287,7 +287,7 @@ export const spec: ExplainerSpec = {
 			controls: [shadows, ...lights],
 			body: `
 <p>A ray tracer can ask a question the rasteriser could not: <strong>can this point see the lamp?</strong> From the point a ray hits, send a second ray, a <dfn data-def="A ray from a surface point towards a light. If it hits something on the way, the point is in shadow.">shadow ray</dfn>, towards the lamp. If anything is in the way, the point gets only the ambient light.</p>
-<p>Move the lamp: the shadows swing round and stretch when it is low. Switch shadow rays off and they vanish; the picture is the rasteriser's again. On the map, the shadow ray of the picked pixel is drawn to the lamp, and ends in a cross where it is blocked.</p>`,
+<p>Move the lamp: the shadows swing round and stretch when it is low. Switch shadow rays off and they vanish: the floor and the cube are then exactly the rasteriser's again. On the map, the shadow ray of the picked pixel is drawn to the lamp, and ends in a cross where it is blocked.</p>`,
 			notes: `<p>The shadows here have hard edges because the lamp is a single point. A real lamp has a size, so near the edge of a shadow part of it is hidden: a soft half-shadow. Ray tracers get that by sending many shadow rays to random points on the lamp and averaging.</p><p>Simplification: the glass ball casts a full shadow here. Real glass focuses light into a bright spot (a caustic), which needs light followed from the lamp too.</p>`
 		},
 		{

@@ -152,23 +152,29 @@ test('with no shadows and no bounces, the ray tracer sees what the rasteriser se
 	const r = rasterise(scene, cam, light);
 	const t = raytrace(world, cam, light, { ...DEFAULT_TRACE, shadows: false, bounces: 0 });
 	let sameId = 0;
-	let floorPx = 0;
-	let floorClose = 0;
+	let mattePx = 0;
+	let matteClose = 0;
 	for (let k = 0; k < W * H; k++) {
 		if (r.ids[k] === t.ids[k]) sameId++;
-		if (r.ids[k] === ID.floor && t.ids[k] === ID.floor) {
-			floorPx++;
-			if (Math.abs(r.rgba[4 * k] - t.rgba[4 * k]) <= 2) floorClose++;
+		const matte = r.ids[k] === ID.floor || r.ids[k] === ID.cube;
+		if (matte && t.ids[k] === r.ids[k]) {
+			mattePx++;
+			if (Math.abs(r.rgba[4 * k] - t.rgba[4 * k]) <= 2) matteClose++;
 		}
 	}
 	expect(sameId).toBe(W * H);
-	// Same textured, shaded floor (perspective-correct texture coordinates = where the ray hits).
-	expect(floorClose / floorPx).toBeGreaterThan(0.99);
+	// The same textured, shaded floor and cube (perspective-correct texture coordinates are
+	// where the ray hits).
+	expect(matteClose / mattePx).toBeGreaterThan(0.99);
 	// Interpolating the texture coordinates flat across the screen (affine) gets the floor wrong.
 	const a = rasterise(scene, cam, light, { ...DEFAULT_RASTER, perspectiveCorrect: false });
+	let floorPx = 0;
 	let affineClose = 0;
 	for (let k = 0; k < W * H; k++)
-		if (a.ids[k] === ID.floor && Math.abs(a.rgba[4 * k] - t.rgba[4 * k]) <= 2) affineClose++;
+		if (a.ids[k] === ID.floor) {
+			floorPx++;
+			if (Math.abs(a.rgba[4 * k] - t.rgba[4 * k]) <= 2) affineClose++;
+		}
 	expect(affineClose / floorPx).toBeLessThan(0.85);
 });
 
