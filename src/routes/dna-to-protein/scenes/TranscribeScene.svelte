@@ -276,7 +276,7 @@
 			<Txt
 				x={24}
 				y={574}
-				text={gene.eukaryote
+				text={gene.id !== 'trpl'
 					? 'Template A → U, T → A, C → G, G → C: the RNA spells the coding strand, with U for T'
 					: 'No nucleus in a bacterium: ribosomes start reading this RNA while it is still being made'}
 				size={13}

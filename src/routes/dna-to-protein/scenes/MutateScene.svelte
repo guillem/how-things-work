@@ -46,7 +46,9 @@
 	const before = $derived(cmp.before);
 	const after = $derived(cmp.after);
 	const mutant = $derived(edit ? applyEdit(seq, edit) : seq);
-	const name = $derived(edit ? editName(seq, edit, before.start) : 'no edit');
+	const name = $derived(
+		edit ? editName(seq, edit, before.start, before.stopped ? before.end : Infinity) : 'no edit'
+	);
 
 	const tv = $derived(reduced || lab ? 1e6 : t);
 	/** The edit taking effect (letter flips, letters slide). */

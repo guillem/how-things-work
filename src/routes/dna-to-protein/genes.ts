@@ -55,8 +55,8 @@ export const TRPL: Gene = {
 };
 
 export const GENE_OPTIONS: { value: GeneId; label: string }[] = [
-	{ value: 'hbb', label: 'Human β-globin (HBB), 147 codons' },
-	{ value: 'trpl', label: 'E. coli trpL, 14 codons' },
+	{ value: 'hbb', label: 'Human β-globin (HBB), 147 amino acids' },
+	{ value: 'trpl', label: 'E. coli trpL, 14 amino acids' },
 	{ value: 'own', label: 'Your own (type it on the stage)' }
 ];
 

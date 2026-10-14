@@ -206,11 +206,13 @@ export function applyEdit(seq: string, e: Edit): string {
 }
 
 /** HGVS-style name of an edit in coding-DNA numbering (c.1 is the A of the start codon). */
-export function editName(seq: string, e: Edit, cdsStart: number): string {
-	// No c.0: the letter before c.1 is c.−1. Without a start codon, plain letter numbers.
+export function editName(seq: string, e: Edit, cdsStart: number, cdsEnd = Infinity): string {
+	// No c.0: the letter before c.1 is c.−1; letters after the stop codon are c.*1, c.*2…
+	// (cdsEnd: index just past the stop codon). Without a start codon, plain letter numbers.
 	const pre = cdsStart < 0 ? '' : 'c.';
 	const pos = (i: number) => {
 		if (cdsStart < 0) return `${i + 1}`;
+		if (i >= cdsEnd) return `*${i - cdsEnd + 1}`;
 		const c = i - cdsStart;
 		return c >= 0 ? `${c + 1}` : `${c}`;
 	};

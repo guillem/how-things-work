@@ -5,7 +5,8 @@
 	 *            one codon to the next, so each step plays one cycle (tRNA arrives, the chain
 	 *            moves onto it, the ribosome shifts three letters, the empty tRNA leaves);
 	 *   auto   — the whole message at 2.8 codons a second (half the measured 5.6 per second),
-	 *            from the first AUG to the stop codon; the reduced-motion frame is the end.
+	 *            from the first AUG to the stop codon, then again after a 4 s pause; the reduced-motion
+	 *            frame is the end.
 	 * The position is u codons (0 … n): k = ⌊u⌋ codons are read and f = u − k is the progress
 	 * of the next one. The mini code table outlines the codon being read.
 	 */
@@ -53,7 +54,7 @@
 			: mode === 'auto'
 				? reduced
 					? n
-					: clamp((t - 0.8) * RATE, 0, n)
+					: clamp((Math.max(0, t - 0.8) % (n / RATE + 4)) * RATE, 0, n)
 				: clamp(pos.current, 0, n)
 	);
 	const k = $derived(Math.min(n, Math.floor(u)));

@@ -150,6 +150,11 @@ test.describe('one-letter changes in real HBB variants', () => {
 	test('changes outside the coding part leave the protein alone; losing the start moves it', () => {
 		expect(compareEdit(HBB_MRNA, { kind: 'sub', at: 10, base: 'G' }).effect).toBe('outside');
 		expect(compareEdit(HBB_MRNA, { kind: 'del', at: HBB_CDS.end + 20 }).effect).toBe('outside');
+		// Named as HGVS does: before the start c.−N, after the stop c.*N.
+		expect(editName(HBB_MRNA, { kind: 'sub', at: 10, base: 'G' }, HBB_CDS.start)).toBe('c.-40C>G');
+		expect(
+			editName(HBB_MRNA, { kind: 'del', at: HBB_CDS.end + 20 }, HBB_CDS.start, HBB_CDS.end)
+		).toMatch(/^c\.\*21del/);
 		const noStart = compareEdit(HBB_MRNA, { kind: 'sub', at: HBB_CDS.start + 1, base: 'C' });
 		expect(noStart.effect).toBe('start-changed');
 		const stopLost = compareEdit(HBB_MRNA, { kind: 'sub', at: HBB_CDS.end - 3, base: 'C' });
@@ -165,5 +170,15 @@ test.describe('one-letter changes in real HBB variants', () => {
 		expect(s.silent).toBe(325);
 		expect(s.nonsense).toBe(34);
 		expect(s.missense / total).toBeGreaterThan(0.7);
+		// …and 306 of the silent ones are at the third letter of a codon.
+		let third = 0;
+		for (let at = 2; at < HBB_CODING.length; at += 3)
+			for (const base of ['A', 'C', 'G', 'T'] as const)
+				if (
+					base !== HBB_CODING[at] &&
+					compareEdit(HBB_CODING, { kind: 'sub', at, base }).effect === 'silent'
+				)
+					third++;
+		expect(third).toBe(306);
 	});
 });

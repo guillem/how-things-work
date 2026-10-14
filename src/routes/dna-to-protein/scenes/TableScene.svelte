@@ -52,15 +52,17 @@
 	</Readout>
 
 	<!-- the codon in focus -->
-	<rect
-		x={PX}
-		y={40}
-		width="244"
-		height="214"
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<Readout id="card">
+		<rect
+			x={PX}
+			y={40}
+			width="244"
+			height="214"
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	<Readout
 		id="codon"
 		order={1}
@@ -125,13 +127,19 @@
 	</Readout>
 
 	<!-- key and counts -->
-	{#each KINDS as k, i (k)}
-		<Readout id="kind-{k}" order={10 + i} label={KIND_LABEL[k]} color={KIND_COLOR[k]}>
+	<Readout
+		id="kinds"
+		order={3}
+		label="Colours"
+		value="side chains"
+		note="yellow water-repelling · green water-loving · blue charged + · red charged − · grey stop"
+	>
+		{#each KINDS as k, i (k)}
 			<rect x={PX + 4} y={290 + i * 28} width="22" height="18" rx="4" fill={KIND_COLOR[k]} />
 			<Txt x={PX + 34} y={304 + i * 28} text={KIND_LABEL[k]} size={12.5} />
-		</Readout>
-	{/each}
-	<Readout id="counts" order={2} label="64 codons" value="61 amino acid · 3 stop">
+		{/each}
+	</Readout>
+	<Readout id="counts" order={2} label="64 codons" value="61 for amino acids · 3 stop">
 		<Txt x={PX + 4} y={454} text="64 codons:" size={13} weight={700} />
 		<Txt x={PX + 4} y={474} text="61 for the 20 amino acids," size={12.5} />
 		<Txt x={PX + 4} y={492} text="3 for stop (UAA, UAG, UGA)." size={12.5} />
