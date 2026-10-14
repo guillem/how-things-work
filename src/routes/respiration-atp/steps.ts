@@ -180,12 +180,13 @@ export const spec: ExplainerSpec = {
 			title: 'A charged membrane',
 			scene: 'chain',
 			hints: { focus: 'atp' },
-			controls: [synthase],
+			controls: [synthase, uncoupler],
 			duration: 20,
 			body: `
 <p>Pumping protons out of the matrix charges the inner membrane like a battery: the intermembrane side becomes positive and slightly more acidic. Together the voltage and the acidity difference make the <dfn data-def="The energy, per unit charge, that pushes protons back into the matrix: the membrane voltage (≈ 150–180 mV) plus the pH difference (≈ 0.5–0.9 units, ≈ 30–50 mV).">proton-motive force</dfn>, about <strong>180 mV</strong> across a membrane only 5 nm thick: an electric field of some 35 million volts per metre.</p>
 <p>Unlike in a chloroplast, most of it is voltage, not acidity. The protons' only easy way back is through <strong>ATP synthase</strong>, and it lets them through only while making ATP.</p>
-<p>Block the synthase (as the antibiotic <strong>oligomycin</strong> does). The gradient rises until pumping against it gets too hard, and the whole chain slows almost to a stop, even with plenty of NADH and oxygen. Respiration and ATP making are <em>coupled</em>: the cell burns its food only as fast as it spends ATP.</p>`,
+<p>Block the synthase (as the antibiotic <strong>oligomycin</strong> does). The gradient rises until pumping against it gets too hard, and the whole chain slows almost to a stop, even with plenty of NADH and oxygen. Respiration and ATP making are <em>coupled</em>: the cell burns its food only as fast as it spends ATP.</p>
+<p>Now punch a leak in the membrane with an <strong>uncoupler</strong>. The gradient collapses, the chain races and burns food as fast as it can, and no ATP is made: the energy all becomes heat. Brown fat does this on purpose, with a leak protein (UCP1), to keep newborns warm.</p>`,
 			notes: `<p>This is Peter Mitchell's chemiosmotic theory (1961, Nobel Prize 1978), which was fiercely resisted for a decade because no one could find a high-energy chemical intermediate linking the chain to ATP: there isn't one; the link is the gradient. Matrix pH is about 7.8 and the intermembrane space about 6.9–7.2 (Porcelli et al., <i>BBRC</i> 2005).</p><p>Simplification: in the model the blocked synthase simply stops. A real one, with too little gradient, runs backwards, burning ATP to pump protons, until a small inhibitor protein (IF1) stops it.</p>`
 		},
 		{

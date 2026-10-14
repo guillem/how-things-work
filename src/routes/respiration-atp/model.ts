@@ -346,7 +346,7 @@ export const FERMENTATION_ATP = STAGES.glycolysis.atp;
  * to pay for ATP at its cellular value (≈ 50 kJ/mol).
  *
  * The rate constants and pool sizes are illustrative (chosen so that the
- * resting Δp is ≈ 170 mV and the pools are partly reduced); the order in
+ * resting Δp is ≈ 180 mV and the pools are partly reduced); the order in
  * which the carriers back up without oxygen, and the directions of the
  * responses, follow from the potentials and are not tuned.
  */
@@ -391,12 +391,12 @@ export const NORMAL: ChainConditions = { oxygen: true, synthase: true, uncoupler
 export const REST_STATE: ChainState = { nadh: 0.5, q: 0.4, c: 0.3, dp: 0.17 };
 
 const K = {
-	supply: 12,
-	I: 60,
+	supply: 24,
+	I: 120,
 	II: 3,
-	III: 80,
-	IV: 30,
-	atp: 12,
+	III: 200,
+	IV: 80,
+	atp: 26,
 	leak: 10,
 	leakUncoupled: 3000,
 	/** Pool sizes (relative): many NAD, fewer Q, few cyt c; a small membrane capacitance. */
