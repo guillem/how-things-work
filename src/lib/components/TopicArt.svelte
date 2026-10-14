@@ -1652,6 +1652,30 @@
 		{/each}
 		<path d="M24 60 H62" stroke={accent} stroke-width="2" stroke-linecap="round" />
 		<circle cx="24" cy="60" r="4" fill={accent} />
+	{:else if slug === 'acids-bases'}
+		<!-- a titration curve (strong acid, strong base) beside a flask turning pink -->
+		<path
+			d="M88 100 C 120 99, 140 94, 148 86 L 152 34 C 158 26, 176 23, 192 22"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linecap="round"
+		/>
+		<path d="M88 61 H192" stroke="currentColor" stroke-dasharray="2 4" opacity="0.35" />
+		<path
+			d="M38 22 V48 L18 92 Q16 100 24 100 H64 Q72 100 70 92 L50 48 V22"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			stroke-linejoin="round"
+			opacity="0.6"
+		/>
+		<path
+			d="M27 74 H61 L69 92 Q70 98 64 98 H24 Q18 98 19 92 Z"
+			fill="var(--ab-pink)"
+			opacity="0.75"
+		/>
+		<circle cx="44" cy="12" r="3" fill="var(--ab-pink)" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

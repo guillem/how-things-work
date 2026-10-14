@@ -456,6 +456,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 11,
 		minutes: 22
+	},
+	{
+		slug: 'acids-bases',
+		title: 'Acids, bases and pH',
+		summary:
+			'Zoom into water to count its hydrogen ions, place everyday liquids on the pH scale, then add a base to an acid drop by drop and watch the pH leap at the very drop that matches the acid.',
+		accent: '#c2255c',
+		steps: 12,
+		minutes: 18
 	}
 ];
 

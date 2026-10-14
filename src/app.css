@@ -643,6 +643,17 @@ kbd {
 	--hm-muscle: #c2255c;
 	--hm-gut: #e67700;
 	--hm-urine: #b08900;
+	/* acids-bases: H⁺, OH⁻, acid side, base side, indicator pink, curves (strong, weak, weaker), glass, liquid */
+	--ab-h: #d6336c;
+	--ab-oh: #1971c2;
+	--ab-acid: #e03131;
+	--ab-base: #3b5bdb;
+	--ab-pink: #d6338a;
+	--ab-strong: #c2255c;
+	--ab-weak: #e8590c;
+	--ab-weaker: #2b8a3e;
+	--ab-glass: #868e96;
+	--ab-liquid: #e7f5ff;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -1042,6 +1053,17 @@ kbd {
 	--hm-muscle: #f06595;
 	--hm-gut: #fcc419;
 	--hm-urine: #ffe066;
+	/* acids-bases */
+	--ab-h: #f783ac;
+	--ab-oh: #74c0fc;
+	--ab-acid: #ff8787;
+	--ab-base: #91a7ff;
+	--ab-pink: #f06595;
+	--ab-strong: #f783ac;
+	--ab-weak: #ffa94d;
+	--ab-weaker: #69db7c;
+	--ab-glass: #868e96;
+	--ab-liquid: #1c2b38;
 }
 
 /* quantum-mechanics: the wave (Re ψ, Im ψ, |ψ|²), the two slits' waves, dots, barrier, detectors */
