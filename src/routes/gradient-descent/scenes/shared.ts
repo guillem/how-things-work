@@ -290,7 +290,7 @@ function fmtRaw(v: number) {
 	if (!Number.isFinite(v) || Math.abs(v) >= 1e6) return v > 0 ? 'huge' : '−huge';
 	if (v === 0) return '0';
 	const a = Math.abs(v);
-	if (a < 5e-7) return '0.000000';
+	if (a < 5e-7) return '0';
 	if (a >= 100) return v.toFixed(0);
 	if (a >= 10) return v.toFixed(1);
 	if (a >= 0.001) return Number(v.toPrecision(3)).toString();

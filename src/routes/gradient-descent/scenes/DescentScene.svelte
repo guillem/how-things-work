@@ -40,12 +40,17 @@
 	const here = $derived(
 		balls.length ? { x: balls[0].x, y: balls[0].y } : { x: s.start[0], y: s.start[1] }
 	);
+	const noisy = $derived(s.noise > 0 || (s.land.id === 'line' && s.batch < 21));
 	const trails = $derived(
 		balls.length
 			? balls.map((b) => ({
 					key: b.key,
 					color: b.color,
-					points: [...b.run.path.slice(0, b.k + 1), { x: b.x, y: b.y }],
+					// A noisy run shows only its recent steps, so its wandering stays readable.
+					points: [
+						...b.run.path.slice(noisy ? Math.max(0, b.k - 40) : 0, b.k + 1),
+						{ x: b.x, y: b.y }
+					],
 					ball: { x: b.x, y: b.y }
 				}))
 			: [{ key: 'still', color: 'var(--gd-ball)', points: [], ball: here }]
@@ -62,7 +67,6 @@
 	const lossHere = $derived(s.land.f(here.x, here.y));
 	const grad = $derived(s.land.grad(here.x, here.y));
 	const lowest = $derived(s.land.minima[0].value);
-	const noisy = $derived(s.noise > 0 || (s.land.id === 'line' && s.batch < 21));
 
 	function verdict(b: (typeof balls)[number]) {
 		const r = b.run;
@@ -73,14 +77,23 @@
 			const m = nearestMinimum(s.land, b.x, b.y);
 			return `reached ${m.name} at step ${r.settledAt}`;
 		}
-		if (b.k >= b.last) {
-			const m = nearestMinimum(s.land, b.x, b.y);
-			return noisy ? `jiggling around ${m.name}` : `still going after ${b.last} steps`;
-		}
+		const L = s.land;
+		if (b.x < L.x[0] || b.x > L.x[1] || b.y < L.y[0] || b.y > L.y[1]) return 'off the map';
+		const m = nearestMinimum(L, b.x, b.y);
+		if (noisy && b.k > 3) return `wandering around ${m.name}`;
+		if (b.k >= b.last) return `still going after ${b.last} steps`;
 		return 'going downhill…';
 	}
 	const xn = $derived(s.land.id === 'line' ? 'a' : 'w₁');
 	const yn = $derived(s.land.id === 'line' ? 'b' : 'w₂');
+	// How far the loss plot's step axis reaches: the steps taken so far; in the
+	// reduced-motion frame (the whole run at once), up to a little past where it settled.
+	const plotSteps = $derived.by(() => {
+		const longest = Math.max(0, ...balls.map((b) => b.last));
+		if (!reduced) return Math.min(kf, longest);
+		const settled = balls.map((b) => (b.run.settledAt > 0 ? b.run.settledAt : b.last));
+		return Math.min(longest, Math.max(20, 1.6 * Math.max(...settled)));
+	});
 	const RX = MAP.x;
 	const RY = MAP.y + MAP.size + 56;
 </script>
@@ -111,7 +124,7 @@
 			}))}
 			top={balls[0].run.path[0].loss}
 			floor={lowest}
-			shown={Math.min(kf, Math.max(...balls.map((b) => b.last)))}
+			shown={plotSteps}
 		/>
 	{/if}
 

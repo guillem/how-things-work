@@ -248,7 +248,7 @@ export const landscapes: Record<LandscapeId, Landscape> = {
 		...RAVINE,
 		minima: [{ x: 0, y: 0, value: 0, name: 'the bottom' }],
 		levels: squares(0.03, 12),
-		cap: 4.6,
+		cap: 6,
 		start: [-2.6, 0.2]
 	},
 	plateau: {

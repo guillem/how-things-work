@@ -187,7 +187,7 @@
 		{/each}
 	</g>
 
-	{#each trailPaths as tr (tr.key)}
+	{#each trailPaths.filter((tr) => !tr.off) as tr (tr.key)}
 		<circle
 			cx={tr.bx}
 			cy={tr.by}
@@ -195,7 +195,6 @@
 			fill={tr.color}
 			stroke="var(--stage-bg)"
 			stroke-width="2"
-			opacity={tr.off ? 0.45 : 1}
 			style:pointer-events="none"
 		/>
 	{/each}

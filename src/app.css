@@ -1044,29 +1044,33 @@ kbd {
 	--hm-urine: #ffe066;
 }
 
-/* gradient-descent: contour/surface ramp (low → high loss), mesh, ball, trail, the three
-   compared runs, the fitted line, the downhill arrows */
+/* gradient-descent: surface ramp (low → high loss), contour-line ramp, mesh, ball, the three
+   compared runs, the fitted line, the downhill arrows, the minimum markers */
 :root {
-	--gd-low: #1864ab;
-	--gd-high: #fff3bf;
-	--gd-mesh: #495057;
-	--gd-ball: #e8590c;
+	--gd-low: #4dabf7;
+	--gd-high: #fff9db;
+	--gd-c-low: #1864ab;
+	--gd-c-high: #e8a33d;
+	--gd-mesh: #343a40;
+	--gd-ball: #d6336c;
 	--gd-run1: #1c7ed6;
 	--gd-run2: #2f9e44;
 	--gd-run3: #e03131;
 	--gd-line: #ae3ec9;
-	--gd-arrow: #343a40;
-	--gd-min: #c92a2a;
+	--gd-arrow: #495057;
+	--gd-min: #212529;
 }
 :root[data-theme='dark'] {
-	--gd-low: #1c3d5a;
-	--gd-high: #e9d8a6;
-	--gd-mesh: #ced4da;
-	--gd-ball: #ff922b;
+	--gd-low: #1b4b72;
+	--gd-high: #8f7b4e;
+	--gd-c-low: #74c0fc;
+	--gd-c-high: #e0a84f;
+	--gd-mesh: #dee2e6;
+	--gd-ball: #f783ac;
 	--gd-run1: #4dabf7;
 	--gd-run2: #69db7c;
 	--gd-run3: #ff6b6b;
 	--gd-line: #da77f2;
-	--gd-arrow: #dee2e6;
-	--gd-min: #ff8787;
+	--gd-arrow: #ced4da;
+	--gd-min: #f8f9fa;
 }
