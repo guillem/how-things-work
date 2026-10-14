@@ -10,17 +10,17 @@
  * dependency: the forward pass is the page's own (src/routes/convolution-vision/cnn.ts), the
  * backward pass (backpropagation through the dense layer, the max pools, the ReLUs and both
  * convolutions) is written out below and checked against finite differences by --gradcheck.
- * The full run takes about 10 minutes on one core of a 2024 laptop.
+ * The full run takes 10–30 minutes on one core, depending on the machine and its load.
  *
  * Data: the MNIST database of handwritten digits (Yann LeCun, Corinna Cortes and Christopher
  * J. C. Burges, http://yann.lecun.com/exdb/mnist/; described in LeCun, Bottou, Bengio & Haffner,
  * "Gradient-based learning applied to document recognition", Proc. IEEE 86, 2278–2324, 1998):
  * 60 000 training and 10 000 test digits, 28 × 28 grey pixels. The four files are fetched from
  * the mirror torchvision uses (https://ossci-datasets.s3.amazonaws.com/mnist/) into the cache dir
- * (outside the repository) and checked against the SHA-256 sums below. Licence: MNIST is
- * distributed under the Creative Commons Attribution-Share Alike 3.0 licence (as stated by
- * TensorFlow Datasets' catalogue entry for "mnist"); the few test digits written to the output
- * file are shared under the same licence.
+ * (outside the repository) and checked against the SHA-256 sums below. Licence: the original
+ * MNIST page states none; the dataset is freely redistributed for research and teaching, and
+ * Hugging Face's "ylecun/mnist" dataset card gives the MIT licence (others cite CC BY-SA 3.0).
+ * The few test digits written to the output file keep the dataset's terms and attribution.
  *
  * Training: the 60 000 training digits only (the test digits are never seen until the
  * evaluation). Weights start He-normal (seeded mulberry32), biases at 0. Mini-batches of 32,
@@ -429,9 +429,9 @@ const header = `/**
  * A small convolutional network (architecture in ./cnn.ts, ${PARAMS.toLocaleString('en-US')} parameters) trained on
  * the MNIST database of handwritten digits (Yann LeCun, Corinna Cortes and Christopher J. C.
  * Burges, http://yann.lecun.com/exdb/mnist/; LeCun et al., Proc. IEEE 86, 2278–2324, 1998),
- * fetched from https://ossci-datasets.s3.amazonaws.com/mnist/. MNIST is distributed under the
- * Creative Commons Attribution-Share Alike 3.0 licence; the test digits below (SAMPLES, PARTS)
- * are a subset of it, shared under the same licence.
+ * fetched from https://ossci-datasets.s3.amazonaws.com/mnist/. The original MNIST page states no
+ * licence; Hugging Face's "ylecun/mnist" card gives MIT (others cite CC BY-SA 3.0). The test
+ * digits below (SAMPLES, PARTS) are a subset of it and keep its terms and attribution.
  *
  * Training: the ${nTrain.toLocaleString('en-US')} training digits, ${epochs} epoch${epochs > 1 ? 's' : ''}, mini-batches of ${BATCH}, random shifts of up
  * to ±${SHIFT} px, Adam with learning rates ${LR.slice(0, epochs).join(', ')}, seed ${SEED}; ${seconds} s on one core.
