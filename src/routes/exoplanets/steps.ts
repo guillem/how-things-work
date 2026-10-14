@@ -1,6 +1,6 @@
 import type { Control, ExplainerSpec, Params } from '#lib/explainer/index.ts';
 import { JUPITER_MASSES, JUPITER_RADII } from './exoplanets';
-import { MYSTERIES, mysteryTruth } from './systems';
+import { MYSTERIES, distOf, fmtAU, fmtTilt, massOf, mysteryTruth, tiltOf } from './systems';
 
 // ---- controls ------------------------------------------------------------------------
 // The planet's four settings share their ids across steps, so a planet set up on one
@@ -32,52 +32,46 @@ const size: Control = {
 	format: (v) => `${v.toFixed(1)} × Earth (${(v / JUPITER_RADII).toFixed(2)} × Jupiter)`
 };
 
-const MASSES = [
-	0.1, 0.2, 0.3, 0.5, 0.7, 1, 1.5, 2, 3, 5, 7, 10, 15, 20, 30, 50, 75, 100, 150, 200, 318, 500, 750,
-	1000, 1500, 2000, 3000, 4000
-];
 const mass: Control = {
 	type: 'range',
 	id: 'mass',
 	label: 'Planet mass',
-	min: MASSES[0],
-	max: MASSES[MASSES.length - 1],
-	default: 318,
-	values: () => MASSES,
-	format: (v) => `${fmt(v)} × Earth (${(v / JUPITER_MASSES).toFixed(v < 30 ? 3 : 2)} × Jupiter)`
+	min: -1,
+	max: 3.6,
+	step: 0.01,
+	default: Math.log10(JUPITER_MASSES),
+	format: (v) => {
+		const m = massOf(v);
+		return `${fmt(m)} × Earth (${(m / JUPITER_MASSES).toFixed(m < 30 ? 3 : 2)} × Jupiter)`;
+	},
+	help: 'A logarithmic slider: each step to the right multiplies the mass.'
 };
 
-/** Orbit radii offered, AU: close-in hot Jupiters to Jupiter's own orbit. */
-export const DISTANCES = [
-	0.01, 0.015, 0.02, 0.025, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5, 0.6,
-	0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.5, 1.7, 2, 2.5, 3, 4, 5.2
-];
 const dist: Control = {
 	type: 'range',
 	id: 'dist',
 	label: 'Orbit size',
-	min: DISTANCES[0],
-	max: DISTANCES[DISTANCES.length - 1],
-	default: 0.05,
-	values: () => DISTANCES,
-	format: (v) => `${v} AU from the star`,
+	min: -2,
+	max: Math.log10(5.2),
+	step: 0.01,
+	default: Math.log10(0.05),
+	format: (v) => `${fmtAU(distOf(v))} AU from the star`,
 	help: '1 AU is the Earth’s distance from the Sun; Mercury is at 0.39 AU, Jupiter at 5.2.'
 };
 
-/** Tilt from edge-on, degrees: finely spaced near 0, where transits are decided. */
-const TILTS = [
-	0, 0.1, 0.2, 0.3, 0.5, 0.75, 1, 1.5, 2, 3, 4, 5, 6, 8, 10, 15, 20, 30, 45, 60, 75, 90
-];
 const tilt: Control = {
 	type: 'range',
 	id: 'tilt',
 	label: 'Tilt of the orbit',
 	min: 0,
-	max: 90,
+	max: 100,
+	step: 1,
 	default: 0,
-	values: () => TILTS,
-	format: (v) => (v === 0 ? 'edge-on (0°)' : v === 90 ? 'face-on (90°)' : `${v}° from edge-on`),
-	help: '0° means we see the orbit exactly edge-on; 90° means we look straight down on it.'
+	format: (v) => {
+		const d = tiltOf(v);
+		return d === 0 ? 'edge-on (0°)' : d === 90 ? 'face-on (90°)' : `${fmtTilt(d)}° from edge-on`;
+	},
+	help: '0° means we see the orbit exactly edge-on; 90° means we look straight down on it. Finer near edge-on.'
 };
 
 const mystery: Control = {
