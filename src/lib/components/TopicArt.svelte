@@ -1606,6 +1606,32 @@
 			opacity="0.6"
 		/>
 		<path d="M14 30 H186" stroke="currentColor" stroke-dasharray="2 4" opacity="0.3" />
+	{:else if slug === 'gradient-descent'}
+		<!-- contour rings of a valley and a ball's trail of steps zigzagging down to the bottom -->
+		{#each [14, 28, 42, 56, 70] as r, i (r)}
+			<ellipse
+				cx="112"
+				cy="62"
+				rx={r * 1.25}
+				ry={r * 0.62}
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.2"
+				opacity={0.55 - i * 0.08}
+				transform="rotate(-18 112 62)"
+			/>
+		{/each}
+		<path
+			d="M38 30 L70 64 L80 38 L98 70 L104 50 L110 63"
+			fill="none"
+			stroke={accent}
+			stroke-width="2"
+			stroke-linejoin="round"
+		/>
+		{#each [[38, 30], [70, 64], [80, 38], [98, 70], [104, 50]] as [x, y] (x)}
+			<circle cx={x} cy={y} r="2.6" fill={accent} />
+		{/each}
+		<circle cx="110" cy="63" r="5.5" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

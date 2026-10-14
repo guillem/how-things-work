@@ -1043,3 +1043,30 @@ kbd {
 	--hm-gut: #fcc419;
 	--hm-urine: #ffe066;
 }
+
+/* gradient-descent: contour/surface ramp (low → high loss), mesh, ball, trail, the three
+   compared runs, the fitted line, the downhill arrows */
+:root {
+	--gd-low: #1864ab;
+	--gd-high: #fff3bf;
+	--gd-mesh: #495057;
+	--gd-ball: #e8590c;
+	--gd-run1: #1c7ed6;
+	--gd-run2: #2f9e44;
+	--gd-run3: #e03131;
+	--gd-line: #ae3ec9;
+	--gd-arrow: #343a40;
+	--gd-min: #c92a2a;
+}
+:root[data-theme='dark'] {
+	--gd-low: #1c3d5a;
+	--gd-high: #e9d8a6;
+	--gd-mesh: #ced4da;
+	--gd-ball: #ff922b;
+	--gd-run1: #4dabf7;
+	--gd-run2: #69db7c;
+	--gd-run3: #ff6b6b;
+	--gd-line: #da77f2;
+	--gd-arrow: #dee2e6;
+	--gd-min: #ff8787;
+}

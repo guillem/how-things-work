@@ -1,0 +1,283 @@
+import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
+
+/** Learning rates offered by the sliders (log-like spacing, round values at the limits). */
+const LR_VALUES = [
+	0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.5, 1.7, 1.8,
+	1.9, 2, 2.05, 2.1, 2.2, 2.5
+];
+
+const fmtLr = (v: number) => (v < 0.1 ? v.toFixed(2) : String(Number(v.toFixed(2))));
+
+/** A learning-rate slider; each step has its own id so a diverging value never follows the reader. */
+const lr = (id: string, def: number, max = 2.5): Control => ({
+	type: 'range',
+	id,
+	label: 'Learning rate η',
+	min: 0.01,
+	max,
+	step: 0.01,
+	default: def,
+	values: () => LR_VALUES.filter((v) => v <= max),
+	format: fmtLr,
+	help: 'How far each step goes, per unit of slope: step = η × gradient.'
+});
+
+const momentum = (id: string): Control => ({
+	type: 'range',
+	id,
+	label: 'Momentum β',
+	min: 0,
+	max: 0.95,
+	step: 0.05,
+	default: 0,
+	format: (v) => (v === 0 ? '0: plain descent' : v.toFixed(2)),
+	help: 'The share of the previous step that is carried into the next one.'
+});
+
+const noise = (id: string): Control => ({
+	type: 'range',
+	id,
+	label: 'Noise in the gradient',
+	min: 0,
+	max: 1.5,
+	step: 0.1,
+	default: 0,
+	format: (v) => (v === 0 ? 'none' : v.toFixed(1)),
+	help: 'Typical size of a random error added to the measured slope at every step.'
+});
+
+const again: Control = {
+	type: 'action',
+	id: 'again',
+	label: 'Run again',
+	action: 'Run again',
+	help: 'Drop the ball again from the same place, with new random noise.'
+};
+
+const batch: Control = {
+	type: 'select',
+	id: 'batch',
+	label: 'Examples per step',
+	default: '21',
+	options: [
+		{ value: '21', label: 'All 21 (full gradient)' },
+		{ value: '5', label: '5 at random (mini-batch)' },
+		{ value: '1', label: '1 at random (stochastic)' }
+	],
+	help: 'How many examples each step measures the slope on.'
+};
+
+const land: Control = {
+	type: 'select',
+	id: 'land',
+	label: 'Landscape',
+	default: 'wells',
+	options: [
+		{ value: 'line', label: 'Fitting a line (real examples)' },
+		{ value: 'bowl', label: 'A round bowl' },
+		{ value: 'ravine', label: 'A narrow ravine' },
+		{ value: 'plateau', label: 'A plateau around a well' },
+		{ value: 'wells', label: 'Several valleys' }
+	]
+};
+
+export const spec: ExplainerSpec = {
+	slug: 'gradient-descent',
+	title: 'Gradient descent: how a model learns by going downhill',
+	summary:
+		'Drop a ball on an error landscape and watch it step downhill. Change the step size until it crawls, converges or flies off, add momentum and noise, and get it through ravines, plateaus and false valleys.',
+	chapters: [
+		{ id: 'landscape', title: 'The error landscape' },
+		{ id: 'downhill', title: 'Going downhill' },
+		{ id: 'terrain', title: 'Hard terrain' },
+		{ id: 'training', title: 'Training a model' }
+	],
+	steps: [
+		// ------------------------------------------------------------------ landscape
+		{
+			id: 'settings',
+			chapter: 'landscape',
+			title: 'Every setting has an error',
+			scene: 'descent',
+			hints: { phase: 'explore', land: 'line', left: 'data' },
+			duration: 18,
+			body: `
+<p>In <a href="../learning-from-data/#line">learning from data</a> a straight line, output = <i>a</i> × input + <i>b</i>, was fitted to 21 examples. Its two settings — the slope <i>a</i> and the height <i>b</i> — are the model's <dfn data-def="The adjustable numbers of a model that learning chooses: here the slope a and height b of a line; in a large neural network, billions of weights.">parameters</dfn>, and each pair of values gives a line with its own <dfn data-def="The average of the squared gaps between a model's predictions and the examples.">mean squared error</dfn>.</p>
+<p>The square on the right is a map of all possible settings: across, the slope <i>a</i>; up, the height <i>b</i>. Every point on it is one line. Drag the point on the map and watch the line on the left, and its error, change.</p>
+<p>In machine learning the number to be made small is called the <dfn data-def="The number a training method tries to make as small as possible; usually an average error over the examples.">loss</dfn>. Learning means finding the point of the map where the loss is lowest.</p>`,
+			notes: `<p>For a straight line there is a formula that gives the best <i>a</i> and <i>b</i> at once (least squares). For the models of modern machine learning there is no such formula, and the method on this page is how they are trained.</p>`
+		},
+		{
+			id: 'landscape',
+			chapter: 'landscape',
+			title: 'A landscape of error',
+			scene: 'descent',
+			hints: { phase: 'explore', land: 'line', left: 'surface' },
+			duration: 18,
+			body: `
+<p>Give every point of the map a height equal to its loss and you get a landscape: the <dfn data-def="The loss drawn as a height above every possible setting of a model's parameters.">loss landscape</dfn>. On the left it is drawn as a surface; on the right as a <dfn data-def="Lines joining points of equal height, as on a hiking map. Where they crowd together, the ground is steep.">contour map</dfn>, like a hiking map, where each ring joins settings with the same loss. The best line sits at the bottom of the valley (the cross).</p>
+<p>Drag the point: the ball on the surface follows. Close-packed rings mean steep ground; far-apart rings, gentle ground.</p>
+<p>Here we can see the whole landscape, because there are only two parameters. A real model may have millions, and its landscape cannot be drawn or searched point by point. The learner is like a hiker in thick fog: it can only feel the slope under its feet.</p>`,
+			notes: `<p>To draw the map the computer worked out the loss at thousands of settings. That is cheap for two parameters, but the number of points needed grows like (points per axis)<sup>number of parameters</sup>: hopeless for a model with even ten.</p>`
+		},
+		{
+			id: 'gradient',
+			chapter: 'landscape',
+			title: 'Which way is downhill? The gradient',
+			scene: 'descent',
+			hints: { phase: 'gradient', land: 'line', left: 'surface' },
+			duration: 20,
+			body: `
+<p>On a curve, the <a href="../calculus/#tangent">derivative</a> is the slope at a point. On a landscape there is a slope in each direction. Take the slope along <i>a</i>, keeping <i>b</i> fixed, and the slope along <i>b</i>, keeping <i>a</i> fixed: these are the two <dfn data-def="The slope of a function of several inputs along one of them, the others held fixed. Written ∂L/∂a.">partial derivatives</dfn>, ∂L/∂a and ∂L/∂b.</p>
+<p>Put together as an arrow, they make the <dfn data-def="The arrow of all the partial derivatives of a function: it points in the direction of steepest climb, and its length is the slope in that direction. Written ∇L.">gradient</dfn>, ∇L. It points in the direction where the loss <strong>climbs</strong> fastest, and its length says how steep that climb is. So the direction of fastest <em>descent</em> is the opposite way, −∇L.</p>
+<p>The small arrows show −∇L all over the map: always across the contour rings, never along them, and longest where the rings crowd. Note that they do not point straight at the bottom: downhill and towards the bottom are not the same thing.</p>`,
+			notes: `<p>For the line's mean squared error the partial derivatives have a simple form: ∂L/∂a = (2/n) Σ (<i>a x</i> + <i>b</i> − <i>y</i>) <i>x</i> and ∂L/∂b = (2/n) Σ (<i>a x</i> + <i>b</i> − <i>y</i>): each example pushes in proportion to how far the line misses it.</p>`
+		},
+		// ------------------------------------------------------------------ downhill
+		{
+			id: 'descend',
+			chapter: 'downhill',
+			title: 'Step downhill, then look again',
+			scene: 'descent',
+			hints: { phase: 'run', land: 'line', left: 'surface' },
+			duration: 22,
+			controls: [lr('lr-descend', 0.3, 1.2)],
+			body: `
+<p>Gradient descent is just this, repeated: measure the gradient where you are, and step against it.</p>
+<p class="formula"><strong>new settings = old settings − η × gradient</strong></p>
+<p>The number η (eta) is the <dfn data-def="The number that sets how far each step of gradient descent goes, as a multiple of the gradient.">learning rate</dfn>. The step is η times the gradient, so it is long where the ground is steep and short where it is flat: watch the dots of the trail crowd together near the bottom, even though η never changes. The plot underneath shows the loss after every step.</p>
+<p>Click anywhere on the map to drop the ball there. Wherever it starts, it ends at the same place: the best line, found without any formula for it.</p>`,
+			notes: `<p>The ball is a picture, not a physical ball. It does not roll or gather speed: each step is a jump whose length is set only by the slope where it stands. Speed that carries over from step to step is an extra, called momentum, that comes later.</p>`
+		},
+		{
+			id: 'compare',
+			chapter: 'downhill',
+			title: 'Too small, just right, too big',
+			scene: 'descent',
+			hints: { phase: 'compare', land: 'bowl', left: 'surface' },
+			duration: 22,
+			body: `
+<p>Three balls start at the same place on a round bowl, with three learning rates.</p>
+<p>With <strong>η = 0.05</strong> the steps are tiny: the ball <strong>crawls</strong>, and needs dozens of steps to get anywhere. With <strong>η = 0.6</strong> it <strong>converges</strong> in a handful. With <strong>η = 2.05</strong> every step overshoots the bottom and lands higher up the far side than it started: it bounces from wall to wall, further each time, and <strong>diverges</strong> off the map.</p>
+<p>The loss plot tells the three stories at a glance: a slow slide, a quick drop, and a curve that climbs out of the top.</p>`
+		},
+		{
+			id: 'learning-rate',
+			chapter: 'downhill',
+			title: 'Where the step size breaks',
+			scene: 'descent',
+			hints: { phase: 'run', land: 'bowl', left: 'surface' },
+			duration: 24,
+			controls: [lr('lr', 0.6)],
+			body: `
+<p>On this bowl the gradient is exactly the arrow from the bottom to the ball, so a step moves the ball to (1 − η) times its distance from the bottom. Slide η and watch the factor:</p>
+<ul>
+<li>η below 1: the factor is between 0 and 1, and the ball approaches from one side;</li>
+<li>η = 1: the factor is 0, and the ball lands on the bottom in one step;</li>
+<li>η between 1 and 2: the factor is negative but smaller than 1 in size: the ball <strong>overshoots</strong> to the other side each time, but less each time, and still converges;</li>
+<li>η above 2: the factor is bigger than 1 in size, and every step makes things worse.</li>
+</ul>
+<p>The limit depends on how sharply the valley curves. On any valley with <dfn data-def="How fast the slope changes: the second derivative. A sharply curved valley has a large curvature λ.">curvature</dfn> λ, descent is stable only for η &lt; 2/λ: the more sharply curved the landscape, the smaller the safe step.</p>`,
+			notes: `<p>η = 0.1 and η = 1.9 give factors of +0.9 and −0.9: one creeps in from one side, the other bounces in from both, and they take exactly the same number of steps. In practice the curvature is unknown, so η is found by trial: start small, raise it until training becomes unstable, then back off.</p>`
+		},
+		// ------------------------------------------------------------------ terrain
+		{
+			id: 'ravine',
+			chapter: 'terrain',
+			title: 'Ravines: zigzagging down a narrow valley',
+			scene: 'descent',
+			hints: { phase: 'run', land: 'ravine', left: 'surface' },
+			duration: 24,
+			controls: [lr('lr-ravine', 1.8)],
+			body: `
+<p>Real landscapes are rarely round. This one is a long, narrow ravine: steep walls (curvature 1) and an almost flat floor (curvature 0.02) sloping gently to the bottom.</p>
+<p>The steep walls set the speed limit: η must stay below 2/1 = 2. At η = 1.8 the ball bounces from wall to wall in a <strong>zigzag</strong>, because the gradient points mostly across the ravine, not along it. Along the floor each step gains only a sliver, and it takes about 100 steps to reach the bottom.</p>
+<p>Lower η and the zigzag stops, but the ball creeps along the floor even more slowly. Raise it past 2 and the zigzag grows until the ball flies out. No single learning rate suits both directions.</p>`,
+			notes: `<p>Ravines appear in real training whenever some parameters affect the loss much more than others. Fitting a line to inputs that are all large numbers (say, house sizes in square metres) gives one: that is one reason inputs are usually rescaled before training.</p>`
+		},
+		{
+			id: 'momentum',
+			chapter: 'terrain',
+			title: 'Momentum: carrying speed along the floor',
+			scene: 'descent',
+			hints: { phase: 'run', land: 'ravine', left: 'surface', lr: 0.9 },
+			duration: 24,
+			controls: [momentum('momentum')],
+			body: `
+<p>A fix: let each step remember the previous one. With <dfn data-def="A variant of gradient descent in which each step adds a fraction β of the previous step to the new downhill push, so steps that agree build up speed.">momentum</dfn>, each step is the downhill push plus a share β of the step before:</p>
+<p class="formula"><strong>step = β × previous step − η × gradient</strong></p>
+<p>Across the ravine the pushes alternate left and right and largely cancel; along the floor they all agree and add up. Here η = 0.9. With β = 0 (plain descent) the ball needs about 190 steps. Slide β to 0.8 and it gets there in about 30.</p>
+<p>Too much momentum overshoots instead: at β = 0.95 the ball swings past the bottom and circles round it before settling.</p>`,
+			notes: `<p>This is "heavy ball" momentum (Boris Polyak, 1964). Now the ball really does carry speed from step to step. Popular training methods such as Adam combine momentum with a separate step size for each parameter, which also tames ravines.</p>`
+		},
+		{
+			id: 'plateau',
+			chapter: 'terrain',
+			title: 'Plateaus: where the slope almost vanishes',
+			scene: 'descent',
+			hints: { phase: 'run', land: 'plateau', left: 'surface', lr: 1 },
+			duration: 24,
+			controls: [momentum('momentum-plateau')],
+			body: `
+<p>This landscape is a wide plain, almost flat, around a deep well. On the plain the gradient is tiny, so even with η = 1 the steps are tiny: the ball spends more than a hundred steps barely moving, then drops into the well all at once.</p>
+<p>The loss plot shows the signature of a plateau: a long, almost level stretch, then a sudden fall. In real training this can look as if learning has stopped when it has not.</p>
+<p>Momentum helps here too: on the plain, every step points the same way, so they build up. Slide β to 0.8 and it gets off the plateau in about a quarter of the steps.</p>`,
+			notes: `<p>A bigger η would also cross the plain faster, but it is limited by the well: its curvature is about 1.1, so η must stay below 2/1.1 ≈ 1.8. In landscapes with many parameters, flat regions around <em>saddle points</em> (a minimum in some directions, a maximum in others) slow training in the same way.</p>`
+		},
+		{
+			id: 'valleys',
+			chapter: 'terrain',
+			title: 'Several valleys: the start decides the end',
+			scene: 'descent',
+			hints: { phase: 'run', land: 'wells', left: 'surface', lr: 0.3 },
+			duration: 22,
+			body: `
+<p>This landscape has three valleys of different depths. Dropped near the top of the map, the ball goes down into the valley it happens to be above — not the deepest one — and stops there, at a loss of 0.43 instead of 0.</p>
+<p>Gradient descent only ever feels the ground under it, so it finds a <dfn data-def="A point lower than everything around it, but not necessarily the lowest point of the whole landscape (the global minimum).">local minimum</dfn>: a point lower than its surroundings. There is no guarantee that it is the <strong>global minimum</strong>, the lowest of all.</p>
+<p>Click around the map to drop the ball in different places. The map divides into regions — one per valley — and the starting point alone decides where the ball ends.</p>`,
+			notes: `<p>For a line, as for every model whose loss is a single bowl (a <em>convex</em> loss), this cannot happen: there is only one valley. For neural networks it can, but in practice their huge landscapes have many low valleys of similar quality, and which one is found matters less than this two-dimensional picture suggests.</p>`
+		},
+		{
+			id: 'noise',
+			chapter: 'terrain',
+			title: 'A little noise can help',
+			scene: 'descent',
+			hints: { phase: 'run', land: 'wells', left: 'surface', lr: 0.3, start: '-1.2,-2.4' },
+			duration: 24,
+			controls: [noise('noise'), again],
+			body: `
+<p>Now the ball starts in the shallowest valley, which is small and narrow. Without noise it stays there.</p>
+<p>Add noise: at every step a random error is added to the measured slope, so the ball staggers. Turn it up to about 1 and the staggering can throw it over the rim of the narrow valley, into a wider and deeper one. It never settles exactly, though: it keeps jiggling around the bottom it finds.</p>
+<p>Press <em>Run again</em> for a new roll of the dice: sometimes it ends in the deepest valley, sometimes in the other one. Noise is no guarantee, but it tends to shake the ball out of small, narrow valleys.</p>`,
+			notes: `<p>Here the noise is simply added at random, a stand-in for the real thing in the next step. In practice the learning rate is often lowered as training goes on (a <em>schedule</em>), so that the jiggling dies down and the ball settles once it has found a good valley.</p>`
+		},
+		// ------------------------------------------------------------------ training
+		{
+			id: 'train',
+			chapter: 'training',
+			title: 'Training for real, one batch at a time',
+			scene: 'descent',
+			hints: { phase: 'run', land: 'line', left: 'data' },
+			duration: 24,
+			controls: [lr('lr-train', 0.3, 1.2), batch, again],
+			body: `
+<p>Back to the line and its 21 examples. Gradient descent turns the line step by step until it settles on the best fit — the same line least squares gives, with a loss of 0.118.</p>
+<p>Real training sets have millions of examples, and measuring the slope on all of them for every step is slow. So each step uses a small random <dfn data-def="A small random selection of the training examples, used to estimate the gradient for one step.">mini-batch</dfn> instead: <dfn data-def="Gradient descent in which each step uses the gradient of a random mini-batch of examples instead of all of them.">stochastic gradient descent</dfn>. Pick 5 or 1 examples per step: each step is quick but its slope is only an estimate, so the line jitters and the ball wanders around the bottom instead of settling.</p>
+<p>That jitter is where the noise of the last step really comes from. It costs some precision at the end, but each step is far cheaper, and it can shake the model out of narrow valleys.</p>`,
+			notes: `<p>Here a "batch" of 5 is drawn at random, without repeats, for every step. Real training usually shuffles the examples and goes through them in batches; one pass through all of them is called an <em>epoch</em>.</p>`
+		},
+		{
+			id: 'playground',
+			chapter: 'training',
+			title: 'Try it yourself',
+			scene: 'descent',
+			hints: { phase: 'run', left: 'surface' },
+			duration: 30,
+			controls: [land, lr('lr-play', 0.3), momentum('momentum-play'), noise('noise-play'), again],
+			body: `
+<p>Every landscape and every setting, together. Pick a landscape, click to drop the ball, and tune the learning rate, momentum and noise. Can you get through the ravine in under 30 steps? Off the plateau in under 20? Into the deepest valley from the top of the map?</p>
+<p>That is how a model is trained: <strong>measure which way the error falls fastest, take a step that way, and repeat</strong>. The learning rate decides whether that crawls, converges or blows up.</p>
+<p>A neural network is trained exactly like this, with millions or billions of parameters instead of two. The only hard part is computing the gradient for all of them at once, which a method called backpropagation does — the subject of the next topic in this series.</p>`
+		}
+	]
+};

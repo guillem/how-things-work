@@ -447,6 +447,15 @@ const explainers: Explainer[] = [
 		accent: '#d9480f',
 		steps: 8,
 		minutes: 15
+	},
+	{
+		slug: 'gradient-descent',
+		title: 'Gradient descent: how a model learns by going downhill',
+		summary:
+			'Drop a ball on an error landscape and watch it step downhill. Change the step size until it crawls, converges or flies off, add momentum and noise, and get it through ravines, plateaus and false valleys.',
+		accent: '#862e9c',
+		steps: 13,
+		minutes: 20
 	}
 ];
 
