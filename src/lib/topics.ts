@@ -483,6 +483,15 @@ const explainers: Explainer[] = [
 		accent: '#862e9c',
 		steps: 11,
 		minutes: 20
+	},
+	{
+		slug: 'carbon-cycle',
+		title: 'The carbon cycle',
+		summary:
+			'See the carbon in the air, plants, ocean, fossil fuels and rock drawn to scale, then burn fossil fuels, cut down forests and run the clock to find out where the extra carbon goes and how long it stays in the air.',
+		accent: '#0c8599',
+		steps: 12,
+		minutes: 18
 	}
 ];
 

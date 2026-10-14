@@ -1175,3 +1175,48 @@ kbd {
 	--emb-c10: #38d9a9;
 	--emb-c11: #748ffc;
 }
+
+/* carbon cycle: air, surface and deep ocean, plants, soils, permafrost, fossil fuels, rock,
+   human (fossil) and land-clearing flows, and the sky, sea and ground behind them */
+:root {
+	--cc-air: #1971c2;
+	--cc-air-fill: #a5d8ff;
+	--cc-ocean: #0c8599;
+	--cc-surface-fill: #66d9e8;
+	--cc-deep-fill: #1098ad;
+	--cc-plants: #2f9e44;
+	--cc-plants-fill: #8ce99a;
+	--cc-soil: #8d6748;
+	--cc-soil-fill: #d8c2a8;
+	--cc-permafrost-fill: #dee6ee;
+	--cc-fossil: #343a40;
+	--cc-fossil-fill: #868e96;
+	--cc-rock: #868e96;
+	--cc-rock-fill: #dcd7cf;
+	--cc-human: #e03131;
+	--cc-clearing: #e8590c;
+	--cc-sky: #f1f8ff;
+	--cc-sea: #e3fafc;
+	--cc-ground: #f4efe7;
+}
+:root[data-theme='dark'] {
+	--cc-air: #74c0fc;
+	--cc-air-fill: #1c4a73;
+	--cc-ocean: #3bc9db;
+	--cc-surface-fill: #1b6d7a;
+	--cc-deep-fill: #0e3f4a;
+	--cc-plants: #69db7c;
+	--cc-plants-fill: #2b5e35;
+	--cc-soil: #c9a37f;
+	--cc-soil-fill: #4e3b2a;
+	--cc-permafrost-fill: #3a434c;
+	--cc-fossil: #ced4da;
+	--cc-fossil-fill: #495057;
+	--cc-rock: #868e96;
+	--cc-rock-fill: #34302b;
+	--cc-human: #ff6b6b;
+	--cc-clearing: #ff922b;
+	--cc-sky: #0f1620;
+	--cc-sea: #0c1c22;
+	--cc-ground: #1c1914;
+}
