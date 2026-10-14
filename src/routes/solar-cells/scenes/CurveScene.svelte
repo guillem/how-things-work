@@ -97,7 +97,7 @@
 	<Readout
 		id="ceil-label"
 		order={5}
-		label="Dashed: spectrum losses only"
+		label={records ? undefined : 'Dashed: spectrum losses only'}
 		value="peak {fmt(Math.max(...ceilPts.map((p) => p.e)))}"
 	>
 		<T x={sg(1.95)} y={se(36)} text="spectrum losses only (no voltage loss)" size={12} muted />
@@ -145,13 +145,7 @@
 				stroke="var(--stage-bg)"
 				stroke-width="1.5"
 			/>
-			<Readout
-				id="rec-{r.key}"
-				order={10}
-				label="Record {r.name} ({r.year})"
-				value={fmt(r.e)}
-				color="var(--sc-record)"
-			>
+			<Readout id="rec-{r.key}">
 				<T
 					x={sg(r.g) + (r.key === 'si' ? -10 : 10)}
 					y={se(r.e) + 22}
@@ -163,6 +157,34 @@
 				/>
 			</Readout>
 		{/each}
+		<!-- phone panel: the records in three rows -->
+		<Readout
+			id="sum-gap"
+			order={10}
+			label="Records at their gaps"
+			value={onGap.map((r) => `${r.name} ${fmt(r.e)}`).join(' · ')}
+			color="var(--sc-record)"
+		/>
+		<Readout
+			id="sum-single"
+			order={11}
+			label="Other single junctions"
+			value={column
+				.filter((r) => !r.tandem)
+				.map((r) => `${r.name} ${fmt(r.e)}`)
+				.join(' · ')}
+			color="var(--sc-record)"
+		/>
+		<Readout
+			id="sum-tandem"
+			order={12}
+			label="Several junctions"
+			value={column
+				.filter((r) => r.tandem)
+				.map((r) => `${r.name} ${fmt(r.e)}`)
+				.join(' · ')}
+			color="var(--sc-tandem)"
+		/>
 		<!-- the column: records whose gap is not one number -->
 		<line x1={CX} x2={CX} y1={Y0} y2={Y1} stroke="var(--stage-line)" />
 		<Readout id="col-title">
@@ -195,13 +217,7 @@
 				fill={r.tandem ? 'var(--sc-tandem)' : 'var(--sc-record)'}
 			/>
 			<line x1={CX + 5} x2={CX + 14} y1={se(r.e)} y2={columnYs[k] - 4} stroke="var(--stage-line)" />
-			<Readout
-				id="col-{r.key}"
-				order={11 + k}
-				label={r.name}
-				value={fmt(r.e)}
-				color={r.tandem ? 'var(--sc-tandem)' : 'var(--sc-record)'}
-			>
+			<Readout id="col-{r.key}">
 				<T
 					x={CX + 16}
 					y={columnYs[k]}
@@ -216,7 +232,9 @@
 			<T x={CX - 12} y={Y1 + 34} text="records: NLR (formerly NREL) chart, 2026" size={11} muted />
 		</Readout>
 	{:else}
-		<Card x={640} y={110} w={300} h={118} />
+		<Readout id="card">
+			<Card x={640} y={110} w={300} h={118} />
+		</Readout>
 		<Readout id="g" order={1} label="Band gap" value="{gap.toFixed(2)} eV">
 			<T x={656} y={140} text="band gap {gap.toFixed(2)} eV" size={14} weight={700} />
 		</Readout>

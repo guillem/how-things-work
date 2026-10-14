@@ -88,6 +88,16 @@
 	const hx = $derived(sv(v));
 	const hy = $derived(sj(mA(j)));
 	const RX = 640;
+	const sup = (n: number) =>
+		String(n)
+			.split('')
+			.map((ch) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(ch)] ?? (ch === '-' ? '⁻' : ch))
+			.join('');
+	const glowText = $derived.by(() => {
+		if (givenBack >= 0.001) return `${(givenBack * 100).toFixed(1)}%`;
+		const e = Math.floor(Math.log10(givenBack));
+		return `${(givenBack / 10 ** e).toFixed(1)} × 10${sup(e)}`;
+	});
 </script>
 
 <g>
@@ -169,7 +179,12 @@
 
 	<!-- Jsc and Voc on the axes -->
 	<circle cx={sv(0)} cy={sj(mA(c.jsc))} r="4" fill="var(--sc-curve)" />
-	<Readout id="jsc" order={3} label="Short-circuit current" value="{fmtJ(mA(c.jsc))} mA/cm²">
+	<Readout
+		id="jsc"
+		order={3}
+		label={phase === 'voc' ? undefined : 'Short-circuit current'}
+		value="{fmtJ(mA(c.jsc))} mA/cm²"
+	>
 		<T
 			x={sv(0) + 10}
 			y={sj(mA(c.jsc)) - 10}
@@ -228,12 +243,14 @@
 	/>
 
 	<!-- readouts -->
-	<Card
-		x={RX}
-		y={60}
-		w={300}
-		h={phase === 'voc' ? 290 : phase === 'mpp' ? 196 : phase === 'temp' ? 196 : 120}
-	/>
+	<Readout id="card">
+		<Card
+			x={RX}
+			y={60}
+			w={300}
+			h={phase === 'voc' ? 290 : phase === 'mpp' ? 196 : phase === 'temp' ? 196 : 120}
+		/>
+	</Readout>
 	<Readout id="title" order={0}>
 		<T
 			x={RX + 16}
@@ -349,16 +366,14 @@
 			fill="var(--sc-glow)"
 			opacity="0.8"
 		/>
-		<Readout id="in" order={5} label="Photons absorbed" value="100%">
+		<Readout id="in">
 			<T x={RX + 16} y={172} text="photons absorbed from the sunlight" size={12} muted />
 		</Readout>
 		<Readout
 			id="out"
 			order={6}
 			label="Photons given back as glow"
-			value="{givenBack < 0.001
-				? givenBack.toExponential(1)
-				: (givenBack * 100).toFixed(1) + '%'} of those absorbed"
+			value="{glowText} of those absorbed"
 			color="var(--sc-glow)"
 		>
 			<T x={RX + 16} y={228} text="photons the cell gives back (glow)" size={12} muted />
@@ -366,19 +381,14 @@
 				x={RX + 16}
 				y={276}
 				text={givenBack < 0.001
-					? `${(givenBack * 100).toExponential(1)}%: next to nothing`
+					? `${glowText}: next to nothing`
 					: `${(givenBack * 100).toFixed(1)}% of those absorbed`}
 				size={14}
 				weight={700}
 				color="var(--sc-glow)"
 			/>
 		</Readout>
-		<Readout
-			id="gapshort"
-			order={7}
-			label="Voltage short of the gap"
-			value="{((GAP - c.voc) * 1000).toFixed(0)} mV"
-		>
+		<Readout id="gapshort">
 			<T
 				x={RX + 16}
 				y={310}

@@ -480,7 +480,9 @@
 	{/if}
 
 	<!-- readouts -->
-	<Card x={640} y={20} w={300} h={sweep ? 112 : 92} />
+	<Readout id="card">
+		<Card x={640} y={20} w={300} h={sweep ? 112 : 92} />
+	</Readout>
 	<Readout
 		id="photon"
 		order={1}

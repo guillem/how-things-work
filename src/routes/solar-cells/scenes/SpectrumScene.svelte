@@ -224,7 +224,7 @@
 			const yEnd = below ? Y1 - 6 : yLand;
 			const y = lerp(yStart, yEnd, u);
 			const fade = smoothstep(0, 0.12, u) * (1 - smoothstep(below ? 0.82 : 0.86, 1, u));
-			const color = nm >= 400 && nm <= 700 ? wavelengthToColor(nm) : 'var(--stage-ink-muted)';
+			const color = nm >= 410 && nm <= 680 ? wavelengthToColor(nm) : 'var(--stage-ink-muted)';
 			return { k, x: sx(e), y, fade, color };
 		})
 	);
@@ -293,7 +293,7 @@
 			<T x={sx(0.8)} y={sy(80)} text="infrared" size={13} anchor="middle" muted />
 			<T
 				x={sx((VIS_LO + VIS_HI) / 2)}
-				y={sy(560)}
+				y={sy(150)}
 				text="visible"
 				size={13}
 				anchor="middle"
@@ -362,7 +362,7 @@
 				text="absorbed →"
 				size={12}
 				muted
-				opacity={gap < 3.4 ? 1 : 0}
+				opacity={gap < 2.2 ? 1 : 0}
 			/>
 		</Readout>
 		{#each materials as m (m.id)}
@@ -412,7 +412,7 @@
 			</Readout>
 		{/each}
 		{#if limit}
-			<Readout id="eff" order={1.5} label="Ideal cell’s efficiency" value={pct(c.efficiency)}>
+			<Readout id="eff">
 				<T
 					x={X1 - 4}
 					y={Y0 + 40}
@@ -431,12 +431,7 @@
 				/>
 			</Readout>
 		{:else}
-			<Readout
-				id="ceil"
-				order={1.5}
-				label="Ceiling from the spectrum alone"
-				value={pct(s.voltage + s.output)}
-			>
+			<Readout id="ceil">
 				<T
 					x={X1 - 4}
 					y={Y0 + 40}
