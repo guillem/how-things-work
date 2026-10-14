@@ -166,7 +166,7 @@ A topic is done when:
 **Space**
 - [x] sun-earth-moon
 - [x] orbits-kepler
-- [ ] rockets
+- [x] rockets
 - [ ] stars
 - [x] black-holes
 - [ ] gravitational-waves
