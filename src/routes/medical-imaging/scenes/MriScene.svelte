@@ -333,7 +333,7 @@
 				x={gx(0)}
 				y={304}
 				muted
-				text="three tubes of water; spins shown relative to the one in the middle"
+				text="three tubes of water; spins shown relative to the centre of the scanner"
 			/>
 		</Readout>
 		<!-- position axis and profile -->
