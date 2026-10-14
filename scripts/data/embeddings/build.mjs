@@ -10,8 +10,8 @@
  *    reads the zip's central directory (the last 64 KiB), then range-fetches the first FETCH bytes
  *    of that member's deflate stream and inflates it as far as it goes. Downloads are cached in the
  *    given directory (outside the repository).
- * 2. Vocabulary. The first N_FREQUENT words that are plain lower-case letters and not in STOP (the
- *    NLTK English stop-word list), plus the hand-picked EXTRA words (everyday words the page uses:
+ * 2. Vocabulary. The first N_FREQUENT words of two or more lower-case letters that are not in STOP
+ *    (the NLTK English stop-word list, without its contraction fragments), plus the hand-picked EXTRA words (everyday words the page uses:
  *    animals, food, family, capitals…), all of which must be among the fetched rows.
  * 3. Vectors. Each vector is scaled to unit length, then quantised to int8 by its largest
  *    component (q = round(127 · u / max|u|)). The page only uses directions (cosines), so the
@@ -38,7 +38,9 @@ const K = 12;
 const SEED = 1;
 const OUT = path.resolve(import.meta.dirname, '../../../src/routes/embeddings/glove-data.ts');
 
-// NLTK's English stop-word list (nltk.corpus.stopwords.words('english')), letters only.
+// NLTK's English stop-word list (nltk.corpus.stopwords.words('english')) without its contraction
+// fragments ("don", "won", "ll"…): GloVe's tokeniser splits "won't" as "wo" + "n't", so there
+// "won" is the verb. Single letters are left out by the length rule below.
 const STOP = new Set(
 	`i me my myself we our ours ourselves you your yours yourself yourselves he him his himself she
 her hers herself it its itself they them their theirs themselves what which who whom this that
@@ -46,8 +48,7 @@ these those am is are was were be been being have has had having do does did doi
 if or because as until while of at by for with about against between into through during before
 after above below to from up down in out on off over under again further then once here there when
 where why how all any both each few more most other some such no nor not only own same so than too
-very s t can will just don should now d ll m o re ve y ain aren couldn didn doesn hadn hasn haven
-isn ma mightn mustn needn shan shouldn wasn weren won wouldn`.split(/\s+/)
+very can will just should now`.split(/\s+/)
 );
 
 // Everyday words the page shows or the reader is likely to search for.
@@ -321,7 +322,7 @@ const chosen = new Set();
 for (const line of lines) {
 	if (chosen.size >= N_FREQUENT) break;
 	const w = line.slice(0, line.indexOf(' '));
-	if (/^[a-z]+$/.test(w) && !STOP.has(w)) chosen.add(w);
+	if (/^[a-z]{2,}$/.test(w) && !STOP.has(w)) chosen.add(w);
 }
 const extraAdded = EXTRA.filter((w) => !chosen.has(w));
 for (const w of EXTRA) chosen.add(w);
@@ -363,7 +364,7 @@ const out = `/**
  * Licence: Open Data Commons Public Domain Dedication and License (PDDL) 1.0.
  *
  * Subset: the ${N_FREQUENT} most frequent words made only of lower-case letters that are not on
- * NLTK's English stop-word list, plus ${extraAdded.length} hand-picked everyday words (listed in the
+ * NLTK's English stop-word list (without its contraction fragments such as "won"), plus ${extraAdded.length} hand-picked everyday words (listed in the
  * script), in GloVe's frequency order.
  * VECTORS: ${N} × ${D} int8, row by row, base64. Each row is the word's vector scaled to unit
  *   length, then quantised by its largest component (round(127 · u / max|u|)); only directions are
