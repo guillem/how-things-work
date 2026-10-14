@@ -344,7 +344,6 @@ const COMMON: Record<string, string> = {
 	'1|COOH@1': 'formic acid',
 	'2|COOH@1': 'acetic acid',
 	'4|COOH@1': 'butyric acid',
-	'2|OH@1': 'alcohol',
 	'1|OH@1': 'wood alcohol',
 	'3|OH@2': 'isopropyl alcohol',
 	'1|Cl@1': 'methyl chloride'
