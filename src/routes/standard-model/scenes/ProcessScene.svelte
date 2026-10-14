@@ -98,7 +98,7 @@
 		],
 		ee: [
 			S('e1a', 'e⁻', [X0, 140], [V1, 140], 'fermion', 0, 0, { dy: -12 }),
-			S('e1b', 'e⁻', [V1, 140], [X1, 80], 'fermion', 1, 2, { dy: -12 }),
+			S('e1b', 'e⁻', [V1, 140], [X1, 104], 'fermion', 1, 2, { dy: -12 }),
 			S('e2a', 'e⁻', [X0, 320], [V2, 320], 'fermion', 0, 1, { dy: 24 }),
 			S('e2b', 'e⁻', [V2, 320], [X1, 375], 'fermion', 2, 2, { dy: 24 }),
 			S('g', 'γ', [V1, 140], [V2, 320], 'photon', 1, 1, { dy: -10, dx: 30 })
@@ -357,17 +357,19 @@
 	</Readout>
 
 	<!-- ledger -->
-	<Card x={20} y={418} w={920} h={166} />
+	<Readout id="card-1"><Card x={20} y={418} w={920} h={166} /></Readout>
 	{#each [0, 1, 2] as k (k)}
-		<rect
-			x={COL(k) - 10}
-			y={424}
-			width={232}
-			height={154}
-			rx="8"
-			fill="var(--explainer-accent)"
-			opacity={k === moment ? 0.1 : 0}
-		/>
+		<Readout id="hl-{k}">
+			<rect
+				x={COL(k) - 10}
+				y={424}
+				width={232}
+				height={154}
+				rx="8"
+				fill="var(--explainer-accent)"
+				opacity={k === moment ? 0.1 : 0}
+			/></Readout
+		>
 		<Readout id="col-{k}">
 			<T
 				x={COL(k)}

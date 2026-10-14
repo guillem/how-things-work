@@ -304,7 +304,7 @@
 	</Readout>
 
 	<!-- card -->
-	<Card x={CX - 16} y={24} w={256} h={560} />
+	<Readout id="card-1"><Card x={CX - 16} y={24} w={256} h={560} /></Readout>
 	{#if view === 'browse'}
 		<Readout
 			id="p-name"

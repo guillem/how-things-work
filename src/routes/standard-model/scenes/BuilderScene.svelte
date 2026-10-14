@@ -359,7 +359,7 @@
 	/>
 
 	<!-- what it is -->
-	<Card x={CX - 16} y={24} w={336} h={560} />
+	<Readout id="card-1"><Card x={CX - 16} y={24} w={336} h={560} /></Readout>
 	<Readout id="name" order={1} label="Makes" value={nameText} note={kindText}>
 		<T x={CX} y={66} text={nameText} size={nameText.length > 18 ? 19 : 26} weight={700} />
 		<T

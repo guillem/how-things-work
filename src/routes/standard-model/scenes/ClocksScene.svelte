@@ -192,7 +192,7 @@
 	</Readout>
 
 	<!-- why weak is slow -->
-	<Card x={20} y={486} w={920} h={98} />
+	<Readout id="card-1"><Card x={20} y={486} w={920} h={98} /></Readout>
 	<Readout
 		id="w-mass"
 		order={10}

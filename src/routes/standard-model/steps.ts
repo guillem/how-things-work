@@ -53,7 +53,7 @@ const processControl: Control = {
 	type: 'select',
 	id: 'process',
 	label: 'Process',
-	default: 'beta',
+	default: 'muon',
 	options: [
 		{ value: 'beta', label: 'Neutron decay' },
 		{ value: 'muon', label: 'Muon decay' },
@@ -189,7 +189,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [strongView],
 			body: `
-<p>The quarks are held together by the <dfn data-def="The force between colour charges, carried by gluons. It binds quarks into hadrons, and (as a leftover effect) protons and neutrons into nuclei.">strong force</dfn>, carried by <dfn data-def="The carriers of the strong force: massless, spin 1, and (unlike photons) charged themselves: each carries a colour and an anticolour.">gluons</dfn>. Quarks swap gluons all the time, and each gluon carries a colour and an anticolour, so a swap <strong>changes the quarks' colours</strong>. Watch: the colours keep moving, but at every instant there is one red, one green and one blue.</p>
+<p>The quarks are held together by the <dfn data-def="The force between colour charges, carried by gluons. It binds quarks into hadrons, and (as a leftover effect) protons and neutrons into nuclei.">strong force</dfn>, carried by <dfn data-def="The carriers of the strong force: massless, spin 1, and (unlike photons) charged themselves: each carries a colour and an anticolour.">gluons</dfn>. Quarks swap gluons all the time, and each gluon carries a colour and an anticolour, so a swap <strong>changes the quarks' colours</strong>. Watch: the colours keep moving, but once the gluon has landed there is again one red, one green and one blue, and even mid-flight the total, counting the gluon's colour and anticolour, is one of each.</p>
 <p>Now pull a quark out. Unlike gravity or electric attraction, which weaken with distance, the pull between quarks <strong>does not weaken</strong>: the gluon field between them forms a narrow tube, and the energy stored in it grows with every bit of distance. Long before the quark is free, there is enough energy to make a new quark and antiquark (E = mc²). The tube snaps, and instead of a free quark you have two hadrons.</p>
 <p>This is <dfn data-def="The fact that quarks and gluons are never seen alone, only inside colourless hadrons.">confinement</dfn>: no one has ever seen a single quark.</p>`,
 			notes: `<p>The leftover of the strong force between the quarks of neighbouring protons and neutrons is what holds a nucleus together, against the electric repulsion of the protons (it is the nuclear force of the <a href="../radioactivity/">radioactivity explainer</a>).</p>

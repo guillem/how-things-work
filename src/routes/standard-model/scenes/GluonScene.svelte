@@ -65,7 +65,15 @@
 	}
 	const before = $derived(coloursAfter(k));
 	const arrived = $derived(local >= FLIGHT);
-	const now = $derived(arrived ? coloursAfter(k + 1) : before);
+	// The emitter takes the receiver's colour as it emits (it keeps the anticolour's partner);
+	// the receiver changes when the gluon lands. Counting the gluon, one of each throughout.
+	const now = $derived.by(() => {
+		if (arrived) return coloursAfter(k + 1);
+		const c = [...before];
+		const [a, b] = PAIRS[k % PAIRS.length];
+		c[a] = before[b];
+		return c;
+	});
 	const pair = $derived(PAIRS[k % PAIRS.length]);
 	const gluon = $derived.by(() => {
 		if (arrived) return null;
@@ -181,7 +189,7 @@
 				</g>
 			{/each}
 
-			<Card x={600} y={60} w={340} h={300} />
+			<Readout id="card-1"><Card x={600} y={60} w={340} h={300} /></Readout>
 			<T x={620} y={96} text="Colours right now" size={13} muted />
 			{#each now as c, i (i)}
 				<circle cx={636 + i * 34} cy={128} r="13" fill={chargeColour(c)} />
@@ -199,10 +207,24 @@
 				order={1}
 				label="Colours now"
 				value={nowText}
-				note="always one of each: colourless"
+				note="counting the gluon in flight, always one of each: colourless"
 			>
-				<T x={746} y={124} text="one of each:" size={13} weight={600} color="var(--sm-ok)" />
-				<T x={746} y={142} text="colourless ✓" size={13} weight={600} color="var(--sm-ok)" />
+				<T
+					x={746}
+					y={124}
+					text={gluon ? 'with the gluon:' : 'one of each:'}
+					size={13}
+					weight={600}
+					color="var(--sm-ok)"
+				/>
+				<T
+					x={746}
+					y={142}
+					text={gluon ? 'one of each ✓' : 'colourless ✓'}
+					size={13}
+					weight={600}
+					color="var(--sm-ok)"
+				/>
 			</Readout>
 			<T x={620} y={190} text="Gluon in flight" size={13} muted />
 			<Readout id="gluon" order={2} label="Gluon in flight" value={gluonText}>
@@ -341,7 +363,7 @@
 				{/each}
 			</Readout>
 
-			<Card x={620} y={110} w={316} h={300} />
+			<Readout id="card-2"><Card x={620} y={110} w={316} h={300} /></Readout>
 			<T x={GX - 12} y={140} text="Energy stored, against distance" size={13} weight={600} />
 			<line x1={GX} x2={GX + GW} y1={GY} y2={GY} stroke="var(--stage-line)" />
 			<line x1={GX} x2={GX} y1={GY} y2={GY - GH} stroke="var(--stage-line)" />

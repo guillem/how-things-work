@@ -250,7 +250,7 @@
 	</Readout>
 
 	<!-- the ledger -->
-	<Card x={20} y={180} w={588} h={232} />
+	<Readout id="card-1"><Card x={20} y={180} w={588} h={232} /></Readout>
 	<T x={40} y={206} text="Conserved?" size={12} muted />
 	<T x={250} y={206} text="before" size={12} muted anchor="middle" />
 	<T x={380} y={206} text="after" size={12} muted anchor="middle" />
@@ -292,7 +292,7 @@
 	</Readout>
 
 	<!-- verdict -->
-	<Card x={VX - 16} y={24} w={336} h={388} />
+	<Readout id="card-2"><Card x={VX - 16} y={24} w={336} h={388} /></Readout>
 	<Readout
 		id="verdict"
 		order={0}
