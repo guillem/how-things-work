@@ -110,7 +110,7 @@
 	<!-- the Sun -->
 	<circle cx={sunX} cy={sunY} r="6" fill="none" stroke="#ffd43b" stroke-width="1.6" />
 	<circle cx={sunX} cy={sunY} r="1.6" fill="#ffd43b" />
-	<Readout id="sun" order={4} label="The Sun" value="5,772 K, luminosity 1">
+	<Readout id="sun" order={4} label="The Sun" value="5,772 K, luminosity 1" opacity={1 - z}>
 		<SkyLabel
 			x={sunX + 12}
 			y={sunY - 10}
@@ -142,12 +142,7 @@
 				weight={700}
 				anchor="start"
 			/>
-			<Readout
-				id="sample"
-				order={5}
-				label="Sample"
-				value="1 in 15 of the stars within 50 pc (Gaia)"
-			>
+			<Readout id="sample">
 				<Txt
 					x={CARD.x + 20}
 					y={CARD.y + 60}
@@ -238,7 +233,14 @@
 					anchor="start"
 				/>
 			</Readout>
-			<Readout id="lum" order={2} label="Luminosity" value="{round2(star.L)} × the Sun">
+			<Readout
+				id="lum"
+				order={2}
+				label="Luminosity · surface · radius"
+				value="{round2(star.L)} × Sun · {(Math.round(star.T / 100) * 100).toLocaleString(
+					'en-US'
+				)} K · {round2(star.R)} × Sun"
+			>
 				<Txt
 					x={CARD.x + 20}
 					y={CARD.y + 66}
@@ -246,12 +248,7 @@
 					anchor="start"
 				/>
 			</Readout>
-			<Readout
-				id="temp"
-				order={3}
-				label="Surface"
-				value="{(Math.round(star.T / 100) * 100).toLocaleString('en-US')} K"
-			>
+			<Readout id="temp">
 				<Txt
 					x={CARD.x + 20}
 					y={CARD.y + 92}
@@ -259,7 +256,7 @@
 					anchor="start"
 				/>
 			</Readout>
-			<Readout id="radius" order={4} label="Radius" value="{round2(star.R)} × the Sun">
+			<Readout id="radius">
 				<Txt
 					x={CARD.x + 20}
 					y={CARD.y + 118}
@@ -273,7 +270,7 @@
 				cy={CARD.y + 210}
 				r={SUN_R}
 				fill={starColour(5772)}
-				stroke="var(--border)"
+				stroke="var(--stage-line)"
 			/>
 			<Txt x={CARD.x + 60} y={CARD.y + 210 + 30} text="the Sun" size={11} muted />
 			<circle
@@ -281,7 +278,7 @@
 				cy={CARD.y + 210}
 				r={Math.max(1.2, discR)}
 				fill={starColour(shown.T)}
-				stroke="var(--border)"
+				stroke="var(--stage-line)"
 			/>
 			<Txt
 				x={CARD.x + 200}
@@ -333,7 +330,7 @@
 				{/if}
 			{/each}
 			<line x1={ux} x2={ux} y1={by - 6} y2={by + 16} stroke="var(--stage-ink)" stroke-width="1.5" />
-			<Readout id="universe" order={6} label="Age of the universe" value="13.8 billion years">
+			<Readout id="universe">
 				<Txt x={ux} y={by + 50} text="age of the universe" size={11} />
 			</Readout>
 		</g>

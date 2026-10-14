@@ -99,7 +99,6 @@
 	const rCO = $derived(rOf(now.cCore));
 	const MS_CORE = RC * Math.sqrt(0.1);
 	const heShare = $derived(clamp(1 - now.xH / 0.715));
-	const coreLabel = $derived(now.xNe > 0.1 ? 'oxygen, neon, magnesium' : 'carbon, oxygen');
 	const strength = (lx: number) => smoothstep(-2, -0.7, lx - now.logL);
 	const glowH = $derived(burn.core === 'H' ? 1 : 0);
 	const hShell = $derived(now.heCore > 1e-3 && now.xH < 1e-3 ? strength(now.logLH) : 0);
@@ -221,7 +220,7 @@
 			opacity={showEnd}
 		/>
 	{/if}
-	<Readout id="mass-start" order={0} label="Starting mass" value="{mass} M☉">
+	<Readout id="mass-start">
 		<SkyLabel
 			x={BOX.x + 12}
 			y={BOX.y + 22}
@@ -233,10 +232,10 @@
 	</Readout>
 
 	<!-- stage and age -->
-	<Readout id="stage" order={1} label="Stage" value={stageName(tr, now)}>
+	<Readout id="stage" order={1} label="{mass} M☉ star" value="{stageName(tr, now)}, age {ageText}">
 		<Txt x={560} y={40} text={stageName(tr, now)} size={16} weight={700} anchor="start" />
 	</Readout>
-	<Readout id="age" order={2} label="Age" value={ageText}>
+	<Readout id="age">
 		<Txt x={560} y={62} text="age: {ageText}" anchor="start" muted size={12} />
 	</Readout>
 
@@ -317,20 +316,16 @@
 		stroke="var(--border)"
 		opacity="0.92"
 	/>
-	<Readout id="k-h" order={10} label="hydrogen and helium (the envelope)" color="var(--st-h)">
+	<Readout id="k-h">
 		<rect x={kx} y={98} width="12" height="12" rx="3" fill="var(--st-h)" stroke="var(--border)" />
 		<Txt x={kx + 18} y={109} text="hydrogen" anchor="start" size={12} />
 	</Readout>
-	<Readout id="k-he" order={11} label="helium" color="var(--st-he)">
+	<Readout id="k-he">
 		<rect x={kx} y={124} width="12" height="12" rx="3" fill="var(--st-he)" stroke="var(--border)" />
 		<Txt x={kx + 18} y={135} text="helium" anchor="start" size={12} />
 	</Readout>
-	<Readout
-		id="k-co"
-		order={12}
-		label={coreLabel}
-		color={now.xNe > 0.1 ? 'var(--st-ne)' : 'var(--st-co)'}
-	>
+	<Readout id="k-co">
+		0.1 ? 'var(--st-ne)' : 'var(--st-co)'} >
 		<rect
 			x={kx}
 			y={150}
@@ -409,20 +404,18 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	<Readout id="lum" order={4} label="Luminosity" value="{round2(now.L)} × the Sun">
+	<Readout
+		id="lum"
+		order={4}
+		label="Luminosity · surface · radius"
+		value="{round2(now.L)} × Sun · {round2(now.T)} K · {round2(now.R)} × Sun"
+	>
 		<Txt x={568} y={372} text="luminosity: {round2(now.L)} × Sun" anchor="start" size={12} />
 	</Readout>
-	<Readout id="temp" order={5} label="Surface" value="{round2(now.T)} K">
+	<Readout id="temp">
 		<Txt x={760} y={372} text="surface: {round2(now.T)} K" anchor="start" size={12} />
 	</Readout>
-	<Readout
-		id="radius"
-		order={6}
-		label="Radius"
-		value="{round2(now.R)} × the Sun{big
-			? ` (${(now.R / AU_IN_RSUN).toFixed(1)} × Earth's orbit)`
-			: ''}"
-	>
+	<Readout id="radius">
 		<Txt
 			x={568}
 			y={398}
@@ -433,7 +426,7 @@
 			size={12}
 		/>
 	</Readout>
-	<Readout id="mass" order={7} label="Mass now" value="{now.M.toFixed(now.M < 10 ? 2 : 1)} M☉">
+	<Readout id="mass">
 		<Txt
 			x={568}
 			y={424}
@@ -442,7 +435,7 @@
 			size={12}
 		/>
 	</Readout>
-	<Readout id="core-t" order={8} label="Centre" value="{round2(now.Tc / 1e6)} million K">
+	<Readout id="core-t">
 		<Txt x={760} y={424} text="centre: {round2(now.Tc / 1e6)} million K" anchor="start" size={12} />
 	</Readout>
 	{#if showEnd > 0.01}

@@ -181,14 +181,7 @@
 					opacity={ring}
 				/>
 				{#if phase === 'you'}
-					<Readout
-						id="body-{c.o.z}"
-						order={20 + c.o.z}
-						label="{c.o.symbol} in the body"
-						value="{(BODY_Z.get(c.o.z)! * 100).toLocaleString('en-US', {
-							maximumFractionDigits: 1
-						})}%"
-					>
+					<Readout id="body-{c.o.z}">
 						<Txt
 							x={c.x + CW / 2}
 							y={c.y + CH - 6}
@@ -268,8 +261,8 @@
 		<Readout
 			id="you"
 			order={1}
-			label="Your body"
-			value="the six elements that make up 99% of its mass"
+			label="Your body, by mass"
+			value="O 61%, C 23%, H 10%, N 2.6%, Ca 1.4%, P 1.1%"
 		>
 			<Txt x={X0 + 6.5 * CW} y={Y0 + 26} text="the elements of your body" size={14} weight={700} />
 			<Txt x={X0 + 6.5 * CW} y={Y0 + 48} text="share of its mass under each" size={12} muted />
@@ -330,13 +323,7 @@
 		{#each barParts as p (p.s)}
 			<rect x={p.x} y={BAR.y} width={p.w} height="22" fill={COLOUR[p.s]} />
 		{/each}
-		<Readout
-			id="bb"
-			order={2}
-			label="Big Bang (hydrogen)"
-			value="{Math.round(body.bigBang * 100)}%"
-			color="var(--st-bigbang)"
-		>
+		<Readout id="bb">
 			<Txt
 				x={BAR.x}
 				y={BAR.y + 42}
@@ -346,7 +333,14 @@
 				opacity={grow}
 			/>
 		</Readout>
-		<Readout id="instars" order={3} label="Made in stars" value="{Math.round(inStars * 100)}%">
+		<Readout
+			id="instars"
+			order={3}
+			label="Your body’s mass"
+			value="{Math.round(inStars * 100)}% made in stars, {Math.round(
+				body.bigBang * 100
+			)}% (hydrogen) in the Big Bang"
+		>
 			<Txt
 				x={BAR.x + BAR.w}
 				y={BAR.y + 42}

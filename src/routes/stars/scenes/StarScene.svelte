@@ -248,7 +248,7 @@
 				<Txt x={620} y={256} text="centre: 16 million K," anchor="start" />
 				<Txt x={620} y={276} text="160 g/cm³ (160 × water)" anchor="start" muted size={12} />
 			</Readout>
-			<Readout id="surface" order={5} label="Surface" value="{Math.round(sun.T / 10) * 10} K">
+			<Readout id="surface">
 				<Txt
 					x={620}
 					y={312}
@@ -256,7 +256,12 @@
 					anchor="start"
 				/>
 			</Readout>
-			<Readout id="light" order={6} label="Light given off" value="3.8 × 10²⁶ W">
+			<Readout
+				id="light"
+				order={6}
+				label="Surface · light given off"
+				value="{(Math.round(sun.T / 10) * 10).toLocaleString('en-US')} K · 3.8 × 10²⁶ W"
+			>
 				<Txt x={620} y={348} text="light given off: 3.8 × 10²⁶ W" anchor="start" />
 				<Txt
 					x={620}

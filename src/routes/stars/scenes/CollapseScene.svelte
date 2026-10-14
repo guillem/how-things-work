@@ -34,8 +34,10 @@
 	const ASH = [1, 2, 3, 3, 4, 5];
 	const time = $derived(reduced ? 12 : t);
 	const appear = (k: number) => smoothstep(TS[k], TS[k] + 1, time);
+	/** When each stage is highlighted in the list: as the layer of its ash appears. */
+	const STAGE_T = [2.2, 4.0, 5.8, 6.7, 7.6, 9.4];
 	const activeStage = $derived(
-		reduced ? -1 : time < 11 ? Math.min(5, Math.max(0, Math.floor((time - 0.4) / 1.8))) : -1
+		reduced || time >= 11 ? -1 : STAGE_T.reduce((a, s, k) => (time >= s ? k : a), -1)
 	);
 	const ironGrow = $derived(smoothstep(11, 14.5, time));
 	const collapse = $derived(smoothstep(15, 16.4, time));
@@ -217,7 +219,7 @@
 			fill={l.colour}
 			stroke="var(--border)"
 		/>
-		<Readout id="stage-{k}" order={10 + k} label="{s.fuel} → {s.products}" value={years(s.years)}>
+		<Readout id="stage-{k}">
 			<Txt
 				x={LIST.x + 24}
 				{y}
@@ -237,7 +239,12 @@
 			/>
 		</Readout>
 	{/each}
-	<Readout id="src">
+	<Readout
+		id="src"
+		order={4}
+		label="Burning stages (20 M☉)"
+		value={BURNING_STAGES.map((b) => `${b.fuel} ${years(b.years)}`).join(' · ')}
+	>
 		<Txt
 			x={LIST.x}
 			y={LIST.y + 286}
