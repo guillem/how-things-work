@@ -564,6 +564,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'vision-color',
+		title: 'How we see, and where colour comes from',
+		summary:
+			'Focus an eye on near and far things by changing the shape of its lens and fit glasses to a blurry eye. Then mix red, green and blue light to match a colour while three kinds of cone report what they see, and let some classic illusions fool you.',
+		accent: '#1c7ed6',
+		steps: 13,
+		minutes: 20
 	}
 ];
 

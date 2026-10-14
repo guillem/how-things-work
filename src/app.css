@@ -1606,3 +1606,47 @@ kbd {
 	--gh-ssp370: #ff6b6b;
 	--gh-ssp585: #e599f7;
 }
+
+/* vision and colour: the three cone types, the eye's tissues, rays, glasses and the object */
+:root {
+	--vc-l: #e8590c;
+	--vc-m: #2f9e44;
+	--vc-s: #4263eb;
+	--vc-sclera: #f8f1ea;
+	--vc-sclera-edge: #c9b8a6;
+	--vc-humour: #eef6fb;
+	--vc-cornea: #a5d8ff;
+	--vc-iris: #5c7cfa;
+	--vc-lens: #d0ebff;
+	--vc-lens-edge: #4dabf7;
+	--vc-retina: #e64980;
+	--vc-nerve: #f3d9c4;
+	--vc-ray: #f08c00;
+	--vc-ray-2: #7048e8;
+	--vc-object: #e8590c;
+	--vc-glasses: #868e96;
+	--vc-good: #2f9e44;
+	--vc-bad: #e03131;
+	--vc-water: #d0ebff;
+}
+:root[data-theme='dark'] {
+	--vc-l: #ff922b;
+	--vc-m: #69db7c;
+	--vc-s: #748ffc;
+	--vc-sclera: #2a2622;
+	--vc-sclera-edge: #6b5d50;
+	--vc-humour: #141c22;
+	--vc-cornea: #1f4f73;
+	--vc-iris: #748ffc;
+	--vc-lens: #1c3a52;
+	--vc-lens-edge: #74c0fc;
+	--vc-retina: #f06595;
+	--vc-nerve: #4a3a2e;
+	--vc-ray: #ffc078;
+	--vc-ray-2: #b197fc;
+	--vc-object: #ff922b;
+	--vc-glasses: #adb5bd;
+	--vc-good: #69db7c;
+	--vc-bad: #ff6b6b;
+	--vc-water: #11324d;
+}
