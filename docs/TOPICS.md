@@ -133,7 +133,7 @@ A topic is done when:
 
 **Biology**
 - [x] the-cell
-- [ ] dna-to-protein
+- [x] dna-to-protein
 - [ ] protein-folding
 - [x] photosynthesis
 - [x] respiration-atp
