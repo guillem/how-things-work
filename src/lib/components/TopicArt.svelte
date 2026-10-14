@@ -2109,6 +2109,44 @@
 			d="M100 14 l2.4 5 5.4 .6 -4 3.7 1.1 5.3 -4.9 -2.7 -4.9 2.7 1.1 -5.3 -4 -3.7 5.4 -.6 z"
 			fill={accent}
 		/>
+	{:else if slug === 'dna-to-protein'}
+		<!-- a DNA ladder, its RNA copy read three letters at a time, and the growing chain -->
+		{#each [0, 1, 2, 3, 4, 5, 6, 7, 8] as i (i)}
+			<line
+				x1={22 + i * 9}
+				x2={22 + i * 9}
+				y1="26"
+				y2="50"
+				stroke={['#e8590c', '#e0a100', '#2f9e44', '#1c7ed6'][(i * 7) % 4]}
+				stroke-width="3"
+				opacity="0.85"
+			/>
+		{/each}
+		<path d="M18 26 H98 M18 50 H98" stroke="currentColor" stroke-width="1.6" opacity="0.55" />
+		<path d="M58 56 V70" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
+		<path d="M18 80 H128" stroke={accent} stroke-width="2.5" />
+		{#each [0, 1, 2, 3] as c (c)}
+			<path
+				d="M{20 + c * 27} 86 v4 h23 v-4"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1"
+				opacity="0.5"
+			/>
+		{/each}
+		<ellipse cx="112" cy="72" rx="20" ry="13" fill="currentColor" opacity="0.12" />
+		<ellipse cx="112" cy="90" rx="17" ry="7" fill="currentColor" opacity="0.12" />
+		{#each [[118, 56], [130, 44], [144, 36], [160, 34], [175, 40], [184, 54]] as [x, y], i (i)}
+			<circle
+				cx={x}
+				cy={y}
+				r="6"
+				fill={['#f2c94c', '#6fcf97', '#6ea8fe', '#f28b82'][i % 4]}
+				stroke="currentColor"
+				stroke-width="0.8"
+				stroke-opacity="0.5"
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
