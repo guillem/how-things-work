@@ -807,6 +807,15 @@ const explainers: Explainer[] = [
 		accent: '#5c7cfa',
 		steps: 12,
 		minutes: 24
+	},
+	{
+		slug: 'flight',
+		title: 'Flight',
+		summary:
+			'Tilt a wing in a stream of air and watch the air turn downwards, the pressure drop above it and lift grow until the wing stalls. Then balance lift, weight, thrust and drag to fly a real Cessna 172 at any speed and height.',
+		accent: '#1c7ed6',
+		steps: 13,
+		minutes: 24
 	}
 ];
 

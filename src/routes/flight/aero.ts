@@ -364,35 +364,50 @@ export function trailingFlowAngle(f: Flow) {
 /**
  * The pressure field on a body-fitted grid (rings round the circle in the ζ plane,
  * mapped onto the section's plane): quadrilaterals in wind coordinates with the
- * pressure coefficient at their centre.
+ * pressure coefficient at their centre. With `band`, a cell whose corners fall in
+ * different bands is split in four, twice, so that the band edges come out smooth.
  */
 export function pressureCells(
 	f: Flow,
-	rings = 26,
-	spokes = 112,
+	band?: (cp: number) => number,
+	rings = 28,
+	spokes = 144,
 	rMax = 7
 ): { quad: Cx[]; cp: number }[] {
 	const { mx, my, a } = f.section;
 	const c: Cx = [-mx, my];
-	const radius = (i: number) => a * (rMax / a) ** ((i / rings) ** 1.6);
-	const node = (i: number, j: number) =>
-		toWind(f, joukowskiMap(add(c, mul([radius(i), 0], cis((2 * Math.PI * j) / spokes)))));
-	const grid: Cx[][] = [];
-	for (let i = 0; i <= rings; i++) {
-		const row: Cx[] = [];
-		for (let j = 0; j <= spokes; j++) row.push(node(i, j));
-		grid.push(row);
-	}
+	// u in 0..1 across the rings (crowded near the surface), v in 0..1 round the circle
+	const zeta = (u: number, v: number) =>
+		add(c, mul([a * (rMax / a) ** (u ** 1.25), 0], cis(2 * Math.PI * v)));
+	const point = (u: number, v: number) => toWind(f, joukowskiMap(zeta(u, v)));
+	const cpAt = (u: number, v: number) => pressureAtZeta(f, zeta(u, v));
 	const cells: { quad: Cx[]; cp: number }[] = [];
-	for (let i = 0; i < rings; i++)
-		for (let j = 0; j < spokes; j++) {
-			const rm = (radius(i) + radius(i + 1)) / 2;
-			const s = add(c, mul([rm, 0], cis((2 * Math.PI * (j + 0.5)) / spokes)));
-			cells.push({
-				quad: [grid[i][j], grid[i][j + 1], grid[i + 1][j + 1], grid[i + 1][j]],
-				cp: pressureAtZeta(f, s)
-			});
+	const cell = (u0: number, u1: number, v0: number, v1: number, depth: number) => {
+		if (band && depth < 2) {
+			const b = band(cpAt(u0, v0));
+			if (
+				band(cpAt(u1, v0)) !== b ||
+				band(cpAt(u1, v1)) !== b ||
+				band(cpAt(u0, v1)) !== b ||
+				band(cpAt((u0 + u1) / 2, (v0 + v1) / 2)) !== b
+			) {
+				const um = (u0 + u1) / 2;
+				const vm = (v0 + v1) / 2;
+				cell(u0, um, v0, vm, depth + 1);
+				cell(um, u1, v0, vm, depth + 1);
+				cell(u0, um, vm, v1, depth + 1);
+				cell(um, u1, vm, v1, depth + 1);
+				return;
+			}
 		}
+		cells.push({
+			quad: [point(u0, v0), point(u0, v1), point(u1, v1), point(u1, v0)],
+			cp: cpAt((u0 + u1) / 2, (v0 + v1) / 2)
+		});
+	};
+	for (let i = 0; i < rings; i++)
+		for (let j = 0; j < spokes; j++)
+			cell(i / rings, (i + 1) / rings, j / spokes, (j + 1) / spokes, 0);
 	return cells;
 }
 
