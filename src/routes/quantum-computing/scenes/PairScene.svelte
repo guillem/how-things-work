@@ -162,18 +162,22 @@
 	const b = $derived(bDeg * DEG);
 	const RATE = 25;
 	const MAX_PAIRS = 2000;
-	// pairs restart when the angle changes (start time remembered)
-	let lastB = -1;
-	let t0 = 0;
-	const elapsed = $derived.by(() => {
-		if (!isBell) return 0;
-		if (bDeg !== lastB) {
-			if (lastB >= 0) t0 = t;
-			lastB = bDeg;
-		}
-		if (t < t0) t0 = 0;
-		return Math.max(0, t - t0);
+	// pairs restart when the angle changes: the start time is set when B's axis turns (not
+	// on the first angle seen), and drops back to 0 when the clock is scrubbed before it
+	let t0 = $state(0);
+	let seenB: number | null = null;
+	$effect(() => {
+		const deg = bDeg;
+		if (!isBell) return;
+		untrack(() => {
+			if (seenB !== null && seenB !== deg) t0 = t;
+			seenB = deg;
+		});
 	});
+	$effect(() => {
+		if (t < untrack(() => t0)) t0 = 0;
+	});
+	const elapsed = $derived(isBell ? Math.max(0, t - t0) : 0);
 	const nPairs = $derived(reduced ? 1000 : Math.min(MAX_PAIRS, Math.floor(elapsed * RATE)));
 	const bellPairs = $derived.by(() => {
 		if (!isBell) return [] as number[];
