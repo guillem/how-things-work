@@ -1702,6 +1702,37 @@
 			<circle cx={x} cy={y} r="2.6" fill={accent} />
 		{/each}
 		<circle cx="110" cy="63" r="5.5" fill={accent} />
+	{:else if slug === 'embeddings'}
+		<!-- clumps of word dots, and two parallel arrows: man → woman, king → queen -->
+		{#each [[40, 34], [30, 52], [52, 46], [44, 60], [58, 30], [26, 40], [150, 84], [164, 92], [158, 76], [172, 80], [146, 98], [168, 102], [150, 28], [162, 22], [170, 36], [142, 40]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="3.2" fill={accent} opacity={0.35 + (i % 3) * 0.2} />
+		{/each}
+		<path
+			d="M60 100 L104 90 M76 62 L120 52"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.2"
+			stroke-linecap="round"
+			opacity="0.75"
+		/>
+		<path
+			d="M98 86 L106 89.6 L99.6 95 M114 48 L122 51.6 L115.6 57"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			opacity="0.75"
+		/>
+		<path
+			d="M60 100 L76 62 M104 90 L120 52"
+			stroke="currentColor"
+			stroke-dasharray="2 3"
+			opacity="0.4"
+		/>
+		{#each [[60, 100], [104, 90], [76, 62], [120, 52]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="4" fill={accent} />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
