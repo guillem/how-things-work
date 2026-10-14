@@ -102,7 +102,7 @@ export const CALLOUTS: Record<string, Callout[]> = {
 		{ id: 'sinusoid', text: 'blood capillary (sinusoid)', x: rbc.x + 30, y: rbc.y, dx: 40, dy: 40 }
 	],
 	hepatocyte: [
-		{ id: 'nucleus', text: 'nucleus', x: N.x - 2.8, y: N.y + 2.4, dx: -70, dy: 60, max: 50 },
+		{ id: 'nucleus', text: 'nucleus', x: N.x - 2.8, y: N.y + 2.4, dx: -70, dy: 60, max: 45 },
 		{
 			id: 'nucleolus',
 			text: 'nucleolus',
@@ -112,12 +112,12 @@ export const CALLOUTS: Record<string, Callout[]> = {
 			dy: -66,
 			max: 50
 		},
-		{ id: 'mitochondrion', text: 'mitochondrion', x: mito.x, y: mito.y, dx: -40, dy: -50, max: 50 },
-		{ id: 'roughER', text: 'rough ER', x: rer[0], y: rer[1], dx: 40, dy: 50, max: 50 },
-		{ id: 'golgi', text: 'Golgi', x: golgiMid[0], y: golgiMid[1], dx: -40, dy: -40, max: 50 },
-		{ id: 'lysosome', text: 'lysosome', x: lyso.x, y: lyso.y, dx: 40, dy: 40, max: 50 },
-		{ id: 'peroxisome', text: 'peroxisome', x: perox.x, y: perox.y, dx: -50, dy: 46, max: 50 },
-		{ id: 'plasmaMembrane', text: 'cell membrane', x: -10.5, y: -6.9, dx: -40, dy: -50, max: 50 },
+		{ id: 'mitochondrion', text: 'mitochondrion', x: mito.x, y: mito.y, dx: -40, dy: -50, max: 45 },
+		{ id: 'roughER', text: 'rough ER', x: rer[0], y: rer[1], dx: 40, dy: 50, max: 45 },
+		{ id: 'golgi', text: 'Golgi', x: golgiMid[0], y: golgiMid[1], dx: -40, dy: -40, max: 45 },
+		{ id: 'lysosome', text: 'lysosome', x: lyso.x, y: lyso.y, dx: 40, dy: 40, max: 45 },
+		{ id: 'peroxisome', text: 'peroxisome', x: perox.x, y: perox.y, dx: -50, dy: 46, max: 45 },
+		{ id: 'plasmaMembrane', text: 'cell membrane', x: -10.5, y: -6.9, dx: -40, dy: -50, max: 45 },
 		// the nucleus close up
 		{
 			id: 'nuclearEnvelope',
