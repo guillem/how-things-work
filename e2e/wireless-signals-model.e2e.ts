@@ -159,3 +159,25 @@ test('Wi-Fi data rates from the OFDM parameters match the 802.11n/ac tables', ()
 	expect(wifiRate(80, 8, 5 / 6, true)).toBeCloseTo(433.3, 1);
 	expect(wifiRate(160, 8, 5 / 6, true)).toBeCloseTo(866.7, 1);
 });
+
+test('the numbers the narrative quotes', () => {
+	// QPSK: 1 in 18 at 4 dB, 1 in 1,300 at 10 dB, under 1 in a million at 14 dB
+	expect(1 / berTheory('qpsk', 4)).toBeCloseTo(18, -0.5);
+	expect(1 / berTheory('qpsk', 10)).toBeCloseTo(1300, -2);
+	expect(berTheory('qpsk', 14)).toBeLessThan(1e-6);
+	// at 20 dB: QPSK error-free, 16-QAM ~3 per million, 64-QAM nearly 1 in 100
+	expect(berTheory('qpsk', 20)).toBeLessThan(1e-12);
+	expect(berTheory('qam16', 20) * 1e6).toBeCloseTo(3, 0);
+	expect(berTheory('qam64', 20)).toBeCloseTo(0.0085, 3);
+	// a wider channel at 1 km, 5 GHz: 96 → 337 Mbit/s, never above ~760 Mbit/s
+	const c = (w: number) => capacity(w * 1e6, dbToLin(link(1000, 5.18e9, w * 1e6).snrDb)) / 1e6;
+	expect(c(20)).toBeCloseTo(96, 0);
+	expect(c(160)).toBeCloseTo(337, 0);
+	expect(c(1e6)).toBeCloseTo(764, -1);
+	// Shannon: 6 bit/s/Hz from 18 dB; uncoded 64-QAM needs 26.6 dB for 10⁻⁶
+	expect(linToDb(2 ** 6 - 1)).toBeCloseTo(18, 1);
+	expect(snrForBer('qam64', 1e-6)).toBeCloseTo(26.6, 1);
+	// Wi-Fi 5's 390 Mbit/s in 80 MHz: 4.9 bit/s/Hz, allowed by Shannon from 14.5 dB
+	expect(wifiRate(80, 8, 5 / 6) / 80).toBeCloseTo(4.9, 1);
+	expect(linToDb(2 ** (wifiRate(80, 8, 5 / 6) / 80) - 1)).toBeCloseTo(14.5, 1);
+});
