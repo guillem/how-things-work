@@ -32,7 +32,7 @@
 				length: LENGTH,
 				dx: 0.05,
 				dt: 0.0025,
-				tEnd: Math.min(30, 1.5 + (1.25 * LENGTH * 10) / guess),
+				tEnd: Math.min(30, 0.8 + (1.2 * LENGTH * 10) / guess),
 				every: 0.02
 			})
 		)
@@ -43,7 +43,7 @@
 	// ---- playback --------------------------------------------------------------------
 	const LEAD = 0.5;
 	const PLAY = $derived(clamp(tEnd * 0.9, 5, 12)); // seconds of playback
-	const HOLD = 2;
+	const HOLD = 1;
 	const since = replayClock();
 	const elapsed = $derived(since(`${diameter}|${T}`, t));
 	/** Time when the spike is half way: shown under reduced motion. */

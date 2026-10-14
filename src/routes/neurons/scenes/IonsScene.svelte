@@ -292,7 +292,7 @@
 	<Readout
 		id="outside"
 		order={5}
-		label="Outside: sea water"
+		label={mode === 'nernst' ? 'Outside: sea water' : undefined}
 		value={ions.map((k) => `${ION_INFO[k].symbol} ${Math.round(conc[k].outside)}`).join(' · ') +
 			' mM'}
 	>
@@ -310,7 +310,7 @@
 	<Readout
 		id="inside"
 		order={6}
-		label="Inside: axoplasm"
+		label={mode === 'nernst' ? 'Inside: axoplasm' : undefined}
 		value={ions.map((k) => `${ION_INFO[k].symbol} ${conc[k].inside}`).join(' · ') + ' mM'}
 	>
 		<Label x={X0 + 12} y={IN.y1 - 26} anchor="start" text="inside: axoplasm" size={12} />
@@ -422,7 +422,7 @@
 			<Readout
 				id="p-{k}"
 				order={7 + i}
-				label="{ION_INFO[k].symbol} permeability"
+				label={k === 'Na' ? 'Na⁺ permeability (K⁺ = 1)' : undefined}
 				value={p < 0.1 ? p.toFixed(3) : p < 10 ? p.toFixed(2) : p.toFixed(0)}
 			>
 				<Label x={784} y={238 + i * 30} anchor="end" size={11} text={ION_INFO[k].symbol} />

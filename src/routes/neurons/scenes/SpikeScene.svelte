@@ -336,68 +336,45 @@
 		{/if}
 	{/each}
 
-	<!-- channels -->
-	{#each naX as x, i (x)}
-		{@const s = naState[i]}
-		<g opacity={s === 'closed' ? 0.55 : 1}>
+	<!-- channels: two halves, apart (a pore) when open, together when closed -->
+	{#each [...naX.map( (x, i) => ({ key: `na${i}`, x, na: true, s: naState[i] }) ), ...kX.map( (x, i) => ({ key: `k${i}`, x, na: false, s: kOpen < 0 ? 'blocked' : i < kOpen ? 'open' : 'closed' }) )] as c (c.key)}
+		{@const apart = c.s === 'open' || c.s === 'inactive' ? 5 : 0}
+		{@const col = c.na ? 'var(--nr-na)' : 'var(--nr-k)'}
+		<g opacity={c.s === 'open' || c.s === 'inactive' ? 1 : 0.6}>
 			<rect
-				x={x - 11}
+				x={c.x - 10 - apart}
 				y={MEM.y0 - 8}
-				width="8"
+				width="10"
 				height={MEM.y1 - MEM.y0 + 16}
-				rx="3"
-				fill="var(--nr-na)"
+				rx="4"
+				fill={col}
 			/>
 			<rect
-				x={x + 3}
+				x={c.x + apart}
 				y={MEM.y0 - 8}
-				width="8"
+				width="10"
 				height={MEM.y1 - MEM.y0 + 16}
-				rx="3"
-				fill="var(--nr-na)"
+				rx="4"
+				fill={col}
 			/>
-			{#if s === 'closed' || s === 'blocked'}
-				<rect x={x - 4} y={MEM.y0 + 10} width="8" height="6" fill="var(--nr-na)" />
-			{/if}
-			{#if s === 'inactive'}
+			{#if c.s === 'inactive'}
+				<!-- the inactivation gate plugs the pore from inside -->
 				<circle
-					cx={x}
-					cy={MEM.y1 + 4}
-					r="5"
-					fill="var(--nr-na)"
+					cx={c.x}
+					cy={MEM.y1 + 6}
+					r="6"
+					fill={col}
 					stroke="var(--stage-bg)"
-					stroke-width="1"
+					stroke-width="1.2"
 				/>
 			{/if}
-			{#if s === 'blocked'}
-				<circle cx={x} cy={MEM.y0 - 10} r="6" fill="var(--stage-ink-muted)" />
-			{/if}
-		</g>
-	{/each}
-	{#each kX as x, i (x)}
-		{@const open = i < kOpen}
-		<g opacity={open ? 1 : 0.55}>
-			<rect
-				x={x - 11}
-				y={MEM.y0 - 8}
-				width="8"
-				height={MEM.y1 - MEM.y0 + 16}
-				rx="3"
-				fill="var(--nr-k)"
-			/>
-			<rect
-				x={x + 3}
-				y={MEM.y0 - 8}
-				width="8"
-				height={MEM.y1 - MEM.y0 + 16}
-				rx="3"
-				fill="var(--nr-k)"
-			/>
-			{#if !open}
-				<rect x={x - 4} y={MEM.y1 - 16} width="8" height="6" fill="var(--nr-k)" />
-			{/if}
-			{#if kOpen < 0}
-				<circle cx={x} cy={MEM.y1 + 10} r="6" fill="var(--stage-ink-muted)" />
+			{#if c.s === 'blocked'}
+				<circle
+					cx={c.x}
+					cy={c.na ? MEM.y0 - 12 : MEM.y1 + 12}
+					r="7"
+					fill="var(--stage-ink-muted)"
+				/>
 			{/if}
 		</g>
 	{/each}
@@ -488,7 +465,7 @@
 		<Readout id="th">
 			<Label
 				x={CX1 - 4}
-				y={syV(REST + 6.6) + 15}
+				y={syV(REST + 6.6) - 6}
 				anchor="end"
 				size={11}
 				muted
@@ -510,7 +487,7 @@
 			<Readout id="e-{e.v}">
 				<Label
 					x={CX1 - 4}
-					y={syV(e.v) + (e.v > 0 ? -6 : 15)}
+					y={syV(e.v) + (e.v > 0 ? 15 : -6)}
 					anchor="end"
 					size={11}
 					color={e.c}
