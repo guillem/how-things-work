@@ -17,6 +17,7 @@ import {
 	eachTour,
 	encode,
 	fromStandard,
+	heldKarpSteps,
 	haltingTable,
 	machine,
 	nearestNeighbour,
@@ -118,11 +119,9 @@ test('the halting table: each machine run on each description, decided by watchi
 	t.codes.forEach((c, j) =>
 		expect(row('Even length')[j]).toBe(c.length % 2 === 0 ? 'halts' : 'loops')
 	);
-	// The diagonal has both answers, and the "opposite" machine D differs from every row.
+	// The diagonal has both answers, so the machine D that flips it is not a constant row.
 	const diag = t.cells.map((r, i) => r[i]);
 	expect(new Set(diag).size).toBe(2);
-	const d = diag.map((v) => (v === 'halts' ? 'loops' : 'halts'));
-	t.cells.forEach((r, i) => expect(r[i]).not.toBe(d[i]));
 	// A verdict the decider gives is the truth: halting ones really halt.
 	const add = machine(['right 0 -> 0 R right', 'right _ -> _ L x']);
 	expect(decide(add, encode(add))).toBe('halts');
@@ -154,5 +153,5 @@ test('at a billion tours a second: 20 cities take about 2 years, 25 about 10 mil
 	expect(bruteForceYears(20)).toBeCloseTo(1.93, 2);
 	expect(bruteForceYears(25) / 1e6).toBeCloseTo(9.8, 1);
 	// Held–Karp's n² 2ⁿ for 25 cities: about 21 seconds at the same rate.
-	expect((25 ** 2 * 2 ** 25) / 1e9).toBeCloseTo(21, 0);
+	expect(heldKarpSteps(25) / 1e9).toBeCloseTo(21, 0);
 });

@@ -573,6 +573,11 @@ export function nearestNeighbour(cs: City[]): number[] {
 	return tour;
 }
 
+/** Steps of the Held–Karp dynamic program for n cities, about n² 2ⁿ. */
+export function heldKarpSteps(n: number): number {
+	return n * n * 2 ** n;
+}
+
 /** Years to try every tour of n cities at `rate` tours per second. */
 export function bruteForceYears(n: number, rate = 1e9): number {
 	return tourCount(n) / rate / (365.25 * 24 * 3600);

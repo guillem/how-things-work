@@ -11,7 +11,7 @@
 	import { untrack } from 'svelte';
 	import { Axes, clamp, linePath, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { tourCount } from '../turing';
+	import { heldKarpSteps, tourCount } from '../turing';
 	import Txt from './Txt.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -39,7 +39,7 @@
 		{
 			id: 'hk',
 			label: 'n² 2ⁿ (Held–Karp)',
-			f: (x: number) => x * x * 2 ** x,
+			f: heldKarpSteps,
 			color: 'var(--tm-greedy)'
 		},
 		{ id: 'bf', label: '(n − 1)!/2 tours (brute force)', f: tourCount, color: 'var(--tm-loop)' }
@@ -50,7 +50,7 @@
 	const Y0 = 520;
 	const Y1 = 100;
 	const sx = scale([3, 30], [X0, X1]);
-	const sy = scale([0, 32], [Y0, Y1]);
+	const sy = scale([0, 33], [Y0, Y1]);
 	const lg = (v: number) => Math.log10(Math.max(1, v));
 	const xs = Array.from({ length: 28 }, (_, i) => i + 3);
 	const paths = SERIES.map((s) => ({
@@ -58,7 +58,7 @@
 		d: linePath(
 			xs,
 			(x) => x,
-			(x) => clamp(lg(s.f(x)), 0, 32),
+			(x) => clamp(lg(s.f(x)), 0, 33),
 			sx,
 			sy
 		)
@@ -91,7 +91,7 @@
 		s.replace(/\^(\d+)/, (_, d: string) => [...d].map((c) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(c)]).join(''));
 
 	const tours = $derived(tourCount(n));
-	const hk = $derived(n * n * 2 ** n);
+	const hk = $derived(heldKarpSteps(n));
 	const mx = $derived(sx(nT.current));
 	const fadeIn = $derived(reduced ? 1 : smoothstep(0, 0.4, t));
 	const draw = $derived(reduced ? 1 : smoothstep(0.2, 1.6, t));
@@ -107,7 +107,7 @@
 	<Txt
 		x={24}
 		y={68}
-		text="Each grid line is ten times the one below. Times at a billion operations a second."
+		text="Each grid line is 1,000 times the one below. Times at a billion operations a second."
 		size={13}
 		muted
 	/>
@@ -118,7 +118,7 @@
 		xLabel="cities, n"
 		yLabel="operations"
 		xTicks={[5, 10, 15, 20, 25, 30]}
-		yTicks={[0, 4, 8, 12, 16, 20, 24, 28, 32]}
+		yTicks={[0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33]}
 		yFormat={(v) => sup(`10^${v}`)}
 	/>
 	{#each LINES as l (l.label)}
@@ -142,7 +142,7 @@
 	{#each SERIES as s (s.id)}
 		<circle
 			cx={mx}
-			cy={sy(clamp(lg(s.f(nT.current)), 0, 32))}
+			cy={sy(clamp(lg(s.f(nT.current)), 0, 33))}
 			r="5"
 			fill={s.color}
 			stroke="var(--stage-bg)"
@@ -221,7 +221,7 @@
 	</Readout>
 	<Readout id="g-note">
 		<Txt x={636} y={448} text="A computer 1,000× faster lifts the time lines" size={12} muted />
-		<Txt x={636} y={466} text="by three grid lines. Near 20 cities, brute force" size={12} muted />
+		<Txt x={636} y={466} text="by one grid line. Near 20 cities, brute force" size={12} muted />
 		<Txt x={636} y={484} text="then gets only about two more cities." size={12} muted />
 	</Readout>
 </g>

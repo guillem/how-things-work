@@ -353,8 +353,8 @@ export const spec: ExplainerSpec = {
 			duration: 40,
 			controls: [growthN],
 			body: `
-<p>The chart puts the number of tours, (<i>n</i> − 1)!/2, next to the growth you met in <a href="../sorting/#growth">sorting</a>, <i>n</i>² and <i>n</i> log₂ <i>n</i>, and Held–Karp’s <i>n</i>² 2<sup><i>n</i></sup>, on a scale where each line is ten times the one below.</p>
-<p>At a billion tours a second, 20 cities take about <strong>2 years</strong> of brute force; 25 take about <strong>10 million years</strong>. Held–Karp does 25 cities in about 20 seconds, but doubles its work with every city added. A faster computer only moves the wall a few cities along.</p>
+<p>The chart puts the number of tours, (<i>n</i> − 1)!/2, next to the growth you met in <a href="../sorting/#growth">sorting</a>, <i>n</i>² and <i>n</i> log₂ <i>n</i>, and Held–Karp’s <i>n</i>² 2<sup><i>n</i></sup>, on a scale where each grid line is a thousand times the one below.</p>
+<p>At a billion tours a second, 20 cities take about <strong>2 years</strong> of brute force; 25 take about <strong>10 million years</strong>. Held–Karp does 25 cities in about 21 seconds, but doubles its work with every city added. A faster computer only moves the wall a few cities along.</p>
 <p>Nobody knows a method that solves every instance in polynomial time, nor has anyone proved that none exists: that is the P versus NP question, open since 1971. So there are three kinds of problem: those solved quickly, those solvable only (as far as anyone knows) by searches that explode, and those, like halting, that <strong>no program can solve at all</strong>. And all of it is measured on a machine as simple as a tape and a head.</p>`,
 			notes: `<p>P is the class of yes/no problems solvable in polynomial time; NP those whose “yes” answers can be checked in polynomial time (“is there a tour shorter than <i>L</i>?” — given a tour, adding up its length is quick). The decision version of the travelling salesman problem is NP-complete (Karp, 1972): a polynomial-time method for it would give one for every problem in NP. Stephen Cook posed the question in 1971.</p>`
 		}
