@@ -191,6 +191,8 @@ export interface Landscape {
 	best: number;
 	/** The lowest-energy shapes, as turn strings. */
 	bestFolds: string[];
+	/** One shape at each energy, picked at random (seeded), as turn strings, by energy. */
+	examples: Map<number, string>;
 }
 
 /** Every shape of the chain, sorted by energy: the model's whole energy landscape. */
@@ -200,6 +202,8 @@ export function landscape(seq: string): Landscape {
 	const count = new Map<number, number>();
 	let best = 0;
 	let bestWalks: Int8Array[] = [];
+	const exampleWalks = new Map<number, Int8Array>();
+	const pick = rng(7);
 	let shapes = 0;
 	const at = new Map<number, number>();
 	eachShape(n - 1, (w) => {
@@ -216,6 +220,8 @@ export function landscape(seq: string): Landscape {
 			}
 		}
 		count.set(e, (count.get(e) ?? 0) + 1);
+		// reservoir sampling: each shape at this energy is equally likely to be the example
+		if (pick() * (count.get(e) ?? 1) < 1) exampleWalks.set(e, w.slice());
 		if (e < best) {
 			best = e;
 			bestWalks = [];
@@ -224,12 +230,14 @@ export function landscape(seq: string): Landscape {
 	});
 	const byEnergy = [];
 	for (let e = 0; e >= best; e--) byEnergy.push({ energy: e, shapes: count.get(e) ?? 0 });
-	const bestFolds = bestWalks.map((w) => {
+	const turnsOf = (w: Int8Array) => {
 		const fold: Fold = [];
 		for (let i = 0; i < n; i++) fold.push([w[2 * i], w[2 * i + 1]]);
 		return toTurns(fold);
-	});
-	return { shapes, byEnergy, best, bestFolds };
+	};
+	const bestFolds = bestWalks.map(turnsOf);
+	const examples = new Map([...exampleWalks].map(([e, w]) => [e, turnsOf(w)]));
+	return { shapes, byEnergy, best, bestFolds, examples };
 }
 
 // ---- Monte Carlo ------------------------------------------------------------------------
