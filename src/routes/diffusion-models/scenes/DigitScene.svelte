@@ -302,12 +302,7 @@
 		{#each stepRuns as r, i (r.n)}
 			<image href={url(r.cur.x)} x={44 + i * 180} y={130} width={152} height={152} class="dm-px" />
 			<rect x={43 + i * 180} y={129} width={154} height={154} fill="none" stroke="var(--border)" />
-			<Readout
-				id="s-{r.n}"
-				order={i + 1}
-				label="{r.n} {r.n === 1 ? 'step' : 'steps'}"
-				value={r.cur === r.last ? `reads as ${r.s.reads}` : '…'}
-			>
+			<Readout id="s-{r.n}">
 				<Label
 					x={120 + i * 180}
 					y={312}
@@ -325,6 +320,16 @@
 				/>
 			</Readout>
 		{/each}
+		<Readout
+			id="s-reads"
+			order={1}
+			label="Read as, with 1 · 5 · 20 · 100 · 1000 steps"
+			value={stepRuns.every((r) => r.cur === r.last)
+				? stepRuns.map((r) => r.s.reads).join(' · ')
+				: '…'}
+		>
+			<g></g>
+		</Readout>
 		<Readout id="s-note">
 			<Label
 				x={480}
@@ -355,12 +360,7 @@
 		{#each guideRuns as r, i (r.g)}
 			<image href={url(r.cur.x)} x={40 + i * 140} y={90} width={120} height={120} class="dm-px" />
 			<rect x={39 + i * 140} y={89} width={122} height={122} fill="none" stroke="var(--border)" />
-			<Readout
-				id="g-{r.g}"
-				order={i + 1}
-				label="s = {r.g}"
-				value={r.cur === r.last ? `reads as ${r.s.reads}` : '…'}
-			>
+			<Readout id="g-{r.g}">
 				<Label x={100 + i * 140} y={236} size={14} weight={600} text="s = {r.g}" />
 				<Label
 					x={100 + i * 140}
@@ -402,12 +402,7 @@
 				fill="var(--dm-signal)"
 				opacity="0.85"
 			/>
-			<Readout
-				id="g-bar-{c.guidance}"
-				order={10 + i}
-				label="Read right at s = {c.guidance}"
-				value={pct(c.right / c.of)}
-			>
+			<Readout id="g-bar-{c.guidance}">
 				<Label
 					x={100 + i * 140}
 					y={352 + 150 * (1 - c.right / c.of)}
@@ -418,6 +413,24 @@
 			</Readout>
 			<Label x={100 + i * 140} y={532} size={12} text="s = {c.guidance}" />
 		{/each}
+		<Readout
+			id="g-reads"
+			order={1}
+			label="Read as, at s = 0 · 1 · 3 · 7"
+			value={guideRuns.every((r) => r.cur === r.last)
+				? guideRuns.map((r) => r.s.reads).join(' · ')
+				: '…'}
+		>
+			<g></g>
+		</Readout>
+		<Readout
+			id="g-rate"
+			order={2}
+			label="Of 200, read as asked, at s = 0 · 1 · 3 · 7"
+			value={CHECK.map((c) => pct(c.right / c.of)).join(' · ')}
+		>
+			<g></g>
+		</Readout>
 		<Readout id="g-tnow">
 			<Label
 				x={620}

@@ -274,7 +274,7 @@ export const spec: ExplainerSpec = {
 		{
 			id: 'steps-digit',
 			chapter: 'generate',
-			title: 'Fewer steps, worse digits',
+			title: 'Fewer steps, more average digits',
 			scene: 'digit',
 			hints: { mode: 'steps' },
 			duration: 24,
