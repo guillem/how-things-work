@@ -546,6 +546,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'respiration-atp',
+		title: 'Respiration and ATP',
+		summary:
+			'Follow one glucose molecule through glycolysis, the citric acid cycle and the electron transport chain, watch the electrons pump protons and the protons spin ATP synthase, then take the oxygen away and see the chain back up.',
+		accent: '#d9480f',
+		steps: 14,
+		minutes: 22
 	}
 ];
 
