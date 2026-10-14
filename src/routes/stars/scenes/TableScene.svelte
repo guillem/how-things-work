@@ -8,7 +8,7 @@
 	 *   origins — the whole table, filled in order of atomic number over the first seconds; the
 	 *             `source` control picks out one source (the others turn grey) and counts the
 	 *             elements it made most of
-	 *   heavy   — elements up to iron dimmed; the s-process elements (Sr, Ba, Pb) and the
+	 *   heavy   — elements up to iron dimmed; the s-process elements (Sr, Ba) and the
 	 *             r-process ones (Eu, Pt, Au, U) ringed
 	 *   you     — the six elements making up 99% of the human body ringed with their shares of
 	 *             its mass, and a bar of the body's mass by source, growing in
@@ -54,7 +54,7 @@
 	};
 	const CELLS = origins.map((o) => ({ o, ...pos(o.z), main: mainSource(o.z) }));
 
-	const HEAVY_S = new Set([38, 56, 82]);
+	const HEAVY_S = new Set([38, 56]);
 	const HEAVY_R = new Set([63, 78, 79, 92]);
 	const BODY_Z = new Map(BODY.map((b) => [b.z, b.share]));
 
@@ -231,7 +231,7 @@
 			id="s"
 			order={1}
 			label="Slow neutron capture (s-process)"
-			value="in giant stars: strontium, barium, lead"
+			value="in giant stars: strontium, barium"
 			color="var(--st-lowmass)"
 		>
 			<Txt

@@ -215,3 +215,72 @@ test('about nine-tenths of the mass of a human body was made in stars; the tenth
 	expect(b.bigBang).toBeCloseTo(0.1, 2);
 	expect(b.massive).toBeGreaterThan(b.lowMass);
 });
+
+// ---- the numbers the narrative quotes, step by step ---------------------------------------------
+
+const within = (v: number, lo: number, hi: number) => {
+	expect(v).toBeGreaterThanOrEqual(lo);
+	expect(v).toBeLessThanOrEqual(hi);
+};
+
+test('main-sequence step: 6,400 L☉ at 10 M☉, a thousandth at 0.1 M☉ (2,900 K), 50,000 K at the top, 24 and 4 million years', () => {
+	within(zams(10).L, 6000, 6800);
+	within(zams(0.1).L, 0.0009, 0.0011);
+	within(zams(0.1).T, 2800, 3000);
+	within(zams(60).T, 47000, 52000);
+	within(mainSequenceLifetime(10) / 1e6, 22, 26);
+	within(mainSequenceLifetime(60) / 1e6, 3.5, 4.5);
+	// τ·L/M changes by about a factor of four from 0.5 to 60 M☉ ...
+	const v = (m: number) => (mainSequenceLifetime(m) * meanMainSequenceLuminosity(m)) / m;
+	within(v(60) / v(1.5), 3, 5);
+	// ... because massive stars burn a bigger share of their hydrogen: a third at 20 M☉, a seventh for the Sun.
+	const burnt = (m: number) =>
+		mainSequenceLifetime(m) / fuelLifetime(m, meanMainSequenceLuminosity(m), 1);
+	within(burnt(20), 0.28, 0.38);
+	within(burnt(1), 0.12, 0.17);
+});
+
+test('sun-ms step: born at two-thirds of today’s model luminosity, over twice it at the end; main sequence over 85% of the life', () => {
+	const zamsL = at(sun, STAGE.zams).L;
+	within(zamsL / sunNow.L, 0.6, 0.72);
+	expect(at(sun, STAGE.tams).L / sunNow.L).toBeGreaterThan(2);
+	const life = sun.age[sun.age.length - 1] - sun.age[0];
+	const ms = sun.age[STAGE.tams] - sun.age[0];
+	within(ms / life, 0.85, 0.9);
+	within((life - ms) / 1e9, 1.4, 1.6);
+});
+
+test('red-giant step: 1.4 billion years to the tip, at 170 R☉, 2,400 L☉, 3,100 K, 0.95 M☉', () => {
+	const tip = at(sun, STAGE.rgbTip);
+	within((tip.age - sun.age[STAGE.tams]) / 1e9, 1.3, 1.5);
+	within(tip.R, 160, 180);
+	within(tip.L, 2300, 2500);
+	within(tip.T, 3000, 3200);
+	within(tip.M, 0.94, 0.96);
+});
+
+test('helium step: core helium burning starts at 11 R☉ and 47 L☉ and lasts about 110 million years', () => {
+	const start = at(sun, STAGE.zachb);
+	within(start.R, 10, 12);
+	within(start.L, 44, 50);
+	within((sun.age[STAGE.tachb] - sun.age[STAGE.zachb]) / 1e6, 100, 120);
+});
+
+test('massive step: a 20 M☉ star starts at 36,000 K and 46,000 L☉, loses 7 M☉, and burns carbon at about 900 million K', () => {
+	const t = track(20);
+	const z0 = at(t, 0);
+	within(z0.T, 35000, 37000);
+	within(z0.L, 44000, 48000);
+	within(20 - t.M[t.M.length - 1], 6.5, 7.5);
+	let tc = 0;
+	for (let i = 0; i < t.age.length; i++) {
+		const m = at(t, i);
+		if (burning(m).core === 'C') tc = Math.max(tc, m.Tc);
+	}
+	within(tc / 1e6, 850, 1000);
+});
+
+test('run step: a 0.5 M☉ star is still on the main sequence at about seven times the age of the universe', () => {
+	const t = track(0.5);
+	within(t.age[t.age.length - 1] / 13.8e9, 6.5, 7.2);
+});
