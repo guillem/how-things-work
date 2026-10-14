@@ -187,3 +187,12 @@ test('at 100 million K the average nucleus has 1/35 of the barrier; 10²⁰ m⁻
 		expect(coast({ t, n: 1e20, tau: 1 }).outcome).toBe('cools');
 	}
 });
+
+test('a plasma started hotter than its burn point cools to it and keeps burning', () => {
+	const burn = burnTemperature(1e21, 0.3);
+	expect(burn).not.toBeNull();
+	const run = coast({ t: 100, n: 1e21, tau: 0.3 });
+	expect(run.final).toBeLessThan(100);
+	expect(run.outcome).toBe('ignites');
+	near(run.final, burn ?? 0, 0.1);
+});

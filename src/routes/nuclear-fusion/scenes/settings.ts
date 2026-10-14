@@ -40,9 +40,10 @@ export const pow10 = (e: number) => `10${sup(e)}`;
 /** A power density in W/m³ as readable text. */
 export function powerText(w: number): string {
 	const a = Math.abs(w);
-	if (a >= 1e6) return `${(w / 1e6).toPrecision(a >= 1e8 ? 3 : 2)} MW/m³`;
-	if (a >= 1e3) return `${(w / 1e3).toPrecision(2)} kW/m³`;
-	return `${w.toPrecision(2)} W/m³`;
+	const n = (v: number) => Number(v.toPrecision(2)).toLocaleString('en-US');
+	if (a >= 1e6) return `${n(w / 1e6)} MW/m³`;
+	if (a >= 1e3) return `${n(w / 1e3)} kW/m³`;
+	return `${n(w)} W/m³`;
 }
 
 /** A gain Q as text. */
@@ -51,5 +52,6 @@ export function qText(q: number): string {
 	if (q >= 100) return String(Math.round(q));
 	if (q >= 10) return q.toFixed(0);
 	if (q >= 1) return q.toFixed(1);
-	return q.toFixed(2);
+	if (q >= 0.01) return q.toFixed(2);
+	return sci(q, 1);
 }

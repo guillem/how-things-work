@@ -400,7 +400,12 @@ export function coast(p: Plasma, spans = 8, steps = 400): Run {
 		}
 	}
 	const final = samples[samples.length - 1].t;
-	const outcome = final > p.t * 1.02 ? 'ignites' : final < p.t * 0.98 ? 'cools' : 'steady';
+	// Burning: still heating up, stopped at the top of the range, or settled at the burn point
+	// (which a plasma started hotter than it cools down to).
+	const burn = burnTemperature(n, tau);
+	const settled = burn !== null && Math.abs(final - burn) < 0.1 * burn;
+	const outcome =
+		capped || final > p.t * 1.02 || settled ? 'ignites' : final < p.t * 0.98 ? 'cools' : 'steady';
 	return { samples, outcome, final, capped, duration };
 }
 
