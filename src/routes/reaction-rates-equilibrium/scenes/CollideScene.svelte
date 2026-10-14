@@ -15,8 +15,8 @@
 	 */
 	import { Label, hash, lerp, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Profile, { climbTo } from '../parts/Profile.svelte';
-	import { ATOM, atoms, circ, fmtPow } from '../look';
+	import Profile from '../parts/Profile.svelte';
+	import { ATOM, atoms, circ, climbTo, fmtPow } from '../look';
 	import { DH, EA_F, R, fractionAbove } from '../model';
 
 	let { step, t }: StageProps = $props();

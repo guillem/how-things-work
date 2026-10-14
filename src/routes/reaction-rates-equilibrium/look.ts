@@ -116,3 +116,20 @@ export function niceLapse(v: number): number {
 	for (const n of NICE) if (Math.abs(Math.log(n / v)) < Math.abs(Math.log(best / v))) best = n;
 	return best;
 }
+
+/**
+ * Energy (kJ/mol, reactants = 0) along the course of the reaction, u from 0
+ * (H₂ + I₂) to 1 (2 HI): flat, a smooth climb to the barrier Ea at u = 0.5, a
+ * smooth fall to ΔH, flat. A drawing of the two numbers, not a computed surface.
+ */
+export function profileEnergy(u: number, ea: number, dh: number): number {
+	if (u <= 0.2) return 0;
+	if (u <= 0.5) return (ea * (1 - Math.cos((Math.PI * (u - 0.2)) / 0.3))) / 2;
+	if (u <= 0.8) return dh + ((ea - dh) * (1 + Math.cos((Math.PI * (u - 0.5)) / 0.3))) / 2;
+	return dh;
+}
+/** Where on the climb (u in 0.2–0.5) the energy reaches e (0 ≤ e ≤ ea). */
+export function climbTo(e: number, ea: number): number {
+	const f = Math.min(1, Math.max(0, e / ea));
+	return 0.2 + (0.3 * Math.acos(1 - 2 * f)) / Math.PI;
+}
