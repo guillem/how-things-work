@@ -17,6 +17,8 @@ import {
 	TNT_TONNE,
 	amplitudeRatio,
 	bValue,
+	catalogueEnergy,
+	energyShare,
 	energy,
 	energyRatio,
 	magnitudeOf,
@@ -150,4 +152,10 @@ test('Gutenberg–Richter: each step up in magnitude is about ten times rarer', 
 	expect(perYearAtLeast(6) / perYearAtLeast(7)).toBeLessThan(12);
 	expect(bValue()).toBeGreaterThan(0.9);
 	expect(bValue()).toBeLessThan(1.1);
+	// The few biggest dominate the energy: 3% of the earthquakes (M ≥ 7) release 84% of it, and
+	// one magnitude 9 nearly as much as the whole decade.
+	expect(perYearAtLeast(7) * 10).toBe(137);
+	expect(energyShare(7)).toBeCloseTo(0.84, 2);
+	expect(energy(9) / catalogueEnergy()).toBeGreaterThan(0.8);
+	expect(energy(9) / catalogueEnergy()).toBeLessThan(1);
 });

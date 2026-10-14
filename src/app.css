@@ -1323,3 +1323,39 @@ kbd {
 .pt-deep {
 	color: var(--pt-deep);
 }
+
+/* earthquakes */
+:root {
+	--eq-p: #1971c2;
+	--eq-s: #d6336c;
+	--eq-inner-wave: #0c8599;
+	--eq-crust: #b08968;
+	--eq-mantle: #f3dcc0;
+	--eq-mantle-deep: #e9c49c;
+	--eq-outer: #f2b06b;
+	--eq-inner: #f5d36a;
+	--eq-shadow: #868e96;
+	--eq-station: #2b8a3e;
+	--eq-quake: #e8590c;
+	--eq-water: #a5d8ff;
+}
+:root[data-theme='dark'] {
+	--eq-p: #4dabf7;
+	--eq-s: #f783ac;
+	--eq-inner-wave: #3bc9db;
+	--eq-crust: #8a6a4d;
+	--eq-mantle: #3d2b1f;
+	--eq-mantle-deep: #4f3624;
+	--eq-outer: #7a4b1f;
+	--eq-inner: #8f7424;
+	--eq-shadow: #868e96;
+	--eq-station: #69db7c;
+	--eq-quake: #ff922b;
+	--eq-water: #1f4f7a;
+}
+.eq-p {
+	color: var(--eq-p);
+}
+.eq-s {
+	color: var(--eq-s);
+}

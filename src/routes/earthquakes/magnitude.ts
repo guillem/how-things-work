@@ -69,3 +69,12 @@ export function bValue(min = 5.5) {
 
 /** The largest earthquakes of the catalogue, biggest first. */
 export const largest = (n: number) => [...quakes].sort((a, b) => b.mag - a.mag).slice(0, n);
+
+/** Share of the catalogue's total seismic energy released by the earthquakes of magnitude ≥ m. */
+export function energyShare(m: number) {
+	const total = quakes.reduce((s, q) => s + energy(q.mag), 0);
+	return quakes.filter((q) => q.mag >= m - 1e-9).reduce((s, q) => s + energy(q.mag), 0) / total;
+}
+
+/** Total seismic energy of the catalogue's earthquakes, J. */
+export const catalogueEnergy = () => quakes.reduce((s, q) => s + energy(q.mag), 0);

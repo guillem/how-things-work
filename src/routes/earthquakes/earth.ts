@@ -443,3 +443,47 @@ export function pathXY(ray: Ray, side: 1 | -1 = 1, step = 60): [number, number, 
 	}
 	return out;
 }
+
+/** The ray parameter at which a P wave just grazes the core (larger p: it turns in the mantle). */
+export const grazingCore = (wave: Wave) => R_CMB / speed(wave, CMB_DEPTH);
+
+/**
+ * A fan of rays for drawing, in order of take-off angle from straight down, chosen so that they
+ * come back up evenly spaced round the surface (about every `spacing` degrees, with the first
+ * and last ray of each kind of path kept); S rays stopped at the core are kept every 3° of
+ * take-off angle. An even fan of take-off angles would bunch them near the earthquake.
+ */
+export function fan(wave: Wave, depth: number, model: EarthModel = 'ak135', spacing = 6): Ray[] {
+	const step = 0.05;
+	const all: { a: number; kind: RayKind; land: number }[] = [];
+	for (let a = step; a < 89.9; a += step) {
+		const r = rayAt(wave, a / DEG, depth, model, false);
+		if (r) all.push({ a, kind: r.kind, land: surfaceDistance(r.angle) });
+	}
+	const keep: number[] = [];
+	let last: (typeof all)[number] | null = null;
+	for (let i = 0; i < all.length; i++) {
+		const c = all[i];
+		const next = all[i + 1];
+		// Keep the first ray of each kind of path and the last one through the mantle (the
+		// grazing ray at the edge of the shadow), and otherwise every `spacing` degrees.
+		const edge =
+			!last ||
+			last.kind !== c.kind ||
+			((c.kind === 'P' || c.kind === 'S') && (!next || next.kind !== c.kind));
+		const far =
+			last &&
+			c.a - last.a >= 0.3 &&
+			(c.kind === 'blocked'
+				? c.a - last.a >= 3
+				: Math.abs(c.land - last.land) >=
+					(c.kind === 'P' || c.kind === 'S' ? spacing : spacing * 0.6));
+		if (edge || far) {
+			keep.push(c.a);
+			last = c;
+		}
+	}
+	return keep
+		.map((a) => rayAt(wave, a / DEG, depth, model, true))
+		.filter((r): r is Ray => r !== null);
+}

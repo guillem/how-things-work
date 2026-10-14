@@ -20,12 +20,11 @@ export const ORIGIN = {
 export interface Recording {
 	net: string;
 	sta: string;
+	loc: string;
 	name: string;
 	site: string;
 	lat: number;
 	lon: number;
-	/** Seconds after the origin when the P wave arrives, picked automatically (STA/LTA). */
-	pPick: number;
 	/** Seconds after the origin when the P wave arrives, picked automatically (STA/LTA). */
 	pPick: number;
 	/** Vertical ground motion, per second after the origin time: [min, max, min, max, …], ×1000 of
