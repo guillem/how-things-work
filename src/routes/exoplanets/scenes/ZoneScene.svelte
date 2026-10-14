@@ -262,8 +262,21 @@
 	<Readout id="year" order={4} label="Its year" value={duration(P)}>
 		<T x={454} y={516} text="year: {duration(P)}" size={12.5} anchor="end" muted />
 	</Readout>
-	<T x={32} y={546} text="In the zone, water could be liquid on a planet with" size={11.5} muted />
-	<T x={32} y={564} text="the right air. It doesn’t mean anyone lives there." size={11.5} muted />
+	<Readout
+		id="m-pitfall"
+		order={9}
+		label="Note"
+		value="In the zone, water could be liquid on a planet with the right air; it doesn’t mean anyone lives there."
+	>
+		<T
+			x={32}
+			y={546}
+			text="In the zone, water could be liquid on a planet with"
+			size={11.5}
+			muted
+		/>
+		<T x={32} y={564} text="the right air. It doesn’t mean anyone lives there." size={11.5} muted />
+	</Readout>
 
 	<!-- ---- the chart ---- -->
 	<rect

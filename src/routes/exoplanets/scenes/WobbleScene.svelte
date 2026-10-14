@@ -215,7 +215,7 @@
 		/>
 	{/if}
 	<Readout id="com-label">
-		<T x={BX + RSTAR + 8} y={BY + 4} text="centre of mass" size={11} muted />
+		<T x={BX} y={BY + RSTAR + 34} text="centre of mass" size={11} anchor="middle" muted />
 	</Readout>
 	<!-- the Earth, far below -->
 	<line
@@ -398,8 +398,10 @@
 		yLabel=""
 	/>
 	<line x1={PX0} x2={PX1} y1={sy(0)} y2={sy(0)} stroke="var(--stage-line)" />
-	<T x={PX0 + 8} y={PY0 + 4} text="↑ away from us ({yUnit})" size={11} muted />
-	<T x={PX0 + 8} y={PY1 - 6} text="↓ towards us" size={11} muted />
+	<Readout id="m-axes">
+		<T x={PX0 + 8} y={PY0 + 4} text="↑ away from us ({yUnit})" size={11} muted />
+		<T x={PX0 + 8} y={PY1 - 6} text="↓ towards us" size={11} muted />
+	</Readout>
 	{#if phase === 'doppler'}
 		{#each [0, 1, 2] as n (n)}
 			<line
@@ -412,13 +414,15 @@
 				opacity="0.8"
 			/>
 		{/each}
-		<T
-			x={sx(P) + 6}
-			y={PY0 + 12}
-			text="planet in front of the star"
-			size={11}
-			color="var(--ex-light)"
-		/>
+		<Readout id="m-front">
+			<T
+				x={sx(P) + 6}
+				y={PY0 + 12}
+				text="planet in front of the star"
+				size={11}
+				color="var(--ex-light)"
+			/>
+		</Readout>
 	{/if}
 	<path d={full} fill="none" stroke="var(--ex-rv)" stroke-width="1.5" opacity="0.25" />
 	<path d={drawn} fill="none" stroke="var(--ex-rv)" stroke-width="2.4" />
@@ -475,8 +479,15 @@
 				muted
 			/>
 		</Readout>
-		<T x={CX + 16} y={508} text="Sun, from Jupiter: 12.5 m/s" size={11.5} muted />
-		<T x={CX + 16} y={526} text="Sun, from the Earth: 9 cm/s" size={11.5} muted />
+		<Readout
+			id="m-sun"
+			order={9}
+			label="For scale"
+			value="the Sun moves 12.5 m/s from Jupiter, 9 cm/s from the Earth"
+		>
+			<T x={CX + 16} y={508} text="Sun, from Jupiter: 12.5 m/s" size={11.5} muted />
+			<T x={CX + 16} y={526} text="Sun, from the Earth: 9 cm/s" size={11.5} muted />
+		</Readout>
 	{:else if phase === 'doppler'}
 		<Readout
 			id="frac"
@@ -488,8 +499,10 @@
 			<T x={CX + CW - 16} y={452} text={sci(K / C)} size={13.5} weight={650} anchor="end" />
 			<T x={CX + CW - 16} y={472} text="= speed ÷ speed of light" size={12} anchor="end" muted />
 		</Readout>
-		<T x={CX + 16} y={508} text="Blue: coming towards us." size={11.5} color="var(--ex-blue)" />
-		<T x={CX + 16} y={526} text="Red: moving away." size={11.5} color="var(--ex-red)" />
+		<Readout id="m-colours">
+			<T x={CX + 16} y={508} text="Blue: coming towards us." size={11.5} color="var(--ex-blue)" />
+			<T x={CX + 16} y={526} text="Red: moving away." size={11.5} color="var(--ex-red)" />
+		</Readout>
 	{:else}
 		<Readout id="tilt" order={4} label="Tilt from edge-on" value="{fmtTilt(tiltDeg)}°">
 			<T x={CX + 16} y={452} text="Tilt from edge-on" size={12.5} muted />

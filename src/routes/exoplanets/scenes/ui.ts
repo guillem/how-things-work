@@ -43,7 +43,12 @@ export function dimming(frac: number): string {
 export function ticksWithDecimals(lo: number, hi: number, count = 4) {
 	const tk = ticks(lo, hi, count);
 	const stepV = tk.length > 1 ? tk[1] - tk[0] : Math.abs(hi - lo) || 1;
-	const decimals = Math.max(0, Math.min(6, -Math.floor(Math.log10(stepV) + 1e-9)));
+	let decimals = Math.max(0, -Math.floor(Math.log10(stepV) + 1e-9));
+	while (
+		decimals < 6 &&
+		Math.abs(stepV * 10 ** decimals - Math.round(stepV * 10 ** decimals)) > 1e-6
+	)
+		decimals++;
 	return { ticks: tk, decimals };
 }
 

@@ -352,8 +352,15 @@
 				anchor="end"
 			/>
 		</Readout>
-		<T x={CX + 16} y={512} text="Earth across the Sun: 0.0084%" size={11.5} muted />
-		<T x={CX + 16} y={530} text="Jupiter across the Sun: 1%" size={11.5} muted />
+		<Readout
+			id="m-ref"
+			order={9}
+			label="For scale"
+			value="Earth across the Sun: 0.0084%; Jupiter: 1%"
+		>
+			<T x={CX + 16} y={512} text="Earth across the Sun: 0.0084%" size={11.5} muted />
+			<T x={CX + 16} y={530} text="Jupiter across the Sun: 1%" size={11.5} muted />
+		</Readout>
 	{:else if phase === 'period'}
 		<Readout id="period" order={1} label="Gap between dips (period)" value={duration(P)}>
 			<T x={CX + 16} y={396} text="Gap between dips" size={12.5} muted />
@@ -398,8 +405,10 @@
 				anchor="end"
 			/>
 		</Readout>
-		<T x={CX + 16} y={512} text="Three orbits shown, whatever" size={11.5} muted />
-		<T x={CX + 16} y={530} text="the period: read the days below." size={11.5} muted />
+		<Readout id="m-three">
+			<T x={CX + 16} y={512} text="Three orbits shown, whatever" size={11.5} muted />
+			<T x={CX + 16} y={530} text="the period: read the days below." size={11.5} muted />
+		</Readout>
 	{:else}
 		<Readout id="tilt" order={1} label="Tilt from edge-on" value="{sig(90 - pl.incl, 2)}°">
 			<T x={CX + 16} y={396} text="Tilt from edge-on" size={12.5} muted />
@@ -462,6 +471,8 @@
 				anchor="end"
 			/>
 		</Readout>
-		<T x={CX + 16} y={534} text="(star’s radius ÷ orbit’s radius)" size={11.5} muted />
+		<Readout id="m-chance">
+			<T x={CX + 16} y={534} text="(star’s radius ÷ orbit’s radius)" size={11.5} muted />
+		</Readout>
 	{/if}
 </g>

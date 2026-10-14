@@ -267,8 +267,10 @@
 		xLabel="days"
 	/>
 	<line x1={LX0} x2={LX1} y1={vsy(0)} y2={vsy(0)} stroke="var(--stage-line)" />
-	<T x={LX0 + 8} y={VY0 + 4} text="↑ away (m/s)" size={11} muted />
-	<T x={LX0 + 8} y={VY1 - 6} text="↓ towards" size={11} muted />
+	<Readout id="m-axes">
+		<T x={LX0 + 8} y={VY0 + 4} text="↑ away (m/s)" size={11} muted />
+		<T x={LX0 + 8} y={VY1 - 6} text="↓ towards" size={11} muted />
+	</Readout>
 	<path d={vfull} fill="none" stroke="var(--ex-rv)" stroke-width="1.5" opacity="0.25" />
 	<path d={vdrawn} fill="none" stroke="var(--ex-rv)" stroke-width="2.4" />
 	{#if !reduced}
@@ -453,10 +455,12 @@
 	<T x={DX1} y={294} text="g/cm³ (water = 1)" size={10.5} anchor="end" muted />
 
 	{#if !mysteryStep}
-		<T x={CX + 16} y={330} text="Gas giants are light for their size;" size={12} />
-		<T x={CX + 16} y={348} text="rock and iron planets are dense." size={12} />
-		<T x={CX + 16} y={376} text="Tilt the orbit past a few degrees and" size={12} muted />
-		<T x={CX + 16} y={394} text="the dip, the size and the density go." size={12} muted />
+		<Readout id="m-note">
+			<T x={CX + 16} y={330} text="Gas giants are light for their size;" size={12} />
+			<T x={CX + 16} y={348} text="rock and iron planets are dense." size={12} />
+			<T x={CX + 16} y={376} text="Tilt the orbit past a few degrees and" size={12} muted />
+			<T x={CX + 16} y={394} text="the dip, the size and the density go." size={12} muted />
+		</Readout>
 	{:else if archive}
 		<Card x={CX} y={328} w={CW} h={256} opacity={revealed ? 1 : 0.6} />
 		{#if revealed}
