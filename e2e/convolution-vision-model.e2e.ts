@@ -10,6 +10,7 @@ import {
 	SIDE,
 	decodeBytes,
 	decodeWeights,
+	drawAsIs,
 	forward,
 	prepare,
 	type Stroke
@@ -139,4 +140,21 @@ test('the network reads simple drawn digits correctly', () => {
 	expect(forward(wt, prepare(ONE)!).digit).toBe(1);
 	expect(forward(wt, prepare(ZERO)!).digit).toBe(0);
 	expect(forward(wt, prepare(SEVEN)!).digit).toBe(7);
+});
+
+test('without the MNIST preparation, a small digit in a corner is misread', () => {
+	// the same small strokes, at the top left and at the bottom right of the pad
+	for (const [dx, dy] of [
+		[0.04, 0.04],
+		[0.6, 0.6]
+	])
+		for (const [digit, strokes] of [
+			[7, SEVEN],
+			[1, ONE],
+			[0, ZERO]
+		] as const) {
+			const small = moved(strokes, dx, dy, 0.3);
+			expect(forward(wt, prepare(small)!).digit).toBe(digit);
+			expect(forward(wt, drawAsIs(small)!).digit).not.toBe(digit);
+		}
 });

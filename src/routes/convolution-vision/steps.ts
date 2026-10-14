@@ -123,10 +123,10 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [digit],
 			body: `
-<p>To a computer a grey picture is a grid of numbers, one per <dfn data-def="Picture element: one cell of the grid that makes up a digital image, with one number for its brightness (three for colour).">pixel</dfn>. This one is a handwritten digit from <dfn data-def="A collection of 70 000 handwritten digits, 28 × 28 pixels each, gathered by the US National Institute of Standards and Technology and prepared by Yann LeCun, Corinna Cortes and Christopher Burges. The standard first test of image recognition.">MNIST</dfn>, the classic collection of 70 000 of them: 28 × 28 = 784 numbers, 0 for paper and 1 for ink. The magnifier shows the numbers under it.</p>
+<p>To a computer a grey picture is a grid of numbers, one per <dfn data-def="Picture element: one cell of the grid that makes up a digital image, with one number for its brightness (three for colour).">pixel</dfn>. This one is a handwritten digit from <dfn data-def="A collection of 70,000 handwritten digits, 28 × 28 pixels each, gathered by the US National Institute of Standards and Technology and prepared by Yann LeCun, Corinna Cortes and Christopher Burges. The standard first test of image recognition.">MNIST</dfn>, the classic collection of 70,000 of them: 28 × 28 = 784 numbers, 0 for paper and 1 for ink. The magnifier shows the numbers under it.</p>
 <p>Could a <a href="../neural-networks/#hidden">neural network</a> read it? Feed the 784 numbers to a layer of neurons, and each neuron has 784 weights, one per pixel. A neuron that learns to spot a stroke in the top-left corner knows nothing about the same stroke one pixel lower: it has to be learnt again at every position.</p>
 <p>A <dfn data-def="A neural network whose first layers apply small filters (convolutions) across the whole image, the same filter at every position.">convolutional network</dfn> starts from the opposite idea: one small detector, a few weights, used at every position of the picture. That operation is a convolution.</p>`,
-			notes: `<p>MNIST was built in the 1990s from forms filled in by American high-school students and Census Bureau employees: 60 000 digits for training and 10 000 for testing, each scaled to fit a 20 × 20 box and centred in the 28 × 28 image. Colour pictures are three such grids: red, green and blue.</p>`
+			notes: `<p>MNIST was built in the 1990s from forms filled in by American high-school students and Census Bureau employees: 60,000 digits for training and 10,000 for testing, each scaled to fit a 20 × 20 box and centred in the 28 × 28 image. Colour pictures are three such grids: red, green and blue.</p>`
 		},
 		{
 			id: 'slide',
@@ -172,7 +172,7 @@ export const spec: ExplainerSpec = {
 			controls: [shift, preset, digit],
 			body: `
 <p>Move the digit. The feature map moves with it, by exactly the same amount, and keeps its shape: the filter finds an edge wherever it is, because the <strong>same 9 weights</strong> are used at all 784 positions. This is called <dfn data-def="Using the same weights at every position of the image, so that a feature is detected wherever it appears.">weight sharing</dfn>.</p>
-<p>It is also why convolution is cheap. A layer of 784 neurons that each looked at all 784 pixels would need 784 × 784 = <strong>614 656 weights</strong> to produce a map like this, and would have to learn every edge at every place separately. The filter needs <strong>9</strong>.</p>
+<p>It is also why convolution is cheap. A layer of 784 neurons that each looked at all 784 pixels would need 784 × 784 = <strong>614,656 weights</strong> to produce a map like this, and would have to learn every edge at every place separately. The filter needs <strong>9</strong>.</p>
 <p>So a convolutional network learns small detectors, a few dozen weights each, and the convolution applies them across the whole picture.</p>`
 		},
 		// ------------------------------------------------------------------ network
@@ -185,9 +185,9 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [f1, digit],
 			body: `
-<p>Here is a real convolutional network, small enough to run in your browser. Its first layer has <strong>8 filters</strong> of 5 × 5 weights, plus a bias each. Nobody chose their weights: they started random and were trained on MNIST's 60 000 training digits with <a href="../neural-networks/#backward">backpropagation</a> and <a href="../neural-networks/#train">gradient descent</a>, the same way as any network. The error flows back through the convolutions too, and every weight of a filter collects the slopes from all the positions where it was used.</p>
+<p>Here is a real convolutional network, small enough to run in your browser. Its first layer has <strong>8 filters</strong> of 5 × 5 weights, plus a bias each. Nobody chose their weights: they started random and were trained on MNIST's 60,000 training digits with <a href="../neural-networks/#backward">backpropagation</a> and <a href="../neural-networks/#train">gradient descent</a>, the same way as any network. The error flows back through the convolutions too, and every weight of a filter collects the slopes from all the positions where it was used.</p>
 <p>Each filter is drawn with its weights, blue positive and orange negative, and next to it its feature map on the digit. Look at the filters: most are bands of blue beside bands of orange at some angle, and their maps light up along strokes that run that way, on one side of the stroke. Training has found edge detectors, much like Sobel's, at several orientations.</p>`,
-			notes: `<p>The maps are shown before the ReLU of the next step, on one colour scale for all 8, so a weak response looks weak. The network was trained for this page by a plain Node script (no machine-learning library): 4 passes through the 60 000 training digits, each shifted at random by up to 2 pixels.</p>`
+			notes: `<p>The maps are shown before the ReLU of the next step, on one colour scale for all 8, so a weak response looks weak. The network was trained for this page by a plain Node script (no machine-learning library): 4 passes through the 60,000 training digits, each shifted at random by up to 2 pixels.</p>`
 		},
 		{
 			id: 'pool',
@@ -212,7 +212,7 @@ export const spec: ExplainerSpec = {
 			controls: [f2, digit],
 			body: `
 <p>The second layer runs <strong>16 filters</strong> over those 8 maps. Each filter is 5 × 5 × 8 = 200 weights: it looks at all 8 edge maps at once, so it can respond to a particular <em>combination</em> of edges, such as a vertical stroke ending under a horizontal one.</p>
-<p>What does each one respond to? The strip shows, for the selected filter, the six patches of the 10 000 test digits that excite it most. Each patch is the 14 × 14 window of the picture that one unit of this layer sees, its <dfn data-def="The part of the input image that can affect one unit of a layer. It grows with every convolution and pooling layer.">receptive field</dfn>: bigger than the 5 × 5 of the first layer, because the pooling halved the maps in between.</p>
+<p>What does each one respond to? The strip shows, for the selected filter, the six patches of the 10,000 test digits that excite it most. Each patch is the 14 × 14 window of the picture that one unit of this layer sees, its <dfn data-def="The part of the input image that can affect one unit of a layer. It grows with every convolution and pooling layer.">receptive field</dfn>: bigger than the 5 × 5 of the first layer, because the pooling halved the maps in between.</p>
 <p>The patches are parts of strokes. Filter 13, for example, fires on a single upright stroke, filter 5 on the corner at the top right of a 7, filter 11 on the closed loop of a 6, filter 14 on a curve shaped like a closing bracket. The first layer found edges; the second combines them into <strong>parts of digits</strong>.</p>`,
 			notes: `<p>Showing the inputs that excite a unit most is one of the standard ways to look inside a trained network; the descriptions above are our reading of those patches. The maps of this layer are 14 × 14 before pooling, and shown after the ReLU.</p>`
 		},

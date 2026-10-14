@@ -453,12 +453,12 @@
 			id="l2-parts"
 			order={3}
 			label="Excites it most"
-			value="six patches from the 10 000 test digits"
+			value="six patches from the 10,000 test digits"
 		>
 			<Txt
 				x={40}
 				y={420}
-				text="the six patches of the 10 000 test digits that excite filter {s2 + 1} most"
+				text="the six patches of the 10,000 test digits that excite filter {s2 + 1} most"
 				size={13}
 				weight={600}
 			/>
