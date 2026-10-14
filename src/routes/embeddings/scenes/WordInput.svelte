@@ -76,7 +76,7 @@
 	/* on phones the stage is drawn at ~0.4 scale: larger type keeps the field legible */
 	@media (max-width: 640px) {
 		.emb-input {
-			padding: 0 6px;
+			padding: 0 4px;
 			font-size: var(--emb-input-phone, 30px);
 		}
 	}

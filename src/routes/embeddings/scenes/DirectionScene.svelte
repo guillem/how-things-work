@@ -675,7 +675,7 @@
 				y={48}
 				w={80}
 				size={15}
-				phoneSize={22}
+				phoneSize={17}
 				value={typed[k]}
 				label={['First word', 'Word to subtract', 'Word to add'][k]}
 				invalid={!emb.has(words[k])}
