@@ -145,7 +145,7 @@ export const spec: ExplainerSpec = {
 <li><strong>Killer T cells</strong> find infected cells, which display fragments of the viral proteins they are making on their surface, and kill them before the virus inside is finished. They act <em>inside</em> the tissue, on the virus factories.</li>
 <li><strong>Antibodies</strong> are the B cells’ receptor, released in bulk: Y-shaped proteins with two identical tips that grip the virus. Antibodies stuck to a virus’s spikes stop it from attaching to a cell, and mark it to be swallowed. They act on the virus <em>outside</em> cells.</li>
 </ul>
-<p>The shapes here are traced from real structures, atom by atom, at true size: an antibody is about 15 nm across, and a flu virus about 100 nm.</p>`,
+<p>The shapes on the left are traced from real structures, atom by atom, at true size: an antibody is about 17 nm across, and a flu virus about 100 nm. With its two arms, one antibody can hold two spikes at once.</p>`,
 			notes: `<p>The first antibodies a plasma cell makes are <strong>IgM</strong>: five Ys joined together, good at grabbing but short-lived. Over the following weeks, B cells switch to <strong>IgG</strong> (and, in the airways, IgA), whose tips also become a better fit through rounds of mutation and selection in the lymph nodes (affinity maturation). The model has one short-lived and one long-lived antibody to stand for them. The antibody outline is PDB 1IGT (Harris et al., <i>Biochemistry</i>, 1997), a complete mouse IgG2a antibody; the spike is the flu haemagglutinin, PDB 1RU7 (Gamblin et al., <i>Science</i>, 2004).</p>`
 		},
 		{
@@ -159,7 +159,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now everything together, day by day. Release the virus and watch the tissue: in the first two days infected cells multiply; the interferon alarm turns neighbours resistant and NK cells start killing; then for a few days nothing seems to change.</p>
 <p>Out of sight, in the lymph node, the few matching B and T cells are multiplying. From day 5 antibodies arrive and catch free virus; from day 6 killer T cells pour in and kill infected cells. By day 9 the virus is gone.</p>
-<p>The counters on the left come from the model, and the cells are drawn in proportion: each cell of the lining in the picture stands for about three million real ones.</p>`,
+<p>The counters on the left come from the model. Resistant and lost cells are drawn in proportion: each cell of the lining in the picture stands for about three million real ones. Infected cells, virus particles and immune cells are drawn on a logarithmic scale, because their numbers change a millionfold: one more drawn means ten times as many.</p>`,
 			notes: `<p>The order of events matches real flu: in volunteers infected with flu the virus in nasal washes peaks on day 2–3 and is undetectable by day 7 or 8 (Baccam et al., 2006). The model's numbers come from mice, whose flu runs a similar course.</p>`
 		},
 		{
