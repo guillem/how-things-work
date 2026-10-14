@@ -107,7 +107,7 @@
 					x2: colX[l + 1] - S / 2,
 					y2: nodeY(l + 1, j),
 					color: v >= 0 ? 'var(--nn-pos)' : 'var(--nn-neg)',
-					width: 0.6 + 3.4 * Math.min(1, Math.abs(v) / 3),
+					width: Number.isFinite(v) ? 0.6 + 3.4 * Math.min(1, Math.abs(v) / 3) : 0.6,
 					w: v
 				};
 			});
@@ -124,7 +124,15 @@
 		return -1;
 	});
 	const right = $derived(Math.round(acc * run.data.length));
+	const diverged = $derived(run.divergedAt >= 0 && k >= run.divergedAt);
+	// Once the weights are not numbers the network gives no answer, so there is nothing to count.
+	const rightText = $derived(
+		diverged
+			? 'none: the network gives no answer'
+			: `${right} of ${run.data.length} (${Math.round(acc * 100)}%)`
+	);
 	const verdict = $derived.by(() => {
+		if (diverged) return 'diverged: the steps were too big and the weights blew up';
 		if (solvedAt >= 0) return `first got every point right at epoch ${solvedAt}`;
 		if (k === 0) return 'random weights: training starts…';
 		if (k >= MAX_EPOCHS) {
@@ -306,18 +314,8 @@
 	<Readout id="epoch" order={1} label="Epoch" value="{k} · loss {fmt(loss)}">
 		<Txt x={448} y={472} text="epoch {k} · loss {fmt(loss)}" size={15} weight={600} />
 	</Readout>
-	<Readout
-		id="right"
-		order={2}
-		label="Right"
-		value="{right} of {run.data.length} ({Math.round(acc * 100)}%)"
-	>
-		<Txt
-			x={448}
-			y={494}
-			text="right: {right} of {run.data.length} ({Math.round(acc * 100)}%)"
-			size={13}
-		/>
+	<Readout id="right" order={2} label="Right" value={rightText}>
+		<Txt x={448} y={494} text="right: {rightText}" size={13} />
 	</Readout>
 	<Readout id="verdict" order={3} label="So far" value={verdict}>
 		<Txt x={448} y={515} text={verdict} size={13} />

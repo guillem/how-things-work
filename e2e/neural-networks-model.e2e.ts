@@ -103,7 +103,7 @@ test('two hidden neurons solve the corners; the circle needs three', () => {
 	const xor = new Run({ data: 'xor', hidden: [2], act: 'tanh', lr: 0.3, seed: 1 });
 	expect(xor.solvedAt(100)).toBe(17);
 	const circle2 = new Run({ data: 'circle', hidden: [2], act: 'tanh', lr: 0.3, seed: 1 });
-	circle2.at(300);
+	circle2.at(500);
 	expect(Math.max(...circle2.accuracies)).toBeLessThan(0.9);
 	const circle3 = new Run({ data: 'circle', hidden: [3], act: 'tanh', lr: 0.3, seed: 1 });
 	expect(circle3.solvedAt(200)).toBe(64);
@@ -112,9 +112,18 @@ test('two hidden neurons solve the corners; the circle needs three', () => {
 test('an unlucky start can get stuck: the corners with seed 2 stays at 75%', () => {
 	const run = new Run({ data: 'xor', hidden: [2], act: 'tanh', lr: 0.3, seed: 2 });
 	run.at(500);
-	// Three corners right, one wrong: a local minimum of the loss.
+	// Three corners right, one wrong: training has stalled on a flat region of the loss.
 	expect(Math.max(...run.accuracies)).toBeLessThan(0.8);
 	expect(run.accuracies[500]).toBeCloseTo(0.75, 2);
+});
+
+test('too big a step makes the weights blow up, and the run records when', () => {
+	const run = new Run({ data: 'moons', hidden: [4, 4], act: 'linear', lr: 3, seed: 1 });
+	run.at(500);
+	expect(run.divergedAt).toBeGreaterThan(0);
+	const calm = new Run({ data: 'moons', hidden: [4, 4], act: 'linear', lr: 0.3, seed: 1 });
+	calm.at(500);
+	expect(calm.divergedAt).toBe(-1);
 });
 
 test('without activations, layers collapse into one neuron and draw a straight line', () => {

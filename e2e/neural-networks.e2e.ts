@@ -98,6 +98,27 @@ test('stepping through: the update lowers the loss, matches the nudge, and moves
 	await expect(stage(page)).toContainText('example #2');
 });
 
+test('the playground: an unlucky start stalls on the corners; too big a step diverges', async ({
+	page
+}) => {
+	await open(page, './neural-networks/#playground', 'first got every point right at epoch 49');
+	// The recipe the training step gives: four corners, one layer of 2, Train again once.
+	await pick(page, 'data-play', 'xor');
+	await slider(page, 'layers-play').fill('1');
+	await slider(page, 'neurons-play').fill('2');
+	await expect(stage(page)).toContainText('first got every point right at epoch 17');
+	await page.locator('.action button[data-control=again-play]').click();
+	await expect(stage(page)).toContainText('after 500 epochs: still 50 wrong (best 75%)');
+	// No activation and η = 3: the weights stop being numbers, and the verdict says so.
+	await pick(page, 'data-play', 'moons');
+	await slider(page, 'layers-play').fill('2');
+	await slider(page, 'neurons-play').fill('4');
+	await pick(page, 'act-play', 'linear');
+	await pick(page, 'lr-play', '3');
+	await expect(stage(page)).toContainText('diverged: the steps were too big');
+	await expect(stage(page)).toContainText('right: none');
+});
+
 test('the bending step ends on the bent plane', async ({ page }) => {
 	await open(page, './neural-networks/#bend', 'the bent plane: each point at (h₁, h₂)');
 });
