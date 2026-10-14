@@ -87,9 +87,13 @@ test('S − P at Ankara gives its distance from the Nepal earthquake', async ({ 
 test('three S − P readings put the circles together over Nepal', async ({ page }) => {
 	await open(page, './earthquakes/#locate');
 	await expect(stage(page)).toContainText('Where do the three circles meet?');
-	// The S waves as read on the three real seismograms.
-	await control(page, 'lagAnto').fill('392');
-	await control(page, 'lagTato').fill('316');
+	// S − P as read by eye on the three real side-to-side traces: the S onsets at about 884,
+	// 716 and 784 s after the origin, less the automatic P picks.
+	await control(page, 'lagAnto').fill('395');
+	await control(page, 'lagTato').fill('318');
+	await control(page, 'lagDgar').fill('300');
+	// One reading still off (Diego Garcia): the circles don't meet.
+	await expect(stage(page)).toContainText('Where do the three circles meet?');
 	await control(page, 'lagDgar').fill('347');
 	await expect(stage(page)).toContainText('They meet: the epicentre, in Nepal');
 	await expect(stage(page)).toContainText('km from the USGS location');

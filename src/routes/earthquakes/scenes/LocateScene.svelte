@@ -36,7 +36,7 @@
 
 	// ---- seismograms ----------------------------------------------------------------------
 	const T0 = 330;
-	const T1 = 960;
+	const T1 = 1100;
 	interface Box {
 		x0: number;
 		x1: number;
@@ -136,7 +136,9 @@
 				)
 			: null
 	);
-	const found = $derived(fit !== null && fit.rms < 0.6);
+	/** Found when every S marker is on its S wave (the same test as the ✓). Readings by eye are
+	 * good to several seconds, so the circles then cross within a degree or two of each other. */
+	const found = $derived(fit !== null && [0, 1, 2].every((k) => onS(k)));
 	const missKm = $derived(fit ? gcDistance(fit.lat, fit.lon, ORIGIN.lat, ORIGIN.lon) * KM : 0);
 </script>
 
@@ -292,7 +294,7 @@
 			color="var(--eq-s)"
 		/>
 		{#if phase === 'lag'}
-			{#each [6, 8, 10, 12, 14, 16] as m (m)}
+			{#each [6, 8, 10, 12, 14, 16, 18] as m (m)}
 				<path d="M{xOf(b, m * 60)} {b.y + b.h}v5" stroke="var(--stage-ink-muted)" />
 				<Readout id="tt-{m}">
 					<text

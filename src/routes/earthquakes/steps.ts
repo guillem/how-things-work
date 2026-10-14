@@ -47,7 +47,7 @@ const station: Control = {
 	type: 'range',
 	id: 'station',
 	label: 'Seismometer’s distance from the earthquake',
-	min: 0,
+	min: 2,
 	max: 180,
 	step: 1,
 	default: 40,
@@ -93,7 +93,8 @@ export const spec: ExplainerSpec = {
 		{ id: 'inside', title: 'Through the planet' },
 		{ id: 'core', title: 'The core’s shadow' },
 		{ id: 'locate', title: 'Finding the epicentre' },
-		{ id: 'size', title: 'How big' }
+		{ id: 'size', title: 'How big' },
+		{ id: 'whole', title: 'The whole picture' }
 	],
 	steps: [
 		// ------------------------------------------------------------------ quake
@@ -254,7 +255,7 @@ export const spec: ExplainerSpec = {
 		},
 		{
 			id: 'interior',
-			chapter: 'size',
+			chapter: 'whole',
 			title: 'What the waves revealed',
 			scene: 'earth',
 			hints: { phase: 'summary' },

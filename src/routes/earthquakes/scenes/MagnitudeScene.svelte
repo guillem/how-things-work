@@ -94,6 +94,8 @@
 	const ly = (n: number) => LC.y1 - ((Math.log10(Math.max(n, 0.01)) + 2) / 5) * (LC.y1 - LC.y0);
 	const ry = (f: number) => RC.y1 - (f / 0.5) * (RC.y1 - RC.y0);
 	const perYearText = (n: number) => (n >= 10 ? Math.round(n).toString() : n.toFixed(1));
+	const countsText = BINS.map((b) => perYearText(b.perYear)).join(' · ');
+	const sharesText = BINS.map((b) => `${Math.round(b.share * 100)}%`).join(' · ');
 </script>
 
 <g class="magnitude-scene">
@@ -188,7 +190,8 @@
 			id="c-title"
 			order={1}
 			label="Earthquakes a year, 2015–2024"
-			value="about 10× fewer per step"
+			value={countsText}
+			note="magnitude 5.5–6, 6–6.5, … 8–8.5: about ten times fewer per step"
 		>
 			<text x={LC.x0 - 50} y={LC.y0 - 40} style:font-size="14px" style:font-weight="600"
 				>How many a year (2015–2024)</text
@@ -216,12 +219,7 @@
 				opacity="0.8"
 				rx="2"
 			/>
-			<Readout
-				id="cb-{b.lo}"
-				order={2 + i}
-				label="M {b.lo}–{b.lo + 0.5}"
-				value="{perYearText(b.perYear)} a year"
-			>
+			<Readout id="cb-{b.lo}">
 				<text
 					x={x + (bw - 12) / 2}
 					y={ly(b.perYear) - 6}
@@ -251,7 +249,8 @@
 			id="e-title"
 			order={10}
 			label="Share of the decade’s energy"
-			value="most from the biggest few"
+			value={sharesText}
+			note="the few big ones release most of it"
 		>
 			<text x={RC.x0 - 30} y={RC.y0 - 40} style:font-size="14px" style:font-weight="600"
 				>Share of all their energy</text
@@ -279,7 +278,7 @@
 				opacity="0.85"
 				rx="2"
 			/>
-			<Readout id="eb-{b.lo}" order={11 + i}>
+			<Readout id="eb-{b.lo}">
 				<text
 					x={x + (bw - 12) / 2}
 					y={ry(b.share) - 6}
@@ -303,7 +302,7 @@
 				style:font-size="12px">magnitude</text
 			>
 		</Readout>
-		<Readout id="src" order={20} label="Source" value="USGS catalogue, M ≥ 5.5, 2015–2024">
+		<Readout id="src">
 			<text x="480" y="560" text-anchor="middle" class="muted" style:font-size="12px"
 				>USGS catalogue: all {Math.round(perYearAtLeast(5.5) * 10).toLocaleString('en-GB')} earthquakes
 				of magnitude 5.5 or more, 2015–2024</text

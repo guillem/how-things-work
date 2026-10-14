@@ -127,6 +127,18 @@ test('three S − P times put the Gorkha epicentre back where the USGS located i
 	const km = (Math.PI / 180) * EARTH_R;
 	const coslat = Math.cos((ORIGIN.lat * Math.PI) / 180);
 	expect(Math.hypot(fit.lat - ORIGIN.lat, (fit.lon - ORIGIN.lon) * coslat) * km).toBeLessThan(15);
+	// The same from S − P read by eye off the real recordings (S onsets at about 884, 716 and
+	// 784 s on the side-to-side traces, less the automatic P picks): within 100 km.
+	const read = [395, 318, 347];
+	const byEye = bestFit(
+		stations.map((s) => s.rec),
+		read.map(distanceFor)
+	);
+	const coslat2 = Math.cos((ORIGIN.lat * Math.PI) / 180);
+	expect(Math.hypot(byEye.lat - ORIGIN.lat, (byEye.lon - ORIGIN.lon) * coslat2) * km).toBeLessThan(
+		100
+	);
+	for (const [i, s] of stations.entries()) expect(Math.abs(read[i] - s.lag)).toBeLessThan(15);
 	// And the real seismograms agree with the model: the P waves picked on them arrive within
 	// a few seconds of the ak135 times.
 	for (const s of stations) expect(Math.abs(s.rec.pPick - s.pModel)).toBeLessThan(5);

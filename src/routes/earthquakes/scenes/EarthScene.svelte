@@ -243,7 +243,7 @@
 	const t90u = arrivalOf('P', 90, DEPTH, 'uniform')!;
 
 	// ---- the seismometer ------------------------------------------------------------------
-	const stationDeg = $derived(Math.max(0, Math.min(180, Number(params.station ?? 40))));
+	const stationDeg = $derived(Math.max(2, Math.min(180, Number(params.station ?? 40))));
 	const stationXY = $derived(at(stationDeg, RP + 2));
 	/** First arrivals at the seismometer; the waves through and off the inner core, which
 	 * arrive within seconds of each other, count as one. */
@@ -268,8 +268,11 @@
 	const near = (d: Drawn) => phase === 'station' && Math.abs(d.land - stationDeg) < 1.6;
 	function moveStation(p: { x: number; y: number }) {
 		const a = (Math.atan2(p.x - C.x, -(p.y - C.y)) * 180) / Math.PI;
-		setParam('station', Math.round(Math.abs(a)));
+		setParam('station', Math.max(2, Math.round(Math.abs(a))));
 	}
+	/** On phones the panel stays short: no clock or colour key where the step has more to say. */
+	const phoneClock = $derived(phase !== 'station' && phase !== 'summary');
+	const phoneKeys = $derived(phase === 'trigger' || phase === 's-shadow' || phase === 'p-shadow');
 	const pTime = $derived(arr.find((a) => a.kind === 'P')?.time ?? null);
 	const sTime = $derived(arr.find((a) => a.kind === 'S')?.time ?? null);
 
@@ -471,11 +474,11 @@
 			/>
 		</g>
 		<Handle
-			x={at(stationDeg, RP + 38)[0]}
-			y={at(stationDeg, RP + 38)[1]}
+			x={at(stationDeg, RP + 20)[0]}
+			y={at(stationDeg, RP + 20)[1]}
 			label="Seismometer"
 			value={stationDeg}
-			min={0}
+			min={2}
 			max={180}
 			valuetext="{stationDeg} degrees from the earthquake"
 			color="var(--eq-station)"
@@ -483,7 +486,7 @@
 			onkey={(k: number | 'start' | 'end') =>
 				setParam(
 					'station',
-					k === 'start' ? 0 : k === 'end' ? 180 : Math.max(0, Math.min(180, stationDeg + k))
+					k === 'start' ? 2 : k === 'end' ? 180 : Math.max(2, Math.min(180, stationDeg + k))
 				)}
 		/>
 	{/if}
@@ -594,23 +597,33 @@
 			<Readout
 				id="clock"
 				order={1}
-				label="Time since the earthquake"
+				label={phoneClock ? 'Time since the earthquake' : undefined}
 				value={reduced ? 'all waves drawn' : clock(tau)}
 			>
 				<text x={610} y={60} style:font-size="13px" class="muted">Time since the earthquake</text>
 				<text x={610} y={88} style:font-size="24px" style:font-weight="600"
-					>{reduced ? '—' : clock(tau)}</text
+					>{reduced ? 'all waves drawn' : clock(tau)}</text
 				>
 			</Readout>
 			<g transform="translate(610 120)">
 				{#if showP}
-					<Readout id="key-p" order={2} label="P waves" color="var(--eq-p)">
+					<Readout
+						id="key-p"
+						order={2}
+						label={phoneKeys ? 'P waves' : undefined}
+						color="var(--eq-p)"
+					>
 						<path d="M0 0h24" stroke="var(--eq-p)" stroke-width="3" />
 						<text x="32" y="4" style:font-size="13px">P waves</text>
 					</Readout>
 				{/if}
 				{#if showS}
-					<Readout id="key-s" order={3} label="S waves" color="var(--eq-s)">
+					<Readout
+						id="key-s"
+						order={3}
+						label={phoneKeys ? 'S waves' : undefined}
+						color="var(--eq-s)"
+					>
 						<path d="M{showP ? 120 : 0} 0h24" stroke="var(--eq-s)" stroke-width="3" />
 						<text x={showP ? 152 : 32} y="4" style:font-size="13px">S waves</text>
 					</Readout>
@@ -619,7 +632,7 @@
 					<Readout
 						id="key-i"
 						order={4}
-						label="P waves that met the inner core"
+						label={phoneKeys ? 'P waves that met the inner core' : undefined}
 						color="var(--eq-inner-wave)"
 					>
 						<path d="M120 0h24" stroke="var(--eq-inner-wave)" stroke-width="3" />
@@ -673,7 +686,7 @@
 					<Readout
 						id="s-none"
 						order={6}
-						label="S-wave shadow"
+						label={undefined}
 						value="{Math.round(sEdge)}° to 180°: no S at all"
 					>
 						<path d="M0 26h24" stroke="var(--eq-s)" stroke-width="5" opacity="0.35" />
@@ -684,24 +697,14 @@
 						<text y="90">there must be a liquid there</text>
 					</Readout>
 				{:else if phase === 'p-shadow' || phase === 'inner-core'}
-					<Readout
-						id="p-reach"
-						order={5}
-						label="Direct P waves arrive"
-						value="up to {Math.round(pEdge)}°"
-					>
+					<Readout id="p-reach" order={5} label={undefined} value="up to {Math.round(pEdge)}°">
 						<text y="0"
 							>P through the mantle: up to <tspan style:font-weight="600"
 								>{Math.round(pEdge)}°</tspan
 							></text
 						>
 					</Readout>
-					<Readout
-						id="p-core"
-						order={6}
-						label="P through the core arrives"
-						value="from {Math.round(coreFrom)}°"
-					>
+					<Readout id="p-core" order={6} label={undefined} value="from {Math.round(coreFrom)}°">
 						<text y="22"
 							>P through the core: from <tspan style:font-weight="600"
 								>{Math.round(coreFrom)}°</tspan
@@ -713,6 +716,9 @@
 						order={7}
 						label="P-wave shadow zone"
 						value="{Math.round(pEdge)}° to {Math.round(coreFrom)}°"
+						note="direct P up to {Math.round(pEdge)}°, through the core from {Math.round(
+							coreFrom
+						)}°"
 					>
 						<path d="M0 48h24" stroke="var(--eq-p)" stroke-width="5" opacity="0.4" />
 						<text x="32" y="52">shadow zone: {Math.round(pEdge)}° – {Math.round(coreFrom)}°</text>
@@ -794,7 +800,7 @@
 					<Readout
 						id="sum-s"
 						order={10}
-						label="S-wave shadow"
+						label={undefined}
 						value="beyond {Math.round(sEdge)}°: liquid outer core"
 						color="var(--eq-s)"
 					>
@@ -804,7 +810,7 @@
 					<Readout
 						id="sum-p"
 						order={11}
-						label="P-wave shadow"
+						label={undefined}
 						value="{Math.round(pEdge)}° – {Math.round(coreFrom)}°: the core bends P"
 						color="var(--eq-p)"
 					>

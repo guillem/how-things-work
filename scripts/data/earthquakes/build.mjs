@@ -78,6 +78,8 @@ writeFileSync(
 // the Earth from travel times, Geophys. J. Int. 122, 108–124, doi:10.1111/j.1365-246X.1995.tb03540.x.
 // Source: http://rses.anu.edu.au/seismology/ak135/ak135t.html (Research School of Earth Sciences,
 // ANU), also distributed by the EarthScope (IRIS) Earth Model Collaboration (doi:10.17611/DP/9991801).
+// Licence: none stated at the source; the model is published for use in seismology and is cited
+// here as its authors and the EMC ask.
 // The model is pointwise: speeds are linearly interpolated in radius between rows; a depth that
 // appears twice is a discontinuity (the upper value first).
 
