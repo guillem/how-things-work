@@ -51,26 +51,31 @@ test('US Standard Atmosphere 1976: pressure halves about every 5.5 km near the g
 	expect(atmosphere(100e3).rho / atmosphere(0).rho).toBeLessThan(1e-6);
 });
 
-test("Apollo 11's Saturn V: the rocket equation on the report's masses gives about 9.4 km/s", () => {
+test("Apollo 11's Saturn V: the rocket equation on the report's masses gives about 9.2 km/s", () => {
 	const [s1, s2, s3] = saturnV.stages;
 	// S-IVB first burn: 4,202 N·s/kg × ln(166,571 / 135,182) ≈ 0.88 km/s.
 	expect(deltaV(s3.veVac, s3.m0, s3.mf) / 1000).toBeCloseTo(0.88, 2);
 	expect(deltaV(s2.veVac, s2.m0, s2.mf) / 1000).toBeCloseTo(4.62, 2);
-	// The first stage in a vacuum would give 3.9 km/s; at sea level only 3.3.
-	expect(deltaV(s1.veVac, s1.m0, s1.mf) / 1000).toBeCloseTo(3.9, 1);
+	// The F-1's 304 s in a vacuum: the first stage would give 3.74 km/s there; at sea level only 3.26.
+	expect(deltaV(s1.veVac, s1.m0, s1.mf) / 1000).toBeCloseTo(3.74, 2);
 	expect(deltaV(s1.veSea, s1.m0, s1.mf) / 1000).toBeCloseTo(3.26, 2);
 });
 
 test('the simulated Saturn V reaches the parking orbit Apollo 11 reached', () => {
 	const f = flyBest(saturnV);
 	expect(f.outcome).toBe('orbit');
-	// Report: 7,793.1 m/s space-fixed at 191.1 km, 709 s after liftoff.
+	// Report: 7,793.1 m/s space-fixed, 709 s after liftoff, on a 183 × 186 km orbit over a
+	// round Earth.
 	expect(Math.abs(f.cutoff.v - AS506_INSERTION.speed)).toBeLessThan(0.01 * AS506_INSERTION.speed);
-	expect(Math.abs(f.cutoff.h - AS506_INSERTION.altitude)).toBeLessThan(10e3);
+	expect(Math.abs(f.perigee - AS506_INSERTION.perigee)).toBeLessThan(5e3);
+	expect(Math.abs(f.apogee - AS506_INSERTION.apogee)).toBeLessThan(5e3);
 	expect(Math.abs(f.cutoff.t - AS506_INSERTION.time)).toBeLessThan(0.15 * AS506_INSERTION.time);
 	// The report's masses sized the S-IVB's first burn to just reach the parking orbit: the
-	// simulated flight gets there with little to spare.
-	expect(f.spare).toBeLessThan(300);
+	// simulated flight dips less than 0.15 km/s into the propellant kept for the Moon.
+	const s3 = saturnV.stages[2];
+	const kept = deltaV(s3.veVac, s3.mf, s3.mf - (s3.reserve ?? 0));
+	expect(f.spare).toBeLessThan(kept);
+	expect(kept - f.spare).toBeLessThan(150);
 	// The engines gave about 9 km/s; gravity, drag and steering took about 1.6 of it.
 	const losses = f.gravity + f.drag + f.steering;
 	expect(losses / 1000).toBeGreaterThan(1.2);

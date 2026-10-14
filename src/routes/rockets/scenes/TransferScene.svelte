@@ -25,7 +25,7 @@
 	const K = 262 / R_GEO; // px per m, to scale
 	const toS = (r: { x: number; y: number }) => ({ x: CX + r.x * K, y: CY - r.y * K });
 
-	const dv1 = $derived(clamp(Number(params.burn1 ?? 1.2), 0, 3.2) * 1000);
+	const dv1 = $derived(clamp(Number(params.burn1 ?? 1.2), 0, 3) * 1000);
 	const dv2 = $derived(clamp(Number(params.burn2 ?? 0), 0, 2) * 1000);
 	const plan = $derived(twoBurns(dv1, dv2));
 
@@ -45,7 +45,13 @@
 		plan.second.e < 1 ? orbitPath(plan.second) : orbitPath(plan.second, 0, 3 * 86400, 200)
 	);
 	const finalOrbit = $derived(plan.third);
-	const finalPath = $derived(finalOrbit ? orbitPath(finalOrbit) : '');
+	const finalPath = $derived(
+		!finalOrbit
+			? ''
+			: finalOrbit.e < 1
+				? orbitPath(finalOrbit)
+				: orbitPath(finalOrbit, 0, 3 * 86400, 200)
+	);
 
 	// ---- timeline (screen seconds) -----------------------------------------------------------
 	const A = 3; // the first lap of the low orbit
@@ -110,8 +116,8 @@
 			Math.abs(finalOrbit.apo - R_GEO) < 0.01 * R_GEO
 	);
 	const verdict = $derived(
-		plan.second.e >= 1
-			? 'Burn 1 alone escapes the Earth'
+		finalOrbit && finalOrbit.e >= 1
+			? 'Burn 2 escapes the Earth'
 			: isGeo
 				? 'Geostationary: round, one turn a day'
 				: dv2 === 0

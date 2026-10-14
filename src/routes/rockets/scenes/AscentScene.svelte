@@ -4,7 +4,7 @@
 	 * rocket from params.fuel, params.veDesign and params.stages). The flight is `flyBest()` in
 	 * the model: a point mass over a round, spinning Earth through the US Standard Atmosphere
 	 * 1976. The panel plots height against distance travelled round the Earth (heights
-	 * stretched about 8×), the path coloured by stage; the rocket moves along it at 40× real
+	 * stretched about 11×), the path coloured by stage; the rocket moves along it at 40× real
 	 * time, then the result is held and the flight repeats. The card tallies the Δv budget as
 	 * the flight goes: what the engines gave, minus gravity, drag and steering losses, plus
 	 * the Earth's spin, equals the speed now.
@@ -49,8 +49,8 @@
 	const sx = scale([0, 3000], [PANEL.x + 30, PANEL.x + PANEL.w - 18]);
 	const sy = scale([0, 240], [GROUND, PANEL.y + 60]);
 	const downrange = (s: Sample) => (RE * Math.atan2(s.x, s.y)) / 1000;
-	const ORBIT_H = 190;
-	const V_ORBIT = circularSpeed(ORBIT_H * 1000) / 1000;
+	const ORBIT_H = $derived((vehicle.target ?? 190e3) / 1000);
+	const V_ORBIT = $derived(circularSpeed(ORBIT_H * 1000) / 1000);
 
 	// Air: bands shaded by density (US76), thinning upwards.
 	const AIR = [0, 5, 10, 15, 20, 30, 40, 60].map((h, i, a) => ({
@@ -200,7 +200,7 @@
 	);
 	const verdictNote = $derived(
 		flight.outcome === 'orbit'
-			? `${fmt(flight.spare / 1000, 2)} km/s of Δv left in the tanks`
+			? `${fmt(flight.spare / 1000, 2)} km/s of Δv left in the tanks${phase === 'saturn' ? ', kept for the Moon' : ''}`
 			: `top speed ${fmt(flight.cutoff.v / 1000, 1)} of the ${fmt(V_ORBIT, 1)} km/s needed`
 	);
 	const liftoff = $derived(vehicle.stages[0].m0 / 1000);
@@ -339,7 +339,7 @@
 		<T
 			x={sx(0)}
 			y={GROUND + 36}
-			text="distance round the Earth · heights stretched about 8×"
+			text="distance round the Earth · heights stretched about 11×"
 			size={10}
 			muted
 		/>
