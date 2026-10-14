@@ -166,7 +166,7 @@
 				weight={700}
 				anchor={BX0 + w + 70 > BX1 ? 'end' : 'start'}
 				opacity={g}
-				color={BX0 + w + 70 > BX1 ? '#212529' : undefined}
+				color={BX0 + w + 70 > BX1 ? 'var(--ex-absorb)' : undefined}
 			/>
 		</Readout>
 	{/each}

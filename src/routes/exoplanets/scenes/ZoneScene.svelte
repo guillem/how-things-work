@@ -51,6 +51,7 @@
 	const rPx = $derived(Math.min(TR, pl.a * pxPerAU));
 	const beyond = $derived(pl.a * pxPerAU > TR);
 	const planetXY = $derived({ x: TX + rPx * Math.cos(ang), y: TY + rPx * Math.sin(ang) });
+	// Semi-major axes, AU (NASA planetary fact sheets).
 	const SOLAR = [
 		{ id: 'mercury', label: 'Mercury', a: 0.387 },
 		{ id: 'venus', label: 'Venus', a: 0.723 },
@@ -259,7 +260,7 @@
 	<Readout id="verdict" order={2} label="So it is" value={verdict} color={zoneColor}>
 		<T x={32} y={516} text={verdict} size={15} weight={700} color={zoneColor} />
 	</Readout>
-	<Readout id="year" order={4} label="Its year" value={duration(P)}>
+	<Readout id="year">
 		<T x={454} y={516} text="year: {duration(P)}" size={12.5} anchor="end" muted />
 	</Readout>
 	<Readout

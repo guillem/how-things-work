@@ -1345,6 +1345,7 @@ kbd {
 	--ex-lens: #2f9e44;
 	--ex-imaging: #9c36b5;
 	--ex-other: #868e96;
+	--ex-absorb: #111418;
 }
 :root[data-theme='dark'] {
 	--ex-space: #0d1117;
@@ -1366,4 +1367,5 @@ kbd {
 	--ex-lens: #69db7c;
 	--ex-imaging: #da77f2;
 	--ex-other: #adb5bd;
+	--ex-absorb: #111418;
 }

@@ -310,7 +310,7 @@
 			y={SY0}
 			width="3"
 			height={SH}
-			fill="#111"
+			fill="var(--ex-absorb)"
 			opacity="0.85"
 		/>
 	{/each}
@@ -337,7 +337,14 @@
 		stroke-dasharray="3 3"
 		stroke-width="1.2"
 	/>
-	<rect x={sxZ(HA + shiftNm(HA)) - 3} y={ZY0} width="6" height={ZH} fill="#111" opacity="0.9" />
+	<rect
+		x={sxZ(HA + shiftNm(HA)) - 3}
+		y={ZY0}
+		width="6"
+		height={ZH}
+		fill="var(--ex-absorb)"
+		opacity="0.9"
+	/>
 	<Readout id="zoom-title">
 		<T
 			x={ZX0}
