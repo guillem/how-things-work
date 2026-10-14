@@ -46,6 +46,17 @@ export function comovingMpc(z1: number, z2 = 0): number {
 	return ((C_KMS / H0) * s * h) / 3;
 }
 
+/** Lookback time (Gyr) to redshift z: how long ago the light set out. */
+export function lookbackGyr(z: number): number {
+	const n = 400;
+	const h = z / n;
+	const f = (x: number) => 1 / ((1 + x) * Math.sqrt(OM * (1 + x) ** 3 + OL));
+	let s = f(0) + f(z);
+	for (let i = 1; i < n; i++) s += (i % 2 ? 4 : 2) * f(i * h);
+	const hubbleGyr = 977.792 / H0; // 1/H₀ in Gyr for H₀ in km/s/Mpc
+	return (hubbleGyr * s * h) / 3;
+}
+
 /** Angular-diameter distance (Mpc) from redshift zl to zs (flat universe). */
 export const angularMpc = (zs: number, zl = 0) => comovingMpc(zs, zl) / (1 + zs);
 

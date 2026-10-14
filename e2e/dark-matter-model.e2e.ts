@@ -7,6 +7,8 @@ import {
 	GALAXIES,
 	ML_DISK_DEFAULT,
 	bestHalo,
+	bestVisibleOnly,
+	speedAt,
 	cosmicBudget,
 	curve,
 	fit,
@@ -25,6 +27,7 @@ import {
 	blobs,
 	kappaGrid,
 	kpcPerArcsec,
+	lookbackGyr,
 	lensedShape,
 	massInCircle,
 	massInField,
@@ -147,4 +150,44 @@ test('a shear stretches a round galaxy across the line to the lens', () => {
 	const s = lensedShape({ x: 0, y: 0 }, { kappa: 0, g1: -0.2, g2: 0 });
 	expect(s.q).toBeCloseTo(0.8 / 1.2, 6);
 	expect(Math.abs(Math.cos(s.angle))).toBeLessThan(1e-6);
+});
+
+test('the numbers the narrative quotes', () => {
+	const g = galaxy('NGC3198');
+	const m = visibleMass(g, ML_DISK_DEFAULT);
+	// 19 billion Suns of stars and 14 billion of gas, 45 million light years away.
+	expect(m.stars / 1e9).toBeCloseTo(19, 0);
+	expect(m.gas / 1e9).toBeCloseTo(14.5, 0);
+	expect(g.distance * 3.2616).toBeCloseTo(45, 0);
+	// The visible matter's speed peaks at about 100 km/s near 7 kpc.
+	const vis = curve(g, ML_DISK_DEFAULT, null);
+	const top = vis.reduce((a, b) => (b.total > a.total ? b : a));
+	expect(top.total).toBeCloseTo(100, -1);
+	expect(top.r).toBeGreaterThan(6);
+	expect(top.r).toBeLessThan(8);
+	// At the edge the visible matter gives 65 km/s; the stars there take 4.2 Gyr per turn.
+	expect(speedAt(g, g.rLast, 'visible')).toBeCloseTo(65, 0);
+	expect(periodGyr(g.rLast, 65)).toBeCloseTo(4.2, 1);
+	// (149/57)² ≈ 7 times the visible mass.
+	expect((149 / keplerSpeed(m.total, g.rLast)) ** 2).toBeCloseTo(6.8, 1);
+	// Within the slider's range (Υ ≤ 1.2) the visible matter alone never beats χ²/dof ≈ 245.
+	const bv = bestVisibleOnly(g);
+	expect(bv.chi2 / (g.points.length - 1)).toBeCloseTo(245, -1);
+	// NGC 2403 has about a quarter of NGC 3198's stars.
+	expect(visibleMass(galaxy('NGC2403'), 0.5).stars / m.stars).toBeCloseTo(0.26, 1);
+	// The four halos weigh 5½–8 times their galaxies' visible matter.
+	const ratios = GALAXIES.map((i) => bestHalo(galaxy(i.id), ML_DISK_DEFAULT).ratio);
+	expect(Math.min(...ratios)).toBeGreaterThan(5.4);
+	expect(Math.max(...ratios)).toBeLessThan(8.4);
+	// The Bullet Cluster's light set out 3.4 billion years ago; its gas sits ~200 kpc from its galaxies.
+	expect(lookbackGyr(0.296)).toBeCloseTo(3.4, 1);
+	const p = POSITIONS;
+	for (const [gas, gal] of [
+		[p.mainGas, p.mainBCG],
+		[p.subGas, p.subBCG]
+	]) {
+		const d = Math.hypot(gas.x - gal.x, gas.y - gal.y);
+		expect(d).toBeGreaterThan(180);
+		expect(d).toBeLessThan(220);
+	}
 });
