@@ -72,6 +72,12 @@ test('twelve heads of a layer, each with its own pattern', async ({ page }) => {
 	await expect(stage(page)).toContainText('Layer 5: its 12 heads');
 	await expect(stage(page)).toContainText('previous token');
 	await expect(stage(page)).toContainText('looks at “animal”');
+	// the layer readout: how much rests on ⟨start⟩ and how far back the rest reaches
+	await expect(stage(page)).toContainText('this layer: 58% of all attention on ⟨start⟩');
+	await expect(stage(page)).toContainText('on average 2.3 tokens back');
+	await range(page, 'layer').fill('11');
+	await expect(stage(page)).toContainText('this layer: 84% of all attention on ⟨start⟩');
+	await expect(stage(page)).toContainText('on average 3.9 tokens back');
 	await range(page, 'layer').fill('1');
 	await expect(stage(page)).toContainText('Layer 1: its 12 heads');
 	await expect(stage(page)).toContainText('itself');

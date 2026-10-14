@@ -17,7 +17,7 @@
 	import { cycle, smoothstep } from '#lib/draw/index.ts';
 	import { cosine } from '../attention';
 	import { gpt2 } from '../gpt2';
-	import { bands, bars, fix, label, num, top } from './shared';
+	import { bands, bars, clipCaps, fix, label, num, top } from './shared';
 	import TokenChip from './TokenChip.svelte';
 	import Txt from './Txt.svelte';
 
@@ -58,9 +58,18 @@
 	const MX = { x: 420, bw: 2 };
 	const OUT = { x: 650, bw: 4.4, mid: 300 };
 
-	const kBars = f.k.map((k, j) => ({ j, d: bars(k, K.x, cy(j), K.bw, 2.1, 13) }));
-	const vBars = f.v.map((v, j) => ({ j, d: bars(v, V.x, cy(j), V.bw, 13, 13) }));
+	const kBars = f.k.map((k, j) => ({
+		j,
+		d: bars(k, K.x, cy(j), K.bw, 2.1, 13),
+		cap: clipCaps(k, K.x, cy(j), K.bw, 2.1, 13)
+	}));
+	const vBars = f.v.map((v, j) => ({
+		j,
+		d: bars(v, V.x, cy(j), V.bw, 13, 13),
+		cap: clipCaps(v, V.x, cy(j), V.bw, 13, 13)
+	}));
 	const qBars = $derived(bars(f.q[qi], Q.x, Q.mid, Q.bw, 9, 26));
+	const qCaps = $derived(clipCaps(f.q[qi], Q.x, Q.mid, Q.bw, 9, 26));
 	const scaled = $derived(
 		at.weights.map((w, j) => ({
 			j,
@@ -72,12 +81,22 @@
 				MX.bw,
 				13,
 				13
+			),
+			cap: clipCaps(
+				f.v[j].map((x) => x * w),
+				MX.x,
+				cy(j),
+				MX.bw,
+				13,
+				13
 			)
 		}))
 	);
 	const outBars = $derived(bars(at.out, OUT.x, OUT.mid, OUT.bw, 40, 44));
+	const outCaps = $derived(clipCaps(at.out, OUT.x, OUT.mid, OUT.bw, 40, 44));
 	const lead = $derived(best[0]);
 	const leadBars = $derived(bars(f.v[lead.j], OUT.x, OUT.mid + 150, OUT.bw, 40, 44));
+	const leadCaps = $derived(clipCaps(f.v[lead.j], OUT.x, OUT.mid + 150, OUT.bw, 40, 44));
 	const leadCos = $derived(cosine(at.out, f.v[lead.j]));
 
 	// Particles from the scaled values into the sum, as many as the weight is large.
@@ -159,6 +178,7 @@
 		/>
 		<line x1={Q.x} y1={Q.mid} x2={Q.x + 64 * Q.bw} y2={Q.mid} stroke="var(--stage-line)" />
 		<path d={qBars} fill="var(--tf-q)" />
+		<path d={qCaps} fill="var(--stage-ink)" />
 		<Readout id="formula" order={9} label="Formula" value={formula}>
 			<Txt x={944} y={Q.mid + 5} anchor="end" size={13} weight={600} text={formula} />
 		</Readout>
@@ -200,12 +220,14 @@
 			<g opacity={b.j > qi && phase !== 'qkv' ? 0.3 : 1}>
 				<line x1={K.x} y1={cy(b.j)} x2={K.x + 128} y2={cy(b.j)} stroke="var(--stage-line)" />
 				<path d={b.d} fill="var(--tf-k)" />
+				<path d={b.cap} fill="var(--stage-ink)" />
 			</g>
 		{/each}
 		{#each vBars as b (b.j)}
 			<g opacity={b.j > qi && phase !== 'qkv' ? 0.3 : 1}>
 				<line x1={V.x} y1={cy(b.j)} x2={V.x + 128} y2={cy(b.j)} stroke="var(--stage-line)" />
 				<path d={b.d} fill="var(--tf-v)" />
+				<path d={b.cap} fill="var(--stage-ink)" />
 			</g>
 		{/each}
 	</g>
@@ -219,7 +241,7 @@
 				anchor={phase === 'scores' ? 'middle' : 'start'}
 				size={11}
 				weight={600}
-				text={phase === 'scores' ? 'score (0 here)' : 'attention weight'}
+				text={phase === 'scores' ? 'score (line = 0)' : 'attention weight'}
 			/>
 			{#if phase === 'scores'}
 				<line
@@ -242,6 +264,15 @@
 						fill="var(--tf-att)"
 						opacity={j === lead.j ? 1 : 0.55}
 					/>
+					{#if at.scores[j] < -7 || at.scores[j] > 3}
+						<rect
+							x={at.scores[j] < 0 ? x0 - 3 : sx(at.scores[j]) + 1}
+							y={cy(j) - 9}
+							width="2"
+							height="18"
+							fill="var(--stage-ink)"
+						/>
+					{/if}
 				{:else}
 					<rect
 						x={W.x}
@@ -295,6 +326,7 @@
 				</Readout>
 				<line x1={MX.x} y1={cy(r.j)} x2={MX.x + 128} y2={cy(r.j)} stroke="var(--stage-line)" />
 				<path d={r.d} fill="var(--tf-v)" />
+				<path d={r.cap} fill="var(--stage-ink)" />
 			{/each}
 			{#each flow as p (p.key)}
 				<circle cx={p.x} cy={p.y} r={p.r} fill="var(--tf-v)" opacity={p.o} />
@@ -314,6 +346,7 @@
 				stroke="var(--stage-line)"
 			/>
 			<path d={outBars} fill="var(--tf-v)" />
+			<path d={outCaps} fill="var(--stage-ink)" />
 			<Txt
 				x={OUT.x}
 				y={OUT.mid + 90}
@@ -330,6 +363,7 @@
 				stroke="var(--stage-line)"
 			/>
 			<path d={leadBars} fill="var(--tf-v)" opacity="0.55" />
+			<path d={leadCaps} fill="var(--stage-ink)" />
 			<Readout
 				id="cos"
 				order={3}
@@ -401,10 +435,23 @@
 				<Txt x={620} y={208} size={12} text="each row adds up to 1" />
 				<Txt x={620} y={228} size={12} muted text="grey triangle: masked (later tokens)" />
 				<Txt x={620} y={268} size={12} text="outlined: the row of “{names[qi]}”" />
-				<Txt x={620} y={318} size={12} text="the whole table is one product, Q Kᵀ," />
-				<Txt x={620} y={338} size={12} text="computed for all tokens in parallel" />
+				<Txt x={620} y={318} size={12} text="the scores are one product, Q Kᵀ," />
+				<Txt x={620} y={338} size={12} text="then a softmax, row by row:" />
+				<Txt x={620} y={358} size={12} text="every row at the same time" />
 			</Readout>
 		</g>
+	{/if}
+
+	{#if phase !== 'matrix'}
+		<Readout id="clip">
+			<Txt
+				x={16}
+				y={594}
+				size={11}
+				muted
+				text="a cap across the end of a bar: cut off at the edge, larger than shown"
+			/>
+		</Readout>
 	{/if}
 
 	<Readout

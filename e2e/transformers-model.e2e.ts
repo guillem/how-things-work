@@ -83,8 +83,9 @@ test.describe('one attention operation, redone by hand', () => {
 
 test.describe('what heads of GPT-2 small are known to do', () => {
 	test('layer 5, head 12 looks at the previous token', () => {
+		// the patterns step: “a weight of at least 0.89 on every token of the eight sentences”
 		for (const s of gpt2.sentences)
-			for (let i = 1; i < s.n; i++) expect(s.row(4, 11, i)[i - 1]).toBeGreaterThan(0.6);
+			for (let i = 1; i < s.n; i++) expect(s.row(4, 11, i)[i - 1]).toBeGreaterThan(0.89);
 		const fox = gpt2.sentence('fox');
 		expect(fox.row(4, 11, fox.n - 1)[fox.n - 2]).toBeGreaterThan(0.99);
 	});
@@ -106,19 +107,25 @@ test.describe('what heads of GPT-2 small are known to do', () => {
 	});
 
 	test('most heads park most of their attention on the start token', () => {
-		const s = gpt2.sentence('animal');
+		// the heads step: “across all 144 heads, averaged over the eight sentences, about 60%”
 		let sum = 0;
 		let count = 0;
+		for (const s of gpt2.sentences)
+			for (let l = 0; l < 12; l++)
+				for (let h = 0; h < 12; h++)
+					for (let i = 1; i < s.n; i++) {
+						sum += s.row(l, h, i)[0];
+						count++;
+					}
+		expect(sum / count).toBeCloseTo(0.6, 1);
+		const s = gpt2.sentence('animal');
 		let heads = 0;
 		for (let l = 0; l < 12; l++)
 			for (let h = 0; h < 12; h++) {
 				let hs = 0;
 				for (let i = 1; i < s.n; i++) hs += s.row(l, h, i)[0];
-				sum += hs;
-				count += s.n - 1;
 				if (hs / (s.n - 1) > 0.5) heads++;
 			}
-		expect(sum / count).toBeGreaterThan(0.55);
 		expect(heads).toBeGreaterThan(90);
 	});
 
@@ -127,8 +134,13 @@ test.describe('what heads of GPT-2 small are known to do', () => {
 		expect(c[10][10]).toBeCloseTo(1, 2);
 		expect(c[10][11]).toBeGreaterThan(0.95);
 		expect(c[10][60]).toBeLessThan(0.6);
-		// position 0 is special: its vector is about twice as long as the others
-		expect(gpt2.positions.norms[0]).toBeGreaterThan(1.8 * gpt2.positions.norms[5]);
+		// position 0 is special: “two to three times as long as the others (9.9, against 3.4 to 5.2)”
+		const [first, ...rest] = gpt2.positions.norms;
+		expect(first).toBeCloseTo(9.9, 1);
+		expect(Math.min(...rest)).toBeCloseTo(3.4, 1);
+		expect(Math.max(...rest)).toBeCloseTo(5.2, 1);
+		expect(first / Math.max(...rest)).toBeGreaterThan(1.8);
+		expect(first / Math.min(...rest)).toBeLessThan(3);
 	});
 });
 
@@ -163,6 +175,10 @@ test.describe('what the page says', () => {
 		).toBeCloseTo(0.8, 2);
 	});
 
+	test('the mix step: “animal” is seven tokens back from “it”', () => {
+		expect(at('animal', ' it') - at('animal', ' animal')).toBe(7);
+	});
+
 	test('the featured head: a lead of 3.2 in score is 24 times the weight', () => {
 		const st = gpt2.featuredStep(at('animal', ' it'));
 		const sorted = [...st.scores].sort((a, b) => b - a);
@@ -174,7 +190,7 @@ test.describe('what the page says', () => {
 		for (const tk of [' didn', ' cross', ' was'])
 			expect(argmax(gpt2.featuredStep(at('animal', tk)).weights)).toBe(at('animal', ' animal'));
 		for (const tk of ['The', ' street'])
-			expect(argmax(gpt2.featuredStep(at('animal', tk)).weights)).toBe(0);
+			expect(gpt2.featuredStep(at('animal', tk)).weights[0]).toBeGreaterThan(0.5);
 	});
 
 	test('position 10 against 11, 30 and 63', () => {
@@ -205,7 +221,7 @@ test.describe('what the page says', () => {
 		expect(early).toBeGreaterThan(2);
 		expect(early).toBeLessThan(3);
 		expect(late).toBeGreaterThan(3.5);
-		expect(late).toBeLessThan(4.6);
+		expect(late).toBeLessThan(4);
 	});
 
 	test('the stack step: Italy after “Rome is the capital of”, and the parameter split', () => {

@@ -67,7 +67,7 @@
 	};
 	const caption = $derived(
 		s.id === 'animal'
-			? '“it” starts as the same 768 numbers as in any other text: nothing in them says “animal”.'
+			? '“it” has the same token embedding as in any other text: nothing in those 768 numbers says “animal”.'
 			: 'Each token starts as the same 768 numbers it has in any other text; only its position vector differs.'
 	);
 </script>

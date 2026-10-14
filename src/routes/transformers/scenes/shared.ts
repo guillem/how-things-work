@@ -45,6 +45,28 @@ export function bars(
 }
 
 /**
+ * Caps for the bars that `bars` (same arguments) cut off at ± `max` px: a short bar, a little
+ * wider than the bar and just beyond its end, so a clipped bar can be told from a full one.
+ */
+export function clipCaps(
+	values: readonly number[],
+	x: number,
+	mid: number,
+	bw: number,
+	scale: number,
+	max: number
+) {
+	let d = '';
+	values.forEach((v, i) => {
+		if (Math.abs(v * scale) <= max) return;
+		const x0 = x + i * bw - 0.6;
+		const y0 = v > 0 ? mid - max - 2.4 : mid + max + 0.8;
+		d += `M${x0.toFixed(1)} ${y0.toFixed(1)}h${(bw * 0.8 + 1.2).toFixed(2)}v1.6h${(-(bw * 0.8 + 1.2)).toFixed(2)}Z`;
+	});
+	return d;
+}
+
+/**
  * A matrix of values in 0..1 as a few paths, one per brightness band (instead of one rect per
  * cell): `cells(i, j)` returns the value or null for no cell. Returns [{ key, d, level }].
  */

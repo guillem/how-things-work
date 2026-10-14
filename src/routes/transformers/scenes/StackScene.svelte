@@ -30,7 +30,7 @@
 			const mean = new Array<number>(s.n).fill(0);
 			for (let h = 0; h < 12; h++) s.row(l, h, last).forEach((w, j) => (mean[j] += w / 12));
 			let j = 1;
-			for (let k = 1; k < s.n; k++) if (mean[k] > mean[j]) j = k;
+			for (let k = 1; k < s.n - 1; k++) if (mean[k] > mean[j]) j = k;
 			const y = by(l) + T.block / 2 + 4;
 			const x0 = sx(last);
 			const x1 = sx(j);
@@ -148,7 +148,7 @@
 			muted
 			text="arc in each block: the earlier token “{names[
 				last
-			]}” listens to most (12-head average, ⟨start⟩ left out)"
+			]}” listens to most (12-head average, itself and ⟨start⟩ left out)"
 		/>
 	</Readout>
 
