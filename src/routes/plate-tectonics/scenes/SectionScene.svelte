@@ -1133,11 +1133,11 @@
 			color="var(--pt-sideways)"
 		>
 			<Label
-				x={X(0) + 12}
+				x={X(0) - 12}
 				y={PB - 12}
 				text="transform fault: also sliding past"
 				size={11}
-				anchor="start"
+				anchor="end"
 				pill
 			/>
 		</Readout>
@@ -1152,12 +1152,7 @@
 			</Readout>
 		{/if}
 		{#if phase === 'island-arc' || (phase === 'sandbox' && cfg.left === 'ocean' && cfg.right === 'ocean' && sec.kind === 'subduction')}
-			<Readout
-				id="ages"
-				order={7}
-				label="Sea floor ages"
-				value="left {Math.round(leftAge)}, right {Math.round(OCEAN_AGE.right + sec.myr)} Myr"
-			>
+			<Readout id="ages">
 				<Label
 					x={X(-640)}
 					y={Y(leftCol.z) - 10}
