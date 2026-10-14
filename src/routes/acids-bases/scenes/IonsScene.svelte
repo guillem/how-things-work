@@ -310,7 +310,7 @@
 			<Label
 				x={LX - 16}
 				y={(rowY(1) + rowY(13)) / 2}
-				text="each step up: ×10 H⁺"
+				text="each step toward pH 0: ×10 H⁺"
 				size={12}
 				weight={600}
 				rotate={-90}

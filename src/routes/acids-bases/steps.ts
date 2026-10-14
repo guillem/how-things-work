@@ -11,7 +11,7 @@ const ph: Control = {
 	step: 0.1,
 	default: 5,
 	format: (v) => v.toFixed(1),
-	help: 'Drag down for more acidic, up for more basic.'
+	help: 'Lower values are more acidic, higher values more basic.'
 };
 /** The same slider on the bases step, starting on the basic side. */
 const phBase: Control = { ...ph, id: 'phBase', default: 10 };
@@ -159,10 +159,10 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [ph],
 			body: `
-<p>Add acid and the number of H⁺ ions in the cube climbs, fast. Drag the pH slider and count: at pH 7 there are 60, at pH 6 there are <strong>600</strong>, at pH 5 <strong>6 000</strong>. Every step down the scale means <strong>ten times</strong> more hydrogen ions.</p>
-<p>That is how the <dfn data-def="A number for how acidic a solution is: minus the power of ten of its H⁺ concentration in mol/L. pH 3 means 10⁻³ mol/L of H⁺.">pH</dfn> is defined: it is the power of ten of the H⁺ concentration, with the minus sign dropped. pH 3 means 10⁻³ moles of H⁺ per litre; pH 4 means 10⁻⁴, ten times less. Lower pH, more H⁺, more acidic. A logarithmic scale like this squeezes a range of a hundred trillion into the numbers 0 to 14.</p>
+<p>Add acid and the number of H⁺ ions in the cube climbs, fast. Drag the pH slider and count: at pH 7 there are 60, at pH 6 there are <strong>600</strong>, at pH 5 <strong>6 000</strong>. Every step down in pH means <strong>ten times</strong> more hydrogen ions.</p>
+<p>That is how the <dfn data-def="A number for how acidic a solution is: minus the power of ten of its H⁺ concentration in mol/L. pH 3 means 10⁻³ mol/L of H⁺.">pH</dfn> is defined: it is the power of ten of the H⁺ concentration, with the minus sign dropped. pH 3 means 10⁻³ <dfn data-def="A fixed, very large count of particles: 6.02 × 10²³.">moles</dfn> of H⁺ per litre; pH 4 means 10⁻⁴, ten times less. Lower pH, more H⁺, more acidic. A logarithmic scale like this squeezes a range of a hundred trillion into the numbers 0 to 14.</p>
 <p>Watch the OH⁻ ions at the same time: as the H⁺ go up, the OH⁻ go down by the same factor.</p>`,
-			notes: `<p>In symbols, pH = −log₁₀[H⁺], with [H⁺] in mol/L. Strictly the formula uses the <em>activity</em> of H⁺, its effective concentration, which in concentrated solutions differs from the real one; the page uses plain concentrations, which is accurate for dilute solutions. Real pH meters measure activity, which is why a strong acid can read slightly below 0 or a strong base above 14.</p>`
+			notes: `<p>In symbols, pH = −log₁₀[H⁺], with [H⁺] in mol/L. Strictly the formula uses the <em>activity</em> of H⁺, its effective concentration, which in concentrated solutions differs from the real one; the page uses plain concentrations, which is accurate for dilute solutions. The scale is not fenced at 0 and 14: any solution with more than 1 mol/L of H⁺ has a negative pH (concentrated hydrochloric acid is about −1), and very strong bases go above 14.</p>`
 		},
 		{
 			id: 'bases',
@@ -231,7 +231,7 @@ export const spec: ExplainerSpec = {
 			controls: [added('addedJump', 24.85, 20, 30), drop],
 			body: `
 <p>You are at 24.85 mL, three drops short. Add the base yourself, <strong>one drop at a time</strong> (a drop from a burette is about 0.05 mL), and watch the panel of the last drops.</p>
-<p>Why the leap? The pH counts H⁺ by powers of ten. At 24.95 mL only one part in a thousand of the acid is left and the pH is 4.0. The next drop, at <strong>25.00 mL</strong>, matches the acid exactly: the moles of OH⁻ added equal the moles of H⁺ there were, the <dfn data-def="The point of a titration at which the base added exactly matches the acid in the flask, mole for mole.">equivalence point</dfn>. Only water's own ions remain: pH 7.0. One more drop leaves OH⁻ in excess, and the pH is 10.0. Two drops, six pH steps: <strong>a millionfold</strong> change in H⁺.</p>
+<p>Why the leap? The pH counts H⁺ by powers of ten. At 24.95 mL only one part in 500 of the acid is left and the pH is 4.0. The next drop, at <strong>25.00 mL</strong>, matches the acid exactly: the moles of OH⁻ added equal the moles of H⁺ there were, the <dfn data-def="The point of a titration at which the base added exactly matches the acid in the flask, mole for mole.">equivalence point</dfn>. Only water's own ions remain: pH 7.0. One more drop leaves OH⁻ in excess, and the pH is 10.0. Two drops, six pH steps: <strong>a millionfold</strong> change in H⁺.</p>
 <p>That is why a titration is so precise: the equivalence point is marked by a cliff, not a gentle slope.</p>`,
 			notes: `<p>At equivalence the flask holds 50 mL of sodium chloride solution, salt water. The moles of acid are 0.025 L × 0.1 mol/L = 2.5 millimoles, so it takes 2.5 millimoles of NaOH: 25.00 mL. Knowing the base's concentration and reading the volume at the jump gives the amount of acid, which is how the acidity of wine, vinegar or a water sample is measured.</p>`
 		},
@@ -252,7 +252,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A chemist can't watch a pH curve: they watch a colour. An indicator is itself a weak acid whose two forms have different colours. Bromothymol blue is yellow while it holds its proton and blue once it has lost it; it changes over pH 6.0–7.6, the band shaded on the plot.</p>
 <p>Titrate the acid yourself: add a millilitre at a time, then go drop by drop near 25 mL. The colour changes inside a single drop. Then empty the flask and try the other two indicators. With a strong acid all three work: the curve is almost vertical from about pH 3.5 to 10.5, so each of them changes within a couple of drops of 25 mL. Phenolphthalein, colourless until about pH 8.2, is the usual choice.</p>`,
-			notes: `<p>Only a few drops of indicator go in, far too little to change the pH. The colour drawn here is the mix of the two forms in the proportions the indicator's own pKa sets (pKIn 3.7, 7.0 and 9.4; values from Imperial College's <i>Acid–Base Indicators and Titrations</i> by W. Locke). The eye sees a change once about a tenth of the dye has switched, which is why each range spans about two pH units.</p>`
+			notes: `<p>Only a few drops of indicator go in, far too little to change the pH. The colour drawn here is the mix of the two forms in the proportions the indicator's own pKa sets (pKIn 3.7, 7.0 and 9.4; values from Imperial College's <i>Acid–Base Indicators and Titrations</i> by W. Locke). The eye only notices the change once a fair share of the dye has switched, roughly within one pH unit either side of pKIn, which is why each range spans one to two pH units.</p>`
 		},
 		// ------------------------------------------------------------------ weak
 		{
@@ -302,8 +302,8 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [added('addedC', 0), drop, ml, restart, acidC, indicatorC],
 			body: `
-<p>Titrate the acetic acid with <strong>methyl orange</strong>. It is half-way to yellow after only 2 mL and fully yellow by about 8 mL, long before the acid is used up: its band lies in the weak acid's first climb, not in the jump. A chemist stopping where its colour changes would think the vinegar held less than a tenth of the acid it really does.</p>
-<p>Switch to <strong>phenolphthalein</strong>: its band, 8.2–10, sits right in the weak acid's jump, and it turns pink at the drop that reaches 25 mL. The rule is to pick an indicator that changes colour <strong>at the equivalence pH</strong>, which depends on the acid.</p>
+<p>Titrate the acetic acid with <strong>methyl orange</strong>. It is half-way to yellow after only 2 mL and fully yellow by about 8 mL, long before the acid is used up: its band lies in the weak acid's first climb, not in the jump. A chemist stopping where its colour changes would think the sample held less than a tenth of the acid it really does.</p>
+<p>Switch to <strong>phenolphthalein</strong>: its band, 8.2–10, sits right in the weak acid's jump, and it turns pink within a drop of 25 mL. The rule is to pick an indicator that changes colour <strong>at the equivalence pH</strong>, which depends on the acid.</p>
 <p>The takeaway, in one picture: pH counts hydrogen ions in powers of ten, so it leaps at the drop where the base matches the acid; and that leap is centred on pH 7 only when both are strong.</p>`
 		}
 	]

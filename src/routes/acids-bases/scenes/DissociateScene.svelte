@@ -60,12 +60,21 @@
 			}
 			return s;
 		}
+		// Slot j only uses molecules j, j + nSplit, j + 2·nSplit…, so no two slots share one,
+		// and it cross-fades from one molecule to the next: always exactly nSplit split.
+		const group = Math.floor(N / Math.max(1, nSplit));
+		const pick = (j: number, life: number) =>
+			j + nSplit * Math.floor(rng(7000 + j * 131 + life * 7919)() * group);
 		for (let j = 0; j < nSplit; j++) {
 			const off = (j * 0.618034) % 1;
 			const life = Math.floor(t / LIFE + off);
-			const u = reduced ? 0.5 : cycle(t, LIFE, -off * LIFE);
-			const i = Math.floor(rng(7000 + j * 131 + life * 7919)() * N);
-			s[i] = Math.max(s[i], smoothstep(0, 0.15, u) * (1 - smoothstep(0.85, 1, u)));
+			// `cycle`'s offset is in periods, so the phase wraps exactly when `life` ticks.
+			const u = reduced ? 0.5 : cycle(t, LIFE, off);
+			const out = smoothstep(0.85, 1, u);
+			const a = pick(j, life);
+			const b = pick(j, life + 1);
+			s[a] = Math.max(s[a], 1 - out);
+			s[b] = Math.max(s[b], out);
 		}
 		return s;
 	});
