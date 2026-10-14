@@ -1043,3 +1043,37 @@ kbd {
 	--hm-gut: #fcc419;
 	--hm-urine: #ffe066;
 }
+
+/* quantum-mechanics: the wave (Re ψ, Im ψ, |ψ|²), the two slits' waves, dots, barrier, detectors */
+:root {
+	--qm-re: #1971c2;
+	--qm-im: #e8590c;
+	--qm-prob: #7048e8;
+	--qm-prob-fill: #7048e833;
+	--qm-top: #0c8599;
+	--qm-bottom: #d6336c;
+	--qm-dot: #5f3dc4;
+	--qm-wall: #868e96;
+	--qm-barrier: #fab005;
+	--qm-barrier-fill: #fab00533;
+	--qm-click: #2f9e44;
+	--qm-map-lo: #fbfaf7;
+	--qm-map-hi: #5f3dc4;
+	--qm-screen: #e9ecef;
+}
+:root[data-theme='dark'] {
+	--qm-re: #4dabf7;
+	--qm-im: #ff922b;
+	--qm-prob: #b197fc;
+	--qm-prob-fill: #b197fc33;
+	--qm-top: #3bc9db;
+	--qm-bottom: #f06595;
+	--qm-dot: #d0bfff;
+	--qm-wall: #868e96;
+	--qm-barrier: #ffd43b;
+	--qm-barrier-fill: #ffd43b2b;
+	--qm-click: #69db7c;
+	--qm-map-lo: #16171a;
+	--qm-map-hi: #b197fc;
+	--qm-screen: #25262b;
+}

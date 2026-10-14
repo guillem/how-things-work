@@ -447,6 +447,15 @@ const explainers: Explainer[] = [
 		accent: '#d9480f',
 		steps: 8,
 		minutes: 15
+	},
+	{
+		slug: 'quantum-mechanics',
+		title: 'Quantum mechanics',
+		summary:
+			'Fire electrons one at a time at two slits and watch single dots build up an interference pattern, then record which slit each one took and watch the pattern vanish. Solve the Schrödinger equation and send a wave packet at a barrier it cannot climb: part of it tunnels through.',
+		accent: '#7048e8',
+		steps: 11,
+		minutes: 22
 	}
 ];
 
