@@ -2072,3 +2072,37 @@ kbd {
 	--im-node: #211c33;
 	--im-node-edge: #7c6bc4;
 }
+
+/* mrna-vaccines */
+:root {
+	--mv-lnp: #fff3bf;
+	--mv-lnp-edge: #e8a90c;
+	--mv-mrna: #0c8599;
+	--mv-spike: #e8590c;
+	--mv-s1: #e8590c;
+	--mv-s2: #f59f00;
+	--mv-ribosome: #845ef7;
+	--mv-nucleus: #edf2ff;
+	--mv-nucleus-edge: #748ffc;
+	--mv-endosome: #fff0f6;
+	--mv-endosome-edge: #e64980;
+	--mv-muscle: #ffe3e3;
+	--mv-muscle-edge: #e599a0;
+	--mv-alarm: #f08c00;
+}
+:root[data-theme='dark'] {
+	--mv-lnp: #3d3410;
+	--mv-lnp-edge: #fcc419;
+	--mv-mrna: #3bc9db;
+	--mv-spike: #ff922b;
+	--mv-s1: #ff922b;
+	--mv-s2: #ffd43b;
+	--mv-ribosome: #b197fc;
+	--mv-nucleus: #1b2140;
+	--mv-nucleus-edge: #91a7ff;
+	--mv-endosome: #3a1527;
+	--mv-endosome-edge: #f783ac;
+	--mv-muscle: #3b1f22;
+	--mv-muscle-edge: #b05a63;
+	--mv-alarm: #ffa94d;
+}

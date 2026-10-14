@@ -2421,6 +2421,29 @@
 		/>
 		<circle cx="88" cy="100" r="3" fill="var(--im-virus)" />
 		<circle cx="142" cy="100" r="3" fill="var(--im-virus)" />
+	{:else if slug === 'mrna-vaccines'}
+		<!-- a lipid bubble with its message, a ribosome reading it, and the spike it makes -->
+		<circle cx="58" cy="60" r="30" fill="none" stroke={accent} stroke-width="5" opacity="0.85" />
+		<path
+			d="M40 62 C 46 50, 52 74, 58 62 S 70 50, 76 62"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M98 76 L182 76"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linecap="round"
+			stroke-dasharray="6 4"
+		/>
+		<ellipse cx="124" cy="70" rx="13" ry="10" fill={accent} opacity="0.6" />
+		<g stroke="currentColor" stroke-opacity="0.55" stroke-width="2.4" stroke-linecap="round">
+			<path d="M162 76 L162 52" />
+			<path d="M162 54 C 150 48, 152 36, 162 34 C 172 36, 174 48, 162 54" fill="none" />
+		</g>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

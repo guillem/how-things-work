@@ -672,6 +672,15 @@ const explainers: Explainer[] = [
 		accent: '#c2255c',
 		steps: 12,
 		minutes: 20
+	},
+	{
+		slug: 'mrna-vaccines',
+		title: 'How vaccines work — and what an mRNA vaccine does inside you',
+		summary:
+			'Follow an mRNA vaccine from the injection: a fat bubble enters a muscle cell, its ribosomes read the message and make a virus’s spike protein, the cell shows it to the immune system and breaks the message down within days. Then compare the antibodies after one dose, two doses and a later infection.',
+		accent: '#0c8599',
+		steps: 14,
+		minutes: 22
 	}
 ];
 
