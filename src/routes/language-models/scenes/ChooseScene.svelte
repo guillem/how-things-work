@@ -67,16 +67,16 @@
 </script>
 
 <g>
-	<rect
-		x="24"
-		y="16"
-		width="912"
-		height="200"
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
 	<Readout id="text" order={1} label="Your text" value={text}>
+		<rect
+			x="24"
+			y="16"
+			width="912"
+			height="200"
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
 		<TextCard
 			x={44}
 			y={52}

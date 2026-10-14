@@ -80,19 +80,19 @@
 </script>
 
 <g>
-	<rect
-		x="24"
-		y="16"
-		width="912"
-		height="224"
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
 	<Readout id="setting" order={1} label="Setting" value={setting}>
 		<Txt x={44} y={42} size={12} muted text="GPT-2 small writes · {setting}" />
 	</Readout>
 	<Readout id="text" order={2} label="Text so far" value={fullText}>
+		<rect
+			x="24"
+			y="16"
+			width="912"
+			height="224"
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
 		<TextCard
 			x={44}
 			y={72}
@@ -189,6 +189,7 @@
 					y={STRIP.y + 17}
 					text-anchor="middle"
 					style:font-size="11.5px"
+					style:font-family="var(--font-mono)"
 					style:fill="var(--stage-bg)"
 					style:font-weight="650">{label(lm.token(g.id))}</text
 				>

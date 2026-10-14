@@ -108,13 +108,13 @@
 			/>
 			<TextCard
 				x={L.x}
-				y={y + 37}
+				y={y + 35}
 				w={L.w}
 				prompt={[]}
 				gen={o.run.steps.slice(0, shown).map((s) => s.pick)}
 				maxLines={3}
 				size={12.5}
-				lineH={17}
+				lineH={15.5}
 				color={i === 0 ? 'var(--lm-greedy)' : 'var(--lm-gen)'}
 			/>
 		</Readout>
