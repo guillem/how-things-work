@@ -531,14 +531,14 @@ export interface Search {
 	bestLength: number;
 }
 
-/** Brute force: try every tour, keeping the shortest. Records the tours when n ≤ 8. */
+/** Brute force: try every tour, keeping the shortest. Records the tours when n ≤ 9. */
 export function bruteForce(cs: City[]): Search {
 	const tried: number[][] = [];
 	const records: Search['records'] = [];
 	let best: number[] = [];
 	let bestLength = Infinity;
 	let i = 0;
-	const keep = cs.length <= 8;
+	const keep = cs.length <= 9;
 	eachTour(cs.length, (tour) => {
 		const d = tourLength(cs, tour);
 		if (keep) tried.push([...tour]);

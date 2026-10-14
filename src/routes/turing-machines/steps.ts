@@ -330,7 +330,16 @@ export const spec: ExplainerSpec = {
 			title: 'Solvable, but slowly: the travelling salesman',
 			scene: 'tsp',
 			duration: 40,
-			controls: [cityCount, tourPace, reshuffle],
+			controls: [
+				cityCount,
+				{
+					...play,
+					id: 'tspPlay',
+					help: 'Off: drag the marker on the timeline, or focus it and use the arrow keys.'
+				},
+				tourPace,
+				reshuffle
+			],
 			body: `
 <p>Some problems are computable but seem to need an enormous search. Visit every city once and return home by the shortest round trip: the <dfn data-def="Find the shortest closed route through a set of cities that visits each exactly once.">travelling salesman problem</dfn>.</p>
 <p>Brute force tries every tour. Fix the starting city; the other <i>n</i> − 1 can come in (<i>n</i> − 1)! orders, and each tour is counted twice (once each way): <strong>(<i>n</i> − 1)!/2 tours</strong>. Six cities have 60; nine have 20,160. Watch the search try them and keep the shortest so far (green). The dashed tour is a greedy guess, always going to the nearest unvisited city: fast, often good, sometimes not the best.</p>`,

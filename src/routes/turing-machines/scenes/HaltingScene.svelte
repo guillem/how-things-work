@@ -183,7 +183,7 @@
 	</Readout>
 
 	<!-- column headers -->
-	{#each table.names as _, j (j)}
+	{#each table.names as name, j (name)}
 		<Txt
 			x={colX(j)}
 			y={GY - 10}
@@ -259,7 +259,7 @@
 	{/each}
 	<g opacity={show.more.current}>
 		<Txt x={NAME_X} y={rowY(N) + 2} text="⋮  infinitely many more" size={13} muted />
-		{#each table.names as _, j (j)}
+		{#each table.names as name, j (name)}
 			<Txt x={colX(j)} y={rowY(N) + 2} text="⋮" size={15} anchor="middle" muted />
 		{/each}
 	</g>
