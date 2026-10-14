@@ -152,7 +152,8 @@
 	const EON_Y = 40;
 	const ERA_Y = 60;
 	const COVER_Y = 76;
-	const TEMP = { y: 102, h: 98, lo: 8, hi: 40 };
+	// hi leaves room for the top of the 90% band of the Turonian hothouse (43.7 °C)
+	const TEMP = { y: 102, h: 98, lo: 8, hi: 45 };
 	const O2T = { y: 222, h: 84 };
 	const LIFE_Y = 326;
 	const ROW = 19;
@@ -223,7 +224,9 @@
 			const xb = clampX(xOf(b.top, sp));
 			const lo = 'lo' in b ? b.lo : undefined;
 			const hi = 'hi' in b ? b.hi : undefined;
+			const estimates = 'estimates' in b ? b.estimates : [];
 			return {
+				estimates: estimates.map((e) => ({ ...e, y: oY(e.pal) })),
 				id: b.id,
 				x: xa,
 				w: xb - xa,
@@ -820,6 +823,16 @@
 						stroke="var(--dt-o2)"
 						stroke-dasharray="4 3"
 					/>
+					{#each b.estimates as e (e.pal)}
+						<path
+							d="M{b.x + 3} {e.y.toFixed(1)}H{b.x + b.w - 3}"
+							stroke="var(--dt-o2)"
+							stroke-width="1.4"
+						/>
+						{#if labelFits(e.text, b.w, 9.5)}
+							<T x={b.x + b.w / 2} y={e.y + 10} text={e.text} size={9.5} color="var(--dt-o2)" />
+						{/if}
+					{/each}
 				{:else}
 					<path d="M{b.x} {b.yBot}H{b.x + b.w}" stroke="var(--dt-o2)" stroke-width="1.6" />
 					{#each Array.from({ length: Math.floor(b.w / 34) }, (_, k) => k) as k (k)}

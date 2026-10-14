@@ -10,6 +10,7 @@ import {
 	LIFE,
 	OXYGEN_PEAK,
 	PERIODS,
+	PRECAMBRIAN_O2,
 	TEMPERATURE_EXTREMES,
 	TEMPERATURE_START,
 	YEARS_PER_SECOND,
@@ -103,7 +104,7 @@ test('the time scale is the ICS chart, with no gaps from the Earth’s birth to 
 	expect(EXTINCTIONS.map((e) => e.age)).toEqual([443.1, 372.15, 251.902, 201.4, 66]);
 });
 
-test('PhanDA: 11–36 °C, hottest in the mid-Cretaceous, coldest in the last ice age', () => {
+test('PhanDA: 11–36 °C, hottest in the mid-Cretaceous, coldest just before the Holocene', () => {
 	// Judd et al. 2024: GMST "spanned 11° to 36°C" over the past 485 million years
 	expect(TEMPERATURE_EXTREMES.cold.p50).toBeCloseTo(11.4, 1);
 	expect(TEMPERATURE_EXTREMES.cold.stage).toBe('Upper Pleistocene');
@@ -128,6 +129,14 @@ test('oxygen: 5–10% in the Cambrian, over 25% around the Permian, 21% today', 
 	expect(OXYGEN_PEAK[0]).toBeLessThan(320);
 	expect(oxygenAt(0)!.mid).toBeCloseTo(20.6, 1);
 	expect(oxygenAt(600)).toBeNull();
+});
+
+test('the disputed mid-Proterozoic oxygen box spans both published estimates', () => {
+	// Planavsky et al. 2014: under 0.1% of today's level; Zhang et al. 2016: over 4%
+	const box = PRECAMBRIAN_O2.find((b) => b.id === 'boring')!;
+	expect(box.lo).toBeLessThan(1e-3);
+	expect(box.hi).toBeGreaterThan(4e-2);
+	expect([box.top, box.base]).toEqual([800, 1800]);
 });
 
 test('uranium-238 dating: half of an Earth-age crystal’s uranium has turned to lead', () => {
@@ -156,6 +165,22 @@ test('one calendar year: animals in November, humans in the last half-hour', () 
 	expect(secondsBeforeMidnight(0.0115)).toBeCloseTo(79.4, 1);
 	expect(secondsBeforeMidnight(80e-6)).toBeCloseTo(0.55, 2); // an 80-year life
 	expect(calendarText(0, true)).toBe('31 December, 24:00:00'); // midnight: today
+	// the other dates the narrative quotes
+	expect(calendarText(4404)).toBe('14 January'); // oldest zircon
+	expect(calendarText(2430)).toBe('20 June'); // oxygen
+	expect(toCalendar(1635).month).toBe(7); // complex cells, late August
+	expect(toCalendar(1635).day).toBeGreaterThan(20);
+	expect(calendarText(571)).toBe('16 November'); // first large animals
+	expect(calendarText(230)).toBe('13 December'); // first dinosaurs
+});
+
+test('the shares of Earth’s history the narrative quotes', () => {
+	const pct = (age: number) => (100 * age) / EARTH_AGE;
+	expect(100 - pct(PERIODS.find((x) => x.name === 'Cambrian')!.base)).toBeCloseTo(88, 0); // Precambrian
+	expect(pct(PERIODS.find((x) => x.name === 'Quaternary')!.base)).toBeCloseTo(0.06, 2); // ice ages
+	expect(pct(LIFE.find((l) => l.id === 'sapiens')!.from)).toBeCloseTo(0.007, 3);
+	// the oldest mammal relative, Kalaallitkigun (Sulej et al. 2020): mid–late Norian, about 215 Ma
+	expect(LIFE.find((l) => l.id === 'mammals')!.from).toBe(215);
 });
 
 test('the groups of life are in the order of their first fossils', () => {

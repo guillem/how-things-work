@@ -230,6 +230,13 @@ for (const f of features) {
 		...simplify(r.slice(far), TOL)
 	].slice(0, -1);
 	if (s.length < 4) continue;
+	// the coastline file repeats some polygons: keep one copy (two would draw darker when faded)
+	const same = (k) =>
+		k.pid === f.pid &&
+		k.from === f.from &&
+		k.ring.length === s.length &&
+		k.ring.every((v, i) => v[0] === s[i][0] && v[1] === s[i][1]);
+	if (kept.some(same)) continue;
 	kept.push({ ...f, area, ring: s });
 }
 const plates = [...new Set(kept.map((f) => f.pid))].sort((a, b) => a - b);
