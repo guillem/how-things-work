@@ -40,12 +40,12 @@ export const R_SUN = 6.957e8;
 export const TEFF_SUN = 5772;
 /** The Earth's GM, m³/s² (IAU 2015 Resolution B3, nominal). */
 export const GM_EARTH = 3.986004e14;
-/** The Earth's equatorial radius, m (IAU 2015 Resolution B3, nominal). */
-export const R_EARTH = 6.3781e6;
+/** The Earth's mean radius, m (IUGG mean radius R1). Mean radii, so that densities come out right. */
+export const R_EARTH = 6.371e6;
 /** Jupiter's GM, m³/s² (IAU 2015 Resolution B3, nominal). */
 export const GM_JUPITER = 1.2668653e17;
-/** Jupiter's equatorial radius, m (IAU 2015 Resolution B3, nominal). */
-export const R_JUPITER = 7.1492e7;
+/** Jupiter's volumetric mean radius, m (NASA Jupiter fact sheet). */
+export const R_JUPITER = 6.9911e7;
 /** Jupiter's orbit: semi-major axis 5.2038 AU (NASA Jupiter fact sheet). */
 export const A_JUPITER = 5.2038;
 
@@ -53,7 +53,7 @@ export const M_SUN = GM_SUN / G;
 export const M_EARTH = GM_EARTH / G;
 /** Jupiter's mass in Earth masses (≈ 317.8). */
 export const JUPITER_MASSES = GM_JUPITER / GM_EARTH;
-/** Jupiter's radius in Earth radii (≈ 11.2). */
+/** Jupiter's radius in Earth radii (≈ 11.0). */
 export const JUPITER_RADII = R_JUPITER / R_EARTH;
 /** The Sun's radius in Earth radii (≈ 109). */
 export const SUN_RADII = R_SUN / R_EARTH;
@@ -332,7 +332,19 @@ export type StarId = keyof typeof STARS;
 export const starOf = (id: unknown): Star =>
 	STARS[(id as StarId) in STARS ? (id as StarId) : 'sun'].star;
 
-/** An archive planet as a model planet (circular orbit; edge-on, 90°, if no inclination is known). */
-export function modelPlanet(p: ArchivePlanet, incl = p.incl ?? 90): Planet {
-	return { radius: p.radius, mass: p.mass, a: p.a, incl };
+/**
+ * An archive planet and its star as a model system. The orbit radius comes from
+ * the measured period through Kepler's third law (the composite table can take a
+ * and P from different papers), so the period is the measured one. Circular
+ * orbit; edge-on (90°) if no inclination is known.
+ */
+export function archiveSystem(
+	p: ArchivePlanet,
+	incl = p.incl ?? 90
+): { star: Star; planet: Planet } {
+	const star = archiveStar(p.star);
+	return {
+		star,
+		planet: { radius: p.radius, mass: p.mass, a: orbitAU(p.period, star.mass, p.mass), incl }
+	};
 }

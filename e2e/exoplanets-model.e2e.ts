@@ -10,7 +10,7 @@ import {
 	STARS,
 	SUN,
 	archivePlanet,
-	archiveStar,
+	archiveSystem,
 	blocked,
 	density,
 	dopplerShift,
@@ -20,7 +20,6 @@ import {
 	interceptedFraction,
 	massFromWobble,
 	maxTiltDeg,
-	modelPlanet,
 	orbitAU,
 	periodDays,
 	radialVelocity,
@@ -48,7 +47,7 @@ test("Kepler's third law: 1 AU round the Sun is a year, Jupiter's orbit 11.9 yea
 
 test('a transit dims the star by (Rp/R★)²: 84 ppm for the Earth, 1% for Jupiter', () => {
 	expect(transitDepth(SUN, earth) * 1e6).toBeCloseTo(84, 0);
-	expect(transitDepth(SUN, jupiter) * 100).toBeCloseTo(1.06, 2);
+	expect(transitDepth(SUN, jupiter) * 100).toBeCloseTo(1.01, 2);
 	// Mid-transit the light really is down by that much, and far from transit it is not.
 	expect(1 - flux(SUN, earth, 0)).toBeCloseTo(transitDepth(SUN, earth), 9);
 	expect(flux(SUN, earth, 0.25)).toBe(1);
@@ -68,7 +67,8 @@ test('the overlap of two discs: none apart, k² inside, half at the edge for a t
 test('real transits: the model reproduces measured depths from the archive radii', () => {
 	for (const name of ['HD 209458 b', 'HD 189733 b', 'TRAPPIST-1 e']) {
 		const p = archivePlanet(name);
-		const depth = transitDepth(archiveStar(p.star), modelPlanet(p)) * 100;
+		const { star, planet } = archiveSystem(p);
+		const depth = transitDepth(star, planet) * 100;
 		expect(p.depthPercent).not.toBeNull();
 		// Measured depths include limb darkening, which the model leaves out: within 15%.
 		expect(Math.abs(depth / p.depthPercent! - 1)).toBeLessThan(0.15);
@@ -102,7 +102,8 @@ test('real wobbles: the model reproduces the measured amplitudes from the archiv
 		const p = archivePlanet(name);
 		// Proxima b's archive mass is the minimum mass, M sin i: seen edge-on it gives K directly.
 		const incl = p.massKind === 'Msini' ? 90 : p.incl!;
-		const K = rvAmplitude(archiveStar(p.star), { ...modelPlanet(p, incl), a: p.a });
+		const { star, planet } = archiveSystem(p, incl);
+		const K = rvAmplitude(star, planet);
 		expect(p.rvAmp).not.toBeNull();
 		expect(Math.abs(K / p.rvAmp! - 1)).toBeLessThan(0.03);
 	}
@@ -119,8 +120,8 @@ test('the velocity curve: zero at mid-transit, then the star comes towards us (b
 
 test('reading the planet back: depth gives the size, wobble and period give the mass', () => {
 	const p = archivePlanet('HD 209458 b');
-	const st = archiveStar(p.star);
-	const pl = modelPlanet(p);
+	const { star: st, planet: pl } = archiveSystem(p);
+	expect(periodDays(st, pl)).toBeCloseTo(p.period, 6);
 	const depth = transitDepth(st, pl);
 	expect(radiusFromDepth(depth, st.radius)).toBeCloseTo(p.radius, 6);
 	const K = rvAmplitude(st, pl);
@@ -134,10 +135,9 @@ test('reading the planet back: depth gives the size, wobble and period give the 
 	expect(massFromWobble(peg.rvAmp!, peg.period, peg.star.mass)).toBeCloseTo(148, -1);
 });
 
-test('density tells rock from gas: Earth 5.5 g/cm³, Jupiter 1.2, an inflated hot Jupiter less', () => {
+test('density tells rock from gas: Earth 5.5 g/cm³, Jupiter 1.3, an inflated hot Jupiter less', () => {
 	expect(density(1, 1)).toBeCloseTo(5.5, 1);
-	// Jupiter: 1.24 with its equatorial radius (1.33 with its mean radius: its spin flattens it).
-	expect(density(JUPITER_RADII, JUPITER_MASSES)).toBeCloseTo(1.24, 2);
+	expect(density(JUPITER_RADII, JUPITER_MASSES)).toBeCloseTo(1.33, 2);
 	const p = archivePlanet('HD 209458 b');
 	expect(density(p.radius, p.mass)).toBeLessThan(0.5);
 });
@@ -159,7 +159,7 @@ test("the Sun's habitable zone runs from 0.95 to 1.68 AU (Kopparapu et al. 2014)
 
 test('the Earth intercepts less than a billionth of the Sun’s light', () => {
 	expect(interceptedFraction(earth)).toBeCloseTo(4.5e-10, 11);
-	expect(interceptedFraction(jupiter)).toBeCloseTo(2.1e-9, 10);
+	expect(interceptedFraction(jupiter)).toBeCloseTo(2.0e-9, 10);
 });
 
 test('the census: most known planets were found by transits, then by the wobble', () => {

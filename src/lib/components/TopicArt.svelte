@@ -1829,6 +1829,24 @@
 				<path d="M0 0 L10 5 L0 10 Z" fill="currentColor" />
 			</marker>
 		</defs>
+	{:else if slug === 'exoplanets'}
+		<!-- a planet crossing its star, and the dip it makes in the star's light -->
+		<circle cx="58" cy="52" r="30" fill="var(--ex-star-g)" opacity="0.9" />
+		<circle cx="70" cy="58" r="7" fill="currentColor" opacity="0.85" />
+		<path
+			d="M104 40 H136 C142 40 143 52 148 52 H162 C167 52 168 40 174 40 H192"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.2"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M104 86 C116 70 128 70 140 86 S164 102 176 86 S188 76 192 80"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			opacity="0.55"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
