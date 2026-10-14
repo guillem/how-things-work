@@ -136,7 +136,7 @@ export const spec: ExplainerSpec = {
 <p>In <a href="../chemical-bonds/#tug">chemical bonds</a> you saw that chlorine pulls the shared pair of H–Cl towards itself, leaving the hydrogen slightly positive. Put hydrogen chloride in water and the polar water molecules finish the job: the hydrogen leaves <strong>without its electron</strong>, as a bare <dfn data-def="A hydrogen atom that has lost its electron: just a proton, with charge +1.">hydrogen ion</dfn>, H⁺. The chlorine keeps the pair and becomes a chloride ion, Cl⁻.</p>
 <p class="formula"><strong>HCl → H⁺ + Cl⁻</strong></p>
 <p>That is what an <dfn data-def="A substance that gives away hydrogen ions (H⁺) in water.">acid</dfn> is: something that gives away H⁺ ions. Hydrogen chloride dissolved in water is <strong>hydrochloric acid</strong>, the acid in your stomach. Every one of its molecules splits, so it is called a <dfn data-def="An acid whose molecules all give away their hydrogen ion in water.">strong acid</dfn>.</p>`,
-			notes: `<p>A bare proton never floats free in water: it sticks at once to a water molecule's lone pair, making a <dfn data-def="H₃O⁺: a water molecule carrying an extra proton. It is what 'H⁺' in water really is.">hydronium ion</dfn>, H₃O⁺. Chemists write H⁺ for short, and so does this page; the drawing shows the H⁺ on its water molecule.</p>`
+			notes: `<p>A bare proton never floats free in water: it sticks at once to a water molecule's lone pair, making a <dfn data-def="H₃O⁺: a water molecule carrying an extra proton. It is what 'H⁺' in water really is.">hydronium ion</dfn>, H₃O⁺. Chemists write H⁺ for short, and so does this page; each pink dot in the drawings stands for an H₃O⁺.</p>`
 		},
 		{
 			id: 'water',

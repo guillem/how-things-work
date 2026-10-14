@@ -168,6 +168,9 @@
 		}
 		return hi;
 	});
+	const changedText = $derived(
+		vChange === 0 ? `already ${ind.baseName} before any base` : `colour changed at ${ml(vChange)}`
+	);
 	const changedShow = $derived(showBand && Number.isFinite(vChange) && vb >= vChange ? 1 : 0);
 
 	// ---- the last drops (jump focus) ------------------------------------------------------------
@@ -249,7 +252,7 @@
 
 	<!-- readouts -->
 	<Readout id="vol" order={1} label="NaOH added" value={ml(vb)}>
-		<text x={PX0} y={32} font-size="12" class="muted">NaOH added</text>
+		<text x={PX0} y={32} font-size="12" class="muted">added</text>
 		<text x={PX0} y={54} font-size="18" font-weight="600">{ml(vb)}</text>
 	</Readout>
 	<Readout id="ph" order={2} label="pH" value={ph.toFixed(2)} color={curveColor}>
@@ -306,7 +309,7 @@
 			{@render tint(
 				PX0 + 6,
 				sy(ind.range[1]) - 5,
-				`${ind.name} changes colour: pH ${ind.range[0]}–${ind.range[1]}`,
+				`${ind.name}: pH ${ind.range[0]}–${ind.range[1]}`,
 				'var(--stage-ink)',
 				11,
 				'start',
@@ -442,11 +445,11 @@
 			stroke={indicatorColor(ind, 14).rgb}
 			stroke-width="2"
 		/>
-		<Readout id="changed" order={6} label="Colour changed at" value={ml(vChange)}>
+		<Readout id="changed" order={6} label="Colour change" value={changedText}>
 			{@render tint(
 				sx(vChange) + (vChange > 40 ? -6 : 6),
 				PY1 - 10,
-				`colour changed at ${ml(vChange)}`,
+				changedText,
 				'var(--stage-ink)',
 				12,
 				vChange > 40 ? 'end' : 'start'
@@ -469,16 +472,16 @@
 			<text x={IX + 12} y={IY + 20} font-size="12" font-weight="600"
 				>the last drops, 0.05 mL each</text
 			>
-			<text x={IX + 12} y={IY + 38} font-size="10" class="muted">NaOH added</text>
-			<text x={IX + 98} y={IY + 38} font-size="10" class="muted" text-anchor="end">pH</text>
+			<text x={IX + 12} y={IY + 38} font-size="10" class="muted">added</text>
+			<text x={IX + 106} y={IY + 38} font-size="10" class="muted" text-anchor="end">pH</text>
 
 			{#each lastDrops as d, i (d.k)}
 				{@const y = IY + 58 + i * 21}
 				<g opacity={d.done ? 1 : 0.4}>
 					<rect
-						x={IX + 108}
+						x={IX + 116}
 						y={y - 9}
-						width={(d.ph / 14) * (IW - 120)}
+						width={(d.ph / 14) * (IW - 128)}
 						height="12"
 						rx="3"
 						fill={curveColor}
@@ -488,7 +491,7 @@
 						>{ml(d.v)}</text
 					>
 					<text
-						x={IX + 98}
+						x={IX + 106}
 						y={y + 1}
 						font-size="11"
 						font-weight={d.k === 0 ? 700 : 600}
