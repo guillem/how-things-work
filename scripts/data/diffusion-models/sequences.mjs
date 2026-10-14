@@ -149,7 +149,7 @@ export async function sequences(cache) {
  * cite CC BY-SA 3.0). DIGITS are three test digits and keep its terms and attribution.
  *
  * Training: ${info.epochs} epochs, mini-batches of ${info.BATCH}, Adam, peak learning rate ${info.LR}, EMA ${info.EMA},
- * seed ${info.SEED}; ${info.seconds} s on ${info.workers} cores; final training loss ${info.loss.toFixed(4)}.
+ * seed ${info.SEED}; ${info.seconds} s ${info.cpu ? 'of CPU time' : 'wall clock'} on ${info.workers} threads; final training loss ${info.loss.toFixed(4)}.
  *
  * Images: 28 × 28, 4 bits per pixel, two per byte (high nibble first), base64; value v ↦
  * (v / 15) · 2 − 1 (−1 = black paper, 1 = white ink), x_t clipped to [−1, 1] first.
