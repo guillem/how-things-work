@@ -15,7 +15,15 @@ import {
 	threshold,
 	velocity
 } from '../src/routes/neurons/hh';
-import { P_PEAK, P_REST, ghk, ghkCurrent, ionsToCharge, nernstOf, SQUID } from '../src/routes/neurons/ions';
+import {
+	P_PEAK,
+	P_REST,
+	ghk,
+	ghkCurrent,
+	ionsToCharge,
+	nernstOf,
+	SQUID
+} from '../src/routes/neurons/ions';
 import { circuit, fires, receive } from '../src/routes/neurons/inputs';
 import {
 	myelinatedSpeed,
