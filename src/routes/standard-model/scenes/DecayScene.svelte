@@ -31,7 +31,9 @@
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
 	const parentKey = $derived(
-		step.hints?.parent === 'param' ? String(params.parent ?? 'n') : String(step.hints?.parent ?? 'n')
+		step.hints?.parent === 'param'
+			? String(params.parent ?? 'n')
+			: String(step.hints?.parent ?? 'n')
 	);
 	const parent = $derived(decayParticle(parentKey));
 
@@ -114,7 +116,12 @@
 	const equation = $derived(`${parent.label} → ${products.map(name).join(' ') || '?'}`);
 	const pdgLines = $derived.by((): string[] => {
 		const m = check.mode;
-		if (parentKey === 'p' && products.length === 2 && products.includes('e+') && products.includes('pi0'))
+		if (
+			parentKey === 'p' &&
+			products.length === 2 &&
+			products.includes('e+') &&
+			products.includes('pi0')
+		)
 			return [
 				'Searched for: if the proton decays',
 				`this way, it lives more than`,
@@ -125,9 +132,7 @@
 		if (m)
 			return [
 				'Observed (PDG):',
-				m.approx
-					? 'essentially every decay'
-					: `${pctText(m.fraction)} of decays`
+				m.approx ? 'essentially every decay' : `${pctText(m.fraction)} of decays`
 			];
 		if (!products.length) return [];
 		if (check.allowed)
@@ -166,10 +171,16 @@
 
 <g>
 	<!-- the decay -->
-	<Readout id="equation" order={1} label="Decay" value={equation}>
-		<circle cx={PX} cy={PY} r="38" fill={kindColour(parent)} />
-		<text x={PX} y={PY + 9} text-anchor="middle" font-weight="700" style:font-size="26px" style:fill="var(--sm-ball-ink)">{parent.label}</text>
-	</Readout>
+	<Readout id="equation" order={1} label="Decay" value={equation} />
+	<circle cx={PX} cy={PY} r="38" fill={kindColour(parent)} />
+	<text
+		x={PX}
+		y={PY + 9}
+		text-anchor="middle"
+		font-weight="700"
+		style:font-size="26px"
+		style:fill="var(--sm-ball-ink)">{parent.label}</text
+	>
 	<line
 		x1={138}
 		x2={206}
@@ -182,7 +193,12 @@
 		marker-end="url(#arrowhead)"
 	/>
 	{#if products.length && !check.allowed}
-		<path d="M164 {PY - 12} l16 24 M180 {PY - 12} l-16 24" stroke="var(--sm-bad)" stroke-width="3.5" stroke-linecap="round" />
+		<path
+			d="M164 {PY - 12} l16 24 M180 {PY - 12} l-16 24"
+			stroke="var(--sm-bad)"
+			stroke-width="3.5"
+			stroke-linecap="round"
+		/>
 	{/if}
 	{#each Array.from({ length: MAX_PRODUCTS }, (_, i) => i) as i (i)}
 		{#if i < products.length}
@@ -203,14 +219,34 @@
 			>
 				<circle class="ring" r="38" />
 				<circle r="33" fill={kindColour(p)} />
-				<text y="8" text-anchor="middle" font-weight="700" style:font-size="22px" style:fill="var(--sm-ball-ink)">{p.label}</text>
+				<text
+					y="8"
+					text-anchor="middle"
+					font-weight="700"
+					style:font-size="22px"
+					style:fill="var(--sm-ball-ink)">{p.label}</text
+				>
 			</g>
 		{:else}
-			<circle cx={SLOT(i)} cy={PY} r="33" fill="none" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="5 5" />
+			<circle
+				cx={SLOT(i)}
+				cy={PY}
+				r="33"
+				fill="none"
+				stroke="var(--border)"
+				stroke-width="1.5"
+				stroke-dasharray="5 5"
+			/>
 		{/if}
 	{/each}
 	<Readout id="tap-hint">
-		<T x={SLOT(0) - 33} y={PY + 60} text="tap a product to take it out · four at most" size={12} muted />
+		<T
+			x={SLOT(0) - 33}
+			y={PY + 60}
+			text="tap a product to take it out · four at most"
+			size={12}
+			muted
+		/>
 	</Readout>
 
 	<!-- the ledger -->
@@ -221,12 +257,19 @@
 	{#each lawRows as l, r (l.id)}
 		{@const y = 236 + r * 28}
 		<Readout id="law-{l.id}">
-			<T x={40} y={y} text={l.label} size={13.5} weight={600} />
-			<T x={250} y={y} text={l.b} size={13.5} anchor="middle" />
-			<T x={380} y={y} text={products.length ? l.a : '—'} size={13.5} anchor="middle" />
+			<T x={40} {y} text={l.label} size={13.5} weight={600} />
+			<T x={250} {y} text={l.b} size={13.5} anchor="middle" />
+			<T x={380} {y} text={products.length ? l.a : '—'} size={13.5} anchor="middle" />
 			{#if products.length}
-				<T x={470} y={y} text={l.ok ? '✓' : '✗'} size={17} weight={700} color={l.ok ? 'var(--sm-ok)' : 'var(--sm-bad)'} />
-				<T x={494} y={y} text={l.why} size={11} muted />
+				<T
+					x={470}
+					{y}
+					text={l.ok ? '✓' : '✗'}
+					size={17}
+					weight={700}
+					color={l.ok ? 'var(--sm-ok)' : 'var(--sm-bad)'}
+				/>
+				<T x={494} {y} text={l.why} size={11} muted />
 			{/if}
 		</Readout>
 	{/each}
@@ -234,16 +277,38 @@
 		id="laws"
 		order={2}
 		label="Laws"
-		value={products.length ? check.laws.map((l) => `${l.label} ${l.ok ? '✓' : '✗'}`).join(' · ') : '—'}
+		value={products.length
+			? check.laws.map((l) => `${l.label} ${l.ok ? '✓' : '✗'}`).join(' · ')
+			: '—'}
 	/>
 	<Readout id="ledger-foot">
-		<T x={40} y={402} text="Energy: masses, with neutrinos taken as 0 (below 0.45 eV). Spin: how many have spin ½." size={11} muted />
+		<T
+			x={40}
+			y={402}
+			text="Energy: masses, with neutrinos taken as 0 (below 0.45 eV). Spin: how many have spin ½."
+			size={11}
+			muted
+		/>
 	</Readout>
 
 	<!-- verdict -->
 	<Card x={VX - 16} y={24} w={336} h={388} />
-	<Readout id="verdict" order={0} label="Verdict" value={verdict} note={reasons.join('; ')} color={products.length ? (check.allowed ? 'var(--sm-ok)' : 'var(--sm-bad)') : undefined}>
-		<T x={VX} y={60} text={verdict} size={verdict.length > 20 ? 17 : 22} weight={700} color={products.length ? (check.allowed ? 'var(--sm-ok)' : 'var(--sm-bad)') : undefined} />
+	<Readout
+		id="verdict"
+		order={0}
+		label="Verdict"
+		value={verdict}
+		note={reasons.join('; ')}
+		color={products.length ? (check.allowed ? 'var(--sm-ok)' : 'var(--sm-bad)') : undefined}
+	>
+		<T
+			x={VX}
+			y={60}
+			text={verdict}
+			size={verdict.length > 20 ? 17 : 22}
+			weight={700}
+			color={products.length ? (check.allowed ? 'var(--sm-ok)' : 'var(--sm-bad)') : undefined}
+		/>
 		{#each reasons as line, i (i)}
 			<T x={VX} y={84 + i * 18} text={line} size={12.5} />
 		{/each}
@@ -257,7 +322,13 @@
 			<T x={VX} y={150 + i * 19} text={line} size={13} weight={i === 0 ? 600 : 500} />
 		{/each}
 	</Readout>
-	<Readout id="strange" order={4} label="Strangeness" value={strangeNote.join(' ')} opacity={strangeNote.length ? 1 : 0}>
+	<Readout
+		id="strange"
+		order={4}
+		label="Strangeness"
+		value={strangeNote.join(' ')}
+		opacity={strangeNote.length ? 1 : 0}
+	>
 		{#each strangeNote as line, i (i)}
 			<T x={VX} y={250 + i * 18} text={line} size={12.5} color="var(--sm-weak)" />
 		{/each}

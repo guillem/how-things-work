@@ -108,7 +108,11 @@
 			S('ub', 'u', [V1, 130], [X1, 130], 'fermion', 1, 2, { colour: 'g', dy: -14 }),
 			S('da', 'd', [X0, 320], [V2, 320], 'fermion', 0, 1, { colour: 'g', dy: 26 }),
 			S('db', 'd', [V2, 320], [X1, 320], 'fermion', 2, 2, { colour: 'r', dy: 26 }),
-			S('g', 'red–antigreen gluon', [V1, 130], [V2, 320], 'gluon', 1, 1, { colour: 'r~g', dy: -10, dx: 92 })
+			S('g', 'red–antigreen gluon', [V1, 130], [V2, 320], 'gluon', 1, 1, {
+				colour: 'r~g',
+				dy: -10,
+				dx: 92
+			})
 		]
 	};
 	const segs = $derived(DIAGRAMS[proc.id] ?? DIAGRAMS.beta);
@@ -219,9 +223,22 @@
 
 <g>
 	<!-- title -->
-	<Readout id="proc-title" order={1} label={proc.title} value="{FORCE_NAME[proc.force]} force, carrier {proc.carrier}" color={forceColour(proc.force)}>
+	<Readout
+		id="proc-title"
+		order={1}
+		label={proc.title}
+		value="{FORCE_NAME[proc.force]} force, carrier {proc.carrier}"
+		color={forceColour(proc.force)}
+	>
 		<T x={24} y={36} text={proc.title} size={16} weight={700} />
-		<T x={24} y={56} text="{FORCE_NAME[proc.force]} force · carrier {proc.carrier}" size={13} color={forceColour(proc.force)} weight={600} />
+		<T
+			x={24}
+			y={56}
+			text="{FORCE_NAME[proc.force]} force · carrier {proc.carrier}"
+			size={13}
+			color={forceColour(proc.force)}
+			weight={600}
+		/>
 	</Readout>
 
 	<!-- moment bands -->
@@ -254,10 +271,16 @@
 		{@const [mx, my] = mid(s)}
 		<Readout id="lab-{s.id}">
 			<T
-				x={s.kind === 'fermion' && s.a[1] === s.b[1] && s.to === 2 && s.from === 0 ? X0 - 10 : mx + (s.dx ?? 0)}
-				y={s.kind === 'fermion' && s.a[1] === s.b[1] && s.to === 2 && s.from === 0 ? my + 5 : my + (s.dy ?? -12)}
+				x={s.kind === 'fermion' && s.a[1] === s.b[1] && s.to === 2 && s.from === 0
+					? X0 - 10
+					: mx + (s.dx ?? 0)}
+				y={s.kind === 'fermion' && s.a[1] === s.b[1] && s.to === 2 && s.from === 0
+					? my + 5
+					: my + (s.dy ?? -12)}
 				text={s.kind === 'w' ? `${s.label} (virtual)` : s.label}
-				anchor={s.kind === 'fermion' && s.a[1] === s.b[1] && s.to === 2 && s.from === 0 ? 'end' : 'middle'}
+				anchor={s.kind === 'fermion' && s.a[1] === s.b[1] && s.to === 2 && s.from === 0
+					? 'end'
+					: 'middle'}
 				size={s.kind === 'fermion' ? 15 : 14}
 				weight={700}
 				color={s.kind === 'fermion' && !s.colour ? undefined : strokeOf(s)}
@@ -269,7 +292,13 @@
 		{#if segs.some((s) => s.a[0] === v)}
 			{@const s0 = segs.find((s) => s.a[0] === v)}
 			{#if s0}
-				<circle cx={v} cy={s0.a[1]} r="6" fill="var(--stage-ink)" opacity={moment >= (v === V1 ? 1 : 2) ? 1 : 0.35} />
+				<circle
+					cx={v}
+					cy={s0.a[1]}
+					r="6"
+					fill="var(--stage-ink)"
+					opacity={moment >= (v === V1 ? 1 : 2) ? 1 : 0.35}
+				/>
 			{/if}
 		{/if}
 	{/each}
@@ -285,14 +314,43 @@
 
 	<!-- now line and riders -->
 	<line x1={nowX} x2={nowX} y1={74} y2={392} stroke="var(--explainer-accent)" stroke-width="2" />
-	<T x={nowX} y={406} text="now" anchor="middle" size={12} weight={700} color="var(--explainer-accent)" />
+	<T
+		x={nowX}
+		y={406}
+		text="now"
+		anchor="middle"
+		size={12}
+		weight={700}
+		color="var(--explainer-accent)"
+	/>
 	{#each riders as r (r.s.id)}
-		<circle cx={r.x} cy={r.y} r="7" fill={strokeOf(r.s)} stroke="var(--stage-bg)" stroke-width="2" />
+		<circle
+			cx={r.x}
+			cy={r.y}
+			r="7"
+			fill={strokeOf(r.s)}
+			stroke="var(--stage-bg)"
+			stroke-width="2"
+		/>
 	{/each}
 
 	<!-- caption -->
-	<Readout id="caption" order={2} label="Exchange" value={caption} opacity={capAlways ? 1 : capOpacity}>
-		<T x={480} y={92} text={caption} anchor="middle" size={12.5} muted opacity={capAlways ? 1 : capOpacity} />
+	<Readout
+		id="caption"
+		order={2}
+		label="Exchange"
+		value={caption}
+		opacity={capAlways ? 1 : capOpacity}
+	>
+		<T
+			x={480}
+			y={92}
+			text={caption}
+			anchor="middle"
+			size={12.5}
+			muted
+			opacity={capAlways ? 1 : capOpacity}
+		/>
 	</Readout>
 	<Readout id="time-axis">
 		<T x={X1} y={406} text="time →" anchor="end" size={12} muted />
@@ -311,7 +369,13 @@
 			opacity={k === moment ? 0.1 : 0}
 		/>
 		<Readout id="col-{k}">
-			<T x={COL(k)} y={444} text="{k + 1} · {proc.stages[k].label}" size={12.5} weight={k === moment ? 700 : 500} />
+			<T
+				x={COL(k)}
+				y={444}
+				text="{k + 1} · {proc.stages[k].label}"
+				size={12.5}
+				weight={k === moment ? 700 : 500}
+			/>
 			<T x={COL(k)} y={462} text={present(k)} size={12} muted />
 		</Readout>
 	{/each}
@@ -321,7 +385,9 @@
 			order={3 + r}
 			label={row.label}
 			value={row.cells[moment]}
-			note={r === 0 ? `the same at all three moments: ${row.cells.every((c) => c === row.cells[0]) ? 'yes' : 'no'}` : undefined}
+			note={r === 0
+				? `the same at all three moments: ${row.cells.every((c) => c === row.cells[0]) ? 'yes' : 'no'}`
+				: undefined}
 		>
 			<T x={LX} y={488 + r * 24} text={row.label} size={12.5} muted />
 			{#each row.cells as c, k (k)}

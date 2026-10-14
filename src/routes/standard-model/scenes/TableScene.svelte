@@ -79,7 +79,9 @@
 	// ---- focus per view ---------------------------------------------------------------------
 	const feels = (p: Fundamental, f: Force | 'gravity' | 'all') =>
 		f === 'all' || f === 'gravity' ? true : p.feels.includes(f) || p.carries === f;
-	const dimT = new Map(PARTICLES.map((p) => [p.key, new Tween(1, { duration: 600, easing: cubicInOut })]));
+	const dimT = new Map(
+		PARTICLES.map((p) => [p.key, new Tween(1, { duration: 600, easing: cubicInOut })])
+	);
 	$effect(() => {
 		const v = view;
 		const f = forceSel;
@@ -201,75 +203,100 @@
 			stroke-width="2"
 			stroke-dasharray="6 5"
 		/>
-		<Readout id="ordinary" order={9} label="Generation I" value="u, d and e make all ordinary matter">
-			<T x={COLX[0] + W / 2} y={ROWY[3] + H + 26} text="ordinary matter:" anchor="middle" size={12} weight={600} color="var(--explainer-accent)" />
-			<T x={COLX[0] + W / 2} y={ROWY[3] + H + 42} text="u, d, e" anchor="middle" size={12} weight={600} color="var(--explainer-accent)" />
+		<Readout
+			id="ordinary"
+			order={9}
+			label="Generation I"
+			value="u, d and e make all ordinary matter"
+		>
+			<T
+				x={COLX[0] + W / 2}
+				y={ROWY[3] + H + 26}
+				text="ordinary matter:"
+				anchor="middle"
+				size={12}
+				weight={600}
+				color="var(--explainer-accent)"
+			/>
+			<T
+				x={COLX[0] + W / 2}
+				y={ROWY[3] + H + 42}
+				text="u, d, e"
+				anchor="middle"
+				size={12}
+				weight={600}
+				color="var(--explainer-accent)"
+			/>
 		</Readout>
 	{/if}
 
 	<!-- cells -->
-	{#each cells as c (c.p.key)}
+	{#snippet cellBody(c: (typeof cells)[number])}
 		{@const p = c.p}
 		{@const col = familyColour(p.family)}
 		{@const on = view === 'browse' && p.key === pick}
-		<g
-			class="cell"
-			class:clickable={view === 'browse'}
-			opacity={opacityOf(p.key)}
-			role={view === 'browse' ? 'button' : undefined}
-			tabindex={view === 'browse' ? 0 : undefined}
-			aria-label={view === 'browse' ? `${p.name}: show details` : undefined}
-			onclick={() => view === 'browse' && select(p.key)}
-			onkeydown={(e) => {
-				if (view !== 'browse' || (e.key !== 'Enter' && e.key !== ' ')) return;
-				e.preventDefault();
-				e.stopPropagation();
-				select(p.key);
-			}}
-		>
-			{#if ringed(p)}
-				<rect
-					x={c.x - 6}
-					y={c.y - 6}
-					width={W + 12}
-					height={H + 12}
-					rx="16"
-					fill="none"
-					stroke={forceColour(p.carries ?? 'em')}
-					stroke-width="4"
-				/>
-			{/if}
-			<rect class="ring" x={c.x - 5} y={c.y - 5} width={W + 10} height={H + 10} rx="15" />
+		{#if ringed(p)}
 			<rect
-				x={c.x}
-				y={c.y}
-				width={W}
-				height={H}
-				rx="12"
-				fill="var(--surface)"
-				stroke={col}
-				stroke-width={on ? 3.5 : 1.5}
+				x={c.x - 6}
+				y={c.y - 6}
+				width={W + 12}
+				height={H + 12}
+				rx="16"
+				fill="none"
+				stroke={forceColour(p.carries ?? 'em')}
+				stroke-width="4"
 			/>
-			<rect x={c.x} y={c.y} width={W} height={H} rx="12" fill={col} opacity={on ? 0.22 : 0.1} />
-			<text x={c.x + 9} y={c.y + 18} style:font-size="11px" class="muted">{thirds(p.charge3)}</text>
-			<text x={c.x + W - 9} y={c.y + 18} text-anchor="end" style:font-size="11px" class="muted"
-				>{spinText(p.spin)}</text
+		{/if}
+		<rect class="ring" x={c.x - 5} y={c.y - 5} width={W + 10} height={H + 10} rx="15" />
+		<rect
+			x={c.x}
+			y={c.y}
+			width={W}
+			height={H}
+			rx="12"
+			fill="var(--surface)"
+			stroke={col}
+			stroke-width={on ? 3.5 : 1.5}
+		/>
+		<rect x={c.x} y={c.y} width={W} height={H} rx="12" fill={col} opacity={on ? 0.22 : 0.1} />
+		<text x={c.x + 9} y={c.y + 18} style:font-size="11px" class="muted">{thirds(p.charge3)}</text>
+		<text x={c.x + W - 9} y={c.y + 18} text-anchor="end" style:font-size="11px" class="muted"
+			>{spinText(p.spin)}</text
+		>
+		<text
+			x={c.x + W / 2}
+			y={c.y + 52}
+			text-anchor="middle"
+			font-weight="700"
+			style:font-size="28px"
+			style:fill={col}>{p.symbol}</text
+		>
+		<text x={c.x + W / 2} y={c.y + 72} text-anchor="middle" style:font-size="11.5px">{p.name}</text>
+		<text x={c.x + W / 2} y={c.y + 90} text-anchor="middle" style:font-size="11px" class="muted"
+			>{massLine(p)}</text
+		>
+	{/snippet}
+	{#each cells as c (c.p.key)}
+		{#if view === 'browse'}
+			<g
+				class="cell clickable"
+				opacity={opacityOf(c.p.key)}
+				role="button"
+				tabindex="0"
+				aria-label="{c.p.name}: show details"
+				onclick={() => select(c.p.key)}
+				onkeydown={(e) => {
+					if (e.key !== 'Enter' && e.key !== ' ') return;
+					e.preventDefault();
+					e.stopPropagation();
+					select(c.p.key);
+				}}
 			>
-			<text
-				x={c.x + W / 2}
-				y={c.y + 52}
-				text-anchor="middle"
-				font-weight="700"
-				style:font-size="28px"
-				style:fill={col}>{p.symbol}</text
-			>
-			<text x={c.x + W / 2} y={c.y + 72} text-anchor="middle" style:font-size="11.5px"
-				>{p.name}</text
-			>
-			<text x={c.x + W / 2} y={c.y + 90} text-anchor="middle" style:font-size="11px" class="muted"
-				>{massLine(p)}</text
-			>
-		</g>
+				{@render cellBody(c)}
+			</g>
+		{:else}
+			<g class="cell" opacity={opacityOf(c.p.key)}>{@render cellBody(c)}</g>
+		{/if}
 	{/each}
 	<Readout id="key">
 		<T x={COLX[3]} y={ROWY[3] + H + 26} text="corners: charge (e), spin" size={11} muted />
@@ -279,7 +306,14 @@
 	<!-- card -->
 	<Card x={CX - 16} y={24} w={256} h={560} />
 	{#if view === 'browse'}
-		<Readout id="p-name" order={1} label={sel.name} value={sel.symbol} note={famLine} color={familyColour(sel.family)}>
+		<Readout
+			id="p-name"
+			order={1}
+			label={sel.name}
+			value={sel.symbol}
+			note={famLine}
+			color={familyColour(sel.family)}
+		>
 			<T x={CX} y={70} text={sel.symbol} size={40} weight={700} color={familyColour(sel.family)} />
 			<T x={CX} y={100} text={sel.name} size={17} weight={700} />
 			<T x={CX} y={120} text={famLine} size={12} muted />
@@ -289,8 +323,19 @@
 			<T x={CX} y={180} text={massCard} size={massCard.length > 26 ? 12 : 15} weight={600} />
 		</Readout>
 		<T x={CX} y={218} text="Charge · spin" size={12} muted />
-		<Readout id="p-charge" order={3} label="Charge, spin" value="{thirds(sel.charge3)} e, spin {spinText(sel.spin)}">
-			<T x={CX} y={238} text="{thirds(sel.charge3)} e · spin {spinText(sel.spin)}" size={15} weight={600} />
+		<Readout
+			id="p-charge"
+			order={3}
+			label="Charge, spin"
+			value="{thirds(sel.charge3)} e, spin {spinText(sel.spin)}"
+		>
+			<T
+				x={CX}
+				y={238}
+				text="{thirds(sel.charge3)} e · spin {spinText(sel.spin)}"
+				size={15}
+				weight={600}
+			/>
 		</Readout>
 		<T x={CX} y={276} text="Lifetime" size={12} muted />
 		<Readout id="p-life" order={4} label="Lifetime" value={lifeCard}>
@@ -300,23 +345,59 @@
 		<Readout id="p-feels">
 			<T x={CX} y={354} text={feelsCard} size={12.5} />
 			{#if sel.carries}
-				<T x={CX} y={376} text="carries the {FORCE_NAME[sel.carries]} force" size={12.5} weight={600} color={forceColour(sel.carries)} />
+				<T
+					x={CX}
+					y={376}
+					text="carries the {FORCE_NAME[sel.carries]} force"
+					size={12.5}
+					weight={600}
+					color={forceColour(sel.carries)}
+				/>
 			{/if}
 		</Readout>
 		<Readout id="p-anti">
-			<T x={CX} y={420} text={sel.family === 'gauge' || sel.family === 'scalar' ? (sel.key === 'W' ? 'W⁺ and W⁻ are each other’s' : 'its own antiparticle') : `antiparticle: opposite charge`} size={12} muted />
+			<T
+				x={CX}
+				y={420}
+				text={sel.family === 'gauge' || sel.family === 'scalar'
+					? sel.key === 'W'
+						? 'W⁺ and W⁻ are each other’s'
+						: 'its own antiparticle'
+					: `antiparticle: opposite charge`}
+				size={12}
+				muted
+			/>
 			{#if sel.key === 'W'}<T x={CX} y={437} text="antiparticles" size={12} muted />{/if}
 			<T x={CX} y={550} text="Tap any particle." size={12} muted />
 			<T x={CX} y={568} text="Data: PDG 2026" size={11} muted />
 		</Readout>
 	{:else}
 		{#if fsel}
-			<Readout id="f-name" order={1} label="Force" value={FORCE_NAME[fsel.id]} color={forceColour(fsel.id)}>
-				<T x={CX} y={70} text={FORCE_NAME[fsel.id]} size={22} weight={700} color={forceColour(fsel.id)} />
+			<Readout
+				id="f-name"
+				order={1}
+				label="Force"
+				value={FORCE_NAME[fsel.id]}
+				color={forceColour(fsel.id)}
+			>
+				<T
+					x={CX}
+					y={70}
+					text={FORCE_NAME[fsel.id]}
+					size={22}
+					weight={700}
+					color={forceColour(fsel.id)}
+				/>
 			</Readout>
 			<T x={CX} y={110} text="Carried by" size={12} muted />
 			<Readout id="f-carrier" order={2} label="Carried by" value={fsel.carrier}>
-				<T x={CX} y={130} text={fsel.carrier} size={fsel.carrier.length > 24 ? 12 : 14} weight={600} />
+				<T
+					x={CX}
+					y={130}
+					text={fsel.carrier}
+					size={fsel.carrier.length > 24 ? 12 : 14}
+					weight={600}
+				/>
 			</Readout>
 			<T x={CX} y={168} text="Reach" size={12} muted />
 			<Readout id="f-reach" order={3} label="Reach" value={fsel.reach}>
@@ -338,11 +419,42 @@
 			{#each FORCES as f, i (f.id)}
 				{@const y = 102 + i * 108}
 				<rect x={CX} y={y - 14} width="5" height="78" rx="2.5" fill={forceColour(f.id)} />
-				<Readout id="f-{f.id}" order={1 + i} label={FORCE_NAME[f.id]} value={f.carrier} color={forceColour(f.id)}>
-					<T x={CX + 16} y={y} text={FORCE_NAME[f.id]} size={15} weight={700} color={forceColour(f.id)} />
-					<T x={CX + 16} y={y + 21} text={f.id === 'gravity' ? 'no carrier in the' : `carrier: ${f.short}`} size={12.5} weight={f.id === 'gravity' ? 700 : 500} />
-					{#if f.id === 'gravity'}<T x={CX + 16} y={y + 38} text="Standard Model" size={12.5} weight={700} />{/if}
-					<T x={CX + 16} y={y + (f.id === 'gravity' ? 55 : 40)} text="felt by {f.felt}" size={11.5} muted />
+				<Readout
+					id="f-{f.id}"
+					order={1 + i}
+					label={FORCE_NAME[f.id]}
+					value={f.carrier}
+					color={forceColour(f.id)}
+				>
+					<T
+						x={CX + 16}
+						{y}
+						text={FORCE_NAME[f.id]}
+						size={15}
+						weight={700}
+						color={forceColour(f.id)}
+					/>
+					<T
+						x={CX + 16}
+						y={y + 21}
+						text={f.id === 'gravity' ? 'no carrier in the' : `carrier: ${f.short}`}
+						size={12.5}
+						weight={f.id === 'gravity' ? 700 : 500}
+					/>
+					{#if f.id === 'gravity'}<T
+							x={CX + 16}
+							y={y + 38}
+							text="Standard Model"
+							size={12.5}
+							weight={700}
+						/>{/if}
+					<T
+						x={CX + 16}
+						y={y + (f.id === 'gravity' ? 55 : 40)}
+						text="felt by {f.felt}"
+						size={11.5}
+						muted
+					/>
 				</Readout>
 			{/each}
 			<Readout id="f-take">

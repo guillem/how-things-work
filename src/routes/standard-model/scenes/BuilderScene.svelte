@@ -121,10 +121,7 @@
 		if (build.status === 'top')
 			return ['The top quark decays in about', '5 × 10⁻²⁵ s, before it can be bound.'];
 		if (build.kind === 'coloured')
-			return [
-				'The strong force lets only colourless',
-				'combinations out: qqq, q̄q̄q̄ or qq̄.'
-			];
+			return ['The strong force lets only colourless', 'combinations out: qqq, q̄q̄q̄ or qq̄.'];
 		const h = build.hadron;
 		if (!h) return [];
 		const out: string[] = [];
@@ -161,8 +158,7 @@
 	const share = $derived(
 		build.hadron ? Math.min(1, build.quarkMass / build.hadron.data.mass.v) : 0
 	);
-	const pct = (x: number) =>
-		x < 0.1 ? `${(x * 100).toFixed(1)}%` : `${Math.round(x * 100)}%`;
+	const pct = (x: number) => (x < 0.1 ? `${(x * 100).toFixed(1)}%` : `${Math.round(x * 100)}%`);
 	const quarkMassText = $derived(
 		tokens.length ? tokens.map((tk) => massText(quarkMass(flavourOf(tk)))).join(' + ') : ''
 	);
@@ -233,8 +229,7 @@
 
 	// ---- right-hand card -------------------------------------------------------------------
 	const CX = 640;
-	const sectionOpacity = (s: string) =>
-		focus === 'zoo' || focus === s ? 1 : 0.5;
+	const sectionOpacity = (s: string) => (focus === 'zoo' || focus === s ? 1 : 0.5);
 </script>
 
 <g>
@@ -277,10 +272,20 @@
 			<circle class="ring" r={BALL + 5} />
 			<circle r={BALL} {fill} stroke="var(--stage-bg)" stroke-width="3" />
 			{#if b.anti}
-				<circle r={BALL - 7} fill="none" stroke="var(--sm-ball-ink)" stroke-width="2" stroke-dasharray="4 4" />
+				<circle
+					r={BALL - 7}
+					fill="none"
+					stroke="var(--sm-ball-ink)"
+					stroke-width="2"
+					stroke-dasharray="4 4"
+				/>
 			{/if}
-			<text y="4" text-anchor="middle" font-weight="700" style:font-size="30px" style:fill="var(--sm-ball-ink)"
-				>{symbolOf(b.tk)}</text
+			<text
+				y="4"
+				text-anchor="middle"
+				font-weight="700"
+				style:font-size="30px"
+				style:fill="var(--sm-ball-ink)">{symbolOf(b.tk)}</text
 			>
 			<text y="24" text-anchor="middle" style:font-size="13px" style:fill="var(--sm-ball-ink)"
 				>{frac(charge3Of(b.tk))}</text
@@ -294,7 +299,9 @@
 		<T
 			x={BX}
 			y={BY + BR + 26}
-			text={full ? 'Full: tap a quark in the bag to take it out' : 'Tap a quark in the bag to take it out'}
+			text={full
+				? 'Full: tap a quark in the bag to take it out'
+				: 'Tap a quark in the bag to take it out'}
 			anchor="middle"
 			size={12}
 			muted
@@ -371,7 +378,14 @@
 	</Readout>
 
 	<g opacity={sectionOpacity('charge')}>
-		{#if focus === 'charge'}<rect x={CX - 12} y={158} width="4" height="56" rx="2" fill="var(--explainer-accent)" />{/if}
+		{#if focus === 'charge'}<rect
+				x={CX - 12}
+				y={158}
+				width="4"
+				height="56"
+				rx="2"
+				fill="var(--explainer-accent)"
+			/>{/if}
 		<T x={CX} y={172} text="Charge (in units of e)" size={12} muted />
 		<Readout id="charge" order={2} label="Charge" value={chargeSum}>
 			<T x={CX} y={200} text={chargeSum} size={tokens.length === 3 ? 20 : 22} weight={600} />
@@ -379,7 +393,14 @@
 	</g>
 
 	<g opacity={sectionOpacity('colour')}>
-		{#if focus === 'colour'}<rect x={CX - 12} y={230} width="4" height="62" rx="2" fill="var(--explainer-accent)" />{/if}
+		{#if focus === 'colour'}<rect
+				x={CX - 12}
+				y={230}
+				width="4"
+				height="62"
+				rx="2"
+				fill="var(--explainer-accent)"
+			/>{/if}
 		<T x={CX} y={244} text="Colour: the total must be colourless" size={12} muted />
 		{#each balls as b, i (b.i + b.tk)}
 			<circle cx={CX + 10 + i * 26} cy={270} r="10" fill={chargeColour(b.colour, b.anti)} />
@@ -391,7 +412,11 @@
 				text={colourCheck}
 				size={13}
 				weight={600}
-				color={build.kind === 'empty' ? undefined : build.neutral ? 'var(--sm-ok)' : 'var(--sm-bad)'}
+				color={build.kind === 'empty'
+					? undefined
+					: build.neutral
+						? 'var(--sm-ok)'
+						: 'var(--sm-bad)'}
 			/>
 		</Readout>
 	</g>
@@ -404,10 +429,25 @@
 	</g>
 
 	<g opacity={sectionOpacity('mass')}>
-		{#if focus === 'mass'}<rect x={CX - 12} y={366} width="4" height="110" rx="2" fill="var(--explainer-accent)" />{/if}
+		{#if focus === 'mass'}<rect
+				x={CX - 12}
+				y={366}
+				width="4"
+				height="110"
+				rx="2"
+				fill="var(--explainer-accent)"
+			/>{/if}
 		<T x={CX} y={380} text="Mass" size={12} muted />
 		{#if build.hadron}
-			<rect x={CX} y={392} width={296} height={18} rx="4" fill="var(--sm-field)" stroke="var(--border)" />
+			<rect
+				x={CX}
+				y={392}
+				width={296}
+				height={18}
+				rx="4"
+				fill="var(--sm-field)"
+				stroke="var(--border)"
+			/>
 			<rect
 				x={CX}
 				y={392}
@@ -440,7 +480,14 @@
 	</g>
 
 	<g opacity={sectionOpacity('zoo')}>
-		{#if focus === 'zoo'}<rect x={CX - 12} y={490} width="4" height="62" rx="2" fill="var(--explainer-accent)" />{/if}
+		{#if focus === 'zoo'}<rect
+				x={CX - 12}
+				y={490}
+				width="4"
+				height="62"
+				rx="2"
+				fill="var(--explainer-accent)"
+			/>{/if}
 		<T x={CX} y={504} text="Spin and lifetime" size={12} muted />
 		{#if build.hadron}
 			<Readout
