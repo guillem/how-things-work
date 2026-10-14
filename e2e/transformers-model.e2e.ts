@@ -93,7 +93,8 @@ test.describe('what heads of GPT-2 small are known to do', () => {
 		const second = at('fox', ' fox', at('fox', ' fox') + 1);
 		expect(argmax(fox.row(5, 5, second))).toBe(at('fox', ' jumps'));
 		expect(fox.row(5, 5, second)[at('fox', ' jumps')]).toBeGreaterThan(0.9);
-		expect(fox.next[0]).toEqual({ token: ' over', p: expect.closeTo(0.98, 2) as number });
+		expect(fox.next[0].token).toBe(' over');
+		expect(fox.next[0].p).toBeCloseTo(0.98, 2);
 	});
 
 	test('the final “to” attends to Mary in layer 10, heads 7 and 10, and GPT-2 predicts Mary', () => {

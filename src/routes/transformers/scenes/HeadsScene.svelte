@@ -73,9 +73,11 @@
 		})
 	);
 	const counts = $derived.by(() => {
-		const c = new Map<string, number>();
-		for (const h of heads) c.set(h.d.kind, (c.get(h.d.kind) ?? 0) + 1);
-		return [...c].map(([k, v]) => `${v} ${k}`).join(' · ');
+		const c: Record<string, number> = {};
+		for (const h of heads) c[h.d.kind] = (c[h.d.kind] ?? 0) + 1;
+		return Object.entries(c)
+			.map(([k, v]) => `${v} ${k}`)
+			.join(' · ');
 	});
 
 	// A row sweeping down every pattern at once (row 3 under reduced motion).

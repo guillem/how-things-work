@@ -117,9 +117,11 @@
 		10,
 		2
 	);
-	let maskD = '';
-	for (let i = 0; i < N; i++)
-		maskD += `M${MAT.x + (i + 1) * MAT.cell + 1} ${ROW.y + i * ROW.h + 1}h${(N - i - 1) * MAT.cell - 2}v${ROW.h - 2}h${-((N - i - 1) * MAT.cell - 2)}Z`;
+	const maskD = Array.from(
+		{ length: N },
+		(_, i) =>
+			`M${MAT.x + (i + 1) * MAT.cell + 1} ${ROW.y + i * ROW.h + 1}h${(N - i - 1) * MAT.cell - 2}v${ROW.h - 2}h${-((N - i - 1) * MAT.cell - 2)}Z`
+	).join('');
 
 	const formula = $derived(
 		phase === 'qkv'
