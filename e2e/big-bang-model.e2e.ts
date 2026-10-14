@@ -22,6 +22,7 @@ import {
 	pairsLeft,
 	peakWavelength,
 	redshiftSeen,
+	reionized,
 	scaleAt,
 	T_FREEZE_S,
 	T_NUC_S,
@@ -143,4 +144,11 @@ test('the CMB’s light was stretched 1,091 times: from near-infrared to 1 mm mi
 	expect(peakWavelength(T0) * 1e3).toBeCloseTo(1.063, 2);
 	expect(peakWavelength(temperature(aStar)) * 1e9).toBeCloseTo(975, -1);
 	expect(peakWavelength(T0) / peakWavelength(temperature(aStar))).toBeCloseTo(1 + Z_STAR, 3);
+});
+
+test('reionization: half the hydrogen ionized again at z = 7.67, about 670 million years in', () => {
+	expect(reionized(PLANCK.zRe)).toBeCloseTo(0.5, 6);
+	expect(reionized(20)).toBeLessThan(0.01);
+	expect(reionized(5)).toBeGreaterThan(0.99);
+	expect(timeAt(1 / (1 + PLANCK.zRe)) * 1000).toBeCloseTo(672, -1);
 });

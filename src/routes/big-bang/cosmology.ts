@@ -384,3 +384,17 @@ export const BALMER = [
 	{ name: 'Hγ', nm: 434.05 },
 	{ name: 'Hδ', nm: 410.17 }
 ] as const;
+
+// ------------------------------------------------------------------ reionization
+
+/**
+ * Fraction of hydrogen ionized again by the first stars and galaxies, at redshift z: the tanh
+ * model Planck fits (Planck 2018 VI, §3.3: x_e ∝ 1 + tanh((y_re − y)/Δy), y = (1 + z)^{3/2},
+ * Δy = 1.5 √(1 + z_re) Δz, Δz = 0.5), with its midpoint z_re = 7.67.
+ */
+export function reionized(z: number) {
+	const y = (1 + z) ** 1.5;
+	const yRe = (1 + PLANCK.zRe) ** 1.5;
+	const dy = 1.5 * Math.sqrt(1 + PLANCK.zRe) * 0.5;
+	return 0.5 * (1 + Math.tanh((yRe - y) / dy));
+}
