@@ -36,14 +36,15 @@
 		<line x1={box.x} x2={box.x + box.w} y1={sy(v)} y2={sy(v)} stroke="var(--st-sky-grid)" />
 	{/each}
 	{#each L_TICKS as v (v)}
-		<text x={box.x - 8} y={sy(v) + 4} text-anchor="end" font-size="11" class="muted">{fmtL(v)}</text
+		<text x={box.x - 8} y={sy(v) + 4} text-anchor="end" style:font-size="11px" class="muted"
+			>{fmtL(v)}</text
 		>
 	{/each}
 	{#each T_TICKS as T (T)}
 		{@const x = sx(Math.log10(T))}
 		<line x1={x} x2={x} y1={box.y} y2={box.y + box.h} stroke="var(--st-sky-grid)" />
 		<Readout id="tick-{T}">
-			<text {x} y={box.y + box.h + 30} text-anchor="middle" font-size="11" class="muted"
+			<text {x} y={box.y + box.h + 30} text-anchor="middle" style:font-size="11px" class="muted"
 				>{fmtT(T)}</text
 			>
 		</Readout>
@@ -51,10 +52,14 @@
 	{#each strip as s (s.i)}
 		<rect x={s.x} y={box.y + box.h + 4} width={box.w / 40 + 0.5} height="8" fill={s.colour} />
 	{/each}
-	<text x={box.x + box.w} y={box.y + box.h + 48} text-anchor="end" font-size="11" class="muted"
-		>surface temperature ← hotter</text
+	<text
+		x={box.x + box.w}
+		y={box.y + box.h + 48}
+		text-anchor="end"
+		style:font-size="11px"
+		class="muted">surface temperature ← hotter</text
 	>
-	<text x={box.x - 8} y={box.y - 10} text-anchor="start" font-size="11" class="muted"
+	<text x={box.x - 8} y={box.y - 10} text-anchor="start" style:font-size="11px" class="muted"
 		>luminosity (Sun = 1)</text
 	>
 	<clipPath id="{name}-hr-clip">

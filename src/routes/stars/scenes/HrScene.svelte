@@ -15,9 +15,10 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Label, clamp, scale, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import HrPlot from './HrPlot.svelte';
+	import Txt from './Txt.svelte';
 	import SkyLabel from './SkyLabel.svelte';
 	import { hrScales, zamsPath, type Box } from './hr';
 	import { UNIVERSE_AGE, mainSequenceLifetime, round2, starColour, years, zams } from '../star';
@@ -133,7 +134,7 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<Label
+			<Txt
 				x={CARD.x + 20}
 				y={CARD.y + 34}
 				text="Stars within 163 light years"
@@ -147,7 +148,7 @@
 				label="Sample"
 				value="1 in 15 of the stars within 50 pc (Gaia)"
 			>
-				<Label
+				<Txt
 					x={CARD.x + 20}
 					y={CARD.y + 60}
 					text="one in fifteen, measured by Gaia"
@@ -156,28 +157,28 @@
 					size={12}
 				/>
 			</Readout>
-			<Label
+			<Txt
 				x={CARD.x + 20}
 				y={CARD.y + 98}
 				text="each dot: one star, in its colour"
 				anchor="start"
 				size={13}
 			/>
-			<Label
+			<Txt
 				x={CARD.x + 20}
 				y={CARD.y + 126}
 				text="left: hotter · up: more light"
 				anchor="start"
 				size={13}
 			/>
-			<Label
+			<Txt
 				x={CARD.x + 20}
 				y={CARD.y + 154}
 				text="each grid line up: 10 × brighter"
 				anchor="start"
 				size={13}
 			/>
-			<Label
+			<Txt
 				x={CARD.x + 20}
 				y={CARD.y + 194}
 				text="most nearby stars are small, cool"
@@ -185,7 +186,7 @@
 				muted
 				size={12}
 			/>
-			<Label
+			<Txt
 				x={CARD.x + 20}
 				y={CARD.y + 212}
 				text="red dwarfs, too faint to see by eye"
@@ -228,7 +229,7 @@
 				stroke="var(--border)"
 			/>
 			<Readout id="mass" order={1} label="A new star of" value="{m} M☉">
-				<Label
+				<Txt
 					x={CARD.x + 20}
 					y={CARD.y + 34}
 					text="A new star of {m} M☉"
@@ -238,7 +239,7 @@
 				/>
 			</Readout>
 			<Readout id="lum" order={2} label="Luminosity" value="{round2(star.L)} × the Sun">
-				<Label
+				<Txt
 					x={CARD.x + 20}
 					y={CARD.y + 66}
 					text="luminosity: {round2(star.L)} × the Sun"
@@ -251,7 +252,7 @@
 				label="Surface"
 				value="{(Math.round(star.T / 100) * 100).toLocaleString('en-US')} K"
 			>
-				<Label
+				<Txt
 					x={CARD.x + 20}
 					y={CARD.y + 92}
 					text="surface: {(Math.round(star.T / 100) * 100).toLocaleString('en-US')} K"
@@ -259,7 +260,7 @@
 				/>
 			</Readout>
 			<Readout id="radius" order={4} label="Radius" value="{round2(star.R)} × the Sun">
-				<Label
+				<Txt
 					x={CARD.x + 20}
 					y={CARD.y + 118}
 					text="radius: {round2(star.R)} × the Sun"
@@ -274,7 +275,7 @@
 				fill={starColour(5772)}
 				stroke="var(--border)"
 			/>
-			<Label x={CARD.x + 60} y={CARD.y + 210 + 30} text="the Sun" size={11} muted />
+			<Txt x={CARD.x + 60} y={CARD.y + 210 + 30} text="the Sun" size={11} muted />
 			<circle
 				cx={CARD.x + 200}
 				cy={CARD.y + 210}
@@ -282,7 +283,7 @@
 				fill={starColour(shown.T)}
 				stroke="var(--border)"
 			/>
-			<Label
+			<Txt
 				x={CARD.x + 200}
 				y={CARD.y + 210 + Math.max(discR, 8) + 18}
 				text="this star (same scale)"
@@ -292,15 +293,8 @@
 
 			<!-- lifetime on a log bar -->
 			<Readout id="life" order={5} label="Life on the main sequence" value={years(life)}>
-				<Label x={CARD.x + 20} y={by - 44} text="life on the main sequence:" anchor="start" />
-				<Label
-					x={CARD.x + 20}
-					y={by - 22}
-					text={years(life)}
-					anchor="start"
-					size={16}
-					weight={700}
-				/>
+				<Txt x={CARD.x + 20} y={by - 44} text="life on the main sequence:" anchor="start" />
+				<Txt x={CARD.x + 20} y={by - 22} text={years(life)} anchor="start" size={16} weight={700} />
 			</Readout>
 			<rect
 				x={lifeScale(6)}
@@ -328,15 +322,19 @@
 				/>
 				{#if lifeLabel(v)}
 					<Readout id="lt-{v}">
-						<text x={lifeScale(v)} y={by + 30} text-anchor="middle" font-size="11" class="muted"
-							>{lifeLabel(v)}</text
+						<text
+							x={lifeScale(v)}
+							y={by + 30}
+							text-anchor="middle"
+							style:font-size="11px"
+							class="muted">{lifeLabel(v)}</text
 						>
 					</Readout>
 				{/if}
 			{/each}
 			<line x1={ux} x2={ux} y1={by - 6} y2={by + 16} stroke="var(--stage-ink)" stroke-width="1.5" />
 			<Readout id="universe" order={6} label="Age of the universe" value="13.8 billion years">
-				<Label x={ux} y={by + 50} text="age of the universe" size={11} />
+				<Txt x={ux} y={by + 50} text="age of the universe" size={11} />
 			</Readout>
 		</g>
 	{/if}

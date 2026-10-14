@@ -187,30 +187,16 @@ export const spec: ExplainerSpec = {
 			notes: `<p>Above about 8 M☉ the core never becomes dense enough for electron degeneracy to hold it up, so each time a fuel runs out it contracts, heats and ignites the next. Stars spin, and rotation mixes extra fuel into the core: the MIST models used here start spinning at 40% of the speed that would tear their surface apart.</p>`
 		},
 		{
-			id: 'onion',
-			chapter: 'massive',
-			title: 'An onion of burning shells',
-			scene: 'collapse',
-			hints: { phase: 'onion' },
-			duration: 26,
-			body: `
-<p>After carbon come <strong>neon</strong>, <strong>oxygen</strong> and <strong>silicon</strong>, each at a higher temperature and each over far less time. The model tracks stop at the end of carbon burning: what follows is so fast that the surface barely notices.</p>
-<p>For a 20 M☉ star detailed models give: hydrogen 8 million years, helium 1.2 million, carbon 1,000 years, neon 7 months, oxygen 16 months, and silicon <strong>11 days</strong>. Each fuel, once it is used up at the centre, keeps burning in a shell further out, so the star ends up layered like an onion.</p>
-<p>Silicon burning makes <strong>iron</strong>, and iron is a dead end. Its nucleus is among the most tightly bound of all, so fusing it into anything heavier absorbs energy instead of releasing it. The iron core grows, and nothing in it can make heat any more.</p>`,
-			notes: `<p>The stage durations and temperatures are from Heger, Woosley, Fryer and Langer (2003), Table 1, for a 20 M☉ star of solar composition: H at 37 million K, He 190 million, C 870 million, Ne 1.6 billion, O 2.0 billion, Si 3.3 billion. Each stage is so short partly because the core is cooled by neutrinos, which escape straight through the star. The layers are drawn by mass, as a sketch; their sizes are illustrative.</p>`
-		},
-		{
 			id: 'collapse',
 			chapter: 'massive',
-			title: 'Collapse and supernova',
+			title: 'An onion, a collapse, a supernova',
 			scene: 'collapse',
-			hints: { phase: 'collapse' },
-			duration: 26,
+			duration: 34,
 			body: `
-<p>When the iron core reaches about 1.4 M☉ it can no longer hold itself up. In less than a second it collapses from thousands of kilometres across to a ball about 12 km in radius, and the electrons and protons are squeezed together into neutrons: a <dfn data-def="The collapsed core of a massive star: about 1.4 solar masses packed into a ball some 12 km in radius, as dense as an atomic nucleus.">neutron star</dfn>, as dense as an atomic nucleus.</p>
-<p>The infalling layers hit the stiff new neutron star and rebound, and a flood of neutrinos heats them from below. A shock wave blows the rest of the star apart: a <dfn data-def="Core-collapse supernova: the explosion of a massive star whose iron core has collapsed. For weeks it can outshine a whole galaxy.">supernova</dfn>, for weeks as bright as a whole galaxy. In 1987, about two dozen neutrinos from one in a neighbouring galaxy were caught by detectors in Japan, the USA and Russia.</p>
-<p>The explosion scatters everything the star made — carbon, oxygen, silicon, iron — into space, and forges more in the shock. In the heaviest stars, much of the core falls back and the remnant collapses further, into a <a href="../black-holes/#horizon">black hole</a>.</p>`,
-			notes: `<p>Almost all of a supernova's energy — some 3 × 10⁴⁶ J, a few hundred times what the Sun will radiate in its whole life — leaves as neutrinos; the explosion itself takes about 1%, and the light 0.01%. Which stars leave neutron stars and which leave black holes is not a clean cut. For single stars of solar composition, models (Heger et al. 2003) give neutron stars up to about 20–25 M☉ and black holes, mostly by fallback, above. This page uses that simple rule.</p>`
+<p>After carbon come <strong>neon</strong>, <strong>oxygen</strong> and <strong>silicon</strong>, each hotter and far quicker than the last: for a 20 M☉ star, carbon lasts about 1,000 years, neon 7 months, oxygen 16 months and silicon <strong>11 days</strong>. Each fuel keeps burning in a shell once the centre has used it up, so the star ends up layered like an onion (the model tracks stop at the end of carbon burning: what follows is too fast for the surface to notice).</p>
+<p>Silicon burning makes <strong>iron</strong>, a dead end: its nucleus is among the most tightly bound of all, so fusing it absorbs energy instead of releasing it. When the iron core reaches about 1.4 M☉ it can no longer hold itself up. In less than a second it collapses from thousands of kilometres across to a ball about 12 km in radius, and its electrons and protons are squeezed into neutrons: a <dfn data-def="The collapsed core of a massive star: about 1.4 solar masses packed into a ball some 12 km in radius, as dense as an atomic nucleus.">neutron star</dfn>.</p>
+<p>The infalling layers rebound off it, heated by a flood of neutrinos, and the rest of the star is blown apart: a <dfn data-def="Core-collapse supernova: the explosion of a massive star whose iron core has collapsed. For weeks it can outshine a whole galaxy.">supernova</dfn>, for weeks as bright as a galaxy, scattering the carbon, oxygen, silicon and iron the star made. In 1987 about two dozen neutrinos from one in a neighbouring galaxy were caught on Earth. In the heaviest stars much of the core falls back, and the remnant becomes a <a href="../black-holes/#horizon">black hole</a>.</p>`,
+			notes: `<p>Stage durations and central temperatures: Heger, Woosley, Fryer and Langer (2003), Table 1, for a 20 M☉ star of solar composition (hydrogen 8.1 million years at 37 million K, helium 1.2 million years at 190 million K, carbon 980 years at 870 million K, neon 0.6 years at 1.6 billion K, oxygen 1.3 years at 2.0 billion K, silicon 0.031 years at 3.3 billion K). The onion is a sketch: its layers are illustrative. Almost all of a supernova's energy — some 3 × 10⁴⁶ J, a few hundred times what the Sun will radiate in its whole life — leaves as neutrinos; the explosion takes about 1%, the light 0.01%. Which stars leave neutron stars and which black holes is not a clean cut: for single stars of solar composition, models give neutron stars up to about 20–25 M☉ and black holes, mostly by fallback, above. This page uses that simple rule.</p>`
 		},
 		// ------------------------------------------------------------------ yours
 		{

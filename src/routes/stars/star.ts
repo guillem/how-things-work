@@ -346,6 +346,27 @@ export function madeInStars(z: number): number {
 	return (s.lowMass ?? 0) + (s.massive ?? 0) + (s.whiteDwarfs ?? 0) + (s.mergers ?? 0);
 }
 
+/**
+ * Elements in the human body, share of its mass: ICRP Publication 23 (1975), "Reference Man"
+ * (a 70 kg adult); the rest (0.9%) is spread over many elements.
+ */
+export const BODY: readonly { z: number; share: number }[] = [
+	{ z: 8, share: 0.61 },
+	{ z: 6, share: 0.23 },
+	{ z: 1, share: 0.1 },
+	{ z: 7, share: 0.026 },
+	{ z: 20, share: 0.014 },
+	{ z: 15, share: 0.011 }
+];
+
+/** Share of the body's mass in each source, for the elements listed in BODY. */
+export function bodyBySource(): Record<Source, number> {
+	const out = Object.fromEntries(SOURCES.map((s) => [s, 0])) as Record<Source, number>;
+	for (const { z, share } of BODY)
+		for (const s of SOURCES) out[s] += share * (origin(z).shares[s] ?? 0);
+	return out;
+}
+
 // ------------------------------------------------------------------ formatting
 
 export function years(y: number): string {

@@ -15,6 +15,7 @@ import {
 	cnoDominates,
 	fate,
 	fuelLifetime,
+	bodyBySource,
 	madeInStars,
 	mainSequenceLifetime,
 	mainSource,
@@ -204,4 +205,13 @@ test('origins: hydrogen is from the Big Bang, oxygen from massive stars, gold mo
 	// Technetium and promethium have no long-lived isotopes.
 	expect(origin(43).synthetic).toBe(true);
 	expect(origin(61).synthetic).toBe(true);
+});
+
+test('about nine-tenths of the mass of a human body was made in stars; the tenth that is hydrogen, in the Big Bang', () => {
+	const b = bodyBySource();
+	const stars = b.lowMass + b.massive + b.whiteDwarfs + b.mergers;
+	expect(stars).toBeGreaterThan(0.86);
+	expect(stars).toBeLessThan(0.92);
+	expect(b.bigBang).toBeCloseTo(0.1, 2);
+	expect(b.massive).toBeGreaterThan(b.lowMass);
 });
