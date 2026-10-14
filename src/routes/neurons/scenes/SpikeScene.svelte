@@ -25,17 +25,7 @@
 	 */
 	import { Axes, Label, clamp, cycle, hash, linePath, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import {
-		HH,
-		REST,
-		firingRate,
-		peak,
-		pulse,
-		simulate,
-		spikeTimes,
-		threshold,
-		type Sample
-	} from '../hh';
+	import { HH, REST, firingRate, peak, pulse, simulate, spikeTimes, threshold } from '../hh';
 	import { replayClock } from './replay';
 
 	let { step, t, params, reduced }: StageProps = $props();

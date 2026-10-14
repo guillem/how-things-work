@@ -67,7 +67,7 @@ export function circuitEvents(
 	active: readonly boolean[],
 	strength3A: number
 ): SynEvent[] {
-	const w = [...WIRING[cell]];
+	const w: number[] = [...WIRING[cell]];
 	if (cell === 'A') w[2] = strength3A;
 	const out: SynEvent[] = [];
 	w.forEach((n, i) => {

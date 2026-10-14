@@ -269,14 +269,7 @@
 
 	<!-- speed -->
 	<Readout id="speed" order={1} label="Speed in the model" value="{speed.toFixed(1)} m/s">
-		<Label
-			x={X1}
-			y={70}
-			anchor="end"
-			size={15}
-			weight={700}
-			text="speed: {speed.toFixed(1)} m/s"
-		/>
+		<Label x={X1} y={70} anchor="end" size={15} weight={700} text="speed: {speed.toFixed(1)} m/s" />
 	</Readout>
 	<Readout
 		id="ref"
