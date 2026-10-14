@@ -13,6 +13,7 @@
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
 	import T from './T.svelte';
+	import Title from './Title.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -80,7 +81,7 @@
 		fill="var(--gw-space)"
 		stroke="var(--border)"
 	/>
-	<T x={32} y={44} text="Face on: the wave comes out of the page" size={14} weight={700} />
+	<Title x={32} y={44} text="Face on: the wave comes out of the page" size={14} weight={700} />
 
 	<!-- the undisturbed ring -->
 	<circle cx={CX} cy={CY} r={R} fill="none" stroke="var(--stage-line)" stroke-dasharray="4 5" />
@@ -172,7 +173,7 @@
 		fill="var(--gw-space)"
 		stroke="var(--border)"
 	/>
-	<T x={496} y={44} text="Side on: the wave travels to the right" size={14} weight={700} />
+	<Title x={496} y={44} text="Side on: the wave travels to the right" size={14} weight={700} />
 	{#each rings as r (r.x)}
 		<line
 			x1={r.x}

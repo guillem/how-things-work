@@ -35,6 +35,7 @@
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
 	import T from './T.svelte';
+	import Title from './Title.svelte';
 	import { sci, sup } from './fmt';
 	import { Readout } from '#lib/explainer/index.ts';
 
@@ -281,7 +282,7 @@
 	<!-- readouts -->
 	{#if phase === 'ripples'}
 		<Card x={KX} y={PY0} w={KW} h={172} />
-		<T x={KX + 16} y={PY0 + 28} text="The waves" size={15} weight={700} />
+		<Title x={KX + 16} y={PY0 + 28} text="The waves" size={15} weight={700} />
 		<Row
 			id="speed"
 			order={1}
@@ -323,7 +324,7 @@
 		{@const p =
 			source === 'earth' ? powers.earth : source === 'pulsar' ? powers.pulsar : powers.bbh}
 		<Card x={KX} y={PY0} w={KW} h={200} />
-		<T
+		<Title
 			x={KX + 16}
 			y={PY0 + 28}
 			text={source === 'earth'
@@ -506,7 +507,7 @@
 		</Readout>
 	{:else}
 		<Card x={KX} y={PY0} w={KW} h={196} />
-		<T x={KX + 16} y={PY0 + 28} text="When the wave arrives" size={15} weight={700} />
+		<Title x={KX + 16} y={PY0 + 28} text="When the wave arrives" size={15} weight={700} />
 		<Row
 			id="s1"
 			order={1}

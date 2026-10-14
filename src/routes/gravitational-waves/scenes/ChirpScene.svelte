@@ -35,6 +35,8 @@
 		finalSpin,
 		horizonRadius,
 		inspiral,
+		iscoFrequency,
+		minTotalMass,
 		radiatedMass,
 		ringdown,
 		strain
@@ -42,6 +44,7 @@
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
 	import T from './T.svelte';
+	import Title from './Title.svelte';
 	import { sci, sup, whole } from './fmt';
 	import { playSamples, stopAll } from './sound';
 
@@ -51,6 +54,8 @@
 	const m1 = $derived(Number(params.m1 ?? 36));
 	const m2 = $derived(Number(params.m2 ?? 29));
 	const dMpc = $derived(phase === 'arrival' ? Number(params.dist ?? 410) : 410);
+
+	const sameMc = $derived(Boolean(params.sameMc) && phase === 'track');
 
 	// ---- the model ----------------------------------------------------------------------
 	const ins = $derived(inspiral(m1, m2));
@@ -131,7 +136,13 @@
 	);
 
 	// frequency track (log scale)
-	const F1 = 250;
+	/** Top of the frequency axis: a round value above the highest ISCO shown. */
+	const F1 = $derived(
+		[50, 100, 150, 250].find(
+			(v) => v >= 1.1 * Math.max(ins.fIsco, sameMc ? iscoFrequency(minTotalMass(mc)) : 0)
+		) ?? 250
+	);
+	const fTicks = $derived(Array.from({ length: 6 }, (_, i) => (F1 * i) / 5));
 	const lf = (f: number) => PY1 - ((PY1 - PY0) * Math.min(f, F1)) / F1;
 	const trackOf = (i: ReturnType<typeof inspiral>) => {
 		let d = '';
@@ -163,7 +174,6 @@
 		}
 		return { a, b, d, fIsco: i.fIsco, tIsco: Math.min(T1, shift) };
 	});
-	const sameMc = $derived(Boolean(params.sameMc) && phase === 'track');
 
 	// ---- the orbit at the playhead ----------------------------------------------------------
 	const merged = $derived(ts > 0);
@@ -309,7 +319,7 @@
 
 	<!-- readouts -->
 	<Card x={KX} y={OY} w={KW} h={OH} />
-	<T x={KX + 18} y={OY + 30} text="{m1} + {m2} suns" size={16} weight={700} />
+	<Title x={KX + 18} y={OY + 30} text="{m1} + {m2} suns" size={16} weight={700} />
 	{#if phase === 'inspiral' || phase === 'arrival'}
 		<Row
 			id="mc"
@@ -607,7 +617,7 @@
 
 	{#if phase === 'track'}
 		<!-- frequency, linear scale -->
-		{#each [0, 50, 100, 150, 200, 250] as f (f)}
+		{#each fTicks as f (f)}
 			<line x1={PX0} x2={sx(0)} y1={lf(f)} y2={lf(f)} stroke="var(--stage-grid)" />
 			<T x={PX0 - 8} y={lf(f) + 4} text={String(f)} anchor="end" size={11.5} muted />
 		{/each}

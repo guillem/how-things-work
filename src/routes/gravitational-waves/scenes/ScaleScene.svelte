@@ -64,7 +64,7 @@
 		objects
 			.map((o) => ({ ...o, r: (o.size * k) / 2 }))
 			.filter((o) => o.r > 1 && o.r < 3000)
-			.map((o) => ({ ...o, labelled: o.r > 6 && o.r < 230 }))
+			.map((o) => ({ ...o, labelled: o.r > 6 && o.r < 700 }))
 	);
 	const armPx = $derived(LIGO_ARM * k);
 	const dlPx = $derived(dl * k);
@@ -146,7 +146,7 @@
 		{#each shown.filter((o) => o.labelled) as o (o.id)}
 			<T
 				x={CX}
-				y={CY - o.r - 8}
+				y={Math.max(PY0 + 22, CY - o.r - 8)}
 				text={o.name}
 				anchor="middle"
 				size={12.5}

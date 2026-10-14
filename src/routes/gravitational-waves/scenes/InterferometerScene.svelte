@@ -21,6 +21,7 @@
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
 	import T from './T.svelte';
+	import Title from './Title.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -185,7 +186,7 @@
 
 	<!-- right: the waves at the sensor -->
 	<Card x={656} y={16} w={288} h={568} />
-	<T x={672} y={44} text="At the light sensor" size={14} weight={700} />
+	<Title x={672} y={44} text="At the light sensor" size={14} weight={700} />
 	<path d={bx} fill="none" stroke="var(--gw-h1)" stroke-width="1.8" />
 	<path d={by} fill="none" stroke="var(--gw-l1)" stroke-width="1.8" />
 	<path d={sum} fill="none" stroke="var(--gw-laser)" stroke-width="2.4" />
