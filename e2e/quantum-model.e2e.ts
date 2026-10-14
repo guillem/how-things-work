@@ -140,7 +140,7 @@ test('tunnelling falls off exponentially with width, as e^(−2κa)', () => {
 	expect(sim / Math.exp(-2 * kappa * 0.1)).toBeLessThan(1.05);
 	// Scanning tunnelling microscope: with a 4.5 eV work function, 0.1 nm more gap cuts the
 	// current about ninefold, and 0.1 nm less raises it as much.
-	const stm = barrierT(0.5, 5, 0.5) / barrierT(0.5, 5, 0.6);
+	const stm = barrierT(1, 5.5, 0.5) / barrierT(1, 5.5, 0.6);
 	expect(stm).toBeGreaterThan(8.5);
 	expect(stm).toBeLessThan(9.5);
 });
