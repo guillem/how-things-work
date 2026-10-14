@@ -180,7 +180,7 @@
 	const GAS = { x: 194, y: 406, h: 16, w: widthFor(PRE.gas, 16) };
 	/** Fossil carbon burnt since 1750 (model / GCB), drawn as a ghost beside the reserves. */
 	const burnt = totals(today()).burnt;
-	const BURNT = { x: 240, y: 400, h: 28, w: widthFor(burnt, 28) };
+	const BURNT = { x: 262, y: 400, h: 28, w: widthFor(burnt, 28) };
 	const ROCK_Y = 548;
 
 	// ---- flows (widths to scale) ---------------------------------------------
@@ -306,9 +306,9 @@
 			id: 'burial',
 			flux: NATURAL.seafloorBurial,
 			points: [
-				{ x: 900, y: 272 },
-				{ x: 904, y: 400 },
-				{ x: 900, y: 528 }
+				{ x: 530, y: 272 },
+				{ x: 534, y: 400 },
+				{ x: 530, y: 528 }
 			],
 			color: 'var(--stage-ink-muted)',
 			group: 'slow'
@@ -367,6 +367,9 @@
 		})
 	);
 
+	/** Flow labels show only while their flows are in focus (dimmed flows keep no text). */
+	const labelOpacity = (v: number) => smoothstep(0.45, 0.8, v) * v;
+
 	// ---- readouts per view (phone panel) -------------------------------------
 	const ROWS: Record<string, string[]> = {
 		stores: ['air', 'land', 'ocean', 'fossil'],
@@ -385,20 +388,20 @@
 	const now = totals(today());
 
 	// ---- budget inset (magnified ×10) ----------------------------------------
-	const INSET = { x: 584, y: 26, w: 352, h: 200 };
+	const INSET = { x: 626, y: 62, w: 310, h: 168 };
 	const K = 3.5; // scene units per GtC/yr: 10× the main diagram
 	const total = BUDGET.fossil + BUDGET.landUse;
 	const sankey = (() => {
 		const x0 = INSET.x + 22;
-		const x1 = INSET.x + 196;
-		const y0 = INSET.y + 82;
+		const x1 = INSET.x + 160;
+		const y0 = INSET.y + 56;
 		const splits = [
 			{ id: 'air', v: BUDGET.air, color: 'var(--cc-air)', label: 'air' },
 			{ id: 'ocean', v: BUDGET.ocean, color: 'var(--cc-ocean)', label: 'ocean' },
 			{ id: 'land', v: BUDGET.land, color: 'var(--cc-plants)', label: 'plants' }
 		];
 		let acc = 0;
-		let outY = INSET.y + 58;
+		let outY = INSET.y + 50;
 		return splits.map((s) => {
 			const a = y0 + acc * K;
 			const b = a + s.v * K;
@@ -411,7 +414,7 @@
 			return { ...s, path, labelY: (c + d) / 2 + 4, x1 };
 		});
 	})();
-	const srcTop = INSET.y + 82;
+	const srcTop = INSET.y + 56;
 </script>
 
 <g>
@@ -474,7 +477,7 @@
 			opacity={row('fossil')}
 		>
 			<Label
-				x={60}
+				x={92}
 				y={390}
 				text="fossil fuels (proven reserves): {gtc(FOSSIL_RESERVES)} GtC"
 				anchor="start"
@@ -513,9 +516,10 @@
 					opacity={row('l-burnt')}
 				>
 					<Label
-						x={BURNT.x + BURNT.w / 2}
+						x={BURNT.x}
 						y={446}
 						text="burnt since 1750: {gtc(burnt)}"
+						anchor="start"
 						size={11}
 						color="var(--cc-human)"
 					/>
@@ -638,9 +642,10 @@
 			opacity={row('land')}
 		>
 			<Label
-				x={PLANTS.x + PLANTS.w / 2}
-				y={PLANTS.y - 8}
+				x={PLANTS.x - 8}
+				y={PLANTS.y + 15}
 				text="plants 450"
+				anchor="end"
 				size={12}
 				weight={600}
 			/>
@@ -656,7 +661,7 @@
 			<path
 				d={b.band.d}
 				fill={b.color}
-				fill-opacity={b.scaled ? 0.42 : 0.9}
+				fill-opacity={b.group === 'human' ? 0.85 : b.scaled ? 0.42 : 0.9}
 				stroke={b.scaled ? 'none' : b.color}
 				stroke-dasharray={b.scaled ? undefined : '3 2'}
 				stroke-width="0.6"
@@ -669,7 +674,7 @@
 	{/each}
 
 	<!-- flow labels -->
-	<g opacity={o.fast}>
+	<g opacity={labelOpacity(o.fast)}>
 		<Readout
 			id="gpp"
 			order={1}
@@ -707,7 +712,7 @@
 			/>
 		</Readout>
 	</g>
-	<g opacity={o.gas}>
+	<g opacity={labelOpacity(o.gas)}>
 		<Readout
 			id="in"
 			order={3}
@@ -745,7 +750,7 @@
 			/>
 		</Readout>
 	</g>
-	<g opacity={o.mix}>
+	<g opacity={labelOpacity(o.mix)}>
 		<Readout
 			id="down"
 			order={5}
@@ -774,7 +779,7 @@
 			/>
 		</Readout>
 	</g>
-	<g opacity={o.slow}>
+	<g opacity={labelOpacity(o.slow)}>
 		<path d="M408 250 L424 232 L440 250 Z" fill="var(--cc-rock)" />
 		<Readout
 			id="volcano"
@@ -832,12 +837,12 @@
 			opacity={row('burial')}
 		>
 			<Label
-				x={894}
-				y={460}
+				x={540}
+				y={470}
 				text="burial {NATURAL.seafloorBurial}"
 				size={12}
 				weight={600}
-				anchor="end"
+				anchor="start"
 			/>
 		</Readout>
 		<Readout id="minwidth">
@@ -851,7 +856,7 @@
 			/>
 		</Readout>
 	</g>
-	<g opacity={o.human}>
+	<g opacity={labelOpacity(o.human)}>
 		<Readout
 			id="fossil-flow"
 			order={2}
@@ -861,8 +866,8 @@
 			opacity={row('fossil-flow')}
 		>
 			<Label
-				x={30}
-				y={232}
+				x={74}
+				y={306}
 				text="burning {BUDGET.fossil}"
 				size={12}
 				weight={700}
@@ -959,15 +964,15 @@
 			/>
 			<Label
 				x={INSET.x + 14}
-				y={INSET.y + 22}
-				text="Where each year's 11.2 GtC goes (2015–2024)"
+				y={INSET.y + 20}
+				text="Where 11.2 GtC a year goes (2015–2024)"
 				anchor="start"
 				size={13}
 				weight={700}
 			/>
 			<Label
 				x={INSET.x + 14}
-				y={INSET.y + 40}
+				y={INSET.y + 36}
 				text="bands 10× wider than in the main drawing"
 				anchor="start"
 				size={11}
@@ -989,7 +994,7 @@
 			/>
 			<Label
 				x={INSET.x + 16}
-				y={srcTop + total * K + 18}
+				y={INSET.y + 134}
 				text="burning 9.8 + clearing 1.4"
 				anchor="start"
 				size={11}
@@ -1029,8 +1034,8 @@
 			>
 				<Label
 					x={INSET.x + 14}
-					y={INSET.y + INSET.h - 12}
-					text="since 1850: 745 GtC · air 290 · ocean 200 · land 175"
+					y={INSET.y + 156}
+					text="1850–2024: air 290 · ocean 200 · land 175"
 					anchor="start"
 					size={11}
 					muted
@@ -1068,7 +1073,7 @@
 			/>
 			<Label
 				x={30}
-				y={330}
+				y={530}
 				text="slow loop: millions of years"
 				anchor="start"
 				size={13}
@@ -1121,8 +1126,8 @@
 				opacity={row('l-land')}
 			>
 				<Label
-					x={300}
-					y={210}
+					x={330}
+					y={238}
 					text="land {now.land < 0 ? '−' : '+'}{gtc(Math.abs(now.land))} net"
 					size={12}
 					weight={700}

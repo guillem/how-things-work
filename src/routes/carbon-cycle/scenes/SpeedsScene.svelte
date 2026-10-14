@@ -27,6 +27,8 @@
 		fill: string;
 		text: string;
 		loop: 'fast' | 'slow';
+		/** Where the text goes: after the bar (default), inside it, or before it. */
+		place?: 'inside' | 'before';
 	}
 	const BARS: Bar[] = [
 		{
@@ -82,6 +84,7 @@
 			color: 'var(--cc-fossil)',
 			fill: 'var(--cc-fossil-fill)',
 			text: 'formed over 10–300 million years',
+			place: 'before',
 			loop: 'slow'
 		},
 		{
@@ -91,6 +94,7 @@
 			color: 'var(--cc-rock)',
 			fill: 'var(--cc-rock-fill)',
 			text: '≈ 400 million years',
+			place: 'inside',
 			loop: 'slow'
 		}
 	];
@@ -170,10 +174,10 @@
 		value="a few years to decades"
 	>
 		<Label
-			x={36}
-			y={ROW0 + 5 * ROW - 40}
+			x={230}
+			y={ROW0 + 5 * ROW - 38}
 			text="fast loop"
-			anchor="start"
+			anchor="end"
 			size={12}
 			weight={700}
 			color="var(--cc-air)"
@@ -196,10 +200,10 @@
 		/>
 		<Readout id="bar-{b.id}">
 			<Label
-				x={x1 + 8}
+				x={b.place === 'inside' ? x0 + 10 : b.place === 'before' ? x0 - 8 : x1 + 8}
 				y={y + 5}
 				text={b.text}
-				anchor="start"
+				anchor={b.place === 'before' ? 'end' : 'start'}
 				size={12}
 				opacity={smoothstep(0.6, 1, grow(i))}
 			/>
@@ -217,15 +221,13 @@
 		label="Slow loop: fossil fuels and rock"
 		value="tens to hundreds of millions of years"
 	>
-		<Label x={36} y={rowY(6) + 30} text="slow loop" anchor="start" size={12} weight={700} />
+		<Label x={230} y={rowY(6) + 32} text="slow loop" anchor="end" size={12} weight={700} />
 	</Readout>
 
 	<!-- burning the reserves -->
 	<g opacity={arrowIn}>
 		<path
-			d="M{sx(1e7) - 4} {rowY(5)} C {sx(1e5)} {rowY(5) - 70}, {sx(1e3)} {rowY(5) - 70}, {sx(
-				burnYears
-			) + 6} {rowY(5) - 22}"
+			d="M{sx(1e7)} {rowY(5) - 12} Q {sx(1e5)} {rowY(5) - 56}, {sx(burnYears)} {rowY(5) - 14}"
 			fill="none"
 			stroke="var(--cc-human)"
 			stroke-width="2.5"
@@ -239,8 +241,8 @@
 			color="var(--cc-human)"
 		>
 			<Label
-				x={sx(1e4) + 30}
-				y={rowY(5) - 66}
+				x={sx(2e4)}
+				y={rowY(5) - 46}
 				text="burnt at today's rate: about {Math.round(burnYears)} years"
 				size={12}
 				weight={700}

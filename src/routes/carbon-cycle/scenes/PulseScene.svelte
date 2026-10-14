@@ -121,9 +121,9 @@
 	/>
 	<Readout id="joos">
 		<Label
-			x={sx(300)}
-			y={sy(joos(300)) - 26}
-			text="dashed: average of 15 research models"
+			x={sx(150)}
+			y={sy(0.1)}
+			text="dashed line: average of 15 research models (Joos et al. 2013)"
 			size={11}
 			muted
 		/>

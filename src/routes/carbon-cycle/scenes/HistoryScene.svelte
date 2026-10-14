@@ -27,7 +27,7 @@
 	const L = 90;
 	const R = 900;
 	const sx = scale([1750, 2024], [L, R]);
-	const top = scale([0, 12], [250, 70]);
+	const top = scale([0, 12], [250, 96]);
 	const bottom = scale([-1.5, 8], [540, 330]);
 
 	// The cursor sweeps 1750 → 2024 in 9 s, then stays (reduced motion: the whole record).
@@ -187,7 +187,7 @@
 	<line
 		x1={sx(at.year)}
 		x2={sx(at.year)}
-		y1={70}
+		y1={96}
 		y2={540}
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="3 3"
@@ -200,7 +200,7 @@
 	>
 		<Label
 			x={Math.min(sx(at.year) + 8, R - 4)}
-			y={96}
+			y={120}
 			text="{fmt(at.year)} · {ppmOf(state).toFixed(0)} ppm · ocean pH {pHOf(state).toFixed(2)}"
 			anchor={sx(at.year) > R - 230 ? 'end' : 'start'}
 			size={13}

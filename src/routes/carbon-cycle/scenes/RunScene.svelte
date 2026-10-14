@@ -29,6 +29,7 @@
 
 	// ---- split time axis: 2024–2224 over 60% of the width, 2224–3024 over the rest
 	const L = 96;
+	const CHART_TOP = 236;
 	const SPLIT = 560;
 	const R = 880;
 	const left = scale([0, 200], [L, SPLIT]);
@@ -57,7 +58,7 @@
 	);
 	const yMax = $derived(niceMax(Math.max(...series.map((d) => Math.max(d.air, d.ocean)), 600)));
 	const yMin = $derived(Math.min(-200, -niceMax(-Math.min(...series.map((d) => d.land)))));
-	const sy = $derived(scale([yMin, yMax], [560, 300]));
+	const sy = $derived(scale([yMin, yMax], [560, CHART_TOP]));
 	const visible = $derived(series.slice(0, cursorYear + 1));
 	const air = $derived(
 		linePath(
@@ -109,10 +110,11 @@
 			(v) => v >= yMin && v <= yMax
 		)
 	);
-	const xTicks = [0, 50, 100, 150, 200, 400, 600, 800, 1000];
+	// Round years: 2050, 2100, … (offsets from the end of 2024).
+	const xTicks = [26, 76, 126, 176, 476, 976];
 
 	// ---- bars of the stores at the cursor
-	const BAR_X0 = 330;
+	const BAR_X0 = 360;
 	const BAR_W = 420;
 	const barMax = $derived(
 		niceMax(Math.max(run[run.length - 1] ? totals(run[run.length - 1]).burnt : 1, 800))
@@ -184,7 +186,7 @@
 	{#each bars as b, i (b.id)}
 		{@const y = 70 + i * 36}
 		{@const x0 = Math.min(bx(0), bx(b.v))}
-		<Label x={bx(0) - 10} y={y + 15} text={b.name} anchor="end" size={13} weight={600} />
+		<Label x={24} y={y + 15} text={b.name} anchor="start" size={13} weight={600} />
 		<rect
 			x={x0}
 			{y}
@@ -220,7 +222,7 @@
 		opacity="0.75"
 	/>
 	<Readout id="burnt">
-		<Label x={bx(0) - 10} y={BURN_Y + 10} text="fossil carbon burnt" anchor="end" size={12} muted />
+		<Label x={24} y={BURN_Y + 10} text="fossil carbon burnt" anchor="start" size={12} muted />
 		<Label
 			x={bx(tot.burnt) + 8}
 			y={BURN_Y + 10}
@@ -240,9 +242,23 @@
 		xFormat={(v: number) => String(2024 + v)}
 		yLabel="GtC since 1750"
 	/>
-	<line x1={SPLIT} x2={SPLIT} y1={300} y2={560} stroke="var(--stage-line)" stroke-dasharray="2 3" />
+	<line
+		x1={SPLIT}
+		x2={SPLIT}
+		y1={CHART_TOP}
+		y2={560}
+		stroke="var(--stage-line)"
+		stroke-dasharray="2 3"
+	/>
 	<Readout id="split">
-		<Label x={SPLIT + 6} y={314} text="axis squeezed ×4 from here" anchor="start" size={11} muted />
+		<Label
+			x={SPLIT + 6}
+			y={CHART_TOP + 14}
+			text="axis squeezed ×4 from here"
+			anchor="start"
+			size={11}
+			muted
+		/>
 	</Readout>
 	{#each ppmTicks as p (p)}
 		<Readout id="ppm-{p}">
@@ -259,9 +275,9 @@
 	{#if s.years > 0}
 		<rect
 			x={xOf(0)}
-			y={300}
+			y={CHART_TOP}
 			width={xOf(s.years) - xOf(0)}
-			height={260}
+			height={560 - CHART_TOP}
 			fill="var(--cc-human)"
 			opacity="0.06"
 		/>
@@ -282,7 +298,7 @@
 	<line
 		x1={xOf(cursorYear)}
 		x2={xOf(cursorYear)}
-		y1={300}
+		y1={CHART_TOP}
 		y2={560}
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="3 3"

@@ -258,7 +258,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Put it together. The fast loop of air, life and ocean moves carbon within years to centuries. The slow loop of rock moves it over millions of years. Before industry the two barely touched.</p>
 <p>Burning fossil fuels takes carbon that was locked away for millions of years and moves it into the fast loop in a few decades. Once there, it does not go back: the plants and the ocean only move it around inside the fast loop. The stage shows the carbon added to the fast loop since 1750. Only rock weathering can return it to the slow loop, and that takes tens to hundreds of thousands of years.</p>
-<p>What does the extra CO₂ in the air do? It traps heat, which is the subject of <a href="../greenhouse-effect/">the greenhouse effect</a>.</p>`,
+<p>What does the extra CO₂ in the air do? It absorbs the infrared radiation the warm ground gives off and sends part of it back down, making it harder for heat to escape to space: the greenhouse effect, the subject of the next explainer.</p>`,
 			notes: `<p>In the model, the fast loop holds the 500 GtC of fossil carbon burnt since 1750 and the 280 GtC released by land clearing: with the clearing it is shared between the air (+308 GtC) and the ocean (+208 GtC), and the land, where regrowth and CO₂ fertilisation (+155 GtC) have not yet made up for the clearing. GCB 2025 Table 8 gives 1750–2024 totals of 500 GtC fossil and 280 GtC land-use change.</p>`
 		}
 	]
