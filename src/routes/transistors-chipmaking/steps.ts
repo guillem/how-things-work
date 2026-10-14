@@ -35,9 +35,7 @@ export const spec: ExplainerSpec = {
 			scene: 'mosfet',
 			hints: { phase: 'gate' },
 			duration: 26,
-			controls: [
-				gate('vg', 'Gate voltage', 0, 'The drain is held at 1.8 V above the source.')
-			],
+			controls: [gate('vg', 'Gate voltage', 0, 'The drain is held at 1.8 V above the source.')],
 			body: `
 <p>Nearly every transistor on a chip is a <dfn data-def="Metal–oxide–semiconductor field-effect transistor: a switch in which the voltage on an insulated gate creates or removes a conducting channel between two doped regions, the source and the drain.">MOSFET</dfn>. Seen in cross-section, it is a slab of <a href="../semiconductors/#acceptor">p-type silicon</a> with two small <a href="../semiconductors/#donor">n-type</a> islands, the <dfn data-def="The terminal the channel's carriers come from: in an n-channel transistor, the n-type region connected to the lower voltage.">source</dfn> and the <dfn data-def="The terminal the channel's carriers flow to: in an n-channel transistor, the n-type region at the higher voltage.">drain</dfn>. Between them, on top, lies the <dfn data-def="The electrode that controls a MOSFET. It sits on a thin insulating layer and never touches the silicon underneath.">gate</dfn>: a conductor separated from the silicon by a layer of glass (silicon dioxide) only about 4 nm thick.</p>
 <p>With the gate at 0 V, the path from source to drain is n, then p, then n: two <a href="../semiconductors/#pn">p–n junctions</a> back to back, one of which is always reverse-biased. No current flows. The transistor is <strong>off</strong>.</p>
@@ -52,7 +50,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'curve' },
 			duration: 26,
 			controls: [
-				gate('vg', 'Gate voltage', 1.2),
+				gate('vg', 'Gate voltage', 0),
 				{
 					type: 'toggle',
 					id: 'logScale',
@@ -133,14 +131,14 @@ export const spec: ExplainerSpec = {
 					default: 0,
 					format: (v) =>
 						['wafer', 'chip', 'block', 'cells', 'transistor'][Math.min(4, Math.round(v))],
-					help: 'Each step is about a hundred times closer.'
+					help: 'From 300 mm across down to a few hundred nanometres.'
 				}
 			],
 			body: `
 <p>Chips are made on <dfn data-def="A thin disc sawn from a single crystal of very pure silicon; chips are built on its polished surface.">wafers</dfn>: discs of single-crystal silicon <strong>300 mm</strong> across and under a millimetre thick. Each wafer carries hundreds of identical chips side by side, built all at once and sawn apart only at the end.</p>
-<p><strong>Zoom in</strong>. A chip the size of Apple's M1 (about 119 mm²) fits some 530 times on one wafer. Inside it are blocks (processor cores, memory, graphics), made of rows of standard <dfn data-def="A small pre-designed group of transistors, such as a NAND gate or a memory bit, laid out to a fixed height so that thousands can be placed in rows.">cells</dfn>, made of transistors. The M1 has <strong>16 billion</strong> of them: one wafer holds some 8 trillion.</p>
+<p><strong>Zoom in</strong>. A chip the size of Apple's M1 (about 119 mm²) fits about 500 times on one wafer. Inside it are blocks (processor cores, memory, graphics), made of rows of standard <dfn data-def="A small pre-designed group of transistors, such as a NAND gate or a memory bit, laid out to a fixed height so that thousands can be placed in rows.">cells</dfn>, made of transistors. The M1 has <strong>16 billion</strong> of them: one wafer holds some 8 trillion.</p>
 <p>Nobody places them one at a time. Every layer of every transistor on a wafer is printed in under a minute, the way a photograph is printed: with light, through a stencil.</p>`,
-			notes: `<p>The number of chips is the standard estimate πr²/S − πd/√(2S) for chips of area S on a wafer of diameter d (the second term is the partial chips lost at the edge); defects then spoil a fraction of them. The M1's 16 billion transistors are Apple's figure; its area of about 119 mm² was measured by TechInsights, as Apple does not publish it. The views between the levels are drawn schematically, not from the M1's real layout.</p>`
+			notes: `<p>The wafer drawn holds 509 whole chips of 10.9 × 10.9 mm that keep 3 mm clear of the edge; the usual estimate πr²/S − πd/√(2S) for chips of area S on a wafer of diameter d gives 532. Defects then spoil a fraction of them. The M1's 16 billion transistors are Apple's figure; its area of about 119 mm² was measured by TechInsights, as Apple does not publish it. The rows of cells (210 nm tall) and the spacing of the gates (51 nm) are those Angstronomics measured on TSMC's 5 nm process, the one the M1 is made on; the layouts themselves are schematic, not the M1's real ones.</p>`
 		},
 		{
 			id: 'films',
@@ -164,7 +162,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			body: `
 <p>Now the pattern. The wafer is spun while a drop of <dfn data-def="A light-sensitive polymer. In a positive resist the exposed areas become soluble in the developer; in a negative resist they become insoluble.">photoresist</dfn> is spread into an even film. In the scanner, ultraviolet light shines through a <dfn data-def="A glass plate carrying the pattern of one layer in an opaque film (chrome). It is drawn four times larger than the pattern it prints.">mask</dfn>: wherever the mask is clear, the light reaches the resist and changes its chemistry; where the mask is opaque, it doesn't.</p>
-<p>A lens shrinks the mask's image four times. Each flash exposes a field up to <strong>26 × 33 mm</strong> at once (seven chips the size of the M1: over a hundred billion transistors), then the wafer steps to the next field.</p>
+<p>A lens shrinks the mask's image four times. Each flash exposes a field up to <strong>26 × 33 mm</strong> at once (six chips the size of the M1: about a hundred billion transistors), then the wafer steps to the next field.</p>
 <p>The wafer is then washed in a <dfn data-def="The solution that dissolves the exposed (positive resist) or unexposed (negative resist) parts of the photoresist.">developer</dfn>. With a positive resist, the exposed parts dissolve. What is left is a stencil of resist on top of the films, shaped exactly like the opaque parts of the mask: here, one strip over the future gate.</p>`,
 			notes: `<p>This is <dfn data-def="Printing a pattern by exposing a light-sensitive film through a mask; from the Greek for writing on stone.">photolithography</dfn>. The resist is baked before and after the exposure, and the scanner aligns each new mask to the layers already on the wafer to within a few nanometres. A modern chip needs dozens of masks, each a different layer.</p>`
 		},
