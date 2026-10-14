@@ -23,8 +23,8 @@
 				for (let c = 0; c < 3; c++)
 					out.push({
 						k: `b${d}${r}${c}`,
-						x: 132 + c * 11 + d * 7,
-						y: 50 + r * 11 - d * 7,
+						x: 132 + c * 11 + d * 9,
+						y: 50 + r * 11 - d * 9,
 						o: 0.25 + 0.1 * (2 - d)
 					});
 		return out;
@@ -2329,8 +2329,7 @@
 				width="11"
 				height="11"
 				rx="1.5"
-				fill={accent}
-				fill-opacity={c.o}
+				fill="color-mix(in srgb, {accent} {Math.round(c.o * 100)}%, var(--surface))"
 				stroke="currentColor"
 				stroke-opacity="0.55"
 				stroke-width="1"

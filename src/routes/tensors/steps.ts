@@ -220,7 +220,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Stack two matrices one behind the other and the block has three axes: shape (2, 3, 4), and three indices pick one number, such as B[1, 0, 3] (layer 1, the one behind; row 0; column 3). Nothing stops there: a fourth axis would be a row of blocks, a fifth a table of blocks, and so on. A tensor is just numbers laid out along any number of axes.</p>
 <p>So <strong>scalars, vectors and matrices are tensors with 0, 1 and 2 axes</strong>. Grow and shrink the block with the sliders, or drag the handles at the ends of the axes: the total count of numbers is always the product of the lengths, 2 × 3 × 4 = 24 here.</p>`,
-			notes: `<p>The number of axes goes by several names: NumPy's <code>ndim</code>, PyTorch's <code>dim()</code>, the <em>order</em> of the tensor, and often its <em>rank</em>. That last one clashes with the rank of a matrix in linear algebra (how many independent directions it keeps: a 3 × 4 matrix can have matrix rank 1, 2 or 3, but always has 2 axes), so this page avoids it.</p>`
+			notes: `<p>The number of axes goes by several names: NumPy's <code>ndim</code>, PyTorch's <code>dim()</code>, the <em>order</em> of the tensor, and often its <em>rank</em>. That last one clashes with the rank of a matrix in linear algebra (how many independent directions it keeps: a 3 × 4 matrix has matrix rank anywhere from 0 to 3, but always 2 axes), so this page avoids it.</p>`
 		},
 		// ------------------------------------------------------------------ image
 		{

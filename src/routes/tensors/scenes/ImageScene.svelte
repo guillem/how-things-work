@@ -19,7 +19,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { Handle, VectorHandle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { get, num, shapeText } from '../tensor';
 	import {
@@ -115,11 +115,10 @@
 		setParam('col', clamp(Math.floor((p.x - PHOTO.x) / P), 0, W - 1));
 		setParam('row', clamp(Math.floor((p.y - PHOTO.y) / P), 0, H - 1));
 	}
-	function keyPixel(s: number | 'start' | 'end') {
-		// ← → move along the row, ↑ ↓ (reported as ±1 too) would be ambiguous: the sliders do rows.
-		if (s === 'start') setParam('col', 0);
-		else if (s === 'end') setParam('col', W - 1);
-		else setParam('col', clamp(col + s, 0, W - 1));
+	function keyPixel(dx: number, dy: number) {
+		// ← → move along the row, ↑ ↓ to the row above or below (Shift: 5 at a time).
+		setParam('col', clamp(col + dx, 0, W - 1));
+		setParam('row', clamp(row - dy, 0, H - 1));
 	}
 
 	// ============================================================ phase slice
@@ -434,14 +433,12 @@
 					{ h: 'axis 0: height · 48', w: 'axis 1: width · 36', c: 'axis 2: channel · 3' }
 				)}
 			</g>
-			<Handle
+			<VectorHandle
 				x={PHOTO.x + (col + 0.5) * P}
 				y={PHOTO.y + (row + 0.5) * P}
 				r={7}
 				label="Pixel"
 				value={col}
-				min={0}
-				max={W - 1}
 				valuetext="row {row}, column {col}"
 				color="var(--stage-ink)"
 				onmove={movePixel}

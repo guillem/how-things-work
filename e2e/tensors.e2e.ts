@@ -45,6 +45,9 @@ test('picking a pixel reads its three numbers from the photo', async ({ page }) 
 	await page.keyboard.press('ArrowRight');
 	await expect(slider(page, 'col')).toHaveValue('4');
 	await expect(stage(page)).toContainText(`green: ${get(img, [10, 4, 1])}`);
+	await page.keyboard.press('ArrowUp');
+	await expect(slider(page, 'row')).toHaveValue('9');
+	await expect(stage(page)).toContainText(`green: ${get(img, [9, 4, 1])}`);
 });
 
 test('a slice drops the axis it fixes', async ({ page }) => {
