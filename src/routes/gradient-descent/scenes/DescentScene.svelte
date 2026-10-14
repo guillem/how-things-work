@@ -264,11 +264,11 @@
 			/>
 		</Readout>
 		{#if s.land.id === 'bowl'}
-			<Readout id="factor" order={4} label="Each step" value="distance × (1 − η) = {fmt(1 - s.lr)}">
+			<Readout id="factor" order={4} label="Each step" value="offset × (1 − η) = {fmt(1 - s.lr)}">
 				<Txt
 					x={RX}
 					y={RY + 61}
-					text="each step: distance to the bottom × (1 − η) = × {fmt(1 - s.lr)}"
+					text="each step: offset from the bottom × (1 − η) = × {fmt(1 - s.lr)}"
 					size={12}
 					muted
 				/>

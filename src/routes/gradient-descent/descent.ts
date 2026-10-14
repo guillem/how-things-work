@@ -7,16 +7,17 @@
  *   plain:     w ← w − η ∇L(w)
  *   momentum:  v ← β v − η ∇L(w);  w ← w + v        (Polyak's "heavy ball")
  *   noise:     ∇L is replaced by ∇L + σ ξ, ξ a standard normal vector, as a
- *              stand-in for the noise of mini-batch gradients; on the line-fit
- *              landscape the noise is the real thing instead: each step uses the
- *              gradient of a random mini-batch of the examples.
+ *              stand-in for the noise of mini-batch gradients. On the line-fit
+ *              landscape a mini-batch is the real thing instead: each step uses the
+ *              gradient of a random mini-batch of the examples, and the added
+ *              noise applies only when a step uses all of them.
  *
  * Landscapes:
  *   line     the mean squared error of a straight line y = a·x + b on the 21
  *            examples of the learning-from-data page (`makeData(21, 0.15, 1)`),
  *            a real loss whose minimum is the least-squares line;
  *   bowl     L = (w₁² + w₂²)/2: curvature 1 in every direction, so a step
- *            multiplies the distance to the bottom by exactly (1 − η);
+ *            multiplies the distance to the bottom by exactly |1 − η|;
  *   ravine   a long, narrow valley: a quadratic with curvatures 0.02 along the
  *            floor and 1 across it, turned by 30°;
  *   plateau  a wide, almost flat plain (curvature 0.004) around a well of
@@ -331,8 +332,8 @@ function miniBatch(rand: () => number, size: number) {
 export function descend(land: Landscape, start: readonly [number, number], o: RunOptions): Run {
 	const steps = o.steps ?? 300;
 	const beta = o.momentum ?? 0;
-	const sigma = land.id === 'line' ? 0 : (o.noise ?? 0);
 	const batch = land.id === 'line' ? Math.round(o.batch ?? examples.length) : examples.length;
+	const sigma = batch < examples.length ? 0 : (o.noise ?? 0);
 	const rand = rng(o.seed ?? 1);
 	// Far enough off the map that the run has clearly blown up.
 	const span = Math.max(land.x[1] - land.x[0], land.y[1] - land.y[0]);

@@ -57,7 +57,7 @@ test('every listed minimum is a minimum: zero gradient, curving up both ways, in
 	}
 });
 
-test('on the round bowl a step multiplies the distance to the bottom by 1 − η', () => {
+test('on the round bowl a step multiplies the offset from the bottom by 1 − η', () => {
 	for (const lr of [0.05, 0.6, 1.5, 1.9]) {
 		const run = descend(bowl, [-2.1, 1.5], { lr, steps: 5 });
 		for (let k = 1; k < run.path.length; k++) {
@@ -72,6 +72,16 @@ test('on the round bowl a step multiplies the distance to the bottom by 1 − η
 	}
 	// η = 1 lands on the bottom in a single step.
 	expect(dist(descend(bowl, [-2.1, 1.5], { lr: 1, steps: 1 }).path[1], { x: 0, y: 0 })).toBe(0);
+	// η = 2: the factor is −1, so the ball bounces between two points forever.
+	const edge = descend(bowl, [-2.1, 1.5], { lr: 2 });
+	expect(edge.diverged).toBe(false);
+	expect(edge.settledAt).toBe(-1);
+	for (const p of edge.path.slice(-4))
+		expect(Math.hypot(p.x, p.y)).toBeCloseTo(Math.hypot(2.1, 1.5), 9);
+	// The narrative: at η = 0.05 the ball crawls, about 70 steps to the bottom.
+	const crawl = descend(bowl, bowl.start, { lr: 0.05 }).settledAt;
+	expect(crawl).toBeGreaterThan(60);
+	expect(crawl).toBeLessThan(85);
 });
 
 test('it converges exactly when η < 2/λ: crawl, converge, diverge', () => {
@@ -141,6 +151,8 @@ test('mini-batches make the descent noisy: it wanders around the best line inste
 	expect(dist(mean, { x: ls.a, y: ls.b })).toBeLessThan(0.15);
 	// …but its loss is above the minimum.
 	expect(tail.reduce((s, p) => s + p.loss, 0) / tail.length).toBeGreaterThan(0.12);
+	// Added noise acts on the line fit too (the playground offers it there), when every step uses all the examples.
+	expect(descend(line, line.start, { lr: 0.3, noise: 1 }).settledAt).toBe(-1);
 	// Same seed, same run: the page can replay it.
 	expect(descend(line, line.start, { lr: 0.3, batch: 1, seed: 3 }).path).toEqual(one.path);
 });
@@ -148,8 +160,14 @@ test('mini-batches make the descent noisy: it wanders around the best line inste
 test('in the ravine momentum reaches the bottom in far fewer steps', () => {
 	const plain = descend(ravine, ravine.start, { lr: 0.9 });
 	const heavy = descend(ravine, ravine.start, { lr: 0.9, momentum: 0.8 });
-	expect(plain.settledAt).toBeGreaterThan(150);
-	expect(heavy.settledAt).toBeLessThan(plain.settledAt / 4);
+	// The narrative: about 190 steps plain, about 30 with β = 0.8.
+	expect(plain.settledAt).toBeGreaterThan(175);
+	expect(plain.settledAt).toBeLessThan(205);
+	expect(heavy.settledAt).toBeGreaterThan(25);
+	expect(heavy.settledAt).toBeLessThan(35);
+	// Too much momentum (β = 0.95) still settles, but only after circling the bottom.
+	const swing = descend(ravine, ravine.start, { lr: 0.9, momentum: 0.95 }).settledAt;
+	expect(swing).toBeGreaterThan(heavy.settledAt * 3);
 	// The narrative: at η = 1.8 the zigzag reaches the bottom in about 100 steps.
 	const fast = descend(ravine, ravine.start, { lr: 1.8 }).settledAt;
 	expect(fast).toBeGreaterThan(80);
@@ -169,9 +187,14 @@ test('on the plateau plain descent crawls; momentum gets off it sooner', () => {
 	const leaves = (momentum: number) =>
 		descend(plateau, plateau.start, { lr: 1, momentum }).path.findIndex((p) => p.loss < 0.45);
 	const plain = leaves(0);
-	// The narrative: more than a hundred steps on the plain, about a quarter of that with β = 0.8.
-	expect(plain).toBeGreaterThan(100);
-	expect(leaves(0.8)).toBeLessThan(plain / 3);
+	// The narrative: about 120 steps on the plain, about 30 with β = 0.8…
+	expect(plain).toBeGreaterThan(110);
+	expect(plain).toBeLessThan(130);
+	expect(leaves(0.8)).toBeGreaterThan(25);
+	expect(leaves(0.8)).toBeLessThan(40);
+	// …though with momentum it circles the bottom of the well before it settles.
+	const heavy = descend(plateau, plateau.start, { lr: 1, momentum: 0.8 }).settledAt;
+	expect(heavy).toBeGreaterThan(leaves(0.8) + 15);
 	// The plain is nearly flat: at the start the slope is tiny compared with the well's walls.
 	const [gx, gy] = plateau.grad(...plateau.start);
 	const wall = plateau.grad(plateau.minima[0].x + 0.9, plateau.minima[0].y);
@@ -185,6 +208,8 @@ test('several valleys: where the ball starts decides where it ends, not which va
 		'the shallowest valley'
 	]);
 	expect(wells.minima[0].value).toBe(0);
+	// The narrative: the ball stops at a loss of 0.43 instead of 0.
+	expect(wells.minima[1].value).toBeCloseTo(0.43, 2);
 	const endIn = (start: [number, number], o = {}) => {
 		const run = descend(wells, start, { lr: 0.3, ...o });
 		const e = run.path.at(-1)!;
