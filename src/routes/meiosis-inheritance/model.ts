@@ -426,19 +426,23 @@ export function genotype(pairs: Record<string, string>): Genotype {
 // chromosome long enough for both, in a parent that got 1+2 from one parent
 // and 1−2− from the other.
 
-/** Simulated recombinant fraction among `n` gametes for two genes `d` Morgans apart. */
+/**
+ * Simulated gametes for two genes `d` Morgans apart: for each, the homologue
+ * it carries at gene 1 and at gene 2 (different: a recombinant), and the
+ * recombinant fraction.
+ */
 export function recombinants(d: number, n: number, seed: number) {
 	const kind: ChromosomeKind = { id: 'L', length: d + 0.4, centromere: 0.1 };
 	const rand = seeded(seed);
 	let rec = 0;
-	const flags: boolean[] = [];
+	const gametes: [Origin, Origin][] = [];
 	for (let i = 0; i < n; i++) {
 		const g = gamete([kind], rand)[0];
-		const r = originAt(g, 0.2) !== originAt(g, 0.2 + d);
-		flags.push(r);
-		if (r) rec++;
+		const pair: [Origin, Origin] = [originAt(g, 0.2), originAt(g, 0.2 + d)];
+		gametes.push(pair);
+		if (pair[0] !== pair[1]) rec++;
 	}
-	return { fraction: rec / n, flags };
+	return { fraction: rec / n, gametes };
 }
 
 // ---------------------------------------------------------------------------
