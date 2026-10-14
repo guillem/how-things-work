@@ -1766,6 +1766,34 @@
 			stroke-linecap="round"
 			stroke-linejoin="round"
 		/>
+	{:else if slug === 'rockets'}
+		<!-- a rocket climbing on a curving gravity turn over the Earth's limb, an orbit ring above -->
+		<path d="M10 118 Q100 84 190 118" fill="var(--sky-ocean)" opacity="0.35" />
+		<path
+			d="M40 104 C60 84 90 52 150 30"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			stroke-dasharray="3 4"
+			opacity="0.5"
+		/>
+		<ellipse
+			cx="100"
+			cy="112"
+			rx="96"
+			ry="84"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.2"
+			stroke-dasharray="2 4"
+			opacity="0.6"
+		/>
+		<g transform="translate(118 44) rotate(62)">
+			<path d="M-4 18 L0 34 L4 18 Z" fill="var(--rk-flame)" />
+			<rect x="-5" y="-10" width="10" height="28" rx="2" fill="currentColor" opacity="0.85" />
+			<path d="M-5 -10 Q0 -24 5 -10 Z" fill={accent} />
+			<path d="M-5 12 L-10 20 L-5 18 Z M5 12 L10 20 L5 18 Z" fill={accent} />
+		</g>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
