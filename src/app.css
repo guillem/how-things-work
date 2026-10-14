@@ -2057,6 +2057,11 @@ kbd {
 	--mi-water: #d0ebff;
 	--mi-gel: #c5f6fa;
 	--mi-panel: #101113;
+	--mi-t-fat: #e8a33d;
+	--mi-t-liver: #a0522d;
+	--mi-t-spleen: #9c36b5;
+	--mi-t-muscle: #e03131;
+	--mi-t-blood: #1c7ed6;
 }
 :root[data-theme='dark'] {
 	--mi-xray: #b197fc;
@@ -2081,4 +2086,9 @@ kbd {
 	--mi-water: #1c3a52;
 	--mi-gel: #1b4a50;
 	--mi-panel: #000000;
+	--mi-t-fat: #ffc078;
+	--mi-t-liver: #e8925f;
+	--mi-t-spleen: #da77f2;
+	--mi-t-muscle: #ff6b6b;
+	--mi-t-blood: #4dabf7;
 }

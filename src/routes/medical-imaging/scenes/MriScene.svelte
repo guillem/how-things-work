@@ -116,11 +116,11 @@
 		blood: 'blood'
 	};
 	const COLORS: Record<MriTissue, string> = {
-		subcutaneousFat: '#e8a33d',
-		liver: '#a0522d',
-		spleen: '#9c36b5',
-		muscle: '#e03131',
-		blood: '#1c7ed6'
+		subcutaneousFat: 'var(--mi-t-fat)',
+		liver: 'var(--mi-t-liver)',
+		spleen: 'var(--mi-t-spleen)',
+		muscle: 'var(--mi-t-muscle)',
+		blood: 'var(--mi-t-blood)'
 	};
 	const signals = $derived(MRI_TISSUES.map((k) => ({ k, s: spinEcho(k, TR, TE) })));
 	const sMax = $derived(Math.max(...signals.map((s) => s.s), 1e-9));

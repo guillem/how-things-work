@@ -24,7 +24,7 @@
 	 *   hounsfield — complete, filtered; a draggable probe reads HU
 	 *   dose       — complete, filtered, with photon noise; doses in mSv
 	 */
-	import { Handle, Label, type Point } from '#lib/draw/index.ts';
+	import { Handle, Label, VectorHandle, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		BODY,
@@ -135,7 +135,8 @@
 	// ---- display windows ------------------------------------------------------------------
 	const huToMu = (h: number) => muW * (1 + h / 1000);
 	const window_ = $derived.by((): [number, number] => {
-		if (!filtered) return [0, range(recon.img)[1] || 1];
+		// a lone dot: stretch the grey scale so its faint 1/r halo shows
+		if (!filtered) return [0, (range(recon.img)[1] || 1) * (key === 'point' ? 0.15 : 1)];
 		if (key === 'head') return [1.0, 1.05];
 		if (key === 'point') return [0, 1];
 		return [huToMu(-1000), huToMu(400)];
@@ -237,10 +238,11 @@
 		const y = Math.max(-12, Math.min(12, (p.y - PY - PH / 2) / pxPerUnitRecon));
 		setParam('probe', `${x.toFixed(1)},${y.toFixed(1)}`);
 	}
-	function keyProbe(stepv: number | 'start' | 'end') {
-		if (typeof stepv !== 'number') return;
-		const x = Math.max(-16, Math.min(16, probe.x + stepv * 0.5));
-		setParam('probe', `${x.toFixed(1)},${probe.y.toFixed(1)}`);
+	function keyProbe(dx: number, dy: number) {
+		// ↑ is +dy (towards the front, up the picture); steps of 0.5 cm, 2.5 cm with Shift
+		const x = Math.max(-16, Math.min(16, probe.x + dx * 0.5));
+		const y = Math.max(-12, Math.min(12, probe.y - dy * 0.5));
+		setParam('probe', `${x.toFixed(1)},${y.toFixed(1)}`);
 	}
 	const probeHU = $derived(
 		key === 'chest'
@@ -585,7 +587,7 @@
 				y={398}
 				anchor="start"
 				text={phase === 'angles'
-					? `${K} direction${K === 1 ? '' : 's'}, ${(180 / K).toFixed(K > 60 ? 1 : 0)}° apart · ${filtered ? 'filtered' : 'not filtered'}`
+					? `${K === 1 ? '1 direction' : `${K} directions, ${(180 / K).toFixed(K > 60 ? 1 : 0)}° apart`} · ${filtered ? 'filtered' : 'not filtered'}`
 					: `shadows smeared back: ${rows} of ${K} · ${filtered ? 'filtered' : 'not filtered'}`}
 			/>
 		</Readout>
@@ -648,13 +650,11 @@
 			</g>
 		{/if}
 	{:else if phase === 'hounsfield'}
-		<Handle
+		<VectorHandle
 			x={probeScreen.x}
 			y={probeScreen.y}
 			label="CT number probe"
-			value={probe.x}
-			min={-16}
-			max={16}
+			value={0}
 			valuetext="{fmtHU(probeHU)}, {probeName}"
 			color="var(--mi-probe)"
 			r={7}

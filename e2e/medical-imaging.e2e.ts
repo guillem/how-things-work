@@ -28,7 +28,7 @@ test('the X-ray source turns with the arrow keys, and past 180° the shadow is t
 	await expect(page).toHaveURL(/#rotate$/);
 });
 
-test('@smoke the ramp filter brings the computed slice close to the true one', async ({ page }) => {
+test('the ramp filter brings the computed slice close to the true one', async ({ page }) => {
 	await page.goto('./medical-imaging/#filter');
 	await expect(stage(page)).toContainText('180 of 180 · filtered');
 	const filtered = await errorPct(page);
@@ -53,7 +53,7 @@ test('more directions, fewer streaks: the difference falls', async ({ page }) =>
 	expect(some).toBeGreaterThan(all);
 });
 
-test('the probe reads soft tissue in the heart and a negative CT number in the lung', async ({
+test('the probe reads soft tissue in the heart, a negative CT number in the lung and over +1000 in bone', async ({
 	page
 }) => {
 	await page.goto('./medical-imaging/#hounsfield');
@@ -70,10 +70,14 @@ test('the probe reads soft tissue in the heart and a negative CT number in the l
 	expect(heart).toBeLessThan(80);
 	const probe = page.getByRole('slider', { name: 'CT number probe' });
 	await probe.focus();
-	await page.keyboard.press('Shift+ArrowLeft');
-	await page.keyboard.press('Shift+ArrowLeft');
+	for (let i = 0; i < 3; i++) await page.keyboard.press('Shift+ArrowLeft');
 	await expect(stage(page)).toContainText('right lung');
 	expect(await hu()).toBeLessThan(-400);
+	// down the picture (towards the back) to the spine
+	for (let i = 0; i < 3; i++) await page.keyboard.press('Shift+ArrowRight');
+	for (let i = 0; i < 3; i++) await page.keyboard.press('Shift+ArrowDown');
+	await expect(stage(page)).toContainText('spine');
+	expect(await hu()).toBeGreaterThan(1000);
 });
 
 test('lower dose, more noise', async ({ page }) => {

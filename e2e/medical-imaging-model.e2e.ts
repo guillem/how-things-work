@@ -131,6 +131,10 @@ test.describe('CT: projections and filtered back-projection', () => {
 		const img = reconstruct(scan(bodySlice(0), 180), true);
 		expect(HU(discMean(img, 18, -7.4, 0.2, 1.5))).toBeCloseTo(HU(mu('lung', 60)), -2);
 		expect(Math.abs(HU(discMean(img, 18, 0.8, -3.4, 1.5)) - HU(mu('soft', 60)))).toBeLessThan(20);
+		// The numbers the Hounsfield step quotes: fat about −90, bone well over +1000.
+		expect(HU(discMean(img, 18, 15.4, 0, 0.4))).toBeCloseTo(-90, -1);
+		expect(HU(discMean(img, 18, 0, 3.9, 0.4))).toBeGreaterThan(1000);
+		expect(HU(discMean(img, 18, 0, -8.4, 0.4))).toBeGreaterThan(1000);
 		// The 1.6 cm nodule stands out of the dark lung around it.
 		expect(HU(discMean(img, 18, 6.4, 3.4, 0.4))).toBeGreaterThan(0);
 	});
