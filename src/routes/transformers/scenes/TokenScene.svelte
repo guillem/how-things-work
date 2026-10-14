@@ -48,8 +48,14 @@
 					const u = cycle(t, 3);
 					if (u > 0.8) return [];
 					const f = u / 0.8;
+					const y = COL.emb + 8 + f * (COL.x + COL.xh / 2 - COL.emb - 8);
+					// visible only inside the boxes, so they never cross the row labels
+					const inside = [COL.emb, COL.pos, COL.x].some(
+						(top, k) => y > top + 4 && y < top + (k === 2 ? COL.xh : COL.h) - 4
+					);
+					if (!inside) return [];
 					const o = smoothstep(0, 0.1, f) * (1 - smoothstep(0.85, 1, f));
-					return [{ key: c.i, x: c.cx, y: ROW_Y + 34 + f * (COL.x + COL.xh / 2 - ROW_Y - 34), o }];
+					return [{ key: c.i, x: c.cx - c.w * 0.18, y, o }];
 				})
 	);
 

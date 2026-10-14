@@ -207,6 +207,17 @@
 		/>
 		<Txt x={NX.x + nx.p * NX.w + 8} y={y + 15} size={12} text="{fix(nx.p * 100, 1)}%" />
 	{/each}
+	{#if next.some((x) => x.token === '\n')}
+		<Readout id="nl">
+			<Txt
+				x={560}
+				y={NX.y + 5 * NX.h + 16}
+				size={12}
+				muted
+				text="↵ = a new line: the sentence ended with a full stop"
+			/>
+		</Readout>
+	{/if}
 	<Readout
 		id="block"
 		order={4}

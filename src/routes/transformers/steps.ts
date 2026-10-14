@@ -150,7 +150,7 @@ export const spec: ExplainerSpec = {
 <p>A <dfn data-def="A neural network that updates every token's vector using the other tokens of the text, through attention, many times over.">transformer</dfn> fixes this by letting every word's vector take in information from the other words. This page looks inside a real one, ${MODEL}. Every number on the stage was computed by running it.</p>
 <p>First it cuts the text into <dfn data-def="A piece of text from a fixed vocabulary: a common word with its leading space, a part of a rarer word, a digit or a punctuation mark. GPT-2 has 50,257 of them.">tokens</dfn> (“didn’t” becomes “␣didn” and “’t”; ␣ marks a space) and puts a special ⟨start⟩ token in front. Each token becomes a list of 768 numbers, its embedding, plus a second list that says where in the text it stands.</p>`,
 			notes: `<p><strong>The tokens.</strong> GPT-2 uses <dfn data-def="Byte-pair encoding: start from single bytes and repeatedly merge the most frequent neighbouring pair into a new token, until the vocabulary has the size wanted.">byte-pair encoding</dfn>: 50,257 tokens learned from how often pieces of text occur, so common words are one token and rare words are several. The ⟨start⟩ token is GPT-2's <code>&lt;|endoftext|&gt;</code>, which separated documents in its training text; we put it first, as is usual when studying GPT-2.</p>
-<p><strong>The model.</strong> GPT-2 small: Radford, Wu, Child, Luan, Amodei &amp; Sutskever, “Language Models are Unsupervised Multitask Learners”, OpenAI 2019. The weights come from Hugging Face (<code>openai-community/gpt2</code>, MIT licence). A script in this site's repository (<code>scripts/data/transformers/</code>) runs the model's forward pass in plain numpy on eight fixed sentences and stores every attention weight (to within 0.002) and, for one head, the query, key and value vectors.</p>`
+<p><strong>The model.</strong> GPT-2 small: Radford, Wu, Child, Luan, Amodei &amp; Sutskever, “Language Models are Unsupervised Multitask Learners”, OpenAI 2019. The weights come from Hugging Face (<code>openai-community/gpt2</code>, revision <code>607a30d</code>, MIT licence). A script in this site's repository (<code>scripts/data/transformers/</code>) runs the model's forward pass in plain numpy on eight fixed sentences and stores every attention weight (to within 0.002) and, for one head, the query, key and value vectors.</p>`
 		},
 		{
 			id: 'positions',
@@ -161,10 +161,11 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [position],
 			body: `
-<p>Attention, as you will see, makes each token a weighted average of the others. An average does not care about order: shuffle the tokens and every token gets the same mix as before. So the order has to be written into the vectors themselves.</p>
+<p>Attention, as you will see, makes each token a weighted average of the tokens it can see. An average does not care about order: shuffle the earlier tokens and the last token gets exactly the same mix as before. So the order has to be written into the vectors themselves.</p>
 <p>GPT-2 has a learned <dfn data-def="A vector added to each token's embedding that depends only on the token's place in the text: one for position 0, one for position 1, and so on.">position embedding</dfn> for each of its 1,024 positions: 768 more numbers, added to the token's embedding. Nobody designed them: training set them, like every other weight. The stage compares the first 64 of them by cosine similarity, as on the embeddings page: bright where two positions point the same way.</p>
 <p>The bright band along the diagonal says that neighbouring positions get similar vectors, and the similarity fades with distance: position 10 has a cosine of 0.998 with 11, 0.78 with 30 and 0.40 with 63. A token can therefore tell “the word just before me” from “a word far back”. Position 0 is the odd one out: its vector is twice as long as the others.</p>`,
-			notes: `<p>The original transformer paper (Vaswani and colleagues, “Attention is all you need”, 2017) did not learn its positions: it used fixed sine and cosine waves of different wavelengths. GPT-2 learned them instead, and they came out smooth and wave-like anyway. Many newer models rotate the queries and keys by an angle that depends on the position instead (“rotary” embeddings).</p>`
+			notes: `<p>Strictly, GPT-2's mask leaks a little order information on its own: the first token can see one token, the tenth can see ten. The position embeddings make it explicit.</p>
+<p>The original transformer paper (Vaswani and colleagues, “Attention is all you need”, 2017) did not learn its positions: it used fixed sine and cosine waves of different wavelengths. GPT-2 learned them instead, and they came out smooth and wave-like anyway. Many newer models rotate the queries and keys by an angle that depends on the position instead (“rotary” embeddings).</p>`
 		},
 		// ------------------------------------------------------------------ operation
 		{
@@ -279,7 +280,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [pattern],
 			body: `
-<p>Some heads of GPT-2 small do one job so consistently that researchers have named them. Pick one:</p>
+<p>Some heads of GPT-2 small do one job consistently. Researchers named the previous-token, induction and name-mover heads; “the noun” and “resting” are this page's own labels. Pick one:</p>
 <ul>
 <li><strong>Previous token</strong> (layer 5, head 12): every token looks at the one before it, with a weight near 1.</li>
 <li><strong>The noun</strong> (layer 5, head 4): <em>are</em> looks at <em>keys</em> (0.85), not at the nearer <em>cabinet</em>; the verb has to agree with the keys.</li>

@@ -3,7 +3,13 @@
  * scripts/data/transformers/build.py (see its header for the format) — do not edit by hand.
  *
  * Model: GPT-2 small, OpenAI 2019, https://huggingface.co/openai-community/gpt2 at revision
- * 607a30d783dfa663caf39e06633721c8d4cfcd7e. Licence: MIT.
+ * 607a30d783dfa663caf39e06633721c8d4cfcd7e (model.safetensors SHA-256 248dfc39…a707). Licence: MIT.
+ * Citation: Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei and Ilya Sutskever.
+ * 2019. Language Models are Unsupervised Multitask Learners. OpenAI.
+ *
+ * Subset: 8 fixed sentences, each prefixed with <|endoftext|>, run through the model's forward
+ * pass in numpy; all 144 heads' attention weights stored in 8 bits (within 0.002), plus q, k, v
+ * of one head (layer 4, head 3, from 0) and the cosines of the first 64 position embeddings.
  */
 import type { GptData } from './attention';
 
