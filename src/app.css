@@ -1462,3 +1462,20 @@ kbd {
 	--nn-fwd: #69db7c;
 	--nn-back: #f06595;
 }
+
+/* convolution-vision: positive and negative weights and responses, the filter window, the
+   pen. The pixel images themselves are drawn with fixed palettes in scenes/shared.ts. */
+:root {
+	--cv-pos: #1c7ed6;
+	--cv-neg: #e8590c;
+	--cv-window: #0c8599;
+	--cv-pen: #212529;
+	--cv-pad: #ffffff;
+}
+:root[data-theme='dark'] {
+	--cv-pos: #4dabf7;
+	--cv-neg: #ff922b;
+	--cv-window: #3bc9db;
+	--cv-pen: #f1f3f5;
+	--cv-pad: #101113;
+}

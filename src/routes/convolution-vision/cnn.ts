@@ -245,6 +245,21 @@ function rasterise(segs: number[][]): Float32Array {
 }
 
 /**
+ * Strokes drawn in a unit square (0–1 on both axes), put on the 28 × 28 image as they are,
+ * without centring or scaling: to show what the network makes of an unprepared drawing.
+ */
+export function drawAsIs(strokes: Stroke[]): Float32Array | null {
+	if (strokes.every((s) => s.length === 0)) return null;
+	return rasterise(
+		strokes.flatMap((st) => {
+			const q = st.map((p) => [p.x * SIDE, p.y * SIDE]);
+			if (q.length === 1) return [[q[0][0], q[0][1], q[0][0], q[0][1]]];
+			return q.slice(1).map((b, i) => [q[i][0], q[i][1], b[0], b[1]]);
+		})
+	);
+}
+
+/**
  * Turns strokes into the network's input, MNIST-style: the drawing is scaled so that its ink's
  * bounding box (pen width included) fits 20 × 20 with the aspect ratio kept, rasterised
  * anti-aliased with a pen of fixed width, and shifted so that the ink's centre of mass sits at
