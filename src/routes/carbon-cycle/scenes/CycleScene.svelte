@@ -867,7 +867,7 @@
 		>
 			<Label
 				x={74}
-				y={306}
+				y={344}
 				text="burning {BUDGET.fossil}"
 				size={12}
 				weight={700}
@@ -962,22 +962,24 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<Label
-				x={INSET.x + 14}
-				y={INSET.y + 20}
-				text="Where 11.2 GtC a year goes (2015–2024)"
-				anchor="start"
-				size={13}
-				weight={700}
-			/>
-			<Label
-				x={INSET.x + 14}
-				y={INSET.y + 36}
-				text="bands 10× wider than in the main drawing"
-				anchor="start"
-				size={11}
-				muted
-			/>
+			<Readout id="b-title">
+				<Label
+					x={INSET.x + 14}
+					y={INSET.y + 20}
+					text="Where 11.2 GtC a year goes (2015–2024)"
+					anchor="start"
+					size={13}
+					weight={700}
+				/>
+				<Label
+					x={INSET.x + 14}
+					y={INSET.y + 36}
+					text="bands 10× wider than in the main drawing"
+					anchor="start"
+					size={11}
+					muted
+				/>
+			</Readout>
 			<rect
 				x={INSET.x + 10}
 				y={srcTop}
@@ -992,13 +994,15 @@
 				height={BUDGET.landUse * K}
 				fill="var(--cc-clearing)"
 			/>
-			<Label
-				x={INSET.x + 16}
-				y={INSET.y + 134}
-				text="burning 9.8 + clearing 1.4"
-				anchor="start"
-				size={11}
-			/>
+			<Readout id="b-src">
+				<Label
+					x={INSET.x + 16}
+					y={INSET.y + 134}
+					text="burning 9.8 + clearing 1.4"
+					anchor="start"
+					size={11}
+				/>
+			</Readout>
 			{#each sankey as s (s.id)}
 				<path d={s.path} fill={s.color} fill-opacity="0.5" />
 				<Readout

@@ -100,3 +100,21 @@ test('weaker sinks leave more carbon in the air', () => {
 	const noPlants = future(9.8, 1.4, 100, 100, { ...DEFAULTS, beta: 0 })[100];
 	expect(ppmOf(noPlants)).toBeGreaterThan(ppmOf(base) + 50);
 });
+
+test('the numbers the narrative quotes', () => {
+	const peak = (run: ReturnType<typeof future>) => Math.max(...run.map(ppmOf));
+	// "Run the clock": today's emissions for 50 years.
+	const fifty = future(9.8, 1.4, 50, 1000);
+	expect(peak(fifty)).toBeCloseTo(535, -1);
+	expect(ppmOf(fifty[1000])).toBeCloseTo(390, -1);
+	// Stopping now: about 370 ppm within a century.
+	expect(ppmOf(future(0, 0, 0, 100)[100])).toBeCloseTo(370, -1);
+	// Plants that do not respond to CO₂: a peak of about 630 ppm.
+	expect(peak(future(9.8, 1.4, 50, 100, { ...DEFAULTS, beta: 0 }))).toBeCloseTo(630, -1);
+	// A 100 GtC burst: about 60% after 20 years, 40% after 100, a quarter after 1,000.
+	const f = pulse(100, 1000);
+	expect(f[20]).toBeCloseTo(0.6, 1);
+	expect(f[100]).toBeCloseTo(0.4, 1);
+	expect(f[1000]).toBeCloseTo(0.25, 1);
+	// The model's history: 3.1 and 2.4 GtC/yr into ocean and plants in 2015–2024 (see the history test).
+});
