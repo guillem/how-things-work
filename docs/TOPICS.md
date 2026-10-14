@@ -125,7 +125,7 @@ A topic is done when:
 - [x] radioactivity
 - [x] chemical-bonds
 - [x] states-of-matter
-- [ ] reaction-rates-equilibrium
+- [x] reaction-rates-equilibrium
 - [x] acids-bases
 - [ ] redox-batteries
 - [ ] carbon-polymers
