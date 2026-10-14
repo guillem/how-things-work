@@ -127,6 +127,14 @@ test.describe('one-letter changes in real HBB variants', () => {
 		); // c.52A>T, AAG → TAG (ClinVar 15401)
 	});
 
+	test('a stop at codon 146 (Hb McKees Rocks, c.438T>A or G) loses only the last two residues', () => {
+		for (const base of ['A', 'G'] as const) {
+			const cmp = compareEdit(HBB_MRNA, { kind: 'sub', at: HBB_CDS.start + 437, base });
+			expect(cmp.effect).toBe('nonsense');
+			expect(cmp.after.protein).toBe(HBB_PROTEIN.slice(0, 145));
+		}
+	});
+
 	test('c.20del shifts the frame: 6 residues kept, 12 wrong ones, then a stop', () => {
 		const v = HBB_VARIANTS.frameshift;
 		expect(editName(HBB_MRNA, v.edit, HBB_CDS.start)).toBe('c.20delA');

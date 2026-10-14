@@ -144,8 +144,9 @@
 		<Txt x={PX + 4} y={474} text="61 for the 20 amino acids," size={12.5} />
 		<Txt x={PX + 4} y={492} text="3 for stop (UAA, UAG, UGA)." size={12.5} />
 		<Txt x={PX + 4} y={518} text="AUG (Met) also means start." size={12.5} />
-		<Txt x={PX + 4} y={544} text="Same colour box = same" size={12} muted />
-		<Txt x={PX + 4} y={560} text="amino acid, often only the" size={12} muted />
-		<Txt x={PX + 4} y={576} text="3rd letter differs." size={12} muted />
+		<Txt x={PX + 4} y={544} text="One box = one amino acid," size={12} muted />
+		<Txt x={PX + 4} y={560} text="often only the 3rd letter" size={12} muted />
+		<Txt x={PX + 4} y={576} text="differs. Colour = kind of" size={12} muted />
+		<Txt x={PX + 4} y={592} text="side chain." size={12} muted />
 	</Readout>
 </g>
