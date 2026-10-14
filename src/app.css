@@ -1900,6 +1900,7 @@ kbd {
 	--tn-normal: #1971c2;
 	--tn-turned: #e8590c;
 	--tn-plate: #e9ecef;
+	--tn-bad: #e03131;
 }
 :root[data-theme='dark'] {
 	--tn-across: #4dabf7;
@@ -1915,5 +1916,6 @@ kbd {
 	--tn-force: #f783ac;
 	--tn-normal: #74c0fc;
 	--tn-turned: #ffa94d;
-	--tn-plate: #2c2e33;
+	--tn-plate: #3a3d44;
+	--tn-bad: #ff6b6b;
 }

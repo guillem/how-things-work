@@ -147,7 +147,7 @@ const theta: Control = {
 	min: -180,
 	max: 180,
 	step: 0.5,
-	default: 30,
+	default: -20,
 	unit: '°',
 	help: 'Or drag the end of the x′ axis (or focus it and use the arrow keys).'
 };
