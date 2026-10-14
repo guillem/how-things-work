@@ -1,4 +1,5 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
+import { LIQUIDS } from './liquids';
 
 /** The pH of the solution in the zoomed cube. */
 const ph: Control = {
@@ -21,8 +22,8 @@ const acidD: Control = {
 	label: 'Acid',
 	default: 'acetic',
 	options: [
-		{ value: 'hcl', label: 'Hydrochloric acid, HCl (strong)' },
-		{ value: 'acetic', label: 'Acetic acid, CH₃COOH (weak)' }
+		{ value: 'hcl', label: 'HCl (strong)' },
+		{ value: 'acetic', label: 'Acetic acid (weak)' }
 	]
 };
 const conc: Control = {
@@ -39,53 +40,46 @@ const conc: Control = {
 	help: 'Moles of acid per litre of solution (one mole is 6.02 × 10²³ molecules).'
 };
 
+/** The liquid compared with pure water, chosen by its place on the scale. */
 const liquid: Control = {
-	type: 'select',
+	type: 'range',
 	id: 'liquid',
 	label: 'Compare',
-	default: 'lemon',
-	options: [
-		{ value: 'hcl', label: 'Hydrochloric acid (0.1 mol/L)' },
-		{ value: 'lemon', label: 'Lemon juice' },
-		{ value: 'vinegar', label: 'Vinegar' },
-		{ value: 'orange', label: 'Orange juice' },
-		{ value: 'tomato', label: 'Tomatoes' },
-		{ value: 'rain', label: 'Clean rain' },
-		{ value: 'milk', label: 'Milk' },
-		{ value: 'water', label: 'Pure water' },
-		{ value: 'blood', label: 'Blood' },
-		{ value: 'sea', label: 'Seawater' },
-		{ value: 'soda', label: 'Baking soda in water' },
-		{ value: 'ammonia', label: 'Ammonia solution (0.1 mol/L)' },
-		{ value: 'naoh', label: 'Sodium hydroxide (0.1 mol/L)' }
-	]
+	min: 0,
+	max: LIQUIDS.length - 1,
+	step: 1,
+	default: 1,
+	format: (v) => LIQUIDS[Math.round(v)]?.name ?? '',
+	help: 'Slide from the most acidic to the most basic, or click a liquid on the scale.'
 };
 
 const indicatorOptions = [
-	{ value: 'methylOrange', label: 'Methyl orange (red → yellow, pH 3.2–4.4)' },
-	{ value: 'bromothymol', label: 'Bromothymol blue (yellow → blue, pH 6.0–7.6)' },
-	{ value: 'phenolphthalein', label: 'Phenolphthalein (colourless → pink, pH 8.2–10)' }
+	{ value: 'methylOrange', label: 'Methyl orange' },
+	{ value: 'bromothymol', label: 'Bromothymol blue' },
+	{ value: 'phenolphthalein', label: 'Phenolphthalein' }
 ];
 const indicator: Control = {
 	type: 'select',
 	id: 'indicator',
 	label: 'Indicator in the flask',
 	default: 'bromothymol',
-	options: indicatorOptions
+	options: indicatorOptions,
+	help: 'Methyl orange: red → yellow at pH 3.2–4.4. Bromothymol blue: yellow → blue at 6.0–7.6. Phenolphthalein: colourless → pink at 8.2–10.'
 };
 const indicatorC: Control = { ...indicator, id: 'indicatorC', default: 'methylOrange' };
 
 const acidOptions = [
-	{ value: 'hcl', label: 'Hydrochloric acid (strong)' },
-	{ value: 'acetic', label: 'Acetic acid (weak, pKa 4.76)' },
-	{ value: 'hocl', label: 'Hypochlorous acid (weaker, pKa 7.40)' }
+	{ value: 'hcl', label: 'HCl (strong)' },
+	{ value: 'acetic', label: 'Acetic (weak)' },
+	{ value: 'hocl', label: 'Hypochlorous (weaker)' }
 ];
 const acidEq: Control = {
 	type: 'select',
 	id: 'acidEq',
 	label: 'Acid in the flask',
 	default: 'acetic',
-	options: acidOptions
+	options: acidOptions,
+	help: '25 mL at 0.1 mol/L. pKa: acetic acid 4.76, hypochlorous acid 7.40 (CRC Handbook).'
 };
 const acidC: Control = { ...acidEq, id: 'acidC' };
 

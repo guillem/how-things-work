@@ -200,6 +200,12 @@
 	const dropU = $derived(cycle(t, DROP_PERIOD));
 	const dropY = $derived(TIP + 6 + dropU * (level - TIP - 10));
 
+	const dropsText = $derived(
+		lastDrops
+			.filter((d) => d.done)
+			.map((d) => d.ph.toFixed(1))
+			.join(' → ') || 'none yet'
+	);
 	const status = $derived.by(() => {
 		if (Math.abs(vb - veq) < DROP / 2)
 			return { text: 'equivalence: the base matches the acid', color: 'var(--stage-ink)' };
@@ -450,35 +456,34 @@
 
 	<!-- the last drops: one row per drop, its pH as a bar -->
 	{#if focus === 'jump'}
-		<rect
-			x={IX}
-			y={IY}
-			width={IW}
-			height={IH}
-			rx="10"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
-		<Readout id="drops-title">
+		<Readout id="drops" order={5} label="pH after each of the last drops" value={dropsText}>
+			<rect
+				x={IX}
+				y={IY}
+				width={IW}
+				height={IH}
+				rx="10"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
 			<text x={IX + 12} y={IY + 20} font-size="12" font-weight="600"
 				>the last drops, 0.05 mL each</text
 			>
 			<text x={IX + 12} y={IY + 38} font-size="10" class="muted">NaOH added</text>
 			<text x={IX + 98} y={IY + 38} font-size="10" class="muted" text-anchor="end">pH</text>
-		</Readout>
-		{#each lastDrops as d, i (d.k)}
-			{@const y = IY + 58 + i * 21}
-			<g opacity={d.done ? 1 : 0.4}>
-				<rect
-					x={IX + 108}
-					y={y - 9}
-					width={(d.ph / 14) * (IW - 120)}
-					height="12"
-					rx="3"
-					fill={curveColor}
-					opacity={d.k === 0 ? 1 : 0.75}
-				/>
-				<Readout id="drop-{d.k}">
+
+			{#each lastDrops as d, i (d.k)}
+				{@const y = IY + 58 + i * 21}
+				<g opacity={d.done ? 1 : 0.4}>
+					<rect
+						x={IX + 108}
+						y={y - 9}
+						width={(d.ph / 14) * (IW - 120)}
+						height="12"
+						rx="3"
+						fill={curveColor}
+						opacity={d.k === 0 ? 1 : 0.75}
+					/>
 					<text x={IX + 12} y={y + 1} font-size="11" font-weight={d.k === 0 ? 700 : 400}
 						>{ml(d.v)}</text
 					>
@@ -489,9 +494,9 @@
 						font-weight={d.k === 0 ? 700 : 600}
 						text-anchor="end">{d.ph.toFixed(1)}</text
 					>
-				</Readout>
-			</g>
-		{/each}
+				</g>
+			{/each}
+		</Readout>
 	{/if}
 
 	<!-- burette -->
@@ -530,7 +535,7 @@
 		stroke="var(--ab-glass)"
 	/>
 	<rect x={BUR_X - 14} y={BUR_BOT + 26} width="28" height="8" rx="3" fill="var(--ab-glass)" />
-	<Readout id="burette" order={9} label="Burette" value="0.1 mol/L NaOH">
+	<Readout id="burette">
 		<text x={BUR_X + 22} y={BUR_TOP + 14} font-size="12" font-weight="600">burette</text>
 		<text x={BUR_X + 22} y={BUR_TOP + 30} font-size="11" class="muted">0.1 mol/L NaOH</text>
 	</Readout>
@@ -559,7 +564,7 @@
 		/>
 	</g>
 	<path d={FLASK} fill="none" stroke="var(--ab-glass)" stroke-width="1.5" />
-	<Readout id="flask" order={10} label="Flask" value={flaskText}>
+	<Readout id="flask">
 		<Label x={150} y={584} text={flaskText} size={12} />
 	</Readout>
 	<Readout id="colour" order={5} label="Colour" value={colourName}>

@@ -225,12 +225,7 @@
 	<Readout id="dots" order={4} label="Drawing" value={dotNote}>
 		<Label x={BX + BS} y={BY + BS + 31} text={dotNote} size={12} anchor="end" muted />
 	</Readout>
-	<Readout
-		id="water"
-		order={5}
-		label="Water molecules"
-		value="{fmtCount(WATER_IN_CUBE)} (not drawn)"
-	>
+	<Readout id="water">
 		<Label
 			x={BX + BS}
 			y={BY + BS + 55}
@@ -291,7 +286,7 @@
 					{y}
 					font-size="12"
 					text-anchor="end"
-					opacity={focusOH ? 0.6 : 1}
+					opacity={focusOH ? 0.75 : 1}
 					style:fill="var(--ab-h)">{fmtCount(r.h)}</text
 				>
 				<text
@@ -299,7 +294,7 @@
 					{y}
 					font-size="12"
 					text-anchor="end"
-					opacity={focusOH ? 1 : 0.6}
+					opacity={focusOH ? 1 : 0.75}
 					style:fill="var(--ab-oh)">{fmtCount(r.oh)}</text
 				>
 			{/each}

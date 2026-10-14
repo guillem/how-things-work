@@ -39,8 +39,11 @@ test('a weak acid splits far less than a strong one at the same concentration', 
 test('the scale compares a liquid with pure water in powers of ten', async ({ page }) => {
 	await open(page, './acids-bases/#scale');
 	await expect(stage(page)).toContainText('50 000 times as many H⁺ as pure water');
-	await button(page, 'liquid', 'naoh').click();
+	await range(page, 'liquid').fill('12');
 	await expect(stage(page)).toContainText('1 million times fewer H⁺ than pure water');
+	// Clicking a liquid on the scale picks it too.
+	await stage(page).getByRole('button', { name: 'Compare milk' }).click();
+	await expect(stage(page)).toContainText('milk: pH 6.4–6.8');
 });
 
 test(

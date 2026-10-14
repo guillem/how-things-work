@@ -32,9 +32,9 @@
 	const ROWS = 10;
 	const N = COLS * ROWS;
 	const GX = 44;
-	const GY = 124;
+	const GY = 140;
 	const DX = 28;
-	const DY = 38;
+	const DY = 40;
 	const nSplit = $derived(Math.round(N * share));
 
 	// Each molecule: anion at (x, y), its H to the right; a split H drifts off.
@@ -137,16 +137,18 @@
 	<path d={paths.minus} stroke="var(--stage-bg)" stroke-width="1.8" />
 	<path d={paths.hplus} fill="var(--ab-h)" />
 
-	<!-- the panel -->
-	<rect
-		x={PX}
-		y={92}
-		width={296}
-		height={360}
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<!-- the panel (its contents move under the stage on phones) -->
+	<Readout id="panel">
+		<rect
+			x={PX}
+			y={92}
+			width={296}
+			height={360}
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	<Readout
 		id="eq"
 		order={2}

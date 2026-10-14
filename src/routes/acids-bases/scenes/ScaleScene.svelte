@@ -8,13 +8,13 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Label, scale } from '#lib/draw/index.ts';
+	import { Label, clamp, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { LIQUIDS } from '../liquids';
 	import { solvePH } from '../model';
 	import { fmtTimes, superscript } from '../look';
 
-	let { params, reduced }: StageProps = $props();
+	let { params, reduced, setParam }: StageProps = $props();
 
 	const NEUTRAL = solvePH({});
 	const X0 = 64;
@@ -36,11 +36,13 @@
 			let lane = 0;
 			while ((ends[lane] ?? -Infinity) > x0) lane++;
 			ends[lane] = x1;
-			return { ...l, lane, right, y: LANE0 - lane * LANE, mid: (l.lo + l.hi) / 2 };
+			return { ...l, lane, right, x0, x1, y: LANE0 - lane * LANE, mid: (l.lo + l.hi) / 2 };
 		});
 	})();
 
-	const chosen = $derived(items.find((l) => l.id === String(params.liquid ?? 'lemon')) ?? items[1]);
+	const chosen = $derived(
+		items[clamp(Math.round(Number(params.liquid ?? 1)), 0, items.length - 1)]
+	);
 	const pos = new Tween(
 		untrack(() => chosen.mid),
 		{ duration: 800, easing: cubicInOut }
@@ -130,10 +132,25 @@
 	</Readout>
 
 	<!-- liquids -->
-	{#each items as l (l.id)}
+	{#each items as l, i (l.id)}
 		{@const on = l.id === chosen.id}
 		{@const c = sideColor(l.mid)}
-		<g opacity={on ? 1 : 0.6}>
+		<!-- click a liquid to compare it (the slider follows) -->
+		<g
+			opacity={on ? 1 : 0.6}
+			role="button"
+			tabindex="0"
+			aria-label="Compare {l.name}"
+			style:cursor="pointer"
+			onclick={() => setParam('liquid', i)}
+			onkeydown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.preventDefault();
+					setParam('liquid', i);
+				}
+			}}
+		>
+			<rect x={l.x0} y={l.y - 13} width={l.x1 - l.x0} height="26" fill="transparent" />
 			<line
 				x1={sx(l.mid)}
 				x2={sx(l.mid)}
