@@ -29,7 +29,7 @@ export const T_SUN = GM_SUN / C ** 3;
 /** G M☉ / c²: the Sun's mass as a length, 1.48 km. */
 export const L_SUN = GM_SUN / C ** 2;
 export const AU = 1.495978707e11; // m
-export const PC = 3.0856775814913673e16; // m
+export const PC = 3.0856775814913e16; // m
 export const MPC = 1e6 * PC;
 export const DAY = 86_400;
 export const YEAR = 365.25 * DAY;

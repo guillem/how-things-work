@@ -39,7 +39,6 @@
 		nrHanford,
 		nrLivingston
 	} from '../signal';
-	import Card from './Card.svelte';
 	import Row from './Row.svelte';
 	import T from './T.svelte';
 	import { playSamples, stopAll } from './sound';
