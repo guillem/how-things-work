@@ -400,6 +400,20 @@ export function constellation(scheme: Scheme): Point[] {
 	return out;
 }
 
+/** The bits of the constellation point nearest to (i, q): what a receiver reads there. */
+export function decide(scheme: Scheme, i: number, q: number) {
+	const ax = axisOf(scheme);
+	const code = (m: number) => gray(m).toString(2).padStart(ax.k, '0');
+	const bi = code(slice(i, ax));
+	return scheme === 'bpsk' ? bi : bi + code(slice(q, ax));
+}
+
+/** Decision boundaries on one axis (between neighbouring levels). */
+export function boundaries(scheme: Scheme) {
+	const ax = axisOf(scheme);
+	return Array.from({ length: ax.L - 1 }, (_, m) => (2 * m - ax.L + 2) * ax.scale);
+}
+
 /** Index of the level nearest to x on an axis. */
 const slice = (x: number, ax: Axis) =>
 	Math.min(ax.L - 1, Math.max(0, Math.round((x / ax.scale + ax.L - 1) / 2)));

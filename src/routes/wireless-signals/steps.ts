@@ -41,7 +41,7 @@ const snr: Control = {
 	min: -5,
 	max: 35,
 	step: 0.5,
-	default: 10,
+	default: 8,
 	unit: ' dB',
 	help: 'Signal power over noise power, in decibels: +10 dB is 10 times, +20 dB 100 times.'
 };
