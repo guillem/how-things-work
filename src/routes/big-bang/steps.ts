@@ -24,10 +24,10 @@ const time: Control = {
 	type: 'range',
 	id: 'time',
 	label: 'Time since the Big Bang',
-	min: 1,
+	min: 3,
 	max: 30,
 	step: 0.05,
-	default: Math.round(AGE * 20) / 20,
+	default: AGE,
 	format: (v) => (Math.abs(v - AGE) < 0.03 ? `${gyrText(v)} (today)` : gyrText(v)),
 	help: 'Today is 13.8 billion years. Beyond it, the model’s prediction for the future.'
 };
@@ -98,7 +98,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			body: `
 <p>In the 1910s Vesto Slipher measured the light of faint spiral nebulae and found that almost all of them were redshifted: moving away from us. In 1927 Georges Lemaître, and in 1929 Edwin Hubble, showed that these are galaxies far beyond our own, and that the farther one is, the faster it recedes. <strong>Speed is proportional to distance.</strong> This is the <dfn data-def="v = H₀ × d: a galaxy's recession speed is proportional to its distance. H₀, the Hubble constant, is about 67–73 km/s for every megaparsec (3.26 million light years) of distance.">Hubble–Lemaître law</dfn>, v = H₀ × d.</p>
-<p>The map shows a patch of the universe around the Milky Way, with one dot for every billion light years (real galaxies are thousands of times more crowded), and it runs the expansion forward and backward between 3 and 20 billion years after the Big Bang. The arrows show how fast each galaxy is moving away; the plot beside them shows those speeds against distance. They fall on a straight line.</p>
+<p>The map shows a patch of the universe around the Milky Way, with one dot for every billion light years (real galaxies are thousands of times more crowded), and it runs the expansion forward and backward between 3 and 20 billion years after the Big Bang. Each arrow shows where its galaxy would be a while later at its present speed; the plot beside the map shows those speeds against distance. They fall on a straight line.</p>
 <p>Today the slope is <strong>H₀ = 67.4 km/s per megaparsec</strong>: a galaxy 100 million light years away recedes at about 2,100 km/s, one ten times farther at ten times that.</p>`,
 			notes: `<p>A megaparsec is 3.26 million light years. The value 67.36 ± 0.54 km/s/Mpc is the one fitted to the cosmic microwave background by the Planck satellite (Planck Collaboration 2020, VI), and it drives everything on this page. Measuring nearby galaxies directly, with Cepheid stars and supernovae, gives a higher 73.0 ± 1.0 (Riess et al. 2022): this <em>Hubble tension</em> is not yet explained. Nearby galaxies also have their own motions of a few hundred km/s (Andromeda is in fact approaching us); the law describes the overall flow, which dominates beyond a few tens of millions of light years. The map is drawn as the universe is at that moment, everywhere at once.</p>`
 		},
@@ -155,7 +155,7 @@ export const spec: ExplainerSpec = {
 <p>If everything is moving apart now, it was closer together before. Drag time backward. All distances shrink by the same factor: the galaxies crowd together <strong>everywhere at once</strong>, not towards any point. The <dfn data-def="a: how big distances in the universe are compared with today (a = 1 now, 0.5 when all distances were half as big).">scale factor</dfn> <i>a</i> on the plot measures it: 1 today, ½ when every distance was half as long.</p>
 <p>At today's speed, the galaxies would all have been on top of each other 14.5 billion years ago (the dashed line). But the expansion has not kept a steady speed, and the real curve reaches zero <strong>13.8 billion years ago</strong>: the age of the universe. Running the film back to that moment, the density and temperature grow without limit. That hot, dense beginning, everywhere at once, is what is called the <dfn data-def="The hot, dense early state of the whole universe, about 13.8 billion years ago, from which it has been expanding and cooling ever since.">Big Bang</dfn>.</p>
 <p>Push time into the future too: the model says the expansion will go on, faster and faster.</p>`,
-			notes: `<p>The galaxies themselves are only about 13 billion years old; before 3 billion years the map shows where today's galaxies' material was. The curve stops at 1 billion years on the slider, but the model behind it is integrated from 0.01 seconds after the start. What happened at the very beginning, at “time zero”, is not known: the theory used here (general relativity) is expected to fail when the density gets extreme enough, and other ideas (such as <em>inflation</em>, an extremely fast early expansion) are needed there.</p>`
+			notes: `<p>The slider stops at 3 billion years, when the map gets too crowded to draw; the curve and the model behind them are integrated from 0.01 seconds after the start. What happened at the very beginning, at “time zero”, is not known: the theory used here (general relativity) is expected to fail when the density gets extreme enough, and other ideas (such as <em>inflation</em>, an extremely fast early expansion) are needed there.</p>`
 		},
 		{
 			id: 'friedmann',
