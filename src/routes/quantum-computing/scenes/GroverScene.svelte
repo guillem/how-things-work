@@ -79,7 +79,7 @@
 	const BX = (k: number) => 90 + k * 68;
 	const BW = 44;
 	const ZERO = 300;
-	const AMP_PX = 200; // px per unit amplitude
+	const AMP_PX = 180; // px per unit amplitude
 	const PROB_Y = 560;
 	const PROB_PX = 90;
 
@@ -377,7 +377,7 @@
 					text-anchor="middle"
 					font-weight="700"
 					style:font-size="12px"
-					style:fill="#fff">{label(3, r)}</text
+					style:fill="var(--stage-bg)">{label(3, r)}</text
 				>
 			{/each}
 		</Readout>
@@ -572,7 +572,9 @@
 					? 'keep going'
 					: k === best
 						? 'stop here and measure'
-						: 'overshot: it rotates past'}
+						: sim[k].p > sim[best].p - 1e-9
+							? 'past the best: it has come round again'
+							: 'overshot: it rotates past'}
 				size={14}
 				weight={600}
 			/>
@@ -586,7 +588,9 @@
 			<T
 				x={PP.x0}
 				y={530}
-				text="trial and error: {classicalTries(N)} tries on average; Grover: {best} rounds"
+				text="trial and error: {classicalTries(N)} tries on average; Grover: {best} round{best === 1
+					? ''
+					: 's'}"
 				size={13}
 				muted
 			/>

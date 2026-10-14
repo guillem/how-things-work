@@ -334,7 +334,7 @@
 	<!-- ============ panel: state ============ -->
 	{#if phase === 'state'}
 		<Readout id="ttl">
-			<T x={PX} y={58} text="the two amplitudes, as arrows" size={13} muted />
+			<T x={PX} y={58} text="the two amplitudes, as arrows (β = length ∠ phase)" size={13} muted />
 		</Readout>
 		<Readout
 			id="alpha"
@@ -421,7 +421,7 @@
 					y={234}
 					text-anchor="middle"
 					style:font-size="13px"
-					style:fill="#fff"
+					style:fill="var(--stage-bg)"
 					font-weight="700">{r}</text
 				>
 			{/each}

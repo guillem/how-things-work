@@ -533,7 +533,7 @@
 						y={318}
 						text-anchor="middle"
 						style:font-size="12px"
-						style:fill="#fff"
+						style:fill="var(--stage-bg)"
 						font-weight="700">{a}</text
 					>
 					<rect
@@ -549,7 +549,7 @@
 						y={348}
 						text-anchor="middle"
 						style:font-size="12px"
-						style:fill="#fff"
+						style:fill="var(--stage-bg)"
 						font-weight="700">{bb}</text
 					>
 					{#if a !== bb}
