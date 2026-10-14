@@ -216,7 +216,7 @@
 				? `${(p * 100).toFixed(0)}%`
 				: p >= 0.001
 					? `${(p * 100).toFixed(1)}%`
-					: `${(p * 100).toFixed(3)}%`;
+					: `${(p * 100).toPrecision(2)}%`;
 	const PL = 700;
 	const sup = (n: number) =>
 		String(n)
@@ -302,7 +302,7 @@
 				stroke-width="2"
 			/>
 		</g>
-		<Readout id="time" order={9} label="Time" value="{Math.round(simT)} fs">
+		<Readout id="time">
 			<T x={PX0 + 6} y={EY0 + 30} text="t = {Math.round(simT)} fs" size={12} muted />
 		</Readout>
 		<Readout id="dist">

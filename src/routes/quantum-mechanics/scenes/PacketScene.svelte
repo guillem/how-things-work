@@ -341,7 +341,7 @@
 			<T x={PL} y={290} text="total probability ∫|ψ|²dx" size={13} muted />
 			<T x={PL} y={314} text={total.toFixed(4)} size={20} weight={600} />
 		</Readout>
-		<Readout id="time" order={5} label="Time" value="{Math.round(simT)} fs">
+		<Readout id="time">
 			<T x={PL} y={358} text="time since the start" size={13} muted />
 			<T x={PL} y={382} text="{Math.round(simT)} fs" size={20} weight={600} />
 			<T x={PL} y={404} text="(1 fs = 10⁻¹⁵ s)" size={12} muted />
@@ -397,8 +397,22 @@
 			stroke-linecap="round"
 		/>
 		<circle cx={DC.x + dial.re * 44} cy={DC.y - dial.im * 44} r="4" fill="var(--qm-prob)" />
-		<Readout id="dial" order={6} label="ψ at the dotted line" value={dialNote}>
+		<Readout id="dial">
 			<T x={DC.x - 60} y={DC.y - 60} text="ψ at the dotted line" size={12} muted />
+			<T
+				x={DC.x + 56}
+				y={DC.y + 4}
+				text={dialNote.split(' ').slice(0, 3).join(' ')}
+				size={11}
+				muted
+			/>
+			<T
+				x={DC.x + 56}
+				y={DC.y + 19}
+				text={dialNote.split(' ').slice(3).join(' ')}
+				size={11}
+				muted
+			/>
 		</Readout>
 		<Readout id="slow" order={7} label="Slowed down" value="{slowdown} times">
 			<T
