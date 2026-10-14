@@ -160,7 +160,7 @@ export interface Burning {
  */
 export function burning(m: Moment): Burning {
 	const strong = (logLx: number, share: number) => logLx > m.logL + Math.log10(share);
-	const coreH = m.xH > 1e-3 && strong(m.logLH, 0.03);
+	const coreH = m.xH > 1e-4 && strong(m.logLH, 0.03);
 	const coreHe = !coreH && m.xHe > 1e-3 && m.xH < 1e-3 && strong(m.logLHe, 0.03);
 	const coreC = !coreH && !coreHe && m.xHe < 1e-3 && m.Tc > 6e8 && strong(m.logLZ, 0.05);
 	return {
@@ -185,8 +185,12 @@ export function stageName(t: Track, m: Moment): string {
 	if (b.core === 'He') return massive ? 'supergiant, burning helium' : 'giant, burning helium';
 	if (b.core === 'C') return 'supergiant, burning carbon';
 	if (m.phase === 2) return massive ? 'becoming a supergiant' : 'red giant';
+	if (m.phase === 3) return m.xHe > 0.5 ? 'helium flash' : 'giant, burning helium';
 	if (m.phase === 4 || m.phase === 5) return massive ? 'red supergiant' : 'asymptotic giant';
-	if (m.phase === 6) return m.L > 50 && m.T > 3e4 ? 'planetary nebula' : 'white dwarf';
+	if (m.phase === 6) {
+		if (m.R > 1) return 'shedding its envelope';
+		return m.L > 10 ? 'planetary nebula' : 'white dwarf';
+	}
 	return 'giant';
 }
 

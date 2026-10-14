@@ -636,6 +636,15 @@ const explainers: Explainer[] = [
 		accent: '#5f3dc4',
 		steps: 14,
 		minutes: 24
+	},
+	{
+		slug: 'stars',
+		title: 'The life cycle of stars',
+		summary:
+			'Choose a star’s mass and run its life across the Hertzsprung–Russell diagram while a cutaway shows what its core is fusing, watch it end as a white dwarf, a neutron star or a black hole, and find out where each element was made.',
+		accent: '#e8590c',
+		steps: 15,
+		minutes: 25
 	}
 ];
 

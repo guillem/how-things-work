@@ -1882,3 +1882,53 @@ kbd {
 	--sm-field: #2a2340;
 	--sm-ball-ink: #15141a;
 }
+
+/* stars: the layers of a star (hydrogen envelope, helium, carbon-oxygen, neon-magnesium,
+   oxygen-silicon, silicon, iron), fusion glow, gravity and pressure arrows, and the six
+   sources of the elements */
+:root {
+	--st-h: #a5d8ff;
+	--st-he: #ffe066;
+	--st-co: #b197fc;
+	--st-ne: #63e6be;
+	--st-o: #ff8787;
+	--st-si: #ffa94d;
+	--st-fe: #868e96;
+	--st-burn: #f76707;
+	--st-gravity: #1c7ed6;
+	--st-pressure: #e8590c;
+	--st-bigbang: #4dabf7;
+	--st-cosmic: #f783ac;
+	--st-lowmass: #69db7c;
+	--st-massive: #ffd43b;
+	--st-wd: #ced4da;
+	--st-mergers: #b197fc;
+	--st-none: #e9ecef;
+	--st-cell-ink: #212529;
+	--st-sky: #141a2e;
+	--st-sky-ink: #e9ecef;
+	--st-sky-grid: rgba(255, 255, 255, 0.1);
+}
+:root[data-theme='dark'] {
+	--st-h: #1d4f7a;
+	--st-he: #8f7400;
+	--st-co: #5f3dc4;
+	--st-ne: #0b7d5e;
+	--st-o: #b02525;
+	--st-si: #c2560c;
+	--st-fe: #5c636a;
+	--st-burn: #ff922b;
+	--st-gravity: #4dabf7;
+	--st-pressure: #ff922b;
+	--st-bigbang: #1971c2;
+	--st-cosmic: #a61e4d;
+	--st-lowmass: #2b8a3e;
+	--st-massive: #a87f00;
+	--st-wd: #6c757d;
+	--st-mergers: #6741d9;
+	--st-none: #2c2e33;
+	--st-cell-ink: #f8f9fa;
+	--st-sky: #0b1020;
+	--st-sky-ink: #e9ecef;
+	--st-sky-grid: rgba(255, 255, 255, 0.09);
+}

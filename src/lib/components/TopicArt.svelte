@@ -2299,6 +2299,22 @@
 			stroke-width="2"
 			stroke-linecap="round"
 		/>
+	{:else if slug === 'stars'}
+		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
+		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />
+		<circle cx="62" cy="60" r="32" fill="var(--st-he)" />
+		<circle cx="62" cy="60" r="22" fill="var(--st-co)" />
+		<circle cx="62" cy="60" r="13" fill="var(--st-si)" />
+		<circle cx="62" cy="60" r="6" fill="var(--st-fe)" />
+		<path
+			d="M128 88 L150 78 Q160 74 170 60 L178 40 Q182 30 174 28"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.5"
+			stroke-linecap="round"
+		/>
+		<circle cx="128" cy="88" r="5" fill="#9bc2ff" />
+		<circle cx="174" cy="28" r="6" fill="#ff8a4c" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
