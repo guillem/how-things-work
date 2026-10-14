@@ -15,6 +15,8 @@
 		/** Marks the text as not understood (a word that is not in the list). */
 		invalid?: boolean;
 		maxlength?: number;
+		/** Font size in px on wide screens. */
+		size?: number;
 		oninput: (value: string) => void;
 	}
 	let {
@@ -27,6 +29,7 @@
 		placeholder = '',
 		invalid = false,
 		maxlength = 24,
+		size = 18,
 		oninput
 	}: Props = $props();
 </script>
@@ -44,6 +47,7 @@
 		autocapitalize="off"
 		aria-label={label}
 		aria-invalid={invalid}
+		style:--emb-input-size="{size}px"
 		oninput={(e) => oninput(e.currentTarget.value)}
 	/>
 </foreignObject>
@@ -58,7 +62,7 @@
 		border-radius: 10px;
 		background: var(--surface);
 		color: var(--stage-ink);
-		font: 500 18px var(--font-sans);
+		font: 500 var(--emb-input-size, 18px) var(--font-sans);
 		user-select: text;
 		-webkit-user-select: text;
 	}
