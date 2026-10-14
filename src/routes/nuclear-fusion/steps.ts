@@ -5,9 +5,7 @@ import { KELVIN_PER_KEV } from './model';
 
 const fmtKelvin = (keV: number) => {
 	const mk = (keV * KELVIN_PER_KEV) / 1e6;
-	return mk >= 1000
-		? `${(mk / 1000).toFixed(1)} billion K`
-		: `${mk >= 100 ? Math.round(mk / 10) * 10 : Math.round(mk)} million K`;
+	return mk >= 1000 ? `${(mk / 1000).toFixed(1)} billion K` : `${Math.round(mk)} million K`;
 };
 const tempValues = [
 	1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 18, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90,
@@ -120,8 +118,8 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			body: `
 <p>The easiest fusion to make happen on Earth joins two heavy kinds of hydrogen (<dfn data-def="Versions of an element with the same number of protons but different numbers of neutrons.">isotopes</dfn>): <strong>deuterium</strong> (one proton, one neutron), found in all water, and <strong>tritium</strong> (one proton, two neutrons). They make a helium-4 nucleus and a free neutron.</p>
-<p>The products weigh 0.38% less than the fuel, and the missing mass is released as energy, E = mc²: <strong>17.6 MeV</strong> per reaction. Momentum is shared out like a gun's recoil, so the light neutron flies off with 14.1 MeV and the helium nucleus (an <dfn data-def="A helium-4 nucleus: two protons and two neutrons.">alpha particle</dfn>) with 3.5 MeV.</p>
-<p>Per kilogram of fuel that is <strong>4 times</strong> what fission of uranium gives, and <strong>6 million times</strong> what burning natural gas gives. The bars are on a scale where each step is ten times the one before.</p>`,
+<p>The products weigh 0.38% less than the fuel, and the missing mass is released as energy, E = mc²: <strong>17.6 MeV</strong> per reaction. Momentum is shared out like a gun's recoil, so the light neutron flies off with four-fifths of it, 14.05 MeV, and the helium nucleus (an <dfn data-def="A helium-4 nucleus: two protons and two neutrons.">alpha particle</dfn>) with 3.54 MeV (usually rounded to 14.1 and 3.5).</p>
+<p>Per kilogram of fuel that is <strong>4 times</strong> what fission of uranium gives, and <strong>6 million times</strong> what burning natural gas gives. The bars are drawn on a scale where each grid line is a thousand times the one before.</p>`,
 			notes: `<p>All energies here are computed from AME2020 atomic masses. For fission, a typical split of uranium-235 into barium-141, krypton-92 and three neutrons, followed by the beta decays of the fragments down to stable praseodymium-141 and zirconium-92, releases 199 MeV (the usual round figure is 200 MeV; about a twentieth leaves as neutrinos). Methane: 890.6 kJ per mole burnt (NIST), counting the fuel but not the oxygen. Tritium is radioactive (it <a href="../radioactivity/#beta">beta-decays</a> with a half-life of 12.3 years) and almost absent in nature, so a power station would have to make its own: the neutron from each fusion can split a lithium-6 nucleus in a blanket round the plasma, n + ⁶Li → T + ⁴He, giving 4.8 MeV more.</p>`
 		},
 		// ------------------------------------------------------------------ barrier
@@ -148,7 +146,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Two things rescue fusion. First, a nucleus is also a quantum wave, so it has a small chance of appearing on the far side of the barrier without ever climbing it: <a href="../quantum-mechanics/#barrier">quantum tunnelling</a>. The chance (the <dfn data-def="The probability of tunnelling through the Coulomb barrier. It rises steeply with energy: e^(−√(E_G/E)).">Gamow factor</dfn>) grows steeply with energy: about 1 in 7,000 per collision for a pair with 15 keV, 1 in 330 at 35 keV.</p>
 <p>Second, a hot plasma is not uniform. A few nuclei are much faster than average, in a tail that thins out quickly: at 10 keV, only about 1 pair in 14 has more than 35 keV. Multiply the two curves, many slow pairs with no chance against a few fast ones with a fair chance, and you get where the fusions come from: a narrow peak.</p>
-<p>At 10 keV it sits at about <strong>35 keV</strong>, more than three times the temperature but still a tenth of the barrier. Change the temperature and watch the peak, and the total number of fusions (its area), move.</p>`,
+<p>At 10 keV it sits at about <strong>35 keV</strong>, more than three times the temperature but still a tenth of the barrier. Change the temperature and watch the peak move, and the fusion rate change.</p>`,
 			notes: `<p>The fusion curve is the real one: the share of pairs at each energy (Maxwell–Boltzmann) times their speed times the measured D–T cross section, the parametrisation of Bosch and Hale (1992). Textbooks put the peak at (E_G (kT)²/4)^⅓ = 31 keV at 10 keV, from the Gamow factor alone; the real cross section has a broad resonance near 65 keV that pulls it a little higher. In the Sun's core, at 1.4 keV, the same physics works with far fewer fusions per second per nucleus: the Sun makes up for it with its size, and with its gravity holding the fuel in for billions of years (see <a href="../stars/#fusion">how stars shine</a>).</p>`
 		},
 		{
