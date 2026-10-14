@@ -194,7 +194,7 @@
 	<Readout
 		id="k-one"
 		order={5}
-		label="Right"
+		label="Right panel"
 		value="one clean point x₀ (ring), 40 noisings of it at step t, the one-go disc"
 	>
 		<Label
