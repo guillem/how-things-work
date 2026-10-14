@@ -210,7 +210,6 @@ export function runMoths(set: MothSettings): MothGeneration[] {
 	}
 	let parentsOf: [number, number][] = Array.from({ length: Math.min(N, SAMPLE) }, () => [-1, -1]);
 	const out: MothGeneration[] = [];
-	let extinct = false;
 	const classes = new Int32Array(N);
 	const alive = new Uint8Array(N);
 
@@ -219,13 +218,12 @@ export function runMoths(set: MothSettings): MothGeneration[] {
 		const hist = new Array<number>(SHADES).fill(0);
 		const survivorHist = new Array<number>(SHADES).fill(0);
 		let sum = 0;
-		let dark = 0;
 		for (let i = 0; i < N; i++) {
 			classes[i] = shadeClass(genome, i);
 			hist[classes[i]]++;
 			sum += classes[i];
 		}
-		dark = sum / (N * G);
+		const dark = sum / (N * G);
 		// a. the birds
 		let meanSurvival = 0;
 		if (!selection) {
@@ -256,11 +254,10 @@ export function runMoths(set: MothSettings): MothGeneration[] {
 			survived: Array.from(alive.subarray(0, n), (a) => a === 1),
 			parents: parentsOf,
 			darkAlleles: dark,
-			extinct
+			extinct: false
 		});
 		if (g === generations) break;
 		if (survivors.length === 0) {
-			extinct = true;
 			// Nobody left to breed: the record stays empty from here on.
 			for (let k = g + 1; k <= generations; k++) {
 				out.push({

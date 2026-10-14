@@ -2180,6 +2180,35 @@
 				stroke-linecap="round"
 			/>
 		{/each}
+	{:else if slug === 'evolution'}
+		<!-- a pale population (outlined bars) shifting dark (filled bars) under selection -->
+		{#each [0, 1, 2, 3, 4, 5, 6] as k (k)}
+			{@const before = [26, 40, 30, 16, 8, 4, 2][k]}
+			{@const after = [3, 6, 12, 22, 34, 38, 24][k]}
+			<rect
+				x={40 + k * 18}
+				y={100 - before}
+				width="14"
+				height={before}
+				fill="none"
+				stroke="currentColor"
+				stroke-opacity="0.4"
+				stroke-dasharray="3 2"
+			/>
+			<rect
+				x={42 + k * 18}
+				y={100 - after}
+				width="10"
+				height={after}
+				rx="1.5"
+				fill={['#ece6d4', '#d6cfba', '#b5ad97', '#8c8573', '#625d52', '#3f3b35', '#24221f'][k]}
+				stroke={accent}
+				stroke-width="1"
+			/>
+		{/each}
+		<path d="M40 100 H172" stroke="currentColor" stroke-opacity="0.5" />
+		<path d="M70 24 C 100 16, 130 16, 156 28" fill="none" stroke={accent} stroke-width="2" />
+		<path d="M150 22 L157 28 L149 33" fill="none" stroke={accent} stroke-width="2" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

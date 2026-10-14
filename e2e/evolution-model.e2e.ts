@@ -44,7 +44,7 @@ test('a new beneficial mutation fixes with probability about 2s, and is usually 
 
 test('a harmful mutation almost never fixes in a large population, but can in a tiny one', () => {
 	expect(kimuraFixation(1000, -0.01)).toBeLessThan(1e-15);
-	expect(kimuraFixation(10, -0.01)).toBeGreaterThan(0.03);
+	expect(kimuraFixation(10, -0.01)).toBeCloseTo(0.04, 2);
 });
 
 const sooty = () => 1;

@@ -600,6 +600,15 @@ const explainers: Explainer[] = [
 		accent: '#c0396b',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'evolution',
+		title: 'Evolution by natural selection',
+		summary:
+			'Run a population of moths whose wing shade is inherited, set the mutation rate, the population size and the birds that hunt them, and watch it change over generations. Then see the part chance plays, and evolution measured in peppered moths, bacteria on an antibiotic and a 50,000-generation experiment.',
+		accent: '#4d7c32',
+		steps: 12,
+		minutes: 20
 	}
 ];
 
