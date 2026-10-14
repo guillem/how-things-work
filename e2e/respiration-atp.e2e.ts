@@ -48,7 +48,9 @@ test.describe('settled pictures', () => {
 		await expect(stage(page)).toContainText('2.7 (≈ 3.7 with transport)');
 		await page.locator('[data-control=ring][data-value=spinach]').click();
 		await expect(stage(page)).toContainText('14 subunits');
-		await expect(stage(page)).toContainText('4.7 (≈ 5.7 with transport)');
+		// A chloroplast makes its ATP where it is used: no proton to carry it out.
+		await expect(stage(page)).toContainText('4.7 (no transport cost)');
+		await expect(stage(page)).not.toContainText('with transport');
 	});
 
 	test('FADH₂ skips complex I and drives 6 protons instead of 10', async ({ page }) => {

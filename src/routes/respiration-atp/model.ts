@@ -222,18 +222,35 @@ export function oxygenPerGlucose() {
 
 // ---- the ATP yield ----------------------------------------------------------
 
-/** c-ring sizes of real ATP synthases (subunits = protons per rotation). */
+/**
+ * c-ring sizes of real ATP synthases (subunits = protons per rotation). `mito`:
+ * the synthase sits in a mitochondrion, so each ATP also pays a proton to be
+ * carried out to the cytosol; elsewhere ATP is made where it is used.
+ */
 export const C_RINGS = [
-	{ id: 'cow', label: 'Cow (all vertebrates)', c: 8, source: 'Watt et al. 2010, PDB 2XND' },
-	{ id: 'yeast', label: 'Yeast', c: 10, source: 'Stock et al. 1999, PDB 1QO1' },
-	{ id: 'ecoli', label: 'E. coli', c: 10, source: 'Jiang et al. 2001' },
+	{
+		id: 'cow',
+		label: 'Cow (all vertebrates)',
+		c: 8,
+		mito: true,
+		source: 'Watt et al. 2010, PDB 2XND'
+	},
+	{ id: 'yeast', label: 'Yeast', c: 10, mito: true, source: 'Stock et al. 1999, PDB 1QO1' },
+	{ id: 'ecoli', label: 'E. coli', c: 10, mito: false, source: 'Jiang et al. 2001' },
 	{
 		id: 'spinach',
 		label: 'Spinach chloroplast',
 		c: 14,
+		mito: false,
 		source: 'Seelert et al. 2000; Vollmar et al. 2009'
 	},
-	{ id: 'spirulina', label: 'Spirulina (cyanobacterium)', c: 15, source: 'Pogoryelov et al. 2005' }
+	{
+		id: 'spirulina',
+		label: 'Spirulina (cyanobacterium)',
+		c: 15,
+		mito: false,
+		source: 'Pogoryelov et al. 2005'
+	}
 ] as const;
 
 /** Protons per ATP at the synthase alone: one rotation makes 3 ATP. */
@@ -346,7 +363,7 @@ export const FERMENTATION_ATP = STAGES.glycolysis.atp;
  * to pay for ATP at its cellular value (≈ 50 kJ/mol).
  *
  * The rate constants and pool sizes are illustrative (chosen so that the
- * resting Δp is ≈ 180 mV and the pools are partly reduced); the order in
+ * working Δp is ≈ 190 mV and the pools are partly reduced); the order in
  * which the carriers back up without oxygen, and the directions of the
  * responses, follow from the potentials and are not tuned.
  */

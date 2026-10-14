@@ -89,9 +89,11 @@
 	function rel(v: number, ref: number) {
 		return Math.max(0, v / ref);
 	}
+	/** The steady state, for reduced motion: computed once per condition, not every frame. */
+	const steady = $derived(reduced ? steadyChain(cond, WORKING.state) : null);
 	const view = $derived.by(() => {
-		if (!reduced) return live;
-		const s = steadyChain(cond, WORKING.state);
+		if (!steady) return live;
+		const s = steady;
 		const f = s.fluxes;
 		return {
 			state: s.state,
