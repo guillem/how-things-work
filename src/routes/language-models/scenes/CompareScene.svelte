@@ -44,7 +44,7 @@
 		<Txt x={40} y={30} size={12} muted text="Prompt" />
 		<TextCard x={100} y={31} w={820} prompt={prompt.ids.slice(1)} gen={[]} maxLines={2} />
 	</Readout>
-	<Readout id="setting" order={2} label="Setting" value={setting}>
+	<Readout id="setting">
 		<Txt x={920} y={62} anchor="end" size={11.5} muted text={setting} />
 	</Readout>
 	{#each cards as c (c.label)}

@@ -17,9 +17,12 @@ export const label = (t: string) => tokenLabel(t);
 export const message = (params: Params) => str(params.msg, DEFAULT_MESSAGE);
 export const MAX_LENGTH = 120;
 
-/** Width of a chip for `text` at `size` px (a rough average glyph width). */
+/** Width of a chip for `text` at `size` px (monospace; ⟨ ⟩ of byte tokens come from a wider font). */
 export const chipWidth = (text: string, size = 13, min = 22) =>
-	Math.max(min, Math.round([...text].length * size * 0.6 + 12));
+	Math.max(
+		min,
+		Math.round([...text].length * size * 0.6 + 12 + (text.startsWith('⟨') ? size * 0.5 : 0))
+	);
 
 /** Lay chips out left to right, wrapping at `width`. */
 export function flow<T extends { w: number }>(

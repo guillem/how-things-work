@@ -18,7 +18,7 @@
 	const BEAT = 3.2;
 	const N = run.steps.length;
 	const k = $derived(reduced ? 6 : Math.floor(t / BEAT) % (N + 1));
-	const u = $derived(reduced ? 0.55 : (t % BEAT) / BEAT);
+	const u = $derived(reduced ? 0.7 : (t % BEAT) / BEAT);
 	const cur = $derived(Math.min(N - 1, k));
 	const s = $derived(run.steps[cur]);
 	const gen = $derived(run.steps.slice(0, k).map((x) => x.pick));

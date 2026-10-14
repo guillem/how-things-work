@@ -172,7 +172,7 @@ export const spec: ExplainerSpec = {
 <p>Nobody wrote GPT-2's list of tokens. It was learned from text by <dfn data-def="Byte-pair encoding: start from the 256 possible bytes, find the pair of neighbouring tokens that is most frequent in a large body of text, make it a new token, and repeat, here 50,000 times.">byte-pair encoding</dfn>: start from the 256 possible bytes, find the pair of neighbours that occurs most often in a large body of text, glue it into a new token, and repeat. GPT-2 did this 50,000 times: 256 bytes + 50,000 merges + one special token = 50,257.</p>
 <p>The stage replays it on your text: every piece starts as single bytes, and at each tick the merge learned earliest among its neighbours is applied. The number on each merge is its rank. <em>␣t</em> + <em>he</em>, making <em>␣the</em>, is merge no. 7, among the very first; the pieces of a rare word join late, or never.</p>
 <p>The result is a compromise. Frequent words are one token, so text stays short; rare words still fit, as several pieces.</p>`,
-			notes: `<p>BPE was invented for data compression (Philip Gage, 1994) and adapted to language models by Sennrich, Haddow and Birch (2016). GPT-2's version, from Radford and colleagues (2019), works on bytes and never merges across the split between a word and the space or punctuation around it.</p>`
+			notes: `<p>BPE was invented for data compression (Philip Gage, 1994) and adapted to splitting words for neural machine translation by Sennrich, Haddow and Birch (2016). GPT-2's version, from Radford and colleagues (2019), works on bytes and never merges across the split between a word and the space or punctuation around it.</p>`
 		},
 		// ------------------------------------------------------------------ predict
 		{
@@ -185,9 +185,10 @@ export const spec: ExplainerSpec = {
 			controls: [prompt],
 			body: `
 <p>Give the model some tokens and it does exactly one thing: for <em>each</em> of the 50,257 tokens it says how likely that token is to come next. The stage shows GPT-2 small's real answer for the ten most likely, and one bar for all the others together.</p>
-<p>After “… Rome is the capital of” it gives <em>␣Italy</em> 35%, <em>␣Rome</em> 27% and <em>␣the</em> 21%. After “Once upon a time, there was a” no token stands out: <em>␣time</em> gets 8% and almost three quarters of the probability is spread over tokens outside the top ten.</p>
-<p>The probabilities say what tends to follow such text, not what is true. After “The Eiffel Tower is in the city of”, GPT-2 small puts <em>␣London</em> (8.1%) ahead of <em>␣Paris</em> (6.9%).</p>`,
-			notes: `<p>These are the numbers GPT-2 small computed when this page was made: the prompts are fixed. Getting probabilities for a prompt you type would mean running the model in your browser, after downloading its 550 MB of weights. (The tokenizer above needs only its 200 KB list of merges.) Every prompt starts with GPT-2's special token <code>&lt;|endoftext|&gt;</code>, which separated documents in its training text.</p>`
+<p>After “… Rome is the capital of” it gives <em>␣Italy</em> 35%, <em>␣Rome</em> 27% and <em>␣the</em> 21%. After “Once upon a time, there was a” no token stands out: <em>␣time</em> gets 8% and three quarters of the probability is spread over tokens outside the top ten.</p>
+<p>The probabilities say what tends to follow such text, not what is true. After “The Eiffel Tower is in the city of”, GPT-2 small puts <em>␣London</em> (8.1%) ahead of <em>␣Paris</em> (6.9%).</p>
+<p>The prompts are fixed. The tokenizer could run in your browser on anything you type, but the model itself would need its 550 MB of weights downloaded; instead, these prompts were run through it when the page was made.</p>`,
+			notes: `<p>The tokenizer of the first steps needs only GPT-2's 200 KB list of merges. Every prompt starts with GPT-2's special token <code>&lt;|endoftext|&gt;</code>, which separated documents in its training text.</p>`
 		},
 		{
 			id: 'scores',
@@ -282,9 +283,9 @@ export const spec: ExplainerSpec = {
 			controls: [runPrompt, runTemp, runTopP, seed],
 			body: `
 <p>Here is real sampling. At each step the kept tokens are laid end to end on a strip, each as long as its probability. A random number between 0 and 1 is drawn, and the token whose stretch it lands on is the one written.</p>
-<p>Change the temperature and the run. At 0.3 the runs are almost the same as greedy text. At 0.7 they differ but stay sensible. At 1.5 the dice often land on rare tokens and the text turns to nonsense within a few words; top-p 0.9 keeps it together for longer.</p>
+<p>Change the temperature and the run. At 0.3 the runs start like the greedy text and stay close to it. At 0.7 they differ but stay sensible. At 1.5 the dice often land on rare tokens and the text turns to nonsense within a few words; even top-p 0.9 cannot save it, because at that temperature the nucleus still holds thousands of tokens.</p>
 <p>These runs were drawn when the page was made, three for each setting, so a run's settings cannot change halfway. In “Choose the next token yourself”, below, you do the picking and can change the settings at every token.</p>`,
-			notes: `<p>Each run draws its random numbers from numpy's generator with a fixed seed. Every stored text was read before publishing; one high-temperature run was replaced by the next seed's (the build script says which). The rule used, laying the probabilities end to end and seeing where a uniform random number falls, is called inverse transform sampling. Chat assistants typically sample at temperatures between 0.5 and 1 with top-p near 0.9, but every product picks its own settings.</p>`
+			notes: `<p>Each run draws its random numbers from numpy's generator with a fixed seed. Every stored text was read before publishing; one high-temperature run was replaced by the next seed's (the build script says which). The rule used, laying the probabilities end to end and seeing where a uniform random number falls, is called inverse transform sampling.</p>`
 		},
 		{
 			id: 'compare',

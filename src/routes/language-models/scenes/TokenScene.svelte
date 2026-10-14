@@ -34,20 +34,37 @@
 	const X0 = 40;
 	const W = 880;
 	const Y0 = 196;
-	const chips = $derived(
+	/** Chip sizes, largest first: a long text uses the first size whose rows fit on the stage. */
+	const SIZES = [
+		{ f: 18, h: 36, lh: 72 },
+		{ f: 15, h: 30, lh: 56 },
+		{ f: 12, h: 24, lh: 44 },
+		{ f: 10, h: 20, lh: 36 }
+	];
+	const layoutTokens = (f: number, lh: number) =>
 		flow(
 			ids.map((id, i) => ({
 				id,
 				i,
 				text: tokText(id),
-				w: Math.max(chipWidth(tokText(id), 18), String(id).length * 8 + 12)
+				w: Math.max(chipWidth(tokText(id), f, f + 4), String(id).length * f * 0.45 + 10)
 			})),
 			X0,
 			W,
-			5,
-			ids.length > 50 ? 58 : 72
-		)
-	);
+			4,
+			lh
+		);
+	const tokLayout = $derived.by(() => {
+		for (const sz of SIZES) {
+			const lay = layoutTokens(sz.f, sz.lh);
+			const rows = lay.length ? lay[lay.length - 1].row + 1 : 1;
+			if (Y0 + (rows - 1) * sz.lh + sz.h + 18 <= 588 || sz === SIZES[SIZES.length - 1])
+				return { sz, chips: lay };
+		}
+		return { sz: SIZES[0], chips: [] };
+	});
+	const sz = $derived(tokLayout.sz);
+	const chips = $derived(tokLayout.chips);
 
 	// ---- merges phase: every merge of every piece, in rank order
 	const TICK = 0.55;
@@ -69,6 +86,30 @@
 	});
 	const latest = $derived(applied > 0 ? events[applied - 1] : null);
 	const stateOf = (p: Piece, n: number) => (n === 0 ? p.bytes : p.merges[n - 1].tokens);
+	/** Merge-chip size: the largest at which the text, as single bytes (its widest), fits in 4 rows. */
+	const MSIZES = [
+		{ f: 15, h: 30, lh: 42 },
+		{ f: 12, h: 24, lh: 34 },
+		{ f: 10, h: 20, lh: 28 }
+	];
+	const mlayout = $derived.by(() => {
+		const all = pieces.flatMap((p, pi) =>
+			p.bytes.map((id, j) => ({ id, pi, j, first: j === 0 && pi > 0 }))
+		);
+		for (const m of MSIZES) {
+			const lay = flow(
+				all.map((c) => ({ w: chipWidth(tokText(c.id), m.f, m.f + 5) + (c.first ? 10 : 0) })),
+				X0,
+				W,
+				2,
+				m.lh
+			);
+			const rows = lay.length ? lay[lay.length - 1].row + 1 : 1;
+			if (rows <= 4 || m === MSIZES[MSIZES.length - 1]) return { m, rows };
+		}
+		return { m: MSIZES[0], rows: 1 };
+	});
+	const msz = $derived(mlayout.m);
 	const mchips = $derived.by(() => {
 		const items: {
 			key: string;
@@ -85,7 +126,7 @@
 				items.push({
 					key: `${pi}-${j}`,
 					text: tokText(id),
-					w: chipWidth(tokText(id), 15, 20),
+					w: chipWidth(tokText(id), msz.f, msz.f + 5),
 					pi,
 					hot: id === made,
 					gapBefore: j === 0 && pi > 0
@@ -98,7 +139,7 @@
 			X0,
 			W,
 			2,
-			46
+			msz.lh
 		).map((c) => ({
 			...c,
 			x: c.x + (c.gapBefore && c.x > X0 ? 10 : 0),
@@ -118,13 +159,19 @@
 	});
 
 	// ---- the ladder of the longest piece (by number of merges)
-	const LY = 346;
-	const MAX_ROWS = 10;
+	const RH = 24;
+	const LY = $derived(Math.max(346, Y0 + mlayout.rows * msz.lh + 44));
+	const MAX_ROWS = $derived(Math.floor((590 - LY) / RH));
+	const ladderW = (text: string) => chipWidth(text, 12, 16);
 	const ladder = $derived.by(() => {
 		if (!pieces.length) return null;
-		let best = pieces[0];
-		for (const p of pieces) if (p.merges.length > best.merges.length) best = p;
-		if (best.merges.length === 0) return null;
+		// the piece with the most merges among those whose bytes fit on one line of the ladder
+		const fits = (p: Piece) =>
+			p.bytes.reduce((a, id) => a + ladderW(tokText(id)) + 2, 0) <= W - 132;
+		let best: Piece | null = null;
+		for (const p of pieces)
+			if (fits(p) && (!best || p.merges.length > best.merges.length)) best = p;
+		if (!best || best.merges.length === 0 || MAX_ROWS < 3) return null;
 		const pi = pieces.indexOf(best);
 		const rows = [
 			{ n: 0, rank: -1, toks: best.bytes },
@@ -134,7 +181,6 @@
 			rows.length > MAX_ROWS ? [...rows.slice(0, 2), null, ...rows.slice(3 - MAX_ROWS)] : rows;
 		return { pi, piece: best, rows: shown };
 	});
-	const RH = 24;
 </script>
 
 <g>
@@ -180,7 +226,7 @@
 					x={c.x}
 					y={Y0 + c.y}
 					width={c.w}
-					height="36"
+					height={sz.h}
 					rx="7"
 					fill={TOKEN_FILLS[c.i % 5]}
 					stroke="var(--border)"
@@ -188,17 +234,17 @@
 				/>
 				<text
 					x={c.x + c.w / 2}
-					y={Y0 + c.y + 24}
+					y={Y0 + c.y + sz.h * 0.67}
 					text-anchor="middle"
-					style:font-size="18px"
+					style:font-size="{sz.f}px"
 					style:font-family="var(--font-mono)"
 					style:fill="var(--stage-ink)">{c.text}</text
 				>
 				<text
 					x={c.x + c.w / 2}
-					y={Y0 + c.y + 53}
+					y={Y0 + c.y + sz.h + 16}
 					text-anchor="middle"
-					style:font-size="12px"
+					style:font-size="{Math.max(9.5, sz.f * 0.66)}px"
 					style:fill="var(--stage-ink-muted)"
 					style:font-variant-numeric="tabular-nums">{c.id}</text
 				>
@@ -214,7 +260,7 @@
 					x={c.x}
 					y={Y0 + c.y - 8}
 					width={c.w}
-					height="30"
+					height={msz.h}
 					rx="5"
 					fill={c.hot
 						? 'color-mix(in oklab, var(--lm-pick) 30%, var(--surface))'
@@ -224,9 +270,9 @@
 				/>
 				<text
 					x={c.x + c.w / 2}
-					y={Y0 + c.y + 12}
+					y={Y0 + c.y - 8 + msz.h * 0.67}
 					text-anchor="middle"
-					style:font-size="15px"
+					style:font-size="{msz.f}px"
 					style:font-family="var(--font-mono)"
 					style:fill="var(--stage-ink)">{c.text}</text
 				>
@@ -247,7 +293,7 @@
 				{#if row}
 					{@const now = done[ladder.pi] === row.n}
 					{@const lay = flow(
-						row.toks.map((id, j) => ({ j, text: tokText(id), w: chipWidth(tokText(id), 12, 16) })),
+						row.toks.map((id, j) => ({ j, text: tokText(id), w: ladderW(tokText(id)) })),
 						X0 + 132,
 						W - 132,
 						2,

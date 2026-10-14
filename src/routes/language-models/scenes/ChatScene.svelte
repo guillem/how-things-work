@@ -95,8 +95,8 @@
 		<Readout
 			id="out-{i}"
 			order={3 + i}
-			label={o.label}
-			value={lm.text(o.run.steps.map((s) => s.pick))}
+			label={i === 0 ? o.label : undefined}
+			value={i === 0 ? lm.text(o.run.steps.map((s) => s.pick)) : undefined}
 		>
 			<Txt
 				x={L.x}
