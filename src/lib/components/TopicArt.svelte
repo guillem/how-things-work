@@ -2835,6 +2835,28 @@
 			stroke="currentColor"
 			stroke-opacity="0.35"
 		/>
+	{:else if slug === 'nuclear-fusion'}
+		<!-- deuterium and tritium meeting in a flash, a helium nucleus and a neutron flying off, and the U-shaped Lawson curve -->
+		<circle cx="60" cy="60" r="16" fill={accent} fill-opacity="0.18" />
+		<circle cx="38" cy="52" r="6" fill="var(--nf-proton)" />
+		<circle cx="45" cy="57" r="6" fill="var(--nf-neutron)" />
+		<circle cx="76" cy="66" r="6" fill="var(--nf-proton)" />
+		<circle cx="83" cy="60" r="6" fill="var(--nf-neutron)" />
+		<circle cx="80" cy="72" r="6" fill="var(--nf-neutron)" />
+		<path
+			d="M60 44 L60 32 M60 76 L60 88 M44 60 L32 60 M76 60 L88 60"
+			stroke={accent}
+			stroke-width="2"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M120 26 Q130 92 152 92 Q172 92 188 54"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.5"
+			stroke-linecap="round"
+		/>
+		<circle cx="160" cy="70" r="5" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

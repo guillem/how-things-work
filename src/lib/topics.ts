@@ -798,6 +798,15 @@ const explainers: Explainer[] = [
 		accent: '#1971c2',
 		steps: 14,
 		minutes: 24
+	},
+	{
+		slug: 'nuclear-fusion',
+		title: 'Nuclear fusion',
+		summary:
+			'Heat a plasma of hydrogen isotopes until its nuclei tunnel through their repulsion and fuse, then set its temperature, density and confinement time and see whether it ignites.',
+		accent: '#e64980',
+		steps: 11,
+		minutes: 20
 	}
 ];
 

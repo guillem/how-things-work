@@ -177,3 +177,13 @@ test('above the Lawson line the plasma heats itself to a steady burn; below it, 
 	// Below the ideal ignition temperature even superb confinement cannot ignite it.
 	expect(coast({ t: 4, n: 1e21, tau: 10 }).outcome).toBe('cools');
 });
+
+test('at 100 million K the average nucleus has 1/35 of the barrier; 10²⁰ m⁻³ for 1 s never ignites', () => {
+	const mean = 1.5 * (1e8 / kelvin(1));
+	expect(barrier() / mean).toBeGreaterThan(33);
+	expect(barrier() / mean).toBeLessThan(36);
+	for (let t = 2; t <= 100; t += 1) {
+		expect(powers({ t, n: 1e20, tau: 1 }).q).toBeLessThan(Infinity);
+		expect(coast({ t, n: 1e20, tau: 1 }).outcome).toBe('cools');
+	}
+});

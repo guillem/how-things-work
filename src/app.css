@@ -2577,3 +2577,44 @@ kbd {
 	--mi-t-muscle: #ff6b6b;
 	--mi-t-blood: #4dabf7;
 }
+/* nuclear fusion */
+:root {
+	--nf-proton: #e8590c;
+	--nf-neutron: #868e96;
+	--nf-dt: #e64980;
+	--nf-dd: #1c7ed6;
+	--nf-dhe3: #37b24d;
+	--nf-fusion: #e64980;
+	--nf-alpha: #f08c00;
+	--nf-neutron-power: #868e96;
+	--nf-loss: #1c7ed6;
+	--nf-brems: #7048e8;
+	--nf-heat: #e03131;
+	--nf-ignite: #ffe3ec;
+	--nf-plasma: #f783ac;
+	--nf-vessel: #dee2e6;
+	--nf-coil: #4263eb;
+	--nf-laser: #2f9e44;
+	--nf-gold: #e2b33c;
+	--nf-fuel: #74c0fc;
+}
+:root[data-theme='dark'] {
+	--nf-proton: #ff922b;
+	--nf-neutron: #adb5bd;
+	--nf-dt: #f783ac;
+	--nf-dd: #74c0fc;
+	--nf-dhe3: #69db7c;
+	--nf-fusion: #f783ac;
+	--nf-alpha: #ffc078;
+	--nf-neutron-power: #adb5bd;
+	--nf-loss: #74c0fc;
+	--nf-brems: #b197fc;
+	--nf-heat: #ff8787;
+	--nf-ignite: #3d1a28;
+	--nf-plasma: #f06595;
+	--nf-vessel: #343a40;
+	--nf-coil: #91a7ff;
+	--nf-laser: #8ce99a;
+	--nf-gold: #ffd43b;
+	--nf-fuel: #a5d8ff;
+}
