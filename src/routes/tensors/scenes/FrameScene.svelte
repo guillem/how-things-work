@@ -233,6 +233,8 @@
 	// ---- phase meanings: a pixel -----------------------------------------------------------
 	const PIXEL = [212, 23, 22] as const; // pixel [24, 22] of the photo on the image steps
 	const fmt = (v: number) => num(v, 1);
+	/** A square in the panel: (−4)², not −4². */
+	const sq = (v: number) => (num(v).startsWith('−') ? `(${num(v)})²` : `${num(v)}²`);
 	const angleText = $derived(`${num(theta, 1)}°`);
 </script>
 
@@ -616,7 +618,7 @@
 				<T
 					x={PX}
 					y={300}
-					text="√({num(Fp[0])}² + {num(Fp[1])}²) = {num(Math.hypot(...Fp))} N"
+					text="√({sq(Fp[0])} + {sq(Fp[1])}) = {num(Math.hypot(...Fp))} N"
 					size={16}
 					weight={600}
 				/>

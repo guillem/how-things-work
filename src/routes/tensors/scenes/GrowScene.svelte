@@ -194,6 +194,7 @@
 			fill="none"
 			stroke="var(--explainer-accent, var(--accent))"
 			stroke-width="4"
+			stroke-dasharray={at.l > 0 ? '7 5' : undefined}
 		/>
 		{#if at.l > 0}
 			<!-- a number in a back layer: show it on a badge -->
@@ -278,8 +279,8 @@
 			/>
 			<Readout id="ax-deep">
 				<T
-					x={deep.b.x + 22}
-					y={deep.b.y - 8}
+					x={(deep.a.x + deep.b.x) / 2 + 14}
+					y={(deep.a.y + deep.b.y) / 2 + 20}
 					text="axis 0: layers · {nL}"
 					color="var(--tn-deep)"
 					weight={600}
