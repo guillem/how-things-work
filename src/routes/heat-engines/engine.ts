@@ -416,3 +416,17 @@ export function engineAt(c: Cycle, u: number, dwell = 0.06) {
 	}
 	return { stroke, crank, x, V, gas, f };
 }
+
+/**
+ * The Carnot engine of the "perfect engine" step: the gas of the first steps
+ * (0.59 g of air), starting each cycle at 1 atm and the cold temperature, and
+ * doubling its volume while it takes in heat.
+ */
+export function carnotDemo(tHot: number, tCold: number): Cycle {
+	const m = boxMass();
+	return carnot(m, tCold, tHot, (m * R_AIR * tCold) / P_ATM, m * R_AIR * Math.log(2));
+}
+
+/** The Carnot cycle that takes in heat over the same range of entropy as an Otto (or Diesel) cycle. */
+export const carnotAround = (c: Cycle) =>
+	carnot(c.m, c.states[0].T, c.tMax, c.states[0].V, c.states[2].S - c.states[1].S);

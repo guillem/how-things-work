@@ -9,6 +9,8 @@ import {
 	R_AIR,
 	boxCycle,
 	carnot,
+	carnotAround,
+	carnotDemo,
 	carnotLimit,
 	clausius,
 	diesel,
@@ -30,6 +32,7 @@ import {
 	saturationAt,
 	superheated
 } from '../src/routes/heat-engines/steam';
+import { EIA_HEAT_RATE, fromHeatRate } from '../src/routes/heat-engines/real-data';
 
 const grid = <T>(xs: number[], f: (x: number) => T[]) => xs.flatMap(f);
 /** Every cycle the sliders can make (the narrative's ranges). */
@@ -105,18 +108,32 @@ test('Diesel: below Otto at the same ratio, the same as Otto as the burn shrinks
 	}
 	const t2 = 300 * Math.pow(18, GAMMA - 1);
 	expect(diesel(18, 300, t2 * 1.0001).efficiency).toBeCloseTo(ottoEfficiency(18), 4);
-	// Compressing more (18 against a petrol engine's 10) more than makes up for it.
-	expect(diesel(18, 300, 2500).efficiency).toBeGreaterThan(ottoEfficiency(10));
-	expect(diesel(18, 300, 2500).efficiency).toBeCloseTo(0.604, 3);
+	// Compressing more (22 against a petrol engine's 10) more than makes up for it.
+	expect(diesel(22, 300, 2500).efficiency).toBeGreaterThan(ottoEfficiency(10));
+	expect(diesel(22, 300, 2500).efficiency).toBeCloseTo(0.643, 3);
+	expect(diesel(18, 300, 2500).states[1].T).toBeCloseTo(953, 0);
+	// Unlike Otto's, its efficiency falls as the burn gets longer (hotter).
+	expect(diesel(18, 300, 2000).efficiency).toBeGreaterThan(diesel(18, 300, 2500).efficiency);
 });
 
 test('Carnot with the Otto engine’s entropy range: 88% at 300/2500 K, but 1,700 bar and a 4,000-fold squeeze', () => {
 	const o = otto(10, 300, 2500);
-	const c = carnot(o.m, 300, 2500, o.states[0].V, o.states[2].S - o.states[1].S);
+	const c = carnotAround(o);
 	expect(c.efficiency).toBeCloseTo(0.88, 12);
+	expect(c.states[0]).toEqual(o.states[0]);
 	expect(c.work).toBeGreaterThan(2 * o.work);
 	expect(c.states[1].P / 1e5).toBeCloseTo(1693, -1);
 	expect(c.states[3].V / c.states[1].V).toBeCloseTo(4019, -1);
+});
+
+test('the perfect engine, 0.59 g of air from 1 atm: 50% at 600/300 K; reaching 2,500 K takes a 200-fold squeeze and 1,700 bar', () => {
+	const c = carnotDemo(600, 300);
+	expect(c.efficiency).toBeCloseTo(0.5, 12);
+	expect(c.states[0].P).toBeCloseTo(P_ATM, 6);
+	expect(c.states[2].V / c.states[1].V).toBeCloseTo(2, 12);
+	const hot = carnotDemo(2500, 300);
+	expect(hot.states[0].V / hot.states[1].V).toBeCloseTo(200.5, 1);
+	expect(hot.states[1].P / 1e5).toBeCloseTo(1693, -1);
 });
 
 test('entropy ledger: turning more than 1 − Tc/Th of the heat into work would lower the total entropy', () => {
@@ -199,4 +216,11 @@ test('ideal Rankine cycle, 15 MPa and 600 °C to a 10 kPa condenser: 43% (Çenge
 test('combined cycle: a 41% gas turbine plus a steam cycle on its exhaust reaches about 62%', () => {
 	expect(combined(0.41, 0.36)).toBeCloseTo(0.622, 3);
 	expect(combined(0.41, 0)).toBe(0.41);
+});
+
+test('real efficiencies from EIA heat rates: coal 34%, nuclear 33%, gas turbines 31%, combined cycle 45%', () => {
+	expect(fromHeatRate(EIA_HEAT_RATE.coalSteam)).toBeCloseTo(0.341, 3);
+	expect(fromHeatRate(EIA_HEAT_RATE.nuclear)).toBeCloseTo(0.327, 3);
+	expect(fromHeatRate(EIA_HEAT_RATE.gasTurbine)).toBeCloseTo(0.31, 3);
+	expect(fromHeatRate(EIA_HEAT_RATE.combinedCycle)).toBeCloseTo(0.452, 3);
 });
