@@ -13,7 +13,16 @@
 	 * The chromatids' colours and letters come from the model (meiosisOfPair,
 	 * tetrad) with the reader's crossovers and line-up.
 	 */
-	import { Handle, Label, clamp, cycle, lerp, rng, smoothstep } from '#lib/draw/index.ts';
+	import {
+		Handle,
+		Label,
+		clamp,
+		cycle,
+		lerp,
+		rng,
+		smoothstep,
+		type Point
+	} from '#lib/draw/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
@@ -298,7 +307,7 @@
 					min={4}
 					max={96}
 					valuetext="{pct(xo[p])} from the top"
-					onmove={(pt) =>
+					onmove={(pt: Point) =>
 						setParam(
 							`xo${p}`,
 							Math.round(clamp((pt.y - top) / (k.length * S0), 0.04, 0.96) * 100) / 100
