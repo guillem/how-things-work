@@ -315,7 +315,7 @@ export const spec: ExplainerSpec = {
 			controls: [bounces, az, el, lightAz],
 			body: `
 <p>Here are both pictures of the same scene, from the same camera, made from the same 654 triangles with the same shading formula. The <strong>rasteriser</strong> projected each triangle once and filled its pixels. The <strong>ray tracer</strong> followed light backwards from the eye: one ray per pixel, then shadow rays and bounces.</p>
-<p>The bars count the work. From the starting view the rasteriser makes about 50,000 pixel tests; the ray tracer makes about 2.5 million ray–triangle tests, and every extra bounce adds more. In return it gets the shadows, the reflections and the bent light through the glass right, because it asks the whole scene about every point.</p>
+<p>The bars count the tests. From the starting view the rasteriser makes about 50,000 pixel tests; the ray tracer makes about 2.5 million ray–triangle tests, and every extra bounce adds more. In return it gets the shadows, the reflections and the bent light through the glass right, because it asks the whole scene about every point.</p>
 <p>That is the trade. Games rasterise, to draw sixty pictures a second; films ray-trace, spending minutes or hours on each frame. Today's graphics cards have circuits for ray tests, and games mix the two: rasterise the picture, then trace a few rays for shadows and reflections.</p>`,
 			notes: `<p>The counts depend on the view and on the scene: the rasteriser's work grows with the number of triangles and the pixels they cover, the ray tracer's with pixels × rays per pixel × the cost of finding the nearest triangle. With a good BVH that cost grows only slowly with the number of triangles, which is why ray tracing scales to huge film scenes.</p>`
 		}

@@ -100,7 +100,7 @@
 		<T
 			x={LX}
 			y={BY - 22}
-			text="Work done for this picture (same scale)"
+			text="Tests made for this picture (same scale)"
 			size={13}
 			weight={650}
 			muted
@@ -171,9 +171,9 @@
 		<T
 			x={LX}
 			y={BY + 140}
-			text="Projecting is fast; tracing light back from the eye is faithful: here it does {Math.round(
+			text="Projecting is fast; tracing light back from the eye is faithful: here it makes {Math.round(
 				tr.stats.triangleTests / ras.stats.pixelTests
-			)} times the work."
+			)} times as many tests."
 			size={14}
 			weight={700}
 		/>

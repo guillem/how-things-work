@@ -75,13 +75,11 @@
 		perspectiveCorrect: phase === 'texture' ? params.perspectiveCorrect !== false : true
 	});
 	// On the last step the picture is built triangle by triangle, in the order they come (a pure
-	// function of t in 48 stages, each rendered once), then held complete.
+	// function of t in 48 stages, each rendered once), once, then held complete.
 	const BUILD = 8;
 	const STAGES = 48;
 	const stage = $derived(
-		phase === 'raster' && !reduced
-			? Math.min(STAGES, Math.floor(((t % (BUILD + 4)) / BUILD) * STAGES))
-			: STAGES
+		phase === 'raster' && !reduced ? Math.min(STAGES, Math.floor((t / BUILD) * STAGES)) : STAGES
 	);
 	const img = $derived(
 		rasterise(scene, camera, L, {

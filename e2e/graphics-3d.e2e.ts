@@ -85,9 +85,9 @@ test('the bounce limit decides how many reflected and refracted rays are followe
 	await expect(stage(page)).not.toContainText(/\d\. refracted ray/);
 });
 
-test('side by side, the ray tracer does many times the rasteriser’s work', async ({ page }) => {
+test('side by side, the ray tracer makes many times the rasteriser’s tests', async ({ page }) => {
 	await open(page, './graphics-3d/#compare');
-	const times = /here it does (\d+) times the work/;
+	const times = /here it makes (\d+) times as many tests/;
 	await expect(stage(page)).toContainText(times);
 	const at3 = Number(times.exec((await stage(page).textContent()) ?? '')![1]);
 	expect(at3).toBeGreaterThan(20);

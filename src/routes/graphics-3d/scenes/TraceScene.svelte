@@ -64,7 +64,7 @@
 	const url = $derived(toDataUrl(img));
 
 	const SCAN = 8;
-	const reveal = $derived(phase === 'rays' && !reduced ? Math.min(1, (t % (SCAN + 3)) / SCAN) : 1);
+	const reveal = $derived(phase === 'rays' && !reduced ? Math.min(1, t / SCAN) : 1);
 
 	const rowsDone = $derived(Math.round(reveal * IMG_H));
 	const R = { x: 352, y: 16, w: 592, h: 370 };

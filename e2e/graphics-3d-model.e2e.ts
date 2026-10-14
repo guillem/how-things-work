@@ -234,3 +234,24 @@ test('the mirror shows the scene only with one bounce; light gets through the gl
 	const path = tracePixel(world, cam, light, i, j, { ...DEFAULT_TRACE, bounces: 2 });
 	expect(path.segments.filter((s) => s.kind === 'refract').length).toBeGreaterThanOrEqual(2);
 });
+
+test('with more bounces, the mirror ball shows the glass ball, and the light through it', () => {
+	// Mirror pixels whose reflected ray hits the glass ball (a reflection of the glass in the mirror).
+	const sees: number[] = [];
+	for (let j = 0; j < H; j++)
+		for (let i = 0; i < W; i++) {
+			const p = tracePixel(world, cam, light, i, j, { ...DEFAULT_TRACE, bounces: 1 });
+			if (
+				p.id === ID.mirror &&
+				p.segments.some((s) => s.kind === 'reflect' && s.depth === 1 && s.obj === ID.glass)
+			)
+				sees.push(j * W + i);
+		}
+	expect(sees.length).toBeGreaterThan(10);
+	// With one bounce the glass seen in the mirror is dark (its own light needs more rays);
+	// with three, the light through it shows up in the mirror.
+	const b1 = raytrace(world, cam, light, { ...DEFAULT_TRACE, bounces: 1 });
+	const b3 = raytrace(world, cam, light, { ...DEFAULT_TRACE, bounces: 3 });
+	const mean = (img: typeof b1) => sees.reduce((s, k) => s + img.rgba[4 * k + 2], 0) / sees.length;
+	expect(mean(b3)).toBeGreaterThan(mean(b1) + 20);
+});
