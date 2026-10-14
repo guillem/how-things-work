@@ -122,22 +122,10 @@
 			label="A cell that made spikes"
 			value="whole spikes on its surface, and fragments held up on MHC molecules"
 		>
-			<Tag
-				x={30}
-				y={60}
-				text="a cell that read the vaccine"
-				size={13}
-				weight={600}
-				anchor="start"
-			/>
-			<Tag
-				x={30}
-				y={548}
-				text="whole spikes, and fragments on MHC"
-				size={11}
-				anchor="start"
-				muted
-			/>
+			<Tag x={24} y={282} text="a cell that read" size={13} weight={600} anchor="start" />
+			<Tag x={24} y={300} text="the vaccine" size={13} weight={600} anchor="start" />
+			<Tag x={24} y={330} text="whole spikes," size={11} anchor="start" muted />
+			<Tag x={24} y={346} text="fragments on MHC" size={11} anchor="start" muted />
 		</Readout>
 
 		<!-- a free spike and the B cell that grabs it -->
@@ -190,7 +178,7 @@
 			color="var(--im-tcell)"
 		>
 			<Tag
-				x={200}
+				x={235}
 				y={450}
 				text="killer T cell: fits a fragment on MHC"
 				size={12}
