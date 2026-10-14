@@ -1619,14 +1619,15 @@ kbd {
 	--sm-blue: #1c7ed6;
 	--sm-antired: #15aabf;
 	--sm-antigreen: #d6336c;
-	--sm-antiblue: #f59f00;
+	--sm-antiblue: #e8890c;
 	--sm-strong: #c2255c;
 	--sm-em: #1971c2;
 	--sm-weak: #5c940d;
 	--sm-gravity: #868e96;
 	--sm-ok: #2b8a3e;
 	--sm-bad: #e03131;
-	--sm-field: #fde2e4;
+	--sm-field: #efe7fd;
+	--sm-ball-ink: #ffffff;
 }
 :root[data-theme='dark'] {
 	--sm-quark: #9775fa;
@@ -1645,5 +1646,6 @@ kbd {
 	--sm-gravity: #adb5bd;
 	--sm-ok: #69db7c;
 	--sm-bad: #ff6b6b;
-	--sm-field: #4a1d2b;
+	--sm-field: #2a2340;
+	--sm-ball-ink: #15141a;
 }

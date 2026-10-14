@@ -264,7 +264,7 @@ const SIBLINGS: Record<string, string> = {
 const NOTES: Record<string, string> = {
 	'u|u': 'a mixture of uū and dd̄',
 	'd|d': 'a mixture of uū and dd̄',
-	's|s': 'almost pure ss̄; the lighter η and η′ mix uū, dd̄ and ss̄'
+	's|s': 'almost pure ss̄ (η, η′: lighter mixes)'
 };
 
 const SUPERS: Record<string, string> = { '⁺': '⁻', '⁻': '⁺' };
@@ -344,6 +344,9 @@ export function combine(tokens: Token[]): Build {
 }
 
 /** Ready-made combinations for the builder's presets. */
+/** The builder's bag holds at most this many quarks and antiquarks. */
+export const MAX_TOKENS = 3;
+
 export const PRESETS: Record<string, Token[]> = {
 	proton: ['u', 'u', 'd'],
 	neutron: ['u', 'd', 'd'],
