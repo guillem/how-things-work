@@ -187,7 +187,7 @@
 	>
 		<Label
 			x={lx(N) + (exp > 10 ? -12 : 12)}
-			y={ly(now.speedup) + (ly(now.speedup) > PLOT.y1 - 60 ? -16 : 22)}
+			y={ly(now.speedup) + (ly(now.speedup) > PLOT.y1 - 60 ? -44 : 22)}
 			anchor={exp > 10 ? 'end' : 'start'}
 			size={13}
 			weight={700}
@@ -249,7 +249,7 @@
 				<rect
 					x={BX + sw}
 					y={y + 10}
-					width={Math.max(0, w - sw)}
+					width={Math.max(b.serial < b.total ? 2 : 0, w - sw)}
 					height="22"
 					fill="var(--gpu-lane)"
 				/>

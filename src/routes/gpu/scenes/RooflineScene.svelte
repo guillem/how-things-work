@@ -500,9 +500,9 @@
 			color="var(--gpu-fast)"
 		>
 			<Label
-				x={PLOT.x1}
-				y={ly(cpu.peak) - 14}
-				anchor="end"
+				x={PLOT.x0 + 10}
+				y={ly(cpu.peak) - 8}
+				anchor="start"
 				size={12}
 				weight={600}
 				color="var(--gpu-fast)"
@@ -512,8 +512,8 @@
 		</Readout>
 		<Readout id="slope">
 			<Label
-				x={lx(1 / 8)}
-				y={ly(gpu.bandwidth / 8) - 10}
+				x={lx(1 / 6)}
+				y={ly(gpu.bandwidth / 6) + 20}
 				anchor="start"
 				size={12}
 				color="var(--gpu-mem)"
@@ -523,7 +523,7 @@
 			/>
 			<Label
 				x={lx(1)}
-				y={ly(cpu.bandwidth) - 10}
+				y={ly(cpu.bandwidth) + 20}
 				anchor="start"
 				size={12}
 				color="var(--gpu-mem)"
