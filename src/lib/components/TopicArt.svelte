@@ -2093,6 +2093,22 @@
 			<path d={k.d} fill="none" stroke={k.c} stroke-width="2.2" stroke-linejoin="round" />
 		{/each}
 		<path d="M112 97 L188 97" stroke="currentColor" stroke-opacity="0.35" />
+	{:else if slug === 'earthquakes'}
+		<!-- half a slice through the Earth: curved rays from an earthquake, the core in the middle -->
+		<path d="M4 116 A96 96 0 0 1 196 116 Z" fill="var(--eq-mantle)" />
+		<path d="M48 116 A52 52 0 0 1 152 116 Z" fill="var(--eq-outer)" />
+		<path d="M82 116 A18 18 0 0 1 118 116 Z" fill="var(--eq-inner)" />
+		<g fill="none" stroke-width="1.6" stroke-linecap="round">
+			{#each [1, -1] as k (k)}
+				<path d="M100 22 Q{100 + k * 18} 70 {100 + k * 62} 42" stroke="var(--eq-p)" />
+				<path d="M100 22 Q{100 + k * 30} 98 {100 + k * 88} 82" stroke="var(--eq-p)" />
+				<path d="M100 22 Q{100 + k * 8} 52 {100 + k * 34} 28" stroke="var(--eq-s)" />
+			{/each}
+		</g>
+		<path
+			d="M100 14 l2.4 5 5.4 .6 -4 3.7 1.1 5.3 -4.9 -2.7 -4.9 2.7 1.1 -5.3 -4 -3.7 5.4 -.6 z"
+			fill={accent}
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -573,6 +573,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'earthquakes',
+		title: 'Earthquakes and the Earth’s interior',
+		summary:
+			'Trigger an earthquake and follow its P and S waves through a cross-section of the real Earth, bending as they go and casting shadows behind the core, then find the epicentre of the 2015 Nepal earthquake from three real seismograms and compare magnitudes.',
+		accent: '#c2410c',
+		steps: 13,
+		minutes: 20
 	}
 ];
 
