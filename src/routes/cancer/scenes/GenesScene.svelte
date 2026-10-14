@@ -186,8 +186,12 @@
 			<Readout
 				id="row-{row.id}"
 				order={2 + (row.id === 'mutant' ? 1 : 0)}
-				label={row.id === 'mutant' ? mutantLabel : 'Normal KRAS'}
-				value={row.id === 'mutant' && mutated ? 'always on' : 'on, then off'}
+				label={row.id === 'mutant' ? 'KRAS' : undefined}
+				value={row.id === 'mutant'
+					? mutated
+						? `normal: on, then off · ${change}: always on`
+						: 'on after each signal, then off'
+					: undefined}
 			>
 				<text x={60} y={row.y + 48} style:font-size="12px" font-weight="600"
 					>{row.id === 'mutant' ? mutantLabel : row.label}</text
@@ -253,10 +257,9 @@
 			>
 			<Readout
 				id="brake-{col.id}"
-				order={5 + col.hits}
-				label={col.title}
-				value={col.brake}
-				color={col.hits === 2 ? 'var(--ca-cancer)' : undefined}
+				order={5}
+				label={col.hits === 2 ? 'TP53' : undefined}
+				value={col.hits === 2 ? 'the brake fails only when both copies are hit' : undefined}
 			>
 				<Label
 					x={col.x}

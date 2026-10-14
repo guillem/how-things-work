@@ -104,7 +104,7 @@ export function plan(view: View, r: Run): Plan {
 		default: {
 			const done = r.treatedAt === null ? r.found : (r.relapse ?? r.cleared);
 			const end = after(done, r.treatedAt === null ? 90 : 60);
-			return { end, pace: 20, slow: 5, still: end };
+			return { end, pace: 40, slow: 5, still: end };
 		}
 	}
 }

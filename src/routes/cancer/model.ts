@@ -90,20 +90,21 @@ export const RES_B = 32;
 const P53 = P53A | P53B;
 
 /** What a site shows. */
-export const enum Kind {
-	Empty = 0,
-	Normal = 1,
+export const Kind = {
+	Empty: 0,
+	Normal: 1,
 	/** One TP53 copy hit: no visible effect. */
-	OneHit = 2,
+	OneHit: 2,
 	/** KRAS on (accelerator stuck). */
-	Kras = 3,
+	Kras: 3,
 	/** Both TP53 copies lost (brake gone). */
-	P53 = 4,
+	P53: 4,
 	/** KRAS on and TP53 lost. */
-	Cancer = 5,
+	Cancer: 5,
 	/** A cancer cell that resists the treatment on offer. */
-	Resistant = 6
-}
+	Resistant: 6
+} as const;
+export type Kind = (typeof Kind)[keyof typeof Kind];
 export const KINDS = 7;
 /** Flag added to a snapshot cell whose repair gene is broken. */
 export const MUTATOR = 8;

@@ -13,6 +13,7 @@
 	import {
 		H,
 		KINDS,
+		DETECT,
 		KIND_MASK,
 		Kind,
 		MUTATOR,
@@ -117,11 +118,14 @@
 	const CX1 = 932;
 	const CY0 = 250;
 	const CY1 = 500;
-	const sx = $derived(scale([0, p.end], [CX0, CX1]));
-	const STEP = $derived(Math.max(1, Math.ceil(p.end / 240)));
+	/** Treatment views zoom the chart on the tumour: from 100 generations before it is found. */
+	const treatView = $derived(view === 'treat' || view === 'combo' || view === 'recap');
+	const G0 = $derived(treatView && r.found !== null ? Math.max(0, r.found - 100) : 0);
+	const sx = $derived(scale([G0, p.end], [CX0, CX1]));
+	const STEP = $derived(Math.max(1, Math.ceil((p.end - G0) / 240)));
 	const samples = $derived.by(() => {
 		const out: number[] = [];
-		for (let g = 0; g <= p.end; g += STEP) out.push(g);
+		for (let g = G0; g <= p.end; g += STEP) out.push(g);
 		if (out[out.length - 1] !== p.end) out.push(p.end);
 		return out;
 	});
@@ -161,8 +165,32 @@
 	);
 
 	const chartKind = $derived(
-		view === 'balance' ? 'living' : view === 'passengers' ? 'passengers' : 'share'
+		view === 'balance'
+			? 'living'
+			: view === 'passengers'
+				? 'passengers'
+				: treatView
+					? 'tumour'
+					: 'share'
 	);
+
+	/** Treatment views: the tumour's size, resistant cells at the bottom. */
+	const tumourMax = $derived.by(() => {
+		let m = DETECT;
+		for (const g of samples) m = Math.max(m, tumour(r, g));
+		return Math.ceil((m * 1.1) / 100) * 100;
+	});
+	const syTum = $derived(scale([0, tumourMax], [CY1, CY0]));
+	const tumourAreas = $derived.by(() => {
+		const res = samples.map((g) => count(r, g, Kind.Resistant));
+		const all = samples.map((g) => tumour(r, g));
+		const pts = (ys: number[]) =>
+			samples.map((g, j) => `${sx(g).toFixed(1)},${syTum(ys[j]).toFixed(1)}`);
+		const zero = samples.map(() => 0);
+		const area = (hi: number[], lo: number[]) =>
+			`M${pts(hi).join('L')}L${pts(lo).reverse().join('L')}Z`;
+		return { res: area(res, zero), sens: area(all, res) };
+	});
 
 	// ---- events -------------------------------------------------------------------------
 	const events = $derived.by(() => {
@@ -286,7 +314,9 @@
 			? 'cells in the patch'
 			: chartKind === 'passengers'
 				? 'mutations per cell, on average'
-				: 'what the patch is made of'
+				: chartKind === 'tumour'
+					? 'cancer cells in the patch'
+					: 'what the patch is made of'
 	);
 </script>
 
@@ -349,14 +379,8 @@
 	{#if view === 'passengers'}
 		<Readout id="pass-key" label="Darker: more mutations">
 			<g>
-				{#each PASS_BINS as _, i (i)}
-					<circle
-						cx={LX + 8 + i * 22}
-						cy={LEG_Y}
-						r={R}
-						fill="var(--ca-pass)"
-						fill-opacity={PASS_OPACITY[i]}
-					/>
+				{#each PASS_OPACITY as op, i (i)}
+					<circle cx={LX + 8 + i * 22} cy={LEG_Y} r={R} fill="var(--ca-pass)" fill-opacity={op} />
 				{/each}
 				<text x={LX + 100} y={LEG_Y + 4} style:font-size="12px"
 					>0–9 · 10–19 · 20–39 · 40 or more mutations</text
@@ -494,6 +518,30 @@
 				<path d={a.d} fill={STACK_FILL[a.k]} opacity="0.9" />
 			{/each}
 		</g>
+	{:else if chartKind === 'tumour'}
+		<Axes {sx} sy={syTum} xLabel="cell generations" />
+		<g clip-path="url(#tissue-chart-clip)">
+			<path d={tumourAreas.sens} fill="var(--ca-cancer)" opacity="0.9" />
+			<path d={tumourAreas.res} fill="var(--ca-resistant)" opacity="0.9" />
+		</g>
+		<line
+			x1={CX0}
+			x2={CX1}
+			y1={syTum(DETECT)}
+			y2={syTum(DETECT)}
+			stroke="var(--stage-ink-muted)"
+			stroke-dasharray="4 4"
+		/>
+		<Readout id="detect-key">
+			<Label
+				x={CX0 + 6}
+				y={syTum(DETECT) - 6}
+				text="size when found"
+				size={11}
+				anchor="start"
+				muted
+			/>
+		</Readout>
 	{:else if chartKind === 'passengers'}
 		<Axes {sx} sy={syPass} xLabel="cell generations" />
 		<path
@@ -550,6 +598,6 @@
 		y1={CY0}
 		y2={CY1}
 		stroke="var(--stage-ink-muted)"
-		opacity={gen < p.end ? 0.6 : 0}
+		opacity={gen < p.end && gen >= G0 ? 0.6 : 0}
 	/>
 </g>
