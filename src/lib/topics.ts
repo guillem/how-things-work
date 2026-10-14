@@ -582,6 +582,15 @@ const explainers: Explainer[] = [
 		accent: '#c2410c',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'immune-system',
+		title: 'How the immune system fights an infection — and remembers it',
+		summary:
+			'Release a flu virus into the lining of the airways and watch the fast, general alarm hold it back while a few B and T cells whose receptors happen to fit it multiply. Then infect the same body again and compare.',
+		accent: '#c2255c',
+		steps: 12,
+		minutes: 20
 	}
 ];
 

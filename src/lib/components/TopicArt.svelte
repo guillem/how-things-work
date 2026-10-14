@@ -2109,6 +2109,29 @@
 			d="M100 14 l2.4 5 5.4 .6 -4 3.7 1.1 5.3 -4.9 -2.7 -4.9 2.7 1.1 -5.3 -4 -3.7 5.4 -.6 z"
 			fill={accent}
 		/>
+	{:else if slug === 'immune-system'}
+		<!-- an antibody beside two responses: a small slow first one, a big fast second one -->
+		<g
+			transform="translate(40 58)"
+			fill="none"
+			stroke={accent}
+			stroke-width="5"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<path d="M0 34 L0 4 L-20 -22 M0 4 L20 -22" />
+			<path d="M-9 -2 L-26 -24 M9 -2 L26 -24" stroke-width="2.4" opacity="0.6" />
+		</g>
+		<path d="M80 100 L192 100" stroke="currentColor" stroke-opacity="0.35" />
+		<path
+			d="M80 99 C 96 99, 100 82, 110 82 S 122 98, 132 99 L140 99 C 146 99, 148 30, 158 30 S 172 80, 192 86"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linecap="round"
+		/>
+		<circle cx="88" cy="100" r="3" fill="var(--im-virus)" />
+		<circle cx="142" cy="100" r="3" fill="var(--im-virus)" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -1686,3 +1686,43 @@ kbd {
 .eq-s {
 	color: var(--eq-s);
 }
+
+/* immune-system */
+:root {
+	--im-virus: #e03131;
+	--im-infected: #ffc9c9;
+	--im-infected-edge: #e03131;
+	--im-resistant: #d0ebff;
+	--im-resistant-edge: #1c7ed6;
+	--im-cell: #fff0e6;
+	--im-cell-edge: #d9a88a;
+	--im-dead: #e9ecef;
+	--im-mucus: #c3fae8;
+	--im-interferon: #f08c00;
+	--im-nk: #0c8599;
+	--im-tcell: #7048e8;
+	--im-bcell: #2f9e44;
+	--im-antibody: #2f9e44;
+	--im-memory: #c2255c;
+	--im-node: #f3f0ff;
+	--im-node-edge: #b197fc;
+}
+:root[data-theme='dark'] {
+	--im-virus: #ff6b6b;
+	--im-infected: #5c1f22;
+	--im-infected-edge: #ff6b6b;
+	--im-resistant: #13324d;
+	--im-resistant-edge: #4dabf7;
+	--im-cell: #2b2420;
+	--im-cell-edge: #7a5a48;
+	--im-dead: #25262b;
+	--im-mucus: #0f3b33;
+	--im-interferon: #ffa94d;
+	--im-nk: #3bc9db;
+	--im-tcell: #9775fa;
+	--im-bcell: #69db7c;
+	--im-antibody: #69db7c;
+	--im-memory: #f06595;
+	--im-node: #211c33;
+	--im-node-edge: #7c6bc4;
+}
