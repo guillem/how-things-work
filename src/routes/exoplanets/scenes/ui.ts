@@ -52,3 +52,16 @@ export function oneIn(p: number): string {
 	if (p >= 0.5) return `${Math.round(p * 100)}%`;
 	return `1 in ${sig(1 / p, 2)}`;
 }
+
+/** Scientific notation with unicode superscripts: 4.2 × 10⁻⁷. */
+export function sci(v: number, digits = 2): string {
+	if (v === 0 || !isFinite(v)) return '0';
+	const e = Math.floor(Math.log10(Math.abs(v)));
+	if (e >= -2 && e < 4) return sig(v, digits);
+	const m = v / 10 ** e;
+	const sup = String(e)
+		.split('')
+		.map((c) => (c === '-' ? '⁻' : '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(c)]))
+		.join('');
+	return `${m.toFixed(digits - 1)} × 10${sup}`;
+}

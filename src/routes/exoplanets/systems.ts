@@ -79,3 +79,9 @@ export function mysteryTruth(id: string) {
 		period: periodDays(star, planet)
 	};
 }
+
+/** Upper ends of the two measuring sliders for a mystery planet: [depth %, K m/s]. */
+export function measureBounds(id: string): [number, number] {
+	const tr = mysteryTruth(id);
+	return [Math.max(0.1, Math.ceil(tr.depthPercent * 16) / 10), Math.ceil((tr.K * 1.6) / 10) * 10];
+}

@@ -1,6 +1,6 @@
 import type { Control, ExplainerSpec, Params } from '#lib/explainer/index.ts';
 import { JUPITER_MASSES, JUPITER_RADII } from './exoplanets';
-import { MYSTERIES, distOf, fmtAU, fmtTilt, massOf, mysteryTruth, tiltOf } from './systems';
+import { MYSTERIES, distOf, fmtAU, fmtTilt, massOf, measureBounds, tiltOf } from './systems';
 
 // ---- controls ------------------------------------------------------------------------
 // The planet's four settings share their ids across steps, so a planet set up on one
@@ -82,7 +82,7 @@ const mystery: Control = {
 	options: MYSTERIES.map((m, i) => ({ value: m.id, label: `Mystery planet ${i + 1}` }))
 };
 
-const truthOf = (p: Params) => mysteryTruth(String(p.mystery ?? MYSTERIES[0].id));
+const boundsOf = (p: Params) => measureBounds(String(p.mystery ?? MYSTERIES[0].id));
 const measDepth: Control = {
 	type: 'range',
 	id: 'measDepth',
@@ -91,7 +91,7 @@ const measDepth: Control = {
 	max: 4,
 	step: 0.01,
 	default: 0,
-	bounds: (p) => [0, Math.max(0.1, Math.ceil(truthOf(p).depthPercent * 1.6 * 10) / 10)],
+	bounds: (p) => [0, boundsOf(p)[0]],
 	format: (v) => `${v.toFixed(2)}% dimmer`,
 	help: 'Or drag the handle on the light curve to the bottom of the dip.'
 };
@@ -103,7 +103,7 @@ const measK: Control = {
 	max: 400,
 	step: 1,
 	default: 0,
-	bounds: (p) => [0, Math.ceil((truthOf(p).K * 1.6) / 10) * 10],
+	bounds: (p) => [0, boundsOf(p)[1]],
 	format: (v) => `${v.toFixed(0)} m/s`,
 	help: 'Or drag the handle on the velocity curve to its highest point.'
 };
