@@ -174,7 +174,8 @@ export function landCentre(land: { pts: Vec[] }[]): LonLat {
 			y += p[1];
 			z += p[2];
 		}
-	return x || y || z ? toLonLat([x, y, z]) : [0, 0];
+	const n = Math.hypot(x, y, z);
+	return n ? toLonLat([x / n, y / n, z / n]) : [0, 0];
 }
 
 // ------------------------------------------------------------------ orthographic projection

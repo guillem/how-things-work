@@ -2109,6 +2109,46 @@
 			d="M100 14 l2.4 5 5.4 .6 -4 3.7 1.1 5.3 -4.9 -2.7 -4.9 2.7 1.1 -5.3 -4 -3.7 5.4 -.6 z"
 			fill={accent}
 		/>
+	{:else if slug === 'deep-time'}
+		<!-- the eons to scale (ICS colours), a globe, and a magnifier on the last sliver -->
+		{#each [[12, 20.6, '#AE027E'], [32.6, 59, '#F0047F'], [91.6, 75.6, '#F73563'], [167.2, 20.8, '#9AD9DD']] as [x, w, c] (x)}
+			<rect x={Number(x)} y="80" width={Number(w)} height="12" fill={String(c)} opacity="0.85" />
+		{/each}
+		<rect
+			x="12"
+			y="80"
+			width="176"
+			height="12"
+			rx="2"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.4"
+		/>
+		<circle
+			cx="62"
+			cy="40"
+			r="25"
+			fill="var(--dt-sea)"
+			stroke="currentColor"
+			stroke-opacity="0.45"
+			stroke-width="1.4"
+		/>
+		<path
+			d="M48 30 q8 -9 18 -4 q9 5 4 13 q-3 8 -12 7 q-6 6 -11 -1 q-6 -7 1 -15 z"
+			fill="var(--dt-land)"
+			stroke="var(--dt-land-edge)"
+		/>
+		<path
+			d="M38 46 q12 5 24 4 q12 -1 23 -6"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.3"
+		/>
+		<circle cx="184" cy="86" r="13" fill="none" stroke={accent} stroke-width="2.2" />
+		<path d="M175 76 L150 40" stroke={accent} stroke-width="1.4" stroke-dasharray="3 3" />
+		<path d="M184 79 L184 93" stroke={accent} stroke-width="2.4" />
+		<text x="148" y="34" font-size="11" text-anchor="end" fill="currentColor" opacity="0.7">us</text
+		>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

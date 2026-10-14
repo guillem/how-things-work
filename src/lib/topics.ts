@@ -582,6 +582,15 @@ const explainers: Explainer[] = [
 		accent: '#c2410c',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'deep-time',
+		title: 'Deep time',
+		summary:
+			'Scrub through 4.57 billion years while a globe shows the continents drifting and tracks show the temperature, the oxygen in the air and the major groups of life, zoom from eons down to the last few thousand years, then squeeze it all into one calendar year.',
+		accent: '#a61e4d',
+		steps: 12,
+		minutes: 20
 	}
 ];
 
