@@ -277,7 +277,7 @@ export const landscapes: Record<LandscapeId, Landscape> = {
 		minima: wellMinima
 			.map(([x, y], i) => ({ x, y, value: wellsF(x, y), name: WELL_NAMES[i] }))
 			.sort((p, q) => p.value - q.value),
-		levels: range(0.06, 1.26, 21),
+		levels: range(0.08, 1.28, 16),
 		cap: 1.35,
 		start: [-0.3, 2.4]
 	}
