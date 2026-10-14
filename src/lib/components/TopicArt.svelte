@@ -1706,15 +1706,7 @@
 		<!-- a small network: two inputs, a hidden layer of three, one output, weights as lines -->
 		{#each [40, 80] as y1 (y1)}
 			{#each [30, 60, 90] as y2 (y2)}
-				<line
-					x1="58"
-					y1={y1}
-					x2="100"
-					y2={y2}
-					stroke="currentColor"
-					stroke-width="1.2"
-					opacity="0.5"
-				/>
+				<line x1="58" {y1} x2="100" {y2} stroke="currentColor" stroke-width="1.2" opacity="0.5" />
 			{/each}
 		{/each}
 		{#each [30, 60, 90] as y2 (y2)}

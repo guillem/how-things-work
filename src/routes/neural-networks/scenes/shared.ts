@@ -8,6 +8,7 @@ import {
 	ACTIVATIONS,
 	DATASET_IDS,
 	forward,
+	runKey,
 	type Activation,
 	type DatasetId,
 	type Net,
@@ -47,7 +48,7 @@ export function setup(step: Step, params: Params) {
 	const lr = num(raw('lr'), 0.3);
 	const seed = num(hint('seed'), 1) + num(raw('again'), 0);
 	const spec: RunSpec = { data, hidden: Array<number>(layers).fill(neurons), act, lr, seed };
-	return { spec, curve: hint('curve') === true, key: [step.id, ...Object.values(spec)].join('|') };
+	return { spec, curve: hint('curve') === true, key: `${step.id}|${runKey(spec)}` };
 }
 
 // ---------------------------------------------------------------------- time
