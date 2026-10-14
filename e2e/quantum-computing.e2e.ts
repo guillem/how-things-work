@@ -56,6 +56,17 @@ test('a measurement gives one bit and leaves the qubit in it', async ({ page }) 
 	await expect(stage(page)).toContainText(`now the state is |${bit}⟩`);
 });
 
+test('the measurement is blind to the phase: round a latitude the odds stay the same', async ({
+	page
+}) => {
+	await open(page, './quantum-computing/#measure');
+	await range(page, 'theta').fill('120');
+	await expect(stage(page)).toContainText('P(0) = |α|² = 25%');
+	await range(page, 'phi').fill('200');
+	await expect(range(page, 'phi')).toHaveValue('200');
+	await expect(stage(page)).toContainText('P(0) = |α|² = 25%');
+});
+
 test('fresh copies settle on Born’s odds', async ({ page }) => {
 	await open(page, './quantum-computing/#measure');
 	await range(page, 'theta').fill('120'); // P(0) = cos²60° = 25%

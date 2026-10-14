@@ -431,7 +431,7 @@
 			<T
 				x={RC.x + RC.r + 6}
 				y={RC.y + 38}
-				text="(even mix of N − 1)"
+				text="(equal superposition of N − 1)"
 				size={11}
 				anchor="end"
 				muted

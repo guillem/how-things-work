@@ -11,6 +11,7 @@ import {
 	bestIterations,
 	bloch,
 	chsh,
+	chshValue,
 	classicalTries,
 	cnot,
 	correlation,
@@ -34,6 +35,7 @@ import {
 	type Matrix,
 	type State
 } from '../src/routes/quantum-computing/qubits';
+import { rng } from '../src/lib/draw/math';
 
 const names = ['X', 'Y', 'Z', 'H', 'S', 'T'] as const;
 const close = (a: State, b: State) => expect(fidelity(a, b)).toBeCloseTo(1, 12);
@@ -163,6 +165,35 @@ test("Bell's test: the entangled pair reaches 2√2, beyond the limit of 2 for p
 	// a product state (no entanglement) stays within the classical bound
 	const product = apply(apply(basis(2), GATES.H, 0), GATES.H, 1);
 	expect(Math.abs(chsh(product).S)).toBeLessThanOrEqual(2 + 1e-12);
+	// every product state stays within it: each qubit turned its own way, at random
+	const r = rng(2024);
+	const axis = (): [number, number, number] => {
+		const z = 2 * r() - 1;
+		const f = 2 * Math.PI * r();
+		const s = Math.sqrt(1 - z * z);
+		return [s * Math.cos(f), s * Math.sin(f), z];
+	};
+	let most = 0;
+	for (let i = 0; i < 500; i++) {
+		const st = apply(
+			apply(basis(2), rotation(axis(), 2 * Math.PI * r()), 0),
+			rotation(axis(), 2 * Math.PI * r()),
+			1
+		);
+		most = Math.max(most, Math.abs(chsh(st).S));
+	}
+	// unentangled qubits do even worse at these settings: at most √2
+	expect(most).toBeLessThanOrEqual(Math.SQRT2 + 1e-12);
+	expect(most).toBeGreaterThan(1.3);
+	// answers fixed in advance: each side holds a ±1 answer for each of its two axes; all
+	// 16 such strategies stay within 2, and some reach it
+	let best = 0;
+	for (let m = 0; m < 16; m++) {
+		const [a1, a2, b1, b2] = [0, 1, 2, 3].map((i) => ((m >> i) & 1 ? 1 : -1));
+		const S = chshValue([a1 * b1, a1 * b2, a2 * b1, a2 * b2]);
+		best = Math.max(best, Math.abs(S));
+	}
+	expect(best).toBe(2);
 });
 
 test('the oracle flips one sign and changes no probability', () => {

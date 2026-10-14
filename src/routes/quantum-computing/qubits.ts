@@ -310,6 +310,9 @@ export const CHSH = {
 	b: [Math.PI / 4, -Math.PI / 4]
 } as const;
 
+/** The CHSH combination of the four correlations, in the order (a,b), (a,b′), (a′,b), (a′,b′). */
+export const chshValue = (e: readonly number[]) => e[0] + e[1] + e[2] - e[3];
+
 /**
  * Bell's test in the CHSH form: S = E(a,b) + E(a,b′) + E(a′,b) − E(a′,b′), each correlation
  * estimated from `runs` simulated pairs (or exact with runs = 0). Any pre-agreed answers give
@@ -324,7 +327,7 @@ export function chsh(s: State, runs = 0, seed = 1) {
 	const [a, a2] = CHSH.a;
 	const [b, b2] = CHSH.b;
 	const e = [E(a, b, 0), E(a, b2, 1), E(a2, b, 2), E(a2, b2, 3)];
-	return { S: e[0] + e[1] + e[2] - e[3], E: e };
+	return { S: chshValue(e), E: e };
 }
 
 // ---- Grover's search ---------------------------------------------------------------------
