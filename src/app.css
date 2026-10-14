@@ -2612,3 +2612,37 @@ kbd {
 	--gw-dl: #f783ac;
 	--gw-blank: #25262b;
 }
+/* graphics-3d: the map of the scene (floor squares, objects), the camera and its view, the lamp,
+   and the rays of the ray tracer (eye, reflected, refracted, shadow) */
+:root {
+	--g3-floor: #e9ecef;
+	--g3-floor-dark: #ced4da;
+	--g3-cube: #c92a2a;
+	--g3-mirror: #868e96;
+	--g3-glass: #74c0fc;
+	--g3-camera: #3b5bdb;
+	--g3-lamp: #f08c00;
+	--g3-eye: #3b5bdb;
+	--g3-reflect: #ae3ec9;
+	--g3-refract: #0c8599;
+	--g3-shadow: #495057;
+	--g3-inside: #4c6ef5;
+	--g3-tested: #dbe4ff;
+	--g3-wire: #495057;
+}
+:root[data-theme='dark'] {
+	--g3-floor: #2c2e33;
+	--g3-floor-dark: #3d4047;
+	--g3-cube: #ff6b6b;
+	--g3-mirror: #ced4da;
+	--g3-glass: #74c0fc;
+	--g3-camera: #748ffc;
+	--g3-lamp: #ffc078;
+	--g3-eye: #91a7ff;
+	--g3-reflect: #e599f7;
+	--g3-refract: #3bc9db;
+	--g3-shadow: #adb5bd;
+	--g3-inside: #748ffc;
+	--g3-tested: #2b3350;
+	--g3-wire: #ced4da;
+}

@@ -2860,6 +2860,42 @@
 			stroke-width="1.4"
 			opacity="0.6"
 		/>
+	{:else if slug === 'graphics-3d'}
+		<!-- a wireframe cube projected onto a screen of pixels, and a ray from the eye through one -->
+		<rect
+			x="96"
+			y="18"
+			width="88"
+			height="84"
+			rx="4"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.35"
+			stroke-width="1.5"
+			stroke-dasharray="3 4"
+		/>
+		{#each [0, 1, 2, 3] as k (k)}
+			<rect
+				x={120 + 10 * k}
+				y={52 + 4 * (k % 2)}
+				width="9"
+				height="9"
+				fill={accent}
+				fill-opacity={0.25 + 0.18 * k}
+			/>
+		{/each}
+		<path
+			d="M128 40 L160 34 L172 46 L140 52 Z M128 40 L128 76 L140 88 L140 52 M140 88 L172 82 L172 46"
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.6"
+			stroke-width="2"
+			stroke-linejoin="round"
+		/>
+		<line x1="22" y1="74" x2="150" y2="60" stroke={accent} stroke-width="2.5" />
+		<circle cx="22" cy="74" r="6" fill="none" stroke="currentColor" stroke-width="2" />
+		<circle cx="22" cy="74" r="2.2" fill="currentColor" />
+		<circle cx="150" cy="60" r="3.5" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

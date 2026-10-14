@@ -807,6 +807,15 @@ const explainers: Explainer[] = [
 		accent: '#5c7cfa',
 		steps: 12,
 		minutes: 24
+	},
+	{
+		slug: 'graphics-3d',
+		title: '3D graphics',
+		summary:
+			'Move a camera and a lamp round a small scene and watch it become a picture two ways: projecting its triangles through 4 × 4 matrices and filling them pixel by pixel, or shooting a ray through every pixel and following it to the lamp, off a mirror and through glass.',
+		accent: '#3b5bdb',
+		steps: 13,
+		minutes: 22
 	}
 ];
 
