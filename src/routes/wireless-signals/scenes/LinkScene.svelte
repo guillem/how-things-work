@@ -311,7 +311,7 @@
 		stroke="var(--ws-wave)"
 		stroke-width="3"
 	/>
-	<Readout id="sent" order={2} label="Sent" value="{TX_DBM} dBm (100 mW)">
+	<Readout id="sent">
 		<T x={LX + 128} y={ly(TX_DBM) + 4} text="sent: 20 dBm (100 mW)" size={12} weight={600} />
 	</Readout>
 	<!-- loss -->
@@ -321,7 +321,7 @@
 		stroke-width="1.5"
 		marker-end="url(#arrowhead)"
 	/>
-	<Readout id="loss" order={3} label="Free-space loss" value={db(budget.lossDb)}>
+	<Readout id="loss">
 		<T
 			x={LX + 68}
 			y={(ly(TX_DBM) + level(budget.rxDbm)) / 2 + 4}
@@ -339,7 +339,13 @@
 		stroke="var(--ws-wave)"
 		stroke-width="3"
 	/>
-	<Readout id="rx" order={4} label="Received" value="{num(budget.rxDbm)} dBm">
+	<Readout
+		id="rx"
+		order={4}
+		label={phase === 'distance' ? 'Received (sent 20 dBm)' : undefined}
+		value="{num(budget.rxDbm)} dBm"
+		note="after {db(budget.lossDb)} of free-space loss"
+	>
 		<T x={LX + 208} y={labelY.rx} text="received: {num(budget.rxDbm)} dBm" size={12} weight={600} />
 	</Readout>
 	<!-- noise -->
@@ -352,7 +358,12 @@
 		stroke-width="3"
 		stroke-dasharray="2 3"
 	/>
-	<Readout id="noise" order={5} label="Noise in 20 MHz" value="{num(budget.noiseDbm)} dBm">
+	<Readout
+		id="noise"
+		order={5}
+		label={phase === 'distance' ? 'Noise in 20 MHz' : undefined}
+		value="{num(budget.noiseDbm)} dBm"
+	>
 		<T x={LX + 208} y={labelY.noise} text="noise: {num(budget.noiseDbm)} dBm" size={12} muted />
 	</Readout>
 	{#if phase === 'neighbour' && iRel > 0}

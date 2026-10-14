@@ -52,9 +52,11 @@
 	const base = $derived(rows[0]);
 	const fx = (mhz: number) => 80 + ((mhz - 5150) / 200) * 800;
 	/** Height of our block: power per MHz, relative to 20 MHz (linear). */
-	const blockH = $derived(130 * (20 / width));
+	/** Drawing units per (signal power per MHz at 20 MHz), so that the taller of the two fits. */
+	const unit = $derived(130 / Math.max(1, dbToLin(-base.snr)));
+	const blockH = $derived(Math.max(2, unit * (20 / width)));
 	/** Noise floor height on the same scale: noise per MHz over signal per MHz at 20 MHz. */
-	const noiseH = $derived(Math.max(3, 130 * dbToLin(-base.snr)));
+	const noiseH = $derived(Math.max(3, unit * dbToLin(-base.snr)));
 	const shimmer = (x: number) =>
 		reduced ? 0 : 1.5 * Math.sin(x * 0.21 + t * 5) + 1 * Math.sin(x * 0.53 - t * 7);
 	const noisePath = $derived.by(() => {
@@ -126,8 +128,8 @@
 			value="power per MHz ÷ {width / 20}"
 		>
 			<T
-				x={fx(5170 + width) + 10}
-				y={210 - blockH + 16}
+				x={fx(5170)}
+				y={210 - Math.max(blockH, noiseH + 4) - 10}
 				text="your signal: the same 100 mW spread over {width} MHz"
 				size={12}
 				weight={600}
@@ -265,13 +267,7 @@
 				stroke-dasharray="3 3"
 			/>
 			<circle cx={p.x} cy={p.y} r="6" fill="var(--ws-s{SCHEMES.indexOf(p.s)})" />
-			<Readout
-				id="pt-{p.s}"
-				order={10 + SCHEMES.indexOf(p.s)}
-				label={schemeName[p.s]}
-				value="needs {db(p.need)} (Shannon: {db(p.shannon)})"
-				color="var(--ws-s{SCHEMES.indexOf(p.s)})"
-			>
+			<Readout id="pt-{p.s}">
 				<T
 					x={p.s === 'qam256' ? p.x : p.x + 10}
 					y={p.s === 'qam256' ? p.y - 12 : p.y + 4}
@@ -282,6 +278,12 @@
 				/>
 			</Readout>
 		{/each}
+		<Readout
+			id="needs"
+			order={10}
+			label="SNR needed for 1 error in a million bits, no code"
+			value={pts.map((p) => `${schemeName[p.s]} ${num(p.need)}`).join(' · ') + ' dB'}
+		/>
 		<!-- Wi-Fi 5 -->
 
 		<circle cx={sx(wifiMin)} cy={sy(wifiEta)} r="5" fill="var(--ws-ok)" />

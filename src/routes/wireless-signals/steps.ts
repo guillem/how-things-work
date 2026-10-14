@@ -84,7 +84,7 @@ const nbCh: Control = {
 	default: '8',
 	options: Array.from({ length: 13 }, (_, i) => ({
 		value: String(i + 1),
-		label: `Channel ${i + 1}${i + 1 === 6 ? ' (same as yours)' : ''}`
+		label: String(i + 1)
 	}))
 };
 
@@ -274,7 +274,7 @@ export const spec: ExplainerSpec = {
 			controls: [nbCh, nbDb, logd],
 			body: `
 <p>Your neighbour's router uses the same band. In the 2.4 GHz band, Wi-Fi channels are numbered every 5 MHz (channel 1 at 2412 MHz, channel 6 at 2437 MHz…), but each signal is 20 MHz wide, so a neighbour a channel or two away overlaps yours.</p>
-<p>The part of their signal that falls inside your channel adds to the noise. It isn't random hiss: it is another carrier, at a random angle to yours, so each cloud becomes a <strong>ring</strong> around its point. Move the neighbour to the same channel, then to channel 1 or 11: four channel numbers away there is no overlap at all. That is why routers are usually set to channels 1, 6 or 11.</p>`,
+<p>The part of their signal that falls inside your channel adds to the noise. It isn't random hiss: it is another carrier, at a random angle to yours, so each cloud becomes a <strong>ring</strong> around its point. A small ring does little harm, but once it reaches the dashed lines the errors climb fast. Turn the neighbour up and move it to your channel, then to channel 1 or 11: from four channel numbers away there is no overlap at all. That is why routers are usually set to channels 1, 6 or 11.</p>`,
 			notes: `<p>What counts is the <em>signal-to-interference-plus-noise ratio</em> (SINR): your power over the noise plus the overlapping part of the neighbour's power. Real Wi-Fi radios also take turns: each listens before it talks and waits if the channel is busy, which avoids most collisions on the same channel but halves each network's share of airtime.</p>
 <p><strong>Simplification:</strong> the spectra are taken as flat 20 MHz blocks; real ones have sloping skirts and leak a little further. Channels 1, 6 and 11 date from the original 22 MHz-wide Wi-Fi signals; where channel 13 is allowed (most of the world outside North America), 1, 5, 9 and 13 also fit side by side.</p>`
 		},
