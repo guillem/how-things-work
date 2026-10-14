@@ -71,6 +71,9 @@ test('without feedbacks doubled CO₂ warms about 1.2 °C; with them, AR6’s 3 
 	expect(only('water')).toBeGreaterThan(only('clouds'));
 	expect(only('clouds')).toBeGreaterThan(only('ice'));
 	expect(only('ice')).toBeGreaterThan(sensitivity(NO_FEEDBACKS));
+	// The sensitivities the narrative quotes as feedbacks are switched on: 1.9 and 2.3 °C.
+	expect(only('water')).toBeCloseTo(1.9, 1);
+	expect(sensitivity({ water: true, ice: true, clouds: false })).toBeCloseTo(2.3, 1);
 	// The net feedback stays negative: the planet always settles.
 	expect(lambda(ALL_FEEDBACKS)).toBeLessThan(0);
 });

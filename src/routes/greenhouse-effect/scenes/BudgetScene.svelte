@@ -140,12 +140,12 @@
 		id="budget"
 		order={3}
 		label="Left for 1.5 °C (50% chance)"
-		value="about 500 Gt CO₂ from 2020"
+		value="about 130 Gt CO₂ from 2025 (AR6: 500 from 2020)"
 	>
 		<Label
 			x={sx(y2020.cumulative + 500) + 8}
 			y={sy(0) - 10}
-			text="500 more from 2020: an even chance of 1.5 °C"
+			text="AR6: 500 more from 2020 for an even chance of 1.5 °C"
 			anchor="start"
 			size={11}
 			weight={600}
