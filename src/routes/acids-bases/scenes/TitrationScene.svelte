@@ -30,7 +30,6 @@
 		DROP,
 		INDICATORS,
 		equivalenceVolume,
-		indicatorBase,
 		indicatorColor,
 		ionsInCube,
 		standard,
@@ -217,9 +216,9 @@
 	const hText = $derived(fmtCount(ionsInCube(ph).h));
 	const flaskText = $derived(`25 mL ${acid.formula} + ${ind.name}`);
 	const colourName = $derived.by(() => {
-		const f = indicatorBase(ind, ph);
-		if (f < 0.1) return ind.acidName;
-		if (f > 0.9) return ind.baseName;
+		// The eye sees the change across the indicator's stated range.
+		if (ph < ind.range[0]) return ind.acidName;
+		if (ph > ind.range[1]) return ind.baseName;
 		return `${ind.acidName} → ${ind.baseName}`;
 	});
 	const liquidOpacity = $derived(0.15 + 0.75 * color.alpha);

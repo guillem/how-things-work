@@ -308,7 +308,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [added('addedC', 0), drop, ml, restart, acidC, indicatorC],
 			body: `
-<p>Titrate the acetic acid with <strong>methyl orange</strong>. It turns from red to yellow by about 8 mL, long before the acid is used up: its band lies in the buffer region, not the jump. A chemist trusting it would think the vinegar held a third of the acid it really does.</p>
+<p>Titrate the acetic acid with <strong>methyl orange</strong>. It is half-way to yellow after only 2 mL and fully yellow by about 8 mL, long before the acid is used up: its band lies in the weak acid's first climb, not in the jump. A chemist trusting it would think the vinegar held a third of the acid it really does.</p>
 <p>Switch to <strong>phenolphthalein</strong>: its band, 8.2–10, sits right in the weak acid's jump, and it turns pink at the drop that reaches 25 mL. The rule is to pick an indicator that changes colour <strong>at the equivalence pH</strong>, which depends on the acid.</p>
 <p>The takeaway, in one picture: pH counts hydrogen ions in powers of ten, so it leaps at the drop where the base matches the acid; and that leap is centred on pH 7 only when both are strong.</p>`
 		}
