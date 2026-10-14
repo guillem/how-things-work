@@ -324,13 +324,14 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-width="1"
 		/>
-		<Readout id="deg-{d}">
+		<Readout id="deg-{d}" opacity={phase === 'station' && Math.abs(d - stationDeg) < 9 ? 0 : 1}>
 			<Label
 				x={lx}
 				y={ly + 4}
 				text="{d}°"
 				size={11}
 				muted
+				opacity={phase === 'station' && Math.abs(d - stationDeg) < 9 ? 0 : 1}
 				anchor={d === 180 ? 'middle' : 'start'}
 			/>
 		</Readout>
