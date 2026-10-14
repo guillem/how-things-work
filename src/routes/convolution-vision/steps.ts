@@ -153,7 +153,7 @@ export const spec: ExplainerSpec = {
 <p>A <dfn data-def="A small grid of weights (here 3 × 3) slid across an image; at each position the pixels under it are multiplied by the weights and added up. Also called a kernel.">filter</dfn> is a small grid of weights, here 3 × 3. Put it over the picture, multiply each of the 9 pixels under it by the weight on top, and add the 9 products: that sum is one pixel of the output. Then slide the filter one pixel along and do it again, row by row, until it has visited every position.</p>
 <p class="formula"><strong>out(<i>x</i>, <i>y</i>) = Σ <i>w</i>(<i>i</i>, <i>j</i>) × in(<i>x</i> + <i>i</i>, <i>y</i> + <i>j</i>)</strong>, for <i>i</i>, <i>j</i> = −1, 0, 1</p>
 <p>That is a <dfn data-def="Sliding a filter across an image and taking, at each position, the sum of the pixels times the filter's weights. (Strictly, deep-learning libraries compute a cross-correlation: the filter is not flipped.)">convolution</dfn>. The output, a <dfn data-def="The image of a filter's responses at every position: how strongly the feature it detects is present at each place.">feature map</dfn>, is the same size as the input: off the edges the missing pixels count as 0. Blue is a positive sum, orange a negative one.</p>
-<p>This filter has −1, −2, −1 on its left, +1, +2, +1 on its right. On blank paper or in solid ink the two sides cancel: 0. Where ink starts on the right of the window the sum is positive, where it stops, negative. It is a detector of vertical edges, the <dfn data-def="The 3 × 3 kernel [−1 0 1; −2 0 2; −1 0 1] (and its transpose), which measures how fast brightness changes from left to right (top to bottom). Irwin Sobel and Gary Feldman, 1968.">Sobel filter</dfn>.</p>`,
+<p>This filter has −1, −2, −1 on its left, +1, +2, +1 on its right. On blank paper or in solid ink the two sides cancel: 0. Where ink starts on the right of the window the sum is positive, where it stops, negative. It is a detector of vertical edges, the <dfn data-def="The 3 × 3 kernel [−1 0 1; −2 0 2; −1 0 1] (and its transpose), which measures how fast the pixel values change from left to right (top to bottom). Irwin Sobel and Gary Feldman, 1968.">Sobel filter</dfn>.</p>`,
 			notes: `<p>Mathematicians flip the filter before sliding it (that is a true convolution, as in the <a href="../fourier-transform/">Fourier transform</a>'s convolution theorem); neural-network libraries do not, and compute what is strictly a cross-correlation. For a filter that is learnt the difference does not matter, and everyone calls it convolution.</p>`
 		},
 		{
@@ -168,12 +168,12 @@ export const spec: ExplainerSpec = {
 <p>Change the nine weights and the same sliding operation does something else. Pick a filter, or edit the cells yourself:</p>
 <ul>
 <li><strong>Blur</strong>: nine 1s, divided by 9. Each output pixel is the average of its neighbourhood, so sharp edges are smeared out.</li>
-<li><strong>Sharpen</strong>: 5 in the middle, −1 on each side. The pixel minus its neighbours' excess: edges get a bright rim and a dark rim.</li>
+<li><strong>Sharpen</strong>: 5 in the middle, −1 on each side: the pixel plus how much it stands out from its four neighbours, so edges get a bright rim and a dark rim.</li>
 <li><strong>Vertical</strong> and <strong>horizontal edges</strong>: the Sobel pair. Each sees only the edges that run its way.</li>
 <li><strong>Outline</strong>: 8 in the middle, −1 all round. It answers 0 wherever the picture is flat, and lights up every edge whatever its direction.</li>
 </ul>
 <p>When the weights add up to more than 0 the sum is divided by their total (the "÷" next to the filter), so that a blur keeps the picture's brightness. Edge filters add up to 0: flat areas give 0.</p>`,
-			notes: `<p>Photo editors are full of these: blur, sharpen, emboss and edge detection are all small convolutions, usually 3 × 3 to 7 × 7. The division by the total follows GIMP's "convolution matrix" filter.</p>`
+			notes: `<p>Photo editors are full of these: blur, sharpen, emboss and edge detection are all small convolutions, usually 3 × 3 to 7 × 7. The division by the total is like the Normalise option of GIMP's "convolution matrix" filter.</p>`
 		},
 		{
 			id: 'shared',
@@ -186,7 +186,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Move the digit. The feature map moves with it, by exactly the same amount, and keeps its shape: the filter finds an edge wherever it is, because the <strong>same 9 weights</strong> are used at all 784 positions. This is called <dfn data-def="Using the same weights at every position of the image, so that a feature is detected wherever it appears.">weight sharing</dfn>.</p>
 <p>It is also why convolution is cheap. A layer of 784 neurons that each looked at all 784 pixels would need 784 × 784 = <strong>614,656 weights</strong> to produce a map like this, and would have to learn every edge at every place separately. The filter needs <strong>9</strong>.</p>
-<p>So a convolutional network learns small detectors, a few dozen weights each, and the convolution applies them across the whole picture.</p>`
+<p>So a convolutional network learns small detectors, a few dozen to a few hundred weights each, and the convolution applies them across the whole picture.</p>`
 		},
 		// ------------------------------------------------------------------ network
 		{
@@ -199,7 +199,7 @@ export const spec: ExplainerSpec = {
 			controls: [f1, digit],
 			body: `
 <p>Here is a real convolutional network, small enough to run in your browser. Its first layer has <strong>8 filters</strong> of 5 × 5 weights, plus a bias each. Nobody chose their weights: they started random and were trained on MNIST's 60,000 training digits with <a href="../neural-networks/#backward">backpropagation</a> and <a href="../neural-networks/#train">gradient descent</a>, the same way as any network. The error flows back through the convolutions too, and every weight of a filter collects the slopes from all the positions where it was used.</p>
-<p>Each filter is drawn with its weights, blue positive and orange negative, and next to it its feature map on the digit. Look at the filters: most are bands of blue beside bands of orange at some angle, and their maps light up along strokes that run that way, on one side of the stroke. Training has found edge detectors, much like Sobel's, at several orientations.</p>`,
+<p>Each filter is drawn with its weights, blue positive and orange negative, and next to it its feature map on the digit. Look at the filters: many are bands of blue beside bands of orange at some angle, and their maps light up along strokes that run that way, on one side of the stroke. Training has found rough edge detectors, much like Sobel's, at several orientations.</p>`,
 			notes: `<p>The maps are shown before the ReLU of the next step, on one colour scale for all 8, so a weak response looks weak. The network was trained for this page by a plain Node script (no machine-learning library): 4 passes through the 60,000 training digits, each shifted at random by up to 2 pixels.</p>`
 		},
 		{
@@ -211,7 +211,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [f1, digit],
 			body: `
-<p>Two simple operations follow each convolution. First the <a href="../neural-networks/#activation">ReLU</a> activation: negative sums become 0, so a map keeps only "edge found here", not "the opposite of an edge". As on the neural-networks page, without this bend the layers would collapse into one.</p>
+<p>Two simple operations follow each convolution. First the <a href="../neural-networks/#activation">ReLU</a> activation: negative sums become 0, so a map keeps only "edge found here", not "the opposite of an edge". Without it, two convolutions in a row would amount to a single larger one, just as stacked layers on the neural-networks page would collapse into one.</p>
 <p>Then <dfn data-def="Shrinking a feature map by keeping only the largest value of each small block (here 2 × 2).">max pooling</dfn>: the map is cut into 2 × 2 blocks and each block keeps only its largest value. The 28 × 28 map becomes 14 × 14. It keeps <em>whether</em> the feature was found in each little region and forgets exactly where, so a stroke one pixel further along changes little.</p>
 <p>After the first layer the digit has become 8 maps of 14 × 14: where edges of each orientation are.</p>`
 		},
@@ -225,7 +225,7 @@ export const spec: ExplainerSpec = {
 			controls: [f2, digit],
 			body: `
 <p>The second layer runs <strong>16 filters</strong> over those 8 maps. Each filter is 5 × 5 × 8 = 200 weights: it looks at all 8 edge maps at once, so it can respond to a particular <em>combination</em> of edges, such as a vertical stroke ending under a horizontal one.</p>
-<p>What does each one respond to? The strip shows, for the selected filter, the six patches of the 10,000 test digits that excite it most. Each patch is the 14 × 14 window of the picture that one unit of this layer sees, its <dfn data-def="The part of the input image that can affect one unit of a layer. It grows with every convolution and pooling layer.">receptive field</dfn>: bigger than the 5 × 5 of the first layer, because the pooling halved the maps in between.</p>
+<p>What does each one respond to? The strip shows, for the selected filter, the six patches of the 10,000 test digits that excite it most. Each patch is the 14 × 14 window of the picture that one unit of this layer (one pixel of one of its maps) sees, its <dfn data-def="The part of the input image that can affect one unit of a layer. It grows with every convolution and pooling layer.">receptive field</dfn>: bigger than the 5 × 5 of the first layer, because the pooling halved the maps in between.</p>
 <p>The patches are parts of strokes. Filter 13, for example, fires on a single upright stroke, filter 5 on the corner at the top right of a 7, filter 11 on the closed loop of a 6, filter 14 on a curve shaped like a closing bracket. The first layer found edges; the second combines them into <strong>parts of digits</strong>.</p>`,
 			notes: `<p>Showing the inputs that excite a unit most is one of the standard ways to look inside a trained network; the descriptions above are our reading of those patches. The maps of this layer are 14 × 14 before pooling, and shown after the ReLU.</p>`
 		},
@@ -241,8 +241,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Draw a digit in the box. Your drawing is prepared the way the MNIST digits were: scaled to fit a 20 × 20 box and centred in the 28 × 28 grid. Then it flows through the network: 8 edge maps, pooled to 14 × 14, 16 part maps, pooled to 7 × 7.</p>
 <p>The last step is an ordinary layer of the <a href="../neural-networks/#hidden">neural-networks</a> kind: the 16 × 7 × 7 = 784 numbers go to 10 output neurons, one per digit, and a <dfn data-def="The function that turns a list of scores into probabilities: e to the power of each score, divided by the sum of them all. The probabilities are positive and add up to 1.">softmax</dfn> turns their 10 sums into probabilities that add up to 1. Each output neuron weighs evidence like "loop at the top" and "upright stroke on the right" from every region.</p>
-<p>The whole network has ${int(PARAMS)} weights, and on the ${int(TEST_COUNT)} MNIST test digits, which it never saw during training, it is right <strong>${pct}%</strong> of the time (${TEST_ERRORS} wrong).</p>`,
-			notes: `<p>The architecture follows Yann LeCun's LeNet, which read the amounts on bank cheques in the 1990s (LeCun, Bottou, Bengio and Haffner, 1998). Most of the weights, ${int(DENSE)}, are in the last layer; the two convolutional layers together have ${int(CONV)}.</p>`
+<p>The whole network has ${int(PARAMS)} weights and biases, and on the ${int(TEST_COUNT)} MNIST test digits, which it never saw during training, it is right <strong>${pct}%</strong> of the time (${TEST_ERRORS} wrong).</p>`,
+			notes: `<p>The architecture follows Yann LeCun's LeNet, which read the amounts on bank cheques in the 1990s (LeCun, Bottou, Bengio and Haffner, 1998). Most of the weights and biases, ${int(DENSE)}, are in the last layer; the two convolutional layers together have ${int(CONV)}.</p>`
 		},
 		{
 			id: 'mistakes',

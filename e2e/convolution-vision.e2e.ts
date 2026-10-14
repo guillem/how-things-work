@@ -68,6 +68,29 @@ test('the test digits it gets wrong, and a drawing that is not a digit', async (
 	await expect(stage(page)).toContainText('your drawing, not centred or scaled');
 });
 
+test('switching the centring off on “Where it goes wrong” leaves the other steps centred', async ({
+	page
+}) => {
+	await open(page, './convolution-vision/#predict', 'It reads 2');
+	// a small 1 in the top-left corner: read differently with and without the centring
+	await stroke(page, [
+		[0.15, 0.08],
+		[0.15, 0.3]
+	]);
+	const reading = async () =>
+		(await stage(page).textContent())!.match(/It reads \d, with probability[^%]*%/)![0];
+	await expect(stage(page)).toContainText('your drawing, centred and scaled like MNIST');
+	const centred = await reading();
+	await page.evaluate(() => (location.hash = '#mistakes'));
+	await pick(page, 'wrong', 'drawn');
+	await page.locator('input[type=checkbox][data-control=centre]').uncheck({ force: true });
+	await expect(stage(page)).toContainText('your drawing, not centred or scaled');
+	expect(await reading()).not.toBe(centred);
+	await page.evaluate(() => (location.hash = '#predict'));
+	await expect(stage(page)).toContainText('your drawing, centred and scaled like MNIST');
+	expect(await reading()).toBe(centred);
+});
+
 test('the filter can be picked and edited, and its divisor follows', async ({ page }) => {
 	await open(page, './convolution-vision/#filters', 'filter: Vertical edges');
 	await expect(stage(page)).toContainText('sum not divided');
@@ -89,6 +112,14 @@ test('moving the digit moves its feature map by the same amount', async ({ page 
 	await page.locator('input[type=range][data-control=shift]').fill('-4');
 	await expect(stage(page)).toContainText('both moved 4 px left');
 	await expect(stage(page)).toContainText('784 × 784 = 614,656');
+});
+
+test('the digit stops where its map would run off the grid', async ({ page }) => {
+	// the default 2 has 1 px of paper on its right: its edge map already reaches the last column
+	await open(page, './convolution-vision/#shared', 'move the digit with the slider');
+	await page.locator('input[type=range][data-control=shift]').fill('6');
+	await expect(stage(page)).toContainText('no room: the map already touches the right edge');
+	await expect(stage(page)).not.toContainText('6 px right');
 });
 
 test('the filter slides over every position, then the map is complete', async ({ page }) => {
