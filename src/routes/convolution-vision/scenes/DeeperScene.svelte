@@ -110,7 +110,7 @@
 			fill-opacity={0.1 * w.o}
 			stroke="var(--cv-window)"
 			stroke-width={3 - i * 0.5}
-			opacity={w.o}
+			opacity={input.empty ? 0 : w.o}
 		/>
 		<Readout id="dp-{w.key}">
 			<Txt
@@ -137,12 +137,12 @@
 		id="dp-big"
 		order={3}
 		label="Larger networks"
-		value="edges → textures → object parts → whole objects"
+		value="edges → corners → textures → object parts → whole objects"
 	>
 		<Txt
 			x={R.x}
 			y={108}
-			text="edges, colour blobs → corners, textures → parts (eyes, wheels) → objects"
+			text="edges, colour blobs → corners → textures → parts (dogs' faces) → objects"
 			size={12}
 			muted
 		/>

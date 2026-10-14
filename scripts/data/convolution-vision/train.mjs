@@ -37,6 +37,9 @@
  * the six test digits whose patch excites it most (at most one patch per digit), as the 14 × 14
  * pixel window that one second-layer unit sees (its receptive field), with the activation (after
  * the ReLU, before pooling).
+ *
+ * After retraining, re-read PARTS: the narrative (steps.ts, step "layer2") and DeeperScene name
+ * particular second-layer filters by what their patches show in this run.
  */
 import crypto from 'node:crypto';
 import fs from 'node:fs';

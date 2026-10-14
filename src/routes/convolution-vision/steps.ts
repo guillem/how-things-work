@@ -1,10 +1,23 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
-import { PARAMS } from './cnn';
+import { PARAMS, SHAPES } from './cnn';
 import { PRESETS, PRESET_IDS } from './filters';
-import { SAMPLES, TEST_ACCURACY, TEST_COUNT, TEST_ERRORS } from './mnist-cnn';
+import { CONFUSION, SAMPLES, TEST_ACCURACY, TEST_COUNT, TEST_ERRORS } from './mnist-cnn';
 
 const pct = (TEST_ACCURACY * 100).toFixed(1);
 const int = (n: number) => n.toLocaleString('en-US');
+const size = (name: string) => SHAPES.find(([n]) => n === name)?.[1] ?? 0;
+const DENSE = size('dw') + size('db');
+const CONV = PARAMS - DENSE;
+
+/** The test set's commonest confusions: [count, true digit, read as], most frequent first. */
+const CONFUSIONS = CONFUSION.flatMap((row, d) =>
+	row.flatMap((n, p) => (p !== d && n > 0 ? [[n, d, p] as const] : []))
+).sort((a, b) => b[0] - a[0]);
+const [c1, c2] = CONFUSIONS;
+
+// NOTE: the descriptions of second-layer filters 13, 5, 11 and 14 (step "layer2"), and the filters
+// shown in DeeperScene, are our reading of PARTS from this training run: re-read them after any
+// retraining (scripts/data/convolution-vision/train.mjs).
 
 /** One real MNIST test digit of each class (the first of each in the test set). */
 const FIRST = Array.from({ length: 10 }, (_, d) => SAMPLES.findIndex((s) => s.label === d));
@@ -135,7 +148,7 @@ export const spec: ExplainerSpec = {
 			scene: 'conv',
 			hints: { mode: 'slide' },
 			duration: 26,
-			controls: [preset, digit],
+			controls: [digit],
 			body: `
 <p>A <dfn data-def="A small grid of weights (here 3 × 3) slid across an image; at each position the pixels under it are multiplied by the weights and added up. Also called a kernel.">filter</dfn> is a small grid of weights, here 3 × 3. Put it over the picture, multiply each of the 9 pixels under it by the weight on top, and add the 9 products: that sum is one pixel of the output. Then slide the filter one pixel along and do it again, row by row, until it has visited every position.</p>
 <p class="formula"><strong>out(<i>x</i>, <i>y</i>) = Σ <i>w</i>(<i>i</i>, <i>j</i>) × in(<i>x</i> + <i>i</i>, <i>y</i> + <i>j</i>)</strong>, for <i>i</i>, <i>j</i> = −1, 0, 1</p>
@@ -229,7 +242,7 @@ export const spec: ExplainerSpec = {
 <p>Draw a digit in the box. Your drawing is prepared the way the MNIST digits were: scaled to fit a 20 × 20 box and centred in the 28 × 28 grid. Then it flows through the network: 8 edge maps, pooled to 14 × 14, 16 part maps, pooled to 7 × 7.</p>
 <p>The last step is an ordinary layer of the <a href="../neural-networks/#hidden">neural-networks</a> kind: the 16 × 7 × 7 = 784 numbers go to 10 output neurons, one per digit, and a <dfn data-def="The function that turns a list of scores into probabilities: e to the power of each score, divided by the sum of them all. The probabilities are positive and add up to 1.">softmax</dfn> turns their 10 sums into probabilities that add up to 1. Each output neuron weighs evidence like "loop at the top" and "upright stroke on the right" from every region.</p>
 <p>The whole network has ${int(PARAMS)} weights, and on the ${int(TEST_COUNT)} MNIST test digits, which it never saw during training, it is right <strong>${pct}%</strong> of the time (${TEST_ERRORS} wrong).</p>`,
-			notes: `<p>The architecture follows Yann LeCun's LeNet, which read the amounts on bank cheques in the 1990s (LeCun, Bottou, Bengio and Haffner, 1998). Most of the weights, 7 850, are in the last layer; the two convolutional layers together have 3 424.</p>`
+			notes: `<p>The architecture follows Yann LeCun's LeNet, which read the amounts on bank cheques in the 1990s (LeCun, Bottou, Bengio and Haffner, 1998). Most of the weights, ${int(DENSE)}, are in the last layer; the two convolutional layers together have ${int(CONV)}.</p>`
 		},
 		{
 			id: 'mistakes',
@@ -240,7 +253,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [wrong, centre, clear],
 			body: `
-<p>${TEST_ERRORS} test digits out of ${int(TEST_COUNT)} fool it. These are the first four. Some are hard for people too; others show the network has not seen enough of that way of writing. The commonest confusion is a 9 read as a 4 (8 times), then a 7 read as a 2 (6 times).</p>
+<p>${TEST_ERRORS} test digits out of ${int(TEST_COUNT)} fool it. These are the first four. Some are hard for people too; others show the network has not seen enough of that way of writing. The commonest confusion is a ${c1[1]} read as a ${c1[2]} (${c1[0]} times), then a ${c2[1]} read as a ${c2[2]} (${c2[0]} times).</p>
 <p>It also has no way to say "this is not a digit". Draw a letter, a face or a scribble: the softmax shares the probability out among the ten digits all the same, and often one of them gets most of it.</p>
 <p>And it relies on the digits being prepared like MNIST's. Switch off the centring and draw a small digit in a corner of the box: the filters still find its edges (they work everywhere), but the last layer learnt where parts of a digit sit in a centred digit, and the answer goes wrong.</p>`,
 			notes: `<p>The network was trained only on centred digits shifted by up to 2 pixels. Training on digits moved further, scaled and rotated (data augmentation), or adding more pooling, makes a network more tolerant of such changes.</p>`
@@ -253,7 +266,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			body: `
 <p>Each layer's units see a bigger window of the picture than the last: 5 × 5 pixels for the first layer, 14 × 14 for the second, the whole digit for the output. Small detectors stacked layer on layer build up from <strong>edges to parts to whole digits</strong>.</p>
-<p>Networks that recognise photographs do the same with more layers. AlexNet (Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton, 2012) had 5 convolutional layers and 60 million weights, trained on 1.2 million photos of 1000 kinds of objects; its win in the ImageNet competition started the deep-learning boom. Looking inside such a network, Matthew Zeiler and Rob Fergus (2014) found the same ladder, longer: edges and colour blobs in the first layer, corners and textures next, then parts such as eyes, wheels or dog faces, then whole objects.</p>
+<p>Networks that recognise photographs do the same with more layers. AlexNet (Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton, 2012) had 5 convolutional layers and 60 million weights, trained on 1.2 million photos of 1000 kinds of objects; its win in the ImageNet competition started the deep-learning boom. Looking inside such a network, Matthew Zeiler and Rob Fergus (2014) found the same ladder, longer: edges and colour blobs in the first layer, corners and other combinations of edges in the second, textures such as mesh patterns in the third, parts such as dogs' faces or birds' legs in the fourth, and whole objects in the fifth.</p>
 <p>That is a convolutional network: <strong>the same small detectors used across the whole image, stacked so that simple features combine into complex ones</strong>. Our two-layer network climbs the first rungs of that ladder; the textures and object parts take deeper networks and photographs.</p>`,
 			notes: `<p>Modern image networks have from dozens to over a hundred layers (ResNet, 2015, added shortcuts that make very deep networks trainable). Convolution is also used on sound, on text and on the 3D structure of proteins: anywhere the same pattern can turn up in many places.</p>`
 		}

@@ -21,7 +21,13 @@
 
 	const mode = $derived(String(step.hints?.mode ?? 'l1'));
 	const input = $derived(inputOf(params));
-	const act = $derived(forward(WT, input.img));
+	// Nothing drawn: show empty maps rather than the bare biases, which would read as a response.
+	const act = $derived.by(() => {
+		const a = forward(WT, input.img);
+		if (!input.empty) return a;
+		for (const m of [a.conv1, a.relu1, a.pool1, a.conv2, a.relu2, a.pool2]) m.fill(0);
+		return a;
+	});
 	const inUrl = $derived(greyUrl(input.img, SIDE, SIDE, dark));
 	const pick = (v: unknown, n: number) => {
 		const i = Math.round(Number(v)) - 1;
@@ -411,9 +417,11 @@
 			<Txt
 				x={40}
 				y={380}
-				text={best.v > 0
-					? 'box: the 14 × 14 window its strongest unit sees'
-					: 'this filter finds nothing in this digit'}
+				text={input.empty
+					? 'nothing drawn yet: draw on the “Draw a digit” step'
+					: best.v > 0
+						? 'box: the 14 × 14 window its strongest unit sees'
+						: 'this filter finds nothing in this digit'}
 				size={11}
 				muted
 			/>

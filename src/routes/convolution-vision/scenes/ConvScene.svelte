@@ -33,7 +33,8 @@
 	const input = $derived(inputOf(params));
 	const dx = $derived(mode === 'shift' ? Number(params.shift ?? 0) : 0);
 	const img = $derived(dx === 0 ? input.img : shift(input.img, dx, 0));
-	const k = $derived(kernelOf(params));
+	// the slide step is about the Sobel filter its text describes, whatever was picked elsewhere
+	const k = $derived(mode === 'slide' ? [...PRESETS.vertical.k] : kernelOf(params));
 	const d = $derived(divisor(k));
 	const out = $derived(filter(img, k));
 	const scale = $derived(maxAbs(out) || 1);
@@ -42,7 +43,9 @@
 	const edited = $derived(
 		k.some((v, i) => v !== PRESETS[presetOf(params)].k[i]) ? ' (edited)' : ''
 	);
-	const filterName = $derived(PRESETS[presetOf(params)].name + edited);
+	const filterName = $derived(
+		mode === 'slide' ? PRESETS.vertical.name : PRESETS[presetOf(params)].name + edited
+	);
 
 	// ---- layout ---------------------------------------------------------------------------
 	const PX = 12;
