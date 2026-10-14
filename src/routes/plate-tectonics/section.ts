@@ -290,10 +290,10 @@ function zAt(line: P[], x: number): number | null {
 const mirror = (s: Section): Section => ({
 	...s,
 	columns: s.columns
-		.map((c) => ({
+		.map((c): Column => ({
 			...c,
 			x: -c.x,
-			plate: (c.plate === 'left' ? 'right' : 'left')
+			plate: c.plate === 'left' ? 'right' : 'left'
 		}))
 		.reverse(),
 	slab: s.slab && {
@@ -364,7 +364,7 @@ function diverge(input: SectionInput, open: number, myr: number): Section {
 	const slow = speed < 5;
 	if (left === 'continent' && right === 'continent') {
 		const breakAt = RIFT_WIDTH * (BREAKUP_BETA - 1);
-		if (open < breakAt) return rift(input, open, myr);
+		if (open < breakAt) return rift(open, myr);
 		// After break-up: two stretched margins drift apart, new ocean floor between them.
 		const ocean = open - breakAt;
 		const marginW = (RIFT_WIDTH * BREAKUP_BETA) / 2;
@@ -449,7 +449,7 @@ function ridgeQuakes(): Quake[] {
 	}));
 }
 
-function rift(input: SectionInput, open: number, myr: number): Section {
+function rift(open: number, myr: number): Section {
 	const beta = (RIFT_WIDTH + open) / RIFT_WIDTH;
 	const w = (RIFT_WIDTH + open) / 2;
 	const thin = CONTINENT_CRUST / beta;
@@ -558,7 +558,7 @@ function subduct(input: SectionInput, close: number, myr: number): Section {
 		const c = columns[Math.round((xArc + HALF_WIDTH) / STEP)];
 		if (grow > 0.02) {
 			volcanoes.push({ x: xArc, base: c.z, top: c.z + relief, kind: 'arc' });
-			addCone(columns, xArc, relief, over === 'ocean' ? 45 : 35);
+			addCone(columns, xArc, relief, 45);
 			features.push({ id: 'arc', x: xArc, z: c.z + relief, value: xArc });
 		}
 	}
@@ -596,7 +596,7 @@ function subduct(input: SectionInput, close: number, myr: number): Section {
  * conserved); the crust thickens up to twice its normal thickness (beyond that it spreads
  * sideways under its own weight, making a plateau like Tibet), with 150 km wide tapering flanks.
  */
-function collide(input: SectionInput, close: number, myr: number): Section {
+function collide(close: number, myr: number): Section {
 	const area = close * CONTINENT_CRUST;
 	const maxExtra = CONTINENT_CRUST;
 	const taper = 150;
@@ -656,7 +656,7 @@ export function section(input: SectionInput): Section {
 	else if (normal < -0.5) {
 		s =
 			input.left === 'continent' && input.right === 'continent'
-				? collide(input, -normal, myr)
+				? collide(-normal, myr)
 				: subduct(input, -normal, myr);
 	} else s = rest(input, myr);
 	if (Math.abs(slide) > 0.5) {
