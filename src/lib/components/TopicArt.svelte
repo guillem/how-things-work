@@ -2654,6 +2654,23 @@
 		{/each}
 		<circle cx="100" cy="60" r="5" fill={accent} />
 		<circle cx="100" cy="60" r="9" fill="none" stroke={accent} stroke-width="1.2" opacity="0.6" />
+	{:else if slug === 'gps'}
+		<!-- three circles of distance round three satellites, meeting at the receiver -->
+		{#each [[52, 30, 63], [156, 26, 66], [112, 106, 41]] as [x, y, r] (`${x},${y}`)}
+			<circle
+				cx={x}
+				cy={y}
+				{r}
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.2"
+				opacity="0.45"
+			/>
+			<rect x={x - 5} y={y - 3} width="10" height="6" rx="1.5" fill={accent} />
+			<path d="M{x - 11} {y}h5M{x + 6} {y}h5" stroke={accent} stroke-width="2" />
+		{/each}
+		<circle cx="104" cy="66" r="4.5" fill={accent} />
+		<circle cx="104" cy="66" r="8" fill="none" stroke={accent} stroke-width="1.2" opacity="0.6" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

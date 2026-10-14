@@ -2362,3 +2362,38 @@ kbd {
 	--tc-plasma: #da77f2;
 	--tc-curve: #4dabf7;
 }
+/* gps: satellites, signals, the two receivers, relativity */
+:root {
+	--gps-s1: #1c7ed6;
+	--gps-s2: #ae3ec9;
+	--gps-s3: #e8590c;
+	--gps-s4: #2b8a3e;
+	--gps-rx: #0c8599;
+	--gps-fix: #2f9e44;
+	--gps-trust: #e03131;
+	--gps-ocean: #d0ebff;
+	--gps-ocean-edge: #74c0fc;
+	--gps-orbit: #adb5bd;
+	--gps-sat: #495057;
+	--gps-gravity: #1971c2;
+	--gps-speed: #e8590c;
+	--gps-net: #2f9e44;
+	--gps-map: #f1f3f5;
+}
+:root[data-theme='dark'] {
+	--gps-s1: #4dabf7;
+	--gps-s2: #da77f2;
+	--gps-s3: #ff922b;
+	--gps-s4: #69db7c;
+	--gps-rx: #3bc9db;
+	--gps-fix: #51cf66;
+	--gps-trust: #ff6b6b;
+	--gps-ocean: #0b2a40;
+	--gps-ocean-edge: #1c7ed6;
+	--gps-orbit: #5c636a;
+	--gps-sat: #ced4da;
+	--gps-gravity: #4dabf7;
+	--gps-speed: #ff922b;
+	--gps-net: #51cf66;
+	--gps-map: #1a1d21;
+}

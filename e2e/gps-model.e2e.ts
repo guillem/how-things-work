@@ -4,12 +4,14 @@
 // Runs in Node.
 import { expect, test } from '@playwright/test';
 import { ALMANAC, ALMANAC_DATE, ALMANAC_WEEK } from '../src/routes/gps/almanac';
+import { PLACES } from '../src/routes/gps/places';
 import {
 	A_GPS,
 	C,
 	MU,
 	PHI0_C2,
 	R_EARTH,
+	DAY,
 	clockRate,
 	constellation,
 	crossoverRadius,
@@ -80,6 +82,25 @@ test('from the ground, 8 to 12 satellites are usually above the horizon (10° ma
 		}
 	}
 	expect(visible(constellation(0), ...PALMA).length).toBe(8);
+	// Over the whole Earth and a whole day: usually 8 to 12, never fewer than 7.
+	const counts: number[] = [];
+	for (let lat = -80; lat <= 80; lat += 10)
+		for (let lon = -180; lon < 180; lon += 30)
+			for (let tk = 0; tk < DAY; tk += 3 * 3600)
+				counts.push(visible(constellation(tk), lat, lon).length);
+	expect(Math.min(...counts)).toBe(7);
+	const usual = counts.filter((n) => n >= 8 && n <= 12).length / counts.length;
+	expect(usual).toBeGreaterThan(0.9);
+});
+
+test('signals take 67 ms to come down from overhead, up to 86 ms from the horizon', () => {
+	const up = A_GPS - R_EARTH;
+	expect((up / C) * 1e3).toBeCloseTo(67, 0);
+	expect((Math.sqrt(A_GPS ** 2 - R_EARTH ** 2) / C) * 1e3).toBeCloseTo(86, 0);
+	// While the signal comes down, the satellite moves about 300 m (260 to 330 m).
+	const v = Math.sqrt(MU / A_GPS);
+	expect(v * (up / C)).toBeCloseTo(260, -1);
+	expect((v * Math.sqrt(A_GPS ** 2 - R_EARTH ** 2)) / C).toBeCloseTo(330, -1);
 });
 
 test('ranges with a clock error: least squares from the centre of the Earth recovers position and clock', () => {
@@ -182,6 +203,12 @@ test('without the rate correction, a receiver that solves for its clock stays pu
 		const [e, n, u] = s.trustingErr!;
 		expect(norm(s.trustingErr!) / 1e3).toBeGreaterThan(10);
 		expect(Math.abs(u)).toBeGreaterThan(Math.hypot(e, n));
+	}
+	// After one day, 16 to 20 km for every place on the page.
+	for (const p of PLACES) {
+		const err = norm(scenario(p.lat, p.lon, 0, { days: 1 }).trustingErr!) / 1e3;
+		expect(err).toBeGreaterThan(16);
+		expect(err).toBeLessThan(20);
 	}
 	// It grows day by day.
 	const err = (days: number) => norm(scenario(...PALMA, 0, { days }).trustingErr!) / 1e3;

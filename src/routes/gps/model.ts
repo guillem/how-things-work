@@ -196,6 +196,8 @@ export interface Fix {
 	residuals: number[];
 	iterations: number;
 	converged: boolean;
+	/** The estimate after each iteration (position, clock), starting with the first guess. */
+	path: { pos: Vec; clock: number }[];
 }
 
 /**
@@ -218,6 +220,7 @@ export function solve(
 	let b = opts.clock ?? 0;
 	const maxIter = opts.maxIter ?? 30;
 	let residuals: number[] = [];
+	const path = [{ pos: [...x], clock: b }];
 	for (let it = 1; it <= maxIter; it++) {
 		const H: number[][] = [];
 		residuals = sats.map((s, i) => {
@@ -233,12 +236,13 @@ export function solve(
 		const dx = Q.map((row) => dot(row, g));
 		x = x.map((v, i) => v + dx[i]);
 		if (solveClock) b += dx[dim];
+		path.push({ pos: [...x], clock: b });
 		if (norm(dx) < 1e-6) {
 			residuals = sats.map((s, i) => ranges[i] - (norm(sub(x, s)) + b));
-			return { pos: x, clock: b, residuals, iterations: it, converged: true };
+			return { pos: x, clock: b, residuals, iterations: it, converged: true, path };
 		}
 	}
-	return { pos: x, clock: b, residuals, iterations: maxIter, converged: false };
+	return { pos: x, clock: b, residuals, iterations: maxIter, converged: false, path };
 }
 
 /** Root-mean-square of the residuals (m): how badly the circles or spheres fail to meet. */
