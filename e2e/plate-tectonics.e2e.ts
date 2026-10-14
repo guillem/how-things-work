@@ -38,12 +38,12 @@ test('two continents make mountains but no volcanoes', async ({ page }) => {
 test('the sandbox: the crust on each plate decides what forms', async ({ page }) => {
 	await open(page, './plate-tectonics/#sandbox');
 	await expect(stage(page)).toContainText('Plates at rest');
-	await control(page, 'sbRight').selectOption('continent');
+	await page.locator('[data-control=sbRight][data-value=continent]').click();
 	await plate(page).focus();
 	for (let i = 0; i < 10; i++) await page.keyboard.press('Shift+ArrowLeft'); // 500 km together
 	await expect(control(page, 'sbNormal')).toHaveValue('-500');
 	await expect(stage(page)).toContainText('mountains');
-	await control(page, 'sbRight').selectOption('ocean');
+	await page.locator('[data-control=sbRight][data-value=ocean]').click();
 	await expect(stage(page)).toContainText('trench');
 	await expect(stage(page)).toContainText('km from the trench');
 	await expect(stage(page)).not.toContainText('mountains');
