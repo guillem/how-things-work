@@ -7,6 +7,7 @@ import {
 	capacity,
 	channelMHz,
 	constellation,
+	decide,
 	dbToLin,
 	fsplDb,
 	link,
@@ -43,6 +44,9 @@ test('constellations: Gray-coded, average energy 1, neighbours differ by one bit
 				expect(diff).toBe(1);
 			}
 	}
+	// the receiver reads each ideal point back as its own bits
+	for (const s of SCHEMES)
+		for (const p of constellation(s)) expect(decide(s, p.i, p.q)).toBe(p.bits);
 	expect(constellation('qam16')).toHaveLength(16);
 	expect(constellation('qam256')).toHaveLength(256);
 });

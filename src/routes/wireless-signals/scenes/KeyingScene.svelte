@@ -338,7 +338,7 @@
 	</g>
 
 	<!-- ===== the pointer ===== -->
-	<g opacity={focus === 'spectrum' ? 0.5 : 1}>
+	<g opacity={focus === 'spectrum' ? 0.6 : 1}>
 		<Readout id="ptr-title">
 			<T x={612} y={304} text="Pointer: amplitude and phase" size={14} weight={700} />
 		</Readout>
