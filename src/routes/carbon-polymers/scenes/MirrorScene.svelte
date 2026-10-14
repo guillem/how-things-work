@@ -215,9 +215,12 @@
 	{@const r = radius(g)}
 	{@const lk = ATOM[look(g)]}
 	{@const cx = pts === 'left' ? LX : RXc}
+	{@const len = Math.hypot(d.x - cx, d.y - CY) || 1}
+	<!-- a bond in front of the carbon starts at its edge, so the carbon stays legible -->
+	{@const off = d.z >= 0 ? Math.min(ballRadius('C', 1.25), len) : 0}
 	<line
-		x1={cx}
-		y1={CY}
+		x1={cx + ((d.x - cx) / len) * off}
+		y1={CY + ((d.y - CY) / len) * off}
 		x2={d.x}
 		y2={d.y}
 		stroke="var(--stage-ink-muted)"

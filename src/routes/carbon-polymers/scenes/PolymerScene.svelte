@@ -46,15 +46,15 @@
 
 	// ================================================================== link
 	const PERIOD = 2.6;
-	const DX = 46; // px per carbon along the zigzag
-	const ZY = 13; // zigzag half-height
+	const DX = 58; // px per carbon along the zigzag
+	const ZY = 16; // zigzag half-height
 	const CHAIN_Y = 300;
 	const START = 6; // carbons at t = 0
 	const added = $derived(Math.floor(t / PERIOD));
 	const u = $derived(cycle(t, PERIOD));
 	const carbons = $derived(START + 2 * added);
 	// Scroll continuously so that the reactive end stays near x = 560.
-	const scroll = $derived(Math.max(0, (START + (2 * t) / PERIOD) * DX - 470));
+	const scroll = $derived(Math.max(0, (START + (2 * t) / PERIOD) * DX - 520));
 	const cx = (i: number) => 90 + i * DX - scroll;
 	const cy = (i: number) => CHAIN_Y + (i % 2 ? -ZY : ZY);
 	const endX = $derived(cx(carbons - 1));
@@ -81,7 +81,8 @@
 	const network = $derived(G > 0);
 	const loose = $derived(looseFraction(Mn, Mc));
 
-	const BOX = { x: 70, y: 140, w: 250, h: 300 };
+	// Narrow enough that a threefold stretch still clears the readout.
+	const BOX = { x: 60, y: 150, w: 176, h: 300 };
 	const N_CHAINS = 7;
 	const beads = $derived(Math.round(6 + 6 * (Math.log10(units) - 1.5)));
 	interface Chain {
@@ -142,7 +143,7 @@
 			return true;
 		});
 	});
-	const links = $derived(candidates.slice(0, Math.round(12 * xl)));
+	const links = $derived(candidates.slice(0, Math.round(14 * xl)));
 	/** Per chain, the range of beads between its outermost cross-links (null: none). */
 	const tied = $derived(
 		chains.map((_, j) => {
@@ -290,14 +291,14 @@
 						<line
 							x1={x}
 							y1={y}
-							x2={x + v * 9}
-							y2={y + (i % 2 ? -22 : 22)}
+							x2={x + v * 11}
+							y2={y + (i % 2 ? -27 : 27)}
 							stroke="var(--stage-ink-muted)"
 							stroke-width="1.6"
 						/>
-						{@render atom(x + v * 9, y + (i % 2 ? -22 : 22), 'H', 6)}
+						{@render atom(x + v * 11, y + (i % 2 ? -27 : 27), 'H', 7)}
 					{/each}
-					{@render atom(x, y, 'C', 11)}
+					{@render atom(x, y, 'C', 13)}
 				{/if}
 			{/each}
 			<!-- the new bond to the incoming monomer -->
@@ -325,7 +326,7 @@
 		{@render ethylene(mono.x, mono.y, open, smoothstep(0, 0.12, u) * (1 - smoothstep(0.92, 1, u)))}
 		<!-- the queue -->
 		{#each [0, 1, 2] as k (k)}
-			{@render ethylene(700 + k * 100, 470, 0, 0.9)}
+			{@render ethylene(650 + k * 110, 470, 0, 0.9)}
 		{/each}
 		<Readout id="l-mono" order={2} label="Monomer" value="ethylene, CH₂=CH₂">
 			<text
@@ -349,7 +350,7 @@
 		</Readout>
 		<Readout id="l-end">
 			<text
-				x={Math.min(endX, 640)}
+				x={Math.min(endX, 640) + 34}
 				y={endY + 52}
 				text-anchor="middle"
 				class="halo"
@@ -403,19 +404,6 @@
 			fill="var(--stage-ink-muted)"
 			opacity="0.5"
 		/>
-		{#each links as l, k (k)}
-			{@const p = drawn[l.a[0]][l.a[1]]}
-			{@const q = drawn[l.b[0]][l.b[1]]}
-			<line
-				x1={p.x}
-				y1={p.y}
-				x2={q.x}
-				y2={q.y}
-				stroke="var(--cp-link)"
-				stroke-width="3.5"
-				stroke-linecap="round"
-			/>
-		{/each}
 		{#each drawn as pts, j (j)}
 			{@const tie = tied[j]}
 			{#each pts as p, i (i)}
@@ -441,6 +429,21 @@
 					fill={COLORS[j % 3]}
 				/>
 			{/each}
+		{/each}
+		{#each links as l, k (k)}
+			{@const p = drawn[l.a[0]][l.a[1]]}
+			{@const q = drawn[l.b[0]][l.b[1]]}
+			<line
+				x1={p.x}
+				y1={p.y}
+				x2={q.x}
+				y2={q.y}
+				stroke="var(--cp-link)"
+				stroke-width="5"
+				stroke-linecap="round"
+			/>
+			<circle cx={p.x} cy={p.y} r="4" fill="var(--cp-link)" />
+			<circle cx={q.x} cy={q.y} r="4" fill="var(--cp-link)" />
 		{/each}
 		<Readout id="s-key">
 			<text x={BOX.x} y={BOX.y - 28} class="halo" style:font-size="11px"

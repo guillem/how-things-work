@@ -68,7 +68,8 @@
 		mol.bonds.forEach(([a, b]) =>
 			out.push({
 				key: `b${a}-${b}`,
-				depth: (s[a].depth + s[b].depth) / 2 - 0.5,
+				// Just behind the nearer-to-the-back atom: both atoms cover the ends.
+				depth: Math.min(s[a].depth, s[b].depth) - 0.01,
 				kind: 'bond',
 				x: s[a].x,
 				y: s[a].y,
