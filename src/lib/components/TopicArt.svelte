@@ -2654,6 +2654,21 @@
 		{/each}
 		<circle cx="100" cy="60" r="5" fill={accent} />
 		<circle cx="100" cy="60" r="9" fill="none" stroke={accent} stroke-width="1.2" opacity="0.6" />
+	{:else if slug === 'diffusion-models'}
+		<!-- scattered noise on the left condenses, step by step, into a crescent on the right -->
+		{#each [[22, 34], [40, 78], [30, 58], [54, 44], [18, 88], [48, 96], [62, 70], [36, 24], [58, 26], [26, 104]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="3" fill="currentColor" opacity="0.45" />
+		{/each}
+		<path d="M 76 60 L 104 60" stroke={accent} stroke-width="1.6" />
+		<path d="M 100 56 L 106 60 L 100 64" fill="none" stroke={accent} stroke-width="1.6" />
+		{#each [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as k (k)}
+			<circle
+				cx={150 + 34 * Math.cos(Math.PI * (0.1 + 0.08 * k))}
+				cy={88 - 46 * Math.sin(Math.PI * (0.1 + 0.08 * k))}
+				r="3.4"
+				fill={accent}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

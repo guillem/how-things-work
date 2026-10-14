@@ -2362,3 +2362,22 @@ kbd {
 	--tc-plasma: #da77f2;
 	--tc-curve: #4dabf7;
 }
+/* diffusion-models: the two moons, unlabelled noise, the network's guess, the signal and noise curves */
+:root {
+	--dm-upper: #e8590c;
+	--dm-lower: #1971c2;
+	--dm-point: #495057;
+	--dm-guess: #ae3ec9;
+	--dm-signal: #2f9e44;
+	--dm-noise: #868e96;
+	--dm-data: #adb5bd66;
+}
+:root[data-theme='dark'] {
+	--dm-upper: #ff922b;
+	--dm-lower: #4dabf7;
+	--dm-point: #ced4da;
+	--dm-guess: #e599f7;
+	--dm-signal: #69db7c;
+	--dm-noise: #adb5bd;
+	--dm-data: #868e9666;
+}
