@@ -170,14 +170,25 @@
 			/>
 		</Readout>
 	{/each}
-	<T
-		x={502}
-		y={552}
-		<Readout id="m-ratio" order={9} label="So" value="the dip a transiting Earth makes is {ratio} times all the light it could send us">
-		text="The dip a transiting Earth makes is {ratio} times"
-		size={12.5}
-		weight={600}
-	/>
-	<T x={502} y={572} text="bigger than all the light it could send us." size={12.5} weight={600} />
-		</Readout>
+	<Readout
+		id="m-ratio"
+		order={9}
+		label="So"
+		value="the dip a transiting Earth makes is {ratio} times all the light it could send us"
+	>
+		<T
+			x={502}
+			y={552}
+			text="The dip a transiting Earth makes is {ratio} times"
+			size={12.5}
+			weight={600}
+		/>
+		<T
+			x={502}
+			y={572}
+			text="bigger than all the light it could send us."
+			size={12.5}
+			weight={600}
+		/>
+	</Readout>
 </g>
