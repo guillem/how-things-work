@@ -517,32 +517,35 @@
 			/>
 		</Readout>
 		<line x1={CX + 16} x2={CX + CW - 16} y1={134} y2={134} stroke="var(--border)" />
-		<T
-			x={CX + 16}
-			y={158}
-			text="Visible matter (measured)"
-			size={13}
-			weight={700}
-			color="var(--dm-visible)"
-		/>
-		<T x={CX + 16} y={180} text="stars, Υ = {mlTarget.toFixed(2)}" size={12.5} muted />
-		<T x={CX + CW - 16} y={180} text="{e10(vm.stars)} × 10¹⁰ Suns" size={12.5} anchor="end" />
-		<T x={CX + 16} y={200} text="gas (hydrogen + helium)" size={12.5} muted />
-		<T x={CX + CW - 16} y={200} text="{e10(vm.gas)} × 10¹⁰ Suns" size={12.5} anchor="end" />
-		{#if withHalo}
+		<Readout id="m-masses">
 			<T
 				x={CX + 16}
-				y={232}
-				text="Dark halo (your guess)"
+				y={158}
+				text="Visible matter (measured)"
 				size={13}
 				weight={700}
-				color="var(--dm-halo)"
+				color="var(--dm-visible)"
 			/>
-			<T x={CX + 16} y={254} text="mass inside {g.rLast.toFixed(0)} kpc" size={12.5} muted />
-			<T x={CX + CW - 16} y={254} text="{e10(darkLast)} × 10¹⁰ Suns" size={12.5} anchor="end" />
-			<T x={CX + 16} y={274} text="core radius" size={12.5} muted />
-			<T x={CX + CW - 16} y={274} text="{coreTarget.toFixed(1)} kpc" size={12.5} anchor="end" />
-
+			<T x={CX + 16} y={180} text="stars, Υ = {mlTarget.toFixed(2)}" size={12.5} muted />
+			<T x={CX + CW - 16} y={180} text="{e10(vm.stars)} × 10¹⁰ Suns" size={12.5} anchor="end" />
+			<T x={CX + 16} y={200} text="gas (hydrogen + helium)" size={12.5} muted />
+			<T x={CX + CW - 16} y={200} text="{e10(vm.gas)} × 10¹⁰ Suns" size={12.5} anchor="end" />
+			{#if withHalo}
+				<T
+					x={CX + 16}
+					y={232}
+					text="Dark halo (your guess)"
+					size={13}
+					weight={700}
+					color="var(--dm-halo)"
+				/>
+				<T x={CX + 16} y={254} text="mass inside {g.rLast.toFixed(0)} kpc" size={12.5} muted />
+				<T x={CX + CW - 16} y={254} text="{e10(darkLast)} × 10¹⁰ Suns" size={12.5} anchor="end" />
+				<T x={CX + 16} y={274} text="core radius" size={12.5} muted />
+				<T x={CX + CW - 16} y={274} text="{coreTarget.toFixed(1)} kpc" size={12.5} anchor="end" />
+			{/if}
+		</Readout>
+		{#if withHalo}
 			<line x1={CX + 16} x2={CX + CW - 16} y1={294} y2={294} stroke="var(--border)" />
 			<T x={CX + 16} y={318} text="Mass inside {g.rLast.toFixed(0)} kpc" size={13} weight={700} />
 			<rect x={BAR_X} y={332} width={BAR_W} height={26} rx="5" fill="none" stroke="var(--border)" />
@@ -558,16 +561,18 @@
 					opacity="0.85"
 				/>
 			{/if}
-			<T x={BAR_X} y={376} text="visible" size={11.5} color="var(--dm-visible)" weight={650} />
-			<T
-				x={BAR_X + BAR_W}
-				y={376}
-				text="dark"
-				size={11.5}
-				anchor="end"
-				color="var(--dm-halo)"
-				weight={650}
-			/>
+			<Readout id="m-bar">
+				<T x={BAR_X} y={376} text="visible" size={11.5} color="var(--dm-visible)" weight={650} />
+				<T
+					x={BAR_X + BAR_W}
+					y={376}
+					text="dark"
+					size={11.5}
+					anchor="end"
+					color="var(--dm-halo)"
+					weight={650}
+				/>
+			</Readout>
 			<Readout
 				id="r-ratio"
 				order={4}
@@ -587,8 +592,10 @@
 				/>
 			</Readout>
 		{:else}
-			<T x={CX + 16} y={236} text="No halo: the visible matter" size={12.5} />
-			<T x={CX + 16} y={254} text="alone has to hold the orbits." size={12.5} />
+			<Readout id="m-nohalo">
+				<T x={CX + 16} y={236} text="No halo: the visible matter" size={12.5} />
+				<T x={CX + 16} y={254} text="alone has to hold the orbits." size={12.5} />
+			</Readout>
 		{/if}
 	{/if}
 
@@ -646,10 +653,21 @@
 	{:else if massMode}
 		<line x1={CX + 16} x2={CX + CW - 16} y1={448} y2={448} stroke="var(--border)" />
 		<Readout id="r-massnote">
-			<T x={CX + 16} y={472} text="The dark halo keeps growing" size={12.5} weight={650} />
-			<T x={CX + 16} y={492} text="where the stars and gas run out;" size={12} muted />
-			<T x={CX + 16} y={510} text="the measurements stop, the halo" size={12} muted />
-			<T x={CX + 16} y={528} text="almost certainly does not." size={12} muted />
+			<T
+				x={CX + 16}
+				y={472}
+				text={halo && halo.ratio > 0 ? 'The dark halo keeps growing' : 'Add a halo to see its mass'}
+				size={12.5}
+				weight={650}
+			/>
+			{#if halo && halo.ratio > 0}
+				<T x={CX + 16} y={492} text="where the stars and gas run out;" size={12} muted />
+				<T x={CX + 16} y={510} text="the measurements stop, the halo" size={12} muted />
+				<T x={CX + 16} y={528} text="almost certainly does not." size={12} muted />
+			{:else}
+				<T x={CX + 16} y={492} text="with the slider, or “Find the best" size={12} muted />
+				<T x={CX + 16} y={510} text="halo” below the chart." size={12} muted />
+			{/if}
 		</Readout>
 	{/if}
 </g>

@@ -75,6 +75,10 @@
 			return { ...p, d: a1 > a0 + 1e-3 ? arc(a0, a1 - 0.02) : '', mid: (a0 + a) / 2 };
 		});
 	});
+	const galaxyRow = rows
+		.slice(0, 4)
+		.map((r) => `${r.label} ${r.ratio.toFixed(1)}×`)
+		.join(', ');
 	const pct = (f: number) => `${(100 * f).toFixed(1)}%`;
 
 	const CARDS = [
@@ -162,8 +166,8 @@
 			<Readout
 				id="row-{r.id}"
 				order={2 + i}
-				label={r.label}
-				value="{r.ratio.toFixed(1)} ×"
+				label={i === 0 ? 'Galaxy rotation' : i < 4 ? undefined : r.label}
+				value={i === 0 ? galaxyRow : `${r.ratio.toFixed(1)} ×`}
 				color="var(--dm-halo)"
 			>
 				<T
@@ -246,13 +250,7 @@
 			/>
 		{/if}
 	{/each}
-	<Readout
-		id="ring-ratio"
-		order={9}
-		label="Dark ÷ ordinary matter"
-		value="{cosmic.ratio.toFixed(1)} ×"
-		color="var(--dm-halo)"
-	>
+	<Readout id="ring-ratio">
 		<T
 			x={RCX}
 			y={RCY - 4}
@@ -274,7 +272,12 @@
 		/>
 	</Readout>
 	{#each parts as p, i (p.id)}
-		<Readout id="ring-{p.id}" order={10 + i} label={p.label} value={pct(p.frac)} color={p.color}>
+		<Readout
+			id="ring-{p.id}"
+			order={10 + i}
+			label={i === 0 ? 'The universe' : undefined}
+			value={i === 0 ? parts.map((q) => `${pct(q.frac)} ${q.label}`).join(', ') : undefined}
+		>
 			<rect
 				x={RCX - 100}
 				y={RCY + RR + 40 + i * 24}

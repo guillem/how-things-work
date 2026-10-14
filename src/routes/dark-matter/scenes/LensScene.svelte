@@ -417,23 +417,11 @@
 		stroke-dasharray="3 3"
 	/>
 
-	<Readout
-		id="r-gas"
-		order={2}
-		label="Hot gas (X-rays)"
-		value="{fmt13(BRADAC.fieldGas)} × 10¹³ Suns"
-		color="var(--dm-xgas)"
-	>
+	<Readout id="r-gas">
 		<T x={BX} y={220} text="hot gas (X-rays)" size={12.5} color="var(--dm-xgas)" weight={650} />
 		<T x={BX + BW} y={220} text={fmt13(BRADAC.fieldGas)} size={12.5} anchor="end" />
 	</Readout>
-	<Readout
-		id="r-stars"
-		order={3}
-		label="Stars in galaxies"
-		value="{fmt13(FIELD_STARS)} × 10¹³ Suns"
-		color="var(--dm-galaxies)"
-	>
+	<Readout id="r-stars">
 		<T
 			x={BX}
 			y={240}
@@ -448,7 +436,7 @@
 		id="r-dark"
 		order={4}
 		label="Dark matter added"
-		value="{fmt13(dark13 * 1e13)} × 10¹³ Suns"
+		value="{fmt13(dark13 * 1e13)} × 10¹³ Suns (gas + stars: {fmt13(visible)})"
 		color="var(--dm-halo)"
 	>
 		<T
@@ -511,7 +499,14 @@
 		/>
 	</Readout>
 	<line x1={BX} x2={BX + BW} y1={376} y2={376} stroke="var(--border)" />
-	<Readout id="r-peak" order={7} label="Model’s mass peaks" value={peakOn} color="var(--dm-mass)">
+	<Readout
+		id="r-peak"
+		order={7}
+		label="Model’s mass peaks"
+		value={peakOn}
+		note="measured: on the galaxies"
+		color="var(--dm-mass)"
+	>
 		<T x={BX} y={400} text="your model’s mass peaks" size={12.5} muted />
 		<T
 			x={BX + BW}
@@ -523,12 +518,7 @@
 			color="var(--dm-mass)"
 		/>
 	</Readout>
-	<Readout
-		id="r-meas-peak"
-		order={8}
-		label="Measured mass peaks"
-		value="on the galaxies (Clowe et al. 2006)"
-	>
+	<Readout id="r-meas-peak">
 		<T x={BX} y={452} text="the measured mass peaks" size={12.5} muted />
 		<T x={BX + BW} y={476} text="on the galaxies" size={15} weight={700} anchor="end" />
 	</Readout>

@@ -52,7 +52,7 @@ const galaxyPick: Control = {
 	id: 'galaxy',
 	label: 'Galaxy',
 	default: 'NGC3198',
-	options: GALAXIES.map((g) => ({ value: g.id, label: `${g.name}: ${g.kind}` }))
+	options: GALAXIES.map((g) => ({ value: g.id, label: g.name }))
 };
 
 const dark: Control = {
@@ -164,7 +164,7 @@ export const spec: ExplainerSpec = {
 			controls: [ratio, core, ml, fitHalo],
 			body: `
 <p>Now add mass we can’t see: a round <span class="dm-key dm-halo">dark halo</span> enveloping the disc, with a nearly constant density in its core and a density falling as 1/r² further out. A halo like that gives a speed that rises and then stays flat — exactly the shape the data need.</p>
-<p>Turn up its mass until the <span class="dm-key dm-model">total</span> runs through the dots, then adjust its core (or let the button find the best fit). With Υ = 0.5, NGC 3198 fits within its error bars with a halo of about <strong>5½ times the visible mass</strong> inside the last measured point. The stacked bar under the chart shows the result: most of the galaxy is matter that gives off no light at all.</p>`,
+<p>Turn up its mass until the <span class="dm-key dm-model">total</span> runs through the dots, then adjust its core (or let the button find the best fit). With Υ = 0.5, NGC 3198 fits within its error bars with a halo of about <strong>5½ times the visible mass</strong> inside the last measured point. The stacked bar beside the chart shows the result: most of the galaxy is matter that gives off no light at all.</p>`,
 			notes: `<p>The halo is a <em>pseudo-isothermal sphere</em>, density ρ₀ / (1 + (r/r<sub>c</sub>)²). Simulations of cold dark matter predict a somewhat different shape (the NFW profile) with a density spike, a “cusp”, at the centre; many dwarf galaxies fit a flat-cored halo better. Whether that is a problem for the theory or the result of gas blown about by exploding stars is an open question. A χ² per point of about 1–2 is as good as it gets: SPARC’s error bars include only random errors, not the uncertainty in the galaxy’s distance or tilt.</p>`
 		},
 		{
