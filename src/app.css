@@ -1130,3 +1130,26 @@ kbd {
 	--gd-arrow: #ced4da;
 	--gd-min: #f8f9fa;
 }
+
+/* reaction-rates-equilibrium: H₂, I₂ and HI series, forward and reverse reactions,
+   the catalyst path, the violet tint of iodine vapour, the barrier line */
+:root {
+	--rr-h2: #1c7ed6;
+	--rr-i2: #7048e8;
+	--rr-hi: #0b7285;
+	--rr-forward: #e67700;
+	--rr-reverse: #c2255c;
+	--rr-cat: #b08900;
+	--rr-vapour: #7048e8;
+	--rr-barrier: #c92a2a;
+}
+:root[data-theme='dark'] {
+	--rr-h2: #4dabf7;
+	--rr-i2: #b197fc;
+	--rr-hi: #3bc9db;
+	--rr-forward: #ffa94d;
+	--rr-reverse: #f783ac;
+	--rr-cat: #ffd43b;
+	--rr-vapour: #9775fa;
+	--rr-barrier: #ff6b6b;
+}

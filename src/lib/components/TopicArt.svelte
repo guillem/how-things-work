@@ -1702,6 +1702,27 @@
 			<circle cx={x} cy={y} r="2.6" fill={accent} />
 		{/each}
 		<circle cx="110" cy="63" r="5.5" fill={accent} />
+	{:else if slug === 'reaction-rates-equilibrium'}
+		<!-- an energy profile: reactants, a barrier with a lower catalysed path, products a little lower -->
+		<path
+			d="M20 84 H52 C 72 84, 82 20, 100 20 C 118 20, 128 88, 148 88 H184"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M52 84 C 72 84, 84 56, 100 56 C 116 56, 128 88, 148 88"
+			fill="none"
+			stroke="var(--rr-cat)"
+			stroke-width="2"
+			stroke-dasharray="4 4"
+		/>
+		<circle cx="36" cy="76" r="6" fill={accent} opacity="0.8" />
+		<circle cx="166" cy="80" r="6" fill={accent} opacity="0.8" />
+		<circle cx="174" cy="80" r="3" fill="currentColor" opacity="0.5" />
+		<circle cx="29" cy="76" r="3" fill="currentColor" opacity="0.5" />
+		<path d="M100 26 V80" stroke="currentColor" stroke-dasharray="2 3" opacity="0.4" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

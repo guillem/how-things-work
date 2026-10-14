@@ -474,6 +474,15 @@ const explainers: Explainer[] = [
 		accent: '#862e9c',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'reaction-rates-equilibrium',
+		title: 'Reaction rates, catalysts and equilibrium',
+		summary:
+			'Watch hydrogen and iodine collide, react and react back. Heat them, add a catalyst that lowers the energy barrier, or add more hydrogen, and see the rates and the final mixture respond.',
+		accent: '#7048e8',
+		steps: 13,
+		minutes: 20
 	}
 ];
 
