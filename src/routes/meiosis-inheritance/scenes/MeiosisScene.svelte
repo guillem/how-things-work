@@ -13,7 +13,7 @@
 	 * The chromatids' colours and letters come from the model (meiosisOfPair,
 	 * tetrad) with the reader's crossovers and line-up.
 	 */
-	import { Handle, Label, clamp, lerp, rng, smoothstep } from '#lib/draw/index.ts';
+	import { Handle, Label, clamp, cycle, lerp, rng, smoothstep } from '#lib/draw/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import {
@@ -36,7 +36,7 @@
 
 	const plant = genotype({ R: 'Rr', Y: 'Yy', A: 'Aa' });
 	const xo = $derived(
-		[0, 1, 2].map((p) => clamp(Number(params[`xo${p}`] ?? [0.62, 0.3, 0.55][p]), 0.04, 0.96))
+		[0, 1, 2].map((p) => clamp(Number(params[`xo${p}`] ?? [0.62, 0.75, 0.25][p]), 0.04, 0.96))
 	);
 	const flips = $derived([0, 1, 2].map((p) => Boolean(params[`flip${p}`] ?? p === 1)));
 
@@ -53,7 +53,7 @@
 	const gametes = $derived(tetrad(crossed));
 
 	// ------------------------------------------------------------------ layout
-	const S0 = 140; // px per Morgan while the chromosomes are whole cells' size
+	const S0 = 160; // px per Morgan while the chromosomes are whole cells' size
 	const S2 = 105;
 	const S4 = 78;
 	const CX = [330, 480, 630];
@@ -93,7 +93,7 @@
 		// Order across the bivalent, left to right: the left homologue's sisters, then the right's.
 		const col = left ? (sis ? -9 : -24) : sis ? 24 : 9;
 		if (k === 2) return { x: 480 + col, y: tops2[p], s: S2 };
-		if (k === 3) return { x: (left ? 250 : 710) + (sis ? 6 : -6), y: tops2[p], s: S2 };
+		if (k === 3) return { x: (left ? 250 : 710) + (sis ? 8 : -8), y: tops2[p], s: S2 };
 		const g = GAMETE[(left ? 0 : 2) + sis];
 		return { x: g.x + (p - 1) * 38, y: g.y - (L * S4) / 2, s: S4 };
 	}
@@ -101,7 +101,11 @@
 		const a = place(Math.floor(f), p, slot);
 		const b = place(Math.ceil(f), p, slot);
 		const v = f - Math.floor(f);
-		return { x: lerp(a.x, b.x, v), y: lerp(a.y, b.y, v), s: lerp(a.s, b.s, v) };
+		// Chromosomes are never still in a living cell: a gentle drift per homologue.
+		const h = slot < 2 ? 0 : 1;
+		const jx = 1.6 * Math.sin(t * 0.9 + p * 2.1 + h * 1.3);
+		const jy = 2.2 * Math.sin(t * 0.7 + p + h * 2);
+		return { x: lerp(a.x, b.x, v) + jx, y: lerp(a.y, b.y, v) + jy, s: lerp(a.s, b.s, v) };
 	}
 
 	const rods = $derived(
@@ -266,7 +270,25 @@
 		{#each PEA_CHROMOSOMES as k, p (k.id)}
 			{@const top = MID - (k.length * S0) / 2}
 			{@const y = top + xo[p] * k.length * S0}
+			{@const c = cycle(t, 1.8, p * 0.3)}
 			<g opacity={smoothstep(0.4, 0.9, f)}>
+				<!-- the chiasma: the two inner chromatids cross here -->
+				<path
+					d="M{CX[p] - 9} {y - 12} L{CX[p] + 9} {y + 12} M{CX[p] + 9} {y - 12} L{CX[p] - 9} {y +
+						12}"
+					stroke="var(--stage-ink)"
+					stroke-width="2"
+					opacity="0.6"
+				/>
+				<circle
+					cx={CX[p]}
+					cy={y}
+					r={11 + 9 * c}
+					fill="none"
+					stroke="var(--explainer-accent, var(--accent))"
+					stroke-width="1.5"
+					opacity={0.7 * (1 - c)}
+				/>
 				<Handle
 					x={CX[p]}
 					{y}
@@ -376,7 +398,7 @@
 			<Label x={160} y={300} text="2 × 2 × 2 = 8" size={16} weight={600} opacity={u} />
 			<Label x={160} y={322} text="possible line-ups" size={12} muted opacity={u} />
 			<Label x={160} y={350} text="humans: 2²³ ≈ 8.4 million" size={12} muted opacity={u} />
-			<Label x={480} y={576} text="click a pair to turn it round" size={11} muted opacity={u} />
+			<Label x={480} y={50} text="click a pair to turn it round" size={11} muted opacity={u} />
 		</Readout>
 	{/if}
 
@@ -390,7 +412,7 @@
 		>
 			<Label
 				x={480}
-				y={572}
+				y={50}
 				text="each cell: one chromosome of every pair, still two chromatids each"
 				size={12}
 				muted

@@ -9,7 +9,7 @@
 	 * distance, with Haldane's curve, the 50% ceiling, and this simulation's
 	 * point. params.again breeds a new batch.
 	 */
-	import { Label, clamp, pathFrom, smoothstep } from '#lib/draw/index.ts';
+	import { Label, clamp, cycle, pathFrom, smoothstep } from '#lib/draw/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { haldane, recombinants } from '../model';
@@ -24,7 +24,8 @@
 	// Parent chromosomes.
 	const X0 = 60;
 	const X1 = 450;
-	const geneX = (k: 0 | 1) => X0 + 30 + (k ? (d / 200) * (X1 - X0 - 60) : 0);
+	// Gene 2 sits at least a letter's width from gene 1, so both stay readable at 0 cM.
+	const geneX = (k: 0 | 1) => X0 + 30 + (k ? 20 + (d / 200) * (X1 - X0 - 80) : 0);
 	const colors = ['var(--mi-mom)', 'var(--mi-dad)'];
 	const letters = [
 		['A', 'B'],
@@ -209,6 +210,14 @@
 		value="{pct(sim.fraction)} recombinant (Haldane: {pct(haldane(d / 100))})"
 	>
 		<circle cx={px(d)} cy={py(sim.fraction)} r="7" fill="var(--stage-ink)" opacity={point} />
+		<circle
+			cx={px(d)}
+			cy={py(sim.fraction)}
+			r={9 + 10 * cycle(t, 2)}
+			fill="none"
+			stroke="var(--stage-ink)"
+			opacity={point * 0.6 * (1 - cycle(t, 2))}
+		/>
 		<Label
 			x={d > 130 ? px(d) - 12 : px(d) + 12}
 			y={py(sim.fraction) + (sim.fraction > 0.42 ? 24 : -12)}

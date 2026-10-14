@@ -119,131 +119,131 @@
 	{/each}
 
 	<!-- right: the plant (pairs) -->
-	<g opacity={panelA}>
-		<Readout
-			id="legend-mom"
-			order={1}
-			label="Red: copy from the plant’s mother"
-			color="var(--mi-mom)"
-			opacity={panelA}
-		>
-			<rect x="610" y="78" width="26" height="12" rx="6" fill="var(--mi-mom)" />
-			<Label x={646} y={89} text="copy from the plant’s mother" anchor="start" />
-		</Readout>
-		<Readout
-			id="legend-dad"
-			order={2}
-			label="Blue: copy from its father"
-			color="var(--mi-dad)"
-			opacity={panelA}
-		>
-			<rect x="610" y="106" width="26" height="12" rx="6" fill="var(--mi-dad)" />
-			<Label x={646} y={117} text="copy from its father" anchor="start" />
-		</Readout>
-		<Readout
-			id="genes"
-			order={3}
-			label="Genes"
-			value="R seed shape · Y seed colour · A flower colour"
-			opacity={panelA}
-		>
-			{#each traits as tr, i (tr.id)}
-				<text x="612" y={176 + i * 44} font-size="14" font-weight="700" font-style="italic"
-					>{tr.id}</text
-				>
-				<text x="636" y={176 + i * 44} font-size="13">{tr.text}</text>
-				<text x="636" y={194 + i * 44} font-size="11" class="muted">{tr.a} · {tr.b}</text>
-			{/each}
-		</Readout>
-		<line x1="610" x2="930" y1="320" y2="320" stroke="var(--stage-line)" />
-		<Readout
-			id="plant"
-			order={4}
-			label="This plant"
-			value="Rr Yy Aa: round yellow seeds, purple flowers"
-			opacity={panelA}
-		>
-			<text x="612" y="350" font-size="13" font-weight="600">This plant: Rr Yy Aa</text>
-			<text x="612" y="370" font-size="11" class="muted"
-				>one allele of each gene from each parent</text
+	{#if panelA > 0.02}<g opacity={panelA}>
+			<Readout
+				id="legend-mom"
+				order={1}
+				label="Red: copy from the plant’s mother"
+				color="var(--mi-mom)"
+				opacity={panelA}
 			>
-		</Readout>
-		<Pea x={650} y={420} r={16} />
-		<Pea x={690} y={426} r={16} />
-		<Label x={670} y={460} text="seeds: round, yellow" size={11} muted />
-		<Flower x={830} y={420} r={20} />
-		<Label x={830} y={456} text="purple flowers" size={11} muted />
-		<Readout id="hint">
-			<Label x={770} y={510} text="it shows the dominant trait of each pair" size={11} muted />
-		</Readout>
-	</g>
+				<rect x="610" y="78" width="26" height="12" rx="6" fill="var(--mi-mom)" />
+				<Label x={646} y={89} text="copy from the plant’s mother" anchor="start" />
+			</Readout>
+			<Readout
+				id="legend-dad"
+				order={2}
+				label="Blue: copy from its father"
+				color="var(--mi-dad)"
+				opacity={panelA}
+			>
+				<rect x="610" y="106" width="26" height="12" rx="6" fill="var(--mi-dad)" />
+				<Label x={646} y={117} text="copy from its father" anchor="start" />
+			</Readout>
+			<Readout
+				id="genes"
+				order={3}
+				label="Genes"
+				value="R seed shape · Y seed colour · A flower colour"
+				opacity={panelA}
+			>
+				{#each traits as tr, i (tr.id)}
+					<text x="612" y={176 + i * 44} font-size="14" font-weight="700" font-style="italic"
+						>{tr.id}</text
+					>
+					<text x="636" y={176 + i * 44} font-size="13">{tr.text}</text>
+					<text x="636" y={194 + i * 44} font-size="11" class="muted">{tr.a} · {tr.b}</text>
+				{/each}
+			</Readout>
+			<line x1="610" x2="930" y1="320" y2="320" stroke="var(--stage-line)" />
+			<Readout
+				id="plant"
+				order={4}
+				label="This plant"
+				value="Rr Yy Aa: round yellow seeds, purple flowers"
+				opacity={panelA}
+			>
+				<text x="612" y="350" font-size="13" font-weight="600">This plant: Rr Yy Aa</text>
+				<text x="612" y="370" font-size="11" class="muted"
+					>one allele of each gene from each parent</text
+				>
+			</Readout>
+			<Pea x={650} y={420} r={16} />
+			<Pea x={690} y={426} r={16} />
+			<Label x={670} y={460} text="seeds: round, yellow" size={11} muted />
+			<Flower x={830} y={420} r={20} />
+			<Label x={830} y={456} text="purple flowers" size={11} muted />
+			<Readout id="hint">
+				<Label x={770} y={510} text="it shows the dominant trait of each pair" size={11} muted />
+			</Readout>
+		</g>{/if}
 
 	<!-- right: genotypes and traits (alleles) -->
-	<g opacity={panelB}>
-		<Readout
-			id="col-title"
-			order={1}
-			label="Seed colour"
-			value="YY, Yy: yellow · yy: green"
-			opacity={panelB}
-		>
-			<text x="612" y="72" font-size="14" font-weight="600">Seed colour</text>
-			{#each rows as row, i (row.g)}
-				{@const y = 112 + i * 52}
-				<rect
-					x="606"
-					y={y - 22}
-					width="320"
-					height="44"
-					rx="8"
-					fill="var(--mi-box)"
-					stroke="var(--border)"
-				/>
-				<text x="624" y={y + 6} font-size="17" font-weight="700" font-style="italic">
-					<tspan style:fill="var(--mi-mom)">{row.g[0]}</tspan><tspan style:fill="var(--mi-dad)"
-						>{row.g[1]}</tspan
-					>
-				</text>
-				<Pea x={712} {y} r={13} green={row.green} />
-				<text x="738" y={y + 5} font-size="13">{row.text}</text>
-			{/each}
-		</Readout>
-		<Readout
-			id="shape-title"
-			order={2}
-			label="Seed shape"
-			value="RR, Rr: round · rr: wrinkled"
-			opacity={panelB}
-		>
-			<text x="612" y="300" font-size="14" font-weight="600">Seed shape</text>
-			{#each shapes as row, i (row.g)}
-				{@const y = 340 + i * 52}
-				<rect
-					x="606"
-					y={y - 22}
-					width="320"
-					height="44"
-					rx="8"
-					fill="var(--mi-box)"
-					stroke="var(--border)"
-				/>
-				<text x="624" y={y + 6} font-size="17" font-weight="700" font-style="italic">
-					<tspan style:fill="var(--mi-mom)">{row.g[0]}</tspan><tspan style:fill="var(--mi-dad)"
-						>{row.g[1]}</tspan
-					>
-				</text>
-				<Pea x={712} {y} r={13} wrinkled={row.w} />
-				<text x="738" y={y + 5} font-size="13">{row.text}</text>
-			{/each}
-		</Readout>
-		<Readout
-			id="dominant"
-			order={3}
-			label="Dominant"
-			value="one copy is enough to show"
-			opacity={panelB}
-		>
-			<Label x={766} y={530} text="one dominant allele is enough to show" size={12} muted />
-		</Readout>
-	</g>
+	{#if panelB > 0.02}<g opacity={panelB}>
+			<Readout
+				id="col-title"
+				order={1}
+				label="Seed colour"
+				value="YY, Yy: yellow · yy: green"
+				opacity={panelB}
+			>
+				<text x="612" y="72" font-size="14" font-weight="600">Seed colour</text>
+				{#each rows as row, i (row.g)}
+					{@const y = 112 + i * 52}
+					<rect
+						x="606"
+						y={y - 22}
+						width="320"
+						height="44"
+						rx="8"
+						fill="var(--mi-box)"
+						stroke="var(--border)"
+					/>
+					<text x="624" y={y + 6} font-size="17" font-weight="700" font-style="italic">
+						<tspan style:fill="var(--mi-mom)">{row.g[0]}</tspan><tspan style:fill="var(--mi-dad)"
+							>{row.g[1]}</tspan
+						>
+					</text>
+					<Pea x={712} {y} r={13} green={row.green} />
+					<text x="738" y={y + 5} font-size="13">{row.text}</text>
+				{/each}
+			</Readout>
+			<Readout
+				id="shape-title"
+				order={2}
+				label="Seed shape"
+				value="RR, Rr: round · rr: wrinkled"
+				opacity={panelB}
+			>
+				<text x="612" y="300" font-size="14" font-weight="600">Seed shape</text>
+				{#each shapes as row, i (row.g)}
+					{@const y = 340 + i * 52}
+					<rect
+						x="606"
+						y={y - 22}
+						width="320"
+						height="44"
+						rx="8"
+						fill="var(--mi-box)"
+						stroke="var(--border)"
+					/>
+					<text x="624" y={y + 6} font-size="17" font-weight="700" font-style="italic">
+						<tspan style:fill="var(--mi-mom)">{row.g[0]}</tspan><tspan style:fill="var(--mi-dad)"
+							>{row.g[1]}</tspan
+						>
+					</text>
+					<Pea x={712} {y} r={13} wrinkled={row.w} />
+					<text x="738" y={y + 5} font-size="13">{row.text}</text>
+				{/each}
+			</Readout>
+			<Readout
+				id="dominant"
+				order={3}
+				label="Dominant"
+				value="one copy is enough to show"
+				opacity={panelB}
+			>
+				<Label x={766} y={530} text="one dominant allele is enough to show" size={12} muted />
+			</Readout>
+		</g>{/if}
 </g>

@@ -107,6 +107,8 @@
 	});
 	const shown = (b: Box) => smoothstep(b.appear, b.appear + 0.35, t);
 	const breedMode = $derived(mode === 'breed');
+	/** Once the square is full, one box after another lights up with the egg cell and pollen that make it. */
+	const lit = $derived(t > 2.6 ? Math.floor((t - 2.6) / 1.3) % square.boxes.length : -1);
 
 	// --------------------------------------------------------------- breeding
 	const genes = $derived(mode === 'dihybrid' ? [SHAPE, COLOUR] : [gene]);
@@ -154,7 +156,7 @@
 		white: cat === 'white'
 	});
 	const fmt = (v: number) => v.toLocaleString('en-GB');
-	const pct = (v: number) => `${(v * 100).toFixed(v < 0.1 ? 1 : 0)}%`;
+	const pct = (v: number) => (v === 0 ? '0%' : `${(v * 100).toFixed(v < 0.1 ? 1 : 0)}%`);
 	const ratio = $derived.by(() => {
 		if (mode === 'dihybrid') {
 			const w = counts.get('wrinkled, green') ?? 0;
@@ -222,6 +224,7 @@
 				font-size={mode === 'dihybrid' ? 15 : 20}
 				font-weight="700"
 				font-style="italic"
+				opacity={lit < 0 || sq.boxes[lit].key[1] === String(j) ? 1 : 0.4}
 				style:fill="var(--mi-dad)">{c}</text
 			>
 		{/each}
@@ -233,6 +236,7 @@
 				font-size={mode === 'dihybrid' ? 15 : 20}
 				font-weight="700"
 				font-style="italic"
+				opacity={lit < 0 || sq.boxes[lit].key[0] === String(i) ? 1 : 0.4}
 				style:fill="var(--mi-mom)">{r}</text
 			>
 		{/each}
@@ -245,7 +249,8 @@
 				height={b.size - 4}
 				rx="8"
 				fill="var(--mi-box)"
-				stroke="var(--border)"
+				stroke={sq.boxes[lit] === b ? 'var(--explainer-accent, var(--accent))' : 'var(--border)'}
+				stroke-width={sq.boxes[lit] === b ? 2.5 : 1}
 			/>
 			<g opacity={o}>
 				<Pea

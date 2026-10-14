@@ -3,7 +3,7 @@ import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
 const pairNames = ['long', 'middle', 'short'];
 
 /** Where the chiasma of each pair sits, as a share of the chromosome's length from its top end. */
-const crossovers: Control[] = [0.62, 0.3, 0.55].map((d, i) => ({
+const crossovers: Control[] = [0.62, 0.75, 0.25].map((d, i) => ({
 	type: 'range',
 	id: `xo${i}`,
 	label: `Crossover on the ${pairNames[i]} pair`,
@@ -126,7 +126,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 3 },
 			body: `
 <p>The fibres pull: the two chromosomes of each pair go to opposite ends, and the cell divides. Each new cell has <strong>one chromosome of each pair</strong>, 3 instead of 6. That is the halving.</p>
-<p>Each chromosome still has its two chromatids, and after crossing over they are no longer identical. Look at the letters: one cell can hold both <strong>Y</strong> and <strong>y</strong> if the crossover fell between the centromere and the gene.</p>`
+<p>Each chromosome still has its two chromatids, and after crossing over they are no longer identical. Look at the long chromosome: as set at first, each cell holds both <strong>R</strong> and <strong>r</strong>, because its crossover fell between the centromere and the gene. Those two separate in the next division.</p>`
 		},
 		{
 			id: 'second',

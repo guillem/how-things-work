@@ -8,7 +8,7 @@
 	 * where it falls among 400 simulated sibling pairs. params.again: two new
 	 * siblings. The children's chromosomes grow in over the first ~2 s.
 	 */
-	import { Label, rng, smoothstep } from '#lib/draw/index.ts';
+	import { Label, cycle, rng, smoothstep } from '#lib/draw/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { HUMAN_AUTOSOMES } from '../human-map';
@@ -182,6 +182,14 @@
 			stroke="var(--explainer-accent, var(--accent))"
 			stroke-width="2.5"
 			opacity={grow(1)}
+		/>
+		<circle
+			cx={hx(share)}
+			cy="516"
+			r={4 + 8 * cycle(t, 2)}
+			fill="none"
+			stroke="var(--explainer-accent, var(--accent))"
+			opacity={grow(1) * (1 - cycle(t, 2))}
 		/>
 	</Readout>
 </g>
