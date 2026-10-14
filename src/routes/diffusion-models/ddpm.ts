@@ -377,7 +377,7 @@ export function sample(wt: Weights, o: SampleOptions): Float32Array {
 	const { D } = wt.cfg;
 	const B = o.count;
 	const rnd = gaussian(o.seed);
-	let x = Float32Array.from({ length: B * D }, () => rnd());
+	let x: Float32Array = Float32Array.from({ length: B * D }, () => rnd());
 	o.onStart?.(x);
 	const ts = schedule(o.steps);
 	for (let k = 0; k < ts.length; k++) {

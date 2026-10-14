@@ -618,6 +618,15 @@ const explainers: Explainer[] = [
 		accent: '#6741d9',
 		steps: 12,
 		minutes: 24
+	},
+	{
+		slug: 'diffusion-models',
+		title: 'Diffusion models',
+		summary:
+			'Dissolve a cloud of points, then a handwritten digit, into pure static one small step of noise at a time. Then run two small trained networks backwards, from noise to data, steered by a prompt and a guidance scale.',
+		accent: '#ae3ec9',
+		steps: 13,
+		minutes: 26
 	}
 ];
 
