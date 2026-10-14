@@ -88,7 +88,7 @@
 		untrack(() => {
 			for (const p of PARTICLES) {
 				const on = v === 'browse' || feels(p, f);
-				dimT.get(p.key)?.set(on ? 1 : 0.22, { duration: reduced ? 0 : 600 });
+				dimT.get(p.key)?.set(on ? 1 : 0.35, { duration: reduced ? 0 : 600 });
 			}
 		});
 	});

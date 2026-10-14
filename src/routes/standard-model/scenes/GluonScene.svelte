@@ -113,13 +113,13 @@
 	const SNAP = 0.62;
 	const pu = $derived(reduced ? 0.5 : cycle(t, PULL));
 	const stretch = $derived(smoothstep(0.05, SNAP, pu));
-	const sep = $derived(90 + 380 * stretch);
+	const sep = $derived(90 + 330 * stretch);
 	const after = $derived(smoothstep(SNAP, SNAP + 0.06, pu));
 	const drift = $derived(smoothstep(SNAP, 1, pu));
 	const MX = 300;
 	const MY = 260;
-	const qx = $derived(MX - sep / 2 - 40 * drift);
-	const aqx = $derived(MX + sep / 2 + 40 * drift);
+	const qx = $derived(MX - sep / 2 - 30 * drift);
+	const aqx = $derived(MX + sep / 2 + 30 * drift);
 	const tubeLeft = $derived(qx + 30);
 	const tubeRight = $derived(aqx - 30);
 	// After the snap: the new antiquark sits by the quark, the new quark by the antiquark.

@@ -328,7 +328,7 @@
 			edge="var(--sm-quark)"
 			size={24}
 			disabled={full}
-			ariaLabel="Add an {f} quark"
+			ariaLabel="Add quark {f}"
 			onpress={() => add(f)}
 		/>
 		<Pad
@@ -342,7 +342,7 @@
 			edge="var(--sm-quark)"
 			size={24}
 			disabled={full}
-			ariaLabel="Add an anti-{f} quark"
+			ariaLabel="Add antiquark {f}"
 			onpress={() => add(`~${f}`)}
 		/>
 	{/each}
