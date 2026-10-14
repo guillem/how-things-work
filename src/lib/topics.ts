@@ -537,6 +537,15 @@ const explainers: Explainer[] = [
 		accent: '#0c8599',
 		steps: 11,
 		minutes: 24
+	},
+	{
+		slug: 'transformers',
+		title: 'Attention and transformers',
+		summary:
+			'Look inside GPT-2: see which earlier words each word attends to, layer by layer and head by head, then work through one attention operation with the model’s real numbers, from queries and keys to the weighted mix of values.',
+		accent: '#6741d9',
+		steps: 12,
+		minutes: 24
 	}
 ];
 

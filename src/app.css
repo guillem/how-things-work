@@ -1490,3 +1490,36 @@ kbd {
 	--qc-bar: #adb5bd;
 	--qc-click: #ffd43b;
 }
+
+/* transformers: query, key, value, attention weight, the start token, masked cells */
+:root {
+	--tf-q: #e8590c;
+	--tf-k: #1971c2;
+	--tf-v: #2f9e44;
+	--tf-att: #6741d9;
+	--tf-att-cell: #6741d9;
+	--tf-start: #868e96;
+	--tf-mask: #868e9626;
+	--tf-cell: #f1f3f5;
+	--tf-sel: #f08c00;
+}
+:root[data-theme='dark'] {
+	--tf-q: #ff922b;
+	--tf-k: #4dabf7;
+	--tf-v: #69db7c;
+	--tf-att: #b197fc;
+	--tf-att-cell: #b197fc;
+	--tf-start: #adb5bd;
+	--tf-mask: #adb5bd1f;
+	--tf-cell: #25262b;
+	--tf-sel: #ffd43b;
+}
+.tf-q {
+	color: var(--tf-q);
+}
+.tf-k {
+	color: var(--tf-k);
+}
+.tf-v {
+	color: var(--tf-v);
+}

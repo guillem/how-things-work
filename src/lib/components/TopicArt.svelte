@@ -1963,6 +1963,31 @@
 				opacity={k === 5 ? 1 : 0.45}
 			/>
 		{/each}
+	{:else if slug === 'transformers'}
+		<!-- a row of tokens; the last one attends back to the others, one arc per weight -->
+		{#each [{ x: 30, w: 1 }, { x: 66, w: 4.5 }, { x: 102, w: 1.2 }, { x: 138, w: 2 }] as a (a.x)}
+			<path
+				d="M174 78 Q{(a.x + 174) / 2} {78 - (174 - a.x) * 0.45} {a.x} 78"
+				fill="none"
+				stroke={accent}
+				stroke-width={a.w}
+				stroke-linecap="round"
+				opacity={0.35 + a.w / 8}
+			/>
+		{/each}
+		{#each [30, 66, 102, 138, 174] as x (x)}
+			<rect
+				x={x - 14}
+				y="82"
+				width="28"
+				height="16"
+				rx="4"
+				fill={x === 174 ? accent : 'none'}
+				stroke={x === 174 ? accent : 'currentColor'}
+				stroke-width="1.4"
+				opacity={x === 174 ? 0.9 : 0.6}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
