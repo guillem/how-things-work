@@ -456,6 +456,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 11,
 		minutes: 22
+	},
+	{
+		slug: 'quantum-computing',
+		title: 'Quantum computing',
+		summary:
+			"Turn a qubit round the Bloch sphere with gates and measure it again and again, entangle two qubits and compare what they say, then step through Grover's search and watch interference pile the probability onto the right answer.",
+		accent: '#0c8599',
+		steps: 11,
+		minutes: 24
 	}
 ];
 
