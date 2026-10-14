@@ -780,6 +780,15 @@ const explainers: Explainer[] = [
 		accent: '#6741d9',
 		steps: 12,
 		minutes: 22
+	},
+	{
+		slug: 'gpu',
+		title: 'GPUs and parallel computing',
+		summary:
+			'Race one fast processor core against thousands of slow lanes on every pixel of an image and on a matrix multiplication. See what a branch costs a warp of 32, why memory sets the pace on a real GPU and CPU, and why the part of a job that must run in order caps the speed-up.',
+		accent: '#5c940d',
+		steps: 12,
+		minutes: 22
 	}
 ];
 

@@ -2743,6 +2743,33 @@
 		{#each [[112, 70], [120, 48], [130, 40], [142, 38], [154, 38], [166, 39], [178, 38]] as [x, y] (x)}
 			<circle cx={x} cy={y} r="3" fill={accent} />
 		{/each}
+	{:else if slug === 'gpu'}
+		<!-- one big core beside a grid of many small lanes, a few of them switched off -->
+		<rect
+			x="16"
+			y="34"
+			width="52"
+			height="52"
+			rx="6"
+			fill="var(--gpu-fast)"
+			fill-opacity="0.18"
+			stroke="var(--gpu-fast)"
+			stroke-width="2.5"
+		/>
+		<text x="42" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="var(--gpu-fast)"
+			>CPU</text
+		>
+		{#each Array.from({ length: 48 }, (_, k) => k) as k (k)}
+			<rect
+				x={88 + (k % 12) * 9}
+				y={30 + Math.floor(k / 12) * 15}
+				width="7"
+				height="12"
+				rx="1.5"
+				fill={k % 12 > 8 && k > 23 ? 'var(--gpu-idle)' : accent}
+				fill-opacity={k % 12 > 8 && k > 23 ? 1 : 0.8}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
