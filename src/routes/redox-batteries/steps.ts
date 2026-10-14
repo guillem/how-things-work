@@ -226,7 +226,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [closedCell],
 			body: `
-<p>Connect a lamp. In the graphite, a lithium ion lets go of the electron it shared with the carbon, and the two part company. The <strong>ion</strong> crosses the electrolyte and the separator to the oxide; the <strong>electron</strong> can't go that way, since the separator doesn't conduct electrons, so it goes round through the copper foil, the wire, the lamp and the aluminium foil, and reaches the oxide from the other side. There the two meet again.</p>
+<p>Connect a lamp. In the graphite, the carbon gives up an electron and a lithium ion leaves it. The <strong>ion</strong> crosses the electrolyte and the separator to the oxide; the <strong>electron</strong> can't go that way, since the separator doesn't conduct electrons, so it goes round through the copper foil, the wire, the lamp and the aluminium foil, and reaches the oxide from the other side. There the two meet again.</p>
 <p class="formula">− side: LiC₆ → C₆ + Li⁺ + e⁻<br>+ side: Li⁺ + e⁻ + MO₂ → LiMO₂</p>
 <p>The lithium is an ion throughout, in the graphite and in the oxide alike. What is oxidised and reduced is the <em>host</em>: the graphite gives up electrons, and nickel ions in the oxide take them (Ni⁴⁺ back towards Ni²⁺).</p>
 <p>Count them: every second, as many electrons cross the lamp as lithium ions cross the separator. That is the <a href="../electric-circuits/#current">same current all the way round the loop</a>. Disconnect the wire, and the ions stop too.</p>`,

@@ -6,7 +6,7 @@
 	 * Focus (`step.hints.focus`):
 	 *   split   — a lamp and a switch in the wire (control `closed`). Closed: electrons run
 	 *             along the wire, Zn²⁺ leave the zinc, Cu²⁺ plate onto the copper, NO₃⁻ and K⁺
-	 *             drift through the bridge: per cycle 2 e⁻, 1 Zn²⁺, 1 Cu²⁺, 1 NO₃⁻ and 1 K⁺, so
+	 *             drift through the bridge: every 9.6 s 6 e⁻, 3 Zn²⁺, 3 Cu²⁺, 3 NO₃⁻ and 3 K⁺, so
 	 *             the charge balances everywhere. Open: everything fades out together.
 	 *   nernst  — a voltmeter instead of the lamp (it draws almost no current, so nothing
 	 *             moves); controls `zn`, `cu` (mol/L); the panel plots E against log₁₀ Q.
@@ -109,8 +109,8 @@
 	// ---- particles (pure functions of t) ---------------------------------------------------------
 	const P = 3.2;
 	const electrons = $derived(
-		Array.from({ length: 10 }, (_, i) => {
-			const u = cycle(t, P * 2.5, i / 10);
+		Array.from({ length: 6 }, (_, i) => {
+			const u = cycle(t, P * 3, i / 6);
 			return {
 				i,
 				...along(wire, u),
@@ -133,8 +133,8 @@
 		lanes.map((y, k) => ({ k, ...swim(cycle(t, P * 3, k / 3 + 0.5), 450, CU_X - 14, y) }))
 	);
 	const nitrate = $derived(
-		[0, 1].map((k) => {
-			const u = cycle(t, P * 3, k / 2);
+		[0, 1, 2].map((k) => {
+			const u = cycle(t, P * 3, k / 3);
 			return {
 				k,
 				...along(bridge.slice().reverse(), u),
@@ -143,8 +143,8 @@
 		})
 	);
 	const potassium = $derived(
-		[0, 1].map((k) => {
-			const u = cycle(t, P * 3, k / 2 + 0.25);
+		[0, 1, 2].map((k) => {
+			const u = cycle(t, P * 3, k / 3 + 1 / 6);
 			return {
 				k,
 				...along(bridge, u),

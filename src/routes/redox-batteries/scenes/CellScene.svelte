@@ -418,7 +418,7 @@
 			<Readout
 				id="an"
 				order={2}
-				label={reactions.anNote}
+				label={focus === 'summary' ? undefined : reactions.anNote}
 				value={reactions.an.replace('− side: ', '')}
 			>
 				<Label x={(xAn + xSep) / 2} y={BOT + 76} text={reactions.an} size={13} weight={600} />
@@ -427,7 +427,7 @@
 			<Readout
 				id="ca"
 				order={3}
-				label={reactions.caNote}
+				label={focus === 'summary' ? undefined : reactions.caNote}
 				value={reactions.ca.replace('+ side: ', '')}
 			>
 				<Label x={(xCa + xAl) / 2} y={BOT + 76} text={reactions.ca} size={13} weight={600} />
@@ -450,7 +450,12 @@
 			/>
 		</Readout>
 		{#if focus === 'summary'}
-			<Readout id="inside" order={5} label="Inside the cell" value="only ions can cross">
+			<Readout
+				id="inside"
+				order={5}
+				label="Ions and electrons"
+				value="only ions cross inside the cell; only electrons go round outside, through what you power"
+			>
 				<Label
 					x={(xSep + xCa) / 2}
 					y={TOP - 8}
@@ -460,12 +465,7 @@
 					color="var(--rb-li)"
 				/>
 			</Readout>
-			<Readout
-				id="outside"
-				order={6}
-				label="Outside"
-				value="only electrons: through what you power"
-			>
+			<Readout id="outside">
 				<Label
 					x={LOAD.x + 130}
 					y={WIRE_Y - 12}
