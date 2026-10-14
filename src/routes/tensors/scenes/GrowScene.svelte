@@ -278,8 +278,8 @@
 			/>
 			<Readout id="ax-deep">
 				<T
-					x={deep.b.x + 10}
-					y={deep.b.y + 4}
+					x={deep.b.x + 22}
+					y={deep.b.y - 8}
 					text="axis 0: layers · {nL}"
 					color="var(--tn-deep)"
 					weight={600}

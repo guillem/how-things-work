@@ -314,7 +314,19 @@
 				weight={600}
 			/>
 		</g>
-		<T x={back.x + 10} y={back.y + 30} text={words.c} color={colors.c} weight={600} />
+		<g
+			transform="rotate({(Math.atan2(s.sy, s.sx) * 180) / Math.PI} {(right.x + back.x) /
+				2} {(right.y + back.y) / 2})"
+		>
+			<T
+				x={(right.x + back.x) / 2}
+				y={(right.y + back.y) / 2 + 32}
+				text={words.c}
+				anchor="middle"
+				color={colors.c}
+				weight={600}
+			/>
+		</g>
 	</Readout>
 {/snippet}
 
@@ -950,7 +962,8 @@
 					weight={700}
 					size={14}
 				/>
-				<circle cx={pp.x} cy={pp.y} r="5" fill="none" stroke="var(--stage-ink)" stroke-width="2" />
+				<circle cx={pp.x} cy={pp.y} r="6" fill="none" stroke="#fff" stroke-width="3" />
+				<circle cx={pp.x} cy={pp.y} r="6" fill="none" stroke="#000" stroke-width="1.2" />
 			{/each}
 			{@render stackAxes(
 				'grey',

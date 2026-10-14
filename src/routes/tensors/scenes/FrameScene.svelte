@@ -208,7 +208,7 @@
 				shx,
 				[s * yp[0], s * yp[1]],
 				txy,
-				'var(--tn-turned)',
+				'var(--tn-shear)',
 				s > 0 ? `τ′xy = ${num(txy, 1)}` : ''
 			);
 			// ± y′ faces
@@ -225,7 +225,7 @@
 				fy[0] - (s * txy * 1.25 * KR * xp[0]) / 2,
 				fy[1] - (s * txy * 1.25 * KR * xp[1]) / 2
 			];
-			add(`sy${s}`, shy, [s * xp[0], s * xp[1]], txy, 'var(--tn-turned)', '');
+			add(`sy${s}`, shy, [s * xp[0], s * xp[1]], txy, 'var(--tn-shear)', '');
 		}
 		return out;
 	});
@@ -279,14 +279,14 @@
 				<Arrow
 					from={{ x: CX + s * (HALF + 8), y: CY + s * 30 * 0.6 * breathe }}
 					to={{ x: CX + s * (HALF + 8), y: CY - s * 30 * 0.6 * breathe }}
-					color="var(--tn-turned)"
+					color="var(--tn-shear)"
 					width={2}
 					opacity={0.45}
 				/>
 				<Arrow
 					from={{ x: CX - s * 30 * 0.6 * breathe, y: CY - s * (HALF + 8) }}
 					to={{ x: CX + s * 30 * 0.6 * breathe, y: CY - s * (HALF + 8) }}
-					color="var(--tn-turned)"
+					color="var(--tn-shear)"
 					width={2}
 					opacity={0.45}
 				/>
@@ -361,8 +361,8 @@
 					color="var(--tn-force)"
 				/>
 				<T
-					x={P([n[0] * (KN + 30) - n[1] * 14, 0], 1).x}
-					y={P([0, n[1] * (KN + 30) + n[0] * 14], 1).y + 6}
+					x={P([n[0] * (KN + 22) + n[1] * 18, 0], 1).x}
+					y={P([0, n[1] * (KN + 22) - n[0] * 18], 1).y + 6}
 					text="n"
 					size={20}
 					weight={700}
@@ -661,14 +661,7 @@
 					color="var(--tn-force)"
 					weight={600}
 				/>
-				<T
-					x={24}
-					y={580}
-					text="and shear (τ′xy)"
-					size={12}
-					color="var(--tn-turned)"
-					weight={600}
-				/>
+				<T x={24} y={580} text="and shear (τ′xy)" size={12} color="var(--tn-shear)" weight={600} />
 			</Readout>
 			<Readout id="principal-label">
 				<T

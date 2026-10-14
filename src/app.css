@@ -1901,6 +1901,7 @@ kbd {
 	--tn-turned: #e8590c;
 	--tn-plate: #e9ecef;
 	--tn-bad: #e03131;
+	--tn-shear: #0c8599;
 }
 :root[data-theme='dark'] {
 	--tn-across: #4dabf7;
@@ -1912,10 +1913,11 @@ kbd {
 	--tn-green: #69db7c;
 	--tn-blue: #4dabf7;
 	--tn-cell: #25262b;
-	--tn-cell-back: #1a1b1e;
+	--tn-cell-back: #202125;
 	--tn-force: #f783ac;
 	--tn-normal: #74c0fc;
 	--tn-turned: #ffa94d;
 	--tn-plate: #3a3d44;
 	--tn-bad: #ff6b6b;
+	--tn-shear: #3bc9db;
 }
