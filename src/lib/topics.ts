@@ -519,6 +519,15 @@ const explainers: Explainer[] = [
 		accent: '#c2570c',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'dna-to-protein',
+		title: 'DNA to protein',
+		summary:
+			'Follow a real human gene from DNA to protein: copied into RNA, edited, read three letters at a time by a ribosome with the genetic code. Then change, insert or delete one letter and see the protein survive, change or fall apart.',
+		accent: '#a61e4d',
+		steps: 12,
+		minutes: 20
 	}
 ];
 

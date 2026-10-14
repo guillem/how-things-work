@@ -1435,3 +1435,63 @@ kbd {
 	--tc-flagellum: #c8a06a;
 	--tc-protein: #4a5566;
 }
+
+/* ---------------------------------------------------------------------------
+   dna-to-protein: bases, strands, machines, amino-acid kinds (light, then dark)
+   --------------------------------------------------------------------------- */
+:root {
+	--dp-a: #e8590c;
+	--dp-t: #e0a100;
+	--dp-c: #2f9e44;
+	--dp-g: #1c7ed6;
+	--dp-backbone: #868e96;
+	--dp-rna: #c2255c;
+	--dp-pol: #d9c3ea;
+	--dp-pol-edge: #8c6bb1;
+	--dp-ribo: #e9d8c4;
+	--dp-ribo-edge: #a07850;
+	--dp-trna: #74b9c9;
+	--dp-trna-edge: #2f7f93;
+	--dp-nucleus: #eee8f6;
+	--dp-nucleus-edge: #9b87c4;
+	--dp-cyto: #fbf3ea;
+	--dp-exon: #c2255c;
+	--dp-intron: #ced4da;
+	--dp-utr: #f3a5bf;
+	--dp-nonpolar: #f2c94c;
+	--dp-polar: #6fcf97;
+	--dp-positive: #6ea8fe;
+	--dp-negative: #f28b82;
+	--dp-stop: #495057;
+	--dp-wrong: #e03131;
+	--dp-same: #dee2e6;
+	--dp-hl: #ffd43b;
+}
+:root[data-theme='dark'] {
+	--dp-a: #ff922b;
+	--dp-t: #fcc419;
+	--dp-c: #51cf66;
+	--dp-g: #4dabf7;
+	--dp-backbone: #868e96;
+	--dp-rna: #f06595;
+	--dp-pol: #3d2f52;
+	--dp-pol-edge: #b197fc;
+	--dp-ribo: #4a3b2c;
+	--dp-ribo-edge: #d0a777;
+	--dp-trna: #1f5563;
+	--dp-trna-edge: #66d9e8;
+	--dp-nucleus: #241f30;
+	--dp-nucleus-edge: #9775fa;
+	--dp-cyto: #221d17;
+	--dp-exon: #f06595;
+	--dp-intron: #495057;
+	--dp-utr: #a34a6b;
+	--dp-nonpolar: #b8902a;
+	--dp-polar: #2f9e5d;
+	--dp-positive: #3b6fd1;
+	--dp-negative: #c4473f;
+	--dp-stop: #adb5bd;
+	--dp-wrong: #ff6b6b;
+	--dp-same: #3a3f45;
+	--dp-hl: #fab005;
+}
