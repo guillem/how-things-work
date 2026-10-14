@@ -214,6 +214,7 @@
 			<text {x} y={390} style:font-size="14px" font-weight="600" text-anchor="middle">{c.aa}</text>
 		{/each}
 		<Readout
+			opacity={1 - mix.current}
 			id="same"
 			order={2}
 			label="Same protein, different letters"
@@ -228,6 +229,7 @@
 			/>
 		</Readout>
 		<Readout
+			opacity={1 - mix.current}
 			id="gc"
 			order={3}
 			label="G and C letters"
@@ -351,6 +353,7 @@
 			</g>
 		{/each}
 		<Readout
+			opacity={mix.current}
 			id="letters"
 			order={2}
 			label="The letter"
@@ -431,6 +434,7 @@
 			{/if}
 		{/each}
 		<Readout
+			opacity={mix.current}
 			id="alarm"
 			order={3}
 			label="RNA sensors"
@@ -448,6 +452,7 @@
 			/>
 		</Readout>
 		<Readout
+			opacity={mix.current}
 			id="ribo"
 			order={4}
 			label="Ribosomes"

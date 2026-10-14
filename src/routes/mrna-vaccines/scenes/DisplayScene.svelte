@@ -117,6 +117,7 @@
 			</g>
 		{/each}
 		<Readout
+			opacity={1 - mix.current}
 			id="cell"
 			order={1}
 			label="A cell that made spikes"
@@ -151,6 +152,7 @@
 			</g>
 		{/each}
 		<Readout
+			opacity={1 - mix.current}
 			id="bcell"
 			order={2}
 			label="B cell"
@@ -171,6 +173,7 @@
 		<circle cx={TCELL.x} cy={TCELL.y} r="30" fill="var(--im-tcell)" opacity="0.85" />
 		<rect x={TCELL.x - 40} y={TCELL.y - 5} width="12" height="10" rx="2" fill="var(--im-tcell)" />
 		<Readout
+			opacity={1 - mix.current}
 			id="tcell"
 			order={3}
 			label="Killer T cell"
@@ -250,6 +253,7 @@
 			</g>
 		{/each}
 		<Readout
+			opacity={1 - mix.current}
 			id="node"
 			order={4}
 			label="In the lymph node"
@@ -288,7 +292,13 @@
 				opacity={c.o}
 			/>
 		{/each}
-		<Readout id="gen" order={1} label="Dividing" value="1 → {2 ** gen} cells after {gen} divisions">
+		<Readout
+			opacity={mix.current}
+			id="gen"
+			order={1}
+			label="Dividing"
+			value="1 → {2 ** gen} cells after {gen} divisions"
+		>
 			<Tag
 				x={70}
 				y={40}
@@ -312,7 +322,14 @@
 			>after one dose, in the model</text
 		>
 		{#each [{ id: 'naive', label: 'matching naive T cells', value: `${CAO.Cn0}`, c: 'var(--stage-ink-muted)' }, { id: 'peak', label: `killer T cells at the peak, day ${Math.round(eMax.t)}`, value: count(eMax.v), c: 'var(--im-tcell)' }, { id: 'ab', label: 'antibodies from', value: `day ${Math.round(firstAb)}`, c: 'var(--im-antibody)' }, { id: 'mem', label: 'memory T cells left (5% of the peak)', value: count(memT), c: 'var(--im-memory)' }, { id: 'virus', label: 'virus, infected cells', value: 'none', c: 'var(--im-virus)' }] as r, i (r.id)}
-			<Readout id="m-{r.id}" order={2 + i} label={r.label} value={r.value} color={r.c}>
+			<Readout
+				opacity={mix.current}
+				id="m-{r.id}"
+				order={2 + i}
+				label={r.label}
+				value={r.value}
+				color={r.c}
+			>
 				<circle cx={548} cy={186 + i * 60} r="6" fill={r.c} />
 				<text x={562} y={191 + i * 60} style:font-size="13px">{r.label}</text>
 				<text

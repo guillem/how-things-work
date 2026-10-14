@@ -320,6 +320,7 @@
 			fill="none"
 		/>
 		<Readout
+			opacity={1 - cellMix.current}
 			id="arm"
 			order={1}
 			label="Injected into the shoulder muscle"
@@ -406,6 +407,7 @@
 			</g>
 		</g>
 		<Readout
+			opacity={1 - cellMix.current}
 			id="zoom-key"
 			order={2}
 			label="In the muscle"
@@ -416,18 +418,20 @@
 			<Tag x={ZOOM.x - 40} y={ZOOM.y + 182} text="dendritic cell" size={11} pill />
 			<Tag x={ZOOM.x + 170} y={ZOOM.y - 150} text="lymph vessel" size={11} anchor="start" muted />
 		</Readout>
-		<Readout id="node" order={3} label="Lymph node (armpit)">
-			<ellipse
-				cx={ZOOM.x + 220}
-				cy={ZOOM.y - 262}
-				rx="62"
-				ry="26"
-				fill="var(--im-node)"
-				stroke="var(--im-node-edge)"
-				stroke-width="1.5"
-			/>
-			<Tag x={ZOOM.x + 220} y={ZOOM.y - 258} text="to the lymph node" size={11} />
-		</Readout>
+		{#if view === 'muscle'}
+			<Readout id="node" order={3} label="Lymph node (armpit)">
+				<ellipse
+					cx={ZOOM.x + 220}
+					cy={ZOOM.y - 262}
+					rx="62"
+					ry="26"
+					fill="var(--im-node)"
+					stroke="var(--im-node-edge)"
+					stroke-width="1.5"
+				/>
+				<Tag x={ZOOM.x + 220} y={ZOOM.y - 258} text="to the lymph node" size={11} />
+			</Readout>
+		{/if}
 	</g>
 
 	<!-- ================================================= the cell ===== -->
@@ -496,6 +500,7 @@
 			{/each}
 		</g>
 		<Readout
+			opacity={cellMix.current}
 			id="cell-key"
 			order={1}
 			label="A muscle cell"
@@ -575,7 +580,13 @@
 					opacity={entry.burst}
 				/>
 			{/if}
-			<Readout id="entry-steps" order={2} label="Getting in" value={STAGES[entry.stage - 1].label}>
+			<Readout
+				opacity={on('entry') * cellMix.current}
+				id="entry-steps"
+				order={2}
+				label="Getting in"
+				value={STAGES[entry.stage - 1].label}
+			>
 				{#each STAGES as s (s.n)}
 					<text
 						x={s.x}
@@ -631,6 +642,7 @@
 				<circle cx={v.x} cy={v.y} r="3.5" fill="var(--mv-spike)" opacity={v.o} />
 			{/each}
 			<Readout
+				opacity={on('ribosome') * cellMix.current}
 				id="codon"
 				order={2}
 				label="Reading"
@@ -713,6 +725,7 @@
 				<path d="M-5 -5 L5 5 M5 -5 L-5 5" stroke="var(--im-virus)" stroke-width="2.5" />
 			</g>
 			<Readout
+				opacity={on('nucleus') * cellMix.current}
 				id="nuc-out"
 				order={2}
 				label="Traffic through the nuclear pores"
@@ -727,6 +740,7 @@
 				/>
 			</Readout>
 			<Readout
+				opacity={on('nucleus') * cellMix.current}
 				id="nuc-vax"
 				order={3}
 				label="The vaccine's message"
@@ -804,6 +818,7 @@
 			/>
 			<circle cx={fadeX} cy={lerp(PLOT.y1, PLOT.y0, left)} r="4.5" fill="var(--mv-mrna)" />
 			<Readout
+				opacity={on('fade') * cellMix.current}
 				id="fade-left"
 				order={2}
 				label="Day {day}"
