@@ -2,8 +2,8 @@
 	/**
 	 * Why planets are hard to see (step glare). Left: a Sun-like star's glare with
 	 * an Earth on its orbit, lost in it. Right: on a scale of powers of ten, the
-	 * star's light against the light the Earth and Jupiter catch (an upper bound
-	 * on what they reflect, (R / 2a)²) and against the dips they make when they
+	 * star's light against the light the Earth and Jupiter catch, (R / 2a)², the
+	 * light they intercept and against the dips they make when they
 	 * transit, (R / R★)². The bars grow in one after another (pure function of t).
 	 */
 	import { smoothstep } from '#lib/draw/index.ts';
@@ -174,7 +174,7 @@
 		id="m-ratio"
 		order={9}
 		label="So"
-		value="the dip a transiting Earth makes is {ratio} times all the light it could send us"
+		value="the dip a transiting Earth makes is {ratio} times all the light it catches from the Sun"
 	>
 		<T
 			x={502}
@@ -183,12 +183,6 @@
 			size={12.5}
 			weight={600}
 		/>
-		<T
-			x={502}
-			y={572}
-			text="bigger than all the light it could send us."
-			size={12.5}
-			weight={600}
-		/>
+		<T x={502} y={572} text="all the light it catches from the Sun." size={12.5} weight={600} />
 	</Readout>
 </g>

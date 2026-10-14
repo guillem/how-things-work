@@ -63,6 +63,19 @@ test('seen face-on the star still moves, but none of it is towards us', async ({
 	await range(page, 'tilt').fill('100');
 	await expect(stage(page)).toContainText(/± 0 cm\/s/);
 	await expect(stage(page)).toContainText(/Star’s real speed\s*127 m\/s/);
+	await expect(stage(page)).toContainText('no shift: seen face-on');
+	await expect(stage(page)).not.toContainText('redder by');
+});
+
+test('tilting the orbit flattens the velocity curve', async ({ page }) => {
+	await open(page, './exoplanets/#tilt-wobble');
+	const curve = stage(page).locator('path[stroke="var(--ex-rv)"]').last();
+	const height = async () => (await curve.boundingBox())?.height ?? 0;
+	await range(page, 'tilt').fill('0');
+	const edgeOn = await height();
+	await range(page, 'tilt').fill('90'); // 66° from edge-on: sin i = 0.41
+	await expect.poll(height).toBeLessThan(edgeOn * 0.5);
+	expect(await height()).toBeGreaterThan(edgeOn * 0.3);
 });
 
 test('both curves give size, mass and density; tilting loses the dip and the density', async ({

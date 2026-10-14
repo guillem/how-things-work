@@ -52,6 +52,10 @@ test('a transit dims the star by (Rp/R★)²: 84 ppm for the Earth, 1% for Jupit
 	expect(1 - flux(SUN, earth, 0)).toBeCloseTo(transitDepth(SUN, earth), 9);
 	expect(flux(SUN, earth, 0.25)).toBe(1);
 	expect(flux(SUN, earth, 0.5)).toBe(1); // behind the star: nothing blocked
+	// A planet bigger than its star (22 Earth radii round Proxima) hides all of it, no more.
+	const huge: Planet = { radius: 22, mass: 1, a: 0.05, incl: 90 };
+	expect(transitDepth(STARS.proxima.star, huge)).toBe(1);
+	expect(flux(STARS.proxima.star, huge, 0)).toBe(0);
 });
 
 test('the overlap of two discs: none apart, k² inside, half at the edge for a tiny planet', () => {

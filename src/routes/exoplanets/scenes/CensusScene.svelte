@@ -159,7 +159,7 @@
 			weight={700}
 			color="var(--ex-imaging)"
 		/>
-		<T x={CX + 16} y={392} text="All the others were found from" size={12.5} />
+		<T x={CX + 16} y={392} text="Almost all the others were found from" size={12.5} />
 		<T x={CX + 16} y={412} text="what they do to their star’s light:" size={12.5} />
 		<T x={CX + 16} y={432} text="a dip in its brightness, or a" size={12.5} />
 		<T x={CX + 16} y={452} text="wobble in its spectral lines" size={12.5} />

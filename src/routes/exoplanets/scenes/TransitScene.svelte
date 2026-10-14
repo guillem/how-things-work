@@ -92,7 +92,7 @@
 	const xOf = (p: number) => (slow ? p * P * 24 : (p + 0.25) * P);
 	// y: brightness in %, scaled to the depth of a full transit (also when it misses).
 	const scaleDepth = $derived(Math.max(depth, 1e-7));
-	const yLo = $derived(100 * (1 - 1.3 * scaleDepth));
+	const yLo = $derived(Math.max(0, 100 * (1 - 1.3 * scaleDepth)));
 	const yHi = $derived(100 * (1 + 0.25 * scaleDepth));
 	const sy = $derived(scale([yLo, yHi], [PY1, PY0]));
 	const yt = $derived(ticksWithDecimals(yLo, 100, 3));
@@ -153,12 +153,12 @@
 		y: OCY + (pos.y / AR) * orx
 	});
 	const ellipseHalf = (near: boolean) => {
-		// near half: cos θ > 0 (θ from -90° to 90°), drawn below the star when tilted
+		// near half: cos θ > 0 (θ from -90° to 90°), drawn above the star when tilted, like the planet
 		const pts: string[] = [];
 		for (let i = 0; i <= 60; i++) {
 			const th = (near ? -Math.PI / 2 : Math.PI / 2) + (Math.PI * i) / 60;
 			pts.push(
-				`${i ? 'L' : 'M'}${(OCX + orx * Math.sin(th)).toFixed(1)} ${(OCY + ry * Math.cos(th)).toFixed(1)}`
+				`${i ? 'L' : 'M'}${(OCX + orx * Math.sin(th)).toFixed(1)} ${(OCY - ry * Math.cos(th)).toFixed(1)}`
 			);
 		}
 		return pts.join(' ');
