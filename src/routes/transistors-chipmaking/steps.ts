@@ -247,17 +247,18 @@ export const spec: ExplainerSpec = {
 					type: 'range',
 					id: 'year',
 					label: 'Year',
-					min: 1971,
-					max: 2021,
+					min: 1972,
+					max: 2022,
 					step: 1,
-					default: 2021
+					default: 2022,
+					help: 'Chips released after this year are dimmed.'
 				}
 			],
 			body: `
 <p>Each new generation of lithography let the same area of silicon hold about twice as many transistors. The chart plots the number of transistors on microprocessors from Intel's first, the <strong>4004</strong> of 1971 with 2,300, to chips of over <strong>50 billion</strong> fifty years later. Each gridline is ten times the one below.</p>
 <p>On this scale steady doubling is a straight line. Fitted to these chips, the count doubles every <strong>2.0 years</strong>: <dfn data-def="Gordon Moore's observation (1965, revised in 1975) that the number of transistors on a chip doubles about every two years.">Moore's law</dfn>, which held for half a century. Move the year to compare any chip with the 4004.</p>
 <p>So the two halves of the story meet: a transistor is a switch controlled by a voltage, and chips are made by printing billions of those switches at once, with light.</p>`,
-			notes: `<p>Data: Karl Rupp, <i>Microprocessor Trend Data</i> (CC BY 4.0), with data up to 2010 collected by M. Horowitz, F. Labonte, O. Shacham, K. Olukotun, L. Hammond and C. Batten. The line is a least-squares fit of the logarithm of the count to the year over all 99 chips. Moore first predicted a doubling every year (1965) and revised it to every two years in 1975. Counts kept rising after 2005, but clock speeds stopped, because shrinking transistors no longer cut their power as before; the extra transistors went into more processor cores instead.</p>`
+			notes: `<p>Data: Karl Rupp, <i>Microprocessor Trend Data</i> (CC BY 4.0), with data up to 2010 collected by M. Horowitz, F. Labonte, O. Shacham, K. Olukotun, L. Hammond and C. Batten. The line is a least-squares fit of the logarithm of the count to the year over all 99 chips. The three named chips are identified by their year and count (Intel's 4004; Apple's M1 and M1 Max, whose counts are Apple's). Moore first predicted a doubling every year (1965) and revised it to every two years in 1975. Counts kept rising after 2005, but clock speeds stopped, because shrinking transistors no longer cut their power as before; the extra transistors went into more processor cores instead.</p>`
 		}
 	]
 };
