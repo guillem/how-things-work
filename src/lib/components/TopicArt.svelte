@@ -1902,6 +1902,23 @@
 		{#each [148, 162, 176] as x (x)}
 			<circle cx={x} cy="66" r="6" fill="currentColor" opacity="0.45" />
 		{/each}
+	{:else if slug === 'neural-networks'}
+		<!-- a small network: two inputs, a hidden layer of three, one output, weights as lines -->
+		{#each [40, 80] as y1 (y1)}
+			{#each [30, 60, 90] as y2 (y2)}
+				<line x1="58" {y1} x2="100" {y2} stroke="currentColor" stroke-width="1.2" opacity="0.5" />
+			{/each}
+		{/each}
+		{#each [30, 60, 90] as y2 (y2)}
+			<line x1="100" y1={y2} x2="142" y2="60" stroke={accent} stroke-width="1.6" opacity="0.8" />
+		{/each}
+		{#each [40, 80] as y (y)}
+			<circle cx="58" cy={y} r="7" fill="none" stroke="currentColor" stroke-width="1.4" />
+		{/each}
+		{#each [30, 60, 90] as y (y)}
+			<circle cx="100" cy={y} r="8" fill={accent} opacity="0.85" />
+		{/each}
+		<circle cx="142" cy="60" r="9" fill="none" stroke={accent} stroke-width="2.2" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -519,6 +519,15 @@ const explainers: Explainer[] = [
 		accent: '#c2570c',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'neural-networks',
+		title: 'Neural networks and backpropagation',
+		summary:
+			'Build a network out of simple neurons, train it live and watch it bend a straight line into circles and spirals. Then follow one example forward through the network and its error backward, adjusting every weight.',
+		accent: '#1971c2',
+		steps: 11,
+		minutes: 22
 	}
 ];
 

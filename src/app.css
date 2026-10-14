@@ -1435,3 +1435,30 @@ kbd {
 	--tc-flagellum: #c8a06a;
 	--tc-protein: #4a5566;
 }
+
+/* neural-networks: the two classes (orange, blue) as points and as shading, the neutral middle of the shading, positive and
+   negative weights, the boundary, the forward and backward pulses */
+:root {
+	--nn-a: #e8590c;
+	--nn-b: #1c7ed6;
+	--nn-a-fill: #f76707;
+	--nn-b-fill: #228be6;
+	--nn-mid: #fbfaf7;
+	--nn-pos: #1c7ed6;
+	--nn-neg: #e8590c;
+	--nn-edge: #212529;
+	--nn-fwd: #2f9e44;
+	--nn-back: #c2255c;
+}
+:root[data-theme='dark'] {
+	--nn-a: #ff922b;
+	--nn-b: #4dabf7;
+	--nn-a-fill: #ffa94d;
+	--nn-b-fill: #74c0fc;
+	--nn-mid: #1a1b1e;
+	--nn-pos: #4dabf7;
+	--nn-neg: #ff922b;
+	--nn-edge: #f1f3f5;
+	--nn-fwd: #69db7c;
+	--nn-back: #f06595;
+}
