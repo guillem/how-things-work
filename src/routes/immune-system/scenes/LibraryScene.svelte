@@ -55,7 +55,7 @@
 		i,
 		x: GX0 + (i % COLS) * DX,
 		y: GY0 + Math.floor(i / COLS) * DY,
-		kind: (i === MATCH_B || (i !== MATCH_T && hash(i, 51) < 0.45) ? 'b' : 't'),
+		kind: i === MATCH_B || (i !== MATCH_T && hash(i, 51) < 0.45) ? 'b' : 't',
 		shape: shapeOf(i)
 	}));
 	/** Depth of each of the three steps of the cradle floor, below its rim. */
@@ -72,7 +72,7 @@
 		const [a, b, c] = floor(TARGET).map((d) => r + d - 0.8);
 		return `M${x - 12.4} ${r - 8} H${x + 12.4} V${c} H${x + 4.3} V${b} H${x - 4.3} V${a} H${x - 12.4} Z`;
 	};
-	const color = (k: 'b' | 't') => (k === 't' ? 'var(--im-tcell)' : 'var(--im-bcell)');
+	const color = (k: string) => (k === 't' ? 'var(--im-tcell)' : 'var(--im-bcell)');
 
 	// ---- library: cells appear one by one -------------------------------------------------
 	const built = $derived(view === 'library' ? clamp((tt - 0.8) / 10) * cells.length : cells.length);
