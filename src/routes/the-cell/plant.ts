@@ -236,19 +236,26 @@ export function palisadeCell(): PalisadeCell {
 export function grana(seed: number, c: Chloroplast): Granum[] {
 	const r = rng(seed);
 	const out: Granum[] = [{ u: 0, v: 0, w: 0.45, n: 12 }];
-	for (let u = -c.a + 0.55; u < c.a - 0.5; u += 0.62) {
-		if (Math.abs(u) < 0.5) continue;
-		const lim = c.b * Math.sqrt(Math.max(0, 1 - (u / c.a) ** 2)) - 0.3;
-		if (lim < 0.15) continue;
-		out.push({
-			u: u + r.range(-0.05, 0.05),
-			v: r.range(-lim * 0.4, lim * 0.4),
-			w: r.range(0.32, 0.55),
-			n: r.int(5, Math.min(16, Math.floor((2 * lim) / THYLAKOID.repeat)))
-		});
+	for (const row of [-0.62, 0, 0.62]) {
+		for (let u = -c.a + 0.5 + (row ? 0.31 : 0); u < c.a - 0.45; u += 0.62) {
+			if (!row && Math.abs(u) < 0.5) continue;
+			const vc = row * c.b + r.range(-0.06, 0.06);
+			const w = r.range(0.32, 0.55);
+			const n = r.int(5, 14);
+			const h = (n * THYLAKOID.repeat) / 2;
+			// keep the whole stack inside the lens (with a margin for the envelope)
+			const inside = (uu: number, vv: number) =>
+				(uu / (c.a - 0.12)) ** 2 + (vv / (c.b - 0.12)) ** 2 < 1;
+			if (![-1, 1].every((su) => [-1, 1].every((sv) => inside(u + (su * w) / 2, vc + sv * h))))
+				continue;
+			out.push({ u: u + r.range(-0.04, 0.04), v: vc, w, n });
+		}
 	}
 	return out;
 }
+
+/** Where the thylakoid view sits: this far (µm) right of the target granum’s edge. */
+export const THYLAKOID_VIEW_OFFSET = 0.012;
 
 const target = palisadeCell().chloroplasts[0];
 const g0 = grana(11, target)[0];
@@ -260,5 +267,8 @@ export const PLANT_TARGETS: { cell: Pt; chloroplast: Pt; granum: Pt; thylakoid: 
 	chloroplast: [target.x, target.y],
 	granum: [target.x + g0.u, target.y + g0.v],
 	// the right-hand margin of the granum, at the middle of the stack
-	thylakoid: [target.x + g0.u + g0.w / 2 - 0.02, target.y + g0.v + (g0h / g0.n) * 0.5 - 0.0]
+	thylakoid: [
+		target.x + g0.u + g0.w / 2 + THYLAKOID_VIEW_OFFSET,
+		target.y + g0.v + (g0h / g0.n) * 0.5
+	]
 };

@@ -289,6 +289,17 @@ const list: Structure[] = [
 		cells: EUK
 	},
 	{
+		id: 'endosome',
+		name: 'Endosome',
+		kind: 'organelle',
+		size: 0.5 * UM,
+		range: [0.1 * UM, 1 * UM],
+		dims: '≈ 0.3–0.6 µm across',
+		does: 'A sorting station for material the cell has taken in from outside: some is recycled to the surface, the rest is sent to lysosomes.',
+		source: '1% of a liver cell’s volume (Alberts); drawn 0.3–0.6 µm.',
+		cells: EUK
+	},
+	{
 		id: 'vesicle',
 		name: 'Vesicle',
 		kind: 'organelle',

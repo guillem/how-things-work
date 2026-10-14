@@ -45,7 +45,7 @@ export const ATOM_SPOTS = {
 	/** An ATP molecule beside an ATP synthase head in the crista view. */
 	atp: [12, -24],
 	/** A chlorophyll in a photosystem II antenna in the thylakoid view. */
-	chlorophyll: [-26, -6],
+	chlorophyll: [-42, -6.6],
 	/** A glucose molecule in the bacterium's cytoplasm view. */
 	glucose: [34, 26]
 } as const;

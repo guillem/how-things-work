@@ -75,7 +75,7 @@ export const SIZES = {
 	/** Intermembrane space of mitochondria, µm (≈ 20 nm, cryo-ET; Kühlbrandt 2015). */
 	ims: 0.02,
 	/** Thickness of a crista, µm (30–40 nm, BNID 107021). */
-	crista: 0.03,
+	crista: 0.034,
 	membrane: 0.004,
 	pore: 0.12,
 	/** Pores per µm² of envelope (2,000 over the 200 µm² of an 8 µm nucleus). */
@@ -275,12 +275,20 @@ export function hepatocyte(): Hepatocyte {
 	let rerLength = 0;
 	const half = SIZES.rerThickness / 2 + SIZES.ribosome + 0.01;
 	/** A stack of `count` arcs; each keeps its free stretches longer than 0.8 µm. */
-	const tryStack = (angle: number, r0: number, count: number, len: number, whole = false) => {
+	const tryStack = (
+		cx: number,
+		cy: number,
+		angle: number,
+		r0: number,
+		count: number,
+		len: number,
+		whole = false
+	) => {
 		const placed: Pt[][] = [];
 		for (let k = 0; k < count; k++) {
 			const rr = r0 + k * SIZES.rerSpacing;
 			const span = len / rr;
-			const pts = arc(N.x, N.y, rr, angle - span / 2, angle + span / 2);
+			const pts = arc(cx, cy, rr, angle - span / 2, angle + span / 2);
 			if (whole) {
 				if (!tubeFree(grid, pts, half)) break;
 				markTube(grid, pts, half);
@@ -305,18 +313,25 @@ export function hepatocyte(): Hepatocyte {
 	};
 	const addStacks = (until: number) => {
 		for (let tries = 0; tries < 3000 && rerLength < until; tries++) {
+			// a gently curved stack through a random point, at a random angle
+			const px = r.range(-13, 13);
+			const py = r.range(-11, 11);
+			const ang = r.range(0, Math.PI * 2);
+			const R = r.range(3, 14);
 			const st = tryStack(
-				r.range(0, Math.PI * 2),
-				N.r + r.range(0.4, 8.5),
+				px - R * Math.cos(ang),
+				py - R * Math.sin(ang),
+				ang,
+				R,
 				r.int(3, 6),
-				r.range(2.5, 7)
+				r.range(2, 6)
 			);
 			rer.push(...st);
 			for (const c of st) rerLength += polyLength(c);
 		}
 	};
 	// the target stack, directly below the nucleus: there the cisternae run horizontally
-	const target = tryStack(Math.PI / 2, N.r + 0.55, 5, 5.5, true);
+	const target = tryStack(N.x, N.y, Math.PI / 2, N.r + 0.55, 5, 5.5, true);
 	rer.push(...target);
 	for (const c of target) rerLength += polyLength(c);
 
@@ -544,3 +559,111 @@ export function targetCristae() {
 }
 
 export type { Rng };
+
+// ---- the tissue around the cell -------------------------------------------------------------
+
+export interface TissueCell {
+	outline: Pt[];
+	nucleus: Disc;
+	/** The cell at the centre (drawn in detail by the next view). */
+	target: boolean;
+}
+
+export interface LiverTissue {
+	cells: TissueCell[];
+	/** Red blood cells in the sinusoids: centre, half-length, half-thickness, angle. */
+	rbcs: { x: number; y: number; a: number; b: number; angle: number }[];
+	/** Flattened nuclei of the cells lining the sinusoids. */
+	lining: { x: number; y: number; angle: number }[];
+	/** Vertical extent of each plate of cells (y at x = 0) and its waviness. */
+	plates: { y0: number; y1: number; phase: number }[];
+}
+
+/** Sinusoid width drawn, µm (measured 5–15 µm). */
+export const SINUSOID = 9;
+
+let tissueCache: LiverTissue | null = null;
+
+/**
+ * Plates of liver cells one cell thick, separated by sinusoids with red blood
+ * cells (7.5 µm, BNID 100509) in them. The centre cell is the one drawn in
+ * detail; its neighbours are rounded polygons of the same measured size.
+ */
+export function liverTissue(): LiverTissue {
+	if (tissueCache) return tissueCache;
+	const r = rng(9);
+	const plateH = 21.5;
+	const plates: LiverTissue['plates'] = [];
+	for (let j = -4; j <= 4; j++) {
+		const y0 = -10.6 + j * (plateH + SINUSOID);
+		plates.push({ y0, y1: y0 + plateH, phase: r.range(0, Math.PI * 2) });
+	}
+	/** The vertical shift of plate j at x: flat near the centre cell. */
+	const wobble = (j: number, x: number) => {
+		const p = plates[j];
+		const flat = Math.abs(j - 4) <= 1 ? Math.min(1, Math.max(0, (Math.abs(x) - 20) / 40)) : 1;
+		return 4 * flat * Math.sin(x / 55 + p.phase);
+	};
+	const cells: TissueCell[] = [];
+	const rbcs: LiverTissue['rbcs'] = [];
+	const lining: LiverTissue['lining'] = [];
+	plates.forEach((p, j) => {
+		const centre = j === 4;
+		// cell boundaries along the plate
+		const xs: number[] = [];
+		if (centre) {
+			for (let x = -13.9; x > -190; x -= r.range(21, 27)) xs.unshift(x);
+			for (let x = 13.6; x < 190; x += r.range(21, 27)) xs.push(x);
+		} else {
+			for (let x = -190 + r.range(0, 20); x < 190; x += r.range(21, 27)) xs.push(x);
+		}
+		for (let i = 0; i + 1 < xs.length; i++) {
+			const a = xs[i] + 0.4;
+			const b = xs[i + 1] - 0.4;
+			if (centre && a > -14 && b < 14) continue;
+			const ta = r.range(-2.5, 2.5);
+			const tb = r.range(-2.5, 2.5);
+			const top = (x: number) => p.y0 + wobble(j, x) + 0.4;
+			const bot = (x: number) => p.y1 + wobble(j, x) - 0.4;
+			const c = 3.2;
+			const outline: Pt[] = [
+				[a + ta + c, top(a)],
+				[b + tb - c, top(b)],
+				[b + tb, top(b) + c],
+				[b - tb, bot(b) - c],
+				[b - tb - c, bot(b)],
+				[a - ta + c, bot(a)],
+				[a - ta, bot(a) - c],
+				[a + ta, top(a) + c]
+			];
+			const cx = (a + b) / 2 + r.range(-2, 2);
+			const cy = (p.y0 + p.y1) / 2 + wobble(j, cx) + r.range(-2, 2);
+			cells.push({
+				outline,
+				nucleus: { x: cx, y: cy, r: SIZES.nucleusDiameter / 2 },
+				target: false
+			});
+		}
+		// red blood cells and lining nuclei in the sinusoid below this plate
+		if (j < plates.length - 1) {
+			for (let x = -190 + r.range(0, 30); x < 190; x += r.range(14, 40)) {
+				const y = p.y1 + SINUSOID / 2 + wobble(j, x);
+				if (r.next() < 0.75) {
+					const flat = r.next() < 0.5;
+					rbcs.push({
+						x,
+						y: y + r.range(-0.8, 0.8),
+						a: 3.75,
+						b: flat ? 1.2 : r.range(2, 3.75),
+						angle: r.range(-0.4, 0.4)
+					});
+				} else
+					lining.push({ x, y: y + (r.next() < 0.5 ? -1 : 1) * (SINUSOID / 2 - 0.9), angle: 0 });
+			}
+		}
+	});
+	const h = hepatocyte();
+	cells.push({ outline: h.outline, nucleus: h.nucleus, target: true });
+	tissueCache = { cells, rbcs, lining, plates };
+	return tissueCache;
+}

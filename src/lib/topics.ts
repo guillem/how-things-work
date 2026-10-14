@@ -447,6 +447,15 @@ const explainers: Explainer[] = [
 		accent: '#d9480f',
 		steps: 8,
 		minutes: 15
+	},
+	{
+		slug: 'the-cell',
+		title: 'Inside a cell',
+		summary:
+			'Zoom from a slice of liver into one cell, its nucleus, its power stations and its protein factories, down to single molecules, with a scale bar that tells the truth at every step. Then compare a plant cell and a bacterium.',
+		accent: '#c2570c',
+		steps: 13,
+		minutes: 20
 	}
 ];
 
