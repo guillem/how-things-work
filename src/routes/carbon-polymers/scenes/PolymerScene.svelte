@@ -542,7 +542,7 @@
 				>
 			</Readout>
 		</g>
-		<Readout id="s-chart">
+		<g data-testid="stress-chart">
 			<Axes
 				sx={csx}
 				sy={csy}
@@ -554,6 +554,6 @@
 			/>
 			<path d={curve} fill="none" stroke="var(--cp-group)" stroke-width="2.5" />
 			<circle cx={csx(lambda.current)} cy={csy(Math.min(4, sNow))} r="6" fill="var(--cp-group)" />
-		</Readout>
+		</g>
 	</g>
 {/if}

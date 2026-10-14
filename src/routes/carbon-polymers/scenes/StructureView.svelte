@@ -64,6 +64,8 @@
 		)
 	);
 	/** An atom of the functional group other than carbon and hydrogen (O, N, Cl). */
+	/** Font size of the line drawing's atom labels. */
+	const fs = $derived(Math.min(20, Math.max(12, 0.36 * unit)));
 	const hetero = (a: SAtom) => !!a.group && a.el !== 'C' && a.el !== 'H';
 	const ballR = (el: string) => (el === 'H' ? 0.17 : el === 'Cl' ? 0.25 : 0.22) * unit;
 
@@ -127,19 +129,19 @@
 	{#if skeletal}
 		{@const label = skelLabel(i)}
 		<rect
-			x={x - label.length * 0.2 * unit * 0.62}
-			y={y - 0.2 * unit}
-			width={label.length * 0.4 * unit * 0.62}
-			height={0.4 * unit}
+			x={x - label.length * 0.31 * fs}
+			y={y - 0.56 * fs}
+			width={label.length * 0.62 * fs}
+			height={1.1 * fs}
 			rx="4"
 			fill="var(--stage-bg)"
 		/>
 		<text
 			{x}
-			y={y + 0.13 * unit}
+			y={y + 0.36 * fs}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="{Math.max(12, 0.36 * unit)}px"
+			style:font-size="{fs}px"
 			style:fill={a.el === 'C'
 				? 'var(--stage-ink)'
 				: ATOM[a.el].fill === '#f3f4f6'

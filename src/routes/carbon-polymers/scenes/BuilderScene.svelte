@@ -474,7 +474,13 @@
 
 	<!-- readout -->
 	<g transform="translate({RX} 0)" style:pointer-events="none" data-testid="readout">
-		<Readout id="name" order={0} label="Name" value={name(build)} note={common ?? undefined}>
+		<Readout
+			id="name"
+			order={0}
+			label="Name"
+			value={name(build)}
+			note={common ? `${fam}; also ${common}` : fam}
+		>
 			{@render txt(0, 98, name(build), name(build).length > 16 ? 19 : 23, { weight: 700 })}
 			{#if common}
 				{@render txt(0, 120, `also: ${common}`, 13, { muted: true })}
@@ -484,7 +490,7 @@
 			{@render txt(0, 152, formula(build), 20, { weight: 700 })}
 			{@render txt(110, 152, `${molarMass(build).toFixed(1)} g/mol`, 13, { muted: true })}
 		</Readout>
-		<Readout id="family" order={2} label="Family" value={fam}>
+		<Readout id="family">
 			{@render txt(0, 176, fam, 13, { weight: 600, color: 'var(--cp-group)' })}
 		</Readout>
 		{#if notice}
@@ -508,15 +514,17 @@
 			</Readout>
 		{/if}
 		<g transform="translate(0 240)">
-			<rect
-				x="-12"
-				y="0"
-				width="290"
-				height="150"
-				rx="12"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
+			<Readout id="card">
+				<rect
+					x="-12"
+					y="0"
+					width="290"
+					height="150"
+					rx="12"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+			</Readout>
 			<Readout id="boils" order={4} label="Boils at" value={celsius(tb) ?? 'no NIST value'}>
 				{@render txt(4, 26, 'boils at', 12, { muted: true })}
 				{@render txt(4, 50, celsius(tb) ?? '—', 20, { weight: 700, color: 'var(--cp-hot)' })}
