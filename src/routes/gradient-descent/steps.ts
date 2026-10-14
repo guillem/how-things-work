@@ -159,7 +159,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			body: `
 <p>Three balls start at the same place on a round bowl, with three learning rates.</p>
-<p>With <strong>η = 0.05</strong> the steps are tiny: the ball <strong>crawls</strong>, and needs dozens of steps to get anywhere. With <strong>η = 0.6</strong> it <strong>converges</strong> in a handful. With <strong>η = 2.05</strong> every step overshoots the bottom and lands higher up the far side than it started: it bounces from wall to wall, further each time, and <strong>diverges</strong> off the map.</p>
+<p>With <strong>η = 0.05</strong> the steps are tiny: the ball <strong>crawls</strong>, and needs about 70 steps to reach the bottom. With <strong>η = 0.6</strong> it <strong>converges</strong> in a handful. With <strong>η = 2.05</strong> every step overshoots the bottom and lands higher up the far side than it started: it bounces from wall to wall, further each time, and <strong>diverges</strong> off the map.</p>
 <p>The loss plot tells the three stories at a glance: a slow slide, a quick drop, and a curve that climbs out of the top.</p>`
 		},
 		{
@@ -171,11 +171,12 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [lr('lr', 0.6)],
 			body: `
-<p>On this bowl the gradient is exactly the arrow from the bottom to the ball, so a step moves the ball to (1 − η) times its distance from the bottom. Slide η and watch the factor:</p>
+<p>On this bowl the gradient is exactly the arrow from the bottom to the ball, so a step multiplies the ball's offset from the bottom by (1 − η): its distance shrinks by the size of that factor, and a negative factor puts it on the other side. Slide η and watch the factor:</p>
 <ul>
 <li>η below 1: the factor is between 0 and 1, and the ball approaches from one side;</li>
 <li>η = 1: the factor is 0, and the ball lands on the bottom in one step;</li>
 <li>η between 1 and 2: the factor is negative but smaller than 1 in size: the ball <strong>overshoots</strong> to the other side each time, but less each time, and still converges;</li>
+<li>η = 2: the factor is −1, and the ball bounces between two points forever;</li>
 <li>η above 2: the factor is bigger than 1 in size, and every step makes things worse.</li>
 </ul>
 <p>The limit depends on how sharply the valley curves. On any valley with <dfn data-def="How fast the slope changes: the second derivative. A sharply curved valley has a large curvature λ.">curvature</dfn> λ, descent is stable only for η &lt; 2/λ: the more sharply curved the landscape, the smaller the safe step.</p>`,
@@ -192,7 +193,7 @@ export const spec: ExplainerSpec = {
 			controls: [lr('lr-ravine', 1.8)],
 			body: `
 <p>Real landscapes are rarely round. This one is a long, narrow ravine: steep walls (curvature 1) and an almost flat floor (curvature 0.02) sloping gently to the bottom.</p>
-<p>The steep walls set the speed limit: η must stay below 2/1 = 2. At η = 1.8 the ball bounces from wall to wall in a <strong>zigzag</strong>, because the gradient points mostly across the ravine, not along it. Along the floor each step gains only a sliver, and it takes about 100 steps to reach the bottom.</p>
+<p>The steep walls set the speed limit: η must stay below 2/1 = 2. At η = 1.8 every step overshoots the narrow floor, so the ball bounces from wall to wall in a <strong>zigzag</strong>. And because the gradient points mostly across the ravine, not along it, each step gains only a sliver along the floor: it takes about 100 steps to reach the bottom.</p>
 <p>Lower η and the zigzag stops, but the ball creeps along the floor even more slowly. Raise it past 2 and the zigzag grows until the ball flies out. No single learning rate suits both directions.</p>`,
 			notes: `<p>Ravines appear in real training whenever some parameters affect the loss much more than others. Fitting a line to inputs that are all large numbers (say, house sizes in square metres) gives one: that is one reason inputs are usually rescaled before training.</p>`
 		},
@@ -207,9 +208,9 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A fix: let each step remember the previous one. With <dfn data-def="A variant of gradient descent in which each step adds a fraction β of the previous step to the new downhill push, so steps that agree build up speed.">momentum</dfn>, each step is the downhill push plus a share β of the step before:</p>
 <p class="formula"><strong>step = β × previous step − η × gradient</strong></p>
-<p>Across the ravine the pushes alternate left and right and largely cancel; along the floor they all agree and add up. Here η = 0.9. With β = 0 (plain descent) the ball needs about 190 steps. Slide β to 0.8 and it gets there in about 30.</p>
+<p>Along the floor every push points the same way, so with momentum they add up to real speed. Across the ravine, as soon as the ball swings past the floor, the push reverses and brakes it, so the swinging dies away instead of building up. Here η = 0.9. With β = 0 (plain descent) the ball needs about 190 steps. Slide β to 0.8 and it gets there in about 30.</p>
 <p>Too much momentum overshoots instead: at β = 0.95 the ball swings past the bottom and circles round it before settling.</p>`,
-			notes: `<p>This is "heavy ball" momentum (Boris Polyak, 1964). Now the ball really does carry speed from step to step. Popular training methods such as Adam combine momentum with a separate step size for each parameter, which also tames ravines.</p>`
+			notes: `<p>This is "heavy ball" momentum (Boris Polyak, 1964). Now the ball really does carry speed from step to step. Popular training methods such as Adam combine momentum with a separate step size for each parameter, which tames ravines that run along a parameter's axis.</p>`
 		},
 		{
 			id: 'plateau',
@@ -222,7 +223,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>This landscape is a wide plain, almost flat, around a deep well. On the plain the gradient is tiny, so even with η = 1 the steps are tiny: the ball spends more than a hundred steps barely moving, then drops into the well all at once.</p>
 <p>The loss plot shows the signature of a plateau: a long, almost level stretch, then a sudden fall. In real training this can look as if learning has stopped when it has not.</p>
-<p>Momentum helps here too: on the plain, every step points the same way, so they build up. Slide β to 0.8 and it gets off the plateau in about a quarter of the steps.</p>`,
+<p>Momentum helps here too: on the plain, every step points the same way, so they build up. Slide β to 0.8 and it drops into the well after about 30 steps instead of about 120, though its speed then carries it round the bottom for a while before it settles.</p>`,
 			notes: `<p>A bigger η would also cross the plain faster, but it is limited by the well: its curvature is about 1.1, so η must stay below 2/1.1 ≈ 1.8. In landscapes with many parameters, flat regions around <em>saddle points</em> (a minimum in some directions, a maximum in others) slow training in the same way.</p>`
 		},
 		{
@@ -233,7 +234,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'run', land: 'wells', left: 'surface', lr: 0.3 },
 			duration: 22,
 			body: `
-<p>This landscape has three valleys of different depths. Dropped near the top of the map, the ball goes down into the valley it happens to be above — not the deepest one — and stops there, at a loss of 0.43 instead of 0.</p>
+<p>This landscape has three valleys of different depths. Dropped near the top of the map, the ball rolls into the nearest valley downhill from it — not the deepest one — and stops there, at a loss of 0.43 instead of 0.</p>
 <p>Gradient descent only ever feels the ground under it, so it finds a <dfn data-def="A point lower than everything around it, but not necessarily the lowest point of the whole landscape (the global minimum).">local minimum</dfn>: a point lower than its surroundings. There is no guarantee that it is the <strong>global minimum</strong>, the lowest of all.</p>
 <p>Click around the map to drop the ball in different places. The map divides into regions — one per valley — and the starting point alone decides where the ball ends.</p>`,
 			notes: `<p>For a line, as for every model whose loss is a single bowl (a <em>convex</em> loss), this cannot happen: there is only one valley. For neural networks it can, but in practice their huge landscapes have many low valleys of similar quality, and which one is found matters less than this two-dimensional picture suggests.</p>`
