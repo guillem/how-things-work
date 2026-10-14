@@ -104,8 +104,18 @@
 	const appear = (i: number) => smoothstep(0.2 + 0.45 * i, 0.8 + 0.45 * i, t);
 
 	// ---- gallery
-	const GALLERY = [
-		{ id: 'octane', title: 'octane', role: 'fuel', x: 168, y: 165, w: 270, h: 120, mark: -1 },
+	/** `marks`: atoms that are stereocentres (glucose's ring form has five: C1–C5). */
+	const GALLERY: {
+		id: string;
+		title: string;
+		role: string;
+		x: number;
+		y: number;
+		w: number;
+		h: number;
+		marks: number[];
+	}[] = [
+		{ id: 'octane', title: 'octane', role: 'fuel', x: 168, y: 165, w: 270, h: 120, marks: [] },
 		{
 			id: 'polyethylene',
 			title: 'polyethylene',
@@ -114,9 +124,18 @@
 			y: 165,
 			w: 270,
 			h: 120,
-			mark: -1
+			marks: []
 		},
-		{ id: 'ibuprofen', title: 'ibuprofen', role: 'drug', x: 795, y: 170, w: 270, h: 150, mark: 6 },
+		{
+			id: 'ibuprofen',
+			title: 'ibuprofen',
+			role: 'drug',
+			x: 795,
+			y: 170,
+			w: 270,
+			h: 150,
+			marks: [6]
+		},
 		{
 			id: 'glucose',
 			title: 'glucose',
@@ -125,7 +144,7 @@
 			y: 420,
 			w: 220,
 			h: 180,
-			mark: -1
+			marks: [1, 2, 3, 4, 5]
 		},
 		{
 			id: 'alanine',
@@ -135,7 +154,7 @@
 			y: 420,
 			w: 200,
 			h: 150,
-			mark: 1
+			marks: [1]
 		}
 	];
 	const sub = (s: string) => s.replace(/\d+/g, (d) => [...d].map((c) => '₀₁₂₃₄₅₆₇₈₉'[+c]).join(''));
@@ -312,8 +331,8 @@
 						class="muted">…</text
 					>
 				{/if}
-				{#if g.mark >= 0}
-					{@const a = s.atoms[g.mark]}
+				{#each g.marks as mk (mk)}
+					{@const a = s.atoms[mk]}
 					<text
 						x={g.x + f.dx + a.x * f.unit + 10}
 						y={g.y + f.dy - 6 + a.y * f.unit - 8}
@@ -321,7 +340,7 @@
 						style:font-size="16px"
 						style:fill="var(--cp-number)">*</text
 					>
-				{/if}
+				{/each}
 				<Readout
 					id="g-{g.id}"
 					order={1 + i}

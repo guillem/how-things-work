@@ -76,7 +76,7 @@ export const spec: ExplainerSpec = {
 			hints: { start: '4|double@1' },
 			duration: 30,
 			body: `
-<p>Two neighbouring carbons can share two pairs of electrons instead of one, a <strong>C=C double bond</strong> (each carbon then holds one hydrogen fewer). The ending becomes <strong>-ene</strong>, and a number says where the double bond starts, counting from the nearer end: this is but-1-ene. <strong>Drag the double bond</strong> onto another bond of the chain, or drop a <strong>triple bond</strong> (ending <strong>-yne</strong>) from the palette.</p>
+<p>Two neighbouring carbons can share two pairs of electrons instead of one, a <strong>C=C double bond</strong> (each carbon then holds one hydrogen fewer). The ending becomes <strong>-ene</strong>, and a number says where the double bond starts, counting from the nearer end: this is but-1-ene. <strong>Click another bond</strong> of the chain to move the double bond there, or drag a <strong>triple bond</strong> (ending <strong>-yne</strong>) from the palette onto a bond.</p>
 <p>Multiple bonds change the shape: around a double bond the atoms lie flat at about 120°, and a triple bond is perfectly straight, so the chain runs straight through it. They are also shorter: C–C 154 pm (in ethane), C=C 134 pm, C≡C 120 pm.</p>
 <p>The simplest, ethene (C₂H₄, called ethylene), is made at well over a hundred million tonnes a year. Its double bond is what lets it link up into polyethylene; you'll do that in the last chapter.</p>`,
 			notes: `<p>A double bond doesn't twist, so but-2-ene comes in two forms: with the two end carbons on opposite sides of the double bond (<i>trans</i>, or (E)-) or on the same side (<i>cis</i>, (Z)-). The zigzag drawing is the trans form, which is why its name starts with (E)-. Bond lengths: ethane, ethene and ethyne, measured (CCCBDB).</p>`
@@ -163,7 +163,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Here is a carbon with <strong>four different</strong> atoms on it: H, F, Cl and Br (bromochlorofluoromethane, drawn from its measured geometry). On the right is its mirror image. <strong>Drag the right-hand one to turn it</strong>, and try to make it sit exactly on the left one.</p>
 <p>You can't. Line up any two atoms (the button lines up H and F) and the other two land in each other's places. The two molecules are like a left and a right hand: mirror images that no turning can superimpose. A molecule like this is <dfn data-def="Not superimposable on its mirror image, like a hand. From the Greek kheir, hand.">chiral</dfn>, and the carbon with four different groups is its <dfn data-def="An atom (usually carbon) with four different groups attached, which makes the molecule chiral.">stereocentre</dfn>.</p>`,
-			notes: `<p>The page checks this with a calculation, not just a picture: it finds the turn (a rotation, never a reflection) that brings the copy as close as possible to the original (Horn's method). For this molecule the best fit still leaves the atoms tenths of a nanometre apart. The two mirror forms are named R and S by a priority rule (Cahn–Ingold–Prelog). Butan-2-ol, which you could build earlier, is chiral too: its carbon 2 holds H, OH, CH₃ and CH₂CH₃.</p>`
+			notes: `<p>The page checks this with a calculation, not just a picture: it finds the turn (a rotation, never a reflection) that brings the copy as close as possible to the original (Horn's method). For this molecule even the best fit leaves the atoms 1.4 Å (0.14 nm) from their places on average, nearly the length of a bond. The two mirror forms are named R and S by a priority rule (Cahn–Ingold–Prelog). Butan-2-ol, which you could build earlier, is chiral too: its carbon 2 holds H, OH, CH₃ and CH₂CH₃.</p>`
 		},
 		{
 			id: 'handed',
@@ -277,7 +277,7 @@ export const spec: ExplainerSpec = {
 			hints: { mode: 'gallery' },
 			duration: 26,
 			body: `
-<p>Here are five molecules made from the same few elements: carbon, hydrogen, oxygen and nitrogen. <strong>Octane</strong> is a fuel. <strong>Polyethylene</strong> is a plastic. <strong>Ibuprofen</strong> is a drug, with one stereocentre. <strong>Glucose</strong>, the sugar your cells burn, and <strong>alanine</strong>, a building block of proteins, are molecules of life.</p>
+<p>Here are five molecules made from the same few elements: carbon, hydrogen, oxygen and nitrogen. <strong>Octane</strong> is a fuel. <strong>Polyethylene</strong> is a plastic. <strong>Ibuprofen</strong> is a drug, with one stereocentre. <strong>Glucose</strong>, the sugar your cells burn (five stereocentres in its ring), and <strong>alanine</strong>, a building block of proteins, are molecules of life.</p>
 <p>What separates them is only how the atoms are joined. That is the whole story: <strong>carbon's four bonds allow endless chains and rings, so the same few elements, arranged differently, give fuels, plastics, drugs and the molecules of life</strong>.</p>`,
 			notes: `<p>Formulas are counted from the drawings (and checked against PubChem). Glucose is drawn as its ring form, flat, without showing on which side each –OH sits; those sides are what make it glucose rather than one of its isomers, such as galactose.</p>`
 		}

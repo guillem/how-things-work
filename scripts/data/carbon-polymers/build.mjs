@@ -27,6 +27,13 @@
  *    bromochlorofluoromethane (CHFClBr).
  *
  * Downloads are cached in the given directory (outside the repository).
+ *
+ * Terms: PubChem's computed names and identifiers are NCBI data with no NCBI-imposed restrictions
+ * (https://www.ncbi.nlm.nih.gov/home/about/policies/). The NIST data are NIST Standard Reference
+ * Data, "© U.S. Secretary of Commerce on behalf of the United States of America. All rights
+ * reserved", copyright governed by the Standard Reference Data Act; NIST's statement:
+ * https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications#SRD.
+ * Only small cited extracts are kept here.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -197,6 +204,10 @@ const header = `/**
  * InChIKey matches PubChem's. tm is NIST's Tfus, or its triple-point temperature where it
  * lists no Tfus (tmTriple). NIST/TRC averages (AVG rows) where given; otherwise the median of at
  * least two individual values that agree within 3 K; otherwise no value.
+ *
+ * Terms: PubChem data, no NCBI-imposed restrictions. NIST WebBook data: © U.S. Secretary of
+ * Commerce on behalf of the U.S.A., all rights reserved; NIST Standard Reference Data under the
+ * Standard Reference Data Act (https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications#SRD).
  */
 `;
 const lines = [
@@ -277,6 +288,9 @@ const geo = [
  * retrieved ${new Date().toISOString().slice(0, 10)}). Lengths in ångström (1 Å = 100 pm),
  * angles in degrees; each molecule by CAS number. CCCBDB cites the original measurements
  * (mostly microwave spectroscopy and electron diffraction) for every value.
+ *
+ * Terms: NIST Standard Reference Data, © U.S. Secretary of Commerce on behalf of the U.S.A.,
+ * under the Standard Reference Data Act (https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications#SRD).
  */
 `,
 	'export interface Coord {',

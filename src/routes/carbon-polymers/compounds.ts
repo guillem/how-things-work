@@ -8,6 +8,10 @@
  * InChIKey matches PubChem's. tm is NIST's Tfus, or its triple-point temperature where it
  * lists no Tfus (tmTriple). NIST/TRC averages (AVG rows) where given; otherwise the median of at
  * least two individual values that agree within 3 K; otherwise no value.
+ *
+ * Terms: PubChem data, no NCBI-imposed restrictions. NIST WebBook data: © U.S. Secretary of
+ * Commerce on behalf of the U.S.A., all rights reserved; NIST Standard Reference Data under the
+ * Standard Reference Data Act (https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications#SRD).
  */
 
 export interface Compound {

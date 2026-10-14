@@ -52,7 +52,10 @@
 		const saved = params[paramKey];
 		return parse(typeof saved === 'string' ? saved : null, start);
 	});
-	const skeletal = $derived(params.skeletal === true);
+	// Only on steps that offer the toggle (control values carry over to other steps).
+	const skeletal = $derived(
+		params.skeletal === true && !!step.controls?.some((c) => c.id === 'skeletal')
+	);
 	const structure = $derived(layout(build));
 	const compound = $derived(COMPOUNDS[BUILDS[key(build)]]);
 
@@ -247,6 +250,8 @@
 	const tb = $derived(compound?.tb);
 	const tm = $derived(compound?.tm);
 	const atRoom = $derived(stateAt(tb, tm));
+	/** Solid straight to gas at 1 atm (its triple point lies above 1 atm): ethyne. */
+	const sublimes = $derived(tb != null && tm != null && tm >= tb);
 	const where = $derived(uses(build));
 	const len = (mol: string, atoms: string, nth = 0) =>
 		Math.round(
@@ -525,17 +530,28 @@
 					stroke="var(--border)"
 				/>
 			</Readout>
-			<Readout id="boils" order={4} label="Boils at" value={celsius(tb) ?? 'no NIST value'}>
-				{@render txt(4, 26, 'boils at', 12, { muted: true })}
+			<Readout
+				id="boils"
+				order={4}
+				label={sublimes ? 'Turns to gas at' : 'Boils at'}
+				value={celsius(tb) ?? 'no NIST value'}
+			>
+				{@render txt(4, 26, sublimes ? 'turns to gas at' : 'boils at', 12, { muted: true })}
 				{@render txt(4, 50, celsius(tb) ?? '—', 20, { weight: 700, color: 'var(--cp-hot)' })}
 			</Readout>
-			<Readout id="melts" order={5} label="Melts at" value={celsius(tm) ?? 'no NIST value'}>
+			<Readout id="melts">
 				{@render txt(140, 26, 'melts at', 12, { muted: true })}
-				{@render txt(140, 50, celsius(tm) ?? '—', 20, { weight: 700, color: 'var(--cp-cold)' })}
+				{@render txt(140, 50, sublimes ? 'never' : (celsius(tm) ?? '—'), 20, {
+					weight: 700,
+					color: 'var(--cp-cold)'
+				})}
 			</Readout>
 			{#if atRoom}
 				<Readout id="atRoom" order={6} label="At 25 °C" value={atRoom}>
 					{@render txt(4, 80, STATE_NOTE[atRoom], 14, { weight: 600 })}
+					{#if sublimes}
+						{@render txt(130, 80, 'solid turns straight to gas', 11, { muted: true })}
+					{/if}
 				</Readout>
 			{:else}
 				<Readout id="atRoom">
@@ -552,12 +568,12 @@
 				{@render txt(4, 100, 'measured, 1 atm (NIST WebBook)', 11, { muted: true })}
 			</Readout>
 			{#if where}
-				<Readout id="uses" order={7} label="Found in" value={where}>
+				<Readout id="uses">
 					{@render txt(4, 128, where, 12, { weight: 500 })}
 				</Readout>
 			{/if}
 		</g>
-		<Readout id="bonds" order={8} label="Bond lengths" value={bondLine}>
+		<Readout id="bonds">
 			{@render txt(0, 418, 'Bond lengths (measured, CCCBDB)', 11, { muted: true })}
 			{#each bondLine.match(/[^·]+(?:·[^·]+)?/g) ?? [] as line, i (i)}
 				{@render txt(0, 436 + i * 17, line.trim().replace(/·$/, ''), 12)}

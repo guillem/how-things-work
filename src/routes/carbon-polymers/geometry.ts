@@ -6,6 +6,9 @@
  * retrieved 2026-10-14). Lengths in ångström (1 Å = 100 pm),
  * angles in degrees; each molecule by CAS number. CCCBDB cites the original measurements
  * (mostly microwave spectroscopy and electron diffraction) for every value.
+ *
+ * Terms: NIST Standard Reference Data, © U.S. Secretary of Commerce on behalf of the U.S.A.,
+ * under the Standard Reference Data Act (https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications#SRD).
  */
 
 export interface Coord {

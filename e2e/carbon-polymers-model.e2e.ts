@@ -192,7 +192,8 @@ test('a carbon with four different groups cannot be turned onto its mirror image
 	const M = P.map(mirror);
 	const fit = bestFit(M, P);
 	expect(det(fit.R)).toBeCloseTo(1, 6);
-	expect(fit.rms).toBeGreaterThan(0.3);
+	// The page quotes it: 1.4 Å on average, nearly a bond length.
+	expect(fit.rms).toBeCloseTo(1.38, 2);
 	// Line up H and F exactly: Cl and Br then sit in each other's places.
 	const iH = chiral.groups.findIndex((g) => g.el === 'H');
 	const iF = chiral.groups.findIndex((g) => g.el === 'F');
