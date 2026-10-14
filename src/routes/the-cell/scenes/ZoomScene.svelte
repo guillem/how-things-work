@@ -17,7 +17,8 @@
 	import { untrack, type Component } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp } from '#lib/draw/index.ts';
+	import { Label, clamp, smoothstep } from '#lib/draw/index.ts';
+	import { CALLOUTS, LEGENDS } from '../labels';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		BRANCH_OF,
@@ -176,6 +177,62 @@
 	}
 	const cardLines = $derived(card ? wrap(card.does, 46) : []);
 
+	const legend = $derived.by(() => {
+		const front = shown.findLast((l) => l.interactive);
+		return front
+			? { items: LEGENDS[front.frame.id] ?? [], opacity: front.opacity }
+			: { items: [], opacity: 0 };
+	});
+
+	// ---- callouts ------------------------------------------------------------------------------
+	const cardBottom = $derived(16 + 64 + cardLines.length * 16);
+	const callouts = $derived.by(() => {
+		const out: {
+			key: string;
+			ax: number;
+			ay: number;
+			lx: number;
+			ly: number;
+			text: string;
+			opacity: number;
+			leader: boolean;
+		}[] = [];
+		for (const l of shown) {
+			const p = place(l.frame);
+			const list = CALLOUTS[l.frame.draw ?? ''] ?? [];
+			const tx = p.view.x0 * -p.ppu;
+			const ty = p.view.y0 * -p.ppu;
+			list.forEach((c, i) => {
+				const lo = c.min ?? 0;
+				const hi = c.max ?? Infinity;
+				const fade = smoothstep(lo * 0.8, lo, p.ppu) * (1 - smoothstep(hi, hi * 1.25, p.ppu));
+				const opacity = fade * l.opacity * (l.interactive ? 1 : 0.6);
+				if (opacity < 0.02) return;
+				const ax = tx + c.x * p.ppu;
+				const ay = ty + c.y * p.ppu;
+				if (ax < 12 || ax > STAGE.w - 12 || ay < 12 || ay > STAGE.h - 12) return;
+				const lx = clamp(ax + c.dx, 70, STAGE.w - 70);
+				const ly = clamp(ay + c.dy, 28, STAGE.h - 28);
+				const w = c.text.length * 7 + 20;
+				const hitCard = lx + w / 2 > 610 && ly < cardBottom + 14;
+				const hitBar = lx - w / 2 < 220 && ly > 528;
+				const hitRuler = lx + w / 2 > 535 && ly > 500;
+				if (hitCard || hitBar || hitRuler) return;
+				out.push({
+					key: `${l.frame.id}-${i}`,
+					ax,
+					ay,
+					lx,
+					ly,
+					text: c.text,
+					opacity,
+					leader: c.dx !== 0 || c.dy !== 0
+				});
+			});
+		}
+		return out;
+	});
+
 	// ---- zoom by wheel and keys ------------------------------------------------------------------
 	const bounds = $derived.by(() => {
 		const [lo, hi] = zoomRange(wanted.chain);
@@ -258,6 +315,54 @@
 			{/each}
 		</g>
 	</g>
+
+	<!-- callouts -->
+	{#each callouts as c (c.key)}
+		<Readout id="co-{c.key}">
+			<g opacity={c.opacity} style:pointer-events="none">
+				{#if c.leader}
+					<line
+						x1={c.ax}
+						y1={c.ay}
+						x2={c.lx}
+						y2={c.ly}
+						stroke="var(--stage-ink)"
+						stroke-width="1"
+						opacity="0.6"
+					/>
+					<circle cx={c.ax} cy={c.ay} r="3" fill="var(--stage-ink)" />
+				{/if}
+				<Label x={c.lx} y={c.ly + 4} text={c.text} size={12.5} pill />
+			</g>
+		</Readout>
+	{/each}
+
+	<!-- colour key -->
+	{#each legend.items as item, i (item.text)}
+		<Readout id="key-{i}" order={5 + i} label={item.text} color={item.color}>
+			<g opacity={legend.opacity} style:pointer-events="none">
+				<rect
+					x="16"
+					y={16 + i * 26}
+					width={item.text.length * 7 + 40}
+					height="22"
+					rx="11"
+					fill="var(--surface)"
+					stroke="var(--border)"
+					opacity="0.92"
+				/>
+				<circle
+					cx="30"
+					cy={27 + i * 26}
+					r="6"
+					fill={item.color}
+					stroke="var(--stage-ink)"
+					stroke-opacity="0.4"
+				/>
+				<text x="44" y={31 + i * 26} class="key">{item.text}</text>
+			</g>
+		</Readout>
+	{/each}
 
 	<!-- info card -->
 	{#if card}
@@ -400,6 +505,10 @@
 	.tick {
 		font-size: 10.5px;
 		fill: var(--stage-ink-muted);
+	}
+	.key {
+		font-size: 12px;
+		fill: var(--stage-ink);
 	}
 	.glyph {
 		font-size: 22px;

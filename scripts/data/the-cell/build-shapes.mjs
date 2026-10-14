@@ -41,6 +41,19 @@ const OUT = resolve(import.meta.dirname, '../../../src/routes/the-cell/shapes.ts
 
 const RNA = new Set(['A', 'C', 'G', 'U', 'PSU', '5MC', 'OMG', 'OMC', 'OMU', '2MG', '7MG', 'M2G']);
 const DNA = new Set(['DA', 'DC', 'DG', 'DT']);
+const BACKBONE = new Set([
+	'P',
+	'OP1',
+	'OP2',
+	"O5'",
+	"C5'",
+	"C4'",
+	"O4'",
+	"C3'",
+	"O3'",
+	"C2'",
+	"C1'"
+]);
 const SKIP = new Set([
 	'HOH',
 	'DUM',
@@ -86,6 +99,8 @@ const MACHINES = [
 		membrane: true,
 		groups: [
 			{ name: 'sec61', chains: ['1', '2', '3'] },
+			{ name: 'mrna', chains: ['S4'] },
+			{ name: 'trna', chains: ['S5', 'S6'] },
 			{ name: 'rna', rna: true },
 			{ name: 'protein', rest: true }
 		]
@@ -666,7 +681,12 @@ for (const spec of SMALL) {
 	small[spec.id] = {
 		name: spec.name,
 		source: spec.source,
-		atoms: p.map((a) => [a.el, +a.px.toFixed(3), +a.py.toFixed(3), +a.pd.toFixed(3)])
+		atoms: p.map((a) => {
+			const row = [a.el, +a.px.toFixed(3), +a.py.toFixed(3), +a.pd.toFixed(3)];
+			// DNA: tag each atom with its base letter, or 'b' for the sugar–phosphate backbone
+			if (spec.id === 'dna') row.push(BACKBONE.has(a.name) ? 'b' : a.res.replace('D', ''));
+			return row;
+		})
 	};
 	console.log(spec.id, p.length);
 }
@@ -710,8 +730,8 @@ export interface MachineShape {
 export interface SmallMolecule {
 	name: string;
 	source: string;
-	/** [element, x, y, depth] in nm, back to front. */
-	atoms: [string, number, number, number][];
+	/** [element, x, y, depth] in nm, back to front; DNA atoms also carry their base (A, C, G, T) or 'b' (backbone). */
+	atoms: [string, number, number, number, string?][];
 }
 `;
 

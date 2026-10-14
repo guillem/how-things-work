@@ -1606,6 +1606,79 @@
 			opacity="0.6"
 		/>
 		<path d="M14 30 H186" stroke="currentColor" stroke-dasharray="2 4" opacity="0.3" />
+	{:else if slug === 'the-cell'}
+		<!-- a liver cell with its nucleus, mitochondria and ER, and a zoom box onto one ribosome-studded sheet -->
+		<path
+			d="M22 40 L44 18 L96 16 L120 38 L116 92 L86 108 L36 104 L18 76 Z"
+			fill={accent}
+			fill-opacity="0.08"
+			stroke={accent}
+			stroke-width="2"
+			stroke-linejoin="round"
+		/>
+		<circle cx="62" cy="62" r="18" fill="currentColor" opacity="0.12" />
+		<circle
+			cx="62"
+			cy="62"
+			r="18"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.55"
+		/>
+		<circle cx="67" cy="57" r="5" fill="currentColor" opacity="0.4" />
+		{#each [[34, 44, 0.4], [92, 34, -0.3], [98, 74, 1.2], [44, 90, 0.2]] as [x, y, a], i (i)}
+			<rect
+				x={x - 8}
+				y={y - 4}
+				width="16"
+				height="8"
+				rx="4"
+				fill={accent}
+				opacity="0.75"
+				transform="rotate({(a * 180) / Math.PI} {x} {y})"
+			/>
+		{/each}
+		<path
+			d="M50 86 Q62 92 76 86 M48 92 Q62 99 80 92"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			stroke-dasharray="1.5 2.5"
+			opacity="0.55"
+		/>
+		<rect
+			x="74"
+			y="80"
+			width="12"
+			height="9"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1"
+			opacity="0.6"
+		/>
+		<path
+			d="M86 80 L138 30 M86 89 L138 98"
+			stroke="currentColor"
+			stroke-width="0.8"
+			opacity="0.35"
+		/>
+		<rect
+			x="138"
+			y="30"
+			width="48"
+			height="68"
+			rx="6"
+			fill="currentColor"
+			fill-opacity="0.05"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.7"
+		/>
+		<path d="M140 52 H184" stroke={accent} stroke-width="3" opacity="0.6" />
+		{#each [148, 162, 176] as x (x)}
+			<circle cx={x} cy="66" r="6" fill="currentColor" opacity="0.45" />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -14,8 +14,17 @@
 		angle?: number;
 		/** Swap x and y before turning (to lay a vertical molecule down). */
 		lay?: boolean;
+		/** DNA: colour each atom by its base (A, T, C, G) or as backbone. */
+		byBase?: boolean;
 	}
-	let { id, x, y, angle = 0, lay = false }: Props = $props();
+	let { id, x, y, angle = 0, lay = false, byBase = false }: Props = $props();
+	const BASE: Record<string, string> = {
+		A: '#f76707',
+		T: '#fab005',
+		C: '#40c057',
+		G: '#228be6',
+		b: '#adb5bd'
+	};
 
 	const RADIUS: Record<string, number> = {
 		H: 0.12,
@@ -37,12 +46,12 @@
 </script>
 
 <g transform="translate({x} {y}) rotate({(angle * 180) / Math.PI})">
-	{#each atoms as [el, ax, ay], i (i)}
+	{#each atoms as [el, ax, ay, , tag], i (i)}
 		<circle
 			cx={lay ? ay : ax}
 			cy={lay ? -ax : ay}
 			r={RADIUS[el] ?? 0.17}
-			fill={FILL[el] ?? '#a0a'}
+			fill={byBase && tag ? BASE[tag] : (FILL[el] ?? '#a0a')}
 			stroke="var(--stage-ink)"
 			stroke-opacity="0.45"
 			stroke-width="0.012"

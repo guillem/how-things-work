@@ -17,8 +17,8 @@
 		glucoseAtoms: { id: 'glucose', lay: false, angle: 0.4, wet: true }
 	};
 	const R: Record<string, number> = { H: 0.12, C: 0.17, N: 0.155, O: 0.152, P: 0.18, MG: 0.173 };
-	const W = 9;
-	const Hh = 6;
+	const W = 12;
+	const Hh = 8;
 	function watersFor(key: string) {
 		const w = WHICH[key];
 		const atoms = SMALL_MOLECULES[w.id].atoms;
@@ -92,6 +92,6 @@
 		<rect x="2.1" y="-1" width="9.9" height="2" fill="var(--tc-dna)" opacity="0.25" />
 	{/if}
 	<Part id={frame.focus} {sel} {pick} {interactive}>
-		<Mol id={w.id} x={0} y={0} angle={w.angle} lay={w.lay} />
+		<Mol id={w.id} x={0} y={0} angle={w.angle} lay={w.lay} byBase={w.id === 'dna'} />
 	</Part>
 </g>

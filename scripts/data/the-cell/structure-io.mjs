@@ -7,7 +7,7 @@
 import { readFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 
-/** @typedef {{ el: string, x: number, y: number, z: number, chain: string, res: string, entity?: string, het: boolean }} Atom */
+/** @typedef {{ el: string, x: number, y: number, z: number, chain: string, res: string, name?: string, entity?: string, het: boolean }} Atom */
 
 function text(path) {
 	const buf = readFileSync(path);
@@ -103,6 +103,7 @@ export function readCif(path) {
 		const iZ = c('Cartn_z');
 		const iChain = c('auth_asym_id');
 		const iRes = c('label_comp_id');
+		const iName = c('label_atom_id');
 		const iEnt = c('label_entity_id');
 		const iModel = c('pdbx_PDB_model_num');
 		for (; j < lines.length && !lines[j].startsWith('#'); j++) {
@@ -116,6 +117,7 @@ export function readCif(path) {
 				z: Number(t[iZ]),
 				chain: t[iChain],
 				res: t[iRes],
+				name: t[iName]?.replace(/"/g, ''),
 				entity: t[iEnt],
 				het: t[iGroup] === 'HETATM'
 			});
