@@ -214,6 +214,7 @@
 				size={13}
 				weight={on ? 700 : 500}
 				color={on ? 'var(--lm-pick)' : undefined}
+				mono
 				text={label(lm.token(id))}
 			/>
 			<rect

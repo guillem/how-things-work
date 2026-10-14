@@ -49,6 +49,8 @@
 		const perLine = Math.floor(w / cw);
 		let col = 0;
 		let line = 0;
+		let broke = false;
+		let nlCol = 0;
 		const all = [
 			...prompt.map((id) => ({ id, kind: 'prompt' as const })),
 			...gen.map((id) => ({ id, kind: 'gen' as const })),
@@ -57,24 +59,31 @@
 		let gi = -1;
 		all.forEach((tk, i) => {
 			if (tk.kind === 'gen') gi++;
-			const raw = lm.token(tk.id).replace(/ /g, ' ');
+			const raw = lm.token(tk.id).replace(/\u00a0/g, ' ');
 			const parts = raw.split('\n');
 			parts.forEach((part, pi) => {
 				if (pi > 0) {
-					// show the newline itself, then break
+					// show the newline itself, then break; a run of newlines breaks only once (↵↵)
+					const again = broke;
 					out.push({
 						key: `${i}-nl${pi}`,
 						text: '↵',
-						x: col,
-						line,
+						x: again ? nlCol : col,
+						line: again ? line - 1 : line,
 						kind: tk.kind,
 						n: 1,
 						i: tk.kind === 'gen' ? gi : -1
 					});
-					col = 0;
-					line++;
+					if (again) nlCol++;
+					else {
+						nlCol = col + 1;
+						col = 0;
+						line++;
+						broke = true;
+					}
 				}
 				if (!part) return;
+				broke = false;
 				let text = part;
 				if (col === 0) text = text.replace(/^ /, '');
 				if (col + text.length > perLine && col > 0) {

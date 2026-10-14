@@ -52,14 +52,17 @@
 			? `Your choice ${depth + 1} of 3: click one of the first four tokens`
 			: 'Three tokens chosen: as deep as the stored predictions go'
 	);
-	const keptN = $derived(cut.kept.filter(Boolean).length);
 	const cutNote = $derived(
 		greedyT
-			? 'T = 0: only the top token can be picked'
+			? 'only the top token can be picked'
 			: cut.size === null
-				? `top-p ${P.toFixed(2)} keeps all ten shown and more`
-				: `top-p ${P.toFixed(2)} keeps ${cut.size === lm.vocab ? 'every token' : `${keptN === cut.size ? keptN : cut.size} token${cut.size === 1 ? '' : 's'}`}`
+				? `top-p ${P.toFixed(2)} keeps more than the ten shown`
+				: cut.size === lm.vocab
+					? 'top-p 1: every token can be picked'
+					: `top-p ${P.toFixed(2)} keeps ${cut.size.toLocaleString('en-US')} token${cut.size === 1 ? '' : 's'}`
 	);
+	/** Bars are scaled to the most likely token (its percentage is written beside it). */
+	const scale = $derived(ROW.w / Math.max(0.2, d.p[0]));
 	const text = $derived(lm.text([...prompt.ids.slice(1), ...walk.chosen]));
 </script>
 
@@ -76,13 +79,15 @@
 	<Readout id="text" order={1} label="Your text" value={text}>
 		<TextCard
 			x={44}
-			y={46}
+			y={52}
 			w={872}
 			prompt={prompt.ids.slice(1)}
 			gen={walk.chosen}
 			ghost={node.g ?? []}
 			hot={depth - 1}
-			maxLines={6}
+			maxLines={5}
+			size={17}
+			lineH={27}
 		/>
 	</Readout>
 	<Readout id="ghost-note">
@@ -156,19 +161,20 @@
 				anchor="end"
 				size={13.5}
 				weight={live ? 650 : 500}
+				mono
 				text={label(lm.token(id))}
 			/>
 			<rect
 				x={ROW.x}
 				y={y + 4}
-				width={Math.max(0.5, d.p[i] * ROW.w)}
+				width={Math.max(0.5, d.p[i] * scale)}
 				height="18"
 				rx="3"
 				fill={ok ? 'var(--lm-bar)' : 'var(--lm-cut)'}
 				opacity="0.85"
 			/>
 			<Txt
-				x={ROW.x + d.p[i] * ROW.w + 8}
+				x={ROW.x + d.p[i] * scale + 8}
 				y={y + 17}
 				size={12}
 				muted

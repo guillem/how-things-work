@@ -26,7 +26,7 @@
 	const N = $derived(run.steps.length);
 
 	// ---- the clock: one token per beat, a pause at the end, then again
-	const BEAT = $derived(greedy ? 1.3 : 1.7);
+	const BEAT = $derived(greedy ? 1 : 1.5);
 	const period = $derived(N * BEAT + 4);
 	const tt = $derived(reduced ? N * BEAT : t % period);
 	const cur = $derived(Math.min(N - 1, Math.floor(tt / BEAT)));
@@ -65,12 +65,14 @@
 	const status = $derived(
 		greedy
 			? `step ${cur + 1} of ${N}: take the most likely token, ${label(lm.token(s.pick))} (${percent(s.pp)})`
-			: `step ${cur + 1} of ${N}: random number ${s.r?.toFixed(3)} → ${label(lm.token(s.pick))} (${percent(s.pp)})`
+			: u < 0.6
+				? `step ${cur + 1} of ${N}: draw a random number between 0 and 1 …`
+				: `step ${cur + 1} of ${N}: random number ${s.r?.toFixed(3)} → ${label(lm.token(s.pick))} (${percent(s.pp)})`
 	);
 	const setting = $derived(
 		greedy
 			? 'greedy decoding (T = 0)'
-			: `T = ${run.T}${run.p < 1 ? ', top-p 0.9' : ''}, run ${run.seed}`
+			: `T = ${run.T}${run.p < 1 ? ', top-p 0.9' : ''}, run ${seed}`
 	);
 	const fullText = $derived(
 		lm.text(prompt.ids.slice(1)) + lm.text(run.steps.slice(0, appended).map((x) => x.pick))
@@ -98,7 +100,9 @@
 			prompt={prompt.ids.slice(1)}
 			gen={run.steps.slice(0, appended).map((x) => x.pick)}
 			hot={appended === cur + 1 ? cur : -1}
-			maxLines={7}
+			maxLines={6}
+			size={17}
+			lineH={27}
 		/>
 	</Readout>
 
@@ -127,6 +131,7 @@
 			size={13}
 			weight={on ? 700 : 500}
 			color={on ? 'var(--lm-pick)' : undefined}
+			mono
 			text={label(lm.token(r.id))}
 		/>
 		<rect
@@ -242,6 +247,7 @@
 				size={12}
 				weight={650}
 				color="var(--lm-pick)"
+				opacity={marker > 0.98 ? 1 : 0}
 				text="r = {s.r?.toFixed(3)}"
 			/>
 		</g>

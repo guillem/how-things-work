@@ -15,7 +15,7 @@
 
 	const tr = lm.data.training;
 	const n = tr.steps.length;
-	const pos = $derived(Math.min(n, Math.max(1, Math.round(num(params.pos, 9)))));
+	const pos = $derived(Math.min(n, Math.max(1, Math.round(num(params.pos, 14)))));
 	const s = $derived(tr.steps[pos - 1]);
 	const actual = $derived(tr.ids[pos]);
 	const loss = crossEntropy(tr.steps.map((x) => x.p));
@@ -136,7 +136,7 @@
 		<Txt x={44} y={CY + 50} size={12} muted text="its three best guesses for the next token" />
 	</Readout>
 	{#each s.top as [id, p], i (i)}
-		{@const y = CY + 62 + i * 28}
+		{@const y = CY + 64 + i * 34}
 		{@const right = id === actual}
 		<Txt
 			x={210}
@@ -145,18 +145,19 @@
 			size={13}
 			weight={right ? 700 : 500}
 			color={right ? 'var(--lm-pick)' : undefined}
+			mono
 			text={label(lm.token(id))}
 		/>
 		<rect
 			x={222}
 			y={y + 2}
-			width={Math.max(0.5, p * 300)}
+			width={Math.max(0.5, p * 340)}
 			height="18"
 			rx="3"
 			fill={right ? 'var(--lm-pick)' : 'var(--lm-bar)'}
 			opacity="0.85"
 		/>
-		<Txt x={222 + p * 300 + 8} y={y + 15} size={12} muted text={percent(p)} />
+		<Txt x={222 + p * 340 + 8} y={y + 15} size={12} muted text={percent(p)} />
 	{/each}
 	<Readout
 		id="actual"
@@ -173,6 +174,7 @@
 			size={18}
 			weight={700}
 			color="var(--lm-pick)"
+			mono
 			text={label(lm.token(actual))}
 		/>
 		<Txt x={620} y={CY + 130} size={13} text="GPT-2 gave it {percent(s.p)}" />

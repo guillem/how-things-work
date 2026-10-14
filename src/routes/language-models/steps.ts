@@ -22,10 +22,10 @@ const prompt: Control = {
 	label: 'Prompt',
 	default: 'capital',
 	options: [
-		{ value: 'capital', label: '… Rome is the capital of' },
-		{ value: 'story', label: 'Once upon a time, there was a' },
-		{ value: 'eiffel', label: 'The Eiffel Tower is in the city of' },
-		{ value: 'qa', label: 'Q: What is the boiling point of water? A:' }
+		{ value: 'capital', label: 'capital of' },
+		{ value: 'story', label: 'Once upon a time' },
+		{ value: 'eiffel', label: 'Eiffel Tower' },
+		{ value: 'qa', label: 'Q: … A:' }
 	],
 	help: 'Four fixed prompts, run through GPT-2 small when the page was made.'
 };
@@ -69,9 +69,9 @@ const runPrompt: Control = {
 	label: 'Prompt',
 	default: 'story',
 	options: [
-		{ value: 'story', label: 'Once upon a time, there was a' },
-		{ value: 'eiffel', label: 'The Eiffel Tower is in the city of' },
-		{ value: 'qa', label: 'Q: What is the boiling point of water? A:' }
+		{ value: 'story', label: 'Once upon a time' },
+		{ value: 'eiffel', label: 'Eiffel Tower' },
+		{ value: 'qa', label: 'Q: … A:' }
 	]
 };
 
@@ -109,8 +109,8 @@ const treePrompt: Control = {
 	label: 'Prompt',
 	default: 'story',
 	options: [
-		{ value: 'story', label: 'Once upon a time, there was a' },
-		{ value: 'eiffel', label: 'The Eiffel Tower is in the city of' }
+		{ value: 'story', label: 'Once upon a time' },
+		{ value: 'eiffel', label: 'Eiffel Tower' }
 	]
 };
 
@@ -127,7 +127,7 @@ const framing: Control = {
 	label: 'Prompt',
 	default: 'question',
 	options: [
-		{ value: 'question', label: 'The bare question' },
+		{ value: 'question', label: 'Bare question' },
 		{ value: 'qa', label: 'Framed as Q: … A:' }
 	]
 };
@@ -156,9 +156,9 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			body: `
 <p>A <dfn data-def="A program that gives a probability to every possible next piece of text, given the text so far. Large language models are neural networks with billions of learned numbers.">language model</dfn> does not read letters or words. It reads <dfn data-def="A piece of text from a fixed list, the vocabulary: a common word with its leading space, part of a rarer word, a digit, a punctuation mark or a single byte.">tokens</dfn>, pieces of text from a fixed list of 50,257, and each token is just a number, its position in that list.</p>
-<p>Type in the box. The stage shows how ${MODEL} cuts your text, with the number of each token. Common words, with the space before them, are one token: <em>␣Tower</em> is token 8765. Rare words are cut into pieces: <em>␣unbelievably</em> becomes <em>␣unbeliev</em> and <em>ably</em>. Try a long word, a number, accents or an emoji.</p>
-<p>The tokenizer is GPT-2's own, running in your browser. Notice that <em>Paris</em>, <em>␣Paris</em> and <em>␣paris</em> are three different tokens: to the model they are three different symbols, and it learns that they are related only from how they are used.</p>`,
-			notes: `<p>GPT-2's tokenizer first splits the text at spaces and punctuation (a word keeps the space in front of it, and endings such as <em>’s</em> and <em>’t</em> are split off), then turns each piece into its <dfn data-def="The standard way of storing text as bytes: one byte for plain English letters, two for accented letters, three for most Chinese characters, four for most emoji.">UTF-8</dfn> bytes. Because any text is made of bytes, nothing can ever be “unknown”: an emoji the vocabulary lacks simply becomes several byte tokens, shown here as ⟨F0 9F …⟩.</p>
+<p>Type in the box. The stage shows how ${MODEL} cuts your text, with the number of each token. Common words, with the space before them, are one token: <em>␣Tower</em> is token 8765. Rarer words are cut into pieces: <em>␣Eiffel</em> becomes <em>␣E</em>, <em>iff</em> and <em>el</em>. Try a long word, a number, accents or an emoji.</p>
+<p>The tokenizer is GPT-2's own, running in your browser. Try <strong>Paris paris</strong>: <em>Paris</em> (40313) and <em>␣Paris</em> (6342) are different tokens, and <em>␣paris</em> is two, <em>␣par</em> + <em>is</em>. To the model these are unrelated symbols; it learns that they mean the same city only from how they are used.</p>`,
+			notes: `<p>GPT-2's tokenizer first splits the text at spaces and punctuation (a word keeps the space in front of it, and endings such as <em>’s</em> and <em>’t</em> are split off), then turns each piece into its <dfn data-def="The standard way of storing text as bytes: one byte for plain English letters, two for accented letters, three for most Chinese characters, four for most emoji.">UTF-8</dfn> bytes. Because any text is made of bytes, nothing can ever be “unknown”: an emoji the vocabulary lacks is cut into tokens that are pieces of its bytes: 🙂 becomes ⟨F0 9F⟩ and ⟨99 82⟩, shown here in hexadecimal.</p>
 <p>English text averages about four characters per token for GPT-2; other languages, numbers and code usually need more tokens for the same text, which makes them slower and costlier to process.</p>`
 		},
 		{
@@ -170,7 +170,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			body: `
 <p>Nobody wrote GPT-2's list of tokens. It was learned from text by <dfn data-def="Byte-pair encoding: start from the 256 possible bytes, find the pair of neighbouring tokens that is most frequent in a large body of text, make it a new token, and repeat, here 50,000 times.">byte-pair encoding</dfn>: start from the 256 possible bytes, find the pair of neighbours that occurs most often in a large body of text, glue it into a new token, and repeat. GPT-2 did this 50,000 times: 256 bytes + 50,000 merges + one special token = 50,257.</p>
-<p>The stage replays it on your text: every piece starts as single bytes, and at each tick the merge learned earliest among its neighbours is applied. The number on each merge is its rank. <em>␣t</em> + <em>he</em> is merge no. 262, among the very first; the pieces of a rare word join late, or never.</p>
+<p>The stage replays it on your text: every piece starts as single bytes, and at each tick the merge learned earliest among its neighbours is applied. The number on each merge is its rank. <em>␣t</em> + <em>he</em>, making <em>␣the</em>, is merge no. 7, among the very first; the pieces of a rare word join late, or never.</p>
 <p>The result is a compromise. Frequent words are one token, so text stays short; rare words still fit, as several pieces.</p>`,
 			notes: `<p>BPE was invented for data compression (Philip Gage, 1994) and adapted to language models by Sennrich, Haddow and Birch (2016). GPT-2's version, from Radford and colleagues (2019), works on bytes and never merges across the split between a word and the space or punctuation around it.</p>`
 		},
@@ -216,15 +216,15 @@ export const spec: ExplainerSpec = {
 					id: 'pos',
 					label: 'Position',
 					min: 1,
-					max: 22,
+					max: 20,
 					step: 1,
-					default: 9,
+					default: 14,
 					help: 'Or point at a token on the stage.'
 				}
 			],
 			body: `
 <p>Where do the probabilities come from? GPT-2 was trained on about 40 GB of text from 8 million web pages (<dfn data-def="The training text of GPT-2: web pages linked from Reddit posts with at least 3 karma, about 8 million documents and 40 GB of text, collected by OpenAI in 2017.">WebText</dfn>) with one task: at every position, predict the next token. Nobody labelled anything: the text itself supplies the right answers.</p>
-<p>The stage feeds GPT-2 a sentence and shows, under each token, the probability the model had given it before seeing it. <em>␣Tower</em> after “The Eiffel” was easy (97%); <em>␣1889</em> after “built in” was not (2.6%). The loss used in training is the <a href="../neural-networks/#train-neuron">cross-entropy</a>: the average of −ln p over the tokens. Training nudges all 124 million numbers, by <a href="../gradient-descent/">gradient descent</a>, to make that average smaller across billions of tokens.</p>
+<p>The stage feeds GPT-2 a sentence and shows, under each token, the probability the model had given it before seeing it. <em>␣Tower</em> after “The Eiffel” was easy (98%); <em>␣Paris</em> after “is in” got only 0.9%, <em>␣1889</em> after “built in” 1.1%, and <em>␣330</em> 0.002%. The loss used in training is the <a href="../neural-networks/#train-neuron">cross-entropy</a>: the average of −ln p over the tokens. Training nudges all 124 million numbers, by <a href="../gradient-descent/">gradient descent</a>, to make that average smaller across billions of tokens.</p>
 <p>To predict web text well, a model has to pick up grammar, facts, styles and some reasoning, because they all help guess what comes next. That is all it learned, and all it was asked to do.</p>`,
 			notes: `<p>The WebText figures come from the GPT-2 paper (Radford and colleagues, “Language Models are Unsupervised Multitask Learners”, 2019). Every position of every training text is one guess, all made in parallel: GPT-2's mask (see the transformers page) stops each position from looking at the token it has to predict.</p>`
 		},
@@ -239,7 +239,7 @@ export const spec: ExplainerSpec = {
 			controls: [runPrompt],
 			body: `
 <p>A model that predicts one token can write a whole text: pick a token from the prediction, add it to the end of the text, and predict again from the longer text. Every token of every answer a language model gives is made this way, one at a time.</p>
-<p>The simplest way to pick is to always take the most likely token: <dfn data-def="Generating text by always choosing the single most likely next token.">greedy decoding</dfn>. The stage runs it for 20 tokens, with GPT-2's prediction at each step. Watch what happens: the text is fluent at first, then GPT-2 tends to repeat itself (“… a place of chaos and chaos.”). The most likely token at each step does not make the most likely, or the most interesting, text.</p>`,
+<p>The simplest way to pick is to always take the most likely token: <dfn data-def="Generating text by always choosing the single most likely next token.">greedy decoding</dfn>. The stage runs it for 32 tokens, with GPT-2's prediction at each step. Watch what happens: the text is fluent at first, then GPT-2 goes round in circles (“… a place of chaos and chaos. The world is a place of chaos”), or starts the prompt over (“The Eiffel Tower is a …”). The most likely token at each step does not make the most likely, or the most interesting, text.</p>`,
 			notes: `<p>Repetition is a well-known failure of greedy decoding (Holtzman and colleagues, “The curious case of neural text degeneration”, 2020): once a phrase has appeared, repeating it becomes likely, which makes it likelier still.</p>`
 		},
 		{
@@ -252,7 +252,7 @@ export const spec: ExplainerSpec = {
 			controls: [prompt, temp],
 			body: `
 <p>Instead of always taking the top token, we can draw one at random, each with its probability. A setting called <dfn data-def="A number T that divides every logit before the softmax: below 1 it sharpens the distribution, above 1 it flattens it; T → 0 is greedy decoding.">temperature</dfn> T reshapes the distribution first: every score is divided by T before the softmax.</p>
-<p>Move the slider. Below 1, differences grow and the top token takes over; at 0 it gets everything (greedy). Above 1, differences shrink and the rarer tokens catch up: at T = 2 the ten most likely tokens of the story prompt keep less than 4% between them, and the rest goes to tokens that make little sense.</p>
+<p>Move the slider. Below 1, differences grow and the top token takes over; at 0 it gets everything (greedy). Above 1, differences shrink and the rarer tokens catch up: at T = 2 the ten most likely tokens of the story prompt keep less than 2% between them, and the rest goes to tokens that make little sense.</p>
 <p>Temperature changes no ranking: the order of the bars never changes, only their heights.</p>`,
 			notes: `<p>The probabilities at every temperature are computed here, in your browser, from GPT-2's logits for the ten tokens shown and its normaliser Σ e<sup>score / T</sup> over all 50,257 tokens, stored when the page was made for T = 0.1, 0.2, … 2.0.</p>`
 		},
@@ -270,7 +270,7 @@ export const spec: ExplainerSpec = {
 <li><dfn data-def="Sampling only from the k most likely tokens, after renormalising their probabilities to add up to 1.">Top-k</dfn>: keep only the k most likely tokens.</li>
 <li><dfn data-def="Nucleus sampling: keep the fewest most likely tokens whose probabilities add up to at least p, renormalise, and draw from them.">Top-p</dfn> (nucleus sampling): keep the fewest most likely tokens whose probabilities add up to at least p.</li>
 </ul>
-<p>The kept tokens' probabilities are scaled up to add up to 1 again. The stage applies both: a token is kept only if both keep it. Top-p adapts to the prompt: with p = 0.9 it keeps 2 tokens after “… capital of” at T = 0.5, but thousands after “Once upon a time, there was a”, where many continuations are reasonable.</p>`
+<p>The kept tokens' probabilities are scaled up to add up to 1 again. The stage applies both: a token is kept only if both keep it. Top-p adapts to the prompt: with p = 0.9 and T = 1 it keeps 14 tokens after “… capital of”, but 3,167 after “Once upon a time, there was a”, where many continuations are reasonable.</p>`
 		},
 		{
 			id: 'sample',
@@ -284,7 +284,7 @@ export const spec: ExplainerSpec = {
 <p>Here is real sampling. At each step the kept tokens are laid end to end on a strip, each as long as its probability. A random number between 0 and 1 is drawn, and the token whose stretch it lands on is the one written.</p>
 <p>Change the temperature and the run. At 0.3 the runs are almost the same as greedy text. At 0.7 they differ but stay sensible. At 1.5 the dice often land on rare tokens and the text turns to nonsense within a few words; top-p 0.9 keeps it together for longer.</p>
 <p>These runs were drawn when the page was made, three for each setting, so a run's settings cannot change halfway. In “Choose the next token yourself”, below, you do the picking and can change the settings at every token.</p>`,
-			notes: `<p>Each run uses numpy's random generator with seed 1, 2 or 3. The rule used, laying the probabilities end to end and seeing where a uniform random number falls, is called inverse transform sampling. Chat assistants typically sample at temperatures between 0.5 and 1 with top-p near 0.9, but every product picks its own settings.</p>`
+			notes: `<p>Each run draws its random numbers from numpy's generator with a fixed seed. Every stored text was read before publishing; one high-temperature run was replaced by the next seed's (the build script says which). The rule used, laying the probabilities end to end and seeing where a uniform random number falls, is called inverse transform sampling. Chat assistants typically sample at temperatures between 0.5 and 1 with top-p near 0.9, but every product picks its own settings.</p>`
 		},
 		{
 			id: 'compare',
@@ -296,7 +296,7 @@ export const spec: ExplainerSpec = {
 			controls: [runPrompt, runTemp, runTopP],
 			body: `
 <p>The same prompt and the same model give a different text every time, because the dice differ. The stage shows the three runs for the setting chosen, next to the greedy text, which is always the same.</p>
-<p>The first token chosen already sends each run somewhere else: a story about “a woman” and a story about “a guy named John” share nothing after that. Every token is predicted from all the tokens before it, so one different choice changes everything that follows.</p>
+<p>One different token sends a run somewhere else: at T = 0.7, run 1 of the story starts “a woman. She'd been in her late thirties”, run 3 “a time when an elf was the only person that could walk”. Every token is predicted from all the tokens before it, so one different choice changes everything that follows.</p>
 <p>That is why asking a chat assistant the same question twice can give two different answers, and why a single unlucky token can steer an answer wrong.</p>`
 		},
 		{
@@ -322,7 +322,7 @@ export const spec: ExplainerSpec = {
 			duration: 34,
 			controls: [framing],
 			body: `
-<p>GPT-2 is a <dfn data-def="A language model trained only to predict the next token of a large body of text, with no further training to follow instructions or hold a conversation.">base model</dfn>: it continues text the way web pages continue. Ask it “What is the boiling point of water?” and the most likely next token is a line break (53%): on the web, a question is often followed by more text, or more questions. Framed as “Q: … A:”, it writes an answer, because that is what follows such a pattern. Its greedy answer, “about 1.5 degrees Fahrenheit”, is fluent and wrong.</p>
+<p>GPT-2 is a <dfn data-def="A language model trained only to predict the next token of a large body of text, with no further training to follow instructions or hold a conversation.">base model</dfn>: it continues text the way web pages continue. Ask it “What is the boiling point of water?” and the most likely next token is a line break (53%): on the web, a question is often followed by more text, or more questions. Framed as “Q: … A:”, it writes an answer, because that is what follows such a pattern. Its greedy answer, “about 1.5 degrees Fahrenheit”, is fluent and wrong, and it then writes the next question itself: “Q: What is the temperature of water in a glass of water?”</p>
 <p>Chat assistants such as ChatGPT, Claude or Gemini start as base models like this one, only far larger and trained on far more text. They are then trained further: on many example conversations written by people (<dfn data-def="Further training of a base model on examples of instructions and good responses, so that it learns to answer rather than merely continue.">instruction tuning</dfn>), and with people's judgements of which answers are better (<dfn data-def="Reinforcement learning from human feedback: people compare the model's answers, a second model learns to predict their preferences, and the language model is trained to produce answers that score well.">RLHF</dfn>).</p>
 <p>That further training changes which continuations are likely, not how text is made. A chat is written out as one text, with special tokens marking who speaks, and the assistant's reply is generated one token at a time, exactly as on this page.</p>`,
 			notes: `<p>The recipe was laid out for InstructGPT (Ouyang and colleagues, “Training language models to follow instructions with human feedback”, 2022): a 1.3-billion-parameter model trained this way was preferred by people to the 175-billion-parameter GPT-3 base model. GPT-2 had none of this training. Larger base models also get facts right far more often than GPT-2 small, but a confident, fluent, wrong answer remains possible for any language model.</p>`

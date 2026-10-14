@@ -40,7 +40,8 @@ What is stored (all probabilities are GPT-2's, over its whole vocabulary of 50,2
             { prompt, T, p, seed, steps } with, at every step, d: the
             five most likely tokens of the distribution actually sampled from (temperature T,
             then top-p p, renormalised) as [id, probability]; r: the random number drawn
-            (numpy default_rng(seed)); pick: the token chosen, the one whose interval of the
+            (numpy default_rng(seed), 6 decimals; d has 5, and the script checks
+            that the rounded numbers still select the same token); pick: the token chosen, the one whose interval of the
             cumulative distribution (tokens sorted by probability) contains r; pp: its
             probability. T = 0 is greedy decoding (always the most likely token; r unused, and d is
             the model's own distribution at T = 1).
@@ -257,9 +258,17 @@ def main(src, outdir):
                         r = float(rng.random())
                         j = min(int(np.searchsorted(np.cumsum(q), r, side='right')), keep - 1)
                         pick = int(order[j])
-                        d = [[int(i), round(float(x), 4)] for i, x in zip(order[:RUN_TOP], q[:RUN_TOP])]
+                        d = [[int(i), round(float(x), 5)] for i, x in zip(order[:RUN_TOP], q[:RUN_TOP])]
                         pp = sig(q[j])
-                        r = round(r, 4)
+                        r = round(r, 6)
+                        # the stored (rounded) numbers must give the same token as the exact ones
+                        c, shown = 0.0, -1
+                        for jj, (_, x) in enumerate(d):
+                            c += x
+                            if r < c:
+                                shown = jj
+                                break
+                        assert (shown == j) if j < RUN_TOP else (shown == -1), (pid, T, top_p, seed, r)
                     steps.append({'d': d, 'r': r, 'pick': pick, 'pp': pp})
                     used.update(i for i, _ in d)
                     used.add(pick)

@@ -59,7 +59,7 @@
 	</Readout>
 	{#each d.ids.slice(0, 4) as id, i (i)}
 		{@const y = 134 + i * 22}
-		<Txt x={L.x + 70} y={y + 13} anchor="end" size={12.5} text={label(lm.token(id))} />
+		<Txt x={L.x + 70} y={y + 13} anchor="end" size={12.5} mono text={label(lm.token(id))} />
 		<rect
 			x={L.x + 80}
 			y={y + 2}

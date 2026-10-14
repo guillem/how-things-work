@@ -230,8 +230,15 @@ export function crossEntropy(p: readonly number[]): number {
 /** How a token is written on the stage: ␣ for a leading space, ↵ for a newline. */
 export function tokenLabel(t: string): string {
 	if (t === '<|endoftext|>') return '⟨start⟩';
-	return t.replace(/\n/g, '↵').replace(/^ /, '␣').replace(/ /g, '⍽');
+	return t.replace(/\n/g, '↵').replace(/^ /, '␣').replace(/\u00a0/g, '⍽');
 }
 
+/** A probability as a percentage: 35%, 6.9%, 99.8%, <0.1%. */
 export const percent = (p: number) =>
-	p >= 0.1 ? `${(p * 100).toFixed(0)}%` : p >= 0.001 ? `${(p * 100).toFixed(1)}%` : '<0.1%';
+	p >= 0.995 && p < 1
+		? `${(p * 100).toFixed(1)}%`
+		: p >= 0.1
+			? `${(p * 100).toFixed(0)}%`
+			: p >= 0.001
+				? `${(p * 100).toFixed(1)}%`
+				: '<0.1%';
