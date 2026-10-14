@@ -43,6 +43,23 @@
 		tangent: { x: 117.6, y: calcY(0.6), k: (-140 * 0.6) / 156 }
 	};
 
+	// Vision & colour: three cone-sensitivity humps (decorative bell curves at the S, M and L
+	// peaks, 442, 543 and 570 nm, over x 112…188 for 400…700 nm).
+	const visionArt = (
+		[
+			[442, 26, 'var(--vc-s)'],
+			[543, 30, 'var(--vc-m)'],
+			[570, 34, 'var(--vc-l)']
+		] as const
+	).map(([peak, w, c]) => ({
+		c,
+		d: Array.from({ length: 41 }, (_, i) => {
+			const nm = 400 + (i / 40) * 300;
+			const y = 96 - 60 * Math.exp(-(((nm - peak) / w) ** 2) / 2);
+			return `${i ? 'L' : 'M'}${(112 + (i / 40) * 76).toFixed(1)} ${y.toFixed(1)}`;
+		}).join(' ')
+	}));
+
 	// Light & optics: the spectrum fanning out of a prism (fixed colours of the
 	// rainbow, red bent least).
 	const opticsArt = ['#e03131', '#f76707', '#fab005', '#40c057', '#228be6', '#7048e8'].map(
@@ -1766,6 +1783,44 @@
 			stroke-linecap="round"
 			stroke-linejoin="round"
 		/>
+	{:else if slug === 'vision-color'}
+		<!-- an eye in cross-section focusing parallel rays on its retina, and the three cone
+		     sensitivity curves -->
+		<circle
+			cx="62"
+			cy="60"
+			r="34"
+			fill={accent}
+			fill-opacity="0.1"
+			stroke="currentColor"
+			stroke-opacity="0.45"
+			stroke-width="1.6"
+		/>
+		<path d="M30 46 Q22 60 30 74" fill="none" stroke={accent} stroke-width="2" />
+		<ellipse
+			cx="44"
+			cy="60"
+			rx="5"
+			ry="11"
+			fill={accent}
+			fill-opacity="0.45"
+			stroke={accent}
+			stroke-width="1.2"
+		/>
+		<path d="M38 42 L38 50 M38 70 L38 78" stroke="currentColor" stroke-width="2.4" opacity="0.6" />
+		{#each [-7, 0, 7] as h (h)}
+			<path
+				d="M6 {60 + h} L44 {60 + h} L96 60"
+				fill="none"
+				stroke="var(--vc-ray)"
+				stroke-width="1.6"
+			/>
+		{/each}
+		<circle cx="96" cy="60" r="2.6" fill="var(--vc-retina)" />
+		{#each visionArt as k (k.c)}
+			<path d={k.d} fill="none" stroke={k.c} stroke-width="2.2" stroke-linejoin="round" />
+		{/each}
+		<path d="M112 97 L188 97" stroke="currentColor" stroke-opacity="0.35" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
