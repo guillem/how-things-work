@@ -95,8 +95,9 @@ test('a glucose yields 30–32 ATP with measured P/O, 36–38 with the old integ
 	expect(atpYield('classic', 'glycerol').total).toBe(36);
 	// The c₈ ring's ceiling, with no leak at all.
 	const max = atpYield('ring', 'malate').total;
-	expect(max).toBeGreaterThan(34);
-	expect(max).toBeLessThan(35);
+	expect(max).toBeCloseTo(34.5, 1);
+	// The narrative quotes the glycerol-phosphate shuttle's ceiling too.
+	expect(atpYield('ring', 'glycerol').total).toBeCloseTo(32.4, 1);
 	// The chain makes almost all of it: only 4 come from substrate-level steps.
 	expect(atpYield('measured', 'malate').substrate).toBe(4);
 	// Fermentation gives 2 per glucose: 16 times less.

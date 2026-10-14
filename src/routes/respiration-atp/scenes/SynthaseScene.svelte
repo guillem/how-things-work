@@ -20,7 +20,8 @@
 	let { t, params, reduced }: StageProps = $props();
 
 	const ringId = $derived(String(params.ring ?? 'cow'));
-	const C = $derived(C_RINGS.find((r) => r.id === ringId)?.c ?? 8);
+	const ring = $derived(C_RINGS.find((r) => r.id === ringId) ?? C_RINGS[0]);
+	const C = $derived(ring.c);
 
 	// ---- the outline ------------------------------------------------------------
 	const shape = MACHINES.atpSynthase;
@@ -358,11 +359,14 @@
 		id="per"
 		order={2}
 		label="Protons per ATP"
-		value="{fmt(hAtp)} at the synthase, ≈ {fmt(hPerATP(C))} with transport"
+		value={ring.mito
+			? `${fmt(hAtp)} at the synthase, ≈ ${fmt(hPerATP(C))} with transport`
+			: `${fmt(hAtp)} at the synthase (ATP made where it is used: no transport cost)`}
 	>
 		<text x="562" y="412" font-size="12" class="muted">protons per ATP</text>
 		<text x="918" y="412" font-size="13" font-weight="600" text-anchor="end"
-			>{fmt(hAtp)} (≈ {fmt(hPerATP(C))} with transport)</text
+			>{fmt(hAtp)}
+			{ring.mito ? `(≈ ${fmt(hPerATP(C))} with transport)` : '(no transport cost)'}</text
 		>
 	</Readout>
 	<Readout id="count" order={3} label="So far" value="{protonsDone} H⁺ through → {atpDone} ATP">

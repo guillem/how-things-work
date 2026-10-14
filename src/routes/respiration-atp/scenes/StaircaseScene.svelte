@@ -259,10 +259,10 @@
 	<Readout
 		id="stored"
 		order={5}
-		label="Stored by its protons at 180 mV"
+		label="Stored by its protons at a typical 180 mV"
 		value="{totalH} × {protonKJ(DP).toFixed(1)} = {Math.round(storedKJ)} kJ/mol"
 	>
-		<text x="44" y="532" font-size="12">stored in {totalH} protons at 180 mV</text>
+		<text x="44" y="532" font-size="12">stored in {totalH} protons at a typical 180 mV</text>
 		<rect x="380" y="522" width={storedKJ * scale} height="13" rx="6" fill="#f472b6" />
 		<text x={388 + storedKJ * scale} y="533" font-size="12" font-weight="700"
 			>{Math.round(storedKJ)} kJ/mol ({Math.round((100 * storedKJ) / totalKJ)}%)</text

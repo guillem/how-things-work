@@ -384,7 +384,7 @@
 				stroke-width="3"
 				stroke-linejoin="round"
 			/>
-			<Label x={196} y={524} text="2,840 kJ/mol of heat" size={11} anchor="start" muted />
+			<Label x={196} y={524} text="≈ 2,800 kJ/mol, all as heat" size={11} anchor="start" muted />
 		</Readout>
 		<Readout id="cell">
 			<text x="480" y="480" font-size="12" font-weight="600"

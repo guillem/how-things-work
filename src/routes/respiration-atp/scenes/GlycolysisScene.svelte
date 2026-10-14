@@ -318,7 +318,7 @@
 			label="So far"
 			value="an investment: 2 ATP spent to split the sugar"
 		>
-			<Label x={788} y={256} text="an investment: the sugar is primed to split" size={11} muted />
+			<Label x={788} y={256} text="an investment: 2 ATP spent to split the sugar" size={11} muted />
 		</Readout>
 	{/if}
 </g>
