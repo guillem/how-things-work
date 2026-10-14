@@ -2054,7 +2054,8 @@
 		<circle cx="112" cy="76" r="11" fill="var(--sm-blue)" />
 		<text x="88" y="36.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">u</text>
 		<text x="64" y="80.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">u</text>
-		<text x="112" y="80.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">d</text>
+		<text x="112" y="80.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">d</text
+		>
 		<circle cx="166" cy="34" r="6" fill="var(--sm-lepton)" />
 		<path
 			d="M140 58 q6 -8 12 0 q6 8 12 0"
