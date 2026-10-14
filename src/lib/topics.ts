@@ -699,6 +699,15 @@ const explainers: Explainer[] = [
 		accent: '#5f3dc4',
 		steps: 13,
 		minutes: 22
+	},
+	{
+		slug: 'gravitational-waves',
+		title: 'Gravitational waves',
+		summary:
+			'Set the masses of two black holes and let them spiral together: ripples spread out, the signal climbs into a chirp you can hear, and a laser interferometer’s arms change by far less than a proton. Then read the masses off the real signal of GW150914.',
+		accent: '#5c7cfa',
+		steps: 12,
+		minutes: 24
 	}
 ];
 
