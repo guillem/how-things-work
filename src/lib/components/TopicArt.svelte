@@ -2357,6 +2357,47 @@
 		<circle cx="92" cy="76" r="4.2" fill="var(--rb-li)" />
 		<path d="M98 76 H110" stroke={accent} stroke-width="1.6" stroke-linecap="round" />
 		<path d="M106 72 L111 76 L106 80" fill="none" stroke={accent} stroke-width="1.6" />
+	{:else if slug === 'neurons'}
+		<!-- a neuron: dendrites, cell body, a myelinated axon, and the spike it fires -->
+		<g
+			fill="none"
+			stroke="currentColor"
+			stroke-opacity="0.55"
+			stroke-width="1.6"
+			stroke-linecap="round"
+		>
+			<path d="M40 78 L18 60 M28 68 L14 74 M40 78 L22 96 M30 88 L16 92 M40 78 L30 104" />
+			<path d="M40 78 L56 50 M50 60 L44 44" />
+		</g>
+		<circle
+			cx="44"
+			cy="78"
+			r="11"
+			fill={accent}
+			fill-opacity="0.3"
+			stroke={accent}
+			stroke-width="1.6"
+		/>
+		<path d="M55 80 L188 80" stroke="var(--nr-axon-edge)" stroke-width="3" stroke-linecap="round" />
+		{#each [66, 98, 130, 162] as x (x)}
+			<rect
+				{x}
+				y="75"
+				width="26"
+				height="10"
+				rx="5"
+				fill="var(--nr-myelin)"
+				stroke="var(--nr-myelin-edge)"
+				stroke-width="1"
+			/>
+		{/each}
+		<path
+			d="M70 46 L112 46 L118 44 L124 12 L130 50 L138 52 L146 47 L188 46"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.2"
+			stroke-linejoin="round"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -654,6 +654,15 @@ const explainers: Explainer[] = [
 		accent: '#2b8a3e',
 		steps: 12,
 		minutes: 20
+	},
+	{
+		slug: 'neurons',
+		title: 'How neurons fire and talk to each other',
+		summary:
+			'Inject current into a squid axon and watch sodium and potassium channels open, the voltage spike and the pulse race down the axon, far faster when wrapped in myelin. Then release neurotransmitter at a synapse and add up excitatory and inhibitory inputs on the next cell.',
+		accent: '#a61e4d',
+		steps: 13,
+		minutes: 20
 	}
 ];
 
