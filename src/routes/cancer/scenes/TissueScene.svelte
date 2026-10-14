@@ -185,16 +185,19 @@
 	const cancerNow = $derived(tumour(r, gen));
 	const resistantNow = $derived(count(r, gen, Kind.Resistant));
 	const treating = $derived(r.treatedAt !== null && gen >= r.treatedAt);
+	const early = $derived(
+		cancerNow > 0 ? 'a tumour is starting, too small to find' : 'no tumour yet'
+	);
 	const status = $derived.by(() => {
 		if (view === 'treat' || view === 'combo' || view === 'recap') {
-			if (r.found === null || gen < r.found) return 'no tumour yet';
+			if (r.found === null || gen < r.found) return early;
 			if (r.treatedAt === null) return 'untreated';
 			if (r.cleared !== null && gen >= r.cleared) return 'tumour cleared';
 			if (r.relapse !== null && gen >= r.relapse) return 'back, resistant to the drug';
 			return 'under treatment';
 		}
 		if (view === 'hits' || view === 'repair') {
-			if (r.found === null || gen < r.found) return 'no tumour yet';
+			if (r.found === null || gen < r.found) return early;
 			return `tumour found at generation ${r.found}`;
 		}
 		return '';
@@ -252,10 +255,10 @@
 				return [normal, one, krasK, p53, cancer, mut];
 			case 'combo':
 				return s.scenario.therapy === 'two'
-					? [normal, krasK, p53, cancer, part, res]
-					: [normal, krasK, p53, cancer, res];
+					? [normal, one, krasK, p53, cancer, part, res]
+					: [normal, one, krasK, p53, cancer, res];
 			default:
-				return [normal, krasK, p53, cancer, res];
+				return [normal, one, krasK, p53, cancer, res];
 		}
 	});
 	const LEG_X = [LX, LX + 180, LX + 360];
@@ -512,7 +515,7 @@
 		<Readout id="flat">
 			<Label
 				x={(CX0 + CX1) / 2}
-				y={syLiving(SITES) + 14}
+				y={syLiving(SITES) + 30}
 				text="divisions replace losses: the size holds"
 				size={12}
 				muted
