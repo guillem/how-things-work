@@ -403,12 +403,12 @@
 			id="scale"
 			order={3}
 			label="Real stack"
-			value="0.2 mm thick, rolled up inside a 21 × 70 mm can"
+			value="one layer of each 0.2 mm thick, rolled up inside a 21 × 70 mm can"
 		>
 			<Label
 				x={(X0 + xEnd) / 2}
 				y={BOT + 102}
-				text="the whole stack: 0.2 mm, drawn to scale; rolled up inside a 21 mm × 70 mm can"
+				text="one layer of each: 0.2 mm, drawn to scale; rolled up inside a 21 mm × 70 mm can"
 				size={11}
 				muted
 			/>

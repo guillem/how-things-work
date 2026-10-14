@@ -4,7 +4,7 @@
 	 * its E°, the band where water is stable (0 to 1.23 V at pH 0), and the two electrodes
 	 * chosen with `metalA` / `metalB`. Whichever sits higher is reduced (the cathode), the
 	 * lower one is oxidised (the anode), whatever control it came from; the bracket between
-	 * them is the cell voltage, E°cathode − E°anode. Electrons (dots) climb from the lower
+	 * them is the cell voltage, E°cathode − E°anode. Electrons (dots) go from the lower
 	 * rung to the higher one. Labels are spread apart where rungs crowd (around 0 V) and
 	 * joined to their rungs by short leaders.
 	 */
@@ -203,7 +203,7 @@
 			<Label
 				x={BX + 16}
 				y={(ya + yc) / 2 + 30}
-				text="electrons climb"
+				text="electrons go to the stronger pull"
 				size={11}
 				anchor="start"
 				muted

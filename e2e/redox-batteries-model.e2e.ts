@@ -48,6 +48,7 @@ test('the Daniell cell gives 1.10 V, whichever electrode is named first', () => 
 	expect(pairing('cu', 'cu').voltage).toBe(0);
 	// Lithium against copper: 3.38 V; magnesium against silver: 3.16 V.
 	expect(pairing('li', 'cu').voltage).toBeCloseTo(3.382, 3);
+	expect(pairing('mg', 'ag').voltage).toBeCloseTo(3.156, 3);
 	// ΔG° = −nFE°: about −213 kJ per mole of zinc.
 	expect(freeEnergy(2, DANIELL_E0)).toBeCloseTo(-213, 0);
 });
@@ -71,6 +72,8 @@ test('a running Daniell cell stays near 1.1 V, then dies at equilibrium (K ≈ 1
 	expect(half.zn).toBeCloseTo(1.5, 6);
 	expect(half.voltage).toBeCloseTo(1.0896, 3);
 	expect(daniellAt(0.99).voltage).toBeGreaterThan(1.03);
+	// Even with 99.99 % of the copper gone it still gives 0.98 V: −0.03 V per tenfold drop.
+	expect(daniellAt(0.9999).voltage).toBeCloseTo(0.976, 2);
 	const end = daniellAt(1);
 	expect(end.voltage).toBeCloseTo(0, 6);
 	// Faraday: 0.1 mol of Cu²⁺ takes 0.2 mol of electrons, 5.36 Ah.
@@ -119,6 +122,10 @@ test('every electrode curve is finite and one-way over the window it is used in'
 test('the LG M50 cell runs from 2.5 V empty to 4.2 V full, about 3.7 V on average', () => {
 	expect(cellVoltage(nmc, graphite, 0)).toBeCloseTo(M50.vMin, 1);
 	expect(cellVoltage(nmc, graphite, 1)).toBeCloseTo(M50.vMax, 1);
+	// No plateau: it falls steadily, through about 3.7 V at half charge.
+	expect(cellVoltage(nmc, graphite, 0.1)).toBeLessThan(3.4);
+	expect(cellVoltage(nmc, graphite, 0.5)).toBeCloseTo(3.7, 1);
+	expect(cellVoltage(nmc, graphite, 0.9)).toBeGreaterThan(4);
 	const mean = meanVoltage(nmc, graphite);
 	expect(mean).toBeGreaterThan(3.6);
 	expect(mean).toBeLessThan(3.8);
@@ -136,6 +143,10 @@ test('swapping materials changes voltage and capacity the way the page says', ()
 	const iron = pairFigures(lfp, graphite);
 	const metal = pairFigures(nmc, li);
 	const si = pairFigures(nmc, silicon);
+	// The range shown, 10 % to 90 % charge, stays where real cells work: an LFP cell is
+	// cut off at about 2.5 V, so its 10 % voltage must be above that.
+	expect(iron.v10).toBeGreaterThan(2.5);
+	expect(iron.v90).toBeLessThan(3.6);
 	// LiFePO₄ is about half a volt lower than NMC: the 3.2 V of LFP cells.
 	expect(base.meanV - iron.meanV).toBeGreaterThan(0.4);
 	expect(iron.meanV).toBeCloseTo(3.2, 1);
@@ -147,7 +158,7 @@ test('swapping materials changes voltage and capacity the way the page says', ()
 	expect(si.meanV).toBeLessThan(base.meanV);
 	// The cathode is the heavy part: even with graphite it outweighs the anode.
 	expect(base.gCathode).toBeGreaterThan(base.gAnode);
-	// Active materials alone: several hundred Wh/kg (a whole cell gets about half).
+	// Active materials alone: several hundred Wh/kg (a whole cell gets about two-thirds).
 	expect(base.specificEnergy).toBeGreaterThan(400);
 	expect(base.specificEnergy).toBeLessThan(600);
 });

@@ -188,7 +188,7 @@
 			return voltage < 0.005
 				? 'equilibrium: E = 0, the cell is flat'
 				: usedPct > 99
-					? 'the last copper ions: the voltage collapses'
+					? 'nearly out of Cu²⁺: −0.03 V per tenfold drop'
 					: 'running';
 		return 'a voltmeter draws almost no current';
 	});
