@@ -85,7 +85,9 @@
 		]);
 		const k = -L[1] / d[1];
 		const p: Vec3 = [L[0] + d[0] * k, 0, L[2] + d[2] * k];
-		return clampPx(projectPoint(camera, p).pixel);
+		const q = projectPoint(camera, p).pixel;
+		const onScreen = q[0] >= 0 && q[0] < IMG_W && q[1] >= 0 && q[1] < IMG_H;
+		return clampPx(onScreen ? q : projectPoint(camera, CUBE_CENTRE).pixel);
 	});
 	const pick = $derived(pickOf(params, pickKey, fallback));
 	const path = $derived(tracePixel(world, camera, L, pick[0], pick[1], opts));
@@ -216,8 +218,10 @@
 		id="story"
 		order={5}
 		label="Picked pixel"
-		value={story.lines.map((l) => l.text).join('; ') +
-			(story.more > 0 ? ` (+${story.more} more)` : '')}
+		value={story.lines
+			.slice(0, 3)
+			.map((l) => l.text)
+			.join('; ') + (story.lines.length + story.more > 3 ? ' …' : '')}
 	>
 		<T
 			x={R.x}

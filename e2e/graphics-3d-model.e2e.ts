@@ -186,7 +186,7 @@ test('a ray tracer sends one ray per pixel and does far more work than a rasteri
 	// From the starting view (as the page says): about 50,000 pixel tests for the rasteriser…
 	expect(r.stats.pixelTests).toBeGreaterThan(45_000);
 	expect(r.stats.pixelTests).toBeLessThan(55_000);
-	// …and about 2.6 million ray–triangle tests for the ray tracer with 3 bounces.
+	// …and about 2.5 million ray–triangle tests for the ray tracer with 3 bounces.
 	expect(t.stats.triangleTests).toBeGreaterThan(2_400_000);
 	expect(t.stats.triangleTests).toBeLessThan(2_800_000);
 	// Every extra bounce adds work.
