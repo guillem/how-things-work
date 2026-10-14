@@ -136,6 +136,7 @@
 	const runCursor = (tt: number) =>
 		tt < runAt ? Math.max(0, 800 - RATE * tt) : Math.max(0, runFrom - RATE * (tt - runAt));
 	let wasPlaying = false;
+	let stoppedBySlider = false;
 	$effect(() => {
 		const on = playing;
 		untrack(() => {
@@ -143,11 +144,12 @@
 				const k = Number(params.ka);
 				runFrom = k <= 0.5 ? 800 : k;
 				runAt = t;
-			} else if (wasPlaying && hasPlay) {
+			} else if (wasPlaying && hasPlay && !stoppedBySlider) {
 				// stopped with the toggle: leave the cursor where it was shown
 				setParam('ka', Math.round(runCursor(t)));
 			}
 			wasPlaying = on;
+			stoppedBySlider = false;
 		});
 	});
 	// moving the slider during playback stops it
@@ -155,7 +157,10 @@
 	$effect(() => {
 		const k = Number(params.ka);
 		untrack(() => {
-			if (k !== lastKa && playing) setParam('play', false);
+			if (k !== lastKa && playing) {
+				stoppedBySlider = true;
+				setParam('play', false);
+			}
 			lastKa = k;
 		});
 	});

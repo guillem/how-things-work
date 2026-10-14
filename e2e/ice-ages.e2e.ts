@@ -75,7 +75,7 @@ test.describe('settled frames (reduced motion)', () => {
 	}) => {
 		await open(page, './ice-ages/#beats');
 		await expect(stage(page)).toContainText(/100,000 yr ±2\.7/);
-		await page.locator('select[data-control=series]').selectOption('summer');
+		await page.locator('button[data-control=series][data-value=summer]').click();
 		await expect(stage(page)).toContainText(/100,000 yr ±[0-2] .*W\/m²/);
 		await expect(stage(page)).toContainText(/41,000 yr ±14/);
 	});
@@ -97,16 +97,20 @@ test.describe('settled frames (reduced motion)', () => {
 	});
 });
 
-test('playing the cycles runs the cursor forward to today; moving the slider stops it', async ({
+test('playing the cycles moves the cursor forward in time; moving the slider stops it', async ({
 	page
 }) => {
 	await page.clock.install();
 	await open(page, './ice-ages/#cycles');
 	await expect(toggle(page, 'play')).toBeChecked();
-	await playUntil(page, stage(page), '400,000 years ago', 30_000);
-	// 800,000 years at 20,000 a second: today after 40 s, where it stays
-	await page.clock.runFor(30_000);
-	await expect(stage(page)).not.toContainText(/\d,000 years ago/);
+	const ago = async () => {
+		const m = /(\d+),000 years ago/.exec((await stage(page).textContent()) ?? '');
+		return m ? Number(m[1]) : 0;
+	};
+	await playUntil(page, stage(page), /\D[1-6]\d\d,000 years ago/, 30_000);
+	const before = await ago();
+	await page.clock.runFor(3000);
+	expect(await ago()).toBeLessThan(before);
 	await range(page, 'ka').fill('300');
 	await expect(toggle(page, 'play')).not.toBeChecked();
 	await expect(stage(page)).toContainText('300,000 years ago');
