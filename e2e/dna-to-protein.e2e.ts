@@ -14,7 +14,7 @@ test('the codon slider steps the ribosome along β-globin, codon by codon', asyn
 	await slider.fill('7');
 	// Codon 7 is the GAG that the sickle-cell mutation changes.
 	await expect(stage(page)).toContainText('Codon 7 of 148: GAG → Glu (glutamic acid)');
-	await expect(stage(page)).toContainText('its tRNA’s anticodon CUC pairs with GAG');
+	await expect(stage(page)).toContainText('its tRNA’s anticodon CUC (3′→5′) pairs with GAG');
 	await expect(stage(page)).toContainText('β-globin protein: 7 of 147 amino acids');
 	await slider.focus();
 	await page.keyboard.press('ArrowRight');
@@ -80,6 +80,23 @@ test('in the lab, a clicked letter can be changed, deleted or left alone', async
 	await expect(stage(page)).toContainText('not part of the instructions');
 	await choose(page, 'edit', 'none');
 	await expect(stage(page)).toContainText('Pick an edit');
+});
+
+test('in the lab, an own sequence with no AUG: an edit can create one, or leave none', async ({
+	page
+}) => {
+	await page.goto('./dna-to-protein/#lab');
+	await choose(page, 'gene', 'own');
+	const box = page.getByRole('textbox', { name: 'Your DNA sequence' });
+	await box.fill('CCTGGGC');
+	await choose(page, 'edit', 'sub');
+	await page.locator('input[type=range][data-control=at]').fill('2');
+	await choose(page, 'base', 'A');
+	// CATGGGC: the new ATG starts at letter 2, and there was none to break before.
+	await expect(stage(page)).toContainText('New start');
+	await expect(stage(page)).toContainText('A new AUG at letter 2: 2 amino acids');
+	await choose(page, 'base', 'G');
+	await expect(stage(page)).toContainText('Still no AUG: no protein');
 });
 
 test('clicking a codon in the table names its amino acid and its other codons', async ({

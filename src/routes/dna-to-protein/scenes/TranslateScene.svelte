@@ -459,7 +459,7 @@
 				<Txt
 					x={24}
 					y={522}
-					text="its tRNA’s anticodon {anticodonOf(rna(reading.codon))} pairs with {rna(
+					text="its tRNA’s anticodon {anticodonOf(rna(reading.codon))} (3′→5′) pairs with {rna(
 						reading.codon
 					)}{reading === tr.codons[0] ? ': AUG, the start codon' : ''}"
 					size={12.5}

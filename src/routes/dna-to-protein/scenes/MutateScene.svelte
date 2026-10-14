@@ -151,6 +151,9 @@
 		'start-changed': 'Start moved',
 		'no-start': 'No start'
 	};
+	const word = $derived(
+		cmp.effect === 'start-changed' && before.start < 0 ? 'New start' : WORD[cmp.effect]
+	);
 	const verdict = $derived.by(() => {
 		const a = before.protein;
 		const b = after.protein;
@@ -178,11 +181,13 @@
 			case 'stop-lost':
 				return `The stop codon is gone: the ribosome reads on, ${int(b.length)} amino acids${after.stopped ? '' : ' and off the end'}`;
 			case 'start-changed':
+				if (before.start < 0)
+					return `A new AUG at letter ${after.start + 1}: ${int(b.length)} amino acids`;
 				return after.start > before.start
 					? `The start codon is broken: reading begins at the next AUG, letter ${after.start + 1}: ${int(b.length)} amino acids`
 					: `A new AUG earlier, at letter ${after.start + 1}: ${int(b.length)} amino acids`;
 			case 'no-start':
-				return 'No AUG left: no protein at all';
+				return before.start < 0 ? 'Still no AUG: no protein' : 'No AUG left: no protein at all';
 		}
 	});
 	const effectColor = $derived(
@@ -414,32 +419,10 @@
 
 	<!-- verdict -->
 	<g opacity={reveal}>
-		<Readout
-			id="verdict"
-			order={0}
-			label={WORD[cmp.effect]}
-			value=""
-			note={verdict}
-			color={effectColor}
-		>
-			<rect
-				x={24}
-				y={494}
-				width={WORD[cmp.effect].length * 11 + 28}
-				height="30"
-				rx="15"
-				fill={effectColor}
-			/>
-			<Txt
-				x={38}
-				y={514}
-				text={WORD[cmp.effect]}
-				size={15}
-				weight={700}
-				halo={false}
-				color="var(--stage-bg)"
-			/>
-			<Txt x={WORD[cmp.effect].length * 11 + 64} y={514} text={verdict} size={14} weight={600} />
+		<Readout id="verdict" order={0} label={word} value="" note={verdict} color={effectColor}>
+			<rect x={24} y={494} width={word.length * 11 + 28} height="30" rx="15" fill={effectColor} />
+			<Txt x={38} y={514} text={word} size={15} weight={700} halo={false} color="var(--stage-bg)" />
+			<Txt x={word.length * 11 + 64} y={514} text={verdict} size={14} weight={600} />
 		</Readout>
 	</g>
 

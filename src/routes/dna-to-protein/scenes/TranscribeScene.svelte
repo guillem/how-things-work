@@ -81,7 +81,7 @@
 			<Txt
 				x={24}
 				y={40}
-				text="{gene.name}: {int(n)} letters of DNA, copied at 1,200 letters a minute"
+				text="{gene.name}: {int(n)} letters of DNA, shown at 1,200 letters a minute"
 				size={14}
 				weight={700}
 			/>

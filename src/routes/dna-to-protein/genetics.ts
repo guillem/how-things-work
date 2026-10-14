@@ -205,7 +205,8 @@ export function applyEdit(seq: string, e: Edit): string {
 	return seq.slice(0, at) + b + seq.slice(at + 1);
 }
 
-/** HGVS-style name of an edit in coding-DNA numbering (c.1 is the A of the start codon). */
+/** Position-based name of an edit (simplified from HGVS: no `dup`, no shift to the 3′-most
+ * letter of a run) in coding-DNA numbering (c.1 is the A of the start codon). */
 export function editName(seq: string, e: Edit, cdsStart: number, cdsEnd = Infinity): string {
 	// No c.0: the letter before c.1 is c.−1; letters after the stop codon are c.*1, c.*2…
 	// (cdsEnd: index just past the stop codon). Without a start codon, plain letter numbers.
