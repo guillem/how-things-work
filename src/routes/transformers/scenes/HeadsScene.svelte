@@ -6,7 +6,7 @@
 	 * once: every head works on every token at the same time.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { bands, label, num, sentenceOf } from './shared';
+	import { bands, fix, label, num, sentenceOf } from './shared';
 	import Txt from './Txt.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -80,6 +80,29 @@
 			.join(' · ');
 	});
 
+	/**
+	 * This layer on this sentence, over its 12 heads: the share of attention on ⟨start⟩ (rows
+	 * 1..n−1), and how far back the rest lands on average (rows 2..n−1, ⟨start⟩ left out).
+	 */
+	const layerStats = $derived.by(() => {
+		let start = 0;
+		let rows = 0;
+		let d = 0;
+		let w = 0;
+		for (let h = 0; h < 12; h++)
+			for (let i = 1; i < s.n; i++) {
+				const r = s.row(L, h, i);
+				start += r[0];
+				rows++;
+				if (i >= 2)
+					for (let j = 1; j <= i; j++) {
+						d += r[j] * (i - j);
+						w += r[j];
+					}
+			}
+		return { start: start / rows, reach: d / w };
+	});
+
 	// A row sweeping down every pattern at once (row 3 under reduced motion).
 	const sweep = $derived(reduced ? 3 : Math.floor(t / 0.9) % s.n);
 </script>
@@ -93,6 +116,28 @@
 			size={12}
 			muted
 			text="each square: one head's weights · row = token asking, top to bottom · column = token looked at · left column = ⟨start⟩"
+		/>
+	</Readout>
+	<Readout
+		id="layerstats"
+		order={2}
+		label="This layer"
+		value="{Math.round(layerStats.start * 100)}% of attention on ⟨start⟩; the rest lands {fix(
+			layerStats.reach,
+			1
+		)} tokens back on average"
+	>
+		<Txt
+			x={16}
+			y={74}
+			size={12}
+			weight={600}
+			text="this layer: {Math.round(
+				layerStats.start * 100
+			)}% of all attention on ⟨start⟩ · the rest lands on average {fix(
+				layerStats.reach,
+				1
+			)} tokens back"
 		/>
 	</Readout>
 	{#each heads as hd (hd.h)}
@@ -135,7 +180,7 @@
 				text="{Math.round(hd.d.share * 100)}% {hd.d.kind === 'spread out'
 					? 'away from ⟨start⟩'
 					: hd.d.kind.startsWith('looks')
-						? 'of the weight of later tokens'
+						? 'from the later tokens'
 						: 'of its weight'}"
 			/>
 		</Readout>

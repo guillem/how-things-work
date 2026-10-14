@@ -163,7 +163,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Attention, as you will see, makes each token a weighted average of the tokens it can see. An average does not care about order: shuffle the earlier tokens and the last token gets exactly the same mix as before. So the order has to be written into the vectors themselves.</p>
 <p>GPT-2 has a learned <dfn data-def="A vector added to each token's embedding that depends only on the token's place in the text: one for position 0, one for position 1, and so on.">position embedding</dfn> for each of its 1,024 positions: 768 more numbers, added to the token's embedding. Nobody designed them: training set them, like every other weight. The stage compares the first 64 of them by cosine similarity, as on the embeddings page: bright where two positions point the same way.</p>
-<p>The bright band along the diagonal says that neighbouring positions get similar vectors, and the similarity fades with distance: position 10 has a cosine of 0.998 with 11, 0.78 with 30 and 0.40 with 63. A token can therefore tell “the word just before me” from “a word far back”. Position 0 is the odd one out: its vector is twice as long as the others.</p>`,
+<p>The bright band along the diagonal says that neighbouring positions get similar vectors, and the similarity fades with distance: position 10 has a cosine of 0.998 with 11, 0.78 with 30 and 0.40 with 63. A token can therefore tell “the word just before me” from “a word far back”. Position 0 is the odd one out: its vector is two to three times as long as the others (9.9, against 3.4 to 5.2).</p>`,
 			notes: `<p>Strictly, GPT-2's mask leaks a little order information on its own: the first token can see one token, the tenth can see ten. The position embeddings make it explicit.</p>
 <p>The original transformer paper (Vaswani and colleagues, “Attention is all you need”, 2017) did not learn its positions: it used fixed sine and cosine waves of different wavelengths. GPT-2 learned them instead, and they came out smooth and wave-like anyway. Many newer models rotate the queries and keys by an angle that depends on the position instead (“rotary” embeddings).</p>`
 		},
@@ -184,7 +184,7 @@ export const spec: ExplainerSpec = {
 <li>a <dfn data-def="The vector a token hands over when another token attends to it.">value</dfn> <strong class="tf-v">v</strong>: what this token passes on to whoever attends to it.</li>
 </ul>
 <p>The stage shows the real 64 numbers of each, as bars. The query of <strong>it</strong> is on top; every token has a key and a value. Click another token, or use the slider, to make it the one asking.</p>`,
-			notes: `<p>“Multiplied by a matrix” is a <a href="../linear-transformations/">linear transformation</a>: q = x W<sub>Q</sub> + b<sub>Q</sub>, where x is the token's current 768-number vector (normalised first by a LayerNorm, which rescales it to mean 0 and spread 1). Like the weights of the <a href="../neural-networks/">neural networks</a> page, W<sub>Q</sub>, W<sub>K</sub> and W<sub>V</sub> were set by gradient descent during training, here to make GPT-2 good at predicting the next token of web text.</p>`
+			notes: `<p>“Multiplied by a matrix” is a <a href="../linear-transformations/">linear transformation</a>: q = x W<sub>Q</sub> + b<sub>Q</sub>, where x is the token's current 768-number vector (normalised first by a LayerNorm, which rescales it to mean 0 and spread 1, then applies a learned scale and shift to each of the 768 numbers). Like the weights of the <a href="../neural-networks/">neural networks</a> page, W<sub>Q</sub>, W<sub>K</sub> and W<sub>V</sub> were set by gradient descent during training, here to make GPT-2 good at predicting the next token of web text.</p>`
 		},
 		{
 			id: 'scores',
@@ -198,7 +198,7 @@ export const spec: ExplainerSpec = {
 <p>The query is compared with each key by a dot product, the same multiply-and-add as on the embeddings page, and divided by √64 = 8. The result is a <strong>score</strong>: large when query and key point the same way.</p>
 <p>For <strong>it</strong>, the key of <strong>animal</strong> scores 1.06. Everything else scores below −2, most of it far below. Nothing tells the head to look for the noun: it is a pattern its three matrices learned.</p>
 <p>The tokens after <strong>it</strong> get no score at all. GPT-2 learns by predicting each next token, so a token may only look back, never ahead; the later tokens are <dfn data-def="Hidden from the attention by setting their scores to minus infinity before the softmax, so their weights are exactly 0. GPT-2 masks every token that comes later in the text.">masked</dfn>. That is why the model, at <em>it</em>, has not yet seen “tired”.</p>`,
-			notes: `<p><strong>Why divide by √d?</strong> The dot product of two vectors of 64 random numbers grows like √64. Without the division, scores in a big model would be so large that the softmax of the next step would give all the weight to one token and learning would stall. Dividing by √d keeps the scores of order 1.</p>
+			notes: `<p><strong>Why divide by √d?</strong> If q and k have 64 independent components of mean 0 and variance 1, their dot product has variance 64, so its typical size is √64 = 8. Without the division, scores in a big model would be so large that the softmax of the next step would give almost all the weight to one token, its gradients would become tiny and learning would stall. Dividing by √d keeps the scores of order 1.</p>
 <p>Models that read a whole text at once rather than writing it, such as BERT, do not mask: there every token attends to all the others, before and after it.</p>`
 		},
 		{
@@ -224,7 +224,7 @@ export const spec: ExplainerSpec = {
 			controls: [query],
 			body: `
 <p>Finally, each value is scaled by its weight and they are added up: 0.92 × v(animal) + 0.04 × v(⟨start⟩) + … The result is the head's output for <strong>it</strong>: 64 numbers, here pointing almost exactly the way of the value of <strong>animal</strong>.</p>
-<p>Joined with the outputs of the layer's other heads, it is added back into the vector of <strong>it</strong>. From then on, the vector at the position of <em>it</em> carries information that came from <em>animal</em>, four tokens away, in a single operation. No word-by-word passing along the sentence was needed.</p>
+<p>Joined with the outputs of the layer's other heads, it is added back into the vector of <strong>it</strong>. From then on, the vector at the position of <em>it</em> carries information that came from <em>animal</em>, seven tokens back, in a single operation. No word-by-word passing along the sentence was needed.</p>
 <p>So the whole operation is: match queries with keys, softmax the scores, mix the values. Written for all tokens at once, with Q, K and V the matrices whose rows are the tokens' vectors and M the mask:</p>
 <p class="formula">Attention(Q, K, V) = softmax(Q Kᵀ / √d + M) V</p>`,
 			notes: `<p>In GPT-2 the outputs of all 12 heads of a layer (12 × 64 = 768 numbers) are put side by side and multiplied by one more learned 768 × 768 matrix, W<sub>O</sub>, before being added to the token's vector. That addition is the <dfn data-def="The connection that adds a layer's output to its input instead of replacing it, so that information can pass through many layers unchanged.">residual connection</dfn>: each layer adds to the token's vector rather than replacing it.</p>`
@@ -240,7 +240,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Every token does the same thing at the same time, each with its own query. Stack the weights row by row and you get the head's <dfn data-def="The table of attention weights of one head: one row per token doing the looking, one column per token looked at. Each row adds up to 1.">attention pattern</dfn>: one row for each token asking, one column for each token looked at. The row of <strong>it</strong> is the one you just computed.</p>
 <p>Everything above the diagonal is empty: the mask. The column on the left is ⟨start⟩, and it is often bright: when a head has nothing useful to look at, it parks its attention on the first token (more on that soon).</p>
-<p>Because the whole table is one matrix product, Q Kᵀ, a computer can do it for every token in parallel. That, more than anything, is why transformers replaced older networks that read a sentence one word after another.</p>`
+<p>Because the scores of the whole table are one matrix product, Q Kᵀ, a computer can work out every row in parallel. That, more than anything, is why transformers replaced older networks that read a sentence one word after another: during training, every position of a known text is processed at once (writing new text still goes one token at a time).</p>`
 		},
 		// ------------------------------------------------------------------ heads
 		{
@@ -253,8 +253,8 @@ export const spec: ExplainerSpec = {
 			controls: [sentence(), layer],
 			body: `
 <p>One head can only look for one kind of thing. So each layer of GPT-2 has 12 heads side by side, each with its own query, key and value matrices, all working on the same tokens at once: <dfn data-def="Several attention operations run in parallel on the same tokens, each with its own learned matrices; their outputs are joined and mixed by one more matrix.">multi-head attention</dfn>. Here are the 12 patterns of one layer.</p>
-<p>They differ. In layer 5, head 12 is a sharp line just below the diagonal: every token looks at the token right before it. Head 4 is the subject-finder of the last steps. Many others are a bright first column: they rest on ⟨start⟩. Across all 144 heads, about 60% of all attention goes to that one token.</p>
-<p>Move through the layers. Leaving ⟨start⟩ aside, attention in the first five layers lands on average 2 to 3 tokens back, in the last three about 4: the later layers reach further.</p>`,
+<p>They differ. In layer 5, head 12 is a sharp line just below the diagonal: every token looks at the token right before it. Head 4 is the subject-finder of the last steps. Many others are a bright first column: they rest on ⟨start⟩. Across all 144 heads, averaged over the eight sentences, about 60% of all attention goes to that one token.</p>
+<p>Move through the layers and watch the line above the patterns. Leaving ⟨start⟩ aside, attention in the first five layers lands on average 2 to 3 tokens back, in the last three about 3.5 to 4 (averages over the eight sentences): the later layers reach further.</p>`,
 			notes: `<p>Why so much attention on ⟨start⟩? The weights must add up to 1, so a head that finds nothing relevant has to put them somewhere. GPT-2 learned to put them on the first token, whose value adds almost nothing to the output: an “attention sink” (Xiao and colleagues, 2023). Keep this in mind when reading the patterns: a bright first column means “nothing here”, not “the start matters”.</p>`
 		},
 		{
@@ -268,7 +268,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Point at a token (or tap it, or Tab to it) to see which earlier tokens it attends to in the chosen layer and head: the thicker the line, the larger the weight. The grid on the right shows the same token in all 144 heads at once, each cell a tiny bar chart of its weights; click a cell to pick that layer and head.</p>
 <p>Try the sentence <strong>fox</strong> (“the quick brown fox …” twice) at the second <em>fox</em>, or <strong>Mary</strong> at the last <em>to</em>, and look for the cells that light up away from ⟨start⟩.</p>
-<p>The sentences are fixed. Typing your own would mean running GPT-2 in your browser, and downloading its 550 MB of weights; instead, these eight were run through it when the page was made.</p>`,
+<p>The sentences are fixed. Typing your own would mean running GPT-2 in your browser, a download of hundreds of megabytes; instead, these eight were run through it when the page was made.</p>`,
 			notes: `<p>Attention weights show where a head looks, not what the model does with what it finds. A head can attend strongly to a token whose value it then mostly ignores, and the same information can arrive by other paths. Researchers who want to know what a head is for switch it off or swap its output and watch what changes in the prediction.</p>`
 		},
 		{
@@ -282,13 +282,13 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Some heads of GPT-2 small do one job consistently. Researchers named the previous-token, induction and name-mover heads; “the noun” and “resting” are this page's own labels. Pick one:</p>
 <ul>
-<li><strong>Previous token</strong> (layer 5, head 12): every token looks at the one before it, with a weight near 1.</li>
+<li><strong>Previous token</strong> (layer 5, head 12): every token looks at the one before it, with a weight of at least 0.89 on every token of the eight sentences, usually close to 1.</li>
 <li><strong>The noun</strong> (layer 5, head 4): <em>are</em> looks at <em>keys</em> (0.85), not at the nearer <em>cabinet</em>; the verb has to agree with the keys.</li>
 <li><strong>Induction</strong> (layer 6, head 6): the second <em>fox</em> looks at <em>jumps</em> (0.96), the token that came after the first <em>fox</em>. This head finds “what came next last time”, and GPT-2 then predicts <em>over</em> with 98% confidence.</li>
 <li><strong>Name mover</strong> (layer 10, head 10): at the final <em>to</em> it looks at <em>Mary</em> (0.67), the name that has not yet been given anything, and GPT-2 predicts <em>Mary</em> with 68%.</li>
 <li><strong>Resting</strong> (layer 6, head 2, on the animal sentence): 0.98 of the attention of <em>it</em> goes to ⟨start⟩. On the fox sentence the same head is an induction head (0.80 from the second <em>fox</em> to <em>jumps</em>): it rests until there is something to copy.</li>
 </ul>`,
-			notes: `<p>The induction head works together with a previous-token head in an earlier layer: that head copies “the token before me was <em>fox</em>” into the vector of <em>jumps</em>, so that the induction head's query, at the second <em>fox</em>, can match it (Olsson and colleagues, “In-context learning and induction heads”, 2022). The name movers belong to a circuit of about 26 heads that GPT-2 small uses to complete such sentences (Wang and colleagues, “Interpretability in the wild”, 2022). Both papers count layers and heads from 0: our layer 6, head 6 is their head 5.5.</p>`
+			notes: `<p>The induction head works together with a previous-token head in an earlier layer: that head copies “the token before me was <em>fox</em>” into the vector of <em>jumps</em>, so that the induction head's query, at the second <em>fox</em>, can match it (Olsson and colleagues, “In-context learning and induction heads”, 2022). The name movers belong to a circuit of 26 heads that GPT-2 small uses to complete such sentences (Wang and colleagues, “Interpretability in the wild”, 2022). That paper, like most interpretability work on GPT-2, counts layers and heads from 0: our layer 10, head 10 is their name mover 9.9, our layer 6, head 6 their induction head 5.5, and our layer 5, head 12 their previous-token head 4.11.</p>`
 		},
 		// ------------------------------------------------------------------ stack
 		{
@@ -321,7 +321,7 @@ export const spec: ExplainerSpec = {
 <li>position embeddings tell it where each token stands;</li>
 <li>a transformer runs many heads side by side and stacks the whole thing many times: 144 heads in GPT-2 small.</li>
 </ul>
-<p>The grid shows the last token of the sentence in all 144 heads: each head of each layer finds its own earlier tokens to listen to.</p>`
+<p>The grid shows the last token of the sentence in all 144 heads: most heads rest on ⟨start⟩, and the few that light up away from it each find their own earlier tokens to listen to.</p>`
 		}
 	]
 };
