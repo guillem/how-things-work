@@ -18,6 +18,7 @@
 		createSince,
 		dots,
 		epochsAt,
+		fix,
 		fmt,
 		neuronGrids,
 		outputGrid,
@@ -241,7 +242,7 @@
 				<Txt
 					x={(e.x1 + e.x2) / 2}
 					y={(e.y1 + e.y2) / 2 + (i ? 22 : -12)}
-					text="w{i ? '₂' : '₁'} = {fmt(e.w)}"
+					text="w{i ? '₂' : '₁'} = {fix(e.w)}"
 					anchor="middle"
 					size={12}
 					weight={600}
@@ -251,7 +252,7 @@
 			<Txt
 				x={colX[1]}
 				y={nodeY(1, 0) - S / 2 - 10}
-				text="b = {fmt(net.b[0][0])}"
+				text="b = {fix(net.b[0][0])}"
 				anchor="middle"
 				size={12}
 				muted
