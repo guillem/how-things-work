@@ -72,7 +72,18 @@
 	const MY = 112;
 	const MW = 540;
 	const MH = 404;
-	const px = (c: { x: number; y: number }) => ({ x: MX + c.x * MW, y: MY + c.y * MH });
+	// The same scale on both axes, fitted to the map (lengths keep their proportions).
+	const fit = $derived.by(() => {
+		const xs = cs.map((c) => c.x);
+		const ys = cs.map((c) => c.y);
+		const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+		const k = Math.min((MW - 60) / Math.max(1e-6, x1 - x0), (MH - 60) / Math.max(1e-6, y1 - y0));
+		return { k, ox: MX + MW / 2 - (k * (x0 + x1)) / 2, oy: MY + MH / 2 - (k * (y0 + y1)) / 2 };
+	});
+	const px = (c: { x: number; y: number }) => ({
+		x: fit.ox + c.x * fit.k,
+		y: fit.oy + c.y * fit.k
+	});
 	const pathOf = (tour: number[]) =>
 		tour
 			.map((c, i) => `${i ? 'L' : 'M'}${px(cs[c]).x.toFixed(1)} ${px(cs[c]).y.toFixed(1)}`)
@@ -262,13 +273,7 @@
 		/>
 	</Readout>
 	<Readout id="units">
-		<Txt
-			x={600}
-			y={340}
-			text="Lengths in map widths (the map is 1 × 1). ⌂: the start."
-			size={12}
-			muted
-		/>
+		<Txt x={600} y={340} text="Lengths in arbitrary units. ⌂: the start." size={12} muted />
 		<Txt x={600} y={380} text="One more city multiplies the tours by n:" size={13} />
 		<Txt
 			x={600}
