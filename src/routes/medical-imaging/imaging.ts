@@ -428,17 +428,21 @@ export function gauss(i: number): number {
 }
 
 /**
- * Measures every projection of a phantom. With `photons` (N₀, photons sent per
+ * Measures every projection of a phantom, each detector bin averaging the
+ * line integrals across its width. With `photons` (N₀, photons sent per
  * detector bin per angle), each line integral gets the Poisson counting noise of
  * the N₀·e^(−p) photons that arrive, σ = 1/√(N₀·e^(−p)).
  */
-export function scan(p: Phantom, angles: number, photons?: number, bins = CT_N): Sinogram {
+export function scan(p: Phantom, angles: number, photons?: number, bins = 2 * CT_N): Sinogram {
 	const tau = (2 * p.fov) / bins;
 	const data = new Float64Array(angles * bins);
 	for (let k = 0; k < angles; k++) {
 		const th = (k * Math.PI) / angles;
 		for (let j = 0; j < bins; j++) {
-			let v = projection(p, th, binOffset(j, bins, tau));
+			// Each detector element is a bin wide and averages what falls on it.
+			const s0 = binOffset(j, bins, tau);
+			let v = 0;
+			for (let q = 0; q < 4; q++) v += projection(p, th, s0 + ((q + 0.5) / 4 - 0.5) * tau) / 4;
 			if (photons) {
 				const n = photons * Math.exp(-v);
 				v += gauss(k * 4099 + j) / Math.sqrt(Math.max(n, 1));
