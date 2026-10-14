@@ -11,7 +11,7 @@
 
 	const C = crowd();
 	const E = ENVELOPE;
-	const BOX = { x0: -170, x1: 170, y0: -130, y1: 130 };
+	const BOX = { x0: -260, x1: 260, y0: -170, y1: 170 };
 	const dna = C.dna
 		.map((pts) => 'M' + pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join('L'))
 		.join('');
@@ -21,6 +21,9 @@
 		(_, k) => `M${BOX.x0 + k * 2.2} ${E.pg0 + 1}V${E.pg1 - 1}`
 	).join('');
 	const [gx, gy] = ATOM_SPOTS.glucose;
+	// the machines with their own info card are picked by kind; the rest are "a typical protein"
+	const KINDS = ['protein', 'trna', 'groEL', 'rnaPolymerase'] as const;
+	const partOf = (id: string) => ((KINDS as readonly string[]).includes(id) ? id : 'protein');
 </script>
 
 <script lang="ts">
@@ -120,13 +123,15 @@
 			stroke-linejoin="round"
 		/>
 	</Part>
-	<Part id="protein" {sel} {pick} {interactive}>
-		{#each C.proteins as p, i (i)}
-			{#if near(p.x, p.y)}
-				<Machine id={p.id} x={p.x} y={p.y} angle={p.angle} />
-			{/if}
-		{/each}
-	</Part>
+	{#each KINDS as kind (kind)}
+		<Part id={kind} {sel} {pick} {interactive}>
+			{#each C.proteins as p, i (i)}
+				{#if partOf(p.id) === kind && near(p.x, p.y)}
+					<Machine id={p.id} x={p.x} y={p.y} angle={p.angle} />
+				{/if}
+			{/each}
+		</Part>
+	{/each}
 	<Part id="ribosome70S" {sel} {pick} {interactive}>
 		{#each C.ribosomes as p, i (i)}
 			{#if near(p.x, p.y, 20)}

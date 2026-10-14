@@ -203,11 +203,12 @@
 			const tx = p.view.x0 * -p.ppu;
 			const ty = p.view.y0 * -p.ppu;
 			list.forEach((c, i) => {
-				const lo = c.min ?? 0;
-				const hi = c.max ?? Infinity;
-				const fade = smoothstep(lo * 0.8, lo, p.ppu) * (1 - smoothstep(hi, hi * 1.25, p.ppu));
-				const opacity = fade * l.opacity * (l.interactive ? 1 : 0.6);
-				if (opacity < 0.02) return;
+				// each bound is optional (a smoothstep over an infinite range would give NaN)
+				const fadeIn = c.min === undefined ? 1 : smoothstep(c.min * 0.8, c.min, p.ppu);
+				const fadeOut = c.max === undefined ? 1 : 1 - smoothstep(c.max, c.max * 1.25, p.ppu);
+				const opacity = fadeIn * fadeOut * l.opacity * (l.interactive ? 1 : 0.6);
+				// a label too faint to read is left out rather than drawn as a ghost
+				if (opacity < 0.3) return;
 				const ax = tx + c.x * p.ppu;
 				const ay = ty + c.y * p.ppu;
 				if (ax < 12 || ax > STAGE.w - 12 || ay < 12 || ay > STAGE.h - 12) return;

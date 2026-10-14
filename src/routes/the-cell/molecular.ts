@@ -7,7 +7,7 @@
  * of molecule at n per µm³ with diameter d appears n × d times per µm² of slice.
  */
 import { rng } from './random';
-import { ecoliSection, BACTERIUM_TARGETS, ECOLI } from './bacterium';
+import { ecoliSection, BACTERIUM_TARGETS, CYTOPLASM_VIEW_DEPTH, ECOLI } from './bacterium';
 import { THYLAKOID, THYLAKOID_VIEW_OFFSET } from './plant';
 import { ATOM_SPOTS } from './frames';
 import { MACHINES } from './shapes';
@@ -79,6 +79,67 @@ export function chromatin(R = 260): ChromatinRun[] {
 	return runs;
 }
 
+let fieldCache: ChromatinRun[] | null = null;
+/**
+ * The same chromatin continued out to ±R nm, for the nucleus view, where the
+ * field of beads is seen from a micrometre or more away: `chromatin()` in the
+ * middle, and more runs at the same density around it (so the beads don't end
+ * at a visible edge). A bucket grid keeps the overlap test fast.
+ */
+export function chromatinField(R = 1000): ChromatinRun[] {
+	if (fieldCache) return fieldCache;
+	const core = chromatin();
+	const R0 = 260;
+	const r = rng(43);
+	const cell = NUCLEOSOME + 1.5;
+	const buckets = new Map<string, [number, number][]>();
+	const key = (i: number, j: number) => `${i},${j}`;
+	const add = (x: number, y: number) => {
+		const k = key(Math.floor(x / cell), Math.floor(y / cell));
+		const b = buckets.get(k);
+		if (b) b.push([x, y]);
+		else buckets.set(k, [[x, y]]);
+	};
+	const taken = (x: number, y: number) => {
+		const i0 = Math.floor(x / cell);
+		const j0 = Math.floor(y / cell);
+		for (let i = i0 - 1; i <= i0 + 1; i++)
+			for (let j = j0 - 1; j <= j0 + 1; j++)
+				if (buckets.get(key(i, j))?.some(([px, py]) => Math.hypot(px - x, py - y) < cell))
+					return true;
+		return false;
+	};
+	for (const run of core) for (const [x, y] of run.beads) add(x, y);
+	const per = NUCLEOSOMES_PER_UM3 * (NUCLEOSOME / 1000);
+	const want = per * (((2 * R) / 1000) ** 2 - ((2 * R0) / 1000) ** 2);
+	const runs: ChromatinRun[] = [];
+	let n = 0;
+	const inCore = (x: number, y: number) => Math.abs(x) < R0 && Math.abs(y) < R0;
+	for (let tries = 0; tries < 200000 && n < want; tries++) {
+		let x = r.range(-R, R);
+		let y = r.range(-R, R);
+		if (inCore(x, y)) continue;
+		let a = r.range(0, Math.PI * 2);
+		const beads: [number, number][] = [];
+		const len = r.int(2, 6);
+		for (let k = 0; k < len; k++) {
+			if (inCore(x, y) || taken(x, y)) break;
+			beads.push([x, y]);
+			add(x, y);
+			a += r.range(-1.1, 1.1);
+			const step = NUCLEOSOME + LINKER * r.range(0.6, 1);
+			x += step * Math.cos(a);
+			y += step * Math.sin(a);
+		}
+		if (beads.length) {
+			runs.push({ beads });
+			n += beads.length;
+		}
+	}
+	fieldCache = [...core, ...runs];
+	return fieldCache;
+}
+
 // ---- the crista ------------------------------------------------------------------------------
 
 /** The crista view: a fold 30 nm thick coming from the left, its rounded tip at x = 25. */
@@ -109,9 +170,9 @@ export const CRISTA_MACHINES: Placed[] = [
 	{ id: 'atpSynthase', x: -64, y: CRISTA.half, angle: 0 }
 ];
 
-/** Where the head (F1, ≈ 10 nm across, centred ≈ 15 nm from the membrane) of a placed ATP synthase is. */
+/** Where the head (F1, ≈ 10 nm across, centred ≈ 10 nm from the membrane centre in the traced 6ZPO) of a placed ATP synthase is. */
 export function headCentre(m: Placed): [number, number] {
-	const d = 15 * (m.flip ? -1 : 1);
+	const d = 10 * (m.flip ? -1 : 1);
 	// local (0, d) turned by angle (SVG: x' = −d sin a, y' = d cos a)
 	return [m.x - d * Math.sin(m.angle), m.y + d * Math.cos(m.angle)];
 }
@@ -236,9 +297,9 @@ export const STROMA_RUBISCO: [number, number][] = [
 
 // ---- the bacterium's cytoplasm ---------------------------------------------------------------------
 
-/** Envelope layers in the cytoplasm view, nm (y down): outer surface at −32. */
+/** Envelope layers in the cytoplasm view, nm (y down): outer surface at −CYTOPLASM_VIEW_DEPTH. */
 export const ENVELOPE = (() => {
-	const om0 = -32;
+	const om0 = -CYTOPLASM_VIEW_DEPTH;
 	const om1 = om0 + ECOLI.outerMembrane * 1000;
 	const im0 = om1 + ECOLI.periplasm * 1000;
 	const im1 = im0 + ECOLI.innerMembrane * 1000;
@@ -250,10 +311,12 @@ export const ENVELOPE = (() => {
 export const PROTEINS_PER_UM3 = 3e6;
 const MIX: { id: Placed['id']; share: number; d: number }[] = [
 	{ id: 'efTuTrna', share: 0.25, d: 8 },
-	{ id: 'adk', share: 0.45, d: 5 },
+	{ id: 'adk', share: 0.53, d: 5 },
 	{ id: 'trna', share: 0.12, d: 6 },
-	{ id: 'groEL', share: 0.05, d: 15 },
-	{ id: 'rnaPolymerase', share: 0.05, d: 15 },
+	// a few of the big machines in view (≈ 10 times their real share: E. coli has a few
+	// thousand of each per cell)
+	{ id: 'groEL', share: 0.01, d: 15 },
+	{ id: 'rnaPolymerase', share: 0.01, d: 15 },
 	{ id: 'citrateSynthase', share: 0.08, d: 8 }
 ];
 
@@ -270,32 +333,62 @@ export interface Crowd {
 }
 
 let crowdCache: Crowd | null = null;
-/** The crowd in a box ±X × (envelope … +Y) nm around the cytoplasm view's centre. */
-export function crowd(X = 110, Y = 90): Crowd {
+/**
+ * The crowd in a box ±X × (envelope … +Y) nm around the cytoplasm view's centre: wide
+ * enough to fill the view from when it starts fading in (a view 3 × 150 nm wide).
+ */
+export function crowd(X = 240, Y = 150): Crowd {
 	if (crowdCache) return crowdCache;
 	const r = rng(23);
 	const sec = ecoliSection();
 	const [ex, ey] = BACTERIUM_TARGETS.envelope;
 	const ribosomes: Placed[] = sec.ribosomes
-		.map(([x, y]) => ({ x: (x - ex) * 1000, y: (y - ey) * 1000 - 32 }))
+		.map(([x, y]) => ({ x: (x - ex) * 1000, y: (y - ey) * 1000 - CYTOPLASM_VIEW_DEPTH }))
 		.filter((p) => Math.abs(p.x) < X + 20 && p.y < Y + 20)
 		.map((p) => ({ id: 'ribosome70S' as const, ...p, angle: r.range(0, Math.PI * 2) }));
 	const top = ENVELOPE.im1 + 1;
 	const area = 2 * X * (Y - top);
+	// DNA strands of the nucleoid's edge, laid first so that the proteins leave them visible
+	const rd = rng(24);
+	const dna: [number, number][][] = [];
+	for (let k = 0; k < 3; k++) {
+		const pts: [number, number][] = [];
+		let x = -X - 10;
+		// the edge of the nucleoid, in the lower part of the 150 nm view
+		let y = 70 - k * 22 + rd.range(-5, 5);
+		let a = rd.range(-0.3, 0.3);
+		while (x < X + 10) {
+			pts.push([x, y]);
+			a += rd.range(-0.25, 0.25);
+			a = Math.max(-0.7, Math.min(0.7, a));
+			// stay in the cytoplasm, clear of the inner membrane
+			if (y < top + 12) a = Math.abs(a);
+			if (y > Y - 6) a = -Math.abs(a);
+			x += 4 * Math.cos(a);
+			y += 4 * Math.sin(a);
+		}
+		dna.push(pts);
+	}
+	const onDna = (x: number, y: number, d: number) =>
+		dna.some((pts) =>
+			pts.some(([px, py]) => Math.abs(px - x) < d && Math.hypot(px - x, py - y) < d)
+		);
 	const proteins: Placed[] = [];
 	let expected = 0;
 	const [gx, gy] = ATOM_SPOTS.glucose;
-	for (const m of MIX) {
+	// the big machines first, so that they still find room in the crowd
+	for (const m of [...MIX].sort((a, b) => b.d - a.d)) {
 		// n per nm² of slice = n per nm³ × diameter
 		const n = Math.round(PROTEINS_PER_UM3 * 1e-9 * m.share * m.d * area);
 		expected += n;
 		const rad = m.d / 2;
-		for (let k = 0, tries = 0; k < n && tries < 4000; tries++) {
+		for (let k = 0, tries = 0; k < n && tries < 30 * n; tries++) {
 			const x = r.range(-X, X);
 			const y = r.range(top + rad, Y);
 			if (Math.hypot(x - gx, y - gy) < rad + 2.5) continue;
 			if (ribosomes.some((q) => Math.hypot(q.x - x, q.y - y) < 12 + rad * 0.6)) continue;
 			if (proteins.some((q) => Math.hypot(q.x - x, q.y - y) < rad * 0.9)) continue;
+			if (onDna(x, y, rad * 0.7 + 1)) continue;
 			proteins.push({ id: m.id, x, y, angle: r.range(0, Math.PI * 2) });
 			k++;
 		}
@@ -305,21 +398,6 @@ export function crowd(X = 110, Y = 90): Crowd {
 		membrane.push({ id: 'ompF', x, y: (ENVELOPE.om0 + ENVELOPE.om1) / 2, angle: 0, flip: true });
 	for (let x = -X + 14; x < X; x += r.range(24, 40))
 		membrane.push({ id: 'lacY', x, y: (ENVELOPE.im0 + ENVELOPE.im1) / 2, angle: 0 });
-	const dna: [number, number][][] = [];
-	for (let k = 0; k < 3; k++) {
-		const pts: [number, number][] = [];
-		let x = -X - 10;
-		let y = Y - 20 - k * 22 + r.range(-5, 5);
-		let a = r.range(-0.3, 0.3);
-		while (x < X + 10) {
-			pts.push([x, y]);
-			a += r.range(-0.25, 0.25);
-			a = Math.max(-0.7, Math.min(0.7, a));
-			x += 4 * Math.cos(a);
-			y += 4 * Math.sin(a);
-		}
-		dna.push(pts);
-	}
 	crowdCache = { ribosomes, proteins, membrane, dna, expected, area };
 	return crowdCache;
 }

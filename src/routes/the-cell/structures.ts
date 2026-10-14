@@ -230,7 +230,18 @@ const list: Structure[] = [
 		dims: 'flat sacs 60–100 nm thick',
 		does: 'Stacks of flattened sacs studded with ribosomes. Proteins for membranes or for export are made here and threaded into the sacs.',
 		source:
-			'Sheet thickness 60–100 nm (BNID 111388); 10% of a liver cell’s volume (Alberts, via Cell Biology by the Numbers).',
+			'Sheet thickness 60–100 nm (BNID 111388); 9% of a liver cell’s volume (Alberts, Table 12-1).',
+		cells: EUK
+	},
+	{
+		id: 'smoothER',
+		name: 'Smooth endoplasmic reticulum',
+		kind: 'organelle',
+		size: 60 * NM,
+		dims: 'tubules ≈ 60 nm thick',
+		does: 'A network of tubes without ribosomes. It makes lipids for the cell’s membranes and, in the liver, breaks down drugs and poisons.',
+		source:
+			'Tubules ≈ 60 nm; smooth ER and Golgi together 6% of a liver cell’s volume (Alberts, Table 12-1).',
 		cells: EUK
 	},
 	{
@@ -492,7 +503,7 @@ const list: Structure[] = [
 		kind: 'machine',
 		size: 17 * NM,
 		dims: '≈ 17 nm wide',
-		does: 'A second light-driven pump that lifts electrons high enough to make NADPH.',
+		does: 'A second light-driven machine that lifts electrons high enough to make NADPH.',
 		source: 'PDB 5L8R (pea), measured on the outline.',
 		cells: ['plant']
 	},
@@ -562,11 +573,11 @@ const list: Structure[] = [
 		id: 'envelope',
 		name: 'Cell envelope',
 		kind: 'organelle',
-		size: 30 * NM,
-		dims: 'two membranes ≈ 30 nm apart overall',
+		size: 34 * NM,
+		dims: 'two membranes ≈ 34 nm across overall',
 		does: 'An outer membrane, a thin mesh wall (peptidoglycan) and the inner cell membrane. Antibiotics like penicillin attack the wall.',
 		source:
-			'Periplasm 11–15 nm (BNID 100016); peptidoglycan 6.35 nm (BNID 105385); inner membrane ≈ 6 nm (BNID 114122).',
+			'Periplasm 21 nm and peptidoglycan 6.35 nm, by cryo-electron microscopy of frozen cells (BNID 105387, 105385; Matias et al. 2003); inner membrane ≈ 6 nm (BNID 114122).',
 		cells: ['bacterium']
 	},
 	{

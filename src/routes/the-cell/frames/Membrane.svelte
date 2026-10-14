@@ -4,7 +4,7 @@
 	 * bilayer (4 nm) at y = 0, the outside above and the cytoplasm below, with a
 	 * sodium–potassium pump (PDB 3WGU), a potassium channel (PDB 2R9R) and a glucose
 	 * transporter (PDB 4PYP) set in it as OPM orients them. Ions are drawn at their
-	 * measured concentrations (mammalian cell: K⁺ 100 mM, Na⁺ 10 mM; blood plasma:
+	 * measured concentrations (mammalian cell: K⁺ 140 mM, Na⁺ 10 mM; blood plasma:
 	 * K⁺ 4 mM, Na⁺ 145 mM; BNID 104049, 104050), as hydrated ions ≈ 0.7 nm across.
 	 */
 	import { CORTEX_ACTIN, MEMBRANE_PROTEINS, scatterSmall, scatter } from '../molecular';
@@ -28,7 +28,7 @@
 		naOut: scatterSmall(1, outside, (x, y) => inProtein(x, y), 0.145 * NA, 0.7),
 		kOut: scatterSmall(2, outside, (x, y) => inProtein(x, y), 0.004 * NA, 0.7),
 		naIn: scatterSmall(3, inside, (x, y) => inProtein(x, y), 0.01 * NA, 0.7),
-		kIn: scatterSmall(4, inside, (x, y) => inProtein(x, y), 0.1 * NA, 0.7)
+		kIn: scatterSmall(4, inside, (x, y) => inProtein(x, y), 0.14 * NA, 0.7)
 	};
 	const proteins = scatter(5, { ...BOX, y0: 3 }, (x, y, r) => inProtein(x, y, r + 1), [
 		{ id: 'adk', share: 0.6, d: 5 }

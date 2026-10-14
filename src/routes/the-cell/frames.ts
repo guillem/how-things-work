@@ -11,7 +11,7 @@
  * view onto the other), so the next frame grows in place without sliding, and
  * the view at the end of the zoom is exactly that frame.
  */
-import { BACTERIUM_TARGETS } from './bacterium';
+import { BACTERIUM_TARGETS, CYTOPLASM_VIEW_DEPTH } from './bacterium';
 import { hepatocyte } from './liver';
 import { PLANT_TARGETS } from './plant';
 import type { CellType } from './structures';
@@ -61,7 +61,7 @@ const membraneC = um(h.targets.edge);
 
 // ---- the plant and the bacterium (see plant.ts and bacterium.ts for the layouts) --------
 const thylakoidC = um(PLANT_TARGETS.thylakoid);
-const cytoplasmC = add(um(BACTERIUM_TARGETS.envelope), 0, 32 * NM);
+const cytoplasmC = add(um(BACTERIUM_TARGETS.envelope), 0, CYTOPLASM_VIEW_DEPTH * NM);
 
 export const FRAMES: Record<string, Frame> = Object.fromEntries(
 	(

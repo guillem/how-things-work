@@ -18,7 +18,8 @@ import {
 	layers,
 	type Frame
 } from '../src/routes/the-cell/frames';
-import { hepatocyte, VOLUME_FRACTIONS, SIZES } from '../src/routes/the-cell/liver';
+import { hepatocyte, SIZES } from '../src/routes/the-cell/liver';
+import { ER_RIBOSOMES } from '../src/routes/the-cell/molecular';
 import { palisadeCell, PLANT_SHARES, THYLAKOID } from '../src/routes/the-cell/plant';
 import { MACHINES, SMALL_MOLECULES } from '../src/routes/the-cell/shapes';
 import { STRUCTURES, STRUCTURE_LIST } from '../src/routes/the-cell/structures';
@@ -96,29 +97,44 @@ test('the liver cell section has the measured composition of a liver cell', () =
 	const d = Math.cbrt((6 * SIZES.cellVolume) / Math.PI);
 	expect(A.cell / ((Math.PI * d * d) / 4)).toBeGreaterThan(0.9);
 	expect(A.cell / ((Math.PI * d * d) / 4)).toBeLessThan(1.3);
-	// each organelle covers the share of the cytoplasm it fills of the cell (Delesse)
-	for (const k of [
-		'mitochondria',
-		'roughER',
-		'smoothERGolgi',
-		'peroxisomes',
-		'lysosomes',
-		'endosomes'
-	] as const) {
-		const share = (A[k] / A.cytoplasm) * (1 - VOLUME_FRACTIONS.nucleus);
-		expect(share / VOLUME_FRACTIONS[k]).toBeGreaterThan(0.95);
-		expect(share / VOLUME_FRACTIONS[k]).toBeLessThan(1.1);
+	// each organelle covers the share of the cytoplasm it fills of a liver cell (Delesse), as
+	// measured: Alberts et al., Molecular Biology of the Cell, Table 12-1 (hepatocyte)
+	const ALBERTS = {
+		mitochondria: 0.22,
+		roughER: 0.09,
+		smoothERGolgi: 0.06,
+		peroxisomes: 0.01,
+		lysosomes: 0.01,
+		endosomes: 0.01
+	} as const;
+	const nucleus = 0.06;
+	for (const k of Object.keys(ALBERTS) as (keyof typeof ALBERTS)[]) {
+		const share = (A[k] / A.cytoplasm) * (1 - nucleus);
+		expect(share / ALBERTS[k]).toBeGreaterThan(0.95);
+		expect(share / ALBERTS[k]).toBeLessThan(1.1);
 	}
-	// what is left, the cytosol, is the measured 50–60% of the cell
+	// what is left, the cytosol, is the measured 54% of the cell
 	const organelles =
 		A.mitochondria + A.roughER + A.smoothERGolgi + A.peroxisomes + A.lysosomes + A.endosomes;
-	const cytosol = ((A.cytoplasm - organelles) / A.cytoplasm) * (1 - VOLUME_FRACTIONS.nucleus);
-	expect(cytosol).toBeGreaterThan(0.5);
-	expect(cytosol).toBeLessThan(0.6);
+	const cytosol = ((A.cytoplasm - organelles) / A.cytoplasm) * (1 - nucleus);
+	expect(Math.abs(cytosol - 0.54)).toBeLessThan(0.03);
+	// the cell step says "over a hundred" mitochondria in this slice
+	expect(h.mitochondria.length).toBeGreaterThan(100);
+	expect(h.mitochondria.length).toBeLessThan(130);
 	// mitochondria are the measured ~1 µm thick and up to 2 µm long
 	for (const m of h.mitochondria) {
 		expect(2 * m.b).toBeLessThanOrEqual(1);
 		expect(2 * m.a).toBeLessThanOrEqual(2.1);
+	}
+});
+
+test('ribosomes on the rough ER are as far apart as their measured density gives', () => {
+	// 1,000 per µm² of ER sheet (BNID 113957), each ≈ 27 nm across: a thin slice cuts
+	// 1,000 × 0.027 = 27 per µm of membrane, one every ≈ 37 nm (the ribosomes step's notes)
+	const xs = ER_RIBOSOMES.map((m) => m.x).sort((a, b) => a - b);
+	for (let i = 1; i < xs.length; i++) {
+		expect(xs[i] - xs[i - 1]).toBeGreaterThan(33);
+		expect(xs[i] - xs[i - 1]).toBeLessThan(41);
 	}
 });
 
@@ -141,14 +157,19 @@ test('the bacterium has the measured size, envelope and number of ribosomes', ()
 	const s = ecoliSection();
 	expect(capsuleVolume(ECOLI.length, ECOLI.width)).toBeGreaterThan(1);
 	expect(capsuleVolume(ECOLI.length, ECOLI.width)).toBeLessThan(1.8);
-	// envelope: two membranes and the periplasm, a few tens of nm
-	expect(envelopeThickness * 1000).toBeGreaterThan(20);
-	expect(envelopeThickness * 1000).toBeLessThan(40);
+	// envelope: two membranes and the 21 nm periplasm of frozen cells (Matias et al. 2003),
+	// ≈ 34 nm, as the info card says
+	expect(envelopeThickness * 1000).toBeGreaterThan(30);
+	expect(envelopeThickness * 1000).toBeLessThan(38);
+	expect(Math.abs(STRUCTURES.envelope.size / NM - envelopeThickness * 1000)).toBeLessThan(2);
 	// ~10,000 ribosomes per cell: an ideal thin section cuts n_V × d per µm²
 	const nV = ECOLI.ribosomesPerCell / capsuleVolume(ECOLI.length, ECOLI.width);
 	const expected = nV * ECOLI.ribosome * s.sectionArea;
 	expect(s.ribosomes.length).toBeGreaterThan(expected * 0.97);
 	expect(s.ribosomes.length).toBeLessThan(expected * 1.03);
+	// the bacterium step says a thin slice cuts "about 300" of them
+	expect(s.ribosomes.length).toBeGreaterThan(270);
+	expect(s.ribosomes.length).toBeLessThan(330);
 	// no two ribosomes overlap
 	for (let i = 0; i < s.ribosomes.length; i += 7)
 		for (let j = 0; j < s.ribosomes.length; j++)
