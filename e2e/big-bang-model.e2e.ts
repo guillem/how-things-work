@@ -94,15 +94,15 @@ test('limiting cases: a ∝ t^½ with radiation, t^⅔ with matter, Hubble’s l
 });
 
 test('distances: light-travel < then·(1+z) = now, and the observable universe is 46 Gly', () => {
-	for (const z of [0.1, 1, 3, 14.32, Z_STAR]) {
+	for (const z of [0.1, 1, 3, 14.18, Z_STAR]) {
 		const d = distances(z);
 		expect(d.lightTravel).toBeLessThan(d.comoving);
 		expect(d.then * (1 + z)).toBeCloseTo(d.comoving, 6);
 	}
-	// A galaxy at z = 14.32: light travelled 13.5 Gyr, the galaxy is now ~34 Gly away.
-	const far = distances(14.32);
+	// JADES-GS-z14-0 at z = 14.18: light travelled 13.5 Gyr, the galaxy is now ~34 Gly away.
+	const far = distances(14.18);
 	expect(far.lightTravel).toBeCloseTo(13.5, 1);
-	expect(far.comoving).toBeCloseTo(33.8, 0);
+	expect(far.comoving).toBeCloseTo(33.7, 0);
 	expect(HORIZON).toBeGreaterThan(45.5);
 	expect(HORIZON).toBeLessThan(47);
 	expect(HUBBLE_DISTANCE).toBeCloseTo(14.5, 1);
@@ -134,7 +134,7 @@ test('helium: neutrons freeze out at ~1 in 5, decay to ~1 in 7, ~25% of the mass
 	expect(1 / neutronsPerProton(T_NUC_S)).toBeCloseTo(7, 0);
 	// later, bound in helium, the neutrons stop decaying
 	expect(neutronsPerProton(1e6)).toBe(neutronsPerProton(T_NUC_S));
-	// PDG review of Big-Bang nucleosynthesis: Y_P = 0.245 ± 0.003
+	// measured in pristine gas: 0.2449 ± 0.0040 (Aver et al. 2015, quoted in Planck 2018 VI)
 	const Y = heliumMassFraction();
 	expect(Y).toBeGreaterThan(0.23);
 	expect(Y).toBeLessThan(0.26);

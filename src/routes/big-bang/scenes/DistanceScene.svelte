@@ -16,7 +16,7 @@
 
 	let { t, params, reduced }: StageProps = $props();
 
-	const lz = $derived(Number(params.zFar ?? Math.log10(14.32)));
+	const lz = $derived(Number(params.zFar ?? Math.log10(14.18)));
 	const z = $derived(10 ** lz);
 	const d = $derived(distances(z));
 	const vNow = $derived(recession(d.comoving, 1));
@@ -54,7 +54,7 @@
 		{ id: 'coma', name: 'Coma cluster', z: 0.0231 },
 		{ id: '3c273', name: 'quasar 3C 273', z: 0.158 },
 		{ id: 'gnz11', name: 'GN-z11', z: 10.6 },
-		{ id: 'jades', name: 'JADES-GS-z14-0', z: 14.32 },
+		{ id: 'jades', name: 'JADES-GS-z14-0', z: 14.18 },
 		{ id: 'cmb', name: 'CMB', z: 1089.92 }
 	];
 	const zName = $derived(OBJECTS.find((o) => Math.abs(Math.log10(o.z) - lz) < 0.02)?.name);

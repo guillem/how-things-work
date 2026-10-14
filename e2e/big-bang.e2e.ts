@@ -92,11 +92,11 @@ test('dragging along the timeline moves through time', async ({ page }) => {
 	await expect(stage(page)).toContainText('Today: 2.7 K, still expanding');
 });
 
-test('distances: the z = 14.3 galaxy is now 33.8 billion light years away', async ({ page }) => {
+test('distances: the z = 14.18 galaxy is now 33.7 billion light years away', async ({ page }) => {
 	await open(page, './big-bang/#distances');
 	await expect(stage(page)).toContainText('JADES-GS-z14-0');
-	await expect(stage(page)).toContainText('Now: 33.8 billion light years');
-	await expect(stage(page)).toContainText('When the light left: 2.21 billion light years');
+	await expect(stage(page)).toContainText('Now: 33.7 billion light years');
+	await expect(stage(page)).toContainText('When the light left: 2.22 billion light years');
 	await range(page, 'zFar').press('End');
 	await expect(stage(page)).toContainText('Now: 45.2 billion light years');
 	await expect(stage(page)).toContainText('When the light left: 42 million light years');

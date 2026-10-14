@@ -310,7 +310,7 @@ export const Q_NP = 1.29333236;
 /** Neutron lifetime, s (Particle Data Group 2024: 878.4 ± 0.5 s). */
 export const TAU_N = 878.4;
 /**
- * Textbook temperatures (e.g. B. Ryden, Introduction to Cosmology, 2nd ed., 2017, ch. 10): weak
+ * Textbook temperatures (standard textbook estimates): weak
  * reactions stop turning protons and neutrons into each other at kT ≈ 0.8 MeV; deuterium
  * survives, and nearly every neutron ends up in helium, below kT ≈ 0.07 MeV.
  */

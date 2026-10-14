@@ -428,7 +428,7 @@
 		</Readout>
 		<Readout id="stars-note">
 			<T x={560} y={196} text="First stars expected at z ≈ 30–20 (100–180 Myr)" size={12} />
-			<T x={560} y={216} text="JADES-GS-z14-0 seen at z = 14.3 (≈ 290 Myr)" size={12} />
+			<T x={560} y={216} text="JADES-GS-z14-0 seen at z = 14.18 (≈ 290 Myr)" size={12} />
 		</Readout>
 	{:else}
 		<!-- the last 13.8 Gyr on a linear scale -->
