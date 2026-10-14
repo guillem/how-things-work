@@ -134,6 +134,7 @@
 			size={12}
 			weight={600}
 			color="var(--im-antibody)"
+			opacity={smoothstep(0.85, 1, dock)}
 		/>
 	</Readout>
 	<Readout

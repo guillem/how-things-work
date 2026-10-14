@@ -55,7 +55,7 @@
 		i,
 		x: GX0 + (i % COLS) * DX,
 		y: GY0 + Math.floor(i / COLS) * DY,
-		kind: (i === MATCH_B || (i !== MATCH_T && hash(i, 51) < 0.45) ? 'b' : 't') as 'b' | 't',
+		kind: (i === MATCH_B || (i !== MATCH_T && hash(i, 51) < 0.45) ? 'b' : 't'),
 		shape: shapeOf(i)
 	}));
 	/** Depth of each of the three steps of the cradle floor, below its rim. */
@@ -484,9 +484,11 @@
 					fill="var(--im-node)"
 					stroke="var(--im-node-edge)"
 				/>
-				<text x={p.x + 140} y={104} font-size="15" font-weight="600" text-anchor="middle"
-					>{p.title}</text
-				>
+				<Readout id="recap-{i}" order={i} label={p.title}>
+					<text x={p.x + 140} y={104} font-size="15" font-weight="600" text-anchor="middle"
+						>{p.title}</text
+					>
+				</Readout>
 			</g>
 		{/each}
 		<!-- 1: many different receptors -->
