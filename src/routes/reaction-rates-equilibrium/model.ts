@@ -97,7 +97,7 @@ export const A_F = Math.exp(arrhenius.a);
 /**
  * Activation energy of HI decomposition on a gold surface, ≈ 105 kJ/mol: the value
  * textbooks quote from C. N. Hinshelwood and C. R. Prichard, J. Chem. Soc. 127,
- * 1552 (1925). The page uses it only for the size of the drop it makes.
+ * 1551–1555 (1925). The page uses it only for the size of the drop it makes.
  */
 export const EA_GOLD = 105e3;
 /** How much gold lowers the barrier, in both directions (J/mol). */
@@ -210,7 +210,8 @@ function derivative(m: Mix, kf: number, kr: number) {
 /**
  * Integrates the rate law from `start` under `conditions`, applying `changes` at
  * their times, and records a sample every `dt` seconds up to `until` (s). Fourth-
- * order Runge–Kutta, with sub-steps short compared with the relaxation time.
+ * order Runge–Kutta, with sub-steps short compared with the relaxation time; an
+ * interval many relaxation times long uses the exact solution (`mixAt`) instead.
  */
 export function simulate(
 	start: Mix,
@@ -247,6 +248,32 @@ export function simulate(
 			const kr = kReverse(T, lowering);
 			// Relaxation rate of the linearised equation: dν/dx.
 			const lambda = kf * (m.h2 + m.i2) + 4 * kr * m.hi + 1e-30;
+			if ((stop - t) * lambda > 50) {
+				// Stiff (a fast catalysed run, recorded sparsely): RK4 would need up to
+				// 10⁶ sub-steps per record. The conditions are fixed until `stop`, so take
+				// the exact solution, and integrate the forward and reverse counts on
+				// log-spaced points (fine during the relaxation, coarse once settled).
+				const c = { T, lowering };
+				const m0 = m;
+				const span = stop - t;
+				const h0 = 1 / (20 * lambda);
+				const N = 200;
+				let prevT = 0;
+				let prev = rates(m0, T, lowering);
+				for (let i = 1; i <= N; i++) {
+					const tt = i === N ? span : Math.min(span, h0 * Math.pow(span / h0, i / N));
+					const mi = mixAt(m0, c, tt);
+					const ri = rates(mi, T, lowering);
+					done += ((prev.forward + ri.forward) / 2) * (tt - prevT);
+					undone += ((prev.reverse + ri.reverse) / 2) * (tt - prevT);
+					prev = ri;
+					prevT = tt;
+					m = mi;
+				}
+				t = stop;
+				while (next < todo.length && todo[next].at <= t + 1e-12) apply(todo[next++]);
+				continue;
+			}
 			const n = Math.max(1, Math.ceil((stop - t) * lambda * 20));
 			const h = (stop - t) / n;
 			for (let i = 0; i < n; i++) {

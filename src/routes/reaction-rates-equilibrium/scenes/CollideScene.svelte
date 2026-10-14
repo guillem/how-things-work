@@ -8,7 +8,8 @@
 	 * and the marker on the profile barely leave the floor: none gets near 171.
 	 * Phase `react`: one of the rare collisions that do get over (its energy is the
 	 * barrier plus an exponential excess, the energies above Ea being distributed
-	 * that way), every 6 s: the four atoms pass through the transition state and two
+	 * that way; drawn here with mean 0.6 RT instead of RT, to keep the marker near the
+	 * top), every 6 s: the four atoms pass through the transition state and two
 	 * HI fly apart, while the marker rides over the top of the profile.
 	 * Reduced motion (t = 2.5): just after a bounce, or on the way into the
 	 * transition state.

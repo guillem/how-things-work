@@ -130,7 +130,7 @@ export const spec: ExplainerSpec = {
 <p class="formula"><strong>H₂ + I₂ → 2 HI</strong></p>
 <p>For that, an H–H bond and an I–I bond have to break and two H–I bonds have to form (the bonds of <a href="../chemical-bonds/#share">Chemical bonds</a>). Nothing happens unless the molecules meet. At 700 K the molecules fly about fast, H₂ at some 2.7 km/s and the heavier I₂ at 240 m/s, and each one collides billions of times a second.</p>
 <p>Yet almost every collision is a bounce: the two molecules hit, push each other apart and fly off unchanged. The meter shows the energy each collision brings, against what it would need.</p>`,
-			notes: `<p>This is the reaction Max Bodenstein measured in the 1890s, in sealed glass bulbs between 283 and 508 °C, and every number on this page comes from his data. It became the textbook example of a reaction in which two molecules simply collide. In 1967 J. H. Sullivan showed that it really goes through iodine atoms: some I₂ splits into 2 I, and the atoms react with H₂. The rate is still proportional to [H₂][I₂], because the iodine atoms stay in balance with the I₂, so the simple picture predicts the right rates. The page keeps it, as Bodenstein did.</p>`
+			notes: `<p>This is the reaction Max Bodenstein measured in the 1890s, in sealed glass bulbs between 283 and 508 °C, and every rate and equilibrium number for this reaction comes from his data. It became the textbook example of a reaction in which two molecules simply collide. In 1967 J. H. Sullivan showed that it really goes through iodine atoms: some I₂ splits into 2 I, and the atoms react with H₂. The rate is still proportional to [H₂][I₂], because the iodine atoms stay in balance with the I₂, so the simple picture predicts the right rates. The page keeps it, as Bodenstein did.</p>`
 		},
 		{
 			id: 'barrier',
@@ -167,8 +167,8 @@ export const spec: ExplainerSpec = {
 			hints: { plot: 'conc', lapse: 600, start: 'reactants', focus: 'rate' },
 			duration: 28,
 			body: `
-<p>Here is the flask at 700 K (427 °C), filled at 1 atmosphere with equal amounts of hydrogen and iodine: 0.0087 mol/L of each. The box holds 30 molecules of each; a litre of the real gas holds 5 × 10²¹. Each flash is a collision that got over the barrier. Iodine vapour is violet, so the gas grows paler as the I₂ is used up.</p>
-<p>The <dfn data-def="How much reactant is used up (or product made) per litre per second, in mol L⁻¹ s⁻¹.">rate</dfn> is how fast that happens. Bodenstein found it proportional to how much of each reactant there is, the <dfn data-def="How the rate of a reaction depends on the concentrations, e.g. rate = k[H₂][I₂].">rate law</dfn>:</p>
+<p>Here is the flask at 700 K (427 °C), filled at 1 atmosphere with equal amounts of hydrogen and iodine: 0.0087 mol/L of each. The box holds 30 molecules of each; a litre of the real gas holds 5 × 10²¹. Each flash is a collision that got over the barrier (the few pink ones are the reaction running backwards, which comes later). Iodine vapour is violet, so the gas grows paler as the I₂ is used up.</p>
+<p>The <dfn data-def="How many times the reaction happens per litre per second, in mol L⁻¹ s⁻¹ (here HI is made twice as fast).">rate</dfn> is how fast that happens. Bodenstein found it proportional to how much of each reactant there is, the <dfn data-def="How the rate of a reaction depends on the concentrations, e.g. rate = k[H₂][I₂].">rate law</dfn>:</p>
 <p class="formula"><strong>rate = k [H₂] [I₂]</strong></p>
 <p>Square brackets mean a concentration in mol/L, and the <dfn data-def="The constant k in a rate law. It depends on the temperature and the barrier, not on the amounts.">rate constant</dfn> k is 0.063 L mol⁻¹ s⁻¹ here. As the reactants are used up there are fewer of them to meet, and the reaction slows down: half of the hydrogen is gone after <strong>31 minutes</strong>.</p>`,
 			notes: `<p>The box is a time-lapse: one second here is ten minutes in the flask. Its molecules fly in straight lines and pass through each other, and the model decides how many of their meetings react, so that the counts follow the calculated amounts. The rate law is the law of <dfn data-def="The rule that a reaction's rate is proportional to the concentration of each reacting molecule (raised to the number of them that meet). Guldberg and Waage, 1864.">mass action</dfn>: the chance that an H₂ and an I₂ meet is proportional to the number of each.</p>`
@@ -209,7 +209,7 @@ export const spec: ExplainerSpec = {
 			controls: [lowering],
 			body: `
 <p>A <dfn data-def="A substance that speeds up a reaction by giving it a path with a lower barrier, and is not used up.">catalyst</dfn> offers the molecules another way to react, with a lower barrier. On a gold surface, for example, HI molecules stick to the metal, their bonds are loosened, and the barrier drops by about <strong>78 kJ/mol</strong>. The gold itself comes out unchanged.</p>
-<p>Lower the barrier. Because the share of collisions that get over it depends exponentially on its height, the effect is enormous: 20 kJ/mol less makes the reaction 30 times faster; the full 78 kJ/mol, <strong>700 000 times</strong>. Half of the hydrogen is then gone in less than 3 milliseconds instead of half an hour.</p>
+<p>Lower the barrier. Because the share of collisions that get over it depends exponentially on its height, the effect is enormous: 20 kJ/mol less makes the reaction 30 times faster; the full 78 kJ/mol, <strong>700 000 times</strong>, if nothing else about the reaction changed. Half of the hydrogen is then gone in less than 3 milliseconds instead of half an hour.</p>
 <p>The plot has a time axis in powers of ten, so that both runs fit. The faint curve is the reaction without a catalyst.</p>`,
 			notes: `<p>The decomposition of HI on gold has a barrier of about 105 kJ/mol instead of 183 (the value textbooks quote from Hinshelwood and Prichard, 1925). On the metal the rate law itself changes, because the molecules first have to land on the surface; the page keeps the same rate law and only lowers the barrier, by the same amount in both directions. The time-lapse of the box is adjusted to each run; the clock shows the flask's real time. Most of the catalysts in industry, and every enzyme in your body, work this way.</p>`
 		},
@@ -224,7 +224,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The reaction never runs to the end. Two HI molecules can also collide hard enough to swap partners back:</p>
 <p class="formula"><strong>2 HI → H₂ + I₂</strong>, &nbsp; rate = k<sub>r</sub> [HI]²</p>
-<p>It goes over the same barrier from the other side, which is higher from there: 171 + 12 = <strong>183 kJ/mol</strong>. Its rate constant k<sub>r</sub> is 52 times smaller than the forward one, but it grows as HI builds up.</p>
+<p>It goes over the same barrier from the other side, which is higher from there: 171 + 12 = <strong>183 kJ/mol</strong>. Its rate constant k<sub>r</sub> is 52 times smaller than the forward one, but the reverse <em>rate</em> grows as HI builds up.</p>
 <p>Watch the two rates on the plot: the forward rate falls as H₂ and I₂ are used up, the reverse rate rises as HI piles up. The pink flashes in the box are reverse reactions. Sooner or later the two rates must meet.</p>`,
 			notes: `<p>Bodenstein measured this reaction too, starting from pure HI. Its own fit gives about 186 kJ/mol; this page derives k<sub>r</sub> from k<sub>f</sub> and the measured equilibrium (next step), which keeps the two directions consistent, within the scatter of his data. The reverse reaction is written with [HI]² because two HI molecules have to meet.</p>`
 		},
@@ -241,7 +241,7 @@ export const spec: ExplainerSpec = {
 <p>Equal rates mean k<sub>f</sub>[H₂][I₂] = k<sub>r</sub>[HI]², so the ratio</p>
 <p class="formula"><strong>K = [HI]² / ([H₂] [I₂]) = k<sub>f</sub> / k<sub>r</sub></strong></p>
 <p>is fixed. This <dfn data-def="K: the ratio of product to reactant concentrations (each raised to its coefficient) once a reaction is at equilibrium. It depends only on the temperature.">equilibrium constant</dfn> is <strong>52</strong> at 700 K. The readout compares it with the same ratio for the mixture right now, Q.</p>`,
-			notes: `<p>This is the law of mass action as Guldberg and Waage stated it in 1864: at equilibrium the forward and reverse rates are equal. Bodenstein's equilibrium mixtures give K = 52 at 700 K; Taylor and Crist (1941) found 22.3 % of HI split at 730.8 K, K = 48.6, against 47.7 from his data. In the box, with 60 molecules, the counts jiggle by one or two around the balance; in a real flask, with 10²¹ molecules, the jiggles are far too small to measure.</p>`
+			notes: `<p>Guldberg and Waage proposed the law of mass action in 1864 as a balance of two opposing "forces", and in 1879 recast it as equal forward and reverse rates. Bodenstein's equilibrium mixtures give K = 52 at 700 K; Taylor and Crist (1941) found 22.3 % of HI split at 730.8 K, K = 48.6, against 47.7 from his data. In the box, with 60 molecules, the counts jiggle by one or two around the balance; in a real flask, with 10²² molecules in a litre, the jiggles are far too small to measure.</p>`
 		},
 		{
 			id: 'fromhi',
@@ -265,7 +265,7 @@ export const spec: ExplainerSpec = {
 			controls: [gold],
 			body: `
 <p>A catalyst lowers the barrier, and it is the same barrier whichever way the molecules cross it. So it speeds up the forward and the reverse reactions by <strong>exactly the same factor</strong>. Their ratio, K = k<sub>f</sub>/k<sub>r</sub>, stays the same, and so does the final mixture.</p>
-<p>Switch the gold on and compare the curves: with the catalyst, the mixture reaches equilibrium about 700 000 times sooner, but it ends up at the same 78 % HI. A catalyst gets a reaction to its equilibrium faster; it cannot make more product than the equilibrium allows.</p>`,
+<p>Switch the gold on and compare the curves: with the catalyst, in this model the mixture reaches equilibrium about 700 000 times sooner, but it ends up at the same 78 % HI. A catalyst gets a reaction to its equilibrium faster; it cannot make more product than the equilibrium allows.</p>`,
 			notes: `<p>If a catalyst could shift an equilibrium, you could build a perpetual-motion machine: let a gas mixture shift one way with the catalyst in, the other way with it out, and draw work from each swing. The catalyst lowers both barriers by the same amount because the two directions are the same path, crossed forwards or backwards.</p>`
 		},
 		// ------------------------------------------------------------------ push

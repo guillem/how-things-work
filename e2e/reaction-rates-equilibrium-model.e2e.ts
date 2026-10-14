@@ -191,3 +191,34 @@ test('the step-by-step integration agrees with the exact solution of the rate la
 		}
 	}
 });
+
+test('the heat step with gold on stays quick and exact: a stiff run uses the exact solution', () => {
+	// The flask scene's heat step: 150 s of animation at 10 min per second, a record
+	// every 30 s, the gold switched on (relaxation in milliseconds at 780 K).
+	const begin = performance.now();
+	const eq = equilibriumMix(START, 780);
+	const run = simulate(eq, at(780, GOLD_LOWERING), [], 90000, 30);
+	expect(performance.now() - begin).toBeLessThan(3000);
+	const last = run[run.length - 1];
+	expect(last.hi).toBeCloseTo(eq.hi, 9);
+	// Forward reactions keep running at the equilibrium rate, and as many go back.
+	expect(last.done / (rates(eq, 780, GOLD_LOWERING).forward * 90000)).toBeCloseTo(1, 4);
+	expect(last.undone / last.done).toBeCloseTo(1, 6);
+
+	// From reactants, with the gold switched on after 10 min: the mixture follows the
+	// exact solution, and every HI made is counted (Δ[HI] = 2 × (forward − reverse)).
+	const run2 = simulate(START, at(700), [{ at: 600, lowering: GOLD_LOWERING }], 6000, 30);
+	const before = mixAt(START, at(700), 600);
+	for (const k of [21, 25, 200]) {
+		const exact = mixAt(before, at(700, GOLD_LOWERING), run2[k].t - 600);
+		expect(run2[k].hi / exact.hi).toBeCloseTo(1, 6);
+		expect((2 * (run2[k].done - run2[k].undone)) / run2[k].hi).toBeCloseTo(1, 2);
+	}
+});
+
+test('the flask the narrative quotes: 0.0087 mol/L of each gas, 10²² molecules in a litre', () => {
+	expect(START.h2).toBeCloseTo(0.0087, 4);
+	const perLitre = START_TOTAL * 6.02214076e23;
+	expect(perLitre / 1e22).toBeCloseTo(1.05, 2);
+	expect((START.h2 * 6.02214076e23) / 1e21).toBeCloseTo(5.2, 1);
+});
