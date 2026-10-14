@@ -38,8 +38,8 @@
 	const L = { x0: 16, y0: 16, x1: 466, y1: 340 };
 	const R = { x0: 482, y0: 16, x1: 944, y1: 340 };
 	const BX = 241; // centre of mass, top view
-	const BY = 172;
-	const RP = 112; // planet's orbit, px (not to scale)
+	const BY = 188;
+	const RP = 106; // planet's orbit, px (not to scale)
 	const RSTAR = 26; // star's circle, px (enlarged)
 	const SX0 = 506; // spectrum strip
 	const SX1 = 920;
@@ -351,7 +351,7 @@
 		id="shift"
 		order={3}
 		label="Hα shift (real)"
-		value="{v < 0 ? '−' : '+'}{sig(Math.abs(dopplerShift(HA, v)) * 1e6, 2)} millionths of a nm"
+		value="{v < 0 ? '−' : '+'}{sci(Math.abs(dopplerShift(HA, v)))} nm"
 	>
 		<T
 			x={(ZX0 + ZX1) / 2}
@@ -359,8 +359,8 @@
 			text={Math.abs(v) < K * 0.05
 				? 'no shift: the star moves across our line of sight'
 				: v < 0
-					? `towards us: bluer by ${sig(Math.abs(dopplerShift(HA, v)) * 1e6, 2)} millionths of a nm`
-					: `away from us: redder by ${sig(Math.abs(dopplerShift(HA, v)) * 1e6, 2)} millionths of a nm`}
+					? `towards us: bluer by ${sci(Math.abs(dopplerShift(HA, v)))} nm`
+					: `away from us: redder by ${sci(Math.abs(dopplerShift(HA, v)))} nm`}
 			size={12}
 			anchor="middle"
 			weight={600}
@@ -446,7 +446,7 @@
 		value="± {speed(K)}"
 		color="var(--ex-rv)"
 	>
-		<T x={CX + 16} y={396} text="Speed towards / away" size={12.5} muted />
+		<T x={CX + 16} y={396} text="Towards / away" size={12.5} muted />
 		<T
 			x={CX + CW - 16}
 			y={396}

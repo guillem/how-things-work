@@ -46,7 +46,7 @@
 	const SCY = 186;
 	const RS = 112; // star radius in the close-up, px
 	const OCX = (O.x0 + O.x1) / 2;
-	const OCY = 190;
+	const OCY = 184;
 	const ORX = 196; // orbit radius in the whole-orbit view, px
 	const PX0 = 92;
 	const PX1 = 676;
@@ -143,12 +143,14 @@
 
 	// ---- whole orbit ----------------------------------------------------------------
 	const ci = $derived(Math.cos((pl.incl * Math.PI) / 180));
-	const ry = $derived(ORX * ci);
-	const starPx = $derived(ORX / AR);
+	// Face-on the orbit is a circle: shrink the drawing so that it fits the panel.
+	const orx = $derived(Math.min(ORX, 110 / Math.max(ci, 1e-6)));
+	const ry = $derived(orx * ci);
+	const starPx = $derived(orx / AR);
 	const starDraw = $derived(Math.max(3, starPx));
 	const oPos = $derived({
-		x: OCX + (pos.x / AR) * ORX,
-		y: OCY + (pos.y / AR) * ORX
+		x: OCX + (pos.x / AR) * orx,
+		y: OCY + (pos.y / AR) * orx
 	});
 	const ellipseHalf = (near: boolean) => {
 		// near half: cos θ > 0 (θ from -90° to 90°), drawn below the star when tilted
@@ -156,7 +158,7 @@
 		for (let i = 0; i <= 60; i++) {
 			const th = (near ? -Math.PI / 2 : Math.PI / 2) + (Math.PI * i) / 60;
 			pts.push(
-				`${i ? 'L' : 'M'}${(OCX + ORX * Math.sin(th)).toFixed(1)} ${(OCY + ry * Math.cos(th)).toFixed(1)}`
+				`${i ? 'L' : 'M'}${(OCX + orx * Math.sin(th)).toFixed(1)} ${(OCY + ry * Math.cos(th)).toFixed(1)}`
 			);
 		}
 		return pts.join(' ');
