@@ -228,7 +228,14 @@
 				opacity={e.cu.o}
 			/>
 			{#each e.electrons as el, j (j)}
-				<circle cx={el.x} cy={el.y} r="5.5" fill="var(--rb-electron)" stroke="var(--stage-bg)" opacity={el.o} />
+				<circle
+					cx={el.x}
+					cy={el.y}
+					r="5.5"
+					fill="var(--rb-electron)"
+					stroke="var(--stage-bg)"
+					opacity={el.o}
+				/>
 			{/each}
 		{/each}
 	</g>
