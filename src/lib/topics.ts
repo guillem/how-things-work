@@ -600,6 +600,15 @@ const explainers: Explainer[] = [
 		accent: '#c0396b',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'convolution-vision',
+		title: 'Convolution and computer vision',
+		summary:
+			'Slide a small filter across a picture and watch it blur, sharpen or find edges. Then open up a network trained on handwritten digits: the same small detectors used everywhere, stacked layer on layer, read the digit you draw.',
+		accent: '#0c8599',
+		steps: 10,
+		minutes: 20
 	}
 ];
 

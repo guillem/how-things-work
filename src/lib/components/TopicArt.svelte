@@ -2180,6 +2180,35 @@
 				stroke-linecap="round"
 			/>
 		{/each}
+	{:else if slug === 'convolution-vision'}
+		<!-- a pixel grid with a 3 × 3 filter on it, and the feature map it builds -->
+		{#each [0, 1, 2, 3, 4] as r (r)}
+			{#each [0, 1, 2, 3, 4] as c (c)}
+				<rect
+					x={30 + c * 12}
+					y={30 + r * 12}
+					width="11"
+					height="11"
+					fill="currentColor"
+					opacity={c === 2 || (r === 1 && c > 1) ? 0.75 : 0.12}
+				/>
+			{/each}
+		{/each}
+		<rect x="41" y="41" width="35" height="35" fill="none" stroke={accent} stroke-width="2.2" />
+		<path d="M 80 58 L 114 58" stroke={accent} stroke-width="1.6" />
+		<path d="M 110 54 L 116 58 L 110 62" fill="none" stroke={accent} stroke-width="1.6" />
+		{#each [0, 1, 2, 3] as r (r)}
+			{#each [0, 1, 2, 3] as c (c)}
+				<rect
+					x={122 + c * 12}
+					y={36 + r * 12}
+					width="11"
+					height="11"
+					fill={accent}
+					opacity={c === 1 || c === 2 ? 0.8 : 0.15}
+				/>
+			{/each}
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
