@@ -17,7 +17,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, clamp, cycle, hash, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { idealDeltaV, massRatio, saturnV } from '../rockets';
+	import { massRatio } from '../rockets';
 	import { hohmann, marsHohmann, MU_EARTH, R_GEO, R_LEO } from '../space';
 	import Card from './Card.svelte';
 	import RocketShape from './RocketShape.svelte';
@@ -125,7 +125,8 @@
 	// ---- tyranny and budget -------------------------------------------------------------------
 	const geo = hohmann(MU_EARTH, R_LEO, R_GEO);
 	const mars = marsHohmann();
-	const LEO = idealDeltaV(saturnV);
+	/** Ground to low orbit: the usual round figure, about 9.4 km/s. */
+	const LEO = 9400;
 	type Leg = { id: string; label: string; dv: number; color: string };
 	const LEGS: Record<string, Leg[]> = {
 		leo: [{ id: 'up', label: 'ground to low orbit', dv: LEO, color: 'var(--rk-fuel)' }],

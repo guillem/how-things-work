@@ -42,6 +42,11 @@ export interface StageFigures {
 	/** Exhaust speed in a vacuum and at sea level (m/s). */
 	veVac: number;
 	veSea: number;
+	/**
+	 * Propellant (kg) the stage keeps beyond `mf` for later in the mission. The guidance may burn
+	 * into it to finish reaching orbit; what is left of it counts as Δv to spare.
+	 */
+	reserve?: number;
 }
 
 /** Launch site of Apollo 11: Launch Complex 39A, latitude 28.6° N. */
@@ -52,15 +57,20 @@ export const KSC_LATITUDE = 28.608;
  *
  * - S-IC: 2,899,008 kg at holddown release to 827,292 kg at outboard engine cutoff
  *   (161.63 s; release at 0.30 s). F-1 specific impulse at sea level 2,598 N·s/kg
- *   (Table 5-1). The vacuum figure follows the flight manual's thrust rise, 9.160/7.648 times
- *   the sea-level thrust, at the same flow.
+ *   (Table 5-1); in a vacuum the F-1's published 304 s (Rocketdyne F-1 engine data). The
+ *   stage's thrust rose more than that with altitude (to about 9.16 million lbf) partly
+ *   because its propellant flow rose too; the model keeps the flow at its average.
  * - S-II: 658,547 kg at separation; the aft interstage (3,982 kg) and the launch escape
  *   tower (4,051 kg), dropped about half a minute after ignition, are taken off at ignition; 213,757 kg at
  *   S-II/S-IVB separation. Flow 1,239 kg/s, specific impulse 4,150.2 N·s/kg (section 6).
  * - S-IVB first burn: 166,571 kg at ignition, 135,182 kg at cutoff, 147.1 s, specific impulse
- *   4,202 N·s/kg (Table 7-1).
+ *   4,202 N·s/kg (Table 7-1). It kept the propellant for its second burn, which sent Apollo 11
+ *   to the Moon: 346.8 s (NASA SP-4029, Apollo by the Numbers), taken at the first burn's flow.
+ * - Insertion height: the report's 191.1 km is above the local ellipsoid; on the round Earth
+ *   of the model the orbit was 183 × 186 km (100.4 × 98.9 nmi, SP-4029), so the model aims
+ *   the Saturn V at 185 km.
  */
-export const SATURN_V: { stages: StageFigures[]; diameter: number } = {
+export const SATURN_V: { stages: StageFigures[]; diameter: number; target: number } = {
 	stages: [
 		{
 			name: 'S-IC',
@@ -68,7 +78,7 @@ export const SATURN_V: { stages: StageFigures[]; diameter: number } = {
 			mf: 827292,
 			mdot: (2899008 - 827292) / (161.63 - 0.3),
 			veSea: 2598,
-			veVac: 2598 * (9160 / 7648)
+			veVac: 304 * G0
 		},
 		{
 			name: 'S-II',
@@ -84,15 +94,27 @@ export const SATURN_V: { stages: StageFigures[]; diameter: number } = {
 			mf: 135182,
 			mdot: (166571 - 135182) / 147.1,
 			veSea: 4202,
-			veVac: 4202
+			veVac: 4202,
+			reserve: ((166571 - 135182) / 147.1) * 346.8
 		}
 	],
 	/** Diameter of the S-IC and S-II, 33 ft (10.1 m), MSFC-MAN-504 section 1. */
-	diameter: 10.06
+	diameter: 10.06,
+	/** Height the model's guidance aims for (m): see the insertion note above. */
+	target: 185e3
 };
 
-/** Apollo 11's parking-orbit insertion (Table 4-5): 709.3 s, 191.1 km, 7,793.1 m/s space-fixed. */
-export const AS506_INSERTION = { time: 709.3, altitude: 191.1e3, speed: 7793.1 };
+/**
+ * Apollo 11's parking-orbit insertion (Table 4-5): 709.3 s, 191.1 km above the ellipsoid,
+ * 7,793.1 m/s space-fixed; perigee and apogee 183.2 and 185.9 km over a round Earth (SP-4029).
+ */
+export const AS506_INSERTION = {
+	time: 709.3,
+	altitude: 191.1e3,
+	speed: 7793.1,
+	perigee: 183.2e3,
+	apogee: 185.9e3
+};
 
 /**
  * Keplerian elements of the Earth–Moon barycentre and Mars, valid 1800–2050, from E. M.

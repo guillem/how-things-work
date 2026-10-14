@@ -114,12 +114,15 @@
 	const cx = scale([0, WINDOW_DAYS], [CH.x, CH.x + CH.w]);
 	const cy = scale([5, 20], [CH.y + CH.h, CH.y]);
 	const curve = $derived.by(() => {
-		if (phase !== 'window') return { d: '', min: 0 };
+		const lows: { day: number; total: number }[] = [];
+		if (phase !== 'window') return { d: '', min: 0, lows };
 		let d = '';
 		let min = Infinity;
 		let pen = false;
+		const totals: number[] = [];
 		for (let day = 0; day <= WINDOW_DAYS; day += 5) {
 			const tr = marsTrip(WINDOW_START + day, flightDays);
+			totals.push(tr ? tr.total : Infinity);
 			if (!tr) {
 				pen = false;
 				continue;
@@ -129,13 +132,28 @@
 			d += `${pen ? 'L' : 'M'}${cx(day).toFixed(1)} ${y.toFixed(1)}`;
 			pen = true;
 		}
-		return { d, min };
+		// The bottom of each window: the windows differ in cost, so each is judged on its own.
+		for (let i = 0; i < totals.length; i++)
+			if (
+				Number.isFinite(totals[i]) &&
+				totals[i] <= (totals[i - 1] ?? Infinity) &&
+				totals[i] <= (totals[i + 1] ?? Infinity)
+			)
+				lows.push({ day: i * 5, total: totals[i] });
+		return { d, min, lows };
 	});
 	const YEARS = [2027, 2028, 2029, 2030, 2031].map((y) => ({
 		y,
 		day: (Date.UTC(y, 0, 1) - Date.UTC(2026, 0, 1)) / (DAY * 1000)
 	}));
-	const inWindow = $derived(!!trip && trip.total <= curve.min * 1.1);
+	const inWindow = $derived.by(() => {
+		if (!trip) return false;
+		const day = departDay - WINDOW_START;
+		let near: { day: number; total: number } | null = null;
+		for (const low of curve.lows)
+			if (!near || Math.abs(low.day - day) < Math.abs(near.day - day)) near = low;
+		return !!near && Math.abs(near.day - day) < 90 && trip.total <= 1.1 * near.total;
+	});
 	const verdictW = $derived(
 		!trip
 			? 'No orbit gets there that fast'

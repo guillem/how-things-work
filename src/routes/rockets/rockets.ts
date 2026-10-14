@@ -73,6 +73,8 @@ export interface Vehicle {
 	/** Reference area for drag (m²). */
 	area: number;
 	payload: number;
+	/** Height the guidance aims to level off at (m); 190 km unless set. */
+	target?: number;
 }
 
 /** Drag coefficient (a constant: see the header). */
@@ -82,7 +84,8 @@ export const saturnV: Vehicle = {
 	name: 'Saturn V',
 	stages: SATURN_V.stages,
 	area: (Math.PI * SATURN_V.diameter ** 2) / 4,
-	payload: 0
+	payload: 0,
+	target: SATURN_V.target
 };
 
 /** Tanks, engines and structure as a share of a stage's propellant (between the S-II's ~8% and the S-IVB's ~13%). */
@@ -142,7 +145,7 @@ export function designRocket(fuel: number, ve: number, n: number): Vehicle {
 	return { name: 'Your rocket', stages, area: (Math.PI * diameter ** 2) / 4, payload: PAYLOAD };
 }
 
-/** The rocket equation summed over the stages, in a vacuum (m/s). */
+/** The rocket equation summed over the stages, in a vacuum (m/s); reserves left out. */
 export const idealDeltaV = (v: Vehicle) =>
 	v.stages.reduce((s, st) => s + deltaV(st.veVac, st.m0, st.mf), 0);
 
@@ -222,7 +225,9 @@ export function apsides(x: number, y: number, vx: number, vy: number) {
 
 /** Flies `v` from the pad. */
 export function fly(v: Vehicle, opts: FlightOptions = {}): Flight {
-	const target = opts.target ?? 190e3;
+	const target = opts.target ?? v.target ?? 190e3;
+	/** Mass at which a stage is empty, its reserve burnt too. */
+	const empty = (s: StageFigures) => s.mf - (s.reserve ?? 0);
 	const kick = ((opts.kick ?? 3) * Math.PI) / 180;
 	const dt = opts.dt ?? 0.5;
 	const every = opts.every ?? 2;
@@ -343,7 +348,7 @@ export function fly(v: Vehicle, opts: FlightOptions = {}): Flight {
 		if (!level && h0 > 60e3 && (si > 0 || h0 > 80e3)) level = true;
 
 		// RK4 on position and velocity; the mass falls linearly within the step.
-		const step = st ? Math.min(dt, (m - st.mf) / mdot) : dt;
+		const step = st ? Math.min(dt, (m - empty(st)) / mdot) : dt;
 		const k1 = deriv(x, y, vx, vy, m, thrust);
 		const k2 = deriv(
 			x + (vx * step) / 2,
@@ -411,7 +416,7 @@ export function fly(v: Vehicle, opts: FlightOptions = {}): Flight {
 			if (level && ap.peri - RE > target - 5e3) {
 				cut = { t, h, v: Math.hypot(vx, vy) };
 				record();
-			} else if (m <= st.mf + 1e-6) {
+			} else if (m <= empty(st) + 1e-6) {
 				staging.push(t);
 				if (si + 1 < v.stages.length) {
 					si += 1;
@@ -438,10 +443,10 @@ export function fly(v: Vehicle, opts: FlightOptions = {}): Flight {
 	let spare = 0;
 	if (cut && outcome === 'orbit' && si < v.stages.length) {
 		const st = v.stages[si];
-		spare += deltaV(st.veVac, m, st.mf);
+		spare += deltaV(st.veVac, m, empty(st));
 		for (let i = si + 1; i < v.stages.length; i++) {
 			const s = v.stages[i];
-			spare += deltaV(s.veVac, s.m0, s.mf);
+			spare += deltaV(s.veVac, s.m0, empty(s));
 		}
 	}
 	return {

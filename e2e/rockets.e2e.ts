@@ -77,6 +77,11 @@ test('November 2026 is in a launch window to Mars; a year later costs several ti
 	await expect(stage(page)).toContainText('In a launch window');
 	await slider(page, 'depart').fill('680'); // November 2027
 	await expect(stage(page)).toContainText(/\d\.\d times the cheapest/);
+	// Each window is judged on its own: on a 200-day trip the 2026 window costs 1.15 times the
+	// 2031 one, and its cheapest date is still in a window.
+	await slider(page, 'flight').fill('200');
+	await slider(page, 'depart').fill('340');
+	await expect(stage(page)).toContainText('In a launch window');
 });
 
 test('a closer pass of Jupiter turns the craft more and leaves it faster round the Sun', async ({

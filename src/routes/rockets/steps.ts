@@ -82,7 +82,7 @@ const burn1: Control = {
 	id: 'burn1',
 	label: 'First burn',
 	min: 0,
-	max: 3.2,
+	max: 3,
 	step: 0.01,
 	default: 1.2,
 	unit: ' km/s',
@@ -196,7 +196,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [fuelShare, exhaust],
 			body: `
-<p>How much speed can a rocket gain? Not simply "exhaust speed × propellant": early on, each kilogram of gas has to push the whole full rocket, so it gives little speed; the last kilograms push an almost empty one. Adding it all up gives the <strong>rocket equation</strong>, found by Konstantin Tsiolkovsky in 1903:</p>
+<p>How much speed can a rocket gain? Not simply "exhaust speed × propellant": early on, each kilogram of gas has to push the whole full rocket, so it gives little speed; the last kilograms push an almost empty one. Adding it all up gives the <strong>rocket equation</strong>, derived by Konstantin Tsiolkovsky in 1897 and published in 1903:</p>
 <p class="formula">Δv = v<sub>e</sub> × ln(m<sub>start</sub> / m<sub>end</sub>)</p>
 <p>Δv ("delta-v") is the speed gained, v<sub>e</sub> the exhaust speed, and m<sub>start</sub> / m<sub>end</sub> the <dfn data-def="The rocket's mass full divided by its mass when the propellant is used up.">mass ratio</dfn>. "ln" is the natural logarithm, which grows ever more slowly: make the rocket 80% propellant (a mass ratio of 5) and it gains 1.6 exhaust speeds; 90% (ratio 10) gives 2.3; 95% (ratio 20) only 3.0.</p>`,
 			notes: `<p>This ignores gravity and air: it is the speed gained in empty space. Rocket engineers quote exhaust speed as <em>specific impulse</em>, in seconds: the exhaust speed divided by 9.81 m/s². 300 s means about 2.9 km/s.</p>`
@@ -212,7 +212,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Turn the equation round: to gain Δv, the rocket must start e<sup>Δv / v<sub>e</sub></sup> times heavier than it ends. Each extra exhaust speed's worth of Δv <strong>multiplies</strong> the starting mass by e ≈ 2.7, because the extra propellant has to be carried — and speeded up — by yet more propellant.</p>
 <p>Getting from the ground into orbit takes about 9.4 km/s. With a 3 km/s exhaust the rocket must start ${massRatio(9400, 3000).toFixed(0)} times heavier than it ends: 96% propellant, with everything else — engines, tanks, crew, cargo — squeezed into the last 4%. Every bit of speed costs exponentially more than the last. This is the "tyranny of the rocket equation".</p>`,
-			notes: `<p>The bars are drawn to scale for 1 tonne arriving at the end. Faster exhaust (hydrogen rather than kerosene) is the only way to soften the exponential: the same Δv needs a smaller multiple of exhaust speeds.</p>`
+			notes: `<p>The squares are drawn to scale by area, round 1 tonne arriving at the end. Faster exhaust (hydrogen rather than kerosene) is the only way to soften the exponential: the same Δv needs a smaller multiple of exhaust speeds.</p>`
 		},
 		// ------------------------------------------------------------------ orbit
 		{
@@ -223,10 +223,10 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'saturn' },
 			duration: 30,
 			body: `
-<p>From the previous topic: a low orbit is falling round the Earth, at about <strong>7.8 km/s</strong> sideways, 200 km up. Getting there costs more than that. Here is Apollo 11's Saturn V, flown with its real stage masses and engines through the real atmosphere.</p>
-<p>The engines push it straight up at first, and in those first minutes much of their effort only holds the rocket up against gravity: that is the <dfn data-def="Speed the engines give that gravity takes back while the rocket is still climbing. It is largest early on, when the rocket climbs steeply and slowly.">gravity loss</dfn>. So the rocket tilts over as soon as it can, in a <dfn data-def="A climb in which the engines push along the direction of travel and gravity slowly bends the path over towards horizontal.">gravity turn</dfn>. Air drag takes a little more, and steering — pushing partly upwards rather than along the path — some more. The Earth's spin gives back 0.4 km/s for free when the rocket heads east.</p>
-<p>The bars tally the budget. The engines give over 9 km/s; about 7.4 of it survives the losses, and the Earth's spin adds 0.4 to make the 7.8 of orbit. In the real flight Apollo 11 entered its parking orbit at 7,793 m/s, 191 km up, 11 minutes 49 seconds after liftoff.</p>`,
-			notes: `<p>The model: a point mass in one plane over a round, spinning Earth; Newton's gravity; drag ½ρv²C<sub>d</sub>A with the density of the U.S. Standard Atmosphere 1976 and a constant C<sub>d</sub> = 0.5; stage masses, flow rates and exhaust speeds from NASA's AS-506 flight evaluation report. The steering loss starts large because the rocket rises straight up while the spinning Earth is already carrying it east at 0.4 km/s, so its push is at first across its direction of travel. The first stage's exhaust is slower at sea level, where the air pushes back on it, than in the near-vacuum higher up. Simplifications: the flight heads due east (Apollo 11 flew a 72° heading), the first stage's centre engine isn't shut down early, and the tilt is chosen by the model, so the times differ by up to a minute from the real flight.</p>`
+<p>From <em>Orbits and Kepler's laws</em>: a low orbit is falling round the Earth, at about <strong>7.8 km/s</strong> sideways, 200 km up. Getting there costs more than that. Here is Apollo 11's Saturn V, flown with its real stage masses and engines through the real atmosphere.</p>
+<p>The engines push it straight up at first, and that slow, steep climb wastes effort. The spinning Earth is already carrying the rocket east at 0.4 km/s, so a push straight up is at first across its direction of travel: the tally books it as <dfn data-def="Speed lost because the engines push partly across the direction of travel rather than along it.">steering loss</dfn>. Once it is climbing, gravity pulling back along the path takes more: the <dfn data-def="Speed the engines give that gravity takes back while the rocket is still climbing.">gravity loss</dfn>. So the rocket tilts over as soon as it can, in a <dfn data-def="A climb in which the engines push along the direction of travel and gravity slowly bends the path over towards horizontal.">gravity turn</dfn>. Air drag takes a little more, and the upper stages' steering, pushing partly upwards to level off at the right height, some more. The Earth's spin gives back 0.4 km/s for free when the rocket heads east.</p>
+<p>The bars tally the budget. The engines give over 9 km/s; about 7.4 of it survives the losses, and the Earth's spin adds 0.4 to make the 7.8 of orbit. In the real flight Apollo 11 entered its parking orbit (a temporary low orbit before heading for the Moon) at 7,793 m/s, 191 km up, 11 minutes 49 seconds after liftoff.</p>`,
+			notes: `<p>The model: a point mass in one plane over a round, spinning Earth; Newton's gravity; drag ½ρv²C<sub>d</sub>A with the density of the U.S. Standard Atmosphere 1976 and a constant C<sub>d</sub> = 0.5; stage masses, flow rates and exhaust speeds from NASA's AS-506 flight evaluation report. The steering loss starts large because the rocket rises straight up while the spinning Earth is already carrying it east at 0.4 km/s, so its push is at first across its direction of travel. The first stage's exhaust is slower at sea level, where the air pushes back on it, than in the near-vacuum higher up. Simplifications: the flight heads due east (Apollo 11 flew a 72° heading), the first stage's centre engine isn't shut down early, and the tilt is chosen by the model, so the simulated flight reaches orbit about forty seconds early (T+11:09 against T+11:49). The real orbit, 183 × 186 km over a round Earth, is what the model aims for; the 191 km quoted above is measured from the slightly flattened Earth's surface. The S-IVB kept the rest of its propellant for its second burn, towards the Moon: that is the Δv left in the tanks.</p>`
 		},
 		{
 			id: 'staging',
@@ -262,7 +262,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [burn1, burn2],
 			body: `
-<p>Once in orbit, a spacecraft moves by changing its speed. Fire the engine forwards and the far side of the orbit rises: the circle becomes an ellipse. Half an orbit later the craft reaches its new high point, slower than ever — and if it does nothing, it falls back to where it fired.</p>
+<p>Once in orbit, a spacecraft moves by changing its speed. Fire the engine to push forwards, along the direction of travel, and the far side of the orbit rises: the circle becomes an ellipse. Half an orbit later the craft reaches its new high point, slower than ever — and if it does nothing, it falls back to where it fired.</p>
 <p>To stay up, it must fire forwards again at the high point to round off the new orbit. This two-burn route, the <dfn data-def="The cheapest two-burn way between two circular orbits: an ellipse that just touches both. Described by Walter Hohmann in 1925.">Hohmann transfer</dfn>, takes a satellite from a 200 km orbit to the <dfn data-def="The orbit 35,786 km above the equator whose period is one day, so a satellite there stays above the same spot on the ground.">geostationary</dfn> orbit with ${kms(geo.dv1, 2)} + ${kms(geo.dv2, 2)} = ${kms(geo.total, 2)} km/s, in ${(geo.time / 3600).toFixed(1)} hours. Try it.</p>
 <p>The surprise: after two burns forwards, the satellite is <strong>slower</strong> than when it started (3.1 km/s against 7.8). Higher orbits are slower; the burns pay for climbing out of the Earth's gravity.</p>`,
 			notes: `<p>Burns are drawn as instant kicks; real ones last minutes. The Δv tally is what the engines must deliver, the number that sets the propellant through the rocket equation. Real launches to geostationary orbit also have to tilt the orbit into the equator's plane, which costs more.</p>`
@@ -305,7 +305,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A planet can change a spacecraft's speed without any propellant. Send a craft to Jupiter on a Hohmann ellipse: it arrives at 7.4 km/s, while Jupiter goes round the Sun at 13.1 km/s and catches it up.</p>
 <p>Seen from Jupiter, the craft falls in and swings round on a curve, and leaves at <strong>the same speed it came</strong> — gravity only turns it. But Jupiter is moving: in the Sun's view, the turned velocity plus Jupiter's own velocity adds up to a faster craft. Pass closer and the turn is sharper, the gain bigger. This <dfn data-def="Using a planet's gravity to change a spacecraft's speed and direction relative to the Sun, without propellant. Also called a gravity assist or slingshot.">gravity assist</dfn> nearly carries the craft clear of the Solar System; the energy comes from Jupiter, which slows by an unmeasurably tiny amount.</p>`,
-			notes: `<p>The two views are "patched": near Jupiter only its gravity counts, far away only the Sun's. Pioneer, Voyager, Cassini and New Horizons all used flybys to reach the outer planets with rockets that could never have got there directly.</p>`
+			notes: `<p>The two views are "patched": near Jupiter only its gravity counts, far away only the Sun's. Pioneer 11, the Voyagers, Galileo and Cassini used flybys to reach targets their rockets could not have reached directly, and New Horizons used Jupiter to cut years off its trip to Pluto.</p>`
 		},
 		// ------------------------------------------------------------------ budget
 		{
