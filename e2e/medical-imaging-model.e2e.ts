@@ -1,6 +1,7 @@
 // Checks the X-ray, CT, ultrasound and MRI physics behind the medical-imaging explainer.
 // Runs in Node.
 import { expect, test } from '@playwright/test';
+import { TISSUE } from '../src/routes/medical-imaging/tissues';
 import {
 	BODY,
 	CT_KEV,
@@ -139,6 +140,7 @@ test.describe('CT: projections and filtered back-projection', () => {
 		const cyst = HU(discMean(img, 18, -7, -1.5, 0.6));
 		const liver = HU(discMean(img, 18, -2, 2, 1));
 		expect(liver - cyst).toBeGreaterThan(40);
+		expect(liver - cyst).toBeLessThan(70); // the page quotes about 55 HU
 		// On the plain X-ray the cyst changes the shadow by under 1%.
 		const p0 = radiographAt(-7, 13);
 		const without = p0 - 3 * (mu('water', 60) - mu('soft', 60));
@@ -194,6 +196,8 @@ test.describe('doses (RadiologyInfo)', () => {
 		expect(backgroundDays(DOSES_MSV.chestXray)).toBeCloseTo(12, 0);
 		expect(backgroundDays(DOSES_MSV.ctChest) / 365.25).toBeCloseTo(2, 0);
 		expect(DOSES_MSV.ctChest / DOSES_MSV.chestXray).toBeCloseTo(61, 0);
+		// Lung screening: about a quarter of a standard chest CT.
+		expect(DOSES_MSV.ctLungScreening / DOSES_MSV.ctChest).toBeCloseTo(0.25, 1);
 	});
 });
 
@@ -208,6 +212,11 @@ test.describe('ultrasound', () => {
 		expect(bone.R).toBeLessThan(0.4);
 		const air = echoes(3.5, false)[0];
 		expect(air.R).toBeGreaterThan(0.998);
+	});
+
+	test('sound is slower in fat (~1440 m/s) than in muscle (~1590 m/s)', () => {
+		expect(TISSUE.fat.speed).toBeCloseTo(1440, -1);
+		expect(TISSUE.muscle.speed).toBeCloseTo(1590, -1);
 	});
 
 	test('echoes return 13 μs per centimetre of depth', () => {
