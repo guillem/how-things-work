@@ -500,9 +500,9 @@
 			color="var(--gpu-fast)"
 		>
 			<Label
-				x={PLOT.x0 + 10}
-				y={ly(cpu.peak) - 8}
-				anchor="start"
+				x={PLOT.x1}
+				y={ly(cpu.peak) - 14}
+				anchor="end"
 				size={12}
 				weight={600}
 				color="var(--gpu-fast)"

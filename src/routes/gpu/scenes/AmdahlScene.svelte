@@ -55,6 +55,7 @@
 	const DOT_T = 0.22;
 	const dotsShown = $derived(reduced ? 15 : clamp(Math.floor((t - DOT_LEAD) / DOT_T) + 1, 0, 15));
 	const now = $derived(measuredSpeedup(s, N));
+	const workersText = $derived(`${fmt(N)} worker${N === 1 ? '' : 's'}`);
 	const ceiling = $derived(s > 0 ? 1 / s : Infinity);
 
 	// ---- bars -----------------------------------------------------------------------
@@ -154,9 +155,9 @@
 		color="var(--gpu-serial)"
 	>
 		<Label
-			x={PLOT.x1}
-			y={s > 0 ? ly(ceiling) - 9 : PLOT.y0 + 4}
-			anchor="end"
+			x={s > 0 ? PLOT.x1 : PLOT.x0 + 12}
+			y={s > 0 ? ly(ceiling) - 9 : PLOT.y0 + 40}
+			anchor={s > 0 ? 'end' : 'start'}
 			size={13}
 			weight={700}
 			color="var(--gpu-serial)"
@@ -180,26 +181,26 @@
 	<Readout
 		id="now"
 		order={1}
-		label="Measured with {fmt(N)} workers"
+		label="Measured with {workersText}"
 		value="{fx(now.speedup)}× faster"
 		color="var(--gpu-lane)"
 	>
 		<Label
 			x={lx(N) + (exp > 10 ? -12 : 12)}
-			y={ly(now.speedup) + 22}
+			y={ly(now.speedup) + (ly(now.speedup) > PLOT.y1 - 60 ? -16 : 22)}
 			anchor={exp > 10 ? 'end' : 'start'}
 			size={13}
 			weight={700}
 			color="var(--gpu-lane)"
 			opacity={exp < dotsShown ? 1 : 0}
-			text="{fmt(N)} workers: {fx(now.speedup)}× faster"
+			text="{workersText}: {fx(now.speedup)}× faster"
 		/>
 	</Readout>
 	<Readout id="legend">
 		<Label
-			x={PLOT.x1 - 4}
-			y={PLOT.y1 - 14}
-			anchor="end"
+			x={PLOT.x0 + 12}
+			y={PLOT.y0 + 18}
+			anchor="start"
 			size={12}
 			muted
 			text="dots: measured · line: Amdahl’s law"
@@ -274,7 +275,7 @@
 				size={15}
 				weight={700}
 				opacity={clock >= 1 ? 1 : 0}
-				text="{fmt(N)} workers: {fx(now.speedup)}× faster"
+				text="{workersText}: {fx(now.speedup)}× faster"
 			/>
 			<Label
 				x={BX}

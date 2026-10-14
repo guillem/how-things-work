@@ -308,9 +308,7 @@
 			size={12}
 			muted
 			opacity={done ? 1 : 0.35}
-			text="the fast core: {own} instructions (each pixel only its own side), {Math.round(
-				own / FAST_IPC
-			)} ticks"
+			text="the fast core, same 32 pixels: {Math.round(own / FAST_IPC)} ticks"
 		/>
 	</Readout>
 	{#if anyOn && anyOff}
@@ -321,24 +319,17 @@
 				anchor="start"
 				size={12}
 				color="#e8590c"
-				text="orange rows: the ball’s side"
+				text="orange: the ball’s side"
 			/>
 			<Label
-				x={MAP.x + 190}
+				x={MAP.x + 160}
 				y={512}
 				anchor="start"
 				size={12}
 				color="#1c7ed6"
-				text="blue rows: the sky’s side"
+				text="blue: the sky’s side"
 			/>
-			<Label
-				x={MAP.x}
-				y={532}
-				anchor="start"
-				size={12}
-				muted
-				text="grey: lane switched off, waiting"
-			/>
+			<Label x={MAP.x} y={532} anchor="start" size={12} muted text="grey: lane switched off" />
 		</Readout>
 	{/if}
 </g>

@@ -139,6 +139,7 @@
 	const fmt = (v: number) => Math.round(v).toLocaleString('en-US');
 	const pct = (v: number) => {
 		const p = 100 * v;
+		if (p > 0 && p < 0.1) return '<0.1%';
 		return p > 0 && p < 1 ? `${p.toFixed(1)}%` : `${Math.floor(p)}%`;
 	};
 	const nicePace = (v: number) => {
