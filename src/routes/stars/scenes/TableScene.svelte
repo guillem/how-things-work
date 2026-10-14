@@ -177,10 +177,6 @@
 					fill="none"
 					stroke="var(--stage-ink)"
 					stroke-dasharray={phase === 'heavy' && HEAVY_R.has(c.o.z) ? '6 4' : undefined}
-						? HEAVY_S.has(c.o.z)
-							? 'var(--st-lowmass)'
-							: 'var(--st-mergers)'
-						: 'var(--stage-ink)'}
 					stroke-width="3"
 					opacity={ring}
 				/>
