@@ -2494,6 +2494,41 @@
 			stroke-width="1.6"
 			stroke-linecap="round"
 		/>
+	{:else if slug === 'dark-matter'}
+		<!-- a tilted galaxy inside its dashed dark halo; a flat measured rotation curve above a falling Kepler curve -->
+		<circle
+			cx="48"
+			cy="60"
+			r="36"
+			fill={accent}
+			fill-opacity="0.08"
+			stroke={accent}
+			stroke-width="1.4"
+			stroke-dasharray="4 3"
+		/>
+		<ellipse
+			cx="48"
+			cy="60"
+			rx="24"
+			ry="9"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.6"
+		/>
+		<circle cx="48" cy="60" r="4" fill="currentColor" opacity="0.7" />
+		<path d="M104 28 V92 H190" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
+		<path
+			d="M110 84 C118 50 126 46 134 52 S160 70 186 76"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			stroke-dasharray="4 3"
+			opacity="0.55"
+		/>
+		{#each [[112, 70], [120, 48], [130, 40], [142, 38], [154, 38], [166, 39], [178, 38]] as [x, y] (x)}
+			<circle cx={x} cy={y} r="3" fill={accent} />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -46,10 +46,10 @@ export interface GalaxyInfo {
 }
 
 export const GALAXIES: readonly GalaxyInfo[] = [
-	{ id: 'NGC3198', name: 'NGC 3198', kind: 'spiral, a little smaller than the Milky Way' },
-	{ id: 'NGC2403', name: 'NGC 2403', kind: 'spiral, about a third of the Milky Way’s stars' },
+	{ id: 'NGC3198', name: 'NGC 3198', kind: 'spiral, the classic case' },
+	{ id: 'NGC2403', name: 'NGC 2403', kind: 'smaller spiral' },
 	{ id: 'DDO154', name: 'DDO 154', kind: 'dwarf, mostly gas, few stars' },
-	{ id: 'NGC2841', name: 'NGC 2841', kind: 'big spiral with a bright central bulge' }
+	{ id: 'NGC2841', name: 'NGC 2841', kind: 'giant spiral with a central bulge' }
 ];
 
 export const galaxyInfo = (id: string): GalaxyInfo =>
