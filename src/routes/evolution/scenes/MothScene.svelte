@@ -106,7 +106,7 @@
 		const u = bark.current;
 		return `rgb(${pale.map((p, i) => Math.round(p + (sooty[i] - p) * u)).join(',')})`;
 	});
-	const lichen = $derived(`rgba(150, 170, 120, ${0.55 * (1 - bark.current)})`);
+	const lichen = $derived(`rgba(150, 170, 120, ${0.4 * (1 - bark.current)})`);
 	const soot = $derived(`rgba(20, 18, 16, ${0.5 * bark.current})`);
 
 	// ---- the moths on the bark

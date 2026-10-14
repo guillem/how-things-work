@@ -137,17 +137,31 @@
 	{/each}
 
 	<!-- key of the resistance classes -->
-	{#each Array.from({ length: CLASSES }, (_, k) => k) as k (k)}
-		<rect x={PX0 + 6 + k * 150} y={PY1 + 18} width="14" height="14" rx="3" fill={classColour(k)} />
-		<Label
-			x={PX0 + 26 + k * 150}
-			y={PY1 + 30}
-			anchor="start"
-			text="survives {micLabel(k)}"
-			size={11}
-			muted
-		/>
-	{/each}
+	<Readout
+		id="key"
+		order={4}
+		label="Colours"
+		value="grey 1×, blue 10×, green 100×, amber 1,000×, red 10,000× the original dose"
+	>
+		{#each Array.from({ length: CLASSES }, (_, k) => k) as k (k)}
+			<rect
+				x={PX0 + 6 + k * 150}
+				y={PY1 + 18}
+				width="14"
+				height="14"
+				rx="3"
+				fill={classColour(k)}
+			/>
+			<Label
+				x={PX0 + 26 + k * 150}
+				y={PY1 + 30}
+				anchor="start"
+				text="survives {micLabel(k)}"
+				size={11}
+				muted
+			/>
+		{/each}
+	</Readout>
 
 	<Label
 		x={CX0}

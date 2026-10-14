@@ -154,15 +154,17 @@
 	</Readout>
 
 	<!-- ===== statistics -->
-	<rect
-		x={470}
-		y={392}
-		width={466}
-		height={186}
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<Readout id="card">
+		<rect
+			x={470}
+			y={392}
+			width={466}
+			height={186}
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	<Readout
 		id="these"
 		order={1}
