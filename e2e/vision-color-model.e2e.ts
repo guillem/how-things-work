@@ -23,6 +23,7 @@ import {
 	afterimage,
 	bestMatch,
 	cones,
+	conesOfRGB,
 	cssColour,
 	matchFor,
 	mismatch,
@@ -212,4 +213,18 @@ test('after staring at a colour, a grey looks like its opposite', () => {
 	expect(opponent(afterimage(yellow, grey, 0.6)).blueYellow).toBeGreaterThan(0.05); // bluish
 	// Staring at the grey itself changes nothing.
 	expect(mismatch(afterimage(grey, grey, 1), grey)).toBeLessThan(1e-12);
+});
+
+test('screen pixels turn into cone signals and back into the same pixels', () => {
+	for (const [r, g, b] of [
+		[128, 128, 128],
+		[0, 190, 190],
+		[230, 200, 0],
+		[200, 40, 200]
+	]) {
+		expect(cssColour(conesOfRGB(r, g, b))).toBe(`rgb(${r}, ${g}, ${b})`);
+	}
+	// A screen's grey is close to neutral on the red–green channel.
+	const grey = opponent(conesOfRGB(128, 128, 128));
+	expect(Math.abs(grey.redGreen)).toBeLessThan(0.05);
 });

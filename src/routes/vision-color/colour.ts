@@ -74,6 +74,40 @@ export const toXYZ = (c: Cones): Cones => apply(LMS_TO_XYZ, c);
 /** Linear sRGB of cone responses (unclipped: may be negative or above 1). */
 export const linearRGB = (c: Cones): Cones => apply(XYZ_TO_RGB, toXYZ(c));
 
+const det3 = (m: readonly (readonly number[])[]) =>
+	m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
+	m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
+	m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+const inverse3 = (m: readonly (readonly number[])[]): number[][] => {
+	const d = det3(m);
+	const c = (r: number, k: number) => {
+		const rows = [0, 1, 2].filter((i) => i !== r);
+		const cols = [0, 1, 2].filter((j) => j !== k);
+		const minor =
+			m[rows[0]][cols[0]] * m[rows[1]][cols[1]] - m[rows[0]][cols[1]] * m[rows[1]][cols[0]];
+		return ((r + k) % 2 ? -minor : minor) / d;
+	};
+	return [0, 1, 2].map((i) => [0, 1, 2].map((j) => c(j, i)));
+};
+const RGB_TO_LMS = (() => {
+	const toXYZ = inverse3(XYZ_TO_RGB);
+	const toLMS = inverse3(LMS_TO_XYZ);
+	return [0, 1, 2].map((i) =>
+		[0, 1, 2].map((j) => toLMS[i][0] * toXYZ[0][j] + toLMS[i][1] * toXYZ[1][j] + toLMS[i][2] * toXYZ[2][j])
+	);
+})();
+const decode = (v: number) => {
+	const x = v / 255;
+	return x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+};
+/**
+ * Cone responses to a screen pixel of sRGB colour (0–255 per channel): the display pipeline run
+ * backwards, so that `cssColour(conesOfRGB(r, g, b))` gives back the same pixel.
+ */
+export function conesOfRGB(r: number, g: number, b: number): Cones {
+	return apply(RGB_TO_LMS, [decode(r), decode(g), decode(b)]);
+}
+
 /** Whether the screen can show these cone responses exactly (no negative R, G or B). */
 export const onScreen = (c: Cones) => linearRGB(c).every((v) => v >= -1e-9);
 
@@ -125,10 +159,6 @@ const EQUAL_ENERGY: Cones = (() => {
 	return out;
 })();
 
-const det3 = (m: readonly (readonly number[])[]) =>
-	m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
-	m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
-	m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
 const PRIMARY_CONES = PRIMARIES.map((p) => cones(p.nm));
 /** Columns: cone responses of 1 W of each primary. */
 const P = [0, 1, 2].map((k) => PRIMARY_CONES.map((c) => c[k]));
