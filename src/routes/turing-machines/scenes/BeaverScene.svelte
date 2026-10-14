@@ -325,6 +325,12 @@
 	{/each}
 
 	<!-- known values -->
+	<Readout
+		id="known"
+		order={4}
+		label="Champions S(n)"
+		value={KNOWN.map((r) => `S(${r.n}) ${r.n === '6' ? '> 2↑↑↑5' : `= ${r.steps}`}`).join(', ')}
+	/>
 	<Txt
 		x={TX}
 		y={KY}
@@ -335,13 +341,7 @@
 	{#each KNOWN as row, i (row.n)}
 		{@const y = KY + 26 + i * 24}
 		{@const on = row.n === String(n)}
-		<Readout
-			id="known-{row.n}"
-			order={10 + i}
-			label="S({row.n})"
-			value="{row.steps}{row.ones ? ` (${row.ones} ones)` : ''}"
-			color={on ? 'var(--tm-head)' : undefined}
-		>
+		<Readout id="known-{row.n}">
 			{#if on}
 				<rect
 					x={TX - 6}

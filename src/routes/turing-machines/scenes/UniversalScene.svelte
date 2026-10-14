@@ -277,7 +277,13 @@
 			color="var(--tm-write)"
 		/>
 		{#if carried}
-			<Readout id="carried" order={2} label="U is carrying" value={carried}>
+			<Readout
+				id="carried"
+				order={2}
+				label="U is carrying"
+				value={carried}
+				opacity={thesis ? 0 : 1}
+			>
 				<Txt
 					x={clamp(ux, 120, 840)}
 					y={Y + H + 62}
@@ -293,10 +299,17 @@
 
 	{#if !thesis}
 		<!-- what U does, phase by phase -->
-		<Txt x={24} y={310} text="For every step of M, U:" size={14} weight={600} />
+		<Readout
+			id="phase"
+			order={3}
+			label="U is doing"
+			value={phase < 4 ? `${phase + 1}. ${PHASES[phase]}` : 'M has halted'}
+		>
+			<Txt x={24} y={310} text="For every step of M, U:" size={14} weight={600} />
+		</Readout>
 		{#each PHASES as p, i (i)}
 			{@const on = phase === i}
-			<Readout id="phase-{i}" order={3 + i} label="{i + 1}. {p}" opacity={on ? 1 : 0}>
+			<Readout id="phase-{i}">
 				<circle
 					cx={36}
 					cy={338 + i * 30}
@@ -401,7 +414,7 @@
 		/>
 		{#each MODELS as md, i (md.name)}
 			{@const x = 24 + i * 186}
-			<Readout id="model-{i}" order={3 + i} label={md.name} value={md.who}>
+			<Readout id="model-{i}">
 				<rect
 					{x}
 					y={360}
@@ -434,7 +447,18 @@
 				/>
 			{/if}
 		{/each}
-		<Readout id="thesis">
+		<Readout
+			id="models"
+			order={3}
+			label="Equivalent models"
+			value={MODELS.map((md) => md.name).join(' ⇔ ')}
+		/>
+		<Readout
+			id="thesis"
+			order={4}
+			label="Church–Turing thesis"
+			value="whatever any step-by-step method can compute, a Turing machine can"
+		>
 			<Txt
 				x={480}
 				y={488}

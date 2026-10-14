@@ -159,11 +159,7 @@
 </script>
 
 <g opacity={fadeIn}>
-	<Readout
-		id="h-title"
-		order={1}
-		label={isArgument ? panelText.title : 'Machine k run on description j'}
-	>
+	<Readout id="h-title" order={1} label={isArgument ? undefined : 'Machine k run on description j'}>
 		<Txt
 			x={24}
 			y={42}

@@ -153,13 +153,7 @@
 
 	<!-- legend and readouts -->
 	{#each SERIES as s, i (s.id)}
-		<Readout
-			id="leg-{s.id}"
-			order={10 + i}
-			label={s.label}
-			value={fmtCount(s.f(n))}
-			color={s.color}
-		>
+		<Readout id="leg-{s.id}">
 			<line
 				x1={636}
 				x2={662}

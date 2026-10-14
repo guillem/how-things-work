@@ -162,6 +162,22 @@ B 1 -> 1 R H`;
 	);
 	const stateNow = $derived(frame ? (u > 0.85 && nextFrame ? nextFrame.state : frame.state) : '');
 	const done = $derived(index >= total);
+	/** The tape as text for the phone panel, the cell under the head in brackets. */
+	const tapeShown = $derived.by(() => {
+		if (!frame) return '';
+		const h = Math.round(headPos);
+		let lo = Math.min(h, frame.origin);
+		let hi = Math.max(h, frame.origin + frame.cells.length - 1);
+		while (lo < h && symbolAt(frame, lo, blank) === blank) lo++;
+		while (hi > h && symbolAt(frame, hi, blank) === blank) hi--;
+		let out = '';
+		for (let i = lo; i <= hi; i++) {
+			const c =
+				applied && i === frame.head && written ? applied.rule.write : symbolAt(frame, i, blank);
+			out += i === h ? `[${c}]` : c;
+		}
+		return `${out} · state ${stateNow}`;
+	});
 	/** Steps finished; the one under way counts once it is half done. */
 	const taken = $derived(Math.min(total, index + (u > 0.5 ? 1 : 0)));
 
@@ -339,7 +355,13 @@ B 1 -> 1 R H`;
 			d="M{headX - 9} {TAPE_Y - 22} L{headX + 9} {TAPE_Y - 22} L{headX} {TAPE_Y - 8} Z"
 			fill="var(--tm-head)"
 		/>
-		<Readout id="state" order={3} label="State" value={stateNow} color="var(--tm-head)">
+		<Readout
+			id="state"
+			order={3}
+			label="Tape (head in brackets)"
+			value={tapeShown}
+			color="var(--tm-head)"
+		>
 			<Txt
 				x={clamp(headX, 60, 900)}
 				y={TAPE_Y - 30}
