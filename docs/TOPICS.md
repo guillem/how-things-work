@@ -201,7 +201,7 @@ A topic is done when:
 - [ ] gradient-descent
 - [ ] neural-networks
 - [ ] convolution-vision
-- [ ] embeddings
+- [x] embeddings
 - [ ] transformers
 - [ ] language-models
 - [ ] diffusion-models
