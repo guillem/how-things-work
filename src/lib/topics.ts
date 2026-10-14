@@ -834,6 +834,15 @@ const explainers: Explainer[] = [
 		accent: '#5c940d',
 		steps: 12,
 		minutes: 22
+	},
+	{
+		slug: 'wireless-signals',
+		title: 'Wireless signals',
+		summary:
+			'Put bits on a radio wave by changing its amplitude, frequency or phase, watch noise blur the constellation until bits are misread, push the receiver away and add a neighbouring network, then pack more bits into each symbol and meet the limit Shannon proved.',
+		accent: '#1c7ed6',
+		steps: 14,
+		minutes: 24
 	}
 ];
 

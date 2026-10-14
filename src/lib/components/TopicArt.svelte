@@ -391,6 +391,28 @@
 					});
 		return out;
 	})();
+
+	// Wireless signals: a carrier whose phase flips by half a turn at each bit change
+	// (bits 1 0 1 1 0, 2 cycles per bit over x 14…104), and a 16-QAM grid of noisy points.
+	const wsWave = Array.from({ length: 161 }, (_, i) => {
+		const u = i / 160;
+		const bit = [1, 0, 1, 1, 0][Math.min(4, Math.floor(u * 5))];
+		const y = 60 - 26 * Math.sin(u * 10 * 2 * Math.PI) * (bit ? 1 : -1);
+		return `${i ? 'L' : 'M'}${(14 + 90 * u).toFixed(1)} ${y.toFixed(1)}`;
+	}).join(' ');
+	const wsDots = (() => {
+		const out: { x: number; y: number }[] = [];
+		let seed = 11;
+		const rand = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+		for (let i = 0; i < 4; i++)
+			for (let j = 0; j < 4; j++)
+				for (let k = 0; k < 4; k++)
+					out.push({
+						x: 124 + i * 18 + (rand() + rand() - 1) * 5,
+						y: 33 + j * 18 + (rand() + rand() - 1) * 5
+					});
+		return out;
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -2940,6 +2962,19 @@
 		<text x="109" y="100" text-anchor="middle" font-size="11" fill={accent} font-weight="600"
 			>carry 1 → 0 L</text
 		>
+	{:else if slug === 'wireless-signals'}
+		<!-- a phase-keyed carrier and a 16-QAM constellation blurred by noise -->
+		<path d={wsWave} fill="none" stroke={accent} stroke-width="2" stroke-linejoin="round" />
+		<line x1="115" x2="187" y1="60" y2="60" stroke="currentColor" stroke-opacity="0.3" />
+		<line x1="151" x2="151" y1="22" y2="98" stroke="currentColor" stroke-opacity="0.3" />
+		{#each wsDots as d, i (i)}
+			<circle cx={d.x} cy={d.y} r="1.6" fill="currentColor" opacity="0.5" />
+		{/each}
+		{#each [0, 1, 2, 3] as i (i)}
+			{#each [0, 1, 2, 3] as j (j)}
+				<circle cx={124 + i * 18} cy={33 + j * 18} r="2.6" fill={accent} />
+			{/each}
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

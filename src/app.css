@@ -2717,3 +2717,46 @@ kbd {
 	--tm-greedy: #ffa94d;
 	--tm-city: #74c0fc;
 }
+/* wireless-signals */
+:root {
+	--ws-wave: #1c7ed6;
+	--ws-env: #868e96;
+	--ws-ref: #adb5bd;
+	--ws-spec: #1971c2;
+	--ws-band: #d0ebff;
+	--ws-point: #1864ab;
+	--ws-cloud: #4dabf7;
+	--ws-bad: #e03131;
+	--ws-theory: #495057;
+	--ws-nb: #e8590c;
+	--ws-nb-fill: #ffe8cc;
+	--ws-shannon: #5f3dc4;
+	--ws-ok: #2f9e44;
+	--ws-region: #f1f3f5;
+	--ws-s0: #1c7ed6;
+	--ws-s1: #0ca678;
+	--ws-s2: #f08c00;
+	--ws-s3: #d6336c;
+	--ws-s4: #7048e8;
+}
+:root[data-theme='dark'] {
+	--ws-wave: #74c0fc;
+	--ws-env: #909296;
+	--ws-ref: #5c5f66;
+	--ws-spec: #74c0fc;
+	--ws-band: #1b2f45;
+	--ws-point: #a5d8ff;
+	--ws-cloud: #4dabf7;
+	--ws-bad: #ff6b6b;
+	--ws-theory: #ced4da;
+	--ws-nb: #ffa94d;
+	--ws-nb-fill: #3d2a14;
+	--ws-shannon: #b197fc;
+	--ws-ok: #69db7c;
+	--ws-region: #1f2228;
+	--ws-s0: #74c0fc;
+	--ws-s1: #63e6be;
+	--ws-s2: #ffc078;
+	--ws-s3: #f783ac;
+	--ws-s4: #b197fc;
+}
