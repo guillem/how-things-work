@@ -215,6 +215,11 @@
 			{/if}
 		</Readout>
 
+		<Readout id="key-h" order={3} label="Hanford, Washington" color="var(--gw-h1)" />
+		<Readout id="key-l" order={4} label="Livingston, Louisiana" color="var(--gw-l1)" />
+		{#if showNr}
+			<Readout id="key-nr" order={5} label="General relativity" color="var(--gw-nr)" />
+		{/if}
 		<path
 			d={pL}
 			transform="translate(0 {YL})"
