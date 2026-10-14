@@ -221,12 +221,7 @@
 		<Label x={RX} y={40} text="Predicted: AlphaFold" size={15} weight={600} />
 		<Label x={RX} y={60} text="{P.af.id} · from the sequence alone" size={12} muted />
 	</Readout>
-	<Readout
-		id="rmsd"
-		order={3}
-		label="Difference"
-		value="{P.rmsd.toFixed(2)} Å on average (Cα RMSD over {measured} amino acids)"
-	>
+	<Readout id="rmsd" order={3} label="Difference" value="{P.rmsd.toFixed(2)} Å (Cα RMSD)">
 		<Label x={480} y={470} text="difference: {P.rmsd.toFixed(2)} Å" size={14} weight={600} />
 		<Label x={480} y={488} text="(Cα RMSD over the {measured} measured)" size={11} muted />
 	</Readout>
@@ -248,15 +243,12 @@
 	{/if}
 
 	<!-- confidence key: in the strip's legend on wide screens, with shares on phones -->
-	{#each BANDS as b, k (b.id)}
-		<Readout
-			id="band-{b.id}"
-			order={5 + k}
-			label="Confidence {b.label}"
-			value={pct(share[b.id])}
-			color={BAND_COLOR[b.id]}
-		/>
-	{/each}
+	<Readout
+		id="bands"
+		order={5}
+		label="AlphaFold’s confidence: very high · confident · low · very low"
+		value={BANDS.map((b) => pct(share[b.id])).join(' · ')}
+	/>
 	<!-- the sequence strip -->
 	<Readout id="strip">
 		<Label
