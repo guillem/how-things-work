@@ -75,11 +75,11 @@
 		return `M${f(x)} ${f(y)}L${f(ex)} ${f(ey)}M${f(ax)} ${f(ay)}L${f(ex)} ${f(ey)}L${f(bx)} ${f(by)}`;
 	}
 
-	// The gradient at the start point: uphill (dashed) and downhill (solid), twice the field's scale.
+	// The gradient at the start point: uphill (dashed) and downhill (solid), three times the field's scale.
 	const local = $derived.by(() => {
 		if (!arrows) return null;
 		const [gx, gy] = land.grad(start[0], start[1]);
-		const k = 2 * field.scale;
+		const k = 3 * field.scale;
 		const px = X(start[0]);
 		const py = Y(start[1]);
 		return {
