@@ -23,8 +23,15 @@
 		n < 2 ? 1 : (walkCount(n - 1) + 4) / 8
 	);
 	const C13 = walkCount(EXACT - 1);
-	const gridShapes = (n: number) =>
+	const gridAt = (n: number) =>
 		n <= EXACT ? exact[n] : walkCountEstimate(n - 1, EXACT - 1, C13) / 8;
+	/** Shapes on the grid; between whole lengths (the marker sliding), log-linear in between. */
+	const gridShapes = (n: number) => {
+		const lo = Math.floor(n);
+		if (lo === n) return gridAt(n);
+		const u = n - lo;
+		return 10 ** ((1 - u) * Math.log10(gridAt(lo)) + u * Math.log10(gridAt(lo + 1)));
+	};
 	const log3 = Math.log10(3);
 
 	const N0 = 4;
@@ -156,8 +163,8 @@
 		/>
 		<Readout id="k3" order={6} label="Red: 3 positions each" color="var(--pf-helix)">
 			<Label
-				x={sx(146)}
-				y={sy(146 * log3) - 14}
+				x={sx(136)}
+				y={sy(136 * log3) - 14}
 				text="3 positions each: 3ⁿ"
 				size={13}
 				anchor="end"
@@ -166,8 +173,8 @@
 		</Readout>
 		<Readout id="kgrid" order={7} label="Purple: the HP grid" color="var(--pf-bar)">
 			<Label
-				x={sx(148)}
-				y={sy(Math.log10(gridShapes(148))) + 26}
+				x={sx(140)}
+				y={sy(Math.log10(gridShapes(140))) + 26}
 				text="on the grid"
 				size={13}
 				anchor="end"

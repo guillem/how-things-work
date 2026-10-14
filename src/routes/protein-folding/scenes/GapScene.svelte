@@ -106,8 +106,43 @@
 		<Label x={560} y={314} text="sequences are cheap to read;" size={13} anchor="start" />
 		<Label x={560} y={332} text="shapes take months to measure" size={13} anchor="start" />
 	</Readout>
+	<!-- CASP14 (2020): median backbone error, Jumper et al., Nature 596, 583 (2021) -->
+	<Readout
+		id="casp"
+		order={5}
+		label="CASP14 (2020), median error"
+		value="AlphaFold 0.96 Å · next best 2.8 Å"
+	>
+		<Label
+			x={560}
+			y={392}
+			text="CASP14 blind test (2020), median error:"
+			size={12}
+			anchor="start"
+			muted
+		/>
+		{#each [{ name: 'AlphaFold', v: 0.96, c: 'var(--pf-bar)' }, { name: 'next best', v: 2.8, c: 'var(--stage-ink-muted)' }] as b, k (b.name)}
+			<rect
+				x={640}
+				y={404 + k * 28}
+				width={b.v * 90 * (reduced ? 1 : smoothstep(3.4, 4.4, t))}
+				height="18"
+				rx="4"
+				fill={b.c}
+			/>
+			<Label x={632} y={418 + k * 28} text={b.name} size={12} anchor="end" />
+			<Label x={648 + b.v * 90} y={418 + k * 28} text="{b.v} Å" size={12} anchor="start" />
+		{/each}
+	</Readout>
 	<Readout id="src">
 		<Label x={560} y={520} text="RCSB PDB, October 2026" size={11} anchor="start" muted />
-		<Label x={560} y={536} text="UniProtKB release 2026_03" size={11} anchor="start" muted />
+		<Label
+			x={560}
+			y={536}
+			text="UniProtKB release 2026_03 · Jumper et al. 2021"
+			size={11}
+			anchor="start"
+			muted
+		/>
 	</Readout>
 </g>
