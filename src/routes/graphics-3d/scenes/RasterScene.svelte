@@ -28,6 +28,7 @@
 		projectPoint,
 		rasterise,
 		traceWorld,
+		triangleCount,
 		MIRROR_CENTRE,
 		MIRROR_R,
 		add,
@@ -55,7 +56,7 @@
 	import Picture from './Picture.svelte';
 	import T from './T.svelte';
 
-	let { step, params, setParam }: StageProps = $props();
+	let { step, t, params, setParam, reduced }: StageProps = $props();
 
 	const phase = $derived(String(step.hints?.phase ?? 'raster'));
 	const cam = $derived(cameraOf(params));
@@ -73,7 +74,21 @@
 		texture: phase === 'texture' ? params.texture !== false : true,
 		perspectiveCorrect: phase === 'texture' ? params.perspectiveCorrect !== false : true
 	});
-	const img = $derived(rasterise(scene, camera, L, opts));
+	// On the last step the picture is built triangle by triangle, in the order they come (a pure
+	// function of t in 48 stages, each rendered once), then held complete.
+	const BUILD = 8;
+	const STAGES = 48;
+	const stage = $derived(
+		phase === 'raster' && !reduced
+			? Math.min(STAGES, Math.floor(((t % (BUILD + 4)) / BUILD) * STAGES))
+			: STAGES
+	);
+	const img = $derived(
+		rasterise(scene, camera, L, {
+			...opts,
+			limit: stage < STAGES ? Math.round((stage / STAGES) * triangleCount(scene)) : undefined
+		})
+	);
 	const url = $derived(toDataUrl(img));
 	const depthUrl = $derived(
 		phase === 'zbuffer' ? toDataUrl(depthImage(img.depth, IMG_W, IMG_H, 3, 13)) : ''

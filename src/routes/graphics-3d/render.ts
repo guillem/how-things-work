@@ -590,6 +590,8 @@ export interface RasterOptions extends ShadeOptions {
 	zbuffer: boolean;
 	/** Divide interpolated attributes by w (true) or interpolate them flat across the screen. */
 	perspectiveCorrect: boolean;
+	/** Stop after this many triangles (to show the picture being built); all by default. */
+	limit?: number;
 }
 export const DEFAULT_RASTER: RasterOptions = {
 	shading: 'phong',
@@ -683,6 +685,7 @@ export function rasterise(
 		const normals = mesh.normals.map((n) => normalize(transformDir(model, n)));
 		const clip = world.map((p) => transform4(cam.viewProj, p));
 		for (let t = 0; t < mesh.tris.length; t += 3) {
+			if (opts.limit !== undefined && stats.triangles >= opts.limit) break;
 			stats.triangles++;
 			const v = [mesh.tris[t], mesh.tris[t + 1], mesh.tris[t + 2]];
 			if (v.some((k) => clip[k][3] < NEAR)) {

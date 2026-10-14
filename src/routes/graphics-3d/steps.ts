@@ -258,7 +258,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [...camera, ...lights],
 			body: `
-<p>That is the whole pipeline: matrices place every vertex on the screen, edge functions find the pixels, the z-buffer keeps the nearest, and a formula shades each pixel. The counters show the work: from the starting view, 654 triangles and about 50,000 pixel tests for a picture of 192 × 120 = 23,040 pixels. A graphics card does the same for pictures of millions of pixels, sixty times a second.</p>
+<p>That is the whole pipeline: matrices place every vertex on the screen, edge functions find the pixels, the z-buffer keeps the nearest, and a formula shades each pixel. Watch the picture being built the way it happens, triangle by triangle in the order they come: the floor, the cube, then the balls, each filled wherever it lands. The counters show the work: from the starting view, 654 triangles and about 50,000 pixel tests for a picture of 192 × 120 = 23,040 pixels. A graphics card does the same for pictures of millions of pixels, sixty times a second.</p>
 <p>Now look closely. The lamp lights the floor, but <strong>nothing casts a shadow</strong>. The mirror ball shows no reflection: it is just shiny grey. The glass ball is opaque. Each triangle was drawn knowing only itself, the camera and the lamp, never the rest of the scene.</p>`,
 			notes: `<p>Games fake what is missing with extra passes: a shadow map (the scene rendered once more from the lamp, as a z-buffer, to see what the lamp can reach), environment maps (a picture of the surroundings pasted on shiny things), screen-space reflections. They are fast, clever and imperfect, and much of a game engine is made of them.</p>`
 		},
