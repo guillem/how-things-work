@@ -325,15 +325,17 @@
 	<circle cx={cam.x} cy={cam.y} r="8" fill="#fff" opacity="0.85" />
 
 	<!-- ================= counters ================= -->
-	<rect
-		x="544"
-		y="358"
-		width="392"
-		height="128"
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<Readout id="card1">
+		<rect
+			x="544"
+			y="358"
+			width="392"
+			height="128"
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	<Readout id="ring" order={1} label="c-ring" value="{C} subunits: {C} H⁺ per turn, 3 ATP">
 		<text x="562" y="384" font-size="12" class="muted">c-ring</text>
 		<text x="918" y="384" font-size="13" font-weight="600" text-anchor="end"

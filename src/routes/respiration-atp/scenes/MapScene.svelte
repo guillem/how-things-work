@@ -139,7 +139,7 @@
 
 <g class="map-scene">
 	<!-- the overall equation -->
-	<Readout id="eq" order={0} label="Overall" value="C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O">
+	<Readout id="eq">
 		<Label
 			x={480}
 			y={34}
@@ -359,16 +359,23 @@
 	<!-- ================= bottom strip ================= -->
 	{#if phase === 'overview'}
 		<!-- the takeaway: one drop as heat, or many small steps caught as ATP -->
-		<rect
-			x="24"
-			y="458"
-			width="912"
-			height="126"
-			rx="12"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
-		<Readout id="flame" order={4} label="In a flame" value="all 2,840 kJ/mol at once, as heat">
+		<Readout id="card1">
+			<rect
+				x="24"
+				y="458"
+				width="912"
+				height="126"
+				rx="12"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+		</Readout>
+		<Readout
+			id="flame"
+			order={4}
+			label="Flame or cell"
+			value="a flame frees it all at once, as heat; a cell in small steps, many caught as ATP"
+		>
 			<text x="44" y="480" font-size="12" font-weight="600">in a flame: all at once, as heat</text>
 			<path
 				d="M60 496 H150 V568 H250"
@@ -379,12 +386,7 @@
 			/>
 			<Label x={196} y={524} text="2,840 kJ/mol of heat" size={11} anchor="start" muted />
 		</Readout>
-		<Readout
-			id="cell"
-			order={5}
-			label="In a cell"
-			value="about thirty small steps; a third or more caught as ATP"
-		>
+		<Readout id="cell">
 			<text x="480" y="480" font-size="12" font-weight="600"
 				>in a cell: small steps, many caught as ATP</text
 			>
@@ -403,15 +405,17 @@
 			{/each}
 		</Readout>
 	{:else}
-		<rect
-			x="24"
-			y="458"
-			width="912"
-			height="126"
-			rx="12"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
+		<Readout id="card2">
+			<rect
+				x="24"
+				y="458"
+				width="912"
+				height="126"
+				rx="12"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+		</Readout>
 		<Readout
 			id="yield"
 			order={4}
@@ -428,12 +432,7 @@
 					: `glycolysis only: pyruvate becomes lactate to give back NAD⁺`}</text
 			>
 		</Readout>
-		<Readout
-			id="o2state"
-			order={5}
-			label="Oxygen"
-			value={oxygen ? 'the chain runs; CO₂ and water come out' : 'no oxygen: the mitochondria stop'}
-		>
+		<Readout id="o2state">
 			<text x="44" y="556" font-size="12" class="muted"
 				>{oxygen
 					? 'energy released in small steps → proton gradient → rotating ATP synthase'

@@ -171,7 +171,7 @@
 			order={5}
 			label="Pyruvate dehydrogenase"
 			value="pyruvate → acetyl-CoA + CO₂ + NADH"
-			opacity={oLink}
+			opacity={1 - focus.current}
 		>
 			<Label
 				x={PDH.x}
@@ -253,15 +253,17 @@
 	</g>
 
 	<!-- ================= tally ================= -->
-	<rect
-		x="24"
-		y="412"
-		width="316"
-		height="172"
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<Readout id="card1">
+		<rect
+			x="24"
+			y="412"
+			width="316"
+			height="172"
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	{#if phase === 'link'}
 		<Label
 			x={44}

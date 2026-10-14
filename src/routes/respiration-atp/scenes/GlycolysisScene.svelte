@@ -70,7 +70,7 @@
 				? { from: SPLIT, to: rows.length - 1 }
 				: { from: 0, to: LACTATE_ROW }
 	);
-	const DIM = 0.35;
+	const DIM = 0.45;
 	const litOf = (from: number, to: number) =>
 		Array.from({ length: LACTATE_ROW + 1 }, (_, i) => (i >= from && i <= to ? 1 : DIM));
 	const lit = new Tween(
@@ -168,7 +168,7 @@
 	{#each rows as row (row.i)}
 		{@const o = lit.current[row.i]}
 		{@const here = !reduced && tokenRow === row.i && tokenU < 0.05}
-		<g opacity={o * (done(row.i) || row.i < range.from ? 1 : 0.55)}>
+		<g opacity={o * (done(row.i) || row.i < range.from ? 1 : 0.7)}>
 			{#each halves(row) as hx (hx)}
 				<Molecule
 					kind="sugar"
@@ -264,15 +264,17 @@
 	</g>
 
 	<!-- ================= tally ================= -->
-	<rect
-		x="640"
-		y="60"
-		width="296"
-		height="172"
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<Readout id="card1">
+		<rect
+			x="640"
+			y="60"
+			width="296"
+			height="172"
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	<Label x={660} y={88} text="one glucose so far" anchor="start" size={13} weight={600} />
 	<Readout id="spent" order={1} label="ATP spent" value={String(tally.spent)}>
 		<text x="660" y="118" font-size="12" class="muted">ATP spent</text>

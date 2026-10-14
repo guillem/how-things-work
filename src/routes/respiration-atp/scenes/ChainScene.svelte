@@ -160,7 +160,7 @@
 	// ---- geometry ---------------------------------------------------------------
 	const MEM = { top: 266, bottom: 314, mid: 290 };
 	const IMS = { top: 314, bottom: 432 };
-	const CII = { x: 300 };
+	const CII = { x: 312 };
 	const CIII = { x: 440 };
 	const CIV = { x: 625 };
 	const SYN = { x: 820, headY: 176 };
@@ -197,10 +197,10 @@
 
 	// FADH₂ electrons: from complex II's head down into the Q pool.
 	const eII = [
-		{ x: 300, y: 248 },
-		{ x: 300, y: 276 },
-		{ x: 318, y: 292 },
-		{ x: 360, y: 294 }
+		{ x: 312, y: 248 },
+		{ x: 312, y: 276 },
+		{ x: 330, y: 292 },
+		{ x: 370, y: 294 }
 	];
 
 	const iiU = $derived(cycle(ck.ii, 3));
@@ -340,7 +340,7 @@
 	/>
 	<Readout id="m">
 		<Label x={24} y={36} text="matrix" anchor="start" muted />
-		<Label x={24} y={294} text="inner membrane" anchor="start" size={11} muted />
+		<Label x={24} y={334} text="↑ inner membrane" anchor="start" size={11} muted />
 		<Label x={24} y={426} text="intermembrane space" anchor="start" size={11} muted />
 	</Readout>
 
@@ -665,15 +665,17 @@
 	</g>
 
 	<!-- ================= readouts ================= -->
-	<rect
-		x="24"
-		y="452"
-		width="912"
-		height="132"
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<Readout id="card1">
+		<rect
+			x="24"
+			y="452"
+			width="912"
+			height="132"
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	<Readout id="loaded" order={4} label="Carriers holding electrons" value={loaded}>
 		<text x="44" y="478" font-size="12" font-weight="600">carriers holding electrons</text>
 		{#each bars as b, i (b.id)}

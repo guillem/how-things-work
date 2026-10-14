@@ -133,6 +133,12 @@
 		<text x={AX - 8} y={tk.y + 4} text-anchor="end" font-size="11" class="muted">{tk.text}</text>
 		<line x1={AX} y1={tk.y} x2="930" y2={tk.y} stroke="var(--stage-grid)" />
 	{/each}
+	<Readout
+		id="drops"
+		order={1}
+		label="The three drops"
+		value={drops.map((d) => `${d.name}: ${Math.round(d.kj)} kJ, ${d.h} H⁺`).join(' · ')}
+	/>
 	<Readout id="axis">
 		<Label
 			x={AX + 8}
@@ -157,12 +163,7 @@
 		/>
 		{@const mx = (d.from.x + d.to.x) / 2}
 		{@const my = (y0 + y1) / 2}
-		<Readout
-			id="drop-{d.id}"
-			order={k + 1}
-			label={d.name}
-			value="{Math.round(d.kj)} kJ/mol · {d.h} H⁺ out{d.extra}"
-		>
+		<Readout id="drop-{d.id}">
 			{@const small = d.kj < 20}
 			<Label
 				x={small ? mx : mx + 12}
@@ -224,15 +225,17 @@
 	<Molecule kind="electron" x={pair.x + 6} y={pair.y} glow />
 
 	<!-- energy bars -->
-	<rect
-		x="24"
-		y="478"
-		width="912"
-		height="106"
-		rx="12"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<Readout id="card1">
+		<rect
+			x="24"
+			y="478"
+			width="912"
+			height="106"
+			rx="12"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	<Readout
 		id="total"
 		order={4}
