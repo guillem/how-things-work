@@ -249,11 +249,11 @@
 
 	// ---- the spectrum inset -------------------------------------------------------------
 	const SP = { x: 560, y: 290, w: 364, h: 84 };
-	const L0 = -13;
+	const L0 = -14;
 	const L1 = -1;
 	const lx = (l: number) => SP.x + ((Math.log10(l) - L0) / (L1 - L0)) * SP.w;
 	const BANDS = [
-		{ id: 'g', from: 1e-13, to: 1e-11, text: 'γ rays' },
+		{ id: 'g', from: 1e-14, to: 1e-11, text: 'γ rays' },
 		{ id: 'x', from: 1e-11, to: 1e-8, text: 'X-rays' },
 		{ id: 'uv', from: 1e-8, to: 3.8e-7, text: 'UV' },
 		{ id: 'v', from: 3.8e-7, to: 7.5e-7, text: '' },
@@ -521,7 +521,7 @@
 	<T
 		x={SP.x + SP.w}
 		y={SP.y + SP.h + 34}
-		text="wavelength (each tick ×1,000)"
+		text="wavelength (log scale)"
 		size={10.5}
 		anchor="end"
 		muted
