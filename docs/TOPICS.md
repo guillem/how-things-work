@@ -161,7 +161,7 @@ A topic is done when:
 - [x] ocean-currents
 - [ ] ice-ages
 - [x] carbon-cycle
-- [ ] greenhouse-effect
+- [x] greenhouse-effect
 
 **Space**
 - [x] sun-earth-moon
