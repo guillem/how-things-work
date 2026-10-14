@@ -2601,6 +2601,36 @@
 				stroke-width="1"
 			/>
 		{/each}
+	{:else if slug === 'ice-ages'}
+		<!-- the Sun off-centre in a stretched orbit; a tilted Earth with a northern ice cap -->
+		<ellipse
+			cx="96"
+			cy="60"
+			rx="80"
+			ry="34"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.4"
+		/>
+		<circle cx="74" cy="60" r="12" fill="#f59f00" />
+		<g transform="rotate(-24 160 52)">
+			<circle cx="160" cy="52" r="20" fill={accent} />
+			<path
+				d="M145.7 38 A20 20 0 0 1 174.3 38 Z"
+				fill="var(--ia-ice)"
+				stroke="var(--ia-ice-edge)"
+			/>
+			<path d="M160 22 V82" stroke="currentColor" stroke-width="1.6" opacity="0.7" />
+		</g>
+		<path
+			d="M150 78 A20 20 0 0 1 140 60"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.2"
+			stroke-dasharray="2 3"
+			opacity="0.6"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
