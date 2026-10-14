@@ -7,8 +7,8 @@
 	 *               position), then over every row until the map is complete. A pure function of
 	 *               t; under reduced motion, the complete map with the window parked on that row.
 	 * mode 'edit'   the complete map; the nine weights are editable on the stage.
-	 * mode 'shift'  the digit moved by `params.shift` pixels: the map moves the same way, and the
-	 *               cost of the filter against a fully connected layer.
+	 * mode 'shift'  the digit moved by `params.shift` pixels (no further than the grid allows): the
+	 *               map moves the same way, and the cost of the filter against a fully connected layer.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { SIDE } from '../cnn';
@@ -31,7 +31,24 @@
 
 	const mode = $derived(String(step.hints?.mode ?? 'slide'));
 	const input = $derived(inputOf(params));
-	const dx = $derived(mode === 'shift' ? Number(params.shift ?? 0) : 0);
+	/**
+	 * How far the digit can move each way before its feature map (the ink plus the filter's reach
+	 * of 1 px) runs off the grid: the slider stops the digit there, so the map keeps its shape.
+	 */
+	const room = $derived.by(() => {
+		let a = SIDE;
+		let b = -1;
+		for (let i = 0; i < input.img.length; i++)
+			if (input.img[i] > 0) {
+				a = Math.min(a, i % SIDE);
+				b = Math.max(b, i % SIDE);
+			}
+		if (b < 0) return { left: 0, right: 0 };
+		return { left: Math.max(0, a - 1), right: Math.max(0, SIDE - 2 - b) };
+	});
+	const wanted = $derived(mode === 'shift' ? Number(params.shift ?? 0) : 0);
+	const dx = $derived(Math.max(-room.left, Math.min(room.right, wanted)));
+	const atEdge = $derived(dx !== wanted);
 	const img = $derived(dx === 0 ? input.img : shift(input.img, dx, 0));
 	// the slide step is about the Sobel filter its text describes, whatever was picked elsewhere
 	const k = $derived(mode === 'slide' ? [...PRESETS.vertical.k] : kernelOf(params));
@@ -397,16 +414,21 @@
 				id="cv-moved"
 				order={4}
 				label="Moved"
-				value={dx === 0
+				value={(dx === 0
 					? 'not moved'
-					: `digit and map both ${Math.abs(dx)} px ${dx < 0 ? 'left' : 'right'}`}
+					: `digit and map both ${Math.abs(dx)} px ${dx < 0 ? 'left' : 'right'}`) +
+					(atEdge ? ', as far as the grid allows' : '')}
 			>
 				<Txt
 					x={480}
 					y={B.y + W / 2 + 120}
-					text={dx === 0
-						? 'move the digit with the slider'
-						: `both moved ${Math.abs(dx)} px ${dx < 0 ? 'left' : 'right'}`}
+					text={atEdge
+						? dx === 0
+							? `no room: the map already touches the ${wanted < 0 ? 'left' : 'right'} edge`
+							: `both moved ${Math.abs(dx)} px ${dx < 0 ? 'left' : 'right'}: the edge of the grid`
+						: dx === 0
+							? 'move the digit with the slider'
+							: `both moved ${Math.abs(dx)} px ${dx < 0 ? 'left' : 'right'}`}
 					size={13}
 					anchor="middle"
 					weight={600}

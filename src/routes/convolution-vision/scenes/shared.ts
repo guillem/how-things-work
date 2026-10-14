@@ -70,12 +70,16 @@ export interface Input {
 
 const BLANK = new Float32Array(SIDE * SIDE);
 
-/** The digit chosen with the select `id` ('digit' or 'wrong'); drawings centred unless told not. */
+/**
+ * The digit chosen with the select `id` ('digit' or 'wrong'). Drawings are centred and scaled like
+ * MNIST, except on the 'wrong' select with the centring switched off (the toggle is shown there only).
+ */
 export function inputOf(params: Params, id = 'digit'): Input {
 	const v = params[id];
 	if (v === 'drawn') {
 		const st = drawing(params);
-		const img = params.centre === false ? drawAsIs(st) : prepare(st);
+		const centred = id !== 'wrong' || params.centre !== false;
+		const img = centred ? prepare(st) : drawAsIs(st);
 		return { img: img ?? BLANK, sample: -1, label: null, empty: img === null };
 	}
 	const i = Number(v);

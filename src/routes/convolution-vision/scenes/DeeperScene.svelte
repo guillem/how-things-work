@@ -48,7 +48,7 @@
 	// ---- examples for the rungs ---------------------------------------------------------------
 	const kScale = maxAbs(WT.c1w);
 	const k1 = $derived(
-		[0, 1, 3].map((c) => signedUrl(WT.c1w, K, K, kScale, dark, c * K * K)).slice(0, C1)
+		[0, 2, 4].map((c) => signedUrl(WT.c1w, K, K, kScale, dark, c * K * K)).slice(0, C1)
 	);
 	// second-layer filters 13, 5, 11: the strongest patch of each
 	const p2 = $derived(
