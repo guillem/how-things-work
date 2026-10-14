@@ -207,7 +207,14 @@
 	{#if Math.abs(T - 700) > 1}
 		<path d={ghostLine} stroke="var(--stage-ink-muted)" stroke-width="1.5" stroke-dasharray="4 4" />
 		<Readout id="ghost">
-			<Label x={px(150)} y={py(logShare(150, 700)) + 22} text="700 K" size={11} muted />
+			<Label
+				x={px(60) + 8}
+				y={py(logShare(60, 700)) - 10}
+				text="700 K"
+				size={11}
+				anchor="start"
+				muted
+			/>
 		</Readout>
 	{/if}
 	<path d={shareLine} stroke="var(--rr-forward)" stroke-width="2.4" fill="none" />
@@ -248,8 +255,8 @@
 		color="var(--rr-forward)"
 	>
 		<Label
-			x={px(EA) - 12}
-			y={py(logShare(EA, T)) + 28}
+			x={px(EA) - 20}
+			y={Math.min(py(-13.5), py(logShare(EA, T)) + 28)}
 			text="1 in {fmtPow(1 / share)}"
 			size={14}
 			weight={600}
