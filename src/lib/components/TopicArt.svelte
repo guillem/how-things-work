@@ -1794,6 +1794,41 @@
 			<path d="M-5 -10 Q0 -24 5 -10 Z" fill={accent} />
 			<path d="M-5 12 L-10 20 L-5 18 Z M5 12 L10 20 L5 18 Z" fill={accent} />
 		</g>
+	{:else if slug === 'plate-tectonics'}
+		<!-- an ocean plate sinking under a continent, with a volcano above the sinking plate -->
+		<path d="M10 60 H186" stroke="var(--pt-sea-edge)" stroke-width="1" opacity="0.8" />
+		<path d="M10 60 H96 L98 76 H10 Z" fill="var(--pt-sea)" />
+		<path
+			d="M10 76 H98 L104 78 C124 84 148 100 176 118 L160 118 C138 104 118 92 100 86 L10 86 Z"
+			fill="var(--pt-ocean-crust)"
+		/>
+		<path
+			d="M98 76 C108 66 118 58 124 56 L132 40 L138 56 C150 54 170 52 190 52 V96 C170 88 140 82 104 78 Z"
+			fill="var(--pt-continent)"
+		/>
+		<path d="M132 40 L134 30" stroke={accent} stroke-width="2.5" stroke-linecap="round" />
+		<circle cx="128" cy="84" r="2.5" fill={accent} opacity="0.8" />
+		<circle cx="131" cy="70" r="2" fill={accent} opacity="0.7" />
+		<path
+			d="M30 100 H70"
+			stroke="currentColor"
+			stroke-width="1.4"
+			marker-end="url(#pt-art-head)"
+			opacity="0.5"
+		/>
+		<defs>
+			<marker
+				id="pt-art-head"
+				viewBox="0 0 10 10"
+				refX="8"
+				refY="5"
+				markerWidth="5"
+				markerHeight="5"
+				orient="auto"
+			>
+				<path d="M0 0 L10 5 L0 10 Z" fill="currentColor" />
+			</marker>
+		</defs>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

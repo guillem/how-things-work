@@ -1257,3 +1257,69 @@ kbd {
 	--rk-jupiter: #d9a86c;
 	--rk-air: #1c3550;
 }
+
+/* plate-tectonics */
+:root {
+	--pt-sea: #cfe6f7;
+	--pt-sea-edge: #74a9cf;
+	--pt-ocean-crust: #5f7184;
+	--pt-continent: #c9a27a;
+	--pt-stretched: #ddbf9c;
+	--pt-litho: #a9b38b;
+	--pt-astheno: #edd2b3;
+	--pt-young: #e8590c;
+	--pt-magma: #e03131;
+	--pt-map-sea: #edf4fa;
+	--pt-land: #e3ddcf;
+	--pt-land-edge: #c2b9a5;
+	--pt-quake: #c2255c;
+	--pt-volcano: #e8590c;
+	--pt-apart: #1971c2;
+	--pt-together: #6741d9;
+	--pt-sideways: #2b8a3e;
+	--pt-shallow: #f59f00;
+	--pt-intermediate: #c2255c;
+	--pt-deep: #364fc7;
+	--pt-intraplate: #2b8a3e;
+}
+:root[data-theme='dark'] {
+	--pt-sea: #15344d;
+	--pt-sea-edge: #3d7aa6;
+	--pt-ocean-crust: #6a7d92;
+	--pt-continent: #9a7752;
+	--pt-stretched: #7d6246;
+	--pt-litho: #56603f;
+	--pt-astheno: #4a3222;
+	--pt-young: #ff922b;
+	--pt-magma: #ff6b6b;
+	--pt-map-sea: #121b24;
+	--pt-land: #2c2e33;
+	--pt-land-edge: #4a4e56;
+	--pt-quake: #f783ac;
+	--pt-volcano: #ff922b;
+	--pt-apart: #4dabf7;
+	--pt-together: #b197fc;
+	--pt-sideways: #69db7c;
+	--pt-shallow: #ffd43b;
+	--pt-intermediate: #f783ac;
+	--pt-deep: #91a7ff;
+	--pt-intraplate: #69db7c;
+}
+.pt-apart {
+	color: var(--pt-apart);
+}
+.pt-together {
+	color: var(--pt-together);
+}
+.pt-sideways {
+	color: var(--pt-sideways);
+}
+.pt-shallow {
+	color: var(--pt-shallow);
+}
+.pt-intermediate {
+	color: var(--pt-intermediate);
+}
+.pt-deep {
+	color: var(--pt-deep);
+}

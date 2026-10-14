@@ -501,6 +501,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 11,
 		minutes: 20
+	},
+	{
+		slug: 'plate-tectonics',
+		title: 'Plate tectonics and volcanoes',
+		summary:
+			'See where ten years of earthquakes and every active volcano lie on a world map, then push two plates together, pull them apart or slide them past each other and watch trenches, mountains, rift valleys and volcanoes form.',
+		accent: '#c2410c',
+		steps: 12,
+		minutes: 18
 	}
 ];
 
