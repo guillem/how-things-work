@@ -48,7 +48,7 @@ test('impossible molecules are refused with the reason', async ({ page }) => {
 	await stage(page)
 		.getByRole('button', { name: /Add –COOH/ })
 		.press('Enter');
-	await expect(stage(page)).toContainText('end of a chain');
+	await expect(stage(page)).toContainText('The –COOH carbon has to be at the end');
 	await stage(page).getByRole('button', { name: 'Make a benzene ring' }).click();
 	await expect(stage(page)).toContainText('benzene');
 	await expect(stage(page)).toContainText('C₆H₆');
@@ -81,6 +81,7 @@ test('a chiral molecule never lines up with its mirror image; an achiral one doe
 	await page.goto('./carbon-polymers/#handed');
 	await expect(stage(page)).toContainText('L-alanine (S)');
 	await page.locator('button[data-control=centre][data-value=CH2FCl]').click();
+	await expect(stage(page)).toContainText('chlorofluoromethane');
 	await action(page, 'lineup').click();
 	await expect(stage(page)).toContainText('All four line up: the same molecule');
 });
@@ -89,6 +90,8 @@ test('turning the mirror image with the keyboard changes what lines up', async (
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await page.goto('./carbon-polymers/#mirror');
 	const turn = stage(page).getByRole('slider', { name: /Turn the mirror image/ });
+	// The scene is drawn (and listening) before the button is pressed.
+	await expect(turn).toHaveAttribute('aria-valuenow', '0');
 	await action(page, 'lineup').click();
 	await expect(turn).toHaveAttribute('aria-valuenow', '2');
 	await turn.press('Shift+ArrowLeft');
