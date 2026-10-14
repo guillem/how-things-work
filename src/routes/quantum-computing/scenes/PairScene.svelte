@@ -362,7 +362,7 @@
 					y1={y}
 					x2={672 + re * 24}
 					y2={y - im * 24}
-					stroke={re < -1e-3 ? 'var(--qc-neg)' : 'var(--qc-psi)'}
+					stroke={re < -1e-3 ? 'var(--qc-neg)' : 'var(--qc-state)'}
 					stroke-width="3"
 					stroke-linecap="round"
 				/>
@@ -376,7 +376,7 @@
 				fill="var(--stage-grid)"
 				opacity="0.5"
 			/>
-			<rect x={712} y={y - 8} width={140 * probs[k]} height="16" rx="3" fill="var(--qc-psi)" />
+			<rect x={712} y={y - 8} width={140 * probs[k]} height="16" rx="3" fill="var(--qc-state)" />
 			<Readout id="a{k}">
 				<T
 					x={860}
@@ -404,7 +404,7 @@
 					text="{sci(2 ** nq)} amplitudes"
 					size={22}
 					weight={700}
-					color="var(--qc-psi)"
+					color="var(--qc-state)"
 				/>
 				<T x={600} y={456} text="{bytes(16 * 2 ** nq)} to store them (16 bytes each)" size={13} />
 				<T
@@ -443,7 +443,7 @@
 						width="56"
 						height={120 * frac}
 						rx="3"
-						fill="var(--qc-psi)"
+						fill="var(--qc-state)"
 					/>
 					<T x={bx + 28} y={540} text={label(2, k)} size={14} weight={700} anchor="middle" />
 					<T x={bx + 28} y={558} text={String(runsHere[k])} size={12} anchor="middle" muted />
@@ -574,7 +574,7 @@
 				text="results agreed: {nPairs ? pct(agreeN / nPairs) : '–'}"
 				size={20}
 				weight={700}
-				color="var(--qc-psi)"
+				color="var(--qc-state)"
 			/>
 			<T
 				x={30}
@@ -624,7 +624,7 @@
 				muted
 			/>
 		</Readout>
-		<path d={curve} fill="none" stroke="var(--qc-psi)" stroke-width="2.5" />
+		<path d={curve} fill="none" stroke="var(--qc-state)" stroke-width="2.5" />
 		<line
 			x1={px(bDeg)}
 			x2={px(bDeg)}
@@ -645,7 +645,7 @@
 			/>
 		{/if}
 		<Readout id="curve-l">
-			<T x={px(60)} y={py(0.75) - 12} text="cos²(angle/2)" size={12} color="var(--qc-psi)" />
+			<T x={px(60)} y={py(0.75) - 12} text="cos²(angle/2)" size={12} color="var(--qc-state)" />
 		</Readout>
 
 		<!-- CHSH -->
@@ -663,7 +663,14 @@
 				muted
 			/>
 			<T x={560} y={414} text="A at 0° or 90°, B at 45° or −45°" size={12} muted />
-			<T x={560} y={460} text="S = {S.S.toFixed(2)}" size={24} weight={700} color="var(--qc-psi)" />
+			<T
+				x={560}
+				y={460}
+				text="S = {S.S.toFixed(2)}"
+				size={24}
+				weight={700}
+				color="var(--qc-state)"
+			/>
 			<rect
 				x={SBAR.x0}
 				y={SBAR.y - 8}
@@ -694,7 +701,7 @@
 				cx={sx(S.S)}
 				cy={SBAR.y}
 				r="8"
-				fill="var(--qc-psi)"
+				fill="var(--qc-state)"
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
@@ -711,7 +718,7 @@
 				text="quantum 2√2"
 				size={12}
 				anchor="middle"
-				color="var(--qc-psi)"
+				color="var(--qc-state)"
 			/>
 			<T x={SBAR.x0} y={SBAR.y + 34} text="0" size={11} muted />
 		</Readout>

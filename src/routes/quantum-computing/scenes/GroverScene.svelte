@@ -200,7 +200,7 @@
 				stroke={i === ops
 					? name === 'oracle'
 						? 'var(--qc-neg)'
-						: 'var(--qc-psi)'
+						: 'var(--qc-state)'
 					: 'var(--stage-line)'}
 				stroke-width={i === ops ? 2.5 : 1.2}
 				opacity={done ? 1 : 0.35}
@@ -446,7 +446,7 @@
 					y1={RC.y}
 					x2={RC.x + Math.cos(a) * RC.r}
 					y2={RC.y - Math.sin(a) * RC.r}
-					stroke="var(--qc-psi)"
+					stroke="var(--qc-state)"
 					stroke-width="1.2"
 					opacity={0.35}
 				/>
@@ -461,7 +461,7 @@
 			y1={RC.y}
 			x2={RC.x + Math.cos(aNow) * RC.r}
 			y2={RC.y - Math.sin(aNow) * RC.r}
-			stroke="var(--qc-psi)"
+			stroke="var(--qc-state)"
 			stroke-width="4"
 			stroke-linecap="round"
 		/>
@@ -469,7 +469,7 @@
 			cx={RC.x + Math.cos(aNow) * RC.r}
 			cy={RC.y - Math.sin(aNow) * RC.r}
 			r="7"
-			fill="var(--qc-psi)"
+			fill="var(--qc-state)"
 		/>
 		<!-- the projection on "marked": its length² is the chance -->
 		<line
@@ -552,7 +552,7 @@
 		<Readout
 			id="pk"
 			order={2}
-			label="After {k} rounds"
+			label="After {k} round{k === 1 ? '' : 's'}"
 			value="P = {pct1(sim[k].p)}"
 			color="var(--qc-marked)"
 		>
@@ -704,12 +704,7 @@
 		</Readout>
 		{#each TABLE as row, i (row.task)}
 			{@const y = 80 + i * 88}
-			<Readout
-				id="row{i}"
-				order={3 + i}
-				label={row.task}
-				value="{row.gain}{row.level >= 2.5 ? ` ${row.more}` : ''}"
-			>
+			<Readout id="row{i}">
 				<T x={560} {y} text={row.task} size={14} weight={700} />
 				<T
 					x={560}
@@ -733,6 +728,12 @@
 				{/each}
 			</Readout>
 		{/each}
+		<Readout
+			id="gains"
+			order={3}
+			label="Speed-up on a quantum computer"
+			value="factoring: huge · molecules: large (expected) · search: quadratic · sorting and most tasks: none"
+		/>
 		<Readout id="take">
 			<T
 				x={SP.x0}

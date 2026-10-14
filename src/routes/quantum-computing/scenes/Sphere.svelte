@@ -93,18 +93,30 @@
 		/>
 		{#if labels === 'all' || a.pole}
 			{@const l = P(a.p, a.pole ? 1.13 : 1.2)}
-			<Readout id="{id}-ax-{a.text}">
+			{#if a.pole}
 				<T
 					x={l.x}
-					y={l.y + (a.pole ? (a.p[2] > 0 ? -2 : 14) : 5)}
+					y={l.y + (a.p[2] > 0 ? -2 : 14)}
 					text={a.text}
 					size={small ? 12 : 15}
 					anchor="middle"
-					weight={a.pole ? 700 : 500}
-					color={a.pole ? (a.p[2] > 0 ? 'var(--qc-zero)' : 'var(--qc-one)') : undefined}
-					muted={!a.pole}
+					weight={700}
+					color={a.p[2] > 0 ? 'var(--qc-zero)' : 'var(--qc-one)'}
 				/>
-			</Readout>
+			{:else}
+				<Readout id="{id}-ax-{a.text}">
+					<T
+						x={l.x}
+						y={l.y + (a.pole ? (a.p[2] > 0 ? -2 : 14) : 5)}
+						text={a.text}
+						size={small ? 12 : 15}
+						anchor="middle"
+						weight={a.pole ? 700 : 500}
+						color={a.pole ? (a.p[2] > 0 ? 'var(--qc-zero)' : 'var(--qc-one)') : undefined}
+						muted={!a.pole}
+					/>
+				</Readout>
+			{/if}
 		{/if}
 	{/each}
 
