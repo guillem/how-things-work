@@ -137,7 +137,7 @@ A topic is done when:
 - [ ] protein-folding
 - [x] photosynthesis
 - [ ] respiration-atp
-- [ ] meiosis-inheritance
+- [x] meiosis-inheritance
 - [ ] evolution
 - [x] ecosystems
 - [ ] crispr
