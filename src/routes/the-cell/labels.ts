@@ -60,7 +60,6 @@ const perox = nearest(h.peroxisomes, -8, 6);
 const golgiMid = h.golgi[2]?.[Math.floor((h.golgi[2]?.length ?? 1) / 2)] ?? [N.x, N.y - 6];
 const rer = h.rer[0][Math.floor(h.rer[0].length / 2)];
 const pore = h.pores[Math.floor(h.pores.length * 0.62)];
-const [cx, cy] = h.targets.chromatin;
 const [tx, ty] = h.targets.cristaTip;
 const [ex, ey] = h.targets.erFace;
 const [bx, by] = h.targets.edge;

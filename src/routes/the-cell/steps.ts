@@ -13,10 +13,10 @@ function zoom(step: string, cell: CellType, branch: string, width: number): Cont
 		type: 'range',
 		id: `zoom-${step}`,
 		label: 'Zoom: width of the view',
-		min: -Math.log10(hi),
-		max: -Math.log10(lo),
+		min: Math.ceil(-Math.log10(hi) * 100) / 100,
+		max: Math.floor(-Math.log10(lo) * 100) / 100,
 		step: 0.01,
-		default: -Math.log10(width),
+		default: Math.round(-Math.log10(width) * 100) / 100,
 		format: (v) => formatLength(10 ** -v),
 		help: 'Slide right to zoom in; or scroll, or use + and −, over the picture. Click any part to see what it does.'
 	};
@@ -48,14 +48,14 @@ const exploreZoom: Control = {
 	type: 'range',
 	id: 'zoom-explore',
 	label: 'Zoom: width of the view',
-	min: -Math.log10(400 * UM * 1.25),
-	max: -Math.log10(3 * NM),
+	min: Math.ceil(-Math.log10(400 * UM * 1.25) * 100) / 100,
+	max: Math.floor(-Math.log10(3 * NM) * 100) / 100,
 	bounds: (params) => {
 		const [lo, hi] = zoomRange(exploreChain(params).chain);
-		return [-Math.log10(hi), -Math.log10(lo)];
+		return [Math.ceil(-Math.log10(hi) * 100) / 100, Math.floor(-Math.log10(lo) * 100) / 100];
 	},
 	step: 0.01,
-	default: -Math.log10(40 * UM),
+	default: Math.round(-Math.log10(40 * UM) * 100) / 100,
 	format: (v) => formatLength(10 ** -v),
 	help: 'Click a part to read about it; clicking a nucleus, mitochondrion, rough ER or the cell membrane also sets where the zoom dives.'
 };
