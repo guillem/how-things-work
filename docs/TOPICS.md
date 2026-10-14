@@ -154,7 +154,7 @@ A topic is done when:
 - [ ] medical-imaging
 
 **Earth & Climate**
-- [ ] plate-tectonics
+- [x] plate-tectonics
 - [ ] earthquakes
 - [ ] deep-time
 - [x] atmosphere-weather
