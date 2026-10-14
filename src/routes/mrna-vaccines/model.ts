@@ -280,6 +280,20 @@ function add(y: State, k: State, h: number): State {
 	return y.map((v, i) => v + h * k[i]) as State;
 }
 
+const cache = new Map<string, Point[]>();
+
+/** `simulate`, cached (a year-long run takes about half a second), for the scenes. */
+export function simulateCached(schedule: Schedule): Point[] {
+	const key = JSON.stringify(schedule);
+	let r = cache.get(key);
+	if (!r) {
+		r = simulate(schedule);
+		if (cache.size > 30) cache.clear();
+		cache.set(key, r);
+	}
+	return r;
+}
+
 // ---------------------------------------------------------------- read-outs
 
 export { antibody, effectors, peak } from '../immune-system/model';

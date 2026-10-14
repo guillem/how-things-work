@@ -25,25 +25,14 @@
 		infectionAntibodyPeak,
 		infectionOutcome,
 		peak,
-		simulate,
-		type Point,
-		type Schedule
+		simulateCached,
+		type Point
 	} from '../model';
 
 	let { step, t, params, reduced }: StageProps = $props();
 	const view = $derived(String(step.hints?.view ?? 'doses'));
 
-	const cache = new Map<string, Point[]>();
-	const run = (s: Schedule) => {
-		const key = JSON.stringify(s);
-		let r = cache.get(key);
-		if (!r) {
-			r = simulate(s);
-			if (cache.size > 30) cache.clear();
-			cache.set(key, r);
-		}
-		return r;
-	};
+	const run = simulateCached;
 	const yard = infectionAntibodyPeak();
 
 	const LEAD = 0.8;
