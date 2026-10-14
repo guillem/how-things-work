@@ -82,3 +82,17 @@ export function ionsToCharge(dV: number, C = 1): number {
 
 /** Avogadro constant, per mol. */
 export const AVOGADRO = 6.02214076e23;
+
+/**
+ * Goldman–Hodgkin–Katz current of one ion at voltage V (mV), outward
+ * positive, in arbitrary units (permeability × mM): the flux each ion
+ * carries through its channels. At the voltage `ghk` returns, the currents
+ * of all the ions add up to zero.
+ */
+export function ghkCurrent(ion: Ion, P: number, V: number, conc = SQUID, T: number = ROOM): number {
+	const z = ION_INFO[ion].z;
+	const u = (z * V) / rtf(T);
+	const { inside, outside } = conc[ion];
+	if (Math.abs(u) < 1e-6) return P * z * (inside - outside);
+	return (P * z * u * (inside - outside * Math.exp(-u))) / (1 - Math.exp(-u));
+}

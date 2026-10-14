@@ -1686,3 +1686,39 @@ kbd {
 .eq-s {
 	color: var(--eq-s);
 }
+
+/* neurons */
+:root {
+	--nr-na: #e8590c;
+	--nr-k: #7048e8;
+	--nr-cl: #2b8a3e;
+	--nr-v: #1864ab;
+	--nr-exc: #e03131;
+	--nr-inh: #1c7ed6;
+	--nr-ca: #c2255c;
+	--nr-glu: #f08c00;
+	--nr-axon: #f3e3d3;
+	--nr-axon-edge: #c9a88a;
+	--nr-myelin: #f8f0c8;
+	--nr-myelin-edge: #c8b46a;
+	--nr-inside: #f6eadf;
+	--nr-outside: #e3f0f8;
+	--nr-fire: #f59f00;
+}
+:root[data-theme='dark'] {
+	--nr-na: #ff922b;
+	--nr-k: #9775fa;
+	--nr-cl: #69db7c;
+	--nr-v: #74c0fc;
+	--nr-exc: #ff8787;
+	--nr-inh: #4dabf7;
+	--nr-ca: #f06595;
+	--nr-glu: #ffc078;
+	--nr-axon: #3b2e25;
+	--nr-axon-edge: #8a6a4d;
+	--nr-myelin: #4a4428;
+	--nr-myelin-edge: #a89a55;
+	--nr-inside: #2d241e;
+	--nr-outside: #16293a;
+	--nr-fire: #ffd43b;
+}

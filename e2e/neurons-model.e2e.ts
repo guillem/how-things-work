@@ -15,7 +15,7 @@ import {
 	threshold,
 	velocity
 } from '../src/routes/neurons/hh';
-import { P_PEAK, P_REST, ghk, ionsToCharge, nernstOf, SQUID } from '../src/routes/neurons/ions';
+import { P_PEAK, P_REST, ghk, ghkCurrent, ionsToCharge, nernstOf, SQUID } from '../src/routes/neurons/ions';
 import { circuit, fires, receive } from '../src/routes/neurons/inputs';
 import {
 	myelinatedSpeed,
@@ -152,7 +152,8 @@ test('one excitatory input is not enough; three together fire the cell; spreadin
 	expect(fires(receive({ exc: 3, inh: 0, spread: 0 }))).toBe(true);
 	expect(fires(receive({ exc: 3, inh: 0, spread: 8 }))).toBe(false);
 	expect(fires(receive({ exc: 3, inh: 2, spread: 0 }))).toBe(false);
-	expect(fires(receive({ exc: 6, inh: 2, spread: 0 }))).toBe(true);
+	expect(fires(receive({ exc: 4, inh: 2, spread: 0 }))).toBe(false);
+	expect(fires(receive({ exc: 5, inh: 2, spread: 0 }))).toBe(true);
 	// The spike, when it comes, is a full one.
 	expect(peak(receive({ exc: 8, inh: 0, spread: 0 })).V).toBeGreaterThan(30);
 });
@@ -178,4 +179,16 @@ test('myelin: about 6 m/s per µm of diameter, many times an unmyelinated fibre 
 	expect(myelinatedSpeed(10) / unmyelinatedSpeed(10)).toBeGreaterThan(15);
 	// To match a 10 µm myelinated fibre without myelin, an axon would need to be millimetres thick.
 	expect(unmyelinatedDiameterFor(60)).toBeGreaterThan(3000);
+});
+
+test('at the Goldman–Hodgkin–Katz voltage the currents of the three ions cancel', () => {
+	for (const P of [P_REST, P_PEAK]) {
+		const V = ghk(P);
+		const total = (['K', 'Na', 'Cl'] as const).reduce((s, i) => s + ghkCurrent(i, P[i], V), 0);
+		const k = Math.abs(ghkCurrent('K', P.K, V));
+		expect(Math.abs(total) / k).toBeLessThan(1e-9);
+	}
+	// At rest potassium leaks out and sodium leaks in.
+	expect(ghkCurrent('K', 1, ghk(P_REST))).toBeGreaterThan(0);
+	expect(ghkCurrent('Na', 0.04, ghk(P_REST))).toBeLessThan(0);
 });
