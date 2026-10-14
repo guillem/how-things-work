@@ -150,7 +150,7 @@
 			label="Sentence {n}"
 			maxlength={60}
 			size={17}
-			oninput={(v) => setParam(id, v)}
+			oninput={(v: string) => setParam(id, v)}
 		/>
 	{/if}
 	{#each list as c, k (k)}
@@ -286,7 +286,7 @@
 				<Txt
 					x={ta.x}
 					y={ta.y + 24}
-					text={theta < 4 ? "1 and 2" : "1"}
+					text={theta < 4 ? '1 and 2' : '1'}
 					size={13}
 					anchor="middle"
 					weight={700}

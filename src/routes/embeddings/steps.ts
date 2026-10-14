@@ -1,40 +1,22 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
 
-/** Words offered for the two-word comparisons (all in the shipped subset). */
-const WORDS = [
-	'king',
-	'queen',
-	'man',
-	'woman',
-	'cat',
-	'dog',
-	'banana',
-	'car',
-	'paris',
-	'france',
-	'guitar',
-	'piano',
-	'happy',
-	'sad',
-	'good',
-	'bad'
-];
-const wordOptions = WORDS.map((w) => ({ value: w, label: w }));
+/** Words offered for the two-word comparisons (all in the shipped subset; few, so they fit a phone). */
+const opts = (words: string[]) => words.map((w) => ({ value: w, label: w }));
 
 const wordA: Control = {
 	type: 'select',
 	id: 'a',
 	label: 'First word',
 	default: 'king',
-	options: wordOptions
+	options: opts(['king', 'cat', 'good', 'paris'])
 };
 const wordB: Control = {
 	type: 'select',
 	id: 'b',
 	label: 'Second word',
 	default: 'queen',
-	options: wordOptions,
-	help: 'Try king with queen, then king with banana.'
+	options: opts(['queen', 'man', 'banana', 'dog', 'bad', 'france']),
+	help: 'Try king with queen, then king with banana; cat with dog.'
 };
 
 const projection: Control = {
@@ -43,22 +25,23 @@ const projection: Control = {
 	label: 'Map',
 	default: 'tsne',
 	options: [
-		{ value: 'tsne', label: 't-SNE: keeps neighbours together' },
-		{ value: 'pca', label: 'PCA: the two directions of greatest spread' }
+		{ value: 'tsne', label: 't-SNE' },
+		{ value: 'pca', label: 'PCA' }
 	],
-	help: 'The same 3,292 words, the same 100-number vectors: only the flattening changes.'
+	help: 't-SNE keeps neighbours together; PCA keeps the two directions of greatest spread. Same words, same vectors: only the flattening changes.'
 };
 
 const relation: Control = {
 	type: 'select',
 	id: 'rel',
 	label: 'Relationship',
+	help: 'man → woman, country → capital, verb → past tense, adjective → comparative.',
 	default: 'gender',
 	options: [
-		{ value: 'gender', label: 'man → woman' },
-		{ value: 'capital', label: 'country → capital' },
-		{ value: 'tense', label: 'verb → past tense' },
-		{ value: 'compare', label: 'adjective → comparative' }
+		{ value: 'gender', label: 'woman' },
+		{ value: 'capital', label: 'capital' },
+		{ value: 'tense', label: 'past' },
+		{ value: 'compare', label: 'bigger' }
 	]
 };
 
@@ -74,12 +57,13 @@ const failCase: Control = {
 	type: 'select',
 	id: 'fail',
 	label: 'Analogy',
+	help: 'brother − man + woman, bigger − big + small, doctor − man + woman, nurse − woman + man.',
 	default: 'brother',
 	options: [
-		{ value: 'brother', label: 'brother − man + woman' },
-		{ value: 'bigger', label: 'bigger − big + small' },
-		{ value: 'doctor', label: 'doctor − man + woman' },
-		{ value: 'nurse', label: 'nurse − woman + man' }
+		{ value: 'brother', label: 'brother' },
+		{ value: 'bigger', label: 'bigger' },
+		{ value: 'doctor', label: 'doctor' },
+		{ value: 'nurse', label: 'nurse' }
 	]
 };
 
@@ -89,8 +73,8 @@ const orderCase: Control = {
 	label: 'Pair of sentences',
 	default: 'bite',
 	options: [
-		{ value: 'bite', label: 'Who bit whom?' },
-		{ value: 'film', label: 'Good or bad?' }
+		{ value: 'bite', label: 'Who bit whom' },
+		{ value: 'film', label: 'Good or bad' }
 	]
 };
 
@@ -148,7 +132,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			body: `
 <p>Here are all 3,292 words, one dot each. To fit 100 dimensions onto a flat screen they have been squashed down to two by <dfn data-def="t-distributed stochastic neighbour embedding (van der Maaten &amp; Hinton, 2008): a method that places points on a flat map so that points that are close in the full space stay close on the map. Distances between far-apart groups mean little.">t-SNE</dfn>, a method that tries to keep each word next to the words it is close to in the full space.</p>
-<p>Related words gather in clumps: numbers, months and days, countries, cities, sports, family, food, money. The colours were not painted on the map: a computer sorted the 100-number vectors into 12 groups (<dfn data-def="A method that sorts points into k groups by repeatedly assigning each point to the nearest group centre and moving each centre to the middle of its group.">k-means</dfn>) in the full space, and the groups come out together on the map.</p>
+<p>Related words gather in clumps: months, first names, countries, American cities, sport, war, money, kings and queens. The colours were not painted on the map: a computer sorted the 100-number vectors into 12 groups (<dfn data-def="A method that sorts points into k groups by repeatedly assigning each point to the nearest group centre and moving each centre to the middle of its group.">k-means</dfn>) in the full space, and the groups come out together on the map.</p>
 <p>Drag to move around, scroll or use the + and − buttons to zoom, and point at a dot to read its word. Zoom in on a clump to see more of its words.</p>`,
 			notes: `<p>The map was computed once, when the page was made: exact t-SNE with a perplexity of 30 (roughly, each word pays attention to its 30 nearest neighbours) and 1,000 rounds of adjustment, started from the PCA map you will meet in two steps. The script is in the site's repository (<code>scripts/data/embeddings/</code>). The clumps are labelled with the words closest to the centre of each k-means group.</p>`
 		},
@@ -216,7 +200,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [failCase],
 			body: `
-<p>Word arithmetic is impressive but not reliable. <strong>brother − man + woman</strong> should be sister, but lands closest to <strong>daughter</strong>, then wife and mother: family words are packed so tightly that the step from man to woman overshoots. <strong>bigger − big + small</strong> gives <strong>larger</strong> before smaller, because <em>bigger</em> and <em>larger</em> mean the same.</p>
+<p>Word arithmetic is impressive but not reliable. <strong>brother − man + woman</strong> should be sister, but lands closest to <strong>daughter</strong>, then wife and mother: family words are packed so tightly that several of them beat <em>sister</em>, which comes sixth. <strong>bigger − big + small</strong> gives <strong>larger</strong> before smaller, because <em>bigger</em> and <em>larger</em> mean the same.</p>
 <p>The vectors also learn the prejudices of the text they were trained on. In this data <strong>doctor − man + woman</strong> gives <strong>nurse</strong>, and <strong>nurse − woman + man</strong> gives <strong>doctor</strong>. The arithmetic is right; the 2014 news and encyclopaedia text it learned from wrote about men doctors and women nurses more often. Systems built on embeddings can carry such patterns into decisions about real people, so researchers measure and try to remove them.</p>`,
 			notes: `<p>Bolukbasi and colleagues (2016) showed such patterns in word2vec embeddings and proposed ways to remove a chosen direction from the vectors; Caliskan and colleagues (2017) found that word vectors reproduce many associations measured in people by psychology's implicit association tests. The examples on this page are computed from the GloVe vectors shown here.</p>`
 		},

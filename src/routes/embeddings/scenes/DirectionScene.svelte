@@ -89,7 +89,7 @@
 		brother: {
 			w: ['brother', 'man', 'woman'],
 			expect: 'sister',
-			note: ['Family words are packed tightly:', 'the step overshoots to daughter.']
+			note: ['Family words are packed tightly:', 'daughter, wife and mother all beat sister.']
 		},
 		bigger: {
 			w: ['bigger', 'big', 'small'],
@@ -386,9 +386,11 @@
 			{/each}
 		</g>
 		<!-- panel -->
-		<Txt x={PL} y={40} text={rel.title} size={16} weight={700} />
-		<Txt x={PL} y={60} text="each arrow's cosine with the average" size={11} muted />
-		<Txt x={PL} y={74} text="direction, in the full 100-D space" size={11} muted />
+		<Readout id="pairs-title">
+			<Txt x={PL} y={40} text={rel.title} size={16} weight={700} />
+			<Txt x={PL} y={60} text="each arrow's cosine with the average" size={11} muted />
+			<Txt x={PL} y={74} text="direction, in the full 100-D space" size={11} muted />
+		</Readout>
 		{#each pairView as pr, k (pr.from)}
 			{@const y = 104 + k * 28}
 			<Readout
@@ -522,16 +524,15 @@
 				</g>
 			{/each}
 			<!-- the three inputs: a and b labelled on the left, c (always right of a) on the right -->
-			{#each [[A, n.minus, 'end'], [B, n.plus, 'end'], [C, n.add, 'start']] as [p, w, side], k (k)}
-				{@const q = p as Pt}
+			{#each [{ q: A, w: n.minus, right: false }, { q: B, w: n.plus, right: false }, { q: C, w: n.add, right: true }] as { q, w, right }, k (k)}
 				{@const top = analogy.results[0]?.word === w}
 				<circle cx={q.x} cy={q.y} r="5" fill="var(--stage-ink)" />
 				<Txt
-					x={side === 'end' ? q.x - 10 : q.x + 10}
+					x={right ? q.x + 10 : q.x - 10}
 					y={q.y + 5}
-					text={top ? `1. ${String(w)}` : String(w)}
+					text={top ? `1. ${w}` : w}
 					size={14}
-					anchor={side === 'end' ? 'end' : 'start'}
+					anchor={right ? 'start' : 'end'}
 					weight={700}
 					color={top ? 'var(--emb-warn)' : undefined}
 				/>
@@ -674,11 +675,12 @@
 				y={48}
 				w={80}
 				size={15}
+				phoneSize={22}
 				value={typed[k]}
 				label={['First word', 'Word to subtract', 'Word to add'][k]}
 				invalid={!emb.has(words[k])}
 				maxlength={16}
-				oninput={(v) => setParam(`an${k + 1}`, v)}
+				oninput={(v: string) => setParam(`an${k + 1}`, v)}
 			/>
 			{#if k < 2}
 				<Txt x={x + 89} y={74} text={k === 0 ? '−' : '+'} size={20} anchor="middle" weight={700} />

@@ -17,6 +17,8 @@
 		maxlength?: number;
 		/** Font size in px on wide screens. */
 		size?: number;
+		/** Font size in px on phones (the stage is drawn at ~0.4 scale there). */
+		phoneSize?: number;
 		oninput: (value: string) => void;
 	}
 	let {
@@ -30,6 +32,7 @@
 		invalid = false,
 		maxlength = 24,
 		size = 18,
+		phoneSize = 30,
 		oninput
 	}: Props = $props();
 </script>
@@ -48,6 +51,7 @@
 		aria-label={label}
 		aria-invalid={invalid}
 		style:--emb-input-size="{size}px"
+		style:--emb-input-phone="{phoneSize}px"
 		oninput={(e) => oninput(e.currentTarget.value)}
 	/>
 </foreignObject>
@@ -72,8 +76,8 @@
 	/* on phones the stage is drawn at ~0.4 scale: larger type keeps the field legible */
 	@media (max-width: 640px) {
 		.emb-input {
-			padding: 0 8px;
-			font-size: 30px;
+			padding: 0 6px;
+			font-size: var(--emb-input-phone, 30px);
 		}
 	}
 	.emb-input:focus {

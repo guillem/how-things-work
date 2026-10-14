@@ -281,12 +281,7 @@
 						muted
 					/>
 				</Readout>
-				<Readout
-					id="dot"
-					order={4}
-					label="Dot product (sum of the 100 products)"
-					value={fmt(built === D ? cos : partial)}
-				>
+				<Readout id="dot" order={4} label="Dot product (sum of the 100 products)" value={fmt(cos)}>
 					<Txt
 						x={X0}
 						y={rowP.y + rowP.h + 46}

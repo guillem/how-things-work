@@ -41,7 +41,7 @@ test('the PCA map keeps fewer true neighbours close than the t-SNE map', async (
 		Number(
 			(
 				await stage(page)
-					.locator('text', { hasText: /close on this map too: \d+ of 10/ })
+					.locator('text', { hasText: /among its 10 closest dots: \d+ of 10/ })
 					.textContent()
 			)?.match(/(\d+) of 10/)?.[1]
 		);
@@ -49,7 +49,7 @@ test('the PCA map keeps fewer true neighbours close than the t-SNE map', async (
 	const tsne = await kept();
 	await page.locator('button[data-control=proj][data-value=pca]').click();
 	await expect(stage(page)).toContainText('PCA map');
-	await expect(stage(page)).toContainText('close on this map too: 0 of 10');
+	await expect(stage(page)).toContainText('among its 10 closest dots: 0 of 10');
 	expect(tsne).toBeGreaterThan(0);
 });
 

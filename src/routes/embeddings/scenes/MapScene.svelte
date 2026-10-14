@@ -336,6 +336,8 @@
 		const max = Math.round(clamp(30 + (z - 1) * 22, 30, 110));
 		const boxes: Box[] = nbLabels.map((l) => l.box);
 		const out: Placed[] = [];
+		// Plain local sets, rebuilt on every run of this $derived (no reactivity needed).
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const reserved = new Set<string>();
 		if (searching && known) {
 			reserved.add(query);
@@ -349,6 +351,7 @@
 		boxes.push([MAP.x + MAP.w - 60, MAP.y, MAP.x + MAP.w, MAP.y + 160]);
 		const order = [...LANDMARKS.map((w) => emb!.indexOf(w)).filter((i) => i >= 0)];
 		for (let i = 0; i < emb.size; i++) order.push(i);
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const seen = new Set<number>();
 		for (const i of order) {
 			if (out.length >= max) break;
@@ -718,7 +721,7 @@
 				value={String(params.query ?? 'king')}
 				label="Word to search"
 				invalid={!known}
-				oninput={(v) => setParam('query', v)}
+				oninput={(v: string) => setParam('query', v)}
 			/>
 			{#if known}
 				<Readout id="nb-head">
@@ -733,7 +736,7 @@
 						order={10 + k}
 						label="{k + 1}. {n.word}"
 						value={fmt(n.cos)}
-						opacity={k < 5 ? 1 : 0}
+						opacity={k < (phase === 'distort' ? 3 : 4) ? 1 : 0}
 					>
 						<Txt x={PL} {y} text={String(k + 1)} size={11} muted />
 						<Txt x={PL + 20} {y} text={n.word} size={13} weight={600} />
@@ -768,14 +771,16 @@
 						value="{keptCount} of {NEIGHBOURS}"
 						note="of its 10 true neighbours are among its 10 closest dots"
 					>
+						<circle cx={PL + 5} cy={443} r="4.5" fill="var(--emb-result)" />
 						<Txt
-							x={PL}
+							x={PL + 16}
 							y={448}
-							text="● close on this map too: {keptCount} of {NEIGHBOURS}"
+							text="among its 10 closest dots: {keptCount} of {NEIGHBOURS}"
 							size={13}
 							weight={600}
 						/>
-						<Txt x={PL} y={468} text="○ far away on this map (dashed lines)" size={12} muted />
+						<circle cx={PL + 5} cy={463} r="4" fill="none" stroke="var(--stage-ink-muted)" />
+						<Txt x={PL + 16} y={468} text="not among them (dashed lines)" size={12} muted />
 						<Txt x={PL} y={494} text="Every neighbour is computed in the full" size={11} muted />
 						<Txt x={PL} y={509} text="100-D space; only the map changes." size={11} muted />
 					</Readout>
