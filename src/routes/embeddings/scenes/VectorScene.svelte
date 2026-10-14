@@ -68,7 +68,7 @@
 	const theta = $derived(va && vb ? angleDeg(va, vb) : 90);
 	const products = $derived(barsA.current.map((x, i) => x * barsB.current[i]));
 
-	// numbers phase: a cursor walking along the strips (8 positions a second)
+	// numbers phase: a cursor walking along the strips (6 positions a second)
 	const cursor = $derived(reduced ? 37 : Math.floor(t * 6) % D);
 	// angle phase: the running total of the products builds up over ~5 s
 	const built = $derived(reduced ? D : Math.round(clamp((t - 0.8) / 5) * D));

@@ -87,14 +87,21 @@
 		known: boolean;
 		x: number;
 		w: number;
+		/** The "…" that stands for words past the box's edge (they still count in the average). */
+		more?: boolean;
 	}
+	const MORE_W = 22;
 	function chips(text: string): Chip[] {
 		if (!emb) return [];
 		let x = L;
 		const out: Chip[] = [];
 		for (const w of tokens(text)) {
 			const cw = w.length * 7.4 + 16;
-			if (x + cw > L + W) break;
+			if (x + cw > L + W) {
+				while (out.length && x + MORE_W > L + W) x = out.pop()!.x;
+				out.push({ word: '…', known: true, x, w: MORE_W, more: true });
+				break;
+			}
 			out.push({ word: w, known: emb.has(w), x, w: cw });
 			x += cw + 6;
 		}
@@ -155,36 +162,40 @@
 	{/if}
 	{#each list as c, k (k)}
 		<g opacity={0.25 + 0.75 * lit(k)}>
-			<rect
-				x={c.x}
-				y={y + 52}
-				width={c.w}
-				height="24"
-				rx="12"
-				fill={c.known ? color : 'none'}
-				fill-opacity={c.known ? 0.16 : 0}
-				stroke={c.known ? color : 'var(--stage-line)'}
-				stroke-dasharray={c.known ? undefined : '3 3'}
-			/>
-			<Txt
-				x={c.x + c.w / 2}
-				y={y + 68.5}
-				text={c.word}
-				size={12.5}
-				anchor="middle"
-				weight={c.known ? 600 : 400}
-				muted={!c.known}
-				halo={false}
-			/>
-			{#if !c.known}
-				<line
-					x1={c.x + 8}
-					x2={c.x + c.w - 8}
-					y1={y + 64}
-					y2={y + 64}
-					stroke="var(--stage-ink-muted)"
-					stroke-width="1"
+			{#if c.more}
+				<Txt x={c.x + c.w / 2} y={y + 68.5} text={c.word} size={14} anchor="middle" muted />
+			{:else}
+				<rect
+					x={c.x}
+					y={y + 52}
+					width={c.w}
+					height="24"
+					rx="12"
+					fill={c.known ? color : 'none'}
+					fill-opacity={c.known ? 0.16 : 0}
+					stroke={c.known ? color : 'var(--stage-line)'}
+					stroke-dasharray={c.known ? undefined : '3 3'}
 				/>
+				<Txt
+					x={c.x + c.w / 2}
+					y={y + 68.5}
+					text={c.word}
+					size={12.5}
+					anchor="middle"
+					weight={c.known ? 600 : 400}
+					muted={!c.known}
+					halo={false}
+				/>
+				{#if !c.known}
+					<line
+						x1={c.x + 8}
+						x2={c.x + c.w - 8}
+						y1={y + 64}
+						y2={y + 64}
+						stroke="var(--stage-ink-muted)"
+						stroke-width="1"
+					/>
+				{/if}
 			{/if}
 		</g>
 	{/each}

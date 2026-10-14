@@ -4,7 +4,8 @@
 	 *
 	 * Phases (`step.hints.phase`):
 	 *   map      — the t-SNE map coloured by k-means cluster; the panel is the cluster legend.
-	 *              Clumps are named on the map (pills) while zoomed out.
+	 *              Landmark and frequent words are labelled on the map; the legend names each
+	 *              group by the words closest to its centre.
 	 *   search   — a search box; the word's ten nearest neighbours (cosine in 100-D) are listed
 	 *              and joined to it on the map. The view flies to the word.
 	 *   distort  — as search, plus `params.proj` (t-SNE or PCA): the dots glide between the two
