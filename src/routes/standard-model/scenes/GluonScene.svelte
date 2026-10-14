@@ -202,6 +202,12 @@
 					style:fill="var(--sm-ball-ink)">{FLAV[i]}</text
 				>
 			{/each}
+			{#if gluon}
+				<g transform="translate({636 + 3 * 34} 128)">
+					<path d="M0 -11 A11 11 0 0 0 0 11 Z" fill={chargeColour(gluon.col)} />
+					<path d="M0 -11 A11 11 0 0 1 0 11 Z" fill={chargeColour(gluon.anti, true)} />
+				</g>
+			{/if}
 			<Readout
 				id="now"
 				order={1}
@@ -210,7 +216,7 @@
 				note="counting the gluon in flight, always one of each: colourless"
 			>
 				<T
-					x={746}
+					x={772}
 					y={124}
 					text={gluon ? 'with the gluon:' : 'one of each:'}
 					size={13}
@@ -218,7 +224,7 @@
 					color="var(--sm-ok)"
 				/>
 				<T
-					x={746}
+					x={772}
 					y={142}
 					text={gluon ? 'one of each ✓' : 'colourless ✓'}
 					size={13}
