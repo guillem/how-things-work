@@ -152,7 +152,13 @@
 	/>
 	<Readout id="top-title">
 		<T x={32} y={42} text="{STARS[starId].name} from above" size={14} weight={700} />
-		<T x={32} y={60} text="green: the habitable zone · to scale" size={11.5} muted />
+		<T
+			x={32}
+			y={60}
+			text="green: the habitable zone · orbits to scale, star enlarged"
+			size={11.5}
+			muted
+		/>
 	</Readout>
 	<circle cx={TX} cy={TY} r={hz.optimisticOuter * pxPerAU} fill="var(--ex-hz-opt)" />
 	<circle cx={TX} cy={TY} r={hz.outer * pxPerAU} fill="var(--ex-hz)" />

@@ -88,8 +88,15 @@
 	// ---- spectrum ------------------------------------------------------------------
 	// Magnification: a 1-2-5 step so that the full swing in the close-up is 25–60 px.
 	const pxPerNmZ = (ZX1 - ZX0) / (2 * ZW);
+	// The scale of the drawing: the speed along our line of sight (K), except on the
+	// tilt step, where it is the star's true speed so that tilting visibly flattens
+	// the curve and shrinks the line shift. (Elsewhere, a floor keeps a face-on orbit's
+	// flat curve on a readable axis.)
+	const ref = $derived(phase === 'tilt' ? vTrue : Math.max(K, 0.02 * vTrue));
+	const faceOn = $derived(K < 1e-6);
+	const noShift = $derived(Math.abs(v) <= Math.max(K * 0.05, 1e-12));
 	const mag = $derived.by(() => {
-		const real = dopplerShift(HA, Math.max(K, 1e-6)) * pxPerNmZ; // px at ×1
+		const real = dopplerShift(HA, Math.max(ref, 1e-6)) * pxPerNmZ; // px at ×1
 		const want = 45 / real;
 		const e = Math.floor(Math.log10(want));
 		const m = [1, 2, 5, 10].findLast((q) => q * 10 ** e <= want) ?? 1;
@@ -111,7 +118,7 @@
 	const fmtMag = (m: number) => Math.round(m).toLocaleString('en-US').replace(/,/g, ' ');
 
 	// ---- velocity curve -------------------------------------------------------------
-	const vMax = $derived(Math.max(K, vTrue * 0.02, 1e-9) * 1.35);
+	const vMax = $derived(Math.max(ref, 1e-9) * 1.35);
 	const sx = $derived(scale([0, 2 * P], [PX0, PX1]));
 	const sy = $derived(scale([-vMax, vMax], [PY1, PY0]));
 	const xt = $derived(ticksWithDecimals(0, 2 * P, 6));
@@ -288,7 +295,9 @@
 		<T
 			x={R.x0 + 16}
 			y={R.y0 + 44}
-			text="line shifts drawn {fmtMag(mag)}× larger than they are"
+			text={faceOn
+				? 'no shift: seen face-on'
+				: `line shifts drawn ${fmtMag(mag)}× larger than they are`}
 			size={11.5}
 			muted
 		/>
@@ -315,7 +324,7 @@
 		/>
 	{/each}
 	<Readout id="spec-axis">
-		<T x={SX0} y={SY0 + SH + 16} text="400 nm" size={11} muted />
+		<T x={sxL(400)} y={SY0 + SH + 16} text="400 nm" size={11} anchor="middle" muted />
 		<T x={SX1} y={SY0 + SH + 16} text="700 nm" size={11} anchor="end" muted />
 		<T
 			x={(SX0 + SX1) / 2}
@@ -358,12 +367,14 @@
 		id="shift"
 		order={3}
 		label="Hα shift (real)"
-		value="{v < 0 ? '−' : '+'}{sci(Math.abs(dopplerShift(HA, v)))} nm"
+		value={noShift
+			? '0 nm (no shift)'
+			: `${v < 0 ? '−' : '+'}${sci(Math.abs(dopplerShift(HA, v)))} nm`}
 	>
 		<T
 			x={(ZX0 + ZX1) / 2}
 			y={ZY0 + ZH + 24}
-			text={Math.abs(v) < K * 0.05
+			text={noShift
 				? 'no shift: the star moves across our line of sight'
 				: v < 0
 					? `towards us: bluer by ${sci(Math.abs(dopplerShift(HA, v)))} nm`
@@ -371,7 +382,7 @@
 			size={12}
 			anchor="middle"
 			weight={600}
-			color={Math.abs(v) < K * 0.05 ? undefined : losColor}
+			color={noShift ? undefined : losColor}
 		/>
 	</Readout>
 

@@ -132,7 +132,7 @@
 	const sinI = $derived(Math.sin((pl.incl * Math.PI) / 180));
 	// With a transit the orbit is edge-on to within a few degrees: use its sin i
 	// (≈ 1). Without one, only the minimum mass is known.
-	const sizeRead = $derived(readDepth > 0 ? radiusFromDepth(readDepth, st.radius) : NaN);
+	const sizeRead = $derived(hits && readDepth > 0 ? radiusFromDepth(readDepth, st.radius) : NaN);
 	const massRead = $derived(readK > 0 ? massFromWobble(readK, P, st.mass, hits ? sinI : 1) : NaN);
 	const dens = $derived(hits && sizeRead > 0 && massRead > 0 ? density(sizeRead, massRead) : NaN);
 	const aRead = $derived(orbitAU(P, st.mass));
@@ -211,7 +211,7 @@
 			stroke-width="1.5"
 		/>
 	{/if}
-	{#if mysteryStep}
+	{#if mysteryStep && hits}
 		{@const y = lsy(100 - measDepth)}
 		<line
 			x1={LX0}
@@ -514,14 +514,14 @@
 			<T
 				x={CX + 16}
 				y={516}
-				text={archive.depthPercent ? '' : 'Its tilt was found later, from its own'}
+				text={archive.depthPercent ? '' : 'Its tilt was estimated later from its own'}
 				size={11}
 				muted
 			/>
 			<T
 				x={CX + 16}
 				y={532}
-				text={archive.depthPercent ? '' : 'light: the mass above is the true one.'}
+				text={archive.depthPercent ? '' : 'light: the mass above rests on that tilt.'}
 				size={11}
 				muted
 			/>
