@@ -17,6 +17,20 @@
 		return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
 	}).join(' ');
 
+	// Quantum mechanics: dots on the screen at heights drawn (deterministically) from a
+	// cos² fringe pattern under a broad envelope, scattered a little sideways.
+	const qmDots = (() => {
+		const out: { x: number; y: number }[] = [];
+		let seed = 7;
+		const rand = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+		while (out.length < 46) {
+			const u = rand() * 2 - 1;
+			const p = Math.cos(u * 4.5 * Math.PI) ** 2 * (1 - u * u);
+			if (rand() < p) out.push({ x: 172 + rand() * 12, y: 60 + u * 46 });
+		}
+		return out;
+	})();
+
 	// Calculus: y = 100 − 70u² for u in 0…1 over x 24…180, six left-edge rectangles under
 	// it, and the tangent at u = 0.6 (screen slope −140u/156).
 	const calcY = (u: number) => 100 - 70 * u * u;
@@ -1606,6 +1620,38 @@
 			opacity="0.6"
 		/>
 		<path d="M14 30 H186" stroke="currentColor" stroke-dasharray="2 4" opacity="0.3" />
+	{:else if slug === 'quantum-mechanics'}
+		<!-- a wall with two slits, and the dots of single electrons piling up in fringes on a screen -->
+		<path
+			d="M70 14 V50 M70 56 V64 M70 70 V106"
+			stroke="currentColor"
+			stroke-width="3"
+			stroke-linecap="round"
+			opacity="0.6"
+		/>
+		{#each [0, 1, 2, 3] as r (r)}
+			<path
+				d="M{78 + r * 18} {60 - 12 - r * 9} Q{86 + r * 22} 60 {78 + r * 18} {60 + 12 + r * 9}"
+				fill="none"
+				stroke={accent}
+				stroke-width="1.4"
+				opacity={0.6 - r * 0.12}
+			/>
+		{/each}
+		<line
+			x1="168"
+			y1="12"
+			x2="168"
+			y2="108"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.5"
+		/>
+		{#each qmDots as d, i (i)}
+			<circle cx={d.x} cy={d.y} r="1.7" fill={accent} />
+		{/each}
+		<path d="M24 60 H62" stroke={accent} stroke-width="2" stroke-linecap="round" />
+		<circle cx="24" cy="60" r="4" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

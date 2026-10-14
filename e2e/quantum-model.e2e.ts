@@ -4,6 +4,7 @@ import { expect, test } from '@playwright/test';
 import {
 	ELECTRON,
 	NATURAL,
+	PLANCK,
 	barrierT,
 	boxEnergy,
 	boxState,
@@ -195,4 +196,17 @@ test('single random hits pile up into the probability pattern', () => {
 	// Yes/no outcomes come up in proportion to their probability.
 	const yes = outcomes(0.27, 10000, 3).filter(Boolean).length;
 	expect(yes / 10000).toBeCloseTo(0.27, 1);
+});
+
+test('the other numbers the narrative quotes', () => {
+	// Tunnelling at the default barrier (1 eV electron, 2 eV barrier): ~27% at 0.25 nm, ~2.5% at 0.5 nm.
+	expect(tunnel({ E: 1, V0: 2, a: 0.25 }).transmitted).toBeCloseTo(0.27, 2);
+	expect(tunnel({ E: 1, V0: 2, a: 0.5 }).transmitted).toBeCloseTo(0.025, 3);
+	// Each extra 0.1 nm of that barrier divides the chance by about 2.8; κ = 5.1 per nm.
+	expect(decayConstant(1)).toBeCloseTo(5.1, 1);
+	expect(barrierT(1, 2, 0.8) / barrierT(1, 2, 0.9)).toBeCloseTo(2.8, 1);
+	// The 1 nm box sloshes back and forth every h/(E₂ − E₁) ≈ 3.7 fs.
+	expect(PLANCK / (boxEnergy(2, 1) - boxEnergy(1, 1))).toBeCloseTo(3.7, 1);
+	// STM: κ = 10.9 per nm for a 4.5 eV work function.
+	expect(decayConstant(4.5)).toBeCloseTo(10.9, 1);
 });
