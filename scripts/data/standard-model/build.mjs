@@ -249,6 +249,7 @@ const MODES = [
 	['S010.1', 'K+ --> mu+ nu_mu', 'K+', ['mu+', 'nu_mu']],
 	['S010.2', 'K+ --> pi+ pi0', 'K+', ['pi+', 'pi0']],
 	['S010.3', 'K+ --> pi+ pi+ pi-', 'K+', ['pi+', 'pi+', 'pi-']],
+	['S010.4', 'K+ --> pi+ pi0 pi0', 'K+', ['pi+', 'pi0', 'pi0']],
 	['S010.6', 'K+ --> pi0 e+ nu_e', 'K+', ['pi0', 'e+', 'nu_e']],
 	['S010.5', 'K+ --> pi0 mu+ nu_mu', 'K+', ['pi0', 'mu+', 'nu_mu']],
 	['S010.11', 'K+ --> e+ nu_e', 'K+', ['e+', 'nu_e']]
@@ -307,7 +308,7 @@ const header = `/**
  * Subset: Summary Table masses (MeV) and mean lives (s; from the width as τ = ħ/Γ where PDG
  * gives a width, flagged \`fromWidth\`) of the 17 Standard Model particles and 39 hadrons,
  * their charges (in thirds of e) and spins J, quark contents derived from the PDG Monte Carlo
- * numbers, and 21 decay modes (branching fractions, or upper limits). \`limit\` marks a bound,
+ * numbers, and ${modes.length} decay modes (branching fractions, or upper limits). \`limit\` marks a bound,
  * \`estimate\` a PDG estimate (Δ(1232)), \`err\` the larger of the two quoted errors.
  * Quark masses: u, d, s in the MS-bar scheme at 2 GeV, c and b at their own mass (MS-bar),
  * t from direct measurements.

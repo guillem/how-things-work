@@ -98,6 +98,18 @@
 
 	// ---- the card ----------------------------------------------------------------------
 	const sel = $derived(PARTICLES.find((p) => p.key === pick) ?? PARTICLES[0]);
+	/** One or two lines on the selected particle's antiparticle. */
+	const antiLines = $derived(
+		sel.key === 'W'
+			? ['W⁺ and W⁻ are each other’s', 'antiparticles']
+			: sel.key === 'g'
+				? ['antiparticle: the gluon with', 'colour and anticolour swapped']
+				: sel.family === 'gauge' || sel.family === 'scalar'
+					? ['its own antiparticle']
+					: neutrino(sel)
+						? ['antiparticle: the antineutrino', '(opposite lepton number)']
+						: ['antiparticle: opposite charge']
+	);
 	const GEN = ['', 'I', 'II', 'III'];
 	const famLine = $derived(
 		sel.family === 'quark' || sel.family === 'lepton'
@@ -110,7 +122,7 @@
 		const p = sel;
 		if (neutrino(p)) return `below ${massText(neutrinoMassLimit.v)}, not yet measured`;
 		if (p.key === 'g') return '0 (in theory)';
-		if (p.key === 'gamma') return `0 (measured: below ${sci((p.mass?.v ?? 0) * 1e6, 0)} eV)`;
+		if (p.key === 'gamma') return `0 (measured: below ${sci((p.mass?.v ?? 0) * 1e6, 1)} eV)`;
 		if (!p.mass) return '—';
 		return massText(p.mass.v);
 	});
@@ -356,18 +368,8 @@
 			{/if}
 		</Readout>
 		<Readout id="p-anti">
-			<T
-				x={CX}
-				y={420}
-				text={sel.family === 'gauge' || sel.family === 'scalar'
-					? sel.key === 'W'
-						? 'W⁺ and W⁻ are each other’s'
-						: 'its own antiparticle'
-					: `antiparticle: opposite charge`}
-				size={12}
-				muted
-			/>
-			{#if sel.key === 'W'}<T x={CX} y={437} text="antiparticles" size={12} muted />{/if}
+			<T x={CX} y={420} text={antiLines[0]} size={12} muted />
+			{#if antiLines[1]}<T x={CX} y={437} text={antiLines[1]} size={12} muted />{/if}
 			<T x={CX} y={550} text="Tap any particle." size={12} muted />
 			<T x={CX} y={568} text="Data: PDG 2026" size={11} muted />
 		</Readout>

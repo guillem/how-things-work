@@ -169,7 +169,7 @@
 		<T
 			x={480}
 			y={60}
-			text="Zooming in (not to scale: each step is 10 to 10,000 times smaller)"
+			text="Zooming in (not to scale: each step is a few to 100,000 times smaller)"
 			anchor="middle"
 			size={13}
 			muted

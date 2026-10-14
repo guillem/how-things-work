@@ -155,6 +155,21 @@ test('every decay PDG has observed passes every check', () => {
 	expect(l.before).not.toBe(l.after);
 });
 
+test('the listed decays cover essentially every decay of each particle', () => {
+	// The checker labels any allowed build missing from the list as rare: the list must not
+	// leave out a common real decay (K⁺ → π⁺π⁰π⁰, 1.76 %, once was).
+	const k = checkDecay('K+', ['pi+', 'pi0', 'pi0']);
+	expect(k.allowed).toBe(true);
+	expect(k.mode?.fraction).toBeCloseTo(0.0176, 3);
+	const parents = new Set(modes.filter((m) => !m.limit).map((m) => m.parent));
+	for (const parent of parents) {
+		const total = modes
+			.filter((m) => m.parent === parent && !m.limit)
+			.reduce((s, m) => s + m.fraction, 0);
+		expect(total, parent).toBeGreaterThanOrEqual(0.99);
+	}
+});
+
 test('every vertex of every process conserves charge, baryon number and lepton numbers', () => {
 	for (const p of Object.values(PROCESSES)) {
 		const first = ledger(p.stages[0]);

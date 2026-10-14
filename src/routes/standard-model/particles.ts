@@ -754,7 +754,7 @@ export function sci(v: number, digits = 2): string {
 	const e = Math.floor(Math.log10(Math.abs(v)));
 	if (e >= -2 && e <= 4) return Number(v.toPrecision(digits + 1)).toLocaleString('en-US');
 	const m = v / 10 ** e;
-	return `${m.toFixed(digits - 1)} × 10${sup(e)}`;
+	return `${m.toFixed(Math.max(0, digits - 1))} × 10${sup(e)}`;
 }
 
 /** Mass for display: "938.3 MeV", "80.4 GeV", "2.16 MeV". */

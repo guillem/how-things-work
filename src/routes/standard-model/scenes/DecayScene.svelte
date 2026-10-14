@@ -137,8 +137,8 @@
 		if (!products.length) return [];
 		if (check.allowed)
 			return [
-				'Not in the PDG’s list of this',
-				'particle’s decays: rare, if it happens,',
+				'Not among the decays listed here',
+				'(a selection from the PDG): it may be rare,',
 				'or blocked by a rule not checked here.'
 			];
 		return ['Never seen.'];
