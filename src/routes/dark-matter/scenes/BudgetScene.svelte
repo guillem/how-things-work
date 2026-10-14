@@ -36,7 +36,7 @@
 	const GROUPS: Record<string, { title: string; note: string; y: number }> = {
 		galaxies: {
 			title: 'Galaxy rotation curves',
-			note: 'best-fit halo inside the last measured point',
+			note: 'at least: best-fit halo inside the last measured point only',
 			y: 92
 		},
 		bullet: { title: 'Lensing by a cluster', note: 'Hubble field of the Bullet Cluster', y: 288 },
