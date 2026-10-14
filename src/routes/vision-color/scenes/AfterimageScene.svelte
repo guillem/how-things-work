@@ -11,7 +11,8 @@
 	 */
 	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { afterimage, conesOfRGB, cssColour } from '../colour';
+	import { cssColour } from '../colour';
+	import { AFTER_DISCS as DISCS, AFTER_GREY as GREY, afterimageOf } from './ui';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -22,20 +23,8 @@
 	const greyAmt = $derived(forced ? 1 : smoothstep(STARE, STARE + 0.3, tc));
 	const left = $derived(Math.max(0, Math.ceil(STARE - tc)));
 
-	const GREY: [number, number, number] = [128, 128, 128];
 	const greyCss = `rgb(${GREY.join(', ')})`;
-	const DISCS = [
-		{ id: 'cyan', name: 'cyan', rgb: [0, 190, 190], x: 360, y: 190, after: 'reddish' },
-		{ id: 'yellow', name: 'yellow', rgb: [225, 205, 0], x: 600, y: 190, after: 'bluish' },
-		{ id: 'magenta', name: 'magenta', rgb: [205, 40, 205], x: 480, y: 344, after: 'greenish' }
-	] as const;
-	/** How far adaptation goes in a 20 s stare: an illustrative value, not a measurement. */
-	const STRENGTH = 0.3;
-	const grey = conesOfRGB(...GREY);
-	const predicted = DISCS.map((d) => ({
-		...d,
-		css: cssColour(afterimage(conesOfRGB(d.rgb[0], d.rgb[1], d.rgb[2]), grey, STRENGTH))
-	}));
+	const predicted = DISCS.map((d) => ({ ...d, css: cssColour(afterimageOf(d.rgb)) }));
 
 	const PANEL = { x: 180, y: 70, w: 600, h: 360 };
 	const message = $derived(
