@@ -42,7 +42,7 @@
 	/** Rotor angle (radians): 1/C of a turn per proton. */
 	const theta = $derived((n / C) * TAU);
 	const protonsDone = $derived(Math.floor(n));
-	const atpDone = $derived(Math.floor((n * 3) / C));
+	const atpDone = $derived(Math.floor((protonsDone * 3) / C));
 	const turns = $derived(n / C);
 
 	/**
