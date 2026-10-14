@@ -123,8 +123,8 @@
 	<Readout
 		id="universe"
 		order={5}
-		label="Dashed line"
-		value="all the shapes 10¹³ tries a second could test since the Big Bang"
+		label="Dashed: all tries since the Big Bang"
+		color="var(--pf-clash)"
 	>
 		<Label
 			x={sx(N0) + 6}
@@ -154,12 +154,7 @@
 			stroke-width="2.5"
 			stroke-dasharray="7 5"
 		/>
-		<Readout
-			id="k3"
-			order={6}
-			label="Red curve: 3 positions per amino acid"
-			color="var(--pf-helix)"
-		>
+		<Readout id="k3" order={6} label="Red: 3 positions each" color="var(--pf-helix)">
 			<Label
 				x={sx(146)}
 				y={sy(146 * log3) - 14}
@@ -169,12 +164,7 @@
 				color="var(--pf-helix)"
 			/>
 		</Readout>
-		<Readout
-			id="kgrid"
-			order={7}
-			label="Purple curve: the HP grid (dashed: long-chain law)"
-			color="var(--pf-bar)"
-		>
+		<Readout id="kgrid" order={7} label="Purple: the HP grid" color="var(--pf-bar)">
 			<Label
 				x={sx(148)}
 				y={sy(Math.log10(gridShapes(148))) + 26}

@@ -83,7 +83,7 @@
 	});
 
 	// rules: fold from straight to the example during the first 3 s, then count the contacts
-	const foldU = $derived(mode === 'rules' ? smoothstep(0.3, 3, t) : 1);
+	const foldU = $derived(mode === 'rules' && !reduced ? smoothstep(0.3, 3, t) : 1);
 	const shownAngles = $derived(
 		mode === 'rules' ? anglesOf(EXAMPLE).map((a) => a * foldU) : angles.current
 	);
@@ -132,7 +132,7 @@
 					const l = land(c.seq);
 					const tt = l.bestFolds[0];
 					const cx = 240 + k * 480;
-					const p = pointsOf(anglesOf(tt), 34, cx, 330, middleOf(tt));
+					const p = pointsOf(anglesOf(tt), 46, cx, 320, middleOf(tt));
 					return { c, pts: p, contacts: contacts(c.seq, fromTurns(tt)), best: l.best, cx };
 				})
 			: []
@@ -387,7 +387,7 @@
 					</g>
 					<Label x={p.cx} y={556} text="best fold: energy −6, the only one" size={13} />
 				</Readout>
-				<Beads seq={p.c.seq} pts={p.pts} contacts={p.contacts} r={12} />
+				<Beads seq={p.c.seq} pts={p.pts} contacts={p.contacts} r={16} />
 			{/each}
 			<line x1="480" x2="480" y1="60" y2="560" stroke="var(--stage-line)" stroke-width="1" />
 		</g>

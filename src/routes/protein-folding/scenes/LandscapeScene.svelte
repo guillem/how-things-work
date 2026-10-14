@@ -132,12 +132,7 @@
 			stroke={here ? 'var(--pf-you)' : 'none'}
 			stroke-width="3"
 		/>
-		<Readout
-			id="count-{r.energy}"
-			order={10 - r.energy}
-			label="Energy {fmt(r.energy)}"
-			value={shapes(r.shapes)}
-		>
+		<Readout id="count-{r.energy}">
 			<Label
 				x={CX + r.w / 2 + 10}
 				y={r.y + (here ? -2 : 5)}
@@ -157,6 +152,12 @@
 		/>
 	{/each}
 
+	<Readout
+		id="counts"
+		order={3}
+		label="Shapes at 0, −1, … {fmt(land.best)}"
+		value={rows.map((r) => r.shapes.toLocaleString('en-US')).join(' · ')}
+	/>
 	{#if myRow}
 		<Readout
 			id="you"

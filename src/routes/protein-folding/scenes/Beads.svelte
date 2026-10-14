@@ -73,7 +73,7 @@
 				onclick={() => onbead?.(i)}
 				onkeydown={(e) => key(e, i)}
 			>
-				<circle cx={p.x} cy={p.y} r={r + 7} fill="transparent" />
+				<circle cx={p.x} cy={p.y} r={Math.max(r + 7, r * 1.45)} fill="transparent" />
 				<circle
 					cx={p.x}
 					cy={p.y}
