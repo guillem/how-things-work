@@ -150,6 +150,32 @@ export function visible(sats: SatState[], lat: number, lon: number, mask = 10) {
 		.filter((s) => s.elevation >= mask);
 }
 
+/**
+ * Each satellite's path across the sky of a place over a day (above the horizon, sampled every
+ * `stepS` seconds): its points and the indices where a new pass starts.
+ */
+export function skyTracks(lat: number, lon: number, stepS = 900) {
+	const tracks = new Map<
+		number,
+		{
+			prn: number;
+			points: { azimuth: number; elevation: number }[];
+			breaks: number[];
+			last: number;
+		}
+	>();
+	for (let k = 0; k * stepS <= DAY; k++) {
+		for (const v of visible(constellation(k * stepS), lat, lon, 0)) {
+			let tr = tracks.get(v.prn);
+			if (!tr) tracks.set(v.prn, (tr = { prn: v.prn, points: [], breaks: [], last: -2 }));
+			if (tr.last !== k - 1 && tr.points.length) tr.breaks.push(tr.points.length);
+			tr.points.push({ azimuth: v.azimuth, elevation: v.elevation });
+			tr.last = k;
+		}
+	}
+	return [...tracks.values()];
+}
+
 // ---- linear algebra for the small normal equations --------------------------------------
 
 /** Inverse of a small square matrix (Gauss–Jordan); null if it is singular. */

@@ -253,7 +253,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Here is the real sky at the place and time you choose, with every satellite above 10°. With 8 or more in view, the GDOP is usually about 2: a range error of a couple of metres gives a fix a few metres off.</p>
 <p>Look at the spread of the fixes: it is wider in <strong>height</strong> than across the map. All the satellites are above you, none below (the Earth is in the way), so up and down are pinned less well than north, south, east and west. Your phone's height is the least accurate thing it knows.</p>
-<p>The sky is not evenly filled, either: the orbits are tilted 55°, so no satellite ever passes overhead near the poles. Away from the equator there is a gap on the side of the sky towards the nearest pole. Try London and then Antarctica.</p>`
+<p>The sky is not evenly filled, either: the orbits are tilted 55°, so no satellite ever passes overhead near the poles. The grey lines are the satellites' paths across this sky over a whole day. From London they leave a gap in the northern sky; from Antarctica the gap sits right overhead.</p>`
 		},
 		// ------------------------------------------------------------------ clocks
 		{
