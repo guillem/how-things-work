@@ -467,15 +467,15 @@
 			size={12}
 			weight={600}
 		/>
-		<Label
+		<!-- the main readout of the interaction: larger than the stage's 13 px text -->
+		<text
 			x={GL}
-			y={GYY - 30}
-			text="{sunshine.toFixed(0)} W/m²"
-			anchor="start"
-			size={22}
-			weight={700}
-			color="var(--ia-sun)"
-		/>
+			y={GYY - 26}
+			class="halo"
+			font-weight="700"
+			style:font-size="24px"
+			style:fill="var(--ia-sun)">{sunshine.toFixed(0)} W/m²</text
+		>
 		<Label
 			x={GR}
 			y={GYY - 30}

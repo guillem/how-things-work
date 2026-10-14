@@ -132,7 +132,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 
 			body: `
-<p>The record is not random. Over the last 450,000 years the warm peaks come at roughly regular intervals: about 129,000, 242,000, 333,000 and 407,000 years ago, and today. That is a beat of about <strong>100,000 years</strong>, with smaller wiggles on top.</p>
+<p>The record is not random. Over the last 450,000 years the warm peaks come about 129,000, 242,000, 333,000 and 407,000 years ago, and today. The gaps are irregular, from 74,000 to 126,000 years, but average about <strong>100,000 years</strong>, with smaller wiggles on top.</p>
 <p>The shape is lopsided, like a saw blade. Each glacial creeps in over tens of thousands of years, cooling in fits and starts as the ice sheets grow; then, in less than about 10,000 years, the cold collapses into an interglacial. These sudden endings are called <dfn data-def="The rapid end of a glacial period, when the great ice sheets melt and the climate jumps to an interglacial within a few thousand years.">terminations</dfn>.</p>
 <p>Before about 430,000 years ago the interglacials were cooler than today's. What could set such a slow, steady rhythm? Something that keeps time over hundreds of thousands of years: the shape of Earth's orbit.</p>`,
 			notes: `<p>The peaks are the warmest 500-year bins of each warm stretch in the Dome C record. Ice-core ages this old come from a model of how the ice flowed, pinned by a few markers of known age; EDC3 is uncertain by up to a few thousand years in the oldest part.</p>`
@@ -176,7 +176,7 @@ export const spec: ExplainerSpec = {
 			controls: [closest, ecc],
 			body: `
 <p>Like a spinning top, the Earth's axis slowly swings round in a circle, once every 26,000 years or so: <dfn data-def="The slow turning of the direction of Earth's axis, and of the orbit, which changes the time of year when the Earth passes closest to the Sun.">precession</dfn>. Meanwhile the ellipse itself slowly turns. Together they move the seasons round the orbit, so the date of the closest pass drifts through the whole calendar, every <strong>19,000 to 23,000 years</strong>.</p>
-<p>Today the close pass falls in the northern winter, so northern summers happen far from the Sun. About 11,000 years ago it fell in late June: northern summers were close to the Sun, and their sunshine was about 50 W/m² stronger.</p>
+<p>Today the close pass falls in the northern winter, so northern summers happen far from the Sun. About 11,000 years ago it fell in late June: northern summers were close to the Sun. At today's stretch, moving the close pass from January to the June solstice alone adds about 33 W/m² to the summer sunshine.</p>
 <p>Now set the stretch to zero: on a circular orbit there is no close pass, and the wobble does nothing. The more stretched the orbit, the stronger the effect of the wobble.</p>`,
 			notes: `<p>What matters for the seasons is the climatic precession, e sin ϖ, where ϖ is the angle from the March equinox to the closest point (perihelion) seen from the Sun. Its strongest periods are 23,700, 22,400 and 19,000 years. The dates on this page use a calendar pinned to the March equinox on 20 March.</p>`
 		},
@@ -267,7 +267,7 @@ export const spec: ExplainerSpec = {
 			scene: 'co2',
 			duration: 26,
 			body: `
-<p>Bubbles in the ice are tiny samples of old air. Their CO₂ rose and fell with the Antarctic temperature through all eight cycles: about <strong>180–190 ppm</strong> at the depths of the glacial periods and <strong>250–300 ppm</strong> in the interglacials. The two curves match with a correlation of 0.9.</p>
+<p>Bubbles in the ice are tiny samples of old air. Their CO₂ rose and fell with the Antarctic temperature through all eight cycles: about <strong>180–190 ppm</strong> at the depths of the glacial periods and <strong>240–300 ppm</strong> in the interglacials. The two curves match with a correlation of 0.9.</p>
 <p>A cold ocean dissolves more CO₂, and in glacial times the deep ocean stored more carbon; as the climate warmed, it gave it back. That is the <a href="../carbon-cycle/#ocean">ocean side of the carbon cycle</a> at work. And CO₂ is a greenhouse gas, so the release warmed the planet further: the drop from 278 to 190 ppm alone is worth about −2.2 W/m². CO₂ was both a result of the warming and a cause of more of it.</p>`,
 			notes: `<p>CO₂: the Antarctic composite of Bereiter et al. (2015), <i>Geophysical Research Letters</i> 42, 542 (AICC2012 gas ages), averaged in 500-year bins, before 1850 only. The forcing uses the logarithmic rule of AR6 WG1 (3.93 W/m² per doubling). The temperature is on the EDC3 timescale and CO₂ on AICC2012, which differ by up to a few thousand years, so this page does not try to read leads or lags. How the ocean held the extra carbon (colder water, sea ice, a more sluggish deep circulation, more dust fertilising plankton) is still being worked out.</p>`
 		},

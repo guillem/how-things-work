@@ -2314,7 +2314,11 @@
 		<circle cx="74" cy="60" r="12" fill="#f59f00" />
 		<g transform="rotate(-24 160 52)">
 			<circle cx="160" cy="52" r="20" fill={accent} />
-			<path d="M143 42 A20 20 0 0 1 177 42 Z" fill="var(--ia-ice)" stroke="var(--ia-ice-edge)" />
+			<path
+				d="M145.7 38 A20 20 0 0 1 174.3 38 Z"
+				fill="var(--ia-ice)"
+				stroke="var(--ia-ice-edge)"
+			/>
 			<path d="M160 22 V82" stroke="currentColor" stroke-width="1.6" opacity="0.7" />
 		</g>
 		<path

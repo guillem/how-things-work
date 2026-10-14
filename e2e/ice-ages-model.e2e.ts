@@ -23,7 +23,8 @@ import {
 	spectrumPeriods,
 	summerSunshine,
 	terminations,
-	valueAt
+	valueAt,
+	warmPeaks
 } from '../src/routes/ice-ages/milankovitch';
 
 const PAST = orbitSeries(800, 0);
@@ -216,4 +217,97 @@ test('the summer-sunshine spectrum has almost nothing at 100,000 years', () => {
 	const amps = spectrum(s, PERIODS);
 	const at = (p: number) => amps[PERIODS.findIndex((x) => x <= p)];
 	expect(at(95)).toBeLessThan(0.1 * Math.max(...amps));
+});
+
+// ------------------------------------------------------------ numbers the narrative quotes
+
+test('tilt alone, across its real range, moves summer sunshine at 65° N by about 40 W/m² (8%)', () => {
+	const lo = summerSunshine({ ...TODAY, tilt: 22.1 });
+	const hi = summerSunshine({ ...TODAY, tilt: 24.5 });
+	expect(hi - lo).toBeGreaterThan(35);
+	expect(hi - lo).toBeLessThan(45);
+	expect((hi - lo) / lo).toBeCloseTo(0.08, 1);
+	expect(Math.round(summerSunshine(TODAY))).toBe(478);
+});
+
+test('today the Earth is 3.4% closer in January and gets 7% more sunlight; at e = 0.05, 22%', () => {
+	const e = TODAY.e;
+	expect((1 + e) / (1 - e) - 1).toBeCloseTo(0.034, 3);
+	expect(((1 + e) / (1 - e)) ** 2 - 1).toBeCloseTo(0.07, 2);
+	expect(((1.05 / 0.95) ** 2 - 1) * 100).toBeCloseTo(22, 0);
+});
+
+test('moving the close pass from January to the June solstice alone adds about 33 W/m² at today’s stretch', () => {
+	// perihelion longitude 270°: closest to the Sun on the June solstice
+	const june = summerSunshine({ ...TODAY, peri: 270 });
+	expect(Math.round(june - summerSunshine(TODAY))).toBe(33);
+	// and 11,000 years ago the close pass did fall in late June
+	const day = perihelionDay(orbitAt(-11));
+	expect(day).toBeGreaterThan(165);
+	expect(day).toBeLessThan(185);
+});
+
+test('21,000 years ago the whole Earth got within 0.02 W/m² of today’s sunlight', () => {
+	expect(Math.abs(globalMean(orbitAt(-21)) - globalMean(TODAY))).toBeLessThan(0.02);
+});
+
+test('warm peaks at about 129, 242, 333 and 407 thousand years ago, irregular gaps averaging ~101,000 years', () => {
+	const peaksAll = warmPeaks(TEMPERATURE, -2.5, 40);
+	const recent = peaksAll.filter((p) => p.ka < 450).map((p) => p.ka);
+	expect(recent).toHaveLength(5);
+	[3, 129, 242, 333, 407].forEach((ka, i) => expect(Math.abs(recent[i] - ka)).toBeLessThan(3));
+	const gaps = recent.slice(1).map((k, i) => k - recent[i]);
+	expect(Math.min(...gaps)).toBeCloseTo(74, -1);
+	expect(Math.max(...gaps)).toBeCloseTo(126, -1);
+	expect(Math.round((recent[4] - recent[0]) / 4)).toBe(101);
+	// eight earlier interglacials: eight cycles in 800,000 years
+	expect(peaksAll.filter((p) => p.ka > 5)).toHaveLength(8);
+	// the interglacials before ~430,000 years ago were cooler than the later ones
+	const older = peaksAll.filter((p) => p.ka > 430).map((p) => p.v);
+	const later = peaksAll.filter((p) => p.ka > 5 && p.ka < 430).map((p) => p.v);
+	expect(Math.max(...older)).toBeLessThan(Math.min(...later));
+	expect(Math.max(...older)).toBeLessThan(0);
+});
+
+test('CO₂ at about 180–190 ppm at glacial depths and 240–300 ppm in interglacials', () => {
+	const peaksAll = warmPeaks(TEMPERATURE, -2.5, 40);
+	const near = (ka: number, w: number) =>
+		CO2.filter((p) => Math.abs(p.ka - ka) <= w).map((p) => p.v);
+	for (const p of peaksAll) {
+		const top = Math.max(...near(p.ka, 6));
+		expect(top, `${p.ka} ka`).toBeGreaterThan(240);
+		expect(top).toBeLessThan(300);
+	}
+	// the coldest of each glacial, between consecutive peaks
+	for (let i = 0; i + 1 < peaksAll.length; i++) {
+		const span = CO2.filter((p) => p.ka > peaksAll[i].ka && p.ka < peaksAll[i + 1].ka);
+		const low = Math.min(...span.map((p) => p.v));
+		expect(low, `glacial before ${peaksAll[i].ka} ka`).toBeGreaterThan(170);
+		expect(low).toBeLessThan(200);
+	}
+});
+
+test('ahead: e = 0.002 about 26,000 years from now, and the next deep low of summer sunshine in about 54,000', () => {
+	const next = orbitSeries(0, -100);
+	const round = next.reduce((a, b) => (b.o.e < a.o.e ? b : a));
+	expect(round.o.e.toFixed(3)).toBe('0.002');
+	expect(-round.ka).toBeCloseTo(26, -0.5);
+	const low = next.reduce((a, b) => (b.summer < a.summer ? b : a));
+	expect(-low.ka).toBeCloseTo(54, -0.5);
+});
+
+test('climatic precession: strongest periods 23,700, 22,400 and 19,000 years', () => {
+	const ps = peaks(
+		spectrumPeriods(2000, 15, 30),
+		spectrum(
+			PAST.map((p) => climaticPrecession(p.o)),
+			spectrumPeriods(2000, 15, 30)
+		)
+	)
+		.slice(0, 3)
+		.map((p) => p.period)
+		.sort((a, b) => b - a);
+	expect(ps[0]).toBeCloseTo(23.7, 0);
+	expect(ps[1]).toBeCloseTo(22.4, 0);
+	expect(ps[2]).toBeCloseTo(19.0, 0);
 });
