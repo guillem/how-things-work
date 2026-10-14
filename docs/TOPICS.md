@@ -127,7 +127,7 @@ A topic is done when:
 - [x] states-of-matter
 - [x] reaction-rates-equilibrium
 - [x] acids-bases
-- [ ] redox-batteries
+- [x] redox-batteries
 - [ ] carbon-polymers
 - [x] semiconductors
 
