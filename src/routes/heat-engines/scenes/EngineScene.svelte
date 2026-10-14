@@ -22,9 +22,9 @@
 	import { Axes, Label, cycle, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { CRANK, ROD, diesel, engineAt, loop, otto, ottoEfficiency, type Stroke } from '../engine';
-	import Card, { type Row } from './Card.svelte';
+	import Card from './Card.svelte';
 	import Gas from './Gas.svelte';
-	import { bar, fmt, pct } from './colors';
+	import { bar, fmt, pct, type Row } from './colors';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -408,7 +408,7 @@
 		xLabel="volume (litres)"
 		yLabel="pressure (bar)"
 		xTicks={[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6]}
-		xFormat={(x) => fmt(x, 1)}
+		xFormat={(x: number) => fmt(x, 1)}
 	/>
 	{#if phase !== 'strokes'}
 		<path d={loopPath} fill="var(--he-loop-fill)" />

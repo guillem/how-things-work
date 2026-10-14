@@ -237,8 +237,8 @@
 		yLabel="pressure (atm)"
 		xTicks={[0, 0.25, 0.5, 0.75, 1]}
 		yTicks={[0, 1, 2]}
-		yFormat={(v) => fmt(v)}
-		xFormat={(v) => fmt(v, 2)}
+		yFormat={(v: number) => fmt(v)}
+		xFormat={(v: number) => fmt(v, 2)}
 	/>
 	{#if phase === 'push'}
 		<path d={pushArea} fill="var(--he-work)" opacity="0.22" />

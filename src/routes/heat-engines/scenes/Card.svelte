@@ -5,15 +5,8 @@
 	 * rows are listed under the stage instead.
 	 */
 	import { Readout } from '#lib/explainer/index.ts';
+	import type { Row } from './colors';
 
-	export interface Row {
-		id: string;
-		label: string;
-		value: string;
-		color?: string;
-		strong?: boolean;
-		note?: string;
-	}
 	interface Props {
 		x: number;
 		y: number;
