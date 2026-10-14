@@ -2577,3 +2577,54 @@ kbd {
 	--mi-t-muscle: #ff6b6b;
 	--mi-t-blood: #4dabf7;
 }
+/* nuclear fission */
+:root {
+	--nf-u235: #e8590c;
+	--nf-u238: #868e96;
+	--nf-proton: #e03131;
+	--nf-neutron: #495057;
+	--nf-fast: #d6336c;
+	--nf-slow: #1c7ed6;
+	--nf-light: #2f9e44;
+	--nf-heavy: #7048e8;
+	--nf-flash: #f59f00;
+	--nf-captured: #868e96;
+	--nf-escaped: #c2255c;
+	--nf-water: #d0ebff;
+	--nf-water-edge: #74c0fc;
+	--nf-fuel: #ffd8a8;
+	--nf-fuel-edge: #e8590c;
+	--nf-rod: #343a40;
+	--nf-curve: #1864ab;
+	--nf-energy: #f08c00;
+	--nf-neutrino: #adb5bd;
+	--nf-sub: #1971c2;
+	--nf-crit: #2f9e44;
+	--nf-super: #e03131;
+	--nf-band: #d3f9d8;
+}
+:root[data-theme='dark'] {
+	--nf-u235: #ff922b;
+	--nf-u238: #adb5bd;
+	--nf-proton: #ff6b6b;
+	--nf-neutron: #ced4da;
+	--nf-fast: #f783ac;
+	--nf-slow: #4dabf7;
+	--nf-light: #69db7c;
+	--nf-heavy: #b197fc;
+	--nf-flash: #ffd43b;
+	--nf-captured: #868e96;
+	--nf-escaped: #f06595;
+	--nf-water: #1c3a52;
+	--nf-water-edge: #339af0;
+	--nf-fuel: #5c3d1e;
+	--nf-fuel-edge: #ff922b;
+	--nf-rod: #adb5bd;
+	--nf-curve: #74c0fc;
+	--nf-energy: #ffc078;
+	--nf-neutrino: #868e96;
+	--nf-sub: #4dabf7;
+	--nf-crit: #69db7c;
+	--nf-super: #ff6b6b;
+	--nf-band: #1f3d26;
+}

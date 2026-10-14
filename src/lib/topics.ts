@@ -798,6 +798,15 @@ const explainers: Explainer[] = [
 		accent: '#1971c2',
 		steps: 14,
 		minutes: 24
+	},
+	{
+		slug: 'nuclear-fission',
+		title: 'Nuclear fission',
+		summary:
+			'Fire a neutron at a uranium-235 nucleus and watch it split, read where the energy comes from on the curve of binding energy, then run a reactor core: set the fuel, the water and the control rods to hold the chain reaction at exactly one new fission per fission.',
+		accent: '#1864ab',
+		steps: 12,
+		minutes: 22
 	}
 ];
 
