@@ -117,7 +117,7 @@ A topic is done when:
 - [x] light-optics
 - [x] entropy
 - [x] special-relativity
-- [ ] quantum-mechanics
+- [x] quantum-mechanics
 - [ ] standard-model
 
 **Chemistry & Materials**
