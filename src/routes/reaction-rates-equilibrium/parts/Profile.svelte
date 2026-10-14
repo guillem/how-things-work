@@ -141,7 +141,7 @@
 		stroke-dasharray="3 3"
 	/>
 	<line x1={sx(0.14)} x2={sx(0.5)} y1={sy(0)} y2={sy(0)} stroke="var(--stage-grid)" />
-	<Readout id="{id}-ea" order={20} label="Barrier, forward" value="{Math.round(ea)} kJ/mol">
+	<Readout id="{id}-ea">
 		<Label
 			x={sx(climbTo(ea * 0.5, ea)) - 10}
 			y={sy(ea * 0.5)}
@@ -162,7 +162,7 @@
 			stroke-dasharray="3 3"
 		/>
 		<line x1={sx(0.5)} x2={sx(0.86)} y1={sy(dh)} y2={sy(dh)} stroke="var(--stage-grid)" />
-		<Readout id="{id}-er" order={21} label="Barrier, reverse" value="{Math.round(ea - dh)} kJ/mol">
+		<Readout id="{id}-er">
 			<Label
 				x={sx(1 - climbTo(ea * 0.5, ea)) + 10}
 				y={sy(ea * 0.5)}

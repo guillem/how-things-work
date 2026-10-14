@@ -62,7 +62,7 @@
 	});
 
 	// ---- react: one successful collision every P2 seconds ----------------------------
-	const v = $derived((t % P2) / P2);
+	const v = $derived(((t + 0.5) % P2) / P2); // t = 2.5 (reduced motion) is the transition state
 	const reacting = $derived.by(() => {
 		// 0–0.3 approach, 0.3–0.5 into the transition state, 0.5–0.8 apart, then fade.
 		const appr = smoothstep(0, 0.3, v);
