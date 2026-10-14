@@ -447,6 +447,15 @@ const explainers: Explainer[] = [
 		accent: '#d9480f',
 		steps: 8,
 		minutes: 15
+	},
+	{
+		slug: 'embeddings',
+		title: 'Embeddings: meaning as position',
+		summary:
+			'Explore a map of 3,292 real word vectors where related words cluster, search for any of them to see its nearest neighbours, work out king − man + woman, and compare sentences by the angle between them.',
+		accent: '#862e9c',
+		steps: 11,
+		minutes: 20
 	}
 ];
 

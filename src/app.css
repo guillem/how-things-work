@@ -1043,3 +1043,48 @@ kbd {
 	--hm-gut: #fcc419;
 	--hm-urine: #ffe066;
 }
+
+/* embeddings: the two compared words, the analogy sum and its result, positive/negative bars,
+   warnings, and 12 cluster hues for the word map */
+:root {
+	--emb-a: #1971c2;
+	--emb-b: #e8590c;
+	--emb-sum: #862e9c;
+	--emb-result: #2b8a3e;
+	--emb-pos: #1971c2;
+	--emb-neg: #e8590c;
+	--emb-warn: #c92a2a;
+	--emb-c0: #e03131;
+	--emb-c1: #1971c2;
+	--emb-c2: #2f9e44;
+	--emb-c3: #9c36b5;
+	--emb-c4: #f08c00;
+	--emb-c5: #0c8599;
+	--emb-c6: #c2255c;
+	--emb-c7: #66a80f;
+	--emb-c8: #6741d9;
+	--emb-c9: #e8590c;
+	--emb-c10: #099268;
+	--emb-c11: #3b5bdb;
+}
+:root[data-theme='dark'] {
+	--emb-a: #4dabf7;
+	--emb-b: #ffa94d;
+	--emb-sum: #da77f2;
+	--emb-result: #69db7c;
+	--emb-pos: #4dabf7;
+	--emb-neg: #ffa94d;
+	--emb-warn: #ff8787;
+	--emb-c0: #ff8787;
+	--emb-c1: #4dabf7;
+	--emb-c2: #69db7c;
+	--emb-c3: #da77f2;
+	--emb-c4: #ffd43b;
+	--emb-c5: #3bc9db;
+	--emb-c6: #f783ac;
+	--emb-c7: #a9e34b;
+	--emb-c8: #9775fa;
+	--emb-c9: #ffa94d;
+	--emb-c10: #38d9a9;
+	--emb-c11: #748ffc;
+}
