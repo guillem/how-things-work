@@ -151,10 +151,10 @@ const mission: Control = {
 	label: 'Mission',
 	default: 'mars',
 	options: [
-		{ value: 'leo', label: 'Low Earth orbit' },
-		{ value: 'geo', label: 'Geostationary orbit' },
-		{ value: 'escape', label: 'Out to Mars (flyby)' },
-		{ value: 'mars', label: 'Into orbit round Mars' }
+		{ value: 'leo', label: 'Low orbit' },
+		{ value: 'geo', label: 'Geostationary' },
+		{ value: 'escape', label: 'Fly past Mars' },
+		{ value: 'mars', label: 'Orbit Mars' }
 	]
 };
 
@@ -226,7 +226,7 @@ export const spec: ExplainerSpec = {
 <p>From the previous topic: a low orbit is falling round the Earth, at about <strong>7.8 km/s</strong> sideways, 200 km up. Getting there costs more than that. Here is Apollo 11's Saturn V, flown with its real stage masses and engines through the real atmosphere.</p>
 <p>The engines push it straight up at first, and in those first minutes much of their effort only holds the rocket up against gravity: that is the <dfn data-def="Speed the engines give that gravity takes back while the rocket is still climbing. It is largest early on, when the rocket climbs steeply and slowly.">gravity loss</dfn>. So the rocket tilts over as soon as it can, in a <dfn data-def="A climb in which the engines push along the direction of travel and gravity slowly bends the path over towards horizontal.">gravity turn</dfn>. Air drag takes a little more, and steering — pushing partly upwards rather than along the path — some more. The Earth's spin gives back 0.4 km/s for free when the rocket heads east.</p>
 <p>The bars tally the budget. The engines give over 9 km/s; only about 7.4 of it ends up as speed. In the real flight Apollo 11 entered its parking orbit at 7,793 m/s, 191 km up, 11 minutes 49 seconds after liftoff.</p>`,
-			notes: `<p>The model: a point mass in one plane over a round, spinning Earth; Newton's gravity; drag ½ρv²C<sub>d</sub>A with the density of the U.S. Standard Atmosphere 1976 and a constant C<sub>d</sub> = 0.5; stage masses, flow rates and exhaust speeds from NASA's AS-506 flight evaluation report. The first stage's exhaust is slower at sea level, where the air pushes back on it, than in the near-vacuum higher up. Simplifications: the flight heads due east (Apollo 11 flew a 72° heading), the first stage's centre engine isn't shut down early, and the tilt is chosen by the model, so the times differ by up to a minute from the real flight.</p>`
+			notes: `<p>The model: a point mass in one plane over a round, spinning Earth; Newton's gravity; drag ½ρv²C<sub>d</sub>A with the density of the U.S. Standard Atmosphere 1976 and a constant C<sub>d</sub> = 0.5; stage masses, flow rates and exhaust speeds from NASA's AS-506 flight evaluation report. The steering loss starts large because the rocket rises straight up while the spinning Earth is already carrying it east at 0.4 km/s, so its push is at first across its direction of travel. The first stage's exhaust is slower at sea level, where the air pushes back on it, than in the near-vacuum higher up. Simplifications: the flight heads due east (Apollo 11 flew a 72° heading), the first stage's centre engine isn't shut down early, and the tilt is chosen by the model, so the times differ by up to a minute from the real flight.</p>`
 		},
 		{
 			id: 'staging',

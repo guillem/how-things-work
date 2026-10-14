@@ -223,7 +223,6 @@
 			weight={600}
 			color="var(--rk-flame)"
 		/>
-		<T x={CX} y={CY + 4 + R_EARTH * K + 14} text="Earth" size={11} anchor="middle" muted />
 		<T
 			x={PANEL.x + 20}
 			y={PANEL.y + PANEL.h - 30}

@@ -362,13 +362,7 @@
 					fill={s.color}
 					opacity="0.85"
 				/>
-				<Readout
-					id="leg-{s.id}"
-					order={10 + i}
-					label={s.label}
-					value="{fmt(s.dv / 1000, 2)} km/s"
-					color={s.color}
-				>
+				<Readout id="leg-{s.id}">
 					<T x={s.x + 2} y={PANEL.y + 86 + (i % 2) * 30} text={s.label} size={11} muted />
 					<T
 						x={s.x + 2}
@@ -417,9 +411,9 @@
 				{/if}
 			{/each}
 			<T
-				x={SQ.x + Math.max(base, 10) + 8}
-				y={SQ.y - 4}
-				text={base > 8 ? '1 t arrives' : '1 t arrives (the dot)'}
+				x={SQ.x}
+				y={SQ.y + 16}
+				text={base > 8 ? '1 t arrives (blue)' : '1 t arrives (the blue dot)'}
 				size={12}
 				weight={600}
 				color="var(--rk-payload)"
@@ -704,7 +698,14 @@
 			stroke="var(--surface)"
 			stroke-width="1.5"
 		/>
-		<Readout id="ty-dv" order={1} label="Δv" value="{fmt(target, 1)} km/s">
+		<Readout
+			id="ty-dv"
+			order={1}
+			label="Δv"
+			value={phase === 'budget'
+				? `${legs.map((l) => fmt(l.dv / 1000, 2)).join(' + ')} = ${fmt(target, 1)} km/s`
+				: `${fmt(target, 1)} km/s`}
+		>
 			<T
 				x={CL}
 				y={CARD.y + 466}
