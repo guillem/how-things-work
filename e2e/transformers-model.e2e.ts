@@ -2,8 +2,9 @@
 // sentences, and the attention operation redone in TypeScript from the model's own q, k and v.
 // The results asserted are the ones the page quotes and ones published for GPT-2 small.
 import { expect, test } from '@playwright/test';
-import { attend, parameterCount, softmax } from '../src/routes/transformers/attention';
+import { attend, parameterCount, softmax, tokenLabel } from '../src/routes/transformers/attention';
 import { gpt2 } from '../src/routes/transformers/gpt2';
+import { FEATURED_TOKENS, PATTERNS, SENTENCES } from '../src/routes/transformers/steps';
 
 const at = (s: string, tok: string, from = 0) => gpt2.sentence(s).tokens.indexOf(tok, from);
 const argmax = (r: number[]) => r.indexOf(Math.max(...r));
@@ -128,5 +129,92 @@ test.describe('what heads of GPT-2 small are known to do', () => {
 		expect(c[10][60]).toBeLessThan(0.6);
 		// position 0 is special: its vector is about twice as long as the others
 		expect(gpt2.positions.norms[0]).toBeGreaterThan(1.8 * gpt2.positions.norms[5]);
+	});
+});
+
+test.describe('what the page says', () => {
+	test('the menus match the data: sentences, token counts and the featured tokens', () => {
+		expect(SENTENCES.map((x) => x.id)).toEqual(gpt2.sentences.map((x) => x.id));
+		for (const x of SENTENCES) expect(gpt2.sentence(x.id).n).toBe(x.n);
+		expect(gpt2.sentence('animal').tokens.map((x) => tokenLabel(x))).toEqual(FEATURED_TOKENS);
+	});
+
+	test('the named heads do what the patterns step says', () => {
+		const w = (p: (typeof PATTERNS)[keyof typeof PATTERNS], tok: string) => {
+			const s = gpt2.sentence(p.s);
+			return s.row(p.layer, p.head, p.tok)[s.tokens.indexOf(tok)];
+		};
+		const P = PATTERNS;
+		expect(
+			gpt2.sentence(P.previous.s).row(P.previous.layer, P.previous.head, P.previous.tok)[
+				P.previous.tok - 1
+			]
+		).toBeGreaterThan(0.95);
+		expect(gpt2.sentence(P.subject.s).tokens[P.subject.tok]).toBe(' are');
+		expect(w(P.subject, ' keys')).toBeCloseTo(0.85, 2);
+		expect(gpt2.sentence(P.induction.s).tokens[P.induction.tok]).toBe(' fox');
+		expect(w(P.induction, ' jumps')).toBeCloseTo(0.96, 2);
+		expect(w(P.names, ' Mary')).toBeCloseTo(0.67, 2);
+		expect(w(P.start, '<|endoftext|>')).toBeCloseTo(0.98, 2);
+		// the resting head is an induction head on the fox sentence
+		const fox = gpt2.sentence('fox');
+		expect(
+			fox.row(P.start.layer, P.start.head, P.induction.tok)[fox.tokens.indexOf(' jumps')]
+		).toBeCloseTo(0.8, 2);
+	});
+
+	test('the featured head: a lead of 3.2 in score is 24 times the weight', () => {
+		const st = gpt2.featuredStep(at('animal', ' it'));
+		const sorted = [...st.scores].sort((a, b) => b - a);
+		expect(sorted[0]).toBeCloseTo(1.06, 2);
+		expect(sorted[1]).toBeLessThan(-2);
+		expect(sorted[0] - sorted[1]).toBeCloseTo(3.2, 1);
+		expect(st.weights[0]).toBeCloseTo(0.04, 2);
+		// "didn", "cross" and "was" also look at "animal"; "The" and "street" at ⟨start⟩
+		for (const tk of [' didn', ' cross', ' was'])
+			expect(argmax(gpt2.featuredStep(at('animal', tk)).weights)).toBe(at('animal', ' animal'));
+		for (const tk of ['The', ' street'])
+			expect(argmax(gpt2.featuredStep(at('animal', tk)).weights)).toBe(0);
+	});
+
+	test('position 10 against 11, 30 and 63', () => {
+		const c = gpt2.positions.cos[10];
+		expect(c[11]).toBeCloseTo(0.998, 3);
+		expect(c[30]).toBeCloseTo(0.78, 2);
+		expect(c[63]).toBeCloseTo(0.4, 2);
+	});
+
+	test('later layers reach further back than the first five', () => {
+		const reach = (layers: number[]) => {
+			let d = 0;
+			let w = 0;
+			for (const s of gpt2.sentences)
+				for (const l of layers)
+					for (let h = 0; h < 12; h++)
+						for (let i = 2; i < s.n; i++)
+							s.row(l, h, i).forEach((x, j) => {
+								if (j >= 1 && j <= i) {
+									d += x * (i - j);
+									w += x;
+								}
+							});
+			return d / w;
+		};
+		const early = reach([0, 1, 2, 3, 4]);
+		const late = reach([9, 10, 11]);
+		expect(early).toBeGreaterThan(2);
+		expect(early).toBeLessThan(3);
+		expect(late).toBeGreaterThan(3.5);
+		expect(late).toBeLessThan(4.6);
+	});
+
+	test('the stack step: Italy after “Rome is the capital of”, and the parameter split', () => {
+		const c = gpt2.sentence('capital');
+		expect(c.next[0].token).toBe(' Italy');
+		expect(c.next[0].p).toBeCloseTo(0.35, 2);
+		const p = parameterCount(gpt2.config);
+		expect(gpt2.config.vocab * gpt2.config.dModel).toBe(38_597_376);
+		expect(p.attention).toBe(2_362_368);
+		expect(p.mlp).toBe(4_722_432);
 	});
 });

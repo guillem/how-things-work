@@ -285,7 +285,7 @@ export const spec: ExplainerSpec = {
 <li><strong>The noun</strong> (layer 5, head 4): <em>are</em> looks at <em>keys</em> (0.85), not at the nearer <em>cabinet</em>; the verb has to agree with the keys.</li>
 <li><strong>Induction</strong> (layer 6, head 6): the second <em>fox</em> looks at <em>jumps</em> (0.96), the token that came after the first <em>fox</em>. This head finds “what came next last time”, and GPT-2 then predicts <em>over</em> with 98% confidence.</li>
 <li><strong>Name mover</strong> (layer 10, head 10): at the final <em>to</em> it looks at <em>Mary</em> (0.67), the name that has not yet been given anything, and GPT-2 predicts <em>Mary</em> with 68%.</li>
-<li><strong>Resting</strong> (layer 6, head 2, on the animal sentence): 0.98 of the attention of <em>it</em> goes to ⟨start⟩. On the fox sentence the same head is an induction head (0.82 from the second <em>fox</em> to <em>jumps</em>): it rests until there is something to copy.</li>
+<li><strong>Resting</strong> (layer 6, head 2, on the animal sentence): 0.98 of the attention of <em>it</em> goes to ⟨start⟩. On the fox sentence the same head is an induction head (0.80 from the second <em>fox</em> to <em>jumps</em>): it rests until there is something to copy.</li>
 </ul>`,
 			notes: `<p>The induction head works together with a previous-token head in an earlier layer: that head copies “the token before me was <em>fox</em>” into the vector of <em>jumps</em>, so that the induction head's query, at the second <em>fox</em>, can match it (Olsson and colleagues, “In-context learning and induction heads”, 2022). The name movers belong to a circuit of about 26 heads that GPT-2 small uses to complete such sentences (Wang and colleagues, “Interpretability in the wild”, 2022). Both papers count layers and heads from 0: our layer 6, head 6 is their head 5.5.</p>`
 		},
@@ -302,7 +302,7 @@ export const spec: ExplainerSpec = {
 <p>A layer of GPT-2, a <dfn data-def="One layer of a transformer: an attention step (tokens exchange information) followed by an MLP (each token processed on its own), each added back to the token's vector.">transformer block</dfn>, is two parts. First the 12 attention heads, where the tokens exchange information. Then a small <a href="../neural-networks/">neural network</a> (an MLP, 768 → 3,072 → 768 neurons) that works on each token's vector on its own. Both add their result to the token's vector.</p>
 <p>GPT-2 small stacks 12 such blocks. Each token's vector flows up through all of them, picking up a little more context at every layer. At the top, the vector of the last token is compared with all 50,257 token embeddings to give a probability for each possible next token: for “… Rome is the capital of”, GPT-2 says <em>Italy</em> (35%).</p>
 <p>All of it is 124,439,808 learned numbers: 38.6 million in the token embeddings, 0.8 million in the positions, and 7.1 million in each block, of which 2.4 million are attention.</p>`,
-			notes: `<p>Bigger language models are the same design with more of everything: GPT-3 has 96 blocks of 96 heads and 12,288 numbers per token. How such a model turns next-token probabilities into text is the subject of the <a href="../language-models/">large language models</a> page.</p>`
+			notes: `<p>Bigger language models are the same design with more of everything: GPT-3 has 96 blocks of 96 heads and 12,288 numbers per token. How such a model turns next-token probabilities into text is the subject of the topic on large language models.</p>`
 		},
 		{
 			id: 'summary',
