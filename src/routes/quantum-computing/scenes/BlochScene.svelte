@@ -49,7 +49,7 @@
 	const R = 195;
 	const DEG = Math.PI / 180;
 	const thetaDeg = $derived(clamp(Number(params.theta ?? 60), 0, 180));
-	const phiDeg = $derived((((Number(params.phi ?? 0) % 360) + 360) % 360) as number);
+	const phiDeg = $derived(((Number(params.phi ?? 0) % 360) + 360) % 360);
 	const vState = $derived<Vec3>([
 		Math.sin(thetaDeg * DEG) * Math.cos(phiDeg * DEG),
 		Math.sin(thetaDeg * DEG) * Math.sin(phiDeg * DEG),
@@ -57,8 +57,7 @@
 	]);
 
 	// ---- presses ------------------------------------------------------------------------
-	const GATE_KEYS = ['X', 'H', 'Z', 'S', 'T'] as const;
-	type G = (typeof GATE_KEYS)[number];
+	type G = 'X' | 'H' | 'Z' | 'S' | 'T';
 	const ACTIONS = [
 		'gateX',
 		'gateH',
