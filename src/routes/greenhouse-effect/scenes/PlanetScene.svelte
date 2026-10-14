@@ -440,7 +440,7 @@
 			<Label
 				x={636}
 				y={44}
-				text={view === 'bare' ? 'A planet with no air' : 'The real Earth'}
+				text={view === 'bare' ? 'No infrared-absorbing gases' : 'The real Earth'}
 				anchor="start"
 				size={15}
 				weight={700}
@@ -577,7 +577,13 @@
 				<Label x={636} y={220} text="240 sunlight in ≈ 239 infrared out" anchor="start" size={12} />
 				<Label x={636} y={252} text="At the surface:" anchor="start" size={12} weight={700} />
 				<Label x={636} y={272} text="160 sunlight + 342 infrared in" anchor="start" size={12} />
-				<Label x={636} y={290} text="≈ 398 infrared + 103 warm air out" anchor="start" size={12} />
+				<Label
+					x={636}
+					y={290}
+					text="≈ 398 infrared + 103 evaporation and warm air"
+					anchor="start"
+					size={12}
+				/>
 				<Label x={636} y={326} text="W/m², AR6 Fig. 7.2" anchor="start" size={11} muted />
 			</Readout>
 		{/if}
