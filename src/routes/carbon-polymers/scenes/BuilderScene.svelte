@@ -180,7 +180,7 @@
 	const skeletonBonds = $derived(build.ring ? build.n : build.n - 1);
 	function bondLabel(i: number) {
 		if (i >= skeletonBonds || !isBondFeature(build.feature) || build.aromatic) return null;
-		const f = build.feature!;
+		const f = build.feature;
 		if (i === build.at - 1) return `Remove the ${KIND[f]}`;
 		return `Move the ${KIND[f]} to carbons ${i + 1}–${((i + 1) % build.n) + 1}`;
 	}
@@ -267,16 +267,16 @@
 	};
 	const bondKinds = $derived.by(() => {
 		const full = withHydrogens(structure);
-		const seen = new Set<string>();
+		const seen: string[] = [];
 		for (const b of full.bonds) {
 			const [p, q] = [full.atoms[b.a].el, full.atoms[b.b].el].sort((x, y) =>
 				x === 'C' ? -1 : y === 'C' ? 1 : x === 'H' ? 1 : y === 'H' ? -1 : 0
 			);
 			const sym = b.order === 1.5 ? '⋯' : b.order === 2 ? '=' : b.order === 3 ? '≡' : '–';
 			const k = `${p}${sym}${q}`;
-			if (k in BOND_PM) seen.add(k);
+			if (k in BOND_PM) seen.push(k);
 		}
-		return Object.keys(BOND_PM).filter((k) => seen.has(k));
+		return Object.keys(BOND_PM).filter((k) => seen.includes(k));
 	});
 	const bondLine = $derived(
 		bondKinds.map((k) => `${k === 'C⋯C' ? 'ring C–C' : k} ${BOND_PM[k]}`).join(' · ') + ' pm'
