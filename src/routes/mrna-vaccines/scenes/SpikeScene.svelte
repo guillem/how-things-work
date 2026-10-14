@@ -14,7 +14,8 @@
 	 */
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Label, cycle, smoothstep } from '#lib/draw/index.ts';
+	import { cycle, smoothstep } from '#lib/draw/index.ts';
+	import Tag from './Tag.svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { codonToAmino } from '../../dna-to-protein/genetics';
 	import { SHAPES as IMMUNE } from '../../immune-system/shapes';
@@ -69,7 +70,7 @@
 		stroke="var(--membrane-edge)"
 	/>
 	<Readout id="membrane">
-		<Label x={50} y={MEM + 40} text="the virus’s membrane" size={11} anchor="start" muted />
+		<Tag x={50} y={MEM + 40} text="the virus’s membrane" size={11} anchor="start" muted />
 	</Readout>
 
 	<!-- before: S2 then S1, fading out as it springs -->
@@ -131,7 +132,7 @@
 		<g
 			transform="translate({SX + 10} {top -
 				(ab.bottom - 0.5) * K * 0.98 +
-				26}) rotate(180) scale({K})"
+				64}) rotate(180) scale({K})"
 		>
 			{#each ab.groups as g (g.name)}
 				<path
@@ -156,7 +157,7 @@
 			: 'springs into its after shape: the S1 heads fall away, S2 becomes a needle'}
 	>
 		{#if pro}
-			<Label
+			<Tag
 				x={SX + 110}
 				y={MEM - 120}
 				text="before shape, held"
@@ -164,7 +165,7 @@
 				weight={600}
 				anchor="start"
 			/>
-			<Label
+			<Tag
 				x={SX + 110}
 				y={MEM - 100}
 				text="S1 heads (orange) ready to grip a cell"
@@ -172,8 +173,8 @@
 				anchor="start"
 				muted
 			/>
-			<Label x={SX + 110} y={MEM - 84} text="S2 stalk (yellow)" size={11} anchor="start" muted />
-			<Label
+			<Tag x={SX + 110} y={MEM - 84} text="S2 stalk (yellow)" size={11} anchor="start" muted />
+			<Tag
 				x={SX + 110}
 				y={top - 60}
 				text="antibody (same scale)"
@@ -181,9 +182,9 @@
 				anchor="start"
 				color="var(--im-antibody)"
 			/>
-			<Label x={SX + 110} y={top - 44} text="blocks the head" size={11} anchor="start" muted />
+			<Tag x={SX + 110} y={top - 44} text="blocks the head" size={11} anchor="start" muted />
 		{:else}
-			<Label
+			<Tag
 				x={SX + 110}
 				y={MEM - 120}
 				text={sprung > 0.5 ? 'after shape: a long needle' : 'before shape… springing'}
@@ -191,7 +192,7 @@
 				weight={600}
 				anchor="start"
 			/>
-			<Label
+			<Tag
 				x={SX + 110}
 				y={MEM - 100}
 				text="antibodies against this shape"
@@ -199,7 +200,7 @@
 				anchor="start"
 				muted
 			/>
-			<Label
+			<Tag
 				x={SX + 110}
 				y={MEM - 84}
 				text="mostly fail to block the virus"
@@ -218,8 +219,8 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-width="2"
 		/>
-		<Label x={60 + 5 * K} y={60} text="10 nm" size={11} muted />
-		<Label x={60} y={90} text="traced from PDB 6VSB, 6XRA, 1IGT" size={11} anchor="start" muted />
+		<Tag x={60 + 5 * K} y={60} text="10 nm" size={11} muted />
+		<Tag x={60} y={90} text="traced from PDB 6VSB, 6XRA, 1IGT" size={11} anchor="start" muted />
 	</Readout>
 
 	<!-- the codons -->
@@ -231,7 +232,7 @@
 			? 'AAA GUU (lysine, valine) in the virus → CCU CCU (proline, proline) in the vaccine'
 			: 'AAA GUU: lysine, valine, as in the virus'}
 	>
-		<Label
+		<Tag
 			x={QX0 + (8 * QW) / 2}
 			y={170}
 			text="codons {SEQUENCE.windowFrom}–{SEQUENCE.windowFrom + 7} of the spike"
@@ -242,7 +243,7 @@
 			<text
 				x={QX0 - 10}
 				y={232 + j * 92}
-				font-size="13"
+				style:font-size="13px"
 				text-anchor="end"
 				font-weight={(j === 1) === pro ? 600 : 400}>{row}</text
 			>
@@ -261,13 +262,13 @@
 					opacity="0.12"
 				/>
 			{/if}
-			<text {x} y={204} font-size="10" text-anchor="middle" class="muted">{c.n}</text>
+			<text {x} y={204} style:font-size="10px" text-anchor="middle" class="muted">{c.n}</text>
 			{#each [{ cod: c.virus, aa: c.aaV, j: 0 }, { cod: c.vaccine, aa: c.aaP, j: 1 }] as r (r.j)}
 				<g opacity={(r.j === 1) === pro ? 1 : 0.45}>
 					<text
 						{x}
 						y={232 + r.j * 92}
-						font-size="14"
+						style:font-size="14px"
 						text-anchor="middle"
 						font-family="ui-monospace, monospace"
 						font-weight={hot ? 700 : 400}>{r.cod}</text
@@ -280,13 +281,13 @@
 						stroke={hot ? 'var(--mv-spike)' : 'var(--stage-line)'}
 						stroke-width="1.5"
 					/>
-					<text {x} y={267 + r.j * 92} font-size="13" font-weight="600" text-anchor="middle"
+					<text {x} y={267 + r.j * 92} style:font-size="13px" font-weight="600" text-anchor="middle"
 						>{r.aa}</text
 					>
 				</g>
 			{/each}
 		{/each}
-		<Label
+		<Tag
 			x={QX0 + 3 * QW}
 			y={432}
 			text={pro ? 'lysine, valine → proline, proline' : 'lysine, valine: the virus’s own spike'}
@@ -295,7 +296,7 @@
 			anchor="start"
 			color="var(--mv-spike)"
 		/>
-		<Label
+		<Tag
 			x={QX0 + 3 * QW}
 			y={452}
 			text={pro ? 'stiff prolines jam the hinge' : 'free to spring'}

@@ -282,8 +282,12 @@ function add(y: State, k: State, h: number): State {
 
 // ---------------------------------------------------------------- read-outs
 
-export { antibody, at, effectors, peak } from '../immune-system/model';
-import { antibody, peak } from '../immune-system/model';
+export { antibody, effectors, peak } from '../immune-system/model';
+import { antibody, at as atSample, peak } from '../immune-system/model';
+
+/** The point nearest to day `t` (the immune-system helper, keeping the vaccine's fields). */
+export const at = <T extends Sample>(series: readonly T[], t: number): T =>
+	atSample(series, t) as T;
 
 /** Peak antibody of the model's first infection (no vaccine), the yardstick of the charts. */
 let infectionPeak: number | null = null;
