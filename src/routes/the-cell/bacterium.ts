@@ -4,8 +4,9 @@
  * Sizes: cells ≈ 1 µm wide and 2 µm long (BNID 101788, 100002), drawn
  * 1.6–3 µm long as they grow before dividing; flagella ≈ 20 nm thick and
  * 5–10 µm long (BNID 100096, 100095), a helix 0.5 µm across with a 2.5 µm
- * pitch (BNID 109341). Envelope: outer membrane, a periplasm 11–15 nm wide
- * (BNID 100016) holding the 6.35 nm peptidoglycan wall (BNID 105385), and the
+ * pitch (BNID 109341). Envelope: outer membrane, a periplasm 21 nm wide
+ * (BNID 105387) holding the 6.35 nm peptidoglycan wall (BNID 105385; both by
+ * cryo-EM of frozen-hydrated sections, Matias et al. 2003), and the
  * ≈ 6 nm inner membrane (BNID 114122). Nucleoid ≈ 0.2 µm³ (BNID 107009).
  * Ribosomes ≈ 25 nm, about 10,000 per cell (Cell Biology by the Numbers;
  * up to 72,000 in fast growth), 85–90% of them outside the nucleoid
@@ -22,7 +23,7 @@ export const ECOLI = {
 	length: 2.2,
 	width: 1.0,
 	outerMembrane: 0.007,
-	periplasm: 0.013,
+	periplasm: 0.021,
 	peptidoglycan: 0.00635,
 	innerMembrane: 0.006,
 	ribosome: 0.025,
@@ -165,6 +166,12 @@ export function ecoliSection(): EcoliSection {
 	sectionCache = { cell, nucleoid, ribosomes, sectionArea };
 	return sectionCache;
 }
+
+/**
+ * How far inside the cell's outer surface the cytoplasm view is centred, nm: past the
+ * 34 nm envelope, so the view shows the envelope along its top and the crowd below.
+ */
+export const CYTOPLASM_VIEW_DEPTH = 40;
 
 export const BACTERIUM_TARGETS: { envelope: Pt } = {
 	// the top of the cell, where the envelope runs straight: outside above, cytoplasm below

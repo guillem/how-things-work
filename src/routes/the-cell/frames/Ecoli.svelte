@@ -2,7 +2,7 @@
 	/**
 	 * One E. coli cell in section, in micrometres (bacterium.ts): the envelope
 	 * (outer membrane, periplasm with the peptidoglycan wall, inner membrane;
-	 * ≈ 26 nm), the nucleoid where the chromosome lies, and the ≈ 500 ribosomes
+	 * ≈ 34 nm), the nucleoid where the chromosome lies, and the ≈ 300 ribosomes
 	 * a thin slice cuts (25 nm each), with the neighbouring cells and flagella.
 	 */
 	import { colony, ecoliSection, envelopeThickness, ECOLI, flagellumPath } from '../bacterium';

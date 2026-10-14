@@ -92,4 +92,10 @@
 			<Machine id={m.id} x={m.x} y={m.y} />
 		{/each}
 	</Part>
+	<!-- the channel under each ribosome, drawn again on top so that it can be picked -->
+	<Part id="sec61" {sel} {pick} {interactive}>
+		{#each ER_RIBOSOMES as m, i (i)}
+			<Machine id={m.id} x={m.x} y={m.y} only={['sec61']} />
+		{/each}
+	</Part>
 </g>

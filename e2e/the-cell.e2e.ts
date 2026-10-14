@@ -48,6 +48,24 @@ test('picking a part shows what it is, how big it is and what it does', async ({
 	await expect(stage(page)).toContainText('≈ 1 µm wide, 2 µm long');
 });
 
+test('the structures the views label each open their own card', async ({ page }) => {
+	// what only the info card says (the callouts on the picture use shorter names)
+	const pick = async (id: string, says: string) => {
+		await part(page, id).focus();
+		await page.keyboard.press('Enter');
+		await expect(stage(page)).toContainText(says);
+	};
+	await open(page, './the-cell/#crowded');
+	await pick('groEL', 'GroEL chaperone');
+	await pick('rnaPolymerase', 'Copies a gene');
+	await pick('trna', 'Transfer RNA');
+	await open(page, './the-cell/#ribosomes');
+	await pick('sec61', 'a pore through the ER membrane');
+	await open(page, './the-cell/#cell');
+	await pick('smoothER', 'Smooth endoplasmic reticulum');
+	await pick('golgi', 'Golgi apparatus');
+});
+
 test('+ and − over the picture zoom without changing the step', async ({ page }) => {
 	await open(page, './the-cell/#cell');
 	await page.getByRole('application', { name: /Zoomable picture/ }).focus();

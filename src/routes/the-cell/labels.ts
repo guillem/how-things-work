@@ -56,7 +56,7 @@ const leftCell = T.cells
 const rbc = nearest(T.rbcs, 40, -15);
 const mito = nearest(h.mitochondria.slice(1), -9, -4);
 const lyso = nearest(h.lysosomes, 8, 6);
-const perox = nearest(h.peroxisomes, -8, 6);
+const perox = nearest(h.peroxisomes, -9, 8);
 const golgiMid = h.golgi[2]?.[Math.floor((h.golgi[2]?.length ?? 1) / 2)] ?? [N.x, N.y - 6];
 const rer = h.rer[0][Math.floor(h.rer[0].length / 2)];
 const pore = h.pores[Math.floor(h.pores.length * 0.62)];
@@ -116,7 +116,7 @@ export const CALLOUTS: Record<string, Callout[]> = {
 		{ id: 'roughER', text: 'rough ER', x: rer[0], y: rer[1], dx: 40, dy: 50, max: 45 },
 		{ id: 'golgi', text: 'Golgi', x: golgiMid[0], y: golgiMid[1], dx: -40, dy: -40, max: 45 },
 		{ id: 'lysosome', text: 'lysosome', x: lyso.x, y: lyso.y, dx: 40, dy: 40, max: 45 },
-		{ id: 'peroxisome', text: 'peroxisome', x: perox.x, y: perox.y, dx: -50, dy: 46, max: 45 },
+		{ id: 'peroxisome', text: 'peroxisome', x: perox.x, y: perox.y, dx: -50, dy: 30, max: 45 },
 		{ id: 'plasmaMembrane', text: 'cell membrane', x: -10.5, y: -6.9, dx: -40, dy: -50, max: 45 },
 		// the nucleus close up
 		{
@@ -168,7 +168,7 @@ export const CALLOUTS: Record<string, Callout[]> = {
 			dx: -60,
 			dy: -70,
 			min: 200,
-			max: 700
+			max: 1100
 		},
 		{
 			id: 'mitochondrion',
@@ -236,13 +236,14 @@ export const CALLOUTS: Record<string, Callout[]> = {
 		{ id: 'protein', text: 'proteins', x: 30, y: 25, dx: 40, dy: 40 }
 	],
 	crista: [
-		...CRISTA_MACHINES.slice(0, 1).map((m) => {
+		// the lower machine of the dimer at the tip: the upper one is under the info card
+		...CRISTA_MACHINES.slice(1, 2).map((m) => {
 			const [hx, hy] = headCentre(m);
-			return { id: 'atpSynthase', text: 'ATP synthase', x: hx, y: hy, dx: -50, dy: -40 };
+			return { id: 'atpSynthase', text: 'ATP synthase', x: hx, y: hy, dx: -120, dy: -30 };
 		}),
 		{ id: 'crista', text: 'crista membrane', x: -20, y: CRISTA.half, dx: -40, dy: 60 },
-		{ id: 'atp', text: 'ATP', x: ATOM_SPOTS.atp[0], y: ATOM_SPOTS.atp[1], dx: 40, dy: -30 },
-		{ id: 'mitochondrion', text: 'matrix', x: 40, y: 22, dx: 30, dy: 40 }
+		{ id: 'atp', text: 'ATP', x: ATOM_SPOTS.atp[0], y: ATOM_SPOTS.atp[1], dx: -60, dy: -20 },
+		{ id: 'mitochondrion', text: 'matrix', x: -30, y: -24, dx: 30, dy: 30 }
 	],
 	ribosome: [
 		{ id: 'ribosome', text: 'ribosome', x: -10, y: ER.membrane + 18, dx: -50, dy: 60 },
@@ -252,7 +253,7 @@ export const CALLOUTS: Record<string, Callout[]> = {
 	],
 	membrane: [
 		{ id: 'naKPump', text: 'Na⁺/K⁺ pump', x: MEMBRANE_PROTEINS[0].x, y: 6, dx: -40, dy: 70 },
-		{ id: 'kChannel', text: 'K⁺ channel', x: MEMBRANE_PROTEINS[1].x, y: -5, dx: 10, dy: -70 },
+		{ id: 'kChannel', text: 'K⁺ channel', x: MEMBRANE_PROTEINS[1].x, y: -1, dx: 10, dy: -110 },
 		{ id: 'glut', text: 'glucose transporter', x: MEMBRANE_PROTEINS[2].x, y: 3, dx: 30, dy: 70 },
 		{ id: 'plasmaMembrane', text: 'lipid bilayer', x: -22, y: 0, dx: -30, dy: -60 },
 		{ id: 'sinusoid', text: 'outside the cell', x: -2, y: -12, dx: 0, dy: 0 },
@@ -392,7 +393,7 @@ export const CALLOUTS: Record<string, Callout[]> = {
 		{
 			id: 'envelope',
 			text: 'wall (peptidoglycan)',
-			x: 30,
+			x: -30,
 			y: (ENVELOPE.pg0 + ENVELOPE.pg1) / 2,
 			dx: 0,
 			dy: 0
@@ -416,10 +417,11 @@ export const CALLOUTS: Record<string, Callout[]> = {
 		{
 			id: 'rnaPolymerase',
 			text: 'RNA polymerase',
-			x: nearC('rnaPolymerase', 30, 30).x,
-			y: nearC('rnaPolymerase', 30, 30).y,
-			dx: 40,
-			dy: 30
+			x: nearC('rnaPolymerase', 10, 30).x,
+			y: nearC('rnaPolymerase', 10, 30).y,
+			dx: 80,
+			dy: 16,
+			min: 4.5
 		},
 		{
 			id: 'glucose',
@@ -427,7 +429,8 @@ export const CALLOUTS: Record<string, Callout[]> = {
 			x: ATOM_SPOTS.glucose[0],
 			y: ATOM_SPOTS.glucose[1],
 			dx: 40,
-			dy: -30
+			dy: -30,
+			min: 4.5
 		}
 	],
 	atoms: []

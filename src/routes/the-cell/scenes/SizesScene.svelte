@@ -31,7 +31,6 @@
 		'granum',
 		'nuclearPore',
 		'roughER',
-		'vesicle',
 		'ribosome',
 		'microtubule',
 		'atpSynthase',

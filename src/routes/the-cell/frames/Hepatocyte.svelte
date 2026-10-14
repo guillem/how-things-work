@@ -18,7 +18,13 @@
 		type Capsule,
 		type Pt
 	} from '../liver';
-	import { chromatin, CORTEX_ACTIN, MEMBRANE_PROTEINS, CRISTA_MACHINES, ER } from '../molecular';
+	import {
+		chromatinField,
+		CORTEX_ACTIN,
+		MEMBRANE_PROTEINS,
+		CRISTA_MACHINES,
+		ER
+	} from '../molecular';
 	import { circlePath, capsulePath, polyline } from './types';
 
 	const H = hepatocyte();
@@ -146,10 +152,14 @@
 		.join('');
 	const hetero = H.heterochromatin.map((d) => circlePath(d.x, d.y, d.r)).join('');
 	const [cx0, cy0] = H.targets.chromatin;
-	const nucleosomeDots = chromatin()
+	// the beads around the chromatin view, kept inside the nucleus
+	const field = chromatinField().filter((run) =>
+		run.beads.every(([x, y]) => Math.hypot(cx0 + x / 1000 - N.x, cy0 + y / 1000 - N.y) < N.r - 0.05)
+	);
+	const nucleosomeDots = field
 		.flatMap((run) => run.beads.map(([x, y]) => circlePath(cx0 + x / 1000, cy0 + y / 1000, 0.0055)))
 		.join('');
-	const linkers = chromatin()
+	const linkers = field
 		.map((run) => polyline(run.beads.map(([x, y]) => [cx0 + x / 1000, cy0 + y / 1000] as Pt)))
 		.join('');
 
@@ -264,7 +274,7 @@
 	{/if}
 
 	<!-- smooth ER and Golgi -->
-	<Part id="golgi" {sel} {pick} {interactive}>
+	<Part id="smoothER" {sel} {pick} {interactive}>
 		<path
 			d={serPath}
 			fill="none"
@@ -283,6 +293,8 @@
 			stroke-linejoin="round"
 			opacity={0.45 + 0.55 * detail}
 		/>
+	</Part>
+	<Part id="golgi" {sel} {pick} {interactive}>
 		<path
 			d={golgiPath}
 			fill="none"

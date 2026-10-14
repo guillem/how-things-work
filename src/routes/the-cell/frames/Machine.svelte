@@ -3,6 +3,7 @@
 	 * A molecular machine drawn from its traced outline (shapes.ts), at true
 	 * size in nanometres: placed at (x, y), turned by `angle` (radians) and
 	 * mirrored top-to-bottom when `flip` (for the other face of a membrane).
+	 * `only` draws just the named groups (to make one part of a machine pickable).
 	 */
 	import { MACHINES } from '../shapes';
 	import { colors } from '#lib/draw/index.ts';
@@ -14,8 +15,9 @@
 		angle?: number;
 		flip?: boolean;
 		opacity?: number;
+		only?: string[];
 	}
-	let { id, x, y, angle = 0, flip = false, opacity = 1 }: Props = $props();
+	let { id, x, y, angle = 0, flip = false, opacity = 1, only }: Props = $props();
 
 	const FILL: Record<string, string> = {
 		'atpSynthase/head': colors.atpSynthase,
@@ -51,13 +53,14 @@
 		'lacY/lacy': '#ffa94d'
 	};
 	const m = $derived(MACHINES[id]);
+	const groups = $derived(only ? m.groups.filter((g) => only.includes(g.name)) : m.groups);
 </script>
 
 <g
 	transform="translate({x} {y}) rotate({(angle * 180) / Math.PI}) scale(1 {flip ? -1 : 1})"
 	{opacity}
 >
-	{#each m.groups as g (g.name)}
+	{#each groups as g (g.name)}
 		<path
 			d={g.d}
 			fill={FILL[`${id}/${g.name}`] ?? 'var(--tc-protein)'}

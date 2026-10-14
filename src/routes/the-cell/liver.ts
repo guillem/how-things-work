@@ -11,7 +11,7 @@
  * measured proportions (Alberts et al., Molecular Biology of the Cell, Table
  * 12-1, quoted in Cell Biology by the Numbers):
  *
- *   cytosol 50–60%, mitochondria 20%, rough ER cisternae 10%, smooth ER and
+ *   cytosol 54%, mitochondria 22%, rough ER cisternae 9%, smooth ER and
  *   Golgi cisternae 6%, nucleus 6%, peroxisomes 1%, lysosomes 1%, endosomes 1%
  *
  * Sizes: cell volume 6,200 µm³ (a 23 µm sphere; rat, BNID 115150); nucleus
@@ -49,8 +49,8 @@ export interface Disc {
 
 /** Fractions of the cell volume (Alberts, Table 12-1). */
 export const VOLUME_FRACTIONS = {
-	mitochondria: 0.2,
-	roughER: 0.1,
+	mitochondria: 0.22,
+	roughER: 0.09,
 	smoothERGolgi: 0.06,
 	nucleus: 0.06,
 	peroxisomes: 0.01,
