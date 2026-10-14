@@ -26,6 +26,7 @@ import {
 	kForward,
 	kFromFraction,
 	kReverse,
+	mixAt,
 	quotient,
 	rates,
 	sampleAt,
@@ -174,4 +175,19 @@ test('the box of molecules follows the model to within a molecule or two', () =>
 	// At equilibrium the box still reacts both ways.
 	const st = box.stateAt(39);
 	expect(st.reverse).toBeGreaterThan(2);
+});
+
+test('the step-by-step integration agrees with the exact solution of the rate law', () => {
+	for (const [start, c] of [
+		[START, at(700)],
+		[START_HI, at(760)],
+		[{ ...START, h2: START.h2 * 2 }, at(650, 20e3)]
+	] as const) {
+		const tau = 1 / (kForward(c.T, c.lowering) * START_TOTAL);
+		const run = simulate(start, c, [], 10 * tau, tau / 10);
+		for (const k of [3, 10, 40, 100]) {
+			const exact = mixAt(start, c, run[k].t);
+			expect(run[k].hi / exact.hi).toBeCloseTo(1, 6);
+		}
+	}
 });

@@ -321,3 +321,29 @@ export function halfLife(start: Mix, c: Conditions): number {
 	const i = run.findIndex((s) => s.h2 <= start.h2 / 2);
 	return i < 0 ? Infinity : run[i].t;
 }
+
+/**
+ * The exact solution at fixed conditions. With x the extent of H₂ + I₂ → 2 HI,
+ * dx/dt = k_f(h₂ − x)(i₂ − x) − k_r(hi + 2x)² = α(x − r₁)(x − r₂), a quadratic with
+ * roots r₁ (the equilibrium) and r₂, so ln((x − r₁)/(x − r₂)) grows linearly in time.
+ */
+export function mixAt(start: Mix, c: Conditions, t: number): Mix {
+	const kf = kForward(c.T, c.lowering);
+	const kr = kReverse(c.T, c.lowering);
+	const alpha = kf - 4 * kr;
+	const beta = -kf * (start.h2 + start.i2) - 4 * kr * start.hi;
+	const gamma = kf * start.h2 * start.i2 - kr * start.hi * start.hi;
+	const of = (x: number): Mix => ({ h2: start.h2 - x, i2: start.i2 - x, hi: start.hi + 2 * x });
+	if (Math.abs(alpha) < 1e-300) return of((-gamma / beta) * (1 - Math.exp(beta * t)));
+	const disc = Math.sqrt(beta * beta - 4 * alpha * gamma);
+	const roots = [(-beta - disc) / (2 * alpha), (-beta + disc) / (2 * alpha)];
+	// The equilibrium root lies between −hi/2 and min(h₂, i₂).
+	const lo = -start.hi / 2 - 1e-15;
+	const hi = Math.min(start.h2, start.i2) + 1e-15;
+	const r1 = roots.find((r) => r >= lo && r <= hi) ?? roots[0];
+	const r2 = r1 === roots[0] ? roots[1] : roots[0];
+	if (Math.abs(r1) < 1e-18 && Math.abs(gamma) < 1e-30) return of(0);
+	const C = (0 - r1) / (0 - r2);
+	const e = C * Math.exp(alpha * (r1 - r2) * t);
+	return of((r1 - r2 * e) / (1 - e));
+}
