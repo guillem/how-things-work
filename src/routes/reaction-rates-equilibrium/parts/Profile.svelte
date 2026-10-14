@@ -177,7 +177,7 @@
 		<Readout id="{id}-cat" order={22} label="With the catalyst" value="{Math.round(eaCat)} kJ/mol">
 			<Label
 				x={sx(0.5)}
-				y={sy(eaCat) - 9}
+				y={sy(eaCat) + 22}
 				text="catalyst: {Math.round(eaCat)}"
 				size={12}
 				color="var(--rr-cat)"

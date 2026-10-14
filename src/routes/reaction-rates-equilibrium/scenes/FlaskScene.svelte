@@ -134,11 +134,10 @@
 		const added: Log['changes'] = [];
 		if (live && now.T !== seen.T) added.push({ tau: at, T: now.T });
 		if (live && now.low !== seen.low) added.push({ tau: at, lowering: now.low });
-		if (now.adds !== seen.adds) {
-			const n = log.changes.filter((c) => (c.dose ?? 0) > 0).length;
-			if (n < MAX_ADDS) added.push({ tau: at, dose: 10 });
-		}
-		if (now.removes !== seen.removes) added.push({ tau: at, dose: -5 });
+		let made = log.changes.filter((c) => (c.dose ?? 0) > 0).length;
+		for (let k = 0; k < now.adds - seen.adds && made < MAX_ADDS; k++, made++)
+			added.push({ tau: at, dose: 10 });
+		for (let k = 0; k < now.removes - seen.removes; k++) added.push({ tau: at, dose: -5 });
 		seen = now;
 		if (added.length) log = { ...log, changes: [...log.changes, ...added] };
 		return log;
@@ -250,7 +249,14 @@
 	const Q = $derived(quotient(now));
 	const eqNow = $derived(equilibriumMix(now, now.T));
 	const micro = (v: number) => v * 1e6; // mol L⁻¹ s⁻¹ → µmol L⁻¹ s⁻¹
-	const fmtRate = (v: number) => (v >= 10 ? sig(v, 3) : v >= 0.01 ? sig(v, 2) : fmtPow(v));
+	const fmtRate = (v: number) =>
+		v >= 1000
+			? Math.round(Number(v.toPrecision(2))).toLocaleString('en-US')
+			: v >= 10
+				? sig(v, 3)
+				: v >= 0.01
+					? sig(v, 2)
+					: fmtPow(v);
 	const fmtQ = (q: number) =>
 		!isFinite(q) ? '∞' : q >= 1000 ? fmtPow(q) : q >= 10 ? q.toFixed(0) : sig(q, 2);
 	const kText = $derived(`${Math.round(now.T)} K (${Math.round(now.T - 273.15)} °C)`);
@@ -671,14 +677,16 @@
 					: 'Q > K: the reverse reaction wins'}
 		>
 			<text x={PL.x - 4} y={556} style:font-size="14px"
-				>Q = [HI]²/[H₂][I₂] = <tspan font-weight="600">{fmtQ(Q)}</tspan> K =
-				<tspan font-weight="600">{sig(K, 2)}</tspan>
-				<tspan font-size="13" class="muted"
+				>Q = [HI]²/[H₂][I₂] = <tspan font-weight="600">{fmtQ(Q)}</tspan><tspan dx="14">K =</tspan
+				><tspan dx="5" font-weight="600">{sig(K, 2)}</tspan><tspan
+					dx="14"
+					class="muted"
+					fill="var(--stage-ink-muted)"
 					>{Math.abs(Q / K - 1) < 0.03
-						? '  at equilibrium'
+						? 'at equilibrium'
 						: Q < K
-							? '  Q < K: forward wins'
-							: '  Q > K: reverse wins'}</tspan
+							? 'Q < K: forward wins'
+							: 'Q > K: reverse wins'}</tspan
 				></text
 			>
 		</Readout>
