@@ -469,7 +469,7 @@
 		label="Result"
 		value={done ? verdict : 'flying…'}
 		note={done ? verdictNote : undefined}
-		color={flight.outcome === 'orbit' ? 'var(--rk-spin)' : 'var(--rk-gravity)'}
+		color={done ? (flight.outcome === 'orbit' ? 'var(--rk-spin)' : 'var(--rk-gravity)') : undefined}
 	>
 		<T
 			x={CL}

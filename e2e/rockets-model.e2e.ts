@@ -68,6 +68,9 @@ test('the simulated Saturn V reaches the parking orbit Apollo 11 reached', () =>
 	expect(Math.abs(f.cutoff.v - AS506_INSERTION.speed)).toBeLessThan(0.01 * AS506_INSERTION.speed);
 	expect(Math.abs(f.cutoff.h - AS506_INSERTION.altitude)).toBeLessThan(10e3);
 	expect(Math.abs(f.cutoff.t - AS506_INSERTION.time)).toBeLessThan(0.15 * AS506_INSERTION.time);
+	// The report's masses sized the S-IVB's first burn to just reach the parking orbit: the
+	// simulated flight gets there with little to spare.
+	expect(f.spare).toBeLessThan(300);
 	// The engines gave about 9 km/s; gravity, drag and steering took about 1.6 of it.
 	const losses = f.gravity + f.drag + f.steering;
 	expect(losses / 1000).toBeGreaterThan(1.2);

@@ -154,7 +154,7 @@
 	const turns = $derived(target / ve);
 	const pct = (r: number) => {
 		const p = 100 * (1 - 1 / r);
-		return p > 99.95 ? fmt(p, 4) : fmt(p, 1);
+		return p > 99.995 ? '> 99.99' : p > 99.95 ? fmt(p, 2) : fmt(p, 1);
 	};
 
 	// Nested squares: the inner one is the 1 t that arrives; each ring is one more exhaust
@@ -429,7 +429,7 @@
 			/>
 			<T
 				x={SQ.x + 8}
-				y={outer < 60 ? SQ.y - outer - 8 : SQ.y - outer + 20}
+				y={outer < 60 || outer - rings[0].side < 30 ? SQ.y - outer - 8 : SQ.y - outer + 20}
 				text="{big(R)} t on the pad{outerClipped ? ' (the blue dot is drawn too big)' : ''}"
 				size={13}
 				weight={700}

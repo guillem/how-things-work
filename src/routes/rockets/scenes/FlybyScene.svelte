@@ -100,17 +100,6 @@
 		<clipPath id="flyby-panel">
 			<rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} rx="14" />
 		</clipPath>
-		<marker
-			id="flyby-arrow"
-			viewBox="0 0 10 10"
-			refX="9"
-			refY="5"
-			markerWidth="7"
-			markerHeight="7"
-			orient="auto-start-reverse"
-		>
-			<path d="M0 0 L10 5 L0 10 Z" fill="context-stroke" />
-		</marker>
 	</defs>
 	<rect
 		x={PANEL.x}
@@ -173,7 +162,7 @@
 		y2={PANEL.y + 80}
 		stroke="var(--rk-jupiter)"
 		stroke-width="2.5"
-		marker-end="url(#flyby-arrow)"
+		marker-end="url(#arrowhead)"
 	/>
 	<Readout id="labels">
 		<T x={PANEL.x + 20} y={PANEL.y + 32} text="Jupiter's view" size={14} weight={700} />
@@ -297,7 +286,7 @@
 		y2={J.y}
 		stroke="var(--rk-jupiter)"
 		stroke-width="2.5"
-		marker-end="url(#flyby-arrow)"
+		marker-end="url(#arrowhead)"
 	/>
 	<line
 		x1={J.x}
@@ -306,7 +295,7 @@
 		y2={pin.y - 6}
 		stroke="var(--stage-ink-muted)"
 		stroke-width="1.5"
-		marker-end="url(#flyby-arrow)"
+		marker-end="url(#arrowhead)"
 	/>
 	<line
 		x1={J.x}
@@ -315,7 +304,7 @@
 		y2={pout.y}
 		stroke="var(--rk-path)"
 		stroke-width="1.5"
-		marker-end="url(#flyby-arrow)"
+		marker-end="url(#arrowhead)"
 	/>
 	<line
 		x1={O.x}
@@ -325,7 +314,7 @@
 		stroke="var(--rk-orbit)"
 		stroke-width="2"
 		opacity="0.9"
-		marker-end="url(#flyby-arrow)"
+		marker-end="url(#arrowhead)"
 	/>
 	<line
 		x1={O.x}
@@ -334,7 +323,7 @@
 		y2={pout.y}
 		stroke="var(--rk-speed)"
 		stroke-width="2.5"
-		marker-end="url(#flyby-arrow)"
+		marker-end="url(#arrowhead)"
 	/>
 	<circle cx={O.x} cy={O.y} r="3" fill="var(--stage-ink)" />
 	<Readout id="vec-labels">
