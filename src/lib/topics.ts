@@ -726,6 +726,15 @@ const explainers: Explainer[] = [
 		accent: '#3b6fb6',
 		steps: 13,
 		minutes: 22
+	},
+	{
+		slug: 'big-bang',
+		title: 'The Big Bang & expanding universe',
+		summary:
+			'Watch a universe of galaxies expand from any galaxy you choose, follow light stretching toward red on its way, run the film backward to a hot, dense beginning, and scrub a timeline from the first second to today.',
+		accent: '#e8590c',
+		steps: 12,
+		minutes: 22
 	}
 ];
 

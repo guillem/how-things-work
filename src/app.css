@@ -2276,3 +2276,46 @@ kbd {
 	--ia-land: #7d6a4b;
 	--ia-night: #2b3038;
 }
+/* big-bang */
+:root {
+	--bb-space: #f3f1ec;
+	--bb-gal: #364fc7;
+	--bb-mid: #ae3ec9;
+	--bb-red: #e03131;
+	--bb-arrow: #e8590c;
+	--bb-view: #e8590c;
+	--bb-curve: #1971c2;
+	--bb-radiation: #f59f00;
+	--bb-matter: #5f3dc4;
+	--bb-de: #0ca678;
+	--bb-proton: #e03131;
+	--bb-neutron: #868e96;
+	--bb-electron: #1c7ed6;
+	--bb-positron: #d6336c;
+	--bb-photon: #f08c00;
+	--bb-neutrino: #94d82d;
+	--bb-helium: #9c36b5;
+	--bb-plasma: #ffe8cc;
+	--bb-dark: #dee2e6;
+}
+:root[data-theme='dark'] {
+	--bb-space: #101218;
+	--bb-gal: #dbe4ff;
+	--bb-mid: #e599f7;
+	--bb-red: #ff6b6b;
+	--bb-arrow: #ffa94d;
+	--bb-view: #ffa94d;
+	--bb-curve: #74c0fc;
+	--bb-radiation: #ffd43b;
+	--bb-matter: #b197fc;
+	--bb-de: #63e6be;
+	--bb-proton: #ff8787;
+	--bb-neutron: #adb5bd;
+	--bb-electron: #74c0fc;
+	--bb-positron: #f783ac;
+	--bb-photon: #ffc078;
+	--bb-neutrino: #c0eb75;
+	--bb-helium: #da77f2;
+	--bb-plasma: #3d2a14;
+	--bb-dark: #1c1f26;
+}
