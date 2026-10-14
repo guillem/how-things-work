@@ -31,7 +31,9 @@ export function useScrub(o: Inputs) {
 		o.step().controls?.find((c) => c.id.startsWith('t-') || c.id.startsWith('k-')) ?? null
 	);
 	const scale = $derived(slider?.id.startsWith('t-') ? T : 100);
-	const auto = $derived(autoId ? bool(o.params(), autoId) : false);
+	// a step with neither toggle nor slider runs by itself (and shows the end under reduced
+	// motion); one with only a slider follows the slider
+	const auto = $derived(autoId ? bool(o.params(), autoId) : !slider);
 	const value = $derived(
 		slider && slider.type === 'range' ? num(o.params(), slider.id, slider.default) / scale : 1
 	);

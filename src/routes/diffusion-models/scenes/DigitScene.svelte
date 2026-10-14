@@ -9,7 +9,7 @@
 	 * - guidance: guidance 0, 1, 3 and 7 for one prompt, and the reading-rate bars (CHECK).
 	 * Snapshots are the stored frames (mnist-sequences.ts): the display jumps from one to the next.
 	 */
-	import { Label } from '#lib/draw/index.ts';
+	import Label from './Label.svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { T, alphaBar, gaussian, noisy } from '../ddpm';
 	import { CHECK, DIGITS, SEQUENCES, type Sequence } from '../mnist-sequences';

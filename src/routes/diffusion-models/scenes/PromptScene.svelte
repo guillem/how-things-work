@@ -5,7 +5,7 @@
 	 * and at every denoising step the image network reads them through cross-attention. The
 	 * attention lines pulse in turn (pure function of t; still under reduced motion).
 	 */
-	import { Label } from '#lib/draw/index.ts';
+	import Label from './Label.svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { gaussian } from '../ddpm';
 	import { imageUrl } from './shared';

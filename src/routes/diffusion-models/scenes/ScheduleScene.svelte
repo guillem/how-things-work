@@ -6,7 +6,8 @@
 	 * them with its whole path; and the disc the one-go formula predicts: centre √ᾱ_t x₀, radius
 	 * 2 √(1 − ᾱ_t) (a 2-D normal falls inside 2 standard deviations 86% of the time).
 	 */
-	import { Axes, Label, linePath, scale } from '#lib/draw/index.ts';
+	import { Axes, linePath, scale } from '#lib/draw/index.ts';
+	import Label from './Label.svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { BETAS, T, alphaBar, gaussian } from '../ddpm';
 	import { fmt, paceForward } from './shared';

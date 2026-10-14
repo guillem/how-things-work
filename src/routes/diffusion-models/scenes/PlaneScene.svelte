@@ -9,7 +9,7 @@
 	 *   (../sampler.svelte.ts), replayed at the playhead; points coloured by the moon they end on.
 	 * Faint dashed curves show the moons' centre lines throughout.
 	 */
-	import { Label } from '#lib/draw/index.ts';
+	import Label from './Label.svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { T, alphaBar, decodeWeights, gaussian, mulberry32, noisy, predict } from '../ddpm';
 	import { MOONS, WEIGHTS } from '../moons-model';
