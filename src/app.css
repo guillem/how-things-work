@@ -1829,3 +1829,33 @@ kbd {
 .tf-v {
 	color: var(--tf-v);
 }
+
+/* language-models: token backgrounds, probability bars, the token picked, cut-off tokens */
+:root {
+	--lm-t1: #ffe3e3;
+	--lm-t2: #d3f9d8;
+	--lm-t3: #d0ebff;
+	--lm-t4: #fff3bf;
+	--lm-t5: #f3d9fa;
+	--lm-bar: #c2255c;
+	--lm-ghost: #c2255c66;
+	--lm-pick: #e8590c;
+	--lm-cut: #adb5bd;
+	--lm-rest: #868e96;
+	--lm-gen: #1971c2;
+	--lm-greedy: #868e96;
+}
+:root[data-theme='dark'] {
+	--lm-t1: #4a2a2e;
+	--lm-t2: #233d2a;
+	--lm-t3: #1f3550;
+	--lm-t4: #44391c;
+	--lm-t5: #3d2647;
+	--lm-bar: #f06595;
+	--lm-ghost: #f0659566;
+	--lm-pick: #ff922b;
+	--lm-cut: #5c636a;
+	--lm-rest: #909296;
+	--lm-gen: #74c0fc;
+	--lm-greedy: #909296;
+}

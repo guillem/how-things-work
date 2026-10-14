@@ -618,6 +618,15 @@ const explainers: Explainer[] = [
 		accent: '#6741d9',
 		steps: 12,
 		minutes: 24
+	},
+	{
+		slug: 'language-models',
+		title: 'How language models write',
+		summary:
+			'Type a sentence and watch it split into GPT-2’s tokens, see the model’s real probabilities for the next token, then turn them into text one token at a time: greedy, with temperature, top-k and top-p, or by picking each token yourself.',
+		accent: '#c2255c',
+		steps: 13,
+		minutes: 26
 	}
 ];
 

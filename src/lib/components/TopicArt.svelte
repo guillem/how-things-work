@@ -2234,6 +2234,50 @@
 				opacity={x === 174 ? 0.9 : 0.6}
 			/>
 		{/each}
+	{:else if slug === 'language-models'}
+		<!-- a row of tokens, then a bar chart of next-token probabilities, the top one picked -->
+		{#each [26, 62, 98] as x (x)}
+			<rect
+				x={x - 14}
+				y="22"
+				width="30"
+				height="16"
+				rx="4"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.4"
+				opacity="0.6"
+			/>
+		{/each}
+		<rect
+			x="120"
+			y="22"
+			width="30"
+			height="16"
+			rx="4"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.6"
+			stroke-dasharray="3 2"
+		/>
+		{#each [0.9, 0.62, 0.4, 0.22, 0.12] as w, i (i)}
+			<rect
+				x="40"
+				y={52 + i * 12}
+				width={w * 130}
+				height="8"
+				rx="2"
+				fill={accent}
+				opacity={i === 0 ? 0.95 : 0.45}
+			/>
+		{/each}
+		<path
+			d="M172 56 C188 48 186 34 158 30"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.6"
+			stroke-linecap="round"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
