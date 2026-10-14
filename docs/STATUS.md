@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-13 UTC.
+Last updated: 2026-10-14 UTC.
 
 ## How we work
 
@@ -70,6 +70,15 @@ Last updated: 2026-10-13 UTC.
   rebuild those registries from `main` plus each branch's own entry) and deleted.
 
 ## Current development
+
+**Final push (2026-10-14): the remaining 54 topics.** No fixed batches: a rolling pool of ~8
+builder agents, one per topic in its own local worktree (`.claude/worktrees/<slug>`, branch
+`topic/<slug>`), each on its own dev port (52xx) and `PW_PORT` (42xx). Each finished branch is
+rebased and merged into `main` locally, then fact-checked (`make review`) and its report applied;
+the topic is ticked after that. Nothing is pushed or released until the user validates. In
+flight (wave 1): the-cell, gradient-descent, embeddings, quantum-mechanics, plate-tectonics,
+carbon-cycle, acids-bases, rockets. To resume after an interruption: `git worktree list`, then
+for each `topic/*` branch check `git log main..topic/<slug>` and continue or merge it.
 
 **Phone readouts rollout (2026-10-13, on main, not yet released):** 38 of 46 topics converted
 (list in BACKLOG); 8 topics left, then the shared `<Axes>` tick labels. Release v0.1.17 after the
