@@ -2276,3 +2276,38 @@ kbd {
 	--ia-land: #7d6a4b;
 	--ia-night: #2b3038;
 }
+/* turing-machines */
+:root {
+	--tm-cell: #f8f9fa;
+	--tm-cell-edge: #adb5bd;
+	--tm-head: #5c940d;
+	--tm-write: #e8590c;
+	--tm-rule: #5c940d;
+	--tm-halt: #2b8a3e;
+	--tm-loop: #c92a2a;
+	--tm-yes: #2b8a3e;
+	--tm-no: #c92a2a;
+	--tm-desc: #1971c2;
+	--tm-one: #343a40;
+	--tm-best: #2f9e44;
+	--tm-try: #868e96;
+	--tm-greedy: #e8590c;
+	--tm-city: #1971c2;
+}
+:root[data-theme='dark'] {
+	--tm-cell: #25262b;
+	--tm-cell-edge: #5c5f66;
+	--tm-head: #94d82d;
+	--tm-write: #ff922b;
+	--tm-rule: #94d82d;
+	--tm-halt: #69db7c;
+	--tm-loop: #ff6b6b;
+	--tm-yes: #69db7c;
+	--tm-no: #ff6b6b;
+	--tm-desc: #74c0fc;
+	--tm-one: #e9ecef;
+	--tm-best: #69db7c;
+	--tm-try: #909296;
+	--tm-greedy: #ffa94d;
+	--tm-city: #74c0fc;
+}

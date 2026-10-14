@@ -2631,6 +2631,35 @@
 			stroke-dasharray="2 3"
 			opacity="0.6"
 		/>
+	{:else if slug === 'turing-machines'}
+		<!-- a strip of tape cells holding 1 0 1 1, the head (a triangle) over one cell -->
+		{#each ['1', '0', '1', '1', '', ''] as sym, i (i)}
+			<rect
+				x={22 + i * 27}
+				y="52"
+				width="24"
+				height="28"
+				rx="3"
+				fill={i === 3 ? accent : 'none'}
+				fill-opacity={i === 3 ? 0.2 : 0}
+				stroke="currentColor"
+				stroke-width="1.4"
+				opacity={i === 3 ? 1 : 0.55}
+			/>
+			<text
+				x={34 + i * 27}
+				y="71"
+				text-anchor="middle"
+				font-size="14"
+				font-weight="600"
+				fill="currentColor">{sym}</text
+			>
+		{/each}
+		<path d="M103 26 L115 26 L109 44 Z" fill={accent} />
+		<path d="M16 66 H20 M186 66 H190" stroke="currentColor" stroke-width="1.4" opacity="0.4" />
+		<text x="109" y="100" text-anchor="middle" font-size="11" fill={accent} font-weight="600"
+			>carry 1 → 0 L</text
+		>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
