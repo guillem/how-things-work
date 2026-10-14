@@ -170,6 +170,12 @@ test('the numbers the narrative quotes', () => {
 	expect(solved({ data: 'circle', hidden: [4], act: 'tanh', lr: 0.3, seed: 1 })).toBe(45);
 	expect(solved({ data: 'circle', hidden: [4], act: 'tanh', lr: 0.03, seed: 1 })).toBe(387);
 	expect(solved({ data: 'circle', hidden: [4], act: 'tanh', lr: 0.01, seed: 1 })).toBe(-1);
+	// "A hidden layer": more than three neurons get there faster.
+	for (const n of [4, 5, 6, 7, 8]) {
+		const e = solved({ data: 'circle', hidden: [n], act: 'tanh', lr: 0.3, seed: 1 });
+		expect(e).toBeGreaterThanOrEqual(26);
+		expect(e).toBeLessThanOrEqual(45);
+	}
 	// "Build your own network": the playground's starting network.
 	expect(solved({ data: 'moons', hidden: [4, 4], act: 'tanh', lr: 0.3, seed: 1 })).toBe(49);
 	// "A neuron": the clusters within a couple of epochs.

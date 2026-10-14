@@ -332,7 +332,12 @@
 		stroke="var(--stage-line)"
 		rx="2"
 	/>
-	<Readout id="inset" order={5} label="So far" value="{n} examples trained on">
+	<Readout
+		id="inset"
+		order={5}
+		label={phase === 'update' ? undefined : 'So far'}
+		value="{n} examples trained on"
+	>
 		<Txt x={I.x} y={I.y - 10} text="after {n} example{n === 1 ? '' : 's'}" size={12} weight={600} />
 		<Txt x={I.x} y={I.y + I.size + 16} text="ringed: this example" size={11} muted />
 	</Readout>

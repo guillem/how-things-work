@@ -132,6 +132,13 @@
 			pulse({ x: SIG.x + SIG.w + 4, y: SUM.y }, { x: OUT.x - 18, y: OUT.y }, 0.62, 0.85)
 		].flatMap((q, i) => (q ? [{ ...q, key: i }] : []))
 	);
+	const lineNote = $derived(
+		Math.abs(w1) < 0.05 && Math.abs(w2) < 0.05
+			? 'no line: with both weights at 0 the answer is the same everywhere'
+			: line
+				? 'always a straight line: the weights turn it, the bias slides it'
+				: 'a straight line, but outside the square: one answer everywhere here'
+	);
 	const signed = (v: number, d = 2) => (v < 0 ? `− ${fix(-v, d)}` : `+ ${fix(v, d)}`);
 	const par = (v: number) => (v < 0 ? `(${fix(v)})` : fix(v));
 	const wColor = (w: number) => (w >= 0 ? 'var(--nn-pos)' : 'var(--nn-neg)');
@@ -193,7 +200,7 @@
 		id="line"
 		order={3}
 		label="Boundary (z = 0)"
-		value="{fix(w1, 1)} x₁ {signed(w2, 1)} x₂ {signed(b, 1)} = 0: a straight line"
+		value="{fix(w1, 1)} x₁ {signed(w2, 1)} x₂ {signed(b, 1)} = 0: {lineNote}"
 	>
 		<Txt
 			x={P.x}
@@ -202,13 +209,7 @@
 			size={13}
 			weight={600}
 		/>
-		<Txt
-			x={P.x}
-			y={P.y + P.size + 64}
-			text="always a straight line: the weights turn it, the bias slides it"
-			size={12}
-			muted
-		/>
+		<Txt x={P.x} y={P.y + P.size + 64} text={lineNote} size={12} muted />
 	</Readout>
 
 	<!-- the neuron -->

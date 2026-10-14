@@ -148,7 +148,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Put several neurons side by side, each one looking at the two inputs, and feed their outputs to a final neuron. The middle neurons form a <dfn data-def="A row of neurons that all take the same inputs. In a hidden layer the neurons feed the next layer instead of giving the final answer.">hidden layer</dfn>: hidden because we never see their outputs as the answer, only the final <dfn data-def="The last neuron (or neurons) of a network, whose output is its answer.">output neuron</dfn>'s.</p>
 <p>Each square in the diagram is one neuron, shaded by its output over the whole plane. Every hidden neuron still draws a straight edge, but at its own angle and place. The output neuron weighs and adds <em>their</em> outputs, and the sum of a few soft edges can be a closed shape.</p>
-<p>Three neurons are enough to trap the circle, at epoch 64. Slide down to two and the best they manage is a band, with some ring points always wrong. One is back to a single line. More than three gets there faster.</p>`,
+<p>Three neurons are enough to trap the circle, at epoch 64. Slide down to two and the best they manage is a band, with some ring points always wrong. One is back to a single line. Four to eight get there faster, by epoch 26 to 45.</p>`,
 			notes: `<p>The lines between the squares are the weights: blue for positive, orange for negative, thicker for larger. In these hidden layers the squashing is done by tanh, the sigmoid stretched to run from −1 to 1, which suits neurons whose outputs feed other neurons.</p>`
 		},
 		{
@@ -164,7 +164,7 @@ export const spec: ExplainerSpec = {
 <li>add the biases: shift everything;</li>
 <li>squash both coordinates with tanh: the plane is <strong>bent</strong>, folded into a square from −1 to 1.</li>
 </ol>
-<p>In the bent plane the blue corners have been pulled to one side and the orange to the other, and a straight line, the output neuron's, splits them. Drawn back on the original plane, that line is the bent boundary. A network classifies by bending space until a straight cut works.</p>`,
+<p>In the bent plane the blue moon has been pulled to one side and the orange moon to the other, and a straight line, the output neuron's, splits them. Drawn back on the original plane, that line is the bent boundary. A network classifies by bending space until a straight cut works.</p>`,
 			notes: `<p>The view of layers as transformations of space is beautifully explained in Chris Olah's essay "Neural Networks, Manifolds, and Topology" (2014). The squash at step 3 is what makes the difference: without it, steps 1 and 2 would only move lines into other straight lines.</p>`
 		},
 		{
@@ -177,7 +177,7 @@ export const spec: ExplainerSpec = {
 			controls: [activation('act-activation', 'linear')],
 			body: `
 <p>The squashing curve of a hidden neuron is its <dfn data-def="The function a neuron applies to its weighted sum, such as the sigmoid, tanh or ReLU. Without it, a network of any depth is equivalent to a single neuron.">activation function</dfn>. This network has two hidden layers of 8 neurons, and it starts with <strong>no activation</strong>: each neuron passes its sum on unchanged.</p>
-<p>It fails like a single neuron, with a straight boundary. Each layer is then a linear transformation plus a shift, and <a href="../linear-transformations/#compose">a chain of linear transformations is one linear transformation</a>: the 2 × 8, 8 × 8 and 8 × 1 weight tables multiply out to a single row of two weights. Sixteen neurons collapse into one.</p>
+<p>It fails like a single neuron, with a straight boundary. Each layer is then a linear transformation plus a shift, and <a href="../linear-transformations/#compose">a chain of linear transformations is one linear transformation</a>: the 8 × 2, 8 × 8 and 1 × 8 weight tables multiply out to a single row of two weights, and the biases add up to a single bias. Sixteen neurons collapse into one.</p>
 <p>Switch to <strong>tanh</strong> and the same network traps the circle by epoch 40. <strong>ReLU</strong>, the <dfn data-def="Rectified linear unit: output = z when z is positive, 0 otherwise. The most common activation in modern networks.">rectified linear unit</dfn>, simply cuts the negative sums to 0; it is the commonest choice today, and here gets there by epoch 9. With ReLU the boundary is made of straight pieces joined at corners.</p>`,
 			notes: `<p>Any curve that is not a straight line will do in principle. ReLU is popular because it is cheap and its slope (1 for every positive sum) does not fade as the error is passed back through many layers, which tanh's and the sigmoid's slopes do.</p>`
 		},
@@ -236,7 +236,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A weight multiplies the input <i>a</i> that flows into it, and it feeds a neuron with error signal δ. So the slope of the loss for that weight is just</p>
 <p class="formula"><strong>∂L/∂<i>w</i> = <i>a</i><sub>in</sub> × δ<sub>out</sub></strong></p>
-<p>(and for a bias, just δ). One forward pass and one backward pass give the slope for <em>every</em> weight at once. Then each weight takes the <a href="../gradient-descent/#descend">gradient-descent step</a>, <i>w</i> ← <i>w</i> − η × ∂L/∂<i>w</i>, here with η = 0.5. The diagram shows each weight's old value, its slope and its new value. Run the example forward again and its loss is lower.</p>
+<p>(and for a bias, just δ). One forward pass and one backward pass give the slope for <em>every</em> weight at once. Then each weight takes the <a href="../gradient-descent/#descend">gradient-descent step</a>, <i>w</i> ← <i>w</i> − η × ∂L/∂<i>w</i>, here with η = 0.5. Each weight's line shows its old and new value, and the readout works through the steepest one. Run the example forward again and its loss is lower.</p>
 <p>Check that the slopes are right: nudge one weight by 0.001 and the loss changes by the slope × 0.001 (the readout does it). Press <em>Next example</em> to make the update and move on to the next point, and watch the inset: one example at a time, it takes this network 165 steps to get every corner right.</p>`,
 			notes: `<p>Computing every slope by nudging, as the check does, would need one extra forward pass per weight: billions for a large model. Backpropagation gets all of them for about the cost of two passes. It was popularised for neural networks by David Rumelhart, Geoffrey Hinton and Ronald Williams in 1986.</p>`
 		},
