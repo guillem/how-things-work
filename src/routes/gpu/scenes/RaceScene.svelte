@@ -159,8 +159,8 @@
 	const LINE = 16.4;
 	const pathColor: Record<Path, string> = {
 		all: 'var(--stage-ink-muted)',
-		sphere: '#e8590c',
-		sky: '#1c7ed6',
+		sphere: 'var(--gpu-ball)',
+		sky: 'var(--gpu-sky)',
 		end: 'var(--stage-ink-muted)'
 	};
 	const curX = $derived(picX + ((current % cols) + 0.5) * cell);
@@ -183,7 +183,7 @@
 	</defs>
 
 	{#if !solo}
-		<Readout id="clock" order={0} label="Same clock for both" value="{fmt(ticks)} ticks">
+		<Readout id="clock">
 			<Label
 				x={40}
 				y={46}
@@ -193,7 +193,7 @@
 				text="Same clock for both: {fmt(ticks)} ticks"
 			/>
 		</Readout>
-		<Readout id="pace" order={1} label="Clock" value={nicePace(pace)} opacity={pace > 1.5 ? 1 : 0}>
+		<Readout id="pace">
 			<Label
 				x={920}
 				y={46}

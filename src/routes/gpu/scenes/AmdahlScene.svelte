@@ -181,7 +181,7 @@
 	<Readout
 		id="now"
 		order={1}
-		label="Measured with {workersText}"
+		label={mode === 'curve' ? `Measured with ${workersText}` : undefined}
 		value="{fx(now.speedup)}× faster"
 		color="var(--gpu-lane)"
 	>
@@ -267,7 +267,7 @@
 		</Readout>
 	{/each}
 	{#if mode === 'curve'}
-		<Readout id="ratio" order={6} label="Speed-up" value="{fx(now.speedup)}×">
+		<Readout id="ratio">
 			<Label
 				x={BX}
 				y={380}

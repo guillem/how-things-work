@@ -355,7 +355,10 @@ export const gpuPeakGFLOPS = RTX_4090.cudaCores * 2 * RTX_4090.boostGHz;
 export const cpuFp64FromParts = I9_14900K.cores * I9_14900K.baseGHz * 16;
 /** 32-bit numbers: an AVX2 register holds 8 floats instead of 4 doubles, so twice the rate. */
 export const cpuPeakGFLOPS = 2 * I9_14900K.fp64GFLOPS;
-/** FP32 lanes per CPU core implied by Intel's figure (two 8-wide multiply-add units). */
+/**
+ * FP32 multiply-adds per core per tick implied by Intel's figure, which applies one
+ * formula to all 24 cores (big and small alike): an average, not a per-core spec.
+ */
 export const cpuLanesPerCore = cpuPeakGFLOPS / (I9_14900K.cores * I9_14900K.baseGHz * 2);
 
 export interface Chip {

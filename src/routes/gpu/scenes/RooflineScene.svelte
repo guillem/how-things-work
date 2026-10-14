@@ -71,7 +71,7 @@
 		},
 		{
 			id: 'lanes',
-			label: '32-bit multiply-adds per tick',
+			label: '32-bit multiply-adds per tick (CPU: from Intel’s figure)',
 			cpu: `${fmt(I9_14900K.cores * cpuLanesPerCore)}`,
 			gpu: fmt(RTX_4090.cudaCores),
 			ratio: `×${fmt(RTX_4090.cudaCores / (I9_14900K.cores * cpuLanesPerCore))}`
@@ -186,13 +186,7 @@
 			stroke="var(--gpu-fast)"
 			stroke-width="1.5"
 		/>
-		<Readout
-			id="cpu-name"
-			order={0}
-			label="CPU"
-			value="{I9_14900K.name} ({I9_14900K.year})"
-			color="var(--gpu-fast)"
-		>
+		<Readout id="cpu-name">
 			<Label
 				x={60}
 				y={CARD_Y + 30}
@@ -286,13 +280,7 @@
 			stroke="var(--gpu-lane)"
 			stroke-width="1.5"
 		/>
-		<Readout
-			id="gpu-name"
-			order={1}
-			label="GPU"
-			value="{RTX_4090.name} ({RTX_4090.year})"
-			color="var(--gpu-lane)"
-		>
+		<Readout id="gpu-name">
 			<Label
 				x={510}
 				y={CARD_Y + 30}
@@ -335,7 +323,12 @@
 		{#if !takeaway}
 			{#each rowsTable as r, i (r.id)}
 				{@const y = TABLE_Y + 26 + i * 30}
-				<Readout id="row-{r.id}" order={2 + i} label={r.label} value="{r.cpu} · {r.gpu}">
+				<Readout
+					id="row-{r.id}"
+					order={2 + i}
+					label={r.id === 'clock' ? undefined : r.label}
+					value="{r.cpu} · {r.gpu}"
+				>
 					<Label x={40} {y} anchor="start" size={13} text={r.label} />
 					<Label
 						x={560}
@@ -474,13 +467,7 @@
 				/>
 			{/each}
 		</g>
-		<Readout
-			id="roof-gpu"
-			order={10}
-			label="RTX 4090 roof"
-			value="{rate(gpu.peak)}, bend at {fmt(ridge(gpu))} FLOP/byte"
-			color="var(--gpu-lane)"
-		>
+		<Readout id="roof-gpu">
 			<Label
 				x={PLOT.x0 + 10}
 				y={ly(gpu.peak) - 8}
@@ -492,13 +479,7 @@
 				text="RTX 4090 peak: {rate(gpu.peak)}"
 			/>
 		</Readout>
-		<Readout
-			id="roof-cpu"
-			order={11}
-			label="i9-14900K roof"
-			value="{rate(cpu.peak)}, bend at {fmt(ridge(cpu))} FLOP/byte"
-			color="var(--gpu-fast)"
-		>
+		<Readout id="roof-cpu">
 			<Label
 				x={PLOT.x0 + 10}
 				y={ly(cpu.peak) - 8}

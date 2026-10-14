@@ -2206,7 +2206,8 @@ kbd {
 }
 
 /* gpu: the fast core, the slow lanes, idle (switched-off) lanes, the serial part of a job,
-   memory (the sloping roof) and the path a warp takes through the shader */
+   memory (the sloping roof), the highlighted path through the shader, and its two branches
+   (the ball's side and the sky's side) */
 :root {
 	--gpu-fast: #1c7ed6;
 	--gpu-lane: #5c940d;
@@ -2214,6 +2215,8 @@ kbd {
 	--gpu-serial: #e8590c;
 	--gpu-mem: #7048e8;
 	--gpu-path: #fff3bf;
+	--gpu-ball: #e8590c;
+	--gpu-sky: #1c7ed6;
 }
 :root[data-theme='dark'] {
 	--gpu-fast: #4dabf7;
@@ -2222,4 +2225,6 @@ kbd {
 	--gpu-serial: #ff922b;
 	--gpu-mem: #9775fa;
 	--gpu-path: #3d3a1f;
+	--gpu-ball: #ff922b;
+	--gpu-sky: #4dabf7;
 }

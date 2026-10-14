@@ -106,11 +106,30 @@
 		return `M${x0} ${y0} C ${x0 + 40} ${GY - 40}, ${LX - 60} ${GY - 14}, ${GX - 6} ${GY - 14}`;
 	});
 	const picture = $derived(mode === 'divergence' ? warpMap(dark) : shadedImage());
+	/** Runs of neighbouring lanes that are all on or all off on a row. */
+	function runsOf(r: { active: (on: boolean) => boolean }) {
+		const out: { a: number; b: number; active: boolean }[] = [];
+		for (const l of lanes) {
+			const active = r.active(l.on);
+			const last = out.at(-1);
+			if (last && last.active === active) last.b = l.i + 1;
+			else out.push({ a: l.i, b: l.i + 1, active });
+		}
+		return out;
+	}
+	const gaps = $derived.by(() => {
+		let d = '';
+		for (let i = 1; i < WARP; i++) {
+			const x = GX + i * (CW + GAP) - GAP / 2;
+			d += `M${x.toFixed(2)} ${GY} V${(GY + shown * RH).toFixed(1)}`;
+		}
+		return d;
+	});
 	const pathTint: Record<Path, string> = {
 		all: 'var(--gpu-lane)',
 		end: 'var(--gpu-lane)',
-		sphere: '#e8590c',
-		sky: '#1c7ed6'
+		sphere: 'var(--gpu-ball)',
+		sky: 'var(--gpu-sky)'
 	};
 	const pct = (v: number) => `${Math.round(100 * v)}%`;
 	const kindText: Record<Kind, string> = {
@@ -176,7 +195,7 @@
 			{ id: 'edge', label: `across the edge: ${MIXED} ticks`, fill: dark ? '#fa6b6b' : '#d92633' }
 		]}
 		{#each items as it, i (it.id)}
-			<Readout id="key-{it.id}" order={10 + i} label={it.label} color={it.fill}>
+			<Readout id="key-{it.id}">
 				<rect
 					x={MAP.x}
 					y={MAP.y + mapH + 18 + i * 22}
@@ -243,19 +262,23 @@
 				font-weight={now ? 700 : 400}>{r.ins.text}</text
 			>
 			<rect x={LX - 10} y={y + 1} width="4" height={RH - 2} rx="1" fill={pathTint[r.ins.path]} />
-			{#each lanes as l (l.i)}
+			{#each runsOf(r) as run (run.a)}
 				<rect
-					x={GX + l.i * (CW + GAP)}
+					x={GX + run.a * (CW + GAP)}
 					y={y + 1}
-					width={CW}
+					width={(run.b - run.a) * (CW + GAP) - GAP}
 					height={RH - 2}
 					rx="1.5"
-					fill={r.active(l.on) ? pathTint[r.ins.path] : 'var(--gpu-idle)'}
-					opacity={r.active(l.on) ? (now ? 1 : 0.8) : 1}
+					fill={run.active ? pathTint[r.ins.path] : 'var(--gpu-idle)'}
+					opacity={run.active ? (now ? 1 : 0.8) : 1}
 				/>
 			{/each}
 		{/if}
 	{/each}
+	<!-- the gaps between lanes, drawn once over all the rows -->
+	{#if shown > 0}
+		<path d={gaps} stroke="var(--stage-bg)" stroke-width={GAP + 0.6} />
+	{/if}
 	<Readout id="tick-label">
 		<Label
 			x={LX - 16}
@@ -318,7 +341,7 @@
 				y={512}
 				anchor="start"
 				size={12}
-				color="#e8590c"
+				color="var(--gpu-ball)"
 				text="orange: the ball’s side"
 			/>
 			<Label
@@ -326,7 +349,7 @@
 				y={512}
 				anchor="start"
 				size={12}
-				color="#1c7ed6"
+				color="var(--gpu-sky)"
 				text="blue: the sky’s side"
 			/>
 			<Label x={MAP.x} y={532} anchor="start" size={12} muted text="grey: lane switched off" />
