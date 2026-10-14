@@ -75,12 +75,13 @@ Last updated: 2026-10-14 UTC.
 builder agents, one per topic in its own local worktree (`.claude/worktrees/<slug>`, branch
 `topic/<slug>`), each on its own dev port (52xx) and `PW_PORT` (42xx). Each finished branch is
 rebased and merged into `main` locally, then fact-checked (`make review`) and its report applied;
-the topic is ticked after that. Nothing is pushed or released until the user validates. Merged into `main` (not ticked until their
-fact-check is applied): quantum-mechanics, acids-bases, gradient-descent, embeddings,
-carbon-cycle, rockets, plate-tectonics. Batch reviews submitted: msgbatch_01EjzxvBTpHfuetSeN7qT1HL
-(first three), msgbatch_01BV1p6aUAsiFtzFKbfs3u11 (other four). In flight: the-cell,
-quantum-computing, neural-networks, reaction-rates-equilibrium, vision-color, greenhouse-effect,
-exoplanets, earthquakes. To resume after an interruption: `git worktree list`, then
+the topic is ticked after that. Nothing is pushed or released until the user validates. Progress at 20:00: 67 explainers on `main`, 60 ticked. crispr is set aside: a safety
+classifier stopped three builder attempts (the last with the user's fixed-walkthrough scope)
+before anything was written. In flight: builders for carbon-polymers, language-models, evolution,
+redox-batteries, deep-time, immune-system, diffusion-models, protein-folding, neurons, tensors,
+ice-ages, stars; fact-check fixes for convolution-vision, earthquakes, dna-to-protein,
+meiosis-inheritance, transformers, respiration-atp; standard-model's review is at the Batch API.
+To resume after an interruption: `git worktree list`, then
 for each `topic/*` branch check `git log main..topic/<slug>` and continue or merge it.
 
 **Phone readouts rollout (2026-10-13, on main, not yet released):** 38 of 46 topics converted
