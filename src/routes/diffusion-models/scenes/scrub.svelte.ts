@@ -21,6 +21,8 @@ interface Inputs {
 	setParam: (id: string, value: ParamValue) => void;
 	/** seconds of animation from start to end */
 	run?: number;
+	/** how the animation paces the process (shared.ts `paceForward` / `paceReverse`) */
+	pace?: (v: number) => number;
 }
 
 export function useScrub(o: Inputs) {
@@ -33,7 +35,7 @@ export function useScrub(o: Inputs) {
 	const value = $derived(
 		slider && slider.type === 'range' ? num(o.params(), slider.id, slider.default) / scale : 1
 	);
-	const u = $derived(playhead(o.t(), auto, o.reduced(), value, o.run ?? 7));
+	const u = $derived(playhead(o.t(), auto, o.reduced(), value, o.run ?? 7, o.pace));
 
 	let lastSlider: { id: string; v: number } | null = null;
 	let lastAuto: { id: string; v: boolean } | null = null;

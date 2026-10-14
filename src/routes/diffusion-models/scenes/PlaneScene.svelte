@@ -15,7 +15,7 @@
 	import { MOONS, WEIGHTS } from '../moons-model';
 	import { LABELS, ON_DATA, moon, moonCurve, nearestMoon, onMoons } from '../moons';
 	import { POINTS, request, runKey, runs } from '../sampler.svelte';
-	import { PLANE, dotsPath, fmt, int, num, pct, px, py } from './shared';
+	import { PLANE, dotsPath, fmt, int, num, pct, px, py, paceForward, paceReverse } from './shared';
 	import { useScrub } from './scrub.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
@@ -27,7 +27,8 @@
 		t: () => t,
 		reduced: () => reduced,
 		setParam: (id, v) => setParam(id, v),
-		run: 8
+		run: 8,
+		pace: (v) => (mode === 'reverse' ? paceReverse(v) : paceForward(v))
 	});
 	const u = $derived(scrub.u);
 
@@ -156,29 +157,6 @@
 	const onNow = $derived(rev ? onMoons(rev) : null);
 	const tReached = $derived(run ? run.ts[Math.min(stepsN, Math.round(kNow))] : T);
 
-	// trails of 12 points, through up to 30 moments of the run
-	const TRAILS = 12;
-	const trailPath = $derived.by(() => {
-		const f = run?.frames;
-		if (!f || mode !== 'reverse') return '';
-		const n = POINTS * 2;
-		const marks = Math.min(stepsN, 30);
-		let d = '';
-		for (let p = 0; p < TRAILS; p++) {
-			const i = p * Math.floor(POINTS / TRAILS);
-			let seg = '';
-			for (let m = 0; m <= marks; m++) {
-				const k = Math.round((m / marks) * stepsN);
-				if (k > kNow) break;
-				const x = px(f[k * n + 2 * i]);
-				const y = py(f[k * n + 2 * i + 1]);
-				seg += `${seg ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
-			}
-			d += seg;
-		}
-		return d;
-	});
-
 	// ---- what is drawn ---------------------------------------------------------------------------
 	const curves = [0, 1].map((l) => ({
 		l,
@@ -265,9 +243,6 @@
 		{/each}
 		{#if mode === 'denoise'}
 			<path d={arrowPath} stroke="var(--dm-guess)" stroke-width="1" opacity="0.45" fill="none" />
-		{/if}
-		{#if mode === 'reverse'}
-			<path d={trailPath} stroke="var(--dm-noise)" stroke-width="1" opacity="0.5" fill="none" />
 		{/if}
 		{#each dots as s (s.id)}
 			<path

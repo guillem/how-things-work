@@ -4,6 +4,7 @@
  */
 import type { Params } from '#lib/explainer/index.ts';
 import { clamp } from '#lib/draw/index.ts';
+import { T, alphaBar } from '../ddpm';
 
 /** Numbers with `d` decimals, a real minus sign, no "-0". */
 export const fmt = (v: number, d = 2) => {
@@ -17,7 +18,8 @@ export const textWidth = (text: string, size: number) => text.length * size * 0.
 /**
  * Where a process stands, 0 … 1. With "Run by itself" on, it plays as a pure function of t:
  * `lead` seconds still, `run` seconds of progress, then it holds the end. Off (or under reduced
- * motion), it is the slider's value (`value` already scaled 0 … 1).
+ * motion), it is the slider's value (`value` already scaled 0 … 1). `pace` maps the even
+ * passage of time to the process (see `paceForward`).
  */
 export function playhead(
 	t: number,
@@ -25,11 +27,37 @@ export function playhead(
 	reduced: boolean,
 	value: number,
 	run = 7,
+	pace: (v: number) => number = (v) => v,
 	lead = 0.6
 ): number {
 	if (!auto || reduced) return clamp(value);
-	return clamp((t - lead) / run);
+	return pace(clamp((t - lead) / run));
 }
+
+/**
+ * Pacing of "Run by itself": what happens visibly happens while the noise level changes, not
+ * evenly in t (from t = 1000 to 500 the data are hidden anyway, the last 50 steps barely change
+ * anything). So the animation moves the log signal-to-noise ratio, ln(ᾱ / (1 − ᾱ)), evenly
+ * from −7 to 4 (t ≈ 760 to 40), and takes the ends quickly.
+ */
+const LOGSNR = Float64Array.from({ length: T + 1 }, (_, t) =>
+	t === 0 ? 99 : Math.log(alphaBar(t) / (1 - alphaBar(t)))
+);
+function tAtNoise(v: number): number {
+	// v = 0: clean (t = 0); v = 1: pure noise (t = T); the ends get 8% of the time each
+	if (v <= 0.08) return (v / 0.08) * tAtLog(4);
+	if (v >= 0.92) return tAtLog(-7) + ((v - 0.92) / 0.08) * (T - tAtLog(-7));
+	return tAtLog(4 + ((v - 0.08) / 0.84) * (-7 - 4));
+}
+function tAtLog(l: number): number {
+	let t = 1;
+	while (t < T && LOGSNR[t] > l) t++;
+	return t;
+}
+/** Animation fraction → fraction of the forward process (t / T). */
+export const paceForward = (v: number) => tAtNoise(clamp(v)) / T;
+/** Animation fraction → fraction of the reverse process done (1 − t / T). */
+export const paceReverse = (v: number) => 1 - tAtNoise(1 - clamp(v)) / T;
 
 export const bool = (params: Params, id: string, def = true) =>
 	typeof params[id] === 'boolean' ? params[id] : def;

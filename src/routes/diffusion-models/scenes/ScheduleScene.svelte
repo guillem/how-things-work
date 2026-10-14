@@ -9,7 +9,7 @@
 	import { Axes, Label, linePath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { BETAS, T, alphaBar, gaussian } from '../ddpm';
-	import { fmt } from './shared';
+	import { fmt, paceForward } from './shared';
 	import { useScrub } from './scrub.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
@@ -19,7 +19,8 @@
 		t: () => t,
 		reduced: () => reduced,
 		setParam: (id, v) => setParam(id, v),
-		run: 8
+		run: 8,
+		pace: paceForward
 	});
 	const tt = $derived(Math.round(scrub.u * T));
 

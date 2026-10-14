@@ -13,7 +13,7 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { T, alphaBar, gaussian, noisy } from '../ddpm';
 	import { CHECK, DIGITS, SEQUENCES, type Sequence } from '../mnist-sequences';
-	import { fmt, imageUrl, num, pct, unpack4, unpack8 } from './shared';
+	import { fmt, imageUrl, num, pct, unpack4, unpack8, paceForward, paceReverse } from './shared';
 	import { useScrub } from './scrub.svelte';
 
 	let { step, t, params, reduced, dark, setParam }: StageProps = $props();
@@ -25,7 +25,8 @@
 		t: () => t,
 		reduced: () => reduced,
 		setParam: (id, v) => setParam(id, v),
-		run: 8
+		run: 8,
+		pace: (v) => (mode === 'forward' ? paceForward(v) : paceReverse(v))
 	});
 	const u = $derived(scrub.u);
 
