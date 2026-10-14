@@ -43,6 +43,23 @@
 		tangent: { x: 117.6, y: calcY(0.6), k: (-140 * 0.6) / 156 }
 	};
 
+	// Vision & colour: three cone-sensitivity humps (decorative bell curves at the S, M and L
+	// peaks, 442, 543 and 570 nm, over x 112…188 for 400…700 nm).
+	const visionArt = (
+		[
+			[442, 26, 'var(--vc-s)'],
+			[543, 30, 'var(--vc-m)'],
+			[570, 34, 'var(--vc-l)']
+		] as const
+	).map(([peak, w, c]) => ({
+		c,
+		d: Array.from({ length: 41 }, (_, i) => {
+			const nm = 400 + (i / 40) * 300;
+			const y = 96 - 60 * Math.exp(-(((nm - peak) / w) ** 2) / 2);
+			return `${i ? 'L' : 'M'}${(112 + (i / 40) * 76).toFixed(1)} ${y.toFixed(1)}`;
+		}).join(' ')
+	}));
+
 	// Light & optics: the spectrum fanning out of a prism (fixed colours of the
 	// rainbow, red bent least).
 	const opticsArt = ['#e03131', '#f76707', '#fab005', '#40c057', '#228be6', '#7048e8'].map(
