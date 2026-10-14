@@ -22,6 +22,7 @@ import {
 	spectrum,
 	spectrumPeriods,
 	summerSunshine,
+	terminations,
 	valueAt
 } from '../src/routes/ice-ages/milankovitch';
 
@@ -190,4 +191,29 @@ test('the next 100,000 years: the orbit grows rounder, so northern summers swing
 		range(next.map((p) => p.summer)) / range(PAST.filter((p) => p.ka <= 100).map((p) => p.summer));
 	expect(ratio).toBeGreaterThan(0.6);
 	expect(ratio).toBeLessThan(0.75);
+});
+
+test('nine terminations in 800,000 years; eight began while northern summer sunshine was rising', () => {
+	const ends = terminations();
+	expect(ends).toHaveLength(9);
+	const sun = (ka: number) => summerSunshine(orbitAt(-ka));
+	const rising = ends.filter((tr) => sun(tr.from - 1) > sun(tr.from + 1));
+	expect(rising).toHaveLength(8);
+	// the last one: from about 17,000 to 12,000 years ago
+	expect(ends[0].from).toBeGreaterThan(15);
+	expect(ends[0].from).toBeLessThan(19);
+	expect(ends[0].to).toBeGreaterThan(10);
+	expect(ends[0].to).toBeLessThan(13);
+	// but summer sunshine peaked 37 times
+	const s = PAST.map((p) => p.summer);
+	let peaksCount = 0;
+	for (let i = 1; i < s.length - 1; i++) if (s[i] > s[i - 1] && s[i] >= s[i + 1]) peaksCount++;
+	expect(peaksCount).toBe(37);
+});
+
+test('the summer-sunshine spectrum has almost nothing at 100,000 years', () => {
+	const s = PAST.map((p) => p.summer);
+	const amps = spectrum(s, PERIODS);
+	const at = (p: number) => amps[PERIODS.findIndex((x) => x <= p)];
+	expect(at(95)).toBeLessThan(0.1 * Math.max(...amps));
 });

@@ -274,3 +274,24 @@ export function warmPeaks(rec: readonly Point[], threshold = -1.5, gap = 30) {
 	if (best) out.push(best);
 	return out;
 }
+
+/**
+ * The terminations of the record: for each warm peak (see `warmPeaks`), from
+ * the end of the cold before it (the youngest point within 1 °C of the coldest
+ * of the 40,000 years before the peak) to the first point within 1.5 °C of
+ * the peak. Youngest first; ages in kyr.
+ */
+export function terminations(rec: readonly Point[] = TEMPERATURE) {
+	return warmPeaks(rec, -2.5, 40).flatMap((peak) => {
+		const before = rec.filter((p) => p.ka > peak.ka && p.ka < peak.ka + 40);
+		if (before.length === 0) return [];
+		const coldest = Math.min(...before.map((p) => p.v));
+		const start = before.find((p) => p.v < coldest + 1);
+		if (!start) return [];
+		const end = rec
+			.filter((p) => p.ka < start.ka && p.ka >= peak.ka)
+			.reverse()
+			.find((p) => p.v >= peak.v - 1.5);
+		return end ? [{ from: start.ka, to: end.ka }] : [];
+	});
+}
