@@ -691,7 +691,7 @@
 
 	{#if isAmp}
 		<g opacity={ampAmt.current}>
-			<circle cx={AC.x} cy={AC.y} r={2 * AR} fill="none" stroke="var(--stage-grid)" />
+			<circle cx={AC.x} cy={AC.y} r={2 * AR} fill="none" stroke="var(--stage-line)" opacity="0.6" />
 			<line
 				x1={AC.x - 2 * AR - 6}
 				x2={AC.x + 2 * AR + 6}

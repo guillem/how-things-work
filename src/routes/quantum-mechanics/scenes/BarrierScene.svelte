@@ -124,7 +124,7 @@
 			if (j < jb + Math.round(run.a / g.dx))
 				left += `L${X} ${(base - p * PROB_PX * side).toFixed(1)}`;
 			else right += `L${X} ${(base - p * PROB_PX * side).toFixed(1)}`;
-			const amp = Math.sqrt(PROB_PX * 75) * side; // Re ψ scaled so the start peaks at 120 px too
+			const amp = Math.sqrt(PROB_PX * 75) * side; // Re ψ on the same scale as |ψ|²
 			re += `${re ? 'L' : 'M'}${X} ${(base - f.re[j] * amp * 0.5).toFixed(1)}`;
 		}
 		left += `L${sx(run.right).toFixed(1)} ${base}Z`;
