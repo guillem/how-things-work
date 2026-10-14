@@ -1435,3 +1435,36 @@ kbd {
 	--tc-flagellum: #c8a06a;
 	--tc-protein: #4a5566;
 }
+
+/* ---------------------------------------------------------------------------
+   Meiosis & inheritance: the two parental copies, grandparents, peas */
+:root {
+	--mi-mom: #d9534a;
+	--mi-dad: #3a78d0;
+	--mi-mom-2: #e9a23b;
+	--mi-dad-2: #2fa59a;
+	--mi-cell: #fbf1ea;
+	--mi-cell-edge: #c9a48e;
+	--mi-nucleus: #f3e6ef;
+	--mi-band: rgba(255, 255, 255, 0.92);
+	--mi-pea-yellow: #e6c13a;
+	--mi-pea-green: #7aa83a;
+	--mi-flower: #8e4fb5;
+	--mi-flower-white: #f4f1ea;
+	--mi-box: #fffaf5;
+}
+:root[data-theme='dark'] {
+	--mi-mom: #ec6f62;
+	--mi-dad: #5d97ec;
+	--mi-mom-2: #f0b552;
+	--mi-dad-2: #3fc0b2;
+	--mi-cell: #261d1b;
+	--mi-cell-edge: #8a6a5a;
+	--mi-nucleus: #2c2230;
+	--mi-band: rgba(255, 255, 255, 0.9);
+	--mi-pea-yellow: #e2c044;
+	--mi-pea-green: #86b548;
+	--mi-flower: #b07ad6;
+	--mi-flower-white: #e9e4da;
+	--mi-box: #1d1a18;
+}
