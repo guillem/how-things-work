@@ -2038,6 +2038,31 @@
 			stroke-linecap="round"
 			opacity="0.75"
 		/>
+	{:else if slug === 'standard-model'}
+		<!-- a proton: three quarks, one of each colour, tied by gluon springs; an electron outside -->
+		<circle cx="88" cy="60" r="42" fill={accent} opacity="0.1" />
+		<path
+			d="M88 32 L64 76 L112 76 Z"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.2"
+			stroke-dasharray="2 3"
+			opacity="0.5"
+		/>
+		<circle cx="88" cy="32" r="11" fill="var(--sm-red)" />
+		<circle cx="64" cy="76" r="11" fill="var(--sm-green)" />
+		<circle cx="112" cy="76" r="11" fill="var(--sm-blue)" />
+		<text x="88" y="36.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">u</text>
+		<text x="64" y="80.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">u</text>
+		<text x="112" y="80.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">d</text>
+		<circle cx="166" cy="34" r="6" fill="var(--sm-lepton)" />
+		<path
+			d="M140 58 q6 -8 12 0 q6 8 12 0"
+			fill="none"
+			stroke="var(--sm-boson)"
+			stroke-width="2"
+			stroke-linecap="round"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
