@@ -118,25 +118,34 @@ export function chloroplastPaths(i: number): ChloroplastPaths {
 	let blocks = '';
 	let thylakoids = '';
 	let lamellae = '';
-	const sorted = gs.map((g, k) => ({ ...g, k })).sort((a, b) => a.u - b.u);
+	const rows = [-1, 0, 1].map((row) =>
+		gs
+			.map((g, k) => ({ ...g, k }))
+			.filter((g) => g.row === row)
+			.sort((a, b) => a.u - b.u)
+	);
 	for (const g of gs) {
 		const h = g.n * R;
 		blocks += `M${at(g.u - g.w / 2, g.v - h / 2)}L${at(g.u + g.w / 2, g.v - h / 2)}L${at(g.u + g.w / 2, g.v + h / 2)}L${at(g.u - g.w / 2, g.v + h / 2)}Z`;
 		for (let k = 0; k < g.n; k++)
 			thylakoids += bar(g.u - g.w / 2, g.u + g.w / 2, g.v + (k - (g.n - 1) / 2) * R);
 	}
-	for (let j = 0; j + 1 < sorted.length; j++) {
-		const a = sorted[j];
-		const b = sorted[j + 1];
-		const va = a.k === 0 ? a.v + 0.5 * R : a.v + (((a.n / 2) | 0) - (a.n - 1) / 2) * R;
-		const vb = b.v + (((b.n / 2) | 0) - (b.n - 1) / 2) * R;
-		const u0 = a.u + a.w / 2;
-		const u1 = b.u - b.w / 2;
-		lamellae += `M${at(u0, va)}L${at(u0 + Math.min(0.16, (u1 - u0) / 2), va)}L${at(u1, vb)}`;
-		// a second lamella between neighbours, lower in the stacks
-		if (a.n > 6 && b.n > 6) lamellae += `M${at(u0, a.v - 2 * R)}L${at(u1, b.v - 2.5 * R)}`;
-	}
-	const starch = `M${at(-c.a * 0.55 - 0.45, c.b * 0.25)}A0.45 0.22 ${(c.angle * 180) / Math.PI} 1 0 ${at(-c.a * 0.55 + 0.45, c.b * 0.25)}A0.45 0.22 ${(c.angle * 180) / Math.PI} 1 0 ${at(-c.a * 0.55 - 0.45, c.b * 0.25)}Z`;
+	for (const sorted of rows)
+		for (let j = 0; j + 1 < sorted.length; j++) {
+			const a = sorted[j];
+			const b = sorted[j + 1];
+			const va = a.k === 0 ? a.v + 0.5 * R : a.v + (((a.n / 2) | 0) - (a.n - 1) / 2) * R;
+			const vb = b.v + (((b.n / 2) | 0) - (b.n - 1) / 2) * R;
+			const u0 = a.u + a.w / 2;
+			const u1 = b.u - b.w / 2;
+			lamellae += `M${at(u0, va)}L${at(u0 + Math.min(0.16, (u1 - u0) / 2), va)}L${at(u1, vb)}`;
+			// a second lamella between neighbours, lower in the stacks
+			if (a.n > 6 && b.n > 6) lamellae += `M${at(u0, a.v - 2 * R)}L${at(u1, b.v - 2.5 * R)}`;
+		}
+	const su = -c.a * 0.3;
+	const sv = c.b * 0.31;
+	const deg = (c.angle * 180) / Math.PI;
+	const starch = `M${at(su - 0.45, sv)}A0.45 0.19 ${deg} 1 0 ${at(su + 0.45, sv)}A0.45 0.19 ${deg} 1 0 ${at(su - 0.45, sv)}Z`;
 	const globules = [
 		[c.a * 0.55, -c.b * 0.45],
 		[c.a * 0.62, c.b * 0.35],

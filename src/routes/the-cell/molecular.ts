@@ -185,6 +185,27 @@ export const MEMBRANE_PROTEINS: Placed[] = [
 	{ id: 'glut1', x: 18, y: 0, angle: 0 }
 ];
 
+/**
+ * Actin filaments of the cortex under the cell membrane in the membrane view,
+ * nm from the membrane target (y down into the cell): 6–7 nm wide, a mesh in
+ * the first ~150 nm (lengths and angles random, seeded).
+ */
+export const CORTEX_ACTIN: [number, number][][] = (() => {
+	const r = rng(3);
+	const out: [number, number][][] = [];
+	for (let k = 0; k < 70; k++) {
+		const x = r.range(-800, 800);
+		const y = r.range(12, 150);
+		const a = r.range(-0.6, 0.6);
+		const L = r.range(80, 280);
+		out.push([
+			[x - (L / 2) * Math.cos(a), y - (L / 2) * Math.sin(a)],
+			[x + (L / 2) * Math.cos(a), y + (L / 2) * Math.sin(a)]
+		]);
+	}
+	return out;
+})();
+
 // ---- the thylakoid ----------------------------------------------------------------------------------
 
 /** Centre lines of the stacked thylakoids in view (lumen centres), nm; the middle one continues right. */

@@ -7,7 +7,7 @@
 	 * measured concentrations (mammalian cell: K⁺ 100 mM, Na⁺ 10 mM; blood plasma:
 	 * K⁺ 4 mM, Na⁺ 145 mM; BNID 104049, 104050), as hydrated ions ≈ 0.7 nm across.
 	 */
-	import { MEMBRANE_PROTEINS, scatterSmall, scatter } from '../molecular';
+	import { CORTEX_ACTIN, MEMBRANE_PROTEINS, scatterSmall, scatter } from '../molecular';
 	import { MACHINES } from '../shapes';
 
 	const BOX = { x0: -110, x1: 110, y0: -80, y1: 80 };
@@ -40,6 +40,9 @@
 					`M${(p.x - 0.35).toFixed(2)} ${p.y.toFixed(2)}a0.35 0.35 0 1 0 0.7 0a0.35 0.35 0 1 0 -0.7 0Z`
 			)
 			.join('');
+	const actin = CORTEX_ACTIN.map(
+		(seg) => `M${seg[0][0]} ${seg[0][1]}L${seg[1][0]} ${seg[1][1]}`
+	).join('');
 	const NA_FILL = '#9c36b5';
 	const K_FILL = '#2f9e44';
 </script>
@@ -98,6 +101,23 @@
 			width={BOX.x1 - BOX.x0 + 120}
 			height="2.4"
 			fill="var(--tc-lipid)"
+		/>
+	</Part>
+	<Part id="actin" {sel} {pick} {interactive}>
+		<path
+			d={actin}
+			fill="none"
+			stroke="var(--tc-actin)"
+			stroke-width="6.5"
+			stroke-linecap="round"
+		/>
+		<path
+			d={actin}
+			fill="none"
+			stroke="var(--tc-cytosol)"
+			stroke-width="1"
+			stroke-dasharray="2.7 2.7"
+			opacity="0.5"
 		/>
 	</Part>
 	<Part id="protein" {sel} {pick} {interactive}>

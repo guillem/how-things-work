@@ -72,6 +72,8 @@ export interface Granum {
 	/** Width across, µm, and number of stacked thylakoids. */
 	w: number;
 	n: number;
+	/** Row across the chloroplast (−1, 0, 1); lamellae join neighbours in a row. */
+	row: number;
 }
 
 export interface Leaf {
@@ -235,8 +237,8 @@ export function palisadeCell(): PalisadeCell {
 /** Grana of a chloroplast, in its own frame; the target granum (index 0) at the centre. */
 export function grana(seed: number, c: Chloroplast): Granum[] {
 	const r = rng(seed);
-	const out: Granum[] = [{ u: 0, v: 0, w: 0.45, n: 12 }];
-	for (const row of [-0.62, 0, 0.62]) {
+	const out: Granum[] = [{ u: 0, v: 0, w: 0.45, n: 12, row: 0 }];
+	for (const [ri, row] of [-0.62, 0, 0.62].entries()) {
 		for (let u = -c.a + 0.5 + (row ? 0.31 : 0); u < c.a - 0.45; u += 0.62) {
 			if (!row && Math.abs(u) < 0.5) continue;
 			const vc = row * c.b + r.range(-0.06, 0.06);
@@ -248,7 +250,7 @@ export function grana(seed: number, c: Chloroplast): Granum[] {
 				(uu / (c.a - 0.12)) ** 2 + (vv / (c.b - 0.12)) ** 2 < 1;
 			if (![-1, 1].every((su) => [-1, 1].every((sv) => inside(u + (su * w) / 2, vc + sv * h))))
 				continue;
-			out.push({ u: u + r.range(-0.04, 0.04), v: vc, w, n });
+			out.push({ u: u + r.range(-0.04, 0.04), v: vc, w, n, row: ri - 1 });
 		}
 	}
 	return out;

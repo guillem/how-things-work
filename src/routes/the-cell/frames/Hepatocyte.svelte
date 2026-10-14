@@ -18,7 +18,7 @@
 		type Capsule,
 		type Pt
 	} from '../liver';
-	import { chromatin, MEMBRANE_PROTEINS, CRISTA_MACHINES, ER, headCentre } from '../molecular';
+	import { chromatin, CORTEX_ACTIN, MEMBRANE_PROTEINS, CRISTA_MACHINES, ER } from '../molecular';
 	import { circlePath, capsulePath, polyline } from './types';
 
 	const H = hepatocyte();
@@ -57,14 +57,16 @@
 	const ribo = SIZES.ribosome;
 	const faceOff = SIZES.rerThickness / 2 + ribo / 2 + 0.001;
 	const target = H.rer[2];
+	// the target cisterna's lower (cytosolic) face carries explicit ribosomes: dashes only on its upper face
+	const mid = Math.floor(target.length / 2);
+	const down = offset(target, faceOff)[mid][1] > target[mid][1] ? 1 : -1;
 	const rerDots = H.rer
 		.map((c) =>
 			c === target
-				? polyline(offset(c, faceOff))
+				? polyline(offset(c, -down * faceOff))
 				: polyline(offset(c, faceOff)) + polyline(offset(c, -faceOff))
 		)
 		.join('');
-	const targetUpper = polyline(offset(target, -faceOff));
 	// explicit ribosomes along the target's lower (cytosolic) face, 37 nm apart, one at the target point
 	const [ex, ey] = H.targets.erFace;
 	const erRibosomes: Pt[] = [];
@@ -102,27 +104,18 @@
 		const at = (u: number, v: number): Pt => [c.x + u * ca - v * sa, c.y + u * sa + v * ca];
 		return list.map((k) => {
 			const v0 = k.side * ib;
-			const v1 = k.side * (ib - 2 * ib * k.reach);
+			// the round cap reaches half the crista's thickness beyond the line's end
+			const v1 = k.side * (ib - 2 * ib * k.reach) + k.side * (SIZES.crista / 2);
 			return polyline([at(k.s, v0), at(k.s, v1)]);
 		});
 	}
 	const cristaPath = H.mitochondria
 		.map((c, i) => cristaLines(c, i === 0 ? targetCristae() : cristae(c, 1000 + i)).join(''))
 		.join('');
-	// ATP synthase heads (F1, ≈ 10 nm) along both faces of the target mitochondrion's cristae,
-	// and the dimer at the target crista's tip exactly where the crista view draws it
+	// the target crista's tip, where the crista view's ATP synthases sit
 	const [tx, ty] = H.targets.cristaTip;
-	const heads: Pt[] = CRISTA_MACHINES.map(headCentre).map(
-		([x, y]) => [tx - 0.025 + x / 1000, ty + y / 1000] as Pt
-	);
-	const headPath = heads.map(([x, y]) => circlePath(x, y, 0.005)).join('');
-	const stalkPath = CRISTA_MACHINES.map((m, i) => {
-		const [hx, hy] = heads[i];
-		return polyline([
-			[tx - 0.025 + m.x / 1000, ty + m.y / 1000],
-			[hx, hy]
-		]);
-	}).join('');
+	/** The ribosomes nearest the ER target (drawn as outlines when zoomed in). */
+	const nearRibosomes = erRibosomes.filter(([x]) => Math.abs(x - ex) < 0.6);
 
 	// nucleus: two membranes 30 nm apart, broken by pores 120 nm wide
 	const rOut = N.r;
@@ -183,26 +176,14 @@
 
 	// the cell edge: actin filaments in the cortex and the proteins in the membrane, near the edge target
 	const [bx, by] = H.targets.edge;
-	const actin: Pt[][] = [];
-	{
-		let s = 3;
-		const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
-		for (let k = 0; k < 70; k++) {
-			const x = bx + (rnd() - 0.5) * 1.6;
-			const y = by + 0.01 + rnd() * 0.14;
-			const a = (rnd() - 0.5) * 1.2;
-			const L = 0.08 + rnd() * 0.2;
-			actin.push([
-				[x - (L / 2) * Math.cos(a), y - (L / 2) * Math.sin(a)],
-				[x + (L / 2) * Math.cos(a), y + (L / 2) * Math.sin(a)]
-			]);
-		}
-	}
+	const actin: Pt[][] = CORTEX_ACTIN.map((seg) =>
+		seg.map(([x, y]) => [bx + x / 1000, by + y / 1000] as Pt)
+	);
 	const actinPath = actin.map((p) => polyline(p)).join('');
-	const bumps = MEMBRANE_PROTEINS.map((m) => circlePath(bx + m.x / 1000, by, 0.004)).join('');
 </script>
 
 <script lang="ts">
+	import Machine from './Machine.svelte';
 	import Part from './Part.svelte';
 	import { smoothstep } from '#lib/draw/index.ts';
 	import type { FrameProps } from './types';
@@ -272,16 +253,13 @@
 					d={actinPath}
 					fill="none"
 					stroke="var(--tc-actin)"
-					stroke-width="0.006"
+					stroke-width="0.0065"
 					stroke-linecap="round"
 				/>
 			</Part>
-			<path
-				d={bumps}
-				fill="var(--tc-protein)"
-				stroke="var(--tc-organelle-edge)"
-				stroke-width={sw(0.0005, 0.6)}
-			/>
+			{#each MEMBRANE_PROTEINS as m (m.id)}
+				<g transform="translate({bx} {by}) scale(0.001)"><Machine id={m.id} x={m.x} y={m.y} /></g>
+			{/each}
 		</g>
 	{/if}
 
@@ -349,15 +327,17 @@
 				stroke-dasharray="0.0001 0.037"
 				stroke-linecap="round"
 			/>
-			<path
-				d={targetUpper}
-				fill="none"
-				stroke="var(--tc-ribosome)"
-				stroke-width={ribo}
-				stroke-dasharray="0.0001 0.037"
-				stroke-linecap="round"
-			/>
-			<path d={erRiboPath} fill="var(--tc-ribosome)" />
+
+			<path d={erRiboPath} fill="var(--tc-ribosome)" opacity={1 - fine} />
+			{#if fine > 0}
+				<g opacity={fine}>
+					{#each nearRibosomes as [x, y], i (i)}
+						<g transform="translate({x} {y - ribo / 2 - 0.001}) scale(0.001)"
+							><Machine id="ribosome80S" x={0} y={0} /></g
+						>
+					{/each}
+				</g>
+			{/if}
 		</g>
 	</Part>
 
@@ -397,8 +377,11 @@
 	{#if fine > 0}
 		<g opacity={fine}>
 			<Part id="atpSynthase" {sel} {pick} {interactive}>
-				<path d={stalkPath} stroke="#d97a62" stroke-width="0.004" />
-				<path d={headPath} fill="#ef7a5a" />
+				<g transform="translate({tx - 0.025} {ty}) scale(0.001)">
+					{#each CRISTA_MACHINES as m, i (i)}
+						<Machine id={m.id} x={m.x} y={m.y} angle={m.angle} flip={m.flip} />
+					{/each}
+				</g>
 			</Part>
 		</g>
 	{/if}

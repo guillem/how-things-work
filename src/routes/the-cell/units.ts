@@ -16,8 +16,7 @@ const UNITS = [
 /** Rounds to `sig` significant figures, dropping trailing zeros. */
 function round(v: number, sig: number) {
 	if (v === 0) return '0';
-	const d = Math.max(0, sig - 1 - Math.floor(Math.log10(Math.abs(v))));
-	return String(Number(v.toFixed(Math.min(d, 6))));
+	return String(Number(v.toPrecision(sig)));
 }
 
 /**
