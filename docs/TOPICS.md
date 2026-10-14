@@ -118,7 +118,7 @@ A topic is done when:
 - [x] entropy
 - [x] special-relativity
 - [x] quantum-mechanics
-- [ ] standard-model
+- [x] standard-model
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
