@@ -166,10 +166,10 @@ export const spec: ExplainerSpec = {
 			controls: [metalA, metalB],
 			body: `
 <p>Why does copper take the electrons and not zinc? Every half-reaction has a <dfn data-def="E°: how strongly a half-reaction pulls electrons in when written as a reduction, in volts, measured against the hydrogen electrode with every concentration at 1 mol/L and 25 °C.">standard reduction potential</dfn>, E°: how hard its ions pull electrons in, measured in volts against a reference, the hydrogen electrode (0 V). Lined up, they make a ladder. Copper ions sit high, at +0.34 V; zinc ions sit lower, at −0.76 V.</p>
-<p>Electrons run <strong>uphill on this ladder</strong>: the metal lower down is oxidised, the ions higher up are reduced, and the cell's voltage is the height of the step between them:</p>
+<p>Electrons go <strong>up this ladder</strong>, to the ions that pull harder. For an electron that is downhill in energy, which is why it happens by itself: the metal lower down is oxidised, the ions higher up are reduced, and the cell's voltage is the height of the step between them:</p>
 <p class="formula">E°cell = E°(cathode) − E°(anode)<br>= 0.34 − (−0.76) = <strong>1.10 V</strong></p>
 <p>Choose two electrodes. The farther apart they are, the higher the voltage. Lithium sits at the very bottom, at −3.04 V: no metal gives its electrons away more readily.</p>`,
-			notes: `<p>Values at 25 °C from the LibreTexts table <i>Standard Reduction Potentials by Element</i>, compiled from Bard, Parsons and Jordan, <i>Standard Potentials in Aqueous Solution</i> (1985), and Milazzo, Caroli and Sharma (1978). A volt is a joule per coulomb (see <a href="../electric-circuits/#voltage">voltage</a>), so the step is energy per charge: the Daniell reaction releases nFE° = 2 × 96 485 C/mol × 1.10 V = 213 kJ of free energy per mole of zinc, which the wire can deliver as electrical work. The shaded band is where water itself is stable (0 to 1.23 V at pH 0): beyond it water is split into hydrogen or oxygen, so lithium can't be used in water at all; it reacts with it.</p>`
+			notes: `<p>Values at 25 °C from the LibreTexts table <i>Standard Reduction Potentials by Element</i>, compiled from Bard, Parsons and Jordan, <i>Standard Potentials in Aqueous Solution</i> (1985), and Milazzo, Caroli and Sharma (1978). A volt is a joule per coulomb (see <a href="../electric-circuits/#voltage">voltage</a>), so the step is energy per charge: the Daniell reaction releases nFE° = 2 × 96 485 C/mol × 1.104 V = 213 kJ of free energy per mole of zinc, which the wire can deliver as electrical work. The shaded band is where water itself is stable (0 to 1.23 V at pH 0): beyond it water is split into hydrogen or oxygen, so lithium can't be used in water at all; it reacts with it. Zinc sits below the band too but gets away with it: hydrogen forms only slowly on zinc, and the near-neutral solutions shift the band a little lower. Lithium has no such luck.</p>`
 		},
 		{
 			id: 'nernst',
@@ -195,9 +195,9 @@ export const spec: ExplainerSpec = {
 			controls: [used],
 			body: `
 <p>Let the cell run. Each copper ion that turns into copper takes 2 electrons through the wire, and each zinc atom that dissolves gives 2. So the charge the cell delivers is fixed by how many ions there are: that is <dfn data-def="The charge that passes in an electrode reaction is proportional to the amount of substance changed: one mole of electrons carries 96 485 coulombs (Faraday's constant, F).">Faraday's law</dfn>. A mole of electrons carries <strong>96 485 coulombs</strong>, 26.8 amp-hours. With 100 mL of 1 mol/L copper sulfate, 0.1 mol of Cu²⁺, the cell can deliver 0.2 mol of electrons: <strong>5.36 Ah</strong>.</p>
-<p>Run it down and watch the voltage. It barely moves for most of the way: Q only grows from 1 to 3 when half the copper is gone. Then, as the last copper ions run out, Q rockets and the voltage falls off a cliff.</p>
-<p>A flat battery is a reaction that has reached <a href="../reaction-rates-equilibrium/#equilibrium">equilibrium</a>: E = 0, no push left. For this cell that happens when Q equals the equilibrium constant, K = 10³⁷: by then practically every copper ion is gone.</p>`,
-			notes: `<p>K comes from E° directly: log₁₀ K = nE° ÷ 0.0592 V = 2 × 1.1037 ÷ 0.0592 = 37.3. A large E° means a large K, a reaction that runs practically to completion. The capacity in amp-hours depends only on the amount of reactant; the voltage depends on which reaction it is. Energy is the two multiplied: about 5.4 Ah × 1.1 V ≈ 6 Wh here.</p>`
+<p>Run it down and watch the voltage. It barely moves for most of the way: Q only grows from 1 to 3 when half the copper is gone. Then the copper ions run out. Even at 99.99 % used the voltage is still 0.98 V, because each tenfold drop in copper costs only 0.03 V. It reaches zero only when the copper is down to about 10⁻³⁷ mol/L, which on this plot is the vertical cliff at 5.36 Ah.</p>
+<p>A cell that is completely dead has reached <a href="../reaction-rates-equilibrium/#equilibrium">equilibrium</a>: E = 0, no push left. For this cell that means Q equals the equilibrium constant, K = 10³⁷, or [Cu²⁺] ≈ 10⁻³⁷ mol/L: less than one ion in the whole beaker. Real batteries are called empty well before that, at a cut-off voltage (2.5 V for the lithium-ion cell later on), and a lamp goes out once copper ions can no longer reach the electrode fast enough.</p>`,
+			notes: `<p>K comes from E° directly: log₁₀ K = nE° ÷ 0.0592 V = 2 × 1.1037 ÷ 0.0592 = 37.3. A large E° means a large K, a reaction that runs practically to completion. The capacity in amp-hours depends only on the amount of reactant; the voltage depends on which reaction it is. Energy is the two multiplied: about 5.4 Ah × 1.1 V ≈ 6 Wh here. The voltages shown are open-circuit values; with the lamp drawing current, a real cell reads a little lower.</p>`
 		},
 		// ------------------------------------------------------------------ liion
 		{
@@ -208,7 +208,7 @@ export const spec: ExplainerSpec = {
 			hints: { focus: 'inside' },
 			duration: 26,
 			body: `
-<p>A lithium-ion cell does the same trick with better materials. This is a slice through the LG M50, a cylindrical cell the size of a thumb (21 mm across, 70 mm long) of the kind used in electric cars, drawn to its real thicknesses. The whole stack is a fifth of a millimetre, rolled up tightly inside the can.</p>
+<p>A lithium-ion cell does the same trick with better materials. This is a slice through the LG M50, a cylindrical cell the size of a thumb (21 mm across, 70 mm long) of the kind used in electric cars, drawn to its real thicknesses. This slice, one layer of each, is a fifth of a millimetre thick. In the real cell each foil is coated on both sides, and the long sheets are rolled up tightly inside the can.</p>
 <ul>
 <li>The <strong>negative electrode</strong> is graphite, stacked sheets of carbon on a copper foil.</li>
 <li>The <strong>positive electrode</strong> is a layered metal oxide, NMC 811 (LiNi₀.₈Mn₀.₁Co₀.₁O₂), on an aluminium foil.</li>
@@ -243,7 +243,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Swap the lamp for a charger. A charger is a supply with a higher voltage than the cell, up to 4.2 V, so it can push electrons the "wrong" way round: out of the oxide, through the charger and into the graphite. Lithium ions follow inside the cell, leaving the oxide and slipping back between the carbon sheets.</p>
 <p>Both half-reactions now run backwards. It takes energy to do this, the energy the cell will give back when it is next discharged. Lithium ions simply rock back and forth between the two electrodes, which is why these cells were once called "rocking-chair" batteries.</p>
-<p>Switch between a lamp, nothing, and the charger and watch the arrows. The names stick to the discharge: the graphite is still called the anode while charging, although it is then where reduction happens.</p>`,
+<p>Switch between a lamp, nothing, and the charger and watch the ions and electrons reverse. The names stick to the discharge: the graphite is still called the anode while charging, although it is then where reduction happens.</p>`,
 			notes: `<p>A zinc–copper cell can be recharged too, but its metals plate back unevenly and the solutions mix through the bridge. Lithium-ion electrodes take lithium in and out without changing shape much, so they survive thousands of cycles. Each charge still loses a little lithium: on first charge some of the electrolyte breaks down on the graphite into a thin protective film, which keeps growing slowly as the cell ages.</p>`
 		},
 		{
@@ -255,7 +255,7 @@ export const spec: ExplainerSpec = {
 			duration: 28,
 			controls: [soc],
 			body: `
-<p>Drag the state of charge from full to empty. The lithium moves from the graphite into the oxide, and the voltage falls: <strong>4.2 V</strong> when full, around <strong>3.7 V</strong> for most of the way, then down to <strong>2.5 V</strong>, where the cell is called empty. The voltage is the difference between the two electrodes' potentials, and both change as they fill and empty.</p>
+<p>Drag the state of charge from full to empty. The lithium moves from the graphite into the oxide, and the voltage falls: <strong>4.2 V</strong> when full, falling steadily through about <strong>3.7 V</strong> at half charge (its average), then down to <strong>2.5 V</strong>, where the cell is called empty. The voltage is the difference between the two electrodes' potentials, and both change as they fill and empty.</p>
 <p>How much lithium moves? Faraday's law again. The cell is rated at 5 Ah: 5 × 3 600 = 18 000 coulombs, or 18 000 ÷ 96 485 = <strong>0.19 mol</strong> of electrons, so 0.19 mol of lithium ions: just <strong>1.3 g</strong> of lithium shuttling across, in a cell weighing 68 g.</p>
 <p>Charge times average voltage gives the energy: about 5 Ah × 3.7 V ≈ <strong>18.5 Wh</strong>, around 270 Wh per kilogram of cell.</p>`,
 			notes: `<p>These are open-circuit voltages, for a cell discharged very slowly. With a real current flowing, some voltage is lost inside the cell, so it reads lower while discharging and higher while charging. The curve is computed from the two electrodes' measured potentials, fitted by Chen et al. (2020) and used in the open-source battery modelling library PyBaMM. The cell's usable range runs from 2.8 % to 90 % lithium in the graphite, and from 91 % to 27 % in the oxide.</p>`
@@ -273,11 +273,11 @@ export const spec: ExplainerSpec = {
 <p>Battery makers choose from a ladder of their own, with potentials measured against lithium metal (0 V on this scale, which is about −3.04 V on the hydrogen one). The positive electrode should sit as high as possible and the negative as low as possible. The cell's voltage is the gap between their curves.</p>
 <ul>
 <li><strong>Lithium iron phosphate</strong> (LiFePO₄) sits at a flat 3.4 V: cells of about 3.2 V, lower than NMC's 3.7 V, but cheap, long-lived, and free of nickel and cobalt.</li>
-<li><strong>Lithium cobalt oxide</strong> (LiCoO₂), the first commercial cathode (Sony, 1991), is still in phones.</li>
+<li><strong>Lithium cobalt oxide</strong> (LiCoO₂), the cathode of the first commercial lithium-ion cell (Sony, 1991), is still in phones.</li>
 <li>On the negative side, <strong>lithium metal</strong> is the bottom of the scale, and <strong>silicon</strong> sits a little higher than graphite, which costs some voltage.</li>
 </ul>
 <p>Try every pairing and watch the gap, and the voltage it gives.</p>`,
-			notes: `<p>Curves: graphite and NMC 811 from Chen et al. (2020); LiCoO₂ from Ramadass et al., <i>J. Electrochem. Soc.</i> 151, A196 (2004); LiFePO₄ from Afshar, Morris and Khajepour (2017); silicon from Verbrugge, Baker and Xiao, <i>J. Electrochem. Soc.</i> 163, A262 (2016), averaging its charge and discharge curves, which differ. Each is used only over the range of filling a real cell uses. The two scales are tied only approximately: the lithium electrode in an organic electrolyte is not the same as in water.</p>`
+			notes: `<p>Curves: graphite and NMC 811 from Chen et al. (2020); LiCoO₂ from Ramadass et al., <i>J. Electrochem. Soc.</i> 151, A196 (2004); LiFePO₄ from Afshar, Morris and Khajepour (2017); silicon from Verbrugge, Baker and Xiao, <i>J. Electrochem. Soc.</i> 163, A262 (2016), averaging its charge and discharge curves, which differ. Each is used only over the range of filling a real cell uses. The voltage range shown runs from 10 % to 90 % charge: only NMC 811 and graphite were measured in the same cell, and in the other pairings the very ends of the curves are not what a real cell reaches (an LFP cell is cut off at about 2.5 V). The two scales are tied only approximately: the lithium electrode in an organic electrolyte is not the same as in water.</p>`
 		},
 		{
 			id: 'capacity',

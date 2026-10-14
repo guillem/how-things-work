@@ -177,9 +177,13 @@ export interface PairFigures {
 	meanV: number;
 	/** Wh per kg of the two active materials together. */
 	specificEnergy: number;
-	/** Voltage when full and when empty. */
-	vFull: number;
-	vEmpty: number;
+	/**
+	 * Voltage at 10 % and 90 % charge. Each material's lithium window is fixed on its own
+	 * (graphite's from the M50), so in pairings other than NMC/graphite the very ends of the
+	 * curves are steeper than a real cell, cut off sooner, ever reaches.
+	 */
+	v10: number;
+	v90: number;
 }
 
 /** The figures of a matched pair: each electrode sized to hold the same charge. */
@@ -198,8 +202,8 @@ export function pairFigures(cathode: Material, anode: Material): PairFigures {
 		qPair,
 		meanV,
 		specificEnergy: qPair * meanV,
-		vFull: cellVoltage(cathode, anode, 1),
-		vEmpty: cellVoltage(cathode, anode, 0)
+		v10: cellVoltage(cathode, anode, 0.1),
+		v90: cellVoltage(cathode, anode, 0.9)
 	};
 }
 

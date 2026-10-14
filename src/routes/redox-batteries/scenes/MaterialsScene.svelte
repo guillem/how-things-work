@@ -164,13 +164,13 @@
 		<Readout
 			id="v"
 			order={2}
-			label="Cell voltage, empty → full"
-			value="{fmtV(fig.vEmpty, 2)} → {fmtV(fig.vFull, 2)}"
+			label="Cell voltage, 10 % → 90 % charge"
+			value="{fmtV(fig.v10, 2)} → {fmtV(fig.v90, 2)}"
 		>
 			<text x={QX} y={PY0} style:font-size="12px" class="muted">average cell voltage</text>
 			<text x={QX} y={PY0 + 30} style:font-size="28px" font-weight="700">{fmtV(fig.meanV, 2)}</text>
 			<text x={QX} y={PY0 + 54} style:font-size="12px" class="muted"
-				>{fmtV(fig.vEmpty, 2)} empty → {fmtV(fig.vFull, 2)} full</text
+				>{fmtV(fig.v10, 2)} at 10 % → {fmtV(fig.v90, 2)} at 90 %</text
 			>
 		</Readout>
 		<Readout id="list">
