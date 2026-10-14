@@ -82,7 +82,7 @@
 			number
 		>
 	);
-	const ring = $derived(reduced ? 1 : 0.6 + 0.4 * Math.sin(t * 3));
+	const ring = $derived(reduced ? 1 : 0.8 + 0.2 * Math.sin(t * 3));
 
 	// The body bar.
 	const body = bodyBySource();
