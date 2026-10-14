@@ -618,6 +618,15 @@ const explainers: Explainer[] = [
 		accent: '#6741d9',
 		steps: 12,
 		minutes: 24
+	},
+	{
+		slug: 'redox-batteries',
+		title: 'Redox and batteries',
+		summary:
+			'Watch zinc hand electrons to copper, then split the reaction in two so the electrons must take a wire. Read voltages off the ladder of potentials, charge and discharge a lithium-ion cell in cross-section, and swap its electrodes to change its voltage and capacity.',
+		accent: '#2b8a3e',
+		steps: 12,
+		minutes: 20
 	}
 ];
 
