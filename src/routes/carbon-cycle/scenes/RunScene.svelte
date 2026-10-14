@@ -13,6 +13,7 @@
 		niceMax,
 		scale,
 		smoothstep,
+		ticks,
 		type Scale
 	} from '#lib/draw/index.ts';
 	import { GTC_PER_PPM, PPM0, pHOf, ppmOf, totals } from '../carbon';
@@ -99,17 +100,20 @@
 			: ''
 	);
 	// ppm on the right-hand axis: the air's extra carbon converted (1 ppm = 2.124 GtC).
+	/** Keeps only values at least `gap` scene units apart on the y axis. */
+	const spaced = (values: number[], toY: (v: number) => number, gap: number) => {
+		const out: number[] = [];
+		for (const v of values) {
+			const y = toY(v);
+			if (y < CHART_TOP || y > 560) continue;
+			if (out.every((w) => Math.abs(toY(w) - y) >= gap)) out.push(v);
+		}
+		return out;
+	};
 	const ppmTicks = $derived(
-		[300, 400, 500, 600, 800, 1000, 1200, 1500].filter((p) => {
-			const g = (p - PPM0) * GTC_PER_PPM;
-			return g >= yMin && g <= yMax;
-		})
+		spaced([300, 400, 500, 600, 800, 1000, 1200, 1500], (p) => sy((p - PPM0) * GTC_PER_PPM), 26)
 	);
-	const yTicks = $derived(
-		[-400, -200, 0, 200, 400, 600, 800, 1000, 1500, 2000, 2500, 3000].filter(
-			(v) => v >= yMin && v <= yMax
-		)
-	);
+	const yTicks = $derived(spaced(ticks(yMin, yMax, 5), sy, 1));
 	// Round years: 2050, 2100, … (offsets from the end of 2024).
 	const xTicks = [26, 76, 126, 176, 476, 976];
 
