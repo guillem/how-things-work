@@ -643,6 +643,25 @@ kbd {
 	--hm-muscle: #c2255c;
 	--hm-gut: #e67700;
 	--hm-urine: #b08900;
+	/* rockets: flame, exhaust gas, rocket body, propellant, dry mass, payload, the Δv budget
+	   (gravity, drag, steering losses, Earth's spin), orbits, transfer path, Mars, Jupiter */
+	--rk-flame: #f76707;
+	--rk-gas: #868e96;
+	--rk-body: #dee2e6;
+	--rk-body-edge: #495057;
+	--rk-fuel: #e8590c;
+	--rk-dry: #868e96;
+	--rk-payload: #1c7ed6;
+	--rk-gravity: #c2255c;
+	--rk-drag: #7048e8;
+	--rk-steer: #e67700;
+	--rk-spin: #2f9e44;
+	--rk-speed: #1971c2;
+	--rk-orbit: #495057;
+	--rk-path: #e8590c;
+	--rk-mars: #c0532c;
+	--rk-jupiter: #b08453;
+	--rk-air: #d0ebff;
 }
 :root[data-theme='dark'] {
 	--membrane: #6d5b3b;
@@ -1042,4 +1061,22 @@ kbd {
 	--hm-muscle: #f06595;
 	--hm-gut: #fcc419;
 	--hm-urine: #ffe066;
+	/* rockets */
+	--rk-flame: #ff922b;
+	--rk-gas: #adb5bd;
+	--rk-body: #495057;
+	--rk-body-edge: #ced4da;
+	--rk-fuel: #ff922b;
+	--rk-dry: #868e96;
+	--rk-payload: #4dabf7;
+	--rk-gravity: #f06595;
+	--rk-drag: #b197fc;
+	--rk-steer: #ffd43b;
+	--rk-spin: #69db7c;
+	--rk-speed: #74c0fc;
+	--rk-orbit: #adb5bd;
+	--rk-path: #ff922b;
+	--rk-mars: #e8754a;
+	--rk-jupiter: #d9a86c;
+	--rk-air: #1c3550;
 }

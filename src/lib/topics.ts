@@ -447,6 +447,15 @@ const explainers: Explainer[] = [
 		accent: '#d9480f',
 		steps: 8,
 		minutes: 15
+	},
+	{
+		slug: 'rockets',
+		title: 'Rockets and orbital manoeuvres',
+		summary:
+			'Design a rocket and fly it through the real atmosphere to see whether it makes orbit, then plan the burns that raise an orbit, catch Mars in its launch window and borrow speed from Jupiter.',
+		accent: '#e8590c',
+		steps: 11,
+		minutes: 20
 	}
 ];
 
