@@ -306,7 +306,7 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>Tibor Radó turned the halting problem into a game in 1962. Take every machine with <i>n</i> states and the symbols 0 and 1, start each on a blank tape, and among those that halt, find the one that runs longest. Its number of steps is <dfn data-def="The largest number of steps that an n-state, 2-symbol Turing machine started on a blank tape can take and still halt.">S(<i>n</i>)</dfn>, the busy beaver number.</p>
-<p>Each row of the picture is the tape after one more step, time running down; the outlined cell is the head. The champions: <strong>S(2) = 6</strong> steps (4 ones), <strong>S(3) = 21</strong> (5 ones), <strong>S(4) = 107</strong> (13 ones).</p>
+<p>Each row of the picture is the tape after one more step, time running down; the green cell is the head. The champions: <strong>S(2) = 6</strong> steps (4 ones), <strong>S(3) = 21</strong> (5 ones), <strong>S(4) = 107</strong> (13 ones).</p>
 <p>If S(<i>n</i>) were computable, the halting problem for blank tapes would be easy: run an <i>n</i>-state machine for S(<i>n</i>) steps; if it hasn’t halted by then, it never will. So S grows faster than any computable function.</p>`,
 			notes: `<p>Champions in the Busy Beaver Challenge’s list (wiki.bbchallenge.org, “Champions”): S(2) found by Radó, S(3) proved by Shen Lin (1963), S(4) by Allen Brady (1983). The most 1s three states can leave, Σ(3) = 6, comes from a different machine, which halts in 14 steps. The transition into the halt state is counted as a step.</p>`
 		},
@@ -318,10 +318,10 @@ export const spec: ExplainerSpec = {
 			hints: { five: true },
 			duration: 40,
 			body: `
-<p>With five states the champion, found by Heiner Marxen and Jürgen Buntrock in 1989, halts after <strong>47,176,870 steps</strong>, leaving 4,098 ones. The picture shows its first steps; the whole run fits in a fraction of a second on this page’s simulator, which reproduces both numbers.</p>
+<p>With five states the champion, found by Heiner Marxen and Jürgen Buntrock in 1989, halts after <strong>47,176,870 steps</strong>, leaving 4,098 ones. The picture shows its first 10,000 steps. Run to the end, the simulator behind this page reproduces both numbers in a fraction of a second.</p>
 <p>Proving that no other 5-state machine runs longer took until <strong>2024</strong>. The Busy Beaver Challenge, an online collaboration largely of amateurs, decided every one of the 181,385,789 machines it had to consider, halting or not, with deciders checked in the Coq proof assistant: <strong>S(5) = 47,176,870</strong>.</p>
 <p>No single program can decide halting, but people with many clever, special-purpose arguments decided it for every 5-state machine. For six states the record holder runs for a number of steps far too large to write out, and some 6-state machines halt only if open problems in number theory, much like the Collatz problem, come out a certain way.</p>`,
-			notes: `<p>The bbchallenge Collaboration, “Determination of the fifth Busy Beaver value”, arXiv:2509.12337 (2025); the result was announced on 2 July 2024. Wikipedia (“Busy beaver”) gives the best known lower bound for six states as Σ(6) &gt; 2↑↑↑5 in Knuth’s up-arrow notation, a tower of powers of 2 whose height is itself a tower.</p>`
+			notes: `<p>The bbchallenge Collaboration, “Determination of the fifth Busy Beaver value”, arXiv:2509.12337 (2025); the result was announced on 2 July 2024. Wikipedia (“Busy beaver”) gives the best known lower bound for six states as Σ(6) &gt; 2↑↑↑5 in Knuth’s up-arrow notation, a tower of powers of 2 whose height is itself a tower. One 6-state machine, nicknamed Antihydra, halts only if a Collatz-like iteration ever produces a particular balance of odd and even values, an unsolved problem (Busy Beaver Challenge wiki, “Antihydra”).</p>`
 		},
 		// ------------------------------------------------------------------ hard
 		{
