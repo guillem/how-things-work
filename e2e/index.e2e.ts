@@ -34,16 +34,13 @@ test('the 404 page is built and links back home', async ({ page }) => {
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/how things work/i);
 });
 
-test('an explainer links to its catalogue neighbours, linking only built topics', async ({
-	page
-}) => {
+test('an explainer links to its built catalogue neighbours', async ({ page }) => {
 	await page.goto('./photosynthesis/');
 	await expect(page.locator('header.title .eyebrow')).toContainText('Biology');
 	const links = page.getByRole('navigation', { name: 'Related topics' });
 	await expect(links.getByRole('heading', { name: 'Read first' })).toBeVisible();
-	// the-cell is a prerequisite that is not built yet: named, not linked.
-	await expect(links.getByText('The cell')).toBeVisible();
-	await expect(links.getByRole('link', { name: 'The cell' })).toHaveCount(0);
+	// the-cell is a built prerequisite: linked under its explainer title.
+	await expect(links.getByRole('link', { name: 'Inside a cell' })).toBeVisible();
 });
 
 test('the index tracks reading progress in this browser and can clear it', async ({ page }) => {
