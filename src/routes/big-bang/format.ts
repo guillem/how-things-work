@@ -53,7 +53,7 @@ export function zText(z: number) {
 /** A distance in billions of light years. */
 export function glyText(d: number) {
 	if (d < 0.01) return `${n0(d * 1000)} million light years`;
-	if (d < 1) return `${(d * 1000).toPrecision(2)} million light years`;
+	if (d < 1) return `${n0(Number((d * 1000).toPrecision(2)))} million light years`;
 	return `${d.toFixed(d < 10 ? 2 : 1)} billion light years`;
 }
 
