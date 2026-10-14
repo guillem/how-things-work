@@ -36,7 +36,7 @@
 	const fanArea = `M${sx(0)} ${sy(0)} L${sx(11000)} ${sy((TCRE[2] * 11000) / 1000)} L${sx(11000)} ${sy((TCRE[1] * 11000) / 1000)} Z`;
 
 	const u = $derived(reduced ? 1 : smoothstep(0.5, 14, t));
-	const year = $derived(Math.round(1850 + 250 * u));
+	const year = $derived(Math.round(1950 + 150 * u));
 	const now = $derived(runs[chosen][year - 1850]);
 	const y2020 = runs.ssp245[2020 - 1850];
 	const name = $derived(SCENARIOS.find((s) => s.id === chosen)!.name);
@@ -67,8 +67,8 @@
 		value="0.45 °C per 1,000 Gt CO₂ (likely 0.27–0.63)"
 	>
 		<Label
-			x={sx(10400)}
-			y={sy((TCRE[0] * 10400) / 1000) + 18}
+			x={sx(10700)}
+			y={sy(3.6)}
 			text="IPCC: 0.45 °C per 1,000 Gt"
 			anchor="end"
 			size={12}
@@ -76,8 +76,8 @@
 			muted
 		/>
 		<Label
-			x={sx(10400)}
-			y={sy((TCRE[0] * 10400) / 1000) + 33}
+			x={sx(10700)}
+			y={sy(3.6) + 15}
 			text="shaded: likely 0.27–0.63"
 			anchor="end"
 			size={11}
@@ -185,6 +185,7 @@
 		<Label
 			x={110}
 			y={118}
+			opacity={now.cumulative > 500 ? 1 : 0}
 			text="{((now.T / Math.max(1, now.cumulative)) * 1000).toFixed(2)} °C per 1,000 Gt so far"
 			anchor="start"
 			size={11}

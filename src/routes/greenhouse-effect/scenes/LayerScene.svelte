@@ -133,7 +133,7 @@
 	{#each sunP as p (p.key)}
 		<Photon x={p.x} y={p.y} angle={90} length={26} opacity={p.opacity * 0.9} />
 	{/each}
-	<Readout id="sun" order={1} label="Sunlight absorbed" value="240 W/m²">
+	<Readout id="sun">
 		<Label x={130} y={56} text="240" anchor="start" size={12} weight={700} />
 		<Label x={130} y={72} text="sunlight" anchor="start" size={12} weight={700} />
 	</Readout>
@@ -173,7 +173,7 @@
 			color="var(--gh-ir)"
 		/>
 	</Readout>
-	<Readout id="win" order={3} label="Straight through to space" value="{w0(f.window)} W/m²">
+	<Readout id="win">
 		<Label x={geo.x0 + geo.ww + 8} y={130} text="{w0(f.window)} through" anchor="start" size={12} />
 	</Readout>
 	{#if geo.up}

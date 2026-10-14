@@ -47,7 +47,7 @@
 	});
 
 	// ---- albedo (bare view only; elsewhere the real 29%)
-	const albedo = $derived(view === 'bare' ? Number(params.albedo ?? 29) / 100 : 100 / 340);
+	const albedo = $derived(view === 'bare' ? Number(params.albedo ?? 29.4) / 100 : 100 / 340);
 	const asr = $derived(absorbedSunlight(albedo));
 	const reflected = $derived(INCOMING - asr);
 	const tEq = $derived(bareTemperature(albedo));
@@ -268,7 +268,7 @@
 	{#each sunPhotons as p (p.key)}
 		<Photon x={p.x} y={p.y} angle={90} length={30} opacity={p.opacity * 0.9} />
 	{/each}
-	<Readout id="sun-in" order={1} label="Sunlight arriving" value="{fmtW(INCOMING)} W/m²">
+	<Readout id="sun-in">
 		<Label
 			x={X0 + 50}
 			y={22}
@@ -281,7 +281,7 @@
 	<Readout
 		id="sun-ref"
 		order={2}
-		label="Reflected"
+		label={view === 'real' ? undefined : 'Reflected'}
 		value="{fmtW(reflected)} W/m² ({Math.round((reflected / INCOMING) * 100)}%)"
 	>
 		<Label
@@ -292,7 +292,12 @@
 		/>
 	</Readout>
 	{#if view !== 'bare'}
-		<Readout id="sun-air" order={3} label="Absorbed by the air" value="80 W/m²">
+		<Readout
+			id="sun-air"
+			order={3}
+			label={view === 'sun' ? 'Absorbed by the air' : undefined}
+			value="80 W/m²"
+		>
 			<Label
 				x={sunBands.xa + 16}
 				y={232}
@@ -314,7 +319,7 @@
 	<Readout
 		id="sun-surf"
 		order={4}
-		label="Absorbed by the ground and ocean"
+		label={view === 'sun' ? 'Absorbed by the ground and ocean' : undefined}
 		value="{fmtW(view === 'bare' ? asr : 160)} W/m²"
 	>
 		<Label
@@ -353,10 +358,10 @@
 			<path d={real.up.d} fill="var(--gh-ir)" fill-opacity="0.45" />
 			<path d={real.down.d} fill="var(--gh-ir)" fill-opacity="0.3" />
 			<path d={real.out.d} fill="var(--gh-ir)" fill-opacity="0.6" />
-			<Readout id="r-up" order={5} label="Infrared from the surface" value="398 W/m²">
+			<Readout id="r-up">
 				<Label x={345} y={GROUND - 40} text="398 up" size={12} weight={700} color="var(--gh-ir)" />
 			</Readout>
-			<Readout id="r-down" order={6} label="Infrared from the air, down" value="342 W/m²">
+			<Readout id="r-down">
 				<Label
 					x={510}
 					y={GROUND - 40}
@@ -366,7 +371,7 @@
 					color="var(--gh-ir)"
 				/>
 			</Readout>
-			<Readout id="r-out" order={7} label="Infrared to space" value="239 W/m²">
+			<Readout id="r-out">
 				<Label
 					x={425 + 38}
 					y={66}
@@ -555,7 +560,12 @@
 					color="var(--gh-warm)"
 				/>
 			</Readout>
-			<Readout id="sums" order={2} label="At the top" value="240 sunlight in ≈ 239 infrared out">
+			<Readout
+				id="sums"
+				order={2}
+				label="Infrared"
+				value="398 up from the surface, 342 back down, 239 to space (W/m²)"
+			>
 				<Label
 					x={636}
 					y={200}

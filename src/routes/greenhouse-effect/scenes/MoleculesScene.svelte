@@ -97,8 +97,8 @@
 		y: m.y + Math.cos(tt * 1.1 + m.id * 2.3) * a
 	});
 
-	const KEY: { gas: Gas; name: string; share: string; absorbs: boolean }[] = [
-		{ gas: 'N2', name: 'N₂ nitrogen', share: '78%', absorbs: false },
+	const KEY: { gas: Gas; name: string; share: string; absorbs: boolean; row?: string }[] = [
+		{ gas: 'N2', name: 'N₂ nitrogen', share: '78%', absorbs: false, row: 'N₂ nitrogen, O₂ oxygen' },
 		{ gas: 'O2', name: 'O₂ oxygen', share: '21%', absorbs: false },
 		{ gas: 'H2O', name: 'H₂O water vapour', share: 'about 0.4%', absorbs: true },
 		{ gas: 'CO2', name: 'CO₂ carbon dioxide', share: '0.04%', absorbs: true },
@@ -202,8 +202,10 @@
 		<Readout
 			id="k-{k.gas}"
 			order={i}
-			label={k.name}
-			value="{k.share} of the air · {k.absorbs ? 'absorbs infrared' : 'lets it through'}"
+			label={k.gas === 'O2' ? undefined : (k.row ?? k.name)}
+			value={k.gas === 'N2'
+				? '99% of the air · let infrared through'
+				: `${k.share} of the air · absorbs infrared`}
 			color={k.absorbs ? 'var(--gh-ir)' : undefined}
 		>
 			<Label x={684} y={y - 2} text={k.name} anchor="start" size={13} weight={600} />

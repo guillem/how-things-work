@@ -8,10 +8,11 @@ const albedo: Control = {
 	label: 'Sunlight reflected',
 	min: 0,
 	max: 90,
-	step: 1,
-	default: 29,
+	step: 0.1,
+	default: 29.4,
+	values: () => [0, 6, 10, 20, 29.4, 40, 50, 60, 70, 80, 90],
 	unit: '%',
-	help: 'Earth today: 29% (clouds, ice, snow, deserts). Fresh snow reflects about 80%, the open ocean about 6%.'
+	help: 'Earth today: 29.4%, 100 of 340 W/m² (clouds, ice, snow, deserts). Fresh snow reflects about 80%, the open ocean about 6%.'
 };
 
 /** The layer model's absorption. */
