@@ -185,3 +185,45 @@ test('guidance raises how often a generated digit is read as the one asked for',
 	expect(rate(1)).toBeGreaterThan(rate(0) + 0.4);
 	expect(rate(3)).toBeGreaterThan(0.9);
 });
+
+test('the digit runs the page describes', () => {
+	const run = (digit: number, guidance: number, steps = T) => {
+		const s = SEQUENCES.find(
+			(x) => x.digit === digit && x.seed === 1 && x.guidance === guidance && x.steps === steps
+		);
+		if (!s) throw new Error(`no run ${digit} ${guidance} ${steps}`);
+		return s;
+	};
+	// guidance: the same noise, "4" and "7" at 0, 1, 3, 7
+	expect(run(4, 0).reads).toBe(7);
+	expect(run(7, 0).reads).toBe(7);
+	expect(run(4, 1).reads).toBe(9);
+	expect(run(4, 3).reads).toBe(4);
+	// steps: every step count gives a 2
+	for (const n of [1, 5, 20, 100, T]) expect(run(2, 3, n).reads).toBe(2);
+	// the guess takes shape early: at t = 700 it already resembles the final digit, x_t does not
+	const corr = (a: Float32Array, b: Float32Array) => {
+		const n = a.length;
+		let ma = 0;
+		let mb = 0;
+		for (let i = 0; i < n; i++) {
+			ma += a[i] / n;
+			mb += b[i] / n;
+		}
+		let s = 0;
+		let sa = 0;
+		let sb = 0;
+		for (let i = 0; i < n; i++) {
+			s += (a[i] - ma) * (b[i] - mb);
+			sa += (a[i] - ma) ** 2;
+			sb += (b[i] - mb) ** 2;
+		}
+		return s / Math.sqrt(sa * sb);
+	};
+	const three = run(3, 3);
+	const at700 = three.frames.find((f) => f.t === 700);
+	if (!at700) throw new Error('no frame at t = 700');
+	const final = unpack4(three.frames[three.frames.length - 1].x);
+	expect(corr(unpack4(at700.x0), final)).toBeGreaterThan(0.7);
+	expect(corr(unpack4(at700.x), final)).toBeLessThan(0.2);
+});

@@ -266,7 +266,7 @@
 				width={76}
 				height={76}
 				class="dm-px"
-				opacity={s.k <= cur.k ? 1 : 0.4}
+				opacity={s.k <= cur.k ? 1 : 0.5}
 			/>
 			<rect
 				x={39 + i * 102}

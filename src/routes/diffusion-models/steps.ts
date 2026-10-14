@@ -267,7 +267,7 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>The same process with the 784-dimensional model, trained on MNIST's 60,000 training digits. It starts from 784 numbers of pure static and takes all 1,000 steps. These runs were computed in advance by the same code (the network is too big to ship to your browser) and stored as 9 snapshots each, 3 runs per digit.</p>
-<p>Left, the image <i>x</i><sub><i>t</i></sub> as it is denoised; right, the network's guess <i>x̂</i><sub>0</sub> of the finished digit at that moment. Early on the guess is a grey blur, the average of every possible digit with a hint of the one asked for; a rough outline appears around the middle of the run, and the strokes settle in the last few hundred steps, while the noise on the left fades away.</p>
+<p>Left, the image <i>x</i><sub><i>t</i></sub> as it is denoised; right, the network's guess <i>x̂</i><sub>0</sub> of the finished digit at that moment. The two tell different stories. The guess takes shape early: by step 300 (<i>t</i> = 700) it is already a blurry version of the final digit, because the prompt and the faint signal left in the noise narrow down the possibilities fast. The image itself stays static for much longer and only emerges in the last few hundred steps, as the noise is taken away and the guess's details are settled.</p>
 <p>The digit is generated, not retrieved: it is not one of the training digits, and a different seed gives a different hand.</p>`,
 			notes: `<p>Here the network is told which digit to make (a <em>prompt</em>, see the next chapter), with guidance scale 3. The images are stored with 16 grey levels to keep the page small. The guess is clipped to the black-to-white range at every step, as in Ho and colleagues' sampler.</p>`
 		},
@@ -279,7 +279,7 @@ export const spec: ExplainerSpec = {
 			hints: { mode: 'steps' },
 			duration: 24,
 			body: `
-<p>The same prompt (“2”) and the same starting noise, sampled with 1, 5, 20, 100 and 1,000 steps. One step gives the average-of-everything blur seen in the plane; five give a smudge; twenty an outline; a hundred and a thousand a clean digit.</p>
+<p>The same prompt (“2”) and the same starting noise, sampled with 1, 5, 20, 100 and 1,000 steps. One step gives a blurred 2: the average of all the 2s this noise could become, as in the plane (guidance makes it the average 2 rather than the average of every digit). Five steps already give a smooth but generic 2. With 100 and 1,000 steps the strokes get the wobbles, loops and uneven thickness of a real hand: more steps make the sample less average, more like one particular piece of data.</p>
 <p>Below each digit is what the digit-reading network of the <a href="../convolution-vision/#predict">computer vision</a> page reads in it: a quick, independent check that a person would read it too.</p>`
 		},
 		// ------------------------------------------------------------------ guide
@@ -314,7 +314,7 @@ export const spec: ExplainerSpec = {
 			controls: [guidedDigit],
 			body: `
 <p>The digit model was trained the same way, with its label dropped 15% of the time. Here are the prompts “4” and “7” at guidance 0, 1, 3 and 7, all from the same starting noise.</p>
-<p>At 0 the prompt is ignored and the model makes whatever digit the noise leads to. At 1 it tries for the digit, and the result is often a shaky one. Around 3 the strokes are confident; at 7 they are bold and thick, all variety squeezed out.</p>
+<p>At 0 the prompt is ignored and the model makes whatever digit the noise leads to: here a 7, for both prompts (for “7” that is luck). At 1 it tries for the digit, and the result can be shaky: asked for a 4, it draws something the digit reader takes for a 9. Around 3 the strokes are confident; at 7 they are exaggerated, thick and broken: too much guidance distorts, as it pushed points off the moons.</p>
 <p>The bars measure it on 200 digits per scale (20 of each): how many the digit-reading network of the computer vision page reads as the digit asked for.</p>`
 		},
 		{
