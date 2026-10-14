@@ -75,6 +75,9 @@ test('the shadow zones come out of the rays: no direct P or S beyond about 100°
 	const inner = reach('PKIKP', 0);
 	expect(inner[0][0]).toBeGreaterThan(113);
 	expect(inner[0][0]).toBeLessThan(117);
+	// The same edges, 143° and 115°, for the earthquake drawn on the page, 10 km down.
+	expect(Math.round(pkpRange(10)[0])).toBe(143);
+	expect(Math.round(reach('PKIKP', 10)[0][0])).toBe(115);
 	// If the core were liquid all the way down, the whole zone would stay silent.
 	for (const d of [105, 115, 125, 135, 140]) expect(arrivals(d, 0, 'liquid-core')).toEqual([]);
 	expect(arrivals(150, 0, 'liquid-core').length).toBeGreaterThan(0);
@@ -88,6 +91,9 @@ test('a planet of the same rock all through: straight rays, everywhere reached, 
 	}
 	// The real Earth gets the P wave to 90° in half the time: deep rock is faster.
 	expect(arrivalOf('P', 90, 0)! / arrivalOf('P', 90, 0, 'uniform')!).toBeLessThan(0.55);
+	// For the earthquake drawn (10 km down): 13 minutes in the real Earth, 26 in the uniform one.
+	expect(arrivalOf('P', 90, 10)! / 60).toBeCloseTo(13, 0);
+	expect(arrivalOf('P', 90, 10, 'uniform')! / 60).toBeCloseTo(26, 0);
 });
 
 test('rays curve back up: the path to 30° dives far deeper than the straight line', () => {
@@ -114,6 +120,16 @@ test('S − P grows with distance, and turns back into the distance', () => {
 		last = lag;
 		expect(distanceFor(lag)).toBeCloseTo(d, 2);
 	}
+	// About 25 s at 2°, the nearest the seismometer goes.
+	expect(Math.round(sMinusP(2, 10)!)).toBe(25);
+	// 6½ minutes of gap: about 44°, 4,900 km.
+	expect(distanceFor(390)).toBeCloseTo(44, 0);
+	expect(Math.round((distanceFor(390) * Math.PI * EARTH_R) / 180 / 100) * 100).toBe(4900);
+	// In an Earth of the same rock all through, S falls behind P much faster: the same gap would
+	// mean a much shorter distance (556 s at 44° there, against 392 s in ak135).
+	const uniformLag = (d: number) =>
+		arrivalOf('S', d, ORIGIN.depth, 'uniform')! - arrivalOf('P', d, ORIGIN.depth, 'uniform')!;
+	expect(uniformLag(44) / sMinusP(44, ORIGIN.depth)!).toBeGreaterThan(1.3);
 	// About 8 minutes at 60°.
 	expect(sMinusP(60, 0)! / 60).toBeGreaterThan(7.8);
 	expect(sMinusP(60, 0)! / 60).toBeLessThan(8.6);
@@ -142,6 +158,9 @@ test('three S − P times put the Gorkha epicentre back where the USGS located i
 	// And the real seismograms agree with the model: the P waves picked on them arrive within
 	// a few seconds of the ak135 times.
 	for (const s of stations) expect(Math.abs(s.rec.pPick - s.pModel)).toBeLessThan(5);
+	// At Ankara, the step's example, 2 s after ak135.
+	const ankara = stations.find((s) => s.rec.sta === 'ANTO')!;
+	expect(Math.round(ankara.rec.pPick - ankara.pModel)).toBe(2);
 });
 
 test('magnitude: ten times the wiggles and about 32 times the energy per step', () => {
@@ -160,6 +179,10 @@ test('magnitude: ten times the wiggles and about 32 times the energy per step', 
 
 test('Gutenberg–Richter: each step up in magnitude is about ten times rarer', () => {
 	expect(perYearAtLeast(7)).toBeCloseTo(13.7, 1);
+	// About 130 a year of magnitude 6 or more, fewer than one of 8 or more; 4,516 in all.
+	expect(Math.round(perYearAtLeast(6) / 10) * 10).toBe(130);
+	expect(perYearAtLeast(8)).toBeLessThan(1);
+	expect(Math.round(perYearAtLeast(5.5) * 10)).toBe(4516);
 	expect(perYearAtLeast(6) / perYearAtLeast(7)).toBeGreaterThan(8);
 	expect(perYearAtLeast(6) / perYearAtLeast(7)).toBeLessThan(12);
 	expect(bValue()).toBeGreaterThan(0.9);
