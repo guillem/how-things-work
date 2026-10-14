@@ -370,6 +370,27 @@
 		});
 		return { nucleons, dots };
 	})();
+
+	// Tensors: a scalar, a vector of 3, a 3 × 3 matrix and a 3 × 3 × 3 block (back layers drawn
+	// first, offset up and to the right).
+	const tensorArt = (() => {
+		const out: { k: string; x: number; y: number; o: number }[] = [];
+		out.push({ k: 's', x: 14, y: 54, o: 0.6 });
+		for (let i = 0; i < 3; i++) out.push({ k: `v${i}`, x: 36 + i * 11, y: 54, o: 0.45 });
+		for (let r = 0; r < 3; r++)
+			for (let c = 0; c < 3; c++)
+				out.push({ k: `m${r}${c}`, x: 82 + c * 11, y: 43 + r * 11, o: 0.35 });
+		for (let d = 2; d >= 0; d--)
+			for (let r = 0; r < 3; r++)
+				for (let c = 0; c < 3; c++)
+					out.push({
+						k: `b${d}${r}${c}`,
+						x: 132 + c * 11 + d * 9,
+						y: 50 + r * 11 - d * 9,
+						o: 0.25 + 0.1 * (2 - d)
+					});
+		return out;
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -2565,6 +2586,21 @@
 			stroke-opacity="0.55"
 			stroke-width="2.5"
 		/>
+	{:else if slug === 'tensors'}
+		<!-- one number grows into a row, a table and a block: tensors with 0, 1, 2 and 3 axes -->
+		{#each tensorArt as c (c.k)}
+			<rect
+				x={c.x}
+				y={c.y}
+				width="11"
+				height="11"
+				rx="1.5"
+				fill="color-mix(in srgb, {accent} {Math.round(c.o * 100)}%, var(--surface))"
+				stroke="currentColor"
+				stroke-opacity="0.55"
+				stroke-width="1"
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

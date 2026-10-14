@@ -708,6 +708,15 @@ const explainers: Explainer[] = [
 		accent: '#d9480f',
 		steps: 13,
 		minutes: 20
+	},
+	{
+		slug: 'tensors',
+		title: 'Tensors: numbers with axes',
+		summary:
+			'Grow a number into a vector, a matrix and a block, slice and reshape a real photograph as a 48 × 36 × 3 block of numbers, multiply along matching axes, then turn the coordinate axes and see what a physicist means by a tensor.',
+		accent: '#0c8599',
+		steps: 14,
+		minutes: 20
 	}
 ];
 
