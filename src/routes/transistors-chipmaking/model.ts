@@ -87,7 +87,11 @@ export const vdsSat = (dev: Device, vgs: number) => Math.max(0, vgs - dev.vt);
 
 /** Electrons (or holes) in the channel per µm² of gate, at gate–source voltage `vgs`. */
 export function channelDensity(dev: Device, vgs: number): number {
-	return (COX * twoNVt * softplus((vgs - dev.vt) / twoNVt)) / Q;
+	// EKV's normalised inversion charge q = √(¼ + i_f) − ½ with √i_f = softplus: it falls tenfold
+	// per subthreshold swing below threshold (like the current) and tends to C_ox(V_GS − V_t − nV_T)
+	// above it.
+	const s = softplus((vgs - dev.vt) / twoNVt);
+	return (COX * twoNVt * (Math.sqrt(0.25 + s * s) - 0.5)) / Q;
 }
 
 /** Gate voltage change for a tenfold change of the subthreshold current (V/decade). */

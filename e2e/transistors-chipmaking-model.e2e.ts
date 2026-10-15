@@ -56,8 +56,18 @@ test('the channel holds C_ox (V_GS − V_t) of charge: ~54 000 electrons per µm
 	const perVolt = COX / 1.602176634e-19;
 	expect(perVolt).toBeGreaterThan(53000);
 	expect(perVolt).toBeLessThan(54000);
-	expect(Math.abs(channelDensity(NMOS, 1.5) - perVolt) / perVolt).toBeLessThan(0.01);
+	// Strong inversion: each extra volt adds C_ox × 1 V (the absolute level sits n·kT/q ≈ 39 mV low).
+	const added = channelDensity(NMOS, 1.5) - channelDensity(NMOS, 1.0);
+	expect(Math.abs(added - perVolt / 2) / (perVolt / 2)).toBeLessThan(0.01);
 	expect(channelDensity(NMOS, 0)).toBeLessThan(20);
+});
+
+test('below threshold the channel charge falls tenfold per subthreshold swing, like the current', () => {
+	const ratio = channelDensity(NMOS, 0.3) / channelDensity(NMOS, 0.3 - SUBTHRESHOLD_SWING);
+	expect(ratio).toBeGreaterThan(9);
+	expect(ratio).toBeLessThan(11);
+	// So at 0.3 V, 0.2 V under threshold, only some tens of electrons per µm².
+	expect(channelDensity(NMOS, 0.3)).toBeLessThan(100);
 });
 
 test('a matched CMOS inverter flips at V_DD/2 and draws current only while switching', () => {

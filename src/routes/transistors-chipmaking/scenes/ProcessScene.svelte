@@ -492,7 +492,7 @@
 					{@render txt(
 						480,
 						ILD_TOP - 128,
-						'…and ten or more wiring layers above, each coarser than the last',
+						'…and ten or more wiring layers above, coarser in steps',
 						13,
 						{ weight: 600 }
 					)}
