@@ -12,7 +12,7 @@
  *   circular orbit (ISCO) of the total mass, where this approximation fails.
  * - The remnant, from fits to numerical-relativity simulations of non-spinning
  *   black holes: final mass (Barausse, Morozova & Rezzolla 2012), final spin
- *   (Rezzolla et al. 2008) and the ringing frequency and damping of its
+ *   (Barausse & Rezzolla 2009) and the ringing frequency and damping of its
  *   l = m = 2 mode (Berti, Cardoso & Will 2006).
  * - A Michelson interferometer's differential arm length, ΔL = h·L.
  * - Reading the chirp mass off measured data: the frequency from the spacing of
@@ -196,7 +196,7 @@ export function finalMass(m1: number, m2: number) {
 	const eIsco = Math.sqrt(8 / 9);
 	return (m1 + m2) * (1 - n * (1 - 4 * n) * (1 - eIsco) - 16 * n * n * 0.04827);
 }
-/** Dimensionless spin of the merged black hole, non-spinning progenitors (Rezzolla et al. 2008). */
+/** Dimensionless spin of the merged black hole, non-spinning progenitors (Barausse & Rezzolla 2009). */
 export function finalSpin(m1: number, m2: number) {
 	const n = eta(m1, m2);
 	return 2 * Math.sqrt(3) * n - 3.5171 * n ** 2 + 2.5763 * n ** 3;

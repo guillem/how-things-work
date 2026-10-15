@@ -542,7 +542,7 @@
 			color="var(--gw-proton)"
 		/>
 		<Readout id="s5">
-			<T x={KX + 16} y={PY0 + 176} text="Since 2015: hundreds of mergers heard" size={12} muted />
+			<T x={KX + 16} y={PY0 + 176} text="Since 2015: over 200 mergers heard" size={12} muted />
 		</Readout>
 	{/if}
 </g>

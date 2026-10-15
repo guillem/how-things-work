@@ -40,7 +40,9 @@ test('a plus wave stretches one arm and squeezes the other; a cross wave leaves 
 	await expect(stage(page)).toContainText('x arm +25%');
 	await expect(stage(page)).toContainText('y arm −25%');
 	await choice(page, 'pol', 'cross').click();
-	await expect(stage(page)).toContainText(/x arm \+[0-3]%/);
+	// measured along each arm: a cross wave leaves both lengths unchanged
+	await expect(stage(page)).toContainText('x arm +0%');
+	await expect(stage(page)).toContainText('y arm +0%');
 	await expect(stage(page)).toContainText('no change');
 });
 
