@@ -2909,3 +2909,43 @@ kbd {
 	--cb-m3: #ff922b;
 	--cb-m4: #3bc9db;
 }
+/* feedback-control: the target and the measured response, the controller's P, I and D terms,
+   the fixed-throttle car, the road, the vehicles, gusts, and the arm */
+:root {
+	--fc-target: #495057;
+	--fc-response: #0c8599;
+	--fc-open: #adb5bd;
+	--fc-out: #e8590c;
+	--fc-p: #1971c2;
+	--fc-i: #9c36b5;
+	--fc-d: #2f9e44;
+	--fc-limit: #e03131;
+	--fc-road: #868e96;
+	--fc-ground: #e9ecef;
+	--fc-car: #0c8599;
+	--fc-body: #343a40;
+	--fc-gust: #74c0fc;
+	--fc-parcel: #b08d57;
+	--fc-pole: #d9480f;
+	--fc-arm: #364fc7;
+	--fc-arm2: #5c7cfa;
+}
+:root[data-theme='dark'] {
+	--fc-target: #ced4da;
+	--fc-response: #3bc9db;
+	--fc-open: #5c636a;
+	--fc-out: #ff922b;
+	--fc-p: #74c0fc;
+	--fc-i: #e599f7;
+	--fc-d: #8ce99a;
+	--fc-limit: #ff6b6b;
+	--fc-road: #868e96;
+	--fc-ground: #2c2e33;
+	--fc-car: #3bc9db;
+	--fc-body: #dee2e6;
+	--fc-gust: #4dabf7;
+	--fc-parcel: #c9a36b;
+	--fc-pole: #ff922b;
+	--fc-arm: #91a7ff;
+	--fc-arm2: #bac8ff;
+}

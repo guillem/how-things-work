@@ -879,6 +879,15 @@ const explainers: Explainer[] = [
 		accent: '#0b7285',
 		steps: 12,
 		minutes: 22
+	},
+	{
+		slug: 'feedback-control',
+		title: 'Feedback control: how machines stay on target',
+		summary:
+			'Tune the three gains of a PID controller as it holds a car at 90 km/h over hills, a drone at a set height in the wind and a pole upright on a cart, then let two motors steer a robot arm to a point you choose.',
+		accent: '#0c8599',
+		steps: 13,
+		minutes: 24
 	}
 ];
 

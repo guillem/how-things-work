@@ -3089,6 +3089,38 @@
 				/>
 			{/if}
 		{/each}
+	{:else if slug === 'feedback-control'}
+		<!-- a drone overshooting its target height and settling on it, the loop arrow beside it -->
+		<line
+			x1="70"
+			x2="192"
+			y1="40"
+			y2="40"
+			stroke="currentColor"
+			stroke-opacity="0.45"
+			stroke-width="1.5"
+			stroke-dasharray="4 4"
+		/>
+		<path
+			d="M70 96 C 84 96, 88 24, 104 24 S 118 52, 130 48 S 146 36, 156 39 S 176 40, 192 40"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.6"
+			stroke-linecap="round"
+		/>
+		<g transform="translate(36 60)">
+			<rect x="-16" y="-4" width="32" height="8" rx="3" fill="currentColor" opacity="0.6" />
+			<line x1="-22" x2="-10" y1="-8" y2="-8" stroke={accent} stroke-width="2.5" />
+			<line x1="10" x2="22" y1="-8" y2="-8" stroke={accent} stroke-width="2.5" />
+			<path
+				d="M0 14 L0 30"
+				stroke={accent}
+				stroke-width="2.5"
+				stroke-linecap="round"
+				opacity="0.7"
+			/>
+			<path d="M-5 24 L0 32 L5 24" fill="none" stroke={accent} stroke-width="2.5" opacity="0.7" />
+		</g>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
