@@ -2995,3 +2995,58 @@ kbd {
 	--pg-rotor: #5c636a;
 	--pg-cloud: #868e96;
 }
+/* ---------------------------------------------------------------------------
+   flight: wind tunnel, wing, streamlines, pressure, forces, sky (light, then dark)
+   --------------------------------------------------------------------------- */
+:root {
+	--fl-tunnel: #f1f5fa;
+	--fl-wing: #495057;
+	--fl-wing-edge: #212529;
+	--fl-stream: #8aa4bf;
+	--fl-parcel: #364fc7;
+	--fl-top: #1c7ed6;
+	--fl-bottom: #e8590c;
+	--fl-low: #1c7ed6;
+	--fl-high: #e03131;
+	--fl-lift: #2b8a3e;
+	--fl-drag: #e8590c;
+	--fl-weight: #862e9c;
+	--fl-thrust: #1971c2;
+	--fl-theory: #495057;
+	--fl-ideal: #1c7ed6;
+	--fl-data: #e8590c;
+	--fl-wake: #adb5bd;
+	--fl-sky: #e7f1fb;
+	--fl-sky-high: #c5dcf2;
+	--fl-ground: #b2c99a;
+	--fl-cloud: #ffffff;
+	--fl-plane: #f8f9fa;
+	--fl-plane-edge: #343a40;
+	--fl-stall: #c92a2a;
+}
+:root[data-theme='dark'] {
+	--fl-tunnel: #11161d;
+	--fl-wing: #ced4da;
+	--fl-wing-edge: #f1f3f5;
+	--fl-stream: #4c6580;
+	--fl-parcel: #91a7ff;
+	--fl-top: #4dabf7;
+	--fl-bottom: #ffa94d;
+	--fl-low: #4dabf7;
+	--fl-high: #ff6b6b;
+	--fl-lift: #69db7c;
+	--fl-drag: #ffa94d;
+	--fl-weight: #da77f2;
+	--fl-thrust: #74c0fc;
+	--fl-theory: #ced4da;
+	--fl-ideal: #4dabf7;
+	--fl-data: #ffa94d;
+	--fl-wake: #5c636a;
+	--fl-sky: #0f1a26;
+	--fl-sky-high: #070d14;
+	--fl-ground: #2b3a24;
+	--fl-cloud: #2a3440;
+	--fl-plane: #dee2e6;
+	--fl-plane-edge: #f8f9fa;
+	--fl-stall: #ff8787;
+}
