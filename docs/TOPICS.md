@@ -183,7 +183,7 @@ A topic is done when:
 - [ ] graphics-3d
 - [x] sorting
 - [x] graph-search
-- [ ] turing-machines
+- [x] turing-machines
 - [x] quantum-computing
 
 **Information & Networks**
