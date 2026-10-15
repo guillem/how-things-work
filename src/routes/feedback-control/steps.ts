@@ -302,7 +302,7 @@ export const spec: ExplainerSpec = {
 			controls: [gusts, noise, droneKd],
 			body: `
 <p>Outdoors, gusts push the drone up and down. Feedback doesn't need to know where they come from: it sees the height change and pushes back, so the drone stays within a metre of 3 m.</p>
-<p>Its height sensor isn't perfect, though. Each reading jitters by a centimetre or so, and the derivative term turns a reading that jumps a little in a millisecond into a large rate of change: the thrust starts to shake. More noise or more Kd, more shaking. The drone itself hardly notices, because its mass can't follow such fast jitter, but motors that shake waste energy and wear out. Real controllers smooth the derivative, as this one does over 50 ms, and turn Kd down when the sensor is noisy.</p>`
+<p>Its height sensor isn't perfect, though. Each reading jitters by a centimetre or so, and the derivative term turns a reading that jumps a little in a millisecond into a large rate of change: the thrust starts to shake. More noise or more Kd, more shaking. The drone itself hardly notices, because its mass can't follow such fast jitter, but motors that shake waste energy and wear out. Real controllers smooth the derivative, as this one does over 20 ms, and turn Kd down when the sensor is noisy.</p>`
 		},
 		{
 			id: 'delay',

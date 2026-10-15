@@ -239,9 +239,9 @@ test('delay: the loop survives up to its phase margin ÷ crossover frequency, th
 			else expect(s.at(-1)!.a).toBeLessThan(s[0].a);
 		}
 	}
-	expect(criticalDelay({ kp: 4, ki: 1, kd: 4 }).delay).toBeCloseTo(0.27, 2);
+	expect(criticalDelay({ kp: 4, ki: 1, kd: 4 }).delay).toBeCloseTo(0.3, 2);
 	// less damping, less margin… but a slower loop: here it tolerates a little more
-	expect(criticalDelay({ kp: 4, ki: 1, kd: 2 }).delay).toBeCloseTo(0.31, 2);
+	expect(criticalDelay({ kp: 4, ki: 1, kd: 2 }).delay).toBeCloseTo(0.33, 2);
 	// with only P the drone has no margin at all: any delay makes it grow
 	expect(criticalDelay({ kp: 4, ki: 0, kd: 0 }).delay).toBeLessThan(0);
 });

@@ -486,7 +486,7 @@ export const DRONE = {
 	m: 1,
 	maxThrust: 25, // N
 	/** Derivative filter (s). */
-	tf: 0.05
+	tf: 0.02
 };
 
 export interface DroneOptions {

@@ -150,7 +150,9 @@
 				? [78, 96]
 				: focus === 'windup'
 					? [75, 120]
-					: [70, 100]
+					: focus === 'offset'
+						? [78, 92]
+						: [70, 100]
 	);
 	const sx = $derived(scale([0, SECONDS], [P0, P1]));
 	const sy = $derived(scale(yDomain, [SP.bottom, SP.top]));
@@ -162,7 +164,9 @@
 				? [80, 85, 90, 95]
 				: focus === 'windup'
 					? [80, 90, 100, 110, 120]
-					: [70, 80, 90, 100]
+					: focus === 'offset'
+						? [80, 85, 90]
+						: [70, 80, 90, 100]
 	);
 	const xTicks = $derived(mode === 'zn' ? [0, 5, 10, 15, 20, 25, 30] : [0, 15, 30, 45, 60, 75, 90]);
 	const kmhSeries = (r: typeof run) => r.y.map((s) => s / KMH);
