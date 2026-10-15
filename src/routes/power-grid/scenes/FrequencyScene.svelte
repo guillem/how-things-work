@@ -244,7 +244,11 @@
 		</g>
 	</g>
 	<Readout id="rpm">
-		<Label x={170} y={244} text="every generator: {rpm.toLocaleString('en-GB')} turns a minute" />
+		<Label
+			x={170}
+			y={244}
+			text="a two-pole generator: {rpm.toLocaleString('en-GB')} turns a minute"
+		/>
 	</Readout>
 	<Readout id="rotor-note">
 		<Label x={170} y={40} text="all turning in step" muted />
