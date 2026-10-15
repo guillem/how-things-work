@@ -23,7 +23,7 @@
  * pressure reflection r = (Z₂ − Z₁)/(Z₂ + Z₁), intensity transmission 1 − r²,
  * amplitude attenuation α = α₀·f^b (IT'IS), and depth shown = 1540 m/s · t / 2.
  *
- * MRI: the Larmor frequency f = (γ/2π)·B with the CODATA 2018 proton value
+ * MRI: the Larmor frequency f = (γ/2π)·B with the CODATA 2022 proton value
  * 42.577 478 461 MHz/T, and the spin-echo signal S = PD·(1 − e^(−TR/T1))·e^(−TE/T2)
  * with T1, T2 at 1.5 T from IT'IS and equal proton density PD for every tissue.
  */
@@ -746,7 +746,7 @@ export const wavelengthMm = (fMHz: number) => (C_ASSUMED / (fMHz * 1e6)) * 1000;
 // MRI
 // ======================================================================================
 
-/** Proton gyromagnetic ratio γ/2π, MHz/T (CODATA 2018). */
+/** Proton gyromagnetic ratio γ/2π, MHz/T (CODATA 2022). */
 export const GAMMA_MHZ_T = 42.577478461;
 
 /** Larmor (precession) frequency of hydrogen nuclei in a field B (T), MHz. */

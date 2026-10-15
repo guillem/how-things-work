@@ -47,6 +47,7 @@
 		partScale,
 		phantomAt,
 		projection,
+		reconstruct,
 		relativeError,
 		scan,
 		truth,
@@ -269,14 +270,23 @@
 	];
 
 	// ---- dose ---------------------------------------------------------------------------------
-	/** Noise: spread of the CT number inside the heart (uniform in the model), HU. */
+	/** The same slice reconstructed without photon noise, to measure the noise against. */
+	const cleanImg = $derived(phase === 'dose' ? reconstruct(scan(ph, K), true) : null);
+	/**
+	 * Noise: spread of the CT number inside the heart, HU, measured against the noise-free
+	 * reconstruction so that the small ripples of reconstruction itself don't count.
+	 */
 	const noiseHU = $derived.by(() => {
-		if (phase !== 'dose') return 0;
+		if (!cleanImg) return 0;
 		const vals: number[] = [];
 		for (let dy = -2; dy <= 2; dy += 0.28)
 			for (let dx = -2; dx <= 2; dx += 0.28)
-				if (dx * dx + dy * dy <= 4)
-					vals.push(hounsfield(imageAt(recon.img, BODY_FOV, 0.8 + dx, -3.4 + dy), muW));
+				if (dx * dx + dy * dy <= 4) {
+					const x = 0.8 + dx;
+					const y = -3.4 + dy;
+					const d = imageAt(recon.img, BODY_FOV, x, y) - imageAt(cleanImg, BODY_FOV, x, y);
+					vals.push((1000 * d) / muW);
+				}
 		const m = vals.reduce((a, b) => a + b, 0) / vals.length;
 		return Math.sqrt(vals.reduce((a, b) => a + (b - m) ** 2, 0) / vals.length);
 	});

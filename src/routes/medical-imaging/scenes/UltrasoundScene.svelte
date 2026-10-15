@@ -33,7 +33,7 @@
 		muscle: 'muscle',
 		liver: 'liver',
 		blood: 'blood vessel',
-		bone: 'bone (rib)',
+		bone: 'bone',
 		water: 'gel',
 		air: 'air'
 	};

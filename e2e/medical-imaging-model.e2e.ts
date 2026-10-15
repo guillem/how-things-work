@@ -48,6 +48,18 @@ test.describe('X-ray attenuation (NIST coefficients)', () => {
 		expect(transmitted(m, 2 * hvl)).toBeCloseTo(0.25, 12);
 	});
 
+	test('most photons are stopped: a few percent cross the chest, about 1% the belly', () => {
+		// 20 cm of soft tissue, the depth of a belly
+		expect(transmitted(mu('soft', 60), 20)).toBeGreaterThan(0.008);
+		expect(transmitted(mu('soft', 60), 20)).toBeLessThan(0.02);
+		// the model chest, front to back: under 10% even through a lung, far less mid-chest
+		let best = 0;
+		for (let x = -12; x <= 12; x += 0.5) best = Math.max(best, Math.exp(-radiographAt(x, 0)));
+		expect(best).toBeGreaterThan(0.02);
+		expect(best).toBeLessThan(0.1);
+		expect(Math.exp(-radiographAt(0, 0))).toBeLessThan(0.01);
+	});
+
 	test('bone stops low-energy X-rays far better than soft tissue; the gap closes at high energy', () => {
 		const ratio = (e: number) => mu('bone', e) / mu('soft', e);
 		expect(ratio(30)).toBeGreaterThan(6);
@@ -196,7 +208,7 @@ test.describe('CT: projections and filtered back-projection', () => {
 });
 
 test.describe('doses (RadiologyInfo)', () => {
-	test('a chest X-ray is about 10 days of background; a chest CT about 2 years', () => {
+	test('a chest X-ray is about 12 days of background by the 3 mSv/yr rule (RadiologyInfo rounds to 10); a chest CT about 2 years', () => {
 		expect(backgroundDays(DOSES_MSV.chestXray)).toBeCloseTo(12, 0);
 		expect(backgroundDays(DOSES_MSV.ctChest) / 365.25).toBeCloseTo(2, 0);
 		expect(DOSES_MSV.ctChest / DOSES_MSV.chestXray).toBeCloseTo(61, 0);

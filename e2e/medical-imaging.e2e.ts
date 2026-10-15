@@ -94,9 +94,10 @@ test('lower dose, more noise', async ({ page }) => {
 	await range(page, 'dose').fill('0.25');
 	await expect(stage(page)).toContainText('0.25 × standard');
 	const quarter = await noise();
-	// a quarter of the photons: about twice the noise
-	expect(quarter / standard).toBeGreaterThan(1.6);
-	expect(quarter / standard).toBeLessThan(2.5);
+	// a quarter of the photons: twice the noise (measured against a noise-free reconstruction,
+	// so the ratio is the 1/√dose rule itself)
+	expect(quarter / standard).toBeGreaterThan(1.85);
+	expect(quarter / standard).toBeLessThan(2.15);
 });
 
 test('lower down, the CT slice finds the fluid the X-ray cannot see', async ({ page }) => {
@@ -105,7 +106,17 @@ test('lower down, the CT slice finds the fluid the X-ray cannot see', async ({ p
 	await range(page, 'slice').fill('13');
 	await expect(stage(page)).toContainText('13 cm lower');
 	await expect(stage(page)).toContainText('cyst (fluid)');
-	await expect(stage(page)).toContainText('fluid: 0 HU, liver +54 HU');
+	// Both numbers are read off the reconstructed slice: fluid near water's 0, about 55 HU below
+	// the liver round it (as the narrative says).
+	const label = stage(page).locator('text', { hasText: /^fluid: / });
+	const m = (await label.textContent())?.match(/fluid: ([+−]?\d+) HU, liver ([+−]?\d+) HU/);
+	expect(m).toBeTruthy();
+	const num = (v: string) => Number(v.replace('−', '-'));
+	const fluid = num(m![1]);
+	const liver = num(m![2]);
+	expect(Math.abs(fluid)).toBeLessThan(10);
+	expect(liver - fluid).toBeGreaterThan(45);
+	expect(liver - fluid).toBeLessThan(65);
 });
 
 test('without gel the sound bounces straight back', async ({ page }) => {
