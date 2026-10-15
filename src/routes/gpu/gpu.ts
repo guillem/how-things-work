@@ -357,7 +357,8 @@ export const cpuFp64FromParts = I9_14900K.cores * I9_14900K.baseGHz * 16;
 export const cpuPeakGFLOPS = 2 * I9_14900K.fp64GFLOPS;
 /**
  * FP32 multiply-adds per core per tick implied by Intel's figure, which applies one
- * formula to all 24 cores (big and small alike): an average, not a per-core spec.
+ * formula to all 24 cores: the big cores' rate applied to all 24; the small cores do
+ * about half.
  */
 export const cpuLanesPerCore = cpuPeakGFLOPS / (I9_14900K.cores * I9_14900K.baseGHz * 2);
 

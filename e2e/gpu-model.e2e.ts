@@ -41,13 +41,14 @@ test('the published peak rates follow from the chips’ parts', () => {
 	);
 	// Intel's export figure: 24 cores × 3.2 GHz × 16 double-precision operations per tick.
 	expect(cpuFp64FromParts).toBeCloseTo(I9_14900K.fp64GFLOPS, 6);
-	// In 32-bit numbers that is 16 lanes per core (two 8-wide multiply-add units).
+	// In 32-bit numbers that is 16 lanes per core (two 8-wide multiply-add units): the big
+	// cores' rate, which Intel's formula applies to all 24 cores.
 	expect(cpuLanesPerCore).toBeCloseTo(16, 9);
 	// The page: about 34× the arithmetic but only about 11× the memory bandwidth.
 	expect(gpu.peak / cpu.peak).toBeGreaterThan(33);
 	expect(gpu.peak / cpu.peak).toBeLessThan(34);
 	expect(gpu.bandwidth / cpu.bandwidth).toBeCloseTo(11.25, 2);
-	// In 64-bit numbers (1/64 of the FP32 rate) the GPU is no faster than the CPU.
+	// In 64-bit numbers (1/64 of the FP32 rate) the GPU is about as fast as the CPU.
 	expect((gpu.peak * RTX_4090.fp64Fraction) / I9_14900K.fp64GFLOPS).toBeCloseTo(1.05, 2);
 });
 
@@ -96,6 +97,10 @@ test('many slow lanes shade the image far faster than one fast core', () => {
 		expect(speedup).toBeGreaterThan(lanes / FAST_IPC / 2);
 	}
 	expect(fast.cycles / runLanes(job, 1024).cycles).toBeGreaterThan(200);
+	// The page: 1,024 lanes are done before the fast core has finished its first row.
+	expect(fast.done[IMAGE.w - 1]).toBeGreaterThan(runLanes(job, 1024).cycles);
+	// The page: with just 32 lanes (one warp) they are already 7 times faster.
+	expect(Math.round(fast.cycles / runLanes(job, 32).cycles)).toBe(7);
 	// With 512 warps and only 1,280 groups of pixels, many warps sit idle at the end.
 	expect(efficiency(runLanes(job, 1024))).toBeGreaterThan(0.85);
 	expect(efficiency(runLanes(job, 16384))).toBeLessThan(0.75);
@@ -138,6 +143,11 @@ test('with enough work in sequence the single fast core wins, unless it takes th
 	expect(contest(0.05, 16384).winner).toBe('lanes');
 	expect(contest(0.3, 16384).winner).toBe('fast');
 	expect(contest(0.5, 16384).winner).toBe('fast');
+	// The page: with a thousand lanes, the fast core wins past about a quarter.
+	expect(contest(0.24, 1024).winner).toBe('lanes');
+	expect(contest(0.25, 1024).winner).toBe('fast');
+	// With 4 workers or fewer, the fast core wins at any serial share.
+	expect(contest(0.01, 4).winner).toBe('fast');
 	// The fast core does the sequential part and the lanes the rest: best of both.
 	for (const s of [0.05, 0.3, 0.5]) {
 		const both = contest(s, 16384, true);

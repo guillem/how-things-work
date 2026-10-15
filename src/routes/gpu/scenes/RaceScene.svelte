@@ -89,7 +89,6 @@
 	}
 	const fastDone = $derived(upTo(fast.done, ticks));
 	const groupsDone = $derived(upTo(ends, ticks));
-	const groupsStarted = $derived(ticks >= slow.cycles ? slow.end.length : upTo(slow.start, ticks));
 	const slowDone = $derived(Math.min(job.tasks, groupsDone * WARP));
 	const fastFinished = $derived(fastDone >= job.tasks);
 	const slowFinished = $derived(groupsDone >= slow.end.length);
@@ -113,6 +112,27 @@
 	);
 	const picture = $derived(mode === 'matrix' ? productImage() : shadedImage());
 
+	/**
+	 * Task ranges [a, b) of the groups that pass `keep`, merged where groups are
+	 * consecutive. Groups finish out of order (a sky group is quicker than an edge
+	 * group), so the finished part of the picture is not a prefix.
+	 */
+	function groupRuns(keep: (g: number) => boolean): [number, number][] {
+		const out: [number, number][] = [];
+		const G = slow.end.length;
+		for (let g = 0; g < G; g++) {
+			if (!keep(g)) continue;
+			const a = g;
+			while (g + 1 < G && keep(g + 1)) g++;
+			out.push([a * WARP, Math.min(job.tasks, (g + 1) * WARP)]);
+		}
+		return out;
+	}
+	const slowDoneRuns = $derived(groupRuns((g) => slow.end[g] <= ticks + 1e-9));
+	const slowBusyRuns = $derived(
+		slowFinished ? [] : groupRuns((g) => slow.start[g] <= ticks && ticks < slow.end[g] - 1e-9)
+	);
+
 	interface Box {
 		x: number;
 		y: number;
@@ -135,6 +155,8 @@
 		if (cb > 0) out.push({ x: picX, y: y0 + rb * cell, w: cb * cell, h: cell });
 		return out;
 	}
+
+	const spans = (runs: [number, number][], y0: number) => runs.flatMap(([a, b]) => span(a, b, y0));
 
 	const fmt = (v: number) => Math.round(v).toLocaleString('en-US');
 	const pct = (v: number) => {
@@ -175,7 +197,7 @@
 	<defs>
 		{#each panels as p (p.id)}
 			<clipPath id="race-clip-{p.id}">
-				{#each span(0, p.id === 'fast' ? fastDone : slowDone, p.y) as r, i (i)}
+				{#each p.id === 'fast' ? span(0, fastDone, p.y) : spans(slowDoneRuns, p.y) as r, i (i)}
 					<rect x={r.x} y={r.y} width={r.w + 0.4} height={r.h + 0.4} />
 				{/each}
 			</clipPath>
@@ -235,7 +257,7 @@
 			/>
 		{/if}
 		{#if !isFast && !slowFinished}
-			{#each span(groupsDone * WARP, Math.min(job.tasks, groupsStarted * WARP), p.y) as r, i (i)}
+			{#each spans(slowBusyRuns, p.y) as r, i (i)}
 				<rect x={r.x} y={r.y} width={r.w} height={r.h} fill="var(--gpu-lane)" opacity="0.75" />
 			{/each}
 		{/if}

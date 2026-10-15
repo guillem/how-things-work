@@ -64,7 +64,7 @@
 	const rowsTable = [
 		{
 			id: 'cores',
-			label: 'Cores (each fetches its own instructions)',
+			label: 'Cores (CPU) / streaming multiprocessors (GPU)',
 			cpu: `${I9_14900K.cores}`,
 			gpu: `${RTX_4090.sms} SMs`,
 			ratio: ''
@@ -360,11 +360,22 @@
 			<Readout id="footnote">
 				<Label
 					x={40}
-					y={TABLE_Y + 182}
+					y={TABLE_Y + 176}
 					anchor="start"
 					size={11}
 					muted
-					text="* twice Intel’s published 64-bit figure, 1,228.8 GFLOP/s (all 24 cores at 3.2 GHz; they can run up to 6 GHz): an AVX2 register holds 8 floats or 4 doubles"
+					text="* twice Intel’s published 64-bit figure, {fmt(
+						I9_14900K.fp64GFLOPS,
+						1
+					)} GFLOP/s: an AVX2 register holds 8 floats or 4 doubles."
+				/>
+				<Label
+					x={40}
+					y={TABLE_Y + 192}
+					anchor="start"
+					size={11}
+					muted
+					text="Intel’s formula counts all {I9_14900K.cores} cores at the big cores’ {I9_14900K.baseGHz} GHz base; the big cores boost to {I9_14900K.maxTurboGHz} GHz, the small ones to {I9_14900K.efficientMaxTurboGHz} GHz."
 				/>
 			</Readout>
 		{:else}

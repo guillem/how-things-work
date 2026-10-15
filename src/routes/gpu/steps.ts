@@ -14,7 +14,8 @@ import {
 	pixelJob,
 	ridge,
 	runFast,
-	runLanes
+	runLanes,
+	shaderIntensity
 } from './gpu';
 import { I9_14900K, RTX_4090 } from './specs';
 
@@ -26,6 +27,8 @@ const px = pixelJob();
 const pxFast = runFast(px);
 const px1024 = runLanes(px, 1024);
 const px16k = runLanes(px, 16384);
+const px32 = runLanes(px, 32);
+const shaderPerByte = shaderIntensity();
 const mx = matrixJob();
 const mxFast = runFast(mx);
 const mx16k = runLanes(mx, 16384);
@@ -152,9 +155,9 @@ export const spec: ExplainerSpec = {
 			controls: [lanes('lanes', 10)],
 			body: `
 <p>Now the same job goes to a <dfn data-def="Graphics processing unit: a chip with thousands of simple arithmetic lanes, built to run the same small program on many pieces of data at once.">GPU</dfn>-like machine: ${n(1024)} slow <dfn data-def="A simple arithmetic unit that works on one piece of data. A GPU lane does what one core would do for one pixel, but has no control unit of its own.">lanes</dfn>. Each lane finishes just one instruction per tick, a quarter of the fast core’s pace, and the two machines run on the same clock.</p>
-<p>But a thousand of them work at the same time, each on its own pixel. The fast core has barely started its first rows when the lanes finish: ${n(px1024.cycles)} ticks against ${n(pxFast.cycles)}, about ${n(pxFast.cycles / px1024.cycles)} times faster.</p>
-<p>Change the number of lanes. With 32 (one <em>warp</em>, see the next chapter) they are already 7 times faster than the fast core: many slow workers beat one fast one as soon as there is enough work to share.</p>`,
-			notes: `<p>The race counts ticks, not seconds: this page’s machines are toys with stated rules, not models of real chips. Real GPUs run their clocks at less than half the rate of a fast CPU (2.5 GHz against 6 GHz for the chips later on this page), and real CPU cores also have a few lanes of their own. The real-chip comparison comes in the chapter on memory.</p>`
+<p>But a thousand of them work at the same time, each on its own pixel. The fast core hasn’t finished its first row when the lanes are done: ${n(px1024.cycles)} ticks against ${n(pxFast.cycles)}, about ${n(pxFast.cycles / px1024.cycles)} times faster.</p>
+<p>Change the number of lanes. With 32 (one <em>warp</em>, see the next chapter) they are already ${n(pxFast.cycles / px32.cycles)} times faster than the fast core: many slow workers beat one fast one as soon as there is enough work to share.</p>`,
+			notes: `<p>The race counts ticks, not seconds: this page’s machines are toys with stated rules, not models of real chips. Real GPUs run their clocks at less than half the rate of a fast CPU (2.5 GHz against 6 GHz for the chips later on this page), real CPU cores also have a few lanes of their own, and here memory costs nothing: every number a program needs is there at once. The real-chip comparison comes in the chapter on memory.</p>`
 		},
 		{
 			id: 'scale',
@@ -179,7 +182,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			body: `
 <p>How can a chip hold thousands of lanes? By leaving out most of a processor. A CPU core has its own <a href="../cpu/#decode">control unit</a> that fetches and decodes every instruction, and a lot of circuitry to guess what comes next and keep busy.</p>
-<p>A GPU shares one control unit between 32 lanes, a <dfn data-def="A group of 32 lanes that share one instruction stream: on every tick, they all carry out the same instruction, each on its own data. NVIDIA's name; AMD's is a wavefront.">warp</dfn>. The control unit fetches one instruction and all 32 lanes carry it out on the same tick, each on its own pixel: the same <em>dx = x − cx</em>, with 32 different x. This is called <dfn data-def="Single instruction, multiple threads: many lanes run the same instruction at the same time, each with its own data.">SIMT</dfn>, single instruction, multiple threads.</p>
+<p>A GPU shares one control unit between 32 lanes, a <dfn data-def="A group of 32 lanes that share one instruction stream: on every tick, they all carry out the same instruction, each on its own data. NVIDIA's name; AMD's is a wavefront.">warp</dfn>. The control unit fetches one instruction and all 32 lanes carry it out on the same tick, each on its own pixel: the same <em>dx = x − cx</em>, with 32 different x. This is called <dfn data-def="Single instruction, multiple threads: many lanes run the same instruction at the same time, each with its own data.">SIMT</dfn>, single instruction, multiple threads (each lane runs one <em>thread</em>, one copy of the program on its own data).</p>
 <p>Here, 32 pixels of the ball go through the shader in lockstep: ${PIXEL_COST.sphere} ticks for all 32 of them.</p>`,
 			notes: `<p>NVIDIA’s CUDA Programming Guide: “Within a thread block, threads are organized into groups of 32 threads called warps.” Each SM (streaming multiprocessor) of the RTX 4090 has four warp schedulers, each feeding 32 lanes (NVIDIA Ada architecture whitepaper). While one warp waits for data from memory, the scheduler switches to another one that is ready, so an SM keeps dozens of warps on the go at once.</p>`
 		},
@@ -210,7 +213,8 @@ export const spec: ExplainerSpec = {
 <p>The second job: multiply two ${MATRIX_N} × ${MATRIX_N} <a href="../linear-transformations/#compose">matrices</a>, A·B = C. Each of the ${n(mx.tasks)} numbers of C is a row of A times a column of B: ${MATRIX_N} multiplications, added up (${n(elementCost(MATRIX_N))} instructions with the loads and the store).</p>
 <p>It is the ideal job for lanes. Every element can be worked out independently, all of them run exactly the same instructions, and there is no branch at all, so no lane ever idles. With ${n(16384)} lanes, all ${n(mx.tasks)} elements are worked out at once, in the time of one: ${n(mx16k.cycles)} ticks, against ${n(mxFast.cycles)} for the fast core. That is exactly ${n(16384 / FAST_IPC)} times faster: lanes ÷ ${FAST_IPC}.</p>
 <p>This is why GPUs now run artificial intelligence. A <a href="../neural-networks/">neural network</a>’s layers, and the attention of a <a href="../transformers/#matrix">transformer</a>, are matrix multiplications, millions of times over.</p>`,
-			notes: `<p>Multiplying two n × n matrices takes n³ multiply-adds, so doubling n makes eight times the work, while the number of independent elements, n², only grows four times. Large networks keep thousands of lanes busy without trouble.</p>`
+			notes: `<p>Multiplying two n × n matrices takes n³ multiply-adds, so doubling n makes eight times the work, while the number of independent elements, n², only grows four times. Large networks keep thousands of lanes busy without trouble.</p>
+<p>In this race every load takes one tick, as if memory were free. Done this naive way, a real GPU would spend most of its time waiting for those loads; the next chapter shows why, and how tiles fix it.</p>`
 		},
 		// ------------------------------------------------------------------ real chips
 		{
@@ -222,9 +226,9 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			body: `
 <p>Two real chips from 2022–23. The Intel Core i9-14900K desktop processor has ${I9_14900K.cores} cores (${I9_14900K.performanceCores} big and ${I9_14900K.efficientCores} small), up to ${I9_14900K.maxTurboGHz} GHz. The NVIDIA GeForce RTX 4090 graphics card has ${RTX_4090.sms} <dfn data-def="Streaming multiprocessor: the GPU's building block, with its own warp schedulers, lanes and fast local memory. Roughly the GPU's counterpart of a core.">SMs</dfn>, each with 4 warp schedulers of 32 lanes: ${n(RTX_4090.cudaCores)} lanes at ${RTX_4090.boostGHz} GHz.</p>
-<p>NVIDIA calls those lanes “CUDA cores”, but they are not cores in the CPU’s sense: they don’t fetch their own instructions. The fair count is ${I9_14900K.cores} CPU cores against ${RTX_4090.sms} SMs. And the CPU’s cores have lanes of their own: Intel’s published figure works out to ${n(cpuLanesPerCore)} 32-bit multiply-adds per core per tick, on average.</p>
+<p>NVIDIA calls those lanes “CUDA cores”, but they are not cores in the CPU’s sense: they don’t fetch their own instructions. The fair count is ${I9_14900K.cores} CPU cores against ${RTX_4090.sms} SMs (or ${n(RTX_4090.sms * RTX_4090.schedulersPerSm)} warp schedulers, if you count every unit that issues its own instructions). And the CPU’s cores have lanes of their own: Intel’s published figure counts ${n(cpuLanesPerCore)} 32-bit multiply-adds per tick for every core. That is true of the ${I9_14900K.performanceCores} big cores; the small ones do about half.</p>
 <p>At full speed the GPU does about <strong>${n(gpu.peak / 1000, 1)} trillion</strong> arithmetic operations a second, the CPU about ${n(cpu.peak / 1000, 1)} trillion: ${n(gpu.peak / cpu.peak)} times more. The GPU spends its transistors on lanes; the CPU spends them on making a few threads fast.</p>`,
-			notes: `<p>Figures from NVIDIA’s Ada GPU architecture whitepaper (V2.02, Appendix A: 128 SMs, 16,384 CUDA cores, 2,520 MHz boost clock, 82.6 TFLOPS FP32, 1,008 GB/s) and Intel’s specification page for the i9-14900K (24 cores, 6 GHz, 89.6 GB/s). The GPU’s peak is every lane doing one multiply-add (2 operations) per tick: 16,384 × 2 × 2.52 GHz = 82.6 trillion. Intel publishes 1,228.8 billion 64-bit operations a second for this CPU in its export-compliance table (24 cores × 3.2 GHz × 16); an AVX2 register holds eight 32-bit numbers instead of four 64-bit ones, so twice that for 32-bit numbers is our estimate. In 64-bit numbers the tables turn: the RTX 4090 does them at 1/64 of its 32-bit rate, about 1.3 trillion a second, no faster than the CPU.</p>`
+			notes: `<p>Figures from NVIDIA’s Ada GPU architecture whitepaper (V2.1, Appendix A: 128 SMs, 16,384 CUDA cores, 2,520 MHz boost clock, 82.6 TFLOPS FP32, 1,008 GB/s) and Intel’s specification page for the i9-14900K (24 cores, 6 GHz, 89.6 GB/s). The GPU’s peak is every lane doing one multiply-add (2 operations) per tick: 16,384 × 2 × 2.52 GHz = 82.6 trillion. Intel publishes 1,228.8 billion 64-bit operations a second for this CPU in its export-compliance table (24 cores × 3.2 GHz × 16); an AVX2 register holds eight 32-bit numbers instead of four 64-bit ones, so twice that for 32-bit numbers is our estimate. In 64-bit numbers the tables turn: the RTX 4090 does them at 1/64 of its 32-bit rate, about 1.3 trillion a second, about the same as the CPU.</p>`
 		},
 		{
 			id: 'memory',
@@ -237,7 +241,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Arithmetic is only half the story: the numbers have to come from memory. The RTX 4090 moves ${n(RTX_4090.bandwidthGBs)} GB a second between its memory and its lanes, the CPU ${n(I9_14900K.bandwidthGBs)} GB/s. That is ${n(gpu.bandwidth / cpu.bandwidth)} times more, but far less than the ${n(gpu.peak / cpu.peak)} times more arithmetic.</p>
 <p>This chart, a <dfn data-def="A chart of the best speed a chip can reach against how many operations a job does per byte it moves: a sloping line where memory limits it, a flat roof where arithmetic does.">roofline</dfn>, shows the consequence. Across: how many operations a job does per byte it reads or writes. Up: the most it can get done each second. A job that does little arithmetic per byte runs along the sloping line, waiting for memory; only past the bend does it reach the flat roof of full arithmetic speed.</p>
-<p>Adding two long lists of numbers does one addition per 12 bytes: on the GPU it gets about 84 billion operations a second, a thousandth of its peak. Our pixel shader does about 4 per byte and still waits for memory. Try the jobs.</p>`,
+<p>Adding two long lists of numbers does one addition per 12 bytes: on the GPU it gets about 84 billion operations a second, a thousandth of its peak. Our pixel shader does about ${n(4 * shaderPerByte)} operations for the 4 bytes of colour it writes, about ${n(shaderPerByte)} per byte, and still waits for memory. Try the jobs.</p>`,
 			notes: `<p>The roofline model is from S. Williams, A. Waterman and D. Patterson, “Roofline: an insightful visual performance model for multicore architectures”, <em>Communications of the ACM</em> 52(4), 2009. The bend sits at peak ÷ bandwidth: about ${n(ridge(gpu))} operations per byte for the RTX 4090 and ${n(ridge(cpu))} for the i9-14900K. Real chips keep recent data in caches, which a measured roofline adds as extra, steeper lines.</p>`
 		},
 		{
@@ -252,7 +256,7 @@ export const spec: ExplainerSpec = {
 <p>A matrix multiplication done naively fetches two numbers from memory for each multiply-add, and lands on the sloping line. But every number of A is needed by a whole row of C, and every number of B by a whole column.</p>
 <p>So GPU programs work in <dfn data-def="A small square block of a matrix, loaded once into the SM's fast local memory and reused for many multiply-adds.">tiles</dfn>: an SM loads a block of A and a block of B into its fast local memory once, and uses each number many times. A tile b wide does b/4 operations per byte. Widen the tile and watch the job climb the slope until it hits the roof.</p>
 <p>Matrix multiplication is one of the few jobs that can be made to do a lot of arithmetic per byte, which is why it runs so close to a GPU’s peak, and why AI is built from it.</p>`,
-			notes: `<p>A tile of b × b reuses each number b times: a block of b rows of A and b columns of B (2·b·n numbers, 4 bytes each) feeds 2·b²·n operations, so b/4 operations per byte. Real libraries reach very wide effective tiles by also keeping numbers in each lane’s registers and in the shared L2 cache, rather than with one huge tile. The RTX 4090 also has <dfn data-def="Units inside each SM that multiply small blocks of matrices in one go, much faster than the ordinary lanes.">tensor cores</dfn> built only for this: 165.2 trillion operations a second on 16-bit numbers, that is 82.6 trillion multiply-adds (NVIDIA’s figure without its “sparsity” doubling), twice its ordinary peak.</p>`
+			notes: `<p>A tile of b × b reuses each number b times: a block of b rows of A and b columns of B (2·b·n numbers, 4 bytes each) feeds 2·b²·n operations, so b/4 operations per byte. Real libraries reach very wide effective tiles by also keeping numbers in each lane’s registers and in the shared L2 cache, rather than with one huge tile. The RTX 4090 also has <dfn data-def="Units inside each SM that multiply small blocks of matrices in one go, much faster than the ordinary lanes.">tensor cores</dfn> built only for this: ${n(RTX_4090.fp16TensorTFLOPS, 1)} trillion operations a second on 16-bit numbers summed in 32-bit (${n(RTX_4090.fp16TensorTFLOPS / 2, 1)} trillion multiply-adds, twice its ordinary peak; ${n(RTX_4090.fp16TensorFp16AccTFLOPS, 1)} trillion if the sums are kept in 16-bit too), without NVIDIA’s “sparsity” doubling.</p>`
 		},
 		// ------------------------------------------------------------------ limits
 		{
@@ -265,7 +269,7 @@ export const spec: ExplainerSpec = {
 			controls: [serial, workers],
 			body: `
 <p>Most real jobs have a part that can’t be split: reading the input, setting up, combining the results, a step that needs the one before. That part runs on one worker however many you have.</p>
-<p>Give the matrix job a part like that and run it on more and more workers. The dots are the measured speed-ups, the ticks for one worker divided by the ticks for many. With 5% in sequence, ${n(1024)} workers are only ${n(measuredSpeedup(0.05, 1024).speedup, 1)} times faster than one, and ${n(16384)} only ${n(measuredSpeedup(0.05, 16384).speedup, 1)} times.</p>
+<p>Give the matrix job a part like that and run it on more and more workers. The dots are the measured speed-ups, the ticks for one worker divided by the ticks for many. With 5% in sequence, ${n(1024)} workers are only ${n(measuredSpeedup(0.05, 1024).speedup, 1)} times faster than one, and ${n(16384)} only ${n(measuredSpeedup(0.05, 16384).speedup, 2)} times.</p>
 <p>The measurements follow a simple formula, <dfn data-def="The speed-up on N workers of a job whose share s must run in sequence: 1 / (s + (1 − s) / N). It can never exceed 1 / s.">Amdahl’s law</dfn>: speed-up = 1 / (s + (1 − s) / N), for a share s in sequence and N workers.</p>`,
 			notes: `<p>Gene Amdahl, “Validity of the single processor approach to achieving large scale computing capabilities”, AFIPS Spring Joint Computer Conference, 1967. The law assumes the job stays the same size. If more workers are given a bigger job instead (a larger image in the same time), the parallel part grows and the speed-up keeps rising: that is Gustafson’s law (1988), and it is how GPUs are mostly used.</p>`
 		},
@@ -279,7 +283,7 @@ export const spec: ExplainerSpec = {
 			controls: [serial, workers, hybrid],
 			body: `
 <p>Make the serial share bigger and watch the curve flatten against its ceiling, <strong>1 ÷ s</strong>. Even with infinitely many workers, the parallel part shrinks to nothing but the serial part is still there: with 5% in sequence, no number of workers ever goes beyond 20 times faster.</p>
-<p>The bars race the fast core against the slow lanes on this job. Push the serial share past about a quarter and the fast core wins: the lanes do the serial part one instruction per tick, and the fast core is ${FAST_IPC} times quicker at it.</p>
+<p>The bars race the fast core against the slow lanes on this job. With a thousand or more lanes, push the serial share past about a quarter and the fast core wins: the lanes do the serial part one instruction per tick, and the fast core is ${FAST_IPC} times quicker at it.</p>
 <p>That is why a computer has both. Switch on <em>The fast core does the sequential part</em>: the CPU runs what can’t be split and hands the rest to the GPU, and the pair beats either alone.</p>`
 		},
 		{
