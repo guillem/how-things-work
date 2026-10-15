@@ -228,10 +228,11 @@
 	<path d={evPath} fill="none" stroke="var(--semi-band-edge)" stroke-width="2" />
 	<Readout id="cb">
 		<T
-			x={XL + 8}
-			y={136}
+			x={XR - 8}
+			y={152}
 			text="conduction band (empty: free electrons move here)"
 			size={12}
+			anchor="end"
 			muted
 		/>
 	</Readout>

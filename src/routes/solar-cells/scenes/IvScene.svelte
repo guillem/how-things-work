@@ -182,7 +182,7 @@
 	<Readout
 		id="jsc"
 		order={3}
-		label={phase === 'voc' ? undefined : 'Short-circuit current'}
+		label={phase === 'iv' ? 'Short-circuit current' : undefined}
 		value="{fmtJ(mA(c.jsc))} mA/cm²"
 	>
 		<T
@@ -194,7 +194,12 @@
 		/>
 	</Readout>
 	<circle cx={sv(c.voc)} cy={Y1} r="4" fill="var(--sc-curve)" />
-	<Readout id="voc" order={4} label="Open-circuit voltage" value="{c.voc.toFixed(3)} V">
+	<Readout
+		id="voc"
+		order={4}
+		label={phase === 'mpp' ? undefined : 'Open-circuit voltage'}
+		value="{c.voc.toFixed(3)} V"
+	>
 		<T
 			x={sv(c.voc) - 6}
 			y={Y1 - 10}
@@ -289,7 +294,7 @@
 			id="p"
 			order={5}
 			label="Power"
-			value="{power.toFixed(1)} mW/cm²"
+			value="{power.toFixed(1)} mW/cm² ({(efficiency * 100).toFixed(1)}%)"
 			color="var(--sc-power)"
 		>
 			<T
@@ -301,7 +306,7 @@
 				color="var(--sc-power)"
 			/>
 		</Readout>
-		<Readout id="eff" order={6} label="Efficiency here" value="{(efficiency * 100).toFixed(1)}%">
+		<Readout id="eff">
 			<T
 				x={RX + 16}
 				y={182}
