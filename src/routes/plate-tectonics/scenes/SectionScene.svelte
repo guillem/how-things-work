@@ -1080,8 +1080,8 @@
 				size={12}
 			/>
 		</Readout>
-		<Readout id="f-novolc" order={4} label="Volcanoes" value="none: nothing sinks">
-			<Label x={X(0)} y={Y(-170)} text="no plate sinks: no volcanoes" size={12} muted />
+		<Readout id="f-novolc" order={4} label="Volcanoes" value="none: no ocean floor sinks">
+			<Label x={X(0)} y={Y(-170)} text="no ocean floor sinking: no volcanoes" size={12} muted />
 		</Readout>
 	{/if}
 	{#if transformF && sec.kind === 'transform'}

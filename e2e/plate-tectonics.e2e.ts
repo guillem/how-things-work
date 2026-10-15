@@ -31,7 +31,7 @@ test('pushing an ocean plate under a continent: the volcanoes wait for it to get
 test('two continents make mountains but no volcanoes', async ({ page }) => {
 	await open(page, './plate-tectonics/#collision');
 	await expect(stage(page)).toContainText('mountains');
-	await expect(stage(page)).toContainText('no plate sinks: no volcanoes');
+	await expect(stage(page)).toContainText('no ocean floor sinking: no volcanoes');
 	await expect(stage(page)).not.toContainText('trench');
 });
 

@@ -209,10 +209,10 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [moved('colClose', 0, 1200, 600, 'How far the plates have moved together')],
 			body: `
-<p>Continents are too light to sink. When two of them collide, neither goes down: the crust crumples, stacks up and thickens, and the thick crust floats high, like the thickened continent of the "Floating rock" step. That is how the highest mountains on Earth are made.</p>
-<p>India rammed into Asia about 50 million years ago and is still pushing north by a few centimetres a year. The crust there is about 70 km thick, twice the normal, and holds up the Himalayas and the Tibetan Plateau, 5 km high on average. Push harder: once the crust is twice as thick it cannot pile any higher without spreading out under its own weight, so the mountains grow wider instead, into a plateau.</p>
-<p>Earthquakes are spread across the whole crumpling region — the Nepal earthquake of 2015, magnitude 7.8, was one of the dots on the map at the start — but there is <strong>no line of volcanoes</strong>: no plate sinks deep into the mantle, so nothing releases the water that would make the mantle melt.</p>`,
-			notes: `<p>The model keeps the amount of crust: every kilometre the plates converge adds 35 km² of crust (per kilometre along the belt) to the mountain range. Before the collision, India was carried north by the sinking of the ocean floor in front of it, under Asia — the ocean–continent boundary of two steps ago — until all that ocean had gone down.</p>`
+<p>Continents are too light to sink into the mantle the way ocean floor does. When two of them collide, the crust crumples, stacks up and thickens, and the thick crust floats high, like the thickened continent of the "Floating rock" step. That is how the highest mountains on Earth are made.</p>
+<p>India rammed into Asia about 50 million years ago and is still pushing north by a few centimetres a year, its edge sliding in underneath Tibet. The crust there is about 70 km thick, twice the normal, and holds up the Himalayas and the Tibetan Plateau, 5 km high on average. Push harder: once the crust is twice as thick it cannot pile any higher without spreading out under its own weight, so the mountains grow wider instead, into a plateau.</p>
+<p>Earthquakes are spread across the whole crumpling region — the Nepal earthquake of 2015, magnitude 7.8, was one of the dots on the map at the start — but there is <strong>no line of volcanoes</strong>: India slides in underneath, but no wet ocean floor is sinking any more, so nothing releases the water that would make the mantle melt.</p>`,
+			notes: `<p>The model keeps the amount of crust: every kilometre the plates converge adds 35 km² of crust (per kilometre along the belt) to the mountain range. Before the collision, India was carried north by the sinking of the ocean floor in front of it, under Asia — the ocean–continent boundary of two steps ago — until all that ocean had gone down. Much of the thickening is India's crust pushed in under Asia's (the 2015 earthquake was a slip on that underthrust fault); the model simply stacks the crust in place.</p>`
 		},
 		// ------------------------------------------------------------------ sideways
 		{
@@ -247,7 +247,7 @@ export const spec: ExplainerSpec = {
 <p>Now choose what each plate carries and drag them any way you like — apart, together, sideways, or at a slant, which does both at once. The same few rules make every feature:</p>
 <ul>
 <li>Pulling apart thins and splits continents, and makes new ocean floor at a ridge.</li>
-<li>Pushing together sends ocean floor back into the mantle at a trench, with volcanoes above the sinking plate; continents, too light to sink, crumple into mountains.</li>
+<li>Pushing together sends ocean floor back into the mantle at a trench, with volcanoes above the sinking plate; continents, too light to sink into the mantle, crumple into mountains.</li>
 <li>Sliding past makes earthquakes, but neither makes nor destroys plate.</li>
 </ul>
 <p>The clock in the corner shows how long it all takes at the speed you set: a few hundred kilometres means millions of years.</p>`,
