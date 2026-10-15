@@ -322,7 +322,7 @@
 				<T
 					x={600}
 					y={B2 + 76}
-					text="Lambert: n · l = cos {Math.round(hit.angle)}° = {fmt(Math.max(0, hit.nl))}"
+					text="Lambert: max(0, cos {Math.round(hit.angle)}°) = {fmt(Math.max(0, hit.nl))}"
 					size={13}
 					weight={650}
 					color="var(--g3-lamp)"
@@ -334,10 +334,17 @@
 					<T
 						x={600}
 						y={B2 + 126}
-						text="Phong highlight (r · eye)^shine: + {fmt(hit.highlight)}"
+						text="Phong highlight k·(r · v)^shine: + {fmt(hit.highlight)}"
 						size={13}
 						weight={650}
 						color="var(--g3-reflect)"
+					/>
+					<T
+						x={600}
+						y={B2 + 150}
+						text="k = {hit.specular[0]}, shine = {hit.specular[1]}"
+						size={13}
+						muted
 					/>
 				</Readout>
 			{/if}
