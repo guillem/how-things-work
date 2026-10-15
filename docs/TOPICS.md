@@ -134,7 +134,7 @@ A topic is done when:
 **Biology**
 - [x] the-cell
 - [x] dna-to-protein
-- [ ] protein-folding
+- [x] protein-folding
 - [x] photosynthesis
 - [x] respiration-atp
 - [x] meiosis-inheritance
