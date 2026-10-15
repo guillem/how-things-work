@@ -149,8 +149,8 @@ export const U235 = { fission: 587.3, capture: 99.5, nu: 2.425 } as const;
 export const ABSORB = { U238: 2.68, H: 0.3326, O: 0.00019 } as const;
 const SCATTER_BOUND = { H: 82.03, O: 4.232 } as const;
 
-/** Natural uranium: 0.72% U-235 by atoms (same NIST table). */
-export const NATURAL = 0.72;
+/** Natural uranium: 0.711% U-235 by weight, as the enrichment slider counts it (0.720% by atoms, same NIST table). */
+export const NATURAL = 0.711;
 
 /** Atom fraction of U-235 for an enrichment given in percent by weight. */
 export function atomFraction(enrichmentPct: number): number {
@@ -498,7 +498,9 @@ export const u235PerDay = (watts: number) =>
  * approximation P/P₀ = 0.0622 [t^−0.2 − (t + T)^−0.2], with t the time since
  * shutdown and T the time the reactor ran, both in seconds (as given in
  * S. Glasstone and A. Sesonske, Nuclear Reactor Engineering). Good to a few
- * tens of percent between about 10 s and 100 days.
+ * tens of percent between about 10 s and 100 days, on the low side (standard
+ * figures: about 6.5% at shutdown, 1.5% after an hour); the page also reads it
+ * at 1 s, outside that range.
  */
 export function decayHeat(t: number, operated = 365.25 * 86400): number {
 	const s = Math.max(1, t); // the formula diverges at t = 0; hold its 1 s value

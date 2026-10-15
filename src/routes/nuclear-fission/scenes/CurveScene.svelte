@@ -134,7 +134,7 @@
 		},
 		{
 			id: 'nu',
-			label: 'antineutrinos escape',
+			label: 'antineutrinos escape, decays still to come',
 			from: E.total - E.neutrinos - E.pending,
 			to: E.total,
 			color: 'var(--fi-neutrino)',
@@ -301,15 +301,10 @@
 				id="fission"
 				order={4}
 				label="Fission"
-				value="up the curve by about 0.8 MeV per nucleon"
+				value="up ≈ 0.8 MeV per nucleon: ≈ 175 MeV at once, ≈ 200 after decays"
 			>
-				<Label
-					x={box.x1}
-					y={64}
-					text="fission: up ≈ 0.8 MeV per nucleon × 236 ≈ 200 MeV"
-					anchor="end"
-					pill
-				/>
+				<Label x={box.x1} y={64} text="fission: up ≈ 0.8 MeV per nucleon" anchor="end" pill />
+				<Label x={box.x1} y={86} text="≈ 175 MeV at once, ≈ 200 after decays" anchor="end" pill />
 			</Readout>
 			<!-- fusion: the light side climbs towards the peak -->
 			<path
