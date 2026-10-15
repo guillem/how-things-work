@@ -77,7 +77,7 @@ test('Shockley–Queisser: 33.7% at 1.34 eV for AM1.5G at 300 K (Rühle 2016)', 
 	expect(best.gap).toBeCloseTo(1.34, 2);
 	expect(best.efficiency).toBeCloseTo(0.337, 3);
 	// A broad plateau: within a percentage point from 1.1 to 1.4 eV.
-	for (const g of [1.12, 1.2, 1.3, 1.4]) expect(cell(g).efficiency).toBeGreaterThan(0.327);
+	for (const g of [1.1, 1.12, 1.2, 1.3, 1.4]) expect(cell(g).efficiency).toBeGreaterThan(0.327);
 	const c = cell(1.34);
 	expect(mA(c.jsc)).toBeCloseTo(35.0, 0);
 	expect(c.voc).toBeCloseTo(1.08, 2);
