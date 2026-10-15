@@ -5,11 +5,10 @@
 	 * Beside it, two cards compare where the memory is kept in a bacterium
 	 * (in DNA, inherited) and in us (in memory cells, not inherited).
 	 */
-	import { smoothstep, lerp } from '#lib/draw/index.ts';
+	import { Label, lerp, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import ArrayStrip from './ArrayStrip.svelte';
 	import { stripWidth, type StripSpacer } from './strip';
-	import Tag from './Tag.svelte';
 
 	let { t, reduced }: StageProps = $props();
 	const time = $derived(reduced ? 99 : t);
@@ -61,8 +60,8 @@
 		label="Division"
 		value="the chromosome, array included, is copied: every daughter cell carries the same spacers"
 	>
-		<Tag x={300} y={52} text="Every daughter inherits the array" size={16} weight={600} />
-		<Tag
+		<Label x={300} y={52} text="Every daughter inherits the array" size={16} weight={600} />
+		<Label
 			x={300}
 			y={74}
 			text="the chromosome is copied at each division, spacers and all"
@@ -107,8 +106,8 @@
 		{/if}
 	{/each}
 	<Readout id="gens">
-		<Tag x={300} y={100} text="a survivor of phages A, B and C" size={12} muted />
-		<Tag
+		<Label x={300} y={100} text="a survivor of phages A, B and C" size={12} muted />
+		<Label
 			x={300}
 			y={548}
 			text="all its descendants: protected against A, B and C"
@@ -144,11 +143,11 @@
 			label="A bacterium’s memory"
 			value="spacers in its chromosome: copied at every division, so every descendant is protected"
 		>
-			<Tag x={648} y={152} text="A bacterium’s memory" size={15} weight={600} anchor="start" />
-			<Tag x={648} y={182} text="spacers, written in its DNA" size={13} anchor="start" />
-			<Tag x={648} y={210} text="copied at every division:" size={13} anchor="start" muted />
-			<Tag x={648} y={232} text="all descendants are protected" size={13} anchor="start" muted />
-			<Tag
+			<Label x={648} y={152} text="A bacterium’s memory" size={15} weight={600} anchor="start" />
+			<Label x={648} y={182} text="spacers, written in its DNA" size={13} anchor="start" />
+			<Label x={648} y={210} text="copied at every division:" size={13} anchor="start" muted />
+			<Label x={648} y={232} text="all descendants are protected" size={13} anchor="start" muted />
+			<Label
 				x={648}
 				y={262}
 				text="inherited"
@@ -164,11 +163,11 @@
 			label="Our immune memory"
 			value="memory B and T cells: they protect us, but our children start with a fresh immune system"
 		>
-			<Tag x={648} y={342} text="Our immune memory" size={15} weight={600} anchor="start" />
-			<Tag x={648} y={372} text="memory B and T cells" size={13} anchor="start" />
-			<Tag x={648} y={400} text="they protect us for years," size={13} anchor="start" muted />
-			<Tag x={648} y={422} text="but each child starts afresh" size={13} anchor="start" muted />
-			<Tag
+			<Label x={648} y={342} text="Our immune memory" size={15} weight={600} anchor="start" />
+			<Label x={648} y={372} text="memory B and T cells" size={13} anchor="start" />
+			<Label x={648} y={400} text="they protect us for years," size={13} anchor="start" muted />
+			<Label x={648} y={422} text="but each child starts afresh" size={13} anchor="start" muted />
+			<Label
 				x={648}
 				y={452}
 				text="not inherited"

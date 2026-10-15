@@ -11,15 +11,16 @@
 	 * Areas are powers: each bin's height is its power ÷ 0.01 eV.
 	 */
 	import {
-		Handle,
 		clamp,
 		cycle,
+		Handle,
 		hash,
+		Label,
 		lerp,
+		type Point,
 		scale,
 		smoothstep,
-		wavelengthToColor,
-		type Point
+		wavelengthToColor
 	} from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { E_START, E_STEP, FLUX, POWER } from '../spectrum';
@@ -35,7 +36,6 @@
 		wavelength
 	} from '../model';
 	import Axes from '#lib/draw/Axes.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 	const phase = $derived(String(step.hints?.phase ?? 'sun'));
@@ -279,19 +279,19 @@
 			stroke="var(--stage-line)"
 		/>
 		<Readout id="nm-{nm}">
-			<T x={sx(photonEnergy(nm))} y={Y0 - 54} text="{nm} nm" size={11} anchor="middle" muted />
+			<Label x={sx(photonEnergy(nm))} y={Y0 - 54} text="{nm} nm" size={11} anchor="middle" muted />
 		</Readout>
 	{/each}
 	<Readout id="nm-axis">
-		<T x={X0 - 8} y={Y0 - 54} text="wavelength" size={11} anchor="end" muted />
+		<Label x={X0 - 8} y={Y0 - 54} text="wavelength" size={11} anchor="end" muted />
 	</Readout>
 
 	{#if !showGap}
 		<path d={fullArea} fill="var(--stage-ink-muted)" opacity="0.22" />
 		<path d={visibleArea} fill="url(#spectrum-rainbow)" opacity="0.85" />
 		<Readout id="bands">
-			<T x={sx(0.8)} y={sy(80)} text="infrared" size={13} anchor="middle" muted />
-			<T
+			<Label x={sx(0.8)} y={sy(80)} text="infrared" size={13} anchor="middle" muted />
+			<Label
 				x={sx((VIS_LO + VIS_HI) / 2)}
 				y={sy(150)}
 				text="visible"
@@ -299,7 +299,7 @@
 				anchor="middle"
 				weight={700}
 			/>
-			<T x={sx(3.55)} y={sy(80)} text="ultraviolet" size={13} anchor="middle" muted />
+			<Label x={sx(3.55)} y={sy(80)} text="ultraviolet" size={13} anchor="middle" muted />
 		</Readout>
 	{:else}
 		<path d={belowArea} fill="var(--sc-below)" opacity="0.55" />
@@ -337,7 +337,7 @@
 			label="Band gap"
 			value="{gap.toFixed(2)} eV · {wavelength(gap).toFixed(0)} nm"
 		>
-			<T
+			<Label
 				x={sx(gap) + (gap > 2.6 ? -8 : 8)}
 				y={Y0 + 18}
 				text="band gap {gap.toFixed(2)} eV"
@@ -347,7 +347,7 @@
 			/>
 		</Readout>
 		<Readout id="weak">
-			<T
+			<Label
 				x={sx(gap) - 8}
 				y={Y0 + 40}
 				text="← too weak"
@@ -356,7 +356,8 @@
 				muted
 				opacity={gap > 0.75 ? 1 : 0}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={sx(gap) + 8}
 				y={Y0 + 40}
 				text="absorbed →"
@@ -368,7 +369,7 @@
 		{#each materials as m (m.id)}
 			<line x1={sx(m.g)} x2={sx(m.g)} y1={Y1 + 22} y2={Y1 + 27} stroke="var(--stage-ink-muted)" />
 			<Readout id="mat-{m.id}">
-				<T x={sx(m.g)} y={Y1 + 40} text={m.name} size={11} anchor="middle" muted />
+				<Label x={sx(m.g)} y={Y1 + 40} text={m.name} size={11} anchor="middle" muted />
 			</Readout>
 		{/each}
 		<Handle
@@ -396,7 +397,7 @@
 		{/each}
 		<rect x={BX} y={Y0} width={BW} height={Y1 - Y0} fill="none" stroke="var(--stage-line)" rx="2" />
 		<Readout id="bar-title">
-			<T x={BX + BW / 2} y={Y0 - 16} text="sunlight’s power" size={12} anchor="middle" muted />
+			<Label x={BX + BW / 2} y={Y0 - 16} text="sunlight’s power" size={12} anchor="middle" muted />
 		</Readout>
 		{#each slices as sl, k (sl.id)}
 			<line
@@ -407,13 +408,20 @@
 				stroke="var(--stage-line)"
 			/>
 			<Readout id="slice-{sl.id}" order={2 + k} label={sl.label} value={pct(sl.f)} color={sl.color}>
-				<T x={BX + BW + 14} y={labelYs[k] - 3} text={sl.label} size={12} muted />
-				<T x={BX + BW + 14} y={labelYs[k] + 14} text={pct(sl.f)} size={16} weight={700} />
+				<Label anchor="start" x={BX + BW + 14} y={labelYs[k] - 3} text={sl.label} size={12} muted />
+				<Label
+					anchor="start"
+					x={BX + BW + 14}
+					y={labelYs[k] + 14}
+					text={pct(sl.f)}
+					size={16}
+					weight={700}
+				/>
 			</Readout>
 		{/each}
 		{#if limit}
 			<Readout id="eff">
-				<T
+				<Label
 					x={X1 - 4}
 					y={Y0 + 40}
 					text="efficiency {pct(c.efficiency)}"
@@ -421,7 +429,7 @@
 					weight={700}
 					anchor="end"
 				/>
-				<T
+				<Label
 					x={X1 - 4}
 					y={Y0 + 60}
 					text="Voc {c.voc.toFixed(2)} V · Vmp {c.vmp.toFixed(2)} V"
@@ -432,7 +440,7 @@
 			</Readout>
 		{:else}
 			<Readout id="ceil">
-				<T
+				<Label
 					x={X1 - 4}
 					y={Y0 + 40}
 					text="kept: {pct(s.voltage + s.output)}"
@@ -440,25 +448,32 @@
 					weight={700}
 					anchor="end"
 				/>
-				<T x={X1 - 4} y={Y0 + 60} text="not yet the limit" size={12} anchor="end" muted />
+				<Label x={X1 - 4} y={Y0 + 60} text="not yet the limit" size={12} anchor="end" muted />
 			</Readout>
 		{/if}
 	{:else}
 		<Readout id="total" order={1} label="Total power" value="{SUN_POWER.toFixed(0)} W/m²">
-			<T x={760} y={150} text="{SUN_POWER.toFixed(0)} W/m²" size={18} weight={700} />
-			<T x={760} y={170} text="total power" size={12} muted />
+			<Label
+				anchor="start"
+				x={760}
+				y={150}
+				text="{SUN_POWER.toFixed(0)} W/m²"
+				size={18}
+				weight={700}
+			/>
+			<Label anchor="start" x={760} y={170} text="total power" size={12} muted />
 		</Readout>
 		<Readout id="count" order={2} label="Photons" value="4.3 × 10²¹ per m² per second">
-			<T x={760} y={220} text="4.3 × 10²¹" size={18} weight={700} />
-			<T x={760} y={240} text="photons per m² per second" size={12} muted />
+			<Label anchor="start" x={760} y={220} text="4.3 × 10²¹" size={18} weight={700} />
+			<Label anchor="start" x={760} y={240} text="photons per m² per second" size={12} muted />
 		</Readout>
 		<Readout id="mean" order={3} label="Average photon" value="{meanEv.toFixed(2)} eV">
-			<T x={760} y={290} text="{meanEv.toFixed(2)} eV" size={18} weight={700} />
-			<T x={760} y={310} text="average photon energy" size={12} muted />
+			<Label anchor="start" x={760} y={290} text="{meanEv.toFixed(2)} eV" size={18} weight={700} />
+			<Label anchor="start" x={760} y={310} text="average photon energy" size={12} muted />
 		</Readout>
 		<Readout id="source">
-			<T x={760} y={380} text="ASTM G173 AM1.5 global:" size={11} muted />
-			<T x={760} y={396} text="the standard test sunlight" size={11} muted />
+			<Label anchor="start" x={760} y={380} text="ASTM G173 AM1.5 global:" size={11} muted />
+			<Label anchor="start" x={760} y={396} text="the standard test sunlight" size={11} muted />
 		</Readout>
 	{/if}
 </g>

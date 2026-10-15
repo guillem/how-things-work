@@ -10,12 +10,11 @@
 	 *             then pulses gently.
 	 *             Quality: `params.qlow`.
 	 */
-	import { clamp, easeInOut, pingpong, wave } from '#lib/draw/index.ts';
+	import { clamp, easeInOut, Label, pingpong, wave } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { SIZE, bmpDataUrl, jpeg, psnr } from '../compression';
 	import BlockPicker from './BlockPicker.svelte';
 	import { BLOCKS, blockOf, fmt, greyUrl, imageOf, int } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -78,16 +77,32 @@
 	{#if phase === 'quality'}
 		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 		<Readout id="original-title">
-			<Txt x={40} y={112} text="Original" size={13} weight={700} />
+			<Label anchor="start" x={40} y={112} text="Original" size={13} weight={700} />
 			{#snippet narrow()}
-				<Txt x={40} y={114} text="Original" size={24} weight={700} />
+				<Label anchor="start" x={40} y={114} text="Original" size={24} weight={700} />
 			{/snippet}
 		</Readout>
 		<image href={origUrl} x={40} y={128} width={SIZE * PX} height={SIZE * PX} class="cmp-px" />
 		<Readout id="jpeg-title">
-			<Txt x={360} y={112} text="After JPEG at quality {quality}" size={13} weight={700} />
+			<Label
+				anchor="start"
+				tabular
+				x={360}
+				y={112}
+				text="After JPEG at quality {quality}"
+				size={13}
+				weight={700}
+			/>
 			{#snippet narrow()}
-				<Txt x={360} y={114} text="JPEG, quality {quality}" size={24} weight={700} />
+				<Label
+					anchor="start"
+					tabular
+					x={360}
+					y={114}
+					text="JPEG, quality {quality}"
+					size={24}
+					weight={700}
+				/>
 			{/snippet}
 		</Readout>
 		<defs>
@@ -116,7 +131,7 @@
 				stroke-width="2.5"
 			/>
 			<Readout id="wipe-labels">
-				<Txt
+				<Label
 					x={lx2 - 6}
 					y={128 + SIZE * PX + 18}
 					text="← original"
@@ -125,7 +140,8 @@
 					color="var(--cmp-pick)"
 					opacity={clamp(split * 8)}
 				/>
-				<Txt
+				<Label
+					anchor="start"
 					x={lx2 + 6}
 					y={128 + SIZE * PX + 18}
 					text="JPEG →"
@@ -139,7 +155,7 @@
 		{@const bx = 680}
 		{@const bw = 240}
 		<Readout id="size-title">
-			<Txt x={bx} y={140} text="Size" size={13} weight={700} />
+			<Label anchor="start" x={bx} y={140} text="Size" size={13} weight={700} />
 		</Readout>
 		<rect
 			x={bx}
@@ -151,7 +167,7 @@
 			opacity="0.8"
 		/>
 		<Readout id="raw">
-			<Txt x={bx} y={190} text="raw: {int(RAW)} bits" size={12} muted />
+			<Label anchor="start" tabular x={bx} y={190} text="raw: {int(RAW)} bits" size={12} muted />
 		</Readout>
 		<rect
 			x={bx}
@@ -169,7 +185,9 @@
 			note="raw {int(RAW)} bits → JPEG {int(result.bits)} bits"
 			color="var(--explainer-accent, var(--accent))"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={bx}
 				y={240}
 				text="JPEG: {int(result.bits)} bits"
@@ -177,9 +195,9 @@
 				weight={700}
 				color="var(--explainer-accent, var(--accent))"
 			/>
-			<Txt x={bx} y={296} text={sizeText} size={22} weight={700} />
+			<Label anchor="start" tabular x={bx} y={296} text={sizeText} size={22} weight={700} />
 			{#snippet narrow()}
-				<Txt x={bx} y={270} text={sizeText} size={30} weight={700} />
+				<Label anchor="start" tabular x={bx} y={270} text={sizeText} size={30} weight={700} />
 			{/snippet}
 		</Readout>
 		<Readout
@@ -188,7 +206,9 @@
 			label="Kept"
 			value="{int(result.kept)} of {int(result.total)} coefficients"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={bx}
 				y={340}
 				text="{int(result.kept)} of {int(result.total)} coefficients kept"
@@ -202,17 +222,20 @@
 			value="{Number.isFinite(db) ? fmt(db, 1) : '∞'} dB"
 			note="higher = closer to the original"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={bx}
 				y={380}
 				text="PSNR {Number.isFinite(db) ? fmt(db, 1) : '∞'} dB"
 				size={15}
 				weight={700}
 			/>
-			<Txt x={bx} y={400} text="higher = closer to the original" size={11} muted />
+			<Label anchor="start" x={bx} y={400} text="higher = closer to the original" size={11} muted />
 		</Readout>
 		<Readout id="pipeline">
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={470}
 				text="Every block: DCT, divide by the table, round; then zigzag, runs of zeros and a Huffman code."
@@ -230,7 +253,9 @@
 					? 'fine detail dropped, hard to see'
 					: 'the blocks start to show'}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={40}
 				y={540}
 				text={quality >= 90
@@ -243,7 +268,8 @@
 			/>
 		</Readout>
 		<Readout id="footnote">
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={566}
 				text="The size counts the coded coefficients only (no file headers or tables)."
@@ -253,7 +279,7 @@
 		</Readout>
 	{:else}
 		<Readout id="pick-title">
-			<Txt x={40} y={112} text="Pick where to look" size={13} weight={700} />
+			<Label anchor="start" x={40} y={112} text="Pick where to look" size={13} weight={700} />
 		</Readout>
 		<image href={origUrl} x={40} y={128} width={SIZE * 2} height={SIZE * 2} class="cmp-px" />
 		<rect
@@ -270,9 +296,11 @@
 
 		{#each panels as p (p.x)}
 			<Readout id="panel-title-{p.x}">
-				<Txt x={p.x} y={112} text={p.title} size={13} weight={700} />
+				<Label anchor="start" tabular x={p.x} y={112} text={p.title} size={13} weight={700} />
 				{#snippet narrow()}
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={p.x}
 						y={116}
 						text={p.title.replace(/ at quality \d+| \(grey = none\)/, '')}
@@ -302,7 +330,15 @@
 			{/each}
 		{/each}
 		<Readout id="block-edges">
-			<Txt x={256} y={366} text="Block edges" size={11} color="var(--cmp-pick)" opacity={grid} />
+			<Label
+				anchor="start"
+				x={256}
+				y={366}
+				text="Block edges"
+				size={11}
+				color="var(--cmp-pick)"
+				opacity={grid}
+			/>
 		</Readout>
 
 		<Readout
@@ -315,7 +351,9 @@
 				: '∞'} dB; largest error here {maxErr} level{maxErr === 1 ? '' : 's'}"
 			color="var(--explainer-accent, var(--accent))"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={256}
 				y={400}
 				text="Quality {quality}: {sizeText}, PSNR {Number.isFinite(db)
@@ -332,8 +370,9 @@
 			value="flat or gently shaded tiles"
 			note="only the slowest patterns are left"
 		>
-			<Txt x={40} y={460} text="Blocking:" size={14} weight={700} />
-			<Txt
+			<Label anchor="start" x={40} y={460} text="Blocking:" size={14} weight={700} />
+			<Label
+				anchor="start"
 				x={130}
 				y={460}
 				text="with only the slowest patterns left, each block turns into a flat or gently shaded tile."
@@ -347,8 +386,9 @@
 			value="ripples inside the block"
 			note="the missing fast patterns, next to a sharp edge"
 		>
-			<Txt x={40} y={490} text="Ringing:" size={14} weight={700} />
-			<Txt
+			<Label anchor="start" x={40} y={490} text="Ringing:" size={14} weight={700} />
+			<Label
+				anchor="start"
 				x={130}
 				y={490}
 				text="next to a sharp edge, the missing fast patterns leave ripples inside the block."
@@ -362,7 +402,8 @@
 			value="keep what the eye notices"
 			note="and drop the rest, until there is too little left"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={550}
 				text="Lossy formats keep what the eye notices and drop the rest, until there is too little left."

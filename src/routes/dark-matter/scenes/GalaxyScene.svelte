@@ -17,7 +17,7 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { GYR_S, KPC_KM, galaxy, periodGyr, speedAt } from '../galaxies';
 	import { rng } from '#lib/draw/math.ts';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { step, t, reduced }: StageProps = $props();
 
@@ -174,8 +174,9 @@
 		label="NGC 3198"
 		value="seen face-on, {fmtMyr(elapsed)} after the start"
 	>
-		<T x={24} y={38} text="NGC 3198, seen face-on" size={16} weight={700} />
-		<T
+		<Label anchor="start" x={24} y={38} text="NGC 3198, seen face-on" size={16} weight={700} />
+		<Label
+			anchor="start"
 			x={24}
 			y={58}
 			text="{fmtMyr(elapsed)} after the start · 1 s ≈ {MYR_PER_S} million years"
@@ -185,9 +186,9 @@
 	</Readout>
 	<Readout id="key-stars">
 		<circle cx={30} cy={572} r="4" fill="var(--dm-galaxies)" />
-		<T x={40} y={576} text="stars" size={12} muted />
+		<Label anchor="start" x={40} y={576} text="stars" size={12} muted />
 		<circle cx={92} cy={572} r="4" fill="var(--dm-gas)" opacity="0.7" />
-		<T x={102} y={576} text="hydrogen gas" size={12} muted />
+		<Label anchor="start" x={102} y={576} text="hydrogen gas" size={12} muted />
 		<line
 			x1={210}
 			x2={210 + 10 * k(meas.R)}
@@ -196,7 +197,14 @@
 			stroke="var(--stage-ink)"
 			stroke-width="2"
 		/>
-		<T x={216 + 10 * k(meas.R)} y={576} text="10 kpc (33,000 light years)" size={12} muted />
+		<Label
+			anchor="start"
+			x={216 + 10 * k(meas.R)}
+			y={576}
+			text="10 kpc (33,000 light years)"
+			size={12}
+			muted
+		/>
 	</Readout>
 
 	{#if s > 0.02}
@@ -211,7 +219,7 @@
 				).toFixed(1)} billion years"
 				color="var(--dm-visible)"
 			>
-				<T
+				<Label
 					x={vis.cx}
 					y={110}
 					text="If only the visible matter pulled"
@@ -220,7 +228,7 @@
 					anchor="middle"
 					color="var(--dm-visible)"
 				/>
-				<T
+				<Label
 					x={vis.cx}
 					y={548}
 					text="edge: {outer.vv.toFixed(0)} km/s · one turn in {periodGyr(
@@ -241,7 +249,7 @@
 				).toFixed(1)} billion years"
 				color="var(--dm-model)"
 			>
-				<T
+				<Label
 					x={meas.cx}
 					y={110}
 					text="As measured"
@@ -250,7 +258,7 @@
 					anchor="middle"
 					color="var(--dm-model)"
 				/>
-				<T
+				<Label
 					x={meas.cx}
 					y={548}
 					text="edge: {outer.vm.toFixed(0)} km/s · one turn in {periodGyr(
@@ -269,8 +277,15 @@
 			label="Coloured stars"
 			value="start on one line at 8, 22 and 44 kpc"
 		>
-			<T x={936} y={38} text="three stars start on the dotted line," size={12} anchor="end" muted />
-			<T x={936} y={56} text="8, 22 and 44 kpc from the centre" size={12} anchor="end" muted />
+			<Label
+				x={936}
+				y={38}
+				text="three stars start on the dotted line,"
+				size={12}
+				anchor="end"
+				muted
+			/>
+			<Label x={936} y={56} text="8, 22 and 44 kpc from the centre" size={12} anchor="end" muted />
 		</Readout>
 	{/if}
 </g>

@@ -12,11 +12,10 @@
 	 * Bits and XOR come from the model (`crypto.ts`). Reduced motion shows the complete
 	 * frame: every row shown, every message logged, nothing in flight.
 	 */
-	import { clamp, cycle, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, cycle, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { bits8, padBytes, utf8, xorBytes } from '../crypto';
 	import Person from './Person.svelte';
-	import Txt from './Txt.svelte';
 
 	let { step, t, reduced }: StageProps = $props();
 	const phase = $derived(String(step.hints?.phase ?? 'open'));
@@ -112,7 +111,7 @@
 {#snippet pill(x: number, y: number, text: string, color: string, mono = false)}
 	{@const w = mono ? text.length * 8.2 + 22 : pillW(text)}
 	<rect x={x - w / 2} y={y - 14} width={w} height="26" rx="13" fill={color} />
-	<Txt
+	<Label
 		{x}
 		y={y + 4}
 		{text}
@@ -140,12 +139,12 @@
 			stroke-width="1.5"
 		/>
 		<Readout id="router-{rx}">
-			<Txt x={rx} y={LINE_Y + 34} text="router" size={11} anchor="middle" muted />
+			<Label x={rx} y={LINE_Y + 34} text="router" size={11} anchor="middle" muted />
 		</Readout>
 	{/each}
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="channel-title">
-		<Txt
+		<Label
 			x={480}
 			y={42}
 			text="The public channel: anyone along the way can copy"
@@ -182,7 +181,8 @@
 			stroke="var(--cr-eve)"
 			stroke-opacity="0.6"
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={NOTE.x + 16}
 			y={NOTE.y + 26}
 			text="Eve’s copy of the traffic"
@@ -203,7 +203,9 @@
 		>
 			{#each openMsgs as m (m.i)}
 				{#if m.logged}
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={NOTE.x + 16}
 						y={NOTE.y + 58 + m.i * 28}
 						text="{m.from === 'alice' ? 'Alice → Bob' : 'Bob → Alice'}:  “{m.text}”"
@@ -247,7 +249,7 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<Txt
+			<Label
 				x={480}
 				y={492}
 				text="Every message crosses machines run by strangers, and Eve reads them all."
@@ -256,7 +258,7 @@
 				anchor="middle"
 				halo={false}
 			/>
-			<Txt
+			<Label
 				x={480}
 				y={524}
 				text="Can Alice and Bob keep anything secret when every word is overheard?"
@@ -277,8 +279,17 @@
 			color="var(--cr-eve)"
 		>
 			{#if cipherLogged}
-				<Txt x={NOTE.x + 16} y={NOTE.y + 60} text="Alice → Bob:" size={13} halo={false} />
-				<Txt
+				<Label
+					anchor="start"
+					x={NOTE.x + 16}
+					y={NOTE.y + 60}
+					text="Alice → Bob:"
+					size={13}
+					halo={false}
+				/>
+				<Label
+					anchor="start"
+					tabular
 					x={NOTE.x + 108}
 					y={NOTE.y + 60}
 					text={ROW_BITS[2].join('').replace(/(.{8})/, '$1 ')}
@@ -286,7 +297,8 @@
 					mono
 					halo={false}
 				/>
-				<Txt
+				<Label
+					anchor="start"
 					x={NOTE.x + 16}
 					y={NOTE.y + 90}
 					text="Without the key: random-looking bits."
@@ -294,7 +306,8 @@
 					muted
 					halo={false}
 				/>
-				<Txt
+				<Label
+					anchor="start"
 					x={NOTE.x + 16}
 					y={NOTE.y + 110}
 					text="They could stand for any two letters."
@@ -325,11 +338,27 @@
 		<!-- both already hold the key -->
 		{@render keyIcon(22, 176, 0.9)}
 		<Readout id="key-a">
-			<Txt x={58} y={182} text="key" size={12} color="var(--cr-key)" weight={700} />
+			<Label
+				anchor="start"
+				x={58}
+				y={182}
+				text="key"
+				size={12}
+				color="var(--cr-key)"
+				weight={700}
+			/>
 		</Readout>
 		{@render keyIcon(838, 176, 0.9)}
 		<Readout id="key-b">
-			<Txt x={874} y={182} text="key" size={12} color="var(--cr-key)" weight={700} />
+			<Label
+				anchor="start"
+				x={874}
+				y={182}
+				text="key"
+				size={12}
+				color="var(--cr-key)"
+				weight={700}
+			/>
 		</Readout>
 
 		<!-- the XOR table -->
@@ -341,7 +370,7 @@
 			note="How, if Eve hears everything?"
 			color="var(--cr-key)"
 		>
-			<Txt
+			<Label
 				x={480}
 				y={364}
 				text="But first both need the same key. How, if Eve hears everything?"
@@ -356,7 +385,8 @@
 			{@const bitsRow = ROW_BITS[r]}
 			<g opacity={on}>
 				<Readout id="row-label-{r}">
-					<Txt
+					<Label
+						tabular
 						x={250}
 						y={RY(r) + 5}
 						text={row.label}
@@ -366,7 +396,8 @@
 						halo={false}
 					/>
 					{#snippet narrow()}
-						<Txt
+						<Label
+							tabular
 							x={250}
 							y={RY(r) + 9}
 							text={['msg', '⊕ key', '= sent', '⊕ key', '= Bob'][r]}
@@ -392,7 +423,8 @@
 						stroke-opacity="0.5"
 					/>
 					<Readout id="bit-{r}-{i}">
-						<Txt
+						<Label
+							tabular
 							x={CX(i) + 12}
 							y={RY(r) + 4}
 							text={String(b)}
@@ -404,7 +436,8 @@
 							color={isKey && b ? '#fff' : undefined}
 						/>
 						{#snippet narrow()}
-							<Txt
+							<Label
+								tabular
 								x={CX(i) + 12}
 								y={RY(r) + 8}
 								text={String(b)}
@@ -420,7 +453,8 @@
 				{/each}
 				{#if row.side === 'H I'}
 					<Readout id="side-{r}">
-						<Txt
+						<Label
+							anchor="start"
 							x={CX(15) + 44}
 							y={RY(r) + 5}
 							text="“HI”"
@@ -430,7 +464,8 @@
 							color="var(--cr-alice)"
 						/>
 						{#snippet narrow()}
-							<Txt
+							<Label
+								anchor="start"
 								x={CX(15) + 40}
 								y={RY(r) + 10}
 								text="HI"
@@ -443,7 +478,8 @@
 					</Readout>
 				{:else if r === 2}
 					<Readout id="side-sent">
-						<Txt
+						<Label
+							anchor="start"
 							x={CX(15) + 44}
 							y={RY(r) + 5}
 							text="sent: Eve sees it"
@@ -458,7 +494,8 @@
 		{/each}
 		{#if cipherArrived}
 			<Readout id="flip-back">
-				<Txt
+				<Label
+					anchor="start"
 					x={CX(15) + 44}
 					y={RY(3) + 5}
 					text="Bob flips them back"

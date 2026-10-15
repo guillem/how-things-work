@@ -16,10 +16,9 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { untrack } from 'svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { cycle, smoothstep, clamp } from '#lib/draw/index.ts';
+	import { clamp, cycle, Label, smoothstep } from '#lib/draw/index.ts';
 	import type { Colour } from '../particles';
 	import { chargeColour, coil, colourName } from './shared';
-	import T from './T.svelte';
 	import Card from './Card.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -152,7 +151,7 @@
 	<g opacity={oIn} style:pointer-events={oIn < 0.5 ? 'none' : undefined}>
 		{#if oIn > 0.01}
 			<circle cx={CX} cy={CY} r="215" fill="var(--sm-field)" opacity="0.7" stroke="var(--border)" />
-			<T x={CX} y={CY + 245} text="a proton (u u d)" anchor="middle" size={13} muted />
+			<Label x={CX} y={CY + 245} text="a proton (u u d)" anchor="middle" size={13} muted />
 			{#each springs as s (s.key)}
 				<path
 					d={s.d}
@@ -183,14 +182,14 @@
 						y="10"
 						text-anchor="middle"
 						font-weight="700"
-						style:font-size="30px"
+						font-size="30"
 						style:fill="var(--sm-ball-ink)">{FLAV[i]}</text
 					>
 				</g>
 			{/each}
 
 			<Readout id="card-1"><Card x={600} y={60} w={340} h={300} /></Readout>
-			<T x={620} y={96} text="Colours right now" size={13} muted />
+			<Label anchor="start" x={620} y={96} text="Colours right now" size={13} muted />
 			{#each now as c, i (i)}
 				<circle cx={636 + i * 34} cy={128} r="13" fill={chargeColour(c)} />
 				<text
@@ -198,7 +197,7 @@
 					y={133}
 					text-anchor="middle"
 					font-weight="700"
-					style:font-size="13px"
+					font-size="13"
 					style:fill="var(--sm-ball-ink)">{FLAV[i]}</text
 				>
 			{/each}
@@ -215,7 +214,8 @@
 				value={nowText}
 				note="counting the gluon in flight, always one of each: colourless"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={772}
 					y={124}
 					text={gluon ? 'with the gluon:' : 'one of each:'}
@@ -223,7 +223,8 @@
 					weight={600}
 					color="var(--sm-ok)"
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={772}
 					y={142}
 					text={gluon ? 'one of each ✓' : 'colourless ✓'}
@@ -232,9 +233,10 @@
 					color="var(--sm-ok)"
 				/>
 			</Readout>
-			<T x={620} y={190} text="Gluon in flight" size={13} muted />
+			<Label anchor="start" x={620} y={190} text="Gluon in flight" size={13} muted />
 			<Readout id="gluon" order={2} label="Gluon in flight" value={gluonText}>
-				<T
+				<Label
+					anchor="start"
 					x={620}
 					y={214}
 					text={gluonText}
@@ -244,10 +246,35 @@
 				/>
 			</Readout>
 			<Readout id="inside-note">
-				<T x={620} y={258} text="It carries the emitter's colour and the" size={12} />
-				<T x={620} y={276} text="receiver's anticolour: when it lands," size={12} />
-				<T x={620} y={294} text="the two quarks have swapped colours." size={12} />
-				<T x={620} y={332} text="Exchanges so far: {k + (arrived ? 1 : 0)}" size={12} muted />
+				<Label
+					anchor="start"
+					x={620}
+					y={258}
+					text="It carries the emitter's colour and the"
+					size={12}
+				/>
+				<Label
+					anchor="start"
+					x={620}
+					y={276}
+					text="receiver's anticolour: when it lands,"
+					size={12}
+				/>
+				<Label
+					anchor="start"
+					x={620}
+					y={294}
+					text="the two quarks have swapped colours."
+					size={12}
+				/>
+				<Label
+					anchor="start"
+					x={620}
+					y={332}
+					text="Exchanges so far: {k + (arrived ? 1 : 0)}"
+					size={12}
+					muted
+				/>
 			</Readout>
 		{/if}
 	</g>
@@ -299,7 +326,7 @@
 						y={MY + 7}
 						text-anchor="middle"
 						font-weight="700"
-						style:font-size="20px"
+						font-size="20"
 						style:fill="var(--sm-ball-ink)">ū</text
 					>
 					<circle
@@ -315,7 +342,7 @@
 						y={MY + 7}
 						text-anchor="middle"
 						font-weight="700"
-						style:font-size="20px"
+						font-size="20"
 						style:fill="var(--sm-ball-ink)">u</text
 					>
 				</g>
@@ -333,7 +360,7 @@
 				y={MY + 8}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="22px"
+				font-size="22"
 				style:fill="var(--sm-ball-ink)">d</text
 			>
 			<circle
@@ -349,16 +376,16 @@
 				y={MY + 8}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="22px"
+				font-size="22"
 				style:fill="var(--sm-ball-ink)">ū</text
 			>
 			{#if after > 0.5}
-				<T x={(qx + nAq) / 2} y={MY + 62} text="meson" anchor="middle" size={12} muted />
-				<T x={(nQ + aqx) / 2} y={MY + 62} text="meson" anchor="middle" size={12} muted />
+				<Label x={(qx + nAq) / 2} y={MY + 62} text="meson" anchor="middle" size={12} muted />
+				<Label x={(nQ + aqx) / 2} y={MY + 62} text="meson" anchor="middle" size={12} muted />
 			{/if}
 			<Readout id="pull-caption" order={1} label="Pulling" value={pullCaption.join(' ')}>
 				{#each pullCaption as line, i (i)}
-					<T
+					<Label
 						x={MX}
 						y={120 + i * 20}
 						text={line}
@@ -370,15 +397,23 @@
 			</Readout>
 
 			<Readout id="card-2"><Card x={620} y={110} w={316} h={300} /></Readout>
-			<T x={GX - 12} y={140} text="Energy stored, against distance" size={13} weight={600} />
+			<Label
+				anchor="start"
+				x={GX - 12}
+				y={140}
+				text="Energy stored, against distance"
+				size={13}
+				weight={600}
+			/>
 			<line x1={GX} x2={GX + GW} y1={GY} y2={GY} stroke="var(--stage-line)" />
 			<line x1={GX} x2={GX} y1={GY} y2={GY - GH} stroke="var(--stage-line)" />
-			<T x={GX + GW} y={GY + 20} text="distance →" anchor="end" size={11} muted />
+			<Label x={GX + GW} y={GY + 20} text="distance →" anchor="end" size={11} muted />
 			<path d={emCurve} fill="none" stroke="var(--sm-em)" stroke-width="2" stroke-dasharray="6 5" />
 			<path d={strongCurve} fill="none" stroke="var(--sm-strong)" stroke-width="3" />
 			<circle cx={dotX} cy={dotY} r="6" fill="var(--sm-strong)" opacity={1 - after} />
 			<Readout id="plot-key">
-				<T
+				<Label
+					anchor="start"
 					x={GX + 12}
 					y={GY - GH * 0.86}
 					text="quarks: keeps rising"
@@ -386,7 +421,7 @@
 					color="var(--sm-strong)"
 					weight={600}
 				/>
-				<T
+				<Label
 					x={GX + GW}
 					y={GY - GH * 0.36}
 					text="electric: levels off"
@@ -395,7 +430,14 @@
 					color="var(--sm-em)"
 					weight={600}
 				/>
-				<T x={GX + 40} y={GY + 38} text="(shapes only, no scale)" size={11} muted />
+				<Label
+					anchor="start"
+					x={GX + 40}
+					y={GY + 38}
+					text="(shapes only, no scale)"
+					size={11}
+					muted
+				/>
 			</Readout>
 		{/if}
 	</g>

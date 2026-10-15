@@ -8,11 +8,10 @@
 	 * Jupiter's velocity plus the craft's velocity relative to Jupiter, before and after; the
 	 * circle is every velocity the turn can give. The flyby lasts 6 s on screen, then repeats.
 	 */
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { at, conic, flyby, JUPITER, type Vec } from '../space';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -165,32 +164,50 @@
 		marker-end="url(#arrowhead)"
 	/>
 	<Readout id="labels">
-		<T x={PANEL.x + 20} y={PANEL.y + 32} text="Jupiter's view" size={14} weight={700} />
-		<T
+		<Label
+			anchor="start"
+			x={PANEL.x + 20}
+			y={PANEL.y + 32}
+			text="Jupiter's view"
+			size={14}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
 			x={PANEL.x + 20}
 			y={PANEL.y + 50}
 			text="(it is moving this way round the Sun at 13.1 km/s)"
 			size={11}
 			muted
 		/>
-		<T x={PANEL.x + 120} y={PANEL.y + 84} text="Jupiter's motion" size={11} muted />
-		<T
+		<Label
+			anchor="start"
+			x={PANEL.x + 120}
+			y={PANEL.y + 84}
+			text="Jupiter's motion"
+			size={11}
+			muted
+		/>
+		<Label
+			anchor="start"
 			x={CX + pxPerRJ + 8}
 			y={CY + pxPerRJ + 14}
 			text="Jupiter"
 			size={12}
 			color="var(--rk-jupiter)"
 		/>
-		<T x={inAt.x} y={inAt.y} text="comes in" size={12} anchor="end" muted />
-		<T x={outAt.x} y={outAt.y} text="leaves" size={12} anchor="end" muted />
-		<T
+		<Label x={inAt.x} y={inAt.y} text="comes in" size={12} anchor="end" muted />
+		<Label x={outAt.x} y={outAt.y} text="leaves" size={12} anchor="end" muted />
+		<Label
+			anchor="start"
 			x={PANEL.x + 20}
 			y={PANEL.y + PANEL.h - 32}
 			text="speed relative to Jupiter: {fmt(relSpeed / 1000, 1)} km/s"
 			size={12}
 			weight={600}
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={PANEL.x + 20}
 			y={PANEL.y + PANEL.h - 14}
 			text="scale: Jupiter's disc; closest approach {fmt(closestRJ, 1)} Jupiter radii"
@@ -202,8 +219,15 @@
 	<!-- ---------------------------------------------------------------- card -->
 	<Card x={CARD.x} y={CARD.y} w={CARD.w} h={CARD.h} />
 	<Readout id="title">
-		<T x={CL} y={CARD.y + 32} text="The Sun's view" size={16} weight={700} />
-		<T x={CL} y={CARD.y + 50} text="velocity = Jupiter's + relative to Jupiter" size={11} muted />
+		<Label anchor="start" x={CL} y={CARD.y + 32} text="The Sun's view" size={16} weight={700} />
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 50}
+			text="velocity = Jupiter's + relative to Jupiter"
+			size={11}
+			muted
+		/>
 	</Readout>
 	<Readout
 		id="rel"
@@ -211,8 +235,15 @@
 		label="Relative to Jupiter"
 		value="{fmt(fb.vInf / 1000, 2)} km/s in and out"
 	>
-		<T x={CL} y={CARD.y + 82} text="Relative to Jupiter, in and out" size={12} muted />
-		<T
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 82}
+			text="Relative to Jupiter, in and out"
+			size={12}
+			muted
+		/>
+		<Label
 			x={CR}
 			y={CARD.y + 82}
 			text="{fmt(fb.vInf / 1000, 2)} km/s"
@@ -222,8 +253,8 @@
 		/>
 	</Readout>
 	<Readout id="turn" order={1} label="Turned through" value="{fmt((fb.turn * 180) / Math.PI, 0)}°">
-		<T x={CL} y={CARD.y + 104} text="Turned through" size={12} muted />
-		<T
+		<Label anchor="start" x={CL} y={CARD.y + 104} text="Turned through" size={12} muted />
+		<Label
 			x={CR}
 			y={CARD.y + 104}
 			text="{fmt((fb.turn * 180) / Math.PI, 0)}°"
@@ -239,8 +270,8 @@
 		value="{fmt(fb.speedIn / 1000, 1)} → {fmt(fb.speedOut / 1000, 1)} km/s"
 		color="var(--rk-speed)"
 	>
-		<T x={CL} y={CARD.y + 130} text="Speed round the Sun" size={12} muted />
-		<T
+		<Label anchor="start" x={CL} y={CARD.y + 130} text="Speed round the Sun" size={12} muted />
+		<Label
 			x={CR}
 			y={CARD.y + 130}
 			text="{fmt(fb.speedIn / 1000, 1)} → {fmt(fb.speedOut / 1000, 1)} km/s"
@@ -249,7 +280,7 @@
 			anchor="end"
 			color="var(--rk-speed)"
 		/>
-		<T
+		<Label
 			x={CR}
 			y={CARD.y + 150}
 			text="+{fmt(fb.gain / 1000, 1)} km/s, free"
@@ -327,9 +358,16 @@
 	/>
 	<circle cx={O.x} cy={O.y} r="3" fill="var(--stage-ink)" />
 	<Readout id="vec-labels">
-		<T x={O.x + escapeR + 4} y={O.y - 80} text="Sun's escape" size={10} muted />
-		<T x={O.x + escapeR + 4} y={O.y - 68} text="{fmt(fb.escape / 1000, 1)} km/s" size={10} muted />
-		<T
+		<Label anchor="start" x={O.x + escapeR + 4} y={O.y - 80} text="Sun's escape" size={10} muted />
+		<Label
+			anchor="start"
+			x={O.x + escapeR + 4}
+			y={O.y - 68}
+			text="{fmt(fb.escape / 1000, 1)} km/s"
+			size={10}
+			muted
+		/>
+		<Label
 			x={(O.x + J.x) / 2}
 			y={O.y - 12}
 			text="Jupiter 13.1"
@@ -337,7 +375,7 @@
 			anchor="middle"
 			color="var(--rk-jupiter)"
 		/>
-		<T
+		<Label
 			x={pin.x}
 			y={O.y + 20}
 			text="before {fmt(fb.speedIn / 1000, 1)}"
@@ -345,7 +383,7 @@
 			anchor="middle"
 			muted
 		/>
-		<T
+		<Label
 			x={pout.x + (pout.y < O.y ? 0 : 0)}
 			y={pout.y + (pout.y < O.y ? -10 : 18)}
 			text="after {fmt(fb.speedOut / 1000, 1)}"
@@ -355,29 +393,40 @@
 		/>
 	</Readout>
 	<Readout id="notes">
-		<T
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 436}
 			text="Dashed circle: all the ways the turn can point"
 			size={11}
 			muted
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 452}
 			text="the craft, at the same speed relative to Jupiter."
 			size={11}
 			muted
 		/>
-		<T x={CL} y={CARD.y + 478} text="The craft arrives on a Hohmann ellipse from" size={11} muted />
-		<T
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 478}
+			text="The craft arrives on a Hohmann ellipse from"
+			size={11}
+			muted
+		/>
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 494}
 			text="the Earth, so Jupiter catches it up from behind."
 			size={11}
 			muted
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 520}
 			text="Pass closer for a sharper turn and more speed."

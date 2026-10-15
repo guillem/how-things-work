@@ -3,7 +3,7 @@
 	 * The grid's frequency as a dial: an arc from `min` to `max` Hz with the ±200 mHz
 	 * operating band in green, the load-shedding zone (below 49.0 Hz) in red, and a needle.
 	 */
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import { BAND, F0, UFLS_STEPS } from '../grid';
 
 	interface Props {
@@ -84,5 +84,5 @@
 		stroke-linecap="round"
 	/>
 	<circle {cx} {cy} r="7" fill={needle} />
-	<Txt x={cx} y={cy + 36} text="{f.toFixed(2)} Hz" size={18} weight={700} />
+	<Label x={cx} y={cy + 36} text="{f.toFixed(2)} Hz" size={18} weight={700} />
 </g>

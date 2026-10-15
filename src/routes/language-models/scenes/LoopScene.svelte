@@ -5,11 +5,10 @@
 	 * text grows by one token each time it comes back.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { along, smooth } from '#lib/draw/index.ts';
+	import { along, Label, smooth } from '#lib/draw/index.ts';
 	import { percent } from '../lm';
 	import { label, lm } from './shared';
 	import TextCard from './TextCard.svelte';
-	import Txt from './Txt.svelte';
 
 	let { t, reduced }: StageProps = $props();
 
@@ -73,7 +72,14 @@
 		label="1 The text so far"
 		value={lm.text([...prompt.ids.slice(1), ...gen])}
 	>
-		<Txt x={S.text.x + 16} y={S.text.y + 24} size={13} weight={650} text="1  the text so far" />
+		<Label
+			anchor="start"
+			x={S.text.x + 16}
+			y={S.text.y + 24}
+			size={13}
+			weight={650}
+			text="1  the text so far"
+		/>
 		<TextCard
 			x={S.text.x + 16}
 			y={S.text.y + 52}
@@ -103,7 +109,9 @@
 		label="2 Tokens"
 		value="{prompt.ids.length - 1 + k} tokens, each a number"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={S.tok.x + 16}
 			y={S.tok.y + 24}
 			size={13}
@@ -124,14 +132,14 @@
 				x={S.tok.x + 49 + i * 71}
 				y={S.tok.y + 67}
 				text-anchor="middle"
-				style:font-size="12px"
+				font-size="12"
 				style:font-family="var(--font-mono)">{label(lm.token(id))}</text
 			>
 			<text
 				x={S.tok.x + 49 + i * 71}
 				y={S.tok.y + 94}
 				text-anchor="middle"
-				style:font-size="10.5px"
+				font-size="10.5"
 				style:fill="var(--stage-ink-muted)">{id}</text
 			>
 		{/each}
@@ -153,7 +161,14 @@
 		label="3 The network"
 		value="a transformer of 124 million learned numbers scores all 50,257 tokens"
 	>
-		<Txt x={S.net.x + 16} y={S.net.y + 24} size={13} weight={650} text="3  the network" />
+		<Label
+			anchor="start"
+			x={S.net.x + 16}
+			y={S.net.y + 24}
+			size={13}
+			weight={650}
+			text="3  the network"
+		/>
 		{#each Array.from({ length: 12 }, (_, i) => i) as l (l)}
 			<rect
 				x={S.net.x + 16 + l * 29}
@@ -165,14 +180,16 @@
 				opacity={0.2 + 0.6 * (u > 0.22 + l * 0.015 && u < 0.4 + l * 0.015 ? 1 : 0)}
 			/>
 		{/each}
-		<Txt
+		<Label
+			anchor="start"
 			x={S.net.x + 16}
 			y={S.net.y + 96}
 			size={11.5}
 			muted
 			text="12 transformer blocks, 124 million learned numbers:"
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={S.net.x + 16}
 			y={S.net.y + 111}
 			size={11.5}
@@ -197,7 +214,8 @@
 		label="4 Pick a token"
 		value="{label(lm.token(s.pick))} ({percent(s.pp)}), appended to the text"
 	>
-		<Txt
+		<Label
+			anchor="start"
 			x={S.prob.x + 16}
 			y={S.prob.y + 24}
 			size={13}
@@ -207,7 +225,8 @@
 		{#each s.d.slice(0, 4) as [id, p], i (i)}
 			{@const y = S.prob.y + 44 + i * 30}
 			{@const on = id === s.pick && u > 0.62}
-			<Txt
+			<Label
+				tabular
 				x={S.prob.x + 120}
 				y={y + 15}
 				anchor="end"
@@ -226,7 +245,9 @@
 				fill={on ? 'var(--lm-pick)' : 'var(--lm-bar)'}
 				opacity="0.85"
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={S.prob.x + 138 + p * 300 * (u > 0.45 ? 1 : 0.15)}
 				y={y + 15}
 				size={11.5}
@@ -234,7 +255,8 @@
 				text={percent(p)}
 			/>
 		{/each}
-		<Txt
+		<Label
+			anchor="start"
 			x={S.prob.x + 16}
 			y={S.prob.y + 180}
 			size={11.5}
@@ -244,9 +266,9 @@
 	</Readout>
 
 	<Readout id="moral">
-		<Txt x={920} y={470} anchor="end" size={15} weight={650} text="Predict one token." />
-		<Txt x={920} y={492} anchor="end" size={15} weight={650} text="Append it. Repeat." />
-		<Txt
+		<Label x={920} y={470} anchor="end" size={15} weight={650} text="Predict one token." />
+		<Label x={920} y={492} anchor="end" size={15} weight={650} text="Append it. Repeat." />
+		<Label
 			x={920}
 			y={520}
 			anchor="end"

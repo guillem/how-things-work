@@ -36,13 +36,10 @@
 			{#if i > 0}
 				<line x1={x + i * cw} x2={x + i * cw} y1={y + 14} y2={y + h - 14} stroke="var(--border)" />
 			{/if}
-			<text x={cx} y={y + 22} class="muted" style:font-size="12px" font-weight="500">{c.label}</text
-			>
-			<text x={cx} y={y + 45} style:font-size="18px" style:fill={c.color} font-weight="700"
-				>{c.value}</text
-			>
+			<text x={cx} y={y + 22} class="muted" font-size="12" font-weight="500">{c.label}</text>
+			<text x={cx} y={y + 45} font-size="18" style:fill={c.color} font-weight="700">{c.value}</text>
 			{#if c.sub}
-				<text x={cx} y={y + 61} class="muted" style:font-size="11px">{c.sub}</text>
+				<text x={cx} y={y + 61} class="muted" font-size="11">{c.sub}</text>
 			{/if}
 		{/each}
 	</g>

@@ -7,8 +7,7 @@
 	 * few copies of the one short message. Below, the spike enlarged: the piece
 	 * both show the immune system.
 	 */
-	import { TAU, cycle, hash } from '#lib/draw/index.ts';
-	import Tag from './Tag.svelte';
+	import { cycle, hash, Label, TAU } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { SHAPES } from '../data';
 
@@ -150,15 +149,15 @@
 		label="The virus"
 		value="a genome of 29,903 letters for about 30 proteins; it copies itself in your cells"
 	>
-		<Tag x={VIRUS.x} y={36} text="the virus" size={16} weight={600} />
-		<Tag
+		<Label x={VIRUS.x} y={36} text="the virus" size={16} weight={600} />
+		<Label
 			x={VIRUS.x}
 			y={56}
 			text="genome: 29,903 letters of RNA, about 30 proteins"
 			size={12}
 			muted
 		/>
-		<Tag x={VIRUS.x} y={418} text="copies itself, spreads, makes you ill" size={12} />
+		<Label x={VIRUS.x} y={418} text="copies itself, spreads, makes you ill" size={12} />
 	</Readout>
 	<Readout
 		id="vaccine"
@@ -166,9 +165,9 @@
 		label="The mRNA vaccine"
 		value="copies of one message of about 4,300 letters, for one protein: the spike; it cannot copy itself"
 	>
-		<Tag x={LNP.x} y={36} text="the mRNA vaccine" size={16} weight={600} />
-		<Tag x={LNP.x} y={56} text="one message: about 4,300 letters, one protein" size={12} muted />
-		<Tag x={LNP.x} y={418} text="cannot copy itself; gone in days" size={12} />
+		<Label x={LNP.x} y={36} text="the mRNA vaccine" size={16} weight={600} />
+		<Label x={LNP.x} y={56} text="one message: about 4,300 letters, one protein" size={12} muted />
+		<Label x={LNP.x} y={418} text="cannot copy itself; gone in days" size={12} />
 	</Readout>
 
 	<!-- scale bar -->
@@ -183,7 +182,7 @@
 		/>
 		<line x1={430} x2={430} y1={105} y2={115} stroke="var(--stage-ink-muted)" />
 		<line x1={430 + 50 * NM} x2={430 + 50 * NM} y1={105} y2={115} stroke="var(--stage-ink-muted)" />
-		<Tag x={430 + 25 * NM} y={98} text="50 nm" size={11} muted />
+		<Label x={430 + 25 * NM} y={98} text="50 nm" size={11} muted />
 	</Readout>
 
 	<!-- the spike, enlarged -->
@@ -220,8 +219,8 @@
 		label="Shared by both"
 		value="the spike protein: what the immune system learns to recognise"
 	>
-		<Tag x={bigX + 64} y={528} text="the spike protein" size={14} weight={600} anchor="start" />
-		<Tag
+		<Label x={bigX + 64} y={528} text="the spike protein" size={14} weight={600} anchor="start" />
+		<Label
 			x={bigX + 64}
 			y={546}
 			text="what both show the immune system"
@@ -229,7 +228,7 @@
 			anchor="start"
 			muted
 		/>
-		<Tag
+		<Label
 			x={bigX + 64}
 			y={563}
 			text="(traced from PDB 6VSB, 6.5× enlarged)"

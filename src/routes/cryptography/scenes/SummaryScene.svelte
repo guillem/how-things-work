@@ -8,10 +8,9 @@
 	 * Values come from the model (`mixHex`, `diffieHellman`, `sha256Hex`, `RSA`). Reduced
 	 * motion shows the arrows without dots.
 	 */
-	import { cycle, smoothstep } from '#lib/draw/index.ts';
+	import { cycle, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { RSA, diffieHellman, mixHex, sha256Hex } from '../crypto';
-	import Txt from './Txt.svelte';
 
 	let { t, reduced }: StageProps = $props();
 
@@ -66,10 +65,10 @@
 <g>
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="title">
-		<Txt x={40} y={46} text="One-way streets" size={18} weight={700} />
+		<Label anchor="start" x={40} y={46} text="One-way streets" size={18} weight={700} />
 	</Readout>
 	<Readout id="directions">
-		<Txt
+		<Label
 			x={A0 + (A1 - A0) / 2}
 			y={40}
 			text="quick →"
@@ -78,7 +77,7 @@
 			anchor="middle"
 			color="var(--cr-ok)"
 		/>
-		<Txt
+		<Label
 			x={A0 + (A1 - A0) / 2}
 			y={60}
 			text="← practically impossible"
@@ -88,7 +87,7 @@
 			color="var(--cr-bad)"
 		/>
 		{#snippet narrow()}
-			<Txt
+			<Label
 				x={A0 + (A1 - A0) / 2}
 				y={34}
 				text="quick →"
@@ -97,7 +96,7 @@
 				anchor="middle"
 				color="var(--cr-ok)"
 			/>
-			<Txt
+			<Label
 				x={A0 + (A1 - A0) / 2}
 				y={64}
 				text="← impossible"
@@ -112,8 +111,8 @@
 	{#each ROWS as r, i (r.id)}
 		{@const y = RY(i)}
 		<Readout id="street-{r.id}" order={1 + i} label={r.title} marker={i + 1} at={[90, y - 4]}>
-			<Txt x={40} y={y - 6} text={r.title} size={15} weight={700} />
-			<Txt x={40} y={y + 14} text={r.use} size={12} muted />
+			<Label anchor="start" tabular x={40} y={y - 6} text={r.title} size={15} weight={700} />
+			<Label anchor="start" tabular x={40} y={y + 14} text={r.use} size={12} muted />
 		</Readout>
 
 		<rect
@@ -126,7 +125,8 @@
 			stroke="var(--border)"
 		/>
 		<Readout id="from-{r.id}">
-			<Txt
+			<Label
+				tabular
 				x={IN}
 				y={y + 1}
 				text={r.from}
@@ -137,7 +137,8 @@
 				mono={r.id === 'hash'}
 			/>
 			{#snippet narrow()}
-				<Txt
+				<Label
+					tabular
 					x={IN}
 					y={y + 4}
 					text={r.from}
@@ -161,14 +162,33 @@
 		{#if r.swatch}
 			<circle cx={OUT - 40} cy={y - 4} r="13" fill={r.swatch} stroke="var(--stage-line)" />
 			<Readout id="to-{r.id}">
-				<Txt x={OUT - 20} y={y + 1} text={r.to} size={14} weight={600} halo={false} />
+				<Label
+					anchor="start"
+					tabular
+					x={OUT - 20}
+					y={y + 1}
+					text={r.to}
+					size={14}
+					weight={600}
+					halo={false}
+				/>
 				{#snippet narrow()}
-					<Txt x={OUT - 20} y={y + 4} text={r.to} size={20} weight={600} halo={false} />
+					<Label
+						anchor="start"
+						tabular
+						x={OUT - 20}
+						y={y + 4}
+						text={r.to}
+						size={20}
+						weight={600}
+						halo={false}
+					/>
 				{/snippet}
 			</Readout>
 		{:else}
 			<Readout id="to-{r.id}">
-				<Txt
+				<Label
+					tabular
 					x={OUT}
 					y={y + 1}
 					text={r.to}
@@ -179,7 +199,8 @@
 					mono={r.id === 'hash'}
 				/>
 				{#snippet narrow()}
-					<Txt
+					<Label
+						tabular
 						x={OUT}
 						y={y + 4}
 						text={r.to}
@@ -233,7 +254,8 @@
 			/>
 		{/if}
 		<Readout id="back-{r.id}">
-			<Txt
+			<Label
+				tabular
 				x={A0 + (A1 - A0) / 2}
 				y={y + 28}
 				text={r.back}
@@ -243,7 +265,8 @@
 				weight={600}
 			/>
 			{#snippet narrow()}
-				<Txt
+				<Label
+					tabular
 					x={A0 + (A1 - A0) / 2}
 					y={y + 36}
 					text={r.back}
@@ -272,7 +295,7 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		<Txt
+		<Label
 			x={480}
 			y={532}
 			text="Easy to do, practically impossible to undo: that asymmetry lets strangers"
@@ -281,7 +304,7 @@
 			anchor="middle"
 			halo={false}
 		/>
-		<Txt
+		<Label
 			x={480}
 			y={558}
 			text="share secrets and prove who they are over an open network."

@@ -291,7 +291,7 @@
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
 		transform={opts.rotate ? `rotate(${opts.rotate} ${x} ${y})` : undefined}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}

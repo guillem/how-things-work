@@ -240,12 +240,12 @@
 		x={CX}
 		y={CY + 16}
 		text-anchor="middle"
-		style:font-size="28px"
+		font-size="28"
 		font-weight="600"
 		style:fill="var(--hm-glucose)"
 		>{Math.round(glucose)}<tspan font-size="14" dx="5" font-weight="500">mg/dL</tspan></text
 	>
-	<text x={CX} y={CY + 38} text-anchor="middle" style:font-size="12px" class="muted"
+	<text x={CX} y={CY + 38} text-anchor="middle" font-size="12" class="muted"
 		>{(glucose / 18).toFixed(1)} mmol/L · {zoneText}</text
 	>
 
@@ -398,12 +398,12 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<text x={268} y={44} style:font-size="13px" opacity={capA}
+			<text x={268} y={44} font-size="13" opacity={capA}
 				><tspan font-weight="600" style:fill="var(--hm-glucose)">After a meal:</tspan> glucose rises
 				→ β-cells release <tspan font-weight="600" style:fill="var(--hm-insulin)">insulin</tspan> → cells
 				take glucose in</text
 			>
-			<text x={268} y={68} style:font-size="13px" opacity={capB}
+			<text x={268} y={68} font-size="13" opacity={capB}
 				><tspan font-weight="600" style:fill="var(--hm-glucose)">Between meals:</tspan> glucose
 				falls → α-cells release
 				<tspan font-weight="600" style:fill="var(--hm-glucagon)">glucagon</tspan> → liver releases glucose</text

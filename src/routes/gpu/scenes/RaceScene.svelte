@@ -16,8 +16,7 @@
 	 * exponentially so that the fast core finishes FF_T s later, whatever the
 	 * ratio. Reduced motion shows the finished race.
 	 */
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
-	import Label from './Txt.svelte';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		FAST_IPC,
@@ -455,7 +454,7 @@
 				<text
 					x={LIST_X}
 					{y}
-					style:font-size="12.5px"
+					font-size="12.5"
 					font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
 					opacity={ins.path === 'all' || ins.path === 'end' || lit || fastFinished ? 1 : 0.45}
 					>{ins.text}</text

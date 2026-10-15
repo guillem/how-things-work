@@ -18,8 +18,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, cycle, smoothstep } from '#lib/draw/index.ts';
-	import Tag from './Tag.svelte';
+	import { clamp, cycle, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { codonToAmino } from '../../dna-to-protein/genetics';
 	import { SEQUENCE } from '../data';
@@ -121,7 +120,7 @@
 		label="The message"
 		value="about 4,300 letters: cap, lead-in, 3,819 letters of code for the spike, 3′ end section, poly(A) tail"
 	>
-		<Tag
+		<Label
 			x={BX0}
 			y={52}
 			text="the vaccine’s mRNA, to scale (about 4,300 letters)"
@@ -130,7 +129,7 @@
 			anchor="start"
 		/>
 		<circle cx={BX0 - 10} cy={BY} r="8" fill="var(--mv-ribosome)" />
-		<Tag x={BX0 - 14} y={BY + 34} text="cap" size={12} anchor="start" />
+		<Label x={BX0 - 14} y={BY + 34} text="cap" size={12} anchor="start" />
 		{#each segs as s (s.id)}
 			<rect
 				x={s.x}
@@ -143,9 +142,9 @@
 				rx="2"
 			/>
 		{/each}
-		<Tag x={segs[0].x + 2} y={BY - 18} text={segs[0].label} size={11} anchor="start" muted />
-		<Tag x={segs[1].x + segs[1].w / 2} y={BY + 34} text={segs[1].label} size={12} />
-		<Tag
+		<Label x={segs[0].x + 2} y={BY - 18} text={segs[0].label} size={11} anchor="start" muted />
+		<Label x={segs[1].x + segs[1].w / 2} y={BY + 34} text={segs[1].label} size={12} />
+		<Label
 			x={segs[2].x + segs[2].w / 2 - 10}
 			y={BY - 18}
 			text={segs[2].label}
@@ -153,7 +152,7 @@
 			anchor="end"
 			muted
 		/>
-		<Tag x={BX1} y={BY + 34} text={segs[3].label} size={11} anchor="end" muted />
+		<Label x={BX1} y={BY + 34} text={segs[3].label} size={11} anchor="end" muted />
 	</Readout>
 
 	<!-- parts: the first codons -->
@@ -164,14 +163,10 @@
 			stroke-dasharray="3 4"
 			fill="none"
 		/>
-		<Tag x={CX0 + (13 * CW) / 2} y={190} text="codons 1–13, zoomed in" size={11} muted />
+		<Label x={CX0 + (13 * CW) / 2} y={190} text="codons 1–13, zoomed in" size={11} muted />
 		{#each ['codon', 'virus', 'vaccine', 'amino acid'] as row, j (row)}
-			<text
-				x={CX0 - 12}
-				y={236 + j * 52}
-				style:font-size="13px"
-				text-anchor="end"
-				class:muted={j === 0}>{row}</text
+			<text x={CX0 - 12} y={236 + j * 52} font-size="13" text-anchor="end" class:muted={j === 0}
+				>{row}</text
 			>
 		{/each}
 		{#each codons as c (c.i)}
@@ -186,12 +181,12 @@
 				fill="var(--mv-mrna)"
 				opacity={on ? 0.14 : 0}
 			/>
-			<text {x} y={236} style:font-size="11px" text-anchor="middle" class="muted">{c.i + 1}</text>
+			<text {x} y={236} font-size="11" text-anchor="middle" class="muted">{c.i + 1}</text>
 			{#each [c.virus, c.vaccine] as cod, row (row)}
 				<text
 					{x}
 					y={288 + row * 52}
-					style:font-size="17px"
+					font-size="17"
 					text-anchor="middle"
 					font-family="ui-monospace, monospace"
 				>
@@ -211,7 +206,7 @@
 				stroke="var(--mv-mrna)"
 				stroke-width="1.5"
 			/>
-			<text {x} y={390} style:font-size="14px" font-weight="600" text-anchor="middle">{c.aa}</text>
+			<text {x} y={390} font-size="14" font-weight="600" text-anchor="middle">{c.aa}</text>
 		{/each}
 		<Readout
 			opacity={1 - mix.current}
@@ -220,7 +215,7 @@
 			label="Same protein, different letters"
 			value="{SEQUENCE.sameCodons} of the 1,273 codons are spelled the same"
 		>
-			<Tag
+			<Label
 				x={CX0}
 				y={450}
 				text="Same amino acids, different letters (changed letters in orange): only {SEQUENCE.sameCodons} of the 1,273 codons are spelled the same."
@@ -237,7 +232,7 @@
 				SEQUENCE.gcVaccine * 100
 			)}% in the vaccine"
 		>
-			<Tag
+			<Label
 				x={CX0}
 				y={474}
 				text="G and C letters: {Math.round(
@@ -249,7 +244,7 @@
 			/>
 		</Readout>
 		<Readout id="src">
-			<Tag
+			<Label
 				x={CX0}
 				y={560}
 				text="Sequences: SARS-CoV-2 Wuhan-Hu-1 (GenBank NC_045512.2); BNT162b2 as sequenced from vials (Jeong et al., 2021)"
@@ -287,7 +282,7 @@
 					stroke="var(--stage-ink)"
 					stroke-width="1.5"
 				/>
-				<text x={pts[0].x} y={pts[0].y - 22} style:font-size="13px" text-anchor="middle">O</text>
+				<text x={pts[0].x} y={pts[0].y - 22} font-size="13" text-anchor="middle">O</text>
 				<line
 					x1={pts[4].x}
 					y1={pts[4].y}
@@ -296,13 +291,11 @@
 					stroke="var(--stage-ink)"
 					stroke-width="1.5"
 				/>
-				<text x={pts[4].x - 26} y={pts[4].y - 10} style:font-size="13px" text-anchor="middle"
-					>O</text
-				>
+				<text x={pts[4].x - 26} y={pts[4].y - 10} font-size="13" text-anchor="middle">O</text>
 				<!-- N3 (top-left) and N1 (bottom) -->
-				<text x={pts[5].x - 2} y={pts[5].y + 4} style:font-size="12px" text-anchor="end">N</text>
+				<text x={pts[5].x - 2} y={pts[5].y + 4} font-size="12" text-anchor="end">N</text>
 				{#if b.k === 'u'}
-					<text x={pts[3].x} y={pts[3].y + 15} style:font-size="12px" text-anchor="middle">N</text>
+					<text x={pts[3].x} y={pts[3].y + 15} font-size="12" text-anchor="middle">N</text>
 					<line
 						x1={pts[3].x}
 						y1={pts[3].y}
@@ -311,7 +304,7 @@
 						stroke="var(--im-virus)"
 						stroke-width="3"
 					/>
-					<Tag
+					<Label
 						x={pts[3].x + 8}
 						y={pts[3].y + 30}
 						text="N–sugar bond"
@@ -321,7 +314,7 @@
 					/>
 				{:else}
 					<!-- the sugar on C5 (top-right), N1 carries a methyl -->
-					<text x={pts[3].x} y={pts[3].y + 15} style:font-size="12px" text-anchor="middle">N</text>
+					<text x={pts[3].x} y={pts[3].y + 15} font-size="12" text-anchor="middle">N</text>
 					<line
 						x1={pts[3].x}
 						y1={pts[3].y + 18}
@@ -333,7 +326,7 @@
 					<text
 						x={pts[3].x}
 						y={pts[3].y + 46}
-						style:font-size="12px"
+						font-size="12"
 						text-anchor="middle"
 						font-weight="700"
 						style:fill="var(--mv-mrna)">CH₃</text
@@ -346,10 +339,17 @@
 						stroke="var(--mv-mrna)"
 						stroke-width="3"
 					/>
-					<Tag x={pts[1].x + 34} y={pts[1].y - 18} text="C–sugar" size={11} anchor="start" muted />
+					<Label
+						x={pts[1].x + 34}
+						y={pts[1].y - 18}
+						text="C–sugar"
+						size={11}
+						anchor="start"
+						muted
+					/>
 				{/if}
-				<Tag x={cx} y={392} text={b.label} size={13} weight={600} />
-				<Tag x={cx} y={410} text={b.note} size={11} muted />
+				<Label x={cx} y={392} text={b.label} size={13} weight={600} />
+				<Label x={cx} y={410} text={b.note} size={11} muted />
 			</g>
 		{/each}
 		<Readout
@@ -361,14 +361,14 @@
 				? 'N1-methylpseudouridine in place of every U: read as U, ignored by the sensors'
 				: 'ordinary U: the cell’s RNA sensors recognise the message as foreign'}
 		>
-			<Tag
+			<Label
 				x={225}
 				y={200}
 				text={mod ? 'every U replaced: still read as U' : 'ordinary U throughout'}
 				size={13}
 				weight={600}
 			/>
-			<Tag
+			<Label
 				x={225}
 				y={470}
 				text="same pairing with A: the ribosome reads both as U"
@@ -387,7 +387,7 @@
 			fill="var(--cell)"
 			stroke="var(--border)"
 		/>
-		<Tag x={PX0} y={200} text="in the cytoplasm" size={12} anchor="start" muted />
+		<Label x={PX0} y={200} text="in the cytoplasm" size={12} anchor="start" muted />
 		<path
 			d={strandPath}
 			fill="none"
@@ -441,7 +441,7 @@
 			value={mod ? 'idle: no alarm' : 'bound: interferon alarm raised'}
 			color="var(--mv-alarm)"
 		>
-			<Tag
+			<Label
 				x={PX0}
 				y={PY + 140}
 				text={mod ? 'RNA sensors idle: no alarm' : 'RNA sensors bound: the alarm is raised'}
@@ -458,7 +458,7 @@
 			label="Ribosomes"
 			value={mod ? 'running: plenty of spike made' : 'stalled: little protein made'}
 		>
-			<Tag
+			<Label
 				x={PX0}
 				y={PY + 164}
 				text={mod
@@ -470,7 +470,7 @@
 			/>
 		</Readout>
 		<Readout id="ribo-key">
-			<Tag
+			<Label
 				x={PX1}
 				y={PY - 50}
 				text={clamp(m) > 0.5 ? 'spike chains' : ''}

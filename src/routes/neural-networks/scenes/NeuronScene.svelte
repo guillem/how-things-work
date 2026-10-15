@@ -5,11 +5,10 @@
 	 * Right: the neuron itself, with the point's numbers flowing through it: inputs × weights,
 	 * plus the bias, into the sum z, through the sigmoid, out as p.
 	 */
-	import { Handle } from '#lib/draw/index.ts';
+	import { Handle, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { dataset, sigmoid } from '../network';
 	import { bands, cellCoord, dots, fix, fmt } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { t, params, setParam, reduced }: StageProps = $props();
 
@@ -187,13 +186,20 @@
 		/>
 	</g>
 	<Readout id="plane-labels">
-		<Txt x={P.x} y={P.y - 12} text="the neuron's answer over the plane" size={13} weight={600} />
-		<Txt x={P.x + P.size} y={P.y + P.size + 16} text="x₁ →" anchor="end" size={12} muted />
+		<Label
+			anchor="start"
+			x={P.x}
+			y={P.y - 12}
+			text="the neuron's answer over the plane"
+			size={13}
+			weight={600}
+		/>
+		<Label x={P.x + P.size} y={P.y + P.size + 16} text="x₁ →" anchor="end" size={12} muted />
 		<text
 			class="halo muted"
 			transform="translate({P.x - 10} {P.y}) rotate(-90)"
 			text-anchor="end"
-			style:font-size="12px">x₂ →</text
+			font-size="12">x₂ →</text
 		>
 	</Readout>
 	<Readout
@@ -202,14 +208,15 @@
 		label="Boundary (z = 0)"
 		value="{fix(w1, 1)} x₁ {signed(w2, 1)} x₂ {signed(b, 1)} = 0: {lineNote}"
 	>
-		<Txt
+		<Label
+			anchor="start"
 			x={P.x}
 			y={P.y + P.size + 44}
 			text="boundary, where z = 0: {fix(w1, 1)} x₁ {signed(w2, 1)} x₂ {signed(b, 1)} = 0"
 			size={13}
 			weight={600}
 		/>
-		<Txt x={P.x} y={P.y + P.size + 64} text={lineNote} size={12} muted />
+		<Label anchor="start" x={P.x} y={P.y + P.size + 64} text={lineNote} size={12} muted />
 	</Readout>
 
 	<!-- the neuron -->
@@ -276,13 +283,13 @@
 	{/each}
 
 	<Readout id="in1" order={1} label="Inputs" value="x₁ = {fix(probe[0])}, x₂ = {fix(probe[1])}">
-		<Txt x={IN1.x} y={IN1.y + 5} text={fix(probe[0])} anchor="middle" size={13} weight={600} />
-		<Txt x={IN2.x} y={IN2.y + 5} text={fix(probe[1])} anchor="middle" size={13} weight={600} />
-		<Txt x={IN1.x} y={IN1.y - 28} text="input x₁" anchor="middle" size={12} muted />
-		<Txt x={IN2.x} y={IN2.y + 38} text="input x₂" anchor="middle" size={12} muted />
+		<Label x={IN1.x} y={IN1.y + 5} text={fix(probe[0])} anchor="middle" size={13} weight={600} />
+		<Label x={IN2.x} y={IN2.y + 5} text={fix(probe[1])} anchor="middle" size={13} weight={600} />
+		<Label x={IN1.x} y={IN1.y - 28} text="input x₁" anchor="middle" size={12} muted />
+		<Label x={IN2.x} y={IN2.y + 38} text="input x₂" anchor="middle" size={12} muted />
 	</Readout>
 	<Readout id="weights">
-		<Txt
+		<Label
 			x={548}
 			y={158}
 			text="× w₁ = {fix(w1, 1)}"
@@ -291,7 +298,7 @@
 			color={wColor(w1)}
 			weight={600}
 		/>
-		<Txt
+		<Label
 			x={566}
 			y={332}
 			text="× w₂ = {fix(w2, 1)}"
@@ -300,7 +307,7 @@
 			color={wColor(w2)}
 			weight={600}
 		/>
-		<Txt
+		<Label
 			x={BIAS.x}
 			y={BIAS.y}
 			text="+ bias b = {fix(b, 1)}"
@@ -309,9 +316,9 @@
 			color={wColor(b)}
 			weight={600}
 		/>
-		<Txt x={SUM.x} y={SUM.y + 6} text="Σ" anchor="middle" size={18} weight={600} />
-		<Txt x={SUM.x} y={SUM.y + SUM.r + 18} text="sum z" anchor="middle" size={12} muted />
-		<Txt
+		<Label x={SUM.x} y={SUM.y + 6} text="Σ" anchor="middle" size={18} weight={600} />
+		<Label x={SUM.x} y={SUM.y + SUM.r + 18} text="sum z" anchor="middle" size={12} muted />
+		<Label
 			x={SIG.x + SIG.w / 2}
 			y={SIG.y + SIG.h + 22}
 			text="sigmoid σ"
@@ -319,8 +326,8 @@
 			size={12}
 			muted
 		/>
-		<Txt x={OUT.x} y={OUT.y - 22} text="output" anchor="middle" size={12} muted />
-		<Txt x={OUT.x + 2} y={OUT.y + 5} text={fix(p)} anchor="middle" size={15} weight={600} />
+		<Label x={OUT.x} y={OUT.y - 22} text="output" anchor="middle" size={12} muted />
+		<Label x={OUT.x + 2} y={OUT.y + 5} text={fix(p)} anchor="middle" size={15} weight={600} />
 	</Readout>
 	<Readout
 		id="sum"
@@ -328,7 +335,8 @@
 		label="Sum and output"
 		value="z = {fmt(z)} → σ(z) = {fix(p)}: {Math.round(p * 100)}% blue"
 	>
-		<Txt
+		<Label
+			anchor="start"
 			x={470}
 			y={420}
 			text="z = {fix(w1, 1)} × {par(probe[0])} {signed(w2, 1)} × {par(probe[1])} {signed(
@@ -338,7 +346,8 @@
 			size={14}
 			weight={600}
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={470}
 			y={446}
 			text="output σ(z) = 1 / (1 + e⁻ᶻ) = {fix(p)}: {Math.round(p * 100)}% sure it is blue"
@@ -346,7 +355,8 @@
 			color={p >= 0.5 ? 'var(--nn-b)' : 'var(--nn-a)'}
 			weight={600}
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={470}
 			y={472}
 			text="drag the point on the plane to feed in other inputs"

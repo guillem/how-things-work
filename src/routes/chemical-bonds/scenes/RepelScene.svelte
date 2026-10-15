@@ -8,8 +8,6 @@
 	 * nearest-neighbour edges of the shape fade in and the readout lists the angles.
 	 * Turnable by dragging or with the arrow keys; turns slowly by itself.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG presentation
-	 * attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -169,7 +167,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -232,7 +230,7 @@
 			y={CY + 6}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="16px"
+			font-size="16"
 			style:fill="#ffffff">A</text
 		>
 		{#each front as l (l.i)}

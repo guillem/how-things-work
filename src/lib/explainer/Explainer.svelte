@@ -433,15 +433,15 @@
 		overflow: hidden;
 		user-select: none;
 	}
+	/* Text inherits the font and ink from the <svg>, so a `font-size` or `fill` attribute on a
+	   <text> (and `<Label size>`) still wins: a rule on `text` itself would override them. */
 	.stage :global(svg) {
 		display: block;
 		width: 100%;
 		height: 100%;
-	}
-	.stage :global(text) {
 		font-family: var(--font-sans);
-		fill: var(--stage-ink);
 		font-size: 13px;
+		fill: var(--stage-ink);
 	}
 	.stage :global(text.muted) {
 		fill: var(--stage-ink-muted);

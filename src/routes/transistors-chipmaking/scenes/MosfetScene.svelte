@@ -184,7 +184,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'middle'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -357,7 +357,7 @@
 				y={SURF - 22}
 				text-anchor="middle"
 				font-weight="800"
-				style:font-size="{fs(16)}px"
+				font-size={fs(16)}
 				style:fill="#fff">{isP ? '−' : '+'}</text
 			>
 		{/each}
@@ -369,7 +369,7 @@
 				y="88"
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="{fs(13)}px"
+				font-size={fs(13)}
 				style:fill="#fff">gate</text
 			>
 			{#if L < 0.5}
@@ -511,7 +511,7 @@
 				})}
 			</Readout>
 		{/if}
-		<text x={PX1} y={PY1 + 34} text-anchor="end" class="halo muted" style:font-size="11px"
+		<text x={PX1} y={PY1 + 34} text-anchor="end" class="halo muted" font-size="11"
 			>gate voltage</text
 		>
 		<Handle

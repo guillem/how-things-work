@@ -9,11 +9,10 @@
 	 * The morph is a pure function of t (a 16 s loop); under reduced motion the finished,
 	 * bent frame is shown.
 	 */
-	import { easeInOut, smoothstep } from '#lib/draw/index.ts';
+	import { easeInOut, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { BEND_EPOCHS, BEND_SPEC, layerStages, runFor } from '../network';
 	import { bands, dots, fix, outputGrid, zeroLine } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { t, reduced }: StageProps = $props();
 
@@ -209,10 +208,11 @@
 		{/if}
 	</g>
 	<Readout id="caption" order={1} label="Now" value={caption}>
-		<Txt x={PANEL.x} y={PANEL.y - 14} text={caption} size={14} weight={600} />
+		<Label anchor="start" x={PANEL.x} y={PANEL.y - 14} text={caption} size={14} weight={600} />
 	</Readout>
 	<Readout id="line" order={2} label="Dashed" value="the output neuron's line" opacity={lineOn}>
-		<Txt
+		<Label
+			anchor="start"
 			x={PANEL.x + 10}
 			y={PANEL.y + PANEL.size - 12}
 			text="dashed: the output neuron's straight line"
@@ -224,11 +224,19 @@
 
 	<!-- the three moves -->
 	<Readout id="moves">
-		<Txt x={490} y={84} text="one hidden layer, 2 neurons" size={14} weight={600} />
+		<Label
+			anchor="start"
+			x={490}
+			y={84}
+			text="one hidden layer, 2 neurons"
+			size={14}
+			weight={600}
+		/>
 		{#each MOVE_TEXT as mv, i (i)}
 			{@const on = current === i}
 			<g opacity={on ? 1 : current > i || m > 2.98 ? 0.75 : 0.45}>
-				<Txt
+				<Label
+					anchor="start"
 					x={490}
 					y={118 + 50 * i}
 					text={mv.title}
@@ -236,7 +244,7 @@
 					weight={600}
 					color={on ? 'var(--nn-back)' : undefined}
 				/>
-				<Txt x={490} y={136 + 50 * i} text={mv.note} size={12} muted />
+				<Label anchor="start" x={490} y={136 + 50 * i} text={mv.note} size={12} muted />
 			</g>
 		{/each}
 	</Readout>
@@ -246,7 +254,8 @@
 		label="W and b"
 		value="W = [{fix(W[0])}, {fix(W[1])}; {fix(W[2])}, {fix(W[3])}], b = ({fix(B[0])}, {fix(B[1])})"
 	>
-		<Txt
+		<Label
+			anchor="start"
 			x={490}
 			y={276}
 			text="W = [ {fix(W[0])}  {fix(W[1])} ;  {fix(W[2])}  {fix(W[3])} ]    b = ({fix(B[0])}, {fix(
@@ -275,7 +284,21 @@
 		rx="2"
 	/>
 	<Readout id="inset" order={4} label="Back on the input plane" value="the same line, bent">
-		<Txt x={I.x} y={I.y - 28} text="the dashed line, drawn back" size={12} weight={600} />
-		<Txt x={I.x} y={I.y - 12} text="on the input plane: bent" size={12} weight={600} />
+		<Label
+			anchor="start"
+			x={I.x}
+			y={I.y - 28}
+			text="the dashed line, drawn back"
+			size={12}
+			weight={600}
+		/>
+		<Label
+			anchor="start"
+			x={I.x}
+			y={I.y - 12}
+			text="on the input plane: bent"
+			size={12}
+			weight={600}
+		/>
 	</Readout>
 </g>

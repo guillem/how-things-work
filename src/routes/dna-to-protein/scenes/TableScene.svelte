@@ -8,7 +8,7 @@
 	import { CODE, amino, codonsFor } from '../genetics';
 	import CodeTable from './CodeTable.svelte';
 	import { KIND_COLOR, KIND_LABEL, rna } from './shared';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { t, params, setParam, reduced }: StageProps = $props();
 
@@ -26,8 +26,15 @@
 
 <g>
 	<Readout id="title">
-		<Txt x={24} y={24} text="The standard genetic code (RNA letters)" size={14} weight={700} />
-		<Txt x={680} y={24} text="2nd letter →" size={11} muted anchor="end" />
+		<Label
+			anchor="start"
+			x={24}
+			y={24}
+			text="The standard genetic code (RNA letters)"
+			size={14}
+			weight={700}
+		/>
+		<Label x={680} y={24} text="2nd letter →" size={11} muted anchor="end" />
 	</Readout>
 	<CodeTable
 		x={24}
@@ -42,7 +49,8 @@
 		onpick={(c: string) => setParam('pick', c)}
 	/>
 	<Readout id="first">
-		<Txt
+		<Label
+			anchor="start"
 			x={22}
 			y={590}
 			text="↑ 1st letter · 3rd letter: the lines in each box (U C A G)"
@@ -75,12 +83,13 @@
 			x={PX + 122}
 			y={92}
 			text-anchor="middle"
-			style:font-size="38px"
+			font-size="38"
 			style:font-weight="700"
 			style:font-family="var(--font-mono)"
 			style:letter-spacing="0.08em">{rna(codon)}</text
 		>
-		<Txt
+		<Label
+			tabular
 			x={PX + 122}
 			y={126}
 			text={info.kind === 'stop' ? 'stop: end of the protein' : `${info.three} · ${info.name}`}
@@ -89,7 +98,8 @@
 			anchor="middle"
 		/>
 		<rect x={PX + 70} y={140} width="104" height="22" rx="11" fill={KIND_COLOR[info.kind]} />
-		<Txt
+		<Label
+			tabular
 			x={PX + 122}
 			y={155}
 			text={KIND_LABEL[info.kind]}
@@ -98,7 +108,8 @@
 			anchor="middle"
 			halo={false}
 		/>
-		<Txt
+		<Label
+			tabular
 			x={PX + 122}
 			y={190}
 			text={syn.length === 1 ? 'its only codon' : `${syn.length} codons for it:`}
@@ -106,7 +117,8 @@
 			anchor="middle"
 			muted
 		/>
-		<Txt
+		<Label
+			tabular
 			x={PX + 122}
 			y={212}
 			text={syn.length === 1 ? (aa === 'M' ? 'also the start signal' : '') : syn.map(rna).join(' ')}
@@ -116,7 +128,8 @@
 		/>
 	</Readout>
 	<Readout id="hint">
-		<Txt
+		<Label
+			tabular
 			x={PX + 122}
 			y={240}
 			text={picked ? 'click another codon' : 'click any codon'}
@@ -136,17 +149,17 @@
 	>
 		{#each KINDS as k, i (k)}
 			<rect x={PX + 4} y={290 + i * 28} width="22" height="18" rx="4" fill={KIND_COLOR[k]} />
-			<Txt x={PX + 34} y={304 + i * 28} text={KIND_LABEL[k]} size={12.5} />
+			<Label anchor="start" tabular x={PX + 34} y={304 + i * 28} text={KIND_LABEL[k]} size={12.5} />
 		{/each}
 	</Readout>
 	<Readout id="counts" order={2} label="64 codons" value="61 for amino acids · 3 stop">
-		<Txt x={PX + 4} y={454} text="64 codons:" size={13} weight={700} />
-		<Txt x={PX + 4} y={474} text="61 for the 20 amino acids," size={12.5} />
-		<Txt x={PX + 4} y={492} text="3 for stop (UAA, UAG, UGA)." size={12.5} />
-		<Txt x={PX + 4} y={518} text="AUG (Met) also means start." size={12.5} />
-		<Txt x={PX + 4} y={544} text="One box = one amino acid," size={12} muted />
-		<Txt x={PX + 4} y={560} text="often only the 3rd letter" size={12} muted />
-		<Txt x={PX + 4} y={576} text="differs. Colour = kind of" size={12} muted />
-		<Txt x={PX + 4} y={592} text="side chain." size={12} muted />
+		<Label anchor="start" x={PX + 4} y={454} text="64 codons:" size={13} weight={700} />
+		<Label anchor="start" x={PX + 4} y={474} text="61 for the 20 amino acids," size={12.5} />
+		<Label anchor="start" x={PX + 4} y={492} text="3 for stop (UAA, UAG, UGA)." size={12.5} />
+		<Label anchor="start" x={PX + 4} y={518} text="AUG (Met) also means start." size={12.5} />
+		<Label anchor="start" x={PX + 4} y={544} text="One box = one amino acid," size={12} muted />
+		<Label anchor="start" x={PX + 4} y={560} text="often only the 3rd letter" size={12} muted />
+		<Label anchor="start" x={PX + 4} y={576} text="differs. Colour = kind of" size={12} muted />
+		<Label anchor="start" x={PX + 4} y={592} text="side chain." size={12} muted />
 	</Readout>
 </g>

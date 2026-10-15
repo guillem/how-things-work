@@ -12,7 +12,7 @@
 	import { Readout } from '#lib/explainer/index.ts';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import Title from './Title.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -112,7 +112,8 @@
 				value={pct(xChange)}
 				color="var(--gw-laser)"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={CX + 100}
 					y={CY + 50}
 					text="x arm {pct(xChange)}"
@@ -128,7 +129,8 @@
 				value={pct(yChange)}
 				color="var(--gw-laser)"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={CX + 14}
 					y={CY - 192}
 					text="y arm {pct(yChange)}"
@@ -153,14 +155,16 @@
 	<circle cx={CX} cy={CY} r="4" fill="var(--stage-ink)" />
 
 	<Readout id="ring-cap">
-		<T
+		<Label
+			anchor="start"
 			x={32}
 			y={548}
 			text="dashed: the ring with no wave · free masses, not tied"
 			size={12}
 			muted
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={32}
 			y={566}
 			text="strain drawn h = 0.5 (each axis ±25%); a real one is about 10⁻²¹"
@@ -213,8 +217,16 @@
 		marker-end="url(#arrowhead)"
 	/>
 	<Readout id="side-cap">
-		<T x={SX1 - 70} y={SY + 200} text="direction of travel, at c" size={12} anchor="end" muted />
-		<T
+		<Label
+			x={SX1 - 70}
+			y={SY + 200}
+			text="direction of travel, at c"
+			size={12}
+			anchor="end"
+			muted
+		/>
+		<Label
+			anchor="start"
 			x={496}
 			y={566}
 			text={cross

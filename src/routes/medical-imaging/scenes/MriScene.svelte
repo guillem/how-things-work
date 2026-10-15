@@ -173,8 +173,7 @@
 			marker-end="url(#arrowhead)"
 		/>
 		<Readout id="field" order={1} label="Field" value="{B.toFixed(1)} T">
-			<text x={44} y={60} font-weight="600" style:font-size="15px"
-				>magnetic field B = {B.toFixed(1)} T</text
+			<text x={44} y={60} font-weight="600" font-size="15">magnetic field B = {B.toFixed(1)} T</text
 			>
 		</Readout>
 		{#each spins as s (s.i)}
@@ -217,7 +216,7 @@
 			value="{f.toFixed(1)} MHz"
 			note="{(f * 1e6).toExponential(2).replace('e+', ' × 10^')} turns per second"
 		>
-			<text x={FX} y={140} font-weight="600" style:font-size="22px">f = {f.toFixed(1)} MHz</text>
+			<text x={FX} y={140} font-weight="600" font-size="22">f = {f.toFixed(1)} MHz</text>
 			<Label
 				x={FX}
 				y={166}
@@ -297,7 +296,7 @@
 				? `${(kcm * 1000).toFixed(0)} Hz per cm`
 				: 'off: every proton at the same frequency'}
 		>
-			<text x={gx(-10)} y={50} font-weight="600" style:font-size="15px"
+			<text x={gx(-10)} y={50} font-weight="600" font-size="15"
 				>field grows to the right: {G} mT/m{G > 0
 					? ` → ${(kcm * 1000).toFixed(0)} Hz more per cm`
 					: ' (off)'}</text
@@ -382,9 +381,7 @@
 			/>
 		</Readout>
 		<!-- the signal -->
-		<text x={SIG_X} y={SIG_Y - SIG_H - 20} font-weight="600" style:font-size="15px"
-			>The coil's signal</text
-		>
+		<text x={SIG_X} y={SIG_Y - SIG_H - 20} font-weight="600" font-size="15">The coil's signal</text>
 		<line x1={SIG_X} y1={SIG_Y} x2={SIG_X + SIG_W} y2={SIG_Y} stroke="var(--stage-line)" />
 		<path d={sigPath} fill="none" stroke="var(--mi-spin)" stroke-width="1.6" />
 		<Readout
@@ -425,7 +422,7 @@
 		</Readout>
 	{:else}
 		<!-- tissue patches -->
-		<text x={40} y={60} font-weight="600" style:font-size="15px">Brightness in the image</text>
+		<text x={40} y={60} font-weight="600" font-size="15">Brightness in the image</text>
 		<rect x={39} y={79} width={362} height={242} fill="var(--mi-panel)" stroke="var(--border)" />
 		{#each signals as s, i (s.k)}
 			{@const x = 52 + (i % 3) * 116}
@@ -441,7 +438,7 @@
 			value={weighting}
 			note="brightest: {NAMES[brightest.k]}"
 		>
-			<text x={40} y={358} font-weight="600" style:font-size="15px"
+			<text x={40} y={358} font-weight="600" font-size="15"
 				>{weighting}: brightest is {NAMES[brightest.k]}</text
 			>
 		</Readout>

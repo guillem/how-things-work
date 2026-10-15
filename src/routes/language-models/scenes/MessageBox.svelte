@@ -6,7 +6,7 @@
 	 */
 	import { Readout, type ParamValue } from '#lib/explainer/index.ts';
 	import { MAX_LENGTH } from './shared';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Props {
 		x: number;
@@ -61,7 +61,8 @@
 		{oninput}></textarea>
 </foreignObject>
 <Readout id="msg-length">
-	<Txt
+	<Label
+		tabular
 		x={x + w}
 		y={y + 76}
 		anchor="end"
@@ -71,7 +72,7 @@
 	/>
 </Readout>
 <Readout id="msg-try">
-	<Txt {x} y={y + 85} text="Try:" size={12} muted />
+	<Label anchor="start" {x} y={y + 85} text="Try:" size={12} muted />
 </Readout>
 {#each chips as c (c.label)}
 	{@const on = c.value === value}
@@ -94,8 +95,7 @@
 			fill-opacity={on ? 0.18 : 1}
 			stroke={on ? 'var(--explainer-accent, var(--accent))' : 'var(--border)'}
 		/>
-		<text x={c.x + c.w / 2} y={y + 84.5} text-anchor="middle" style:font-size="12px">{c.label}</text
-		>
+		<text x={c.x + c.w / 2} y={y + 84.5} text-anchor="middle" font-size="12">{c.label}</text>
 	</g>
 {/each}
 

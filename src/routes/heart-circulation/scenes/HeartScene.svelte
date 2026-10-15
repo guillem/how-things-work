@@ -119,7 +119,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -131,7 +131,7 @@
 			y={Y(ly) + i * (size + 2)}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="{size}px"
+			font-size={size}
 			style:fill="var(--surface)">{line}</text
 		>
 	{/each}
@@ -412,7 +412,7 @@
 					y={y + 3}
 					text-anchor="middle"
 					font-weight="700"
-					style:font-size="11px"
+					font-size="11"
 					style:fill={v.open ? 'var(--surface)' : 'var(--stage-ink-muted)'}
 					>{v.open ? 'open' : 'shut'}</text
 				>

@@ -429,7 +429,7 @@
 							y={SY + 42}
 							text-anchor="middle"
 							class="halo"
-							style:font-size="12px"
+							font-size="12"
 							style:fill="var(--wav-b)"
 							font-weight="600">squeezed</text
 						>
@@ -438,7 +438,7 @@
 							y={SY + 42}
 							text-anchor="middle"
 							class="halo"
-							style:font-size="12px"
+							font-size="12"
 							style:fill="var(--wav-a)"
 							font-weight="600">stretched</text
 						>
@@ -464,7 +464,7 @@
 					y={SY + 70}
 					text-anchor={e.a}
 					class="halo"
-					style:font-size="12px"
+					font-size="12"
 					style:fill={e.c}
 					font-weight="600">listener {e.l}</text
 				>
@@ -473,12 +473,12 @@
 					y={SY + 90}
 					text-anchor={e.a}
 					class="halo"
-					style:font-size="15px"
+					font-size="15"
 					style:fill={e.c}
 					font-weight="700">{fmt(e.f, 0)} Hz</text
 				>
 			{/each}
-			<text x="32" y={FY1 - 14} class="muted halo" style:font-size="11px"
+			<text x="32" y={FY1 - 14} class="muted halo" font-size="11"
 				>seen from above · crests drawn hugely slowed down; the speeds’ ratio is real</text
 			>
 		</g>
@@ -520,7 +520,7 @@
 			/>
 			<line x1={RX0} x2={RX1} y1={RY} y2={RY} stroke="var(--stage-line)" stroke-dasharray="14 12" />
 			{#each [-60, -40, -20, 0, 20, 40, 60] as m (m)}
-				<text x={rx(m)} y={RY - 28} text-anchor="middle" class="muted" style:font-size="11px"
+				<text x={rx(m)} y={RY - 28} text-anchor="middle" class="muted" font-size="11"
 					>{m === 0 ? '0 m' : `${m > 0 ? '+' : '−'}${Math.abs(m)}`}</text
 				>
 			{/each}
@@ -533,7 +533,7 @@
 				stroke="var(--stage-line)"
 				stroke-dasharray="2 3"
 			/>
-			<text x={LX + 8} y={(RY + 20 + LY) / 2 + 4} class="muted" style:font-size="11px">10 m</text>
+			<text x={LX + 8} y={(RY + 20 + LY) / 2 + 4} class="muted" font-size="11">10 m</text>
 			<circle
 				cx={LX}
 				cy={LY}
@@ -542,7 +542,7 @@
 				stroke="var(--stage-ink)"
 				stroke-width="2.5"
 			/>
-			<text x={LX + 16} y={LY + 4} style:font-size="12px" font-weight="600">you</text>
+			<text x={LX + 16} y={LY + 4} font-size="12" font-weight="600">you</text>
 			<!-- where the sound being heard was sent from -->
 			{#if v > 0}
 				{@const ex = rx(drive.heard.emitted * v)}
@@ -582,9 +582,7 @@
 			<!-- plot -->
 			{#each ticks as f (f)}
 				<line x1={RX0} x2={RX1} y1={py(f)} y2={py(f)} stroke="var(--stage-grid)" />
-				<text x={RX0 + 4} y={py(f) - 4} class="muted" style:font-size="11px"
-					>{Math.round(f)} Hz</text
-				>
+				<text x={RX0 + 4} y={py(f) - 4} class="muted" font-size="11">{Math.round(f)} Hz</text>
 			{/each}
 			<line
 				x1={RX0}
@@ -594,7 +592,7 @@
 				stroke="var(--stage-ink-muted)"
 				stroke-dasharray="5 5"
 			/>
-			<text x={RX1} y={py(F) - 6} text-anchor="end" class="muted halo" style:font-size="11px"
+			<text x={RX1} y={py(F) - 6} text-anchor="end" class="muted halo" font-size="11"
 				>the horn’s own 440 Hz</text
 			>
 			<path d={curve} fill="none" stroke="var(--wav-sum)" stroke-width="2.5" />
@@ -614,15 +612,10 @@
 				opacity={drive.o}
 			/>
 			<line x1={RX0} x2={RX1} y1={PY1} y2={PY1} stroke="var(--stage-line)" />
-			<text
-				x={(RX0 + RX1) / 2}
-				y={PY1 + 22}
-				text-anchor="middle"
-				class="muted"
-				style:font-size="12px"
+			<text x={(RX0 + RX1) / 2} y={PY1 + 22} text-anchor="middle" class="muted" font-size="12"
 				>pitch you hear, against where the car is on the road (same scale as above)</text
 			>
-			<text x={RX0} y={PY0 - 14} style:font-size="13px" font-weight="600">What you hear</text>
+			<text x={RX0} y={PY0 - 14} font-size="13" font-weight="600">What you hear</text>
 		</g>
 	{/if}
 </g>

@@ -300,7 +300,7 @@
 			x={LOAD.x}
 			y={LOAD.y + 5}
 			text-anchor="middle"
-			style:font-size="13px"
+			font-size="13"
 			font-weight="700"
 			style:fill="var(--stage-bg)">charger</text
 		>
@@ -511,10 +511,10 @@
 				stroke-width="2"
 			/>
 			<Readout id="v" order={2} label="Cell voltage" value={fmtV(voltage, 2)}>
-				<text x={PX1 - 90} y={PY0 - 40} text-anchor="end" style:font-size="12px" class="muted"
+				<text x={PX1 - 90} y={PY0 - 40} text-anchor="end" font-size="12" class="muted"
 					>cell voltage</text
 				>
-				<text x={PX1} y={PY0 - 38} text-anchor="end" style:font-size="22px" font-weight="700"
+				<text x={PX1} y={PY0 - 38} text-anchor="end" font-size="22" font-weight="700"
 					>{fmtV(voltage, 2)}</text
 				>
 			</Readout>

@@ -182,7 +182,7 @@
 <g>
 	<!-- header -->
 	<Readout id="tree-title">
-		<text x={TX0 - 24} y={70} style:font-size="16px" font-weight="600">A chain of fissions</text>
+		<text x={TX0 - 24} y={70} font-size="16" font-weight="600">A chain of fissions</text>
 		<text x={TX0 - 24} y={90} class="muted"
 			>{genShown === 0
 				? 'one fission'
@@ -191,7 +191,7 @@
 	</Readout>
 	{#each Array.from({ length: GENS + 1 }, (_, g) => g) as g (g)}
 		<Readout id="gen-{g}">
-			<text x={colX(g)} y={TY0 - 16} text-anchor="middle" class="muted" style:font-size="11px"
+			<text x={colX(g)} y={TY0 - 16} text-anchor="middle" class="muted" font-size="11"
 				>{g === 0 ? 'start' : `gen ${g}`}</text
 			>
 		</Readout>
@@ -250,7 +250,7 @@
 	<Readout id="key-captured" label="captured" color="var(--fi-captured)" />
 	<Readout id="key-escaped" label="escapes" color="var(--fi-escaped)" />
 	<Readout id="key">
-		<g style:font-size="12px">
+		<g font-size="12">
 			<circle cx={TX0 - 16} cy={566} r="7" fill="var(--fi-u235)" />
 			<circle cx={TX0 - 16} cy={566} r="2.6" fill="var(--fi-flash)" />
 			<text x={TX0 - 4} y={570}>fission</text>
@@ -328,12 +328,12 @@
 				note="the chain is set to k = 1 on average"
 			>
 				<text x={670} y={358}>new fissions per fission</text>
-				<text x={900} y={388} text-anchor="end" style:font-size="18px" font-weight="700"
+				<text x={900} y={388} text-anchor="end" font-size="18" font-weight="700"
 					>{tally.parents
 						? `${tally.fis} / ${tally.parents} = ${(tally.fis / tally.parents).toFixed(2)}`
 						: '…'}</text
 				>
-				<text x={670} y={408} class="muted" style:font-size="11px"
+				<text x={670} y={408} class="muted" font-size="11"
 					>the chain is set to k = 1 on average</text
 				>
 			</Readout>
@@ -342,9 +342,7 @@
 		<!-- the long run -->
 		<g opacity={runIn}>
 			<Readout id="plot-title">
-				<text x={PX0} y={102} style:font-size="15px" font-weight="600"
-					>1,000 neutrons, 40 generations</text
-				>
+				<text x={PX0} y={102} font-size="15" font-weight="600">1,000 neutrons, 40 generations</text>
 				<text x={PX0} y={120} class="muted">neutrons in each generation</text>
 			</Readout>
 			<Axes
@@ -386,7 +384,7 @@
 				<text x={PX0 + 32} y={486} class="muted">1,000 × kᵍ, the average</text>
 			</Readout>
 			<Readout id="state" order={1} label="k = {k.toFixed(2)}" value={state} color={stateColour}>
-				<text x={PX0} y={512} style:font-size="18px" font-weight="700" style:fill={stateColour}
+				<text x={PX0} y={512} font-size="18" font-weight="700" style:fill={stateColour}
 					>k = {k.toFixed(2)} · {state}</text
 				>
 			</Readout>

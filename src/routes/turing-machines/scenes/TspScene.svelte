@@ -7,11 +7,10 @@
 	 * `createPlayback` (tours per second), with a scrubber.
 	 */
 	import { untrack } from 'svelte';
-	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { clamp, Handle, Label, type Point, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { createPlayback } from '#lib/explainer/playback.ts';
 	import { bruteForce, cities, nearestNeighbour, tourCount, tourLength } from '../turing';
-	import Txt from './Txt.svelte';
 
 	let { t, params, setParam, reduced }: StageProps = $props();
 
@@ -116,8 +115,18 @@
 			: `Trying tour ${(tried + 1).toLocaleString('en')} of ${total.toLocaleString('en')}`}
 		color={done ? 'var(--tm-best)' : undefined}
 	>
-		<Txt x={24} y={42} text="{n} made-up cities: try every round trip" size={18} weight={600} />
-		<Txt
+		<Label
+			anchor="start"
+			tabular
+			x={24}
+			y={42}
+			text="{n} made-up cities: try every round trip"
+			size={18}
+			weight={600}
+		/>
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={68}
 			text={done
@@ -169,7 +178,8 @@
 			stroke="var(--surface)"
 			stroke-width="2"
 		/>
-		<Txt
+		<Label
+			tabular
 			x={p.x}
 			y={p.y + 4}
 			text={i === 0 ? '⌂' : String(i)}
@@ -188,12 +198,36 @@
 		label="Distinct tours, (n − 1)!/2"
 		value={tourCount(n).toLocaleString('en')}
 	>
-		<Txt x={600} y={120} text="Distinct tours: ({n} − 1)!/2" size={13} muted />
-		<Txt x={600} y={146} text={tourCount(n).toLocaleString('en')} size={22} weight={700} />
+		<Label
+			anchor="start"
+			tabular
+			x={600}
+			y={120}
+			text="Distinct tours: ({n} − 1)!/2"
+			size={13}
+			muted
+		/>
+		<Label
+			anchor="start"
+			tabular
+			x={600}
+			y={146}
+			text={tourCount(n).toLocaleString('en')}
+			size={22}
+			weight={700}
+		/>
 	</Readout>
 	<Readout id="tried" order={3} label="Tried" value={tried.toLocaleString('en')}>
-		<Txt x={780} y={120} text="Tried so far" size={13} muted />
-		<Txt x={780} y={146} text={tried.toLocaleString('en')} size={22} weight={700} />
+		<Label anchor="start" x={780} y={120} text="Tried so far" size={13} muted />
+		<Label
+			anchor="start"
+			tabular
+			x={780}
+			y={146}
+			text={tried.toLocaleString('en')}
+			size={22}
+			weight={700}
+		/>
 	</Readout>
 	<Readout
 		id="best"
@@ -203,7 +237,9 @@
 		color="var(--tm-best)"
 	>
 		<line x1={600} x2={630} y1={196} y2={196} stroke="var(--tm-best)" stroke-width="3.5" />
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={640}
 			y={200}
 			text="shortest so far: {bestNow ? fmt(bestNow.length) : '—'}"
@@ -228,7 +264,9 @@
 			stroke-width="2"
 			stroke-dasharray="6 5"
 		/>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={640}
 			y={230}
 			text="greedy guess: {fmt(greedyLength)}"
@@ -240,7 +278,9 @@
 	{#if current && !done}
 		<Readout id="trying">
 			<line x1={600} x2={630} y1={256} y2={256} stroke="var(--tm-try)" stroke-width="1.5" />
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={640}
 				y={260}
 				text="tour being tried: {fmt(tourLength(cs, current))}"
@@ -259,7 +299,9 @@
 				: `the greedy tour is ${pct.toFixed(1)}% longer`
 			: 'not known until every tour is tried'}
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={600}
 			y={310}
 			text={done
@@ -272,9 +314,24 @@
 		/>
 	</Readout>
 	<Readout id="units">
-		<Txt x={600} y={340} text="Lengths in arbitrary units. ⌂: the start." size={12} muted />
-		<Txt x={600} y={380} text="One more city multiplies the tours by n:" size={13} />
-		<Txt
+		<Label
+			anchor="start"
+			x={600}
+			y={340}
+			text="Lengths in arbitrary units. ⌂: the start."
+			size={12}
+			muted
+		/>
+		<Label
+			anchor="start"
+			x={600}
+			y={380}
+			text="One more city multiplies the tours by n:"
+			size={13}
+		/>
+		<Label
+			anchor="start"
+			tabular
 			x={600}
 			y={402}
 			text="{n} cities: {tourCount(n).toLocaleString('en')} · {n + 1} cities: {tourCount(
@@ -306,7 +363,8 @@
 		opacity="0.6"
 	/>
 	<Readout id="tsp-tl">
-		<Txt
+		<Label
+			tabular
 			x={(TL0 + TL1) / 2}
 			y={TLY + 28}
 			text={playing ? 'drag, or focus and use ← → / End' : 'paused: drag or use ← →'}

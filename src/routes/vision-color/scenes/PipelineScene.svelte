@@ -283,7 +283,7 @@
 			<text
 				x={w.b.x + 10}
 				y={w.b.y + 4}
-				style:font-size="12px"
+				font-size="12"
 				font-weight="700"
 				style:fill={KINDS[w.k].color}>{w.sign}</text
 			>

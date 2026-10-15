@@ -7,10 +7,9 @@
 	 * falls GIVE_UP blocks behind. Bottom: the probability that he ever catches up, against z,
 	 * from Nakamoto's formula and the exact one. Loops; reduced motion shows the finished race.
 	 */
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type Params } from '#lib/explainer/index.ts';
 	import { confirmationsFor, exactRace, nakamoto, race } from '../consensus';
-	import Txt from './Txt.svelte';
 
 	interface Props {
 		t: number;
@@ -105,7 +104,9 @@
 		label="Attacker"
 		value="{Math.round(q * 100)} % of the power · shop waits {z} blocks"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={36}
 			text="An attacker with {Math.round(
@@ -125,7 +126,7 @@
 		rx="5"
 		fill="var(--stage-ink-muted)"
 	/>
-	<Txt
+	<Label
 		x={BX - 60}
 		y={(ROW.honest + ROW.attacker) / 2 + 4}
 		text="before"
@@ -135,7 +136,8 @@
 		color="var(--surface)"
 	/>
 	<Readout id="rows">
-		<Txt
+		<Label
+			anchor="start"
 			x={BX - 20}
 			y={ROW.honest - 28}
 			text="public chain (all honest miners): its block 1 pays the shop"
@@ -143,7 +145,8 @@
 			weight={700}
 			color="var(--cb-honest)"
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={BX - 20}
 			y={ROW.attacker + 40}
 			text="attacker’s secret chain: its block 1 pays the same coins back to him"
@@ -200,7 +203,7 @@
 					x={x(b.n)}
 					y={y + 5}
 					text-anchor="middle"
-					style:font-size="12px"
+					font-size="12"
 					style:font-weight="700"
 					style:fill="white">{b.n}</text
 				>
@@ -221,7 +224,8 @@
 			stroke-dasharray="5 4"
 		/>
 		<Readout id="shop">
-			<Txt
+			<Label
+				anchor="start"
 				x={sx + 6}
 				y={(ROW.honest + ROW.attacker) / 2 + 4}
 				text="shop hands over the goods"
@@ -239,11 +243,21 @@
 		value="public {h} · secret {a}{outcome ? ` — ${outcome}` : ''}"
 		color={!outcome ? undefined : run.outcome === 'caught-up' ? 'var(--cb-bad)' : 'var(--cb-ok)'}
 	>
-		<Txt x={24} y={ROW.attacker + 72} text="public {h} · secret {a}" size={13} weight={700} />
+		<Label
+			anchor="start"
+			tabular
+			x={24}
+			y={ROW.attacker + 72}
+			text="public {h} · secret {a}"
+			size={13}
+			weight={700}
+		/>
 	</Readout>
 	{#if outcome}
 		<Readout id="outcome">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={190}
 				y={ROW.attacker + 72}
 				text={outcome}
@@ -256,7 +270,8 @@
 
 	<!-- chart -->
 	<Readout id="chart-title">
-		<Txt
+		<Label
+			anchor="start"
 			x={CH.x0}
 			y={CH.y1 - 18}
 			text="Chance the attacker ever catches up, against the blocks the shop waits for"
@@ -266,7 +281,8 @@
 	</Readout>
 	{#each [0, -2, -4, -6, -8] as e (e)}
 		<line x1={CH.x0} x2={CH.x1} y1={cy(10 ** e)} y2={cy(10 ** e)} stroke="var(--stage-grid)" />
-		<Txt
+		<Label
+			tabular
 			x={CH.x0 - 8}
 			y={cy(10 ** e) + 4}
 			text={['100 %', '1 %', '0.01 %', '0.0001 %', '≤ 10⁻⁶ %'][-e / 2]}
@@ -276,7 +292,7 @@
 		/>
 	{/each}
 	{#each zs as zz (zz)}
-		<Txt x={cx(zz)} y={CH.y0 + 18} text={String(zz)} size={11} anchor="middle" muted />
+		<Label tabular x={cx(zz)} y={CH.y0 + 18} text={String(zz)} size={11} anchor="middle" muted />
 	{/each}
 	<path
 		d={line(exact)}
@@ -307,7 +323,9 @@
 			: `below 0.1 % after ${needed} blocks (exact)`}
 		color="var(--cb-attacker)"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={600}
 			y={384}
 			text="At z = {z}: {pctText(nak[z])}"
@@ -315,13 +333,22 @@
 			weight={700}
 			color="var(--cb-attacker)"
 		/>
-		<Txt x={600} y={406} text="Nakamoto’s formula (solid line)" size={12} muted />
+		<Label anchor="start" x={600} y={406} text="Nakamoto’s formula (solid line)" size={12} muted />
 	</Readout>
 	<Readout id="p-exact">
-		<Txt x={600} y={436} text="exact value: {pctText(exact[z])} (dashed)" size={12} />
+		<Label
+			anchor="start"
+			tabular
+			x={600}
+			y={436}
+			text="exact value: {pctText(exact[z])} (dashed)"
+			size={12}
+		/>
 	</Readout>
 	<Readout id="need">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={600}
 			y={470}
 			text={q >= 0.5

@@ -62,13 +62,13 @@
 <g class="genes-scene">
 	<!-- ===================== the gene ===================== -->
 	<Readout id="gene-title">
-		<text x={BX} y={40} style:font-size="15px" font-weight="600"
+		<text x={BX} y={40} font-size="15" font-weight="600"
 			>KRAS, the start of the gene: codons 1–20</text
 		>
 	</Readout>
 	{#each codons as c (c.i)}
 		<g>
-			<text x={c.x + BW / 2} y={BY - 6} text-anchor="middle" style:font-size="10px" class="muted"
+			<text x={c.x + BW / 2} y={BY - 6} text-anchor="middle" font-size="10" class="muted"
 				>{c.i + 1}</text
 			>
 			<rect
@@ -88,7 +88,7 @@
 					text-anchor="middle"
 					font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
 					font-weight={l.changed ? 700 : 500}
-					style:font-size="14px"
+					font-size="14"
 					style:fill={l.changed ? 'var(--ca-cancer)' : undefined}>{l.b}</text
 				>
 			{/each}
@@ -96,7 +96,7 @@
 				x={c.x + BW / 2}
 				y={BY + 50}
 				text-anchor="middle"
-				style:font-size="12px"
+				font-size="12"
 				font-weight={c.changed ? 700 : 400}
 				style:fill={c.changed ? 'var(--ca-cancer)' : 'var(--stage-ink-muted)'}>{c.aa}</text
 			>
@@ -122,7 +122,7 @@
 		/>
 	</Readout>
 	<Readout id="gene-note">
-		<text x={BX} y={BY + 112} style:font-size="12px" class="muted"
+		<text x={BX} y={BY + 112} font-size="12" class="muted"
 			>{mutated
 				? 'One letter of 567 changed; the rest of the protein is the same.'
 				: 'The normal gene (RefSeq NM_004985.5). Pick a change of codon 12.'}</text
@@ -133,10 +133,10 @@
 
 	<!-- ===================== the accelerator ===================== -->
 	<Readout id="acc-title">
-		<text x={40} y={242} style:font-size="15px" font-weight="600">Accelerator: an oncogene</text>
+		<text x={40} y={242} font-size="15" font-weight="600">Accelerator: an oncogene</text>
 	</Readout>
 	<Readout id="acc-sub">
-		<text x={40} y={262} style:font-size="12px" class="muted">one hit switches it on for good</text>
+		<text x={40} y={262} font-size="12" class="muted">one hit switches it on for good</text>
 	</Readout>
 	{#each ROWS as row (row.id)}
 		{@const on = onOf(row.id)}
@@ -150,7 +150,7 @@
 				arrow
 				opacity={0.25 + 0.75 * sig}
 			/>
-			<text x={60} y={row.y - 14} style:font-size="12px" class="muted">“divide” signal</text>
+			<text x={60} y={row.y - 14} font-size="12" class="muted">“divide” signal</text>
 			<!-- the switch -->
 			<circle
 				cx={200}
@@ -164,7 +164,7 @@
 				x={200}
 				y={row.y - 2}
 				text-anchor="middle"
-				style:font-size="12px"
+				font-size="12"
 				font-weight="600"
 				style:fill={on > 0.5 ? '#2a1f1c' : undefined}>KRAS</text
 			>
@@ -172,7 +172,7 @@
 				x={200}
 				y={row.y + 14}
 				text-anchor="middle"
-				style:font-size="11px"
+				font-size="11"
 				style:fill={on > 0.5 ? '#2a1f1c' : undefined}>{on > 0.5 ? 'ON' : 'off'}</text
 			>
 			<!-- onward to division -->
@@ -188,7 +188,7 @@
 			<text
 				x={350}
 				y={row.y + 5}
-				style:font-size="13px"
+				font-size="13"
 				font-weight={on > 0.5 ? 600 : 400}
 				opacity={0.35 + 0.65 * on}>divide</text
 			>
@@ -202,10 +202,10 @@
 						: 'on after each signal, then off'
 					: undefined}
 			>
-				<text x={60} y={row.y + 48} style:font-size="12px" font-weight="600"
+				<text x={60} y={row.y + 48} font-size="12" font-weight="600"
 					>{row.id === 'mutant' ? mutantLabel : row.label}</text
 				>
-				<text x={60} y={row.y + 64} style:font-size="11px" class="muted"
+				<text x={60} y={row.y + 64} font-size="11" class="muted"
 					>{row.id === 'mutant' && mutated
 						? 'on even without a signal'
 						: 'switches itself off after each signal'}</text
@@ -218,18 +218,18 @@
 
 	<!-- ===================== the brakes ===================== -->
 	<Readout id="brake-title">
-		<text x={500} y={242} style:font-size="15px" font-weight="600"
+		<text x={500} y={242} font-size="15" font-weight="600"
 			>Brakes: a tumour suppressor (TP53, RB1)</text
 		>
 	</Readout>
 	<Readout id="brake-sub">
-		<text x={500} y={262} style:font-size="12px" class="muted"
+		<text x={500} y={262} font-size="12" class="muted"
 			>two copies, and one working copy is enough</text
 		>
 	</Readout>
 	{#each COLS as col (col.id)}
 		<g>
-			<text x={col.x} y={300} text-anchor="middle" style:font-size="12px" font-weight="600"
+			<text x={col.x} y={300} text-anchor="middle" font-size="12" font-weight="600"
 				>{col.title}</text
 			>
 			{#each [0, 1] as k (k)}
@@ -261,7 +261,7 @@
 					/>
 				{/if}
 			{/each}
-			<text x={col.x} y={498} text-anchor="middle" style:font-size="11px" class="muted"
+			<text x={col.x} y={498} text-anchor="middle" font-size="11" class="muted"
 				>TP53 on each copy</text
 			>
 			<Readout

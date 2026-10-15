@@ -306,9 +306,7 @@
 			value="6 protons · 6 neutrons"
 			note="stable: lasts for ever"
 		>
-			<text x={250} y={128} text-anchor="middle" style:font-size="18px" font-weight="600"
-				>Carbon-12</text
-			>
+			<text x={250} y={128} text-anchor="middle" font-size="18" font-weight="600">Carbon-12</text>
 			<text x={250} y={152} text-anchor="middle" class="muted">6 protons · 6 neutrons</text>
 		</Readout>
 		{@render drawn(intro12)}
@@ -328,7 +326,7 @@
 					: 'radioactive: half-life 5,700 years'}
 				opacity={introFade}
 			>
-				<text x={700} y={128} text-anchor="middle" style:font-size="18px" font-weight="600">
+				<text x={700} y={128} text-anchor="middle" font-size="18" font-weight="600">
 					{decayed ? 'Nitrogen-14' : 'Carbon-14'}
 				</text>
 				<text x={700} y={152} text-anchor="middle" class="muted">
@@ -385,7 +383,7 @@
 			value={halfLifeText}
 			note="for {nameText(parent).toLowerCase()}"
 		>
-			<text x={40} y={50} style:font-size="18px" font-weight="600">{NAMES[mode]}</text>
+			<text x={40} y={50} font-size="18" font-weight="600">{NAMES[mode]}</text>
 			<text x={40} y={74} class="muted">{halfLifeText} for {nameText(parent).toLowerCase()}</text>
 		</Readout>
 
@@ -506,7 +504,7 @@
 					text-anchor="middle"
 					font-weight={hot ? 600 : 400}
 					class={hot ? '' : 'muted'}
-					style:font-size="12px"
+					font-size="12"
 					opacity={hot ? 1 : underArrow(c) ? 0 : 0.7}
 					>{element(c.z).symbol}-{c.z + c.n}{isParent(c) && parent.meta ? 'm' : ''}</text
 				>
@@ -557,7 +555,7 @@
 
 		<!-- what stops it -->
 		<Readout id="stopped" order={4} label="What stops it" value={stoppedBy}>
-			<text x={40} y={SY - 62} style:font-size="15px" font-weight="600">What stops it</text>
+			<text x={40} y={SY - 62} font-size="15" font-weight="600">What stops it</text>
 			<text x={160} y={SY - 62} class="muted">{stoppedBy}</text>
 		</Readout>
 		<circle cx={SRC - 16} cy={SY} r="12" fill="var(--rad-parent)" />

@@ -21,7 +21,7 @@
 		schwarzschildRadius
 	} from '../blackhole';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -75,8 +75,8 @@
 </script>
 
 {#snippet row(y: number, label: string, value: string, color?: string)}
-	<T x={CX + 16} {y} text={label} size={12.5} muted />
-	<T x={CX + CW - 16} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+	<Label anchor="start" x={CX + 16} {y} text={label} size={12.5} muted />
+	<Label x={CX + CW - 16} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
 {/snippet}
 
 <g>
@@ -145,13 +145,13 @@
 		stroke="var(--bh-space)"
 		stroke-width="1.5"
 	/>
-	<T x={earth.X} y={earth.Y - 14} text="Earth" size={12} anchor="middle" weight={600} />
-	<T x={pull.LX} y={pull.LY} text="gravity" size={11.5} anchor="middle" weight={600} />
+	<Label x={earth.X} y={earth.Y - 14} text="Earth" size={12} anchor="middle" weight={600} />
+	<Label x={pull.LX} y={pull.LY} text="gravity" size={11.5} anchor="middle" weight={600} />
 
 	{#if k.current < 0.5}
-		<T x={SX} y={SY + 50} text="the Sun (drawn 25× too big)" size={12} anchor="middle" muted />
+		<Label x={SX} y={SY + 50} text="the Sun (drawn 25× too big)" size={12} anchor="middle" muted />
 	{:else}
-		<T
+		<Label
 			x={SX}
 			y={SY + 44}
 			text="a black hole of one solar mass"
@@ -159,7 +159,7 @@
 			anchor="middle"
 			weight={600}
 		/>
-		<T
+		<Label
 			x={SX}
 			y={SY + 62}
 			text="dashed: where the Sun’s edge was (enlarged)"
@@ -168,11 +168,19 @@
 			muted
 		/>
 	{/if}
-	<T x={SX} y={SY - ORBIT - 10} text="the Earth’s orbit: 1 AU" size={12} anchor="middle" muted />
+	<Label
+		x={SX}
+		y={SY - ORBIT - 10}
+		text="the Earth’s orbit: 1 AU"
+		size={12}
+		anchor="middle"
+		muted
+	/>
 
 	<!-- readouts -->
 	<Card x={CX} y={PY0} w={CW} h={228} />
-	<T
+	<Label
+		anchor="start"
 		x={CX + 16}
 		y={PY0 + 28}
 		text={squeeze ? 'Round a black hole' : 'Round the Sun'}
@@ -191,17 +199,44 @@
 	{@render row(PY0 + 200, 'Extra turn (relativity)', `${earthTurn.toFixed(1)}″ a century`)}
 
 	<Card x={CX} y={PY0 + 244} w={CW} h={150} />
-	<T x={CX + 16} y={PY0 + 270} text="Where they differ" size={13.5} weight={700} />
-	<T x={CX + 16} y={PY0 + 292} text="Only close in. Anywhere outside the" size={12.5} />
-	<T
+	<Label
+		anchor="start"
+		x={CX + 16}
+		y={PY0 + 270}
+		text="Where they differ"
+		size={13.5}
+		weight={700}
+	/>
+	<Label
+		anchor="start"
+		x={CX + 16}
+		y={PY0 + 292}
+		text="Only close in. Anywhere outside the"
+		size={12.5}
+	/>
+	<Label
+		anchor="start"
 		x={CX + 16}
 		y={PY0 + 312}
 		text={`Sun’s surface (${fmtKm(R_SUN / 1000)} km), both pull`}
 		size={12.5}
 	/>
-	<T x={CX + 16} y={PY0 + 332} text="the same. Below that, the Sun’s pull" size={12.5} />
-	<T x={CX + 16} y={PY0 + 352} text="weakens; the black hole’s keeps growing," size={12.5} />
-	<T
+	<Label
+		anchor="start"
+		x={CX + 16}
+		y={PY0 + 332}
+		text="the same. Below that, the Sun’s pull"
+		size={12.5}
+	/>
+	<Label
+		anchor="start"
+		x={CX + 16}
+		y={PY0 + 352}
+		text="weakens; the black hole’s keeps growing,"
+		size={12.5}
+	/>
+	<Label
+		anchor="start"
 		x={CX + 16}
 		y={PY0 + 372}
 		text={`down to a horizon ${(rs / 1000).toFixed(1)} km from its centre.`}
@@ -209,7 +244,20 @@
 	/>
 
 	<Card x={CX} y={PY1 - 96} w={CW} h={96} />
-	<T x={CX + 16} y={PY1 - 68} text="A black hole doesn’t suck." size={13.5} weight={700} />
-	<T x={CX + 16} y={PY1 - 46} text="From far away it is just a mass," size={12.5} />
-	<T x={CX + 16} y={PY1 - 26} text="orbited like any other." size={12.5} />
+	<Label
+		anchor="start"
+		x={CX + 16}
+		y={PY1 - 68}
+		text="A black hole doesn’t suck."
+		size={13.5}
+		weight={700}
+	/>
+	<Label
+		anchor="start"
+		x={CX + 16}
+		y={PY1 - 46}
+		text="From far away it is just a mass,"
+		size={12.5}
+	/>
+	<Label anchor="start" x={CX + 16} y={PY1 - 26} text="orbited like any other." size={12.5} />
 </g>

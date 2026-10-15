@@ -17,7 +17,7 @@
 	 * The scheme is `step.hints.scheme` when given, else `params.scheme`.
 	 * `params.resend` changes the noise seed.
 	 */
-	import { Axes, scale } from '#lib/draw/index.ts';
+	import { Axes, Label, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		SCHEMES,
@@ -32,7 +32,6 @@
 	} from '../radio';
 	import { count, num, rate, sup } from '../format';
 	import Constellation from './Constellation.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -132,7 +131,7 @@
 
 <g>
 	<Readout id="title" order={0} label="Received" value={title}>
-		<T x={30} y={44} text="Received symbols: {title}" size={15} weight={700} />
+		<Label anchor="start" x={30} y={44} text="Received symbols: {title}" size={15} weight={700} />
 	</Readout>
 	<Constellation {scheme} {tx} {shown} cx={256} cy={316} half={226} uid="channel" />
 	<Readout
@@ -142,7 +141,8 @@
 		value="{count(here)} of {count(shown)} symbols misread"
 		color="var(--ws-bad)"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={30}
 			y={568}
 			text="{count(shown)} symbols · {count(here)} misread (red)"
@@ -154,9 +154,9 @@
 	{#if phase === 'noise'}
 		<!-- the latest symbols, bit by bit -->
 		<Readout id="strip-title">
-			<T x={560} y={92} text="The latest symbols" size={14} weight={700} />
-			<T x={560} y={134} text="sent" size={12} muted />
-			<T x={660} y={134} text="read as" size={12} muted />
+			<Label anchor="start" x={560} y={92} text="The latest symbols" size={14} weight={700} />
+			<Label anchor="start" x={560} y={134} text="sent" size={12} muted />
+			<Label anchor="start" x={660} y={134} text="read as" size={12} muted />
 		</Readout>
 		{#each strip as row, r (row.s)}
 			{@const y = 160 + r * 26}
@@ -173,8 +173,9 @@
 						opacity="0.15"
 					/>
 				{/if}
-				<T x={560} {y} text={row.sent} size={15} weight={700} />
-				<T
+				<Label anchor="start" x={560} {y} text={row.sent} size={15} weight={700} />
+				<Label
+					anchor="start"
 					x={660}
 					{y}
 					text={row.got}
@@ -183,20 +184,36 @@
 					color={bad ? 'var(--ws-bad)' : undefined}
 				/>
 				{#if bad}
-					<T x={740} {y} text="misread" size={12} color="var(--ws-bad)" weight={600} />
+					<Label
+						anchor="start"
+						x={740}
+						{y}
+						text="misread"
+						size={12}
+						color="var(--ws-bad)"
+						weight={600}
+					/>
 				{/if}
 			</Readout>
 		{/each}
 		<Readout id="count-text">
-			<T x={560} y={500} text="Each symbol carries {schemeBits[scheme]} bits." size={13} />
-			<T
+			<Label
+				anchor="start"
+				x={560}
+				y={500}
+				text="Each symbol carries {schemeBits[scheme]} bits."
+				size={13}
+			/>
+			<Label
+				anchor="start"
 				x={560}
 				y={524}
 				text="Noise pushed {count(here)} of the {count(shown)} symbols"
 				size={13}
 				weight={600}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={560}
 				y={546}
 				text="across a dashed line into a neighbour’s square."
@@ -207,8 +224,8 @@
 	{:else}
 		<!-- bit-error rate against SNR -->
 		<Readout id="plot-title">
-			<T x={560} y={78} text="Bit-error rate" size={14} weight={700} />
-			<T
+			<Label anchor="start" x={560} y={78} text="Bit-error rate" size={14} weight={700} />
+			<Label
 				x={920}
 				y={78}
 				text={phase === 'tradeoff'
@@ -244,7 +261,7 @@
 					label={schemeName[s]}
 					color={schemeColor[s]}
 				>
-					<T
+					<Label
 						x={lab.x}
 						y={lab.y}
 						text={schemeName[s]}
@@ -299,10 +316,18 @@
 			value={nowText}
 			color="var(--ws-bad)"
 		>
-			<T x={560} y={562} text="At {num(snr)} dB: {nowText}" size={13} weight={700} />
+			<Label
+				anchor="start"
+				x={560}
+				y={562}
+				text="At {num(snr)} dB: {nowText}"
+				size={13}
+				weight={700}
+			/>
 		</Readout>
 		<Readout id="theory" order={3} label="Theory" value={rate(theoryNow)}>
-			<T
+			<Label
+				anchor="start"
 				x={560}
 				y={582}
 				text="theory: {theoryNow < 1e-9 ? 'below 10⁻⁹' : rate(theoryNow)}"

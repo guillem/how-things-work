@@ -131,8 +131,8 @@
 		label="Orbit"
 		value="{Math.round(altKm).toLocaleString('en-US')} km up, {speed.toFixed(1)} km/s"
 	>
-		<text x={PX + 18} y={50} class="muted" style:font-size="12px">Orbit</text>
-		<text x={PX + 18} y={72} style:font-size="15px" font-weight="600"
+		<text x={PX + 18} y={50} class="muted" font-size="12">Orbit</text>
+		<text x={PX + 18} y={72} font-size="15" font-weight="600"
 			>{Math.round(altKm).toLocaleString('en-US')} km up · {speed.toFixed(1)} km/s</text
 		>
 	</Readout>
@@ -144,9 +144,8 @@
 		color="var(--gps-gravity)"
 	>
 		<circle cx={PX + 24} cy={106} r="5" fill="var(--gps-gravity)" />
-		<text x={PX + 38} y={110} style:font-size="13px">Weaker gravity</text>
-		<text x={PX + PW - 18} y={110} text-anchor="end" style:font-size="13px"
-			>{sgn(rate.gravity)} µs/day</text
+		<text x={PX + 38} y={110} font-size="13">Weaker gravity</text>
+		<text x={PX + PW - 18} y={110} text-anchor="end" font-size="13">{sgn(rate.gravity)} µs/day</text
 		>
 	</Readout>
 	<Readout
@@ -157,25 +156,21 @@
 		color="var(--gps-speed)"
 	>
 		<circle cx={PX + 24} cy={134} r="5" fill="var(--gps-speed)" />
-		<text x={PX + 38} y={138} style:font-size="13px">Speed</text>
-		<text x={PX + PW - 18} y={138} text-anchor="end" style:font-size="13px"
-			>{sgn(rate.speed)} µs/day</text
-		>
+		<text x={PX + 38} y={138} font-size="13">Speed</text>
+		<text x={PX + PW - 18} y={138} text-anchor="end" font-size="13">{sgn(rate.speed)} µs/day</text>
 	</Readout>
 	<Readout id="net" order={3} label="Net" value="{sgn(rate.net)} µs/day" color="var(--gps-net)">
 		<path d="M{PX + 18} {150}h{PW - 36}" stroke="var(--border)" />
 		<circle cx={PX + 24} cy={170} r="5" fill="var(--gps-net)" />
-		<text x={PX + 38} y={174} style:font-size="14px" font-weight="600">Net</text>
-		<text x={PX + PW - 18} y={174} text-anchor="end" style:font-size="14px" font-weight="600"
+		<text x={PX + 38} y={174} font-size="14" font-weight="600">Net</text>
+		<text x={PX + PW - 18} y={174} text-anchor="end" font-size="14" font-weight="600"
 			>{sgn(rate.net)} µs/day</text
 		>
 	</Readout>
 
 	<Readout id="tally">
-		<text x={PX + 18} y={232} class="muted" style:font-size="12px"
-			>Orbiting clock minus ground clock</text
-		>
-		<text x={PX + 18} y={258} style:font-size="15px" font-weight="600"
+		<text x={PX + 18} y={232} class="muted" font-size="12">Orbiting clock minus ground clock</text>
+		<text x={PX + 18} y={258} font-size="15" font-weight="600"
 			>after {day.toFixed(1)} {day >= 0.95 && day < 1.05 ? 'day' : 'days'}: {sgn(gained)} µs</text
 		>
 		<rect x={PX + 22} y={276} width={BAR} height={14} rx="4" fill="var(--stage-grid)" />
@@ -190,19 +185,17 @@
 			fill="var(--gps-net)"
 		/>
 		<path d="M{PX + 22 + BAR / 2} 270v26" stroke="var(--stage-ink)" />
-		<text x={PX + 18} y={322} class="muted" style:font-size="12px"
+		<text x={PX + 18} y={322} class="muted" font-size="12"
 			>As a range error, at the speed of light</text
 		>
-		<text x={PX + 18} y={346} style:font-size="15px" font-weight="600"
+		<text x={PX + 18} y={346} font-size="15" font-weight="600"
 			>{Math.abs(rangeKm).toFixed(1)} km</text
 		>
 	</Readout>
 	<Readout id="factory">
-		<text x={PX + 18} y={520} class="muted" style:font-size="12px"
-			>GPS clocks are set to tick at</text
-		>
-		<text x={PX + 18} y={544} style:font-size="14px" font-weight="600">10.229 999 995 43 MHz</text>
-		<text x={PX + 18} y={564} class="muted" style:font-size="12px"
+		<text x={PX + 18} y={520} class="muted" font-size="12">GPS clocks are set to tick at</text>
+		<text x={PX + 18} y={544} font-size="14" font-weight="600">10.229 999 995 43 MHz</text>
+		<text x={PX + 18} y={564} class="muted" font-size="12"
 			>so they keep 10.23 MHz seen from the ground</text
 		>
 	</Readout>

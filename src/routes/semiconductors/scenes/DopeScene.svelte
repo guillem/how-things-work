@@ -244,7 +244,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'middle'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -278,7 +278,7 @@
 				y="47.5"
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="12px"
+				font-size="12"
 				style:fill="#fff">{c.sym}</text
 			>
 			{@render txt(c.x - 12, 40, elementName(c.sym).toLowerCase(), 12, {
@@ -359,7 +359,7 @@
 				y={a.y + 4.5}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="12px"
+				font-size="12"
 				style:fill={dop ? '#fff' : 'var(--stage-ink)'}>{s}</text
 			>
 		</g>

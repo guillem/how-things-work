@@ -228,7 +228,7 @@
 			y={y + 4}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="11px"
+			font-size="11"
 			style:fill={ATOM.C.ink}>C</text
 		>
 	{/if}
@@ -331,23 +331,13 @@
 			{@render ethylene(650 + k * 110, 470, 0, 0.9)}
 		{/each}
 		<Readout id="l-mono" order={2} label="Monomer" value="ethylene, CH₂=CH₂">
-			<text
-				x="805"
-				y="425"
-				text-anchor="middle"
-				class="halo"
-				font-weight="600"
-				style:font-size="13px">monomers: ethylene, CH₂=CH₂</text
+			<text x="805" y="425" text-anchor="middle" class="halo" font-weight="600" font-size="13"
+				>monomers: ethylene, CH₂=CH₂</text
 			>
 		</Readout>
 		<Readout id="l-chain" order={1} label="Polymer" value="polyethylene, –(CH₂–CH₂)ₙ–">
-			<text
-				x="250"
-				y="380"
-				text-anchor="middle"
-				class="halo"
-				font-weight="600"
-				style:font-size="13px">the growing chain: polyethylene</text
+			<text x="250" y="380" text-anchor="middle" class="halo" font-weight="600" font-size="13"
+				>the growing chain: polyethylene</text
 			>
 		</Readout>
 		<Readout id="l-end">
@@ -356,7 +346,7 @@
 				y={endY + 52}
 				text-anchor="middle"
 				class="halo"
-				style:font-size="12px"
+				font-size="12"
 				style:fill="var(--cp-link)">reactive end</text
 			>
 		</Readout>
@@ -366,13 +356,7 @@
 			label="Each step"
 			value="the C=C opens: one electron bonds to the chain, the other is the new reactive end"
 		>
-			<text
-				x="480"
-				y="120"
-				text-anchor="middle"
-				class="halo"
-				font-weight="600"
-				style:font-size="14px"
+			<text x="480" y="120" text-anchor="middle" class="halo" font-weight="600" font-size="14"
 				>each C=C opens: one electron bonds to the chain, the other is the new reactive end</text
 			>
 		</Readout>
@@ -382,7 +366,7 @@
 			label="Chain so far"
 			value="{unitsNow} units, {Math.round(chainMass)} g/mol"
 		>
-			<text x="40" y="560" class="halo" style:font-size="13px"
+			<text x="40" y="560" class="halo" font-size="13"
 				>chain so far: {unitsNow} ethylene units ({carbons} carbons), {Math.round(chainMass)} g/mol ·
 				real chains: thousands of units</text
 			>
@@ -449,7 +433,7 @@
 			<circle cx={q.x} cy={q.y} r="4" fill="var(--cp-link)" />
 		{/each}
 		<Readout id="s-key">
-			<text x={BOX.x} y={BOX.y - 28} class="halo" style:font-size="11px"
+			<text x={BOX.x} y={BOX.y - 28} class="halo" font-size="11"
 				><tspan style:fill="var(--cp-link)" font-weight="700">orange: cross-links</tspan> · pale: loose
 				ends · each bead: many units</text
 			>
@@ -480,7 +464,7 @@
 				y={handleY - 22}
 				text-anchor="middle"
 				class="halo"
-				style:font-size="11px">drag to stretch</text
+				font-size="11">drag to stretch</text
 			>
 		</Readout>
 		<g transform="translate({RX} 0)">
@@ -496,7 +480,7 @@
 					y="96"
 					class="halo"
 					font-weight="700"
-					style:font-size="16px"
+					font-size="16"
 					style:fill={network ? 'var(--cp-group)' : 'var(--cp-warn)'}>{verdict}</text
 				>
 			</Readout>
@@ -506,8 +490,8 @@
 				label="Chain"
 				value="{units.toLocaleString('en-GB')} units, {fmtMass(Mn)}"
 			>
-				<text x="0" y="126" class="halo muted" style:font-size="12px">chains</text>
-				<text x="90" y="126" class="halo" style:font-size="13px">{fmtMass(Mn)}</text>
+				<text x="0" y="126" class="halo muted" font-size="12">chains</text>
+				<text x="90" y="126" class="halo" font-size="13">{fmtMass(Mn)}</text>
 			</Readout>
 			<Readout
 				id="s-mc"
@@ -515,8 +499,8 @@
 				label="Between cross-links"
 				value={Number.isFinite(Mc) ? fmtMass(Mc) : 'no cross-links'}
 			>
-				<text x="0" y="148" class="halo muted" style:font-size="12px">strands</text>
-				<text x="90" y="148" class="halo" style:font-size="13px"
+				<text x="0" y="148" class="halo muted" font-size="12">strands</text>
+				<text x="90" y="148" class="halo" font-size="13"
 					>{Number.isFinite(Mc) ? fmtMass(Mc) : 'no cross-links'}</text
 				>
 			</Readout>
@@ -526,26 +510,26 @@
 				label="Loose ends"
 				value="{Math.round(loose * 100)}% of the chain"
 			>
-				<text x="0" y="170" class="halo muted" style:font-size="12px">loose ends</text>
-				<text x="90" y="170" class="halo" style:font-size="13px"
+				<text x="0" y="170" class="halo muted" font-size="12">loose ends</text>
+				<text x="90" y="170" class="halo" font-size="13"
 					>{Math.round(loose * 100)}% of each chain</text
 				>
 				{#if !network && xl > 0}
-					<text x="90" y="187" class="halo muted" style:font-size="11px"
+					<text x="90" y="187" class="halo muted" font-size="11"
 						>stiffness from {gel.toFixed(2)} cross-links per 100</text
 					>
 				{/if}
 			</Readout>
 			<Readout id="s-E" order={4} label="Stiffness E" value={network ? mpa(E) : '0'}>
-				<text x="0" y="210" class="halo muted" style:font-size="12px"
-					>stiffness (Young’s modulus)</text
-				>
-				<text x="0" y="238" class="halo" font-weight="700" style:font-size="22px"
+				<text x="0" y="210" class="halo muted" font-size="12">stiffness (Young’s modulus)</text>
+				<text x="0" y="238" class="halo" font-weight="700" font-size="22"
 					>{network ? mpa(E) : '0: it flows'}</text
 				>
-				<text x="0" y="258" class="halo muted" style:font-size="11px"
-					>ideal network: E = 3ρRT/M<tspan baseline-shift="sub" style:font-size="9px">c</tspan> · (1
-					− 2M<tspan baseline-shift="sub" style:font-size="9px">c</tspan>/Mₙ)</text
+				<text x="0" y="258" class="halo muted" font-size="11"
+					>ideal network: E = 3ρRT/M<tspan baseline-shift="sub" font-size="9">c</tspan> · (1 − 2M<tspan
+						baseline-shift="sub"
+						font-size="9">c</tspan
+					>/Mₙ)</text
 				>
 			</Readout>
 		</g>

@@ -19,8 +19,6 @@
 	 * keys; the map cursor (Tab to it) moves with the arrow keys and paints with
 	 * Space or Enter.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
-	 * presentation attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, clamp, easeInOut, startDrag, toSvg, type Point } from '#lib/draw/index.ts';
@@ -670,7 +668,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-variant-numeric="tabular-nums">{text}</text
 	>
@@ -751,7 +749,7 @@
 				text-anchor="middle"
 				font-weight="600"
 				class="halo"
-				style:font-size="11px"
+				font-size="11"
 				style:font-variant-numeric="tabular-nums">{n.s}</text
 			>
 		</Readout>
@@ -763,7 +761,7 @@
 				y={cy(j) + 5}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="15px"
+				font-size="15"
 				style:fill={c === SMALL ? 'var(--rl-on-small)' : 'var(--rl-on-cell)'}
 				>{terminalLabel(c)}</text
 			>
@@ -823,7 +821,7 @@
 		x={GX + colOf(world.start) * CS + 8}
 		y={GY + rowOf(world.start) * CS + 18}
 		font-weight="700"
-		style:font-size="13px">S</text
+		font-size="13">S</text
 	>
 	{#if ended && current && !fast}
 		{@render txt(

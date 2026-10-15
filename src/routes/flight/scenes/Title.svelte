@@ -1,7 +1,7 @@
 <script lang="ts">
 	/** A card or panel title: drawn on wide screens, left out on phones (the panel under the stage has the rows). */
 	import { Readout } from '#lib/explainer/index.ts';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Props {
 		x: number;
@@ -14,5 +14,5 @@
 </script>
 
 <Readout id="title-{x}-{y}">
-	<T {x} {y} {text} {size} {weight} />
+	<Label anchor="start" {x} {y} {text} {size} {weight} />
 </Readout>

@@ -163,7 +163,7 @@
 				y2={Y + 135}
 				stroke="var(--stage-line)"
 			/>
-			<text x={X0 + m * PXM} y={Y + 152} text-anchor="middle" class="muted" style:font-size="11px"
+			<text x={X0 + m * PXM} y={Y + 152} text-anchor="middle" class="muted" font-size="11"
 				>{m} m</text
 			>
 		{/each}
@@ -202,7 +202,7 @@
 				stroke-width="1.5"
 			/>
 			<line x1={X0 - 20} x2={X0} y1={handY} y2={handY} stroke="var(--wav-sum)" stroke-width="3" />
-			<text x={X0 - 36} y={Y + AMP + 40} text-anchor="middle" class="muted" style:font-size="12px"
+			<text x={X0 - 36} y={Y + AMP + 40} text-anchor="middle" class="muted" font-size="12"
 				>hand</text
 			>
 
@@ -240,7 +240,7 @@
 					y={yb - 10}
 					text-anchor="middle"
 					class="halo"
-					style:font-size="13px"
+					font-size="13"
 					style:fill="var(--wav-a)"
 					font-weight="600">λ = {fmt(lam, 2)} m</text
 				>
@@ -257,8 +257,7 @@
 					stroke-width="1.5"
 					marker-end="url(#arrowhead)"
 				/>
-				<text x={front + 10} y={Y - 32} class="muted halo" style:font-size="12px">front, 2 m/s</text
-				>
+				<text x={front + 10} y={Y - 32} class="muted halo" font-size="12">front, 2 m/s</text>
 			{/if}
 		</g>
 	{/if}
@@ -324,7 +323,7 @@
 				y={Y + AMP + 26}
 				text-anchor="middle"
 				class="halo"
-				style:font-size="12px"
+				font-size="12"
 				style:fill="var(--wav-bead)">the bead only moves up and down</text
 			>
 		</g>
@@ -339,7 +338,7 @@
 						y={Y - AMP - 20}
 						text-anchor="middle"
 						class="halo"
-						style:font-size="22px"
+						font-size="22"
 						style:fill="var(--wav-a)"
 						font-weight="700">→</text
 					>
@@ -350,7 +349,7 @@
 						y={a2 > 0 ? Y - AMP - 20 : Y + AMP + 32}
 						text-anchor="middle"
 						class="halo"
-						style:font-size="22px"
+						font-size="22"
 						style:fill="var(--wav-b)"
 						font-weight="700">←</text
 					>
@@ -361,7 +360,7 @@
 					y={Y - Math.max(AMP, peak) - 24}
 					text-anchor="middle"
 					class="halo"
-					style:font-size="13px"
+					font-size="13"
 					font-weight="600"
 					opacity={Math.min(1, (overlap - 0.35) * 3)}
 					>{inverted ? 'up + down = flat' : 'up + up = twice as tall'}</text
@@ -369,7 +368,7 @@
 			{/if}
 			<g transform="translate(0 {Y + 186})">
 				<line x1={X0} x2={X0 + 26} y1="0" y2="0" stroke="var(--wav-sum)" stroke-width="3" />
-				<text x={X0 + 34} y="4" style:font-size="12px">the rope (the sum)</text>
+				<text x={X0 + 34} y="4" font-size="12">the rope (the sum)</text>
 				<line
 					x1={X0 + 190}
 					x2={X0 + 216}
@@ -388,7 +387,7 @@
 					stroke-width="2"
 					stroke-dasharray="6 5"
 				/>
-				<text x={X0 + 256} y="4" style:font-size="12px">each pulse on its own</text>
+				<text x={X0 + 256} y="4" font-size="12">each pulse on its own</text>
 			</g>
 		</g>
 	{/if}

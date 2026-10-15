@@ -100,8 +100,6 @@
 	 * - `machine`: running time on a log–log chart, bubble sort on a computer
 	 *   `speedup`× faster vs merge sort, and where the two cross.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
-	 * presentation attributes (docs/BACKLOG.md).
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -518,7 +516,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -625,7 +623,7 @@
 					color={COLOR[l.group[0]]}
 					opacity={w.growth}
 				>
-					<text x={x + 10} y={l.y} class="halo" font-weight="600" style:font-size="13px">
+					<text x={x + 10} y={l.y} class="halo" font-weight="600" font-size="13">
 						{#each l.group as a, i (a)}<tspan style:fill={COLOR[a]}
 								>{i === 0
 									? l.group.length === 1

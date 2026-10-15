@@ -87,7 +87,7 @@
 						x={p.x}
 						y={p.y + r * 0.36}
 						text-anchor="middle"
-						style:font-size="{r}px"
+						font-size={r}
 						font-weight="700"
 						style:fill="#fff"
 					>
@@ -109,7 +109,7 @@
 					x={p.x}
 					y={p.y + r * 0.36}
 					text-anchor="middle"
-					style:font-size="{r}px"
+					font-size={r}
 					font-weight="700"
 					style:fill="#fff"
 					style:pointer-events="none"

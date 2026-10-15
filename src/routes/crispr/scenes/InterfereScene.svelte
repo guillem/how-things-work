@@ -15,7 +15,7 @@
 	 * escape: the phage with one letter changed (none / far / seed / PAM).
 	 * Plays once (about 13 s), then holds; reduced motion shows the end.
 	 */
-	import { lerp, smoothstep } from '#lib/draw/index.ts';
+	import { Label, lerp, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		CUT_FROM_PAM,
@@ -33,7 +33,6 @@
 		type Check,
 		type Mutation
 	} from '../model';
-	import Tag from './Tag.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 	const time = $derived(reduced ? 999 : t);
@@ -202,8 +201,8 @@
 <g>
 	<!-- overview -->
 	<Readout id="title" order={0} label="On the stage" value={title}>
-		<Tag x={OX} y={70} text={title} size={14} weight={600} anchor="start" />
-		<Tag x={OX} y={166} text="all letters made up for teaching" size={11} anchor="start" muted />
+		<Label x={OX} y={70} text={title} size={14} weight={600} anchor="start" />
+		<Label x={OX} y={166} text="all letters made up for teaching" size={11} anchor="start" muted />
 	</Readout>
 	{#each Array.from({ length: N }, (_, i) => i) as i (i)}
 		<rect
@@ -276,13 +275,13 @@
 			x={0}
 			y={-26}
 			text-anchor="middle"
-			style:font-size="12px"
+			font-size="12"
 			style:fill="var(--cr-cas9-edge)"
 			font-weight="600">Cas9 + crRNA</text
 		>
 	</g>
 	<Readout id="key">
-		<Tag
+		<Label
 			x={OX + N * PX}
 			y={166}
 			text="yellow frames: PAMs (any letter, then GG)"
@@ -304,7 +303,7 @@
 			stroke="var(--border)"
 		/>
 		<Readout id="closeup">
-			<Tag
+			<Label
 				x={CX}
 				y={256}
 				text={focusIsStop ? 'close-up: where Cas9 has stopped' : 'close-up: the matching letters'}
@@ -312,7 +311,7 @@
 				anchor="start"
 				muted
 			/>
-			<Tag
+			<Label
 				x={CX + (L + 3) * CW}
 				y={256}
 				text="read from the PAM outward ←"
@@ -337,7 +336,7 @@
 			x={wx(L + 1)}
 			y={ROW_BOT + 40}
 			text-anchor="middle"
-			style:font-size="12px"
+			font-size="12"
 			style:fill={pamHere ? 'var(--stage-ink)' : 'var(--stage-ink-muted)'}
 			font-weight="600">{pamHere ? 'PAM' : 'no PAM'}</text
 		>
@@ -347,7 +346,7 @@
 				x={wx(w.k)}
 				y={ROW_TOP + 6}
 				text-anchor="middle"
-				style:font-size="17px"
+				font-size="17"
 				font-weight="600"
 				style:fill={isMut ? 'var(--cr-mismatch)' : 'var(--stage-ink)'}
 				font-family="ui-monospace, monospace">{w.top}</text
@@ -356,7 +355,7 @@
 				x={wx(w.k)}
 				y={ROW_BOT + 6}
 				text-anchor="middle"
-				style:font-size="17px"
+				font-size="17"
 				style:fill={isMut ? 'var(--cr-mismatch)' : 'var(--stage-ink-muted)'}
 				font-family="ui-monospace, monospace">{w.bot}</text
 			>
@@ -403,7 +402,7 @@
 					x={wx(w.k)}
 					y={ROW_RNA + 3}
 					text-anchor="middle"
-					style:font-size="15px"
+					font-size="15"
 					font-weight="600"
 					style:fill="var(--cr-on-colour)"
 					font-family="ui-monospace, monospace">{RNA[w.k]}</text
@@ -424,11 +423,11 @@
 			/>
 		{/if}
 		<Readout id="rows">
-			<Tag x={CX - 8} y={ROW_TOP + 6} text="DNA" size={11} anchor="end" muted />
-			<Tag x={CX - 8} y={ROW_RNA + 3} text="crRNA" size={11} anchor="end" color="var(--cr-rna)" />
+			<Label x={CX - 8} y={ROW_TOP + 6} text="DNA" size={11} anchor="end" muted />
+			<Label x={CX - 8} y={ROW_RNA + 3} text="crRNA" size={11} anchor="end" color="var(--cr-rna)" />
 		</Readout>
 		{#if noPamNote}
-			<Tag
+			<Label
 				x={CX + (L + 3) * CW}
 				y={450}
 				text={noPamNote}
@@ -448,7 +447,7 @@
 			label={requirePam ? `Stop ${e.i + 1}` : 'Stop'}
 			value={e.text}
 		>
-			<Tag
+			<Label
 				x={CX - 18}
 				y={478 + e.i * 22}
 				text={e.text}
@@ -467,7 +466,7 @@
 			value="none: there is no PAM in the array"
 			opacity={outcomeShown ? 1 : 0}
 		>
-			<Tag
+			<Label
 				x={CX - 18}
 				y={478}
 				text="no stops: this made-up array has no PAM at all"
@@ -486,7 +485,7 @@
 		color={outcome.good ? 'var(--cr-match)' : 'var(--cr-mismatch)'}
 		opacity={outcomeShown ? 1 : 0}
 	>
-		<Tag
+		<Label
 			x={480}
 			y={566}
 			text={outcome.text}

@@ -122,7 +122,7 @@
 		<text
 			x={PX1 + 8}
 			y={l.y + 4}
-			style:font-size="12px"
+			font-size="12"
 			font-weight={chosen ? 700 : 400}
 			style:fill={chosen ? colorOf(l.m) : undefined}
 			class:muted={!chosen}>{shortName(l.m)}</text
@@ -167,14 +167,14 @@
 			label="Cell voltage, 10 % → 90 % charge"
 			value="{fmtV(fig.v10, 2)} → {fmtV(fig.v90, 2)}"
 		>
-			<text x={QX} y={PY0} style:font-size="12px" class="muted">average cell voltage</text>
-			<text x={QX} y={PY0 + 30} style:font-size="28px" font-weight="700">{fmtV(fig.meanV, 2)}</text>
-			<text x={QX} y={PY0 + 54} style:font-size="12px" class="muted"
+			<text x={QX} y={PY0} font-size="12" class="muted">average cell voltage</text>
+			<text x={QX} y={PY0 + 30} font-size="28" font-weight="700">{fmtV(fig.meanV, 2)}</text>
+			<text x={QX} y={PY0 + 54} font-size="12" class="muted"
 				>{fmtV(fig.v10, 2)} at 10 % → {fmtV(fig.v90, 2)} at 90 %</text
 			>
 		</Readout>
 		<Readout id="list">
-			<text x={QX} y={PY0 + 104} style:font-size="12px" font-weight="600"
+			<text x={QX} y={PY0 + 104} font-size="12" font-weight="600"
 				>all nine pairings: average voltage</text
 			>
 			{#each pairs as p, i (p.c.id + p.a.id)}
@@ -184,7 +184,7 @@
 					x={barX - 8}
 					y={y + 4}
 					text-anchor="end"
-					style:font-size="11px"
+					font-size="11"
 					font-weight={on ? 700 : 400}
 					class:muted={!on}>{shortName(p.c)} / {shortName(p.a)}</text
 				>
@@ -200,7 +200,7 @@
 				<text
 					x={barX + (p.f.meanV / maxV) * barW + 6}
 					y={y + 4}
-					style:font-size="11px"
+					font-size="11"
 					font-weight={on ? 700 : 400}>{p.f.meanV.toFixed(2)}</text
 				>
 			{/each}
@@ -212,7 +212,7 @@
 			label="To hold 1 Ah"
 			value="{fmtG(gC)} of {shortName(cathode)} + {fmtG(gA)} of {shortName(anode)}"
 		>
-			<text x={QX} y={PY0} style:font-size="12px" font-weight="600">grams needed to hold 1 Ah</text>
+			<text x={QX} y={PY0} font-size="12" font-weight="600">grams needed to hold 1 Ah</text>
 			<rect x={QX} y={PY0 + 12} width={gC * gScale} height="22" rx="3" fill="var(--rb-cathode)" />
 			<rect
 				x={QX + gC * gScale}
@@ -222,14 +222,10 @@
 				rx="3"
 				fill="var(--rb-anode)"
 			/>
-			<text
-				x={QX}
-				y={PY0 + 52}
-				style:font-size="12px"
-				style:fill="var(--rb-cathode)"
-				font-weight="600">{shortName(cathode)}: {fmtG(gC)}</text
+			<text x={QX} y={PY0 + 52} font-size="12" style:fill="var(--rb-cathode)" font-weight="600"
+				>{shortName(cathode)}: {fmtG(gC)}</text
 			>
-			<text x={QX1} y={PY0 + 52} text-anchor="end" style:font-size="12px" font-weight="600"
+			<text x={QX1} y={PY0 + 52} text-anchor="end" font-size="12" font-weight="600"
 				>{shortName(anode)}: {fmtG(gA)}</text
 			>
 		</Readout>
@@ -241,13 +237,11 @@
 				fig.qAnode
 			)} mAh/g"
 		>
-			<text x={QX} y={PY0 + 84} style:font-size="11px" class="muted"
+			<text x={QX} y={PY0 + 84} font-size="11" class="muted"
 				>Faraday: 96 485 C per mole of lithium</text
 			>
-			<text x={QX} y={PY0 + 104} style:font-size="11px"
-				>{shortName(cathode)}: {faraday(cathode)}</text
-			>
-			<text x={QX} y={PY0 + 122} style:font-size="11px">{shortName(anode)}: {faraday(anode)}</text>
+			<text x={QX} y={PY0 + 104} font-size="11">{shortName(cathode)}: {faraday(cathode)}</text>
+			<text x={QX} y={PY0 + 122} font-size="11">{shortName(anode)}: {faraday(anode)}</text>
 		</Readout>
 		<Readout
 			id="e"
@@ -255,17 +249,15 @@
 			label="Energy per kg of the two materials"
 			value="{Math.round(fig.specificEnergy)} Wh/kg"
 		>
-			<text x={QX} y={PY0 + 156} style:font-size="12px" class="muted"
+			<text x={QX} y={PY0 + 156} font-size="12" class="muted"
 				>energy per kg of the two materials</text
 			>
-			<text x={QX} y={PY0 + 184} style:font-size="24px" font-weight="700"
+			<text x={QX} y={PY0 + 184} font-size="24" font-weight="700"
 				>{Math.round(fig.specificEnergy)} Wh/kg</text
 			>
 		</Readout>
 		<Readout id="elist">
-			<text x={QX} y={PY0 + 222} style:font-size="12px" font-weight="600"
-				>all nine pairings (Wh/kg)</text
-			>
+			<text x={QX} y={PY0 + 222} font-size="12" font-weight="600">all nine pairings (Wh/kg)</text>
 			{#each pairs as p, i (p.c.id + p.a.id)}
 				{@const on = p.c.id === cathode.id && p.a.id === anode.id}
 				{@const y = PY0 + 246 + i * 24}
@@ -273,7 +265,7 @@
 					x={barX - 8}
 					y={y + 4}
 					text-anchor="end"
-					style:font-size="11px"
+					font-size="11"
 					font-weight={on ? 700 : 400}
 					class:muted={!on}>{shortName(p.c)} / {shortName(p.a)}</text
 				>
@@ -289,7 +281,7 @@
 				<text
 					x={barX + (p.f.specificEnergy / maxE) * barW + 6}
 					y={y + 4}
-					style:font-size="11px"
+					font-size="11"
 					font-weight={on ? 700 : 400}>{Math.round(p.f.specificEnergy)}</text
 				>
 			{/each}

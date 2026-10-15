@@ -28,9 +28,8 @@
 	import { cubicInOut } from 'svelte/easing';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
-	import { clamp, smoothstep, wave, startDrag, toSvg } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep, startDrag, toSvg, wave } from '#lib/draw/index.ts';
 	import { load, type Embeddings } from '../embeddings';
-	import Txt from './Txt.svelte';
 	import WordInput from './WordInput.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
@@ -479,7 +478,8 @@
 	>
 		<rect class="ring" x={x - 3} y={y - 3} width="46" height="46" rx="11" />
 		<rect {x} {y} width="40" height="40" rx="9" fill="var(--surface)" stroke="var(--border)" />
-		<Txt
+		<Label
+			tabular
 			x={x + 20}
 			y={y + 28}
 			text={glyph}
@@ -548,7 +548,8 @@
 				<Readout id="map-labels">
 					<g style:pointer-events="none" opacity={searching && known ? 0.6 : 1}>
 						{#each labels as l (l.word)}
-							<Txt
+							<Label
+								tabular
 								x={l.x}
 								y={l.y - 6}
 								text={l.word}
@@ -612,7 +613,8 @@
 							stroke-width="2"
 						/>
 						{#each nbLabels as l, k (l.word)}
-							<Txt
+							<Label
+								tabular
 								x={l.x}
 								y={l.y}
 								text={l.word}
@@ -646,7 +648,8 @@
 							rx="12"
 							fill="var(--stage-ink)"
 						/>
-						<Txt
+						<Label
+							tabular
 							x={p.x}
 							y={p.y - 19.5}
 							text={hover}
@@ -659,7 +662,7 @@
 					</g>
 				{/if}
 			{:else}
-				<Txt
+				<Label
 					x={MAP.x + MAP.w / 2}
 					y={MAP.y + MAP.h / 2}
 					text="Loading 3,292 word vectors…"
@@ -679,7 +682,9 @@
 		{@render zbutton(MAP.x + MAP.w - 52, MAP.y + 108, 'Show the whole map', '1:1', reset)}
 	{/if}
 	<Readout id="map-kind">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={MAP.x + 14}
 			y={MAP.y + MAP.h - 14}
 			text="{mix.current < 0.5 ? 't-SNE' : 'PCA'} map · zoom × {target.z.toFixed(1)}"
@@ -697,18 +702,48 @@
 				label="Colours"
 				value="12 groups found by k-means in the full 100-D space"
 			>
-				<Txt x={PL} y={40} text="12 groups, found in 100-D" size={15} weight={700} />
-				<Txt x={PL} y={60} text="k-means on the full vectors; each named" size={11} muted />
-				<Txt x={PL} y={75} text="by the words nearest its centre" size={11} muted />
+				<Label
+					anchor="start"
+					x={PL}
+					y={40}
+					text="12 groups, found in 100-D"
+					size={15}
+					weight={700}
+				/>
+				<Label
+					anchor="start"
+					x={PL}
+					y={60}
+					text="k-means on the full vectors; each named"
+					size={11}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PL}
+					y={75}
+					text="by the words nearest its centre"
+					size={11}
+					muted
+				/>
 			</Readout>
 			<Readout id="legend">
 				{#each names as n, c (c)}
 					<circle cx={PL + 6} cy={100 + c * 38} r="6" fill={colour(c)} />
-					<Txt x={PL + 20} y={104 + c * 38} text={n.join(', ')} size={12.5} />
+					<Label
+						anchor="start"
+						tabular
+						x={PL + 20}
+						y={104 + c * 38}
+						text={n.join(', ')}
+						size={12.5}
+					/>
 				{/each}
 			</Readout>
 		{:else if searching}
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={PL}
 				y={34}
 				text={phase === 'distort' ? 'True neighbours (100-D)' : 'Search a word'}
@@ -726,8 +761,8 @@
 			/>
 			{#if known}
 				<Readout id="nb-head">
-					<Txt x={PL} y={110} text="nearest by cosine" size={11} muted />
-					<Txt x={PR} y={110} text="cos θ" size={11} anchor="end" muted />
+					<Label anchor="start" x={PL} y={110} text="nearest by cosine" size={11} muted />
+					<Label x={PR} y={110} text="cos θ" size={11} anchor="end" muted />
 				</Readout>
 				{#each neighbours as n, k (n.word)}
 					{@const y = 134 + k * 30}
@@ -739,8 +774,8 @@
 						value={fmt(n.cos)}
 						opacity={k < (phase === 'distort' ? 3 : 4) ? 1 : 0}
 					>
-						<Txt x={PL} {y} text={String(k + 1)} size={11} muted />
-						<Txt x={PL + 20} {y} text={n.word} size={13} weight={600} />
+						<Label anchor="start" tabular x={PL} {y} text={String(k + 1)} size={11} muted />
+						<Label anchor="start" tabular x={PL + 20} {y} text={n.word} size={13} weight={600} />
 						<rect
 							x={PL + 128}
 							y={y - 10}
@@ -750,9 +785,10 @@
 							fill="var(--explainer-accent, var(--accent))"
 							opacity="0.55"
 						/>
-						<Txt x={PR} {y} text={fmt(n.cos)} size={12} anchor="end" />
+						<Label tabular x={PR} {y} text={fmt(n.cos)} size={12} anchor="end" />
 						{#if closeOnMap}
-							<Txt
+							<Label
+								tabular
 								x={PL + 118}
 								{y}
 								text={kept ? '●' : '○'}
@@ -773,7 +809,9 @@
 						note="of its 10 true neighbours are among its 10 closest dots"
 					>
 						<circle cx={PL + 5} cy={443} r="4.5" fill="var(--emb-result)" />
-						<Txt
+						<Label
+							anchor="start"
+							tabular
 							x={PL + 16}
 							y={448}
 							text="among its 10 closest dots: {keptCount} of {NEIGHBOURS}"
@@ -781,20 +819,50 @@
 							weight={600}
 						/>
 						<circle cx={PL + 5} cy={463} r="4" fill="none" stroke="var(--stage-ink-muted)" />
-						<Txt x={PL + 16} y={468} text="not among them (dashed lines)" size={12} muted />
-						<Txt x={PL} y={494} text="Every neighbour is computed in the full" size={11} muted />
-						<Txt x={PL} y={509} text="100-D space; only the map changes." size={11} muted />
+						<Label
+							anchor="start"
+							x={PL + 16}
+							y={468}
+							text="not among them (dashed lines)"
+							size={12}
+							muted
+						/>
+						<Label
+							anchor="start"
+							x={PL}
+							y={494}
+							text="Every neighbour is computed in the full"
+							size={11}
+							muted
+						/>
+						<Label
+							anchor="start"
+							x={PL}
+							y={509}
+							text="100-D space; only the map changes."
+							size={11}
+							muted
+						/>
 					</Readout>
 				{:else}
 					<Readout id="search-note">
-						<Txt
+						<Label
+							anchor="start"
+							tabular
 							x={PL}
 							y={448}
 							text="Out of our {emb.size.toLocaleString('en-US')} words, computed in the"
 							size={11}
 							muted
 						/>
-						<Txt x={PL} y={463} text="full 100-D space, not on the map." size={11} muted />
+						<Label
+							anchor="start"
+							x={PL}
+							y={463}
+							text="full 100-D space, not on the map."
+							size={11}
+							muted
+						/>
 					</Readout>
 				{/if}
 			{:else if query.length > 0}
@@ -804,7 +872,9 @@
 					label="Not found"
 					value="“{query}” is not among our {emb.size.toLocaleString('en-US')} words"
 				>
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={PL}
 						y={112}
 						text="“{query}” is not among"
@@ -812,7 +882,9 @@
 						color="var(--emb-warn)"
 						weight={600}
 					/>
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={PL}
 						y={130}
 						text="our {emb.size.toLocaleString('en-US')} words."
@@ -821,20 +893,29 @@
 						weight={600}
 					/>
 					{#if suggestions.length}
-						<Txt x={PL} y={156} text="Try: {suggestions.join(', ')}" size={12} muted />
+						<Label
+							anchor="start"
+							tabular
+							x={PL}
+							y={156}
+							text="Try: {suggestions.join(', ')}"
+							size={12}
+							muted
+						/>
 					{/if}
 				</Readout>
 			{/if}
 		{:else}
 			<!-- summary -->
-			<Txt x={PL} y={40} text="Meaning as position" size={16} weight={700} />
+			<Label anchor="start" x={PL} y={40} text="Meaning as position" size={16} weight={700} />
 			{#each [['Distance stands for similarity:', 'cat and dog, cos θ = 0.88'], ['Directions stand for relationships:', 'man → woman ≈ king → queen'], ['The flat map is only a picture:', 'measure in the full 100-D space']] as [a, b], k (k)}
 				{@const y = 84 + k * 70}
 				{@const u = reduced ? 1 : smoothstep(0.4 + k * 0.6, 1 + k * 0.6, t)}
 				<Readout id="take-{k}" order={k + 1} label={a.replace(':', '')} value={b} opacity={u}>
 					<g opacity={u}>
 						<circle cx={PL + 8} cy={y - 4} r="8" fill="var(--explainer-accent, var(--accent))" />
-						<Txt
+						<Label
+							tabular
 							x={PL + 8}
 							{y}
 							text={String(k + 1)}
@@ -844,8 +925,8 @@
 							color="var(--surface)"
 							halo={false}
 						/>
-						<Txt x={PL + 24} {y} text={a} size={13} weight={600} />
-						<Txt x={PL + 24} y={y + 20} text={b} size={12} muted />
+						<Label anchor="start" tabular x={PL + 24} {y} text={a} size={13} weight={600} />
+						<Label anchor="start" tabular x={PL + 24} y={y + 20} text={b} size={12} muted />
 					</g>
 				</Readout>
 			{/each}

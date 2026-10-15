@@ -10,7 +10,7 @@
 	import { percent } from '../lm';
 	import { label, lm, num, onkey, str } from './shared';
 	import TextCard from './TextCard.svelte';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { params, setParam }: StageProps = $props();
 
@@ -91,7 +91,8 @@
 		/>
 	</Readout>
 	<Readout id="ghost-note">
-		<Txt
+		<Label
+			anchor="start"
 			x={44}
 			y={202}
 			size={11}
@@ -117,15 +118,16 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<text x="863" y="200.5" text-anchor="middle" style:font-size="12px">↶ Undo last token</text>
+			<text x="863" y="200.5" text-anchor="middle" font-size="12">↶ Undo last token</text>
 		</g>
 	{/if}
 
 	<Readout id="status" order={2} label="Step" value={status}>
-		<Txt x={44} y={250} size={14} weight={650} text={status} />
+		<Label anchor="start" tabular x={44} y={250} size={14} weight={650} text={status} />
 	</Readout>
 	<Readout id="cut" order={3} label="Allowed" value={cutNote}>
-		<Txt
+		<Label
+			tabular
 			x={920}
 			y={250}
 			anchor="end"
@@ -155,7 +157,8 @@
 					stroke-opacity="0.5"
 				/>
 			{/if}
-			<Txt
+			<Label
+				tabular
 				x={ROW.x - 14}
 				y={y + 17}
 				anchor="end"
@@ -173,7 +176,9 @@
 				fill={ok ? 'var(--lm-bar)' : 'var(--lm-cut)'}
 				opacity="0.85"
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={ROW.x + d.p[i] * scale + 8}
 				y={y + 17}
 				size={12}
@@ -181,7 +186,7 @@
 				text="{percent(d.p[i])}{ok ? '' : ' · cut'}"
 			/>
 			{#if live}
-				<Txt
+				<Label
 					x={848}
 					y={y + 17}
 					anchor="end"
@@ -192,7 +197,7 @@
 				/>
 			{:else if ok && node.ch}
 				<Readout id="ns-{i}">
-					<Txt x={848} y={y + 17} anchor="end" size={11} muted text="not stored" />
+					<Label x={848} y={y + 17} anchor="end" size={11} muted text="not stored" />
 				</Readout>
 			{/if}
 		{/snippet}

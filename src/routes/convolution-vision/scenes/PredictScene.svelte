@@ -10,10 +10,9 @@
 	 * reduced motion).
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { startDrag, type Point } from '#lib/draw/index.ts';
+	import { Label, type Point, startDrag } from '#lib/draw/index.ts';
 	import { C1, C2, CLASSES, P1, P2, SIDE, forward } from '../cnn';
 	import { SAMPLES } from '../mnist-cnn';
-	import Txt from './Txt.svelte';
 	import {
 		WT,
 		beginStroke,
@@ -118,7 +117,14 @@
 <g>
 	<!-- the pad -->
 	<Readout id="pd-title" order={1} label="Draw" value="in the box, with the mouse or a finger">
-		<Txt x={PAD.x} y={PAD.y - 16} text="draw a digit here" size={14} weight={600} />
+		<Label
+			anchor="start"
+			x={PAD.x}
+			y={PAD.y - 16}
+			text="draw a digit here"
+			size={14}
+			weight={600}
+		/>
 	</Readout>
 	<rect
 		x={PAD.x}
@@ -152,7 +158,7 @@
 		/>
 	{/each}
 	{#if drawn && paths.length === 0}
-		<Txt
+		<Label
 			x={PAD.x + PAD.s / 2}
 			y={PAD.y + PAD.s / 2}
 			text="draw here"
@@ -174,7 +180,8 @@
 		onpointerdown={down}
 	/>
 	<Readout id="pd-hint">
-		<Txt
+		<Label
+			anchor="start"
 			x={PAD.x}
 			y={PAD.y + PAD.s + 22}
 			text={drawn ? 'Clear starts again' : 'a test digit: draw over it to start your own'}
@@ -184,15 +191,15 @@
 	</Readout>
 
 	<!-- what the network sees, and its layers -->
-	<Txt x={362} y={84} text="the input" size={12} weight={600} />
+	<Label anchor="start" x={362} y={84} text="the input" size={12} weight={600} />
 	<image href={inUrl} x={362} y={96} width={100} height={100} class="cv-px" />
 	<rect x={361} y={95} width={102} height={102} fill="none" stroke="var(--border)" />
 	<Readout id="pd-sizes">
-		<Txt x={362} y={212} text="28 × 28" size={11} muted />
-		<Txt x={492} y={84} text="layer 1" size={12} weight={600} />
-		<Txt x={492} y={316} text="8 × 14 × 14" size={11} muted />
-		<Txt x={630} y={84} text="layer 2" size={12} weight={600} />
-		<Txt x={630} y={340} text="16 × 7 × 7" size={11} muted />
+		<Label anchor="start" x={362} y={212} text="28 × 28" size={11} muted />
+		<Label anchor="start" x={492} y={84} text="layer 1" size={12} weight={600} />
+		<Label anchor="start" x={492} y={316} text="8 × 14 × 14" size={11} muted />
+		<Label anchor="start" x={630} y={84} text="layer 2" size={12} weight={600} />
+		<Label anchor="start" x={630} y={340} text="16 × 7 × 7" size={11} muted />
 	</Readout>
 	{#each maps1 as url, c (c)}
 		<image
@@ -236,10 +243,10 @@
 	{/each}
 
 	<!-- the probabilities -->
-	<Txt x={BAR.x} y={84} text="probabilities (softmax)" size={12} weight={600} />
+	<Label anchor="start" x={BAR.x} y={84} text="probabilities (softmax)" size={12} weight={600} />
 	{#each probs as p, d (d)}
 		{@const y = BAR.y + d * BAR.h}
-		<Txt
+		<Label
 			x={BAR.x + 8}
 			y={y + 18}
 			text={String(d)}
@@ -264,7 +271,8 @@
 			fill={d === top ? 'var(--cv-window)' : 'var(--stage-ink-muted)'}
 		/>
 		{#if act}
-			<Txt
+			<Label
+				anchor="start"
 				x={BAR.x + BAR.w + 28}
 				y={y + 18}
 				text={pct(p)}
@@ -274,20 +282,21 @@
 			/>
 		{/if}
 		{#if input.label === d}
-			<Txt x={BAR.x - 6} y={y + 18} text="true" size={10} anchor="end" muted />
+			<Label x={BAR.x - 6} y={y + 18} text="true" size={10} anchor="end" muted />
 		{/if}
 	{/each}
 
 	<!-- the verdict -->
 	<Readout id="pd-verdict" order={2} label="The network" value={verdict}>
-		<Txt x={362} y={440} text={verdict} size={18} weight={700} />
+		<Label anchor="start" x={362} y={440} text={verdict} size={18} weight={700} />
 	</Readout>
 	<Readout id="pd-truth" order={3} label="Digit" value={truth}>
-		<Txt x={362} y={466} text={truth} size={13} muted />
+		<Label anchor="start" x={362} y={466} text={truth} size={13} muted />
 	</Readout>
 	{#if act}
 		<Readout id="pd-pipe">
-			<Txt
+			<Label
+				anchor="start"
 				x={362}
 				y={500}
 				text="784 pixels → 8 edge maps → 16 part maps → 784 numbers → 10 neurons → softmax"

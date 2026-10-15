@@ -1,8 +1,6 @@
 <script lang="ts">
 	/**
-	 * A particle of the redox scenes: a disc in a fixed colour with its symbol, e.g. "Zn²⁺",
-	 * The text size is set as a style: the stage's own \`text\` rule (13 px) overrides
-	 * presentation attributes.
+	 * A particle of the redox scenes: a disc in a fixed colour with its symbol, e.g. "Zn²⁺".
 	 */
 	interface Props {
 		x: number;
@@ -33,12 +31,8 @@
 <g transform="translate({x} {y})" {opacity} style:pointer-events="none">
 	<circle {r} {fill} stroke={edge} stroke-width="1.2" />
 	{#if text}
-		<text
-			y={fs * 0.36}
-			text-anchor="middle"
-			style:font-size="{fs}px"
-			font-weight="600"
-			style:fill={ink}>{text}</text
+		<text y={fs * 0.36} text-anchor="middle" font-size={fs} font-weight="600" style:fill={ink}
+			>{text}</text
 		>
 	{/if}
 </g>

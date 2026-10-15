@@ -105,7 +105,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'middle'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -335,8 +335,7 @@
 				weight: 600
 			})}
 		</Readout>
-		<text x={sx(VDD)} y={sy(0) + 34} text-anchor="end" class="halo muted" style:font-size="11px"
-			>input</text
+		<text x={sx(VDD)} y={sy(0) + 34} text-anchor="end" class="halo muted" font-size="11">input</text
 		>
 		<Handle
 			x={sx(vin)}

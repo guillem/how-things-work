@@ -20,8 +20,6 @@
 	 * jiggle, whose size follows each group's energy per particle.
 	 * Reduced motion: the gas 12 s after release; no jiggle.
 	 *
-	 * Text sizes and colours are set with `style:` because the stage's CSS
-	 * overrides SVG presentation attributes.
 	 */
 	import { Handle, clamp, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -244,7 +242,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-variant-numeric={opts.tabular ? 'tabular-nums' : undefined}>{text}</text
 	>

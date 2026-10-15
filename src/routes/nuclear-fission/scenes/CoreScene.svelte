@@ -347,7 +347,7 @@
 			stroke="var(--fi-water-edge)"
 		/>
 		<Readout id="box-title">
-			<text x={BX0} y={104} style:font-size="16px" font-weight="600"
+			<text x={BX0} y={104} font-size="16" font-weight="600"
 				>{moderated ? 'A fission neutron in water' : 'No water: nothing to slow it'}</text
 			>
 		</Readout>
@@ -390,7 +390,7 @@
 			>
 		</Readout>
 		<Readout id="hit-key">
-			<g style:font-size="12px">
+			<g font-size="12">
 				<circle cx={BX0 + 6} cy={566} r="4" fill="var(--stage-ink)" opacity="0.55" />
 				<text x={BX0 + 16} y={570}>bounce off hydrogen</text>
 				<circle cx={BX0 + 162} cy={566} r="7" fill="var(--fi-proton)" opacity="0.55" />
@@ -400,7 +400,7 @@
 
 		<!-- energy on a log scale -->
 		<Readout id="e-title">
-			<text x={EX0} y={104} style:font-size="15px" font-weight="600">The neutron's energy</text>
+			<text x={EX0} y={104} font-size="15" font-weight="600">The neutron's energy</text>
 			<text x={EX0} y={122} class="muted">after each collision (log scale)</text>
 		</Readout>
 		<Axes
@@ -444,7 +444,7 @@
 			<text
 				x={EX0}
 				y={486}
-				style:font-size="18px"
+				font-size="18"
 				font-weight="700"
 				style:fill={slowState.e > 0.1 ? 'var(--fi-fast)' : 'var(--fi-slow)'}
 				>{fmtE(slowState.e)}</text
@@ -465,7 +465,7 @@
 	{:else}
 		<!-- the core -->
 		<Readout id="core-title">
-			<text x={CX0} y={78} style:font-size="16px" font-weight="600">A reactor core</text>
+			<text x={CX0} y={78} font-size="16" font-weight="600">A reactor core</text>
 			<text x={CX0} y={96} class="muted"
 				>fuel {enrichLabel(enrichment)} · water {Math.round(water * 100)}% · rods {(
 					rods * 100
@@ -547,7 +547,7 @@
 			{/if}
 		{/each}
 		<Readout id="core-key">
-			<g style:font-size="12px">
+			<g font-size="12">
 				<rect
 					x={CX0}
 					y={556}
@@ -582,7 +582,7 @@
 			<text
 				x={GX0}
 				y={136}
-				style:font-size="34px"
+				font-size="34"
 				font-weight="700"
 				style:fill={stateColour}
 				style:font-variant-numeric="tabular-nums">k = {k.toFixed(3)}</text
@@ -591,7 +591,7 @@
 				x={GX1}
 				y={136}
 				text-anchor="end"
-				style:font-size="16px"
+				font-size="16"
 				font-weight="600"
 				style:fill={stateColour}>{state}</text
 			>
@@ -618,24 +618,16 @@
 					opacity="0.8"
 				/>
 				{#each [0.8, 0.9, 1, 1.1, 1.2] as v (v)}
-					<text x={gk(v)} y={204} text-anchor="middle" class="muted" style:font-size="11px"
+					<text x={gk(v)} y={204} text-anchor="middle" class="muted" font-size="11"
 						>{v.toFixed(1)}</text
 					>
 				{/each}
 				<path d="M{gk(kShown)} 164 l-7 -12 h14 z" fill={stateColour} />
-				<text
-					x={gk(0.85)}
-					y={224}
-					text-anchor="middle"
-					style:font-size="11px"
-					style:fill="var(--fi-sub)">dies away</text
+				<text x={gk(0.85)} y={224} text-anchor="middle" font-size="11" style:fill="var(--fi-sub)"
+					>dies away</text
 				>
-				<text
-					x={gk(1.15)}
-					y={224}
-					text-anchor="middle"
-					style:font-size="11px"
-					style:fill="var(--fi-super)">grows</text
+				<text x={gk(1.15)} y={224} text-anchor="middle" font-size="11" style:fill="var(--fi-super)"
+					>grows</text
 				>
 			</g>
 		</Readout>
@@ -654,10 +646,9 @@
 				><g style:font-variant-numeric="tabular-nums">
 					{#each [{ s: 'η', v: f.eta, d: 'neutrons freed per neutron the fuel absorbs' }, { s: 'ε', v: f.epsilon, d: 'extra from fast fission of uranium-238' }, { s: 'p', v: f.p, d: 'share not captured by U-238 while slowing' }, { s: 'f', v: f.f, d: 'share of slow ones absorbed in the fuel' }, { s: 'L', v: f.nonLeakage, d: 'share that does not leak out' }] as row, i (row.s)}
 						{@const y = 250 + i * 46}
-						<text x={GX0} {y} style:font-size="15px" font-weight="600">{row.s}</text>
-						<text x={GX0 + 30} {y} style:font-size="15px" font-weight="600">{row.v.toFixed(3)}</text
-						>
-						<text x={GX0 + 30} y={y + 18} class="muted" style:font-size="11px">{row.d}</text>
+						<text x={GX0} {y} font-size="15" font-weight="600">{row.s}</text>
+						<text x={GX0 + 30} {y} font-size="15" font-weight="600">{row.v.toFixed(3)}</text>
+						<text x={GX0 + 30} y={y + 18} class="muted" font-size="11">{row.d}</text>
 						<rect
 							x={GX0 + 110}
 							y={y - 12}
@@ -674,7 +665,7 @@
 		{:else}
 			<!-- the next 50 generations -->
 			<Readout id="ahead-title">
-				<text x={PX0 - 20} y={262} style:font-size="15px" font-weight="600"
+				<text x={PX0 - 20} y={262} font-size="15" font-weight="600"
 					>Neutrons over the next 50 generations</text
 				>
 				<text x={PX0 - 20} y={280} class="muted">generation by generation, relative to now</text>

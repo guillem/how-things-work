@@ -13,12 +13,11 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, easeOut } from '#lib/draw/index.ts';
+	import { clamp, easeOut, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { fixedBits, messageEntropy, symbolStats, symbolsOf, utf8Bits } from '../compression';
 	import MessageInput from './MessageInput.svelte';
 	import { fmt, messageOf, show } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -98,7 +97,7 @@
 <g>
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="your-message">
-		<Txt x={40} y={14} text="Your message" size={12} weight={700} />
+		<Label anchor="start" x={40} y={14} text="Your message" size={12} weight={700} />
 	</Readout>
 	<MessageInput x={40} y={22} w={600} value={msg} {setParam} presets={phase !== 'fixed'} />
 
@@ -120,7 +119,7 @@
 					x={tile.x + 20}
 					y={tile.y + 30}
 					text-anchor="middle"
-					style:font-size="22px"
+					font-size="22"
 					style:font-weight="600"
 					style:font-family="var(--font-mono)">{show(tile.s)}</text
 				>
@@ -130,29 +129,27 @@
 						y={tile.y + 56 + li * 15}
 						text-anchor="middle"
 						class="muted"
-						style:font-size="11.5px"
+						font-size="11.5"
 						style:font-family="var(--font-mono)">{line}</text
 					>
 				{/each}
 				{#if tile.more}
-					<text
-						x={tile.x + 20}
-						y={tile.y + 112}
-						text-anchor="middle"
-						class="muted"
-						style:font-size="9.5px">+{tile.more}</text
+					<text x={tile.x + 20} y={tile.y + 112} text-anchor="middle" class="muted" font-size="9.5"
+						>+{tile.more}</text
 					>
 				{/if}
 			</g>
 		{/each}
 		{#if n === 0}
-			<Txt x={480} y={240} text="Type something in the box" size={15} anchor="middle" muted />
+			<Label x={480} y={240} text="Type something in the box" size={15} anchor="middle" muted />
 		{/if}
 
 		{@const rowY = n > PER_ROW ? 410 : 282}
 		{#if k > 0}
 			<Readout id="code-title">
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={40}
 					y={rowY}
 					text="Only {k} different symbol{k === 1 ? '' : 's'}: a fixed {fixed}-bit code is enough"
@@ -166,7 +163,7 @@
 						x={58 + i * 44}
 						y={rowY + 26}
 						text-anchor="middle"
-						style:font-size="15px"
+						font-size="15"
 						style:font-weight="600"
 						style:font-family="var(--font-mono)">{show(s.symbol)}</text
 					>
@@ -174,14 +171,14 @@
 						x={58 + i * 44}
 						y={rowY + 44}
 						text-anchor="middle"
-						style:font-size="11.5px"
+						font-size="11.5"
 						style:fill="var(--cmp-count)"
 						style:font-family="var(--font-mono)">{i.toString(2).padStart(fixed, '0')}</text
 					>
 				</g>
 			{/each}
 			{#if k > PER_ROW}
-				<Txt x={40 + PER_ROW * 44} y={rowY + 26} text="…" size={15} muted />
+				<Label anchor="start" x={40 + PER_ROW * 44} y={rowY + 26} text="…" size={15} muted />
 			{/if}
 		{/if}
 
@@ -195,7 +192,9 @@
 					? ` in ${utf8 / 8} bytes`
 					: ''} × 8 bits"
 			>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={40}
 					y={538}
 					text="UTF-8: {n} character{n === 1 ? '' : 's'}{utf8 !== n * 8
@@ -213,7 +212,9 @@
 				note="{k} different symbol{k === 1 ? '' : 's'}: {n} × {fixed} bits"
 				color="var(--cmp-count)"
 			>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={40}
 					y={566}
 					text="Fixed {fixed}-bit code: {n} × {fixed} = {n * fixed} bits (2{[
@@ -234,7 +235,15 @@
 	{:else}
 		<!-- count bars -->
 		<Readout id="how-often">
-			<Txt x={40} y={142} text="How often" size={12} weight={700} color="var(--cmp-count)" />
+			<Label
+				anchor="start"
+				x={40}
+				y={142}
+				text="How often"
+				size={12}
+				weight={700}
+				color="var(--cmp-count)"
+			/>
 		</Readout>
 		<!-- surprise gridlines, in bits -->
 		{#each Array.from({ length: Math.floor(maxBits) }, (_, b) => b + 1) as b (b)}
@@ -246,11 +255,19 @@
 				stroke="var(--stage-grid)"
 			/>
 			<Readout id="bit-tick-{b}">
-				<Txt x={X0 - 10} y={TOP + b * bitScale + 4} text={String(b)} size={11} anchor="end" muted />
+				<Label
+					tabular
+					x={X0 - 10}
+					y={TOP + b * bitScale + 4}
+					text={String(b)}
+					size={11}
+					anchor="end"
+					muted
+				/>
 			</Readout>
 		{/each}
 		<Readout id="bits-axis">
-			<Txt x={40} y={TOP + 14} text="bits" size={11} muted />
+			<Label anchor="start" x={40} y={TOP + 14} text="bits" size={11} muted />
 		</Readout>
 		{#each columns as c (c.symbol)}
 			{@const on = c.i === hi}
@@ -264,14 +281,15 @@
 						x={c.x + c.w / 2}
 						y={LAB}
 						text-anchor="middle"
-						style:font-size="{c.w >= 14 ? 15 : 11}px"
+						font-size={c.w >= 14 ? 15 : 11}
 						style:font-weight="600"
 						style:font-family="var(--font-mono)">{show(c.symbol)}</text
 					>
 				{/if}
 				{#if showNums && c.w >= 22}
 					<Readout id="count-{c.i}">
-						<Txt
+						<Label
+							tabular
 							x={c.x + c.w / 2}
 							y={BASE - h1 - 6}
 							text={String(c.count)}
@@ -283,7 +301,8 @@
 				{/if}
 				{#if showNums && c.w >= 22 && phase === 'surprise'}
 					<Readout id="surprise-{c.i}">
-						<Txt
+						<Label
+							tabular
 							x={c.x + c.w / 2}
 							y={TOP + h2 + 14}
 							text={fmt(c.bits, 1)}
@@ -308,7 +327,8 @@
 				stroke-dasharray="8 5"
 			/>
 			<Readout id="h-label">
-				<Txt
+				<Label
+					anchor="start"
 					x={X0 + W + 14}
 					y={ly - 4}
 					text="average"
@@ -316,7 +336,9 @@
 					weight={600}
 					color="var(--cmp-h)"
 				/>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={X0 + W + 14}
 					y={ly + 13}
 					text="H = {fmt(H)}"
@@ -325,7 +347,15 @@
 					color="var(--cmp-h)"
 				/>
 				{#snippet narrow()}
-					<Txt x={X0 + W + 14} y={ly + 10} text="H" size={30} weight={700} color="var(--cmp-h)" />
+					<Label
+						anchor="start"
+						x={X0 + W + 14}
+						y={ly + 10}
+						text="H"
+						size={30}
+						weight={700}
+						color="var(--cmp-h)"
+					/>
 				{/snippet}
 			</Readout>
 		{/if}
@@ -339,7 +369,8 @@
 				note="p = {fmt(hiCol.p, 3)} → log₂(1/p) = {fmt(hiCol.bits)} bits"
 				color="var(--cmp-bits)"
 			>
-				<Txt
+				<Label
+					tabular
 					x={920}
 					y={142}
 					text="“{show(hiCol.symbol)}”: {hiCol.count} of {n} → p = {fmt(
@@ -363,7 +394,8 @@
 				value="log₂(1/p)"
 				note="the rarer the symbol, the more bits it is worth"
 			>
-				<Txt
+				<Label
+					anchor="start"
 					x={40}
 					y={540}
 					text="Surprise = log₂(1/p): the rarer the symbol, the more bits it is worth"
@@ -371,7 +403,8 @@
 					weight={600}
 					color="var(--cmp-bits)"
 				/>
-				<Txt
+				<Label
+					anchor="start"
 					x={40}
 					y={566}
 					text="Common symbols: few bits. Rare symbols: many bits."
@@ -388,7 +421,9 @@
 				note="width = how often, height = surprise"
 				color="var(--cmp-h)"
 			>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={40}
 					y={540}
 					text="Width = how often, height = surprise: spread the orange evenly and it fills up to H = {fmt(
@@ -406,7 +441,9 @@
 				note="{n} symbols × {fmt(H)} bits"
 				color="var(--cmp-h)"
 			>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={40}
 					y={566}
 					text="{n} symbols × {fmt(H)} bits = {fmt(
@@ -420,7 +457,7 @@
 			</Readout>
 		{/if}
 		{#if n === 0}
-			<Txt x={480} y={240} text="Type something in the box" size={15} anchor="middle" muted />
+			<Label x={480} y={240} text="Type something in the box" size={15} anchor="middle" muted />
 		{/if}
 	{/if}
 </g>

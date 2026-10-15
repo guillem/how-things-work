@@ -19,7 +19,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Handle, VectorHandle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { clamp, Handle, Label, type Point, smoothstep, VectorHandle } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { get, num, shapeText } from '../tensor';
 	import {
@@ -40,7 +40,6 @@
 		type SliceAxis
 	} from '../pictures';
 	import Sheet from './Sheet.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -290,7 +289,7 @@
 	/>
 	<Readout id="{id}-axes">
 		<g transform="rotate(-90 {top.x - 18} {(top.y + bot.y) / 2})">
-			<T
+			<Label
 				x={top.x - 18}
 				y={(top.y + bot.y) / 2}
 				text={words.h}
@@ -304,7 +303,7 @@
 				right.y) /
 				2})"
 		>
-			<T
+			<Label
 				x={(bot.x + right.x) / 2}
 				y={(bot.y + right.y) / 2 + 30}
 				text={words.w}
@@ -317,7 +316,7 @@
 			transform="rotate({(Math.atan2(s.sy, s.sx) * 180) / Math.PI} {(right.x + back.x) /
 				2} {(right.y + back.y) / 2})"
 		>
-			<T
+			<Label
 				x={(right.x + back.x) / 2}
 				y={(right.y + back.y) / 2 + 32}
 				text={words.c}
@@ -360,7 +359,7 @@
 {/snippet}
 
 {#snippet shapeBig(x: number, y: number, parts: { n: string; color: string }[], size = 30)}
-	<text {x} {y} class="halo" style:font-size="{size}px" font-weight="700"
+	<text {x} {y} class="halo" font-size={size} font-weight="700"
 		>(<!--
 		-->{#each parts as part, i (i)}<tspan style:fill={part.color}>{part.n}</tspan
 			>{#if i < parts.length - 1}<tspan>,&nbsp;</tspan>{/if}{/each}{#if parts.length === 1}<tspan
@@ -374,7 +373,14 @@
 	<!-- ============ phase image ============ -->
 	{#if w.image > 0.01}
 		<g opacity={w.image}>
-			<T x={PHOTO.x} y={PHOTO.y - 16} text="the photo: 48 × 36 pixels" size={14} weight={600} />
+			<Label
+				anchor="start"
+				x={PHOTO.x}
+				y={PHOTO.y - 16}
+				text="the photo: 48 × 36 pixels"
+				size={14}
+				weight={600}
+			/>
 			<image
 				href={colourUrl()}
 				x={PHOTO.x}
@@ -408,7 +414,7 @@
 					{@const top = at(moving, d, W / 2, 0)}
 					{@const pp = at(moving, d, col + 0.5, row + 0.5)}
 					<Readout id="layer-{d}">
-						<T
+						<Label
 							x={top.x}
 							y={top.y - 12}
 							text="{d}: {CH[d]}"
@@ -454,13 +460,13 @@
 			opacity={w.image}
 		>
 			<g opacity={w.image}>
-				<T x={PX} y={96} text="a 3-axis tensor" size={14} muted />
+				<Label anchor="start" x={PX} y={96} text="a 3-axis tensor" size={14} muted />
 				{@render shapeBig(PX, 134, [
 					{ n: '48', color: 'var(--tn-down)' },
 					{ n: '36', color: 'var(--tn-across)' },
 					{ n: '3', color: 'var(--tn-deep)' }
 				])}
-				<T x={PX} y={162} text="48 × 36 × 3 = 5184 numbers" size={14} />
+				<Label anchor="start" x={PX} y={162} text="48 × 36 × 3 = 5184 numbers" size={14} />
 			</g>
 		</Readout>
 		<Readout
@@ -473,10 +479,11 @@
 			opacity={w.image}
 		>
 			<g opacity={w.image}>
-				<T x={PX} y={240} text="one pixel: two indices" size={14} muted />
-				<T x={PX} y={270} text="img[{row}, {col}] =" size={20} weight={700} />
+				<Label anchor="start" x={PX} y={240} text="one pixel: two indices" size={14} muted />
+				<Label anchor="start" x={PX} y={270} text="img[{row}, {col}] =" size={20} weight={700} />
 				{#each [0, 1, 2] as c (c)}
-					<T
+					<Label
+						anchor="start"
 						x={PX}
 						y={302 + c * 26}
 						text="{CH[c]}: {probe[c]}"
@@ -494,7 +501,7 @@
 					fill={rgb(probe[0], probe[1], probe[2])}
 					stroke="var(--stage-line)"
 				/>
-				<T x={PX} y={410} text="Drag the marker on the photo." size={13} muted />
+				<Label anchor="start" x={PX} y={410} text="Drag the marker on the photo." size={13} muted />
 			</g>
 		</Readout>
 	{/if}
@@ -510,7 +517,7 @@
 			{#each [0, 1, 2] as d (d)}
 				{@const top = at(LEFT, d, W / 2, 0)}
 				<Readout id="s-layer-{d}">
-					<T
+					<Label
 						x={top.x}
 						y={top.y - 34}
 						text={CH[d]}
@@ -581,7 +588,7 @@
 			/>
 			{#if sliceAxis !== 'channel'}
 				{#each [0, 1, 2] as c (c)}
-					<T
+					<Label
 						x={RES.x + (c + 0.5) * slicePic.cw}
 						y={RES.y - 8}
 						text={['R', 'G', 'B'][c]}
@@ -591,14 +598,16 @@
 					/>
 				{/each}
 				<Readout id="slice-dims">
-					<T
+					<Label
+						anchor="start"
 						x={RES.x + 3 * slicePic.cw + 12}
 						y={RES.y + 16}
 						text="{slicePic.h} pixels down"
 						size={12}
 						muted
 					/>
-					<T
+					<Label
+						anchor="start"
 						x={RES.x + 3 * slicePic.cw + 12}
 						y={RES.y + 32}
 						text="× 3 channels across"
@@ -608,14 +617,22 @@
 				</Readout>
 			{:else}
 				<Readout id="slice-dims">
-					<T
+					<Label
+						anchor="start"
 						x={RES.x}
 						y={RES.y + H * 6.4 + 22}
 						text="one number per pixel, drawn as grey"
 						size={12}
 						muted
 					/>
-					<T x={RES.x} y={RES.y + H * 6.4 + 38} text="(0 black, 255 white)" size={12} muted />
+					<Label
+						anchor="start"
+						x={RES.x}
+						y={RES.y + H * 6.4 + 38}
+						text="(0 black, 255 white)"
+						size={12}
+						muted
+					/>
 				</Readout>
 			{/if}
 			<Handle
@@ -640,9 +657,9 @@
 			opacity={w.slice}
 		>
 			<g opacity={w.slice}>
-				<T x={PX} y={96} text="fix one index:" size={14} muted />
-				<T x={PX} y={128} text={sliceCode} size={22} weight={700} />
-				<T x={PX} y={154} text={sliceWhat} size={14} />
+				<Label anchor="start" x={PX} y={96} text="fix one index:" size={14} muted />
+				<Label anchor="start" x={PX} y={128} text={sliceCode} size={22} weight={700} />
+				<Label anchor="start" x={PX} y={154} text={sliceWhat} size={14} />
 			</g>
 		</Readout>
 		<Readout
@@ -654,11 +671,18 @@
 			opacity={w.slice}
 		>
 			<g opacity={w.slice}>
-				<T x={PX} y={214} text="(48, 36, 3) →" size={16} muted />
-				<T x={PX} y={250} text={shapeText(sl.tensor.shape)} size={30} weight={700} />
-				<T x={PX} y={276} text="2 axes: one fewer" size={14} />
-				<T x={PX} y={330} text="first numbers:" size={13} muted />
-				<T x={PX} y={350} text="{firstNumbers}, …" size={13} />
+				<Label anchor="start" x={PX} y={214} text="(48, 36, 3) →" size={16} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={250}
+					text={shapeText(sl.tensor.shape)}
+					size={30}
+					weight={700}
+				/>
+				<Label anchor="start" x={PX} y={276} text="2 axes: one fewer" size={14} />
+				<Label anchor="start" x={PX} y={330} text="first numbers:" size={13} muted />
+				<Label anchor="start" x={PX} y={350} text="{firstNumbers}, …" size={13} />
 			</g>
 		</Readout>
 	{/if}
@@ -666,7 +690,8 @@
 	<!-- ============ phase reshape ============ -->
 	{#if w.reshape > 0.01}
 		<g opacity={w.reshape}>
-			<T
+			<Label
+				anchor="start"
 				x={STRIP.x}
 				y={STRIP.y - 14}
 				text="In memory: one list of 5184 numbers (the first 48 shown)"
@@ -693,13 +718,13 @@
 					x={STRIP.x + (cell.o + 0.5) * STRIP.cw - 1}
 					y={STRIP.y + 19}
 					text-anchor="middle"
-					style:font-size="9px"
+					font-size="9"
 					style:fill={photo.data[cell.o] > 140 ? '#000' : '#fff'}>{photo.data[cell.o]}</text
 				>
 			{/each}
 			{#each Array.from({ length: 16 }, (_, p) => p) as p (p)}
 				<Readout id="strip-px-{p}">
-					<T
+					<Label
 						x={STRIP.x + (p * 3 + 1.5) * STRIP.cw - 1}
 						y={STRIP.y + 42}
 						text={String(p * 3)}
@@ -709,7 +734,14 @@
 					/>
 				</Readout>
 			{/each}
-			<T x={STRIP.x + STRIP.n * STRIP.cw + 6} y={STRIP.y + 18} text="… 5184" size={13} muted />
+			<Label
+				anchor="start"
+				x={STRIP.x + STRIP.n * STRIP.cw + 6}
+				y={STRIP.y + 18}
+				text="… 5184"
+				size={13}
+				muted
+			/>
 			<rect
 				x={STRIP.x + k * STRIP.cw - 2}
 				y={STRIP.y - 3}
@@ -750,7 +782,8 @@
 					stroke-width="2.5"
 				/>
 				<Readout id="rs-note">
-					<T
+					<Label
+						anchor="start"
 						x={400}
 						y={170}
 						text="row 0 = numbers 0–107"
@@ -758,13 +791,19 @@
 						weight={600}
 						color="var(--explainer-accent, var(--accent))"
 					/>
-					<T x={400} y={194} text="row 1 = numbers 108–215, …" size={14} muted />
-					<T x={400} y={240} text="number {k} = {CH[kChannel]} of pixel (0, {kPixel})" size={14} />
+					<Label anchor="start" x={400} y={194} text="row 1 = numbers 108–215, …" size={14} muted />
+					<Label
+						anchor="start"
+						x={400}
+						y={240}
+						text="number {k} = {CH[kChannel]} of pixel (0, {kPixel})"
+						size={14}
+					/>
 				</Readout>
 			{:else if shape === 'pixels'}
-				<T x={60} y={140} text="pixel" size={12} muted />
+				<Label anchor="start" x={60} y={140} text="pixel" size={12} muted />
 				{#each [0, 1, 2] as c (c)}
-					<T
+					<Label
 						x={180 + c * 56}
 						y={140}
 						text={['R', 'G', 'B'][c]}
@@ -777,7 +816,7 @@
 				{#each tableRows as r (r.p)}
 					{@const y = 162 + r.p * 22}
 					<g opacity={r.p === kPixel ? 1 : 0.75}>
-						<T x={60} {y} text={String(r.p)} size={12} muted />
+						<Label anchor="start" x={60} {y} text={String(r.p)} size={12} muted />
 						<rect
 							x={92}
 							y={y - 13}
@@ -788,7 +827,7 @@
 							stroke="var(--stage-line)"
 						/>
 						{#each [0, 1, 2] as c (c)}
-							<T
+							<Label
 								x={180 + c * 56}
 								{y}
 								text={String(r.v[c])}
@@ -809,7 +848,14 @@
 					stroke="var(--stage-ink)"
 					stroke-width="2"
 				/>
-				<T x={60} y={162 + TABLE_ROWS * 22} text="⋮  1728 rows" size={13} muted />
+				<Label
+					anchor="start"
+					x={60}
+					y={162 + TABLE_ROWS * 22}
+					text="⋮  1728 rows"
+					size={13}
+					muted
+				/>
 				<image
 					href={pixelListUrl()}
 					x={360}
@@ -821,10 +867,11 @@
 				/>
 				<rect x={360} y={130} width={60} height={420} fill="none" stroke="var(--stage-line)" />
 				<Readout id="rs-note">
-					<T x={436} y={146} text="all 1728 rows," size={13} muted />
-					<T x={436} y={164} text="squeezed into this strip" size={13} muted />
-					<T x={436} y={300} text="one row per pixel:" size={14} />
-					<T
+					<Label anchor="start" x={436} y={146} text="all 1728 rows," size={13} muted />
+					<Label anchor="start" x={436} y={164} text="squeezed into this strip" size={13} muted />
+					<Label anchor="start" x={436} y={300} text="one row per pixel:" size={14} />
+					<Label
+						anchor="start"
 						x={436}
 						y={322}
 						text="row {kPixel} = numbers {kPixel * 3}–{kPixel * 3 + 2}"
@@ -844,20 +891,29 @@
 				/>
 				<rect x={40} y={230} width={864} height={60} fill="none" stroke="var(--stage-line)" />
 				<Readout id="rs-note">
-					<T
+					<Label
+						anchor="start"
 						x={40}
 						y={216}
 						text="all 5184 numbers in one row, squeezed: one axis, length 5184"
 						size={14}
 					/>
-					<T
+					<Label
+						anchor="start"
 						x={40}
 						y={330}
 						text="v[{k}] = {photo.data[k]} — the same number, now found with one index"
 						size={14}
 						weight={600}
 					/>
-					<T x={40} y={370} text="Same list, same order: only the shape changed." size={14} muted />
+					<Label
+						anchor="start"
+						x={40}
+						y={370}
+						text="Same list, same order: only the shape changed."
+						size={14}
+						muted
+					/>
 				</Readout>
 			{:else}
 				{#each [0, 1, 2] as layer (layer)}
@@ -880,8 +936,16 @@
 						stroke="var(--stage-line)"
 					/>
 					<Readout id="rs-layer-{layer}">
-						<T {x} y={LAYERS3.y - 26} text="layer {layer}" size={13} weight={700} />
-						<T
+						<Label
+							anchor="start"
+							{x}
+							y={LAYERS3.y - 26}
+							text="layer {layer}"
+							size={13}
+							weight={700}
+						/>
+						<Label
+							anchor="start"
 							{x}
 							y={LAYERS3.y - 10}
 							text={shape === 'transpose'
@@ -902,7 +966,8 @@
 					stroke-width="2.5"
 				/>
 				<Readout id="rs-note">
-					<T
+					<Label
+						anchor="start"
 						x={LAYERS3.x}
 						y={LAYERS3.y + H * LAYERS3.P + 30}
 						text={shape === 'transpose'
@@ -925,15 +990,17 @@
 			opacity={w.reshape}
 		>
 			<g opacity={w.reshape}>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={160}
 					text={shape === 'transpose' ? 'transpose →' : shape === 'image' ? 'shape' : 'reshape →'}
 					size={14}
 					muted
 				/>
-				<T x={PX} y={196} text={shapeName} size={30} weight={700} />
-				<T
+				<Label anchor="start" x={PX} y={196} text={shapeName} size={30} weight={700} />
+				<Label
+					anchor="start"
 					x={PX}
 					y={222}
 					text={shape === 'transpose' ? 'numbers moved' : 'same list, same order'}
@@ -950,7 +1017,7 @@
 			{#each [0, 1, 2] as d (d)}
 				{@const top = at(LEFT, d, W / 2, 0)}
 				{@const pp = at(LEFT, d, sweep + 0.5, 24.5)}
-				<T
+				<Label
 					x={top.x}
 					y={top.y - 26}
 					text="× {num([wr, wg, wb][d], 3)}"
@@ -968,7 +1035,7 @@
 				{ h: 'var(--tn-keep)', w: 'var(--tn-keep)', c: 'var(--tn-combine)' },
 				{ h: 'height · kept', w: 'width · kept', c: 'channel: summed away' }
 			)}
-			<T x={448} y={340} text="→" size={34} anchor="middle" weight={700} />
+			<Label x={448} y={340} text="→" size={34} anchor="middle" weight={700} />
 			<image
 				href={grey.href}
 				x={RES.x}
@@ -996,7 +1063,8 @@
 				stroke="var(--stage-ink)"
 				stroke-width="2"
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={RES.x}
 				y={RES.y - 12}
 				text="grey: (48, 36)"
@@ -1013,12 +1081,20 @@
 			opacity={w.grey}
 		>
 			<g opacity={w.grey}>
-				<text x={PX} y={96} class="halo" style:font-size="16px" font-weight="700"
+				<text x={PX} y={96} class="halo" font-size="16" font-weight="700"
 					>(48, 36, <tspan style:fill="var(--tn-combine)">3</tspan>) · (<tspan
 						style:fill="var(--tn-combine)">3</tspan
 					>,)</text
 				>
-				<T x={PX} y={122} text="→ (48, 36)" size={16} weight={700} color="var(--tn-keep)" />
+				<Label
+					anchor="start"
+					x={PX}
+					y={122}
+					text="→ (48, 36)"
+					size={16}
+					weight={700}
+					color="var(--tn-keep)"
+				/>
 			</g>
 		</Readout>
 		<Readout
@@ -1029,9 +1105,10 @@
 			opacity={w.grey}
 		>
 			<g opacity={w.grey}>
-				<T x={PX} y={190} text="grey[24, {sweep}] =" size={16} weight={700} />
+				<Label anchor="start" x={PX} y={190} text="grey[24, {sweep}] =" size={16} weight={700} />
 				{#each [0, 1, 2] as c (c)}
-					<T
+					<Label
+						anchor="start"
 						x={PX}
 						y={218 + c * 24}
 						text="{c ? '+ ' : '  '}{num([wr, wg, wb][c], 3)} × {gp[c]}"
@@ -1040,7 +1117,7 @@
 						weight={600}
 					/>
 				{/each}
-				<T x={PX} y={300} text="= {num(gv, 1)}" size={20} weight={700} />
+				<Label anchor="start" x={PX} y={300} text="= {num(gv, 1)}" size={20} weight={700} />
 			</g>
 		</Readout>
 		<Readout
@@ -1056,8 +1133,16 @@
 			opacity={w.grey}
 		>
 			<g opacity={w.grey}>
-				<T x={PX} y={360} text="weights add up to {num(wsum, 3)}" size={13} muted />
-				<T
+				<Label
+					anchor="start"
+					x={PX}
+					y={360}
+					text="weights add up to {num(wsum, 3)}"
+					size={13}
+					muted
+				/>
+				<Label
+					anchor="start"
 					x={PX}
 					y={378}
 					text={Math.abs(wsum - 1) < 0.0005
@@ -1086,7 +1171,7 @@
 					c: combined.c ? 'channel: averaged' : 'channel · kept'
 				}
 			)}
-			<T x={448} y={340} text="→" size={34} anchor="middle" weight={700} />
+			<Label x={448} y={340} text="→" size={34} anchor="middle" weight={700} />
 			{#if combine === 'c'}
 				<image
 					href={avg.href}
@@ -1158,7 +1243,15 @@
 				/>
 			{/if}
 			<Readout id="avg-what">
-				<T x={RES.x} y={530} text={avgWhat} size={14} weight={600} color="var(--tn-keep)" />
+				<Label
+					anchor="start"
+					x={RES.x}
+					y={530}
+					text={avgWhat}
+					size={14}
+					weight={600}
+					color="var(--tn-keep)"
+				/>
 			</Readout>
 		</g>
 		<Readout
@@ -1170,9 +1263,18 @@
 			opacity={w.average}
 		>
 			<g opacity={w.average}>
-				<T x={PX} y={160} text="(48, 36, 3) →" size={16} muted />
-				<T x={PX} y={198} text={avgShape} size={30} weight={700} color="var(--tn-keep)" />
-				<T
+				<Label anchor="start" x={PX} y={160} text="(48, 36, 3) →" size={16} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={198}
+					text={avgShape}
+					size={30}
+					weight={700}
+					color="var(--tn-keep)"
+				/>
+				<Label
+					anchor="start"
 					x={PX}
 					y={224}
 					text="{3 - avg.tensor.shape.length} ax{3 - avg.tensor.shape.length === 1
@@ -1184,7 +1286,15 @@
 		</Readout>
 		{#if avgText}
 			<Readout id="avg-value" order={2} label="Value" value={avgText} opacity={w.average}>
-				<T x={PX} y={290} text={avgText} size={18} weight={700} opacity={w.average} />
+				<Label
+					anchor="start"
+					x={PX}
+					y={290}
+					text={avgText}
+					size={18}
+					weight={700}
+					opacity={w.average}
+				/>
 			</Readout>
 		{/if}
 	{/if}

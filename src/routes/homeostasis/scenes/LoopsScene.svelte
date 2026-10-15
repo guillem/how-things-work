@@ -170,7 +170,7 @@
 		{@const o = origin(k)}
 		<g transform="translate({o.x} {o.y})">
 			<rect width={CW} height={CH} rx="14" fill="var(--surface)" stroke="var(--border)" />
-			<text x={16} y={30} style:font-size="15px" font-weight="600"
+			<text x={16} y={30} font-size="15" font-weight="600"
 				>{c.title}<tspan class="muted" font-size="12" font-weight="400" dx="8">{c.sub}</tspan></text
 			>
 
@@ -191,7 +191,7 @@
 				stroke="var(--stage-line)"
 				stroke-width="1.5"
 			/>
-			<text x={r.x} y={r.y + 16} style:font-size="11px" class="muted" text-anchor="middle"
+			<text x={r.x} y={r.y + 16} font-size="11" class="muted" text-anchor="middle"
 				>the effect is measured again</text
 			>
 
@@ -205,17 +205,13 @@
 					fill="var(--stage-bg)"
 					stroke="var(--border)"
 				/>
-				<text
-					x={boxX(j) + BW / 2}
-					y={BY + 18}
-					style:font-size="11px"
-					class="muted"
-					text-anchor="middle">{role}</text
+				<text x={boxX(j) + BW / 2} y={BY + 18} font-size="11" class="muted" text-anchor="middle"
+					>{role}</text
 				>
 				<text
 					x={boxX(j) + BW / 2}
 					y={BY + 35}
-					style:font-size="12.5px"
+					font-size="12.5"
 					font-weight="600"
 					text-anchor="middle">{name}</text
 				>
@@ -240,7 +236,7 @@
 				<text
 					x={boxX(0) + BW / 2}
 					y={BY - 8}
-					style:font-size="11px"
+					font-size="11"
 					font-weight="600"
 					text-anchor="middle"
 					style:fill="var(--hm-glucose)">{c.note} ↑</text
@@ -257,7 +253,7 @@
 
 			<!-- what goes wrong -->
 			{#each c.lines as line, j (j)}
-				<text x={16} y={186 + j * 20} style:font-size="12.5px"
+				<text x={16} y={186 + j * 20} font-size="12.5"
 					>{#if line.head}<tspan
 							font-weight="600"
 							style:fill={c.broken >= 0 ? 'var(--hm-hypo)' : 'var(--hm-glucose)'}>{line.head}</tspan

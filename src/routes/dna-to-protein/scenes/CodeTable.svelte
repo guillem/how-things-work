@@ -82,7 +82,7 @@
 	<text
 		x={cell.x + 6}
 		y={cell.y + lh / 2 + size * 0.36}
-		style:font-size="{size}px"
+		font-size={size}
 		style:font-family="var(--font-mono)"
 		style:font-weight={hi ? 700 : 500}
 		opacity={quiet && !on && !hi ? 0.6 : 1}>{rna(cell.c)}</text
@@ -91,7 +91,7 @@
 		x={cell.x + cw - 6}
 		y={cell.y + lh / 2 + size * 0.36}
 		text-anchor="end"
-		style:font-size="{size}px"
+		font-size={size}
 		style:font-weight={cell.a.kind === 'stop' || hi || on ? 700 : 500}
 		opacity={quiet && !on && !hi ? 0.6 : 1}>{cell.a.three}</text
 	>
@@ -105,7 +105,7 @@
 			y={y + margin - 7}
 			text-anchor="middle"
 			class="muted"
-			style:font-size="{size}px"
+			font-size={size}
 			style:font-weight="700">{rna(b)}</text
 		>
 		<text
@@ -113,7 +113,7 @@
 			y={y + margin + (j * 4 + 2) * lh + size * 0.35}
 			text-anchor="middle"
 			class="muted"
-			style:font-size="{size + 1}px"
+			font-size={size + 1}
 			style:font-weight="700">{rna(b)}</text
 		>
 	{/each}

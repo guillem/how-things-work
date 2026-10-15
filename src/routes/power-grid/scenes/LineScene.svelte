@@ -15,7 +15,6 @@
 	import { Label, linePath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { AMPACITY, line } from '../grid';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -304,7 +303,7 @@
 	{#if mode === 'transformer'}
 		<!-- ===== power in = power out, and three phases -->
 		<Readout id="power" order={4} label="Power" value="{fmt(mw)} MW on both sides">
-			<Txt
+			<Label
 				x={480}
 				y={42}
 				text="{fmt(mw)} MW in = {fmt(mw)} MW out: voltage up {fmt(
@@ -320,7 +319,7 @@
 			<path d={ph.d} fill="none" stroke={PHASE_COLORS[ph.p]} stroke-width="2.5" />
 		{/each}
 		<Readout id="phases" order={5} label="Three phases" value="a third of a cycle apart">
-			<Txt
+			<Label
 				x={WX0}
 				y={WY - WA - 26}
 				text="three phases, a third of a cycle apart"
@@ -372,9 +371,9 @@
 			value={L.impossible ? 'more than half: impossible' : `${fmt(L.loss)} MW (${pct(L.share)})`}
 			color="var(--pg-hot)"
 		>
-			<Txt x={60} y={380} text="sent: {fmt(mw)} MW" anchor="start" size={14} weight={600} />
+			<Label x={60} y={380} text="sent: {fmt(mw)} MW" anchor="start" size={14} weight={600} />
 			{#if L.impossible}
-				<Txt
+				<Label
 					x={60}
 					y={410}
 					text="lost as heat: more than half"
@@ -392,7 +391,7 @@
 				/>
 				<Label x={60} y={458} text="melt the wires long before" anchor="start" muted />
 			{:else}
-				<Txt
+				<Label
 					x={60}
 					y={410}
 					text="lost as heat: {fmt(L.loss)} MW ({pct(L.share)})"
@@ -401,7 +400,7 @@
 					weight={600}
 					color="var(--pg-hot)"
 				/>
-				<Txt
+				<Label
 					x={60}
 					y={440}
 					text="delivered: {fmt(mw - L.loss)} MW"
@@ -442,7 +441,7 @@
 		{#each [0, 25, 50] as v (v)}
 			<text x={PX0 - 6} y={py(v) + 4} text-anchor="end" font-size="11" class="muted">{v}%</text>
 		{/each}
-		<Txt
+		<Label
 			x={PX0}
 			y={PY0 - 14}
 			text="lost on this line, at each voltage"
@@ -488,7 +487,7 @@
 		</Readout>
 	{:else}
 		<!-- ===== the chain of voltages -->
-		<Txt x={480} y={42} text="from the power station to your socket" size={14} weight={600} />
+		<Label x={480} y={42} text="from the power station to your socket" size={14} weight={600} />
 		<Readout id="balance-note">
 			<Label
 				x={480}

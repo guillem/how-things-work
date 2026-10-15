@@ -112,16 +112,6 @@ fact-check agents or flagged for the user. Data licences are listed in
 
 **Framework**
 
-- **Stage text is forced to 13 px** (site-wide, found 2026-10-07; `Label`'s `size` has no
-  effect, found again by cryptography on 2026-10-12). `src/lib/explainer/Explainer.svelte` has
-  `.stage :global(text) { font-family; fill; font-size: 13px }`, which beats presentation
-  attributes, so every `font-size=`/`fill=` on `<text>` (including `<Axes>` tick labels at 11 px
-  and `<Label size>`) renders at 13 px in ink. Many topics work around it with `style:font-size`
-  or a local text helper (gpu `Txt`, protein-folding `Text`, mrna-vaccines `Tag`, diffusion-models
-  `Label`, the epidemics threshold/SIR snippets); `<Label color>` works (it sets `style:fill`).
-  The fix (move the three declarations to `.stage :global(svg)` so they inherit) changes every
-  older scene's text size: do it on its own, with a two-theme screenshot pass of all topics, then
-  delete the local copies.
 - **Controls can't be driven by a scene.** deep-time's time slider doesn't follow the cursor while
   "play" runs; a way for a scene to update or disable a control would fix it.
 

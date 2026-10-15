@@ -12,11 +12,10 @@
 	 * its whole energy trace.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { lerp, smoothstep } from '#lib/draw/index.ts';
+	import { Label, lerp, smoothstep } from '#lib/draw/index.ts';
 	import { run, type Frame } from '../hp';
 	import { chainById, landscapeOf } from '../folding';
 	import Beads from './Beads.svelte';
-	import Label from './Text.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 

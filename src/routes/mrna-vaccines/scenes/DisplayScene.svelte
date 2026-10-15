@@ -15,9 +15,8 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { TAU, cycle, hash, lerp, smoothstep } from '#lib/draw/index.ts';
+	import { cycle, hash, Label, lerp, smoothstep, TAU } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Tag from './Tag.svelte';
 	import { count } from '../../immune-system/run';
 	import { CAO, MEMORY } from '../../immune-system/model';
 	import { antibody, effectors, peak, simulate } from '../model';
@@ -128,10 +127,10 @@
 			label="A cell that made spikes"
 			value="whole spikes on its surface, and fragments held up on MHC molecules"
 		>
-			<Tag x={24} y={282} text="a cell that read" size={13} weight={600} anchor="start" />
-			<Tag x={24} y={300} text="the vaccine" size={13} weight={600} anchor="start" />
-			<Tag x={24} y={330} text="whole spikes," size={11} anchor="start" muted />
-			<Tag x={24} y={346} text="fragments on MHC" size={11} anchor="start" muted />
+			<Label x={24} y={282} text="a cell that read" size={13} weight={600} anchor="start" />
+			<Label x={24} y={300} text="the vaccine" size={13} weight={600} anchor="start" />
+			<Label x={24} y={330} text="whole spikes," size={11} anchor="start" muted />
+			<Label x={24} y={346} text="fragments on MHC" size={11} anchor="start" muted />
 		</Readout>
 
 		<!-- a free spike and the B cell that grabs it -->
@@ -164,7 +163,7 @@
 			value="its receptor fits the spike's shape: it grabs a whole spike"
 			color="var(--im-bcell)"
 		>
-			<Tag
+			<Label
 				x={BCELL.x + 44}
 				y={BCELL.y - 8}
 				text="B cell: grabs a whole spike"
@@ -185,7 +184,7 @@
 			value="its receptor fits one fragment held up on MHC"
 			color="var(--im-tcell)"
 		>
-			<Tag
+			<Label
 				x={235}
 				y={450}
 				text="killer T cell: fits a fragment on MHC"
@@ -269,9 +268,9 @@
 			label="In the lymph node"
 			value="a dendritic cell shows spike fragments to T cells; B cells catch whole spikes that drain in; only the few that fit are switched on"
 		>
-			<Tag x={NODE.x} y={NODE.y - NODE.ry + 30} text="lymph node" size={13} weight={600} />
-			<Tag x={DC.x} y={DC.y + 62} text="dendritic cell" size={11} pill />
-			<Tag
+			<Label x={NODE.x} y={NODE.y - NODE.ry + 30} text="lymph node" size={13} weight={600} />
+			<Label x={DC.x} y={DC.y + 62} text="dendritic cell" size={11} pill />
+			<Label
 				x={NODE.x}
 				y={NODE.y + NODE.ry - 18}
 				text="only the few that fit switch on (ringed)"
@@ -309,7 +308,7 @@
 			label="Dividing"
 			value="1 → {2 ** gen} cells after {gen} divisions"
 		>
-			<Tag
+			<Label
 				x={70}
 				y={40}
 				text="one matching T cell: 1 → {2 ** gen} after {gen} divisions"
@@ -328,9 +327,7 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		<text x={540} y={142} style:font-size="15px" font-weight="600"
-			>after one dose, in the model</text
-		>
+		<text x={540} y={142} font-size="15" font-weight="600">after one dose, in the model</text>
 		{#each [{ id: 'naive', label: 'matching naive T cells', value: `${CAO.Cn0}`, c: 'var(--stage-ink-muted)' }, { id: 'peak', label: `killer T cells at the peak, day ${Math.round(eMax.t)}`, value: count(eMax.v), c: 'var(--im-tcell)' }, { id: 'ab', label: 'antibodies from', value: `day ${Math.round(firstAb)}`, c: 'var(--im-antibody)' }, { id: 'mem', label: 'memory T cells left (5% of the peak)', value: count(memT), c: 'var(--im-memory)' }, { id: 'virus', label: 'virus, infected cells', value: 'none', c: 'var(--im-virus)' }] as r, i (r.id)}
 			<Readout
 				opacity={mix.current}
@@ -341,11 +338,11 @@
 				color={r.c}
 			>
 				<circle cx={548} cy={186 + i * 60} r="6" fill={r.c} />
-				<text x={562} y={191 + i * 60} style:font-size="13px">{r.label}</text>
+				<text x={562} y={191 + i * 60} font-size="13">{r.label}</text>
 				<text
 					x={900}
 					y={191 + i * 60}
-					style:font-size="16px"
+					font-size="16"
 					font-weight="700"
 					text-anchor="end"
 					style:fill={r.c}>{r.value}</text

@@ -7,7 +7,7 @@
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { bands, fix, label, num, sentenceOf } from './shared';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -109,8 +109,17 @@
 
 <g>
 	<Readout id="title" order={1} label="Layer {L + 1}" value={counts}>
-		<Txt x={16} y={30} size={15} weight={650} text="Layer {L + 1}: its 12 heads on “{s.text}”" />
-		<Txt
+		<Label
+			anchor="start"
+			tabular
+			x={16}
+			y={30}
+			size={15}
+			weight={650}
+			text="Layer {L + 1}: its 12 heads on “{s.text}”"
+		/>
+		<Label
+			anchor="start"
 			x={16}
 			y={52}
 			size={12}
@@ -127,7 +136,9 @@
 			1
 		)} tokens back on average"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={16}
 			y={74}
 			size={12}
@@ -141,7 +152,15 @@
 		/>
 	</Readout>
 	{#each heads as hd (hd.h)}
-		<Txt x={hd.x} y={hd.y - 8} size={12} weight={650} text="head {hd.h + 1}" />
+		<Label
+			anchor="start"
+			tabular
+			x={hd.x}
+			y={hd.y - 8}
+			size={12}
+			weight={650}
+			text="head {hd.h + 1}"
+		/>
 		<rect
 			x={hd.x}
 			y={hd.y}
@@ -164,7 +183,9 @@
 			stroke-width="1.6"
 		/>
 		<Readout id="d-{hd.h}">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={hd.x}
 				y={hd.y + PANEL.m + 20}
 				size={12}
@@ -172,7 +193,9 @@
 				color={hd.d.color}
 				text={hd.d.kind}
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={hd.x}
 				y={hd.y + PANEL.m + 37}
 				size={11}
@@ -186,7 +209,9 @@
 		</Readout>
 	{/each}
 	<Readout id="sweep">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={16}
 			y={584}
 			size={12}

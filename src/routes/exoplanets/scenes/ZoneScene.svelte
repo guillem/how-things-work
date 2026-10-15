@@ -8,7 +8,7 @@
 	 * planets from the archive. The planet glints round its orbit as a pure
 	 * function of t (one turn per ORBIT_S s); the handle sits on the planet.
 	 */
-	import { Handle, scale, type Point } from '#lib/draw/index.ts';
+	import { Handle, Label, type Point, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		HZ_TEFF_RANGE,
@@ -23,7 +23,6 @@
 	import { STARS, type StarId } from '../exoplanets';
 	import { distValue, fmtAU, readerSystem } from '../systems';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 	import { duration, sig, starColor } from './ui';
 
 	let { t, params, reduced, setParam }: StageProps = $props();
@@ -151,8 +150,16 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="top-title">
-		<T x={32} y={42} text="{STARS[starId].name} from above" size={14} weight={700} />
-		<T
+		<Label
+			anchor="start"
+			x={32}
+			y={42}
+			text="{STARS[starId].name} from above"
+			size={14}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
 			x={32}
 			y={60}
 			text="green: the habitable zone · orbits to scale, star enlarged"
@@ -175,7 +182,7 @@
 				stroke-dasharray="2 4"
 				opacity="0.6"
 			/>
-			<T x={TX} y={TY - o.a * pxPerAU - 4} text={o.label} size={10.5} anchor="middle" muted />
+			<Label x={TX} y={TY - o.a * pxPerAU - 4} text={o.label} size={10.5} anchor="middle" muted />
 		{/each}
 	{/if}
 	<circle
@@ -202,7 +209,7 @@
 		{onkey}
 	/>
 	{#if beyond}
-		<T
+		<Label
 			x={planetXY.x}
 			y={planetXY.y + 24}
 			text="further out: {fmtAU(pl.a)} AU"
@@ -217,7 +224,8 @@
 		label="Habitable zone"
 		value="{fmtAU(hz.inner)}–{fmtAU(hz.outer)} AU"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={32}
 			y={404}
 			text="zone: {fmtAU(hz.inner)}–{fmtAU(hz.outer)} AU (optimistic {fmtAU(
@@ -236,7 +244,8 @@
 		label="Star"
 		value="{STARS[starId].type}, {Math.round(st.teff)} K, {sig(st.lum, 2)} × the Sun’s light"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={32}
 			y={458}
 			text="{STARS[starId].type} · {Math.round(st.teff).toLocaleString('en-US')} K · {sig(
@@ -253,8 +262,8 @@
 		label="Starlight on the planet"
 		value="{sig(S, 2)} × what the Earth gets"
 	>
-		<T x={32} y={486} text="Planet at {fmtAU(pl.a)} AU gets" size={12.5} muted />
-		<T
+		<Label anchor="start" x={32} y={486} text="Planet at {fmtAU(pl.a)} AU gets" size={12.5} muted />
+		<Label
 			x={454}
 			y={486}
 			text="{sig(S, 2)} × the Earth’s sunlight"
@@ -264,10 +273,10 @@
 		/>
 	</Readout>
 	<Readout id="verdict" order={2} label="So it is" value={verdict} color={zoneColor}>
-		<T x={32} y={516} text={verdict} size={15} weight={700} color={zoneColor} />
+		<Label anchor="start" x={32} y={516} text={verdict} size={15} weight={700} color={zoneColor} />
 	</Readout>
 	<Readout id="year">
-		<T x={454} y={516} text="year: {duration(P)}" size={12.5} anchor="end" muted />
+		<Label x={454} y={516} text="year: {duration(P)}" size={12.5} anchor="end" muted />
 	</Readout>
 	<Readout
 		id="m-pitfall"
@@ -275,14 +284,22 @@
 		label="Note"
 		value="In the zone, water could be liquid on a planet with the right air; it doesn’t mean anyone lives there."
 	>
-		<T
+		<Label
+			anchor="start"
 			x={32}
 			y={546}
 			text="In the zone, water could be liquid on a planet with"
 			size={11.5}
 			muted
 		/>
-		<T x={32} y={564} text="the right air. It doesn’t mean anyone lives there." size={11.5} muted />
+		<Label
+			anchor="start"
+			x={32}
+			y={564}
+			text="the right air. It doesn’t mean anyone lives there."
+			size={11.5}
+			muted
+		/>
 	</Readout>
 
 	<!-- ---- the chart ---- -->
@@ -296,7 +313,7 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="chart-title">
-		<T x={502} y={42} text="Real planets on the map" size={14} weight={700} />
+		<Label anchor="start" x={502} y={42} text="Real planets on the map" size={14} weight={700} />
 	</Readout>
 	<path d={optBand} fill="var(--ex-hz-opt)" />
 	<path d={consBand} fill="var(--ex-hz)" />
@@ -312,7 +329,7 @@
 	{/each}
 	<line x1={CX0} x2={CX1} y1={CY1} y2={CY1} stroke="var(--stage-line)" />
 	<line x1={CX0} x2={CX0} y1={CY0} y2={CY1} stroke="var(--stage-line)" />
-	<T
+	<Label
 		x={CX1}
 		y={CY1 + 36}
 		text="starlight received (Earth = 1) → less"
@@ -320,10 +337,10 @@
 		anchor="end"
 		muted
 	/>
-	<T x={CX0} y={CY0 - 10} text="star’s temperature (K)" size={11} muted />
+	<Label anchor="start" x={CX0} y={CY0 - 10} text="star’s temperature (K)" size={11} muted />
 	{#each REAL as r (r.id)}
 		<circle cx={sxS(r.s)} cy={syT(r.teff)} r="4.5" fill="var(--stage-ink)" />
-		<T x={sxS(r.s) + r.dx} y={syT(r.teff) + r.dy} text={r.label} size={11} anchor={r.anchor} />
+		<Label x={sxS(r.s) + r.dx} y={syT(r.teff) + r.dy} text={r.label} size={11} anchor={r.anchor} />
 	{/each}
 	<!-- the reader's planet -->
 	<circle
@@ -334,7 +351,7 @@
 		stroke="var(--surface)"
 		stroke-width="2"
 	/>
-	<T
+	<Label
 		x={offChart === 'left' ? CX0 + 8 : offChart === 'right' ? CX1 - 8 : youXY.x - 10}
 		y={youXY.y + (offChart ? 40 : 18)}
 		text={offChart ? `yours: ${sig(S, 2)}× (off the chart)` : 'yours'}
@@ -344,14 +361,29 @@
 		color="var(--ex-measure)"
 	/>
 	<Readout id="chart-note">
-		<T x={502} y={528} text="Planets: NASA Exoplanet Archive. Zone: Kopparapu" size={11} muted />
-		<T
+		<Label
+			anchor="start"
+			x={502}
+			y={528}
+			text="Planets: NASA Exoplanet Archive. Zone: Kopparapu"
+			size={11}
+			muted
+		/>
+		<Label
+			anchor="start"
 			x={502}
 			y={544}
 			text="et al. 2014, for stars of 2 600–7 200 K (TRAPPIST-1,"
 			size={11}
 			muted
 		/>
-		<T x={502} y={560} text="2 566 K, is just below the fitted range)." size={11} muted />
+		<Label
+			anchor="start"
+			x={502}
+			y={560}
+			text="2 566 K, is just below the fitted range)."
+			size={11}
+			muted
+		/>
 	</Readout>
 </g>

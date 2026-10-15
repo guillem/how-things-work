@@ -11,12 +11,11 @@
 	 */
 	import { untrack } from 'svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { cycle, smoothstep, toSvg } from '#lib/draw/index.ts';
+	import { cycle, Label, smoothstep, toSvg } from '#lib/draw/index.ts';
 	import { gpt2 } from '../gpt2';
 	import { PATTERNS, type PatternId } from '../steps';
 	import { fix, label, num, top } from './shared';
 	import TokenChip from './TokenChip.svelte';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
 
@@ -182,10 +181,19 @@
 		value="“{names[tok]}” · {headLabel}"
 		color="var(--tf-sel)"
 	>
-		<Txt x={COL.from} y={30} size={15} weight={650} text="“{names[tok]}” in {headLabel}" />
+		<Label
+			anchor="start"
+			tabular
+			x={COL.from}
+			y={30}
+			size={15}
+			weight={650}
+			text="“{names[tok]}” in {headLabel}"
+		/>
 	</Readout>
 	<Readout id="hint">
-		<Txt
+		<Label
+			anchor="start"
 			x={COL.from}
 			y={52}
 			size={12}
@@ -194,8 +202,8 @@
 		/>
 	</Readout>
 	<Readout id="top" order={2} label="Attends to" value={topText}><g></g></Readout>
-	<Txt x={COL.from} y={COL.y - 8} size={11} weight={600} muted text="asking" />
-	<Txt x={COL.to} y={COL.y - 8} size={11} weight={600} muted text="looked at" />
+	<Label anchor="start" x={COL.from} y={COL.y - 8} size={11} weight={600} muted text="asking" />
+	<Label anchor="start" x={COL.to} y={COL.y - 8} size={11} weight={600} muted text="looked at" />
 	{#each lines as l (l.j)}
 		<path
 			d={l.d}
@@ -235,7 +243,9 @@
 		/>
 		{#if i <= tok && row[i] >= 0.01}
 			<Readout id="w-{i}">
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={COL.to + COL.w + 8}
 					y={cy(i) + 4}
 					size={12}
@@ -248,8 +258,17 @@
 
 	<!-- right: the same token in all 144 heads -->
 	<Readout id="gtitle">
-		<Txt x={G.x} y={30} size={15} weight={650} text="“{names[tok]}” in all 144 heads" />
-		<Txt
+		<Label
+			anchor="start"
+			tabular
+			x={G.x}
+			y={30}
+			size={15}
+			weight={650}
+			text="“{names[tok]}” in all 144 heads"
+		/>
+		<Label
+			anchor="start"
 			x={G.x}
 			y={52}
 			size={12}
@@ -259,7 +278,8 @@
 	</Readout>
 	<Readout id="gaxes">
 		{#each Array.from({ length: 12 }, (_, k) => k) as k (k)}
-			<Txt
+			<Label
+				tabular
 				x={G.x + (k + 0.5) * G.c}
 				y={G.y - 8}
 				anchor="middle"
@@ -267,7 +287,8 @@
 				muted
 				text={String(k + 1)}
 			/>
-			<Txt
+			<Label
+				tabular
 				x={G.x - 8}
 				y={G.y + (k + 0.5) * G.c + 4}
 				anchor="end"
@@ -276,8 +297,16 @@
 				text={String(k + 1)}
 			/>
 		{/each}
-		<Txt x={G.x + 6 * G.c} y={G.y - 26} anchor="middle" size={11} weight={600} muted text="head" />
-		<Txt x={G.x - 4} y={G.y - 26} anchor="end" size={11} weight={600} muted text="layer ↓" />
+		<Label
+			x={G.x + 6 * G.c}
+			y={G.y - 26}
+			anchor="middle"
+			size={11}
+			weight={600}
+			muted
+			text="head"
+		/>
+		<Label x={G.x - 4} y={G.y - 26} anchor="end" size={11} weight={600} muted text="layer ↓" />
 	</Readout>
 	<rect x={G.x} y={G.y} width={12 * G.c} height={12 * G.c} fill="var(--surface)" />
 	<path d={gridLines} fill="none" stroke="var(--border)" stroke-width="1" />

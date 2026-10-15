@@ -371,7 +371,7 @@
 		transform={opts.rotate === undefined ? undefined : `rotate(${opts.rotate} ${x} ${y})`}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -549,15 +549,13 @@
 			{@const ink = wT.current > 0.5 && darkText(c) ? 'var(--stage-bg)' : 'var(--stage-ink)'}
 			{@const lift = groupOf(c) ? wC.current * 4 : 0}
 			<g opacity={textOpacity(c)}>
-				<text x={c.x + 4} y={c.y + 11} style:font-size="9px" style:fill={ink} opacity="0.75"
-					>{c.z}</text
-				>
+				<text x={c.x + 4} y={c.y + 11} font-size="9" style:fill={ink} opacity="0.75">{c.z}</text>
 				<text
 					x={c.x + CW / 2}
 					y={c.y + 29 - lift}
 					text-anchor="middle"
 					font-weight="600"
-					style:font-size="15px"
+					font-size="15"
 					style:fill={ink}>{c.e.symbol}</text
 				>
 			</g>
@@ -570,7 +568,7 @@
 					text-anchor="middle"
 					font-weight="700"
 					opacity={wC.current}
-					style:font-size="10px">{o.n} e⁻</text
+					font-size="10">{o.n} e⁻</text
 				>
 			{/each}
 		{/if}
@@ -654,8 +652,8 @@
 						note={sweeping ? undefined : SEQUENCE.join(' ')}
 						opacity={wB.current}
 					>
-						<text x={480} y={Y0 + 26} text-anchor="middle" style:font-size="13px">
-							<tspan class="muted" style:font-size="12px">Filling order:</tspan>
+						<text x={480} y={Y0 + 26} text-anchor="middle" font-size="13">
+							<tspan class="muted" font-size="12">Filling order:</tspan>
 							{#each SEQUENCE as s (s)}
 								<tspan
 									dx="6"
@@ -748,8 +746,8 @@
 					style:fill="var(--surface)"
 					stroke="var(--border)"
 				/>
-				<text x={GX + 16} y={GY + 26} style:font-size="17px" font-weight="700"
-					>{e.name}<tspan dx="8" class="muted" style:font-size="13px" font-weight="500"
+				<text x={GX + 16} y={GY + 26} font-size="17" font-weight="700"
+					>{e.name}<tspan dx="8" class="muted" font-size="13" font-weight="500"
 						>{e.symbol} · Z = {e.z}</tspan
 					></text
 				>
@@ -771,7 +769,7 @@
 					<!-- the configuration has a line of its own; the rest go in two columns -->
 					{@const cx = GX + 16 + (i === 0 ? 0 : ((i - 1) % 2) * (GW / 2))}
 					{@const cy = GY + 52 + (i === 0 ? 0 : 1 + Math.floor((i - 1) / 2)) * 22}
-					<text x={cx} y={cy} style:font-size="12px"
+					<text x={cx} y={cy} font-size="12"
 						><tspan class="muted">{r[0]}</tspan><tspan dx="6" font-weight="600">{r[1]}</tspan></text
 					>
 				{/each}

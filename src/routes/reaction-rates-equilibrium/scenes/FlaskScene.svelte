@@ -391,7 +391,7 @@
 <g style:font-variant-numeric="tabular-nums">
 	<!-- title -->
 	<Readout id="cond">
-		<text x={BX} y={40} style:font-size="16px" font-weight="600"
+		<text x={BX} y={40} font-size="16" font-weight="600"
 			>The flask · {kText}{#if catText}<tspan dx="6" fill="var(--rr-cat)" font-size="14">
 					· {catText}</tspan
 				>{/if}</text
@@ -454,7 +454,7 @@
 					stroke={isI ? ATOM.iEdge : ATOM.hEdge}
 				/>
 			{/each}
-			<text x={m.x + 30} y={491} style:font-size="14px" font-weight="600" style:fill={m.color}
+			<text x={m.x + 30} y={491} font-size="14" font-weight="600" style:fill={m.color}
 				>{m.name} {snap.counts[m.k]}</text
 			>
 		{/each}
@@ -466,16 +466,14 @@
 		value={fmtTime(now.t)}
 		note="{kText}{catText ? `, ${catText}` : ''} · 1 s here = {fmtTime(lapse)}"
 	>
-		<text x={BX} y={526} style:font-size="14px"
+		<text x={BX} y={526} font-size="14"
 			>time in the flask: <tspan font-weight="600">{fmtTime(now.t)}</tspan></text
 		>
-		<text x={BX} y={546} style:font-size="12px" class="muted"
-			>time-lapse: 1 s here = {fmtTime(lapse)}</text
-		>
+		<text x={BX} y={546} font-size="12" class="muted">time-lapse: 1 s here = {fmtTime(lapse)}</text>
 	</Readout>
 	<Readout id="flash-key">
 		<circle cx={BX + 6} cy={570} r="5" fill="none" stroke="var(--rr-forward)" stroke-width="2.5" />
-		<text x={BX + 16} y={574} style:font-size="12px">H₂ + I₂ → 2 HI</text>
+		<text x={BX + 16} y={574} font-size="12">H₂ + I₂ → 2 HI</text>
 		<circle
 			cx={BX + 146}
 			cy={570}
@@ -484,7 +482,7 @@
 			stroke="var(--rr-reverse)"
 			stroke-width="2.5"
 		/>
-		<text x={BX + 156} y={574} style:font-size="12px">2 HI → H₂ + I₂</text>
+		<text x={BX + 156} y={574} font-size="12">2 HI → H₂ + I₂</text>
 	</Readout>
 	{#if full && focus === 'add'}
 		<Readout id="full">
@@ -601,12 +599,12 @@
 	{/if}
 	<Readout id="legend">
 		{#if plot === 'rates'}
-			<text x={PL.x + PL.w} y={PL.y - 12} text-anchor="end" style:font-size="12px"
+			<text x={PL.x + PL.w} y={PL.y - 12} text-anchor="end" font-size="12"
 				><tspan fill="var(--rr-forward)" font-weight="600">forward</tspan>
 				<tspan fill="var(--rr-reverse)" font-weight="600">reverse</tspan></text
 			>
 		{:else if plot === 'conc'}
-			<text x={PL.x + PL.w} y={PL.y - 12} text-anchor="end" style:font-size="12px"
+			<text x={PL.x + PL.w} y={PL.y - 12} text-anchor="end" font-size="12"
 				><tspan fill="var(--rr-h2)" font-weight="600">H₂</tspan>
 				<tspan fill="var(--rr-i2)" font-weight="600">I₂</tspan>
 				<tspan fill="var(--rr-hi)" font-weight="600">HI</tspan></text
@@ -626,14 +624,14 @@
 				: `at the start: ${fmtRate(micro(run[0].forward))}`}
 			color="var(--rr-forward)"
 		>
-			<text x={PL.x - 4} y={556} style:font-size="14px"
+			<text x={PL.x - 4} y={556} font-size="14"
 				>rate = k[H₂][I₂] = <tspan font-weight="600" fill="var(--rr-forward)"
 					>{fmtRate(micro(now.forward))}</tspan
 				> µmol L⁻¹ s⁻¹</text
 			>
 		</Readout>
 		<Readout id="rate2">
-			<text x={PL.x - 4} y={580} style:font-size="13px" class="muted"
+			<text x={PL.x - 4} y={580} font-size="13" class="muted"
 				>{focus === 'rate'
 					? `k = ${sig(kForward(now.T))} L mol⁻¹ s⁻¹ · half of the H₂ gone after ${fmtTime(halfNow)}`
 					: `at the start: ${fmtRate(micro(run[0].forward))} µmol L⁻¹ s⁻¹`}</text
@@ -649,7 +647,7 @@
 				? ' without a catalyst'
 				: ''} · half of the H₂ gone after {fmtTime(halfNow)}"
 		>
-			<text x={PL.x - 4} y={556} style:font-size="14px"
+			<text x={PL.x - 4} y={556} font-size="14"
 				>k = <tspan font-weight="600">{fmtRate(kForward(now.T, now.lowering))}</tspan> L mol⁻¹ s⁻¹ ·
 				<tspan font-weight="600" fill="var(--rr-forward)"
 					>×{kRel >= 1000 ? fmtPow(kRel) : sig(kRel, 2)}</tspan
@@ -658,7 +656,7 @@
 			>
 		</Readout>
 		<Readout id="half">
-			<text x={PL.x - 4} y={580} style:font-size="13px" class="muted"
+			<text x={PL.x - 4} y={580} font-size="13" class="muted"
 				>half of the H₂ gone after {fmtTime(halfNow)}</text
 			>
 		</Readout>
@@ -669,7 +667,7 @@
 			label="Forward · reverse"
 			value="{fmtRate(micro(now.forward))} · {fmtRate(micro(now.reverse))} µmol L⁻¹ s⁻¹"
 		>
-			<text x={PL.x - 4} y={556} style:font-size="14px"
+			<text x={PL.x - 4} y={556} font-size="14"
 				><tspan fill="var(--rr-forward)" font-weight="600"
 					>forward {fmtRate(micro(now.forward))}</tspan
 				>
@@ -691,7 +689,7 @@
 					? 'Q < K: the forward reaction wins'
 					: 'Q > K: the reverse reaction wins'}
 		>
-			<text x={PL.x - 4} y={556} style:font-size="14px"
+			<text x={PL.x - 4} y={556} font-size="14"
 				>Q = [HI]²/[H₂][I₂] = <tspan font-weight="600">{fmtQ(Q)}</tspan><tspan dx="14">K =</tspan
 				><tspan dx="5" font-weight="600">{sig(K, 2)}</tspan><tspan
 					dx="14"
@@ -714,7 +712,7 @@
 				micro(now.reverse)
 			)} µmol L⁻¹ s⁻¹"
 		>
-			<text x={PL.x - 4} y={580} style:font-size="13px" class="muted"
+			<text x={PL.x - 4} y={580} font-size="13" class="muted"
 				>iodine in HI: {Math.round(hiShare(now) * 100)} % · rates:
 				<tspan fill="var(--rr-forward)">{fmtRate(micro(now.forward))}</tspan>
 				/ <tspan fill="var(--rr-reverse)">{fmtRate(micro(now.reverse))}</tspan> µmol L⁻¹ s⁻¹</text

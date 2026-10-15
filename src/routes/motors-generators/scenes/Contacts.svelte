@@ -109,7 +109,7 @@
 				y={h.label.y + 4}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="12px"
+				font-size="12"
 				style:fill={h.color}>{h.id}</text
 			>
 		{/each}
@@ -162,7 +162,7 @@
 				y={y - RING.ry - 10}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="12px"
+				font-size="12"
 				style:fill={m.color}>{m.id}</text
 			>
 			<rect

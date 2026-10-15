@@ -30,8 +30,6 @@
 	 * Look changes (bulb glow, switch lever, dot dimming, parts appearing) are
 	 * cross-faded with one Tween between snapshots keyed by slot.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
-	 * presentation attributes.
 	 */
 	// Maps and Sets here are temporaries built inside one computation, or the
 	// deliberately non-reactive phase accumulator: no SvelteMap needed.
@@ -662,7 +660,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:stroke={opts.halo ?? 'var(--surface)'}
 		style:font-variant-numeric={opts.tabular ? 'tabular-nums' : undefined}>{text}</text

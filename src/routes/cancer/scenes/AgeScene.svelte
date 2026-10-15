@@ -119,7 +119,7 @@
 
 <g class="age-scene">
 	<Readout id="age-title">
-		<text x={X0} y={36} style:font-size="15px" font-weight="600"
+		<text x={X0} y={36} font-size="15" font-weight="600"
 			>{site.label}: new cases per 100,000 people a year, by age</text
 		>
 	</Readout>
@@ -134,27 +134,23 @@
 	/>
 	{#each yTicks as v (v)}
 		<line x1={X0} x2={X1} y1={ly(v)} y2={ly(v)} stroke="var(--stage-grid)" stroke-width="1.5" />
-		<text x={X0 - 8} y={ly(v) + 4} text-anchor="end" style:font-size="12px" class="muted"
-			>{pow10(v)}</text
-		>
+		<text x={X0 - 8} y={ly(v) + 4} text-anchor="end" font-size="12" class="muted">{pow10(v)}</text>
 	{/each}
 	{#each X_TICKS as a (a)}
 		<line x1={sxAge(a)} x2={sxAge(a)} y1={Y1} y2={Y1 + 5} stroke="var(--stage-line)" />
-		<text x={sxAge(a)} y={Y1 + 20} text-anchor="middle" style:font-size="12px" class="muted"
-			>{a}</text
-		>
+		<text x={sxAge(a)} y={Y1 + 20} text-anchor="middle" font-size="12" class="muted">{a}</text>
 	{/each}
 	<line x1={X0} x2={X1} y1={Y1} y2={Y1} stroke="var(--stage-line)" />
 	<line x1={X0} x2={X0} y1={Y0} y2={Y1} stroke="var(--stage-line)" />
 	<Readout id="age-axes">
-		<text x={(X0 + X1) / 2} y={Y1 + 44} text-anchor="middle" style:font-size="12px" class="muted"
+		<text x={(X0 + X1) / 2} y={Y1 + 44} text-anchor="middle" font-size="12" class="muted"
 			>age (log scale)</text
 		>
 		<text
 			x={X0 - 52}
 			y={(Y0 + Y1) / 2}
 			text-anchor="middle"
-			style:font-size="12px"
+			font-size="12"
 			class="muted"
 			transform="rotate(-90 {X0 - 52} {(Y0 + Y1) / 2})">rate per 100,000 a year (log scale)</text
 		>
@@ -162,7 +158,7 @@
 			x={(sxAge(FIT_LO) + sxAge(FIT_HI)) / 2}
 			y={Y0 + 16}
 			text-anchor="middle"
-			style:font-size="11px"
+			font-size="11"
 			class="muted">fitted: ages 30–79</text
 		>
 	</Readout>
@@ -199,12 +195,12 @@
 
 	<!-- readouts -->
 	<Readout id="best" order={1} label="Best fit" value="k ≈ {fmtK(best.k)} steps">
-		<text x={724} y={88} style:font-size="12px" class="muted">best fit (dashed)</text>
-		<text x={724} y={114} style:font-size="22px" font-weight="600">k ≈ {fmtK(best.k)}</text>
+		<text x={724} y={88} font-size="12" class="muted">best fit (dashed)</text>
+		<text x={724} y={114} font-size="22" font-weight="600">k ≈ {fmtK(best.k)}</text>
 	</Readout>
 	<Readout id="yours" order={2} label="Your line" value="k = {k}" color="var(--ca-cancer)">
-		<text x={724} y={156} style:font-size="12px" class="muted">your line</text>
-		<text x={724} y={182} style:font-size="22px" font-weight="600" style:fill="var(--ca-cancer)"
+		<text x={724} y={156} font-size="12" class="muted">your line</text>
+		<text x={724} y={182} font-size="22" font-weight="600" style:fill="var(--ca-cancer)"
 			>k = {k}</text
 		>
 	</Readout>
@@ -214,11 +210,11 @@
 		label="Twice the age"
 		value="×{doubling.toLocaleString('en-US')} the risk"
 	>
-		<text x={724} y={222} style:font-size="13px">twice the age:</text>
-		<text x={724} y={242} style:font-size="13px" font-weight="600"
+		<text x={724} y={222} font-size="13">twice the age:</text>
+		<text x={724} y={242} font-size="13" font-weight="600"
 			>×{doubling.toLocaleString('en-US')} the yearly risk</text
 		>
-		<text x={724} y={260} style:font-size="11px" class="muted">(2 to the power k − 1)</text>
+		<text x={724} y={260} font-size="11" class="muted">(2 to the power k − 1)</text>
 	</Readout>
 	{#if r70}
 		<Readout
@@ -227,15 +223,15 @@
 			label="Ages 70–74"
 			value="{r70.rate.toLocaleString('en-US', { maximumFractionDigits: 0 })} per 100,000 a year"
 		>
-			<text x={724} y={306} style:font-size="12px" class="muted">ages 70–74</text>
-			<text x={724} y={326} style:font-size="13px"
+			<text x={724} y={306} font-size="12" class="muted">ages 70–74</text>
+			<text x={724} y={326} font-size="13"
 				>{r70.rate.toLocaleString('en-US', { maximumFractionDigits: 0 })} per 100,000 a year</text
 			>
 		</Readout>
 	{/if}
 	<Readout id="note">
 		{#each wrap(note, 32) as line, i (i)}
-			<text x={724} y={372 + i * 17} style:font-size="12px" class="muted">{line}</text>
+			<text x={724} y={372 + i * 17} font-size="12" class="muted">{line}</text>
 		{/each}
 	</Readout>
 	<Readout id="source">

@@ -74,7 +74,7 @@
 		x={x + w / 2}
 		y={y + h / 2 + size * 0.36}
 		text-anchor="middle"
-		style:font-size="{size}px"
+		font-size={size}
 		style:font-weight={selected ? 650 : 500}
 		style:fill={muted ? 'var(--stage-ink-muted)' : 'var(--stage-ink)'}>{text}</text
 	>

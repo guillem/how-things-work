@@ -15,9 +15,8 @@
 	 * Bars fill on a shared clock (a pure function of t): the slowest finishes
 	 * at BAR_T seconds. Reduced motion shows everything finished.
 	 */
-	import { Axes, clamp, scale, smoothstep } from '#lib/draw/index.ts';
+	import { Axes, clamp, Label, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Label from './Txt.svelte';
 	import { FAST_IPC, amdahl, contest, measuredSpeedup } from '../gpu';
 
 	let { step, t, params, reduced }: StageProps = $props();

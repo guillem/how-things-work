@@ -43,7 +43,7 @@
 		type Trace
 	} from '../blackhole';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -441,8 +441,8 @@
 </script>
 
 {#snippet row(y: number, label: string, value: string, color?: string)}
-	<T x={CX + 16} {y} text={label} size={12.5} muted />
-	<T x={CX + CW - 16} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+	<Label anchor="start" x={CX + 16} {y} text={label} size={12.5} muted />
+	<Label x={CX + CW - 16} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
 {/snippet}
 
 <g>
@@ -661,12 +661,12 @@
 				x={cx}
 				y={cy + 4}
 				text-anchor="middle"
-				style:font-size="12px"
+				font-size="12"
 				style:fill="var(--bh-on-hole)"
 				style:pointer-events="none">horizon</text
 			>
 		{:else}
-			<T
+			<Label
 				x={cx}
 				y={cy + 2 * S + 18}
 				text={phase === 'weak' ? 'a compact mass' : 'black hole'}
@@ -676,7 +676,7 @@
 			/>
 		{/if}
 		{#if phase === 'light' || phase === 'sphere'}
-			<T
+			<Label
 				x={cx}
 				y={cy + 3 * S + 16}
 				text="photon sphere 1.5 rₛ"
@@ -687,7 +687,8 @@
 			/>
 		{/if}
 		{#if phase === 'light'}
-			<T
+			<Label
+				anchor="start"
 				x={PX0 + 12}
 				y={cy - B_CRIT * S - 8}
 				text="aim inside this band: captured"
@@ -695,7 +696,8 @@
 				color="var(--bh-captured)"
 				weight={600}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={PX0 + 12}
 				y={cy + B_CRIT * S + 18}
 				text="2.6 rₛ either side"
@@ -704,9 +706,16 @@
 			/>
 		{/if}
 		{#if weakGeo}
-			<T x={PX0 + 12} y={weakGeo.Y0 - 8} text="the straight path" size={11.5} muted />
+			<Label
+				anchor="start"
+				x={PX0 + 12}
+				y={weakGeo.Y0 - 8}
+				text="the straight path"
+				size={11.5}
+				muted
+			/>
 			{#if arrived}
-				<T
+				<Label
 					x={Math.min(PX1 - 12, weakGeo.ex - 6)}
 					y={Math.min(PY1 - 10, weakGeo.ey + 24)}
 					text="bent {(bendAngle * DEG).toFixed(1)}°"
@@ -718,9 +727,9 @@
 			{/if}
 		{/if}
 		{#if flash && lamp}
-			<T x={lamp.X + 12} y={lamp.Y + 16} text="lamp" size={12} weight={600} />
+			<Label anchor="start" x={lamp.X + 12} y={lamp.Y + 16} text="lamp" size={12} weight={600} />
 			{#if flash.cone > 0.002}
-				<T
+				<Label
 					x={lamp.X}
 					y={Math.max(PY0 + 16, lamp.Y - 72)}
 					text="escape cone"
@@ -736,26 +745,48 @@
 	<!-- ---- readout cards ---- -->
 	{#if phase === 'weak' && current}
 		<Card x={CX} y={PY0} w={CW} h={196} />
-		<T x={CX + 16} y={PY0 + 28} text="Light passing a mass" size={15} weight={700} />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 28}
+			text="Light passing a mass"
+			size={15}
+			weight={700}
+		/>
 		{@render row(PY0 + 60, 'Passes at', `${bendB.toFixed(1)} rₛ`)}
 		{@render row(PY0 + 88, 'Bend (traced)', `${(bendAngle * DEG).toFixed(2)}°`, 'var(--bh-light)')}
 		{@render row(PY0 + 116, 'Einstein’s 4GM/(c²b)', `${((2 / bendB) * DEG).toFixed(2)}°`)}
 		{@render row(PY0 + 144, 'Light as a bullet', `${((1 / bendB) * DEG).toFixed(2)}°`)}
-		<T x={CX + 16} y={PY0 + 176} text="Close in, the real bend grows faster." size={12} muted />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 176}
+			text="Close in, the real bend grows faster."
+			size={12}
+			muted
+		/>
 		<Card x={CX} y={PY0 + 212} w={CW} h={112} />
-		<T x={CX + 16} y={PY0 + 240} text="The Sun, 1919" size={14} weight={700} />
-		<T x={CX + 16} y={PY0 + 262} text="Grazing its edge (236 000 rₛ):" size={12.5} />
-		<T
+		<Label anchor="start" x={CX + 16} y={PY0 + 240} text="The Sun, 1919" size={14} weight={700} />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 262}
+			text="Grazing its edge (236 000 rₛ):"
+			size={12.5}
+		/>
+		<Label
+			anchor="start"
 			x={CX + 16}
 			y={PY0 + 284}
 			text="predicted 1.75″, measured 1.98″ ± 0.12″"
 			size={12.5}
 			weight={600}
 		/>
-		<T x={CX + 16} y={PY0 + 306} text="as a bullet: 0.88″" size={12.5} muted />
+		<Label anchor="start" x={CX + 16} y={PY0 + 306} text="as a bullet: 0.88″" size={12.5} muted />
 	{:else if (phase === 'light' || phase === 'sphere') && current}
 		<Card x={CX} y={PY0} w={CW} h={phase === 'sphere' ? 196 : 170} />
-		<T
+		<Label
+			anchor="start"
 			x={CX + 16}
 			y={PY0 + 28}
 			text={phase === 'sphere' ? 'Near the knife edge' : 'Your light ray'}
@@ -784,20 +815,69 @@
 						: 'still circling',
 				rayColor(current.fate)
 			)}
-			<T x={CX + 16} y={PY0 + 176} text="Critical aim: 2.598 076 211… rₛ" size={12} muted />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 176}
+				text="Critical aim: 2.598 076 211… rₛ"
+				size={12}
+				muted
+			/>
 		{:else}
 			{@render row(PY0 + 116, 'Fate', fateText(current), rayColor(current.fate))}
-			<T x={CX + 16} y={PY0 + 150} text="Captured if aimed inside 2.6 rₛ" size={12} muted />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 150}
+				text="Captured if aimed inside 2.6 rₛ"
+				size={12}
+				muted
+			/>
 		{/if}
 		<Card x={CX} y={PY1 - 124} w={CW} h={124} />
-		<T x={CX + 16} y={PY1 - 98} text="Distances in rₛ = 2GM/c²," size={12.5} weight={600} />
-		<T x={CX + 16} y={PY1 - 78} text="the radius of the horizon:" size={12.5} weight={600} />
-		<T x={CX + 16} y={PY1 - 56} text="3 km for the Sun’s mass" size={12.5} muted />
-		<T x={CX + 16} y={PY1 - 36} text="9 mm for the Earth’s" size={12.5} muted />
-		<T x={CX + 16} y={PY1 - 16} text="12 million km for Sgr A*" size={12.5} muted />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY1 - 98}
+			text="Distances in rₛ = 2GM/c²,"
+			size={12.5}
+			weight={600}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY1 - 78}
+			text="the radius of the horizon:"
+			size={12.5}
+			weight={600}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY1 - 56}
+			text="3 km for the Sun’s mass"
+			size={12.5}
+			muted
+		/>
+		<Label anchor="start" x={CX + 16} y={PY1 - 36} text="9 mm for the Earth’s" size={12.5} muted />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY1 - 16}
+			text="12 million km for Sgr A*"
+			size={12.5}
+			muted
+		/>
 	{:else if flash}
 		<Card x={CX} y={PY0} w={CW} h={170} />
-		<T x={CX + 16} y={PY0 + 28} text="A lamp held still" size={15} weight={700} />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 28}
+			text="A lamp held still"
+			size={15}
+			weight={700}
+		/>
 		{@render row(PY0 + 60, 'Height', `${lampR.toFixed(2)} rₛ`)}
 		{@render row(
 			PY0 + 88,
@@ -811,15 +891,42 @@
 			`${(100 - Number((skyShare * 100).toFixed(0))).toFixed(0)}%`,
 			'var(--bh-captured)'
 		)}
-		<T x={CX + 16} y={PY0 + 150} text="Half the sky at 1.5 rₛ; none at 1 rₛ" size={12} muted />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 150}
+			text="Half the sky at 1.5 rₛ; none at 1 rₛ"
+			size={12}
+			muted
+		/>
 		<Card x={CX} y={PY1 - 116} w={CW} h={116} />
-		<T x={CX + 16} y={PY1 - 90} text="Inside the horizon" size={13.5} weight={700} />
-		<T x={CX + 16} y={PY1 - 68} text="every direction, even light’s," size={12.5} />
-		<T x={CX + 16} y={PY1 - 48} text="leads further in. There is no" size={12.5} />
-		<T x={CX + 16} y={PY1 - 28} text="way out to aim for." size={12.5} />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY1 - 90}
+			text="Inside the horizon"
+			size={13.5}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY1 - 68}
+			text="every direction, even light’s,"
+			size={12.5}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY1 - 48}
+			text="leads further in. There is no"
+			size={12.5}
+		/>
+		<Label anchor="start" x={CX + 16} y={PY1 - 28} text="way out to aim for." size={12.5} />
 	{:else if probeRun}
 		<Card x={CX} y={PY0} w={CW} h={phase === 'isco' ? 170 : 226} />
-		<T
+		<Label
+			anchor="start"
 			x={CX + 16}
 			y={PY0 + 28}
 			text={phase === 'isco' ? 'A circular orbit, nudged' : 'Your probe'}
@@ -855,7 +962,8 @@
 				probeFate,
 				probeRun.pr.fate === 'captured' ? 'var(--bh-captured)' : 'var(--bh-isco)'
 			)}
-			<T
+			<Label
+				anchor="start"
 				x={CX + 16}
 				y={PY0 + 150}
 				text={iscoR < 3
@@ -878,7 +986,7 @@
 				stroke-width={dash ? 1.6 : 2.4}
 				stroke-dasharray={dash}
 			/>
-			<T x={CX + 54} {y} {text} size={12.5} {muted} />
+			<Label anchor="start" x={CX + 54} {y} {text} size={12.5} {muted} />
 		{/snippet}
 		{@render key(PY1 - 112, 'var(--bh-probe)', '', 'the real path')}
 		{#if phase === 'probe'}
@@ -896,6 +1004,13 @@
 			'3 4',
 			'photon sphere, 1.5 rₛ'
 		)}
-		<T x={CX + 16} y={PY1 - 18} text="Paced by the probe’s own clock" size={12} muted />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY1 - 18}
+			text="Paced by the probe’s own clock"
+			size={12}
+			muted
+		/>
 	{/if}
 </g>

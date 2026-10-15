@@ -5,11 +5,19 @@
 	 * close up into the 628-letter mRNA; the cap, the tail and the coding part are marked; in
 	 * the inset the finished message leaves the nucleus through a pore and meets a ribosome.
 	 */
-	import { along, clamp, cycle, easeInOut, lerp, smooth, smoothstep } from '#lib/draw/index.ts';
+	import {
+		along,
+		clamp,
+		cycle,
+		easeInOut,
+		Label,
+		lerp,
+		smooth,
+		smoothstep
+	} from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { HBB_CDS, HBB_EXONS, HBB_GENE, HBB_MRNA } from '../genes-data';
 	import { int } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { t, reduced }: StageProps = $props();
 	const tv = $derived(reduced ? 1e6 : t);
@@ -74,7 +82,9 @@
 
 <g>
 	<Readout id="gene-title">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={X0}
 			y={Y_GENE - 34}
 			text="The HBB gene as copied: {int(N)} letters (to scale)"
@@ -93,7 +103,8 @@
 			fill={s.kind === 'exon' ? 'var(--dp-exon)' : 'var(--dp-intron)'}
 		/>
 		<Readout id="seg-{s.kind}-{s.n}">
-			<Txt
+			<Label
+				tabular
 				x={x + (s.len * S) / 2}
 				y={Y_GENE + (s.kind === 'exon' ? 26 : 42)}
 				text="{s.kind} {s.n} · {s.len}"
@@ -104,8 +115,8 @@
 			/>
 		</Readout>
 	{/each}
-	<Txt x={X0 - 8} y={Y_GENE + 5} text="5′" size={12} weight={700} anchor="end" />
-	<Txt x={X0 + W + 8} y={Y_GENE + 5} text="3′" size={12} weight={700} />
+	<Label x={X0 - 8} y={Y_GENE + 5} text="5′" size={12} weight={700} anchor="end" />
+	<Label anchor="start" x={X0 + W + 8} y={Y_GENE + 5} text="3′" size={12} weight={700} />
 
 	<!-- the copy being spliced -->
 	{#if drop > 0}
@@ -141,8 +152,15 @@
 				stroke-linecap="round"
 			/>
 			<Readout id="cap">
-				<Txt x={XM - 22} y={Y_COPY + 5} text="cap" size={12} weight={600} anchor="end" />
-				<Txt x={XM + M * S + 72} y={Y_COPY + 5} text="tail of A’s (AAAA…)" size={12} weight={600} />
+				<Label x={XM - 22} y={Y_COPY + 5} text="cap" size={12} weight={600} anchor="end" />
+				<Label
+					anchor="start"
+					x={XM + M * S + 72}
+					y={Y_COPY + 5}
+					text="tail of A’s (AAAA…)"
+					size={12}
+					weight={600}
+				/>
 			</Readout>
 		</g>
 	{/if}
@@ -169,7 +187,7 @@
 				value="{M} letters"
 				note="50 before the start · 444 coding · 134 after the stop"
 			>
-				<Txt
+				<Label
 					x={(cdsX0 + cdsX1) / 2}
 					y={Y_COPY + 46}
 					text="coding: 444 letters, AUG … UAA"
@@ -177,13 +195,15 @@
 					weight={700}
 					anchor="middle"
 				/>
-				<Txt x={cdsX0 - 6} y={Y_COPY + 66} text="50 before" size={11} anchor="end" muted />
-				<Txt x={cdsX1 + 6} y={Y_COPY + 66} text="134 after" size={11} muted />
+				<Label x={cdsX0 - 6} y={Y_COPY + 66} text="50 before" size={11} anchor="end" muted />
+				<Label anchor="start" x={cdsX1 + 6} y={Y_COPY + 66} text="134 after" size={11} muted />
 			</Readout>
 		</g>
 	{/if}
 	<Readout id="copy-title" opacity={drop}>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={X0}
 			y={Y_COPY - 24}
 			text={join < 1 ? 'The RNA copy, introns being cut out' : `Spliced mRNA: ${M} letters`}
@@ -214,15 +234,23 @@
 			opacity="0.6"
 		/>
 		<Readout id="nucleus">
-			<Txt x={40} y={540} text="nucleus" size={12} weight={600} color="var(--dp-nucleus-edge)" />
-			<Txt x={496} y={436} text="nuclear pore" size={11.5} muted />
-			<Txt x={900} y={540} text="cytoplasm" size={12} weight={600} anchor="end" muted />
+			<Label
+				anchor="start"
+				x={40}
+				y={540}
+				text="nucleus"
+				size={12}
+				weight={600}
+				color="var(--dp-nucleus-edge)"
+			/>
+			<Label anchor="start" x={496} y={436} text="nuclear pore" size={11.5} muted />
+			<Label x={900} y={540} text="cytoplasm" size={12} weight={600} anchor="end" muted />
 		</Readout>
 		<!-- ribosome waiting -->
 		<ellipse cx="790" cy="478" rx="44" ry="26" fill="var(--dp-ribo)" stroke="var(--dp-ribo-edge)" />
 		<ellipse cx="790" cy="512" rx="36" ry="14" fill="var(--dp-ribo)" stroke="var(--dp-ribo-edge)" />
 		<Readout id="ribo">
-			<Txt x={790} y={444} text="ribosome" size={11.5} anchor="middle" muted />
+			<Label x={790} y={444} text="ribosome" size={11.5} anchor="middle" muted />
 		</Readout>
 		<!-- the message -->
 		<g transform="translate({msg.x} {msg.y}) rotate({(msg.angle * 180) / Math.PI})">
@@ -244,7 +272,7 @@
 		value="1,608 → 628 letters"
 		note="introns cut out; cap and tail added"
 	>
-		<Txt
+		<Label
 			x={480}
 			y={588}
 			text="Introns cut out, exons joined, cap and tail added: the message leaves through a pore"

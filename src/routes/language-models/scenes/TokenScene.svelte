@@ -9,7 +9,7 @@
 	import type { Bpe, Piece } from '../bpe';
 	import MessageBox from './MessageBox.svelte';
 	import { chipWidth, flow, label, message, TOKEN_FILLS, tokenizer } from './shared';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
 
@@ -187,7 +187,8 @@
 	<MessageBox x={X0} y={22} w={W} value={msg} {setParam} />
 
 	{#if !bpe}
-		<Txt
+		<Label
+			tabular
 			x={480}
 			y={300}
 			anchor="middle"
@@ -201,7 +202,15 @@
 			label="GPT-2 tokens"
 			value="{chars} characters → {ids.length} tokens"
 		>
-			<Txt x={X0} y={160} size={16} weight={650} text="{chars} characters → {ids.length} tokens" />
+			<Label
+				anchor="start"
+				tabular
+				x={X0}
+				y={160}
+				size={16}
+				weight={650}
+				text="{chars} characters → {ids.length} tokens"
+			/>
 		</Readout>
 		<Readout
 			id="ratio"
@@ -209,7 +218,8 @@
 			label="Characters per token"
 			value={ids.length ? (chars / ids.length).toFixed(1) : '–'}
 		>
-			<Txt
+			<Label
+				tabular
 				x={X0 + W}
 				y={160}
 				anchor="end"
@@ -236,7 +246,7 @@
 					x={c.x + c.w / 2}
 					y={Y0 + c.y + sz.h * 0.67}
 					text-anchor="middle"
-					style:font-size="{sz.f}px"
+					font-size={sz.f}
 					style:font-family="var(--font-mono)"
 					style:fill="var(--stage-ink)">{c.text}</text
 				>
@@ -244,7 +254,7 @@
 					x={c.x + c.w / 2}
 					y={Y0 + c.y + sz.h + 16}
 					text-anchor="middle"
-					style:font-size="{Math.max(9.5, sz.f * 0.66)}px"
+					font-size={Math.max(9.5, sz.f * 0.66)}
 					style:fill="var(--stage-ink-muted)"
 					style:font-variant-numeric="tabular-nums">{c.id}</text
 				>
@@ -252,7 +262,7 @@
 		{/each}
 	{:else}
 		<Readout id="merge" order={1} label="Latest merge" value={caption}>
-			<Txt x={X0} y={160} size={15} weight={650} text={caption} />
+			<Label anchor="start" tabular x={X0} y={160} size={15} weight={650} text={caption} />
 		</Readout>
 		{#each mchips as c (c.key)}
 			<g>
@@ -272,7 +282,7 @@
 					x={c.x + c.w / 2}
 					y={Y0 + c.y - 8 + msz.h * 0.67}
 					text-anchor="middle"
-					style:font-size="{msz.f}px"
+					font-size={msz.f}
 					style:font-family="var(--font-mono)"
 					style:fill="var(--stage-ink)">{c.text}</text
 				>
@@ -280,7 +290,9 @@
 		{/each}
 		{#if ladder}
 			<Readout id="ladder-title">
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={X0}
 					y={LY - 14}
 					size={13}
@@ -300,7 +312,8 @@
 						RH
 					)}
 					<Readout id="ladder-{ri}">
-						<Txt
+						<Label
+							tabular
 							x={X0 + 120}
 							y={y + 13}
 							anchor="end"
@@ -327,13 +340,13 @@
 							x={c.x + c.w / 2}
 							y={y + 14}
 							text-anchor="middle"
-							style:font-size="12px"
+							font-size="12"
 							style:font-family="var(--font-mono)"
 							style:fill="var(--stage-ink)">{c.text}</text
 						>
 					{/each}
 				{:else}
-					<Txt x={X0 + 120} y={y + 13} anchor="end" size={12} muted text="…" />
+					<Label x={X0 + 120} y={y + 13} anchor="end" size={12} muted text="…" />
 				{/if}
 			{/each}
 		{/if}

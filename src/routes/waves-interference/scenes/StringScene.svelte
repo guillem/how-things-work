@@ -210,16 +210,10 @@
 	<g style:pointer-events="none">
 		<rect x={X0 - 14} y={Y - 40} width="12" height="80" rx="3" fill="var(--stage-line)" />
 		<rect x={X1 + 2} y={Y - 40} width="12" height="80" rx="3" fill="var(--stage-line)" />
-		<text x={X0 - 8} y={Y + 60} text-anchor="middle" class="muted" style:font-size="12px">nut</text>
-		<text x={X1 + 8} y={Y + 60} text-anchor="middle" class="muted" style:font-size="12px"
-			>bridge</text
-		>
-		<text
-			x={(X0 + X1) / 2}
-			y={Y + AMP + 52}
-			text-anchor="middle"
-			class="muted"
-			style:font-size="11px">L = 65 cm · drawn hugely slowed down</text
+		<text x={X0 - 8} y={Y + 60} text-anchor="middle" class="muted" font-size="12">nut</text>
+		<text x={X1 + 8} y={Y + 60} text-anchor="middle" class="muted" font-size="12">bridge</text>
+		<text x={(X0 + X1) / 2} y={Y + AMP + 52} text-anchor="middle" class="muted" font-size="11"
+			>L = 65 cm · drawn hugely slowed down</text
 		>
 		<line
 			x1={X0}
@@ -280,7 +274,7 @@
 					y={Y + AMP + 22}
 					text-anchor="middle"
 					class="halo"
-					style:font-size="12px"
+					font-size="12"
 					font-weight="600">node</text
 				>
 				<line
@@ -297,7 +291,7 @@
 				y={Y - AMP - 14}
 				text-anchor="middle"
 				class="halo"
-				style:font-size="12px"
+				font-size="12"
 				font-weight="600">antinode</text
 			>
 			<!-- one loop is half a wavelength -->
@@ -318,7 +312,7 @@
 						y="-6"
 						text-anchor="middle"
 						class="halo"
-						style:font-size="12px"
+						font-size="12"
 						style:fill="var(--wav-a)"
 						font-weight="600">½ λ = {fmt(lamCm / 2, 1)} cm</text
 					>
@@ -326,19 +320,15 @@
 			</g>
 			{#if oHalves > 0.3}
 				<g opacity={oHalves}>
-					<text
-						x={X0 + 6}
-						y={Y - AMP - 28}
-						class="halo"
-						style:font-size="12px"
-						style:fill="var(--wav-a)">wave going right →</text
+					<text x={X0 + 6} y={Y - AMP - 28} class="halo" font-size="12" style:fill="var(--wav-a)"
+						>wave going right →</text
 					>
 					<text
 						x={X1 - 6}
 						y={Y - AMP - 28}
 						text-anchor="end"
 						class="halo"
-						style:font-size="12px"
+						font-size="12"
 						style:fill="var(--wav-b)">← its reflection going left</text
 					>
 				</g>
@@ -364,7 +354,7 @@
 					y={Y - AMP - 18}
 					text-anchor="middle"
 					class="halo"
-					style:font-size="12px"
+					font-size="12"
 					font-weight="600">pulled here…</text
 				>
 			{:else}
@@ -382,7 +372,7 @@
 					y={Y - AMP - 16}
 					text-anchor="middle"
 					class="halo"
-					style:font-size="12px"
+					font-size="12"
 					style:fill="var(--wav-bead)">plucked here</text
 				>
 			{/if}
@@ -393,7 +383,7 @@
 	<g style:pointer-events="none">
 		<line x1={CX0} x2={CX1} y1={CY} y2={CY} stroke="var(--stage-line)" />
 		{#if phase === 'pluck'}
-			<text x={CX0} y={CY - CH - 18} style:font-size="13px" font-weight="600"
+			<text x={CX0} y={CY - CH - 18} font-size="13" font-weight="600"
 				>How much of each harmonic the pluck contains</text
 			>
 			{#each relAmps as a, i (i)}
@@ -407,30 +397,25 @@
 					fill={a < 1e-6 ? 'var(--stage-line)' : 'var(--wav-a)'}
 					opacity={a < 1e-6 ? 1 : 0.35 + 0.65 * Math.sqrt(a)}
 				/>
-				<text {x} y={CY + 16} text-anchor="middle" class="muted" style:font-size="11px"
-					>{(i + 1) * A2}</text
+				<text {x} y={CY + 16} text-anchor="middle" class="muted" font-size="11">{(i + 1) * A2}</text
 				>
 				{#if a < 1e-6}
-					<text {x} y={CY - 8} text-anchor="middle" style:font-size="12px" font-weight="700">×</text
-					>
+					<text {x} y={CY - 8} text-anchor="middle" font-size="12" font-weight="700">×</text>
 				{/if}
 			{/each}
-			<text x={CX1} y={CY + 32} text-anchor="end" class="muted" style:font-size="11px"
+			<text x={CX1} y={CY + 32} text-anchor="end" class="muted" font-size="11"
 				>harmonic frequency (Hz)</text
 			>
 		{:else}
-			<text x={CX0} y={CY - CH + 30} style:font-size="13px" font-weight="600"
+			<text x={CX0} y={CY - CH + 30} font-size="13" font-weight="600"
 				>The only frequencies that fit: n × 110 Hz</text
 			>
 			{#each [0, 200, 400, 600, 800, 1000] as f (f)}
 				<line x1={ladderX(f)} x2={ladderX(f)} y1={CY} y2={CY + 5} stroke="var(--stage-line)" />
-				<text x={ladderX(f)} y={CY + 18} text-anchor="middle" class="muted" style:font-size="11px"
-					>{f}</text
+				<text x={ladderX(f)} y={CY + 18} text-anchor="middle" class="muted" font-size="11">{f}</text
 				>
 			{/each}
-			<text x={CX1} y={CY + 34} text-anchor="end" class="muted" style:font-size="11px"
-				>frequency (Hz)</text
-			>
+			<text x={CX1} y={CY + 34} text-anchor="end" class="muted" font-size="11">frequency (Hz)</text>
 			{#each Array.from({ length: 9 }, (_, k) => k + 1) as k (k)}
 				{@const x = ladderX(k * A2)}
 				{@const on = k === n}
@@ -447,7 +432,7 @@
 					{x}
 					y={CY - (on ? 74 : 52)}
 					text-anchor="middle"
-					style:font-size={on ? '13px' : '11px'}
+					font-size={on ? 13 : 11}
 					style:fill={on ? 'var(--wav-a)' : 'var(--stage-ink-muted)'}
 					font-weight={on ? 700 : 500}>{k}</text
 				>

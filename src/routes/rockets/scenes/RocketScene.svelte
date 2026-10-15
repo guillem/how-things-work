@@ -15,13 +15,12 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Axes, clamp, cycle, hash, scale, smoothstep } from '#lib/draw/index.ts';
+	import { Axes, clamp, cycle, hash, Label, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { massRatio } from '../rockets';
 	import { hohmann, marsHohmann, MU_EARTH, R_GEO, R_LEO } from '../space';
 	import Card from './Card.svelte';
 	import RocketShape from './RocketShape.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -290,21 +289,23 @@
 
 	{#if phase === 'recoil'}
 		<Readout id="recoil-caption">
-			<T
+			<Label
+				anchor="start"
 				x={PANEL.x + 22}
 				y={PANEL.y + 34}
 				text="Empty space, no air, no ground"
 				size={13}
 				weight={600}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={PANEL.x + 22}
 				y={PANEL.y + 54}
 				text="the view follows the rocket: the stars stream past"
 				size={11}
 				muted
 			/>
-			<T
+			<Label
 				x={NOZZLE.x - 70}
 				y={NOZZLE.y + 60}
 				text="gas thrown back"
@@ -324,7 +325,8 @@
 				stroke="var(--rk-fuel)"
 				stroke-width="2"
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={272}
 				y={546 - (ROCKET_H * share) / 2}
 				text="propellant {Math.round(share * 100)}%"
@@ -332,14 +334,16 @@
 				weight={600}
 				color="var(--rk-fuel)"
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={272}
 				y={Math.max(80, 548 - ROCKET_H * share - (ROCKET_H * (1 - share)) / 2 + 4)}
 				text="everything else {Math.round((1 - share) * 100)}%"
 				size={12}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={PANEL.x + 22}
 				y={PANEL.y + 34}
 				text="Burning down, in empty space"
@@ -352,8 +356,15 @@
 	{#if phase === 'tyranny' || phase === 'budget'}
 		{#if phase === 'budget'}
 			<Readout id="budget-title">
-				<T x={PANEL.x + 24} y={PANEL.y + 32} text="Δv budget" size={14} weight={700} />
-				<T
+				<Label
+					anchor="start"
+					x={PANEL.x + 24}
+					y={PANEL.y + 32}
+					text="Δv budget"
+					size={14}
+					weight={700}
+				/>
+				<Label
 					x={PANEL.x + PANEL.w - 24}
 					y={PANEL.y + 32}
 					text="{fmt(missionDv, 1)} km/s"
@@ -373,8 +384,16 @@
 					opacity="0.85"
 				/>
 				<Readout id="leg-{s.id}">
-					<T x={s.x + 2} y={PANEL.y + 86 + (i % 2) * 30} text={s.label} size={11} muted />
-					<T
+					<Label
+						anchor="start"
+						x={s.x + 2}
+						y={PANEL.y + 86 + (i % 2) * 30}
+						text={s.label}
+						size={11}
+						muted
+					/>
+					<Label
+						anchor="start"
 						x={s.x + 2}
 						y={PANEL.y + 100 + (i % 2) * 30}
 						text="{fmt(s.dv / 1000, 2)} km/s"
@@ -411,7 +430,8 @@
 		<Readout id="squares-labels">
 			{#each rings as r (r.j)}
 				{#if r.j > 0 && r.j % ringLabelEvery === 0 && r.side > 30 && r.side < outer - 20}
-					<T
+					<Label
+						anchor="start"
 						x={SQ.x + r.side + 6}
 						y={SQ.y - r.side + 12}
 						text="×{big(Math.exp(r.j))}"
@@ -420,7 +440,8 @@
 					/>
 				{/if}
 			{/each}
-			<T
+			<Label
+				anchor="start"
 				x={SQ.x}
 				y={SQ.y + 16}
 				text={base > 8 ? '1 t arrives (blue)' : '1 t arrives (the blue dot)'}
@@ -428,7 +449,8 @@
 				weight={600}
 				color="var(--rk-payload)"
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={SQ.x + 8}
 				y={outer < 60 || outer - rings[0].side < 30 ? SQ.y - outer - 8 : SQ.y - outer + 20}
 				text="{big(R)} t on the pad{outerClipped ? ' (the blue dot is drawn too big)' : ''}"
@@ -436,21 +458,24 @@
 				weight={700}
 			/>
 			{#if phase === 'tyranny'}
-				<T
+				<Label
+					anchor="start"
 					x={PANEL.x + 22}
 					y={PANEL.y + 34}
 					text="Fuel to lift the fuel to lift the fuel…"
 					size={13}
 					weight={600}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PANEL.x + 22}
 					y={PANEL.y + 54}
 					text="each square out is one more exhaust speed of Δv:"
 					size={11}
 					muted
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PANEL.x + 22}
 					y={PANEL.y + 70}
 					text="e ≈ 2.7 times the mass of everything inside it (areas to scale)"
@@ -466,8 +491,22 @@
 
 	{#if phase === 'recoil'}
 		<Readout id="rc-title">
-			<T x={CL} y={CARD.y + 34} text="Momentum stays balanced" size={16} weight={700} />
-			<T x={CL} y={CARD.y + 54} text="100 t rocket, 80 t of it propellant" size={11} muted />
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 34}
+				text="Momentum stays balanced"
+				size={16}
+				weight={700}
+			/>
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 54}
+				text="100 t rocket, 80 t of it propellant"
+				size={11}
+				muted
+			/>
 		</Readout>
 		{@const mid = CARD.x + CARD.w / 2}
 		{@const sc = (CARD.w / 2 - 34) / pMax}
@@ -489,9 +528,9 @@
 			fill="var(--rk-payload)"
 		/>
 		<Readout id="rc-bars">
-			<T x={mid - 8} y={CARD.y + 106} text="← gas" size={12} anchor="end" muted />
-			<T x={mid + 8} y={CARD.y + 196} text="rocket →" size={12} muted />
-			<T
+			<Label x={mid - 8} y={CARD.y + 106} text="← gas" size={12} anchor="end" muted />
+			<Label anchor="start" x={mid + 8} y={CARD.y + 196} text="rocket →" size={12} muted />
+			<Label
 				x={mid}
 				y={CARD.y + 220}
 				text="total momentum: zero"
@@ -501,12 +540,12 @@
 			/>
 		</Readout>
 		<Readout id="rc-ve" order={1} label="Exhaust speed" value="{fmt(ve)} km/s">
-			<T x={CL} y={CARD.y + 268} text="Exhaust speed" size={12} muted />
-			<T x={CR} y={CARD.y + 268} text="{fmt(ve)} km/s" size={15} weight={700} anchor="end" />
+			<Label anchor="start" x={CL} y={CARD.y + 268} text="Exhaust speed" size={12} muted />
+			<Label x={CR} y={CARD.y + 268} text="{fmt(ve)} km/s" size={15} weight={700} anchor="end" />
 		</Readout>
 		<Readout id="rc-used" order={2} label="Propellant thrown out" value="{fmt(M0 - massNow, 0)} t">
-			<T x={CL} y={CARD.y + 296} text="Propellant thrown out" size={12} muted />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 296} text="Propellant thrown out" size={12} muted />
+			<Label
 				x={CR}
 				y={CARD.y + 296}
 				text="{fmt(M0 - massNow, 0)} of 80 t"
@@ -522,8 +561,8 @@
 			value="{fmt(speedNow, 2)} km/s"
 			color="var(--rk-payload)"
 		>
-			<T x={CL} y={CARD.y + 324} text="Rocket's speed" size={12} muted />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 324} text="Rocket's speed" size={12} muted />
+			<Label
 				x={CR}
 				y={CARD.y + 324}
 				text="{fmt(speedNow, 2)} km/s"
@@ -534,8 +573,15 @@
 			/>
 		</Readout>
 		<Readout id="rc-thrust" order={4} label="Thrust" value="{fmt((Q / 1) * ve, 1)} MN">
-			<T x={CL} y={CARD.y + 352} text="Thrust = flow × exhaust speed" size={12} muted />
-			<T
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 352}
+				text="Thrust = flow × exhaust speed"
+				size={12}
+				muted
+			/>
+			<Label
 				x={CR}
 				y={CARD.y + 352}
 				text="{fmt(Q, 1)} t/s × {fmt(ve)} km/s = {fmt(Q * ve, 0)} MN"
@@ -545,10 +591,23 @@
 			/>
 		</Readout>
 		<Readout id="rc-note">
-			<T x={CL} y={CARD.y + 404} text="The rocket pushes on its own exhaust," size={12} />
-			<T x={CL} y={CARD.y + 422} text="not on the air or the ground: it works" size={12} />
-			<T x={CL} y={CARD.y + 440} text="best of all in empty space." size={12} />
-			<T
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 404}
+				text="The rocket pushes on its own exhaust,"
+				size={12}
+			/>
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 422}
+				text="not on the air or the ground: it works"
+				size={12}
+			/>
+			<Label anchor="start" x={CL} y={CARD.y + 440} text="best of all in empty space." size={12} />
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 480}
 				text="(the flow is sped up for the drawing: 80 t in 9 s)"
@@ -560,8 +619,22 @@
 
 	{#if phase === 'equation'}
 		<Readout id="eq-title">
-			<T x={CL} y={CARD.y + 34} text="Δv = vₑ × ln(m_start / m_end)" size={16} weight={700} />
-			<T x={CL} y={CARD.y + 54} text="speed gained against propellant share" size={11} muted />
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 34}
+				text="Δv = vₑ × ln(m_start / m_end)"
+				size={16}
+				weight={700}
+			/>
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 54}
+				text="speed gained against propellant share"
+				size={11}
+				muted
+			/>
 		</Readout>
 		<Axes
 			sx={exSx}
@@ -609,8 +682,15 @@
 			stroke-width="1.5"
 		/>
 		<Readout id="eq-ratio" order={1} label="Mass ratio" value={fmt(ratio, 1)}>
-			<T x={CL} y={CARD.y + 466} text="Mass ratio m_start / m_end" size={12} muted />
-			<T x={CR} y={CARD.y + 466} text={fmt(ratio, 1)} size={15} weight={700} anchor="end" />
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 466}
+				text="Mass ratio m_start / m_end"
+				size={12}
+				muted
+			/>
+			<Label x={CR} y={CARD.y + 466} text={fmt(ratio, 1)} size={15} weight={700} anchor="end" />
 		</Readout>
 		<Readout
 			id="eq-dv"
@@ -619,8 +699,15 @@
 			value="{fmt(dvShare, 2)} km/s"
 			color="var(--rk-fuel)"
 		>
-			<T x={CL} y={CARD.y + 494} text="Δv when the tank is empty" size={12} muted />
-			<T
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 494}
+				text="Δv when the tank is empty"
+				size={12}
+				muted
+			/>
+			<Label
 				x={CR}
 				y={CARD.y + 494}
 				text="{fmt(dvShare, 2)} km/s"
@@ -631,8 +718,8 @@
 			/>
 		</Readout>
 		<Readout id="eq-now" order={3} label="Speed so far" value="{fmt(eqSpeed, 2)} km/s">
-			<T x={CL} y={CARD.y + 522} text="Speed gained so far" size={12} muted />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 522} text="Speed gained so far" size={12} muted />
+			<Label
 				x={CR}
 				y={CARD.y + 522}
 				text="{fmt(eqSpeed, 2)} km/s"
@@ -642,7 +729,8 @@
 			/>
 		</Readout>
 		<Readout id="eq-ve">
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 548}
 				text="exhaust speed {fmt(ve)} km/s; dashed: 3 and 4.4 km/s"
@@ -654,7 +742,8 @@
 
 	{#if phase === 'tyranny' || phase === 'budget'}
 		<Readout id="ty-title">
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 34}
 				text={phase === 'budget'
@@ -663,7 +752,8 @@
 				size={16}
 				weight={700}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 54}
 				text="mass ratio, each grid line ten times the last"
@@ -716,14 +806,15 @@
 				? `${legs.map((l) => fmt(l.dv / 1000, 2)).join(' + ')} = ${fmt(target, 1)} km/s`
 				: `${fmt(target, 1)} km/s`}
 		>
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 466}
 				text={phase === 'budget' ? 'Mission Δv' : 'Δv to gain'}
 				size={12}
 				muted
 			/>
-			<T
+			<Label
 				x={CR}
 				y={CARD.y + 466}
 				text="{fmt(target, 1)} km/s = {fmt(turns, 2)} × vₑ"
@@ -733,8 +824,8 @@
 			/>
 		</Readout>
 		<Readout id="ty-ratio" order={2} label="Start ÷ end mass" value={big(R)} color="var(--rk-fuel)">
-			<T x={CL} y={CARD.y + 494} text="Start mass ÷ end mass" size={12} muted />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 494} text="Start mass ÷ end mass" size={12} muted />
+			<Label
 				x={CR}
 				y={CARD.y + 494}
 				text={big(R)}
@@ -745,11 +836,19 @@
 			/>
 		</Readout>
 		<Readout id="ty-share" order={3} label="Propellant" value="{pct(R)}%">
-			<T x={CL} y={CARD.y + 522} text="Share that is propellant" size={12} muted />
-			<T x={CR} y={CARD.y + 522} text="{pct(R)}%" size={14} weight={600} anchor="end" />
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 522}
+				text="Share that is propellant"
+				size={12}
+				muted
+			/>
+			<Label x={CR} y={CARD.y + 522} text="{pct(R)}%" size={14} weight={600} anchor="end" />
 		</Readout>
 		<Readout id="ty-ve">
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 548}
 				text="exhaust speed {fmt(ve)} km/s; dashed: 3 and 4.4 km/s{phase === 'budget'

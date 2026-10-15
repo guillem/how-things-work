@@ -7,7 +7,7 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { label, lm, num, str } from './shared';
 	import TextCard from './TextCard.svelte';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -41,11 +41,11 @@
 
 <g>
 	<Readout id="prompt" order={1} label="Prompt" value={lm.text(prompt.ids.slice(1))}>
-		<Txt x={40} y={30} size={12} muted text="Prompt" />
+		<Label anchor="start" x={40} y={30} size={12} muted text="Prompt" />
 		<TextCard x={100} y={31} w={820} prompt={prompt.ids.slice(1)} gen={[]} maxLines={2} />
 	</Readout>
 	<Readout id="setting">
-		<Txt x={920} y={62} anchor="end" size={11.5} muted text={setting} />
+		<Label tabular x={920} y={62} anchor="end" size={11.5} muted text={setting} />
 	</Readout>
 	{#each cards as c (c.label)}
 		{@const y = CARD.y + c.i * (CARD.h + 4)}
@@ -59,7 +59,9 @@
 			stroke="var(--border)"
 		/>
 		<Readout id="card-{c.i}" order={3 + c.i} label={c.label} value={lm.text(c.ids.slice(0, N))}>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={40}
 				y={y + 24}
 				size={12.5}
@@ -82,7 +84,8 @@
 		</Readout>
 		{#if c.first >= 0 && c.first < shown}
 			<Readout id="diverge-{c.i}">
-				<Txt
+				<Label
+					tabular
 					x={920}
 					y={y + CARD.h - 16}
 					anchor="end"

@@ -60,7 +60,7 @@
 	<line x1={axisX} x2={axisX} y1={top} y2={bottom} stroke="var(--stage-line)" />
 	{#each xs as v (v)}
 		<line x1={sx(v)} x2={sx(v)} y1={bottom} y2={bottom + 4} stroke="var(--stage-line)" />
-		<text x={sx(v)} y={bottom + 17} text-anchor="middle" font-size="11" class="muted">
+		<text x={sx(v)} y={bottom + 17} text-anchor="middle" font-size="11" class="muted tick">
 			{xFormat(v)}
 		</text>
 	{/each}
@@ -70,7 +70,7 @@
 			y={sy(v) + 4}
 			text-anchor={yRight ? 'start' : 'end'}
 			font-size="11"
-			class="muted"
+			class="muted tick"
 		>
 			{yFormat(v)}
 		</text>

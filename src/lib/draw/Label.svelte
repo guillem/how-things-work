@@ -11,6 +11,13 @@
 		color?: string;
 		opacity?: number;
 		rotate?: number;
+		italic?: boolean;
+		/** Monospace, for code, tokens and hashes. */
+		mono?: boolean;
+		/** Digits of equal width, so a changing readout does not jitter. */
+		tabular?: boolean;
+		/** Without the halo the text sits flat on whatever is behind it. */
+		halo?: boolean;
 		/** Draws a rounded pill behind the text instead of a halo. */
 		pill?: boolean;
 	}
@@ -25,6 +32,10 @@
 		color,
 		opacity = 1,
 		rotate = 0,
+		italic = false,
+		mono = false,
+		tabular = false,
+		halo = true,
 		pill = false
 	}: Props = $props();
 
@@ -49,11 +60,14 @@
 	<text
 		{x}
 		{y}
-		class={pill ? '' : 'halo'}
+		class:halo={halo && !pill}
 		class:muted
 		text-anchor={anchor}
 		font-size={size}
 		font-weight={weight}
+		font-style={italic ? 'italic' : undefined}
+		style:font-family={mono ? 'var(--font-mono)' : undefined}
+		style:font-variant-numeric={tabular ? 'tabular-nums' : undefined}
 		style:fill={color}
 	>
 		{text}

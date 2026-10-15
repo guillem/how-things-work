@@ -559,13 +559,8 @@
 	<!-- labels where the calm lines reach the edge -->
 	<g style:pointer-events="none">
 		{#each edgeLabels as e (e.order)}
-			<text
-				x={e.x}
-				y={e.y + 4}
-				text-anchor={e.anchor}
-				class="halo"
-				style:font-size="12px"
-				font-weight="600">{e.text}</text
+			<text x={e.x} y={e.y + 4} text-anchor={e.anchor} class="halo" font-size="12" font-weight="600"
+				>{e.text}</text
 			>
 		{/each}
 	</g>
@@ -597,7 +592,7 @@
 			y={bracket.label.y}
 			text-anchor="middle"
 			class="halo"
-			style:font-size="12px"
+			font-size="12"
 			font-weight="600">{fmt(d, 1)} cm</text
 		>
 	</g>
@@ -681,16 +676,16 @@
 
 	<!-- ---- panel ---- -->
 	<g style:pointer-events="none">
-		<text x={PL} y={40} style:font-size="16px" font-weight="700">Ripple tank</text>
-		<text x={PL} y={60} class="muted" style:font-size="12px">seen from above, slowed down</text>
+		<text x={PL} y={40} font-size="16" font-weight="700">Ripple tank</text>
+		<text x={PL} y={60} class="muted" font-size="12">seen from above, slowed down</text>
 
 		<!-- legend -->
 		{#if oBands < 0.5}
 			<g transform="translate({PL} 84)">
 				<rect width="16" height="16" rx="3" fill="var(--wav-crest)" stroke="var(--border)" />
-				<text x="24" y="12" style:font-size="12px">crest (water lifted)</text>
+				<text x="24" y="12" font-size="12">crest (water lifted)</text>
 				<rect y="24" width="16" height="16" rx="3" fill="var(--wav-still)" stroke="var(--border)" />
-				<text x="24" y="36" style:font-size="12px">level water</text>
+				<text x="24" y="36" font-size="12">level water</text>
 				<rect
 					y="48"
 					width="16"
@@ -699,12 +694,12 @@
 					fill="var(--wav-trough)"
 					stroke="var(--border)"
 				/>
-				<text x="24" y="60" style:font-size="12px">trough</text>
+				<text x="24" y="60" font-size="12">trough</text>
 			</g>
 		{:else}
 			<g transform="translate({PL} 84)">
 				<rect width="16" height="16" rx="3" fill="var(--wav-crest)" stroke="var(--border)" />
-				<text x="24" y="12" style:font-size="12px">water heaves: waves in step</text>
+				<text x="24" y="12" font-size="12">water heaves: waves in step</text>
 				<rect
 					y="24"
 					width="16"
@@ -713,54 +708,52 @@
 					fill="var(--wav-trough)"
 					stroke="var(--border)"
 				/>
-				<text x="24" y="36" style:font-size="12px">calm: waves cancel</text>
+				<text x="24" y="36" font-size="12">calm: waves cancel</text>
 			</g>
 		{/if}
 
 		<!-- readouts -->
 		<g transform="translate({PL} 176)">
-			<text class="muted" style:font-size="12px">Wavelength</text>
-			<text y="24" style:font-size="18px" font-weight="700">{fmt(lam, 1)} cm</text>
-			<text x="130" class="muted" style:font-size="12px">Spacing</text>
-			<text x="130" y="24" style:font-size="18px" font-weight="700">{fmt(d, 1)} cm</text>
-			<text y="50" class="muted" style:font-size="12px">= {fmt(d / lam, 2)} wavelengths apart</text>
+			<text class="muted" font-size="12">Wavelength</text>
+			<text y="24" font-size="18" font-weight="700">{fmt(lam, 1)} cm</text>
+			<text x="130" class="muted" font-size="12">Spacing</text>
+			<text x="130" y="24" font-size="18" font-weight="700">{fmt(d, 1)} cm</text>
+			<text y="50" class="muted" font-size="12">= {fmt(d / lam, 2)} wavelengths apart</text>
 		</g>
 
 		{#if oProbe < 0.5}
 			<g transform="translate({PL} 262)">
-				<text class="muted" style:font-size="12px">Calm lines</text>
-				<text y="26" style:font-size="22px" font-weight="700">{nQuiet}</text>
-				<text y="48" class="muted" style:font-size="11px">one pair for each ½λ, 1½λ, 2½λ…</text>
-				<text y="63" class="muted" style:font-size="11px">that is shorter than the spacing</text>
+				<text class="muted" font-size="12">Calm lines</text>
+				<text y="26" font-size="22" font-weight="700">{nQuiet}</text>
+				<text y="48" class="muted" font-size="11">one pair for each ½λ, 1½λ, 2½λ…</text>
+				<text y="63" class="muted" font-size="11">that is shorter than the spacing</text>
 				{#if oBands > 0.5}
-					<text y="98" class="muted" style:font-size="12px">First calm line, far away</text>
-					<text y="122" style:font-size="18px" font-weight="700"
+					<text y="98" class="muted" font-size="12">First calm line, far away</text>
+					<text y="122" font-size="18" font-weight="700"
 						>{firstAngle === null ? 'none' : `${fmt(firstAngle, 1)}° off centre`}</text
 					>
-					<text y="142" class="muted" style:font-size="11px">sin θ = ½ λ ÷ spacing</text>
+					<text y="142" class="muted" font-size="11">sin θ = ½ λ ÷ spacing</text>
 				{/if}
 			</g>
 		{:else}
 			<g transform="translate({PL} 262)">
-				<text class="muted" style:font-size="12px">From source 1</text>
-				<text y="22" style:font-size="16px" font-weight="700" style:fill="var(--wav-a)"
+				<text class="muted" font-size="12">From source 1</text>
+				<text y="22" font-size="16" font-weight="700" style:fill="var(--wav-a)"
 					>r₁ = {fmt(r1, 2)} λ</text
 				>
-				<text x="130" class="muted" style:font-size="12px">From source 2</text>
-				<text x="130" y="22" style:font-size="16px" font-weight="700" style:fill="var(--wav-b)"
+				<text x="130" class="muted" font-size="12">From source 2</text>
+				<text x="130" y="22" font-size="16" font-weight="700" style:fill="var(--wav-b)"
 					>r₂ = {fmt(r2, 2)} λ</text
 				>
-				<text y="52" class="muted" style:font-size="12px">Path difference r₁ − r₂</text>
-				<text y="76" style:font-size="18px" font-weight="700">{fmt(delta, 2)} λ</text>
-				<text y="104" style:font-size="14px" font-weight="700" style:fill={verdict.c}
-					>{verdict.text}</text
-				>
-				<text y="122" class="muted" style:font-size="12px">{verdict.sub}</text>
+				<text y="52" class="muted" font-size="12">Path difference r₁ − r₂</text>
+				<text y="76" font-size="18" font-weight="700">{fmt(delta, 2)} λ</text>
+				<text y="104" font-size="14" font-weight="700" style:fill={verdict.c}>{verdict.text}</text>
+				<text y="122" class="muted" font-size="12">{verdict.sub}</text>
 			</g>
 			<!-- the waves arriving at the probe -->
 			{#each traces as row (row.l)}
 				<line x1={TRX0} x2={TRX1} y1={row.y} y2={row.y} stroke="var(--stage-grid)" />
-				<text x={PL} y={row.y - 20} class="muted" style:font-size="11px">{row.l}</text>
+				<text x={PL} y={row.y - 20} class="muted" font-size="11">{row.l}</text>
 				<path
 					d={row.d}
 					transform="translate(0 {row.y})"
@@ -769,7 +762,7 @@
 					stroke-width={row.w}
 				/>
 			{/each}
-			<text x={TRX1} y={588} text-anchor="end" class="muted" style:font-size="11px"
+			<text x={TRX1} y={588} text-anchor="end" class="muted" font-size="11"
 				>at the probe, over time →</text
 			>
 		{/if}

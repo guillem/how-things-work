@@ -1,8 +1,7 @@
 <script lang="ts">
 	/**
 	 * Plot frame shared by the oscillation scenes: horizontal grid lines at the
-	 * y ticks, the axes and 11 px tick labels (the stage CSS ignores font-size
-	 * attributes, so sizes are set with style).
+	 * y ticks, the axes and 11 px tick labels.
 	 */
 	import type { Scale } from '#lib/draw/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
@@ -37,7 +36,7 @@
 		<line x1={left} x2={right} y1={sy(v)} y2={sy(v)} stroke="var(--stage-grid)" />
 		<!-- tick labels: unreadable on phones -->
 		<Readout id="y-tick">
-			<text x={left - 8} y={sy(v) + 4} text-anchor="end" class="muted" style:font-size="11px"
+			<text x={left - 8} y={sy(v) + 4} text-anchor="end" class="muted" font-size="11"
 				>{yFormat(v)}</text
 			>
 		</Readout>
@@ -47,7 +46,7 @@
 	{#each xTicks as v (v)}
 		<line x1={sx(v)} x2={sx(v)} y1={bottom} y2={bottom + 4} stroke="var(--stage-line)" />
 		<Readout id="x-tick">
-			<text x={sx(v)} y={bottom + 17} text-anchor="middle" class="muted" style:font-size="11px"
+			<text x={sx(v)} y={bottom + 17} text-anchor="middle" class="muted" font-size="11"
 				>{xFormat(v)}</text
 			>
 		</Readout>

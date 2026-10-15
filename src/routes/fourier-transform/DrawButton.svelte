@@ -39,7 +39,7 @@
 		y={y + H / 2 + 5}
 		text-anchor="middle"
 		font-weight="600"
-		style:font-size="14px"
+		font-size="14"
 		style:fill={armed ? 'var(--stage-bg)' : 'var(--ft-bar)'}>{armed ? '✕ Cancel' : '✎ Draw'}</text
 	>
 </g>

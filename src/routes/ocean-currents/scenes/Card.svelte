@@ -12,8 +12,7 @@
 	/**
 	 * Readout card shared by the ocean scenes: a box of cells, each a small
 	 * label, a big value and an optional note, stacked vertically (or side by
-	 * side when `row` is set). Text sizes are set with `style:` because the
-	 * stage CSS overrides SVG presentation attributes.
+	 * side when `row` is set).
 	 */
 	interface Props {
 		x: number;
@@ -43,14 +42,12 @@
 				<line x1={x + 14} x2={x + w - 14} y1={cy} y2={cy} stroke="var(--border)" />
 			{/if}
 		{/if}
-		<text x={cx + 14} y={cy + 22} class="muted" style:font-size="12px" font-weight="500"
-			>{c.label}</text
-		>
-		<text x={cx + 14} y={cy + 46} style:font-size="19px" style:fill={c.color} font-weight="700"
+		<text x={cx + 14} y={cy + 22} class="muted" font-size="12" font-weight="500">{c.label}</text>
+		<text x={cx + 14} y={cy + 46} font-size="19" style:fill={c.color} font-weight="700"
 			>{c.value}</text
 		>
 		{#if c.sub}
-			<text x={cx + 14} y={cy + 64} class="muted" style:font-size="11px">{c.sub}</text>
+			<text x={cx + 14} y={cy + 64} class="muted" font-size="11">{c.sub}</text>
 		{/if}
 	{/each}
 </g>

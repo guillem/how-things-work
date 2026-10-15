@@ -221,11 +221,11 @@
 				? `Nepal, ${fmt(missKm)} km from where the USGS put it`
 				: 'don’t meet yet: move the S markers'}
 		>
-			<text x={MAP.x} y={MAP.y - 26} style:font-size="15px" style:font-weight="600">
+			<text x={MAP.x} y={MAP.y - 26} font-size="15" style:font-weight="600">
 				{found ? 'They meet: the epicentre, in Nepal' : 'Where do the three circles meet?'}
 			</text>
 			{#if found}
-				<text x={MAP.x} y={MAP.y - 8} class="muted" style:font-size="12px"
+				<text x={MAP.x} y={MAP.y - 8} class="muted" font-size="12"
 					>{fmt(missKm)} km from the USGS location (28.23° N, 84.73° E)</text
 				>
 			{/if}
@@ -252,7 +252,7 @@
 				style:fill={phase === 'locate' ? COLORS[tr.k] : undefined}
 				>{s.rec.name}{phase === 'lag' ? ` (${s.rec.net}.${s.rec.sta}), 25 April 2015` : ''}</text
 			>
-			<text x={b.x1} y={b.y - 8} text-anchor="end" style:font-size="12px"
+			<text x={b.x1} y={b.y - 8} text-anchor="end" font-size="12"
 				>S − P {minSec(lags[tr.k])} → {fmt(dists[tr.k] * KM)} km</text
 			>
 		</Readout>
@@ -314,7 +314,7 @@
 						y={b.y + b.h + 50}
 						text-anchor="middle"
 						class="muted"
-						style:font-size="11px">{m} min</text
+						font-size="11">{m} min</text
 					>
 				</Readout>
 			{/each}
@@ -323,7 +323,7 @@
 
 	{#if phase === 'lag'}
 		<Readout id="tt-axis">
-			<text x={320} y={404} text-anchor="middle" class="muted" style:font-size="11px"
+			<text x={320} y={404} text-anchor="middle" class="muted" font-size="11"
 				>minutes after the earthquake</text
 			>
 		</Readout>
@@ -333,20 +333,20 @@
 			label="Drag"
 			value="the S marker to where the sideways shaking jumps"
 		>
-			<text x={70} y={450} style:font-size="13px"
+			<text x={70} y={450} font-size="13"
 				>Drag the <tspan style:fill="var(--eq-s)" style:font-weight="600">S marker</tspan> to where the
 				side-to-side shaking suddenly grows.</text
 			>
-			<text x={70} y={472} class="muted" style:font-size="12px"
+			<text x={70} y={472} class="muted" font-size="12"
 				>The P wave was picked automatically, where the up-and-down shaking first jumps.</text
 			>
-			<text x={70} y={490} class="muted" style:font-size="12px"
+			<text x={70} y={490} class="muted" font-size="12"
 				>Wiggle heights are compressed so the small ones show.</text
 			>
 		</Readout>
 		<!-- the chart: S − P against distance -->
 		<Readout id="ch-title">
-			<text x={CH.x0 - 30} y={CH.y0 - 30} style:font-size="14px" style:font-weight="600"
+			<text x={CH.x0 - 30} y={CH.y0 - 30} font-size="14" style:font-weight="600"
 				>S − P against distance (ak135)</text
 			>
 		</Readout>
@@ -361,30 +361,20 @@
 		{#each [0, 20, 40, 60, 80, 100] as d (d)}
 			<path d="M{cx(d)} {CH.y0}V{CH.y1}" stroke="var(--stage-grid)" />
 			<Readout id="chx-{d}">
-				<text x={cx(d)} y={CH.y1 + 16} text-anchor="middle" class="muted" style:font-size="11px"
-					>{d}°</text
-				>
+				<text x={cx(d)} y={CH.y1 + 16} text-anchor="middle" class="muted" font-size="11">{d}°</text>
 			</Readout>
 		{/each}
 		{#each [0, 4, 8, 12] as m (m)}
 			<path d="M{CH.x0} {cy(m * 60)}H{CH.x1}" stroke="var(--stage-grid)" />
 			<Readout id="chy-{m}">
-				<text
-					x={CH.x0 - 6}
-					y={cy(m * 60) + 4}
-					text-anchor="end"
-					class="muted"
-					style:font-size="11px">{m} min</text
+				<text x={CH.x0 - 6} y={cy(m * 60) + 4} text-anchor="end" class="muted" font-size="11"
+					>{m} min</text
 				>
 			</Readout>
 		{/each}
 		<Readout id="ch-axis">
-			<text
-				x={(CH.x0 + CH.x1) / 2}
-				y={CH.y1 + 34}
-				text-anchor="middle"
-				class="muted"
-				style:font-size="11px">distance round the Earth</text
+			<text x={(CH.x0 + CH.x1) / 2} y={CH.y1 + 34} text-anchor="middle" class="muted" font-size="11"
+				>distance round the Earth</text
 			>
 		</Readout>
 		<path
@@ -400,12 +390,7 @@
 			label="Dashed line"
 			value="if the Earth were the same rock all through"
 		>
-			<text
-				x={cx(uniformTo) - 30}
-				y={CH.y0 + 16}
-				text-anchor="end"
-				class="muted"
-				style:font-size="11px"
+			<text x={cx(uniformTo) - 30} y={CH.y0 + 16} text-anchor="end" class="muted" font-size="11"
 				><tspan x={cx(uniformTo) - 30}>if the Earth were</tspan><tspan
 					x={cx(uniformTo) - 30}
 					dy="14">the same rock all through</tspan
@@ -427,7 +412,7 @@
 			label="Ankara is"
 			value="{Math.round(dists[0])}° · {fmt(dists[0] * KM)} km from the earthquake"
 		>
-			<text x={CH.x0} y={CH.y1 + 64} style:font-size="14px">
+			<text x={CH.x0} y={CH.y1 + 64} font-size="14">
 				→ <tspan style:font-weight="600">{Math.round(dists[0])}°</tspan> round the Earth: {fmt(
 					dists[0] * KM
 				)} km

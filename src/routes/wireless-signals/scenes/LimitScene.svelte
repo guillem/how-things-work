@@ -17,7 +17,7 @@
 	 *
 	 * Static apart from a gentle shimmer of the noise floor (a pure function of t).
 	 */
-	import { Axes, scale } from '#lib/draw/index.ts';
+	import { Axes, Label, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		SCHEMES,
@@ -33,7 +33,6 @@
 		type Scheme
 	} from '../radio';
 	import { bitRate, db, distanceText, num } from '../format';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -99,7 +98,8 @@
 <g>
 	{#if phase === 'width'}
 		<Readout id="title" order={0} label="Link" value="5 GHz, {distanceText(logd)}, {width} MHz">
-			<T
+			<Label
+				anchor="start"
 				x={24}
 				y={34}
 				text="5 GHz Wi-Fi, 100 mW, {distanceText(logd)} away in open space"
@@ -112,7 +112,7 @@
 		{#each [5150, 5200, 5250, 5300, 5350] as f (f)}
 			<line x1={fx(f)} x2={fx(f)} y1="210" y2="215" stroke="var(--stage-line)" />
 			<Readout id="f-{f}">
-				<T x={fx(f)} y={230} text="{f} MHz" size={11} anchor="middle" muted />
+				<Label x={fx(f)} y={230} text="{f} MHz" size={11} anchor="middle" muted />
 			</Readout>
 		{/each}
 		<rect
@@ -131,7 +131,8 @@
 			label="Same power, wider band"
 			value="power per MHz ÷ {width / 20}"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={fx(5170)}
 				y={210 - Math.max(blockH, noiseH + 4) - 10}
 				text="your signal: the same 100 mW spread over {width} MHz"
@@ -139,7 +140,7 @@
 				weight={600}
 				color="var(--ws-wave)"
 			/>
-			<T
+			<Label
 				x={fx(5350)}
 				y={210 - noiseH - 10}
 				text="noise: the same in every MHz"
@@ -151,8 +152,16 @@
 
 		<!-- capacity for each width -->
 		<Readout id="cap-title">
-			<T x={24} y={280} text="Shannon’s best possible rate" size={14} weight={700} />
-			<T
+			<Label
+				anchor="start"
+				x={24}
+				y={280}
+				text="Shannon’s best possible rate"
+				size={14}
+				weight={700}
+			/>
+			<Label
+				anchor="start"
 				x={24}
 				y={300}
 				text="grey outline: if the rate doubled with every doubling of width"
@@ -164,8 +173,16 @@
 			{@const y = 330 + i * 60}
 			{@const on = r.w === width}
 			<Readout id="w-{r.w}">
-				<T x={24} y={y + 20} text="{r.w} MHz" size={14} weight={on ? 700 : 500} />
-				<T
+				<Label
+					anchor="start"
+					x={24}
+					y={y + 20}
+					text="{r.w} MHz"
+					size={14}
+					weight={on ? 700 : 500}
+				/>
+				<Label
+					anchor="start"
 					x={110}
 					y={y + 20}
 					text="SNR {db(r.snr)}"
@@ -200,7 +217,8 @@
 				value="{bitRate(r.c)} at {db(r.snr)} SNR"
 				color={on ? 'var(--ws-shannon)' : undefined}
 			>
-				<T
+				<Label
+					anchor="start"
 					x={238 + 700 * cx(r.c)}
 					y={y + 20}
 					text={bitRate(r.c)}
@@ -215,7 +233,7 @@
 			label="Compared with 20 MHz"
 			value="{width / 20}× the width, {(chosen.c / base.c).toFixed(1)}× the rate"
 		>
-			<T
+			<Label
 				x={936}
 				y={584}
 				text="{width / 20}× the width → {(chosen.c / base.c).toFixed(1)}× the rate"
@@ -226,7 +244,14 @@
 		</Readout>
 	{:else}
 		<Readout id="title" order={0} label="Shannon’s limit" value="C = B · log₂(1 + SNR)">
-			<T x={24} y={34} text="Shannon’s limit: C = B · log₂(1 + SNR)" size={15} weight={700} />
+			<Label
+				anchor="start"
+				x={24}
+				y={34}
+				text="Shannon’s limit: C = B · log₂(1 + SNR)"
+				size={15}
+				weight={700}
+			/>
 		</Readout>
 		<path d={impossible} fill="var(--ws-bad)" opacity="0.08" />
 		<Axes
@@ -239,7 +264,8 @@
 			yLabel="bits per second per hertz"
 		/>
 		<Readout id="impossible">
-			<T
+			<Label
+				anchor="start"
 				x={sx(4)}
 				y={sy(10)}
 				text="impossible: no scheme can work up here"
@@ -250,7 +276,7 @@
 		</Readout>
 		<path d={shannonPath} fill="none" stroke="var(--ws-shannon)" stroke-width="3" />
 		<Readout id="curve-label">
-			<T
+			<Label
 				x={sx(28)}
 				y={sy(Math.log2(1 + dbToLin(28))) - 12}
 				text="Shannon’s limit"
@@ -272,7 +298,7 @@
 			/>
 			<circle cx={p.x} cy={p.y} r="6" fill="var(--ws-s{SCHEMES.indexOf(p.s)})" />
 			<Readout id="pt-{p.s}">
-				<T
+				<Label
 					x={p.s === 'qam256' ? p.x : p.x + 10}
 					y={p.s === 'qam256' ? p.y - 12 : p.y + 4}
 					anchor={p.s === 'qam256' ? 'middle' : 'start'}
@@ -305,7 +331,8 @@
 			value="4.9 bit/s/Hz; needs at least {db(wifiFloor)}, Shannon’s curve {db(wifiMin)}"
 			color="var(--ws-ok)"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={sx(wifiFloor) + 10}
 				y={sy(wifiEta) + 4}
 				text="Wi-Fi 5 with its code: 4.9, needs at least {num(wifiFloor, 0)} dB"
@@ -332,7 +359,8 @@
 				capacity(20e6, dbToLin(snr))
 			)} in 20 MHz"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={24}
 				y={584}
 				text="At {num(snr)} dB: at most {etaNow.toFixed(1)} bits per second per hertz, {bitRate(

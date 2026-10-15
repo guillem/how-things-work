@@ -201,7 +201,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -293,7 +293,7 @@
 			y={yMass + 5}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size={m < 1 ? '11px' : '13px'}
+			font-size={m < 1 ? 11 : 13}
 			style:fill="#fff">{m.toFixed(m < 1 ? 2 : 1)} kg</text
 		>
 	</Readout>

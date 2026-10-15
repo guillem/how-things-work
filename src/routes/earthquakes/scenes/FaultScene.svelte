@@ -89,17 +89,11 @@
 	</defs>
 
 	<Readout id="f-title">
-		<text x={MAP.x} y={MAP.y - 22} style:font-size="14px" style:font-weight="600"
-			>Seen from above</text
-		>
+		<text x={MAP.x} y={MAP.y - 22} font-size="14" style:font-weight="600">Seen from above</text>
 	</Readout>
 	<Readout id="f-stage" order={1} label="Now" value={stage}>
-		<text
-			x={MAP.x + MAP.w}
-			y={MAP.y - 22}
-			text-anchor="end"
-			style:font-size="15px"
-			style:font-weight="600">{stage}</text
+		<text x={MAP.x + MAP.w} y={MAP.y - 22} text-anchor="end" font-size="15" style:font-weight="600"
+			>{stage}</text
 		>
 	</Readout>
 
@@ -232,7 +226,7 @@
 
 	<!-- the cut across the fault -->
 	<Readout id="s-title">
-		<text x={SEC.x} y={SEC.y - 48} style:font-size="14px" style:font-weight="600"
+		<text x={SEC.x} y={SEC.y - 48} font-size="14" style:font-weight="600"
 			>A cut through the ground</text
 		>
 	</Readout>
@@ -300,10 +294,10 @@
 		label="Speed-up"
 		value="decades of bending in 7 s; the slip takes seconds"
 	>
-		<text x={SEC.x} y={SEC.y + SEC.h + 34} class="muted" style:font-size="12px"
+		<text x={SEC.x} y={SEC.y + SEC.h + 34} class="muted" font-size="12"
 			>Drawing sped up: decades of bending take 7 s,</text
 		>
-		<text x={SEC.x} y={SEC.y + SEC.h + 52} class="muted" style:font-size="12px"
+		<text x={SEC.x} y={SEC.y + SEC.h + 52} class="muted" font-size="12"
 			>the slip itself really takes a few seconds.</text
 		>
 	</Readout>

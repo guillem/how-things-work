@@ -10,7 +10,7 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { C1, K, SIDE, decodeBytes } from '../cnn';
 	import { PARTS, SAMPLES } from '../mnist-cnn';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import { WT, greyUrl, inputOf, maxAbs, samplePixels, signedUrl } from './shared';
 
 	let { t, params, reduced, dark }: StageProps = $props();
@@ -88,7 +88,14 @@
 		label="What one unit sees"
 		value="5 × 5 → 14 × 14 → the whole 28 × 28 digit"
 	>
-		<Txt x={D.x} y={D.y - 24} text="what one unit of each layer sees" size={14} weight={600} />
+		<Label
+			anchor="start"
+			x={D.x}
+			y={D.y - 24}
+			text="what one unit of each layer sees"
+			size={14}
+			weight={600}
+		/>
 	</Readout>
 	<image href={inUrl} x={D.x} y={D.y} width={SIDE * PX} height={SIDE * PX} class="cv-px" />
 	<rect
@@ -113,7 +120,8 @@
 			opacity={input.empty ? 0 : w.o}
 		/>
 		<Readout id="dp-{w.key}">
-			<Txt
+			<Label
+				anchor="start"
 				x={D.x}
 				y={D.y + SIDE * PX + 26 + i * 20}
 				text={w.label}
@@ -125,7 +133,8 @@
 	{/each}
 
 	<!-- the ladder -->
-	<Txt
+	<Label
+		anchor="start"
 		x={R.x}
 		y={86}
 		text="larger networks on photographs (Zeiler & Fergus, 2014):"
@@ -139,7 +148,8 @@
 		label="Larger networks"
 		value="edges → corners → textures → object parts → whole objects"
 	>
-		<Txt
+		<Label
+			anchor="start"
 			x={R.x}
 			y={108}
 			text="edges, colour blobs → corners → textures → parts (dogs' faces) → objects"
@@ -155,7 +165,14 @@
 		stroke="var(--stage-line)"
 		stroke-dasharray="4 4"
 	/>
-	<Txt x={R.x} y={152} text="this page's network, two layers deep:" size={12} weight={600} />
+	<Label
+		anchor="start"
+		x={R.x}
+		y={152}
+		text="this page's network, two layers deep:"
+		size={12}
+		weight={600}
+	/>
 	{#each rungs as r (r.key)}
 		<rect
 			x={R.x}
@@ -166,8 +183,8 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		<Txt x={R.x + 16} y={r.y + 40} text={r.title} size={14} weight={700} />
-		<Txt x={R.x + 16} y={r.y + 62} text={r.note} size={11} muted />
+		<Label anchor="start" x={R.x + 16} y={r.y + 40} text={r.title} size={14} weight={700} />
+		<Label anchor="start" x={R.x + 16} y={r.y + 62} text={r.note} size={11} muted />
 		{#each r.imgs as url, i (i)}
 			<image
 				href={url}
@@ -202,7 +219,8 @@
 		label="This network"
 		value="edges → parts of digits → whole digits"
 	>
-		<Txt
+		<Label
+			anchor="start"
 			x={R.x}
 			y={548}
 			text="small detectors, stacked: simple features combine into complex ones"

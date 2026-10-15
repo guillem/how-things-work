@@ -5,11 +5,10 @@
 	 * anywhere on the map). Optionally the field of downhill arrows (−∇L) and,
 	 * at the start point, the gradient and the downhill direction.
 	 */
-	import { VectorHandle, startDrag, type Point } from '#lib/draw/index.ts';
+	import { Label, type Point, startDrag, VectorHandle } from '#lib/draw/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
 	import type { Landscape } from '../descent';
 	import { MAP, contours, contourColor, fromMap, mapX, mapY } from './shared';
-	import Txt from './Txt.svelte';
 
 	interface Trail {
 		key: string;
@@ -248,16 +247,23 @@
 	<!-- axes -->
 	<Readout id="map-axes">
 		{#each ticks as tk (tk.v)}
-			<Txt x={X(tk.v)} y={MAP.y + MAP.size + 15} text={tk.label} anchor="middle" size={11} muted />
-			<Txt x={MAP.x - 7} y={Y(tk.v) + 4} text={tk.label} anchor="end" size={11} muted />
+			<Label
+				x={X(tk.v)}
+				y={MAP.y + MAP.size + 15}
+				text={tk.label}
+				anchor="middle"
+				size={11}
+				muted
+			/>
+			<Label x={MAP.x - 7} y={Y(tk.v) + 4} text={tk.label} anchor="end" size={11} muted />
 		{/each}
-		<Txt
+		<Label
 			x={MAP.x + MAP.size / 2}
 			y={MAP.y + MAP.size + 32}
 			text="{land.xName} →"
 			anchor="middle"
 			size={12}
 		/>
-		<Txt x={MAP.x + 6} y={MAP.y - 9} text="↑ {land.yName}" size={12} />
+		<Label anchor="start" x={MAP.x + 6} y={MAP.y - 9} text="↑ {land.yName}" size={12} />
 	</Readout>
 </g>

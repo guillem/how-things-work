@@ -23,7 +23,6 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { BAND, F0, UFLS_STEPS, UNDER_TRIP, trip, type TripInput } from '../grid';
 	import Dial from './Dial.svelte';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -288,7 +287,7 @@
 		xLabel={cfg.minutes ? 'minutes' : 'seconds'}
 		yFormat={(v: number) => v.toFixed(1)}
 	/>
-	<Txt x={CX0 - 8} y={CY0 - 16} text="frequency, Hz" anchor="start" muted size={12} />
+	<Label x={CX0 - 8} y={CY0 - 16} text="frequency, Hz" anchor="start" muted size={12} />
 	<line x1={CX0} x2={CX1} y1={sy(F0)} y2={sy(F0)} stroke="var(--pg-ok)" stroke-dasharray="4 4" />
 	{#if yLo.current < UFLS_STEPS[0]}
 		<line
@@ -402,7 +401,7 @@
 
 	<!-- ===== where the power comes from: one row per contributor, zero at BZ -->
 	<Readout id="bars-title">
-		<Txt
+		<Label
 			x={CX0}
 			y={BY0 - 22}
 			anchor="start"

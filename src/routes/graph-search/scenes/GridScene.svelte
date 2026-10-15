@@ -24,8 +24,6 @@
 	 * and paints with Space or Enter. Painting is only offered where the step
 	 * offers the brush (not on `estimate`); S and G move on every step.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
-	 * presentation attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, clamp, startDrag, toSvg, type Point } from '#lib/draw/index.ts';
@@ -572,7 +570,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-variant-numeric="tabular-nums">{text}</text
 	>
@@ -618,7 +616,7 @@
 			y={cy(i) + 5}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="14px"
+			font-size="14"
 			style:fill="var(--stage-bg)">{letter}</text
 		>
 	</g>
@@ -760,7 +758,7 @@
 				y={n.y}
 				text-anchor="middle"
 				opacity="0.85"
-				style:font-size="13px"
+				font-size="13"
 				style:fill={n.color}
 				style:font-variant-numeric="tabular-nums">{n.s}</text
 			>

@@ -89,7 +89,7 @@
 			y={y + nameDy}
 			text-anchor={nameDx < 0 ? 'end' : 'start'}
 			font-weight="700"
-			style:font-size="17px"
+			font-size="17"
 			style:fill={color}
 			style:font-style="italic">{name}</text
 		>

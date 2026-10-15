@@ -12,7 +12,7 @@
 	 * model (`PROCESSES`), and each line below names the moments it spans.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { cycle, smoothstep } from '#lib/draw/index.ts';
+	import { cycle, Label, smoothstep } from '#lib/draw/index.ts';
 	import {
 		PROCESSES,
 		colourCount,
@@ -25,7 +25,6 @@
 		type Colour
 	} from '../particles';
 	import { chargeColour, coil, forceColour, FORCE_NAME, wavy } from './shared';
-	import T from './T.svelte';
 	import Card from './Card.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -230,8 +229,9 @@
 		value="{FORCE_NAME[proc.force]} force, carrier {proc.carrier}"
 		color={forceColour(proc.force)}
 	>
-		<T x={24} y={36} text={proc.title} size={16} weight={700} />
-		<T
+		<Label anchor="start" x={24} y={36} text={proc.title} size={16} weight={700} />
+		<Label
+			anchor="start"
 			x={24}
 			y={56}
 			text="{FORCE_NAME[proc.force]} force · carrier {proc.carrier}"
@@ -270,7 +270,7 @@
 	{#each segs as s (s.id)}
 		{@const [mx, my] = mid(s)}
 		<Readout id="lab-{s.id}">
-			<T
+			<Label
 				x={s.kind === 'fermion' && s.a[1] === s.b[1] && s.to === 2 && s.from === 0
 					? X0 - 10
 					: mx + (s.dx ?? 0)}
@@ -305,16 +305,16 @@
 
 	{#if proc.id === 'beta'}
 		<Readout id="nucleons">
-			<T x={X0 - 10} y={240} text="neutron" size={12} anchor="end" muted />
+			<Label x={X0 - 10} y={240} text="neutron" size={12} anchor="end" muted />
 			<path d="M{X0 - 4} 98 v124" stroke="var(--stage-ink-muted)" stroke-width="1.5" fill="none" />
 			<path d="M{X1 + 6} 98 v124" stroke="var(--stage-ink-muted)" stroke-width="1.5" fill="none" />
-			<T x={X1 + 12} y={164} text="proton" size={12} muted />
+			<Label anchor="start" x={X1 + 12} y={164} text="proton" size={12} muted />
 		</Readout>
 	{/if}
 
 	<!-- now line and riders -->
 	<line x1={nowX} x2={nowX} y1={74} y2={392} stroke="var(--explainer-accent)" stroke-width="2" />
-	<T
+	<Label
 		x={nowX}
 		y={406}
 		text="now"
@@ -342,7 +342,7 @@
 		value={caption}
 		opacity={capAlways ? 1 : capOpacity}
 	>
-		<T
+		<Label
 			x={480}
 			y={92}
 			text={caption}
@@ -353,7 +353,7 @@
 		/>
 	</Readout>
 	<Readout id="time-axis">
-		<T x={X1} y={406} text="time →" anchor="end" size={12} muted />
+		<Label x={X1} y={406} text="time →" anchor="end" size={12} muted />
 	</Readout>
 
 	<!-- ledger -->
@@ -371,14 +371,15 @@
 			/></Readout
 		>
 		<Readout id="col-{k}">
-			<T
+			<Label
+				anchor="start"
 				x={COL(k)}
 				y={444}
 				text="{k + 1} · {proc.stages[k].label}"
 				size={12.5}
 				weight={k === moment ? 700 : 500}
 			/>
-			<T x={COL(k)} y={462} text={present(k)} size={12} muted />
+			<Label anchor="start" x={COL(k)} y={462} text={present(k)} size={12} muted />
 		</Readout>
 	{/each}
 	{#each ROWS as row, r (row.id)}
@@ -391,9 +392,16 @@
 				? `the same at all three moments: ${row.cells.every((c) => c === row.cells[0]) ? 'yes' : 'no'}`
 				: undefined}
 		>
-			<T x={LX} y={488 + r * 24} text={row.label} size={12.5} muted />
+			<Label anchor="start" x={LX} y={488 + r * 24} text={row.label} size={12.5} muted />
 			{#each row.cells as c, k (k)}
-				<T x={COL(k)} y={488 + r * 24} text={c} size={13.5} weight={k === moment ? 700 : 500} />
+				<Label
+					anchor="start"
+					x={COL(k)}
+					y={488 + r * 24}
+					text={c}
+					size={13.5}
+					weight={k === moment ? 700 : 500}
+				/>
 			{/each}
 		</Readout>
 	{/each}

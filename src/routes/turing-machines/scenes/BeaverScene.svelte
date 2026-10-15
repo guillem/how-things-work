@@ -14,7 +14,7 @@
 	 * with a clip rectangle, so a frame costs a handful of nodes.
 	 */
 	import { untrack } from 'svelte';
-	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { clamp, Handle, Label, type Point, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { createPlayback } from '#lib/explainer/playback.ts';
 	import {
@@ -26,7 +26,6 @@
 		type BeaverSize,
 		type Run
 	} from '../turing';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -184,8 +183,18 @@
 		value={status}
 		color={done && !five ? 'var(--tm-halt)' : undefined}
 	>
-		<Txt x={24} y={42} text="The {n}-state busy beaver, from a blank tape" size={18} weight={600} />
-		<Txt
+		<Label
+			anchor="start"
+			tabular
+			x={24}
+			y={42}
+			text="The {n}-state busy beaver, from a blank tape"
+			size={18}
+			weight={600}
+		/>
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={68}
 			text={status}
@@ -194,7 +203,9 @@
 		/>
 	</Readout>
 	<Readout id="bb-axis">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={DX}
 			y={DY - 12}
 			text={five
@@ -207,7 +218,7 @@
 
 	<Readout id="bb-key" order={3} label="Dark cells" value="1 (light: 0, blank)">
 		<rect x={DX + DW - 132} y={DY - 22} width="12" height="12" rx="2" fill="var(--tm-one)" />
-		<Txt x={DX + DW - 116} y={DY - 12} text="1" size={12} muted />
+		<Label anchor="start" x={DX + DW - 116} y={DY - 12} text="1" size={12} muted />
 		<rect
 			x={DX + DW - 96}
 			y={DY - 22}
@@ -217,7 +228,7 @@
 			fill="var(--tm-cell)"
 			stroke="var(--tm-cell-edge)"
 		/>
-		<Txt x={DX + DW - 80} y={DY - 12} text="0 (blank)" size={12} muted />
+		<Label anchor="start" x={DX + DW - 80} y={DY - 12} text="0 (blank)" size={12} muted />
 	</Readout>
 
 	<!-- the diagram -->
@@ -258,7 +269,14 @@
 	{/if}
 
 	<!-- the rule table -->
-	<Txt x={TX} y={TY - 12} text="Rules: write, move, next (H = halt)" size={13} weight={600} />
+	<Label
+		anchor="start"
+		x={TX}
+		y={TY - 12}
+		text="Rules: write, move, next (H = halt)"
+		size={13}
+		weight={600}
+	/>
 	<rect
 		x={TX - 6}
 		y={TY - 2}
@@ -268,9 +286,10 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	<Txt x={TX + 8} y={TY + RH * 0.7} text="state" size={12} muted halo={false} />
+	<Label anchor="start" x={TX + 8} y={TY + RH * 0.7} text="state" size={12} muted halo={false} />
 	{#each ['0', '1'] as s, j (s)}
-		<Txt
+		<Label
+			tabular
 			x={TX + 90 + ((RW - 90) * (j + 0.5)) / 2}
 			y={TY + RH * 0.7}
 			text="reads {s}"
@@ -283,7 +302,9 @@
 	{#each m.states as st, i (st)}
 		{@const y = TY + RH * (i + 1)}
 		<line x1={TX} x2={TX + RW} y1={y} y2={y} stroke="var(--border)" />
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={TX + 12}
 			y={y + RH * 0.68}
 			text={st}
@@ -310,7 +331,8 @@
 					stroke-width="2"
 				/>
 			{/if}
-			<Txt
+			<Label
+				tabular
 				x={x0 + (RW - 90) / 4}
 				y={y + RH * 0.68}
 				text={r ? `${r.write} ${r.move} ${r.next}` : '—'}
@@ -331,7 +353,8 @@
 		label="Champions S(n)"
 		value={KNOWN.map((r) => `S(${r.n}) ${r.n === '6' ? '> 2↑↑↑5' : `= ${r.steps}`}`).join(', ')}
 	/>
-	<Txt
+	<Label
+		anchor="start"
 		x={TX}
 		y={KY}
 		text="Champions: most steps S(n), and the 1s they leave"
@@ -353,8 +376,19 @@
 					fill-opacity="0.12"
 				/>
 			{/if}
-			<Txt x={TX + 8} {y} text="n = {row.n}" size={13} weight={on ? 700 : 500} halo={false} />
-			<Txt
+			<Label
+				anchor="start"
+				tabular
+				x={TX + 8}
+				{y}
+				text="n = {row.n}"
+				size={13}
+				weight={on ? 700 : 500}
+				halo={false}
+			/>
+			<Label
+				anchor="start"
+				tabular
 				x={TX + 100}
 				{y}
 				text={row.steps}
@@ -363,7 +397,8 @@
 				halo={false}
 				mono={row.n !== '6'}
 			/>
-			<Txt
+			<Label
+				tabular
 				x={TX + RW}
 				{y}
 				text={row.ones ? `${row.ones} ones` : ''}
@@ -377,7 +412,8 @@
 
 	{#if five}
 		<Readout id="bb5-note">
-			<Txt
+			<Label
+				anchor="start"
 				x={TX}
 				y={548}
 				text="Proved the longest of all 5-state machines in 2024"
@@ -385,7 +421,8 @@
 				weight={600}
 				color="var(--tm-head)"
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={TX}
 				y={568}
 				text="(bbchallenge; the run shown is 0.02% of the whole)"
@@ -415,7 +452,8 @@
 			opacity="0.6"
 		/>
 		<Readout id="bb-tl">
-			<Txt
+			<Label
+				tabular
 				x={(TL0 + TL1) / 2}
 				y={TLY + 28}
 				text="step {kk} of {total}{playing ? '' : ' · paused: drag or use ← →'}"

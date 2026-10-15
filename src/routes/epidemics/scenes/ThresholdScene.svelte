@@ -24,6 +24,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import {
 		Axes,
+		Label,
 		areaPath,
 		clamp,
 		cycle,
@@ -220,11 +221,6 @@
 	]);
 </script>
 
-<!--
-	The stage's CSS sets fill and font-size on every <text>, which beats SVG
-	presentation attributes, so text here sets both through `style:` (the
-	attributes are kept so that the drawing reads the same without that CSS).
--->
 {#snippet measlesShort()}
 	{@render say(MX + 6, Y1 - 26, 'measles: 92–94%', 12, { anchor: 'end' })}
 {/snippet}
@@ -242,18 +238,17 @@
 		halo?: boolean;
 	} = {}
 )}
-	<text
+	<Label
 		{x}
 		{y}
-		class:halo={o.halo ?? true}
-		class:muted={o.muted}
-		text-anchor={o.anchor ?? 'start'}
-		font-size={size}
-		font-weight={o.weight ?? 400}
-		style:font-size="{size}px"
-		style:fill={o.color}
-		style:pointer-events="none">{text}</text
-	>
+		{text}
+		{size}
+		anchor={o.anchor ?? 'start'}
+		weight={o.weight ?? 400}
+		muted={o.muted}
+		halo={o.halo ?? true}
+		color={o.color}
+	/>
 {/snippet}
 
 <g style:font-variant-numeric="tabular-nums">

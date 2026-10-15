@@ -6,7 +6,7 @@
 	 * dragging the lamp its direction and height (`lightAz`, `lightEl`: nearer the middle is
 	 * higher). Optional `segments` (rays from the ray tracer) are drawn flattened onto the floor.
 	 */
-	import { Handle } from '#lib/draw/index.ts';
+	import { Handle, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		CUBE_CENTRE,
@@ -26,7 +26,6 @@
 		type Vec3
 	} from '../render';
 	import { cameraFromMap, lightFromMap, toMap, wrap, IMG_H, IMG_W, type MapBox } from './shared';
-	import T from './T.svelte';
 
 	interface Props {
 		box: MapBox;
@@ -232,7 +231,15 @@
 	</g>
 
 	<Readout id="map-title">
-		<T x={box.x + 12} y={box.y + 22} text="Seen from above" size={12.5} weight={650} muted />
+		<Label
+			anchor="start"
+			x={box.x + 12}
+			y={box.y + 22}
+			text="Seen from above"
+			size={12.5}
+			weight={650}
+			muted
+		/>
 	</Readout>
 
 	<!-- the camera -->

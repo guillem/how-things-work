@@ -29,10 +29,9 @@
 	 * Reduced motion: the frame after the split; on the measure step, the
 	 * counts of 400 electrons.
 	 */
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { barrierT, outcomes, packetT, snapWidth, tunnel } from '../quantum';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -238,7 +237,7 @@
 		{#each [0, 1, 2, 3] as e (e)}
 			<line x1={PX0 - 5} x2={PX0} y1={ey(e)} y2={ey(e)} stroke="var(--stage-line)" />
 			<Readout id="e-{e}">
-				<T x={PX0 - 8} y={ey(e) + 4} text="{e} eV" size={11} anchor="end" muted />
+				<Label x={PX0 - 8} y={ey(e) + 4} text="{e} eV" size={11} anchor="end" muted />
 			</Readout>
 		{/each}
 		<line x1={PX0} x2={PX1} y1={EY0} y2={EY0} stroke="var(--stage-line)" />
@@ -259,14 +258,22 @@
 				label="Barrier"
 				value="{V0.toFixed(1)} eV high, {a.toFixed(2)} nm wide"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={sx(run.right) + 8}
 					y={ey(V0) - 8}
 					text="barrier {V0.toFixed(1)} eV"
 					size={12}
 					weight={600}
 				/>
-				<T x={sx(run.right) + 8} y={ey(V0) + 8} text="{a.toFixed(2)} nm wide" size={11} muted />
+				<Label
+					anchor="start"
+					x={sx(run.right) + 8}
+					y={ey(V0) + 8}
+					text="{a.toFixed(2)} nm wide"
+					size={11}
+					muted
+				/>
 			</Readout>
 		{/if}
 
@@ -281,7 +288,7 @@
 			opacity="0.7"
 		/>
 		<Readout id="energy-label">
-			<T
+			<Label
 				x={PX1}
 				y={ey(E) + 26}
 				text="electron energy 1 eV"
@@ -303,10 +310,17 @@
 			/>
 		</g>
 		<Readout id="time">
-			<T x={PX0 + 6} y={EY0 + 30} text="t = {Math.round(simT)} fs" size={12} muted />
+			<Label
+				anchor="start"
+				x={PX0 + 6}
+				y={EY0 + 30}
+				text="t = {Math.round(simT)} fs"
+				size={12}
+				muted
+			/>
 		</Readout>
 		<Readout id="dist">
-			<T x={PX1} y={EY0 + 30} text="view: {XMAX - XMIN} nm wide" size={12} anchor="end" muted />
+			<Label x={PX1} y={EY0 + 30} text="view: {XMAX - XMIN} nm wide" size={12} anchor="end" muted />
 		</Readout>
 	{/if}
 
@@ -326,7 +340,7 @@
 				stroke-width={lit > 0.01 ? 2.5 : 1.5}
 			/>
 			<Readout id="det-{d.side}">
-				<T
+				<Label
 					x={d.side ? d.x + 12 : d.x - 12}
 					y={ey(E) - 160}
 					text={d.side ? 'detector R' : 'detector L'}
@@ -347,7 +361,7 @@
 					color="var(--qm-click)"
 					opacity={lit}
 				>
-					<T
+					<Label
 						x={d.side ? d.x + 12 : d.x - 12}
 						y={ey(E) + 46}
 						text={d.side ? 'click: found on the right' : 'click: found on the left'}
@@ -372,8 +386,9 @@
 				value={pct(run.transmitted)}
 				color="var(--qm-prob)"
 			>
-				<T x={PL} y={60} text="probability through" size={13} muted />
-				<T
+				<Label anchor="start" x={PL} y={60} text="probability through" size={13} muted />
+				<Label
+					anchor="start"
 					x={PL}
 					y={92}
 					text={pct(run.transmitted)}
@@ -381,7 +396,14 @@
 					weight={600}
 					color="var(--qm-prob)"
 				/>
-				<T x={PL} y={114} text="reflected {pct(run.reflected)}" size={12} muted />
+				<Label
+					anchor="start"
+					x={PL}
+					y={114}
+					text="reflected {pct(run.reflected)}"
+					size={12}
+					muted
+				/>
 			</Readout>
 			<Readout
 				id="plane"
@@ -389,9 +411,30 @@
 				label="Plane wave at exactly 1 eV"
 				value="T = {pct(barrierT(E, V0, a))}"
 			>
-				<T x={PL} y={150} text="textbook T, plane wave at 1 eV" size={12} muted />
-				<T x={PL} y={170} text={pct(barrierT(E, V0, a))} size={15} weight={600} />
-				<T x={PL} y={190} text="the packet has a spread of energies" size={11} muted />
+				<Label
+					anchor="start"
+					x={PL}
+					y={150}
+					text="textbook T, plane wave at 1 eV"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PL}
+					y={170}
+					text={pct(barrierT(E, V0, a))}
+					size={15}
+					weight={600}
+				/>
+				<Label
+					anchor="start"
+					x={PL}
+					y={190}
+					text="the packet has a spread of energies"
+					size={11}
+					muted
+				/>
 			</Readout>
 			<Readout
 				id="regime"
@@ -399,8 +442,9 @@
 				label="Classically"
 				value={V0 > E ? 'it could never get through' : 'it would always get through'}
 			>
-				<T x={PL} y={226} text="a ball with this energy would" size={12} muted />
-				<T
+				<Label anchor="start" x={PL} y={226} text="a ball with this energy would" size={12} muted />
+				<Label
+					anchor="start"
 					x={PL}
 					y={242}
 					text={V0 > E ? 'always bounce back' : 'always roll over'}
@@ -438,21 +482,23 @@
 				{/each}
 				<path d={inset.d} fill="none" stroke="var(--qm-prob)" stroke-width="2" />
 				<Readout id="inset-title">
-					<T
+					<Label
+						anchor="start"
 						x={inset.X0}
 						y={inset.Y0 - 24}
 						text="|ψ|² across the barrier, as it hits"
 						size={12}
 						muted
 					/>
-					<T
+					<Label
+						anchor="start"
 						x={inset.X0}
 						y={inset.Y0 - 8}
 						text="(log scale: grid lines a factor 100 apart)"
 						size={11}
 						muted
 					/>
-					<T
+					<Label
 						x={(inset.bx0 + inset.bx1) / 2}
 						y={inset.Y0 + inset.H + 16}
 						text="barrier"
@@ -465,8 +511,8 @@
 		{/if}
 		{#if isMeasure}
 			<Readout id="sent" order={1} label="Electrons sent" value={String(done)}>
-				<T x={PL} y={60} text="electrons sent" size={13} muted />
-				<T x={PL} y={92} text={String(done)} size={28} weight={600} />
+				<Label anchor="start" x={PL} y={60} text="electrons sent" size={13} muted />
+				<Label anchor="start" x={PL} y={92} text={String(done)} size={28} weight={600} />
 			</Readout>
 			<Readout
 				id="found"
@@ -475,8 +521,9 @@
 				value="{rightCount} ({done ? pct(rightCount / done) : '–'})"
 				color="var(--qm-click)"
 			>
-				<T x={PL} y={130} text="found on the right" size={13} muted />
-				<T
+				<Label anchor="start" x={PL} y={130} text="found on the right" size={13} muted />
+				<Label
+					anchor="start"
 					x={PL}
 					y={156}
 					text="{rightCount}  ({done ? pct(rightCount / done) : '–'})"
@@ -492,8 +539,16 @@
 				value={pct(run.transmitted)}
 				color="var(--qm-prob)"
 			>
-				<T x={PL} y={196} text="share of |ψ|² that got through" size={13} muted />
-				<T
+				<Label
+					anchor="start"
+					x={PL}
+					y={196}
+					text="share of |ψ|² that got through"
+					size={13}
+					muted
+				/>
+				<Label
+					anchor="start"
 					x={PL}
 					y={222}
 					text={pct(run.transmitted)}
@@ -515,7 +570,7 @@
 			<rect x={PL} y={262} width={220 * run.transmitted} height="6" rx="2" fill="var(--qm-prob)" />
 			{#if fast}
 				<Readout id="fast-note">
-					<T x={PL} y={292} text="fast: counts only" size={12} muted />
+					<Label anchor="start" x={PL} y={292} text="fast: counts only" size={12} muted />
 				</Readout>
 			{/if}
 		{/if}
@@ -533,7 +588,7 @@
 					stroke="var(--stage-grid)"
 				/>
 				<Readout id="dec-{k}">
-					<T
+					<Label
 						x={LP.x0 - 8}
 						y={ly(10 ** -k) + 4}
 						text={k === 0 ? '1' : `10${sup(-k)}`}
@@ -552,14 +607,22 @@
 					stroke="var(--stage-line)"
 				/>
 				<Readout id="w-{w}">
-					<T x={lx(w, 0, 1)} y={LP.y1 + 22} text={w.toFixed(1)} size={11} anchor="middle" muted />
+					<Label
+						x={lx(w, 0, 1)}
+						y={LP.y1 + 22}
+						text={w.toFixed(1)}
+						size={11}
+						anchor="middle"
+						muted
+					/>
 				</Readout>
 			{/each}
 			<line x1={LP.x0} x2={LP.x1} y1={LP.y1} y2={LP.y1} stroke="var(--stage-line)" />
 			<line x1={LP.x0} x2={LP.x0} y1={LP.y0} y2={LP.y1} stroke="var(--stage-line)" />
 			<Readout id="exp-axes">
-				<T x={LP.x1} y={LP.y1 + 44} text="barrier width (nm)" size={12} anchor="end" muted />
-				<T
+				<Label x={LP.x1} y={LP.y1 + 44} text="barrier width (nm)" size={12} anchor="end" muted />
+				<Label
+					anchor="start"
 					x={LP.x0 - 8}
 					y={LP.y0 - 18}
 					text="chance of getting through (log scale)"
@@ -589,7 +652,7 @@
 		</g>
 		<Readout id="exp-legend-1" order={2} label="Solid" value="averaged over the packet's energies">
 			<line x1={PL} x2={PL + 24} y1={150} y2={150} stroke="var(--qm-prob)" stroke-width="2.5" />
-			<T x={PL + 32} y={154} text="the packet (energies averaged)" size={12} />
+			<Label anchor="start" x={PL + 32} y={154} text="the packet (energies averaged)" size={12} />
 		</Readout>
 		<Readout id="exp-legend-2" order={3} label="Dashed" value="plane wave at exactly 1 eV">
 			<line
@@ -601,7 +664,7 @@
 				stroke-width="1.5"
 				stroke-dasharray="5 4"
 			/>
-			<T x={PL + 32} y={178} text="plane wave at exactly 1 eV" size={12} />
+			<Label anchor="start" x={PL + 32} y={178} text="plane wave at exactly 1 eV" size={12} />
 		</Readout>
 		{#if run}
 			<Readout
@@ -612,8 +675,22 @@
 				color="var(--qm-barrier)"
 			>
 				<circle cx={PL + 12} cy={60} r="7" fill="var(--qm-barrier)" />
-				<T x={PL + 32} y={64} text="simulated: {pct(run.transmitted)}" size={14} weight={600} />
-				<T x={PL + 32} y={84} text="{V0.toFixed(1)} eV, {a.toFixed(2)} nm" size={12} muted />
+				<Label
+					anchor="start"
+					x={PL + 32}
+					y={64}
+					text="simulated: {pct(run.transmitted)}"
+					size={14}
+					weight={600}
+				/>
+				<Label
+					anchor="start"
+					x={PL + 32}
+					y={84}
+					text="{V0.toFixed(1)} eV, {a.toFixed(2)} nm"
+					size={12}
+					muted
+				/>
 			</Readout>
 			{#if V0 > E}
 				<Readout
@@ -622,9 +699,17 @@
 					label="Each extra 0.1 nm (plane wave, thick barrier)"
 					value="÷ {(barrierT(E, V0, 0.8) / barrierT(E, V0, 0.9)).toFixed(1)}"
 				>
-					<T x={PL} y={216} text="each extra 0.1 nm" size={12} muted />
-					<T x={PL} y={232} text="(plane wave, thick barrier):" size={12} muted />
-					<T
+					<Label anchor="start" x={PL} y={216} text="each extra 0.1 nm" size={12} muted />
+					<Label
+						anchor="start"
+						x={PL}
+						y={232}
+						text="(plane wave, thick barrier):"
+						size={12}
+						muted
+					/>
+					<Label
+						anchor="start"
 						x={PL}
 						y={256}
 						text="chance ÷ {(barrierT(E, V0, 0.8) / barrierT(E, V0, 0.9)).toFixed(1)}"
@@ -667,7 +752,8 @@
 			stroke-width="1.5"
 		/>
 		<Readout id="gap-label" label="Gap" value="{gap.toFixed(2)} nm">
-			<T
+			<Label
+				anchor="start"
 				x={SX + 82}
 				y={SURF + 10 - (gap * NMPX) / 2}
 				text="gap {gap.toFixed(2)} nm"
@@ -676,14 +762,14 @@
 			/>
 		</Readout>
 		<Readout id="stm-tip">
-			<T x={SX - 66} y={50} text="metal tip" size={12} anchor="end" muted />
-			<T x={370} y={SURF + 27} text="surface atoms" size={12} muted />
+			<Label x={SX - 66} y={50} text="metal tip" size={12} anchor="end" muted />
+			<Label anchor="start" x={370} y={SURF + 27} text="surface atoms" size={12} muted />
 		</Readout>
 		<!-- current vs gap -->
 		{#each [2, 1, 0, -1, -2, -3, -4, -5] as k (k)}
 			<line x1={LP.x0} x2={LP.x1} y1={sy(10 ** k)} y2={sy(10 ** k)} stroke="var(--stage-grid)" />
 			<Readout id="sdec-{k}">
-				<T
+				<Label
 					x={LP.x0 - 8}
 					y={sy(10 ** k) + 4}
 					text={k === 0 ? '1' : `10${sup(k)}`}
@@ -702,13 +788,21 @@
 				stroke="var(--stage-line)"
 			/>
 			<Readout id="sw-{w}">
-				<T x={lx(w, 0.3, 1)} y={SP.y1 + 20} text={w.toFixed(1)} size={11} anchor="middle" muted />
+				<Label
+					x={lx(w, 0.3, 1)}
+					y={SP.y1 + 20}
+					text={w.toFixed(1)}
+					size={11}
+					anchor="middle"
+					muted
+				/>
 			</Readout>
 		{/each}
 		<line x1={LP.x0} x2={LP.x1} y1={SP.y1} y2={SP.y1} stroke="var(--stage-line)" />
 		<Readout id="stm-axes">
-			<T x={LP.x1} y={SP.y1 + 36} text="gap (nm)" size={12} anchor="end" muted />
-			<T
+			<Label x={LP.x1} y={SP.y1 + 36} text="gap (nm)" size={12} anchor="end" muted />
+			<Label
+				anchor="start"
 				x={LP.x0 + 6}
 				y={SP.y0 - 14}
 				text="current, relative to a 0.5 nm gap (log scale)"
@@ -733,17 +827,24 @@
 			value="{fmtRel(current)} the current at 0.5 nm"
 			color="var(--qm-barrier)"
 		>
-			<T x={PL} y={60} text="tunnelling current" size={13} muted />
-			<T x={PL} y={92} text={fmtRel(current)} size={28} weight={600} />
-			<T x={PL} y={114} text="of the current at a 0.5 nm gap" size={12} muted />
+			<Label anchor="start" x={PL} y={60} text="tunnelling current" size={13} muted />
+			<Label anchor="start" x={PL} y={92} text={fmtRel(current)} size={28} weight={600} />
+			<Label anchor="start" x={PL} y={114} text="of the current at a 0.5 nm gap" size={12} muted />
 		</Readout>
 		<Readout id="stm-step" order={2} label="0.1 nm further" value="current ÷ {per01.toFixed(1)}">
-			<T x={PL} y={156} text="0.1 nm further away:" size={13} muted />
-			<T x={PL} y={180} text="current ÷ {per01.toFixed(1)}" size={18} weight={600} />
+			<Label anchor="start" x={PL} y={156} text="0.1 nm further away:" size={13} muted />
+			<Label
+				anchor="start"
+				x={PL}
+				y={180}
+				text="current ÷ {per01.toFixed(1)}"
+				size={18}
+				weight={600}
+			/>
 		</Readout>
 		<Readout id="stm-work" order={3} label="Barrier" value="work function 4.5 eV (assumed)">
-			<T x={PL} y={220} text="barrier: work function 4.5 eV" size={12} muted />
-			<T x={PL} y={236} text="(a typical metal, assumed)" size={11} muted />
+			<Label anchor="start" x={PL} y={220} text="barrier: work function 4.5 eV" size={12} muted />
+			<Label anchor="start" x={PL} y={236} text="(a typical metal, assumed)" size={11} muted />
 		</Readout>
 	{/if}
 </g>

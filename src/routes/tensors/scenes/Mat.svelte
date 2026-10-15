@@ -36,7 +36,7 @@
 				y={y + rowH * (r + 1) - size * 0.15}
 				text-anchor="end"
 				font-weight="700"
-				style:font-size="{size}px"
+				font-size={size}
 				style:fill={color}>{cell}</text
 			>
 		{/each}

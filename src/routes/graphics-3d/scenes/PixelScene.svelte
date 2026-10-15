@@ -8,10 +8,9 @@
 	 * shown on the right. Under reduced motion the scan is complete, and the readout shows a pixel
 	 * inside.
 	 */
-	import { Handle, type Point } from '#lib/draw/index.ts';
+	import { Handle, Label, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { coverage, edge } from '../render';
-	import T from './T.svelte';
 
 	let { t, params, setParam, reduced }: StageProps = $props();
 
@@ -184,8 +183,8 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="tested" order={1} label="Pixels tested (the box)" value={String(n)}>
-		<T x={RX + 6} y={Y0 + 28} text="Box round it" size={12.5} muted />
-		<T x={RX + 6} y={Y0 + 50} text="{n} pixels tested" size={15} weight={700} />
+		<Label anchor="start" x={RX + 6} y={Y0 + 28} text="Box round it" size={12.5} muted />
+		<Label anchor="start" x={RX + 6} y={Y0 + 50} text="{n} pixels tested" size={15} weight={700} />
 	</Readout>
 	<Readout
 		id="inside"
@@ -194,8 +193,9 @@
 		value={String(cov.covered)}
 		color="var(--g3-inside)"
 	>
-		<T x={RX + 6} y={Y0 + 84} text="Centres inside" size={12.5} muted />
-		<T
+		<Label anchor="start" x={RX + 6} y={Y0 + 84} text="Centres inside" size={12.5} muted />
+		<Label
+			anchor="start"
 			x={RX + 6}
 			y={Y0 + 106}
 			text="{u < 1 ? paths.covered : cov.covered} of {cov.covered} filled"
@@ -211,10 +211,11 @@
 		value={signs.map((v) => (v >= 0 ? '+' : '−')).join(' ') +
 			(curInside ? ' → inside' : ' → outside')}
 	>
-		<T x={RX + 6} y={Y0 + 150} text="This pixel's centre," size={12.5} muted />
-		<T x={RX + 6} y={Y0 + 168} text="side of each edge:" size={12.5} muted />
+		<Label anchor="start" x={RX + 6} y={Y0 + 150} text="This pixel's centre," size={12.5} muted />
+		<Label anchor="start" x={RX + 6} y={Y0 + 168} text="side of each edge:" size={12.5} muted />
 		{#each signs as v, k (k)}
-			<T
+			<Label
+				anchor="start"
 				x={RX + 6}
 				y={Y0 + 196 + 26 * k}
 				text="edge {k + 1}:  {v >= 0 ? '+ inner side' : '− outer side'}"
@@ -223,7 +224,8 @@
 				color={edgeColor[k]}
 			/>
 		{/each}
-		<T
+		<Label
+			anchor="start"
 			x={RX + 6}
 			y={Y0 + 292}
 			text={curInside ? 'all three +: inside' : 'a −: outside'}
@@ -233,14 +235,14 @@
 		/>
 	</Readout>
 	<Readout id="hint">
-		<T x={RX + 6} y={Y0 + 420} text="Drag the corners" size={12.5} muted />
-		<T x={RX + 6} y={Y0 + 440} text="of the triangle." size={12.5} muted />
+		<Label anchor="start" x={RX + 6} y={Y0 + 420} text="Drag the corners" size={12.5} muted />
+		<Label anchor="start" x={RX + 6} y={Y0 + 440} text="of the triangle." size={12.5} muted />
 	</Readout>
 
 	<Readout id="legend">
 		<g>
 			<rect x={X0} y={500} width="16" height="16" fill="var(--g3-tested)" stroke="var(--border)" />
-			<T x={X0 + 24} y={513} text="tested, outside" size={13} />
+			<Label anchor="start" x={X0 + 24} y={513} text="tested, outside" size={13} />
 			<rect
 				x={X0 + 150}
 				y={500}
@@ -249,15 +251,23 @@
 				fill="var(--g3-inside)"
 				fill-opacity="0.75"
 			/>
-			<T x={X0 + 174} y={513} text="tested, centre inside: the triangle's pixels" size={13} />
-			<T
+			<Label
+				anchor="start"
+				x={X0 + 174}
+				y={513}
+				text="tested, centre inside: the triangle's pixels"
+				size={13}
+			/>
+			<Label
+				anchor="start"
 				x={X0}
 				y={546}
 				text="Edge test for an edge a → b and pixel centre p:  (b − a) × (p − a) = (bx − ax)(py − ay) − (by − ay)(px − ax)"
 				size={13}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={X0}
 				y={570}
 				text="Its sign says which side of the edge p is on. Inside = on the inner side of all three."

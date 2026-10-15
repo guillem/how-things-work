@@ -91,12 +91,11 @@
 				stroke="var(--stage-bg)"
 				stroke-width="3"
 			/>
-			<!-- style: the stage's `text` rule overrides presentation attributes -->
 			<text
 				x={at[0]}
 				y={at[1] + 10}
 				text-anchor="middle"
-				style:font-size="28px"
+				font-size="28"
 				style:font-weight="700"
 				style:fill="var(--stage-bg)">{marker}</text
 			>

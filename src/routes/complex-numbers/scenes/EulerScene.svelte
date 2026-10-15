@@ -17,8 +17,6 @@
 	 * the compounding path from `compound`. θ lives in `params.theta`
 	 * (degrees), shared with the slider; `params.n` is the number of steps.
 	 *
-	 * Text sizes and colours are set with `style:` because the stage's CSS
-	 * overrides SVG presentation attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -220,7 +218,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -241,9 +239,9 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 600}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
-		>e<tspan dy={-size * 0.42} style:font-size="{Math.round(size * 0.66)}px">{sup}</tspan><tspan
+		>e<tspan dy={-size * 0.42} font-size={Math.round(size * 0.66)}>{sup}</tspan><tspan
 			dy={size * 0.42}>{rest}</tspan
 		></text
 	>
@@ -648,10 +646,11 @@
 
 				<line x1={PX} x2={PX + PW - 20} y1={176} y2={176} stroke="var(--border)" />
 				{@render txt(PX, 210, 'Angles add when you multiply:', 14, { weight: 600 })}
-				<text x={PX} y={242} class="halo" font-weight="600" style:font-size="17px"
-					>e<tspan dy="-7" style:font-size="11px">iα</tspan><tspan dy="7">&nbsp;·&nbsp;e</tspan
-					><tspan dy="-7" style:font-size="11px">iβ</tspan><tspan dy="7">&nbsp;=&nbsp;e</tspan
-					><tspan dy="-7" style:font-size="11px">i(α + β)</tspan></text
+				<text x={PX} y={242} class="halo" font-weight="600" font-size="17"
+					>e<tspan dy="-7" font-size="11">iα</tspan><tspan dy="7">&nbsp;·&nbsp;e</tspan><tspan
+						dy="-7"
+						font-size="11">iβ</tspan
+					><tspan dy="7">&nbsp;=&nbsp;e</tspan><tspan dy="-7" font-size="11">i(α + β)</tspan></text
 				>
 
 				<line x1={PX} x2={PX + PW - 20} y1={280} y2={280} stroke="var(--border)" />

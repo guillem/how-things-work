@@ -161,15 +161,15 @@
 		label="Satellite clocks"
 		value={corrected ? 'corrected' : `+${gainUs.toFixed(1)} µs fast`}
 	>
-		<text x={PANEL + 18} y={50} class="muted" style:font-size="12px"
+		<text x={PANEL + 18} y={50} class="muted" font-size="12"
 			>{corrected
 				? 'Satellite clocks'
 				: `Satellite clocks, after ${days.toFixed(1)} ${days.toFixed(1) === '1.0' ? 'day' : 'days'}`}</text
 		>
-		<text x={PANEL + 18} y={74} style:font-size="15px" font-weight="600"
+		<text x={PANEL + 18} y={74} font-size="15" font-weight="600"
 			>{corrected ? 'corrected: on time' : `${gainUs.toFixed(1)} µs fast`}</text
 		>
-		<text x={PANEL + 18} y={96} class="muted" style:font-size="12px"
+		<text x={PANEL + 18} y={96} class="muted" font-size="12"
 			>{corrected ? 'every range right' : `every range ${rangeKm.toFixed(1)} km short`}</text
 		>
 	</Readout>
@@ -187,10 +187,9 @@
 			stroke-width="2.5"
 			stroke-linecap="round"
 		/>
-		<text x={PANEL + 40} y={151} style:font-size="14px" font-weight="600">Trusts its own clock</text
-		>
-		<text x={PANEL + 40} y={174} style:font-size="13px">position: {dist(len(trust))}</text>
-		<text x={PANEL + 40} y={194} class="muted" style:font-size="12px"
+		<text x={PANEL + 40} y={151} font-size="14" font-weight="600">Trusts its own clock</text>
+		<text x={PANEL + 40} y={174} font-size="13">position: {dist(len(trust))}</text>
+		<text x={PANEL + 40} y={194} class="muted" font-size="12"
 			>{len(trust) < 5
 				? 'time: right'
 				: `${size(Math.hypot(trust[0], trust[1]))} across, ${size(trust[2])} up`}</text
@@ -207,22 +206,21 @@
 		color="var(--gps-fix)"
 	>
 		<circle cx={PANEL + 25} cy={240} r="7" fill="none" stroke="var(--gps-fix)" stroke-width="2.2" />
-		<text x={PANEL + 40} y={245} style:font-size="14px" font-weight="600">Solves for its clock</text
-		>
-		<text x={PANEL + 40} y={268} style:font-size="13px">position: {dist(len(solved))}</text>
-		<text x={PANEL + 40} y={288} style:font-size="13px"
+		<text x={PANEL + 40} y={245} font-size="14" font-weight="600">Solves for its clock</text>
+		<text x={PANEL + 40} y={268} font-size="13">position: {dist(len(solved))}</text>
+		<text x={PANEL + 40} y={288} font-size="13"
 			>time: {clockUs < 0.0005 ? 'right' : `${clockUs.toFixed(1)} µs ahead`}</text
 		>
 	</Readout>
 
 	<Readout id="note">
-		<text x={PANEL + 18} y={524} class="muted" style:font-size="12px"
+		<text x={PANEL + 18} y={524} class="muted" font-size="12"
 			>{sc.sats.length} satellites in view from {where.name.split(',')[0]}.</text
 		>
-		<text x={PANEL + 18} y={544} class="muted" style:font-size="12px"
+		<text x={PANEL + 18} y={544} class="muted" font-size="12"
 			>Both receivers have perfect clocks.</text
 		>
-		<text x={PANEL + 18} y={564} class="muted" style:font-size="12px"
+		<text x={PANEL + 18} y={564} class="muted" font-size="12"
 			>{ecc ? 'Eccentricity correction also left out.' : 'Eccentricity correction applied.'}</text
 		>
 	</Readout>

@@ -19,7 +19,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { VectorHandle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { clamp, Label, type Point, smoothstep, VectorHandle } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		det,
@@ -35,7 +35,6 @@
 	} from '../tensor';
 	import Arrow from './Arrow.svelte';
 	import Mat from './Mat.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -244,8 +243,8 @@
 		<line x1={CX - AX} y1={CY} x2={CX + AX} y2={CY} stroke="var(--stage-line)" stroke-width="1.5" />
 		<line x1={CX} y1={CY - AX} x2={CX} y2={CY + AX} stroke="var(--stage-line)" stroke-width="1.5" />
 		<Readout id="xy">
-			<T x={CX + AX + 6} y={CY + 5} text="x" size={15} italic muted />
-			<T x={CX + 8} y={CY - AX + 4} text="y" size={15} italic muted />
+			<Label anchor="start" x={CX + AX + 6} y={CY + 5} text="x" size={15} italic muted />
+			<Label anchor="start" x={CX + 8} y={CY - AX + 4} text="y" size={15} italic muted />
 		</Readout>
 	</g>
 
@@ -294,14 +293,16 @@
 				/>
 			{/each}
 			<Readout id="loads">
-				<T
+				<Label
+					anchor="start"
 					x={CX - HALF - 70}
 					y={CY + HALF + 74}
 					text="faint arrows: the loads on the square's faces"
 					size={12}
 					muted
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={CX - HALF - 70}
 					y={CY + HALF + 92}
 					text="σxx = 80 and σyy = 20 MPa pull, τxy = 30 MPa shears"
@@ -352,7 +353,7 @@
 				head={16}
 			/>
 			<Readout id="tn-labels">
-				<T
+				<Label
 					x={P([tr[0] * KS + (tr[0] >= 0 ? 10 : -10), tr[1] * KS], 1).x}
 					y={P([0, tr[1] * KS + (tr[1] >= 0 ? 12 : -22)], 1).y}
 					text="t"
@@ -362,7 +363,7 @@
 					anchor={tr[0] >= 0 ? 'start' : 'end'}
 					color="var(--tn-force)"
 				/>
-				<T
+				<Label
 					x={P([n[0] * (KN + 22) + n[1] * 18, 0], 1).x}
 					y={P([0, n[1] * (KN + 22) - n[0] * 18], 1).y + 6}
 					text="n"
@@ -392,8 +393,8 @@
 			opacity={w.stress}
 		>
 			<g opacity={w.stress}>
-				<T x={PX} y={86} text="the stress tensor (MPa)" size={14} muted />
-				<T x={PX} y={128} text="σ =" size={20} weight={700} />
+				<Label anchor="start" x={PX} y={86} text="the stress tensor (MPa)" size={14} muted />
+				<Label anchor="start" x={PX} y={128} text="σ =" size={20} weight={700} />
 				<Mat
 					x={PX + 42}
 					y={98}
@@ -414,7 +415,8 @@
 			color="var(--tn-normal)"
 			opacity={w.stress}
 		>
-			<T
+			<Label
+				anchor="start"
 				x={PX}
 				y={196}
 				text="n = ({num(n[0], 3)}, {num(n[1], 3)})  at {cut}°"
@@ -434,7 +436,8 @@
 			opacity={w.stress}
 		>
 			<g opacity={w.stress}>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={236}
 					text="t = σ n = ({fmt(tr[0])}, {fmt(tr[1])}) MPa"
@@ -442,10 +445,29 @@
 					weight={700}
 					color="var(--tn-force)"
 				/>
-				<T x={PX} y={262} text="size {fmt(Math.hypot(...tr))} MPa:" size={14} />
-				<T x={PX} y={284} text="{fmt(sn)} pulling straight across the cut," size={14} />
-				<T x={PX} y={304} text="{fmt(shearMag)} sliding along it (shear)" size={14} />
-				<T x={PX} y={360} text="Drag the tip of n to turn the cut." size={13} muted />
+				<Label anchor="start" x={PX} y={262} text="size {fmt(Math.hypot(...tr))} MPa:" size={14} />
+				<Label
+					anchor="start"
+					x={PX}
+					y={284}
+					text="{fmt(sn)} pulling straight across the cut,"
+					size={14}
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={304}
+					text="{fmt(shearMag)} sliding along it (shear)"
+					size={14}
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={360}
+					text="Drag the tip of n to turn the cut."
+					size={13}
+					muted
+				/>
 			</g>
 		</Readout>
 	{/if}
@@ -470,7 +492,7 @@
 				stroke-width="2"
 			/>
 			<Readout id="turned">
-				<T
+				<Label
 					x={P([xp[0] * (AX + 32), 0], 1).x}
 					y={P([0, xp[1] * (AX + 32)], 1).y + 5}
 					text="x′"
@@ -479,7 +501,7 @@
 					anchor="middle"
 					color="var(--tn-turned)"
 				/>
-				<T
+				<Label
 					x={P([yp[0] * (AX + 16), 0], 1).x}
 					y={P([0, yp[1] * (AX + 16)], 1).y + 5}
 					text="y′"
@@ -551,7 +573,8 @@
 			/>
 			<Arrow from={P([0, 0], 1)} to={P(F, KF)} color="var(--tn-force)" width={5} head={20} />
 			<Readout id="f-label">
-				<T
+				<Label
+					anchor="start"
 					x={P(F, KF).x + 12}
 					y={P(F, KF).y - 8}
 					text="F = 5 N"
@@ -559,7 +582,7 @@
 					weight={700}
 					color="var(--tn-force)"
 				/>
-				<T
+				<Label
 					x={labX.x}
 					y={labX.y + 5}
 					text="F′x = {num(Fp[0])}"
@@ -568,7 +591,7 @@
 					anchor={labX.x >= footX.x ? 'start' : 'end'}
 					color="var(--tn-turned)"
 				/>
-				<T
+				<Label
 					x={labY.x}
 					y={labY.y + 5}
 					text="F′y = {num(Fp[1])}"
@@ -581,8 +604,16 @@
 		</g>
 		<Readout id="f-xy" order={1} label="Along x, y" value="F = (4, 3) N" opacity={w.arrow}>
 			<g opacity={w.arrow}>
-				<T x={PX} y={96} text="along x and y:" size={14} muted />
-				<T x={PX} y={124} text="F = (4, 3) N" size={22} weight={700} color="var(--tn-force)" />
+				<Label anchor="start" x={PX} y={96} text="along x and y:" size={14} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={124}
+					text="F = (4, 3) N"
+					size={22}
+					weight={700}
+					color="var(--tn-force)"
+				/>
 			</g>
 		</Readout>
 		<Readout
@@ -595,8 +626,16 @@
 			opacity={w.arrow}
 		>
 			<g opacity={w.arrow}>
-				<T x={PX} y={180} text="along x′ and y′, turned by θ = {angleText}:" size={14} muted />
-				<T
+				<Label
+					anchor="start"
+					x={PX}
+					y={180}
+					text="along x′ and y′, turned by θ = {angleText}:"
+					size={14}
+					muted
+				/>
+				<Label
+					anchor="start"
 					x={PX}
 					y={210}
 					text="F′ = ({num(Fp[0])}, {num(Fp[1])}) N"
@@ -604,7 +643,7 @@
 					weight={700}
 					color="var(--tn-turned)"
 				/>
-				<T x={PX} y={238} text="F′ = Rᵀ F: one factor of R" size={14} />
+				<Label anchor="start" x={PX} y={238} text="F′ = Rᵀ F: one factor of R" size={14} />
 			</g>
 		</Readout>
 		<Readout
@@ -615,15 +654,23 @@
 			opacity={w.arrow}
 		>
 			<g opacity={w.arrow}>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={300}
 					text="√({sq(Fp[0])} + {sq(Fp[1])}) = {num(Math.hypot(...Fp))} N"
 					size={16}
 					weight={600}
 				/>
-				<T x={PX} y={322} text="the arrow itself never changes" size={14} muted />
-				<T x={PX} y={380} text="Drag the end of the x′ axis." size={13} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={322}
+					text="the arrow itself never changes"
+					size={14}
+					muted
+				/>
+				<Label anchor="start" x={PX} y={380} text="Drag the end of the x′ axis." size={13} muted />
 			</g>
 		</Readout>
 	{/if}
@@ -655,7 +702,8 @@
 				<Arrow from={f.from} to={f.to} color={f.color} width={3} head={12} />
 			{/each}
 			<Readout id="face-key">
-				<T
+				<Label
+					anchor="start"
 					x={24}
 					y={562}
 					text="arrows on the faces: pulls (σ′xx, σ′yy)"
@@ -663,10 +711,18 @@
 					color="var(--tn-force)"
 					weight={600}
 				/>
-				<T x={24} y={580} text="and shear (τ′xy)" size={12} color="var(--tn-shear)" weight={600} />
+				<Label
+					anchor="start"
+					x={24}
+					y={580}
+					text="and shear (τ′xy)"
+					size={12}
+					color="var(--tn-shear)"
+					weight={600}
+				/>
 			</Readout>
 			<Readout id="principal-label">
-				<T
+				<Label
 					x={P([-unit(pr.deg)[0] * (AX * 0.85 + 6), 0], 1).x}
 					y={P([0, -unit(pr.deg)[1] * (AX * 0.85 + 6)], 1).y + 16}
 					text="principal axis"
@@ -689,8 +745,15 @@
 			opacity={w.rotate}
 		>
 			<g opacity={w.rotate}>
-				<T x={PX} y={86} text="in axes turned by θ = {angleText} (MPa):" size={14} muted />
-				<T x={PX} y={136} text="σ′ =" size={20} weight={700} />
+				<Label
+					anchor="start"
+					x={PX}
+					y={86}
+					text="in axes turned by θ = {angleText} (MPa):"
+					size={14}
+					muted
+				/>
+				<Label anchor="start" x={PX} y={136} text="σ′ =" size={20} weight={700} />
 				<Mat
 					x={PX + 48}
 					y={104}
@@ -699,7 +762,13 @@
 						[fmt(Sp[1][0]), fmt(Sp[1][1])]
 					]}
 				/>
-				<T x={PX} y={192} text="σ′ = Rᵀ σ R: one factor of R per axis" size={14} />
+				<Label
+					anchor="start"
+					x={PX}
+					y={192}
+					text="σ′ = Rᵀ σ R: one factor of R per axis"
+					size={14}
+				/>
 			</g>
 		</Readout>
 		<Readout
@@ -710,8 +779,9 @@
 			opacity={w.rotate}
 		>
 			<g opacity={w.rotate}>
-				<T x={PX} y={236} text="never changes:" size={14} muted />
-				<T
+				<Label anchor="start" x={PX} y={236} text="never changes:" size={14} muted />
+				<Label
+					anchor="start"
 					x={PX}
 					y={262}
 					text="σ′xx + σ′yy = {fmt(trace(Sp))} MPa"
@@ -719,7 +789,8 @@
 					weight={600}
 					color="var(--tn-keep)"
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={288}
 					text="σ′xx σ′yy − τ′xy² = {fmt(det(Sp))} MPa²"
@@ -738,7 +809,8 @@
 			opacity={w.rotate}
 		>
 			<g opacity={w.rotate}>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={346}
 					text={principalNow
@@ -748,8 +820,14 @@
 					weight={principalNow ? 700 : 500}
 					color={principalNow ? 'var(--tn-keep)' : undefined}
 				/>
-				<T x={PX} y={368} text="pure pulls of {fmt(pr.s1)} and {fmt(pr.s2)} MPa" size={14} />
-				<T x={PX} y={420} text="Drag the end of the x′ axis." size={13} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={368}
+					text="pure pulls of {fmt(pr.s1)} and {fmt(pr.s2)} MPa"
+					size={14}
+				/>
+				<Label anchor="start" x={PX} y={420} text="Drag the end of the x′ axis." size={13} muted />
 			</g>
 		</Readout>
 	{/if}
@@ -785,14 +863,23 @@
 			opacity={w.meanings}
 		>
 			<g opacity={w.meanings}>
-				<T
+				<Label
+					anchor="start"
 					x={PX - 90}
 					y={100}
 					text="Physics: the stress tensor, at θ = {angleText}"
 					size={14}
 					weight={700}
 				/>
-				<T x={PX - 90} y={150} text="σ′ =" size={20} weight={700} color="var(--tn-turned)" />
+				<Label
+					anchor="start"
+					x={PX - 90}
+					y={150}
+					text="σ′ ="
+					size={20}
+					weight={700}
+					color="var(--tn-turned)"
+				/>
 				<Mat
 					x={PX - 40}
 					y={118}
@@ -802,8 +889,21 @@
 					]}
 					color="var(--tn-turned)"
 				/>
-				<T x={PX - 90} y={198} text="its numbers change by a rule: σ′ = Rᵀ σ R" size={14} />
-				<T x={PX - 90} y={220} text="(the steel and its load don't change)" size={13} muted />
+				<Label
+					anchor="start"
+					x={PX - 90}
+					y={198}
+					text="its numbers change by a rule: σ′ = Rᵀ σ R"
+					size={14}
+				/>
+				<Label
+					anchor="start"
+					x={PX - 90}
+					y={220}
+					text="(the steel and its load don't change)"
+					size={13}
+					muted
+				/>
 			</g>
 		</Readout>
 		<Readout
@@ -815,7 +915,8 @@
 			opacity={w.meanings}
 		>
 			<g opacity={w.meanings}>
-				<T
+				<Label
+					anchor="start"
 					x={PX - 90}
 					y={306}
 					text="An array: one pixel of the photo, at θ = {angleText}"
@@ -823,15 +924,28 @@
 					weight={700}
 				/>
 				<rect x={PX - 90} y={322} width="48" height="48" rx="6" fill="rgb({PIXEL.join(' ')})" />
-				<T
+				<Label
+					anchor="start"
 					x={PX - 26}
 					y={354}
 					text="(red {PIXEL[0]}, green {PIXEL[1]}, blue {PIXEL[2]})"
 					size={18}
 					weight={700}
 				/>
-				<T x={PX - 90} y={404} text="its axis is colour, not a direction in space:" size={14} />
-				<T x={PX - 90} y={426} text="turning the axes doesn't mix its numbers" size={14} />
+				<Label
+					anchor="start"
+					x={PX - 90}
+					y={404}
+					text="its axis is colour, not a direction in space:"
+					size={14}
+				/>
+				<Label
+					anchor="start"
+					x={PX - 90}
+					y={426}
+					text="turning the axes doesn't mix its numbers"
+					size={14}
+				/>
 			</g>
 		</Readout>
 	{/if}

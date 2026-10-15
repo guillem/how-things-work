@@ -10,12 +10,11 @@
 	 * flask: phages never change; the CRISPR toggle switches the defence off.
 	 * arms: CRISPR on; phages may change a letter.
 	 */
-	import { clamp } from '#lib/draw/index.ts';
+	import { clamp, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { POP, SITES, SITE_NAMES, sampleAt, simulate, type SpacerKey } from '../model';
 	import ArrayStrip from './ArrayStrip.svelte';
 	import { type StripSpacer } from './strip';
-	import Tag from './Tag.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 	const time = $derived(reduced ? 999 : t);
@@ -98,19 +97,18 @@
 			stroke="var(--stage-grid)"
 			stroke-width="1"
 		/>
-		<text x={X0 - 10} y={sy(10 ** e) + 4} text-anchor="end" style:font-size="12px" class="muted"
+		<text x={X0 - 10} y={sy(10 ** e) + 4} text-anchor="end" font-size="12" class="muted"
 			>{e === 0 ? '1' : `10${SUP[i]}`}</text
 		>
 	{/each}
 	{#each [0, 2, 4, 6, 8, 10] as d (d)}
-		<text x={sx(d * 24)} y={Y0 + 20} text-anchor="middle" style:font-size="12px" class="muted"
-			>day {d}</text
+		<text x={sx(d * 24)} y={Y0 + 20} text-anchor="middle" font-size="12" class="muted">day {d}</text
 		>
 	{/each}
 	<line x1={X0} x2={X0} y1={Y1} y2={Y0} stroke="var(--stage-line)" />
 	<line x1={X0} x2={X1} y1={Y0} y2={Y0} stroke="var(--stage-line)" />
 	<Readout id="axis">
-		<Tag
+		<Label
 			x={X0}
 			y={42}
 			text="number in the flask (each line is ten times the one below)"
@@ -145,7 +143,7 @@
 		value={fmt(now.bacteria)}
 		color="var(--cr-bact-line)"
 	>
-		<Tag
+		<Label
 			x={X1}
 			y={42}
 			text="bacteria {fmt(now.bacteria)}"
@@ -156,7 +154,7 @@
 		/>
 	</Readout>
 	<Readout id="phage" order={2} label="Phages" value={fmt(now.phage)} color="var(--cr-phage-line)">
-		<Tag
+		<Label
 			x={X1 - 170}
 			y={42}
 			text="phages {fmt(now.phage)}"
@@ -167,7 +165,7 @@
 		/>
 	</Readout>
 	<Readout id="day" order={3} label="Time" value="day {day.toFixed(1)}">
-		<Tag x={X1 - 330} y={42} text="day {day.toFixed(1)}" size={13} anchor="end" muted />
+		<Label x={X1 - 330} y={42} text="day {day.toFixed(1)}" size={13} anchor="end" muted />
 	</Readout>
 
 	<!-- bottom panel: the commonest bacterium and phage -->
@@ -190,7 +188,7 @@
 				: 'no spacers yet'
 			: 'no CRISPR'}
 	>
-		<Tag
+		<Label
 			x={44}
 			y={396}
 			text="Commonest bacterium: its array"
@@ -198,7 +196,7 @@
 			weight={600}
 			anchor="start"
 		/>
-		<Tag
+		<Label
 			x={44}
 			y={416}
 			text="spacers named by the phage target they match; ′ = after a changed letter"
@@ -217,10 +215,10 @@
 			more={(snap?.spacers.length ?? 0) > MAX}
 		/>
 		{#if spacers.length === 0}
-			<Tag x={200} y={500} text="no spacers yet" size={12} anchor="start" muted />
+			<Label x={200} y={500} text="no spacers yet" size={12} anchor="start" muted />
 		{/if}
 	{:else}
-		<Tag
+		<Label
 			x={44}
 			y={466}
 			text="no CRISPR system: nothing to remember with"
@@ -230,7 +228,7 @@
 		/>
 	{/if}
 	<Readout id="avg">
-		<Tag
+		<Label
 			x={44}
 			y={556}
 			text="spacers gained, on average: {now.spacers.toFixed(1)} per bacterium"
@@ -249,7 +247,7 @@
 			? `targets ${sites.map((v, s) => SITE_NAMES[s] + primes(v)).join(' ')}`
 			: 'none left'}
 	>
-		<Tag
+		<Label
 			x={540}
 			y={396}
 			text="Commonest phage: its six targets"
@@ -257,7 +255,14 @@
 			weight={600}
 			anchor="start"
 		/>
-		<Tag x={540} y={416} text="ringed: a letter has changed there" size={11} anchor="start" muted />
+		<Label
+			x={540}
+			y={416}
+			text="ringed: a letter has changed there"
+			size={11}
+			anchor="start"
+			muted
+		/>
 	</Readout>
 	{#if sites.length}
 		{#each Array.from({ length: SITES }, (_, s) => s) as s (s)}
@@ -268,7 +273,7 @@
 				x={x + 24}
 				y={488}
 				text-anchor="middle"
-				style:font-size="13px"
+				font-size="13"
 				style:fill="var(--cr-on-colour)"
 				font-weight="700">{SITE_NAMES[s] + primes(v)}</text
 			>
@@ -286,10 +291,10 @@
 			{/if}
 		{/each}
 	{:else}
-		<Tag x={540} y={466} text="no phages left" size={13} anchor="start" muted />
+		<Label x={540} y={466} text="no phages left" size={13} anchor="start" muted />
 	{/if}
 	<Readout id="chg">
-		<Tag
+		<Label
 			x={540}
 			y={556}
 			text="changed letters, on average: {now.changes.toFixed(1)} per phage"

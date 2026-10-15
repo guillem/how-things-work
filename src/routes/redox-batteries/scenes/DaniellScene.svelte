@@ -309,7 +309,7 @@
 			stroke="var(--border)"
 			stroke-width="1.5"
 		/>
-		<text x={LAMP.x} y={LAMP.y + 8} text-anchor="middle" style:font-size="22px" font-weight="700"
+		<text x={LAMP.x} y={LAMP.y + 8} text-anchor="middle" font-size="22" font-weight="700"
 			>{fmtV(voltage, 3)}</text
 		>
 		<Label x={LAMP.x} y={LAMP.y - 40} text="voltmeter" size={12} muted />
@@ -378,8 +378,8 @@
 
 	<!-- the panel -->
 	<Readout id="v" order={1} label="Cell voltage" value={fmtV(voltage, 3)}>
-		<text x={PX0} y={64} style:font-size="12px" class="muted">cell voltage</text>
-		<text x={PX0} y={98} style:font-size="30px" font-weight="700">{fmtV(voltage, 3)}</text>
+		<text x={PX0} y={64} font-size="12" class="muted">cell voltage</text>
+		<text x={PX0} y={98} font-size="30" font-weight="700">{fmtV(voltage, 3)}</text>
 	</Readout>
 	<Readout id="status" order={2} label="Now" value={status}>
 		<Label x={PX0} y={128} text={status} size={13} anchor="start" />

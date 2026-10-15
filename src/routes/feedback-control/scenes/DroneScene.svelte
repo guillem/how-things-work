@@ -12,7 +12,7 @@
 	 * the complete flight.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { scale } from '#lib/draw/index.ts';
+	import { Label, scale } from '#lib/draw/index.ts';
 	import {
 		DRONE,
 		G,
@@ -28,7 +28,6 @@
 	} from '../control';
 	import Card from './Card.svelte';
 	import Plot from './Plot.svelte';
-	import Txt from './Txt.svelte';
 	import { restartClock, seriesPath, type Cell } from './shared';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -215,7 +214,7 @@
 	{#each [1, 2, 3, 4, 5] as h (h)}
 		<line x1="52" x2="60" y1={yOf(h)} y2={yOf(h)} stroke="var(--stage-line)" />
 		<Readout id="h-{h}">
-			<Txt x={46} y={yOf(h) + 4} text="{h} m" size={11} anchor="end" muted />
+			<Label x={46} y={yOf(h) + 4} text="{h} m" size={11} anchor="end" muted />
 		</Readout>
 	{/each}
 	<line x1="56" x2="56" y1={yOf(5)} y2={GROUND} stroke="var(--stage-line)" />
@@ -229,7 +228,7 @@
 		stroke-dasharray="6 5"
 	/>
 	<Readout id="target-col">
-		<Txt
+		<Label
 			x={350}
 			y={yOf(targetNow) - 6}
 			text="target"
@@ -258,7 +257,7 @@
 			</g>
 		{/if}
 		<Readout id="gust-label">
-			<Txt
+			<Label
 				x={COL - 70}
 				y={Math.max(80, yd - 40)}
 				text={gNow > 0.3 ? 'gust up' : gNow < -0.3 ? 'gust down' : 'calm'}
@@ -290,7 +289,8 @@
 		marker-end="url(#arrowhead)"
 	/>
 	<Readout id="force-labels">
-		<Txt
+		<Label
+			anchor="start"
 			x={COL + 74}
 			y={yd - thrust * NPX + 10}
 			text="thrust"
@@ -298,7 +298,7 @@
 			color="var(--fc-out)"
 			weight={600}
 		/>
-		<Txt x={COL + 74} y={yd + mass * G * NPX} text="weight" size={11} muted />
+		<Label anchor="start" x={COL + 74} y={yd + mass * G * NPX} text="weight" size={11} muted />
 	</Readout>
 
 	<!-- the drone -->
@@ -343,7 +343,7 @@
 		yFormat={(s) => `${s} m`}
 	/>
 	<Readout id="height-title">
-		<Txt x={P0} y={HP.top - 10} text="height" size={12} muted />
+		<Label anchor="start" x={P0} y={HP.top - 10} text="height" size={12} muted />
 	</Readout>
 	<!-- thrust against time -->
 	<Plot {sx} sy={st} {xTicks} yTicks={[0, 10, 20]} xFormat={() => ''} yFormat={(s) => `${s} N`} />
@@ -356,8 +356,8 @@
 		stroke-dasharray="3 4"
 	/>
 	<Readout id="thrust-title">
-		<Txt x={P0} y={TP.top - 8} text="thrust" size={12} muted />
-		<Txt x={P1} y={st(mass * G) - 5} text="weight" size={11} anchor="end" muted />
+		<Label anchor="start" x={P0} y={TP.top - 8} text="thrust" size={12} muted />
+		<Label x={P1} y={st(mass * G) - 5} text="weight" size={11} anchor="end" muted />
 	</Readout>
 	<g clip-path="url(#drone-plots)">
 		<path
@@ -394,7 +394,7 @@
 	<!-- the controller's terms now -->
 	<Readout id="terms">
 		<g>
-			<Txt x={P0} y={524} text="the controller's terms now" size={12} muted />
+			<Label anchor="start" x={P0} y={524} text="the controller's terms now" size={12} muted />
 			<line x1={BAR(0)} x2={BAR(0)} y1={516} y2={580} stroke="var(--stage-line)" />
 			{#each bars as b, i (b.id)}
 				{@const y = 528 + i * 20}
@@ -407,7 +407,7 @@
 					rx="3"
 					fill={b.color}
 				/>
-				<Txt
+				<Label
 					x={BX - 10}
 					y={y + 4}
 					text="{b.id} {fmtN(b.v)} N"

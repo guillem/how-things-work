@@ -473,7 +473,7 @@
 			y={GYY - 26}
 			class="halo"
 			font-weight="700"
-			style:font-size="24px"
+			font-size="24"
 			style:fill="var(--ia-sun)">{sunshine.toFixed(0)} W/m²</text
 		>
 		<Label

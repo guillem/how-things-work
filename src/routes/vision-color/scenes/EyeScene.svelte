@@ -486,15 +486,9 @@
 			stroke="var(--vc-object)"
 			stroke-width="2"
 		/>
-		<text x="0" y={-OBJ_H + 30} text-anchor="middle" style:font-size="26px" font-weight="700"
-			>E</text
-		>
-		<text x="0" y={-OBJ_H + 52} text-anchor="middle" style:font-size="12px" font-weight="700"
-			>F P</text
-		>
-		<text x="0" y={-OBJ_H + 66} text-anchor="middle" style:font-size="8px" font-weight="700"
-			>T O Z</text
-		>
+		<text x="0" y={-OBJ_H + 30} text-anchor="middle" font-size="26" font-weight="700">E</text>
+		<text x="0" y={-OBJ_H + 52} text-anchor="middle" font-size="12" font-weight="700">F P</text>
+		<text x="0" y={-OBJ_H + 66} text-anchor="middle" font-size="8" font-weight="700">T O Z</text>
 	</g>
 	<Readout id="object-label">
 		<Label x={objX} y={AX - OBJ_H - 12} text={live ? distanceValue : 'far away'} size={12} muted />
@@ -673,7 +667,7 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		<text x={IN.x + 14} y={IN.y + 20} class="muted" style:font-size="12px" font-weight="500"
+		<text x={IN.x + 14} y={IN.y + 20} class="muted" font-size="12" font-weight="500"
 			>What this eye sees</text
 		>
 	</Readout>
@@ -689,26 +683,14 @@
 				stroke="var(--vc-object)"
 				stroke-width="3"
 			/>
-			<text
-				x={IN.x + 105}
-				y={IN.y + 88}
-				text-anchor="middle"
-				style:font-size="44px"
-				font-weight="700">E</text
+			<text x={IN.x + 105} y={IN.y + 88} text-anchor="middle" font-size="44" font-weight="700"
+				>E</text
 			>
-			<text
-				x={IN.x + 105}
-				y={IN.y + 122}
-				text-anchor="middle"
-				style:font-size="22px"
-				font-weight="700">F P</text
+			<text x={IN.x + 105} y={IN.y + 122} text-anchor="middle" font-size="22" font-weight="700"
+				>F P</text
 			>
-			<text
-				x={IN.x + 105}
-				y={IN.y + 146}
-				text-anchor="middle"
-				style:font-size="14px"
-				font-weight="700">T O Z</text
+			<text x={IN.x + 105} y={IN.y + 146} text-anchor="middle" font-size="14" font-weight="700"
+				>T O Z</text
 			>
 		</g>
 	</g>

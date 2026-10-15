@@ -9,12 +9,11 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { complement } from '../genetics';
 	import { HBB_GENE } from '../genes-data';
 	import { baseColor } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { step, t, reduced }: StageProps = $props();
 
@@ -64,7 +63,8 @@
 <g>
 	<!-- strand ends and direction -->
 	<Readout id="title">
-		<Txt
+		<Label
+			anchor="start"
 			x={32}
 			y={40}
 			text="Human β-globin gene (HBB), letters 45–74: where its instructions begin"
@@ -91,11 +91,18 @@
 		stroke-linecap="round"
 		opacity={1 - 0.6 * f}
 	/>
-	<Txt x={X0 - 26} y={yTop - 17} text="5′" size={14} weight={700} anchor="end" />
-	<Txt x={X0 + (N - 1) * DX + 26} y={yTop - 17} text="3′" size={14} weight={700} />
+	<Label x={X0 - 26} y={yTop - 17} text="5′" size={14} weight={700} anchor="end" />
+	<Label anchor="start" x={X0 + (N - 1) * DX + 26} y={yTop - 17} text="3′" size={14} weight={700} />
 	<g opacity={1 - 0.6 * f}>
-		<Txt x={X0 - 26} y={yBot + 27} text="3′" size={14} weight={700} anchor="end" />
-		<Txt x={X0 + (N - 1) * DX + 26} y={yBot + 27} text="5′" size={14} weight={700} />
+		<Label x={X0 - 26} y={yBot + 27} text="3′" size={14} weight={700} anchor="end" />
+		<Label
+			anchor="start"
+			x={X0 + (N - 1) * DX + 26}
+			y={yBot + 27}
+			text="5′"
+			size={14}
+			weight={700}
+		/>
 	</g>
 
 	{#each top as b, i (i)}
@@ -134,7 +141,7 @@
 				x={xs[i]}
 				y={yTop + 5}
 				text-anchor="middle"
-				style:font-size="14px"
+				font-size="14"
 				style:font-weight="700"
 				style:font-family="var(--font-mono)">{b}</text
 			>
@@ -151,7 +158,7 @@
 					x={xs[i]}
 					y={yBot + 5}
 					text-anchor="middle"
-					style:font-size="14px"
+					font-size="14"
 					style:font-weight="700"
 					style:font-family="var(--font-mono)">{p}</text
 				>
@@ -169,7 +176,8 @@
 				value="{b}–{complement(b)}"
 				note="{NAMES[b]} pairs with {NAMES[complement(b)]}"
 			>
-				<Txt
+				<Label
+					tabular
 					x={480}
 					y={yBot + 76}
 					text="{b} ({NAMES[b]}) pairs with {complement(b)} ({NAMES[complement(b)]})"
@@ -191,9 +199,7 @@
 					stroke={baseColor(l)}
 					stroke-width="2.5"
 				/>
-				<text x="30" y="37" text-anchor="middle" style:font-size="15px" style:font-weight="700"
-					>{l}</text
-				>
+				<text x="30" y="37" text-anchor="middle" font-size="15" style:font-weight="700">{l}</text>
 				<line x1="44" x2="116" y1="32" y2="32" stroke="var(--stage-line)" stroke-dasharray="3 4" />
 				<circle
 					cx="130"
@@ -203,9 +209,7 @@
 					stroke={baseColor(r)}
 					stroke-width="2.5"
 				/>
-				<text x="130" y="37" text-anchor="middle" style:font-size="15px" style:font-weight="700"
-					>{r}</text
-				>
+				<text x="130" y="37" text-anchor="middle" font-size="15" style:font-weight="700">{r}</text>
 			</g>
 		{/each}
 		<Readout
@@ -215,7 +219,7 @@
 			value="A–T, C–G"
 			note="each strand fixes the other"
 		>
-			<Txt
+			<Label
 				x={480}
 				y={548}
 				text="A always pairs with T, and C with G: each strand fixes the other"
@@ -235,7 +239,8 @@
 					stroke={k === 0 ? 'var(--dp-rna)' : 'var(--stage-ink)'}
 					stroke-width="2"
 				/>
-				<Txt
+				<Label
+					tabular
 					x={xs[c + 1]}
 					y={yTop - 50}
 					text={k === 0 ? 'start' : `codon ${k + 1}`}
@@ -246,11 +251,12 @@
 				/>
 			</g>
 		{/each}
-		<Txt x={xs[1]} y={yTop - 50} text="before the start" size={11} anchor="middle" muted />
+		<Label x={xs[1]} y={yTop - 50} text="before the start" size={11} anchor="middle" muted />
 		<!-- the same letters, one letter later -->
 		<g opacity={smoothstep(1.6, 2.2, tv)}>
 			<Readout id="shift-title">
-				<Txt
+				<Label
+					anchor="start"
 					x={X0 - 18}
 					y={yBot + 58}
 					text="The same letters read from one letter later spell other words:"
@@ -272,7 +278,7 @@
 						y={yBot + 96}
 						text-anchor="middle"
 						class="muted"
-						style:font-size="13px"
+						font-size="13"
 						style:font-family="var(--font-mono)">{top.slice(c, c + 3).join('')}</text
 					>
 				</g>
@@ -284,7 +290,9 @@
 			{@const o = reveal(k)}
 			{@const gx = 110 + k * 250}
 			<g opacity={o}>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={gx}
 					y={398}
 					text="{c.n} letter{c.n > 1 ? 's' : ''}: {c.words} words"
@@ -321,7 +329,9 @@
 						/>
 					{/each}
 				{/if}
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={gx}
 					y={530}
 					text={c.ok ? '≥ 20 amino acids ✓' : '< 20 amino acids'}
@@ -338,7 +348,7 @@
 			value="20 amino acids"
 			note="1 letter: 4 · 2 letters: 16 · 3 letters: 64"
 		>
-			<Txt
+			<Label
 				x={480}
 				y={572}
 				text="Proteins use 20 amino acids, so the code needs words of three letters: codons"

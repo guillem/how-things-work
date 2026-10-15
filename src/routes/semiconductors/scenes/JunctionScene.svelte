@@ -285,7 +285,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'middle'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -434,7 +434,7 @@
 			y={ion.y + 5}
 			text-anchor="middle"
 			font-weight={u > 0.5 ? 800 : 600}
-			style:font-size="{u > 0.5 ? 17 : 14}px"
+			font-size={u > 0.5 ? 17 : 14}
 			style:fill={ion.nSide ? 'var(--semi-donor)' : 'var(--semi-acceptor)'}
 			opacity={0.4 + 0.6 * u}>{ion.nSide ? '+' : '−'}</text
 		>

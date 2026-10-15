@@ -14,7 +14,7 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { C1, C2, K, P1, SIDE, decodeBytes, forward } from '../cnn';
 	import { PARTS } from '../mnist-cnn';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import { WT, fmt, greyUrl, inputOf, maxAbs, signedUrl } from './shared';
 
 	let { step, t, params, reduced, dark, setParam }: StageProps = $props();
@@ -134,8 +134,8 @@
 <g>
 	{#if mode === 'l1'}
 		<Readout id="ly-in" order={1} label="Input" value={caption}>
-			<Txt x={40} y={74} text="input" size={14} weight={600} />
-			<Txt x={40} y={292} text={caption} size={11} muted />
+			<Label anchor="start" x={40} y={74} text="input" size={14} weight={600} />
+			<Label anchor="start" x={40} y={292} text={caption} size={11} muted />
 		</Readout>
 		<rect x={39} y={83} width={198} height={198} fill="none" stroke="var(--border)" />
 		<image href={inUrl} x={40} y={84} width={196} height={196} class="cv-px" />
@@ -146,8 +146,15 @@
 			label="Filter {s1 + 1}"
 			value="5 × 5 weights + a bias of {fmt(WT.c1b[s1])}"
 		>
-			<Txt x={40} y={336} text="filter {s1 + 1}: its 25 weights" size={13} weight={600} />
-			<Txt x={40} y={548} text="+ bias {fmt(WT.c1b[s1])}" size={12} muted />
+			<Label
+				anchor="start"
+				x={40}
+				y={336}
+				text="filter {s1 + 1}: its 25 weights"
+				size={13}
+				weight={600}
+			/>
+			<Label anchor="start" x={40} y={548} text="+ bias {fmt(WT.c1b[s1])}" size={12} muted />
 		</Readout>
 		{#each sel as v, i (i)}
 			<rect
@@ -163,13 +170,14 @@
 				x={60 + (i % K) * 40}
 				y={371 + Math.floor(i / K) * 36}
 				text-anchor="middle"
-				style:font-size="11px"
+				font-size="11"
 				style:fill="var(--stage-ink)"
 				style:pointer-events="none">{fmt(v, 1)}</text
 			>
 		{/each}
 
-		<Txt
+		<Label
+			anchor="start"
 			x={G1.x}
 			y={74}
 			text="layer 1: 8 learnt filters and their feature maps"
@@ -202,7 +210,7 @@
 					stroke={c === s1 ? 'var(--cv-window)' : 'none'}
 					stroke-width="2"
 				/>
-				<Txt x={p.x} y={p.y + 12} text={String(c + 1)} size={13} weight={700} />
+				<Label anchor="start" x={p.x} y={p.y + 12} text={String(c + 1)} size={13} weight={700} />
 				<image href={url} x={p.x} y={p.y + 22} width={35} height={35} class="cv-px" />
 				<rect x={p.x} y={p.y + 22} width={35} height={35} fill="none" stroke="var(--border)" />
 				<image href={maps1[c]} x={p.x + 40} y={p.y} width={102} height={102} class="cv-px" />
@@ -211,24 +219,32 @@
 		{/each}
 		<Readout id="ly-key" order={3} label="Colours" value="blue: positive · orange: negative">
 			<rect x={G1.x} y={448} width="12" height="12" fill="var(--cv-pos)" />
-			<Txt x={G1.x + 18} y={458} text="positive weight or response" size={12} />
+			<Label anchor="start" x={G1.x + 18} y={458} text="positive weight or response" size={12} />
 			<rect x={G1.x + 230} y={448} width="12" height="12" fill="var(--cv-neg)" />
-			<Txt x={G1.x + 248} y={458} text="negative" size={12} />
-			<Txt
+			<Label anchor="start" x={G1.x + 248} y={458} text="negative" size={12} />
+			<Label
+				anchor="start"
 				x={G1.x}
 				y={484}
 				text="small square: the filter's 5 × 5 weights · large: its map on the digit"
 				size={12}
 				muted
 			/>
-			<Txt x={G1.x} y={504} text="click a filter to see its weights" size={12} muted />
+			<Label
+				anchor="start"
+				x={G1.x}
+				y={504}
+				text="click a filter to see its weights"
+				size={12}
+				muted
+			/>
 		</Readout>
 	{:else if mode === 'pool' && poolUrls}
 		{@const X = [40, 268, 496, 724]}
 		{@const S = 196}
 		{@const Y = 96}
 		{#each ['input', `filter ${s1 + 1}`, 'ReLU: negatives → 0', 'max pool: 14 × 14'] as title, i (i)}
-			<Txt x={X[i]} y={Y - 16} text={title} size={13} weight={600} />
+			<Label anchor="start" x={X[i]} y={Y - 16} text={title} size={13} weight={600} />
 			<rect
 				x={X[i] - 1}
 				y={Y - 1}
@@ -275,24 +291,27 @@
 			label="One 2 × 2 block"
 			value="{blockVals.map((v) => fmt(v)).join(', ')} → max {fmt(Math.max(...blockVals))}"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={X[2]}
 				y={Y + S + 26}
 				text="block: {blockVals.map((v) => fmt(v)).join('  ')}"
 				size={12}
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={X[3]}
 				y={Y + S + 26}
 				text="keeps the largest: {fmt(Math.max(...blockVals))}"
 				size={12}
 				weight={600}
 			/>
-			<Txt x={X[1]} y={Y + S + 26} text="28 × 28" size={12} muted />
+			<Label anchor="start" x={X[1]} y={Y + S + 26} text="28 × 28" size={12} muted />
 		</Readout>
 
 		<Readout id="pl-all" order={3} label="After layer 1" value="8 maps of 14 × 14">
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={380}
 				text="after the first layer: 8 maps of 14 × 14, one per filter (pooled, after the ReLU)"
@@ -326,11 +345,12 @@
 					stroke-width={c === s1 ? 2.5 : 1}
 				/>
 				<image href={kernels[c]} x={40 + c * 110} y={512} width={30} height={30} class="cv-px" />
-				<Txt x={78 + c * 110} y={532} text="filter {c + 1}" size={11} muted />
+				<Label anchor="start" x={78 + c * 110} y={532} text="filter {c + 1}" size={11} muted />
 			</g>
 		{/each}
 	{:else if mode === 'l2'}
-		<Txt
+		<Label
+			anchor="start"
 			x={40}
 			y={56}
 			text="layer 2: 16 filters, each looking at all 8 first-layer maps"
@@ -353,7 +373,7 @@
 					}
 				}}
 			>
-				<Txt
+				<Label
 					x={x + 24}
 					y={80}
 					text={String(c + 1)}
@@ -381,8 +401,8 @@
 			label="Filter {s2 + 1} on this digit"
 			value="strongest response {fmt(best.v)}"
 		>
-			<Txt x={40} y={182} text="input" size={12} weight={600} />
-			<Txt x={232} y={182} text="filter {s2 + 1}'s map" size={12} weight={600} />
+			<Label anchor="start" x={40} y={182} text="input" size={12} weight={600} />
+			<Label anchor="start" x={232} y={182} text="filter {s2 + 1}'s map" size={12} weight={600} />
 		</Readout>
 		<image href={inUrl} x={40} y={192} width={168} height={168} class="cv-px" />
 		<rect x={39} y={191} width={170} height={170} fill="none" stroke="var(--border)" />
@@ -414,7 +434,8 @@
 			/>
 		{/if}
 		<Readout id="l2-rf">
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={380}
 				text={input.empty
@@ -434,14 +455,16 @@
 			label="Its weights"
 			value="5 × 5 × 8 = 200, one slice per first-layer map"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={440}
 				y={182}
 				text="its 200 weights: a 5 × 5 slice for each first-layer map"
 				size={12}
 				weight={600}
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={440}
 				y={340}
 				text="↑ applied to the map of the first-layer filter below it"
@@ -453,7 +476,7 @@
 			<image href={url} x={440 + ci * 59} y={196} width={50} height={50} class="cv-px" />
 			<rect x={439 + ci * 59} y={195} width={52} height={52} fill="none" stroke="var(--border)" />
 			<image href={kernels[ci]} x={452 + ci * 59} y={270} width={25} height={25} class="cv-px" />
-			<Txt x={464 + ci * 59} y={316} text={String(ci + 1)} size={11} anchor="middle" muted />
+			<Label x={464 + ci * 59} y={316} text={String(ci + 1)} size={11} anchor="middle" muted />
 		{/each}
 
 		<!-- what excites it most -->
@@ -463,7 +486,8 @@
 			label="Excites it most"
 			value="six patches from the 10,000 test digits"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={420}
 				text="the six patches of the 10,000 test digits that excite filter {s2 + 1} most"
@@ -475,7 +499,14 @@
 			<image href={p.url} x={40 + i * 128} y={432} width={112} height={112} class="cv-px" />
 			<rect x={39 + i * 128} y={431} width={114} height={114} fill="none" stroke="var(--border)" />
 			<Readout id="l2-p{i}">
-				<Txt x={40 + i * 128} y={562} text="test #{p.index} · {fmt(p.value, 1)}" size={11} muted />
+				<Label
+					anchor="start"
+					x={40 + i * 128}
+					y={562}
+					text="test #{p.index} · {fmt(p.value, 1)}"
+					size={11}
+					muted
+				/>
 			</Readout>
 		{/each}
 	{/if}

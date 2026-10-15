@@ -145,7 +145,7 @@
 		class="halo"
 		class:muted={o.muted}
 		text-anchor={o.anchor ?? 'middle'}
-		style:font-size="{o.size ?? 13}px"
+		font-size={o.size ?? 13}
 		style:fill={o.color}
 		font-weight={o.weight ?? 500}>{s}</text
 	>

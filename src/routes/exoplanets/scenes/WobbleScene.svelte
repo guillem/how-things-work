@@ -7,7 +7,7 @@
 	 * stated factor), and a close-up of Hα. Below: the velocity curve over two
 	 * orbits. One orbit takes ORBIT_S s; everything is a pure function of t.
 	 */
-	import { Axes, scale, wavelengthToColor } from '#lib/draw/index.ts';
+	import { Axes, Label, scale, wavelengthToColor } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		C,
@@ -24,7 +24,6 @@
 	} from '../exoplanets';
 	import { fmtTilt, readerSystem } from '../systems';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 	import { duration, sci, sig, speed, starColor, ticksWithDecimals } from './ui';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -158,8 +157,16 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="top-title">
-		<T x={L.x0 + 16} y={L.y0 + 26} text="Seen from above the orbit" size={14} weight={700} />
-		<T
+		<Label
+			anchor="start"
+			x={L.x0 + 16}
+			y={L.y0 + 26}
+			text="Seen from above the orbit"
+			size={14}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
 			x={L.x0 + 16}
 			y={L.y0 + 44}
 			text="not to scale · star’s circle enlarged ×{sig(enlarge, 2)}"
@@ -222,7 +229,7 @@
 		/>
 	{/if}
 	<Readout id="com-label">
-		<T x={BX} y={BY + RSTAR + 34} text="centre of mass" size={11} anchor="middle" muted />
+		<Label x={BX} y={BY + RSTAR + 34} text="centre of mass" size={11} anchor="middle" muted />
 	</Readout>
 	<!-- the Earth, far below -->
 	<line
@@ -235,7 +242,7 @@
 		opacity="0.6"
 	/>
 	<Readout id="to-earth">
-		<T
+		<Label
 			x={BX}
 			y={L.y1 - 14}
 			text="to Earth (light-years away)"
@@ -275,8 +282,8 @@
 				marker-end="url(#arrowhead)"
 				style:color="var(--ex-blue)"
 			/>
-			<T x={0} y={-34} text="side view" size={10.5} anchor="middle" muted />
-			<T x={0} y={44} text="orbit · Earth →" size={10.5} anchor="middle" muted />
+			<Label x={0} y={-34} text="side view" size={10.5} anchor="middle" muted />
+			<Label x={0} y={44} text="orbit · Earth →" size={10.5} anchor="middle" muted />
 		</g>
 	{/if}
 
@@ -291,8 +298,16 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="spec-title">
-		<T x={R.x0 + 16} y={R.y0 + 26} text="The star’s spectrum" size={14} weight={700} />
-		<T
+		<Label
+			anchor="start"
+			x={R.x0 + 16}
+			y={R.y0 + 26}
+			text="The star’s spectrum"
+			size={14}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
 			x={R.x0 + 16}
 			y={R.y0 + 44}
 			text={faceOn
@@ -324,9 +339,9 @@
 		/>
 	{/each}
 	<Readout id="spec-axis">
-		<T x={sxL(400)} y={SY0 + SH + 16} text="400 nm" size={11} anchor="middle" muted />
-		<T x={SX1} y={SY0 + SH + 16} text="700 nm" size={11} anchor="end" muted />
-		<T
+		<Label x={sxL(400)} y={SY0 + SH + 16} text="400 nm" size={11} anchor="middle" muted />
+		<Label x={SX1} y={SY0 + SH + 16} text="700 nm" size={11} anchor="end" muted />
+		<Label
 			x={(SX0 + SX1) / 2}
 			y={SY0 + SH + 16}
 			text="ticks: where the lines are at rest"
@@ -355,7 +370,8 @@
 		opacity="0.9"
 	/>
 	<Readout id="zoom-title">
-		<T
+		<Label
+			anchor="start"
 			x={ZX0}
 			y={ZY0 - 14}
 			text="Close-up: the hydrogen-alpha line, 656.28 nm"
@@ -371,7 +387,7 @@
 			? '0 nm (no shift)'
 			: `${v < 0 ? '−' : '+'}${sci(Math.abs(dopplerShift(HA, v)))} nm`}
 	>
-		<T
+		<Label
 			x={(ZX0 + ZX1) / 2}
 			y={ZY0 + ZH + 24}
 			text={noShift
@@ -397,7 +413,8 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="curve-title">
-		<T
+		<Label
+			anchor="start"
 			x={32}
 			y={378}
 			text="The star’s speed along our line of sight (velocity curve)"
@@ -417,8 +434,8 @@
 	/>
 	<line x1={PX0} x2={PX1} y1={sy(0)} y2={sy(0)} stroke="var(--stage-line)" />
 	<Readout id="m-axes">
-		<T x={PX0 + 8} y={PY0 + 4} text="↑ away from us ({yUnit})" size={11} muted />
-		<T x={PX0 + 8} y={PY1 - 6} text="↓ towards us" size={11} muted />
+		<Label anchor="start" x={PX0 + 8} y={PY0 + 4} text="↑ away from us ({yUnit})" size={11} muted />
+		<Label anchor="start" x={PX0 + 8} y={PY1 - 6} text="↓ towards us" size={11} muted />
 	</Readout>
 	{#if phase === 'doppler'}
 		{#each [0, 1, 2] as n (n)}
@@ -433,7 +450,8 @@
 			/>
 		{/each}
 		<Readout id="m-front">
-			<T
+			<Label
+				anchor="start"
 				x={sx(P) + 6}
 				y={PY0 + 12}
 				text="planet in front of the star"
@@ -464,8 +482,8 @@
 		value="± {speed(K)}"
 		color="var(--ex-rv)"
 	>
-		<T x={CX + 16} y={396} text="Towards / away" size={12.5} muted />
-		<T
+		<Label anchor="start" x={CX + 16} y={396} text="Towards / away" size={12.5} muted />
+		<Label
 			x={CX + CW - 16}
 			y={396}
 			text="± {speed(K)}"
@@ -476,8 +494,8 @@
 		/>
 	</Readout>
 	<Readout id="period" order={2} label="One cycle (period)" value={duration(P)}>
-		<T x={CX + 16} y={424} text="One cycle (period)" size={12.5} muted />
-		<T x={CX + CW - 16} y={424} text={duration(P)} size={13.5} weight={650} anchor="end" />
+		<Label anchor="start" x={CX + 16} y={424} text="One cycle (period)" size={12.5} muted />
+		<Label x={CX + CW - 16} y={424} text={duration(P)} size={13.5} weight={650} anchor="end" />
 	</Readout>
 	{#if phase === 'wobble'}
 		<Readout
@@ -486,9 +504,16 @@
 			label="The star’s circle"
 			value="{fmtKm(starOrbitKm)} ({sig(starOrbitR, 2)} star radii)"
 		>
-			<T x={CX + 16} y={452} text="Star’s circle (radius)" size={12.5} muted />
-			<T x={CX + CW - 16} y={452} text={fmtKm(starOrbitKm)} size={13.5} weight={650} anchor="end" />
-			<T
+			<Label anchor="start" x={CX + 16} y={452} text="Star’s circle (radius)" size={12.5} muted />
+			<Label
+				x={CX + CW - 16}
+				y={452}
+				text={fmtKm(starOrbitKm)}
+				size={13.5}
+				weight={650}
+				anchor="end"
+			/>
+			<Label
 				x={CX + CW - 16}
 				y={472}
 				text="{sig(starOrbitR, 2)} × the star’s radius"
@@ -503,8 +528,22 @@
 			label="For scale"
 			value="the Sun moves 12.5 m/s from Jupiter, 9 cm/s from the Earth"
 		>
-			<T x={CX + 16} y={508} text="Sun, from Jupiter: 12.5 m/s" size={11.5} muted />
-			<T x={CX + 16} y={526} text="Sun, from the Earth: 9 cm/s" size={11.5} muted />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={508}
+				text="Sun, from Jupiter: 12.5 m/s"
+				size={11.5}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={526}
+				text="Sun, from the Earth: 9 cm/s"
+				size={11.5}
+				muted
+			/>
 		</Readout>
 	{:else if phase === 'doppler'}
 		<Readout
@@ -513,18 +552,39 @@
 			label="Shift ÷ wavelength"
 			value="{sci(K / C)} (speed ÷ speed of light)"
 		>
-			<T x={CX + 16} y={452} text="Shift ÷ wavelength" size={12.5} muted />
-			<T x={CX + CW - 16} y={452} text={sci(K / C)} size={13.5} weight={650} anchor="end" />
-			<T x={CX + CW - 16} y={472} text="= speed ÷ speed of light" size={12} anchor="end" muted />
+			<Label anchor="start" x={CX + 16} y={452} text="Shift ÷ wavelength" size={12.5} muted />
+			<Label x={CX + CW - 16} y={452} text={sci(K / C)} size={13.5} weight={650} anchor="end" />
+			<Label
+				x={CX + CW - 16}
+				y={472}
+				text="= speed ÷ speed of light"
+				size={12}
+				anchor="end"
+				muted
+			/>
 		</Readout>
 		<Readout id="m-colours">
-			<T x={CX + 16} y={508} text="Blue: coming towards us." size={11.5} color="var(--ex-blue)" />
-			<T x={CX + 16} y={526} text="Red: moving away." size={11.5} color="var(--ex-red)" />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={508}
+				text="Blue: coming towards us."
+				size={11.5}
+				color="var(--ex-blue)"
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={526}
+				text="Red: moving away."
+				size={11.5}
+				color="var(--ex-red)"
+			/>
 		</Readout>
 	{:else}
 		<Readout id="tilt" order={4} label="Tilt from edge-on" value="{fmtTilt(tiltDeg)}°">
-			<T x={CX + 16} y={452} text="Tilt from edge-on" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={452} text="Tilt from edge-on" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={452}
 				text="{fmtTilt(tiltDeg)}°"
@@ -534,8 +594,8 @@
 			/>
 		</Readout>
 		<Readout id="true" order={5} label="Star’s real speed" value={speed(vTrue)}>
-			<T x={CX + 16} y={478} text="Star’s real speed" size={12.5} muted />
-			<T x={CX + CW - 16} y={478} text={speed(vTrue)} size={13.5} weight={650} anchor="end" />
+			<Label anchor="start" x={CX + 16} y={478} text="Star’s real speed" size={12.5} muted />
+			<Label x={CX + CW - 16} y={478} text={speed(vTrue)} size={13.5} weight={650} anchor="end" />
 		</Readout>
 		<Readout
 			id="minmass"
@@ -543,8 +603,8 @@
 			label="Minimum mass from the curve"
 			value="{sig(minMass)} Earths (true: {sig(pl.mass)})"
 		>
-			<T x={CX + 16} y={504} text="Minimum mass from it" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={504} text="Minimum mass from it" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={504}
 				text="{sig(minMass)} Earths"
@@ -552,7 +612,7 @@
 				weight={650}
 				anchor="end"
 			/>
-			<T
+			<Label
 				x={CX + CW - 16}
 				y={524}
 				text="true mass: {sig(pl.mass)} Earths"

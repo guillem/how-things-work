@@ -178,14 +178,10 @@
 			<Label x={244} y={66} text="cosmic-ray neutron" anchor="end" />
 		</Readout>
 		<circle cx={316} cy={108} r="10" fill="var(--rad-beta)" />
-		<text x={316} y={112} text-anchor="middle" style:fill="var(--stage-bg)" style:font-size="10px"
-			>N</text
-		>
+		<text x={316} y={112} text-anchor="middle" style:fill="var(--stage-bg)" font-size="10">N</text>
 		<Readout id="arrow-label"><text x={336} y={113} class="muted">→</text></Readout>
 		<circle cx={364} cy={108} r="10" fill="var(--rad-parent)" />
-		<text x={364} y={112} text-anchor="middle" style:fill="var(--stage-bg)" style:font-size="10px"
-			>C</text
-		>
+		<text x={364} y={112} text-anchor="middle" style:fill="var(--stage-bg)" font-size="10">C</text>
 		<Readout id="n-to-c">
 			<text x={340} y={138} text-anchor="middle" class="muted">nitrogen-14 → carbon-14</text>
 		</Readout>
@@ -242,7 +238,7 @@
 
 		<!-- the level over time -->
 		<Readout id="level-title">
-			<text x={LX} y={100} style:font-size="15px" font-weight="600"
+			<text x={LX} y={100} font-size="15" font-weight="600"
 				>Carbon-14 in the tree's newest growth</text
 			>
 			<text x={LX} y={120} class="muted">compared with living things</text>
@@ -301,7 +297,7 @@
 			value="{pctText(f)} left"
 			note="each dot: 1% of the carbon-14 it had while alive"
 		>
-			<text x={50} y={100} style:font-size="15px" font-weight="600">The sample</text>
+			<text x={50} y={100} font-size="15" font-weight="600">The sample</text>
 			<text x={50} y={124} class="muted">each dot: 1% of the carbon-14</text>
 			<text x={50} y={144} class="muted">it had while alive</text>
 		</Readout>
@@ -320,7 +316,7 @@
 			<text
 				x={50}
 				y={472}
-				style:font-size="15px"
+				font-size="15"
 				font-weight="600"
 				style:font-variant-numeric="tabular-nums">{pctText(f)} left</text
 			>
@@ -328,7 +324,7 @@
 
 		<!-- the decay curve and the reading -->
 		<Readout id="curve-title">
-			<text x={DX0} y={92} style:font-size="15px" font-weight="600">Carbon-14 left</text>
+			<text x={DX0} y={92} font-size="15" font-weight="600">Carbon-14 left</text>
 		</Readout>
 		<rect
 			x={dsx(LIMIT)}
@@ -395,7 +391,7 @@
 			color="var(--rad-parent)"
 		>
 			<g style:font-variant-numeric="tabular-nums">
-				<text x={DX0} y={490} style:font-size="24px" font-weight="600"
+				<text x={DX0} y={490} font-size="24" font-weight="600"
 					>{f >= 1 ? 'Alive, or only just dead' : `≈ ${fmt(age)} years old`}</text
 				>
 				<text x={DX0} y={516} class="muted">

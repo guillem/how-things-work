@@ -20,7 +20,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, rng, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, rng, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		bestIterations,
@@ -34,7 +34,6 @@
 		probabilities,
 		uniform
 	} from '../qubits';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
 
@@ -182,7 +181,7 @@
 	{#if isBars}
 		<!-- ============ circuit ============ -->
 		<Readout id="circ-ttl">
-			<T x={30} y={40} text="the circuit (one line per qubit)" size={13} muted />
+			<Label anchor="start" x={30} y={40} text="the circuit (one line per qubit)" size={13} muted />
 		</Readout>
 		{#each [0, 1, 2] as q (q)}
 			<line x1={50} x2={640} y1={62 + q * 16} y2={62 + q * 16} stroke="var(--stage-ink-muted)" />
@@ -211,13 +210,13 @@
 				text-anchor="middle"
 				font-weight="700"
 				opacity={done ? 1 : 0.4}
-				style:font-size="13px">{name === 'H' ? 'H H H' : name}</text
+				font-size="13">{name === 'H' ? 'H H H' : name}</text
 			>
 		{/each}
 
 		<!-- ============ amplitudes ============ -->
 		<Readout id="amp-ttl">
-			<T x={30} y={140} text="amplitudes" size={13} weight={600} muted />
+			<Label anchor="start" x={30} y={140} text="amplitudes" size={13} weight={600} muted />
 		</Readout>
 		<line x1={70} x2={640} y1={ZERO} y2={ZERO} stroke="var(--stage-line)" stroke-width="1.5" />
 		{#each [0, 1, 2, 3, 4, 5, 6, 7] as s (s)}
@@ -233,7 +232,7 @@
 				opacity={isM ? 1 : 0.75}
 			/>
 			<Readout id="av{s}">
-				<T
+				<Label
 					x={BX(s) + BW / 2}
 					y={a >= 0 ? ZERO - a * AMP_PX - 8 : ZERO - 8}
 					text={f2(a)}
@@ -243,7 +242,7 @@
 					muted={a >= -0.005}
 				/>
 			</Readout>
-			<T
+			<Label
 				x={BX(s) + BW / 2}
 				y={412}
 				text={label(3, s)}
@@ -265,7 +264,15 @@
 		{/each}
 		<line x1={70} x2={640} y1={PROB_Y} y2={PROB_Y} stroke="var(--stage-line)" />
 		<Readout id="prob-ttl">
-			<T x={30} y={440} text="probabilities (amplitude²)" size={13} weight={600} muted />
+			<Label
+				anchor="start"
+				x={30}
+				y={440}
+				text="probabilities (amplitude²)"
+				size={13}
+				weight={600}
+				muted
+			/>
 		</Readout>
 		{#if phase === 'amplify'}
 			<line
@@ -279,7 +286,7 @@
 				opacity={0.8}
 			/>
 			<Readout id="mean-l">
-				<T x={644} y={ZERO - mean * AMP_PX + 4} text="mean" size={11} muted />
+				<Label anchor="start" x={644} y={ZERO - mean * AMP_PX + 4} text="mean" size={11} muted />
 			</Readout>
 		{/if}
 
@@ -291,10 +298,26 @@
 			value={pct1(pMarked)}
 			color="var(--qc-marked)"
 		>
-			<T x={700} y={150} text="chance a measurement finds" size={13} muted />
-			<T x={700} y={168} text="the marked string {label(3, marked)}" size={13} muted />
-			<T x={700} y={206} text={pct1(pMarked)} size={32} weight={700} color="var(--qc-marked)" />
-			<T
+			<Label anchor="start" x={700} y={150} text="chance a measurement finds" size={13} muted />
+			<Label
+				anchor="start"
+				x={700}
+				y={168}
+				text="the marked string {label(3, marked)}"
+				size={13}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={700}
+				y={206}
+				text={pct1(pMarked)}
+				size={32}
+				weight={700}
+				color="var(--qc-marked)"
+			/>
+			<Label
+				anchor="start"
 				x={700}
 				y={230}
 				text={phase === 'oracle'
@@ -313,21 +336,37 @@
 				label="The oracle"
 				value="flipped the sign of {label(3, marked)}: no probability changed"
 			>
-				<T x={700} y={290} text="the oracle flipped one sign;" size={13} />
-				<T x={700} y={308} text="no probability changed" size={13} weight={600} />
-				<T x={700} y={326} text="(−a)² = a²" size={13} muted />
+				<Label anchor="start" x={700} y={290} text="the oracle flipped one sign;" size={13} />
+				<Label
+					anchor="start"
+					x={700}
+					y={308}
+					text="no probability changed"
+					size={13}
+					weight={600}
+				/>
+				<Label anchor="start" x={700} y={326} text="(−a)² = a²" size={13} muted />
 			</Readout>
 		{:else}
 			<Readout id="op" order={2} label="Operations" value="{ops}: {opName(ops)}">
-				<T x={700} y={290} text="after {ops} operation{ops === 1 ? '' : 's'}:" size={13} muted />
-				<T
+				<Label
+					anchor="start"
+					x={700}
+					y={290}
+					text="after {ops} operation{ops === 1 ? '' : 's'}:"
+					size={13}
+					muted
+				/>
+				<Label
+					anchor="start"
 					x={700}
 					y={310}
 					text={ops === 0 ? 'H on every qubit' : `${opName(ops)} (iteration ${Math.ceil(ops / 2)})`}
 					size={14}
 					weight={600}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={700}
 					y={330}
 					text={ops === 0
@@ -348,11 +387,12 @@
 				? 'press Measure'
 				: `${label(3, lastResult)} ${lastResult === marked ? '(right)' : '(wrong)'}`}
 		>
-			<T x={700} y={392} text="measure: one string at random" size={13} muted />
+			<Label anchor="start" x={700} y={392} text="measure: one string at random" size={13} muted />
 			{#if lastResult === null}
-				<T x={700} y={424} text="press Measure" size={15} weight={600} muted />
+				<Label anchor="start" x={700} y={424} text="press Measure" size={15} weight={600} muted />
 			{:else}
-				<T
+				<Label
+					anchor="start"
 					x={700}
 					y={428}
 					text="{label(3, lastResult)} {lastResult === marked ? '✓ right' : '✗ wrong'}"
@@ -376,7 +416,7 @@
 					y={463 + Math.floor(i / 5) * 30}
 					text-anchor="middle"
 					font-weight="700"
-					style:font-size="12px"
+					font-size="12"
 					style:fill="var(--stage-bg)">{label(3, r)}</text
 				>
 			{/each}
@@ -409,7 +449,8 @@
 			stroke="var(--stage-line)"
 		/>
 		<Readout id="ax-m">
-			<T
+			<Label
+				anchor="start"
 				x={RC.x + 8}
 				y={RC.y - RC.r - 18}
 				text="the marked string"
@@ -419,7 +460,7 @@
 			/>
 		</Readout>
 		<Readout id="ax-r">
-			<T
+			<Label
 				x={RC.x + RC.r + 6}
 				y={RC.y + 22}
 				text="the rest"
@@ -428,7 +469,7 @@
 				anchor="end"
 				color="var(--qc-bar)"
 			/>
-			<T
+			<Label
 				x={RC.x + RC.r + 6}
 				y={RC.y + 38}
 				text="(equal superposition of N − 1)"
@@ -495,13 +536,21 @@
 			label="N, θ"
 			value="N = {N}, θ = {((theta * 180) / Math.PI).toFixed(1)}°, each round turns 2θ"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={30}
 				y={40}
 				text="N = {N}: starts θ = {((theta * 180) / Math.PI).toFixed(1)}° above “the rest”"
 				size={13}
 			/>
-			<T x={30} y={58} text="each round (oracle + diffusion) turns it 2θ" size={13} muted />
+			<Label
+				anchor="start"
+				x={30}
+				y={58}
+				text="each round (oracle + diffusion) turns it 2θ"
+				size={13}
+				muted
+			/>
 		</Readout>
 
 		<!-- ============ P against k ============ -->
@@ -510,16 +559,17 @@
 		{#each [0, 0.5, 1] as p (p)}
 			<line x1={PP.x0} x2={PP.x1} y1={ppy(p)} y2={ppy(p)} stroke="var(--stage-grid)" />
 			<Readout id="ppy{p}">
-				<T x={PP.x0 - 6} y={ppy(p) + 4} text={pct(p)} size={11} anchor="end" muted />
+				<Label x={PP.x0 - 6} y={ppy(p) + 4} text={pct(p)} size={11} anchor="end" muted />
 			</Readout>
 		{/each}
 		{#each [0, best, kMax] as v (v)}
 			<Readout id="ppx{v}">
-				<T x={ppx(v)} y={PP.y1 + 16} text={String(v)} size={11} anchor="middle" muted />
+				<Label x={ppx(v)} y={PP.y1 + 16} text={String(v)} size={11} anchor="middle" muted />
 			</Readout>
 		{/each}
 		<Readout id="pp-ttl">
-			<T
+			<Label
+				anchor="start"
 				x={PP.x0}
 				y={PP.y0 - 14}
 				text="chance of the right answer, against the number of rounds"
@@ -547,7 +597,13 @@
 			stroke-dasharray="4 4"
 		/>
 		<Readout id="best-l">
-			<T x={ppx(best) + 6} y={PP.y0 + 12} text="best: {best} (≈ π/4 · √N)" size={12} />
+			<Label
+				anchor="start"
+				x={ppx(best) + 6}
+				y={PP.y0 + 12}
+				text="best: {best} (≈ π/4 · √N)"
+				size={12}
+			/>
 		</Readout>
 		<Readout
 			id="pk"
@@ -556,8 +612,16 @@
 			value="P = {pct1(sim[k].p)}"
 			color="var(--qc-marked)"
 		>
-			<T x={PP.x0} y={455} text="after {k} round{k === 1 ? '' : 's'}:" size={13} muted />
-			<T
+			<Label
+				anchor="start"
+				x={PP.x0}
+				y={455}
+				text="after {k} round{k === 1 ? '' : 's'}:"
+				size={13}
+				muted
+			/>
+			<Label
+				anchor="start"
 				x={PP.x0}
 				y={488}
 				text="P = {pct1(sim[k].p)}"
@@ -565,7 +629,8 @@
 				weight={700}
 				color="var(--qc-marked)"
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={PP.x0 + 170}
 				y={486}
 				text={k < best
@@ -585,7 +650,8 @@
 			label="Trial and error"
 			value="{classicalTries(N)} tries on average"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={PP.x0}
 				y={530}
 				text="trial and error: {classicalTries(N)} tries on average; Grover: {best} round{best === 1
@@ -594,7 +660,8 @@
 				size={13}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={PP.x0}
 				y={550}
 				text="dots: simulated state vector · line: sin²((2k + 1)θ)"
@@ -611,7 +678,7 @@
 		{#each [0, 5, 10, 15, 20] as e (e)}
 			<line x1={SP.x0} x2={SP.x1} y1={spy(10 ** e)} y2={spy(10 ** e)} stroke="var(--stage-grid)" />
 			<Readout id="spy{e}">
-				<T
+				<Label
 					x={SP.x0 - 6}
 					y={spy(10 ** e) + 4}
 					text={e === 0
@@ -628,11 +695,12 @@
 		{/each}
 		{#each [4, 20, 40, 64] as n (n)}
 			<Readout id="spx{n}">
-				<T x={spx(n)} y={SP.y1 + 16} text="n = {n}" size={11} anchor="middle" muted />
+				<Label x={spx(n)} y={SP.y1 + 16} text="n = {n}" size={11} anchor="middle" muted />
 			</Readout>
 		{/each}
 		<Readout id="sp-ttl">
-			<T
+			<Label
+				anchor="start"
 				x={SP.x0}
 				y={SP.y0 - 30}
 				text="questions to the oracle to find one item among N = 2ⁿ"
@@ -659,7 +727,7 @@
 			value="{big(classicalTries(2 ** bits))} questions on average"
 			color="var(--qc-one)"
 		>
-			<T
+			<Label
 				x={spx(40)}
 				y={spy(classicalTries(2 ** 40)) - 22}
 				text="trial and error, (N + 1)/2"
@@ -676,7 +744,8 @@
 			value="{big(groverQ(bits))} questions"
 			color="var(--qc-marked)"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={spx(40)}
 				y={spy(groverQ(40)) + 26}
 				text="Grover, ≈ (π/4)√N"
@@ -686,7 +755,8 @@
 			/>
 		</Readout>
 		<Readout id="sp-n">
-			<T
+			<Label
+				anchor="start"
 				x={SP.x0 + 8}
 				y={SP.y0 - 8}
 				text="n = {bits}: {big(classicalTries(2 ** bits))} against {big(groverQ(bits))}"
@@ -697,7 +767,8 @@
 
 		<!-- ============ where it helps ============ -->
 		<Readout id="tbl-ttl">
-			<T
+			<Label
+				anchor="start"
 				x={560}
 				y={40}
 				text="speed-up on a quantum computer (roughly)"
@@ -709,8 +780,9 @@
 		{#each TABLE as row, i (row.task)}
 			{@const y = 80 + i * 88}
 			<Readout id="row{i}">
-				<T x={560} {y} text={row.task} size={14} weight={700} />
-				<T
+				<Label anchor="start" x={560} {y} text={row.task} size={14} weight={700} />
+				<Label
+					anchor="start"
 					x={560}
 					y={y + 20}
 					text={row.gain}
@@ -718,7 +790,7 @@
 					color={row.level === 0 ? 'var(--qc-neg)' : 'var(--qc-marked)'}
 					weight={600}
 				/>
-				<T x={560} y={y + 38} text={row.more} size={11} muted />
+				<Label anchor="start" x={560} y={y + 38} text={row.more} size={11} muted />
 				{#each [0, 1, 2] as d (d)}
 					<circle
 						cx={880 + d * 18}
@@ -739,14 +811,16 @@
 			value="factoring: huge · molecules: large (expected) · search: quadratic · sorting and most tasks: none"
 		/>
 		<Readout id="take">
-			<T
+			<Label
+				anchor="start"
 				x={SP.x0}
 				y={530}
 				text="Amplitudes are steered so that wrong answers cancel and the right one adds up;"
 				size={13}
 				weight={600}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={SP.x0}
 				y={550}
 				text="a big gain for a few problems, little or none for most."

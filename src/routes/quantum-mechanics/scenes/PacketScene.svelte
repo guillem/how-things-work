@@ -21,7 +21,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		HBAR,
@@ -39,7 +39,6 @@
 		speed,
 		waveNumber
 	} from '../quantum';
-	import T from './T.svelte';
 
 	let { step, t, params }: StageProps = $props();
 
@@ -209,8 +208,22 @@
 		/>
 	{/each}
 	<Readout id="row-labels">
-		<T x={isBox ? BX0 + 6 : PX0} y={BW - 112} text="the wave ψ" size={12} muted />
-		<T x={isBox ? BX0 + 6 : PX0} y={BP - 162} text="probability density |ψ|²" size={12} muted />
+		<Label
+			anchor="start"
+			x={isBox ? BX0 + 6 : PX0}
+			y={BW - 112}
+			text="the wave ψ"
+			size={12}
+			muted
+		/>
+		<Label
+			anchor="start"
+			x={isBox ? BX0 + 6 : PX0}
+			y={BP - 162}
+			text="probability density |ψ|²"
+			size={12}
+			muted
+		/>
 	</Readout>
 
 	{#if !isBox}
@@ -234,7 +247,14 @@
 			/>
 			<circle cx={sx(m.mean)} cy={BP} r="4" fill="var(--stage-ink)" />
 			<Readout id="spread-label">
-				<T x={sx(m.mean)} y={BP + 42} text="±σ" size={12} anchor="middle" color="var(--qm-prob)" />
+				<Label
+					x={sx(m.mean)}
+					y={BP + 42}
+					text="±σ"
+					size={12}
+					anchor="middle"
+					color="var(--qm-prob)"
+				/>
 			</Readout>
 		</g>
 		<!-- distance scale -->
@@ -242,11 +262,11 @@
 		{#each [-20, -10, 0, 10, 20, 30] as x (x)}
 			<line x1={sx(x)} x2={sx(x)} y1={BP + 60} y2={BP + 66} stroke="var(--stage-line)" />
 			<Readout id="tick-{x}">
-				<T x={sx(x)} y={BP + 82} text={String(x)} size={11} anchor="middle" muted />
+				<Label x={sx(x)} y={BP + 82} text={String(x)} size={11} anchor="middle" muted />
 			</Readout>
 		{/each}
 		<Readout id="axis-unit">
-			<T x={PX1} y={BP + 104} text="position x (nm)" size={12} anchor="end" muted />
+			<Label x={PX1} y={BP + 104} text="position x (nm)" size={12} anchor="end" muted />
 		</Readout>
 	{:else}
 		<!-- the box walls -->
@@ -282,7 +302,13 @@
 			<line x1={BX0} x2={BX1} y1={BP + 64} y2={BP + 64} stroke="var(--stage-line)" />
 			<line x1={BX0} x2={BX0} y1={BP + 58} y2={BP + 70} stroke="var(--stage-line)" />
 			<line x1={BX1} x2={BX1} y1={BP + 58} y2={BP + 70} stroke="var(--stage-line)" />
-			<T x={(BX0 + BX1) / 2} y={BP + 86} text="L = {L.toFixed(1)} nm" size={13} anchor="middle" />
+			<Label
+				x={(BX0 + BX1) / 2}
+				y={BP + 86}
+				text="L = {L.toFixed(1)} nm"
+				size={13}
+				anchor="middle"
+			/>
 		</Readout>
 		<Readout
 			id="slosh"
@@ -291,7 +317,14 @@
 			value="{Math.round(boxMean * 100)}% of the way across"
 		>
 			<path d="M{bx(boxMean * L)} {BP + 4}l-6 12h12z" fill="var(--stage-ink)" />
-			<T x={bx(boxMean * L)} y={BP + 32} text="average position" size={11} anchor="middle" muted />
+			<Label
+				x={bx(boxMean * L)}
+				y={BP + 32}
+				text="average position"
+				size={11}
+				anchor="middle"
+				muted
+			/>
 		</Readout>
 	{/if}
 
@@ -299,9 +332,9 @@
 	<Readout id="key" order={1} label="Curves" value="Re ψ (blue), Im ψ (orange), |ψ|² (filled)">
 		<g>
 			<line x1={PX0} x2={PX0 + 22} y1={48} y2={48} stroke="var(--qm-re)" stroke-width="2" />
-			<T x={PX0 + 30} y={52} text="Re ψ" size={13} />
+			<Label anchor="start" x={PX0 + 30} y={52} text="Re ψ" size={13} />
 			<line x1={PX0 + 90} x2={PX0 + 112} y1={48} y2={48} stroke="var(--qm-im)" stroke-width="2" />
-			<T x={PX0 + 120} y={52} text="Im ψ" size={13} />
+			<Label anchor="start" x={PX0 + 120} y={52} text="Im ψ" size={13} />
 			<rect
 				x={PX0 + 180}
 				y={41}
@@ -311,7 +344,13 @@
 				fill="var(--qm-prob-fill)"
 				stroke="var(--qm-prob)"
 			/>
-			<T x={PX0 + 210} y={52} text="|ψ|²: where it is likely to be found" size={13} />
+			<Label
+				anchor="start"
+				x={PX0 + 210}
+				y={52}
+				text="|ψ|²: where it is likely to be found"
+				size={13}
+			/>
 		</g>
 	</Readout>
 
@@ -324,9 +363,16 @@
 			value="λ = {f2(deBroglie(E))} nm"
 			note="speed {Math.round(v * 1000)} km/s"
 		>
-			<T x={PL} y={110} text="wavelength λ = h/p" size={13} muted />
-			<T x={PL} y={134} text="{f2(deBroglie(E))} nm" size={20} weight={600} />
-			<T x={PL} y={156} text="speed {Math.round(v * 1000)} km/s" size={12} muted />
+			<Label anchor="start" x={PL} y={110} text="wavelength λ = h/p" size={13} muted />
+			<Label anchor="start" x={PL} y={134} text="{f2(deBroglie(E))} nm" size={20} weight={600} />
+			<Label
+				anchor="start"
+				x={PL}
+				y={156}
+				text="speed {Math.round(v * 1000)} km/s"
+				size={12}
+				muted
+			/>
 		</Readout>
 		<Readout
 			id="width"
@@ -335,18 +381,26 @@
 			value="{f2(m.spread)} nm"
 			note="{f2(sigma0)} nm at the start"
 		>
-			<T x={PL} y={200} text="spread σ" size={13} muted />
-			<T x={PL} y={224} text="{f2(m.spread)} nm" size={20} weight={600} color="var(--qm-prob)" />
-			<T x={PL} y={246} text="{f2(sigma0)} nm at the start" size={12} muted />
+			<Label anchor="start" x={PL} y={200} text="spread σ" size={13} muted />
+			<Label
+				anchor="start"
+				x={PL}
+				y={224}
+				text="{f2(m.spread)} nm"
+				size={20}
+				weight={600}
+				color="var(--qm-prob)"
+			/>
+			<Label anchor="start" x={PL} y={246} text="{f2(sigma0)} nm at the start" size={12} muted />
 		</Readout>
 		<Readout id="total" order={4} label="Total probability" value={total.toFixed(4)}>
-			<T x={PL} y={290} text="total probability ∫|ψ|²dx" size={13} muted />
-			<T x={PL} y={314} text={total.toFixed(4)} size={20} weight={600} />
+			<Label anchor="start" x={PL} y={290} text="total probability ∫|ψ|²dx" size={13} muted />
+			<Label anchor="start" x={PL} y={314} text={total.toFixed(4)} size={20} weight={600} />
 		</Readout>
 		<Readout id="time">
-			<T x={PL} y={358} text="time since the start" size={13} muted />
-			<T x={PL} y={382} text="{Math.round(simT)} fs" size={20} weight={600} />
-			<T x={PL} y={404} text="(1 fs = 10⁻¹⁵ s)" size={12} muted />
+			<Label anchor="start" x={PL} y={358} text="time since the start" size={13} muted />
+			<Label anchor="start" x={PL} y={382} text="{Math.round(simT)} fs" size={20} weight={600} />
+			<Label anchor="start" x={PL} y={404} text="(1 fs = 10⁻¹⁵ s)" size={12} muted />
 		</Readout>
 	{:else}
 		<Readout
@@ -356,7 +410,14 @@
 			value={ladder.map((l) => `E${['₁', '₂', '₃'][l.n - 1]} ${f2(l.e)}`).join(' · ') + ' eV'}
 		/>
 		<g opacity={focus.current}>
-			<T x={LAD_X} y={LAD_BASE - LAD_H - 40} text="energy levels" size={13} muted />
+			<Label
+				anchor="start"
+				x={LAD_X}
+				y={LAD_BASE - LAD_H - 40}
+				text="energy levels"
+				size={13}
+				muted
+			/>
 			<line
 				x1={LAD_X}
 				x2={LAD_X}
@@ -374,14 +435,22 @@
 					stroke-width={l.on ? 3 : 1.5}
 				/>
 				<Readout id="level-{l.n}">
-					<T
+					<Label
+						anchor="start"
 						x={LAD_X + LAD_W + 6}
 						y={l.y + 4}
 						text="n = {l.n}"
 						size={12}
 						weight={l.on ? 700 : 500}
 					/>
-					<T x={LAD_X + 4} y={l.y - 6} text="{f2(l.e)} eV" size={11} muted={!l.on} />
+					<Label
+						anchor="start"
+						x={LAD_X + 4}
+						y={l.y - 6}
+						text="{f2(l.e)} eV"
+						size={11}
+						muted={!l.on}
+					/>
 				</Readout>
 			{/each}
 		</g>
@@ -401,15 +470,24 @@
 		/>
 		<circle cx={DC.x + dial.re * 44} cy={DC.y - dial.im * 44} r="4" fill="var(--qm-prob)" />
 		<Readout id="dial">
-			<T x={DC.x - 60} y={DC.y - 60} text="ψ at the dotted line" size={12} muted />
-			<T
+			<Label
+				anchor="start"
+				x={DC.x - 60}
+				y={DC.y - 60}
+				text="ψ at the dotted line"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
 				x={DC.x + 56}
 				y={DC.y + 4}
 				text={dialNote.split(' ').slice(0, 3).join(' ')}
 				size={11}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={DC.x + 56}
 				y={DC.y + 19}
 				text={dialNote.split(' ').slice(3).join(' ')}
@@ -418,7 +496,8 @@
 			/>
 		</Readout>
 		<Readout id="slow" order={7} label="Slowed down" value="{slowdown} times">
-			<T
+			<Label
+				anchor="start"
 				x={BX0 - 30}
 				y={570}
 				text="slowed down {slowdown} times: n = 1 really turns every {f2(period1)} fs"

@@ -18,7 +18,7 @@
 	} from '../render';
 	import { cameraOf, cubeTurnOf, IMG_H, IMG_W, lightOf, thousands, toDataUrl } from './shared';
 	import Picture from './Picture.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { params }: StageProps = $props();
 
@@ -57,7 +57,8 @@
 
 <g>
 	<Readout id="t-ras">
-		<T
+		<Label
+			anchor="start"
 			x={LX}
 			y={PY - 12}
 			text="Rasterised: triangles projected and filled"
@@ -66,7 +67,8 @@
 		/>
 	</Readout>
 	<Readout id="t-tr">
-		<T
+		<Label
+			anchor="start"
 			x={RX}
 			y={PY - 12}
 			text="Ray-traced: light followed back from the eye"
@@ -83,7 +85,8 @@
 		label="Rasteriser"
 		value="✗ shadows · ✗ reflections · ✗ light through glass"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={LX}
 			y={PY + PH + 26}
 			text="✗ shadows   ✗ reflections   ✗ light through glass"
@@ -92,12 +95,20 @@
 		/>
 	</Readout>
 	<Readout id="tr-gets" order={2} label="Ray tracer" value={traced.join(' · ')}>
-		<T x={RX} y={PY + PH + 26} text={traced.join('   ')} size={13} weight={650} />
+		<Label
+			anchor="start"
+			x={RX}
+			y={PY + PH + 26}
+			text={traced.join('   ')}
+			size={13}
+			weight={650}
+		/>
 	</Readout>
 
 	<!-- the work, to one scale -->
 	<Readout id="work-title">
-		<T
+		<Label
+			anchor="start"
 			x={LX}
 			y={BY - 22}
 			text="Tests made for this picture (same scale)"
@@ -113,7 +124,7 @@
 		value={thousands(ras.stats.pixelTests)}
 		color="var(--g3-camera)"
 	>
-		<T x={LX} y={BY + 15} text="Rasteriser: pixel tests" size={13} />
+		<Label anchor="start" x={LX} y={BY + 15} text="Rasteriser: pixel tests" size={13} />
 		<rect
 			x={BAR0}
 			y={BY}
@@ -122,14 +133,15 @@
 			rx="3"
 			fill="var(--g3-camera)"
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={BAR0 + bw(ras.stats.pixelTests) + 8}
 			y={BY + 16}
 			text={thousands(ras.stats.pixelTests)}
 			size={13.5}
 			weight={700}
 		/>
-		<T x={LX} y={BY + 36} text="(654 triangles projected)" size={11.5} muted />
+		<Label anchor="start" x={LX} y={BY + 36} text="(654 triangles projected)" size={11.5} muted />
 	</Readout>
 	<Readout
 		id="w-tr"
@@ -138,7 +150,7 @@
 		value={thousands(tr.stats.triangleTests)}
 		color="var(--g3-reflect)"
 	>
-		<T x={LX} y={BY + 75} text="Ray tracer: ray–triangle tests" size={13} />
+		<Label anchor="start" x={LX} y={BY + 75} text="Ray tracer: ray–triangle tests" size={13} />
 		<rect
 			x={BAR0}
 			y={BY + 60}
@@ -147,14 +159,16 @@
 			rx="3"
 			fill="var(--g3-reflect)"
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={BAR0 + bw(tr.stats.triangleTests) + 8}
 			y={BY + 76}
 			text={thousands(tr.stats.triangleTests)}
 			size={13.5}
 			weight={700}
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={LX}
 			y={BY + 96}
 			text="({thousands(rays)} rays, bounce limit {bounces})"
@@ -168,7 +182,8 @@
 		label="Ray tracer ÷ rasteriser"
 		value="× {Math.round(tr.stats.triangleTests / ras.stats.pixelTests)}"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={LX}
 			y={BY + 140}
 			text="Projecting is fast; tracing light back from the eye is faithful: here it makes {Math.round(

@@ -16,9 +16,8 @@
 	import { cubicInOut } from 'svelte/easing';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
-	import { clamp, lerp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, lerp, smoothstep } from '#lib/draw/index.ts';
 	import { load, angleDeg, type Embeddings } from '../embeddings';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -122,11 +121,13 @@
 
 <g>
 	{#if !emb}
-		<Txt x={480} y={300} text="Loading word vectors…" size={15} anchor="middle" muted />
+		<Label x={480} y={300} text="Loading word vectors…" size={15} anchor="middle" muted />
 	{:else}
 		<!-- word A -->
 		<Readout id="word-a" order={1} label="First word" value={wa} color="var(--emb-a)">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={X0}
 				y={rowA.y - rowA.h - 16}
 				text={wa}
@@ -138,7 +139,9 @@
 		{@render strip(barsA.current, rowA, 'var(--emb-a)', VSCALE)}
 		<!-- word B -->
 		<Readout id="word-b" order={2} label="Second word" value={wb} color="var(--emb-b)">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={X0}
 				y={rowB.y - rowB.h - 16}
 				text={wb}
@@ -153,9 +156,9 @@
 		{#if p < 0.99}
 			<g opacity={1 - p}>
 				<Readout id="axis">
-					<Txt x={X0} y={rowB.y + rowB.h + 30} text="number 1" size={11} muted />
-					<Txt x={X1} y={rowB.y + rowB.h + 30} text="number 100" size={11} anchor="end" muted />
-					<Txt
+					<Label anchor="start" x={X0} y={rowB.y + rowB.h + 30} text="number 1" size={11} muted />
+					<Label x={X1} y={rowB.y + rowB.h + 30} text="number 100" size={11} anchor="end" muted />
+					<Label
 						x={X1}
 						y={rowA.y - rowA.h - 16}
 						text="bar up: positive · bar down: negative"
@@ -198,7 +201,8 @@
 						fill="var(--surface)"
 						stroke="var(--border)"
 					/>
-					<Txt
+					<Label
+						tabular
 						x={tx}
 						y={rowB.y + rowB.h + 65}
 						text="number {cursor + 1} of 100"
@@ -207,7 +211,8 @@
 						muted
 						halo={false}
 					/>
-					<Txt
+					<Label
+						tabular
 						x={tx - 8}
 						y={rowB.y + rowB.h + 90}
 						text="{wa} {fmt(barsA.current[cursor], 3)}"
@@ -217,7 +222,9 @@
 						color="var(--emb-a)"
 						halo={false}
 					/>
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={tx + 8}
 						y={rowB.y + rowB.h + 90}
 						text="{wb} {fmt(barsB.current[cursor], 3)}"
@@ -228,7 +235,7 @@
 					/>
 				</Readout>
 				<Readout id="numbers-note">
-					<Txt
+					<Label
 						x={480}
 						y={560}
 						text="No single number means anything; what matters is how the 100 numbers go together."
@@ -244,7 +251,9 @@
 		{#if p > 0.01}
 			<g opacity={p}>
 				<Readout id="prod-title">
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={X0}
 						y={rowP.y - rowP.h - 14}
 						text="{wa} × {wb}, number by number"
@@ -272,7 +281,7 @@
 					/>
 				{/each}
 				<Readout id="prod-key">
-					<Txt
+					<Label
 						x={X1}
 						y={rowP.y - rowP.h - 14}
 						text="green: same sign · red: opposite"
@@ -282,14 +291,17 @@
 					/>
 				</Readout>
 				<Readout id="dot" order={4} label="Dot product (sum of the 100 products)" value={fmt(cos)}>
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={X0}
 						y={rowP.y + rowP.h + 46}
 						text="sum of the {built} products = {fmt(built === D ? cos : partial)}"
 						size={15}
 						weight={600}
 					/>
-					<Txt
+					<Label
+						anchor="start"
 						x={X0}
 						y={rowP.y + rowP.h + 68}
 						text="Both vectors have length 1, so this sum is cos θ."
@@ -300,8 +312,16 @@
 
 				<!-- the plane of the two vectors -->
 				<Readout id="plane-title">
-					<Txt x={C.x - 60} y={66} text="The plane through both arrows" size={14} weight={700} />
-					<Txt
+					<Label
+						anchor="start"
+						x={C.x - 60}
+						y={66}
+						text="The plane through both arrows"
+						size={14}
+						weight={700}
+					/>
+					<Label
+						anchor="start"
 						x={C.x - 60}
 						y={84}
 						text="(any two vectors lie in one, even in 100-D)"
@@ -337,9 +357,27 @@
 					label="Angle between them"
 					value="θ = {theta.toFixed(0)}°, cos θ = {fmt(cos)}"
 				>
-					<Txt x={mid.x + 4} y={mid.y + 4} text="θ = {theta.toFixed(0)}°" size={14} weight={700} />
-					<Txt x={a.x + 6} y={a.y + 20} text={wa} size={14} weight={700} color="var(--emb-a)" />
-					<Txt
+					<Label
+						anchor="start"
+						tabular
+						x={mid.x + 4}
+						y={mid.y + 4}
+						text="θ = {theta.toFixed(0)}°"
+						size={14}
+						weight={700}
+					/>
+					<Label
+						anchor="start"
+						tabular
+						x={a.x + 6}
+						y={a.y + 20}
+						text={wa}
+						size={14}
+						weight={700}
+						color="var(--emb-a)"
+					/>
+					<Label
+						tabular
 						x={b.x + (theta > 70 ? -6 : 6)}
 						y={b.y - 8}
 						text={wb}
@@ -352,14 +390,22 @@
 
 				<!-- other pairs -->
 				<Readout id="pairs-title">
-					<Txt x={C.x - 60} y={124} text="cos θ for other pairs" size={12} muted />
+					<Label anchor="start" x={C.x - 60} y={124} text="cos θ for other pairs" size={12} muted />
 				</Readout>
 				{#each PAIRS as [x, y], k (k)}
 					{@const c = emb.similarity(x, y) ?? 0}
 					{@const yy = 146 + k * 22}
 					{@const on = (x === wa && y === wb) || (x === wb && y === wa)}
 					<Readout id="pair-{k}">
-						<Txt x={C.x - 60} y={yy} text="{x} · {y}" size={12.5} weight={on ? 700 : 500} />
+						<Label
+							anchor="start"
+							tabular
+							x={C.x - 60}
+							y={yy}
+							text="{x} · {y}"
+							size={12.5}
+							weight={on ? 700 : 500}
+						/>
 						<rect
 							x={C.x + 60}
 							y={yy - 10}
@@ -369,7 +415,8 @@
 							fill="var(--stage-ink)"
 							opacity={on ? 0.6 : 0.25}
 						/>
-						<Txt
+						<Label
+							tabular
 							x={C.x + 230}
 							y={yy}
 							text={fmt(c)}
@@ -381,7 +428,8 @@
 				{/each}
 				{#if smoothstep(0, 1, p) > 0}
 					<Readout id="cos-big">
-						<Txt
+						<Label
+							tabular
 							x={C.x + 150}
 							y={C.y + 60}
 							text="cos θ = {fmt(cos)}"

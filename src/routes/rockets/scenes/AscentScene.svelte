@@ -12,7 +12,7 @@
 	 * A new design restarts the flight (the frame-to-frame memo sanctioned by the scene guide,
 	 * as in orbits-kepler/scenes/CannonScene.svelte).
 	 */
-	import { clamp, scale, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		atmosphere,
@@ -26,7 +26,6 @@
 	} from '../rockets';
 	import Card from './Card.svelte';
 	import RocketShape from './RocketShape.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -315,10 +314,10 @@
 	<!-- labels on the panel -->
 	<Readout id="axis-labels">
 		{#each [50, 100, 150, 200] as h (h)}
-			<T x={sx(0) - 8} y={sy(h) + 4} text={String(h)} size={10} muted anchor="end" />
+			<Label x={sx(0) - 8} y={sy(h) + 4} text={String(h)} size={10} muted anchor="end" />
 		{/each}
-		<T x={sx(0) - 8} y={sy(240) + 4} text="km up" size={10} muted anchor="start" />
-		<T
+		<Label x={sx(0) - 8} y={sy(240) + 4} text="km up" size={10} muted anchor="start" />
+		<Label
 			x={PANEL.x + PANEL.w - 18}
 			y={sy(ORBIT_H) - 7}
 			text="orbit height {ORBIT_H} km"
@@ -327,7 +326,7 @@
 			anchor="end"
 		/>
 		{#each [1000, 2000, 3000] as d (d)}
-			<T
+			<Label
 				x={sx(d)}
 				y={GROUND + 18}
 				text="{d.toLocaleString('en-US')} km"
@@ -336,16 +335,18 @@
 				anchor="middle"
 			/>
 		{/each}
-		<T
+		<Label
+			anchor="start"
 			x={sx(0)}
 			y={GROUND + 36}
 			text="distance round the Earth · heights stretched about 11×"
 			size={10}
 			muted
 		/>
-		<T x={sx(0) + 20} y={sy(20) + 4} text="the dense air" size={11} muted />
+		<Label anchor="start" x={sx(0) + 20} y={sy(20) + 4} text="the dense air" size={11} muted />
 		{#each separations as s (s.i)}
-			<T
+			<Label
+				anchor="start"
 				x={s.p.x + 8}
 				y={s.p.y + 16}
 				text="{vehicle.stages[s.i].name} dropped"
@@ -359,14 +360,16 @@
 	<!-- ---------------------------------------------------------------- card -->
 	<Card x={CARD.x} y={CARD.y} w={CARD.w} h={CARD.h} />
 	<Readout id="title">
-		<T
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 32}
 			text={phase === 'saturn' ? "Apollo 11's Saturn V" : 'Your rocket'}
 			size={16}
 			weight={700}
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 50}
 			text="{Math.round(liftoff).toLocaleString('en-US')} t at liftoff · {vehicle.stages
@@ -379,12 +382,12 @@
 		/>
 	</Readout>
 	<Readout id="clock">
-		<T x={CL} y={CARD.y + 80} text={clock(tf)} size={14} weight={700} />
-		<T x={CR} y={CARD.y + 80} text={stageName} size={12} muted anchor="end" />
+		<Label anchor="start" x={CL} y={CARD.y + 80} text={clock(tf)} size={14} weight={700} />
+		<Label x={CR} y={CARD.y + 80} text={stageName} size={12} muted anchor="end" />
 	</Readout>
 	<Readout id="height" order={2} label="Height" value="{Math.round(now.h / 1000)} km">
-		<T x={CL} y={CARD.y + 104} text="Height" size={12} muted />
-		<T
+		<Label anchor="start" x={CL} y={CARD.y + 104} text="Height" size={12} muted />
+		<Label
 			x={CR}
 			y={CARD.y + 104}
 			text="{Math.round(Math.max(0, now.h) / 1000)} km"
@@ -400,8 +403,15 @@
 		value="{fmt(now.v / 1000, 2)} of {fmt(V_ORBIT, 1)} km/s"
 		color="var(--rk-speed)"
 	>
-		<T x={CL} y={CARD.y + 126} text="Speed (orbit needs {fmt(V_ORBIT, 2)})" size={12} muted />
-		<T
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 126}
+			text="Speed (orbit needs {fmt(V_ORBIT, 2)})"
+			size={12}
+			muted
+		/>
+		<Label
 			x={CR}
 			y={CARD.y + 126}
 			text="{fmt(now.v / 1000, 2)} km/s"
@@ -414,7 +424,14 @@
 
 	<line x1={CL} x2={CR} y1={CARD.y + 146} y2={CARD.y + 146} stroke="var(--border)" />
 	<Readout id="budget-title">
-		<T x={CL} y={CARD.y + 170} text="The Δv budget so far" size={13} weight={700} />
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 170}
+			text="The Δv budget so far"
+			size={13}
+			weight={700}
+		/>
 	</Readout>
 
 	{#each rows as r, i (r.id)}
@@ -429,7 +446,8 @@
 			opacity={r.id === 'v' || r.id === 'b' ? 0.9 : 0.75}
 		/>
 		<Readout id="row-{r.id}">
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				{y}
 				text={r.label}
@@ -437,7 +455,7 @@
 				muted={r.id !== 'v'}
 				weight={r.id === 'v' ? 700 : 500}
 			/>
-			<T x={CR} {y} text={fmt(r.v, 2)} size={12} weight={600} anchor="end" />
+			<Label x={CR} {y} text={fmt(r.v, 2)} size={12} weight={600} anchor="end" />
 		</Readout>
 	{/each}
 	<line
@@ -450,7 +468,7 @@
 		opacity="0.6"
 	/>
 	<Readout id="orbit-line">
-		<T x={BAR.x + bx(V_ORBIT)} y={CARD.y + 358} text="orbit" size={10} muted anchor="middle" />
+		<Label x={BAR.x + bx(V_ORBIT)} y={CARD.y + 358} text="orbit" size={10} muted anchor="middle" />
 	</Readout>
 	<Readout
 		id="losses"
@@ -471,7 +489,8 @@
 		note={done ? verdictNote : undefined}
 		color={done ? (flight.outcome === 'orbit' ? 'var(--rk-spin)' : 'var(--rk-gravity)') : undefined}
 	>
-		<T
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 402}
 			text={done ? verdict : 'Flying…'}
@@ -484,42 +503,54 @@
 					: 'var(--rk-gravity)'
 				: undefined}
 		/>
-		<T x={CL} y={CARD.y + 422} text={done ? verdictNote : ''} size={12} muted />
+		<Label anchor="start" x={CL} y={CARD.y + 422} text={done ? verdictNote : ''} size={12} muted />
 	</Readout>
 	<Readout id="notes">
 		{#if phase === 'saturn'}
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 458}
 				text="Real flight (NASA report): orbit at 7.79 km/s,"
 				size={11}
 				muted
 			/>
-			<T x={CL} y={CARD.y + 474} text="191 km up, T+11:49." size={11} muted />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 474} text="191 km up, T+11:49." size={11} muted />
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 500}
 				text="Rocket equation on its masses: {fmt(ideal / 1000, 2)} km/s;"
 				size={11}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 516}
 				text="the first stage gets less at sea level, where"
 				size={11}
 				muted
 			/>
-			<T x={CL} y={CARD.y + 532} text="the air pushes back on its exhaust." size={11} muted />
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 532}
+				text="the air pushes back on its exhaust."
+				size={11}
+				muted
+			/>
 		{:else}
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 458}
 				text="{fmt(fuel, 0)} t of propellant, exhaust {fmt(ve, 1)} km/s"
 				size={11}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 474}
 				text="10 t payload; tanks 10% of their propellant"
@@ -527,7 +558,8 @@
 				muted
 			/>
 			{#each vehicle.stages as s, i (i)}
-				<T
+				<Label
+					anchor="start"
 					x={CL}
 					y={CARD.y + 500 + i * 16}
 					text="stage {i + 1}: {Math.round((s.m0 - s.mf) / 1000).toLocaleString(

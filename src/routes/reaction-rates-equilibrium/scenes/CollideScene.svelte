@@ -136,7 +136,7 @@
 
 <g style:font-variant-numeric="tabular-nums">
 	<Readout id="title" order={1} label="In the flask" value="H₂ + I₂ at 700 K (427 °C)">
-		<text x={28} y={44} style:font-size="16px" font-weight="600">H₂ + I₂ at 700 K (427 °C)</text>
+		<text x={28} y={44} font-size="16" font-weight="600">H₂ + I₂ at 700 K (427 °C)</text>
 	</Readout>
 	<Readout id="sub">
 		<Label

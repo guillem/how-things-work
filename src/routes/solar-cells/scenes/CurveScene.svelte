@@ -8,12 +8,11 @@
 	 *   sit at their band gaps; the others (gaps that depend on composition) and the
 	 *   multi-junction cells are marks on a column at the right, on the same efficiency scale.
 	 */
-	import { Axes, Handle, clamp, scale, type Point } from '#lib/draw/index.ts';
+	import { Axes, clamp, Handle, Label, type Point, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { GAAS_GAP, GAPS, bestGap, cell, spectrumCeiling } from '../model';
 	import { RECORDS } from '../records';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { step, params, setParam }: StageProps = $props();
 	const phase = $derived(String(step.hints?.phase ?? 'limit'));
@@ -100,10 +99,18 @@
 		label={records ? undefined : 'Dashed: spectrum losses only'}
 		value="peak {fmt(Math.max(...ceilPts.map((p) => p.e)))}"
 	>
-		<T x={sg(1.95)} y={se(36)} text="spectrum losses only (no voltage loss)" size={12} muted />
+		<Label
+			anchor="start"
+			x={sg(1.95)}
+			y={se(36)}
+			text="spectrum losses only (no voltage loss)"
+			size={12}
+			muted
+		/>
 	</Readout>
 	<Readout id="limit-label">
-		<T
+		<Label
+			anchor="start"
 			x={sg(2.12)}
 			y={se(23)}
 			text="Shockley–Queisser limit"
@@ -126,7 +133,8 @@
 		label="Best single junction"
 		value="{fmt(best.efficiency * 100)} at {best.gap.toFixed(2)} eV"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={sg(best.gap) + 10}
 			y={se(best.efficiency * 100) - 10}
 			text="{fmt(best.efficiency * 100)} at {best.gap.toFixed(2)} eV"
@@ -146,7 +154,7 @@
 				stroke-width="1.5"
 			/>
 			<Readout id="rec-{r.key}">
-				<T
+				<Label
 					x={sg(r.g) + (r.key === 'si' ? -10 : 10)}
 					y={se(r.e) + 22}
 					text="{r.name} {fmt(r.e)}"
@@ -188,7 +196,7 @@
 		<!-- the column: records whose gap is not one number -->
 		<line x1={CX} x2={CX} y1={Y0} y2={Y1} stroke="var(--stage-line)" />
 		<Readout id="col-title">
-			<T x={CX} y={Y0 - 22} text="other records" size={12} anchor="middle" muted />
+			<Label x={CX} y={Y0 - 22} text="other records" size={12} anchor="middle" muted />
 		</Readout>
 		<line
 			x1={CX - 8}
@@ -200,7 +208,7 @@
 			opacity="0.8"
 		/>
 		<Readout id="col-limit">
-			<T
+			<Label
 				x={940}
 				y={se(best.efficiency * 100) + 14}
 				text="one-junction limit"
@@ -218,7 +226,8 @@
 			/>
 			<line x1={CX + 5} x2={CX + 14} y1={se(r.e)} y2={columnYs[k] - 4} stroke="var(--stage-line)" />
 			<Readout id="col-{r.key}">
-				<T
+				<Label
+					anchor="start"
 					x={CX + 16}
 					y={columnYs[k]}
 					text="{fmt(r.e)} {r.name}"
@@ -229,23 +238,53 @@
 			</Readout>
 		{/each}
 		<Readout id="col-source">
-			<T x={CX - 12} y={Y1 + 34} text="records: NLR (formerly NREL) chart, 2026" size={11} muted />
+			<Label
+				anchor="start"
+				x={CX - 12}
+				y={Y1 + 34}
+				text="records: NLR (formerly NREL) chart, 2026"
+				size={11}
+				muted
+			/>
 		</Readout>
 	{:else}
 		<Readout id="card">
 			<Card x={640} y={110} w={300} h={118} />
 		</Readout>
 		<Readout id="g" order={1} label="Band gap" value="{gap.toFixed(2)} eV">
-			<T x={656} y={140} text="band gap {gap.toFixed(2)} eV" size={14} weight={700} />
+			<Label
+				anchor="start"
+				x={656}
+				y={140}
+				text="band gap {gap.toFixed(2)} eV"
+				size={14}
+				weight={700}
+			/>
 		</Readout>
 		<Readout id="e" order={2} label="Limit" value={fmt(eff)} color="var(--sc-output)">
-			<T x={656} y={166} text="limit {fmt(eff)}" size={16} weight={700} color="var(--sc-output)" />
+			<Label
+				anchor="start"
+				x={656}
+				y={166}
+				text="limit {fmt(eff)}"
+				size={16}
+				weight={700}
+				color="var(--sc-output)"
+			/>
 		</Readout>
 		<Readout id="c" order={3} label="Spectrum losses only" value={fmt(ceil)}>
-			<T x={656} y={190} text="spectrum losses only: {fmt(ceil)}" size={13} muted />
+			<Label
+				anchor="start"
+				x={656}
+				y={190}
+				text="spectrum losses only: {fmt(ceil)}"
+				size={13}
+				muted
+			/>
 		</Readout>
 		<Readout id="iv">
-			<T
+			<Label
+				anchor="start"
 				x={656}
 				y={212}
 				text="Voc {c.voc.toFixed(2)} V · Jsc {(c.jsc / 10).toFixed(1)} mA/cm²"

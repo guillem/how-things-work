@@ -33,7 +33,6 @@
 		type Events
 	} from '../grid';
 	import Dial from './Dial.svelte';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
 
@@ -284,7 +283,7 @@
 <g>
 	<!-- ===== clock, dial, tally -->
 	<Readout id="clock" order={1} label="Time" value={clock(hour)}>
-		<Txt x={158} y={60} text={clock(hour)} size={34} weight={700} />
+		<Label x={158} y={60} text={clock(hour)} size={34} weight={700} />
 		<Label x={158} y={84} text="9 April 2025 · 1 hour every {SECONDS_PER_HOUR} s" muted />
 	</Readout>
 	<Readout
@@ -338,7 +337,7 @@
 		label="So far today"
 		value="outside the band {mins(state.out)}; customers cut off {mins(state.shed)}"
 	>
-		<Txt x={30} y={440} text="So far today" anchor="start" size={13} weight={600} />
+		<Label x={30} y={440} text="So far today" anchor="start" size={13} weight={600} />
 		<Label x={30} y={464} text="outside the band: {mins(state.out)}" anchor="start" />
 		<Label
 			x={30}
@@ -370,7 +369,7 @@
 		<line x1={X0} x2={X1} y1={sy(v)} y2={sy(v)} stroke="var(--stage-grid)" />
 		<text x={X0 - 8} y={sy(v) + 4} text-anchor="end" class="muted" font-size="11">{v / 1000}</text>
 	{/each}
-	<Txt x={X0 - 30} y={36} text="GW" anchor="start" muted size={12} />
+	<Label x={X0 - 30} y={36} text="GW" anchor="start" muted size={12} />
 	{#each [0, 6, 12, 18, 24] as h (h)}
 		<text x={sx(h)} y={sy(0) + 17} text-anchor="middle" class="muted" font-size="11"
 			>{String(h % 24).padStart(2, '0')}:00</text
@@ -449,7 +448,7 @@
 	{#each [49, 50] as v (v)}
 		<text x={X0 - 8} y={sf(v) + 4} text-anchor="end" class="muted" font-size="11">{v}</text>
 	{/each}
-	<Txt x={X0 - 30} y={FY0 - 8} text="Hz" anchor="start" muted size={12} />
+	<Label x={X0 - 30} y={FY0 - 8} text="Hz" anchor="start" muted size={12} />
 	<path d={fPath} fill="none" stroke="var(--stage-ink)" stroke-width="2" />
 	<circle
 		cx={sx(hour)}
@@ -459,7 +458,7 @@
 	/>
 
 	<!-- ===== the balance now -->
-	<Txt x={BX0} y={UY - 22} text="Now" anchor="start" size={13} weight={600} />
+	<Label x={BX0} y={UY - 22} text="Now" anchor="start" size={13} weight={600} />
 	{#each used as s (s.key)}
 		<rect
 			x={s.x0}

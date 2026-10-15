@@ -4,10 +4,9 @@
 	 * the hash rate changes by `params.jump` from the third period (after week 4) on. Bars appear one
 	 * period at a time; under each, the hash rate and the difficulty the nodes computed.
 	 */
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type Params } from '#lib/explainer/index.ts';
 	import { retargetRun } from '../consensus';
-	import Txt from './Txt.svelte';
 
 	interface Props {
 		t: number;
@@ -44,7 +43,8 @@
 
 <g>
 	<Readout id="title" order={1} label="Target" value="one block every 10 minutes">
-		<Txt
+		<Label
+			anchor="start"
 			x={24}
 			y={40}
 			text="Average time between blocks, in each period of 2016 blocks"
@@ -53,7 +53,9 @@
 		/>
 	</Readout>
 	<Readout id="sub" order={2} label="Hash rate" value="{mult(jump)} after week 4">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={64}
 			text="Hash rate {mult(
@@ -67,7 +69,7 @@
 	<!-- axes -->
 	{#each ticks as v (v)}
 		<line x1={X0} x2={X1} y1={y(v)} y2={y(v)} stroke="var(--stage-grid)" />
-		<Txt x={X0 - 10} y={y(v) + 4} text="{v} min" size={11} anchor="end" muted />
+		<Label tabular x={X0 - 10} y={y(v) + 4} text="{v} min" size={11} anchor="end" muted />
 	{/each}
 	<line
 		x1={X0}
@@ -88,7 +90,15 @@
 			stroke-width="2"
 			stroke-dasharray="7 5"
 		/>
-		<Txt x={X1 - 112} y={96} text="target: 10 min" size={12} weight={700} color="var(--cb-ok)" />
+		<Label
+			anchor="start"
+			x={X1 - 112}
+			y={96}
+			text="target: 10 min"
+			size={12}
+			weight={700}
+			color="var(--cb-ok)"
+		/>
 	</Readout>
 
 	{#each run as r (r.period)}
@@ -104,7 +114,8 @@
 				rx="4"
 				fill={off ? 'var(--cb-work)' : 'var(--cb-follower)'}
 			/>
-			<Txt
+			<Label
+				tabular
 				x={bx(r.period) + bw * 0.32}
 				y={Math.max(y(m) - 8, Y1 - 4)}
 				text="{minutes(r.blockTime)}{m > YMAX ? ' ↑' : ''}"
@@ -112,7 +123,8 @@
 				weight={700}
 				anchor="middle"
 			/>
-			<Txt
+			<Label
+				tabular
 				x={bx(r.period) + bw * 0.32}
 				y={Y0 + 20}
 				text={String(r.period + 1)}
@@ -121,14 +133,16 @@
 				muted
 			/>
 			<Readout id="hr-{r.period}">
-				<Txt
+				<Label
+					tabular
 					x={bx(r.period) + bw * 0.32}
 					y={Y0 + 50}
 					text={mult(r.hashrate)}
 					size={12}
 					anchor="middle"
 				/>
-				<Txt
+				<Label
+					tabular
 					x={bx(r.period) + bw * 0.32}
 					y={Y0 + 76}
 					text={mult(r.difficulty)}
@@ -142,10 +156,10 @@
 			</Readout>
 		</g>
 	{/each}
-	<Txt x={X0 - 10} y={Y0 + 20} text="period" size={11} anchor="end" muted />
+	<Label x={X0 - 10} y={Y0 + 20} text="period" size={11} anchor="end" muted />
 	<Readout id="rows">
-		<Txt x={X0 - 10} y={Y0 + 50} text="hash rate" size={11} anchor="end" muted />
-		<Txt x={X0 - 10} y={Y0 + 76} text="difficulty" size={11} anchor="end" muted />
+		<Label x={X0 - 10} y={Y0 + 50} text="hash rate" size={11} anchor="end" muted />
+		<Label x={X0 - 10} y={Y0 + 76} text="difficulty" size={11} anchor="end" muted />
 	</Readout>
 	<Readout
 		id="note"
@@ -157,7 +171,9 @@
 				? 'two periods'
 				: 'one period'}"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={Y0 + 116}
 			text={jump === 1

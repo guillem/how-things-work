@@ -33,7 +33,7 @@
 		type Token
 	} from '../particles';
 	import { chargeColour, coil, colourName } from './shared';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import Card from './Card.svelte';
 	import Pad from './Pad.svelte';
 
@@ -284,19 +284,19 @@
 				y="4"
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="30px"
+				font-size="30"
 				style:fill="var(--sm-ball-ink)">{symbolOf(b.tk)}</text
 			>
-			<text y="24" text-anchor="middle" style:font-size="13px" style:fill="var(--sm-ball-ink)"
+			<text y="24" text-anchor="middle" font-size="13" style:fill="var(--sm-ball-ink)"
 				>{frac(charge3Of(b.tk))}</text
 			>
 		</g>
 	{/each}
 	{#if build.kind === 'empty'}
-		<T x={BX} y={BY + 5} text="Tap a quark below to add it" anchor="middle" muted />
+		<Label x={BX} y={BY + 5} text="Tap a quark below to add it" anchor="middle" muted />
 	{/if}
 	<Readout id="bag-hint">
-		<T
+		<Label
 			x={BX}
 			y={BY + BR + 26}
 			text={full
@@ -311,9 +311,9 @@
 
 	<!-- palette -->
 	<Readout id="palette-titles">
-		<T x={24} y={428 + KH / 2} text="quarks" size={12} muted />
-		<T x={24} y={506 + KH / 2} text="anti-" size={12} muted />
-		<T x={24} y={506 + KH / 2 + 15} text="quarks" size={12} muted />
+		<Label anchor="start" x={24} y={428 + KH / 2} text="quarks" size={12} muted />
+		<Label anchor="start" x={24} y={506 + KH / 2} text="anti-" size={12} muted />
+		<Label anchor="start" x={24} y={506 + KH / 2 + 15} text="quarks" size={12} muted />
 	</Readout>
 	{#each FLAVOURS as f, i (f)}
 		<Pad
@@ -361,8 +361,16 @@
 	<!-- what it is -->
 	<Readout id="card-1"><Card x={CX - 16} y={24} w={336} h={560} /></Readout>
 	<Readout id="name" order={1} label="Makes" value={nameText} note={kindText}>
-		<T x={CX} y={66} text={nameText} size={nameText.length > 18 ? 19 : 26} weight={700} />
-		<T
+		<Label
+			anchor="start"
+			x={CX}
+			y={66}
+			text={nameText}
+			size={nameText.length > 18 ? 19 : 26}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
 			x={CX}
 			y={90}
 			text={kindText}
@@ -373,7 +381,7 @@
 	</Readout>
 	<Readout id="status">
 		{#each statusLines as line, i (i)}
-			<T x={CX} y={114 + i * 17} text={line} size={12} muted />
+			<Label anchor="start" x={CX} y={114 + i * 17} text={line} size={12} muted />
 		{/each}
 	</Readout>
 
@@ -386,9 +394,16 @@
 				rx="2"
 				fill="var(--explainer-accent)"
 			/>{/if}
-		<T x={CX} y={172} text="Charge (in units of e)" size={12} muted />
+		<Label anchor="start" x={CX} y={172} text="Charge (in units of e)" size={12} muted />
 		<Readout id="charge" order={2} label="Charge" value={chargeSum}>
-			<T x={CX} y={200} text={chargeSum} size={tokens.length === 3 ? 20 : 22} weight={600} />
+			<Label
+				anchor="start"
+				x={CX}
+				y={200}
+				text={chargeSum}
+				size={tokens.length === 3 ? 20 : 22}
+				weight={600}
+			/>
 		</Readout>
 	</g>
 
@@ -401,12 +416,20 @@
 				rx="2"
 				fill="var(--explainer-accent)"
 			/>{/if}
-		<T x={CX} y={244} text="Colour: the total must be colourless" size={12} muted />
+		<Label
+			anchor="start"
+			x={CX}
+			y={244}
+			text="Colour: the total must be colourless"
+			size={12}
+			muted
+		/>
 		{#each balls as b, i (b.i + b.tk)}
 			<circle cx={CX + 10 + i * 26} cy={270} r="10" fill={chargeColour(b.colour, b.anti)} />
 		{/each}
 		<Readout id="colour" order={3} label="Colour" value={colourCheck}>
-			<T
+			<Label
+				anchor="start"
 				x={CX + 8 + Math.max(1, balls.length) * 26}
 				y={275}
 				text={colourCheck}
@@ -422,9 +445,9 @@
 	</g>
 
 	<g opacity={sectionOpacity('charge')}>
-		<T x={CX} y={318} text="Baryon number" size={12} muted />
+		<Label anchor="start" x={CX} y={318} text="Baryon number" size={12} muted />
 		<Readout id="baryon" order={4} label="Baryon number" value={baryonSum}>
-			<T x={CX} y={342} text={baryonSum} size={16} weight={600} />
+			<Label anchor="start" x={CX} y={342} text={baryonSum} size={16} weight={600} />
 		</Readout>
 	</g>
 
@@ -437,7 +460,7 @@
 				rx="2"
 				fill="var(--explainer-accent)"
 			/>{/if}
-		<T x={CX} y={380} text="Mass" size={12} muted />
+		<Label anchor="start" x={CX} y={380} text="Mass" size={12} muted />
 		{#if build.hadron}
 			<rect
 				x={CX}
@@ -464,18 +487,26 @@
 				note="The rest is the energy of the gluon field and the quarks' motion."
 				opacity={focus === 'mass' || focus === 'zoo' ? 1 : 0}
 			>
-				<T x={CX} y={428} text="quarks: {quarkMassText}" size={12} />
-				<T
+				<Label anchor="start" x={CX} y={428} text="quarks: {quarkMassText}" size={12} />
+				<Label
+					anchor="start"
 					x={CX}
 					y={446}
 					text="{build.hadron.name}: {massText(build.hadron.data.mass.v)} · quarks {pct(share)}"
 					size={13}
 					weight={600}
 				/>
-				<T x={CX} y={464} text="the rest: gluon-field and motion energy" size={12} muted />
+				<Label
+					anchor="start"
+					x={CX}
+					y={464}
+					text="the rest: gluon-field and motion energy"
+					size={12}
+					muted
+				/>
 			</Readout>
 		{:else}
-			<T x={CX} y={406} text="—" size={14} muted />
+			<Label anchor="start" x={CX} y={406} text="—" size={14} muted />
 		{/if}
 	</g>
 
@@ -488,7 +519,7 @@
 				rx="2"
 				fill="var(--explainer-accent)"
 			/>{/if}
-		<T x={CX} y={504} text="Spin and lifetime" size={12} muted />
+		<Label anchor="start" x={CX} y={504} text="Spin and lifetime" size={12} muted />
 		{#if build.hadron}
 			<Readout
 				id="life"
@@ -498,15 +529,15 @@
 				note={spinText}
 				opacity={focus === 'zoo' ? 1 : 0}
 			>
-				<T x={CX} y={526} text={spinText} size={13} />
-				<T x={CX} y={546} text={lifeLine} size={13} weight={600} />
+				<Label anchor="start" x={CX} y={526} text={spinText} size={13} />
+				<Label anchor="start" x={CX} y={546} text={lifeLine} size={13} weight={600} />
 			</Readout>
 		{:else}
-			<T x={CX} y={530} text="—" size={14} muted />
+			<Label anchor="start" x={CX} y={530} text="—" size={14} muted />
 		{/if}
 	</g>
 	<Readout id="pdg">
-		<T x={CX + 296} y={574} text="data: PDG 2026" size={11} anchor="end" muted />
+		<Label x={CX + 296} y={574} text="data: PDG 2026" size={11} anchor="end" muted />
 	</Readout>
 </g>
 

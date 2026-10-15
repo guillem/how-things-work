@@ -136,7 +136,7 @@
 
 <g>
 	<!-- ================= the X-ray ================= -->
-	<text x={X0} y={50} font-weight="600" style:font-size="15px">Plain X-ray, front to back</text>
+	<text x={X0} y={50} font-weight="600" font-size="15">Plain X-ray, front to back</text>
 	<rect
 		x={X0 - 1}
 		y={Y0 - 1}
@@ -171,8 +171,7 @@
 		/>
 
 		<!-- the slice from above, with the ray -->
-		<text x={RCX - 170} y={50} font-weight="600" style:font-size="15px">One ray, front to back</text
-		>
+		<text x={RCX - 170} y={50} font-weight="600" font-size="15">One ray, front to back</text>
 		<g transform="translate({RCX} {RCY}) scale({RS})">
 			{#each shapes0 as s (s.p.id)}
 				<ellipse
@@ -243,7 +242,7 @@
 			value="p = {total.toFixed(2)}"
 			note="{(Math.exp(-total) * 100).toPrecision(2)}% of the photons get through"
 		>
-			<text x={BX} y={520} style:font-size="15px" font-weight="600">
+			<text x={BX} y={520} font-size="15" font-weight="600">
 				total p = {total.toFixed(2)}: {(Math.exp(-total) * 100).toPrecision(2)}% of the photons get
 				through
 			</text>
@@ -311,7 +310,7 @@
 			/>
 		</Readout>
 
-		<text x={CX} y={50} font-weight="600" style:font-size="15px">CT slice at the line</text>
+		<text x={CX} y={50} font-weight="600" font-size="15">CT slice at the line</text>
 		<rect
 			x={CX - 1}
 			y={CY - 1}

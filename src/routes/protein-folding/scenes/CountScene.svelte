@@ -8,11 +8,10 @@
 	 */
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Axes, linePath, scale, smoothstep } from '#lib/draw/index.ts';
+	import { Axes, Label, linePath, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { walkCount, walkCountEstimate } from '../hp';
 	import { SECONDS_PER_YEAR, UNIVERSE_AGE_YEARS, searchYears } from '../folding';
-	import Label from './Text.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 

@@ -46,10 +46,8 @@
 					stroke="var(--border)"
 				/>
 			{/if}
-			<text {x} y={CARD.y + 30} class="muted" style:font-size="12px" font-weight="500"
-				>{c.label}</text
-			>
-			<text {x} y={CARD.y + 57} style:font-size="19px" style:fill={c.color} font-weight="700"
+			<text {x} y={CARD.y + 30} class="muted" font-size="12" font-weight="500">{c.label}</text>
+			<text {x} y={CARD.y + 57} font-size="19" style:fill={c.color} font-weight="700"
 				>{c.value}</text
 			>
 			{#if c.bar !== undefined}
@@ -63,7 +61,7 @@
 					fill={c.barColor ?? 'var(--osc-trace)'}
 				/>
 			{:else if c.sub}
-				<text {x} y={CARD.y + 80} class="muted" style:font-size="11px">{c.sub}</text>
+				<text {x} y={CARD.y + 80} class="muted" font-size="11">{c.sub}</text>
 			{/if}
 		{/each}
 	</g>

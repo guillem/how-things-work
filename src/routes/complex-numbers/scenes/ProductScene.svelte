@@ -19,8 +19,6 @@
 	 * length is shown with up to four decimals (1.05 × 1.05 = 1.1025), so the
 	 * readouts "1.40 × 1.25 = 1.75" and "20° + 45° = 65°" are exact.
 	 *
-	 * Text sizes and colours are set with `style:` because the stage's CSS
-	 * overrides SVG presentation attributes.
 	 */
 	import { clamp, smoothstep, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -230,7 +228,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:font-style={opts.italic ? 'italic' : undefined}
 		style:fill={opts.color}>{text}</text
 	>

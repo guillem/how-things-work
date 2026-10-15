@@ -15,10 +15,9 @@
 	 */
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { cycle, smoothstep } from '#lib/draw/index.ts';
+	import { cycle, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { GATES, apply, basis, phaseGate, probabilities } from '../qubits';
-	import T from './T.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -112,7 +111,7 @@
 		stroke="var(--stage-ink-muted)"
 		stroke-width="1.5"
 	/>
-	<T x={56} y={WIRE_Y + 5} text="|0⟩" size={15} weight={600} anchor="end" />
+	<Label x={56} y={WIRE_Y + 5} text="|0⟩" size={15} weight={600} anchor="end" />
 	{#each [{ x: 270, g: 'H' }, { x: XM, g: 'P(φ)' }, { x: 560, g: 'H' }] as b (b.x)}
 		<rect
 			x={b.x - (b.g === 'H' ? 20 : 30)}
@@ -124,9 +123,7 @@
 			stroke="var(--stage-line)"
 			stroke-width="1.5"
 		/>
-		<text x={b.x} y={WIRE_Y + 6} text-anchor="middle" font-weight="700" style:font-size="16px"
-			>{b.g}</text
-		>
+		<text x={b.x} y={WIRE_Y + 6} text-anchor="middle" font-weight="700" font-size="16">{b.g}</text>
 	{/each}
 	<!-- the final measurement -->
 	<rect
@@ -154,7 +151,7 @@
 		stroke-width="1.5"
 	/>
 	<Readout id="phi" order={1} label="Phase φ on the |1⟩ path" value={deg(phiDeg)}>
-		<T x={XM} y={WIRE_Y + 38} text="φ = {deg(phiDeg)}" size={13} anchor="middle" muted />
+		<Label x={XM} y={WIRE_Y + 38} text="φ = {deg(phiDeg)}" size={13} anchor="middle" muted />
 	</Readout>
 	<!-- the measurement in the middle -->
 	<g opacity={peekAmt.current}>
@@ -190,7 +187,7 @@
 			color="var(--qc-click)"
 			opacity={peekAmt.current}
 		>
-			<T
+			<Label
 				x={490}
 				y={WIRE_Y - 28}
 				text="measured here"
@@ -217,7 +214,7 @@
 			e.x1 + (e.x2 - e.x1) * (e.m === -1 ? 0.5 : e.f === e.m ? 0.5 : e.m === 0 ? 0.3 : 0.3)}
 		{@const ly = e.y1 + (e.y2 - e.y1) * (e.m === -1 ? 0.5 : e.f === e.m ? 0.5 : 0.3)}
 		<Readout id="edge-{e.id}">
-			<T
+			<Label
 				x={lx}
 				y={ly + (e.f === e.m || e.m === -1 ? (e.f === 0 ? -10 : 20) : e.m === 0 ? 22 : -12)}
 				text={e.label}
@@ -252,9 +249,9 @@
 		stroke="var(--stage-line)"
 		stroke-width="1.5"
 	/>
-	<T x={X0} y={325} text="|0⟩" size={15} weight={600} anchor="middle" />
+	<Label x={X0} y={325} text="|0⟩" size={15} weight={600} anchor="middle" />
 	<Readout id="start-l">
-		<T x={X0} y={362} text="amplitude 1" size={12} anchor="middle" muted />
+		<Label x={X0} y={362} text="amplitude 1" size={12} anchor="middle" muted />
 	</Readout>
 
 	<!-- middle: after H and P(φ) -->
@@ -271,7 +268,7 @@
 		<line x1={XM - DIAL_M} x2={XM + DIAL_M} y1={ROW[m]} y2={ROW[m]} stroke="var(--stage-grid)" />
 		{@render arrow(XM, ROW[m], a.re * DIAL_M * 1.3, -a.im * DIAL_M * 1.3, pathColor(m), 3)}
 		<Readout id="mid-{m}">
-			<T
+			<Label
 				x={XM}
 				y={ROW[m] + (m === 0 ? -DIAL_M - 10 : DIAL_M + 22)}
 				text={m === 0 ? 'via |0⟩: 1/√2' : `via |1⟩: 1/√2 ∠ ${deg(phiDeg)}`}
@@ -319,7 +316,7 @@
 			{@render arrow(XF, cy, c1.re * k, -c1.im * k, pathColor(1), 3)}
 		</g>
 		<circle cx={XF} {cy} r="2.5" fill="var(--stage-ink)" />
-		<T
+		<Label
 			x={XF}
 			y={cy + (f === 0 ? -DIAL_F - 10 : DIAL_F + 22)}
 			text="end at |{f}⟩"
@@ -340,7 +337,8 @@
 			value={pct(P[f])}
 			color={f === 0 ? 'var(--qc-zero)' : 'var(--qc-one)'}
 		>
-			<T
+			<Label
+				anchor="start"
 				x={790}
 				y={cy - 22}
 				text="P({f}) = {pct(P[f])}"
@@ -365,7 +363,8 @@
 				rx="3"
 				fill={f === 0 ? 'var(--qc-zero)' : 'var(--qc-one)'}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={790}
 				y={cy + 26}
 				text={peek
@@ -387,7 +386,7 @@
 			? 'paths recorded: probabilities add, 50/50 whatever φ'
 			: 'paths unrecorded: amplitudes add, then square'}
 	>
-		<T
+		<Label
 			x={480}
 			y={560}
 			text={peek

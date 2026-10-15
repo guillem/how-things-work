@@ -1,8 +1,7 @@
 <script lang="ts">
 	/**
 	 * A button drawn on the stage (a palette key, a quark in the bag): a rounded tile with a
-	 * label, keyboard accessible (Tab, Enter or Space). Text goes through `style:` because the
-	 * stage's CSS overrides SVG presentation attributes.
+	 * label, keyboard accessible (Tab, Enter or Space).
 	 */
 	interface Props {
 		x: number;
@@ -64,7 +63,7 @@
 		y={y + h / 2 + (sub ? size * 0.12 : size * 0.36)}
 		text-anchor="middle"
 		font-weight="700"
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={ink}>{label}</text
 	>
 	{#if sub}
@@ -72,7 +71,7 @@
 			x={x + w / 2}
 			y={y + h - 9}
 			text-anchor="middle"
-			style:font-size="11px"
+			font-size="11"
 			style:fill={ink}
 			opacity="0.85">{sub}</text
 		>

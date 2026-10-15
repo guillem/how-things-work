@@ -5,7 +5,7 @@
 	 * training loop. Sizes come from the two trained models. Dots run along the arrows (pure
 	 * function of t; none under reduced motion).
 	 */
-	import Label from './Label.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { MNIST_NET as DIGITS, paramCount } from '../ddpm';
 	import { MOONS } from '../moons-model';

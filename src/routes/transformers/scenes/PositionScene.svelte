@@ -5,10 +5,9 @@
 	 * position chosen with the slider, and the length of each position vector.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { pingpong } from '#lib/draw/index.ts';
+	import { Label, pingpong } from '#lib/draw/index.ts';
 	import { gpt2 } from '../gpt2';
 	import { bands, fix, num } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -55,7 +54,14 @@
 
 <g>
 	<!-- the cosine matrix -->
-	<Txt x={M.x} y={M.y - 36} size={14} weight={650} text="Cosine between position vectors, 0–63" />
+	<Label
+		anchor="start"
+		x={M.x}
+		y={M.y - 36}
+		size={14}
+		weight={650}
+		text="Cosine between position vectors, 0–63"
+	/>
 	<rect x={M.x} y={M.y} width={N * M.cell} height={N * M.cell} fill="var(--tf-cell)" />
 	{#each cells as b (b.key)}
 		<path d={b.d} fill="var(--tf-att)" opacity={0.08 + 0.92 * b.level} />
@@ -70,7 +76,8 @@
 		stroke-width="2"
 	/>
 	{#each ticks as k (k)}
-		<Txt
+		<Label
+			tabular
 			x={M.x + (k + 0.5) * M.cell}
 			y={M.y - 8}
 			anchor="middle"
@@ -78,7 +85,8 @@
 			muted
 			text={String(k)}
 		/>
-		<Txt
+		<Label
+			tabular
 			x={M.x - 8}
 			y={M.y + (k + 0.5) * M.cell + 4}
 			anchor="end"
@@ -88,14 +96,17 @@
 		/>
 	{/each}
 	<Readout id="legend">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={M.x}
 			y={M.y + N * M.cell + 24}
 			size={12}
 			muted
 			text="pale: cos {fix(lo, 1)} · bright: cos 1 (the same direction)"
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={M.x}
 			y={M.y + N * M.cell + 42}
 			size={12}
@@ -105,7 +116,9 @@
 	</Readout>
 
 	<!-- the chosen row as a curve -->
-	<Txt
+	<Label
+		anchor="start"
+		tabular
 		x={C.x}
 		y={C.y - 36}
 		size={14}
@@ -116,10 +129,10 @@
 	<line x1={C.x} y1={C.y} x2={C.x} y2={C.y + C.h} stroke="var(--stage-line)" />
 	{#each [lo, (lo + 1) / 2, 1] as v (v)}
 		<line x1={C.x} y1={cy(v)} x2={C.x + C.w} y2={cy(v)} stroke="var(--stage-grid)" />
-		<Txt x={C.x - 6} y={cy(v) + 4} anchor="end" size={11} muted text={fix(v, 1)} />
+		<Label tabular x={C.x - 6} y={cy(v) + 4} anchor="end" size={11} muted text={fix(v, 1)} />
 	{/each}
 	{#each ticks as k (k)}
-		<Txt x={cx(k)} y={C.y + C.h + 18} anchor="middle" size={11} muted text={String(k)} />
+		<Label tabular x={cx(k)} y={C.y + C.h + 18} anchor="middle" size={11} muted text={String(k)} />
 	{/each}
 	<path d={curve} fill="none" stroke="var(--tf-att)" stroke-width="2.5" stroke-linejoin="round" />
 	<circle cx={cx(pos)} cy={cy(1)} r="5" fill="var(--tf-sel)" />
@@ -134,7 +147,8 @@
 	/>
 	<circle cx={cx(probe)} cy={cy(probeC)} r="4" fill="var(--tf-att)" />
 	<Readout id="probe">
-		<Txt
+		<Label
+			tabular
 			x={Math.min(C.x + C.w - 4, Math.max(C.x + 60, cx(probe)))}
 			y={C.y - 10}
 			anchor="middle"
@@ -143,7 +157,8 @@
 		/>
 	</Readout>
 	<Readout id="near" order={1} label="cos(position {pos}, {near})" value={fix(P.cos[pos][near], 3)}>
-		<Txt
+		<Label
+			tabular
 			x={C.x + C.w}
 			y={C.y + C.h + 40}
 			anchor="end"
@@ -156,7 +171,14 @@
 	>
 
 	<!-- the lengths -->
-	<Txt x={L.x} y={L.y - 16} size={13} weight={600} text="Length of each position vector" />
+	<Label
+		anchor="start"
+		x={L.x}
+		y={L.y - 16}
+		size={13}
+		weight={600}
+		text="Length of each position vector"
+	/>
 	<path d={lenBars} fill="var(--tf-q)" opacity="0.65" />
 	<rect x={L.x} y={L.y + L.h - zeroH} width={(L.w / N) * 0.75} height={zeroH} fill="var(--tf-q)" />
 	<line x1={L.x} y1={L.y + L.h} x2={L.x + L.w} y2={L.y + L.h} stroke="var(--stage-line)" />
@@ -166,7 +188,9 @@
 		label="Lengths"
 		value="position 0: {fix(P.norms[0], 1)}; positions 1–63: {fix(restMin, 1)}–{fix(restMax, 1)}"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={L.x + 10}
 			y={L.y + 10}
 			size={12}
@@ -174,7 +198,8 @@
 			color="var(--tf-q)"
 			weight={600}
 		/>
-		<Txt
+		<Label
+			tabular
 			x={L.x + L.w}
 			y={L.y + L.h + 18}
 			anchor="end"

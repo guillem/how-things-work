@@ -12,7 +12,7 @@
 	 *            decoded block, how many coefficients survive and the zigzag sequence.
 	 * The picture and small blocks are grey BMP images (one SVG node each).
 	 */
-	import { clamp } from '#lib/draw/index.ts';
+	import { clamp, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		N,
@@ -29,7 +29,6 @@
 	import BlockPicker from './BlockPicker.svelte';
 	import PictureInput from './PictureInput.svelte';
 	import { BLOCKS, blockOf, fmt, greyUrl, imageOf } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -105,7 +104,8 @@
 		{@const cell = 36}
 		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 		<Readout id="picture-title">
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={112}
 				text="The picture: 96 × 96 pixels in 8 × 8 blocks"
@@ -149,7 +149,9 @@
 			note="64 numbers, 0 (black) to 255 (white)"
 			color="var(--cmp-pick)"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={zx}
 				y={112}
 				text="Block at column {block.bx + 1}, row {block.by +
@@ -174,7 +176,7 @@
 						x={zx + c.c * cell + cell / 2}
 						y={zy + c.r * cell + cell / 2 + 4}
 						text-anchor="middle"
-						style:font-size="11.5px"
+						font-size="11.5"
 						style:font-family="var(--font-mono)"
 						style:fill={ink(v)}>{v}</text
 					>
@@ -183,7 +185,7 @@
 							x={zx + c.c * cell + cell / 2}
 							y={zy + c.r * cell + cell / 2 + 6}
 							text-anchor="middle"
-							style:font-size="17px"
+							font-size="17"
 							style:font-weight="600"
 							style:font-family="var(--font-mono)"
 							style:fill={ink(v)}>{v}</text
@@ -208,9 +210,9 @@
 			value="512 bits"
 			note="64 pixels × 8 bits"
 		>
-			<Txt x={740} y={160} text="This block" size={13} weight={700} />
-			<Txt x={740} y={184} text="64 pixels × 8 bits" size={13} />
-			<Txt x={740} y={206} text="= 512 bits" size={15} weight={700} />
+			<Label anchor="start" x={740} y={160} text="This block" size={13} weight={700} />
+			<Label anchor="start" x={740} y={184} text="64 pixels × 8 bits" size={13} />
+			<Label anchor="start" x={740} y={206} text="= 512 bits" size={15} weight={700} />
 		</Readout>
 		<Readout
 			id="whole"
@@ -219,14 +221,15 @@
 			value="73,728 bits"
 			note="144 blocks × 64 pixels × 8 bits"
 		>
-			<Txt x={740} y={262} text="The whole picture" size={13} weight={700} />
-			<Txt x={740} y={286} text="144 blocks × 64 pixels" size={13} />
-			<Txt x={740} y={308} text="= 9,216 pixels × 8 bits" size={13} />
-			<Txt x={740} y={332} text="= 73,728 bits" size={15} weight={700} />
+			<Label anchor="start" x={740} y={262} text="The whole picture" size={13} weight={700} />
+			<Label anchor="start" x={740} y={286} text="144 blocks × 64 pixels" size={13} />
+			<Label anchor="start" x={740} y={308} text="= 9,216 pixels × 8 bits" size={13} />
+			<Label anchor="start" x={740} y={332} text="= 73,728 bits" size={15} weight={700} />
 		</Readout>
 		<PictureInput x={740} y={372} w={180} missing={chosen.missing} {setParam} />
 		<Readout id="pick-hint">
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={470}
 				text="Click or drag over the picture to pick a block (or Tab to it and use the arrow keys)."
@@ -241,7 +244,8 @@
 			value="one 8 × 8 block at a time"
 			note="64 brightness values"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={540}
 				text="JPEG treats each 8 × 8 block on its own: 64 brightness values at a time."
@@ -257,13 +261,13 @@
 		<image href={url} x={bxX} y={128} width={96 * 1.5} height={96 * 1.5} class="cmp-px" />
 		<BlockPicker x={bxX} y={128} px={1.5} index={block.index} onpick={pick} />
 		<Readout id="dct-labels">
-			<Txt x={bxX} y={112} text="Picture" size={12} weight={700} />
-			<Txt x={bxX} y={306} text="The block" size={12} weight={700} />
+			<Label anchor="start" x={bxX} y={112} text="Picture" size={12} weight={700} />
+			<Label anchor="start" x={bxX} y={306} text="The block" size={12} weight={700} />
 		</Readout>
 		<image href={greyUrl(8, 8, pixels)} x={bxX} y={316} width={176} height={176} class="cmp-px" />
 
 		<Readout id="coef-title">
-			<Txt x={cx} y={112} text="Its 64 DCT coefficients" size={13} weight={700} />
+			<Label anchor="start" x={cx} y={112} text="Its 64 DCT coefficients" size={13} weight={700} />
 		</Readout>
 		{#each cells as c (c.i)}
 			{@const v = coef[c.i]}
@@ -283,7 +287,7 @@
 						x={cx + c.c * cell + cell / 2 - 1}
 						y={128 + c.r * cell + cell / 2 + 3}
 						text-anchor="middle"
-						style:font-size="10.5px"
+						font-size="10.5"
 						style:font-family="var(--font-mono)">{fmtSigned(Math.round(v))}</text
 					>
 					{#snippet narrow()}
@@ -291,7 +295,7 @@
 							x={cx + c.c * cell + cell / 2 - 1}
 							y={128 + c.r * cell + cell / 2 + 5}
 							text-anchor="middle"
-							style:font-size="14px"
+							font-size="14"
 							style:font-weight="600"
 							style:font-family="var(--font-mono)">{fmtSigned(Math.round(v))}</text
 						>
@@ -308,8 +312,15 @@
 			stroke-linejoin="round"
 		/>
 		<Readout id="coef-captions">
-			<Txt x={cx} y={128 + 8 * cell + 18} text="DC: 8 × (average − 128)" size={11} muted />
-			<Txt
+			<Label
+				anchor="start"
+				x={cx}
+				y={128 + 8 * cell + 18}
+				text="DC: 8 × (average − 128)"
+				size={11}
+				muted
+			/>
+			<Label
 				x={cx + 8 * cell - 2}
 				y={128 + 8 * cell + 18}
 				text="slow → fast patterns"
@@ -328,7 +339,9 @@
 				? 'exactly the block again'
 				: `off by up to ${Math.round(partialErr)} level${Math.round(partialErr) === 1 ? '' : 's'}`}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={rx}
 				y={112}
 				text="Rebuilt from {shown} pattern{shown === 1 ? '' : 's'}"
@@ -336,12 +349,22 @@
 				weight={700}
 			/>
 			{#snippet narrow()}
-				<Txt x={rx} y={112} text="{shown} pattern{shown === 1 ? '' : 's'}" size={24} weight={700} />
+				<Label
+					anchor="start"
+					tabular
+					x={rx}
+					y={112}
+					text="{shown} pattern{shown === 1 ? '' : 's'}"
+					size={24}
+					weight={700}
+				/>
 			{/snippet}
 		</Readout>
 		<image href={greyUrl(8, 8, partial)} x={rx} y={128} width={176} height={176} class="cmp-px" />
 		<Readout id="rebuilt-error">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={rx}
 				y={326}
 				text={partialErr < 0.5
@@ -353,7 +376,7 @@
 			/>
 		</Readout>
 		<Readout id="last-title">
-			<Txt x={rx} y={370} text="Pattern added last" size={12} weight={700} />
+			<Label anchor="start" x={rx} y={370} text="Pattern added last" size={12} weight={700} />
 		</Readout>
 		<image
 			href={greyUrl(
@@ -374,14 +397,18 @@
 			value="× {fmtSigned(Math.round(coef[lastIdx]))}"
 			note="{lastIdx % N} across, {Math.floor(lastIdx / N)} down"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={rx + 108}
 				y={418}
 				text="× {fmtSigned(Math.round(coef[lastIdx]))}"
 				size={15}
 				weight={700}
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={rx + 108}
 				y={440}
 				text="{lastIdx % N} across, {Math.floor(lastIdx / N)} down"
@@ -389,7 +416,9 @@
 				muted
 			/>
 			{#snippet narrow()}
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={rx + 108}
 					y={436}
 					text="× {fmtSigned(Math.round(coef[lastIdx]))}"
@@ -405,14 +434,16 @@
 			value="how much of one cosine pattern"
 			note="added in zigzag order; all 64 give the block back exactly"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={540}
 				text="Each coefficient says how much of one cosine pattern the block contains"
 				size={15}
 				weight={600}
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={566}
 				text="Added in zigzag order, from the flat average to the finest checkerboard. All 64 give the block back exactly."
@@ -425,25 +456,41 @@
 		{@const gy = 150}
 		{@const xs = [40, 360, 680]}
 		<Readout id="q-title-0">
-			<Txt x={xs[0]} y={gy - 14} text="DCT coefficients" size={13} weight={700} />
+			<Label anchor="start" x={xs[0]} y={gy - 14} text="DCT coefficients" size={13} weight={700} />
 			{#snippet narrow()}
-				<Txt x={xs[0]} y={gy - 14} text="DCT" size={26} weight={700} />
+				<Label anchor="start" x={xs[0]} y={gy - 14} text="DCT" size={26} weight={700} />
 			{/snippet}
 		</Readout>
 		<Readout id="q-title-1">
-			<Txt x={xs[1]} y={gy - 14} text="÷ table at quality {quality}" size={13} weight={700} />
+			<Label
+				anchor="start"
+				tabular
+				x={xs[1]}
+				y={gy - 14}
+				text="÷ table at quality {quality}"
+				size={13}
+				weight={700}
+			/>
 			{#snippet narrow()}
-				<Txt x={xs[1]} y={gy - 14} text="÷ table" size={26} weight={700} />
+				<Label anchor="start" x={xs[1]} y={gy - 14} text="÷ table" size={26} weight={700} />
 			{/snippet}
 		</Readout>
 		<Readout id="q-title-2">
-			<Txt x={xs[2]} y={gy - 14} text="= rounded: {kept} of 64 kept" size={13} weight={700} />
+			<Label
+				anchor="start"
+				tabular
+				x={xs[2]}
+				y={gy - 14}
+				text="= rounded: {kept} of 64 kept"
+				size={13}
+				weight={700}
+			/>
 			{#snippet narrow()}
-				<Txt x={xs[2]} y={gy - 14} text="= rounded" size={26} weight={700} />
+				<Label anchor="start" x={xs[2]} y={gy - 14} text="= rounded" size={26} weight={700} />
 			{/snippet}
 		</Readout>
-		<Txt x={xs[1] - 30} y={gy + 126} text="÷" size={24} weight={700} anchor="middle" muted />
-		<Txt x={xs[2] - 30} y={gy + 126} text="=" size={24} weight={700} anchor="middle" muted />
+		<Label x={xs[1] - 30} y={gy + 126} text="÷" size={24} weight={700} anchor="middle" muted />
+		<Label x={xs[2] - 30} y={gy + 126} text="=" size={24} weight={700} anchor="middle" muted />
 		{#each cells as c (c.i)}
 			{@const on = c.i === work}
 			{@const v = coef[c.i]}
@@ -462,14 +509,14 @@
 				x={xs[0] + c.c * cell + cell / 2 - 1}
 				y={gy + c.r * cell + cell / 2 + 3}
 				text-anchor="middle"
-				style:font-size="9.5px"
+				font-size="9.5"
 				style:font-family="var(--font-mono)">{fmtSigned(Math.round(v))}</text
 			>
 			<text
 				x={xs[1] + c.c * cell + cell / 2 - 1}
 				y={gy + c.r * cell + cell / 2 + 3}
 				text-anchor="middle"
-				style:font-size="11px"
+				font-size="11"
 				style:font-weight={on ? '800' : '500'}
 				style:font-family="var(--font-mono)"
 				style:fill="var(--cmp-bits)">{table[c.i]}</text
@@ -493,7 +540,7 @@
 				text-anchor="middle"
 				class:muted={q[c.i] === 0}
 				opacity={q[c.i] === 0 ? 0.5 : 1}
-				style:font-size="11px"
+				font-size="11"
 				style:font-weight={q[c.i] === 0 ? '400' : '700'}
 				style:font-family="var(--font-mono)">{fmtSigned(q[c.i])}</text
 			>
@@ -509,7 +556,8 @@
 		/>
 		{#if work >= 0}
 			<Readout id="work">
-				<Txt
+				<Label
+					tabular
 					x={920}
 					y={112}
 					text="{fmt(coef[work], 2).replace('-', '−')} ÷ {table[work]} = {fmt(
@@ -524,16 +572,16 @@
 		{/if}
 
 		<Readout id="original-label">
-			<Txt x={40} y={432} text="Original" size={12} weight={700} />
+			<Label anchor="start" x={40} y={432} text="Original" size={12} weight={700} />
 			{#snippet narrow()}
-				<Txt x={40} y={434} text="Original" size={20} weight={700} />
+				<Label anchor="start" x={40} y={434} text="Original" size={20} weight={700} />
 			{/snippet}
 		</Readout>
 		<image href={greyUrl(8, 8, pixels)} x={40} y={442} width={96} height={96} class="cmp-px" />
 		<Readout id="decoded-label">
-			<Txt x={156} y={432} text="Decoded" size={12} weight={700} />
+			<Label anchor="start" x={156} y={432} text="Decoded" size={12} weight={700} />
 			{#snippet narrow()}
-				<Txt x={156} y={434} text="Decoded" size={20} weight={700} />
+				<Label anchor="start" x={156} y={434} text="Decoded" size={20} weight={700} />
 			{/snippet}
 		</Readout>
 		<image href={greyUrl(8, 8, decoded)} x={156} y={442} width={96} height={96} class="cmp-px" />
@@ -546,17 +594,20 @@
 				? undefined
 				: `one symbol stands for the ${63 - lastNonZero} zero${63 - lastNonZero === 1 ? '' : 's'} at the end`}
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={290}
 				y={460}
 				text="Read in zigzag order, up to the last non-zero value:"
 				size={13}
 				weight={600}
 			/>
-			<text x={290} y={486} style:font-size="13px" style:font-family="var(--font-mono)"
+			<text x={290} y={486} font-size="13" style:font-family="var(--font-mono)"
 				>{sequence.replaceAll('-', '−')}</text
 			>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={290}
 				y={510}
 				text={lastNonZero === 63
@@ -573,7 +624,9 @@
 			value="{kept} of 64 coefficients"
 			note="the decoder multiplies back, but the rounding stays"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={290}
 				y={540}
 				text="{kept} of 64 coefficients kept; the decoder multiplies back, but the rounding stays"
@@ -588,7 +641,9 @@
 			value="steps from {Math.min(...table)} to {Math.max(...table)}"
 			note="the standard table at 50"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={290}
 				y={566}
 				text="Quality {quality}: steps from {Math.min(...table)} to {Math.max(

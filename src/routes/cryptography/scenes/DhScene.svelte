@@ -13,12 +13,11 @@
 	 * Numbers come from the model (`diffieHellman`, `fastPower`); the secrets are the `a` and
 	 * `b` sliders. Reduced motion shows the complete frame.
 	 */
-	import { clamp, lerp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, lerp, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { fastPower, sup } from '../../primes-modular-arithmetic/modular';
 	import { DH, diffieHellman } from '../crypto';
 	import Person from './Person.svelte';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 	const phase = $derived(String(step.hints?.phase ?? 'public'));
@@ -102,7 +101,9 @@
 			{color}
 			opacity={secretOn}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={x + 20}
 				y={CARD.y + 36}
 				text="{who}’s secret: {secretName} = {secret}"
@@ -112,7 +113,9 @@
 				halo={false}
 			/>
 			{#snippet narrow()}
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={x + 20}
 					y={CARD.y + 44}
 					text="{secretName} = {secret}"
@@ -134,15 +137,28 @@
 			note="{cost} multiplication{cost === 1 ? '' : 's'}"
 			opacity={pub ? powerOn : 0}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={x + 20}
 				y={CARD.y + 78}
 				text="{pubName} = 2{sup(secret)} mod 101"
 				size={15}
 				halo={false}
 			/>
-			<Txt x={x + 20} y={CARD.y + 112} text="= {pubValue}" size={24} weight={700} halo={false} />
-			<Txt
+			<Label
+				anchor="start"
+				tabular
+				x={x + 20}
+				y={CARD.y + 112}
+				text="= {pubValue}"
+				size={24}
+				weight={700}
+				halo={false}
+			/>
+			<Label
+				anchor="start"
+				tabular
 				x={x + 20}
 				y={CARD.y + 138}
 				text="{cost} multiplication{cost === 1 ? '' : 's'} (square-and-multiply)"
@@ -151,7 +167,9 @@
 				halo={false}
 			/>
 			{#snippet narrow()}
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={x + 20}
 					y={CARD.y + 110}
 					text="{pubName} = {pubValue}"
@@ -171,7 +189,9 @@
 			stroke="var(--border)"
 		/>
 		<Readout id="received-{who}">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={x + 20}
 				y={CARD.y + 198}
 				text="received {otherName} = {otherValue}"
@@ -179,7 +199,9 @@
 				halo={false}
 			/>
 			{#snippet narrow()}
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={x + 20}
 					y={CARD.y + 206}
 					text="got {otherName} = {otherValue}"
@@ -200,14 +222,18 @@
 				color="var(--cr-key)"
 				opacity={keyOn}
 			>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={x + 20}
 					y={CARD.y + 236}
 					text="key = {otherValue}{sup(secret)} mod 101"
 					size={15}
 					halo={false}
 				/>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={x + 20}
 					y={CARD.y + 276}
 					text="= {key}"
@@ -217,7 +243,8 @@
 					halo={false}
 				/>
 				{@render keyIcon(x + 112, CARD.y + 266)}
-				<Txt
+				<Label
+					anchor="start"
 					x={x + 20}
 					y={CARD.y + 310}
 					text="never sent over the line"
@@ -226,7 +253,9 @@
 					halo={false}
 				/>
 				{#snippet narrow()}
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={x + 20}
 						y={CARD.y + 280}
 						text="key = {key}"
@@ -244,7 +273,7 @@
 {#snippet pill(x: number, y: number, text: string, color: string)}
 	{@const w = pillW(text)}
 	<rect x={x - w / 2} y={y - 14} width={w} height="28" rx="14" fill={color} />
-	<Txt {x} y={y + 5} {text} size={14} weight={700} anchor="middle" color="#fff" halo={false} />
+	<Label {x} y={y + 5} {text} size={14} weight={700} anchor="middle" color="#fff" halo={false} />
 {/snippet}
 
 <g>
@@ -263,7 +292,7 @@
 	/>
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="public-title">
-		<Txt
+		<Label
 			x={480}
 			y={62}
 			text="Public: everyone knows"
@@ -274,7 +303,7 @@
 		/>
 	</Readout>
 	<Readout id="public-numbers">
-		<Txt
+		<Label
 			x={480}
 			y={90}
 			text="clock p = 101,  base g = 2"
@@ -284,7 +313,7 @@
 			halo={false}
 		/>
 		{#snippet narrow()}
-			<Txt
+			<Label
 				x={480}
 				y={82}
 				text="p = 101, g = 2"
@@ -345,7 +374,8 @@
 			stroke-opacity="0.6"
 		/>
 		<Readout id="eve-note">
-			<Txt
+			<Label
+				anchor="start"
 				x={NOTE.x + 16}
 				y={NOTE.y + 28}
 				text="Eve knows p = 101, g = 2"
@@ -353,7 +383,9 @@
 				weight={600}
 				halo={false}
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={NOTE.x + 16}
 				y={NOTE.y + 52}
 				text="A = {k.A},  B = {k.B}"
@@ -361,7 +393,9 @@
 				weight={600}
 				halo={false}
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={NOTE.x + 16}
 				y={NOTE.y + 82}
 				text={pub ? 'but not a or b' : 'but not a, b or the key'}
@@ -371,7 +405,9 @@
 				halo={false}
 			/>
 			{#snippet narrow()}
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={NOTE.x + 16}
 					y={NOTE.y + 46}
 					text="A = {k.A}, B = {k.B}"
@@ -379,7 +415,9 @@
 					weight={700}
 					halo={false}
 				/>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={NOTE.x + 16}
 					y={NOTE.y + 92}
 					text={pub ? 'not a or b' : 'not a, b, key'}
@@ -403,7 +441,8 @@
 					note="(2ᵇ)ᵃ = (2ᵃ)ᵇ: same exponent, either order"
 					opacity={bannerOn}
 				>
-					<Txt
+					<Label
+						tabular
 						x={c.cx}
 						y={CARD.y + CARD.h + 40}
 						text="{c.o} = {c.got} = 2{sup(c.other)}, so the key is (2{sup(c.other)}){sup(c.own)}"
@@ -411,7 +450,8 @@
 						anchor="middle"
 						muted
 					/>
-					<Txt
+					<Label
+						tabular
 						x={c.cx}
 						y={CARD.y + CARD.h + 70}
 						text="= 2 to the power {a} × {b}, mod 101"

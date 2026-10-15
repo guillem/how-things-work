@@ -14,7 +14,7 @@
 	import { SIDE } from '../cnn';
 	import { PRESETS, divisor, effective, filter, shift, window3, denseWeights } from '../filters';
 	import KernelGrid from './KernelGrid.svelte';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import {
 		fmt,
 		greyUrl,
@@ -200,8 +200,15 @@
 <g>
 	<!-- input -->
 	<Readout id="cv-in" order={1} label="Input" value={caption}>
-		<Txt x={A.x} y={A.y - 18} text="input · 28 × 28 pixels" size={14} weight={600} />
-		<Txt x={A.x} y={A.y + W + 22} text={caption} size={12} muted />
+		<Label
+			anchor="start"
+			x={A.x}
+			y={A.y - 18}
+			text="input · 28 × 28 pixels"
+			size={14}
+			weight={600}
+		/>
+		<Label anchor="start" x={A.x} y={A.y + W + 22} text={caption} size={12} muted />
 	</Readout>
 	<rect x={A.x - 1} y={A.y - 1} width={W + 2} height={W + 2} fill="none" stroke="var(--border)" />
 	<image href={inUrl} x={A.x} y={A.y} width={W} height={W} class="cv-px" />
@@ -250,7 +257,7 @@
 				y={MY + c.j * MC + MC / 2 + 5}
 				text-anchor="middle"
 				font-weight="600"
-				style:font-size="15px"
+				font-size="15"
 				style:fill={c.v > 0.5 ? 'var(--stage-bg)' : 'var(--stage-ink)'}
 				style:pointer-events="none">{fmt(c.v)}</text
 			>
@@ -265,13 +272,15 @@
 			stroke-width="2.5"
 		/>
 		<Readout id="cv-mag" order={2} label="Magnifier" value="0 = paper, 1 = ink">
-			<Txt
+			<Label
+				anchor="start"
 				x={MX}
 				y={MY + MAG * MC + 28}
 				text="the numbers under the magnifier: 0 = paper, 1 = ink"
 				size={13}
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={MX}
 				y={MY + MAG * MC + 48}
 				text="784 of them in all: the network's whole input"
@@ -282,7 +291,7 @@
 	{:else}
 		<!-- the filter -->
 		<Readout id="cv-filter" order={2} label="Filter" value={filterName}>
-			<Txt
+			<Label
 				x={KX + (3 * KC) / 2}
 				y={KY - 22}
 				text="filter: {filterName}"
@@ -292,7 +301,7 @@
 			/>
 		</Readout>
 		<KernelGrid x={KX} y={KY} cell={KC} {k} edit={mode === 'edit' ? editCell : undefined} />
-		<Txt
+		<Label
 			x={KX + (3 * KC) / 2}
 			y={KY + 3 * KC + 24}
 			text={d === 1 ? 'sum not divided' : `sum ÷ ${d}`}
@@ -301,7 +310,7 @@
 		/>
 		{#if mode === 'edit'}
 			<Readout id="cv-edit">
-				<Txt
+				<Label
 					x={KX + (3 * KC) / 2}
 					y={KY + 3 * KC + 46}
 					text="click ▲ / ▼ on a cell"
@@ -319,7 +328,14 @@
 		/>
 
 		<!-- the output -->
-		<Txt x={B.x} y={B.y - 18} text="feature map · 28 × 28" size={14} weight={600} />
+		<Label
+			anchor="start"
+			x={B.x}
+			y={B.y - 18}
+			text="feature map · 28 × 28"
+			size={14}
+			weight={600}
+		/>
 		<rect x={B.x - 1} y={B.y - 1} width={W + 2} height={W + 2} fill="none" stroke="var(--border)" />
 		<image href={outUrl} x={B.x} y={B.y} width={W} height={W} class="cv-px" />
 		{#each veils as v (v.key)}
@@ -333,10 +349,10 @@
 		{/each}
 		<Readout id="cv-key" order={3} label="Colours" value="blue: positive sum · orange: negative">
 			<rect x={B.x} y={B.y + W + 12} width="12" height="12" fill="var(--cv-pos)" />
-			<Txt x={B.x + 18} y={B.y + W + 22} text="positive" size={12} />
+			<Label anchor="start" x={B.x + 18} y={B.y + W + 22} text="positive" size={12} />
 			<rect x={B.x + 92} y={B.y + W + 12} width="12" height="12" fill="var(--cv-neg)" />
-			<Txt x={B.x + 110} y={B.y + W + 22} text="negative" size={12} />
-			<Txt x={B.x + 190} y={B.y + W + 22} text="paper colour: 0" size={12} muted />
+			<Label anchor="start" x={B.x + 110} y={B.y + W + 22} text="negative" size={12} />
+			<Label anchor="start" x={B.x + 190} y={B.y + W + 22} text="paper colour: 0" size={12} muted />
 		</Readout>
 
 		{#if showWindow}
@@ -367,9 +383,17 @@
 				label="At ({slide.x}, {slide.y})"
 				value="sum of pixel × weight = {fmt(sum)}"
 			>
-				<Txt x={A.x} y={492} text="at ({slide.x}, {slide.y}):" size={13} weight={600} />
+				<Label
+					anchor="start"
+					x={A.x}
+					y={492}
+					text="at ({slide.x}, {slide.y}):"
+					size={13}
+					weight={600}
+				/>
 				{#each win as v, i (i)}
-					<Txt
+					<Label
+						anchor="start"
 						x={190 + (i % 3) * 136}
 						y={492 + Math.floor(i / 3) * 24}
 						text="{fmt(v)} × {fmt(eff[i], d === 1 ? 0 : 3)}{i % 3 < 2 ? '  +' : ''}"
@@ -377,8 +401,9 @@
 						opacity={Math.abs(v * eff[i]) > 1e-9 ? 1 : 0.5}
 					/>
 				{/each}
-				<Txt x={610} y={516} text="= {fmt(sum)}" size={18} weight={700} />
-				<Txt
+				<Label anchor="start" x={610} y={516} text="= {fmt(sum)}" size={18} weight={700} />
+				<Label
+					anchor="start"
 					x={610}
 					y={540}
 					text={slide.phase === 'fast' ? 'every position, row by row' : 'one output pixel'}
@@ -419,7 +444,7 @@
 					: `digit and map both ${Math.abs(dx)} px ${dx < 0 ? 'left' : 'right'}`) +
 					(atEdge ? ', as far as the grid allows' : '')}
 			>
-				<Txt
+				<Label
 					x={480}
 					y={B.y + W / 2 + 120}
 					text={atEdge
@@ -441,13 +466,27 @@
 				label="Weights"
 				value="this filter: 9 · fully connected: {int(dense)}"
 			>
-				<Txt x={A.x} y={500} text="weights needed to make this map" size={13} weight={600} />
+				<Label
+					anchor="start"
+					x={A.x}
+					y={500}
+					text="weights needed to make this map"
+					size={13}
+					weight={600}
+				/>
 				<rect x={290} y={518} width={3} height={14} fill="var(--cv-window)" rx="1" />
-				<Txt x={A.x} y={530} text="this filter, used everywhere" size={12} />
-				<Txt x={300} y={530} text="9" size={12} weight={700} />
+				<Label anchor="start" x={A.x} y={530} text="this filter, used everywhere" size={12} />
+				<Label anchor="start" x={300} y={530} text="9" size={12} weight={700} />
 				<rect x={290} y={546} width={470} height={14} fill="var(--cv-neg)" opacity="0.75" rx="2" />
-				<Txt x={A.x} y={558} text="a fully connected layer" size={12} />
-				<Txt x={770} y={558} text="784 × 784 = {int(dense)}" size={12} weight={700} />
+				<Label anchor="start" x={A.x} y={558} text="a fully connected layer" size={12} />
+				<Label
+					anchor="start"
+					x={770}
+					y={558}
+					text="784 × 784 = {int(dense)}"
+					size={12}
+					weight={700}
+				/>
 			</Readout>
 		{/if}
 	{/if}

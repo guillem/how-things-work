@@ -7,8 +7,6 @@
 	 * can bond) glow in the electron colour; paired ones (lone pairs) are ink. Under each
 	 * card: how many bonds the atom makes (`capacity()`), or "full shell" for neon.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG presentation
-	 * attributes.
 	 */
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
@@ -81,7 +79,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'middle'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -114,7 +112,7 @@
 				y={c.y + 12}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="34px"
+				font-size="34"
 				style:fill={c.sym === 'H' || c.sym === 'Ne'
 					? 'var(--stage-ink)'
 					: c.sym === 'C'

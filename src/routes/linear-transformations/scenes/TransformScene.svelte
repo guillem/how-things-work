@@ -28,7 +28,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { VectorHandle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { clamp, Label, type Point, smoothstep, VectorHandle } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		I2,
@@ -55,7 +55,6 @@
 	} from '../matrix';
 	import { R, S, examples, loads, specials, type Preset } from '../presets';
 	import Arrow from './Arrow.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -498,7 +497,7 @@
 	/>
 	{#each rows as row, r (r)}
 		{#each row as cell, c (c)}
-			<T
+			<Label
 				x={x + gap / 2 + c * gap}
 				y={y + r * (size + 12)}
 				text={cell}
@@ -653,7 +652,7 @@
 					{@const right = P(Mv).x < 420 && Mv.x >= 0}
 					<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 					<Readout id="lands-label">
-						<T
+						<Label
 							x={P(Mv).x + (right ? 14 : -14)}
 							y={P(Mv).y + (Mv.y >= 0 ? -12 : 24)}
 							text="v lands here"
@@ -685,7 +684,7 @@
 						/>
 						{#if k === 0 || (latest && k > 0)}
 							<Readout id="power-{k}">
-								<T
+								<Label
 									x={tip.x + (it.x / L >= 0 ? 12 : -12)}
 									y={tip.y + (it.y / L >= 0 ? -10 : 20)}
 									text={powers[k]}
@@ -705,7 +704,7 @@
 		<!-- labels inside the plane -->
 		{#if areaW > 0.01 && Math.abs(dM) > 0.15 && onPlane(centreOfSquare)}
 			<Readout id="square-area">
-				<T
+				<Label
 					x={centreOfSquare.x}
 					y={centreOfSquare.y + 5}
 					text={n2(dM)}
@@ -721,7 +720,7 @@
 				{@const lab = eigenLabel(l)}
 				{#if onPlane(lab, 10)}
 					<Readout id="lambda-{l.k}">
-						<T
+						<Label
 							x={lab.x}
 							y={lab.y}
 							text="λ = {n2(l.value)}"
@@ -736,7 +735,7 @@
 			{/each}
 		{/if}
 		{#if w.drag + w.gallery + w.flip > 0.3 && onPlane(Fcentre, 20)}
-			<T
+			<Label
 				x={Fcentre.x}
 				y={Fcentre.y + 5}
 				text="F"
@@ -751,7 +750,7 @@
 		<!-- î and ĵ where they land -->
 		<Arrow from={O} to={P(iL)} color="var(--lt-i)" width={5} head={18} />
 		<Arrow from={O} to={P(jL)} color="var(--lt-j)" width={5} head={18} />
-		<T
+		<Label
 			x={iLabel.x}
 			y={iLabel.y}
 			text="î"
@@ -760,7 +759,7 @@
 			anchor="middle"
 			color="var(--lt-i)"
 		/>
-		<T
+		<Label
 			x={jLabel.x}
 			y={jLabel.y}
 			text="ĵ"
@@ -848,17 +847,66 @@
 	{#if w.drag > 0.01}
 		<Readout id="matrix-drag" order={1} label="The matrix" value={mText(M)} opacity={w.drag}>
 			<g opacity={panel(w.drag)}>
-				<T x={PX} y={64} text="the matrix" size={13} muted />
+				<Label anchor="start" x={PX} y={64} text="the matrix" size={13} muted />
 				{@render matrixBox(PX, 104, M, 22)}
-				<T x={PX} y={196} text="î lands on {pt(iL)}" size={15} weight={600} color="var(--lt-i)" />
-				<T x={PX} y={222} text="ĵ lands on {pt(jL)}" size={15} weight={600} color="var(--lt-j)" />
-				<T x={PX} y={290} text="A linear transformation:" size={14} weight={600} />
-				<T x={PX} y={316} text="• the origin stays put" size={13} />
-				<T x={PX} y={338} text="• straight lines stay straight (or collapse)" size={13} />
-				<T x={PX} y={360} text="• parallel, evenly spaced lines" size={13} />
-				<T x={PX + 12} y={378} text="stay parallel and evenly spaced" size={13} />
-				<T x={PX} y={450} text="Drag the tips of î and ĵ, or focus" size={13} muted />
-				<T x={PX} y={470} text="one (Tab) and use the arrow keys." size={13} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={196}
+					text="î lands on {pt(iL)}"
+					size={15}
+					weight={600}
+					color="var(--lt-i)"
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={222}
+					text="ĵ lands on {pt(jL)}"
+					size={15}
+					weight={600}
+					color="var(--lt-j)"
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={290}
+					text="A linear transformation:"
+					size={14}
+					weight={600}
+				/>
+				<Label anchor="start" x={PX} y={316} text="• the origin stays put" size={13} />
+				<Label
+					anchor="start"
+					x={PX}
+					y={338}
+					text="• straight lines stay straight (or collapse)"
+					size={13}
+				/>
+				<Label anchor="start" x={PX} y={360} text="• parallel, evenly spaced lines" size={13} />
+				<Label
+					anchor="start"
+					x={PX + 12}
+					y={378}
+					text="stay parallel and evenly spaced"
+					size={13}
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={450}
+					text="Drag the tips of î and ĵ, or focus"
+					size={13}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={470}
+					text="one (Tab) and use the arrow keys."
+					size={13}
+					muted
+				/>
 			</g>
 		</Readout>
 	{/if}
@@ -882,8 +930,9 @@
 			opacity={w.follow}
 		>
 			<g opacity={panel(w.follow)}>
-				<T x={PX} y={70} text="before:" size={13} muted />
-				<T
+				<Label anchor="start" x={PX} y={70} text="before:" size={13} muted />
+				<Label
+					anchor="start"
 					x={PX}
 					y={98}
 					text="v = ({n2(vx)}, {n2(vy)}) = {n2(vx)}·î {plusMinus(vy)}·ĵ"
@@ -891,17 +940,69 @@
 					weight={700}
 					color="var(--lt-v)"
 				/>
-				<T x={PX} y={160} text="after: the same recipe," size={13} muted />
-				<T x={PX} y={178} text="with î and ĵ where they landed" size={13} muted />
-				<T x={PX} y={214} text="{n2(vx)}·" size={16} weight={600} />
-				<T x={PX + 34} y={214} text={pt(iL)} size={16} weight={600} color="var(--lt-i)" />
-				<T x={PX} y={242} text="{plusMinus(vy)}·" size={16} weight={600} />
-				<T x={PX + 46} y={242} text={pt(jL)} size={16} weight={600} color="var(--lt-j)" />
-				<T x={PX} y={276} text="= {pt(Mv)}" size={20} weight={700} color="var(--lt-v)" />
-				<T x={PX} y={350} text="Four numbers pin the whole" size={14} weight={600} />
-				<T x={PX} y={372} text="transformation down:" size={14} weight={600} />
-				<T x={PX} y={398} text="where î lands  {pt(iL)}" size={14} color="var(--lt-i)" />
-				<T x={PX} y={420} text="where ĵ lands  {pt(jL)}" size={14} color="var(--lt-j)" />
+				<Label anchor="start" x={PX} y={160} text="after: the same recipe," size={13} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={178}
+					text="with î and ĵ where they landed"
+					size={13}
+					muted
+				/>
+				<Label anchor="start" x={PX} y={214} text="{n2(vx)}·" size={16} weight={600} />
+				<Label
+					anchor="start"
+					x={PX + 34}
+					y={214}
+					text={pt(iL)}
+					size={16}
+					weight={600}
+					color="var(--lt-i)"
+				/>
+				<Label anchor="start" x={PX} y={242} text="{plusMinus(vy)}·" size={16} weight={600} />
+				<Label
+					anchor="start"
+					x={PX + 46}
+					y={242}
+					text={pt(jL)}
+					size={16}
+					weight={600}
+					color="var(--lt-j)"
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={276}
+					text="= {pt(Mv)}"
+					size={20}
+					weight={700}
+					color="var(--lt-v)"
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={350}
+					text="Four numbers pin the whole"
+					size={14}
+					weight={600}
+				/>
+				<Label anchor="start" x={PX} y={372} text="transformation down:" size={14} weight={600} />
+				<Label
+					anchor="start"
+					x={PX}
+					y={398}
+					text="where î lands  {pt(iL)}"
+					size={14}
+					color="var(--lt-i)"
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={420}
+					text="where ĵ lands  {pt(jL)}"
+					size={14}
+					color="var(--lt-j)"
+				/>
 			</g>
 		</Readout>
 	{/if}
@@ -932,28 +1033,31 @@
 			opacity={w.matrix}
 		>
 			<g opacity={panel(w.matrix)}>
-				<T x={PX} y={64} text="the matrix times v" size={13} muted />
+				<Label anchor="start" x={PX} y={64} text="the matrix times v" size={13} muted />
 				{@render matrixBox(PX - 4, 112, M, 17)}
 				{@render bracket(PX + 128, 112, [[n2(vx)], [n2(vy)]], ['var(--lt-v)'], 17, 50)}
-				<T x={PX + 196} y={124} text="=" size={20} weight={600} anchor="middle" />
+				<Label x={PX + 196} y={124} text="=" size={20} weight={600} anchor="middle" />
 				{@render bracket(PX + 210, 112, [[n2(Mv.x)], [n2(Mv.y)]], ['var(--lt-v)'], 17, 62)}
-				<T x={PX} y={214} text="= {n2(vx)} × (first column)" size={14} />
-				<T x={PX} y={236} text="+ {n2(vy)} × (second column)" size={14} />
-				<T
+				<Label anchor="start" x={PX} y={214} text="= {n2(vx)} × (first column)" size={14} />
+				<Label anchor="start" x={PX} y={236} text="+ {n2(vy)} × (second column)" size={14} />
+				<Label
+					anchor="start"
 					x={PX}
 					y={280}
 					text="top:  {f(M.a)} × {f(vx)} + {f(M.b)} × {f(vy)} = {n2(Mv.x)}"
 					size={14}
 					weight={600}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={306}
 					text="bottom:  {f(M.c)} × {f(vx)} + {f(M.d)} × {f(vy)} = {n2(Mv.y)}"
 					size={14}
 					weight={600}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={376}
 					text="first column: where î lands"
@@ -961,7 +1065,8 @@
 					color="var(--lt-i)"
 					weight={600}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={400}
 					text="second column: where ĵ lands"
@@ -984,13 +1089,50 @@
 			opacity={w.gallery}
 		>
 			<g opacity={panel(w.gallery)}>
-				<T x={PX} y={78} text={galleryName?.name ?? 'Your own matrix'} size={22} weight={700} />
-				<T x={PX} y={104} text={galleryName?.about ?? 'dragged from the example'} size={13} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={78}
+					text={galleryName?.name ?? 'Your own matrix'}
+					size={22}
+					weight={700}
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={104}
+					text={galleryName?.about ?? 'dragged from the example'}
+					size={13}
+					muted
+				/>
 				{@render matrixBox(PX, 166, M, 22)}
-				<T x={PX} y={258} text="î lands on {pt(iL)}" size={15} weight={600} color="var(--lt-i)" />
-				<T x={PX} y={284} text="ĵ lands on {pt(jL)}" size={15} weight={600} color="var(--lt-j)" />
-				<T x={PX} y={350} text="Pick another example from the menu," size={13} muted />
-				<T x={PX} y={370} text="or drag î and ĵ." size={13} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={258}
+					text="î lands on {pt(iL)}"
+					size={15}
+					weight={600}
+					color="var(--lt-i)"
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={284}
+					text="ĵ lands on {pt(jL)}"
+					size={15}
+					weight={600}
+					color="var(--lt-j)"
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={350}
+					text="Pick another example from the menu,"
+					size={13}
+					muted
+				/>
+				<Label anchor="start" x={PX} y={370} text="or drag î and ĵ." size={13} muted />
 			</g>
 		</Readout>
 	{/if}
@@ -1022,13 +1164,29 @@
 			opacity={w.area + w.flip}
 		>
 			<g opacity={panel(w.area + w.flip)}>
-				<T x={PX} y={64} text="the matrix" size={13} muted />
+				<Label anchor="start" x={PX} y={64} text="the matrix" size={13} muted />
 				{@render matrixBox(PX, 104, M, 20)}
-				<T x={PX} y={196} text="det = ad − bc" size={18} weight={700} />
-				<T x={PX} y={224} text="= {detText}" size={15} />
-				<T x={PX} y={254} text="= {n2(dM)}" size={22} weight={700} color={areaColor} />
-				<T x={PX} y={300} text="unit square: area 1 → {n2(Math.abs(dM))}" size={14} weight={600} />
-				<T
+				<Label anchor="start" x={PX} y={196} text="det = ad − bc" size={18} weight={700} />
+				<Label anchor="start" x={PX} y={224} text="= {detText}" size={15} />
+				<Label
+					anchor="start"
+					x={PX}
+					y={254}
+					text="= {n2(dM)}"
+					size={22}
+					weight={700}
+					color={areaColor}
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={300}
+					text="unit square: area 1 → {n2(Math.abs(dM))}"
+					size={14}
+					weight={600}
+				/>
+				<Label
+					anchor="start"
 					x={PX}
 					y={326}
 					text="F: area {n2(Math.abs(F0area))} → {n2(Math.abs(F0area * dM))}  (× {n2(
@@ -1038,7 +1196,8 @@
 					weight={600}
 					color="var(--lt-shape)"
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={372}
 					text={orientation}
@@ -1047,7 +1206,14 @@
 					color={dShown < 0 ? 'var(--lt-neg)' : undefined}
 				/>
 				{#if !showArea}
-					<T x={PX} y={420} text="(turn on “Show areas” to see them)" size={12} muted />
+					<Label
+						anchor="start"
+						x={PX}
+						y={420}
+						text="(turn on “Show areas” to see them)"
+						size={12}
+						muted
+					/>
 				{/if}
 			</g>
 		</Readout>
@@ -1084,8 +1250,16 @@
 		>
 			<g opacity={panel(w.eigen + w.special)}>
 				{#if w.special > 0.5}
-					<T x={PX} y={70} text={specialName?.name ?? 'Your own matrix'} size={20} weight={700} />
-					<T
+					<Label
+						anchor="start"
+						x={PX}
+						y={70}
+						text={specialName?.name ?? 'Your own matrix'}
+						size={20}
+						weight={700}
+					/>
+					<Label
+						anchor="start"
 						x={PX}
 						y={94}
 						text={specialName?.about ?? 'dragged from the example'}
@@ -1093,16 +1267,32 @@
 						muted
 					/>
 				{:else}
-					<T x={PX} y={104} text="the matrix" size={13} muted />
+					<Label anchor="start" x={PX} y={104} text="the matrix" size={13} muted />
 				{/if}
 				{@render matrixBox(PX, 146, M, 20)}
-				<T x={PX} y={240} text="M v = λ v" size={18} weight={700} />
+				<Label anchor="start" x={PX} y={240} text="M v = λ v" size={18} weight={700} />
 				{#each eigenSummary as line, k (k)}
-					<T x={PX} y={274 + 24 * k} text={line} size={15} weight={600} color="var(--lt-eigen)" />
+					<Label
+						anchor="start"
+						x={PX}
+						y={274 + 24 * k}
+						text={line}
+						size={15}
+						weight={600}
+						color="var(--lt-eigen)"
+					/>
 				{/each}
 				{#if w.eigen > 0.5}
-					<T x={PX} y={380} text="the thin arrow and its image:" size={13} muted />
-					<T
+					<Label
+						anchor="start"
+						x={PX}
+						y={380}
+						text="the thin arrow and its image:"
+						size={13}
+						muted
+					/>
+					<Label
+						anchor="start"
 						x={PX}
 						y={404}
 						text={length(Mu) < 1e-6
@@ -1116,7 +1306,14 @@
 					/>
 				{/if}
 				{#if !showEigen}
-					<T x={PX} y={450} text="(turn on “Show eigenvectors” to draw them)" size={12} muted />
+					<Label
+						anchor="start"
+						x={PX}
+						y={450}
+						text="(turn on “Show eigenvectors” to draw them)"
+						size={12}
+						muted
+					/>
 				{/if}
 			</g>
 		</Readout>
@@ -1144,12 +1341,20 @@
 			opacity={shownCount >= 8 ? w.repeat : 0}
 		>
 			<g opacity={panel(w.repeat)}>
-				<T x={PX} y={64} text="apply the matrix again and again" size={13} muted />
-				<T x={PX} y={96} text="vector" size={13} weight={600} />
-				<T x={PX + 120} y={96} text="direction" size={13} weight={600} anchor="end" />
-				<T x={PX + 290} y={96} text="length" size={13} weight={600} anchor="end" />
+				<Label
+					anchor="start"
+					x={PX}
+					y={64}
+					text="apply the matrix again and again"
+					size={13}
+					muted
+				/>
+				<Label anchor="start" x={PX} y={96} text="vector" size={13} weight={600} />
+				<Label x={PX + 120} y={96} text="direction" size={13} weight={600} anchor="end" />
+				<Label x={PX + 290} y={96} text="length" size={13} weight={600} anchor="end" />
 				{#each iterates as it, k (k)}
-					<T
+					<Label
+						anchor="start"
 						x={PX}
 						y={124 + 26 * k}
 						text={powers[k]}
@@ -1159,7 +1364,7 @@
 						color={k === 0 ? 'var(--lt-v)' : undefined}
 						opacity={k < shownCount ? 1 : 0.15}
 					/>
-					<T
+					<Label
 						x={PX + 120}
 						y={124 + 26 * k}
 						text={length(it) > 1e-9 ? `${num(angleOf(it), 1)}°` : '—'}
@@ -1167,7 +1372,7 @@
 						anchor="end"
 						opacity={k < shownCount ? 1 : 0.15}
 					/>
-					<T
+					<Label
 						x={PX + 290}
 						y={124 + 26 * k}
 						text={num(length(it), 1)}
@@ -1178,11 +1383,33 @@
 				{/each}
 				<g opacity={shownCount >= 8 ? 1 : 0.15}>
 					{#each verdict as line, k (k)}
-						<T x={PX} y={356 + 24 * k} text={line} size={15} weight={600} color="var(--lt-eigen)" />
+						<Label
+							anchor="start"
+							x={PX}
+							y={356 + 24 * k}
+							text={line}
+							size={15}
+							weight={600}
+							color="var(--lt-eigen)"
+						/>
 					{/each}
 				</g>
-				<T x={PX} y={470} text="PageRank finds the ranks of web pages" size={13} muted />
-				<T x={PX} y={490} text="this way, with a matrix of links." size={13} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={470}
+					text="PageRank finds the ranks of web pages"
+					size={13}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={490}
+					text="this way, with a matrix of links."
+					size={13}
+					muted
+				/>
 			</g>
 		</Readout>
 	{/if}
@@ -1222,8 +1449,17 @@
 			opacity={w.compose}
 		>
 			<g opacity={panel(w.compose)}>
-				<T x={PX} y={60} text="1. first" size={13} muted opacity={firstNow ? 1 : 0.7} />
-				<T
+				<Label
+					anchor="start"
+					x={PX}
+					y={60}
+					text="1. first"
+					size={13}
+					muted
+					opacity={firstNow ? 1 : 0.7}
+				/>
+				<Label
+					anchor="start"
 					x={PX}
 					y={84}
 					text={firstIs === 'rotate' ? 'rotate a quarter turn: R' : 'shear: S'}
@@ -1232,8 +1468,9 @@
 					opacity={firstNow || ct < 1 ? 1 : 0.6}
 				/>
 				{@render matrixBox(PX + 210, 80, firstIs === 'rotate' ? R : S, 15)}
-				<T x={PX} y={148} text="2. then" size={13} muted />
-				<T
+				<Label anchor="start" x={PX} y={148} text="2. then" size={13} muted />
+				<Label
+					anchor="start"
 					x={PX}
 					y={172}
 					text={firstIs === 'rotate' ? 'shear: S' : 'rotate a quarter turn: R'}
@@ -1242,10 +1479,18 @@
 					opacity={secondNow ? 1 : 0.6}
 				/>
 				{@render matrixBox(PX + 210, 168, firstIs === 'rotate' ? S : R, 15)}
-				<T x={PX} y={254} text="together:" size={13} muted />
-				<T x={PX} y={282} text={composeOrder === 'rs' ? 'SR =' : 'RS ='} size={20} weight={700} />
+				<Label anchor="start" x={PX} y={254} text="together:" size={13} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={282}
+					text={composeOrder === 'rs' ? 'SR =' : 'RS ='}
+					size={20}
+					weight={700}
+				/>
 				{@render matrixBox(PX + 70, 278, product, 20)}
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={364}
 					text="î ends on {pt(col1(product))}"
@@ -1253,7 +1498,8 @@
 					weight={600}
 					color="var(--lt-i)"
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={388}
 					text="ĵ ends on {pt(col2(product))}"
@@ -1261,7 +1507,8 @@
 					weight={600}
 					color="var(--lt-j)"
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={436}
 					text="the other order gives {composeOrder === 'rs' ? 'RS' : 'SR'} = ({n2(other.a)} {n2(
@@ -1270,14 +1517,16 @@
 					size={13}
 					muted
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={462}
 					text="det: {n2(det(S))} × {n2(det(R))} = {n2(det(product))}"
 					size={13}
 					muted
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={530}
 					text={ct < 1
@@ -1318,17 +1567,54 @@
 			opacity={w.all}
 		>
 			<g opacity={panel(w.all)}>
-				<T x={PX} y={64} text="the matrix: where î and ĵ land" size={13} muted />
+				<Label anchor="start" x={PX} y={64} text="the matrix: where î and ĵ land" size={13} muted />
 				{@render matrixBox(PX, 104, M, 22)}
-				<T x={PX} y={200} text="det = {n2(dM)}" size={18} weight={700} color={areaColor} />
-				<T x={PX} y={224} text="areas × {n2(Math.abs(dM))}; {orientation}" size={12} muted />
-				<T x={PX} y={276} text="eigenvectors" size={13} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={200}
+					text="det = {n2(dM)}"
+					size={18}
+					weight={700}
+					color={areaColor}
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={224}
+					text="areas × {n2(Math.abs(dM))}; {orientation}"
+					size={12}
+					muted
+				/>
+				<Label anchor="start" x={PX} y={276} text="eigenvectors" size={13} muted />
 				{#each eigenSummary as line, k (k)}
-					<T x={PX} y={300 + 24 * k} text={line} size={15} weight={600} color="var(--lt-eigen)" />
+					<Label
+						anchor="start"
+						x={PX}
+						y={300 + 24 * k}
+						text={line}
+						size={15}
+						weight={600}
+						color="var(--lt-eigen)"
+					/>
 				{/each}
-				<T x={PX} y={420} text="A matrix is a transformation:" size={15} weight={700} />
-				<T x={PX} y={444} text="its columns are where it sends" size={15} weight={700} />
-				<T x={PX} y={468} text="the basis vectors." size={15} weight={700} />
+				<Label
+					anchor="start"
+					x={PX}
+					y={420}
+					text="A matrix is a transformation:"
+					size={15}
+					weight={700}
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={444}
+					text="its columns are where it sends"
+					size={15}
+					weight={700}
+				/>
+				<Label anchor="start" x={PX} y={468} text="the basis vectors." size={15} weight={700} />
 			</g>
 		</Readout>
 	{/if}

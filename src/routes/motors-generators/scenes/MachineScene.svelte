@@ -529,7 +529,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -618,20 +618,15 @@
 			faceX(C.y + POLE_H)} {C.y + POLE_H} H{2 * C.x - 36} Z"
 		fill="var(--em-south)"
 	/>
-	<text
-		x="62"
-		y={C.y + 8}
-		text-anchor="middle"
-		font-weight="800"
-		style:font-size="22px"
-		style:fill="#fff">N</text
+	<text x="62" y={C.y + 8} text-anchor="middle" font-weight="800" font-size="22" style:fill="#fff"
+		>N</text
 	>
 	<text
 		x={2 * C.x - 62}
 		y={C.y + 8}
 		text-anchor="middle"
 		font-weight="800"
-		style:font-size="22px"
+		font-size="22"
 		style:fill="#fff">S</text
 	>
 
@@ -1118,8 +1113,8 @@
 					stroke="var(--border)"
 				/>
 			{/if}
-			<text {x} y={CARD.y + 24} class="muted" style:font-size="12px">{c.label}</text>
-			<text {x} y={CARD.y + 49} font-weight="700" style:font-size="18px" style:fill={c.color}
+			<text {x} y={CARD.y + 24} class="muted" font-size="12">{c.label}</text>
+			<text {x} y={CARD.y + 49} font-weight="700" font-size="18" style:fill={c.color}
 				>{c.value}</text
 			>
 		</Readout>

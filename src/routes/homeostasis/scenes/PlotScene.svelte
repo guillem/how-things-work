@@ -330,7 +330,7 @@
 <g style:font-variant-numeric="tabular-nums">
 	<!-- ===================== left: the readout and the tank ===================== -->
 	<Label x={24} y={36} text={fmtMin(minute)} size={13} anchor="start" muted />
-	<text x={24} y={76} style:font-size="30px" font-weight="600" style:fill={z.color}
+	<text x={24} y={76} font-size="30" font-weight="600" style:fill={z.color}
 		>{Math.round(now.g)}<tspan font-size="14" font-weight="500" dx="6">mg/dL</tspan></text
 	>
 	<text x={24} y={100} class="muted"
@@ -402,12 +402,8 @@
 			y2={tankY(g)}
 			stroke="var(--stage-ink-muted)"
 		/>
-		<text
-			x={TX + TW - 19}
-			y={tankY(g) + 4}
-			style:font-size="10px"
-			class="muted halo"
-			text-anchor="end">{g}</text
+		<text x={TX + TW - 19} y={tankY(g) + 4} font-size="10" class="muted halo" text-anchor="end"
+			>{g}</text
 		>
 	{/each}
 	<Label x={TX + TW / 2} y={TY0 - 10} text="glucose in the blood" size={12} weight={600} />
@@ -421,7 +417,7 @@
 			<text
 				x={p.lx}
 				y={p.id === 'urine' ? p.ly + 16 : p.ly + 34}
-				style:font-size="11px"
+				font-size="11"
 				class="muted"
 				text-anchor={anchor}>{fmtRate(p.rate)} mg/dL/min</text
 			>
@@ -431,7 +427,7 @@
 	<!-- hormones now -->
 	<g>
 		<circle cx={30} cy={496} r="5" fill="var(--hm-insulin)" />
-		<text x={42} y={500} style:font-size="13px"
+		<text x={42} y={500} font-size="13"
 			>insulin <tspan font-weight="600">{now.i.toFixed(now.i < 10 ? 1 : 0)}</tspan><tspan
 				class="muted"
 				font-size="11"
@@ -439,7 +435,7 @@
 			></text
 		>
 		<circle cx={30} cy={520} r="5" fill="var(--hm-glucagon)" />
-		<text x={42} y={524} style:font-size="13px"
+		<text x={42} y={524} font-size="13"
 			>glucagon <tspan font-weight="600">×{now.gcg.toFixed(1)}</tspan><tspan
 				class="muted"
 				font-size="11"
@@ -450,12 +446,12 @@
 
 	<!-- the step's key result -->
 	<g opacity={verdictShow}>
-		<text x={24} y={560} style:font-size="14px" font-weight="600">{verdict.text}</text>
+		<text x={24} y={560} font-size="14" font-weight="600">{verdict.text}</text>
 		{#if verdict.sub}
 			<text
 				x={24}
 				y={578}
-				style:font-size="12px"
+				font-size="12"
 				font-weight={verdict.ok ? 400 : 600}
 				style:fill={verdict.ok ? 'var(--stage-ink-muted)' : 'var(--hm-hypo)'}>{verdict.sub}</text
 			>
@@ -495,7 +491,7 @@
 	<text
 		x={sx(0) + 6}
 		y={syG(lines === 'hypo' ? 54 : THRESHOLDS.hypo) + 13}
-		style:font-size="11px"
+		font-size="11"
 		class="halo"
 		style:fill="var(--hm-hypo)"
 		>{lines === 'hypo'
@@ -677,7 +673,7 @@
 			stroke-width="1.5"
 			stroke-dasharray="4 3"
 		/>
-		<text x={X1 - 122} y={40} style:font-size="12px" class="muted">{cfg.ghostLabel}</text>
+		<text x={X1 - 122} y={40} font-size="12" class="muted">{cfg.ghostLabel}</text>
 	{/if}
 
 	<!-- cursor -->

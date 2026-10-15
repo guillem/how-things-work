@@ -7,7 +7,7 @@
 	import { Readout } from '#lib/explainer/index.ts';
 	import { examples, leastSquares } from '../descent';
 	import { LEFT } from './shared';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Props {
 		a: number;
@@ -59,7 +59,7 @@
 	{/each}
 	<Readout id="data-axes">
 		{#each ticks as v (v)}
-			<Txt
+			<Label
 				x={px(v)}
 				y={Y1 + 15}
 				text={String(v).replace('-', '−')}
@@ -67,7 +67,7 @@
 				size={11}
 				muted
 			/>
-			<Txt
+			<Label
 				x={X0 - 6}
 				y={py(v) + 4}
 				text={String(v).replace('-', '−')}
@@ -76,8 +76,8 @@
 				muted
 			/>
 		{/each}
-		<Txt x={X1} y={Y1 + 30} text="input x →" anchor="end" size={12} muted />
-		<Txt x={X0 + 4} y={Y0 - 8} text="↑ output y" size={12} muted />
+		<Label x={X1} y={Y1 + 30} text="input x →" anchor="end" size={12} muted />
+		<Label anchor="start" x={X0 + 4} y={Y0 - 8} text="↑ output y" size={12} muted />
 	</Readout>
 
 	<g clip-path="url(#gd-data-clip)">
@@ -103,11 +103,26 @@
 		{/each}
 	</g>
 	<Readout id="data-line" order={1} label="Line" value={eq} color="var(--gd-line)">
-		<Txt x={X0 + 10} y={Y0 + 20} text={eq} size={14} weight={600} color="var(--gd-line)" />
+		<Label
+			anchor="start"
+			x={X0 + 10}
+			y={Y0 + 20}
+			text={eq}
+			size={14}
+			weight={600}
+			color="var(--gd-line)"
+		/>
 	</Readout>
 	{#if showBest}
 		<Readout id="data-best" order={2} label="Dashed" value="the least-squares line">
-			<Txt x={X0 + 10} y={Y0 + 40} text="dashed: the least-squares line" size={12} muted />
+			<Label
+				anchor="start"
+				x={X0 + 10}
+				y={Y0 + 40}
+				text="dashed: the least-squares line"
+				size={12}
+				muted
+			/>
 		</Readout>
 	{/if}
 </g>

@@ -6,10 +6,9 @@
 	 * A highlight walks along the panels (4 s each); under reduced motion all
 	 * four are shown at full strength, each at a telling moment.
 	 */
-	import { TAU, cycle, hash, smoothstep } from '#lib/draw/index.ts';
+	import { cycle, hash, Label, smoothstep, TAU } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import Phage from './Phage.svelte';
-	import Tag from './Tag.svelte';
 
 	let { t, reduced }: StageProps = $props();
 	const time = $derived(reduced ? 2.5 : t);
@@ -89,8 +88,8 @@
 		label="A phage infects a bacterium"
 		value="about an hour from landing to bursting, depending on the phage"
 	>
-		<Tag x={480} y={66} text="A phage infects a bacterium" size={17} weight={600} />
-		<Tag
+		<Label x={480} y={66} text="A phage infects a bacterium" size={17} weight={600} />
+		<Label
 			x={480}
 			y={88}
 			text="(schematic: the yogurt bacterium’s phages are about 0.3 µm long, a third of the cell)"
@@ -193,8 +192,8 @@
 			marker={p.k + 1}
 			at={[p.x, 190]}
 		>
-			<Tag x={p.x} y={184} text="{p.k + 1}  {p.title}" size={13} weight={600} opacity={o} />
-			<Tag x={p.x} y={418} text={p.sub} size={12} muted opacity={o} />
+			<Label x={p.x} y={184} text="{p.k + 1}  {p.title}" size={13} weight={600} opacity={o} />
+			<Label x={p.x} y={418} text={p.sub} size={12} muted opacity={o} />
 		</Readout>
 		{#if p.k < 3}
 			<path
@@ -213,14 +212,14 @@
 		label="This page"
 		value="CRISPR, the defence many bacteria and archaea use to remember a phage and destroy it the next time"
 	>
-		<Tag
+		<Label
 			x={480}
 			y={500}
 			text="This page: CRISPR, the defence many bacteria use"
 			size={14}
 			weight={600}
 		/>
-		<Tag
+		<Label
 			x={480}
 			y={522}
 			text="to remember a phage and destroy it the next time it gets in"

@@ -17,8 +17,6 @@
 	 *            table lights the element in its block colour. The electrons
 	 *            that are new since the last value drop into place (Tween).
 	 *
-	 * Text sizes and colours are set with `style:` because the stage's CSS
-	 * overrides SVG presentation attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -426,7 +424,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -650,7 +648,7 @@
 					class="muted"
 					text-anchor="middle"
 					transform="translate(9 350) rotate(-90)"
-					style:font-size="11px">filling order (roughly, energy)</text
+					font-size="11">filling order (roughly, energy)</text
 				>
 			</Readout>
 
@@ -812,7 +810,7 @@
 				y={litPos.current.y + 11}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="11px"
+				font-size="11"
 				style:fill="var(--stage-bg)">{litEl.symbol}</text
 			>
 		</g>

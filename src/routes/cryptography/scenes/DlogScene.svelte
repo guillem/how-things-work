@@ -8,11 +8,10 @@
 	 * Numbers come from the model (`diffieHellman`, `eveSearch`, `REAL`); Alice's secret is the
 	 * `a` slider. Reduced motion shows the finished search.
 	 */
-	import { clamp, cycle } from '#lib/draw/index.ts';
+	import { clamp, cycle, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { fastPower, slowPower, sup } from '../../primes-modular-arithmetic/modular';
 	import { DH, REAL, diffieHellman, eveSearch } from '../crypto';
-	import Txt from './Txt.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 	const a = $derived(clamp(Math.round(Number(params.a ?? 29)), 2, 99));
@@ -44,14 +43,14 @@
 		<line x1={AX.x0} x2={AX.x1} y1={sy(v)} y2={sy(v)} stroke="var(--stage-grid)" />
 		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 		<Readout id="tick-{v}">
-			<Txt x={AX.x0 - 8} y={sy(v) + 4} text={String(v)} size={11} anchor="end" muted />
-			<Txt x={sx(v)} y={AX.y0 + 20} text={String(v)} size={11} anchor="middle" muted />
+			<Label tabular x={AX.x0 - 8} y={sy(v) + 4} text={String(v)} size={11} anchor="end" muted />
+			<Label tabular x={sx(v)} y={AX.y0 + 20} text={String(v)} size={11} anchor="middle" muted />
 		</Readout>
 	{/each}
 	<line x1={AX.x0} x2={AX.x0} y1={AX.y0} y2={AX.y1} stroke="var(--stage-line)" />
 	<line x1={AX.x0} x2={AX.x1} y1={AX.y0} y2={AX.y0} stroke="var(--stage-line)" />
 	<Readout id="x-title">
-		<Txt
+		<Label
 			x={(AX.x0 + AX.x1) / 2}
 			y={AX.y0 + 46}
 			text="exponent Eve tries"
@@ -60,13 +59,27 @@
 			anchor="middle"
 		/>
 		{#snippet narrow()}
-			<Txt x={(AX.x0 + AX.x1) / 2} y={AX.y0 + 40} text="x" size={28} weight={600} anchor="middle" />
+			<Label
+				x={(AX.x0 + AX.x1) / 2}
+				y={AX.y0 + 40}
+				text="x"
+				size={28}
+				weight={600}
+				anchor="middle"
+			/>
 		{/snippet}
 	</Readout>
 	<Readout id="y-title">
-		<Txt x={AX.x0 - 40} y={AX.y1 - 22} text="2ˣ mod 101" size={13} weight={600} />
+		<Label anchor="start" x={AX.x0 - 40} y={AX.y1 - 22} text="2ˣ mod 101" size={13} weight={600} />
 		{#snippet narrow()}
-			<Txt x={AX.x0 - 40} y={AX.y1 - 22} text="2ˣ mod 101" size={26} weight={600} />
+			<Label
+				anchor="start"
+				x={AX.x0 - 40}
+				y={AX.y1 - 22}
+				text="2ˣ mod 101"
+				size={26}
+				weight={600}
+			/>
 		{/snippet}
 	</Readout>
 
@@ -81,7 +94,9 @@
 		stroke-dasharray="6 4"
 	/>
 	<Readout id="a-line">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={AX.x1 + 14}
 			y={sy(A) + 4}
 			text="A = {A}"
@@ -90,7 +105,9 @@
 			color="var(--cr-alice)"
 		/>
 		{#snippet narrow()}
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={AX.x1 + 10}
 				y={sy(A) + 9}
 				text="A = {A}"
@@ -133,7 +150,8 @@
 			stroke-width="3"
 		/>
 		<Readout id="found">
-			<Txt
+			<Label
+				tabular
 				x={sx(found.x)}
 				y={sy(A) - 16}
 				text="a = {found.x}"
@@ -143,7 +161,8 @@
 				color="var(--cr-alice)"
 			/>
 			{#snippet narrow()}
-				<Txt
+				<Label
+					tabular
 					x={sx(found.x)}
 					y={sy(A) - 18}
 					text="a = {found.x}"
@@ -173,11 +192,28 @@
 		value="2ᵃ ≡ {A} (mod 101)"
 		note="no pattern to follow: try a = 0, 1, 2, …"
 	>
-		<Txt x={PX} y={70} text="Eve wants a with 2ᵃ ≡ {A} (mod 101)" size={17} weight={700} />
-		<Txt x={PX} y={94} text="No pattern to follow: try a = 0, 1, 2, …" size={13} muted />
+		<Label
+			anchor="start"
+			tabular
+			x={PX}
+			y={70}
+			text="Eve wants a with 2ᵃ ≡ {A} (mod 101)"
+			size={17}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
+			x={PX}
+			y={94}
+			text="No pattern to follow: try a = 0, 1, 2, …"
+			size={13}
+			muted
+		/>
 	</Readout>
 	<Readout id="status">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={PX}
 			y={134}
 			text={hit
@@ -197,8 +233,10 @@
 		value="{nTries} {nTries === 1 ? 'try' : 'tries'}"
 		color="var(--cr-bad)"
 	>
-		<Txt x={PX} y={178} text="Eve, by trying" size={14} weight={700} />
-		<Txt
+		<Label anchor="start" x={PX} y={178} text="Eve, by trying" size={14} weight={700} />
+		<Label
+			anchor="start"
+			tabular
 			x={PX}
 			y={204}
 			text="{nTries} {nTries === 1 ? 'try' : 'tries'}"
@@ -214,8 +252,10 @@
 		value="{cost} multiplication{cost === 1 ? '' : 's'}"
 		color="var(--cr-ok)"
 	>
-		<Txt x={PX + 190} y={178} text="Alice, forwards" size={14} weight={700} />
-		<Txt
+		<Label anchor="start" x={PX + 190} y={178} text="Alice, forwards" size={14} weight={700} />
+		<Label
+			anchor="start"
+			tabular
 			x={PX + 190}
 			y={204}
 			text="{cost} multiplication{cost === 1 ? '' : 's'}"
@@ -225,7 +265,14 @@
 		/>
 	</Readout>
 	<Readout id="tiny">
-		<Txt x={PX} y={240} text="Easy for Eve here: the clock is tiny." size={13} muted />
+		<Label
+			anchor="start"
+			x={PX}
+			y={240}
+			text="Easy for Eve here: the clock is tiny."
+			size={13}
+			muted
+		/>
 	</Readout>
 	<Readout
 		id="real"
@@ -243,7 +290,9 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={PX + 4}
 			y={300}
 			text="Real keys: a prime of {REAL.keyBits} bits"
@@ -251,7 +300,9 @@
 			weight={700}
 			halo={false}
 		/>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={PX + 4}
 			y={320}
 			text="({REAL.keyDigits} digits) or more"
@@ -259,7 +310,8 @@
 			weight={700}
 			halo={false}
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={PX + 4}
 			y={354}
 			text="Alice: at most 4,094 multiplications"
@@ -268,7 +320,8 @@
 			weight={600}
 			halo={false}
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={PX + 4}
 			y={380}
 			text="Eve by trying: up to about 10⁶¹⁶ tries"
@@ -277,22 +330,33 @@
 			weight={600}
 			halo={false}
 		/>
-		<Txt x={PX + 4} y={416} text="Cleverer attacks exist. Their record:" size={13} halo={false} />
-		<Txt
+		<Label
+			anchor="start"
+			x={PX + 4}
+			y={416}
+			text="Cleverer attacks exist. Their record:"
+			size={13}
+			halo={false}
+		/>
+		<Label
+			anchor="start"
+			tabular
 			x={PX + 4}
 			y={438}
 			text="a {REAL.dlogRecordBits}-bit ({REAL.dlogRecordDigits}-digit) prime, in 2019,"
 			size={13}
 			halo={false}
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={PX + 4}
 			y={460}
 			text="after thousands of years of computer time."
 			size={13}
 			halo={false}
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={PX + 4}
 			y={494}
 			text="The numbers here are for illustration."

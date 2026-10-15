@@ -5,7 +5,7 @@
 	 */
 	import type { Scale } from '#lib/draw/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import { niceTicks, num } from './plot';
 
 	interface Props {
@@ -51,13 +51,13 @@
 		<line x1={left} x2={right} y1={sy(v)} y2={sy(v)} stroke="var(--stage-grid)" />
 		<!-- <Readout>: tick labels and axis names are hidden on narrow screens -->
 		<Readout id="frame-y{v}">
-			<Txt x={left - 8} y={sy(v) + 4} text={num(v, decimals)} size={11} anchor="end" muted />
+			<Label x={left - 8} y={sy(v) + 4} text={num(v, decimals)} size={11} anchor="end" muted />
 		</Readout>
 	{/each}
 	{#each xTicks as v (v)}
 		<line x1={sx(v)} x2={sx(v)} y1={bottom} y2={bottom + 4} stroke="var(--stage-line)" />
 		<Readout id="frame-x{v}">
-			<Txt x={sx(v)} y={bottom + 17} text={xFormat(v)} size={11} anchor="middle" muted />
+			<Label x={sx(v)} y={bottom + 17} text={xFormat(v)} size={11} anchor="middle" muted />
 		</Readout>
 	{/each}
 	<line x1={left} x2={left} y1={top} y2={bottom} stroke="var(--stage-line)" />
@@ -73,9 +73,17 @@
 		/>
 	{/if}
 	<Readout id="frame-names">
-		<Txt x={left - 8} y={top - 12} text={yName} size={12} weight={600} color={yColor} />
+		<Label
+			anchor="start"
+			x={left - 8}
+			y={top - 12}
+			text={yName}
+			size={12}
+			weight={600}
+			color={yColor}
+		/>
 		{#if xName}
-			<Txt x={right} y={bottom + 34} text={xName} size={12} anchor="end" muted />
+			<Label x={right} y={bottom + 34} text={xName} size={12} anchor="end" muted />
 		{/if}
 	</Readout>
 </g>

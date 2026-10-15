@@ -14,9 +14,8 @@
 	 * A cursor sweeps each window in SWEEP seconds and holds the finished
 	 * picture; reduced motion shows the finished picture.
 	 */
-	import { Axes, clamp, linePath, scale, smoothstep } from '#lib/draw/index.ts';
+	import { Axes, clamp, Label, linePath, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Tag from './Tag.svelte';
 	import { count, pow10 } from '../../immune-system/run';
 	import {
 		INTERVAL,
@@ -130,7 +129,7 @@
 	{#if view === 'doses'}
 		<!-- left: the read-outs -->
 		<Readout id="d-day" order={1} label="Days after the first dose" value={dayD.toFixed(0)}>
-			<text x={24} y={60} style:font-size="16px" font-weight="600"
+			<text x={24} y={60} font-size="16" font-weight="600"
 				>Day {dayD.toFixed(0)} after the first dose</text
 			>
 		</Readout>
@@ -141,7 +140,7 @@
 			value="{count(antibody(nowD))} pg/mL"
 			color="var(--im-antibody)"
 		>
-			<text x={24} y={92} style:font-size="13px"
+			<text x={24} y={92} font-size="13"
 				>antibodies now <tspan font-weight="600" dx="4">{count(antibody(nowD))} pg/mL</tspan></text
 			>
 		</Readout>
@@ -152,8 +151,8 @@
 			value="{count(peakOne.v)} pg/mL, {ratio(peakOne.v)} an infection's"
 		>
 			<g opacity={two ? 0.6 : 1}>
-				<text x={24} y={150} style:font-size="13px">peak after one dose</text>
-				<text x={24} y={170} style:font-size="15px" font-weight="700"
+				<text x={24} y={150} font-size="13">peak after one dose</text>
+				<text x={24} y={170} font-size="15" font-weight="700"
 					>{count(peakOne.v)} pg/mL · {ratio(peakOne.v)} an infection’s</text
 				>
 			</g>
@@ -167,20 +166,18 @@
 			)} times one dose"
 		>
 			<g opacity={two ? 1 : 0.6}>
-				<text x={24} y={214} style:font-size="13px">peak after two doses</text>
-				<text x={24} y={234} style:font-size="15px" font-weight="700"
+				<text x={24} y={214} font-size="13">peak after two doses</text>
+				<text x={24} y={234} font-size="15" font-weight="700"
 					>{count(peakTwo.v)} pg/mL · {ratio(peakTwo.v)} an infection’s</text
 				>
-				<text x={24} y={254} style:font-size="12px" class="muted"
+				<text x={24} y={254} font-size="12" class="muted"
 					>{Math.round(peakTwo.v / peakOne.v)} times the first dose’s peak</text
 				>
 			</g>
 		</Readout>
 		<Readout id="d-why">
-			<text x={24} y={310} style:font-size="12px" class="muted"
-				>the second dose meets memory cells:</text
-			>
-			<text x={24} y={328} style:font-size="12px" class="muted">more of them, sooner, faster</text>
+			<text x={24} y={310} font-size="12" class="muted">the second dose meets memory cells:</text>
+			<text x={24} y={328} font-size="12" class="muted">more of them, sooner, faster</text>
 		</Readout>
 
 		<!-- right: the chart -->
@@ -208,7 +205,7 @@
 			label="Dashed line"
 			value="the antibody peak after the model's infection"
 		>
-			<Tag
+			<Label
 				x={X1 - 4}
 				y={syD(Math.log10(yard)) - 8}
 				text="peak after an infection"
@@ -238,7 +235,7 @@
 			</g>
 		{/each}
 		<Readout id="d-key">
-			<Tag
+			<Label
 				x={sxD(INTERVAL) + 8}
 				y={syD(0) - 22}
 				text={two ? 'second dose' : ''}
@@ -246,8 +243,8 @@
 				anchor="start"
 				muted
 			/>
-			<Tag x={sxD(0) + 8} y={syD(0) - 22} text="dose" size={11} anchor="start" muted />
-			<Tag
+			<Label x={sxD(0) + 8} y={syD(0) - 22} text="dose" size={11} anchor="start" muted />
+			<Label
 				x={X1 - 4}
 				y={72}
 				text={two ? 'faint: one dose only' : 'faint: two doses'}
@@ -271,7 +268,7 @@
 	{:else}
 		<!-- left: the read-outs -->
 		<Readout id="i-day" order={1} label="Days after the infection" value={dayI.toFixed(1)}>
-			<text x={24} y={60} style:font-size="16px" font-weight="600"
+			<text x={24} y={60} font-size="16" font-weight="600"
 				>Day {dayI.toFixed(1)} of the infection</text
 			>
 		</Readout>
@@ -283,7 +280,7 @@
 				? 'never vaccinated'
 				: `${vax === '1' ? 'one dose' : 'two doses'}, ${months} month${months === 1 ? '' : 's'} earlier`}
 		>
-			<text x={24} y={88} style:font-size="13px"
+			<text x={24} y={88} font-size="13"
 				>{vax === '0'
 					? 'never vaccinated'
 					: `${vax === '1' ? 'one dose' : 'two doses'}, ${months} month${months === 1 ? '' : 's'} before`}</text
@@ -296,10 +293,8 @@
 			value="{count(abAtInfection)} pg/mL"
 			color="var(--im-antibody)"
 		>
-			<text x={24} y={124} style:font-size="12px" class="muted"
-				>antibodies when the virus arrives</text
-			>
-			<text x={24} y={144} style:font-size="15px" font-weight="700" style:fill="var(--im-antibody)"
+			<text x={24} y={124} font-size="12" class="muted">antibodies when the virus arrives</text>
+			<text x={24} y={144} font-size="15" font-weight="700" style:fill="var(--im-antibody)"
 				>{count(abAtInfection)} pg/mL</text
 			>
 		</Readout>
@@ -311,8 +306,8 @@
 			opacity={verdictShow}
 		>
 			<g opacity={verdictShow}>
-				<text x={24} y={210} style:font-size="15px" font-weight="700">{verdict.text}</text>
-				<text x={24} y={230} style:font-size="12px" class="muted">{verdict.sub}</text>
+				<text x={24} y={210} font-size="15" font-weight="700">{verdict.text}</text>
+				<text x={24} y={230} font-size="12" class="muted">{verdict.sub}</text>
 			</g>
 		</Readout>
 
@@ -333,7 +328,7 @@
 			stroke-dasharray="4 4"
 		/>
 		<Readout id="i-cleared">
-			<Tag x={X1 - 4} y={syV(0) - 6} text="below 1: cleared" size={11} anchor="end" muted />
+			<Label x={X1 - 4} y={syV(0) - 6} text="below 1: cleared" size={11} anchor="end" muted />
 		</Readout>
 		{#if vax !== '0'}
 			<path
@@ -390,7 +385,7 @@
 					stroke-width="1.5"
 					stroke-dasharray="4 3"
 				/>
-				<text x={X1 - 142} y={48} style:font-size="12px" class="muted">never vaccinated</text>
+				<text x={X1 - 142} y={48} font-size="12" class="muted">never vaccinated</text>
 			</Readout>
 		{/if}
 		{#if !done}

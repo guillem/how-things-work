@@ -34,7 +34,7 @@
 	} from '../gw';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import Title from './Title.svelte';
 	import { sci, sup } from './fmt';
 	import { Readout } from '#lib/explainer/index.ts';
@@ -199,8 +199,8 @@
 			stroke="var(--gw-space)"
 			stroke-width="1.5"
 		/>
-		<T x={CX} y={CY + 44} text="the Sun" anchor="middle" size={12} muted />
-		<T
+		<Label x={CX} y={CY + 44} text="the Sun" anchor="middle" size={12} muted />
+		<Label
 			x={CX + 190 * Math.cos(earthAng)}
 			y={CY - 190 * Math.sin(earthAng) - 14}
 			text="Earth"
@@ -230,8 +230,15 @@
 		/>
 		<circle cx={kepler.p.x} cy={kepler.p.y} r="7" fill="var(--gw-crest)" />
 		<circle cx={kepler.c.x} cy={kepler.c.y} r="7" fill="var(--gw-horizon)" />
-		<T x={kepler.p.x} y={kepler.p.y - 14} text="pulsar" anchor="middle" size={12} weight={600} />
-		<T x={kepler.c.x} y={kepler.c.y - 14} text="companion" anchor="middle" size={12} muted />
+		<Label
+			x={kepler.p.x}
+			y={kepler.p.y - 14}
+			text="pulsar"
+			anchor="middle"
+			size={12}
+			weight={600}
+		/>
+		<Label x={kepler.c.x} y={kepler.c.y - 14} text="companion" anchor="middle" size={12} muted />
 	{:else}
 		{#each bodies as b (b.id)}
 			<circle cx={b.x} cy={b.y} r={b.r} fill="var(--gw-hole)" stroke="var(--gw-horizon)" />
@@ -241,8 +248,16 @@
 	<!-- captions in the panel -->
 	{#if phase === 'ripples'}
 		<Readout id="bin-cap">
-			<T x={PX0 + 20} y={PY1 - 40} text="solid: crests · dashed: troughs" size={12} muted />
-			<T
+			<Label
+				anchor="start"
+				x={PX0 + 20}
+				y={PY1 - 40}
+				text="solid: crests · dashed: troughs"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
 				x={PX0 + 20}
 				y={PY1 - 20}
 				text="black holes and their orbit to scale; the waves move outwards at c (slowed down)"
@@ -252,7 +267,8 @@
 		</Readout>
 	{:else if phase === 'power'}
 		<Readout id="bin-cap">
-			<T
+			<Label
+				anchor="start"
 				x={PX0 + 20}
 				y={PY1 - 20}
 				text={source === 'bbh'
@@ -275,7 +291,7 @@
 			/>
 			<line x1={DX} y1={CY + 40} x2={DX} y2={CY - 30} stroke="var(--gw-laser)" stroke-width="3" />
 			<rect x={DX - 5} y={CY + 35} width="10" height="10" fill="var(--stage-ink)" />
-			<T x={DX + 35} y={CY + 64} text="a detector" anchor="middle" size={12} weight={600} />
+			<Label x={DX + 35} y={CY + 64} text="a detector" anchor="middle" size={12} weight={600} />
 		</g>
 	{/if}
 
@@ -464,7 +480,14 @@
 		<!-- all three on one scale of watts -->
 		<Readout id="bars">
 			<Card x={KX} y={PY0 + 216} w={KW} h={240} />
-			<T x={KX + 16} y={PY0 + 244} text="Power, watts (log scale)" size={13.5} weight={700} />
+			<Label
+				anchor="start"
+				x={KX + 16}
+				y={PY0 + 244}
+				text="Power, watts (log scale)"
+				size={13.5}
+				weight={700}
+			/>
 			{#each bars as b, i (b.id)}
 				{@const y = PY0 + 280 + i * 44}
 				<rect
@@ -476,7 +499,8 @@
 					fill={b.id === source ? 'var(--gw-crest)' : 'var(--stage-line)'}
 					opacity={b.id === source ? 1 : 0.6}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={LX0}
 					y={y - 5}
 					text="{b.label}: {sci(b.p, 2)} W"
@@ -488,7 +512,7 @@
 			<line x1={LX0} x2={LX1} y1={yA} y2={yA} stroke="var(--stage-line)" />
 			{#each [0, 10, 20, 30, 40, 50] as e (e)}
 				<line x1={lw(10 ** e)} x2={lw(10 ** e)} y1={yA} y2={yA + 5} stroke="var(--stage-line)" />
-				<T x={lw(10 ** e)} y={yA + 18} text="10{sup(e)}" anchor="middle" size={11} muted />
+				<Label x={lw(10 ** e)} y={yA + 18} text="10{sup(e)}" anchor="middle" size={11} muted />
 			{/each}
 			<line
 				x1={lw(PLANCK_POWER)}
@@ -498,7 +522,7 @@
 				stroke="var(--gw-trough)"
 				stroke-dasharray="3 3"
 			/>
-			<T
+			<Label
 				x={lw(PLANCK_POWER)}
 				y={yA + 36}
 				text="c⁵/G"
@@ -542,7 +566,14 @@
 			color="var(--gw-proton)"
 		/>
 		<Readout id="s5">
-			<T x={KX + 16} y={PY0 + 176} text="Since 2015: over 200 mergers heard" size={12} muted />
+			<Label
+				anchor="start"
+				x={KX + 16}
+				y={PY0 + 176}
+				text="Since 2015: over 200 mergers heard"
+				size={12}
+				muted
+			/>
 		</Readout>
 	{/if}
 </g>

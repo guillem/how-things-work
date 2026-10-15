@@ -476,18 +476,7 @@
 	anchor: 'start' | 'middle' | 'end',
 	opacity: number
 )}
-	<!-- <Label color> is overridden by the stage's text fill, so tinted labels set style:fill -->
-	<text
-		{x}
-		{y}
-		class="halo"
-		text-anchor={anchor}
-		font-size={size}
-		font-weight="600"
-		style:fill={color}
-		{opacity}
-		style:pointer-events="none">{text}</text
-	>
+	<Label {x} {y} {text} {size} {anchor} {color} {opacity} weight={600} />
 {/snippet}
 
 <g style:font-variant-numeric="tabular-nums">

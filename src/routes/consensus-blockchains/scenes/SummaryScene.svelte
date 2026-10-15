@@ -3,9 +3,8 @@
 	 * Two ways to agree, side by side: voting among known servers (Raft; Byzantine variants)
 	 * and proof-of-work among strangers. Static cards that fade in one row at a time.
 	 */
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Txt from './Txt.svelte';
 
 	let { t, reduced }: StageProps = $props();
 	const tv = $derived(reduced ? 100 : t);
@@ -39,7 +38,7 @@
 		label="Takeaway"
 		value="voting among known machines; work among strangers"
 	>
-		<Txt
+		<Label
 			x={480}
 			y={44}
 			text="Two ways to agree on one history"
@@ -68,7 +67,8 @@
 		fill-opacity="0.08"
 		stroke="var(--cb-work)"
 	/>
-	<Txt
+	<Label
+		anchor="start"
 		x={COL.a}
 		y={Y0 - 26}
 		text="Voting among known servers"
@@ -76,7 +76,8 @@
 		weight={700}
 		color="var(--cb-follower)"
 	/>
-	<Txt
+	<Label
+		anchor="start"
 		x={COL.b}
 		y={Y0 - 26}
 		text="Proof-of-work among strangers"
@@ -93,18 +94,27 @@
 				label={r.k}
 				value="{r.a}{r.a2 ? `, ${r.a2}` : ''} · {r.b}"
 			>
-				<Txt x={COL.k} y={y + 14} text={r.k} size={12} weight={700} muted />
-				<Txt x={COL.a} y={y + 14} text={r.a} size={14} />
+				<Label
+					anchor="start"
+					tabular
+					x={COL.k}
+					y={y + 14}
+					text={r.k}
+					size={12}
+					weight={700}
+					muted
+				/>
+				<Label anchor="start" tabular x={COL.a} y={y + 14} text={r.a} size={14} />
 				{#if r.a2}
-					<Txt x={COL.a} y={y + 36} text={r.a2} size={14} />
+					<Label anchor="start" tabular x={COL.a} y={y + 36} text={r.a2} size={14} />
 				{/if}
-				<Txt x={COL.b} y={y + 14} text={r.b} size={14} />
+				<Label anchor="start" tabular x={COL.b} y={y + 14} text={r.b} size={14} />
 			</Readout>
 		</g>
 	{/each}
 	<g opacity={smoothstep(3, 3.6, tv)}>
 		<Readout id="moral">
-			<Txt
+			<Label
 				x={480}
 				y={560}
 				text="Votes handle failures among machines you know; work lets strangers agree, if no one controls half of it."
