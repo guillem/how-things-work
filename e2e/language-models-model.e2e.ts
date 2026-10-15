@@ -47,6 +47,10 @@ test.describe('the tokenizer', () => {
 		expect(p.ids).toEqual([262]);
 		// 🙂 is not one token: it is cut into two pieces of its four UTF-8 bytes, shown in hexadecimal
 		expect(bpe.encode('🙂').map((i) => bpe.text(i))).toEqual(['⟨F0 9F⟩', '⟨99 82⟩']);
+		// after a space it is one token: GPT-2's pre-split lets a piece keep the space in front of it
+		expect(bpe.encode(' 🙂').map((i) => bpe.text(i))).toEqual([' 🙂']);
+		// endings split off only with a straight apostrophe
+		expect(bpe.encode("it's").map((i) => bpe.text(i))).toEqual(['it', "'s"]);
 	});
 
 	test('merges are applied in the order they were learned', () => {

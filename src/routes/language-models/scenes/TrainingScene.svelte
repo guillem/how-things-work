@@ -191,7 +191,7 @@
 		id="mean"
 		order={3}
 		label="Average loss"
-		value="{loss.toFixed(2)} (cross-entropy, in nats)"
+		value="{loss.toFixed(2)} (cross-entropy, natural logarithms)"
 	>
 		<Txt
 			x={44}

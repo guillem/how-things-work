@@ -112,3 +112,18 @@ test('a base model continues text; framed as Q and A it answers, wrongly', async
 	await option(page, 'frame', 'qa').click();
 	await expect(stage(page)).toContainText('1.5 degrees Fahrenheit');
 });
+
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true });
+
+	test('the greedy texts read out as the 20 tokens the cards show', async ({ page }) => {
+		const panel = page.getByRole('group', { name: 'Readouts' });
+		await page.goto('./language-models/#compare');
+		await expect(panel).toContainText("Now, it's a place of chaos");
+		// greedy decoding goes on past token 20 (“… and chaos. The world is …”)
+		await expect(panel).not.toContainText('The world is');
+		await page.goto('./language-models/#base');
+		await expect(panel).toContainText('the water boils. The boiling point of');
+		await expect(panel).not.toContainText('the water boils. The boiling point of water');
+	});
+});
