@@ -319,6 +319,36 @@ export function run(seq: string, opts: RunOptions): Frame[] {
 		occ.set(code(x, y), i);
 	};
 
+	/**
+	 * Crankshaft: beads i and i + 1 form a U with i − 1 and i + 2 (a hairpin end); the pair
+	 * swings over to the other side.
+	 */
+	const crankshaft = (i: number) => {
+		if (i < 1 || i + 2 >= n) return;
+		const ax = xs[i - 1];
+		const ay = ys[i - 1];
+		const cx = xs[i + 2];
+		const cy = ys[i + 2];
+		if (Math.abs(ax - cx) + Math.abs(ay - cy) !== 1) return;
+		const dx = xs[i] - ax;
+		const dy = ys[i] - ay;
+		if (xs[i + 1] - cx !== dx || ys[i + 1] - cy !== dy) return;
+		const x1 = ax - dx;
+		const y1 = ay - dy;
+		const x2 = cx - dx;
+		const y2 = cy - dy;
+		if (!free(x1, y1) || !free(x2, y2)) return;
+		const before = local(i, xs[i], ys[i], i + 1) + local(i + 1, xs[i + 1], ys[i + 1], i);
+		const after = local(i, x1, y1, i + 1) + local(i + 1, x2, y2, i);
+		// the pair's contact with each other cannot change (they stay chain neighbours)
+		const dE = after - before;
+		if (accept(dE)) {
+			place(i, x1, y1);
+			place(i + 1, x2, y2);
+			E += dE;
+		}
+	};
+
 	const localMove = () => {
 		const i = Math.floor(random() * n);
 		if (i === 0 || i === n - 1) {
@@ -339,38 +369,19 @@ export function run(seq: string, opts: RunOptions): Frame[] {
 		const ay = ys[i - 1];
 		const bx = xs[i + 1];
 		const by = ys[i + 1];
-		if (ax !== bx && ay !== by) {
-			// corner flip across the diagonal of the corner
-			const x = ax + bx - xs[i];
-			const y = ay + by - ys[i];
-			if (!free(x, y)) return;
-			const dE = local(i, x, y) - local(i, xs[i], ys[i]);
-			if (accept(dE)) {
-				place(i, x, y);
-				E += dE;
-			}
-			return;
-		}
-		// crankshaft: beads i, i+1 form a U with i−1 and i+2; flip it to the other side
-		if (i + 2 >= n) return;
-		const cx = xs[i + 2];
-		const cy = ys[i + 2];
-		if (Math.abs(ax - cx) + Math.abs(ay - cy) !== 1) return;
-		const dx = xs[i] - ax;
-		const dy = ys[i] - ay;
-		if (xs[i + 1] - cx !== dx || ys[i + 1] - cy !== dy) return;
-		const x1 = ax - dx;
-		const y1 = ay - dy;
-		const x2 = cx - dx;
-		const y2 = cy - dy;
-		if (!free(x1, y1) || !free(x2, y2)) return;
-		const before = local(i, xs[i], ys[i], i + 1) + local(i + 1, xs[i + 1], ys[i + 1], i);
-		const after = local(i, x1, y1, i + 1) + local(i + 1, x2, y2, i);
-		// the pair's contact with each other cannot change (they stay chain neighbours)
-		const dE = after - before;
+		if (ax === bx || ay === by) return; // a straight stretch: no local move bends it
+		// bead i sits at a corner: flip it across the corner's diagonal
+		const x = ax + bx - xs[i];
+		const y = ay + by - ys[i];
+		const j = occ.get(code(x, y));
+		// the far point is taken by the chain itself when i is one side of a U: swing the U
+		// (picking either bead of the U proposes the same crankshaft, in both directions)
+		if (j === i + 2) return crankshaft(i);
+		if (j === i - 2) return crankshaft(i - 1);
+		if (j !== undefined) return;
+		const dE = local(i, x, y) - local(i, xs[i], ys[i]);
 		if (accept(dE)) {
-			place(i, x1, y1);
-			place(i + 1, x2, y2);
+			place(i, x, y);
 			E += dE;
 		}
 	};

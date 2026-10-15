@@ -117,6 +117,41 @@ test.describe('the HP lattice model', () => {
 		expect(mean(cold)).toBeLessThan(-5);
 		expect(mean(hot)).toBeGreaterThan(-1.5);
 	});
+
+	test('Monte Carlo spends the Boltzmann share of its time in the best fold', () => {
+		// exact share from the full enumeration: e^(6/T) / Σ g(E) e^(−E/T) (0.19 at T = 0.4;
+		// about one half at the page's default 0.3, as its text says)
+		const seq = CHAINS[0].seq;
+		const l = landscape(seq);
+		const share = (T: number) =>
+			Math.exp(-l.best / T) /
+			l.byEnergy.reduce((z, e) => z + e.shapes * Math.exp(-e.energy / T), 0);
+		expect(share(0.3)).toBeGreaterThan(0.4);
+		expect(share(0.3)).toBeLessThan(0.6);
+		let inBest = 0;
+		let frames = 0;
+		for (const seed of [1, 2, 3, 4]) {
+			for (const f of run(seq, { T: 0.4, movesPerFrame: 50, frames: 5000, seed }).slice(500)) {
+				frames++;
+				if (f.energy === l.best) inBest++;
+			}
+		}
+		expect(Math.abs(inBest / frames - share(0.4))).toBeLessThan(0.05);
+	});
+
+	test('a hairpin end swings over: local moves free a shape no end or corner move can change', () => {
+		// a 12-bead shape whose only local move is a crankshaft (found by enumeration)
+		const start = fromTurns('LSSRRLRRLL');
+		const frames = run('P'.repeat(12), {
+			T: 100,
+			movesPerFrame: 400,
+			frames: 2,
+			seed: 1,
+			pivot: 0,
+			start
+		});
+		expect(toTurns(frames[1].fold)).not.toBe(toTurns(start));
+	});
 });
 
 test('Levinthal: 3¹⁰⁰ shapes at 10¹³ a second take about 10²⁷ years', () => {
