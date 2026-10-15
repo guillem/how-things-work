@@ -283,7 +283,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Trap the electron in a box with walls it cannot pass. Like the waves on a guitar string, only waves that fit — a whole number of half-wavelengths across the box — survive. Each one is a <dfn data-def="A solution of the Schrödinger equation whose probability |ψ|² does not change in time; it has a definite energy E, and ψ just turns at the rate E/ħ.">stationary state</dfn> with its own energy:</p>
 <p class="formula"><strong>Eₙ = n² h² / 8mL²</strong> &nbsp; (n = 1, 2, 3…)</p>
-<p>For a box 1 nm wide, E₁ = 0.38 eV, E₂ = 4E₁, E₃ = 9E₁. In a stationary state ψ just turns, at the rate E/ħ, everywhere at once; |ψ|² stays still. Nothing moves.</p>
+<p>For a box 1 nm wide, E₁ = 0.38 eV, E₂ = 4E₁, E₃ = 9E₁. In a stationary state ψ just turns, at the rate E/ħ, everywhere at once; |ψ|² stays still. Nothing you could measure about where the electron is changes.</p>
 <p>Now choose n = 1 and 2 together. The two turn at different rates, so where they add and where they cancel keeps changing, and |ψ|² sloshes from side to side. Motion in quantum mechanics is interference between states of different energy. Electrons in atoms are trapped waves too, which is why atoms have energy levels.</p>`,
 			notes: `<p>The sloshing repeats every <i>h</i>/(E₂ − E₁): for the 1 nm box about 3.7 femtoseconds. An atom's electron sits in a three-dimensional trap made by the nucleus's attraction, not a box with hard walls, so its energies follow a different rule (−13.6 eV/n² for hydrogen), but the reason they are fixed is the same.</p>`
 		},

@@ -149,7 +149,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'rects' },
 			controls: [n, curve],
 			body: `
-<p>The second question of calculus: <strong>how much area lies between a curve and the <i>x</i> axis?</strong> For a rectangle or a triangle there is a formula; a curved edge has none.</p>
+<p>The second question of calculus: <strong>how much area lies between a curve and the <i>x</i> axis?</strong> For a rectangle or a triangle there is a formula, and for a few curves, like a circle, too; a general curved edge needs a general method.</p>
 <p>So approximate. Cut the stretch from <i>x</i> = 0 to 3 into <i>n</i> strips of equal width and replace each strip by a rectangle as tall as the curve at the strip's left edge. Rectangles are easy: width × height. Add them up.</p>
 <p>Under the parabola <i>y</i> = <i>x</i>² (pick it again if you changed the curve), four rectangles give about 5.9. That is too little: each rectangle stops below the rising curve and leaves a sliver uncovered. Add more rectangles with the slider and watch the slivers shrink.</p>`,
 			notes: `<p>A sum of rectangles like this is called a <dfn data-def="An approximation of the area under a curve by a sum of thin rectangles, named after the mathematician Bernhard Riemann (1826–1866).">Riemann sum</dfn>.</p>`
