@@ -843,6 +843,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 14,
 		minutes: 24
+	},
+	{
+		slug: 'gps',
+		title: 'How GPS finds you',
+		summary:
+			'Drag a receiver and the satellites around a map and watch circles of distance meet at your position, give its clock an error and fix it with one more satellite, then use the real GPS constellation and see why the satellite clocks must allow for relativity.',
+		accent: '#0c8599',
+		steps: 11,
+		minutes: 20
 	}
 ];
 
