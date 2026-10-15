@@ -24,7 +24,9 @@ import {
 	reverseComplement,
 	sampleAt,
 	scan,
-	simulate
+	simulate,
+	strainArray,
+	PHAGE_858
 } from '../src/routes/crispr/model';
 
 test('Cas9 checks each PAM in turn and cuts only where all the letters beside it match', () => {
@@ -133,4 +135,15 @@ test('runs replay identically from the same seed', () => {
 	const a = simulate({ crispr: true, mutate: true, seed: 5 });
 	const b = simulate({ crispr: true, mutate: true, seed: 5 });
 	expect(sampleAt(a, 200)).toEqual(sampleAt(b, 200));
+});
+
+test('the yogurt experiment: resistance follows the new spacers, removed or added', () => {
+	const resists = (s: Parameters<typeof strainArray>[0]) => immune(strainArray(s).array, PHAGE_858);
+	expect(resists('wt')).toBe(false);
+	expect(resists('bim')).toBe(true);
+	expect(resists('removed')).toBe(false);
+	expect(resists('added')).toBe(true);
+	// the survivor's two new spacers are at the front
+	const bim = strainArray('bim').array.spacers.map((s) => s.source);
+	expect(bim.slice(0, 2)).toEqual(['new 2', 'new 1']);
 });
