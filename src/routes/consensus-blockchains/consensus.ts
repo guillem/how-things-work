@@ -660,7 +660,11 @@ export function stateAt(list: NodeState[], t: number): NodeState {
 /** Bitcoin hashes block headers twice with SHA-256. */
 export const sha256d = (s: string) => sha256(sha256(s));
 
-/** Number of leading zero bits of a digest. */
+/**
+ * Number of leading zero bits of a digest. Bitcoin reads the hash as a little-endian number,
+ * so the zeros it requires are at the end of the raw digest (block hashes are shown
+ * byte-reversed, zeros first); counting them at the start is statistically the same.
+ */
 export function zeroBits(d: Uint8Array): number {
 	let z = 0;
 	for (const b of d) {
@@ -913,18 +917,30 @@ export function nakamoto(q: number, z: number) {
 export function exactRace(q: number, z: number) {
 	const p = 1 - q;
 	if (q >= p || z === 0) return 1;
+	// In logarithms: C(z + k − 1, k) overflows a double for z of a few hundred, while each
+	// term (a probability) stays at most 1.
+	const lp = Math.log(p);
+	const lq = Math.log(q);
 	let sum = 0;
-	let c = 1; // C(z + k − 1, k)
+	let logc = 0; // ln C(z + k − 1, k)
 	for (let k = 0; k <= z; k++) {
-		if (k > 0) c = (c * (z + k - 1)) / k;
-		sum += c * (Math.pow(p, z) * Math.pow(q, k) - Math.pow(q, z) * Math.pow(p, k));
+		if (k > 0) logc += Math.log(z + k - 1) - Math.log(k);
+		sum += Math.exp(logc + z * lp + k * lq) - Math.exp(logc + z * lq + k * lp);
 	}
 	return 1 - sum;
 }
 
-/** The fewest confirmations that bring Nakamoto's probability below `risk`. */
-export function confirmationsFor(q: number, risk = 0.001, max = 1000) {
-	for (let z = 0; z <= max; z++) if (nakamoto(q, z) < risk) return z;
+/**
+ * The fewest confirmations that bring the attacker's chance below `risk`, by Nakamoto's
+ * formula or (with `f = exactRace`) the exact one.
+ */
+export function confirmationsFor(
+	q: number,
+	risk = 0.001,
+	max = 1000,
+	f: (q: number, z: number) => number = nakamoto
+) {
+	for (let z = 0; z <= max; z++) if (f(q, z) < risk) return z;
 	return Infinity;
 }
 

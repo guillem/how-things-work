@@ -20,7 +20,7 @@
 		{
 			k: 'Failures survived',
 			a: 'crashes: fewer than half',
-			a2: 'liars: fewer than a third (BFT)',
+			a2: 'Byzantine versions: liars under a third',
 			b: 'cheats with under half the power'
 		},
 		{ k: 'When it is final', a: 'at once, once committed', b: 'ever more likely with each block' },

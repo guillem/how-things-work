@@ -78,7 +78,9 @@
 			: !run.agree
 				? 'The loyal lieutenants disagree'
 				: !run.obey
-					? 'They agree, but not with their loyal commander'
+					? run.loyal.length === 1
+						? `L${run.loyal[0]} disobeys his loyal commander`
+						: 'They agree, but not with their loyal commander'
 					: isTraitor(0)
 						? 'The loyal lieutenants agree'
 						: 'All loyal generals agree and obey'
@@ -89,6 +91,9 @@
 			? 'No traitors: everyone just follows the order'
 			: `${f} traitor${f > 1 ? 's need' : ' needs'} at least 3 × ${f} + 1 = ${need} generals; here ${n}`
 	);
+	// Too few generals, yet this particular lie failed (a lying commander alone can't split three).
+	const lucky = $derived(f > 0 && n < need && run.ok);
+	const LUCKY = 'This lie happened to fail, but another could succeed: nothing guarantees it.';
 
 	// ---- panel --------------------------------------------------------------------------------
 	const P = { x: 520, y: 150, row: 46 };
@@ -318,7 +323,7 @@
 		id="rule"
 		order={4}
 		label="Rule"
-		value={rule}
+		value={lucky ? `${rule} · ${LUCKY}` : rule}
 		note={f === 1 && n === 3
 			? 'L1 hears the same whether C or L2 lies, so he can’t know whom to believe'
 			: undefined}
@@ -349,6 +354,9 @@
 				size={11}
 				muted
 			/>
+		{/if}
+		{#if lucky}
+			<Txt x={P.x} y={576} text={LUCKY} size={11} color="var(--cb-bad)" />
 		{/if}
 	</Readout>
 </g>

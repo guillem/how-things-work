@@ -8,7 +8,8 @@ const slider = (page: Page, id: string) => page.locator(`input[type=range][data-
 
 test('three generals fail with one traitor; four succeed', { tag: '@smoke' }, async ({ page }) => {
 	await page.goto('./consensus-blockchains/#generals');
-	await expect(stage(page)).toContainText('They agree, but not with their loyal commander');
+	// The one loyal lieutenant follows the liar (the verdict was reworded to name him).
+	await expect(stage(page)).toContainText('L1 disobeys his loyal commander');
 	await expect(stage(page)).toContainText('L1 hears the same whether C or L2 is the liar');
 	await slider(page, 'n').fill('4');
 	await expect(stage(page)).toContainText('All loyal generals agree and obey');
@@ -17,6 +18,13 @@ test('three generals fail with one traitor; four succeed', { tag: '@smoke' }, as
 	await expect(stage(page)).toContainText(
 		'2 traitors need at least 3 × 2 + 1 = 7 generals; here 4'
 	);
+});
+
+test('a lying commander alone fails against three generals, by luck', async ({ page }) => {
+	await page.goto('./consensus-blockchains/#generals');
+	await page.locator('button[data-control=role][data-value=commander]').click();
+	await expect(stage(page)).toContainText('The loyal lieutenants agree');
+	await expect(stage(page)).toContainText('This lie happened to fail, but another could succeed');
 });
 
 test('two crashed servers of five still commit; three stall the cluster', async ({ page }) => {
@@ -89,13 +97,20 @@ test('no delay, no orphans', async ({ page }) => {
 	);
 });
 
-test('the double-spend odds follow Nakamoto’s table', async ({ page }) => {
+test('the double-spend odds follow Nakamoto’s table; the threshold follows the exact race', async ({
+	page
+}) => {
 	await page.goto('./consensus-blockchains/#double-spend');
 	await slider(page, 'q').fill('10');
 	await slider(page, 'z').fill('5');
 	// Nakamoto 2008, §11: q = 0.1, z = 5 gives P = 0.0009137.
 	await expect(stage(page)).toContainText('At z = 5: 0.091 %');
-	await expect(stage(page)).toContainText('Risk below 0.1 % after 5 blocks.');
+	// The threshold follows the exact race, which needs one block more than Nakamoto's 5.
+	await expect(stage(page)).toContainText('Risk below 0.1 % after 6 blocks (exact).');
+	await slider(page, 'q').fill('30');
+	await expect(stage(page)).toContainText('Risk below 0.1 % after 32 blocks (exact).');
+	await slider(page, 'q').fill('45');
+	await expect(stage(page)).toContainText(/Risk below 0\.1 % after \d+ blocks \(exact\)\./);
 	await slider(page, 'q').fill('50');
 	await expect(stage(page)).toContainText('With half the power or more, he always catches up.');
 });

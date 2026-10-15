@@ -4,6 +4,7 @@ import { expect, test } from '@playwright/test';
 import { createHash } from 'node:crypto';
 import {
 	BITCOIN,
+	MINERS,
 	GENESIS_PREV,
 	LIES,
 	blockHash,
@@ -246,14 +247,21 @@ test.describe('forks and stale blocks', () => {
 		return stale / settled;
 	};
 
-	test('with no delay there are no forks; with delay d the stale share is about d / 600 s', () => {
+	test('with no delay there are no forks; with delay d the stale share is a little under d / 600 s', () => {
 		expect(staleRate(0)).toBe(0);
+		// A pool never races against its own block: only a block by another pool, found within
+		// the delay, forks. The page quotes "about 0.8 × d ÷ 600 s".
+		const others = 1 - MINERS.reduce((sum, s) => sum + s * s, 0);
+		expect(others).toBeCloseTo(0.8, 1);
 		const r10 = staleRate(10);
 		const r60 = staleRate(60);
-		expect(r10).toBeGreaterThan(0.6 * (10 / 600));
-		expect(r10).toBeLessThan(1.4 * (10 / 600));
-		expect(r60).toBeGreaterThan(0.6 * (60 / 600));
-		expect(r60).toBeLessThan(1.4 * (60 / 600));
+		for (const [r, d] of [
+			[r10, 10],
+			[r60, 60]
+		]) {
+			expect(r).toBeGreaterThan(0.8 * others * (d / 600));
+			expect(r).toBeLessThan(1.2 * others * (d / 600));
+		}
 		expect(staleRate(300)).toBeGreaterThan(r60);
 	});
 
@@ -286,7 +294,7 @@ test.describe('the double-spend race (Nakamoto 2008, §11)', () => {
 		expect(exactRace(0.6, 10)).toBe(1);
 	});
 
-	test('simulated races match the exact formula; Nakamoto’s Poisson shortcut is a little low', () => {
+	test('simulated races match the exact formula; Nakamoto’s Poisson shortcut is low', () => {
 		for (const [q, z] of [
 			[0.1, 2],
 			[0.3, 5]
@@ -299,5 +307,19 @@ test.describe('the double-spend race (Nakamoto 2008, §11)', () => {
 			expect(nakamoto(q, z)).toBeLessThan(exactRace(q, z));
 		}
 		expect(exactRace(0.1, 1)).toBeCloseTo(0.2, 12);
+	});
+
+	test('the exact race needs more confirmations than Nakamoto’s formula, as the page says', () => {
+		// "with 30 % of the power, 24 blocks still leave a 0.4 % chance … needs 32 blocks".
+		expect(nakamoto(0.3, 24)).toBeLessThan(0.001);
+		expect(exactRace(0.3, 24)).toBeCloseTo(0.004, 4);
+		const exactFor = (q: number) => confirmationsFor(q, 0.001, 1000, exactRace);
+		expect(exactFor(0.1)).toBe(6);
+		expect(exactFor(0.3)).toBe(32);
+		// Up to the slider's 45 %, without overflowing.
+		const at45 = exactFor(0.45);
+		expect(at45).toBeGreaterThan(confirmationsFor(0.45));
+		expect(at45).toBeLessThan(1000);
+		expect(exactRace(0.45, at45)).toBeGreaterThan(0);
 	});
 });
