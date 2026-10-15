@@ -78,8 +78,9 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			body: `
 <p>Follow one drop of blood. From the body it comes back through the <dfn data-def="Vessels that carry blood back to the heart.">veins</dfn> to the right side, which pumps it through the lungs. There it picks up oxygen and gets rid of carbon dioxide. It returns to the left side, which pumps it out through the <dfn data-def="Vessels that carry blood away from the heart, under pressure.">arteries</dfn> to every organ, which take some of its oxygen. Then it comes back to the right side again.</p>
-<p>Every drop passes through both pumps in turn: they are connected <dfn data-def="One after the other, so that everything that goes through the first must then go through the second.">in series</dfn>. So the two sides must pump exactly the same amount — about 75 mL per beat each, some 5½ litres a minute, roughly all your blood every minute. Blood leaves the lungs 98% <dfn data-def="The share of the blood's oxygen carriers (haemoglobin) that are holding oxygen: 100% means all of them.">saturated</dfn> with oxygen and comes back from the body at rest still about three-quarters saturated.</p>
-<p>The lungs are close by and delicate, so the right pump works at a low pressure, about a fifth of the left pump's (the graphic gives pressures in <dfn data-def="Millimetres of mercury: a unit of pressure. 120 mmHg is the pressure that would push a column of mercury 12 cm up a tube.">mmHg</dfn>, explained later). The left pump must push blood around the whole body, which is why the wall of the left ventricle is about three times thicker.</p>`
+<p>Every drop passes through both pumps in turn: they are connected <dfn data-def="One after the other, so that everything that goes through the first must then go through the second.">in series</dfn>. So, averaged over many beats, the two sides must pump the same amount — about 75 mL per beat each, some 5½ litres a minute, roughly all your blood every minute. Blood leaves the lungs 98% <dfn data-def="The share of the blood's oxygen carriers (haemoglobin) that are holding oxygen: 100% means all of them.">saturated</dfn> with oxygen and comes back from the body at rest still about three-quarters saturated.</p>
+<p>The lungs are close by and delicate, so the right pump works at a low pressure, about a fifth of the left pump's (the graphic gives pressures in <dfn data-def="Millimetres of mercury: a unit of pressure. 120 mmHg is the pressure that would push a column of mercury 12 cm up a tube.">mmHg</dfn>, explained later). The left pump must push blood around the whole body, which is why the wall of the left ventricle is about three times thicker.</p>`,
+			notes: `<p>Strictly, the two outputs only match on average. The blood vessels can store a little extra blood for a while, so single beats can differ: breathing in briefly fills the right side more and the left side less, and the outputs differ for a few beats after any change. If one side kept pumping more for long, blood would pile up behind the other. The model shows one repeating, steady beat, where the two match exactly.</p>`
 		},
 		{
 			id: 'valves',
@@ -163,7 +164,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [rate],
 			body: `
-<p><strong>The heart is two pumps in series — the right one for the lungs, the left one for the rest of the body — kept in step by one electrical signal.</strong> Everything else follows: the two sides pump the same volume per beat; the valves, pushed only by pressure, keep the blood moving one way; and the ECG shows the signal that starts each beat.</p>
+<p><strong>The heart is two pumps in series — the right one for the lungs, the left one for the rest of the body — kept in step by one electrical signal.</strong> Everything else follows: on average the two sides pump the same volume per beat; the valves, pushed only by pressure, keep the blood moving one way; and the ECG shows the signal that starts each beat.</p>
 <p>Change the heart rate and watch both pumps follow the same rhythm, each sending the same amount of blood round its own circuit.</p>`
 		}
 	]
