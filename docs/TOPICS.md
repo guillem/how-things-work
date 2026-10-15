@@ -212,7 +212,7 @@ A topic is done when:
 - [x] motors-generators
 - [ ] power-grid
 - [ ] solar-cells
-- [ ] nuclear-fission
+- [x] nuclear-fission
 - [ ] nuclear-fusion
 - [ ] flight
 - [x] bridges-structures
