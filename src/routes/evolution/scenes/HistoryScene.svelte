@@ -126,7 +126,7 @@
 			id="mutation"
 			order={5}
 			label="The mutation"
-			value="about 1819 (van’t Hof et al. 2016)"
+			value="most likely ≈1819, perhaps older (van’t Hof et al. 2016)"
 		>
 			<Label
 				x={ax(1819) + 6}
