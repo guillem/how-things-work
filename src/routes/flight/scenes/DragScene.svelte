@@ -232,7 +232,7 @@
 			yLabel="lift coefficient"
 			xTicks={[0, 0.05, 0.1, 0.15, 0.2]}
 			yTicks={[0, 0.5, 1, 1.5]}
-			xFormat={(v) => v.toFixed(2)}
+			xFormat={(v: number) => v.toFixed(2)}
 		/>
 		<line
 			x1={px(0)}

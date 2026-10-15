@@ -304,8 +304,8 @@
 		yLabel="lift coefficient C"
 		xTicks={[-5, 0, 5, 10, 15, 20]}
 		yTicks={[-0.5, 0, 0.5, 1, 1.5, 2]}
-		xFormat={(v) => `${v < 0 ? '−' : ''}${Math.abs(v)}`}
-		yFormat={(v) => `${v < 0 ? '−' : ''}${Math.abs(v)}`}
+		xFormat={(v: number) => `${v < 0 ? '−' : ''}${Math.abs(v)}`}
+		yFormat={(v: number) => `${v < 0 ? '−' : ''}${Math.abs(v)}`}
 	/>
 	<line x1={sx(0)} y1={PY0} x2={sx(0)} y2={PY1} stroke="var(--stage-line)" stroke-dasharray="2 4" />
 	<line x1={PX0} y1={sy(0)} x2={PX1} y2={sy(0)} stroke="var(--stage-line)" stroke-dasharray="2 4" />
