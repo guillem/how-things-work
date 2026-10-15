@@ -54,7 +54,11 @@
 
 	const NODE = { x: 735, y: 320, rx: 205, ry: 230 };
 	const DC = { x: 640, y: 320 };
-	/** Naive lymphocytes in the node, each with its own receptor shape; three fit. */
+	/**
+	 * Naive lymphocytes in the node, each with its own receptor shape. Three T
+	 * cells fit the fragments the dendritic cell shows; one B cell fits a whole
+	 * spike that drained in with the lymph (B cells see intact antigen).
+	 */
 	const CROWD = Array.from({ length: 16 }, (_, i) => {
 		const a = (i / 16) * TAU;
 		return {
@@ -62,7 +66,8 @@
 			x: 740 + Math.cos(a) * (110 + 40 * hash(i, 2)),
 			y: 320 + Math.sin(a) * (150 + 30 * hash(i, 3)),
 			shape: Math.floor(hash(i, 4) * 4),
-			fit: i === 2 || i === 9 || i === 13,
+			fit: i === 2 || i === 3 || i === 9 || i === 13,
+			holds: i === 2,
 			b: i % 2 === 0
 		};
 	});
@@ -236,7 +241,12 @@
 					/>
 				{/if}
 				<circle cx={c.x} cy={c.y} r="14" fill={col} />
-				{#if c.shape === 0}
+				{#if c.holds}
+					<g transform="translate({c.x - 18} {c.y}) rotate(180)">
+						<path d="M0 0 L10 0" stroke="var(--mv-s2)" stroke-width="4" stroke-linecap="round" />
+						<circle cx="15" r="6" fill="var(--mv-s1)" />
+					</g>
+				{:else if c.shape === 0}
 					<rect x={c.x - 20} y={c.y - 3} width="7" height="6" fill={col} />
 				{:else if c.shape === 1}
 					<circle cx={c.x - 17} cy={c.y} r="4" fill={col} />
@@ -257,7 +267,7 @@
 			id="node"
 			order={4}
 			label="In the lymph node"
-			value="a dendritic cell shows spike fragments; of the many naive B and T cells, only the few that fit are switched on"
+			value="a dendritic cell shows spike fragments to T cells; B cells catch whole spikes that drain in; only the few that fit are switched on"
 		>
 			<Tag x={NODE.x} y={NODE.y - NODE.ry + 30} text="lymph node" size={13} weight={600} />
 			<Tag x={DC.x} y={DC.y + 62} text="dendritic cell" size={11} pill />

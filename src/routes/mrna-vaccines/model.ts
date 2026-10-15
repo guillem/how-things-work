@@ -20,21 +20,28 @@
  *    Translation fades as the cells break the mRNA down: after an injection
  *    into the muscle, protein production from nucleoside-modified mRNA in
  *    lipid nanoparticles falls with a half-life of 20.6 hours (Pardi et al.,
- *    J. Control. Release 217:345, 2015, Table 1, in mice). We take the
- *    antigen the immune cells see to be proportional to that production:
- *        A(t) = A₀ · e^(−δM·(t − t_dose)),   δM = ln 2 / 20.6 h
- *    for each dose, and add it to the virus in the recruitment terms
- *    (V → V + A). Antigen below one unit counts as gone, as the virus does.
+ *    J. Control. Release 217:345, 2015, Table 1, in mice). The spike made
+ *    is cleared in turn; we assume a half-life of a day (δS = ln 2 / 1 day,
+ *    not measured), so the antigen the immune cells see rises from zero at
+ *    the injection, peaks about a day and a half later, and falls:
+ *        dA/dt = A₀·δM·e^(−δM·(t − t_dose)) − δS·A,
+ *        A(t) = A₀ · δS/(δS − δM) · (e^(−δM·τ) − e^(−δS·τ)),   τ = t − t_dose,
+ *    for each dose (δM = ln 2 / 20.6 h), added to the virus in the
+ *    recruitment terms (V → V + A). Antigen below one unit counts as gone,
+ *    as the virus does. Antibodies do not bind the vaccine's antigen (in
+ *    people, those left by the first dose catch much of the second's).
  *    The vaccine's antigen does not multiply, infects no cell and raises no
  *    interferon alarm.
  *
  * 2. The size of a dose, A₀, in the model's units of virus. It is the one
  *    parameter we fit: chosen so that two doses leave a peak of antibody
- *    2.8 times the peak after the model's infection. In the phase 1 trial of
+ *    2.5 times the peak after the model's infection. In the phase 1 trial of
  *    the BioNTech/Pfizer vaccine, neutralising antibody 7–14 days after the
- *    second dose was 1.7 to 4.6 times that of people who had recovered from
- *    COVID-19 (Walsh et al., N. Engl. J. Med. 383:2439, 2020, adults
- *    18–55); 2.8 is the geometric middle. Everything else (one dose against
+ *    second dose of BNT162b2 was about 1.7 to 3.8 times that of people who
+ *    had recovered from COVID-19 (Walsh et al., N. Engl. J. Med. 383:2439,
+ *    2020, adults 18–55; the paper's 1.7–4.6 covers both candidates, and the
+ *    3.8 is 360.9 against 94 in the FDA briefing of 10 December 2020);
+ *    2.5 is the geometric middle. Everything else (one dose against
  *    two, the second dose's boost, a later infection) follows from the model.
  *
  * 3. Memory over several meetings. Cao et al. give memory for one second
@@ -67,13 +74,13 @@ export const MRNA = {
 
 /**
  * Antigen per dose, in the model's units of virus (EID₅₀/mL). Fitted so that
- * two doses 21 days apart leave 2.8 times the antibody peak of an infection
+ * two doses 21 days apart leave 2.5 times the antibody peak of an infection
  * (see the header; `fitDose` recomputes it, and the model test checks it).
  */
-export const DOSE = 8.2e3;
+export const DOSE = 7.8e3;
 
-/** The target of the fit: two doses against recovered people (Walsh et al. 2020, ages 18–55). */
-export const WALSH = { low: 1.7, high: 4.6, target: Math.sqrt(1.7 * 4.6) } as const;
+/** The target of the fit: two doses of BNT162b2 against recovered people (Walsh et al. 2020, ages 18–55). */
+export const WALSH = { low: 1.7, high: 3.8, target: Math.sqrt(1.7 * 3.8) } as const;
 
 /** Days between the two doses of the BioNTech/Pfizer vaccine (Comirnaty) as authorised. */
 export const INTERVAL = 21;
@@ -116,6 +123,28 @@ type State = [
 	Pm: number
 ];
 
+/** Clearance of the spike protein already made (an assumption, see the header). */
+export const SPIKE = {
+	/** Half-life of the spike made, days. */
+	halfLifeDays: 1,
+	/** Loss rate, per day. */
+	rate: Math.LN2 / 1
+} as const;
+
+/**
+ * Spike from the doses at day t, per unit of A₀: made at a rate that fades
+ * with the mRNA, and cleared at `SPIKE.rate`; zero at the injection, it rises
+ * and then falls. Its integral over time is the same as for e^(−δM·t).
+ */
+export function spikeLevel(doses: readonly number[], t: number): number {
+	const dm = MRNA.rate;
+	const rate = SPIKE.rate;
+	let a = 0;
+	for (const d of doses)
+		if (t >= d) a += (rate / (rate - dm)) * (Math.exp(-dm * (t - d)) - Math.exp(-rate * (t - d)));
+	return a;
+}
+
 /** Share of each dose's mRNA still translated at day t, summed over the doses given. */
 export function mrnaLeft(doses: readonly number[], t: number): number {
 	let m = 0;
@@ -131,7 +160,7 @@ export function simulate(schedule: Schedule): Point[] {
 	const doses = [...schedule.doses].sort((x, y) => x - y);
 	const n = Math.round(schedule.days / DT);
 	const antigen = (s: number) => {
-		const a = a0 * mrnaLeft(doses, s * DT);
+		const a = a0 * spikeLevel(doses, s * DT);
 		return a < CLEARED ? 0 : a;
 	};
 

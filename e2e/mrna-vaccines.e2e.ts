@@ -10,13 +10,13 @@ async function open(page: Page, url: string) {
 test.describe('finished pictures (reduced motion)', () => {
 	test.use({ reducedMotion: 'reduce' });
 
-	test('two doses give almost three times an infection’s antibodies; one dose an eighth', async ({
+	test('two doses give two and a half times an infection’s antibodies; one dose a seventh', async ({
 		page
 	}) => {
 		await open(page, './mrna-vaccines/#doses');
-		await expect(stage(page)).toContainText('2.8× an infection’s');
-		await expect(stage(page)).toContainText('22 times the first dose’s peak');
-		await expect(stage(page)).toContainText('0.13× an infection’s');
+		await expect(stage(page)).toContainText('2.5× an infection’s');
+		await expect(stage(page)).toContainText('18 times the first dose’s peak');
+		await expect(stage(page)).toContainText('0.14× an infection’s');
 		await page.locator('[data-control=doses][data-value="1"]').click();
 		await expect(stage(page)).toContainText('faint: two doses');
 	});

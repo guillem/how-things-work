@@ -397,13 +397,13 @@
 				{#each [0, 1, 2, 3, 4, 5] as j (j)}
 					<path
 						d="M0 0 L{Math.cos((j * TAU) / 6 + 0.3) * 34} {Math.sin((j * TAU) / 6 + 0.3) * 30}"
-						stroke="var(--im-tcell)"
+						stroke="var(--mv-ribosome)"
 						stroke-width="7"
 						stroke-linecap="round"
 						opacity="0.7"
 					/>
 				{/each}
-				<circle r="16" fill="var(--im-tcell)" opacity="0.8" />
+				<circle r="16" fill="var(--mv-ribosome)" opacity="0.8" />
 			</g>
 		</g>
 		<Readout
@@ -744,7 +744,7 @@
 				id="nuc-vax"
 				order={3}
 				label="The vaccine's message"
-				value="stays in the cytoplasm: no way into the nucleus, no DNA, no reverse transcriptase"
+				value="stays in the cytoplasm: no way into the nucleus; it brings no DNA and no reverse transcriptase"
 			>
 				<Tag
 					x={near.x - 10}
@@ -757,7 +757,7 @@
 				<Tag
 					x={near.x - 10}
 					y={near.y + 54}
-					text="RNA, not DNA; nothing to copy it into DNA"
+					text="RNA, not DNA; the vaccine brings no enzyme to copy it into DNA"
 					size={11}
 					muted
 				/>
