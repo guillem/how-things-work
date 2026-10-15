@@ -945,7 +945,8 @@ export function race(q: number, z: number, seed: number, giveUp = 6, maxBlocks =
 			outcome = 'caught-up';
 			break;
 		}
-		if (acceptedAt >= 0 && h - a >= giveUp) {
+		// With half the power or more he never falls behind for good, so he never gives up.
+		if (acceptedAt >= 0 && q < 0.5 && h - a >= giveUp) {
 			outcome = 'gave-up';
 			break;
 		}

@@ -2669,6 +2669,55 @@
 				fill={accent}
 			/>
 		{/each}
+	{:else if slug === 'consensus-blockchains'}
+		<!-- five servers in a ring (one leader) beside three blocks linked by hash -->
+		{#each [0, 1, 2, 3, 4] as k (k)}
+			{#each [0, 1, 2, 3, 4] as j (j)}
+				{#if j > k}
+					<line
+						x1={46 + 28 * Math.cos(-Math.PI / 2 + (k * 2 * Math.PI) / 5)}
+						y1={60 + 28 * Math.sin(-Math.PI / 2 + (k * 2 * Math.PI) / 5)}
+						x2={46 + 28 * Math.cos(-Math.PI / 2 + (j * 2 * Math.PI) / 5)}
+						y2={60 + 28 * Math.sin(-Math.PI / 2 + (j * 2 * Math.PI) / 5)}
+						stroke="currentColor"
+						stroke-opacity="0.25"
+					/>
+				{/if}
+			{/each}
+		{/each}
+		{#each [0, 1, 2, 3, 4] as k (k)}
+			<circle
+				cx={46 + 28 * Math.cos(-Math.PI / 2 + (k * 2 * Math.PI) / 5)}
+				cy={60 + 28 * Math.sin(-Math.PI / 2 + (k * 2 * Math.PI) / 5)}
+				r="7"
+				fill={k === 1 ? accent : 'var(--surface)'}
+				stroke={k === 1 ? accent : 'currentColor'}
+				stroke-opacity={k === 1 ? 1 : 0.5}
+				stroke-width="2"
+			/>
+		{/each}
+		{#each [0, 1, 2] as b (b)}
+			<rect
+				x={96 + b * 34}
+				y="46"
+				width="24"
+				height="28"
+				rx="4"
+				fill={accent}
+				opacity={0.55 + b * 0.2}
+			/>
+			{#if b > 0}
+				<line
+					x1={86 + b * 34}
+					y1="60"
+					x2={96 + b * 34}
+					y2="60"
+					stroke="currentColor"
+					stroke-opacity="0.5"
+					stroke-width="2"
+				/>
+			{/if}
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

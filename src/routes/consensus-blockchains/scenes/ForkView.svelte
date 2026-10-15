@@ -250,7 +250,7 @@
 					style:fill="white">{b.height}</text
 				>
 			</g>
-			{#if o && lane.get(b.id) === 1}
+			{#if o && lane.get(b.id) === 1 && !found.some((c) => c.height === b.height - 1 && lane.get(c.id) === 1)}
 				<Readout id="orph-{b.id}">
 					<Txt
 						x={bx(b.height)}

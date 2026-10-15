@@ -71,14 +71,17 @@
 		)
 	);
 
+	const good = $derived(run.ok && run.loyal.length > 0);
 	const verdict = $derived(
-		!run.agree
-			? 'The loyal lieutenants disagree'
-			: !run.obey
-				? 'They agree, but not with their loyal commander'
-				: isTraitor(0)
-					? 'The loyal lieutenants agree'
-					: 'All loyal generals agree and obey'
+		run.loyal.length === 0
+			? 'No loyal lieutenant is left'
+			: !run.agree
+				? 'The loyal lieutenants disagree'
+				: !run.obey
+					? 'They agree, but not with their loyal commander'
+					: isTraitor(0)
+						? 'The loyal lieutenants agree'
+						: 'All loyal generals agree and obey'
 	);
 	const need = $derived(3 * f + 1);
 	const rule = $derived(
@@ -298,16 +301,16 @@
 			order={3}
 			label="Result"
 			value={verdict}
-			color={run.ok ? 'var(--cb-ok)' : 'var(--cb-bad)'}
+			color={good ? 'var(--cb-ok)' : 'var(--cb-bad)'}
 			opacity={decided ? 1 : 0}
 		>
 			<Txt
 				x={P.x}
 				y={510}
-				text={(run.ok ? '✓ ' : '✕ ') + verdict}
+				text={(good ? '✓ ' : '✕ ') + verdict}
 				size={14}
 				weight={700}
-				color={run.ok ? 'var(--cb-ok)' : 'var(--cb-bad)'}
+				color={good ? 'var(--cb-ok)' : 'var(--cb-bad)'}
 			/>
 		</Readout>
 	</g>
@@ -316,7 +319,7 @@
 		order={4}
 		label="Rule"
 		value={rule}
-		note={f > 0 && n === 3
+		note={f === 1 && n === 3
 			? 'L1 hears the same whether C or L2 lies, so he can’t know whom to believe'
 			: undefined}
 	>
@@ -328,7 +331,7 @@
 			weight={600}
 			color={f > 0 && n < need ? 'var(--cb-bad)' : undefined}
 		/>
-		{#if f > 0 && n === 3}
+		{#if f === 1 && n === 3}
 			<Txt
 				x={P.x}
 				y={556}

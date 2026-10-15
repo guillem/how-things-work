@@ -69,7 +69,9 @@
 			? '100 %'
 			: p >= 0.001
 				? `${(p * 100).toFixed(p >= 0.1 ? 0 : 1)} %`
-				: `${(p * 100).toPrecision(2)} %`;
+				: p >= 1e-6
+					? `${(p * 100).toPrecision(2)} %`
+					: 'under 0.0001 %';
 	const behindChance = $derived(Math.pow(q / (1 - q), GIVE_UP));
 
 	const outcome = $derived(
@@ -132,12 +134,7 @@
 		halo={false}
 		color="var(--surface)"
 	/>
-	<Readout
-		id="rows"
-		order={2}
-		label="Block 1"
-		value="public: pays the shop · secret: pays the attacker"
-	>
+	<Readout id="rows">
 		<Txt
 			x={BX - 20}
 			y={ROW.honest - 28}
@@ -223,13 +220,7 @@
 			stroke-width="2"
 			stroke-dasharray="5 4"
 		/>
-		<Readout
-			id="shop"
-			order={3}
-			label="Shop"
-			value="hands over the goods after {z} block{z === 1 ? '' : 's'}"
-			color="var(--cb-work)"
-		>
+		<Readout id="shop">
 			<Txt
 				x={sx + 6}
 				y={(ROW.honest + ROW.attacker) / 2 + 4}
@@ -241,17 +232,17 @@
 		</Readout>
 	{/if}
 
-	<Readout id="count" order={4} label="Race" value="public {h} · secret {a}">
+	<Readout
+		id="count"
+		order={4}
+		label="Race"
+		value="public {h} · secret {a}{outcome ? ` — ${outcome}` : ''}"
+		color={!outcome ? undefined : run.outcome === 'caught-up' ? 'var(--cb-bad)' : 'var(--cb-ok)'}
+	>
 		<Txt x={24} y={ROW.attacker + 72} text="public {h} · secret {a}" size={13} weight={700} />
 	</Readout>
 	{#if outcome}
-		<Readout
-			id="outcome"
-			order={5}
-			label="Outcome"
-			value={outcome}
-			color={run.outcome === 'caught-up' ? 'var(--cb-bad)' : 'var(--cb-ok)'}
-		>
+		<Readout id="outcome">
 			<Txt
 				x={190}
 				y={ROW.attacker + 72}
@@ -309,8 +300,9 @@
 	<Readout
 		id="p"
 		order={6}
-		label="Nakamoto 2008"
-		value="{pctText(nak[z])} chance at z = {z}"
+		label="Chance he catches up"
+		value="{pctText(nak[z])} at z = {z} (Nakamoto) · {pctText(exact[z])} exact"
+		note={q >= 0.5 ? 'with half the power or more, always' : `below 0.1 % after ${needed} blocks`}
 		color="var(--cb-attacker)"
 	>
 		<Txt
@@ -323,15 +315,10 @@
 		/>
 		<Txt x={600} y={406} text="Nakamoto’s formula (solid line)" size={12} muted />
 	</Readout>
-	<Readout id="p-exact" order={7} label="Exact" value={pctText(exact[z])}>
+	<Readout id="p-exact">
 		<Txt x={600} y={436} text="exact value: {pctText(exact[z])} (dashed)" size={12} />
 	</Readout>
-	<Readout
-		id="need"
-		order={8}
-		label="Below 0.1 %"
-		value={Number.isFinite(needed) ? `${needed} blocks` : 'never'}
-	>
+	<Readout id="need">
 		<Txt
 			x={600}
 			y={470}
