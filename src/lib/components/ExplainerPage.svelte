@@ -29,6 +29,13 @@
 <svelte:head>
 	<title>{spec.title} — {site.name}</title>
 	<meta name="description" content={spec.summary} />
+	<meta property="og:title" content="{spec.title} — {site.name}" />
+	<meta property="og:description" content={spec.summary} />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="{site.url}{spec.slug}/" />
+	<meta property="og:site_name" content={site.name} />
+	<meta property="og:image" content="{site.url}og-image.png" />
+	<meta name="twitter:card" content="summary" />
 </svelte:head>
 
 <SiteHeader back />

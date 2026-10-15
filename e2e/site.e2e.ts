@@ -98,6 +98,45 @@ test('an unknown nested URL loads the 404 assets and its home link works', async
 	expect(failed).toEqual([]);
 });
 
+test('the footer names the licences and links to both licence files', async ({ page }) => {
+	await page.goto('./');
+	const footer = page.getByRole('contentinfo');
+	await expect(footer).toContainText('Code under the MIT licence');
+	await expect(footer).toContainText('text and illustrations CC BY 4.0');
+	await expect(footer).toContainText('by Guillem Cantallops Ramis');
+	await expect(footer.getByRole('link', { name: 'MIT licence' })).toHaveAttribute(
+		'href',
+		/\/LICENSE$/
+	);
+	await expect(footer.getByRole('link', { name: 'CC BY 4.0' })).toHaveAttribute(
+		'href',
+		/\/LICENSE-CONTENT\.md$/
+	);
+});
+
+test('sitemap.xml lists the index and every built topic under the live URL', async ({ page }) => {
+	const res = await page.request.get('./sitemap.xml');
+	expect(res.status()).toBe(200);
+	const xml = await res.text();
+	expect(xml).toContain('<loc>https://guillem.github.io/how-things-work/</loc>');
+	expect(xml).toContain('<loc>https://guillem.github.io/how-things-work/sorting/</loc>');
+	expect(xml.match(/<loc>/g)).toHaveLength(slugs.length + 1);
+});
+
+test('a topic page carries sharing metadata for its live URL, and the image exists', async ({
+	page
+}) => {
+	await page.goto('./sorting/');
+	await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+		'content',
+		'https://guillem.github.io/how-things-work/sorting/'
+	);
+	await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary');
+	const image = await page.locator('meta[property="og:image"]').getAttribute('content');
+	expect(image).toBe('https://guillem.github.io/how-things-work/og-image.png');
+	expect((await page.request.get('./og-image.png')).status()).toBe(200);
+});
+
 test.describe('theme', () => {
 	test('follows a live change of the OS preference while no theme is saved', async ({ page }) => {
 		await page.emulateMedia({ colorScheme: 'light' });

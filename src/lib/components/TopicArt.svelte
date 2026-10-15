@@ -3267,6 +3267,36 @@
 			/>
 		{/each}
 		<circle cx="100" cy="60" r="5" fill={accent} />
+	{:else if slug === 'sun-earth-moon'}
+		<!-- the Sun, the Earth on an arc of its orbit with its tilted axis and equator,
+		     and the Moon on its own orbit, lit on the side that faces the Sun -->
+		<circle cx="34" cy="60" r="27" fill={accent} opacity="0.18" />
+		<circle cx="34" cy="60" r="18" fill={accent} />
+		<path
+			d="M56.3 15.6 A86 46 0 0 1 56.3 104.4"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.2"
+			stroke-dasharray="4 4"
+			opacity="0.35"
+		/>
+		<circle cx="120" cy="60" r="26" fill="none" stroke="currentColor" opacity="0.3" />
+		<circle cx="120" cy="60" r="11" fill="currentColor" opacity="0.28" />
+		<path d="M120 49 A11 11 0 0 0 120 71 Z" fill={accent} opacity="0.55" />
+		<ellipse
+			cx="120"
+			cy="60"
+			rx="11"
+			ry="3.5"
+			transform="rotate(23.5 120 60)"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1"
+			opacity="0.5"
+		/>
+		<line x1="113.5" y1="45" x2="126.5" y2="75" stroke="currentColor" stroke-width="1.5" />
+		<circle cx="140" cy="43" r="4.5" fill="currentColor" opacity="0.3" />
+		<path d="M140 38.5 A4.5 4.5 0 0 0 140 47.5 Z" fill="currentColor" opacity="0.9" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
