@@ -147,7 +147,7 @@ A topic is done when:
 - [x] homeostasis
 - [x] neurons
 - [x] vision-color
-- [ ] immune-system
+- [x] immune-system
 - [x] epidemics
 - [x] mrna-vaccines
 - [x] cancer
