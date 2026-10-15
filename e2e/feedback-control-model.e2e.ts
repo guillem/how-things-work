@@ -104,11 +104,15 @@ test('PI control removes the error; too strong an integral overshoots', () => {
 	const strong = drive({ road: 'flat', gains: car(10, 10), v0: 80 * KMH, seconds: 40 });
 	expect(kmh(peak(gentle, gentle.y))).toBeLessThan(91);
 	expect(kmh(peak(strong, strong.y))).toBeGreaterThan(98);
+	// on the page's hilly road, Ki = 10 overshoots by well over 10 km/h
+	const hilly = drive({ road: 'hills', gains: car(10, 10), v0: 80 * KMH });
+	expect(kmh(peak(hilly, hilly.y))).toBeGreaterThan(100);
 });
 
 test('integral windup: after an 8.4% climb at full throttle the car overshoots, unless clamped', () => {
-	const wound = drive({ road: 'climb', gains: car(10, 3), v0: 25 });
-	const clamped = drive({ road: 'climb', gains: car(10, 3), antiWindup: true, v0: 25 });
+	// the page's starting gains: Kp 10, Ki 2
+	const wound = drive({ road: 'climb', gains: car(10, 2), v0: 25 });
+	const clamped = drive({ road: 'climb', gains: car(10, 2), antiWindup: true, v0: 25 });
 	// the climb is too steep for the engine: full throttle all the way up, about 85 km/h
 	expect(
 		Math.min(...wound.u.slice(Math.round(20 / wound.sample), Math.round(50 / wound.sample)))
@@ -116,12 +120,15 @@ test('integral windup: after an 8.4% climb at full throttle the car overshoots, 
 	const climbing = kmh(mean(wound, wound.y, 30, 50));
 	expect(climbing).toBeGreaterThan(84);
 	expect(climbing).toBeLessThan(86);
-	expect(kmh(peak(wound, wound.y))).toBeCloseTo(116, 0);
+	expect(kmh(peak(wound, wound.y))).toBeCloseTo(113, 0);
 	expect(kmh(peak(clamped, clamped.y))).toBeCloseTo(93, 0);
 });
 
 test('too much P: the throttle starts to chatter past the ultimate gain', () => {
 	const { ku, tu } = carUltimate();
+	// on the hills, past 130% per km/h, the throttle slams shut on every swing
+	const hard = drive({ road: 'hills', gains: car(140), v0: 80 * KMH });
+	expect(Math.min(...hard.u.slice(Math.round(30 / hard.sample)))).toBe(0);
 	// in the page's units: about 133% throttle per km/h, a 2.1 s period
 	expect((ku * 100) / 3.6).toBeCloseTo(133, 0);
 	expect(tu).toBeCloseTo(2.11, 2);

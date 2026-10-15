@@ -214,7 +214,7 @@ export const spec: ExplainerSpec = {
 			controls: [carKp],
 			body: `
 <p>Driving at 80 km/h you set the cruise control to 90. The simplest useful rule: open the throttle in proportion to the error, <strong>throttle = Kp × error</strong>. 10 km/h short, with Kp = 10% per km/h, means full throttle; 1 km/h short means 10%. This is <dfn data-def="A controller whose correction is the error multiplied by a fixed number, its gain Kp: twice the error, twice the correction.">proportional control</dfn>.</p>
-<p>A small gain is <strong>sluggish</strong>: it barely reacts, and the hills drag the car well off its target. A bigger gain reacts harder and holds the speed more tightly. Turn it right up, past about 130% per km/h, and the throttle starts to chatter from fully open to shut: by the time the engine has answered and the slightly old speed reading has caught up, the correction is already too big, so it swings back too far the other way. Too much correction makes the loop oscillate.</p>`
+<p>A small gain is <strong>sluggish</strong>: it barely reacts, and the hills drag the car well off its target. A bigger gain reacts harder and holds the speed more tightly. Turn it right up, past about 130% per km/h, and the throttle starts to chatter, slamming shut and opening again: by the time the engine has answered and the slightly old speed reading has caught up, the correction is already too big, so it swings back too far the other way. Too much correction makes the loop oscillate.</p>`
 		},
 		{
 			id: 'offset',
@@ -240,7 +240,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The fix is a second term that keeps adding the error up over time: <strong>throttle = Kp × error + Ki × (sum of the error so far)</strong>. That sum is the area under the error curve, the <a href="../calculus/#integral">integral</a> of the error, so this is <dfn data-def="A correction that grows with the accumulated error (its integral): as long as any error remains, the correction keeps growing, so the error is driven to zero.">integral action</dfn>.</p>
 <p>As long as the car is even slightly slow, the sum keeps growing and the throttle keeps opening. It only stops growing when the error is zero, so the speed now settles on 90 exactly, and the integral holds the quarter-throttle the car needs. A controller with both terms is a <strong>PI</strong> controller.</p>
-<p>The integral remembers, though. A strong one keeps pushing after the error is gone: the car overshoots, then the sum unwinds and it dips back. Raise Ki to 10 and watch it overshoot 90 by several km/h.</p>`
+<p>The integral remembers, though. A strong one keeps pushing after the error is gone: the car overshoots, then the sum unwinds and it dips back. Raise Ki to 10 and watch it overshoot 90 by well over 10 km/h.</p>`
 		},
 		{
 			id: 'windup',
@@ -252,7 +252,7 @@ export const spec: ExplainerSpec = {
 			controls: [antiWindup, carKi, carKp],
 			body: `
 <p>Now a 1 km climb at 8.4%: too steep for this engine in top gear. The controller opens the throttle fully, yet the car slows to about 85 km/h, all the engine can manage on this slope, and for the 40 seconds of the climb the error sits there, piling up in the integral. That is <dfn data-def="The build-up of a controller's integral while its output is stuck at a limit: the stored-up correction makes it overshoot once the limit no longer holds it back.">integral windup</dfn>.</p>
-<p>At the top the road levels and the car no longer needs full throttle, but the huge sum keeps the throttle wide open until the car has gone fast enough for long enough to cancel it: with Ki = 3% per km/h per s, it overshoots to about 116 km/h.</p>
+<p>At the top the road levels and the car no longer needs full throttle, but the huge sum keeps the throttle wide open until the car has gone fast enough for long enough to cancel it: with the starting gains it overshoots to about 113 km/h.</p>
 <p>The cure is <strong>anti-windup</strong>: stop adding to the sum while the throttle is already at its limit. Switch it on and the car comes over the top at about 93 km/h and settles.</p>`
 		},
 		{
@@ -265,7 +265,7 @@ export const spec: ExplainerSpec = {
 			controls: [droneKp],
 			body: `
 <p>A drone hovers at 1 m and is told to climb to 3 m. Its controller adds the thrust that holds it up against gravity, plus a proportional correction: <strong>extra thrust = Kp × (3 m − height)</strong>.</p>
-<p>A car is held back by drag; a drone in still air is not, so it reaches 3 m still climbing, overshoots, and the controller pulls it back down: it bounces for ever. A force proportional to the distance from a point is exactly what a spring gives, so the drone is a <a href="../oscillations-resonance/#spring">mass on a spring</a> of stiffness Kp. Its swing takes 2π√(m / Kp): 3.1 s for this 1 kg drone at Kp = 4 N per m. A stiffer “spring” swings faster, but no less.</p>`
+<p>A car is held back by drag; a drone in still air hardly is (this one not at all), so it reaches 3 m still climbing, overshoots, and the controller pulls it back down: it bounces for ever. A force proportional to the distance from a point is exactly what a spring gives, so the drone is a <a href="../oscillations-resonance/#spring">mass on a spring</a> of stiffness Kp. Its swing takes 2π√(m / Kp): 3.1 s for this 1 kg drone at Kp = 4 N per m. A stiffer “spring” swings faster, but no less.</p>`
 		},
 		{
 			id: 'derivative',
@@ -290,7 +290,7 @@ export const spec: ExplainerSpec = {
 			controls: [parcel, droneKi, droneKd, droneKp],
 			body: `
 <p>Hang a 300 g parcel under the drone. The controller still adds the hover thrust for 1 kg, so with only P and D the drone settles below its target, where the spring's extra pull holds the parcel up: 0.3 kg × 9.81 m/s² ÷ Kp = 0.74 m low at Kp = 4. The same steady-state error the car had.</p>
-<p>Add the integral and it climbs back to exactly 3 m. Together the three terms are a <dfn data-def="Proportional–integral–derivative controller: its correction is Kp × error + Ki × the accumulated error + Kd × the rate of change, the most common controller in industry.">PID controller</dfn>: P for the present error, I for its past, D for where it is heading. Each gain is a dial, and most of the controllers in factories, cars and aircraft are this one with its three dials set for its machine.</p>`
+<p>Add the integral and it climbs back to exactly 3 m. Together the three terms are a <dfn data-def="Proportional–integral–derivative controller: its correction is Kp × error + Ki × the accumulated error + Kd × the rate of change, the most common controller in industry.">PID controller</dfn>: P for the present error, I for its past, D for where it is heading. Each gain is a dial, and most of the control loops in factories, and many in cars and aircraft, are this one with its three dials set for its machine.</p>`
 		},
 		{
 			id: 'disturbances',
@@ -314,8 +314,8 @@ export const spec: ExplainerSpec = {
 			controls: [delay, droneKd, droneKp],
 			body: `
 <p>Now let the height reading arrive late, as when it comes over a radio link or from a slow camera. The controller is always correcting where the drone <em>was</em>.</p>
-<p>A little delay costs damping: at 100 ms the drone overshoots further than without. At about 0.3 s, with the starting gains (Kp 4, Ki 1, Kd 2), the swings no longer die away, and beyond that each one is bigger than the last: the correction arrives so late that it pushes the drone the way it is already going. Every loop has such a limit. Lower Kp to lengthen the swing and it tolerates more delay; raise it and it tolerates less.</p>`,
-			notes: `<p>The limit is the loop's <em>phase margin</em> divided by the frequency at which its correction is as big as the disturbance it answers (the loop gain is 1): how much extra lag the swing at that frequency can take before the correction is half a swing late. With delay, a high gain is always eventually unstable, which is why engineers fight delay so hard.</p>`
+<p>A little delay costs damping: at 100 ms the drone overshoots further than without. At about a third of a second, with the starting gains (Kp 4, Ki 1, Kd 2), the swings no longer die away, and beyond that each one is bigger than the last: the correction arrives so late that it pushes the drone the way it is already going. Every loop has such a limit. Lower Kp to lengthen the swing and it tolerates more delay; raise it and it tolerates less.</p>`,
+			notes: `<p>The limit is the loop's <em>phase margin</em> divided by the frequency at which a swing, sent once round the loop, comes back the same size (the loop gain is 1): how much extra lag the swing at that frequency can take before the correction is half a swing late. With delay, a high gain is always eventually unstable, which is why engineers fight delay so hard.</p>`
 		},
 		{
 			id: 'ziegler-nichols',
