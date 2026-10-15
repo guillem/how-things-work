@@ -2826,3 +2826,31 @@ kbd {
 	--he-steam: #a5d8ff;
 	--he-water: #4dabf7;
 }
+/* solar-cells: light that passes through, heat, voltage loss, electrical output, the cell's
+   glow, the p and n sides, wires, the limit curve */
+:root {
+	--sc-below: #adb5bd;
+	--sc-heat: #e8590c;
+	--sc-kept: #2f9e44;
+	--sc-voltage: #7048e8;
+	--sc-output: #2f9e44;
+	--sc-glow: #c2255c;
+	--sc-curve: #212529;
+	--sc-ceiling: #868e96;
+	--sc-power: #e67700;
+	--sc-record: #1971c2;
+	--sc-tandem: #c2255c;
+}
+:root[data-theme='dark'] {
+	--sc-below: #5c5f66;
+	--sc-heat: #ff8a3d;
+	--sc-kept: #51cf66;
+	--sc-voltage: #9775fa;
+	--sc-output: #51cf66;
+	--sc-glow: #f06595;
+	--sc-curve: #f1f3f5;
+	--sc-ceiling: #909296;
+	--sc-power: #ffa94d;
+	--sc-record: #4dabf7;
+	--sc-tandem: #f06595;
+}

@@ -3009,6 +3009,37 @@
 			stroke-width="2.4"
 			stroke-linejoin="round"
 		/>
+	{:else if slug === 'solar-cells'}
+		<!-- a sun's photons striking a tilted cell; an I–V curve with its maximum-power rectangle -->
+		<circle cx="30" cy="28" r="12" fill={accent} opacity="0.85" />
+		{#each [[46, 40], [40, 50], [52, 34]] as [x, y] (x)}
+			<path
+				d="M{x} {y} q4 -3 8 0 t8 0 t8 0"
+				fill="none"
+				stroke={accent}
+				stroke-width="1.4"
+				transform="rotate(35 {x} {y})"
+			/>
+		{/each}
+		<path d="M30 96 L84 66 L96 74 L42 104 Z" fill="currentColor" opacity="0.18" />
+		<path
+			d="M30 96 L84 66 L96 74 L42 104 Z"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.6"
+		/>
+		<path d="M48 85 L60 92 M66 75 L78 82" stroke="currentColor" stroke-width="1" opacity="0.45" />
+		<path d="M112 26 V96 H192" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
+		<rect x="112" y="40" width="58" height="56" fill={accent} fill-opacity="0.15" />
+		<path
+			d="M112 36 L160 37 C168 38 172 44 176 60 L182 96"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			opacity="0.75"
+		/>
+		<circle cx="170" cy="40" r="3.5" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

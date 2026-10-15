@@ -861,6 +861,15 @@ const explainers: Explainer[] = [
 		accent: '#d4380d',
 		steps: 12,
 		minutes: 22
+	},
+	{
+		slug: 'solar-cells',
+		title: 'Solar cells',
+		summary:
+			'Shine light of any colour on a silicon junction and watch each photon free an electron that the junction’s field drives round a circuit. Then find the best voltage to run the cell at, and change the band gap to see how sunlight’s energy divides between what passes through, what turns into heat, what the voltage cannot keep, and the one-third that becomes electricity.',
+		accent: '#e67700',
+		steps: 12,
+		minutes: 22
 	}
 ];
 
