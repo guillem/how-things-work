@@ -145,7 +145,7 @@
 	<line x1={X0} x2={X1} y1={182} y2={182} stroke="var(--stage-line)" />
 	{#each [800, 600, 400, 200, 0] as v (v)}
 		<text x={tx(v)} y={198} text-anchor="middle" font-size="11" class="muted"
-			>{v === 0 ? 'today' : `${v} ka`}</text
+			>{v === 0 ? 'today' : `${v},000 yr ago`}</text
 		>
 	{/each}
 	<path d={seriesPath} fill="none" stroke={set.color} stroke-width="1.3" />

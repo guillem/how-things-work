@@ -99,7 +99,7 @@
 	<Readout id="today"><Label x={sx(0)} y={572} text="today" size={12} weight={700} /></Readout>
 	{#each [-200, -150, -100, -50, 50, 100] as v (v)}
 		<text x={sx(v)} y={572} text-anchor="middle" font-size="11" class="muted"
-			>{v < 0 ? `${-v} ka` : `+${v} kyr`}</text
+			>{v < 0 ? `${-v},000 yr ago` : `+${v},000 yr`}</text
 		>
 	{/each}
 

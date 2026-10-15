@@ -154,7 +154,7 @@
 	// ------------------------------------------------------------ gauge
 	const GL = 560;
 	const GR = 920;
-	const gx = scale([400, 580], [GL, GR]);
+	const gx = scale([400, 600], [GL, GR]);
 	const GYY = 490;
 	const signed = (v: number, d = 0) =>
 		(v >= 0.5 * 10 ** -d ? '+' : v <= -0.5 * 10 ** -d ? '−' : '±') + Math.abs(v).toFixed(d);
@@ -504,7 +504,7 @@
 		stroke-width="2"
 	/>
 	<circle
-		cx={gx(clamp(sunshine, 400, 580))}
+		cx={gx(clamp(sunshine, 400, 600))}
 		cy={GYY}
 		r="9"
 		fill="var(--ia-sun)"
