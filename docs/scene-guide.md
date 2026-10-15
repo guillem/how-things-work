@@ -81,9 +81,12 @@ Run the dev server with `npm run dev` (http://localhost:5173, hot reload).
   `var(--border)`, `var(--leaf)`, `var(--leaf-dark)`, `var(--leaf-vein)`, `var(--sky)`,
   `var(--carbon)`. Never hard-code white, black or grey for backgrounds, lines or text (white text
   on a fixed-colour protein is fine).
-- Text: `<text>` inherits the font and `var(--stage-ink)`; use `<Label>` so the halo keeps text
-  legible over drawings (`pill` for callouts; a `var(--surface)` card with a `var(--border)`
-  stroke when a block of labels has to sit over a busy drawing). Sizes: 12–13 for labels, 11
+- Text: `<text>` inherits the font, 13 px and `var(--stage-ink)` from the stage's `<svg>`, so a
+  `font-size=`, `fill=` or `font-family=` attribute on it works. Use `<Label>` so the halo keeps
+  text legible over drawings (`size`, `weight`, `anchor`, `muted`, `color`, `italic`, `mono`,
+  `tabular` for readouts whose digits change, `halo={false}` on a plain background, `pill` for
+  callouts; a `var(--surface)` card with a `var(--border)` stroke when a block of labels has to
+  sit over a busy drawing). Don't copy `Label` into a topic. Sizes: 12–13 for labels, 11
   `muted` for secondary lines, 14–16 for a title or readout. Use unicode sub- and superscripts in
   SVG text: CO₂ H₂O O₂ NADP⁺ H⁺ e⁻ C₆H₁₂O₆.
 - Strokes 1–1.5 px for cells and membranes, 2–3 px for emphasised paths. Rounded corners. Calm

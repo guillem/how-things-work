@@ -114,12 +114,6 @@ fact-check agents or flagged for the user. Data licences are listed in
 
 **Framework**
 
-- **Stage text is forced to 13 px.** `src/lib/explainer/Explainer.svelte` has
-  `.stage :global(text) { font-size: 13px; fill: … }`, which overrides every `font-size`
-  attribute, so `<Label size>` is ignored everywhere. Many recent topics work around it with
-  `style:font-size` or a local Label copy (gpu `Txt`, protein-folding `Text`, mrna-vaccines `Tag`,
-  diffusion-models `Label`). Fixing the shared rule changes every older scene's text size: do it on
-  its own, with a two-theme screenshot pass of all topics, then delete the local copies.
 - **Controls can't be driven by a scene.** deep-time's time slider doesn't follow the cursor while
   "play" runs; a way for a scene to update or disable a control would fix it.
 - `prerender_missing_id` warnings for step-hash links (`../topic/#step`) appear on many pages.
@@ -170,8 +164,6 @@ and then applies the fixes.
 
 ## Site and framework work
 
-- **`Label`'s `size` has no effect** (found by cryptography, 2026-10-12): the stage CSS fixes all
-  stage text at 13 px, so topics roll their own text helpers (`Txt`, `T`).
 - **Stage text on phones — option B (decided 2026-10-13), mechanism landed.** At 390 px wide the
   960-unit stage is drawn at ~0.4 scale, so 13-unit labels end up ~5 px. The user chose B
   (readouts out of the SVG) over a zoomable stage and landscape. On viewports ≤ 640 px a scene's
@@ -197,16 +189,6 @@ at>` (badge), minor labels in a bare `<Readout>`; pass the scene's fade as `opac
   which still show tiny on phones
   (several hundred text elements, each needing editorial choices), plus axis ticks in the shared chart
   helpers.
-
-- **Stage text styling overrides SVG attributes (site-wide, found 2026-10-07).** In
-  `src/lib/explainer/Explainer.svelte`, `.stage :global(text) { font-family; fill; font-size: 13px }`
-  beats presentation attributes, so every `font-size=`/`fill=` on `<text>` (including `<Axes>` tick
-  labels at 11 px and `<Label size>`) renders at 13 px in ink. Photosynthesis was polished under
-  this behaviour, so the fix (move the three declarations to `.stage :global(svg)` so they
-  inherit) changes every scene's look and needs its own branch with a full screenshot re-review of
-  both topics. Until then: `<Label color>` works (it sets `style:fill`), and the epidemics
-  threshold/SIR scenes use local snippets with `style:font-size`/`style:fill`; switch them back to
-  `<Label>` after the fix.
 
 - Shared components still to create as their first topic needs them: an algorithm stepper / bar chart (`sorting`), a build palette (`pagerank` or
   `graph-search`), pan/zoom (`chaos-fractals`).

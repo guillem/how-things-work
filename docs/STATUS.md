@@ -87,6 +87,13 @@ content, third-party data under its own terms (`LICENSE`, `LICENSE-CONTENT.md`,
 To resume after an interruption: `git worktree list`, then
 for each `topic/*` branch check `git log main..topic/<slug>` and continue or merge it.
 
+**Stage text rule (2026-10-15, worktree branch `claude/vibrant-yalow-bb5d14`, not merged):** the
+13 px rule moved from every `<text>` to the stage `<svg>`, so `font-size=`/`fill=` attributes and
+`<Label size>` work again; the 37 local text helpers and 949 `style:font-size` workarounds are
+gone (`<Label>` gained `italic`, `mono`, `tabular`, `halo`). 55 topics' stages changed (Axes ticks
+at 11 px, authored sizes), none broke; `make check` and `make e2e-full` green. Awaiting the user's
+validation (per-topic list in the session's hand-over note), then merge into `main`.
+
 **Phone readouts rollout (2026-10-13, on main, not yet released):** 38 of 46 topics converted
 (list in BACKLOG); 8 topics left, then the shared `<Axes>` tick labels. Release v0.1.17 after the
 user checks phones.
