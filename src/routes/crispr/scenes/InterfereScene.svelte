@@ -405,7 +405,7 @@
 					text-anchor="middle"
 					style:font-size="15px"
 					font-weight="600"
-					style:fill="#fff"
+					style:fill="var(--cr-on-colour)"
 					font-family="ui-monospace, monospace">{RNA[w.k]}</text
 				>
 			{/if}

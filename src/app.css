@@ -3174,6 +3174,7 @@ kbd {
 	--cr-dish: #f1f3f5;
 	--cr-bact-line: #2f9e44;
 	--cr-phage-line: #e03131;
+	--cr-on-colour: #ffffff;
 }
 :root[data-theme='dark'] {
 	--cr-cell: #1f2d17;
@@ -3204,4 +3205,5 @@ kbd {
 	--cr-dish: #25262b;
 	--cr-bact-line: #69db7c;
 	--cr-phage-line: #ff6b6b;
+	--cr-on-colour: #1a1b1e;
 }

@@ -132,7 +132,7 @@
 						y={y + text * 0.36}
 						text-anchor="middle"
 						style:font-size="{text}px"
-						style:fill={sp.ghost ? 'var(--stage-ink-muted)' : '#fff'}
+						style:fill={sp.ghost ? 'var(--stage-ink-muted)' : 'var(--cr-on-colour)'}
 						font-weight="600">{sp.label}</text
 					>
 				{/if}
