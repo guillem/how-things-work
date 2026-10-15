@@ -18,6 +18,9 @@ test('the resonance curve peaks at the natural frequency', async ({ page }) => {
 	// More friction lowers the peak and moves it a little below f₀.
 	await page.locator('input[type=range][data-control=damping]').fill('3');
 	await expect(stage(page)).toContainText('peak at 0.93 Hz');
+	// Strong friction (damping ratio above 1/√2) removes the peak, as the narrative says.
+	await page.locator('input[type=range][data-control=damping]').fill('15');
+	await expect(stage(page)).toContainText('no peak');
 });
 
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);

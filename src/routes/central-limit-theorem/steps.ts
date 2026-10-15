@@ -114,7 +114,7 @@ export const spec: ExplainerSpec = {
 			controls: [shape, sampleSize, samplePace, restart],
 			body: `
 <p>Now start from a distribution that looks nothing like a bell — two humps, a lopsided slope, or one you draw yourself (top chart). Take a <strong>sample</strong>: pick <i>n</i> values from it at random and work out their average. Do it again and again, and stack the averages in the bottom chart.</p>
-<p>With <i>n</i> = 1 the averages just copy the starting distribution. Slide <i>n</i> up to 2, 5, 30 and watch the bottom chart: the averages pile up in a <strong>bell curve</strong>, whatever you started from.</p>`
+<p>With <i>n</i> = 1 the averages just copy the starting distribution. Slide <i>n</i> up to 2, 5, 30 and watch the bottom chart: the averages pile up in a <strong>bell curve</strong>, whatever you started from, as long as it has some spread: draw a single bar and every value, so every average, is the same.</p>`
 		},
 		{
 			id: 'clt',
@@ -127,7 +127,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>This is the <dfn data-def="Averages of many independent random values with the same distribution (of finite spread) are approximately normally distributed, whatever that distribution is; the approximation improves as more values are averaged.">central limit theorem</dfn>: averages of many independent random values pile up in a bell curve, <strong>almost regardless of the distribution they came from</strong>. The bell is centred on the starting distribution's mean, and it gets narrower as <i>n</i> grows — its width shrinks like 1 ÷ √<i>n</i>: four times the sample, half the spread. Width here means the <dfn data-def="The standard deviation: roughly the typical distance of a value from the mean.">standard deviation</dfn> σ of the starting distribution (the ±σ bar on the top chart); the bell's width is σ/√<i>n</i>.</p>
 <p>That is why polls of a thousand people can estimate a whole country's opinion to within a few percent, and why scientists average repeated measurements: the average is far more predictable than any single value.</p>`,
-			notes: `<p>"Almost regardless": the values must be independent, and their distribution must not have extremely heavy tails (its spread must be finite). How large <i>n</i> must be depends on the shape: for very lopsided starting distributions the bell takes longer to appear. The theorem was found in special cases by de Moivre (1733) and Laplace (1810), and proved in general in the early 20th century.</p><p>In this model each value drawn is the centre of one of the 20 bars, so the starting distribution is discrete; the theorem works the same way for continuous ones.</p>`
+			notes: `<p>"Almost regardless": the values must be independent, and their distribution must have some spread, but not extremely heavy tails (its spread must be finite and above zero; with all the weight on one bar there is nothing to average out). How large <i>n</i> must be depends on the shape: for very lopsided starting distributions the bell takes longer to appear. The theorem was found in special cases by de Moivre (1733) and Laplace (1810), and proved in general in the early 20th century.</p><p>In this model each value drawn is the centre of one of the 20 bars, so the starting distribution is discrete; the theorem works the same way for continuous ones.</p>`
 		}
 	]
 };

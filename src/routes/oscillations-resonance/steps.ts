@@ -143,9 +143,9 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [pushFreq, damping],
 			body: `
-<p>Plot how big the swing finally gets against the push frequency and you get a sharp peak at the natural frequency. Less friction makes the peak taller and narrower; more friction flattens it and slides it a little lower.</p>
+<p>Plot how big the swing finally gets against the push frequency and you get, with light friction, a sharp peak close to the natural frequency. Less friction makes the peak taller and narrower; more friction flattens it and slides it lower, and with enough friction there is no peak at all: the swing only shrinks as the push gets faster.</p>
 <p><strong>Every oscillator has a natural frequency, and pushing it at that frequency makes the motion build up.</strong> That is how a singer can shatter a wine glass, how a radio picks one station out of many, why soldiers break step on bridges — and why engineers add damping to tall buildings, so that wind and earthquakes pushing at their natural frequency can't build up a large sway.</p>`,
-			notes: `<p>The steady swing for a push F₀ at frequency f is F₀ ÷ √((k − m ω²)² + (c ω)²), with ω = 2πf; at the natural frequency the first term vanishes and only friction limits it. London's Millennium Bridge swayed sideways on its opening day in 2000: as walkers adjusted their steps to the wobble, they fed it energy at its natural frequency. It closed, and dampers were fitted.</p>`
+			notes: `<p>The steady swing for a push F₀ at frequency f is F₀ ÷ √((k − m ω²)² + (c ω)²), with ω = 2πf; at the natural frequency the first term vanishes and only friction limits it. The very top of the curve sits slightly lower, at f₀·√(1 − 2ζ²), where ζ = c ÷ (2√(km)) is the damping ratio; once ζ passes 1/√2 (about 0.71) the peak is gone. London's Millennium Bridge swayed sideways on its opening day in 2000: as walkers adjusted their steps to the wobble, they fed it energy at its natural frequency. It closed, and dampers were fitted.</p>`
 		}
 	]
 };
