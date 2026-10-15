@@ -221,18 +221,18 @@ test('the summer-sunshine spectrum has almost nothing at 100,000 years', () => {
 
 // ------------------------------------------------------------ numbers the narrative quotes
 
-test('tilt alone, across its real range, moves summer sunshine at 65° N by about 40 W/m² (8%)', () => {
+test('tilt alone, across its real range, moves summer sunshine at 65° N by about 40 W/m² (9%)', () => {
 	const lo = summerSunshine({ ...TODAY, tilt: 22.1 });
 	const hi = summerSunshine({ ...TODAY, tilt: 24.5 });
 	expect(hi - lo).toBeGreaterThan(35);
 	expect(hi - lo).toBeLessThan(45);
-	expect((hi - lo) / lo).toBeCloseTo(0.08, 1);
+	expect((hi - lo) / lo).toBeCloseTo(0.086, 2);
 	expect(Math.round(summerSunshine(TODAY))).toBe(478);
 });
 
-test('today the Earth is 3.4% closer in January and gets 7% more sunlight; at e = 0.05, 22%', () => {
+test('today the Earth is about 3% closer in January and gets 7% more sunlight; at e = 0.05, 22%', () => {
 	const e = TODAY.e;
-	expect((1 + e) / (1 - e) - 1).toBeCloseTo(0.034, 3);
+	expect(1 - (1 - e) / (1 + e)).toBeCloseTo(0.033, 3);
 	expect(((1 + e) / (1 - e)) ** 2 - 1).toBeCloseTo(0.07, 2);
 	expect(((1.05 / 0.95) ** 2 - 1) * 100).toBeCloseTo(22, 0);
 });

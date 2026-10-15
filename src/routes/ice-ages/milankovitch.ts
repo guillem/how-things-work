@@ -27,7 +27,7 @@ export const SOLAR = 1361;
 /** Length of the year, days, and day of the March equinox (0 = 1 January; 20 March). */
 export const YEAR = 365.2422;
 export const MARCH_EQUINOX_DAY = 78.6;
-/** The latitude Milankovitch picked: where the great northern ice sheets grew. */
+/** The latitude most often used since Milankovitch: where the great northern ice sheets grew. */
 export const LAT_65N = 65;
 
 export interface Orbit {
