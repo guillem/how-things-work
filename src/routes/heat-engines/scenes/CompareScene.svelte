@@ -188,6 +188,6 @@
 		</Readout>
 	{/each}
 	<Readout id="eq" order={4} label="Otto = 1 − T₁/T₂" value={pct(1 - tCold / s2.T, 1)}>
-		<Label x={780} y={by(0) + 44} text="Otto = 1 − Tc/T₂: only the ratio matters" size={11} muted />
+		<Label x={780} y={by(0) + 44} text="Otto = 1 − T₁/T₂: only the ratio matters" size={11} muted />
 	</Readout>
 </g>
