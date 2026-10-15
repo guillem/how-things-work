@@ -70,7 +70,7 @@
 		})
 	);
 
-	// Arrows: speed × ARROW_TIME/H, i.e. where each galaxy would be after a quarter of the
+	// Arrows: speed × ARROW_TIME/H, i.e. where each galaxy would be after 0.3 of the
 	// Hubble time at its present speed (v = H d), so the arrows are ARROW_TIME × d long.
 	const shown = $derived(arrows ? sample(vi, vj, cam, a, w / 2, h / 2, gap) : []);
 	const arrowList = $derived(

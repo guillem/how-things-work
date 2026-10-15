@@ -12,8 +12,10 @@
 	 *  - the readouts (right): time, temperature, redshift, size, and per step the neutron
 	 *    count, helium's share, or the ionized fraction; the light's spectrum (Planck's law at
 	 *    T) on a log-wavelength axis.
-	 * The atoms switch on across z* ± 100 (the width of the last-scattering shell). The box is
-	 * not to scale: in reality there are 1.6 billion photons per nucleon.
+	 * The atoms switch on, and the light escapes, across z* ± 100 (the width of the
+	 * last-scattering shell): a schematic of when light stops scattering, not of how many
+	 * electrons are bound (about 90% already are at z*). The box is not to scale: in reality
+	 * there are 1.6 billion photons per nucleon (stated in the first-second notes).
 	 */
 	import { startDrag, wavelengthToColor, hash, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -24,7 +26,10 @@
 		T0,
 		T_FREEZE_S,
 		T_NUC_S,
+		T_ACC,
+		T_DARK_ENERGY,
 		T_START_S,
+		Z_EQ,
 		heliumMassFraction,
 		neutronsPerProton,
 		pairsLeft,
@@ -75,8 +80,7 @@
 		{ lg: lgYr(1e9), text: '1 Gyr' }
 	];
 	const zStarT = timeAt(1 / (1 + PLANCK.zStar)) * GYR_S;
-	const zEq = 3418; // Ω_m/Ω_r − 1 for this model
-	const tEq = timeAt(1 / (1 + zEq)) * GYR_S;
+	const tEq = timeAt(1 / (1 + Z_EQ)) * GYR_S;
 	const tRe = timeAt(1 / (1 + PLANCK.zRe)) * GYR_S;
 	const EVENTS = [
 		{
@@ -92,11 +96,16 @@
 		{ id: 'stars', lg: lgYr(1.4e8), text: 'first stars', row: 0, anchor: 'end' },
 		{ id: 're', lg: Math.log10(tRe), text: 'reionized', row: 1, anchor: 'start' }
 	];
-	/** Eras: radiation, then matter, then (from 10.3 Gyr) dark energy dominate. */
+	/** Eras: radiation, then matter, then (from T_DARK_ENERGY, 10.3 Gyr) dark energy dominate. */
 	const ERAS = [
 		{ id: 'rad', from: LOG0, to: Math.log10(tEq), color: 'var(--bb-radiation)' },
-		{ id: 'mat', from: Math.log10(tEq), to: Math.log10(10.3 * GYR_S), color: 'var(--bb-matter)' },
-		{ id: 'de', from: Math.log10(10.3 * GYR_S), to: LOGNOW, color: 'var(--bb-de)' }
+		{
+			id: 'mat',
+			from: Math.log10(tEq),
+			to: Math.log10(T_DARK_ENERGY * GYR_S),
+			color: 'var(--bb-matter)'
+		},
+		{ id: 'de', from: Math.log10(T_DARK_ENERGY * GYR_S), to: LOGNOW, color: 'var(--bb-de)' }
 	];
 	function moveTo(p: Point) {
 		const lg = LOG0 + ((p.x - TX0) / (TX1 - TX0)) * (LOGNOW - LOG0);
@@ -399,10 +408,10 @@
 		<Readout
 			id="atoms"
 			order={6}
-			label="Electrons bound in atoms"
+			label="Light that has escaped for good"
 			value="{Math.round(neutral * 100)}%"
 		>
-			{@render row(162, 'Electrons bound in atoms', `${Math.round(neutral * 100)}%`)}
+			{@render row(162, 'Light that has escaped for good', `${Math.round(neutral * 100)}%`)}
 		</Readout>
 		<Readout id="peak" order={7} label="The light is brightest at" value={lambdaText(lambdaPeak)}>
 			{@render row(188, 'The light is brightest at', lambdaText(lambdaPeak))}
@@ -446,7 +455,7 @@
 			fill="var(--bb-curve)"
 			opacity="0.6"
 		/>
-		{#each [{ g: 0.00001, t: 'Big Bang', y: 198, anchor: 'start' }, { g: 7.7, t: 'speeding up', y: 198, anchor: 'middle' }, { g: 9.23, t: 'Sun', y: 216, anchor: 'middle' }, { g: AGE, t: 'today', y: 198, anchor: 'end' }] as m (m.t)}
+		{#each [{ g: 0.00001, t: 'Big Bang', y: 198, anchor: 'start' }, { g: T_ACC, t: 'speeding up', y: 198, anchor: 'middle' }, { g: 9.23, t: 'Sun', y: 216, anchor: 'middle' }, { g: AGE, t: 'today', y: 198, anchor: 'end' }] as m (m.t)}
 			<line x1={lin(m.g)} x2={lin(m.g)} y1={166} y2={184} stroke="var(--stage-ink)" />
 			<T
 				x={lin(m.g)}
