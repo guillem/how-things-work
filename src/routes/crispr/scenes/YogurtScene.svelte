@@ -4,7 +4,7 @@
 	 * lawn of the chosen bacterium and phage 858 spread on it: where the phage
 	 * kills, clear holes (plaques) grow. Right, the four bacteria with their
 	 * arrays: the original strain, a survivor with two new spacers at the front,
-	 * the survivor with them removed, and the original strain given them.
+	 * the survivor with them removed, and a survivor of phage 2972 given them.
 	 * Whether a strain resists comes from the model (`immune`).
 	 */
 	import { untrack } from 'svelte';
@@ -23,7 +23,7 @@
 		{ s: 'wt', name: 'The original strain' },
 		{ s: 'bim', name: 'A survivor of phage 858' },
 		{ s: 'removed', name: 'The survivor, new spacers removed' },
-		{ s: 'added', name: 'The original strain, new spacers added' }
+		{ s: 'added', name: 'A survivor of phage 2972, the two spacers added' }
 	];
 	const strain = $derived((params.strain as Strain) ?? 'bim');
 
@@ -38,7 +38,7 @@
 			...ghosts,
 			...array.spacers.map((sp, i) => ({
 				key: `${sp.source}-${i}`,
-				label: sp.source.startsWith('new') ? 'new' : '',
+				label: sp.source.startsWith('new') ? 'new' : sp.source === '2972' ? '2972' : '',
 				color: sp.source.startsWith('new') ? 'var(--cr-phage)' : 'var(--cr-repeat)'
 			}))
 		];

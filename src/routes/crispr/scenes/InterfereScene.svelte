@@ -167,7 +167,7 @@
 		if (view === 'self')
 			return cutSeg
 				? { text: 'its own chromosome cut: the cell dies', good: false }
-				: { text: 'no PAM in the array: Cas9 never opens it', good: true };
+				: { text: 'no PAM next to the spacer: Cas9 never opens it', good: true };
 		if (cutSeg) return { text: 'phage DNA cut: the cell survives', good: true };
 		return { text: 'the phage escapes: the cell dies', good: false };
 	});
@@ -470,7 +470,7 @@
 			<Tag
 				x={CX - 18}
 				y={478}
-				text="no stops: there is no PAM anywhere in the array"
+				text="no stops: this made-up array has no PAM at all"
 				size={13}
 				anchor="start"
 				muted

@@ -246,8 +246,9 @@ export const PHAGES = {
 
 // ------------------------------------------- the yogurt experiment (schematic)
 
-/** Made-up genome standing for phage 858 of the 2007 experiment. */
+/** Made-up genomes standing for phages 858 and 2972 of the 2007 experiment. */
 export const PHAGE_858 = madeUpGenome(858, 240);
+export const PHAGE_2972 = madeUpGenome(2972, 240);
 /** Made-up spacers the strain already had, from other phages. */
 const OLD = [madeUpGenome(5, 240), madeUpGenome(6, 240), madeUpGenome(7, 240)].map(
 	(g, i) => acquire({ spacers: [] }, g, `old ${i + 1}`)!.array.spacers[0]
@@ -257,14 +258,17 @@ export type Strain = 'wt' | 'bim' | 'removed' | 'added';
 
 /**
  * The four bacteria of the experiment: the original strain, a survivor of
- * phage 858 with two new spacers at the front, the survivor with those two
- * removed, and the original strain with the two added.
+ * phage 858 with two new spacers at the front, that survivor with the two
+ * removed, and a survivor of phage 2972 (one new spacer, against 2972 only)
+ * given the same two. In the 2007 work the two 858 spacers went into the
+ * 2972 survivor, not into the original strain.
  */
 export function strainArray(strain: Strain): { array: CrisprArray; removed: number } {
 	const wt: CrisprArray = { spacers: OLD.slice() };
 	if (strain === 'wt') return { array: wt, removed: 0 };
 	if (strain === 'removed') return { array: wt, removed: 2 };
-	const first = acquire(wt, PHAGE_858, 'new 1')!;
+	const base = strain === 'added' ? acquire(wt, PHAGE_2972, '2972')!.array : wt;
+	const first = acquire(base, PHAGE_858, 'new 1')!;
 	const second = acquire(first.array, PHAGE_858, 'new 2', first.protospacer + SPACER_LENGTH + 1)!;
 	return { array: second.array, removed: 0 };
 }
