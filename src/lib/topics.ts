@@ -870,6 +870,15 @@ const explainers: Explainer[] = [
 		accent: '#e67700',
 		steps: 12,
 		minutes: 22
+	},
+	{
+		slug: 'consensus-blockchains',
+		title: 'How machines agree: consensus and blockchains',
+		summary:
+			'Five servers elect a leader and keep one log through crashes and a cut network; then blocks are chained by hash, mined by brute force, and raced by an attacker — how independent machines, and then strangers, agree on one history.',
+		accent: '#0b7285',
+		steps: 12,
+		minutes: 22
 	}
 ];
 

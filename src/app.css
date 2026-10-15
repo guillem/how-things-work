@@ -2854,3 +2854,58 @@ kbd {
 	--sc-record: #4dabf7;
 	--sc-tandem: #f06595;
 }
+/* consensus-blockchains: server roles, messages, terms, valid/invalid blocks, miners, attacker */
+:root {
+	--cb-leader: #e8590c;
+	--cb-candidate: #f59f00;
+	--cb-follower: #1c7ed6;
+	--cb-down: #adb5bd;
+	--cb-vote: #ae3ec9;
+	--cb-append: #1c7ed6;
+	--cb-ack: #2f9e44;
+	--cb-lost: #e03131;
+	--cb-ok: #2f9e44;
+	--cb-bad: #e03131;
+	--cb-work: #f08c00;
+	--cb-card: #f8f9fa;
+	--cb-term1: #1c7ed6;
+	--cb-term2: #2f9e44;
+	--cb-term3: #ae3ec9;
+	--cb-term4: #e8590c;
+	--cb-term5: #0c8599;
+	--cb-term6: #c2255c;
+	--cb-honest: #1c7ed6;
+	--cb-attacker: #e03131;
+	--cb-m0: #1c7ed6;
+	--cb-m1: #2f9e44;
+	--cb-m2: #ae3ec9;
+	--cb-m3: #e8590c;
+	--cb-m4: #0c8599;
+}
+:root[data-theme='dark'] {
+	--cb-leader: #ff922b;
+	--cb-candidate: #fcc419;
+	--cb-follower: #4dabf7;
+	--cb-down: #495057;
+	--cb-vote: #da77f2;
+	--cb-append: #4dabf7;
+	--cb-ack: #69db7c;
+	--cb-lost: #ff6b6b;
+	--cb-ok: #69db7c;
+	--cb-bad: #ff6b6b;
+	--cb-work: #ffa94d;
+	--cb-card: #1f2326;
+	--cb-term1: #4dabf7;
+	--cb-term2: #69db7c;
+	--cb-term3: #da77f2;
+	--cb-term4: #ff922b;
+	--cb-term5: #3bc9db;
+	--cb-term6: #f06595;
+	--cb-honest: #4dabf7;
+	--cb-attacker: #ff6b6b;
+	--cb-m0: #4dabf7;
+	--cb-m1: #69db7c;
+	--cb-m2: #da77f2;
+	--cb-m3: #ff922b;
+	--cb-m4: #3bc9db;
+}
