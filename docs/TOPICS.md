@@ -145,7 +145,7 @@ A topic is done when:
 **Body & Medicine**
 - [x] heart-circulation
 - [x] homeostasis
-- [ ] neurons
+- [x] neurons
 - [x] vision-color
 - [ ] immune-system
 - [x] epidemics
