@@ -44,7 +44,7 @@
 	const sim = $derived.by((): Sim => {
 		const key = `${chain.id}|${T}|${presses}`;
 		if (memo && memo.key === key && t >= memo.start) return memo;
-		const seed = 2 + 7919 * presses;
+		const seed = 1 + 7919 * presses; // the first run folds chain A in a typical time (about 16 s)
 		const carryOn = memo && memo.chain === chain.id && memo.presses === presses && t >= memo.start;
 		if (memo && carryOn) {
 			const k = Math.min(FRAMES - 1, Math.floor((t - memo.start) * FPS));

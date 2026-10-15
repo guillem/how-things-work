@@ -219,7 +219,7 @@
 	</Readout>
 	<Readout id="pred" order={2} label="Predicted" value="AlphaFold DB {P.af.id}, from the sequence">
 		<Label x={RX} y={40} text="Predicted: AlphaFold" size={15} weight={600} />
-		<Label x={RX} y={60} text="{P.af.id} · from the sequence alone" size={12} muted />
+		<Label x={RX} y={60} text="{P.af.id} · from the sequence and its relatives’" size={12} muted />
 	</Readout>
 	<Readout id="rmsd" order={3} label="Difference" value="{P.rmsd.toFixed(2)} Å (Cα RMSD)">
 		<Label x={480} y={470} text="difference: {P.rmsd.toFixed(2)} Å" size={14} weight={600} />

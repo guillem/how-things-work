@@ -37,11 +37,11 @@
 </script>
 
 <g style:font-variant-numeric="tabular-nums">
-	<Readout id="title" order={1} label="Every dot" value="about {n(PDB_ENTRIES)} proteins">
+	<Readout id="title" order={1} label="Every dot" value="{n(PDB_ENTRIES)} sequences">
 		<Label
 			x={X0 - 6}
 			y={64}
-			text="Each dot stands for about {n(PDB_ENTRIES)} proteins"
+			text="Each dot stands for {n(PDB_ENTRIES)} sequences"
 			size={15}
 			weight={600}
 			anchor="start"
