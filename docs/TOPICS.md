@@ -208,7 +208,7 @@ A topic is done when:
 - [x] reinforcement-learning
 
 **Energy & Machines**
-- [ ] heat-engines
+- [x] heat-engines
 - [x] motors-generators
 - [ ] power-grid
 - [x] solar-cells
