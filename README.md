@@ -138,3 +138,9 @@ or CSS animations), theme colours only through the CSS variables in `app.css` (`
 `--membrane`, `--stroma`, …), fixed molecule colours from `src/lib/draw/palette.ts`, labels with the
 `<Label>` halo so they stay legible over drawings, and `$effect`s that depend only on `$derived`
 values of `step`/`params` (never on `t`) with `Tween.set` wrapped in `untrack()`.
+
+## Licence
+
+Code: MIT ([`LICENSE`](LICENSE)). Original text and illustrations: CC BY 4.0. Third-party data keep
+their own terms, listed in [`docs/DATA-SOURCES.md`](docs/DATA-SOURCES.md). Details in
+[`LICENSE-CONTENT.md`](LICENSE-CONTENT.md).
