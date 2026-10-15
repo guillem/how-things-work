@@ -177,7 +177,7 @@ A topic is done when:
 **Computing**
 - [x] binary
 - [x] logic-gates
-- [ ] transistors-chipmaking
+- [x] transistors-chipmaking
 - [x] cpu
 - [ ] gpu
 - [ ] graphics-3d
