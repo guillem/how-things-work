@@ -214,7 +214,7 @@ A topic is done when:
 - [ ] solar-cells
 - [x] nuclear-fission
 - [x] nuclear-fusion
-- [ ] flight
+- [x] flight
 - [x] bridges-structures
 - [ ] feedback-control
 
