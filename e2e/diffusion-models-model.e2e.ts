@@ -7,19 +7,21 @@
 import { expect, test } from '@playwright/test';
 import {
 	BETAS,
+	MNIST_NET,
 	T,
 	alphaBar,
 	decodeWeights,
 	gaussian,
 	mulberry32,
 	noisy,
+	paramCount,
 	predict,
 	sample,
 	schedule
 } from '../src/routes/diffusion-models/ddpm';
 import { MOONS, WEIGHTS } from '../src/routes/diffusion-models/moons-model';
 import { moon, onMoons } from '../src/routes/diffusion-models/moons';
-import { CHECK, SEQUENCES } from '../src/routes/diffusion-models/mnist-sequences';
+import { CHECK, SEQUENCES, TRAIN } from '../src/routes/diffusion-models/mnist-sequences';
 import { decodeWeights as cnnWeights, forward as cnn } from '../src/routes/convolution-vision/cnn';
 import { WEIGHTS as CNN_WEIGHTS } from '../src/routes/convolution-vision/mnist-cnn';
 
@@ -117,6 +119,17 @@ test('from pure noise the network guesses the middle; from little noise, the nea
 	expect(onMoons(predict(wt, noisy(x0, eps, 50), 50, null, 0)).any).toBeGreaterThan(0.85);
 });
 
+test('the denoise step’s own readout at t = 50: nine in ten guesses on a moon', () => {
+	// the 120 arrows of the scene: its data (seeds 2024/2025, alternating moons) and noise (31)
+	const r = mulberry32(2024);
+	const g = gaussian(2025);
+	const xy = new Float32Array(120 * 2);
+	for (let i = 0; i < 120; i++) xy.set(moon(r, g, i % 2), 2 * i);
+	const n = gaussian(31);
+	const eps = Float32Array.from({ length: 120 * 2 }, () => n());
+	expect(pct(onMoons(predict(wt, noisy(xy, eps, 50), 50, null, 0)).any)).toBeGreaterThanOrEqual(90);
+});
+
 test('sampling lands on the moons, better with more steps (the page’s numbers)', () => {
 	const on = (steps: number) =>
 		onMoons(sample(wt, { steps, seed: 1, label: null, guidance: 0, count: 400 }));
@@ -140,7 +153,8 @@ test('guidance sends the points to the moon asked for; too much overshoots', () 
 	expect(run(1, 1).lower).toBe(1);
 	expect(pct(run(0, 3).upper)).toBe(92);
 	const s7 = run(0, 7);
-	expect(pct(s7.any)).toBe(60);
+	// the page quotes the share on the moon asked for (the upper one)
+	expect(pct(s7.upper)).toBe(60);
 	expect(s7.lower).toBeLessThan(0.01);
 });
 
@@ -157,6 +171,10 @@ const unpack4 = (b64: string) => {
 };
 const reader = cnnWeights(CNN_WEIGHTS);
 const reads = (b64: string) => cnn(reader, unpack4(b64)).digit;
+
+test('the network diagram’s digit model is the one that was trained', () => {
+	expect(paramCount(MNIST_NET)).toBe(TRAIN.params);
+});
 
 test('every stored run starts from noise and ends at a digit that is read as stored', () => {
 	for (const s of SEQUENCES) {

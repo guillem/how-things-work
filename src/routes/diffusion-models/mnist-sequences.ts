@@ -9,7 +9,8 @@
  * cite CC BY-SA 3.0). DIGITS are three test digits and keep its terms and attribution.
  *
  * Training: 25 epochs, mini-batches of 128, Adam, peak learning rate 0.001, EMA 0.9995,
- * seed 5; 4458 s wall clock on 2 threads; final training loss 0.0312.
+ * seed 5; labels dropped to "no label" 15% of the time (P_UNCOND in train.mjs);
+ * 4458 s wall clock on 2 threads; final training loss 0.0312.
  *
  * Images: 28 × 28, 4 bits per pixel, two per byte (high nibble first), base64; value v ↦
  * (v / 15) · 2 − 1 (−1 = black paper, 1 = white ink), x_t clipped to [−1, 1] first.

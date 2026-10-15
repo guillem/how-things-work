@@ -44,6 +44,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
 import {
+	MNIST_NET,
 	T,
 	alphaBar,
 	gaussian,
@@ -56,7 +57,7 @@ import { loadMnist } from './mnist.mjs';
 import { backprop, initWeights } from './net.mjs';
 
 export const MOONS = { D: 2, H: 32, E: 16, blocks: 2, classes: 2 };
-export const MNIST = { D: 784, H: 512, E: 32, blocks: 3, classes: 10 };
+export const MNIST = MNIST_NET;
 const P_UNCOND = 0.15;
 const SNR_CAP = 5;
 const ROUTES = path.resolve(import.meta.dirname, '../../../src/routes/diffusion-models');
@@ -290,7 +291,8 @@ async function trainMnist(cache, workers, epochs) {
 				BATCH,
 				LR,
 				EMA,
-				SEED
+				SEED,
+				P_UNCOND
 			})
 		);
 	}

@@ -38,7 +38,7 @@ export function playhead(
  * Pacing of "Run by itself": what happens visibly happens while the noise level changes, not
  * evenly in t (from t = 1000 to 500 the data are hidden anyway, the last 50 steps barely change
  * anything). So the animation moves the log signal-to-noise ratio, ln(ᾱ / (1 − ᾱ)), evenly
- * from −7 to 4 (t ≈ 760 to 40), and takes the ends quickly.
+ * from −7 to 4 (t ≈ 830 to 40), and takes the ends quickly.
  */
 const LOGSNR = Float64Array.from({ length: T + 1 }, (_, t) =>
 	t === 0 ? 99 : Math.log(alphaBar(t) / (1 - alphaBar(t)))
