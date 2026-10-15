@@ -211,7 +211,7 @@ A topic is done when:
 - [ ] heat-engines
 - [x] motors-generators
 - [ ] power-grid
-- [ ] solar-cells
+- [x] solar-cells
 - [x] nuclear-fission
 - [x] nuclear-fusion
 - [x] flight
