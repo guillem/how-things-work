@@ -16,12 +16,15 @@
  *    The genes, at textbook level:
  *      - KRAS, an oncogene (the accelerator): one hit switches it on; the cell tries to divide
  *        more often (b = B_KRAS = 0.7 instead of 0.5);
- *      - TP53, a tumour-suppressor gene (a brake), two copies: a cell with one copy hit is
- *        unchanged; with both hit it escapes programmed death (d × P53_DEATH);
+ *      - TP53, a tumour-suppressor gene (a brake), two copies, each hit a plain loss of that
+ *        copy: a cell with one copy hit is unchanged; with both hit it escapes programmed death
+ *        (d × P53_DEATH). (Some real TP53 missense mutations are dominant-negative, so one hit
+ *        already weakens the brake; the model leaves that kind out.)
  *      - a mismatch-repair gene (MLH1 stands for it): once broken, the cell and its descendants
  *        mutate REPAIR_FACTOR times as often;
  *      - two genes of resistance to two drugs, A and B, which do nothing unless the drug is
- *        given (they are hit at random like any other gene: the drug does not cause them).
+ *        given (they are hit at random like any other gene, at a fixed rate: in this model
+ *        the drug does not cause them).
  *    A cell with both KRAS on and TP53 lost is a cancer cell: in this model it also stops
  *    respecting its neighbours, and a daughter can take the site of a non-cancer neighbour
  *    (crowding it out). That rule stands for the several further changes real tumours need.

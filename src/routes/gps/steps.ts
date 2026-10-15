@@ -239,8 +239,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Real ranges are never perfect. The signal slows a little in the atmosphere, bounces off buildings, and the broadcast orbits and clocks are slightly off. Each range is wrong by a few metres, and the fix is wrong too. By how much depends on <strong>where the satellites are in the sky</strong>.</p>
 <p>This is a <dfn data-def="A map of the sky: the centre is straight overhead, the edge is the horizon, north is at the top.">sky plot</dfn>: overhead in the middle, the horizon at the edge. Each dot on the right is one fix made with fresh random range errors. Drag the four satellites. Spread out, the spheres cross at steep angles and the fixes stay close. Bunched together, the spheres cross at shallow angles and small range errors move the crossing a long way.</p>
-<p>The factor is the <dfn data-def="Dilution of precision: how much the satellites' geometry multiplies range errors into position and clock errors. GDOP (geometric) covers all four unknowns.">GDOP</dfn>: the spread of the fixes is roughly the range error times this number.</p>`,
-			notes: `<p>GDOP is √trace((HᵀH)⁻¹), where each row of H holds the direction to one satellite and a 1 for the clock. HDOP and VDOP are its horizontal and vertical parts. The best four satellites are one overhead and three spread round the horizon. The fixes shown are the least-squares solutions for the ranges with their random errors, computed for each dot.</p>`
+<p>The factor is the <dfn data-def="Position dilution of precision: how much the satellites' geometry multiplies range errors into errors of the position (HDOP across the map, VDOP in height). GDOP adds the receiver's clock error to the position.">PDOP</dfn>: the spread of the fixes in space is roughly the range error times this number.</p>`,
+			notes: `<p>With each row of H holding the direction to one satellite and a 1 for the clock, (HᵀH)⁻¹ has four diagonal terms: east, north, up and clock. PDOP is the square root of the sum of the first three, HDOP of east and north, VDOP of up alone, and GDOP of all four: GDOP also counts the clock, so it is never smaller than PDOP. These multipliers assume the range errors are independent and equally large. The best four satellites are one overhead and three spread round the horizon. The fixes shown are the least-squares solutions for the ranges with their random errors, computed for each dot.</p>`
 		},
 		{
 			id: 'real-sky',
@@ -251,7 +251,7 @@ export const spec: ExplainerSpec = {
 			duration: 28,
 			controls: [place, hour, sigma],
 			body: `
-<p>Here is the real sky at the place and time you choose, with every satellite above 10°. With 8 or more in view, the GDOP is usually about 2: a range error of a couple of metres gives a fix a few metres off.</p>
+<p>Here is the real sky at the place and time you choose, with every satellite above 10°. With 8 or more in view, the PDOP is usually under 2: a range error of a couple of metres gives a fix a few metres off.</p>
 <p>Look at the spread of the fixes: it is wider in <strong>height</strong> than across the map. All the satellites are above you, none below (the Earth is in the way), so up and down are pinned less well than north, south, east and west. Your phone's height is the least accurate thing it knows.</p>
 <p>The sky is not evenly filled, either: the orbits are tilted 55°, so no satellite ever passes overhead near the poles. The grey lines are the satellites' paths across this sky over a whole day. From London they leave a gap in the northern sky; from Antarctica the gap sits right overhead.</p>`
 		},

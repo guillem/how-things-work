@@ -131,7 +131,7 @@
 	const metres = (v: number) => (v > 999 ? '> 1 km' : `${v < 10 ? v.toFixed(1) : Math.round(v)} m`);
 	const ok = $derived(Boolean(D));
 	const geomText = $derived(
-		!D ? 'no fix' : D.gdop < 3 ? 'good' : D.gdop < 6 ? 'fair' : D.gdop < 20 ? 'poor' : 'very poor'
+		!D ? 'no fix' : D.pdop < 3 ? 'good' : D.pdop < 6 ? 'fair' : D.pdop < 20 ? 'poor' : 'very poor'
 	);
 	const rimLabel = (az: number) => toXY(az, -7);
 </script>
@@ -232,9 +232,9 @@
 			stroke="var(--border)"
 		/>
 	</Readout>
-	<Readout id="gdop" order={0} label="GDOP" value="{D ? big(D.gdop) : '—'} ({geomText})">
-		<text x={544} y={52} class="muted" style:font-size="12px">Geometry: GDOP</text>
-		<text x={544} y={80} style:font-size="22px" font-weight="700">{D ? big(D.gdop) : '—'}</text>
+	<Readout id="pdop" order={0} label="PDOP" value="{D ? big(D.pdop) : '—'} ({geomText})">
+		<text x={544} y={52} class="muted" style:font-size="12px">Geometry: PDOP</text>
+		<text x={544} y={80} style:font-size="22px" font-weight="700">{D ? big(D.pdop) : '—'}</text>
 		<text x={610} y={80} class="muted" style:font-size="13px">{geomText}</text>
 	</Readout>
 	<Readout

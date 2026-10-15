@@ -78,7 +78,7 @@
 		!over
 			? ''
 			: run.outcome === 'caught-up'
-				? 'The secret chain caught up: the attacker publishes it, and the payment to the shop vanishes'
+				? 'The secret chain caught up: counted as a double-spend (from a tie he must still pull ahead)'
 				: run.outcome === 'gave-up'
 					? `The attacker is ${GIVE_UP} blocks behind and gives up (his chance from there: ${pctText(behindChance)})`
 					: 'Still racing after 40 blocks'

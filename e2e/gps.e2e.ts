@@ -73,9 +73,9 @@ test('the real sky changes with the place, and height is the weaker direction', 
 	await expect(stage(page)).toContainText(/11 above 10° now/);
 });
 
-test('bunching the satellites together raises the GDOP', async ({ page }) => {
+test('bunching the satellites together raises the PDOP', async ({ page }) => {
 	await open(page, './gps/#geometry');
-	await expect(stage(page)).toContainText(/GDOP\s*4\.7/);
+	await expect(stage(page)).toContainText(/PDOP\s*4\.1/);
 	// Drag satellites 3 and 4 next to satellite 1, high in the north.
 	const box = async (n: number) =>
 		(await page.getByRole('slider', { name: `Satellite ${n} in the sky` }).boundingBox())!;
