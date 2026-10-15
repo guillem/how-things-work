@@ -13,7 +13,8 @@
 	import { clamp } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { POP, SITES, SITE_NAMES, sampleAt, simulate, type SpacerKey } from '../model';
-	import ArrayStrip, { type StripSpacer } from './ArrayStrip.svelte';
+	import ArrayStrip from './ArrayStrip.svelte';
+	import { type StripSpacer } from './strip';
 	import Tag from './Tag.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();

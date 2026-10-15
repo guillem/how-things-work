@@ -18,7 +18,8 @@
 	import { lerp, norm, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { PHAGES, SPACER_LENGTH, acquire, hasPam, madeUpGenome } from '../model';
-	import ArrayStrip, { spacerX, stripWidth, STRIP, type StripSpacer } from './ArrayStrip.svelte';
+	import ArrayStrip from './ArrayStrip.svelte';
+	import { spacerX, stripWidth, STRIP, type StripSpacer } from './strip';
 	import Phage from './Phage.svelte';
 	import Tag from './Tag.svelte';
 
@@ -338,7 +339,6 @@
 		label="The array"
 		value="leader, then repeat (grey diamond), spacer, repeat, …; newest spacer next to the leader"
 	>
-		<Tag x={stripX + (STRIP.leader * SCALE) / 2} y={stripY + 40} text="leader" size={12} muted />
 		<Tag
 			x={stripX + (STRIP.leader + STRIP.repeat / 2) * SCALE}
 			y={stripY - 30}

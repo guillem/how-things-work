@@ -12,7 +12,8 @@
 	import { TAU, hash, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { PHAGE_858, immune, strainArray, type Strain } from '../model';
-	import ArrayStrip, { type StripSpacer } from './ArrayStrip.svelte';
+	import ArrayStrip from './ArrayStrip.svelte';
+	import { type StripSpacer } from './strip';
 	import Tag from './Tag.svelte';
 
 	let { t, params, reduced }: StageProps = $props();

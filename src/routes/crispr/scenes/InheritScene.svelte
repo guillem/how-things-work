@@ -7,7 +7,8 @@
 	 */
 	import { smoothstep, lerp } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import ArrayStrip, { stripWidth, type StripSpacer } from './ArrayStrip.svelte';
+	import ArrayStrip from './ArrayStrip.svelte';
+	import { stripWidth, type StripSpacer } from './strip';
 	import Tag from './Tag.svelte';
 
 	let { t, reduced }: StageProps = $props();
