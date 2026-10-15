@@ -66,9 +66,15 @@ test('without perspective correction the floor looks up the wrong place in its t
 
 test('shading: Lambert reads the cosine of the angle to the lamp', async ({ page }) => {
 	await open(page, './graphics-3d/#shading');
-	const m = /Lambert: n · l = cos (\d+)° = ([\d.]+)/.exec((await stage(page).textContent()) ?? '');
+	const text = (await stage(page).textContent()) ?? '';
+	const m = /Lambert: max\(0, cos (\d+)°\) = ([\d.]+)/.exec(text);
 	expect(m).not.toBeNull();
 	expect(Number(m![2])).toBeCloseTo(Math.cos((Number(m![1]) * Math.PI) / 180), 1);
+	// The highlight is k·(r · v)^shine, so it never exceeds the surface's k.
+	const h = /Phong highlight k·\(r · v\)\^shine: \+ ([\d.]+)/.exec(text);
+	const k = /k = ([\d.]+), shine = \d+/.exec(text);
+	expect(h && k).not.toBeNull();
+	expect(Number(h![1])).toBeLessThanOrEqual(Number(k![1]));
 	await page.locator('button[data-control=shading][data-value=none]').click();
 	await expect(stage(page)).toContainText('No shading');
 });

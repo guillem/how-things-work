@@ -626,7 +626,8 @@ export const edge = (ax: number, ay: number, bx: number, by: number, px: number,
 
 /**
  * Which pixel centres of a w × h grid lie inside the screen-space triangle (x0,y0)…(x2,y2):
- * the edge-function test a GPU makes, over the triangle's bounding box.
+ * the edge-function test a GPU makes (without the tie-breaking fill rule a GPU adds for pixels
+ * exactly on a shared edge), over the triangle's bounding box.
  */
 export function coverage(
 	pts: [number, number][],
@@ -1124,6 +1125,8 @@ export function probe(
 		depth: h.t,
 		nl: dot(nf, l),
 		highlight: highlight(h.tri.mesh, p, nf, cam.eye, light, { ...opts, shading: 'phong' }),
+		/** The surface's highlight strength k and shininess exponent. */
+		specular: SPECULAR[h.tri.mesh.material],
 		/** Angle between the normal and the lamp, degrees. */
 		angle: (Math.acos(Math.max(-1, Math.min(1, dot(nf, l)))) * 180) / Math.PI
 	};
