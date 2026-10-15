@@ -26,6 +26,7 @@ import {
 } from '../src/routes/heat-engines/engine';
 import {
 	T_BOIL,
+	boilerSaturation,
 	boilingPoint,
 	combined,
 	rankine,
@@ -223,4 +224,18 @@ test('real efficiencies from EIA heat rates: coal 34%, nuclear 33%, gas turbines
 	expect(fromHeatRate(EIA_HEAT_RATE.nuclear)).toBeCloseTo(0.327, 3);
 	expect(fromHeatRate(EIA_HEAT_RATE.gasTurbine)).toBeCloseTo(0.31, 3);
 	expect(fromHeatRate(EIA_HEAT_RATE.combinedCycle)).toBeCloseTo(0.452, 3);
+});
+
+test('in the 150-bar boiler, warming the water takes more heat than boiling it or superheating the steam', () => {
+	const k = rankine(873.15, boilingPoint(0.01));
+	const b = boilerSaturation();
+	const warm = (b.hf - k.h2) / k.qIn;
+	const boil = (b.hg - b.hf) / k.qIn;
+	const superheat = (k.h3 - b.hg) / k.qIn;
+	expect(warm + boil + superheat).toBeCloseTo(1, 9);
+	expect(warm).toBeCloseTo(0.42, 2);
+	expect(boil).toBeCloseTo(0.3, 2);
+	expect(superheat).toBeCloseTo(0.29, 2);
+	// On average the heat goes in at about 290 °C.
+	expect(k.tMeanIn - 273.15).toBeCloseTo(287, 0);
 });

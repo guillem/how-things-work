@@ -52,35 +52,35 @@ export const REAL: readonly RealEngine[] = [
 	},
 	{
 		id: 'gt',
-		label: 'Gas turbines (US average)',
+		label: 'Gas turbines (US, tested)',
 		value: fromHeatRate(EIA_HEAT_RATE.gasTurbine),
 		source: 'EIA 2024',
 		group: 'plant'
 	},
 	{
 		id: 'nuclear',
-		label: 'Nuclear plants (US average)',
+		label: 'Nuclear plants (US, tested)',
 		value: fromHeatRate(EIA_HEAT_RATE.nuclear),
 		source: 'EIA 2024',
 		group: 'plant'
 	},
 	{
 		id: 'coal',
-		label: 'Coal steam plants (US average)',
+		label: 'Coal steam plants (US, tested)',
 		value: fromHeatRate(EIA_HEAT_RATE.coalSteam),
 		source: 'EIA 2024',
 		group: 'plant'
 	},
 	{
 		id: 'cc',
-		label: 'Gas combined cycle (US average)',
+		label: 'Gas combined cycle (US, tested)',
 		value: fromHeatRate(EIA_HEAT_RATE.combinedCycle),
 		source: 'EIA 2024',
 		group: 'plant'
 	},
 	{
 		id: 'record',
-		label: 'Combined-cycle record',
+		label: 'Combined-cycle record, 2016',
 		value: 0.6222,
 		source: 'Bouchain 2016',
 		group: 'plant'
