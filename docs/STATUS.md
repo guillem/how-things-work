@@ -75,14 +75,15 @@ Last updated: 2026-10-15 UTC.
 builder agents, one per topic in its own local worktree (`.claude/worktrees/<slug>`, branch
 `topic/<slug>`), each on its own dev port (52xx) and `PW_PORT` (42xx). Each finished branch is
 rebased and merged into `main` locally, then fact-checked (`make review`) and its report applied;
-the topic is ticked after that. Nothing is pushed or released until the user validates. **Done 2026-10-15: all 100 catalogue topics built, fact-checked and ticked.** v0.1.17 (99
-topics) is live; crispr (built as CRISPR-as-bacterial-immunity, the user's choice after a safety
-classifier stopped the gene-editing scope) and the last ten fact-checks are on `main`, awaiting the
-user's validation and v0.1.18. The last ten fact-checks were done in-house (an agent reviews with
-web search, then applies; `_orch/selfreview-brief.md`) because the Batch API credit is out until
-November. `make e2e-full` green (2,157). Open decisions for the user: dashboard "Decisions wanted"
-and `.claude/worktrees/_orch/notes.md`. Next per the user: the ChatGPT fact-check notes in
-`docs/codex-fact-check-*.md`.
+the topic is ticked after that. Nothing is pushed or released until the user validates. **Done 2026-10-15: all 100 catalogue topics built, fact-checked and ticked; v0.1.18 live.**
+Then the user's external audit (`docs/codex-fact-check-complete.md`, kept untracked: 59
+findings, 2 High) was applied in 11 local worktrees, one agent per group of topics, each finding
+checked against its source first: all applied, none rejected (the unverified Held & Hou
+attribution was removed). Notable model changes: homeostasis (type 1 glucagon still rises with
+exercise; liver flow split out of Topp's insulin term), motors-generators (torque ratio ≈ 0.7 and
+braking on a voltage drop), gps (PDOP). `make e2e-full` green (2,157). Licence: MIT code, CC BY 4.0
+content, third-party data under its own terms (`LICENSE`, `LICENSE-CONTENT.md`,
+`docs/DATA-SOURCES.md`). Awaiting the user's validation, then push and v0.1.19.
 To resume after an interruption: `git worktree list`, then
 for each `topic/*` branch check `git log main..topic/<slug>` and continue or merge it.
 
