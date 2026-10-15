@@ -128,7 +128,7 @@ A topic is done when:
 - [x] reaction-rates-equilibrium
 - [x] acids-bases
 - [x] redox-batteries
-- [ ] carbon-polymers
+- [x] carbon-polymers
 - [x] semiconductors
 
 **Biology**
