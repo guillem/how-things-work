@@ -215,7 +215,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Snow and ice reflect most of the sunlight that falls on them; open ocean and bare ground absorb most of it. As the planet warms, sea ice and snow retreat, the Earth becomes a little darker, and it absorbs more sunlight. That warms it further.</p>
 <p>This one works on the sunlight side of the balance: watch the ice shrink, and the sunlight absorbed creep up (by less than 1 W/m², so read the number). With both feedbacks on, doubling CO₂ warms the planet by about <strong>2.3 °C</strong>.</p>
-<p>Feedbacks amplify the warming, but they do not make it run away. The Stefan–Boltzmann law always wins: a warmer planet glows more strongly, by more than the feedbacks add, so it settles at a new, warmer balance.</p>`,
+<p>Feedbacks amplify the warming, but they do not make it run away. For changes like these on today's Earth, the Stefan–Boltzmann law wins: a warmer planet glows more strongly, by more than the feedbacks add, so it settles at a new, warmer balance. (A planet much hotter, with oceans steaming into the air, can hit a ceiling on the infrared that escapes and run away, as Venus may have; nothing we are doing comes close.)</p>`,
 			notes: `<p>AR6 WG1 Table 7.10: surface-albedo feedback +0.35 W/m² per °C [0.10 to 0.60], mostly from Arctic sea ice and spring snow. The great ice sheets of Greenland and Antarctica respond over centuries to millennia, and are not in this number. On the stage the extra sunlight is +0.35 W/m² for each degree of warming, and the ice drawn shrinks with the warming.</p>`
 		},
 		{
