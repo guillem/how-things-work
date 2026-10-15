@@ -170,7 +170,7 @@ A topic is done when:
 - [x] stars
 - [x] black-holes
 - [x] gravitational-waves
-- [ ] dark-matter
+- [x] dark-matter
 - [x] big-bang
 - [x] exoplanets
 
