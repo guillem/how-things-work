@@ -444,9 +444,9 @@
 			sx={px}
 			sy={py}
 			{xTicks}
-			xFormat={(v) => (Math.abs(v) < 1e-12 ? 'off' : fmtS(v))}
+			xFormat={(v: number) => (Math.abs(v) < 1e-12 ? 'off' : fmtS(v))}
 			yTicks={[Math.log10(0.2), 0, Math.log10(5), 1, Math.log10(50), 2]}
-			yFormat={(v) => String(Number((10 ** v).toPrecision(1)))}
+			yFormat={(v: number) => String(Number((10 ** v).toPrecision(1)))}
 			xLabel="time"
 			yLabel="keV"
 		/>

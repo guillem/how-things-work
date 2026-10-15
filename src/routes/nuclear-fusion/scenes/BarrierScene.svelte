@@ -53,7 +53,7 @@
 		sx={lx}
 		{sy}
 		xTicks={[0, 1, 2, 3]}
-		xFormat={(v) => String(10 ** v)}
+		xFormat={(v: number) => String(10 ** v)}
 		yTicks={[0, 100, 200, 300, 400, 500]}
 		xLabel="distance between the nuclei (femtometres)"
 		yLabel="energy (keV)"

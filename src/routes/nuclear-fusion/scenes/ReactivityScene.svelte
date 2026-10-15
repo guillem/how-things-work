@@ -82,9 +82,9 @@
 		sx={lx}
 		sy={ly}
 		xTicks={[0, Math.log10(2), Math.log10(5), 1, Math.log10(20), Math.log10(50), 2]}
-		xFormat={(v) => String(Math.round(10 ** v))}
+		xFormat={(v: number) => String(Math.round(10 ** v))}
 		{yTicks}
-		yFormat={(v) => pow10(v)}
+		yFormat={(v: number) => pow10(v)}
 		xLabel="temperature (keV)"
 		yLabel="reactivity ⟨σv⟩ (m³/s)"
 	/>
