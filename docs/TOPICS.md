@@ -150,7 +150,7 @@ A topic is done when:
 - [ ] immune-system
 - [x] epidemics
 - [x] mrna-vaccines
-- [ ] cancer
+- [x] cancer
 - [x] medical-imaging
 
 **Earth & Climate**
