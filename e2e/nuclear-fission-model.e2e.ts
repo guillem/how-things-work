@@ -10,6 +10,7 @@ import {
 	FISSION_ENERGY,
 	GENERATION_TIME,
 	METHANE_J_PER_KG,
+	NATURAL,
 	MEV,
 	SCRAM_REACTIVITY,
 	SPLITS,
@@ -41,7 +42,12 @@ import {
 	waterXi,
 	xi
 } from '../src/routes/nuclear-fission/model';
-import { CHAIN_GENERATIONS, CHAIN_N0, CHAIN_SEED } from '../src/routes/nuclear-fission/chain';
+import {
+	CHAIN_GENERATIONS,
+	CHAIN_N0,
+	CHAIN_SEED,
+	buildTree
+} from '../src/routes/nuclear-fission/chain';
 
 test('binding energy per nucleon peaks near iron and is lower for uranium', () => {
 	const top = peak();
@@ -101,7 +107,7 @@ test('a kilogram of uranium-235 gives over a million times the heat of a kilogra
 
 test('η: 1.35 neutrons per absorption in natural uranium, 1.9 at 4%', () => {
 	expect(U235.nu).toBeCloseTo(2.425, 3);
-	expect(eta(0.72)).toBeCloseTo(1.35, 2);
+	expect(eta(NATURAL)).toBeCloseTo(1.35, 2);
 	expect(eta(4)).toBeCloseTo(1.9, 2);
 	expect(eta(100)).toBeCloseTo((U235.nu * U235.fission) / (U235.fission + U235.capture), 9);
 });
@@ -129,16 +135,16 @@ test('the design core is critical with the rods half in', () => {
 test('natural uranium in light water never reaches k = 1', () => {
 	let best = 0;
 	for (let w = 0.05; w <= 6; w += 0.05)
-		best = Math.max(best, factors({ enrichment: 0.72, water: w, rods: 0 }).k);
+		best = Math.max(best, factors({ enrichment: NATURAL, water: w, rods: 0 }).k);
 	expect(best).toBeLessThan(0.95);
-	expect(criticalRods(0.72, 1)).toBeNull();
+	expect(criticalRods(NATURAL, 1)).toBeNull();
 	// Power-reactor fuel (3–5%) can be held critical at the design water.
 	for (const e of [3, 3.5, 4, 4.5, 5]) expect(criticalRods(e, 1)).not.toBeNull();
 });
 
 test('more enrichment raises k; more rods lower it', () => {
 	let last = 0;
-	for (const e of [0.72, 1, 2, 3, 4, 5]) {
+	for (const e of [NATURAL, 1, 2, 3, 4, 5]) {
 		const k = factors({ ...DESIGN, enrichment: e }).k;
 		expect(k).toBeGreaterThan(last);
 		last = k;
@@ -190,8 +196,18 @@ test('below 1 the chain dies away, above 1 it grows, at 1 it holds', () => {
 	const sup = chainRun(1.1, CHAIN_N0, CHAIN_GENERATIONS, CHAIN_SEED);
 	expect(sub.at(-1)!).toBeLessThan(0.05 * CHAIN_N0);
 	expect(sup.at(-1)!).toBeGreaterThan(15 * CHAIN_N0);
-	// The page's critical run stays within ±15% of where it started.
-	for (const n of crit) expect(Math.abs(n / CHAIN_N0 - 1)).toBeLessThan(0.15);
+	// The page's critical run stays within ±10% of where it started.
+	for (const n of crit) expect(Math.abs(n / CHAIN_N0 - 1)).toBeLessThan(0.1);
+});
+
+test('in the chain tree, lost neutrons are mostly captured: few leak out of a large core', () => {
+	const lost = Array.from({ length: 200 }, (_, salt) => buildTree(1, 8, 1000, salt))
+		.flatMap((tree) => tree.neutrons.flat())
+		.filter((n) => n.fate !== 'fission');
+	const escaped = lost.filter((n) => n.fate === 'escaped').length;
+	// The core model loses 3% of all neutrons to leakage, against about 59% lost in all.
+	expect(escaped / lost.length).toBeGreaterThan(0.01);
+	expect(escaped / lost.length).toBeLessThan(0.12);
 });
 
 test('delayed neutrons: β = 0.65%, and they set the pace', () => {

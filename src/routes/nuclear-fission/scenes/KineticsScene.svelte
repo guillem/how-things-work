@@ -405,7 +405,7 @@
 		<Readout
 			id="power"
 			order={1}
-			label="Power"
+			label="Fission power"
 			value="{fmt(opPower * 100, 1)}% · {fmt((opPower * PLANT_HEAT) / 1e9, 2)} GW"
 			color={trendColour}
 		>
@@ -418,7 +418,7 @@
 				style:font-variant-numeric="tabular-nums">{fmt(opPower * 100, 1)}%</text
 			>
 			<text x={OX0 + 120} y={508} style:font-variant-numeric="tabular-nums"
-				>{fmt((opPower * PLANT_HEAT) / 1e9, 2)} GW of heat</text
+				>{fmt((opPower * PLANT_HEAT) / 1e9, 2)} GW from fission</text
 			>
 		</Readout>
 		<Readout
@@ -435,7 +435,7 @@
 				class="muted"
 				style:font-size="11px"
 				style:font-variant-numeric="tabular-nums"
-				>reactivity {opRho >= 0 ? '+' : ''}{(opRho * 100).toFixed(2)}% · delayed neutrons β = {(
+				>k − 1 ≈ {opRho >= 0 ? '+' : ''}{(opRho * 100).toFixed(2)}% · delayed neutrons β = {(
 					BETA * 100
 				).toFixed(2)}%</text
 			>
@@ -525,10 +525,10 @@
 			<Readout
 				id="kg"
 				order={4}
-				label="Uranium-235 split"
+				label="Fissile nuclei split"
 				value="{fmt(u235PerDay(PLANT_HEAT), 1)} kg a day"
 			>
-				<text x={700} y={276} class="muted">uranium-235 split</text>
+				<text x={700} y={276} class="muted">fissile nuclei split</text>
 				<text x={900} y={276} text-anchor="end" font-weight="600"
 					>{fmt(u235PerDay(PLANT_HEAT), 1)} kg/day</text
 				>

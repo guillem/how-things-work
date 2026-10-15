@@ -609,9 +609,9 @@
 					stroke-linecap="round"
 				/>
 				<rect
-					x={gk(0.995)}
+					x={gk(0.999)}
 					y={168}
-					width={gk(1.005) - gk(0.995)}
+					width={Math.max(3, gk(1.001) - gk(0.999))}
 					height="16"
 					rx="3"
 					fill="var(--fi-crit)"
@@ -661,7 +661,7 @@
 						<rect
 							x={GX0 + 110}
 							y={y - 12}
-							width={(Math.min(1.5, row.v) / 2) * (GX1 - GX0 - 110)}
+							width={(Math.min(2, row.v) / 2) * (GX1 - GX0 - 110)}
 							height="12"
 							rx="3"
 							fill="var(--fi-curve)"

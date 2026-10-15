@@ -4,11 +4,18 @@
  * where the other neutrons went) and the long run of neutron counts.
  */
 import { hash } from '#lib/draw/math.ts';
-import { P_THREE, U235 } from './model';
+import { NON_LEAKAGE, P_THREE, U235 } from './model';
 
 /** The long run: 1,000 neutrons followed for 40 generations. */
 export const CHAIN_N0 = 1000;
 export const CHAIN_GENERATIONS = 40;
+/**
+ * Of the neutrons that do not cause a fission, the share that leaks out of the
+ * core; the rest are captured. From the core model's 3% leakage per neutron
+ * against the 1 − 1/ν̄ of all neutrons lost in a critical core (about 5%).
+ */
+export const ESCAPED_SHARE = (1 - NON_LEAKAGE) / (1 - 1 / U235.nu);
+
 /**
  * The page's seed. Chosen so that the critical run (k = 1) stays within ±10%
  * of its start: a critical chain of only 1,000 neutrons wanders (by about
@@ -64,7 +71,7 @@ export function buildTree(k: number, generations: number, maxPerColumn: number, 
 			for (let j = 0; j < n; j++) {
 				const u = hash(key * 7 + j, salt + 2);
 				const fate: Fate =
-					u < q ? 'fission' : hash(key * 7 + j, salt + 3) < 0.6 ? 'captured' : 'escaped';
+					u < q ? 'fission' : hash(key * 7 + j, salt + 3) < ESCAPED_SHARE ? 'escaped' : 'captured';
 				let child = -1;
 				if (fate === 'fission') {
 					counted++;
