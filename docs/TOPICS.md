@@ -204,7 +204,7 @@ A topic is done when:
 - [x] embeddings
 - [x] transformers
 - [ ] language-models
-- [ ] diffusion-models
+- [x] diffusion-models
 - [x] reinforcement-learning
 
 **Energy & Machines**
