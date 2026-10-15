@@ -90,6 +90,8 @@ test('wider channels: more rate, but less than in proportion', async ({ page }) 
 test('Shannon’s limit at the chosen SNR', async ({ page }) => {
 	await page.goto('./wireless-signals/#shannon');
 	await expect(stage(page)).toContainText('at most 2.9 bits per second per hertz');
+	// Wi-Fi 5 sits right of the curve: 4.9 bit/s/Hz needs at least 20 dB, not 14.5
+	await expect(stage(page)).toContainText('Wi-Fi 5 with its code: 4.9, needs at least 20 dB');
 	await range(page, 'snr').fill('30');
 	await expect(stage(page)).toContainText('at most 10.0 bits per second per hertz, 199 Mbit/s');
 	await expect(stage(page)).toContainText('without a code: BPSK, QPSK, 16-QAM, 64-QAM');

@@ -11,8 +11,9 @@
 	 *   doubling with every doubling of width would give.
 	 * - `shannon`: bits per second per hertz against SNR: the curve log₂(1 + SNR)
 	 *   with the region above it shaded, each uncoded scheme at the SNR it needs
-	 *   for a BER of 10⁻⁶, and Wi-Fi 5's fastest single-stream rate (4.9 bit/s/Hz)
-	 *   from the curve. `params.snr` marks an SNR.
+	 *   for a BER of 10⁻⁶, and Wi-Fi 5's 256-QAM 5/6 rate in 80 MHz (4.9 bit/s/Hz,
+	 *   one stream, normal guard interval) at the SNR its subcarriers need at the
+	 *   very least, with a dashed gap back to the curve. `params.snr` marks an SNR.
 	 *
 	 * Static apart from a gentle shimmer of the noise floor (a pure function of t).
 	 */
@@ -28,6 +29,7 @@
 		schemeName,
 		snrForBer,
 		wifiRate,
+		wifiSnrFloorDb,
 		type Scheme
 	} from '../radio';
 	import { bitRate, db, distanceText, num } from '../format';
@@ -88,6 +90,8 @@
 	}));
 	const wifiEta = wifiRate(80, 8, 5 / 6) / 80;
 	const wifiMin = linToDb(2 ** wifiEta - 1);
+	/** What its 6.7 coded bits per subcarrier need, by Shannon's formula alone. */
+	const wifiFloor = wifiSnrFloorDb(8, 5 / 6);
 	const etaNow = $derived(Math.log2(1 + dbToLin(snr)));
 	const fits = $derived(pts.filter((p) => p.need <= snr).map((p) => schemeName[p.s]));
 </script>
@@ -285,22 +289,28 @@
 			value={pts.map((p) => `${schemeName[p.s]} ${num(p.need)}`).join(' · ') + ' dB'}
 		/>
 		<!-- Wi-Fi 5 -->
-
-		<circle cx={sx(wifiMin)} cy={sy(wifiEta)} r="5" fill="var(--ws-ok)" />
+		<line
+			x1={sx(wifiMin)}
+			x2={sx(wifiFloor) - 6}
+			y1={sy(wifiEta)}
+			y2={sy(wifiEta)}
+			stroke="var(--ws-ok)"
+			stroke-dasharray="3 3"
+		/>
+		<circle cx={sx(wifiFloor)} cy={sy(wifiEta)} r="5" fill="var(--ws-ok)" />
 		<Readout
 			id="wifi"
 			order={20}
 			label="Wi-Fi 5, 256-QAM + code"
-			value="4.9 bit/s/Hz; Shannon allows it from {db(wifiMin)}"
+			value="4.9 bit/s/Hz; needs at least {db(wifiFloor)}, Shannon’s curve {db(wifiMin)}"
 			color="var(--ws-ok)"
 		>
 			<T
-				x={sx(wifiMin) - 10}
-				y={sy(wifiEta) - 10}
-				text="Wi-Fi 5 with its error-correcting code: 4.9"
+				x={sx(wifiFloor) + 10}
+				y={sy(wifiEta) + 4}
+				text="Wi-Fi 5 with its code: 4.9, needs at least {num(wifiFloor, 0)} dB"
 				size={12}
 				weight={600}
-				anchor="end"
 				color="var(--ws-ok)"
 			/>
 		</Readout>

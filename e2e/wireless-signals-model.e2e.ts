@@ -18,7 +18,8 @@ import {
 	overlap,
 	snrForBer,
 	spectrum,
-	wifiRate
+	wifiRate,
+	wifiSnrFloorDb
 } from '../src/routes/wireless-signals/radio';
 
 test('Q function: textbook values', () => {
@@ -197,4 +198,10 @@ test('the numbers the narrative quotes', () => {
 	// Wi-Fi 5's 390 Mbit/s in 80 MHz: 4.9 bit/s/Hz, allowed by Shannon from 14.5 dB
 	expect(wifiRate(80, 8, 5 / 6) / 80).toBeCloseTo(4.9, 1);
 	expect(linToDb(2 ** (wifiRate(80, 8, 5 / 6) / 80) - 1)).toBeCloseTo(14.5, 1);
+	// ...but its subcarriers each carry 6.7 coded bits, so it needs at least 20 dB:
+	// overheads lower the bits per hertz, not the SNR each subcarrier needs
+	expect(wifiSnrFloorDb(8, 5 / 6)).toBeCloseTo(20, 0);
+	expect(wifiSnrFloorDb(8, 5 / 6)).toBeGreaterThan(
+		linToDb(2 ** (wifiRate(80, 8, 5 / 6) / 80) - 1) + 5
+	);
 });
