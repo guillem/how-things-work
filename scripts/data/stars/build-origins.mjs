@@ -20,7 +20,8 @@
  * therefore read off a picture: good to a few per cent, no better.
  *
  * Elements 43 (Tc), 61 (Pm) and 95–103 have no long-lived isotopes and are marked
- * `synthetic`; elements above 103 are not in the table.
+ * `synthetic` (neptunium, 93, has none either, but Johnson shades it, like polonium to
+ * plutonium, by where its parent nuclei were made); elements above 103 are not in the table.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';

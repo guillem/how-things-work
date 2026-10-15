@@ -30,25 +30,18 @@ import { NEARBY, NEARBY_WHITE_DWARFS } from '../src/routes/stars/nearby';
 const sun = track(1);
 const sunNow = atAge(sun, SUN_AGE);
 
-test('the model Sun today is within 12% of the real Sun in luminosity and 2% in temperature and radius', () => {
+test('the model Sun today is within 12% of the real Sun in luminosity, 2% in temperature and 3% in radius', () => {
 	expect(sunNow.L).toBeGreaterThan(0.88);
 	expect(sunNow.L).toBeLessThan(1.12);
 	expect(Math.abs(sunNow.T / T_SUN - 1)).toBeLessThan(0.02);
 	expect(Math.abs(sunNow.R - 1)).toBeLessThan(0.03);
-	// Its centre: about 15 million kelvin and 150 g/cm³ (standard solar models give 15.7 MK).
-	expect(sunNow.Tc).toBeGreaterThan(1.45e7);
-	expect(sunNow.Tc).toBeLessThan(1.65e7);
-	expect(sunNow.rhoc).toBeGreaterThan(130);
-	expect(sunNow.rhoc).toBeLessThan(170);
+	// Its centre, as the balance step and the Sun's card quote it: about 16 million kelvin and
+	// 160 g/cm³ (standard solar models give 15.7 MK and 150 g/cm³).
+	expect(Math.round(sunNow.Tc / 1e6)).toBe(16);
+	expect(Math.round(sunNow.rhoc / 10) * 10).toBe(160);
 	// About half the hydrogen in its core is gone.
 	expect(sunNow.xH).toBeGreaterThan(0.3);
 	expect(sunNow.xH).toBeLessThan(0.4);
-});
-
-test('the young Sun was about 30% fainter than today (the faint young Sun)', () => {
-	const young = at(sun, STAGE.zams);
-	expect(young.L / sunNow.L).toBeGreaterThan(0.6);
-	expect(young.L / sunNow.L).toBeLessThan(0.75);
 });
 
 test('fusing hydrogen into helium turns 0.7% of the mass into energy: 4.3 million tonnes a second for the Sun', () => {
@@ -77,13 +70,13 @@ test('main-sequence lifetimes: about 10 billion years for the Sun, 10 million fo
 	expect(mainSequenceLifetime(1)).toBeLessThan(13.8e9);
 });
 
-test('lifetime ∝ M/L: across a 10⁷ range of luminosity, τ·L/M stays within 10–45 billion years', () => {
-	for (const m of [0.5, 1, 2, 5, 10, 20, 30]) {
+test('lifetime ∝ M/L: across a 10⁷ range of luminosity, τ·L/M stays within 10–50 billion years', () => {
+	for (const m of [0.5, 1, 2, 5, 10, 20, 30, 60]) {
 		const v = (mainSequenceLifetime(m) * meanMainSequenceLuminosity(m)) / m;
 		expect(v / 1e9).toBeGreaterThan(10);
-		expect(v / 1e9).toBeLessThan(45);
+		expect(v / 1e9).toBeLessThan(50);
 	}
-	expect(zams(30).L / zams(0.5).L).toBeGreaterThan(1e6);
+	expect(zams(60).L / zams(0.5).L).toBeGreaterThan(1e6);
 	// Burning a tenth of the Sun's hydrogen at today's luminosity takes about 10 billion years.
 	expect(fuelLifetime(1, 1) / 1e9).toBeGreaterThan(9.5);
 	expect(fuelLifetime(1, 1) / 1e9).toBeLessThan(11.5);
@@ -118,6 +111,26 @@ test('real stars within 50 pc lie along the model main sequence', () => {
 	const sunLike = NEARBY_WHITE_DWARFS.filter(([lt]) => Math.abs(lt - Math.log10(6000)) < 0.03);
 	expect(sunLike.length).toBeGreaterThan(5);
 	for (const [, ll] of sunLike) expect(ll).toBeLessThan(-2.5);
+});
+
+test('no ordinary star on the HR diagram sits far below the main sequence', () => {
+	// Only white dwarfs live ten times or more below the zero-age main sequence; ordinary stars
+	// plotted there would be misclassified white dwarfs or bad colours.
+	const ms: [number, number][] = [];
+	for (let lm = -1; lm <= Math.log10(60); lm += 0.01)
+		ms.push([zams(10 ** lm).logT, zams(10 ** lm).logL]);
+	const zamsL = (logT: number) => {
+		if (logT <= ms[0][0]) return ms[0][1];
+		for (let i = 1; i < ms.length; i++)
+			if (ms[i][0] >= logT) {
+				const u = (logT - ms[i - 1][0]) / (ms[i][0] - ms[i - 1][0]);
+				return ms[i - 1][1] + u * (ms[i][1] - ms[i - 1][1]);
+			}
+		return ms[ms.length - 1][1];
+	};
+	const below = NEARBY.filter(([lt, ll]) => ll < zamsL(lt) - 1);
+	expect(below).toEqual([]);
+	expect(NEARBY.length).toBeGreaterThan(2000);
 });
 
 test('the Sun becomes a red giant, then a helium-burning giant, then a white dwarf of about 0.54 M☉', () => {
@@ -240,9 +253,9 @@ test('main-sequence step: 6,400 L☉ at 10 M☉, a thousandth at 0.1 M☉ (2,900
 	within(burnt(1), 0.12, 0.17);
 });
 
-test('sun-ms step: born at two-thirds of today’s model luminosity, over twice it at the end; main sequence over 85% of the life', () => {
-	const zamsL = at(sun, STAGE.zams).L;
-	within(zamsL / sunNow.L, 0.6, 0.72);
+test('sun-ms step: born at about three-quarters of the Sun’s present luminosity (the faint young Sun), over twice it at the end; main sequence over 85% of the life', () => {
+	within(at(sun, STAGE.zams).L, 0.7, 0.8);
+	expect(at(sun, STAGE.tams).L).toBeGreaterThan(2);
 	expect(at(sun, STAGE.tams).L / sunNow.L).toBeGreaterThan(2);
 	const life = sun.age[sun.age.length - 1] - sun.age[0];
 	const ms = sun.age[STAGE.tams] - sun.age[0];
@@ -280,7 +293,8 @@ test('massive step: a 20 M☉ star starts at 36,000 K and 46,000 L☉, loses 7 M
 	within(tc / 1e6, 850, 1000);
 });
 
-test('run step: a 0.5 M☉ star is still on the main sequence at about seven times the age of the universe', () => {
+test('run step: a 0.5 M☉ star stays on the main sequence for about 96 billion years, seven times the age of the universe', () => {
 	const t = track(0.5);
+	within(mainSequenceLifetime(0.5) / 1e9, 94, 98);
 	within(t.age[t.age.length - 1] / 13.8e9, 6.5, 7.2);
 });

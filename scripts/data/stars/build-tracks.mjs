@@ -14,8 +14,8 @@
  * Subset:
  * - `tracks`: nine initial masses (0.5, 1, 2, 3, 5, 12, 15, 20, 30 M☉), each from the zero-age
  *   main sequence (EEP 202) to the end of the track: the white-dwarf cooling track for ≤ 5 M☉
- *   (EEP 1710), the end of core carbon burning for the massive ones (EEP 808), the age limit
- *   for 0.5 M☉ (still on the main sequence after 95 Gyr). Between consecutive primary EEPs the
+ *   (EEP 1710), the end of core carbon burning for the massive ones (EEP 808), the terminal-age
+ *   main sequence for 0.5 M☉ (EEP 454, at 96 Gyr, where its core hydrogen runs out). Between consecutive primary EEPs the
  *   points are thinned evenly to the counts in SEGMENTS (always keeping the primary EEPs), so
  *   the thermal pulses on the AGB are smoothed away. Columns, rounded to 4 significant
  *   figures (age to 7): age (yr), current mass `M` (M☉), log L, log Teff, log R, helium- and carbon-core masses

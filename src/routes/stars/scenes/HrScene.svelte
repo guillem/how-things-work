@@ -4,7 +4,7 @@
 	 * masses.
 	 *
 	 * Phases (`step.hints.phase`):
-	 *   nearby — 2,500 stars and 140 white dwarfs within 50 pc (Gaia), coloured by temperature,
+	 *   nearby — about 2,450 stars and 140 white dwarfs within 50 pc (Gaia), coloured by temperature,
 	 *            with the main sequence, the giants and the white dwarfs labelled one after the
 	 *            other, and the Sun marked
 	 *   zams   — the stars dimmed, the MIST zero-age main sequence drawn with mass marks, and a

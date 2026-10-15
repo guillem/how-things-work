@@ -27,10 +27,16 @@
  * left out. For white dwarfs
  * of the same one-in-five sample, R = √(GM/g) from the fitted mass and gravity, and
  * L = 4πR²σT⁴. Every third star of each list (in catalogue order) is kept, so the sample is
- * one star in fifteen within 50 pc. Values: log₁₀ Teff and log₁₀ L/L☉, rounded to 3 decimals.
+ * one star in fifteen within 50 pc. Of those, ordinary stars more than 1 dex (ten times) fainter
+ * than the MIST zero-age main sequence at their temperature (from `tracks.ts`, held flat below
+ * its coolest point, 0.1 M☉) are dropped: no star that is not a white dwarf can sit there, so
+ * they are white dwarfs that missed the WDprob cut or faint sources with spurious BP − RP
+ * colours, to which the dwarf colour–temperature relation does not apply (about 60 stars).
+ * Values: log₁₀ Teff and log₁₀ L/L☉, rounded to 3 decimals.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { grid } from '../../../src/routes/stars/tracks.ts';
 
 const [gcnsFile, wdFile, eemFile] = process.argv.slice(2);
 if (!eemFile) throw new Error('usage: build-nearby.mjs gcns.csv wd.csv eem.txt');
@@ -84,6 +90,21 @@ for (const s of csv(gcnsFile)) {
 }
 const third = (list) => list.filter((_, i) => i % 3 === 0);
 
+// The zero-age main sequence as log L against log Teff, and the cut below it.
+const ZAMS = grid.map((g) => [g.zams[2], g.zams[1]]).sort((a, b) => a[0] - b[0]);
+function zamsLogL(logT) {
+	if (logT <= ZAMS[0][0]) return ZAMS[0][1];
+	for (let i = 1; i < ZAMS.length; i++) {
+		const [t1, l1] = ZAMS[i];
+		if (t1 >= logT) {
+			const [t0, l0] = ZAMS[i - 1];
+			return l0 + ((logT - t0) / (t1 - t0)) * (l1 - l0);
+		}
+	}
+	return ZAMS[ZAMS.length - 1][1];
+}
+const plausible = ([logT, logL]) => logL >= zamsLogL(logT) - 1;
+
 const G = 6.674e-11;
 const MSUN = 1.98841e30;
 const RSUN = 6.957e8;
@@ -104,10 +125,17 @@ writeFileSync(
 // Generated file: do not edit by hand.
 
 /** [log₁₀ Teff (K), log₁₀ L/L☉] of stars that are not white dwarfs. */
-export const NEARBY: readonly (readonly [number, number])[] = ${JSON.stringify(third(stars))};
+export const NEARBY: readonly (readonly [number, number])[] = ${JSON.stringify(third(stars).filter(plausible))};
 
 /** [log₁₀ Teff (K), log₁₀ L/L☉] of white dwarfs. */
 export const NEARBY_WHITE_DWARFS: readonly (readonly [number, number])[] = ${JSON.stringify(third(dwarfs))};
 `
 );
-console.log('wrote', OUT, third(stars).length, 'stars,', third(dwarfs).length, 'white dwarfs');
+console.log(
+	'wrote',
+	OUT,
+	third(stars).filter(plausible).length,
+	'stars,',
+	third(dwarfs).length,
+	'white dwarfs'
+);
