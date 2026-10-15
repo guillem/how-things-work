@@ -151,7 +151,7 @@ A topic is done when:
 - [x] epidemics
 - [ ] mrna-vaccines
 - [ ] cancer
-- [ ] medical-imaging
+- [x] medical-imaging
 
 **Earth & Climate**
 - [x] plate-tectonics
