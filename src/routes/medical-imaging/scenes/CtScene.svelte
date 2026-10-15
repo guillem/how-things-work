@@ -336,7 +336,7 @@
 <g>
 	<!-- ================= the scanner ================= -->
 	<g opacity={oScanner}>
-		<text x={24} y={40} font-weight="600" style:font-size="15px">The scanner</text>
+		<text x={24} y={40} font-weight="600" font-size="15">The scanner</text>
 		<circle
 			cx={C.x}
 			cy={C.y}
@@ -477,7 +477,7 @@
 
 	<!-- ================= the sinogram ================= -->
 	<g opacity={oSino}>
-		<text x={SX} y={40} font-weight="600" style:font-size="15px">All the shadows</text>
+		<text x={SX} y={40} font-weight="600" font-size="15">All the shadows</text>
 		<rect
 			x={SX - 1}
 			y={PY - 1}
@@ -518,7 +518,7 @@
 
 	<!-- ================= the computed slice ================= -->
 	<g>
-		<text x={RX} y={40} font-weight="600" style:font-size="15px" opacity={showSlice ? 1 : 0.5}
+		<text x={RX} y={40} font-weight="600" font-size="15" opacity={showSlice ? 1 : 0.5}
 			>The computed slice</text
 		>
 		<rect
@@ -608,7 +608,7 @@
 			value={fmtPct(error)}
 			note={filtered ? '' : 'after the best scaling'}
 		>
-			<text x={SX} y={424} style:font-size="15px" font-weight="600"
+			<text x={SX} y={424} font-size="15" font-weight="600"
 				>difference from the true slice: {fmtPct(error)}</text
 			>
 			{#if !filtered && Number.isFinite(error)}
@@ -679,7 +679,7 @@
 			note={probeName}
 			color="var(--mi-probe)"
 		>
-			<text x={SX} y={398} style:font-size="15px" font-weight="600">probe: {fmtHU(probeHU)}</text>
+			<text x={SX} y={398} font-size="15" font-weight="600">probe: {fmtHU(probeHU)}</text>
 			<Label x={SX + 150} y={398} anchor="start" muted text={probeName} />
 		</Readout>
 		<Readout id="huscale">
@@ -751,7 +751,7 @@
 			/>
 		</Readout>
 		<Readout id="noise" order={3} label="Noise in the heart" value="± {noiseHU.toFixed(0)} HU">
-			<text x={SX} y={416} style:font-size="15px" font-weight="600"
+			<text x={SX} y={416} font-size="15" font-weight="600"
 				>noise in the heart: ± {noiseHU.toFixed(0)} HU</text
 			>
 		</Readout>

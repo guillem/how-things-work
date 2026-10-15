@@ -217,7 +217,7 @@
 			class="halo muted"
 			transform="translate({P.x - 10} {P.y}) rotate(-90)"
 			text-anchor="end"
-			style:font-size="12px">x₂ →</text
+			font-size="12">x₂ →</text
 		>
 	</Readout>
 

@@ -77,9 +77,7 @@
 
 <g class="waves-scene">
 	<Readout id="w-medium" order={1} label="Through" value={NAMES[medium]}>
-		<text x={X0} y="58" style:font-size="15px" style:font-weight="600"
-			>Through the {NAMES[medium]}</text
-		>
+		<text x={X0} y="58" font-size="15" style:font-weight="600">Through the {NAMES[medium]}</text>
 	</Readout>
 
 	<!-- the source -->
@@ -166,7 +164,7 @@
 		label="Same scale"
 		value="both pulses leave together; P always gets there first"
 	>
-		<text x={X0} y="560" class="muted" style:font-size="12px"
+		<text x={X0} y="560" class="muted" font-size="12"
 			>Both pulses leave the source together and are drawn on the same scale: P always arrives
 			first.</text
 		>

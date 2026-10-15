@@ -24,8 +24,6 @@
 	 * Handle that writes to it. Nothing moves on its own except a gentle
 	 * "drag me" pulse at the start of the step (a function of t).
 	 *
-	 * Text sizes and colours are set with `style:` because the stage's CSS
-	 * overrides SVG presentation attributes (see docs/BACKLOG.md).
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -500,7 +498,7 @@
 		transform={opts.rotate === undefined ? undefined : `rotate(${opts.rotate} ${x} ${y})`}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:pointer-events="none">{text}</text
 	>

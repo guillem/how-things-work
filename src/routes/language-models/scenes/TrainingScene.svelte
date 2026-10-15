@@ -78,7 +78,7 @@
 				x={c.x + c.w / 2}
 				y={y + 17.5}
 				text-anchor="middle"
-				style:font-size="13px"
+				font-size="13"
 				style:font-family="var(--font-mono)"
 				style:fill="var(--stage-ink)">{c.text}</text
 			>
@@ -102,7 +102,7 @@
 				x={c.x + c.w / 2}
 				y={y + 32 + BAR + 14}
 				text-anchor="middle"
-				style:font-size="11px"
+				font-size="11"
 				style:fill="var(--stage-ink-muted)"
 				style:font-variant-numeric="tabular-nums">{percent(p)}</text
 			>

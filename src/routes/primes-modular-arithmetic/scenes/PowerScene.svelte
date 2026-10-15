@@ -12,8 +12,7 @@
 	 *   on `params.target`. Loops.
 	 *
 	 * All values come from the model (`fastPower`, `discreteLog`, `slowPower`). Reduced
-	 * motion shows the finished frame. Text uses `style:` (the stage CSS overrides
-	 * presentation attributes).
+	 * motion shows the finished frame.
 	 */
 	import { clamp, cycle } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -91,7 +90,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-variant-numeric="tabular-nums">{text}</text
 	>

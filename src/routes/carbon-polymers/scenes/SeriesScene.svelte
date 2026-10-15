@@ -118,7 +118,7 @@
 		stroke-width="1.2"
 	/>
 	<Readout id="room">
-		<text x={P.x + 8} y={sy(25) - 6} class="halo" style:font-size="11px">25 °C</text>
+		<text x={P.x + 8} y={sy(25) - 6} class="halo" font-size="11">25 °C</text>
 	</Readout>
 	<line
 		x1={sx(2)}
@@ -136,7 +136,7 @@
 			y={sy(toC(PE_LIMIT)) - 7}
 			class="halo"
 			text-anchor="end"
-			style:font-size="11px"
+			font-size="11"
 			style:fill="var(--cp-chain)">limit 141 °C (endless chain)</text
 		>
 	</Readout>
@@ -171,9 +171,9 @@
 	<Readout id="legend">
 		<g transform="translate({P.x + 250} {P.y + P.h - 70})">
 			<circle cx="0" cy="0" r="4" fill="var(--cp-hot)" />
-			<text x="10" y="4" class="halo" style:font-size="11px">boils (NIST)</text>
+			<text x="10" y="4" class="halo" font-size="11">boils (NIST)</text>
 			<circle cx="0" cy="18" r="4" fill="var(--cp-cold)" />
-			<text x="10" y="22" class="halo" style:font-size="11px">melts (NIST)</text>
+			<text x="10" y="22" class="halo" font-size="11">melts (NIST)</text>
 			<line
 				x1="-6"
 				x2="6"
@@ -183,9 +183,7 @@
 				stroke-width="2.5"
 				stroke-dasharray="4 2"
 			/>
-			<text x="10" y="40" class="halo" style:font-size="11px"
-				>melts (Broadhurst’s fit, beyond C₄₄)</text
-			>
+			<text x="10" y="40" class="halo" font-size="11">melts (Broadhurst’s fit, beyond C₄₄)</text>
 		</g>
 	</Readout>
 
@@ -212,12 +210,12 @@
 				y={P.y + P.h + 57}
 				text-anchor="middle"
 				font-weight="600"
-				style:font-size="11px">{r.s}</text
+				font-size="11">{r.s}</text
 			>
 		</Readout>
 	{/each}
 	<Readout id="strip-title">
-		<text x={P.x - 8} y={P.y + P.h + 57} text-anchor="end" class="muted" style:font-size="11px"
+		<text x={P.x - 8} y={P.y + P.h + 57} text-anchor="end" class="muted" font-size="11"
 			>at 25 °C</text
 		>
 	</Readout>
@@ -248,10 +246,10 @@
 
 	<g transform="translate({RX} 0)">
 		<Readout id="formula" order={0} label="Chain" value={`${n.toLocaleString('en-GB')} carbons`}>
-			<text x="0" y="96" class="halo" font-weight="700" style:font-size={n > 99 ? '18px' : '24px'}
+			<text x="0" y="96" class="halo" font-weight="700" font-size={n > 99 ? 18 : 24}
 				>{formulaN}</text
 			>
-			<text x="0" y="120" class="halo muted" style:font-size="13px">{massText}</text>
+			<text x="0" y="120" class="halo muted" font-size="13">{massText}</text>
 		</Readout>
 		<Readout
 			id="melts"
@@ -260,16 +258,11 @@
 			value={m ? fmt(toC(m.k)) : 'no NIST value'}
 			color="var(--cp-cold)"
 		>
-			<text x="0" y="160" class="halo muted" style:font-size="12px">melts at</text>
-			<text
-				x="0"
-				y="184"
-				class="halo"
-				font-weight="700"
-				style:font-size="20px"
-				style:fill="var(--cp-cold)">{m ? fmt(toC(m.k)) : '—'}</text
+			<text x="0" y="160" class="halo muted" font-size="12">melts at</text>
+			<text x="0" y="184" class="halo" font-weight="700" font-size="20" style:fill="var(--cp-cold)"
+				>{m ? fmt(toC(m.k)) : '—'}</text
 			>
-			<text x="0" y="202" class="halo muted" style:font-size="11px"
+			<text x="0" y="202" class="halo muted" font-size="11"
 				>{m
 					? m.measured
 						? 'measured (NIST)'
@@ -284,16 +277,11 @@
 			value={b != null ? fmt(toC(b)) : 'no NIST value'}
 			color="var(--cp-hot)"
 		>
-			<text x="140" y="160" class="halo muted" style:font-size="12px">boils at</text>
-			<text
-				x="140"
-				y="184"
-				class="halo"
-				font-weight="700"
-				style:font-size="20px"
-				style:fill="var(--cp-hot)">{b != null ? fmt(toC(b)) : '—'}</text
+			<text x="140" y="160" class="halo muted" font-size="12">boils at</text>
+			<text x="140" y="184" class="halo" font-weight="700" font-size="20" style:fill="var(--cp-hot)"
+				>{b != null ? fmt(toC(b)) : '—'}</text
 			>
-			<text x="140" y="202" class="halo muted" style:font-size="11px"
+			<text x="140" y="202" class="halo muted" font-size="11"
 				>{b != null
 					? 'measured (NIST)'
 					: n >= 100
@@ -312,8 +300,8 @@
 					fill={FILL[st]}
 					stroke="var(--border)"
 				/>
-				<text x="8" y="252" font-weight="700" style:font-size="16px">a {st} at 25 °C</text>
-				<text x="8" y="276" style:font-size="12px">molecules this size: {what}</text>
+				<text x="8" y="252" font-weight="700" font-size="16">a {st} at 25 °C</text>
+				<text x="8" y="276" font-size="12">molecules this size: {what}</text>
 			</Readout>
 		{/if}
 	</g>

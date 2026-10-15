@@ -140,7 +140,7 @@
 			y={y + qj(i, 1) + 7}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="19px"
+			font-size="19"
 			style:fill="var(--sm-ball-ink)">{['u', 'u', 'd'][i]}</text
 		>
 	{/each}
@@ -207,7 +207,7 @@
 			y={546}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="16px"
+			font-size="16"
 			style:fill="var(--sm-ball-ink)">{p.s}</text
 		>
 		<Readout id="ev-{i}">

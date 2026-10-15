@@ -118,7 +118,7 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<text x="863" y="200.5" text-anchor="middle" style:font-size="12px">↶ Undo last token</text>
+			<text x="863" y="200.5" text-anchor="middle" font-size="12">↶ Undo last token</text>
 		</g>
 	{/if}
 

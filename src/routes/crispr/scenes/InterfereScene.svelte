@@ -275,7 +275,7 @@
 			x={0}
 			y={-26}
 			text-anchor="middle"
-			style:font-size="12px"
+			font-size="12"
 			style:fill="var(--cr-cas9-edge)"
 			font-weight="600">Cas9 + crRNA</text
 		>
@@ -336,7 +336,7 @@
 			x={wx(L + 1)}
 			y={ROW_BOT + 40}
 			text-anchor="middle"
-			style:font-size="12px"
+			font-size="12"
 			style:fill={pamHere ? 'var(--stage-ink)' : 'var(--stage-ink-muted)'}
 			font-weight="600">{pamHere ? 'PAM' : 'no PAM'}</text
 		>
@@ -346,7 +346,7 @@
 				x={wx(w.k)}
 				y={ROW_TOP + 6}
 				text-anchor="middle"
-				style:font-size="17px"
+				font-size="17"
 				font-weight="600"
 				style:fill={isMut ? 'var(--cr-mismatch)' : 'var(--stage-ink)'}
 				font-family="ui-monospace, monospace">{w.top}</text
@@ -355,7 +355,7 @@
 				x={wx(w.k)}
 				y={ROW_BOT + 6}
 				text-anchor="middle"
-				style:font-size="17px"
+				font-size="17"
 				style:fill={isMut ? 'var(--cr-mismatch)' : 'var(--stage-ink-muted)'}
 				font-family="ui-monospace, monospace">{w.bot}</text
 			>
@@ -402,7 +402,7 @@
 					x={wx(w.k)}
 					y={ROW_RNA + 3}
 					text-anchor="middle"
-					style:font-size="15px"
+					font-size="15"
 					font-weight="600"
 					style:fill="var(--cr-on-colour)"
 					font-family="ui-monospace, monospace">{RNA[w.k]}</text

@@ -257,7 +257,7 @@
 				y={MY + c.j * MC + MC / 2 + 5}
 				text-anchor="middle"
 				font-weight="600"
-				style:font-size="15px"
+				font-size="15"
 				style:fill={c.v > 0.5 ? 'var(--stage-bg)' : 'var(--stage-ink)'}
 				style:pointer-events="none">{fmt(c.v)}</text
 			>

@@ -12,8 +12,6 @@
 	 *   (one at a time, much more often than in reality, as the notes say) drifts apart:
 	 *   the electron to +, the hole to − as neighbouring bond electrons hop into it.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG presentation
-	 * attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -199,7 +197,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'middle'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -354,7 +352,7 @@
 					y={a.y + 5}
 					text-anchor="middle"
 					font-weight="700"
-					style:font-size="14px"
+					font-size="14"
 					style:fill="#fff">+</text
 				>
 			{/each}
@@ -379,7 +377,7 @@
 					y={a.y + 5}
 					text-anchor="middle"
 					font-weight="700"
-					style:font-size="13px"
+					font-size="13"
 					style:fill={semi ? 'var(--stage-ink)' : '#fff'}>{semi ? 'Si' : 'C'}</text
 				>
 			{/each}

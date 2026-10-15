@@ -141,7 +141,7 @@
 				x={xs[i]}
 				y={yTop + 5}
 				text-anchor="middle"
-				style:font-size="14px"
+				font-size="14"
 				style:font-weight="700"
 				style:font-family="var(--font-mono)">{b}</text
 			>
@@ -158,7 +158,7 @@
 					x={xs[i]}
 					y={yBot + 5}
 					text-anchor="middle"
-					style:font-size="14px"
+					font-size="14"
 					style:font-weight="700"
 					style:font-family="var(--font-mono)">{p}</text
 				>
@@ -199,9 +199,7 @@
 					stroke={baseColor(l)}
 					stroke-width="2.5"
 				/>
-				<text x="30" y="37" text-anchor="middle" style:font-size="15px" style:font-weight="700"
-					>{l}</text
-				>
+				<text x="30" y="37" text-anchor="middle" font-size="15" style:font-weight="700">{l}</text>
 				<line x1="44" x2="116" y1="32" y2="32" stroke="var(--stage-line)" stroke-dasharray="3 4" />
 				<circle
 					cx="130"
@@ -211,9 +209,7 @@
 					stroke={baseColor(r)}
 					stroke-width="2.5"
 				/>
-				<text x="130" y="37" text-anchor="middle" style:font-size="15px" style:font-weight="700"
-					>{r}</text
-				>
+				<text x="130" y="37" text-anchor="middle" font-size="15" style:font-weight="700">{r}</text>
 			</g>
 		{/each}
 		<Readout
@@ -282,7 +278,7 @@
 						y={yBot + 96}
 						text-anchor="middle"
 						class="muted"
-						style:font-size="13px"
+						font-size="13"
 						style:font-family="var(--font-mono)">{top.slice(c, c + 3).join('')}</text
 					>
 				</g>

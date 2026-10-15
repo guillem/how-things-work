@@ -145,7 +145,7 @@
 				x={m.q.x + B0.size / 2}
 				y={m.q.y + B0.size / 2 + 9}
 				text-anchor="middle"
-				style:font-size="26px"
+				font-size="26"
 				font-weight="700"
 				style:fill={m.id === 'A' ? '#d8d8d8' : '#2a2a2a'}>{m.id}</text
 			>

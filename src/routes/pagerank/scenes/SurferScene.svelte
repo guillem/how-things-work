@@ -17,8 +17,6 @@
 	 * - Ranks use d = `params.damping` only on steps with the damping control;
 	 *   elsewhere 0.85 (the param persists across steps).
 	 *
-	 * Text sizes and colours are set with `style:` because the stage's CSS
-	 * overrides SVG presentation attributes.
 	 */
 	import { tick, untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -463,7 +461,7 @@
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
 		pointer-events="none"
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-variant-numeric={opts.tabular ? 'tabular-nums' : undefined}>{text}</text
 	>

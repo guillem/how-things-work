@@ -15,8 +15,6 @@
 	 * a string of 0/1 for bits 1→2, 2→3, 3→4), an unwired carry in reads 0, and a
 	 * checker counts how many of the 256 pairs the chain then adds right.
 	 *
-	 * Text sizes and colours use `style:` because the stage CSS overrides SVG
-	 * presentation attributes.
 	 */
 	import { clamp } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -113,7 +111,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-variant-numeric="tabular-nums">{text}</text
 	>

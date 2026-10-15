@@ -20,8 +20,6 @@
 	 * Reduced motion: the settled ranks, with every link labelled with the share
 	 * it carries in one round and the pool with the share each page gets.
 	 *
-	 * Text sizes and colours are set with `style:` because the stage's CSS
-	 * overrides SVG presentation attributes (see docs/BACKLOG.md).
 	 */
 	import { clamp, easeInOut, lerp, niceMax, norm, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -545,7 +543,7 @@
 		stroke={color}
 		stroke-width="1"
 	/>
-	<text {x} {y} text-anchor="middle" font-weight="600" style:font-size="{size}px" style:fill={color}
+	<text {x} {y} text-anchor="middle" font-weight="600" font-size={size} style:fill={color}
 		>{text}</text
 	>
 {/snippet}
@@ -572,7 +570,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-variant-numeric={opts.tabular ? 'tabular-nums' : undefined}>{text}</text
 	>

@@ -331,7 +331,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -426,9 +426,7 @@
 		{#each yTicks as v (v)}
 			<line x1={P0} x2={P1} y1={py(v)} y2={py(v)} stroke="var(--stage-grid)" />
 			<Readout id="tick-{v}">
-				<text x={P0 - 8} y={py(v) + 4} text-anchor="end" class="muted" style:font-size="11px"
-					>{v}</text
-				>
+				<text x={P0 - 8} y={py(v) + 4} text-anchor="end" class="muted" font-size="11">{v}</text>
 			</Readout>
 		{/each}
 		<line x1={P0} x2={P0} y1={PR.top} y2={PR.bottom} stroke="var(--stage-line)" />

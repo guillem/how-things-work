@@ -173,7 +173,7 @@
 					x={x(i)}
 					y={yc + 4.5}
 					text-anchor="middle"
-					style:font-size="12.5px"
+					font-size="12.5"
 					style:font-weight="700"
 					style:font-family="var(--font-mono)">{b}</text
 				>
@@ -189,7 +189,7 @@
 					x={x(i)}
 					y={yt + 4.5}
 					text-anchor="middle"
-					style:font-size="12.5px"
+					font-size="12.5"
 					style:font-weight="700"
 					style:font-family="var(--font-mono)">{tb}</text
 				>
@@ -232,7 +232,7 @@
 					x={r.x}
 					y={r.y + 4.5}
 					text-anchor="middle"
-					style:font-size="12.5px"
+					font-size="12.5"
 					style:font-weight="700"
 					style:font-family="var(--font-mono)"
 					style:fill={rb === 'U' ? 'var(--dp-rna)' : undefined}>{rb}</text

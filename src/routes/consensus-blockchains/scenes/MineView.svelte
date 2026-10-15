@@ -152,7 +152,7 @@
 		{@const bs = bitString(current.d, BIN)}
 		{@const zs = Math.min(current.z, BIN)}
 		{@const cut = zs + Math.floor(zs / 4) - (zs > 0 && zs % 4 === 0 ? 1 : 0)}
-		<text x={B.x + 16} y={B.y + 244} style:font-size="17px" style:font-family="var(--font-mono)"
+		<text x={B.x + 16} y={B.y + 244} font-size="17" style:font-family="var(--font-mono)"
 			><tspan style:fill={current.ok ? 'var(--cb-ok)' : 'var(--cb-bad)'} style:font-weight="700"
 				>{bs.slice(0, cut)}</tspan
 			><tspan>{bs.slice(cut)}</tspan></text

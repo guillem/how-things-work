@@ -346,7 +346,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -366,17 +366,13 @@
 	<g style:pointer-events="none">
 		{#each yt as v (v)}
 			<line x1={l} x2={r} y1={sy(v)} y2={sy(v)} stroke="var(--stage-grid)" />
-			<text x={l - 6} y={sy(v) + 4} text-anchor="end" class="muted" style:font-size="11px"
-				>{yf(v)}</text
-			>
+			<text x={l - 6} y={sy(v) + 4} text-anchor="end" class="muted" font-size="11">{yf(v)}</text>
 		{/each}
 		<line x1={l} x2={r} y1={b} y2={b} stroke="var(--stage-line)" />
 		<line x1={l} x2={l} y1={tp} y2={b} stroke="var(--stage-line)" />
 		{#each xt as v (v)}
 			<line x1={sx(v)} x2={sx(v)} y1={b} y2={b + 4} stroke="var(--stage-line)" />
-			<text x={sx(v)} y={b + 16} text-anchor="middle" class="muted" style:font-size="11px"
-				>{xf(v)}</text
-			>
+			<text x={sx(v)} y={b + 16} text-anchor="middle" class="muted" font-size="11">{xf(v)}</text>
 		{/each}
 	</g>
 {/snippet}

@@ -163,7 +163,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -179,7 +179,7 @@
 		stroke={color}
 		stroke-width="1.5"
 	/>
-	<text x={x + 3} {y} font-weight="700" style:font-size="12px" style:fill={color}>{text}</text>
+	<text x={x + 3} {y} font-weight="700" font-size="12" style:fill={color}>{text}</text>
 {/snippet}
 
 <g>
@@ -290,7 +290,7 @@
 					y={Y(318) + 14}
 					text-anchor="middle"
 					font-weight="800"
-					style:font-size="36px"
+					font-size="36"
 					style:fill="var(--surface)">{p.s}</text
 				>
 			{/each}
@@ -300,7 +300,7 @@
 			y={Y(318)}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="11px"
+			font-size="11"
 			style:fill="var(--surface)">right</text
 		>
 		<text
@@ -308,7 +308,7 @@
 			y={Y(318) + 13}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="11px"
+			font-size="11"
 			style:fill="var(--surface)">pump</text
 		>
 		<text
@@ -316,7 +316,7 @@
 			y={Y(318)}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="11px"
+			font-size="11"
 			style:fill="var(--surface)">left</text
 		>
 		<text
@@ -324,7 +324,7 @@
 			y={Y(318) + 13}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="11px"
+			font-size="11"
 			style:fill="var(--surface)">pump</text
 		>
 	</Readout>

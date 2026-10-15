@@ -285,8 +285,8 @@
 			stroke-width={on ? 3.5 : 1.5}
 		/>
 		<rect x={c.x} y={c.y} width={W} height={H} rx="12" fill={col} opacity={on ? 0.22 : 0.1} />
-		<text x={c.x + 9} y={c.y + 18} style:font-size="11px" class="muted">{thirds(p.charge3)}</text>
-		<text x={c.x + W - 9} y={c.y + 18} text-anchor="end" style:font-size="11px" class="muted"
+		<text x={c.x + 9} y={c.y + 18} font-size="11" class="muted">{thirds(p.charge3)}</text>
+		<text x={c.x + W - 9} y={c.y + 18} text-anchor="end" font-size="11" class="muted"
 			>{spinText(p.spin)}</text
 		>
 		<text
@@ -294,11 +294,11 @@
 			y={c.y + 52}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="28px"
+			font-size="28"
 			style:fill={col}>{p.symbol}</text
 		>
-		<text x={c.x + W / 2} y={c.y + 72} text-anchor="middle" style:font-size="11.5px">{p.name}</text>
-		<text x={c.x + W / 2} y={c.y + 90} text-anchor="middle" style:font-size="11px" class="muted"
+		<text x={c.x + W / 2} y={c.y + 72} text-anchor="middle" font-size="11.5">{p.name}</text>
+		<text x={c.x + W / 2} y={c.y + 90} text-anchor="middle" font-size="11" class="muted"
 			>{massLine(p)}</text
 		>
 	{/snippet}

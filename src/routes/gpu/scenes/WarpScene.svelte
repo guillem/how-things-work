@@ -256,7 +256,7 @@
 			<text
 				x={LX}
 				y={y + RH * 0.72}
-				style:font-size="12px"
+				font-size="12"
 				font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
 				font-weight={now ? 700 : 400}>{r.ins.text}</text
 			>

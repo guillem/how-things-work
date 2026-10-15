@@ -123,9 +123,7 @@
 			stroke="var(--stage-line)"
 			stroke-width="1.5"
 		/>
-		<text x={b.x} y={WIRE_Y + 6} text-anchor="middle" font-weight="700" style:font-size="16px"
-			>{b.g}</text
-		>
+		<text x={b.x} y={WIRE_Y + 6} text-anchor="middle" font-weight="700" font-size="16">{b.g}</text>
 	{/each}
 	<!-- the final measurement -->
 	<rect

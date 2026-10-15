@@ -111,7 +111,7 @@
 		y={nLabel.y + 8}
 		text-anchor="middle"
 		font-weight="800"
-		style:font-size="22px"
+		font-size="22"
 		style:fill="#fff">N</text
 	>
 
@@ -188,7 +188,7 @@
 		y={sLabel.y + 8}
 		text-anchor="middle"
 		font-weight="800"
-		style:font-size="22px"
+		font-size="22"
 		style:fill="#fff">S</text
 	>
 

@@ -68,7 +68,7 @@
 			text-anchor="middle"
 			font-weight="600"
 			class="cv-num"
-			style:font-size="{size}px">{fmt(v, digits)}</text
+			font-size={size}>{fmt(v, digits)}</text
 		>
 		{#if edit}
 			<text
@@ -76,7 +76,7 @@
 				y={cy + 11}
 				text-anchor="middle"
 				class="muted"
-				style:font-size="9px"
+				font-size="9"
 				style:pointer-events="none">▲</text
 			>
 			<text
@@ -84,7 +84,7 @@
 				y={cy + cell - 4}
 				text-anchor="middle"
 				class="muted"
-				style:font-size="9px"
+				font-size="9"
 				style:pointer-events="none">▼</text
 			>
 			<rect

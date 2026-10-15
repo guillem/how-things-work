@@ -117,7 +117,7 @@
 			stroke={traitor ? 'var(--cb-bad)' : 'var(--stage-ink-muted)'}
 			stroke-width={g === 0 ? 3 : 2}
 		/>
-		<text x={p.x} y={p.y + 5} text-anchor="middle" style:font-size="15px" style:font-weight="700"
+		<text x={p.x} y={p.y + 5} text-anchor="middle" font-size="15" style:font-weight="700"
 			>{name(g)}</text
 		>
 		{@const dx = (p.x - C.x) / RING}
@@ -145,7 +145,7 @@
 					x={b.x}
 					y={b.y + 4}
 					text-anchor="middle"
-					style:font-size="12px"
+					font-size="12"
 					style:font-weight="700"
 					style:fill="white">{dec}</text
 				>
@@ -175,7 +175,7 @@
 						x={lp.p.x}
 						y={lp.p.y + 4}
 						text-anchor="middle"
-						style:font-size="11px"
+						font-size="11"
 						style:font-weight="700"
 						style:fill="white">{v}</text
 					>
@@ -279,11 +279,11 @@
 						x={x + 20}
 						y={y + 16}
 						text-anchor="middle"
-						style:font-size="11px"
+						font-size="11"
 						style:font-weight="700"
 						style:fill="white">{cell.v === 'attack' ? 'A' : 'R'}</text
 					>
-					<text x={x + 20} y={y - 3} text-anchor="middle" class="muted" style:font-size="9px"
+					<text x={x + 20} y={y - 3} text-anchor="middle" class="muted" font-size="9"
 						>{cell.j === i ? 'C→me' : `via ${name(cell.j)}`}</text
 					>
 				</g>

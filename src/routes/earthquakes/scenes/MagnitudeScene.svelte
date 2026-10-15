@@ -116,14 +116,10 @@
 				value={tnt(b.set)}
 				color={b.id === 'a' ? 'var(--eq-quake)' : 'var(--eq-p)'}
 			>
-				<text
-					x={b.x}
-					y={BALL_Y + 172}
-					text-anchor="middle"
-					style:font-size="16px"
-					style:font-weight="600">M {b.set.toFixed(1)}</text
+				<text x={b.x} y={BALL_Y + 172} text-anchor="middle" font-size="16" style:font-weight="600"
+					>M {b.set.toFixed(1)}</text
 				>
-				<text x={b.x} y={BALL_Y + 192} text-anchor="middle" class="muted" style:font-size="12px"
+				<text x={b.x} y={BALL_Y + 192} text-anchor="middle" class="muted" font-size="12"
 					>{tnt(b.set)}</text
 				>
 			</Readout>
@@ -134,7 +130,7 @@
 			{/if}
 		{/each}
 		<Readout id="ratio" order={3} label="Energy" value="{nice(ratioE)} times more">
-			<text x="480" y="56" text-anchor="middle" style:font-size="16px" style:font-weight="600">
+			<text x="480" y="56" text-anchor="middle" font-size="16" style:font-weight="600">
 				{magA === magB
 					? 'The same size'
 					: `M ${big.toFixed(1)} releases ${nice(ratioE)} times the energy of M ${small.toFixed(1)}`}
@@ -146,7 +142,7 @@
 			label="Wiggles on a seismometer"
 			value="{nice(ratioA)} times bigger"
 		>
-			<text x="480" y="78" text-anchor="middle" class="muted" style:font-size="12px">
+			<text x="480" y="78" text-anchor="middle" class="muted" font-size="12">
 				{magA === magB
 					? ''
 					: `and its wiggles on a seismometer at the same distance are ${nice(ratioA)} times bigger · each ball’s volume is the energy`}
@@ -158,11 +154,11 @@
 		{#each [2, 3, 4, 5, 6, 7, 8, 9] as m (m)}
 			<path d="M{ax(m)} {AX.y}v6" stroke="var(--stage-ink)" />
 			<Readout id="ax-{m}">
-				<text x={ax(m)} y={AX.y + 22} text-anchor="middle" style:font-size="12px">{m}</text>
+				<text x={ax(m)} y={AX.y + 22} text-anchor="middle" font-size="12">{m}</text>
 			</Readout>
 		{/each}
 		<Readout id="ax-name">
-			<text x={AX.x0} y={AX.y + 44} class="muted" style:font-size="12px"
+			<text x={AX.x0} y={AX.y + 44} class="muted" font-size="12"
 				>moment magnitude · each step: × 32 energy, × 10 wiggles</text
 			>
 		</Readout>
@@ -193,17 +189,17 @@
 			value={countsText}
 			note="half-magnitude bins: about three times fewer per bar, ten times fewer per whole magnitude"
 		>
-			<text x={LC.x0 - 50} y={LC.y0 - 40} style:font-size="14px" style:font-weight="600"
+			<text x={LC.x0 - 50} y={LC.y0 - 40} font-size="14" style:font-weight="600"
 				>How many a year (2015–2024)</text
 			>
-			<text x={LC.x0 - 50} y={LC.y0 - 22} class="muted" style:font-size="12px"
+			<text x={LC.x0 - 50} y={LC.y0 - 22} class="muted" font-size="12"
 				>each line up: ten times more</text
 			>
 		</Readout>
 		{#each [0.01, 0.1, 1, 10, 100, 1000] as n (n)}
 			<path d="M{LC.x0} {ly(n)}H{LC.x1}" stroke="var(--stage-grid)" />
 			<Readout id="cy-{n}">
-				<text x={LC.x0 - 6} y={ly(n) + 4} text-anchor="end" class="muted" style:font-size="11px"
+				<text x={LC.x0 - 6} y={ly(n) + 4} text-anchor="end" class="muted" font-size="11"
 					>{n >= 1 ? n.toLocaleString('en-GB') : n}</text
 				>
 			</Readout>
@@ -224,23 +220,19 @@
 					x={x + (bw - 12) / 2}
 					y={ly(b.perYear) - 6}
 					text-anchor="middle"
-					style:font-size="12px"
+					font-size="12"
 					style:font-weight="600">{perYearText(b.perYear)}</text
 				>
 			</Readout>
 			<Readout id="cx-{b.lo}">
-				<text x={x + (bw - 12) / 2} y={LC.y1 + 18} text-anchor="middle" style:font-size="11px"
+				<text x={x + (bw - 12) / 2} y={LC.y1 + 18} text-anchor="middle" font-size="11"
 					>{b.lo}–{b.lo + 0.5}</text
 				>
 			</Readout>
 		{/each}
 		<Readout id="cx-name">
-			<text
-				x={(LC.x0 + LC.x1) / 2}
-				y={LC.y1 + 38}
-				text-anchor="middle"
-				class="muted"
-				style:font-size="12px">magnitude</text
+			<text x={(LC.x0 + LC.x1) / 2} y={LC.y1 + 38} text-anchor="middle" class="muted" font-size="12"
+				>magnitude</text
 			>
 		</Readout>
 
@@ -252,17 +244,17 @@
 			value={sharesText}
 			note="the few big ones release most of it"
 		>
-			<text x={RC.x0 - 30} y={RC.y0 - 40} style:font-size="14px" style:font-weight="600"
+			<text x={RC.x0 - 30} y={RC.y0 - 40} font-size="14" style:font-weight="600"
 				>Share of all their energy</text
 			>
-			<text x={RC.x0 - 30} y={RC.y0 - 22} class="muted" style:font-size="12px"
+			<text x={RC.x0 - 30} y={RC.y0 - 22} class="muted" font-size="12"
 				>the few big ones release most of it</text
 			>
 		</Readout>
 		{#each [0, 0.1, 0.2, 0.3, 0.4, 0.5] as f (f)}
 			<path d="M{RC.x0} {ry(f)}H{RC.x1}" stroke="var(--stage-grid)" />
 			<Readout id="ey-{f}">
-				<text x={RC.x0 - 6} y={ry(f) + 4} text-anchor="end" class="muted" style:font-size="11px"
+				<text x={RC.x0 - 6} y={ry(f) + 4} text-anchor="end" class="muted" font-size="11"
 					>{Math.round(f * 100)}%</text
 				>
 			</Readout>
@@ -283,27 +275,23 @@
 					x={x + (bw - 12) / 2}
 					y={ry(b.share) - 6}
 					text-anchor="middle"
-					style:font-size="12px"
+					font-size="12"
 					style:font-weight="600">{Math.round(b.share * 100)}%</text
 				>
 			</Readout>
 			<Readout id="ex-{b.lo}">
-				<text x={x + (bw - 12) / 2} y={RC.y1 + 18} text-anchor="middle" style:font-size="11px"
+				<text x={x + (bw - 12) / 2} y={RC.y1 + 18} text-anchor="middle" font-size="11"
 					>{b.lo}–{b.lo + 0.5}</text
 				>
 			</Readout>
 		{/each}
 		<Readout id="ex-name">
-			<text
-				x={(RC.x0 + RC.x1) / 2}
-				y={RC.y1 + 38}
-				text-anchor="middle"
-				class="muted"
-				style:font-size="12px">magnitude</text
+			<text x={(RC.x0 + RC.x1) / 2} y={RC.y1 + 38} text-anchor="middle" class="muted" font-size="12"
+				>magnitude</text
 			>
 		</Readout>
 		<Readout id="src">
-			<text x="480" y="560" text-anchor="middle" class="muted" style:font-size="12px"
+			<text x="480" y="560" text-anchor="middle" class="muted" font-size="12"
 				>USGS catalogue: all {Math.round(perYearAtLeast(5.5) * 10).toLocaleString('en-GB')} earthquakes
 				of magnitude 5.5 or more, 2015–2024</text
 			>

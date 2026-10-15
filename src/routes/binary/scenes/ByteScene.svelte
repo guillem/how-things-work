@@ -20,8 +20,6 @@
 	 * Nothing is written on entry: only a click, a key, a preset or an action
 	 * button writes the pattern back.
 	 *
-	 * Text sizes and colours are set with `style:` because the stage's CSS
-	 * overrides SVG presentation attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -684,7 +682,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-family={opts.mono
 			? 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'
@@ -1016,10 +1014,9 @@
 						text-anchor="middle"
 						font-weight={pl.on ? 700 : 500}
 						opacity={pl.on || signBit ? 1 : 0.8}
-						style:font-size="{geo.placeSize}px"
+						font-size={geo.placeSize}
 						style:fill={signBit ? 'var(--bit-sign)' : undefined}
-						>{base}{#if exp !== undefined}<tspan dy="-5" style:font-size="9px">{exp}</tspan
-							>{/if}</text
+						>{base}{#if exp !== undefined}<tspan dy="-5" font-size="9">{exp}</tspan>{/if}</text
 					>
 				{/each}
 			</g>
@@ -1133,7 +1130,7 @@
 					class="halo"
 					text-anchor="middle"
 					font-weight="600"
-					style:font-size="24px"
+					font-size="24"
 					style:font-variant-numeric="tabular-nums"
 				>
 					{#if terms.length === 0}
@@ -1471,7 +1468,7 @@
 					class="halo"
 					text-anchor="middle"
 					font-weight="700"
-					style:font-size="30px"
+					font-size="30"
 					style:font-variant-numeric="tabular-nums"
 				>
 					{#if flt.kind === 'normal' || flt.kind === 'subnormal'}

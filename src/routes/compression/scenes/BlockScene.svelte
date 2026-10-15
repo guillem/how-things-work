@@ -176,7 +176,7 @@
 						x={zx + c.c * cell + cell / 2}
 						y={zy + c.r * cell + cell / 2 + 4}
 						text-anchor="middle"
-						style:font-size="11.5px"
+						font-size="11.5"
 						style:font-family="var(--font-mono)"
 						style:fill={ink(v)}>{v}</text
 					>
@@ -185,7 +185,7 @@
 							x={zx + c.c * cell + cell / 2}
 							y={zy + c.r * cell + cell / 2 + 6}
 							text-anchor="middle"
-							style:font-size="17px"
+							font-size="17"
 							style:font-weight="600"
 							style:font-family="var(--font-mono)"
 							style:fill={ink(v)}>{v}</text
@@ -287,7 +287,7 @@
 						x={cx + c.c * cell + cell / 2 - 1}
 						y={128 + c.r * cell + cell / 2 + 3}
 						text-anchor="middle"
-						style:font-size="10.5px"
+						font-size="10.5"
 						style:font-family="var(--font-mono)">{fmtSigned(Math.round(v))}</text
 					>
 					{#snippet narrow()}
@@ -295,7 +295,7 @@
 							x={cx + c.c * cell + cell / 2 - 1}
 							y={128 + c.r * cell + cell / 2 + 5}
 							text-anchor="middle"
-							style:font-size="14px"
+							font-size="14"
 							style:font-weight="600"
 							style:font-family="var(--font-mono)">{fmtSigned(Math.round(v))}</text
 						>
@@ -509,14 +509,14 @@
 				x={xs[0] + c.c * cell + cell / 2 - 1}
 				y={gy + c.r * cell + cell / 2 + 3}
 				text-anchor="middle"
-				style:font-size="9.5px"
+				font-size="9.5"
 				style:font-family="var(--font-mono)">{fmtSigned(Math.round(v))}</text
 			>
 			<text
 				x={xs[1] + c.c * cell + cell / 2 - 1}
 				y={gy + c.r * cell + cell / 2 + 3}
 				text-anchor="middle"
-				style:font-size="11px"
+				font-size="11"
 				style:font-weight={on ? '800' : '500'}
 				style:font-family="var(--font-mono)"
 				style:fill="var(--cmp-bits)">{table[c.i]}</text
@@ -540,7 +540,7 @@
 				text-anchor="middle"
 				class:muted={q[c.i] === 0}
 				opacity={q[c.i] === 0 ? 0.5 : 1}
-				style:font-size="11px"
+				font-size="11"
 				style:font-weight={q[c.i] === 0 ? '400' : '700'}
 				style:font-family="var(--font-mono)">{fmtSigned(q[c.i])}</text
 			>
@@ -602,7 +602,7 @@
 				size={13}
 				weight={600}
 			/>
-			<text x={290} y={486} style:font-size="13px" style:font-family="var(--font-mono)"
+			<text x={290} y={486} font-size="13" style:font-family="var(--font-mono)"
 				>{sequence.replaceAll('-', '−')}</text
 			>
 			<Label

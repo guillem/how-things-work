@@ -210,7 +210,7 @@
 				text-anchor="middle"
 				font-weight="700"
 				opacity={done ? 1 : 0.4}
-				style:font-size="13px">{name === 'H' ? 'H H H' : name}</text
+				font-size="13">{name === 'H' ? 'H H H' : name}</text
 			>
 		{/each}
 
@@ -416,7 +416,7 @@
 					y={463 + Math.floor(i / 5) * 30}
 					text-anchor="middle"
 					font-weight="700"
-					style:font-size="12px"
+					font-size="12"
 					style:fill="var(--stage-bg)">{label(3, r)}</text
 				>
 			{/each}

@@ -77,7 +77,7 @@
 				y={T.bottom + 34}
 				transform="rotate(-50 {sx(i)} {T.bottom + 34})"
 				text-anchor="end"
-				style:font-size="11px"
+				font-size="11"
 				style:fill={i === last ? 'var(--stage-ink)' : 'var(--stage-ink-muted)'}
 				style:font-weight={i === last ? 650 : 500}>{nm}</text
 			>

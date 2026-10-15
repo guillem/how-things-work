@@ -535,7 +535,7 @@
 					<text
 						x={entry.lx + Math.cos(h.a + time) * 18}
 						y={entry.ly + Math.sin(h.a + time) * 18 + 4}
-						style:font-size="9px"
+						font-size="9"
 						text-anchor="middle"
 						style:fill="var(--im-virus)"
 						opacity={entry.acid * entry.endo}>H⁺</text
@@ -590,7 +590,7 @@
 					<text
 						x={s.x}
 						y={s.y}
-						style:font-size="12px"
+						font-size="12"
 						font-weight={s.n === entry.stage ? 700 : 400}
 						class:muted={s.n !== entry.stage}>{s.n}. {s.label}</text
 					>
@@ -824,17 +824,16 @@
 				value="{pct(left)} of the messages still being read (half-life {MRNA.halfLifeHours} h)"
 				color="var(--mv-mrna)"
 			>
-				<text x={PLOT.x0 - 40} y={PLOT.y0 - 14} style:font-size="12px" font-weight="600"
+				<text x={PLOT.x0 - 40} y={PLOT.y0 - 14} font-size="12" font-weight="600"
 					>day {day}: {pct(left)} of the mRNA still read</text
 				>
-				<text x={PLOT.x0 - 6} y={PLOT.y0 + 4} style:font-size="10px" text-anchor="end" class="muted"
+				<text x={PLOT.x0 - 6} y={PLOT.y0 + 4} font-size="10" text-anchor="end" class="muted"
 					>100%</text
 				>
-				<text x={PLOT.x0 - 6} y={PLOT.y1 + 3} style:font-size="10px" text-anchor="end" class="muted"
-					>0</text
+				<text x={PLOT.x0 - 6} y={PLOT.y1 + 3} font-size="10" text-anchor="end" class="muted">0</text
 				>
-				<text x={PLOT.x0} y={PLOT.y1 + 15} style:font-size="10px" class="muted">0</text>
-				<text x={PLOT.x1} y={PLOT.y1 + 15} style:font-size="10px" text-anchor="end" class="muted"
+				<text x={PLOT.x0} y={PLOT.y1 + 15} font-size="10" class="muted">0</text>
+				<text x={PLOT.x1} y={PLOT.y1 + 15} font-size="10" text-anchor="end" class="muted"
 					>14 days</text
 				>
 			</Readout>
@@ -851,7 +850,7 @@
 					<text
 						x={s.x}
 						y={s.y + 4}
-						style:font-size="12px"
+						font-size="12"
 						text-anchor="middle"
 						font-weight="700"
 						style:fill="var(--stage-bg)">{s.n}</text

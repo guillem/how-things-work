@@ -74,12 +74,8 @@
 				stroke-width={on ? 2.5 : 1.2}
 				opacity={match || c < 3 ? 1 : 1}
 			/>
-			<text
-				x={p.x + (C - 4) / 2}
-				y={p.y + 25}
-				text-anchor="middle"
-				style:font-size="20px"
-				font-weight="600">{num(m)}</text
+			<text x={p.x + (C - 4) / 2} y={p.y + 25} text-anchor="middle" font-size="20" font-weight="600"
+				>{num(m)}</text
 			>
 		{/each}
 	{/each}
@@ -124,8 +120,7 @@
 			/>
 		</g>
 	</Readout>
-	<text x={MX + 4 * C + 22} y={MY + 1.5 * C + 6} text-anchor="middle" style:font-size="26px">×</text
-	>
+	<text x={MX + 4 * C + 22} y={MY + 1.5 * C + 6} text-anchor="middle" font-size="26">×</text>
 
 	<!-- ============ the vector ============ -->
 	<Label anchor="start" x={VX - 6} y={VY - 18} text="v: ({v.length},)" size={15} weight={700} />
@@ -141,12 +136,8 @@
 			stroke="var(--tn-combine)"
 			stroke-width="1.5"
 		/>
-		<text
-			x={p.x + (C - 4) / 2}
-			y={p.y + 25}
-			text-anchor="middle"
-			style:font-size="20px"
-			font-weight="600">{num(x)}</text
+		<text x={p.x + (C - 4) / 2} y={p.y + 25} text-anchor="middle" font-size="20" font-weight="600"
+			>{num(x)}</text
 		>
 	{/each}
 	<line
@@ -192,7 +183,7 @@
 					x={px + (C - 12) / 2}
 					y={py + 15}
 					text-anchor="middle"
-					style:font-size="13px"
+					font-size="13"
 					style:fill="#fff"
 					font-weight="700"
 					>{multiplied > 0.5 && products[k] !== null
@@ -219,7 +210,7 @@
 					x={p.x + (C - 4) / 2}
 					y={p.y + 49}
 					text-anchor="middle"
-					style:font-size="14px"
+					font-size="14"
 					style:fill="var(--tn-bad)"
 					font-weight="800">?</text
 				>
@@ -228,7 +219,7 @@
 	{/if}
 
 	<!-- ============ the result ============ -->
-	<text x={RX - 32} y={MY + 1.5 * C + 6} text-anchor="middle" style:font-size="26px">=</text>
+	<text x={RX - 32} y={MY + 1.5 * C + 6} text-anchor="middle" font-size="26">=</text>
 	{#if match && out}
 		<Label
 			anchor="start"
@@ -257,7 +248,7 @@
 					x={p.x + (C - 4) / 2}
 					y={p.y + 37}
 					text-anchor="middle"
-					style:font-size="20px"
+					font-size="20"
 					font-weight="700">{num(y)}</text
 				>
 			{/if}
@@ -288,7 +279,7 @@
 			? 'columns axis summed away, rows axis kept'
 			: 'the shared axis must have one length'}
 	>
-		<text x={PX} y={MY + 3 * C + 72} class="halo" style:font-size="22px" font-weight="700"
+		<text x={PX} y={MY + 3 * C + 72} class="halo" font-size="22" font-weight="700"
 			>(<tspan style:fill="var(--tn-keep)">3</tspan>,&nbsp;<tspan style:fill="var(--tn-combine)"
 				>4</tspan
 			>) · (<tspan style:fill="var(--tn-combine)">{v.length}</tspan>,) {match ? '→ (' : ''}<tspan

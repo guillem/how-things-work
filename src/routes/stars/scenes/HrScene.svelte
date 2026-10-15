@@ -325,12 +325,8 @@
 				/>
 				{#if lifeLabel(v)}
 					<Readout id="lt-{v}">
-						<text
-							x={lifeScale(v)}
-							y={by + 30}
-							text-anchor="middle"
-							style:font-size="11px"
-							class="muted">{lifeLabel(v)}</text
+						<text x={lifeScale(v)} y={by + 30} text-anchor="middle" font-size="11" class="muted"
+							>{lifeLabel(v)}</text
 						>
 					</Readout>
 				{/if}

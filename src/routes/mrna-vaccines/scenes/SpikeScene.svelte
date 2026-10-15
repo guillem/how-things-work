@@ -242,7 +242,7 @@
 			<text
 				x={QX0 - 10}
 				y={232 + j * 92}
-				style:font-size="13px"
+				font-size="13"
 				text-anchor="end"
 				font-weight={(j === 1) === pro ? 600 : 400}>{row}</text
 			>
@@ -261,13 +261,13 @@
 					opacity="0.12"
 				/>
 			{/if}
-			<text {x} y={204} style:font-size="10px" text-anchor="middle" class="muted">{c.n}</text>
+			<text {x} y={204} font-size="10" text-anchor="middle" class="muted">{c.n}</text>
 			{#each [{ cod: c.virus, aa: c.aaV, j: 0 }, { cod: c.vaccine, aa: c.aaP, j: 1 }] as r (r.j)}
 				<g opacity={(r.j === 1) === pro ? 1 : 0.45}>
 					<text
 						{x}
 						y={232 + r.j * 92}
-						style:font-size="14px"
+						font-size="14"
 						text-anchor="middle"
 						font-family="ui-monospace, monospace"
 						font-weight={hot ? 700 : 400}>{r.cod}</text
@@ -280,7 +280,7 @@
 						stroke={hot ? 'var(--mv-spike)' : 'var(--stage-line)'}
 						stroke-width="1.5"
 					/>
-					<text {x} y={267 + r.j * 92} style:font-size="13px" font-weight="600" text-anchor="middle"
+					<text {x} y={267 + r.j * 92} font-size="13" font-weight="600" text-anchor="middle"
 						>{r.aa}</text
 					>
 				</g>

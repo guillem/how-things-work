@@ -82,7 +82,7 @@
 
 <g class="knudson-scene">
 	<Readout id="k-title">
-		<text x={GX} y={40} style:font-size="15px" font-weight="600"
+		<text x={GX} y={40} font-size="15" font-weight="600"
 			>{carrier
 				? '40 children who inherited one broken RB1'
 				: '40 children with two working copies of RB1'}</text
@@ -111,8 +111,8 @@
 
 	<!-- tally -->
 	<Readout id="k-sub">
-		<text x={TX} y={84} style:font-size="12px" class="muted">this group (bars) and</text>
-		<text x={TX} y={100} style:font-size="12px" class="muted">Knudson's expectation (ticks)</text>
+		<text x={TX} y={84} font-size="12" class="muted">this group (bars) and</text>
+		<text x={TX} y={100} font-size="12" class="muted">Knudson's expectation (ticks)</text>
 	</Readout>
 	{#each tally as row, i (row.k)}
 		{@const y = 140 + i * 74}
@@ -124,8 +124,8 @@
 			color={row.k === 'none' ? undefined : 'var(--ca-cancer)'}
 		>
 			<g>
-				<text x={TX} {y} style:font-size="13px" font-weight="600">{row.label}</text>
-				<text x={TX + TW} {y} text-anchor="end" style:font-size="13px">{row.seen}</text>
+				<text x={TX} {y} font-size="13" font-weight="600">{row.label}</text>
+				<text x={TX + TW} {y} text-anchor="end" font-size="13">{row.seen}</text>
 				<rect x={TX} y={y + 10} width={TW} height={16} rx="4" fill="var(--stage-grid)" />
 				<rect
 					x={TX}
@@ -144,7 +144,7 @@
 					stroke="var(--stage-ink)"
 					stroke-width="2"
 				/>
-				<text x={TX} y={y + 46} style:font-size="11px" class="muted"
+				<text x={TX} y={y + 46} font-size="11" class="muted"
 					>expected {(row.expected / N) * 100 < 1 && row.expected > 0
 						? '< 1'
 						: Math.round((row.expected / N) * 100)}%</text
@@ -153,8 +153,8 @@
 		</Readout>
 	{/each}
 	<Readout id="k-total" order={5} label="Tumours in this group" value={String(tumours)}>
-		<text x={TX} y={378} style:font-size="13px">{tumours} tumours in all</text>
-		<text x={TX} y={396} style:font-size="12px" class="muted"
+		<text x={TX} y={378} font-size="13">{tumours} tumours in all</text>
+		<text x={TX} y={396} font-size="12" class="muted"
 			>{carrier
 				? `Knudson: 3 per child, ${N * 3} expected`
 				: 'two hits in one cell: almost never'}</text
@@ -172,7 +172,7 @@
 			/>
 			<circle cx={TX + 15} cy={450} r={5} fill="var(--ca-iris)" opacity="0.7" />
 			<circle cx={TX + 20} cy={444} r={3.6} fill="var(--ca-cancer)" />
-			<text x={TX + 40} y={454} style:font-size="12px">an eye; red spot: a tumour</text>
+			<text x={TX + 40} y={454} font-size="12">an eye; red spot: a tumour</text>
 		</g>
 	</Readout>
 	<Readout id="k-source">

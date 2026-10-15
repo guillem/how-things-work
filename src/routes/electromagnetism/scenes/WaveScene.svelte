@@ -158,7 +158,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -241,7 +241,7 @@
 		y={chargeY + 5}
 		text-anchor="middle"
 		font-weight="700"
-		style:font-size="15px"
+		font-size="15"
 		style:fill="#fff">+</text
 	>
 	<Readout id="charge-label">
@@ -377,8 +377,8 @@
 						stroke="var(--border)"
 					/>
 				{/if}
-				<text {x} y={CARD.y + 25} class="muted" style:font-size="12px">{c.label}</text>
-				<text {x} y={CARD.y + 51} font-weight="700" style:font-size="19px" style:fill={c.color}
+				<text {x} y={CARD.y + 25} class="muted" font-size="12">{c.label}</text>
+				<text {x} y={CARD.y + 51} font-weight="700" font-size="19" style:fill={c.color}
 					>{c.value}</text
 				>
 			</Readout>

@@ -21,8 +21,6 @@
 	 * phase (after the mixing, or back at the start after the backward run); presses are ignored, and so are
 	 * presses before the wall has lifted.
 	 *
-	 * Text sizes and colours are set with `style:` because the stage's CSS
-	 * overrides SVG presentation attributes.
 	 */
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -349,7 +347,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-variant-numeric={opts.tabular ? 'tabular-nums' : undefined}>{text}</text
 	>
@@ -462,9 +460,9 @@
 			{@render txt(cx(s), CY0 + 16, `${s}`, 11, { anchor: 'middle', muted: true })}
 		{/each}
 		{@render txt(CX1 + 12, CY0 + 16, 's', 11, { anchor: 'start', muted: true })}
-		<text x={CX0 - 34} y={CY1 - 14} class="halo muted" style:font-size="12px">
+		<text x={CX0 - 34} y={CY1 - 14} class="halo muted" font-size="12">
 			{#if isEntropy}
-				entropy above the start, ΔS ÷ k<tspan baseline-shift="sub" style:font-size="9px">B</tspan>
+				entropy above the start, ΔS ÷ k<tspan baseline-shift="sub" font-size="9">B</tspan>
 			{:else}
 				temperature (¼-second average)
 			{/if}

@@ -127,7 +127,7 @@
 			y={py}
 			xml:space="preserve"
 			style:font-family="var(--font-mono)"
-			style:font-size="{size}px"
+			font-size={size}
 			style:fill={p.kind === 'prompt'
 				? 'var(--stage-ink-muted)'
 				: p.kind === 'ghost'

@@ -241,7 +241,7 @@
 		y={d.y + (g.label.length > 2 ? 4.5 : r * 0.36)}
 		text-anchor="middle"
 		font-weight="700"
-		style:font-size="{g.label.length > 2 ? 12.5 : Math.max(11, r * 0.95)}px"
+		font-size={g.label.length > 2 ? 12.5 : Math.max(11, r * 0.95)}
 		style:fill={lk.ink}>{g.label}</text
 	>
 {/snippet}
@@ -260,7 +260,7 @@
 		y={CY + 5}
 		text-anchor="middle"
 		font-weight="700"
-		style:font-size="14px"
+		font-size="14"
 		style:fill={ATOM.C.ink}>C</text
 	>
 {/snippet}
@@ -277,8 +277,7 @@
 		stroke-dasharray="8 6"
 	/>
 	<Readout id="mirror-label">
-		<text x="475" y="84" text-anchor="middle" class="halo muted" style:font-size="12px">mirror</text
-		>
+		<text x="475" y="84" text-anchor="middle" class="halo muted" font-size="12">mirror</text>
 	</Readout>
 
 	<!-- left: the molecule -->
@@ -329,10 +328,10 @@
 	<!-- captions -->
 	<g style:pointer-events="none">
 		<Readout id="left-name" order={1} label="Left" value={`${centre.name} ${leftName}`.trim()}>
-			<text x={LX} y="44" text-anchor="middle" class="halo" font-weight="700" style:font-size="16px"
+			<text x={LX} y="44" text-anchor="middle" class="halo" font-weight="700" font-size="16"
 				>{centre.name}</text
 			>
-			<text x={LX} y="64" text-anchor="middle" class="halo muted" style:font-size="12px"
+			<text x={LX} y="64" text-anchor="middle" class="halo muted" font-size="12"
 				>{leftName || centre.formula}</text
 			>
 		</Readout>
@@ -342,15 +341,10 @@
 			label="Right"
 			value={rightName ? `mirror image ${rightName}` : 'mirror image'}
 		>
-			<text
-				x={RXc}
-				y="44"
-				text-anchor="middle"
-				class="halo"
-				font-weight="700"
-				style:font-size="16px">its mirror image</text
+			<text x={RXc} y="44" text-anchor="middle" class="halo" font-weight="700" font-size="16"
+				>its mirror image</text
 			>
-			<text x={RXc} y="64" text-anchor="middle" class="halo muted" style:font-size="12px"
+			<text x={RXc} y="64" text-anchor="middle" class="halo muted" font-size="12"
 				>{rightName || 'drag to turn it'}</text
 			>
 		</Readout>
@@ -367,7 +361,7 @@
 				text-anchor="middle"
 				class="halo"
 				font-weight="700"
-				style:font-size="16px"
+				font-size="16"
 				style:fill={count === 4 ? 'var(--cp-group)' : undefined}>{verdict}</text
 			>
 		</Readout>
@@ -377,19 +371,19 @@
 			label="Verdict"
 			value={chiral ? 'chiral: can’t be superimposed' : 'not chiral'}
 		>
-			<text x="480" y="562" text-anchor="middle" class="halo muted" style:font-size="12px"
+			<text x="480" y="562" text-anchor="middle" class="halo muted" font-size="12"
 				>{chiral
 					? 'Four different groups: no turn puts the copy on the original (chiral)'
 					: 'Two groups are the same: a turn puts the copy on the original'}</text
 			>
 		</Readout>
 		<Readout id="rings">
-			<text x={RXc} y="520" text-anchor="middle" class="halo muted" style:font-size="11px"
+			<text x={RXc} y="520" text-anchor="middle" class="halo muted" font-size="11"
 				>dashed rings: where the left molecule’s atoms are</text
 			>
 		</Readout>
 		<Readout id="source">
-			<text x={LX} y="520" text-anchor="middle" class="halo muted" style:font-size="11px"
+			<text x={LX} y="520" text-anchor="middle" class="halo muted" font-size="11"
 				>{centre.source}</text
 			>
 		</Readout>

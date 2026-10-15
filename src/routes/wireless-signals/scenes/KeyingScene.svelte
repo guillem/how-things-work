@@ -219,7 +219,7 @@
 				y="80"
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size={symbols.length > 10 ? '12px' : '15px'}
+				font-size={symbols.length > 10 ? 12 : 15}
 				style:fill={currentBits &&
 				s.bits === currentBits &&
 				cursorUs * rate >= s.s &&

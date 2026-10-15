@@ -94,7 +94,7 @@
 		label="Temperature"
 		value="{Math.round(T)} K ({Math.round(T - 273.15)} °C)"
 	>
-		<text x={28} y={44} style:font-size="16px" font-weight="600"
+		<text x={28} y={44} font-size="16" font-weight="600"
 			>Collision energies at {Math.round(T)} K<tspan
 				dx="10"
 				font-size="13"

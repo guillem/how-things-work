@@ -148,7 +148,7 @@
 				x={cx}
 				y={Y_CAS + 34}
 				text-anchor="middle"
-				style:font-size="13px"
+				font-size="13"
 				style:fill="var(--cr-on-colour)"
 				font-weight="600">Cas9</text
 			>
@@ -166,7 +166,7 @@
 					x={q.x}
 					y={q.y + 4.5}
 					text-anchor="middle"
-					style:font-size="11px"
+					font-size="11"
 					style:fill="var(--cr-on-colour)"
 					font-weight="700">{p.label}</text
 				>

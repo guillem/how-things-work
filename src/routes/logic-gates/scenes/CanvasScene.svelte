@@ -27,8 +27,6 @@
 	 * Circuit coordinates (as in logic.ts) are mapped onto the left part of the stage
 	 * by X()/Y(); the truth table sits on the right.
 	 *
-	 * Text sizes and colours use `style:` because the stage CSS overrides SVG
-	 * presentation attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -634,7 +632,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		stroke={opts.halo === false ? 'none' : undefined}
 		style:font-variant-numeric="tabular-nums">{text}</text

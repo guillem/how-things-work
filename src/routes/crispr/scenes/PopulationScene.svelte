@@ -97,13 +97,12 @@
 			stroke="var(--stage-grid)"
 			stroke-width="1"
 		/>
-		<text x={X0 - 10} y={sy(10 ** e) + 4} text-anchor="end" style:font-size="12px" class="muted"
+		<text x={X0 - 10} y={sy(10 ** e) + 4} text-anchor="end" font-size="12" class="muted"
 			>{e === 0 ? '1' : `10${SUP[i]}`}</text
 		>
 	{/each}
 	{#each [0, 2, 4, 6, 8, 10] as d (d)}
-		<text x={sx(d * 24)} y={Y0 + 20} text-anchor="middle" style:font-size="12px" class="muted"
-			>day {d}</text
+		<text x={sx(d * 24)} y={Y0 + 20} text-anchor="middle" font-size="12" class="muted">day {d}</text
 		>
 	{/each}
 	<line x1={X0} x2={X0} y1={Y1} y2={Y0} stroke="var(--stage-line)" />
@@ -274,7 +273,7 @@
 				x={x + 24}
 				y={488}
 				text-anchor="middle"
-				style:font-size="13px"
+				font-size="13"
 				style:fill="var(--cr-on-colour)"
 				font-weight="700">{SITE_NAMES[s] + primes(v)}</text
 			>

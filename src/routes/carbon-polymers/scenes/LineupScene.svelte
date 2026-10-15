@@ -176,7 +176,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -320,14 +320,14 @@
 						x={Math.min(...xs) - 18}
 						y={g.y + 6}
 						text-anchor="middle"
-						style:font-size="26px"
+						font-size="26"
 						class="muted">…</text
 					>
 					<text
 						x={Math.max(...xs) + 18}
 						y={g.y + 6}
 						text-anchor="middle"
-						style:font-size="26px"
+						font-size="26"
 						class="muted">…</text
 					>
 				{/if}
@@ -337,7 +337,7 @@
 						x={g.x + f.dx + a.x * f.unit + 10}
 						y={g.y + f.dy - 6 + a.y * f.unit - 8}
 						font-weight="700"
-						style:font-size="16px"
+						font-size="16"
 						style:fill="var(--cp-number)">*</text
 					>
 				{/each}

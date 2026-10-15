@@ -107,7 +107,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'middle'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -153,7 +153,7 @@
 					{x}
 					y={y + (o.sign === 1 ? -11 : 21)}
 					text-anchor="middle"
-					style:font-size="10px"
+					font-size="10"
 					class="muted">0</text
 				>
 			{/if}

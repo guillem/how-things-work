@@ -177,13 +177,8 @@
 					stroke="var(--pf-h-edge)"
 					stroke-width="1.5"
 				/>
-				<text
-					x="738"
-					y="62"
-					text-anchor="middle"
-					style:font-size="11px"
-					font-weight="700"
-					style:fill="#fff">H</text
+				<text x="738" y="62" text-anchor="middle" font-size="11" font-weight="700" style:fill="#fff"
+					>H</text
 				>
 				<Label x={758} y={62} text="water-repelling" anchor="start" />
 			</Readout>
@@ -196,13 +191,8 @@
 					stroke="var(--pf-p-edge)"
 					stroke-width="1.5"
 				/>
-				<text
-					x="738"
-					y="94"
-					text-anchor="middle"
-					style:font-size="11px"
-					font-weight="700"
-					style:fill="#fff">P</text
+				<text x="738" y="94" text-anchor="middle" font-size="11" font-weight="700" style:fill="#fff"
+					>P</text
 				>
 				<Label x={758} y={94} text="water-loving" anchor="start" />
 			</Readout>
@@ -376,7 +366,7 @@
 								x={p.cx - 13 * 11.5 + i * 23}
 								y={106}
 								text-anchor="middle"
-								style:font-size="10px"
+								font-size="10"
 								font-weight="700"
 								style:fill="#fff"
 							>

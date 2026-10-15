@@ -180,7 +180,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'middle'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -362,7 +362,7 @@
 			y={d.y}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="12px"
+			font-size="12"
 			style:fill={gasName === 'O₂' ? 'var(--circ-low)' : 'var(--tc-poly-edge)'}
 			opacity={d.o}>{gasName}</text
 		>
@@ -580,7 +580,7 @@
 					y="531"
 					text-anchor="middle"
 					font-weight={on ? 700 : 500}
-					style:font-size="12px"
+					font-size="12"
 					style:fill={on ? '#fff' : i < current ? 'var(--stage-ink)' : 'var(--stage-ink-muted)'}
 					>{s}</text
 				>

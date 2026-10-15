@@ -275,7 +275,7 @@
 		{y}
 		text-anchor={anchor}
 		font-weight={weight}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill="var(--bh-on-hole)"
 		style:pointer-events="none">{text}</text
 	>

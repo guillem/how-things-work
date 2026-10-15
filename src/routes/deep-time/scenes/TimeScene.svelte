@@ -453,7 +453,7 @@
 				x={G.cx}
 				y={G.cy + 22}
 				text-anchor="middle"
-				style:font-size="64px"
+				font-size="64"
 				font-weight="700"
 				class="muted">?</text
 			>
@@ -506,9 +506,9 @@
 				label="A zircon crystal: 100 atoms that started as uranium"
 			>
 				<circle cx={G.cx - 120} cy={G.cy + 168} r="6" fill="var(--dt-uranium)" />
-				<text x={G.cx - 110} y={G.cy + 172} style:font-size="12px">uranium-238</text>
+				<text x={G.cx - 110} y={G.cy + 172} font-size="12">uranium-238</text>
 				<circle cx={G.cx + 10} cy={G.cy + 168} r="6" fill="var(--dt-lead)" />
-				<text x={G.cx + 20} y={G.cy + 172} style:font-size="12px">lead-206</text>
+				<text x={G.cx + 20} y={G.cy + 172} font-size="12">lead-206</text>
 			</Readout>
 		{/if}
 	</g>
@@ -526,14 +526,12 @@
 		/>
 	</Readout>
 	<Readout id="age" order={0} label="When" value={ageText(age)}>
-		<text x={CARD.x + 16} y={CARD.y + 46} style:font-size="18px" font-weight="700"
-			>{ageText(age)}</text
-		>
+		<text x={CARD.x + 16} y={CARD.y + 46} font-size="18" font-weight="700">{ageText(age)}</text>
 	</Readout>
 	<Readout id="unit" order={1} label="Time scale" value={placeText}>
-		<text x={CARD.x + 16} y={CARD.y + 66} style:font-size="12px" class="muted">{placeText}</text>
+		<text x={CARD.x + 16} y={CARD.y + 66} font-size="12" class="muted">{placeText}</text>
 	</Readout>
-	<g transform="translate({CARD.x + 16} {CARD.y + 94})" style:font-size="13px">
+	<g transform="translate({CARD.x + 16} {CARD.y + 94})" font-size="13">
 		{#if phase === 'dating'}
 			<Readout id="u" order={2} label="Uranium-238 left" value="{(uLeft * 100).toFixed(0)}%">
 				<text y="0"
@@ -558,7 +556,7 @@
 				>
 			</Readout>
 			<Readout id="halflife">
-				<text y="70" style:font-size="11px" class="muted"
+				<text y="70" font-size="11" class="muted"
 					>half-life of uranium-238: 4,468 million years</text
 				>
 			</Readout>
@@ -585,19 +583,19 @@
 			</Readout>
 			{#if temp}
 				<Readout id="stage">
-					<text y="48" style:font-size="11px" class="muted">PhanDA stage: {temp.stage}</text>
+					<text y="48" font-size="11" class="muted">PhanDA stage: {temp.stage}</text>
 				</Readout>
 			{/if}
 		{:else if phase === 'oxygen'}
 			<Readout id="o2" order={2} label="Oxygen in the air" value={o2Text} color="var(--dt-o2)">
 				<text y="0">Oxygen: <tspan font-weight="700">{o2 ? o2Text : ''}</tspan></text>
 				{#if !o2}
-					<text y="20" style:font-size="12px" font-weight="600">{o2Text}</text>
+					<text y="20" font-size="12" font-weight="600">{o2Text}</text>
 				{/if}
 			</Readout>
 			{#if o2}
 				<Readout id="o2range">
-					<text y="22" style:font-size="11px" class="muted"
+					<text y="22" font-size="11" class="muted"
 						>range of estimates {o2.min.toFixed(0)}–{o2.max.toFixed(0)}% (today 21%)</text
 					>
 				</Readout>
@@ -618,7 +616,7 @@
 			{#if newest}
 				<Readout id="newest" order={3} label="Newest group" value={newest.name}>
 					<text y="22">Newest: <tspan font-weight="700">{newest.name}</tspan></text>
-					<text y="40" style:font-size="11px" class="muted">{newest.evidence}</text>
+					<text y="40" font-size="11" class="muted">{newest.evidence}</text>
 				</Readout>
 			{/if}
 			{#if phase === 'extinctions'}
@@ -628,7 +626,7 @@
 					label="Nearest mass extinction"
 					value="{nextExt.name}, {ageText(nextExt.age)}"
 				>
-					<text y="64" style:font-size="12px"
+					<text y="64" font-size="12"
 						>Nearest extinction: <tspan font-weight="600">{nextExt.name}</tspan></text
 					>
 				</Readout>
@@ -674,7 +672,7 @@
 			</Readout>
 			{#if phase === 'drift' || phase === 'before'}
 				<Readout id="equator">
-					<text y="22" style:font-size="11px" class="muted"
+					<text y="22" font-size="11" class="muted"
 						>the long curved line: the equator at the time</text
 					>
 				</Readout>
@@ -684,7 +682,7 @@
 
 	<!-- ================= the tracks ================= -->
 	<Readout id="window-title">
-		<text x={X0} y={headY - 6} style:font-size="14px" font-weight="600"
+		<text x={X0} y={headY - 6} font-size="14" font-weight="600"
 			>{zoomInfo.label} · {ageText(span).replace(' ago', '')}</text
 		>
 	</Readout>
@@ -698,7 +696,7 @@
 						x={b.x + b.w / 2}
 						y={EON_Y + 12.5}
 						text-anchor="middle"
-						style:font-size="11px"
+						font-size="11"
 						font-weight="600"
 						style:fill={inkOn(b.u.color)}>{b.u.name}</text
 					>
@@ -711,7 +709,7 @@
 						x={b.x + b.w / 2}
 						y={ERA_Y + 9.8}
 						text-anchor="middle"
-						style:font-size="9.5px"
+						font-size="9.5"
 						style:fill={inkOn(b.u.color)}>{b.u.name}</text
 					>
 				{/if}
@@ -769,7 +767,7 @@
 					x={(X0 + tempStartX) / 2}
 					y={TEMP.y + TEMP.h / 2 + 4}
 					text-anchor="middle"
-					style:font-size="11px"
+					font-size="11"
 					class="muted">no global temperature record</text
 				>
 			{/if}
@@ -961,7 +959,7 @@
 	</g>
 
 	<!-- track titles and scales (outside the clip) -->
-	<g style:font-size="11px">
+	<g font-size="11">
 		<g opacity={Math.max(0.6, fTemp.current)}>
 			<Readout id="temp-title">
 				<text x={X0} y={TEMP.y - 4} font-weight="600" style:fill="var(--dt-temp)"
@@ -969,7 +967,7 @@
 				>
 			</Readout>
 			{#each [10, 20, 30] as c (c)}
-				<text x={X1 + 4} y={tY(c) + 4} class="muted" style:font-size="9.5px">{c}</text>
+				<text x={X1 + 4} y={tY(c) + 4} class="muted" font-size="9.5">{c}</text>
 			{/each}
 		</g>
 		<g opacity={Math.max(0.6, fO2.current)}>
@@ -979,7 +977,7 @@
 				>
 			</Readout>
 			{#each PAL_LINES as l (l.v)}
-				<text x={X1 + 4} y={oY(l.v) + 3.5} class="muted" style:font-size="9.5px">{l.text}</text>
+				<text x={X1 + 4} y={oY(l.v) + 3.5} class="muted" font-size="9.5">{l.text}</text>
 			{/each}
 		</g>
 		{#if fSliver.current > 0.01 && xOf(571, sp) > X0 + 260}
@@ -1017,16 +1015,13 @@
 			{@const x = xOf(k.age, sp)}
 			{#if x >= X0 - 0.5 && x < X1 - 30}
 				<path d="M{x} {AXIS_Y}v5" stroke="var(--stage-line)" />
-				<text {x} y={AXIS_Y + 18} text-anchor="middle" style:font-size="10.5px" class="muted"
-					>{k.text}</text
+				<text {x} y={AXIS_Y + 18} text-anchor="middle" font-size="10.5" class="muted">{k.text}</text
 				>
 			{/if}
 		{/each}
-		<text x={X1} y={AXIS_Y + 18} text-anchor="end" style:font-size="10.5px" font-weight="600"
-			>today</text
-		>
+		<text x={X1} y={AXIS_Y + 18} text-anchor="end" font-size="10.5" font-weight="600">today</text>
 		<Readout id="axis-unit">
-			<text x={X0} y={AXIS_Y + 34} style:font-size="10.5px" class="muted">{axis.unit}</text>
+			<text x={X0} y={AXIS_Y + 34} font-size="10.5" class="muted">{axis.unit}</text>
 		</Readout>
 	</g>
 
@@ -1043,7 +1038,7 @@
 	/>
 
 	<Readout id="sources">
-		<text x="944" y="592" style:font-size="9.5px" text-anchor="end" class="muted"
+		<text x="944" y="592" font-size="9.5" text-anchor="end" class="muted"
 			>ICS chart 2024/12 · Merdith et al. 2021 · PhanDA (Judd et al. 2024) · Mills et al. 2023</text
 		>
 	</Readout>

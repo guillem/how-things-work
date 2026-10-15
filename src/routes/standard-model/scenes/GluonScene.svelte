@@ -182,7 +182,7 @@
 						y="10"
 						text-anchor="middle"
 						font-weight="700"
-						style:font-size="30px"
+						font-size="30"
 						style:fill="var(--sm-ball-ink)">{FLAV[i]}</text
 					>
 				</g>
@@ -197,7 +197,7 @@
 					y={133}
 					text-anchor="middle"
 					font-weight="700"
-					style:font-size="13px"
+					font-size="13"
 					style:fill="var(--sm-ball-ink)">{FLAV[i]}</text
 				>
 			{/each}
@@ -326,7 +326,7 @@
 						y={MY + 7}
 						text-anchor="middle"
 						font-weight="700"
-						style:font-size="20px"
+						font-size="20"
 						style:fill="var(--sm-ball-ink)">ū</text
 					>
 					<circle
@@ -342,7 +342,7 @@
 						y={MY + 7}
 						text-anchor="middle"
 						font-weight="700"
-						style:font-size="20px"
+						font-size="20"
 						style:fill="var(--sm-ball-ink)">u</text
 					>
 				</g>
@@ -360,7 +360,7 @@
 				y={MY + 8}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="22px"
+				font-size="22"
 				style:fill="var(--sm-ball-ink)">d</text
 			>
 			<circle
@@ -376,7 +376,7 @@
 				y={MY + 8}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="22px"
+				font-size="22"
 				style:fill="var(--sm-ball-ink)">ū</text
 			>
 			{#if after > 0.5}

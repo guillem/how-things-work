@@ -155,7 +155,7 @@
 		value="μ = {m.toFixed(m < 0.1 ? 3 : 2)} per cm"
 		note="at {keV} keV"
 	>
-		<text x={560} y={410} style:font-size="15px" font-weight="600"
+		<text x={560} y={410} font-size="15" font-weight="600"
 			>μ = {m.toFixed(m < 0.1 ? 3 : 2)} per cm</text
 		>
 		<Label x={560} y={432} anchor="start" muted text="{matInfo.name} at {keV} keV (NIST)" />
@@ -169,9 +169,7 @@
 		/>
 	</Readout>
 	<Readout id="frac" order={4} label="Photons getting through" value={pct(frac)}>
-		<text x={560} y={500} style:font-size="15px" font-weight="600"
-			>getting through: {pct(frac)}</text
-		>
+		<text x={560} y={500} font-size="15" font-weight="600">getting through: {pct(frac)}</text>
 		<Label x={560} y={522} anchor="start" muted text="I/I₀ = e^−μx = e^−{(m * x).toFixed(2)}" />
 	</Readout>
 

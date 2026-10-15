@@ -15,8 +15,6 @@
 	 * Every number shown comes from `route()` and the map; the estimate is
 	 * rounded first, so the displayed sum always adds up.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
-	 * presentation attributes.
 	 */
 	import { smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -149,7 +147,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		data-readout={opts.data}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -170,7 +168,7 @@
 		y={y + size * 0.36}
 		text-anchor="middle"
 		class:muted={!color}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={color}>{text}</text
 	>
 {/snippet}
@@ -303,7 +301,7 @@
 			class="halo"
 			text-anchor={anchor}
 			font-weight="600"
-			style:font-size="13px"
+			font-size="13"
 			>{town.name}{#if settled}<tspan
 					font-weight="500"
 					opacity={isNew ? fresh : 1}

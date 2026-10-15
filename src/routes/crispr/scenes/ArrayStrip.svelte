@@ -70,7 +70,7 @@
 				x={x + (STRIP.leader * s) / 2}
 				y={y + text * 0.36}
 				text-anchor="middle"
-				style:font-size="{text - 1}px"
+				font-size={text - 1}
 				style:fill="var(--stage-bg)"
 				font-weight="600">leader</text
 			>
@@ -96,7 +96,7 @@
 						x={cx}
 						y={y + text * 0.36}
 						text-anchor="middle"
-						style:font-size="{text}px"
+						font-size={text}
 						style:fill={sp.ghost ? 'var(--stage-ink-muted)' : 'var(--cr-on-colour)'}
 						font-weight="600">{sp.label}</text
 					>
@@ -122,7 +122,7 @@
 			x={end + 22 * s}
 			y={y - 6 * s}
 			text-anchor="middle"
-			style:font-size="{Math.max(11, text)}px"
+			font-size={Math.max(11, text)}
 			style:fill="var(--stage-ink-muted)">…</text
 		>
 	{/if}

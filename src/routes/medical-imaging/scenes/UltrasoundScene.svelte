@@ -198,7 +198,7 @@
 	{/each}
 
 	<!-- ================= the trace ================= -->
-	<text x={TX} y={TY - 40} font-weight="600" style:font-size="15px">What the probe hears</text>
+	<text x={TX} y={TY - 40} font-weight="600" font-size="15">What the probe hears</text>
 	<line x1={TX} y1={TY + TH} x2={TX + TW} y2={TY + TH} stroke="var(--stage-line)" />
 	<line x1={TX} y1={TY} x2={TX} y2={TY + TH} stroke="var(--stage-line)" />
 	{#each [0, -50, -100] as d (d)}

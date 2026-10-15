@@ -448,27 +448,23 @@
 		/></Readout
 	>
 	<Readout id="caption" order={0} label="Now" value={caption}>
-		<text x={PX + 18} y={52} style:font-size="15px" font-weight="600">{caption}</text>
+		<text x={PX + 18} y={52} font-size="15" font-weight="600">{caption}</text>
 	</Readout>
 
 	{#if phase === 'one'}
 		<Readout id="time" order={1} label="Signal travel time" value="{ms(trueR[0]).toFixed(1)} ms">
-			<text x={PX + 18} y={96} class="muted" style:font-size="12px">Signal travel time</text>
-			<text x={PX + 18} y={120} style:font-size="16px" font-weight="600"
-				>{ms(trueR[0]).toFixed(1)} ms</text
-			>
+			<text x={PX + 18} y={96} class="muted" font-size="12">Signal travel time</text>
+			<text x={PX + 18} y={120} font-size="16" font-weight="600">{ms(trueR[0]).toFixed(1)} ms</text>
 		</Readout>
 		<Readout id="dist" order={2} label="Distance = time × speed of light" value="{km(trueR[0])} km">
-			<text x={PX + 18} y={156} class="muted" style:font-size="12px"
-				>Distance = time × speed of light</text
-			>
-			<text x={PX + 18} y={180} style:font-size="16px" font-weight="600">{km(trueR[0])} km</text>
+			<text x={PX + 18} y={156} class="muted" font-size="12">Distance = time × speed of light</text>
+			<text x={PX + 18} y={180} font-size="16" font-weight="600">{km(trueR[0])} km</text>
 		</Readout>
 		<Readout id="hint">
-			<text x={PX + 18} y={MY0 + MH - 46} class="muted" style:font-size="12px"
+			<text x={PX + 18} y={MY0 + MH - 46} class="muted" font-size="12"
 				>Drag the receiver or the satellite.</text
 			>
-			<text x={PX + 18} y={MY0 + MH - 28} class="muted" style:font-size="12px"
+			<text x={PX + 18} y={MY0 + MH - 28} class="muted" font-size="12"
 				>Pulses slowed down about 100 times.</text
 			>
 		</Readout>
@@ -483,28 +479,28 @@
 				color={COLORS[i]}
 			>
 				<circle cx={PX + 24} cy={92 + i * 28} r="5" fill={COLORS[i]} />
-				<text x={PX + 38} y={96 + i * 28} style:font-size="13px">Range to {NAMES[i]}</text>
-				<text x={PX + PW - 18} y={96 + i * 28} text-anchor="end" style:font-size="13px"
+				<text x={PX + 38} y={96 + i * 28} font-size="13">Range to {NAMES[i]}</text>
+				<text x={PX + PW - 18} y={96 + i * 28} text-anchor="end" font-size="13"
 					>{km(measured[i])} km</text
 				>
 			</Readout>
 		{/each}
 		{#if phase === 'tri'}
 			<Readout id="meet" order={5} label="Circles meet at" value={meetText}>
-				<text x={PX + 18} y={200} class="muted" style:font-size="12px">Circles meet at</text>
-				<text x={PX + 18} y={224} style:font-size="16px" font-weight="600">{meetText}</text>
+				<text x={PX + 18} y={200} class="muted" font-size="12">Circles meet at</text>
+				<text x={PX + 18} y={224} font-size="16" font-weight="600">{meetText}</text>
 			</Readout>
 			<Readout id="hint">
-				<text x={PX + 18} y={MY0 + MH - 28} class="muted" style:font-size="12px"
+				<text x={PX + 18} y={MY0 + MH - 28} class="muted" font-size="12"
 					>Drag the receiver or any satellite.</text
 				>
 			</Readout>
 		{:else}
 			<Readout id="clk" order={5}>
-				<text x={PX + 18} y={200} class="muted" style:font-size="12px"
+				<text x={PX + 18} y={200} class="muted" font-size="12"
 					>Receiver clock error → added to every range</text
 				>
-				<text x={PX + 18} y={224} style:font-size="16px" font-weight="600"
+				<text x={PX + 18} y={224} font-size="16" font-weight="600"
 					>{clockMs === 0
 						? 'exact'
 						: `${signed(clockMs)} ms → ${bias.current >= 0 ? '+' : '−'}${km(Math.abs(bias.current))} km`}</text
@@ -523,8 +519,8 @@
 					stroke-width="2.5"
 					stroke-linecap="round"
 				/>
-				<text x={PX + 38} y={278} style:font-size="13px">Trusting its clock</text>
-				<text x={PX + PW - 18} y={278} text-anchor="end" style:font-size="13px" font-weight="600"
+				<text x={PX + 38} y={278} font-size="13">Trusting its clock</text>
+				<text x={PX + PW - 18} y={278} text-anchor="end" font-size="13" font-weight="600"
 					>{kmText(kmOff(trustPt))}</text
 				>
 			</Readout>
@@ -544,8 +540,8 @@
 						stroke="var(--gps-fix)"
 						stroke-width="2.2"
 					/>
-					<text x={PX + 38} y={312} style:font-size="13px">Solving for its clock</text>
-					<text x={PX + PW - 18} y={312} text-anchor="end" style:font-size="13px" font-weight="600"
+					<text x={PX + 38} y={312} font-size="13">Solving for its clock</text>
+					<text x={PX + PW - 18} y={312} text-anchor="end" font-size="13" font-weight="600"
 						>{solving ? kmText(kmOff(solvedPt)) : 'off'}</text
 					>
 				</Readout>
@@ -556,15 +552,15 @@
 						label="Clock error found"
 						value="{signed((solved.clock / C) * 1e3)} ms"
 					>
-						<text x={PX + 18} y={350} class="muted" style:font-size="12px">Clock error found</text>
-						<text x={PX + 18} y={374} style:font-size="16px" font-weight="600"
+						<text x={PX + 18} y={350} class="muted" font-size="12">Clock error found</text>
+						<text x={PX + 18} y={374} font-size="16" font-weight="600"
 							>{signed((solved.clock / C) * 1e3)} ms</text
 						>
 					</Readout>
 				{/if}
 			{/if}
 			<Readout id="hint">
-				<text x={PX + 18} y={MY0 + MH - 28} class="muted" style:font-size="12px"
+				<text x={PX + 18} y={MY0 + MH - 28} class="muted" font-size="12"
 					>Drag the receiver or any satellite.</text
 				>
 			</Readout>

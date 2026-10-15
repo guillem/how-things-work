@@ -248,7 +248,7 @@
 				y={Y + 4}
 				text-anchor="middle"
 				opacity={edge(x) * (inside ? 1 : 0.45)}
-				style:font-size="15px"
+				font-size="15"
 				style:font-weight="700"
 				style:font-family="var(--font-mono)"
 				style:fill={baseColor(b)}>{b}</text
@@ -326,7 +326,7 @@
 					x="0"
 					y={Y - 24}
 					text-anchor="middle"
-					style:font-size="12px"
+					font-size="12"
 					style:font-weight="700"
 					style:font-family="var(--font-mono)">{anticodonOf(rna(q.codon))}</text
 				>
@@ -339,12 +339,8 @@
 						stroke="var(--stage-ink)"
 						stroke-width="1"
 					/>
-					<text
-						x="0"
-						y={TOP + 4.5}
-						text-anchor="middle"
-						style:font-size="12px"
-						style:font-weight="700">{q.aa}</text
+					<text x="0" y={TOP + 4.5} text-anchor="middle" font-size="12" style:font-weight="700"
+						>{q.aa}</text
 					>
 				{/if}
 			{/if}
@@ -367,7 +363,7 @@
 			y={b.y + 4.5}
 			text-anchor="middle"
 			opacity={b.o}
-			style:font-size="12px"
+			font-size="12"
 			style:font-weight="700">{b.aa}</text
 		>
 	{/each}
@@ -423,7 +419,7 @@
 					x={x0 + i * cell + cell / 2}
 					y={453}
 					text-anchor="middle"
-					style:font-size="11px"
+					font-size="11"
 					style:font-weight="700">{a}</text
 				>
 			{/if}

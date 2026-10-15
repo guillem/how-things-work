@@ -182,9 +182,9 @@
 				fill="var(--lm-t3)"
 				stroke="var(--border)"
 			/>
-			<text x="659" y="110" text-anchor="middle" style:font-size="11.5px">⟨user⟩</text>
-			<text x="622" y="138" style:font-size="12.5px">What is the boiling point</text>
-			<text x="622" y="156" style:font-size="12.5px">of water?</text>
+			<text x="659" y="110" text-anchor="middle" font-size="11.5">⟨user⟩</text>
+			<text x="622" y="138" font-size="12.5">What is the boiling point</text>
+			<text x="622" y="156" font-size="12.5">of water?</text>
 			<rect
 				x="622"
 				y="172"
@@ -194,7 +194,7 @@
 				fill="var(--lm-t5)"
 				stroke="var(--border)"
 			/>
-			<text x="674" y="186" text-anchor="middle" style:font-size="11.5px">⟨assistant⟩</text>
+			<text x="674" y="186" text-anchor="middle" font-size="11.5">⟨assistant⟩</text>
 		</g>
 		{#each Array.from({ length: 6 }, (_, i) => i) as i (i)}
 			{@const on = i < beats}

@@ -327,9 +327,7 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		<text x={540} y={142} style:font-size="15px" font-weight="600"
-			>after one dose, in the model</text
-		>
+		<text x={540} y={142} font-size="15" font-weight="600">after one dose, in the model</text>
 		{#each [{ id: 'naive', label: 'matching naive T cells', value: `${CAO.Cn0}`, c: 'var(--stage-ink-muted)' }, { id: 'peak', label: `killer T cells at the peak, day ${Math.round(eMax.t)}`, value: count(eMax.v), c: 'var(--im-tcell)' }, { id: 'ab', label: 'antibodies from', value: `day ${Math.round(firstAb)}`, c: 'var(--im-antibody)' }, { id: 'mem', label: 'memory T cells left (5% of the peak)', value: count(memT), c: 'var(--im-memory)' }, { id: 'virus', label: 'virus, infected cells', value: 'none', c: 'var(--im-virus)' }] as r, i (r.id)}
 			<Readout
 				opacity={mix.current}
@@ -340,11 +338,11 @@
 				color={r.c}
 			>
 				<circle cx={548} cy={186 + i * 60} r="6" fill={r.c} />
-				<text x={562} y={191 + i * 60} style:font-size="13px">{r.label}</text>
+				<text x={562} y={191 + i * 60} font-size="13">{r.label}</text>
 				<text
 					x={900}
 					y={191 + i * 60}
-					style:font-size="16px"
+					font-size="16"
 					font-weight="700"
 					text-anchor="end"
 					style:fill={r.c}>{r.value}</text

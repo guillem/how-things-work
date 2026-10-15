@@ -329,7 +329,7 @@
 
 	<!-- ===================== left: the tissue ===================== -->
 	<Readout id="heading">
-		<text x={LX} y={42} style:font-size="15px" font-weight="600">{heading}</text>
+		<text x={LX} y={42} font-size="15" font-weight="600">{heading}</text>
 	</Readout>
 	<rect
 		x={LX - 6}
@@ -382,10 +382,10 @@
 				{#each PASS_OPACITY as op, i (i)}
 					<circle cx={LX + 8 + i * 22} cy={LEG_Y} r={R} fill="var(--ca-pass)" fill-opacity={op} />
 				{/each}
-				<text x={LX + 100} y={LEG_Y + 4} style:font-size="12px"
+				<text x={LX + 100} y={LEG_Y + 4} font-size="12"
 					>0–9 · 10–19 · 20–39 · 40 or more mutations</text
 				>
-				<text x={LX} y={LEG_Y + 30} style:font-size="12px" class="muted"
+				<text x={LX} y={LEG_Y + 30} font-size="12" class="muted"
 					>Passengers only: none of them changes how a cell behaves.</text
 				>
 			</g>
@@ -421,7 +421,7 @@
 							<circle cx={x + 8} cy={y} r="1.7" fill="var(--ca-mutator)" />
 						{/if}
 					{/if}
-					<text x={x + 22} y={y + 4} style:font-size="12px">{key.label}</text>
+					<text x={x + 22} y={y + 4} font-size="12">{key.label}</text>
 				</g>
 			</Readout>
 		{/each}
@@ -429,16 +429,16 @@
 
 	<!-- ===================== right: numbers and chart ===================== -->
 	<Readout id="gen" order={1} label="Generation" value={fmt(gen)}>
-		<text x={600} y={74} style:font-size="12px" class="muted">cell generation</text>
-		<text x={600} y={98} style:font-size="22px" font-weight="600">{fmt(gen)}</text>
+		<text x={600} y={74} font-size="12" class="muted">cell generation</text>
+		<text x={600} y={98} font-size="22" font-weight="600">{fmt(gen)}</text>
 	</Readout>
 	{#if view === 'balance'}
 		<Readout id="living" order={2} label="Cells" value={fmt(living(r, gen))}>
-			<text x={760} y={74} style:font-size="12px" class="muted">cells</text>
-			<text x={760} y={98} style:font-size="22px" font-weight="600">{fmt(living(r, gen))}</text>
+			<text x={760} y={74} font-size="12" class="muted">cells</text>
+			<text x={760} y={98} font-size="22" font-weight="600">{fmt(living(r, gen))}</text>
 		</Readout>
 		<Readout id="divs" order={3} label="Divisions this generation" value={fmt(r.divisions[gen])}>
-			<text x={600} y={136} style:font-size="13px"
+			<text x={600} y={136} font-size="13"
 				>{fmt(r.divisions[gen])} divisions this generation, filling the gaps</text
 			>
 		</Readout>
@@ -449,9 +449,8 @@
 			label="Mutations per cell (average)"
 			value={r.meanPassengers[gen].toFixed(1)}
 		>
-			<text x={760} y={74} style:font-size="12px" class="muted">mutations per cell</text>
-			<text x={760} y={98} style:font-size="22px" font-weight="600"
-				>{r.meanPassengers[gen].toFixed(1)}</text
+			<text x={760} y={74} font-size="12" class="muted">mutations per cell</text>
+			<text x={760} y={98} font-size="22" font-weight="600">{r.meanPassengers[gen].toFixed(1)}</text
 			>
 		</Readout>
 	{:else if view === 'driver'}
@@ -462,10 +461,8 @@
 			value={fmt(count(r, gen, Kind.Kras))}
 			color="var(--ca-kras)"
 		>
-			<text x={760} y={74} style:font-size="12px" class="muted">cells with KRAS on</text>
-			<text x={760} y={98} style:font-size="22px" font-weight="600"
-				>{fmt(count(r, gen, Kind.Kras))}</text
-			>
+			<text x={760} y={74} font-size="12" class="muted">cells with KRAS on</text>
+			<text x={760} y={98} font-size="22" font-weight="600">{fmt(count(r, gen, Kind.Kras))}</text>
 		</Readout>
 	{:else}
 		<Readout
@@ -475,8 +472,8 @@
 			value={fmt(cancerNow)}
 			color="var(--ca-cancer)"
 		>
-			<text x={760} y={74} style:font-size="12px" class="muted">cancer cells</text>
-			<text x={760} y={98} style:font-size="22px" font-weight="600">{fmt(cancerNow)}</text>
+			<text x={760} y={74} font-size="12" class="muted">cancer cells</text>
+			<text x={760} y={98} font-size="22" font-weight="600">{fmt(cancerNow)}</text>
 		</Readout>
 		{#if view === 'treat' || view === 'combo' || view === 'recap'}
 			<Readout
@@ -486,24 +483,20 @@
 				value={fmt(resistantNow)}
 				color="var(--ca-resistant)"
 			>
-				<text x={860} y={74} style:font-size="12px" class="muted">resistant</text>
-				<text
-					x={860}
-					y={98}
-					style:font-size="22px"
-					font-weight="600"
-					style:fill="var(--ca-resistant)">{fmt(resistantNow)}</text
+				<text x={860} y={74} font-size="12" class="muted">resistant</text>
+				<text x={860} y={98} font-size="22" font-weight="600" style:fill="var(--ca-resistant)"
+					>{fmt(resistantNow)}</text
 				>
 			</Readout>
 		{/if}
 		<Readout id="status" order={4} label="Now" value={status}>
-			<text x={600} y={136} style:font-size="13px">{status}</text>
+			<text x={600} y={136} font-size="13">{status}</text>
 		</Readout>
 	{/if}
 
 	<!-- chart -->
 	<Readout id="chart-title">
-		<text x={CX0} y={CY0 - 36} style:font-size="12px" class="muted">{chartTitle}</text>
+		<text x={CX0} y={CY0 - 36} font-size="12" class="muted">{chartTitle}</text>
 	</Readout>
 	{#if chartKind === 'share'}
 		<Axes

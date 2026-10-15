@@ -6,8 +6,6 @@
 	 * under reduced motion) and the reader turns it by dragging or with the arrow keys. A
 	 * changed length zooms smoothly (Tween) so the molecule fills the view.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG presentation
-	 * attributes.
 	 */
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
@@ -233,7 +231,7 @@
 						y={it.y + r * 0.36}
 						text-anchor="middle"
 						font-weight="700"
-						style:font-size="{Math.max(10, r * 0.95)}px"
+						font-size={Math.max(10, r * 0.95)}
 						style:fill={ATOM[it.el].ink}>{it.el}</text
 					>
 				{/if}
@@ -244,49 +242,38 @@
 	{#if arc.opacity > 0.02}
 		<g opacity={arc.opacity} style:pointer-events="none" data-testid="chain-angle">
 			<path d={arc.d} fill="none" stroke="var(--stage-ink)" stroke-width="1.5" />
-			<text
-				x={arc.x}
-				y={arc.y}
-				class="halo"
-				text-anchor="middle"
-				font-weight="700"
-				style:font-size="13px">{arc.text}</text
+			<text x={arc.x} y={arc.y} class="halo" text-anchor="middle" font-weight="700" font-size="13"
+				>{arc.text}</text
 			>
 		</g>
 	{/if}
 
 	<Readout id="hint">
-		<text x={CX} y="578" class="halo muted" text-anchor="middle" style:font-size="11px"
+		<text x={CX} y="578" class="halo muted" text-anchor="middle" font-size="11"
 			>Drag to turn the molecule</text
 		>
 	</Readout>
 
 	<g transform="translate({RX} 0)" style:pointer-events="none">
 		<Readout id="name" order={0} label={name(build)} value={formula(build)}>
-			<text x="0" y="96" class="halo" font-weight="700" style:font-size="26px"
-				>{formula(build)}</text
-			>
-			<text x="0" y="122" class="halo muted" style:font-size="15px">{name(build)}</text>
+			<text x="0" y="96" class="halo" font-weight="700" font-size="26">{formula(build)}</text>
+			<text x="0" y="122" class="halo muted" font-size="15">{name(build)}</text>
 		</Readout>
 		{#if n > 1}
 			<Readout id="general" order={1} label="Rule" value="CₙH₂ₙ₊₂">
-				<text x="0" y="148" class="halo" style:font-size="13px"
+				<text x="0" y="148" class="halo" font-size="13"
 					>CₙH₂ₙ₊₂: {n} carbons, {2 * n + 2} hydrogens</text
 				>
 			</Readout>
 		{/if}
 		{#each lines as l, i (l.id)}
 			<Readout id="geo-{l.id}" order={2 + i} label={l.label} value={l.value}>
-				<text x="0" y={196 + i * 46} class="halo muted" style:font-size="12px">{l.label}</text>
-				<text x="0" y={216 + i * 46} class="halo" font-weight="700" style:font-size="18px"
-					>{l.value}</text
-				>
+				<text x="0" y={196 + i * 46} class="halo muted" font-size="12">{l.label}</text>
+				<text x="0" y={216 + i * 46} class="halo" font-weight="700" font-size="18">{l.value}</text>
 			</Readout>
 		{/each}
 		<Readout id="source">
-			<text x="0" y={196 + lines.length * 46 + 6} class="halo muted" style:font-size="11px"
-				>{source}</text
-			>
+			<text x="0" y={196 + lines.length * 46 + 6} class="halo muted" font-size="11">{source}</text>
 		</Readout>
 	</g>
 </g>

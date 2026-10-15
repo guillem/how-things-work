@@ -170,7 +170,7 @@
 				x={60 + (i % K) * 40}
 				y={371 + Math.floor(i / K) * 36}
 				text-anchor="middle"
-				style:font-size="11px"
+				font-size="11"
 				style:fill="var(--stage-ink)"
 				style:pointer-events="none">{fmt(v, 1)}</text
 			>

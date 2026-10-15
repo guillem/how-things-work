@@ -346,8 +346,8 @@
 		label={phase === 'fix' ? undefined : 'Time (GPS)'}
 		value={phase === 'fix' ? undefined : clockTime(tk / 3600)}
 	>
-		<text x={PX + 18} y={52} class="muted" style:font-size="12px">Time (GPS)</text>
-		<text x={PX + 18} y={74} style:font-size="15px" font-weight="600">{clockTime(tk / 3600)}</text>
+		<text x={PX + 18} y={52} class="muted" font-size="12">Time (GPS)</text>
+		<text x={PX + 18} y={74} font-size="15" font-weight="600">{clockTime(tk / 3600)}</text>
 	</Readout>
 	<Readout
 		id="inview"
@@ -355,26 +355,26 @@
 		label="Satellites in view"
 		value="{inView.length} of {sats.length}"
 	>
-		<text x={PX + 18} y={110} class="muted" style:font-size="12px"
+		<text x={PX + 18} y={110} class="muted" font-size="12"
 			>Satellites above 10° from {where.name.split(',')[0]}</text
 		>
-		<text x={PX + 18} y={134} style:font-size="16px" font-weight="600"
+		<text x={PX + 18} y={134} font-size="16" font-weight="600"
 			>{inView.length} of {sats.length}</text
 		>
 	</Readout>
 
 	{#if phase === 'orbits'}
 		<Readout id="orbit" order={2} label="Orbits" value="20 200 km up, 55°, every 11 h 58 min">
-			<text x={PX + 18} y={172} class="muted" style:font-size="12px">Orbits</text>
-			<text x={PX + 18} y={194} style:font-size="13px">6 planes, tilted 55°</text>
-			<text x={PX + 18} y={214} style:font-size="13px">20 200 km up</text>
-			<text x={PX + 18} y={234} style:font-size="13px">once round every 11 h 58 min</text>
+			<text x={PX + 18} y={172} class="muted" font-size="12">Orbits</text>
+			<text x={PX + 18} y={194} font-size="13">6 planes, tilted 55°</text>
+			<text x={PX + 18} y={214} font-size="13">20 200 km up</text>
+			<text x={PX + 18} y={234} font-size="13">once round every 11 h 58 min</text>
 		</Readout>
 		<Readout id="speedup">
-			<text x={PX + 18} y={PY + PH - 46} class="muted" style:font-size="12px"
+			<text x={PX + 18} y={PY + PH - 46} class="muted" font-size="12"
 				>1 second here = 10 minutes.</text
 			>
-			<text x={PX + 18} y={PY + PH - 28} class="muted" style:font-size="12px"
+			<text x={PX + 18} y={PY + PH - 28} class="muted" font-size="12"
 				>Source: US Coast Guard GPS almanac.</text
 			>
 		</Readout>
@@ -385,10 +385,8 @@
 			label="Unknowns"
 			value="x, y, z, clock — {usedSats.length} {usedSats.length === 1 ? 'range' : 'ranges'}"
 		>
-			<text x={PX + 18} y={172} class="muted" style:font-size="12px"
-				>Unknowns: x, y, z and clock</text
-			>
-			<text x={PX + 18} y={194} style:font-size="13px" font-weight="600"
+			<text x={PX + 18} y={172} class="muted" font-size="12">Unknowns: x, y, z and clock</text>
+			<text x={PX + 18} y={194} font-size="13" font-weight="600"
 				>{usedSats.length} satellites used: {fix ? 'enough' : 'not enough'}</text
 			>
 		</Readout>
@@ -399,50 +397,47 @@
 				label="Least-squares guess"
 				value={last ? offText(last.off) : ''}
 			>
-				<text x={PX + 18} y={232} class="muted" style:font-size="12px"
+				<text x={PX + 18} y={232} class="muted" font-size="12"
 					>Each guess, and how far off it is</text
 				>
 				{#each guesses as g, i (i)}
-					<text x={PX + 18} y={256 + i * 20} style:font-size="13px"
+					<text x={PX + 18} y={256 + i * 20} font-size="13"
 						>{i === 0 ? 'start: Earth’s centre' : `guess ${i}`}</text
 					>
 					<text
 						x={PX + PW - 18}
 						y={256 + i * 20}
 						text-anchor="end"
-						style:font-size="13px"
+						font-size="13"
 						font-weight={i === guesses.length - 1 ? 600 : 400}>{offText(g.off)}</text
 					>
 				{/each}
 			</Readout>
 			{#if shownIters === path.length}
 				<Readout id="found" order={4} label="Clock error found" value={signedMs(fix.clock)}>
-					<text x={PX + 18} y={PY + PH - 46} class="muted" style:font-size="12px"
-						>Clock error found</text
-					>
-					<text x={PX + 18} y={PY + PH - 24} style:font-size="15px" font-weight="600"
+					<text x={PX + 18} y={PY + PH - 46} class="muted" font-size="12">Clock error found</text>
+					<text x={PX + 18} y={PY + PH - 24} font-size="15" font-weight="600"
 						>{signedMs(fix.clock)}</text
 					>
 				</Readout>
 			{/if}
 		{:else}
 			<Readout id="nofix" order={3} label="Fix" value="none: 4 unknowns, 3 ranges">
-				<text x={PX + 18} y={240} style:font-size="13px">No fix: three spheres and an</text>
-				<text x={PX + 18} y={260} style:font-size="13px">unknown clock leave a whole</text>
-				<text x={PX + 18} y={280} style:font-size="13px">curve of possible places.</text>
+				<text x={PX + 18} y={240} font-size="13">No fix: three spheres and an</text>
+				<text x={PX + 18} y={260} font-size="13">unknown clock leave a whole</text>
+				<text x={PX + 18} y={280} font-size="13">curve of possible places.</text>
 			</Readout>
 		{/if}
 	{:else}
 		<Readout id="gdop" order={2} label="GDOP" value={D ? D.gdop.toFixed(1) : '—'}>
-			<text x={PX + 18} y={172} class="muted" style:font-size="12px">Geometry (GDOP)</text>
-			<text x={PX + 18} y={196} style:font-size="16px" font-weight="600"
-				>{D ? D.gdop.toFixed(1) : '—'}</text
+			<text x={PX + 18} y={172} class="muted" font-size="12">Geometry (GDOP)</text>
+			<text x={PX + 18} y={196} font-size="16" font-weight="600">{D ? D.gdop.toFixed(1) : '—'}</text
 			>
 		</Readout>
 		<Readout id="solved" order={3} label="Fix" value="position and clock solved">
-			<text x={PX + 18} y={234} class="muted" style:font-size="12px">Four unknowns solved</text>
-			<text x={PX + 18} y={256} style:font-size="13px">position: x, y, z</text>
-			<text x={PX + 18} y={276} style:font-size="13px">time: the receiver’s clock</text>
+			<text x={PX + 18} y={234} class="muted" font-size="12">Four unknowns solved</text>
+			<text x={PX + 18} y={256} font-size="13">position: x, y, z</text>
+			<text x={PX + 18} y={276} font-size="13">time: the receiver’s clock</text>
 		</Readout>
 	{/if}
 </g>

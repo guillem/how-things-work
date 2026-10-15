@@ -95,8 +95,7 @@
 			fill-opacity={on ? 0.18 : 1}
 			stroke={on ? 'var(--explainer-accent, var(--accent))' : 'var(--border)'}
 		/>
-		<text x={c.x + c.w / 2} y={y + 84.5} text-anchor="middle" style:font-size="12px">{c.label}</text
-		>
+		<text x={c.x + c.w / 2} y={y + 84.5} text-anchor="middle" font-size="12">{c.label}</text>
 	</g>
 {/each}
 

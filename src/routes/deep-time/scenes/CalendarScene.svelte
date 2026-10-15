@@ -186,7 +186,7 @@
 		{@const u = sweep(s)}
 		<g opacity={o}>
 			<Readout id="title-{s.id}">
-				<text x={XA} y={s.y - 38} style:font-size="13px" font-weight="600">{s.title}</text>
+				<text x={XA} y={s.y - 38} font-size="13" font-weight="600">{s.title}</text>
 			</Readout>
 			<rect
 				x={XA}
@@ -214,7 +214,7 @@
 						x={(xIn(s, m.from) + xIn(s, m.to)) / 2}
 						y={s.y + 19}
 						text-anchor="middle"
-						style:font-size="11px"
+						font-size="11"
 						class="muted">{MONTHS[m.i].slice(0, 3)}</text
 					>
 				{/each}
@@ -227,25 +227,22 @@
 					x={xIn(s, s.from + 8 * DAY)}
 					y={s.y + 20}
 					text-anchor="middle"
-					style:font-size="11px"
+					font-size="11"
 					class="muted">November</text
 				>
 				<text
 					x={xIn(s, s.from + 31 * DAY)}
 					y={s.y + 20}
 					text-anchor="middle"
-					style:font-size="11px"
+					font-size="11"
 					class="muted">December</text
 				>
 			{:else if s.id === 'day'}
 				{#each Array.from({ length: 25 }, (_, k) => k) as k (k)}
 					<path d="M{xIn(s, s.from + k * 3600)} {s.y}v{k % 6 ? 6 : H}" stroke="var(--stage-grid)" />
 					{#if k % 6 === 0 && k < 24}
-						<text
-							x={xIn(s, s.from + k * 3600) + 4}
-							y={s.y + 20}
-							style:font-size="10.5px"
-							class="muted">{two(k)}:00</text
+						<text x={xIn(s, s.from + k * 3600) + 4} y={s.y + 20} font-size="10.5" class="muted"
+							>{two(k)}:00</text
 						>
 					{/if}
 				{/each}
@@ -253,11 +250,8 @@
 				{#each Array.from({ length: 9 }, (_, k) => k) as k (k)}
 					<path d="M{xIn(s, s.from + k * 15)} {s.y}v{k % 4 ? 6 : H}" stroke="var(--stage-grid)" />
 				{/each}
-				<text x={xIn(s, s.from) + 4} y={s.y + 20} style:font-size="10.5px" class="muted">23:58</text
-				>
-				<text x={xIn(s, s.from + 60) + 4} y={s.y + 20} style:font-size="10.5px" class="muted"
-					>23:59</text
-				>
+				<text x={xIn(s, s.from) + 4} y={s.y + 20} font-size="10.5" class="muted">23:58</text>
+				<text x={xIn(s, s.from + 60) + 4} y={s.y + 20} font-size="10.5" class="muted">23:59</text>
 				<!-- an 80-year life -->
 				<rect
 					x={xIn(s, YEAR - 80 / YEARS_PER_SECOND)}
@@ -333,10 +327,10 @@
 			label={pickedEvent.name}
 			value="{calendarText(pickedEvent.age, true)} · {ageText(pickedEvent.age)}"
 		>
-			<text x={XB} y="24" text-anchor="end" style:font-size="15px" font-weight="700"
+			<text x={XB} y="24" text-anchor="end" font-size="15" font-weight="700"
 				>{pickedEvent.name}: {calendarText(pickedEvent.age)}</text
 			>
-			<text x={XB} y="42" text-anchor="end" style:font-size="11px" class="muted"
+			<text x={XB} y="42" text-anchor="end" font-size="11" class="muted"
 				>{ageText(pickedEvent.age)}</text
 			>
 		</Readout>
@@ -347,7 +341,7 @@
 		label="On this calendar"
 		value="1 day = 12.5 million years · 1 second = 145 years"
 	>
-		<text x={XA} y="24" style:font-size="13px" font-weight="600"
+		<text x={XA} y="24" font-size="13" font-weight="600"
 			>1 day = {(EARTH_AGE / 365).toFixed(1)} million years · 1 second = {Math.round(
 				YEARS_PER_SECOND
 			)} years</text

@@ -7,8 +7,6 @@
 	 * the ticks and counts the instructions finished. Below, the clock rate of a
 	 * real processor (source in steps.ts).
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
-	 * presentation attributes.
 	 */
 	import { smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -69,7 +67,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -140,7 +138,7 @@
 							y={tb.y + cell.i * RH + 16}
 							text-anchor="middle"
 							font-weight="700"
-							style:font-size="11px"
+							font-size="11"
 							style:fill="#fff">{LETTER[ph]}</text
 						>
 						{#snippet narrow()}
@@ -149,7 +147,7 @@
 								y={tb.y + cell.i * RH + 17}
 								text-anchor="middle"
 								font-weight="700"
-								style:font-size="16px"
+								font-size="16"
 								style:fill="#fff">{LETTER[ph]}</text
 							>
 						{/snippet}

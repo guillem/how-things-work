@@ -168,7 +168,7 @@
 
 <g>
 	<Readout id="title">
-		<text x={box.x0} y={budget ? 76 : 56} style:font-size="16px" font-weight="600"
+		<text x={box.x0} y={budget ? 76 : 56} font-size="16" font-weight="600"
 			>Binding energy per nucleon</text
 		>
 		<text x={box.x0} y={budget ? 94 : 74} class="muted"
@@ -330,7 +330,7 @@
 
 	{#if budget}
 		<Readout id="w-title">
-			<text x={WX0} y={76} style:font-size="16px" font-weight="600">Energy of one fission</text>
+			<text x={WX0} y={76} font-size="16" font-weight="600">Energy of one fission</text>
 			<text x={WX0} y={94} class="muted">this split, from the masses (AME2020)</text>
 			<text x={WX0} y={rowY(2) - 34} class="muted">all splits, averaged (Ma et al. 2013)</text>
 		</Readout>

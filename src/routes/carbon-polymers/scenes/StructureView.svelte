@@ -144,7 +144,7 @@
 			y={y + 0.36 * fs}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="{fs}px"
+			font-size={fs}
 			style:fill={a.el === 'C'
 				? 'var(--stage-ink)'
 				: ATOM[a.el].fill === '#f3f4f6'
@@ -161,7 +161,7 @@
 			y={y + r * 0.38}
 			text-anchor="middle"
 			font-weight="700"
-			style:font-size="{Math.max(9, r * (a.el === 'Cl' ? 0.95 : 1.05))}px"
+			font-size={Math.max(9, r * (a.el === 'Cl' ? 0.95 : 1.05))}
 			style:fill={ATOM[a.el].ink}>{a.el}</text
 		>
 	{/if}
@@ -275,7 +275,7 @@
 					y={spot.y}
 					class="halo"
 					text-anchor="middle"
-					style:font-size="11px"
+					font-size="11"
 					style:fill="var(--cp-number)"
 					style:pointer-events="none">{locant ? locant(a.carbon) : a.carbon}</text
 				>

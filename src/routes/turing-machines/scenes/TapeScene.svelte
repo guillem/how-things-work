@@ -12,8 +12,6 @@
 	 * progress `u`: first the rule lights up (the symbol has been read), then
 	 * the new symbol is written, then the head moves and the state changes.
 	 *
-	 * Text sizes and colours use `style:` because the stage CSS overrides SVG
-	 * presentation attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { clamp, Handle, Label, type Point, smoothstep } from '#lib/draw/index.ts';

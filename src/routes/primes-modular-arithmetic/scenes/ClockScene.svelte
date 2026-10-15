@@ -13,7 +13,7 @@
 	 *   hop until a value repeats. Loops.
 	 *
 	 * All arithmetic comes from the model (`modular.ts`). Reduced motion shows the finished
-	 * drawing. Text uses `style:` (the stage CSS overrides presentation attributes).
+	 * drawing.
 	 */
 	import { clamp, cycle, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -206,7 +206,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-variant-numeric="tabular-nums">{text}</text
 	>

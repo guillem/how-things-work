@@ -432,7 +432,7 @@
 			color="var(--cr-key)"
 		>
 			<Label anchor="start" x={40} y={130} text="Its digest:" size={13} weight={700} />
-			<text x="128" y="131" class="halo" style:font-size="15px" style:font-family="var(--font-mono)"
+			<text x="128" y="131" class="halo" font-size="15" style:font-family="var(--font-mono)"
 				><tspan style:fill="var(--cr-key)" style:font-weight="700">{hex.slice(0, k)}</tspan><tspan
 					>{hex.slice(k)}</tspan
 				></text
@@ -466,7 +466,7 @@
 			<g opacity={top ? 1 : Math.max(0.25, 1 - j * 0.11)}>
 				<Label anchor="start" tabular x={48} {y} text="“try {r.i}”" size={14} mono halo={false} />
 				<Label anchor="start" x={200} {y} text="→" size={14} muted halo={false} />
-				<text x="230" {y} style:font-size="14px" style:font-family="var(--font-mono)"
+				<text x="230" {y} font-size="14" style:font-family="var(--font-mono)"
 					>{#each r.h.slice(0, 16).split('') as ch, ci (ci)}<tspan
 							style:fill={ci < r.pre ? 'var(--cr-key)' : undefined}
 							style:font-weight={ci < r.pre ? '700' : undefined}>{ch}</tspan

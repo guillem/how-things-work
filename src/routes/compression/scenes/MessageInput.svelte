@@ -100,7 +100,7 @@
 				x={c.x + c.w / 2}
 				y={y + 75.5}
 				text-anchor="middle"
-				style:font-size="12.5px"
+				font-size="12.5"
 				style:font-family="var(--font-mono)">{c.label}</text
 			>
 		</g>

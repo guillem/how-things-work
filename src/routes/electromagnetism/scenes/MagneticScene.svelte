@@ -152,7 +152,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -207,8 +207,8 @@
 						stroke="var(--border)"
 					/>
 				{/if}
-				<text {x} y={CARD.y + 25} class="muted" style:font-size="12px">{c.label}</text>
-				<text {x} y={CARD.y + 51} font-weight="700" style:font-size="19px" style:fill={c.color}
+				<text {x} y={CARD.y + 25} class="muted" font-size="12">{c.label}</text>
+				<text {x} y={CARD.y + 51} font-weight="700" font-size="19" style:fill={c.color}
 					>{c.value}</text
 				>
 			{/each}
@@ -396,7 +396,7 @@
 						class="halo"
 						text-anchor="middle"
 						font-weight="800"
-						style:font-size="20px"
+						font-size="20"
 						style:fill={pole.p === 'N' ? 'var(--em-north)' : 'var(--em-south)'}>{pole.p}</text
 					>
 				{/each}

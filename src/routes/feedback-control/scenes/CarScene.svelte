@@ -592,7 +592,7 @@
 			stroke={i === 1 ? 'var(--fc-response)' : 'var(--border)'}
 			stroke-width={i === 1 ? 2 : 1}
 		/>
-		<text x={b.x + b.w / 2} y={y + 2} text-anchor="middle" style:font-size="12px" font-weight="600"
+		<text x={b.x + b.w / 2} y={y + 2} text-anchor="middle" font-size="12" font-weight="600"
 			>{b.text}</text
 		>
 		{#if i < boxes.length - 1}

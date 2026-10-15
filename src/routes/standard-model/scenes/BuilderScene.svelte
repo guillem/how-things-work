@@ -284,10 +284,10 @@
 				y="4"
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="30px"
+				font-size="30"
 				style:fill="var(--sm-ball-ink)">{symbolOf(b.tk)}</text
 			>
-			<text y="24" text-anchor="middle" style:font-size="13px" style:fill="var(--sm-ball-ink)"
+			<text y="24" text-anchor="middle" font-size="13" style:fill="var(--sm-ball-ink)"
 				>{frac(charge3Of(b.tk))}</text
 			>
 		</g>

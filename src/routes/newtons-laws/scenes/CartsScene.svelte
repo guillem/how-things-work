@@ -15,8 +15,6 @@
 	 * so fast pushes do not strobe. With two carts (pair, collide) the view is
 	 * fixed (50 px per metre) and carts that run off the end leave a clipped track.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
-	 * presentation attributes (docs/BACKLOG.md).
 	 */
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
@@ -408,7 +406,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -440,7 +438,7 @@
 				y={ty - 13 - h / 2 + 8}
 				text-anchor="middle"
 				font-weight="700"
-				style:font-size="22px"
+				font-size="22"
 				style:fill="#fff">{fmtN(m)} kg</text
 			>
 		{/snippet}
@@ -449,7 +447,7 @@
 			y={ty - 13 - h / 2 + 5}
 			text-anchor="middle"
 			font-weight="600"
-			style:font-size="14px"
+			font-size="14"
 			style:fill="#fff">{fmtN(m)} kg</text
 		>
 	</Readout>
@@ -1138,7 +1136,7 @@
 									y={ROW[r] + ROWH[r] / 2 + 5}
 									class="halo"
 									font-weight="600"
-									style:font-size="13px"
+									font-size="13"
 									><tspan style:fill="var(--mech-kinetic)">{fmt(shownK, 2)} J</tspan
 									>{#if heat > 0.5}<tspan style:fill="var(--mech-heat)"
 											>{` + ${fmt(kShow.lost, 2)} J`}</tspan

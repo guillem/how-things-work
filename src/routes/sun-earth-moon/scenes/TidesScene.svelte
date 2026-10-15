@@ -14,8 +14,6 @@
 	 * Simplification: while the Earth turns, the Moon and Sun are held still (the
 	 * Moon's phase is whatever the slider says), so each lunar day repeats exactly.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
-	 * presentation attributes (docs/BACKLOG.md).
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -285,7 +283,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}

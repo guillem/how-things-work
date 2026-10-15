@@ -34,8 +34,6 @@
 	 * it off freezes the race where it was; turning it on carries on from there
 	 * (from the start once the race is over).
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
-	 * presentation attributes (docs/BACKLOG.md).
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
@@ -278,7 +276,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}

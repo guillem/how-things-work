@@ -225,7 +225,7 @@
 						x={p.x}
 						y={p.y + 4}
 						text-anchor="middle"
-						style:font-size="11px"
+						font-size="11"
 						style:font-weight="700"
 						style:fill={fill ? 'white' : undefined}>{node.weight}</text
 					>
@@ -264,12 +264,12 @@
 					x={p.x}
 					y={p.y + 5}
 					text-anchor="middle"
-					style:font-size="{leafW >= 24 ? 16 : 12}px"
+					font-size={leafW >= 24 ? 16 : 12}
 					style:font-weight="600"
 					style:font-family="var(--font-mono)"
 					style:fill={on ? 'white' : undefined}>{show(node.symbol ?? '')}</text
 				>
-				<text x={p.x} y={p.y + 32} text-anchor="middle" class="muted" style:font-size="11px"
+				<text x={p.x} y={p.y + 32} text-anchor="middle" class="muted" font-size="11"
 					>{node.weight}</text
 				>
 				{#if phase === 'codes'}
@@ -279,7 +279,7 @@
 							x={p.x}
 							y={p.y + 54 + di * 14}
 							text-anchor="middle"
-							style:font-size="13px"
+							font-size="13"
 							style:font-weight={on ? '700' : '500'}
 							style:font-family="var(--font-mono)"
 							style:fill={d === '1' ? 'var(--cmp-one)' : 'var(--cmp-zero)'}>{d}</text
@@ -413,7 +413,7 @@
 					x={g.x + g.w / 2}
 					y={g.y}
 					text-anchor="middle"
-					style:font-size="16px"
+					font-size="16"
 					style:font-family="var(--font-mono)"
 					style:font-weight="600"
 					style:fill={g.i % 2 ? 'var(--cmp-one)' : 'var(--cmp-zero)'}>{g.code}</text
@@ -423,7 +423,7 @@
 					y={g.y + 21}
 					text-anchor="middle"
 					opacity={g.i <= cursor ? 1 : 0}
-					style:font-size="14px"
+					font-size="14"
 					style:font-family="var(--font-mono)">{show(g.s)}</text
 				>
 			</g>

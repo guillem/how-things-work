@@ -245,7 +245,7 @@
 <g opacity={fadeIn}>
 	{#if view === 'delayed'}
 		<Readout id="d-title">
-			<text x={DX0 - 50} y={70} style:font-size="16px" font-weight="600"
+			<text x={DX0 - 50} y={70} font-size="16" font-weight="600"
 				>Power after k goes up by 0.1% (k = 1.001)</text
 			>
 			<text x={DX0 - 50} y={90} class="muted">relative to the power before, log scale</text>
@@ -302,7 +302,7 @@
 			<text
 				x={DX0 - 50}
 				y={500}
-				style:font-size="17px"
+				font-size="17"
 				font-weight="700"
 				style:fill={delayedOn ? 'var(--fi-crit)' : 'var(--fi-super)'}
 				>{delayedOn ? 'With delayed neutrons (β = 0.65%)' : 'If every neutron were prompt'}</text
@@ -333,7 +333,7 @@
 		</Readout>
 	{:else if view === 'operate'}
 		<Readout id="o-title">
-			<text x={OX0 - 50} y={70} style:font-size="16px" font-weight="600">Reactor power</text>
+			<text x={OX0 - 50} y={70} font-size="16" font-weight="600">Reactor power</text>
 			<text x={OX0 - 50} y={90} class="muted">last 60 seconds · 100% = 3 GW of heat</text>
 		</Readout>
 		<Axes
@@ -412,7 +412,7 @@
 			<text
 				x={OX0 - 50}
 				y={508}
-				style:font-size="26px"
+				font-size="26"
 				font-weight="700"
 				style:fill={trendColour}
 				style:font-variant-numeric="tabular-nums">{fmt(opPower * 100, 1)}%</text
@@ -433,7 +433,7 @@
 				x={OX0 - 50}
 				y={558}
 				class="muted"
-				style:font-size="11px"
+				font-size="11"
 				style:font-variant-numeric="tabular-nums"
 				>k − 1 ≈ {opRho >= 0 ? '+' : ''}{(opRho * 100).toFixed(2)}% · delayed neutrons β = {(
 					BETA * 100
@@ -442,9 +442,7 @@
 		</Readout>
 	{:else}
 		<Readout id="k-title">
-			<text x={KX0 - 50} y={70} style:font-size="16px" font-weight="600"
-				>Decay heat after a shutdown</text
-			>
+			<text x={KX0 - 50} y={70} font-size="16" font-weight="600">Decay heat after a shutdown</text>
 			<text x={KX0 - 50} y={90} class="muted"
 				>share of full power, after a year at full power (Way–Wigner)</text
 			>
@@ -535,14 +533,11 @@
 			</Readout>
 			<line x1={700} x2={900} y1={296} y2={296} stroke="var(--border)" />
 			<Readout id="plant-note"
-				><text x={700} y={320} class="muted" style:font-size="12px"
-					>after a scram, the fragments</text
-				>
-				<text x={700} y={338} class="muted" style:font-size="12px"
+				><text x={700} y={320} class="muted" font-size="12">after a scram, the fragments</text>
+				<text x={700} y={338} class="muted" font-size="12"
 					>still give {fmt(mw(decayHeat(1)))} MW, falling slowly:</text
 				>
-				<text x={700} y={356} class="muted" style:font-size="12px"
-					>the core must be cooled for days</text
+				<text x={700} y={356} class="muted" font-size="12">the core must be cooled for days</text
 				></Readout
 			>
 		</g>

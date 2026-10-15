@@ -132,14 +132,14 @@
 				x={S.tok.x + 49 + i * 71}
 				y={S.tok.y + 67}
 				text-anchor="middle"
-				style:font-size="12px"
+				font-size="12"
 				style:font-family="var(--font-mono)">{label(lm.token(id))}</text
 			>
 			<text
 				x={S.tok.x + 49 + i * 71}
 				y={S.tok.y + 94}
 				text-anchor="middle"
-				style:font-size="10.5px"
+				font-size="10.5"
 				style:fill="var(--stage-ink-muted)">{id}</text
 			>
 		{/each}

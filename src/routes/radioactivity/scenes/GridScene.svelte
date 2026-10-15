@@ -249,12 +249,8 @@
 	<!-- header -->
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="clock">
-		<text
-			x={GX}
-			y={52}
-			style:font-size="16px"
-			font-weight="600"
-			style:font-variant-numeric="tabular-nums">{sec.toFixed(1)} s</text
+		<text x={GX} y={52} font-size="16" font-weight="600" style:font-variant-numeric="tabular-nums"
+			>{sec.toFixed(1)} s</text
 		>
 		<text x={GX + 76} y={52} class="muted">half-life {Math.round(half)} s</text>
 	</Readout>
@@ -307,15 +303,13 @@
 			note="fewer left, so fewer decays"
 		>
 			<g style:font-variant-numeric="tabular-nums">
-				<text x={GX} y={448} style:font-size="15px" font-weight="600">The circled nucleus</text>
+				<text x={GX} y={448} font-size="15" font-weight="600">The circled nucleus</text>
 				<text x={GX} y={472}>
 					{focusGone
 						? `decayed after ${focusLife.toFixed(1)} s — nobody could have said when`
 						: `still intact after ${sec.toFixed(1)} s, and no more likely to decay now than at the start`}
 				</text>
-				<text x={GX} y={512} style:font-size="15px" font-weight="600"
-					>Decays in the last second</text
-				>
+				<text x={GX} y={512} font-size="15" font-weight="600">Decays in the last second</text>
 				<text x={GX} y={536}>
 					{lastSecond}
 					{lastSecond === 1 ? 'nucleus' : 'nuclei'}: fewer left, so fewer decays
@@ -338,7 +332,7 @@
 				: `expected ${cardMarks.map((m) => showCount(m.exp)).join(' · ')}`}
 		>
 			<g style:font-variant-numeric="tabular-nums">
-				<text x={GX} y={444} style:font-size="15px" font-weight="600">After each half-life</text>
+				<text x={GX} y={444} font-size="15" font-weight="600">After each half-life</text>
 				{#each cardMarks as m (m.k)}
 					{@const x = GX + (m.k - 1) * 164}
 					{@const hot = view === 'quarter' && m.k === 2}
@@ -355,9 +349,7 @@
 					<text x={x + 12} y={480} class="muted"
 						>{m.k} half-li{m.k === 1 ? 'fe' : 'ves'} · {fmt(m.at)} s</text
 					>
-					<text x={x + 12} y={508} style:font-size="20px" font-weight="600"
-						>{fractions[m.k - 1]}</text
-					>
+					<text x={x + 12} y={508} font-size="20" font-weight="600">{fractions[m.k - 1]}</text>
 					<text x={x + 40} y={507}>expected {showCount(m.exp)}</text>
 					<text
 						x={x + 12}
@@ -376,7 +368,7 @@
 
 	<!-- plot -->
 	<Readout id="plot-title">
-		<text x={PX0} y={100} style:font-size="15px" font-weight="600">Nuclei left</text>
+		<text x={PX0} y={100} font-size="15" font-weight="600">Nuclei left</text>
 	</Readout>
 	<Axes
 		{sx}

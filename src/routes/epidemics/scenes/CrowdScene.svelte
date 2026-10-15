@@ -429,15 +429,10 @@
 		/>
 		<Readout id="case-counts">
 			<g style:font-variant-numeric="tabular-nums">
-				<!-- style:, not attributes: the stage's text rule overrides font-size=/fill= (BACKLOG) -->
-				<text x={PX0} y={206} style:font-size="26px" font-weight="600">{meetingsSoFar.length}</text>
+				<text x={PX0} y={206} font-size="26" font-weight="600">{meetingsSoFar.length}</text>
 				<text x={PX0} y={226} font-size="12" class="muted">people met</text>
-				<text
-					x={PX0 + 150}
-					y={206}
-					style:font-size="26px"
-					font-weight="600"
-					style:fill="var(--sir-i)">{focusVictims.length}</text
+				<text x={PX0 + 150} y={206} font-size="26" font-weight="600" style:fill="var(--sir-i)"
+					>{focusVictims.length}</text
 				>
 				<text x={PX0 + 150} y={226} font-size="12" class="muted">infected by them</text>
 			</g>

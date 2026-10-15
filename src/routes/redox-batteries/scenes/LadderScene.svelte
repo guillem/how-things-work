@@ -101,9 +101,7 @@
 	<line x1={AX} x2={AX} y1={Y0} y2={Y1} stroke="var(--stage-line)" stroke-width="1.5" />
 	{#each [-3, -2, -1, 0, 1] as v (v)}
 		<line x1={AX - 5} x2={AX} y1={sy(v)} y2={sy(v)} stroke="var(--stage-line)" />
-		<text x={AX - 9} y={sy(v) + 4} text-anchor="end" style:font-size="11px" class="muted"
-			>{v} V</text
-		>
+		<text x={AX - 9} y={sy(v) + 4} text-anchor="end" font-size="11" class="muted">{v} V</text>
 	{/each}
 	<Readout id="axis">
 		<Label x={AX} y={Y0 - 26} text="E°: pull on electrons" size={12} anchor="start" />
@@ -140,7 +138,7 @@
 			<text
 				x={LX}
 				y={labelY[i] + 4}
-				style:font-size="12px"
+				font-size="12"
 				font-weight={chosen ? 700 : 400}
 				style:fill={chosen ? color : undefined}>{c.name}</text
 			>
@@ -148,7 +146,7 @@
 				x={LX + 150}
 				y={labelY[i] + 4}
 				text-anchor="end"
-				style:font-size="12px"
+				font-size="12"
 				font-weight={chosen ? 700 : 400}
 				style:fill={chosen ? color : undefined}>{e0s(c.e0)}</text
 			>
@@ -196,8 +194,7 @@
 			/>
 		{/each}
 		<Readout id="gap" order={1} label="Cell voltage, E°cathode − E°anode" value={vText}>
-			<text x={BX + 16} y={(ya + yc) / 2 + 9} style:font-size="26px" font-weight="700">{vText}</text
-			>
+			<text x={BX + 16} y={(ya + yc) / 2 + 9} font-size="26" font-weight="700">{vText}</text>
 		</Readout>
 		<Readout id="eup">
 			<Label

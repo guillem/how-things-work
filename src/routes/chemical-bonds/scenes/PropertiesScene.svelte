@@ -7,8 +7,6 @@
 	 * mass (from the element data) and whether it is polar. On the right, two water
 	 * molecules held by a hydrogen bond. Bars grow in at the start of the step.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG presentation
-	 * attributes.
 	 */
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
@@ -84,7 +82,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'middle'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}

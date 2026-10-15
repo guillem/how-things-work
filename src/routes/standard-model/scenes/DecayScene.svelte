@@ -178,7 +178,7 @@
 		y={PY + 9}
 		text-anchor="middle"
 		font-weight="700"
-		style:font-size="26px"
+		font-size="26"
 		style:fill="var(--sm-ball-ink)">{parent.label}</text
 	>
 	<line
@@ -223,7 +223,7 @@
 					y="8"
 					text-anchor="middle"
 					font-weight="700"
-					style:font-size="22px"
+					font-size="22"
 					style:fill="var(--sm-ball-ink)">{p.label}</text
 				>
 			</g>

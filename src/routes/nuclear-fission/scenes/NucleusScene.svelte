@@ -252,7 +252,7 @@
 		value="U-235 + n → {layout.H.element}-{layout.H.A} + {layout.L.element}-{layout.L
 			.A} + {split.neutrons} n"
 	>
-		<text x={480} y={56} text-anchor="middle" style:font-size="18px" font-weight="600">
+		<text x={480} y={56} text-anchor="middle" font-size="18" font-weight="600">
 			uranium-235 + n → {name(layout.H)} + {name(layout.L)} + {split.neutrons} n
 		</text>
 	</Readout>
@@ -405,11 +405,11 @@
 				x={480}
 				y={546}
 				text-anchor="middle"
-				style:font-size="22px"
+				font-size="22"
 				font-weight="700"
 				style:fill="var(--fi-energy)">{q.toFixed(1)} MeV</text
 			>
-			<text x={480} y={562} text-anchor="middle" class="muted" style:font-size="11px"
+			<text x={480} y={562} text-anchor="middle" class="muted" font-size="11"
 				>the fragments' speed, {split.neutrons} fast neutrons, gamma rays</text
 			>
 		</Readout>
@@ -420,7 +420,7 @@
 	<Readout id="key-n" label="neutron" color="var(--fi-neutron)" />
 	<Readout id="key-f" label="fast neutron" color="var(--fi-fast)" />
 	<Readout id="key-svg">
-		<g style:font-size="12px">
+		<g font-size="12">
 			<circle cx={40} cy={560} r="5" fill="var(--fi-proton)" />
 			<text x={50} y={564}>proton</text>
 			<circle cx={110} cy={560} r="5" fill="var(--fi-neutron)" />

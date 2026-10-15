@@ -30,7 +30,7 @@
 	text-anchor={anchor}
 	transform="rotate({rotate} {x} {y})"
 	{opacity}
-	style:font-size="{size}px"
+	font-size={size}
 	style:font-weight={weight}
 	style:fill={color}
 	style:stroke="var(--st-sky)"

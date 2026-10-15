@@ -170,7 +170,7 @@
 			x={MX(j)}
 			y={MY + 5}
 			text-anchor="middle"
-			style:font-size="14px"
+			font-size="14"
 			style:font-weight="700"
 			style:fill="white">{pools[j]}</text
 		>
@@ -258,7 +258,7 @@
 					x={bx(b.height)}
 					y={by(b.id) + 5}
 					text-anchor="middle"
-					style:font-size="12px"
+					font-size="12"
 					style:font-weight="700"
 					style:fill="white">{b.height}</text
 				>

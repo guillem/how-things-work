@@ -15,8 +15,7 @@
 	 *   the 25 primes light up.
 	 *
 	 * All numbers come from `sieve(100)` in the model. Reduced motion (or a paused stage
-	 * for the cascade) shows the finished frame. Text uses `style:` (the stage CSS
-	 * overrides presentation attributes).
+	 * for the cascade) shows the finished frame.
 	 */
 	import { untrack } from 'svelte';
 	import { clamp, smoothstep, toSvg, wave } from '#lib/draw/index.ts';
@@ -229,7 +228,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-variant-numeric="tabular-nums">{text}</text
 	>

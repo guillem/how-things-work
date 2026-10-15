@@ -175,7 +175,7 @@
 					x={cell.p.x + C / 2}
 					y={cell.p.y + C / 2 + 8}
 					text-anchor="middle"
-					style:font-size="22px"
+					font-size="22"
 					font-weight="600">{value(cell.l, cell.r, cell.c)}</text
 				>
 			{/if}
@@ -209,7 +209,7 @@
 				x={cur.x + C - 4}
 				y={cur.y + 10}
 				text-anchor="middle"
-				style:font-size="16px"
+				font-size="16"
 				style:fill="#fff"
 				font-weight="700">{curValue}</text
 			>
@@ -342,7 +342,7 @@
 		note="{kind}: {axes} ax{axes === 1 ? 'is' : 'es'}"
 	>
 		<Label anchor="start" x={PX} y={90} text={kind} size={15} muted />
-		<text x={PX} y={136} class="halo" style:font-size="34px" font-weight="700"
+		<text x={PX} y={136} class="halo" font-size="34" font-weight="700"
 			>(<!--
 			-->{#each axisList as a, i (a.dir)}<tspan style:fill={a.color}>{a.n}</tspan
 				>{#if i < axisList.length - 1}<tspan>,&nbsp;</tspan>{/if}{/each}{#if axes === 1}<tspan
@@ -391,7 +391,7 @@
 			<Label anchor="start" x={PX} y={326} text="s = {curValue}" size={26} weight={700} />
 			<Label anchor="start" x={PX} y={354} text="no index needed" size={14} muted />
 		{:else}
-			<text x={PX} y={326} class="halo" style:font-size="26px" font-weight="700"
+			<text x={PX} y={326} class="halo" font-size="26" font-weight="700"
 				>{letter}[<!--
 				-->{#each axisList as a, i (a.dir)}<tspan style:fill={a.color}>{idx[i]}</tspan
 					>{#if i < axisList.length - 1}<tspan>,&nbsp;</tspan>{/if}{/each}<!--

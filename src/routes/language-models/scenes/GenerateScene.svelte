@@ -202,7 +202,7 @@
 					x={STRIP.x + (g.a + g.p / 2) * STRIP.w}
 					y={STRIP.y + 17}
 					text-anchor="middle"
-					style:font-size="11.5px"
+					font-size="11.5"
 					style:font-family="var(--font-mono)"
 					style:fill="var(--stage-bg)"
 					style:font-weight="650">{label(lm.token(g.id))}</text

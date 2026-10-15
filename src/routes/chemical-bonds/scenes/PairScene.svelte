@@ -14,8 +14,6 @@
 	 *   the element data (`shellCounts`). Cl⁻ is drawn larger than Na⁺, as it is (Shannon
 	 *   1976 ionic radii: 181 and 102 pm), without being to scale.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG presentation
-	 * attributes.
 	 */
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
@@ -135,7 +133,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'middle'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -147,7 +145,7 @@
 		y={y + r * 0.38}
 		text-anchor="middle"
 		font-weight="700"
-		style:font-size="{r * 0.95}px"
+		font-size={r * 0.95}
 		style:fill={ATOM[sym].ink}>{label}</text
 	>
 {/snippet}
@@ -413,7 +411,7 @@
 					y={c.y + 4}
 					text-anchor="middle"
 					font-weight="700"
-					style:font-size="{c.na ? 10 : 11}px"
+					font-size={c.na ? 10 : 11}
 					style:fill="#ffffff">{c.na ? 'Na⁺' : 'Cl⁻'}</text
 				>
 			</g>

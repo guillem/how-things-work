@@ -238,7 +238,7 @@
 		/>
 		{@const h = c.hash}
 		{#if work}
-			<text x={x + 14} y={y + rows.hash} style:font-size="13px" style:font-family="var(--font-mono)"
+			<text x={x + 14} y={y + rows.hash} font-size="13" style:font-family="var(--font-mono)"
 				><tspan style:fill={c.workOk ? 'var(--cb-ok)' : 'var(--cb-bad)'} style:font-weight="700"
 					>{h.slice(0, zeroHex)}</tspan
 				><tspan>{h.slice(zeroHex, 16)}…</tspan></text
@@ -270,7 +270,7 @@
 			x={x + CARD.w / 2}
 			y={y + rows.status + 1}
 			text-anchor="middle"
-			style:font-size="12px"
+			font-size="12"
 			style:font-weight="700"
 			style:fill="white"
 			>{mining

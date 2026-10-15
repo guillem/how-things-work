@@ -233,9 +233,9 @@
 		/>
 	</Readout>
 	<Readout id="pdop" order={0} label="PDOP" value="{D ? big(D.pdop) : '—'} ({geomText})">
-		<text x={544} y={52} class="muted" style:font-size="12px">Geometry: PDOP</text>
-		<text x={544} y={80} style:font-size="22px" font-weight="700">{D ? big(D.pdop) : '—'}</text>
-		<text x={610} y={80} class="muted" style:font-size="13px">{geomText}</text>
+		<text x={544} y={52} class="muted" font-size="12">Geometry: PDOP</text>
+		<text x={544} y={80} font-size="22" font-weight="700">{D ? big(D.pdop) : '—'}</text>
+		<text x={610} y={80} class="muted" font-size="13">{geomText}</text>
 	</Readout>
 	<Readout
 		id="spread"
@@ -243,10 +243,9 @@
 		label="Spread of the fixes"
 		value={ok ? `${metres(hR)} across, ${metres(vR)} in height` : '—'}
 	>
-		<text x={544} y={116} class="muted" style:font-size="12px"
-			>Spread of the fixes (range error × DOP)</text
+		<text x={544} y={116} class="muted" font-size="12">Spread of the fixes (range error × DOP)</text
 		>
-		<text x={544} y={140} style:font-size="14px" font-weight="600"
+		<text x={544} y={140} font-size="14" font-weight="600"
 			>{ok ? `${metres(hR)} across · ${metres(vR)} in height` : '—'}</text
 		>
 	</Readout>
@@ -323,7 +322,7 @@
 		{/if}
 	</Readout>
 	<Readout id="hint">
-		<text x={544} y={560} class="muted" style:font-size="12px"
+		<text x={544} y={560} class="muted" font-size="12"
 			>{phase === 'drag'
 				? 'Drag the satellites: spread them out, then bunch them up.'
 				: `${real.length} above 10° now · grey: their paths over a day`}</text
@@ -336,7 +335,7 @@
 			label="HDOP · VDOP"
 			value="{D.hdop.toFixed(1)} · {D.vdop.toFixed(1)}"
 		>
-			<text x={544} y={530} style:font-size="13px"
+			<text x={544} y={530} font-size="13"
 				>HDOP {D.hdop.toFixed(1)} across · VDOP {D.vdop.toFixed(1)} in height</text
 			>
 		</Readout>

@@ -661,7 +661,7 @@
 				x={cx}
 				y={cy + 4}
 				text-anchor="middle"
-				style:font-size="12px"
+				font-size="12"
 				style:fill="var(--bh-on-hole)"
 				style:pointer-events="none">horizon</text
 			>

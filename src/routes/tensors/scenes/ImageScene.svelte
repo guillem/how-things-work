@@ -359,7 +359,7 @@
 {/snippet}
 
 {#snippet shapeBig(x: number, y: number, parts: { n: string; color: string }[], size = 30)}
-	<text {x} {y} class="halo" style:font-size="{size}px" font-weight="700"
+	<text {x} {y} class="halo" font-size={size} font-weight="700"
 		>(<!--
 		-->{#each parts as part, i (i)}<tspan style:fill={part.color}>{part.n}</tspan
 			>{#if i < parts.length - 1}<tspan>,&nbsp;</tspan>{/if}{/each}{#if parts.length === 1}<tspan
@@ -718,7 +718,7 @@
 					x={STRIP.x + (cell.o + 0.5) * STRIP.cw - 1}
 					y={STRIP.y + 19}
 					text-anchor="middle"
-					style:font-size="9px"
+					font-size="9"
 					style:fill={photo.data[cell.o] > 140 ? '#000' : '#fff'}>{photo.data[cell.o]}</text
 				>
 			{/each}
@@ -1081,7 +1081,7 @@
 			opacity={w.grey}
 		>
 			<g opacity={w.grey}>
-				<text x={PX} y={96} class="halo" style:font-size="16px" font-weight="700"
+				<text x={PX} y={96} class="halo" font-size="16" font-weight="700"
 					>(48, 36, <tspan style:fill="var(--tn-combine)">3</tspan>) · (<tspan
 						style:fill="var(--tn-combine)">3</tspan
 					>,)</text

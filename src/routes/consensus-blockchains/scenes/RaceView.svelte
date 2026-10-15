@@ -203,7 +203,7 @@
 					x={x(b.n)}
 					y={y + 5}
 					text-anchor="middle"
-					style:font-size="12px"
+					font-size="12"
 					style:font-weight="700"
 					style:fill="white">{b.n}</text
 				>

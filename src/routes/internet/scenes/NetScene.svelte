@@ -12,8 +12,6 @@
 	 * chosen by clicking a link is seen from the start. Reduced motion shows
 	 * the run at `hints.still` seconds.
 	 *
-	 * Text sizes and colours use `style:` because the stage CSS overrides SVG
-	 * presentation attributes.
 	 */
 	import { smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -266,7 +264,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}
 		style:font-family={opts.mono ? 'ui-monospace, SFMono-Regular, Menlo, monospace' : undefined}
 		style:font-variant-numeric="tabular-nums">{text}</text

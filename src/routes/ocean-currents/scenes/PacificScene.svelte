@@ -312,7 +312,7 @@
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
 		transform={opts.rotate ? `rotate(${opts.rotate} ${x} ${y})` : undefined}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}
@@ -545,7 +545,7 @@
 			<line x1={PLOT.x0} x2={PLOT.x1} y1={py(0)} y2={py(0)} stroke="var(--stage-line)" />
 			<line x1={PLOT.x0} x2={PLOT.x0} y1={PLOT.top} y2={PLOT.bottom} stroke="var(--stage-line)" />
 			{#each yTicks as v (v)}
-				<text x={PLOT.x0 - 6} y={py(v) + 4} text-anchor="end" class="muted" style:font-size="11px"
+				<text x={PLOT.x0 - 6} y={py(v) + 4} text-anchor="end" class="muted" font-size="11"
 					>{v > 0 ? '+' : '−'}{Math.abs(v)} °C</text
 				>
 			{/each}
@@ -569,7 +569,7 @@
 					y={PLOT.bottom + 16}
 					text-anchor="middle"
 					class="muted"
-					style:font-size="11px">{yr === 8 ? '8 years' : yr}</text
+					font-size="11">{yr === 8 ? '8 years' : yr}</text
 				>
 			{/each}
 			{@render txt(PLOT.x1 - 6, py(R * 0.82), 'El Niño', 11, {

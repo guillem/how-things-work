@@ -119,7 +119,7 @@
 					x={tile.x + 20}
 					y={tile.y + 30}
 					text-anchor="middle"
-					style:font-size="22px"
+					font-size="22"
 					style:font-weight="600"
 					style:font-family="var(--font-mono)">{show(tile.s)}</text
 				>
@@ -129,17 +129,13 @@
 						y={tile.y + 56 + li * 15}
 						text-anchor="middle"
 						class="muted"
-						style:font-size="11.5px"
+						font-size="11.5"
 						style:font-family="var(--font-mono)">{line}</text
 					>
 				{/each}
 				{#if tile.more}
-					<text
-						x={tile.x + 20}
-						y={tile.y + 112}
-						text-anchor="middle"
-						class="muted"
-						style:font-size="9.5px">+{tile.more}</text
+					<text x={tile.x + 20} y={tile.y + 112} text-anchor="middle" class="muted" font-size="9.5"
+						>+{tile.more}</text
 					>
 				{/if}
 			</g>
@@ -167,7 +163,7 @@
 						x={58 + i * 44}
 						y={rowY + 26}
 						text-anchor="middle"
-						style:font-size="15px"
+						font-size="15"
 						style:font-weight="600"
 						style:font-family="var(--font-mono)">{show(s.symbol)}</text
 					>
@@ -175,7 +171,7 @@
 						x={58 + i * 44}
 						y={rowY + 44}
 						text-anchor="middle"
-						style:font-size="11.5px"
+						font-size="11.5"
 						style:fill="var(--cmp-count)"
 						style:font-family="var(--font-mono)">{i.toString(2).padStart(fixed, '0')}</text
 					>
@@ -285,7 +281,7 @@
 						x={c.x + c.w / 2}
 						y={LAB}
 						text-anchor="middle"
-						style:font-size="{c.w >= 14 ? 15 : 11}px"
+						font-size={c.w >= 14 ? 15 : 11}
 						style:font-weight="600"
 						style:font-family="var(--font-mono)">{show(c.symbol)}</text
 					>

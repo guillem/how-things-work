@@ -246,7 +246,7 @@
 					x={c.x + c.w / 2}
 					y={Y0 + c.y + sz.h * 0.67}
 					text-anchor="middle"
-					style:font-size="{sz.f}px"
+					font-size={sz.f}
 					style:font-family="var(--font-mono)"
 					style:fill="var(--stage-ink)">{c.text}</text
 				>
@@ -254,7 +254,7 @@
 					x={c.x + c.w / 2}
 					y={Y0 + c.y + sz.h + 16}
 					text-anchor="middle"
-					style:font-size="{Math.max(9.5, sz.f * 0.66)}px"
+					font-size={Math.max(9.5, sz.f * 0.66)}
 					style:fill="var(--stage-ink-muted)"
 					style:font-variant-numeric="tabular-nums">{c.id}</text
 				>
@@ -282,7 +282,7 @@
 					x={c.x + c.w / 2}
 					y={Y0 + c.y - 8 + msz.h * 0.67}
 					text-anchor="middle"
-					style:font-size="{msz.f}px"
+					font-size={msz.f}
 					style:font-family="var(--font-mono)"
 					style:fill="var(--stage-ink)">{c.text}</text
 				>
@@ -340,7 +340,7 @@
 							x={c.x + c.w / 2}
 							y={y + 14}
 							text-anchor="middle"
-							style:font-size="12px"
+							font-size="12"
 							style:font-family="var(--font-mono)"
 							style:fill="var(--stage-ink)">{c.text}</text
 						>

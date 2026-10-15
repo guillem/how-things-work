@@ -165,12 +165,8 @@
 		/>
 		<Label x={CX0 + (13 * CW) / 2} y={190} text="codons 1–13, zoomed in" size={11} muted />
 		{#each ['codon', 'virus', 'vaccine', 'amino acid'] as row, j (row)}
-			<text
-				x={CX0 - 12}
-				y={236 + j * 52}
-				style:font-size="13px"
-				text-anchor="end"
-				class:muted={j === 0}>{row}</text
+			<text x={CX0 - 12} y={236 + j * 52} font-size="13" text-anchor="end" class:muted={j === 0}
+				>{row}</text
 			>
 		{/each}
 		{#each codons as c (c.i)}
@@ -185,12 +181,12 @@
 				fill="var(--mv-mrna)"
 				opacity={on ? 0.14 : 0}
 			/>
-			<text {x} y={236} style:font-size="11px" text-anchor="middle" class="muted">{c.i + 1}</text>
+			<text {x} y={236} font-size="11" text-anchor="middle" class="muted">{c.i + 1}</text>
 			{#each [c.virus, c.vaccine] as cod, row (row)}
 				<text
 					{x}
 					y={288 + row * 52}
-					style:font-size="17px"
+					font-size="17"
 					text-anchor="middle"
 					font-family="ui-monospace, monospace"
 				>
@@ -210,7 +206,7 @@
 				stroke="var(--mv-mrna)"
 				stroke-width="1.5"
 			/>
-			<text {x} y={390} style:font-size="14px" font-weight="600" text-anchor="middle">{c.aa}</text>
+			<text {x} y={390} font-size="14" font-weight="600" text-anchor="middle">{c.aa}</text>
 		{/each}
 		<Readout
 			opacity={1 - mix.current}
@@ -286,7 +282,7 @@
 					stroke="var(--stage-ink)"
 					stroke-width="1.5"
 				/>
-				<text x={pts[0].x} y={pts[0].y - 22} style:font-size="13px" text-anchor="middle">O</text>
+				<text x={pts[0].x} y={pts[0].y - 22} font-size="13" text-anchor="middle">O</text>
 				<line
 					x1={pts[4].x}
 					y1={pts[4].y}
@@ -295,13 +291,11 @@
 					stroke="var(--stage-ink)"
 					stroke-width="1.5"
 				/>
-				<text x={pts[4].x - 26} y={pts[4].y - 10} style:font-size="13px" text-anchor="middle"
-					>O</text
-				>
+				<text x={pts[4].x - 26} y={pts[4].y - 10} font-size="13" text-anchor="middle">O</text>
 				<!-- N3 (top-left) and N1 (bottom) -->
-				<text x={pts[5].x - 2} y={pts[5].y + 4} style:font-size="12px" text-anchor="end">N</text>
+				<text x={pts[5].x - 2} y={pts[5].y + 4} font-size="12" text-anchor="end">N</text>
 				{#if b.k === 'u'}
-					<text x={pts[3].x} y={pts[3].y + 15} style:font-size="12px" text-anchor="middle">N</text>
+					<text x={pts[3].x} y={pts[3].y + 15} font-size="12" text-anchor="middle">N</text>
 					<line
 						x1={pts[3].x}
 						y1={pts[3].y}
@@ -320,7 +314,7 @@
 					/>
 				{:else}
 					<!-- the sugar on C5 (top-right), N1 carries a methyl -->
-					<text x={pts[3].x} y={pts[3].y + 15} style:font-size="12px" text-anchor="middle">N</text>
+					<text x={pts[3].x} y={pts[3].y + 15} font-size="12" text-anchor="middle">N</text>
 					<line
 						x1={pts[3].x}
 						y1={pts[3].y + 18}
@@ -332,7 +326,7 @@
 					<text
 						x={pts[3].x}
 						y={pts[3].y + 46}
-						style:font-size="12px"
+						font-size="12"
 						text-anchor="middle"
 						font-weight="700"
 						style:fill="var(--mv-mrna)">CH₃</text

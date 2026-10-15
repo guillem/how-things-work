@@ -18,8 +18,6 @@
 	 * (a pure function of t). The buckled bow grows with a 1 s tween from the moment
 	 * the load passes the limit, then holds.
 	 *
-	 * Text sizes and colours are set with `style:` because the stage's CSS overrides
-	 * SVG presentation attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -655,7 +653,7 @@
 			y={y + h / 2 + 5}
 			text-anchor="middle"
 			font-weight="650"
-			style:font-size="14px"
+			font-size="14"
 			style:fill="var(--stage-bg)">{kn(load)}</text
 		>
 		{@render txt(cx - w / 2 - 10, y + h / 2 + 4, tonnes(load), 12, {
@@ -719,7 +717,7 @@
 		{y}
 		text-anchor="middle"
 		font-weight="650"
-		style:font-size="13px"
+		font-size="13"
 		style:fill="var(--stage-ink)">{text}</text
 	>
 {/snippet}
@@ -766,7 +764,7 @@
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
 		opacity={opts.opacity ?? 1}
-		style:font-size="{size}px"
+		font-size={size}
 		style:fill={opts.color}>{text}</text
 	>
 {/snippet}

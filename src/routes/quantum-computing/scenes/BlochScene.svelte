@@ -459,7 +459,7 @@
 					x={PX + i * 27 + 11}
 					y={234}
 					text-anchor="middle"
-					style:font-size="13px"
+					font-size="13"
 					style:fill="var(--stage-bg)"
 					font-weight="700">{r}</text
 				>
@@ -570,12 +570,8 @@
 					stroke={i === shownCircuit.length - 1 ? 'var(--qc-axis)' : 'var(--stage-line)'}
 					stroke-width={i === shownCircuit.length - 1 ? 2 : 1.2}
 				/>
-				<text
-					x={PX + 79 + i * 36}
-					y={97}
-					text-anchor="middle"
-					font-weight="700"
-					style:font-size="14px">{g}</text
+				<text x={PX + 79 + i * 36} y={97} text-anchor="middle" font-weight="700" font-size="14"
+					>{g}</text
 				>
 			{/each}
 			{#if !circuit.length}

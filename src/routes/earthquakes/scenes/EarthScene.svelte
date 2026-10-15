@@ -496,7 +496,7 @@
 		{#if phase === 'bending'}
 			<g opacity={oChart.current}>
 				<Readout id="chart-title">
-					<text x={CH.x0 - 40} y={50} style:font-size="14px" style:font-weight="600"
+					<text x={CH.x0 - 40} y={50} font-size="14" style:font-weight="600"
 						>Speed of the waves at each depth</text
 					>
 				</Readout>
@@ -513,14 +513,14 @@
 				{#each [5, 10] as v (v)}
 					<path d="M{sx(v)} {CH.y0}V{CH.y1}" stroke="var(--stage-grid)" />
 					<Readout id="sv-{v}">
-						<text x={sx(v)} y={CH.y0 - 8} style:font-size="11px" class="muted" text-anchor="middle"
+						<text x={sx(v)} y={CH.y0 - 8} font-size="11" class="muted" text-anchor="middle"
 							>{v} km/s</text
 						>
 					</Readout>
 				{/each}
 				{#each [0, 1000, 2000, 3000, 4000, 5000, 6000] as d (d)}
 					<Readout id="sd-{d}">
-						<text x={CH.x0 - 6} y={sy(d) + 4} style:font-size="11px" class="muted" text-anchor="end"
+						<text x={CH.x0 - 6} y={sy(d) + 4} font-size="11" class="muted" text-anchor="end"
 							>{fmt(d)} km</text
 						>
 					</Readout>
@@ -585,7 +585,7 @@
 					label="P to 90° round the Earth"
 					value={model === 'uniform' ? `${clock(t90u)} (same rock all through)` : clock(t90)}
 				>
-					<text x={CH.x0 - 40} y={584} style:font-size="13px">
+					<text x={CH.x0 - 40} y={584} font-size="13">
 						P to 90° round: <tspan style:font-weight="600"
 							>{model === 'uniform' ? clock(t90u) : clock(t90)}</tspan
 						>
@@ -600,8 +600,8 @@
 				label={phoneClock ? 'Time since the earthquake' : undefined}
 				value={reduced ? 'all waves drawn' : clock(tau)}
 			>
-				<text x={610} y={60} style:font-size="13px" class="muted">Time since the earthquake</text>
-				<text x={610} y={88} style:font-size="24px" style:font-weight="600"
+				<text x={610} y={60} font-size="13" class="muted">Time since the earthquake</text>
+				<text x={610} y={88} font-size="24" style:font-weight="600"
 					>{reduced ? 'all waves drawn' : clock(tau)}</text
 				>
 			</Readout>
@@ -614,7 +614,7 @@
 						color="var(--eq-p)"
 					>
 						<path d="M0 0h24" stroke="var(--eq-p)" stroke-width="3" />
-						<text x="32" y="4" style:font-size="13px">P waves</text>
+						<text x="32" y="4" font-size="13">P waves</text>
 					</Readout>
 				{/if}
 				{#if showS}
@@ -625,7 +625,7 @@
 						color="var(--eq-s)"
 					>
 						<path d="M{showP ? 120 : 0} 0h24" stroke="var(--eq-s)" stroke-width="3" />
-						<text x={showP ? 152 : 32} y="4" style:font-size="13px">S waves</text>
+						<text x={showP ? 152 : 32} y="4" font-size="13">S waves</text>
 					</Readout>
 				{/if}
 				{#if innerFocus && !liquid}
@@ -636,7 +636,7 @@
 						color="var(--eq-inner-wave)"
 					>
 						<path d="M120 0h24" stroke="var(--eq-inner-wave)" stroke-width="3" />
-						<text x="152" y="4" style:font-size="13px">met the inner core</text>
+						<text x="152" y="4" font-size="13">met the inner core</text>
 					</Readout>
 				{/if}
 			</g>
@@ -750,9 +750,7 @@
 							label="Faint"
 							value="a few weak waves in the shadow (next step)"
 						>
-							<text y="86" class="muted" style:font-size="12px"
-								>a few faint ones inside it: next step</text
-							>
+							<text y="86" class="muted" font-size="12">a few faint ones inside it: next step</text>
 						</Readout>
 					{/if}
 				{:else if phase === 'station'}
@@ -794,7 +792,7 @@
 						<Readout id="sum-{i}" order={5 + i} label={name} value={depth} note={what}>
 							<text y={i * 46} style:font-weight="600">{name}</text>
 							<text x="96" y={i * 46}>{depth}</text>
-							<text y={i * 46 + 19} class="muted" style:font-size="12px">{what}</text>
+							<text y={i * 46 + 19} class="muted" font-size="12">{what}</text>
 						</Readout>
 					{/each}
 					<Readout
@@ -829,12 +827,8 @@
 					{#each [0, 5, 10, 15, 20, 25] as m (m)}
 						<path d="M{tx(m * 60)} {TL.y}v5" stroke="var(--stage-ink-muted)" />
 						<Readout id="tl-{m}">
-							<text
-								x={tx(m * 60)}
-								y={TL.y + 18}
-								style:font-size="11px"
-								class="muted"
-								text-anchor="middle">{m} min</text
+							<text x={tx(m * 60)} y={TL.y + 18} font-size="11" class="muted" text-anchor="middle"
+								>{m} min</text
 							>
 						</Readout>
 					{/each}
@@ -849,7 +843,7 @@
 							<text
 								x={tx(a.time)}
 								y={TL.y - 40 - (i % 2) * 22}
-								style:font-size="11px"
+								font-size="11"
 								text-anchor="middle"
 								style:font-weight="600"
 								opacity={tau >= a.time ? 1 : 0.4}>{KIND_SHORT[a.kind]}</text
@@ -866,7 +860,7 @@
 					{/if}
 					{#if pTime !== null && sTime !== null}
 						<Readout id="tl-sp" order={12} label="S − P" value={clock(sTime - pTime)}>
-							<text x={TL.x0} y={TL.y + 48} style:font-size="14px"
+							<text x={TL.x0} y={TL.y + 48} font-size="14"
 								>S comes <tspan style:font-weight="600">{clock(sTime - pTime)}</tspan> after P</text
 							>
 						</Readout>

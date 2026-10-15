@@ -19,8 +19,6 @@
 	 * The editor is an HTML textarea in a `foreignObject`. Its key presses are
 	 * stopped from reaching the explainer's keyboard shortcuts.
 	 *
-	 * Text sizes and colours use `style:` because the stage's CSS overrides SVG
-	 * presentation attributes.
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, along, clamp, cycle, smoothstep, type Point } from '#lib/draw/index.ts';
@@ -654,7 +652,7 @@
 		class:muted={opts.muted}
 		text-anchor={opts.anchor ?? 'start'}
 		font-weight={opts.weight ?? 500}
-		style:font-size="{size}px"
+		font-size={size}
 		style:font-family={opts.mono ? 'var(--font-mono)' : undefined}
 		style:fill={opts.color}>{text}</text
 	>

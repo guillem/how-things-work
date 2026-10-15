@@ -123,7 +123,7 @@
 				x={c.x + c.w / 2}
 				y={36 + c.y + 16.5}
 				text-anchor="middle"
-				style:font-size="12px"
+				font-size="12"
 				style:font-family="var(--font-mono)"
 				style:fill={c.q ? 'var(--lm-bar)' : 'var(--stage-ink)'}
 				style:font-weight={c.q ? 700 : 500}>{c.text}</text

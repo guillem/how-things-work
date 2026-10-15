@@ -299,7 +299,7 @@
 			y={Y1 + 5}
 			text-anchor="middle"
 			opacity={coding ? 1 : 0.45}
-			style:font-size="16px"
+			font-size="16"
 			style:font-weight="700"
 			style:font-family="var(--font-mono)"
 			style:fill={baseColor(seq[i])}
@@ -317,7 +317,7 @@
 			x={c.x}
 			y={Y1 + 40}
 			text-anchor="middle"
-			style:font-size="11.5px"
+			font-size="11.5"
 			style:font-weight="700"
 			style:fill={c.aa === STOP ? '#fff' : undefined}>{amino(c.aa).three}</text
 		>
@@ -333,7 +333,7 @@
 			y={Y2 + 5}
 			text-anchor="middle"
 			opacity={l.o * (l.coding ? 1 : 0.45)}
-			style:font-size="16px"
+			font-size="16"
 			style:font-weight="700"
 			style:font-family="var(--font-mono)"
 			style:fill={baseColor(l.b)}>{l.b}</text
@@ -373,7 +373,7 @@
 				x={c.x}
 				y={Y2 + 40}
 				text-anchor="middle"
-				style:font-size="11.5px"
+				font-size="11.5"
 				style:font-weight="700"
 				style:fill={c.aa === STOP ? '#fff' : undefined}>{amino(c.aa).three}</text
 			>

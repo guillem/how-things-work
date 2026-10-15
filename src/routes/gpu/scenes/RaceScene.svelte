@@ -454,7 +454,7 @@
 				<text
 					x={LIST_X}
 					{y}
-					style:font-size="12.5px"
+					font-size="12.5"
 					font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
 					opacity={ins.path === 'all' || ins.path === 'end' || lit || fastFinished ? 1 : 0.45}
 					>{ins.text}</text

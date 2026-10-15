@@ -83,7 +83,7 @@
 			x={PX + 122}
 			y={92}
 			text-anchor="middle"
-			style:font-size="38px"
+			font-size="38"
 			style:font-weight="700"
 			style:font-family="var(--font-mono)"
 			style:letter-spacing="0.08em">{rna(codon)}</text

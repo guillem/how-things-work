@@ -274,7 +274,7 @@
 					stroke={op.endsWith('A') ? 'var(--qc-a)' : 'var(--qc-b)'}
 					stroke-width="1.5"
 				/>
-				<text {x} y={y + 6} text-anchor="middle" font-weight="700" style:font-size="15px"
+				<text {x} y={y + 6} text-anchor="middle" font-weight="700" font-size="15"
 					>{op[0].toUpperCase()}</text
 				>
 			{/if}
@@ -565,7 +565,7 @@
 						x={63 + i * 26}
 						y={318}
 						text-anchor="middle"
-						style:font-size="12px"
+						font-size="12"
 						style:fill="var(--stage-bg)"
 						font-weight="700">{a}</text
 					>
@@ -581,7 +581,7 @@
 						x={63 + i * 26}
 						y={348}
 						text-anchor="middle"
-						style:font-size="12px"
+						font-size="12"
 						style:fill="var(--stage-bg)"
 						font-weight="700">{bb}</text
 					>

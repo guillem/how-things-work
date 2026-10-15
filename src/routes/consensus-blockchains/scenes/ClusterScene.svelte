@@ -292,7 +292,7 @@
 						x={f.x}
 						y={f.y + 4}
 						text-anchor="middle"
-						style:font-size="11px"
+						font-size="11"
 						style:font-weight="700"
 						style:fill="white">{f.label}</text
 					>
@@ -390,7 +390,7 @@
 				x={P.x}
 				y={P.y + (mode === 'naive' ? -4 : 1)}
 				text-anchor="middle"
-				style:font-size="15px"
+				font-size="15"
 				style:font-weight="700"
 				style:fill={role === 'leader' ? 'white' : undefined}>S{i + 1}</text
 			>
@@ -402,7 +402,7 @@
 						x={P.x}
 						y={P.y + 14}
 						text-anchor="middle"
-						style:font-size="12px"
+						font-size="12"
 						style:font-weight="700"
 						style:fill={writeColor(last)}>{last}</text
 					>
@@ -413,7 +413,7 @@
 					y={P.y + 15}
 					text-anchor="middle"
 					class:muted={role !== 'leader'}
-					style:font-size="10px"
+					font-size="10"
 					style:fill={role === 'leader' ? 'white' : undefined}>term {st.term}</text
 				>
 				{@const below = P.y > C.y}
@@ -531,7 +531,7 @@
 					x={LOG.x + 75 + k * 86}
 					y={y + 18}
 					text-anchor="middle"
-					style:font-size="12px"
+					font-size="12"
 					style:font-weight="700"
 					style:fill="white">{a.label}</text
 				>
@@ -613,7 +613,7 @@
 						x={x + LOG.box / 2}
 						y={y + 18}
 						text-anchor="middle"
-						style:font-size="12px"
+						font-size="12"
 						style:font-weight="700"
 						style:fill={done ? 'white' : termColor(e.term)}>{e.cmd}</text
 					>
