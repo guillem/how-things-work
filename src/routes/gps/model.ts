@@ -14,6 +14,7 @@
  * Units: metres and seconds throughout (a clock error is often carried as a length, c·b).
  */
 import { ALMANAC, ALMANAC_TOA, type AlmanacEntry } from './almanac';
+import { rng } from '#lib/draw/math.ts';
 
 // ---- constants ------------------------------------------------------------------------------
 
@@ -322,17 +323,6 @@ export const fixError = (D: Dop, eps: number[]) => D.gain.map((row) => dot(row, 
 
 // ---- reproducible noise ----------------------------------------------------------------------
 
-/** A seeded uniform generator (mulberry32), so every render shows the same "random" errors. */
-export function rng(seed: number) {
-	let a = seed >>> 0;
-	return () => {
-		a = (a + 0x6d2b79f5) >>> 0;
-		let t = a;
-		t = Math.imul(t ^ (t >>> 15), t | 1);
-		t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-	};
-}
 /** Standard normal numbers (Box–Muller) from a uniform generator. */
 export function gaussians(n: number, seed: number): number[] {
 	const u = rng(seed);

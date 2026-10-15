@@ -10,7 +10,7 @@
 	import { Axes, pingpong, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { GYR_S, KPC_KM, galaxy, speedAt } from '../galaxies';
-	import { rng } from '../lensing';
+	import { rng } from '#lib/draw/math.ts';
 	import T from './T.svelte';
 
 	let { t, reduced }: StageProps = $props();

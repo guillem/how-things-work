@@ -11,7 +11,8 @@
 	 */
 	import Label from './Label.svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { T, alphaBar, decodeWeights, gaussian, mulberry32, noisy, predict } from '../ddpm';
+	import { rng } from '#lib/draw/math.ts';
+	import { T, alphaBar, decodeWeights, gaussian, noisy, predict } from '../ddpm';
 	import { MOONS, WEIGHTS } from '../moons-model';
 	import { LABELS, ON_DATA, moon, moonCurve, nearestMoon, onMoons } from '../moons';
 	import { POINTS, request, runKey, runs } from '../sampler.svelte';
@@ -36,7 +37,7 @@
 
 	// ---- the data and the forward chain (computed once) -----------------------------------
 	const DATA = (() => {
-		const r = mulberry32(2024);
+		const r = rng(2024);
 		const g = gaussian(2025);
 		const xy = new Float32Array(POINTS * 2);
 		const label = new Uint8Array(POINTS);

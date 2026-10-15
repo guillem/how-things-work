@@ -16,7 +16,7 @@
 	import { untrack } from 'svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { GYR_S, KPC_KM, galaxy, periodGyr, speedAt } from '../galaxies';
-	import { rng } from '../lensing';
+	import { rng } from '#lib/draw/math.ts';
 	import T from './T.svelte';
 
 	let { step, t, reduced }: StageProps = $props();

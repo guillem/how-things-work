@@ -15,7 +15,7 @@
 	import { Label, cycle, lerp, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { ACIDS, acidPH, dissociated, type AcidId } from '../model';
-	import { rng } from '../look';
+	import { rng } from '#lib/draw/math.ts';
 
 	let { step, t, params, reduced }: StageProps = $props();
 

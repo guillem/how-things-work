@@ -11,6 +11,7 @@
  * - the tape is unbounded in both directions and starts blank except for the
  *   input, which is written from cell 0 rightwards; the head starts on cell 0.
  */
+import { rng } from '#lib/draw/math.ts';
 
 export type Move = 'L' | 'R';
 
@@ -462,14 +463,7 @@ export interface City {
 
 /** Made-up cities, from a seeded generator (mulberry32), in the unit square. */
 export function cities(n: number, seed = 1): City[] {
-	let a = seed >>> 0;
-	const rnd = () => {
-		a = (a + 0x6d2b79f5) >>> 0;
-		let t = a;
-		t = Math.imul(t ^ (t >>> 15), t | 1);
-		t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-	};
+	const rnd = rng(seed);
 	const out: City[] = [];
 	while (out.length < n) {
 		const c = { x: 0.06 + 0.88 * rnd(), y: 0.08 + 0.84 * rnd() };

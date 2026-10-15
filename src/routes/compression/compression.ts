@@ -20,6 +20,7 @@
  *   `jpeg_add_quant_table`): the 1–100 "quality" setting. It is IJG's convention, used by most
  *   encoders, not part of the standard.
  */
+import { rng } from '#lib/draw/math.ts';
 
 // ===================================================================================== text
 
@@ -407,18 +408,6 @@ export function psnr(a: Grey, b: Grey): number {
 }
 
 // ===================================================================================== images
-
-/** A small seeded random generator (mulberry32), so the images are the same on every visit. */
-function rng(seed: number) {
-	let a = seed >>> 0;
-	return () => {
-		a = (a + 0x6d2b79f5) >>> 0;
-		let t = a;
-		t = Math.imul(t ^ (t >>> 15), t | 1);
-		t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-	};
-}
 
 /** Smooth value noise on a grid of the given cell size (seeded), values 0–1. */
 function valueNoise(w: number, h: number, cell: number, seed: number): Float64Array {

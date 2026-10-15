@@ -36,6 +36,7 @@
  * The label embedding has one extra row, "no label" (index `classes`), used to train and run
  * the unconditional half of classifier-free guidance.
  */
+import { rng } from '#lib/draw/math.ts';
 
 /** Number of diffusion steps the models were trained with (Ho et al. 2020). */
 export const T = 1000;
@@ -59,21 +60,9 @@ export const alphaBar = (t: number) => (t <= 0 ? 1 : ALPHA_BAR[Math.min(T, Math.
 
 // ---------------------------------------------------------------------------- random numbers
 
-/** mulberry32: a small seeded generator of uniform numbers in [0, 1). */
-export function mulberry32(seed: number): () => number {
-	let a = seed >>> 0;
-	return () => {
-		a = (a + 0x6d2b79f5) >>> 0;
-		let t = a;
-		t = Math.imul(t ^ (t >>> 15), t | 1);
-		t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-	};
-}
-
 /** Standard normal numbers (Box–Muller) from a seeded uniform generator. */
 export function gaussian(seed: number): () => number {
-	const u = mulberry32(seed);
+	const u = rng(seed);
 	let spare: number | null = null;
 	return () => {
 		if (spare !== null) {

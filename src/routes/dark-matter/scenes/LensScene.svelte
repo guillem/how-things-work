@@ -17,6 +17,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { smoothstep } from '#lib/draw/index.ts';
+	import { rng } from '#lib/draw/math.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		BRADAC,
@@ -28,7 +29,6 @@
 		lensAt,
 		lensedShape,
 		peak,
-		rng,
 		sigmaCrit
 	} from '../lensing';
 	import Card from './Card.svelte';

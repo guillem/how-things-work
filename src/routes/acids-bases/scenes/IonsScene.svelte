@@ -13,7 +13,8 @@
 	import { Label, cycle, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { ionsInCube, solvePH, WATER_IN_CUBE } from '../model';
-	import { fmtCount, rng, superscript } from '../look';
+	import { rng } from '#lib/draw/math.ts';
+	import { fmtCount, superscript } from '../look';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
