@@ -35,7 +35,15 @@
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
 
-	const startHour = $derived(Number(params.start ?? 6));
+	// each game step has its own start hour (the day, the trip, the cloud)
+	const startControl = $derived(
+		(step.controls ?? []).find((c) => c.id.startsWith('start') && c.type === 'range')
+	);
+	const startHour = $derived(
+		startControl && startControl.type === 'range'
+			? Number(params[startControl.id] ?? startControl.default)
+			: 6
+	);
 	const auto = $derived(params.pilot === 'auto');
 	const mine: Dispatch = $derived({
 		gas: Number(params.gas ?? 3600),

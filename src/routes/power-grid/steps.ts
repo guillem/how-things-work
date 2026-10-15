@@ -126,17 +126,20 @@ const storage: Control = {
 	help: 'Negative: pumping water uphill (or charging batteries) with spare power.'
 };
 
-const start: Control = {
+const startAt = (id: string, value: number): Control => ({
 	type: 'range',
-	id: 'start',
+	id,
 	label: 'Start the day at',
 	min: 0,
 	max: 23,
 	step: 1,
-	default: 6,
+	default: value,
 	format: (v) => `${String(v).padStart(2, '0')}:00`,
-	help: 'Moving it starts the day again from that hour.'
-};
+	help: 'Moving it starts the day again from that hour, with the plants as they really were.'
+});
+const start = startAt('start', 3);
+const startTrip = startAt('startTrip', 10);
+const startCloud = startAt('startCloud', 11);
 
 const tripPlant: Control = {
 	type: 'action',
@@ -324,7 +327,7 @@ export const spec: ExplainerSpec = {
 			scene: 'game',
 			hints: { events: true },
 			duration: 60,
-			controls: [tripPlant, pilot, gas, hydro, storage, start],
+			controls: [tripPlant, pilot, gas, hydro, storage, startTrip],
 			body: `
 <p>A nuclear reactor shuts down automatically when anything looks wrong — and at 1,000 MW it is the biggest plant on this grid. Press the button and watch.</p>
 <p>The frequency drops to about <strong>49.81 Hz</strong>: the governors have used all 1,000 MW of their reserve to hold it there. The grid survives, but it is now one problem away from load shedding. Within minutes the operator has to start other plants to replace the reactor and free the reserve again. Do it yourself, with the gas or the dams — or switch to the autopilot, which calls up gas over about five minutes.</p>`,
@@ -337,7 +340,7 @@ export const spec: ExplainerSpec = {
 			scene: 'game',
 			hints: { events: true },
 			duration: 60,
-			controls: [cloud, pilot, gas, hydro, storage, start],
+			controls: [cloud, pilot, gas, hydro, storage, startCloud],
 			body: `
 <p>Solar power can change much faster than a reactor trips back on. Around midday, send a band of cloud over a quarter of the country's solar farms. It cuts their output by about 70% for an hour, so at noon some 2,800 MW of solar power fades away in a quarter of an hour.</p>
 <p>That is more than the primary reserve. If nobody answers, the frequency falls below 49.0 Hz and load shedding cuts off about 2,000 MW of customers until the cloud passes. Answer it yourself by raising gas, hydro or storage as it comes — or let the autopilot do it.</p>

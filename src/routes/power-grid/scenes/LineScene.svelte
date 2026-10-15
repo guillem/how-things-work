@@ -470,7 +470,7 @@
 		{/each}
 		<Label x={PX1} y={PY1 + 36} text="kV" anchor="end" muted />
 		{#if shareOf(66) > 0.5}
-			<Label x={px(43)} y={py(50) - 10} text="over half: impossible" muted />
+			<Label x={px(30)} y={py(50) + 18} text="over half: impossible" anchor="start" muted />
 		{/if}
 		<Readout id="curve-note">
 			<Label
@@ -518,7 +518,7 @@
 		{/each}
 		<circle
 			cx={chainX(0) + pulse * (chainX(4) - chainX(0))}
-			cy={548}
+			cy={574}
 			r="6"
 			fill="var(--pg-solar)"
 		/>
