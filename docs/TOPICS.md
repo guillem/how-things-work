@@ -179,7 +179,7 @@ A topic is done when:
 - [x] logic-gates
 - [x] transistors-chipmaking
 - [x] cpu
-- [ ] gpu
+- [x] gpu
 - [x] graphics-3d
 - [x] sorting
 - [x] graph-search
