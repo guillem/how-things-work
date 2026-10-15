@@ -3,7 +3,7 @@
  *
  * Experimental geometries from NIST CCCBDB (Computational Chemistry Comparison and Benchmark
  * DataBase, NIST SRD 101, Release 22, May 2022, https://cccbdb.nist.gov/expgeom2x.asp,
- * retrieved 2026-10-14). Lengths in ångström (1 Å = 100 pm),
+ * retrieved 2026-10-15). Lengths in ångström (1 Å = 100 pm),
  * angles in degrees; each molecule by CAS number. CCCBDB cites the original measurements
  * (mostly microwave spectroscopy and electron diffraction) for every value.
  *

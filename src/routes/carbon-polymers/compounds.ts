@@ -4,7 +4,7 @@
  * Names, formulas and identifiers: PubChem PUG REST (https://pubchem.ncbi.nlm.nih.gov),
  * NCBI, public domain. Boiling (tb) and melting (tm) points in kelvin, at 1 atm: NIST
  * Chemistry WebBook, SRD 69 (https://webbook.nist.gov, phase-change data, retrieved
- * 2026-10-14), looked up by InChI and accepted only when NIST's
+ * 2026-10-15), looked up by InChI and accepted only when NIST's
  * InChIKey matches PubChem's. tm is NIST's Tfus, or its triple-point temperature where it
  * lists no Tfus (tmTriple). NIST/TRC averages (AVG rows) where given; otherwise the median of at
  * least two individual values that agree within 3 K; otherwise no value.
@@ -330,7 +330,11 @@ export const COMPOUNDS: Record<string, Compound> = {
 	'BTANRVKWQNVYAZ-UHFFFAOYSA-N': {
 		cid: 6568,
 		iupac: 'butan-2-ol',
-		formula: 'C4H10O'
+		formula: 'C4H10O',
+		tb: 372,
+		tm: 184.71,
+		tmTriple: true,
+		nist: '2-Butanol'
 	},
 	'ZTQSAGDEMFDKMZ-UHFFFAOYSA-N': {
 		cid: 261,
@@ -367,7 +371,9 @@ export const COMPOUNDS: Record<string, Compound> = {
 	'BHRZNVHARXXAHW-UHFFFAOYSA-N': {
 		cid: 24874,
 		iupac: 'butan-2-amine',
-		formula: 'C4H11N'
+		formula: 'C4H11N',
+		tb: 336.15,
+		nist: 'sec-Butylamine'
 	},
 	'VFWCMGCRMGJXDK-UHFFFAOYSA-N': {
 		cid: 8005,
@@ -846,7 +852,10 @@ export const COMPOUNDS: Record<string, Compound> = {
 	'OTTZHAVKAVGASB-HWKANZROSA-N': {
 		cid: 639662,
 		iupac: '(E)-hept-2-ene',
-		formula: 'C7H14'
+		formula: 'C7H14',
+		tb: 371,
+		tm: 163.64,
+		nist: '2-Heptene, (E)-'
 	},
 	'WZHKDGJSXCTSCK-FNORWQNLSA-N': {
 		cid: 5357259,
@@ -881,7 +890,10 @@ export const COMPOUNDS: Record<string, Compound> = {
 	'BBMCTIGTTCKYKF-UHFFFAOYSA-N': {
 		cid: 8129,
 		iupac: 'heptan-1-ol',
-		formula: 'C7H16O'
+		formula: 'C7H16O',
+		tb: 448,
+		tm: 238.6,
+		nist: '1-Heptanol'
 	},
 	'CETWDUZRCINIHU-UHFFFAOYSA-N': {
 		cid: 10976,
@@ -964,7 +976,8 @@ export const COMPOUNDS: Record<string, Compound> = {
 	'CLJMMQGDJNYDER-UHFFFAOYSA-N': {
 		cid: 38665,
 		iupac: 'heptan-4-amine',
-		formula: 'C7H17N'
+		formula: 'C7H17N',
+		nist: '4-Aminoheptane'
 	},
 	'DZMDPHNGKBEVRE-UHFFFAOYSA-N': {
 		cid: 12371,
@@ -1112,7 +1125,9 @@ export const COMPOUNDS: Record<string, Compound> = {
 	'SJWFXCIHNDVPSH-UHFFFAOYSA-N': {
 		cid: 20083,
 		iupac: 'octan-2-ol',
-		formula: 'C8H18O'
+		formula: 'C8H18O',
+		tb: 453.2,
+		nist: '2-Octanol'
 	},
 	'NMRPBPVERJPACX-UHFFFAOYSA-N': {
 		cid: 11527,
@@ -1173,7 +1188,9 @@ export const COMPOUNDS: Record<string, Compound> = {
 	'HBXNJMZWGSCKPW-UHFFFAOYSA-N': {
 		cid: 12735,
 		iupac: 'octan-2-amine',
-		formula: 'C8H19N'
+		formula: 'C8H19N',
+		tb: 438.17,
+		nist: '2-Octanamine'
 	},
 	'JASMWYNKLTULAN-UHFFFAOYSA-N': {
 		cid: 547362,
@@ -1279,7 +1296,8 @@ export const COMPOUNDS: Record<string, Compound> = {
 	'QNAYBMKLOCPYGJ-UHFFFAOYSA-N': {
 		cid: 602,
 		iupac: '2-aminopropanoic acid',
-		formula: 'C3H7NO2'
+		formula: 'C3H7NO2',
+		nist: 'dl-Alanine'
 	},
 	'RRHGJUQNOFWUDK-UHFFFAOYSA-N': {
 		cid: 6557,

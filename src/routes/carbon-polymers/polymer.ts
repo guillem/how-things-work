@@ -64,6 +64,18 @@ export function stateAt(tb: number | null | undefined, tm: number | null | undef
 	return null;
 }
 
+/**
+ * State of the n-alkane at 25 °C. Where NIST lists no boiling or melting point, it is inferred
+ * from the trend: boiling points rise with n (C₁₆ already boils at 281 °C), and melting points
+ * rise beyond C₁₈ (already above 25 °C), so a missing one is taken to be higher still.
+ */
+export function alkaneState(n: number): State | null {
+	return stateAt(
+		alkaneBoiling(n) ?? (n > 16 ? Infinity : null),
+		alkaneMelting(n)?.k ?? (n > 18 ? Infinity : null)
+	);
+}
+
 // ------------------------------------------------------------------ rubber
 
 /** Natural rubber (cis-1,4-polyisoprene), Wood (1976). */
@@ -95,7 +107,10 @@ export function shearModulus(Mn: number, Mc: number, density = RUBBER.density, T
 export const looseFraction = (Mn: number, Mc: number) =>
 	Number.isFinite(Mc) ? Math.min(1, (2 * Mc) / Mn) : 1;
 
-/** Fewest cross-links per 100 units that tie chains of Mn into a network (Mn = 2Mc). */
+/**
+ * Cross-links per 100 units at which Flory's ideal-network modulus reaches zero (Mn = 2Mc); a
+ * gel first forms at about half this.
+ */
 export const gelPoint = (Mn: number, unit = RUBBER.unitMass) => (100 * unit) / Mn;
 
 /** Nominal stress (Pa) at stretch λ: G(λ − 1/λ²). */

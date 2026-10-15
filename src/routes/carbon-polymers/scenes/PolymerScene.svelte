@@ -5,7 +5,7 @@
 	 *   CH₂=CH₂ flies in to the chain's reactive end, its double bond opens (the second line
 	 *   fades) and it becomes two more CH₂ links; the chain scrolls left as it grows. All a pure
 	 *   function of t; the reduced-motion frame shows the chain, the queue of monomers and the
-	 *   next one on its way.
+	 *   next one on its way. Each press of `params.addMono` links one more monomer at once.
 	 * - `stretch`: a schematic sample of seven chains (drawn beads grow with
 	 *   `params.units`), tied by `params.xlinks` cross-links, stretched by `params.stretch`
 	 *   (slider, or the handle on the sample's right edge). With a network (G > 0, from
@@ -50,11 +50,13 @@
 	const ZY = 16; // zigzag half-height
 	const CHAIN_Y = 300;
 	const START = 6; // carbons at t = 0
-	const added = $derived(Math.floor(t / PERIOD));
+	// The "Add a monomer" button links one more on top of the timer's.
+	const presses = $derived(Math.max(0, Math.floor(Number(params.addMono ?? 0))));
+	const added = $derived(Math.floor(t / PERIOD) + presses);
 	const u = $derived(cycle(t, PERIOD));
 	const carbons = $derived(START + 2 * added);
 	// Scroll continuously so that the reactive end stays near x = 560.
-	const scroll = $derived(Math.max(0, (START + (2 * t) / PERIOD) * DX - 520));
+	const scroll = $derived(Math.max(0, (START + (2 * t) / PERIOD + 2 * presses) * DX - 520));
 	const cx = (i: number) => 90 + i * DX - scroll;
 	const cy = (i: number) => CHAIN_Y + (i % 2 ? -ZY : ZY);
 	const endX = $derived(cx(carbons - 1));
@@ -212,7 +214,7 @@
 			? 'a network: it springs back'
 			: xl === 0
 				? 'no cross-links: the chains slide, it flows'
-				: 'too few cross-links per chain: no network'
+				: 'too few cross-links to bear a load'
 	);
 	const gel = $derived(gelPoint(Mn));
 	const RX = 640;
@@ -362,7 +364,7 @@
 			id="l-open"
 			order={3}
 			label="Each step"
-			value="the C=C opens; one pair bonds to the chain"
+			value="the C=C opens: one electron bonds to the chain, the other is the new reactive end"
 		>
 			<text
 				x="480"
@@ -370,7 +372,8 @@
 				text-anchor="middle"
 				class="halo"
 				font-weight="600"
-				style:font-size="14px">each C=C opens: one of its two shared pairs bonds to the chain</text
+				style:font-size="14px"
+				>each C=C opens: one electron bonds to the chain, the other is the new reactive end</text
 			>
 		</Readout>
 		<Readout
@@ -525,10 +528,13 @@
 			>
 				<text x="0" y="170" class="halo muted" style:font-size="12px">loose ends</text>
 				<text x="90" y="170" class="halo" style:font-size="13px"
-					>{Math.round(loose * 100)}% of each chain{!network && xl > 0
-						? ` (network from ${gel.toFixed(2)} per 100)`
-						: ''}</text
+					>{Math.round(loose * 100)}% of each chain</text
 				>
+				{#if !network && xl > 0}
+					<text x="90" y="187" class="halo muted" style:font-size="11px"
+						>stiffness from {gel.toFixed(2)} cross-links per 100</text
+					>
+				{/if}
 			</Readout>
 			<Readout id="s-E" order={4} label="Stiffness E" value={network ? mpa(E) : '0'}>
 				<text x="0" y="210" class="halo muted" style:font-size="12px"
@@ -538,7 +544,8 @@
 					>{network ? mpa(E) : '0: it flows'}</text
 				>
 				<text x="0" y="258" class="halo muted" style:font-size="11px"
-					>ideal network: E = 3ρRT/M꜀ · (1 − 2M꜀/Mₙ)</text
+					>ideal network: E = 3ρRT/M<tspan baseline-shift="sub" style:font-size="9px">c</tspan> · (1
+					− 2M<tspan baseline-shift="sub" style:font-size="9px">c</tspan>/Mₙ)</text
 				>
 			</Readout>
 		</g>

@@ -2,7 +2,7 @@
  * 3D coordinates of a straight-chain alkane CₙH₂ₙ₊₂ in its stretched-out (all-anti) shape,
  * built from measured geometries (NIST CCCBDB, `geometry.ts`): methane for n = 1, ethane for
  * n = 2, and propane's bond lengths and angles for every longer chain (C–C 1.526 Å,
- * C–C–C 112.4°, H–C–H 107.3° on a CH₂ and 106.1° on a CH₃, C–H 1.09 Å). The carbons zigzag in
+ * C–C–C 112.4°, H–C–H 106.1° on a CH₂ and 107.3° on a CH₃, C–H 1.09 Å). The carbons zigzag in
  * one plane; each CH₂'s two hydrogens sit above and below that plane. Longer chains use
  * propane's values throughout: a simplification (butane's measured C–C–C angle is 113.8°).
  * Coordinates in Å, centred on the middle of the chain, z up, the chain along x.
@@ -36,11 +36,11 @@ export const MEASURED = {
 	propane: {
 		CC: get('propane', 'CC', 'length'),
 		CCC: get('propane', 'CCC', 'angle'),
-		/** On the end CH₃ and the middle CH₂. */
-		CH3: get('propane', 'CH', 'length', 0),
-		CH2: get('propane', 'CH', 'length', 1),
-		HCH3: get('propane', 'HCH', 'angle', 0),
-		HCH2: get('propane', 'HCH', 'angle', 1)
+		/** On the middle CH₂ (CCCBDB "center C") and the end CH₃. */
+		CH2: get('propane', 'CH', 'length', 0), // 1.096
+		CH3: get('propane', 'CH', 'length', 1), // 1.089
+		HCH2: get('propane', 'HCH', 'angle', 0), // 106.1
+		HCH3: get('propane', 'HCH', 'angle', 1) // 107.3
 	}
 };
 

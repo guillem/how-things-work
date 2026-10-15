@@ -114,8 +114,25 @@ async function nist(inchi, inchikey, iupac) {
 	let html = await get(`nist-${inchikey}.html`, `InChI=${encodeURIComponent(inchi)}`);
 	// An InChI that matches several entries gives a list: try PubChem's name instead (the
 	// InChIKey check below still decides whether the entry is the right molecule).
+	const list = html;
 	if (!KEY.test(html))
 		html = await get(`nist-name-${inchikey}.html`, `Name=${encodeURIComponent(iupac)}`);
+	// Still a list (racemate and stereoisomers, or NIST uses another name, e.g. 2-Butanol):
+	// open each listed entry and keep those with the same InChIKey; of several, the one with
+	// the most phase-change rows (the main entry, not a sparse duplicate).
+	if (!KEY.test(html)) {
+		const ids = [
+			...new Set([...list.matchAll(/cbook\.cgi\?ID=(C?\d+)&amp;/g)].map((m) => m[1]))
+		].slice(0, 8);
+		let best = null;
+		for (const id of ids) {
+			const page = await get(`nist-id-${id}.html`, `ID=${id}`);
+			if (KEY.exec(page)?.[1] !== inchikey) continue;
+			const rows = (page.match(/<td[^>]*>T<sub>(boil|fus|triple)<\/sub><\/td>/g) ?? []).length;
+			if (!best || rows > best.rows) best = { page, rows };
+		}
+		if (best) html = best.page;
+	}
 	const key = KEY.exec(html);
 	if (!key) return null; // not in the WebBook
 	if (key[1] !== inchikey) throw new Error(`NIST InChIKey ${key[1]} ≠ PubChem ${inchikey}`);

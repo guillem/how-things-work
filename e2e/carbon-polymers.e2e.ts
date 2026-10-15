@@ -120,10 +120,21 @@ test('rubber: cross-links make a network, and its stiffness follows them', async
 	await expect(stage(page)).toContainText('1.90 MPa');
 	await range(page, 'xlinks').fill('2');
 	await expect(stage(page)).toContainText('3.87 MPa');
-	// Short chains: too few cross-links per chain to tie them together.
+	// Short chains: too few cross-links per chain to bear a load (ideal-network model).
 	await range(page, 'units').fill('1.5');
 	await range(page, 'xlinks').fill('0.5');
-	await expect(stage(page)).toContainText('too few cross-links per chain: no network');
+	await expect(stage(page)).toContainText('too few cross-links to bear a load');
+	await expect(stage(page)).toContainText('stiffness from');
+});
+
+test('linking monomers: each press adds one ethylene to the chain', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('./carbon-polymers/#link');
+	await expect(stage(page)).toContainText('3 ethylene units (6 carbons), 84 g/mol');
+	await action(page, 'addMono').click();
+	await expect(stage(page)).toContainText('4 ethylene units (8 carbons), 112 g/mol');
+	await action(page, 'addMono').click();
+	await expect(stage(page)).toContainText('5 ethylene units (10 carbons), 140 g/mol');
 });
 
 test('the 3D chain follows the slider: octane zigzags at 112°', async ({ page }) => {
