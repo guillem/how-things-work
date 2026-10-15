@@ -5,6 +5,7 @@ import { expect, test } from '@playwright/test';
 import {
 	REST,
 	SQUID_AXON,
+	at,
 	cable,
 	firingRate,
 	peak,
@@ -74,10 +75,20 @@ test('blocking the sodium channels (TTX) abolishes the spike; blocking potassium
 	const th = threshold(0.5);
 	const ttx = simulate({ tEnd: 25, current: pulse(5 * th, 1, 0.5), block: { na: 0 } });
 	expect(spikeTimes(ttx)).toHaveLength(0);
+	// A blocked membrane still rests at the resting potential until the pulse comes.
+	expect(Math.abs(at(ttx, 0.95).V - REST)).toBeLessThan(0.5);
 	const width = (s: ReturnType<typeof simulate>) => s.filter((p) => p.V > -20).length;
 	const normal = simulate({ tEnd: 40, current: pulse(2 * th, 1, 0.5) });
-	const tea = simulate({ tEnd: 40, current: pulse(2 * th, 1, 0.5), block: { k: 0 } });
-	expect(width(tea)).toBeGreaterThan(2 * width(normal));
+	// The scene's TEA blocks 90% of the potassium channels, as the real drug does at high dose.
+	const tea = simulate({ tEnd: 40, current: pulse(2 * th, 1, 0.5), block: { k: 0.1 } });
+	expect(Math.abs(at(tea, 0.95).V - REST)).toBeLessThan(0.5);
+	expect(spikeTimes(tea)).toHaveLength(1);
+	// "it lasts about twice as long", then the cell returns to rest.
+	expect(width(tea)).toBeGreaterThan(1.8 * width(normal));
+	expect(width(tea)).toBeLessThan(2.5 * width(normal));
+	expect(Math.abs(at(tea, 40).V - REST)).toBeLessThan(0.5);
+	// Even with no potassium block at all the cell does not fire on its own.
+	expect(spikeTimes(simulate({ tEnd: 40, block: { k: 0 } }))).toHaveLength(0);
 });
 
 test('just after a spike the membrane is refractory', () => {
@@ -100,6 +111,9 @@ test('a steady current is coded as a firing rate that rises with the current', (
 	expect(onset).toBeGreaterThan(40);
 	expect(onset).toBeLessThan(70);
 	expect(firingRate(30)).toBeGreaterThan(1.4 * onset);
+	// "above about 75 µA/cm² here the model stops firing altogether".
+	expect(firingRate(70)).toBeGreaterThan(100);
+	expect(firingRate(80)).toBe(0);
 });
 
 test('the propagated spike travels along the squid axon at HH’s computed 18.8 m/s', () => {
@@ -178,6 +192,12 @@ test('the circuit: which cell fires depends on the pattern of inputs and the str
 	// Strengthen 3 → A and the pattern 1 + 3 now fires A.
 	expect(fires(circuit('A', on('101'), 0))).toBe(false);
 	expect(fires(circuit('A', on('101'), 2))).toBe(true);
+	// "even one synapse": A answers 1 + 3 (and 2 + 3), but not 3 alone …
+	expect(fires(circuit('A', on('101'), 1))).toBe(true);
+	expect(fires(circuit('A', on('011'), 1))).toBe(true);
+	expect(fires(circuit('A', on('001'), 2))).toBe(false);
+	// … "three or more and input 3 alone fires A".
+	expect(fires(circuit('A', on('001'), 3))).toBe(true);
 });
 
 test('myelin: about 6 m/s per µm of diameter, many times an unmyelinated fibre (Hursh 1939)', () => {

@@ -3,8 +3,9 @@
 	 * Myelin. Top: five internodes of a human nerve fibre of the chosen
 	 * diameter, bare or wrapped in myelin, with the front of the impulse (where
 	 * sodium channels are opening) moving along it at the measured speed,
-	 * slowed down about 36,000 times: on the myelinated fibre it jumps from
-	 * node to node, on the bare one it creeps. Bottom: a race over one metre
+	 * slowed down 36,000 times on the myelinated fibre, where it jumps from
+	 * node to node, and 3,000 times on the bare one, where it creeps (at
+	 * 36,000 one pass would take a minute). Bottom: a race over one metre
 	 * (spinal cord to toe) between the two, slowed 50 times.
 	 *
 	 * Speeds from fibres.ts (Hursh 1939 for myelinated fibres; √d scaling from
@@ -28,7 +29,7 @@
 	const NODES = 5; // internodes in view
 
 	/** Close-up: seconds of animation per second of real time. */
-	const SLOW = 36000;
+	const SLOW = $derived(myelin ? 36000 : 3000);
 	const since = replayClock();
 	const elapsed = $derived(since(`${myelin}|${d}`, t));
 	/** Real time in the close-up, µs; loops after the front leaves the view. */
@@ -90,7 +91,9 @@
 			anchor="start"
 			size={11}
 			muted
-			text="5 internodes, {((5 * L) / 1000).toFixed(1)} mm · slowed down 36,000 times"
+			text="5 internodes, {((5 * L) / 1000).toFixed(1)} mm · slowed down {SLOW.toLocaleString(
+				'en'
+			)} times"
 		/>
 	</Readout>
 	<Readout id="speed" order={1} label="Speed" value="{fmtV(v)} m/s" color="var(--nr-fire)">
