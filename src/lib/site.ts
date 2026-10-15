@@ -4,5 +4,8 @@ export const site = {
 	tagline: 'Interactive, animated explanations of how complex things work.',
 	description:
 		'Step-by-step animated explainers of science and technology — from the big picture down to the mechanism. No sign-up, no backend, runs entirely in your browser.',
-	repository: 'https://github.com/guillem/how-things-work'
+	repository: 'https://github.com/guillem/how-things-work',
+	/** Where the site is published (with its trailing slash): absolute links and the sitemap build on it. */
+	url: 'https://guillem.github.io/how-things-work/',
+	author: 'Guillem Cantallops Ramis'
 };
