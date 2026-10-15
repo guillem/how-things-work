@@ -112,7 +112,7 @@ test('the innermost stable orbit: 4400 Hz divided by the total mass in suns', ()
 test('at 75 Hz orbital frequency, 70 suns are only 350 km apart: only black holes fit', () => {
 	const a = separation(70, 150);
 	expect(a / 1000).toBeCloseTo(347, 0);
-	// two black holes of 35 suns have horizons 103 km across each: they nearly touch
+	// two black holes of 35 suns have horizons of radius 103 km (207 km across): they nearly touch
 	expect(a).toBeLessThan(4 * 2 * 35 * 1476.6);
 });
 
@@ -171,12 +171,13 @@ test('the frequency read off the data climbs from ~45 to ~140 Hz; leading order 
 	expect(measuredTrack[measuredTrack.length - 1].f).toBeGreaterThan(120);
 	const fit = fitChirpMass(measuredTrack);
 	// leading order runs high: the full analysis gives 30 (detector frame)
-	expect(fit.mc).toBeGreaterThan(30);
-	expect(fit.mc).toBeLessThan(40);
+	expect(fit.mc).toBeCloseTo(36, 0);
 	expect(fit.rms).toBeLessThan(0.15);
 });
 
 test('numbers quoted in the notes', () => {
+	// the fitted points (up to 160 Hz) lie above the ISCO frequency of a 70-sun pair, about 63 Hz
+	expect(iscoFrequency(70)).toBeCloseTo(63, 0);
 	// two black holes of 30 suns each at 0.3 c go round about 15 times a second
 	const M = 60;
 	const a = (M * GM_SUN) / (0.3 * C) ** 2;

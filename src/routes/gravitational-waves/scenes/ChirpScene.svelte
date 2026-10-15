@@ -10,7 +10,7 @@
 	 *
 	 * Phases (`step.hints.phase`):
 	 *   inspiral — the strain at 410 Mpc against time
-	 *   track    — the frequency against time (log scale); `params.sameMc` adds an
+	 *   track    — the frequency against time (linear scale); `params.sameMc` adds an
 	 *              pair of the same chirp mass (dashed: equal masses, or 1:4 if this pair is equal)
 	 *   merger   — the strain, the blank merger, and the remnant from fits to
 	 *              numerical relativity (mass, spin, ringing); after the ISCO the
@@ -135,7 +135,7 @@
 			).replace('M', 'M')
 	);
 
-	// frequency track (log scale)
+	// frequency track (linear scale)
 	/** Top of the frequency axis: a round value above the highest ISCO shown. */
 	const F1 = $derived(
 		[50, 100, 150, 250].find(
@@ -442,7 +442,7 @@
 				x={KX + 18}
 				y={OY + 244}
 				w={KW - 36}
-				label="Change of a 4 km arm"
+				label="Difference between two 4 km arms"
 				value="{sci(hAt(ins.fIsco) * 4000, 2)} m"
 				color="var(--gw-dl)"
 			/>

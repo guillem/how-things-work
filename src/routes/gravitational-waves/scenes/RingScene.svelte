@@ -47,8 +47,8 @@
 	const xArm = $derived(moved(R, 0, s));
 	const yArm = $derived(moved(0, R, s));
 	const pct = (v: number) => `${v >= 0 ? '+' : '−'}${Math.abs(v * 100).toFixed(0)}%`;
-	const xChange = $derived(Math.hypot(xArm.x, xArm.y) / R - 1);
-	const yChange = $derived(Math.hypot(yArm.x, yArm.y) / R - 1);
+	const xChange = $derived(xArm.x / R - 1); // along the arm only (first order in h)
+	const yChange = $derived(yArm.y / R - 1);
 
 	// ---- side view --------------------------------------------------------------------
 	const SX0 = 500;
@@ -160,7 +160,13 @@
 			size={12}
 			muted
 		/>
-		<T x={32} y={566} text="strain drawn h = 0.5; a real one is about 10⁻²¹" size={12} muted />
+		<T
+			x={32}
+			y={566}
+			text="strain drawn h = 0.5 (each axis ±25%); a real one is about 10⁻²¹"
+			size={12}
+			muted
+		/>
 	</Readout>
 
 	<!-- side view -->
