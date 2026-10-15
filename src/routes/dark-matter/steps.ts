@@ -20,7 +20,7 @@ const ratio: Control = {
 	id: 'ratio',
 	label: 'Mass of the dark halo',
 	min: 0,
-	max: RATIO_MAX / 2,
+	max: RATIO_MAX,
 	step: 0.1,
 	default: 0,
 	format: (v) => (v === 0 ? 'no halo' : `${v.toFixed(1)} × the visible mass`),
@@ -64,7 +64,7 @@ const dark: Control = {
 	step: 1,
 	default: 0,
 	format: (v) => (v === 0 ? 'none: visible matter only' : `${v} × 10¹³ Suns`),
-	help: 'Placed round the two groups of galaxies, inside the 1.3 × 0.8 million-light-year field of the Hubble images.'
+	help: 'Placed round the two groups of galaxies, inside the 4.2 × 2.7 million-light-year field of the Hubble images.'
 };
 
 const trueShapes: Control = {
@@ -125,7 +125,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>How do we clock a star 45 million light years away? With the <dfn data-def="The change in the wavelength of a wave when its source moves towards you (shorter, bluer) or away from you (longer, redder). The shift is proportional to the speed along the line of sight.">Doppler shift</dfn>. Cold hydrogen gas gives off radio waves of exactly 21.1 cm. As the galaxy turns, one side comes towards us and its 21-cm line arrives slightly shorter (bluer); the other side moves away and its line arrives longer (redder). Radio telescopes map that shift across the disc, and since hydrogen extends far beyond the stars, it traces the orbits much further out than starlight can.</p>
 <p>We see NGC 3198 tilted at 73°, so we see only part of each orbit’s speed along our line of sight (<i>v</i> × sin 73°); the tilt is measured from the shape of the disc and corrected for, and the galaxy’s overall motion away from us is subtracted.</p>
-<p>The pattern was first seen in starlight by Vera Rubin and Kent Ford in the Andromeda galaxy (1970), then in radio by Albert Bosma (1978). In 1985 van Albada and colleagues used NGC 3198’s flat curve to argue that an unseen halo must surround it.</p>`,
+<p>The pattern was first seen in the light of glowing gas clouds by Vera Rubin and Kent Ford in the Andromeda galaxy (1970), then much further out with radio telescopes (Morton Roberts and Robert Whitehurst for Andromeda in 1975, Albert Bosma for many spirals in 1978). In 1985 van Albada and colleagues used NGC 3198’s flat curve to argue that an unseen halo must surround it.</p>`,
 			notes: `<p>The plot on the right is a <em>rotation curve</em> seen from both sides of the galaxy, made from the measured speeds (Begeman 1987, Begeman et al. 1991 and Daigle et al. 2006, compiled in SPARC). At 150 km/s the 21-cm line shifts by only about 0.1 mm (v/c ≈ 0.05%), but radio receivers resolve that easily. Our own galaxy’s curve is flat too: the Sun circles the Milky Way at 229 km/s, and the speed declines by only about 1.7 km/s per kpc out to 25 kpc (Eilers et al. 2019, from 23,000 red giant stars).</p>`
 		},
 		// ------------------------------------------------------------------ fit
@@ -178,7 +178,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Try other galaxies from the same catalogue. <strong>NGC 2403</strong> is a smaller spiral, with about a quarter of NGC 3198’s stars. <strong>DDO 154</strong> is a dwarf with hardly any stars: its visible matter is almost all gas, and its curve is far above what that gas can hold. <strong>NGC 2841</strong> is a giant with a bright central bulge; its stars almost explain the inside, but not the flat outskirts at nearly 300 km/s.</p>
 <p>Every one needs a halo several times heavier than its stars and gas. This is not a quirk of one galaxy: the SPARC catalogue holds 175 disc galaxies with careful rotation curves, and flat outer curves are the rule.</p>`,
-			notes: `<p>The four galaxies and their rotation-curve sources: NGC 3198 (Begeman 1987; Begeman et al. 1991; Daigle et al. 2006), NGC 2403 (Fraternali et al. 2002; Daigle et al. 2006), DDO 154 (Carignan &amp; Beaulieu 1989; Begeman et al. 1991), NGC 2841 (Begeman et al. 1991; Dicaire et al. 2008). For the Milky Way, Eilers et al. (2019) estimate a dark halo of about 7 × 10¹¹ Suns in all.</p>`
+			notes: `<p>The four galaxies and their rotation-curve sources: NGC 3198 (Begeman 1987; Begeman et al. 1991; Daigle et al. 2006), NGC 2403 (Fraternali et al. 2002; Daigle et al. 2006), DDO 154 (Carignan &amp; Beaulieu 1989; Begeman et al. 1991), NGC 2841 (Begeman et al. 1991; Dicaire et al. 2008). NGC 2403’s best fit stays at a χ² per point of about 15, yet misses by only 6 km/s on average: its error bars are tiny (some under 1 km/s), and its spiral arms put small wiggles in the speeds that no smooth model follows. For the Milky Way, Eilers et al. (2019) estimate a dark halo of about 7 × 10¹¹ Suns in all.</p>`
 		},
 		{
 			id: 'hidden',
@@ -244,7 +244,7 @@ export const spec: ExplainerSpec = {
 <p>Not ordinary matter in hiding. Dim stars, planets, cold gas and black holes are all made of ordinary matter, and the universe’s total of that is fixed at 4.9% by the microwave background and by how much helium and deuterium the Big Bang made. Surveys that watched millions of stars for the tell-tale brightening caused by a passing dark object (<em>microlensing</em>) found far too few to make up the Milky Way’s halo.</p>
 <p>The leading idea is a new kind of particle that feels gravity but not light, and barely touches ordinary matter: candidates include <dfn data-def="Weakly interacting massive particles: hypothetical particles tens to thousands of times heavier than a proton that would interact only through gravity and the weak force.">WIMPs</dfn> and <dfn data-def="Hypothetical, extremely light particles first proposed to solve a puzzle in the theory of the strong force.">axions</dfn>. Detectors deep underground and in particle colliders have searched for decades, so far without a detection. A minority of physicists instead modify the law of gravity at low accelerations (MOND); it fits galaxy rotation curves remarkably well, but struggles with clusters like the Bullet and with the microwave background.</p>
 <p>What we know for sure is what the graphs show: <strong>galaxies and clusters move as if they held about five times more matter than we can see</strong>.</p>`,
-			notes: `<p>Microlensing: watching 7 million stars in the Magellanic Clouds for 6.7 years, the EROS-2 survey found one candidate where about 39 were expected if the halo were made of half-Sun objects; objects between 0.6 × 10⁻⁷ and 15 Suns cannot be its main ingredient (Tisserand et al. 2007). The most sensitive direct search so far, the LZ tank of liquid xenon deep underground in South Dakota, found no signal in 280 days of data and set the tightest limits yet on WIMPs (LZ Collaboration 2025, arXiv:2410.17036). MOND was proposed by Mordehai Milgrom in 1983.</p>`
+			notes: `<p>Microlensing: watching 7 million stars in the Magellanic Clouds for 6.7 years, the EROS-2 survey found one candidate where about 39 were expected if the halo were made of objects of 0.4 Suns; objects between 0.6 × 10⁻⁷ and 15 Suns cannot be its main ingredient (Tisserand et al. 2007). The most sensitive direct search so far, the LZ tank of liquid xenon deep underground in South Dakota, found no WIMP signal in 280 days of data (LZ Collaboration 2025, arXiv:2410.17036) nor in 417 days reported in December 2025, which pushed the limits down to lighter WIMPs; a single unexplained event reported in 2026 is far short of a discovery. MOND was proposed by Mordehai Milgrom in 1983.</p>`
 		}
 	]
 };

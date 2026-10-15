@@ -161,14 +161,14 @@
 	// ---- the halo handle ------------------------------------------------------------
 	const handleV = $derived(halo ? haloSpeed(g, halo, ml, g.rLast) : 0);
 	const ratioFromSpeed = (v: number) =>
-		Math.min(RATIO_MAX / 2, Math.max(0, (Math.max(0, v) ** 2 * g.rLast) / G / vm.total));
+		Math.min(RATIO_MAX, Math.max(0, (Math.max(0, v) ** 2 * g.rLast) / G / vm.total));
 	function onHandle(p: Point) {
 		const v = sy.invert(p.y);
 		setParam('ratio', Math.round(ratioFromSpeed(v) * 10) / 10);
 	}
 	function onHandleKey(s: number | 'start' | 'end') {
-		const r = s === 'start' ? 0 : s === 'end' ? RATIO_MAX / 2 : ratioTarget + s * 0.1;
-		setParam('ratio', Math.round(Math.min(RATIO_MAX / 2, Math.max(0, r)) * 10) / 10);
+		const r = s === 'start' ? 0 : s === 'end' ? RATIO_MAX : ratioTarget + s * 0.1;
+		setParam('ratio', Math.round(Math.min(RATIO_MAX, Math.max(0, r)) * 10) / 10);
 	}
 
 	// ---- formatting -----------------------------------------------------------------
@@ -379,7 +379,7 @@
 			label="Mass of the dark halo"
 			value={ratioTarget}
 			min={0}
-			max={RATIO_MAX / 2}
+			max={RATIO_MAX}
 			valuetext="{ratioTarget.toFixed(1)} times the visible mass"
 			color="var(--dm-halo)"
 			onmove={onHandle}
