@@ -171,7 +171,7 @@ A topic is done when:
 - [x] black-holes
 - [x] gravitational-waves
 - [ ] dark-matter
-- [ ] big-bang
+- [x] big-bang
 - [x] exoplanets
 
 **Computing**
