@@ -238,10 +238,10 @@
 		<Readout
 			id="repertoire"
 			order={2}
-			label="Different T-cell receptors in an adult"
+			label="Different T-cell receptors in a young adult"
 			value="at least 100 million"
 		>
-			<text x={PX} y={470} font-size="13" font-weight="600">in a real adult:</text>
+			<text x={PX} y={470} font-size="13" font-weight="600">in a real young adult:</text>
 			<text x={PX} y={490} font-size="13">at least 100 million</text>
 			<text x={PX} y={506} font-size="13">different T-cell receptors</text>
 		</Readout>
@@ -369,18 +369,25 @@
 		<Readout
 			id="total"
 			order={2}
-			label="All 100 matching T cells together, at the peak"
+			label="All 100 matching T cells together, at the peak (the first are already dying as the last arrive)"
 			value="about {count(peakE.v)} killer T cells"
 			opacity={smoothstep(5.5, 6, age)}
 		>
 			<g opacity={smoothstep(5.5, 6, age)}>
 				<Label
 					x={760}
-					y={130}
-					text="× 100 cells that fit ≈ {count(peakE.v)} at the peak"
+					y={116}
+					text="all 100 cells that fit: about {count(peakE.v)} at the peak"
 					size={12}
 					weight={600}
 					color="var(--im-tcell)"
+				/>
+				<Label
+					x={760}
+					y={134}
+					text="(the first are already dying as the last arrive)"
+					size={11}
+					muted
 				/>
 			</g>
 		</Readout>

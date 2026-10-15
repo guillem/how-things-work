@@ -51,10 +51,11 @@ test('without the innate response the virus destroys the airway lining', () => {
 test('killer T cells and antibodies arrive after about a week', () => {
 	// Nothing adaptive in the first five days.
 	expect(effectors(at(primary, 5))).toBeLessThan(1);
-	// 100 matching naive T cells become tens of thousands of effectors, peaking on day 7–8.
+	// 100 matching naive T cells become "about 60,000" effectors (as the page says), peaking on
+	// day 7–8: fewer than 100 × 1,300, because the first are dying as the last arrive.
 	const e = peak(primary, effectors);
-	expect(e.v).toBeGreaterThan(1e4);
-	expect(e.v).toBeLessThan(1e5);
+	expect(e.v).toBeGreaterThan(5e4);
+	expect(e.v).toBeLessThan(7.5e4);
 	expect(e.t).toBeGreaterThan(7);
 	expect(e.t).toBeLessThan(8.5);
 	// IgM-like antibody peaks before the long-lived IgG-like antibody; the total near day 12.
