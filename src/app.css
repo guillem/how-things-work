@@ -2795,3 +2795,34 @@ kbd {
 	--gps-net: #51cf66;
 	--gps-map: #1a1d21;
 }
+/* heat-engines: hot and cold sides, work, the gas by temperature, the Carnot ceiling, steam */
+:root {
+	--he-hot: #e03131;
+	--he-hot-soft: #ffe3e3;
+	--he-cold: #1971c2;
+	--he-cold-soft: #dbe4ff;
+	--he-work: #2f9e44;
+	--he-loop: #d4380d;
+	--he-loop-fill: #d4380d2e;
+	--he-carnot: #7048e8;
+	--he-carnot-fill: #7048e817;
+	--he-metal: #ced4da;
+	--he-metal-edge: #868e96;
+	--he-steam: #74c0fc;
+	--he-water: #1c7ed6;
+}
+:root[data-theme='dark'] {
+	--he-hot: #ff6b6b;
+	--he-hot-soft: #3b1a1c;
+	--he-cold: #4dabf7;
+	--he-cold-soft: #16233a;
+	--he-work: #69db7c;
+	--he-loop: #ff8a5c;
+	--he-loop-fill: #ff8a5c33;
+	--he-carnot: #b197fc;
+	--he-carnot-fill: #b197fc1f;
+	--he-metal: #495057;
+	--he-metal-edge: #adb5bd;
+	--he-steam: #a5d8ff;
+	--he-water: #4dabf7;
+}

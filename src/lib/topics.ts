@@ -852,6 +852,15 @@ const explainers: Explainer[] = [
 		accent: '#0c8599',
 		steps: 11,
 		minutes: 20
+	},
+	{
+		slug: 'heat-engines',
+		title: 'Heat engines',
+		summary:
+			'Heat a gas and let it push a piston, run a four-stroke engine round its loop on a pressure–volume chart, then find the ceiling that the hot and cold temperatures put on every engine, from a car to a power station.',
+		accent: '#d4380d',
+		steps: 12,
+		minutes: 22
 	}
 ];
 

@@ -2992,6 +2992,23 @@
 		{/each}
 		<circle cx="104" cy="66" r="4.5" fill={accent} />
 		<circle cx="104" cy="66" r="8" fill="none" stroke={accent} stroke-width="1.2" opacity="0.6" />
+	{:else if slug === 'heat-engines'}
+		<!-- a cylinder and piston, and the loop the gas traces on a pressure–volume chart -->
+		<g stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round">
+			<path d="M28 22 L28 96 L66 96 L66 22" opacity="0.5" />
+			<path d="M47 66 L47 108" opacity="0.5" />
+			<path d="M92 18 L92 102 L184 102" opacity="0.45" />
+		</g>
+		<rect x="30" y="62" width="34" height="9" rx="2" fill="currentColor" opacity="0.45" />
+		<rect x="30" y="24" width="34" height="38" fill={accent} opacity="0.35" />
+		<path
+			d="M104 92 C 116 88, 116 70, 108 30 C 128 40, 150 62, 176 80 L 176 96 C 150 95, 126 94, 104 92 Z"
+			fill={accent}
+			fill-opacity="0.25"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linejoin="round"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
