@@ -28,7 +28,9 @@
 	let { step, t, params, reduced }: StageProps = $props();
 
 	type Mode = 'free' | 'inertia' | 'primary' | 'secondary' | 'ufls';
-	const mode = $derived(String(step.hints?.mode ?? 'free') as Mode);
+	const MODES: Mode[] = ['free', 'inertia', 'primary', 'secondary', 'ufls'];
+	// another scene's mode can arrive for a frame while this scene is leaving: draw 'free'
+	const mode: Mode = $derived(MODES.find((m) => m === step.hints?.mode) ?? 'free');
 	const num = (id: string, d: number) => Number(params[id] ?? d);
 	const flag = (id: string) => params[id] !== false;
 
@@ -165,7 +167,7 @@
 	);
 
 	// ---- labels
-	const fmt = (v: number) => Math.round(v).toLocaleString('en-GB');
+	const fmt = (v: number) => (Math.round(v) || 0).toLocaleString('en-GB');
 	const eventText = $derived(
 		mode === 'free'
 			? lost > 0
@@ -241,7 +243,7 @@
 			<circle r="9" fill="var(--stage-ink)" opacity="0.6" />
 		</g>
 	</g>
-	<Readout id="rpm" order={3} label="Generators turn at" value="{rpm.toLocaleString('en-GB')} rpm">
+	<Readout id="rpm">
 		<Label x={170} y={244} text="every generator: {rpm.toLocaleString('en-GB')} turns a minute" />
 	</Readout>
 	<Readout id="rotor-note">
@@ -295,10 +297,10 @@
 		/>
 		<Readout id="ufls-line">
 			<Label
-				x={CX1 - 6}
-				y={sy(UFLS_STEPS[0]) - 7}
+				x={CX0 + 8}
+				y={sy(UFLS_STEPS[0]) + 16}
 				text="49.0 Hz: load shedding starts"
-				anchor="end"
+				anchor="start"
 				color="var(--pg-alarm)"
 			/>
 		</Readout>
@@ -402,9 +404,11 @@
 			anchor="start"
 			size={13}
 			weight={600}
-			text={lost >= 0
+			text={lost > 0
 				? `Where the missing ${fmt(lost)} MW comes from, at the dot`
-				: `Where the extra ${fmt(-lost)} MW goes, at the dot`}
+				: lost < 0
+					? `Where the extra ${fmt(-lost)} MW goes, at the dot`
+					: 'Balanced: nothing to make up'}
 		/>
 	</Readout>
 	<line

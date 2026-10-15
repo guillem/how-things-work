@@ -22,7 +22,9 @@
 		F0,
 		ISLAND_FCR,
 		SECONDS_PER_HOUR,
+		OVER_TRIP,
 		UFLS_STEPS,
+		UNDER_TRIP,
 		autopilot,
 		demandAt,
 		realDispatch,
@@ -147,6 +149,8 @@
 		return m >= 60 ? `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min` : `${m} min`;
 	};
 	const status = $derived.by(() => {
+		if (f < UNDER_TRIP) return 'blackout: below 47.5 Hz power stations disconnect';
+		if (f > OVER_TRIP) return 'over 51.5 Hz: power stations disconnect';
 		if (g.grid.shed > 0)
 			return `${Math.round(g.grid.shed).toLocaleString('en-GB')} MW of customers cut off`;
 		if (inBand) return 'inside the band';
@@ -191,7 +195,20 @@
 
 	// ---- the balance now: used (top) against supplied (bottom)
 	const BX0 = 372;
-	const sb = scale([0, 40000], [BX0, 930]);
+	const total = (vs: number[]) => vs.reduce((a, b) => a + Math.max(0, b), 0);
+	const sb = $derived(
+		scale(
+			[
+				0,
+				Math.max(
+					40000,
+					g.demand - Math.min(0, g.sources.exchange) - Math.min(0, g.sources.storage),
+					total(Object.values(g.sources))
+				)
+			],
+			[BX0, 930]
+		)
+	);
 	const segs = (items: { key: string; name: string; v: number; color: string }[]) => {
 		let x = 0;
 		return items
@@ -473,12 +490,7 @@
 		stroke="var(--stage-ink)"
 		stroke-dasharray="3 3"
 	/>
-	<Readout
-		id="used"
-		order={8}
-		label="Used"
-		value={gw(g.demand + Math.max(0, -g.sources.exchange) + Math.max(0, -g.sources.storage))}
-	>
+	<Readout id="used">
 		<Label
 			x={BX0 + 6}
 			y={UY + 5}
@@ -489,15 +501,9 @@
 			anchor="start"
 		/>
 	</Readout>
-	<Readout
-		id="supplied"
-		order={9}
-		label="Supplied"
-		value={gw(g.supply + Math.max(0, -g.sources.exchange) + Math.max(0, -g.sources.storage))}
-	/>
-	{#each supplied as s, i (s.key)}
+	{#each supplied as s (s.key)}
 		{#if s.x1 - s.x0 > 44}
-			<Readout id="seg-{s.key}" order={20 + i} label={s.name} value={gw(s.v)} color={s.color}>
+			<Readout id="seg-{s.key}">
 				<Label x={(s.x0 + s.x1) / 2} y={SY + 30} text={s.name} />
 			</Readout>
 		{/if}

@@ -82,7 +82,7 @@
 	const hourRow: Hour = $derived(DAY[Math.max(0, Math.min(23, Math.floor(hour)))]);
 	const hh = (h: number) => String(h).padStart(2, '0');
 	const span = $derived(`${hh(hourRow.hour)}:00–${hh((hourRow.hour + 1) % 24)}:00`);
-	const gw = (mw: number) => `${(mw / 1000).toFixed(1)} GW`;
+	const gw = (mw: number) => `${(mw / 1000).toFixed(1).replace('-', '−')} GW`;
 	const { max, min } = demandExtremes();
 	const gwh = Math.round(dailyEnergy('demand') / 1000);
 
@@ -250,7 +250,7 @@
 			{@const row = Math.floor(i / 4)}
 			<g transform="translate({X0 + col * 212} {494 + row * 26})">
 				<rect x="0" y="-11" width="14" height="14" rx="3" fill={l.color} />
-				<Readout id="leg-{l.key}" order={10 + i} label={l.name} value={gw(l.v)} color={l.color}>
+				<Readout id="leg-{l.key}">
 					<Label x={22} y={1} text="{l.name} {gw(l.v)}" anchor="start" />
 				</Readout>
 			</g>

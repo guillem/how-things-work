@@ -32,7 +32,8 @@
 
 	const fmt = (v: number, d = 0) =>
 		v.toLocaleString('en-GB', { minimumFractionDigits: d, maximumFractionDigits: d });
-	const pct = (v: number) => (v < 0.1 ? fmt(v * 100, 1) : fmt(v * 100, 0)) + '%';
+	const pct = (v: number) =>
+		v < 0.001 ? 'under 0.1%' : (v < 0.1 ? fmt(v * 100, 1) : fmt(v * 100, 0)) + '%';
 
 	// ---- geometry of the link
 	const GY = 170;
@@ -168,7 +169,12 @@
 		<g transform="translate({GEN.x} {GEN.y}) rotate({(tt * 120) % 360})">
 			<rect x="-28" y="-9" width="56" height="18" rx="6" fill="var(--pg-rotor)" />
 		</g>
-		<Readout id="gen" order={1} label="Generator" value="20 kV · {fmt(genA)} A">
+		<Readout
+			id="gen"
+			order={1}
+			label={mode === 'chain' ? undefined : 'Generator'}
+			value="20 kV · {fmt(genA)} A"
+		>
 			<Label x={GEN.x} y={GEN.y + 62} text="generator" weight={600} />
 			<Label x={GEN.x} y={GEN.y + 80} text="20 kV · {fmt(genA)} A" muted />
 		</Readout>
@@ -203,7 +209,7 @@
 		<Readout
 			id="up"
 			order={2}
-			label="Step-up transformer"
+			label={mode === 'chain' ? undefined : 'Step-up transformer'}
 			value={mode === 'chain'
 				? '20 → 400 kV'
 				: `20 → ${lineKv} kV, 1 : ${fmt(ratio, ratio < 10 ? 1 : 0)}`}

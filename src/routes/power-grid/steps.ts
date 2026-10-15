@@ -330,7 +330,7 @@ export const spec: ExplainerSpec = {
 			controls: [tripPlant, pilot, gas, hydro, storage, startTrip],
 			body: `
 <p>A nuclear reactor shuts down automatically when anything looks wrong — and at 1,000 MW it is the biggest plant on this grid. Press the button and watch.</p>
-<p>The frequency drops to about <strong>49.81 Hz</strong>: the governors have used all 1,000 MW of their reserve to hold it there. The grid survives, but it is now one problem away from load shedding. Within minutes the operator has to start other plants to replace the reactor and free the reserve again. Do it yourself, with the gas or the dams — or switch to the autopilot, which calls up gas over about five minutes.</p>`,
+<p>The frequency drops to about <strong>49.81 Hz</strong>: the governors have used almost all of their 1,000 MW of reserve to hold it there (the rest of the gap is made up by motors slowing down). The grid survives, but it is now one problem away from load shedding. Within minutes the operator has to start other plants to replace the reactor and free the reserve again. Do it yourself, with the gas or the dams — or switch to the autopilot, which calls up gas over about five minutes.</p>`,
 			notes: `<p>This is why every grid holds a primary reserve at least as large as its largest single plant, and why it plans, every hour, for the loss of any one of them (the "N−1" rule). ${ISLAND}</p>`
 		},
 		{
