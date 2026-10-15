@@ -8,6 +8,9 @@ import {
 	flow,
 	integratedForce,
 	liftCoefficient,
+	measuredDrag,
+	measuredLift,
+	measuredSlope,
 	naca4ZeroLift,
 	pressureCells,
 	section,
@@ -33,6 +36,9 @@ import {
 	RHO0,
 	WEIGHT,
 	WING_SLOPE,
+	angleFor,
+	clNeeded,
+	dynamicPressure,
 	atmosphere,
 	density,
 	drag,
@@ -227,4 +233,23 @@ test('thrust equal to drag holds level flight; more climbs, less descends', () =
 	expect(steady(50 * KT, 0, 1500).stalled).toBe(true);
 	expect(steady(55 * KT, 0, 1500).stalled).toBe(false);
 	expect(steady(55 * KT, 10000 * FT, 1500).stalled).toBe(true);
+});
+
+test('the numbers the narrative quotes', () => {
+	// measured slope of the NACA 0012, a little under 2π (0.110 per degree)
+	expect(measuredSlope()).toBeCloseTo(0.107, 3);
+	// the readouts interpolate the 80-grit run, mirrored for negative angles
+	expect(measuredLift(17.13)).toBeCloseTo(1.61, 2);
+	expect(measuredLift(-5)).toBeCloseTo(-measuredLift(5), 10);
+	expect(measuredDrag(0)).toBeLessThan(0.0085);
+	// ½ρV² at 100 kt at sea level
+	expect(dynamicPressure(RHO0, 100 * KT)).toBeCloseTo(1621, 0);
+	// lift coefficient needed at 100 and 60 kt, and the angle of attack at 100 kt
+	expect(clNeeded(RHO0, 100 * KT)).toBeCloseTo(0.43, 2);
+	expect(clNeeded(RHO0, 60 * KT)).toBeCloseTo(1.2, 1);
+	expect(angleFor(clNeeded(RHO0, 100 * KT)) / DEG).toBeCloseTo(2.9, 1);
+	// the least drag, about a ninth of the weight
+	expect(drag(RHO0, MIN_DRAG_SPEED).total).toBeCloseTo(1253, -1);
+	// air leaves the trailing edge of the 2%-cambered section 8° down at 5°
+	expect(trailingFlowAngle(flow(section(0.12, 0.02), 5 * DEG)) / DEG).toBeCloseTo(-8, 0);
 });

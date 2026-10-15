@@ -153,7 +153,7 @@
 			stroke-dasharray="2 4"
 		/>
 		<path d={totalPath} fill="none" stroke="var(--stage-ink)" stroke-width="2.6" />
-		<Readout id="k-par" label="Parasite drag, grows as V²" color="var(--fl-drag)">
+		<Readout id="k-par">
 			<T
 				x={sx(118)}
 				y={sy(at(118).parasite) - 10}
@@ -164,7 +164,7 @@
 				color="var(--fl-drag)"
 			/>
 		</Readout>
-		<Readout id="k-ind" label="Induced drag, falls as 1/V²" color="var(--fl-weight)">
+		<Readout id="k-ind">
 			<T
 				x={sx(66)}
 				y={sy(at(66).induced) + 22}
@@ -174,7 +174,7 @@
 				color="var(--fl-weight)"
 			/>
 		</Readout>
-		<Readout id="k-tot" label="Total drag">
+		<Readout id="k-tot">
 			<T
 				x={sx(118) + 4}
 				y={sy(at(118).total) - 10}
@@ -256,7 +256,7 @@
 		{#each section as r, i (i)}
 			<circle cx={px(r[2])} cy={py(r[1])} r="3" fill="var(--fl-data)" />
 		{/each}
-		<Readout id="k-sec" label="NACA 0012 section alone (measured)" color="var(--fl-data)">
+		<Readout id="k-sec">
 			<T
 				x={px(0.03)}
 				y={py(1.62) + 4}
@@ -265,7 +265,7 @@
 				color="var(--fl-data)"
 			/>
 		</Readout>
-		<Readout id="k-plane" label="Whole Cessna 172S">
+		<Readout id="k-plane">
 			<T
 				x={px(dragCoefficient(1.3)) + 10}
 				y={py(1.3) + 4}
@@ -368,11 +368,7 @@
 		stroke-dasharray="2 3"
 	/>
 	<circle cx={glider[0]} cy={glider[1]} r="4" fill="var(--fl-thrust)" opacity={gliderFade} />
-	<Readout
-		id="glide"
-		label="Best glide (handbook)"
-		value="{C172.glideNmPer1000ft} nm per 1000 ft, at {C172.glideKias} kt"
-	>
+	<Readout id="glide">
 		<T x={GX0 + 6} y={GY0 - 8} text="1000 ft" size={12} />
 		<T
 			x={GX1}

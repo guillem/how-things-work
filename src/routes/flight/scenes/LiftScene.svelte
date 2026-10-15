@@ -370,7 +370,7 @@
 	/>
 
 	<!-- key -->
-	<Readout id="key-thin" label="2πα, thin-airfoil theory" color="var(--fl-theory)">
+	<Readout id="key-thin">
 		<line
 			x1={480}
 			y1={78}
@@ -382,11 +382,11 @@
 		/>
 		<T x={512} y={82} text="2πα, thin-airfoil theory" size={12} />
 	</Readout>
-	<Readout id="key-ideal" label="Ideal flow, 12% symmetric section" color="var(--fl-ideal)">
+	<Readout id="key-ideal">
 		<line x1={480} y1={98} x2={504} y2={98} stroke="var(--fl-ideal)" stroke-width="2" />
 		<T x={512} y={102} text="ideal flow, 12% symmetric section" size={12} />
 	</Readout>
-	<Readout id="key-data" label="Measured, NACA 0012 (Ladson, NASA)" color="var(--fl-data)">
+	<Readout id="key-data">
 		<circle cx={492} cy={118} r="3.6" fill="var(--fl-data)" />
 		<T x={512} y={122} text="measured, NACA 0012 (Ladson, NASA)" size={12} />
 	</Readout>

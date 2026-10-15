@@ -84,7 +84,7 @@
 			d: across,
 			len: K * liftN,
 			color: 'var(--fl-lift)',
-			label: `lift ${fmtForce(liftN)}`
+			label: stalled ? `lift ${fmtForce(liftN)}, at most` : `lift ${fmtForce(liftN)}`
 		},
 		{
 			k: 'weight',
@@ -105,7 +105,7 @@
 			d: [-along[0], -along[1]],
 			len: K4 * st.drag,
 			color: 'var(--fl-drag)',
-			label: `drag ${fmtForce(st.drag)}`
+			label: stalled ? 'drag ?' : `drag ${fmtForce(st.drag)}`
 		}
 	]);
 	const labelPos = (a: { k: string; d: number[]; len: number }) => {
@@ -115,7 +115,7 @@
 		if (a.k === 'weight') return { x: x + 8, y: y + 2, anchor: 'start' as const };
 		if (a.k === 'thrust') return { x, y: y - 18, anchor: 'start' as const };
 		// below the fuselage, clear of the tail
-		return { x: CGX - 96, y: CGY + 84, anchor: 'end' as const };
+		return { x: CGX - 44, y: CGY + 36, anchor: 'end' as const };
 	};
 
 	// ---- moving sky --------------------------------------------------------------------
@@ -221,13 +221,7 @@
 		stroke-width="4"
 		marker-end="url(#arrowhead)"
 	/>
-	<Readout
-		id="f-{a.k}"
-		label={a.label.split(' ')[0]}
-		value={a.label.slice(a.label.indexOf(' ') + 1)}
-		color={a.color}
-		order={10 + arrows.indexOf(a)}
-	>
+	<Readout id="f-{a.k}">
 		<T x={lp.x} y={lp.y} text={a.label} size={13} weight={700} color={a.color} anchor={lp.anchor} />
 	</Readout>
 {/each}
@@ -286,13 +280,13 @@
 	<circle cx={GX} cy={gy(altFt)} r="7" fill="var(--fl-thrust)" />
 	<T
 		x={GX + 12}
-		y={gy(altFt) - 10}
+		y={gy(altFt) + 4}
 		text="{((rho / RHO0) * 100).toFixed(0)}%"
 		size={12}
 		weight={650}
 	/>
-	<T x={GX + 12} y={gy(altFt) + 6} text="air" size={11} muted />
-	<T x={GX + 30} y={G1 - 24} text="altitude" size={11.5} anchor="end" muted />
+	<T x={GX + 34} y={G1 - 30} text="altitude," size={11.5} anchor="end" muted />
+	<T x={GX + 34} y={G1 - 15} text="air density" size={11.5} anchor="end" muted />
 </Readout>
 
 <!-- readouts -->
@@ -370,7 +364,11 @@
 		y={82}
 		w={286}
 		label="Thrust − drag"
-		value={fmtForce(thrustN - st.drag)}
+		value={stalled
+			? '—'
+			: Math.abs(thrustN - st.drag) < 15
+				? 'balanced'
+				: fmtForce(thrustN - st.drag)}
 		color={Math.abs(thrustN - st.drag) < 15 ? 'var(--fl-lift)' : undefined}
 	/>
 	<Row

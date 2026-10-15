@@ -16,8 +16,11 @@ export function fmtPa(n: number) {
 	return `${minus(n)}${(a / 1000).toFixed(a < 10000 ? 2 : 1)} kPa`;
 }
 
-/** A signed decimal with a true minus sign. */
-export const signed = (x: number, d = 2) => `${minus(x)}${Math.abs(x).toFixed(d)}`;
+/** A decimal with a true minus sign, and none for a value that rounds to zero. */
+export function signed(x: number, d = 2) {
+	const s = Math.abs(x).toFixed(d);
+	return `${Number(s) === 0 ? '' : minus(x)}${s}`;
+}
 
 /** Degrees with a true minus sign. */
-export const deg = (x: number, d = 1) => `${minus(x)}${Math.abs(x).toFixed(d)}°`;
+export const deg = (x: number, d = 1) => `${signed(x, d)}°`;
