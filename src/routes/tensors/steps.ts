@@ -24,11 +24,11 @@ const len = (id: string, label: string, def: number, help?: string): Control => 
 	help
 });
 const lengths: Control[] = [
-	len('n0', 'Length of axis 0 (layers)', 2),
-	len('n1', 'Length of axis 1 (rows)', 3),
+	len('n0', 'Number of layers', 2),
+	len('n1', 'Number of rows', 3),
 	len(
 		'n2',
-		'Length of axis 2 (columns)',
+		'Number of columns',
 		4,
 		'Or drag the handles at the ends of the axes. An axis exists only while the block has that many axes.'
 	)
@@ -232,7 +232,7 @@ export const spec: ExplainerSpec = {
 			controls: [row, col],
 			body: `
 <p>Here is a real photograph, a scarlet macaw, shrunk to 48 × 36 pixels so that each one stays visible. A screen makes every pixel from red, green and blue light, so the picture is stored as three numbers per pixel, each from 0 (none of that colour) to 255 (full).</p>
-<p>That makes it a tensor with three axes: <strong>height</strong> (48 rows), <strong>width</strong> (36 columns) and <strong>channel</strong> (3 colours). Its shape is (48, 36, 3), 48 × 36 × 3 = 5184 numbers. Watch the picture come apart into its three <dfn data-def="One of the colour layers of an image: red, green or blue. Each holds one number per pixel.">channels</dfn>: the parrot's feathers are bright in the red layer, the leaves behind it in the green one, its tail in the blue one.</p>
+<p>That makes it a tensor with three axes: <strong>height</strong> (48 rows), <strong>width</strong> (36 columns) and <strong>channel</strong> (3 colours). Its shape is (48, 36, 3), 48 × 36 × 3 = 5184 numbers. Watch the picture come apart into its three <dfn data-def="One of the colour layers of an image: red, green or blue. Each holds one number per pixel.">channels</dfn>: the red feathers are bright in the red layer and nearly black in the other two, the yellow feathers are bright in both red and green, and the blue feathers of the tail are brightest in the blue one. The leaves behind the bird are only mid-grey, even in the green layer.</p>
 <p>Drag the marker to pick a pixel: two indices (row and column) leave three numbers, the pixel's colour.</p>`,
 			notes: `<p>The photograph is “Scarlet Macaw” by Adrian Pingstone (public domain, Wikimedia Commons), averaged down from 750 × 1002 pixels. Most image libraries store pictures this way, height first and channels last; PyTorch prefers channels first, (3, 48, 36), and a batch of 32 pictures for a neural network is a tensor with four axes, (32, 3, 48, 36).</p>`
 		},
@@ -293,8 +293,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>To turn the photo grey, give each channel a weight and add up, pixel by pixel: grey = 0.299 × red + 0.587 × green + 0.114 × blue. These are the <dfn data-def="Weights for the brightness of a pixel from its red, green and blue values, from the television standard ITU-R BT.601. Green gets the most weight because the eye is most sensitive to it.">BT.601 luma weights</dfn>, still the classic recipe; green weighs most because the eye is most sensitive to it, and the weights add up to 1, so white stays white.</p>
 <p>It is the matrix–vector product again. The image has shape (48, 36, <strong class="tag combine">3</strong>) and the weights (<strong class="tag combine">3</strong>,): the <strong class="tag combine">channel</strong> axis matches and is summed away; <strong class="tag keep">height</strong> and <strong class="tag keep">width</strong> are kept. The result is a (48, 36) grey picture.</p>
-<p>Change the weights. With 1, 0, 0 the grey picture is just the red channel, and the red parrot glows; with 0, 1, 0 the leaves do.</p>`,
-			notes: `<p>The weights are applied to the stored (gamma-encoded) values, which is what BT.601 specifies and what most simple converters do. Weighing true light intensities instead would mean undoing the sRGB encoding first; the result looks a little different.</p>`
+<p>Change the weights. With 1, 0, 0 the grey picture is just the red channel, and the red parrot glows. With 0, 1, 0 the red feathers go dark and the yellow ones stay bright, while the leaves are only mid-grey: their green values are smaller than you might think.</p>`,
+			notes: `<p>The weights are applied to the stored (gamma-encoded) values, which is what BT.601 specifies and what most simple converters do. Weighing true light intensities instead would mean undoing the sRGB encoding first; the result looks a little different. Strictly, sRGB pictures use the primaries of BT.709, whose weights are 0.2126, 0.7152 and 0.0722; the 601 weights remain the common default.</p>`
 		},
 		{
 			id: 'average',
@@ -312,7 +312,7 @@ export const spec: ExplainerSpec = {
 <li><strong>height and width</strong>: the photo's average colour, three numbers;</li>
 <li><strong>all three</strong>: one number, the average brightness.</li>
 </ul>
-<p>Slicing, reshaping, products and averages are all choices about axes: <strong>which to keep and which to combine</strong>. A neural network is built from little else, applied to tensors with millions of numbers, which is why graphics chips, built to do thousands of multiply-and-adds at once, run it so well.</p>`
+<p>Slicing, reshaping, products and averages are all choices about axes: <strong>which to keep and which to combine</strong>. A neural network is built mostly from these operations, plus simple nonlinear functions, applied to tensors with millions of numbers, which is why graphics chips, built to do thousands of multiply-and-adds at once, run it so well.</p>`
 		},
 		// ------------------------------------------------------------------ physics
 		{
@@ -336,7 +336,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'stress' },
 			controls: [cut],
 			body: `
-<p>Inside a loaded steel plate, every bit of material pushes and pulls on its neighbours. How hard depends on the direction you look in. Imagine a cut through the plate whose <dfn data-def="The unit arrow at right angles to a surface, pointing out of it.">normal</dfn> n points in some direction: the material on the far side pulls on the cut with a force per area, the <dfn data-def="The force per unit area acting across a cut through a material, in MPa (newtons per square millimetre). It is a vector: it can pull straight out, slide along the cut, or both.">traction</dfn> t. The <dfn data-def="The 3 × 3 (in a flat plate 2 × 2) table σ that gives the force per area on a cut through a material from the cut's normal: t = σ n. Its components change by σ′ = Rᵀ σ R when the axes turn.">stress tensor</dfn> σ is the machine that gives t for any n:</p>
+<p>Inside a loaded steel plate, every bit of material pushes and pulls on its neighbours. How hard depends on the direction you look in. Imagine a cut through the plate whose <dfn data-def="The unit arrow at right angles to a surface, pointing out of it.">normal</dfn> n points in some direction: the material on the side n points to pulls on the cut with a force per area, the <dfn data-def="The force per unit area acting across a cut through a material, in MPa (newtons per square millimetre). It is a vector: it can pull straight out, slide along the cut, or both.">traction</dfn> t. The <dfn data-def="The 3 × 3 (in a flat plate 2 × 2) table σ that gives the force per area on a cut through a material from the cut's normal: t = σ n. Its components change by σ′ = Rᵀ σ R when the axes turn.">stress tensor</dfn> σ is the machine that gives t for any n:</p>
 <p class="formula"><strong>t = σ n</strong>, &nbsp; σ = ${m(2, 'σxx', 'τxy', 'τxy', 'σyy')} = ${m(2, '80', '30', '30', '20')} MPa</p>
 <p>Here σxx = 80 MPa (megapascals, newtons per square millimetre) pulls along x, σyy = 20 MPa along y, and the shear τxy = 30 MPa slides neighbouring layers past each other; ordinary structural steel starts to yield at about 250 MPa. Turn the cut: t is rarely parallel to n, because the shear drags it sideways. The stress-tensor matrix eats one direction and returns an arrow; its two axes stand for the two directions involved.</p>`,
 			notes: `<p>Read as a <dfn data-def="A function of several vectors that is linear in each one separately: double one input and the output doubles.">multilinear</dfn> map, σ takes two directions and gives a number: m · (σ n) is the force per area, on the cut with normal n, in the direction m. Double either arrow and the answer doubles. This is the general definition: a tensor with k indices is a machine that is linear in each of k directions. In a solid body σ is 3 × 3; the page uses <em>plane stress</em>, the 2 × 2 part that matters in a thin plate loaded in its own plane. σ is symmetric (τxy = τyx) because otherwise each tiny square would spin.</p>`
@@ -349,10 +349,10 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'rotate' },
 			controls: [theta],
 			body: `
-<p>Describe the same stress in turned axes and its four numbers change, with one factor of R for each of its two axes:</p>
+<p>Describe the same stress in turned axes and its four numbers change, with one factor of R for each of its two indices (its two array axes):</p>
 <p class="formula"><strong>σ′ = Rᵀ σ R</strong></p>
 <p>On the stage, the little square of material is drawn along x′ and y′, with the stresses on its faces. Drag the axes round. σ′ changes, but some things never do: σ′xx + σ′yy = 100 MPa, and the determinant σ′xx σ′yy − τ′xy² = 700 MPa², because the material and its load haven't changed, only the description.</p>
-<p>At θ = 22.5° the shear vanishes. These are the <dfn data-def="The axes in which the stress tensor has no shear. The stresses along them, the principal stresses, are the largest and smallest normal stresses in the material at that point.">principal axes</dfn>: pure pulls of 92.4 and 7.6 MPa, the largest and smallest anywhere at that point, and the eigenvalues of σ. Engineers start from them when they check whether the steel will hold. Turn by 180°: an arrow's components flip sign, but every component of σ comes back unchanged, because it picks up the sign twice.</p>`,
+<p>At θ = 22.5° the shear vanishes. These are the <dfn data-def="The axes in which the stress tensor has no shear. The stresses along them, the principal stresses, are the largest and smallest normal stresses in the material at that point.">principal axes</dfn>: pure pulls of 92.4 and 7.6 MPa, the largest and smallest normal stresses on any cut through that point, and the eigenvalues of σ. Engineers start from them when they check whether the steel will hold. Turn by 180°: an arrow's components flip sign, but every component of σ comes back unchanged, because it picks up the sign twice.</p>`,
 			notes: `<p>For rotations, Rᵀ undoes R, so σ′ = R⁻¹ σ R as well: the same rule as changing the basis of the matrix of a linear transformation. For skewed axes the two rules differ, and physicists keep track with upper and lower indices: a quantity that eats arrows (like σ read as m · σ n) changes as Pᵀ σ P, while a transformation changes as P⁻¹ M P. In the general theory a tensor is defined by such a rule, one factor per index.</p>`
 		},
 		{
@@ -366,9 +366,9 @@ export const spec: ExplainerSpec = {
 <p>So “tensor” means two related things:</p>
 <ul>
 <li>In <strong>computing</strong>, any array of numbers with axes: the photo, a batch of photos, the weights of a neural network. Operations are choices about which axes to keep and which to combine.</li>
-<li>In <strong>physics</strong>, a quantity whose numbers follow a fixed rule when the coordinate axes turn: one factor of R per axis. Stress, the inertia of a spinning body, and the curvature of spacetime in general relativity are tensors in this sense.</li>
+<li>In <strong>physics</strong>, a quantity whose numbers follow a fixed rule when the coordinate axes turn: one factor of R per index. Stress, the inertia of a spinning body, and the curvature of spacetime in general relativity are tensors in this sense.</li>
 </ul>
-<p>Turn the axes once more. The stress components change by the rule. The colour of a pixel, (red, green, blue), is an array with one axis too, but turning the axes of space means nothing to it: there is no rule, and its numbers stay put. Every physics tensor can be stored as an array, but not every array is a physics tensor.</p>`
+<p>Turn the axes once more. The stress components change by the rule. The colour of a pixel, (red, green, blue), is an array with one axis too, but that axis lists colours, not directions in space. Turning the axes does not mix its numbers the way it mixed F's, so it is not a vector in the physicist's sense, just three separate numbers. Every physics tensor can be stored as an array, but not every array is a physics tensor.</p>`
 		}
 	]
 };

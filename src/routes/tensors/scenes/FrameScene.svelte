@@ -11,7 +11,7 @@
 	 *              part across the cut and the part along it
 	 *   rotate   — the square drawn along x′, y′ with the stresses σ′ = Rᵀ σ R on its faces; the
 	 *              principal axes (22.5°, 112.5°) dashed
-	 *   meanings — the same, smaller, beside a pixel's (red, green, blue), which has no rule
+	 *   meanings — the same, smaller, beside a pixel's (red, green, blue), whose axis is colour, not a direction in space
 	 *
 	 * The face arrows breathe gently (a function of t) so the loaded plate reads as loaded; they
 	 * are still under reduced motion.
@@ -811,7 +811,7 @@
 			order={2}
 			label="Just an array: a pixel"
 			value="(212, 23, 22)"
-			note="no rule: turning the axes of space means nothing to it"
+			note="not a vector of space: turning the axes doesn't mix its numbers"
 			opacity={w.meanings}
 		>
 			<g opacity={w.meanings}>
@@ -830,8 +830,8 @@
 					size={18}
 					weight={700}
 				/>
-				<T x={PX - 90} y={404} text="no rule: turning the axes of space" size={14} />
-				<T x={PX - 90} y={426} text="means nothing to it, and its numbers stay put" size={14} />
+				<T x={PX - 90} y={404} text="its axis is colour, not a direction in space:" size={14} />
+				<T x={PX - 90} y={426} text="turning the axes doesn't mix its numbers" size={14} />
 			</g>
 		</Readout>
 	{/if}

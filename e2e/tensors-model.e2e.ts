@@ -53,6 +53,21 @@ test.describe('arrays', () => {
 		expect(r).toBeGreaterThan(150);
 		expect(r).toBeGreaterThan(2 * g);
 		expect(r).toBeGreaterThan(2 * b);
+		// The pixel the physics chapter shows as “just an array”.
+		expect([r, g, b]).toEqual([212, 23, 22]);
+	});
+
+	test('in the green channel the yellow feathers outshine the leaves', () => {
+		// The narrative: with weights 0, 1, 0 the yellow feathers stay bright, the leaves mid-grey.
+		const img = macaw();
+		const px = Array.from({ length: 48 * 36 }, (_, p) => [0, 1, 2].map((c) => img.data[p * 3 + c]));
+		const meanGreen = (a: number[][]) => a.reduce((s, v) => s + v[1], 0) / a.length;
+		const leaf = px.filter(([r, g, b]) => g > r && g > b && g > 40);
+		const yellow = px.filter(([r, g, b]) => r > 200 && g > 150 && b < 150);
+		expect(leaf.length).toBeGreaterThan(100);
+		expect(yellow.length).toBeGreaterThan(50);
+		expect(meanGreen(yellow)).toBeGreaterThan(meanGreen(leaf) + 50);
+		expect(meanGreen(leaf)).toBeLessThan(128);
 	});
 
 	test('a slice fixes one index and drops that axis', () => {
