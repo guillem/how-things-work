@@ -190,7 +190,7 @@ A topic is done when:
 - [x] compression
 - [x] error-correction
 - [x] cryptography
-- [ ] wireless-signals
+- [x] wireless-signals
 - [x] internet
 - [x] gps
 - [x] pagerank
