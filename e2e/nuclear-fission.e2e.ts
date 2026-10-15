@@ -80,15 +80,15 @@ test('pulling the rods raises the power slowly; a scram drops it at once', async
 	await page.clock.install();
 	await open(page, './nuclear-fission/#operate', false);
 	await expect(stage(page)).toContainText('100.0%');
-	await slider(page, 'bank').fill('40');
+	await slider(page, 'bank').fill('48');
 	await playUntil(page, stage(page), 'rising', 3000);
 	await page.clock.runFor(5000);
 	const power = async () =>
 		Number(/(\d+\.\d)%/.exec((await stage(page).textContent()) ?? '')?.[1] ?? NaN);
 	// Delayed neutrons: seconds later the power has grown, but not run away.
 	const p = await power();
-	expect(p).toBeGreaterThan(110);
-	expect(p).toBeLessThan(200);
+	expect(p).toBeGreaterThan(101);
+	expect(p).toBeLessThan(118);
 	await page.getByRole('button', { name: 'Scram: drop all rods' }).click();
 	await playUntil(page, stage(page), 'shut down', 3000);
 	await page.clock.runFor(3000);
@@ -96,4 +96,11 @@ test('pulling the rods raises the power slowly; a scram drops it at once', async
 	await slider(page, 'bank').fill('50');
 	await page.getByRole('button', { name: 'Start again at 100%' }).click();
 	await playUntil(page, stage(page), 'steady', 3000);
+});
+
+test('pulling every rod out trips the reactor before the power runs away', async ({ page }) => {
+	await page.clock.install();
+	await open(page, './nuclear-fission/#operate', false);
+	await slider(page, 'bank').fill('0');
+	await playUntil(page, stage(page), 'automatic trip at 118%', 30_000);
 });

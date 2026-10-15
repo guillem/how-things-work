@@ -282,12 +282,6 @@ test('the numbers the narrative quotes for scale', () => {
 	const perMolecule = (890.71e3 / AVOGADRO / MEV) * 1e6; // eV
 	expect(perMolecule).toBeCloseTo(9.2, 1);
 	expect((FISSION_ENERGY.heat * 1e6) / perMolecule / 1e6).toBeCloseTo(22, 0);
-	// Fission neutrons at 2 MeV move at about 20,000 km/s; thermal ones at about 2.2 km/s.
-	const speed = (eV: number) => Math.sqrt((2 * eV * 1e-6 * MEV) / 1.674927e-27);
-	expect(speed(2e6) / 1e3).toBeCloseTo(19_600, -3);
-	expect(speed(0.0253)).toBeCloseTo(2200, -2);
 	// Decay heat at shutdown of a 3 GW plant: about 180 MW.
 	expect((decayHeat(1) * 3e9) / 1e6).toBeCloseTo(180, -1);
-	// The 50-generation look-ahead of the core plot spans 5 ms.
-	expect(50 * GENERATION_TIME).toBeCloseTo(0.005, 9);
 });

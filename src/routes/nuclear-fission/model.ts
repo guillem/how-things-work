@@ -468,6 +468,12 @@ export const promptOnlyRate = (rho: number) => rho / GENERATION_TIME;
 export const BANK_WORTH = 0.006;
 /** Reactivity of the bank at insertion x, relative to half in (the critical position). */
 export const bankReactivity = (x: number) => BANK_WORTH * (rodShape(0.5) - rodShape(x));
+/**
+ * Power at which the protection system scrams the reactor by itself, relative
+ * to full power. Real high-power trips sit somewhat above 100%; this value is
+ * a design choice of this page.
+ */
+export const POWER_TRIP = 1.18;
 /** Reactivity once every rod has dropped in (a scram); several dollars below critical. */
 export const SCRAM_REACTIVITY = -0.06;
 

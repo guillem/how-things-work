@@ -64,7 +64,7 @@ const water: Control = {
 	id: 'water',
 	label: 'Water in the core',
 	min: 0,
-	max: 300,
+	max: 500,
 	step: 1,
 	default: 100,
 	format: (v) => `${Math.round(v)}%`,
@@ -146,7 +146,7 @@ export const spec: ExplainerSpec = {
 <p>A slow <dfn data-def="A particle of the nucleus with no electric charge and about the mass of a proton.">neutron</dfn> drifts into a nucleus of <strong>uranium-235</strong>: 92 protons and 143 neutrons. Having no charge, it is not pushed away, and the nucleus swallows it. It is now uranium-236, with energy to spare, and it starts to wobble.</p>
 <p>The wobble stretches it into a dumbbell. The two ends, each full of protons, push each other apart electrically, and the nucleus <strong>splits in two</strong>: this is <dfn data-def="The splitting of a heavy nucleus into two lighter ones, releasing energy and a few neutrons.">nuclear fission</dfn>. The two <dfn data-def="The two lighter nuclei a fission leaves behind. They are radioactive, with too many neutrons.">fission fragments</dfn> fly apart at a few percent of the speed of light, and two or three new neutrons are set free.</p>
 <p>Press <em>Fire a neutron</em> and pick how it splits. Each split is different: there are hundreds of possible pairs of fragments, always one lighter and one heavier.</p>`,
-			notes: `<p>The fragments are radioactive: they have the neutron-to-proton ratio of uranium, far too many neutrons for nuclei their size. Each then goes through a chain of <a href="../radioactivity/#beta">beta decays</a>, turning neutrons into protons, until it reaches a stable nucleus: barium-141 ends as praseodymium-141, krypton-92 as zirconium-92. Uranium-235 also decays on its own, very slowly (half-life 704 million years); a neutron makes it split almost at once.</p>`
+			notes: `<p>The fragments are radioactive: they have the neutron-to-proton ratio of uranium, far too many neutrons for nuclei their size. Each then goes through a chain of <a href="../radioactivity/#beta">beta decays</a>, turning neutrons into protons, until it reaches a stable nucleus: barium-141 ends as praseodymium-141, krypton-92 as zirconium-92. Uranium-235 also decays on its own, very slowly (half-life 704 million years, NNDC NuDat); a neutron makes it split almost at once.</p>`
 		},
 		{
 			id: 'binding',
@@ -158,7 +158,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Protons and neutrons are held in a nucleus by the strong force. Pulling a nucleus fully apart takes energy: its <dfn data-def="The energy needed to pull a nucleus apart into separate protons and neutrons. The larger it is per particle, the more tightly the nucleus is held together.">binding energy</dfn>. The curve shows it per particle (per <dfn data-def="A proton or a neutron.">nucleon</dfn>) for every mass number, from measured masses.</p>
 <p>It rises steeply among the light nuclei, peaks around <strong>iron and nickel</strong> at about 8.8 MeV per nucleon, and then falls slowly: big nuclei hold their particles less tightly, because the repulsion between their many protons reaches across the whole nucleus while the strong force only grips neighbours. That is why <a href="../stars/#collapse">stars stop at iron</a>.</p>
-<p>Uranium-235 sits at <strong>7.59 MeV</strong> per nucleon. Its fragments, about half its size, sit at <strong>8.3 to 8.6</strong>. Splitting moves 236 nucleons up the curve by almost 1 MeV each: about 200 MeV in all.</p>`,
+<p>Uranium-235 sits at <strong>7.59 MeV</strong> per nucleon. Its fragments, about half its size, sit at <strong>8.3 to 8.6</strong>. Splitting moves 236 nucleons up the curve by about 0.8 MeV each: about 200 MeV in all.</p>`,
 			notes: `<p>The curve plots, for each mass number A, the most tightly bound nucleus, using the 2020 Atomic Mass Evaluation (AME2020, W.J. Huang et al. and M. Wang et al., Chinese Physics C 45, 030002–3, 2021). The very top is nickel-62 at 8.795 MeV per nucleon, just above iron-58 and iron-56 (8.790). Light nuclei release energy by joining, which is fusion, the energy source of stars; heavy nuclei by splitting. An MeV (a million electronvolts) is the energy unit of nuclear physics; a chemical bond holds a few eV.</p>`
 		},
 		{
@@ -231,7 +231,7 @@ export const spec: ExplainerSpec = {
 			controls: [enrichment],
 			body: `
 <p>Natural uranium is 99.3% <strong>uranium-238</strong>, which slow neutrons do not split, and only <strong>0.7% uranium-235</strong>. The uranium-238 still captures neutrons, and so does the hydrogen of the water: with natural uranium in water, too few neutrons are left to keep the chain going.</p>
-<p>So the fuel is <dfn data-def="Uranium whose share of uranium-235 has been raised above the natural 0.7%.">enriched</dfn> to <strong>3 to 5%</strong> uranium-235, pressed into ceramic pellets of uranium oxide and stacked in metal tubes: the fuel rods. Slide the enrichment and watch k. At 0.7% no amount of water can make it reach 1; at 4%, with the control rods half in, it is exactly critical.</p>
+<p>So the fuel is <dfn data-def="Uranium whose share of uranium-235 has been raised above the natural 0.7%.">enriched</dfn> to <strong>3 to 5%</strong> uranium-235, pressed into ceramic pellets of uranium oxide and stacked in metal tubes: the fuel rods. Slide the enrichment and watch k. At 0.7% it stays well below 1, even with the rods pulled out (on the next step), and no amount of water changes that; at 4%, with the control rods half in, it is exactly critical.</p>
 <p>The rods themselves are the next step. Their job is to soak up the neutrons a fresh core has to spare.</p>`,
 			notes: `<p>Power-reactor fuel is enriched to between about 3.5 and 5% (World Nuclear Association). Reactors moderated by heavy water (CANDU) or graphite, which absorb far fewer neutrons than ordinary water, can run on natural uranium. The bars under k are the classic <dfn data-def="k = η ε p f × (share that does not leak out): neutrons per absorption in fuel, extra from fast fission, share escaping capture while slowing down, share of slow neutrons absorbed in the fuel.">four-factor formula</dfn>, worked out for a typical pressurized-water lattice from measured cross sections (see the last step's notes).</p>`
 		},
@@ -260,7 +260,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A water-cooled reactor is designed with a little <em>less</em> water than would give the most fissions. So if the water heats up and expands, or boils into steam bubbles, fewer neutrons are slowed down, more are captured by uranium-238 on the way, and <strong>k falls</strong>. Slide the water down from 100% and watch it.</p>
 <p>That makes the reactor steady itself: more power heats the water, which lowers k, which lowers the power. And if the water were lost altogether, the chain would stop, because there would be nothing left to slow the neutrons.</p>
-<p>Push the water up instead, to 200 or 300%: k rises at first and then levels off and falls, as the water starts absorbing more neutrons than it saves.</p>`,
+<p>Push the water up instead: k rises up to about 300%, then levels off and falls by 500%, as the extra water starts absorbing more neutrons than it saves.</p>`,
 			notes: `<p>This is the negative <dfn data-def="How k changes when steam bubbles (voids) replace water in the core.">void coefficient</dfn> of water-moderated reactors. The Chernobyl reactor (an RBMK) was moderated by graphite and only cooled by water; losing water there removed an absorber but kept the moderator, so k <em>rose</em>, which, with a flawed shutdown-rod design and a test run outside the rules, led to the 1986 accident. Reactor licensing now requires the temperature and void feedbacks to be negative. Losing the water still leaves the decay heat to remove (last step).</p>`
 		},
 		// ------------------------------------------------------------------ control
@@ -288,8 +288,8 @@ export const spec: ExplainerSpec = {
 			controls: [bank, scram, restart],
 			body: `
 <p>Now you are at the controls of a 3 GW reactor running at full power with its rods at 50%. Move them a few percent: the power drifts up or down over tens of seconds. Can you bring it back and hold it at 100%?</p>
-<p>The rods on this slider are worth less than the delayed neutrons from end to end, as real control rods are limited to be, so even pulling them all the way out only makes the power grow over seconds.</p>
-<p>Press <em>Scram</em>: every rod drops in, the chain stops at once and the power falls to a few percent within a second. It does not drop to zero: the delayed neutrons still trickle out for a minute or two, and the fragments keep decaying.</p>`,
+<p>The rods on this slider are worth less than the delayed neutrons from end to end, as real control rods are limited to be, so even pulling them all the way out only makes the power grow over seconds. And if it climbs past 118%, the protection system drops every rod by itself: an automatic trip.</p>
+<p>Press <em>Scram</em>: every rod drops in, the chain stops at once and the power falls below a tenth within a second, and to a few percent within ten seconds. It does not drop to zero: the delayed neutrons still trickle out for a minute or two, and the fragments keep decaying.</p>`,
 			notes: `<p>The equations are the point-kinetics model with six groups of delayed neutrons and a prompt generation time of 10⁻⁴ s. Real reactors add their own feedback: hotter fuel captures more neutrons in uranium-238 (the Doppler effect) and warmer water slows fewer, so a power rise lowers k by itself. This page leaves that out so that you can see the chain's own behaviour, which is why holding the power exactly steady takes a careful hand.</p>`
 		},
 		{

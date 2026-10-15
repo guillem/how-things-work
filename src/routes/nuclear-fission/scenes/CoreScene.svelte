@@ -677,9 +677,7 @@
 				<text x={PX0 - 20} y={262} style:font-size="15px" font-weight="600"
 					>Neutrons over the next 50 generations</text
 				>
-				<text x={PX0 - 20} y={280} class="muted"
-					>about 5 thousandths of a second · relative to now</text
-				>
+				<text x={PX0 - 20} y={280} class="muted">generation by generation, relative to now</text>
 			</Readout>
 			<Axes
 				{sx}

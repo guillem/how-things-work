@@ -26,6 +26,7 @@
 		BETA,
 		PLANT_EFFICIENCY,
 		PLANT_HEAT,
+		POWER_TRIP,
 		SCRAM_REACTIVITY,
 		advance,
 		bankReactivity,
@@ -105,6 +106,7 @@
 	let simTime = 0;
 	let lastT = -1;
 	let scrammed = false;
+	let tripped = false;
 	let seenScram = -1;
 	let seenRestart = -1;
 	let history: { t: number; p: number }[] = [];
@@ -116,6 +118,7 @@
 				state = steady();
 				simTime = 0;
 				scrammed = false;
+				tripped = false;
 				history = [{ t: 0, p: 1 }];
 				seenScram = scrams;
 			}
@@ -132,13 +135,17 @@
 		if (dt > 0) {
 			state = advance(state, rho, dt);
 			simTime += dt;
+			if (!scrammed && state.power > POWER_TRIP) {
+				scrammed = true;
+				tripped = true;
+			}
 			const last = history[history.length - 1];
 			if (simTime - last.t >= 0.2) {
 				history.push({ t: simTime, p: state.power });
 				if (history.length > 400) history = history.slice(-320);
 			}
 		}
-		return { power: state.power, time: simTime, rho, scrammed, history };
+		return { power: state.power, time: simTime, rho, scrammed, tripped, history };
 	});
 	const opPower = $derived(live ? live.power : 1);
 	const opTime = $derived(live ? live.time : HISTORY);
@@ -170,7 +177,10 @@
 	);
 	const omega = $derived(Math.abs(opRho) < 1e-7 ? 0 : inhour(opRho));
 	const trend = $derived.by(() => {
-		if (live?.scrammed) return 'shut down: the chain has stopped';
+		if (live?.scrammed)
+			return live.tripped
+				? `automatic trip at ${fmt(POWER_TRIP * 100)}%: shut down, the chain has stopped`
+				: 'shut down: the chain has stopped';
 		if (omega === 0) return 'steady';
 		const per = Math.abs(1 / omega) * Math.LN2;
 		return omega > 0
@@ -407,7 +417,7 @@
 				style:fill={trendColour}
 				style:font-variant-numeric="tabular-nums">{fmt(opPower * 100, 1)}%</text
 			>
-			<text x={OX0 + 70} y={508} style:font-variant-numeric="tabular-nums"
+			<text x={OX0 + 120} y={508} style:font-variant-numeric="tabular-nums"
 				>{fmt((opPower * PLANT_HEAT) / 1e9, 2)} GW of heat</text
 			>
 		</Readout>
