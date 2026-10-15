@@ -29,7 +29,7 @@
  * ε̂ = (x_t − √ᾱ_t x̂₀) / √(1 − ᾱ_t), so the two carry the same information (Ho et al. section
  * 3.2 discuss both). Guessing x̂₀ suits a narrow network: a clean digit is described by far fewer
  * than 784 numbers, while the noise needs all 784, more than 512 hidden units can pass through.
- * It is trained with the noise-prediction loss weighted by min(SNR_t, 5), where SNR_t =
+ * It is trained with the noise-prediction loss weighted by min(1, 5/SNR_t), where SNR_t =
  * ᾱ_t / (1 − ᾱ_t): the "min-SNR" weighting of Hang et al., "Efficient Diffusion Training via
  * Min-SNR Weighting Strategy", ICCV 2023 (as a loss on x̂₀ it is min(SNR_t, 5) · ‖x̂₀ − x₀‖²).
  *
@@ -114,6 +114,9 @@ export interface NetConfig {
 	/** number of labels; the label embedding has one more row, "no label" */
 	classes: number;
 }
+
+/** The digit model's size (trained by scripts/data/diffusion-models/train.mjs; not shipped). */
+export const MNIST_NET: NetConfig = { D: 784, H: 512, E: 32, blocks: 3, classes: 10 };
 
 export interface Weights {
 	cfg: NetConfig;

@@ -128,7 +128,10 @@
 	const run = $derived(mode === 'reverse' ? runs[key] : undefined);
 	const ready = $derived(!!run?.frames);
 
-	const kNow = $derived(u * stepsN);
+	// with few steps each one is a visible jump (the point of the few-steps step); with many, the
+	// display slides between them
+	const smooth = $derived(stepsN >= 50);
+	const kNow = $derived(smooth ? u * stepsN : Math.round(u * stepsN));
 	const rev = $derived.by(() => {
 		const f = run?.frames;
 		if (!f) return null;
@@ -138,7 +141,6 @@
 		const w = kNow - k0;
 		const a = f.subarray(k0 * n, (k0 + 1) * n);
 		if (w <= 0 || k1 === k0) return a;
-		// between two steps, the display slides from one to the next
 		const b = f.subarray(k1 * n, (k1 + 1) * n);
 		return Float32Array.from(a, (v, i) => v + (b[i] - v) * w);
 	});
@@ -236,7 +238,7 @@
 				d={c.d}
 				fill="none"
 				stroke={c.l === 0 ? 'var(--dm-upper)' : 'var(--dm-lower)'}
-				stroke-width="18"
+				stroke-width={2 * ON_DATA * PLANE.s}
 				stroke-linecap="round"
 				opacity="0.12"
 			/>

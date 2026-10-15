@@ -7,13 +7,12 @@
 	 */
 	import Label from './Label.svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { paramCount } from '../ddpm';
+	import { MNIST_NET as DIGITS, paramCount } from '../ddpm';
 	import { MOONS } from '../moons-model';
 	import { int } from './shared';
 
 	let { t, reduced }: StageProps = $props();
 
-	const DIGITS = { D: 784, H: 512, E: 32, blocks: 3, classes: 10 };
 	const nPlane = paramCount(MOONS);
 	const nDigit = paramCount(DIGITS);
 

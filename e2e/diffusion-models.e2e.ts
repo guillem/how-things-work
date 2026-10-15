@@ -44,6 +44,17 @@ test('the 2-D model samples in the browser: more steps, more points on the moons
 	await expect(stage(page)).toContainText('points on a moon now: 62%', { timeout: 20000 });
 });
 
+test('with one step the points jump: no gliding between noise and the result', async ({ page }) => {
+	await open(page, './diffusion-models/#few-steps', 'step 1 of 1');
+	await expect(stage(page)).toContainText('points on a moon now: 34%', { timeout: 20000 });
+	// past halfway the one step is done, and the display already shows its result
+	await range(page, 'k-few').fill('60');
+	await expect(stage(page)).toContainText('step 1 of 1 · t = 0');
+	await expect(stage(page)).toContainText('points on a moon now: 34%');
+	await range(page, 'k-few').fill('40');
+	await expect(stage(page)).toContainText('step 0 of 1 · t = 1000');
+});
+
 test('guidance sends the points to the moon asked for', { tag: '@smoke' }, async ({ page }) => {
 	await open(page, './diffusion-models/#guidance-cloud', 'end on the upper moon: 92%');
 	await range(page, 'g-guide').fill('1');
