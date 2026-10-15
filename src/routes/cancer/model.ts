@@ -15,7 +15,7 @@
  *         Poisson number of harmless "passenger" mutations.
  *    The genes, at textbook level:
  *      - KRAS, an oncogene (the accelerator): one hit switches it on; the cell tries to divide
- *        every generation (b = 1 instead of 0.5);
+ *        more often (b = B_KRAS = 0.7 instead of 0.5);
  *      - TP53, a tumour-suppressor gene (a brake), two copies: a cell with one copy hit is
  *        unchanged; with both hit it escapes programmed death (d × P53_DEATH);
  *      - a mismatch-repair gene (MLH1 stands for it): once broken, the cell and its descendants
