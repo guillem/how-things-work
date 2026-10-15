@@ -105,8 +105,13 @@ export interface Gates {
 
 /** Ionic current densities (µA/cm², outward positive) at V with the gates g. */
 export function currents(V: number, g: Gates, block: Block = {}) {
-	const gNa = (block.na ?? 1) * HH.gNa * g.m * g.m * g.m * g.h;
-	const gK = (block.k ?? 1) * HH.gK * g.n ** 4;
+	// A blocker removes the voltage-gated part of a conductance; the small conductance open at
+	// rest is kept as a fixed leak, so that a blocked membrane still rests at REST (without it a
+	// full K⁺ block lets the cell fire on its own and stick near +4 mV).
+	const nb = block.na ?? 1;
+	const kb = block.k ?? 1;
+	const gNa = HH.gNa * (nb * g.m ** 3 * g.h + (1 - nb) * RESTING.m ** 3 * RESTING.h);
+	const gK = HH.gK * (kb * g.n ** 4 + (1 - kb) * RESTING.n ** 4);
 	return {
 		gNa,
 		gK,
@@ -116,7 +121,10 @@ export function currents(V: number, g: Gates, block: Block = {}) {
 	};
 }
 
-/** Fractions of the channels left working (1 = none blocked). TTX blocks Na⁺, TEA blocks K⁺. */
+/**
+ * Fractions of the voltage-gated channels left working (1 = none blocked). TTX blocks Na⁺, TEA
+ * blocks K⁺. Only the voltage-dependent opening is blocked; the conductance open at rest stays.
+ */
 export interface Block {
 	na?: number;
 	k?: number;

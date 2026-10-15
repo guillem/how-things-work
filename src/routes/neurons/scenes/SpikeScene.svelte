@@ -50,9 +50,9 @@
 				return { tEnd: 15, current: pulse(small, PULSE_AT, 0.5), block: {} };
 			case 'channels':
 				return {
-					tEnd: tea ? 40 : 20,
+					tEnd: 20,
 					current: pulse(2 * TH, PULSE_AT, 0.5),
-					block: { na: ttx ? 0 : 1, k: tea ? 0 : 1 }
+					block: { na: ttx ? 0 : 1, k: tea ? 0.1 : 1 }
 				};
 			case 'pair':
 				return {
@@ -264,7 +264,7 @@
 						rate > 0
 							? `${Math.round(rate)} spikes per second`
 							: spikes.length
-								? `${spikes.length} spike, then silence`
+								? `${spikes.length} spike${spikes.length === 1 ? '' : 's'}, then silence`
 								: 'no spike',
 					sub: rate > 0 ? 'keeps firing while the current is on' : 'too weak to keep firing'
 				};
@@ -275,7 +275,7 @@
 							text: `a spike: peak ${fmt(top.V)}`,
 							sub:
 								mode === 'channels' && tea
-									? 'it cannot end quickly without K⁺ channels'
+									? 'it ends slowly with most K⁺ channels blocked'
 									: 'all or nothing'
 						}
 					: {

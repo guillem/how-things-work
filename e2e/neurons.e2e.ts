@@ -33,7 +33,7 @@ test('tetrodotoxin blocks the spike; blocking potassium makes it long', async ({
 	await expect(stage(page)).toContainText('no sodium channels, no spike');
 	await toggle(page, 'ttx').uncheck({ force: true });
 	await toggle(page, 'tea').check({ force: true });
-	await expect(stage(page)).toContainText('it cannot end quickly without K⁺ channels');
+	await expect(stage(page)).toContainText('it ends slowly with most K⁺ channels blocked');
 });
 
 test('a second pulse too soon after a spike fires nothing', async ({ page }) => {
@@ -82,8 +82,11 @@ test('the squid axon conducts at about 18.5 m/s, a thinner one more slowly', asy
 test('myelin makes a 10 µm fibre twenty times faster', async ({ page }) => {
 	await open(page, './neurons/#myelin');
 	await expect(stage(page)).toContainText('60 m/s');
+	await expect(stage(page)).toContainText('slowed down 36,000 times');
 	await toggle(page, 'myelin').uncheck({ force: true });
 	await expect(stage(page)).toContainText('3.1 m/s');
+	// The bare fibre is slowed down less, so its creeping front still visibly moves.
+	await expect(stage(page)).toContainText('slowed down 3,000 times');
 	await expect(stage(page)).toContainText('the front creeps along');
 });
 
