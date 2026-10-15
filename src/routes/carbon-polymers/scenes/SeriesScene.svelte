@@ -18,8 +18,8 @@
 		alkaneBoiling,
 		alkaneMass,
 		alkaneMelting,
+		alkaneState,
 		broadhurst,
-		stateAt,
 		toC,
 		type State
 	} from '../polymer';
@@ -48,12 +48,10 @@
 	})();
 
 	// State at 25 °C along the strip, run by run.
-	const stateOf = (k: number): State | null => stateAt(alkaneBoiling(k), alkaneMelting(k)?.k);
 	const strip = (() => {
 		const runs: { s: State; from: number; to: number }[] = [];
 		for (let k = 1; k <= 100000; k = k < 100 ? k + 1 : Math.ceil(k * 1.05)) {
-			// Beyond the NIST boiling points, anything that melts above 25 °C is a solid.
-			const s = stateOf(k) ?? (alkaneMelting(k) && alkaneMelting(k)!.k > 298.15 ? 'solid' : null);
+			const s = alkaneState(k);
 			if (!s) continue;
 			const last = runs[runs.length - 1];
 			if (last && last.s === s) last.to = k;
@@ -70,7 +68,7 @@
 	// ---- the chosen chain
 	const m = $derived(alkaneMelting(n));
 	const b = $derived(alkaneBoiling(n));
-	const st = $derived(stateOf(n) ?? (m && m.k > 298.15 ? 'solid' : null));
+	const st = $derived(alkaneState(n));
 	const what = $derived(
 		n <= 4
 			? 'natural gas, bottled gas'
@@ -208,7 +206,7 @@
 			fill={FILL[r.s]}
 			stroke="var(--border)"
 		/>
-		<Readout id="strip-{r.s}">
+		<Readout id="strip-{r.s}-{r.from}">
 			<text
 				x={(x0 + x1) / 2}
 				y={P.y + P.h + 57}

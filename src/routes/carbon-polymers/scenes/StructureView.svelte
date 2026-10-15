@@ -29,6 +29,8 @@
 		bondLabel?: (i: number) => string | null;
 		/** Show carbon numbers (locants) next to the skeleton carbons. */
 		numbers?: boolean;
+		/** The number shown for skeleton carbon k (default k): the name's lowest locants. */
+		locant?: (k: number) => number;
 		opacity?: number;
 	}
 	let {
@@ -45,6 +47,7 @@
 		atomLabel,
 		bondLabel,
 		numbers = false,
+		locant,
 		opacity = 1
 	}: Props = $props();
 
@@ -274,7 +277,7 @@
 					text-anchor="middle"
 					style:font-size="11px"
 					style:fill="var(--cp-number)"
-					style:pointer-events="none">{a.carbon}</text
+					style:pointer-events="none">{locant ? locant(a.carbon) : a.carbon}</text
 				>
 			{/if}
 		{/each}

@@ -65,7 +65,9 @@ export function refusal(b: Build): string | null {
 		if (b.aromatic) return "Benzene's ring already shares its extra electrons all round";
 		if (!b.ring && b.at > b.n - 1) return 'There is no carbon–carbon bond there';
 		if (f === 'triple' && b.ring)
-			return 'A triple bond is straight (180°): it would bend a ring this small too far';
+			return b.n < 8
+				? 'A triple bond is straight (180°): it would bend a ring this small too far'
+				: 'Cyclooctyne exists, but is too strained for this builder';
 		return null;
 	}
 	if (b.aromatic && (f === 'CO' || f === 'COOH'))

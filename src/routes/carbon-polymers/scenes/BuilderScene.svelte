@@ -22,6 +22,7 @@
 	import {
 		FEATURES,
 		MAX_CARBONS,
+		canonical,
 		commonName,
 		family,
 		formula,
@@ -58,6 +59,13 @@
 	);
 	const structure = $derived(layout(build));
 	const compound = $derived(COMPOUNDS[BUILDS[key(build)]]);
+	/** Carbon numbers as the name counts them: from the end (or ring carbon) of the feature. */
+	const locant = $derived.by(() => {
+		const { n, at, ring, feature } = build;
+		if (!feature) return (k: number) => k;
+		if (ring) return (k: number) => ((k - at + n) % n) + 1;
+		return canonical(build).at === at ? (k: number) => k : (k: number) => n + 1 - k;
+	});
 
 	// ---- editing
 	let notice = $state<string | null>(null);
@@ -447,6 +455,7 @@
 			{onBond}
 			{atomLabel}
 			{bondLabel}
+			{locant}
 		/>
 	</g>
 	<Readout id="hint">
@@ -454,8 +463,8 @@
 			CX,
 			566,
 			build.feature
-				? 'Click another carbon or bond to move the feature; click it to take it off'
-				: 'Numbers count the carbons from the end nearer the feature',
+				? 'Numbers count from the end nearer the feature · click another carbon or bond to move it; click it to take it off'
+				: 'Drag a feature from the palette onto a carbon or a bond',
 			11,
 			{ anchor: 'middle', muted: true }
 		)}
@@ -558,7 +567,11 @@
 					{@render txt(
 						4,
 						80,
-						tb == null ? 'NIST lists no reliable boiling point' : 'no melting point in NIST',
+						!compound?.nist
+							? 'no NIST value retrieved'
+							: tb == null
+								? 'NIST lists no reliable boiling point'
+								: 'no melting point in NIST',
 						12,
 						{ muted: true }
 					)}

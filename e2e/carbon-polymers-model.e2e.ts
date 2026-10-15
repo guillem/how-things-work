@@ -35,6 +35,7 @@ import {
 	RUBBER,
 	alkaneBoiling,
 	alkaneMelting,
+	alkaneState,
 	broadhurst,
 	gelPoint,
 	shearModulus,
@@ -98,6 +99,8 @@ test('the flat drawings have the same formulas as the molecules', () => {
 test('impossible molecules are refused', () => {
 	expect(refusal(B(4, { feature: 'COOH', at: 2 }))).toMatch(/end of a chain/);
 	expect(refusal(B(6, { ring: true, feature: 'triple', at: 1 }))).toMatch(/straight/);
+	// Cyclooctyne is real, just not built here: the reason says so.
+	expect(refusal(B(8, { ring: true, feature: 'triple', at: 1 }))).toMatch(/Cyclooctyne exists/);
 	expect(refusal(B(6, { ring: true, aromatic: true, feature: 'CO', at: 1 }))).toMatch(
 		/one hydrogen/
 	);
@@ -152,6 +155,11 @@ test('at 25 °C the alkanes run from gas (C1–C4) to liquid (C5–C17) to wax (
 	for (let n = 5; n <= 16; n++) expect(st(n), `C${n}`).toBe('liquid');
 	expect(alkaneMelting(17)!.k).toBeLessThan(298.15);
 	for (const n of [18, 20, 30, 100, 10000]) expect(alkaneMelting(n)!.k).toBeGreaterThan(298.15);
+	// Every length has a state, also where NIST lists no boiling or melting point (inferred
+	// from the trend): liquid up to C17, solid from C18, with no gaps in between.
+	for (let n = 1; n <= 44; n++)
+		expect(alkaneState(n), `C${n}`).toBe(n <= 4 ? 'gas' : n <= 17 ? 'liquid' : 'solid');
+	for (const n of [100, 10000]) expect(alkaneState(n)).toBe('solid');
 });
 
 test('Broadhurst: melting points of long chains climb towards polyethylene, 141 °C', () => {
@@ -177,6 +185,18 @@ test('measured geometry: zigzag chains with C–C 1.53 Å and C–C–C 112°', 
 		if (a.el === 'C') expect(m.bonds.filter((b) => b.includes(i)).length).toBe(4);
 	});
 	expect(m.atoms.filter((a) => a.el === 'H').length).toBe(12);
+	// Propane (CCCBDB, Lide 1960): H–C–H 106.1° and C–H 1.096 Å on the middle CH₂,
+	// H–C–H 107.3° on the end CH₃.
+	const p = alkane3d(3);
+	const Hs = (c: number) =>
+		p.bonds
+			.filter((b) => b.includes(c) && p.atoms[b[0] + b[1] - c].el === 'H')
+			.map((b) => b[0] + b[1] - c);
+	const [h1, h2] = Hs(1);
+	expect(angle(p.atoms[h1].pos, p.atoms[1].pos, p.atoms[h2].pos)).toBeCloseTo(106.1, 1);
+	expect(distance(p.atoms[1].pos, p.atoms[h1].pos)).toBeCloseTo(1.096, 3);
+	const [m1, m2] = Hs(0);
+	expect(angle(p.atoms[m1].pos, p.atoms[0].pos, p.atoms[m2].pos)).toBeCloseTo(107.3, 1);
 	// Methane: a perfect tetrahedron.
 	const ch4 = alkane3d(1);
 	expect(angle(ch4.atoms[1].pos, ch4.atoms[0].pos, ch4.atoms[2].pos)).toBeCloseTo(109.47, 2);
