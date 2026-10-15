@@ -108,7 +108,7 @@
 	{/each}
 	<line x1={X0} x2={X0} y1={Y1} y2={Y0} stroke="var(--stage-line)" />
 	<line x1={X0} x2={X1} y1={Y0} y2={Y0} stroke="var(--stage-line)" />
-	<Readout id="axis" label="Chart">
+	<Readout id="axis">
 		<Tag
 			x={X0}
 			y={42}

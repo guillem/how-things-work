@@ -149,7 +149,7 @@
 	</Readout>
 
 	<!-- the four strains -->
-	<Readout id="rows-title" label="Strains">
+	<Readout id="rows-title">
 		<Tag
 			x={480}
 			y={70}

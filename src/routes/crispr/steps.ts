@@ -25,10 +25,10 @@ const mutation: Control = {
 	label: 'One letter of the phage changed',
 	default: 'seed',
 	options: [
-		{ value: 'none', label: 'None: the original phage' },
+		{ value: 'none', label: 'None' },
 		{ value: 'distal', label: 'Far from the PAM' },
-		{ value: 'seed', label: 'In the seed, next to the PAM' },
-		{ value: 'pam', label: 'In the PAM itself' }
+		{ value: 'seed', label: 'In the seed' },
+		{ value: 'pam', label: 'In the PAM' }
 	]
 };
 
@@ -39,10 +39,10 @@ const strain: Control = {
 	label: 'Bacterium on the plate',
 	default: 'bim',
 	options: [
-		{ value: 'wt', label: 'The original strain' },
-		{ value: 'bim', label: 'A survivor, with its new spacers' },
-		{ value: 'removed', label: 'The survivor with the new spacers removed' },
-		{ value: 'added', label: 'The original strain given the new spacers' }
+		{ value: 'wt', label: 'Original' },
+		{ value: 'bim', label: 'Survivor' },
+		{ value: 'removed', label: 'Survivor, spacers removed' },
+		{ value: 'added', label: 'Original + spacers' }
 	]
 };
 

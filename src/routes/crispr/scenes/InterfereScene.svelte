@@ -203,7 +203,7 @@
 	<!-- overview -->
 	<Readout id="title" order={0} label="On the stage" value={title}>
 		<Tag x={OX} y={70} text={title} size={14} weight={600} anchor="start" />
-		<Tag x={OX} y={90} text="all letters made up for teaching" size={11} anchor="start" muted />
+		<Tag x={OX} y={166} text="all letters made up for teaching" size={11} anchor="start" muted />
 	</Readout>
 	{#each Array.from({ length: N }, (_, i) => i) as i (i)}
 		<rect
@@ -281,7 +281,7 @@
 			font-weight="600">Cas9 + crRNA</text
 		>
 	</g>
-	<Readout id="key" label="PAMs">
+	<Readout id="key">
 		<Tag
 			x={OX + N * PX}
 			y={166}
@@ -303,7 +303,7 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		<Readout id="closeup" label="Close-up">
+		<Readout id="closeup">
 			<Tag
 				x={CX}
 				y={256}
@@ -423,7 +423,7 @@
 				opacity={cutU}
 			/>
 		{/if}
-		<Readout id="rows" label="Rows">
+		<Readout id="rows">
 			<Tag x={CX - 8} y={ROW_TOP + 6} text="DNA" size={11} anchor="end" muted />
 			<Tag x={CX - 8} y={ROW_RNA + 3} text="crRNA" size={11} anchor="end" color="var(--cr-rna)" />
 		</Readout>

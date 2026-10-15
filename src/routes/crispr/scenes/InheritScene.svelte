@@ -105,7 +105,7 @@
 			</g>
 		{/if}
 	{/each}
-	<Readout id="gens" label="Generations">
+	<Readout id="gens">
 		<Tag x={300} y={100} text="a survivor of phages A, B and C" size={12} muted />
 		<Tag
 			x={300}

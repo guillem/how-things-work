@@ -208,7 +208,7 @@
 			>
 				<Tag
 					x={DNA_X}
-					y={DNA_Y - 44}
+					y={DNA_Y - 70}
 					text="DNA of phage {NAMES[newIdx]}, just injected (made-up, 240 letters)"
 					size={13}
 					weight={600}
@@ -216,7 +216,7 @@
 				/>
 				<Tag
 					x={DNA_X + 720}
-					y={DNA_Y - 44}
+					y={DNA_Y - 70}
 					text="yellow: PAMs (any letter, then GG)"
 					size={12}
 					anchor="end"
