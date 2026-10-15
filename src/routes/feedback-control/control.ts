@@ -339,14 +339,14 @@ const ramp = (x: number, a: number, b: number) => {
 /**
  * Grade (rise over run) at distance x (m) along the road:
  *   hills  flat for 400 m, then two rolling hills of ±2.5% (800 m each), then flat
- *   climb  flat for 300 m, a 1 km climb at 8%, then flat again
+ *   climb  flat for 300 m, a 1 km climb at 8.4%, then flat again
  */
 export function grade(road: Road, x: number) {
 	if (road === 'hills') {
 		if (x < 400 || x > 2000) return 0;
 		return 0.025 * Math.sin((TAU * (x - 400)) / 800);
 	}
-	if (road === 'climb') return 0.08 * (ramp(x, 300, 380) - ramp(x, 1260, 1340));
+	if (road === 'climb') return 0.084 * (ramp(x, 300, 380) - ramp(x, 1260, 1340));
 	return 0;
 }
 

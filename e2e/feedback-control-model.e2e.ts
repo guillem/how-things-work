@@ -106,16 +106,18 @@ test('PI control removes the error; too strong an integral overshoots', () => {
 	expect(kmh(peak(strong, strong.y))).toBeGreaterThan(98);
 });
 
-test('integral windup: after an 8% climb at full throttle the car overshoots, unless clamped', () => {
-	const wound = drive({ road: 'climb', gains: car(10, 3) });
-	const clamped = drive({ road: 'climb', gains: car(10, 3), antiWindup: true });
-	// the climb is too steep for the engine: full throttle, and the speed sags to ~85 km/h
-	expect(peak(wound, wound.u, 20, 50)).toBe(1);
-	expect(kmh(Math.min(...wound.y))).toBeLessThan(86);
-	expect(kmh(peak(wound, wound.y))).toBeGreaterThan(105);
-	expect(kmh(peak(clamped, clamped.y))).toBeLessThan(96);
-	// the wound-up integral then swings it well below the target too
-	expect(range(wound, 65)[0]).toBeLessThan(83);
+test('integral windup: after an 8.4% climb at full throttle the car overshoots, unless clamped', () => {
+	const wound = drive({ road: 'climb', gains: car(10, 3), v0: 25 });
+	const clamped = drive({ road: 'climb', gains: car(10, 3), antiWindup: true, v0: 25 });
+	// the climb is too steep for the engine: full throttle all the way up, about 85 km/h
+	expect(
+		Math.min(...wound.u.slice(Math.round(20 / wound.sample), Math.round(50 / wound.sample)))
+	).toBe(1);
+	const climbing = kmh(mean(wound, wound.y, 30, 50));
+	expect(climbing).toBeGreaterThan(84);
+	expect(climbing).toBeLessThan(86);
+	expect(kmh(peak(wound, wound.y))).toBeCloseTo(116, 0);
+	expect(kmh(peak(clamped, clamped.y))).toBeCloseTo(93, 0);
 });
 
 test('too much P: the throttle starts to chatter past the ultimate gain', () => {
