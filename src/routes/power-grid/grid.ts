@@ -502,7 +502,8 @@ export interface Line {
 
 /**
  * A three-phase line sending `mw` at `kv` (line-to-line) over `km`: I = P / (√3 V),
- * loss = 3 I² R. Resistive losses only (the line's inductance and capacitance are ignored).
+ * loss = 3 I² R. Unity power factor (no reactive current), resistive losses only (the line's
+ * inductance and capacitance are ignored).
  */
 export function line(mw: number, kv: number, km: number): Line {
 	const current = (mw * 1e6) / (Math.sqrt(3) * kv * 1e3);
