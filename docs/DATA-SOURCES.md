@@ -151,21 +151,21 @@ Unconfirmed:
 
 Attribution/share-alike:
 
-- **Gaia** (stars): add "© ESA/Gaia/DPAC, CC BY-SA 3.0 IGO" to the page's credit.
+- **Gaia** (stars): done 2026-10-15 — the page credits ESA/Gaia/DPAC, CC BY-SA 3.0 IGO.
 - **Johnson / Lee** (stars): met on the page; consider shipping the licence notice with the data
   (for example a credits page) so the share-alike follows the built file.
-- **Bird PB2002** (plate-tectonics): name Ahlenius/Nordpil's conversion and ODC-BY 1.0 in the
-  map's credit line.
+- **Bird PB2002** (plate-tectonics): done 2026-10-15 — the map's notes name Ahlenius/Nordpil's
+  conversion and ODC-BY 1.0.
 - **Merdith 2021** (deep-time), **GCB 2025 figures** (carbon-cycle), **AME2020**
-  (nuclear-fission, nuclear-fusion): add the licence to the existing credit, and make the two AME
-  headers agree.
+  (nuclear-fission, nuclear-fusion): done 2026-10-15 — the credits name CC BY 4.0 / CC BY 3.0
+  (the papers; AME's data file states no licence), and the two AME headers agree.
 
 Non-commercial:
 
 - **REE** (power-grid): keep the site non-commercial, or replace with data under an open licence
   (for example ENTSO-E or a national open-data portal).
-- **LibreTexts** (redox-batteries): name CC BY-NC-SA on the page, or re-source the potentials
+- **LibreTexts** (redox-batteries): CC BY-NC-SA is now named on the page (2026-10-15); re-source the potentials
   from the primary compilations (Bard, Parsons & Jordan; the CRC Handbook), which are facts.
-- **Giunta / Bodenstein** (reaction-rates-equilibrium): credit Giunta (and OpenStax) on the page,
-  and check the exact wording of the permission on Giunta's page. Re-deriving the values from
+- **Giunta / Bodenstein** (reaction-rates-equilibrium): Giunta and OpenStax are credited on the
+  page (2026-10-15); still check the exact wording of the permission on Giunta's page. Re-deriving the values from
   Bodenstein's 1899 paper (public domain) would remove the restriction.

@@ -4,7 +4,7 @@
  *
  * Source: M. Wang, W. J. Huang, F. G. Kondev, G. Audi and S. Naimi, "The AME 2020 atomic mass
  * evaluation (II). Tables, graphs and references", Chinese Physics C 45, 030003 (2021), open
- * access (CC BY 3.0); file mass_1.mas20.txt from the IAEA Atomic Mass Data Center,
+ * access (CC BY 3.0; the data file itself states no licence); file mass_1.mas20.txt from the IAEA Atomic Mass Data Center,
  * https://www-nds.iaea.org/amdc/ame2020/mass_1.mas20.txt. Estimated (#) values are left out.
  *
  * `curve`: for each mass number A, the measured nuclide with the largest binding energy per

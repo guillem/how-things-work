@@ -3,7 +3,8 @@
 // Source: AME2020 atomic mass evaluation, Atomic Mass Data Center (IAEA),
 // https://www-nds.iaea.org/amdc/ (file mass_1.mas20.txt, unrounded values).
 // Citation: W.J. Huang et al., Chinese Physics C 45, 030002 (2021); M. Wang et al.,
-// Chinese Physics C 45, 030003 (2021). Published for free use; cite the papers above.
+// Chinese Physics C 45, 030003 (2021), open access (CC BY 3.0); the data file itself states no
+// licence and is published for free use, so the papers are cited.
 //
 // `curve`: for each mass number A, the nuclide with the largest experimental binding energy
 // per nucleon (estimated '#' values skipped): [A, Z, element, B/A in keV].
