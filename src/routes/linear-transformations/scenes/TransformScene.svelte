@@ -854,7 +854,7 @@
 				<T x={PX} y={222} text="ĵ lands on {pt(jL)}" size={15} weight={600} color="var(--lt-j)" />
 				<T x={PX} y={290} text="A linear transformation:" size={14} weight={600} />
 				<T x={PX} y={316} text="• the origin stays put" size={13} />
-				<T x={PX} y={338} text="• straight lines stay straight" size={13} />
+				<T x={PX} y={338} text="• straight lines stay straight (or collapse)" size={13} />
 				<T x={PX} y={360} text="• parallel, evenly spaced lines" size={13} />
 				<T x={PX + 12} y={378} text="stay parallel and evenly spaced" size={13} />
 				<T x={PX} y={450} text="Drag the tips of î and ĵ, or focus" size={13} muted />

@@ -199,7 +199,7 @@ export const spec: ExplainerSpec = {
 <p>How much speed can a rocket gain? Not simply "exhaust speed × propellant": early on, each kilogram of gas has to push the whole full rocket, so it gives little speed; the last kilograms push an almost empty one. Adding it all up gives the <strong>rocket equation</strong>, derived by Konstantin Tsiolkovsky in 1897 and published in 1903:</p>
 <p class="formula">Δv = v<sub>e</sub> × ln(m<sub>start</sub> / m<sub>end</sub>)</p>
 <p>Δv ("delta-v") is the speed gained, v<sub>e</sub> the exhaust speed, and m<sub>start</sub> / m<sub>end</sub> the <dfn data-def="The rocket's mass full divided by its mass when the propellant is used up.">mass ratio</dfn>. "ln" is the natural logarithm, which grows ever more slowly: make the rocket 80% propellant (a mass ratio of 5) and it gains 1.6 exhaust speeds; 90% (ratio 10) gives 2.3; 95% (ratio 20) only 3.0.</p>`,
-			notes: `<p>This ignores gravity and air: it is the speed gained in empty space. Rocket engineers quote exhaust speed as <em>specific impulse</em>, in seconds: the exhaust speed divided by 9.81 m/s². 300 s means about 2.9 km/s.</p>`
+			notes: `<p>This ignores gravity and air: it is the speed gained in empty space. Rocket engineers quote exhaust speed as <em>specific impulse</em>, in seconds: the exhaust speed divided by 9.81 m/s². 300 s means about 2.9 km/s. Strictly this is the <em>effective</em> exhaust speed: thrust divided by the mass flow, which also counts the push of the exhaust's pressure at the nozzle exit, and so changes with the outside air pressure.</p>`
 		},
 		{
 			id: 'tyranny',
