@@ -149,7 +149,7 @@ A topic is done when:
 - [x] vision-color
 - [ ] immune-system
 - [x] epidemics
-- [ ] mrna-vaccines
+- [x] mrna-vaccines
 - [ ] cancer
 - [x] medical-imaging
 
