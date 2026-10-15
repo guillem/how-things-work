@@ -120,7 +120,7 @@
 	 * Care 42:1593, 2019).
 	 */
 	function zone(g: number) {
-		if (g < THRESHOLDS.severeHypo)
+		if (g < THRESHOLDS.hypoLevel2)
 			return { text: 'dangerously low', color: 'var(--hm-hypo)', strong: true };
 		if (g < THRESHOLDS.hypo)
 			return { text: 'low: hypoglycaemia', color: 'var(--hm-hypo)', strong: true };
@@ -161,13 +161,16 @@
 				return {
 					at: FROM,
 					text: `Fasting: ${Math.round(fast)} mg/dL`,
+					// The healthy adult sits at Topp et al.'s reference value, 100 mg/dL,
+					// which is where the ADA's prediabetes range begins: say it is the
+					// model's reference rather than give it a clinical class by rounding.
 					sub:
-						fast >= THRESHOLDS.fastingDiabetes
-							? 'diabetes (126 or more)'
-							: fast >= THRESHOLDS.fastingNormal + 0.5
-								? 'prediabetes (100–125)'
-								: fast >= THRESHOLDS.fastingNormal - 0.5
-									? 'edge of normal (under 100)'
+						sc.production === 1 && sc.sensitivity === 1
+							? "the model's healthy reference"
+							: fast >= THRESHOLDS.fastingDiabetes
+								? 'diabetes range (126 or more)'
+								: fast >= THRESHOLDS.fastingNormal
+									? 'prediabetes range (100–125)'
 									: 'normal (under 100)',
 					ok: fast < THRESHOLDS.fastingDiabetes
 				};
@@ -175,10 +178,10 @@
 				const lo = ext.lo.g;
 				const hi = ext.hi.g;
 				const sub =
-					lo < THRESHOLDS.severeHypo
+					lo < THRESHOLDS.hypoLevel2
 						? 'level 2 hypoglycaemia: dangerous'
 						: lo < THRESHOLDS.hypo
-							? 'hypoglycaemia'
+							? 'level 1 hypoglycaemia'
 							: hi > 250
 								? 'very high'
 								: hi > 180
