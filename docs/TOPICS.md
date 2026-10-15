@@ -565,11 +565,11 @@ A topic is done when:
 - **Related:** chaos-fractals, epidemics
 
 #### crispr
-- **Title:** CRISPR & gene editing
+- **Title:** CRISPR: how bacteria remember viruses
 - **Level:** 2
 - **Kind:** step
-- **Interaction:** Choose a target in a gene and design a 20-letter guide RNA; watch Cas9 scan the DNA, find the match beside its PAM site and cut. Choose how the cell repairs the break (disabling the gene or inserting a supplied template) and check the genome for off-target matches.
-- **Takeaway:** CRISPR is a programmable cutter: a short RNA sequence tells the enzyme where to cut, and the cell's own repair machinery makes the edit.
+- **Interaction:** Infect a bacterium with phages and watch it store a piece of a survived virus as a new spacer in its CRISPR array; follow the array being read into guide RNAs, and watch a Cas protein scan an invader's DNA, check the PAM beside the match and cut. Toggle the PAM to see why the cell spares its own array, mutate the phage to see it escape, and run a population of bacteria and phages through an arms race. Gene editing is mentioned only as the later use of this system.
+- **Takeaway:** A bacterium keeps a piece of each virus it survives in its own DNA, and uses RNA copies of that record to find and cut the same virus next time.
 - **Prerequisites:** dna-to-protein
 
 ### Body & Medicine
@@ -650,7 +650,7 @@ A topic is done when:
 - **Title:** Medical imaging
 - **Level:** 2
 - **Kind:** manipulate
-- **Interaction:** Rotate an X-ray source around a simple body and record its shadow at each angle, then watch the cross-section emerge as the projections are combined. Change the number of angles, toggle the filtering step that sharpens the result, and compare with a plain X-ray of the same body.
+- **Interaction:** Rotate an X-ray source around a simple body and record its shadow at each angle, then watch the cross-section emerge as the projections are combined. Change the number of angles, toggle the filtering step that sharpens the result, and compare with a plain X-ray of the same body. Close with how ultrasound and MRI build images by other means.
 - **Takeaway:** A CT scanner never sees a slice directly; it measures many shadows and computes the image that explains them all.
 - **Prerequisites:** fourier-transform
 
@@ -1006,7 +1006,7 @@ A topic is done when:
 - **Title:** Neural networks & backpropagation
 - **Level:** 2
 - **Kind:** build
-- **Interaction:** Pick a 2D classification dataset and build a network by adding layers and neurons; train it live and watch the decision boundary and each neuron's output evolve. Pause to step through one example: values flow forward, then error signals flow backward and adjust each weight.
+- **Interaction:** Pick a 2D classification dataset and build a network by adding layers and neurons; train it live and watch the decision boundary and each neuron's output evolve. Then step through one example on a small 2-2-1 network: values flow forward, then error signals flow backward and adjust each weight.
 - **Takeaway:** A neural network is layers of simple units whose weights are tuned by passing the error backward, and stacking layers lets it bend a simple boundary into almost any shape.
 - **Prerequisites:** gradient-descent, linear-transformations
 - **Related:** tensors, protein-folding, neurons, gpu
@@ -1015,7 +1015,7 @@ A topic is done when:
 - **Title:** Convolution & computer vision
 - **Level:** 2
 - **Kind:** manipulate
-- **Interaction:** Slide a small editable filter across an image and see the output build up; try blur, sharpen and edge filters. Then inspect a trained network layer by layer: early filters respond to edges, later ones to textures and object parts, ending in a labeled prediction for a drawn or uploaded image.
+- **Interaction:** Slide a small editable filter across an image and see the output build up; try blur, sharpen and edge filters. Then inspect a trained network layer by layer: early filters respond to edges, later ones to parts of the shapes it was trained on (in larger networks, textures and object parts), ending in a labeled prediction for a drawn digit.
 - **Takeaway:** A convolutional network reuses the same small detectors across the whole image and stacks them, so simple features combine into complex ones.
 - **Prerequisites:** neural-networks
 - **Related:** vision-color
@@ -1036,7 +1036,7 @@ A topic is done when:
 - **Title:** Attention & transformers
 - **Level:** 3
 - **Kind:** step
-- **Interaction:** Type a sentence and hover over any token to see, layer by layer and head by head, which other tokens it attends to. Step through one attention operation: queries are matched against keys, the scores become weights, and values are mixed into a new vector for each token.
+- **Interaction:** Pick one of several example sentences and hover over any token to see, layer by layer and head by head, which other tokens a real small transformer attends to (weights precomputed from the model). Step through one attention operation: queries are matched against keys, the scores become weights, and values are mixed into a new vector for each token.
 - **Takeaway:** Attention lets every token gather information from every other token in one step, with learned weights deciding what is relevant, and a transformer is that operation stacked many times.
 - **Prerequisites:** embeddings, neural-networks
 - **Related:** language-models
@@ -1046,7 +1046,7 @@ A topic is done when:
 - **Title:** Large language models
 - **Level:** 2
 - **Kind:** step
-- **Interaction:** Type a prompt and see it split into tokens, then view the model's probability for each candidate next token as a bar chart. Generate one token at a time while adjusting temperature and top-p, and compare several continuations of the same prompt.
+- **Interaction:** Type any text to see it split into tokens; for a set of example prompts, view a real small model's probability for each candidate next token as a bar chart (precomputed). Pick tokens one at a time while adjusting temperature and top-p, and compare several sampled continuations of the same prompt.
 - **Takeaway:** A language model does one thing, predict the next token, and fluent text, answers and code emerge from doing that repeatedly with a very large network trained on a very large amount of text.
 - **Prerequisites:** embeddings, neural-networks
 - **Related:** transformers
@@ -1056,7 +1056,7 @@ A topic is done when:
 - **Title:** Diffusion models
 - **Level:** 3
 - **Kind:** step
-- **Interaction:** Add noise to an image step by step until only static remains, then run the learned reverse process and scrub through the denoising steps. Change the number of steps, the random seed and the strength of the text guidance; begin with a 2D cloud of points, where the whole process can be seen at once.
+- **Interaction:** Add noise to an image step by step until only static remains, then run the learned reverse process and scrub through the denoising steps. Change the number of steps, the random seed and the strength of the guidance toward a prompt (a class label here; how text prompts work is sketched), live in a 2D cloud of points, where the whole process can be seen at once, and as precomputed comparisons for images.
 - **Takeaway:** A diffusion model learns to remove a little noise at a time, so generating an image means starting from pure noise and denoising it repeatedly toward something that matches the prompt.
 - **Prerequisites:** neural-networks, embeddings
 - **Needs:** A small diffusion model for the 2D case, and precomputed denoising sequences for images.
