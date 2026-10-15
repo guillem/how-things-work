@@ -444,7 +444,7 @@
 				sx={sv}
 				sy={syLog}
 				xTicks={[0, 0.5, 1, 1.5]}
-				yTicks={[-13, -11, -9, -7, -5, -3]}
+				yTicks={[-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3]}
 				xFormat={(v: number) => `${v} V`}
 				yFormat={(v: number) => `10${sup(v)} A`}
 				yLabel="drain current"

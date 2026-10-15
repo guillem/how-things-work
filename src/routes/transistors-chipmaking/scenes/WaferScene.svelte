@@ -224,10 +224,10 @@
 				<circle r={R} fill="var(--tc-wafer)" stroke="var(--stage-line)" stroke-width={1.5 / k(0)} />
 				<path d={diePath} fill="var(--tc-die)" opacity="0.55" />
 				<rect
-					x={-0.5 * DIE * PX0}
-					y={-1.5 * DIE * PX0}
-					width={fieldCols * DIE * PX0}
-					height={fieldRows * DIE * PX0}
+					x={(-0.5 * DIE - (FIELD_MM.w - fieldCols * DIE) / 2) * PX0}
+					y={(-1.5 * DIE - (FIELD_MM.h - fieldRows * DIE) / 2) * PX0}
+					width={FIELD_MM.w * PX0}
+					height={FIELD_MM.h * PX0}
 					fill="none"
 					stroke="var(--tc-uv)"
 					stroke-width={2.5 / k(0)}
@@ -366,7 +366,7 @@
 		{/each}
 	</Readout>
 	<Readout id="note">
-		{#each level === 0 ? ['Each chip here is the size of Apple’s M1', '(about 119 mm²). The violet frame is one', 'exposure field, 26 × 33 mm: six chips', 'printed by a single flash of light.'] : level === 1 ? ['16 billion transistors in about 119 mm².', 'Blocks drawn schematically; the yellow', 'one is where we zoom in.'] : level === 2 ? ['Logic is laid out in rows of standard', 'cells of equal height, like text in lines.'] : level === 3 ? ['Rows of cells 210 nm tall. Gates (pink)', 'every 51 nm cross the silicon (green);', 'metal wires (blue) connect them.'] : ['Each gate wraps over thin fins of silicon:', 'where a gate crosses its fins, there is', 'one transistor (yellow frame).'] as line, i (i)}
+		{#each level === 0 ? ['Each chip here is the size of Apple’s M1', '(about 119 mm²). The violet frame is one', 'exposure field, 26 × 33 mm: six chips', 'printed in one sweep of the scanner.'] : level === 1 ? ['16 billion transistors in about 119 mm².', 'Blocks drawn schematically; the yellow', 'one is where we zoom in.'] : level === 2 ? ['Logic is laid out in rows of standard', 'cells of equal height, like text in lines.'] : level === 3 ? ['Rows of cells 210 nm tall. Gates (pink)', 'every 51 nm cross the silicon (green);', 'metal wires (blue) connect them.'] : ['Each gate wraps over thin fins of silicon:', 'where a gate crosses its fins, there is', 'one transistor (yellow frame).'] as line, i (i)}
 			{@render txt(630, 200 + i * 20, line, 12, { anchor: 'start', muted: true })}
 		{/each}
 	</Readout>
