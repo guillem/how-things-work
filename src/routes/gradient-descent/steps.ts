@@ -237,7 +237,7 @@ export const spec: ExplainerSpec = {
 <p>This landscape has three valleys of different depths. Dropped near the top of the map, the ball rolls into the nearest valley downhill from it — not the deepest one — and stops there, at a loss of 0.43 instead of 0.</p>
 <p>Gradient descent only ever feels the ground under it, so it finds a <dfn data-def="A point lower than everything around it, but not necessarily the lowest point of the whole landscape (the global minimum).">local minimum</dfn>: a point lower than its surroundings. There is no guarantee that it is the <strong>global minimum</strong>, the lowest of all.</p>
 <p>Click around the map to drop the ball in different places. The map divides into regions — one per valley — and the starting point alone decides where the ball ends.</p>`,
-			notes: `<p>For a line, as for every model whose loss is a single bowl (a <em>convex</em> loss), this cannot happen: there is only one valley. For neural networks it can, but in practice their huge landscapes have many low valleys of similar quality, and which one is found matters less than this two-dimensional picture suggests.</p>`
+			notes: `<p>For a line this cannot happen: its loss is a single bowl with one lowest point. More generally, a <em>convex</em> loss has no trapping valleys: every local minimum is a global one (though the lowest level can be a flat floor of many equally good points rather than a single bottom). For neural networks it can, but in practice their huge landscapes have many low valleys of similar quality, and which one is found matters less than this two-dimensional picture suggests.</p>`
 		},
 		{
 			id: 'noise',
