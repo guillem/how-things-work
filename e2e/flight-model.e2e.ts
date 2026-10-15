@@ -170,6 +170,12 @@ test('the measured NACA 0012: slope a little under 2π, stall at 17°', () => {
 		expect(after[2] / max[2]).toBeGreaterThan(6);
 	}
 	expect(LADSON[0].rows.find((r) => r[0] === 17.13)?.[1]).toBe(1.6116);
+	// the run the narrative quotes (80 grit): a degree past the stall the lift has fallen
+	// by more than a third and the drag has jumped about sevenfold
+	const run = LADSON[0].rows;
+	const i = run.findIndex((r) => r[0] === 17.13);
+	expect(run[i + 1][1] / run[i][1]).toBeLessThan(2 / 3);
+	expect(run[i + 1][2] / run[i][2]).toBeCloseTo(7.3, 1);
 	// the smallest section drag, under 0.01
 	expect(Math.min(...LADSON[0].rows.map((r) => r[2]))).toBe(0.008);
 });

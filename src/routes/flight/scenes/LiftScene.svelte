@@ -1,7 +1,8 @@
 <script lang="ts">
 	/**
 	 * Lift against angle of attack. Left: a 12% symmetric Joukowski section at the chosen
-	 * angle in ideal flow (schematic separated wake past the stall), with a card that
+	 * angle in ideal flow (schematic separated wake past the stall), its lift arrow and its
+	 * measured drag along the stream (drawn ten times the lift scale), with a card that
 	 * depends on the phase: the three slopes (slope), the lift equation for a Cessna 172's
 	 * 16.2 m² wing at the chosen speed and altitude (equation), the measured lift and drag
 	 * (stall). Right: C_L against α for thin-airfoil theory (2πα), the exact ideal flow
@@ -132,8 +133,24 @@
 		marker-end="url(#arrowhead)"
 		opacity={Math.abs(clIdeal) > 0.05 ? 1 : 0}
 	/>
+	<!-- measured drag, along the stream, ten times the scale of the lift arrow -->
+	<line
+		x1={qc[0]}
+		y1={qc[1]}
+		x2={qc[0] + 10 * 70 * cdMeasured}
+		y2={qc[1]}
+		stroke="var(--fl-drag)"
+		stroke-width="3.5"
+		marker-end="url(#arrowhead)"
+	/>
 	<Readout id="wing-cap">
-		<T x={32} y={40} text="NACA 0012-like section, {deg(aDeg)}" size={12.5} weight={650} />
+		<T
+			x={32}
+			y={40}
+			text="NACA 0012-like section, {deg(aDeg)} · drag (orange) drawn 10× longer"
+			size={12.5}
+			weight={650}
+		/>
 		<T
 			x={32}
 			y={334}
@@ -177,17 +194,27 @@
 			value={signed(clMeasured)}
 			color="var(--fl-data)"
 		/>
+		<Row
+			id="meas-cd"
+			order={4}
+			x={32}
+			y={494}
+			w={392}
+			label="Measured drag coefficient"
+			value={cdMeasured.toFixed(4)}
+			color="var(--fl-drag)"
+		/>
 		<Readout id="slopes">
 			<T
 				x={32}
-				y={506}
+				y={530}
 				text="slopes per degree: theory {(THIN_SLOPE * DEG).toFixed(3)} · ideal {idealSlope.toFixed(
 					3
 				)} · measured {dataSlope.toFixed(3)}"
 				size={12}
 				muted
 			/>
-			<T x={32} y={526} text="2π per radian = 0.110 per degree" size={12} muted />
+			<T x={32} y={550} text="2π per radian = 0.110 per degree" size={12} muted />
 		</Readout>
 	{:else if phase === 'equation'}
 		<Title x={32} y={388} text="Lift = ½ρV² × S × C for a 172’s wing" size={14} />

@@ -23,6 +23,16 @@ import { LADSON } from '../naca0012.ts';
 /** Angle of the NACA 0012's greatest lift (80-grit run), used as the stall angle. */
 export const STALL_ANGLE = LADSON[0].rows.reduce((a, b) => (b[1] > a[1] ? b : a))[0] * DEG;
 
+/**
+ * How much of its lift the NACA 0012 keeps just past the stall (80-grit run: the point
+ * after the greatest lift over the greatest), used for the stalled lift arrows.
+ */
+export const POST_STALL = (() => {
+	const rows = LADSON[0].rows;
+	const i = rows.reduce((m, r, k) => (r[1] > rows[m][1] ? k : m), 0);
+	return rows[i + 1][1] / rows[i][1];
+})();
+
 /** Streamline offsets ψ − ψ(surface): a close pair, then evenly spaced lines. */
 export const OFFSETS = [0.12, ...Array.from({ length: 7 }, (_, j) => 0.4 + 0.36 * j)].flatMap(
 	(d) => [d, -d]

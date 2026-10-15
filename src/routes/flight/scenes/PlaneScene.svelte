@@ -377,7 +377,7 @@
 		x={44}
 		y={106}
 		w={286}
-		label="Thrust for level flight"
+		label="Thrust for level flight (model)"
 		value={stalled ? '—' : fmtForce(levelDrag)}
 	/>
 	<Row

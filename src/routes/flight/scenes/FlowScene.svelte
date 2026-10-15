@@ -16,7 +16,7 @@
 	import T from './T.svelte';
 	import Title from './Title.svelte';
 	import Wing from './Wing.svelte';
-	import { BANDS, field } from './field.ts';
+	import { BANDS, POST_STALL, field } from './field.ts';
 	import { deg, fmtForce, fmtPa, signed } from './fmt.ts';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -46,7 +46,9 @@
 	const le = $derived(toWind(f, fld.sec.le));
 	const te = $derived(toWind(f, fld.sec.te));
 	const quarter = $derived([le[0] + 0.25 * (te[0] - le[0]), le[1] + 0.25 * (te[1] - le[1])]);
-	const liftLen = $derived(Math.max(-120, Math.min(170, 78 * f.cl * (1 - 0.45 * fld.stall))));
+	const liftLen = $derived(
+		Math.max(-120, Math.min(170, 78 * f.cl * (1 - (1 - POST_STALL) * fld.stall)))
+	);
 	const liftPerMetre = $derived(dynamicPressure(RHO0, v) * CHORD * f.cl);
 
 	// upwash ahead of the nose, downwash behind the tail: the local direction of the air
@@ -202,7 +204,7 @@
 	{/if}
 
 	<!-- readouts -->
-	<Card x={28} y={28} w={300} h={phase === 'wing' || phase === 'summary' ? 112 : 136} />
+	<Card x={28} y={28} w={300} h={phase === 'wing' || phase === 'summary' ? 160 : 136} />
 	<Title x={44} y={54} text="Ideal flow round the wing" size={14} />
 	<Row
 		id="angle"
@@ -246,6 +248,15 @@
 			label="Lift per metre of a 172’s wing"
 			value={stalled ? '—' : fmtForce(liftPerMetre)}
 			opacity={1}
+		/>
+		<Row
+			id="drag0"
+			order={4}
+			x={44}
+			y={152}
+			w={268}
+			label="Drag in ideal flow"
+			value={stalled ? '—' : '0 N (no friction)'}
 		/>
 	{:else if phase === 'turning'}
 		<Row

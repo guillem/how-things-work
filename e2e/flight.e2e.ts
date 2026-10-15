@@ -53,9 +53,12 @@ test('the measured wing stalls past 17°', { tag: '@smoke' }, async ({ page }) =
 	await open(page, './flight/#stall');
 	await range(page, 'angle').fill('17');
 	await expect(stage(page)).toContainText(/Flow over the top\s*attached/);
+	await expect(stage(page)).toContainText(/Drag coefficient\s*0\.025\d/);
 	await range(page, 'angle').fill('18');
 	await expect(stage(page)).toContainText(/Flow over the top\s*separated: stalled/);
 	await expect(stage(page)).toContainText(/Lift coefficient\s*1\.01/);
+	// and the drag has jumped about sevenfold
+	await expect(stage(page)).toContainText(/Drag coefficient\s*0\.18\d\d/);
 });
 
 test('the lift equation: thinner air higher up lifts less', async ({ page }) => {
