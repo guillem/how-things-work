@@ -2597,6 +2597,7 @@ kbd {
 	--nf-laser: #2f9e44;
 	--nf-gold: #e2b33c;
 	--nf-fuel: #74c0fc;
+	--nf-bar-ink: #ffffff;
 }
 :root[data-theme='dark'] {
 	--nf-proton: #ff922b;
@@ -2617,4 +2618,5 @@ kbd {
 	--nf-laser: #8ce99a;
 	--nf-gold: #ffd43b;
 	--nf-fuel: #a5d8ff;
+	--nf-bar-ink: #1a1b1e;
 }

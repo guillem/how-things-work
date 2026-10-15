@@ -387,7 +387,7 @@
 						y={y + h / 2 + 4}
 						text-anchor="middle"
 						font-size="11"
-						fill="#fff"
+						fill="var(--nf-bar-ink)"
 						font-weight="600">{part.label}</text
 					>
 				{/if}

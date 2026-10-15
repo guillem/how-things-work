@@ -157,13 +157,7 @@
 				stroke-width="1.2"
 			/>
 			<g opacity={smoothstep(0.45, 0.6, u)}>
-				<Readout
-					id="alpha"
-					order={2}
-					label="Alpha (⁴He)"
-					value="{mev2(E_ALPHA)} MeV"
-					color="var(--nf-alpha)"
-				>
+				<Readout id="alpha">
 					<Label
 						x={hePos.x}
 						y={hePos.y - 26}
@@ -173,7 +167,7 @@
 						weight={600}
 					/>
 				</Readout>
-				<Readout id="neutron" order={3} label="Neutron" value="{mev2(E_NEUTRON)} MeV">
+				<Readout id="neutron">
 					<Label
 						x={nPos.x}
 						y={nPos.y + 28}
@@ -194,6 +188,12 @@
 		filter="url(#glow)"
 	/>
 
+	<Readout
+		id="products"
+		order={2}
+		label="Products"
+		value="⁴He {mev2(E_ALPHA)} MeV + n {mev2(E_NEUTRON)} MeV"
+	/>
 	<!-- mass balance -->
 	<Readout
 		id="mass"
@@ -231,17 +231,17 @@
 	{/each}
 	{#each bars as b (b.id)}
 		{@const w = (bx(b.j) - BX0) * grow}
+		<rect
+			x={BX0}
+			y={b.y - 13}
+			width={Math.max(0, w)}
+			height="26"
+			rx="4"
+			fill={b.color}
+			opacity="0.85"
+		/>
 		<Readout id="kg-{b.id}" order={5 + b.y} label={b.label} value={tj(b.j)} color={b.color}>
 			<text x={BX0 - 12} y={b.y + 5} text-anchor="end" font-size="13">{b.label}</text>
-			<rect
-				x={BX0}
-				y={b.y - 13}
-				width={Math.max(0, w)}
-				height="26"
-				rx="4"
-				fill={b.color}
-				opacity="0.85"
-			/>
 			<text
 				x={BX0 + w + 8}
 				y={b.y + 5}
