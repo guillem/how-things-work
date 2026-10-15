@@ -159,7 +159,7 @@ A topic is done when:
 - [x] deep-time
 - [x] atmosphere-weather
 - [x] ocean-currents
-- [ ] ice-ages
+- [x] ice-ages
 - [x] carbon-cycle
 - [x] greenhouse-effect
 
