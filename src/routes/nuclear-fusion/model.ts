@@ -46,8 +46,9 @@ export const atomicMass = (name: NuclideName) =>
 	nuclides[name].a + nuclides[name].massExcess / U_KEV;
 
 /**
- * Energy released (keV) when `reactants` become `products`, from atomic masses. Electrons
- * balance on both sides because the charges do, so atomic masses can be used directly.
+ * Energy released (keV) when `reactants` become `products`, from atomic masses. With atomic
+ * masses, electrons cancel for charge-conserving reactions, and beta-minus electrons are
+ * absorbed into the daughter atoms' masses (electron binding energies neglected).
  */
 export function qValue(reactants: NuclideName[], products: NuclideName[]): number {
 	const sum = (list: NuclideName[]) => list.reduce((s, n) => s + nuclides[n].massExcess, 0);

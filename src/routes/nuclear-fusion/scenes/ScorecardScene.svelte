@@ -20,9 +20,10 @@
 	const time = $derived(reduced ? 10 : t);
 	const show = (k: number) => smoothstep(0.3 + 0.35 * k, 0.6 + 0.35 * k, time);
 
-	// Sources: EUROfusion/Physics World (JET 1997, 16 MW from about 25 MW of heating);
-	// LLNL (NIF 2022: 3.15 MJ from 2.05 MJ; 2025: 8.6 MJ from 2.08 MJ; about 300 MJ drawn from
-	// the grid per shot); ITER Organization (Q = 10 design goal).
+	// Sources: EUROfusion / ISTP-CNR JET background (JET 1997: 16 MW from 24 MW of heating,
+	// Q = 0.67); LLNL (NIF 2022: 3.15 MJ from 2.05 MJ; 2025: 8.6 MJ from 2.08 MJ); E. I. Moses,
+	// NIF status report (2001): over 300 MJ of electricity to the flashlamps per shot; ITER
+	// Organization (Q = 10 design goal).
 	const marks: {
 		id: string;
 		q: number;
@@ -45,9 +46,9 @@
 		},
 		{
 			id: 'jet',
-			q: 16 / 25,
+			q: 16 / 24,
 			title: 'JET 1997',
-			sub: '16 MW from ≈ 25 MW of heating',
+			sub: '16 MW from 24 MW of heating',
 			dy: -70,
 			anchor: 'end',
 			color: 'var(--nf-coil)',

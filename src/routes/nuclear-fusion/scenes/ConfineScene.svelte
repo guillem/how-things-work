@@ -62,10 +62,11 @@
 		}
 		return { k, d: d + 'Z', front: Math.sin(phi) > 0 };
 	});
-	// One field line: once round the ring the long way, about 3 times round the short way.
-	const TURNS = 3.2;
+	// One field line: three times round the ring the long way for each turn the short way
+	// (safety factor q = 3, as at a real tokamak's edge; q < 1 would be unstable).
+	const TURNS = 1 / 3;
 	const N = 360;
-	const field = Array.from({ length: N + 1 }, (_, i) => {
+	const field = Array.from({ length: 3 * N + 1 }, (_, i) => {
 		const phi = (i / N) * Math.PI * 2;
 		return proj(phi, A * 0.62, phi * TURNS);
 	});
@@ -84,8 +85,8 @@
 	const fieldFront = segs(true);
 	const ions = $derived(
 		Array.from({ length: 10 }, (_, i) => {
-			const u = cycle(time, 14, i / 10);
-			const phi = u * Math.PI * 2;
+			const u = cycle(time, 30, i / 10);
+			const phi = u * Math.PI * 6;
 			const p = proj(phi, A * 0.62, phi * TURNS);
 			return { id: i, ...p };
 		})
@@ -219,13 +220,13 @@
 				id="plasma"
 				order={5}
 				label="Plasma ring"
-				value="100–200 million K, about 10²⁰ ions/m³"
+				value="120–230 million K, about 10²⁰ ions/m³"
 				opacity={oMag}
 			>
 				<Label
 					x={CX}
 					y={CY + 166}
-					text="plasma: 100–200 million K, about 10²⁰ ions/m³"
+					text="plasma: 120–230 million K, about 10²⁰ ions/m³"
 					size={12}
 					muted
 				/>
