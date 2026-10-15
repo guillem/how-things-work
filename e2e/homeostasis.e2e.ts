@@ -12,9 +12,9 @@ async function open(page: Page, url: string) {
 
 test('turning insulin production off gives a diabetic fasting glucose', async ({ page }) => {
 	await open(page, './homeostasis/#type1');
-	await expect(stage(page)).toContainText('edge of normal (under 100)');
+	await expect(stage(page)).toContainText("the model's healthy reference");
 	await page.locator('input[type=range][data-control=production]').fill('0');
-	await expect(stage(page)).toContainText('diabetes (126 or more)');
+	await expect(stage(page)).toContainText('diabetes range (126 or more)');
 });
 
 test('too much injected insulin causes dangerous hypoglycaemia', async ({ page }) => {
@@ -34,10 +34,10 @@ test('a healthy adult passes the glucose tolerance test', async ({ page }) => {
 test('settings suggested on one step do not carry into the next', async ({ page }) => {
 	await open(page, './homeostasis/#type1');
 	await page.locator('input[type=range][data-control=production]').fill('0');
-	await expect(stage(page)).toContainText('diabetes (126 or more)');
+	await expect(stage(page)).toContainText('diabetes range (126 or more)');
 	// Type 2 has its own production slider: the pancreas still works there.
 	await page.goto('./homeostasis/#type2');
-	await expect(stage(page)).toContainText('edge of normal (under 100)');
+	await expect(stage(page)).toContainText("the model's healthy reference");
 	// The run step suggests skipping the meal; the dosing step still serves 75 g.
 	await page.goto('./homeostasis/#run');
 	await page.locator('input[type=range][data-control=carbs]').fill('0');

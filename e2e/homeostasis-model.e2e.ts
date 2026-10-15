@@ -16,9 +16,9 @@ const meal = (o: Partial<Scenario> = {}) => simulate({ carbs: 75, mealAt: 0, ...
 
 test('a healthy adult has a normal fasting glucose and insulin', () => {
 	const f = fasting(healthy);
-	// ADA: normal fasting glucose is under 100 mg/dL; Topp et al.'s normal state is 100.
-	expect(f.g).toBeGreaterThanOrEqual(70);
-	expect(f.g).toBeLessThanOrEqual(THRESHOLDS.fastingNormal + 0.5);
+	// Topp et al.'s normal state: 100 mg/dL (where the ADA's prediabetes range
+	// begins; the page calls it the model's reference, not clinically normal).
+	expect(f.g).toBeCloseTo(100, 1);
 	expect(f.i).toBeCloseTo(10, 1);
 	// Nothing happens without a disturbance: the steady state holds.
 	const quiet = simulate({}, 0, 300);
@@ -122,7 +122,7 @@ test('dosing insulin by hand: too little leaves glucose high, too much causes hy
 	expect(matched.lo.g).toBeGreaterThan(THRESHOLDS.hypo);
 	expect(extremes(t1(12)).lo.g).toBeLessThan(THRESHOLDS.hypo);
 	// Insulin without food: level 2 hypoglycaemia (ADA: under 54 mg/dL).
-	expect(extremes(t1(8, 0)).lo.g).toBeLessThan(THRESHOLDS.severeHypo);
+	expect(extremes(t1(8, 0)).lo.g).toBeLessThan(THRESHOLDS.hypoLevel2);
 });
 
 test('timing matters: a dose that works before the meal soars, then crashes, an hour after it', () => {
@@ -143,4 +143,25 @@ test('glucagon defends against a low only while the islets work', () => {
 	expect(Math.max(...withIslets.map((p) => p.gcg))).toBeGreaterThan(2);
 	expect(Math.max(...without.map((p) => p.gcg))).toBeLessThan(1.05);
 	expect(extremes(withIslets).lo.g).toBeGreaterThan(extremes(without).lo.g + 15);
+});
+
+test('insulin holds back the liver: more insulin, less glucose released by it', () => {
+	// After a meal a healthy liver stops releasing glucose.
+	const healthyMeal = meal();
+	expect(at(healthyMeal, 60).liver).toBeLessThan(0.5 * at(healthyMeal, -1).liver);
+	// With no insulin of its own, the dose decides how much the liver releases.
+	const basal = basalFor(100);
+	const dosed = (dose: number) => simulate({ production: 0, basal, carbs: 75, dose, doseAt: -15 });
+	const none = at(dosed(0), 60).liver;
+	expect(at(dosed(8), 60).liver).toBeLessThan(none);
+	expect(at(dosed(16), 0).liver).toBeLessThan(at(dosed(8), 0).liver);
+	// Without insulin at all, the liver keeps releasing glucose however high it is.
+	const t1 = meal({ production: 0 });
+	expect(at(t1, 120).liver).toBeGreaterThanOrEqual(at(t1, -1).liver);
+});
+
+test('in type 1 diabetes glucagon still rises during a run, though not for a low', () => {
+	const basal = basalFor(100);
+	const s = simulate({ production: 0, basal, carbs: 0, intensity: 65, runAt: 0, runFor: 45 });
+	expect(at(s, 40).gcg).toBeGreaterThan(1.5);
 });

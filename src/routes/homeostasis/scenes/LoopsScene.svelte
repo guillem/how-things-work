@@ -85,9 +85,9 @@
 			],
 			broken: 2,
 			lines: [
-				{ head: 'Hyperparathyroidism:', text: 'a gland, usually a' },
-				{ head: '', text: 'benign growth, keeps releasing PTH' },
-				{ head: '', text: 'whatever the calcium. Calcium runs high.' }
+				{ head: 'Primary hyperparathyroidism:', text: 'a gland,' },
+				{ head: '', text: 'usually a benign growth, keeps releasing' },
+				{ head: '', text: 'PTH whatever the calcium. Calcium runs high.' }
 			]
 		}
 	];

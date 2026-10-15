@@ -30,6 +30,14 @@
  *    state Topp et al. describe (glucose 100 mg/dL, insulin 10 µU/mL), which
  *    the model test checks.
  *
+ *    Topp's insulin term SI·I·G is lumped, as in Bergman's minimal model: it
+ *    stands both for insulin pushing glucose into cells and for insulin
+ *    holding back the liver's output, which insulin suppresses directly and
+ *    within minutes (Edgerton et al., JCI Insight 2:e91863, 2017). The model's
+ *    glucose balance keeps that lumped term; only for the flows the page shows
+ *    is it split between the liver and the cells (see HEPATIC_SHARE). R0 is
+ *    the liver's output before insulin's brake.
+ *
  *    Three changes, all stated on the page:
  *    - The β-cells respond more steeply to glucose than in Topp's model,
  *      calibrated so that a healthy adult handles a meal normally (see
@@ -69,9 +77,11 @@
  *      threshold for counter-regulation (Schwartz et al., J. Clin. Invest.
  *      79:777, 1987), and it rises during exercise;
  *    - in type 1 diabetes the glucagon response to low glucose is lost
- *      (Gerich et al., Science 182:171, 1973). The model removes it, and
- *      the rise during exercise, in proportion to the lost insulin
- *      production.
+ *      (Gerich et al., Science 182:171, 1973). The model removes it in
+ *      proportion to the lost insulin production. The rise during exercise
+ *      is kept: the α-cells' defect is specific to the stimulus, and their
+ *      glucagon release during exercise is preserved in type 1 diabetes
+ *      (Bao, Briscoe, Tate & Davis, Diabetes 58:2100, 2009).
  *    Glucagon makes the liver release more glucose (it scales R0).
  *
  * Simplifications, stated on the page: one average adult; a meal is only its
@@ -181,15 +191,30 @@ const GLUCAGON_EXERCISE = 1;
  */
 const EXERCISE_SENSITIVITY = 1;
 
+/**
+ * ILLUSTRATIVE. The share of Topp's lumped insulin term (SI·I·G, taken at
+ * the fasting glucose of 100 mg/dL) shown as insulin holding back the liver's
+ * output rather than as glucose going into cells: at the fasting insulin it
+ * holds back 0.25 of the liver's 0.6 mg/dL per minute. It changes only how the page splits the flows, never the glucose
+ * balance: what the liver no longer releases is subtracted from the liver's
+ * flow and from the flow into cells alike. Once insulin holds the liver's
+ * output at zero, the rest of the term counts as uptake (the liver itself
+ * then stores glucose).
+ */
+const HEPATIC_SHARE = 0.5;
+
 /** Clinical thresholds, mg/dL (American Diabetes Association, Standards of Care). */
 export const THRESHOLDS = {
-	/** Hypoglycaemia level 1 (alert value): below 70 mg/dL (3.9 mmol/L). */
+	/** Hypoglycaemia level 1 (alert value): below 70 mg/dL (3.9 mmol/L), down to 54. */
 	hypo: 70,
-	/** Hypoglycaemia level 2 (clinically significant): below 54 mg/dL (3.0 mmol/L). */
-	severeHypo: 54,
-	/** Normal fasting glucose: below 100 mg/dL (5.6 mmol/L). */
+	/**
+	 * Hypoglycaemia level 2 (clinically significant): below 54 mg/dL (3.0 mmol/L).
+	 * (Level 3, severe, is defined by needing someone else's help, not by a value.)
+	 */
+	hypoLevel2: 54,
+	/** Normal fasting glucose: below 100 mg/dL (5.6 mmol/L); 100–125 is prediabetes. */
 	fastingNormal: 100,
-	/** Diabetes: fasting glucose 126 mg/dL (7.0 mmol/L) or more. */
+	/** Diabetes range: fasting glucose 126 mg/dL (7.0 mmol/L) or more (confirmed by a repeat test). */
 	fastingDiabetes: 126,
 	/** Normal 2-hour value of a 75 g oral glucose tolerance test: below 140 mg/dL (7.8 mmol/L). */
 	twoHourNormal: 140,
@@ -251,9 +276,12 @@ export interface Sample {
 	gcg: number;
 	/** Glucose arriving from the gut, mg/dL per minute. */
 	gut: number;
-	/** Glucose released by the liver, mg/dL per minute. */
+	/**
+	 * Glucose released by the liver, mg/dL per minute: its output, raised by
+	 * glucagon, minus what insulin holds back (see HEPATIC_SHARE).
+	 */
 	liver: number;
-	/** Glucose taken up by the body's cells, mg/dL per minute. */
+	/** Glucose taken up by the body's cells (the liver's own storage included), mg/dL per minute. */
 	uptake: number;
 	/** Glucose lost in urine, mg/dL per minute. */
 	urine: number;
@@ -282,7 +310,8 @@ export function glucagonTarget(g: number, sec: number, production: number, effor
 	const counter = Math.min(1, production);
 	const low = Math.min(1.5, Math.max(0, (GLUCAGON_THRESHOLD - g) / (GLUCAGON_THRESHOLD - 50)));
 	const hypo = counter * (GLUCAGON_HYPO - 1) * low;
-	const run = counter * GLUCAGON_EXERCISE * exertion(effort);
+	// The rise during exercise survives in type 1 diabetes (Bao et al. 2009).
+	const run = GLUCAGON_EXERCISE * exertion(effort);
 	return Math.max(0, 1 - brake + hypo + run);
 }
 
@@ -310,21 +339,31 @@ function rates(s: State, sc: Scenario, t: number) {
 		sc.intensity > REST_INTENSITY && t >= sc.runAt && t < sc.runAt + sc.runFor
 			? sc.intensity
 			: REST_INTENSITY;
-	const liver = R0 * (1 + GLUCAGON_EFFECT * (s.gcg - 1));
+	const release = R0 * (1 + GLUCAGON_EFFECT * (s.gcg - 1));
 	const gut = s.d2 / TMAX_G / VG;
 	const urine = RENAL_RATE * Math.max(0, s.g - RENAL_THRESHOLD);
 	const exercise = EXERCISE_UPTAKE * Math.max(0, s.p - REST_INTENSITY) * (s.g / 100);
 	const boost = 1 + EXERCISE_SENSITIVITY * exertion(s.p);
 	const uptake = (EG0 + SI * sc.sensitivity * boost * s.x) * s.g + exercise;
+	// The part of the insulin term shown as the liver held back (display only:
+	// liver − uptake, and so the glucose balance, is unchanged). It is taken at
+	// the fasting glucose, so that it follows insulin, not glucose, and it is
+	// never more than the insulin-driven uptake it comes out of.
+	const insulinDriven = SI * sc.sensitivity * boost * Math.max(0, s.x) * s.g;
+	const heldBack = Math.min(
+		release,
+		insulinDriven,
+		HEPATIC_SHARE * SI * sc.sensitivity * Math.max(0, s.x) * FASTING_GLUCOSE
+	);
 	const injected = s.s2 / TMAX_I / VI;
 	// The exercise cut stands for the pancreas secreting less, so it can
 	// remove at most what the pancreas is secreting.
 	const cut = Math.min(sec, Math.min(1, sc.production) * s.ie);
 	const di = sec - cut + sc.basal + injected - KE * s.i;
 	return {
-		sample: { liver, gut, urine, uptake },
+		sample: { liver: release - heldBack, gut, urine, uptake: uptake - heldBack },
 		d: {
-			g: liver + gut - uptake - urine,
+			g: release + gut - uptake - urine,
 			i: s.i <= 0 && di < 0 ? 0 : di,
 			x: P2 * (s.i - s.x),
 			gcg: (glucagonTarget(s.g, sec, sc.production, s.p) - s.gcg) / GLUCAGON_TAU,
