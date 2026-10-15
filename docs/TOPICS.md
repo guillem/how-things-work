@@ -140,7 +140,7 @@ A topic is done when:
 - [x] meiosis-inheritance
 - [x] evolution
 - [x] ecosystems
-- [ ] crispr
+- [x] crispr
 
 **Body & Medicine**
 - [x] heart-circulation
