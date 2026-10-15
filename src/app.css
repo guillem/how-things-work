@@ -3144,3 +3144,64 @@ kbd {
 	--fi-super: #ff6b6b;
 	--fi-band: #1f3d26;
 }
+/* crispr */
+:root {
+	--cr-cell: #e9f5db;
+	--cr-cell-edge: #5c940d;
+	--cr-chromosome: #2f9e44;
+	--cr-phage: #c92a2a;
+	--cr-phage-head: #ffe3e3;
+	--cr-phage-dna: #e03131;
+	--cr-repeat: #868e96;
+	--cr-leader: #495057;
+	--cr-s1: #e8590c;
+	--cr-s2: #1c7ed6;
+	--cr-s3: #9c36b5;
+	--cr-s4: #0c8599;
+	--cr-s5: #e67700;
+	--cr-s6: #d6336c;
+	--cr-cas9: #4263eb;
+	--cr-cas9-edge: #364fc7;
+	--cr-cas12: #f08c00;
+	--cr-rna: #ae3ec9;
+	--cr-pam: #fab005;
+	--cr-match: #2f9e44;
+	--cr-mismatch: #e03131;
+	--cr-cut: #c92a2a;
+	--cr-lawn: #d8f5a2;
+	--cr-lawn-edge: #82c91e;
+	--cr-plaque: #fff9db;
+	--cr-dish: #f1f3f5;
+	--cr-bact-line: #2f9e44;
+	--cr-phage-line: #e03131;
+}
+:root[data-theme='dark'] {
+	--cr-cell: #1f2d17;
+	--cr-cell-edge: #94d82d;
+	--cr-chromosome: #69db7c;
+	--cr-phage: #ff6b6b;
+	--cr-phage-head: #4a1f1f;
+	--cr-phage-dna: #ff8787;
+	--cr-repeat: #adb5bd;
+	--cr-leader: #ced4da;
+	--cr-s1: #ff922b;
+	--cr-s2: #4dabf7;
+	--cr-s3: #da77f2;
+	--cr-s4: #3bc9db;
+	--cr-s5: #ffc078;
+	--cr-s6: #f783ac;
+	--cr-cas9: #748ffc;
+	--cr-cas9-edge: #91a7ff;
+	--cr-cas12: #ffa94d;
+	--cr-rna: #e599f7;
+	--cr-pam: #ffd43b;
+	--cr-match: #69db7c;
+	--cr-mismatch: #ff6b6b;
+	--cr-cut: #ff8787;
+	--cr-lawn: #2b3a1a;
+	--cr-lawn-edge: #74b816;
+	--cr-plaque: #141517;
+	--cr-dish: #25262b;
+	--cr-bact-line: #69db7c;
+	--cr-phage-line: #ff6b6b;
+}

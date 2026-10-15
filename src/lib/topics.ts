@@ -924,6 +924,15 @@ const explainers: Explainer[] = [
 		accent: '#1864ab',
 		steps: 12,
 		minutes: 22
+	},
+	{
+		slug: 'crispr',
+		title: 'CRISPR: how bacteria remember and fight viruses',
+		summary:
+			'Watch a virus hijack a bacterium, then see how bacteria fight back: they file a piece of each virus in their own DNA, copy the file into RNA, and send a protein to find and cut any DNA that matches. Then follow the arms race in a flask as phages change a letter to escape.',
+		accent: '#5c940d',
+		steps: 12,
+		minutes: 20
 	}
 ];
 
