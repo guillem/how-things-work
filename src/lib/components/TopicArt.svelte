@@ -2749,6 +2749,34 @@
 			<path d="M162 76 L162 52" />
 			<path d="M162 54 C 150 48, 152 36, 162 34 C 172 36, 174 48, 162 54" fill="none" />
 		</g>
+	{:else if slug === 'crispr'}
+		<!-- a phage above a CRISPR array: grey repeats between coloured spacers, one matching the phage -->
+		<g stroke="var(--cr-phage)" stroke-width="2" fill="none" stroke-linejoin="round">
+			<polygon points="150,14 162,21 162,35 150,42 138,35 138,21" fill="var(--cr-phage-head)" />
+			<path d="M150 42 L150 60 M150 60 L140 68 M150 60 L160 68" stroke-linecap="round" />
+		</g>
+		<line x1="14" x2="186" y1="88" y2="88" stroke="var(--cr-chromosome)" stroke-width="2.4" />
+		<rect x="16" y="80" width="26" height="16" rx="3" fill="var(--cr-leader)" opacity="0.85" />
+		{#each [0, 1, 2, 3] as i (i)}
+			<rect
+				x={50 + i * 34}
+				y={82}
+				width="12"
+				height="12"
+				transform="rotate(45 {56 + i * 34} 88)"
+				fill="var(--cr-repeat)"
+			/>
+		{/each}
+		<rect x="64" y="79" width="20" height="18" rx="3" fill={accent} />
+		<rect x="98" y="79" width="20" height="18" rx="3" fill="var(--cr-s2)" />
+		<rect x="132" y="79" width="20" height="18" rx="3" fill="var(--cr-s3)" />
+		<path
+			d="M150 70 C 120 72, 82 66, 74 78"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.8"
+			stroke-dasharray="4 3"
+		/>
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />
