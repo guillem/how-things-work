@@ -314,7 +314,7 @@
 		x={44}
 		y={106}
 		w={286}
-		label="Most the wing can give"
+		label="Most the aeroplane can give"
 		value={CL_MAX.toFixed(2)}
 	/>
 	<Row
@@ -333,7 +333,7 @@
 		x={44}
 		y={82}
 		w={286}
-		label="Indicated airspeed"
+		label="Calibrated airspeed (≈ indicated)"
 		value="{indicatedKt.toFixed(0)} kt"
 		color="var(--fl-thrust)"
 	/>

@@ -82,7 +82,7 @@ test('lift equals weight: slower needs more lift coefficient, until the stall', 
 }) => {
 	await open(page, './flight/#cessna');
 	await expect(stage(page)).toContainText(/Lift coefficient needed\s*0\.43/);
-	await expect(stage(page)).toContainText(/Most the wing can give\s*1\.54/);
+	await expect(stage(page)).toContainText(/Most the aeroplane can give\s*1\.54/);
 	await range(page, 'speed').fill('50');
 	await expect(stage(page)).toContainText('STALL: below 53 kt');
 });
@@ -91,7 +91,7 @@ test('higher up the stall comes at a faster true airspeed', async ({ page }) => 
 	await open(page, './flight/#altitude');
 	await range(page, 'altitude').fill('10000');
 	await expect(stage(page)).toContainText(/Stall, true airspeed\s*62 kt/);
-	await expect(stage(page)).toContainText(/Indicated airspeed\s*86 kt/);
+	await expect(stage(page)).toContainText(/Calibrated airspeed \(≈ indicated\)\s*86 kt/);
 });
 
 test('thrust equal to drag flies level; more thrust climbs, less descends', async ({ page }) => {
