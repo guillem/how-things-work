@@ -630,3 +630,14 @@ export function wifiRate(
 	const symbolUs = shortGi ? 3.6 : 4;
 	return (DATA_SUBCARRIERS[width] * bitsPerSubcarrier * codeRate) / symbolUs;
 }
+
+/**
+ * The lowest SNR (dB) at which a Wi-Fi mode can work at all, by Shannon's formula
+ * applied to each subcarrier: every data subcarrier carries `bitsPerSubcarrier ×
+ * codeRate` bits per OFDM symbol. The guard interval and the unused and pilot
+ * subcarriers lower the bits per hertz of the whole channel, but not the SNR each
+ * subcarrier needs, so this floor sits well above Shannon's limit for the
+ * channel's overall bits per hertz.
+ */
+export const wifiSnrFloorDb = (bitsPerSubcarrier: number, codeRate: number) =>
+	linToDb(2 ** (bitsPerSubcarrier * codeRate) - 1);
