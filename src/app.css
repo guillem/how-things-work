@@ -18,7 +18,6 @@
 	--border: rgba(28, 27, 25, 0.1);
 	--border-strong: rgba(28, 27, 25, 0.2);
 	--accent: #2f5fd0;
-	--accent-contrast: #ffffff;
 	--focus: #2f5fd0;
 	--shadow-sm: 0 1px 2px rgba(20, 18, 10, 0.05);
 	--shadow-md: 0 1px 2px rgba(20, 18, 10, 0.04), 0 10px 30px -14px rgba(20, 18, 10, 0.25);
@@ -44,7 +43,6 @@
 	--status-new-ink: #ffffff;
 
 	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-	--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 :root[data-theme='dark'] {
@@ -60,7 +58,6 @@
 	--border: rgba(255, 255, 255, 0.09);
 	--border-strong: rgba(255, 255, 255, 0.18);
 	--accent: #85a8ff;
-	--accent-contrast: #0b1020;
 	--focus: #85a8ff;
 	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
 	--shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.6);
@@ -304,7 +301,6 @@ kbd {
 	--atm-sun: #f59f00;
 	--atm-emit: #c2255c;
 	--atm-ocean: #a5d8ff;
-	--atm-land: #b2d3a8;
 	--atm-wind: #343a40;
 	--atm-high: #1971c2;
 	--atm-low: #e03131;
@@ -455,7 +451,6 @@ kbd {
 	--cmp-one: #c2255c;
 	--cmp-pos: #1971c2;
 	--cmp-neg: #e03131;
-	--cmp-cell: #eceef1;
 	--cmp-pick: #f08c00;
 	/* cryptography: Alice, Bob, Eve, the shared key, checks passed or failed, hash bits (set, flipped), cells */
 	--cr-alice: #5f3dc4;
@@ -464,7 +459,6 @@ kbd {
 	--cr-key: #e67700;
 	--cr-ok: #2f9e44;
 	--cr-bad: #e03131;
-	--cr-bit: #495057;
 	--cr-flip: #e67700;
 	--cr-cell: #eceef1;
 	/* complex-numbers: the points z and w, their product, real and imaginary parts */
@@ -606,7 +600,6 @@ kbd {
 	--semi-arsenic: #0c8599;
 	--semi-acceptor: #ae3ec9;
 	--semi-field: #c2255c;
-	--semi-ion: #868e96;
 	/* motors-generators: the coil's two sides (a copper, b raspberry), the lamp's glow */
 	--mg-a: #c76b1c;
 	--mg-b: #a61e4d;
@@ -635,7 +628,6 @@ kbd {
 	--hm-glucagon: #2f9e44;
 	--hm-hypo: #e03131;
 	--hm-hypo-bg: #ffe3e3;
-	--hm-high-bg: #fff4e6;
 	--hm-blood: #fbe9e7;
 	--hm-blood-edge: #c92a2a;
 	--hm-liver: #a5523a;
@@ -661,7 +653,6 @@ kbd {
 	--rk-body: #dee2e6;
 	--rk-body-edge: #495057;
 	--rk-fuel: #e8590c;
-	--rk-dry: #868e96;
 	--rk-payload: #1c7ed6;
 	--rk-gravity: #c2255c;
 	--rk-drag: #7048e8;
@@ -764,7 +755,6 @@ kbd {
 	--atm-sun: #ffd43b;
 	--atm-emit: #f06595;
 	--atm-ocean: #1d3a57;
-	--atm-land: #2f4a2b;
 	--atm-wind: #e9ecef;
 	--atm-high: #4dabf7;
 	--atm-low: #ff6b6b;
@@ -899,7 +889,6 @@ kbd {
 	--cmp-one: #f783ac;
 	--cmp-pos: #74c0fc;
 	--cmp-neg: #ff8787;
-	--cmp-cell: #2a2d33;
 	--cmp-pick: #ffd43b;
 	/* cryptography */
 	--cr-alice: #9775fa;
@@ -908,7 +897,6 @@ kbd {
 	--cr-key: #ffa94d;
 	--cr-ok: #69db7c;
 	--cr-bad: #ff8787;
-	--cr-bit: #ced4da;
 	--cr-flip: #ffa94d;
 	--cr-cell: #2a2d33;
 	--cx-z: #3bc9db;
@@ -1038,7 +1026,6 @@ kbd {
 	--semi-arsenic: #3bc9db;
 	--semi-acceptor: #da77f2;
 	--semi-field: #f06595;
-	--semi-ion: #adb5bd;
 	--mg-a: #e8a15a;
 	--mg-b: #f06595;
 	--mg-lamp: #ffd43b;
@@ -1064,7 +1051,6 @@ kbd {
 	--hm-glucagon: #69db7c;
 	--hm-hypo: #ff6b6b;
 	--hm-hypo-bg: #3b1d1f;
-	--hm-high-bg: #33261a;
 	--hm-blood: #2e1c1c;
 	--hm-blood-edge: #e57373;
 	--hm-liver: #d0805f;
@@ -1157,8 +1143,6 @@ kbd {
 	--emb-b: #e8590c;
 	--emb-sum: #862e9c;
 	--emb-result: #2b8a3e;
-	--emb-pos: #1971c2;
-	--emb-neg: #e8590c;
 	--emb-warn: #c92a2a;
 	--emb-c0: #e03131;
 	--emb-c1: #1971c2;
@@ -1178,8 +1162,6 @@ kbd {
 	--emb-b: #ffa94d;
 	--emb-sum: #da77f2;
 	--emb-result: #69db7c;
-	--emb-pos: #4dabf7;
-	--emb-neg: #ffa94d;
 	--emb-warn: #ff8787;
 	--emb-c0: #ff8787;
 	--emb-c1: #4dabf7;
@@ -1244,7 +1226,6 @@ kbd {
 	--rk-body: #495057;
 	--rk-body-edge: #ced4da;
 	--rk-fuel: #ff922b;
-	--rk-dry: #868e96;
 	--rk-payload: #4dabf7;
 	--rk-gravity: #f06595;
 	--rk-drag: #b197fc;
@@ -1566,7 +1547,6 @@ kbd {
 	--gh-sun: #f59f00;
 	--gh-sun-fill: #ffe8a1;
 	--gh-ir: #e8590c;
-	--gh-ir-fill: #ffc9a8;
 	--gh-space: #e7ebf3;
 	--gh-air: #d0ebff;
 	--gh-air-edge: #74c0fc;
@@ -1588,7 +1568,6 @@ kbd {
 	--gh-sun: #ffd43b;
 	--gh-sun-fill: #5c4813;
 	--gh-ir: #ff922b;
-	--gh-ir-fill: #5c3317;
 	--gh-space: #0b0f18;
 	--gh-air: #15283b;
 	--gh-air-edge: #3d6d99;
@@ -1661,10 +1640,8 @@ kbd {
 	--eq-mantle-deep: #e9c49c;
 	--eq-outer: #f2b06b;
 	--eq-inner: #f5d36a;
-	--eq-shadow: #868e96;
 	--eq-station: #2b8a3e;
 	--eq-quake: #e8590c;
-	--eq-water: #a5d8ff;
 }
 :root[data-theme='dark'] {
 	--eq-p: #4dabf7;
@@ -1675,10 +1652,8 @@ kbd {
 	--eq-mantle-deep: #4f3624;
 	--eq-outer: #7a4b1f;
 	--eq-inner: #8f7424;
-	--eq-shadow: #868e96;
 	--eq-station: #69db7c;
 	--eq-quake: #ff922b;
-	--eq-water: #1f4f7a;
 }
 .eq-p {
 	color: var(--eq-p);
@@ -1705,10 +1680,8 @@ kbd {
 	--dp-trna-edge: #2f7f93;
 	--dp-nucleus: #eee8f6;
 	--dp-nucleus-edge: #9b87c4;
-	--dp-cyto: #fbf3ea;
 	--dp-exon: #c2255c;
 	--dp-intron: #ced4da;
-	--dp-utr: #f3a5bf;
 	--dp-nonpolar: #f2c94c;
 	--dp-polar: #6fcf97;
 	--dp-positive: #6ea8fe;
@@ -1716,7 +1689,6 @@ kbd {
 	--dp-stop: #495057;
 	--dp-wrong: #e03131;
 	--dp-same: #dee2e6;
-	--dp-hl: #ffd43b;
 }
 :root[data-theme='dark'] {
 	--dp-a: #ff922b;
@@ -1733,10 +1705,8 @@ kbd {
 	--dp-trna-edge: #66d9e8;
 	--dp-nucleus: #241f30;
 	--dp-nucleus-edge: #9775fa;
-	--dp-cyto: #221d17;
 	--dp-exon: #f06595;
 	--dp-intron: #495057;
-	--dp-utr: #a34a6b;
 	--dp-nonpolar: #b8902a;
 	--dp-polar: #2f9e5d;
 	--dp-positive: #3b6fd1;
@@ -1744,7 +1714,6 @@ kbd {
 	--dp-stop: #6c757d;
 	--dp-wrong: #ff6b6b;
 	--dp-same: #3a3f45;
-	--dp-hl: #fab005;
 }
 
 /* ---------------------------------------------------------------------------
@@ -1803,7 +1772,6 @@ kbd {
 	--tf-k: #1971c2;
 	--tf-v: #2f9e44;
 	--tf-att: #6741d9;
-	--tf-att-cell: #6741d9;
 	--tf-start: #868e96;
 	--tf-mask: #868e9659;
 	--tf-cell: #f1f3f5;
@@ -1814,7 +1782,6 @@ kbd {
 	--tf-k: #4dabf7;
 	--tf-v: #69db7c;
 	--tf-att: #b197fc;
-	--tf-att-cell: #b197fc;
 	--tf-start: #adb5bd;
 	--tf-mask: #adb5bd40;
 	--tf-cell: #25262b;
@@ -1903,10 +1870,6 @@ kbd {
 	--dt-extinct: #c92a2a;
 	--dt-uranium: #74b816;
 	--dt-lead: #495057;
-	--dt-good: #2f9e44;
-	--dt-fair: #f08c00;
-	--dt-none: #adb5bd;
-	--dt-band-ink: #212529;
 }
 :root[data-theme='dark'] {
 	--dt-sea: #13202d;
@@ -1927,10 +1890,6 @@ kbd {
 	--dt-extinct: #ff6b6b;
 	--dt-uranium: #a9e34b;
 	--dt-lead: #adb5bd;
-	--dt-good: #69db7c;
-	--dt-fair: #ffc078;
-	--dt-none: #495057;
-	--dt-band-ink: #212529;
 }
 
 /* redox and batteries: ions, electrons, electrodes, solutions and the cell's layers */
@@ -1957,7 +1916,6 @@ kbd {
 	--rb-copper-foil: #e8590c;
 	--rb-al-foil: #adb5bd;
 	--rb-separator: #fff9db;
-	--rb-electrolyte: #e7f5ff;
 	--rb-lamp: #fcc419;
 	--rb-charger: #7048e8;
 	--rb-water: #d0ebff;
@@ -1988,7 +1946,6 @@ kbd {
 	--rb-copper-foil: #ff922b;
 	--rb-al-foil: #868e96;
 	--rb-separator: #33301c;
-	--rb-electrolyte: #102231;
 	--rb-lamp: #ffd43b;
 	--rb-charger: #b197fc;
 	--rb-water: #11324d;
@@ -2249,7 +2206,6 @@ kbd {
 	--ia-ecc: #0b7285;
 	--ia-prec: #c2255c;
 	--ia-sun: #e8590c;
-	--ia-sun-fill: #ffe8cc;
 	--ia-temp: #1864ab;
 	--ia-co2: #2b8a3e;
 	--ia-now: #e03131;
@@ -2257,7 +2213,6 @@ kbd {
 	--ia-ice: #f1f6fb;
 	--ia-ice-edge: #8fb3d6;
 	--ia-ocean: #a5d8ff;
-	--ia-land: #c9b48e;
 	--ia-night: #c6ccd6;
 }
 :root[data-theme='dark'] {
@@ -2265,7 +2220,6 @@ kbd {
 	--ia-ecc: #3bc9db;
 	--ia-prec: #f06595;
 	--ia-sun: #ff922b;
-	--ia-sun-fill: #4a3015;
 	--ia-temp: #74c0fc;
 	--ia-co2: #69db7c;
 	--ia-now: #ff6b6b;
@@ -2273,7 +2227,6 @@ kbd {
 	--ia-ice: #dbe7f3;
 	--ia-ice-edge: #6f95ba;
 	--ia-ocean: #1f4f7a;
-	--ia-land: #7d6a4b;
 	--ia-night: #2b3038;
 }
 /* big-bang */
@@ -2663,7 +2616,6 @@ kbd {
 	--ca-drug: #7c5cbf;
 	--ca-eye: #fbf4ec;
 	--ca-iris: #8aa6c4;
-	--ca-panel: #fffdf8;
 }
 :root[data-theme='dark'] {
 	--ca-tissue: #241c1a;
@@ -2680,7 +2632,6 @@ kbd {
 	--ca-drug: #a68cf0;
 	--ca-eye: #2a2a30;
 	--ca-iris: #5d7da0;
-	--ca-panel: #1c1d20;
 }
 /* turing-machines */
 :root {
@@ -2691,7 +2642,6 @@ kbd {
 	--tm-rule: #5c940d;
 	--tm-halt: #2b8a3e;
 	--tm-loop: #c92a2a;
-	--tm-yes: #2b8a3e;
 	--tm-no: #c92a2a;
 	--tm-desc: #1971c2;
 	--tm-one: #343a40;
@@ -2708,7 +2658,6 @@ kbd {
 	--tm-rule: #94d82d;
 	--tm-halt: #69db7c;
 	--tm-loop: #ff6b6b;
-	--tm-yes: #69db7c;
 	--tm-no: #ff6b6b;
 	--tm-desc: #74c0fc;
 	--tm-one: #e9ecef;
@@ -3117,7 +3066,6 @@ kbd {
 	--fi-sub: #1971c2;
 	--fi-crit: #2f9e44;
 	--fi-super: #e03131;
-	--fi-band: #d3f9d8;
 }
 :root[data-theme='dark'] {
 	--fi-u235: #ff922b;
@@ -3142,7 +3090,6 @@ kbd {
 	--fi-sub: #4dabf7;
 	--fi-crit: #69db7c;
 	--fi-super: #ff6b6b;
-	--fi-band: #1f3d26;
 }
 /* crispr */
 :root {

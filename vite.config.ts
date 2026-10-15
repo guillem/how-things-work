@@ -22,7 +22,8 @@ export default defineConfig({
 			paths: { base: base as '' | `/${string}`, relative: false },
 			prerender: {
 				handleHttpError: 'fail',
-				handleMissingId: 'warn'
+				// Step links (`../topic/#step`) point at ids the explainer renders at runtime.
+				handleMissingId: 'ignore'
 			},
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
