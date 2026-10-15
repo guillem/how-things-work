@@ -203,7 +203,7 @@ A topic is done when:
 - [x] convolution-vision
 - [x] embeddings
 - [x] transformers
-- [ ] language-models
+- [x] language-models
 - [x] diffusion-models
 - [x] reinforcement-learning
 
