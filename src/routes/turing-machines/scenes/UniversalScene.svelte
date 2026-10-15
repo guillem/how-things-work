@@ -120,7 +120,7 @@
 
 	const MODELS = [
 		{ name: 'Turing machine', who: 'Turing, 1936' },
-		{ name: 'λ-calculus', who: 'Church, 1936' },
+		{ name: 'λ-calculus', who: 'Church, 1932–36' },
 		{ name: 'processor + memory', who: 'stored program' },
 		{ name: 'Game of Life', who: 'Conway, 1970' },
 		{ name: 'Rule 110', who: 'cellular automaton' }

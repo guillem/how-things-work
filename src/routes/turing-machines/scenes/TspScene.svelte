@@ -60,8 +60,7 @@
 	const current = $derived(tried < total ? search.tried[tried] : null);
 	const bestNow = $derived.by(() => {
 		let r = -1;
-		for (let i = 0; i < search.records.length; i++)
-			if (search.records[i].at < Math.max(1, tried)) r = i;
+		for (let i = 0; i < search.records.length; i++) if (search.records[i].at < tried) r = i;
 		return r < 0 ? null : search.records[r];
 	});
 	const bestTour = $derived(bestNow ? search.tried[bestNow.at] : null);
