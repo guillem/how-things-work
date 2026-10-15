@@ -169,7 +169,7 @@ A topic is done when:
 - [x] rockets
 - [ ] stars
 - [x] black-holes
-- [ ] gravitational-waves
+- [x] gravitational-waves
 - [ ] dark-matter
 - [ ] big-bang
 - [x] exoplanets
