@@ -194,7 +194,7 @@ A topic is done when:
 - [x] internet
 - [ ] gps
 - [x] pagerank
-- [ ] consensus-blockchains
+- [x] consensus-blockchains
 
 **Artificial Intelligence**
 - [x] learning-from-data
