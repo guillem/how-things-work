@@ -216,7 +216,7 @@ A topic is done when:
 - [x] nuclear-fusion
 - [x] flight
 - [x] bridges-structures
-- [ ] feedback-control
+- [x] feedback-control
 
 ## Topics
 
