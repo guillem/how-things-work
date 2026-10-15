@@ -167,7 +167,7 @@ A topic is done when:
 - [x] sun-earth-moon
 - [x] orbits-kepler
 - [x] rockets
-- [ ] stars
+- [x] stars
 - [x] black-holes
 - [x] gravitational-waves
 - [ ] dark-matter
