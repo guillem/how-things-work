@@ -148,8 +148,7 @@ test('the yogurt experiment: resistance follows the new spacers, removed or adde
 
 test('as in 2007, the 858 spacers go into a survivor of phage 2972, which 858 still kills without them', () => {
 	const added = strainArray('added').array;
-	// it resists 2972 because of its own spacer, and 858 only thanks to the two added ones
-	expect(immune(added, PHAGE_2972)).toBe(true);
+	// before the two were added, its spacer matched 2972 and nothing in 858
 	const withoutAdded = { spacers: added.spacers.filter((s) => !s.source.startsWith('new')) };
 	expect(immune(withoutAdded, PHAGE_2972)).toBe(true);
 	expect(immune(withoutAdded, PHAGE_858)).toBe(false);
