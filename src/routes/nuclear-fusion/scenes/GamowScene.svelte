@@ -143,7 +143,7 @@
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="4 4"
 	/>
-	<Readout id="avg" order={3} label="Average energy" value="{fmt(avg)} keV">
+	<Readout id="avg">
 		<Label
 			x={sx(avg) + (avg > 150 ? -6 : 6)}
 			y={Y1 - 8}
@@ -210,7 +210,7 @@
 			weight={600}
 		/>
 	</Readout>
-	<Readout id="rate" order={2} label="Fusion rate, compared with 10 keV" value={relText}>
+	<Readout id="rate">
 		<Label
 			x={X1}
 			y={96}

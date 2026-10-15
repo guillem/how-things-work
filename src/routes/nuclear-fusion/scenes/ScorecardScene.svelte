@@ -57,7 +57,7 @@
 			id: 'nif22',
 			q: 3.15 / 2.05,
 			title: 'NIF 2022',
-			sub: '3.15 MJ from 2.05 MJ of laser light',
+			sub: '3.15 MJ from 2.05 MJ',
 			dy: 70,
 			anchor: 'start',
 			color: 'var(--nf-laser)',
@@ -129,7 +129,9 @@
 	/>
 	{#each ticks as v (v)}
 		<line x1={sx(v)} x2={sx(v)} y1={AY - 5} y2={AY + 5} stroke="var(--stage-line)" />
-		<text x={sx(v)} y={AY + 20} text-anchor="middle" font-size="11" class="muted">{v}</text>
+		{#if !marks.some((m) => Math.abs(sx(m.q) - sx(v)) < 14)}
+			<text x={sx(v)} y={AY + 20} text-anchor="middle" font-size="11" class="muted">{v}</text>
+		{/if}
 	{/each}
 	<Label
 		x={X0}
@@ -148,7 +150,7 @@
 		stroke-width="1.5"
 		stroke-dasharray="5 4"
 	/>
-	<Readout id="breakeven" order={8} label="Breakeven" value="Q = 1">
+	<Readout id="breakeven">
 		<Label
 			x={sx(1)}
 			y={AY + 208}
@@ -158,7 +160,7 @@
 			weight={600}
 		/>
 	</Readout>
-	<Readout id="ignition" order={9} label="Ignition" value="Q → ∞: no heating needed">
+	<Readout id="ignition">
 		<Label
 			x={X1 + 90}
 			y={AY + 46}

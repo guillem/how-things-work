@@ -104,7 +104,7 @@
 			<Readout
 				id={m.id}
 				order={10 + nuclides[m.id].a}
-				label={m.text.split('  ')[0]}
+				label={m.id === 'H-3' ? undefined : m.text.split('  ')[0]}
 				value="{m.text.split('  ')[1].split(' ')[0]} MeV"
 			>
 				<Label x={x + m.dx} y={y + m.dy} text={m.text} anchor={m.anchor} size={12} />

@@ -111,7 +111,7 @@
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="3 4"
 	/>
-	<Readout id="wall" order={6} label="No ignition below" value="{wall.toFixed(1)} keV">
+	<Readout id="wall">
 		<Label
 			x={sx(wall) - 8}
 			y={Y1 - 14}
@@ -144,12 +144,7 @@
 			<Label x={sx(70)} y={sy(tripleFor(70, 1)) + 18} text="Q = 1" color="var(--nf-dd)" size={12} />
 		</Readout>
 		<circle cx={sx(best.t)} cy={sy(best.triple)} r="4" fill="var(--nf-fusion)" />
-		<Readout
-			id="best"
-			order={5}
-			label="Easiest ignition"
-			value="{sci(best.triple)} keV s m⁻³ at {Math.round(best.t)} keV"
-		>
+		<Readout id="best">
 			<Label
 				x={sx(best.t)}
 				y={sy(best.triple) - 14}
