@@ -2949,3 +2949,49 @@ kbd {
 	--fc-arm: #91a7ff;
 	--fc-arm2: #bac8ff;
 }
+/* power grid: the sources of electricity, the demand line, the frequency's bands, and the
+   wires of a transmission line */
+:root {
+	--pg-nuclear: #9775fa;
+	--pg-coal: #868e96;
+	--pg-gas: #ff922b;
+	--pg-hydro: #339af0;
+	--pg-pumping: #a5d8ff;
+	--pg-wind: #20c997;
+	--pg-solar: #fcc419;
+	--pg-solar-thermal: #f76707;
+	--pg-other: #e599f7;
+	--pg-exchange: #d8c9a3;
+	--pg-storage: #74c0fc;
+	--pg-demand: #212529;
+	--pg-ok: #2f9e44;
+	--pg-band: rgba(47, 158, 68, 0.12);
+	--pg-warn: #f08c00;
+	--pg-alarm: #e03131;
+	--pg-wire: #495057;
+	--pg-hot: #f03e3e;
+	--pg-rotor: #adb5bd;
+	--pg-cloud: #adb5bd;
+}
+:root[data-theme='dark'] {
+	--pg-nuclear: #7950f2;
+	--pg-coal: #5c636a;
+	--pg-gas: #e8590c;
+	--pg-hydro: #1c7ed6;
+	--pg-pumping: #4a6f8f;
+	--pg-wind: #0ca678;
+	--pg-solar: #e6a700;
+	--pg-solar-thermal: #d9480f;
+	--pg-other: #ae3ec9;
+	--pg-exchange: #8a7d5c;
+	--pg-storage: #4dabf7;
+	--pg-demand: #f1f3f5;
+	--pg-ok: #51cf66;
+	--pg-band: rgba(81, 207, 102, 0.12);
+	--pg-warn: #ffa94d;
+	--pg-alarm: #ff6b6b;
+	--pg-wire: #ced4da;
+	--pg-hot: #ff6b6b;
+	--pg-rotor: #5c636a;
+	--pg-cloud: #868e96;
+}

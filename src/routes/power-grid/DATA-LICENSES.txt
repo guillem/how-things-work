@@ -1,0 +1,13 @@
+Data used by the power-grid explainer, and their terms. The data file's header gives the
+full source and how the subset was made.
+
+day.ts — hourly means of the real-time demand and generation of the Spanish mainland
+(peninsular) electricity system on 9 April 2025, from Red Eléctrica (REE), "Seguimiento de
+la demanda de energía eléctrica", https://demanda.ree.es/ (source: Red Eléctrica). REE's
+terms of use (https://www.ree.es/en/legal-notice-privacy-policy, section 5.1) allow its
+content to be published on websites and in academic content for information and
+non-commercial purposes, mentioning the company as the source, without altering the
+meaning of the data, and giving the date of their latest update. The demanda.ree.es feed
+carries no update date; REE's matching national real-time series for that day
+(apidatos.ree.es, demanda-tiempo-real) reports its last update as 9 April 2025, 23:58
+(CEST). Downloaded on 15 October 2026.

@@ -3121,6 +3121,34 @@
 			/>
 			<path d="M-5 24 L0 32 L5 24" fill="none" stroke={accent} stroke-width="2.5" opacity="0.7" />
 		</g>
+	{:else if slug === 'power-grid'}
+		<!-- a transmission tower carrying three wires, and a day's demand curve behind it -->
+		<path
+			d="M14 92 C40 92 46 66 66 60 C86 54 104 70 124 66 C144 62 160 30 186 40"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.5"
+			stroke-linecap="round"
+			opacity="0.8"
+		/>
+		<path
+			d="M100 108 L112 30 L124 108 M104 82 H120 M107 60 H117 M88 40 H136 M92 54 H132"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linejoin="round"
+			opacity="0.7"
+		/>
+		{#each [88, 136, 92, 132] as x, i (i)}
+			<circle cx={x} cy={i < 2 ? 40 : 54} r="2.5" fill="currentColor" opacity="0.7" />
+		{/each}
+		<path
+			d="M10 46 Q50 54 88 40 M136 40 Q166 50 192 44 M10 60 Q52 66 92 54 M132 54 Q164 64 192 58"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.5"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
