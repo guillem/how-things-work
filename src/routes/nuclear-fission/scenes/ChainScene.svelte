@@ -95,9 +95,9 @@
 	const genShown = $derived(reduced ? GENS : clamp(Math.floor(tau / GEN_TIME), 0, GENS));
 
 	const colour: Record<Fate, string> = {
-		fission: 'var(--nf-fast)',
-		captured: 'var(--nf-captured)',
-		escaped: 'var(--nf-escaped)'
+		fission: 'var(--fi-fast)',
+		captured: 'var(--fi-captured)',
+		escaped: 'var(--fi-escaped)'
 	};
 
 	// Tally of what has been drawn so far (tree view).
@@ -170,10 +170,10 @@
 	const state = $derived(regime(k, 0.005));
 	const stateColour = $derived(
 		state === 'subcritical'
-			? 'var(--nf-sub)'
+			? 'var(--fi-sub)'
 			: state === 'critical'
-				? 'var(--nf-crit)'
-				: 'var(--nf-super)'
+				? 'var(--fi-crit)'
+				: 'var(--fi-super)'
 	);
 	const fmt = (n: number) => Math.round(n).toLocaleString('en-US');
 	const runIn = $derived(reduced ? 1 : smoothstep(0, 0.5, t));
@@ -215,7 +215,7 @@
 		{#if n.u < 1}
 			<circle cx={ex} cy={ey} r="3.5" fill={colour[n.fate]} />
 		{:else if n.fate === 'captured'}
-			<circle cx={n.x2} cy={n.y2} r="5" fill="var(--nf-u238)" opacity="0.8" />
+			<circle cx={n.x2} cy={n.y2} r="5" fill="var(--fi-u238)" opacity="0.8" />
 		{/if}
 	{/each}
 
@@ -228,13 +228,13 @@
 					cy={f.y}
 					r={9 + 14 * f.flash}
 					fill="none"
-					stroke="var(--nf-flash)"
+					stroke="var(--fi-flash)"
 					stroke-width="2"
 					opacity={1 - f.flash}
 				/>
 			{/if}
-			<circle cx={f.x} cy={f.y} r="8" fill="var(--nf-u235)" />
-			<circle cx={f.x} cy={f.y} r="3" fill="var(--nf-flash)" />
+			<circle cx={f.x} cy={f.y} r="8" fill="var(--fi-u235)" />
+			<circle cx={f.x} cy={f.y} r="3" fill="var(--fi-flash)" />
 		{/if}
 	{/each}
 	{#each tree.hidden as h, g (g)}
@@ -246,31 +246,31 @@
 	{/each}
 
 	<!-- key -->
-	<Readout id="key-fission" label="splits a nucleus" color="var(--nf-fast)" />
-	<Readout id="key-captured" label="captured" color="var(--nf-captured)" />
-	<Readout id="key-escaped" label="escapes" color="var(--nf-escaped)" />
+	<Readout id="key-fission" label="splits a nucleus" color="var(--fi-fast)" />
+	<Readout id="key-captured" label="captured" color="var(--fi-captured)" />
+	<Readout id="key-escaped" label="escapes" color="var(--fi-escaped)" />
 	<Readout id="key">
 		<g style:font-size="12px">
-			<circle cx={TX0 - 16} cy={566} r="7" fill="var(--nf-u235)" />
-			<circle cx={TX0 - 16} cy={566} r="2.6" fill="var(--nf-flash)" />
+			<circle cx={TX0 - 16} cy={566} r="7" fill="var(--fi-u235)" />
+			<circle cx={TX0 - 16} cy={566} r="2.6" fill="var(--fi-flash)" />
 			<text x={TX0 - 4} y={570}>fission</text>
 			<line
 				x1={TX0 + 52}
 				y1={566}
 				x2={TX0 + 74}
 				y2={566}
-				stroke="var(--nf-fast)"
+				stroke="var(--fi-fast)"
 				stroke-width="1.8"
 			/>
 			<text x={TX0 + 80} y={570}>splits a nucleus</text>
-			<circle cx={TX0 + 192} cy={566} r="5" fill="var(--nf-u238)" />
+			<circle cx={TX0 + 192} cy={566} r="5" fill="var(--fi-u238)" />
 			<text x={TX0 + 202} y={570}>captured</text>
 			<line
 				x1={TX0 + 266}
 				y1={566}
 				x2={TX0 + 290}
 				y2={566}
-				stroke="var(--nf-escaped)"
+				stroke="var(--fi-escaped)"
 				stroke-width="1.3"
 				stroke-dasharray="4 3"
 			/>
@@ -304,9 +304,9 @@
 				order={2}
 				label="Split a nucleus"
 				value={String(tally.fis)}
-				color="var(--nf-fast)"
+				color="var(--fi-fast)"
 			>
-				<text x={670} y={262} style:fill="var(--nf-fast)">split a nucleus</text>
+				<text x={670} y={262} style:fill="var(--fi-fast)">split a nucleus</text>
 				<text x={900} y={262} text-anchor="end" font-weight="600">{tally.fis}</text>
 			</Readout>
 			<Readout id="t-cap" order={3} label="Captured" value={String(tally.cap)}>
@@ -371,7 +371,7 @@
 			{#if !off}
 				<circle cx={sx(gInt)} cy={sy(nNow)} r="4" fill={stateColour} />
 			{:else}
-				<Label x={sx(gInt)} y={PY0 - 8} text="off the chart ↑" color="var(--nf-super)" />
+				<Label x={sx(gInt)} y={PY0 - 8} text="off the chart ↑" color="var(--fi-super)" />
 			{/if}
 			<Readout id="legend" label="dashed: 1,000 × kᵍ, the average">
 				<line

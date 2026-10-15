@@ -276,7 +276,7 @@
 			y1={START.y}
 			x2={HIT.x}
 			y2={HIT.y}
-			stroke="var(--nf-slow)"
+			stroke="var(--fi-slow)"
 			stroke-width="1.5"
 			stroke-dasharray="3 5"
 			marker-end="url(#arrowhead)"
@@ -292,7 +292,7 @@
 			cy={CY}
 			r={30 + flash * 330}
 			fill="none"
-			stroke="var(--nf-flash)"
+			stroke="var(--fi-flash)"
 			stroke-width={6 * (1 - flash)}
 			opacity={1 - flash}
 		/>
@@ -300,15 +300,15 @@
 			cx={CX}
 			cy={CY}
 			r={40 * (1 - flash)}
-			fill="var(--nf-flash)"
+			fill="var(--fi-flash)"
 			opacity={0.6 * (1 - flash)}
 		/>
 	{/if}
 
 	<!-- the nucleons -->
-	<path d={paths.n} fill="var(--nf-neutron)" />
-	<path d={paths.p} fill="var(--nf-proton)" />
-	<path d={paths.free} fill="var(--nf-fast)" />
+	<path d={paths.n} fill="var(--fi-neutron)" />
+	<path d={paths.p} fill="var(--fi-proton)" />
+	<path d={paths.free} fill="var(--fi-fast)" />
 	{#if s > T_SPLIT + 0.6}
 		{#each FREE_ANGLES[split.neutrons === 2 ? 0 : 1] as a, i (i)}
 			<line
@@ -316,7 +316,7 @@
 				y1={CY + Math.sin(a) * (FREE_STOP + 10)}
 				x2={CX + Math.cos(a) * (FREE_STOP + 34)}
 				y2={CY + Math.sin(a) * (FREE_STOP + 34)}
-				stroke="var(--nf-fast)"
+				stroke="var(--fi-fast)"
 				stroke-width="2"
 				marker-end="url(#arrowhead)"
 				opacity={labelsIn}
@@ -328,15 +328,15 @@
 				y={CY + FREE_STOP + 4}
 				text="{split.neutrons} fast neutrons, free to split more nuclei"
 				anchor="start"
-				color="var(--nf-fast)"
+				color="var(--fi-fast)"
 				opacity={labelsIn}
 			/>
 		</Readout>
 	{/if}
 
 	{#if s < T_HIT && !reduced}
-		<circle cx={inPos.x} cy={inPos.y} r={BALL * 1.15} fill="var(--nf-slow)" />
-		<Label x={inPos.x} y={inPos.y - 16} text="slow neutron" color="var(--nf-slow)" />
+		<circle cx={inPos.x} cy={inPos.y} r={BALL * 1.15} fill="var(--fi-slow)" />
+		<Label x={inPos.x} y={inPos.y - 16} text="slow neutron" color="var(--fi-slow)" />
 	{/if}
 	{#if s < T_NECK && !reduced}
 		<Readout id="u-label">
@@ -407,7 +407,7 @@
 				text-anchor="middle"
 				style:font-size="22px"
 				font-weight="700"
-				style:fill="var(--nf-energy)">{q.toFixed(1)} MeV</text
+				style:fill="var(--fi-energy)">{q.toFixed(1)} MeV</text
 			>
 			<text x={480} y={562} text-anchor="middle" class="muted" style:font-size="11px"
 				>the fragments' speed, {split.neutrons} fast neutrons, gamma rays</text
@@ -416,16 +416,16 @@
 	</g>
 
 	<!-- key -->
-	<Readout id="key-p" label="proton" color="var(--nf-proton)" />
-	<Readout id="key-n" label="neutron" color="var(--nf-neutron)" />
-	<Readout id="key-f" label="fast neutron" color="var(--nf-fast)" />
+	<Readout id="key-p" label="proton" color="var(--fi-proton)" />
+	<Readout id="key-n" label="neutron" color="var(--fi-neutron)" />
+	<Readout id="key-f" label="fast neutron" color="var(--fi-fast)" />
 	<Readout id="key-svg">
 		<g style:font-size="12px">
-			<circle cx={40} cy={560} r="5" fill="var(--nf-proton)" />
+			<circle cx={40} cy={560} r="5" fill="var(--fi-proton)" />
 			<text x={50} y={564}>proton</text>
-			<circle cx={110} cy={560} r="5" fill="var(--nf-neutron)" />
+			<circle cx={110} cy={560} r="5" fill="var(--fi-neutron)" />
 			<text x={120} y={564}>neutron</text>
-			<circle cx={186} cy={560} r="5" fill="var(--nf-fast)" />
+			<circle cx={186} cy={560} r="5" fill="var(--fi-fast)" />
 			<text x={196} y={564}>freed neutron</text>
 		</g>
 	</Readout>

@@ -41,10 +41,10 @@
 	const state = $derived(regime(k));
 	const stateColour = $derived(
 		state === 'subcritical'
-			? 'var(--nf-sub)'
+			? 'var(--fi-sub)'
 			: state === 'critical'
-				? 'var(--nf-crit)'
-				: 'var(--nf-super)'
+				? 'var(--fi-crit)'
+				: 'var(--fi-super)'
 	);
 
 	// Eased copies for the drawing (rods slide, water fades).
@@ -342,9 +342,9 @@
 			width={BX1 - BX0}
 			height={BY1 - BY0}
 			rx="14"
-			fill="var(--nf-water)"
+			fill="var(--fi-water)"
 			opacity={0.25 + 0.75 * waterDraw}
-			stroke="var(--nf-water-edge)"
+			stroke="var(--fi-water-edge)"
 		/>
 		<Readout id="box-title">
 			<text x={BX0} y={104} style:font-size="16px" font-weight="600"
@@ -355,7 +355,7 @@
 			<path
 				d={trail}
 				fill="none"
-				stroke="var(--nf-slow)"
+				stroke="var(--fi-slow)"
 				stroke-width="1.4"
 				opacity="0.6"
 				stroke-linejoin="round"
@@ -365,7 +365,7 @@
 					cx={c.x}
 					cy={c.y}
 					r={SLOW.hits[i] === 'O' ? 7 : 4}
-					fill={SLOW.hits[i] === 'O' ? 'var(--nf-proton)' : 'var(--stage-ink)'}
+					fill={SLOW.hits[i] === 'O' ? 'var(--fi-proton)' : 'var(--stage-ink)'}
 					opacity="0.55"
 				/>
 			{/each}
@@ -374,7 +374,7 @@
 			cx={slowState.x}
 			cy={slowState.y}
 			r="6"
-			fill={slowState.e > 0.1 ? 'var(--nf-fast)' : 'var(--nf-slow)'}
+			fill={slowState.e > 0.1 ? 'var(--fi-fast)' : 'var(--fi-slow)'}
 			opacity={slowState.o}
 		/>
 		<Readout
@@ -393,7 +393,7 @@
 			<g style:font-size="12px">
 				<circle cx={BX0 + 6} cy={566} r="4" fill="var(--stage-ink)" opacity="0.55" />
 				<text x={BX0 + 16} y={570}>bounce off hydrogen</text>
-				<circle cx={BX0 + 162} cy={566} r="7" fill="var(--nf-proton)" opacity="0.55" />
+				<circle cx={BX0 + 162} cy={566} r="7" fill="var(--fi-proton)" opacity="0.55" />
 				<text x={BX0 + 174} y={570}>off oxygen</text>
 			</g>
 		</Readout>
@@ -423,7 +423,7 @@
 			x2={EX1}
 			y1={ey(Math.log10(THERMAL_EV))}
 			y2={ey(Math.log10(THERMAL_EV))}
-			stroke="var(--nf-slow)"
+			stroke="var(--fi-slow)"
 			stroke-dasharray="4 4"
 		/>
 		<Label
@@ -431,22 +431,22 @@
 			y={ey(Math.log10(THERMAL_EV)) - 10}
 			text="slow (thermal): 0.025 eV"
 			anchor="start"
-			color="var(--nf-slow)"
+			color="var(--fi-slow)"
 		/>
-		<path d={ePath} fill="none" stroke="var(--nf-fast)" stroke-width="2.2" />
+		<path d={ePath} fill="none" stroke="var(--fi-fast)" stroke-width="2.2" />
 		<Readout
 			id="energy"
 			order={2}
 			label="Energy now"
 			value={fmtE(slowState.e)}
-			color={slowState.e > 0.1 ? 'var(--nf-fast)' : 'var(--nf-slow)'}
+			color={slowState.e > 0.1 ? 'var(--fi-fast)' : 'var(--fi-slow)'}
 		>
 			<text
 				x={EX0}
 				y={486}
 				style:font-size="18px"
 				font-weight="700"
-				style:fill={slowState.e > 0.1 ? 'var(--nf-fast)' : 'var(--nf-slow)'}
+				style:fill={slowState.e > 0.1 ? 'var(--fi-fast)' : 'var(--fi-slow)'}
 				>{fmtE(slowState.e)}</text
 			>
 		</Readout>
@@ -478,7 +478,7 @@
 			width={CX1 - CX0}
 			height={CY1 - CY0}
 			rx="10"
-			fill="var(--nf-water)"
+			fill="var(--fi-water)"
 			opacity={waterOpacity}
 		/>
 		<rect
@@ -488,7 +488,7 @@
 			height={CY1 - CY0}
 			rx="10"
 			fill="none"
-			stroke="var(--nf-water-edge)"
+			stroke="var(--fi-water-edge)"
 		/>
 		{#each bubbles as b (b.id)}
 			<circle
@@ -496,7 +496,7 @@
 				cy={b.y}
 				r={b.r}
 				fill="var(--stage-bg)"
-				stroke="var(--nf-water-edge)"
+				stroke="var(--fi-water-edge)"
 				stroke-width="1"
 				opacity="0.8"
 			/>
@@ -508,8 +508,8 @@
 				width={FUEL_W}
 				height={CY1 - CY0 - 28}
 				rx="6"
-				fill="var(--nf-fuel)"
-				stroke="var(--nf-fuel-edge)"
+				fill="var(--fi-fuel)"
+				stroke="var(--fi-fuel-edge)"
 			/>
 		{/each}
 		{#each ROD_SLOTS.map((_, j) => j) as j (j)}
@@ -519,7 +519,7 @@
 				width={ROD_W}
 				height={24 + rodDepth}
 				rx="3"
-				fill="var(--nf-rod)"
+				fill="var(--fi-rod)"
 			/>
 		{/each}
 		<!-- neutrons -->
@@ -529,7 +529,7 @@
 					cx={p.x}
 					cy={p.y}
 					r="3.4"
-					fill={p.fast ? 'var(--nf-fast)' : 'var(--nf-slow)'}
+					fill={p.fast ? 'var(--fi-fast)' : 'var(--fi-slow)'}
 					opacity={p.o}
 				/>
 			{/if}
@@ -538,9 +538,9 @@
 					cx={p.ex}
 					cy={p.ey}
 					r="9"
-					fill="var(--nf-flash)"
+					fill="var(--fi-flash)"
 					fill-opacity="0.35"
-					stroke="var(--nf-flash)"
+					stroke="var(--fi-flash)"
 					stroke-width="3"
 					opacity={p.done}
 				/>
@@ -554,22 +554,22 @@
 					width="10"
 					height="16"
 					rx="3"
-					fill="var(--nf-fuel)"
-					stroke="var(--nf-fuel-edge)"
+					fill="var(--fi-fuel)"
+					stroke="var(--fi-fuel-edge)"
 				/>
 				<text x={CX0 + 16} y={569}>fuel rod</text>
-				<rect x={CX0 + 82} y={556} width="8" height="16" rx="2" fill="var(--nf-rod)" />
+				<rect x={CX0 + 82} y={556} width="8" height="16" rx="2" fill="var(--fi-rod)" />
 				<text x={CX0 + 96} y={569}>control rod</text>
-				<circle cx={CX0 + 184} cy={564} r="3.4" fill="var(--nf-fast)" />
+				<circle cx={CX0 + 184} cy={564} r="3.4" fill="var(--fi-fast)" />
 				<text x={CX0 + 192} y={569}>fast</text>
-				<circle cx={CX0 + 228} cy={564} r="3.4" fill="var(--nf-slow)" />
+				<circle cx={CX0 + 228} cy={564} r="3.4" fill="var(--fi-slow)" />
 				<text x={CX0 + 236} y={569}>slow neutron</text>
 				<circle
 					cx={CX0 + 330}
 					cy={564}
 					r="6"
 					fill="none"
-					stroke="var(--nf-flash)"
+					stroke="var(--fi-flash)"
 					stroke-width="2"
 				/>
 				<text x={CX0 + 342} y={569}>fission</text>
@@ -614,7 +614,7 @@
 					width={gk(1.005) - gk(0.995)}
 					height="16"
 					rx="3"
-					fill="var(--nf-crit)"
+					fill="var(--fi-crit)"
 					opacity="0.8"
 				/>
 				{#each [0.8, 0.9, 1, 1.1, 1.2] as v (v)}
@@ -628,14 +628,14 @@
 					y={224}
 					text-anchor="middle"
 					style:font-size="11px"
-					style:fill="var(--nf-sub)">dies away</text
+					style:fill="var(--fi-sub)">dies away</text
 				>
 				<text
 					x={gk(1.15)}
 					y={224}
 					text-anchor="middle"
 					style:font-size="11px"
-					style:fill="var(--nf-super)">grows</text
+					style:fill="var(--fi-super)">grows</text
 				>
 			</g>
 		</Readout>
@@ -664,7 +664,7 @@
 							width={(Math.min(1.5, row.v) / 2) * (GX1 - GX0 - 110)}
 							height="12"
 							rx="3"
-							fill="var(--nf-curve)"
+							fill="var(--fi-curve)"
 							opacity="0.7"
 						/>
 					{/each}
@@ -692,7 +692,7 @@
 				x2={PX1}
 				y1={sy(1)}
 				y2={sy(1)}
-				stroke="var(--nf-crit)"
+				stroke="var(--fi-crit)"
 				stroke-dasharray="3 4"
 				opacity="0.7"
 			/>

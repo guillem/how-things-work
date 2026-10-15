@@ -21,12 +21,12 @@
 			0.7em 0.7em;
 	}
 	:global(.body .tag.nf-fission) {
-		--tag: var(--nf-flash);
+		--tag: var(--fi-flash);
 	}
 	:global(.body .tag.nf-captured) {
-		--tag: var(--nf-captured);
+		--tag: var(--fi-captured);
 	}
 	:global(.body .tag.nf-escaped) {
-		--tag: var(--nf-escaped);
+		--tag: var(--fi-escaped);
 	}
 </style>

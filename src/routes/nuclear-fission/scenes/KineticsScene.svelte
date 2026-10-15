@@ -189,12 +189,12 @@
 	});
 	const trendColour = $derived(
 		live?.scrammed
-			? 'var(--nf-sub)'
+			? 'var(--fi-sub)'
 			: omega > 1e-6
-				? 'var(--nf-super)'
+				? 'var(--fi-super)'
 				: omega < -1e-6
-					? 'var(--nf-sub)'
-					: 'var(--nf-crit)'
+					? 'var(--fi-sub)'
+					: 'var(--fi-crit)'
 	);
 	const opXTicks = $derived(
 		Array.from({ length: 7 }, (_, i) => Math.ceil(t0 / 10) * 10 + i * 10).filter(
@@ -261,7 +261,7 @@
 		<path
 			d={promptPath}
 			fill="none"
-			stroke="var(--nf-super)"
+			stroke="var(--fi-super)"
 			stroke-width={delayedOn ? 1.6 : 3}
 			stroke-dasharray={delayedOn ? '5 5' : undefined}
 			opacity={delayedOn ? 0.55 : 1}
@@ -269,7 +269,7 @@
 		<path
 			d={delayedPath}
 			fill="none"
-			stroke="var(--nf-crit)"
+			stroke="var(--fi-crit)"
 			stroke-width={delayedOn ? 3 : 1.6}
 			stroke-dasharray={delayedOn ? undefined : '5 5'}
 			opacity={delayedOn ? 1 : 0.55}
@@ -280,7 +280,7 @@
 				y={DY0 + 4}
 				text="no delayed neutrons: off the chart after {fmtTime(tOff)} ↑"
 				anchor="start"
-				color="var(--nf-super)"
+				color="var(--fi-super)"
 				opacity={delayedOn ? 0.7 : 1}
 			/>
 		{/if}
@@ -289,7 +289,7 @@
 			y={dsy(Math.log10(pAt(Math.min(Math.max(cursor, 24), 56)))) - 14}
 			text="with delayed neutrons"
 			anchor="end"
-			color="var(--nf-crit)"
+			color="var(--fi-crit)"
 			opacity={delayedOn ? 1 : 0.7}
 		/>
 		<Readout
@@ -297,14 +297,14 @@
 			order={1}
 			label="This reactor"
 			value={delayedOn ? 'with delayed neutrons' : 'every neutron prompt'}
-			color={delayedOn ? 'var(--nf-crit)' : 'var(--nf-super)'}
+			color={delayedOn ? 'var(--fi-crit)' : 'var(--fi-super)'}
 		>
 			<text
 				x={DX0 - 50}
 				y={500}
 				style:font-size="17px"
 				font-weight="700"
-				style:fill={delayedOn ? 'var(--nf-crit)' : 'var(--nf-super)'}
+				style:fill={delayedOn ? 'var(--fi-crit)' : 'var(--fi-super)'}
 				>{delayedOn ? 'With delayed neutrons (β = 0.65%)' : 'If every neutron were prompt'}</text
 			>
 		</Readout>
@@ -349,13 +349,13 @@
 			x2={OX1}
 			y1={osy(1)}
 			y2={osy(1)}
-			stroke="var(--nf-crit)"
+			stroke="var(--fi-crit)"
 			stroke-dasharray="3 4"
 			opacity="0.7"
 		/>
 		<path d={opPath} fill="none" stroke={trendColour} stroke-width="2.6" stroke-linejoin="round" />
 		{#if opPower > PMAX}
-			<Label x={OX1} y={OY0 - 10} text="above 200% ↑" anchor="end" color="var(--nf-super)" />
+			<Label x={OX1} y={OY0 - 10} text="above 200% ↑" anchor="end" color="var(--fi-super)" />
 		{/if}
 
 		<!-- the core and its rods -->
@@ -366,8 +366,8 @@
 				width={150}
 				height={220}
 				rx="10"
-				fill="var(--nf-water)"
-				stroke="var(--nf-water-edge)"
+				fill="var(--fi-water)"
+				stroke="var(--fi-water-edge)"
 			/>
 			{#each [0, 1, 2, 3, 4] as i (i)}
 				<rect
@@ -376,8 +376,8 @@
 					width={14}
 					height={196}
 					rx="5"
-					fill="var(--nf-fuel)"
-					stroke="var(--nf-fuel-edge)"
+					fill="var(--fi-fuel)"
+					stroke="var(--fi-fuel-edge)"
 				/>
 			{/each}
 			{#each [0, 1, 2, 3] as j (j)}
@@ -387,7 +387,7 @@
 					width={8}
 					height={20 + 200 * (live?.scrammed ? 1 : bank)}
 					rx="2"
-					fill="var(--nf-rod)"
+					fill="var(--fi-rod)"
 				/>
 			{/each}
 			<Readout
@@ -458,12 +458,12 @@
 			yTicks={[0, 1, 2, 3, 4, 5, 6, 7]}
 			yFormat={(v) => `${v}%`}
 		/>
-		<path d={decayPath} fill="none" stroke="var(--nf-energy)" stroke-width="2.6" />
+		<path d={decayPath} fill="none" stroke="var(--fi-energy)" stroke-width="2.6" />
 		{#each MARKS as m (m.id)}
 			{@const lt = Math.log10(m.sec)}
 			{@const share = decayHeat(m.sec)}
 			{#if lt <= decayCursor + 1e-9}
-				<circle cx={ksx(lt)} cy={ksy(100 * share)} r="4.5" fill="var(--nf-energy)" />
+				<circle cx={ksx(lt)} cy={ksy(100 * share)} r="4.5" fill="var(--fi-energy)" />
 				<Readout
 					id="mark-{m.id}"
 					order={10 + MARKS.indexOf(m)}

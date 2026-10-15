@@ -1352,16 +1352,16 @@
 		<circle cx="40" cy="76" r="4.5" fill="currentColor" opacity="0.75" />
 	{:else if slug === 'nuclear-fission'}
 		<!-- a neutron splits a nucleus; its neutrons go on to split the next ones -->
-		<path d="M14 60 H40" stroke="var(--nf-slow)" stroke-width="2" stroke-linecap="round" />
-		<circle cx="14" cy="60" r="3.5" fill="var(--nf-slow)" />
-		<circle cx="62" cy="48" r="11" fill="var(--nf-heavy)" opacity="0.85" />
-		<circle cx="64" cy="74" r="9" fill="var(--nf-light)" opacity="0.85" />
+		<path d="M14 60 H40" stroke="var(--fi-slow)" stroke-width="2" stroke-linecap="round" />
+		<circle cx="14" cy="60" r="3.5" fill="var(--fi-slow)" />
+		<circle cx="62" cy="48" r="11" fill="var(--fi-heavy)" opacity="0.85" />
+		<circle cx="64" cy="74" r="9" fill="var(--fi-light)" opacity="0.85" />
 		<circle
 			cx="62"
 			cy="61"
 			r="20"
 			fill="none"
-			stroke="var(--nf-flash)"
+			stroke="var(--fi-flash)"
 			stroke-width="2"
 			opacity="0.7"
 		/>
@@ -1373,14 +1373,14 @@
 				stroke-dasharray="4 3"
 				fill="none"
 			/>
-			<circle cx="128" cy={61 + ((y - 61) * 44) / 56} r="3" fill="var(--nf-fast)" />
-			<circle cx="154" cy={y} r="12" fill="var(--nf-u235)" />
+			<circle cx="128" cy={61 + ((y - 61) * 44) / 56} r="3" fill="var(--fi-fast)" />
+			<circle cx="154" cy={y} r="12" fill="var(--fi-u235)" />
 			<circle
 				cx="154"
 				cy={y}
 				r="17"
 				fill="none"
-				stroke="var(--nf-flash)"
+				stroke="var(--fi-flash)"
 				stroke-width="1.6"
 				opacity="0.6"
 			/>

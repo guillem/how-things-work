@@ -113,7 +113,7 @@
 			label: 'at once: the fragments fly apart',
 			from: 0,
 			to: q0,
-			color: 'var(--nf-energy)',
+			color: 'var(--fi-energy)',
 			value: `${q0.toFixed(1)} MeV`
 		},
 		{
@@ -121,7 +121,7 @@
 			label: 'later: the fragments beta-decay',
 			from: q0,
 			to: q1,
-			color: 'var(--nf-flash)',
+			color: 'var(--fi-flash)',
 			value: `+ ${(q1 - q0).toFixed(1)} → ${q1.toFixed(1)}`
 		},
 		{
@@ -129,7 +129,7 @@
 			label: 'average over all splits',
 			from: 0,
 			to: E.total,
-			color: 'var(--nf-curve)',
+			color: 'var(--fi-curve)',
 			value: `${E.total.toFixed(1)} MeV`
 		},
 		{
@@ -137,7 +137,7 @@
 			label: 'antineutrinos escape',
 			from: E.total - E.neutrinos - E.pending,
 			to: E.total,
-			color: 'var(--nf-neutrino)',
+			color: 'var(--fi-neutrino)',
 			value: `− ${(E.neutrinos + E.pending).toFixed(1)}`
 		},
 		{
@@ -145,7 +145,7 @@
 			label: 'spare neutrons absorbed',
 			from: E.total - E.neutrinos - E.pending,
 			to: E.heat,
-			color: 'var(--nf-light)',
+			color: 'var(--fi-light)',
 			value: `+ ${E.capture.toFixed(1)}`
 		},
 		{
@@ -153,7 +153,7 @@
 			label: 'heat left in the reactor',
 			from: 0,
 			to: E.heat,
-			color: 'var(--nf-u235)',
+			color: 'var(--fi-u235)',
 			value: `${E.heat.toFixed(1)} MeV`,
 			strong: true
 		}
@@ -186,14 +186,14 @@
 	<path
 		d={curvePath}
 		fill="none"
-		stroke="var(--nf-curve)"
+		stroke="var(--fi-curve)"
 		stroke-width="2.4"
 		stroke-linejoin="round"
 	/>
 
 	<g opacity={marksIn}>
 		<!-- the peak -->
-		<circle cx={sx(top.A)} cy={sy(top.b)} r="4.5" fill="var(--nf-curve)" />
+		<circle cx={sx(top.A)} cy={sy(top.b)} r="4.5" fill="var(--fi-curve)" />
 		<Readout
 			id="peak"
 			order={1}
@@ -221,25 +221,25 @@
 			{/if}
 		</Readout>
 		<!-- uranium -->
-		<circle cx={uPt.x} cy={uPt.y} r="6" fill="var(--nf-u235)" />
+		<circle cx={uPt.x} cy={uPt.y} r="6" fill="var(--fi-u235)" />
 		<Readout
 			id="u235"
 			order={2}
 			label={budget ? undefined : 'Uranium-235'}
 			value="{(U.perNucleon / 1000).toFixed(2)} MeV per nucleon"
-			color="var(--nf-u235)"
+			color="var(--fi-u235)"
 		>
 			<Label
 				x={uPt.x}
 				y={uPt.y + 24}
 				text="uranium-235 · {(U.perNucleon / 1000).toFixed(2)}"
 				anchor="end"
-				color="var(--nf-u235)"
+				color="var(--fi-u235)"
 			/>
 		</Readout>
 		<!-- fragments -->
-		<circle cx={hPt.x} cy={hPt.y} r="5.5" fill="var(--nf-heavy)" />
-		<circle cx={lPt.x} cy={lPt.y} r="5.5" fill="var(--nf-light)" />
+		<circle cx={hPt.x} cy={hPt.y} r="5.5" fill="var(--fi-heavy)" />
+		<circle cx={lPt.x} cy={lPt.y} r="5.5" fill="var(--fi-light)" />
 		<Readout
 			id="frags"
 			order={3}
@@ -252,18 +252,18 @@
 				x={hPt.x}
 				y={hPt.y + 24}
 				text="{name(heavy)} · {(heavy.perNucleon / 1000).toFixed(2)}"
-				color="var(--nf-heavy)"
+				color="var(--fi-heavy)"
 			/>
 			<Label
 				x={lPt.x}
 				y={lPt.y + (budget ? 44 : 24)}
 				text="{name(light)} · {(light.perNucleon / 1000).toFixed(2)}"
-				color="var(--nf-light)"
+				color="var(--fi-light)"
 			/>
 		</Readout>
 		{#if !budget}
 			<!-- light nuclei -->
-			<circle cx={sx(4)} cy={sy(nuclides.He4.perNucleon / 1000)} r="4" fill="var(--nf-curve)" />
+			<circle cx={sx(4)} cy={sy(nuclides.He4.perNucleon / 1000)} r="4" fill="var(--fi-curve)" />
 			<Readout id="he4">
 				<Label
 					x={sx(4) + 10}
@@ -281,7 +281,7 @@
 		<path
 			d={arc(uPt, hPt, budget ? 34 : 54)}
 			fill="none"
-			stroke="var(--nf-u235)"
+			stroke="var(--fi-u235)"
 			stroke-width="2"
 			stroke-dasharray="7 5"
 			stroke-dashoffset={march}
@@ -290,7 +290,7 @@
 		<path
 			d={arc(uPt, lPt, budget ? 64 : 100)}
 			fill="none"
-			stroke="var(--nf-u235)"
+			stroke="var(--fi-u235)"
 			stroke-width="2"
 			stroke-dasharray="7 5"
 			stroke-dashoffset={march}
@@ -315,7 +315,7 @@
 			<path
 				d="M{sx(10)} {sy(3.4)} Q{sx(16)} {sy(6.6)} {sx(40)} {sy(7.7)}"
 				fill="none"
-				stroke="var(--nf-curve)"
+				stroke="var(--fi-curve)"
 				stroke-width="1.6"
 				stroke-dasharray="3 5"
 				marker-end="url(#arrowhead)"
