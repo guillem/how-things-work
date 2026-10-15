@@ -313,7 +313,7 @@
 	}
 	@media (max-width: 640px) {
 		.cb-text {
-			font-size: 26px;
+			font-size: 19px;
 			padding: 0 4px;
 		}
 	}

@@ -103,12 +103,7 @@
 		</g>
 	{/each}
 	<g opacity={smoothstep(3, 3.6, tv)}>
-		<Readout
-			id="moral"
-			order={20}
-			label="In one line"
-			value="agreement is hard; votes handle failures, work handles strangers"
-		>
+		<Readout id="moral">
 			<Txt
 				x={480}
 				y={560}
