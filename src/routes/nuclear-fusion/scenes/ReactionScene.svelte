@@ -44,8 +44,9 @@
 	const tPos = $derived({ x: CX + 260 - 248 * approach, y: CY });
 	// Equal and opposite momenta: the neutron moves 4 times as fast as the alpha.
 	const heTravel = 95;
-	const hePos = $derived({ x: CX - heTravel * fly, y: CY - 0.25 * heTravel * fly });
-	const nPos = $derived({ x: CX + 4 * heTravel * fly, y: CY + 0.25 * 4 * heTravel * fly * 0.25 });
+	const SLOPE = 0.08; // one line through the collision point, so the two fly exactly apart
+	const hePos = $derived({ x: CX - heTravel * fly, y: CY - SLOPE * heTravel * fly });
+	const nPos = $derived({ x: CX + 4 * heTravel * fly, y: CY + SLOPE * 4 * heTravel * fly });
 
 	const massBefore = atomicMass('H-2') + atomicMass('H-3');
 	const massAfter = atomicMass('He-4') + atomicMass('n');

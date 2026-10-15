@@ -213,6 +213,7 @@
 			return run.capped
 				? `ignites: heats itself past ${T_MAX} keV`
 				: `ignites: burns steadily at ${Math.round(run.final)} keV`;
+		if (run.outcome === 'steady') return 'holds steady: on the edge of ignition';
 		return 'cools: fusion fizzles out';
 	});
 	const fmtT = (v: number) =>
@@ -359,7 +360,9 @@
 		<Label
 			x={BX - 20}
 			y={110}
-			text="Power per cubic metre, held steady"
+			text={surplus > 0
+				? 'Power per cubic metre: the alphas out-heat the losses'
+				: 'Power per cubic metre, held steady'}
 			anchor="start"
 			size={14}
 			weight={600}

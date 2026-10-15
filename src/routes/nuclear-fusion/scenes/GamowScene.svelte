@@ -167,10 +167,15 @@
 			<text x="30" y="4" font-size="12">chance of tunnelling through</text>
 		</g>
 	</Readout>
-	<Readout id="k-fu" order={12} label="Fusions (their product)" color="var(--nf-fusion)">
+	<Readout
+		id="k-fu"
+		order={12}
+		label="Fusions (with the real cross section)"
+		color="var(--nf-fusion)"
+	>
 		<g transform="translate({X0 + 480} 72)">
 			<line x1="0" x2="22" y1="0" y2="0" stroke="var(--nf-fusion)" stroke-width="3" />
-			<text x="30" y="4" font-size="12">fusions: the product</text>
+			<text x="30" y="4" font-size="12">fusions (with the real cross section)</text>
 		</g>
 	</Readout>
 	<Readout id="scaled">

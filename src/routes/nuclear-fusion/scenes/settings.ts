@@ -10,11 +10,11 @@ export function plasmaOf(params: Params): Plasma {
 	return { t: num('temp', 10), n: 10 ** num('logN', 20), tau: 10 ** num('logTau', 0) };
 }
 
-/** "116 million K" / "1.2 billion K". */
+/** "11.6 million K" / "116 million K" / "1.2 billion K". */
 export function kelvinText(keV: number): string {
 	const mk = (keV * KELVIN_PER_KEV) / 1e6;
 	if (mk >= 1000) return `${(mk / 1000).toFixed(1)} billion K`;
-	return `${mk < 9.95 ? mk.toFixed(1) : Math.round(mk)} million K`;
+	return `${mk < 99.5 ? Number(mk.toPrecision(3)) : Math.round(mk)} million K`;
 }
 
 const SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
