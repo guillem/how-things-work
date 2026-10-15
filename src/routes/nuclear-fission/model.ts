@@ -460,10 +460,12 @@ export function inhour(rho: number): number {
 export const promptOnlyRate = (rho: number) => rho / GENERATION_TIME;
 
 /**
- * The operating bank of control rods: its full stroke is worth this much
- * reactivity, less than β, so that pulling it out can never make the reactor
- * critical on prompt neutrons alone. A design choice of this page in line with
- * how real plants limit the worth and withdrawal speed of their rods.
+ * The regulating bank on the operating slider: its full stroke is worth this
+ * much reactivity, less than β, so that pulling it out can never make the
+ * reactor critical on prompt neutrons alone. A deliberate restriction of this
+ * page: real rod banks together are worth several dollars (see the scram), and
+ * plants keep withdrawals slow with speed limits, insertion limits and
+ * interlocks rather than by giving the rods little worth.
  */
 export const BANK_WORTH = 0.006;
 /** Reactivity of the bank at insertion x, relative to half in (the critical position). */

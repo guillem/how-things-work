@@ -263,6 +263,12 @@ test('the operating rods are worth less than β either way', () => {
 	expect(1 / inhour(bankReactivity(0))).toBeGreaterThan(5);
 });
 
+test('the scram is worth about nine dollars, as the notes say', () => {
+	const dollars = -SCRAM_REACTIVITY / BETA;
+	expect(dollars).toBeGreaterThan(8.5);
+	expect(dollars).toBeLessThan(9.5);
+});
+
 test('a 3 GW reactor splits about 10²⁰ nuclei a second, about 3 kg of U-235 a day', () => {
 	expect(fissionsPerSecond(3e9)).toBeCloseTo(9.25e19, -18);
 	expect(u235PerDay(3e9)).toBeCloseTo(3.1, 1);
