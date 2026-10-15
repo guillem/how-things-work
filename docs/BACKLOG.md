@@ -106,6 +106,68 @@ radioactivity's raw half-life and lost quarter mark; ecosystems' fractional tick
 chart; the linear-transformations drag offset; `period(r)` near the splits; the orbits-kepler
 label search; right-clicks leaving handles held; and a logic-gates test that guarded nothing.)
 
+## Open after the final push (2026-10-15)
+
+All 100 topics are built and ticked. These are the items left open, deferred by the builder and
+fact-check agents or flagged for the user. Data licences are listed in
+[`DATA-SOURCES.md`](DATA-SOURCES.md).
+
+**Framework**
+
+- **Stage text is forced to 13 px.** `src/lib/explainer/Explainer.svelte` has
+  `.stage :global(text) { font-size: 13px; fill: … }`, which overrides every `font-size`
+  attribute, so `<Label size>` is ignored everywhere. Many recent topics work around it with
+  `style:font-size` or a local Label copy (gpu `Txt`, protein-folding `Text`, mrna-vaccines `Tag`,
+  diffusion-models `Label`). Fixing the shared rule changes every older scene's text size: do it on
+  its own, with a two-theme screenshot pass of all topics, then delete the local copies.
+- **Controls can't be driven by a scene.** deep-time's time slider doesn't follow the cursor while
+  "play" runs; a way for a scene to update or disable a control would fix it.
+- `prerender_missing_id` warnings for step-hash links (`../topic/#step`) appear on many pages.
+
+**Deferred in topics**
+
+- embeddings: a test that 8-bit storage moves similarities by < 0.01 (needs a raw GloVe sample).
+- quantum-computing: a 0°/90° toggle for A's axis on the Bell step (all four CHSH correlations).
+- the-cell: protein crowds count from the whole box area (~10% too many); scale by free fraction.
+- vision-color: an S input on the red–green channel (option B); re-check the cone data against
+  cvrl.org (it came from the colour-science library's copy while cvrl.org was down).
+- dna-to-protein: a "letters copied" control to step through transcription.
+- earthquakes: the PKPab row of the ak135 table test (the table page is a scanned image);
+  station marks on the summary slice.
+- convolution-vision: the build-up animation for the editable filter (only the Sobel one animates).
+- respiration-atp: split the "Yeast, E. coli (10)" rotor option (the transport cost is wrong for
+  E. coli).
+- diffusion-models: store nearest-training-digit distances with a test. The trained MNIST weights
+  were lost with a wiped scratch dir; regenerating digit runs means retraining (~75 min).
+- big-bang: a three-level-atom (Peebles) model for the CMB "electrons bound" readout.
+- flight: a test for the flow scene's "160 times slower".
+- stars: a remnant marker at the end of a 12–30 M☉ free run.
+- nuclear-fusion: draw the plasma vessel as a tokamak cross-section; the redrawn q = 3 field line
+  reads like stacked loops on the tilted ring.
+- deep-time: PhanDA gives one temperature per stage, so the short windows show flat steps.
+- evolution: the Luria–Delbrück figures (11.3, variance 694, 11 of 20) come from course notes;
+  check them against Table 2 of Genetics 28: 491–511 (1943).
+- crispr: the yogurt-experiment correction rests on Danisco's patent strain table (US 10066233);
+  check it against Fig. 3 of Barrangou et al. 2007.
+- solar-cells: re-run `scripts/data/solar-cells/build-records.mjs` when NLR adds LONGi's newer
+  records.
+
+**Modelling choices, stated on their pages** (kept unless the user decides otherwise)
+
+- acids-bases: Kw rounded to 1.0 × 10⁻¹⁴. rockets: the S-IVB carries its translunar reserve so
+  the Saturn V reaches orbit with the F-1's real 304 s. exoplanets: 51 Peg b's revealed mass is a
+  true mass from a 2026 inclination. neurons: Hodgkin & Katz concentrations (Nernst −89/+47 mV)
+  next to Hodgkin & Huxley's measured −72/+55 mV. big-bang: Planck's H₀ everywhere (the Hubble
+  tension in a note). stars: white dwarf < 8 M☉, neutron star to 22 M☉, black hole above.
+  mrna-vaccines: the immune-system page's flu-in-mice parameters and one fitted dose parameter.
+  feedback-control: a 0.5 s engine lag and a 0.2 s-old speed reading added to Åström & Murray's car.
+  gravitational-waves: the leading-order chirp fit gives about 36 suns against the published 30.
+  transistors-chipmaking: three of Rupp's unnamed points named by year and count.
+
+**Process note**: the Anthropic API credit for `make review` ran out on 2026-10-15 (none until
+November); the last ten fact-checks were done in-house by an agent that reviews with web search
+and then applies the fixes.
+
 ## Site and framework work
 
 - **`Label`'s `size` has no effect** (found by cryptography, 2026-10-12): the stage CSS fixes all
