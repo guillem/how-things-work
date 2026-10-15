@@ -431,7 +431,15 @@
 			fill={b.color}
 			opacity="0.85"
 		/>
-		<Readout id="bar-{b.id}" order={10 + i} label={b.name} value="{fmt(v)} MW" color={b.color}>
+		<!-- on phones only the step's own controls are listed (spinning mass and motors only
+			     where nothing else acts), to keep the panel short -->
+		<Readout
+			id="bar-{b.id}"
+			order={10 + i}
+			label={mode === 'free' || !['inertia', 'damping'].includes(b.id) ? b.name : undefined}
+			value="{fmt(v)} MW"
+			color={b.color}
+		>
 			<Label x={BZ - BNEG - 10} y={y + 5} text={b.name} anchor="end" />
 			<Label
 				x={v >= 0 ? BZ + w + 8 : BZ + 8}
