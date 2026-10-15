@@ -127,11 +127,11 @@
 		x1={qc[0]}
 		y1={qc[1]}
 		x2={qc[0]}
-		y2={qc[1] - 70 * (stalled ? clMeasured : clIdeal)}
+		y2={qc[1] - 70 * clMeasured}
 		stroke="var(--fl-lift)"
 		stroke-width="3.5"
 		marker-end="url(#arrowhead)"
-		opacity={Math.abs(clIdeal) > 0.05 ? 1 : 0}
+		opacity={Math.abs(clMeasured) > 0.05 ? 1 : 0}
 	/>
 	<!-- measured drag, along the stream, ten times the scale of the lift arrow -->
 	<line

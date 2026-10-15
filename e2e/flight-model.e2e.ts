@@ -250,12 +250,23 @@ test('the numbers the narrative quotes', () => {
 	expect(measuredDrag(0)).toBeLessThan(0.0085);
 	// ½ρV² at 100 kt at sea level
 	expect(dynamicPressure(RHO0, 100 * KT)).toBeCloseTo(1621, 0);
+	// the suction peak at 5° on the 2%-cambered section, about 3% of atmospheric pressure
+	const peak = Math.min(
+		...surfacePressure(flow(section(0.12, 0.02), 5 * DEG), 400).map((p) => p.cp)
+	);
+	expect(peak).toBeCloseTo(-1.9, 1);
+	expect((peak * dynamicPressure(RHO0, 100 * KT)) / 101325).toBeCloseTo(-0.03, 2);
 	// lift coefficient needed at 100 and 60 kt, and the angle of attack at 100 kt
 	expect(clNeeded(RHO0, 100 * KT)).toBeCloseTo(0.43, 2);
 	expect(clNeeded(RHO0, 60 * KT)).toBeCloseTo(1.2, 1);
 	expect(angleFor(clNeeded(RHO0, 100 * KT)) / DEG).toBeCloseTo(2.9, 1);
 	// the least drag, about a ninth of the weight
 	expect(drag(RHO0, MIN_DRAG_SPEED).total).toBeCloseTo(1253, -1);
+	// the glide polar's drag at the handbook's 126-knot top speed (sea level), against
+	// the thrust 180 hp gives through a propeller about 80% efficient: a third or more too much
+	const available = (180 * 745.7 * 0.8) / (126 * KT);
+	expect(drag(RHO0, 126 * KT).total / 1000).toBeCloseTo(2.3, 1);
+	expect(drag(RHO0, 126 * KT).total / available).toBeGreaterThan(1.33);
 	// air leaves the trailing edge of the 2%-cambered section 8° down at 5°
 	expect(trailingFlowAngle(flow(section(0.12, 0.02), 5 * DEG)) / DEG).toBeCloseTo(-8, 0);
 });
