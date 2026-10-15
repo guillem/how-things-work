@@ -58,7 +58,7 @@
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		<Readout id="card-{c.i}" order={3 + c.i} label={c.label} value={lm.text(c.ids)}>
+		<Readout id="card-{c.i}" order={3 + c.i} label={c.label} value={lm.text(c.ids.slice(0, N))}>
 			<Txt
 				x={40}
 				y={y + 24}
