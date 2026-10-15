@@ -1,0 +1,42 @@
+<!-- batch msgbatch_011bSgoLceuzwu7ZSigcp6XB, claude-opus-5-5, submitted 2026-10-15T04:42:11.211Z, ~$1.39 in tokens + 8 web searches -->
+# Review: language-models
+
+## Verdict
+The page is ready after the fixes below. I checked every number the narrative quotes against the stored GPT-2 data, and they all hold: Italy/Rome/the at 35/27/21%, ␣time at 8% with about 75% of the probability outside the top ten, London 8.1% vs Paris 6.9%, a line break at 53%, 98% / 0.9% / 1.1% / 0.002% on the training sentence, a nucleus of 14 vs 3,167 tokens, under 2% for the top ten at T = 2, both greedy texts, both T = 0.7 quotes and 85 contexts per prompt. The tokenizer is a faithful copy of GPT-2's, and it is tested against the Python version. Most remaining problems are wording. The most important fix is the note on the merges step, which says GPT-2's BPE never merges a word with the space around it. In fact it keeps the leading space and merges it into the word, and the page's own ␣Tower and ␣the examples show this. Second in importance: the sampling step promises that T = 0.3 runs "stay close" to the greedy text, but the stored runs leave it within 2 to 9 tokens.
+
+## Factual errors
+- **medium**, steps.ts:175 (notes of `merges`). "never merges across the split between a word and the space or punctuation around it" is wrong. GPT-2 blocks merges across character categories, *with an exception for spaces*, so the space before a word is merged into it (␣the, ␣Tower). Fix: "GPT-2's version, from Radford and colleagues (2019), works on bytes and never merges across the pieces made by the first split: a word can absorb the space in front of it, but never the punctuation after it." Sources: https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf, https://daviddmc.github.io/blog/2019/GPT-2/
+- **low**, steps.ts:161. The endings are written with a typographic apostrophe (*’s*, *’t*). GPT-2's pattern (bpe.ts:17) only splits endings with the ASCII `'`, so a reader who types "it’s" will not see the split the text promises. Fix: write `<em>'s</em> and <em>'t</em>`, and optionally add "(with a straight apostrophe)".
+- **low**, steps.ts:158 (dfn of *tokens*). "a digit" is too narrow. GPT-2 has tokens for runs of digits, and the page itself shows ␣1889 (49545) and ␣330 (25508) as single tokens. Fix: "…part of a rarer word, a number or part of one, a punctuation mark or a single byte."
+- **low**, steps.ts:227 (dfn of *WebText*). "collected by OpenAI in 2017" is imprecise. The paper (from memory; my search did not return the passage) says WebText leaves out links created after December 2017. Fix: "…from Reddit links posted up to December 2017." Source: https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf
+
+All other claims check out: 50,257 = 256 + 50,000 + 1, token 8765, the Paris tokens 40313 and 6342, merge no. 7 making ␣the, 768-wide vectors with tied embeddings, 124M parameters, GPT-3 at 175B, about 550 MB of weights, 200 KB of merges, Gage 1994, Sennrich et al. 2016, Holtzman et al. 2020, and the InstructGPT result that people preferred the 1.3B model to the 175B one (https://arxiv.org/pdf/2203.02155).
+
+## Model issues
+- **low**, lm.ts:33 / PredictScene.svelte:33–37. Combining top-k and top-p as an intersection of the two sets is a legitimate choice, and the page states it. Common libraries (e.g. Hugging Face) work differently: they apply top-k, renormalise, then apply top-p to the renormalised distribution, which can keep fewer tokens. To avoid implying this is the universal rule, add one sentence to the `cutoffs` step: "(Libraries differ in how they combine the two; here a token must pass both tests on the original probabilities.)"
+
+The rest of the model is sound. Softmax at any temperature is recovered exactly from the stored logits and log-normalisers. Nucleus sizes beyond the ten stored tokens come from a stored table and are shown as "unknown" where none was stored. Sampling by inverse transform is checked against every stored run. The tests check real properties: the tokenizer matches Python's on tricky strings, every distribution sums to at most 1 and keeps its order at every T, and the nucleus shrinks as p falls.
+
+## Narrative and scene mismatches
+- **medium**, steps.ts:286. "At 0.3 the runs start like the greedy text and stay close to it" does not match the stored runs. Story T = 0.3 run 1 leaves the greedy text at token 4 (␣best), run 2 at token 6 and run 3 at token 9. Eiffel run 1 leaves at token 2, and the Q&A run at token 7. Fix: "At 0.3 nearly every pick is the top token, so the runs read like the greedy text, until one less likely pick sends them their own way."
+- **low**, steps.ts:161 vs MessageBox.svelte:25. The note says "🙂 becomes ⟨F0 9F⟩ and ⟨99 82⟩", which holds for 🙂 on its own (tested). In the *emoji* preset, though, the emoji follows a space and sits in one piece with 👍🏽, so the stage tokenizes it differently. From the stored ids I believe " 🙂" may even be a single token there; I am moderately confident. Fix: "🙂 on its own becomes ⟨F0 9F⟩ and ⟨99 82⟩", or change the preset to start a line with the emoji.
+- **low**, ChatScene.svelte:81, 99 and CompareScene.svelte:61. The heading says "20 tokens each", and the cards are cut at 20 tokens. The Readout value of the greedy card, however, is the full 32-token greedy run. Fix: use `o.run.steps.slice(0, 20)` and `c.ids.slice(0, N)` in the Readout values.
+
+The other quoted numbers and behaviours match what the scenes compute: the 32-token greedy run, the T = 2 summary, the top-p note, the default training position showing ␣1889, and the "first differs at token n" markers.
+
+## Catalogue requirements
+- **medium**, entry Interaction ("Type a prompt and see it split into tokens, then view the model's probability for each candidate next token"). What the reader types only goes through the tokenizer. Probabilities exist for four fixed prompts, and choosing tokens is limited to the top four, three levels deep. The page says so honestly (steps.ts:190, 287, 314), and the Needs field allows precomputed probabilities. The written Interaction is still not met as worded, and the catalogue's rules say to raise this rather than build something else quietly. Proposed catalogue change: "Type text and see it split into tokens; for a set of fixed prompts, view the model's probability for each candidate next token as a bar chart. …"
+
+The Takeaway is visible on its own in the loop scene ("Predict one token. Append it. Repeat."). Needs are met with real, documented GPT-2 data (revision, checksum, licence). The prerequisites (embeddings, neural-networks) and the related topic (transformers) are linked.
+
+## Clarity
+- **medium**, steps.ts:202 and 230. The `scores` step leans on "As on the transformers page…" to explain the 768-number vector at the last position, and the `learned` notes do the same for the mask. Transformers is a level-3 topic and not a prerequisite of this level-2 page, so this breaks definition-of-done item 3. Fix for :202: "Inside, the probabilities start as logits, one score per token. The network turns the whole prompt into one list of 768 numbers at the last position (the <a href="../transformers/#stack">transformers</a> page shows how), and compares it with the <a href="../embeddings/">embedding</a> of every token by a dot product…"
+- **low**, TrainingScene.svelte:194. "(cross-entropy, in nats)": *nats* is never explained. Fix: "(cross-entropy, using natural logarithms)", or drop the unit.
+
+## Sources consulted
+- Radford et al., *Language Models are Unsupervised Multitask Learners* (2019): https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf
+- Summary of GPT-2's BPE exception for spaces: https://daviddmc.github.io/blog/2019/GPT-2/
+- Ouyang et al., *Training language models to follow instructions with human feedback* (2022): https://arxiv.org/pdf/2203.02155
+- Gage, *A New Algorithm for Data Compression*, C Users Journal 12(2), Feb 1994: https://www.semanticscholar.org/author/Philip-Gage/2097866775
+- Holtzman et al., *The Curious Case of Neural Text Degeneration* (ICLR 2020): https://scispace.com/papers/the-curious-case-of-neural-text-degeneration-2xplgl0dw1
+- The stored GPT-2 data in `gpt2-lm-data.ts`: I recomputed every probability, nucleus size and decoded text quoted on the page by hand from the stored logits, normalisers and token ids.
