@@ -192,7 +192,7 @@ A topic is done when:
 - [x] cryptography
 - [ ] wireless-signals
 - [x] internet
-- [ ] gps
+- [x] gps
 - [x] pagerank
 - [x] consensus-blockchains
 
