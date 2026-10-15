@@ -34,8 +34,9 @@ Last updated: 2026-10-15 UTC.
 ## Current state
 
 - **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). `main` is
-  deployed as **v0.1.19** (2026-10-15), which also carries the user's external audit
-  (`docs/codex-fact-check-complete.md`: 59 findings, 2 High, all applied). **The project is in
+  deployed as **v0.1.20** (2026-10-15). v0.1.19 carried the user's external audit
+  (`docs/codex-fact-check-complete.md`: 59 findings, 2 High, all applied); v0.1.20 the
+  housekeeping, the stage-text fix and the public-version polish described below. **The project is in
   maintenance:** no topic work is planned; what is left open is in [`BACKLOG.md`](BACKLOG.md)
   ("Open after the final push" and "Site and framework work").
 - Licence: MIT code, CC BY 4.0 content, third-party data under its own terms (`LICENSE`,
@@ -58,10 +59,18 @@ Last updated: 2026-10-15 UTC.
 
 ## Current development
 
-**Nothing in progress.** Housekeeping on 2026-10-15 after v0.1.19, committed on `main` and not
-yet released: docs brought in line with the finished state; dead code removed (the `#lib` stub,
-`easeIn`, 27 unused CSS tokens, the nine local mulberry32 copies replaced by `rng` from
-`src/lib/draw/math.ts`); the `prerender_missing_id` build warnings silenced in `vite.config.ts`.
+**Nothing in progress.** Released as v0.1.20 (2026-10-15), three pieces built in local
+worktrees after the completion review and merged into `main`:
+
+- Housekeeping: docs brought in line with the finished state; dead code removed (the `#lib`
+  stub, `easeIn`, 27 unused CSS tokens, the nine local mulberry32 copies replaced by `rng` from
+  `src/lib/draw/math.ts`); the `prerender_missing_id` build warnings silenced in `vite.config.ts`.
+- Stage text: the 13 px rule moved from every `<text>` to the stage `<svg>`, so `font-size=` /
+  `fill=` attributes and `<Label size>` work again; the 37 local text helpers and the
+  `style:font-size` workarounds are gone (`<Label>` gained `italic`, `mono`, `tabular`, `halo`).
+  55 topics' stages changed slightly (Axes ticks at 11 px, authored sizes).
+- Public polish: footer licence line, Open Graph and Twitter tags, `sitemap.xml` (prerendered
+  endpoint, pointed to from `robots.txt`), an `og-image.png`, the sun-earth-moon card vignette.
 
 **History, newest first:**
 
