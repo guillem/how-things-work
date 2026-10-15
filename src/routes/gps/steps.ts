@@ -154,7 +154,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'one' },
 			duration: 22,
 			body: `
-<p>A GPS satellite does one simple thing, over and over: it broadcasts a radio signal that says <strong>where the satellite is</strong> and <strong>what time it is</strong> on its clock, at the moment of sending.</p>
+<p>A GPS satellite does one simple thing, over and over: it broadcasts a <a href="../wireless-signals/#carrier">radio signal</a> that says <strong>where the satellite is</strong> and <strong>what time it is</strong> on its clock, at the moment of sending.</p>
 <p>Radio waves travel at the speed of light, about 300 000 km every second. A receiver that hears the signal compares the time in it with its own clock. If the signal took 0.02 seconds to arrive, it came from 0.02 × 300 000 = 6 000 km away. The receiver is somewhere on a <strong>circle</strong> of that radius around the satellite.</p>
 <p>Drag the receiver around. The circle always passes through it, but one distance cannot tell you <em>where</em> on the circle you are. Drag the satellite too: it is the satellite's known position that anchors the circle.</p>`,
 			notes: `<p>This first chapter is a flat map, 12 000 km across, with the satellites in the same plane as the receiver, so that distances are circles. The real problem is in three dimensions (spheres instead of circles) and comes in the next chapter. The pulses are slowed down enormously: real radio waves would cross this map in 0.04 seconds.</p>`
@@ -210,7 +210,7 @@ export const spec: ExplainerSpec = {
 			controls: [place, hour],
 			body: `
 <p>These are the real GPS satellites, placed from the <dfn data-def="A summary of the orbits of all the satellites, broadcast by each of them and published by the US Coast Guard Navigation Center; this page uses the one for the week of 11 October 2026.">almanac</dfn> they broadcast for this week: 32 healthy satellites, about <strong>20 200 km</strong> up, on orbits tilted <strong>55°</strong> to the equator in six planes. Each goes round twice a day (every 11 hours 58 minutes), at 3.9 km/s, as <a href="../orbits-kepler/#third">Kepler's third law</a> requires at that height.</p>
-<p>The lines join the receiver to the satellites above its horizon. From anywhere on Earth, at any time, <strong>usually 8 to 12</strong> are in view (never fewer than 7 in this almanac's day). Change the place and the time and count them.</p>
+<p>The lines join the receiver to the satellites above its horizon. From anywhere on Earth, at any time, <strong>usually 8 to 12</strong> are in view, and rarely fewer than 7. Change the place and the time and count them.</p>
 <p>Their signals take 67 to 86 thousandths of a second to come down, depending on how high in the sky the satellite is.</p>`,
 			notes: `<p>The positions come from the YUMA almanac of the U.S. Coast Guard Navigation Center for GPS week 2440, and the orbit formulas of the GPS interface specification (IS-GPS-200): Kepler's equation for each orbit, then a rotation for the turning Earth. The almanac is coarse (kilometres); for the fix itself each satellite also broadcasts a precise <dfn data-def="A satellite's own detailed orbit, worked out and uploaded by the ground stations and broadcast in its signal, good to about a metre.">ephemeris</dfn> of its own orbit. Satellites are counted from 10° above the horizon, a usual cut-off. The globe is to scale; the satellites and the receiver are not.</p>`
 		},
