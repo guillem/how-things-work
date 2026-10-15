@@ -45,15 +45,13 @@ test('cycles: the chart scales tick at round numbers, aligned on both sides', as
 	// (read in one go, so that the animation can't move on between the two).
 	const ticks = () =>
 		stage(page)
-			.locator('text[font-size="11"]:not([text-anchor="middle"])')
+			.locator('text.tick:not([text-anchor="middle"])')
 			.evaluateAll((els) =>
-				els
-					.filter((e) => e.textContent?.trim() !== 'years')
-					.map((e) => ({
-						side: e.getAttribute('text-anchor'),
-						text: e.textContent?.trim() ?? '',
-						y: Number(e.getAttribute('y'))
-					}))
+				els.map((e) => ({
+					side: e.getAttribute('text-anchor'),
+					text: e.textContent?.trim() ?? '',
+					y: Number(e.getAttribute('y'))
+				}))
 			);
 	async function check() {
 		const all = await ticks();
