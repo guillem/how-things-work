@@ -225,9 +225,6 @@ export function at(hour: number, key: Source): number {
 /** Demand, MW, at a time of day (hours, 0–24). */
 export const demandAt = (hour: number) => at(hour, 'demand');
 
-/** The sources nobody dispatches in the game: they run as they did on the day. */
-export const FIXED: Source[] = ['nuclear', 'coal', 'wind', 'solarPV', 'solarThermal', 'other'];
-
 /** Peak and lowest hour of the day's demand. */
 export function demandExtremes() {
 	let max = DAY[0];
@@ -271,8 +268,9 @@ export const inverterShareAt = (hour: number) =>
 //
 // The game treats the mainland as if its links abroad carried exactly the scheduled flows
 // (the day's real exchanges), so any imbalance stays at home and shows up in its own
-// frequency, as on an island. Nuclear, coal, wind, solar and cogeneration run as they did on
-// the day; the reader dispatches gas, hydro and storage. One simulated hour passes in a few
+// frequency, as on an island. Coal, solar thermal and cogeneration run as they did on the
+// day; the reader dispatches gas, hydro, storage and nuclear, and can curtail solar and wind
+// (whose available output is the day's). One simulated hour passes in a few
 // seconds, so the governors settle "instantly": the frequency is the one primary control
 // holds (`island`), and only the reader — or the autopilot — plays the secondary control.
 
@@ -284,13 +282,22 @@ export interface Dispatch {
 	hydro: number;
 	/** Pumped storage and batteries: negative while charging, MW. */
 	storage: number;
+	/** Nuclear output, MW (before any trip). */
+	nuclear: number;
+	/** Share of the available solar PV and wind output switched off (curtailed), 0–1. */
+	curtail: number;
 }
+
+/** Installed nuclear capacity on the Spanish mainland, MW (seven reactors). */
+export const NUCLEAR_CAPACITY = 7100;
 
 /** What the plants really did at an hour of the day. */
 export const realDispatch = (hour: number): Dispatch => ({
 	gas: at(hour, 'gas'),
 	hydro: at(hour, 'hydro'),
-	storage: at(hour, 'pumping')
+	storage: at(hour, 'pumping'),
+	nuclear: at(hour, 'nuclear'),
+	curtail: 0
 });
 
 /** A passing cloud shades a quarter of the country's solar farms, cutting their output by
@@ -343,10 +350,10 @@ export function gridAt(hour: number, d: Dispatch, ev: Events = {}): GridState {
 	const shade = ev.cloud == null ? 0 : cloudShade(hour - ev.cloud);
 	const tripped = ev.trip != null && hour >= ev.trip ? LARGEST_UNIT : 0;
 	const sources = {
-		nuclear: at(hour, 'nuclear') - tripped,
+		nuclear: Math.max(0, d.nuclear - tripped),
 		coal: at(hour, 'coal'),
-		wind: at(hour, 'wind'),
-		solarPV: at(hour, 'solarPV') * (1 - shade),
+		wind: at(hour, 'wind') * (1 - d.curtail),
+		solarPV: at(hour, 'solarPV') * (1 - shade) * (1 - d.curtail),
 		solarThermal: at(hour, 'solarThermal'),
 		other: at(hour, 'other') + unlisted(hour),
 		exchange: at(hour, 'exchange'),

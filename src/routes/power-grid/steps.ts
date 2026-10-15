@@ -81,7 +81,7 @@ const ufls: Control = {
 const pilot: Control = {
 	type: 'select',
 	id: 'pilot',
-	label: 'Who dispatches gas, hydro and storage',
+	label: 'Who dispatches the plants',
 	default: 'you',
 	options: [
 		{ value: 'you', label: 'You' },
@@ -124,6 +124,30 @@ const storage: Control = {
 	default: -500,
 	format: (v) => (v < 0 ? `charging ${gw(-v)}` : v > 0 ? `delivering ${gw(v)}` : 'idle'),
 	help: 'Negative: pumping water uphill (or charging batteries) with spare power.'
+};
+
+const nuclear: Control = {
+	type: 'range',
+	id: 'nuclear',
+	label: 'Nuclear reactors',
+	min: 0,
+	max: 7100,
+	step: 100,
+	default: 6100,
+	format: gw,
+	help: 'Real reactors change their output over hours, not seconds.'
+};
+
+const curtail: Control = {
+	type: 'range',
+	id: 'curtail',
+	label: 'Curtail solar and wind',
+	min: 0,
+	max: 100,
+	step: 5,
+	default: 0,
+	unit: '%',
+	help: 'Switch off part of what the solar farms and wind turbines could make.'
 };
 
 const startAt = (id: string, value: number): Control => ({
@@ -235,7 +259,7 @@ export const spec: ExplainerSpec = {
 <p>This is the demand on the Spanish mainland grid on Wednesday 9 April 2025, hour by hour, as measured by its operator, <dfn data-def="Red Eléctrica (REE), the company that runs Spain's high-voltage grid and balances it in real time.">Red Eléctrica</dfn>.</p>
 <p>It is lowest in the small hours, about <strong>21,300 MW at 4 a.m.</strong>, climbs steeply as the country wakes up, sags a little through the afternoon, and peaks at about <strong>31,300 MW at 9 p.m.</strong>, when Spain cooks, eats and switches on its lights. Over the whole day the mainland used 620 gigawatt-hours.</p>
 <p>Nobody plans this curve. It is the sum of millions of people switching things on and off, and it changes every second. The grid has to follow it.</p>`,
-			notes: `<p>Each point is the mean power over one hour (so it is also that hour's energy, in MWh), averaged from REE's five-minute real-time data; times are local (CEST). The source is REE's "Seguimiento de la demanda de energía eléctrica" (demanda.ree.es), data last updated by REE on 9 April 2025 at 23:58. Real-time data are provisional: REE's final figure for that day's mainland demand is 626 GWh, 1% more.</p>`
+			notes: `<p>Each point is the mean power over one hour (so it is also that hour's energy, in MWh), averaged from REE's five-minute real-time data; times are local (CEST). The source is REE's "Seguimiento de la demanda de energía eléctrica" (demanda.ree.es), downloaded in October 2026 (the feed gives no update date; REE's national real-time series for the day was last updated on 9 April 2025 at 23:58). Real-time data are provisional: REE's final figure for that day's mainland demand is 626 GWh, 1% more.</p>`
 		},
 		{
 			id: 'mix',
@@ -303,7 +327,7 @@ export const spec: ExplainerSpec = {
 <p>Sometimes much more is lost at once — when a fault splits the grid in two and one part is cut off from the power it was importing. Then the reserves can't keep up, and the frequency falls fast.</p>
 <p>At <strong>49.0 Hz</strong> the last line of defence acts: <dfn data-def="Under-frequency load shedding (UFLS): relays in substations that disconnect whole areas of demand when the frequency falls below set points, 49.0 Hz to 48.0 Hz in Continental Europe.">automatic load shedding</dfn>. Relays in substations disconnect whole neighbourhoods, in steps (here 7.5% of demand each), up to 45% of all demand by 48.0 Hz. Cutting customers off sounds drastic, but it saves the grid: demand drops below generation and the frequency recovers, overshooting a little until generators turn down above 50.2 Hz.</p>
 <p>Switch the shedding off. The frequency falls past <strong>47.5 Hz</strong>, where power stations disconnect themselves to protect their machinery — and with them goes everyone's supply: a blackout.</p>`,
-			notes: `<p>The settings come from the EU's Emergency and Restoration network code (2017): shedding starts at 49.0 Hz and must have removed 45% of demand by 48.0 Hz, in at least six steps. Generators may disconnect below 47.5 Hz (Requirements for Generators code, 2016). On 4 November 2006 a line switched off in northern Germany split the European grid in three; the western part was left short of about 9,000 MW, its frequency fell to 49.0 Hz, and load shedding cut off some 15 million households for up to two hours — and kept the grid from collapsing. ${CE}</p>`
+			notes: `<p>The settings come from the EU's Emergency and Restoration network code (2017): shedding starts at 49.0 Hz and must have removed 45% of demand by 48.0 Hz, in at least six steps. Generators may disconnect below 47.5 Hz (Requirements for Generators code, 2016). On 4 November 2006 a line switched off in northern Germany split the European grid in three. The western part was left short of power, its frequency fell to about 49 Hz, and automatic load shedding cut off some 15 million households — but the grid did not collapse, and supply was back within about two hours. ${CE}</p>`
 		},
 		// ---------------------------------------------------------------- dispatch
 		{
@@ -313,9 +337,9 @@ export const spec: ExplainerSpec = {
 			scene: 'game',
 			hints: { events: false },
 			duration: 120,
-			controls: [pilot, gas, hydro, storage, start],
+			controls: [pilot, gas, hydro, storage, nuclear, curtail, start],
 			body: `
-<p>Now you are the grid operator of the Spanish mainland, on the real day of 9 April 2025. Nuclear, wind, solar and the rest run as they did that day; you dispatch the gas stations, the dams and the storage. One hour passes every 6 seconds.</p>
+<p>Now you are the grid operator of the Spanish mainland, on the real day of 9 April 2025. The sun shines and the wind blows as they did that day; you dispatch the gas stations, the dams, the storage and the nuclear reactors, and you can <dfn data-def="Switching off part of the output that solar farms and wind turbines could make, when there is nobody to use it.">curtail</dfn> solar and wind. One hour passes every 6 seconds.</p>
 <p>Keep the frequency between <strong>49.8 and 50.2 Hz</strong>. Here the governors hold only 1,000 MW of primary reserve, so a mismatch much larger than that pushes the frequency out of the band — and below 49.0 Hz customers are cut off. In this game you are the secondary control: nothing brings the frequency back to 50 Hz but you.</p>
 <p>Watch the morning rush and, above all, the evening, when the sun sets just as demand peaks. Pause whenever you like, or switch to the autopilot to see what the real plants did.</p>`,
 			notes: `<p>${ISLAND}</p>`
@@ -327,7 +351,7 @@ export const spec: ExplainerSpec = {
 			scene: 'game',
 			hints: { events: true },
 			duration: 60,
-			controls: [tripPlant, pilot, gas, hydro, storage, startTrip],
+			controls: [tripPlant, pilot, gas, hydro, storage, nuclear, curtail, startTrip],
 			body: `
 <p>A nuclear reactor shuts down automatically when anything looks wrong — and at 1,000 MW it is the biggest plant on this grid. Press the button and watch.</p>
 <p>The frequency drops to about <strong>49.81 Hz</strong>: the governors have used almost all of their 1,000 MW of reserve to hold it there (the rest of the gap is made up by motors slowing down). The grid survives, but it is now one problem away from load shedding. Within minutes the operator has to start other plants to replace the reactor and free the reserve again. Do it yourself, with the gas or the dams — or switch to the autopilot, which calls up gas over about five minutes.</p>`,
@@ -340,7 +364,7 @@ export const spec: ExplainerSpec = {
 			scene: 'game',
 			hints: { events: true },
 			duration: 60,
-			controls: [cloud, pilot, gas, hydro, storage, startCloud],
+			controls: [cloud, pilot, gas, hydro, storage, nuclear, curtail, startCloud],
 			body: `
 <p>Solar power can change much faster than a reactor trips back on. Around midday, send a band of cloud over a quarter of the country's solar farms. It cuts their output by about 70% for an hour, so at noon some 2,800 MW of solar power fades away in a quarter of an hour.</p>
 <p>That is more than the primary reserve. If nobody answers, the frequency falls below 49.0 Hz and load shedding cuts off about 2,000 MW of customers until the cloud passes. Answer it yourself by raising gas, hydro or storage as it comes — or let the autopilot do it.</p>

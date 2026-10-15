@@ -113,3 +113,13 @@ test('high voltage: 1,000 MW over 200 km loses 2.4% at 400 kV, 22% at 132 kV', a
 	await page.locator('button[data-control=kv][data-value="20"]').click();
 	await expect(stage(page)).toContainText('more than half');
 });
+
+test('in the game, curtailing solar and wind at midday lowers the frequency', async ({ page }) => {
+	await open(page, './power-grid/#cloud');
+	await page.locator('button[data-control=pilot][data-value=you]').click();
+	await range(page, 'startCloud').fill('12');
+	await expect(stage(page)).toContainText('12:00');
+	await expect(stage(page)).toContainText('inside the band');
+	await range(page, 'curtail').fill('20');
+	await expect(stage(page)).toContainText('MW of customers cut off');
+});

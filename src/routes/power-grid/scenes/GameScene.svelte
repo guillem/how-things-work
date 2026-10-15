@@ -50,7 +50,9 @@
 	const mine: Dispatch = $derived({
 		gas: Number(params.gas ?? 3600),
 		hydro: Number(params.hydro ?? 9100),
-		storage: Number(params.storage ?? -500)
+		storage: Number(params.storage ?? -500),
+		nuclear: Number(params.nuclear ?? 6100),
+		curtail: Number(params.curtail ?? 0) / 100
 	});
 	// a new day (another start hour, or this step entered) starts from what the plants really
 	// did at that hour, so the reader begins balanced
@@ -63,6 +65,8 @@
 			setParam('gas', r(d.gas));
 			setParam('hydro', r(d.hydro));
 			setParam('storage', r(d.storage));
+			setParam('nuclear', r(d.nuclear));
+			setParam('curtail', 0);
 		});
 	});
 	const offered = $derived(new Set((step.controls ?? []).map((c) => c.id)));
@@ -512,7 +516,7 @@
 		<Label
 			x={X1}
 			y={584}
-			text={auto ? 'gas, hydro and storage: autopilot' : 'gas, hydro and storage: you'}
+			text={auto ? 'dispatch: autopilot' : 'dispatch: you'}
 			anchor="end"
 			muted
 		/>

@@ -7,5 +7,7 @@ la demanda de energía eléctrica", https://demanda.ree.es/ (source: Red Eléctr
 terms of use (https://www.ree.es/en/legal-notice-privacy-policy, section 5.1) allow its
 content to be published on websites and in academic content for information and
 non-commercial purposes, mentioning the company as the source, without altering the
-meaning of the data, and giving the date of their latest update: the real-time series
-were last updated by REE on 9 April 2025 at 23:58 (CEST); downloaded on 15 October 2026.
+meaning of the data, and giving the date of their latest update. The demanda.ree.es feed
+carries no update date; REE's matching national real-time series for that day
+(apidatos.ree.es, demanda-tiempo-real) reports its last update as 9 April 2025, 23:58
+(CEST). Downloaded on 15 October 2026.

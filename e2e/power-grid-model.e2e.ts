@@ -119,6 +119,10 @@ test('the island: the real schedule holds 50 Hz; a mismatch over the reserve lea
 	for (let h = 0; h < 24; h += 0.25) {
 		expect(gridAt(h, realDispatch(h)).grid.f).toBeCloseTo(50, 6);
 	}
+	// at noon, curtailing a tenth of solar and wind removes about 1.8 GW: the frequency falls
+	const noon = realDispatch(12.5);
+	expect(gridAt(12.5, { ...noon, curtail: 0.1 }).surplus).toBeCloseTo(-0.1 * (15766 + 1972), -1);
+	expect(gridAt(12.5, { ...noon, nuclear: noon.nuclear - 500 }).grid.f).toBeLessThan(50);
 	expect(island(-1000, 25000).f).toBeGreaterThan(49.8);
 	expect(island(-1200, 25000).f).toBeLessThan(49.8);
 	expect(island(1200, 25000).f).toBeGreaterThan(50.2);

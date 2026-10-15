@@ -75,9 +75,10 @@ const fields = Object.keys(cols);
 const out = `${header}
 // Reuse: REE's terms (www.ree.es/en/legal-notice-privacy-policy, §5.1) allow publication for
 // information, academic and non-commercial purposes, citing Red Eléctrica as the source,
-// without altering the data's meaning, and giving the date of the latest update: the
-// real-time series were last updated by REE on 2025-04-09T23:58 (CEST), and downloaded on
-// 2026-10-15. Do not edit by hand.
+// without altering the data's meaning, and giving the date of the latest update. The
+// demanda.ree.es feed carries no update date; REE's matching national real-time series
+// (apidatos.ree.es, demanda-tiempo-real) for the day reports its last update as
+// 2025-04-09T23:58 (CEST). Downloaded on 2026-10-15. Do not edit by hand.
 
 export interface Hour {
 	/** Start of the hour, local time (0–23). */
