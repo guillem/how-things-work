@@ -269,7 +269,7 @@ export const spec: ExplainerSpec = {
 					step: 10,
 					default: 420,
 					unit: ' ppm',
-					help: 'Today’s air holds about 420 ppm; greenhouses are often enriched to 800–1000 ppm.'
+					help: 'The air held about 420 ppm in the early 2020s, and it is still rising; greenhouses are often enriched to 800–1000 ppm.'
 				},
 				{
 					type: 'range',
@@ -296,7 +296,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'planet' },
 			duration: 20,
 			body: `
-<p>Every year, photosynthesis on land and in the oceans adds about a hundred billion tonnes of carbon to new biomass, after the plants' own respiration (gross fixation is considerably more) — roughly half of it by microscopic algae and cyanobacteria at sea. The oxygen in the air is the accumulated by-product, first released in bulk by cyanobacteria some 2.4 billion years ago.</p>
+<p>Every year, photosynthesis on land and in the oceans adds about a hundred billion tonnes of carbon to new biomass, after the plants' own respiration (gross fixation is considerably more) — roughly half of it by microscopic algae and cyanobacteria at sea. The oxygen in the air is the accumulated by-product. Cyanobacteria were making it earlier still, but it only began to build up in the air for good about 2.4 billion years ago, once it outpaced the rocks and volcanic gases that soaked it up.</p>
 <p>It is not especially efficient: a crop field converts only about 1–2% of the sunlight energy falling on it into biomass, against a theoretical ceiling near 5%. But it runs on water, air and light, at ambient temperature, repairing itself continuously — and it feeds nearly every living thing on the planet.</p>
 <p>Coal, oil and gas are its fossilised output. Understanding how it works is step one in doing better.</p>`,
 			notes: `<p>Estimates of global net primary production are around 105 gigatonnes of carbon per year, split roughly evenly between land and ocean (Field et al., <i>Science</i>, 1998). Gross fixation is larger: about 123 gigatonnes a year on land alone (Beer et al., <i>Science</i>, 2010), about half of which the plants respire themselves. The theoretical maximum efficiency of converting solar energy into biomass is about 4.6% for C<sub>3</sub> plants and 6% for C<sub>4</sub> plants (Zhu, Long &amp; Ort, 2008); real fields achieve a fraction of that.</p>`

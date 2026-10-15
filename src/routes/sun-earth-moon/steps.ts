@@ -151,7 +151,7 @@ export const spec: ExplainerSpec = {
 			controls: [tilt, latitude, date],
 			body: `
 <p>The chart shows the daily sunshine at your chosen latitude over a whole year; pick a date to read its day length and how high the Sun climbs at noon. Now change the tilt.</p>
-<p>With no tilt at all there would be no seasons: every day of the year would be like an equinox, with 12 hours of daylight everywhere except at the poles, where the Sun would circle along the horizon. A bigger tilt makes the seasons more extreme: hotter summers, colder winters and bigger polar regions with midnight Sun and polar night.</p>
+<p>With no tilt at all there would be no seasons of the kind we know: every day of the year would be like an equinox, with 12 hours of daylight everywhere except at the poles, where the Sun would circle along the horizon. All that would be left is the yearly 7% swing in sunlight from the slightly oval orbit, which this chart leaves out. A bigger tilt makes the seasons more extreme: hotter summers, colder winters and bigger polar regions with midnight Sun and polar night.</p>
 <p>Uranus is tilted by about 98°: for decades at a time one of its poles faces the Sun.</p>`
 		},
 		// ------------------------------------------------------------------ moon
