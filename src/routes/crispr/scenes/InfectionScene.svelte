@@ -93,7 +93,7 @@
 		<Tag
 			x={480}
 			y={88}
-			text="(phages drawn larger than true scale: about a tenth of the cell’s length)"
+			text="(schematic: the yogurt bacterium’s phages are about 0.3 µm long, a third of the cell)"
 			size={12}
 			muted
 		/>

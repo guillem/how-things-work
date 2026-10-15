@@ -25,7 +25,8 @@ import {
 	scan,
 	simulate,
 	strainArray,
-	PHAGE_858
+	PHAGE_858,
+	PHAGE_2972
 } from '../src/routes/crispr/model';
 
 test('Cas9 checks each PAM in turn and cuts only where all the letters beside it match', () => {
@@ -143,6 +144,17 @@ test('the yogurt experiment: resistance follows the new spacers, removed or adde
 	// the survivor's two new spacers are at the front
 	const bim = strainArray('bim').array.spacers.map((s) => s.source);
 	expect(bim.slice(0, 2)).toEqual(['new 2', 'new 1']);
+});
+
+test('as in 2007, the 858 spacers go into a survivor of phage 2972, which 858 still kills without them', () => {
+	const added = strainArray('added').array;
+	// before the two were added, its spacer matched 2972 and nothing in 858
+	const withoutAdded = { spacers: added.spacers.filter((s) => !s.source.startsWith('new')) };
+	expect(immune(withoutAdded, PHAGE_2972)).toBe(true);
+	expect(immune(withoutAdded, PHAGE_858)).toBe(false);
+	expect(immune(added, PHAGE_858)).toBe(true);
+	// the original strain resists neither phage
+	expect(immune(strainArray('wt').array, PHAGE_2972)).toBe(false);
 });
 
 test('the seed is the ten letters next to the PAM; far from it one mismatch is tolerated, two are not', () => {

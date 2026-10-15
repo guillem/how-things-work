@@ -27,7 +27,7 @@ test.describe('finished pictures (reduced motion)', () => {
 		page
 	}) => {
 		await open(page, './crispr/#self');
-		await expect(stage(page)).toContainText('no PAM in the array: Cas9 never opens it');
+		await expect(stage(page)).toContainText('no PAM next to the spacer: Cas9 never opens it');
 		await page.locator('input[type=checkbox][data-control=pam]').uncheck({ force: true });
 		await expect(stage(page)).toContainText('its own chromosome cut: the cell dies');
 	});
