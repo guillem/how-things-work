@@ -110,15 +110,15 @@
 		{/each}
 		<!-- shells still burning round the core -->
 		{#if time < 15}
-			{#each LAYERS.slice(1, 5) as l, k (l.key)}
+			{#each LAYERS.slice(0, 5) as l, k (l.key)}
 				<circle
 					cx={CX}
 					cy={CY}
-					r={LAYERS[k + 2].r * R}
+					r={LAYERS[k + 1].r * R}
 					fill="none"
 					stroke="var(--st-burn)"
 					stroke-width="2"
-					opacity={0.7 * appear(k + 2)}
+					opacity={0.7 * appear(k + 1)}
 				/>
 			{/each}
 		{/if}

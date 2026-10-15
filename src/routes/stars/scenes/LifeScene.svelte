@@ -325,7 +325,6 @@
 		<Txt x={kx + 18} y={135} text="helium" anchor="start" size={12} />
 	</Readout>
 	<Readout id="k-co">
-		0.1 ? 'var(--st-ne)' : 'var(--st-co)'} >
 		<rect
 			x={kx}
 			y={150}

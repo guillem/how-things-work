@@ -31,6 +31,9 @@
 	const sun = atAge(track(1), SUN_AGE);
 	const surface = starColour(sun.T);
 	const tonnes = L_SUN / C ** 2 / 1000; // 4.26 million t/s
+	/** The model Sun's centre: about 16 million K and 160 g/cm³. */
+	const coreMK = Math.round(sun.Tc / 1e6);
+	const coreRho = Math.round(sun.rhoc / 10) * 10;
 
 	const cx = $derived(lerp(300, 170, u));
 	const cy = 300;
@@ -193,9 +196,14 @@
 					marker-end="url(#arrowhead)"
 				/>
 			{/each}
-			<Readout id="core" order={3} label="Core" value="16 million K, 160 × the density of water">
+			<Readout
+				id="core"
+				order={3}
+				label="Core"
+				value="{coreMK} million K, {coreRho} × the density of water"
+			>
 				<Txt x={cx} y={cy - 4} text="core" size={14} weight={700} color="#7a3a06" />
-				<Txt x={cx} y={cy + 14} text="16 million K" size={12} color="#7a3a06" />
+				<Txt x={cx} y={cy + 14} text="{coreMK} million K" size={12} color="#7a3a06" />
 			</Readout>
 
 			<rect
@@ -245,8 +253,15 @@
 				<Txt x={676} y={215} text="pressure pushes outwards" anchor="start" />
 			</Readout>
 			<Readout id="centre" order={4}>
-				<Txt x={620} y={256} text="centre: 16 million K," anchor="start" />
-				<Txt x={620} y={276} text="160 g/cm³ (160 × water)" anchor="start" muted size={12} />
+				<Txt x={620} y={256} text="centre: {coreMK} million K," anchor="start" />
+				<Txt
+					x={620}
+					y={276}
+					text="{coreRho} g/cm³ ({coreRho} × water)"
+					anchor="start"
+					muted
+					size={12}
+				/>
 			</Readout>
 			<Readout id="surface">
 				<Txt
@@ -259,10 +274,10 @@
 			<Readout
 				id="light"
 				order={6}
-				label="Surface · light given off"
+				label="Surface (model) · light (real Sun)"
 				value="{(Math.round(sun.T / 10) * 10).toLocaleString('en-US')} K · 3.8 × 10²⁶ W"
 			>
-				<Txt x={620} y={348} text="light given off: 3.8 × 10²⁶ W" anchor="start" />
+				<Txt x={620} y={348} text="light: 3.8 × 10²⁶ W (real Sun)" anchor="start" />
 				<Txt
 					x={620}
 					y={368}
