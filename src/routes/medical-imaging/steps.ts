@@ -142,7 +142,7 @@ const field: Control = {
 	step: 0.1,
 	default: 1.5,
 	unit: ' T',
-	help: 'Hospital scanners: 1.5 T and 3 T; research scanners 7 T. The Earth’s field is about 0.00005 T.'
+	help: 'Hospital scanners: 1.5 T and 3 T, and a few at 7 T (cleared for clinical use since 2017). The Earth’s field is about 0.00005 T.'
 };
 
 const gradient: Control = {
@@ -186,7 +186,7 @@ export const spec: ExplainerSpec = {
 	slug: 'medical-imaging',
 	title: 'Medical imaging',
 	summary:
-		'Send X-rays through tissue and bone, turn an X-ray tube round a body to record its shadow from every side, and watch a CT scanner compute the slice that explains all those shadows. Then see the same body with echoes of sound and with spinning protons in a magnet.',
+		'Send X-rays through tissue and bone, turn an X-ray tube round a body to record its shadow from every side, and watch a CT scanner compute the slice that explains all those shadows. Then see how echoes of sound and spinning protons in a magnet make images without X-rays.',
 	chapters: [
 		{ id: 'shadows', title: 'X-rays make shadows' },
 		{ id: 'ct', title: 'Computed tomography: many shadows, one slice' },
@@ -203,7 +203,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [material, thickness, energy],
 			body: `
-<p>X-rays are light whose photons carry tens of thousands of times more energy than visible light: tens of <dfn data-def="Kilo-electronvolt: a unit of energy for single particles. A photon of visible light carries about 2 eV; a 60 keV X-ray photon carries 60,000 eV.">keV</dfn>. Most of them pass straight through the body. A few hit an electron and are absorbed or knocked aside, and are gone from the beam.</p>
+<p>X-rays are light whose photons carry tens of thousands of times more energy than visible light: tens of <dfn data-def="Kilo-electronvolt: a unit of energy for single particles. A photon of visible light carries about 2 eV; a 60 keV X-ray photon carries 60,000 eV.">keV</dfn>. Many are stopped on the way: they hit an electron and are absorbed or knocked aside, and are gone from the beam. Only a few percent of the photons get through a chest, and about 1% through the belly, and those are the ones that make the picture.</p>
 <p>Each photon's chance of being removed is the same in every millimetre, so the beam fades like a radioactive sample decays (see <em>Radioactivity and half-life</em>): every <dfn data-def="The thickness of a material that lets half of the photons through.">half-value layer</dfn> lets half through. This is the <dfn data-def="The law of attenuation: the intensity falls exponentially with the thickness crossed, I = I₀·e^(−μx).">Beer–Lambert law</dfn>:</p>
 <p class="formula"><strong>I = I₀ · e<sup>−μx</sup></strong></p>
 <p>where <i>x</i> is the thickness and <i>μ</i>, the <dfn data-def="The fraction of the photons removed per centimetre (strictly, the rate of the exponential fall), written μ, in 1/cm.">attenuation coefficient</dfn>, says how strongly the material stops X-rays. Change the material, the thickness and the photon energy. Bone stops far more than soft tissue, because it is denser and has calcium, whose larger atoms absorb low-energy X-rays strongly. Air-filled lung stops very little.</p>`,
@@ -220,7 +220,7 @@ export const spec: ExplainerSpec = {
 <p>An X-ray picture puts a detector behind the body. Where the rays crossed a lot of bone or tissue few photons arrive, and the picture is bright; where they crossed air-filled lung many arrive, and it is dark. (By tradition, X-rays are shown this way round, like the old films.)</p>
 <p>Each point of the picture records the total of <i>μ</i> × length along its ray: <strong>everything the ray crossed, added up</strong>. The spine, the heart, both lungs and the muscle in front and behind are piled on top of each other. A plain X-ray cannot tell how deep anything is, and two tissues whose μ differ by a few percent look the same.</p>
 <p>This chest is a simple model: a fat layer, muscle, two lungs, a heart, the spine and the breastbone, and lower down a liver. It hides two things: a small lump in one lung, and a pocket of fluid in the liver. Can you see them?</p>`,
-			notes: `<p>The picture is the real line integral through the model body: each part is an ellipsoid or an elliptic cylinder of one material, with μ at 60 keV. A real chest X-ray costs about <strong>0.1 mSv</strong> of radiation dose, as much as 10 days of natural background radiation (RadiologyInfo.org).</p>`
+			notes: `<p>The picture is the real line integral through the model body: each part is an ellipsoid or an elliptic cylinder of one material, with μ at 60 keV. A real chest X-ray costs about <strong>0.1 <dfn data-def="The millisievert: a unit of effective dose, which weights the energy absorbed by each organ by how sensitive it is to radiation.">mSv</dfn></strong> of radiation dose, as much as 10 days of natural background radiation (RadiologyInfo.org).</p>`
 		},
 		// ------------------------------------------------------------------ CT
 		{
@@ -233,7 +233,7 @@ export const spec: ExplainerSpec = {
 			controls: [angle, phantom],
 			body: `
 <p>A CT (<dfn data-def="Computed tomography: from Greek tomos, a slice. A scanner that computes cross-sections of the body from many X-ray shadows.">computed tomography</dfn>) scanner looks at one thin slice of the body at a time. Its X-ray tube shines a beam across the slice, and a row of detectors on the other side records the shadow: a single line of numbers, one per ray.</p>
-<p><strong>Drag the X-ray tube round the body.</strong> From each direction the shadow is different: from the front, the spine and breastbone line up and make one tall peak; from the side the two lungs overlap and the dip is deep. The height of the shadow at each detector is the total μ × length along that ray, worked out from the photons that arrive: <i>p</i> = ln(<i>I</i>₀/<i>I</i>).</p>
+<p><strong>Drag the X-ray tube round the body.</strong> From each direction the shadow is different: from the front, the spine and breastbone line up and make one tall peak; from the side, every ray crosses the whole width of the body, so the shadow is tall all across and the lungs make only a shallow dip. The height of the shadow at each detector is the total μ × length along that ray, worked out from the photons that arrive: <i>p</i> = ln(<i>I</i>₀/<i>I</i>).</p>
 <p>No single shadow says where anything is along its rays. But each one is a different clue.</p>`,
 			notes: `<p>This scanner sends parallel rays and turns step by step, like the first CT scanners. Modern scanners send a fan of rays from a tube that spins round the body two or three times a second, with hundreds of rows of detectors, but the mathematics is the same.</p>`
 		},
@@ -260,7 +260,7 @@ export const spec: ExplainerSpec = {
 			controls: [phantom],
 			body: `
 <p>How do we get a slice back from its shadows? The simplest guess: since a ray doesn't say where along it the tissue was, spread its value evenly back along the whole ray. Do it for every ray of a shadow and the shadow is smeared back across the image, in the direction it came from. This is <dfn data-def="Spreading each measured shadow back across the image along the rays it was measured on, and adding the results.">back-projection</dfn>.</p>
-<p>Watch the image build up as the shadows are added one by one. Where the smears of many directions cross, they pile up, and the lungs, the heart and the spine appear.</p>
+<p>Watch the image build up as the shadows are added one by one. Where the smears of many directions cross, they pile up, and the lungs and the spine appear, with the heart as the band of soft tissue between the lungs.</p>
 <p>But the result is <strong>blurry</strong>. Pick <em>A single dot</em>: every smear crosses the dot, but each one also leaves a streak across the whole image. Together they make a halo that fades only slowly with distance (as 1/<i>r</i>). Every point of the slice gets the same halo, so all edges are washed out.</p>`
 		},
 		{
@@ -303,7 +303,7 @@ export const spec: ExplainerSpec = {
 <p class="formula"><strong>HU = 1000 × (μ − μ<sub>water</sub>) / μ<sub>water</sub></strong></p>
 <p>Water is 0 and air −1000. <strong>Drag the probe</strong> over the slice. It reads the reconstructed value, not the model's: muscle and the heart about +50, fat about −90, the inflated lung about −600 in this model, bone well over +1000. The lump in the left lung, under 2 cm across, stands out clearly as tissue where there should be air.</p>
 <p>Soft tissues differ by only tens of HU, a few percent in μ: invisible in a plain X-ray, where they pile up with everything else, but measurable here, because each pixel is separated from what lies in front and behind.</p>`,
-			notes: `<p>Named after Godfrey Hounsfield, who built the first clinical CT scanner at the EMI laboratories in England; its first patient was scanned in London in 1971. He shared the 1979 Nobel Prize in Physiology or Medicine with Allan Cormack, who had worked out the mathematics independently.</p><p>The CT numbers here are computed from the NIST coefficients at one energy (60 keV). The model's lung uses an average density of inflated lung (0.39 g/cm³, IT'IS database), higher than healthy lung at full breath, which real scanners read nearer −850 HU. Real scanners also calibrate for their spread of energies, so their numbers for bone in particular differ.</p>`
+			notes: `<p>Named after Godfrey Hounsfield, who built the first clinical CT scanner at the EMI laboratories in England; its first patient was scanned in London in 1971. He shared the 1979 Nobel Prize in Physiology or Medicine with Allan Cormack, who had worked out the mathematics independently.</p><p>The CT numbers here are computed from the NIST coefficients at one energy (60 keV). The model's lung uses an average density of inflated lung (0.39 g/cm³, IT'IS database), higher than healthy lung at full breath, which real scanners read nearer −850 HU. Real scanners also calibrate for their spread of energies, so their numbers for bone in particular differ.</p><p>Without a contrast agent the heart and the muscle round it have the same CT number: both are soft tissue, so the heart shows only as the soft tissue between the lungs. Hospitals inject an iodine contrast agent into the blood to make the heart's chambers and the vessels stand out.</p>`
 		},
 		{
 			id: 'dose',
@@ -316,8 +316,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Every reading is a count of photons, and counts of random events are never exact: if 10,000 photons are expected, about 100 more or fewer arrive (the square root, as in <em>Radioactivity and half-life</em>). The scanner turns each count into a shadow height, so every shadow is slightly noisy, and the noise is smeared into the slice.</p>
 <p>Lower the dose: fewer photons, grainier slices. Quarter the dose and the noise doubles: <strong>noise grows as 1/√dose</strong>. Raise it and the slice gets cleaner, at the price of more radiation.</p>
-<p>Typical effective doses (RadiologyInfo.org, for an average adult): a chest X-ray <strong>0.1 mSv</strong>, a CT of the head <strong>1.6 mSv</strong>, a low-dose lung-screening CT <strong>1.5 mSv</strong>, a chest CT <strong>6.1 mSv</strong>, a CT of the abdomen and pelvis <strong>7.7 mSv</strong>. For comparison, natural background radiation gives about <strong>3 mSv a year</strong>. A chest CT equals about two years of it, and 60 chest X-rays.</p>`,
-			notes: `<p>The <dfn data-def="The millisievert: a unit of effective dose, which weights the energy absorbed by each organ by how sensitive it is to radiation.">millisievert</dfn> (mSv) estimates the risk to the whole body from a dose, so that a CT of one part of the body can be compared with background radiation. RadiologyInfo stresses these are rough typical values: the real dose depends on the patient's size and the scanner settings. Scanners choose the dose that makes the image just good enough for the question asked, and lung-cancer screening uses a quarter of a standard chest CT's dose for that reason.</p><p>On this page “standard” means about 100,000 photons per reading; the scanner's real numbers differ, but the 1/√dose rule is the same.</p>`
+<p>Typical effective doses (RadiologyInfo.org, for an average adult): a chest X-ray <strong>0.1 <dfn data-def="The millisievert: a unit of effective dose, which weights the energy absorbed by each organ by how sensitive it is to radiation.">mSv</dfn></strong>, a CT of the head <strong>1.6 mSv</strong>, a low-dose lung-screening CT <strong>1.5 mSv</strong>, a chest CT <strong>6.1 mSv</strong>, a CT of the abdomen and pelvis <strong>7.7 mSv</strong>. For comparison, natural background radiation gives about <strong>3 mSv a year</strong>. A chest CT equals about two years of it, and 60 chest X-rays.</p>`,
+			notes: `<p>The millisievert (mSv) estimates the risk to the whole body from a dose, so that a CT of one part of the body can be compared with background radiation. RadiologyInfo stresses these are rough typical values: the real dose depends on the patient's size and the scanner settings. Scanners choose the dose that makes the image just good enough for the question asked, and lung-cancer screening uses a quarter of a standard chest CT's dose for that reason.</p><p>On this page “standard” means about 100,000 photons per reading; the scanner's real numbers differ, but the 1/√dose rule is the same.</p>`
 		},
 		// ------------------------------------------------------------------ compare
 		{
@@ -344,7 +344,7 @@ export const spec: ExplainerSpec = {
 			controls: [frequency, gel],
 			body: `
 <p>Ultrasound uses sound far too high to hear, millions of vibrations per second (see <em>Waves, sound and interference</em>). The probe sends a short pulse into the body and listens. Wherever two tissues meet, a little of the sound bounces back: an echo.</p>
-<p>The scanner turns the <strong>time</strong> of each echo into a depth. It assumes sound travels at <strong>1540 m/s</strong> in the body, so an echo that returns after 13 μs came from 1 cm deep (there and back). How much bounces back depends on the tissues' <dfn data-def="Density × speed of sound. Where it changes, part of the sound is reflected: the bigger the jump, the stronger the echo.">acoustic impedance</dfn>, density × speed of sound: under 2% at fat and muscle, a third at bone, and almost all of it at air. That's why the probe needs <strong>gel</strong>: switch it off and the sound never gets in.</p>
+<p>The scanner turns the <strong>time</strong> of each echo into a depth. It assumes sound travels at <strong>1540 m/s</strong> in the body, so an echo that returns after 13 μs came from 1 cm deep (there and back). How much bounces back depends on the tissues' <dfn data-def="Density × speed of sound. Where it changes, part of the sound is reflected: the bigger the jump, the stronger the echo.">acoustic impedance</dfn>, density × speed of sound: under 2% where fat meets muscle, a third where tissue meets bone, and almost all of it at air. That's why the probe needs <strong>gel</strong>: switch it off and the sound never gets in.</p>
 <p>Raise the frequency: the pulse gets shorter, so close echoes are told apart, but the body absorbs high-pitched sound faster and the deep echoes fade. No ionising radiation is involved.</p>`,
 			notes: `<p>Densities, speeds of sound and attenuation per MHz come from the IT'IS tissue database. Fat carries sound at about 1440–1480 m/s and muscle at 1590 m/s, so the scanner's assumed 1540 m/s puts echoes a few percent too deep or shallow: the depths on the trace are the scanner's. An ultrasound picture sweeps the beam across hundreds of lines like this one and draws the echoes as brightness; the scanner also boosts later echoes to make up for the fading with depth.</p>`
 		},
@@ -360,7 +360,7 @@ export const spec: ExplainerSpec = {
 <p>Most of the body is water, and every water molecule has two hydrogen nuclei: protons. A proton is a tiny magnet. In the strong field of an MRI scanner its axis <dfn data-def="Turns round the direction of the field like a tilted spinning top round the vertical.">precesses</dfn> round the field at a rate fixed by physics, the <dfn data-def="The rate at which a nucleus precesses in a magnetic field: for hydrogen, 42.58 MHz per tesla.">Larmor frequency</dfn>:</p>
 <p class="formula"><strong>f = 42.58 MHz per tesla × B</strong></p>
 <p>Change the field. At 1.5 T the protons turn about 64 million times a second; at 3 T, 128 million: radio frequencies, like FM radio. A radio pulse at exactly that frequency tips the protons over, and as they precess they broadcast a faint radio signal back, which coils pick up. A pulse at any other frequency does nothing: it is <strong>resonance</strong>, the R of magnetic resonance imaging.</p>`,
-			notes: `<p>The value is the CODATA proton gyromagnetic ratio, 42.577 MHz/T. The animation is slowed down more than a million times, and the arrows stand for the average of trillions of protons: individually, protons are quantum objects, and only about 5 in a million more of them line up with a 1.5 T field than against it.</p>`
+			notes: `<p>The value is the CODATA proton gyromagnetic ratio, 42.577 MHz/T (protons in water: 42.576). The animation is slowed down more than 100 million times, and the arrows stand for the average of trillions of protons: individually, protons are quantum objects, and only about 5 in a million more of them line up with a 1.5 T field than against it.</p>`
 		},
 		{
 			id: 'gradient',

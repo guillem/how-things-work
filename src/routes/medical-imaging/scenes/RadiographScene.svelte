@@ -24,6 +24,7 @@
 		CT_KEV,
 		CT_N,
 		bodySlice,
+		discMean,
 		hounsfield,
 		mu,
 		partScale,
@@ -124,8 +125,13 @@
 		const v = s === 'start' ? -18 : s === 'end' ? 18 : z + s * 0.5;
 		setParam('slice', Math.max(-18, Math.min(18, v)));
 	}
-	const cystHU = $derived(Math.round(hounsfield(mu('water', CT_KEV), muW)));
-	const liverHU = Math.round(hounsfield(mu('soft', CT_KEV), muW));
+	// The CT numbers read off the reconstructed slice (as the probe does), not the model's μ.
+	const ctHU = (x: number, y: number) =>
+		ctImg ? Math.round(hounsfield(discMean(ctImg, BODY_FOV, x, y, 0.6), muW)) : 0;
+	const signed = (h: number) => (h > 0 ? `+${h}` : h < 0 ? `−${-h}` : '0');
+	const cystHU = $derived(signed(ctHU(cyst.x0, cyst.y0)));
+	// a point of the liver 4 cm from the fluid, away from its dark patch
+	const liverHU = $derived(signed(ctHU(-9, 2)));
 </script>
 
 <g>
@@ -355,7 +361,7 @@
 				<Label
 					x={CX + CS / 2 + cyst.x0 * cpx}
 					y={CY + CS / 2 + cyst.y0 * cpx - r - 14}
-					text="fluid: {cystHU} HU, liver +{liverHU} HU"
+					text="fluid: {cystHU} HU, liver {liverHU} HU"
 					color="var(--mi-probe)"
 				/>
 			</Readout>
