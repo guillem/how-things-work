@@ -180,7 +180,7 @@ A topic is done when:
 - [x] transistors-chipmaking
 - [x] cpu
 - [ ] gpu
-- [ ] graphics-3d
+- [x] graphics-3d
 - [x] sorting
 - [x] graph-search
 - [x] turing-machines
