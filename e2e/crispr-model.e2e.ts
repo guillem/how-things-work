@@ -6,7 +6,6 @@
 // bacteria while mutating phages keep an arms race going. Runs in Node.
 import { expect, test } from '@playwright/test';
 import {
-	CUT_FROM_PAM,
 	LEADER,
 	PHAGES,
 	PHAGE_STRETCH,
@@ -39,8 +38,6 @@ test('Cas9 checks each PAM in turn and cuts only where all the letters beside it
 	expect(checks[2].read).toBe(SPACER.length);
 	expect(checks[2].start).toBe(PROTO_AT);
 	expect(findTargets(PHAGE_STRETCH, SPACER)).toEqual([{ strand: '+', at: PROTO_AT }]);
-	// the cut falls inside the protospacer, three letters from the PAM (Garneau et al. 2010)
-	expect(CUT_FROM_PAM).toBe(3);
 });
 
 test('a target on the other strand is found as well', () => {
@@ -146,4 +143,21 @@ test('the yogurt experiment: resistance follows the new spacers, removed or adde
 	// the survivor's two new spacers are at the front
 	const bim = strainArray('bim').array.spacers.map((s) => s.source);
 	expect(bim.slice(0, 2)).toEqual(['new 2', 'new 1']);
+});
+
+test('the seed is the ten letters next to the PAM; far from it one mismatch is tolerated, two are not', () => {
+	/** The phage stretch with the letters at these positions (1 = next to the PAM) changed. */
+	const change = (...positions: number[]) => {
+		const d = [...PHAGE_STRETCH];
+		for (const k of positions) {
+			const i = PROTO_AT + SPACER.length - k;
+			d[i] = d[i] === 'A' ? 'C' : 'A';
+		}
+		return d.join('');
+	};
+	const cuts = (dna: string) => findTargets(dna, SPACER).length > 0;
+	expect(cuts(change(10))).toBe(false);
+	expect(cuts(change(11))).toBe(true);
+	expect(cuts(change(18))).toBe(true);
+	expect(cuts(change(14, 18))).toBe(false);
 });
