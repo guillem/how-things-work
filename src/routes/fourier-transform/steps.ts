@@ -193,7 +193,7 @@ export const spec: ExplainerSpec = {
 <li><strong>Pulse</strong> (high for a fifth of each second): every bar except the 5th, 10th, 15th…, plus a bar at 0 Hz for its average, which is below zero.</li>
 </ul>
 <p>The rule of thumb: <strong>sharp features need high frequencies</strong>, smooth ones don't. Draw your own waveform on the top graph and see its bars.</p>`,
-			notes: `<p>The bars show amplitudes only. The full transform also records each ingredient's phase (its starting angle): as a complex number, amplitude and angle together. Two signals with the same bars but different phases sound alike yet look different.</p><p>This page samples each waveform 400 times a second and uses the <dfn data-def="The Fourier transform of a list of equally spaced samples: N numbers in, N complex numbers out.">discrete Fourier transform</dfn>, the version computers use.</p>`
+			notes: `<p>The bars show amplitudes only. The full transform also records each ingredient's phase (its starting angle): as a complex number, amplitude and angle together. Two signals with the same bars but different phases can look completely different. A steady tone often sounds much the same when only its phases change, but not always: the ear can hear some phase changes, especially in the timing of sharp attacks and pulses, and the signal can't be rebuilt without them.</p><p>This page samples each waveform 400 times a second and uses the <dfn data-def="The Fourier transform of a list of equally spaced samples: N numbers in, N complex numbers out.">discrete Fourier transform</dfn>, the version computers use.</p>`
 		},
 		{
 			id: 'wind',

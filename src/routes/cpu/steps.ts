@@ -120,7 +120,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			body: `
 <p>The processor has already loaded 7 into R0 and 5 into R1. Now it needs its next instruction, and it only knows one place to look: the address in the program counter, 4.</p>
-<p>The PC sends that address to memory along the <dfn data-def="The wires that carry an address from the processor to memory.">address bus</dfn>. Memory answers with the two bytes stored there, 65 and 0, which travel back on the <dfn data-def="The wires that carry bytes between the processor and memory, in either direction.">data bus</dfn> into the instruction register. (To keep things simple, this machine fetches both bytes in one tick; a real 8-bit processor would make two trips to memory.)</p>
+<p>The PC sends that address to memory along the <dfn data-def="The wires that carry an address from the processor to memory.">address bus</dfn>. Memory answers with the two bytes stored there, 65 and 0, which travel back on the <dfn data-def="The wires that carry bytes between the processor and memory, in either direction.">data bus</dfn> into the instruction register. (To keep things simple, this machine fetches both bytes in one tick; a processor that reads memory one byte at a time would need two trips. Being an 8-bit processor doesn't settle that: many 8-bit microcontrollers fetch 16-bit instruction words in one go.)</p>
 <p>Then the PC moves on by 2, to 6, so it already points at the instruction after this one. The processor has not yet looked at what the bytes mean.</p>`
 		},
 		{

@@ -2,6 +2,7 @@
 import { expect, test } from '@playwright/test';
 import {
 	MACHINE,
+	MOTOR_DT,
 	MotorRun,
 	NBA,
 	coilTorque,
@@ -54,6 +55,33 @@ test('over a whole turn the torque averages out without a commutator, and pushes
 	// Slip rings: the same push for half a turn, then a pull back for the other half.
 	expect(motorTorque(90 * deg, I, 'slip')).toBeGreaterThan(0);
 	expect(motorTorque(270 * deg, I, 'slip')).toBeLessThan(0);
+});
+
+test('a running motor: the torque stays positive on a steady battery, averages about 70% of its peak at 3 V, and reverses when the battery is turned down', () => {
+	const run = new MotorRun({ V: 3, connection: 'commutator' });
+	let min = Infinity;
+	let max = -Infinity;
+	let sum = 0;
+	let n = 0;
+	for (let t = 15; t < 20; t += MOTOR_DT) {
+		const { torque } = run.readings(t);
+		min = Math.min(min, torque);
+		max = Math.max(max, torque);
+		sum += torque;
+		n++;
+	}
+	expect(min).toBeGreaterThanOrEqual(0);
+	// The back emf trims the current most at the peak, so the ratio beats the fixed-current 2/π.
+	const ratio = sum / n / max;
+	expect(ratio).toBeGreaterThan(2 / Math.PI);
+	expect(ratio).toBeGreaterThan(0.67);
+	expect(ratio).toBeLessThan(0.72);
+	// Spinning fast at 6 V, then the battery turned down to 1 V: the motor brakes for a while.
+	const fast = new MotorRun({ V: 6, connection: 'commutator' });
+	const slowed = new MotorRun({ V: 1, connection: 'commutator' }, fast.at(15));
+	let lowest = Infinity;
+	for (let t = 0; t < 2; t += MOTOR_DT) lowest = Math.min(lowest, slowed.readings(t).torque);
+	expect(lowest).toBeLessThan(0);
 });
 
 test('a motor with a commutator keeps turning; with slip rings it rocks and stops at a dead point', () => {
