@@ -75,15 +75,14 @@ Last updated: 2026-10-15 UTC.
 builder agents, one per topic in its own local worktree (`.claude/worktrees/<slug>`, branch
 `topic/<slug>`), each on its own dev port (52xx) and `PW_PORT` (42xx). Each finished branch is
 rebased and merged into `main` locally, then fact-checked (`make review`) and its report applied;
-the topic is ticked after that. Nothing is pushed or released until the user validates. Progress 2026-10-15 ~08:20: **99 of 100 explainers on local `main`** (not pushed), **90 ticked**;
-`make check` green and `make e2e-full` green (2,134 browser tests). Left: 9 fact-checks
-(power-grid, immune-system, evolution, wireless-signals, cancer, protein-folding, dark-matter,
-gps, feedback-control) — their batch requests errored because the Anthropic API credit ran out;
-resubmit with `make review TOPICS="…"` (2–3 per batch; large batches stalled for 8 h) once it is
-topped up. crispr is set aside: a safety classifier stopped three builder attempts (the last with
-the user's fixed-walkthrough scope) before anything was written. Orchestration scripts, briefs and
-the list of open decisions for the user live in `.claude/worktrees/_orch/` (git-ignored; see
-`notes.md`); the same decisions are on the dashboard.
+the topic is ticked after that. Nothing is pushed or released until the user validates. **Done 2026-10-15: all 100 catalogue topics built, fact-checked and ticked.** v0.1.17 (99
+topics) is live; crispr (built as CRISPR-as-bacterial-immunity, the user's choice after a safety
+classifier stopped the gene-editing scope) and the last ten fact-checks are on `main`, awaiting the
+user's validation and v0.1.18. The last ten fact-checks were done in-house (an agent reviews with
+web search, then applies; `_orch/selfreview-brief.md`) because the Batch API credit is out until
+November. `make e2e-full` green (2,157). Open decisions for the user: dashboard "Decisions wanted"
+and `.claude/worktrees/_orch/notes.md`. Next per the user: the ChatGPT fact-check notes in
+`docs/codex-fact-check-*.md`.
 To resume after an interruption: `git worktree list`, then
 for each `topic/*` branch check `git log main..topic/<slug>` and continue or merge it.
 
