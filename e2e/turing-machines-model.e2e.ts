@@ -9,13 +9,12 @@ import {
 	INCREMENT,
 	PALINDROME,
 	SIGMA3,
+	TABLE_MACHINES,
 	bruteForce,
 	bruteForceYears,
 	cities,
 	countOnes,
-	decide,
 	eachTour,
-	encode,
 	fromStandard,
 	heldKarpSteps,
 	haltingTable,
@@ -122,9 +121,14 @@ test('the halting table: each machine run on each description, decided by watchi
 	// The diagonal has both answers, so the machine D that flips it is not a constant row.
 	const diag = t.cells.map((r, i) => r[i]);
 	expect(new Set(diag).size).toBe(2);
-	// A verdict the decider gives is the truth: halting ones really halt.
-	const add = machine(['right 0 -> 0 R right', 'right _ -> _ L x']);
-	expect(decide(add, encode(add))).toBe('halts');
+	// Each verdict matches what plainly running the machine does: "halts" entries halt,
+	// "loops" entries are still going long after every halting entry has stopped.
+	const ms = TABLE_MACHINES.map((m) => machine(m.source.split('\n')));
+	ms.forEach((m, i) =>
+		t.codes.forEach((c, j) =>
+			expect(run(m, c, 5000).stop).toBe(t.cells[i][j] === 'halts' ? 'halt' : 'limit')
+		)
+	);
 });
 
 test('travelling salesman: (n − 1)!/2 tours, and brute force finds the shortest', () => {
