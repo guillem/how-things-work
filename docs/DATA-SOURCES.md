@@ -18,7 +18,7 @@ How the status is decided:
 - **Unconfirmed**: no licence found, terms page unreachable, or the data was read from a mirror
   or copy instead of the original. The original's licence is noted where known.
 
-The repository has no top-level licence file. "Page" means the explainer as served; "file" means
+The repository's own licences are `LICENSE` (MIT, the code) and `LICENSE-CONTENT.md` (CC BY 4.0, the text and illustrations); this file covers the third-party data. "Page" means the explainer as served; "file" means
 the data file's header in the repository (headers do not survive into the built JavaScript).
 
 ## Unconfirmed

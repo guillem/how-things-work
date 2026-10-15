@@ -26,7 +26,6 @@ Last updated: 2026-10-15 UTC.
   both themes, reduced motion, every step screenshot-reviewed (method in `scene-guide.md`).
 - Never commit the local `package-lock.json` drift (an optional `yaml` entry dropped by a local
   npm run); stage files by path, not with `git add -A`.
-- Suspected bugs recorded by characterization tests, not fixed yet: see BACKLOG "Known gaps".
 - Screenshots go to a scratch directory outside the repository.
 - CI runs Node 22 on a slower Linux machine; the laptop runs Node 26. Chaotic simulations
   (states-of-matter) differ between them, and heavy scenes can lose forced clicks there. Before a
@@ -34,123 +33,54 @@ Last updated: 2026-10-15 UTC.
 
 ## Current state
 
-- **Cloud and batch tooling (2026-10-11; first real cloud session the same day, see
-  `docs/cloud.md` "What we learned"):** `scripts/cloud-setup.sh`
-  and `docs/cloud.md` for building topics in cloud sessions; `make review` / `make review-fetch`
-  (`scripts/batch-review.ts`) for fact-check reviews through the Batch API. The first real batch
-  reviewed photosynthesis (~$0.97 + 15 web searches); a cloud session applied it.
-- **Lean workflow live since 2026-10-11** (see `CLAUDE.md`). First release `v0.1.0` deployed
-  from its tag and passed the live smoke test; the rollback path was exercised once (redeploying
-  v0.1.0). All merged topic/site branches were deleted, local and remote. Rulesets: `main` can't be
-  force-pushed or deleted; `v*` tags can't be moved or deleted. The `github-pages` environment
-  deploys from `v*` tags and `main` (rollbacks run from main).
-- `main` (deployed as v0.1.16): **46 of the 100 catalogue topics ticked** — photosynthesis
-  (ticked 2026-10-11, the quality reference), 16 early topics (the list below the wave-1 table),
-  and the 29 of batches 6–9, built one agent per topic in local worktrees (the process that
-  worked for batches 2–6, still current). PRs #1–#18 were the early merge-commit flow; #15
-  removed CI (see "Validate once, locally"); everything since is trunk-based.
-- Batch 6 (9 topics: complex-numbers, electromagnetism, heart-circulation, internet,
-  reinforcement-learning, ocean-currents, entropy, primes-modular-arithmetic, error-correction)
-  merged via the integration branch `batch/6` (one PR). New process that worked: one agent
-  builds a whole topic (model, tests, narrative, scenes) in its own worktree off `main`, a second
-  agent reviews, fact-checks and ticks it; then all are merged into `batch/<n>`. The shared files
-  (`src/lib/topics.ts`, `TopicArt.svelte`) don't survive a union merge: rebuild them from main
-  plus each branch's own entry. Nothing in progress; 30 topics ticked (photosynthesis on 2026-10-11).
-- Reading progress (branch `claude/explainer-progress-tracking-qqmcph`): each explainer records
-  the reader's current step in `localStorage` (`src/lib/progress.svelte.ts`); reaching the last
-  step marks it done. The index shows Done (red) / Continue (yellow, opens the saved step) /
-  Start (green) on each card, a counter of each status and a "Clear all progress" button.
-- Local testing: other work runs on this machine, so ports can clash (4173 is taken by another
-  app). The test server uses `PW_PORT` (default 4180). In a worktree, clone `node_modules`
-  (`cp -cR`) rather than symlinking it, or svelte-check checks the other checkout's types.
-- Workflow that worked for batches 2–6: one agent builds a whole topic (model, Node tests,
-  narrative, scenes) in its own worktree off `main`; a second agent reviews, fact-checks and
-  ticks it; the topic branches are then merged into `main` locally (the only conflicts are
-  additive, in `src/app.css`, `src/lib/topics.ts` and `TopicArt.svelte`: keep both sides, or
-  rebuild those registries from `main` plus each branch's own entry) and deleted.
+- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). `main` is
+  deployed as **v0.1.19** (2026-10-15), which also carries the user's external audit
+  (`docs/codex-fact-check-complete.md`: 59 findings, 2 High, all applied). **The project is in
+  maintenance:** no topic work is planned; what is left open is in [`BACKLOG.md`](BACKLOG.md)
+  ("Open after the final push" and "Site and framework work").
+- Licence: MIT code, CC BY 4.0 content, third-party data under its own terms (`LICENSE`,
+  `LICENSE-CONTENT.md`, `docs/DATA-SOURCES.md`).
+- Tooling: `scripts/cloud-setup.sh` and `docs/cloud.md` for building in cloud sessions;
+  `make review` / `make review-fetch` (`scripts/batch-review.ts`) for fact-check reviews through
+  the Batch API (the API credit ran out on 2026-10-15; none until November). Rulesets: `main`
+  can't be force-pushed or deleted; `v*` tags can't be moved or deleted. The `github-pages`
+  environment deploys from `v*` tags and `main` (rollbacks run from main).
+- Reading progress: each explainer records the reader's current step in `localStorage`
+  (`src/lib/progress.svelte.ts`); the index shows Done / Continue / Start on each card.
+- Local testing: other work runs on this machine, so ports can clash (4173 is taken). The test
+  server uses `PW_PORT` (default 4180). In a worktree, clone `node_modules` (`cp -cR`) rather
+  than symlinking it, or svelte-check checks the other checkout's types.
+- The process that built the topics, for reference: one agent builds a whole topic (model, Node
+  tests, narrative, scenes) in its own worktree off `main`; a second agent reviews, fact-checks
+  and ticks it; the branches are merged into `main` locally and deleted. The only conflicts are
+  additive (`src/app.css`, `src/lib/topics.ts`, `TopicArt.svelte`: keep both sides, or rebuild
+  those registries from `main` plus each branch's own entry).
 
 ## Current development
 
-**Final push (2026-10-14): the remaining 54 topics.** No fixed batches: a rolling pool of ~8
-builder agents, one per topic in its own local worktree (`.claude/worktrees/<slug>`, branch
-`topic/<slug>`), each on its own dev port (52xx) and `PW_PORT` (42xx). Each finished branch is
-rebased and merged into `main` locally, then fact-checked (`make review`) and its report applied;
-the topic is ticked after that. Nothing is pushed or released until the user validates. **Done 2026-10-15: all 100 catalogue topics built, fact-checked and ticked; v0.1.18 live.**
-Then the user's external audit (`docs/codex-fact-check-complete.md`, kept untracked: 59
-findings, 2 High) was applied in 11 local worktrees, one agent per group of topics, each finding
-checked against its source first: all applied, none rejected (the unverified Held & Hou
-attribution was removed). Notable model changes: homeostasis (type 1 glucagon still rises with
-exercise; liver flow split out of Topp's insulin term), motors-generators (torque ratio ≈ 0.7 and
-braking on a voltage drop), gps (PDOP). `make e2e-full` green (2,157). Licence: MIT code, CC BY 4.0
-content, third-party data under its own terms (`LICENSE`, `LICENSE-CONTENT.md`,
-`docs/DATA-SOURCES.md`). Awaiting the user's validation, then push and v0.1.19.
-To resume after an interruption: `git worktree list`, then
-for each `topic/*` branch check `git log main..topic/<slug>` and continue or merge it.
+**Nothing in progress.** Housekeeping on 2026-10-15 after v0.1.19, committed on `main` and not
+yet released: docs brought in line with the finished state; dead code removed (the `#lib` stub,
+`easeIn`, 27 unused CSS tokens, the nine local mulberry32 copies replaced by `rng` from
+`src/lib/draw/math.ts`); the `prerender_missing_id` build warnings silenced in `vite.config.ts`.
 
-**Phone readouts rollout (2026-10-13, on main, not yet released):** 38 of 46 topics converted
-(list in BACKLOG); 8 topics left, then the shared `<Axes>` tick labels. Release v0.1.17 after the
-user checks phones.
+**History, newest first:**
 
-**Fact-check round (2026-10-13):** the 29 built topics never reviewed through the Batch API were
-reviewed (batch msgbatch_01RwbH2w8JY5g9dqUqigDc89, ~$18 + ~260 searches; all "ready after
-fixes"). The High/Medium factual errors shipped in v0.1.13; the rest of every report was then
-applied in five local worktrees (each item checked against its source or the code; a few
-rejected with reasons in the commit bodies; larger items deferred to BACKLOG) and the reports
-deleted. Notable: orbits-kepler's two-planet step no longer pins the Sun; logic-gates gained a
-full-adder challenge and a wire-the-carries task; the CLT means histogram uses the exact lattice;
-the hurricane growth rate halved; sun-earth-moon's tilt step got a date control; the bridges arch
-text now says the road takes the bending. Full suite green twice (810 browser, 467 model tests),
-including orbits-kepler `#two` without its old 15 s allowance. Released in v0.1.14. Phone stage
-text: option B landed in v0.1.15; photosynthesis and epidemics fully converted in v0.1.16; ~137 scenes to convert (see BACKLOG).
-
-**Review round (2026-10-13, released in v0.1.12):** a review of the gap and bug rounds (made with
-Kimi and ZCode) found three live bugs and a dozen smaller problems; fixed in four local worktrees
-merged into `main`, each fix with a test that failed first (list at the end of BACKLOG's "Known
-gaps"). Also: `.claude/worktrees/` is git-ignored so lint and Prettier skip agent worktrees; the
-atmosphere note no longer claims a layer height for Held and Hou that no source confirmed.
-Deferred items are in BACKLOG.
-
-**Bug round (2026-10-13, released in v0.1.11):** the arch bridge's posts now carry
-the road (pin-ended spandrel posts — a new member kind, serialized as `p`; model-tested), the
-chemical-bonds pause-on-hover no longer stops between atoms, and the photosynthesis `#water`
-caption follows the light level. states-of-matter's between-machine variance is closed as
-by-design (chaotic, documented on the page). `docs/full-picture.html` is the new one-glance
-dashboard for the user (rule in `CLAUDE.md`: keep it in sync at milestones).
-
-**Gap round (2026-10-12/13):** the "Known gaps in built topics" backlog, worked in seven local
-worktrees (`fix/gaps-a`…`-g`) merged into `main`. Kimi started a–e and g; ZCode finished them,
-built the never-started f (waves-interference: sources draggable anywhere in the tank +
-`sources:tank` param, frame-cache pre-warm, the Doppler source as a handle whose speed becomes
-the drag's; radioactivity: eased half-life slider, thinned marks) and b (oscillations-resonance's
-pendulum label), completed fourier-transform (chart range, signal clipping, deep 0 Hz bar, live
-sweeps on `#square`/`#spectrum`), and committed the main-checkout work (ecosystems' off-balance
-web opening and aligned y-axes; sun-earth-moon's tilt footer/sketch agreement; chemical-bonds'
-angle-arc fade and δ-label placement; the photosynthesis `#summary` captions recorded as fading
-by design). Released in v0.1.10.
-
-**Maintenance (2026-10-12):** fixed nested-URL 404 assets and home navigation by setting
-`paths.relative: false`; replaced the characterization test with a regression test. Both focused
-404 browser tests pass. Also fixed unit-circle slider snapping with optional permitted range
-values, including keyboard navigation; all four unit-circle browser tests pass. `make check`
-passes (424 model tests); the full browser suite after the 404 and slider changes passes (759
-tests). PageRank keeps keyboard events inside editable graph nodes; all 10 focused PageRank
-tests pass, including the new shortcut regression. Released in the next tag.
-
-**Batch 9 (2026-10-12):** calculus, black-holes, states-of-matter, homeostasis, compression. Same
-process (builder agent each, `make review` ~$3.50, review-apply agent each). Merged into `main`
-locally and ticked; `make e2e-full` green (758 tests). Released in v0.1.7 (v0.1.5 and v0.1.6
-failed on CI before deploying: see the two test fixes after them).
-
-Batch 8 (2026-10-12, released in v0.1.4): light-optics, semiconductors, special-relativity, cryptography, cpu,
-motors-generators. Same process as batch 7 (one builder agent each in a local worktree, fact-check
-via `make review` ~$4.35, one agent each applying its report). All merged into `main` locally and
-ticked; `make e2e-full` green (662 tests). Released in v0.1.4 (2026-10-12).
-
-Batch 7 (chemical-bonds, waves-interference, radioactivity, linear-transformations,
-fourier-transform) released in v0.1.3 (2026-10-12).
-
-Released in v0.1.2 (2026-10-12): the photosynthesis review fixes, rate model and "What limits the
-rate?" step (built in cloud sessions on 2026-10-11).
+- **Final push (2026-10-14/15):** the remaining 54 topics, built by a rolling pool of ~8 builder
+  agents, one per topic in its own local worktree, fact-checked through `make review` and, once
+  the credit ran out, in-house; released as v0.1.17 (90 ticked), v0.1.18 (all 100) and v0.1.19
+  (the external audit applied in 11 worktrees; notable model changes: homeostasis, motors-generators
+  torque ratio and braking, gps PDOP). The catalogue entries were reworded to match what was
+  built.
+- **Phone readouts (2026-10-13 to 10-15, v0.1.15–v0.1.17):** on viewports ≤ 640 px a scene's
+  readouts leave the SVG for an HTML panel (option B); 92 of 100 topics converted, the 8 left are
+  listed in BACKLOG.
+- **Fact-check round (2026-10-13, v0.1.13/v0.1.14):** the 29 built topics never reviewed through
+  the Batch API were reviewed (~$18) and every report applied.
+- **Gap, bug and review rounds (2026-10-12/13, v0.1.10–v0.1.12):** the "known gaps" backlog
+  cleared in seven local worktrees (Kimi and ZCode); a review of that work found three live bugs,
+  fixed with tests that failed first.
+- **Batches 2–9 and wave 1 (2026-10-07 to 10-12, v0.1.0–v0.1.7):** the first 46 topics; lean
+  workflow (trunk-based, releases by tag) since 2026-10-11; CI on Ubicloud since v0.1.8.
 
 Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<step>`,
 `map:<step>`, `view:zoom`, `mol:<step>`, `probe:tank`, `sources:tank`, `ft:wave`, `ft:bars`,

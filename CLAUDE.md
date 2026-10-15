@@ -14,7 +14,7 @@ markdown files remain the detailed books.
   Stop hook runs it before every turn ends and hands failures back, and the git pre-push hook runs
   it before every push. Both skip it when nothing changed since the last pass.
 - `make e2e`: smoke tests of the critical paths (~8 s). `make e2e-full`: every browser test
-  (~1.5 min). Run `make e2e-full` before a release, and whenever a change touches the shared
+  (~3 min 15 s). Run `make e2e-full` before a release, and whenever a change touches the shared
   framework (`src/lib`) or a scene's behaviour.
 - **Release:** `make release` tags `main` (next patch version, or `V=v1.2.3`) and pushes it. The
   tag runs `.github/workflows/release.yml`: checks and all tests on a clean machine, build, deploy,
@@ -86,9 +86,9 @@ pushed work survives, so:
     with relative URLs: `page.goto('./sorting/#bubble')`.
   - `scenes.e2e.ts` renders every step of every explainer automatically.
   - Tag a test `{ tag: '@smoke' }` only if it guards a critical path.
-- **Characterization tests** record current behaviour, including suspected bugs (marked in a
-  comment, e.g. the nested-URL 404 test in `site.e2e.ts`). If one starts failing because the bug
-  was fixed, update it.
+- **Characterization tests** record current behaviour, including suspected bugs (say so in a
+  comment). If one starts failing because the bug was fixed, turn it into a regression test of
+  the fixed behaviour (none are left at the moment).
 
 ## Static checks
 

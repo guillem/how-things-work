@@ -47,7 +47,10 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   approximations of solvent spectra (`absorbance()` in `palette.ts`, labelled relative); measured
   spectra (e.g. PhotochemCAD, chlorophyll a/b in diethyl ether) would be better. The model treats
   every absorbed photon alike (McCree's lower yield for blue is not modelled) and fixes the
-  leaf's internal CO₂ at 70% of the air's (no stomata); both are stated on the page.
+  leaf's internal CO₂ at 70% of the air's (no stomata); both are stated on the page. At light 0
+  on `#water` two captions say the same thing on one line (the lumen caption and "no light:
+  electron flow stops…"); they may touch at 13 px. On `#summary` both light captions stay in the
+  accessibility tree at every light level (only their opacity changes).
 
 - **learning-from-data** — ticked: the user accepted dragging only (2026-10-08).
 
@@ -68,11 +71,6 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
   (V8 version, CPU). Water's density anomaly holds on average over starts (~6–7% more room for
   ice) but not in every single run: seed 2 locally shows ice slightly denser. The page uses seed 1
   (3.5–12% more room depending on the machine). Water's freezing is a scripted lattice shortcut.
-
-- **photosynthesis** — at light 0 on `#water` two captions say the same thing on one line (the
-  lumen caption and "no light: electron flow stops…"); they may touch at 13 px. On `#summary`
-  both light captions stay in the accessibility tree at every light level (only their opacity
-  changes).
 
 - **logic-gates** — the catalogue's 4-bit-adder challenge is a "connect the carries" task on the ripple step (wire three carry links; a checker counts the pairs added right), not a build from gates; a gate-level build would need a multi-output full-adder block on the canvas and a 9-input checker (~4–6 h).
 
@@ -114,15 +112,18 @@ fact-check agents or flagged for the user. Data licences are listed in
 
 **Framework**
 
-- **Stage text is forced to 13 px.** `src/lib/explainer/Explainer.svelte` has
-  `.stage :global(text) { font-size: 13px; fill: … }`, which overrides every `font-size`
-  attribute, so `<Label size>` is ignored everywhere. Many recent topics work around it with
-  `style:font-size` or a local Label copy (gpu `Txt`, protein-folding `Text`, mrna-vaccines `Tag`,
-  diffusion-models `Label`). Fixing the shared rule changes every older scene's text size: do it on
-  its own, with a two-theme screenshot pass of all topics, then delete the local copies.
+- **Stage text is forced to 13 px** (site-wide, found 2026-10-07; `Label`'s `size` has no
+  effect, found again by cryptography on 2026-10-12). `src/lib/explainer/Explainer.svelte` has
+  `.stage :global(text) { font-family; fill; font-size: 13px }`, which beats presentation
+  attributes, so every `font-size=`/`fill=` on `<text>` (including `<Axes>` tick labels at 11 px
+  and `<Label size>`) renders at 13 px in ink. Many topics work around it with `style:font-size`
+  or a local text helper (gpu `Txt`, protein-folding `Text`, mrna-vaccines `Tag`, diffusion-models
+  `Label`, the epidemics threshold/SIR snippets); `<Label color>` works (it sets `style:fill`).
+  The fix (move the three declarations to `.stage :global(svg)` so they inherit) changes every
+  older scene's text size: do it on its own, with a two-theme screenshot pass of all topics, then
+  delete the local copies.
 - **Controls can't be driven by a scene.** deep-time's time slider doesn't follow the cursor while
   "play" runs; a way for a scene to update or disable a control would fix it.
-- `prerender_missing_id` warnings for step-hash links (`../topic/#step`) appear on many pages.
 
 **Deferred in topics**
 
@@ -170,8 +171,6 @@ and then applies the fixes.
 
 ## Site and framework work
 
-- **`Label`'s `size` has no effect** (found by cryptography, 2026-10-12): the stage CSS fixes all
-  stage text at 13 px, so topics roll their own text helpers (`Txt`, `T`).
 - **Stage text on phones — option B (decided 2026-10-13), mechanism landed.** At 390 px wide the
   960-unit stage is drawn at ~0.4 scale, so 13-unit labels end up ~5 px. The user chose B
   (readouts out of the SVG) over a zoomable stage and landscape. On viewports ≤ 640 px a scene's
@@ -186,33 +185,23 @@ and then applies the fixes.
   entropy, chaos-fractals, calculus, linear-transformations, sun-earth-moon, radioactivity,
   special-relativity, light-optics, motors-generators, cryptography, compression, cpu,
   atoms-periodic-table, electromagnetism, ecosystems, heart-circulation, bridges-structures and
-  atmosphere-weather
+  atmosphere-weather; the 54 topics of the final push were built with readouts from the start
   (the panel adds ~50–195 px to the pinned card;
   membrane, crowd and the graph-search race are the tallest).
   To convert the next scene: wrap each readout/caption in `<Readout id label value note>`, part names in `<Readout label marker
 at>` (badge), minor labels in a bare `<Readout>`; pass the scene's fade as `opacity`; check
   phone shots (390 × 844, `TOUCH=1`, both themes) and a desktop pixel diff against main; extend
   `e2e/phone-readouts.e2e.ts` with the scene's key readout. Still to do: ocean-currents, semiconductors, black-holes, homeostasis, states-of-matter, chemical-bonds,
-  waves-interference and fourier-transform (38 of 46 converted); then the shared `<Axes>` tick labels,
+  waves-interference and fourier-transform (92 of 100 converted); then the shared `<Axes>` tick labels,
   which still show tiny on phones
   (several hundred text elements, each needing editorial choices), plus axis ticks in the shared chart
   helpers.
 
-- **Stage text styling overrides SVG attributes (site-wide, found 2026-10-07).** In
-  `src/lib/explainer/Explainer.svelte`, `.stage :global(text) { font-family; fill; font-size: 13px }`
-  beats presentation attributes, so every `font-size=`/`fill=` on `<text>` (including `<Axes>` tick
-  labels at 11 px and `<Label size>`) renders at 13 px in ink. Photosynthesis was polished under
-  this behaviour, so the fix (move the three declarations to `.stage :global(svg)` so they
-  inherit) changes every scene's look and needs its own branch with a full screenshot re-review of
-  both topics. Until then: `<Label color>` works (it sets `style:fill`), and the epidemics
-  threshold/SIR scenes use local snippets with `style:font-size`/`style:fill`; switch them back to
-  `<Label>` after the fix.
-
-- Shared components still to create as their first topic needs them: an algorithm stepper / bar chart (`sorting`), a build palette (`pagerank` or
-  `graph-search`), pan/zoom (`chaos-fractals`).
-- `rng` (mulberry32) now lives in `src/lib/draw/math.ts`; epidemics, sorting,
-  learning-from-data and compression still carry their own copies — switch them over.
 - Cards on the index have hand-drawn art only for topics that have a vignette in
-  `src/lib/components/TopicArt.svelte` (45 of the 46 built topics do); give each new topic one.
+  `src/lib/components/TopicArt.svelte` (99 of the 100 topics do; sun-earth-moon has none).
+- Possible cleanup: knip (2026-10-15) lists about 160 unused exports and 60 unused types in
+  `src/routes/*/*.ts` (helpers exported for tests or never used). Its "unused files" for
+  `scripts/data/*.mjs`, `scripts/shot.mjs` and `scripts/batch-review.ts`, and the
+  `@anthropic-ai/sdk` devDependency, are false positives: standalone scripts.
 - ~~A short "how to use the controls" note shared by all pages~~ — done: the `?` keyboard
   shortcuts overlay in the explainer shell.

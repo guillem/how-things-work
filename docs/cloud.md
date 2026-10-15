@@ -97,4 +97,4 @@ branch rebased and passing. Merge it from the GitHub app, or ask a local session
 - **Batch reviews** use API credits. They cost half the normal API price, and the cached
   catalogue is shared within a batch. Measured: about $1.10 for photosynthesis, the largest topic (74k tokens of input,
   15 web searches, ~25 minutes); smaller topics cost less. Each report records its cost.
-- **Releases** run on GitHub Actions, about 7 minutes each. That's free for a public repository.
+- **Releases** run on GitHub Actions, 10–17 minutes each (the last four, v0.1.16–v0.1.19). That's free for a public repository.

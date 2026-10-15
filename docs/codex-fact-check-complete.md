@@ -1188,6 +1188,7 @@ The five resolved items need no repeat correction. CP-1 needs only the remaining
 - Historical report SHA-256 values, preserved:
   - `docs/codex-fact-check-2026-10-15.md`: `0e484d74710ac2e957e09ee849907379750ea7aff43c0675e64a870d1eae5867`.
   - `docs/codex-fact-check-2026-10-13.md`: `1265ae70a86e8886a4dbcc3ad16e6bf1315e58821a59ba9597649fd8c4ffbfd5`.
+  - Neither earlier report was kept in the repository; this complete report supersedes them.
 - Audit date: **2026-10-15, Europe/Madrid**. Only the requested complete report is newly written by this pass; the final source capture and preserved historical-report hashes were checked at completion. No commit or external message is made.
 
 Concurrent working-tree paths present in the final source capture (changes belong to the other agent):

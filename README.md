@@ -2,7 +2,7 @@
 
 Interactive, animated explanations of how complex things work — science, technology, anything.
 Everything runs in the browser; there is no backend. The site is a static build published to
-GitHub Pages.
+GitHub Pages: **https://guillem.github.io/how-things-work/** (100 explainers).
 
 **Stack:** [SvelteKit](https://svelte.dev/docs/kit) (static adapter, every page prerendered),
 Svelte 5, TypeScript, plain SVG for the illustrations, [Playwright](https://playwright.dev) for
@@ -16,7 +16,7 @@ npm install
 npm run dev          # http://localhost:5173
 make check          # prettier, eslint, svelte-check and the model tests (~20 s)
 make e2e            # smoke tests of the critical paths on the production build (~8 s)
-make e2e-full       # every browser test (824 of them, ~1.5 min)
+make e2e-full       # every browser test (2,157 of them, ~3 min 15 s)
 make format         # prettier --write
 npm run build        # static site in ./build
 ```
@@ -67,6 +67,7 @@ src/
   lib/
     site.ts                site name, tagline, repository URL
     catalog.ts             the topic catalogue, parsed from docs/TOPICS.md at build time
+    catalog-parse.ts       the pure parser behind it (also run in Node by the catalogue test)
     topics.ts              registry of the built explainers (index page, cross-links)
     theme.svelte.ts        theme state (light / dark / follows the OS)
     progress.svelte.ts     reading progress per explainer, saved in the browser's localStorage
@@ -86,9 +87,17 @@ docs/BACKLOG.md            what to build next, known gaps
 docs/full-picture.html     the one-glance status dashboard (open in a browser)
 docs/TIMELOG.md            how long each development took
 docs/scene-guide.md        the contract every animated scene follows
+docs/cloud.md              building topics in Claude Code cloud sessions; Batch API reviews
+docs/DATA-SOURCES.md       every external dataset the site ships, with its licence
+docs/reviews/              fact-check reports from `make review-fetch` (applied, then deleted)
 scripts/shot.mjs           screenshot helper for checking scenes in both themes
 scripts/serve-pages.mjs    serves ./build like GitHub Pages, for the browser tests
 scripts/release.sh         `make release`; rollback.sh: `make rollback`; verify-live.mjs: live smoke test
+scripts/batch-review.ts    `make review` / `make review-fetch`: fact-checks through the Batch API
+scripts/check-if-changed.sh  runs `make check` unless nothing changed since the last pass (hooks)
+scripts/cloud-setup.sh     environment setup for cloud sessions
+scripts/data/<slug>/       one-off scripts that built a topic's data files from its sources
+.githooks/                 the pre-push hook (enabled by `npm install`)
 CLAUDE.md                  the workflow and testing philosophy
 e2e/                       Playwright tests (navigation, controls, theme, a render check of every step)
 ```

@@ -503,7 +503,7 @@
 			<header>
 				<h1>How Things Work <span class="accent">— the full picture</span></h1>
 				<span class="updated"
-					>updated 2026-10-15 11:15 ·
+					>updated 2026-10-15 22:10 ·
 					<a href="https://guillem.github.io/how-things-work/">live site</a></span
 				>
 			</header>
@@ -517,12 +517,9 @@
 				>.
 			</p>
 			<div class="badges">
-				<span class="badge"><span class="dot green"></span>v0.1.18 live · all 100 topics</span>
+				<span class="badge"><span class="dot green"></span>v0.1.19 live · all 100 topics</span>
 				<span class="badge"><span class="dot green"></span>make check green on main</span>
-				<span class="badge"
-					><span class="dot amber"></span>final push: builders in parallel, paced by the 5-hour
-					window</span
-				>
+				<span class="badge"><span class="dot green"></span>maintenance · nothing in progress</span>
 			</div>
 			<div class="hero">
 				<div class="row">
@@ -719,49 +716,63 @@
 				<h2 class="amber">Now · next · decisions wanted</h2>
 				<div class="cols3">
 					<div class="col now">
-						<h3>Now — the final push (started 2026-10-14)</h3>
+						<h3>Now — maintenance (since 2026-10-15)</h3>
 						<div class="task">
 							<span class="mark">✓</span>
 							<div>
-								54 topics built and merged into local main<span class="small"
-									>one builder agent per topic in its own worktree</span
+								all 100 topics built, fact-checked and ticked<span class="small"
+									>final push of 54 topics, 2026-10-14/15, released as v0.1.17 and v0.1.18</span
 								>
 							</div>
 						</div>
 						<div class="task">
 							<span class="mark">✓</span>
-							<div>54 of them fact-checked (Batch API), reports applied, ticked</div>
+							<div>
+								external audit applied (59 findings, 2 High) and released as v0.1.19<span
+									class="small"
+									>report kept as docs/codex-fact-check-complete.md</span
+								>
+							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">→</span>
-							<div>building now: nothing</div>
+							<div>
+								building now: nothing<span class="small"
+									>housekeeping on main after v0.1.19 (docs, dead code), not released</span
+								>
+							</div>
 						</div>
 					</div>
 					<div class="col next">
-						<h3>Next</h3>
+						<h3>Next — open items (BACKLOG)</h3>
 						<div class="task todo">
 							<span class="mark">1</span>
-							<div>every topic except crispr is built or being built</div>
+							<div>
+								phone readouts on the 8 topics left, then the shared Axes tick labels<span
+									class="small"
+									>ocean-currents, semiconductors, black-holes, homeostasis, states-of-matter,
+									chemical-bonds, waves-interference, fourier-transform</span
+								>
+							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">2</span>
-							<div>fact-check the 0 built-but-unticked topics</div>
+							<div>
+								the items deferred in topics<span class="small"
+									>BACKLOG "Open after the final push": tests to add, small extras, data to
+									re-check</span
+								>
+							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">3</span>
-							<div>one full browser suite, then your validation, push and release</div>
+							<div>
+								known gaps in built topics<span class="small">listed below and in BACKLOG</span>
+							</div>
 						</div>
 					</div>
 					<div class="col decide">
 						<h3>Decisions wanted from Guillem</h3>
-						<div class="task todo">
-							<span class="mark">★</span>
-							<div>
-								ChatGPT fact-check of all 100 topics<span class="small"
-									>in progress (Guillem); its results get applied next</span
-								>
-							</div>
-						</div>
 						<div class="task todo">
 							<span class="mark">★</span>
 							<div>
@@ -775,8 +786,16 @@
 							<span class="mark">★</span>
 							<div>
 								stage CSS forces all stage text to 13 px<span class="small"
-									>fixing it changes every older scene; open item in BACKLOG "Open after the final
-									push"</span
+									>fixing it changes every older scene (two-theme screenshot pass of all topics);
+									open item in BACKLOG "Open after the final push"</span
+								>
+							</div>
+						</div>
+						<div class="task todo">
+							<span class="mark">★</span>
+							<div>
+								modelling choices stated on their pages<span class="small"
+									>kept unless you decide otherwise; list in BACKLOG</span
 								>
 							</div>
 						</div>
@@ -792,25 +811,24 @@
 						<div class="task todo">
 							<span class="mark">○</span>
 							<div>
-								bridges arch: the deck now does the bending the text gives the rib
-								<span class="small">decide: change the model or the text</span>
-							</div>
-						</div>
-						<div class="task todo">
-							<span class="mark">○</span>
-							<div>
-								small: CLT ball snap · photosynthesis duplicate caption · fronts untested · #two
-								slow-load cause
+								small: photosynthesis duplicate caption at light 0 · atmosphere fronts
+								classification untested · waves-interference handle unmounted mid-drag ·
+								atoms-periodic-table labels impossible nuclei "radioactive"
 								<span class="small">details in BACKLOG.md</span>
 							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">○</span>
 							<div>
-								chemical-bonds: builder is single-centre only
-								<span class="small"
-									>by design — the text says so; multi-centre would need a new geometry engine</span
-								>
+								catalogue extras not built: oscillations-resonance stiffness control and tried-push
+								dots · logic-gates gate-level adder (~4–6 h)
+							</div>
+						</div>
+						<div class="task todo">
+							<span class="mark">○</span>
+							<div>
+								by design: chemical-bonds builder is single-centre only · states-of-matter box is
+								chaotic, so frames differ between machines
 							</div>
 						</div>
 					</div>
@@ -894,30 +912,29 @@
 					<div class="site-box">
 						<ul class="tight">
 							<li class="big">
-								Stage text on phones
-								<span class="small">needs a design decision — see “decisions wanted”</span>
+								Stage CSS forces all stage text to 13 px (Label’s
+								<span class="mono">size</span> and SVG attributes ignored)
+								<span class="small"
+									>fix = move the rule to the svg, then a two-theme screenshot pass of every topic —
+									see “decisions wanted”</span
+								>
 							</li>
-							<li class="big">
-								Stage CSS overriding SVG text attributes
-								<span class="small">fix = every scene re-reviewed, both themes</span>
-							</li>
-							<li class="open">
-								Label’s <span class="mono">size</span> prop has no effect (scenes roll their own
-								text helpers)
-							</li>
+							<li class="open">Phone readouts: 8 topics left, then the shared Axes tick labels</li>
 						</ul>
 					</div>
 					<div class="site-box">
 						<ul class="tight">
 							<li class="open">
-								<span class="mono">compression</span> keeps its own
-								<span class="mono">rng</span> (no seed-0 fallback); the other copies now use
-								<span class="mono">src/lib/draw/math.ts</span>
+								<span class="mono">sun-earth-moon</span> is the one topic without a hand-drawn card
+								vignette
 							</li>
-							<li class="open">Hand-drawn card vignettes for topics that lack one</li>
 							<li class="open">
-								Shared components still to come: algorithm stepper / bar chart, build palette,
-								pan/zoom
+								Possible cleanup: knip lists ~160 unused exports and ~60 unused types in the topics’
+								<span class="mono">.ts</span> files
+							</li>
+							<li>
+								Every seeded generator now uses <span class="mono">rng</span> from
+								<span class="mono">src/lib/draw/math.ts</span> (2026-10-15)
 							</li>
 						</ul>
 					</div>
@@ -928,6 +945,23 @@
 				<h2>Releases</h2>
 				<div class="releases">
 					<div class="rel latest">
+						<span class="tag">v0.1.19</span><span class="date">2026-10-15</span
+						><span
+							>external audit applied (59 findings) · licences: MIT code, CC BY 4.0 content</span
+						>
+					</div>
+					<div class="rel">
+						<span class="tag">v0.1.18</span><span class="date">2026-10-15</span
+						><span
+							>all 100 topics built, fact-checked and ticked (crispr last) · data sources
+							listed</span
+						>
+					</div>
+					<div class="rel">
+						<span class="tag">v0.1.17</span><span class="date">2026-10-15</span
+						><span>final push: 44 more topics, 90 ticked · phone readouts on 92 topics</span>
+					</div>
+					<div class="rel">
 						<span class="tag">v0.1.16</span><span class="date">2026-10-13</span
 						><span
 							>phone readouts on every photosynthesis and epidemics scene · shared rng, playback,
@@ -1013,7 +1047,7 @@
 				</div>
 				<div>
 					Numbers come from the repo’s own books: the TOPICS.md checklist, STATUS.md, BACKLOG.md and
-					the git tags. Last updated 2026-10-13 after v0.1.16.
+					the git tags. Last updated 2026-10-15 after v0.1.19.
 				</div>
 			</footer>
 		</div>
