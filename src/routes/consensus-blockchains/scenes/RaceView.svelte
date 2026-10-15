@@ -95,7 +95,7 @@
 	const exact = $derived(zs.map((zz) => exactRace(q, zz)));
 	const line = (ps: number[]) =>
 		ps.map((p, i) => `${i === 0 ? 'M' : 'L'}${cx(i)} ${cy(p)}`).join(' ');
-	const needed = $derived(confirmationsFor(q));
+	const needed = $derived(confirmationsFor(q, 0.001, 1000, exactRace));
 </script>
 
 <g opacity={fade}>
@@ -302,7 +302,9 @@
 		order={6}
 		label="Chance he catches up"
 		value="{pctText(nak[z])} at z = {z} (Nakamoto) · {pctText(exact[z])} exact"
-		note={q >= 0.5 ? 'with half the power or more, always' : `below 0.1 % after ${needed} blocks`}
+		note={q >= 0.5
+			? 'with half the power or more, always'
+			: `below 0.1 % after ${needed} blocks (exact)`}
 		color="var(--cb-attacker)"
 	>
 		<Txt
@@ -324,7 +326,7 @@
 			y={470}
 			text={q >= 0.5
 				? 'With half the power or more, he always catches up.'
-				: `Risk below 0.1 % after ${needed} block${needed === 1 ? '' : 's'}.`}
+				: `Risk below 0.1 % after ${needed} block${needed === 1 ? '' : 's'} (exact).`}
 			size={13}
 			weight={600}
 			color={q >= 0.5 ? 'var(--cb-bad)' : undefined}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Bitcoin's retarget (`retargetRun`): average block time in each 2016-block period when
-	 * the hash rate changes by `params.jump` from the third period (week 4) on. Bars appear one
+	 * the hash rate changes by `params.jump` from the third period (after week 4) on. Bars appear one
 	 * period at a time; under each, the hash rate and the difficulty the nodes computed.
 	 */
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
@@ -52,13 +52,13 @@
 			weight={700}
 		/>
 	</Readout>
-	<Readout id="sub" order={2} label="Hash rate" value="{mult(jump)} from week 4">
+	<Readout id="sub" order={2} label="Hash rate" value="{mult(jump)} after week 4">
 		<Txt
 			x={24}
 			y={64}
 			text="Hash rate {mult(
 				jump
-			)} from period 3 on (week 4 at the normal pace) · the target is 10 minutes"
+			)} from period 3 on (after 4 weeks at the normal pace) · the target is 10 minutes"
 			size={12}
 			muted
 		/>
