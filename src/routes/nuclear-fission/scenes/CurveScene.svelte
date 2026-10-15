@@ -197,7 +197,7 @@
 		<Readout
 			id="peak"
 			order={1}
-			label="Most tightly bound"
+			label={budget ? undefined : 'Most tightly bound'}
 			value="{name(top)} · {top.b.toFixed(3)} MeV"
 			note="iron-56: {(nuclides.Fe56.perNucleon / 1000).toFixed(3)}"
 		>
@@ -225,7 +225,7 @@
 		<Readout
 			id="u235"
 			order={2}
-			label="Uranium-235"
+			label={budget ? undefined : 'Uranium-235'}
 			value="{(U.perNucleon / 1000).toFixed(2)} MeV per nucleon"
 			color="var(--nf-u235)"
 		>
@@ -243,7 +243,7 @@
 		<Readout
 			id="frags"
 			order={3}
-			label="Its fragments"
+			label={budget ? undefined : 'Its fragments'}
 			value="{name(heavy)} {(heavy.perNucleon / 1000).toFixed(2)} · {name(light)} {(
 				light.perNucleon / 1000
 			).toFixed(2)}"
@@ -345,8 +345,11 @@
 			<Readout
 				id="row-{r.id}"
 				order={10 + i}
-				label={r.label}
+				label={['total', 'nu', 'capture'].includes(r.id) ? undefined : r.label}
 				value={r.value}
+				note={r.id === 'heat'
+					? `average of all splits ${E.total.toFixed(1)}, − ${(E.neutrinos + E.pending).toFixed(1)} antineutrinos, + ${E.capture.toFixed(1)} captures`
+					: undefined}
 				color={r.color}
 				opacity={o}
 			>

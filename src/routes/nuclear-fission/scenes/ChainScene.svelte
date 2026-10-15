@@ -59,7 +59,7 @@
 			const kids = tree.fissions[g + 1];
 			const u = flight(g);
 			if (u <= 0) continue;
-			const lostCount = new Map<number, number>();
+			const lostCount: Record<number, number> = {};
 			for (const n of tree.neutrons[g]) {
 				const x1 = colX(g);
 				const y1 = nodeY(parents.length, n.parent);
@@ -69,8 +69,8 @@
 					x2 = colX(g + 1);
 					y2 = nodeY(kids.length, n.child);
 				} else {
-					const j = lostCount.get(n.parent) ?? 0;
-					lostCount.set(n.parent, j + 1);
+					const j = lostCount[n.parent] ?? 0;
+					lostCount[n.parent] = j + 1;
 					const span = (TX1 - TX0) / GENS;
 					const dir = j % 2 === 0 ? -1 : 1;
 					x2 = x1 + span * (n.fate === 'escaped' ? 0.55 : 0.42);
@@ -281,15 +281,17 @@
 	{#if !kView}
 		<!-- tally of the tree -->
 		<g style:font-variant-numeric="tabular-nums">
-			<rect
-				x={650}
-				y={170}
-				width={270}
-				height={250}
-				rx="12"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
+			<Readout id="tally-card"
+				><rect
+					x={650}
+					y={170}
+					width={270}
+					height={250}
+					rx="12"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/></Readout
+			>
 			<Readout id="tally-title">
 				<text x={670} y={200} font-weight="600">The neutrons so far</text>
 			</Readout>

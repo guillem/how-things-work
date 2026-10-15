@@ -23,15 +23,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, Label, clamp, hash, linePath, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import {
-		DESIGN,
-		NATURAL,
-		THERMAL_EV,
-		U235,
-		factors,
-		regime,
-		slowDown
-	} from '../model';
+	import { DESIGN, NATURAL, THERMAL_EV, U235, factors, regime, slowDown } from '../model';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -250,7 +242,7 @@
 	const walk = (() => {
 		const pts = [{ x: BX0 + 30, y: (BY0 + BY1) / 2 }];
 		let a = -0.3;
-		for (let i = 0; i < SLOW.energies.length - 1 + 4; i++) {
+		for (let i = 0; i < SLOW.energies.length - 1 + 2; i++) {
 			const last = pts[pts.length - 1];
 			a += (hash(i, 71) - 0.5) * 2.6;
 			const len = 46 + 30 * hash(i, 73);
@@ -382,7 +374,7 @@
 			cx={slowState.x}
 			cy={slowState.y}
 			r="6"
-			fill={slowState.e > 1 ? 'var(--nf-fast)' : 'var(--nf-slow)'}
+			fill={slowState.e > 0.1 ? 'var(--nf-fast)' : 'var(--nf-slow)'}
 			opacity={slowState.o}
 		/>
 		<Readout
@@ -447,24 +439,25 @@
 			order={2}
 			label="Energy now"
 			value={fmtE(slowState.e)}
-			color={slowState.e > 1 ? 'var(--nf-fast)' : 'var(--nf-slow)'}
+			color={slowState.e > 0.1 ? 'var(--nf-fast)' : 'var(--nf-slow)'}
 		>
 			<text
 				x={EX0}
 				y={486}
 				style:font-size="18px"
 				font-weight="700"
-				style:fill={slowState.e > 1 ? 'var(--nf-fast)' : 'var(--nf-slow)'}>{fmtE(slowState.e)}</text
+				style:fill={slowState.e > 0.1 ? 'var(--nf-fast)' : 'var(--nf-slow)'}
+				>{fmtE(slowState.e)}</text
 			>
 		</Readout>
 		<Readout
 			id="chance"
 			order={3}
 			label="Chance to split U-235"
-			value={slowState.e < 1 ? "hundreds of times a fast neutron's" : 'low: it is still fast'}
+			value={slowState.e < 0.1 ? "hundreds of times a fast neutron's" : 'low: it is still fast'}
 		>
 			<text x={EX0} y={512}
-				>{slowState.e < 1
+				>{slowState.e < 0.1
 					? 'slow: hundreds of times more likely to split uranium-235'
 					: 'fast: it rarely splits uranium-235'}</text
 			>
@@ -519,7 +512,7 @@
 				stroke="var(--nf-fuel-edge)"
 			/>
 		{/each}
-		{#each ROD_SLOTS as _, j (j)}
+		{#each ROD_SLOTS.map((_, j) => j) as j (j)}
 			<rect
 				x={rodX(j) - ROD_W / 2}
 				y={CY0 - 24}
@@ -657,24 +650,27 @@
 			note="born per absorption in fuel · fast fission · escape U-238 capture · absorbed in fuel · don't leak"
 		></Readout>
 		{#if view === 'fuel'}
-			<g style:font-variant-numeric="tabular-nums">
-				{#each [{ s: 'η', v: f.eta, d: 'neutrons freed per neutron the fuel absorbs' }, { s: 'ε', v: f.epsilon, d: 'extra from fast fission of uranium-238' }, { s: 'p', v: f.p, d: 'share not captured by U-238 while slowing' }, { s: 'f', v: f.f, d: 'share of slow ones absorbed in the fuel' }, { s: 'L', v: f.nonLeakage, d: 'share that does not leak out' }] as row, i (row.s)}
-					{@const y = 250 + i * 46}
-					<text x={GX0} {y} style:font-size="15px" font-weight="600">{row.s}</text>
-					<text x={GX0 + 30} {y} style:font-size="15px" font-weight="600">{row.v.toFixed(3)}</text>
-					<text x={GX0 + 30} y={y + 18} class="muted" style:font-size="11px">{row.d}</text>
-					<rect
-						x={GX0 + 110}
-						y={y - 12}
-						width={(Math.min(1.5, row.v) / 2) * (GX1 - GX0 - 110)}
-						height="12"
-						rx="3"
-						fill="var(--nf-curve)"
-						opacity="0.7"
-					/>
-				{/each}
-				<text x={GX0} y={250 + 5 * 46 + 4} class="muted">k = η × ε × p × f × L</text>
-			</g>
+			<Readout id="factor-bars"
+				><g style:font-variant-numeric="tabular-nums">
+					{#each [{ s: 'η', v: f.eta, d: 'neutrons freed per neutron the fuel absorbs' }, { s: 'ε', v: f.epsilon, d: 'extra from fast fission of uranium-238' }, { s: 'p', v: f.p, d: 'share not captured by U-238 while slowing' }, { s: 'f', v: f.f, d: 'share of slow ones absorbed in the fuel' }, { s: 'L', v: f.nonLeakage, d: 'share that does not leak out' }] as row, i (row.s)}
+						{@const y = 250 + i * 46}
+						<text x={GX0} {y} style:font-size="15px" font-weight="600">{row.s}</text>
+						<text x={GX0 + 30} {y} style:font-size="15px" font-weight="600">{row.v.toFixed(3)}</text
+						>
+						<text x={GX0 + 30} y={y + 18} class="muted" style:font-size="11px">{row.d}</text>
+						<rect
+							x={GX0 + 110}
+							y={y - 12}
+							width={(Math.min(1.5, row.v) / 2) * (GX1 - GX0 - 110)}
+							height="12"
+							rx="3"
+							fill="var(--nf-curve)"
+							opacity="0.7"
+						/>
+					{/each}
+					<text x={GX0} y={250 + 5 * 46 + 4} class="muted">k = η × ε × p × f × L</text>
+				</g></Readout
+			>
 		{:else}
 			<!-- the next 50 generations -->
 			<Readout id="ahead-title">

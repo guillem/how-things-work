@@ -275,8 +275,8 @@
 			/>
 		{/if}
 		<Label
-			x={dsx(Math.min(cursor, 56))}
-			y={dsy(Math.log10(pAt(cursor))) - 14}
+			x={dsx(Math.min(Math.max(cursor, 24), 56))}
+			y={dsy(Math.log10(pAt(Math.min(Math.max(cursor, 24), 56)))) - 14}
 			text="with delayed neutrons"
 			anchor="end"
 			color="var(--nf-crit)"
@@ -472,15 +472,17 @@
 
 		<!-- the plant -->
 		<g style:font-variant-numeric="tabular-nums">
-			<rect
-				x={680}
-				y={130}
-				width={240}
-				height={250}
-				rx="12"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
+			<Readout id="plant-card"
+				><rect
+					x={680}
+					y={130}
+					width={240}
+					height={250}
+					rx="12"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/></Readout
+			>
 			<Readout id="plant-title">
 				<text x={700} y={160} font-weight="600">A large plant at full power</text>
 			</Readout>
@@ -522,12 +524,16 @@
 				>
 			</Readout>
 			<line x1={700} x2={900} y1={296} y2={296} stroke="var(--border)" />
-			<text x={700} y={320} class="muted" style:font-size="12px">after a scram, the fragments</text>
-			<text x={700} y={338} class="muted" style:font-size="12px"
-				>still give {fmt(mw(decayHeat(1)))} MW, falling slowly:</text
-			>
-			<text x={700} y={356} class="muted" style:font-size="12px"
-				>the core must be cooled for days</text
+			<Readout id="plant-note"
+				><text x={700} y={320} class="muted" style:font-size="12px"
+					>after a scram, the fragments</text
+				>
+				<text x={700} y={338} class="muted" style:font-size="12px"
+					>still give {fmt(mw(decayHeat(1)))} MW, falling slowly:</text
+				>
+				<text x={700} y={356} class="muted" style:font-size="12px"
+					>the core must be cooled for days</text
+				></Readout
 			>
 		</g>
 	{/if}

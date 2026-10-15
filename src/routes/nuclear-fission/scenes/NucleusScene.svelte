@@ -125,15 +125,15 @@
 				p,
 				p.map((_, i) => i)
 			);
-			const out = new Map<number, { x: number; y: number }>();
-			src.forEach((b, k) => out.set(b, p[dst[k]]));
+			const out: Record<number, { x: number; y: number }> = {};
+			src.forEach((b, k) => (out[b] = p[dst[k]]));
 			return out;
 		};
 		const tH = target(heavyIdx, rH);
 		const tL = target(lightIdx, rL);
 		const balls: Ball[] = blob.map((b, i) => {
-			const group = tH.has(i) ? 'heavy' : tL.has(i) ? 'light' : 'free';
-			const off = tH.get(i) ?? tL.get(i) ?? { x: 0, y: 0 };
+			const group = i in tH ? 'heavy' : i in tL ? 'light' : 'free';
+			const off = tH[i] ?? tL[i] ?? { x: 0, y: 0 };
 			const fi = freeIdx.indexOf(i);
 			return {
 				x0: b.x,
