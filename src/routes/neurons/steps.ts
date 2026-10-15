@@ -82,7 +82,7 @@ const tea: Control = {
 	id: 'tea',
 	label: 'Block most potassium channels (TEA)',
 	default: false,
-	help: 'Tetraethylammonium, a lab chemical that plugs potassium channels from inside. Here it blocks 90% of them.'
+	help: 'Tetraethylammonium, a lab chemical that plugs potassium channels from inside. Here it blocks 90% of the channels that open with voltage.'
 };
 
 /** Refractory step: the time between two identical pulses. */
@@ -314,9 +314,10 @@ export const spec: ExplainerSpec = {
 <li><strong class="tag na">Sodium channels</strong> open fast. Sodium rushes in and the voltage heads for sodium's balance point: the rising phase. Within a millisecond each channel shuts itself with a second gate (it <dfn data-def="A sodium channel that has opened soon blocks itself with an inactivation gate, and cannot open again until the voltage has been back near rest for a few milliseconds.">inactivates</dfn>).</li>
 <li><strong class="tag k">Potassium channels</strong> open more slowly. Potassium flows out and drags the voltage back down, even a little below rest, before they close.</li>
 </ul>
-<p>Block the sodium channels with tetrodotoxin, the poison of the pufferfish, and the same pulse gives no spike at all; neither would a far stronger one. Block most of the potassium channels instead and the spike still fires but ends much more slowly: it lasts about twice as long.</p>`,
+<p>Block the sodium channels with tetrodotoxin, the poison of the pufferfish, and the same pulse gives no spike at all; neither would a far stronger one. Block most of the potassium channels instead and the spike still fires but ends much more slowly: in this model it lasts about twice as long.</p>`,
 			notes: `<p>Hodgkin and Huxley described each channel type with imaginary gates. A sodium channel conducts when three fast <i>m</i> gates are open and one slow <i>h</i> gate is not shut: conductance = 120 m³h mS/cm². A potassium channel needs four <i>n</i> gates open: 36 n⁴ mS/cm². Each gate flips with voltage-dependent rates they measured. Decades later the channels were found to be real proteins; the potassium channel’s four identical subunits match the four <i>n</i> gates, and the sodium channel’s inactivation gate is a loop of the protein that swings into the pore. The channels in the patch are drawn as symbols; their numbers follow the model's conductances.</p>
-<p>The dashed lines are the balance points Hodgkin and Huxley measured on their axons: +55 mV for sodium and −72 mV for potassium. They differ from the +47 and −89 mV worked out from concentrations in the first chapter: the internal concentrations are uncertain (Hodgkin and Katz called them “subject to considerable error”), and potassium that leaks out piles up in the thin space just outside the membrane (Frankenhaeuser &amp; Hodgkin, <i>Journal of Physiology</i> 131:341, 1956).</p>`
+<p>The dashed lines are the balance points Hodgkin and Huxley measured on their axons: +55 mV for sodium and −72 mV for potassium. They differ from the +47 and −89 mV worked out from concentrations in the first chapter: the internal concentrations are uncertain (Hodgkin and Katz called them “subject to considerable error”), and potassium that leaks out piles up in the thin space just outside the membrane (Frankenhaeuser &amp; Hodgkin, <i>Journal of Physiology</i> 131:341, 1956).</p>
+<p>The blockers here are a simplification. Each removes the voltage-gated part of its conductance (all of it for tetrodotoxin, 90% for TEA) but keeps the small conductance already open at rest as a fixed leak: 0.37 mS/cm² for potassium, out of the 36. Scaling the whole 36 mS/cm² by 0.1 would leave too little potassium conductance at rest, and the model cell would fire again and again on its own. Real axons behave like the simplified version: injected TEA leaves the resting potential unchanged (Tasaki &amp; Hagiwara, <i>Journal of General Physiology</i> 40:859, 1957). It prolongs the squid spike far more than twice, though, sometimes a hundredfold, into a long plateau; the doubling is this model's, not a measurement.</p>`
 		},
 		{
 			id: 'refractory',

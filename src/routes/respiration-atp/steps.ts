@@ -48,7 +48,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'overview' },
 			duration: 18,
 			body: `
-<p>Every cell in your body runs on the same reaction, the reverse of photosynthesis:</p>
+<p>Nearly every cell in your body runs on the same reaction, the reverse of photosynthesis:</p>
 <p class="formula"><strong>C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6 O<sub>2</sub> → 6 CO<sub>2</sub> + 6 H<sub>2</sub>O</strong></p>
 <p>It is the same chemistry as burning sugar in a flame, and it releases the same energy: 2,840 kJ per mole of glucose (180 g). A flame lets it all go at once, as heat. A cell takes the glucose apart in a couple of dozen small, enzyme-controlled steps and stores a large part of the energy in a molecule it can spend anywhere: <dfn data-def="Adenosine triphosphate. Splitting off its last phosphate (ATP → ADP + phosphate) releases about 50 kJ/mol in a living cell, enough to drive a muscle protein's stroke, a pump or a chemical synthesis.">ATP</dfn>.</p>
 <p>The work is shared out between two places you met in the cell: the <strong>cytosol</strong>, where glucose is split in half, and the <strong>mitochondria</strong>, where the halves are burned to CO<sub>2</sub> and the energy is turned into ATP. Follow the glucose on the left.</p>`,
@@ -263,7 +263,7 @@ export const spec: ExplainerSpec = {
 <p>When a sprinting muscle makes pyruvate and NADH faster than its mitochondria can take them, or when oxygen runs short and the chain backs up as you saw, NADH piles up in the cytosol and the cell runs out of NAD<sup>+</sup>. Glycolysis needs NAD<sup>+</sup> at its sixth step, so it would stop too.</p>
 <p>The way out: an enzyme, <strong>lactate dehydrogenase</strong>, hands NADH's electrons back to pyruvate, making <strong>lactate</strong> and freeing NAD<sup>+</sup> to keep glycolysis running. Yeast does the same thing differently, making ethanol and CO<sub>2</sub>.</p>
 <p>This <dfn data-def="Making ATP by glycolysis alone, regenerating NAD⁺ by passing NADH's electrons onto an organic molecule (lactate, ethanol) instead of to oxygen.">fermentation</dfn> yields only the <strong>2 ATP</strong> of glycolysis per glucose, sixteen times less than respiration. To keep up, a cell must burn glucose much faster.</p>`,
-			notes: `<p>The lactate is not a waste product that causes muscle soreness: it is carried in the blood to the heart, which burns it, and to the liver, which builds it back into glucose (the Cori cycle). Louis Pasteur noticed in 1861 that yeast consumes far more sugar without air than with it: the Pasteur effect.</p>`
+			notes: `<p>The lactate is not a waste product that causes muscle soreness: it is carried in the blood to the heart, which burns it, and to the liver, which builds it back into glucose (the Cori cycle). Louis Pasteur noticed in 1861 that yeast consumes far more sugar without air than with it: the Pasteur effect.</p><p>Your red blood cells live this way all the time. They lose their mitochondria as they mature, so even surrounded by the oxygen they carry they make all their ATP by glycolysis, and pass lactate into the blood.</p>`
 		},
 		{
 			id: 'summary',

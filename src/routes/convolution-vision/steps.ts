@@ -186,7 +186,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Move the digit. The feature map moves with it, by exactly the same amount, and keeps its shape: the filter finds an edge wherever it is, because the <strong>same 9 weights</strong> are used at all 784 positions. This is called <dfn data-def="Using the same weights at every position of the image, so that a feature is detected wherever it appears.">weight sharing</dfn>.</p>
 <p>It is also why convolution is cheap. A layer of 784 neurons that each looked at all 784 pixels would need 784 × 784 = <strong>614,656 weights</strong> to produce a map like this, and would have to learn every edge at every place separately. The filter needs <strong>9</strong>.</p>
-<p>So a convolutional network learns small detectors, a few dozen to a few hundred weights each, and the convolution applies them across the whole picture.</p>`
+<p>So a convolutional network learns small detectors, a few dozen to a few hundred weights each, and the convolution applies them across the whole picture.</p>`,
+			notes: `<p>The map moves exactly with the digit only away from the border of the picture. At the edge the filter reads blank paper beyond the frame, and ink pushed out of the frame is simply lost, so a digit moved partly out of the picture gives a cropped map, not a shifted one. That is why the slider stops the digit when its map reaches the edge. Real networks pad their images the same way, and the padding lets them sense how close a feature is to the border (Kayhan &amp; van Gemert, CVPR 2020).</p>`
 		},
 		// ------------------------------------------------------------------ network
 		{

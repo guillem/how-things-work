@@ -79,9 +79,12 @@ test('blocking the sodium channels (TTX) abolishes the spike; blocking potassium
 	expect(Math.abs(at(ttx, 0.95).V - REST)).toBeLessThan(0.5);
 	const width = (s: ReturnType<typeof simulate>) => s.filter((p) => p.V > -20).length;
 	const normal = simulate({ tEnd: 40, current: pulse(2 * th, 1, 0.5) });
-	// The scene's TEA blocks 90% of the potassium channels, as the real drug does at high dose.
+	// The scene's TEA blocks 90% of the voltage-gated potassium channels, as the real drug does at high dose.
 	const tea = simulate({ tEnd: 40, current: pulse(2 * th, 1, 0.5), block: { k: 0.1 } });
 	expect(Math.abs(at(tea, 0.95).V - REST)).toBeLessThan(0.5);
+	// The notes: only the voltage-gated part is blocked; the 0.37 mS/cm² open at rest stays.
+	expect(at(tea, 0.5).gK).toBeCloseTo(0.37, 2);
+	expect(at(tea, 0.5).gK).toBeCloseTo(at(normal, 0.5).gK, 4);
 	expect(spikeTimes(tea)).toHaveLength(1);
 	// "it lasts about twice as long", then the cell returns to rest.
 	expect(width(tea)).toBeGreaterThan(1.8 * width(normal));
