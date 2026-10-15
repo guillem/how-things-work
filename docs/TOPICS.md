@@ -210,7 +210,7 @@ A topic is done when:
 **Energy & Machines**
 - [x] heat-engines
 - [x] motors-generators
-- [ ] power-grid
+- [x] power-grid
 - [x] solar-cells
 - [x] nuclear-fission
 - [x] nuclear-fusion
