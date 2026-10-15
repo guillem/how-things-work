@@ -469,7 +469,7 @@
 				>Drag the receiver or the satellite.</text
 			>
 			<text x={PX + 18} y={MY0 + MH - 28} class="muted" style:font-size="12px"
-				>Pulses slowed down 100 000 times.</text
+				>Pulses slowed down about 100 times.</text
 			>
 		</Readout>
 	{:else}

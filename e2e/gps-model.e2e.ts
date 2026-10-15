@@ -82,15 +82,18 @@ test('from the ground, 8 to 12 satellites are usually above the horizon (10° ma
 		}
 	}
 	expect(visible(constellation(0), ...PALMA).length).toBe(8);
-	// Over the whole Earth and a whole day: usually 8 to 12, never fewer than 7.
+	// Over the whole Earth and a whole day: usually 8 to 12, rarely fewer than 7 (but at
+	// times only 6, as at 25° S, 110° W at the almanac's epoch).
 	const counts: number[] = [];
 	for (let lat = -80; lat <= 80; lat += 10)
 		for (let lon = -180; lon < 180; lon += 30)
 			for (let tk = 0; tk < DAY; tk += 3 * 3600)
 				counts.push(visible(constellation(tk), lat, lon).length);
-	expect(Math.min(...counts)).toBe(7);
+	expect(Math.min(...counts)).toBeGreaterThanOrEqual(6);
+	expect(counts.filter((n) => n < 7).length / counts.length).toBeLessThan(0.01);
 	const usual = counts.filter((n) => n >= 8 && n <= 12).length / counts.length;
 	expect(usual).toBeGreaterThan(0.9);
+	expect(visible(constellation(0), -25, -110).length).toBe(6);
 });
 
 test('signals take 67 ms to come down from overhead, up to 86 ms from the horizon', () => {
