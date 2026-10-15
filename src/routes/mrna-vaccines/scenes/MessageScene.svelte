@@ -42,7 +42,7 @@
 	const parts = [
 		{ id: 'utr5', label: '5′ lead-in', n: SEQUENCE.utr5 },
 		{ id: 'cds', label: 'coding sequence: 1,273 codons for the spike', n: SEQUENCE.codons * 3 },
-		{ id: 'utr3', label: '3′ tail section', n: SEQUENCE.utr3 },
+		{ id: 'utr3', label: '3′ end section (not translated)', n: SEQUENCE.utr3 },
 		{ id: 'polya', label: 'poly(A) tail', n: TAIL }
 	];
 	const TOTAL = parts.reduce((s, p) => s + p.n, 0);
@@ -119,7 +119,7 @@
 		id="bar"
 		order={1}
 		label="The message"
-		value="about 4,300 letters: cap, lead-in, 3,819 letters of code for the spike, tail section, poly(A) tail"
+		value="about 4,300 letters: cap, lead-in, 3,819 letters of code for the spike, 3′ end section, poly(A) tail"
 	>
 		<Tag
 			x={BX0}

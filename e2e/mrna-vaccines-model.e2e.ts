@@ -44,6 +44,17 @@ test('cells stop translating the vaccine mRNA within days', () => {
 	expect(at(two, INTERVAL - 0.05).A).toBe(0);
 });
 
+test('the spike builds up after the injection before it fades', () => {
+	// None at the moment of injection: the cells have not made any yet.
+	expect(at(one, 0).A).toBe(0);
+	// It peaks after the first day (about a day and a half, as the page says), then falls.
+	const top = one.reduce((best, s) => (s.A > best.v ? { t: s.t, v: s.A } : best), { t: 0, v: 0 });
+	expect(top.t).toBeGreaterThan(1);
+	expect(top.t).toBeLessThan(2);
+	// Within a week it is down to a small fraction of that peak.
+	expect(at(one, 7).A).toBeLessThan(0.1 * top.v);
+});
+
 test('the dose is fitted to the antibody of two doses in the phase 1 trial', () => {
 	const r = twoDoseRatio();
 	expect(r).toBeGreaterThan(WALSH.low);
@@ -59,26 +70,33 @@ test('the vaccine raises antibodies without any illness', () => {
 		expect(s.I).toBe(0);
 		expect(s.T).toBeCloseTo(CAO.T0, -2);
 	}
-	// Antibodies appear after about a week, as after an infection.
-	expect(antibody(at(one, 4))).toBeLessThan(1);
+	// Plasma cells release antibodies from about day 4 (the page and its readout).
+	const firstDay = one.find((s) => antibody(s) > 1)!.t;
+	expect(Math.round(firstDay)).toBe(4);
 	expect(antibody(at(one, 8))).toBeGreaterThan(0.05 * yardstick);
 });
 
 test('one dose gives a small response; the second dose meets memory and multiplies it', () => {
 	const first = peak(one, antibody).v;
-	// One dose: about an eighth of an infection's antibody peak.
-	expect(first / yardstick).toBeGreaterThan(0.1);
-	expect(first / yardstick).toBeLessThan(0.16);
-	// Two doses: about 2.8 times an infection's peak, some twenty times the first dose's.
+	// One dose: about a seventh of an infection's antibody peak.
+	expect(first / yardstick).toBeGreaterThan(1 / 8);
+	expect(first / yardstick).toBeLessThan(1 / 6.5);
+	// Two doses: about 2.5 times an infection's peak, almost twenty times the first dose's.
 	const second = peak(two, antibody, INTERVAL).v;
-	expect(second / first).toBeGreaterThan(15);
-	expect(second / first).toBeLessThan(30);
+	expect(second / first).toBeGreaterThan(16);
+	expect(second / first).toBeLessThan(20);
+	// After one dose: about 25,000 killer T cells at the peak, about nine days on.
+	const e1 = peak(one, effectors);
+	expect(e1.v).toBeGreaterThan(0.9 * 25_000);
+	expect(e1.v).toBeLessThan(1.1 * 25_000);
+	expect(Math.round(e1.t)).toBe(9);
 	// The boost comes from memory: far more killer T cells answer the second dose.
 	expect(peak(two, effectors, INTERVAL).v).toBeGreaterThan(50 * peak(one, effectors).v);
-	// Memory T cells after one dose: 5% of the peak, about fifteen times the 100 naive cells.
-	const mem = (MEMORY.share * peak(one, effectors).v) / CAO.Cn0;
-	expect(mem).toBeGreaterThan(12);
-	expect(mem).toBeLessThan(18);
+	// Memory T cells after one dose: 5% of the peak, about 1,300, thirteen times the 100 naive cells.
+	const mem = MEMORY.share * peak(one, effectors).v;
+	expect(mem).toBeGreaterThan(0.9 * 1_300);
+	expect(mem).toBeLessThan(1.1 * 1_300);
+	expect(Math.round(mem / CAO.Cn0)).toBe(13);
 });
 
 test('antibodies fade over months, with the model half-life of about 46 days', () => {
@@ -97,9 +115,10 @@ test('a later infection is stopped at once, or cleared far faster than without t
 		const day = doses[doses.length - 1] + 30 * months;
 		return infectionOutcome(simulate({ doses, infectAt: day, days: day + 25 }), day);
 	};
-	// Within three months of the second dose, leftover antibodies stop the virus at once.
+	// Within about five months of the second dose, leftover antibodies stop the virus at once.
 	expect(later(1).stopped).toBe(true);
 	expect(later(3).stopped).toBe(true);
+	expect(later(5).stopped).toBe(true);
 	// Six months on, the virus barely grows and is gone in about five days, not nine.
 	const six = later(6);
 	expect(six.stopped).toBe(false);

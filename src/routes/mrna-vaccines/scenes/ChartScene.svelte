@@ -106,7 +106,7 @@
 		if (vax === '0')
 			return {
 				text: `Not vaccinated: virus gone on day ${Math.round(outU.cleared ?? ISPAN)}`,
-				sub: `at its peak ${count(outU.peakV)} doses per mL`,
+				sub: `at its peak ${count(outU.peakV)} virus per mL`,
 				at: outU.cleared ?? ISPAN
 			};
 		if (outV.stopped)
@@ -117,7 +117,7 @@
 			};
 		return {
 			text: `Virus gone after ${(outV.cleared ?? ISPAN).toFixed(1)} days`,
-			sub: `not vaccinated: ${Math.round(outU.cleared ?? ISPAN)} days · peak ${count(outV.peakV)} against ${count(outU.peakV)}`,
+			sub: `not vaccinated: ${Math.round(outU.cleared ?? ISPAN)} days · peak ${count(outV.peakV)} per mL against ${count(outU.peakV)} per mL`,
 			at: outV.cleared ?? ISPAN
 		};
 	});
