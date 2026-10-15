@@ -6,12 +6,11 @@
 	 * with that energy (picked at random from the enumeration); the reader's own fold from the
 	 * "fold" step is marked on its row.
 	 */
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { clashes, contacts, energy, fromTurns } from '../hp';
 	import { chainById, landscapeOf } from '../folding';
 	import Beads from './Beads.svelte';
-	import Label from './Text.svelte';
 	import { anglesOf, middleOf, pointsOf, straight } from './lattice';
 
 	let { t, params, reduced }: StageProps = $props();

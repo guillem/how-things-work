@@ -10,7 +10,7 @@
 	 * period step one orbit takes ORBIT_S s and the curve covers three orbits.
 	 * The planet's phase is a pure function of t.
 	 */
-	import { Axes, scale } from '#lib/draw/index.ts';
+	import { Axes, Label, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		aOverR,
@@ -27,7 +27,6 @@
 	} from '../exoplanets';
 	import { fmtAU, readerSystem } from '../systems';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 	import { dimming, duration, oneIn, sig, starColor, ticksWithDecimals } from './ui';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -211,14 +210,16 @@
 		{/if}
 	</g>
 	<Readout id="close-title">
-		<T
+		<Label
+			anchor="start"
 			x={A.x0 + 16}
 			y={A.y0 + 26}
 			text="The star seen from Earth, close up"
 			size={14}
 			weight={700}
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={A.x0 + 16}
 			y={A.y0 + 44}
 			text={slow ? 'planet to scale · crossing slowed down' : 'planet to scale'}
@@ -238,8 +239,16 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="orbit-title">
-		<T x={O.x0 + 16} y={O.y0 + 26} text="The whole orbit, seen from Earth" size={14} weight={700} />
-		<T
+		<Label
+			anchor="start"
+			x={O.x0 + 16}
+			y={O.y0 + 26}
+			text="The whole orbit, seen from Earth"
+			size={14}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
 			x={O.x0 + 16}
 			y={O.y0 + 44}
 			text={starPx < 3
@@ -273,14 +282,22 @@
 		/>
 	{/if}
 	<Readout id="orbit-key">
-		<T
+		<Label
+			anchor="start"
 			x={O.x0 + 16}
 			y={O.y1 - 30}
 			text="solid: the near side, in front of the star"
 			size={11.5}
 			muted
 		/>
-		<T x={O.x0 + 16} y={O.y1 - 14} text="dashed: the far side, behind it" size={11.5} muted />
+		<Label
+			anchor="start"
+			x={O.x0 + 16}
+			y={O.y1 - 14}
+			text="dashed: the far side, behind it"
+			size={11.5}
+			muted
+		/>
 	</Readout>
 
 	<!-- ---- light curve ---- -->
@@ -294,7 +311,14 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="curve-title">
-		<T x={32} y={378} text="The star’s brightness (light curve)" size={14} weight={700} />
+		<Label
+			anchor="start"
+			x={32}
+			y={378}
+			text="The star’s brightness (light curve)"
+			size={14}
+			weight={700}
+		/>
 	</Readout>
 	<Axes
 		{sx}
@@ -322,8 +346,8 @@
 	<Card x={CX} y={368} w={CW} h={204} />
 	{#if phase === 'transit'}
 		<Readout id="depth" order={1} label="Dip" value={dimming(depth)}>
-			<T x={CX + 16} y={396} text="Dip" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={396} text="Dip" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={396}
 				text={dimming(depth)}
@@ -339,13 +363,13 @@
 			label="Planet ÷ star (radius)"
 			value="{sig(k)} → ({sig(k)})² = {dimming(k * k)}"
 		>
-			<T x={CX + 16} y={424} text="Planet ÷ star (radius)" size={12.5} muted />
-			<T x={CX + CW - 16} y={424} text={sig(k)} size={13.5} weight={650} anchor="end" />
-			<T x={CX + 16} y={448} text="dip = ({sig(k)})² of the light" size={12.5} />
+			<Label anchor="start" x={CX + 16} y={424} text="Planet ÷ star (radius)" size={12.5} muted />
+			<Label x={CX + CW - 16} y={424} text={sig(k)} size={13.5} weight={650} anchor="end" />
+			<Label anchor="start" x={CX + 16} y={448} text="dip = ({sig(k)})² of the light" size={12.5} />
 		</Readout>
 		<Readout id="dur" order={3} label="The dip lasts" value={duration(hours / 24)}>
-			<T x={CX + 16} y={480} text="The dip lasts" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={480} text="The dip lasts" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={480}
 				text={duration(hours / 24)}
@@ -360,13 +384,27 @@
 			label="For scale"
 			value="Earth across the Sun: 0.0084%; Jupiter: 1%"
 		>
-			<T x={CX + 16} y={512} text="Earth across the Sun: 0.0084%" size={11.5} muted />
-			<T x={CX + 16} y={530} text="Jupiter across the Sun: 1%" size={11.5} muted />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={512}
+				text="Earth across the Sun: 0.0084%"
+				size={11.5}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={530}
+				text="Jupiter across the Sun: 1%"
+				size={11.5}
+				muted
+			/>
 		</Readout>
 	{:else if phase === 'period'}
 		<Readout id="period" order={1} label="Gap between dips (period)" value={duration(P)}>
-			<T x={CX + 16} y={396} text="Gap between dips" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={396} text="Gap between dips" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={396}
 				text={duration(P)}
@@ -377,12 +415,26 @@
 			/>
 		</Readout>
 		<Readout id="a" order={2} label="So the orbit is" value="{fmtAU(pl.a)} AU">
-			<T x={CX + 16} y={424} text="So the orbit is (Kepler III)" size={12.5} muted />
-			<T x={CX + CW - 16} y={424} text="{fmtAU(pl.a)} AU" size={13.5} weight={650} anchor="end" />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={424}
+				text="So the orbit is (Kepler III)"
+				size={12.5}
+				muted
+			/>
+			<Label
+				x={CX + CW - 16}
+				y={424}
+				text="{fmtAU(pl.a)} AU"
+				size={13.5}
+				weight={650}
+				anchor="end"
+			/>
 		</Readout>
 		<Readout id="mstar" order={3} label="Star’s mass" value="{sig(st.mass)} Suns">
-			<T x={CX + 16} y={452} text="Star’s mass" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={452} text="Star’s mass" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={452}
 				text="{sig(st.mass)} Suns"
@@ -397,8 +449,8 @@
 			label="Each dip lasts"
 			value={hits ? duration(hours / 24) : 'no dip'}
 		>
-			<T x={CX + 16} y={480} text="Each dip lasts" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={480} text="Each dip lasts" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={480}
 				text={hits ? duration(hours / 24) : 'no dip'}
@@ -408,13 +460,27 @@
 			/>
 		</Readout>
 		<Readout id="m-three">
-			<T x={CX + 16} y={512} text="Three orbits shown, whatever" size={11.5} muted />
-			<T x={CX + 16} y={530} text="the period: read the days below." size={11.5} muted />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={512}
+				text="Three orbits shown, whatever"
+				size={11.5}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={530}
+				text="the period: read the days below."
+				size={11.5}
+				muted
+			/>
 		</Readout>
 	{:else}
 		<Readout id="tilt" order={1} label="Tilt from edge-on" value="{sig(90 - pl.incl, 2)}°">
-			<T x={CX + 16} y={396} text="Tilt from edge-on" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={396} text="Tilt from edge-on" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={396}
 				text="{sig(90 - pl.incl, 2)}°"
@@ -424,7 +490,8 @@
 			/>
 		</Readout>
 		<Readout id="status" order={2} label="Result" value={status}>
-			<T
+			<Label
+				anchor="start"
 				x={CX + 16}
 				y={424}
 				text={status}
@@ -432,7 +499,8 @@
 				weight={700}
 				color={hits ? 'var(--ex-light)' : 'var(--ex-red)'}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={CX + 16}
 				y={446}
 				text={hits
@@ -447,8 +515,8 @@
 			label="Transits only if the tilt is under"
 			value="{sig(maxTiltDeg(st, pl), 2)}°"
 		>
-			<T x={CX + 16} y={476} text="Transits only below" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={476} text="Transits only below" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={476}
 				text="{sig(maxTiltDeg(st, pl), 2)}°"
@@ -463,8 +531,8 @@
 			label="Chance for a random tilt"
 			value={oneIn(transitChance(st, pl))}
 		>
-			<T x={CX + 16} y={504} text="Chance for a random tilt" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={504} text="Chance for a random tilt" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={504}
 				text={oneIn(transitChance(st, pl))}
@@ -474,7 +542,14 @@
 			/>
 		</Readout>
 		<Readout id="m-chance">
-			<T x={CX + 16} y={534} text="(star’s radius ÷ orbit’s radius)" size={11.5} muted />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={534}
+				text="(star’s radius ÷ orbit’s radius)"
+				size={11.5}
+				muted
+			/>
 		</Readout>
 	{/if}
 </g>

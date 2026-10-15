@@ -13,14 +13,13 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { along, clamp, easeOut, lerp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { along, clamp, easeOut, Label, lerp, type Point, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { STOP, amino, anticodonOf, translate } from '../genetics';
 	import { geneOf, ownOf } from '../genes';
 	import CodeTable from './CodeTable.svelte';
 	import GeneInput from './GeneInput.svelte';
 	import { aminoColor, baseColor, int, rna } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -209,12 +208,13 @@
 			stroke-width="1.5"
 		/>
 		<Readout id="ribo" order={10} label="Ribosome" marker={1} at={[XP + 150, Y + 52]}>
-			<Txt x={XP + 180} y={Y + 58} text="ribosome" size={12} weight={600} muted />
+			<Label anchor="start" x={XP + 180} y={Y + 58} text="ribosome" size={12} weight={600} muted />
 		</Readout>
 		{#if !done}
 			<Readout id="sites">
 				{#each ['E', 'P', 'A'] as s, i (s)}
-					<Txt
+					<Label
+						tabular
 						x={XP + (i - 1) * CW}
 						y={Y + 40}
 						text={s}
@@ -267,8 +267,24 @@
 			{/if}
 		{/each}
 		<Readout id="ends">
-			<Txt x={20} y={Y + 32} text="mRNA 5′" size={11} weight={600} color="var(--dp-rna)" />
-			<Txt x={940} y={Y + 32} text="3′" size={11} weight={600} anchor="end" color="var(--dp-rna)" />
+			<Label
+				anchor="start"
+				x={20}
+				y={Y + 32}
+				text="mRNA 5′"
+				size={11}
+				weight={600}
+				color="var(--dp-rna)"
+			/>
+			<Label
+				x={940}
+				y={Y + 32}
+				text="3′"
+				size={11}
+				weight={600}
+				anchor="end"
+				color="var(--dp-rna)"
+			/>
 		</Readout>
 	{/if}
 
@@ -282,7 +298,7 @@
 					fill="var(--dp-stop)"
 					opacity="0.85"
 				/>
-				<Txt x={0} y={Y - 108} text="release factor" size={11} weight={600} anchor="middle" />
+				<Label x={0} y={Y - 108} text="release factor" size={11} weight={600} anchor="middle" />
 			{:else}
 				<line
 					x1="0"
@@ -381,7 +397,9 @@
 			value="{made} of {tr.protein.length} amino acids"
 			note={tr.stopped ? undefined : 'no stop codon in this frame'}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={x0}
 				y={432}
 				text="{gene.short} protein: {made} of {int(tr.protein.length)} amino acids{tr.stopped
@@ -414,7 +432,7 @@
 
 	<!-- captions -->
 	{#if tr.start < 0}
-		<Txt
+		<Label
 			x={480}
 			y={300}
 			text="No AUG in this sequence: a ribosome finds nowhere to start"
@@ -424,7 +442,9 @@
 		/>
 	{:else if done}
 		<Readout id="now" order={1} label="Finished" value="{tr.protein.length} amino acids">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={24}
 				y={500}
 				text={tr.stopped
@@ -445,7 +465,9 @@
 				? 'stop: no tRNA fits'
 				: `${a.name}, brought by a tRNA with anticodon ${anticodonOf(rna(reading.codon))}`}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={24}
 				y={500}
 				text="Codon {tr.codons.indexOf(reading) + 1} of {n}: {rna(reading.codon)} → {reading.aa ===
@@ -456,7 +478,9 @@
 				weight={700}
 			/>
 			{#if reading.aa !== STOP}
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={24}
 					y={522}
 					text="its tRNA’s anticodon {anticodonOf(rna(reading.codon))} (3′→5′) pairs with {rna(
@@ -473,7 +497,9 @@
 		<GeneInput x={24} y={548} w={560} value={ownOf(params)} {setParam} />
 	{:else}
 		<Readout id="gene">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={24}
 				y={572}
 				text="{gene.name} mRNA, {int(

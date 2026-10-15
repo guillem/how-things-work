@@ -9,11 +9,10 @@
 	 * 3 s hold. A fallen pole lies on the floor. Reduced motion: the complete run.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { scale } from '#lib/draw/index.ts';
+	import { Label, scale } from '#lib/draw/index.ts';
 	import { G, POLE, at, balance, type Gains } from '../control';
 	import Card from './Card.svelte';
 	import Plot from './Plot.svelte';
-	import Txt from './Txt.svelte';
 	import { restartClock, seriesPath, type Cell } from './shared';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -127,7 +126,7 @@
 			/>
 			{#if m.k % 2 === 0 && Math.abs(m.px - CX) > 40 && m.px > 40 && m.px < 436}
 				<Readout id="mark-{m.k}">
-					<Txt x={m.px} y={TRACK + 28} text="{m.k / 2} m" size={11} anchor="middle" muted />
+					<Label x={m.px} y={TRACK + 28} text="{m.k / 2} m" size={11} anchor="middle" muted />
 				</Readout>
 			{/if}
 		{/each}
@@ -180,9 +179,9 @@
 	</g>
 	<Readout id="pole-labels">
 		{#if !fallen}
-			<Txt x={CX} y={TRACK - 34 - PXM - 22} text="upright" size={11} anchor="middle" muted />
+			<Label x={CX} y={TRACK - 34 - PXM - 22} text="upright" size={11} anchor="middle" muted />
 		{/if}
-		<Txt
+		<Label
 			x={CX}
 			y={TRACK + 52}
 			text="the cart moves under the weight"
@@ -193,7 +192,7 @@
 	</Readout>
 	{#if fallen}
 		<Readout id="fell" label="The pole" value="fell over">
-			<Txt
+			<Label
 				x={CX}
 				y={84}
 				text="fell over: {verdict.why}"
@@ -216,7 +215,7 @@
 		yFormat={(s) => `${s}°`}
 	/>
 	<Readout id="tilt-title">
-		<Txt x={P0} y={TP.top - 10} text="tilt" size={12} muted />
+		<Label anchor="start" x={P0} y={TP.top - 10} text="tilt" size={12} muted />
 	</Readout>
 	<Plot
 		{sx}
@@ -227,7 +226,7 @@
 		yFormat={(s) => `${s}`}
 	/>
 	<Readout id="push-title">
-		<Txt x={P0} y={AP.top - 8} text="cart push, m/s²" size={12} muted />
+		<Label anchor="start" x={P0} y={AP.top - 8} text="cart push, m/s²" size={12} muted />
 	</Readout>
 	<g clip-path="url(#pole-plots)">
 		<path

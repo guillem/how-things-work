@@ -7,13 +7,12 @@
 	 * the stored logits and normalisers.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { cubicInOut } from 'svelte/easing';
 	import { Tween } from 'svelte/motion';
 	import { untrack } from 'svelte';
 	import { percent } from '../lm';
 	import { chipWidth, flow, label, lm, num, str } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -98,7 +97,8 @@
 <g>
 	<!-- the prompt -->
 	<Readout id="prompt-title">
-		<Txt
+		<Label
+			anchor="start"
 			x={40}
 			y={24}
 			size={12}
@@ -132,13 +132,13 @@
 	{/each}
 
 	<Readout id="summary" order={1} label="Next token" value={summary}>
-		<Txt x={40} y={112} size={14} weight={650} text={summary} />
+		<Label anchor="start" tabular x={40} y={112} size={14} weight={650} text={summary} />
 	</Readout>
 
 	<!-- column heads -->
 	{#if scores}
 		<Readout id="score-head">
-			<Txt x={SX} y={ROW.y - 6} anchor="end" size={11} muted text="score" />
+			<Label x={SX} y={ROW.y - 6} anchor="end" size={11} muted text="score" />
 		</Readout>
 	{/if}
 
@@ -146,7 +146,8 @@
 		{@const v = (bars.current[i] ?? 0) * grow(i)}
 		{@const on = !showCut || kept[i]}
 		<g opacity={on ? 1 : 0.55}>
-			<Txt
+			<Label
+				tabular
 				x={LX}
 				y={cy(i) + 5}
 				anchor="end"
@@ -156,7 +157,15 @@
 				text={label(lm.token(id))}
 			/>
 			{#if scores}
-				<Txt x={SX} y={cy(i) + 5} anchor="end" size={12.5} muted text={fmtScore(node.l[i])} />
+				<Label
+					tabular
+					x={SX}
+					y={cy(i) + 5}
+					anchor="end"
+					size={12.5}
+					muted
+					text={fmtScore(node.l[i])}
+				/>
 			{/if}
 			{#if phase === 'temperature'}
 				<rect
@@ -190,7 +199,9 @@
 					stroke="var(--lm-pick)"
 					stroke-width="2.5"
 				/>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={BX + Math.max(v, renorm[i]) * BW + 8}
 					y={cy(i) + 5}
 					size={12}
@@ -199,7 +210,9 @@
 					text="{percent(d.p[i])} → {percent(renorm[i])}"
 				/>
 			{:else}
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={BX + v * BW + 8}
 					y={cy(i) + 5}
 					size={12}
@@ -212,8 +225,8 @@
 	{/each}
 	<!-- everything else -->
 	<g opacity={showCut ? 0.55 : 1}>
-		<Txt x={BX - 14} y={cy(10.4) + 5} anchor="end" size={12.5} text={restLabel} />
-		<Txt x={BX - 14} y={cy(10.4) + 19} anchor="end" size={11} muted text="tokens together" />
+		<Label tabular x={BX - 14} y={cy(10.4) + 5} anchor="end" size={12.5} text={restLabel} />
+		<Label x={BX - 14} y={cy(10.4) + 19} anchor="end" size={11} muted text="tokens together" />
 		<rect
 			x={BX}
 			y={cy(10.4) - 10}
@@ -223,7 +236,9 @@
 			fill="var(--lm-rest)"
 			opacity="0.6"
 		/>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={BX + vr * BW + 8}
 			y={cy(10.4) + 5}
 			size={12}
@@ -243,13 +258,22 @@
 			stroke-width="1"
 		/>
 		<Readout id="ax-{a}">
-			<Txt x={BX + a * BW} y={cy(10.4) + 34} anchor="middle" size={11} muted text="{a * 100}%" />
+			<Label
+				tabular
+				x={BX + a * BW}
+				y={cy(10.4) + 34}
+				anchor="middle"
+				size={11}
+				muted
+				text="{a * 100}%"
+			/>
 		</Readout>
 	{/each}
 
 	{#if showCut}
 		<Readout id="cut-note" order={2} label="Top-p alone" value="{nucleus} tokens">
-			<Txt
+			<Label
+				tabular
 				x={920}
 				y={586}
 				anchor="end"
@@ -262,7 +286,7 @@
 		</Readout>
 	{:else if phase === 'temperature'}
 		<Readout id="ghost-note">
-			<Txt
+			<Label
 				x={920}
 				y={586}
 				anchor="end"

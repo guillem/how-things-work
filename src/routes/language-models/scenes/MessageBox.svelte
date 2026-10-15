@@ -6,7 +6,7 @@
 	 */
 	import { Readout, type ParamValue } from '#lib/explainer/index.ts';
 	import { MAX_LENGTH } from './shared';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Props {
 		x: number;
@@ -61,7 +61,8 @@
 		{oninput}></textarea>
 </foreignObject>
 <Readout id="msg-length">
-	<Txt
+	<Label
+		tabular
 		x={x + w}
 		y={y + 76}
 		anchor="end"
@@ -71,7 +72,7 @@
 	/>
 </Readout>
 <Readout id="msg-try">
-	<Txt {x} y={y + 85} text="Try:" size={12} muted />
+	<Label anchor="start" {x} y={y + 85} text="Try:" size={12} muted />
 </Readout>
 {#each chips as c (c.label)}
 	{@const on = c.value === value}

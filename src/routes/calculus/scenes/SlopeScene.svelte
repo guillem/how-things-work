@@ -18,13 +18,12 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { scale, smoothstep } from '#lib/draw/index.ts';
+	import { Label, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { X0, X1, chordSlope } from '../calculus';
 	import Frame from './Frame.svelte';
 	import KnotHandles from './KnotHandles.svelte';
 	import PointHandle from './PointHandle.svelte';
-	import Txt from './Txt.svelte';
 	import {
 		F_RANGE,
 		LEFT,
@@ -168,7 +167,8 @@
 	<!-- ============ the curve ============ -->
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="formula" order={1} label="Curve" value={curve.formula} color="var(--calc-curve)">
-		<Txt
+		<Label
+			anchor="start"
 			x={LEFT + 44}
 			y={28}
 			text={curve.formula}
@@ -235,7 +235,7 @@
 		<g opacity={wChord.current}>
 			<Readout id="run-rise">
 				{#if runPx > 70}
-					<Txt
+					<Label
 						x={(P.x + chord.corner.x) / 2}
 						y={P.y + (runBelow ? 22 : -12)}
 						text={runLabel}
@@ -244,7 +244,7 @@
 					/>
 				{/if}
 				{#if risePx > 22}
-					<Txt
+					<Label
 						x={chord.corner.x + (back ? -10 : 10)}
 						y={(chord.corner.y + chord.Q.y) / 2 + 5}
 						text={riseLabel}
@@ -296,7 +296,7 @@
 					stroke-width="2"
 				/>
 				<Readout id="slope-pill">
-					<Txt
+					<Label
 						x={slopeDot.x + (slopeLabelRight ? 14 : -14)}
 						y={slopeDot.y - 12}
 						text="slope {num(dfx)}{slopeUnit}"
@@ -328,10 +328,17 @@
 	<!-- ============ readout panel ============ -->
 	<g>
 		<Readout id="x" order={2} label="Point" value="{xName} = {num(x)}{xUnit}">
-			<Txt x={PANEL} y={84} text="{xName} = {num(x)}{xUnit}" size={15} weight={600} />
+			<Label
+				anchor="start"
+				x={PANEL}
+				y={84}
+				text="{xName} = {num(x)}{xUnit}"
+				size={15}
+				weight={600}
+			/>
 		</Readout>
 		<Readout id="fx" order={3} label="Height" value="{yName} = {num(fx)}{yUnit}">
-			<Txt x={PANEL} y={108} text="{yName} = {num(fx)}{yUnit}" size={15} muted />
+			<Label anchor="start" x={PANEL} y={108} text="{yName} = {num(fx)}{yUnit}" size={15} muted />
 		</Readout>
 		{#if wChord.current > 0.01}
 			{@const fc = smoothstep(0.5, 1, wChord.current)}
@@ -348,8 +355,9 @@
 							: ''}"
 					opacity={fc}
 				>
-					<Txt x={PANEL} y={150} text={runLabel} size={14} />
-					<Txt
+					<Label anchor="start" x={PANEL} y={150} text={runLabel} size={14} />
+					<Label
+						anchor="start"
 						x={PANEL}
 						y={174}
 						text={riseLabel}
@@ -357,10 +365,18 @@
 						color="var(--explainer-accent)"
 						weight={600}
 					/>
-					<Txt x={PANEL} y={214} text="slope of the chord" size={12} muted />
-					<Txt x={PANEL} y={244} text="rise ÷ run = {num(chord.slope)}" size={20} weight={600} />
+					<Label anchor="start" x={PANEL} y={214} text="slope of the chord" size={12} muted />
+					<Label
+						anchor="start"
+						x={PANEL}
+						y={244}
+						text="rise ÷ run = {num(chord.slope)}"
+						size={20}
+						weight={600}
+					/>
 					{#if phase === 'secant' || back}
-						<Txt
+						<Label
+							anchor="start"
 							x={PANEL}
 							y={278}
 							text={back ? 'chord to a point on the left' : `from x = ${num(x)} to ${num(x2)}`}
@@ -385,8 +401,9 @@
 					color="var(--calc-slope)"
 					opacity={ft}
 				>
-					<Txt x={PANEL} y={150} text="slope of the tangent" size={12} muted />
-					<Txt
+					<Label anchor="start" x={PANEL} y={150} text="slope of the tangent" size={12} muted />
+					<Label
+						anchor="start"
 						x={PANEL}
 						y={180}
 						text="f′({xName}) = {num(dfx)}{slopeUnit}"
@@ -394,7 +411,7 @@
 						weight={600}
 						color="var(--calc-slope)"
 					/>
-					<Txt x={PANEL} y={208} text={trend} size={12} muted />
+					<Label anchor="start" x={PANEL} y={208} text={trend} size={12} muted />
 				</Readout>
 			</g>
 		{/if}
@@ -406,7 +423,8 @@
 					label="Drag the hollow knots up and down to reshape the curve"
 					color="var(--calc-curve)"
 				>
-					<Txt
+					<Label
+						anchor="start"
 						x={PANEL}
 						y={250}
 						text="Drag the hollow knots"
@@ -414,8 +432,8 @@
 						weight={600}
 						color="var(--calc-curve)"
 					/>
-					<Txt x={PANEL} y={270} text="up and down to reshape" size={13} muted />
-					<Txt x={PANEL} y={290} text="the curve." size={13} muted />
+					<Label anchor="start" x={PANEL} y={270} text="up and down to reshape" size={13} muted />
+					<Label anchor="start" x={PANEL} y={290} text="the curve." size={13} muted />
 				</Readout>
 			</g>
 		{/if}

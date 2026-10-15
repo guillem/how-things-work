@@ -9,10 +9,9 @@
 	 * lieutenant's majority decision and the verdict. With two traitors OM(2) needs a third
 	 * round, summarised in the panel rather than drawn. Reduced motion shows the end.
 	 */
-	import { clamp, polar, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, polar, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { generals, maxTraitors, type Order } from '../consensus';
-	import Txt from './Txt.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -126,7 +125,8 @@
 		{@const out = (d: number) => ({ x: p.x + dx * d, y: p.y + dy * d })}
 		{@const lab = out(RG + 20)}
 		<Readout id="who-{g}">
-			<Txt
+			<Label
+				tabular
 				x={lab.x}
 				y={lab.y + 4}
 				text={g === 0 ? (traitor ? 'commander · traitor' : 'commander') : traitor ? 'traitor' : ''}
@@ -206,7 +206,9 @@
 
 	<!-- header -->
 	<Readout id="title" order={1} label="Generals" value="{n}, {f} traitor{f === 1 ? '' : 's'}">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={40}
 			text="{n} generals, {f} traitor{f === 1 ? '' : 's'}"
@@ -224,7 +226,9 @@
 				? '2: pass it on'
 				: 'decide by majority'}
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={62}
 			text={tv < R2.from || f === 0
@@ -238,9 +242,18 @@
 	</Readout>
 
 	<!-- panel -->
-	<Txt x={P.x} y={P.y - 50} text="What each loyal lieutenant goes by" size={13} weight={700} />
+	<Label
+		anchor="start"
+		x={P.x}
+		y={P.y - 50}
+		text="What each loyal lieutenant goes by"
+		size={13}
+		weight={700}
+	/>
 	<Readout id="panel-key">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={P.x}
 			y={P.y - 32}
 			text={f === 0
@@ -256,7 +269,7 @@
 		{@const y = P.y + k * P.row}
 		{@const vs = votesOf(i)}
 		<g opacity={smoothstep(R1.to, R1.to + 0.4, tv) * fadeOut}>
-			<Txt x={P.x} y={y + 16} text={name(i)} size={14} weight={700} />
+			<Label anchor="start" tabular x={P.x} y={y + 16} text={name(i)} size={14} weight={700} />
 			{#each vs as cell, c (cell.j)}
 				{@const x = P.x + 36 + c * 44}
 				{@const shown = cell.j === i || f === 0 || tv >= R2.to}
@@ -278,7 +291,9 @@
 			{#if decided}
 				{@const d = run.decided.get(i)!}
 				<g opacity={smoothstep(DECIDE, DECIDE + 0.4, tv)}>
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={P.x + 44 + vs.length * 44}
 						y={y + 16}
 						text="→ {d}"
@@ -293,9 +308,9 @@
 	<Readout id="key">
 		<g transform="translate({P.x}, {P.y + panelRows.length * P.row + 6})">
 			<rect x="0" y="0" width="22" height="16" rx="4" fill={ATTACK} />
-			<Txt x={28} y={13} text="A = attack" size={11} muted />
+			<Label anchor="start" x={28} y={13} text="A = attack" size={11} muted />
 			<rect x="104" y="0" width="22" height="16" rx="4" fill={RETREAT} />
-			<Txt x={132} y={13} text="R = retreat" size={11} muted />
+			<Label anchor="start" x={132} y={13} text="R = retreat" size={11} muted />
 		</g>
 	</Readout>
 
@@ -309,7 +324,9 @@
 			color={good ? 'var(--cb-ok)' : 'var(--cb-bad)'}
 			opacity={decided ? 1 : 0}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={P.x}
 				y={510}
 				text={(good ? '✓ ' : '✕ ') + verdict}
@@ -328,7 +345,9 @@
 			? 'L1 hears the same whether C or L2 lies, so he can’t know whom to believe'
 			: undefined}
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={P.x}
 			y={536}
 			text={rule}
@@ -337,7 +356,8 @@
 			color={f > 0 && n < need ? 'var(--cb-bad)' : undefined}
 		/>
 		{#if f === 1 && n === 3}
-			<Txt
+			<Label
+				anchor="start"
 				x={P.x}
 				y={556}
 				text="L1 hears the same whether C or L2 is the liar: he can’t know whom to believe."
@@ -345,7 +365,9 @@
 				muted
 			/>
 		{:else}
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={P.x}
 				y={556}
 				text="Up to {maxTraitors(n)} traitor{maxTraitors(n) === 1
@@ -356,7 +378,7 @@
 			/>
 		{/if}
 		{#if lucky}
-			<Txt x={P.x} y={576} text={LUCKY} size={11} color="var(--cb-bad)" />
+			<Label anchor="start" tabular x={P.x} y={576} text={LUCKY} size={11} color="var(--cb-bad)" />
 		{/if}
 	</Readout>
 </g>

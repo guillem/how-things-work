@@ -17,7 +17,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { linePath, scale } from '#lib/draw/index.ts';
+	import { Label, linePath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		GW150914,
@@ -40,7 +40,6 @@
 		nrLivingston
 	} from '../signal';
 	import Row from './Row.svelte';
-	import T from './T.svelte';
 	import { playSamples, stopAll } from './sound';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -154,7 +153,7 @@
 						stroke="var(--stage-grid)"
 						stroke-dasharray="2 4"
 					/>
-					<T
+					<Label
 						x={X0 - 8}
 						y={y - v * AMP + 4}
 						text={v > 0 ? '1' : '−1'}
@@ -166,14 +165,16 @@
 			</g>
 		{/each}
 		<Readout id="d-labels">
-			<T
+			<Label
+				anchor="start"
 				x={32}
 				y={44}
 				text="Strain × 10⁻²¹, band-passed 35–350 Hz (LIGO, 14 September 2015)"
 				size={13}
 				weight={650}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={X0}
 				y={YH - AMP - 14}
 				text="Hanford, Washington"
@@ -182,7 +183,8 @@
 				color="var(--gw-h1)"
 				opacity={1 - k.current}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={X0}
 				y={YL - AMP - 14}
 				text="Livingston, Louisiana"
@@ -191,7 +193,7 @@
 				color="var(--gw-l1)"
 			/>
 			{#if k.current > 0.5}
-				<T
+				<Label
 					x={X1}
 					y={YL - AMP - 14}
 					text="+ Hanford, 6.9 ms earlier and flipped"
@@ -202,7 +204,7 @@
 				/>
 			{/if}
 			{#if showNr}
-				<T
+				<Label
 					x={X1}
 					y={YH - AMP - 14}
 					text="general relativity (numerical)"
@@ -260,9 +262,9 @@
 		<line x1={X0} x2={X1} y1={490} y2={490} stroke="var(--stage-line)" />
 		{#each [0.25, 0.3, 0.35, 0.4, 0.45] as v (v)}
 			<line x1={sx(v)} x2={sx(v)} y1={490} y2={495} stroke="var(--stage-line)" />
-			<T x={sx(v)} y={509} text={v.toFixed(2)} anchor="middle" size={11.5} muted />
+			<Label x={sx(v)} y={509} text={v.toFixed(2)} anchor="middle" size={11.5} muted />
 		{/each}
-		<T x={X1} y={526} text="seconds after 09:50:45 UTC" anchor="end" size={12} muted />
+		<Label x={X1} y={526} text="seconds after 09:50:45 UTC" anchor="end" size={12} muted />
 		{#if head !== null && head <= TB}
 			<line x1={sx(head)} x2={sx(head)} y1={60} y2={490} stroke="var(--stage-ink)" opacity="0.3" />
 		{/if}
@@ -287,14 +289,16 @@
 	{:else}
 		<!-- the averaged signal -->
 		<Readout id="f-labels">
-			<T
+			<Label
+				anchor="start"
 				x={32}
 				y={44}
 				text="Livingston and the shifted, flipped Hanford, averaged (strain × 10⁻²¹)"
 				size={13}
 				weight={650}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={32}
 				y={FY0 - 18}
 				text="frequency, Hz: one dot per half cycle, from the zero crossings"
@@ -316,7 +320,7 @@
 		<!-- frequency -->
 		{#each [0, 50, 100, 150, 200] as f (f)}
 			<line x1={X0} x2={X1} y1={fy(f)} y2={fy(f)} stroke="var(--stage-grid)" />
-			<T x={X0 - 8} y={fy(f) + 4} text={String(f)} anchor="end" size={11.5} muted />
+			<Label x={X0 - 8} y={fy(f) + 4} text={String(f)} anchor="end" size={11.5} muted />
 		{/each}
 		<path d={curve} fill="none" stroke="var(--gw-crest)" stroke-width="2.4" />
 		{#each measuredTrack as p (p.t)}
@@ -331,11 +335,11 @@
 		{/each}
 		{#each [0.34, 0.36, 0.38, 0.4, 0.42] as v (v)}
 			<line x1={fx(v)} x2={fx(v)} y1={FY1} y2={FY1 + 5} stroke="var(--stage-line)" />
-			<T x={fx(v)} y={FY1 + 19} text={v.toFixed(2)} anchor="middle" size={11.5} muted />
+			<Label x={fx(v)} y={FY1 + 19} text={v.toFixed(2)} anchor="middle" size={11.5} muted />
 		{/each}
 		<line x1={X0} x2={X1} y1={FY1} y2={FY1} stroke="var(--stage-line)" />
 		<Readout id="f-axis">
-			<T x={X1} y={FY1 + 34} text="seconds after 09:50:45 UTC" anchor="end" size={12} muted />
+			<Label x={X1} y={FY1 + 34} text="seconds after 09:50:45 UTC" anchor="end" size={12} muted />
 		</Readout>
 
 		<Row
@@ -369,7 +373,8 @@
 			value="≥ {Mmin.toFixed(0)} suns, {sep150.toFixed(0)} km apart"
 		/>
 		<Readout id="horizons">
-			<T
+			<Label
+				anchor="start"
 				x={608}
 				y={576}
 				text="(as two equal black holes: horizons {horizons.toFixed(0)} km wide)"

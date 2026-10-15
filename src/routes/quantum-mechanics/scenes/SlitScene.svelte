@@ -41,12 +41,11 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { clamp, Handle, Label, type Point, smoothstep } from '#lib/draw/index.ts';
 	import { rng } from '#lib/draw/math.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { pattern, sample, slits, visibility, type Wave } from '../quantum';
 	import { cssColor, ramp, rgb, type RGB } from './paint';
-	import T from './T.svelte';
 
 	let { step, t, params, setParam, reduced, dark }: StageProps = $props();
 
@@ -417,8 +416,8 @@
 	/>
 	<circle cx={SRC_X - 8} cy={Y0} r="7" fill="var(--qm-dot)" opacity="0.8" />
 	<Readout id="source">
-		<T x={SRC_X - 8} y={Y0 + 42} text="electron" size={12} anchor="middle" muted />
-		<T x={SRC_X - 8} y={Y0 + 57} text="source" size={12} anchor="middle" muted />
+		<Label x={SRC_X - 8} y={Y0 + 42} text="electron" size={12} anchor="middle" muted />
+		<Label x={SRC_X - 8} y={Y0 + 57} text="source" size={12} anchor="middle" muted />
 	</Readout>
 	<line
 		x1={SRC_X + 14}
@@ -487,7 +486,8 @@
 			opacity="0.35"
 		/>
 		<Readout id="beam">
-			<T
+			<Label
+				anchor="start"
 				x={MAP_X + 22}
 				y={Y(YMAX) + 18}
 				text="light beam: records the slit"
@@ -520,8 +520,8 @@
 		{/if}
 	</g>
 	<Readout id="slit-labels">
-		<T x={WALL_X - 12} y={Y(0.5) + 4} text="top" size={11} anchor="end" color="var(--qm-top)" />
-		<T
+		<Label x={WALL_X - 12} y={Y(0.5) + 4} text="top" size={11} anchor="end" color="var(--qm-top)" />
+		<Label
 			x={WALL_X - 12}
 			y={Y(-0.5) + 4}
 			text="bottom"
@@ -592,7 +592,7 @@
 		<path d={curvePath} fill="none" stroke="var(--qm-prob)" stroke-width="2.2" opacity={curveAmt} />
 	{/if}
 	<Readout id="axes-labels">
-		<T
+		<Label
 			x={SCREEN_X + SCREEN_W / 2}
 			y={Y(-YMAX) + 22}
 			text="screen"
@@ -600,8 +600,8 @@
 			anchor="middle"
 			muted
 		/>
-		<T x={HIST_X + 4} y={Y(-YMAX) + 22} text="count" size={12} muted />
-		<T
+		<Label anchor="start" x={HIST_X + 4} y={Y(-YMAX) + 22} text="count" size={12} muted />
+		<Label
 			x={(MAP_X + SCREEN_X) / 2}
 			y={Y(-YMAX) + 22}
 			text="|ψ|² between the slits and the screen"
@@ -668,9 +668,9 @@
 
 	<!-- panel -->
 	<Readout id="count" order={1} label="Electrons landed" value={fmt(landed)}>
-		<T x={PL} y={56} text="electrons landed" size={13} muted />
-		<T x={PL} y={88} text={fmt(landed)} size={28} weight={600} />
-		<T x={PL} y={110} text="each dot is one electron" size={12} muted />
+		<Label anchor="start" x={PL} y={56} text="electrons landed" size={13} muted />
+		<Label anchor="start" x={PL} y={88} text={fmt(landed)} size={28} weight={600} />
+		<Label anchor="start" x={PL} y={110} text="each dot is one electron" size={12} muted />
 	</Readout>
 
 	{#if phase === 'dots'}
@@ -683,12 +683,12 @@
 		>
 			<g opacity={curveAmt}>
 				<line x1={PL} x2={PL + 24} y1={150} y2={150} stroke="var(--qm-prob)" stroke-width="2.2" />
-				<T x={PL + 32} y={154} text="predicted pattern" size={12} />
+				<Label anchor="start" x={PL + 32} y={154} text="predicted pattern" size={12} />
 			</g>
 		</Readout>
 		<Readout id="one-at-a-time" order={3} label="In flight" value="one electron at a time">
-			<T x={PL} y={190} text="only one electron is in the" size={12} muted />
-			<T x={PL} y={207} text="apparatus at a time" size={12} muted />
+			<Label anchor="start" x={PL} y={190} text="only one electron is in the" size={12} muted />
+			<Label anchor="start" x={PL} y={207} text="apparatus at a time" size={12} muted />
 		</Readout>
 	{/if}
 
@@ -722,11 +722,35 @@
 			{/each}
 		</g>
 		<Readout id="amp-key" order={2} label="Amplitudes" value="ψtop + ψbottom = ψ">
-			<T x={PL} y={150} text="ψtop" size={13} weight={600} color="var(--qm-top)" />
-			<T x={PL + 40} y={150} text="+" size={13} />
-			<T x={PL + 56} y={150} text="ψbottom" size={13} weight={600} color="var(--qm-bottom)" />
-			<T x={PL + 118} y={150} text="=" size={13} />
-			<T x={PL + 134} y={150} text="ψ" size={13} weight={600} color="var(--qm-prob)" />
+			<Label
+				anchor="start"
+				x={PL}
+				y={150}
+				text="ψtop"
+				size={13}
+				weight={600}
+				color="var(--qm-top)"
+			/>
+			<Label anchor="start" x={PL + 40} y={150} text="+" size={13} />
+			<Label
+				anchor="start"
+				x={PL + 56}
+				y={150}
+				text="ψbottom"
+				size={13}
+				weight={600}
+				color="var(--qm-bottom)"
+			/>
+			<Label anchor="start" x={PL + 118} y={150} text="=" size={13} />
+			<Label
+				anchor="start"
+				x={PL + 134}
+				y={150}
+				text="ψ"
+				size={13}
+				weight={600}
+				color="var(--qm-prob)"
+			/>
 		</Readout>
 		<Readout
 			id="amp-prob"
@@ -734,15 +758,17 @@
 			label="|ψ|² at this point"
 			value="{Math.round(amp.rel * 100)}% of the brightest fringe"
 		>
-			<T x={PL} y={366} text="|ψ|² here" size={13} muted />
-			<T
+			<Label anchor="start" x={PL} y={366} text="|ψ|² here" size={13} muted />
+			<Label
+				anchor="start"
 				x={PL}
 				y={392}
 				text="{Math.round(amp.rel * 100)}% of the brightest"
 				size={16}
 				weight={600}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={PL}
 				y={412}
 				text={amp.rel < 0.05
@@ -764,7 +790,7 @@
 			value="solid: these settings · dashed: top alone + bottom alone"
 		>
 			<line x1={PL} x2={PL + 24} y1={150} y2={150} stroke="var(--qm-prob)" stroke-width="2.2" />
-			<T x={PL + 32} y={154} text="probability, these settings" size={12} />
+			<Label anchor="start" x={PL + 32} y={154} text="probability, these settings" size={12} />
 		</Readout>
 		<Readout id="legend-dashed">
 			<line
@@ -776,15 +802,15 @@
 				stroke-width="1.5"
 				stroke-dasharray="5 4"
 			/>
-			<T x={PL + 32} y={180} text="top alone + bottom alone" size={12} />
+			<Label anchor="start" x={PL + 32} y={180} text="top alone + bottom alone" size={12} />
 		</Readout>
 	{/if}
 
 	{#if phase === 'detector' || phase === 'partial'}
 		<Readout id="visibility" order={4} label="Fringe visibility" value={visText}>
-			<T x={PL} y={226} text="fringe visibility" size={13} muted />
-			<T x={PL} y={254} text={visText} size={24} weight={600} />
-			<T x={PL} y={274} text="1 = perfect fringes, 0 = none" size={12} muted />
+			<Label anchor="start" x={PL} y={226} text="fringe visibility" size={13} muted />
+			<Label anchor="start" x={PL} y={254} text={visText} size={24} weight={600} />
+			<Label anchor="start" x={PL} y={274} text="1 = perfect fringes, 0 = none" size={12} muted />
 		</Readout>
 	{/if}
 
@@ -795,15 +821,29 @@
 			label="Record"
 			value={detectorOn ? (reading ? record : 'made, unread') : 'none'}
 		>
-			<T x={PL} y={316} text="which-slit record" size={13} muted />
+			<Label anchor="start" x={PL} y={316} text="which-slit record" size={13} muted />
 			{#if !detectorOn}
-				<T x={PL} y={340} text="none: the detector is off" size={13} />
+				<Label anchor="start" x={PL} y={340} text="none: the detector is off" size={13} />
 			{:else if reading}
-				<T x={PL} y={340} text={record} size={14} weight={600} />
-				<T x={PL} y={360} text="T top · B bottom (latest last)" size={11} muted />
+				<Label anchor="start" x={PL} y={340} text={record} size={14} weight={600} />
+				<Label
+					anchor="start"
+					x={PL}
+					y={360}
+					text="T top · B bottom (latest last)"
+					size={11}
+					muted
+				/>
 			{:else}
-				<T x={PL} y={340} text="made, but nobody reads it" size={13} />
-				<T x={PL} y={360} text="the photons fly off into the room" size={11} muted />
+				<Label anchor="start" x={PL} y={340} text="made, but nobody reads it" size={13} />
+				<Label
+					anchor="start"
+					x={PL}
+					y={360}
+					text="the photons fly off into the room"
+					size={11}
+					muted
+				/>
 			{/if}
 		</Readout>
 	{/if}
@@ -816,10 +856,24 @@
 			value="D = {Math.round(D * 100)}%"
 			note="overlap γ = {gamma.toFixed(2)}"
 		>
-			<T x={PL} y={316} text="record tells the slits apart" size={13} muted />
-			<T x={PL} y={342} text="D = {Math.round(D * 100)}%" size={18} weight={600} />
-			<T x={PL} y={366} text="overlap of the two photon" size={12} muted />
-			<T x={PL} y={382} text="states: γ = √(1 − D²) = {gamma.toFixed(2)}" size={12} muted />
+			<Label anchor="start" x={PL} y={316} text="record tells the slits apart" size={13} muted />
+			<Label
+				anchor="start"
+				x={PL}
+				y={342}
+				text="D = {Math.round(D * 100)}%"
+				size={18}
+				weight={600}
+			/>
+			<Label anchor="start" x={PL} y={366} text="overlap of the two photon" size={12} muted />
+			<Label
+				anchor="start"
+				x={PL}
+				y={382}
+				text="states: γ = √(1 − D²) = {gamma.toFixed(2)}"
+				size={12}
+				muted
+			/>
 		</Readout>
 	{/if}
 </g>

@@ -16,7 +16,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		BRADAC,
@@ -32,7 +32,6 @@
 		sigmaCrit
 	} from '../lensing';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -174,8 +173,22 @@
 		label="The Bullet Cluster"
 		value="1E 0657−558, light from 3.4 billion years ago"
 	>
-		<T x={24} y={36} text="The Bullet Cluster (1E 0657−558)" size={16} weight={700} />
-		<T x={24} y={56} text="schematic map · north up · west to the right" size={12} muted />
+		<Label
+			anchor="start"
+			x={24}
+			y={36}
+			text="The Bullet Cluster (1E 0657−558)"
+			size={16}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
+			x={24}
+			y={56}
+			text="schematic map · north up · west to the right"
+			size={12}
+			muted
+		/>
 	</Readout>
 
 	<rect
@@ -264,7 +277,7 @@
 	/>
 
 	<Readout id="map-labels">
-		<T
+		<Label
 			x={px(p.mainBCG.x)}
 			y={py(p.mainBCG.y) + 30}
 			text="main cluster"
@@ -272,7 +285,7 @@
 			anchor="middle"
 			weight={650}
 		/>
-		<T
+		<Label
 			x={px(p.subBCG.x)}
 			y={py(p.subBCG.y) + 30}
 			text="the bullet’s galaxies"
@@ -280,7 +293,7 @@
 			anchor="middle"
 			weight={650}
 		/>
-		<T
+		<Label
 			x={px(p.mainGas.x)}
 			y={py(p.mainGas.y) - 70}
 			text="hot gas (X-rays)"
@@ -289,11 +302,18 @@
 			color="var(--dm-xgas)"
 			weight={650}
 		/>
-		<T x={px(fw / 2) - 6} y={py(fh / 2) + 16} text="Hubble field" size={11} anchor="end" muted />
+		<Label
+			x={px(fw / 2) - 6}
+			y={py(fh / 2) + 16}
+			text="Hubble field"
+			size={11}
+			anchor="end"
+			muted
+		/>
 	</Readout>
 	{#if bullet}
 		<Readout id="bullet-labels">
-			<T
+			<Label
 				x={px(p.subGas.x)}
 				y={py(p.subGas.y) - 44}
 				text="the bullet: gas left behind"
@@ -310,14 +330,14 @@
 				stroke="var(--stage-ink)"
 				stroke-width="1.5"
 			/>
-			<T
+			<Label
 				x={(px(p.subGas.x) + px(p.subBCG.x)) / 2}
 				y={py(p.subBCG.y) + 62}
 				text="gas {Math.round(dist(p.subGas, p.subBCG) / 10) * 10} kpc behind"
 				size={12}
 				anchor="middle"
 			/>
-			<T
+			<Label
 				x={px(p.mainBCG.x - 130)}
 				y={py(p.mainBCG.y) + 4}
 				text="← moving"
@@ -325,7 +345,7 @@
 				anchor="end"
 				muted
 			/>
-			<T
+			<Label
 				x={px(p.subBCG.x + 130)}
 				y={py(p.subBCG.y) + 4}
 				text="moving →"
@@ -339,23 +359,39 @@
 	<!-- legend -->
 	<Readout id="legend">
 		<line x1={30} x2={52} y1={480} y2={480} stroke="var(--dm-mass)" stroke-width="2" />
-		<T x={58} y={484} text="mass contours of your model (κ = 0.1, 0.2, …)" size={12} muted />
+		<Label
+			anchor="start"
+			x={58}
+			y={484}
+			text="mass contours of your model (κ = 0.1, 0.2, …)"
+			size={12}
+			muted
+		/>
 		<circle cx={41} cy={505} r="8" fill="none" stroke="var(--dm-mass)" stroke-width="2.5" />
-		<T x={58} y={509} text="your model’s mass peak" size={12} muted />
+		<Label anchor="start" x={58} y={509} text="your model’s mass peak" size={12} muted />
 		<g stroke="var(--stage-ink)" stroke-width="2">
 			<line x1={262} x2={276} y1={498} y2={512} />
 			<line x1={262} x2={276} y1={512} y2={498} />
 		</g>
-		<T x={284} y={509} text="where the measured lensing mass peaks" size={12} muted />
+		<Label
+			anchor="start"
+			x={284}
+			y={509}
+			text="where the measured lensing mass peaks"
+			size={12}
+			muted
+		/>
 		<ellipse cx={41} cy={531} rx="7" ry="3" fill="var(--stage-ink-muted)" opacity="0.6" />
-		<T
+		<Label
+			anchor="start"
 			x={58}
 			y={535}
 			text="faint galaxies far behind, stretched by the cluster’s mass"
 			size={12}
 			muted
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={30}
 			y={562}
 			text="Schematic: round blobs with the published masses; background galaxies at random."
@@ -366,10 +402,10 @@
 
 	<!-- ---- card ---- -->
 	<Card x={CX} y={16} w={CW} h={568} />
-	<T x={CX + 16} y={44} text="Mass in the Hubble field" size={14} weight={700} />
-	<T x={CX + 16} y={62} text="× 10¹³ Suns" size={11.5} muted />
+	<Label anchor="start" x={CX + 16} y={44} text="Mass in the Hubble field" size={14} weight={700} />
+	<Label anchor="start" x={CX + 16} y={62} text="× 10¹³ Suns" size={11.5} muted />
 	<!-- measured: band with its error -->
-	<T x={BX} y={88} text="measured by lensing" size={12} muted />
+	<Label anchor="start" x={BX} y={88} text="measured by lensing" size={12} muted />
 	<rect
 		x={bsx(BRADAC.fieldTotal - BRADAC.fieldTotalErr)}
 		y={96}
@@ -389,9 +425,9 @@
 		stroke="var(--stage-ink)"
 		stroke-width="1.5"
 	/>
-	<T x={BX + BW} y={134} text="91 ± 10" size={12.5} weight={700} anchor="end" />
+	<Label x={BX + BW} y={134} text="91 ± 10" size={12.5} weight={700} anchor="end" />
 	<!-- model: stacked -->
-	<T x={BX} y={160} text="your model" size={12} muted />
+	<Label anchor="start" x={BX} y={160} text="your model" size={12} muted />
 	<rect x={BX} y={168} width={bsx(BRADAC.fieldGas) - BX} height="22" fill="var(--dm-xgas)" />
 	<rect
 		x={bsx(BRADAC.fieldGas)}
@@ -418,11 +454,20 @@
 	/>
 
 	<Readout id="r-gas">
-		<T x={BX} y={220} text="hot gas (X-rays)" size={12.5} color="var(--dm-xgas)" weight={650} />
-		<T x={BX + BW} y={220} text={fmt13(BRADAC.fieldGas)} size={12.5} anchor="end" />
+		<Label
+			anchor="start"
+			x={BX}
+			y={220}
+			text="hot gas (X-rays)"
+			size={12.5}
+			color="var(--dm-xgas)"
+			weight={650}
+		/>
+		<Label x={BX + BW} y={220} text={fmt13(BRADAC.fieldGas)} size={12.5} anchor="end" />
 	</Readout>
 	<Readout id="r-stars">
-		<T
+		<Label
+			anchor="start"
 			x={BX}
 			y={240}
 			text="stars in the galaxies"
@@ -430,7 +475,7 @@
 			color="var(--dm-galaxies)"
 			weight={650}
 		/>
-		<T x={BX + BW} y={240} text={fmt13(FIELD_STARS)} size={12.5} anchor="end" />
+		<Label x={BX + BW} y={240} text={fmt13(FIELD_STARS)} size={12.5} anchor="end" />
 	</Readout>
 	<Readout
 		id="r-dark"
@@ -439,7 +484,8 @@
 		value="{fmt13(dark13 * 1e13)} × 10¹³ Suns (gas + stars: {fmt13(visible)})"
 		color="var(--dm-halo)"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={BX}
 			y={260}
 			text="dark matter (your slider)"
@@ -447,7 +493,7 @@
 			color="var(--dm-halo)"
 			weight={650}
 		/>
-		<T x={BX + BW} y={260} text={fmt13(dark13 * 1e13)} size={12.5} anchor="end" />
+		<Label x={BX + BW} y={260} text={fmt13(dark13 * 1e13)} size={12.5} anchor="end" />
 	</Readout>
 	<line x1={BX} x2={BX + BW} y1={272} y2={272} stroke="var(--border)" />
 	<Readout
@@ -457,8 +503,8 @@
 		value="{fmt13(total)} (measured 91 ± 10)"
 		color={matches ? 'var(--dm-model)' : undefined}
 	>
-		<T x={BX} y={292} text="total" size={13} weight={700} />
-		<T
+		<Label anchor="start" x={BX} y={292} text="total" size={13} weight={700} />
+		<Label
 			x={BX + BW}
 			y={292}
 			text={fmt13(total)}
@@ -467,7 +513,7 @@
 			anchor="end"
 			color={matches ? 'var(--dm-model)' : undefined}
 		/>
-		<T
+		<Label
 			x={BX + BW}
 			y={310}
 			text={matches
@@ -487,8 +533,8 @@
 		value="{(dark13 / (visible / 1e13)).toFixed(1)} ×"
 		color="var(--dm-halo)"
 	>
-		<T x={BX} y={350} text="dark ÷ visible" size={13} muted />
-		<T
+		<Label anchor="start" x={BX} y={350} text="dark ÷ visible" size={13} muted />
+		<Label
 			x={BX + BW}
 			y={352}
 			text="{(dark13 / (visible / 1e13)).toFixed(1)} ×"
@@ -507,8 +553,8 @@
 		note="measured: on the galaxies"
 		color="var(--dm-mass)"
 	>
-		<T x={BX} y={400} text="your model’s mass peaks" size={12.5} muted />
-		<T
+		<Label anchor="start" x={BX} y={400} text="your model’s mass peaks" size={12.5} muted />
+		<Label
 			x={BX + BW}
 			y={424}
 			text={peakOn}
@@ -519,11 +565,11 @@
 		/>
 	</Readout>
 	<Readout id="r-meas-peak">
-		<T x={BX} y={452} text="the measured mass peaks" size={12.5} muted />
-		<T x={BX + BW} y={476} text="on the galaxies" size={15} weight={700} anchor="end" />
+		<Label anchor="start" x={BX} y={452} text="the measured mass peaks" size={12.5} muted />
+		<Label x={BX + BW} y={476} text="on the galaxies" size={15} weight={700} anchor="end" />
 	</Readout>
 	<Readout id="r-src">
-		<T x={BX} y={534} text="Masses: Bradač et al. 2006;" size={11} muted />
-		<T x={BX} y={550} text="positions: Clowe et al. 2006." size={11} muted />
+		<Label anchor="start" x={BX} y={534} text="Masses: Bradač et al. 2006;" size={11} muted />
+		<Label anchor="start" x={BX} y={550} text="positions: Clowe et al. 2006." size={11} muted />
 	</Readout>
 </g>

@@ -14,8 +14,7 @@
 	 */
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { cycle, smoothstep } from '#lib/draw/index.ts';
-	import Tag from './Tag.svelte';
+	import { cycle, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { codonToAmino } from '../../dna-to-protein/genetics';
 	import { SHAPES as IMMUNE } from '../../immune-system/shapes';
@@ -70,7 +69,7 @@
 		stroke="var(--membrane-edge)"
 	/>
 	<Readout id="membrane">
-		<Tag x={50} y={MEM + 40} text="the virus’s membrane" size={11} anchor="start" muted />
+		<Label x={50} y={MEM + 40} text="the virus’s membrane" size={11} anchor="start" muted />
 	</Readout>
 
 	<!-- before: S2 then S1, fading out as it springs -->
@@ -157,7 +156,7 @@
 			: 'springs into its after shape: the S1 heads fall away, S2 becomes a needle'}
 	>
 		{#if pro}
-			<Tag
+			<Label
 				x={SX + 110}
 				y={MEM - 120}
 				text="before shape, held"
@@ -165,7 +164,7 @@
 				weight={600}
 				anchor="start"
 			/>
-			<Tag
+			<Label
 				x={SX + 110}
 				y={MEM - 100}
 				text="S1 heads (orange) ready to grip a cell"
@@ -173,8 +172,8 @@
 				anchor="start"
 				muted
 			/>
-			<Tag x={SX + 110} y={MEM - 84} text="S2 stalk (yellow)" size={11} anchor="start" muted />
-			<Tag
+			<Label x={SX + 110} y={MEM - 84} text="S2 stalk (yellow)" size={11} anchor="start" muted />
+			<Label
 				x={SX + 110}
 				y={top - 60}
 				text="antibody (same scale)"
@@ -182,9 +181,9 @@
 				anchor="start"
 				color="var(--im-antibody)"
 			/>
-			<Tag x={SX + 110} y={top - 44} text="blocks the head" size={11} anchor="start" muted />
+			<Label x={SX + 110} y={top - 44} text="blocks the head" size={11} anchor="start" muted />
 		{:else}
-			<Tag
+			<Label
 				x={SX + 110}
 				y={MEM - 120}
 				text={sprung > 0.5 ? 'after shape: a long needle' : 'before shape… springing'}
@@ -192,7 +191,7 @@
 				weight={600}
 				anchor="start"
 			/>
-			<Tag
+			<Label
 				x={SX + 110}
 				y={MEM - 100}
 				text="antibodies against this shape"
@@ -200,7 +199,7 @@
 				anchor="start"
 				muted
 			/>
-			<Tag
+			<Label
 				x={SX + 110}
 				y={MEM - 84}
 				text="mostly fail to block the virus"
@@ -219,8 +218,8 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-width="2"
 		/>
-		<Tag x={60 + 5 * K} y={60} text="10 nm" size={11} muted />
-		<Tag x={60} y={90} text="traced from PDB 6VSB, 6XRA, 1IGT" size={11} anchor="start" muted />
+		<Label x={60 + 5 * K} y={60} text="10 nm" size={11} muted />
+		<Label x={60} y={90} text="traced from PDB 6VSB, 6XRA, 1IGT" size={11} anchor="start" muted />
 	</Readout>
 
 	<!-- the codons -->
@@ -232,7 +231,7 @@
 			? 'AAA GUU (lysine, valine) in the virus → CCU CCU (proline, proline) in the vaccine'
 			: 'AAA GUU: lysine, valine, as in the virus'}
 	>
-		<Tag
+		<Label
 			x={QX0 + (8 * QW) / 2}
 			y={170}
 			text="codons {SEQUENCE.windowFrom}–{SEQUENCE.windowFrom + 7} of the spike"
@@ -287,7 +286,7 @@
 				</g>
 			{/each}
 		{/each}
-		<Tag
+		<Label
 			x={QX0 + 3 * QW}
 			y={432}
 			text={pro ? 'lysine, valine → proline, proline' : 'lysine, valine: the virus’s own spike'}
@@ -296,7 +295,7 @@
 			anchor="start"
 			color="var(--mv-spike)"
 		/>
-		<Tag
+		<Label
 			x={QX0 + 3 * QW}
 			y={452}
 			text={pro ? 'stiff prolines jam the hinge' : 'free to spring'}

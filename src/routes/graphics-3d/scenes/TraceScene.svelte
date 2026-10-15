@@ -41,7 +41,7 @@
 	} from './shared';
 	import MapView from './MapView.svelte';
 	import Picture from './Picture.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -152,11 +152,18 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="work-title">
-		<T x={BX + 16} y={BY + 26} text="The ray tracer's work" size={14} weight={700} />
+		<Label
+			anchor="start"
+			x={BX + 16}
+			y={BY + 26}
+			text="The ray tracer's work"
+			size={14}
+			weight={700}
+		/>
 	</Readout>
 	{#snippet row(y: number, label: string, value: string, color?: string)}
-		<T x={BX + 16} {y} text={label} size={12.5} muted />
-		<T x={BX + 304} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+		<Label anchor="start" x={BX + 16} {y} text={label} size={12.5} muted />
+		<Label x={BX + 304} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
 	{/snippet}
 	<Readout id="primary" order={1} label="Rays from the eye" value={thousands(rowsDone * IMG_W)}>
 		{@render row(
@@ -203,14 +210,22 @@
 		{@render row(BY + 134, 'Ray–triangle tests', thousands(Math.round(s.triangleTests * reveal)))}
 	</Readout>
 	<Readout id="settings">
-		<T
+		<Label
+			anchor="start"
 			x={BX + 16}
 			y={BY + 176}
 			text="shadow rays {opts.shadows ? 'on' : 'off'} · bounce limit {opts.bounces}"
 			size={12.5}
 			weight={650}
 		/>
-		<T x={BX + 16} y={BY + 210} text="Picture: 192 × 120 = 23,040 pixels" size={12} muted />
+		<Label
+			anchor="start"
+			x={BX + 16}
+			y={BY + 210}
+			text="Picture: 192 × 120 = 23,040 pixels"
+			size={12}
+			muted
+		/>
 	</Readout>
 
 	<!-- the picked pixel's story -->
@@ -223,7 +238,8 @@
 			.map((l) => l.text)
 			.join('; ') + (story.lines.length + story.more > 3 ? ' …' : '')}
 	>
-		<T
+		<Label
+			anchor="start"
 			x={R.x}
 			y={B2 + 16}
 			text="The picked pixel (click the picture to pick another)"
@@ -240,10 +256,11 @@
 				stroke-width="3"
 				stroke-dasharray={l.text.startsWith('shadow') ? '4 3' : undefined}
 			/>
-			<T x={R.x + 32} y={B2 + 43 + 24 * i} text="{i + 1}. {l.text}" size={13} />
+			<Label anchor="start" x={R.x + 32} y={B2 + 43 + 24 * i} text="{i + 1}. {l.text}" size={13} />
 		{/each}
 		{#if story.more > 0}
-			<T
+			<Label
+				anchor="start"
 				x={R.x + 32}
 				y={B2 + 43 + 24 * story.lines.length}
 				text="… and {story.more} more rays"
@@ -254,7 +271,7 @@
 	</Readout>
 	{#if phase === 'bounces'}
 		<Readout id="limit">
-			<T
+			<Label
 				x={944}
 				y={B2 + 16}
 				text="A ray at the limit returns black."

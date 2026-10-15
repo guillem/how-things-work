@@ -7,7 +7,7 @@
 	import type { ParamValue } from '#lib/explainer/index.ts';
 	import { loadPicture } from './shared';
 	import { Readout } from '#lib/explainer/index.ts';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Props {
 		x: number;
@@ -45,7 +45,9 @@
 </foreignObject>
 <!-- hidden on phones, where it would be unreadable -->
 <Readout id="picture-status">
-	<Txt
+	<Label
+		anchor="start"
+		tabular
 		{x}
 		y={y + 60}
 		text={failed

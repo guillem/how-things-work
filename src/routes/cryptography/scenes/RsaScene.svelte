@@ -16,12 +16,11 @@
 	 * Reduced motion shows the finished frame.
 	 */
 	import { untrack } from 'svelte';
-	import { clamp, cycle, lerp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, cycle, Label, lerp, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { sup } from '../../primes-modular-arithmetic/modular';
 	import { REAL, RSA, hashToNumber, sha256Hex, sign, trialFactor, verify } from '../crypto';
 	import Person from './Person.svelte';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 	const phase = $derived(String(step.hints?.phase ?? 'keys'));
@@ -129,7 +128,8 @@
 		/>
 		<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 		<Readout id="alice-title">
-			<Txt
+			<Label
+				anchor="start"
 				x={44}
 				y={56}
 				text="Alice makes a key pair"
@@ -141,31 +141,78 @@
 		</Readout>
 		<g opacity={lineOn(0)}>
 			<Readout id="primes">
-				<Txt x={44} y={96} text="Two secret primes:  p = 61,  q = 53" size={15} halo={false} />
+				<Label
+					anchor="start"
+					x={44}
+					y={96}
+					text="Two secret primes:  p = 61,  q = 53"
+					size={15}
+					halo={false}
+				/>
 				{#snippet narrow()}
-					<Txt x={44} y={104} text="p = 61, q = 53" size={30} weight={700} halo={false} />
+					<Label
+						anchor="start"
+						x={44}
+						y={104}
+						text="p = 61, q = 53"
+						size={30}
+						weight={700}
+						halo={false}
+					/>
 				{/snippet}
 			</Readout>
 			{@render lock(440, 90)}
 		</g>
 		<g opacity={lineOn(1)}>
 			<Readout id="n">
-				<Txt x={44} y={134} text="n = p × q = 3233" size={15} weight={700} halo={false} />
-				<Txt x={44} y={154} text="easy: one multiplication" size={12} muted halo={false} />
+				<Label
+					anchor="start"
+					x={44}
+					y={134}
+					text="n = p × q = 3233"
+					size={15}
+					weight={700}
+					halo={false}
+				/>
+				<Label
+					anchor="start"
+					x={44}
+					y={154}
+					text="easy: one multiplication"
+					size={12}
+					muted
+					halo={false}
+				/>
 				{#snippet narrow()}
-					<Txt x={44} y={150} text="n = 3233" size={30} weight={700} halo={false} />
+					<Label
+						anchor="start"
+						x={44}
+						y={150}
+						text="n = 3233"
+						size={30}
+						weight={700}
+						halo={false}
+					/>
 				{/snippet}
 			</Readout>
 		</g>
 		<g opacity={lineOn(2)}>
 			<Readout id="phi">
-				<Txt x={44} y={190} text="(p − 1)(q − 1) = 60 × 52 = 3120" size={15} halo={false} />
+				<Label
+					anchor="start"
+					x={44}
+					y={190}
+					text="(p − 1)(q − 1) = 60 × 52 = 3120"
+					size={15}
+					halo={false}
+				/>
 			</Readout>
 			{@render lock(440, 184)}
 		</g>
 		<g opacity={lineOn(3)}>
 			<Readout id="e">
-				<Txt
+				<Label
+					anchor="start"
 					x={44}
 					y={228}
 					text="e = 17   (no factor in common with 3120)"
@@ -176,9 +223,17 @@
 		</g>
 		<g opacity={lineOn(4)}>
 			<Readout id="d">
-				<Txt x={44} y={266} text="d = 2753, because" size={15} halo={false} />
-				<Txt x={44} y={290} text="17 × 2753 = 46,801 = 15 × 3120 + 1" size={15} halo={false} />
-				<Txt
+				<Label anchor="start" x={44} y={266} text="d = 2753, because" size={15} halo={false} />
+				<Label
+					anchor="start"
+					x={44}
+					y={290}
+					text="17 × 2753 = 46,801 = 15 × 3120 + 1"
+					size={15}
+					halo={false}
+				/>
+				<Label
+					anchor="start"
 					x={44}
 					y={310}
 					text="so raising to e, then to d, gets back to the start"
@@ -209,7 +264,8 @@
 				color="var(--cr-ok)"
 				opacity={lineOn(5)}
 			>
-				<Txt
+				<Label
+					anchor="start"
 					x={60}
 					y={364}
 					text="PUBLIC KEY: published for everyone"
@@ -218,10 +274,27 @@
 					color="var(--cr-ok)"
 					halo={false}
 				/>
-				<Txt x={60} y={398} text="n = 3233,  e = 17" size={22} weight={700} halo={false} />
-				<Txt x={60} y={422} text="used to check signatures" size={12} muted halo={false} />
+				<Label
+					anchor="start"
+					x={60}
+					y={398}
+					text="n = 3233,  e = 17"
+					size={22}
+					weight={700}
+					halo={false}
+				/>
+				<Label
+					anchor="start"
+					x={60}
+					y={422}
+					text="used to check signatures"
+					size={12}
+					muted
+					halo={false}
+				/>
 				{#snippet narrow()}
-					<Txt
+					<Label
+						anchor="start"
 						x={60}
 						y={368}
 						text="PUBLIC"
@@ -230,7 +303,15 @@
 						color="var(--cr-ok)"
 						halo={false}
 					/>
-					<Txt x={60} y={414} text="n = 3233, e = 17" size={34} weight={700} halo={false} />
+					<Label
+						anchor="start"
+						x={60}
+						y={414}
+						text="n = 3233, e = 17"
+						size={34}
+						weight={700}
+						halo={false}
+					/>
 				{/snippet}
 			</Readout>
 			<rect
@@ -252,7 +333,8 @@
 				color="var(--cr-eve)"
 				opacity={lineOn(5)}
 			>
-				<Txt
+				<Label
+					anchor="start"
 					x={60}
 					y={480}
 					text="PRIVATE KEY: Alice alone"
@@ -262,7 +344,8 @@
 					halo={false}
 				/>
 				{#snippet narrow()}
-					<Txt
+					<Label
+						anchor="start"
 						x={60}
 						y={484}
 						text="PRIVATE"
@@ -271,13 +354,22 @@
 						color="var(--cr-eve)"
 						halo={false}
 					/>
-					<Txt x={60} y={532} text="d = 2753" size={34} weight={700} halo={false} />
+					<Label
+						anchor="start"
+						x={60}
+						y={532}
+						text="d = 2753"
+						size={34}
+						weight={700}
+						halo={false}
+					/>
 				{/snippet}
 			</Readout>
 			{@render lock(424, 474)}
 			<Readout id="private-d">
-				<Txt x={60} y={514} text="d = 2753" size={22} weight={700} halo={false} />
-				<Txt
+				<Label anchor="start" x={60} y={514} text="d = 2753" size={22} weight={700} halo={false} />
+				<Label
+					anchor="start"
 					x={60}
 					y={540}
 					text="used to sign; p, q and 3120 stay secret too"
@@ -291,16 +383,24 @@
 		<!-- Eve tries to factor n -->
 		<Person x={900} y={56} name="Eve" color="var(--cr-eve)" />
 		<Readout id="eve-has">
-			<Txt
+			<Label
+				anchor="start"
 				x={500}
 				y={56}
 				text="Eve has n = 3233. To get d she needs p and q:"
 				size={14}
 				weight={700}
 			/>
-			<Txt x={500} y={80} text="she divides by 2, 3, 4, … up to √3233 ≈ 57" size={13} muted />
+			<Label
+				anchor="start"
+				x={500}
+				y={80}
+				text="she divides by 2, 3, 4, … up to √3233 ≈ 57"
+				size={13}
+				muted
+			/>
 			{#snippet narrow()}
-				<Txt x={500} y={86} text="Eve divides 3233 by" size={26} weight={700} />
+				<Label anchor="start" x={500} y={86} text="Eve divides 3233 by" size={26} weight={700} />
 			{/snippet}
 		</Readout>
 		{#each CANDIDATES as k (k)}
@@ -318,7 +418,8 @@
 				stroke-width="2"
 			/>
 			<Readout id="chip-{k}">
-				<Txt
+				<Label
+					tabular
 					x={chipX(k) + CHIP.w / 2}
 					y={chipY(k) + 19}
 					text={String(k)}
@@ -329,7 +430,8 @@
 					halo={false}
 				/>
 				{#snippet narrow()}
-					<Txt
+					<Label
+						tabular
 						x={chipX(k) + CHIP.w / 2}
 						y={chipY(k) + 22}
 						text={String(k)}
@@ -356,7 +458,9 @@
 				: undefined}
 			color={factored ? 'var(--cr-key)' : undefined}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={500}
 				y={312}
 				text={factored
@@ -369,7 +473,8 @@
 				color={factored ? 'var(--cr-key)' : undefined}
 			/>
 			{#if factored}
-				<Txt
+				<Label
+					anchor="start"
 					x={500}
 					y={336}
 					text="With p and q, Eve could work out d. Easy here: n is tiny."
@@ -395,7 +500,9 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={508}
 				y={402}
 				text="Real keys: n of {REAL.keyBits} bits ({REAL.keyDigits} digits) or more"
@@ -403,7 +510,8 @@
 				weight={700}
 				halo={false}
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={508}
 				y={434}
 				text="Multiplying p × q: a split second"
@@ -412,7 +520,8 @@
 				weight={600}
 				halo={false}
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={508}
 				y={460}
 				text="Trial division: up to about 10³⁰⁸ divisions"
@@ -421,16 +530,33 @@
 				weight={600}
 				halo={false}
 			/>
-			<Txt x={508} y={494} text="The best known method's record: RSA-250," size={13} halo={false} />
-			<Txt
+			<Label
+				anchor="start"
+				x={508}
+				y={494}
+				text="The best known method's record: RSA-250,"
+				size={13}
+				halo={false}
+			/>
+			<Label
+				anchor="start"
+				tabular
 				x={508}
 				y={516}
 				text="{REAL.rsaRecordBits} bits ({REAL.rsaRecordDigits} digits), factored in {REAL.rsaRecordYear} after"
 				size={13}
 				halo={false}
 			/>
-			<Txt x={508} y={538} text="thousands of years of computer time." size={13} halo={false} />
-			<Txt
+			<Label
+				anchor="start"
+				x={508}
+				y={538}
+				text="thousands of years of computer time."
+				size={13}
+				halo={false}
+			/>
+			<Label
+				anchor="start"
 				x={508}
 				y={562}
 				text="The numbers here are for illustration."
@@ -452,7 +578,8 @@
 			stroke-opacity="0.5"
 		/>
 		<Readout id="alice-signs">
-			<Txt
+			<Label
+				anchor="start"
 				x={38}
 				y={50}
 				text="Alice signs her message"
@@ -464,7 +591,9 @@
 		</Readout>
 		{@render field(38, 64, 404, signMsg, 'Alice’s message', editAlice)}
 		<Readout id="alice-hash">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={38}
 				y={138}
 				text="SHA-256: {sha256Hex(signMsg).slice(0, 16)}…"
@@ -472,17 +601,44 @@
 				mono
 				halo={false}
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={38}
 				y={164}
 				text="as a number on the 3233-hour clock: h = {h}"
 				size={14}
 				halo={false}
 			/>
-			<Txt x={38} y={206} text="signature s = h{sup(RSA.d)} mod 3233" size={15} halo={false} />
-			<Txt x={38} y={232} text="= {h}{sup(RSA.d)} mod 3233" size={15} halo={false} />
+			<Label
+				anchor="start"
+				tabular
+				x={38}
+				y={206}
+				text="signature s = h{sup(RSA.d)} mod 3233"
+				size={15}
+				halo={false}
+			/>
+			<Label
+				anchor="start"
+				tabular
+				x={38}
+				y={232}
+				text="= {h}{sup(RSA.d)} mod 3233"
+				size={15}
+				halo={false}
+			/>
 			{#snippet narrow()}
-				<Txt x={38} y={190} text="h = {h}" size={30} weight={600} halo={false} />
+				<Label
+					anchor="start"
+					tabular
+					x={38}
+					y={190}
+					text="h = {h}"
+					size={30}
+					weight={600}
+					halo={false}
+				/>
 			{/snippet}
 		</Readout>
 		<Readout
@@ -493,7 +649,9 @@
 			note="h{sup(RSA.d)} mod 3233: needs the private d"
 			color="var(--cr-alice)"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={38}
 				y={276}
 				text="s = {s}"
@@ -503,7 +661,9 @@
 				halo={false}
 			/>
 			{#snippet narrow()}
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={38}
 					y={282}
 					text="s = {s}"
@@ -516,8 +676,17 @@
 		</Readout>
 		{@render lock(200, 266)}
 		<Readout id="alice-hints">
-			<Txt x={216} y={272} text="needs the private d" size={12} muted halo={false} />
-			<Txt
+			<Label
+				anchor="start"
+				x={216}
+				y={272}
+				text="needs the private d"
+				size={12}
+				muted
+				halo={false}
+			/>
+			<Label
+				anchor="start"
 				x={38}
 				y={334}
 				text="Edit the message: she signs it again."
@@ -539,7 +708,8 @@
 			stroke-width={verdictOn > 0.5 ? 2 : 1}
 		/>
 		<Readout id="bob-title">
-			<Txt
+			<Label
+				anchor="start"
 				x={518}
 				y={50}
 				text="What Bob received"
@@ -559,7 +729,9 @@
 			tampered
 		)}
 		<Readout id="bob-hash">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={518}
 				y={138}
 				text="SHA-256: {sha256Hex(recv).slice(0, 16)}…"
@@ -567,15 +739,27 @@
 				mono
 				halo={false}
 			/>
-			<Txt x={518} y={164} text="as a number: {check.expected}" size={14} halo={false} />
-			<Txt
+			<Label
+				anchor="start"
+				tabular
+				x={518}
+				y={164}
+				text="as a number: {check.expected}"
+				size={14}
+				halo={false}
+			/>
+			<Label
+				anchor="start"
+				tabular
 				x={518}
 				y={206}
 				text="check with the public key: s{sup(RSA.e)} mod 3233"
 				size={15}
 				halo={false}
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={518}
 				y={232}
 				text="= {s}{sup(RSA.e)} mod 3233 = {check.recovered}"
@@ -583,7 +767,16 @@
 				halo={false}
 			/>
 			{#snippet narrow()}
-				<Txt x={518} y={190} text="h = {check.expected}" size={30} weight={600} halo={false} />
+				<Label
+					anchor="start"
+					tabular
+					x={518}
+					y={190}
+					text="h = {check.expected}"
+					size={30}
+					weight={600}
+					halo={false}
+				/>
 			{/snippet}
 		</Readout>
 		<g opacity={verdictOn}>
@@ -601,7 +794,9 @@
 				opacity={verdictOn}
 			>
 				{#if check.ok}
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={518}
 						y={276}
 						text="✓ {check.recovered} = {check.expected}: valid"
@@ -610,7 +805,8 @@
 						color="var(--cr-ok)"
 						halo={false}
 					/>
-					<Txt
+					<Label
+						anchor="start"
 						x={518}
 						y={302}
 						text="Signed by Alice's key, and not changed since."
@@ -619,7 +815,9 @@
 						halo={false}
 					/>
 				{:else}
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={518}
 						y={276}
 						text="✗ {check.recovered} ≠ {check.expected}: invalid"
@@ -628,7 +826,8 @@
 						color="var(--cr-bad)"
 						halo={false}
 					/>
-					<Txt
+					<Label
+						anchor="start"
 						x={518}
 						y={302}
 						text="Changed in transit, or not signed by Alice."
@@ -638,7 +837,9 @@
 					/>
 				{/if}
 				{#snippet narrow()}
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={518}
 						y={290}
 						text={check.ok ? '✓ valid' : '✗ invalid'}
@@ -651,7 +852,15 @@
 			</Readout>
 		</g>
 		<Readout id="bob-hint">
-			<Txt x={518} y={334} text="Edit this copy to play Eve." size={12} muted halo={false} />
+			<Label
+				anchor="start"
+				x={518}
+				y={334}
+				text="Edit this copy to play Eve."
+				size={12}
+				muted
+				halo={false}
+			/>
 		</Readout>
 
 		<!-- the transfer -->
@@ -671,7 +880,8 @@
 			{@const label = `“${short(signMsg)}” + s = ${s}`}
 			{@const w = label.length * 7.6 + 26}
 			<rect x={px - w / 2} y="405" width={w} height="30" rx="15" fill="var(--cr-alice)" />
-			<Txt
+			<Label
+				tabular
 				x={px}
 				y={425}
 				text={label}
@@ -702,7 +912,9 @@
 				: 'but without d she can’t sign the new one'}
 			color="var(--cr-eve)"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={540}
 				y={500}
 				text={tampered
@@ -712,7 +924,9 @@
 				weight={tampered ? 700 : 500}
 				color={tampered ? 'var(--cr-eve)' : undefined}
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={540}
 				y={520}
 				text={tampered

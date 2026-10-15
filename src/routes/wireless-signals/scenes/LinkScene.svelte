@@ -15,7 +15,7 @@
 	 *
 	 * Wavefronts are a pure function of t; the cloud arrives as in ChannelScene.
 	 */
-	import { cycle } from '#lib/draw/index.ts';
+	import { cycle, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		TX_DBM,
@@ -29,7 +29,6 @@
 	} from '../radio';
 	import { count, db, distanceText, num, rate } from '../format';
 	import Constellation from './Constellation.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -113,7 +112,8 @@
 			label="Link"
 			value="Wi-Fi at {band} GHz, {distanceText(logd)} away"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={24}
 				y={34}
 				text="Wi-Fi at {band} GHz, 100 mW, in open space: {distanceText(logd)}"
@@ -152,14 +152,14 @@
 		/>
 		<circle cx={DX0 - 70} cy={AY - 36} r="4" fill="var(--ws-wave)" />
 		<Readout id="tx-label">
-			<T x={DX0 - 70} y={AY + 46} text="router" size={12} anchor="middle" muted />
+			<Label x={DX0 - 70} y={AY + 46} text="router" size={12} anchor="middle" muted />
 		</Readout>
 		<!-- distance axis -->
 		<line x1={DX0} x2={DX1} y1={AY + 30} y2={AY + 30} stroke="var(--stage-line)" />
 		{#each [0, 1, 2, 3, 4] as lg (lg)}
 			<line x1={dx(lg)} x2={dx(lg)} y1={AY + 26} y2={AY + 34} stroke="var(--stage-line)" />
 			<Readout id="tick-{lg}">
-				<T
+				<Label
 					x={dx(lg)}
 					y={AY + 50}
 					text={['1 m', '10 m', '100 m', '1 km', '10 km'][lg]}
@@ -189,12 +189,13 @@
 			stroke-width="2"
 		/>
 		<Readout id="rx-label">
-			<T x={dx(logd)} y={AY - 38} text="receiver" size={12} anchor="middle" weight={600} />
+			<Label x={dx(logd)} y={AY - 38} text="receiver" size={12} anchor="middle" weight={600} />
 		</Readout>
 	{:else}
 		<!-- the 2.4 GHz channel map -->
 		<Readout id="title" order={0} label="Neighbour" value="channel {nbCh}, {db(nbDb, 0)} vs yours">
-			<T
+			<Label
+				anchor="start"
 				x={24}
 				y={34}
 				text="2.4 GHz Wi-Fi channels: yours is 6, the neighbour’s {nbCh}"
@@ -212,7 +213,7 @@
 				stroke="var(--stage-line)"
 			/>
 			<Readout id="ch-{ch}">
-				<T
+				<Label
 					x={fx(channelMHz(ch))}
 					y={210}
 					text={String(ch)}
@@ -224,9 +225,9 @@
 			</Readout>
 		{/each}
 		<Readout id="mhz">
-			<T x={fx(2400)} y={226} text="2400 MHz" size={11} muted anchor="start" />
-			<T x={fx(2484)} y={226} text="2484 MHz" size={11} muted anchor="end" />
-			<T x={fx(2442)} y={226} text="channel number" size={11} muted anchor="middle" />
+			<Label x={fx(2400)} y={226} text="2400 MHz" size={11} muted anchor="start" />
+			<Label x={fx(2484)} y={226} text="2484 MHz" size={11} muted anchor="end" />
+			<Label x={fx(2442)} y={226} text="channel number" size={11} muted anchor="middle" />
 		</Readout>
 		<!-- ours -->
 		<rect
@@ -270,7 +271,7 @@
 			value="{Math.round(ov * 100)}% of the neighbour’s signal is in your channel"
 			color="var(--ws-nb)"
 		>
-			<T
+			<Label
 				x={936}
 				y={70}
 				text="{Math.round(ov * 100)}% of the neighbour’s signal falls in your channel"
@@ -279,7 +280,7 @@
 				anchor="end"
 				color="var(--ws-nb)"
 			/>
-			<T
+			<Label
 				x={fx(channelMHz(OUR_CH))}
 				y={100}
 				text="yours"
@@ -293,13 +294,13 @@
 
 	<!-- ===== the link budget ===== -->
 	<Readout id="budget-title">
-		<T x={24} y={252} text="Power at the receiver" size={14} weight={700} />
+		<Label anchor="start" x={24} y={252} text="Power at the receiver" size={14} weight={700} />
 	</Readout>
 	<line x1={LX} x2={LX} y1={ly(20)} y2={ly(-120)} stroke="var(--stage-line)" />
 	{#each [20, 0, -20, -40, -60, -80, -100, -120] as v (v)}
 		<line x1={LX - 4} x2={LX} y1={ly(v)} y2={ly(v)} stroke="var(--stage-line)" />
 		<Readout id="dbm-{v}">
-			<T x={LX - 8} y={ly(v) + 4} text="{num(v, 0)} dBm" size={11} anchor="end" muted />
+			<Label x={LX - 8} y={ly(v) + 4} text="{num(v, 0)} dBm" size={11} anchor="end" muted />
 		</Readout>
 	{/each}
 	<!-- sent -->
@@ -312,7 +313,14 @@
 		stroke-width="3"
 	/>
 	<Readout id="sent">
-		<T x={LX + 128} y={ly(TX_DBM) + 4} text="sent: 20 dBm (100 mW)" size={12} weight={600} />
+		<Label
+			anchor="start"
+			x={LX + 128}
+			y={ly(TX_DBM) + 4}
+			text="sent: 20 dBm (100 mW)"
+			size={12}
+			weight={600}
+		/>
 	</Readout>
 	<!-- loss -->
 	<path
@@ -322,7 +330,8 @@
 		marker-end="url(#arrowhead)"
 	/>
 	<Readout id="loss">
-		<T
+		<Label
+			anchor="start"
 			x={LX + 68}
 			y={(ly(TX_DBM) + level(budget.rxDbm)) / 2 + 4}
 			text="lost on the way: {db(budget.lossDb)}"
@@ -346,7 +355,14 @@
 		value="{num(budget.rxDbm)} dBm"
 		note="after {db(budget.lossDb)} of free-space loss"
 	>
-		<T x={LX + 208} y={labelY.rx} text="received: {num(budget.rxDbm)} dBm" size={12} weight={600} />
+		<Label
+			anchor="start"
+			x={LX + 208}
+			y={labelY.rx}
+			text="received: {num(budget.rxDbm)} dBm"
+			size={12}
+			weight={600}
+		/>
 	</Readout>
 	<!-- noise -->
 	<line
@@ -364,7 +380,14 @@
 		label={phase === 'distance' ? 'Noise in 20 MHz' : undefined}
 		value="{num(budget.noiseDbm)} dBm"
 	>
-		<T x={LX + 208} y={labelY.noise} text="noise: {num(budget.noiseDbm)} dBm" size={12} muted />
+		<Label
+			anchor="start"
+			x={LX + 208}
+			y={labelY.noise}
+			text="noise: {num(budget.noiseDbm)} dBm"
+			size={12}
+			muted
+		/>
 	</Readout>
 	{#if phase === 'neighbour' && iRel > 0}
 		<line
@@ -383,7 +406,8 @@
 			value="{num(nbInDbm)} dBm"
 			color="var(--ws-nb)"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={LX + 208}
 				y={labelY.nb}
 				text="neighbour: {num(nbInDbm)} dBm"
@@ -408,7 +432,8 @@
 		value={db(snrShown)}
 		color="var(--ws-ok)"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={24}
 			y={584}
 			text="{phase === 'neighbour' ? 'signal ÷ (noise + neighbour)' : 'signal-to-noise ratio'}: {db(
@@ -422,11 +447,11 @@
 
 	<!-- ===== the received symbols ===== -->
 	<Readout id="rx-title">
-		<T x={560} y={252} text="Received QPSK symbols" size={14} weight={700} />
+		<Label anchor="start" x={560} y={252} text="Received QPSK symbols" size={14} weight={700} />
 	</Readout>
 	<Constellation scheme="qpsk" {tx} {shown} cx={740} cy={420} half={150} uid="link" range={1.6} />
 	<Readout id="ber" order={7} label="Bits read wrong" value={berText} color="var(--ws-bad)">
-		<T
+		<Label
 			x={936}
 			y={252}
 			text={berText}

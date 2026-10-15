@@ -7,11 +7,10 @@
 	 * GPT-2's real top five next tokens for the sentence.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { cycle } from '#lib/draw/index.ts';
+	import { cycle, Label } from '#lib/draw/index.ts';
 	import { parameterCount } from '../attention';
 	import { gpt2 } from '../gpt2';
 	import { fix, label, sentenceOf } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -55,7 +54,8 @@
 
 <g>
 	<!-- residual streams -->
-	<Txt
+	<Label
+		anchor="start"
 		x={T.x}
 		y={30}
 		size={15}
@@ -93,7 +93,14 @@
 		opacity={lit === -1 || lit === -2 ? 0.5 : 0.25}
 	/>
 	<Readout id="embl">
-		<Txt x={T.x + T.w + 8} y={T.bottom + 15} size={11} muted text="token + position" />
+		<Label
+			anchor="start"
+			x={T.x + T.w + 8}
+			y={T.bottom + 15}
+			size={11}
+			muted
+			text="token + position"
+		/>
 	</Readout>
 
 	{#each arcs as a (a.l)}
@@ -119,7 +126,9 @@
 			/>
 		{/if}
 		<Readout id="bl-{a.l}">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={T.x + T.w + 8}
 				y={by(a.l) + T.block / 2 + 4}
 				size={11}
@@ -138,10 +147,12 @@
 		opacity={lit === 12 || lit === -2 ? 0.55 : 0.25}
 	/>
 	<Readout id="outl">
-		<Txt x={T.x + T.w + 8} y={T.top - 29} size={11} muted text="next token" />
+		<Label anchor="start" x={T.x + T.w + 8} y={T.top - 29} size={11} muted text="next token" />
 	</Readout>
 	<Readout id="arcnote">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={T.x}
 			y={588}
 			size={11}
@@ -153,7 +164,7 @@
 	</Readout>
 
 	<!-- one block -->
-	<Txt x={560} y={30} size={14} weight={650} text="Inside each block" />
+	<Label anchor="start" x={560} y={30} size={14} weight={650} text="Inside each block" />
 	{#each [{ y: 52, text: 'LayerNorm, then 12 attention heads', sub: 'tokens exchange information', c: 'var(--tf-att)' }, { y: 112, text: 'join the 12 × 64 numbers, × W_O, add', sub: `attention: ${fmt(pc.attention)} numbers`, c: 'var(--tf-att)' }, { y: 172, text: 'LayerNorm, then an MLP 768 → 3,072 → 768', sub: 'each token on its own', c: 'var(--tf-v)' }, { y: 232, text: 'add the result to the token’s vector', sub: `MLP: ${fmt(pc.mlp)} numbers`, c: 'var(--tf-v)' }] as b (b.y)}
 		<rect
 			x={560}
@@ -166,8 +177,8 @@
 			stroke-width="1.4"
 		/>
 		<Readout id="blk-{b.y}">
-			<Txt x={574} y={b.y + 20} size={12} weight={600} text={b.text} />
-			<Txt x={574} y={b.y + 37} size={11} muted text={b.sub} />
+			<Label anchor="start" tabular x={574} y={b.y + 20} size={12} weight={600} text={b.text} />
+			<Label anchor="start" tabular x={574} y={b.y + 37} size={11} muted text={b.sub} />
 		</Readout>
 	{/each}
 	<Readout
@@ -176,7 +187,9 @@
 		label="Parameters"
 		value="{fmt(gpt2.config.params)} in all; {fmt(pc.perBlock)} per block"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={560}
 			y={306}
 			size={12}
@@ -185,10 +198,19 @@
 	</Readout>
 
 	<!-- the prediction -->
-	<Txt x={560} y={NX.y - 26} size={14} weight={650} text="GPT-2’s next token after “… {tail}”" />
+	<Label
+		anchor="start"
+		tabular
+		x={560}
+		y={NX.y - 26}
+		size={14}
+		weight={650}
+		text="GPT-2’s next token after “… {tail}”"
+	/>
 	{#each next as nx, k (k)}
 		{@const y = NX.y + k * NX.h}
-		<Txt
+		<Label
+			tabular
 			x={NX.x - 10}
 			y={y + 15}
 			anchor="end"
@@ -205,11 +227,19 @@
 			fill="var(--tf-v)"
 			opacity={k === 0 ? 1 : 0.6}
 		/>
-		<Txt x={NX.x + nx.p * NX.w + 8} y={y + 15} size={12} text="{fix(nx.p * 100, 1)}%" />
+		<Label
+			anchor="start"
+			tabular
+			x={NX.x + nx.p * NX.w + 8}
+			y={y + 15}
+			size={12}
+			text="{fix(nx.p * 100, 1)}%"
+		/>
 	{/each}
 	{#if next.some((x) => x.token === '\n')}
 		<Readout id="nl">
-			<Txt
+			<Label
+				anchor="start"
 				x={560}
 				y={NX.y + 5 * NX.h + 16}
 				size={12}

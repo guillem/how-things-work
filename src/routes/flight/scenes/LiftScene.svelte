@@ -11,7 +11,7 @@
 	 */
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
-	import { Axes, linePath, scale } from '#lib/draw/index.ts';
+	import { Axes, Label, linePath, scale } from '#lib/draw/index.ts';
 	import {
 		DEG,
 		THIN_SLOPE,
@@ -26,7 +26,6 @@
 	import { C172, FT, KT, WEIGHT, density, dynamicPressure, lift } from '../plane.ts';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
-	import T from './T.svelte';
 	import Title from './Title.svelte';
 	import Wing from './Wing.svelte';
 	import { STALL_ANGLE, field } from './field.ts';
@@ -144,14 +143,16 @@
 		marker-end="url(#arrowhead)"
 	/>
 	<Readout id="wing-cap">
-		<T
+		<Label
+			anchor="start"
 			x={32}
 			y={40}
 			text="NACA 0012-like section, {deg(aDeg)} · drag (orange) drawn 10× longer"
 			size={12.5}
 			weight={650}
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={32}
 			y={334}
 			text={stalled ? 'separated flow: drawn schematically' : 'ideal flow, attached'}
@@ -205,7 +206,8 @@
 			color="var(--fl-drag)"
 		/>
 		<Readout id="slopes">
-			<T
+			<Label
+				anchor="start"
 				x={32}
 				y={530}
 				text="slopes per degree: theory {(THIN_SLOPE * DEG).toFixed(3)} · ideal {idealSlope.toFixed(
@@ -214,7 +216,14 @@
 				size={12}
 				muted
 			/>
-			<T x={32} y={550} text="2π per radian = 0.110 per degree" size={12} muted />
+			<Label
+				anchor="start"
+				x={32}
+				y={550}
+				text="2π per radian = 0.110 per degree"
+				size={12}
+				muted
+			/>
 		</Readout>
 	{:else if phase === 'equation'}
 		<Title x={32} y={388} text="Lift = ½ρV² × S × C for a 172’s wing" size={14} />
@@ -258,14 +267,16 @@
 			color="var(--fl-weight)"
 		/>
 		<Readout id="eq-cap">
-			<T
+			<Label
+				anchor="start"
 				x={32}
 				y={530}
 				text="air density {rho.toFixed(3)} kg/m³ ({((rho / 1.225) * 100).toFixed(0)}% of sea level)"
 				size={12}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={32}
 				y={550}
 				text={L >= WEIGHT
@@ -308,8 +319,22 @@
 			color={stalled ? 'var(--fl-stall)' : undefined}
 		/>
 		<Readout id="stall-cap">
-			<T x={32} y={506} text="most lift: C = 1.61 at 17.1° (80-grit run)" size={12} muted />
-			<T x={32} y={526} text="Reynolds number 6 million, NASA Langley, 1988" size={12} muted />
+			<Label
+				anchor="start"
+				x={32}
+				y={506}
+				text="most lift: C = 1.61 at 17.1° (80-grit run)"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={32}
+				y={526}
+				text="Reynolds number 6 million, NASA Langley, 1988"
+				size={12}
+				muted
+			/>
 		</Readout>
 	{/if}
 
@@ -347,7 +372,8 @@
 			fill-opacity="0.07"
 		/>
 		<Readout id="stall-zone">
-			<T
+			<Label
+				anchor="start"
 				x={stallX + 6}
 				y={PY1 - 10}
 				text="stalled"
@@ -407,14 +433,14 @@
 			stroke-width="1.6"
 			stroke-dasharray="6 5"
 		/>
-		<T x={512} y={82} text="2πα, thin-airfoil theory" size={12} />
+		<Label anchor="start" x={512} y={82} text="2πα, thin-airfoil theory" size={12} />
 	</Readout>
 	<Readout id="key-ideal">
 		<line x1={480} y1={98} x2={504} y2={98} stroke="var(--fl-ideal)" stroke-width="2" />
-		<T x={512} y={102} text="ideal flow, 12% symmetric section" size={12} />
+		<Label anchor="start" x={512} y={102} text="ideal flow, 12% symmetric section" size={12} />
 	</Readout>
 	<Readout id="key-data">
 		<circle cx={492} cy={118} r="3.6" fill="var(--fl-data)" />
-		<T x={512} y={122} text="measured, NACA 0012 (Ladson, NASA)" size={12} />
+		<Label anchor="start" x={512} y={122} text="measured, NACA 0012 (Ladson, NASA)" size={12} />
 	</Readout>
 </g>

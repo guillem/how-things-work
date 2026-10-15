@@ -9,12 +9,11 @@
 	 * Right: the universe's content as a ring. The bars and the ring grow in at
 	 * the start of the step (one-shot).
 	 */
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { GALAXIES, ML_DISK_DEFAULT, bestHalo, cosmicBudget, galaxy } from '../galaxies';
 	import { DARK_NEEDED, FIELD_VISIBLE } from '../lensing';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { step, t, reduced }: StageProps = $props();
 
@@ -126,7 +125,8 @@
 			label="Dark ÷ visible matter"
 			value="three independent measurements"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={24}
 				y={40}
 				text="Dark matter ÷ visible matter, measured three ways"
@@ -135,13 +135,13 @@
 			/>
 		</Readout>
 		{#each Object.entries(GROUPS) as [id, gr] (id)}
-			<T x={24} y={gr.y} text={gr.title} size={13.5} weight={700} />
-			<T x={24} y={gr.y + 17} text={gr.note} size={11.5} muted />
+			<Label anchor="start" x={24} y={gr.y} text={gr.title} size={13.5} weight={700} />
+			<Label anchor="start" x={24} y={gr.y + 17} text={gr.note} size={11.5} muted />
 		{/each}
 		{#each rows as r, i (r.id)}
 			{@const yy = rowY(i)}
 			{@const u = grow(0.2 + i * 0.18)}
-			<T x={BX - 12} y={yy + 15} text={r.label} size={12.5} anchor="end" />
+			<Label x={BX - 12} y={yy + 15} text={r.label} size={12.5} anchor="end" />
 			<rect x={BX} y={yy} width={UNIT * u} height="20" rx="3" fill="var(--dm-visible)" />
 			<rect
 				x={BX + UNIT}
@@ -170,7 +170,8 @@
 				value={i === 0 ? galaxyRow : `${r.ratio.toFixed(1)} ×`}
 				color="var(--dm-halo)"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={BX + UNIT * (1 + r.ratio) * u + 10}
 					y={yy + 15}
 					text="{r.ratio.toFixed(1)} ×"
@@ -183,17 +184,33 @@
 		{/each}
 		<Readout id="key">
 			<rect x={24} y={478} width="16" height="12" rx="2" fill="var(--dm-visible)" />
-			<T x={46} y={489} text="one unit: all the visible matter (stars and gas)" size={12} muted />
+			<Label
+				anchor="start"
+				x={46}
+				y={489}
+				text="one unit: all the visible matter (stars and gas)"
+				size={12}
+				muted
+			/>
 			<rect x={24} y={500} width="16" height="12" rx="2" fill="var(--dm-halo)" opacity="0.85" />
-			<T x={46} y={511} text="each further unit: as much again of dark matter" size={12} muted />
-			<T
+			<Label
+				anchor="start"
+				x={46}
+				y={511}
+				text="each further unit: as much again of dark matter"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
 				x={24}
 				y={548}
 				text="Galaxies: SPARC (Lelli et al. 2016), stars at 0.5 Suns per Sun of light."
 				size={11}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={24}
 				y={566}
 				text="Cluster: Bradač et al. 2006. Universe: Planck Collaboration 2020."
@@ -208,7 +225,14 @@
 			label="What could it be?"
 			value="ruled out, searched for, the alternative"
 		>
-			<T x={24} y={40} text="What could the dark matter be?" size={16} weight={700} />
+			<Label
+				anchor="start"
+				x={24}
+				y={40}
+				text="What could the dark matter be?"
+				size={16}
+				weight={700}
+			/>
 		</Readout>
 		{#each CARDS as c, i (c.id)}
 			{@const y0 = 64 + i * 172}
@@ -217,9 +241,17 @@
 				<Card x={24} y={y0} w={600} h={156} />
 				<rect x={24} y={y0 + 14} width="5" height={128} rx="2" fill={c.color} />
 				<Readout id="card-{c.id}" order={2 + i} label={c.title} value={c.lines.join(' ')}>
-					<T x={44} y={y0 + 36} text={c.title} size={14} weight={700} color={c.color} />
+					<Label
+						anchor="start"
+						x={44}
+						y={y0 + 36}
+						text={c.title}
+						size={14}
+						weight={700}
+						color={c.color}
+					/>
 					{#each c.lines as line, k (k)}
-						<T x={44} y={y0 + 64 + k * 22} text={line} size={12.5} />
+						<Label anchor="start" x={44} y={y0 + 64 + k * 22} text={line} size={12.5} />
 					{/each}
 				</Readout>
 			</g>
@@ -228,7 +260,7 @@
 
 	<!-- the universe's content -->
 	<Readout id="ring-title">
-		<T
+		<Label
 			x={RCX}
 			y={RCY - RR - 54}
 			text="What the universe is made of"
@@ -236,7 +268,7 @@
 			weight={700}
 			anchor="middle"
 		/>
-		<T x={RCX} y={RCY - RR - 34} text="Planck 2018" size={12} anchor="middle" muted />
+		<Label x={RCX} y={RCY - RR - 34} text="Planck 2018" size={12} anchor="middle" muted />
 	</Readout>
 	<circle cx={RCX} cy={RCY} r={RR} fill="none" stroke="var(--stage-grid)" stroke-width="30" />
 	{#each segs as sg (sg.id)}
@@ -251,7 +283,7 @@
 		{/if}
 	{/each}
 	<Readout id="ring-ratio">
-		<T
+		<Label
 			x={RCX}
 			y={RCY - 4}
 			text="{cosmic.ratio.toFixed(1)} ×"
@@ -261,7 +293,7 @@
 			color="var(--dm-halo)"
 			opacity={ringU}
 		/>
-		<T
+		<Label
 			x={RCX}
 			y={RCY + 18}
 			text="dark ÷ ordinary"
@@ -287,8 +319,8 @@
 				fill={p.color}
 				opacity={p.id === 'de' ? 0.45 : 0.9}
 			/>
-			<T x={RCX - 78} y={RCY + RR + 52 + i * 24} text={p.label} size={12.5} />
-			<T
+			<Label anchor="start" x={RCX - 78} y={RCY + RR + 52 + i * 24} text={p.label} size={12.5} />
+			<Label
 				x={RCX + 110}
 				y={RCY + RR + 52 + i * 24}
 				text={pct(p.frac)}

@@ -8,10 +8,9 @@
 	 * The walk is a pure function of t: 9 s out, 3 s at the end, then again.
 	 * Under reduced motion the frame shows them most of the way up.
 	 */
-	import { clamp, cycle, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, cycle, Label, smoothstep } from '#lib/draw/index.ts';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { t, reduced }: StageProps = $props();
 
@@ -173,15 +172,16 @@
 		marker-start="url(#arrowhead)"
 		opacity="0.7"
 	/>
-	<T x={FCX} y={FY0 - 18} text="On a flat sheet" size={15} weight={700} anchor="middle" />
-	<T
+	<Label x={FCX} y={FY0 - 18} text="On a flat sheet" size={15} weight={700} anchor="middle" />
+	<Label
+		anchor="start"
 		x={fb.X + 14}
 		y={flatY + 4}
 		text="{Math.round(KM_APART).toLocaleString('en').replace(/,/g, ' ')} km"
 		size={12.5}
 		weight={600}
 	/>
-	<T
+	<Label
 		x={FCX}
 		y={fy0 + 26}
 		text="start: both head straight up (north)"
@@ -191,7 +191,7 @@
 	/>
 
 	<!-- ---- globe ---- -->
-	<T x={GX} y={FY0 - 18} text="On a globe" size={15} weight={700} anchor="middle" />
+	<Label x={GX} y={FY0 - 18} text="On a globe" size={15} weight={700} anchor="middle" />
 	<circle
 		cx={GX}
 		cy={GY}
@@ -208,8 +208,8 @@
 	{/each}
 	<path d={equator} fill="none" stroke="var(--stage-ink)" stroke-width="1.4" opacity="0.7" />
 	<circle cx={pole.X} cy={pole.Y} r="3.5" fill="var(--stage-ink)" />
-	<T x={pole.X + 12} y={pole.Y + 4} text="North Pole" size={12} muted />
-	<T x={GX - GR + 6} y={project(0, -80).Y + 24} text="equator" size={12} muted />
+	<Label anchor="start" x={pole.X + 12} y={pole.Y + 4} text="North Pole" size={12} muted />
+	<Label anchor="start" x={GX - GR + 6} y={project(0, -80).Y + 24} text="equator" size={12} muted />
 
 	{#each [LON0, LON1] as lon (lon)}
 		<path
@@ -240,7 +240,8 @@
 			stroke-width="1"
 			opacity={Math.min(0.7, (b.X - a.X - 18) / 20)}
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={b.X + 14}
 			y={b.Y + 4}
 			text="{Math.round(gapGlobe).toLocaleString('en').replace(/,/g, ' ')} km"
@@ -249,7 +250,7 @@
 		/>
 	{/if}
 	{#if met || reduced}
-		<T
+		<Label
 			x={pole.X}
 			y={pole.Y - 16}
 			text="they meet here"
@@ -262,7 +263,7 @@
 
 	<!-- ---- the point ---- -->
 	<Card x={150} y={524} w={660} h={60} />
-	<T
+	<Label
 		x={480}
 		y={548}
 		text="Neither traveller ever turns. On the globe they meet anyway:"
@@ -270,7 +271,7 @@
 		weight={600}
 		anchor="middle"
 	/>
-	<T
+	<Label
 		x={480}
 		y={570}
 		text="no force pulls them together — the surface is curved."

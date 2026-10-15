@@ -14,9 +14,8 @@
 	 * A cursor sweeps each window in SWEEP seconds and holds the finished
 	 * picture; reduced motion shows the finished picture.
 	 */
-	import { Axes, clamp, linePath, scale, smoothstep } from '#lib/draw/index.ts';
+	import { Axes, clamp, Label, linePath, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Tag from './Tag.svelte';
 	import { count, pow10 } from '../../immune-system/run';
 	import {
 		INTERVAL,
@@ -208,7 +207,7 @@
 			label="Dashed line"
 			value="the antibody peak after the model's infection"
 		>
-			<Tag
+			<Label
 				x={X1 - 4}
 				y={syD(Math.log10(yard)) - 8}
 				text="peak after an infection"
@@ -238,7 +237,7 @@
 			</g>
 		{/each}
 		<Readout id="d-key">
-			<Tag
+			<Label
 				x={sxD(INTERVAL) + 8}
 				y={syD(0) - 22}
 				text={two ? 'second dose' : ''}
@@ -246,8 +245,8 @@
 				anchor="start"
 				muted
 			/>
-			<Tag x={sxD(0) + 8} y={syD(0) - 22} text="dose" size={11} anchor="start" muted />
-			<Tag
+			<Label x={sxD(0) + 8} y={syD(0) - 22} text="dose" size={11} anchor="start" muted />
+			<Label
 				x={X1 - 4}
 				y={72}
 				text={two ? 'faint: one dose only' : 'faint: two doses'}
@@ -333,7 +332,7 @@
 			stroke-dasharray="4 4"
 		/>
 		<Readout id="i-cleared">
-			<Tag x={X1 - 4} y={syV(0) - 6} text="below 1: cleared" size={11} anchor="end" muted />
+			<Label x={X1 - 4} y={syV(0) - 6} text="below 1: cleared" size={11} anchor="end" muted />
 		</Readout>
 		{#if vax !== '0'}
 			<path

@@ -10,7 +10,7 @@
 	import type { Point } from '#lib/draw/index.ts';
 	import { redshiftSeen } from '../cosmology';
 	import { ARROW_TIME, NAMED, S, TILE, galaxy, nearest, sample } from './grid';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Props {
 		/** Unique prefix for this view's ids. */
@@ -175,7 +175,7 @@
 				/>
 				{#if px > 26}
 					{@const right = n.X > x + w - 90}
-					<T
+					<Label
 						x={right ? n.X - r - 6 : n.X + r + 6}
 						y={n.Y - r - 4}
 						text={n.name}
@@ -190,7 +190,8 @@
 		<circle cx={VX} cy={VY} r={r + 2} fill="var(--bb-view)" />
 		<circle cx={VX} cy={VY} r={r + 7} fill="none" stroke="var(--bb-view)" stroke-width="1.5" />
 		{#if !named.some((n) => n.isView)}
-			<T
+			<Label
+				anchor="start"
 				x={VX + r + 10}
 				y={VY - r - 6}
 				text="you"
@@ -201,7 +202,8 @@
 		{/if}
 		{#each named as n (n.key)}
 			{#if n.isView}
-				<T
+				<Label
+					anchor="start"
 					x={n.X + r + 10}
 					y={n.Y - r - 6}
 					text="{n.name} (you)"

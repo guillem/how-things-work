@@ -22,7 +22,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		GATES,
@@ -42,7 +42,6 @@
 	} from '../qubits';
 	import { rng } from '#lib/draw/index.ts';
 	import Sphere from './Sphere.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
 
@@ -221,7 +220,7 @@
 	{#if !isBell}
 		<!-- ============ circuit ============ -->
 		<Readout id="circ-ttl">
-			<T x={30} y={40} text="the circuit so far" size={13} muted />
+			<Label anchor="start" x={30} y={40} text="the circuit so far" size={13} muted />
 		</Readout>
 		{#each [0, 1] as q (q)}
 			<line
@@ -232,7 +231,7 @@
 				stroke="var(--stage-ink-muted)"
 				stroke-width="1.5"
 			/>
-			<T
+			<Label
 				x={60}
 				y={85 + q * 50}
 				text={q === 0 ? 'A |0⟩' : 'B |0⟩'}
@@ -281,7 +280,7 @@
 			{/if}
 		{/each}
 		{#if !ops.length}
-			<T x={100} y={170} text="press a gate button" size={12} muted />
+			<Label anchor="start" x={100} y={170} text="press a gate button" size={12} muted />
 		{/if}
 		<Readout
 			id="circ"
@@ -311,7 +310,7 @@
 				value={len < 0.01 ? 'length 0: no state of its own' : `length ${len.toFixed(2)}`}
 				color={q === 0 ? 'var(--qc-a)' : 'var(--qc-b)'}
 			>
-				<T
+				<Label
 					x={cx}
 					y={490}
 					text="qubit {q === 0 ? 'A' : 'B'} on its own"
@@ -320,7 +319,7 @@
 					anchor="middle"
 					color={q === 0 ? 'var(--qc-a)' : 'var(--qc-b)'}
 				/>
-				<T
+				<Label
 					x={cx}
 					y={508}
 					text={len < 0.01 ? 'arrow length 0' : `arrow length ${len.toFixed(2)}`}
@@ -336,7 +335,7 @@
 			label="The pair"
 			value={entangled ? 'entangled' : 'a product state: each qubit has its own state'}
 		>
-			<T
+			<Label
 				x={260}
 				y={556}
 				text={entangled
@@ -351,13 +350,20 @@
 
 		<!-- ============ the four amplitudes ============ -->
 		<Readout id="amp-ttl">
-			<T x={600} y={40} text="the four amplitudes (A's bit first)" size={13} muted />
+			<Label
+				anchor="start"
+				x={600}
+				y={40}
+				text="the four amplitudes (A's bit first)"
+				size={13}
+				muted
+			/>
 		</Readout>
 		{#each [0, 1, 2, 3] as k (k)}
 			{@const y = 80 + k * 62}
 			{@const re = amps.current[k]}
 			{@const im = amps.current[k + 4]}
-			<T x={600} y={y + 6} text="|{label(2, k)}⟩" size={16} weight={700} />
+			<Label anchor="start" x={600} y={y + 6} text="|{label(2, k)}⟩" size={16} weight={700} />
 			<circle cx={672} cy={y} r="24" fill="none" stroke="var(--stage-grid)" />
 			<line x1={648} x2={696} y1={y} y2={y} stroke="var(--stage-grid)" />
 			{#if re * re + im * im > 1e-4}
@@ -382,7 +388,8 @@
 			/>
 			<rect x={712} y={y - 8} width={140 * probs[k]} height="16" rx="3" fill="var(--qc-state)" />
 			<Readout id="a{k}">
-				<T
+				<Label
+					anchor="start"
 					x={860}
 					y={y + 5}
 					text="{ampText(k)} → {pct(psi.re[k] ** 2 + psi.im[k] ** 2)}"
@@ -391,7 +398,7 @@
 			</Readout>
 		{/each}
 		<Readout id="ket" order={2} label="State" value={ketText}>
-			<T x={600} y={340} text={ketText} size={14} weight={600} />
+			<Label anchor="start" x={600} y={340} text={ketText} size={14} weight={600} />
 		</Readout>
 
 		{#if phase === 'register'}
@@ -401,8 +408,16 @@
 				label="{nq} qubits"
 				value="{sci(2 ** nq)} amplitudes, {bytes(16 * 2 ** nq)} to store"
 			>
-				<T x={600} y={400} text="{nq} qubit{nq > 1 ? 's' : ''}:" size={14} weight={600} />
-				<T
+				<Label
+					anchor="start"
+					x={600}
+					y={400}
+					text="{nq} qubit{nq > 1 ? 's' : ''}:"
+					size={14}
+					weight={600}
+				/>
+				<Label
+					anchor="start"
 					x={600}
 					y={430}
 					text="{sci(2 ** nq)} amplitudes"
@@ -410,8 +425,15 @@
 					weight={700}
 					color="var(--qc-state)"
 				/>
-				<T x={600} y={456} text="{bytes(16 * 2 ** nq)} to store them (16 bytes each)" size={13} />
-				<T
+				<Label
+					anchor="start"
+					x={600}
+					y={456}
+					text="{bytes(16 * 2 ** nq)} to store them (16 bytes each)"
+					size={13}
+				/>
+				<Label
+					anchor="start"
 					x={600}
 					y={490}
 					text="a measurement still returns {nq} bit{nq > 1 ? 's' : ''}"
@@ -428,7 +450,14 @@
 					? `${runsN}: ${runsHere.map((c, k) => `${label(2, k)} ${c}`).join(', ')}`
 					: 'none yet'}
 			>
-				<T x={600} y={385} text="fresh pairs measured: {runsN}" size={13} muted />
+				<Label
+					anchor="start"
+					x={600}
+					y={385}
+					text="fresh pairs measured: {runsN}"
+					size={13}
+					muted
+				/>
 				{#each [0, 1, 2, 3] as k (k)}
 					{@const frac = runsN ? runsHere[k] / runsN : 0}
 					{@const bx = 610 + k * 82}
@@ -449,8 +478,8 @@
 						rx="3"
 						fill="var(--qc-state)"
 					/>
-					<T x={bx + 28} y={540} text={label(2, k)} size={14} weight={700} anchor="middle" />
-					<T x={bx + 28} y={558} text={String(runsHere[k])} size={12} anchor="middle" muted />
+					<Label x={bx + 28} y={540} text={label(2, k)} size={14} weight={700} anchor="middle" />
+					<Label x={bx + 28} y={558} text={String(runsHere[k])} size={12} anchor="middle" muted />
 				{/each}
 			</Readout>
 		{/if}
@@ -481,7 +510,7 @@
 				stroke-dasharray="1 0"
 			/>
 			<circle cx={cx + Math.sin(ang) * 80} cy={cy - Math.cos(ang) * 80} r="6" fill={col} />
-			<T
+			<Label
 				x={cx}
 				y={cy - 114}
 				text={q === 0 ? 'A measures along z' : `B measures at ${Math.round(bDeg)}°`}
@@ -491,7 +520,7 @@
 				color={col}
 			/>
 			<Readout id="axl{q}">
-				<T
+				<Label
 					x={cx + Math.sin(ang) * 98}
 					y={cy - Math.cos(ang) * 98 + 4}
 					text="0"
@@ -500,7 +529,7 @@
 					anchor="middle"
 					color="var(--qc-zero)"
 				/>
-				<T
+				<Label
 					x={cx - Math.sin(ang) * 98}
 					y={cy + Math.cos(ang) * 98 + 4}
 					text="1"
@@ -512,13 +541,13 @@
 			</Readout>
 		{/each}
 		<Readout id="pair-ttl">
-			<T x={245} y={30} text="each pair: (|00⟩ + |11⟩)/√2" size={13} anchor="middle" muted />
+			<Label x={245} y={30} text="each pair: (|00⟩ + |11⟩)/√2" size={13} anchor="middle" muted />
 		</Readout>
 
 		<!-- the latest pairs, A over B -->
 		<Readout id="latest">
-			<T x={30} y={318} text="A" size={13} weight={700} color="var(--qc-a)" />
-			<T x={30} y={348} text="B" size={13} weight={700} color="var(--qc-b)" />
+			<Label anchor="start" x={30} y={318} text="A" size={13} weight={700} color="var(--qc-a)" />
+			<Label anchor="start" x={30} y={348} text="B" size={13} weight={700} color="var(--qc-b)" />
 			{#each last as k, i (nPairs - last.length + i)}
 				{@const a = k >> 1}
 				{@const bb = k & 1}
@@ -561,7 +590,7 @@
 					{/if}
 				</g>
 			{/each}
-			<T x={52} y={386} text="red dot: the two results differ" size={11} muted />
+			<Label anchor="start" x={52} y={386} text="red dot: the two results differ" size={11} muted />
 		</Readout>
 		<Readout
 			id="agree"
@@ -571,8 +600,9 @@
 				agreeExact
 			)})"
 		>
-			<T x={30} y={430} text="pairs measured: {nPairs}" size={13} muted />
-			<T
+			<Label anchor="start" x={30} y={430} text="pairs measured: {nPairs}" size={13} muted />
+			<Label
+				anchor="start"
 				x={30}
 				y={462}
 				text="results agreed: {nPairs ? pct(agreeN / nPairs) : '–'}"
@@ -580,7 +610,8 @@
 				weight={700}
 				color="var(--qc-state)"
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={30}
 				y={488}
 				text="quantum prediction cos²({Math.round(bDeg)}°/2) = {pct(agreeExact)}"
@@ -593,7 +624,8 @@
 			label="A alone gave 0"
 			value={nPairs ? pct(aliceZero / nPairs) : '–'}
 		>
-			<T
+			<Label
+				anchor="start"
 				x={30}
 				y={530}
 				text="A alone gave 0 in {nPairs
@@ -602,7 +634,14 @@
 				size={12}
 				muted
 			/>
-			<T x={30} y={548} text="turning B's axis sends nothing to A" size={12} muted />
+			<Label
+				anchor="start"
+				x={30}
+				y={548}
+				text="turning B's axis sends nothing to A"
+				size={12}
+				muted
+			/>
 		</Readout>
 
 		<!-- agreement plot -->
@@ -611,16 +650,17 @@
 		{#each [0, 0.5, 1] as p (p)}
 			<line x1={PL.x0} x2={PL.x1} y1={py(p)} y2={py(p)} stroke="var(--stage-grid)" />
 			<Readout id="py{p}">
-				<T x={PL.x0 - 6} y={py(p) + 4} text={pct(p)} size={11} anchor="end" muted />
+				<Label x={PL.x0 - 6} y={py(p) + 4} text={pct(p)} size={11} anchor="end" muted />
 			</Readout>
 		{/each}
 		{#each [0, 45, 90, 135, 180] as d (d)}
 			<Readout id="px{d}">
-				<T x={px(d)} y={PL.y1 + 16} text="{d}°" size={11} anchor="middle" muted />
+				<Label x={px(d)} y={PL.y1 + 16} text="{d}°" size={11} anchor="middle" muted />
 			</Readout>
 		{/each}
 		<Readout id="pl-ttl">
-			<T
+			<Label
+				anchor="start"
 				x={PL.x0}
 				y={PL.y0 - 14}
 				text="how often A and B agree, against the angle between their axes"
@@ -649,7 +689,14 @@
 			/>
 		{/if}
 		<Readout id="curve-l">
-			<T x={px(60)} y={py(0.75) - 12} text="cos²(angle/2)" size={12} color="var(--qc-state)" />
+			<Label
+				anchor="start"
+				x={px(60)}
+				y={py(0.75) - 12}
+				text="cos²(angle/2)"
+				size={12}
+				color="var(--qc-state)"
+			/>
 		</Readout>
 
 		<!-- CHSH -->
@@ -659,15 +706,24 @@
 			label="Bell–CHSH number S"
 			value="{S.S.toFixed(2)} (pre-agreed answers: at most 2; quantum: {SExact.toFixed(2)})"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={560}
 				y={388}
 				text="Bell's test (CHSH), 2000 pairs at each of four settings:"
 				size={12}
 				muted
 			/>
-			<T x={560} y={414} text="A at 0° or 90°, B at 45° or −45°" size={12} muted />
-			<T
+			<Label
+				anchor="start"
+				x={560}
+				y={414}
+				text="A at 0° or 90°, B at 45° or −45°"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
 				x={560}
 				y={460}
 				text="S = {S.S.toFixed(2)}"
@@ -709,14 +765,14 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			<T
+			<Label
 				x={sx(2) - 6}
 				y={SBAR.y + 34}
 				text="pre-agreed answers: at most 2"
 				size={12}
 				anchor="end"
 			/>
-			<T
+			<Label
 				x={sx(SExact)}
 				y={SBAR.y - 22}
 				text="quantum 2√2"
@@ -724,7 +780,7 @@
 				anchor="middle"
 				color="var(--qc-state)"
 			/>
-			<T x={SBAR.x0} y={SBAR.y + 34} text="0" size={11} muted />
+			<Label anchor="start" x={SBAR.x0} y={SBAR.y + 34} text="0" size={11} muted />
 		</Readout>
 	{/if}
 </g>

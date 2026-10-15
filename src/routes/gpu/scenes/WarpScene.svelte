@@ -12,9 +12,8 @@
 	 * off because its pixel takes the other side of the branch. Rows appear one
 	 * per ROW_T seconds (a pure function of t), then the finished table holds.
 	 */
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Label from './Txt.svelte';
 	import { FAST_IPC, IMAGE, PIXEL_COST, SHADER, WARP, pixelJob, shade, type Path } from '../gpu';
 	import { shadedImage, warpMap } from './pictures';
 

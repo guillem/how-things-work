@@ -8,7 +8,7 @@
 	 * planet from the archive, and the reader measures the curves by dragging
 	 * two handles (`measDepth`, `measK`); "Reveal" shows the published values.
 	 */
-	import { Axes, Handle, scale, type Point } from '#lib/draw/index.ts';
+	import { Axes, Handle, Label, type Point, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		density,
@@ -28,7 +28,6 @@
 	} from '../exoplanets';
 	import { fmtAU, measureBounds, mysteryPlanet, mysterySystem, readerSystem } from '../systems';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 	import { dimming, duration, sig, speed, ticksWithDecimals } from './ui';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
@@ -180,8 +179,8 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="l-title">
-		<T x={32} y={40} text="Brightness during a transit" size={14} weight={700} />
-		<T
+		<Label anchor="start" x={32} y={40} text="Brightness during a transit" size={14} weight={700} />
+		<Label
 			x={620}
 			y={40}
 			text={hits ? `dips every ${duration(P)}` : 'never dips'}
@@ -222,7 +221,8 @@
 			stroke-width="1.5"
 			stroke-dasharray="6 4"
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={LX0 + 8}
 			y={y - 7}
 			text="your reading: {measDepth.toFixed(2)}% dimmer"
@@ -255,7 +255,14 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="v-title">
-		<T x={32} y={324} text="The star’s speed towards and away from us" size={14} weight={700} />
+		<Label
+			anchor="start"
+			x={32}
+			y={324}
+			text="The star’s speed towards and away from us"
+			size={14}
+			weight={700}
+		/>
 	</Readout>
 	<Axes
 		sx={vsx}
@@ -268,8 +275,8 @@
 	/>
 	<line x1={LX0} x2={LX1} y1={vsy(0)} y2={vsy(0)} stroke="var(--stage-line)" />
 	<Readout id="m-axes">
-		<T x={LX0 + 8} y={VY0 + 4} text="↑ away (m/s)" size={11} muted />
-		<T x={LX0 + 8} y={VY1 - 6} text="↓ towards" size={11} muted />
+		<Label anchor="start" x={LX0 + 8} y={VY0 + 4} text="↑ away (m/s)" size={11} muted />
+		<Label anchor="start" x={LX0 + 8} y={VY1 - 6} text="↓ towards" size={11} muted />
 	</Readout>
 	<path d={vfull} fill="none" stroke="var(--ex-rv)" stroke-width="1.5" opacity="0.25" />
 	<path d={vdrawn} fill="none" stroke="var(--ex-rv)" stroke-width="2.4" />
@@ -304,7 +311,7 @@
 			stroke-dasharray="2 4"
 			opacity="0.7"
 		/>
-		<T
+		<Label
 			x={LX1 - 8}
 			y={y - 7}
 			text="your reading: ±{measK.toFixed(0)} m/s"
@@ -329,14 +336,16 @@
 
 	<!-- ---- what the curves say ---- -->
 	<Card x={CX} y={16} w={CW} h={mysteryStep ? 300 : 404} />
-	<T
+	<Label
+		anchor="start"
 		x={CX + 16}
 		y={42}
 		text={mysteryStep ? 'From your readings' : 'From the curves alone'}
 		size={14}
 		weight={700}
 	/>
-	<T
+	<Label
+		anchor="start"
 		x={CX + 16}
 		y={62}
 		text="star: {sig(st.radius, 2)} Suns across, {sig(st.mass, 2)} Suns’ mass"
@@ -344,8 +353,8 @@
 		muted
 	/>
 	<Readout id="r-period" order={1} label="Period → orbit" value="{duration(P)} → {fmtAU(aRead)} AU">
-		<T x={CX + 16} y={90} text="Period → orbit" size={12.5} muted />
-		<T
+		<Label anchor="start" x={CX + 16} y={90} text="Period → orbit" size={12.5} muted />
+		<Label
 			x={CX + CW - 16}
 			y={90}
 			text="{duration(P)} → {fmtAU(aRead)} AU"
@@ -363,8 +372,8 @@
 			: 'no dip: size unknown'}
 		color="var(--ex-light)"
 	>
-		<T x={CX + 16} y={118} text="Dip → size" size={12.5} muted />
-		<T
+		<Label anchor="start" x={CX + 16} y={118} text="Dip → size" size={12.5} muted />
+		<Label
 			x={CX + CW - 16}
 			y={118}
 			text={sizeRead > 0
@@ -377,7 +386,7 @@
 			anchor="end"
 			color="var(--ex-light)"
 		/>
-		<T
+		<Label
 			x={CX + CW - 16}
 			y={136}
 			text={sizeRead > 0
@@ -395,8 +404,15 @@
 		value={massRead > 0 ? `${speed(readK)} → ${hits ? '' : 'at least '}${fmtMass(massRead)}` : '–'}
 		color="var(--ex-rv)"
 	>
-		<T x={CX + 16} y={164} text={hits ? 'Wobble → mass' : 'Wobble → at least'} size={12.5} muted />
-		<T
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={164}
+			text={hits ? 'Wobble → mass' : 'Wobble → at least'}
+			size={12.5}
+			muted
+		/>
+		<Label
 			x={CX + CW - 16}
 			y={164}
 			text={massRead > 0 ? fmtMass(massRead) : 'drag to read it'}
@@ -405,7 +421,7 @@
 			anchor="end"
 			color="var(--ex-rv)"
 		/>
-		<T
+		<Label
 			x={CX + CW - 16}
 			y={182}
 			text={massRead > 0 ? `star moves ±${speed(readK)}${hits ? '' : '; tilt unknown'}` : ''}
@@ -420,8 +436,8 @@
 		label="Density"
 		value={isFinite(dens) ? `${sig(dens, 2)} g/cm³` : 'needs both curves'}
 	>
-		<T x={CX + 16} y={210} text="Density" size={12.5} muted />
-		<T
+		<Label anchor="start" x={CX + 16} y={210} text="Density" size={12.5} muted />
+		<Label
 			x={CX + CW - 16}
 			y={210}
 			text={isFinite(dens) ? `${sig(dens, 2)} g/cm³` : 'needs both curves'}
@@ -434,7 +450,7 @@
 	<line x1={DX0} x2={DX1} y1={252} y2={252} stroke="var(--stage-line)" stroke-width="1.5" />
 	{#each REFS as r (r.id)}
 		<line x1={dsx(r.d)} x2={dsx(r.d)} y1={247} y2={257} stroke="var(--stage-ink-muted)" />
-		<T
+		<Label
 			x={dsx(r.d) + r.dx}
 			y={r.above ? 240 : 272}
 			text={r.label}
@@ -453,31 +469,58 @@
 			stroke-width="1.5"
 		/>
 	{/if}
-	<T x={DX1} y={294} text="g/cm³ (water = 1)" size={10.5} anchor="end" muted />
+	<Label x={DX1} y={294} text="g/cm³ (water = 1)" size={10.5} anchor="end" muted />
 
 	{#if !mysteryStep}
 		<Readout id="m-note">
-			<T x={CX + 16} y={330} text="Gas giants are light for their size;" size={12} />
-			<T x={CX + 16} y={348} text="rock and iron planets are dense." size={12} />
-			<T x={CX + 16} y={376} text="Tilt the orbit past a few degrees and" size={12} muted />
-			<T x={CX + 16} y={394} text="the dip, the size and the density go." size={12} muted />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={330}
+				text="Gas giants are light for their size;"
+				size={12}
+			/>
+			<Label anchor="start" x={CX + 16} y={348} text="rock and iron planets are dense." size={12} />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={376}
+				text="Tilt the orbit past a few degrees and"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={394}
+				text="the dip, the size and the density go."
+				size={12}
+				muted
+			/>
 		</Readout>
 	{:else if archive}
 		<Card x={CX} y={328} w={CW} h={256} opacity={revealed ? 1 : 0.6} />
 		{#if revealed}
 			<Readout id="name" order={5} label="It is" value="{archive.name} ({archive.year})">
-				<T x={CX + 16} y={354} text={archive.name} size={15} weight={700} />
-				<T x={CX + CW - 16} y={354} text="found {archive.year}" size={12} anchor="end" muted />
+				<Label anchor="start" x={CX + 16} y={354} text={archive.name} size={15} weight={700} />
+				<Label x={CX + CW - 16} y={354} text="found {archive.year}" size={12} anchor="end" muted />
 			</Readout>
-			<T x={CX + 16} y={378} text="Published values (NASA Exoplanet Archive):" size={11.5} muted />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={378}
+				text="Published values (NASA Exoplanet Archive):"
+				size={11.5}
+				muted
+			/>
 			<Readout
 				id="pub-size"
 				order={6}
 				label="Published size"
 				value={archive.depthPercent ? `${sig(archive.radius)} × Earth` : 'unknown: no transit'}
 			>
-				<T x={CX + 16} y={402} text="Size" size={12.5} muted />
-				<T
+				<Label anchor="start" x={CX + 16} y={402} text="Size" size={12.5} muted />
+				<Label
 					x={CX + CW - 16}
 					y={402}
 					text={archive.depthPercent
@@ -489,8 +532,8 @@
 				/>
 			</Readout>
 			<Readout id="pub-mass" order={7} label="Published mass" value="{sig(archive.mass)} × Earth">
-				<T x={CX + 16} y={426} text="Mass" size={12.5} muted />
-				<T
+				<Label anchor="start" x={CX + 16} y={426} text="Mass" size={12.5} muted />
+				<Label
 					x={CX + CW - 16}
 					y={426}
 					text="{sig(archive.mass)} × Earth"
@@ -499,8 +542,8 @@
 					anchor="end"
 				/>
 			</Readout>
-			<T x={CX + 16} y={450} text="Dip" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={450} text="Dip" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={450}
 				text={archive.depthPercent ? `${archive.depthPercent}%` : 'none'}
@@ -508,17 +551,33 @@
 				weight={650}
 				anchor="end"
 			/>
-			<T x={CX + 16} y={474} text="Wobble" size={12.5} muted />
-			<T x={CX + CW - 16} y={474} text="±{archive.rvAmp} m/s" size={13} weight={650} anchor="end" />
-			<T x={CX + 16} y={500} text="Sources: {archive.refs.mass}" size={11} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={474} text="Wobble" size={12.5} muted />
+			<Label
+				x={CX + CW - 16}
+				y={474}
+				text="±{archive.rvAmp} m/s"
+				size={13}
+				weight={650}
+				anchor="end"
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={500}
+				text="Sources: {archive.refs.mass}"
+				size={11}
+				muted
+			/>
+			<Label
+				anchor="start"
 				x={CX + 16}
 				y={516}
 				text={archive.depthPercent ? '' : 'Its tilt was estimated later from its own'}
 				size={11}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={CX + 16}
 				y={532}
 				text={archive.depthPercent ? '' : 'light: the mass above rests on that tilt.'}
@@ -526,10 +585,22 @@
 				muted
 			/>
 		{:else}
-			<T x={CX + 16} y={360} text="Which planet is it?" size={14} weight={700} />
-			<T x={CX + 16} y={386} text="Drag the two pink handles onto" size={12} />
-			<T x={CX + 16} y={404} text="the curves, then reveal the planet" size={12} />
-			<T x={CX + 16} y={422} text="to compare with the published values." size={12} />
+			<Label anchor="start" x={CX + 16} y={360} text="Which planet is it?" size={14} weight={700} />
+			<Label anchor="start" x={CX + 16} y={386} text="Drag the two pink handles onto" size={12} />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={404}
+				text="the curves, then reveal the planet"
+				size={12}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={422}
+				text="to compare with the published values."
+				size={12}
+			/>
 		{/if}
 	{/if}
 </g>

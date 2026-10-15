@@ -9,7 +9,6 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { DAY, type Hour } from '../day';
 	import { at, dailyEnergy, demandAt, demandExtremes, type Source } from '../grid';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -113,8 +112,8 @@
 		yTicks={mode === 'mix' ? [-10000, 0, 10000, 20000, 30000] : [0, 10000, 20000, 30000]}
 		yFormat={(v) => `${v / 1000}`}
 	/>
-	<Txt x={X0 - 10} y={Y0 - 18} text="GW (thousands of MW)" anchor="start" muted size={12} />
-	<Txt
+	<Label x={X0 - 10} y={Y0 - 18} text="GW (thousands of MW)" anchor="start" muted size={12} />
+	<Label
 		x={X1}
 		y={Y0 - 18}
 		text="Spanish mainland, Wednesday 9 April 2025"
@@ -244,7 +243,7 @@
 
 	{#if mode === 'mix'}
 		<!-- the legend: each source's mean power in the cursor's hour -->
-		<Txt x={X0} y={470} text="In the hour {span}:" anchor="start" size={13} weight={600} />
+		<Label x={X0} y={470} text="In the hour {span}:" anchor="start" size={13} weight={600} />
 		{#each legend as l, i (l.key)}
 			{@const col = i % 4}
 			{@const row = Math.floor(i / 4)}

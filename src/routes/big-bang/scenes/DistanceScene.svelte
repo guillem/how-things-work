@@ -12,7 +12,7 @@
 	const speedText = (v: number) =>
 		`${v >= 10 ? v.toFixed(0) : v.toFixed(v < 0.1 ? 3 : 2)} × light speed`;
 	import Card from './Card.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -92,13 +92,13 @@
 
 <g>
 	<Card x={16} y={16} w={600} h={370} />
-	<T x={36} y={40} text="Distance against redshift" size={15} weight={700} />
+	<Label anchor="start" x={36} y={40} text="Distance against redshift" size={15} weight={700} />
 	{#each [0, 10, 20, 30, 40, 50] as v (v)}
 		<line x1={P.x} x2={P.x + P.w} y1={py(v)} y2={py(v)} stroke="var(--stage-grid)" />
-		<T x={P.x - 6} y={py(v) + 4} text={String(v)} size={11} anchor="end" muted />
+		<Label x={P.x - 6} y={py(v) + 4} text={String(v)} size={11} anchor="end" muted />
 	{/each}
 	{#each zTicks as zt (zt)}
-		<T
+		<Label
 			x={px(Math.log10(zt))}
 			y={P.y + P.h + 16}
 			text={String(zt)}
@@ -109,8 +109,15 @@
 	{/each}
 	<line x1={P.x} x2={P.x + P.w} y1={P.y + P.h} y2={P.y + P.h} stroke="var(--stage-line)" />
 	<line x1={P.x} x2={P.x} y1={P.y} y2={P.y + P.h} stroke="var(--stage-line)" />
-	<T x={P.x - 6} y={P.y - 10} text="billion light years" size={11} muted />
-	<T x={P.x + P.w} y={P.y + P.h + 32} text="redshift z (log scale)" size={11} anchor="end" muted />
+	<Label anchor="start" x={P.x - 6} y={P.y - 10} text="billion light years" size={11} muted />
+	<Label
+		x={P.x + P.w}
+		y={P.y + P.h + 32}
+		text="redshift z (log scale)"
+		size={11}
+		anchor="end"
+		muted
+	/>
 	<!-- the horizon and the age -->
 	<line
 		x1={P.x}
@@ -121,7 +128,8 @@
 		stroke-dasharray="4 4"
 		opacity="0.6"
 	/>
-	<T
+	<Label
+		anchor="start"
 		x={P.x + 8}
 		y={py(HORIZON) - 6}
 		text="edge of the observable universe, {HORIZON.toFixed(1)}"
@@ -137,7 +145,14 @@
 		stroke-dasharray="4 4"
 		opacity="0.6"
 	/>
-	<T x={P.x + 8} y={py(AGE) + 14} text="13.8: the age of the universe × c" size={10.5} muted />
+	<Label
+		anchor="start"
+		x={P.x + 8}
+		y={py(AGE) + 14}
+		text="13.8: the age of the universe × c"
+		size={10.5}
+		muted
+	/>
 	{#each SERIES as s (s.id)}
 		<path d={s.d} fill="none" stroke={s.color} stroke-width="2.4" />
 	{/each}
@@ -167,27 +182,41 @@
 	<!-- readouts -->
 	<Card x={632} y={16} w={312} h={370} />
 	<Readout id="z" order={1} label="Redshift" value={zName ? `${zText(z)} (${zName})` : zText(z)}>
-		<T x={652} y={44} text="z = {zText(z)}" size={16} weight={700} />
+		<Label anchor="start" x={652} y={44} text="z = {zText(z)}" size={16} weight={700} />
 	</Readout>
 	{#each OBJECTS as o (o.id)}
 		{#if Math.abs(Math.log10(o.z) - lz) < 0.02}
 			<Readout id="obj">
-				<T x={924} y={44} text={o.name} size={13} weight={650} anchor="end" />
+				<Label x={924} y={44} text={o.name} size={13} weight={650} anchor="end" />
 			</Readout>
 		{/if}
 	{/each}
 	<Readout id="sent" order={3} label="Light set off" value="{gyrText(AGE - d.emitted)} ago">
-		<T x={652} y={76} text="Light set off" size={12.5} muted />
-		<T x={924} y={76} text="{gyrText(AGE - d.emitted)} ago" size={13.5} weight={700} anchor="end" />
-		<T x={652} y={98} text="when the universe was" size={12.5} muted />
-		<T x={924} y={98} text={timeText(d.emitted * GYR_S)} size={13.5} weight={700} anchor="end" />
+		<Label anchor="start" x={652} y={76} text="Light set off" size={12.5} muted />
+		<Label
+			x={924}
+			y={76}
+			text="{gyrText(AGE - d.emitted)} ago"
+			size={13.5}
+			weight={700}
+			anchor="end"
+		/>
+		<Label anchor="start" x={652} y={98} text="when the universe was" size={12.5} muted />
+		<Label
+			x={924}
+			y={98}
+			text={timeText(d.emitted * GYR_S)}
+			size={13.5}
+			weight={700}
+			anchor="end"
+		/>
 	</Readout>
 	{#each SERIES as s, i (s.id)}
 		{@const v = s.id === 'now' ? d.comoving : s.id === 'travel' ? d.lightTravel : d.then}
 		<Readout id="d-{s.id}" order={4 + i} label={s.label} value={glyText(v)} color={s.color}>
 			<rect x={652} y={124 + i * 46} width="12" height="12" rx="2" fill={s.color} />
-			<T x={672} y={135 + i * 46} text={s.label} size={12.5} />
-			<T
+			<Label anchor="start" x={672} y={135 + i * 46} text={s.label} size={12.5} />
+			<Label
 				x={924}
 				y={157 + i * 46}
 				text={glyText(v)}
@@ -199,21 +228,36 @@
 		</Readout>
 	{/each}
 	<Readout id="speed">
-		<T x={652} y={286} text="Receding now" size={12.5} muted />
-		<T x={924} y={286} text={speedText(vNow)} size={13.5} weight={700} anchor="end" />
-		<T x={652} y={310} text="when the light left" size={12.5} muted />
-		<T x={924} y={310} text={speedText(vThen)} size={13.5} weight={700} anchor="end" />
+		<Label anchor="start" x={652} y={286} text="Receding now" size={12.5} muted />
+		<Label x={924} y={286} text={speedText(vNow)} size={13.5} weight={700} anchor="end" />
+		<Label anchor="start" x={652} y={310} text="when the light left" size={12.5} muted />
+		<Label x={924} y={310} text={speedText(vThen)} size={13.5} weight={700} anchor="end" />
 	</Readout>
 	<Readout id="speed-note">
-		<T x={652} y={342} text="Distances grow faster than light beyond" size={11.5} muted />
-		<T
+		<Label
+			anchor="start"
+			x={652}
+			y={342}
+			text="Distances grow faster than light beyond"
+			size={11.5}
+			muted
+		/>
+		<Label
+			anchor="start"
 			x={652}
 			y={360}
 			text="{HUBBLE_DISTANCE.toFixed(1)} billion light years: space stretches;"
 			size={11.5}
 			muted
 		/>
-		<T x={652} y={378} text="nothing outruns light through space." size={11.5} muted />
+		<Label
+			anchor="start"
+			x={652}
+			y={378}
+			text="nothing outruns light through space."
+			size={11.5}
+			muted
+		/>
 	</Readout>
 
 	<!-- the bars -->
@@ -231,7 +275,7 @@
 		<rect x={BX} y={b.y} width={BW} height="12" rx="4" fill="var(--stage-grid)" opacity="0.6" />
 		<rect x={BX} y={b.y} width={Math.max(2, bx(b.v) - BX)} height="12" rx="4" fill={b.color} />
 		<Readout id="bar-{b.id}">
-			<T x={BX} y={b.y - 6} text={b.label} size={12} weight={600} />
+			<Label anchor="start" x={BX} y={b.y - 6} text={b.label} size={12} weight={600} />
 		</Readout>
 	{/each}
 	<circle cx={BX} cy={498} r="6" fill="var(--bb-view)" />
@@ -244,6 +288,6 @@
 		stroke-width="2"
 		opacity={reduced ? 0 : 1}
 	/>
-	<T x={bx(HORIZON) - 6} y={428} text="observable universe" size={10.5} anchor="end" muted />
-	<T x={BX} y={578} text="us" size={10.5} muted />
+	<Label x={bx(HORIZON) - 6} y={428} text="observable universe" size={10.5} anchor="end" muted />
+	<Label anchor="start" x={BX} y={578} text="us" size={10.5} muted />
 </g>

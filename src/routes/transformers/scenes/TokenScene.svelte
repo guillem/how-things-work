@@ -5,10 +5,9 @@
 	 * embedding and the position embedding. For the animal sentence, "it" asks which noun it means.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { cycle, smoothstep } from '#lib/draw/index.ts';
+	import { cycle, Label, smoothstep } from '#lib/draw/index.ts';
 	import { chipWidth, label, sentenceOf } from './shared';
 	import TokenChip from './TokenChip.svelte';
-	import Txt from './Txt.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -74,7 +73,7 @@
 
 <g>
 	<Readout id="text" order={1} label="Sentence" value="“{s.text}”">
-		<Txt x={480} y={44} anchor="middle" size={17} weight={600} text="“{s.text}”" />
+		<Label tabular x={480} y={44} anchor="middle" size={17} weight={600} text="“{s.text}”" />
 	</Readout>
 
 	{#if it >= 0}
@@ -93,7 +92,7 @@
 			stroke-width="1.6"
 			stroke-dasharray="4 4"
 		/>
-		<Txt
+		<Label
 			x={(layout[it].cx + layout[animal].cx) / 2}
 			y={ROW_Y - 48}
 			anchor="middle"
@@ -101,7 +100,7 @@
 			weight={700}
 			color="var(--tf-att)"
 		/>
-		<Txt
+		<Label
 			x={(layout[it].cx + layout[street].cx) / 2}
 			y={ROW_Y - 28}
 			anchor="middle"
@@ -114,7 +113,15 @@
 	{#each layout as c (c.i)}
 		<TokenChip x={c.x} y={ROW_Y} w={c.w} h={30} text={texts[c.i]} {size} selected={c.i === it} />
 		<Readout id="id-{c.i}">
-			<Txt x={c.cx} y={ROW_Y + 48} anchor="middle" size={11} muted text={String(s.ids[c.i])} />
+			<Label
+				tabular
+				x={c.cx}
+				y={ROW_Y + 48}
+				anchor="middle"
+				size={11}
+				muted
+				text={String(s.ids[c.i])}
+			/>
 		</Readout>
 		<!-- token embedding + position embedding = the token's input vector -->
 		<rect
@@ -136,7 +143,8 @@
 			opacity="0.22"
 		/>
 		<Readout id="p-{c.i}">
-			<Txt
+			<Label
+				tabular
 				x={c.cx}
 				y={COL.pos + COL.h / 2 + 4}
 				anchor="middle"
@@ -184,7 +192,8 @@
 		value="768 numbers, looked up by the token's number (50,257 rows)"
 		color="var(--tf-att)"
 	>
-		<Txt
+		<Label
+			anchor="start"
 			x={24}
 			y={COL.emb - 8}
 			size={12}
@@ -200,7 +209,8 @@
 		value="768 numbers for position 0, 1, 2, …"
 		color="var(--tf-q)"
 	>
-		<Txt
+		<Label
+			anchor="start"
 			x={24}
 			y={COL.pos - 8}
 			size={12}
@@ -215,7 +225,8 @@
 		label="Input"
 		value="their sum: one 768-number vector per token, ready for layer 1"
 	>
-		<Txt
+		<Label
+			anchor="start"
 			x={24}
 			y={COL.x - 8}
 			size={12}
@@ -225,10 +236,11 @@
 	</Readout>
 
 	<Readout id="caption" order={5} label="Note" value={caption}>
-		<Txt x={480} y={548} anchor="middle" size={14} text={caption} />
+		<Label tabular x={480} y={548} anchor="middle" size={14} text={caption} />
 	</Readout>
 	<Readout id="count">
-		<Txt
+		<Label
+			tabular
 			x={480}
 			y={574}
 			anchor="middle"

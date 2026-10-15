@@ -21,7 +21,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { scale } from '#lib/draw/index.ts';
+	import { Label, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		KMH,
@@ -38,7 +38,6 @@
 	} from '../control';
 	import Card from './Card.svelte';
 	import Plot from './Plot.svelte';
-	import Txt from './Txt.svelte';
 	import { heightAt, restartClock, seriesPath, type Cell } from './shared';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -328,7 +327,7 @@
 			/>
 			{#if p.k % 500 === 0 && Math.abs(p.px - CAR_X) > 50 && !(ghost && Math.abs(p.px - sxRoad(gx)) < 50)}
 				<Readout id="post-{p.k}">
-					<Txt x={p.px} y={p.py - 16} text="{p.k / 1000} km" size={11} anchor="middle" muted />
+					<Label x={p.px} y={p.py - 16} text="{p.k / 1000} km" size={11} anchor="middle" muted />
 				</Readout>
 			{/if}
 		{/each}
@@ -347,7 +346,7 @@
 	</g>
 	{#if road !== 'flat'}
 		<Readout id="exaggerated">
-			<Txt
+			<Label
 				x={R.x1 - 12}
 				y={R.bottom - 10}
 				text="heights × {Math.round(HY / HX)}"
@@ -368,7 +367,7 @@
 	{/if}
 	{#if ghost}
 		<Readout id="ghost-label">
-			<Txt
+			<Label
 				x={sxRoad(gx)}
 				y={syRoad(heightAt(road, gx), h0) - 30}
 				text="fixed throttle"
@@ -392,11 +391,11 @@
 		yFormat={(s: number) => String(s)}
 	/>
 	<Readout id="speed-title">
-		<Txt x={P0} y={SP.top - 10} text="speed, km/h" size={12} muted />
+		<Label anchor="start" x={P0} y={SP.top - 10} text="speed, km/h" size={12} muted />
 	</Readout>
 	{#if FAST > 1}
 		<Readout id="fast">
-			<Txt x={P1} y={SP.top - 10} text="time runs 3× faster" size={11} anchor="end" muted />
+			<Label x={P1} y={SP.top - 10} text="time runs 3× faster" size={11} anchor="end" muted />
 		</Readout>
 	{/if}
 	{#if !zn}
@@ -422,7 +421,7 @@
 		/>
 	{/if}
 	<Readout id="target-label">
-		<Txt
+		<Label
 			x={P1}
 			y={sy(zn ? 90.5 : 90) - 6}
 			text={zn ? 'new target 90.5' : 'target 90'}
@@ -458,7 +457,8 @@
 				color="var(--fc-limit)"
 				order={10}
 			>
-				<Txt
+				<Label
+					anchor="start"
 					x={bx + 8}
 					y={sy(settle) + 18}
 					text="error {(90 - settle).toFixed(1)} km/h, for good"
@@ -511,15 +511,22 @@
 	<!-- throttle against time -->
 	<Plot {sx} sy={su} {xTicks} yTicks={[0, 1]} xFormat={() => ''} yFormat={(s) => `${s * 100}%`} />
 	<Readout id="throttle-title">
-		<Txt x={P0} y={TH.top - 8} text="throttle" size={12} muted />
+		<Label anchor="start" x={P0} y={TH.top - 8} text="throttle" size={12} muted />
 	</Readout>
 	{#if showI}
 		<Readout id="i-title">
-			<Txt x={P0 + 62} y={TH.top - 8} text="- - its integral part" size={12} color="var(--fc-i)" />
+			<Label
+				anchor="start"
+				x={P0 + 62}
+				y={TH.top - 8}
+				text="- - its integral part"
+				size={12}
+				color="var(--fc-i)"
+			/>
 		</Readout>
 		{#if Math.max(...run.i) > 1.12}
 			<Readout id="i-off">
-				<Txt
+				<Label
 					x={P1}
 					y={TH.top - 8}
 					text="integral above 100%: off the top"
@@ -532,7 +539,7 @@
 	{/if}
 	{#if ghost}
 		<Readout id="ghost-throttle">
-			<Txt
+			<Label
 				x={P1}
 				y={su(ghostThrottle) - 6}
 				text="fixed throttle"
@@ -600,8 +607,8 @@
 			/>
 		{/if}
 	{/each}
-	<Txt x={144} y={y - 22} text="error" size={11} muted anchor="start" />
-	<Txt x={292} y={y - 22} text="throttle" size={11} muted anchor="start" />
+	<Label x={144} y={y - 22} text="error" size={11} muted anchor="start" />
+	<Label x={292} y={y - 22} text="throttle" size={11} muted anchor="start" />
 	<!-- the speed fed back to the controller: the loop -->
 	<path
 		d="M544 {y - 3} H568 V{y + 26} H232 V{y + 14}"
@@ -610,7 +617,7 @@
 		stroke-width="2"
 		marker-end="url(#arrowhead)"
 	/>
-	<Txt
+	<Label
 		x={400}
 		y={y + 40}
 		text="speed sensor: measured speed fed back"

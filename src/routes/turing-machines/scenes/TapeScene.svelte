@@ -16,7 +16,7 @@
 	 * presentation attributes.
 	 */
 	import { untrack } from 'svelte';
-	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { clamp, Handle, Label, type Point, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { createPlayback } from '#lib/explainer/playback.ts';
 	import {
@@ -29,7 +29,6 @@
 		tapeText,
 		type Machine
 	} from '../turing';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -296,11 +295,12 @@ B 1 -> 1 R H`;
 <g opacity={fadeIn}>
 	<!-- header -->
 	<Readout id="title" order={1} label={title} value={status} color={statusColor}>
-		<Txt x={16 + 8} y={42} text={title} size={18} weight={600} />
-		<Txt x={24} y={68} text={status} size={14} color={statusColor} />
+		<Label anchor="start" tabular x={16 + 8} y={42} text={title} size={18} weight={600} />
+		<Label anchor="start" tabular x={24} y={68} text={status} size={14} color={statusColor} />
 	</Readout>
 	<Readout id="steps" order={2} label="Steps taken" value={String(taken)}>
-		<Txt
+		<Label
+			tabular
 			x={936}
 			y={42}
 			text="steps taken: {taken}"
@@ -327,7 +327,8 @@ B 1 -> 1 R H`;
 					stroke-width={c.fresh ? 2 : 1}
 				/>
 				{#if c.sym !== blank}
-					<Txt
+					<Label
+						tabular
 						x={c.x}
 						y={TAPE_Y + CH / 2 + 8}
 						text={c.sym}
@@ -362,7 +363,8 @@ B 1 -> 1 R H`;
 			value={tapeShown}
 			color="var(--tm-head)"
 		>
-			<Txt
+			<Label
+				tabular
 				x={clamp(headX, 60, 900)}
 				y={TAPE_Y - 30}
 				text="state: {stateNow}"
@@ -373,7 +375,8 @@ B 1 -> 1 R H`;
 			/>
 		</Readout>
 		<Readout id="tape-note">
-			<Txt
+			<Label
+				tabular
 				x={480}
 				y={TAPE_Y + CH + 24}
 				text={edit
@@ -390,7 +393,14 @@ B 1 -> 1 R H`;
 
 	<!-- rule table -->
 	{#if m}
-		<Txt x={TX} y={TY - 20} text="Rule table: write, move, next state" size={13} weight={600} />
+		<Label
+			anchor="start"
+			x={TX}
+			y={TY - 20}
+			text="Rule table: write, move, next state"
+			size={13}
+			weight={600}
+		/>
 		<rect
 			x={TX - 6}
 			y={TY - 6}
@@ -400,9 +410,18 @@ B 1 -> 1 R H`;
 			fill="var(--surface)"
 			stroke="var(--border)"
 		/>
-		<Txt x={TX + 8} y={TY + rowH * 0.65} text="state" size={12} muted halo={false} />
+		<Label
+			anchor="start"
+			x={TX + 8}
+			y={TY + rowH * 0.65}
+			text="state"
+			size={12}
+			muted
+			halo={false}
+		/>
 		{#each symbols as s, j (s)}
-			<Txt
+			<Label
+				tabular
 				x={TX + stateW + colW * (j + 0.5)}
 				y={TY + rowH * 0.65}
 				text="reads {s === blank ? '_ (blank)' : s}"
@@ -415,7 +434,9 @@ B 1 -> 1 R H`;
 		{#each states as st, i (st)}
 			{@const y = TY + rowH * (i + 1)}
 			<line x1={TX} x2={TX + TW} y1={y} y2={y} stroke="var(--border)" stroke-width="1" />
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={TX + 8}
 				y={y + rowH * 0.66}
 				text={st}
@@ -449,7 +470,8 @@ B 1 -> 1 R H`;
 						stroke-width="2"
 					/>
 				{/if}
-				<Txt
+				<Label
+					tabular
 					x={TX + stateW + colW * (j + 0.5)}
 					y={y + rowH * 0.66}
 					text={r ? `${r.write} ${r.move} ${r.next}` : '—  halt'}
@@ -463,7 +485,8 @@ B 1 -> 1 R H`;
 			{/each}
 		{/each}
 		<Readout id="halts">
-			<Txt
+			<Label
+				tabular
 				x={TX + TW}
 				y={TY - 20}
 				text="{haltStates.length
@@ -486,7 +509,8 @@ B 1 -> 1 R H`;
 			/>
 		{/if}
 	{:else if edit}
-		<Txt
+		<Label
+			anchor="start"
 			x={TX}
 			y={TY - 20}
 			text="The table has mistakes:"
@@ -495,7 +519,9 @@ B 1 -> 1 R H`;
 			color="var(--tm-no)"
 		/>
 		{#each errors.slice(0, 6) as err, i (i)}
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={TX}
 				y={TY + 8 + i * 22}
 				text="Line {err.line}: {err.message}"
@@ -514,7 +540,8 @@ B 1 -> 1 R H`;
 
 	<!-- editor -->
 	{#if edit}
-		<Txt
+		<Label
+			anchor="start"
 			x={ED.x + 2}
 			y={TAPE_Y + CH + 34}
 			text="Starting tape (_ or a space is a blank):"
@@ -534,7 +561,14 @@ B 1 -> 1 R H`;
 				onkeydown={(e) => e.stopPropagation()}
 			/>
 		</foreignObject>
-		<Txt x={ED.x + 2} y={ED.y - 20} text="Rules: state symbol -> write move next" size={12} muted />
+		<Label
+			anchor="start"
+			x={ED.x + 2}
+			y={ED.y - 20}
+			text="Rules: state symbol -> write move next"
+			size={12}
+			muted
+		/>
 		<rect
 			x={ED.x}
 			y={ED.y}
@@ -579,7 +613,8 @@ B 1 -> 1 R H`;
 			opacity="0.6"
 		/>
 		<Readout id="tl">
-			<Txt
+			<Label
+				tabular
 				x={(TL0 + TL1) / 2}
 				y={TLY + 28}
 				text="step {Math.round(Math.min(k, total))} of {total}{rec.stop === 'limit'

@@ -14,12 +14,11 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { untrack } from 'svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { cycle, smoothstep } from '#lib/draw/index.ts';
+	import { cycle, Label, smoothstep } from '#lib/draw/index.ts';
 	import { cosine } from '../attention';
 	import { gpt2 } from '../gpt2';
 	import { bands, bars, clipCaps, fix, label, num, top } from './shared';
 	import TokenChip from './TokenChip.svelte';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
 
@@ -165,9 +164,9 @@
 <g>
 	<!-- the query on top -->
 	<g opacity={o.current.head}>
-		<Txt x={16} y={30} size={12} muted text="the token asking" />
+		<Label anchor="start" x={16} y={30} size={12} muted text="the token asking" />
 		<TokenChip x={16} y={36} w={84} h={28} text={names[qi]} selected />
-		<Txt
+		<Label
 			x={Q.x - 10}
 			y={Q.mid + 5}
 			anchor="end"
@@ -180,9 +179,10 @@
 		<path d={qBars} fill="var(--tf-q)" />
 		<path d={qCaps} fill="var(--stage-ink)" />
 		<Readout id="formula" order={9} label="Formula" value={formula}>
-			<Txt x={944} y={Q.mid + 5} anchor="end" size={13} weight={600} text={formula} />
+			<Label tabular x={944} y={Q.mid + 5} anchor="end" size={13} weight={600} text={formula} />
 		</Readout>
-		<Txt
+		<Label
+			anchor="start"
 			x={K.x}
 			y={ROW.y - 6}
 			size={11}
@@ -191,7 +191,8 @@
 			text="key k"
 			opacity={o.current.qkv}
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={V.x}
 			y={ROW.y - 6}
 			size={11}
@@ -235,7 +236,8 @@
 	<!-- scores and weights -->
 	{#if o.current.scores > 0.01 || o.current.weights > 0.01}
 		<g opacity={Math.max(o.current.scores, o.current.weights)}>
-			<Txt
+			<Label
+				tabular
 				x={phase === 'scores' ? SC.zero : W.x}
 				y={ROW.y - 6}
 				anchor={phase === 'scores' ? 'middle' : 'start'}
@@ -285,7 +287,9 @@
 					/>
 				{/if}
 				<Readout id="w-{j}">
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={700}
 						y={cy(j) + 4}
 						size={12}
@@ -296,7 +300,9 @@
 			{/each}
 			{#if qi < N - 1}
 				<Readout id="masked">
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={W.x}
 						y={(cy(qi + 1) + cy(N - 1)) / 2 + 4}
 						size={12}
@@ -312,10 +318,11 @@
 	<!-- the mix -->
 	{#if o.current.mix > 0.01}
 		<g opacity={o.current.mix}>
-			<Txt x={MX.x} y={ROW.y - 6} size={11} weight={600} text="weight × value" />
+			<Label anchor="start" x={MX.x} y={ROW.y - 6} size={11} weight={600} text="weight × value" />
 			{#each scaled as r (r.j)}
 				<Readout id="mw-{r.j}">
-					<Txt
+					<Label
+						tabular
 						x={MX.x - 6}
 						y={cy(r.j) + 4}
 						anchor="end"
@@ -331,7 +338,9 @@
 			{#each flow as p (p.key)}
 				<circle cx={p.x} cy={p.y} r={p.r} fill="var(--tf-v)" opacity={p.o} />
 			{/each}
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={OUT.x}
 				y={OUT.mid - 60}
 				size={13}
@@ -347,7 +356,9 @@
 			/>
 			<path d={outBars} fill="var(--tf-v)" />
 			<path d={outCaps} fill="var(--stage-ink)" />
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={OUT.x}
 				y={OUT.mid + 90}
 				size={13}
@@ -370,7 +381,14 @@
 				label="Output vs value of “{names[lead.j]}”"
 				value="cos = {fix(leadCos)}"
 			>
-				<Txt x={OUT.x} y={OUT.mid + 222} size={13} text="cosine between the two: {fix(leadCos)}" />
+				<Label
+					anchor="start"
+					tabular
+					x={OUT.x}
+					y={OUT.mid + 222}
+					size={13}
+					text="cosine between the two: {fix(leadCos)}"
+				/>
 			</Readout>
 		</g>
 	{/if}
@@ -379,7 +397,8 @@
 	{#if o.current.matrix > 0.01}
 		<g opacity={o.current.matrix}>
 			{#each names as nm, j (j)}
-				<Txt
+				<Label
+					tabular
 					x={MAT.x + (j + 0.5) * MAT.cell}
 					y={ROW.y - 8}
 					anchor="middle"
@@ -411,7 +430,8 @@
 			/>
 			{#each matrix[qi] as w, j (j)}
 				{#if j <= qi && w >= 0.01}
-					<Txt
+					<Label
+						tabular
 						x={MAT.x + (j + 0.5) * MAT.cell}
 						y={cy(qi) + 4}
 						anchor="middle"
@@ -429,22 +449,44 @@
 				label="Pattern"
 				value="row: the token asking; column: the token looked at; each row adds up to 1; grey: masked"
 			>
-				<Txt x={620} y={140} size={14} weight={650} text="Layer 5, head 4: all 14 rows" />
-				<Txt x={620} y={168} size={12} text="row: the token asking" />
-				<Txt x={620} y={188} size={12} text="column: the token looked at" />
-				<Txt x={620} y={208} size={12} text="each row adds up to 1" />
-				<Txt x={620} y={228} size={12} muted text="grey triangle: masked (later tokens)" />
-				<Txt x={620} y={268} size={12} text="outlined: the row of “{names[qi]}”" />
-				<Txt x={620} y={318} size={12} text="the scores are one product, Q Kᵀ," />
-				<Txt x={620} y={338} size={12} text="then a softmax, row by row:" />
-				<Txt x={620} y={358} size={12} text="every row at the same time" />
+				<Label
+					anchor="start"
+					x={620}
+					y={140}
+					size={14}
+					weight={650}
+					text="Layer 5, head 4: all 14 rows"
+				/>
+				<Label anchor="start" x={620} y={168} size={12} text="row: the token asking" />
+				<Label anchor="start" x={620} y={188} size={12} text="column: the token looked at" />
+				<Label anchor="start" x={620} y={208} size={12} text="each row adds up to 1" />
+				<Label
+					anchor="start"
+					x={620}
+					y={228}
+					size={12}
+					muted
+					text="grey triangle: masked (later tokens)"
+				/>
+				<Label
+					anchor="start"
+					tabular
+					x={620}
+					y={268}
+					size={12}
+					text="outlined: the row of “{names[qi]}”"
+				/>
+				<Label anchor="start" x={620} y={318} size={12} text="the scores are one product, Q Kᵀ," />
+				<Label anchor="start" x={620} y={338} size={12} text="then a softmax, row by row:" />
+				<Label anchor="start" x={620} y={358} size={12} text="every row at the same time" />
 			</Readout>
 		</g>
 	{/if}
 
 	{#if phase !== 'matrix'}
 		<Readout id="clip">
-			<Txt
+			<Label
+				anchor="start"
 				x={16}
 				y={594}
 				size={11}

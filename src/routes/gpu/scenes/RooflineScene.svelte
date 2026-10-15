@@ -18,9 +18,8 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Axes, clamp, scale, smoothstep } from '#lib/draw/index.ts';
+	import { Axes, clamp, Label, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Label from './Txt.svelte';
 	import {
 		CHIPS,
 		VECTOR_ADD_INTENSITY,

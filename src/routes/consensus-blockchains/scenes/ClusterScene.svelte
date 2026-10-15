@@ -14,10 +14,9 @@
 	 * and restarts when a control changes (as the internet explainer's network scene does).
 	 * Reduced motion shows one informative moment of the run.
 	 */
-	import { clamp, polar, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, polar, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { NAIVE, naiveReplicas, raft, stateAt, type Msg, type NodeState } from '../consensus';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 	const mode = $derived(String(step.hints?.mode ?? 'election'));
@@ -239,7 +238,7 @@
 			stroke-dasharray="10 6"
 		/>
 		<Readout id="cut" order={3} label="Network" value="cut in two" color="var(--cb-lost)">
-			<Txt
+			<Label
 				x={p1.y > p2.y ? p1.x : p2.x}
 				y={Math.max(p1.y, p2.y) + 16}
 				text="network cut"
@@ -264,8 +263,17 @@
 				stroke={writeColor(name === 'A' ? 'x = 1' : 'x = 2')}
 				stroke-width="2"
 			/>
-			<Txt x={c.x} y={c.y - 2} text="client {name}" size={11} anchor="middle" halo={false} />
-			<Txt
+			<Label
+				tabular
+				x={c.x}
+				y={c.y - 2}
+				text="client {name}"
+				size={11}
+				anchor="middle"
+				halo={false}
+			/>
+			<Label
+				tabular
 				x={c.x}
 				y={c.y + 12}
 				text={name === 'A' ? 'x = 1' : 'x = 2'}
@@ -410,7 +418,8 @@
 				>
 				{@const below = P.y > C.y}
 				<Readout id="role-{i}">
-					<Txt
+					<Label
+						tabular
 						x={P.x}
 						y={below ? P.y + R + 24 : P.y - R - 14}
 						text={roleLabel(st)}
@@ -435,7 +444,8 @@
 				{@const P = pos[owner]}
 				{@const u = clamp((s - at) / 1.2)}
 				<g opacity={(1 - smoothstep(0.7, 1, u)) * runFade}>
-					<Txt
+					<Label
+						tabular
 						x={P.x}
 						y={(P.y > C.y ? P.y - R - 34 : P.y + R + 26) - u * 10}
 						text="+ command {cmd}"
@@ -456,7 +466,9 @@
 		label={mode === 'naive' ? 'Replicas' : 'Cluster'}
 		value={mode === 'naive' ? (naiveDone ? 'they disagree' : 'writes in flight') : status}
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={40}
 			text={mode === 'naive' ? 'Five replicas, no rule for the order' : status}
@@ -466,11 +478,21 @@
 	</Readout>
 	{#if mode !== 'naive'}
 		<Readout id="time" order={2} label="Time" value="{s.toFixed(1)} s · {committedCount} committed">
-			<Txt x={24} y={62} text="t = {s.toFixed(1)} s (slowed down)" size={12} muted />
+			<Label
+				anchor="start"
+				tabular
+				x={24}
+				y={62}
+				text="t = {s.toFixed(1)} s (slowed down)"
+				size={12}
+				muted
+			/>
 		</Readout>
 		{#if mode !== 'election' || states.some((st) => st.role === 'down')}
 			<Readout id="quorum" order={3} label="Majority" value={quorum}>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={24}
 					y={82}
 					text={quorum}
@@ -484,7 +506,8 @@
 
 	<!-- right panel -->
 	{#if mode === 'naive'}
-		<Txt
+		<Label
+			anchor="start"
 			x={LOG.x}
 			y={LOG.y - 38}
 			text="What each replica applied, in order"
@@ -494,7 +517,7 @@
 		{#each replicas as r, i (i)}
 			{@const y = LOG.y + i * LOG.row}
 			{@const seen = naiveSeen(i)}
-			<Txt x={LOG.x} y={y + 18} text="S{i + 1}" size={14} weight={700} />
+			<Label anchor="start" tabular x={LOG.x} y={y + 18} text="S{i + 1}" size={14} weight={700} />
 			{#each seen as a, k (a.label)}
 				<rect
 					x={LOG.x + 40 + k * 86}
@@ -513,11 +536,13 @@
 					style:fill="white">{a.label}</text
 				>
 				{#if k === 1}
-					<Txt x={LOG.x + 117} y={y + 18} text="→" size={13} anchor="middle" muted halo={false} />
+					<Label x={LOG.x + 117} y={y + 18} text="→" size={13} anchor="middle" muted halo={false} />
 				{/if}
 			{/each}
 			{#if seen.length === 2}
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={LOG.x + 216}
 					y={y + 18}
 					text="ends with {r.final}"
@@ -535,7 +560,8 @@
 				value="3 replicas say x = 2, 2 say x = 1"
 				opacity={naiveDone ? 1 : 0}
 			>
-				<Txt
+				<Label
+					anchor="start"
 					x={LOG.x}
 					y={LOG.y + 5 * LOG.row + 14}
 					text="Three say x = 2, two say x = 1: the copies disagree."
@@ -546,9 +572,10 @@
 			</Readout>
 		</g>
 	{:else if run}
-		<Txt x={LOG.x} y={LOG.y - 44} text="Logs" size={14} weight={700} />
+		<Label anchor="start" x={LOG.x} y={LOG.y - 44} text="Logs" size={14} weight={700} />
 		<Readout id="log-key">
-			<Txt
+			<Label
+				anchor="start"
 				x={LOG.x + 44}
 				y={LOG.y - 44}
 				text="number = command · colour = term · filled = committed"
@@ -559,7 +586,9 @@
 		{#each states as st, i (i)}
 			{@const y = LOG.y + i * LOG.row - 22}
 			<g opacity={st.role === 'down' ? 0.5 : 1}>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={LOG.x}
 					y={y + 18}
 					text="S{i + 1}"
@@ -602,15 +631,15 @@
 					stroke="var(--cb-vote)"
 					stroke-width="2.5"
 				/>
-				<Txt x={18} y={4} text="vote request" size={11} muted />
+				<Label anchor="start" x={18} y={4} text="vote request" size={11} muted />
 				<circle cx="112" cy="0" r="5" fill="var(--cb-vote)" />
-				<Txt x={122} y={4} text="vote (hollow: refused)" size={11} muted />
+				<Label anchor="start" x={122} y={4} text="vote (hollow: refused)" size={11} muted />
 				<rect x="0" y="16" width="12" height="12" rx="2.5" fill="var(--cb-append)" />
-				<Txt x={18} y={27} text="heartbeat with entries" size={11} muted />
+				<Label anchor="start" x={18} y={27} text="heartbeat with entries" size={11} muted />
 				<circle cx="164" cy="22" r="5" fill="var(--cb-ack)" />
-				<Txt x={174} y={27} text="reply" size={11} muted />
+				<Label anchor="start" x={174} y={27} text="reply" size={11} muted />
 				<path d="M222 17 l10 10 M222 27 l10 -10" stroke="var(--cb-lost)" stroke-width="2.5" />
-				<Txt x={240} y={27} text="lost" size={11} muted />
+				<Label anchor="start" x={240} y={27} text="lost" size={11} muted />
 			</Readout>
 		</g>
 		<!-- timeline -->
@@ -625,7 +654,8 @@
 				stroke-width="2"
 			/>
 			<Readout id="ev-{ev.label}">
-				<Txt
+				<Label
+					tabular
 					x={tlX(ev.at)}
 					y={TL.y - 12}
 					text="{ev.label} {ev.at} s"
@@ -640,9 +670,9 @@
 		{/each}
 		<circle cx={tlX(Math.min(s, HORIZON))} cy={TL.y} r="6" fill="var(--stage-ink)" />
 		<Readout id="tl-ends">
-			<Txt x={TL.x} y={TL.y + 18} text="0 s" size={11} anchor="middle" muted />
-			<Txt x={TL.x2} y={TL.y + 18} text="{HORIZON} s" size={11} anchor="middle" muted />
-			<Txt
+			<Label x={TL.x} y={TL.y + 18} text="0 s" size={11} anchor="middle" muted />
+			<Label tabular x={TL.x2} y={TL.y + 18} text="{HORIZON} s" size={11} anchor="middle" muted />
+			<Label
 				x={(TL.x + TL.x2) / 2}
 				y={TL.y + 18}
 				text="dots: a leader elected"

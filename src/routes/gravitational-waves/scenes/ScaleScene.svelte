@@ -12,13 +12,12 @@
 	 * sanctioned exception, as in oscillations-resonance/SpringScene). Reduced
 	 * motion: the slider's view (by default all the way in).
 	 */
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { GW150914, LIGO_ARM, PROTON_RADIUS, armDifference } from '../gw';
 	import { length } from '../steps';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
-	import T from './T.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -133,7 +132,7 @@
 	</g>
 	<Readout id="scale-labels">
 		{#if armPx > 40 && armPx < 2000}
-			<T
+			<Label
 				x={CX}
 				y={CY - 16}
 				text="LIGO arm, 4 km"
@@ -144,7 +143,7 @@
 			/>
 		{/if}
 		{#each shown.filter((o) => o.labelled) as o (o.id)}
-			<T
+			<Label
 				x={CX}
 				y={Math.max(PY0 + 22, CY - o.r - 8)}
 				text={o.name}
@@ -155,7 +154,8 @@
 			/>
 		{/each}
 		{#if insideProton}
-			<T
+			<Label
+				anchor="start"
 				x={PX0 + 24}
 				y={PY0 + 30}
 				text="inside a proton: its edge is far off screen"
@@ -173,7 +173,8 @@
 				stroke="var(--gw-dl)"
 				stroke-width="1.5"
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={CX + 44}
 				y={CY + 54}
 				text="ΔL: this dot ({dlPx.toFixed(1)} px)"
@@ -183,7 +184,7 @@
 			/>
 		{/if}
 		{#if dlPx > 3}
-			<T
+			<Label
 				x={CX}
 				y={CY + 22}
 				text="ΔL = {length(dl)}"
@@ -197,7 +198,7 @@
 		<line x1={PX0 + 40} x2={PX1 - 40} y1={PY1 - 24} y2={PY1 - 24} stroke="var(--stage-line)" />
 		<line x1={PX0 + 40} x2={PX0 + 40} y1={PY1 - 30} y2={PY1 - 18} stroke="var(--stage-line)" />
 		<line x1={PX1 - 40} x2={PX1 - 40} y1={PY1 - 30} y2={PY1 - 18} stroke="var(--stage-line)" />
-		<T x={CX} y={PY1 - 30} text="{length(width)} across" anchor="middle" size={12} muted />
+		<Label x={CX} y={PY1 - 30} text="{length(width)} across" anchor="middle" size={12} muted />
 	</Readout>
 
 	<!-- readouts -->
@@ -233,7 +234,8 @@
 		color="var(--gw-proton)"
 	/>
 	<Readout id="scale-note">
-		<T
+		<Label
+			anchor="start"
 			x={PX0 + 20}
 			y={570}
 			text="Everything at its true size for this view; zoom with the slider, or ▶ dive in again."

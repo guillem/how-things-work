@@ -7,7 +7,7 @@
 	 */
 	import { Readout } from '#lib/explainer/index.ts';
 	import type { Vec3 } from '../qubits';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import { circle, project } from './view';
 
 	interface Props {
@@ -94,7 +94,7 @@
 		{#if labels === 'all' || a.pole}
 			{@const l = P(a.p, a.pole ? 1.13 : 1.2)}
 			{#if a.pole}
-				<T
+				<Label
 					x={l.x}
 					y={l.y + (a.p[2] > 0 ? -2 : 14)}
 					text={a.text}
@@ -105,7 +105,7 @@
 				/>
 			{:else}
 				<Readout id="{id}-ax-{a.text}">
-					<T
+					<Label
 						x={l.x}
 						y={l.y + (a.pole ? (a.p[2] > 0 ? -2 : 14) : 5)}
 						text={a.text}

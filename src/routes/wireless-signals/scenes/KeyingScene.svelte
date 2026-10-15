@@ -15,7 +15,7 @@
 	 * `params.keyMode`: ask/fsk/psk). `hints.focus`: 'spectrum' (the rate and
 	 * smoothing controls apply; the pointer panel dims) or 'pointer'.
 	 */
-	import { Axes, scale } from '#lib/draw/index.ts';
+	import { Axes, Label, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		AM_DEPTH,
@@ -29,7 +29,6 @@
 		textBits,
 		type Mode
 	} from '../radio';
-	import T from './T.svelte';
 
 	let { step, t, params }: StageProps = $props();
 
@@ -198,11 +197,11 @@
 <g>
 	<!-- ===== the wave ===== -->
 	<Readout id="mode" order={0} label="Signal" value={modeName[mode]}>
-		<T x={24} y={34} text={modeName[mode]} size={15} weight={700} />
+		<Label anchor="start" x={24} y={34} text={modeName[mode]} size={15} weight={700} />
 	</Readout>
 	{#if digital}
 		<Readout id="rate" order={1} label="Symbols" value={rateText}>
-			<T x={936} y={34} text={rateText} size={12} anchor="end" muted />
+			<Label x={936} y={34} text={rateText} size={12} anchor="end" muted />
 		</Readout>
 	{/if}
 	<g opacity={focus === 'spectrum' ? 0.8 : 1}>
@@ -260,11 +259,11 @@
 			opacity="0.55"
 		/>
 		<Readout id="time-axis">
-			<T x={WX} y={268} text="0" size={11} muted anchor="middle" />
-			<T x={WX + WW} y={268} text="8 µs" size={11} muted anchor="middle" />
-			<T x={WX + WW / 2} y={268} text="time →" size={11} muted anchor="middle" />
+			<Label x={WX} y={268} text="0" size={11} muted anchor="middle" />
+			<Label x={WX + WW} y={268} text="8 µs" size={11} muted anchor="middle" />
+			<Label x={WX + WW / 2} y={268} text="time →" size={11} muted anchor="middle" />
 			{#if showRef}
-				<T
+				<Label
 					x={WX + WW - 50}
 					y={268}
 					text="thin grey: the steady reference carrier"
@@ -274,7 +273,7 @@
 				/>
 			{/if}
 			{#if mode === 'am'}
-				<T
+				<Label
 					x={WX + WW - 50}
 					y={268}
 					text="dashed: the tone being sent"
@@ -289,8 +288,8 @@
 	<!-- ===== the spectrum ===== -->
 	<g opacity={focus === 'pointer' ? 0.6 : 1}>
 		<Readout id="spec-title">
-			<T x={24} y={304} text="Spectrum" size={14} weight={700} />
-			<T x={100} y={304} text="power at each frequency" size={12} muted />
+			<Label anchor="start" x={24} y={304} text="Spectrum" size={14} weight={700} />
+			<Label anchor="start" x={100} y={304} text="power at each frequency" size={12} muted />
 		</Readout>
 		{#if spec.occupied >= 0.1}
 			<rect
@@ -325,7 +324,7 @@
 			value={occ + (wide ? ', wider than shown' : '')}
 			color="var(--ws-spec)"
 		>
-			<T
+			<Label
 				x={540}
 				y={330}
 				text={`99% of the power within ${occ}${wide ? ' (wider than shown)' : ''}`}
@@ -340,7 +339,14 @@
 	<!-- ===== the pointer ===== -->
 	<g opacity={focus === 'spectrum' ? 0.6 : 1}>
 		<Readout id="ptr-title">
-			<T x={612} y={304} text="Pointer: amplitude and phase" size={14} weight={700} />
+			<Label
+				anchor="start"
+				x={612}
+				y={304}
+				text="Pointer: amplitude and phase"
+				size={14}
+				weight={700}
+			/>
 		</Readout>
 		<circle
 			cx={PX}
@@ -353,8 +359,22 @@
 		<line x1={PX - PR - 18} x2={PX + PR + 18} y1={PY} y2={PY} stroke="var(--stage-line)" />
 		<line x1={PX} x2={PX} y1={PY - PR - 14} y2={PY + PR + 14} stroke="var(--stage-line)" />
 		<Readout id="iq">
-			<T x={PX + PR + 22} y={PY + 4} text={mode === 'qpsk' ? 'I' : ''} size={13} weight={700} />
-			<T x={PX + 8} y={PY - PR - 4} text={mode === 'qpsk' ? 'Q' : ''} size={13} weight={700} />
+			<Label
+				anchor="start"
+				x={PX + PR + 22}
+				y={PY + 4}
+				text={mode === 'qpsk' ? 'I' : ''}
+				size={13}
+				weight={700}
+			/>
+			<Label
+				anchor="start"
+				x={PX + 8}
+				y={PY - PR - 4}
+				text={mode === 'qpsk' ? 'Q' : ''}
+				size={13}
+				weight={700}
+			/>
 		</Readout>
 		<path d={trail} fill="none" stroke="var(--ws-wave)" stroke-width="2" opacity="0.35" />
 		{#each points as p (p.bits)}
@@ -366,7 +386,7 @@
 				opacity={p.bits === currentBits ? 1 : 0.45}
 			/>
 			<Readout id="pt-{p.bits}">
-				<T
+				<Label
 					x={PX + pScale * p.i + (p.i >= 0 ? 12 : -12)}
 					y={PY - pScale * p.q + (p.q > 0 ? -10 : p.q < 0 ? 20 : -12)}
 					text={p.bits}
@@ -387,7 +407,7 @@
 		/>
 		<circle cx={pointer.x} cy={pointer.y} r="5" fill="var(--ws-wave)" />
 		<Readout id="ptr-note">
-			<T
+			<Label
 				x={PX}
 				y={584}
 				anchor="middle"

@@ -54,7 +54,7 @@
 	} from './shared';
 	import MapView from './MapView.svelte';
 	import Picture from './Picture.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -183,11 +183,18 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="work-title">
-		<T x={BX + 16} y={BY + 26} text="The rasteriser's work" size={14} weight={700} />
+		<Label
+			anchor="start"
+			x={BX + 16}
+			y={BY + 26}
+			text="The rasteriser's work"
+			size={14}
+			weight={700}
+		/>
 	</Readout>
 	{#snippet row(y: number, label: string, value: string, color?: string)}
-		<T x={BX + 16} {y} text={label} size={12.5} muted />
-		<T x={BX + 304} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+		<Label anchor="start" x={BX + 16} {y} text={label} size={12.5} muted />
+		<Label x={BX + 304} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
 	{/snippet}
 	<Readout id="tris" order={1} label="Triangles projected" value={thousands(s.triangles)}>
 		{@render row(BY + 56, 'Triangles projected', thousands(s.triangles))}
@@ -221,13 +228,21 @@
 		{@render row(BY + 160, 'Pixels shaded', thousands(s.shaded))}
 	</Readout>
 	<Readout id="size">
-		<T x={BX + 16} y={BY + 210} text="Picture: 192 × 120 = 23,040 pixels" size={12} muted />
+		<Label
+			anchor="start"
+			x={BX + 16}
+			y={BY + 210}
+			text="Picture: 192 × 120 = 23,040 pixels"
+			size={12}
+			muted
+		/>
 	</Readout>
 
 	<!-- below the picture -->
 	{#if phase === 'zbuffer'}
 		<Readout id="depth-title" order={6} label="Depth buffer" value="dark = near, light = far">
-			<T
+			<Label
+				anchor="start"
 				x={R.x}
 				y={B2 + 16}
 				text="The z-buffer: depth of the nearest surface so far"
@@ -237,9 +252,16 @@
 		</Readout>
 		<Picture id="g3depth" x={R.x} y={B2 + 28} w={240} h={150} url={depthUrl} label="Depth buffer" />
 		<Readout id="depth-key">
-			<T x={R.x + 260} y={B2 + 50} text="dark: near the camera" size={13} />
-			<T x={R.x + 260} y={B2 + 74} text="light: far away (white: nothing, the sky)" size={13} />
-			<T
+			<Label anchor="start" x={R.x + 260} y={B2 + 50} text="dark: near the camera" size={13} />
+			<Label
+				anchor="start"
+				x={R.x + 260}
+				y={B2 + 74}
+				text="light: far away (white: nothing, the sky)"
+				size={13}
+			/>
+			<Label
+				anchor="start"
 				x={R.x + 260}
 				y={B2 + 112}
 				text={opts.zbuffer
@@ -248,7 +270,8 @@
 				size={13}
 				weight={650}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={R.x + 260}
 				y={B2 + 134}
 				text={opts.zbuffer ? 'nearer than what the buffer holds.' : 'on a pixel wins, near or far.'}
@@ -258,7 +281,8 @@
 		</Readout>
 	{:else if phase === 'shading'}
 		<Readout id="obj" order={6} label="Picked pixel shows" value={OBJECT_NAMES[pickedId]}>
-			<T
+			<Label
+				anchor="start"
 				x={R.x}
 				y={B2 + 16}
 				text="Picked pixel: the {OBJECT_NAMES[pickedId]}"
@@ -287,7 +311,7 @@
 						stroke-width="2.5"
 						marker-end="url(#arrowhead)"
 					/>
-					<T
+					<Label
 						x={v.p.x + (v.p.x < DX ? -6 : 6)}
 						y={v.p.y - 2}
 						text={v.t}
@@ -304,7 +328,8 @@
 				label="Angle between n and the lamp"
 				value="{Math.round(hit.angle)}°"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={R.x}
 					y={B2 + 40}
 					text="n: normal   l: to the lamp{opts.shading === 'phong' ? '   r: l mirrored' : ''}"
@@ -318,8 +343,15 @@
 				label="Lambert n · l"
 				value="{fmt(Math.max(0, hit.nl))} (cos {Math.round(hit.angle)}°)"
 			>
-				<T x={600} y={B2 + 50} text="angle n to l: {Math.round(hit.angle)}°" size={13} />
-				<T
+				<Label
+					anchor="start"
+					x={600}
+					y={B2 + 50}
+					text="angle n to l: {Math.round(hit.angle)}°"
+					size={13}
+				/>
+				<Label
+					anchor="start"
 					x={600}
 					y={B2 + 76}
 					text="Lambert: max(0, cos {Math.round(hit.angle)}°) = {fmt(Math.max(0, hit.nl))}"
@@ -327,11 +359,12 @@
 					weight={650}
 					color="var(--g3-lamp)"
 				/>
-				<T x={600} y={B2 + 100} text="+ ambient {AMBIENT}" size={13} muted />
+				<Label anchor="start" x={600} y={B2 + 100} text="+ ambient {AMBIENT}" size={13} muted />
 			</Readout>
 			{#if opts.shading === 'phong'}
 				<Readout id="phong" order={9} label="Phong highlight" value={fmt(hit.highlight)}>
-					<T
+					<Label
+						anchor="start"
 						x={600}
 						y={B2 + 126}
 						text="Phong highlight k·(r · v)^shine: + {fmt(hit.highlight)}"
@@ -339,7 +372,8 @@
 						weight={650}
 						color="var(--g3-reflect)"
 					/>
-					<T
+					<Label
+						anchor="start"
 						x={600}
 						y={B2 + 150}
 						text="k = {hit.specular[0]}, shine = {hit.specular[1]}"
@@ -355,13 +389,15 @@
 				label="Shading"
 				value="none: every pixel of an object has its flat colour"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={R.x}
 					y={B2 + 50}
 					text="No shading: each object is a flat patch of its own colour."
 					size={13}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={R.x}
 					y={B2 + 74}
 					text="Without light and dark, the eye can't see its shape."
@@ -371,11 +407,17 @@
 			</Readout>
 		{:else}
 			<Readout id="sky" order={7} label="Picked pixel" value="the sky (no surface)">
-				<T x={R.x} y={B2 + 50} text="Nothing here but sky. Pick a pixel on an object." size={13} />
+				<Label
+					anchor="start"
+					x={R.x}
+					y={B2 + 50}
+					text="Nothing here but sky. Pick a pixel on an object."
+					size={13}
+				/>
 			</Readout>
 		{/if}
 		<Readout id="mode">
-			<T
+			<Label
 				x={944}
 				y={B2 + 172}
 				text="shading: {shadingName[opts.shading]}"
@@ -386,12 +428,19 @@
 		</Readout>
 	{:else if phase === 'texture'}
 		<Readout id="tex-title">
-			<T x={R.x} y={B2 + 12} text="The floor's texture: 8 × 8 squares" size={13} weight={650} />
+			<Label
+				anchor="start"
+				x={R.x}
+				y={B2 + 12}
+				text="The floor's texture: 8 × 8 squares"
+				size={13}
+				weight={650}
+			/>
 		</Readout>
 		<rect x={TX} y={TY} width={TS} height={TS} fill="var(--g3-floor)" stroke="var(--border)" />
 		<path d={tex} fill="var(--g3-floor-dark)" />
-		<T x={TX + TS + 6} y={TY + TS + 4} text="u" size={12} muted />
-		<T x={TX - 12} y={TY + 4} text="v" size={12} muted />
+		<Label anchor="start" x={TX + TS + 6} y={TY + TS + 4} text="u" size={12} muted />
+		<Label anchor="start" x={TX - 12} y={TY + 4} text="v" size={12} muted />
 		{#if pickedId === ID.floor && hit}
 			{@const mk = { x: TX + pixUv[0] * TS, y: TY + TS - pixUv[1] * TS }}
 			{@const tr = { x: TX + hit.uv[0] * TS, y: TY + TS - hit.uv[1] * TS }}
@@ -404,7 +453,8 @@
 				value="({fmt(pixUv[0])}, {fmt(pixUv[1])})"
 				color="var(--g3-eye)"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={580}
 					y={B2 + 48}
 					text="picked pixel looks up (u, v) = ({fmt(pixUv[0])}, {fmt(pixUv[1])})"
@@ -420,7 +470,8 @@
 				value="({fmt(hit.uv[0])}, {fmt(hit.uv[1])})"
 				color="var(--g3-refract)"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={580}
 					y={B2 + 74}
 					text="the floor really seen there: ({fmt(hit.uv[0])}, {fmt(hit.uv[1])})"
@@ -429,7 +480,8 @@
 				/>
 			</Readout>
 			<Readout id="uvnote">
-				<T
+				<Label
+					anchor="start"
 					x={580}
 					y={B2 + 110}
 					text={opts.perspectiveCorrect
@@ -438,11 +490,24 @@
 					size={13}
 					weight={650}
 				/>
-				<T x={580} y={B2 + 134} text="Pick other floor pixels, far and near." size={12.5} muted />
+				<Label
+					anchor="start"
+					x={580}
+					y={B2 + 134}
+					text="Pick other floor pixels, far and near."
+					size={12.5}
+					muted
+				/>
 			</Readout>
 		{:else}
 			<Readout id="uvnone" order={6} label="Picked pixel" value="not on the floor">
-				<T x={580} y={B2 + 48} text="Pick a pixel on the floor to see its (u, v)." size={13} />
+				<Label
+					anchor="start"
+					x={580}
+					y={B2 + 48}
+					text="Pick a pixel on the floor to see its (u, v)."
+					size={13}
+				/>
 			</Readout>
 		{/if}
 	{:else}
@@ -452,21 +517,23 @@
 			label="What is missing"
 			value="shadows, reflections, light through glass"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={R.x}
 				y={B2 + 22}
 				text="Each triangle was drawn knowing only itself, the camera and the lamp."
 				size={13}
 				weight={650}
 			/>
-			<T x={R.x + 16} y={B2 + 52} text="· nothing casts a shadow" size={13} />
-			<T
+			<Label anchor="start" x={R.x + 16} y={B2 + 52} text="· nothing casts a shadow" size={13} />
+			<Label
+				anchor="start"
 				x={R.x + 16}
 				y={B2 + 76}
 				text="· the mirror ball reflects nothing: it is plain shiny grey"
 				size={13}
 			/>
-			<T x={R.x + 16} y={B2 + 100} text="· the glass ball is opaque" size={13} />
+			<Label anchor="start" x={R.x + 16} y={B2 + 100} text="· the glass ball is opaque" size={13} />
 		</Readout>
 	{/if}
 </g>

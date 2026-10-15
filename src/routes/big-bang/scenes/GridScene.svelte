@@ -28,7 +28,7 @@
 	import { ARROW_TIME, NAMED, S, filmTime, galaxy, sample, viewIndex } from './grid';
 	import GridView from './GridView.svelte';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -130,10 +130,17 @@
 			</linearGradient>
 		</defs>
 		<rect x={x + 10} y={y + 24} width="160" height="7" rx="3" fill="url(#grid-legend)" />
-		<T x={x + 10} y={y + 17} text="redshift of the light you see" size={11} muted />
-		<T x={x + 10} y={y + 42} text="0" size={10.5} muted />
-		<T x={x + 90} y={y + 42} text="0.6" size={10.5} anchor="middle" muted />
-		<T x={x + 170} y={y + 42} text="1.5+" size={10.5} anchor="end" muted />
+		<Label
+			anchor="start"
+			x={x + 10}
+			y={y + 17}
+			text="redshift of the light you see"
+			size={11}
+			muted
+		/>
+		<Label anchor="start" x={x + 10} y={y + 42} text="0" size={10.5} muted />
+		<Label x={x + 90} y={y + 42} text="0.6" size={10.5} anchor="middle" muted />
+		<Label x={x + 170} y={y + 42} text="1.5+" size={10.5} anchor="end" muted />
 	</g>
 {/snippet}
 
@@ -149,7 +156,7 @@
 			stroke="var(--stage-ink)"
 			stroke-width="1.5"
 		/>
-		<T x={x + S + 8} y={y + 4} text="1 billion light years" size={11.5} />
+		<Label anchor="start" x={x + S + 8} y={y + 4} text="1 billion light years" size={11.5} />
 	</g>
 {/snippet}
 
@@ -176,7 +183,7 @@
 				label={v.key === 'mw' ? 'Left' : 'Right'}
 				value={v.key === 'mw' ? 'seen from the Milky Way' : 'seen from galaxy B'}
 			>
-				<T
+				<Label
 					x={v.x + 228}
 					y={38}
 					text={v.key === 'mw' ? 'Seen from the Milky Way' : 'Seen from galaxy B'}
@@ -187,7 +194,7 @@
 			</Readout>
 		{/each}
 		<Readout id="split-time" order={1} label="Time" value={timeLabel}>
-			<T x={480} y={552} text={timeLabel} size={13.5} weight={650} anchor="middle" />
+			<Label x={480} y={552} text={timeLabel} size={13.5} weight={650} anchor="middle" />
 		</Readout>
 		<Readout
 			id="split-note"
@@ -195,7 +202,7 @@
 			label="Both views"
 			value="everything recedes, farther is faster"
 		>
-			<T
+			<Label
 				x={480}
 				y={574}
 				text="Same universe, same moment: each galaxy sees all the others recede, farther ones faster."
@@ -226,7 +233,7 @@
 				stroke="var(--border)"
 				style:pointer-events="none"
 			/>
-			<T x={MAP.x + 22} y={MAP.y + 29} text={timeLabel} size={13} weight={650} />
+			<Label anchor="start" x={MAP.x + 22} y={MAP.y + 29} text={timeLabel} size={13} weight={650} />
 		</Readout>
 		<Readout id="ruler">
 			{@render ruler(MAP.x + 18, MAP.y + MAP.h - 22)}
@@ -237,8 +244,22 @@
 
 		{#if phase === 'hubble' || phase === 'view'}
 			<Card x={RX} y={16} w={RW} h={330} />
-			<T x={RX + 16} y={44} text="Speed against distance" size={15} weight={700} />
-			<T x={RX + 16} y={64} text="as measured from {viewName}" size={11.5} muted />
+			<Label
+				anchor="start"
+				x={RX + 16}
+				y={44}
+				text="Speed against distance"
+				size={15}
+				weight={700}
+			/>
+			<Label
+				anchor="start"
+				x={RX + 16}
+				y={64}
+				text="as measured from {viewName}"
+				size={11.5}
+				muted
+			/>
 			<!-- axes -->
 			{#each [0, 0.5, 1] as v (v)}
 				<line
@@ -249,7 +270,7 @@
 					stroke="var(--stage-grid)"
 					stroke-dasharray={v === 1 ? '4 4' : undefined}
 				/>
-				<T
+				<Label
 					x={HP.x - 6}
 					y={hy(v) + 4}
 					text={v === 0 ? '0' : v === 1 ? 'c' : '½c'}
@@ -259,7 +280,7 @@
 				/>
 			{/each}
 			{#each [0, 2, 4, 6] as d (d)}
-				<T x={hx(d)} y={HP.y + HP.h + 16} text={String(d)} size={11} anchor="middle" muted />
+				<Label x={hx(d)} y={HP.y + HP.h + 16} text={String(d)} size={11} anchor="middle" muted />
 			{/each}
 			<line
 				x1={HP.x}
@@ -269,7 +290,7 @@
 				stroke="var(--stage-line)"
 			/>
 			<line x1={HP.x} x2={HP.x} y1={HP.y} y2={HP.y + HP.h} stroke="var(--stage-line)" />
-			<T
+			<Label
 				x={HP.x + HP.w}
 				y={HP.y + HP.h + 32}
 				text="distance at that moment, billion light years"
@@ -277,7 +298,7 @@
 				anchor="end"
 				muted
 			/>
-			<T x={HP.x - 6} y={HP.y - 8} text="speed" size={11} muted />
+			<Label anchor="start" x={HP.x - 6} y={HP.y - 8} text="speed" size={11} muted />
 			<line
 				x1={hx(0)}
 				y1={hy(0)}
@@ -291,7 +312,7 @@
 				<circle cx={hx(p.d)} cy={hy(H * p.d)} r="2.6" fill="var(--bb-gal)" opacity="0.8" />
 			{/each}
 			{#if hubbleD < DMAX}
-				<T
+				<Label
 					x={hx(hubbleD) - 4}
 					y={hy(1) - 6}
 					text="faster than light beyond {hubbleD.toFixed(1)}"
@@ -308,8 +329,15 @@
 				label="Expansion rate H"
 				value="{hubble(a).toFixed(1)} km/s per Mpc"
 			>
-				<T x={RX + 16} y={388} text="Expansion rate H (the slope)" size={12.5} muted />
-				<T
+				<Label
+					anchor="start"
+					x={RX + 16}
+					y={388}
+					text="Expansion rate H (the slope)"
+					size={12.5}
+					muted
+				/>
+				<Label
 					x={RX + RW - 16}
 					y={410}
 					text="{hubble(a).toFixed(1)} km/s per megaparsec"
@@ -325,12 +353,33 @@
 				label="Distances compared with today"
 				value="{(a * 100).toFixed(0)}%"
 			>
-				<T x={RX + 16} y={438} text="Distances compared with today" size={12.5} muted />
-				<T x={RX + RW - 16} y={460} text="× {a.toFixed(2)}" size={14} weight={700} anchor="end" />
+				<Label
+					anchor="start"
+					x={RX + 16}
+					y={438}
+					text="Distances compared with today"
+					size={12.5}
+					muted
+				/>
+				<Label
+					x={RX + RW - 16}
+					y={460}
+					text="× {a.toFixed(2)}"
+					size={14}
+					weight={700}
+					anchor="end"
+				/>
 			</Readout>
 			<Readout id="growth">
-				<T x={RX + 16} y={488} text="Every distance grows by" size={12.5} muted />
-				<T
+				<Label
+					anchor="start"
+					x={RX + 16}
+					y={488}
+					text="Every distance grows by"
+					size={12.5}
+					muted
+				/>
+				<Label
 					x={RX + RW - 16}
 					y={510}
 					text="{(H * 100).toFixed(1)}% per billion years"
@@ -338,8 +387,16 @@
 					weight={700}
 					anchor="end"
 				/>
-				<T x={RX + 16} y={556} text="Arrows: where each galaxy would be after" size={11} muted />
-				<T
+				<Label
+					anchor="start"
+					x={RX + 16}
+					y={556}
+					text="Arrows: where each galaxy would be after"
+					size={11}
+					muted
+				/>
+				<Label
+					anchor="start"
 					x={RX + 16}
 					y={572}
 					text="{gyrText(ARROW_TIME / H)} at its present speed"
@@ -350,13 +407,20 @@
 		{:else}
 			<!-- a(t) -->
 			<Card x={RX} y={16} w={RW} h={phase === 'contents' ? 268 : 350} />
-			<T x={RX + 16} y={44} text="Size of the universe, a" size={15} weight={700} />
+			<Label
+				anchor="start"
+				x={RX + 16}
+				y={44}
+				text="Size of the universe, a"
+				size={15}
+				weight={700}
+			/>
 			{#each [0, 1, 2, 3] as v (v)}
 				<line x1={AP.x} x2={AP.x + AP.w} y1={ay(v)} y2={ay(v)} stroke="var(--stage-grid)" />
-				<T x={AP.x - 6} y={ay(v) + 4} text={String(v)} size={11} anchor="end" muted />
+				<Label x={AP.x - 6} y={ay(v) + 4} text={String(v)} size={11} anchor="end" muted />
 			{/each}
 			{#each [0, 10, 20, 30] as tt (tt)}
-				<T x={ax(tt)} y={AP.y + AP.h + 16} text={String(tt)} size={11} anchor="middle" muted />
+				<Label x={ax(tt)} y={AP.y + AP.h + 16} text={String(tt)} size={11} anchor="middle" muted />
 			{/each}
 			<line
 				x1={AP.x}
@@ -366,7 +430,7 @@
 				stroke="var(--stage-line)"
 			/>
 			<line x1={ax(0)} x2={ax(0)} y1={AP.y} y2={AP.y + AP.h} stroke="var(--stage-line)" />
-			<T
+			<Label
 				x={AP.x + AP.w}
 				y={AP.y + AP.h + 32}
 				text="billion years after the Big Bang"
@@ -385,8 +449,8 @@
 					stroke="var(--stage-ink-muted)"
 					stroke-dasharray="2 3"
 				/>
-				<T x={ax(tAcc) - 5} y={AP.y + 16} text="← slowing" size={11} anchor="end" />
-				<T x={ax(tAcc) + 5} y={AP.y + 16} text="speeding up →" size={11} />
+				<Label x={ax(tAcc) - 5} y={AP.y + 16} text="← slowing" size={11} anchor="end" />
+				<Label anchor="start" x={ax(tAcc) + 5} y={AP.y + 16} text="speeding up →" size={11} />
 			{:else}
 				<!-- today's speed, kept steady -->
 				<line
@@ -409,7 +473,8 @@
 						stroke-width="1.4"
 						stroke-dasharray="5 4"
 					/>
-					<T
+					<Label
+						anchor="start"
 						x={RX + 46}
 						y={AP.y + AP.h + 53}
 						text="today’s speed kept: 0 at {(AGE - tZero).toFixed(1)} Gyr ago"
@@ -419,14 +484,28 @@
 				</Readout>
 			{/if}
 			<circle cx={ax(AGE)} cy={ay(1)} r="3.5" fill="none" stroke="var(--stage-ink)" />
-			<T x={ax(AGE) + 6} y={ay(1) + 16} text="today" size={11} muted />
+			<Label anchor="start" x={ax(AGE) + 6} y={ay(1) + 16} text="today" size={11} muted />
 			<circle cx={ax(time)} cy={ay(a)} r="6" fill="var(--bb-view)" />
 
 			{#if phase === 'history'}
 				<Card x={RX} y={382} w={RW} h={202} />
 				<Readout id="a" order={2} label="Scale factor a" value={a.toFixed(3)}>
-					<T x={RX + 16} y={412} text="Distances compared with today" size={12.5} muted />
-					<T x={RX + RW - 16} y={412} text="× {a.toFixed(2)}" size={14} weight={700} anchor="end" />
+					<Label
+						anchor="start"
+						x={RX + 16}
+						y={412}
+						text="Distances compared with today"
+						size={12.5}
+						muted
+					/>
+					<Label
+						x={RX + RW - 16}
+						y={412}
+						text="× {a.toFixed(2)}"
+						size={14}
+						weight={700}
+						anchor="end"
+					/>
 				</Readout>
 				<Readout
 					id="density"
@@ -434,8 +513,8 @@
 					label="Density of matter"
 					value="{(1 / a ** 3).toPrecision(3)} × today"
 				>
-					<T x={RX + 16} y={446} text="Density of matter" size={12.5} muted />
-					<T
+					<Label anchor="start" x={RX + 16} y={446} text="Density of matter" size={12.5} muted />
+					<Label
 						x={RX + RW - 16}
 						y={446}
 						text="{(1 / a ** 3).toPrecision(3)} × today’s"
@@ -445,18 +524,58 @@
 					/>
 				</Readout>
 				<Readout id="temp" order={4} label="Temperature of the light" value={tempText(T0 / a)}>
-					<T x={RX + 16} y={480} text="Temperature of the light" size={12.5} muted />
-					<T x={RX + RW - 16} y={480} text={tempText(T0 / a)} size={14} weight={700} anchor="end" />
+					<Label
+						anchor="start"
+						x={RX + 16}
+						y={480}
+						text="Temperature of the light"
+						size={12.5}
+						muted
+					/>
+					<Label
+						x={RX + RW - 16}
+						y={480}
+						text={tempText(T0 / a)}
+						size={14}
+						weight={700}
+						anchor="end"
+					/>
 				</Readout>
 				<Readout id="hd">
-					<T x={RX + 16} y={518} text="Earlier: denser and hotter, everywhere" size={12} />
-					<T x={RX + 16} y={538} text="at once. Toward a = 0 they grow without limit." size={12} />
-					<T x={RX + 16} y={566} text="Age today: {AGE.toFixed(2)} billion years" size={12} muted />
+					<Label
+						anchor="start"
+						x={RX + 16}
+						y={518}
+						text="Earlier: denser and hotter, everywhere"
+						size={12}
+					/>
+					<Label
+						anchor="start"
+						x={RX + 16}
+						y={538}
+						text="at once. Toward a = 0 they grow without limit."
+						size={12}
+					/>
+					<Label
+						anchor="start"
+						x={RX + 16}
+						y={566}
+						text="Age today: {AGE.toFixed(2)} billion years"
+						size={12}
+						muted
+					/>
 				</Readout>
 			{:else}
 				<!-- the mix -->
 				<Card x={RX} y={300} w={RW} h={284} />
-				<T x={RX + 16} y={328} text="What fills the universe" size={15} weight={700} />
+				<Label
+					anchor="start"
+					x={RX + 16}
+					y={328}
+					text="What fills the universe"
+					size={15}
+					weight={700}
+				/>
 				{@const BX = RX + 16}
 				{@const BW = RW - 32}
 				<rect x={BX} y={344} width={BW * mix.radiation} height="22" fill="var(--bb-radiation)" />
@@ -484,8 +603,8 @@
 						color={row.c}
 					>
 						<rect x={BX} y={388 + i * 30} width="12" height="12" rx="2" fill={row.c} />
-						<T x={BX + 20} y={399 + i * 30} text={row.label} size={12.5} />
-						<T
+						<Label anchor="start" x={BX + 20} y={399 + i * 30} text={row.label} size={12.5} />
+						<Label
 							x={RX + RW - 16}
 							y={399 + i * 30}
 							text={pct(row.v)}
@@ -501,8 +620,8 @@
 					label="The expansion is"
 					value={speeding ? 'speeding up' : 'slowing down'}
 				>
-					<T x={BX} y={502} text="The expansion is" size={12.5} muted />
-					<T
+					<Label anchor="start" x={BX} y={502} text="The expansion is" size={12.5} muted />
+					<Label
 						x={RX + RW - 16}
 						y={502}
 						text={speeding ? 'speeding up' : 'slowing down'}
@@ -513,9 +632,27 @@
 					/>
 				</Readout>
 				<Readout id="pace-note">
-					<T x={BX} y={534} text="Matter’s pull slows it; dark energy," size={12} />
-					<T x={BX} y={554} text="which never thins out, speeds it up" size={12} />
-					<T x={BX} y={574} text="(since {tAcc.toFixed(1)} billion years)." size={12} />
+					<Label
+						anchor="start"
+						x={BX}
+						y={534}
+						text="Matter’s pull slows it; dark energy,"
+						size={12}
+					/>
+					<Label
+						anchor="start"
+						x={BX}
+						y={554}
+						text="which never thins out, speeds it up"
+						size={12}
+					/>
+					<Label
+						anchor="start"
+						x={BX}
+						y={574}
+						text="(since {tAcc.toFixed(1)} billion years)."
+						size={12}
+					/>
 				</Readout>
 			{/if}
 		{/if}

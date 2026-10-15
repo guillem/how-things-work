@@ -21,16 +21,16 @@
 		clamp,
 		cycle,
 		hash,
+		Label,
 		lerp,
+		type Point,
 		smoothstep,
-		wavelengthToColor,
-		type Point
+		wavelengthToColor
 	} from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { bandStep, builtIn, depletionWidth } from '../../semiconductors/model';
 	import { GAPS, monoCurrent, photonEnergy } from '../model';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 	const phase = $derived(String(step.hints?.phase ?? 'absorb'));
@@ -227,7 +227,7 @@
 	<path d={ecPath} fill="none" stroke="var(--semi-band-edge)" stroke-width="2" />
 	<path d={evPath} fill="none" stroke="var(--semi-band-edge)" stroke-width="2" />
 	<Readout id="cb">
-		<T
+		<Label
 			x={XR - 8}
 			y={152}
 			text="conduction band (empty: free electrons move here)"
@@ -237,7 +237,14 @@
 		/>
 	</Readout>
 	<Readout id="vb">
-		<T x={XL + 8} y={EV_N + 34} text="valence band (full: electrons in bonds)" size={12} muted />
+		<Label
+			anchor="start"
+			x={XL + 8}
+			y={EV_N + 34}
+			text="valence band (full: electrons in bonds)"
+			size={12}
+			muted
+		/>
 	</Readout>
 	<!-- the gap, measured at the left -->
 	<line
@@ -257,8 +264,15 @@
 		stroke="var(--stage-ink)"
 	/>
 	<Readout id="gaplabel">
-		<T x={gx + 10} y={evAt(gx) - GAP_PX / 2 - 2} text="gap" size={12} />
-		<T x={gx + 10} y={evAt(gx) - GAP_PX / 2 + 13} text="1.12 eV" size={12} weight={700} />
+		<Label anchor="start" x={gx + 10} y={evAt(gx) - GAP_PX / 2 - 2} text="gap" size={12} />
+		<Label
+			anchor="start"
+			x={gx + 10}
+			y={evAt(gx) - GAP_PX / 2 + 13}
+			text="1.12 eV"
+			size={12}
+			weight={700}
+		/>
 	</Readout>
 
 	{#if b > 0.02}
@@ -272,7 +286,7 @@
 				opacity="0.6"
 			/>
 			<Readout id="sides">
-				<T
+				<Label
 					x={(XL + XJ - 120) / 2}
 					y={EV_N + 70}
 					text="p side"
@@ -280,7 +294,7 @@
 					weight={700}
 					anchor="middle"
 				/>
-				<T
+				<Label
 					x={XJ}
 					y={EV_N + 70}
 					text="junction: field pushes e⁻ → n, holes → p"
@@ -288,7 +302,7 @@
 					anchor="middle"
 					muted
 				/>
-				<T
+				<Label
 					x={(XR + XJ + 120) / 2}
 					y={EV_N + 70}
 					text="n side"
@@ -379,7 +393,7 @@
 				opacity={s.pair}
 			/>
 			<Readout id="pair">
-				<T
+				<Label
 					x={XA - 16}
 					y={(heatPhase ? s.eY : arrowTop) - 3}
 					text="electron"
@@ -387,7 +401,7 @@
 					anchor="end"
 					opacity={s.pair}
 				/>
-				<T x={XA - 16} y={evA + 13} text="hole" size={12} anchor="end" opacity={s.pair} />
+				<Label x={XA - 16} y={evA + 13} text="hole" size={12} anchor="end" opacity={s.pair} />
 			</Readout>
 		{/if}
 	{:else}
@@ -491,8 +505,15 @@
 		value="{nm} nm · {E.toFixed(2)} eV"
 		color={visible ? photonColor : undefined}
 	>
-		<T x={656} y={46} text="photon: {nm} nm ({colourName})" size={13} weight={600} />
-		<T x={656} y={66} text="energy {E.toFixed(2)} eV · gap 1.12 eV" size={13} />
+		<Label
+			anchor="start"
+			x={656}
+			y={46}
+			text="photon: {nm} nm ({colourName})"
+			size={13}
+			weight={600}
+		/>
+		<Label anchor="start" x={656} y={66} text="energy {E.toFixed(2)} eV · gap 1.12 eV" size={13} />
 	</Readout>
 	{#if !sweep}
 		<Readout
@@ -505,7 +526,8 @@
 					: 'makes an electron–hole pair'
 				: `${(GAP - E).toFixed(2)} eV short of the gap`}
 		>
-			<T
+			<Label
+				anchor="start"
 				x={656}
 				y={90}
 				text={absorbed
@@ -524,10 +546,17 @@
 		</Readout>
 	{:else}
 		<Readout id="power" order={2} label="Light on the cell" value="{watts} W/m²">
-			<T x={656} y={90} text="light: {watts} W/m²" size={13} />
+			<Label anchor="start" x={656} y={90} text="light: {watts} W/m²" size={13} />
 		</Readout>
 		<Readout id="current" order={3} label="Current" value="{current.toFixed(1)} mA/cm²">
-			<T x={656} y={116} text="current: {current.toFixed(1)} mA per cm²" size={15} weight={700} />
+			<Label
+				anchor="start"
+				x={656}
+				y={116}
+				text="current: {current.toFixed(1)} mA per cm²"
+				size={15}
+				weight={700}
+			/>
 		</Readout>
 	{/if}
 </g>

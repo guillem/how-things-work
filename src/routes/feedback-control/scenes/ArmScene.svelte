@@ -13,12 +13,11 @@
 	 * is held by the motors' limits). Reduced motion: the settled pose of a run from
 	 * hanging down.
 	 */
-	import { Handle, scale, type Point } from '#lib/draw/index.ts';
+	import { Handle, Label, type Point, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { ARM, joints, moveArm, reach, type ArmRun, type ArmState, type Gains } from '../control';
 	import Card from './Card.svelte';
 	import Plot from './Plot.svelte';
-	import Txt from './Txt.svelte';
 	import { seriesPath, type Cell } from './shared';
 
 	let { t, params, reduced, setParam }: StageProps = $props();
@@ -208,8 +207,8 @@
 		stroke-width="2"
 	/>
 	<Readout id="arm-labels">
-		<Txt x={SX - 22} y={SY + 4} text="shoulder" size={11} anchor="end" muted />
-		<Txt x={px(pose.ex)} y={py(pose.ey) - 18} text="elbow" size={11} anchor="middle" muted />
+		<Label x={SX - 22} y={SY + 4} text="shoulder" size={11} anchor="end" muted />
+		<Label x={px(pose.ex)} y={py(pose.ey) - 18} text="elbow" size={11} anchor="middle" muted />
 	</Readout>
 
 	<!-- the target -->
@@ -242,7 +241,7 @@
 		{onkey}
 	/>
 	<Readout id="drag">
-		<Txt
+		<Label
 			x={px(tx)}
 			y={py(ty) - 22}
 			text="drag the target"
@@ -264,7 +263,14 @@
 		yFormat={(s) => `${s} cm`}
 	/>
 	<Readout id="dist-title">
-		<Txt x={P0} y={DP.top - 10} text="hand to target, since it last moved" size={12} muted />
+		<Label
+			anchor="start"
+			x={P0}
+			y={DP.top - 10}
+			text="hand to target, since it last moved"
+			size={12}
+			muted
+		/>
 	</Readout>
 	<Plot
 		{sx}
@@ -275,8 +281,8 @@
 		yFormat={(s) => `${s}`}
 	/>
 	<Readout id="torque-title">
-		<Txt x={P0} y={QP.top - 8} text="motor torques, N·m" size={12} muted />
-		<Txt
+		<Label anchor="start" x={P0} y={QP.top - 8} text="motor torques, N·m" size={12} muted />
+		<Label
 			x={P1}
 			y={QP.top - 8}
 			text="shoulder"
@@ -285,7 +291,7 @@
 			color="var(--fc-arm)"
 			weight={600}
 		/>
-		<Txt
+		<Label
 			x={P1 - 62}
 			y={QP.top - 8}
 			text="elbow"

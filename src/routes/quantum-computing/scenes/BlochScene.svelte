@@ -23,7 +23,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Handle, clamp, rng, type Point } from '#lib/draw/index.ts';
+	import { clamp, Handle, Label, type Point, rng } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		GATES,
@@ -38,7 +38,6 @@
 		type Vec3
 	} from '../qubits';
 	import Sphere from './Sphere.svelte';
-	import T from './T.svelte';
 	import { arc, project, unproject } from './view';
 
 	let { step, params, reduced, setParam }: StageProps = $props();
@@ -281,15 +280,24 @@
 		/>
 	{/if}
 	<circle cx={x} cy={y} r="2.5" fill="var(--stage-ink)" />
-	<T x={x - r} y={y - r - 10} text={name} size={13} weight={600} {color} />
+	<Label anchor="start" x={x - r} y={y - r - 10} text={name} size={13} weight={600} {color} />
 {/snippet}
 
 {#snippet bars(y: number, w: number)}
 	<Readout id="p01" order={3} label="P(0) / P(1)" value="{pct(p0)} / {pct(p1)}">
-		<T x={PX} {y} text="P(0) = |α|² = {pct(p0)}" size={13} weight={600} color="var(--qc-zero)" />
+		<Label
+			anchor="start"
+			x={PX}
+			{y}
+			text="P(0) = |α|² = {pct(p0)}"
+			size={13}
+			weight={600}
+			color="var(--qc-zero)"
+		/>
 		<rect x={PX} y={y + 8} width={w} height="14" rx="3" fill="var(--stage-grid)" opacity="0.6" />
 		<rect x={PX} y={y + 8} width={w * p0} height="14" rx="3" fill="var(--qc-zero)" />
-		<T
+		<Label
+			anchor="start"
 			x={PX}
 			y={y + 46}
 			text="P(1) = |β|² = {pct(p1)}"
@@ -334,7 +342,14 @@
 	<!-- ============ panel: state ============ -->
 	{#if phase === 'state'}
 		<Readout id="ttl">
-			<T x={PX} y={58} text="the two amplitudes, as arrows (β = length ∠ phase)" size={13} muted />
+			<Label
+				anchor="start"
+				x={PX}
+				y={58}
+				text="the two amplitudes, as arrows (β = length ∠ phase)"
+				size={13}
+				muted
+			/>
 		</Readout>
 		<Readout
 			id="alpha"
@@ -344,7 +359,7 @@
 			color="var(--qc-zero)"
 		>
 			{@render dial(PX + 70, 160, 62, alpha, 0, 'α  on |0⟩', 'var(--qc-zero)')}
-			<T x={PX + 8} y={252} text="α = {f3(alpha)}" size={14} weight={600} />
+			<Label anchor="start" x={PX + 8} y={252} text="α = {f3(alpha)}" size={14} weight={600} />
 		</Readout>
 		<Readout
 			id="beta"
@@ -354,12 +369,13 @@
 			color="var(--qc-one)"
 		>
 			{@render dial(PX + 250, 160, 62, beta, ph, 'β  on |1⟩', 'var(--qc-one)')}
-			<T x={PX + 188} y={252} text="β = {betaText}" size={14} weight={600} />
+			<Label anchor="start" x={PX + 188} y={252} text="β = {betaText}" size={14} weight={600} />
 		</Readout>
 		{@render bars(300, 330)}
 		<Readout id="ket" order={4} label="State" value={ket}>
-			<T x={PX} y={430} text={ket} size={14} weight={600} />
-			<T
+			<Label anchor="start" x={PX} y={430} text={ket} size={14} weight={600} />
+			<Label
+				anchor="start"
 				x={PX}
 				y={452}
 				text="θ = {Math.round(thetaDeg)}°, φ = {Math.round(phiDeg)}°"
@@ -368,9 +384,30 @@
 			/>
 		</Readout>
 		<Readout id="hint">
-			<T x={PX} y={500} text="drag the tip, or use the sliders for the" size={12} muted />
-			<T x={PX} y={518} text="back of the sphere; only the phase" size={12} muted />
-			<T x={PX} y={536} text="difference between α and β is drawn" size={12} muted />
+			<Label
+				anchor="start"
+				x={PX}
+				y={500}
+				text="drag the tip, or use the sliders for the"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={PX}
+				y={518}
+				text="back of the sphere; only the phase"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={PX}
+				y={536}
+				text="difference between α and β is drawn"
+				size={12}
+				muted
+			/>
 		</Readout>
 	{/if}
 
@@ -386,11 +423,12 @@
 				: `${lastResult}${fallen ? ' (state is now |' + lastResult + '⟩)' : ''}`}
 			color={lastResult === 1 ? 'var(--qc-one)' : 'var(--qc-zero)'}
 		>
-			<T x={PX} y={168} text="this qubit, measured" size={13} muted />
+			<Label anchor="start" x={PX} y={168} text="this qubit, measured" size={13} muted />
 			{#if lastResult === null}
-				<T x={PX} y={200} text="press Measure it" size={16} weight={600} muted />
+				<Label anchor="start" x={PX} y={200} text="press Measure it" size={16} weight={600} muted />
 			{:else}
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={204}
 					text="got {lastResult}"
@@ -398,7 +436,8 @@
 					weight={700}
 					color={lastResult === 1 ? 'var(--qc-one)' : 'var(--qc-zero)'}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX + 120}
 					y={202}
 					text={fallen ? `now the state is |${lastResult}⟩` : 'the state has changed since'}
@@ -432,7 +471,14 @@
 			label="Fresh copies measured"
 			value={manyN ? `${manyN}: ${manyHere.n0} gave 0, ${manyHere.n1} gave 1` : 'none yet'}
 		>
-			<T x={PX} y={290} text="fresh copies of this state, measured: {manyN}" size={13} muted />
+			<Label
+				anchor="start"
+				x={PX}
+				y={290}
+				text="fresh copies of this state, measured: {manyN}"
+				size={13}
+				muted
+			/>
 			{#each [0, 1] as k (k)}
 				{@const n = k === 0 ? manyHere.n0 : manyHere.n1}
 				{@const frac = manyN ? n / manyN : 0}
@@ -464,8 +510,8 @@
 					stroke-width="1.5"
 					stroke-dasharray="5 4"
 				/>
-				<T x={bx + 45} y={522} text="{k}: {n}" size={14} weight={600} anchor="middle" />
-				<T
+				<Label x={bx + 45} y={522} text="{k}: {n}" size={14} weight={600} anchor="middle" />
+				<Label
 					x={bx + 45}
 					y={540}
 					text={manyN ? `${Math.round(frac * 100)}%` : '–'}
@@ -474,7 +520,14 @@
 					muted
 				/>
 			{/each}
-			<T x={PX} y={570} text="dashed: Born's rule, |α|² and |β|²" size={11} muted />
+			<Label
+				anchor="start"
+				x={PX}
+				y={570}
+				text="dashed: Born's rule, |α|² and |β|²"
+				size={11}
+				muted
+			/>
 		</Readout>
 	{/if}
 
@@ -486,7 +539,14 @@
 			label="Circuit"
 			value={circuit.length ? `|0⟩ → ${circuit.join(' → ')}` : '(no gates yet)'}
 		>
-			<T x={PX} y={56} text="the circuit so far (read left to right)" size={13} muted />
+			<Label
+				anchor="start"
+				x={PX}
+				y={56}
+				text="the circuit so far (read left to right)"
+				size={13}
+				muted
+			/>
 			<line
 				x1={PX + 34}
 				x2={940}
@@ -495,9 +555,9 @@
 				stroke="var(--stage-ink-muted)"
 				stroke-width="1.5"
 			/>
-			<T x={PX} y={97} text="|ψ⟩" size={14} weight={600} />
+			<Label anchor="start" x={PX} y={97} text="|ψ⟩" size={14} weight={600} />
 			{#if circuit.length > 8}
-				<T x={PX + 46} y={97} text="…" size={14} muted />
+				<Label anchor="start" x={PX + 46} y={97} text="…" size={14} muted />
 			{/if}
 			{#each shownCircuit as g, i (i)}
 				<rect
@@ -519,14 +579,15 @@
 				>
 			{/each}
 			{#if !circuit.length}
-				<T x={PX + 64} y={124} text="press a gate button" size={12} muted />
+				<Label anchor="start" x={PX + 64} y={124} text="press a gate button" size={12} muted />
 			{/if}
 		</Readout>
 		{#if lastGate}
 			{@const gt = GATE_TEXT[lastGate]}
 			{@const mx = PX + (gt.pre ? 44 : 6)}
 			<Readout id="gate" order={2} label="Gate {lastGate}" value={gt.turn} color="var(--qc-axis)">
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={156}
 					text="{lastGate}: {gt.turn}"
@@ -535,7 +596,7 @@
 					color="var(--qc-axis)"
 				/>
 				{#if gt.pre}
-					<T x={PX} y={203} text={gt.pre} size={14} />
+					<Label anchor="start" x={PX} y={203} text={gt.pre} size={14} />
 				{/if}
 				<path
 					d="M{mx + 6} 176 h-6 v42 h6 M{mx + 96} 176 h6 v42 h-6"
@@ -544,7 +605,7 @@
 					stroke-width="1.5"
 				/>
 				{#each gt.m as e, i (i)}
-					<T
+					<Label
 						x={mx + (i % 2 === 0 ? 26 : 72)}
 						y={i < 2 ? 192 : 211}
 						text={e}
@@ -552,19 +613,33 @@
 						anchor="middle"
 					/>
 				{/each}
-				<T x={mx + 120} y={203} text="× (α, β)" size={13} muted />
+				<Label anchor="start" x={mx + 120} y={203} text="× (α, β)" size={13} muted />
 			</Readout>
 		{/if}
 		<Readout id="alpha-g" order={3} label="α, β" value="{f3(alpha)}, {betaText}">
 			{@render dial(PX + 50, 310, 44, alpha, 0, 'α', 'var(--qc-zero)')}
 			{@render dial(PX + 190, 310, 44, beta, ph, 'β', 'var(--qc-one)')}
-			<T x={PX + 6} y={374} text="α = {f3(alpha)}" size={13} />
-			<T x={PX + 146} y={374} text="β = {betaText}" size={13} />
+			<Label anchor="start" x={PX + 6} y={374} text="α = {f3(alpha)}" size={13} />
+			<Label anchor="start" x={PX + 146} y={374} text="β = {betaText}" size={13} />
 		</Readout>
 		{@render bars(418, 330)}
 		<Readout id="undo">
-			<T x={PX} y={520} text="every gate can be undone: apply H twice," size={12} muted />
-			<T x={PX} y={538} text="or X twice, and you are back where you were" size={12} muted />
+			<Label
+				anchor="start"
+				x={PX}
+				y={520}
+				text="every gate can be undone: apply H twice,"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={PX}
+				y={538}
+				text="or X twice, and you are back where you were"
+				size={12}
+				muted
+			/>
 		</Readout>
 	{/if}
 </g>

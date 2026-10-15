@@ -6,11 +6,10 @@
 	 * SEARCH seconds of `t`, with the last few tries listed, and holds on the find. Loops.
 	 */
 	import { untrack } from 'svelte';
-	import { clamp, cycle, easeInOut, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, cycle, easeInOut, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type Params } from '#lib/explainer/index.ts';
 	import { blockDigest, mine, zeroBits } from '../consensus';
 	import { MINE_DATA, bitString, fmt } from './shared';
-	import Txt from './Txt.svelte';
 
 	interface Props {
 		t: number;
@@ -66,7 +65,9 @@
 
 <g opacity={fade}>
 	<Readout id="title" order={1} label="Mining" value="hash must start with {bits} zero bits">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={40}
 			text="Mining: find a nonce whose hash starts with {bits} zero bits"
@@ -81,7 +82,9 @@
 		value="{fmt(done)}{hit ? ' — found' : ''} (about {fmt(2 ** bits)} expected)"
 		color={hit ? 'var(--cb-ok)' : 'var(--cb-work)'}
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={66}
 			text="Tries: {fmt(done)}{hit ? ' — found!' : ''}   ·   on average about 2^{bits} = {fmt(
@@ -104,13 +107,30 @@
 		stroke={hit ? 'var(--cb-ok)' : 'var(--cb-work)'}
 		stroke-width="2"
 	/>
-	<Txt x={B.x + 16} y={B.y + 30} text="Block 1" size={15} weight={700} />
-	<Txt x={B.x + 16} y={B.y + 58} text="hash of the block before" size={11} muted />
-	<Txt x={B.x + 16} y={B.y + 78} text={PREV.slice(0, 32) + '…'} size={13} mono />
-	<Txt x={B.x + 16} y={B.y + 108} text="data" size={11} muted />
-	<Txt x={B.x + 16} y={B.y + 128} text={data} size={14} mono />
-	<Txt x={B.x + 16} y={B.y + 158} text="nonce (the only field the miner changes)" size={11} muted />
-	<Txt
+	<Label anchor="start" x={B.x + 16} y={B.y + 30} text="Block 1" size={15} weight={700} />
+	<Label anchor="start" x={B.x + 16} y={B.y + 58} text="hash of the block before" size={11} muted />
+	<Label
+		anchor="start"
+		tabular
+		x={B.x + 16}
+		y={B.y + 78}
+		text={PREV.slice(0, 32) + '…'}
+		size={13}
+		mono
+	/>
+	<Label anchor="start" x={B.x + 16} y={B.y + 108} text="data" size={11} muted />
+	<Label anchor="start" tabular x={B.x + 16} y={B.y + 128} text={data} size={14} mono />
+	<Label
+		anchor="start"
+		x={B.x + 16}
+		y={B.y + 158}
+		text="nonce (the only field the miner changes)"
+		size={11}
+		muted
+	/>
+	<Label
+		anchor="start"
+		tabular
 		x={B.x + 16}
 		y={B.y + 184}
 		text={fmt(current?.nonce ?? 0)}
@@ -119,7 +139,9 @@
 		mono
 		color={hit ? 'var(--cb-ok)' : 'var(--cb-work)'}
 	/>
-	<Txt
+	<Label
+		anchor="start"
+		tabular
 		x={B.x + 16}
 		y={B.y + 216}
 		text="double SHA-256 of all of the above, first {BIN} bits"
@@ -135,7 +157,9 @@
 				>{bs.slice(0, cut)}</tspan
 			><tspan>{bs.slice(cut)}</tspan></text
 		>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={B.x + 16}
 			y={B.y + 272}
 			text="{current.z} zero bit{current.z === 1 ? '' : 's'}: {current.ok
@@ -148,7 +172,9 @@
 		/>
 		{#if hit && found}
 			<Readout id="hash">
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={B.x + 16}
 					y={B.y + 304}
 					text="hash {found.hash.slice(0, 34)}…"
@@ -162,7 +188,9 @@
 
 	<!-- the last tries -->
 	<Readout id="list-title">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={L.x}
 			y={L.y - 26}
 			text="Latest tries: nonce → first {BIN} bits of the hash"
@@ -174,8 +202,18 @@
 		{@const bs = bitString(r.d, BIN)}
 		<g opacity={k === 0 ? 1 : 0.75 - k * 0.06}>
 			<Readout id="row-{k}">
-				<Txt x={L.x + 70} y={L.y + k * L.row} text={fmt(r.nonce)} size={13} mono anchor="end" />
-				<Txt
+				<Label
+					tabular
+					x={L.x + 70}
+					y={L.y + k * L.row}
+					text={fmt(r.nonce)}
+					size={13}
+					mono
+					anchor="end"
+				/>
+				<Label
+					anchor="start"
+					tabular
 					x={L.x + 84}
 					y={L.y + k * L.row}
 					text={bs}
@@ -183,7 +221,9 @@
 					mono
 					color={r.ok ? 'var(--cb-ok)' : undefined}
 				/>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={L.x + 300}
 					y={L.y + k * L.row}
 					text="{r.z} zero{r.z === 1 ? '' : 's'}"
@@ -196,7 +236,9 @@
 		</g>
 	{/each}
 	<Readout id="checking" order={3} label="Checking" value="one hash, by anyone">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={L.x}
 			y={L.y + SHOW * L.row + 14}
 			text="Finding it took {fmt(tries)} tries. Checking it takes one."
@@ -204,7 +246,9 @@
 			weight={600}
 			opacity={hit ? 1 : 0}
 		/>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={L.x}
 			y={L.y + SHOW * L.row + 36}
 			text="Each zero bit halves the chance per try: 1 in 2^{bits}."

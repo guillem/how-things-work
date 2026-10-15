@@ -5,11 +5,10 @@
 	 * top three guesses there and the loss −ln p. Click a token or use the slider.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { crossEntropy, percent } from '../lm';
 	import { chipWidth, flow, label, lm, num, onkey } from './shared';
 	import TextCard from './TextCard.svelte';
-	import Txt from './Txt.svelte';
 
 	let { t, params, reduced, setParam }: StageProps = $props();
 
@@ -43,7 +42,8 @@
 
 <g>
 	<Readout id="title">
-		<Txt
+		<Label
+			anchor="start"
 			x={40}
 			y={30}
 			size={13}
@@ -120,7 +120,7 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="ctx" order={1} label="GPT-2 has read" value={lm.text(context)}>
-		<Txt x={44} y={CY - 6} size={12} muted text="GPT-2 has read:" />
+		<Label anchor="start" x={44} y={CY - 6} size={12} muted text="GPT-2 has read:" />
 		<TextCard
 			x={150}
 			y={CY - 6}
@@ -133,12 +133,20 @@
 		/>
 	</Readout>
 	<Readout id="guesses-title">
-		<Txt x={44} y={CY + 50} size={12} muted text="its three best guesses for the next token" />
+		<Label
+			anchor="start"
+			x={44}
+			y={CY + 50}
+			size={12}
+			muted
+			text="its three best guesses for the next token"
+		/>
 	</Readout>
 	{#each s.top as [id, p], i (i)}
 		{@const y = CY + 64 + i * 34}
 		{@const right = id === actual}
-		<Txt
+		<Label
+			tabular
 			x={210}
 			y={y + 15}
 			anchor="end"
@@ -157,7 +165,15 @@
 			fill={right ? 'var(--lm-pick)' : 'var(--lm-bar)'}
 			opacity="0.85"
 		/>
-		<Txt x={222 + p * 340 + 8} y={y + 15} size={12} muted text={percent(p)} />
+		<Label
+			anchor="start"
+			tabular
+			x={222 + p * 340 + 8}
+			y={y + 15}
+			size={12}
+			muted
+			text={percent(p)}
+		/>
 	{/each}
 	<Readout
 		id="actual"
@@ -167,8 +183,10 @@
 			2
 		)}"
 	>
-		<Txt x={620} y={CY + 78} size={12} muted text="the real next token" />
-		<Txt
+		<Label anchor="start" x={620} y={CY + 78} size={12} muted text="the real next token" />
+		<Label
+			anchor="start"
+			tabular
 			x={620}
 			y={CY + 104}
 			size={18}
@@ -177,8 +195,17 @@
 			mono
 			text={label(lm.token(actual))}
 		/>
-		<Txt x={620} y={CY + 130} size={13} text="GPT-2 gave it {percent(s.p)}" />
-		<Txt
+		<Label
+			anchor="start"
+			tabular
+			x={620}
+			y={CY + 130}
+			size={13}
+			text="GPT-2 gave it {percent(s.p)}"
+		/>
+		<Label
+			anchor="start"
+			tabular
 			x={620}
 			y={CY + 152}
 			size={13}
@@ -193,7 +220,9 @@
 		label="Average loss"
 		value="{loss.toFixed(2)} (cross-entropy, natural logarithms)"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={44}
 			y={584}
 			size={12}

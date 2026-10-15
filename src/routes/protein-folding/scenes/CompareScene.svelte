@@ -12,11 +12,10 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp } from '#lib/draw/index.ts';
+	import { clamp, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { proteinById, runs } from '../folding';
 	import { BAND_COLOR, band, distance, type Band } from '../structure';
-	import Label from './Text.svelte';
 	import { pieces, projector, Turntable } from './view3d.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();

@@ -21,11 +21,12 @@
 	import {
 		Axes,
 		Handle,
+		Label,
 		niceMax,
 		pingpong,
+		type Point,
 		scale,
-		smoothstep,
-		type Point
+		smoothstep
 	} from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
@@ -41,7 +42,6 @@
 		visibleMass
 	} from '../galaxies';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
 
@@ -229,14 +229,16 @@
 		label={g.name}
 		value="{g.kind}, {Math.round(g.distance * 3.2616)} million light years away"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={24}
 			y={34}
 			text="{g.name}: {massMode ? 'mass inside each radius' : 'rotation curve'}"
 			size={16}
 			weight={700}
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={24}
 			y={54}
 			text="{g.kind} · {Math.round(g.distance * 3.2616)} million light years away"
@@ -405,14 +407,15 @@
 					stroke-dasharray={l.dash ? '6 4' : undefined}
 				/>
 			{/if}
-			<T x={legendX[i] + 30} y={552} text={l.label} size={12} muted />
+			<Label anchor="start" x={legendX[i] + 30} y={552} text={l.label} size={12} muted />
 		{/each}
 	</Readout>
 
 	<!-- ---- card ---- -->
 	<Card x={CX} y={16} w={CW} h={568} />
 	{#if phase === 'curve'}
-		<T
+		<Label
+			anchor="start"
 			x={CX + 16}
 			y={44}
 			text="At the last point, {g.rLast.toFixed(0)} kpc out"
@@ -420,8 +423,8 @@
 			weight={700}
 		/>
 		<Readout id="r-meas" order={2} label="Measured speed" value="{last.v.toFixed(0)} km/s">
-			<T x={CX + 16} y={74} text="measured speed" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={74} text="measured speed" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={74}
 				text="{last.v.toFixed(0)} km/s"
@@ -437,8 +440,8 @@
 			value="{keplerLast.toFixed(0)} km/s"
 			color="var(--dm-kepler)"
 		>
-			<T x={CX + 16} y={100} text="Kepler, visible mass" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={100} text="Kepler, visible mass" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={100}
 				text="{keplerLast.toFixed(0)} km/s"
@@ -448,7 +451,14 @@
 				color="var(--dm-kepler)"
 			/>
 		</Readout>
-		<T x={CX + 16} y={124} text="visible mass: {e10(vm.total)} × 10¹⁰ Suns" size={11.5} muted />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={124}
+			text="visible mass: {e10(vm.total)} × 10¹⁰ Suns"
+			size={11.5}
+			muted
+		/>
 		<line x1={CX + 16} x2={CX + CW - 16} y1={142} y2={142} stroke="var(--border)" />
 		<Readout
 			id="r-need"
@@ -458,8 +468,8 @@
 				1
 			)} × the visible mass"
 		>
-			<T x={CX + 16} y={168} text="mass the orbit needs" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={168} text="mass the orbit needs" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={196}
 				text="({last.v.toFixed(0)} ÷ {keplerLast.toFixed(0)})² = {(
@@ -470,17 +480,59 @@
 				weight={700}
 				anchor="end"
 			/>
-			<T x={CX + CW - 16} y={216} text="the visible mass" size={12.5} anchor="end" />
+			<Label x={CX + CW - 16} y={216} text="the visible mass" size={12.5} anchor="end" />
 		</Readout>
 		<Readout id="r-kepnote">
-			<T x={CX + 16} y={262} text="The dashed curve falls as 1/√r, like" size={12} muted />
-			<T x={CX + 16} y={280} text="the planets round the Sun: what an" size={12} muted />
-			<T x={CX + 16} y={298} text="orbit would do if all the visible" size={12} muted />
-			<T x={CX + 16} y={316} text="mass sat at the centre. The stars" size={12} muted />
-			<T x={CX + 16} y={334} text="far out are much too fast for it." size={12} muted />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={262}
+				text="The dashed curve falls as 1/√r, like"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={280}
+				text="the planets round the Sun: what an"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={298}
+				text="orbit would do if all the visible"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={316}
+				text="mass sat at the centre. The stars"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={334}
+				text="far out are much too fast for it."
+				size={12}
+				muted
+			/>
 		</Readout>
 	{:else}
-		<T x={CX + 16} y={44} text="How well the model fits" size={14} weight={700} />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={44}
+			text="How well the model fits"
+			size={14}
+			weight={700}
+		/>
 		<Readout
 			id="r-chi"
 			order={2}
@@ -488,8 +540,8 @@
 			value="{chiText(score.reduced)} ({verdict})"
 			color={score.reduced < 3 ? 'var(--dm-model)' : 'var(--dm-visible)'}
 		>
-			<T x={CX + 16} y={74} text="χ² per point" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={74} text="χ² per point" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={74}
 				text={chiText(score.reduced)}
@@ -498,7 +550,7 @@
 				anchor="end"
 				color={score.reduced < 3 ? 'var(--dm-model)' : 'var(--dm-visible)'}
 			/>
-			<T x={CX + CW - 16} y={94} text={verdict} size={12} anchor="end" muted />
+			<Label x={CX + CW - 16} y={94} text={verdict} size={12} anchor="end" muted />
 		</Readout>
 		<Readout
 			id="r-miss"
@@ -506,8 +558,8 @@
 			label="Typical miss"
 			value="{score.rmsKms.toFixed(0)} km/s ({score.rmsSigma.toFixed(1)} error bars)"
 		>
-			<T x={CX + 16} y={118} text="typical miss" size={12.5} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={118} text="typical miss" size={12.5} muted />
+			<Label
 				x={CX + CW - 16}
 				y={118}
 				text="{score.rmsKms.toFixed(0)} km/s, {score.rmsSigma.toFixed(1)} error bars"
@@ -518,7 +570,8 @@
 		</Readout>
 		<line x1={CX + 16} x2={CX + CW - 16} y1={134} y2={134} stroke="var(--border)" />
 		<Readout id="m-masses">
-			<T
+			<Label
+				anchor="start"
 				x={CX + 16}
 				y={158}
 				text="Visible matter (measured)"
@@ -526,12 +579,20 @@
 				weight={700}
 				color="var(--dm-visible)"
 			/>
-			<T x={CX + 16} y={180} text="stars, Υ = {mlTarget.toFixed(2)}" size={12.5} muted />
-			<T x={CX + CW - 16} y={180} text="{e10(vm.stars)} × 10¹⁰ Suns" size={12.5} anchor="end" />
-			<T x={CX + 16} y={200} text="gas (hydrogen + helium)" size={12.5} muted />
-			<T x={CX + CW - 16} y={200} text="{e10(vm.gas)} × 10¹⁰ Suns" size={12.5} anchor="end" />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={180}
+				text="stars, Υ = {mlTarget.toFixed(2)}"
+				size={12.5}
+				muted
+			/>
+			<Label x={CX + CW - 16} y={180} text="{e10(vm.stars)} × 10¹⁰ Suns" size={12.5} anchor="end" />
+			<Label anchor="start" x={CX + 16} y={200} text="gas (hydrogen + helium)" size={12.5} muted />
+			<Label x={CX + CW - 16} y={200} text="{e10(vm.gas)} × 10¹⁰ Suns" size={12.5} anchor="end" />
 			{#if withHalo}
-				<T
+				<Label
+					anchor="start"
 					x={CX + 16}
 					y={232}
 					text="Dark halo (your guess)"
@@ -539,15 +600,41 @@
 					weight={700}
 					color="var(--dm-halo)"
 				/>
-				<T x={CX + 16} y={254} text="mass inside {g.rLast.toFixed(0)} kpc" size={12.5} muted />
-				<T x={CX + CW - 16} y={254} text="{e10(darkLast)} × 10¹⁰ Suns" size={12.5} anchor="end" />
-				<T x={CX + 16} y={274} text="core radius" size={12.5} muted />
-				<T x={CX + CW - 16} y={274} text="{coreTarget.toFixed(1)} kpc" size={12.5} anchor="end" />
+				<Label
+					anchor="start"
+					x={CX + 16}
+					y={254}
+					text="mass inside {g.rLast.toFixed(0)} kpc"
+					size={12.5}
+					muted
+				/>
+				<Label
+					x={CX + CW - 16}
+					y={254}
+					text="{e10(darkLast)} × 10¹⁰ Suns"
+					size={12.5}
+					anchor="end"
+				/>
+				<Label anchor="start" x={CX + 16} y={274} text="core radius" size={12.5} muted />
+				<Label
+					x={CX + CW - 16}
+					y={274}
+					text="{coreTarget.toFixed(1)} kpc"
+					size={12.5}
+					anchor="end"
+				/>
 			{/if}
 		</Readout>
 		{#if withHalo}
 			<line x1={CX + 16} x2={CX + CW - 16} y1={294} y2={294} stroke="var(--border)" />
-			<T x={CX + 16} y={318} text="Mass inside {g.rLast.toFixed(0)} kpc" size={13} weight={700} />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={318}
+				text="Mass inside {g.rLast.toFixed(0)} kpc"
+				size={13}
+				weight={700}
+			/>
 			<rect x={BAR_X} y={332} width={BAR_W} height={26} rx="5" fill="none" stroke="var(--border)" />
 			<rect x={BAR_X} y={332} width={visW} height={26} rx="5" fill="var(--dm-visible)" />
 			{#if darkLast > 0}
@@ -562,8 +649,16 @@
 				/>
 			{/if}
 			<Readout id="m-bar">
-				<T x={BAR_X} y={376} text="visible" size={11.5} color="var(--dm-visible)" weight={650} />
-				<T
+				<Label
+					anchor="start"
+					x={BAR_X}
+					y={376}
+					text="visible"
+					size={11.5}
+					color="var(--dm-visible)"
+					weight={650}
+				/>
+				<Label
 					x={BAR_X + BAR_W}
 					y={376}
 					text="dark"
@@ -580,8 +675,8 @@
 				value="{(darkLast / vm.total).toFixed(1)} ×"
 				color="var(--dm-halo)"
 			>
-				<T x={CX + 16} y={412} text="dark ÷ visible" size={13} muted />
-				<T
+				<Label anchor="start" x={CX + 16} y={412} text="dark ÷ visible" size={13} muted />
+				<Label
 					x={CX + CW - 16}
 					y={414}
 					text="{(darkLast / vm.total).toFixed(1)} ×"
@@ -593,8 +688,14 @@
 			</Readout>
 		{:else}
 			<Readout id="m-nohalo">
-				<T x={CX + 16} y={236} text="No halo: the visible matter" size={12.5} />
-				<T x={CX + 16} y={254} text="alone has to hold the orbits." size={12.5} />
+				<Label anchor="start" x={CX + 16} y={236} text="No halo: the visible matter" size={12.5} />
+				<Label
+					anchor="start"
+					x={CX + 16}
+					y={254}
+					text="alone has to hold the orbits."
+					size={12.5}
+				/>
 			</Readout>
 		{/if}
 	{/if}
@@ -602,15 +703,16 @@
 	{#if cursorOn && !massMode}
 		<line x1={CX + 16} x2={CX + CW - 16} y1={448} y2={448} stroke="var(--border)" />
 		<Readout id="r-cursor">
-			<T
+			<Label
+				anchor="start"
 				x={CX + 16}
 				y={472}
 				text="Under the cursor, {cur.r.toFixed(1)} kpc out"
 				size={12.5}
 				weight={650}
 			/>
-			<T x={CX + 16} y={494} text="measured" size={12} muted />
-			<T
+			<Label anchor="start" x={CX + 16} y={494} text="measured" size={12} muted />
+			<Label
 				x={CX + CW - 16}
 				y={494}
 				text="{cur.v.toFixed(0)} ± {cur.e.toFixed(0)} km/s"
@@ -618,8 +720,8 @@
 				anchor="end"
 			/>
 			{#if show.parts}
-				<T x={CX + 16} y={514} text="visible matter" size={12} muted />
-				<T
+				<Label anchor="start" x={CX + 16} y={514} text="visible matter" size={12} muted />
+				<Label
 					x={CX + CW - 16}
 					y={514}
 					text="{Math.max(0, curM.total).toFixed(0)} km/s"
@@ -629,8 +731,8 @@
 				/>
 			{/if}
 			{#if halo}
-				<T x={CX + 16} y={534} text="visible + halo" size={12} muted />
-				<T
+				<Label anchor="start" x={CX + 16} y={534} text="visible + halo" size={12} muted />
+				<Label
 					x={CX + CW - 16}
 					y={534}
 					text="{curM.model.toFixed(0)} km/s"
@@ -639,8 +741,8 @@
 					color="var(--dm-model)"
 				/>
 			{:else if show.kepler}
-				<T x={CX + 16} y={534} text="Kepler" size={12} muted />
-				<T
+				<Label anchor="start" x={CX + 16} y={534} text="Kepler" size={12} muted />
+				<Label
 					x={CX + CW - 16}
 					y={534}
 					text="{keplerSpeed(vm.total, cur.r).toFixed(0)} km/s"
@@ -653,7 +755,8 @@
 	{:else if massMode}
 		<line x1={CX + 16} x2={CX + CW - 16} y1={448} y2={448} stroke="var(--border)" />
 		<Readout id="r-massnote">
-			<T
+			<Label
+				anchor="start"
 				x={CX + 16}
 				y={472}
 				text={halo && halo.ratio > 0 ? 'The dark halo keeps growing' : 'Add a halo to see its mass'}
@@ -661,12 +764,40 @@
 				weight={650}
 			/>
 			{#if halo && halo.ratio > 0}
-				<T x={CX + 16} y={492} text="where the stars and gas run out;" size={12} muted />
-				<T x={CX + 16} y={510} text="the measurements stop, the halo" size={12} muted />
-				<T x={CX + 16} y={528} text="almost certainly does not." size={12} muted />
+				<Label
+					anchor="start"
+					x={CX + 16}
+					y={492}
+					text="where the stars and gas run out;"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={CX + 16}
+					y={510}
+					text="the measurements stop, the halo"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={CX + 16}
+					y={528}
+					text="almost certainly does not."
+					size={12}
+					muted
+				/>
 			{:else}
-				<T x={CX + 16} y={492} text="with the slider, or “Find the best" size={12} muted />
-				<T x={CX + 16} y={510} text="halo” below the chart." size={12} muted />
+				<Label
+					anchor="start"
+					x={CX + 16}
+					y={492}
+					text="with the slider, or “Find the best"
+					size={12}
+					muted
+				/>
+				<Label anchor="start" x={CX + 16} y={510} text="halo” below the chart." size={12} muted />
 			{/if}
 		</Readout>
 	{/if}

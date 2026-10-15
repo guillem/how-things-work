@@ -7,7 +7,7 @@
 	import { Readout } from '#lib/explainer/index.ts';
 	import type { Landscape } from '../descent';
 	import { LEFT, heightOf, mesh, project } from './shared';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Trail {
 		key: string;
@@ -66,8 +66,8 @@
 	<!-- the floor of the picture: the map, flat -->
 	<path d={base} fill="none" stroke="var(--stage-line)" stroke-dasharray="3 4" />
 	<Readout id="surface-axes">
-		<Txt x={axisA.x} y={axisA.y + 26} text="{land.xName} →" anchor="middle" size={12} muted />
-		<Txt x={axisB.x + 14} y={axisB.y + 8} text="{land.yName} ↗" size={12} muted />
+		<Label x={axisA.x} y={axisA.y + 26} text="{land.xName} →" anchor="middle" size={12} muted />
+		<Label anchor="start" x={axisB.x + 14} y={axisB.y + 8} text="{land.yName} ↗" size={12} muted />
 	</Readout>
 
 	{#each grid.rows as row (row.key)}
@@ -111,7 +111,8 @@
 	{/each}
 
 	<Readout id="surface-title">
-		<Txt
+		<Label
+			anchor="start"
 			x={LEFT.x + 4}
 			y={LEFT.y + 14}
 			text="height = loss (cut off flat at the top)"

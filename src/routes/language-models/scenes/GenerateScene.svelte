@@ -7,11 +7,10 @@
 	 * random number drawn, and the token whose stretch contains it.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { drawIndex, percent } from '../lm';
 	import { label, lm, num, str } from './shared';
 	import TextCard from './TextCard.svelte';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -81,7 +80,15 @@
 
 <g>
 	<Readout id="setting" order={1} label="Setting" value={setting}>
-		<Txt x={44} y={42} size={12} muted text="GPT-2 small writes · {setting}" />
+		<Label
+			anchor="start"
+			tabular
+			x={44}
+			y={42}
+			size={12}
+			muted
+			text="GPT-2 small writes · {setting}"
+		/>
 	</Readout>
 	<Readout id="text" order={2} label="Text so far" value={fullText}>
 		<rect
@@ -107,12 +114,13 @@
 	</Readout>
 
 	<Readout id="status" order={3} label="This step" value={status}>
-		<Txt x={44} y={276} size={14} weight={650} text={status} />
+		<Label anchor="start" tabular x={44} y={276} size={14} weight={650} text={status} />
 	</Readout>
 
 	<!-- the distribution at this step -->
 	<Readout id="dist-head">
-		<Txt
+		<Label
+			tabular
 			x={ROW.x - 14}
 			y={ROW.y - 4}
 			anchor="end"
@@ -124,7 +132,8 @@
 	{#each rows as r, i (i)}
 		{@const y = ROW.y + i * ROW.h + 8}
 		{@const on = r.picked && (greedy || u > 0.6)}
-		<Txt
+		<Label
+			tabular
 			x={ROW.x - 14}
 			y={y + 14}
 			anchor="end"
@@ -143,7 +152,9 @@
 			fill={on ? 'var(--lm-pick)' : 'var(--lm-bar)'}
 			opacity="0.85"
 		/>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={ROW.x + r.p * ROW.w * barIn + 8}
 			y={y + 14}
 			size={12}
@@ -153,7 +164,9 @@
 		/>
 	{/each}
 	{#if !pickedShown && (greedy || u > 0.6)}
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={ROW.x}
 			y={ROW.y + rows.length * ROW.h + 22}
 			size={12.5}
@@ -166,7 +179,8 @@
 	{#if !greedy}
 		<!-- the strip: the distribution laid end to end from 0 to 1 -->
 		<Readout id="strip-title">
-			<Txt
+			<Label
+				anchor="start"
 				x={STRIP.x}
 				y={STRIP.y - 12}
 				size={12}
@@ -204,7 +218,7 @@
 			opacity="0.35"
 		/>
 		{#if (1 - segs.end) * STRIP.w > 90}
-			<Txt
+			<Label
 				x={STRIP.x + ((1 + segs.end) / 2) * STRIP.w}
 				y={STRIP.y + 17}
 				anchor="middle"
@@ -221,8 +235,8 @@
 			fill="none"
 			stroke="var(--stage-line)"
 		/>
-		<Txt x={STRIP.x} y={STRIP.y + STRIP.h + 16} anchor="middle" size={11} muted text="0" />
-		<Txt
+		<Label x={STRIP.x} y={STRIP.y + STRIP.h + 16} anchor="middle" size={11} muted text="0" />
+		<Label
 			x={STRIP.x + STRIP.w}
 			y={STRIP.y + STRIP.h + 16}
 			anchor="middle"
@@ -241,7 +255,8 @@
 				stroke="var(--lm-pick)"
 				stroke-width="2.5"
 			/>
-			<Txt
+			<Label
+				tabular
 				x={mx}
 				y={STRIP.y + STRIP.h + 30}
 				anchor="middle"
@@ -254,7 +269,8 @@
 		</g>
 	{:else}
 		<Readout id="greedy-note">
-			<Txt
+			<Label
+				anchor="start"
 				x={ROW.x}
 				y={560}
 				size={12}

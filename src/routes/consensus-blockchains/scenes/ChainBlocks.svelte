@@ -10,11 +10,10 @@
 	 * running over a few seconds of `t`. A fix applies to the text it was made for: editing
 	 * again breaks the chain again.
 	 */
-	import { clamp, easeInOut } from '#lib/draw/index.ts';
+	import { clamp, easeInOut, Label } from '#lib/draw/index.ts';
 	import { Readout, type Params, type ParamValue } from '#lib/explainer/index.ts';
 	import { buildChain, remine, validate, zeroBits, blockDigest, type Block } from '../consensus';
 	import { CHAIN_BITS, CHAIN_DATA, fmt, str } from './shared';
-	import Txt from './Txt.svelte';
 
 	interface Props {
 		t: number;
@@ -102,7 +101,9 @@
 		label="Chain"
 		value={work ? 'blocks with proof-of-work (12 zero bits)' : 'blocks linked by hash'}
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={40}
 			text={work
@@ -119,7 +120,9 @@
 		value={status}
 		color={allValid ? 'var(--cb-ok)' : 'var(--cb-bad)'}
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={66}
 			text={status}
@@ -157,7 +160,9 @@
 			stroke={mining ? 'var(--cb-work)' : c.valid ? 'var(--cb-ok)' : 'var(--cb-bad)'}
 			stroke-width="2"
 		/>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={x + 14}
 			y={y + 28}
 			text={i === 0 ? 'Block 0 (genesis)' : `Block ${i}`}
@@ -165,9 +170,18 @@
 			weight={700}
 		/>
 		<Readout id="prev-{i}">
-			<Txt x={x + 14} y={y + rows.prev - 18} text="hash of the block before" size={11} muted />
+			<Label
+				anchor="start"
+				x={x + 14}
+				y={y + rows.prev - 18}
+				text="hash of the block before"
+				size={11}
+				muted
+			/>
 		</Readout>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={x + 14}
 			y={y + rows.prev}
 			text={hexLine(b.prev)}
@@ -175,7 +189,7 @@
 			mono
 			color={i > 0 && !c.linkOk ? 'var(--cb-bad)' : undefined}
 		/>
-		<Txt x={x + 14} y={y + rows.data - 18} text="data" size={11} muted />
+		<Label anchor="start" x={x + 14} y={y + rows.data - 18} text="data" size={11} muted />
 		{#if i === 1}
 			<foreignObject x={x + 10} y={y + rows.data - 10} width={CARD.w - 20} height="36">
 				<input
@@ -191,11 +205,21 @@
 				/>
 			</foreignObject>
 		{:else}
-			<Txt x={x + 14} y={y + rows.data + 14} text={b.data} size={14} mono />
+			<Label
+				anchor="start"
+				tabular
+				x={x + 14}
+				y={y + rows.data + 14}
+				text={b.data}
+				size={14}
+				mono
+			/>
 		{/if}
 		{#if work}
-			<Txt x={x + 14} y={y + rows.nonce - 18} text="nonce" size={11} muted />
-			<Txt
+			<Label anchor="start" x={x + 14} y={y + rows.nonce - 18} text="nonce" size={11} muted />
+			<Label
+				anchor="start"
+				tabular
 				x={x + 14}
 				y={y + rows.nonce}
 				text={mining ? `${fmt(shown.nonceNow)} …` : fmt(b.nonce)}
@@ -204,7 +228,14 @@
 				color={mining ? 'var(--cb-work)' : undefined}
 			/>
 		{/if}
-		<Txt x={x + 14} y={y + rows.hash - 18} text="this block’s hash" size={11} muted />
+		<Label
+			anchor="start"
+			x={x + 14}
+			y={y + rows.hash - 18}
+			text="this block’s hash"
+			size={11}
+			muted
+		/>
 		{@const h = c.hash}
 		{#if work}
 			<text x={x + 14} y={y + rows.hash} style:font-size="13px" style:font-family="var(--font-mono)"
@@ -213,7 +244,9 @@
 				><tspan>{h.slice(zeroHex, 16)}…</tspan></text
 			>
 			<Readout id="zeros-{i}">
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={x + 14}
 					y={y + rows.hash + 18}
 					text="{zeroBits(blockDigest(b))} zero bits{c.workOk ? '' : ': not enough'}"
@@ -223,7 +256,7 @@
 				/>
 			</Readout>
 		{:else}
-			<Txt x={x + 14} y={y + rows.hash} text={hexLine(h)} size={13} mono />
+			<Label anchor="start" tabular x={x + 14} y={y + rows.hash} text={hexLine(h)} size={13} mono />
 		{/if}
 		<rect
 			x={x + 14}
@@ -254,7 +287,7 @@
 
 	{#if !edited}
 		<Readout id="hint">
-			<Txt
+			<Label
 				x={cx(1) + CARD.w / 2}
 				y={CARD.y + H + 30}
 				text="↑ type in block 1 to change a payment"
@@ -274,7 +307,9 @@
 			? `${fmt(totalTries || 3 * 2 ** CHAIN_BITS)} tries to rewrite 3 blocks`
 			: '3 hashes to rewrite 3 blocks'}
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={work ? 488 : 440}
 			text={work
@@ -282,7 +317,9 @@
 				: 'Change one letter of block 1 and its hash changes completely, so block 2’s link breaks.'}
 			size={13}
 		/>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={work ? 510 : 462}
 			text={work

@@ -6,11 +6,10 @@
 	 * spacer each with half a repeat on either side; each crRNA moves into its
 	 * own Cas9. Plays once over about 12 s, then holds (reduced motion: the end).
 	 */
-	import { lerp, norm, smoothstep } from '#lib/draw/index.ts';
+	import { Label, lerp, norm, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import ArrayStrip from './ArrayStrip.svelte';
 	import { STRIP, spacerX, stripWidth, type StripSpacer } from './strip';
-	import Tag from './Tag.svelte';
 
 	let { t, reduced }: StageProps = $props();
 	const time = $derived(reduced ? 99 : t);
@@ -64,7 +63,7 @@
 		label="CRISPR array (DNA)"
 		value="leader, then three spacers from phages C, B and A"
 	>
-		<Tag x={X0 - 24} y={Y_DNA + 5} text="DNA" size={13} weight={600} anchor="end" />
+		<Label x={X0 - 24} y={Y_DNA + 5} text="DNA" size={13} weight={600} anchor="end" />
 	</Readout>
 	<ArrayStrip x={X0} y={Y_DNA} spacers={SP} scale={S} text={14} />
 
@@ -100,7 +99,7 @@
 				opacity="0.9"
 			/>
 			<Readout id="pol" label="RNA polymerase">
-				<Tag x={polX} y={Y_DNA - 46} text="RNA polymerase" size={12} muted />
+				<Label x={polX} y={Y_DNA - 46} text="RNA polymerase" size={12} muted />
 			</Readout>
 		</g>
 	{/if}
@@ -185,7 +184,7 @@
 				? 'cut inside every repeat'
 				: 'three crRNAs, one spacer each'}
 	>
-		<Tag
+		<Label
 			x={X0 - 24}
 			y={Y_RNA + 5}
 			text="RNA"
@@ -205,7 +204,7 @@
 	/>
 	<Readout id="phases">
 		{#each LINES as line, i (i)}
-			<Tag
+			<Label
 				x={250}
 				y={500 + i * 24}
 				text={line}

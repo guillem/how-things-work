@@ -10,7 +10,7 @@
 	 * The tree is drawn as a dendrogram: leaves on one row in the tree's own left-to-right order,
 	 * each merge at a height of one more than its taller child, so branches never cross.
 	 */
-	import { clamp, easeOut } from '#lib/draw/index.ts';
+	import { clamp, easeOut, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		encode,
@@ -25,7 +25,6 @@
 	} from '../compression';
 	import MessageInput from './MessageInput.svelte';
 	import { fmt, messageOf, show } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -159,12 +158,12 @@
 <g>
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="your-message">
-		<Txt x={40} y={14} text="Your message" size={12} weight={700} />
+		<Label anchor="start" x={40} y={14} text="Your message" size={12} weight={700} />
 	</Readout>
 	<MessageInput x={40} y={22} w={600} value={msg} {setParam} presets />
 
 	{#if n === 0}
-		<Txt x={480} y={260} text="Type something in the box" size={15} anchor="middle" muted />
+		<Label x={480} y={260} text="Type something in the box" size={15} anchor="middle" muted />
 	{:else if phase !== 'size'}
 		<!-- branches -->
 		{#each h.nodes as node (node.id)}
@@ -182,7 +181,8 @@
 						opacity={a}
 					/>
 					{#if phase === 'codes' && (spacing >= 30 || on)}
-						<Txt
+						<Label
+							tabular
 							x={(p.x + q.x) / 2}
 							y={p.y - 6}
 							text={String(bit)}
@@ -293,7 +293,8 @@
 			<Readout id="merge" order={1} {...mergeRow}>
 				{#if latest >= 0}
 					{@const [a, b] = h.merges[latest]}
-					<Txt
+					<Label
+						tabular
 						x={920}
 						y={146}
 						text="Merge {latest + 1} of {merges}: the two rarest, {h.nodes[a].weight} + {h.nodes[b]
@@ -303,7 +304,8 @@
 						anchor="end"
 					/>
 				{:else}
-					<Txt
+					<Label
+						tabular
 						x={920}
 						y={146}
 						text={merges === 0
@@ -316,9 +318,16 @@
 				{/if}
 			</Readout>
 			<Readout id="waiting">
-				<Txt x={40} y={146} text="◯ waiting to be merged" size={12} color="var(--cmp-pick)" />
+				<Label
+					anchor="start"
+					x={40}
+					y={146}
+					text="◯ waiting to be merged"
+					size={12}
+					color="var(--cmp-pick)"
+				/>
 				{#snippet narrow()}
-					<Txt x={40} y={146} text="◯ waiting" size={26} color="var(--cmp-pick)" />
+					<Label anchor="start" x={40} y={146} text="◯ waiting" size={26} color="var(--cmp-pick)" />
 				{/snippet}
 			</Readout>
 			<Readout
@@ -330,7 +339,9 @@
 					: 'join the two rarest nodes'}
 				note={done >= merges ? undefined : 'and put the sum back'}
 			>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={40}
 					y={566}
 					text={done >= merges
@@ -352,7 +363,8 @@
 				)} bits"
 				color="var(--explainer-accent, var(--accent))"
 			>
-				<Txt
+				<Label
+					tabular
 					x={920}
 					y={146}
 					text="“{show(litSym)}” = {code}: {code.length} bit{code.length === 1
@@ -364,15 +376,17 @@
 				/>
 			</Readout>
 			<Readout id="left-right">
-				<Txt x={40} y={146} text="0 = left, 1 = right" size={12} muted />
+				<Label anchor="start" x={40} y={146} text="0 = left, 1 = right" size={12} muted />
 				{#snippet narrow()}
-					<Txt x={40} y={146} text="0 left · 1 right" size={26} muted />
+					<Label anchor="start" x={40} y={146} text="0 left · 1 right" size={26} muted />
 				{/snippet}
 			</Readout>
 		{/if}
 	{:else}
 		<Readout id="coded-title">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={40}
 				y={146}
 				text="The message in Huffman code: {coded.length} bits, decoded one symbol at a time"
@@ -427,7 +441,7 @@
 					note={i === 2 && k > 1 ? `${fmt(avg)} bits per symbol, between H and H + 1` : undefined}
 					color={b.color}
 				>
-					<Txt x={40} y={y + 15} text={b.label} size={13} weight={600} />
+					<Label anchor="start" tabular x={40} y={y + 15} text={b.label} size={13} weight={600} />
 				</Readout>
 				<rect
 					x={220}
@@ -441,7 +455,9 @@
 					stroke-dasharray={i === 3 ? '5 3' : undefined}
 				/>
 				<Readout id="bar-value-{i}">
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={228 + w}
 						y={y + 16}
 						text="{fmt(b.bits, 1)} bits"
@@ -450,7 +466,9 @@
 						color={b.color}
 					/>
 					{#snippet narrow()}
-						<Txt
+						<Label
+							anchor="start"
+							tabular
 							x={228 + w}
 							y={y + 21}
 							text={fmt(b.bits, 1)}
@@ -463,7 +481,9 @@
 			</g>
 		{/each}
 		<Readout id="avg">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={40}
 				y={566}
 				text={k === 1

@@ -7,12 +7,11 @@
 	 * Time is compressed differently in each part (the mission clock on the card shows real
 	 * time). Orbits are Kepler orbits from `twoBurns()` in `space.ts`.
 	 */
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { massRatio } from '../rockets';
 	import { at, circular, MU_EARTH, R_EARTH, R_GEO, R_LEO, twoBurns, type Conic } from '../space';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -213,7 +212,7 @@
 		</g>
 	</g>
 	<Readout id="labels">
-		<T
+		<Label
 			x={CX}
 			y={CY - R_GEO * K - 10}
 			text="geostationary orbit, 35,786 km up"
@@ -221,7 +220,8 @@
 			anchor="middle"
 			color="var(--rk-spin)"
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={burn1At.x + 10}
 			y={burn1At.y + 22}
 			text="burn 1"
@@ -229,14 +229,16 @@
 			weight={600}
 			color="var(--rk-flame)"
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={PANEL.x + 20}
 			y={PANEL.y + PANEL.h - 30}
 			text="to scale: the 200 km orbit hugs the Earth"
 			size={11}
 			muted
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={PANEL.x + 20}
 			y={PANEL.y + PANEL.h - 14}
 			text="dashed: the path still to come"
@@ -244,7 +246,8 @@
 			muted
 		/>
 		{#if burn2At && dv2 > 0 && burn2At.x > PANEL.x + 40 && burn2At.y > PANEL.y + 20}
-			<T
+			<Label
+				anchor="start"
 				x={burn2At.x + 10}
 				y={burn2At.y - 10}
 				text="burn 2"
@@ -257,16 +260,30 @@
 
 	<Card x={CARD.x} y={CARD.y} w={CARD.w} h={CARD.h} />
 	<Readout id="title">
-		<T x={CL} y={CARD.y + 32} text="Two burns, forwards" size={16} weight={700} />
-		<T x={CL} y={CARD.y + 50} text="from a round orbit 200 km up" size={11} muted />
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 32}
+			text="Two burns, forwards"
+			size={16}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 50}
+			text="from a round orbit 200 km up"
+			size={11}
+			muted
+		/>
 	</Readout>
 	<Readout id="clock">
-		<T x={CL} y={CARD.y + 84} text="Mission time" size={12} muted />
-		<T x={CR} y={CARD.y + 84} text={clock(craft.clock)} size={13} weight={600} anchor="end" />
+		<Label anchor="start" x={CL} y={CARD.y + 84} text="Mission time" size={12} muted />
+		<Label x={CR} y={CARD.y + 84} text={clock(craft.clock)} size={13} weight={600} anchor="end" />
 	</Readout>
 	<Readout id="orbit" order={2} label="Orbit now" value={orbitText}>
-		<T x={CL} y={CARD.y + 108} text="Orbit now" size={12} muted />
-		<T x={CR} y={CARD.y + 108} text={orbitText} size={13} weight={600} anchor="end" />
+		<Label anchor="start" x={CL} y={CARD.y + 108} text="Orbit now" size={12} muted />
+		<Label x={CR} y={CARD.y + 108} text={orbitText} size={13} weight={600} anchor="end" />
 	</Readout>
 	<Readout
 		id="speed"
@@ -275,8 +292,8 @@
 		value="{fmt(speedNow / 1000)} km/s"
 		color="var(--rk-speed)"
 	>
-		<T x={CL} y={CARD.y + 132} text="Speed now" size={12} muted />
-		<T
+		<Label anchor="start" x={CL} y={CARD.y + 132} text="Speed now" size={12} muted />
+		<Label
 			x={CR}
 			y={CARD.y + 132}
 			text="{fmt(speedNow / 1000)} km/s"
@@ -289,7 +306,7 @@
 
 	<line x1={CL} x2={CR} y1={CARD.y + 152} y2={CARD.y + 152} stroke="var(--border)" />
 	<Readout id="budget-title">
-		<T x={CL} y={CARD.y + 176} text="Δv budget" size={13} weight={700} />
+		<Label anchor="start" x={CL} y={CARD.y + 176} text="Δv budget" size={13} weight={700} />
 	</Readout>
 	{#each [{ id: 'b1', label: 'burn 1', v: dv1 }, { id: 'b2', label: 'burn 2', v: dv2 }] as b, i (b.id)}
 		{@const y = CARD.y + 202 + i * 26}
@@ -303,13 +320,13 @@
 			opacity="0.8"
 		/>
 		<Readout id="row-{b.id}">
-			<T x={CL} {y} text={b.label} size={12} muted />
-			<T x={CR} {y} text="{fmt(b.v / 1000)} km/s" size={12} weight={600} anchor="end" />
+			<Label anchor="start" x={CL} {y} text={b.label} size={12} muted />
+			<Label x={CR} {y} text="{fmt(b.v / 1000)} km/s" size={12} weight={600} anchor="end" />
 		</Readout>
 	{/each}
 	<Readout id="total" order={1} label="Δv used" value="{fmt(total)} km/s" color="var(--rk-flame)">
-		<T x={CL} y={CARD.y + 262} text="total" size={12} weight={700} />
-		<T
+		<Label anchor="start" x={CL} y={CARD.y + 262} text="total" size={12} weight={700} />
+		<Label
 			x={CR}
 			y={CARD.y + 262}
 			text="{fmt(total)} km/s"
@@ -320,14 +337,22 @@
 		/>
 	</Readout>
 	<Readout id="share">
-		<T
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 286}
 			text="propellant: {Math.round(share * 100)}% of the craft's mass"
 			size={11}
 			muted
 		/>
-		<T x={CL} y={CARD.y + 301} text="(rocket equation, 3 km/s exhaust)" size={11} muted />
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 301}
+			text="(rocket equation, 3 km/s exhaust)"
+			size={11}
+			muted
+		/>
 	</Readout>
 
 	<line x1={CL} x2={CR} y1={CARD.y + 320} y2={CARD.y + 320} stroke="var(--border)" />
@@ -338,7 +363,8 @@
 		value={verdict}
 		color={isGeo ? 'var(--rk-spin)' : undefined}
 	>
-		<T
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 346}
 			text={verdict}
@@ -348,25 +374,62 @@
 		/>
 	</Readout>
 	<Readout id="hint">
-		<T x={CL} y={CARD.y + 380} text="Hohmann to geostationary orbit:" size={11} muted />
-		<T x={CL} y={CARD.y + 396} text="2.45 + 1.48 km/s" size={11} muted />
-		<T
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 380}
+			text="Hohmann to geostationary orbit:"
+			size={11}
+			muted
+		/>
+		<Label anchor="start" x={CL} y={CARD.y + 396} text="2.45 + 1.48 km/s" size={11} muted />
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 424}
 			text="Speed in the low orbit: {fmt(circular(MU_EARTH, R_LEO) / 1000)} km/s"
 			size={11}
 			muted
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={CL}
 			y={CARD.y + 440}
 			text="Speed in geostationary orbit: {fmt(circular(MU_EARTH, R_GEO) / 1000)} km/s"
 			size={11}
 			muted
 		/>
-		<T x={CL} y={CARD.y + 466} text="Higher orbits are slower: the burns pay" size={11} muted />
-		<T x={CL} y={CARD.y + 482} text="for climbing away from the Earth." size={11} muted />
-		<T x={CL} y={CARD.y + 520} text="Burns drawn as instant kicks; time sped up," size={11} muted />
-		<T x={CL} y={CARD.y + 536} text="more in some parts than others." size={11} muted />
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 466}
+			text="Higher orbits are slower: the burns pay"
+			size={11}
+			muted
+		/>
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 482}
+			text="for climbing away from the Earth."
+			size={11}
+			muted
+		/>
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 520}
+			text="Burns drawn as instant kicks; time sped up,"
+			size={11}
+			muted
+		/>
+		<Label
+			anchor="start"
+			x={CL}
+			y={CARD.y + 536}
+			text="more in some parts than others."
+			size={11}
+			muted
+		/>
 	</Readout>
 </g>

@@ -13,11 +13,19 @@
 	 */
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Axes, Handle, clamp, niceMax, scale, ticks, type Point } from '#lib/draw/index.ts';
+	import {
+		Axes,
+		clamp,
+		Handle,
+		Label,
+		niceMax,
+		type Point,
+		scale,
+		ticks
+	} from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { GAPS, K_B, cell, cellCurrent, kelvin } from '../model';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { step, params, setParam }: StageProps = $props();
 	const phase = $derived(String(step.hints?.phase ?? 'iv'));
@@ -141,7 +149,7 @@
 		{@const my = sp(mA(c.pmax))}
 		<circle cx={mx} cy={my} r="5" fill="var(--sc-power)" />
 		<Readout id="mpp-label">
-			<T
+			<Label
 				x={mx - 8}
 				y={my - 10}
 				text="maximum power {mA(c.pmax).toFixed(1)} mW/cm²"
@@ -152,7 +160,7 @@
 			/>
 		</Readout>
 		<Readout id="ptitle">
-			<T
+			<Label
 				x={sv(0.42)}
 				y={sp(mA(0.42 * cellCurrent(0.42, GAP, opts))) - 14}
 				text="power = V × I"
@@ -172,7 +180,7 @@
 			opacity="0.6"
 		/>
 		<Readout id="ref">
-			<T x={sv(ref.voc) + 6} y={Y1 - 30} text="25 °C" size={11} muted />
+			<Label anchor="start" x={sv(ref.voc) + 6} y={Y1 - 30} text="25 °C" size={11} muted />
 		</Readout>
 	{/if}
 	<path d={path} fill="none" stroke="var(--sc-curve)" stroke-width="2.6" />
@@ -185,7 +193,8 @@
 		label={phase === 'iv' ? 'Short-circuit current' : undefined}
 		value="{fmtJ(mA(c.jsc))} mA/cm²"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={sv(0) + 10}
 			y={sj(mA(c.jsc)) - 10}
 			text="Jsc {fmtJ(mA(c.jsc))} mA/cm²"
@@ -200,7 +209,7 @@
 		label={phase === 'mpp' ? undefined : 'Open-circuit voltage'}
 		value="{c.voc.toFixed(3)} V"
 	>
-		<T
+		<Label
 			x={sv(c.voc) - 6}
 			y={Y1 - 10}
 			text="Voc {c.voc.toFixed(3)} V"
@@ -220,7 +229,7 @@
 			stroke-dasharray="6 4"
 		/>
 		<Readout id="gapline">
-			<T
+			<Label
 				x={sv(GAP) - 6}
 				y={Y0 + 34}
 				text="band gap 1.12 eV → 1.12 V"
@@ -257,7 +266,8 @@
 		/>
 	</Readout>
 	<Readout id="title" order={0}>
-		<T
+		<Label
+			anchor="start"
 			x={RX + 16}
 			y={86}
 			text={phase === 'temp'
@@ -270,14 +280,15 @@
 		/>
 	</Readout>
 	<Readout id="v" order={1} label="Voltage" value="{v.toFixed(3)} V">
-		<T x={RX + 16} y={112} text="voltage {v.toFixed(3)} V" size={14} />
+		<Label anchor="start" x={RX + 16} y={112} text="voltage {v.toFixed(3)} V" size={14} />
 	</Readout>
 	<Readout id="j" order={2} label="Current" value="{fmtJ(mA(j))} mA/cm²">
-		<T x={RX + 16} y={134} text="current {fmtJ(mA(j))} mA per cm²" size={14} />
+		<Label anchor="start" x={RX + 16} y={134} text="current {fmtJ(mA(j))} mA per cm²" size={14} />
 	</Readout>
 	{#if phase === 'iv'}
 		<Readout id="hint">
-			<T
+			<Label
+				anchor="start"
 				x={RX + 16}
 				y={160}
 				text={v < 0.02
@@ -297,7 +308,8 @@
 			value="{power.toFixed(1)} mW/cm² ({(efficiency * 100).toFixed(1)}%)"
 			color="var(--sc-power)"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={RX + 16}
 				y={160}
 				text="power {power.toFixed(1)} mW per cm²"
@@ -307,7 +319,8 @@
 			/>
 		</Readout>
 		<Readout id="eff">
-			<T
+			<Label
+				anchor="start"
 				x={RX + 16}
 				y={182}
 				text="efficiency {(efficiency * 100).toFixed(1)}% of 100 mW/cm²"
@@ -316,14 +329,16 @@
 		</Readout>
 		{#if phase === 'mpp'}
 			<Readout id="ff" order={7} label="Fill factor" value="{(c.ff * 100).toFixed(1)}%">
-				<T
+				<Label
+					anchor="start"
 					x={RX + 16}
 					y={204 + 12}
 					text="best: {c.vmp.toFixed(2)} V, {(c.efficiency * 100).toFixed(1)}%"
 					size={13}
 					weight={600}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={RX + 16}
 					y={226 + 12}
 					text="fill factor {(c.ff * 100).toFixed(1)}% (dashed box)"
@@ -341,14 +356,16 @@
 					? '+'
 					: ''}{dP.toFixed(1)}%"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={RX + 16}
 					y={216}
 					text="vs 25 °C: Voc {dV >= 0 ? '+' : '−'}{Math.abs(dV).toFixed(0)} mV"
 					size={13}
 					weight={600}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={RX + 16}
 					y={238}
 					text="best power {dP >= 0 ? '+' : '−'}{Math.abs(dP).toFixed(1)}% ({(
@@ -372,7 +389,14 @@
 			opacity="0.8"
 		/>
 		<Readout id="in">
-			<T x={RX + 16} y={172} text="photons absorbed from the sunlight" size={12} muted />
+			<Label
+				anchor="start"
+				x={RX + 16}
+				y={172}
+				text="photons absorbed from the sunlight"
+				size={12}
+				muted
+			/>
 		</Readout>
 		<Readout
 			id="out"
@@ -381,8 +405,16 @@
 			value="{glowText} of those absorbed"
 			color="var(--sc-glow)"
 		>
-			<T x={RX + 16} y={228} text="photons the cell gives back (glow)" size={12} muted />
-			<T
+			<Label
+				anchor="start"
+				x={RX + 16}
+				y={228}
+				text="photons the cell gives back (glow)"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
 				x={RX + 16}
 				y={276}
 				text={givenBack < 0.001
@@ -394,7 +426,8 @@
 			/>
 		</Readout>
 		<Readout id="gapshort">
-			<T
+			<Label
+				anchor="start"
 				x={RX + 16}
 				y={310}
 				text="Voc is {((GAP - c.voc) * 1000).toFixed(0)} mV below the gap"

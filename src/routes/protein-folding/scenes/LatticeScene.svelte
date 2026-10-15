@@ -13,8 +13,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
-	import Label from './Text.svelte';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { clashes, contacts, energy, fromTurns } from '../hp';
 	import { CHAINS, chainById, landscapeOf } from '../folding';

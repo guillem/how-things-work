@@ -10,7 +10,7 @@
 	 */
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
-	import { Axes, linePath, scale } from '#lib/draw/index.ts';
+	import { Axes, Label, linePath, scale } from '#lib/draw/index.ts';
 	import { LADSON } from '../naca0012.ts';
 	import {
 		CD0,
@@ -28,7 +28,6 @@
 	} from '../plane.ts';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
-	import T from './T.svelte';
 	import Title from './Title.svelte';
 	import { fmtForce } from './fmt.ts';
 
@@ -128,7 +127,7 @@
 			fill-opacity="0.08"
 		/>
 		<Readout id="stall-z">
-			<T
+			<Label
 				x={sx(C172.stallKcas) - 4}
 				y={PY0 + 16}
 				text="stall"
@@ -154,7 +153,7 @@
 		/>
 		<path d={totalPath} fill="none" stroke="var(--stage-ink)" stroke-width="2.6" />
 		<Readout id="k-par">
-			<T
+			<Label
 				x={sx(118)}
 				y={sy(at(118).parasite) - 10}
 				text="parasite"
@@ -165,7 +164,8 @@
 			/>
 		</Readout>
 		<Readout id="k-ind">
-			<T
+			<Label
+				anchor="start"
 				x={sx(66)}
 				y={sy(at(66).induced) + 22}
 				text="induced"
@@ -175,7 +175,7 @@
 			/>
 		</Readout>
 		<Readout id="k-tot">
-			<T
+			<Label
 				x={sx(118) + 4}
 				y={sy(at(118).total) - 10}
 				text="total"
@@ -195,14 +195,22 @@
 		/>
 		<circle cx={sx(vmd)} cy={sy(dmin)} r="5" fill="var(--stage-ink)" />
 		<Readout id="least" label="Least drag" value="{vmd.toFixed(0)} kt, {fmtForce(dmin)}">
-			<T
+			<Label
+				anchor="start"
 				x={sx(vmd) + 8}
 				y={sy(dmin) + 26}
 				text="least drag: {vmd.toFixed(0)} kt"
 				size={12.5}
 				weight={650}
 			/>
-			<T x={sx(vmd) + 8} y={sy(dmin) + 42} text="best glide in the handbook" size={11.5} muted />
+			<Label
+				anchor="start"
+				x={sx(vmd) + 8}
+				y={sy(dmin) + 42}
+				text="best glide in the handbook"
+				size={11.5}
+				muted
+			/>
 		</Readout>
 		<!-- the chosen speed -->
 		{#if !stalled}
@@ -245,7 +253,8 @@
 		<path d={polarPath} fill="none" stroke="var(--stage-ink)" stroke-width="2.6" />
 		<circle cx={px(dragCoefficient(CL_GLIDE))} cy={py(CL_GLIDE)} r="5" fill="var(--stage-ink)" />
 		<Readout id="tangent" label="Best glide" value="L/D = {GLIDE_RATIO.toFixed(1)}">
-			<T
+			<Label
+				anchor="start"
 				x={px(dragCoefficient(CL_GLIDE)) + 10}
 				y={py(CL_GLIDE) + 18}
 				text="best glide: lift/drag = {GLIDE_RATIO.toFixed(1)}"
@@ -257,7 +266,8 @@
 			<circle cx={px(r[2])} cy={py(r[1])} r="3" fill="var(--fl-data)" />
 		{/each}
 		<Readout id="k-sec">
-			<T
+			<Label
+				anchor="start"
 				x={px(0.03)}
 				y={py(1.62) + 4}
 				text="the wing section alone (NACA 0012, measured)"
@@ -266,7 +276,8 @@
 			/>
 		</Readout>
 		<Readout id="k-plane">
-			<T
+			<Label
+				anchor="start"
 				x={px(dragCoefficient(1.3)) + 10}
 				y={py(1.3) + 4}
 				text="the whole aeroplane"
@@ -275,7 +286,14 @@
 			/>
 		</Readout>
 		<Readout id="k-cd0">
-			<T x={px(CD0) + 6} y={py(0.06)} text="zero-lift drag {CD0.toFixed(3)}" size={11.5} muted />
+			<Label
+				anchor="start"
+				x={px(CD0) + 6}
+				y={py(0.06)}
+				text="zero-lift drag {CD0.toFixed(3)}"
+				size={11.5}
+				muted
+			/>
 		</Readout>
 		{#if !stalled}
 			<circle
@@ -336,22 +354,38 @@
 		/>
 	{/if}
 	<Readout id="card-cap">
-		<T
+		<Label
+			anchor="start"
 			x={664}
 			y={190}
 			text="full weight 1157 kg: lift = weight = {fmtForce(WEIGHT)}"
 			size={11.5}
 			muted
 		/>
-		<T x={664} y={208} text="polar fitted to the handbook’s glide:" size={11.5} muted />
-		<T
+		<Label
+			anchor="start"
+			x={664}
+			y={208}
+			text="polar fitted to the handbook’s glide:"
+			size={11.5}
+			muted
+		/>
+		<Label
+			anchor="start"
 			x={664}
 			y={226}
 			text="C(drag) = {CD0.toFixed(3)} + {K_INDUCED.toFixed(3)} × C(lift)²"
 			size={11.5}
 			muted
 		/>
-		<T x={664} y={244} text="(propeller windmilling, flaps up)" size={11.5} muted />
+		<Label
+			anchor="start"
+			x={664}
+			y={244}
+			text="(propeller windmilling, flaps up)"
+			size={11.5}
+			muted
+		/>
 	</Readout>
 
 	<!-- the glide, to scale -->
@@ -369,8 +403,8 @@
 	/>
 	<circle cx={glider[0]} cy={glider[1]} r="4" fill="var(--fl-thrust)" opacity={gliderFade} />
 	<Readout id="glide">
-		<T x={GX0 + 6} y={GY0 - 8} text="1000 ft" size={12} />
-		<T
+		<Label anchor="start" x={GX0 + 6} y={GY0 - 8} text="1000 ft" size={12} />
+		<Label
 			x={GX1}
 			y={GY1 + 22}
 			text="{C172.glideNmPer1000ft} nautical miles ({(
@@ -380,27 +414,30 @@
 			size={12}
 			anchor="end"
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={664}
 			y={486}
 			text="every 1000 ft of height: {C172.glideNmPer1000ft} nm forward,"
 			size={12}
 			muted
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={664}
 			y={504}
 			text="a glide ratio of {GLIDE_RATIO.toFixed(1)} = lift ÷ drag"
 			size={12}
 			muted
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={664}
 			y={530}
 			text="at {C172.glideKias} knots indicated, propeller windmilling"
 			size={12}
 			muted
 		/>
-		<T x={664} y={548} text="(Cessna 172S handbook, Fig. 3-1)" size={12} muted />
+		<Label anchor="start" x={664} y={548} text="(Cessna 172S handbook, Fig. 3-1)" size={12} muted />
 	</Readout>
 </g>

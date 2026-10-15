@@ -20,9 +20,8 @@
 	import { cubicInOut } from 'svelte/easing';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { load, cosine, dot, unit, type Embeddings, type Neighbour } from '../embeddings';
-	import Txt from './Txt.svelte';
 	import WordInput from './WordInput.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
@@ -336,7 +335,7 @@
 		stroke="var(--border)"
 	/>
 	{#if !emb}
-		<Txt
+		<Label
 			x={PLOT.x + PLOT.w / 2}
 			y={300}
 			text="Loading word vectors…"
@@ -348,7 +347,8 @@
 		<!-- ------------------------------------------------------------ pairs -->
 		<g opacity={show.current}>
 			<Readout id="view-note">
-				<Txt
+				<Label
+					anchor="start"
 					x={PLOT.x + 16}
 					y={PLOT.y + PLOT.h - 16}
 					text="A flat linear view: across = the average direction of the arrows"
@@ -362,7 +362,15 @@
 				{@const u = grow(k)}
 				{@const e = arrowEnd(a, b, u)}
 				<circle cx={a.x} cy={a.y} r="4" fill="var(--stage-ink)" />
-				<Txt x={a.x - 8} y={pairLabels[k].ya} text={pr.from} size={13} anchor="end" weight={600} />
+				<Label
+					tabular
+					x={a.x - 8}
+					y={pairLabels[k].ya}
+					text={pr.from}
+					size={13}
+					anchor="end"
+					weight={600}
+				/>
 				{#if u > 0.02}
 					<line
 						x1={a.x}
@@ -376,7 +384,9 @@
 				{/if}
 				<g opacity={u}>
 					<circle cx={b.x} cy={b.y} r="4" fill="var(--emb-sum)" />
-					<Txt
+					<Label
+						anchor="start"
+						tabular
 						x={b.x + 8}
 						y={pairLabels[k].yb}
 						text={pr.to}
@@ -389,9 +399,23 @@
 		</g>
 		<!-- panel -->
 		<Readout id="pairs-title">
-			<Txt x={PL} y={40} text={rel.title} size={16} weight={700} />
-			<Txt x={PL} y={60} text="each arrow's cosine with the average" size={11} muted />
-			<Txt x={PL} y={74} text="direction, in the full 100-D space" size={11} muted />
+			<Label anchor="start" tabular x={PL} y={40} text={rel.title} size={16} weight={700} />
+			<Label
+				anchor="start"
+				x={PL}
+				y={60}
+				text="each arrow's cosine with the average"
+				size={11}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={PL}
+				y={74}
+				text="direction, in the full 100-D space"
+				size={11}
+				muted
+			/>
 		</Readout>
 		{#each pairView as pr, k (pr.from)}
 			{@const y = 104 + k * 28}
@@ -403,7 +427,15 @@
 				opacity={k < 4 ? 1 : 0}
 			>
 				<g opacity={grow(k) * 0.7 + 0.3}>
-					<Txt x={PL} {y} text="{pr.from} → {pr.to}" size={13} weight={600} />
+					<Label
+						anchor="start"
+						tabular
+						x={PL}
+						{y}
+						text="{pr.from} → {pr.to}"
+						size={13}
+						weight={600}
+					/>
 					<rect
 						x={PL + 160}
 						y={y - 10}
@@ -413,15 +445,30 @@
 						fill="var(--emb-sum)"
 						opacity="0.6"
 					/>
-					<Txt x={PR} {y} text={fmt(pr.cos)} size={13} anchor="end" />
+					<Label tabular x={PR} {y} text={fmt(pr.cos)} size={13} anchor="end" />
 				</g>
 			</Readout>
 		{/each}
 		<Readout id="random" order={9} label="Two random word steps" value="cos ≈ {randomCos}">
 			{@const y = 104 + pairView.length * 28 + 18}
 			<line x1={PL} x2={PR} y1={y - 16} y2={y - 16} stroke="var(--stage-line)" />
-			<Txt x={PL} y={y + 4} text="for comparison, the steps between" size={12} muted />
-			<Txt x={PL} y={y + 20} text="random words: cos ≈ {randomCos}" size={12} muted />
+			<Label
+				anchor="start"
+				x={PL}
+				y={y + 4}
+				text="for comparison, the steps between"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				tabular
+				x={PL}
+				y={y + 20}
+				text="random words: cos ≈ {randomCos}"
+				size={12}
+				muted
+			/>
 		</Readout>
 	{:else if analogy}
 		<!-- ------------------------------------------------------------ analogy -->
@@ -434,7 +481,9 @@
 		{@const e2 = arrowEnd(B, L, grow(2))}
 		<g opacity={show.current}>
 			<Readout id="plane-note">
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={PLOT.x + 16}
 					y={PLOT.y + PLOT.h - 16}
 					text="The plane through {n.plus}, {n.minus} and {n.add}; other words drawn where their shadow falls"
@@ -483,7 +532,8 @@
 				/>
 			{/if}
 			<Readout id="step-label">
-				<Txt
+				<Label
+					tabular
 					x={(A.x + C.x) / 2}
 					y={(A.y + C.y) / 2 + 20}
 					text="− {n.minus} + {n.add}"
@@ -492,7 +542,7 @@
 					color="var(--emb-sum)"
 					weight={600}
 				/>
-				<Txt
+				<Label
 					x={(B.x + L.x) / 2}
 					y={(B.y + L.y) / 2 - 10}
 					text="the same step"
@@ -514,7 +564,9 @@
 						opacity={r.rank === 0 ? 1 : 0.7}
 					/>
 					{#if r.lx !== null}
-						<Txt
+						<Label
+							anchor="start"
+							tabular
 							x={r.lx}
 							y={r.ly}
 							text="{r.rank + 1}. {r.word}"
@@ -529,7 +581,8 @@
 			{#each [{ q: A, w: n.minus, right: false }, { q: B, w: n.plus, right: false }, { q: C, w: n.add, right: true }] as { q, w, right }, k (k)}
 				{@const top = analogy.results[0]?.word === w}
 				<circle cx={q.x} cy={q.y} r="5" fill="var(--stage-ink)" />
-				<Txt
+				<Label
+					tabular
 					x={right ? q.x + 10 : q.x - 10}
 					y={q.y + 5}
 					text={top ? `1. ${w}` : w}
@@ -544,7 +597,8 @@
 				<circle cx={L.x} cy={L.y} r="9" fill="none" stroke="var(--emb-sum)" stroke-width="2" />
 				<circle cx={L.x} cy={L.y} r="2.5" fill="var(--emb-sum)" />
 				<Readout id="land">
-					<Txt
+					<Label
+						tabular
 						x={L.x}
 						y={L.y + 26}
 						text="{n.plus} − {n.minus} + {n.add}"
@@ -559,21 +613,31 @@
 
 		<!-- panel -->
 		{#if phase === 'failures'}
-			<Txt x={PL} y={40} text="{n.plus} − {n.minus} + {n.add}" size={16} weight={700} />
+			<Label
+				anchor="start"
+				tabular
+				x={PL}
+				y={40}
+				text="{n.plus} − {n.minus} + {n.add}"
+				size={16}
+				weight={700}
+			/>
 			{#each fail.note as line, k (k)}
-				<Txt x={PL} y={62 + k * 16} text={line} size={11.5} muted />
+				<Label anchor="start" tabular x={PL} y={62 + k * 16} text={line} size={11.5} muted />
 			{/each}
 		{/if}
 		{@const y0 = phase === 'analogy' ? 196 : 124}
 		<Readout id="res-head">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={PL}
 				y={y0}
 				text="closest words{excludeInputs ? ' (inputs left out)' : ''}"
 				size={11}
 				muted
 			/>
-			<Txt x={PR} y={y0} text="cos θ" size={11} anchor="end" muted />
+			<Label x={PR} y={y0} text="cos θ" size={11} anchor="end" muted />
 		</Readout>
 		{#each analogy.results as r, k (r.word)}
 			{@const y = y0 + 26 + k * 28}
@@ -586,8 +650,10 @@
 				color={k === 0 ? 'var(--emb-result)' : undefined}
 				opacity={k < 4 ? 1 : 0}
 			>
-				<Txt x={PL} {y} text={String(k + 1)} size={11} muted />
-				<Txt
+				<Label anchor="start" tabular x={PL} {y} text={String(k + 1)} size={11} muted />
+				<Label
+					anchor="start"
+					tabular
 					x={PL + 18}
 					{y}
 					text={r.word}
@@ -604,7 +670,7 @@
 					fill="var(--emb-result)"
 					opacity="0.55"
 				/>
-				<Txt x={PR} {y} text={fmt(r.cos)} size={13} anchor="end" />
+				<Label tabular x={PR} {y} text={fmt(r.cos)} size={13} anchor="end" />
 			</Readout>
 		{/each}
 		{@const y1 = y0 + 26 + 5 * 28 + 6}
@@ -615,7 +681,9 @@
 				label="Closest word"
 				value="{analogy.results[0].word}, one of the inputs"
 			>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={PL}
 					y={y1}
 					text="The closest word is {analogy.results[0].word} itself:"
@@ -623,7 +691,9 @@
 					weight={600}
 					color="var(--emb-warn)"
 				/>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={PL}
 					y={y1 + 18}
 					text="the step from {n.minus} to {n.add} is short."
@@ -640,8 +710,18 @@
 					? `number ${analogy.expected.rank}, cos ${fmt(analogy.expected.cos)}`
 					: `cos ${fmt(analogy.expected.cos)}`}
 			>
-				<Txt x={PL} y={y1} text="Expected: {analogy.expected.word}" size={13} weight={600} />
-				<Txt
+				<Label
+					anchor="start"
+					tabular
+					x={PL}
+					y={y1}
+					text="Expected: {analogy.expected.word}"
+					size={13}
+					weight={600}
+				/>
+				<Label
+					anchor="start"
+					tabular
 					x={PL}
 					y={y1 + 18}
 					text={analogy.expected.rank > 0
@@ -654,7 +734,8 @@
 		{/if}
 	{:else if phase !== 'pairs'}
 		<!-- an unknown word in the inputs -->
-		<Txt
+		<Label
+			tabular
 			x={PLOT.x + PLOT.w / 2}
 			y={300}
 			text="“{missing.join('”, “')}” {missing.length > 1
@@ -669,7 +750,7 @@
 
 	<!-- the analogy inputs stay mounted while typing (an unknown word must not move them) -->
 	{#if emb && phase === 'analogy'}
-		<Txt x={PL} y={36} text="Type three words" size={15} weight={700} />
+		<Label anchor="start" x={PL} y={36} text="Type three words" size={15} weight={700} />
 		{#each [0, 1, 2] as k (k)}
 			{@const x = PL + k * 98}
 			<WordInput
@@ -685,11 +766,19 @@
 				oninput={(v: string) => setParam(`an${k + 1}`, v)}
 			/>
 			{#if k < 2}
-				<Txt x={x + 89} y={74} text={k === 0 ? '−' : '+'} size={20} anchor="middle" weight={700} />
+				<Label
+					tabular
+					x={x + 89}
+					y={74}
+					text={k === 0 ? '−' : '+'}
+					size={20}
+					anchor="middle"
+					weight={700}
+				/>
 			{/if}
 		{/each}
 		<Readout id="presets-label">
-			<Txt x={PL} y={116} text="Try:" size={11} muted />
+			<Label anchor="start" x={PL} y={116} text="Try:" size={11} muted />
 		</Readout>
 		{#each PRESETS as pr, k (k)}
 			{@const on = pr.every((w, j) => w === words[j])}
@@ -714,7 +803,8 @@
 					fill-opacity={on ? 0.18 : 1}
 					stroke={on ? 'var(--explainer-accent, var(--accent))' : 'var(--border)'}
 				/>
-				<Txt
+				<Label
+					tabular
 					x={x + 61}
 					y={y + 8}
 					text="{pr[0]} − {pr[1]} + {pr[2]}"

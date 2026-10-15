@@ -6,13 +6,12 @@
 	 * its RNA partner, and the RNA peels away behind. For HBB the RNA letters are marked as
 	 * exon or intron. Everything is a function of `t`.
 	 */
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { complement, rnaPartner } from '../genetics';
 	import { geneOf, ownOf } from '../genes';
 	import GeneInput from './GeneInput.svelte';
 	import { baseColor, int } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { t, params, setParam }: StageProps = $props();
 
@@ -73,12 +72,21 @@
 <g>
 	{#if gene.id === 'own'}
 		<Readout id="own-title">
-			<Txt x={24} y={14} text="Your sequence (coding strand, 5′ → 3′)" size={12} weight={700} />
+			<Label
+				anchor="start"
+				x={24}
+				y={14}
+				text="Your sequence (coding strand, 5′ → 3′)"
+				size={12}
+				weight={700}
+			/>
 		</Readout>
 		<GeneInput x={24} y={22} w={640} value={ownOf(params)} {setParam} />
 	{:else}
 		<Readout id="title">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={24}
 				y={40}
 				text="{gene.name}: {int(n)} letters of DNA, shown at 1,200 letters a minute"
@@ -89,7 +97,7 @@
 	{/if}
 
 	{#if n === 0}
-		<Txt
+		<Label
 			x={480}
 			y={300}
 			text="Type some letters A, C, G, T in the box"
@@ -111,7 +119,7 @@
 				stroke-width="1.5"
 			/>
 			<Readout id="pol" order={10} label="RNA polymerase" marker={1} at={[bodyX, 120]}>
-				<Txt
+				<Label
 					x={bodyX}
 					y={124}
 					text="RNA polymerase →"
@@ -234,18 +242,33 @@
 
 		<!-- strand names in the left margin -->
 		<Readout id="names">
-			<Txt x={20} y={Y_CODING + 4} text="coding 5′" size={12} weight={600} />
-			<Txt x={20} y={Y_TEMPLATE + 4} text="template 3′" size={12} weight={600} />
-			<Txt x={20} y={Y_TAIL + 4} text="RNA 5′" size={12} weight={600} color="var(--dp-rna)" />
-			<Txt x={940} y={Y_CODING + 4} text="3′" size={12} weight={600} anchor="end" />
-			<Txt x={940} y={Y_TEMPLATE + 4} text="5′" size={12} weight={600} anchor="end" />
+			<Label anchor="start" x={20} y={Y_CODING + 4} text="coding 5′" size={12} weight={600} />
+			<Label anchor="start" x={20} y={Y_TEMPLATE + 4} text="template 3′" size={12} weight={600} />
+			<Label
+				anchor="start"
+				x={20}
+				y={Y_TAIL + 4}
+				text="RNA 5′"
+				size={12}
+				weight={600}
+				color="var(--dp-rna)"
+			/>
+			<Label x={940} y={Y_CODING + 4} text="3′" size={12} weight={600} anchor="end" />
+			<Label x={940} y={Y_TEMPLATE + 4} text="5′" size={12} weight={600} anchor="end" />
 		</Readout>
 		{#if gene.eukaryote}
 			<Readout id="key">
 				<rect x={640} y={Y_TAIL + 34} width="22" height="5" fill="var(--dp-exon)" />
-				<Txt x={668} y={Y_TAIL + 41} text="exon" size={11} muted />
+				<Label anchor="start" x={668} y={Y_TAIL + 41} text="exon" size={11} muted />
 				<rect x={716} y={Y_TAIL + 34} width="22" height="5" fill="var(--dp-intron)" />
-				<Txt x={744} y={Y_TAIL + 41} text="intron (cut out later)" size={11} muted />
+				<Label
+					anchor="start"
+					x={744}
+					y={Y_TAIL + 41}
+					text="intron (cut out later)"
+					size={11}
+					muted
+				/>
 			</Readout>
 		{/if}
 
@@ -256,7 +279,9 @@
 			value="{int(Math.min(n, Math.ceil(p)))} of {int(n)} letters"
 			note={where ? `now in ${where}` : undefined}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={24}
 				y={548}
 				text={done
@@ -273,7 +298,9 @@
 			value="A→U, T→A, C→G, G→C"
 			note="template DNA letter → RNA letter"
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={24}
 				y={574}
 				text={gene.id !== 'trpl'

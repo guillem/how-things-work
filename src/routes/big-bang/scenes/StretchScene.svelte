@@ -10,12 +10,11 @@
 	 *
 	 * The journey loops every 10 s; under reduced motion the frame shows the light arrived.
 	 */
-	import { wavelengthToColor } from '#lib/draw/index.ts';
+	import { Label, wavelengthToColor } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { AGE, BALMER, conformalAt, distances, scaleAt, timeAt } from '../cosmology';
 	import { glyText, gyrText } from '../format';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -112,17 +111,24 @@
 	{#each rainbow as r (r.k)}
 		<rect x={r.x} y={y - 18} width={r.w} height="36" fill={r.c} opacity="0.22" />
 	{/each}
-	<T x={SX0} y={y - 26} text={label} size={12.5} weight={650} />
+	<Label anchor="start" x={SX0} y={y - 26} text={label} size={12.5} weight={650} />
 {/snippet}
 
 <g>
 	<!-- the journey -->
 	<Card x={16} y={16} w={928} h={300} />
 	<Readout id="title" order={1} label="Light from a galaxy at" value="z = {z.toFixed(2)}">
-		<T x={36} y={46} text="Light crossing an expanding universe" size={15} weight={700} />
+		<Label
+			anchor="start"
+			x={36}
+			y={46}
+			text="Light crossing an expanding universe"
+			size={15}
+			weight={700}
+		/>
 	</Readout>
 	<Readout id="clock" order={2} label="Time" value="{gyrText(tNow)} after the Big Bang">
-		<T
+		<Label
 			x={924}
 			y={46}
 			text="{gyrText(tNow)} after the Big Bang"
@@ -137,7 +143,7 @@
 		<line x1={k.x} x2={k.x} y1={Y + 38} y2={Y + 50} stroke="var(--stage-ink-muted)" />
 	{/each}
 	<Readout id="marks">
-		<T
+		<Label
 			x={(srcX + MW) / 2}
 			y={Y + 68}
 			text="marks fixed in space: they spread apart as it stretches"
@@ -148,7 +154,7 @@
 	</Readout>
 	<!-- the emitted wave, for comparison, and the wave on its way -->
 	<path d={ghost} fill="none" stroke={wavelengthToColor(486.13)} stroke-width="1.4" opacity="0.6" />
-	<T x={srcX + 14 + LAMBDA0 * 2} y={Y + 30} text="as sent" size={10.5} anchor="middle" muted />
+	<Label x={srcX + 14 + LAMBDA0 * 2} y={Y + 30} text="as sent" size={10.5} anchor="middle" muted />
 	<path
 		d={wave}
 		fill="none"
@@ -160,10 +166,10 @@
 	<!-- the galaxy and us -->
 	<circle cx={srcX} cy={Y} r="9" fill="var(--bb-gal)" />
 	<ellipse cx={srcX} cy={Y} rx="20" ry="6" fill="var(--bb-gal)" opacity="0.35" />
-	<T x={srcX} y={Y - 30} text="the galaxy" size={12.5} weight={650} anchor="middle" />
+	<Label x={srcX} y={Y - 30} text="the galaxy" size={12.5} weight={650} anchor="middle" />
 	<circle cx={MW} cy={Y} r="9" fill="var(--bb-view)" />
 	<ellipse cx={MW} cy={Y} rx="20" ry="6" fill="var(--bb-view)" opacity="0.35" />
-	<T x={MW} y={Y - 30} text="us" size={12.5} weight={650} anchor="middle" />
+	<Label x={MW} y={Y - 30} text="us" size={12.5} weight={650} anchor="middle" />
 
 	<Readout
 		id="wl"
@@ -172,8 +178,9 @@
 		value="{Math.round(nm)} nm (× {stretch.toFixed(2)})"
 		color={visible(nm) ? colorOf(nm) : undefined}
 	>
-		<T x={36} y={262} text="Hβ light sent at 486 nm, now" size={12.5} muted />
-		<T
+		<Label anchor="start" x={36} y={262} text="Hβ light sent at 486 nm, now" size={12.5} muted />
+		<Label
+			anchor="start"
 			x={36}
 			y={284}
 			text="{Math.round(nm)} nm {visible(nm) ? '' : '(infrared)'} · stretched × {stretch.toFixed(
@@ -185,8 +192,16 @@
 		/>
 	</Readout>
 	<Readout id="sent" order={4} label="Light sent" value="{gyrText(AGE - tE)} ago">
-		<T x={500} y={262} text="Sent {gyrText(AGE - tE)} ago, when the galaxy" size={12.5} muted />
-		<T
+		<Label
+			anchor="start"
+			x={500}
+			y={262}
+			text="Sent {gyrText(AGE - tE)} ago, when the galaxy"
+			size={12.5}
+			muted
+		/>
+		<Label
+			anchor="start"
 			x={500}
 			y={284}
 			text="was {glyText(d.then)} away; now {glyText(d.comoving)}"
@@ -195,7 +210,7 @@
 		/>
 	</Readout>
 	<Readout id="rule">
-		<T
+		<Label
 			x={924}
 			y={306}
 			text="1 + z = size of the universe now ÷ size then = {(1 + z).toFixed(2)}"
@@ -208,9 +223,9 @@
 	<!-- the spectrum -->
 	<Card x={16} y={332} w={928} h={252} />
 	<Readout id="spec-title">
-		<T x={36} y={360} text="Hydrogen’s fingerprint" size={15} weight={700} />
-		<T x={(sx(380) + sx(750)) / 2} y={406} text="visible" size={11} anchor="middle" muted />
-		<T x={(sx(750) + SX1) / 2} y={406} text="infrared" size={11} anchor="middle" muted />
+		<Label anchor="start" x={36} y={360} text="Hydrogen’s fingerprint" size={15} weight={700} />
+		<Label x={(sx(380) + sx(750)) / 2} y={406} text="visible" size={11} anchor="middle" muted />
+		<Label x={(sx(750) + SX1) / 2} y={406} text="infrared" size={11} anchor="middle" muted />
 	</Readout>
 	{@render strip(LAB_Y, 'In the lab')}
 	{@render strip(GAL_Y, `From the galaxy (z = ${z.toFixed(2)})`)}
@@ -240,10 +255,10 @@
 			stroke={colorOf(l.seen)}
 			stroke-width="3"
 		/>
-		<T x={sx(l.nm)} y={LAB_Y + 32} text={l.name} size={10.5} anchor="middle" muted />
+		<Label x={sx(l.nm)} y={LAB_Y + 32} text={l.name} size={10.5} anchor="middle" muted />
 	{/each}
 	{#each nmTicks as w (w)}
-		<T x={sx(w)} y={GAL_Y + 34} text={String(w)} size={10.5} anchor="middle" muted />
+		<Label x={sx(w)} y={GAL_Y + 34} text={String(w)} size={10.5} anchor="middle" muted />
 	{/each}
-	<T x={SX1} y={GAL_Y + 54} text="wavelength, nm" size={11} anchor="end" muted />
+	<Label x={SX1} y={GAL_Y + 54} text="wavelength, nm" size={11} anchor="end" muted />
 </g>

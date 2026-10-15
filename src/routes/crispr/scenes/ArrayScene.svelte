@@ -15,13 +15,12 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { lerp, norm, smoothstep } from '#lib/draw/index.ts';
+	import { Label, lerp, norm, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { PHAGES, SPACER_LENGTH, acquire, hasPam, madeUpGenome } from '../model';
 	import ArrayStrip from './ArrayStrip.svelte';
 	import { spacerX, stripWidth, STRIP, type StripSpacer } from './strip';
 	import Phage from './Phage.svelte';
-	import Tag from './Tag.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 	const time = $derived(reduced ? 2.5 : t);
@@ -147,7 +146,7 @@
 		stroke-width="1.5"
 	/>
 	<Readout id="cell" opacity={1 - a}>
-		<Tag
+		<Label
 			x={72}
 			y={cellTop + 40}
 			text="a bacterium"
@@ -166,7 +165,7 @@
 				<line x1={r.x0} x2={r.x1} y1={150} y2={150} stroke="var(--cr-phage-dna)" stroke-width="3" />
 				<rect x={r.s0} y={142} width={r.s1 - r.s0} height={16} rx={3} fill={colorOf(r.i)} />
 				<rect x={r.s1 + 1} y={144} width={8} height={12} rx={2} fill="var(--cr-pam)" />
-				<Tag x={r.cx + 20} y={118} text="phage {NAMES[r.i]}: its DNA" size={13} weight={600} />
+				<Label x={r.cx + 20} y={118} text="phage {NAMES[r.i]}: its DNA" size={13} weight={600} />
 				<path
 					d="M{(r.s0 + r.s1) / 2} 162 C {(r.s0 + r.s1) / 2} 260, {spacerX(
 						stripX,
@@ -186,7 +185,7 @@
 				label="Spacers match phages"
 				value="each spacer is a copy of a stretch of one phage’s DNA (the coloured box); the yellow tag after it is its PAM"
 			>
-				<Tag
+				<Label
 					x={480}
 					y={210}
 					text="each spacer is a copy of a stretch of one phage’s DNA"
@@ -207,7 +206,7 @@
 				value="DNA of phage {NAMES[newIdx]}, injected; yellow ticks: PAMs (NGG)"
 				opacity={a}
 			>
-				<Tag
+				<Label
 					x={DNA_X}
 					y={DNA_Y - 70}
 					text="DNA of phage {NAMES[newIdx]}, just injected (made-up, 240 letters)"
@@ -215,7 +214,7 @@
 					weight={600}
 					anchor="start"
 				/>
-				<Tag
+				<Label
 					x={DNA_X + 720}
 					y={DNA_Y - 70}
 					text="yellow: PAMs (any letter, then GG)"
@@ -296,7 +295,7 @@
 					value="cut out the 20 letters before a PAM and carry them to the array"
 					opacity={a * (1 - smoothstep(0.88, 0.95, prog))}
 				>
-					<Tag
+					<Label
 						x={casPath.x}
 						y={casPath.y - 44}
 						text="Cas1–Cas2"
@@ -316,7 +315,7 @@
 						? 'the piece goes to the front of the array, next to the leader'
 						: 'a new spacer, with a new copy of the repeat: newest at the front'}
 			>
-				<Tag
+				<Label
 					x={660}
 					y={262}
 					text={prog < 0.4
@@ -339,14 +338,14 @@
 		label="The array"
 		value="leader, then repeat (grey diamond), spacer, repeat, …; newest spacer next to the leader"
 	>
-		<Tag
+		<Label
 			x={stripX + (STRIP.leader + STRIP.repeat / 2) * SCALE}
 			y={stripY - 30}
 			text="repeat"
 			size={12}
 			muted
 		/>
-		<Tag
+		<Label
 			x={spacerX(stripX, 0, SCALE, true, grow)}
 			y={stripY + 40}
 			text="spacer"
@@ -360,8 +359,8 @@
 			stroke-width="1.2"
 			marker-end="url(#arrowhead)"
 		/>
-		<Tag x={stripX + 20} y={stripY + 90} text="newest" size={12} anchor="start" muted />
-		<Tag x={stripX + stripW - 10} y={stripY + 90} text="oldest" size={12} anchor="end" muted />
+		<Label x={stripX + 20} y={stripY + 90} text="newest" size={12} anchor="start" muted />
+		<Label x={stripX + stripW - 10} y={stripY + 90} text="oldest" size={12} anchor="end" muted />
 	</Readout>
 	<Readout
 		id="array-title"
@@ -371,7 +370,7 @@
 			? `, ${presses + 1} new since this step began`
 			: ''}"
 	>
-		<Tag
+		<Label
 			x={480}
 			y={stripY - 58 + (view === 'adapt' ? 0 : 0)}
 			text="CRISPR array, in the bacterium’s chromosome"

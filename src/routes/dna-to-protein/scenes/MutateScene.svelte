@@ -8,7 +8,7 @@
 	 * strips, the changed residues marked, and a verdict. In the preset steps the edit happens
 	 * at t ≈ 1 s and the new amino acids appear codon by codon; the lab shows it at once.
 	 */
-	import { clamp, smoothstep, wave } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep, wave } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		STOP,
@@ -24,7 +24,6 @@
 	import { HBB, HBB_VARIANTS, geneOf, ownOf } from '../genes';
 	import GeneInput from './GeneInput.svelte';
 	import { aminoColor, baseColor, int, rna } from './shared';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -219,14 +218,18 @@
 		value={name}
 		note={lab ? gene.name : preset?.record}
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={30}
 			text={lab ? `${gene.name}: ${name}` : `${HBB.name}: ${preset?.hgvs} · ${preset?.common}`}
 			size={14}
 			weight={700}
 		/>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={50}
 			text={lab
@@ -241,8 +244,16 @@
 
 	<!-- before -->
 	<Readout id="rows">
-		<Txt x={20} y={Y1 + 5} text="before" size={12} weight={700} />
-		<Txt x={20} y={Y2 + 5} text="after" size={12} weight={700} color={effectColor} />
+		<Label anchor="start" x={20} y={Y1 + 5} text="before" size={12} weight={700} />
+		<Label
+			anchor="start"
+			x={20}
+			y={Y2 + 5}
+			text="after"
+			size={12}
+			weight={700}
+			color={effectColor}
+		/>
 	</Readout>
 	{#each Array.from({ length: Math.max(0, Math.min(NL, seq.length - ws)) }, (_, j) => ws + j) as i (i)}
 		{@const x = slot(i)}
@@ -311,7 +322,7 @@
 			style:fill={c.aa === STOP ? '#fff' : undefined}>{amino(c.aa).three}</text
 		>
 		<Readout id="num-b-{c.key}">
-			<Txt x={c.x} y={Y1 + 62} text={String(c.num)} size={10} anchor="middle" muted />
+			<Label tabular x={c.x} y={Y1 + 62} text={String(c.num)} size={10} anchor="middle" muted />
 		</Readout>
 	{/each}
 
@@ -379,7 +390,9 @@
 				label="Protein {row.label}"
 				value="{int(row.tr.protein.length)} amino acids"
 			>
-				<Txt
+				<Label
+					anchor="start"
+					tabular
 					x={SX}
 					y={row.y - 6}
 					text="Protein {row.label}: {int(row.tr.protein.length)} amino acids{mut && cmp.changed > 0
@@ -421,8 +434,26 @@
 	<g opacity={reveal}>
 		<Readout id="verdict" order={0} label={word} value="" note={verdict} color={effectColor}>
 			<rect x={24} y={494} width={word.length * 11 + 28} height="30" rx="15" fill={effectColor} />
-			<Txt x={38} y={514} text={word} size={15} weight={700} halo={false} color="var(--stage-bg)" />
-			<Txt x={word.length * 11 + 64} y={514} text={verdict} size={14} weight={600} />
+			<Label
+				anchor="start"
+				tabular
+				x={38}
+				y={514}
+				text={word}
+				size={15}
+				weight={700}
+				halo={false}
+				color="var(--stage-bg)"
+			/>
+			<Label
+				anchor="start"
+				tabular
+				x={word.length * 11 + 64}
+				y={514}
+				text={verdict}
+				size={14}
+				weight={600}
+			/>
 		</Readout>
 	</g>
 
@@ -431,8 +462,9 @@
 	{:else}
 		<Readout id="key">
 			<rect x={24} y={560} width="14" height="12" fill="var(--dp-wrong)" />
-			<Txt x={44} y={571} text="amino acid that differs" size={11.5} muted />
-			<Txt
+			<Label anchor="start" x={44} y={571} text="amino acid that differs" size={11.5} muted />
+			<Label
+				anchor="start"
 				x={210}
 				y={571}
 				text="brackets: how the ribosome groups the letters into codons"

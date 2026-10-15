@@ -23,9 +23,8 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { TAU, clamp, cycle, hash, lerp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, cycle, hash, Label, lerp, smoothstep, TAU } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Tag from './Tag.svelte';
 	import { MRNA, mrnaLeft } from '../model';
 	import { SEQUENCE } from '../data';
 
@@ -326,8 +325,8 @@
 			label="Injected into the shoulder muscle"
 			value="0.3 mL holding 30 µg of mRNA: about 13 trillion copies of the message"
 		>
-			<Tag x={200} y={40} text="into the shoulder muscle" size={15} weight={600} />
-			<Tag x={200} y={60} text="30 µg of mRNA ≈ 13 trillion messages" size={12} muted />
+			<Label x={200} y={40} text="into the shoulder muscle" size={15} weight={600} />
+			<Label x={200} y={60} text="30 µg of mRNA ≈ 13 trillion messages" size={12} muted />
 		</Readout>
 
 		<!-- the close-up -->
@@ -413,10 +412,10 @@
 			label="In the muscle"
 			value="the particles spread out and are taken up by muscle cells and immune cells; some drain to the lymph node in the armpit"
 		>
-			<Tag x={ZOOM.x - 120} y={ZOOM.y + 6} text="lipid particles" size={12} weight={600} pill />
-			<Tag x={ZOOM.x} y={ZOOM.y - 150} text="muscle fibres (cells)" size={11} muted />
-			<Tag x={ZOOM.x - 40} y={ZOOM.y + 182} text="dendritic cell" size={11} pill />
-			<Tag x={ZOOM.x + 170} y={ZOOM.y - 150} text="lymph vessel" size={11} anchor="start" muted />
+			<Label x={ZOOM.x - 120} y={ZOOM.y + 6} text="lipid particles" size={12} weight={600} pill />
+			<Label x={ZOOM.x} y={ZOOM.y - 150} text="muscle fibres (cells)" size={11} muted />
+			<Label x={ZOOM.x - 40} y={ZOOM.y + 182} text="dendritic cell" size={11} pill />
+			<Label x={ZOOM.x + 170} y={ZOOM.y - 150} text="lymph vessel" size={11} anchor="start" muted />
 		</Readout>
 		{#if view === 'muscle'}
 			<Readout id="node" order={3} label="Lymph node (armpit)">
@@ -429,7 +428,7 @@
 					stroke="var(--im-node-edge)"
 					stroke-width="1.5"
 				/>
-				<Tag x={ZOOM.x + 220} y={ZOOM.y - 258} text="to the lymph node" size={11} />
+				<Label x={ZOOM.x + 220} y={ZOOM.y - 258} text="to the lymph node" size={11} />
 			</Readout>
 		{/if}
 	</g>
@@ -506,9 +505,9 @@
 			label="A muscle cell"
 			value="cytoplasm, nucleus with the DNA, endoplasmic reticulum (ER)"
 		>
-			<Tag x={N.x} y={N.y + N.r + 22} text="nucleus (DNA)" size={12} weight={600} />
-			<Tag x={N.x - N.r - 70} y={N.y - 120} text="ER" size={11} muted />
-			<Tag x={GOLGI.x} y={GOLGI.y - 14} text="Golgi" size={11} muted />
+			<Label x={N.x} y={N.y + N.r + 22} text="nucleus (DNA)" size={12} weight={600} />
+			<Label x={N.x - N.r - 70} y={N.y - 120} text="ER" size={11} muted />
+			<Label x={GOLGI.x} y={GOLGI.y - 14} text="Golgi" size={11} muted />
 		</Readout>
 
 		<!-- entry -->
@@ -598,7 +597,7 @@
 				{/each}
 			</Readout>
 			<Readout id="entry-cyto">
-				<Tag
+				<Label
 					x={ENDO.x + 80}
 					y={ENDO.y + 110}
 					text="cytoplasm: where the ribosomes are"
@@ -648,7 +647,7 @@
 				label="Reading"
 				value="codon {codonNow} of 1,273, at 5.6 codons a second"
 			>
-				<Tag
+				<Label
 					x={POLY.x0 - 10}
 					y={POLY.y0 + 34}
 					text="ribosomes reading the message"
@@ -656,7 +655,7 @@
 					weight={600}
 					anchor="start"
 				/>
-				<Tag
+				<Label
 					x={POLY.x0 - 10}
 					y={POLY.y0 + 52}
 					text="codon {codonNow} of 1,273 (real speed)"
@@ -666,7 +665,7 @@
 				/>
 			</Readout>
 			<Readout id="vesicle">
-				<Tag
+				<Label
 					x={GOLGI.x + 70}
 					y={GOLGI.y + 50}
 					text="finished spikes ride to the surface"
@@ -731,7 +730,7 @@
 				label="Traffic through the nuclear pores"
 				value="the cell's own messages go out; nothing carries the vaccine's message in"
 			>
-				<Tag
+				<Label
 					x={N.x + 30}
 					y={N.y - N.r - 24}
 					text="the cell’s own messages leave through the pores"
@@ -746,7 +745,7 @@
 				label="The vaccine's message"
 				value="stays in the cytoplasm: no way into the nucleus; it brings no DNA and no reverse transcriptase"
 			>
-				<Tag
+				<Label
 					x={near.x - 10}
 					y={near.y + 36}
 					text="vaccine mRNA: stays in the cytoplasm"
@@ -754,7 +753,7 @@
 					weight={600}
 					color="var(--mv-mrna)"
 				/>
-				<Tag
+				<Label
 					x={near.x - 10}
 					y={near.y + 54}
 					text="RNA, not DNA; the vaccine brings no enzyme to copy it into DNA"
@@ -840,7 +839,7 @@
 				>
 			</Readout>
 			<Readout id="fade-note">
-				<Tag x={200} y={540} text="cut up and recycled by the cell" size={11} muted />
+				<Label x={200} y={540} text="cut up and recycled by the cell" size={11} muted />
 			</Readout>
 		</g>
 
@@ -857,7 +856,7 @@
 						font-weight="700"
 						style:fill="var(--stage-bg)">{s.n}</text
 					>
-					<Tag x={s.x + 18} y={s.y + 4} text={s.label} size={12} weight={600} anchor="start" />
+					<Label x={s.x + 18} y={s.y + 4} text={s.label} size={12} weight={600} anchor="start" />
 				</Readout>
 			{/each}
 			<path
@@ -881,7 +880,7 @@
 				order={5}
 				label="then: the B and T cells that fit multiply, and some stay as memory"
 			>
-				<Tag
+				<Label
 					x={480}
 					y={584}
 					text="then: matching B and T cells multiply, and some stay as memory"

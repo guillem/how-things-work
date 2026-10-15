@@ -7,7 +7,7 @@
 	import { Readout, type ParamValue } from '#lib/explainer/index.ts';
 	import { cleanDna } from '../genetics';
 	import { MAX_OWN } from '../genes';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Props {
 		x: number;
@@ -38,7 +38,9 @@
 	/>
 </foreignObject>
 <Readout id="own-length">
-	<Txt
+	<Label
+		anchor="start"
+		tabular
 		x={x + w + 10}
 		y={y + 23}
 		text="{value.length} of {MAX_OWN} letters (A C G T)"

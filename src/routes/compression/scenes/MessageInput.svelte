@@ -7,7 +7,7 @@
 	import type { ParamValue } from '#lib/explainer/index.ts';
 	import { MAX_LENGTH, PRESETS } from './shared';
 	import { Readout } from '#lib/explainer/index.ts';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Props {
 		x: number;
@@ -61,7 +61,9 @@
 </foreignObject>
 <!-- hidden on phones, where they would be unreadable -->
 <Readout id="msg-length">
-	<Txt
+	<Label
+		anchor="start"
+		tabular
 		x={x + w + 12}
 		y={y + 27}
 		text="{[...value].length} of {MAX_LENGTH} characters"
@@ -71,7 +73,7 @@
 </Readout>
 {#if presets}
 	<Readout id="msg-try">
-		<Txt {x} y={y + 76} text="Try:" size={12} muted />
+		<Label anchor="start" {x} y={y + 76} text="Try:" size={12} muted />
 	</Readout>
 	{#each chips as c (c.label)}
 		{@const on = c.value === value}

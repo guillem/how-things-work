@@ -20,7 +20,7 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import Title from './Title.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
@@ -168,14 +168,15 @@
 	<rect x={SENSOR.x - 12} y={SENSOR.y - 8} width="24" height="16" rx="3" fill="var(--stage-ink)" />
 
 	<Readout id="ifo-labels">
-		<T x={LASER.x + 15} y={BY - 24} text="laser" anchor="middle" size={12} weight={600} />
-		<T x={BX - 24} y={BY - 22} text="beam splitter" anchor="end" size={12} />
-		<T x={BX + ARM - 12} y={BY + 50} text="mirror (hangs free)" anchor="middle" size={12} />
-		<T x={BX + 40} y={BY - ARM + 4} text="mirror" size={12} />
-		<T x={BX + ARM / 2} y={BY + 26} text="x arm, 4 km" anchor="middle" size={12} muted />
-		<T x={BX - 14} y={BY - ARM / 2} text="y arm, 4 km" anchor="end" size={12} muted />
-		<T x={BX + 22} y={SENSOR.y + 5} text="light sensor" size={12} weight={600} />
-		<T
+		<Label x={LASER.x + 15} y={BY - 24} text="laser" anchor="middle" size={12} weight={600} />
+		<Label x={BX - 24} y={BY - 22} text="beam splitter" anchor="end" size={12} />
+		<Label x={BX + ARM - 12} y={BY + 50} text="mirror (hangs free)" anchor="middle" size={12} />
+		<Label anchor="start" x={BX + 40} y={BY - ARM + 4} text="mirror" size={12} />
+		<Label x={BX + ARM / 2} y={BY + 26} text="x arm, 4 km" anchor="middle" size={12} muted />
+		<Label x={BX - 14} y={BY - ARM / 2} text="y arm, 4 km" anchor="end" size={12} muted />
+		<Label anchor="start" x={BX + 22} y={SENSOR.y + 5} text="light sensor" size={12} weight={600} />
+		<Label
+			anchor="start"
 			x={32}
 			y={44}
 			text="Seen from above; mirror motion exaggerated about 10²⁰ times"
@@ -192,15 +193,29 @@
 	<path d={sum} fill="none" stroke="var(--gw-laser)" stroke-width="2.4" />
 	<line x1={WX0} x2={WX1} y1={yS} y2={yS} stroke="var(--stage-grid)" />
 	<Readout id="beam-labels">
-		<T x={672} y={yX - 26} text="light back from the x arm" size={12} muted />
-		<T x={672} y={yY - 26} text="light back from the y arm" size={12} muted />
-		<T x={672} y={yS - 30} text="together: what reaches the sensor" size={12} weight={600} />
+		<Label anchor="start" x={672} y={yX - 26} text="light back from the x arm" size={12} muted />
+		<Label anchor="start" x={672} y={yY - 26} text="light back from the y arm" size={12} muted />
+		<Label
+			anchor="start"
+			x={672}
+			y={yS - 30}
+			text="together: what reaches the sensor"
+			size={12}
+			weight={600}
+		/>
 	</Readout>
 	<line x1={WX0} x2={WX1} y1={500} y2={500} stroke="var(--stage-line)" />
 	<path d={strip} fill="none" stroke="var(--gw-laser)" stroke-width="2" />
 	<Readout id="strip-cap">
-		<T x={672} y={410} text="brightness at the sensor, last 6 s" size={12} muted />
-		<T x={WX1} y={518} text="now" anchor="end" size={11} muted />
+		<Label
+			anchor="start"
+			x={672}
+			y={410}
+			text="brightness at the sensor, last 6 s"
+			size={12}
+			muted
+		/>
+		<Label x={WX1} y={518} text="now" anchor="end" size={11} muted />
 	</Readout>
 	<Row
 		id="arms"

@@ -6,7 +6,7 @@
 	 * light they intercept and against the dips they make when they
 	 * transit, (R / R★)². The bars grow in one after another (pure function of t).
 	 */
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		A_JUPITER,
@@ -18,7 +18,6 @@
 		type Planet
 	} from '../exoplanets';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 	import { sci } from './ui';
 
 	let { t, reduced }: StageProps = $props();
@@ -104,8 +103,15 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="g-title">
-		<T x={32} y={42} text="A Sun and an Earth, from another star" size={14} weight={700} />
-		<T x={32} y={60} text="a sketch, not to scale" size={11.5} muted />
+		<Label
+			anchor="start"
+			x={32}
+			y={42}
+			text="A Sun and an Earth, from another star"
+			size={14}
+			weight={700}
+		/>
+		<Label anchor="start" x={32} y={60} text="a sketch, not to scale" size={11.5} muted />
 	</Readout>
 	<ellipse
 		cx={GX}
@@ -119,17 +125,43 @@
 	/>
 	<circle cx={GX} cy={GY} r="190" fill="url(#glare-glow)" />
 	<circle cx={ex} cy={ey} r="2.2" fill="var(--ex-planet)" opacity="0.8" />
-	<T x={ex} y={ey - 10} text="Earth" size={11.5} anchor="middle" weight={600} />
+	<Label x={ex} y={ey - 10} text="Earth" size={11.5} anchor="middle" weight={600} />
 	<Readout id="g-note">
-		<T x={32} y={540} text="The planet sits inside the star’s glare, and" size={12.5} />
-		<T x={32} y={560} text="sends us less than a billionth as much light." size={12.5} />
+		<Label
+			anchor="start"
+			x={32}
+			y={540}
+			text="The planet sits inside the star’s glare, and"
+			size={12.5}
+		/>
+		<Label
+			anchor="start"
+			x={32}
+			y={560}
+			text="sends us less than a billionth as much light."
+			size={12.5}
+		/>
 	</Readout>
 
 	<!-- ---- ladder ---- -->
 	<Card x={486} y={16} w={458} h={568} />
 	<Readout id="l-title">
-		<T x={502} y={42} text="How much light, as a share of the star’s" size={14} weight={700} />
-		<T x={502} y={60} text="each mark is 100 times the one to its left" size={11.5} muted />
+		<Label
+			anchor="start"
+			x={502}
+			y={42}
+			text="How much light, as a share of the star’s"
+			size={14}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
+			x={502}
+			y={60}
+			text="each mark is 100 times the one to its left"
+			size={11.5}
+			muted
+		/>
 	</Readout>
 	{#each DECADES as e (e)}
 		<line x1={bx(10 ** e)} x2={bx(10 ** e)} y1={86} y2={500} stroke="var(--stage-grid)" />
@@ -148,7 +180,15 @@
 			color={r.color}
 			opacity={g}
 		>
-			<T x={BX0} y={rowY(i) - 12} text={r.label} size={12.5} weight={600} opacity={g} />
+			<Label
+				anchor="start"
+				x={BX0}
+				y={rowY(i) - 12}
+				text={r.label}
+				size={12.5}
+				weight={600}
+				opacity={g}
+			/>
 			<rect
 				x={BX0}
 				y={rowY(i)}
@@ -158,7 +198,7 @@
 				fill={r.color}
 				opacity={r.kind === 'dip' ? 0.85 : 0.9}
 			/>
-			<T
+			<Label
 				x={Math.min(BX1 - 4, BX0 + w + 8)}
 				y={rowY(i) + 15}
 				text={r.v === 1 ? '1' : sci(r.v)}
@@ -176,13 +216,21 @@
 		label="So"
 		value="the dip a transiting Earth makes is {ratio} times all the light it catches from the Sun"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={502}
 			y={552}
 			text="The dip a transiting Earth makes is {ratio} times"
 			size={12.5}
 			weight={600}
 		/>
-		<T x={502} y={572} text="all the light it catches from the Sun." size={12.5} weight={600} />
+		<Label
+			anchor="start"
+			x={502}
+			y={572}
+			text="all the light it catches from the Sun."
+			size={12.5}
+			weight={600}
+		/>
 	</Readout>
 </g>

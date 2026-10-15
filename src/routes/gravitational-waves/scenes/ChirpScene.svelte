@@ -21,7 +21,7 @@
 	 * playhead at the ISCO.
 	 */
 	import { untrack } from 'svelte';
-	import { linePath, scale, niceMax } from '#lib/draw/index.ts';
+	import { Label, linePath, niceMax, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		C,
@@ -43,7 +43,6 @@
 	} from '../gw';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
-	import T from './T.svelte';
 	import Title from './Title.svelte';
 	import { sci, sup, whole } from './fmt';
 	import { playSamples, stopAll } from './sound';
@@ -323,7 +322,7 @@
 			stroke-width="1.5"
 		/>
 		<Readout id="merged">
-			<T
+			<Label
 				x={OCX}
 				y={OCY + k * horizonRadius(Mf) + 24}
 				text="merged: one black hole"
@@ -334,14 +333,15 @@
 		</Readout>
 	{/if}
 	<Readout id="orbit-cap">
-		<T
+		<Label
+			anchor="start"
 			x={OX + 16}
 			y={OY + 26}
 			text="From above, to scale: horizons and wave crests"
 			size={12.5}
 			weight={650}
 		/>
-		<T x={OX + 16} y={OY + OH - 14} text="slowed down {SLOW}×" size={12} muted />
+		<Label anchor="start" x={OX + 16} y={OY + OH - 14} text="slowed down {SLOW}×" size={12} muted />
 		<line
 			x1={OX + OW - 16 - bar.px}
 			x2={OX + OW - 16}
@@ -350,7 +350,7 @@
 			stroke="var(--stage-ink)"
 			stroke-width="2"
 		/>
-		<T x={OX + OW - 16} y={OY + OH - 10} text="{bar.km} km" anchor="end" size={12} muted />
+		<Label x={OX + OW - 16} y={OY + OH - 10} text="{bar.km} km" anchor="end" size={12} muted />
 	</Readout>
 
 	<!-- readouts -->
@@ -448,7 +448,8 @@
 			/>
 		{/if}
 		<Readout id="hint">
-			<T
+			<Label
+				anchor="start"
 				x={KX + 18}
 				y={OY + OH - 18}
 				text="Press ▶ Hear the chirp: it ends at the ISCO."
@@ -517,7 +518,8 @@
 			/>
 		{/if}
 		<Readout id="formula">
-			<T
+			<Label
+				anchor="start"
 				x={KX + 18}
 				y={OY + OH - 18}
 				text="df/dt = (96/5) π^(8/3) (G𝓜/c³)^(5/3) f^(11/3)"
@@ -577,14 +579,16 @@
 			value="{fmtHz(ring.f)}, dying away in {(ring.tau * 1000).toFixed(1)} ms"
 		/>
 		<Readout id="fits">
-			<T
+			<Label
+				anchor="start"
 				x={KX + 18}
 				y={OY + OH - 36}
 				text="Remnant: fits to numerical-relativity simulations"
 				size={12}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={KX + 18}
 				y={OY + OH - 18}
 				text="(black holes not spinning before they merge)"
@@ -607,7 +611,7 @@
 	<!-- after the ISCO: not modelled -->
 	<rect x={sx(0)} y={PY0} width={PX1 - sx(0)} height={PY1 - PY0} fill="var(--gw-blank)" />
 	<Readout id="blank">
-		<T
+		<Label
 			x={(sx(0) + PX1) / 2}
 			y={(PY0 + PY1) / 2 - 8}
 			text="merger"
@@ -616,7 +620,7 @@
 			weight={600}
 			muted
 		/>
-		<T
+		<Label
 			x={(sx(0) + PX1) / 2}
 			y={(PY0 + PY1) / 2 + 8}
 			text="(supercomputers)"
@@ -625,7 +629,7 @@
 			muted
 		/>
 		{#if zoomed}
-			<T
+			<Label
 				x={(sx(0) + PX1) / 2}
 				y={(PY0 + PY1) / 2 + 40}
 				text="then rings at {fmtHz(ring.f)} for a few ms"
@@ -644,7 +648,7 @@
 		stroke-dasharray="4 4"
 	/>
 	<Readout id="isco-mark">
-		<T
+		<Label
 			x={sx(0) - 4}
 			y={PY0 - 10}
 			text="ISCO"
@@ -659,7 +663,7 @@
 		<!-- frequency, linear scale -->
 		{#each fTicks as f (f)}
 			<line x1={PX0} x2={sx(0)} y1={lf(f)} y2={lf(f)} stroke="var(--stage-grid)" />
-			<T x={PX0 - 8} y={lf(f) + 4} text={String(f)} anchor="end" size={11.5} muted />
+			<Label x={PX0 - 8} y={lf(f) + 4} text={String(f)} anchor="end" size={11.5} muted />
 		{/each}
 		<rect
 			x={PX0}
@@ -670,9 +674,16 @@
 			opacity="0.07"
 		/>
 		<Readout id="band-cap">
-			<T x={PX0 + 8} y={PY1 - 6} text="below 30 Hz: hidden by ground noise" size={11} muted />
+			<Label
+				anchor="start"
+				x={PX0 + 8}
+				y={PY1 - 6}
+				text="below 30 Hz: hidden by ground noise"
+				size={11}
+				muted
+			/>
 		</Readout>
-		<T x={PX0 - 50} y={PY0 - 12} text="frequency, Hz" size={12} muted />
+		<Label anchor="start" x={PX0 - 50} y={PY0 - 12} text="frequency, Hz" size={12} muted />
 		{#if sameMc}
 			<path
 				d={twin.d}
@@ -697,7 +708,7 @@
 	{:else}
 		{#each yTicks as v (v)}
 			<line x1={PX0} x2={sx(0)} y1={sy(v)} y2={sy(v)} stroke="var(--stage-grid)" />
-			<T
+			<Label
 				x={PX0 - 8}
 				y={sy(v) + 4}
 				text={String(Number((v / hUnit).toFixed(2)))}
@@ -706,7 +717,8 @@
 				muted
 			/>
 		{/each}
-		<T
+		<Label
+			anchor="start"
 			x={PX0 - 50}
 			y={PY0 - 12}
 			text="strain h, × 10{sup(-Math.round(Math.log10(1 / hUnit)))}"
@@ -729,7 +741,7 @@
 	<line x1={PX0} x2={PX1} y1={PY1} y2={PY1} stroke="var(--stage-line)" />
 	{#each TICKS as v (v)}
 		<line x1={sx(v)} x2={sx(v)} y1={PY1} y2={PY1 + 5} stroke="var(--stage-line)" />
-		<T
+		<Label
 			x={sx(v)}
 			y={PY1 + 19}
 			text={v === 0 ? '0' : zoomed ? `${(v * 1000).toFixed(0)} ms` : `${v.toFixed(1)} s`}
@@ -738,7 +750,7 @@
 			muted
 		/>
 	{/each}
-	<T x={PX1} y={PY1 + 34} text="time, relative to the ISCO" anchor="end" size={12} muted />
+	<Label x={PX1} y={PY1 + 34} text="time, relative to the ISCO" anchor="end" size={12} muted />
 	{#if !reduced}
 		<line
 			x1={sx(ts)}

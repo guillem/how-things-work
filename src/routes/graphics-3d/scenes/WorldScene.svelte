@@ -24,7 +24,7 @@
 	import { cameraOf, cubeTurnOf, fmt, IMG_H, IMG_W, lightOf, MAP } from './shared';
 	import MapView from './MapView.svelte';
 	import Matrix from './Matrix.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -106,7 +106,7 @@
 </script>
 
 {#snippet times(x: number, y: number, s: string)}
-	<T {x} {y} text={s} size={18} anchor="middle" weight={600} />
+	<Label {x} {y} text={s} size={18} anchor="middle" weight={600} />
 {/snippet}
 
 <g>
@@ -169,7 +169,8 @@
 		{/if}
 	</g>
 	<Readout id="view-title">
-		<T
+		<Label
+			anchor="start"
 			x={R.x + 14}
 			y={R.y + 24}
 			text="What the camera sees: every edge"
@@ -182,15 +183,17 @@
 	<!-- below -->
 	{#if phase === 'mesh'}
 		<Readout id="count" order={1} label="Triangles" value="654: floor 2, cube 12, two balls of 320">
-			<T x={32} y={BY - 2} text="654 triangles" size={16} weight={700} />
-			<T
+			<Label anchor="start" x={32} y={BY - 2} text="654 triangles" size={16} weight={700} />
+			<Label
+				anchor="start"
 				x={32}
 				y={BY + 24}
 				text="floor 2 · cube 12 · mirror ball 320 · glass ball 320"
 				size={13}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={32}
 				y={BY + 48}
 				text="{scene.reduce((s, o) => s + o.mesh.positions.length, 0)} vertices, {wires.reduce(
@@ -208,7 +211,8 @@
 			value={triCorners.map((c) => vec(c.w)).join(' ')}
 			color="var(--g3-inside)"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={R.x}
 				y={BY - 2}
 				text="One triangle (shaded): three corners, three numbers each"
@@ -217,7 +221,13 @@
 				color="var(--g3-inside)"
 			/>
 			{#each triCorners as c, i (i)}
-				<T x={R.x} y={BY + 26 + 24 * i} text="corner {i + 1}:  x, y, z = {vec(c.w)}" size={13} />
+				<Label
+					anchor="start"
+					x={R.x}
+					y={BY + 26 + 24 * i}
+					text="corner {i + 1}:  x, y, z = {vec(c.w)}"
+					size={13}
+				/>
 			{/each}
 		</Readout>
 	{:else}
@@ -268,14 +278,28 @@
 		{#if phase === 'model'}
 			<Readout id="m1" order={1} label="Corner of the cube" value={vec(LOCAL)} />
 			<Readout id="m2" order={2} label="In the scene" value={vec(world)} color="var(--g3-inside)">
-				<T x={480} y={BY + 10} text="Last column: the move (−1.4, 0.6, 0.5)" size={13} />
-				<T
+				<Label
+					anchor="start"
+					x={480}
+					y={BY + 10}
+					text="Last column: the move (−1.4, 0.6, 0.5)"
+					size={13}
+				/>
+				<Label
+					anchor="start"
 					x={480}
 					y={BY + 34}
 					text="Top-left 3 × 3: turn {Math.round((turn * 180) / Math.PI)}° and scale × 1.2"
 					size={13}
 				/>
-				<T x={480} y={BY + 58} text="Bottom row 0 0 0 1 keeps w = 1" size={13} muted />
+				<Label
+					anchor="start"
+					x={480}
+					y={BY + 58}
+					text="Bottom row 0 0 0 1 keeps w = 1"
+					size={13}
+					muted
+				/>
 			</Readout>
 		{:else if phase === 'view'}
 			<Readout id="v1" order={1} label="Corner in the scene" value={vec(world)} />
@@ -286,8 +310,15 @@
 				value={vec(viewP)}
 				color="var(--g3-inside)"
 			>
-				<T x={490} y={BY + 10} text="Rows: the camera's right, up and backward" size={13} />
-				<T
+				<Label
+					anchor="start"
+					x={490}
+					y={BY + 10}
+					text="Rows: the camera's right, up and backward"
+					size={13}
+				/>
+				<Label
+					anchor="start"
 					x={490}
 					y={BY + 34}
 					text="The corner is {fmt(-viewP[2])} in front of the camera"
@@ -295,7 +326,8 @@
 					weight={650}
 					color="var(--g3-inside)"
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={490}
 					y={BY + 58}
 					text="(−z), {fmt(viewP[0])} to the right, {fmt(viewP[1])} up"
@@ -320,8 +352,15 @@
 				value={vec(proj.ndc)}
 				note="w = {fmt(clip[3])}, the distance in front"
 			>
-				<T x={490} y={BY + 10} text="w = {fmt(clip[3])}: the distance in front" size={13} />
-				<T
+				<Label
+					anchor="start"
+					x={490}
+					y={BY + 10}
+					text="w = {fmt(clip[3])}: the distance in front"
+					size={13}
+				/>
+				<Label
+					anchor="start"
 					x={490}
 					y={BY + 34}
 					text="÷ w → {vec(proj.ndc)}"
@@ -336,7 +375,8 @@
 				label="Pixel"
 				value="{fmt(proj.pixel[0], 1)} across, {fmt(proj.pixel[1], 1)} down"
 			>
-				<T
+				<Label
+					anchor="start"
 					x={490}
 					y={BY + 58}
 					text="pixel {fmt(proj.pixel[0], 1)} across, {fmt(proj.pixel[1], 1)} down of 192 × 120"

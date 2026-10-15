@@ -5,11 +5,10 @@
 	 * by year over SWEEP s (pure function of t), then stay; reduced motion shows
 	 * the finished chart.
 	 */
-	import { Axes, scale, smoothstep } from '#lib/draw/index.ts';
+	import { Axes, Label, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { BY_YEAR, FETCHED, TOTAL } from '../archive';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { t, reduced }: StageProps = $props();
 
@@ -73,7 +72,14 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="title">
-		<T x={32} y={42} text="Planets found each year, and how" size={14} weight={700} />
+		<Label
+			anchor="start"
+			x={32}
+			y={42}
+			text="Planets found each year, and how"
+			size={14}
+			weight={700}
+		/>
 	</Readout>
 	<Axes
 		{sx}
@@ -89,7 +95,7 @@
 			{/if}
 		{/each}
 	{/each}
-	<T
+	<Label
 		x={sx(2014)}
 		y={sy(yearTotal(2014)) - 8}
 		text="Kepler"
@@ -98,7 +104,7 @@
 		weight={600}
 		opacity={grow(2014)}
 	/>
-	<T
+	<Label
 		x={sx(2016)}
 		y={sy(yearTotal(2016)) - 8}
 		text="Kepler"
@@ -107,7 +113,15 @@
 		weight={600}
 		opacity={grow(2016)}
 	/>
-	<T x={sx(1995)} y={sy(120)} text="51 Peg b" size={11} anchor="start" muted opacity={grow(1995)} />
+	<Label
+		x={sx(1995)}
+		y={sy(120)}
+		text="51 Peg b"
+		size={11}
+		anchor="start"
+		muted
+		opacity={grow(1995)}
+	/>
 	<line
 		x1={sx(1995)}
 		x2={sx(1995)}
@@ -116,13 +130,20 @@
 		stroke="var(--stage-ink-muted)"
 		opacity={grow(1995)}
 	/>
-	<T x={X1} y={Y1 + 36} text="{last}: so far (fetched {FETCHED})" size={10.5} anchor="end" muted />
+	<Label
+		x={X1}
+		y={Y1 + 36}
+		text="{last}: so far (fetched {FETCHED})"
+		size={10.5}
+		anchor="end"
+		muted
+	/>
 
 	<!-- ---- totals ---- -->
 	<Card x={CX} y={16} w={CW} h={568} />
 	<Readout id="total" order={0} label="Known exoplanets" value={fmt(shown)}>
-		<T x={CX + 16} y={46} text="Known exoplanets" size={13} muted />
-		<T x={CX + CW - 16} y={46} text={fmt(shown)} size={18} weight={750} anchor="end" />
+		<Label anchor="start" x={CX + 16} y={46} text="Known exoplanets" size={13} muted />
+		<Label x={CX + CW - 16} y={46} text={fmt(shown)} size={18} weight={750} anchor="end" />
 	</Readout>
 	{#each METHODS as m, i (m.id)}
 		<Readout
@@ -133,8 +154,9 @@
 			color={m.color}
 		>
 			<rect x={CX + 16} y={78 + i * 50} width="14" height="14" rx="3" fill={m.color} />
-			<T x={CX + 38} y={90 + i * 50} text={m.label} size={12.5} />
-			<T
+			<Label anchor="start" x={CX + 38} y={90 + i * 50} text={m.label} size={12.5} />
+			<Label
+				anchor="start"
 				x={CX + 38}
 				y={108 + i * 50}
 				text="{fmt(totals[i])} planets · {pct(totals[i])}"
@@ -151,7 +173,8 @@
 		label="Photographed"
 		value="fewer than 2 in 100: the rest were found from their star’s light"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={CX + 16}
 			y={364}
 			text="Seen: fewer than 2 in 100."
@@ -159,14 +182,47 @@
 			weight={700}
 			color="var(--ex-imaging)"
 		/>
-		<T x={CX + 16} y={392} text="Almost all the others were found from" size={12.5} />
-		<T x={CX + 16} y={412} text="what they do to their star’s light:" size={12.5} />
-		<T x={CX + 16} y={432} text="a dip in its brightness, or a" size={12.5} />
-		<T x={CX + 16} y={452} text="wobble in its spectral lines" size={12.5} />
-		<T x={CX + 16} y={472} text="(or a brief brightening of a star" size={12.5} muted />
-		<T x={CX + 16} y={492} text="behind them, for microlensing)." size={12.5} muted />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={392}
+			text="Almost all the others were found from"
+			size={12.5}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={412}
+			text="what they do to their star’s light:"
+			size={12.5}
+		/>
+		<Label anchor="start" x={CX + 16} y={432} text="a dip in its brightness, or a" size={12.5} />
+		<Label anchor="start" x={CX + 16} y={452} text="wobble in its spectral lines" size={12.5} />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={472}
+			text="(or a brief brightening of a star"
+			size={12.5}
+			muted
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={492}
+			text="behind them, for microlensing)."
+			size={12.5}
+			muted
+		/>
 	</Readout>
 	<Readout id="m-src">
-		<T x={CX + 16} y={556} text="Source: NASA Exoplanet Archive" size={11} muted />
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={556}
+			text="Source: NASA Exoplanet Archive"
+			size={11}
+			muted
+		/>
 	</Readout>
 </g>

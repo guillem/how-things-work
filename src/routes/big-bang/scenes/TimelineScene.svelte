@@ -17,7 +17,7 @@
 	 * electrons are bound (about 90% already are at z*). The box is not to scale: in reality
 	 * there are 1.6 billion photons per nucleon (stated in the first-second notes).
 	 */
-	import { startDrag, wavelengthToColor, hash, type Point } from '#lib/draw/index.ts';
+	import { hash, Label, type Point, startDrag, wavelengthToColor } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		AGE,
@@ -42,7 +42,6 @@
 	} from '../cosmology';
 	import { lambdaText, sci, tempText, timeText, zText } from '../format';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -291,15 +290,15 @@
 </script>
 
 {#snippet row(y: number, label: string, value: string, color?: string)}
-	<T x={560} {y} text={label} size={12.5} muted />
-	<T x={924} {y} text={value} size={13.5} weight={700} anchor="end" {color} />
+	<Label anchor="start" x={560} {y} text={label} size={12.5} muted />
+	<Label x={924} {y} text={value} size={13.5} weight={700} anchor="end" {color} />
 {/snippet}
 
 <g>
 	<!-- the box -->
 	<Card x={16} y={16} w={504} h={430} />
 	<Readout id="headline" order={1} label="What is happening" value={headline}>
-		<T x={32} y={44} text={headline} size={14.5} weight={700} />
+		<Label anchor="start" x={32} y={44} text={headline} size={14.5} weight={700} />
 	</Readout>
 	<defs>
 		<clipPath id="tl-box">
@@ -347,15 +346,15 @@
 	<Readout id="key">
 		{#each [{ k: 'p', c: 'var(--bb-proton)', t: 'proton' }, { k: 'n', c: 'var(--bb-neutron)', t: 'neutron' }, { k: 'e', c: 'var(--bb-electron)', t: 'electron' }, { k: 'e+', c: 'var(--bb-positron)', t: 'positron' }, { k: 'v', c: 'var(--bb-neutrino)', t: 'neutrino' }, { k: 'h', c: 'var(--bb-helium)', t: 'helium' }] as key, i (key.k)}
 			<circle cx={36 + i * 80} cy={438 - 4} r="4" fill={key.c} />
-			<T x={44 + i * 80} y={438} text={key.t} size={11} muted />
+			<Label anchor="start" x={44 + i * 80} y={438} text={key.t} size={11} muted />
 		{/each}
 	</Readout>
 
 	<!-- readouts -->
 	<Card x={536} y={16} w={408} h={430} />
 	<Readout id="time" order={2} label="Time" value={timeLabel}>
-		<T x={560} y={46} text="Time since the Big Bang" size={12.5} muted />
-		<T x={924} y={46} text={timeLabel} size={15} weight={700} anchor="end" />
+		<Label anchor="start" x={560} y={46} text="Time since the Big Bang" size={12.5} muted />
+		<Label x={924} y={46} text={timeLabel} size={15} weight={700} anchor="end" />
 	</Readout>
 	<Readout id="temp" order={3} label="Temperature" value={tempText(temp)}>
 		{@render row(76, 'Temperature', tempText(temp), 'var(--bb-arrow)')}
@@ -401,8 +400,8 @@
 				height="14"
 				fill="var(--bb-helium)"
 			/>
-			<T x={566} y={234} text="hydrogen" size={11} muted />
-			<T x={918} y={234} text="helium" size={11} anchor="end" muted />
+			<Label anchor="start" x={566} y={234} text="hydrogen" size={11} muted />
+			<Label x={918} y={234} text="helium" size={11} anchor="end" muted />
 		{/if}
 	{:else if phase === 'cmb'}
 		<Readout
@@ -417,7 +416,8 @@
 			{@render row(188, 'The light is brightest at', lambdaText(lambdaPeak))}
 		</Readout>
 		<Readout id="opaque">
-			<T
+			<Label
+				anchor="start"
 				x={560}
 				y={222}
 				text={neutral < 0.5
@@ -436,15 +436,34 @@
 			{@render row(162, 'Hydrogen ionized again', `${Math.round(ionizedAgain * 100)}%`)}
 		</Readout>
 		<Readout id="stars-note">
-			<T x={560} y={196} text="First stars expected at z ≈ 30–20 (100–180 Myr)" size={12} />
-			<T x={560} y={216} text="JADES-GS-z14-0 seen at z = 14.18 (≈ 290 Myr)" size={12} />
+			<Label
+				anchor="start"
+				x={560}
+				y={196}
+				text="First stars expected at z ≈ 30–20 (100–180 Myr)"
+				size={12}
+			/>
+			<Label
+				anchor="start"
+				x={560}
+				y={216}
+				text="JADES-GS-z14-0 seen at z = 14.18 (≈ 290 Myr)"
+				size={12}
+			/>
 		</Readout>
 	{:else}
 		<!-- the last 13.8 Gyr on a linear scale -->
 		{@const LX0 = 560}
 		{@const LW = 364}
 		{@const lin = (g: number) => LX0 + (g / AGE) * LW}
-		<T x={560} y={160} text="The same history on an ordinary (linear) scale" size={12} muted />
+		<Label
+			anchor="start"
+			x={560}
+			y={160}
+			text="The same history on an ordinary (linear) scale"
+			size={12}
+			muted
+		/>
 		<rect x={LX0} y={170} width={LW} height="10" rx="3" fill="var(--stage-grid)" />
 		<rect
 			x={LX0}
@@ -457,7 +476,7 @@
 		/>
 		{#each [{ g: 0.00001, t: 'Big Bang', y: 198, anchor: 'start' }, { g: T_ACC, t: 'speeding up', y: 198, anchor: 'middle' }, { g: 9.23, t: 'Sun', y: 216, anchor: 'middle' }, { g: AGE, t: 'today', y: 198, anchor: 'end' }] as m (m.t)}
 			<line x1={lin(m.g)} x2={lin(m.g)} y1={166} y2={184} stroke="var(--stage-ink)" />
-			<T
+			<Label
 				x={lin(m.g)}
 				y={m.y}
 				text={m.t}
@@ -466,7 +485,8 @@
 			/>
 		{/each}
 		<Readout id="today-note">
-			<T
+			<Label
+				anchor="start"
 				x={560}
 				y={244}
 				text="Everything before the first billion years fits in the first 7%."
@@ -477,7 +497,8 @@
 	{/if}
 
 	<!-- spectrum -->
-	<T
+	<Label
+		anchor="start"
 		x={560}
 		y={270}
 		text="The light: Planck’s spectrum at {tempText(temp)}"
@@ -498,7 +519,7 @@
 			{/each}
 		{:else}
 			<line x1={lx(b.from)} x2={lx(b.from)} y1={SP.y} y2={SP.y + SP.h} stroke="var(--stage-grid)" />
-			<T
+			<Label
 				x={(lx(b.from) + lx(b.to)) / 2}
 				y={SP.y + SP.h + 16}
 				text={b.text}
@@ -517,7 +538,7 @@
 			stroke-width="1.4"
 			stroke-dasharray="4 3"
 		/>
-		<T
+		<Label
 			x={lx(peakWavelength(T0)) - 8}
 			y={SP.y + 10}
 			text="today, 2.7255 K"
@@ -527,7 +548,7 @@
 		/>
 	{/if}
 	<path d={specNow} fill="none" stroke="var(--bb-arrow)" stroke-width="2.4" />
-	<T
+	<Label
 		x={SP.x + SP.w}
 		y={SP.y + SP.h + 34}
 		text="wavelength (log scale)"
@@ -548,13 +569,27 @@
 			opacity="0.55"
 		/>
 	{/each}
-	<T x={tx(Math.log10(tEq)) - 6} y={TY + 22} text="radiation era" size={10.5} anchor="end" muted />
-	<T x={tx(Math.log10(tEq)) + 6} y={TY + 22} text="matter era" size={10.5} muted />
+	<Label
+		x={tx(Math.log10(tEq)) - 6}
+		y={TY + 22}
+		text="radiation era"
+		size={10.5}
+		anchor="end"
+		muted
+	/>
+	<Label
+		anchor="start"
+		x={tx(Math.log10(tEq)) + 6}
+		y={TY + 22}
+		text="matter era"
+		size={10.5}
+		muted
+	/>
 	{#each TICKS as k (k.text)}
 		<line x1={tx(k.lg)} x2={tx(k.lg)} y1={TY + 4} y2={TY + 30} stroke="var(--stage-grid)" />
-		<T x={tx(k.lg)} y={TY + 44} text={k.text} size={10.5} anchor="middle" muted />
+		<Label x={tx(k.lg)} y={TY + 44} text={k.text} size={10.5} anchor="middle" muted />
 	{/each}
-	<T x={TX1} y={TY + 44} text="today" size={10.5} anchor="end" muted />
+	<Label x={TX1} y={TY + 44} text="today" size={10.5} anchor="end" muted />
 	{#each EVENTS as ev (ev.id)}
 		<line
 			x1={tx(ev.lg)}
@@ -563,7 +598,7 @@
 			y2={TY - 4}
 			stroke="var(--stage-ink-muted)"
 		/>
-		<T
+		<Label
 			x={tx(ev.lg)}
 			y={TY - (ev.row ? 38 : 22)}
 			text={ev.text}

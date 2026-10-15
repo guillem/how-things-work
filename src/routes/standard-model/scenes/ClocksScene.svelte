@@ -6,7 +6,7 @@
 	 * neutron's decay has, and the reach ħ/(M_W c) that follows.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import {
 		hadrons,
 		lifeText,
@@ -19,7 +19,6 @@
 		type Quantity
 	} from '../particles';
 	import { forceColour, FORCE_NAME } from './shared';
-	import T from './T.svelte';
 	import Card from './Card.svelte';
 
 	let { t, reduced }: StageProps = $props();
@@ -77,7 +76,8 @@
 
 <g>
 	<Readout id="title">
-		<T
+		<Label
+			anchor="start"
 			x={24}
 			y={34}
 			text="How long they live, and which force makes them decay"
@@ -98,7 +98,7 @@
 		<Readout id="tick{e}">
 			{#snippet narrow()}
 				{#if e % 8 === 0}
-					<T
+					<Label
 						x={xOf(10 ** e)}
 						y={rowY(ROWS.length - 1) + 48}
 						text="10{sup(e)} s"
@@ -108,7 +108,7 @@
 					/>
 				{/if}
 			{/snippet}
-			<T
+			<Label
 				x={xOf(10 ** e)}
 				y={rowY(ROWS.length - 1) + 36}
 				text="10{sup(e)} s"
@@ -128,7 +128,7 @@
 			stroke-dasharray="2 4"
 		/>
 		<Readout id="mark-{m.label}">
-			<T x={xOf(m.s)} y={64} text={m.label} anchor="middle" size={11} muted />
+			<Label x={xOf(m.s)} y={64} text={m.label} anchor="middle" size={11} muted />
 		</Readout>
 	{/each}
 
@@ -155,11 +155,19 @@
 		/>
 		<Readout id="row-{r.id}">
 			{#snippet narrow()}
-				<T x={AX0 - 14} y={y + 12} text={r.who} size={34} weight={700} color={col} anchor="end" />
+				<Label
+					x={AX0 - 14}
+					y={y + 12}
+					text={r.who}
+					size={34}
+					weight={700}
+					color={col}
+					anchor="end"
+				/>
 			{/snippet}
-			<T x={24} y={y + 5} text={r.who} size={15} weight={700} color={col} />
-			<T x={62} y={y + 5} text={r.decay} size={12.5} />
-			<T
+			<Label anchor="start" x={24} y={y + 5} text={r.who} size={15} weight={700} color={col} />
+			<Label anchor="start" x={62} y={y + 5} text={r.decay} size={12.5} />
+			<Label
 				x={x > 760 ? x : x + 14}
 				y={x > 760 ? y - 13 : y + 4}
 				text={lifeShort(r.life)}
@@ -182,7 +190,8 @@
 				rx="3"
 				fill={forceColour(f as Force)}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={AX0 + 20 + i * 150}
 				y={rowY(ROWS.length - 1) + 62}
 				text={FORCE_NAME[f as Force]}
@@ -199,7 +208,8 @@
 		label="W boson"
 		value="{massText(wMass)}, against {q.toFixed(2)} MeV in a neutron's decay: virtual"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={40}
 			y={514}
 			text="The W weighs {massText(wMass)}; a neutron's decay has {q.toFixed(
@@ -208,7 +218,8 @@
 			size={13.5}
 			weight={600}
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={40}
 			y={536}
 			text="the W can only be virtual. A carrier of mass M reaches only about ħ/(Mc):"
@@ -221,7 +232,8 @@
 		label="Reach of the weak force"
 		value="≈ {sci(reach(wMass), 2)} m"
 	>
-		<T
+		<Label
+			anchor="start"
 			x={40}
 			y={560}
 			text="for the W, {sci(reach(wMass), 2)} m, a few hundred times less than a proton's radius."

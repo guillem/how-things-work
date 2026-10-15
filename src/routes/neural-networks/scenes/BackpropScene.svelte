@@ -19,7 +19,7 @@
 		stepThrough
 	} from '../network';
 	import { bands, dots, fix, outputGrid, zeroLine } from './shared';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -170,9 +170,9 @@
 <g>
 	<!-- column headings -->
 	<Readout id="headings">
-		<Txt x={130} y={110} text="inputs" anchor="middle" size={12} muted />
-		<Txt x={410} y={110} text="hidden layer (tanh)" anchor="middle" size={12} muted />
-		<Txt x={690} y={110} text="output (sigmoid)" anchor="middle" size={12} muted />
+		<Label x={130} y={110} text="inputs" anchor="middle" size={12} muted />
+		<Label x={410} y={110} text="hidden layer (tanh)" anchor="middle" size={12} muted />
+		<Label x={690} y={110} text="output (sigmoid)" anchor="middle" size={12} muted />
 	</Readout>
 	<Readout
 		id="title"
@@ -180,7 +180,8 @@
 		label="Example"
 		value="#{n + 1}: ({fix(ex.x)}, {fix(ex.y)}), {colour(y)}"
 	>
-		<Txt
+		<Label
+			anchor="start"
 			x={40}
 			y={52}
 			text="example #{n + 1}: (x₁, x₂) = ({fix(ex.x)}, {fix(ex.y)}), colour {colour(y)}"
@@ -212,7 +213,7 @@
 	{/each}
 	<Readout id="edge-labels">
 		{#each edges as e (e.key)}
-			<Txt
+			<Label
 				x={e.lx}
 				y={e.ly + 4}
 				text={edgeLabel(e)}
@@ -241,14 +242,14 @@
 	<Readout id="node-values">
 		{#each [0, 1] as i (i)}
 			{@const c = NODES[0][i]}
-			<Txt x={c.x - R - 10} y={c.y + 5} text="x{i ? '₂' : '₁'}" anchor="end" size={13} muted />
-			<Txt x={c.x} y={c.y + 5} text={fix(x[i])} anchor="middle" size={14} weight={600} />
+			<Label x={c.x - R - 10} y={c.y + 5} text="x{i ? '₂' : '₁'}" anchor="end" size={13} muted />
+			<Label x={c.x} y={c.y + 5} text={fix(x[i])} anchor="middle" size={14} weight={600} />
 		{/each}
 		{#each [0, 1] as j (j)}
 			{@const c = NODES[1][j]}
 			{#if phase === 'forward'}
-				<Txt x={c.x} y={c.y - 6} text="z {fix(fw.z[0][j])}" anchor="middle" size={12} muted />
-				<Txt
+				<Label x={c.x} y={c.y - 6} text="z {fix(fw.z[0][j])}" anchor="middle" size={12} muted />
+				<Label
 					x={c.x}
 					y={c.y + 13}
 					text="a {fix(fw.a[1][j])}"
@@ -257,8 +258,8 @@
 					weight={600}
 				/>
 			{:else}
-				<Txt x={c.x} y={c.y - 6} text="a {fix(fw.a[1][j])}" anchor="middle" size={12} muted />
-				<Txt
+				<Label x={c.x} y={c.y - 6} text="a {fix(fw.a[1][j])}" anchor="middle" size={12} muted />
+				<Label
 					x={c.x}
 					y={c.y + 13}
 					text="δ {fix(bw.delta[0][j], 3)}"
@@ -268,7 +269,7 @@
 					color="var(--nn-back)"
 				/>
 			{/if}
-			<Txt
+			<Label
 				x={c.x}
 				y={c.y + R + 18}
 				text={phase === 'update'
@@ -281,11 +282,11 @@
 		{/each}
 		{@const o = NODES[2][0]}
 		{#if phase === 'forward'}
-			<Txt x={o.x} y={o.y - 6} text="z {fix(fw.z[1][0])}" anchor="middle" size={12} muted />
-			<Txt x={o.x} y={o.y + 13} text="p {fix(p)}" anchor="middle" size={14} weight={600} />
+			<Label x={o.x} y={o.y - 6} text="z {fix(fw.z[1][0])}" anchor="middle" size={12} muted />
+			<Label x={o.x} y={o.y + 13} text="p {fix(p)}" anchor="middle" size={14} weight={600} />
 		{:else}
-			<Txt x={o.x} y={o.y - 6} text="p {fix(p)}" anchor="middle" size={12} muted />
-			<Txt
+			<Label x={o.x} y={o.y - 6} text="p {fix(p)}" anchor="middle" size={12} muted />
+			<Label
 				x={o.x}
 				y={o.y + 13}
 				text="δ {fix(bw.delta[1][0], 3)}"
@@ -295,7 +296,7 @@
 				color="var(--nn-back)"
 			/>
 		{/if}
-		<Txt
+		<Label
 			x={o.x}
 			y={o.y + R + 18}
 			text={phase === 'update'
@@ -338,14 +339,29 @@
 		label={phase === 'update' ? undefined : 'So far'}
 		value="{n} examples trained on"
 	>
-		<Txt x={I.x} y={I.y - 10} text="after {n} example{n === 1 ? '' : 's'}" size={12} weight={600} />
-		<Txt x={I.x} y={I.y + I.size + 16} text="ringed: this example" size={11} muted />
+		<Label
+			anchor="start"
+			x={I.x}
+			y={I.y - 10}
+			text="after {n} example{n === 1 ? '' : 's'}"
+			size={12}
+			weight={600}
+		/>
+		<Label
+			anchor="start"
+			x={I.x}
+			y={I.y + I.size + 16}
+			text="ringed: this example"
+			size={11}
+			muted
+		/>
 	</Readout>
 
 	<!-- the numbers of this phase -->
 	{#if phase === 'forward'}
 		<Readout id="out" order={2} label="Output" value="p = {fix(p)}: {Math.round(100 * p)}% blue">
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={LABEL_Y + 20}
 				text="output p = σ(z) = {fix(p)}: the network says {Math.round(100 * p)}% blue"
@@ -354,7 +370,8 @@
 			/>
 		</Readout>
 		<Readout id="loss" order={3} label="Loss" value="−ln({fix(y ? p : 1 - p)}) = {fix(loss, 3)}">
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={LABEL_Y + 44}
 				text="the right answer is {colour(y)}: loss = −ln(probability given to it) = −ln({fix(
@@ -364,7 +381,8 @@
 			/>
 		</Readout>
 		<Readout id="kept">
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={LABEL_Y + 68}
 				text="z: each neuron's sum · a: its output, tanh(z) · both kept for the backward pass"
@@ -379,7 +397,8 @@
 			label="Output δ"
 			value="p − y = {fix(p)} − {y} = {fix(bw.delta[1][0], 3)}"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={LABEL_Y + 20}
 				text="output: δ = p − y = {fix(p)} − {y} = {fix(bw.delta[1][0], 3)}"
@@ -397,7 +416,8 @@
 				3
 			)}"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={LABEL_Y + 44}
 				text="top hidden neuron: δ = w × δ(output) × (1 − a²) = {fix(net.W[1][0])} × {fix(
@@ -408,7 +428,8 @@
 			/>
 		</Readout>
 		<Readout id="meaning">
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={LABEL_Y + 68}
 				text="δ = how much the loss would rise per unit of extra sum z · positive: the sum should go down"
@@ -426,7 +447,8 @@
 				3
 			)}, new w = {fix(check.next)}"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={LABEL_Y + 20}
 				text="weight {check.name}: slope = a × δ = {par(check.aIn)} × {par(check.delta, 3)} = {fix(
@@ -445,7 +467,8 @@
 				check.slope * 0.001
 			)}"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={LABEL_Y + 44}
 				text="check: nudge that weight by +0.001 → the loss changes by {sci(
@@ -460,7 +483,8 @@
 			label="Loss on this example"
 			value="{fix(loss, 3)} → {fix(after.loss, 3)}"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={40}
 				y={LABEL_Y + 68}
 				text="after every weight steps (η = {STEP_LR}), the loss on this example goes {fix(
@@ -474,7 +498,8 @@
 		</Readout>
 	{/if}
 	<Readout id="press">
-		<Txt
+		<Label
+			anchor="start"
 			x={40}
 			y={LABEL_Y + 92}
 			text="Next example: make this update and go on to the next point"

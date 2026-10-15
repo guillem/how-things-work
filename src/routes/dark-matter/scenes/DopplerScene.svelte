@@ -7,11 +7,10 @@
 	 * measured speeds of both sides (SPARC points, mirrored), the point under the
 	 * beam highlighted, and below the 21-cm line shifted by Δλ = λ v / c.
 	 */
-	import { Axes, pingpong, scale } from '#lib/draw/index.ts';
+	import { Axes, Label, pingpong, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { GYR_S, KPC_KM, galaxy, speedAt } from '../galaxies';
 	import { rng } from '../lensing';
-	import T from './T.svelte';
 
 	let { t, reduced }: StageProps = $props();
 
@@ -92,8 +91,22 @@
 
 <g>
 	<Readout id="title" order={1} label="NGC 3198" value="tilted 73° from face-on, as we see it">
-		<T x={24} y={38} text="NGC 3198 as we see it: tilted 73°" size={16} weight={700} />
-		<T x={24} y={58} text="colour: speed towards (blue) or away from us (red)" size={12} muted />
+		<Label
+			anchor="start"
+			x={24}
+			y={38}
+			text="NGC 3198 as we see it: tilted 73°"
+			size={16}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
+			x={24}
+			y={58}
+			text="colour: speed towards (blue) or away from us (red)"
+			size={12}
+			muted
+		/>
 	</Readout>
 
 	<!-- the disc -->
@@ -132,7 +145,8 @@
 		stroke-opacity="0.6"
 	/>
 	<Readout id="sides">
-		<T
+		<Label
+			anchor="start"
 			x={CX - RX}
 			y={CY + RY + 54}
 			text="← coming towards us"
@@ -140,7 +154,7 @@
 			color="var(--dm-approach)"
 			weight={650}
 		/>
-		<T
+		<Label
 			x={CX + RX}
 			y={CY + RY + 54}
 			text="going away →"
@@ -149,7 +163,7 @@
 			color="var(--dm-recede)"
 			weight={650}
 		/>
-		<T
+		<Label
 			x={CX}
 			y={CY - RY - 38}
 			text="radio beam: 21-cm hydrogen line"
@@ -167,7 +181,7 @@
 			: 'towards us'}"
 		color={losColor(vBeam)}
 	>
-		<T
+		<Label
 			x={CX}
 			y={CY + RY + 84}
 			text="beam at {Math.abs(xs).toFixed(0)} kpc: {Math.abs(vBeam).toFixed(0)} km/s {vBeam >= 0
@@ -191,7 +205,14 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="p-title">
-		<T x={516} y={44} text="Measured speed along our line of sight" size={14} weight={700} />
+		<Label
+			anchor="start"
+			x={516}
+			y={44}
+			text="Measured speed along our line of sight"
+			size={14}
+			weight={700}
+		/>
 	</Readout>
 	<Axes
 		{sx}
@@ -222,8 +243,8 @@
 		stroke-width="2"
 	/>
 	<Readout id="p-axes">
-		<T x={PX0 + 8} y={PY0 + 4} text="away (km/s)" size={11} muted />
-		<T x={PX1 - 4} y={PY1 - 8} text="towards" size={11} muted anchor="end" />
+		<Label anchor="start" x={PX0 + 8} y={PY0 + 4} text="away (km/s)" size={11} muted />
+		<Label x={PX1 - 4} y={PY1 - 8} text="towards" size={11} muted anchor="end" />
 	</Readout>
 
 	<!-- the 21-cm line -->
@@ -237,7 +258,14 @@
 		stroke="var(--border)"
 	/>
 	<Readout id="l-title">
-		<T x={516} y={422} text="The 21-cm line under the beam" size={14} weight={700} />
+		<Label
+			anchor="start"
+			x={516}
+			y={422}
+			text="The 21-cm line under the beam"
+			size={14}
+			weight={700}
+		/>
 	</Readout>
 	<line x1={LX0} x2={LX1} y1={LY} y2={LY} stroke="var(--stage-line)" />
 	<line
@@ -250,9 +278,9 @@
 	/>
 	<path d={line(shiftMm)} fill="none" stroke={losColor(vBeam)} stroke-width="2.5" />
 	<Readout id="l-axes">
-		<T x={lsx(0)} y={LY + 20} text="211.06 mm at rest" size={11} anchor="middle" muted />
-		<T x={LX0} y={LY + 20} text="shorter" size={11} muted />
-		<T x={LX1} y={LY + 20} text="longer" size={11} anchor="end" muted />
+		<Label x={lsx(0)} y={LY + 20} text="211.06 mm at rest" size={11} anchor="middle" muted />
+		<Label anchor="start" x={LX0} y={LY + 20} text="shorter" size={11} muted />
+		<Label x={LX1} y={LY + 20} text="longer" size={11} anchor="end" muted />
 	</Readout>
 	<Readout
 		id="shift"
@@ -261,7 +289,7 @@
 		value="{shiftMm >= 0 ? '+' : '−'}{Math.abs(shiftMm).toFixed(3)} mm"
 		color={losColor(vBeam)}
 	>
-		<T
+		<Label
 			x={928}
 			y={560}
 			text="shifted {shiftMm >= 0 ? '+' : '−'}{Math.abs(shiftMm).toFixed(3)} mm (Δλ = λ v / c)"

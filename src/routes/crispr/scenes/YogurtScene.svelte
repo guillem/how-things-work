@@ -9,12 +9,11 @@
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
-	import { TAU, hash, smoothstep } from '#lib/draw/index.ts';
+	import { hash, Label, smoothstep, TAU } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { PHAGE_858, immune, strainArray, type Strain } from '../model';
 	import ArrayStrip from './ArrayStrip.svelte';
 	import { type StripSpacer } from './strip';
-	import Tag from './Tag.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 	const time = $derived(reduced ? 99 : t);
@@ -97,8 +96,8 @@
 		label="Phage 858 on a lawn"
 		value="{ROWS.find((r) => r.s === strain)?.name}: {resistant ? 'resistant' : 'sensitive'}"
 	>
-		<Tag x={D.x} y={70} text="Phage 858 spread on a lawn of bacteria" size={14} weight={600} />
-		<Tag x={D.x} y={92} text={ROWS.find((r) => r.s === strain)?.name ?? ''} size={13} muted />
+		<Label x={D.x} y={70} text="Phage 858 spread on a lawn of bacteria" size={14} weight={600} />
+		<Label x={D.x} y={92} text={ROWS.find((r) => r.s === strain)?.name ?? ''} size={13} muted />
 	</Readout>
 	<circle
 		cx={D.x}
@@ -139,7 +138,7 @@
 		value={verdict}
 		color={resistant ? 'var(--cr-match)' : 'var(--cr-mismatch)'}
 	>
-		<Tag
+		<Label
 			x={D.x}
 			y={540}
 			text={verdict}
@@ -151,7 +150,7 @@
 
 	<!-- the four strains -->
 	<Readout id="rows-title">
-		<Tag
+		<Label
 			x={480}
 			y={70}
 			text="Their CRISPR arrays (schematic)"
@@ -159,7 +158,14 @@
 			weight={600}
 			anchor="start"
 		/>
-		<Tag x={480} y={92} text="red: new spacers matching phage 858" size={12} anchor="start" muted />
+		<Label
+			x={480}
+			y={92}
+			text="red: new spacers matching phage 858"
+			size={12}
+			anchor="start"
+			muted
+		/>
 	</Readout>
 	{#each ROWS as r, i (r.s)}
 		{@const y = 150 + i * 102}
@@ -178,8 +184,8 @@
 				/>
 			{/if}
 			<Readout id="row{i}" order={2 + i} label={r.name} value={ok ? 'resistant' : 'sensitive'}>
-				<Tag x={480} y={y - 12} text={r.name} size={13} weight={on ? 600 : 500} anchor="start" />
-				<Tag
+				<Label x={480} y={y - 12} text={r.name} size={13} weight={on ? 600 : 500} anchor="start" />
+				<Label
 					x={928}
 					y={y - 12}
 					text={ok ? 'resistant' : 'sensitive'}

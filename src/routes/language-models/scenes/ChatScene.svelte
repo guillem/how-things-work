@@ -6,11 +6,10 @@
 	 * marking who speaks (a schematic of the format, no real model output).
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { percent } from '../lm';
 	import { label, lm, str } from './shared';
 	import TextCard from './TextCard.svelte';
-	import Txt from './Txt.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -31,7 +30,7 @@
 
 <g>
 	<Readout id="base-title">
-		<Txt x={L.x} y={30} size={14} weight={650} text="GPT-2, a base model" />
+		<Label anchor="start" x={L.x} y={30} size={14} weight={650} text="GPT-2, a base model" />
 	</Readout>
 	<rect
 		x={L.x - 12}
@@ -55,11 +54,19 @@
 		/>
 	</Readout>
 	<Readout id="next-title">
-		<Txt x={L.x} y={124} size={12} muted text="its next token" />
+		<Label anchor="start" x={L.x} y={124} size={12} muted text="its next token" />
 	</Readout>
 	{#each d.ids.slice(0, 4) as id, i (i)}
 		{@const y = 134 + i * 22}
-		<Txt x={L.x + 70} y={y + 13} anchor="end" size={12.5} mono text={label(lm.token(id))} />
+		<Label
+			tabular
+			x={L.x + 70}
+			y={y + 13}
+			anchor="end"
+			size={12.5}
+			mono
+			text={label(lm.token(id))}
+		/>
 		<rect
 			x={L.x + 80}
 			y={y + 2}
@@ -69,7 +76,15 @@
 			fill="var(--lm-bar)"
 			opacity="0.85"
 		/>
-		<Txt x={L.x + 88 + d.p[i] * 300} y={y + 13} size={11.5} muted text={percent(d.p[i])} />
+		<Label
+			anchor="start"
+			tabular
+			x={L.x + 88 + d.p[i] * 300}
+			y={y + 13}
+			size={11.5}
+			muted
+			text={percent(d.p[i])}
+		/>
 	{/each}
 	<Readout
 		id="next"
@@ -79,7 +94,7 @@
 	/>
 
 	<Readout id="cont-title">
-		<Txt x={L.x} y={244} size={12} muted text="what it writes (20 tokens each)" />
+		<Label anchor="start" x={L.x} y={244} size={12} muted text="what it writes (20 tokens each)" />
 	</Readout>
 	{#each outs as o, i (o.label)}
 		{@const y = 256 + i * 86}
@@ -98,7 +113,9 @@
 			label={i === 0 ? o.label : undefined}
 			value={i === 0 ? lm.text(o.run.steps.slice(0, 20).map((s) => s.pick)) : undefined}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={L.x}
 				y={y + 18}
 				size={11}
@@ -128,9 +145,23 @@
 			label="A chat assistant"
 			value="the same next-token loop, after further training on conversations and on people’s preferences"
 		>
-			<Txt x={620} y={30} size={14} weight={650} text="A chat assistant" />
-			<Txt x={620} y={50} size={11.5} muted text="sees the conversation as one text, with" />
-			<Txt x={620} y={65} size={11.5} muted text="special tokens marking who speaks:" />
+			<Label anchor="start" x={620} y={30} size={14} weight={650} text="A chat assistant" />
+			<Label
+				anchor="start"
+				x={620}
+				y={50}
+				size={11.5}
+				muted
+				text="sees the conversation as one text, with"
+			/>
+			<Label
+				anchor="start"
+				x={620}
+				y={65}
+				size={11.5}
+				muted
+				text="special tokens marking who speaks:"
+			/>
 		</Readout>
 		<rect
 			x="608"
@@ -181,19 +212,80 @@
 			/>
 		{/each}
 		<Readout id="chat-note">
-			<Txt x={622} y={276} size={11} muted text="the reply: generated one token at a time," />
-			<Txt x={622} y={292} size={11} muted text="by the same loop as GPT-2 (format only;" />
-			<Txt x={622} y={308} size={11} muted text="each product has its own special tokens)" />
+			<Label
+				anchor="start"
+				x={622}
+				y={276}
+				size={11}
+				muted
+				text="the reply: generated one token at a time,"
+			/>
+			<Label
+				anchor="start"
+				x={622}
+				y={292}
+				size={11}
+				muted
+				text="by the same loop as GPT-2 (format only;"
+			/>
+			<Label
+				anchor="start"
+				x={622}
+				y={308}
+				size={11}
+				muted
+				text="each product has its own special tokens)"
+			/>
 		</Readout>
 		<Readout id="recipe">
-			<Txt x={620} y={356} size={12.5} weight={650} text="How a base model becomes one" />
-			<Txt x={620} y={380} size={12} text="1. pretraining: predict the next token" />
-			<Txt x={636} y={396} size={11.5} muted text="of a huge amount of text (GPT-2 stops here)" />
-			<Txt x={620} y={420} size={12} text="2. instruction tuning: more training on" />
-			<Txt x={636} y={436} size={11.5} muted text="example conversations written by people" />
-			<Txt x={620} y={460} size={12} text="3. RLHF: training towards the answers" />
-			<Txt x={636} y={476} size={11.5} muted text="people prefer" />
-			<Txt
+			<Label
+				anchor="start"
+				x={620}
+				y={356}
+				size={12.5}
+				weight={650}
+				text="How a base model becomes one"
+			/>
+			<Label
+				anchor="start"
+				x={620}
+				y={380}
+				size={12}
+				text="1. pretraining: predict the next token"
+			/>
+			<Label
+				anchor="start"
+				x={636}
+				y={396}
+				size={11.5}
+				muted
+				text="of a huge amount of text (GPT-2 stops here)"
+			/>
+			<Label
+				anchor="start"
+				x={620}
+				y={420}
+				size={12}
+				text="2. instruction tuning: more training on"
+			/>
+			<Label
+				anchor="start"
+				x={636}
+				y={436}
+				size={11.5}
+				muted
+				text="example conversations written by people"
+			/>
+			<Label
+				anchor="start"
+				x={620}
+				y={460}
+				size={12}
+				text="3. RLHF: training towards the answers"
+			/>
+			<Label anchor="start" x={636} y={476} size={11.5} muted text="people prefer" />
+			<Label
+				anchor="start"
 				x={620}
 				y={508}
 				size={12}
@@ -201,7 +293,8 @@
 				color="var(--lm-bar)"
 				text="Still the same job at every step:"
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={620}
 				y={526}
 				size={12}

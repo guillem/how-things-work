@@ -16,9 +16,8 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Txt from './Txt.svelte';
 	import { cell } from '../../atoms-periodic-table/atom';
 	import {
 		BODY,
@@ -144,7 +143,7 @@
 						stroke="var(--border)"
 					/>
 				{/if}
-				<Txt
+				<Label
 					x={c.x + CW / 2}
 					y={c.y + CH / 2 + (phase === 'you' && BODY_Z.has(c.o.z) ? 1 : 5)}
 					text={c.o.symbol}
@@ -153,7 +152,7 @@
 					color="var(--st-cell-ink)"
 				/>
 				<Readout id="z-{c.o.z}">
-					<Txt
+					<Label
 						x={c.x + 4}
 						y={c.y + 12}
 						text={String(c.o.z)}
@@ -182,7 +181,7 @@
 				/>
 				{#if phase === 'you'}
 					<Readout id="body-{c.o.z}">
-						<Txt
+						<Label
 							x={c.x + CW / 2}
 							y={c.y + CH - 6}
 							text="{(BODY_Z.get(c.o.z)! * 100).toLocaleString('en-US', {
@@ -207,7 +206,7 @@
 				? 'each square split by where its atoms were made'
 				: `made most of the atoms of ${counts[pick as Source]} elements`}
 		>
-			<Txt
+			<Label
 				x={X0 + 6.5 * CW}
 				y={Y0 + 26}
 				text={pick === 'all'
@@ -216,7 +215,7 @@
 				size={14}
 				weight={700}
 			/>
-			<Txt
+			<Label
 				x={X0 + 6.5 * CW}
 				y={Y0 + 48}
 				text={pick === 'all'
@@ -234,7 +233,7 @@
 			value="in giant stars: strontium, barium"
 			color="var(--st-lowmass)"
 		>
-			<Txt
+			<Label
 				x={X0 + 6.5 * CW}
 				y={Y0 + 26}
 				text="solid rings: s-process (giant stars)"
@@ -249,7 +248,7 @@
 			value="in neutron-star mergers: europium, platinum, gold, uranium"
 			color="var(--st-mergers)"
 		>
-			<Txt
+			<Label
 				x={X0 + 6.5 * CW}
 				y={Y0 + 48}
 				text="dashed rings: r-process (neutron-star mergers)"
@@ -264,8 +263,14 @@
 			label="Your body, by mass"
 			value="O 61%, C 23%, H 10%, N 2.6%, Ca 1.4%, P 1.1%"
 		>
-			<Txt x={X0 + 6.5 * CW} y={Y0 + 26} text="the elements of your body" size={14} weight={700} />
-			<Txt x={X0 + 6.5 * CW} y={Y0 + 48} text="share of its mass under each" size={12} muted />
+			<Label
+				x={X0 + 6.5 * CW}
+				y={Y0 + 26}
+				text="the elements of your body"
+				size={14}
+				weight={700}
+			/>
+			<Label x={X0 + 6.5 * CW} y={Y0 + 48} text="share of its mass under each" size={12} muted />
 		</Readout>
 	{/if}
 
@@ -285,7 +290,7 @@
 				opacity={pick === 'all' || pick === s ? 1 : 0.35}
 			/>
 			<Readout id="key-{s}" order={2 + k} label={SOURCE_NAMES[s]} color={COLOUR[s]}>
-				<Txt
+				<Label
 					x={lx + 20}
 					y={ly}
 					text={SOURCE_NAMES[s]}
@@ -305,12 +310,12 @@
 			stroke="var(--border)"
 		/>
 		<Readout id="key-none" order={9} label="no long-lived isotopes">
-			<Txt x={X0 + 220} y={557} text="no long-lived isotopes" anchor="start" size={12} muted />
+			<Label x={X0 + 220} y={557} text="no long-lived isotopes" anchor="start" size={12} muted />
 		</Readout>
 	{:else}
 		<!-- the body's mass by source -->
 		<Readout id="bar-title"
-			><Txt
+			><Label
 				x={BAR.x}
 				y={BAR.y - 10}
 				text="your body’s mass, by where it was made"
@@ -324,7 +329,7 @@
 			<rect x={p.x} y={BAR.y} width={p.w} height="22" fill={COLOUR[p.s]} />
 		{/each}
 		<Readout id="bb">
-			<Txt
+			<Label
 				x={BAR.x}
 				y={BAR.y + 42}
 				text="Big Bang: {Math.round(body.bigBang * 100)}%"
@@ -341,7 +346,7 @@
 				body.bigBang * 100
 			)}% (hydrogen) in the Big Bang"
 		>
-			<Txt
+			<Label
 				x={BAR.x + BAR.w}
 				y={BAR.y + 42}
 				text="made in stars: {Math.round(inStars * 100)}%"
@@ -352,7 +357,7 @@
 			/>
 		</Readout>
 		<Readout id="split"
-			><Txt
+			><Label
 				x={BAR.x + BAR.w}
 				y={BAR.y + 62}
 				text="massive stars {Math.round(body.massive * 100)}% · low-mass stars {Math.round(

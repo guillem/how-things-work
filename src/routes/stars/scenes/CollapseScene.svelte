@@ -10,9 +10,8 @@
 	 * The onion's proportions are a sketch (the page says so). Under reduced motion the frame is
 	 * the finished onion, with the outcome in the caption.
 	 */
-	import { TAU, clamp, cycle, lerp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, cycle, Label, lerp, smoothstep, TAU } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Txt from './Txt.svelte';
 	import { BURNING_STAGES, years } from '../star';
 
 	let { t, reduced }: StageProps = $props();
@@ -171,10 +170,10 @@
 	{#if collapse > 0.9}
 		<circle cx={CX} cy={CY} r={14 + 6 * pulse} fill="#b197fc" opacity="0.35" />
 		<Readout id="ns" order={3} label="Left behind" value="a neutron star, about 12 km in radius">
-			<Txt x={CX} y={CY + 40} text="neutron star, ~12 km" size={13} weight={700} />
+			<Label x={CX} y={CY + 40} text="neutron star, ~12 km" size={13} weight={700} />
 		</Readout>
 	{:else if appear(5) > 0.5}
-		<Txt x={CX} y={CY + 4} text="iron" size={12} weight={700} color="#f8f9fa" />
+		<Label x={CX} y={CY + 4} text="iron" size={12} weight={700} color="#f8f9fa" />
 	{/if}
 
 	<!-- the list of burning stages -->
@@ -187,7 +186,7 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	<Txt
+	<Label
 		x={LIST.x}
 		y={LIST.y - 6}
 		text="Burning stages of a 20 M☉ star"
@@ -220,7 +219,7 @@
 			stroke="var(--border)"
 		/>
 		<Readout id="stage-{k}">
-			<Txt
+			<Label
 				x={LIST.x + 24}
 				{y}
 				text="{s.fuel} → {s.products}"
@@ -228,8 +227,8 @@
 				size={13}
 				weight={on ? 700 : 500}
 			/>
-			<Txt x={LIST.x + 340} {y} text={years(s.years)} anchor="end" size={13} weight={600} />
-			<Txt
+			<Label x={LIST.x + 340} {y} text={years(s.years)} anchor="end" size={13} weight={600} />
+			<Label
 				x={LIST.x + 24}
 				y={y + 16}
 				text="at {(s.T / 1e6).toLocaleString('en-US')} million K"
@@ -245,7 +244,7 @@
 		label="Burning stages (20 M☉)"
 		value={BURNING_STAGES.map((b) => `${b.fuel} ${years(b.years)}`).join(' · ')}
 	>
-		<Txt
+		<Label
 			x={LIST.x}
 			y={LIST.y + 286}
 			text="Heger et al. 2003 · layers drawn as a sketch"
@@ -257,7 +256,7 @@
 
 	<!-- caption -->
 	<Readout id="caption" order={1} label="Now" value={caption}>
-		<Txt x={CX} y={574} text={caption} size={14} weight={600} />
+		<Label x={CX} y={574} text={caption} size={14} weight={600} />
 	</Readout>
 	{#if time > 16.6 || reduced}
 		<Readout
@@ -266,7 +265,7 @@
 			label="In the heaviest stars"
 			value="the core falls back into a black hole"
 		>
-			<Txt
+			<Label
 				x={LIST.x}
 				y={LIST.y + 340}
 				text="in the heaviest stars: a black hole instead"

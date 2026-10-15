@@ -29,7 +29,7 @@
 		type Fundamental
 	} from '../particles';
 	import { familyColour, forceColour, FORCE_NAME } from './shared';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import Card from './Card.svelte';
 
 	let { step, params, setParam, reduced }: StageProps = $props();
@@ -189,16 +189,30 @@
 	<!-- headers -->
 	<Readout id="headers">
 		{#each ['I', 'II', 'III'] as g, i (g)}
-			<T x={COLX[i] + W / 2} y={60} text={g} anchor="middle" size={13} weight={700} muted />
+			<Label x={COLX[i] + W / 2} y={60} text={g} anchor="middle" size={13} weight={700} muted />
 		{/each}
-		<T x={COLX[3] + W / 2} y={60} text="carriers" anchor="middle" size={12} muted />
-		<T x={COLX[4] + W / 2} y={60} text="Higgs" anchor="middle" size={12} muted />
-		<T x={COLX[1] + W / 2} y={36} text="generations of matter" anchor="middle" size={12} muted />
+		<Label x={COLX[3] + W / 2} y={60} text="carriers" anchor="middle" size={12} muted />
+		<Label x={COLX[4] + W / 2} y={60} text="Higgs" anchor="middle" size={12} muted />
+		<Label
+			x={COLX[1] + W / 2}
+			y={36}
+			text="generations of matter"
+			anchor="middle"
+			size={12}
+			muted
+		/>
 		<g transform="rotate(-90 36 {(ROWY[0] + ROWY[1] + H) / 2})">
-			<T x={36} y={(ROWY[0] + ROWY[1] + H) / 2} text="quarks" anchor="middle" size={12} muted />
+			<Label x={36} y={(ROWY[0] + ROWY[1] + H) / 2} text="quarks" anchor="middle" size={12} muted />
 		</g>
 		<g transform="rotate(-90 36 {(ROWY[2] + ROWY[3] + H) / 2})">
-			<T x={36} y={(ROWY[2] + ROWY[3] + H) / 2} text="leptons" anchor="middle" size={12} muted />
+			<Label
+				x={36}
+				y={(ROWY[2] + ROWY[3] + H) / 2}
+				text="leptons"
+				anchor="middle"
+				size={12}
+				muted
+			/>
 		</g>
 	</Readout>
 
@@ -221,7 +235,7 @@
 			label="Generation I"
 			value="u, d and e make all ordinary matter"
 		>
-			<T
+			<Label
 				x={COLX[0] + W / 2}
 				y={ROWY[3] + H + 26}
 				text="ordinary matter:"
@@ -230,7 +244,7 @@
 				weight={600}
 				color="var(--explainer-accent)"
 			/>
-			<T
+			<Label
 				x={COLX[0] + W / 2}
 				y={ROWY[3] + H + 42}
 				text="u, d, e"
@@ -311,8 +325,22 @@
 		{/if}
 	{/each}
 	<Readout id="key">
-		<T x={COLX[3]} y={ROWY[3] + H + 26} text="corners: charge (e), spin" size={11} muted />
-		<T x={COLX[3]} y={ROWY[3] + H + 42} text="masses: PDG 2026" size={11} muted />
+		<Label
+			anchor="start"
+			x={COLX[3]}
+			y={ROWY[3] + H + 26}
+			text="corners: charge (e), spin"
+			size={11}
+			muted
+		/>
+		<Label
+			anchor="start"
+			x={COLX[3]}
+			y={ROWY[3] + H + 42}
+			text="masses: PDG 2026"
+			size={11}
+			muted
+		/>
 	</Readout>
 
 	<!-- card -->
@@ -326,22 +354,38 @@
 			note={famLine}
 			color={familyColour(sel.family)}
 		>
-			<T x={CX} y={70} text={sel.symbol} size={40} weight={700} color={familyColour(sel.family)} />
-			<T x={CX} y={100} text={sel.name} size={17} weight={700} />
-			<T x={CX} y={120} text={famLine} size={12} muted />
+			<Label
+				anchor="start"
+				x={CX}
+				y={70}
+				text={sel.symbol}
+				size={40}
+				weight={700}
+				color={familyColour(sel.family)}
+			/>
+			<Label anchor="start" x={CX} y={100} text={sel.name} size={17} weight={700} />
+			<Label anchor="start" x={CX} y={120} text={famLine} size={12} muted />
 		</Readout>
-		<T x={CX} y={160} text="Mass" size={12} muted />
+		<Label anchor="start" x={CX} y={160} text="Mass" size={12} muted />
 		<Readout id="p-mass" order={2} label="Mass" value={massCard}>
-			<T x={CX} y={180} text={massCard} size={massCard.length > 26 ? 12 : 15} weight={600} />
+			<Label
+				anchor="start"
+				x={CX}
+				y={180}
+				text={massCard}
+				size={massCard.length > 26 ? 12 : 15}
+				weight={600}
+			/>
 		</Readout>
-		<T x={CX} y={218} text="Charge · spin" size={12} muted />
+		<Label anchor="start" x={CX} y={218} text="Charge · spin" size={12} muted />
 		<Readout
 			id="p-charge"
 			order={3}
 			label="Charge, spin"
 			value="{thirds(sel.charge3)} e, spin {spinText(sel.spin)}"
 		>
-			<T
+			<Label
+				anchor="start"
 				x={CX}
 				y={238}
 				text="{thirds(sel.charge3)} e · spin {spinText(sel.spin)}"
@@ -349,15 +393,23 @@
 				weight={600}
 			/>
 		</Readout>
-		<T x={CX} y={276} text="Lifetime" size={12} muted />
+		<Label anchor="start" x={CX} y={276} text="Lifetime" size={12} muted />
 		<Readout id="p-life" order={4} label="Lifetime" value={lifeCard}>
-			<T x={CX} y={296} text={lifeCard} size={lifeCard.length > 26 ? 12 : 15} weight={600} />
+			<Label
+				anchor="start"
+				x={CX}
+				y={296}
+				text={lifeCard}
+				size={lifeCard.length > 26 ? 12 : 15}
+				weight={600}
+			/>
 		</Readout>
-		<T x={CX} y={334} text="Feels the forces" size={12} muted />
+		<Label anchor="start" x={CX} y={334} text="Feels the forces" size={12} muted />
 		<Readout id="p-feels">
-			<T x={CX} y={354} text={feelsCard} size={12.5} />
+			<Label anchor="start" x={CX} y={354} text={feelsCard} size={12.5} />
 			{#if sel.carries}
-				<T
+				<Label
+					anchor="start"
 					x={CX}
 					y={376}
 					text="carries the {FORCE_NAME[sel.carries]} force"
@@ -368,10 +420,17 @@
 			{/if}
 		</Readout>
 		<Readout id="p-anti">
-			<T x={CX} y={420} text={antiLines[0]} size={12} muted />
-			{#if antiLines[1]}<T x={CX} y={437} text={antiLines[1]} size={12} muted />{/if}
-			<T x={CX} y={550} text="Tap any particle." size={12} muted />
-			<T x={CX} y={568} text="Data: PDG 2026" size={11} muted />
+			<Label anchor="start" x={CX} y={420} text={antiLines[0]} size={12} muted />
+			{#if antiLines[1]}<Label
+					anchor="start"
+					x={CX}
+					y={437}
+					text={antiLines[1]}
+					size={12}
+					muted
+				/>{/if}
+			<Label anchor="start" x={CX} y={550} text="Tap any particle." size={12} muted />
+			<Label anchor="start" x={CX} y={568} text="Data: PDG 2026" size={11} muted />
 		</Readout>
 	{:else}
 		{#if fsel}
@@ -382,7 +441,8 @@
 				value={FORCE_NAME[fsel.id]}
 				color={forceColour(fsel.id)}
 			>
-				<T
+				<Label
+					anchor="start"
 					x={CX}
 					y={70}
 					text={FORCE_NAME[fsel.id]}
@@ -391,9 +451,10 @@
 					color={forceColour(fsel.id)}
 				/>
 			</Readout>
-			<T x={CX} y={110} text="Carried by" size={12} muted />
+			<Label anchor="start" x={CX} y={110} text="Carried by" size={12} muted />
 			<Readout id="f-carrier" order={2} label="Carried by" value={fsel.carrier}>
-				<T
+				<Label
+					anchor="start"
 					x={CX}
 					y={130}
 					text={fsel.carrier}
@@ -401,23 +462,35 @@
 					weight={600}
 				/>
 			</Readout>
-			<T x={CX} y={168} text="Reach" size={12} muted />
+			<Label anchor="start" x={CX} y={168} text="Reach" size={12} muted />
 			<Readout id="f-reach" order={3} label="Reach" value={fsel.reach}>
-				<T x={CX} y={188} text={fsel.reach} size={13} weight={600} />
+				<Label anchor="start" x={CX} y={188} text={fsel.reach} size={13} weight={600} />
 			</Readout>
-			<T x={CX} y={226} text="Felt by" size={12} muted />
+			<Label anchor="start" x={CX} y={226} text="Felt by" size={12} muted />
 			<Readout id="f-felt" order={4} label="Felt by" value={fsel.felt}>
-				<T x={CX} y={246} text={fsel.felt} size={13} weight={600} />
+				<Label anchor="start" x={CX} y={246} text={fsel.felt} size={13} weight={600} />
 			</Readout>
 			{#if fsel.id === 'gravity'}
 				<Readout id="f-grav">
-					<T x={CX} y={290} text="The Standard Model has no" size={12.5} />
-					<T x={CX} y={307} text="particle for gravity. A graviton" size={12.5} />
-					<T x={CX} y={324} text="is a hypothesis, not part of it." size={12.5} />
+					<Label anchor="start" x={CX} y={290} text="The Standard Model has no" size={12.5} />
+					<Label
+						anchor="start"
+						x={CX}
+						y={307}
+						text="particle for gravity. A graviton"
+						size={12.5}
+					/>
+					<Label
+						anchor="start"
+						x={CX}
+						y={324}
+						text="is a hypothesis, not part of it."
+						size={12.5}
+					/>
 				</Readout>
 			{/if}
 		{:else}
-			<T x={CX} y={62} text="Four forces" size={18} weight={700} />
+			<Label anchor="start" x={CX} y={62} text="Four forces" size={18} weight={700} />
 			{#each FORCES as f, i (f.id)}
 				{@const y = 102 + i * 108}
 				<rect x={CX} y={y - 14} width="5" height="78" rx="2.5" fill={forceColour(f.id)} />
@@ -428,7 +501,8 @@
 					value={f.carrier}
 					color={forceColour(f.id)}
 				>
-					<T
+					<Label
+						anchor="start"
 						x={CX + 16}
 						{y}
 						text={FORCE_NAME[f.id]}
@@ -436,21 +510,24 @@
 						weight={700}
 						color={forceColour(f.id)}
 					/>
-					<T
+					<Label
+						anchor="start"
 						x={CX + 16}
 						y={y + 21}
 						text={f.id === 'gravity' ? 'no carrier in the' : `carrier: ${f.short}`}
 						size={12.5}
 						weight={f.id === 'gravity' ? 700 : 500}
 					/>
-					{#if f.id === 'gravity'}<T
+					{#if f.id === 'gravity'}<Label
+							anchor="start"
 							x={CX + 16}
 							y={y + 38}
 							text="Standard Model"
 							size={12.5}
 							weight={700}
 						/>{/if}
-					<T
+					<Label
+						anchor="start"
 						x={CX + 16}
 						y={y + (f.id === 'gravity' ? 55 : 40)}
 						text="felt by {f.felt}"
@@ -460,8 +537,22 @@
 				</Readout>
 			{/each}
 			<Readout id="f-take">
-				<T x={CX} y={545} text="Three of the four forces come" size={12} weight={600} />
-				<T x={CX} y={562} text="from exchanging particles." size={12} weight={600} />
+				<Label
+					anchor="start"
+					x={CX}
+					y={545}
+					text="Three of the four forces come"
+					size={12}
+					weight={600}
+				/>
+				<Label
+					anchor="start"
+					x={CX}
+					y={562}
+					text="from exchanging particles."
+					size={12}
+					weight={600}
+				/>
 			</Readout>
 		{/if}
 	{/if}

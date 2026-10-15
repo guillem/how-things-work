@@ -11,8 +11,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import T from './T.svelte';
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		EARTH_AGE,
@@ -274,7 +273,7 @@
 					value="{lifeSeconds} s"
 					opacity={phase === 'midnight' ? 1 : 0}
 				>
-					<T
+					<Label
 						x={XB}
 						y={s.y + H + 46}
 						text="a whole 80-year life: the last {lifeSeconds} s"
@@ -305,7 +304,7 @@
 					opacity={0.25 + 0.75 * lit}
 				/>
 				<Readout id="ev-{s.id}-{e.id}">
-					<T
+					<Label
 						{x}
 						y={ly}
 						text={labelOf(s, e)}

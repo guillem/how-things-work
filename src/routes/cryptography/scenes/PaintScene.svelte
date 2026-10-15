@@ -15,11 +15,10 @@
 	 * Colours come from the model's mixing (`paintExchange`, `mixHex`). Secrets are the select
 	 * controls `alicePaint` and `bobPaint`. Reduced motion shows the finished state of the step.
 	 */
-	import { clamp, cycle, lerp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, cycle, Label, lerp, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { PAINTS, mixHex, paintExchange, type PaintId } from '../crypto';
 	import Person from './Person.svelte';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 	const phase = $derived(String(step.hints?.phase ?? 'secrets'));
@@ -101,7 +100,17 @@
 {/snippet}
 
 {#snippet sign(cx: number, cy: number, s: string, opacity = 1)}
-	<Txt x={cx} y={cy + 7} text={s} size={22} weight={600} anchor="middle" muted {opacity} />
+	<Label
+		tabular
+		x={cx}
+		y={cy + 7}
+		text={s}
+		size={22}
+		weight={600}
+		anchor="middle"
+		muted
+		{opacity}
+	/>
 {/snippet}
 
 <g>
@@ -112,7 +121,7 @@
 	{@render swatch(COMMON.x, COMMON.y, col.yellow, 30)}
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="common">
-		<Txt
+		<Label
 			x={COMMON.x}
 			y={COMMON.y - 42}
 			text="common paint: public"
@@ -121,7 +130,7 @@
 			anchor="middle"
 		/>
 		{#snippet narrow()}
-			<Txt x={COMMON.x} y={COMMON.y - 46} text="public" size={26} weight={700} anchor="middle" />
+			<Label x={COMMON.x} y={COMMON.y - 46} text="public" size={26} weight={700} anchor="middle" />
 		{/snippet}
 	</Readout>
 	{#each [OUT, mirror(OUT)] as tx (tx)}
@@ -164,7 +173,7 @@
 		<g opacity={row1Dim}>
 			{@render swatch(X(OUT), R1, col.yellow, R, copyIn)}
 			<Readout id="yellow-{s}">
-				<Txt x={X(OUT)} y={R1 + 46} text="yellow" size={11} anchor="middle" muted />
+				<Label x={X(OUT)} y={R1 + 46} text="yellow" size={11} anchor="middle" muted />
 			</Readout>
 			{@render sign((X(OUT) + X(MID)) / 2, R1, '+', secretOn)}
 			<g opacity={secretOn}>
@@ -178,7 +187,8 @@
 					color={col[s]}
 					opacity={secretOn}
 				>
-					<Txt
+					<Label
+						tabular
 						x={X(MID)}
 						y={R1 + 46}
 						text="{PAINTS[s === 'alice' ? alice : bob].name}: secret"
@@ -187,7 +197,7 @@
 						muted
 					/>
 					{#snippet narrow()}
-						<Txt x={X(MID)} y={R1 + 58} text="secret" size={22} anchor="middle" muted />
+						<Label x={X(MID)} y={R1 + 58} text="secret" size={22} anchor="middle" muted />
 					{/snippet}
 				</Readout>
 			</g>
@@ -195,7 +205,7 @@
 				{@render sign((X(MID) + X(IN)) / 2, R1, '=', mixOn)}
 				{@render swatch(X(IN), R1, s === 'alice' ? col.aliceSends : col.bobSends, R, mixOn)}
 				<Readout id="sent-{s}">
-					<Txt
+					<Label
 						x={X(IN)}
 						y={R1 + 46}
 						text="sent"
@@ -205,7 +215,7 @@
 						opacity={mixOn}
 					/>
 					{#snippet narrow()}
-						<Txt
+						<Label
 							x={X(IN)}
 							y={R1 + 58}
 							text="sent"
@@ -229,12 +239,12 @@
 			{#if arrived}
 				{@render swatch(X(IN), R2, s === 'alice' ? col.bobSends : col.aliceSends)}
 				<Readout id="received-{s}">
-					<Txt x={X(IN)} y={R2 + 46} text="received" size={11} anchor="middle" muted />
+					<Label x={X(IN)} y={R2 + 46} text="received" size={11} anchor="middle" muted />
 				</Readout>
 			{/if}
 			{#if phase === 'final'}
 				<Readout id="add-{s}">
-					<Txt
+					<Label
 						x={X(MID)}
 						y={R2 - 56}
 						text="add the secret to what arrived"
@@ -248,7 +258,8 @@
 				{@render swatch(X(MID), R2, col[s])}
 				{@render lock(X(MID) + 22, R2 - 22)}
 				<Readout id="name2-{s}">
-					<Txt
+					<Label
+						tabular
 						x={X(MID)}
 						y={R2 + 46}
 						text={PAINTS[s === 'alice' ? alice : bob].name}
@@ -278,7 +289,7 @@
 					color="var(--cr-key)"
 					opacity={matchOn}
 				>
-					<Txt
+					<Label
 						x={X(OUT)}
 						y={R2 + 52}
 						text="shared secret"
@@ -289,7 +300,7 @@
 						opacity={matchOn}
 					/>
 					{#snippet narrow()}
-						<Txt
+						<Label
 							x={X(OUT)}
 							y={R2 + 62}
 							text="shared"
@@ -325,7 +336,8 @@
 				stroke-opacity="0.6"
 			/>
 			<Readout id="eve-saw-title">
-				<Txt
+				<Label
+					anchor="start"
 					x={CARD.x + 16}
 					y={CARD.y + 32}
 					text="Eve saw:"
@@ -335,7 +347,8 @@
 					halo={false}
 				/>
 				{#snippet narrow()}
-					<Txt
+					<Label
+						anchor="start"
 						x={CARD.x + 16}
 						y={CARD.y + 36}
 						text="Eve saw"
@@ -360,7 +373,8 @@
 						color="var(--cr-bad)"
 						opacity={eveOn}
 					>
-						<Txt
+						<Label
+							anchor="start"
 							x={CARD.x + 16}
 							y={CARD.y + 80}
 							text="Her best pour:"
@@ -370,7 +384,8 @@
 							halo={false}
 						/>
 						{#snippet narrow()}
-							<Txt
+							<Label
+								anchor="start"
 								x={CARD.x + 16}
 								y={CARD.y + 84}
 								text="her pour"
@@ -382,7 +397,7 @@
 						{/snippet}
 					</Readout>
 					{@render swatch(CARD.x + 140, CARD.y + 75, col.eve, 18)}
-					<Txt
+					<Label
 						x={CARD.x + 177}
 						y={CARD.y + 83}
 						text="≠"
@@ -394,8 +409,24 @@
 					/>
 					{@render swatch(CARD.x + 214, CARD.y + 75, col.aliceShared, 18)}
 					<Readout id="too-much">
-						<Txt x={CARD.x + 242} y={CARD.y + 72} text="too much" size={11} muted halo={false} />
-						<Txt x={CARD.x + 242} y={CARD.y + 86} text="yellow" size={11} muted halo={false} />
+						<Label
+							anchor="start"
+							x={CARD.x + 242}
+							y={CARD.y + 72}
+							text="too much"
+							size={11}
+							muted
+							halo={false}
+						/>
+						<Label
+							anchor="start"
+							x={CARD.x + 242}
+							y={CARD.y + 86}
+							text="yellow"
+							size={11}
+							muted
+							halo={false}
+						/>
 					</Readout>
 				</g>
 			{:else}
@@ -407,7 +438,8 @@
 					note="To find a secret she would have to take the yellow back out. She can’t."
 					color="var(--cr-eve)"
 				>
-					<Txt
+					<Label
+						anchor="start"
 						x={CARD.x + 16}
 						y={CARD.y + 66}
 						text="To find a secret she would have to"
@@ -415,7 +447,8 @@
 						muted
 						halo={false}
 					/>
-					<Txt
+					<Label
+						anchor="start"
 						x={CARD.x + 16}
 						y={CARD.y + 84}
 						text="take the yellow back out. She can’t."
@@ -442,7 +475,7 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<Txt
+			<Label
 				x={480}
 				y={CARD.y + 42}
 				text="Mixing paint is easy."
@@ -451,7 +484,7 @@
 				anchor="middle"
 				halo={false}
 			/>
-			<Txt
+			<Label
 				x={480}
 				y={CARD.y + 72}
 				text="Unmixing it is practically impossible."

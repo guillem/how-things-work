@@ -16,9 +16,8 @@
 	import { cubicInOut } from 'svelte/easing';
 	import type { StageProps } from '#lib/explainer/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { load, angleDeg, cosine, tokens, type Embeddings } from '../embeddings';
-	import Txt from './Txt.svelte';
 	import WordInput from './WordInput.svelte';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
@@ -144,10 +143,19 @@
 </script>
 
 {#snippet sentence(y: number, text: string, list: Chip[], color: string, id: string, n: number)}
-	<Txt x={L} y={y - 10} text="Sentence {n}" size={12} weight={700} {color} />
+	<Label
+		anchor="start"
+		tabular
+		x={L}
+		y={y - 10}
+		text="Sentence {n}"
+		size={12}
+		weight={700}
+		{color}
+	/>
 	{#if fixed}
 		<rect x={L} {y} width={W} height="40" rx="10" fill="var(--surface)" stroke="var(--border)" />
-		<Txt x={L + 12} y={y + 26} {text} size={17} halo={false} />
+		<Label anchor="start" x={L + 12} y={y + 26} {text} size={17} halo={false} />
 	{:else}
 		<WordInput
 			x={L}
@@ -163,7 +171,15 @@
 	{#each list as c, k (k)}
 		<g opacity={0.25 + 0.75 * lit(k)}>
 			{#if c.more}
-				<Txt x={c.x + c.w / 2} y={y + 68.5} text={c.word} size={14} anchor="middle" muted />
+				<Label
+					tabular
+					x={c.x + c.w / 2}
+					y={y + 68.5}
+					text={c.word}
+					size={14}
+					anchor="middle"
+					muted
+				/>
 			{:else}
 				<rect
 					x={c.x}
@@ -176,7 +192,8 @@
 					stroke={c.known ? color : 'var(--stage-line)'}
 					stroke-dasharray={c.known ? undefined : '3 3'}
 				/>
-				<Txt
+				<Label
+					tabular
 					x={c.x + c.w / 2}
 					y={y + 68.5}
 					text={c.word}
@@ -218,12 +235,14 @@
 
 <g>
 	{#if !emb || !sentA || !sentB}
-		<Txt x={480} y={300} text="Loading word vectors…" size={15} anchor="middle" muted />
+		<Label x={480} y={300} text="Loading word vectors…" size={15} anchor="middle" muted />
 	{:else}
 		{@render sentence(40, s1, chipsA, 'var(--emb-a)', 's1', 1)}
 		{@render sentence(150, s2, chipsB, 'var(--emb-b)', 's2', 2)}
 		<Readout id="skipped">
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={L}
 				y={258}
 				text="Crossed out: not among our {emb.size.toLocaleString('en-US')} words, so skipped."
@@ -234,7 +253,8 @@
 
 		<!-- the averages -->
 		<Readout id="avg-title">
-			<Txt
+			<Label
+				anchor="start"
 				x={L}
 				y={rowA.y - rowA.h - 14}
 				text="Average of sentence 1's words"
@@ -242,7 +262,8 @@
 				weight={600}
 				color="var(--emb-a)"
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={L}
 				y={rowB.y - rowB.h - 14}
 				text="Average of sentence 2's words"
@@ -294,7 +315,8 @@
 					<path d={arc} fill="none" stroke="var(--stage-ink)" stroke-width="1.5" />
 				{/if}
 				<circle cx={C.x} cy={C.y} r="3.5" fill="var(--stage-ink)" />
-				<Txt
+				<Label
+					tabular
 					x={ta.x}
 					y={ta.y + 24}
 					text={theta < 4 ? '1 and 2' : '1'}
@@ -303,7 +325,7 @@
 					weight={700}
 					color="var(--emb-a)"
 				/>
-				<Txt
+				<Label
 					x={tb.x + 4}
 					y={tb.y - 10}
 					text="2"
@@ -320,7 +342,9 @@
 					value="θ = {theta.toFixed(0)}°, cos θ = {fmt(cos)}"
 				>
 					{#if theta >= 6}
-						<Txt
+						<Label
+							anchor="start"
+							tabular
 							x={mid.x + 4}
 							y={mid.y + 4}
 							text="θ = {theta.toFixed(0)}°"
@@ -328,7 +352,8 @@
 							weight={700}
 						/>
 					{/if}
-					<Txt
+					<Label
+						tabular
 						x={C.x + R}
 						y={C.y + 66}
 						text="cos θ = {fmt(cos)}"
@@ -336,7 +361,8 @@
 						anchor="end"
 						weight={700}
 					/>
-					<Txt
+					<Label
+						tabular
 						x={C.x + R}
 						y={C.y + 88}
 						text={theta < 1
@@ -350,7 +376,7 @@
 			</g>
 		{:else}
 			<Readout id="nocos" order={3} label="Angle" value="needs a known word in each sentence">
-				<Txt
+				<Label
 					x={C.x}
 					y={C.y}
 					text="Each sentence needs at least"
@@ -358,7 +384,7 @@
 					anchor="middle"
 					color="var(--emb-warn)"
 				/>
-				<Txt
+				<Label
 					x={C.x}
 					y={C.y + 18}
 					text="one word from our list."
@@ -372,7 +398,7 @@
 		<!-- panel: presets (compare) or the point (order) -->
 		{#if !fixed}
 			<Readout id="try">
-				<Txt x={PL} y={52} text="Try these pairs:" size={12} muted />
+				<Label anchor="start" x={PL} y={52} text="Try these pairs:" size={12} muted />
 			</Readout>
 			{#each PRESETS as pr, k (k)}
 				{@const on = pr[0] === s1 && pr[1] === s2}
@@ -396,8 +422,25 @@
 						fill-opacity={on ? 0.16 : 1}
 						stroke={on ? 'var(--explainer-accent, var(--accent))' : 'var(--border)'}
 					/>
-					<Txt x={PL + 10} y={y + 17} text={pr[0]} size={11} halo={false} />
-					<Txt x={PL + 10} y={y + 32} text={pr[1]} size={11} muted halo={false} />
+					<Label
+						anchor="start"
+						tabular
+						x={PL + 10}
+						y={y + 17}
+						text={pr[0]}
+						size={11}
+						halo={false}
+					/>
+					<Label
+						anchor="start"
+						tabular
+						x={PL + 10}
+						y={y + 32}
+						text={pr[1]}
+						size={11}
+						muted
+						halo={false}
+					/>
 				</g>
 			{/each}
 		{:else}
@@ -407,9 +450,23 @@
 				label="Same words"
 				value="different order, identical average"
 			>
-				<Txt x={PL} y={60} text="The same words in a different order:" size={13} weight={600} />
-				<Txt x={PL} y={80} text="the averages are identical, so the" size={12} muted />
-				<Txt x={PL} y={96} text="angle is 0° and cos θ = 1.00." size={12} muted />
+				<Label
+					anchor="start"
+					x={PL}
+					y={60}
+					text="The same words in a different order:"
+					size={13}
+					weight={600}
+				/>
+				<Label
+					anchor="start"
+					x={PL}
+					y={80}
+					text="the averages are identical, so the"
+					size={12}
+					muted
+				/>
+				<Label anchor="start" x={PL} y={96} text="angle is 0° and cos θ = 1.00." size={12} muted />
 			</Readout>
 		{/if}
 	{/if}

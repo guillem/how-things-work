@@ -31,7 +31,7 @@
 	} from '../plane.ts';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import Title from './Title.svelte';
 	import { deg, fmtForce } from './fmt.ts';
 
@@ -222,7 +222,15 @@
 		marker-end="url(#arrowhead)"
 	/>
 	<Readout id="f-{a.k}">
-		<T x={lp.x} y={lp.y} text={a.label} size={13} weight={700} color={a.color} anchor={lp.anchor} />
+		<Label
+			x={lp.x}
+			y={lp.y}
+			text={a.label}
+			size={13}
+			weight={700}
+			color={a.color}
+			anchor={lp.anchor}
+		/>
 	</Readout>
 {/each}
 <circle
@@ -251,7 +259,7 @@
 			stroke="var(--fl-stall)"
 			stroke-width="2"
 		/>
-		<T
+		<Label
 			x={480}
 			y={546}
 			text="STALL: below {stallKt.toFixed(0)} kt the wing can’t lift the plane"
@@ -268,7 +276,7 @@
 	<line x1={GX} y1={G0} x2={GX} y2={G1} stroke="var(--stage-ink-muted)" stroke-width="2" />
 	{#each [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000] as ft (ft)}
 		<line x1={GX - 4} y1={gy(ft)} x2={GX + 4} y2={gy(ft)} stroke="var(--stage-ink-muted)" />
-		<T
+		<Label
 			x={GX - 8}
 			y={gy(ft) + 4}
 			text={ft === 0 ? '0 ft' : `${ft / 1000}k`}
@@ -278,15 +286,16 @@
 		/>
 	{/each}
 	<circle cx={GX} cy={gy(altFt)} r="7" fill="var(--fl-thrust)" />
-	<T
+	<Label
+		anchor="start"
 		x={GX + 12}
 		y={gy(altFt) + 4}
 		text="{((rho / RHO0) * 100).toFixed(0)}%"
 		size={12}
 		weight={650}
 	/>
-	<T x={GX + 34} y={G1 - 30} text="altitude," size={11.5} anchor="end" muted />
-	<T x={GX + 34} y={G1 - 15} text="air density" size={11.5} anchor="end" muted />
+	<Label x={GX + 34} y={G1 - 30} text="altitude," size={11.5} anchor="end" muted />
+	<Label x={GX + 34} y={G1 - 15} text="air density" size={11.5} anchor="end" muted />
 </Readout>
 
 <!-- readouts -->
@@ -402,7 +411,8 @@
 	/>
 {/if}
 <Readout id="scale-cap">
-	<T
+	<Label
+		anchor="start"
 		x={44}
 		y={phase === 'balance' ? 182 : 158}
 		text={phase === 'lift' || phase === 'altitude'
@@ -413,7 +423,8 @@
 	/>
 </Readout>
 <Readout id="angle-cap">
-	<T
+	<Label
+		anchor="start"
 		x={44}
 		y={570}
 		text="the plane is drawn pitched by its angle of attack plus its climb angle"

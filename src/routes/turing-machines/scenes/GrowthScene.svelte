@@ -9,10 +9,9 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { untrack } from 'svelte';
-	import { Axes, clamp, linePath, scale, smoothstep } from '#lib/draw/index.ts';
+	import { Axes, clamp, Label, linePath, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { heldKarpSteps, tourCount } from '../turing';
-	import Txt from './Txt.svelte';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -103,8 +102,16 @@
 			<rect x={X0} y={Y1 - 10} width={(X1 - X0) * draw} height={Y0 - Y1 + 20} />
 		</clipPath>
 	</defs>
-	<Txt x={24} y={42} text="How the work grows with the number of cities" size={18} weight={600} />
-	<Txt
+	<Label
+		anchor="start"
+		x={24}
+		y={42}
+		text="How the work grows with the number of cities"
+		size={18}
+		weight={600}
+	/>
+	<Label
+		anchor="start"
 		x={24}
 		y={68}
 		text="Each grid line is 1,000 times the one below. Times at a billion operations a second."
@@ -130,7 +137,7 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-dasharray="3 5"
 		/>
-		<Txt x={X0 + 6} y={sy(lg(l.v)) - 6} text={l.label} size={11} muted />
+		<Label anchor="start" tabular x={X0 + 6} y={sy(lg(l.v)) - 6} text={l.label} size={11} muted />
 	{/each}
 	<g clip-path="url(#growth-reveal)">
 		{#each paths as p (p.id)}
@@ -162,11 +169,11 @@
 				stroke={s.color}
 				stroke-width="3"
 			/>
-			<Txt x={670} y={116 + i * 24} text={s.label} size={13} />
+			<Label anchor="start" tabular x={670} y={116 + i * 24} text={s.label} size={13} />
 		</Readout>
 	{/each}
 	<Readout id="g-n" order={1} label="Cities" value={String(n)}>
-		<Txt x={636} y={238} text="With {n} cities" size={15} weight={700} />
+		<Label anchor="start" tabular x={636} y={238} text="With {n} cities" size={15} weight={700} />
 	</Readout>
 	<Readout
 		id="g-bf"
@@ -175,7 +182,9 @@
 		value="{sup(fmtCount(tours))} tours: {fmtTime(tours)}"
 		color="var(--tm-loop)"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={636}
 			y={266}
 			text="brute force: {sup(fmtCount(tours))} tours"
@@ -184,7 +193,7 @@
 			weight={600}
 		/>
 		{#each fmtTime(tours).match(/.{1,40}(\s|$)/g) ?? [] as line, i (i)}
-			<Txt x={648} y={288 + i * 20} text={line.trim()} size={13} />
+			<Label anchor="start" tabular x={648} y={288 + i * 20} text={line.trim()} size={13} />
 		{/each}
 	</Readout>
 	<Readout
@@ -194,7 +203,9 @@
 		value="{sup(fmtCount(hk))} operations: {fmtTime(hk)}"
 		color="var(--tm-greedy)"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={636}
 			y={348}
 			text="Held–Karp: {sup(fmtCount(hk))} operations"
@@ -202,7 +213,7 @@
 			color="var(--tm-greedy)"
 			weight={600}
 		/>
-		<Txt x={648} y={370} text={fmtTime(hk)} size={13} />
+		<Label anchor="start" tabular x={648} y={370} text={fmtTime(hk)} size={13} />
 	</Readout>
 	<Readout
 		id="g-sort"
@@ -210,7 +221,9 @@
 		label="n² (for comparison)"
 		value="{fmtCount(n * n)}: {fmtTime(n * n)}"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={636}
 			y={402}
 			text="n²: {fmtCount(n * n)} — {fmtTime(n * n)}"
@@ -220,8 +233,29 @@
 		/>
 	</Readout>
 	<Readout id="g-note">
-		<Txt x={636} y={448} text="A computer 1,000× faster lifts the time lines" size={12} muted />
-		<Txt x={636} y={466} text="by one grid line. Near 20 cities, brute force" size={12} muted />
-		<Txt x={636} y={484} text="then gets only about two more cities." size={12} muted />
+		<Label
+			anchor="start"
+			x={636}
+			y={448}
+			text="A computer 1,000× faster lifts the time lines"
+			size={12}
+			muted
+		/>
+		<Label
+			anchor="start"
+			x={636}
+			y={466}
+			text="by one grid line. Near 20 cities, brute force"
+			size={12}
+			muted
+		/>
+		<Label
+			anchor="start"
+			x={636}
+			y={484}
+			text="then gets only about two more cities."
+			size={12}
+			muted
+		/>
 	</Readout>
 </g>

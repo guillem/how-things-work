@@ -16,8 +16,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import T from './T.svelte';
-	import { cycle, hash, startDrag, toSvg } from '#lib/draw/index.ts';
+	import { cycle, hash, Label, startDrag, toSvg } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		EARTH_AGE,
@@ -446,7 +445,7 @@
 				label="Paris was at"
 				value="{Math.abs(paris.lat).toFixed(0)}° {paris.lat >= 0 ? 'N' : 'S'}"
 			>
-				<T x={paris.x + 7} y={paris.y + 4} text="Paris" size={11} weight={600} anchor="start" />
+				<Label x={paris.x + 7} y={paris.y + 4} text="Paris" size={11} weight={600} anchor="start" />
 			</Readout>
 		{/if}
 		{#if unknownFog}
@@ -459,7 +458,7 @@
 				class="muted">?</text
 			>
 			<Readout id="unknown"
-				><T x={G.cx} y={G.cy + 56} text="positions unknown" size={13} weight={600} /></Readout
+				><Label x={G.cx} y={G.cy + 56} text="positions unknown" size={13} weight={600} /></Readout
 			>
 		{/if}
 		<Readout
@@ -469,7 +468,7 @@
 			value={QUALITY_TEXT[quality]}
 			opacity={phase === 'drift' || phase === 'before' ? 1 : 0}
 		>
-			<T
+			<Label
 				x={G.cx}
 				y={G.cy + G.r + 18}
 				text="Map: {QUALITY_TEXT[quality]}"
@@ -727,7 +726,7 @@
 				<rect x={xa} y={COVER_Y} width={Math.max(0, xb - xa)} height="6" fill="var(--dt-{q})" />
 				{#if labelFits(text, xb - xa, 10)}
 					<Readout id="cover-{q}">
-						<T
+						<Label
 							x={(xa + xb) / 2}
 							y={COVER_Y + 16}
 							{text}
@@ -757,7 +756,7 @@
 				/>
 			{/each}
 			{#if iceBars.length && labelFits('ice', iceBars[0].w + 40, 10.5)}
-				<T
+				<Label
 					x={iceBars[0].x + iceBars[0].w / 2}
 					y={TEMP.y + TEMP.h - 18}
 					text={sp > 2000 ? 'ice ages within this span' : 'Snowball Earth'}
@@ -830,7 +829,7 @@
 							stroke-width="1.4"
 						/>
 						{#if labelFits(e.text, b.w, 9.5)}
-							<T x={b.x + b.w / 2} y={e.y + 10} text={e.text} size={9.5} color="var(--dt-o2)" />
+							<Label x={b.x + b.w / 2} y={e.y + 10} text={e.text} size={9.5} color="var(--dt-o2)" />
 						{/if}
 					{/each}
 				{:else}
@@ -856,7 +855,7 @@
 								? 'disputed'
 								: ''}
 				{#if text && labelFits(text, b.w, 10.5)}
-					<T
+					<Label
 						x={b.x + b.w / 2}
 						y={b.id === 'anoxic' ? b.yTop - 6 : b.id === 'goe' ? O2T.y + 12 : b.yTop - 5}
 						{text}
@@ -894,7 +893,7 @@
 						opacity={r.alive ? 0.95 : 0.55}
 					/>
 					<Readout id="row-{r.g.id}">
-						<T
+						<Label
 							x={r.left ? r.a - 8 : Math.min(r.a + 6, X1 - 4)}
 							y={r.y + 4}
 							text={r.g.id === 'sapiens' && sp > 1000
@@ -917,7 +916,7 @@
 				stroke="var(--stage-bg)"
 			/>
 			<Readout id="human-{m.id}">
-				<T
+				<Label
 					x={right ? m.x + 8 : m.x - 8}
 					y={humanY + 4}
 					text={m.text}
@@ -936,7 +935,7 @@
 					stroke-width="1.4"
 					stroke-dasharray="4 3"
 				/>
-				<T
+				<Label
 					x={l.x}
 					y={TEMP.y - (l.i % 2 ? -10 : 2) + 12}
 					text={l.e.name.replace(', the “Great Dying”', '')}
@@ -985,7 +984,7 @@
 		</g>
 		{#if fSliver.current > 0.01 && xOf(571, sp) > X0 + 260}
 			<Readout id="sliver-cap">
-				<T
+				<Label
 					x={X1}
 					y={LIFE_Y - 6}
 					text="large animals and plants: the last {shareText(571)} →"

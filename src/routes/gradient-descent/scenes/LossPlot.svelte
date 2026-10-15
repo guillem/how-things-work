@@ -5,9 +5,8 @@
 	 * through the top, with a note.
 	 */
 	import { Readout } from '#lib/explainer/index.ts';
-	import { niceMax, scale, ticks } from '#lib/draw/index.ts';
+	import { Label, niceMax, scale, ticks } from '#lib/draw/index.ts';
 	import { LOSS, fmt } from './shared';
-	import Txt from './Txt.svelte';
 
 	interface Series {
 		key: string;
@@ -81,15 +80,29 @@
 	</g>
 	<Readout id="loss-axes">
 		{#each yTicks as v (v)}
-			<Txt x={LOSS.x - 6} y={sy(v) + 4} text={fmt(v)} anchor="end" size={11} muted />
+			<Label x={LOSS.x - 6} y={sy(v) + 4} text={fmt(v)} anchor="end" size={11} muted />
 		{/each}
 		{#each xTicks as v (v)}
-			<Txt x={sx(v)} y={LOSS.y + LOSS.h + 15} text={String(v)} anchor="middle" size={11} muted />
+			<Label x={sx(v)} y={LOSS.y + LOSS.h + 15} text={String(v)} anchor="middle" size={11} muted />
 		{/each}
-		<Txt x={LOSS.x + LOSS.w} y={LOSS.y + LOSS.h + 30} text="step →" anchor="end" size={12} muted />
-		<Txt x={LOSS.x - 52} y={LOSS.y - 10} text="loss after each step" size={12} muted />
+		<Label
+			x={LOSS.x + LOSS.w}
+			y={LOSS.y + LOSS.h + 30}
+			text="step →"
+			anchor="end"
+			size={12}
+			muted
+		/>
+		<Label
+			anchor="start"
+			x={LOSS.x - 52}
+			y={LOSS.y - 10}
+			text="loss after each step"
+			size={12}
+			muted
+		/>
 		{#if anyOver}
-			<Txt
+			<Label
 				x={LOSS.x + LOSS.w - 4}
 				y={LOSS.y + 12}
 				text="↑ off the top"

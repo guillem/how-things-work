@@ -16,11 +16,10 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { C, gamma, lightning, num, toTrain, TRAIN_LENGTH } from '../relativity';
 	import { C_PX } from './shared';
-	import T from './T.svelte';
 	import Train from './Train.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -167,7 +166,7 @@
 	<circle cx={x} cy={y} r={7 + 12 * glow} fill="var(--rel-light)" opacity={0.6 * glow} />
 	<circle cx={x} cy={y} r="7" fill={color} stroke="var(--stage-bg)" stroke-width="2" />
 	<Readout id="who-{rowTop}-{label}">
-		<T {x} y={onDeck ? y + 26 : y + 22} text={label} size={11} anchor="middle" weight={600} />
+		<Label {x} y={onDeck ? y + 26 : y + 22} text={label} size={11} anchor="middle" weight={600} />
 	</Readout>
 {/snippet}
 
@@ -235,7 +234,8 @@
 		<Readout id="key-observer" order={3} label="observer (platform)" color="var(--rel-plat)" />
 		<Readout id="key-passenger" order={4} label="passenger (train)" color="var(--rel-train)" />
 		<Readout id="row-top" order={1} label="Platform frame" marker={1} at={[40, ROWS[0] + 24]}>
-			<T
+			<Label
+				anchor="start"
 				x={24}
 				y={ROWS[0] + 18}
 				text="Platform frame"
@@ -250,7 +250,14 @@
 			label="Clocks of the frame shown"
 			value={topW.current > 0.5 ? `t = ${ns(ct)}` : `t′ = ${ns(ct)}`}
 		>
-			<T x={24} y={ROWS[0] + 36} text="platform clocks: t = {ns(ct)}" size={12} muted />
+			<Label
+				anchor="start"
+				x={24}
+				y={ROWS[0] + 36}
+				text="platform clocks: t = {ns(ct)}"
+				size={12}
+				muted
+			/>
 		</Readout>
 		<Readout
 			id="strikes-top"
@@ -264,14 +271,14 @@
 			)}"
 			opacity={topW.current}
 		>
-			<T
+			<Label
 				x={936}
 				y={ROWS[0] + 18}
 				anchor="end"
 				weight={650}
 				text="strikes: back at t = 0, front at t = 0 — the same moment"
 			/>
-			<T
+			<Label
 				x={936}
 				y={ROWS[0] + 35}
 				anchor="end"
@@ -279,7 +286,7 @@
 				opacity={happened(ev.p.meet) ? 1 : 0.45}
 				text="the flashes meet at the observer at t = {ns(ev.p.meet.ct)}"
 			/>
-			<T
+			<Label
 				x={936}
 				y={ROWS[0] + 51}
 				anchor="end"
@@ -335,7 +342,8 @@
 	<!-- ===================== bottom row: the train frame ===================== -->
 	<g opacity={dimBottom}>
 		<Readout id="row-bottom" order={2} label="Train frame" marker={2} at={[40, ROWS[1] + 24]}>
-			<T
+			<Label
+				anchor="start"
 				x={24}
 				y={ROWS[1] + 18}
 				text="Train frame"
@@ -345,7 +353,14 @@
 			/>
 		</Readout>
 		<Readout id="clock-bottom">
-			<T x={24} y={ROWS[1] + 36} text="train clocks: t′ = {ns(ct)}" size={12} muted />
+			<Label
+				anchor="start"
+				x={24}
+				y={ROWS[1] + 36}
+				text="train clocks: t′ = {ns(ct)}"
+				size={12}
+				muted
+			/>
 		</Readout>
 		<Readout
 			id="strikes-bottom"
@@ -361,7 +376,7 @@
 			)}"
 			opacity={1 - topW.current}
 		>
-			<T
+			<Label
 				x={936}
 				y={ROWS[1] + 18}
 				anchor="end"
@@ -370,7 +385,7 @@
 					? 'strikes: both at t′ = 0 — the same moment'
 					: `strikes: front at t′ = ${ns(ev.t.front.ct)}, back at t′ = ${ns(ev.t.back.ct)} — front first`}
 			/>
-			<T
+			<Label
 				x={936}
 				y={ROWS[1] + 35}
 				anchor="end"
@@ -378,7 +393,7 @@
 				opacity={happened(ev.t.meet) ? 1 : 0.45}
 				text="the flashes meet at the observer at t′ = {ns(ev.t.meet.ct)}"
 			/>
-			<T
+			<Label
 				x={936}
 				y={ROWS[1] + 51}
 				anchor="end"

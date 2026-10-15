@@ -19,11 +19,10 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, cycle, pingpong, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, cycle, Label, pingpong, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { addVelocities, flashHits, gamma, num, tickAtRest } from '../relativity';
 	import { C_PX, duration, edgeFade, wrap, wrapShift } from './shared';
-	import T from './T.svelte';
 	import Train from './Train.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -256,7 +255,7 @@
 			filter="url(#glow)"
 		/>
 		<Readout id="clock-{name}-{top}">
-			<T x={x + 28} y={top + G / 2 + 4} text={name} size={12} muted />
+			<Label anchor="start" x={x + 28} y={top + G / 2 + 4} text={name} size={12} muted />
 		</Readout>
 	</g>
 {/snippet}
@@ -266,7 +265,8 @@
 	{@render deck(ROWS[0], 0)}
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="row-top" order={1} label="Platform frame" marker={1} at={[40, ROWS[0] + 24]}>
-		<T
+		<Label
+			anchor="start"
 			x={24}
 			y={ROWS[0] + 18}
 			text="Platform frame"
@@ -314,7 +314,7 @@
 			opacity={wc}
 		>
 			<g opacity={wc}>
-				<T
+				<Label
 					x={936}
 					y={ROWS[0] + 18}
 					anchor="end"
@@ -322,7 +322,7 @@
 					text="one tick, timed on the platform:"
 					muted
 				/>
-				<T
+				<Label
 					x={936}
 					y={ROWS[0] + 33}
 					anchor="end"
@@ -330,7 +330,7 @@
 					weight={600}
 					text="platform clock {restTick} · train clock {movingTick}"
 				/>
-				<T
+				<Label
 					x={936}
 					y={ROWS[0] + 47}
 					anchor="end"
@@ -360,14 +360,14 @@
 			opacity={wl}
 		>
 			<g opacity={wl}>
-				<T
+				<Label
 					x={936}
 					y={ROWS[0] + 18}
 					anchor="end"
 					text="the flash: c forwards, c backwards"
 					weight={600}
 				/>
-				<T
+				<Label
 					x={936}
 					y={ROWS[0] + 33}
 					anchor="end"
@@ -383,7 +383,15 @@
 	<!-- ===================== bottom row: the train frame ===================== -->
 	{@render deck(ROWS[1], postOffset)}
 	<Readout id="row-bottom" order={2} label="Train frame" marker={2} at={[40, ROWS[1] + 24]}>
-		<T x={24} y={ROWS[1] + 18} text="Train frame" size={15} weight={650} color="var(--rel-train)" />
+		<Label
+			anchor="start"
+			x={24}
+			y={ROWS[1] + 18}
+			text="Train frame"
+			size={15}
+			weight={650}
+			color="var(--rel-train)"
+		/>
 	</Readout>
 
 	{#if wc > 0.01}
@@ -424,7 +432,7 @@
 			opacity={wc}
 		>
 			<g opacity={wc}>
-				<T
+				<Label
 					x={936}
 					y={ROWS[1] + 18}
 					anchor="end"
@@ -432,7 +440,7 @@
 					text="one tick, timed on the train:"
 					muted
 				/>
-				<T
+				<Label
 					x={936}
 					y={ROWS[1] + 33}
 					anchor="end"
@@ -440,7 +448,7 @@
 					weight={600}
 					text="train clock {restTick} · platform clock {movingTick}"
 				/>
-				<T
+				<Label
 					x={936}
 					y={ROWS[1] + 47}
 					anchor="end"
@@ -468,14 +476,14 @@
 			opacity={wl}
 		>
 			<g opacity={wl}>
-				<T
+				<Label
 					x={936}
 					y={ROWS[1] + 18}
 					anchor="end"
 					text="the flash: c forwards, c backwards"
 					weight={600}
 				/>
-				<T x={936} y={ROWS[1] + 33} anchor="end" weight={600} text="the ball: 0.5 c" />
+				<Label x={936} y={ROWS[1] + 33} anchor="end" weight={600} text="the ball: 0.5 c" />
 			</g>
 		</Readout>
 	{/if}
@@ -488,7 +496,8 @@
 		value={beta < 0.005 ? 'at rest' : `${num(beta)} c · γ = ${num(g, 3)}`}
 		note={beta < 0.005 ? 'both frames agree' : undefined}
 	>
-		<T
+		<Label
+			anchor="start"
 			x={232}
 			y={ROWS[0] + 18}
 			size={13}
@@ -528,7 +537,7 @@
 			filter="url(#glow)"
 		/>
 		<Readout id="c-{top}-{p.key}">
-			<T x={p.x - dir * 6} y={y - 9} text="c" size={13} weight={650} anchor="middle" italic />
+			<Label x={p.x - dir * 6} y={y - 9} text="c" size={13} weight={650} anchor="middle" italic />
 		</Readout>
 	{/each}
 	{#each s.hits as h (h.key)}
@@ -538,7 +547,7 @@
 		{@const bo = s.ballDone ? 0 : 1}
 		<circle cx={s.ball} cy={top + RAIL - 22} r="7" fill="var(--rel-strike)" />
 		<Readout id="ball-{top}">
-			<T
+			<Label
 				opacity={bo}
 				x={s.ball}
 				y={top + RAIL - 34}

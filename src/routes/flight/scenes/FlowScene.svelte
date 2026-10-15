@@ -13,7 +13,7 @@
 	import { CHORD, KT, RHO0, dynamicPressure } from '../plane.ts';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import Title from './Title.svelte';
 	import Wing from './Wing.svelte';
 	import { BANDS, POST_STALL, field } from './field.ts';
@@ -113,7 +113,7 @@
 
 	<Readout id="air-in">
 		<Card x={28} y={274} w={86} h={36} />
-		<T x={40} y={290} text="air, {speedKt} kt" size={12} muted />
+		<Label anchor="start" x={40} y={290} text="air, {speedKt} kt" size={12} muted />
 	</Readout>
 	<!-- incoming air -->
 	<line
@@ -138,7 +138,8 @@
 			marker-end="url(#arrowhead)"
 		/>
 		<Readout id="lift-label">
-			<T
+			<Label
+				anchor="start"
 				x={X(quarter[0]) + 10}
 				y={Y(quarter[1]) - liftLen + (liftLen >= 0 ? 12 : -4)}
 				text={stalled ? 'lift (stalled)' : 'lift'}
@@ -161,7 +162,14 @@
 				marker-end="url(#arrowhead)"
 			/>
 			<Readout id="wash-{w.k}">
-				<T x={w.p.x - 30} y={w.p.y + w.dy} text={w.text} size={12.5} weight={650} />
+				<Label
+					anchor="start"
+					x={w.p.x - 30}
+					y={w.p.y + w.dy}
+					text={w.text}
+					size={12.5}
+					weight={650}
+				/>
 			</Readout>
 		{/each}
 	{/if}
@@ -170,7 +178,8 @@
 		<g opacity={pressureStrength}>
 			<Readout id="legend" label="Colours" value="blue: lower pressure · red: higher">
 				<Card x={legendX - 14} y={legendY - 30} w={292} h={70} />
-				<T
+				<Label
+					anchor="start"
 					x={legendX}
 					y={legendY - 10}
 					text="pressure, compared with the air far away"
@@ -196,9 +205,9 @@
 						/>
 					{/if}
 				{/each}
-				<T x={legendX} y={legendY + 28} text="lower" size={12} muted />
-				<T x={legendX + 7 * 24} y={legendY + 28} text="same" size={12} anchor="middle" muted />
-				<T x={legendX + 11 * 24} y={legendY + 28} text="higher" size={12} anchor="end" muted />
+				<Label anchor="start" x={legendX} y={legendY + 28} text="lower" size={12} muted />
+				<Label x={legendX + 7 * 24} y={legendY + 28} text="same" size={12} anchor="middle" muted />
+				<Label x={legendX + 11 * 24} y={legendY + 28} text="higher" size={12} anchor="end" muted />
 			</Readout>
 		</g>
 	{/if}
@@ -280,7 +289,8 @@
 			color="var(--fl-low)"
 		/>
 		<Readout id="cap-p">
-			<T
+			<Label
+				anchor="start"
 				x={44}
 				y={160}
 				text="(below the air far away, at {speedKt} kt; ½ρV² = {fmtPa(q)})"
@@ -323,14 +333,29 @@
 
 	{#if phase === 'transit'}
 		<Readout id="cap-t">
-			<T x={44} y={190} text="lines: parcels released at the same instant" size={12} muted />
-			<T x={44} y={208} text="the top ones never meet their partners again" size={12} muted />
+			<Label
+				anchor="start"
+				x={44}
+				y={190}
+				text="lines: parcels released at the same instant"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={44}
+				y={208}
+				text="the top ones never meet their partners again"
+				size={12}
+				muted
+			/>
 		</Readout>
 	{/if}
 
 	{#if phase === 'shape'}
 		<Readout id="cap-s">
-			<T
+			<Label
+				anchor="start"
 				x={44}
 				y={164}
 				text="{(fld.sec.camber * 100).toFixed(1)}% camber · {(fld.sec.thickness * 100).toFixed(
@@ -344,7 +369,8 @@
 
 	<Readout id="cap-model">
 		<Card x={28} y={552} w={470} h={24} />
-		<T
+		<Label
+			anchor="start"
 			x={40}
 			y={570}
 			text="ideal (inviscid) flow, exact for this shape · air drawn {slowdown} times slower than life"
@@ -354,7 +380,7 @@
 	</Readout>
 	{#if phase === 'pressure' && !stalled}
 		<Readout id="cap-high">
-			<T
+			<Label
 				x={X(le[0]) - 12}
 				y={Y(le[1]) + 34}
 				text="highest: Cₚ = {signed(highest)}"

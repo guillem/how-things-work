@@ -19,10 +19,9 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, easeInOut, lerp, scale, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, easeInOut, Label, lerp, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import HrPlot from './HrPlot.svelte';
-	import Txt from './Txt.svelte';
 	import SkyLabel from './SkyLabel.svelte';
 	import { LOG_T, hrScales, type Box } from './hr';
 	import {
@@ -233,10 +232,10 @@
 
 	<!-- stage and age -->
 	<Readout id="stage" order={1} label="{mass} M☉ star" value="{stageName(tr, now)}, age {ageText}">
-		<Txt x={560} y={40} text={stageName(tr, now)} size={16} weight={700} anchor="start" />
+		<Label x={560} y={40} text={stageName(tr, now)} size={16} weight={700} anchor="start" />
 	</Readout>
 	<Readout id="age">
-		<Txt x={560} y={62} text="age: {ageText}" anchor="start" muted size={12} />
+		<Label x={560} y={62} text="age: {ageText}" anchor="start" muted size={12} />
 	</Readout>
 
 	<!-- the cutaway -->
@@ -302,7 +301,7 @@
 		/>
 	{/if}
 	<Readout id="cut">
-		<Txt x={CX} y={CY + RC + 22} text="inside, drawn by mass" size={11} muted />
+		<Label x={CX} y={CY + RC + 22} text="inside, drawn by mass" size={11} muted />
 	</Readout>
 
 	<!-- key to the cutaway -->
@@ -318,11 +317,11 @@
 	/>
 	<Readout id="k-h">
 		<rect x={kx} y={98} width="12" height="12" rx="3" fill="var(--st-h)" stroke="var(--border)" />
-		<Txt x={kx + 18} y={109} text="hydrogen" anchor="start" size={12} />
+		<Label x={kx + 18} y={109} text="hydrogen" anchor="start" size={12} />
 	</Readout>
 	<Readout id="k-he">
 		<rect x={kx} y={124} width="12" height="12" rx="3" fill="var(--st-he)" stroke="var(--border)" />
-		<Txt x={kx + 18} y={135} text="helium" anchor="start" size={12} />
+		<Label x={kx + 18} y={135} text="helium" anchor="start" size={12} />
 	</Readout>
 	<Readout id="k-co">
 		<rect
@@ -334,7 +333,7 @@
 			fill={now.xNe > 0.1 ? 'var(--st-ne)' : 'var(--st-co)'}
 			stroke="var(--border)"
 		/>
-		<Txt
+		<Label
 			x={kx + 18}
 			y={161}
 			text={now.xNe > 0.1 ? 'O, Ne, Mg' : 'carbon, oxygen'}
@@ -343,7 +342,7 @@
 		/>
 	</Readout>
 	<circle cx={kx + 6} cy={182} r="6" fill="var(--st-burn)" opacity="0.8" />
-	<Txt x={kx + 18} y={186} text="fusing" anchor="start" size={12} />
+	<Label x={kx + 18} y={186} text="fusing" anchor="start" size={12} />
 	<!-- what is burning -->
 	<Readout
 		id="burn"
@@ -357,7 +356,7 @@
 			.filter(Boolean)
 			.join('; ') || 'nothing: it is cooling'}
 	>
-		<Txt
+		<Label
 			x={kx}
 			y={214}
 			text={coreBurn ? `core: ${coreBurn} →` : 'core: no fusion'}
@@ -365,7 +364,7 @@
 			size={12}
 			weight={600}
 		/>
-		<Txt
+		<Label
 			x={kx}
 			y={232}
 			text={coreBurn
@@ -377,7 +376,7 @@
 			size={11}
 			muted
 		/>
-		<Txt
+		<Label
 			x={kx}
 			y={256}
 			text={burn.hShell && burn.heShell
@@ -409,13 +408,13 @@
 		label="Luminosity · surface · radius"
 		value="{round2(now.L)} × Sun · {round2(now.T)} K · {round2(now.R)} × Sun"
 	>
-		<Txt x={568} y={372} text="luminosity: {round2(now.L)} × Sun" anchor="start" size={12} />
+		<Label x={568} y={372} text="luminosity: {round2(now.L)} × Sun" anchor="start" size={12} />
 	</Readout>
 	<Readout id="temp">
-		<Txt x={760} y={372} text="surface: {round2(now.T)} K" anchor="start" size={12} />
+		<Label x={760} y={372} text="surface: {round2(now.T)} K" anchor="start" size={12} />
 	</Readout>
 	<Readout id="radius">
-		<Txt
+		<Label
 			x={568}
 			y={398}
 			text="radius: {round2(now.R)} × Sun{big
@@ -426,7 +425,7 @@
 		/>
 	</Readout>
 	<Readout id="mass">
-		<Txt
+		<Label
 			x={568}
 			y={424}
 			text="mass now: {now.M.toFixed(now.M < 10 ? 2 : 1)} M☉"
@@ -435,11 +434,17 @@
 		/>
 	</Readout>
 	<Readout id="core-t">
-		<Txt x={760} y={424} text="centre: {round2(now.Tc / 1e6)} million K" anchor="start" size={12} />
+		<Label
+			x={760}
+			y={424}
+			text="centre: {round2(now.Tc / 1e6)} million K"
+			anchor="start"
+			size={12}
+		/>
 	</Readout>
 	{#if showEnd > 0.01}
 		<Readout id="end" order={9} label="The end" value={endText} opacity={showEnd}>
-			<Txt
+			<Label
 				x={568}
 				y={448}
 				text={endText}
@@ -467,7 +472,7 @@
 		/>
 		{#if x1 - x0 > 110}
 			<Readout id="seg-{g.key}">
-				<Txt
+				<Label
 					x={(x0 + x1) / 2}
 					y={TL.y + 34}
 					text="{g.name}: {years(tr.age[g.i1] - tr.age[g.i0])}"
@@ -487,12 +492,12 @@
 			stroke="var(--stage-ink)"
 			stroke-width="1.5"
 		/>
-		<Txt x={ux} y={TL.y + 34} text="age of the universe" size={11} />
+		<Label x={ux} y={TL.y + 34} text="age of the universe" size={11} />
 	{/if}
 	{#if late.length}
 		{@const lx = tx(tr.age[late[0].i0])}
 		<Readout id="seg-late">
-			<Txt
+			<Label
 				x={Math.min(lx, TL.x + TL.w) - 4}
 				y={TL.y + 34}
 				text="everything after: {years(tr.age[n] - tr.age[late[0].i0])}"
@@ -503,5 +508,5 @@
 		</Readout>
 	{/if}
 	<path d="M{mark} {TL.y - 2} l-6 -9 h12 z" fill="var(--stage-ink)" />
-	<Txt x={TL.x} y={TL.y - 14} text="life, to scale in years" anchor="start" size={11} muted />
+	<Label x={TL.x} y={TL.y - 14} text="life, to scale in years" anchor="start" size={11} muted />
 </g>

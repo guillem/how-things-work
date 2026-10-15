@@ -25,7 +25,7 @@
 		setup,
 		zeroLine
 	} from './shared';
-	import Txt from './Txt.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -204,8 +204,15 @@
 		rx="2"
 	/>
 	<Readout id="plane-labels">
-		<Txt x={P.x} y={P.y - 12} text="the network's answer over the plane" size={13} weight={600} />
-		<Txt x={P.x + P.size} y={P.y + P.size + 16} text="x₁ →" anchor="end" size={12} muted />
+		<Label
+			anchor="start"
+			x={P.x}
+			y={P.y - 12}
+			text="the network's answer over the plane"
+			size={13}
+			weight={600}
+		/>
+		<Label x={P.x + P.size} y={P.y + P.size + 16} text="x₁ →" anchor="end" size={12} muted />
 		<text
 			class="halo muted"
 			transform="translate({P.x - 10} {P.y}) rotate(-90)"
@@ -247,7 +254,7 @@
 	{#if edges.length <= 2}
 		<Readout id="single-weights">
 			{#each edges as e, i (e.key)}
-				<Txt
+				<Label
 					x={(e.x1 + e.x2) / 2}
 					y={(e.y1 + e.y2) / 2 + (i ? 22 : -12)}
 					text="w{i ? '₂' : '₁'} = {fix(e.w)}"
@@ -257,7 +264,7 @@
 					color={e.color}
 				/>
 			{/each}
-			<Txt
+			<Label
 				x={colX[1]}
 				y={nodeY(1, 0) - S / 2 - 10}
 				text="b = {fix(net.b[0][0])}"
@@ -269,11 +276,11 @@
 	{/if}
 	<Readout id="net-labels">
 		{#each colX as x, l (l)}
-			<Txt {x} y={34} text={heading(l)} anchor="middle" size={12} muted />
+			<Label {x} y={34} text={heading(l)} anchor="middle" size={12} muted />
 		{/each}
-		<Txt x={colX[0] - S / 2 - 8} y={nodeY(0, 0) + 4} text="x₁" anchor="end" size={13} />
-		<Txt x={colX[0] - S / 2 - 8} y={nodeY(0, 1) + 4} text="x₂" anchor="end" size={13} />
-		<Txt
+		<Label x={colX[0] - S / 2 - 8} y={nodeY(0, 0) + 4} text="x₁" anchor="end" size={13} />
+		<Label x={colX[0] - S / 2 - 8} y={nodeY(0, 1) + 4} text="x₂" anchor="end" size={13} />
+		<Label
 			x={colX[colX.length - 1]}
 			y={nodeY(sizes.length - 1, 0) + S / 2 + 18}
 			text="= the plane"
@@ -301,31 +308,39 @@
 		stroke-width="2.2"
 	/>
 	<Readout id="loss-axes">
-		<Txt x={L.x - 6} y={L.y + L.h + 4} text="0" anchor="end" size={11} muted />
-		<Txt x={L.x - 6} y={guessY + 4} text="0.693" anchor="end" size={11} muted />
-		<Txt x={L.x + L.w} y={guessY - 5} text="50/50 guess" anchor="end" size={11} muted />
-		<Txt x={L.x} y={L.y + L.h + 16} text="0" anchor="middle" size={11} muted />
-		<Txt x={L.x + L.w} y={L.y + L.h + 16} text={String(xMax)} anchor="middle" size={11} muted />
-		<Txt x={L.x + L.w / 2} y={L.y + L.h + 30} text="epoch →" anchor="middle" size={12} muted />
-		<Txt x={L.x - 44} y={L.y - 10} text="loss (cross-entropy)" size={12} muted />
+		<Label x={L.x - 6} y={L.y + L.h + 4} text="0" anchor="end" size={11} muted />
+		<Label x={L.x - 6} y={guessY + 4} text="0.693" anchor="end" size={11} muted />
+		<Label x={L.x + L.w} y={guessY - 5} text="50/50 guess" anchor="end" size={11} muted />
+		<Label x={L.x} y={L.y + L.h + 16} text="0" anchor="middle" size={11} muted />
+		<Label x={L.x + L.w} y={L.y + L.h + 16} text={String(xMax)} anchor="middle" size={11} muted />
+		<Label x={L.x + L.w / 2} y={L.y + L.h + 30} text="epoch →" anchor="middle" size={12} muted />
+		<Label anchor="start" x={L.x - 44} y={L.y - 10} text="loss (cross-entropy)" size={12} muted />
 	</Readout>
 
 	<!-- readouts -->
 	<Readout id="epoch" order={1} label="Epoch" value="{k} · loss {fmt(loss)}">
-		<Txt x={448} y={472} text="epoch {k} · loss {fmt(loss)}" size={15} weight={600} />
+		<Label
+			anchor="start"
+			x={448}
+			y={472}
+			text="epoch {k} · loss {fmt(loss)}"
+			size={15}
+			weight={600}
+		/>
 	</Readout>
 	<Readout id="right" order={2} label="Right" value={rightText}>
-		<Txt x={448} y={494} text="right: {rightText}" size={13} />
+		<Label anchor="start" x={448} y={494} text="right: {rightText}" size={13} />
 	</Readout>
 	<Readout id="verdict" order={3} label="So far" value={verdict}>
-		<Txt x={448} y={515} text={verdict} size={13} />
+		<Label anchor="start" x={448} y={515} text={verdict} size={13} />
 	</Readout>
 	<Readout id="arch" order={4} label="Network" value={arch}>
-		<Txt x={448} y={536} text="network {arch}" size={12} muted />
+		<Label anchor="start" x={448} y={536} text="network {arch}" size={12} muted />
 	</Readout>
 	{#if collapsed}
 		<Readout id="collapsed" order={5} label="No activation" value="the layers act as one neuron">
-			<Txt
+			<Label
+				anchor="start"
 				x={448}
 				y={557}
 				text="no activation: the layers act as one neuron"
@@ -362,7 +377,7 @@
 				clip-path="url(#nn-curve-clip)"
 			/>
 			<Readout id="curve">
-				<Txt
+				<Label
 					x={C.x + C.w / 2}
 					y={C.y - 8}
 					text="activation: {ACT_NAMES[s.spec.act]}"
@@ -370,7 +385,7 @@
 					size={12}
 					weight={600}
 				/>
-				<Txt x={C.x + C.w} y={C.y + C.h + 14} text="sum z →" anchor="end" size={11} muted />
+				<Label x={C.x + C.w} y={C.y + C.h + 14} text="sum z →" anchor="end" size={11} muted />
 			</Readout>
 		</g>
 	{/if}

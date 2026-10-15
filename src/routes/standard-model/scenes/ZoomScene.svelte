@@ -7,10 +7,9 @@
 	 * Below: the three particles that everyday matter is made of.
 	 */
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { hash, TAU } from '#lib/draw/index.ts';
+	import { hash, Label, TAU } from '#lib/draw/index.ts';
 	import { protonRadius } from '../particles';
 	import { chargeColour, coil } from './shared';
-	import T from './T.svelte';
 
 	let { t, reduced }: StageProps = $props();
 
@@ -160,13 +159,13 @@
 	<!-- captions -->
 	{#each [{ title: 'Atom', size: 'about 10⁻¹⁰ m', note: 'electrons around a nucleus' }, { title: 'Nucleus', size: '10⁻¹⁵ to 10⁻¹⁴ m', note: 'protons and neutrons' }, { title: 'Proton', size: `radius ${radiusFm} × 10⁻¹⁵ m`, note: 'two up quarks, one down' }, { title: 'Quark, electron', size: 'no size measured', note: 'smaller than 10⁻¹⁸ m' }] as c, i (i)}
 		<Readout id="cap-{i}" order={i + 1} label={c.title} value={c.size} note={c.note}>
-			<T x={PX[i]} y={PY + R + 30} text={c.title} anchor="middle" size={15} weight={700} />
-			<T x={PX[i]} y={PY + R + 50} text={c.size} anchor="middle" size={13} />
-			<T x={PX[i]} y={PY + R + 68} text={c.note} anchor="middle" size={12} muted />
+			<Label x={PX[i]} y={PY + R + 30} text={c.title} anchor="middle" size={15} weight={700} />
+			<Label x={PX[i]} y={PY + R + 50} text={c.size} anchor="middle" size={13} />
+			<Label x={PX[i]} y={PY + R + 68} text={c.note} anchor="middle" size={12} muted />
 		</Readout>
 	{/each}
 	<Readout id="scale">
-		<T
+		<Label
 			x={480}
 			y={60}
 			text="Zooming in (not to scale: each step is a few to 100,000 times smaller)"
@@ -192,7 +191,7 @@
 		label="Everything you touch"
 		value="up quarks, down quarks and electrons"
 	>
-		<T
+		<Label
 			x={480}
 			y={506}
 			text="Everything you have ever touched is made of"
@@ -212,7 +211,7 @@
 			style:fill="var(--sm-ball-ink)">{p.s}</text
 		>
 		<Readout id="ev-{i}">
-			<T x={324 + i * 170} y={545} text={p.name} size={13} />
+			<Label anchor="start" x={324 + i * 170} y={545} text={p.name} size={13} />
 		</Readout>
 	{/each}
 </g>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	/** A label and a value on one line of a readout card, listed under the stage on phones. */
 	import { Readout } from '#lib/explainer/index.ts';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Props {
 		id: string;
@@ -35,7 +35,7 @@
 
 <Readout {id} {order} label={minor ? undefined : label} {value} {note} {color} {opacity}>
 	<g {opacity}>
-		<T {x} {y} text={label} size={12.5} muted />
-		<T x={x + w} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+		<Label anchor="start" {x} {y} text={label} size={12.5} muted />
+		<Label x={x + w} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
 	</g>
 </Readout>

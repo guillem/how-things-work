@@ -4,9 +4,8 @@
 	 * at a time (every 1.2 s; reduced motion: all), alternating above and below
 	 * the axis, each tied to its year. Below, the takeaway in one line.
 	 */
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Tag from './Tag.svelte';
 
 	let { t, reduced }: StageProps = $props();
 	const time = $derived(reduced ? 99 : t);
@@ -43,7 +42,7 @@
 	{#each [1990, 2000, 2010, 2020] as y (y)}
 		<line x1={yx(y)} x2={yx(y)} y1={AX.y - 5} y2={AX.y + 5} stroke="var(--stage-line)" />
 		<Readout id="tick{y}">
-			<Tag x={yx(y)} y={AX.y + 22} text={String(y)} size={11} muted />
+			<Label x={yx(y)} y={AX.y + 22} text={String(y)} size={11} muted />
 		</Readout>
 	{/each}
 
@@ -79,10 +78,10 @@
 			/>
 		</g>
 		<Readout id="ev{e.i}" order={e.i} label="{e.year} · {e.who}" value="{e.a} {e.b}" opacity={o}>
-			<Tag x={e.cx} y={top + 20} text={String(e.year)} size={13} weight={700} opacity={o} />
-			<Tag x={e.cx} y={top + 38} text={e.who} size={11} muted opacity={o} />
-			<Tag x={e.cx} y={top + 58} text={e.a} size={12} opacity={o} />
-			<Tag x={e.cx} y={top + 76} text={e.b} size={12} opacity={o} />
+			<Label x={e.cx} y={top + 20} text={String(e.year)} size={13} weight={700} opacity={o} />
+			<Label x={e.cx} y={top + 38} text={e.who} size={11} muted opacity={o} />
+			<Label x={e.cx} y={top + 58} text={e.a} size={12} opacity={o} />
+			<Label x={e.cx} y={top + 76} text={e.b} size={12} opacity={o} />
 		</Readout>
 	{/each}
 
@@ -93,7 +92,7 @@
 		value="a bacterium keeps a piece of each virus it survives in its DNA, and uses RNA copies of it to find and cut that virus next time"
 		opacity={shown(EVENTS.length)}
 	>
-		<Tag
+		<Label
 			x={480}
 			y={538}
 			text="A bacterium keeps a piece of each virus it survives in its own DNA,"
@@ -101,7 +100,7 @@
 			weight={600}
 			opacity={shown(EVENTS.length)}
 		/>
-		<Tag
+		<Label
 			x={480}
 			y={560}
 			text="and uses RNA copies of it to find and cut that virus the next time."

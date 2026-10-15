@@ -14,10 +14,9 @@
 	 * Everything is a pure function of `t`: one step of M every `P` seconds,
 	 * then a pause on the result, on a loop.
 	 */
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { INCREMENT, run, symbolAt, tapeText } from '../turing';
-	import Txt from './Txt.svelte';
 
 	let { step, t, reduced }: StageProps = $props();
 
@@ -133,19 +132,29 @@
 <g opacity={fadeIn}>
 	<g opacity={dim}>
 		<Readout id="u-title" order={1} label="Universal machine U" value={status}>
-			<Txt
+			<Label
+				anchor="start"
 				x={24}
 				y={42}
 				text="Universal machine U, running M = add one on 1011"
 				size={18}
 				weight={600}
 			/>
-			<Txt x={24} y={68} text={status} size={14} color={done ? 'var(--tm-halt)' : undefined} />
+			<Label
+				anchor="start"
+				tabular
+				x={24}
+				y={68}
+				text={status}
+				size={14}
+				color={done ? 'var(--tm-halt)' : undefined}
+			/>
 		</Readout>
 
 		<!-- region labels -->
 		<Readout id="regions">
-			<Txt
+			<Label
+				anchor="start"
 				x={R0}
 				y={Y - 12}
 				text="M’s description: its rule table, written on the tape"
@@ -153,7 +162,7 @@
 				color="var(--tm-desc)"
 				weight={600}
 			/>
-			<Txt
+			<Label
 				x={stateCX}
 				y={Y - 12}
 				text="M’s state"
@@ -162,7 +171,7 @@
 				weight={600}
 				color="var(--tm-head)"
 			/>
-			<Txt x={CX0 + 3 * CW} y={Y - 12} text="M’s tape" size={12} anchor="middle" weight={600} />
+			<Label x={CX0 + 3 * CW} y={Y - 12} text="M’s tape" size={12} anchor="middle" weight={600} />
 		</Readout>
 
 		<!-- the description: one block per rule -->
@@ -180,7 +189,8 @@
 				stroke="var(--tm-desc)"
 				stroke-width={on ? 2.5 : 1}
 			/>
-			<Txt
+			<Label
+				tabular
 				x={ruleX(i) + RW / 2}
 				y={Y + 22}
 				text="{r.state}, {r.read}"
@@ -190,7 +200,8 @@
 				halo={false}
 				weight={on ? 700 : 500}
 			/>
-			<Txt
+			<Label
+				tabular
 				x={ruleX(i) + RW / 2}
 				y={Y + 40}
 				text="→ {r.rule.write} {r.rule.move} {r.rule.next}"
@@ -213,7 +224,8 @@
 			fill-opacity="0.12"
 			stroke="var(--tm-head)"
 		/>
-		<Txt
+		<Label
+			tabular
 			x={stateCX}
 			y={Y + 33}
 			text={mState}
@@ -237,7 +249,8 @@
 				stroke="var(--tm-cell-edge)"
 			/>
 			{#if cellSym(c) !== '_'}
-				<Txt
+				<Label
+					tabular
 					x={cellX(c)}
 					y={Y + 35}
 					text={cellSym(c)}
@@ -267,7 +280,7 @@
 			d="M{ux - 10} {Y + H + 22} L{ux + 10} {Y + H + 22} L{ux} {Y + H + 6} Z"
 			fill="var(--tm-write)"
 		/>
-		<Txt
+		<Label
 			x={ux}
 			y={Y + H + 40}
 			text="U"
@@ -284,7 +297,8 @@
 				value={carried}
 				opacity={thesis ? 0 : 1}
 			>
-				<Txt
+				<Label
+					tabular
 					x={clamp(ux, 120, 840)}
 					y={Y + H + 62}
 					text={carried}
@@ -305,7 +319,7 @@
 			label="U is doing"
 			value={phase < 4 ? `${phase + 1}. ${PHASES[phase]}` : 'M has halted'}
 		>
-			<Txt x={24} y={310} text="For every step of M, U:" size={14} weight={600} />
+			<Label anchor="start" x={24} y={310} text="For every step of M, U:" size={14} weight={600} />
 		</Readout>
 		{#each PHASES as p, i (i)}
 			{@const on = phase === i}
@@ -316,7 +330,8 @@
 					r="10"
 					fill={on ? 'var(--tm-write)' : 'var(--stage-grid)'}
 				/>
-				<Txt
+				<Label
+					tabular
 					x={36}
 					y={342 + i * 30}
 					text={String(i + 1)}
@@ -326,12 +341,28 @@
 					halo={false}
 					color={on ? 'var(--stage-bg)' : undefined}
 				/>
-				<Txt x={56} y={342 + i * 30} text={p} size={13} weight={on ? 700 : 500} muted={!on} />
+				<Label
+					anchor="start"
+					tabular
+					x={56}
+					y={342 + i * 30}
+					text={p}
+					size={13}
+					weight={on ? 700 : 500}
+					muted={!on}
+				/>
 			</Readout>
 		{/each}
 
 		<!-- M on its own, for comparison -->
-		<Txt x={600} y={310} text="M on its own, after the same steps:" size={14} weight={600} />
+		<Label
+			anchor="start"
+			x={600}
+			y={310}
+			text="M on its own, after the same steps:"
+			size={14}
+			weight={600}
+		/>
 		{#each CELLS as c (c)}
 			{@const f = done ? rec.final : u > PH.write ? next : frame}
 			{@const sym = symbolAt(f, c, '_')}
@@ -345,7 +376,8 @@
 				stroke="var(--tm-cell-edge)"
 			/>
 			{#if sym !== '_'}
-				<Txt
+				<Label
+					tabular
 					x={620 + (c + 1) * 44}
 					y={357}
 					text={sym}
@@ -375,7 +407,9 @@
 			label="M on its own"
 			value={tapeText(done ? rec.final : u > PH.write ? next : frame, '_')}
 		>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={600}
 				y={396}
 				text="state {done
@@ -388,14 +422,16 @@
 			/>
 		</Readout>
 		<Readout id="u-note">
-			<Txt
+			<Label
+				anchor="start"
 				x={24}
 				y={500}
 				text="One fixed machine U; change the description on its tape and it becomes any other machine."
 				size={14}
 				weight={600}
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={24}
 				y={524}
 				text="A sketch: a real U marks cells as it goes and takes many of its own steps for each of M’s."
@@ -404,7 +440,7 @@
 			/>
 		</Readout>
 	{:else}
-		<Txt
+		<Label
 			x={480}
 			y={330}
 			text="Each can simulate every other: they compute exactly the same functions"
@@ -424,7 +460,8 @@
 					fill="var(--surface)"
 					stroke="var(--border)"
 				/>
-				<Txt
+				<Label
+					tabular
 					x={x + 85}
 					y={392}
 					text={md.name}
@@ -433,10 +470,19 @@
 					weight={600}
 					halo={false}
 				/>
-				<Txt x={x + 85} y={414} text={md.who} size={12} anchor="middle" muted halo={false} />
+				<Label
+					tabular
+					x={x + 85}
+					y={414}
+					text={md.who}
+					size={12}
+					anchor="middle"
+					muted
+					halo={false}
+				/>
 			</Readout>
 			{#if i < MODELS.length - 1}
-				<Txt
+				<Label
 					x={x + 178}
 					y={403}
 					text="⇔"
@@ -459,7 +505,7 @@
 			label="Church–Turing thesis"
 			value="whatever any step-by-step method can compute, a Turing machine can"
 		>
-			<Txt
+			<Label
 				x={480}
 				y={488}
 				text="Church–Turing thesis: whatever any step-by-step method can compute, a Turing machine can."
@@ -468,7 +514,7 @@
 				weight={600}
 				color="var(--tm-head)"
 			/>
-			<Txt
+			<Label
 				x={480}
 				y={512}
 				text="(with unlimited time and memory; it says nothing about speed)"

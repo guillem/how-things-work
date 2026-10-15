@@ -18,7 +18,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, smoothstep, type Point } from '#lib/draw/index.ts';
+	import { clamp, Label, type Point, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		C,
@@ -33,7 +33,6 @@
 		type Event
 	} from '../relativity';
 	import EventHandle from './EventHandle.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -207,14 +206,14 @@
 			stroke-width="1.5"
 		/>
 		<Readout id="xt-{v}">
-			<T x={P(v, 0).x} y={P(v, 0).y + 18} text={String(v)} size={10} anchor="middle" muted />
+			<Label x={P(v, 0).x} y={P(v, 0).y + 18} text={String(v)} size={10} anchor="middle" muted />
 		</Readout>
 		<Readout id="yt-{v}">
-			<T x={P(0, v).x - 8} y={P(0, v).y + 4} text={String(v)} size={10} anchor="end" muted />
+			<Label x={P(0, v).x - 8} y={P(0, v).y + 4} text={String(v)} size={10} anchor="end" muted />
 		</Readout>
 	{/each}
 	<Readout id="x-caption">
-		<T
+		<Label
 			x={P(R, 0).x - 4}
 			y={P(R, 0).y - 8}
 			text="x (m)"
@@ -225,7 +224,7 @@
 		/>
 	</Readout>
 	<Readout id="ct-caption">
-		<T
+		<Label
 			x={P(0, R).x - 8}
 			y={P(0, R).y + 16}
 			text="c·t (m)"
@@ -263,7 +262,15 @@
 		{/if}
 	</g>
 	<Readout id="light-label">
-		<T x={BOX.x + 8} y={BOX.y + 60} text="light" size={12} color="var(--rel-light)" weight={650} />
+		<Label
+			anchor="start"
+			x={BOX.x + 8}
+			y={BOX.y + 60}
+			text="light"
+			size={12}
+			color="var(--rel-light)"
+			weight={650}
+		/>
 	</Readout>
 
 	<!-- ============ the train: its world-strip and its axes ============ -->
@@ -305,7 +312,8 @@
 	{#if R / g > 30}
 		{@const tl = P(...xy(fromTrain(R / g - 10, 0)))}
 		{@const xl = P(...xy(fromTrain(0, R / g - 10)))}
-		<T
+		<Label
+			anchor="start"
 			x={tl.x + 10}
 			y={Math.max(tl.y + 6, BOX.y + 14)}
 			text="c·t′"
@@ -313,7 +321,7 @@
 			color="var(--rel-train)"
 			weight={650}
 		/>
-		<T
+		<Label
 			x={Math.min(xl.x, BOX.x + BOX.w - 6)}
 			y={xl.y + 20}
 			text="x′"
@@ -447,10 +455,10 @@
 				/>
 			{/each}
 			<Readout id="back-strike">
-				<T x={A.x - 6} y={A.y + 34} text="back strike" size={11} anchor="end" weight={600} />
+				<Label x={A.x - 6} y={A.y + 34} text="back strike" size={11} anchor="end" weight={600} />
 			</Readout>
 			<Readout id="front-strike">
-				<T x={B.x + 6} y={B.y + 34} text="front strike" size={11} weight={600} />
+				<Label anchor="start" x={B.x + 6} y={B.y + 34} text="front strike" size={11} weight={600} />
 			</Readout>
 		</g>
 	{/if}
@@ -470,14 +478,15 @@
 					stroke-width="2"
 				/>
 				<Readout id="tick-{c.n}">
-					<T
+					<Label
+						anchor="start"
 						x={p.x + 10}
 						y={p.y + 4}
 						text="tick {num(c.n)}: c·t′ = {num(c.n * 100)} m"
 						size={11}
 						weight={600}
 					/>
-					<T
+					<Label
 						x={P(0, c.e.ct).x - 8}
 						y={P(0, c.e.ct).y - 6}
 						text={m(c.e.ct)}
@@ -496,7 +505,7 @@
 				stroke-linecap="round"
 			/>
 			<Readout id="platform-length">
-				<T
+				<Label
 					x={P(0, 0).x}
 					y={P(0, 0).y + 54}
 					text="platform: {m(2 * half)}"
@@ -518,7 +527,7 @@
 			</g>
 			{#if Math.abs(ruler.b.x) < R && ruler.b.ct < R}
 				<Readout id="train-length">
-					<T
+					<Label
 						x={P(ruler.b.x, ruler.b.ct).x + 4}
 						y={P(ruler.b.x, ruler.b.ct).y - 12}
 						text="train: 200 m"
@@ -555,7 +564,7 @@
 				stroke-width="2"
 			/>
 			<Readout id="event-label">
-				<T x={E.x + 12} y={E.y - 10} text="event" size={12} weight={650} />
+				<Label anchor="start" x={E.x + 12} y={E.y - 10} text="event" size={12} weight={650} />
 			</Readout>
 			{#if w.interval > 0.5}
 				<EventHandle
@@ -575,7 +584,14 @@
 	<!-- ============ the panel ============ -->
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="speed" order={1} label="Train speed" value="{num(beta)} c · γ = {num(g, 3)}">
-		<T x={PX} y={44} text="Train at {num(beta)} c · γ = {num(g, 3)}" size={15} weight={650} />
+		<Label
+			anchor="start"
+			x={PX}
+			y={44}
+			text="Train at {num(beta)} c · γ = {num(g, 3)}"
+			size={15}
+			weight={650}
+		/>
 	</Readout>
 	{#if w.axes > 0.01}
 		<g opacity={w.axes}>
@@ -588,7 +604,8 @@
 				color="var(--rel-plat)"
 				opacity={w.axes}
 			>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={80}
 					text="platform: x across, c·t up"
@@ -596,7 +613,8 @@
 					color="var(--rel-plat)"
 					weight={650}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={100}
 					text="the observer stays at x = 0: her worldline is the c·t axis"
@@ -613,7 +631,8 @@
 				color="var(--rel-train)"
 				opacity={w.axes}
 			>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={132}
 					text="train: x′ and c·t′ tilted by {num(angle, 0)}°"
@@ -621,14 +640,22 @@
 					color="var(--rel-train)"
 					weight={650}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={152}
 					text="c·t′ is the passenger's worldline; the shaded strip"
 					size={12}
 					muted
 				/>
-				<T x={PX} y={168} text="is the whole 200 m train moving through time" size={12} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={168}
+					text="is the whole 200 m train moving through time"
+					size={12}
+					muted
+				/>
 			</Readout>
 			<Readout
 				id="axes-light"
@@ -639,7 +666,8 @@
 				color="var(--rel-light)"
 				opacity={w.axes}
 			>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={200}
 					text="light: always at 45°, in every frame"
@@ -649,11 +677,40 @@
 				/>
 			</Readout>
 			<Readout id="axes-notes">
-				<T x={PX} y={232} text="the dashed line is the platform's “now”; dots:" size={12} muted />
-				<T x={PX} y={248} text="where the observer, the train and a flash are" size={12} muted />
-				<T x={PX} y={280} text="dotted curves: (c·t)² − x² = ±100², ±200²" size={12} muted />
-				<T x={PX} y={296} text="they mark 100 m and 200 m on the train's axes" size={12} muted />
-				<T
+				<Label
+					anchor="start"
+					x={PX}
+					y={232}
+					text="the dashed line is the platform's “now”; dots:"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={248}
+					text="where the observer, the train and a flash are"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={280}
+					text="dotted curves: (c·t)² − x² = ±100², ±200²"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={296}
+					text="they mark 100 m and 200 m on the train's axes"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
 					x={PX}
 					y={328}
 					text="1 m of c·t: the time light takes to go 1 m, 3.34 ns"
@@ -673,7 +730,8 @@
 				note="simultaneous"
 				opacity={w.now}
 			>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={80}
 					text="On the platform (along the x axis):"
@@ -681,7 +739,13 @@
 					color="var(--rel-plat)"
 					weight={650}
 				/>
-				<T x={PX + 12} y={100} text="both strikes at t = 0: simultaneous" size={13} />
+				<Label
+					anchor="start"
+					x={PX + 12}
+					y={100}
+					text="both strikes at t = 0: simultaneous"
+					size={13}
+				/>
 			</Readout>
 			<Readout
 				id="now-train"
@@ -693,7 +757,8 @@
 				note="front strike at t′ = {ns(strikeT.front.ct)}, back at t′ = {ns(strikeT.back.ct)}"
 				opacity={w.now}
 			>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={136}
 					text="On the train (along the dashed slices):"
@@ -701,9 +766,22 @@
 					color="var(--rel-train)"
 					weight={650}
 				/>
-				<T x={PX + 12} y={156} text="front strike at t′ = {ns(strikeT.front.ct)}" size={13} />
-				<T x={PX + 12} y={174} text="back strike at t′ = {ns(strikeT.back.ct)}" size={13} />
-				<T
+				<Label
+					anchor="start"
+					x={PX + 12}
+					y={156}
+					text="front strike at t′ = {ns(strikeT.front.ct)}"
+					size={13}
+				/>
+				<Label
+					anchor="start"
+					x={PX + 12}
+					y={174}
+					text="back strike at t′ = {ns(strikeT.back.ct)}"
+					size={13}
+				/>
+				<Label
+					anchor="start"
 					x={PX + 12}
 					y={196}
 					text={beta < 0.005
@@ -714,11 +792,46 @@
 				/>
 			</Readout>
 			<Readout id="now-notes">
-				<T x={PX} y={236} text="The solid pink line is the train's “now”," size={12} muted />
-				<T x={PX} y={252} text="moving up: it reaches the front strike first." size={12} muted />
-				<T x={PX} y={284} text="The flashes (amber) meet on the observer's" size={12} muted />
-				<T x={PX} y={300} text="worldline, and cross the passenger's (c·t′)" size={12} muted />
-				<T x={PX} y={316} text="front flash first: events every frame agrees on." size={12} muted />
+				<Label
+					anchor="start"
+					x={PX}
+					y={236}
+					text="The solid pink line is the train's “now”,"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={252}
+					text="moving up: it reaches the front strike first."
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={284}
+					text="The flashes (amber) meet on the observer's"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={300}
+					text="worldline, and cross the passenger's (c·t′)"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
+					x={PX}
+					y={316}
+					text="front flash first: events every frame agrees on."
+					size={12}
+					muted
+				/>
 			</Readout>
 		</g>
 	{/if}
@@ -733,9 +846,24 @@
 				color="var(--rel-plat)"
 				opacity={w.interval}
 			>
-				<T x={PX} y={84} text="Platform" size={13} color="var(--rel-plat)" weight={650} />
-				<T x={PX + 12} y={104} text="c·t = {m(ev.ct)}, x = {m(ev.x)}" size={13} />
-				<T
+				<Label
+					anchor="start"
+					x={PX}
+					y={84}
+					text="Platform"
+					size={13}
+					color="var(--rel-plat)"
+					weight={650}
+				/>
+				<Label
+					anchor="start"
+					x={PX + 12}
+					y={104}
+					text="c·t = {m(ev.ct)}, x = {m(ev.x)}"
+					size={13}
+				/>
+				<Label
+					anchor="start"
 					x={PX + 12}
 					y={124}
 					text="s² = {sq(ev.ct)} − {sq(ev.x)} = {num(s2, 0)} m²"
@@ -752,9 +880,24 @@
 				color="var(--rel-train)"
 				opacity={w.interval}
 			>
-				<T x={PX} y={160} text="Train" size={13} color="var(--rel-train)" weight={650} />
-				<T x={PX + 12} y={180} text="c·t′ = {m(evT.ct)}, x′ = {m(evT.x)}" size={13} />
-				<T
+				<Label
+					anchor="start"
+					x={PX}
+					y={160}
+					text="Train"
+					size={13}
+					color="var(--rel-train)"
+					weight={650}
+				/>
+				<Label
+					anchor="start"
+					x={PX + 12}
+					y={180}
+					text="c·t′ = {m(evT.ct)}, x′ = {m(evT.x)}"
+					size={13}
+				/>
+				<Label
+					anchor="start"
 					x={PX + 12}
 					y={200}
 					text="s² = {sq(evT.ct)} − {sq(evT.x)} = {num(interval(evT), 0)} m²"
@@ -770,7 +913,8 @@
 				note={kindNote}
 				opacity={w.interval}
 			>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={240}
 					text={atOrigin
@@ -784,7 +928,8 @@
 					color="var(--rel-strike)"
 					weight={650}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={258}
 					text={atOrigin
@@ -798,7 +943,8 @@
 					color="var(--rel-strike)"
 					weight={650}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={276}
 					text={kind === 'timelike'
@@ -812,15 +958,24 @@
 				/>
 			</Readout>
 			<Readout id="ev-notes">
-				<T
+				<Label
+					anchor="start"
 					x={PX}
 					y={312}
 					text="Drag the event (or Tab to it and use the arrows)."
 					size={12}
 					muted
 				/>
-				<T x={PX} y={328} text="Its train coordinates change with the speed;" size={12} muted />
-				<T
+				<Label
+					anchor="start"
+					x={PX}
+					y={328}
+					text="Its train coordinates change with the speed;"
+					size={12}
+					muted
+				/>
+				<Label
+					anchor="start"
 					x={PX}
 					y={344}
 					text="it stays on its hyperbola, and s² stays the same."
@@ -841,9 +996,24 @@
 				color="var(--rel-train)"
 				opacity={w.all}
 			>
-				<T x={PX} y={80} text="Time" size={13} color="var(--rel-train)" weight={650} />
-				<T x={PX + 12} y={100} text="the passenger's clock ticks every 100 m of c·t′;" size={12} />
-				<T
+				<Label
+					anchor="start"
+					x={PX}
+					y={80}
+					text="Time"
+					size={13}
+					color="var(--rel-train)"
+					weight={650}
+				/>
+				<Label
+					anchor="start"
+					x={PX + 12}
+					y={100}
+					text="the passenger's clock ticks every 100 m of c·t′;"
+					size={12}
+				/>
+				<Label
+					anchor="start"
 					x={PX + 12}
 					y={116}
 					text="on the platform's clocks: every {m(100 * g)} (γ × 100 m)"
@@ -859,9 +1029,29 @@
 				color="var(--rel-plat)"
 				opacity={w.all}
 			>
-				<T x={PX} y={148} text="Length" size={13} color="var(--rel-plat)" weight={650} />
-				<T x={PX + 12} y={168} text="along the platform's now (x axis): {m(2 * half)}" size={12} />
-				<T x={PX + 12} y={184} text="along the train's now (x′ axis): 200 m" size={12} />
+				<Label
+					anchor="start"
+					x={PX}
+					y={148}
+					text="Length"
+					size={13}
+					color="var(--rel-plat)"
+					weight={650}
+				/>
+				<Label
+					anchor="start"
+					x={PX + 12}
+					y={168}
+					text="along the platform's now (x axis): {m(2 * half)}"
+					size={12}
+				/>
+				<Label
+					anchor="start"
+					x={PX + 12}
+					y={184}
+					text="along the train's now (x′ axis): 200 m"
+					size={12}
+				/>
 			</Readout>
 			<Readout
 				id="all-now"
@@ -874,8 +1064,17 @@
 				color="var(--rel-strike)"
 				opacity={w.all}
 			>
-				<T x={PX} y={216} text="Simultaneity" size={13} color="var(--rel-strike)" weight={650} />
-				<T
+				<Label
+					anchor="start"
+					x={PX}
+					y={216}
+					text="Simultaneity"
+					size={13}
+					color="var(--rel-strike)"
+					weight={650}
+				/>
+				<Label
+					anchor="start"
 					x={PX + 12}
 					y={236}
 					text={beta < 0.005
@@ -883,7 +1082,8 @@
 						: "the strikes lie on the platform's now,"}
 					size={12}
 				/>
-				<T
+				<Label
+					anchor="start"
 					x={PX + 12}
 					y={252}
 					text={beta < 0.005
@@ -892,11 +1092,18 @@
 					size={12}
 				/>
 				{#if beta >= 0.005}
-					<T x={PX + 12} y={268} text="“now”." size={12} />
+					<Label anchor="start" x={PX + 12} y={268} text="“now”." size={12} />
 				{/if}
 			</Readout>
 			<Readout id="all-cause">
-				<T x={PX} y={296} text="One cause: the same c for everyone." size={14} weight={650} />
+				<Label
+					anchor="start"
+					x={PX}
+					y={296}
+					text="One cause: the same c for everyone."
+					size={14}
+					weight={650}
+				/>
 			</Readout>
 		</g>
 	{/if}

@@ -4,10 +4,9 @@
 	 * PDB against the grey dots of UniProt's sequences, at the real ratio (about 575 to 1).
 	 * The dots are one path, so the picture stays a handful of SVG nodes.
 	 */
-	import { smoothstep } from '#lib/draw/index.ts';
+	import { Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { PDB_ENTRIES, UNIPROT_SEQUENCES } from '../folding';
-	import Label from './Text.svelte';
 
 	let { t, reduced }: StageProps = $props();
 

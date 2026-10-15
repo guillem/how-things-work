@@ -14,9 +14,8 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Handle, clamp, type Point } from '#lib/draw/index.ts';
+	import { clamp, Handle, Label, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import T from './T.svelte';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -230,7 +229,7 @@
 				stroke-linecap="round"
 			/>
 			<Readout id="ax-across">
-				<T
+				<Label
 					x={(across.a.x + across.b.x) / 2}
 					y={across.a.y + 24}
 					text="axis {axisNo('across')}: columns · {nC}"
@@ -254,7 +253,7 @@
 			/>
 			<Readout id="ax-down">
 				<g transform="rotate(-90 {down.a.x - 12} {(down.a.y + down.b.y) / 2})">
-					<T
+					<Label
 						x={down.a.x - 12}
 						y={(down.a.y + down.b.y) / 2}
 						text="axis {axisNo('down')}: rows · {nR}"
@@ -278,7 +277,8 @@
 				stroke-linecap="round"
 			/>
 			<Readout id="ax-deep">
-				<T
+				<Label
+					anchor="start"
 					x={(deep.a.x + deep.b.x) / 2 + 14}
 					y={(deep.a.y + deep.b.y) / 2 + 20}
 					text="axis 0: layers · {nL}"
@@ -341,7 +341,7 @@
 		value={axes === 0 ? '()' : `(${axisList.map((a) => a.n).join(', ')}${axes === 1 ? ',' : ''})`}
 		note="{kind}: {axes} ax{axes === 1 ? 'is' : 'es'}"
 	>
-		<T x={PX} y={90} text={kind} size={15} muted />
+		<Label anchor="start" x={PX} y={90} text={kind} size={15} muted />
 		<text x={PX} y={136} class="halo" style:font-size="34px" font-weight="700"
 			>(<!--
 			-->{#each axisList as a, i (a.dir)}<tspan style:fill={a.color}>{a.n}</tspan
@@ -350,7 +350,13 @@
 				>{/if}<!--
 			-->)</text
 		>
-		<T x={PX} y={166} text="shape: {axes} ax{axes === 1 ? 'is' : 'es'}" size={14} />
+		<Label
+			anchor="start"
+			x={PX}
+			y={166}
+			text="shape: {axes} ax{axes === 1 ? 'is' : 'es'}"
+			size={14}
+		/>
 	</Readout>
 	<Readout
 		id="count"
@@ -358,7 +364,8 @@
 		label="Numbers"
 		value={axes <= 1 ? String(total) : `${axisList.map((a) => a.n).join(' × ')} = ${total}`}
 	>
-		<T
+		<Label
+			anchor="start"
 			x={PX}
 			y={222}
 			text={axes === 0
@@ -379,10 +386,10 @@
 			? 'no index needed'
 			: `${axes} ind${axes === 1 ? 'ex' : 'ices'}: ${axisList.map((a) => a.name.replace(/s$/, '')).join(', ')}`}
 	>
-		<T x={PX} y={290} text="To pick one number:" size={14} muted />
+		<Label anchor="start" x={PX} y={290} text="To pick one number:" size={14} muted />
 		{#if axes === 0}
-			<T x={PX} y={326} text="s = {curValue}" size={26} weight={700} />
-			<T x={PX} y={354} text="no index needed" size={14} muted />
+			<Label anchor="start" x={PX} y={326} text="s = {curValue}" size={26} weight={700} />
+			<Label anchor="start" x={PX} y={354} text="no index needed" size={14} muted />
 		{:else}
 			<text x={PX} y={326} class="halo" style:font-size="26px" font-weight="700"
 				>{letter}[<!--
@@ -390,7 +397,8 @@
 					>{#if i < axisList.length - 1}<tspan>,&nbsp;</tspan>{/if}{/each}<!--
 				-->] = {curValue}</text
 			>
-			<T
+			<Label
+				anchor="start"
 				x={PX}
 				y={354}
 				text="{axes} ind{axes === 1 ? 'ex' : 'ices'}: {axisList
@@ -399,13 +407,27 @@
 				size={14}
 				muted
 			/>
-			<T x={PX} y={378} text="counted from 0" size={13} muted />
+			<Label anchor="start" x={PX} y={378} text="counted from 0" size={13} muted />
 		{/if}
 	</Readout>
 	{#if onBlock}
 		<Readout id="hint">
-			<T x={PX} y={470} text="Drag the round handles at the ends" size={13} muted />
-			<T x={PX} y={490} text="of the axes, or use the sliders." size={13} muted />
+			<Label
+				anchor="start"
+				x={PX}
+				y={470}
+				text="Drag the round handles at the ends"
+				size={13}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={PX}
+				y={490}
+				text="of the axes, or use the sliders."
+				size={13}
+				muted
+			/>
 		</Readout>
 	{/if}
 </g>

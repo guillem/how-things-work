@@ -14,12 +14,11 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { scale, smoothstep } from '#lib/draw/index.ts';
+	import { Label, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { X0, X1, integral, rectangles, riemann, type Rule } from '../calculus';
 	import Frame from './Frame.svelte';
 	import KnotHandles from './KnotHandles.svelte';
-	import Txt from './Txt.svelte';
 	import {
 		F_RANGE,
 		LEFT,
@@ -169,7 +168,8 @@
 
 	<!-- <Readout>: on narrow screens these are hidden or listed as HTML under the stage -->
 	<Readout id="formula" order={1} label="Curve" value={curve.formula} color="var(--calc-curve)">
-		<Txt
+		<Label
+			anchor="start"
 			x={LEFT + 44}
 			y={28}
 			text={curve.formula}
@@ -253,7 +253,7 @@
 				stroke-dasharray="6 5"
 			/>
 			<Readout id="exact-label">
-				<Txt
+				<Label
 					x={RIGHT - 4}
 					y={exactLabelY}
 					text="exact area {num(exact)}"
@@ -278,7 +278,7 @@
 				stroke-width="2"
 			/>
 			<Readout id="n-pill">
-				<Txt
+				<Label
 					x={nDot.x + (nLabelRight ? 14 : -14)}
 					y={nLabelY}
 					text="n = {n}: {num(total)}"
@@ -311,9 +311,23 @@
 				note="each {num((X1 - X0) / n, 3)} wide, {ruleText}"
 				opacity={fr}
 			>
-				<Txt x={PANEL} y={84} text="n = {n} rectangle{n === 1 ? '' : 's'}" size={15} weight={600} />
-				<Txt x={PANEL} y={108} text="each {num((X1 - X0) / n, 3)} wide" size={13} muted />
-				<Txt x={PANEL} y={128} text={ruleText} size={13} muted />
+				<Label
+					anchor="start"
+					x={PANEL}
+					y={84}
+					text="n = {n} rectangle{n === 1 ? '' : 's'}"
+					size={15}
+					weight={600}
+				/>
+				<Label
+					anchor="start"
+					x={PANEL}
+					y={108}
+					text="each {num((X1 - X0) / n, 3)} wide"
+					size={13}
+					muted
+				/>
+				<Label anchor="start" x={PANEL} y={128} text={ruleText} size={13} muted />
 			</Readout>
 			<Readout
 				id="total"
@@ -323,8 +337,16 @@
 				color="var(--calc-area)"
 				opacity={fr}
 			>
-				<Txt x={PANEL} y={168} text="total of the rectangles" size={12} muted />
-				<Txt x={PANEL} y={198} text={num(total)} size={26} weight={700} color="var(--calc-area)" />
+				<Label anchor="start" x={PANEL} y={168} text="total of the rectangles" size={12} muted />
+				<Label
+					anchor="start"
+					x={PANEL}
+					y={198}
+					text={num(total)}
+					size={26}
+					weight={700}
+					color="var(--calc-area)"
+				/>
 			</Readout>
 			{#if phase === 'converge'}
 				<Readout
@@ -335,10 +357,17 @@
 					note={shrink !== null ? `${errText}; double n: error ÷ ${num(shrink, 1)}` : errText}
 					opacity={fr}
 				>
-					<Txt x={PANEL} y={240} text="exact area = {num(exact)}" size={14} />
-					<Txt x={PANEL} y={264} text={errText} size={14} weight={600} />
+					<Label anchor="start" x={PANEL} y={240} text="exact area = {num(exact)}" size={14} />
+					<Label anchor="start" x={PANEL} y={264} text={errText} size={14} weight={600} />
 					{#if shrink !== null}
-						<Txt x={PANEL} y={288} text="double n: error ÷ {num(shrink, 1)}" size={13} muted />
+						<Label
+							anchor="start"
+							x={PANEL}
+							y={288}
+							text="double n: error ÷ {num(shrink, 1)}"
+							size={13}
+							muted
+						/>
 					{/if}
 				</Readout>
 			{/if}
@@ -355,8 +384,9 @@
 				color="var(--calc-area)"
 				opacity={fe}
 			>
-				<Txt x={PANEL} y={84} text="area above the axis" size={12} muted />
-				<Txt
+				<Label anchor="start" x={PANEL} y={84} text="area above the axis" size={12} muted />
+				<Label
+					anchor="start"
 					x={PANEL}
 					y={106}
 					text="+{num(above)}"
@@ -373,8 +403,9 @@
 				color="var(--calc-neg)"
 				opacity={fe}
 			>
-				<Txt x={PANEL} y={136} text="area below the axis" size={12} muted />
-				<Txt
+				<Label anchor="start" x={PANEL} y={136} text="area below the axis" size={12} muted />
+				<Label
+					anchor="start"
 					x={PANEL}
 					y={158}
 					text={Math.abs(below) < 0.005 ? '0.00' : num(below)}
@@ -390,8 +421,15 @@
 				value="∫₀³ f(x) dx = {num(exact)}"
 				opacity={fe}
 			>
-				<Txt x={PANEL} y={200} text="integral = signed total" size={12} muted />
-				<Txt x={PANEL} y={232} text="∫₀³ f(x) dx = {num(exact)}" size={20} weight={700} />
+				<Label anchor="start" x={PANEL} y={200} text="integral = signed total" size={12} muted />
+				<Label
+					anchor="start"
+					x={PANEL}
+					y={232}
+					text="∫₀³ f(x) dx = {num(exact)}"
+					size={20}
+					weight={700}
+				/>
 			</Readout>
 		</g>
 	{/if}

@@ -8,10 +8,9 @@
 	 * Under each block, a dot for every miner currently mining on it. The run replays in a
 	 * loop, restarting when a control changes; reduced motion shows the end of the run.
 	 */
-	import { clamp, easeInOut, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, easeInOut, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type Params } from '#lib/explainer/index.ts';
 	import { MINERS, forkLanes, forkRun } from '../consensus';
-	import Txt from './Txt.svelte';
 
 	interface Props {
 		t: number;
@@ -127,7 +126,9 @@
 
 <g opacity={fade}>
 	<Readout id="title" order={1} label="Network" value="5 miners · news takes {delay} s">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={36}
 			text="Five miners; news of a block takes {delay} s to reach the others"
@@ -136,7 +137,9 @@
 		/>
 	</Readout>
 	<Readout id="clock" order={2} label="Time" value="{simMin.toFixed(0)} min · {top} blocks">
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={58}
 			text="{simMin.toFixed(
@@ -172,8 +175,17 @@
 			style:fill="white">{pools[j]}</text
 		>
 		<Readout id="m-{j}">
-			<Txt x={MX(j)} y={MY + 44} text="{pct(share)} of the power" size={11} anchor="middle" muted />
-			<Txt
+			<Label
+				tabular
+				x={MX(j)}
+				y={MY + 44}
+				text="{pct(share)} of the power"
+				size={11}
+				anchor="middle"
+				muted
+			/>
+			<Label
+				tabular
 				x={MX(j)}
 				y={MY + 60}
 				text={tips[j] === 0
@@ -195,7 +207,8 @@
 
 	<!-- tree -->
 	<Readout id="tree-title">
-		<Txt
+		<Label
+			anchor="start"
 			x={24}
 			y={TREE.y - 3 * TREE.lane - 8}
 			text="Blocks by height · lower row: the chain that wins · dots: who mines on which block"
@@ -252,7 +265,7 @@
 			</g>
 			{#if o && lane.get(b.id) === 1 && !found.some((c) => c.height === b.height - 1 && lane.get(c.id) === 1)}
 				<Readout id="orph-{b.id}">
-					<Txt
+					<Label
 						x={bx(b.height)}
 						y={by(b.id) - 22}
 						text="orphaned"
@@ -283,7 +296,9 @@
 		label="Orphaned"
 		value="{shownStale} of {Math.max(0, top)} so far · long run {pct(longRun)}"
 	>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={560}
 			text="Orphaned so far: {shownStale} · over 4,000 simulated blocks at this delay: {pct(

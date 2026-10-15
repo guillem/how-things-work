@@ -24,7 +24,7 @@
 		sci,
 		type DecayParticle
 	} from '../particles';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 	import Card from './Card.svelte';
 	import Pad from './Pad.svelte';
 
@@ -240,7 +240,8 @@
 		{/if}
 	{/each}
 	<Readout id="tap-hint">
-		<T
+		<Label
+			anchor="start"
 			x={SLOT(0) - 33}
 			y={PY + 60}
 			text="tap a product to take it out · four at most"
@@ -251,17 +252,18 @@
 
 	<!-- the ledger -->
 	<Readout id="card-1"><Card x={20} y={180} w={588} h={232} /></Readout>
-	<T x={40} y={206} text="Conserved?" size={12} muted />
-	<T x={250} y={206} text="before" size={12} muted anchor="middle" />
-	<T x={380} y={206} text="after" size={12} muted anchor="middle" />
+	<Label anchor="start" x={40} y={206} text="Conserved?" size={12} muted />
+	<Label x={250} y={206} text="before" size={12} muted anchor="middle" />
+	<Label x={380} y={206} text="after" size={12} muted anchor="middle" />
 	{#each lawRows as l, r (l.id)}
 		{@const y = 236 + r * 28}
 		<Readout id="law-{l.id}">
-			<T x={40} {y} text={l.label} size={13.5} weight={600} />
-			<T x={250} {y} text={l.b} size={13.5} anchor="middle" />
-			<T x={380} {y} text={products.length ? l.a : '—'} size={13.5} anchor="middle" />
+			<Label anchor="start" x={40} {y} text={l.label} size={13.5} weight={600} />
+			<Label x={250} {y} text={l.b} size={13.5} anchor="middle" />
+			<Label x={380} {y} text={products.length ? l.a : '—'} size={13.5} anchor="middle" />
 			{#if products.length}
-				<T
+				<Label
+					anchor="start"
 					x={470}
 					{y}
 					text={l.ok ? '✓' : '✗'}
@@ -269,7 +271,7 @@
 					weight={700}
 					color={l.ok ? 'var(--sm-ok)' : 'var(--sm-bad)'}
 				/>
-				<T x={494} {y} text={l.why} size={11} muted />
+				<Label anchor="start" x={494} {y} text={l.why} size={11} muted />
 			{/if}
 		</Readout>
 	{/each}
@@ -282,7 +284,8 @@
 			: '—'}
 	/>
 	<Readout id="ledger-foot">
-		<T
+		<Label
+			anchor="start"
 			x={40}
 			y={402}
 			text="Energy: masses, with neutrinos taken as 0 (below 0.45 eV). Spin: how many have spin ½."
@@ -301,7 +304,8 @@
 		note={reasons.join('; ')}
 		color={products.length ? (check.allowed ? 'var(--sm-ok)' : 'var(--sm-bad)') : undefined}
 	>
-		<T
+		<Label
+			anchor="start"
 			x={VX}
 			y={60}
 			text={verdict}
@@ -310,16 +314,23 @@
 			color={products.length ? (check.allowed ? 'var(--sm-ok)' : 'var(--sm-bad)') : undefined}
 		/>
 		{#each reasons as line, i (i)}
-			<T x={VX} y={84 + i * 18} text={line} size={12.5} />
+			<Label anchor="start" x={VX} y={84 + i * 18} text={line} size={12.5} />
 		{/each}
 		{#if check.allowed}
-			<T x={VX} y={84} text="Energy released: {mev(check.q)}" size={12.5} />
-			<T x={VX} y={102} text="(carried off as motion)" size={12} muted />
+			<Label anchor="start" x={VX} y={84} text="Energy released: {mev(check.q)}" size={12.5} />
+			<Label anchor="start" x={VX} y={102} text="(carried off as motion)" size={12} muted />
 		{/if}
 	</Readout>
 	<Readout id="pdg" order={3} label="PDG" value={pdgLines.join(' ')}>
 		{#each pdgLines as line, i (i)}
-			<T x={VX} y={150 + i * 19} text={line} size={13} weight={i === 0 ? 600 : 500} />
+			<Label
+				anchor="start"
+				x={VX}
+				y={150 + i * 19}
+				text={line}
+				size={13}
+				weight={i === 0 ? 600 : 500}
+			/>
 		{/each}
 	</Readout>
 	<Readout
@@ -330,11 +341,18 @@
 		opacity={strangeNote.length ? 1 : 0}
 	>
 		{#each strangeNote as line, i (i)}
-			<T x={VX} y={250 + i * 18} text={line} size={12.5} color="var(--sm-weak)" />
+			<Label
+				anchor="start"
+				x={VX}
+				y={250 + i * 18}
+				text={line}
+				size={12.5}
+				color="var(--sm-weak)"
+			/>
 		{/each}
 	</Readout>
 	<Readout id="pdg-cite">
-		<T x={VX} y={394} text="Decay data: PDG 2026" size={11} muted />
+		<Label anchor="start" x={VX} y={394} text="Decay data: PDG 2026" size={11} muted />
 	</Readout>
 
 	<!-- palette -->
@@ -356,10 +374,34 @@
 		/>
 	{/each}
 	<Readout id="palette-note">
-		<T x={KX(7) + 8} y={470} text="hadrons" size={12} color="var(--sm-quark)" weight={600} />
-		<T x={KX(7) + 8} y={490} text="leptons" size={12} color="var(--sm-lepton)" weight={600} />
-		<T x={KX(7) + 8} y={510} text="photon" size={12} color="var(--sm-boson)" weight={600} />
-		<T x={KX(7) + 8} y={540} text="numbers: charge" size={11} muted />
+		<Label
+			anchor="start"
+			x={KX(7) + 8}
+			y={470}
+			text="hadrons"
+			size={12}
+			color="var(--sm-quark)"
+			weight={600}
+		/>
+		<Label
+			anchor="start"
+			x={KX(7) + 8}
+			y={490}
+			text="leptons"
+			size={12}
+			color="var(--sm-lepton)"
+			weight={600}
+		/>
+		<Label
+			anchor="start"
+			x={KX(7) + 8}
+			y={510}
+			text="photon"
+			size={12}
+			color="var(--sm-boson)"
+			weight={600}
+		/>
+		<Label anchor="start" x={KX(7) + 8} y={540} text="numbers: charge" size={11} muted />
 	</Readout>
 </g>
 

@@ -12,14 +12,13 @@
 	 * says how many of its steps are shown, counted from when the run last
 	 * changed. Under reduced motion the whole run is shown.
 	 */
-	import { cycle } from '#lib/draw/index.ts';
+	import { cycle, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { nearestMinimum } from '../descent';
 	import ContourMap from './ContourMap.svelte';
 	import DataPlot from './DataPlot.svelte';
 	import LossPlot from './LossPlot.svelte';
 	import Surface from './Surface.svelte';
-	import Txt from './Txt.svelte';
 	import { MAP, ballAt, clampToMap, createSince, fmt, runsFor, setup, stepsAt } from './shared';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
@@ -136,7 +135,8 @@
 			label="Settings"
 			value="{xn} = {fmt(here.x)}, {yn} = {fmt(here.y)}"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={RX}
 				y={RY}
 				text="{s.land.xName} = {fmt(here.x)}, {s.land.yName} = {fmt(here.y)}"
@@ -144,7 +144,8 @@
 			/>
 		</Readout>
 		<Readout id="loss" order={2} label="Loss" value={fmt(lossHere)} color="var(--gd-ball)">
-			<Txt
+			<Label
+				anchor="start"
 				x={RX}
 				y={RY + 22}
 				text="loss (mean squared error) = {fmt(lossHere)}"
@@ -155,7 +156,8 @@
 		</Readout>
 		{#if s.left === 'surface'}
 			<Readout id="lowest" order={3} label="Lowest (×)" value={fmt(lowest)}>
-				<Txt
+				<Label
+					anchor="start"
 					x={RX}
 					y={RY + 44}
 					text="lowest possible loss, at the ×: {fmt(lowest)}"
@@ -165,7 +167,8 @@
 			</Readout>
 		{:else}
 			<Readout id="drag" order={3} label="Try" value="drag the point on the map">
-				<Txt
+				<Label
+					anchor="start"
 					x={RX}
 					y={RY + 44}
 					text="drag the point: every point of the map is one line"
@@ -181,7 +184,8 @@
 			label="Gradient ∇L"
 			value="(∂L/∂{xn}, ∂L/∂{yn}) = ({fmt(grad[0])}, {fmt(grad[1])})"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={RX}
 				y={RY}
 				text="∇L = (∂L/∂{xn}, ∂L/∂{yn}) = ({fmt(grad[0])}, {fmt(grad[1])})"
@@ -190,10 +194,17 @@
 			/>
 		</Readout>
 		<Readout id="steep" order={2} label="Steepness |∇L|" value={fmt(Math.hypot(...grad))}>
-			<Txt x={RX} y={RY + 20} text="steepness |∇L| = {fmt(Math.hypot(...grad))}" size={13} />
+			<Label
+				anchor="start"
+				x={RX}
+				y={RY + 20}
+				text="steepness |∇L| = {fmt(Math.hypot(...grad))}"
+				size={13}
+			/>
 		</Readout>
 		<Readout id="legend" order={3} label="Arrows" value="dashed: ∇L, uphill · solid: −∇L, downhill">
-			<Txt
+			<Label
+				anchor="start"
 				x={RX}
 				y={RY + 40}
 				text="dashed: ∇L, uphill · solid: −∇L, downhill (the small arrows too)"
@@ -211,7 +222,8 @@
 				color={b.color}
 			>
 				<circle cx={RX + 5} cy={RY + 38 * b.i - 4} r="5" fill={b.color} />
-				<Txt
+				<Label
+					anchor="start"
 					x={RX + 16}
 					y={RY + 38 * b.i}
 					text="η = {b.lr}: {b.label}"
@@ -219,7 +231,14 @@
 					weight={600}
 					color={b.color}
 				/>
-				<Txt x={RX + 16} y={RY + 38 * b.i + 17} text={verdict(b)} size={12} muted />
+				<Label
+					anchor="start"
+					x={RX + 16}
+					y={RY + 38 * b.i + 17}
+					text={verdict(b)}
+					size={12}
+					muted
+				/>
 			</Readout>
 		{/each}
 	{:else if balls.length}
@@ -231,7 +250,8 @@
 			value="{b.k} · loss {fmt(b.loss)}"
 			color="var(--gd-ball)"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={RX}
 				y={RY}
 				text="step {b.k} · loss = {fmt(b.loss)}"
@@ -241,7 +261,7 @@
 			/>
 		</Readout>
 		<Readout id="verdict" order={2} label="So far" value={verdict(b)}>
-			<Txt x={RX} y={RY + 21} text={verdict(b)} size={13} />
+			<Label anchor="start" x={RX} y={RY + 21} text={verdict(b)} size={13} />
 		</Readout>
 		<Readout
 			id="settings"
@@ -251,7 +271,8 @@
 				? `, noise ${s.noise}`
 				: ''}"
 		>
-			<Txt
+			<Label
+				anchor="start"
 				x={RX}
 				y={RY + 41}
 				text="η = {fmt(s.lr)}{s.momentum > 0 ? ` · momentum β = ${s.momentum}` : ''}{s.noise > 0
@@ -265,7 +286,8 @@
 		</Readout>
 		{#if s.land.id === 'bowl'}
 			<Readout id="factor" order={4} label="Each step" value="offset × (1 − η) = {fmt(1 - s.lr)}">
-				<Txt
+				<Label
+					anchor="start"
 					x={RX}
 					y={RY + 61}
 					text="each step: offset from the bottom × (1 − η) = × {fmt(1 - s.lr)}"
@@ -275,7 +297,8 @@
 			</Readout>
 		{:else}
 			<Readout id="hint">
-				<Txt
+				<Label
+					anchor="start"
 					x={RX}
 					y={RY + 61}
 					text="click the map to drop the ball somewhere else"

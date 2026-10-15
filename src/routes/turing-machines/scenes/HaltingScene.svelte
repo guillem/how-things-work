@@ -15,10 +15,9 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { clamp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { haltingTable, type Verdict } from '../turing';
-	import Txt from './Txt.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -160,7 +159,9 @@
 
 <g opacity={fadeIn}>
 	<Readout id="h-title" order={1} label={isArgument ? undefined : 'Machine k run on description j'}>
-		<Txt
+		<Label
+			anchor="start"
+			tabular
 			x={24}
 			y={42}
 			text={isArgument
@@ -169,7 +170,8 @@
 			size={18}
 			weight={600}
 		/>
-		<Txt
+		<Label
+			anchor="start"
 			x={24}
 			y={68}
 			text="H: halts · ∞: runs forever · ⟨j⟩: the description of machine j, as 0s and 1s"
@@ -180,7 +182,8 @@
 
 	<!-- column headers -->
 	{#each table.names as name, j (name)}
-		<Txt
+		<Label
+			tabular
 			x={colX(j)}
 			y={GY - 10}
 			text="⟨{j + 1}⟩"
@@ -191,9 +194,9 @@
 		/>
 	{/each}
 	<g opacity={show.more.current}>
-		<Txt x={colX(N)} y={GY - 10} text="…" size={15} anchor="middle" color="var(--tm-desc)" />
+		<Label x={colX(N)} y={GY - 10} text="…" size={15} anchor="middle" color="var(--tm-desc)" />
 		<g opacity={show.self.current}>
-			<Txt
+			<Label
 				x={colX(N + 1)}
 				y={GY - 10}
 				text="⟨D⟩"
@@ -209,7 +212,15 @@
 	{#each table.cells as row, i (i)}
 		{@const dimRow = move === 4 && i !== cmp ? 0.45 : 1}
 		<g opacity={dimRow}>
-			<Txt x={NAME_X} y={rowY(i) + 5} text="{i + 1}. {table.names[i]}" size={13} weight={500} />
+			<Label
+				anchor="start"
+				tabular
+				x={NAME_X}
+				y={rowY(i) + 5}
+				text="{i + 1}. {table.names[i]}"
+				size={13}
+				weight={500}
+			/>
 			{#each row as v, j (j)}
 				{@const isPick = !isArgument && i === pi && j === pj}
 				{@const onDiag = i === j}
@@ -237,7 +248,8 @@
 						opacity={show.diag.current}
 					/>
 				{/if}
-				<Txt
+				<Label
+					tabular
 					x={colX(j)}
 					y={rowY(i) + 6}
 					text={glyph(v)}
@@ -249,14 +261,21 @@
 				/>
 			{/each}
 			<g opacity={show.more.current}>
-				<Txt x={colX(N)} y={rowY(i) + 5} text="…" size={15} anchor="middle" muted />
+				<Label x={colX(N)} y={rowY(i) + 5} text="…" size={15} anchor="middle" muted />
 			</g>
 		</g>
 	{/each}
 	<g opacity={show.more.current}>
-		<Txt x={NAME_X} y={rowY(N) + 2} text="⋮  infinitely many more" size={13} muted />
+		<Label
+			anchor="start"
+			x={NAME_X}
+			y={rowY(N) + 2}
+			text="⋮  infinitely many more"
+			size={13}
+			muted
+		/>
 		{#each table.names as name, j (name)}
-			<Txt x={colX(j)} y={rowY(N) + 2} text="⋮" size={15} anchor="middle" muted />
+			<Label x={colX(j)} y={rowY(N) + 2} text="⋮" size={15} anchor="middle" muted />
 		{/each}
 	</g>
 
@@ -272,7 +291,15 @@
 			fill-opacity="0.08"
 			stroke="var(--tm-write)"
 		/>
-		<Txt x={NAME_X} y={rowY(dRow) + 5} text="D" size={13} weight={700} color="var(--tm-write)" />
+		<Label
+			anchor="start"
+			x={NAME_X}
+			y={rowY(dRow) + 5}
+			text="D"
+			size={13}
+			weight={700}
+			color="var(--tm-write)"
+		/>
 		{#each dVals as v, j (j)}
 			{@const hot = move === 4 && j === cmp}
 			<rect
@@ -286,7 +313,8 @@
 				stroke={hot ? 'var(--tm-write)' : 'none'}
 				stroke-width="2.5"
 			/>
-			<Txt
+			<Label
+				tabular
 				x={colX(j)}
 				y={rowY(dRow) + 6}
 				text={glyph(v)}
@@ -297,7 +325,7 @@
 				halo={false}
 			/>
 		{/each}
-		<Txt x={colX(N)} y={rowY(dRow) + 5} text="…" size={15} anchor="middle" muted />
+		<Label x={colX(N)} y={rowY(dRow) + 5} text="…" size={15} anchor="middle" muted />
 		<g opacity={show.self.current}>
 			<rect
 				x={colX(N + 1) - CS / 2 + 3}
@@ -310,7 +338,7 @@
 				stroke="var(--tm-write)"
 				stroke-width="2.5"
 			/>
-			<Txt
+			<Label
 				x={colX(N + 1)}
 				y={rowY(dRow) + 7}
 				text="?"
@@ -343,7 +371,9 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={576}
 				y={GY + 22}
 				text="{table.names[pi]} run on ⟨{pj + 1}⟩ ({table.names[pj]})"
@@ -351,7 +381,9 @@
 				weight={600}
 				halo={false}
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={576}
 				y={GY + 48}
 				text="⟨{pj + 1}⟩ = {table.codes[pj].slice(0, 30)}…"
@@ -360,7 +392,9 @@
 				muted
 				halo={false}
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={576}
 				y={GY + 68}
 				text="({table.codes[pj].length} symbols)"
@@ -369,9 +403,19 @@
 				halo={false}
 			/>
 			{#each why(pi, pj).match(/.{1,44}(\s|$)/g) ?? [] as line, k (k)}
-				<Txt x={576} y={GY + 102 + k * 20} text={line.trim()} size={13} halo={false} />
+				<Label
+					anchor="start"
+					tabular
+					x={576}
+					y={GY + 102 + k * 20}
+					text={line.trim()}
+					size={13}
+					halo={false}
+				/>
 			{/each}
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={576}
 				y={GY + 164}
 				text={v === 'halts' ? 'Verdict: halts' : 'Verdict: runs forever'}
@@ -382,14 +426,16 @@
 			/>
 		</Readout>
 		<Readout id="h-foot">
-			<Txt
+			<Label
+				anchor="start"
 				x={24}
 				y={470}
 				text="Each entry here was settled by running the machine and spotting a repeat."
 				size={14}
 				weight={600}
 			/>
-			<Txt
+			<Label
+				anchor="start"
 				x={24}
 				y={494}
 				text="The halting problem asks for one program that settles every entry of the endless table, for every machine."
@@ -409,7 +455,9 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<Txt
+			<Label
+				anchor="start"
+				tabular
 				x={576}
 				y={GY + 22}
 				text={p.title}
@@ -419,7 +467,15 @@
 				halo={false}
 			/>
 			{#each p.lines as line, k (k)}
-				<Txt x={576} y={GY + 52 + k * 22} text={line} size={13} halo={false} />
+				<Label
+					anchor="start"
+					tabular
+					x={576}
+					y={GY + 52 + k * 22}
+					text={line}
+					size={13}
+					halo={false}
+				/>
 			{/each}
 		</Readout>
 		<!-- move 2: H as a box -->
@@ -435,7 +491,7 @@
 				stroke="var(--tm-desc)"
 				stroke-width="2"
 			/>
-			<Txt
+			<Label
 				x={750}
 				y={378}
 				text="H(M, x)"
@@ -445,7 +501,7 @@
 				color="var(--tm-desc)"
 				halo={false}
 			/>
-			<Txt
+			<Label
 				x={750}
 				y={400}
 				text="always halts: “halts” or “runs forever”"
@@ -467,7 +523,8 @@
 					stroke="var(--tm-write)"
 					stroke-width="2"
 				/>
-				<Txt
+				<Label
+					anchor="start"
 					x={616}
 					y={376}
 					text="D(M):"
@@ -477,8 +534,16 @@
 					halo={false}
 					mono
 				/>
-				<Txt x={616} y={398} text="if H(M, M) = halts: loop forever" size={13} halo={false} mono />
-				<Txt x={616} y={420} text="else: halt" size={13} halo={false} mono />
+				<Label
+					anchor="start"
+					x={616}
+					y={398}
+					text="if H(M, M) = halts: loop forever"
+					size={13}
+					halo={false}
+					mono
+				/>
+				<Label anchor="start" x={616} y={420} text="else: halt" size={13} halo={false} mono />
 			</g>
 		{/if}
 		{#if move === 5}
@@ -500,9 +565,24 @@
 					stroke="var(--tm-write)"
 					stroke-width="2"
 				/>
-				<Txt x={616} y={376} text="D halts on ⟨D⟩ ⇒ D loops on ⟨D⟩" size={13} halo={false} />
-				<Txt x={616} y={398} text="D loops on ⟨D⟩ ⇒ D halts on ⟨D⟩" size={13} halo={false} />
-				<Txt
+				<Label
+					anchor="start"
+					x={616}
+					y={376}
+					text="D halts on ⟨D⟩ ⇒ D loops on ⟨D⟩"
+					size={13}
+					halo={false}
+				/>
+				<Label
+					anchor="start"
+					x={616}
+					y={398}
+					text="D loops on ⟨D⟩ ⇒ D halts on ⟨D⟩"
+					size={13}
+					halo={false}
+				/>
+				<Label
+					anchor="start"
 					x={616}
 					y={422}
 					text="So no such H exists."

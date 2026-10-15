@@ -13,9 +13,8 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Photon, TAU, clamp, colors, cycle, lerp, smoothstep } from '#lib/draw/index.ts';
+	import { clamp, colors, cycle, Label, lerp, Photon, smoothstep, TAU } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import Txt from './Txt.svelte';
 	import { C, FUSION_MASS_FRACTION, L_SUN, SUN_AGE, atAge, starColour, track } from '../star';
 
 	let { step, t, reduced }: StageProps = $props();
@@ -202,8 +201,8 @@
 				label="Core"
 				value="{coreMK} million K, {coreRho} × the density of water"
 			>
-				<Txt x={cx} y={cy - 4} text="core" size={14} weight={700} color="#7a3a06" />
-				<Txt x={cx} y={cy + 14} text="{coreMK} million K" size={12} color="#7a3a06" />
+				<Label x={cx} y={cy - 4} text="core" size={14} weight={700} color="#7a3a06" />
+				<Label x={cx} y={cy + 14} text="{coreMK} million K" size={12} color="#7a3a06" />
 			</Readout>
 
 			<rect
@@ -215,7 +214,7 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<Txt x={620} y={146} text="The Sun today (model)" size={16} weight={700} anchor="start" />
+			<Label x={620} y={146} text="The Sun today (model)" size={16} weight={700} anchor="start" />
 			<line
 				x1="624"
 				y1="178"
@@ -232,7 +231,7 @@
 				value="pulls every part inwards"
 				color="var(--st-gravity)"
 			>
-				<Txt x={676} y={183} text="gravity pulls inwards" anchor="start" />
+				<Label x={676} y={183} text="gravity pulls inwards" anchor="start" />
 			</Readout>
 			<line
 				x1="624"
@@ -250,11 +249,11 @@
 				value="of the hot gas pushes outwards"
 				color="var(--st-pressure)"
 			>
-				<Txt x={676} y={215} text="pressure pushes outwards" anchor="start" />
+				<Label x={676} y={215} text="pressure pushes outwards" anchor="start" />
 			</Readout>
 			<Readout id="centre" order={4}>
-				<Txt x={620} y={256} text="centre: {coreMK} million K," anchor="start" />
-				<Txt
+				<Label x={620} y={256} text="centre: {coreMK} million K," anchor="start" />
+				<Label
 					x={620}
 					y={276}
 					text="{coreRho} g/cm³ ({coreRho} × water)"
@@ -264,7 +263,7 @@
 				/>
 			</Readout>
 			<Readout id="surface">
-				<Txt
+				<Label
 					x={620}
 					y={312}
 					text="surface: {(Math.round(sun.T / 10) * 10).toLocaleString('en-US')} K"
@@ -277,8 +276,8 @@
 				label="Surface (model) · light (real Sun)"
 				value="{(Math.round(sun.T / 10) * 10).toLocaleString('en-US')} K · 3.8 × 10²⁶ W"
 			>
-				<Txt x={620} y={348} text="light: 3.8 × 10²⁶ W (real Sun)" anchor="start" />
-				<Txt
+				<Label x={620} y={348} text="light: 3.8 × 10²⁶ W (real Sun)" anchor="start" />
+				<Label
 					x={620}
 					y={368}
 					text="mostly hydrogen and helium plasma"
@@ -309,7 +308,7 @@
 				stroke="var(--stage-line)"
 				stroke-dasharray="4 4"
 			/>
-			<Txt x={cx} y={cy + R + 28} text="the Sun's core" size={13} weight={600} />
+			<Label x={cx} y={cy + R + 28} text="the Sun's core" size={13} weight={600} />
 			<rect
 				x={PANEL.x}
 				y={PANEL.y}
@@ -319,7 +318,7 @@
 				fill="var(--surface)"
 				stroke="var(--border)"
 			/>
-			<Txt
+			<Label
 				x={PANEL.x + 24}
 				y={PANEL.y + 34}
 				text="The proton–proton chain"
@@ -352,10 +351,10 @@
 						{@render nucleus(n, x, y - 4)}
 					</g>
 					{#if !on || local < 0.4}
-						<Txt x={x0} y={y + 30} text={n.name} size={12} muted />
+						<Label x={x0} y={y + 30} text={n.name} size={12} muted />
 					{/if}
 					{#if i < r.inputs.length - 1 && (!on || local < 0.08)}
-						<Txt x={x0 + 45} y={y + 1} text="+" size={15} muted />
+						<Label x={x0 + 45} y={y + 1} text="+" size={15} muted />
 					{/if}
 				{/each}
 				<line
@@ -375,13 +374,13 @@
 					{#each r.outputs as n, i (i)}
 						{@const x = OUT_X + 30 + i * 70}
 						{@render nucleus(n, x, y - 4)}
-						<Txt {x} y={y + 30} text={n.name} size={12} muted />
+						<Label {x} y={y + 30} text={n.name} size={12} muted />
 					{/each}
 					{#each r.extras as e, i (i)}
 						{@const ex = OUT_X + 120 + i * 70 + (on ? 18 * fly : 18)}
 						{#if e === 'gamma'}
 							<Photon x={ex - 20} y={y - 6} length={34} phase={on ? local : 0} />
-							<Txt x={ex} y={y + 30} text="γ (gamma ray)" size={12} muted />
+							<Label x={ex} y={y + 30} text="γ (gamma ray)" size={12} muted />
 						{:else if e === 'e+'}
 							<circle
 								cx={ex}
@@ -390,14 +389,14 @@
 								fill={colors.electron}
 								stroke={colors.electronEdge}
 							/>
-							<Txt x={ex} y={y + 30} text="e⁺" size={12} muted />
+							<Label x={ex} y={y + 30} text="e⁺" size={12} muted />
 						{:else}
 							<circle cx={ex} cy={y - 4} r="3" fill="var(--stage-ink-muted)" />
-							<Txt x={ex} y={y + 30} text="ν (neutrino)" size={12} muted />
+							<Label x={ex} y={y + 30} text="ν (neutrino)" size={12} muted />
 						{/if}
 					{/each}
 				</g>
-				<Txt
+				<Label
 					x={PANEL.x + 24}
 					y={y - 32}
 					text="{k + 1}. {r.text}"
@@ -407,7 +406,7 @@
 					weight={on ? 600 : 500}
 				/>
 				{#if k === 2}
-					<Txt
+					<Label
 						x={PANEL.x + PANEL.w - 24}
 						y={y - 32}
 						text="(steps 1 and 2 happen twice first)"
@@ -425,7 +424,7 @@
 				stroke="var(--border)"
 			/>
 			<Readout id="sum" order={1} label="Overall" value="4 ¹H → ⁴He + 2 e⁺ + 2 ν + energy">
-				<Txt
+				<Label
 					x={PANEL.x + 24}
 					y={PANEL.y + 458}
 					text="overall: 4 ¹H → ⁴He + 2 e⁺ + 2 ν + energy"
@@ -441,7 +440,7 @@
 					1
 				)} million tonnes a second in the Sun"
 			>
-				<Txt
+				<Label
 					x={PANEL.x + 24}
 					y={PANEL.y + 482}
 					text="{(FUSION_MASS_FRACTION * 100).toFixed(1)}% of the mass becomes energy: {(
@@ -453,7 +452,7 @@
 				/>
 			</Readout>
 			{#if clamp(u) > 0}
-				<Txt x={cx} y={cy + 5} text="H → He" size={12} weight={700} color="#7a3a06" />
+				<Label x={cx} y={cy + 5} text="H → He" size={12} weight={700} color="#7a3a06" />
 			{/if}
 		</g>
 	{/if}

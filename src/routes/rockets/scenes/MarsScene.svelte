@@ -10,13 +10,12 @@
 	 *   trip against the departure date for that flight time: the launch windows are the dips.
 	 * Each flight lasts 8 s on screen, then the arrival is held and the flight repeats.
 	 */
-	import { clamp, scale } from '#lib/draw/index.ts';
+	import { clamp, Label, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { at, conic, marsHohmann, marsTrip, MU_SUN, planet, type Vec } from '../space';
 	import { WINDOW_DAYS, WINDOW_START, dateOf } from '../steps';
 	import { AU, DAY } from '../vehicles';
 	import Card from './Card.svelte';
-	import T from './T.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -250,9 +249,9 @@
 			stroke-width="1"
 		/>
 		<Readout id="h-labels">
-			<T x={e.x + 10} y={e.y + 16} text="Earth" size={12} />
-			<T x={m.x + 9} y={m.y - 8} text="Mars" size={12} color="var(--rk-mars)" />
-			<T
+			<Label anchor="start" x={e.x + 10} y={e.y + 16} text="Earth" size={12} />
+			<Label anchor="start" x={m.x + 9} y={m.y - 8} text="Mars" size={12} color="var(--rk-mars)" />
+			<Label
 				x={m0.x < CX ? m0.x + 10 : m0.x - 10}
 				y={m0.y < CY ? m0.y + 20 : m0.y - 12}
 				text="Mars at departure"
@@ -260,8 +259,22 @@
 				muted
 				anchor={m0.x < CX ? 'start' : 'end'}
 			/>
-			<T x={departPoint.x - 10} y={departPoint.y + 18} text="leave" size={11} muted anchor="end" />
-			<T x={arrivalPoint.x + 12} y={arrivalPoint.y + 4} text="arrive" size={11} muted />
+			<Label
+				x={departPoint.x - 10}
+				y={departPoint.y + 18}
+				text="leave"
+				size={11}
+				muted
+				anchor="end"
+			/>
+			<Label
+				anchor="start"
+				x={arrivalPoint.x + 12}
+				y={arrivalPoint.y + 4}
+				text="arrive"
+				size={11}
+				muted
+			/>
 		</Readout>
 	{/if}
 
@@ -314,9 +327,10 @@
 			/>
 		{/if}
 		<Readout id="w-labels">
-			<T x={e.x + 10} y={e.y + 16} text="Earth" size={12} />
-			<T x={m.x + 9} y={m.y - 8} text="Mars" size={12} color="var(--rk-mars)" />
-			<T
+			<Label anchor="start" x={e.x + 10} y={e.y + 16} text="Earth" size={12} />
+			<Label anchor="start" x={m.x + 9} y={m.y - 8} text="Mars" size={12} color="var(--rk-mars)" />
+			<Label
+				anchor="start"
 				x={PANEL.x + 20}
 				y={PANEL.y + PANEL.h - 14}
 				text="real orbits (JPL elements), in one plane; seen from the north"
@@ -326,7 +340,14 @@
 		</Readout>
 	{/if}
 	<Readout id="scale">
-		<T x={PANEL.x + 20} y={PANEL.y + 30} text="1 AU = 150 million km" size={11} muted />
+		<Label
+			anchor="start"
+			x={PANEL.x + 20}
+			y={PANEL.y + 30}
+			text="1 AU = 150 million km"
+			size={11}
+			muted
+		/>
 		<line
 			x1={PANEL.x + 20}
 			x2={PANEL.x + 170}
@@ -334,7 +355,8 @@
 			y2={PANEL.y + 40}
 			stroke="var(--stage-ink-muted)"
 		/>
-		<T
+		<Label
+			anchor="start"
 			x={PANEL.x + 20}
 			y={PANEL.y + 62}
 			text={phase === 'window'
@@ -349,8 +371,15 @@
 	<Card x={CARD.x} y={CARD.y} w={CARD.w} h={CARD.h} />
 	{#if phase === 'hohmann'}
 		<Readout id="h-title">
-			<T x={CL} y={CARD.y + 32} text="The Hohmann trip" size={16} weight={700} />
-			<T x={CL} y={CARD.y + 50} text="circular orbits, mean distances" size={11} muted />
+			<Label anchor="start" x={CL} y={CARD.y + 32} text="The Hohmann trip" size={16} weight={700} />
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 50}
+				text="circular orbits, mean distances"
+				size={11}
+				muted
+			/>
 		</Readout>
 		<Readout
 			id="h-lead"
@@ -361,8 +390,8 @@
 				0
 			)}°)"
 		>
-			<T x={CL} y={CARD.y + 84} text="Mars ahead of the Earth" size={12} muted />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 84} text="Mars ahead of the Earth" size={12} muted />
+			<Label
 				x={CR}
 				y={CARD.y + 84}
 				text="{fmt((lead * 180) / Math.PI, 0)}°"
@@ -370,8 +399,8 @@
 				weight={700}
 				anchor="end"
 			/>
-			<T x={CL} y={CARD.y + 106} text="needed for this trip" size={12} muted />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 106} text="needed for this trip" size={12} muted />
+			<Label
 				x={CR}
 				y={CARD.y + 106}
 				text="{fmt((leadNeeded * 180) / Math.PI, 0)}°"
@@ -381,8 +410,8 @@
 			/>
 		</Readout>
 		<Readout id="h-time" order={2} label="Flight" value="{Math.round(H.time / DAY)} days">
-			<T x={CL} y={CARD.y + 128} text="Flight time" size={12} muted />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 128} text="Flight time" size={12} muted />
+			<Label
 				x={CR}
 				y={CARD.y + 128}
 				text="{Math.round(H.time / DAY)} days"
@@ -393,7 +422,7 @@
 		</Readout>
 		<line x1={CL} x2={CR} y1={CARD.y + 148} y2={CARD.y + 148} stroke="var(--border)" />
 		<Readout id="h-budget-title">
-			<T x={CL} y={CARD.y + 172} text="Δv budget" size={13} weight={700} />
+			<Label anchor="start" x={CL} y={CARD.y + 172} text="Δv budget" size={13} weight={700} />
 		</Readout>
 		<Readout
 			id="h-budget"
@@ -401,8 +430,15 @@
 			label="Δv"
 			value="{fmt(H.burnDepart / 1000, 2)} + {fmt(H.burnArrive / 1000, 2)} km/s"
 		>
-			<T x={CL} y={CARD.y + 196} text="leave a 200 km Earth orbit" size={12} muted />
-			<T
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 196}
+				text="leave a 200 km Earth orbit"
+				size={12}
+				muted
+			/>
+			<Label
 				x={CR}
 				y={CARD.y + 196}
 				text="{fmt(H.burnDepart / 1000, 2)} km/s"
@@ -410,8 +446,15 @@
 				weight={600}
 				anchor="end"
 			/>
-			<T x={CL} y={CARD.y + 218} text="slow into a 200 km Mars orbit" size={12} muted />
-			<T
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 218}
+				text="slow into a 200 km Mars orbit"
+				size={12}
+				muted
+			/>
+			<Label
 				x={CR}
 				y={CARD.y + 218}
 				text="{fmt(H.burnArrive / 1000, 2)} km/s"
@@ -419,8 +462,8 @@
 				weight={600}
 				anchor="end"
 			/>
-			<T x={CL} y={CARD.y + 242} text="total" size={12} weight={700} />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 242} text="total" size={12} weight={700} />
+			<Label
 				x={CR}
 				y={CARD.y + 242}
 				text="{fmt((H.burnDepart + H.burnArrive) / 1000, 2)} km/s"
@@ -442,7 +485,8 @@
 					: `missed: Mars ${missDeg > 0 ? 'ahead' : 'behind'} by ${fmt(missKm / 1e9, 0)} million km`}
 			color={arrived && hit ? 'var(--rk-spin)' : undefined}
 		>
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 290}
 				text={!arrived ? 'On the way…' : hit ? 'Mars is there: arrival!' : 'Missed!'}
@@ -451,7 +495,8 @@
 				muted={!arrived}
 				color={arrived ? (hit ? 'var(--rk-spin)' : 'var(--rk-gravity)') : undefined}
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 312}
 				text={arrived && !hit
@@ -462,7 +507,8 @@
 			/>
 		</Readout>
 		<Readout id="h-note">
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 360}
 				text="In {Math.round(H.time / DAY)} days Mars moves {fmt(
@@ -472,29 +518,46 @@
 				size={11}
 				muted
 			/>
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 376}
 				text="so it must start {fmt((leadNeeded * 180) / Math.PI, 0)}° ahead to meet the craft"
 				size={11}
 				muted
 			/>
-			<T x={CL} y={CARD.y + 392} text="half an orbit from where it left." size={11} muted />
-			<T
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 392}
+				text="half an orbit from where it left."
+				size={11}
+				muted
+			/>
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 424}
 				text="That line-up comes back every {Math.round(H.synodic / DAY)} days"
 				size={11}
 				muted
 			/>
-			<T x={CL} y={CARD.y + 440} text="(about 26 months): the launch window." size={11} muted />
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 440}
+				text="(about 26 months): the launch window."
+				size={11}
+				muted
+			/>
 		</Readout>
 	{/if}
 
 	{#if phase === 'window'}
 		<Readout id="w-title">
-			<T x={CL} y={CARD.y + 32} text="Pick a date" size={16} weight={700} />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 32} text="Pick a date" size={16} weight={700} />
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 50}
 				text="the orbit that meets Mars on the arrival day"
@@ -508,10 +571,17 @@
 			label="Leave → arrive"
 			value="{dateText(departDay)} → {dateText(departDay + flightDays)}"
 		>
-			<T x={CL} y={CARD.y + 82} text="Leave" size={12} muted />
-			<T x={CR} y={CARD.y + 82} text={dateText(departDay)} size={13} weight={600} anchor="end" />
-			<T x={CL} y={CARD.y + 102} text="Arrive" size={12} muted />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 82} text="Leave" size={12} muted />
+			<Label
+				x={CR}
+				y={CARD.y + 82}
+				text={dateText(departDay)}
+				size={13}
+				weight={600}
+				anchor="end"
+			/>
+			<Label anchor="start" x={CL} y={CARD.y + 102} text="Arrive" size={12} muted />
+			<Label
 				x={CR}
 				y={CARD.y + 102}
 				text="{dateText(departDay + flightDays)} ({flightDays} days)"
@@ -522,12 +592,19 @@
 		</Readout>
 		<line x1={CL} x2={CR} y1={CARD.y + 120} y2={CARD.y + 120} stroke="var(--border)" />
 		<Readout id="w-budget-title">
-			<T x={CL} y={CARD.y + 144} text="Δv budget" size={13} weight={700} />
+			<Label anchor="start" x={CL} y={CARD.y + 144} text="Δv budget" size={13} weight={700} />
 		</Readout>
 		{#if trip}
 			<Readout id="w-legs">
-				<T x={CL} y={CARD.y + 168} text="leave a 200 km Earth orbit" size={12} muted />
-				<T
+				<Label
+					anchor="start"
+					x={CL}
+					y={CARD.y + 168}
+					text="leave a 200 km Earth orbit"
+					size={12}
+					muted
+				/>
+				<Label
 					x={CR}
 					y={CARD.y + 168}
 					text="{fmt(trip.burnDepart / 1000, 2)} km/s"
@@ -535,8 +612,15 @@
 					weight={600}
 					anchor="end"
 				/>
-				<T x={CL} y={CARD.y + 190} text="slow into a 200 km Mars orbit" size={12} muted />
-				<T
+				<Label
+					anchor="start"
+					x={CL}
+					y={CARD.y + 190}
+					text="slow into a 200 km Mars orbit"
+					size={12}
+					muted
+				/>
+				<Label
 					x={CR}
 					y={CARD.y + 190}
 					text="{fmt(trip.burnArrive / 1000, 2)} km/s"
@@ -553,8 +637,8 @@
 			value={trip ? `${fmt(trip.total / 1000, 2)} km/s` : '—'}
 			color="var(--rk-flame)"
 		>
-			<T x={CL} y={CARD.y + 214} text="total" size={12} weight={700} />
-			<T
+			<Label anchor="start" x={CL} y={CARD.y + 214} text="total" size={12} weight={700} />
+			<Label
 				x={CR}
 				y={CARD.y + 214}
 				text={trip ? `${fmt(trip.total / 1000, 2)} km/s` : '—'}
@@ -571,7 +655,8 @@
 			value={verdictW}
 			color={inWindow ? 'var(--rk-spin)' : undefined}
 		>
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 244}
 				text={verdictW}
@@ -582,7 +667,8 @@
 		</Readout>
 		<!-- cost against departure date -->
 		<Readout id="w-chart-title">
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 284}
 				text="Δv for a {flightDays}-day trip, by departure date"
@@ -593,7 +679,7 @@
 		{#each [5, 10, 15, 20] as v (v)}
 			<line x1={CH.x} x2={CH.x + CH.w} y1={cy(v)} y2={cy(v)} stroke="var(--stage-grid)" />
 			<Readout id="w-tick-{v}">
-				<T x={CH.x - 6} y={cy(v) + 4} text={String(v)} size={10} muted anchor="end" />
+				<Label x={CH.x - 6} y={cy(v) + 4} text={String(v)} size={10} muted anchor="end" />
 			</Readout>
 		{/each}
 		{#each YEARS as y (y.y)}
@@ -605,7 +691,14 @@
 				stroke="var(--stage-line)"
 			/>
 			<Readout id="w-year-{y.y}">
-				<T x={cx(y.day)} y={CH.y + CH.h + 16} text={String(y.y)} size={10} muted anchor="middle" />
+				<Label
+					x={cx(y.day)}
+					y={CH.y + CH.h + 16}
+					text={String(y.y)}
+					size={10}
+					muted
+					anchor="middle"
+				/>
 			</Readout>
 		{/each}
 		<line x1={CH.x} x2={CH.x + CH.w} y1={CH.y + CH.h} y2={CH.y + CH.h} stroke="var(--stage-line)" />
@@ -630,15 +723,24 @@
 			/>
 		{/if}
 		<Readout id="w-chart-note">
-			<T
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 494}
 				text="km/s, capped at 20. The dips are the launch"
 				size={11}
 				muted
 			/>
-			<T x={CL} y={CARD.y + 510} text="windows, about 26 months apart." size={11} muted />
-			<T
+			<Label
+				anchor="start"
+				x={CL}
+				y={CARD.y + 510}
+				text="windows, about 26 months apart."
+				size={11}
+				muted
+			/>
+			<Label
+				anchor="start"
 				x={CL}
 				y={CARD.y + 536}
 				text="Costs from and into 200 km circular orbits."

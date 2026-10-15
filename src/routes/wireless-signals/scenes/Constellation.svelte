@@ -6,7 +6,7 @@
 	 */
 	import { boundaries, constellation, type Scheme, type Transmission } from '../radio';
 	import { Readout } from '#lib/explainer/index.ts';
-	import T from './T.svelte';
+	import { Label } from '#lib/draw/index.ts';
 
 	interface Props {
 		scheme: Scheme;
@@ -103,7 +103,7 @@
 <Readout id="constellation-labels-{uid}">
 	{#if labels && pts.length <= 16}
 		{#each pts as p (p.bits)}
-			<T
+			<Label
 				x={X(p.i) + (pts.length > 4 ? 0 : p.i >= 0 ? 14 : -14)}
 				y={Y(p.q) + (pts.length > 4 ? 22 : -12)}
 				text={p.bits}
@@ -114,5 +114,5 @@
 		{/each}
 	{/if}
 </Readout>
-<T x={cx + half - 8} y={cy - 6} text="I" size={13} weight={700} anchor="end" />
-<T x={cx + 8} y={cy - half + 18} text="Q" size={13} weight={700} />
+<Label x={cx + half - 8} y={cy - 6} text="I" size={13} weight={700} anchor="end" />
+<Label anchor="start" x={cx + 8} y={cy - half + 18} text="Q" size={13} weight={700} />
