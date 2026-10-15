@@ -392,9 +392,17 @@ export function engineAt(c: Cycle, u: number, dwell = 0.06) {
 	const [s1, s2, s3, s4] = c.states;
 	const V = s2.V + (s1.V - s2.V) * x;
 	let gas: Point;
+	// The burnt gas left in the cylinder cools as it blows down through the open exhaust valve
+	// (adiabatically, from P4 to P1), and is then pushed out at that temperature.
+	const blowdownT = (P: number) => s4.T * Math.pow(P / s4.P, (GAMMA - 1) / GAMMA);
 	if (stroke === 'intake' || stroke === 'exhaust') {
 		// Fresh air in, burnt gas out: the gas leaves the closed cycle (no entropy of its own here).
-		gas = { V, P: s1.P, T: stroke === 'intake' ? s1.T : s4.T, S: stroke === 'intake' ? 0 : s4.S };
+		gas = {
+			V,
+			P: s1.P,
+			T: stroke === 'intake' ? s1.T : blowdownT(s1.P),
+			S: stroke === 'intake' ? 0 : s4.S
+		};
 	} else if (stroke === 'compression') {
 		const T = s1.T * Math.pow(s1.V / V, GAMMA - 1);
 		gas = { V, T, P: (c.m * R_AIR * T) / V, S: 0 };
@@ -412,7 +420,10 @@ export function engineAt(c: Cycle, u: number, dwell = 0.06) {
 			gas = { V, T, P: (c.m * R_AIR * T) / V, S: s3.S };
 		}
 	} else {
-		gas = along(c, 3, f);
+		// The P–V dot follows leg 4 → 1 (pressure falls at constant volume); the temperature shown
+		// is that of the gas still in the cylinder.
+		const p = along(c, 3, f);
+		gas = { ...p, T: blowdownT(p.P) };
 	}
 	return { stroke, crank, x, V, gas, f };
 }

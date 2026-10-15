@@ -160,7 +160,7 @@
 		/>
 		<Readout id="gt-labels">
 			<Label x={GT.x + GT.w - 38} y={GT.y - 8} text="compressor" size={11} muted />
-			<Label x={GT.x + GT.w - 120} y={GT.y - 8} text="1,400 °C+" size={11} color="var(--he-hot)" />
+			<Label x={GT.x + GT.w - 120} y={GT.y - 8} text="1,600 °C" size={11} color="var(--he-hot)" />
 			<Label x={GT.x + 40} y={GT.y - 8} text="gas turbine" size={11} muted />
 		</Readout>
 		<!-- hot exhaust down into the side of the boiler -->

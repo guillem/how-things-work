@@ -45,7 +45,7 @@ export const REAL: readonly RealEngine[] = [
 	},
 	{
 		id: 'toyota',
-		label: 'Best petrol engine, at its best',
+		label: 'Toyota 2.5 L petrol engine, at its best',
 		value: 0.4,
 		source: 'Toyota 2016',
 		group: 'car'

@@ -182,6 +182,23 @@ test('the engine’s strokes follow the crank: intake down, compression up, powe
 	expect(at(0.05).x).toBeGreaterThan(0.5 * (1 - Math.cos((Math.PI * 0.05) / 0.22)));
 });
 
+test('the gas in the cylinder cools smoothly as the exhaust valve opens, and leaves still hot (about 700 K)', () => {
+	for (const c of [otto(10, 300, 2500), diesel(18, 300, 2500)]) {
+		const n = 4000;
+		let prev = engineAt(c, 0).gas.T;
+		for (let k = 1; k < n; k++) {
+			const T = engineAt(c, k / n).gas.T;
+			expect(Math.abs(T - prev)).toBeLessThan(50);
+			prev = T;
+		}
+	}
+	const c = otto(10, 300, 2500);
+	const out = engineAt(c, 0.95);
+	expect(out.stroke).toBe('exhaust');
+	expect(out.gas.T).toBeGreaterThan(650);
+	expect(out.gas.T).toBeLessThan(750);
+});
+
 test('steam data (NIST): water boils at 100 °C at 1 atm and at 46 °C at 10 kPa; 342 °C at 15 MPa', () => {
 	expect(boilingPoint(0.101325)).toBeCloseTo(373.12, 1);
 	expect(boilingPoint(0.01)).toBeCloseTo(318.96, 1);

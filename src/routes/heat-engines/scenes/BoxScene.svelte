@@ -14,10 +14,10 @@
 	 */
 	import { Axes, Label, scale, smoothstep, wave } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { BOX, boxCycle, boxMass, pushAtConstantPressure } from '../engine';
+	import { BOX, P_ATM, boxCycle, boxMass, pushAtConstantPressure } from '../engine';
 	import Card from './Card.svelte';
 	import Gas from './Gas.svelte';
-	import { bar, fmt } from './colors';
+	import { fmt } from './colors';
 
 	let { step, t, params, reduced }: StageProps = $props();
 	const phase = $derived(String(step.hints?.phase ?? 'push'));
@@ -78,7 +78,7 @@
 
 	// ---- chart paths ------------------------------------------------------------------------
 	const P = (g: { P: number; V: number }) =>
-		`${sx(g.V * 1000).toFixed(1)} ${sy(bar(g.P)).toFixed(1)}`;
+		`${sx(g.V * 1000).toFixed(1)} ${sy(g.P / P_ATM).toFixed(1)}`;
 	const loopPath = $derived(
 		back === 'cold'
 			? `M${cyc.corners.map(P).join(' L')} Z`
@@ -275,8 +275,8 @@
 		{#each route.slice(0, 4) as c, i (i)}
 			{@const n = route[i + 1]}
 			{@const mx = (sx(c.V * 1000) + sx(n.V * 1000)) / 2}
-			{@const my = (sy(bar(c.P)) + sy(bar(n.P))) / 2}
-			{@const ang = Math.atan2(sy(bar(n.P)) - sy(bar(c.P)), sx(n.V * 1000) - sx(c.V * 1000))}
+			{@const my = (sy(c.P / P_ATM) + sy(n.P / P_ATM)) / 2}
+			{@const ang = Math.atan2(sy(n.P / P_ATM) - sy(c.P / P_ATM), sx(n.V * 1000) - sx(c.V * 1000))}
 			{#if !(back === 'same' && i >= 2)}
 				<path
 					d="M-7 -6 L4 0 L-7 6"
@@ -300,7 +300,7 @@
 	{/if}
 	<circle
 		cx={sx(gas.V * 1000)}
-		cy={sy(bar(gas.P))}
+		cy={sy(gas.P / P_ATM)}
 		r="7"
 		fill="var(--stage-bg)"
 		stroke="var(--stage-ink)"
