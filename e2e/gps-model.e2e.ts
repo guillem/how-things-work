@@ -167,6 +167,16 @@ test('GDOP: satellites spread over the sky give a small dilution; bunched togeth
 	const sky = dop(visible(constellation(0), ...PALMA))!;
 	expect(sky.gdop).toBeGreaterThan(1.5);
 	expect(sky.gdop).toBeLessThan(3);
+	// The position spread uses PDOP, which leaves out the clock: one satellite overhead and
+	// three on the horizon give PDOP √(8/3) ≈ 1.633 against GDOP √3 ≈ 1.732.
+	const best = dop([
+		{ elevation: 90, azimuth: 0 },
+		{ elevation: 0, azimuth: 0 },
+		{ elevation: 0, azimuth: 120 },
+		{ elevation: 0, azimuth: 240 }
+	])!;
+	expect(best.pdop).toBeCloseTo(Math.sqrt(8 / 3), 6);
+	expect(best.gdop).toBeCloseTo(Math.sqrt(3), 6);
 	// Height is less certain than the horizontal position: every satellite is above you.
 	expect(sky.vdop).toBeGreaterThan(sky.hdop);
 });
