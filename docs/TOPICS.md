@@ -100,7 +100,7 @@ A topic is done when:
 - [x] unit-circle
 - [x] calculus
 - [x] linear-transformations
-- [ ] tensors
+- [x] tensors
 - [x] complex-numbers
 - [x] fourier-transform
 - [x] bayes-theorem
