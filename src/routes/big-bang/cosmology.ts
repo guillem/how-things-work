@@ -245,6 +245,22 @@ export const AGE = timeAt(1);
 /** Hubble distance today, c/H0, Gly. */
 export const HUBBLE_DISTANCE = 1 / H0_GYR;
 
+/** Redshift at which matter and radiation had equal densities. */
+export const Z_EQ = OMEGA_M / OMEGA_R - 1;
+/** When dark energy became the largest share (Ω_m a⁻³ = Ω_Λ), Gyr. */
+export const T_DARK_ENERGY = timeAt((OMEGA_M / OMEGA_L) ** (1 / 3));
+/** When the expansion began to speed up (ä = 0, found by bisection on a), Gyr. */
+export const T_ACC = (() => {
+	let lo = 0.3;
+	let hi = 1;
+	for (let k = 0; k < 50; k++) {
+		const mid = (lo + hi) / 2;
+		if (acceleration(mid) < 0) lo = mid;
+		else hi = mid;
+	}
+	return timeAt(lo);
+})();
+
 // ------------------------------------------------------------------ redshift and distances
 
 /** Redshift of light emitted at scale factor a and seen today. */

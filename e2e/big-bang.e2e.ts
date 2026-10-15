@@ -78,6 +78,8 @@ test('timeline: the CMB at 371,000 years and 2,970 K, cooled to 2.73 K today', a
 	await expect(stage(page)).toContainText('371,000 years');
 	await expect(stage(page)).toContainText('2,970 K');
 	await expect(stage(page)).toContainText('974 nm');
+	// the opaque-to-transparent switch is schematic: it reads as escaped light, not bound electrons
+	await expect(stage(page)).toContainText('Light that has escaped for good');
 	await range(page, 'tCmb').press('End');
 	await expect(stage(page)).toContainText('13.8 billion years');
 	await expect(stage(page)).toContainText('2.73 K');
@@ -99,5 +101,6 @@ test('distances: the z = 14.18 galaxy is now 33.7 billion light years away', asy
 	await expect(stage(page)).toContainText('When the light left: 2.22 billion light years');
 	await range(page, 'zFar').press('End');
 	await expect(stage(page)).toContainText('Now: 45.2 billion light years');
-	await expect(stage(page)).toContainText('When the light left: 42 million light years');
+	// 41.46 million: rounded once to 41 (it used to be rounded twice, to 42)
+	await expect(stage(page)).toContainText('When the light left: 41 million light years');
 });

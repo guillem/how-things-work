@@ -17,12 +17,12 @@
 	import {
 		AGE,
 		T0,
+		T_ACC,
 		acceleration,
 		composition,
 		hubble,
 		hubblePerGyr,
-		scaleAt,
-		timeAt
+		scaleAt
 	} from '../cosmology';
 	import { gyrText, tempText } from '../format';
 	import { ARROW_TIME, NAMED, S, filmTime, galaxy, sample, viewIndex } from './grid';
@@ -98,17 +98,7 @@
 		const sa = scaleAt(tt);
 		return { tt, a: sa, acc: acceleration(sa) > 0 };
 	});
-	/** When the expansion began to speed up: ä = 0, found by bisection on a. */
-	const tAcc = (() => {
-		let lo = 0.3;
-		let hi = 1;
-		for (let k = 0; k < 50; k++) {
-			const mid = (lo + hi) / 2;
-			if (acceleration(mid) < 0) lo = mid;
-			else hi = mid;
-		}
-		return timeAt(lo);
-	})();
+	const tAcc = T_ACC;
 	const pathOf = (pts: { tt: number; a: number }[]) =>
 		pts.map((p, k) => `${k ? 'L' : 'M'}${ax(p.tt).toFixed(1)} ${ay(p.a).toFixed(1)}`).join(' ');
 	const dPast = $derived(pathOf(curve.filter((p) => !p.acc || phase !== 'contents')));
@@ -142,7 +132,7 @@
 		<rect x={x + 10} y={y + 24} width="160" height="7" rx="3" fill="url(#grid-legend)" />
 		<T x={x + 10} y={y + 17} text="redshift of the light you see" size={11} muted />
 		<T x={x + 10} y={y + 42} text="0" size={10.5} muted />
-		<T x={x + 90} y={y + 42} text="0.3" size={10.5} anchor="middle" muted />
+		<T x={x + 90} y={y + 42} text="0.6" size={10.5} anchor="middle" muted />
 		<T x={x + 170} y={y + 42} text="1.5+" size={10.5} anchor="end" muted />
 	</g>
 {/snippet}
@@ -282,7 +272,7 @@
 			<T
 				x={HP.x + HP.w}
 				y={HP.y + HP.h + 32}
-				text="distance now, billion light years"
+				text="distance at that moment, billion light years"
 				size={11}
 				anchor="end"
 				muted
@@ -460,7 +450,7 @@
 				</Readout>
 				<Readout id="hd">
 					<T x={RX + 16} y={518} text="Earlier: denser and hotter, everywhere" size={12} />
-					<T x={RX + 16} y={538} text="at once. At a = 0, no limit." size={12} />
+					<T x={RX + 16} y={538} text="at once. Toward a = 0 they grow without limit." size={12} />
 					<T x={RX + 16} y={566} text="Age today: {AGE.toFixed(2)} billion years" size={12} muted />
 				</Readout>
 			{:else}

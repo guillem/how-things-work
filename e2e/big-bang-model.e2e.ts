@@ -24,6 +24,8 @@ import {
 	redshiftSeen,
 	reionized,
 	scaleAt,
+	T_ACC,
+	T_DARK_ENERGY,
 	T_FREEZE_S,
 	T_NUC_S,
 	temperature,
@@ -103,6 +105,11 @@ test('distances: light-travel < then·(1+z) = now, and the observable universe i
 	const far = distances(14.18);
 	expect(far.lightTravel).toBeCloseTo(13.5, 1);
 	expect(far.comoving).toBeCloseTo(33.7, 0);
+	// it was 2.2 Gly from us when its light left, about 290 million years in
+	expect(far.then).toBeCloseTo(2.2, 1);
+	expect(far.emitted * 1000).toBeCloseTo(290, -1);
+	// the CMB's light set off 41 million light years from here
+	expect(distances(Z_STAR).then * 1000).toBeCloseTo(41.5, 0);
 	expect(HORIZON).toBeGreaterThan(45.5);
 	expect(HORIZON).toBeLessThan(47);
 	expect(HUBBLE_DISTANCE).toBeCloseTo(14.5, 1);
@@ -123,6 +130,11 @@ test('the expansion started to speed up at z ≈ 0.63, about 6 billion years ago
 	expect(acceleration(aAcc * 1.02)).toBeGreaterThan(0);
 	expect(1 / aAcc - 1).toBeCloseTo(0.63, 1);
 	expect(AGE - timeAt(aAcc)).toBeCloseTo(6.1, 0);
+	// the narrative: speeding up from 7.7 billion years, dark energy the largest share from 10.3
+	expect(T_ACC).toBeCloseTo(7.7, 1);
+	expect(T_DARK_ENERGY).toBeCloseTo(10.3, 1);
+	// and light from z = 1 set off 7.95 billion years ago
+	expect(AGE - timeAt(0.5)).toBeCloseTo(7.95, 2);
 });
 
 test('helium: neutrons freeze out at ~1 in 5, decay to ~1 in 7, ~25% of the mass (measured 24.5%)', () => {
@@ -136,8 +148,7 @@ test('helium: neutrons freeze out at ~1 in 5, decay to ~1 in 7, ~25% of the mass
 	expect(neutronsPerProton(1e6)).toBe(neutronsPerProton(T_NUC_S));
 	// measured in pristine gas: 0.2449 ± 0.0040 (Aver et al. 2015, quoted in Planck 2018 VI)
 	const Y = heliumMassFraction();
-	expect(Y).toBeGreaterThan(0.23);
-	expect(Y).toBeLessThan(0.26);
+	expect(Math.abs(Y - 0.245)).toBeLessThan(0.001); // the page quotes 24.5%
 });
 
 test('the CMB’s light was stretched 1,091 times: from near-infrared to 1 mm microwaves', () => {
