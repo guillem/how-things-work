@@ -6,6 +6,9 @@ import { expect, test } from '@playwright/test';
 import {
 	GALAXIES,
 	ML_DISK_DEFAULT,
+	ML_MAX,
+	ML_MIN,
+	RATIO_MAX,
 	bestHalo,
 	bestVisibleOnly,
 	speedAt,
@@ -84,6 +87,24 @@ test('a dark halo of roughly five to eight times the visible mass fits each gala
 		).toBeCloseTo(h.ratio, 6);
 	}
 	expect(ratios.NGC3198).toBeCloseTo(5.6, 0);
+});
+
+test('“Find the best halo” always lands inside the halo-mass control, for any galaxy and Υ', () => {
+	// The button writes its result into the slider, so the search may not go beyond it.
+	for (const info of GALAXIES) {
+		for (const ml of [ML_MIN, 0.3, ML_DISK_DEFAULT, ML_MAX]) {
+			const h = bestHalo(galaxy(info.id), ml);
+			expect(h.ratio, `${info.name} at Υ = ${ml}`).toBeLessThanOrEqual(RATIO_MAX);
+		}
+	}
+});
+
+test('a halo of zero mass scores the same as no halo', () => {
+	const g = galaxy('NGC3198');
+	expect(fit(g, ML_DISK_DEFAULT, { ratio: 0, core: 4 }).reduced).toBeCloseTo(
+		fit(g, ML_DISK_DEFAULT, null).reduced,
+		6
+	);
 });
 
 test('the halo flattens the curve: solid-body rotation in its core, a constant speed far out', () => {
@@ -173,6 +194,15 @@ test('the numbers the narrative quotes', () => {
 	// Within the slider's range (Υ ≤ 1.2) the visible matter alone never beats χ²/dof ≈ 245.
 	const bv = bestVisibleOnly(g);
 	expect(bv.chi2 / (g.points.length - 1)).toBeCloseTo(245, -1);
+	// NGC 2403's best halo misses by about 6 km/s on average, though χ² per point stays near 15.
+	const g2403 = galaxy('NGC2403');
+	const f2403 = fit(g2403, ML_DISK_DEFAULT, bestHalo(g2403, ML_DISK_DEFAULT));
+	expect(f2403.rmsKms).toBeCloseTo(6, 0);
+	expect(f2403.reduced).toBeCloseTo(15, -1);
+	// The Hubble field of the Bullet Cluster, 1300 × 830 kpc, is 4.2 × 2.7 million light years.
+	const MLY_PER_KPC = 3.2616e-3;
+	expect(BRADAC.fieldKpc[0] * MLY_PER_KPC).toBeCloseTo(4.2, 1);
+	expect(BRADAC.fieldKpc[1] * MLY_PER_KPC).toBeCloseTo(2.7, 1);
 	// NGC 2403 has about a quarter of NGC 3198's stars.
 	expect(visibleMass(galaxy('NGC2403'), 0.5).stars / m.stars).toBeCloseTo(0.26, 1);
 	// The four halos weigh 5½–8 times their galaxies' visible matter.

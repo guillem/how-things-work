@@ -12,7 +12,7 @@
  *   Hubble ACS images, 13 ± 1 and 91 ± 10 × 10¹³ M☉, and the lensing masses
  *   within 250 kpc of the main cluster (2.8 ± 0.2 × 10¹⁴ M☉) and of the
  *   subcluster (2.3 ± 0.2 × 10¹⁴ M☉): Bradač et al. (2006), "Strong and weak
- *   lensing united. III", ApJ 652, 937, §5 and Table 4 (arXiv:astro-ph/0608408).
+ *   lensing united. III", ApJ 652, 937, Table 3 and §IV (arXiv:astro-ph/0608408).
  * - Stars are ~1–2% of a cluster's mass (Clowe et al. 2006, citing Kochanek
  *   et al. 2003); the model takes 1.5% of the measured total.
  *

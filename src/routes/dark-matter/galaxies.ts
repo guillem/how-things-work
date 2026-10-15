@@ -198,7 +198,7 @@ export function fit(g: Galaxy, mlDisk: number, h: Halo | null): Fit {
 		sse += d * d;
 	});
 	const n = g.points.length;
-	const k = h ? 3 : 1;
+	const k = h && h.ratio > 0 ? 3 : 1;
 	return {
 		chi2,
 		reduced: chi2 / Math.max(1, n - k),
@@ -209,7 +209,7 @@ export function fit(g: Galaxy, mlDisk: number, h: Halo | null): Fit {
 }
 
 /** Ranges of the reader's controls (also the search box of `bestHalo`). */
-export const RATIO_MAX = 40;
+export const RATIO_MAX = 20;
 export const CORE_MIN = 0.1;
 export const CORE_MAX = 20;
 export const ML_MIN = 0.1;
