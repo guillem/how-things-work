@@ -84,3 +84,69 @@ test('the index tracks reading progress in this browser and can clear it', async
 	await expect(card()).toContainText('Start');
 	expect(await page.evaluate(() => localStorage.getItem('progress'))).toBeNull();
 });
+
+test(
+	'search and filters narrow the index, and the address keeps them',
+	{ tag: '@smoke' },
+	async ({ page }) => {
+		await page.goto('./');
+		const cards = page.locator('main .grid > *');
+		const total = await cards.count();
+		const result = page.getByText(/^(All|Showing) \d+/);
+		await expect(result).toHaveText(`All ${total} explainers`);
+
+		// "/" jumps to the search box; words match titles regardless of case and apostrophes.
+		await page.keyboard.press('/');
+		const search = page.getByRole('searchbox', { name: 'Search the explainers' });
+		await expect(search).toBeFocused();
+		await page.keyboard.type('Photosynth');
+		await expect(cards).toHaveCount(1);
+		await expect(page.getByRole('link', { name: /how photosynthesis works/i })).toBeVisible();
+		await expect(page.getByRole('region', { name: 'Physics' })).toHaveCount(0);
+		await expect(result).toContainText(`Showing 1 of ${total} explainers`);
+		await search.fill('newtons laws');
+		await expect(page.getByRole('link', { name: /newton's laws/i })).toBeVisible();
+		await search.fill('');
+		await expect(cards).toHaveCount(total);
+
+		// Areas: any of the chosen ones.
+		const area = page.getByRole('group', { name: 'Area' });
+		await area.getByRole('button', { name: /^Physics/ }).click();
+		await expect(page.getByRole('region', { name: 'Biology' })).toHaveCount(0);
+		await area.getByRole('button', { name: /^Biology/ }).click();
+		await expect(page.getByRole('region', { name: 'Physics' })).toBeVisible();
+		await expect(page.getByRole('region', { name: 'Biology' })).toBeVisible();
+		await expect(page.getByRole('region', { name: 'Space' })).toHaveCount(0);
+
+		// Levels: only cards of the chosen level are left.
+		const level = page.getByRole('group', { name: 'Level' });
+		await level.getByRole('button', { name: /^Level 1/ }).click();
+		const grid = page.locator('main .grid');
+		await expect(grid.getByText(/^Level [23]$/)).toHaveCount(0);
+		const shown = await cards.count();
+		expect(shown).toBeGreaterThan(0);
+		await expect(result).toContainText(`Showing ${shown} of ${total}`);
+
+		// The filters live in the address: they survive a reload and coming back from a topic.
+		await expect(page).toHaveURL(/\/\?area=physics,biology&level=1$/);
+		await page.reload();
+		await expect(cards).toHaveCount(shown);
+		await expect(level.getByRole('button', { name: /^Level 1/ })).toHaveAttribute(
+			'aria-pressed',
+			'true'
+		);
+		await cards.first().click();
+		await expect(page.getByRole('heading', { level: 1 })).not.toHaveText(/how things work/i);
+		await page.goBack();
+		await expect(cards).toHaveCount(shown);
+
+		// Nothing matches: say so, and clearing brings every topic back.
+		await search.fill('zzzz');
+		await expect(cards).toHaveCount(0);
+		await expect(page.getByText('No explainer matches “zzzz” with these filters.')).toBeVisible();
+		await page.getByRole('button', { name: 'Clear filters' }).last().click();
+		await expect(cards).toHaveCount(total);
+		await expect(search).toHaveValue('');
+		await expect(page).toHaveURL(/\/how-things-work\/$/);
+	}
+);
