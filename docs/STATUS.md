@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-15 UTC.
+Last updated: 2026-10-17 UTC.
 
 ## How we work
 
@@ -49,6 +49,11 @@ Last updated: 2026-10-15 UTC.
   environment deploys from `v*` tags and `main` (rollbacks run from main).
 - Reading progress: each explainer records the reader's current step in `localStorage`
   (`src/lib/progress.svelte.ts`); the index shows Done / Continue / Start on each card.
+- Index search and filters (`src/routes/+page.svelte`): a search box ("/" focuses it) and
+  Area (catalogue category) and Level toggles, multi-select within a group, combined across
+  groups; state in the query string (`?q=&area=physics,biology&level=1`). The prerendered page
+  still lists everything; the options come from the built topics, so new categories and levels
+  appear by themselves (see BACKLOG for what adding a level needs).
 - Local testing: other work runs on this machine, so ports can clash (4173 is taken). The test
   server uses `PW_PORT` (default 4180). In a worktree, clone `node_modules` (`cp -cR`) rather
   than symlinking it, or svelte-check checks the other checkout's types.
@@ -60,8 +65,23 @@ Last updated: 2026-10-15 UTC.
 
 ## Current development
 
-**Nothing in progress.** Released as v0.1.21 (2026-10-15), three pieces built in local
-worktrees after the completion review and merged into `main`:
+**Nothing in progress; committed on local `main`, not pushed or released** (2026-10-17):
+
+- Index search and filters: search box, Area and Level toggles with live counts, an empty state
+  with "Clear filters", the state in the query string; tested in `e2e/index.e2e.ts` (@smoke).
+- Faster browser tests: `make e2e-full` 4 min 9 s → 2 min 46 s locally. `scenes.e2e.ts` slept a
+  fixed 500 ms after each of its ~1,180 step renders and 150 ms per step of each dark-mode walk
+  (about 780 s of its 860 s of test time). It now runs the same 500 ms / 150 ms of timers and
+  frames on Playwright's fake clock and waits for requests in flight, so deferred work (the
+  Mandelbrot's delayed start, debounced readouts, language-models' fetch) is still checked: an
+  error planted in a 250 ms timer fails the test; waiting for a few frames alone missed it.
+  Traces are recorded only in CI (about a quarter of the run locally). More workers didn't help:
+  the suite is CPU-bound at the default 6.
+- `.claude/launch.json`: a `pages` preview (the production build under the sub-path, port 4181)
+  for the desktop app's browser pane.
+
+**Released as v0.1.21** (2026-10-15), three pieces built in local worktrees after the
+completion review and merged into `main`:
 
 - Housekeeping: docs brought in line with the finished state; dead code removed (the `#lib`
   stub, `easeIn`, 27 unused CSS tokens, the nine local mulberry32 copies replaced by `rng` from

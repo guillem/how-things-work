@@ -17,7 +17,9 @@ export default defineConfig({
 	reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
 	use: {
 		baseURL: `http://localhost:${PORT}${BASE}/`,
-		trace: 'retain-on-failure'
+		// Recording a trace costs about a quarter of the suite's time, so only CI keeps one for each
+		// failure (locally, rerun a failing test with `--trace on` to get one).
+		trace: process.env.CI ? 'retain-on-failure' : 'off'
 	},
 	projects: [
 		{

@@ -161,6 +161,13 @@ and then applies the fixes.
 
 ## Site and framework work
 
+- **Index search and filters — done (2026-10-17).** Adding a reader level later (elementary,
+  postgraduate...): add its row to the Levels table in `docs/TOPICS.md` (the user's call), then
+  widen `Level` and `levelNames` in `src/lib/catalog-parse.ts` and the parser's level check; the
+  index's Level filter and the cards pick it up from there. If levels stop being numbers that sort
+  from easiest to hardest, the filter's ordering (numeric) needs a look too. With ~200 topics the
+  Area chips take five rows on a phone; collapse them into a menu there if that feels heavy.
+
 - **Stage text on phones — option B (decided 2026-10-13), mechanism landed.** At 390 px wide the
   960-unit stage is drawn at ~0.4 scale, so 13-unit labels end up ~5 px. The user chose B
   (readouts out of the SVG) over a zoomable stage and landscape. On viewports ≤ 640 px a scene's

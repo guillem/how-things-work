@@ -1,0 +1,14 @@
+{
+	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "pages",
+			"runtimeExecutable": "sh",
+			"runtimeArgs": [
+				"-c",
+				"BASE_PATH=/how-things-work npm run build && node scripts/serve-pages.mjs build /how-things-work 4181"
+			],
+			"port": 4181
+		}
+	]
+}

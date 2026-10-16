@@ -16,12 +16,14 @@ npm install
 npm run dev          # http://localhost:5173
 make check          # prettier, eslint, svelte-check and the model tests (~20 s)
 make e2e            # smoke tests of the critical paths on the production build (~8 s)
-make e2e-full       # every browser test (2,157 of them, ~3 min 15 s)
+make e2e-full       # every browser test (2,161 of them, ~2 min 45 s)
 make format         # prettier --write
 npm run build        # static site in ./build
 ```
 
 The first time you run the browser tests you need the browser: `npx playwright install chromium`.
+Traces are recorded only in CI (they cost about a quarter of the run); add `--trace on` to record
+one for a failing test locally.
 They build the site for the `/how-things-work/` sub-path and serve it the way GitHub Pages does
 (`scripts/serve-pages.mjs`) on port `PW_PORT` (default 4180). How we work and test is in
 [`CLAUDE.md`](CLAUDE.md); building topics in cloud sessions and reviewing them through the Batch API
