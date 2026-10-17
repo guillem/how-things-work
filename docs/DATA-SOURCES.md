@@ -169,3 +169,14 @@ Non-commercial:
 - **Giunta / Bodenstein** (reaction-rates-equilibrium): Giunta and OpenStax are credited on the
   page (2026-10-15); still check the exact wording of the permission on Giunta's page. Re-deriving the values from
   Bodenstein's 1899 paper (public domain) would remove the restriction.
+
+Downloads log:
+
+- 2026-10-17, diffusion-models: MNIST train and test (the four `*-ubyte.gz` files) fetched again
+  from the same torchvision mirror as the MNIST row above (https://ossci-datasets.s3.amazonaws.com/mnist/),
+  checked against the SHA-256 sums in `scripts/data/diffusion-models/mnist.mjs`, into a scratch
+  cache outside the repository, to write `diffusion-models/mnist-nearest.ts`
+  (`scripts/data/diffusion-models/nearest.mjs`): the distance from each shipped generated digit
+  and each test digit to its nearest training digit, plus the 40 nearest training digits
+  themselves (16 grey levels). That file is used by the tests only, not shipped to the page; same
+  licence status as the MNIST row.

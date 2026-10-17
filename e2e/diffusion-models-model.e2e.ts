@@ -2,8 +2,9 @@
 // from it; the step-by-step noising chain has the closed-form marginal and forgets where it
 // started; the trained 2-D network guesses the data's middle from pure noise and the nearest
 // moon from little noise; sampling lands on the moons, better with more steps; guidance sends
-// the points to the moon asked for and too much of it overshoots; and the shipped digit runs are
-// read as the digit asked for by the convolution-vision page's network. Runs in Node; no browser.
+// the points to the moon asked for and too much of it overshoots; the shipped digit runs are
+// read as the digit asked for by the convolution-vision page's network; and their finished digits
+// are as far from the training digits as real test digits are. Runs in Node; no browser.
 import { expect, test } from '@playwright/test';
 import {
 	BETAS,
@@ -22,6 +23,7 @@ import { rng } from '../src/lib/draw/math';
 import { MOONS, WEIGHTS } from '../src/routes/diffusion-models/moons-model';
 import { moon, onMoons } from '../src/routes/diffusion-models/moons';
 import { CHECK, SEQUENCES, TRAIN } from '../src/routes/diffusion-models/mnist-sequences';
+import { NEAREST, TEST } from '../src/routes/diffusion-models/mnist-nearest';
 import { decodeWeights as cnnWeights, forward as cnn } from '../src/routes/convolution-vision/cnn';
 import { WEIGHTS as CNN_WEIGHTS } from '../src/routes/convolution-vision/mnist-cnn';
 
@@ -244,4 +246,61 @@ test('the digit runs the page describes', () => {
 	const final = unpack4(three.frames[three.frames.length - 1].x);
 	expect(corr(unpack4(at700.x0), final)).toBeGreaterThan(0.7);
 	expect(corr(unpack4(at700.x), final)).toBeLessThan(0.2);
+});
+
+// ---- generated, not copied ----------------------------------------------------------------
+// The page's notes on the digit step: "Generated, not copied: the 30 finished digits stored here
+// are on average as far (in pixel distance) from their nearest training digit as real test
+// digits, which the network never saw, are from theirs, and none is a near-copy."
+// mnist-nearest.ts holds, for every stored run, its nearest training digit (found over all 60,000
+// by scripts/data/diffusion-models/nearest.mjs), and the same distance for the 10,000 test digits.
+
+/** Euclidean distance on the network's scale (−1 = paper, 1 = ink), from two 4-bit images. */
+const distance = (a: string, b: string) => {
+	const x = unpack4(a);
+	const y = unpack4(b);
+	let s = 0;
+	for (let i = 0; i < x.length; i++) s += (2 * (x[i] - y[i])) ** 2;
+	return Math.sqrt(s);
+};
+const finished = (s: (typeof SEQUENCES)[number]) => s.frames[s.frames.length - 1].x;
+const testOf = (digit: number) => {
+	const t = TEST.find((x) => x.digit === digit);
+	if (!t) throw new Error(`no test digits of ${digit}`);
+	return t;
+};
+/** Percentile rank (0 … 100) of a distance among the test digits of the same class. */
+const rank = (digit: number, d: number) => testOf(digit).percentiles.filter((p) => p < d).length;
+
+test('the nearest-training-digit record is of the digits shipped', () => {
+	expect(NEAREST).toHaveLength(SEQUENCES.length);
+	SEQUENCES.forEach((s, i) => {
+		const n = NEAREST[i];
+		expect([n.digit, n.seed, n.guidance, n.steps]).toEqual([s.digit, s.seed, s.guidance, s.steps]);
+		// the stored distance is the one between the finished digit and the stored training digit
+		expect(distance(finished(s), n.pixels)).toBeCloseTo(n.distance, 2);
+	});
+	expect(TEST.reduce((a, t) => a + t.n, 0)).toBe(10000);
+});
+
+test('generated, not copied: as far from the training digits as unseen test digits', () => {
+	const main = SEQUENCES.map((s, i) => ({ s, n: NEAREST[i] })).filter(
+		({ s }) => s.guidance === 3 && s.steps === T
+	);
+	expect(main).toHaveLength(30);
+	// "on average as far": 3 runs per digit, so compare with the test digits' mean taken digit
+	// by digit (1s are close to other 1s, 8s far from other 8s)
+	const mean = main.reduce((a, { n }) => a + n.distance, 0) / main.length;
+	const testMean = TEST.reduce((a, t) => a + t.mean, 0) / TEST.length;
+	expect(mean / testMean).toBeGreaterThan(0.9);
+	expect(mean / testMean).toBeLessThan(1.1);
+	// and among the test digits of their own class they sit in the middle, not at the near end
+	const ranks = main.map(({ s, n }) => rank(s.digit, n.distance));
+	const meanRank = ranks.reduce((a, r) => a + r, 0) / ranks.length;
+	expect(meanRank).toBeGreaterThan(35);
+	expect(meanRank).toBeLessThan(65);
+	// "none is a near-copy": each is further from its nearest training digit than the closest of
+	// the test digits of its class, real digits written by other people (at present the closest
+	// generated digit is still further than about 1 in 10 of them)
+	for (const { s, n } of main) expect(n.distance).toBeGreaterThan(testOf(s.digit).percentiles[0]);
 });

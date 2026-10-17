@@ -6,6 +6,7 @@
  *   node scripts/data/diffusion-models/train.mjs sequences <cache dir>
  *
  * It needs the trained EMA weights in <cache dir>/mnist-ema.f32 (written by `train.mjs mnist`).
+ * Afterwards it runs ./nearest.mjs on the new runs (writes mnist-nearest.ts).
  *
  * What is stored (all images 28 × 28, 4 bits per pixel, two pixels per byte, high nibble
  * first; value v ↦ pixel (v / 15) · 2 − 1, so 0 = black paper, 15 = white ink; x_t is clipped to
@@ -36,6 +37,7 @@ import {
 } from '../../../src/routes/convolution-vision/cnn.ts';
 import { WEIGHTS as CNN_WEIGHTS } from '../../../src/routes/convolution-vision/mnist-cnn.ts';
 import { loadMnist } from './mnist.mjs';
+import { nearest } from './nearest.mjs';
 
 const MNIST = MNIST_NET;
 const OUT = path.resolve(
@@ -189,6 +191,7 @@ export const SEQUENCES: Sequence[] = ${JSON.stringify(SEQUENCES)};
 `;
 	fs.writeFileSync(OUT, out);
 	console.log(`wrote ${OUT} (${Math.round(out.length / 1024)} KB)`);
+	await nearest(cache, SEQUENCES);
 }
 
 function readsPacked(b64, reads) {
