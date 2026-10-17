@@ -72,19 +72,22 @@
 	let frame = $state<SVGGElement>();
 	/** CSS px per drawing unit, measured on phones; ~0.37 on a 390 px screen. */
 	let unit = $state(0.37);
-	/** Drawing units between the x axis and the bottom of the stage. */
-	let below = $state(0);
+	/** The stage's edges in this chart's drawing units (left, right, bottom). */
+	let edge = $state({ x0: -Infinity, x1: Infinity, y1: Infinity });
 	$effect(() => {
 		const g = frame;
 		const svg = g?.ownerSVGElement;
-		const [x0, y0] = [left, bottom];
 		if (!narrow || !g || !svg) return;
 		const measure = () => {
 			const m = g.getScreenCTM();
 			const k = m ? Math.hypot(m.a, m.b) : 0;
 			if (!m || !(k > 0)) return;
 			unit = k;
-			below = (svg.getBoundingClientRect().bottom - new DOMPoint(x0, y0).matrixTransform(m).y) / k;
+			const r = svg.getBoundingClientRect();
+			const inv = m.inverse();
+			const a = new DOMPoint(r.left, r.top).matrixTransform(inv);
+			const b = new DOMPoint(r.right, r.bottom).matrixTransform(inv);
+			edge = { x0: a.x, x1: b.x, y1: b.y };
 		};
 		measure();
 		const ro = new ResizeObserver(measure);
@@ -111,6 +114,13 @@
 			Math.max(0, xs.indexOf(0))
 		);
 	});
+	/** x of each tick label on phones: an end label is kept inside the stage. */
+	const xAt = $derived(
+		xs.map((v, i) => {
+			const half = width(xText[i], fs) / 2;
+			return Math.max(edge.x0 + half, Math.min(edge.x1 - half, sx(v)));
+		})
+	);
 	/** Labels the x title would cover if it sat at the right end of the tick row. */
 	const xCovered = $derived.by(() => {
 		if (!narrow || !xLabel) return [];
@@ -123,7 +133,9 @@
 	 * screen; a row lower when that would hide more than one label and the
 	 * stage has room for it.
 	 */
-	const xTitleBelow = $derived(xCovered.length > 1 && below >= 4 + 0.95 * fs + 1.5 * fsTitle);
+	const xTitleBelow = $derived(
+		xCovered.length > 1 && edge.y1 - bottom >= 4 + 0.95 * fs + 1.5 * fsTitle
+	);
 	const xShown = $derived(
 		new Set(xTitleBelow ? xKeep : xKeep.filter((i) => !xCovered.includes(i)))
 	);
@@ -161,7 +173,7 @@
 				{xText[i]}
 			</text>
 		{:else if xShown.has(i)}
-			<text x={sx(v)} y={rowY} text-anchor="middle" font-size={fs} class="muted tick"
+			<text x={xAt[i]} y={rowY} text-anchor="middle" font-size={fs} class="muted tick"
 				>{xText[i]}</text
 			>
 		{/if}
