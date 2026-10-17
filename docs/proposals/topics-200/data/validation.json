@@ -1,0 +1,908 @@
+{
+ "problems": [],
+ "warnings": [
+  "resampling-inference: Needs without a licence word: The Palmer penguins dataset (344 penguins, bill and flipper measurements by spec",
+  "blue-sky-red-sunset: Needs without a licence word: None that needs a licence: sunlight above the air as a Planck spectrum at the Su",
+  "magnets-and-poles: level 0 without a leadsTo",
+  "dissolving-sugar-and-salt: Needs without a licence word: Solubility of sucrose and of sodium chloride in water from 0 to 100 °C (about a ",
+  "chromatography: Needs without a licence word: No external data: the model is the Giddings-Eyring stochastic model (exponential",
+  "dislocations-alloys: Needs without a licence word: None beyond a 2D Lennard-Jones pair potential, the same kind of model states-of-",
+  "huckel-molecular-orbitals: Needs without a licence word: Measured absorption maxima of a cyanine dye series for the color panel, to set b",
+  "transition-state-theory: Needs without a licence word: LEPS (Sato) parameters for the H3 and FH2 surfaces.",
+  "be-the-bird-camouflage: Needs without a licence word: Bark textures, either procedurally generated or public-domain or CC0 photographs",
+  "mri-k-space: Needs without a licence word: The Shepp-Logan phantom (a mathematical object, no data); optionally one real T1",
+  "comet-tails: Needs without a licence word: Orbital elements of comet 1P/Halley (perihelion distance, eccentricity, period) ",
+  "elliptic-curve-cryptography: Needs without a licence word: Curve parameters from public standards (secp256k1, Curve25519), which are publis",
+  "k-means-clustering: Needs without a licence word: The Palmer penguins measurements (344 penguins, three species).",
+  "chain-of-thought-scratchpad: Needs without a licence word: Two tiny transformers trained offline by the project on generated addition probl",
+  "bicycle-stability: Needs without a licence word: The benchmark bicycle parameters and linearized equations of Meijaard, Papadopou"
+ ],
+ "counts": {
+  "byLevelBefore": {
+   "1": 38,
+   "2": 56,
+   "3": 6
+  },
+  "byLevelNew": {
+   "0": 39,
+   "1": 10,
+   "2": 3,
+   "3": 48
+  },
+  "byLevelAfter": {
+   "0": 39,
+   "1": 48,
+   "2": 59,
+   "3": 54
+  },
+  "kinds": {
+   "simulate": 41,
+   "build": 12,
+   "manipulate": 29,
+   "explore": 6,
+   "step": 12
+  },
+  "everyday": 28,
+  "total": 100
+ },
+ "backlinks": [
+  {
+   "existing": "bayes-theorem",
+   "add": "monty-hall"
+  },
+  {
+   "existing": "graphics-3d",
+   "add": "bezier-curves"
+  },
+  {
+   "existing": "bayes-theorem",
+   "add": "probability-trees"
+  },
+  {
+   "existing": "central-limit-theorem",
+   "add": "probability-trees"
+  },
+  {
+   "existing": "epidemics",
+   "add": "differential-equations"
+  },
+  {
+   "existing": "ecosystems",
+   "add": "differential-equations"
+  },
+  {
+   "existing": "feedback-control",
+   "add": "differential-equations"
+  },
+  {
+   "existing": "light-optics",
+   "add": "calculus-of-variations"
+  },
+  {
+   "existing": "gradient-descent",
+   "add": "calculus-of-variations"
+  },
+  {
+   "existing": "orbits-kepler",
+   "add": "calculus-of-variations"
+  },
+  {
+   "existing": "oscillations-resonance",
+   "add": "phase-portraits"
+  },
+  {
+   "existing": "ecosystems",
+   "add": "phase-portraits"
+  },
+  {
+   "existing": "feedback-control",
+   "add": "phase-portraits"
+  },
+  {
+   "existing": "chaos-fractals",
+   "add": "phase-portraits"
+  },
+  {
+   "existing": "epidemics",
+   "add": "random-graphs"
+  },
+  {
+   "existing": "internet",
+   "add": "random-graphs"
+  },
+  {
+   "existing": "pagerank",
+   "add": "random-graphs"
+  },
+  {
+   "existing": "states-of-matter",
+   "add": "random-graphs"
+  },
+  {
+   "existing": "fourier-transform",
+   "add": "taylor-series"
+  },
+  {
+   "existing": "light-optics",
+   "add": "blue-sky-red-sunset"
+  },
+  {
+   "existing": "states-of-matter",
+   "add": "floating-sinking-and-boats"
+  },
+  {
+   "existing": "electromagnetism",
+   "add": "magnets-and-poles"
+  },
+  {
+   "existing": "sun-earth-moon",
+   "add": "shadows-and-pinholes"
+  },
+  {
+   "existing": "waves-interference",
+   "add": "vibrations-and-sound"
+  },
+  {
+   "existing": "fourier-transform",
+   "add": "musical-scales-ratios"
+  },
+  {
+   "existing": "states-of-matter",
+   "add": "ising-model"
+  },
+  {
+   "existing": "neural-networks",
+   "add": "ising-model"
+  },
+  {
+   "existing": "semiconductors",
+   "add": "lasers"
+  },
+  {
+   "existing": "solar-cells",
+   "add": "lasers"
+  },
+  {
+   "existing": "states-of-matter",
+   "add": "dissolving-sugar-and-salt"
+  },
+  {
+   "existing": "bridges-structures",
+   "add": "dislocations-alloys"
+  },
+  {
+   "existing": "carbon-polymers",
+   "add": "huckel-molecular-orbitals"
+  },
+  {
+   "existing": "semiconductors",
+   "add": "huckel-molecular-orbitals"
+  },
+  {
+   "existing": "graph-search",
+   "add": "ant-trails"
+  },
+  {
+   "existing": "evolution",
+   "add": "be-the-bird-camouflage"
+  },
+  {
+   "existing": "ecosystems",
+   "add": "flocking-birds"
+  },
+  {
+   "existing": "entropy",
+   "add": "diffusion-osmosis"
+  },
+  {
+   "existing": "respiration-atp",
+   "add": "diffusion-osmosis"
+  },
+  {
+   "existing": "epidemics",
+   "add": "pcr-copying-dna"
+  },
+  {
+   "existing": "feedback-control",
+   "add": "bacterial-chemotaxis"
+  },
+  {
+   "existing": "homeostasis",
+   "add": "bacterial-chemotaxis"
+  },
+  {
+   "existing": "crispr",
+   "add": "lac-operon"
+  },
+  {
+   "existing": "cancer",
+   "add": "luria-delbruck"
+  },
+  {
+   "existing": "crispr",
+   "add": "luria-delbruck"
+  },
+  {
+   "existing": "cancer",
+   "add": "population-genetics"
+  },
+  {
+   "existing": "chaos-fractals",
+   "add": "turing-patterns"
+  },
+  {
+   "existing": "vision-color",
+   "add": "hearing-and-the-ear"
+  },
+  {
+   "existing": "bridges-structures",
+   "add": "muscles-pull-in-pairs"
+  },
+  {
+   "existing": "oscillations-resonance",
+   "add": "why-spinning-makes-you-dizzy"
+  },
+  {
+   "existing": "newtons-laws",
+   "add": "why-spinning-makes-you-dizzy"
+  },
+  {
+   "existing": "homeostasis",
+   "add": "why-you-get-sleepy"
+  },
+  {
+   "existing": "homeostasis",
+   "add": "pharmacokinetics-dosing"
+  },
+  {
+   "existing": "gradient-descent",
+   "add": "cerebellum-motor-learning"
+  },
+  {
+   "existing": "reinforcement-learning",
+   "add": "cerebellum-motor-learning"
+  },
+  {
+   "existing": "vision-color",
+   "add": "cochlea-hearing"
+  },
+  {
+   "existing": "compression",
+   "add": "cochlea-hearing"
+  },
+  {
+   "existing": "epidemics",
+   "add": "forest-fire-spread"
+  },
+  {
+   "existing": "plate-tectonics",
+   "add": "tsunamis"
+  },
+  {
+   "existing": "deep-time",
+   "add": "carbonate-silicate-thermostat"
+  },
+  {
+   "existing": "bayes-theorem",
+   "add": "ensemble-weather-forecasting"
+  },
+  {
+   "existing": "ocean-currents",
+   "add": "ocean-acidification"
+  },
+  {
+   "existing": "orbits-kepler",
+   "add": "leap-years"
+  },
+  {
+   "existing": "rockets",
+   "add": "lagrange-points-three-body"
+  },
+  {
+   "existing": "chaos-fractals",
+   "add": "lagrange-points-three-body"
+  },
+  {
+   "existing": "sorting",
+   "add": "game-tree-search"
+  },
+  {
+   "existing": "reinforcement-learning",
+   "add": "game-tree-search"
+  },
+  {
+   "existing": "calculus",
+   "add": "how-simulations-work"
+  },
+  {
+   "existing": "feedback-control",
+   "add": "how-simulations-work"
+  },
+  {
+   "existing": "chaos-fractals",
+   "add": "how-simulations-work"
+  },
+  {
+   "existing": "oscillations-resonance",
+   "add": "how-simulations-work"
+  },
+  {
+   "existing": "gpu",
+   "add": "cache-memory-hierarchy"
+  },
+  {
+   "existing": "cryptography",
+   "add": "hash-tables-bloom-filters"
+  },
+  {
+   "existing": "compression",
+   "add": "shazam-audio-fingerprint"
+  },
+  {
+   "existing": "consensus-blockchains",
+   "add": "distributed-hash-tables"
+  },
+  {
+   "existing": "pagerank",
+   "add": "distributed-hash-tables"
+  },
+  {
+   "existing": "graph-search",
+   "add": "distributed-hash-tables"
+  },
+  {
+   "existing": "consensus-blockchains",
+   "add": "elliptic-curve-cryptography"
+  },
+  {
+   "existing": "quantum-computing",
+   "add": "elliptic-curve-cryptography"
+  },
+  {
+   "existing": "gps",
+   "add": "kalman-filter"
+  },
+  {
+   "existing": "gps",
+   "add": "radar-sonar"
+  },
+  {
+   "existing": "medical-imaging",
+   "add": "radar-sonar"
+  },
+  {
+   "existing": "wireless-signals",
+   "add": "tcp-congestion-control"
+  },
+  {
+   "existing": "language-models",
+   "add": "next-word-guessing-game"
+  },
+  {
+   "existing": "embeddings",
+   "add": "k-means-clustering"
+  },
+  {
+   "existing": "language-models",
+   "add": "ngram-text-models"
+  },
+  {
+   "existing": "compression",
+   "add": "ngram-text-models"
+  },
+  {
+   "existing": "turing-machines",
+   "add": "chain-of-thought-scratchpad"
+  },
+  {
+   "existing": "fourier-transform",
+   "add": "positional-encoding"
+  },
+  {
+   "existing": "transformers",
+   "add": "rlhf-alignment"
+  },
+  {
+   "existing": "language-models",
+   "add": "scaling-laws"
+  },
+  {
+   "existing": "transformers",
+   "add": "tokenization"
+  },
+  {
+   "existing": "embeddings",
+   "add": "tokenization"
+  },
+  {
+   "existing": "compression",
+   "add": "training-a-tiny-language-model"
+  },
+  {
+   "existing": "flight",
+   "add": "drone-four-rotors"
+  },
+  {
+   "existing": "feedback-control",
+   "add": "drone-four-rotors"
+  },
+  {
+   "existing": "feedback-control",
+   "add": "room-thermostat"
+  },
+  {
+   "existing": "homeostasis",
+   "add": "room-thermostat"
+  },
+  {
+   "existing": "feedback-control",
+   "add": "toilet-flush"
+  },
+  {
+   "existing": "feedback-control",
+   "add": "bicycle-stability"
+  },
+  {
+   "existing": "power-grid",
+   "add": "gas-turbines-combined-cycle"
+  },
+  {
+   "existing": "power-grid",
+   "add": "wind-turbine-aerodynamics"
+  }
+ ],
+ "buildsOn": [
+  {
+   "existing": "calculus",
+   "by": "differential-equations"
+  },
+  {
+   "existing": "calculus",
+   "by": "calculus-of-variations"
+  },
+  {
+   "existing": "newtons-laws",
+   "by": "calculus-of-variations"
+  },
+  {
+   "existing": "linear-transformations",
+   "by": "phase-portraits"
+  },
+  {
+   "existing": "calculus",
+   "by": "phase-portraits"
+  },
+  {
+   "existing": "graph-search",
+   "by": "random-graphs"
+  },
+  {
+   "existing": "central-limit-theorem",
+   "by": "random-graphs"
+  },
+  {
+   "existing": "central-limit-theorem",
+   "by": "resampling-inference"
+  },
+  {
+   "existing": "bayes-theorem",
+   "by": "resampling-inference"
+  },
+  {
+   "existing": "learning-from-data",
+   "by": "resampling-inference"
+  },
+  {
+   "existing": "calculus",
+   "by": "taylor-series"
+  },
+  {
+   "existing": "complex-numbers",
+   "by": "taylor-series"
+  },
+  {
+   "existing": "waves-interference",
+   "by": "musical-scales-ratios"
+  },
+  {
+   "existing": "entropy",
+   "by": "ising-model"
+  },
+  {
+   "existing": "quantum-mechanics",
+   "by": "lasers"
+  },
+  {
+   "existing": "oscillations-resonance",
+   "by": "lasers"
+  },
+  {
+   "existing": "central-limit-theorem",
+   "by": "chromatography"
+  },
+  {
+   "existing": "reaction-rates-equilibrium",
+   "by": "chromatography"
+  },
+  {
+   "existing": "semiconductors",
+   "by": "dislocations-alloys"
+  },
+  {
+   "existing": "states-of-matter",
+   "by": "dislocations-alloys"
+  },
+  {
+   "existing": "chemical-bonds",
+   "by": "huckel-molecular-orbitals"
+  },
+  {
+   "existing": "linear-transformations",
+   "by": "huckel-molecular-orbitals"
+  },
+  {
+   "existing": "quantum-mechanics",
+   "by": "huckel-molecular-orbitals"
+  },
+  {
+   "existing": "reaction-rates-equilibrium",
+   "by": "surface-catalysis"
+  },
+  {
+   "existing": "reaction-rates-equilibrium",
+   "by": "transition-state-theory"
+  },
+  {
+   "existing": "newtons-laws",
+   "by": "transition-state-theory"
+  },
+  {
+   "existing": "the-cell",
+   "by": "diffusion-osmosis"
+  },
+  {
+   "existing": "states-of-matter",
+   "by": "diffusion-osmosis"
+  },
+  {
+   "existing": "dna-to-protein",
+   "by": "pcr-copying-dna"
+  },
+  {
+   "existing": "the-cell",
+   "by": "bacterial-chemotaxis"
+  },
+  {
+   "existing": "dna-to-protein",
+   "by": "lac-operon"
+  },
+  {
+   "existing": "reaction-rates-equilibrium",
+   "by": "lac-operon"
+  },
+  {
+   "existing": "evolution",
+   "by": "luria-delbruck"
+  },
+  {
+   "existing": "central-limit-theorem",
+   "by": "luria-delbruck"
+  },
+  {
+   "existing": "meiosis-inheritance",
+   "by": "population-genetics"
+  },
+  {
+   "existing": "evolution",
+   "by": "population-genetics"
+  },
+  {
+   "existing": "central-limit-theorem",
+   "by": "population-genetics"
+  },
+  {
+   "existing": "reaction-rates-equilibrium",
+   "by": "turing-patterns"
+  },
+  {
+   "existing": "calculus",
+   "by": "pharmacokinetics-dosing"
+  },
+  {
+   "existing": "radioactivity",
+   "by": "pharmacokinetics-dosing"
+  },
+  {
+   "existing": "neurons",
+   "by": "cerebellum-motor-learning"
+  },
+  {
+   "existing": "feedback-control",
+   "by": "cerebellum-motor-learning"
+  },
+  {
+   "existing": "waves-interference",
+   "by": "cochlea-hearing"
+  },
+  {
+   "existing": "fourier-transform",
+   "by": "cochlea-hearing"
+  },
+  {
+   "existing": "neurons",
+   "by": "cochlea-hearing"
+  },
+  {
+   "existing": "heart-circulation",
+   "by": "ecg-arrhythmias"
+  },
+  {
+   "existing": "neurons",
+   "by": "ecg-arrhythmias"
+  },
+  {
+   "existing": "medical-imaging",
+   "by": "mri-k-space"
+  },
+  {
+   "existing": "fourier-transform",
+   "by": "mri-k-space"
+  },
+  {
+   "existing": "electromagnetism",
+   "by": "mri-k-space"
+  },
+  {
+   "existing": "waves-interference",
+   "by": "tsunamis"
+  },
+  {
+   "existing": "earthquakes",
+   "by": "tsunamis"
+  },
+  {
+   "existing": "carbon-cycle",
+   "by": "carbonate-silicate-thermostat"
+  },
+  {
+   "existing": "greenhouse-effect",
+   "by": "carbonate-silicate-thermostat"
+  },
+  {
+   "existing": "chaos-fractals",
+   "by": "ensemble-weather-forecasting"
+  },
+  {
+   "existing": "atmosphere-weather",
+   "by": "ensemble-weather-forecasting"
+  },
+  {
+   "existing": "acids-bases",
+   "by": "ocean-acidification"
+  },
+  {
+   "existing": "carbon-cycle",
+   "by": "ocean-acidification"
+  },
+  {
+   "existing": "reaction-rates-equilibrium",
+   "by": "ocean-acidification"
+  },
+  {
+   "existing": "greenhouse-effect",
+   "by": "radiative-convective-column"
+  },
+  {
+   "existing": "atmosphere-weather",
+   "by": "radiative-convective-column"
+  },
+  {
+   "existing": "orbits-kepler",
+   "by": "galaxy-collisions"
+  },
+  {
+   "existing": "dark-matter",
+   "by": "galaxy-collisions"
+  },
+  {
+   "existing": "orbits-kepler",
+   "by": "lagrange-points-three-body"
+  },
+  {
+   "existing": "graph-search",
+   "by": "game-tree-search"
+  },
+  {
+   "existing": "newtons-laws",
+   "by": "how-simulations-work"
+  },
+  {
+   "existing": "cpu",
+   "by": "cache-memory-hierarchy"
+  },
+  {
+   "existing": "sorting",
+   "by": "hash-tables-bloom-filters"
+  },
+  {
+   "existing": "binary",
+   "by": "hash-tables-bloom-filters"
+  },
+  {
+   "existing": "fourier-transform",
+   "by": "shazam-audio-fingerprint"
+  },
+  {
+   "existing": "binary",
+   "by": "shazam-audio-fingerprint"
+  },
+  {
+   "existing": "internet",
+   "by": "distributed-hash-tables"
+  },
+  {
+   "existing": "cryptography",
+   "by": "elliptic-curve-cryptography"
+  },
+  {
+   "existing": "bayes-theorem",
+   "by": "kalman-filter"
+  },
+  {
+   "existing": "central-limit-theorem",
+   "by": "kalman-filter"
+  },
+  {
+   "existing": "linear-transformations",
+   "by": "kalman-filter"
+  },
+  {
+   "existing": "feedback-control",
+   "by": "kalman-filter"
+  },
+  {
+   "existing": "waves-interference",
+   "by": "radar-sonar"
+  },
+  {
+   "existing": "fourier-transform",
+   "by": "radar-sonar"
+  },
+  {
+   "existing": "wireless-signals",
+   "by": "radar-sonar"
+  },
+  {
+   "existing": "internet",
+   "by": "tcp-congestion-control"
+  },
+  {
+   "existing": "feedback-control",
+   "by": "tcp-congestion-control"
+  },
+  {
+   "existing": "learning-from-data",
+   "by": "k-means-clustering"
+  },
+  {
+   "existing": "learning-from-data",
+   "by": "ngram-text-models"
+  },
+  {
+   "existing": "transformers",
+   "by": "chain-of-thought-scratchpad"
+  },
+  {
+   "existing": "transformers",
+   "by": "kv-cache-inference"
+  },
+  {
+   "existing": "gpu",
+   "by": "kv-cache-inference"
+  },
+  {
+   "existing": "transformers",
+   "by": "positional-encoding"
+  },
+  {
+   "existing": "unit-circle",
+   "by": "positional-encoding"
+  },
+  {
+   "existing": "transformers",
+   "by": "residual-stream-logit-lens"
+  },
+  {
+   "existing": "language-models",
+   "by": "residual-stream-logit-lens"
+  },
+  {
+   "existing": "language-models",
+   "by": "rlhf-alignment"
+  },
+  {
+   "existing": "reinforcement-learning",
+   "by": "rlhf-alignment"
+  },
+  {
+   "existing": "bayes-theorem",
+   "by": "rlhf-alignment"
+  },
+  {
+   "existing": "neural-networks",
+   "by": "scaling-laws"
+  },
+  {
+   "existing": "gradient-descent",
+   "by": "scaling-laws"
+  },
+  {
+   "existing": "learning-from-data",
+   "by": "scaling-laws"
+  },
+  {
+   "existing": "language-models",
+   "by": "speculative-decoding"
+  },
+  {
+   "existing": "language-models",
+   "by": "tokenization"
+  },
+  {
+   "existing": "compression",
+   "by": "tokenization"
+  },
+  {
+   "existing": "language-models",
+   "by": "training-a-tiny-language-model"
+  },
+  {
+   "existing": "gradient-descent",
+   "by": "training-a-tiny-language-model"
+  },
+  {
+   "existing": "newtons-laws",
+   "by": "abs-brakes"
+  },
+  {
+   "existing": "feedback-control",
+   "by": "abs-brakes"
+  },
+  {
+   "existing": "newtons-laws",
+   "by": "bicycle-stability"
+  },
+  {
+   "existing": "oscillations-resonance",
+   "by": "bicycle-stability"
+  },
+  {
+   "existing": "linear-transformations",
+   "by": "bicycle-stability"
+  },
+  {
+   "existing": "heat-engines",
+   "by": "gas-turbines-combined-cycle"
+  },
+  {
+   "existing": "entropy",
+   "by": "gas-turbines-combined-cycle"
+  },
+  {
+   "existing": "heat-engines",
+   "by": "heat-pumps-refrigeration"
+  },
+  {
+   "existing": "entropy",
+   "by": "heat-pumps-refrigeration"
+  },
+  {
+   "existing": "states-of-matter",
+   "by": "heat-pumps-refrigeration"
+  },
+  {
+   "existing": "flight",
+   "by": "wind-turbine-aerodynamics"
+  }
+ ]
+}

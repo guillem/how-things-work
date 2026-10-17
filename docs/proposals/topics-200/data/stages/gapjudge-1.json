@@ -1,0 +1,268 @@
+[
+ {
+  "label": "judge:build:b25",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "sequence-alignment",
+     "score": 5,
+     "reject": false,
+     "reason": "Needleman-Wunsch/Smith-Waterman on two ~150-residue sequences is a small O(nm) DP that fills and traces back instantly, the shuffle test is 100 more runs, and UniProt (CC BY 4.0) plus the BLOSUM62 table are openly usable.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "queueing-theory",
+     "score": 5,
+     "reject": false,
+     "reason": "A discrete-event M/M/1 (and M/D/1) simulation with the analytic curve overlaid is tiny, exact and needs no data; the wall near 100% load is visible straight from the plot.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "landscape-evolution",
+     "score": 5,
+     "reject": false,
+     "reason": "Steepest-descent flow routing, drainage-area accumulation, implicit stream-power incision and hillslope diffusion on a ~128x128 grid run at interactive rates (the standard FastScape-style scheme), and need no data.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cyclic-voltammetry",
+     "score": 5,
+     "reject": false,
+     "reason": "A 1D finite-difference diffusion grid with a Butler-Volmer boundary is the textbook digital simulation of CV, cheap in the browser, and the sqrt(scan rate) and peak-separation results come straight out of it with no data.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "switching-power-converters",
+     "score": 5,
+     "reject": false,
+     "reason": "An ideal-switch buck/boost converter is a piecewise-linear two-state ODE (inductor current and capacitor voltage) that integrates exactly and fast; ripple, discontinuous conduction and the efficiency comparison all come out of the model.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "receptor-pharmacology",
+     "score": 4,
+     "reject": false,
+     "reason": "The operational model and Gaddum-Schild equations are closed-form, with mass-action binding animated on top; it is honest but mostly evaluates curves rather than simulating, and the optional IUPHAR data is ODbL/CC BY-SA, so share-alike must be honoured if used.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "water-cycle",
+     "score": 3,
+     "reject": false,
+     "reason": "Buildable as a parcel agent model with temperature-dependent evaporation and condensation on cooling with height, but unless the rates follow a real saturation law (Clausius-Clapeyron) and a lapse rate, the model risks becoming a scripted loop dressed as a simulation; the spec should require them.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "rivers-carve-valleys",
+     "score": 4,
+     "reject": false,
+     "reason": "Grid hydraulic erosion with flow routing and speed-dependent sediment capacity is a well-known, fast browser algorithm that produces channels and a fan; it is honest at level 0, though it shares its engine with landscape-evolution.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "why-the-moon-doesnt-fall",
+     "score": 5,
+     "reject": false,
+     "reason": "Newton's cannon is a single-body inverse-square integration with real Earth constants, trivially interactive, and the falling-and-missing takeaway is visible in the trajectories.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "friction-slide-or-stick",
+     "score": 5,
+     "reject": false,
+     "reason": "A static-friction threshold on an inclined plane (tan theta = mu_s) with force arrows is a small honest model; OpenStax friction coefficients are CC BY 4.0, provided the edition is cited.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "be-the-bird-camouflage",
+     "score": 4,
+     "reject": false,
+     "reason": "The heritable-shade population model with the reader as selective predator is a real, simple genetic model rather than a picture to tap, since the next generation is computed from the survivors; procedural bark avoids licence questions.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "learning-by-reward",
+     "score": 5,
+     "reject": false,
+     "reason": "Tabular Q-learning with epsilon-greedy exploration on a small grid runs live in milliseconds, and the local-optimum-versus-exploration takeaway falls out of the real algorithm.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "induction-heads",
+     "score": 4,
+     "reject": false,
+     "reason": "A two-layer, one-head-per-layer attention-only transformer on synthetic repeated sequences is small enough to ship checkpoints or train live in a browser, and head ablation is cheap; reproducing the loss plateau and drop reliably takes care with seeds and hyperparameters, so shipped checkpoints should be the default.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "superposition-toy-models",
+     "score": 5,
+     "reject": false,
+     "reason": "The Elhage et al. 5-to-2 ReLU tied-weight toy model trains in seconds in plain JS, and the antipodal-pair and pentagon geometries are reproducible results that show directly as arrows.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "retrieval-augmented-generation",
+     "score": 4,
+     "reject": false,
+     "reason": "Chunking and nearest-neighbour retrieval with all-MiniLM-L6-v2 (Apache 2.0) are real and cheap, but the generation side is a precomputed SmolLM2 (Apache 2.0) table over every combination of question, chunk size, k and removed document, so the control grid must stay small; it is honest if labelled as precomputed real model outputs, with CC BY-SA honoured for any Wikipedia text.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "microwave-oven-hot-spots",
+     "score": 4,
+     "reject": false,
+     "reason": "A 2D FDTD or Helmholtz solve in a rectangular cavity at 2.45 GHz with a lossy slab is feasible on a modest grid, and rotating the load to time-average the heating is cheap; the real oven is a 3D problem, so the 2D cut must be stated, but the hot-spot spacing comes out honestly.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "lightning-strikes",
+     "score": 4,
+     "reject": false,
+     "reason": "The Niemeyer-Pietronero-Wiesmann dielectric breakdown model, a grid Laplace relaxation with field-weighted growth, runs interactively on roughly 100x100 grids with incremental solves, and tall-object strike statistics can be computed by repeated runs; the facts come from NOAA/NWS public-domain material.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "static-electricity-balloons",
+     "score": 4,
+     "reject": false,
+     "reason": "Coulomb point charges with transfer on rubbing and bound charges that shift slightly in the wall, as in PhET's Balloons and Static Electricity, are a small honest model; the attraction to the wall must come from the computed polarisation forces, not a scripted stick.",
+     "suggestedLevel": 0
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b25",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "sequence-alignment",
+     "score": 4,
+     "reject": false,
+     "reason": "A real dynamic-programming mechanism (Needleman-Wunsch/Smith-Waterman with BLOSUM62 and a shuffled-score background) that bioinformatics students learn, distinct from dna-to-protein and dna-fingerprinting, at an honest level 3.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "queueing-theory",
+     "score": 4,
+     "reject": false,
+     "reason": "The delay-versus-load wall, M/M/1 and Little's law form a counterintuitive mechanism a simulation shows well, honest at level 3 and distinct from internet and the proposed tcp-congestion-control.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "landscape-evolution",
+     "score": 3,
+     "reject": false,
+     "reason": "The stream-power plus diffusion landscape model is real and visual, and steady-state relief is a genuine level-3 insight distinct from plate-tectonics, but it is niche, and its rivers-carve-valleys sibling in this batch shares much of the same picture.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cyclic-voltammetry",
+     "score": 3,
+     "reject": false,
+     "reason": "An honest level-3 model (diffusion plus Butler-Volmer) that nothing on the site covers, but it is a lab measurement technique with narrower appeal to visitors than most candidates.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "switching-power-converters",
+     "score": 4,
+     "reject": false,
+     "reason": "An everyday device (every charger) with a clear piecewise-linear circuit mechanism and the surprising result that output current exceeds input current, distinct from power-grid; university power-electronics material, so level 3 is honest.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "receptor-pharmacology",
+     "score": 4,
+     "reject": false,
+     "reason": "Mass-action binding, Schild shifts and spare receptors are the real pharmacodynamics model a pharmacology student learns, and the page pairs cleanly with the proposed pharmacokinetics page without overlapping it.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "water-cycle",
+     "score": 4,
+     "reject": false,
+     "reason": "A core primary-school subject with a visible loop mechanism and a single sunshine control; it fits level 0 well and is distinct from cloud-base and states-of-matter.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "rivers-carve-valleys",
+     "score": 3,
+     "reject": false,
+     "reason": "The stream-table erosion and deposition mechanism is honest at level 0 and new to the site, but it overlaps visually with landscape-evolution in this batch, so only one of the two may be worth keeping.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "why-the-moon-doesnt-fall",
+     "score": 4,
+     "reject": false,
+     "reason": "Newton's cannon is the classic one-control level-0 doorway to orbits-kepler; that page already states that an orbit is free fall, but without formulas and with one control this page is a fair beginner entry rather than a duplicate.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "friction-slide-or-stick",
+     "score": 4,
+     "reject": false,
+     "reason": "A tilting ramp with a slip angle is a concrete, formula-free mechanism that newtons-laws does not isolate, and it suits a 10-year-old.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "be-the-bird-camouflage",
+     "score": 5,
+     "reject": false,
+     "reason": "The reader acting as the selective predator makes the mechanism the toy itself, a strong level-0 doorway to evolution that is distinct from that page's slider-driven population.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "learning-by-reward",
+     "score": 4,
+     "reject": false,
+     "reason": "A one-control, pup-and-treat version of value learning gives the AI track a level-0 entry, in line with the AI-heavy tilt; it overlaps reinforcement-learning in mechanism but is pitched honestly as a beginner doorway.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "induction-heads",
+     "score": 5,
+     "reject": false,
+     "reason": "A real, trainable two-layer circuit with a phase change and ablations is exactly the detailed LLM mechanism the AI tilt asks for, honest at level 3 and distinct from the static attention view on transformers.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "superposition-toy-models",
+     "score": 4,
+     "reject": false,
+     "reason": "The toy model of superposition trains live in the browser and shows geometric phase changes, a key interpretability idea that embeddings does not cover, and it is honest at level 3.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "retrieval-augmented-generation",
+     "score": 4,
+     "reject": false,
+     "reason": "Retrieval into the prompt is central to how deployed chatbots work and fills a gap in the LLM set, with a real mechanism (embedding nearness, then a change in next-token probabilities); the mechanism is simple enough that level 2 or 3 both fit, and level 3 is acceptable given its prerequisites.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "microwave-oven-hot-spots",
+     "score": 4,
+     "reject": false,
+     "reason": "An everyday device whose standing-wave hot spots and chocolate-bar measurement apply waves-interference to a closed cavity, making it a distinct and honest level-1 page.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "lightning-strikes",
+     "score": 3,
+     "reject": false,
+     "reason": "A stepped-leader growth model on a field grid is a real mechanism distinct from atmosphere-weather, but it relies on electric fields that the site teaches at level 2 (electromagnetism), and its fitted branching makes it less crisp at level 1.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "static-electricity-balloons",
+     "score": 4,
+     "reject": false,
+     "reason": "A familiar experience with a countable charge-transfer mechanism and induced polarisation, honest at level 0 and distinct from electric-circuits and magnets-and-poles.",
+     "suggestedLevel": 0
+    }
+   ]
+  }
+ }
+]

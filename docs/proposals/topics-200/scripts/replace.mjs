@@ -169,11 +169,25 @@ for (const [label, r] of Object.entries(critics)) {
 	}
 }
 const GV = verdictsOf('gapverify-');
+// Verified gap entries are then judged like every pool candidate (data/stages/gapjudge-*.json,
+// the phase-B judges over pool/batch-25.json) and compete on that score: best gap first, each
+// replacing the lowest-ranked topic at its level that it outranks (never an LLM-ladder rung,
+// never leaving a category below its level target), at most GAP_SWAPS swaps.
+const GJ = {};
+for (const [label, r] of Object.entries(collected('gapjudge-'))) {
+	const lens = label.split(':')[1];
+	for (const v of r.verdicts || []) (GJ[norm(v.slug)] = GJ[norm(v.slug)] || {})[lens] = v;
+}
+const fitOf = (e) => (e.scores || {})['fit-level'] || 0;
+const outranks = (a, b) =>
+	(a.score || 0) > (b.score || 0) || ((a.score || 0) === (b.score || 0) && fitOf(a) > fitOf(b));
 const gapSwaps = [];
 const gapEntries = [];
 let gapPending = [];
+let gapUnjudged = [];
 if (!pending.length && gapCands.length) {
 	gapPending = gapCands.filter((g) => !GV[g.slug]);
+	const ready = [];
 	for (const g0 of gapCands.filter((g) => GV[g.slug])) {
 		const v = GV[g0.slug];
 		if (v.refuted && !v.hasFix) {
@@ -186,6 +200,28 @@ if (!pending.length && gapCands.length) {
 				if (v.fixed[k] !== undefined && v.fixed[k] !== null && v.fixed[k] !== '' && k !== 'slug')
 					g[k] = v.fixed[k];
 		g.level = Math.max(0, Math.min(3, Math.round(Number(g.level))));
+		const j = GJ[g.slug];
+		if (!j || Object.keys(j).length < 2) {
+			gapUnjudged.push(g.slug);
+			gapEntries.push({ ...g, kept: 'not judged yet' });
+			continue;
+		}
+		g.scores = Object.fromEntries(Object.entries(j).map(([l, x]) => [l, x.score]));
+		g.score =
+			(Object.values(g.scores).reduce((x, y) => x + y, 0) / Object.keys(g.scores).length) * 3;
+		g.judgeNotes = Object.entries(j).map(([l, x]) => `${l} ${x.score}: ${x.reason}`);
+		if (Object.values(j).some((x) => x.reject)) {
+			gapEntries.push({ ...g, kept: 'rejected by a judge' });
+			continue;
+		}
+		if (j['fit-level'].suggestedLevel !== g.level) {
+			g.originalLevel = g.level;
+			g.level = j['fit-level'].suggestedLevel;
+		}
+		ready.push(g);
+	}
+	ready.sort((a, b) => (b.score || 0) - (a.score || 0) || fitOf(b) - fitOf(a));
+	for (const g of ready) {
 		if (gapSwaps.length >= GAP_SWAPS) {
 			gapEntries.push({ ...g, kept: 'runner-up (swap budget used)' });
 			continue;
@@ -194,7 +230,6 @@ if (!pending.length && gapCands.length) {
 		const victims = final
 			.filter((e) => e.level === g.level && !String(e.origin || '').startsWith('gap'))
 			.filter((e) => e.category === g.category || (cc[g.category] || 0) < capOf(g.category))
-			// never an LLM-ladder rung, and never below a category's level target (select.mjs)
 			.filter((e) => e.ladderStage === undefined)
 			.filter(
 				(e) =>
@@ -202,13 +237,10 @@ if (!pending.length && gapCands.length) {
 					final.filter((x) => x.level === e.level && x.category === e.category).length - 1 >=
 						targetOf(e.level, e.category)
 			)
-			.sort(
-				(a, b) =>
-					(a.score || 0) - (b.score || 0) ||
-					((a.scores || {})['fit-level'] || 0) - ((b.scores || {})['fit-level'] || 0)
-			);
+			.filter((e) => outranks(g, e))
+			.sort((a, b) => (a.score || 0) - (b.score || 0) || fitOf(a) - fitOf(b));
 		if (!victims.length) {
-			gapEntries.push({ ...g, kept: 'runner-up (no slot at its level)' });
+			gapEntries.push({ ...g, kept: 'runner-up (outranks no topic it could replace)' });
 			continue;
 		}
 		const out = victims[0];
@@ -216,10 +248,13 @@ if (!pending.length && gapCands.length) {
 		final.push({
 			slug: g.slug,
 			level: g.level,
+			originalLevel: g.originalLevel,
 			category: g.category,
 			kind: g.kind,
 			title: g.title,
-			score: 15,
+			score: g.score,
+			scores: g.scores,
+			judgeNotes: g.judgeNotes,
 			origin: g.origin,
 			verifyNote: g.verifyNote
 		});
@@ -300,4 +335,6 @@ console.log(
 console.log(JSON.stringify(counts.byCategory));
 for (const d of deviations) console.log('deviation', d);
 if (pending.length) console.log(`next: make-run.mjs workflows/phase-c-verify.js @${next}`);
+if (gapUnjudged.length)
+	console.log(`gap entries to judge (pool/batch-25.json): ${gapUnjudged.join(', ')}`);
 if (gapPending.length) console.log(`next: make-run.mjs workflows/phase-c-verify.js @${nextGap}`);

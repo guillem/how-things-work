@@ -668,6 +668,24 @@
    }
   },
   {
+   "slug": "be-the-bird-camouflage",
+   "level": 0,
+   "category": "biology",
+   "kind": "simulate",
+   "title": "Camouflage: you are the hungry bird",
+   "score": 13.5,
+   "scores": {
+    "build": 4,
+    "fit-level": 5
+   },
+   "judgeNotes": [
+    "build 4: The heritable-shade population model with the reader as selective predator is a real, simple genetic model rather than a picture to tap, since the next generation is computed from the survivors; procedural bark avoids licence questions.",
+    "fit-level 5: The reader acting as the selective predator makes the mechanism the toy itself, a strong level-0 doorway to evolution that is distinct from that page's slider-driven population."
+   ],
+   "origin": "gap:l0",
+   "verifyNote": "Sound in substance. The model (heritable shade with small variation, plus the reader's own predation) is real and cheap. The takeaway shows in the graphic, and the pitfall is right. The page differs from evolution, where the predator is a slider, because here the reader is the predator. leadsTo evolution and meiosis-inheritance are both existing level-1 pages. The weak point is the 'why': a CliffsNotes page is not a curriculum source. The KS2 Year 6 statutory requirement on adaptation and the NGSS standard should be cited directly."
+  },
+  {
    "slug": "fireflies-in-sync",
    "level": 0,
    "category": "biology",
@@ -703,28 +721,6 @@
    "fix": {
     "takeaway": "A flock can hold together and turn as one with no leader: in the model, three simple rules about each bird's nearest neighbours are enough to make one.",
     "pitfall": "No bird leads or sees the whole flock, and the three rules are a model that reproduces flocking, not a list real birds were found to obey. Real starlings each keep track of about six or seven nearest neighbours, however far apart they are (Ballerini et al. 2008), and nobody plans the shapes of a murmuration."
-   }
-  },
-  {
-   "slug": "milk-and-yogurt",
-   "level": 0,
-   "category": "biology",
-   "kind": "simulate",
-   "title": "Milk, vinegar and yogurt",
-   "score": 12,
-   "scores": {
-    "fit-level": 4,
-    "build": 4
-   },
-   "judgeNotes": [
-    "fit-level 4: Charged protein balls clumping when acid is added or made by bacteria is a clear mechanism that ties curds and yogurt together without a pH number, distinct from acids-bases.",
-    "build 4: Brownian colloids whose repulsion switches off as pH falls, plus a temperature-dependent bacterial acidification rate, can be built at interactive rates and show curdling emerging. The thicker set from preheated milk would need an extra stated rule (denatured whey binding the casein)."
-   ],
-   "verifyNote": "Distinct from acids-bases and from the pool's cooking-an-egg (proteins unfolding in heat), and buildable: Brownian colloid particles whose repulsion falls as pH nears casein's isoelectric point (about 4.6), plus bacterial growth with a temperature optimum that makes the acid. The pitfall is wrong in two ways. Most cheese is set by rennet, an enzyme that clips kappa-casein, not by acid, so 'the same clumping is cheese' is false except for acid cheeses such as paneer or ricotta. And raw milk turns sour through lactic acid bacteria much like yogurt cultures, which contradicts 'the bacteria in yogurt are not the bacteria that spoil food'. 'Kept apart by their charge' also oversimplifies: the micelles are held apart by a charged, hairy kappa-casein coat, mostly by its bulk. needsSource should name the few constants it uses.",
-   "fix": {
-    "takeaway": "Milk is a cloud of tiny protein balls kept apart by a charged, fuzzy coat; acid, poured in or made by bacteria, takes the charge away and lets them clump, which is curds in a minute or yogurt overnight.",
-    "pitfall": "Curdling milk with vinegar is not milk 'going off', though milk left out does sour the same way, by lactic acid bacteria much like yogurt's. Most cheese is not made this way: rennet, an enzyme, sets it by clipping the protein balls' coat, and only some cheeses (paneer, ricotta) are set by acid.",
-    "needsSource": "No dataset. The model uses textbook constants: casein's isoelectric point near pH 4.6 (dairy-science reviews such as de Kruif's), and yogurt cultures (Streptococcus thermophilus, Lactobacillus bulgaricus) that work best around 40 to 45 C and stop near fridge temperature. Shown as comparisons, never as numbers."
    }
   },
   {
@@ -2283,8 +2279,699 @@
    }
   }
  ],
- "gapEntries": [],
- "gapSwaps": [],
+ "gapEntries": [
+  {
+   "slug": "be-the-bird-camouflage",
+   "title": "Camouflage: you are the hungry bird",
+   "level": 0,
+   "kind": "simulate",
+   "category": "biology",
+   "interaction": "Moths of many shades rest on a tree trunk and the reader is the bird: tap every moth you spot before the timer runs out. The survivors lay eggs that look like their parents, give or take a little, and the next generation appears; after a few rounds the reader flips the bark from pale to sooty and keeps hunting.",
+   "takeaway": "The moths you fail to see are the ones that have babies, so after a few generations the moths match the bark, and when the bark changes, so do the moths.",
+   "prerequisites": [],
+   "related": [
+    "evolution",
+    "flocking-birds",
+    "ant-trails"
+   ],
+   "needs": "Bark textures, either procedurally generated or public-domain or CC0 photographs from Wikimedia Commons; the moth population model needs no data.",
+   "pitfall": "A moth does not change colour to hide, and no moth chooses its colour; the population changes because the visible ones are eaten before they breed.",
+   "why": "England national curriculum, KS2 Year 6 'Evolution and inheritance': identify how animals and plants are adapted to suit their environment and that adaptation may lead to evolution (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study); NGSS MS-LS4-4 (https://www.nextgenscience.org/pe/ms-ls4-4-biological-evolution-unity-and-diversity).",
+   "overlapWith": "evolution: that page runs a population with sliders for mutation, population size and environment; here the reader is the predator, and the selection is their own clicking, which is the level-0 doorway into that page.",
+   "needsSource": "none, or CC0/public-domain bark photographs (Wikimedia Commons)",
+   "leadsTo": [
+    "evolution",
+    "meiosis-inheritance"
+   ],
+   "everyday": false,
+   "origin": "gap:l0",
+   "verifyNote": "Sound in substance. The model (heritable shade with small variation, plus the reader's own predation) is real and cheap. The takeaway shows in the graphic, and the pitfall is right. The page differs from evolution, where the predator is a slider, because here the reader is the predator. leadsTo evolution and meiosis-inheritance are both existing level-1 pages. The weak point is the 'why': a CliffsNotes page is not a curriculum source. The KS2 Year 6 statutory requirement on adaptation and the NGSS standard should be cited directly.",
+   "scores": {
+    "build": 4,
+    "fit-level": 5
+   },
+   "score": 13.5,
+   "judgeNotes": [
+    "build 4: The heritable-shade population model with the reader as selective predator is a real, simple genetic model rather than a picture to tap, since the next generation is computed from the survivors; procedural bark avoids licence questions.",
+    "fit-level 5: The reader acting as the selective predator makes the mechanism the toy itself, a strong level-0 doorway to evolution that is distinct from that page's slider-driven population."
+   ],
+   "kept": "selected"
+  },
+  {
+   "slug": "induction-heads",
+   "title": "Induction heads: how a model copies from its prompt",
+   "level": 3,
+   "kind": "simulate",
+   "category": "ai",
+   "interaction": "Scrub through the training of a tiny two-layer, attention-only transformer (one head per layer) on sequences that repeat partway through, from a fixed-seed run whose checkpoints ship with the page, or retrain it live; watch the loss sit on a plateau and then fall suddenly. At any checkpoint, hover a token in a test sequence to see each head's attention: after the drop, the layer-1 head looks at the previous token and the layer-2 head attends to whatever followed the earlier copy of the current token. Switch off either head and the in-context copying stops.",
+   "takeaway": "A transformer learns to continue a pattern seen earlier in its prompt with a two-head circuit, one head marking each token's predecessor and another finding the earlier match and copying what followed, and that circuit appears all at once as a sudden drop in the loss.",
+   "prerequisites": [
+    "transformers",
+    "training-a-tiny-language-model"
+   ],
+   "related": [
+    "residual-stream-logit-lens",
+    "positional-encoding",
+    "kv-cache-inference",
+    "chain-of-thought-scratchpad"
+   ],
+   "needs": "Checkpoints of a tiny attention-only transformer trained on synthetic repeated-token sequences, produced by the project (or trained live in the browser), following the setup of Olsson et al. 2022 and Singh et al. 2024 (arXiv 2404.07129); no external data.",
+   "pitfall": "Induction heads do not explain all in-context learning: they copy what is already in the context, and abilities such as learning a new mapping from examples need more than this circuit.",
+   "why": "Anthropic's 'In-context Learning and Induction Heads' and its follow-ups are a core mechanistic-interpretability result, studied at ICML 2024: https://arxiv.org/abs/2404.07129",
+   "overlapWith": "transformers: that page shows the attention weights of a trained model on fixed sentences; this one trains a model live, shows one specific two-head circuit forming during a phase change, and tests it by switching heads off.",
+   "needsSource": "none (synthetic data, model trained by the project; only the published method is reused)",
+   "leadsTo": [],
+   "everyday": false,
+   "origin": "gap:demand",
+   "verifyNote": "Not a duplicate: transformers shows the attention of a fixed pretrained model, while this page trains a model, shows the circuit forming and switches heads off. The level and prerequisites are honest (transformers is level 3; training-a-tiny-language-model is a proposed level-3 slug), and the takeaway and pitfall agree with Olsson et al. 2022 and Singh et al. 2024. Two weaknesses. First, the needsSource asserts that arXiv 2404.07129 is CC BY 4.0, which I could not verify; it is also irrelevant, because only the method is used and the data are synthetic. Second, no source gives a training time for a CPU or browser run, and the plateau before the phase change can be long. The page should use one head per layer, so that switching a head off is clean, and keep a fixed-seed run with precomputed checkpoints as the scrubbable default, with live training as an option.",
+   "scores": {
+    "build": 4,
+    "fit-level": 5
+   },
+   "score": 13.5,
+   "judgeNotes": [
+    "build 4: A two-layer, one-head-per-layer attention-only transformer on synthetic repeated sequences is small enough to ship checkpoints or train live in a browser, and head ablation is cheap; reproducing the loss plateau and drop reliably takes care with seeds and hyperparameters, so shipped checkpoints should be the default.",
+    "fit-level 5: A real, trainable two-layer circuit with a phase change and ablations is exactly the detailed LLM mechanism the AI tilt asks for, honest at level 3 and distinct from the static attention view on transformers."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "sequence-alignment",
+   "title": "Sequence alignment: lining up genes across species",
+   "level": 3,
+   "kind": "step",
+   "category": "biology",
+   "interaction": "Pick two real protein sequences, such as human and mouse haemoglobin or human and yeast cytochrome c, and fill the dynamic-programming grid cell by cell: each cell takes the best of a match, a gap in one sequence or a gap in the other, and the traceback lights up the optimal alignment. Change the gap penalty or swap BLOSUM62 for an identity matrix and the best alignment shifts; switch from global (Needleman-Wunsch) to local (Smith-Waterman) and only the conserved core survives. Shuffle one sequence a hundred times and the page plots the shuffled scores against the real one.",
+   "takeaway": "The best alignment of two sequences is found exactly by building it from the best alignments of their prefixes, and a real relative scores far above what shuffled sequences reach.",
+   "prerequisites": [
+    "dna-to-protein",
+    "evolution"
+   ],
+   "related": [
+    "graph-search",
+    "population-genetics",
+    "dna-fingerprinting",
+    "protein-folding"
+   ],
+   "needs": "A handful of protein sequences from UniProt (CC BY 4.0), and the BLOSUM62 substitution matrix (Henikoff & Henikoff 1992, PNAS 89:10915). The matrix is a table of numerical values, freely redistributed in the NCBI BLAST distribution and in Biopython (BSD licence). Cite the paper.",
+   "pitfall": "An alignment is not proof of shared ancestry: any two sequences have an optimal alignment, and it changes with the scoring matrix and gap penalties; only a score far above the shuffled-sequence background is evidence of homology.",
+   "why": "MIT 6.047 Computational Biology notes open with global and local alignment by dynamic programming (Needleman-Wunsch, Smith-Waterman): https://ocw.mit.edu/ans7870/6/6.047/f15/MIT6_047F15_Compiled.pdf",
+   "overlapWith": "dna-to-protein translates one gene; this page compares two genes, and its model is the dynamic-programming alignment and its score statistics, which no existing or proposed page covers (dna-fingerprinting matches repeat lengths, not sequences).",
+   "needsSource": "UniProt sequences (CC BY 4.0); BLOSUM62, a published numerical table freely redistributed with NCBI BLAST and Biopython (BSD); openly usable with citation",
+   "leadsTo": [],
+   "everyday": false,
+   "origin": "gap:l3",
+   "verifyNote": "Sound topic, level and prerequisites (dna-to-protein and evolution are both level 1), and Needleman-Wunsch/Smith-Waterman on two short proteins plus 100 shuffles runs easily in the browser. It does not duplicate dna-to-protein or the proposed dna-fingerprinting. The licence claim is wrong, though: BLOSUM62 is not a U.S. government work. Henikoff & Henikoff published it in PNAS in 1992 from the Fred Hutchinson Cancer Research Center and HHMI, not from a federal agency. It is a table of numerical facts, freely redistributed with NCBI BLAST and Biopython (BSD), so it is usable, but Needs must not call it public domain as a government work.",
+   "scores": {
+    "build": 5,
+    "fit-level": 4
+   },
+   "score": 13.5,
+   "judgeNotes": [
+    "build 5: Needleman-Wunsch/Smith-Waterman on two ~150-residue sequences is a small O(nm) DP that fills and traces back instantly, the shuffle test is 100 more runs, and UniProt (CC BY 4.0) plus the BLOSUM62 table are openly usable.",
+    "fit-level 4: A real dynamic-programming mechanism (Needleman-Wunsch/Smith-Waterman with BLOSUM62 and a shuffled-score background) that bioinformatics students learn, distinct from dna-to-protein and dna-fingerprinting, at an honest level 3."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "queueing-theory",
+   "title": "Queues: why a nearly busy server is so slow",
+   "level": 3,
+   "kind": "simulate",
+   "category": "networks",
+   "interaction": "Packets (or customers) arrive at random at a router with one output link; set the arrival rate and the service rate and watch the queue grow and drain while a live plot tracks the average wait against the load. Push the utilisation from 50% to 90% to 99% and the wait curve climbs toward a wall, matching Little's law and the M/M/1 formula drawn over the simulated points; make the arrivals or the packet sizes more regular and the same load queues much less.",
+   "takeaway": "Waiting time stays small until a server is nearly fully busy and then grows without bound, and randomness in the arrivals makes the queue long even when capacity exceeds demand on average.",
+   "prerequisites": [
+    "internet",
+    "central-limit-theorem"
+   ],
+   "related": [
+    "tcp-congestion-control",
+    "os-scheduling",
+    "power-grid"
+   ],
+   "needs": "",
+   "pitfall": "A link that is busy 90% of the time is not 'with 10% to spare': the mean delay at 90% load is about five times that at 50%, and at 99% it is fifty times; average capacity above average demand does not mean no queue.",
+   "why": "MIT 6.263J Data Communication Networks devotes its core sessions to Little's theorem and the M/M/1 queue: https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-263j-data-communication-networks-fall-2002/calendar",
+   "overlapWith": "tcp-congestion-control (proposed) shows senders reacting to a full bottleneck buffer; this page is the queue itself: random arrivals, Little's law and the delay-versus-load curve, with no feedback from the sender.",
+   "needsSource": "none",
+   "leadsTo": [],
+   "everyday": false,
+   "origin": "gap:l3",
+   "verifyNote": "internet and the proposed tcp-congestion-control do not show the delay-versus-load curve or Little's law. A discrete-event M/M/1 simulation (and M/D/1 for regular service) runs easily client-side. The pitfall's numbers are correct: the M/M/1 sojourn time is proportional to 1/(1-rho), giving 2, 10 and 100 at 50%, 90% and 99% load, so ratios of 5x and 50x. Regular arrivals or service lowering the queue is Pollaczek-Khinchine. The MIT 6.263J signal is apt, prerequisites are existing, and no data is needed.",
+   "scores": {
+    "build": 5,
+    "fit-level": 4
+   },
+   "score": 13.5,
+   "judgeNotes": [
+    "build 5: A discrete-event M/M/1 (and M/D/1) simulation with the analytic curve overlaid is tiny, exact and needs no data; the wall near 100% load is visible straight from the plot.",
+    "fit-level 4: The delay-versus-load wall, M/M/1 and Little's law form a counterintuitive mechanism a simulation shows well, honest at level 3 and distinct from internet and the proposed tcp-congestion-control."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "switching-power-converters",
+   "title": "Switching power supplies: how a charger changes voltage",
+   "level": 3,
+   "kind": "simulate",
+   "category": "energy",
+   "interaction": "Flip a transistor on and off thousands of times a second in a buck converter and watch the inductor current ramp up and down while the capacitor smooths the output; drag the duty cycle and the output settles at that fraction of the input voltage. Compare against a linear regulator dropping the same voltage across a resistor and see the heat meters diverge; lower the switching frequency or shrink the inductor and the ripple grows until the current hits zero, then rearrange the same parts into a boost converter that steps voltage up.",
+   "takeaway": "A switching converter changes voltage by chopping it and averaging it with an inductor and a capacitor, so it stores and releases energy rather than burning the excess as heat, and output current can exceed input current.",
+   "prerequisites": [
+    "electric-circuits",
+    "electromagnetism"
+   ],
+   "related": [
+    "power-grid",
+    "solar-cells",
+    "motors-generators",
+    "feedback-control",
+    "redox-batteries"
+   ],
+   "needs": "",
+   "pitfall": "A buck converter is not a resistor that drops voltage: ideally it loses no energy, so stepping 20 V down to 5 V draws about a quarter of the output current from the source.",
+   "why": "MIT 6.334 Power Electronics covers the modelling, analysis and control of DC-DC converters, inverters and rectifiers: https://ocw.mit.edu/courses/6-334-power-electronics-spring-2007/pages/syllabus/",
+   "overlapWith": "power-grid uses transformers to change AC voltage; this page is the DC-DC switching converter (in every phone charger, laptop and solar inverter), modelled as a piecewise-linear circuit ODE, which no page shows.",
+   "needsSource": "none",
+   "leadsTo": [],
+   "everyday": true,
+   "origin": "gap:l3",
+   "verifyNote": "No catalogue page shows DC-DC conversion: power-grid uses transformers on AC. A buck or boost converter is a piecewise-linear ODE that is trivial to integrate client-side. The physics checks out: Vout = D*Vin, and the ripple grows until discontinuous conduction as the frequency or inductance falls. The pitfall checks out too: ideally 20 V to 5 V draws about a quarter of the output current. Level 3 fits a topic from an MIT 6.334 syllabus, prerequisites are existing level-1 and level-2 slugs, and no data is needed.",
+   "scores": {
+    "build": 5,
+    "fit-level": 4
+   },
+   "score": 13.5,
+   "judgeNotes": [
+    "build 5: An ideal-switch buck/boost converter is a piecewise-linear two-state ODE (inductor current and capacitor voltage) that integrates exactly and fast; ripple, discontinuous conduction and the efficiency comparison all come out of the model.",
+    "fit-level 4: An everyday device (every charger) with a clear piecewise-linear circuit mechanism and the surprising result that output current exceeds input current, distinct from power-grid; university power-electronics material, so level 3 is honest."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "why-the-moon-doesnt-fall",
+   "title": "Why the Moon doesn't fall down",
+   "level": 0,
+   "kind": "simulate",
+   "category": "space",
+   "interaction": "A cannon stands on a very tall mountain on a round Earth. The reader picks a single thing, how hard to fire, and launches balls one after another; slow ones land close, faster ones land farther around the curve, and one fast enough falls all the way around and comes back to the mountain. A last step swaps the ball for the Moon, far away and moving sideways.",
+   "takeaway": "Everything thrown falls, but a ball moving sideways fast enough keeps missing the curving ground, so it goes round forever: that is what the Moon and the space station are doing.",
+   "prerequisites": [
+    "earth-is-a-ball"
+   ],
+   "related": [
+    "orbits-kepler",
+    "newtons-laws",
+    "rocket-throws-mass",
+    "sun-earth-moon"
+   ],
+   "needs": "none (Newtonian gravity integrated for one body around Earth; Earth radius and surface gravity are standard constants)",
+   "pitfall": "There is gravity in space: astronauts float because they are falling together with their station, not because gravity has switched off. The Moon is not held up by anything.",
+   "why": "Newton's cannonball is the standard answer to the child's question why the Moon doesn't fall (https://eg.bucknell.edu/physics/astronomy/astr101/specials/newtscannon.html); KS2 Year 5 requires that unsupported objects fall towards Earth because of gravity, and NGSS 5-PS2-1 that gravity pulls objects down.",
+   "overlapWith": "orbits-kepler: that page launches bodies around a star to derive ellipses and Kepler's laws with overlays and two planets; this one has one control, starts from throwing a ball, and only reaches the idea that an orbit is falling and missing.",
+   "needsSource": "none",
+   "leadsTo": [
+    "orbits-kepler",
+    "newtons-laws"
+   ],
+   "everyday": true,
+   "origin": "gap:l0",
+   "verifyNote": "Sound as a level-0 on-ramp. It shares its core idea with orbits-kepler, whose takeaway is that an orbit is continuous free fall. But orbits-kepler is level 1, with speed and direction controls, area overlays, period plots and two planets. This page has one control, starts from throwing a ball, and lists orbits-kepler in leadsTo, which is exactly the level-0 pattern the plan asks for. Its prerequisite earth-is-a-ball is a proposed level-0 space topic, so the level is fine. One-body Newtonian integration is trivial in a browser, and no data is needed. The pitfalls (there is gravity in space, astronauts are in free fall) are correct, and the Newton's cannon grounding is standard (Bucknell ASTR101 page). Minor build note: the circular-speed ball returns to the mountain from behind, so the mountain should be thin or the ball drawn passing just over it.",
+   "scores": {
+    "build": 5,
+    "fit-level": 4
+   },
+   "score": 13.5,
+   "judgeNotes": [
+    "build 5: Newton's cannon is a single-body inverse-square integration with real Earth constants, trivially interactive, and the falling-and-missing takeaway is visible in the trajectories.",
+    "fit-level 4: Newton's cannon is the classic one-control level-0 doorway to orbits-kepler; that page already states that an orbit is free fall, but without formulas and with one control this page is a fair beginner entry rather than a duplicate."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "friction-slide-or-stick",
+   "title": "Friction: why things slide or stick",
+   "level": 0,
+   "kind": "manipulate",
+   "category": "physics",
+   "interaction": "A block sits on a ramp. The reader raises the ramp slowly, one control, and sees the exact angle at which the block starts to slide; then changes the surface (ice, wood, carpet, rubber) or the block's weight and tries again, while an arrow shows the grip of the surface growing to match the pull down the slope until it can't.",
+   "takeaway": "Friction grips just as hard as it needs to, up to a limit set by the two surfaces, so a heavier block slips at the same angle but ice lets go much sooner than rubber.",
+   "prerequisites": [],
+   "related": [
+    "newtons-laws",
+    "car-brakes-stopping-distance",
+    "levers-and-scissors",
+    "abs-brakes"
+   ],
+   "needs": "Typical static friction coefficients for a few surface pairs from one edition of OpenStax College Physics 2e, Table 5.1 (CC BY 4.0); cite the edition, since rows such as steel on ice differ between versions.",
+   "pitfall": "Heavier things do not slip later on the same ramp, and for hard surfaces such as wood, metal or ice the size of the touching area hardly matters (soft rubber is the exception); friction is also not only a nuisance, since walking and braking need it.",
+   "why": "KS2 Year 5 statutory: identify the effects of air resistance, water resistance and friction that act between moving surfaces (https://its.teachit.co.uk/resources/primary/forces-ks2); NGSS 3-PS2-1 balanced and unbalanced forces.",
+   "overlapWith": "newtons-laws: that page has forces changing motion with carts and projectiles; this one isolates the grip between two surfaces on a tilting ramp, the starting point for kids before any equation.",
+   "needsSource": "OpenStax College Physics friction table, CC BY 4.0",
+   "leadsTo": [
+    "newtons-laws"
+   ],
+   "everyday": true,
+   "origin": "gap:l0",
+   "verifyNote": "The page is sound overall. It is a genuine level-0 toy with one control (the ramp angle), the KS2 Year 5 and NGSS 3-PS2-1 signal fits, and it differs from newtons-laws, which has no friction-on-ramp page. The takeaway is right, since the slip angle tan(theta) = mu_s does not depend on weight. OpenStax College Physics (Table 5.1) is CC BY 4.0. One part needs a fix: the pitfall states flatly that friction never depends on contact area, yet the page includes rubber, where area and deformation do matter (tyres). Hedge it to the rule of thumb for hard surfaces. Also note that OpenStax editions differ on some rows (steel on ice static 0.4 vs 0.04), so the page should cite one edition and use rows consistently.",
+   "scores": {
+    "build": 5,
+    "fit-level": 4
+   },
+   "score": 13.5,
+   "judgeNotes": [
+    "build 5: A static-friction threshold on an inclined plane (tan theta = mu_s) with force arrows is a small honest model; OpenStax friction coefficients are CC BY 4.0, provided the edition is cited.",
+    "fit-level 4: A tilting ramp with a slip angle is a concrete, formula-free mechanism that newtons-laws does not isolate, and it suits a 10-year-old."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "learning-by-reward",
+   "title": "Learning by treats: how a robot learns by trying",
+   "level": 0,
+   "kind": "simulate",
+   "category": "ai",
+   "interaction": "A little robot pup sits in a small room with a small biscuit close by, a big bone farther away and a puddle in between. Press play: at first it wanders at random; when it reaches a treat, the tile it stepped from glows warmer, and run after run the warmth spreads back across the floor until the pup walks a glowing path straight to it. One control: how often it tries something new instead of following the warmest tiles. Turn it to zero and the pup keeps settling for the near biscuit; give it some curiosity and it finds the bone.",
+   "takeaway": "Nobody tells the robot the way; it gets better only because the steps that led to a treat are remembered and tried again, and it needs some random tries to find a better route.",
+   "prerequisites": [],
+   "related": [
+    "teach-a-machine",
+    "next-word-guessing-game",
+    "twenty-questions",
+    "reinforcement-learning"
+   ],
+   "needs": "none (tabular Q-learning on a small grid, run live in the browser)",
+   "pitfall": "The robot does not understand or want the biscuit, and it is not given the map; it only adjusts numbers on tiles. The rewards it is given, not good intentions, decide what it learns, so a badly placed reward teaches the wrong thing.",
+   "why": "AI4K12 big idea 3, learning, sets grade-band progressions for grades 3-5 and 6-8 (https://www.raspberrypi.org/blog/ai-education-ai4k12-big-ideas-ai-thinking/); reward-trained models (game players, chatbot tuning) are the AI kids already hear about.",
+   "overlapWith": "reinforcement-learning: that level-2 page exposes value tables, discount factor and learning rate on a paintable grid; this one has one control and a pup-and-treat story, as the level-0 entry to the AI track (and later to rlhf-alignment).",
+   "needsSource": "none",
+   "leadsTo": [
+    "learning-from-data"
+   ],
+   "everyday": true,
+   "origin": "gap:l0",
+   "verifyNote": "Sound as the level-0 doorway to reinforcement-learning (leadsTo learning-from-data is the only level-1 AI page, so acceptable), and all related slugs exist in the batch. But the interaction misdescribes the model it names: tabular one-step Q-learning does not warm 'the floor tiles that led there' after a single success; only the tile next to the biscuit gains value, and the warmth spreads backward one tile per run. Saying otherwise would be untrue, and the honest version is itself a good thing to watch. The exploration control also has no visible payoff unless the room holds a worse treat that greedy following settles on, so the room needs a near small treat and a far bigger one.",
+   "scores": {
+    "build": 5,
+    "fit-level": 4
+   },
+   "score": 13.5,
+   "judgeNotes": [
+    "build 5: Tabular Q-learning with epsilon-greedy exploration on a small grid runs live in milliseconds, and the local-optimum-versus-exploration takeaway falls out of the real algorithm.",
+    "fit-level 4: A one-control, pup-and-treat version of value learning gives the AI track a level-0 entry, in line with the AI-heavy tilt; it overlaps reinforcement-learning in mechanism but is pitched honestly as a beginner doorway."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "superposition-toy-models",
+   "title": "Superposition: more features than neurons",
+   "level": 3,
+   "kind": "simulate",
+   "category": "ai",
+   "interaction": "Train a tiny network in the browser to squeeze five input features through two hidden neurons and rebuild them, and see each feature's direction drawn as an arrow in the 2D hidden space. Slide how rarely each feature is active: with dense features the network keeps two of them at right angles and drops the rest; sparser, it packs four as two pairs of opposite arrows; sparser still, the arrows spread into a pentagon that stores all five, at the cost of some interference. Change the importance of each feature and watch which ones lose their arrows.",
+   "takeaway": "When features are rarely active at the same time, a network stores more of them than it has dimensions by sharing directions among them and accepting some interference, and the arrangement jumps between distinct shapes (two at right angles, opposite pairs, a pentagon) as sparsity grows.",
+   "prerequisites": [
+    "neural-networks",
+    "embeddings"
+   ],
+   "related": [
+    "residual-stream-logit-lens",
+    "induction-heads",
+    "weight-quantization",
+    "dimensionality-reduction"
+   ],
+   "needs": "None: the toy model (ReLU output, tied weights, importance-weighted loss) trains in the browser in seconds, as in Elhage et al. 2022, 'Toy Models of Superposition' (Transformer Circuits).",
+   "pitfall": "The page must not claim that each neuron in a real LLM stands for one concept, nor that this toy proves exactly how large models store facts; superposition is why single neurons are often hard to interpret.",
+   "why": "3Blue1Brown's 'How might LLMs store facts' (Deep Learning chapter 7) ends on the superposition hypothesis: https://3blue1brown.substack.com/p/how-might-llms-store-facts-chapter",
+   "overlapWith": "embeddings: that page shows the directions of pretrained word vectors; this one trains a network live to show how and when it packs more features than dimensions into one space.",
+   "needsSource": "none (trained in the browser on synthetic data)",
+   "leadsTo": [],
+   "everyday": false,
+   "origin": "gap:demand",
+   "verifyNote": "The model is the right one: Elhage et al.'s 5-to-2 ReLU toy trains in seconds in the browser. Not a duplicate, and the level and prerequisites are honest. But the takeaway misstates the geometry. In the five-feature pentagon the arrows sit 72 degrees apart, not 'nearly opposite'; opposite (antipodal) pairs belong to an intermediate stage. As sparsity rises, the toy goes from two features at right angles, to two antipodal pairs (four features), to a pentagon of five. The change therefore comes in distinct jumps, not as one switch from 'drop the extras' to 'pack them all in'. The interaction also skips that middle stage.",
+   "scores": {
+    "build": 5,
+    "fit-level": 4
+   },
+   "score": 13.5,
+   "judgeNotes": [
+    "build 5: The Elhage et al. 5-to-2 ReLU tied-weight toy model trains in seconds in plain JS, and the antipodal-pair and pentagon geometries are reproducible results that show directly as arrows.",
+    "fit-level 4: The toy model of superposition trains live in the browser and shows geometric phase changes, a key interpretability idea that embeddings does not cover, and it is honest at level 3."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "receptor-pharmacology",
+   "title": "Drug receptors: dose-response, agonists & antagonists",
+   "level": 3,
+   "kind": "manipulate",
+   "category": "medicine",
+   "interaction": "Add a drug to a dish of cells and watch it bind receptors by mass action while a log dose-response curve builds point by point; set the drug's affinity and efficacy separately and see potency move the curve sideways while efficacy sets its height. Add a competitive antagonist and the curve slides right in parallel by the Schild ratio, add a non-competitive one and the maximum drops; remove most receptors and a full agonist still gives a full response until its spare receptors run out, while a partial agonist starts blocking the full one.",
+   "takeaway": "How strongly a drug binds and how strongly it activates are separate properties: a competitive blocker slides the dose-response curve sideways, while a non-competitive one lowers its ceiling once the tissue's spare receptors are used up.",
+   "prerequisites": [
+    "pharmacokinetics-dosing",
+    "reaction-rates-equilibrium",
+    "neurons"
+   ],
+   "related": [
+    "signalling-cascades",
+    "anaesthesia-infusion",
+    "homeostasis"
+   ],
+   "needs": "Optional: affinities of a few real agonists and antagonists (e.g. at the beta-adrenergic or mu-opioid receptor) from the IUPHAR/BPS Guide to Pharmacology (database under the Open Database License, ODbL; text content CC BY-SA 4.0). The model itself (operational model, Gaddum-Schild) needs no data.",
+   "pitfall": "Potency is not efficacy: a more potent drug is not a stronger one, and a maximal response does not mean every receptor is occupied, since many tissues have spare receptors.",
+   "why": "MIT OCW HST.151 Principles of Pharmacology, lecture 1 'Drug-Receptor Interactions' (mass action, full and partial agonists, reversible and irreversible antagonists): https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/pages/lecture-notes/",
+   "overlapWith": "pharmacokinetics-dosing (proposed) follows how the body moves a drug's concentration over time; this page is pharmacodynamics, what that concentration does at the receptor, with agonism, antagonism and spare receptors.",
+   "needsSource": "none required; optional IUPHAR/BPS Guide to Pharmacology data, ODbL (database) / CC BY-SA 4.0 (text)",
+   "leadsTo": [],
+   "everyday": false,
+   "origin": "gap:l3",
+   "verifyNote": "The model (mass action, the operational model, Gaddum-Schild) is sound and distinct from pharmacokinetics-dosing, but three things need small changes. (1) The takeaway says a non-competitive blocker lowers the ceiling, which contradicts the page's own spare-receptor feature. With a receptor reserve, an irreversible or non-competitive antagonist first shifts the curve right and lowers the maximum only once the reserve is used up (Furchgott analysis). (2) The why signal is a Wikipedia article, not a curriculum or demand signal; MIT OCW HST.151 Principles of Pharmacology, lecture 1 'Drug-Receptor Interactions', covers it. (3) The IUPHAR/BPS Guide to Pharmacology database is licensed ODbL; only its text content is CC BY-SA 4.0.",
+   "scores": {
+    "build": 4,
+    "fit-level": 4
+   },
+   "score": 12,
+   "judgeNotes": [
+    "build 4: The operational model and Gaddum-Schild equations are closed-form, with mass-action binding animated on top; it is honest but mostly evaluates curves rather than simulating, and the optional IUPHAR data is ODbL/CC BY-SA, so share-alike must be honoured if used.",
+    "fit-level 4: Mass-action binding, Schild shifts and spare receptors are the real pharmacodynamics model a pharmacology student learns, and the page pairs cleanly with the proposed pharmacokinetics page without overlapping it."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "retrieval-augmented-generation",
+   "title": "Retrieval: how a chatbot looks things up",
+   "level": 3,
+   "kind": "step",
+   "category": "ai",
+   "interaction": "Pick one of several questions about a small shelf of documents. Watch the documents split into chunks and embed as points; the question becomes a point too, and the nearest chunks light up and are pasted into the prompt. Change the chunk size and the number of chunks retrieved, or remove the document that holds the answer, and compare a small model's next-token probabilities for the answer with and without the retrieved text (precomputed for every combination).",
+   "takeaway": "A chatbot that 'searches' does not change its weights: it finds the passages whose embeddings sit closest to the question and puts them into the prompt, so its answer is only as good as what retrieval put there.",
+   "prerequisites": [
+    "embeddings",
+    "language-models"
+   ],
+   "related": [
+    "tokenization",
+    "kv-cache-inference",
+    "long-context-attention-cost",
+    "pagerank",
+    "hash-tables-bloom-filters"
+   ],
+   "needs": "A small document set, either public-domain texts (for example NASA or US government pages) or Simple English Wikipedia excerpts (CC BY-SA 4.0); embeddings from all-MiniLM-L6-v2 (Apache 2.0), run in the browser or precomputed; next-token probabilities with and without context from a small open model such as SmolLM2-135M-Instruct (Apache 2.0), precomputed.",
+   "pitfall": "Retrieval does not make answers true: a model can still ignore or misread the retrieved passage, and the nearest chunk by embedding is not always the one that answers the question.",
+   "why": "Stanford CS224V lists retrieval-augmented generation among its topics (https://web.stanford.edu/class/cs224v), and Stanford CS25 recorded a lecture on retrieval-augmented language models (https://web.stanford.edu/class/cs25/recordings).",
+   "overlapWith": "embeddings: that page measures nearness between word vectors; this one uses nearness between question and passage vectors to choose what goes into a language model's prompt, and shows the effect on its answer.",
+   "needsSource": "all-MiniLM-L6-v2 (Apache 2.0); SmolLM2 (Apache 2.0); documents public domain or CC BY-SA 4.0 (share-alike must be honoured)",
+   "leadsTo": [],
+   "everyday": true,
+   "origin": "gap:demand",
+   "verifyNote": "Not a duplicate of embeddings or language-models, and the licences hold up: all-MiniLM-L6-v2 and SmolLM2 are Apache 2.0, and Simple English Wikipedia is CC BY-SA 4.0, whose share-alike requirement is noted. Three problems. (1) The interaction says 'Ask a question', which implies free text, but the next-token probabilities are precomputed, so only a fixed set of questions works across the combinations of chunk size, number of chunks and removed document. (2) The 'why' signal is a dev.to blog post, which is weak; Stanford courses teach retrieval-augmented generation (CS224V lists it; CS25 has Douwe Kiela's lecture on retrieval-augmented language models). (3) The page needs nothing from the level-3 transformers page; embeddings and language-models (both level 2) are enough.",
+   "scores": {
+    "build": 4,
+    "fit-level": 4
+   },
+   "score": 12,
+   "judgeNotes": [
+    "build 4: Chunking and nearest-neighbour retrieval with all-MiniLM-L6-v2 (Apache 2.0) are real and cheap, but the generation side is a precomputed SmolLM2 (Apache 2.0) table over every combination of question, chunk size, k and removed document, so the control grid must stay small; it is honest if labelled as precomputed real model outputs, with CC BY-SA honoured for any Wikipedia text.",
+    "fit-level 4: Retrieval into the prompt is central to how deployed chatbots work and fills a gap in the LLM set, with a real mechanism (embedding nearness, then a change in next-token probabilities); the mechanism is simple enough that level 2 or 3 both fit, and level 3 is acceptable given its prerequisites."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "microwave-oven-hot-spots",
+   "title": "Microwave ovens & their hot spots",
+   "level": 1,
+   "kind": "simulate",
+   "category": "physics",
+   "interaction": "Switch on a microwave oven seen from above: a wave simulation fills the metal box, and a slab of food warms where the field is strong, shown as a heat map. Stop the turntable to see fixed hot and cold spots, start it to even them out, and lay a chocolate bar across the floor to measure the gap between melted spots against the wavelength.",
+   "takeaway": "Microwaves reflecting off the metal walls form a standing pattern of strong and weak spots that stays fixed in the box, which is why food heats unevenly and why the turntable moves the food through it.",
+   "prerequisites": [
+    "waves-interference"
+   ],
+   "related": [
+    "wireless-signals",
+    "electromagnetism",
+    "wifi-and-walls",
+    "why-metal-feels-cold"
+   ],
+   "needs": "None: a 2D finite-difference wave (or Helmholtz) solver in a rectangular cavity at 2.45 GHz with a lossy dielectric slab; standard permittivity values for water and food from textbook tables.",
+   "pitfall": "2.45 GHz is not a special resonance of water molecules, and microwaves do not cook food from the inside out; they heat the outer few centimetres, and the chocolate spacing is only roughly half a free-space wavelength because the cavity's modes are not a simple standing wave.",
+   "why": "The chocolate-in-the-microwave speed-of-light experiment is a classic school lesson: https://www.bu.edu/gk12/loren/lesson_microwave.html",
+   "overlapWith": "waves-interference: that page shows standing waves and interference on strings and in open space; this one applies them in a closed metal box with an absorbing load, where the pattern decides what gets hot.",
+   "needsSource": "none (computed; permittivities from standard references)",
+   "leadsTo": [],
+   "everyday": true,
+   "origin": "gap:demand",
+   "verifyNote": "Sound. The prerequisite waves-interference is level 1, the same as the candidate. It does not duplicate waves-interference or wireless-signals: neither shows a closed metal cavity with an absorbing load, a heat map or a turntable. The model is a 2D Helmholtz or FDTD solve on a grid of about 30 by 30 cm at a 12 cm wavelength. That is small enough to compute once, and heating accumulated over the turntable angle can be drawn as a pure function of time. The physics in the pitfall checks out: 2.45 GHz is not a water resonance (water's broad absorption peaks near 20 GHz and above), penetration depth is about 1 to 3 cm, and the chocolate experiment is a standard school lesson (the BU GK-12 URL resolves). Permittivities for water and food are textbook values, so no licence problem. Caveat for the builder: a top-down 2D field is a simplification of a 3D oven's modes, and the page should not claim a quantitatively real oven pattern.",
+   "scores": {
+    "build": 4,
+    "fit-level": 4
+   },
+   "score": 12,
+   "judgeNotes": [
+    "build 4: A 2D FDTD or Helmholtz solve in a rectangular cavity at 2.45 GHz with a lossy slab is feasible on a modest grid, and rotating the load to time-average the heating is cheap; the real oven is a 3D problem, so the 2D cut must be stated, but the hot-spot spacing comes out honestly.",
+    "fit-level 4: An everyday device whose standing-wave hot spots and chocolate-bar measurement apply waves-interference to a closed cavity, making it a distinct and honest level-1 page."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "static-electricity-balloons",
+   "title": "Static electricity: why a balloon sticks to the wall",
+   "level": 0,
+   "kind": "manipulate",
+   "category": "physics",
+   "interaction": "Rub a balloon on a jumper, one stroke at a time, and count the tiny charges that hop from the jumper to the balloon. Bring the balloon near a wall: the wall's charges lean away or toward it without leaving, and the balloon sticks. Hang two rubbed balloons side by side and they push each other apart.",
+   "takeaway": "Rubbing moves charges from one thing to another; opposite charges pull and like charges push, and even an uncharged wall is pulled because its charges shift a little toward or away from the balloon.",
+   "prerequisites": [],
+   "related": [
+    "lightning-strikes",
+    "magnets-and-poles",
+    "atoms-periodic-table"
+   ],
+   "needs": "None: point charges with Coulomb forces; the jumper, balloon and wall are insulators whose charges shift slightly in place, as in PhET's model.",
+   "pitfall": "Rubbing does not create charge, it only moves it from one thing to the other (the tiny charged bits that move are not the atoms' centres), and the wall the balloon sticks to is not itself charged overall: its charges only shift a little.",
+   "why": "PhET's 'Balloons and Static Electricity' is one of its most used simulations (CC BY): https://clixplatform.tiss.ac.in/phet/en/simulation/balloons.html",
+   "overlapWith": "magnets-and-poles: that page is about magnetic poles, which always come in pairs; this one is about electric charges that can be separated and moved by rubbing.",
+   "needsSource": "none",
+   "leadsTo": [
+    "electric-circuits",
+    "atoms-periodic-table"
+   ],
+   "everyday": true,
+   "origin": "gap:demand",
+   "verifyNote": "Two small problems. (a) leadsTo lists electromagnetism, which is level 2 in TOPICS.md, but a level-0 page's leadsTo should name level-1 topics only (electric-circuits and atoms-periodic-table are level 1). (b) The pitfall says flatly that rubbing moves 'electrons, not protons'. Protons never move, but what carries the charge when two insulators touch (electrons, ions or nanoscale bits of material) is still debated; see APS Physics https://physics.aps.org/articles/v7/58 and Chemistry World on material transfer. The page must not present electron transfer as settled for a balloon. Everything else holds up: there is no real duplicate (electromagnetism places fixed charges at level 2 and does not show charging by contact or polarization), PhET's sim shows the point-charge model runs fine in a browser, no data is needed, and the takeaway can be seen in the graphic.",
+   "scores": {
+    "build": 4,
+    "fit-level": 4
+   },
+   "score": 12,
+   "judgeNotes": [
+    "build 4: Coulomb point charges with transfer on rubbing and bound charges that shift slightly in the wall, as in PhET's Balloons and Static Electricity, are a small honest model; the attraction to the wall must come from the computed polarisation forces, not a scripted stick.",
+    "fit-level 4: A familiar experience with a countable charge-transfer mechanism and induced polarisation, honest at level 0 and distinct from electric-circuits and magnets-and-poles."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "landscape-evolution",
+   "title": "How rivers carve mountains: landscape evolution",
+   "level": 3,
+   "kind": "simulate",
+   "category": "earth",
+   "interaction": "Lift a block of land at a steady rate on a grid and let rain run downhill: each cell drains to its steepest neighbour, rivers erode at a rate set by their drainage area and slope (the stream-power law), and hillslopes creep by diffusion. Watch a branching drainage network and ridges emerge until erosion balances uplift; double the uplift rate and the steady-state mountains grow taller and steeper, make the rock harder and the same happens, then switch the uplift off and watch the relief decay.",
+   "takeaway": "Mountain ranges reach a steady state in which rivers erode them as fast as tectonics lifts them, so how high and steep they stand is set by the uplift rate and the rock, not by their age.",
+   "prerequisites": [
+    "plate-tectonics",
+    "deep-time",
+    "calculus"
+   ],
+   "related": [
+    "glacier-flow",
+    "carbon-cycle",
+    "carbonate-silicate-thermostat",
+    "earthquakes"
+   ],
+   "needs": "Optional: a real digital elevation model tile for comparison, from SRTM (NASA/USGS, public domain). The simulation itself needs no data.",
+   "pitfall": "The stream-power law is an empirical erosion rule with poorly constrained exponents, not a fundamental law; and steady-state topography means the form persists while rock keeps moving up and being removed, not that nothing happens.",
+   "why": "Landscape evolution modelling with the stream-power incision model (FastScape) is taught as a core geomorphology method, e.g. the Cologne IRTG course by Jean Braun: https://sfb1211.uni-koeln.de/index.php/74-irtg/events/past-events/141-irtg-rtd-landscape-evolution-modeling-using-the-fastscape-algorithm-software",
+   "overlapWith": "plate-tectonics builds mountains where plates meet; this page adds the erosion that wears them down and shows the drainage network and steady-state relief that emerge from uplift against river incision.",
+   "needsSource": "none (optional SRTM DEM, public domain)",
+   "leadsTo": [],
+   "everyday": false,
+   "origin": "gap:l3",
+   "verifyNote": "No existing page covers erosion or drainage networks: plate-tectonics only builds relief. D8 flow routing plus implicit stream-power incision (Braun and Willett 2013) and hillslope diffusion runs at interactive rates on a grid of about 128x128 in the browser. The takeaway matches Whipple and Tucker (1999), where steady-state relief scales with uplift rate and erodibility, and the pitfall correctly says the exponents m and n are poorly constrained. Prerequisites (plate-tectonics, deep-time, calculus) are existing and below level 3. No data is needed; SRTM is public domain.",
+   "scores": {
+    "build": 5,
+    "fit-level": 3
+   },
+   "score": 12,
+   "judgeNotes": [
+    "build 5: Steepest-descent flow routing, drainage-area accumulation, implicit stream-power incision and hillslope diffusion on a ~128x128 grid run at interactive rates (the standard FastScape-style scheme), and need no data.",
+    "fit-level 3: The stream-power plus diffusion landscape model is real and visual, and steady-state relief is a genuine level-3 insight distinct from plate-tectonics, but it is niche, and its rivers-carve-valleys sibling in this batch shares much of the same picture."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "cyclic-voltammetry",
+   "title": "Cyclic voltammetry: reading a reaction from a current",
+   "level": 3,
+   "kind": "simulate",
+   "category": "chemistry",
+   "interaction": "Sweep an electrode's potential up and back down and watch the concentration profile of the oxidised and reduced species near the electrode, solved as diffusion on a 1D grid with Butler-Volmer kinetics at the surface, while the current traces the duck-shaped voltammogram. Speed up the scan and the peaks grow with the square root of the scan rate; slow the electron transfer and the two peaks pull apart from about 57 mV toward an irreversible wave; add a follow-up chemical reaction and the return peak shrinks.",
+   "takeaway": "The current peaks not when the reaction is fastest but when diffusion can no longer bring fresh molecules to the depleted electrode, and the shape and spacing of the peaks reveal how fast electrons transfer.",
+   "prerequisites": [
+    "redox-batteries",
+    "reaction-rates-equilibrium",
+    "calculus"
+   ],
+   "related": [
+    "surface-catalysis",
+    "diffusion-osmosis",
+    "acids-bases"
+   ],
+   "needs": "",
+   "pitfall": "The peak potential is not the standard potential, and the peak separation of about 57/n mV (2.22RT/nF, often misquoted as 59 mV) holds only for a fast, reversible couple at 25 °C; the current falls after the peak because the diffusion layer thickens, not because the bulk solution has run out.",
+   "why": "Elgrishi et al., 'A Practical Beginner's Guide to Cyclic Voltammetry', J. Chem. Educ. 2018, 95, 197-206, a widely used teaching reference on how scan rate and electron-transfer kinetics shape a voltammogram: https://pubs.acs.org/doi/10.1021/acs.jchemed.7b00361",
+   "overlapWith": "redox-batteries shows a cell charging and discharging at equilibrium voltages; this page is the measurement technique of electrochemistry, with electrode kinetics and diffusion producing a voltammogram, which nothing on the site models.",
+   "needsSource": "none",
+   "leadsTo": [],
+   "everyday": false,
+   "origin": "gap:l3",
+   "verifyNote": "The model (1D finite-difference diffusion with Butler-Volmer boundary kinetics and an optional EC follow-up reaction) is a standard teaching simulation and runs at interactive rates. No existing page covers it, the level 3 is honest, and the prerequisites are at or below level 3. But the entry repeats a common error: for a reversible couple the theoretical peak separation is 2.22RT/nF, about 57/n mV at 25 °C; 59 mV is the Nernst slope, often misquoted as the peak separation. Both the interaction and the pitfall must be corrected. The 'why' URL is an R-package vignette on a CRAN mirror rather than a course or demand signal; Elgrishi et al. 2018 (J. Chem. Educ.) is a stronger one.",
+   "scores": {
+    "build": 5,
+    "fit-level": 3
+   },
+   "score": 12,
+   "judgeNotes": [
+    "build 5: A 1D finite-difference diffusion grid with a Butler-Volmer boundary is the textbook digital simulation of CV, cheap in the browser, and the sqrt(scan rate) and peak-separation results come straight out of it with no data.",
+    "fit-level 3: An honest level-3 model (diffusion plus Butler-Volmer) that nothing on the site covers, but it is a lab measurement technique with narrower appeal to visitors than most candidates."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "water-cycle",
+   "title": "Where rain comes from: the water cycle",
+   "level": 0,
+   "kind": "simulate",
+   "category": "earth",
+   "interaction": "A side view of sea, land, hills and sky holds a few thousand water parcels. The reader moves one slider, the sunshine, and watches parcels leave the warm sea as vapour, rise, turn into cloud as they cool over the hills, fall as rain and run back down rivers to the sea. Counters show how much water is in the sea, the air, the clouds and the rivers at each moment.",
+   "takeaway": "The same water goes round and round: the Sun lifts it from the sea, cooling turns it into cloud and rain, and rivers carry it back, so the total never changes.",
+   "prerequisites": [],
+   "related": [
+    "cloud-base",
+    "sea-breeze",
+    "states-of-matter",
+    "dissolving-sugar-and-salt"
+   ],
+   "needs": "none (a parcel model with evaporation rising with temperature and condensation when air cools with height; no external data)",
+   "pitfall": "Clouds are not water vapour: vapour is invisible, and clouds are tiny liquid drops or ice. And evaporation does not need boiling; puddles dry at everyday temperatures, just faster when it is warm.",
+   "why": "KS2 Year 4 statutory: identify the part played by evaporation and condensation in the water cycle and link the rate of evaporation to temperature (https://thenational.academy/teachers/programmes/science-primary-ks2/units/introduction-to-states-of-matter-and-changing-states/lessons/evaporation-and-condensation-in-the-water-cycle); also NGSS MS-ESS2-4. The catalogue notes the water cycle is not covered.",
+   "overlapWith": "cloud-base: that page explains why one cloud forms and why its base is flat; this one follows water all the way round the loop, sea to sky to river, and keeps the total constant.",
+   "needsSource": "none",
+   "leadsTo": [
+    "states-of-matter",
+    "carbon-cycle"
+   ],
+   "everyday": true,
+   "origin": "gap:l0",
+   "verifyNote": "The catalogue explicitly lists the water cycle as not covered. The proposed cloud-base page explains one cloud, while this page follows the whole loop with conserved counters, so the takeaway (the total never changes) can be read from the counters alone. A parcel model with temperature-dependent evaporation and condensation on cooling runs easily in the browser and needs no external data. The KS2 Year 4 and MS-ESS2-4 signals are real. Level 0 is honest: one slider, no formulas. leadsTo names existing level-1 slugs (states-of-matter, carbon-cycle). The pitfall (clouds are liquid or ice, not vapour; evaporation needs no boiling) is correct. Leaving out evaporation from land and plants is an acceptable simplification for this level.",
+   "scores": {
+    "build": 3,
+    "fit-level": 4
+   },
+   "score": 10.5,
+   "judgeNotes": [
+    "build 3: Buildable as a parcel agent model with temperature-dependent evaporation and condensation on cooling with height, but unless the rates follow a real saturation law (Clausius-Clapeyron) and a lapse rate, the model risks becoming a scripted loop dressed as a simulation; the spec should require them.",
+    "fit-level 4: A core primary-school subject with a visible loop mechanism and a single sunshine control; it fits level 0 well and is distinct from cloud-base and states-of-matter."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "rivers-carve-valleys",
+   "title": "How rivers carve valleys",
+   "level": 0,
+   "kind": "simulate",
+   "category": "earth",
+   "interaction": "A sandbox hillside on a grid, like a classroom stream table. The reader tilts it (one control at a time: slope, then how much water) and pours water at the top; the water finds the lowest path, picks up sand where it runs fast and drops it where it slows, cutting a branching valley and building a fan of sand at the bottom.",
+   "takeaway": "Fast water picks sand up and slow water puts it down, so a steeper slope or more water cuts a deeper valley and builds a bigger fan of sand at the bottom.",
+   "prerequisites": [],
+   "related": [
+    "plate-tectonics",
+    "deep-time",
+    "glacier-flow",
+    "water-cycle"
+   ],
+   "needs": "none (grid hydraulic-erosion model: water routed downhill, sediment capacity rising with flow speed, erosion and deposition; no external data)",
+   "pitfall": "Rivers do not dig valleys in one flood or in a single direction downwards; they also drop most of what they carry, and the landscape is as much built by deposition as cut by erosion.",
+   "why": "NGSS 4-ESS2-1, evidence of weathering and the rate of erosion by water, with slope and water volume as the suggested variables, the classic stream-table investigation (https://thewonderofscience.com/4ess21).",
+   "overlapWith": "plate-tectonics: that page raises mountains by moving plates; this one wears land down and moves it with running water, which no existing page shows.",
+   "needsSource": "none",
+   "leadsTo": [
+    "plate-tectonics",
+    "deep-time"
+   ],
+   "everyday": false,
+   "origin": "gap:l0",
+   "verifyNote": "A sound level-0 topic with a strong NGSS 4-ESS2-1 stream-table signal, and no existing page shows erosion. Three claims are wrong. (1) A grid hydraulic-erosion model (water routed downhill, transport capacity rising with speed) makes branching channels and fans, but not true meanders: meander growth depends on secondary flow in bends and on bank erosion, which this model leaves out. Promising meanders breaks the rule that the model is real. (2) The interaction builds a fan at the foot of the slope, but the takeaway calls it a delta; a delta forms where a river enters standing water. (3) everyday=true is wrong: a river valley is not an everyday object or household mechanism.",
+   "scores": {
+    "build": 4,
+    "fit-level": 3
+   },
+   "score": 10.5,
+   "judgeNotes": [
+    "build 4: Grid hydraulic erosion with flow routing and speed-dependent sediment capacity is a well-known, fast browser algorithm that produces channels and a fan; it is honest at level 0, though it shares its engine with landscape-evolution.",
+    "fit-level 3: The stream-table erosion and deposition mechanism is honest at level 0 and new to the site, but it overlaps visually with landscape-evolution in this batch, so only one of the two may be worth keeping."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  },
+  {
+   "slug": "lightning-strikes",
+   "title": "Lightning: how a bolt finds the ground",
+   "level": 1,
+   "kind": "simulate",
+   "category": "earth",
+   "interaction": "Charge a thundercloud above a landscape and watch a stepped leader grow down from it in jagged jumps, each step chosen at random but more likely where the electric field is strongest. Add a tree, a tower or a lightning rod: an upward streamer rises to meet the leader, the channel connects and the bright return stroke runs from the ground up. Raise or lower the cloud's charge and compare how often the tall object is the one that gets hit.",
+   "takeaway": "Lightning branches because it grows step by step toward wherever the electric field is strongest, and tall pointed objects make the field strong enough near them to launch a streamer that often, but not always, catches the leader.",
+   "prerequisites": [
+    "electric-circuits"
+   ],
+   "related": [
+    "static-electricity-balloons",
+    "electromagnetism",
+    "atmosphere-weather",
+    "chaos-fractals"
+   ],
+   "needs": "None: the dielectric breakdown model (Niemeyer, Pietronero and Wiesmann 1984), which solves the Laplace equation on a grid and grows the channel with probability proportional to a power of the local field; stroke timings and currents from NOAA/NWS public-domain material.",
+   "pitfall": "The bright flash does not travel down from the cloud: the visible return stroke goes up the channel from the ground; and lightning can strike the same place twice. The model's branching exponent is fitted, not derived, and a 2D grid gives flatter branching than real 3D bolts.",
+   "why": "The US National Weather Service explains the stepped leader and return stroke for the public: https://weather.gov/safety/lightning-science-negative-charged-flash",
+   "overlapWith": "atmosphere-weather: that page covers winds, fronts and storms at the scale of the globe; this one zooms into one discharge and models how its path grows and where it lands.",
+   "needsSource": "none (computed model; facts from NOAA/NWS, US public domain)",
+   "leadsTo": [],
+   "everyday": true,
+   "origin": "gap:demand",
+   "verifyNote": "The dielectric breakdown model (Niemeyer, Pietronero and Wiesmann 1984) is a real, cheap grid model: relax the Laplace equation, then grow the channel with probability proportional to a power of the local field. It runs at interactive rates on a grid of about 100x100. An upward streamer from a tall object is a small, documented extension. The NWS page exists and confirms the stepped leader in roughly 50 m steps, the upward streamer connecting within about 50 m of the ground, and the return stroke moving up the channel. So the pitfall is correct, and it honestly states that the branching exponent is fitted and that a 2D grid flattens the branching. The page overlaps neither atmosphere-weather (global circulation) nor electromagnetism (field lines of point charges). Level 1 with electric-circuits as prerequisite is acceptable, since electric fields from static charge are GCSE content. The takeaway (branching toward strong field, tall objects often but not always hit) can be seen in the graphic.",
+   "scores": {
+    "build": 4,
+    "fit-level": 3
+   },
+   "score": 10.5,
+   "judgeNotes": [
+    "build 4: The Niemeyer-Pietronero-Wiesmann dielectric breakdown model, a grid Laplace relaxation with field-weighted growth, runs interactively on roughly 100x100 grids with incremental solves, and tall-object strike statistics can be computed by repeated runs; the facts come from NOAA/NWS public-domain material.",
+    "fit-level 3: A stepped-leader growth model on a field grid is a real mechanism distinct from atmosphere-weather, but it relies on electric fields that the site teaches at level 2 (electromagnetism), and its fitted branching makes it less crisp at level 1."
+   ],
+   "kept": "runner-up (outranks no topic it could replace)"
+  }
+ ],
+ "gapSwaps": [
+  {
+   "out": "milk-and-yogurt",
+   "outTitle": "Milk, vinegar and yogurt",
+   "in": "be-the-bird-camouflage",
+   "inTitle": "Camouflage: you are the hungry bird",
+   "level": 0
+  }
+ ],
  "rejectedInVerify": [
   {
    "slug": "x-ray-diffraction",
@@ -2311,6 +2998,28 @@
   }
  ],
  "runnersUp": [
+  {
+   "slug": "milk-and-yogurt",
+   "level": 0,
+   "category": "biology",
+   "kind": "simulate",
+   "title": "Milk, vinegar and yogurt",
+   "score": 12,
+   "scores": {
+    "fit-level": 4,
+    "build": 4
+   },
+   "judgeNotes": [
+    "fit-level 4: Charged protein balls clumping when acid is added or made by bacteria is a clear mechanism that ties curds and yogurt together without a pH number, distinct from acids-bases.",
+    "build 4: Brownian colloids whose repulsion switches off as pH falls, plus a temperature-dependent bacterial acidification rate, can be built at interactive rates and show curdling emerging. The thicker set from preheated milk would need an extra stated rule (denatured whey binding the casein)."
+   ],
+   "verifyNote": "Distinct from acids-bases and from the pool's cooking-an-egg (proteins unfolding in heat), and buildable: Brownian colloid particles whose repulsion falls as pH nears casein's isoelectric point (about 4.6), plus bacterial growth with a temperature optimum that makes the acid. The pitfall is wrong in two ways. Most cheese is set by rennet, an enzyme that clips kappa-casein, not by acid, so 'the same clumping is cheese' is false except for acid cheeses such as paneer or ricotta. And raw milk turns sour through lactic acid bacteria much like yogurt cultures, which contradicts 'the bacteria in yogurt are not the bacteria that spoil food'. 'Kept apart by their charge' also oversimplifies: the micelles are held apart by a charged, hairy kappa-casein coat, mostly by its bulk. needsSource should name the few constants it uses.",
+   "fix": {
+    "takeaway": "Milk is a cloud of tiny protein balls kept apart by a charged, fuzzy coat; acid, poured in or made by bacteria, takes the charge away and lets them clump, which is curds in a minute or yogurt overnight.",
+    "pitfall": "Curdling milk with vinegar is not milk 'going off', though milk left out does sour the same way, by lactic acid bacteria much like yogurt's. Most cheese is not made this way: rennet, an enzyme, sets it by clipping the protein balls' coat, and only some cheeses (paneer, ricotta) are set by acid.",
+    "needsSource": "No dataset. The model uses textbook constants: casein's isoelectric point near pH 4.6 (dairy-science reviews such as de Kruif's), and yogurt cultures (Streptococcus thermophilus, Lactobacillus bulgaricus) that work best around 40 to 45 C and stop near fridge temperature. Shown as comparisons, never as numbers."
+   }
+  },
   {
    "slug": "monte-carlo-tree-search",
    "level": 3,

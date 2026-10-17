@@ -1,0 +1,200 @@
+[
+ {
+  "label": "verify:g0b4",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "static-electricity-balloons",
+     "refuted": true,
+     "reason": "Two small problems. (a) leadsTo lists electromagnetism, which is level 2 in TOPICS.md, but a level-0 page's leadsTo should name level-1 topics only (electric-circuits and atoms-periodic-table are level 1). (b) The pitfall says flatly that rubbing moves 'electrons, not protons'. Protons never move, but what carries the charge when two insulators touch (electrons, ions or nanoscale bits of material) is still debated; see APS Physics https://physics.aps.org/articles/v7/58 and Chemistry World on material transfer. The page must not present electron transfer as settled for a balloon. Everything else holds up: there is no real duplicate (electromagnetism places fixed charges at level 2 and does not show charging by contact or polarization), PhET's sim shows the point-charge model runs fine in a browser, no data is needed, and the takeaway can be seen in the graphic.",
+     "hasFix": true,
+     "fixed": {
+      "leadsTo": [
+       "electric-circuits",
+       "atoms-periodic-table"
+      ],
+      "pitfall": "Rubbing does not create charge, it only moves it from one thing to the other (the tiny charged bits that move are not the atoms' centres), and the wall the balloon sticks to is not itself charged overall: its charges only shift a little."
+     }
+    },
+    {
+     "slug": "microwave-oven-hot-spots",
+     "refuted": false,
+     "reason": "Sound. The prerequisite waves-interference is level 1, the same as the candidate. It does not duplicate waves-interference or wireless-signals: neither shows a closed metal cavity with an absorbing load, a heat map or a turntable. The model is a 2D Helmholtz or FDTD solve on a grid of about 30 by 30 cm at a 12 cm wavelength. That is small enough to compute once, and heating accumulated over the turntable angle can be drawn as a pure function of time. The physics in the pitfall checks out: 2.45 GHz is not a water resonance (water's broad absorption peaks near 20 GHz and above), penetration depth is about 1 to 3 cm, and the chocolate experiment is a standard school lesson (the BU GK-12 URL resolves). Permittivities for water and food are textbook values, so no licence problem. Caveat for the builder: a top-down 2D field is a simplification of a 3D oven's modes, and the page should not claim a quantitatively real oven pattern.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "why-the-moon-doesnt-fall",
+     "refuted": false,
+     "reason": "Sound as a level-0 on-ramp. It shares its core idea with orbits-kepler, whose takeaway is that an orbit is continuous free fall. But orbits-kepler is level 1, with speed and direction controls, area overlays, period plots and two planets. This page has one control, starts from throwing a ball, and lists orbits-kepler in leadsTo, which is exactly the level-0 pattern the plan asks for. Its prerequisite earth-is-a-ball is a proposed level-0 space topic, so the level is fine. One-body Newtonian integration is trivial in a browser, and no data is needed. The pitfalls (there is gravity in space, astronauts are in free fall) are correct, and the Newton's cannon grounding is standard (Bucknell ASTR101 page). Minor build note: the circular-speed ball returns to the mountain from behind, so the mountain should be thin or the ball drawn passing just over it.",
+     "hasFix": false,
+     "fixed": {}
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:g0b3",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "landscape-evolution",
+     "refuted": false,
+     "reason": "No existing page covers erosion or drainage networks: plate-tectonics only builds relief. D8 flow routing plus implicit stream-power incision (Braun and Willett 2013) and hillslope diffusion runs at interactive rates on a grid of about 128x128 in the browser. The takeaway matches Whipple and Tucker (1999), where steady-state relief scales with uplift rate and erodibility, and the pitfall correctly says the exponents m and n are poorly constrained. Prerequisites (plate-tectonics, deep-time, calculus) are existing and below level 3. No data is needed; SRTM is public domain.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "switching-power-converters",
+     "refuted": false,
+     "reason": "No catalogue page shows DC-DC conversion: power-grid uses transformers on AC. A buck or boost converter is a piecewise-linear ODE that is trivial to integrate client-side. The physics checks out: Vout = D*Vin, and the ripple grows until discontinuous conduction as the frequency or inductance falls. The pitfall checks out too: ideally 20 V to 5 V draws about a quarter of the output current. Level 3 fits a topic from an MIT 6.334 syllabus, prerequisites are existing level-1 and level-2 slugs, and no data is needed.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "receptor-pharmacology",
+     "refuted": true,
+     "reason": "The model (mass action, the operational model, Gaddum-Schild) is sound and distinct from pharmacokinetics-dosing, but three things need small changes. (1) The takeaway says a non-competitive blocker lowers the ceiling, which contradicts the page's own spare-receptor feature. With a receptor reserve, an irreversible or non-competitive antagonist first shifts the curve right and lowers the maximum only once the reserve is used up (Furchgott analysis). (2) The why signal is a Wikipedia article, not a curriculum or demand signal; MIT OCW HST.151 Principles of Pharmacology, lecture 1 'Drug-Receptor Interactions', covers it. (3) The IUPHAR/BPS Guide to Pharmacology database is licensed ODbL; only its text content is CC BY-SA 4.0.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "How strongly a drug binds and how strongly it activates are separate properties: a competitive blocker slides the dose-response curve sideways, while a non-competitive one lowers its ceiling once the tissue's spare receptors are used up.",
+      "why": "MIT OCW HST.151 Principles of Pharmacology, lecture 1 'Drug-Receptor Interactions' (mass action, full and partial agonists, reversible and irreversible antagonists): https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/pages/lecture-notes/",
+      "needs": "Optional: affinities of a few real agonists and antagonists (e.g. at the beta-adrenergic or mu-opioid receptor) from the IUPHAR/BPS Guide to Pharmacology (database under the Open Database License, ODbL; text content CC BY-SA 4.0). The model itself (operational model, Gaddum-Schild) needs no data.",
+      "needsSource": "none required; optional IUPHAR/BPS Guide to Pharmacology data, ODbL (database) / CC BY-SA 4.0 (text)"
+     }
+    },
+    {
+     "slug": "queueing-theory",
+     "refuted": false,
+     "reason": "internet and the proposed tcp-congestion-control do not show the delay-versus-load curve or Little's law. A discrete-event M/M/1 simulation (and M/D/1 for regular service) runs easily client-side. The pitfall's numbers are correct: the M/M/1 sojourn time is proportional to 1/(1-rho), giving 2, 10 and 100 at 50%, 90% and 99% load, so ratios of 5x and 50x. Regular arrivals or service lowering the queue is Pollaczek-Khinchine. The MIT 6.263J signal is apt, prerequisites are existing, and no data is needed.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "friction-slide-or-stick",
+     "refuted": true,
+     "reason": "The page is sound overall. It is a genuine level-0 toy with one control (the ramp angle), the KS2 Year 5 and NGSS 3-PS2-1 signal fits, and it differs from newtons-laws, which has no friction-on-ramp page. The takeaway is right, since the slip angle tan(theta) = mu_s does not depend on weight. OpenStax College Physics (Table 5.1) is CC BY 4.0. One part needs a fix: the pitfall states flatly that friction never depends on contact area, yet the page includes rubber, where area and deformation do matter (tyres). Hedge it to the rule of thumb for hard surfaces. Also note that OpenStax editions differ on some rows (steel on ice static 0.4 vs 0.04), so the page should cite one edition and use rows consistently.",
+     "hasFix": true,
+     "fixed": {
+      "pitfall": "Heavier things do not slip later on the same ramp, and for hard surfaces such as wood, metal or ice the size of the touching area hardly matters (soft rubber is the exception); friction is also not only a nuisance, since walking and braking need it.",
+      "needs": "Typical static friction coefficients for a few surface pairs from one edition of OpenStax College Physics 2e, Table 5.1 (CC BY 4.0); cite the edition, since rows such as steel on ice differ between versions."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:g0b2",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "sequence-alignment",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Sound topic, level and prerequisites (dna-to-protein and evolution are both level 1), and Needleman-Wunsch/Smith-Waterman on two short proteins plus 100 shuffles runs easily in the browser. It does not duplicate dna-to-protein or the proposed dna-fingerprinting. The licence claim is wrong, though: BLOSUM62 is not a U.S. government work. Henikoff & Henikoff published it in PNAS in 1992 from the Fred Hutchinson Cancer Research Center and HHMI, not from a federal agency. It is a table of numerical facts, freely redistributed with NCBI BLAST and Biopython (BSD), so it is usable, but Needs must not call it public domain as a government work.",
+     "fixed": {
+      "needs": "A handful of protein sequences from UniProt (CC BY 4.0), and the BLOSUM62 substitution matrix (Henikoff & Henikoff 1992, PNAS 89:10915). The matrix is a table of numerical values, freely redistributed in the NCBI BLAST distribution and in Biopython (BSD licence). Cite the paper.",
+      "needsSource": "UniProt sequences (CC BY 4.0); BLOSUM62, a published numerical table freely redistributed with NCBI BLAST and Biopython (BSD); openly usable with citation"
+     }
+    },
+    {
+     "slug": "cyclic-voltammetry",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "The model (1D finite-difference diffusion with Butler-Volmer boundary kinetics and an optional EC follow-up reaction) is a standard teaching simulation and runs at interactive rates. No existing page covers it, the level 3 is honest, and the prerequisites are at or below level 3. But the entry repeats a common error: for a reversible couple the theoretical peak separation is 2.22RT/nF, about 57/n mV at 25 °C; 59 mV is the Nernst slope, often misquoted as the peak separation. Both the interaction and the pitfall must be corrected. The 'why' URL is an R-package vignette on a CRAN mirror rather than a course or demand signal; Elgrishi et al. 2018 (J. Chem. Educ.) is a stronger one.",
+     "fixed": {
+      "interaction": "Sweep an electrode's potential up and back down and watch the concentration profile of the oxidised and reduced species near the electrode, solved as diffusion on a 1D grid with Butler-Volmer kinetics at the surface, while the current traces the duck-shaped voltammogram. Speed up the scan and the peaks grow with the square root of the scan rate; slow the electron transfer and the two peaks pull apart from about 57 mV toward an irreversible wave; add a follow-up chemical reaction and the return peak shrinks.",
+      "pitfall": "The peak potential is not the standard potential, and the peak separation of about 57/n mV (2.22RT/nF, often misquoted as 59 mV) holds only for a fast, reversible couple at 25 °C; the current falls after the peak because the diffusion layer thickens, not because the bulk solution has run out.",
+      "why": "Elgrishi et al., 'A Practical Beginner's Guide to Cyclic Voltammetry', J. Chem. Educ. 2018, 95, 197-206, a widely used teaching reference on how scan rate and electron-transfer kinetics shape a voltammogram: https://pubs.acs.org/doi/10.1021/acs.jchemed.7b00361"
+     }
+    },
+    {
+     "slug": "rivers-carve-valleys",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "A sound level-0 topic with a strong NGSS 4-ESS2-1 stream-table signal, and no existing page shows erosion. Three claims are wrong. (1) A grid hydraulic-erosion model (water routed downhill, transport capacity rising with speed) makes branching channels and fans, but not true meanders: meander growth depends on secondary flow in bends and on bank erosion, which this model leaves out. Promising meanders breaks the rule that the model is real. (2) The interaction builds a fan at the foot of the slope, but the takeaway calls it a delta; a delta forms where a river enters standing water. (3) everyday=true is wrong: a river valley is not an everyday object or household mechanism.",
+     "fixed": {
+      "interaction": "A sandbox hillside on a grid, like a classroom stream table. The reader tilts it (one control at a time: slope, then how much water) and pours water at the top; the water finds the lowest path, picks up sand where it runs fast and drops it where it slows, cutting a branching valley and building a fan of sand at the bottom.",
+      "takeaway": "Fast water picks sand up and slow water puts it down, so a steeper slope or more water cuts a deeper valley and builds a bigger fan of sand at the bottom.",
+      "everyday": false
+     }
+    },
+    {
+     "slug": "water-cycle",
+     "refuted": false,
+     "hasFix": false,
+     "reason": "The catalogue explicitly lists the water cycle as not covered. The proposed cloud-base page explains one cloud, while this page follows the whole loop with conserved counters, so the takeaway (the total never changes) can be read from the counters alone. A parcel model with temperature-dependent evaporation and condensation on cooling runs easily in the browser and needs no external data. The KS2 Year 4 and MS-ESS2-4 signals are real. Level 0 is honest: one slider, no formulas. leadsTo names existing level-1 slugs (states-of-matter, carbon-cycle). The pitfall (clouds are liquid or ice, not vapour; evaporation needs no boiling) is correct. Leaving out evaporation from land and plants is an acceptable simplification for this level.",
+     "fixed": {}
+    },
+    {
+     "slug": "lightning-strikes",
+     "refuted": false,
+     "hasFix": false,
+     "reason": "The dielectric breakdown model (Niemeyer, Pietronero and Wiesmann 1984) is a real, cheap grid model: relax the Laplace equation, then grow the channel with probability proportional to a power of the local field. It runs at interactive rates on a grid of about 100x100. An upward streamer from a tall object is a small, documented extension. The NWS page exists and confirms the stepped leader in roughly 50 m steps, the upward streamer connecting within about 50 m of the ground, and the return stroke moving up the channel. So the pitfall is correct, and it honestly states that the branching exponent is fitted and that a 2D grid flattens the branching. The page overlaps neither atmosphere-weather (global circulation) nor electromagnetism (field lines of point charges). Level 1 with electric-circuits as prerequisite is acceptable, since electric fields from static charge are GCSE content. The takeaway (branching toward strong field, tall objects often but not always hit) can be seen in the graphic.",
+     "fixed": {}
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:g0b1",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "learning-by-reward",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Sound as the level-0 doorway to reinforcement-learning (leadsTo learning-from-data is the only level-1 AI page, so acceptable), and all related slugs exist in the batch. But the interaction misdescribes the model it names: tabular one-step Q-learning does not warm 'the floor tiles that led there' after a single success; only the tile next to the biscuit gains value, and the warmth spreads backward one tile per run. Saying otherwise would be untrue, and the honest version is itself a good thing to watch. The exploration control also has no visible payoff unless the room holds a worse treat that greedy following settles on, so the room needs a near small treat and a far bigger one.",
+     "fixed": {
+      "interaction": "A little robot pup sits in a small room with a small biscuit close by, a big bone farther away and a puddle in between. Press play: at first it wanders at random; when it reaches a treat, the tile it stepped from glows warmer, and run after run the warmth spreads back across the floor until the pup walks a glowing path straight to it. One control: how often it tries something new instead of following the warmest tiles. Turn it to zero and the pup keeps settling for the near biscuit; give it some curiosity and it finds the bone."
+     },
+     "refuted_note": ""
+    },
+    {
+     "slug": "induction-heads",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Not a duplicate: transformers shows the attention of a fixed pretrained model, while this page trains a model, shows the circuit forming and switches heads off. The level and prerequisites are honest (transformers is level 3; training-a-tiny-language-model is a proposed level-3 slug), and the takeaway and pitfall agree with Olsson et al. 2022 and Singh et al. 2024. Two weaknesses. First, the needsSource asserts that arXiv 2404.07129 is CC BY 4.0, which I could not verify; it is also irrelevant, because only the method is used and the data are synthetic. Second, no source gives a training time for a CPU or browser run, and the plateau before the phase change can be long. The page should use one head per layer, so that switching a head off is clean, and keep a fixed-seed run with precomputed checkpoints as the scrubbable default, with live training as an option.",
+     "fixed": {
+      "interaction": "Scrub through the training of a tiny two-layer, attention-only transformer (one head per layer) on sequences that repeat partway through, from a fixed-seed run whose checkpoints ship with the page, or retrain it live; watch the loss sit on a plateau and then fall suddenly. At any checkpoint, hover a token in a test sequence to see each head's attention: after the drop, the layer-1 head looks at the previous token and the layer-2 head attends to whatever followed the earlier copy of the current token. Switch off either head and the in-context copying stops.",
+      "needs": "Checkpoints of a tiny attention-only transformer trained on synthetic repeated-token sequences, produced by the project (or trained live in the browser), following the setup of Olsson et al. 2022 and Singh et al. 2024 (arXiv 2404.07129); no external data.",
+      "needsSource": "none (synthetic data, model trained by the project; only the published method is reused)"
+     }
+    },
+    {
+     "slug": "retrieval-augmented-generation",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Not a duplicate of embeddings or language-models, and the licences hold up: all-MiniLM-L6-v2 and SmolLM2 are Apache 2.0, and Simple English Wikipedia is CC BY-SA 4.0, whose share-alike requirement is noted. Three problems. (1) The interaction says 'Ask a question', which implies free text, but the next-token probabilities are precomputed, so only a fixed set of questions works across the combinations of chunk size, number of chunks and removed document. (2) The 'why' signal is a dev.to blog post, which is weak; Stanford courses teach retrieval-augmented generation (CS224V lists it; CS25 has Douwe Kiela's lecture on retrieval-augmented language models). (3) The page needs nothing from the level-3 transformers page; embeddings and language-models (both level 2) are enough.",
+     "fixed": {
+      "interaction": "Pick one of several questions about a small shelf of documents. Watch the documents split into chunks and embed as points; the question becomes a point too, and the nearest chunks light up and are pasted into the prompt. Change the chunk size and the number of chunks retrieved, or remove the document that holds the answer, and compare a small model's next-token probabilities for the answer with and without the retrieved text (precomputed for every combination).",
+      "prerequisites": [
+       "embeddings",
+       "language-models"
+      ],
+      "why": "Stanford CS224V lists retrieval-augmented generation among its topics (https://web.stanford.edu/class/cs224v), and Stanford CS25 recorded a lecture on retrieval-augmented language models (https://web.stanford.edu/class/cs25/recordings)."
+     }
+    },
+    {
+     "slug": "superposition-toy-models",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "The model is the right one: Elhage et al.'s 5-to-2 ReLU toy trains in seconds in the browser. Not a duplicate, and the level and prerequisites are honest. But the takeaway misstates the geometry. In the five-feature pentagon the arrows sit 72 degrees apart, not 'nearly opposite'; opposite (antipodal) pairs belong to an intermediate stage. As sparsity rises, the toy goes from two features at right angles, to two antipodal pairs (four features), to a pentagon of five. The change therefore comes in distinct jumps, not as one switch from 'drop the extras' to 'pack them all in'. The interaction also skips that middle stage.",
+     "fixed": {
+      "interaction": "Train a tiny network in the browser to squeeze five input features through two hidden neurons and rebuild them, and see each feature's direction drawn as an arrow in the 2D hidden space. Slide how rarely each feature is active: with dense features the network keeps two of them at right angles and drops the rest; sparser, it packs four as two pairs of opposite arrows; sparser still, the arrows spread into a pentagon that stores all five, at the cost of some interference. Change the importance of each feature and watch which ones lose their arrows.",
+      "takeaway": "When features are rarely active at the same time, a network stores more of them than it has dimensions by sharing directions among them and accepting some interference, and the arrangement jumps between distinct shapes (two at right angles, opposite pairs, a pentagon) as sparsity grows."
+     }
+    },
+    {
+     "slug": "be-the-bird-camouflage",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Sound in substance. The model (heritable shade with small variation, plus the reader's own predation) is real and cheap. The takeaway shows in the graphic, and the pitfall is right. The page differs from evolution, where the predator is a slider, because here the reader is the predator. leadsTo evolution and meiosis-inheritance are both existing level-1 pages. The weak point is the 'why': a CliffsNotes page is not a curriculum source. The KS2 Year 6 statutory requirement on adaptation and the NGSS standard should be cited directly.",
+     "fixed": {
+      "why": "England national curriculum, KS2 Year 6 'Evolution and inheritance': identify how animals and plants are adapted to suit their environment and that adaptation may lead to evolution (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study); NGSS MS-LS4-4 (https://www.nextgenscience.org/pe/ms-ls4-4-biological-evolution-unity-and-diversity)."
+     }
+    }
+   ]
+  }
+ }
+]
