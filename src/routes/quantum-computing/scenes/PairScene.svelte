@@ -531,17 +531,25 @@
 				stroke-dasharray="1 0"
 			/>
 			<circle cx={cx + Math.sin(ang) * 80} cy={cy - Math.cos(ang) * 80} r="6" fill={col} />
-			<Label
-				x={cx}
-				y={cy - 114}
-				text={q === 0
-					? `A measures at ${aDeg}° (${aDeg ? 'x' : 'z'})`
-					: `B measures at ${deg(bDeg)}`}
-				size={13}
-				weight={700}
-				anchor="middle"
+			<Readout
+				id="axis{q}"
+				order={-2 + q}
+				label={q === 0 ? 'A measures at' : 'B measures at'}
+				value={q === 0 ? `${aDeg}° (${aDeg ? 'x' : 'z'})` : deg(bDeg)}
 				color={col}
-			/>
+			>
+				<Label
+					x={cx}
+					y={cy - 114}
+					text={q === 0
+						? `A measures at ${aDeg}° (${aDeg ? 'x' : 'z'})`
+						: `B measures at ${deg(bDeg)}`}
+					size={13}
+					weight={700}
+					anchor="middle"
+					color={col}
+				/>
+			</Readout>
 			<Readout id="axl{q}">
 				<Label
 					x={cx + Math.sin(ang) * 98}
