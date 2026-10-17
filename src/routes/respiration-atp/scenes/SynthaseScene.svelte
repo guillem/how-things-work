@@ -15,7 +15,7 @@
 	import { Molecule, Label, colors, smoothstep, lerp, polar, TAU } from '#lib/draw/index.ts';
 	import { MACHINES } from '../../the-cell/shapes';
 	import { CHAIN } from '../colors';
-	import { C_RINGS, hPerATP, synthaseHPerATP } from '../model';
+	import { C_RINGS, deliveredHPerATP, synthaseHPerATP } from '../model';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -360,13 +360,15 @@
 		order={2}
 		label="Protons per ATP"
 		value={ring.mito
-			? `${fmt(hAtp)} at the synthase, ≈ ${fmt(hPerATP(C))} with transport`
+			? `${fmt(hAtp)} at the synthase, ≈ ${fmt(deliveredHPerATP(ring))} with transport`
 			: `${fmt(hAtp)} at the synthase (ATP made where it is used: no transport cost)`}
 	>
 		<text x="562" y="412" font-size="12" class="muted">protons per ATP</text>
 		<text x="918" y="412" font-size="13" font-weight="600" text-anchor="end"
 			>{fmt(hAtp)}
-			{ring.mito ? `(≈ ${fmt(hPerATP(C))} with transport)` : '(no transport cost)'}</text
+			{ring.mito
+				? `(≈ ${fmt(deliveredHPerATP(ring))} with transport)`
+				: '(no transport cost)'}</text
 		>
 	</Readout>
 	<Readout id="count" order={3} label="So far" value="{protonsDone} H⁺ through → {atpDone} ATP">
