@@ -2,10 +2,14 @@
 	/**
 	 * A D–T plasma in its vessel, and its power balance.
 	 *
-	 * Left, in both phases: deuterium and tritium ions flying about (speed ∝ √T, number ∝ log
-	 * density); fusions flash at random places at a rate that grows with the fusion power,
-	 * each sending a neutron out through the wall and leaving an alpha behind; red arrows
-	 * show outside heating, blue ones the heat leaking out.
+	 * Left, in both phases: the vessel of a tokamak in cross-section (a slice through the
+	 * ring, its centre off to the left): the D-shaped wall, a field coil round it, and the
+	 * nested magnetic surfaces the field lines wind on, through the page. Deuterium and
+	 * tritium ions fly about inside (speed ∝ √T, number ∝ log density; each bounces in a
+	 * square that is mapped onto the D); fusions flash at random places at a rate that grows
+	 * with the fusion power, each sending a neutron out through the wall and leaving an alpha
+	 * behind; red arrows show outside heating, blue ones the heat leaking out. The shape
+	 * (elongation 1.4, triangularity 0.4) is typical of a tokamak, not of one machine.
 	 *
 	 * Phases (`step.hints.phase`):
 	 *   balance — right: the steady power balance at the chosen settings (fusion power; heat
@@ -63,12 +67,42 @@
 	const tNow = $derived(now.t);
 	const pNow = $derived(powers({ ...plasma, t: tNow }));
 
-	// ---- the vessel ----------------------------------------------------------------------
+	// ---- the vessel: a tokamak in cross-section -----------------------------------------
 	const VX0 = 56;
-	const VX1 = 404;
 	const VY0 = 150;
 	const VY1 = 470;
-	const PAD = 26;
+	const PAD = 0.04; // of the ions' square, kept clear of its edges
+	const DX = 236; // centre of the cross-section
+	const DY = (VY0 + VY1) / 2;
+	const KAPPA = 1.4; // elongation: height ÷ width
+	const DELTA = 0.4; // triangularity: how far the top and bottom lean towards the ring's centre
+	const WALL = 100; // half-width of the wall (its half-height is KAPPA × WALL)
+	const EDGE = WALL - 14; // half-width of the plasma's last closed magnetic surface
+	const COIL = WALL + 14;
+	/** A point of the D of half-width w at angle θ (0 = outboard, round anticlockwise). */
+	const dee = (w: number, th: number) => ({
+		x: DX + w * Math.cos(th + DELTA * Math.sin(th)),
+		y: DY - KAPPA * w * Math.sin(th)
+	});
+	const deePath = (w: number) => {
+		let d = '';
+		for (let i = 0; i < 96; i++) {
+			const p = dee(w, (i / 96) * 2 * Math.PI);
+			d += `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`;
+		}
+		return d + 'Z';
+	};
+	const wallPath = deePath(WALL);
+	const coilPath = deePath(COIL);
+	const surfaces = [0.3, 0.6, 1].map((f) => ({ f, d: deePath(EDGE * f) }));
+	/** A point (u, v) of the square [−1, 1]² carried into the plasma's D (square → disc → D). */
+	const toDee = (u: number, v: number, w: number) => {
+		const x = u * Math.sqrt(1 - (v * v) / 2);
+		const y = v * Math.sqrt(1 - (u * u) / 2);
+		const r = Math.hypot(x, y);
+		return r < 1e-9 ? { x: DX, y: DY } : dee(w * r, Math.atan2(y, x));
+	};
+	const WALL_PTS = Array.from({ length: 96 }, (_, i) => dee(WALL, (i / 96) * 2 * Math.PI));
 	const count = $derived(Math.round(16 + 24 * (logN - 19)));
 	const speed = $derived(14 * Math.sqrt(clamp(tNow, 0.2, 100)) + 4);
 	const time = $derived(reduced ? 2.5 : t);
@@ -91,12 +125,10 @@
 		Array.from({ length: count }, (_, i) => {
 			const a = hash(i, 1) * Math.PI * 2;
 			const s = 0.6 + 0.8 * hash(i, 2);
-			return {
-				id: i,
-				x: bounce(lerp(VX0, VX1, hash(i, 3)) + Math.cos(a) * s * dist, VX0 + PAD, VX1 - PAD),
-				y: bounce(lerp(VY0, VY1, hash(i, 4)) + Math.sin(a) * s * dist, VY0 + PAD, VY1 - PAD),
-				tritium: i % 2 === 1
-			};
+			const d = dist / 150; // the square is 2 units across, about 300 px of the old box
+			const u = bounce(2 * hash(i, 3) - 1 + Math.cos(a) * s * d, PAD - 1, 1 - PAD);
+			const v = bounce(2 * hash(i, 4) - 1 + Math.sin(a) * s * d, PAD - 1, 1 - PAD);
+			return { id: i, ...toDee(u, v, EDGE + 6), tritium: i % 2 === 1 };
 		})
 	);
 
@@ -113,10 +145,11 @@
 			const age = time - k * SLOT;
 			if (age < 0 || age > LIFE) continue;
 			const a = hash(k, 12) * Math.PI * 2;
+			const at = toDee(1.4 * hash(k, 13) - 0.7, 1.4 * hash(k, 14) - 0.7, EDGE);
 			out.push({
 				id: k,
-				x: lerp(VX0 + 60, VX1 - 60, hash(k, 13)),
-				y: lerp(VY0 + 50, VY1 - 50, hash(k, 14)),
+				x: at.x,
+				y: at.y,
 				nx: Math.cos(a),
 				ny: Math.sin(a),
 				age
@@ -126,10 +159,36 @@
 	});
 	/** Distance from an event to the vessel wall along its neutron's direction. */
 	const wallDistance = (e: { x: number; y: number; nx: number; ny: number }) => {
-		const dx = e.nx > 0 ? (VX1 - e.x) / e.nx : e.nx < 0 ? (VX0 - e.x) / e.nx : Infinity;
-		const dy = e.ny > 0 ? (VY1 - e.y) / e.ny : e.ny < 0 ? (VY0 - e.y) / e.ny : Infinity;
-		return Math.min(dx, dy);
+		let best = Infinity;
+		for (let i = 0; i < WALL_PTS.length; i++) {
+			const p = WALL_PTS[i];
+			const q = WALL_PTS[(i + 1) % WALL_PTS.length];
+			// ray e + s·n against the segment p + w·(q − p)
+			const ex = q.x - p.x;
+			const ey = q.y - p.y;
+			const den = e.nx * ey - e.ny * ex;
+			if (Math.abs(den) < 1e-9) continue;
+			const sx = p.x - e.x;
+			const sy = p.y - e.y;
+			const dist = (sx * ey - sy * ex) / den;
+			const w = (sx * e.ny - sy * e.nx) / den;
+			if (dist > 0 && w >= 0 && w <= 1) best = Math.min(best, dist);
+		}
+		return best;
 	};
+	// where the heat-leak arrows start, just outside the coil, and the outboard and inboard
+	// sides of the coil at mid-height, where the heaters' arrows point in
+	const leaks = [Math.PI / 3, (2 * Math.PI) / 3, (4 * Math.PI) / 3, (5 * Math.PI) / 3].map(
+		(th, i) => ({
+			i,
+			...dee(COIL, th),
+			up: th < Math.PI
+		})
+	);
+	const outboard = dee(COIL, 0).x;
+	const inboard = dee(COIL, Math.PI).x;
+	const coilLabel = dee(COIL + 4, Math.PI / 4);
+	const surfaceTip = dee(EDGE * 0.6, -Math.PI / 5);
 	const glow = $derived(clamp((Math.log10(clamp(tNow, 0.2, 100)) + 0.3) / 2.3));
 	const heatW = $derived(
 		heatersOn && p0.heating > 0 ? 2 + 6 * clamp(p0.heating / (p0.conduction + p0.brems)) : 0
@@ -229,26 +288,13 @@
 </script>
 
 <g>
-	<!-- vessel -->
-	<rect
-		x={VX0}
-		y={VY0}
-		width={VX1 - VX0}
-		height={VY1 - VY0}
-		rx="40"
-		fill="var(--nf-vessel)"
-		stroke="var(--stage-line)"
-		stroke-width="1.5"
-	/>
-	<ellipse
-		cx={(VX0 + VX1) / 2}
-		cy={(VY0 + VY1) / 2}
-		rx={(VX1 - VX0) / 2 - 22}
-		ry={(VY1 - VY0) / 2 - 22}
-		fill="var(--nf-plasma)"
-		opacity={0.12 + 0.4 * glow}
-		filter="url(#glow)"
-	/>
+	<!-- vessel: a tokamak in cross-section -->
+	<path d={coilPath} fill="none" stroke="var(--nf-coil)" stroke-width="7" opacity="0.5" />
+	<path d={wallPath} fill="var(--nf-vessel)" stroke="var(--stage-line)" stroke-width="1.5" />
+	<path d={surfaces[2].d} fill="var(--nf-plasma)" opacity={0.12 + 0.4 * glow} filter="url(#glow)" />
+	{#each surfaces as sf (sf.f)}
+		<path d={sf.d} fill="none" stroke="var(--nf-coil)" stroke-width="1" opacity="0.45" />
+	{/each}
 	{#each ions as ion (ion.id)}
 		<circle
 			cx={ion.x}
@@ -285,7 +331,7 @@
 	{/each}
 	<!-- heaters and leaks -->
 	{#if heatW > 0}
-		{#each [VX0 - 6, VX1 + 6] as x, i (i)}
+		{#each [inboard - 6, outboard + 6] as x, i (i)}
 			<line
 				x1={x + (i ? 32 : -32)}
 				y1={(VY0 + VY1) / 2}
@@ -297,30 +343,62 @@
 			/>
 		{/each}
 	{/if}
-	{#each [VX0 + 90, VX1 - 90] as x, i (i)}
+	{#each leaks as l (l.i)}
+		{@const dy = l.up ? -1 : 1}
 		<line
-			x1={x}
-			y1={VY0 - 4}
-			x2={x}
-			y2={VY0 - 32}
-			stroke="var(--nf-loss)"
-			stroke-width={leakW}
-			marker-end="url(#arrowhead)"
-			opacity="0.8"
-		/>
-		<line
-			x1={x}
-			y1={VY1 + 4}
-			x2={x}
-			y2={VY1 + 32}
+			x1={l.x}
+			y1={l.y + dy * 4}
+			x2={l.x}
+			y2={l.y + dy * 30}
 			stroke="var(--nf-loss)"
 			stroke-width={leakW}
 			marker-end="url(#arrowhead)"
 			opacity="0.8"
 		/>
 	{/each}
+	<Readout
+		id="vessel"
+		order={9}
+		label="The vessel: a tokamak cut through, its ring's centre to the left; the lines are the magnetic surfaces the field winds round"
+	>
+		<Label x={24} y={VY1 - 6} text="← centre" size={11} anchor="start" muted />
+		<Label x={24} y={VY1 + 8} text="of the ring" size={11} anchor="start" muted />
+		<Label
+			x={coilLabel.x + 8}
+			y={coilLabel.y}
+			text="field coil"
+			size={11}
+			anchor="start"
+			color="var(--nf-coil)"
+		/>
+		<line
+			x1={surfaceTip.x}
+			y1={surfaceTip.y}
+			x2={outboard + 18}
+			y2={DY + 80}
+			stroke="var(--nf-coil)"
+			stroke-width="1"
+			opacity="0.7"
+		/>
+		<Label
+			x={outboard + 22}
+			y={DY + 88}
+			text="magnetic"
+			size={11}
+			anchor="start"
+			color="var(--nf-coil)"
+		/>
+		<Label
+			x={outboard + 22}
+			y={DY + 102}
+			text="surfaces"
+			size={11}
+			anchor="start"
+			color="var(--nf-coil)"
+		/>
+	</Readout>
 	<Readout id="key-leak">
-		<Label x={(VX0 + VX1) / 2} y={VY0 - 14} text="heat leaks out" size={11} muted />
+		<Label x={DX - 20} y={DY - KAPPA * COIL - 36} text="heat leaks out" size={11} muted />
 	</Readout>
 	<Readout id="key-ions">
 		<g transform="translate({VX0} {VY1 + 58})">
