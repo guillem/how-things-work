@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-17 UTC, after v1.0.0.
+Last updated: 2026-10-17 22:50 UTC, after v1.0.0.
 
 ## How we work
 
@@ -71,7 +71,7 @@ Last updated: 2026-10-17 UTC, after v1.0.0.
 asked for a researched proposal (no code yet): a new level 0 for beginners, the levels made more
 even (level 3 has 6 topics today), 100 new entries. The work, its data and how to resume it are
 in [`proposals/topics-200/README.md`](proposals/topics-200/README.md) (the self-handover for
-that piece). State at the time of writing (2026-10-18 00:50 UTC+2): phase A (generation) is complete, all 19
+that piece). State at the time of writing (2026-10-17 22:50 UTC): phase A (generation) is complete, all 19
 lenses, 557 candidates in `proposals/topics-200/data/pool.json`; judging (phase B) and
 verification (phase C) not started; `docs/TOPICS-PROPOSAL.md` not written. The README there says
 how to split phase B so it fits a usage window. `TOPICS.md` is untouched.

@@ -147,9 +147,10 @@ interaction kind (new shared components), less once components exist. All 100 to
 
 ## Site work (not counted in topic estimates)
 
-| Work                                                | Start            | End              | Active      | Notes                                                                                           |
-| --------------------------------------------------- | ---------------- | ---------------- | ----------- | ----------------------------------------------------------------------------------------------- |
-| Catalogue-driven index, cross-links, status/backlog | 2026-10-07 18:20 | 2026-10-07 18:27 | 7 min       | Includes reading the codebase and planning epidemics                                            |
-| homeostasis: review fixes                           | 2026-10-12 07:24 | 2026-10-12 07:30 | —           | Fact-check report applied                                                                       |
-| Index search/filters; faster browser tests          | 2026-10-16 23:00 | 2026-10-17 00:05 | ~1 h        | Includes profiling the suite (4 min 9 s → 2 min 46 s)                                           |
-| Backlog round (11 packages, one agent each)         | 2026-10-17 00:30 | 2026-10-17 04:15 | ~3 h 45 min | Up to 6 agents at once; merges, docs and the export cleanup by the lead; full suite 2,195 green |
+| Work                                                | Start            | End              | Active      | Notes                                                                                                                                   |
+| --------------------------------------------------- | ---------------- | ---------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Catalogue-driven index, cross-links, status/backlog | 2026-10-07 18:20 | 2026-10-07 18:27 | 7 min       | Includes reading the codebase and planning epidemics                                                                                    |
+| homeostasis: review fixes                           | 2026-10-12 07:24 | 2026-10-12 07:30 | —           | Fact-check report applied                                                                                                               |
+| Index search/filters; faster browser tests          | 2026-10-16 23:00 | 2026-10-17 00:05 | ~1 h        | Includes profiling the suite (4 min 9 s → 2 min 46 s)                                                                                   |
+| Backlog round (11 packages, one agent each)         | 2026-10-17 00:30 | 2026-10-17 04:15 | ~3 h 45 min | Up to 6 agents at once; merges, docs and the export cleanup by the lead; full suite 2,195 green                                         |
+| Topic proposal: phase A (19 generator lenses)       | 2026-10-17 10:30 | 2026-10-17 22:50 | ~3 h active | Four workflow runs, two killed by the usage limit and recovered from the journals; 557 candidates; handoff in docs/proposals/topics-200 |

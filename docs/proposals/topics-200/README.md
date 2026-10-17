@@ -3,7 +3,7 @@
 The self-handover for this piece of work. Read it top to bottom before continuing; the
 "Resume" section at the end says exactly what to run next.
 
-Last updated: 2026-10-18 00:50 UTC+2. **Phase A (generation) is complete; phase B (judging) is the next
+Last updated: 2026-10-17 22:50 UTC. **Phase A (generation) is complete; phase B (judging) is the next
 step.** The session was stopped here on purpose; see "Resume".
 
 ## What the user asked for
@@ -70,8 +70,7 @@ Supporting scripts: `scripts/extract-existing.mjs` (the catalogue as JSON and as
 `data/pool/<category>.json` and `data/pool/batch-NN.json`, and `data/phase-b-args.json`).
 
 The original single-run script (all phases in one workflow, two refuters per topic, per-category
-scribe agents) is `workflows/propose-100-topics-wf_f3cf07b6-3bf.js` in the session's workflow
-directory, not in the repository; the three phase scripts share its header (schemas, shared
+scribe agents) is `workflows/propose-100-topics-single-run.js` (kept for reference, not to be run again); the three phase scripts share its header (schemas, shared
 prompt text, the 19 lens briefs, helpers).
 
 ## Where the runs stand
@@ -167,16 +166,18 @@ output>` writes `data/final.json`; `node docs/proposals/topics-200/scripts/rende
 docs/proposals/topics-200/data/final.json src/routes` checks the invariants over existing +
    proposed and writes `data/entries.md`, `data/tables.md`, `data/checklist.md`,
    `data/validation.json`. Fix every `PROBLEM` it prints (by hand in `final.json`) until it
-   prints none. (`assemble.mjs` expects the phase-C result shape of the current script: `final`
-   rows with `fix`, `gapEntries`; adjust it to whatever the restructured stages return.)
+   prints none. (`assemble.mjs` has never run, since there is no phase-C output yet; it expects the
+   current script's result shape, `final` rows with `fix` and `gapEntries`; adjust it to
+   whatever the restructured stages return. `render.mjs` was smoke-tested on the raw pool.)
 6. **Write `docs/TOPICS-PROPOSAL.md`** from `drafts/skeleton.md`: fill `{{TABLES}}` from
    `data/tables.md`, `{{ENTRIES}}` from `data/entries.md`, `{{CHECKLIST}}` from
    `data/checklist.md`, `{{BACKLINKS}}` from `data/validation.json`, the Reserve table from
    `data/dispositions.json` (one decision per item, reconciled by hand), the categories,
    evenness, waves and method sections from `drafts/prose.md` (fill its placeholders with the
    run's numbers), the framework section from `drafts/framework.md`, and a runners-up section
-   from phase C's `runnersUp` (the best 30 or so, as the new Reserve). Read every entry once as
-   an editor: the catalogue's voice, no duplicated mechanism, one-sentence takeaways.
+   from phase C's `runnersUp` (the best 30 or so, as the new Reserve). `{{SUMMARY}}` and `{{LEVEL0_FRAMEWORK_NOTE}}` have no draft: write them fresh at the end,
+   from the final numbers. Read every entry once as an editor: the catalogue's voice, no
+   duplicated mechanism, one-sentence takeaways.
 7. **Document and commit:** update this README's status, the one-paragraph note in
    `docs/STATUS.md` ("Current development") and `docs/BACKLOG.md`, run `make check`, commit by
    path. Do not touch `TOPICS.md`; do not release.
