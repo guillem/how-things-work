@@ -38,7 +38,7 @@
 	const d = $derived(drag(RHO0, speedKt * KT));
 	const stalled = $derived(speedKt < C172.stallKcas);
 
-	const PX0 = 80;
+	const PX0 = 108;
 	const PX1 = 600;
 	const PY0 = 80;
 	const PY1 = 510;
