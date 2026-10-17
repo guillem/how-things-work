@@ -1,0 +1,102 @@
+[
+ {
+  "label": "curator",
+  "result": {
+   "swaps": [
+    {
+     "out": "sink-or-float",
+     "in": "beach-waves",
+     "reason": "sink-or-float is the same density-in-a-tank page as floating-sinking-and-boats at the same level 0; beach-waves is the top-scoring level-0 runner-up and an everyday experience nothing else covers (a level-0 chemistry alternative from the wider pool would be salt-and-ice)."
+    },
+    {
+     "out": "galaxy-collisions",
+     "in": "mixture-of-experts",
+     "reason": "The user asked for an AI-heavy set that explains LLMs in detail, and mixture of experts (how today's largest models route tokens) is a missing ladder stage; space already has a level-3 page (gravitational-waves) plus lagrange-points-three-body, so galaxy-collisions is the cheapest L3 to give up."
+    },
+    {
+     "out": "abs-brakes",
+     "in": "weight-quantization",
+     "reason": "Energy's level-3 picks held two vehicle-dynamics pages (bicycle-stability, abs-brakes); quantization fills the LLM serving stage next to kv-cache-inference and speculative-decoding, and its prerequisite training-a-tiny-language-model is selected."
+    },
+    {
+     "out": "gas-turbines-combined-cycle",
+     "in": "adaptive-optimizers",
+     "reason": "gas-turbines repeats the heat-engines and heat-pumps-refrigeration thermodynamic-cycle material, while Adam, momentum and learning-rate schedules (warmup and decay) are the training stage the LLM ladder skips between gradient-descent and training-a-tiny-language-model/scaling-laws; AI goes to 17 of its 18."
+    },
+    {
+     "out": "tennis-racket-theorem",
+     "in": "lasers",
+     "reason": "Lasers is the highest-scoring runner-up and a famous subject every physics student meets (rate equations, population inversion, threshold), while the tennis racket theorem is a charming but narrower curiosity of rigid-body dynamics."
+    }
+   ],
+   "overlaps": [
+    {
+     "a": "sink-or-float",
+     "b": "floating-sinking-and-boats",
+     "reason": "Both are level-0 pages about density and whether an object floats in a tank (swapped out above)."
+    },
+    {
+     "a": "hearing-and-the-ear",
+     "b": "cochlea-hearing",
+     "reason": "The same organ and the same place-by-pitch map at level 0 and level 3. Fine as a ladder, but the narratives must split cleanly."
+    },
+    {
+     "a": "hearing-and-the-ear",
+     "b": "why-spinning-makes-you-dizzy",
+     "reason": "Both level-0 medicine pages are about the inner ear (cochlea and semicircular canals), which tilts medicine's level-0 picks toward one organ."
+    },
+    {
+     "a": "next-word-guessing-game",
+     "b": "ngram-text-models",
+     "reason": "Both predict the next word from counts of what followed before (level 0 and level 1): the same mechanism, one level apart."
+    },
+    {
+     "a": "teach-a-machine",
+     "b": "spam-filter-word-counts",
+     "reason": "Two level-0 AI pages that each build a simple classifier from labelled examples (nearest neighbours and naive Bayes word counts)."
+    },
+    {
+     "a": "how-simulations-work",
+     "b": "differential-equations",
+     "reason": "Both step an ODE with Euler's method (level 1 and level 2), as their own overlap notes admit; the slope-field and engine split must be kept strict."
+    },
+    {
+     "a": "differential-equations",
+     "b": "phase-portraits",
+     "reason": "phase-portraits is the direct level-3 sequel; the overlap is intended, but the level-2 page should not get as far as linearisation."
+    },
+    {
+     "a": "surface-catalysis",
+     "b": "transition-state-theory",
+     "reason": "Both are level-3 chemical kinetics pages that extend reaction-rates-equilibrium, so chemistry's level-3 picks lean toward physical chemistry and kinetics."
+    },
+    {
+     "a": "barcode-stripes",
+     "b": "qr-codes",
+     "reason": "Two of networks' three level-0 pages are machine-readable printed codes with check digits or error correction."
+    },
+    {
+     "a": "bicycle-stability",
+     "b": "abs-brakes",
+     "reason": "Both are vehicle-dynamics pages in energy at level 3 (abs-brakes swapped out above)."
+    },
+    {
+     "a": "heat-pumps-refrigeration",
+     "b": "gas-turbines-combined-cycle",
+     "reason": "Both are thermodynamic-cycle pages built on heat-engines (gas-turbines swapped out above)."
+    },
+    {
+     "a": "clock-escapement",
+     "b": "room-thermostat",
+     "reason": "Not a content overlap, but energy's level-0 picks are all household machines; still fine for everyday experience."
+    },
+    {
+     "a": "cloud-base",
+     "b": "sea-breeze",
+     "reason": "Both level-0 earth pages are single-parcel atmosphere convection stories; distinct outcomes, shared mechanism (warm air rises)."
+    }
+   ],
+   "notes": "I checked every selected topic's prerequisites against the existing catalogue and the selection. Three chains are broken, and I fixed them with notes rather than swaps, because each fix would cost a stronger topic.\n- ising-model lists partition-function (runner-up, L3), which is not selected.\n- turing-patterns lists morphogen-gradients (runner-up, L3), which is not selected.\n- shapes-that-tile lists angles-as-turns (pool, L0, scores 3/4), which is not selected.\nIn each case the page can teach the missing idea in a step of its own, so I recommend dropping that prerequisite from the entry. If you would rather keep the chains whole, the alternative is to swap luria-delbruck for morphogen-gradients and to bring in partition-function in place of a weaker physics or chemistry L3.\n\nAI balance after the swaps: AI holds 17 topics (9 ladder rungs, plus mixture-of-experts, weight-quantization and adaptive-optimizers, 3 at level 0 and 2 at level 1). Together with the existing embeddings, transformers, language-models and gradient-descent pages, the ladder now runs tokenizer, embeddings, position, attention, residual block, optimizer, training, scaling, RLHF, reasoning, then serving (KV cache, speculative decoding, quantization) and MoE architecture. That leaves one AI slot under the cap of 18. monte-carlo-tree-search (5/5, the top runner-up, and the natural sequel to the selected game-tree-search) is the obvious use for it, but it is not an LLM stage, so I did not force it in.\n\nLevel counts are unchanged, because every swap keeps its level. Category totals change: space and energy each lose L3 picks to AI, and chemistry loses an L0 to earth. If chemistry should keep three L0 pages, use salt-and-ice from the wider pool instead of beach-waves.\n\nI did not swap kalman-filter in networks, though it fits that category oddly, nor monty-hall at L0: both are famous and score well."
+  }
+ }
+]

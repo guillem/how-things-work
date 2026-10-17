@@ -1,0 +1,24 @@
+[
+ {
+  "label": "merge:computing",
+  "result": {
+   "groups": [
+    {
+     "keep": "pixels-and-pictures",
+     "drop": [
+      "screens-and-pixels"
+     ],
+     "reason": "Both level-0 pages open on the same object, an image as a grid of coloured squares, and would share the same graphic and opening. pixels-and-pictures has the more distinctive computing takeaway: each square is stored as numbers, and resolution costs storage. The RGB-subpixel mixing in screens-and-pixels can be one step inside it, and the colour-matching part is already in vision-color."
+    }
+   ],
+   "duplicatesOfExisting": []
+  }
+ },
+ {
+  "label": "merge:ai",
+  "result": {
+   "groups": [],
+   "duplicatesOfExisting": []
+  }
+ }
+]

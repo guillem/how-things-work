@@ -90,7 +90,10 @@ while (queue.length) {
 	});
 	const cc = catCounts([...final, ...pending, ...queue]);
 	const cands = runners.filter((c) => !tried.has(c.slug) && c.level === e.level);
-	let rep = cands.find((c) => c.category === e.category);
+	// an LLM-ladder rung is replaced from its own stage first (see select.mjs)
+	let rep =
+		e.ladderStage !== undefined ? cands.find((c) => c.ladderStage === e.ladderStage) : undefined;
+	if (!rep) rep = cands.find((c) => c.category === e.category);
 	if (!rep) {
 		rep = cands.find((c) => (cc[c.category] || 0) < capOf(c.category));
 		if (rep)

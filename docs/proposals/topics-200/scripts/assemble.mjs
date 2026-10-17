@@ -57,6 +57,7 @@ for (const row of result.final) {
 	}
 	e.level = Number(row.level);
 	if (row.kind && KINDS.includes(row.kind)) e.kind = row.kind;
+	if (row.category) e.category = row.category; // select.mjs may re-file a topic
 	if (row.title) e.title = row.title;
 	e.prerequisites = (e.prerequisites || []).map(norm).filter(Boolean);
 	e.related = (e.related || []).map(norm).filter(Boolean);

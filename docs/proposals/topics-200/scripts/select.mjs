@@ -41,6 +41,23 @@ const L0_TARGET = {
 };
 const CAT_MAX = 12;
 const capOf = (c) => (c === 'ai' ? 18 : CAT_MAX);
+// The LLM ladder: AI's level-3 cell is filled one page per stage first (the best-ranked
+// eligible candidate of each stage), so that with the existing pages (embeddings,
+// language-models, transformers...) the ladder runs from tokens to serving. The rungs left
+// out are listed in the proposal as the ladder's second wave.
+const LADDER = [
+	['tokenization'],
+	['training-a-tiny-language-model'],
+	['positional-encoding'],
+	['residual-stream-logit-lens'],
+	['scaling-laws'],
+	['rlhf-alignment', 'instruction-tuning'],
+	['chain-of-thought-scratchpad', 'reasoning-rl-verifiable-rewards'],
+	['kv-cache-inference', 'long-context-attention-cost'],
+	['mixture-of-experts', 'weight-quantization', 'speculative-decoding', 'lora-fine-tuning']
+];
+// LLM serving pages filed in computing by their generator; they belong with the ladder.
+const CATEGORY_OVERRIDE = { 'kv-cache-inference': 'ai', 'long-context-attention-cost': 'ai' };
 const CAT_IDS = JSON.parse(
 	fs.readFileSync(path.join(DATA, 'workflow-args.json'), 'utf8')
 ).categories.map((c) => c.id);
@@ -55,7 +72,7 @@ const rows = JSON.parse(fs.readFileSync(path.join(DATA, 'phase-b-args.json'), 'u
 let pool = rows.map((r) => ({
 	slug: r[0],
 	level: r[1],
-	category: r[2],
+	category: CATEGORY_OVERRIDE[r[0]] || r[2],
 	kind: r[3],
 	title: r[4],
 	batch: r[5]
@@ -173,12 +190,22 @@ function selectByQuota() {
 		catCount[c.category] = (catCount[c.category] || 0) + 1;
 		levelCount[c.level]++;
 	};
+	for (const stage of LADDER) {
+		const best = byScore.find(
+			(c) => stage.includes(c.slug) && c.level === 3 && c.category === 'ai'
+		);
+		if (best) take(best);
+		else notes.push(`LLM ladder: no eligible level-3 AI candidate for ${stage.join(' / ')}`);
+	}
 	for (const [level, targets] of [
 		[3, L3_TARGET],
 		[0, L0_TARGET]
 	]) {
 		for (const cat of CAT_IDS) {
-			const want = targets[cat] || 0;
+			const want = Math.max(
+				0,
+				(targets[cat] || 0) - chosen.filter((c) => c.level === level && c.category === cat).length
+			);
 			const cell = byScore.filter(
 				(c) => c.level === level && c.category === cat && !chosenSlugs.has(c.slug)
 			);
@@ -206,30 +233,58 @@ let runnersUp = byScore.filter((e) => !selected.includes(e));
 // --- curator swaps ---
 const curator = Object.values(collected('curator'))[0];
 const curatorSwaps = [];
-if (curator) {
-	for (const s of curator.swaps || []) {
-		const out = selected.find((e) => e.slug === norm(s.out));
-		const inn = runnersUp.find((e) => e.slug === norm(s.in));
-		if (!out || !inn) {
-			notes.push(`curator swap ignored (unknown slug): ${s.out} -> ${s.in}`);
-			continue;
-		}
-		if (out.level !== inn.level) {
-			notes.push(
-				`curator swap ignored (level differs): ${s.out} (L${out.level}) -> ${s.in} (L${inn.level})`
-			);
-			continue;
-		}
-		selected = selected.filter((e) => e !== out).concat(inn);
-		runnersUp = runnersUp.filter((e) => e !== inn).concat(out);
-		curatorSwaps.push({ out: out.slug, in: inn.slug, reason: s.reason });
+// The user chose to take AI's extra slots from level 0, keeping every other category's targets,
+// so a swap across categories may not leave a category below its target at that level.
+const targetOf = (level, cat) =>
+	(level === 3 ? L3_TARGET[cat] : level === 0 ? L0_TARGET[cat] : 0) || 0;
+// Swaps decided by hand after the curator: the curator's own same-category alternative where its
+// cross-category swap was refused.
+const EDITOR_SWAPS = [
+	{
+		out: 'sink-or-float',
+		in: 'salt-and-ice',
+		reason:
+			'sink-or-float is the same density-in-a-tank page as floating-sinking-and-boats; salt-and-ice is the alternative the curator named for keeping chemistry at three level-0 pages.'
 	}
-	runnersUp.sort(rank);
+];
+function applySwap(s, who) {
+	const out = selected.find((e) => e.slug === norm(s.out));
+	const inn = runnersUp.find((e) => e.slug === norm(s.in));
+	if (!out || !inn) return notes.push(`${who} swap ignored (unknown slug): ${s.out} -> ${s.in}`);
+	const stageOf = (slug) => LADDER.findIndex((st) => st.includes(slug));
+	if (stageOf(out.slug) >= 0 && stageOf(out.slug) !== stageOf(inn.slug))
+		return notes.push(`${who} swap ignored (would remove an LLM-ladder rung): ${s.out} -> ${s.in}`);
+	if (out.level !== inn.level)
+		return notes.push(
+			`${who} swap ignored (level differs): ${s.out} (L${out.level}) -> ${s.in} (L${inn.level})`
+		);
+	const left =
+		selected.filter((e) => e.level === out.level && e.category === out.category).length - 1;
+	if (out.category !== inn.category && left < targetOf(out.level, out.category))
+		return notes.push(
+			`${who} swap ignored (would leave ${out.category} below its level-${out.level} target): ${s.out} -> ${s.in}`
+		);
+	if (
+		inn.category !== out.category &&
+		selected.filter((e) => e.category === inn.category).length >= capOf(inn.category)
+	)
+		return notes.push(`${who} swap ignored (${inn.category} is at its cap): ${s.out} -> ${s.in}`);
+	selected = selected.filter((e) => e !== out).concat(inn);
+	runnersUp = runnersUp.filter((e) => e !== inn).concat(out);
+	curatorSwaps.push({ out: out.slug, in: inn.slug, reason: s.reason, by: who });
 }
+if (curator) for (const s of curator.swaps || []) applySwap(s, 'curator');
+for (const s of EDITOR_SWAPS) applySwap(s, 'editor');
+runnersUp.sort(rank);
 
 const count = (list, k) => list.reduce((a, e) => ((a[e[k]] = (a[e[k]] || 0) + 1), a), {});
 const strip = (e) => ({
 	slug: e.slug,
+	ladder: LADDER.some((st) => st.includes(e.slug)) || undefined,
+	ladderStage:
+		LADDER.findIndex((st) => st.includes(e.slug)) >= 0
+			? LADDER.findIndex((st) => st.includes(e.slug))
+			: undefined,
 	level: e.level,
 	originalLevel: e.originalLevel,
 	category: e.category,

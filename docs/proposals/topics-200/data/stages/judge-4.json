@@ -1,0 +1,240 @@
+[
+ {
+  "label": "judge:fit-level:b24",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "next-word-guessing-game",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A level-0 entry to LLMs with a real counting mechanism a 10-year-old can play; it is distinct from language-models, which shows network probabilities at level 2."
+    },
+    {
+     "slug": "words-keep-company",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "It shows the distributional idea through neighbour counts a child can read off, which is distinct from the vector arithmetic on the level-2 embeddings page and from the next-word game's 'what comes next' takeaway."
+    },
+    {
+     "slug": "ngram-text-models",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "It has a real counting model and a clear lesson: contexts explode exponentially. It is an honest level-1 bridge between the level-0 next-word game and language-models, though its generation half overlaps that game a little."
+    },
+    {
+     "slug": "training-a-tiny-language-model",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A cornerstone level-3 LLM page: real cross-entropy training measured against n-gram baselines, with overfitting visible. Nothing existing trains a language model, and several other candidates build on it."
+    },
+    {
+     "slug": "residual-stream-logit-lens",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "It shows the whole transformer block, residual sum and MLP, with predictions read out at every depth, which the attention-only transformers page leaves out; it is core to understanding LLMs in detail."
+    },
+    {
+     "slug": "where-facts-live",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Causal tracing is a real intervention with a clear heatmap and asks a different question from the logit lens (what causes recall, not what is readable). It is more specialised, but valuable for a detailed LLM series."
+    },
+    {
+     "slug": "positional-encoding",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A clean, visual mechanism (order-blind attention, then sinusoids and RoPE rotations) that the transformers page never covers; honest level 3 with the real math."
+    },
+    {
+     "slug": "kv-cache-inference",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "It explains with a real roofline model why decoding is memory-bound and why batching makes serving cheap; this is distinct from the gpu page's parallel speed-up race and essential to how LLMs are run."
+    },
+    {
+     "slug": "long-context-attention-cost",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Quadratic scaling plus exact tiled attention with a running max is a real, checkable mechanism, distinct enough from kv-cache-inference (context scaling, not per-token decode), though the two share their cost-model framing."
+    },
+    {
+     "slug": "weight-quantization",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Weights snapping to a coarser grid as the bits drop, with outliers deciding the damage, is a visual and real mechanism; it is distinct from binary and practically important for LLMs."
+    },
+    {
+     "slug": "lora-fine-tuning",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "It makes low-rank updates visible through a singular-value spectrum and compares trainable-weight counts with forgetting, a genuine level-3 mechanism that no other page or candidate covers."
+    },
+    {
+     "slug": "instruction-tuning",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "It shows concretely, with chat templates, answer-only loss and side-by-side distributions, how a base model becomes an assistant, which is a key gap in the LLM story; showing behaviour needs two small open models in the browser."
+    },
+    {
+     "slug": "knowledge-distillation",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A real mechanism (soft targets at a temperature) with a clean comparison of loss curves, but it is less central to understanding LLMs than its siblings and partly repeats the training page's loss-curve race."
+    },
+    {
+     "slug": "speculative-decoding",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The rejection-sampling rule and its histogram that matches the target exactly make an elegant, checkable mechanism, distinct from kv-cache-inference, which it builds on."
+    },
+    {
+     "slug": "chain-of-thought-scratchpad",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "It shows on a checkable addition task why fixed compute per token makes written working help, a distinctive and timely mechanism that no page covers."
+    },
+    {
+     "slug": "reasoning-rl-verifiable-rewards",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "It applies policy-gradient RL with group-relative advantages to a language model and shows pass@1 rising against pass@k, which is distinct from the grid-world RL page and central to modern reasoning models, though live GRPO in the browser is ambitious."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b24",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "next-word-guessing-game",
+     "score": 5,
+     "reject": false,
+     "reason": "A bigram or trigram count table over a few public-domain Gutenberg books is tiny, exact and runs instantly; 'read more books' just adds counts, so the model is the honest one and the cards show it directly.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "words-keep-company",
+     "score": 4,
+     "reject": false,
+     "reason": "Window co-occurrence counts over a small public-domain corpus are easy to compute. The map needs a real reduction (PPMI plus a small SVD or MDS on a few hundred words), which is feasible in the page; the page must keep the vocabulary small so that neighbours are stable and not noise.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "ngram-text-models",
+     "score": 5,
+     "reject": false,
+     "reason": "Character n-gram counting and sampling over 1 MB of Tiny Shakespeare (public domain, MIT repo) runs in the browser, and both meters (unseen held-out contexts, longest verbatim copy) are exact computations; a clean, honest model.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "training-a-tiny-language-model",
+     "score": 4,
+     "reject": false,
+     "reason": "A two-layer character transformer with tens of thousands of weights can train live in JS or WebGPU at a few steps per frame, with honest loss curves. The overfitting and data-size sweeps may need precomputed runs to stay interactive; this page is also the infrastructure several other candidates depend on.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "residual-stream-logit-lens",
+     "score": 4,
+     "reject": false,
+     "reason": "Precomputed GPT-2 small activations for a fixed prompt set (modified MIT), with the 24 single-component ablations per prompt, are a modest dataset and give a real logit-lens grid. Free-text prompts would need ONNX GPT-2 in the browser (around 100+ MB), so precomputed is the practical route.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "where-facts-live",
+     "score": 3,
+     "reject": false,
+     "reason": "Causal tracing can be precomputed for GPT-2 small, but the page becomes exploring a fixed heatmap rather than driving a live model. GPT-2 small recalls facts weakly (the original work used GPT-2 XL), so the effect must be checked on the chosen prompts before committing.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "positional-encoding",
+     "score": 5,
+     "reject": false,
+     "reason": "Pure math needing no data: permutation equivariance of attention, sinusoidal encodings and RoPE's relative-distance invariance are exact, small computations that render instantly.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "kv-cache-inference",
+     "score": 4,
+     "reject": false,
+     "reason": "The cache-versus-recompute FLOP and byte counts and the roofline from published datasheet and model-card figures are exact arithmetic. Live wall-clock timing in the browser is noisy, though, so the takeaway should rest on the counted operations, not on measured times.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "long-context-attention-cost",
+     "score": 4,
+     "reject": false,
+     "reason": "Online-softmax tiled attention on small matrices, matching naive attention exactly, is a real, cheap algorithm, and the scaling chart is arithmetic from published figures. It overlaps the kv-cache page's cost model somewhat, but it is buildable.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "weight-quantization",
+     "score": 5,
+     "reject": false,
+     "reason": "One GPT-2 small weight matrix (modified MIT, about 1 MB as fp16) quantized live, plus an offline perplexity sweep and the page's own tiny model, makes a small, honest and fully observable model.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "lora-fine-tuning",
+     "score": 4,
+     "reject": false,
+     "reason": "With the tiny model in place, full versus low-rank fine-tuning on a Gutenberg text can train live, and the SVD of a small update matrix is cheap. It is feasible but depends on the training-a-tiny-language-model infrastructure.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "instruction-tuning",
+     "score": 3,
+     "reject": false,
+     "reason": "SmolLM2-135M base and Instruct are Apache-2.0 with official ONNX/Transformers.js builds, but running two in the page is a multi-hundred-MB download, so precomputed next-token distributions are the practical form. The 'step through the template' part risks becoming a browse-a-diagram.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "knowledge-distillation",
+     "score": 4,
+     "reject": false,
+     "reason": "A shipped teacher (own weights) plus two small students training live on Tiny Shakespeare is feasible, and the soft-target bars are exact. The gap between the two loss curves must be measured on the real tiny models, since at this scale it may be small.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "speculative-decoding",
+     "score": 5,
+     "reject": false,
+     "reason": "The accept/reject rule with residual resampling is an exact algorithm on two small own models (or even on toy distributions), and the 10,000-sample histogram matching the target is a clean, honest demonstration.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "chain-of-thought-scratchpad",
+     "score": 3,
+     "reject": false,
+     "reason": "Training two tiny addition transformers offline is doable, but the outcome is an empirical result that has to be measured, not asserted. Tiny transformers often learn direct addition fine at trained lengths and fail length generalisation even with a scratchpad unless positions are handled carefully, so the claim about lengths beyond training is at risk.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "reasoning-rl-verifiable-rewards",
+     "score": 3,
+     "reject": false,
+     "reason": "GRPO on a tiny model needs a group of sampled attempts plus a policy-gradient step per puzzle, so only a very short run is interactive and the rest must be precomputed checkpoints. The pass@1-rises-while-pass@64-stays effect has to be reproduced on the project's own tiny model first, and it may not show at this scale.",
+     "suggestedLevel": 3
+    }
+   ]
+  }
+ }
+]
