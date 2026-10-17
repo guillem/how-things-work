@@ -66,7 +66,7 @@
 	const slow = $derived(Math.round(PLAY / (tEnd / 1000) / 100) * 100);
 
 	// ---- geometry ----------------------------------------------------------------------
-	const X0 = 48;
+	const X0 = 80;
 	const X1 = 912;
 	const sx = scale([0, LENGTH], [X0, X1]);
 	const TUBE = { y0: 150, y1: 196 };
