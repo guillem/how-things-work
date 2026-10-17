@@ -169,3 +169,15 @@ Non-commercial:
 - **Giunta / Bodenstein** (reaction-rates-equilibrium): Giunta and OpenStax are credited on the
   page (2026-10-15); still check the exact wording of the permission on Giunta's page. Re-deriving the values from
   Bodenstein's 1899 paper (public domain) would remove the restriction.
+
+## Primary-source checks, 2026-10-17
+
+- **CVRL cone data** (vision-color, `cone-data.ts`): CVRL's own files
+  http://www.cvrl.org/database/data/cones/linss2_10e_1.csv and
+  http://www.cvrl.org/database/data/cienewxyz/lin2012xyz2e_1_7sf.csv, downloaded 2026-10-17
+  (cvrl.org answers on plain http only). Compared with the shipped table built from the
+  colour-science copy: LMS identical at every nm from 390 to 780; XYZ equal to the 6 significant
+  figures stored (largest difference 4.9 × 10⁻⁶ relative, the rounding of the 7-figure file).
+  `scripts/data/vision-color/build.mjs` now reads CVRL's files directly; the regenerated data
+  rows are unchanged. Licence: cvrl.org states none (no terms, copyright or licence text on its
+  home page). Status: **confirmed against the primary source**; licence still not stated.
