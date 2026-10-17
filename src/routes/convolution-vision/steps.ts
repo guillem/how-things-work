@@ -165,7 +165,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [preset, reset, digit],
 			body: `
-<p>Change the nine weights and the same sliding operation does something else. Pick a filter, or edit the cells yourself:</p>
+<p>Change the nine weights and the same sliding operation does something else. Pick a filter, or edit the cells yourself; each time, the filter slides over the picture again and makes a new map:</p>
 <ul>
 <li><strong>Blur</strong>: nine 1s, divided by 9. Each output pixel is the average of its neighbourhood, so sharp edges are smeared out.</li>
 <li><strong>Sharpen</strong>: 5 in the middle, −1 on each side: the pixel plus how much it stands out from its four neighbours, so edges get a bright rim and a dark rim.</li>

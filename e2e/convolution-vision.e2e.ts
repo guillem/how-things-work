@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g');
 const pick = (page: Page, id: string, value: string) =>
@@ -128,6 +129,25 @@ test('the filter slides over every position, then the map is complete', async ({
 	await expect(stage(page)).toContainText('one output pixel');
 	await page.clock.runFor(14_000);
 	await expect(stage(page)).toContainText('every position, row by row');
+});
+
+test('a picked or edited filter makes its map again, row by row', async ({ page }) => {
+	await page.clock.install();
+	await page.goto('./convolution-vision/#filters');
+	const sliding = 'the filter slides over every position';
+	const complete = 'map complete: the filter has visited all 784 positions';
+	await expect(stage(page)).toContainText(sliding);
+	await playUntil(page, stage(page), complete, 6000);
+	await pick(page, 'preset', 'blur');
+	await expect(stage(page)).toContainText(sliding);
+	await playUntil(page, stage(page), complete, 6000);
+	// one weight changed: the sweep starts again
+	const centre = page.getByRole('slider', { name: 'Weight, middle centre' });
+	await centre.focus();
+	await page.keyboard.press('ArrowUp');
+	await expect(stage(page)).toContainText('filter: Blur (edited)');
+	await expect(stage(page)).toContainText(sliding);
+	await playUntil(page, stage(page), complete, 6000);
 });
 
 test('clicking a second-layer map shows what excites that filter', async ({ page }) => {
