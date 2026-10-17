@@ -93,7 +93,12 @@ user: evolution's model keeps 20 million cells and 3×10⁻⁸ (paper: 5.6×10�
 the page); crispr's `added` strain still immune to 2972 in the model (not shown on stage). Phone readouts B: states-of-matter, chemical-bonds,
 waves-interference, fourier-transform converted (desktop pixel-identical); `startDrag` returns
 an end function that Handle/VectorHandle call on destroy; chemical-bonds' angle arc picks the
-clearest pair (NH₃ readable).
+clearest pair (NH₃ readable). Phone readouts A: ocean-currents, semiconductors,
+black-holes, homeostasis (desktop pixel-identical, 148 shots): all 100 topics now have phone
+readouts. Outside data: atoms-periodic-table says "no such nucleus has ever been made" outside
+NUBASE2020's known isotopes (licence unconfirmed: the file states none); embeddings' 8-bit
+storage moves similarities by at most 0.0034 (GloVe fixture, tests only); earthquakes' PKPab
+row from TauP ak135 and the three Nepal stations on the summary slice.
 
 **Before that, committed on local `main`, not pushed or released** (2026-10-17):
 
