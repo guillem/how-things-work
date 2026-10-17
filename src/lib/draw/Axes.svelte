@@ -134,7 +134,7 @@
 	 * stage has room for it.
 	 */
 	const xTitleBelow = $derived(
-		xCovered.length > 1 && edge.y1 - bottom >= 4 + 0.95 * fs + 1.5 * fsTitle
+		xCovered.length > 1 && edge.y1 - bottom >= 4 + 0.95 * fs + 1.65 * fsTitle
 	);
 	const xShown = $derived(
 		new Set(xTitleBelow ? xKeep : xKeep.filter((i) => !xCovered.includes(i)))
@@ -144,7 +144,7 @@
 	 * stays above the x axis line, so that it doesn't run into the first x label
 	 * beside it (a "−80" next to a "0" would read as "−800").
 	 */
-	const yBase = $derived(ys.map((v) => Math.min(sy(v) + 0.35 * fs, bottom - 0.05 * fs)));
+	const yBase = $derived(ys.map((v) => Math.min(sy(v) + 0.35 * fs, bottom - 0.3 * fs)));
 	const yShown = $derived.by(() => {
 		if (!narrow) return new Set(ys.keys());
 		return new Set(
@@ -202,7 +202,7 @@
 	{#if xLabel}
 		<text
 			x={right}
-			y={narrow ? rowY + (xTitleBelow ? 1.25 * fsTitle : 0) : bottom + 34}
+			y={narrow ? rowY + (xTitleBelow ? 1.4 * fsTitle : 0) : bottom + 34}
 			text-anchor="end"
 			font-size={narrow ? fsTitle : 11}
 			class="muted axis-title">{xLabel}</text
