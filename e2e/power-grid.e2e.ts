@@ -85,11 +85,12 @@ test('the game: the day runs, and leaving the plants alone pushes the frequency 
 test('the autopilot follows the real plants through the evening ramp, inside the band', async ({
 	page
 }) => {
+	// Time moves only when the test says so, from before the page loads: on a slow machine
+	// (or a loaded one), the real seconds while the page loads and the controls are set were
+	// minutes of manual dispatch.
 	await page.clock.install();
-	await open(page, './power-grid/#dispatch', false);
-	// Time moves only when the test says so: on a slow machine, the real seconds between
-	// setting the start and switching on the autopilot were minutes of manual dispatch.
 	await page.clock.pauseAt(Date.now() + 1000);
+	await open(page, './power-grid/#dispatch', false);
 	await range(page, 'start').fill('17');
 	await page.locator('button[data-control=pilot][data-value=auto]').click();
 	await playUntil(page, stage(page), '21:3', 40_000);
