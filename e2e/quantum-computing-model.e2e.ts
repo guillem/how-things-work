@@ -14,6 +14,7 @@ import {
 	chshValue,
 	classicalTries,
 	cnot,
+	CHSH,
 	correlation,
 	diffuse,
 	fidelity,
@@ -154,6 +155,19 @@ test('turning one axis: agreement cos²((a−b)/2), and no message gets through'
 		const p = pairOutcomes(s, 0, b);
 		expect(p[0] + p[1]).toBeCloseTo(0.5, 12);
 	}
+});
+
+test('the four CHSH settings: three correlations of +1/√2 and one of −1/√2', () => {
+	const s = bellPair();
+	const [a, a2] = CHSH.a;
+	const [b, b2] = CHSH.b;
+	expect(correlation(s, a, b)).toBeCloseTo(Math.SQRT1_2, 12);
+	expect(correlation(s, a, b2)).toBeCloseTo(Math.SQRT1_2, 12);
+	expect(correlation(s, a2, b)).toBeCloseTo(Math.SQRT1_2, 12);
+	expect(correlation(s, a2, b2)).toBeCloseTo(-Math.SQRT1_2, 12);
+	// only the angle between the axes counts: A along x and B along x always agree
+	expect(correlation(s, Math.PI / 2, Math.PI / 2)).toBeCloseTo(1, 12);
+	expect(chsh(s).E.map((e) => Math.sign(e))).toEqual([1, 1, 1, -1]);
 });
 
 test("Bell's test: the entangled pair reaches 2√2, beyond the limit of 2 for pre-agreed answers", () => {

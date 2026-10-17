@@ -16,6 +16,7 @@ import {
 	comovingMpc,
 	composition,
 	distances,
+	freeElectrons,
 	heliumMassFraction,
 	hubble,
 	neutronsPerProton,
@@ -23,6 +24,7 @@ import {
 	peakWavelength,
 	redshiftSeen,
 	reionized,
+	sahaFreeElectrons,
 	scaleAt,
 	T_ACC,
 	T_DARK_ENERGY,
@@ -155,6 +157,33 @@ test('the CMB’s light was stretched 1,091 times: from near-infrared to 1 mm mi
 	expect(peakWavelength(T0) * 1e3).toBeCloseTo(1.063, 2);
 	expect(peakWavelength(temperature(aStar)) * 1e9).toBeCloseTo(975, -1);
 	expect(peakWavelength(T0) / peakWavelength(temperature(aStar))).toBeCloseTo(1 + Z_STAR, 3);
+});
+
+test('recombination (Peebles): half the electrons bound by z ≈ 1270, a few in 10,000 left free', () => {
+	const zHalf = (f: (z: number) => number) => {
+		let z = 2000;
+		while (f(z) > 0.5) z -= 1;
+		return z;
+	};
+	// the three-level atom: half recombined near z = 1270 (about 3,500 K)
+	expect(zHalf(freeElectrons)).toBeGreaterThan(1240);
+	expect(zHalf(freeElectrons)).toBeLessThan(1300);
+	// at the last scattering most electrons are already bound: about nine in ten
+	expect(1 - freeElectrons(Z_STAR)).toBeGreaterThan(0.8);
+	expect(1 - freeElectrons(Z_STAR)).toBeLessThan(0.92);
+	// the expansion outruns recombination: a residue freezes out, a few × 10⁻⁴
+	expect(freeElectrons(50)).toBeGreaterThan(1e-4);
+	expect(freeElectrons(50)).toBeLessThan(1e-3);
+	expect(freeElectrons(50) / freeElectrons(300)).toBeGreaterThan(0.6);
+	for (let z = 1600; z > 20; z -= 10)
+		expect(freeElectrons(z - 10)).toBeLessThanOrEqual(freeElectrons(z));
+	// Saha's equilibrium, which ignores the bottleneck at n = 2, recombines too early
+	// (x = 0.5 near z = 1380, Dodelson's Modern Cosmology, ch. 3) and leaves nothing free
+	expect(zHalf(sahaFreeElectrons)).toBeGreaterThan(1350);
+	expect(zHalf(sahaFreeElectrons)).toBeLessThan(1400);
+	expect(sahaFreeElectrons(500)).toBeLessThan(1e-10);
+	// before recombination both agree: the plasma is in equilibrium
+	expect(freeElectrons(1700)).toBeCloseTo(sahaFreeElectrons(1700), 6);
 });
 
 test('reionization: half the hydrogen ionized again at z = 7.67, about 670 million years in', () => {

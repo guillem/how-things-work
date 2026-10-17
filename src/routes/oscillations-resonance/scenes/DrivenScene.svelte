@@ -1,16 +1,20 @@
 <script lang="ts">
 	/**
-	 * The spring of the first steps (1 kg on 39 N/m, f₀ ≈ 0.99 Hz) pushed by a
-	 * hand at the top moving up and down at `params.pushFreq`, with friction
-	 * `params.damping`. A 1 N push is the same as moving the top of the spring
-	 * by F₀/k ≈ 2.6 cm, so hand and mass are drawn at one scale: at resonance
-	 * the mass swings far more than the hand.
+	 * The spring of the first steps (1 kg on `params.stiffness`, 39 N/m by
+	 * default: f₀ ≈ 0.99 Hz) pushed by a hand at the top moving up and down at
+	 * `params.pushFreq`, with friction `params.damping`. A 1 N push is the same
+	 * as moving the top of the spring by F₀/k (2.6 cm at 39 N/m), so hand and
+	 * mass are drawn at one scale: at resonance the mass swings far more than
+	 * the hand. Both driven steps offer the stiffness control, so neither runs on
+	 * a value set out of sight.
 	 *
 	 * Phases (`step.hints.phase`):
 	 *   push  — the build-up from rest on a 30 s trace, the predicted steady
 	 *           swing dashed; below, bars compare the hand's and the mass's swing
 	 *   curve — the bars give way to the resonance curve (steady swing against
-	 *           push frequency, fixed scale) with the current push marked
+	 *           push frequency, fixed scale) with the current push marked, and a
+	 *           dot for every push frequency tried on these steps at the swing the
+	 *           simulation settled to (cleared when the spring or friction change)
 	 *
 	 * The motion (`springMotion` with the push, 90 s, from rest) is precomputed per
 	 * setting and replayed in real time; a slider change restarts it (the clock
@@ -54,10 +58,11 @@
 	const phase = $derived(String(step.hints?.phase ?? 'push'));
 	const f = $derived(Math.max(0.05, Number(params.pushFreq ?? 0.6)));
 	const c = $derived(Math.max(0, Number(params.damping ?? 0.3)));
-	const spring = $derived({ m: 1, k: 39, c });
+	const k = $derived(Math.min(160, Math.max(10, Number(params.stiffness ?? 39))));
+	const spring = $derived({ m: 1, k, c });
 	const END = $derived(settleSeconds(1, c, 90));
 	const f0 = $derived(naturalFrequency(spring));
-	const hand = F0 / 39; // m: how far the top moves for the same force
+	const hand = $derived(F0 / k); // m: how far the top moves for the same force
 	const A = $derived(steadyAmplitude(spring, { F0, f }));
 	const motion = $derived(springMotion(spring, 0, 0, END, { F0, f }, SAMPLE));
 
@@ -155,6 +160,29 @@
 	// frequency axis instead.
 	const marker = $derived({ x: cx(f), y: c === 0 ? CV.bottom : cy(Math.min(CV.max, A)) });
 
+	// ---- the pushes tried: where the simulation settled -------------------------------------
+	// The swing over the last push (or natural) period of the computed motion, after the
+	// start-up has died away: the simulation's own steady swing, not the formula's.
+	const settled = $derived.by(() => {
+		const n = motion.x.length;
+		const span = Math.ceil(Math.max(1 / f, 1 / f0) / SAMPLE);
+		let a = 0;
+		for (let i = Math.max(0, n - span); i < n; i++) a = Math.max(a, Math.abs(motion.x[i]));
+		return a;
+	});
+	let tried = $state<{ f: number; a: number }[]>([]);
+	let triedFor = '';
+	$effect(() => {
+		const key = `${k}|${c}`;
+		const point = { f: Math.round(f * 100) / 100, a: settled };
+		const skip = growing;
+		untrack(() => {
+			const kept = key === triedFor ? tried.filter((p) => p.f !== point.f) : [];
+			triedFor = key;
+			tried = skip ? kept : [...kept, point].slice(-60);
+		});
+	});
+
 	// ---- bars: how far each one moves -------------------------------------------------------
 	const bx = scale([0, CV.max], [PLOT_X0, PLOT_X1 - 90]);
 
@@ -183,7 +211,7 @@
 			sub: 'a gentle 1 N push',
 			color: 'var(--osc-push)'
 		},
-		{ id: 'f0', label: 'natural frequency', value: `${f0.toFixed(2)} Hz`, sub: '1 kg on 39 N/m' },
+		{ id: 'f0', label: 'natural frequency', value: `${f0.toFixed(2)} Hz`, sub: `1 kg on ${k} N/m` },
 		{
 			id: 'now',
 			label: 'swing now',
@@ -257,7 +285,7 @@
 		stroke-width="3"
 		stroke-linecap="round"
 	/>
-	<!-- the hand: a block moving ±2.6 cm, and the push arrow -->
+	<!-- the hand: a block moving ±F₀/k, and the push arrow -->
 	<rect
 		x={COL_X - 28}
 		y={yHand - 8}
@@ -496,7 +524,33 @@
 					stroke-width="2.5"
 					stroke-linejoin="round"
 				/>
+				{#each tried as p (p.f)}
+					<circle
+						class="tried"
+						cx={cx(p.f)}
+						cy={cy(Math.min(CV.max, p.a))}
+						r="3.5"
+						fill="var(--stage-bg)"
+						stroke="var(--osc-trace)"
+						stroke-width="2"
+					/>
+				{/each}
 			</g>
+			{#if tried.length}
+				<Readout id="tried" label="○ pushes tried: the swing each settled to">
+					<circle
+						cx={PLOT_X0 + 5}
+						cy={CV.top - 18}
+						r="3.5"
+						fill="var(--stage-bg)"
+						stroke="var(--osc-trace)"
+						stroke-width="2"
+					/>
+					{@render txt(PLOT_X0 + 14, CV.top - 14, 'pushes tried, as simulated', 12, {
+						muted: true
+					})}
+				</Readout>
+			{/if}
 			<line
 				x1={marker.x}
 				x2={marker.x}

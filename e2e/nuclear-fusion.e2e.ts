@@ -85,3 +85,37 @@ test('the gain scorecard places the reader’s own plasma among the milestones',
 	await expect(stage(page)).toContainText('ITER, design goal: Q ≈ 10');
 	await expect(stage(page)).toContainText('your plasma: Q ≈ 2.4');
 });
+
+test('the plasma sits in a tokamak cross-section: every ion stays inside the D-shaped wall', async ({
+	page
+}) => {
+	await page.clock.install();
+	await open(page, './nuclear-fusion/#balance');
+	await expect(stage(page)).toContainText('field coil');
+	await expect(stage(page)).toContainText('magnetic');
+	await expect(stage(page)).toContainText('centre');
+	// the densest plasma, the most ions; checked over a few seconds of flight
+	await range(page, 'logN').fill('21');
+	const wall = stage(page).locator('path[fill="var(--nf-vessel)"]');
+	for (let i = 0; i < 4; i++) {
+		const outside = await wall.evaluate((w) => {
+			const path = w as SVGPathElement;
+			// the ions (not the key's dots beneath the vessel)
+			const ions = [...document.querySelectorAll('.stage svg circle[r="4.5"]')].filter((c) =>
+				['var(--nf-fuel)', 'var(--nf-proton)'].includes(c.getAttribute('fill') ?? '')
+			);
+			const p = new DOMPoint();
+			return {
+				n: ions.length,
+				out: ions.filter((c) => {
+					p.x = Number(c.getAttribute('cx'));
+					p.y = Number(c.getAttribute('cy'));
+					return !path.isPointInFill(p);
+				}).length
+			};
+		});
+		expect(outside.n).toBeGreaterThan(50);
+		expect(outside.out).toBe(0);
+		await page.clock.runFor(1500);
+	}
+});

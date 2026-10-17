@@ -236,3 +236,10 @@ Downloads log:
   and each test digit to its nearest training digit, plus the 40 nearest training digits
   themselves (16 grey levels). That file is used by the tests only, not shipped to the page; same
   licence status as the MNIST row.
+
+- **Recombination constants** (big-bang, `cosmology.ts`, added 2026-10-17): Peebles (1968, ApJ 153, 1)
+  three-level atom in the form of Seager, Sasselov & Scott (1999, ApJ 523, L1, eq. 1); case-B
+  recombination fit of Péquignot, Petitjean & Boisson (1991, A&A 251, 680); 2s two-photon rate
+  8.22458 s⁻¹ (Goldman 1989, as in RECFAST); Ω_b h² = 0.02237 (Planck 2018 VI, table 2); CODATA
+  2018 constants; hydrogen ionization energy 13.598434 eV and Lyman α 121.567 nm (NIST ASD).
+  Published constants and fit coefficients (facts): no licence obligations; cited in the code.

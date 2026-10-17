@@ -76,3 +76,26 @@ test('light friction: the swing keeps dying away after the first two minutes', a
 	}
 	await expect(stage(page)).toContainText(single);
 });
+
+test('the resonance curve: each push tried leaves a dot, and a stiffer spring moves the peak', async ({
+	page
+}) => {
+	await page.goto('./oscillations-resonance/#push');
+	await expect(stage(page)).toContainText('1 kg on 39 N/m');
+	for (const f of ['0.8', '0.99', '1.2']) await range(page, 'pushFreq').fill(f);
+	await page.goto('./oscillations-resonance/#curve');
+	await expect(stage(page)).toContainText('pushes tried, as simulated');
+	// the first push (0.6 Hz) and the three tried; trying one again adds nothing
+	await expect(stage(page).locator('circle.tried')).toHaveCount(4);
+	await range(page, 'pushFreq').fill('0.99');
+	await expect(stage(page).locator('circle.tried')).toHaveCount(4);
+	// a different spring has a different curve: the dots start again
+	await range(page, 'stiffness').fill('100');
+	await expect(stage(page)).toContainText('1 kg on 100 N/m');
+	await expect(stage(page)).toContainText('peak at 1.59 Hz');
+	await expect(stage(page).locator('circle.tried')).toHaveCount(1);
+	// the push step runs on the same spring, with the control there to show it
+	await page.goto('./oscillations-resonance/#push');
+	await expect(range(page, 'stiffness')).toHaveValue('100');
+	await expect(stage(page)).toContainText('1.59 Hz');
+});

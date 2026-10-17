@@ -33,10 +33,16 @@ test('the starting mass decides the end: white dwarf, neutron star, black hole, 
 	await expect(stage(page)).toContainText('ends as a white dwarf of 0.54 M☉');
 	await range(page, 'mass').fill('5');
 	await expect(stage(page)).toContainText('ends as a white dwarf of 0.90 M☉');
+	await expect(stage(page)).not.toContainText('dashed: the');
 	await range(page, 'mass').fill('15');
 	await expect(stage(page)).toContainText('leaving a neutron star');
+	// the cutaway marks what the remnant is made of
+	await expect(stage(page)).toContainText(
+		'dashed: the 1.4 M☉ that will collapse to a neutron star'
+	);
 	await range(page, 'mass').fill('30');
 	await expect(stage(page)).toContainText('a black hole');
+	await expect(stage(page)).toContainText('dashed: the 11 M☉ that will fall into a black hole');
 	await range(page, 'mass').fill('0.5');
 	await expect(stage(page)).toContainText('still on the main sequence after 96 billion years');
 	await expect(stage(page)).toContainText('age of the universe');

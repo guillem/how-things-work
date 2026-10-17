@@ -104,16 +104,27 @@ const qubits: Control = {
 	default: 2,
 	help: 'How many amplitudes a classical computer must store to simulate them.'
 };
+const aliceAxis: Control = {
+	type: 'select',
+	id: 'aliceAxis',
+	label: "A's measuring axis",
+	default: '0',
+	options: [
+		{ value: '0', label: '0° (along z)' },
+		{ value: '90', label: '90° (along x)' }
+	]
+};
+
 const bobAxis: Control = {
 	type: 'range',
 	id: 'bobAxis',
 	label: "Angle of B's measuring axis",
-	min: 0,
+	min: -90,
 	max: 180,
 	step: 5,
 	default: 0,
-	format: (v) => `${Math.round(v)}° from A's`,
-	help: 'Both axes lie in the x–z plane of the Bloch sphere; A measures along z.'
+	format: (v) => `${v < 0 ? '−' : ''}${Math.abs(Math.round(v))}°`,
+	help: 'Both axes lie in the x–z plane of the Bloch sphere, at an angle from z.'
 };
 
 // ---- Grover ------------------------------------------------------------------------------
@@ -294,11 +305,11 @@ export const spec: ExplainerSpec = {
 			scene: 'pair',
 			hints: { phase: 'bell' },
 			duration: 26,
-			controls: [bobAxis],
+			controls: [aliceAxis, bobAxis],
 			body: `
 <p>Two coins could do the last trick: seal “heads, heads” or “tails, tails” in two envelopes at random, and they always agree. Are entangled qubits just answers agreed in advance?</p>
-<p>No, and you can test it. Let A be measured along z and turn the axis along which B is measured. The two results agree with probability <strong>cos²(angle/2)</strong>: always at 0°, half the time at 90°, never at 180°. Meanwhile A on its own stays 50/50 whatever B's axis is, so the correlation can't carry a message.</p>
-<p>John Bell (1964) showed that once <strong>both</strong> sides choose between axes, answers fixed in advance cannot reproduce these correlations. (With A's axis fixed, as on the plot, they could: the test needs A to switch too.) In the form of Clauser, Horne, Shimony and Holt, A chooses between two axes and B between two, and the four correlations (the average of the product of the two results, counted as +1 and −1) add up to a number <strong>S</strong> that pre-agreed answers keep between −2 and 2. The entangled pair reaches <strong>2√2 ≈ 2.83</strong>: the panel measures it from simulated pairs.</p>`,
+<p>No, and you can test it. Let A be measured along z and turn the axis along which B is measured. The two results agree with probability <strong>cos²(angle/2)</strong>, with the angle between the two axes: always at 0°, half the time at 90°, never at 180°. Meanwhile A on its own stays 50/50 whatever B's axis is, so the correlation can't carry a message.</p>
+<p>John Bell (1964) showed that once <strong>both</strong> sides choose between axes, answers fixed in advance cannot reproduce these correlations. (With A's axis fixed they could: the test needs A to switch too.) In the form of Clauser, Horne, Shimony and Holt, A chooses between two axes and B between two, and the four correlations (the average of the product of the two results, counted as +1 and −1) add up to a number <strong>S</strong> that pre-agreed answers keep between −2 and 2. The entangled pair reaches <strong>2√2 ≈ 2.83</strong>: the panel measures it from simulated pairs. Switch A between 0° and 90° and set B to 45° or −45° to watch each of the four settings.</p>`,
 			notes: `<p>The four settings: A along 0° or 90°, B along 45° or −45° (Bloch angles, which are twice the polariser angles of the photon experiments). S = E(a, b) + E(a, b′) + E(a′, b) − E(a′, b′), with E the average of the product of the two ±1 results. Experiments that closed all the main loopholes, in Delft, Vienna and Boulder in 2015, found the quantum value; the 2022 Nobel Prize in Physics went to Alain Aspect, John Clauser and Anton Zeilinger for this line of work.</p>
 <p>For algorithms, entanglement is what lets n qubits use all 2ⁿ amplitudes rather than 2n numbers for n separate qubits; a computation that never entangles can be simulated efficiently on an ordinary computer.</p>`
 		},

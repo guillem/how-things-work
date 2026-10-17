@@ -401,6 +401,112 @@ export const BALMER = [
 	{ name: 'Hδ', nm: 410.17 }
 ] as const;
 
+// ------------------------------------------------------------------ recombination
+
+/** Physical baryon density today, Ω_b h² (Planck 2018 VI, table 2, same column). */
+export const OMEGA_B_H2 = 0.02237;
+const M_E = 9.1093837015e-31; // electron mass, kg (CODATA 2018)
+const K_B = 1.380649e-23; // Boltzmann's constant, J/K (exact)
+const H_PLANCK = 6.62607015e-34; // J s (exact)
+const EV = 1.602176634e-19; // J (exact)
+const M_H = 1.6735575e-27; // mass of a hydrogen atom, kg
+/** Ionization energy of hydrogen from its ground state, J (NIST: 13.598434 eV). */
+const E_ION = 13.598434 * EV;
+/** Wavelength of Lyman α (2p → 1s), m. */
+const LAMBDA_ALPHA = 121.567e-9;
+/** Two-photon decay rate of hydrogen's 2s level, 1/s (Goldman 1989; RECFAST's 8.22458). */
+const LAMBDA_2S = 8.22458;
+
+/** Hydrogen nuclei per m³ today (free or in atoms), with the page's own helium share. */
+const N_H0 = (() => {
+	const rhoCritH2 = (3 * (100 / MPC_KM) ** 2) / (8 * Math.PI * G); // kg/m³ for h = 1
+	return ((1 - heliumMassFraction()) * OMEGA_B_H2 * rhoCritH2) / M_H;
+})();
+const hydrogenDensity = (z: number) => N_H0 * (1 + z) ** 3;
+/** (2π m_e k T / h²)^{3/2}, m⁻³: the number of electron states per volume at temperature T. */
+const thermal = (T: number) => ((2 * Math.PI * M_E * K_B * T) / H_PLANCK ** 2) ** 1.5;
+/**
+ * Case-B recombination coefficient of hydrogen, m³/s: the fit of Péquignot, Petitjean and
+ * Boisson (1991, A&A 251, 680), as used in RECFAST (Seager, Sasselov and Scott 1999), but
+ * without RECFAST's fudge factor of 1.14, which is not part of Peebles' model.
+ */
+function alphaB(T: number) {
+	const t = T / 1e4;
+	return (1e-19 * 4.309 * t ** -0.6166) / (1 + 0.6703 * t ** 0.53);
+}
+
+/**
+ * Free electrons per hydrogen nucleus if ionization kept up with the temperature: Saha's
+ * equation x²/(1 − x) = (2π m_e kT/h²)^{3/2} e^{−13.6 eV/kT} / n_H (hydrogen only).
+ */
+export function sahaFreeElectrons(z: number) {
+	const T = T0 * (1 + z);
+	const r = (thermal(T) * Math.exp(-E_ION / (K_B * T))) / hydrogenDensity(z);
+	if (r > 1e12) return 1;
+	return (-r + Math.sqrt(r * r + 4 * r)) / 2;
+}
+
+/**
+ * Peebles' three-level atom (P. J. E. Peebles 1968, ApJ 153, 1; in the form of Seager et al.
+ * 1999, eq. 1; also Dodelson, Modern Cosmology, ch. 3): electrons recombine onto hydrogen
+ * directly into its excited states (case B); an atom in n = 2 either reaches the ground state,
+ * by the slow two-photon decay of 2s or by the Lyman-α photon redshifting out of the line, or
+ * is ionized again by the radiation first. With x the free electrons per hydrogen nucleus,
+ *
+ *   dx/dt = −C [α_B n_H x² − β (1 − x) e^{−hν_α/kT}],  C = (Λ_α + Λ_2s)/(Λ_α + Λ_2s + β),
+ *
+ * β = α_B (2π m_e kT/h²)^{3/2} e^{−E_ion/4kT} the ionization rate from n = 2 and
+ * Λ_α = 8πH/(λ_α³ n_1s) the rate at which Lyman-α photons escape. The matter is taken at the
+ * radiation's temperature, and helium (neutral by then) is left out. Integrated once at load
+ * time, from Saha's equilibrium at x = 0.99 (about z = 1,600) down to z = 10, by steps in
+ * ln a implicit in the recombination term (the rates are far faster than the expansion early on).
+ */
+const RECOMB = (() => {
+	let z = 3000;
+	while (sahaFreeElectrons(z) > 0.99) z -= 1;
+	const lnA0 = -Math.log(1 + z);
+	const lnA1 = -Math.log(11);
+	const N = 6000;
+	const h = (lnA1 - lnA0) / N;
+	const lnZ1: number[] = [Math.log(1 + z)];
+	const xs: number[] = [sahaFreeElectrons(z)];
+	let x = xs[0];
+	for (let i = 1; i <= N; i++) {
+		const lnA = lnA0 + (i - 0.5) * h;
+		const a = Math.exp(lnA);
+		const zz = 1 / a - 1;
+		const T = T0 / a;
+		const H = hubble(a) / MPC_KM; // 1/s
+		const nH = hydrogenDensity(zz);
+		const alpha = alphaB(T);
+		const beta = alpha * thermal(T) * Math.exp(-E_ION / (4 * K_B * T));
+		const lyA = (8 * Math.PI * H) / (LAMBDA_ALPHA ** 3 * Math.max(1e-30, (1 - x) * nH));
+		const C = (lyA + LAMBDA_2S) / (lyA + LAMBDA_2S + beta);
+		// x' = x − hC/H [α n_H x'² − β e^{−3E/4kT} (1 − x')], solved for x'
+		const k = (h * C) / H;
+		const ion = beta * Math.exp((-3 * E_ION) / (4 * K_B * T));
+		const qa = k * alpha * nH;
+		const qb = 1 + k * ion;
+		const qc = x + k * ion;
+		x = (2 * qc) / (qb + Math.sqrt(qb * qb + 4 * qa * qc));
+		lnZ1.push(-(lnA0 + i * h));
+		xs.push(x);
+	}
+	// ascending in ln(1 + z) for the lookup
+	return { lnZ1: lnZ1.reverse(), xs: xs.reverse(), zStart: z };
+})();
+
+/**
+ * Free electrons per hydrogen nucleus at redshift z after the Big Bang's hydrogen recombines
+ * (Peebles' model; Saha's equilibrium before it starts). Below z = 10 it stays at its frozen
+ * value: the first stars' ionization is `reionized` below.
+ */
+export function freeElectrons(z: number) {
+	if (z >= RECOMB.zStart) return sahaFreeElectrons(z);
+	const l = Math.log(1 + Math.max(10, z));
+	return interp(RECOMB.lnZ1, RECOMB.xs, l);
+}
+
 // ------------------------------------------------------------------ reionization
 
 /**

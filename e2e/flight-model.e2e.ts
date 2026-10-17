@@ -269,4 +269,6 @@ test('the numbers the narrative quotes', () => {
 	expect(drag(RHO0, 126 * KT).total / available).toBeGreaterThan(1.33);
 	// air leaves the trailing edge of the 2%-cambered section 8° down at 5°
 	expect(trailingFlowAngle(flow(section(0.12, 0.02), 5 * DEG)) / DEG).toBeCloseTo(-8, 0);
+	// at 100 kt the air passes the 1.5 m wing in three hundredths of a second
+	expect(CHORD / (100 * KT)).toBeCloseTo(0.03, 2);
 });
