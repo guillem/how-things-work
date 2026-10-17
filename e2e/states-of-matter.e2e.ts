@@ -36,3 +36,25 @@ test('switching the substance to water shows its hydrogen bonds', async ({ page 
 	await expect(stage(page)).toContainText('water (H₂O)');
 	await expect(stage(page)).toContainText('hydrogen bonds per molecule');
 });
+
+// Phone readouts (as in phone-readouts.e2e.ts): on a narrow screen the readouts leave the
+// drawing and are listed as text under the stage.
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+	const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+
+	test('the box and the phase diagram are text under the stage and follow the temperature', async ({
+		page
+	}) => {
+		await page.goto('./states-of-matter/#water-diagram');
+		const panel = readouts(page);
+		const t = page.locator('input[type=range][data-control=waterT]');
+		await t.fill('-10');
+		await expect(panel).toContainText(/water \(H₂O\)\s*−10 °C · 1 atm/);
+		await expect(panel).toContainText(/State\s*solid/);
+		await expect(panel).toContainText(/Hydrogen bonds per molecule\s*\d\.\d/);
+		await expect(stage(page)).not.toContainText('hydrogen bonds per molecule');
+		await t.fill('110');
+		await expect(panel).toContainText(/State\s*gas/);
+	});
+});

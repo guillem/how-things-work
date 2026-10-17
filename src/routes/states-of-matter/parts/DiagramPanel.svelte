@@ -6,6 +6,7 @@
 	 * its own set point in the same state: see ../mapping.ts).
 	 */
 	import { Label } from '#lib/draw/index.ts';
+	import { Readout } from '#lib/explainer/index.ts';
 	import {
 		ATM,
 		KELVIN,
@@ -104,6 +105,13 @@
 		supercritical: 'supercritical fluid'
 	};
 	const atm1 = $derived(sy(ATM));
+	/** The regions' fills, for their key chips on narrow screens. */
+	const REGION_FILL: Record<string, string> = {
+		solid: 'var(--som-solid)',
+		liquid: 'var(--som-liquid)',
+		gas: 'var(--som-gas)',
+		super: 'var(--som-super)'
+	};
 </script>
 
 <g>
@@ -177,16 +185,19 @@
 		stroke-width="1.2"
 	/>
 
-	{#each regionLabels as r (r.id)}
-		<Label
-			x={sx(r.T + KELVIN)}
-			y={sy(r.P * ATM)}
-			text={r.text}
-			size={13}
-			weight={600}
-			anchor={r.end ? 'end' : 'middle'}
-			muted
-		/>
+	<!-- <Readout>: on narrow screens the regions are key chips in their colours -->
+	{#each regionLabels as r, i (r.id)}
+		<Readout id="region-{r.id}" order={10 + i} label={r.text} color={REGION_FILL[r.id]}>
+			<Label
+				x={sx(r.T + KELVIN)}
+				y={sy(r.P * ATM)}
+				text={r.text}
+				size={13}
+				weight={600}
+				anchor={r.end ? 'end' : 'middle'}
+				muted
+			/>
+		</Readout>
 	{/each}
 
 	<!-- triple and critical points -->
@@ -206,20 +217,36 @@
 		stroke="var(--som-line)"
 		stroke-width="2"
 	/>
-	<Label
-		x={sx(data.triple.T) + 8}
-		y={sy(data.triple.P) + 16}
-		text="triple point"
-		size={11}
-		anchor="start"
-	/>
-	<Label
-		x={sx(data.critical.T) + (sub === 'water' ? -8 : 8)}
-		y={sy(data.critical.P) + 16}
-		text="critical point"
-		size={11}
-		anchor={sub === 'water' ? 'end' : 'start'}
-	/>
+	<Readout
+		id="triple"
+		order={14}
+		label="triple point"
+		marker={1}
+		at={[sx(data.triple.T) + 26, sy(data.triple.P) + 22]}
+	>
+		<Label
+			x={sx(data.triple.T) + 8}
+			y={sy(data.triple.P) + 16}
+			text="triple point"
+			size={11}
+			anchor="start"
+		/>
+	</Readout>
+	<Readout
+		id="critical"
+		order={15}
+		label="critical point"
+		marker={2}
+		at={[sx(data.critical.T) + (sub === 'water' ? -26 : 26), sy(data.critical.P) + 22]}
+	>
+		<Label
+			x={sx(data.critical.T) + (sub === 'water' ? -8 : 8)}
+			y={sy(data.critical.P) + 16}
+			text="critical point"
+			size={11}
+			anchor={sub === 'water' ? 'end' : 'start'}
+		/>
+	</Readout>
 	<Label x={x0 + w - 6} y={atm1 - 6} text="1 atm" size={11} anchor="end" muted />
 
 	<!-- axes -->
@@ -262,20 +289,22 @@
 		stroke-width="2"
 	/>
 
-	<Label
-		x={x0}
-		y={y0 + h + 66}
-		text="{data.name} at {formatCelsius(T - KELVIN)} and {formatAtm(P / ATM)}:"
-		size={13}
-		anchor="start"
-	/>
-	<Label
-		x={x0}
-		y={y0 + h + 90}
-		text={phaseName[phase]}
-		size={18}
-		weight={700}
-		anchor="start"
-		color="var(--som-dot)"
-	/>
+	<Readout id="phase" order={4} label="State" value={phaseName[phase]} color="var(--som-dot)">
+		<Label
+			x={x0}
+			y={y0 + h + 66}
+			text="{data.name} at {formatCelsius(T - KELVIN)} and {formatAtm(P / ATM)}:"
+			size={13}
+			anchor="start"
+		/>
+		<Label
+			x={x0}
+			y={y0 + h + 90}
+			text={phaseName[phase]}
+			size={18}
+			weight={700}
+			anchor="start"
+			color="var(--som-dot)"
+		/>
+	</Readout>
 </g>

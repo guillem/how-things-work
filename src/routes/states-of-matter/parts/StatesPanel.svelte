@@ -1,6 +1,7 @@
 <script lang="ts">
 	/** Three cards, solid, liquid and gas, with the current state's card highlighted. */
 	import { Label } from '#lib/draw/index.ts';
+	import { Readout } from '#lib/explainer/index.ts';
 	import type { Phase } from '../phase';
 
 	interface Props {
@@ -84,9 +85,18 @@
 					stroke-width="1"
 				/>
 			{/each}
-			<Label x={X + 120} y={y + 40} text={c.title} size={17} weight={700} anchor="start" />
-			<Label x={X + 120} y={y + 68} text={c.lines[0]} size={13} anchor="start" />
-			<Label x={X + 120} y={y + 90} text={c.lines[1]} size={13} anchor="start" muted />
+			<!-- on narrow screens: the highlighted card is a row under the stage -->
+			<Readout
+				id="state-{c.id}"
+				order={4}
+				label={on ? 'State' : undefined}
+				value={c.title}
+				note="{c.lines[0]}; {c.lines[1]}"
+			>
+				<Label x={X + 120} y={y + 40} text={c.title} size={17} weight={700} anchor="start" />
+				<Label x={X + 120} y={y + 68} text={c.lines[0]} size={13} anchor="start" />
+				<Label x={X + 120} y={y + 90} text={c.lines[1]} size={13} anchor="start" muted />
+			</Readout>
 		</g>
 	{/each}
 </g>
