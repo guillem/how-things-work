@@ -1,0 +1,1577 @@
+[
+ {
+  "lens": "holes-l1-l2",
+  "ok": true,
+  "count": 30,
+  "candidates": [
+   {
+    "slug": "fluid-pressure-buoyancy",
+    "title": "Pressure in fluids & buoyancy",
+    "level": 1,
+    "kind": "manipulate",
+    "category": "physics",
+    "interaction": "Drag an object of adjustable volume and density into a tank of water and watch it sink, hover or float: arrows show the pressure growing with depth on every face, and the net upward push equals the weight of the water the object displaces, drawn as a bar beside the object's own weight. Lower a diver with a pressure gauge down the column, swap the water for oil or brine, then press on the small piston of a hydraulic lift to raise a car on the large one.",
+    "takeaway": "Pressure in a fluid grows with depth and pushes in every direction, so a submerged object is pushed harder from below than from above, and it floats when that difference exceeds its weight.",
+    "prerequisites": [
+     "newtons-laws"
+    ],
+    "related": [
+     "states-of-matter",
+     "flight"
+    ],
+    "needs": "",
+    "needsSource": "none; the densities of water, brine, oil, ice, wood and steel are standard reference values",
+    "pitfall": "Buoyancy is not a special force of water: it is the ordinary pressure difference between an object's bottom and its top. Floating does not need a lot of water around the object; a ship floats in a snug dock, and the upthrust depends on the fluid displaced, not on how much fluid is left.",
+    "why": "AQA GCSE Physics 8463 topic 4.5.5 'Pressure and pressure differences in fluids' (pressure with depth, upthrust, atmospheric pressure) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF ; AP Physics 1 Unit 8 'Fluids' carries 10 to 15% of the exam https://apstudents.collegeboard.org/courses/ap-physics-1",
+    "overlapWith": "states-of-matter runs a particle box with pressure as a control and flight shows lift on a wing; neither shows pressure growing with depth or the upthrust that follows from it. The pool's level-0 water-pressure-and-hydraulics and air-pressure-and-straws feel the push without the force balance.",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "magnets-and-electromagnets",
+    "title": "Magnets & electromagnets",
+    "level": 1,
+    "kind": "manipulate",
+    "category": "physics",
+    "interaction": "Drag bar magnets around a board scattered with compass needles and iron filings; the field, computed from the magnets' poles, redraws as they move, and a meter shows the pull between two magnets falling as they are separated. Wind a coil around an iron core, set its current and number of turns, and lift a stack of paper clips; reverse the current to swap the poles, then zoom out to the Earth as one large magnet that turns every compass.",
+    "takeaway": "A magnet's force reaches through space as a field that loops from one pole to the other, and a coil carrying a current is a magnet that can be switched on, off and over.",
+    "prerequisites": [
+     "electric-circuits"
+    ],
+    "related": [
+     "electromagnetism",
+     "motors-generators"
+    ],
+    "needs": "",
+    "needsSource": "none; the dipole and coil fields are computed, and the strength of Earth's field is a reference value",
+    "pitfall": "Field lines are a drawing convention, not threads: the field exists everywhere between them. Filings show the field's direction, not its strength; use the compass deflection and the meter for that. Earth's geographic north is a magnetic south pole, which is why a compass's north end points there.",
+    "why": "AQA GCSE Physics 8463 topic 4.7 'Magnetism and electromagnetism' (permanent and induced magnets, magnetic fields, electromagnets) https://www.aqa.org.uk/subjects/science/gcse/physics-8463/specification-at-a-glance ; AQA KS3 syllabus 3.2.4 'Electromagnets' https://www.oxfordaqa.com/oaqaresources/science/teaching/aqa-science-ks3-syllabus.pdf",
+    "overlapWith": "electromagnetism (level 2) starts from charges and induction and assumes circuits; this page is the level-1 magnet itself (permanent magnets, fields, electromagnets, the Earth) that it steps over. The pool's level-0 magnets-and-poles and compass-and-magnetic-poles have no field model and no current.",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "momentum-impulse-crashes",
+    "title": "Momentum, impulse & crashes",
+    "level": 1,
+    "kind": "simulate",
+    "category": "physics",
+    "interaction": "Crash two carts head-on with chosen masses, speeds and bounciness, from perfectly elastic to perfectly sticky, and watch the momentum bars before and after. Add a crumple zone or an airbag to one cart and see the force on its passenger drop as the collision is stretched over a longer time, on a force-time graph whose area stays the same. Then fire a cannon on a frozen lake to see the recoil, and play pool on a table where the balls meet at an angle.",
+    "takeaway": "In every collision the total momentum is unchanged, so what a crumple zone changes is not how much momentum is lost but how long losing it takes, and a longer time means a smaller force.",
+    "prerequisites": [
+     "newtons-laws"
+    ],
+    "related": [
+     "rockets"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "Momentum is conserved in every collision, including sticky ones; it is kinetic energy that an inelastic collision turns into heat and deformation. A crumple zone does not absorb momentum, it stretches the collision in time.",
+    "why": "AQA GCSE Physics 8463 topic 4.5.7 'Momentum' (conservation, changes in momentum, safety features) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF ; AP Physics 1 Unit 4 'Linear momentum' (impulse, conservation, collisions) https://apstudents.collegeboard.org/courses/ap-physics-1",
+    "overlapWith": "newtons-laws already collides carts of different mass to show momentum passing between objects; this page keeps that as its first step and adds what it does not show: the bounciness of a collision, impulse as force spread over time (crash safety), recoil and collisions at an angle.",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "gas-laws",
+    "title": "Gas laws: pressure, volume & temperature",
+    "level": 1,
+    "kind": "simulate",
+    "category": "physics",
+    "interaction": "Pump molecules into a cylinder with a movable piston and a heater; the pressure is measured by counting molecules hitting the walls, not read from a formula. Hold the temperature and squeeze the piston to trace pressure against volume; hold the volume and heat the gas to trace pressure against temperature, then extend that line back to where the pressure would reach zero and find absolute zero. Pump up a bicycle tyre to see why it warms.",
+    "takeaway": "Gas pressure is molecules hitting the walls, so halving the volume doubles the pressure and heating a sealed container raises it, and tracing the pressure back to zero points to a lowest possible temperature.",
+    "prerequisites": [
+     "states-of-matter"
+    ],
+    "related": [
+     "entropy",
+     "heat-engines"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "The three laws hold for a fixed amount of gas and absolute temperature: pressure against degrees Celsius is a straight line that misses the origin. Squeezing a gas quickly warms it, so a quick squeeze is not a constant-temperature experiment.",
+    "why": "AQA GCSE Physics 8463 topic 4.3.3 'Particle model and pressure' (gas pressure and temperature, pressure and volume) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF ; PhET's 'Gas Properties' (pump molecules, change volume, add heat, measure pressure) is one of its most used simulations https://phet.colorado.edu/en/search?q=Thermo",
+    "overlapWith": "states-of-matter runs a molecular box through freezing, melting and boiling with temperature and pressure as controls; this page stays in the gas phase and measures the three relationships between pressure, volume and temperature that the phase page never plots.",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "heat-transfer-insulation",
+    "title": "Heat transfer: conduction, convection & radiation",
+    "level": 1,
+    "kind": "simulate",
+    "category": "energy",
+    "interaction": "Set the temperature inside and outside a house, choose the wall's material and thickness, and watch heat diffuse through a cross-section on a grid coloured by temperature while a meter shows the rate of loss; add double glazing, loft insulation and a draught excluder and compare the bills. Switch to a pan on a stove to watch convection currents carry heat up and around, then hold a hand near a radiator to see radiation cross empty space, with a thermal-camera view of a hot and a cold mug.",
+    "takeaway": "Heat moves from hot to cold in three ways, through a material, with a moving fluid and as radiation, and each is slowed by a different trick: a thick poor conductor, a trapped still gas and a shiny surface.",
+    "prerequisites": [
+     "states-of-matter"
+    ],
+    "related": [
+     "entropy",
+     "greenhouse-effect",
+     "heat-pumps"
+    ],
+    "needs": "A small table of thermal conductivities for common building materials (brick, wood, glass, mineral wool, still air).",
+    "needsSource": "reference values (CRC Handbook or engineering tables); physical constants, not a copyrightable dataset",
+    "pitfall": "Insulation does not make heat: a jumper keeps you warm by slowing the loss of heat your body makes. Metal feels colder than wood at the same temperature because it conducts heat away faster, not because it is colder.",
+    "why": "NGSS MS-PS3-3 'design, construct, and test a device that either minimizes or maximizes thermal energy transfer' https://www2.cde.ca.gov/cacs/id/web/29109 ; AQA GCSE Physics 8463 topic 4.1.1.4 (thermal conductivity, rate of cooling of a building) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF",
+    "overlapWith": "entropy (level 2) shows heat equalising as a count of microstates and greenhouse-effect shows a planet's radiation balance; neither shows conduction through a wall, convection in a fluid or how insulation works. The pool's level-0 keeping-things-warm is the same idea without the heat equation.",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "mains-electricity",
+    "title": "Electricity at home",
+    "level": 1,
+    "kind": "build",
+    "category": "energy",
+    "interaction": "Wire a house: plug appliances with their real power ratings into the ring, watch the mains voltage swing fifty times a second on an oscilloscope beside the steady voltage of a battery, and read the current each appliance draws and the meter counting kilowatt-hours. Overload a socket until its fuse blows, let a live wire touch a metal kettle with and without an earth wire and watch the breaker trip; then set a transformer's turns ratio to step the voltage up and down and see why the grid transmits at hundreds of thousands of volts.",
+    "takeaway": "Mains electricity is a voltage that reverses direction many times a second, power is voltage times current, and fuses, earth wires and breakers exist to cut the current before a fault heats a wire or a person.",
+    "prerequisites": [
+     "electric-circuits"
+    ],
+    "related": [
+     "power-grid",
+     "motors-generators",
+     "magnets-and-electromagnets"
+    ],
+    "needs": "",
+    "needsSource": "none; appliance power ratings are nameplate values",
+    "pitfall": "The neutral wire sits near zero volts but still carries the full current. A residual-current device trips on an imbalance between live and neutral, not on a large current; a fuse does the reverse. Appliances do not use up electricity: charge returns along the neutral, and what the meter bills is energy.",
+    "why": "AQA GCSE Physics 8463 topic 4.2.3 'Domestic uses and safety' (direct and alternating potential difference, mains electricity, plug wiring) and 4.2.4 'Energy transfers' (power, the National Grid) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF",
+    "overlapWith": "electric-circuits is batteries, bulbs and resistors on a DC board; power-grid (level 2) dispatches plants and balances frequency. This page is the house between them: alternating current, the plug, fuses and earthing, the meter, and the transformer that joins the two.",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "enzymes-and-digestion",
+    "title": "Enzymes & digestion",
+    "level": 1,
+    "kind": "simulate",
+    "category": "biology",
+    "interaction": "Follow a meal through the mouth, stomach and small intestine while amylase, protease and lipase, drawn as lock-and-key shapes, cut starch, protein and fat into pieces small enough to cross the gut wall, with a counter of molecules absorbed. Change the temperature and the pH of each stage and watch the rate rise, peak and collapse as the enzyme's shape distorts; add bile to break fat into droplets and see the lipase rate jump with the surface area.",
+    "takeaway": "Digestion is enzymes cutting big molecules into small ones, and each enzyme works fastest at one temperature and one pH and stops working when its shape is changed.",
+    "prerequisites": [
+     "the-cell"
+    ],
+    "related": [
+     "respiration-atp",
+     "acids-bases"
+    ],
+    "needs": "Rate-against-temperature and rate-against-pH behaviour for amylase, pepsin and lipase (optimum pH near 7, 2 and 8).",
+    "needsSource": "a documented Michaelis-Menten model with stated optima needs no dataset; measured constants, if wanted, from the BRENDA enzyme database (its licence was not confirmed in this research; say so before relying on it)",
+    "pitfall": "Heat does not kill an enzyme, it denatures it: the protein unfolds and the active site no longer fits. Cold slows an enzyme but does not denature it. Enzymes are not used up by the reaction they speed.",
+    "why": "AQA GCSE Biology 8461 topic 4.2.2.1 'The human digestive system' with Required practical 5, the effect of pH on the rate of reaction of amylase https://cognito.org/blog/gcse-aqa-biology",
+    "overlapWith": "respiration-atp (level 2) follows one glucose molecule after it has been absorbed and the-cell zooms through a cell; digestion, and the enzyme as a shape that works in a narrow range of temperature and pH, is on no page. The pool's digestion-journey (level 0) is the route without the enzyme model, and its enzyme-kinetics (level 3) is the Michaelis-Menten mathematics; this page shows the behaviour between them.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "diffusion-osmosis",
+    "title": "Diffusion, osmosis & active transport",
+    "level": 1,
+    "kind": "simulate",
+    "category": "biology",
+    "interaction": "Drop dye into one corner of a box of jiggling particles and watch it spread, faster when warmer, while a concentration graph flattens. Put a membrane down the middle with pores that pass water but not sugar, set the sugar concentration on each side and watch the water level rise on the sugary side; then make the box a cell, place it in pure water, salt water and something in between, and see it swell, shrink or hold, as a potato slice does in the classroom experiment. Finally switch on a pump that carries particles against the gradient and watch its ATP meter drain.",
+    "takeaway": "Particles spread from where they are crowded to where they are not by random motion alone, water does the same across a membrane that holds the dissolved particles back, and moving anything the other way costs energy.",
+    "prerequisites": [
+     "the-cell",
+     "states-of-matter"
+    ],
+    "related": [
+     "entropy",
+     "respiration-atp",
+     "kidney-water-balance"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "Osmosis is water moving toward the higher solute concentration, not toward 'more water'. Diffusion needs no force or pump: particles have no direction of their own, and the net flow is a counting effect. A plant cell in pure water becomes firm rather than bursting, because of its wall.",
+    "why": "AQA GCSE Biology 8461 topic 4.1.3 'Transport in cells' (diffusion, osmosis, active transport) with Required practical 3, osmosis in plant tissue https://www.edplace.com/gcse-revision/biology/aqa",
+    "overlapWith": "entropy (level 2) shows two gases mixing as a count of microstates and the-cell shows the membrane as a structure; neither has a membrane that passes water and holds solute, a cell that swells or shrinks, or a pump that spends ATP. The pool's smells-and-diffusion (level 0) spreads a smell without the membrane.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "plant-transport",
+    "title": "Plant transport & transpiration",
+    "level": 1,
+    "kind": "simulate",
+    "category": "biology",
+    "interaction": "Set the light, temperature, humidity and wind around a potted plant and watch water drawn up its xylem from root to leaf as it evaporates from the open stomata, with a potometer bubble marking the rate; close the stomata and the flow stops. Pull a thread of water up a thin tube to see how evaporation at the top can lift a column that is never pushed, then switch to the phloem and watch sugar made in the leaf loaded in, drawing water after it, and flowing down to the roots and fruit.",
+    "takeaway": "A plant has no pump: water is pulled up by evaporation from its leaves through tubes it cannot break, and sugar is pushed from leaf to root by the water it attracts.",
+    "prerequisites": [
+     "photosynthesis",
+     "diffusion-osmosis"
+    ],
+    "related": [
+     "global-water-cycle"
+    ],
+    "needs": "",
+    "needsSource": "none; the transpiration rate is modelled from the vapour-pressure deficit and stomatal opening, documented as a simplification",
+    "pitfall": "Transpiration is not a waste: it is what moves water and minerals up the plant. Roots do not push water to the top of a tree; root pressure is small and the pull from the leaves does the work.",
+    "why": "AQA GCSE Biology 8461 topic 4.2.3.2 'Plant organ system' (transpiration and translocation, factors affecting the rate of transpiration) https://cognito.org/blog/gcse-aqa-biology",
+    "overlapWith": "photosynthesis makes sugar in the leaf and sets light and CO2; the pool's how-plants-drink (level 0) shows water rising without the rates. This page is the plumbing: the pull of transpiration, the four factors that set its rate, and the phloem.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "reflex-arc-reaction-time",
+    "title": "The nervous system: reflexes & reaction time",
+    "level": 1,
+    "kind": "simulate",
+    "category": "medicine",
+    "interaction": "Touch a virtual hand to a hot plate and watch the signal run along the sensory neuron to the spinal cord, across a synapse to a motor neuron and back to the arm muscle, against a stopwatch: the hand has moved before the signal reaches the brain. Then run the classroom ruler-drop test: catch the ruler and the page turns the distance fallen into a reaction time, slower for a conscious choice than for a reflex, and plots how caffeine, distraction and practice shift the distribution over many trials.",
+    "takeaway": "A reflex is fast because its signal takes a short loop through the spinal cord instead of the longer route through the brain, and even the fastest nerve signal takes a measurable fraction of a second.",
+    "prerequisites": [],
+    "related": [
+     "neurons",
+     "homeostasis",
+     "vision-color"
+    ],
+    "needs": "Conduction speeds of myelinated and unmyelinated nerve fibres, typical synaptic delay and path lengths.",
+    "needsSource": "standard physiology reference values; no dataset",
+    "pitfall": "Reflexes are not instant: a signal travels at tens of metres per second and each synapse costs about a millisecond. The brain is not bypassed entirely; it learns of the reflex after the fact, which is why the heat is felt after the hand has moved.",
+    "why": "AQA GCSE Biology 8461 topic 4.5.2 'The human nervous system' (the reflex arc) with Required practical 7, factors affecting human reaction time https://www.developingexperts.com/unit-library/units/4-5-homeostasis-and-response-copy",
+    "overlapWith": "neurons (level 2) is the single cell: ion channels, the spike and the synapse. This page is the system at level 1, the loop from receptor to muscle and the time it takes; the pool's reflexes (level 0) has the knee-jerk without the timing model.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "kidney-water-balance",
+    "title": "The kidney & water balance",
+    "level": 1,
+    "kind": "simulate",
+    "category": "medicine",
+    "interaction": "Let a person drink a litre of water, run on a hot day or eat a salty meal, and watch the blood's water content, the ADH level and the urine's volume and concentration respond over the following hours. Zoom into one nephron: blood is filtered under pressure, glucose and most of the water are reclaimed along the tubule, and the final adjustment is made where ADH sets how much water the collecting duct lets back; raise blood glucose until sugar spills into the urine, then stop the kidneys and run dialysis across a membrane instead.",
+    "takeaway": "The kidney does not pick out waste; it filters almost everything out of the blood and then takes back what the body needs, with a hormone setting how much water it keeps.",
+    "prerequisites": [
+     "homeostasis",
+     "diffusion-osmosis"
+    ],
+    "related": [
+     "heart-circulation"
+    ],
+    "needs": "",
+    "needsSource": "reference physiology values (about 180 litres filtered a day, 1 to 2 litres of urine); no dataset",
+    "pitfall": "Urine is not filtered blood: about 99% of the filtrate is reabsorbed, and glucose appears in urine only when the tubule's capacity to reclaim it is exceeded. ADH makes the kidney keep water, so more ADH means less, and more concentrated, urine.",
+    "why": "AQA GCSE Biology 8461 topic 4.5.3.3 'Maintaining water and nitrogen balance in the body' (the kidney, ADH and negative feedback, dialysis) https://www.developingexperts.com/unit-library/units/4-5-homeostasis-and-response-copy",
+    "overlapWith": "homeostasis shows the glucose-insulin loop; this is the water loop and the organ that closes it. The pool's kidney-nephron and dialysis (level 3) model countercurrent multiplication and dialyser transport; this page keeps to filter-then-reclaim and the ADH loop that GCSE asks for.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "global-water-cycle",
+    "title": "The water cycle",
+    "level": 1,
+    "kind": "simulate",
+    "category": "earth",
+    "interaction": "A diagram of reservoirs (ocean, ice, groundwater, lakes and rivers, soil, air, living things) joined by flows drawn to scale: evaporation, transpiration, precipitation, runoff and infiltration. Drop a tagged water molecule anywhere and follow it; a counter shows how long it typically waits in each reservoir, days in the air against thousands of years in the deep ocean or an ice sheet. Warm the air to see how much more vapour it can hold, cool a parcel to its dew point and watch cloud and rain appear, then pave a catchment and see runoff rise and infiltration fall.",
+    "takeaway": "The same water goes round and round, but it moves through the air in days and through ice and deep groundwater in millennia, and warmer air carries more of it.",
+    "prerequisites": [
+     "states-of-matter"
+    ],
+    "related": [
+     "atmosphere-weather",
+     "ocean-currents",
+     "carbon-cycle",
+     "greenhouse-effect",
+     "plant-transport"
+    ],
+    "needs": "Reservoir volumes and annual flows of the global water cycle, and the saturation vapour pressure of water against temperature.",
+    "needsSource": "reservoir volumes from the USGS Water Science School table (US government work, public domain; it credits Shiklomanov 1993) https://www.usgs.gov/water-science-school/science/how-much-water-there-earth ; annual flows from Oki & Kanae 2006 (Science, not open access; the figure's numbers are facts and are reproduced in open teaching material) - confirm one consistent set before building; vapour pressure from the Magnus formula",
+    "pitfall": "Water is not used up: the amount on Earth is fixed, and what people run short of is fresh water in the right place at the right time. Clouds are not water vapour; vapour is invisible, and a cloud is droplets that have already condensed.",
+    "why": "NGSS MS-ESS2-4 'Develop a model to describe the cycling of water through Earth's systems driven by energy from the sun and the force of gravity' https://www.nextgenscience.org/pe/ms-ess2-4-earths-systems ; the brief notes the water cycle is not covered by any existing page",
+    "overlapWith": "atmosphere-weather (level 2) moves heat and makes fronts and hurricanes, and carbon-cycle has the same reservoir-and-flow design for carbon; nothing on the site follows water itself. The pool's water-cycle (level 0) tells the story without the budget, the residence times or the dew point.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "nitrogen-cycle",
+    "title": "The nitrogen cycle",
+    "level": 1,
+    "kind": "simulate",
+    "category": "earth",
+    "interaction": "Run a field as an agent model of plants, animals, decomposers and three kinds of soil bacteria: nitrogen-fixing bacteria turn air nitrogen into ammonium, nitrifying bacteria turn it into the nitrate that plants take up, and denitrifying bacteria return it to the air, with a reservoir diagram beside the field keeping the running totals. Add fertiliser, plough in a legume crop or flood the soil and watch where the nitrogen goes; overdo the fertiliser and follow the runoff into a lake, where algae bloom, die, and the decomposers use up the oxygen.",
+    "takeaway": "Most of the air is nitrogen that plants cannot use, so almost every living thing depends on bacteria that convert it, and adding too much of the converted form washes into water and chokes it.",
+    "prerequisites": [
+     "ecosystems"
+    ],
+    "related": [
+     "carbon-cycle"
+    ],
+    "needs": "Global nitrogen budget flows (fixation by lightning, bacteria and the Haber process; denitrification) if the reservoir diagram is drawn to scale.",
+    "needsSource": "Fowler et al. 2013, Phil. Trans. R. Soc. B 368:20130164, free on PubMed Central (PMC3682748) but its reuse licence was not confirmed in this research: either confirm it or keep the diagram qualitative and let the agent model be the real part",
+    "pitfall": "Plants do not take nitrogen from the air, and fertiliser is not food: it supplies nitrate for making protein, while the energy still comes from photosynthesis. Eutrophication kills fish through the decomposers' use of oxygen, not through the fertiliser itself.",
+    "why": "AQA A-level Biology 7402 topic 3.5.4 'Nutrient cycles' (nitrogen fixation, ammonification, nitrification, denitrification; fertilisers and eutrophication) https://www.savemyexams.com/a-level/biology/aqa/17/revision-notes/5-energy-transfers-in--between-organisms-a-level-only/5-4-nutrient-cycles-a-level-only/5-4-1-nutrient-cycles ; Edexcel GCSE Biology Topic 9 (the carbon, water and nitrogen cycles) https://pmt.physicsandmathstutor.com/download/Biology/GCSE/Notes/Edexcel/9-Ecosystems-and-Material-Cycles/Flashcards/Flashcards%20-%20Topic%209%20Nutrient%20cycles%20and%20decomposers%20-%20Edexcel%20Biology%20GCSE.pdf",
+    "overlapWith": "carbon-cycle is a reservoir-and-flow diagram driven by burning; here bacteria, not fire, are the gatekeepers, and the second half (fertiliser runoff and eutrophication) links to ecosystems, which has the predator-prey model but no nutrient.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "electrolysis",
+    "title": "Electrolysis",
+    "level": 1,
+    "kind": "simulate",
+    "category": "chemistry",
+    "interaction": "Dip two electrodes into molten lead bromide, then into salt water, and switch on the current: ions drift to the electrode of opposite charge and are turned back into atoms, particle by particle, with bubbles of gas or a growing metal coating. Choose the salt and the solvent and the page predicts from the reactivity series which ion is discharged at each electrode, while a meter adds up the charge passed so that the mass deposited can be read against it. Finish with the aluminium cell and why it eats so much electricity.",
+    "takeaway": "Electricity can pull a compound apart: positive ions gain electrons at one electrode and negative ions lose them at the other, and the amount made is set by the charge passed.",
+    "prerequisites": [
+     "chemical-bonds",
+     "electric-circuits"
+    ],
+    "related": [
+     "redox-batteries",
+     "acids-bases"
+    ],
+    "needs": "The reactivity series and, for the quantitative step, Faraday's constant and the ionic charges.",
+    "needsSource": "reference constants (IUPAC, CODATA); no dataset",
+    "pitfall": "In solution the less reactive of two possible products is discharged: hydrogen rather than sodium at the cathode, and oxygen rather than a halogen unless a halide is present. Electrolysis is a battery run backwards, so the supply must push the electrons uphill.",
+    "why": "AQA GCSE Chemistry 8462 topic 4.4.3 'Electrolysis' (molten ionic compounds, aqueous solutions, extraction of aluminium; Required practical 3) https://www.savemyexams.com/learning-hub/exam-specifications/gcse/chemistry/aqa/",
+    "overlapWith": "redox-batteries (level 2) is the cell discharging through a load; electrolysis is the same chemistry driven backwards by a supply, which that page mentions only as charging a lithium cell. The rule for which ion wins in solution and the charge-to-mass relation are new.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "moles-and-stoichiometry",
+    "title": "The mole & reacting masses",
+    "level": 1,
+    "kind": "build",
+    "category": "chemistry",
+    "interaction": "Drag atoms into a reaction box to balance an equation by making the count of each element match on both sides, then pour in reactants by mass: a scale converts grams into counts of molecules through the mole, the reaction runs until the scarcer ingredient is used up, and the leftover is shown. Swap a solid product for a gas to see the volume a mole takes at room temperature, and compare the predicted and actual yields of a reaction that loses product along the way.",
+    "takeaway": "A chemical equation is a recipe in counts, not in grams, and a reaction stops when the ingredient with the fewest molecules runs out, however much of the others is left.",
+    "prerequisites": [
+     "atoms-periodic-table",
+     "chemical-bonds"
+    ],
+    "related": [
+     "reaction-rates-equilibrium",
+     "gas-laws"
+    ],
+    "needs": "Relative atomic masses.",
+    "needsSource": "IUPAC standard atomic weights (CC BY 4.0) or the PubChem periodic table (US government work, public domain)",
+    "pitfall": "Equal masses of two substances do not hold equal numbers of molecules; a mole is a count, and it is the count that reacts. The molar volume of about 24 litres holds for a gas at room temperature and pressure, not for liquids or solids.",
+    "why": "AQA GCSE Chemistry 8462 topic 4.3 'Quantitative chemistry' (conservation of mass, moles, limiting reactants, gas volumes, yield) https://www.savemyexams.com/learning-hub/exam-specifications/gcse/chemistry/aqa/ ; IB Chemistry stoichiometry (the mole, reacting masses, limiting reagents) https://ibchem.com/IB25/03.00t.php",
+    "overlapWith": "atoms-periodic-table builds single atoms and reaction-rates-equilibrium (level 2) runs collisions and asks how fast and how far; the counting step between them, from grams to molecules and back, on which every chemistry calculation rests, is on no page.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "exponentials-logarithms",
+    "title": "Exponentials & logarithms",
+    "level": 1,
+    "kind": "manipulate",
+    "category": "math",
+    "interaction": "Set a growth factor and a starting amount and watch a quantity double, triple or halve at each step, as a bar chart and as a curve beside a straight line that grows by the same amount each step; the curve wins eventually wherever the slider is. Flip the axis to a logarithmic scale and the curve becomes a straight line whose slope is the growth rate; read a logarithm as 'how many doublings' by counting the steps, and place compound interest, bacteria, decibels, earthquake magnitude and pH on the same scale.",
+    "takeaway": "Growth by a fixed factor outruns growth by a fixed amount, and a logarithm is just the count of such steps, which is why a logarithmic scale turns multiplying into adding and lets wildly different sizes share one axis.",
+    "prerequisites": [],
+    "related": [
+     "radioactivity",
+     "epidemics",
+     "acids-bases",
+     "earthquakes"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "An exponential curve has no take-off point: it grows by the same factor everywhere and only looks flat early because the numbers are small. A logarithmic scale compresses but does not distort: equal distances mean equal ratios.",
+    "why": "AQA A-level Mathematics 7357 content area F 'Exponentials and logarithms' (the function a^x, logarithms, exponential growth and decay in modelling) https://filestore.aqa.org.uk/resources/mathematics/specifications/AQA-7357-SP-2017.PDF",
+    "overlapWith": "radioactivity (decay), epidemics (growth) and acids-bases (a log scale) each use an exponential or a logarithm without naming it; this page is the function itself and the logarithm as a count of steps. The math-l3 lens already proposed this at level 1 under the same slug; the pool keeps one copy.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "game-theory-cooperation",
+    "title": "Game theory: why cooperate?",
+    "level": 1,
+    "kind": "simulate",
+    "category": "math",
+    "interaction": "Play the prisoner's dilemma against the page with a payoff table whose four numbers can be edited, and find that cheating pays once but not when the same two players meet again. Enter strategies (always cheat, always cooperate, tit for tat, grudger, random) into a round-robin tournament of repeated games and watch the scores; let the population evolve, with well-scoring strategies copied more often, and add a little noise to the signals to see which strategies survive it. Finish on a grid where each cell plays its neighbours, so that clusters of cooperators grow or are eaten.",
+    "takeaway": "When the same players meet repeatedly, being nice, retaliating and forgiving beats pure selfishness, so cooperation can emerge among players who each look after only themselves.",
+    "prerequisites": [],
+    "related": [
+     "evolution",
+     "ecosystems",
+     "reinforcement-learning"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "Tit for tat never beat an opponent in a single game; it won the tournaments by scoring well with everyone. There is no best strategy independent of the population it plays in, and the result changes with the payoff numbers and with noise.",
+    "why": "Nicky Case's 'The Evolution of Trust', an interactive built on Axelrod's tournaments https://ncase.me/trust/ (coverage: https://boingboing.net/2017/07/26/fun-interactive-game-theory-si.html )",
+    "overlapWith": "evolution runs selection on a heritable trait and ecosystems couples populations; here the agents choose, with payoffs. The pool's evolutionary-game-theory (level 3) is the replicator ODE on the simplex; this is the level-1 tournament-and-grid version with no equation.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "cellular-automata",
+    "title": "Cellular automata",
+    "level": 1,
+    "kind": "build",
+    "category": "math",
+    "interaction": "Paint cells on a grid and run Conway's Game of Life, where each cell lives or dies by counting its neighbours; place a glider, a blinker and a glider gun from a palette and watch them travel, oscillate and shoot. Then switch to one dimension: pick any of the 256 rules by clicking its eight cases and watch a single row grow downward into a triangle of nothing, of stripes, of nested triangles (rule 90) or of apparent randomness (rule 30).",
+    "takeaway": "A rule that looks only at a cell's nearest neighbours can produce gliders, guns, fractals and patterns that never repeat, so complexity does not need a complex rule.",
+    "prerequisites": [],
+    "related": [
+     "chaos-fractals",
+     "turing-machines"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "Nothing moves in a cellular automaton: a glider is a pattern of births and deaths that recurs one cell over, not an object. Rule 30 is deterministic; its unpredictability is not randomness.",
+    "why": "Conway's Game of Life has drawn a following since its 1970 Scientific American debut and remains a heavily read Wikipedia article https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life",
+    "overlapWith": "chaos-fractals shows the logistic map and the Mandelbrot set, both continuous; this is the discrete-grid counterpart. The pool holds the same slug at level 1 from the math-l3 lens and a level-0 life-on-a-grid; keep one level-1 copy.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "probability-trees",
+    "title": "Counting & probability trees",
+    "level": 1,
+    "kind": "build",
+    "category": "math",
+    "interaction": "Build a tree of chance events by adding branches with their probabilities: sweets drawn from a bag with and without putting them back, coins, dice; the page multiplies along each branch and adds across them to give the probability of any outcome. Press run to perform the experiment a thousand times and watch the tally approach the tree's prediction. Then grow Pascal's triangle by counting paths through a grid, use it to answer how-many-ways questions, and end with the birthday problem, where the tree makes a surprising answer unavoidable.",
+    "takeaway": "The probability of a sequence of events is found by multiplying along its path and adding the paths that lead to the same result, and counting paths is why rare-seeming coincidences are common.",
+    "prerequisites": [],
+    "related": [
+     "bayes-theorem",
+     "central-limit-theorem"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "Independent events have no memory: after five heads the next flip is still even. Drawing without replacement changes the probabilities on later branches, and that is the only difference between the two bag problems.",
+    "why": "Tree diagrams and conditional probability in GCSE (higher) and Edexcel A-level Mathematics statistics https://www.mathsgenie.co.uk/a-level/maths/edexcel/content/a-level-statistics-tree-diagrams",
+    "overlapWith": "bayes-theorem colours a grid of 1,000 people to show base rates and central-limit-theorem drops balls through a Galton board; neither builds a tree, counts paths or runs the with-and-without-replacement comparison at the core of school probability.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "statistics-correlation",
+    "title": "Statistics: averages, spread & correlation",
+    "level": 1,
+    "kind": "manipulate",
+    "category": "math",
+    "interaction": "Drag points on a dot plot and watch the mean, median and spread respond, an outlier dragging the mean but not the median. Then drag points on a scatter plot: the correlation coefficient and the best-fit line update live, the squared vertical gaps the line minimises are drawn, and four very different clouds with identical statistics (Anscombe's quartet) show why the picture matters. Finish with a real dataset in which two variables rise together, and a slider that reveals the third variable driving both.",
+    "takeaway": "An average without a spread hides half the story, a correlation coefficient measures how close points lie to a line and nothing else, and two things rising together does not mean one causes the other.",
+    "prerequisites": [],
+    "related": [
+     "learning-from-data",
+     "central-limit-theorem",
+     "bayes-theorem"
+    ],
+    "needs": "Anscombe's quartet (44 numbers) and one small real dataset with a confounding variable.",
+    "needsSource": "Anscombe 1973 (the published data are facts and are reproduced everywhere); the Palmer penguins dataset (CC0) for a real scatter with a species variable behind it",
+    "pitfall": "A correlation of zero does not mean no relationship, only no straight-line one, and the line of y on x is not the line of x on y. Do not draw the line by eye: show the residuals it minimises.",
+    "why": "A-level Mathematics statistics (scatter diagrams, the product moment correlation coefficient, the regression line of y on x) https://alevelmathsrevision.com/pdf/alevel-revision-notes/1/correlation-and-regression/correlation-and-regression/hw/ ; AP Statistics' first two units are one- and two-variable data",
+    "overlapWith": "learning-from-data (level 1) fits curves of adjustable flexibility and holds out a test set; this page stops at the straight line and asks what the number r means and what it does not. central-limit-theorem is about averages of samples, not the description of one dataset.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "recursion",
+    "title": "Recursion",
+    "level": 1,
+    "kind": "step",
+    "category": "computing",
+    "interaction": "Step through a function that calls itself: the call stack grows as frames are pushed and shrinks as results return, shown beside the code for factorial, the Towers of Hanoi and a tree that draws itself. Count the calls for Fibonacci and watch the call tree explode, switch on memoisation and see it collapse to a line, then remove the base case and watch the stack overflow.",
+    "takeaway": "A problem that contains smaller copies of itself can be solved by a function that calls itself on the copies, provided it has a smallest case that it answers directly.",
+    "prerequisites": [
+     "sorting"
+    ],
+    "related": [
+     "chaos-fractals",
+     "turing-machines",
+     "graph-search"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "Recursion is not a loop in disguise: each call is a separate frame with its own variables, which is both why it works and why a missing base case crashes. Naive recursive Fibonacci is slow because it repeats work, not because recursion is slow.",
+    "why": "OCR A-level Computer Science H446: recursion and stack frames, 'explain recursive techniques, situations when recursion is more useful than iteration' https://denbigh.net/wp-content/uploads/2023/11/Year-13-Computer-Science-SOL.pdf",
+    "overlapWith": "sorting runs merge sort without showing the call stack and chaos-fractals zooms into self-similar sets; this page is the mechanism they share, the stack of frames and the base case.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "databases-and-queries",
+    "title": "Databases & queries",
+    "level": 1,
+    "kind": "explore",
+    "category": "computing",
+    "interaction": "Browse a real table of a few hundred rows, then split it into linked tables with keys so that nothing is stored twice; type a query (filter, sort, join) and watch the rows it touches light up and the result assemble. Turn an index on and off for a search and count the rows examined, then run two edits at once and see why a transaction must either complete or leave no trace.",
+    "takeaway": "A database keeps each fact once, in tables tied together by keys, and answers questions by combining them, with an index to avoid reading everything.",
+    "prerequisites": [
+     "sorting"
+    ],
+    "related": [
+     "graph-search"
+    ],
+    "needs": "A small open dataset with natural relations (for instance countries, cities and populations).",
+    "needsSource": "GeoNames (CC BY 4.0) or the Palmer penguins dataset (CC0)",
+    "pitfall": "A spreadsheet is not a database: it has no keys, so the same fact can be typed twice and drift apart. An index speeds reading and slows writing; it is not free.",
+    "why": "OCR A-level Computer Science H446 (relational databases, normalisation to third normal form, SQL) https://www.savemyexams.com/learning-hub/exam-specifications/a-level/computer-science/ocr/",
+    "overlapWith": "sorting and graph-search are algorithms on bare arrays and graphs and pagerank builds a web of links; no page shows tables, keys, joins or indexes. The pool's b-trees-transactions (level 3) is the structure of the index and the transaction; this page shows their effect.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "how-simulations-work",
+    "title": "How a simulation works",
+    "level": 1,
+    "kind": "step",
+    "category": "computing",
+    "interaction": "Drop a ball and advance time by hand: each tick the velocity is updated by gravity and the position by the velocity, and the dots trace a path that bends, more smoothly the smaller the step. Make the step too large and the ball tunnels through the floor or an orbiting planet spirals away; compare the stepped path with the exact one and watch the error shrink as the step shrinks, then see that a half-step update holds an orbit that plain stepping loses. Finally open the hood on this site's own pendulum and epidemic pages to find the same loop at work.",
+    "takeaway": "A simulation is a rule for the next instant applied over and over, so its accuracy is bought with smaller steps and a better update rule, and every animated model on this site is that loop.",
+    "prerequisites": [
+     "newtons-laws"
+    ],
+    "related": [
+     "calculus",
+     "feedback-control",
+     "chaos-fractals",
+     "oscillations-resonance",
+     "differential-equations"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "Smaller steps are not always the fix: a method that gains or loses energy every step (plain Euler on an orbit) drifts however small the step, and the page must show a better update rule curing what a smaller step does not.",
+    "why": "AP Calculus BC Unit 7, topic 7.5 'Approximating solutions using Euler's method' (slope fields and stepping) https://fiveable.me/ap-calc/unit-7.md ; and the site's own need for a page that explains what every other page is doing",
+    "overlapWith": "calculus (level 2) shows the derivative as a slope and the integral as an area; this page is their numerical shadow at level 1, and the only page that explains the site's own engine. The pool's numerical-stability (level 3) is the analysis of why methods fail; this page shows them failing. The proposed differential-equations (level 2) draws the slope field and the idea of a rule for the slope; this page is the position-and-velocity update on a ball and an orbit, the engine itself.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "web-page-rendering",
+    "title": "How a web page is drawn",
+    "level": 1,
+    "kind": "step",
+    "category": "networks",
+    "interaction": "Edit a few lines of HTML and CSS in a box and step through what the browser does with them: the text is parsed into a tree of elements, each element is matched against the style rules, boxes are laid out from the tree into rows and columns by a small real layout engine, and the boxes are painted to pixels. Change a width, a font size or a rule's selector and watch the tree, the boxes and the picture update; then slow down a script that edits the tree and see the page redraw.",
+    "takeaway": "A web page is text describing a tree, and the browser turns the tree into boxes and the boxes into pixels, so every visual change is a change to the tree or to the rules.",
+    "prerequisites": [
+     "internet"
+    ],
+    "related": [
+     "graphics-3d"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "HTML is not a program and a browser does not run a page from top to bottom like a script: parse, style, layout and paint are separate passes over the tree, which is why a style change can relayout without reparsing.",
+    "why": "'How does the browser render a webpage?' is a standing question with its own explainer genre (e.g. https://betterprogramming.pub/how-does-the-browser-render-a-webpage-75cdb53ba49d ), and KS3 computing asks pupils to understand how instructions and data are turned into the pages they use",
+    "overlapWith": "internet traces a web request from name lookup to response and stops when the bytes arrive; this page starts there. graphics-3d projects triangles; this layout is 2D boxes.",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "k-means-clustering",
+    "title": "Clustering",
+    "level": 1,
+    "kind": "step",
+    "category": "ai",
+    "interaction": "Scatter points by hand or load a real dataset of penguins measured by bill and flipper, then step k-means: drop k centres, colour every point by its nearest centre, move each centre to the middle of its colour, and repeat until nothing moves. Change k and the starting positions and watch the result change, plot the total distance against k to choose a number of groups, and try a cloud shaped like two rings, where k-means fails and a method that follows density succeeds.",
+    "takeaway": "A computer can find groups in data with no labels at all, by alternately assigning points to the nearest centre and moving the centres, but which groups it finds depends on how many it is told to look for and where it starts.",
+    "prerequisites": [
+     "learning-from-data"
+    ],
+    "related": [
+     "embeddings"
+    ],
+    "needs": "A small real dataset with natural clusters.",
+    "needsSource": "the Palmer penguins dataset (CC0)",
+    "pitfall": "k-means does not discover the number of groups and finds only compact round blobs; the elbow plot is a heuristic. Different starts give different answers, so run it several times.",
+    "why": "Google's 'Introduction to Clustering' course (choose a similarity measure, cluster with k-means, evaluate the result) https://developers.google.com/machine-learning/clustering",
+    "overlapWith": "learning-from-data fits labelled points and embeddings shows a map of words that cluster; neither runs the algorithm that finds groups without labels. The pool's clustering-gaussian-mixtures (level 3) is EM on Gaussian mixtures; this is the level-1 k-means by hand.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "heat-pumps",
+    "title": "Heat pumps",
+    "level": 1,
+    "kind": "simulate",
+    "category": "energy",
+    "interaction": "Set the temperature outside and the temperature wanted inside and watch the refrigerant loop run: it boils in the outdoor coil, taking heat from cold air, is compressed, and condenses in the indoor coil, giving that heat plus the compressor's work to the room. Bars show the heat delivered against the electricity used; slide the outdoor temperature down and watch the ratio fall, compare with an electric heater and a gas boiler, then flip a valve to run the same loop backwards as an air conditioner.",
+    "takeaway": "A heat pump does not make heat, it moves it, so it can deliver several units of heat for each unit of electricity, and it delivers fewer the colder it is outside.",
+    "prerequisites": [
+     "states-of-matter"
+    ],
+    "related": [
+     "heat-engines",
+     "heat-transfer-insulation",
+     "power-grid"
+    ],
+    "needs": "The coefficient of performance as a function of the temperature lift.",
+    "needsSource": "no dataset: the Carnot limit times a stated second-law efficiency (a documented simplification), or the published empirical fit for air-source heat pumps in Staffell et al. 2012 (Energy & Environmental Science, not open access; the fit is a formula to cite)",
+    "pitfall": "An efficiency above 100% breaks no law: the extra energy is heat taken from outside, and the loop obeys the same limit as a heat engine run backwards. Heat pumps work below freezing; they just deliver less per unit of electricity.",
+    "why": "IEA, 'The Future of Heat Pumps' (sales up 15% in 2021, 35% in the EU; installed capacity to more than double by 2030) https://www.iea.org/reports/the-future-of-heat-pumps",
+    "overlapWith": "heat-engines (level 2) runs the cycle forward with a pressure-volume loop; this is that cycle backwards at level 1, without the diagram. The pool has refrigerator (level 0, heat moved not made) and heat-pumps-refrigeration (level 3, CoolProp on a p-h diagram); this is the householder's page between them, which the basic-physical-science lens left to another lens.",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "differential-equations",
+    "title": "Differential equations",
+    "level": 2,
+    "kind": "manipulate",
+    "category": "math",
+    "interaction": "Choose a rule for the slope at every point (growth in proportion to the amount, cooling in proportion to the temperature difference, a spring's pull, rabbits and foxes) and the plane fills with small slope arrows; click anywhere to drop a starting point and watch a solution curve thread through them. Step the curve by hand with Euler's method, shrink the step and watch it converge, then compare with the exact solution where one exists and see that most rules have none, only the arrows.",
+    "takeaway": "A differential equation says how fast something changes given where it is, and that rule plus a starting point fixes the whole future, which can be followed step by step even when no formula exists.",
+    "prerequisites": [
+     "calculus"
+    ],
+    "related": [
+     "newtons-laws",
+     "oscillations-resonance",
+     "epidemics",
+     "chaos-fractals",
+     "feedback-control",
+     "how-simulations-work"
+    ],
+    "needs": "",
+    "needsSource": "none",
+    "pitfall": "A differential equation is not solved by finding a formula; most have none, and the slope field is where the solution lives. Euler's method with too large a step shows oscillation or blow-up that the equation does not have.",
+    "why": "3Blue1Brown, 'Differential equations, a tourist's guide' (over 4 million views) https://www.classcentral.com/classroom/youtube-differential-equations-a-tourist-s-guide-133384 ; AP Calculus BC Unit 7 (slope fields, Euler's method) https://fiveable.me/ap-calc/unit-7.md",
+    "overlapWith": "calculus is the derivative and the integral of a given curve; this page starts from the derivative rule and finds the curve. The pool's phase-portraits (level 3) is the sequel (stability, linearisation); this is the level-2 slope-field-and-Euler page whose level the Reserve line asked about. The proposed how-simulations-work (level 1) steps a ball and an orbit with the same method; this page is the rule for the slope and the field it draws, not the engine.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "telescopes",
+    "title": "Telescopes",
+    "level": 2,
+    "kind": "manipulate",
+    "category": "space",
+    "interaction": "Trace rays through a refractor and a reflector, drag the eyepiece to focus and read the magnification; then point the telescope at a pair of stars and shrink the aperture until their blurred images, computed from diffraction, merge into one, and widen it to gather more light until a faint star appears. Compare the eye, a 10 cm amateur scope, a 1 m observatory and a 6.5 m space telescope on the same star field, switch on atmospheric seeing to see why the big ground mirror is still blurred, and change the wavelength to see why a radio telescope must be enormous.",
+    "takeaway": "A telescope's power is in its aperture, not its magnification: a wider mirror gathers more light and resolves finer detail, and the limit set by the wave nature of light is why radio dishes are huge and the sharpest telescopes are in space.",
+    "prerequisites": [
+     "light-optics",
+     "waves-interference"
+    ],
+    "related": [
+     "vision-color",
+     "exoplanets",
+     "stars"
+    ],
+    "needs": "",
+    "needsSource": "none; the Airy pattern and light-gathering are computed, and a synthetic star field needs no catalogue",
+    "pitfall": "Magnification is cheap and is not the point; a small telescope at high power shows a bigger blur. The blur limit comes from diffraction at the aperture, not from lens flaws, and the atmosphere, not the mirror, limits most ground telescopes.",
+    "why": "AQA A-level Physics 7408 astrophysics option: refracting and reflecting telescopes, resolving power and the Rayleigh criterion, CCDs https://egglescliffe.org.uk/wp-content/uploads/2026/03/Physics-A-Level-Revision-Checklist-2025-26.pdf",
+    "overlapWith": "light-optics traces rays through single lenses and mirrors on a bench; this page assembles them into an instrument and adds what ray tracing cannot show, the diffraction limit. The pool's aperture-synthesis (level 3) is interferometry; this is the single-aperture page the earth-sky-weather lens asked another lens to write.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "photoelectric-effect",
+    "title": "The photoelectric effect",
+    "level": 2,
+    "kind": "manipulate",
+    "category": "physics",
+    "interaction": "Shine light on a metal plate in a vacuum tube and watch electrons leave, or not: slide the colour from red toward ultraviolet and nothing happens until a threshold, then electrons appear at once however dim the light; turn up the intensity and more electrons leave but none faster. Apply a reverse voltage to stop them and plot the stopping voltage against frequency: a straight line whose slope is Planck's constant and whose intercept is the metal's work function; change the metal and the line shifts but keeps its slope. A side panel shows what a wave model predicts and where it fails.",
+    "takeaway": "Light delivers its energy in packets whose size depends only on colour, so dim blue light frees electrons that bright red light never can, and the graph's slope is the same for every metal.",
+    "prerequisites": [
+     "waves-interference",
+     "electric-circuits",
+     "atoms-periodic-table"
+    ],
+    "related": [
+     "quantum-mechanics",
+     "solar-cells",
+     "light-optics"
+    ],
+    "needs": "Work functions of a few metals (sodium, potassium, zinc, copper, platinum).",
+    "needsSource": "reference constants (CRC Handbook of Chemistry and Physics; the values are facts reproduced in textbooks); no dataset",
+    "pitfall": "Brighter light does not give faster electrons, and there is no delay while a dim beam charges up the metal; both are the wave model's failed predictions and should be shown failing, not merely stated.",
+    "why": "AQA A-level Physics 7408 topic 3.2.2.1 'The photoelectric effect' (threshold frequency, work function, stopping potential) https://www.tutopiya.com/tools/uk-revision-checklist/aqa-alevel/physics ; PhET's 'Photoelectric Effect' is a widely used classroom simulation https://script.spoken-tutorial.org/index.php/PhET/C2/Photoelectric-Effect/English",
+    "overlapWith": "quantum-mechanics (level 3) starts at the double slit and tunnelling, and solar-cells (level 2) uses photons freeing electrons in a junction; the experiment that first showed light comes in packets, and the graph that measures Planck's constant, is on neither.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "nuclear-binding-energy",
+    "title": "Mass, binding energy & the valley of stability",
+    "level": 2,
+    "kind": "explore",
+    "category": "physics",
+    "interaction": "Scan the chart of all known nuclei, protons against neutrons, coloured by how they decay, with the stable ones running as a valley down the middle; click any nucleus and its measured mass is compared with the mass of its parts, the difference shown as binding energy through E = mc². Follow binding energy per nucleon along the curve from hydrogen to uranium, with the peak near iron, and slide a marker to see why fusing light nuclei and splitting heavy ones both release energy while the middle releases none; pick a decay and watch the daughter land closer to the valley floor.",
+    "takeaway": "A nucleus weighs less than its parts, the missing mass is the energy holding it together, and because that energy per particle peaks near iron, fusion pays on the light side and fission on the heavy side.",
+    "prerequisites": [
+     "radioactivity",
+     "special-relativity"
+    ],
+    "related": [
+     "nuclear-fission",
+     "nuclear-fusion",
+     "stars",
+     "standard-model"
+    ],
+    "needs": "Measured atomic masses and decay modes of all known nuclides.",
+    "needsSource": "AME2020 and NUBASE2020 from the IAEA Atomic Mass Data Centre: free ASCII files, to be cited through their Chinese Physics C papers (CC BY 3.0); the data files themselves state no licence https://www-nds.iaea.org/amdc",
+    "pitfall": "Binding energy is not energy stored in the nucleus waiting to come out; it is energy released when the nucleus formed and would have to be put back to take it apart. Iron-56 is not the most tightly bound nucleus, nickel-62 is by a hair; say 'near iron'.",
+    "why": "AQA A-level Physics 7408 nuclear physics: mass difference and binding energy, binding energy per nucleon, fission and fusion https://senecalearning.com/en-GB/revision-notes/a-level/physics/aqa/8-1-10-binding-energy",
+    "overlapWith": "nuclear-fission fires neutrons and holds a reactor at criticality, nuclear-fusion heats a plasma, and stars names where elements were made; none shows the curve that explains why either process releases energy, or the chart of nuclides with its valley of stability.",
+    "leadsTo": [],
+    "everyday": false
+   }
+  ],
+  "reserveDisposition": [
+   {
+    "item": "Exponentials & logarithms",
+    "decision": "promote",
+    "slug": "exponentials-logarithms",
+    "reason": "Honest at level 1 and a hole the catalogue leans on without naming (radioactivity, epidemics, acids-bases, earthquakes); full entry above, under the slug the math-l3 lens already put in the pool at level 1, so the pool keeps one copy."
+   },
+   {
+    "item": "Differential equations",
+    "decision": "promote",
+    "slug": "differential-equations",
+    "reason": "Honest level for the subject as named is 2: slope fields plus Euler's method need only calculus (level 2) and are AP Calculus BC and first-year material; full entry above. The math-l3 lens's phase-portraits (level 3) is the sequel on stability, not a duplicate."
+   },
+   {
+    "item": "Game theory",
+    "decision": "promote",
+    "slug": "game-theory-cooperation",
+    "reason": "Honest at level 1 as the repeated prisoner's dilemma, the tournament and the spatial grid (Axelrod, Nicky Case); full entry above. The math-l3 lens's evolutionary-game-theory (level 3, replicator ODE) remains the university version."
+   },
+   {
+    "item": "Fluid dynamics",
+    "decision": "promote",
+    "slug": "navier-stokes",
+    "reason": "Not level-1 or level-2 material: the honest model of flow is a grid solver, which the physics-l3 lens proposes as navier-stokes. This lens adds the statics on-ramp that is a real GCSE and AP hole, fluid-pressure-buoyancy at level 1."
+   },
+   {
+    "item": "Embryo development & pattern formation",
+    "decision": "promote",
+    "slug": "turing-patterns",
+    "reason": "No honest level-1 or level-2 face: the models are reaction-diffusion and morphogen PDEs and the subject is not on GCSE or A-level syllabi. Leave it to the biology-l3 lens's turing-patterns and morphogen-gradients (level 3)."
+   },
+   {
+    "item": "DNA sequencing",
+    "decision": "promote",
+    "slug": "dna-sequencing",
+    "reason": "A-level biology names Sanger and nanopore sequencing descriptively, but the real model (chain termination, reads, assembly) is the biology-l3 lens's dna-sequencing at level 3; a level-2 page would duplicate it with less. Not proposed here."
+   },
+   {
+    "item": "Hearing & the cochlea",
+    "decision": "promote",
+    "slug": "cochlea-hearing",
+    "reason": "The level-0 hearing-and-the-ear and the medicine-l3 cochlea-hearing (level 3, transmission-line cochlea) cover both ends, and the level-1 physics of sound is already in waves-interference; a level-1 page between them would repeat the place-by-pitch takeaway. No entry from this lens."
+   },
+   {
+    "item": "Telescopes",
+    "decision": "promote",
+    "slug": "telescopes",
+    "reason": "Promoted at level 2 (A-level astrophysics: ray tracing plus the diffraction limit and light-gathering); full entry above. The earth-space-l3 lens's aperture-synthesis (level 3) is interferometry and does not overlap."
+   },
+   {
+    "item": "Operating systems",
+    "decision": "promote",
+    "slug": "os-scheduling",
+    "reason": "Not level-1 or level-2 material with one honest model; the computing-networks-l3 lens promotes it as os-scheduling (level 3). The GCSE face, file management, is too thin for a page with a real model, so this lens proposes none."
+   },
+   {
+    "item": "Compilers",
+    "decision": "promote",
+    "slug": "compilers",
+    "reason": "University material; the computing-networks-l3 lens promotes it at level 3 as a toy language compiled to the existing cpu page's processor. No level-1 or level-2 page."
+   },
+   {
+    "item": "Cellular automata",
+    "decision": "promote",
+    "slug": "cellular-automata",
+    "reason": "Honest at level 1 (Life plus the 256 elementary rules, no data); full entry above under the slug the math-l3 lens already put in the pool, so the pool keeps one copy. The level-0 life-on-a-grid is the on-ramp and universality is left for level 3."
+   },
+   {
+    "item": "Lasers & LEDs",
+    "decision": "promote",
+    "slug": "lasers",
+    "reason": "The laser is the physics-l3 lens's rate-equation page (level 3); the LED half is a p-n junction run as a light source and belongs as a sentence in semiconductors or solar-cells. Neither is A-level core, so no level-1 or level-2 page."
+   },
+   {
+    "item": "Heat pumps",
+    "decision": "promote",
+    "slug": "heat-pumps",
+    "reason": "Promoted at level 1 as the householder's page (heat moved not made, COP falling with the temperature lift, the same loop as an air conditioner); full entry above. It sits between the level-0 refrigerator and the energy-machines-l3 heat-pumps-refrigeration (CoolProp p-h diagram), the slot the basic-physical-science lens left to another lens."
+   },
+   {
+    "item": "Clustering & dimensionality reduction",
+    "decision": "promote",
+    "slug": "k-means-clustering",
+    "reason": "The clustering half is honest at level 1 as k-means stepped by hand on a CC0 dataset; full entry above. Dimensionality reduction stays with the ai-l3 lens's dimensionality-reduction (level 3): PCA needs linear-transformations (level 2) and t-SNE is university material."
+   }
+  ]
+ },
+ {
+  "lens": "demand",
+  "ok": true,
+  "count": 30,
+  "candidates": [
+   {
+    "slug": "flocking-birds",
+    "title": "Flocks without a leader",
+    "level": 0,
+    "kind": "simulate",
+    "category": "biology",
+    "interaction": "A hundred birds fly across the stage following three rules, each drawn as a short arrow on one highlighted bird: keep a little distance from your neighbours, fly the way they fly, drift toward the middle of them. Switch one rule off at a time: without the first the birds pile into clumps, without the second the flock never agrees on a direction, without the third it scatters. Add a hawk and watch the flock split around it and close again with no bird in charge.",
+    "takeaway": "A flock keeps its shape because every bird follows the same three simple rules about its nearest neighbours, not because any bird leads.",
+    "prerequisites": [],
+    "related": [
+     "ant-trails",
+     "fireflies-in-sync",
+     "ecosystems"
+    ],
+    "needs": "",
+    "pitfall": "No bird leads or sees the whole flock; each reacts only to its few nearest neighbours, and the shapes of a murmuration are planned by nobody.",
+    "why": "NGSS 3-LS2-1 (some animals form groups that help members survive); Reynolds's boids is the classic classroom model of it (MIT StarLogo activity): https://www.nextgenscience.org/pe/3-ls2-1-ecosystems-interactions-energy-and-dynamics",
+    "overlapWith": "ecosystems: populations tied together by birth and predation rates; this page is the movement of one group where each animal follows a rule about its neighbours, with no population counts at all.",
+    "needsSource": "none",
+    "leadsTo": [
+     "ecosystems"
+    ],
+    "everyday": false
+   },
+   {
+    "slug": "ant-trails",
+    "title": "How ants find the shortest way",
+    "level": 0,
+    "kind": "simulate",
+    "category": "biology",
+    "interaction": "Ants wander out of a nest at random; one that finds the sugar walks home laying a scent, and the others follow scent rather than chance, so a trail forms and thickens. Drag the sugar farther away or drop a pebble on the trail and watch the colony reroute. Then offer a long bridge and a short one to the same food and count the ants on each: the short one wins because its scent is refreshed more often, and with the scent's fading switched off the colony stays stuck on whichever bridge it found first.",
+    "takeaway": "A colony finds the shortest path with no map and no ant that knows it: a scent that fades rewards the route that gets walked most often.",
+    "prerequisites": [],
+    "related": [
+     "flocking-birds",
+     "graph-search"
+    ],
+    "needs": "",
+    "pitfall": "No ant knows where the food is or compares the routes, and the queen gives no orders; real ants also use sight and memory, which the page leaves out and says so.",
+    "why": "The NetLogo Ants model, a standard classroom agent model of pheromone trails (Deneubourg's double-bridge experiment): https://ccl.northwestern.edu/netlogo/models/Ants",
+    "overlapWith": "graph-search: an algorithm explores a map systematically to find the shortest route; this page finds one with many simple agents and a fading scent, with no map at all.",
+    "needsSource": "none",
+    "leadsTo": [
+     "graph-search",
+     "ecosystems"
+    ],
+    "everyday": false
+   },
+   {
+    "slug": "fireflies-in-sync",
+    "title": "Fireflies that flash together",
+    "level": 0,
+    "kind": "simulate",
+    "category": "biology",
+    "interaction": "A meadow of fireflies, each with its own inner clock that flashes when it strikes twelve and starts again. One control: how much a neighbour's flash nudges a firefly's clock forward. At zero the meadow twinkles at random; turn it up and patches start flashing together, then waves, then the whole field as one; drag a finger through the swarm to scramble it and watch it fall back into step.",
+    "takeaway": "Thousands of fireflies flash together with no conductor, because each one nudges its own clock a little toward every flash it sees.",
+    "prerequisites": [],
+    "related": [
+     "flocking-birds",
+     "kuramoto-synchronization"
+    ],
+    "needs": "",
+    "pitfall": "There is no lead firefly and no outside signal; synchrony appears only from each insect reacting to its neighbours. Only some firefly species do this.",
+    "why": "Nicky Case's 'Fireflies' explorable (public domain), the interactive credited in Veritasium's synchronization video: https://ncase.me/fireflies/",
+    "overlapWith": "oscillations-resonance: one oscillator pushed at a frequency; this page is many self-timed flashers nudging each other into step, which is not resonance. kuramoto-synchronization (this batch, level 3) is the grown-up phase-coupled model.",
+    "needsSource": "none",
+    "leadsTo": [
+     "oscillations-resonance"
+    ],
+    "everyday": false
+   },
+   {
+    "slug": "monty-hall",
+    "title": "The three doors",
+    "level": 0,
+    "kind": "simulate",
+    "category": "math",
+    "interaction": "Pick one of three doors; the host, who knows where the prize is, opens another to show a goat, and you stay or switch. Play by hand, then let the page play a hundred games with 'always stay' and a hundred with 'always switch', the wins piling into two columns at about two to one. Flip the board to see the three places the prize could be and which choice wins in each, then try ten doors where the host opens eight.",
+    "takeaway": "Switching wins twice as often as staying, because the first pick is right only one time in three and the host's open door points to the prize the rest of the time.",
+    "prerequisites": [],
+    "related": [
+     "bayes-theorem"
+    ],
+    "needs": "",
+    "pitfall": "The host must know where the prize is and always open a goat door; if he opens a door at random and happens to show a goat, the two remaining doors really are equal, and the page should show that case too.",
+    "why": "The Monty Hall problem is among the most-read probability articles on Wikipedia and a staple of popular maths: https://en.wikipedia.org/wiki/Monty_Hall_problem",
+    "overlapWith": "bayes-theorem: counting a grid of 1,000 people to update on a test result; this page updates on what a host does, with doors and tallies instead of rates and formulas.",
+    "needsSource": "none",
+    "leadsTo": [
+     "bayes-theorem"
+    ],
+    "everyday": false
+   },
+   {
+    "slug": "blood-types",
+    "title": "Blood types: who can give to whom",
+    "level": 0,
+    "kind": "build",
+    "category": "medicine",
+    "interaction": "Pick a donor and a patient from the eight blood types and drop the donor's blood into the patient's: red cells carry their flags (A, B, both or none, plus the Rh dot), the patient's blood carries guards against the flags it lacks, and a flagged cell that meets its guard is clumped. Try pairs and the page fills in the eight-by-eight chart of safe gifts; find the type that can give to everyone and the one that can take from everyone.",
+    "takeaway": "A transfusion is safe when the donor's cells carry no flag the patient's blood attacks, which is why O-negative can give to anyone and AB-positive can receive from anyone.",
+    "prerequisites": [],
+    "related": [
+     "meiosis-inheritance",
+     "immune-system"
+    ],
+    "needs": "",
+    "pitfall": "The chart is for red cells; plasma goes the other way (AB is the universal plasma donor), and real blood banks still cross-match every unit. 'Universal donor' does not mean O-negative can receive from anyone.",
+    "why": "'Which blood type can donate to whom' is a perennial question; blood centres publish the compatibility chart: https://communityblood.org/resources/about-blood/blood-type-compatibility",
+    "overlapWith": "immune-system: antibodies selected and multiplied against an invader; this page uses only the fixed anti-A and anti-B antibodies and the Rh factor, with no selection or memory.",
+    "needsSource": "none",
+    "leadsTo": [
+     "heart-circulation",
+     "meiosis-inheritance"
+    ],
+    "everyday": false
+   },
+   {
+    "slug": "sunscreen-spf",
+    "title": "What the number on sunscreen means",
+    "level": 0,
+    "kind": "manipulate",
+    "category": "medicine",
+    "interaction": "A hundred rays of summer sun fall on a patch of skin and the page counts how many get through: bare skin lets in all hundred, and a slider for SPF thins them, with the count read off the skin, about 3 at SPF 30, 2 at SPF 50, 1 at SPF 100. A second slider thins the layer applied, as most people do, and the count climbs back. A timer shows how long the skin takes to redden at each setting.",
+    "takeaway": "SPF says how many times thinner the burning rays are through the lotion, so SPF 50 is not twice SPF 30: both stop nearly all of them, and how much you put on matters more than the number.",
+    "prerequisites": [],
+    "related": [
+     "vision-color",
+     "ozone-layer-chemistry"
+    ],
+    "needs": "",
+    "pitfall": "SPF measures the burning rays (UVB) only, not UVA; it is not minutes of protection, and no sunscreen blocks everything at any SPF.",
+    "why": "'SPF 30 vs SPF 50' is a top sunscreen question and a known misconception (dermatology explainer): https://www.schweigerderm.com/skin-care-articles/skin-care-tips/spf-30-vs-spf-50/",
+    "overlapWith": "light-optics: how light bends and splits; this page is how much of one kind of light a layer absorbs, as counts of rays (the SPF ratio and Beer-Lambert thinning underneath, with the standard 2 mg/cm² test dose).",
+    "needsSource": "none",
+    "leadsTo": [
+     "light-optics"
+    ],
+    "everyday": true
+   },
+   {
+    "slug": "where-calories-go",
+    "title": "Where your calories go",
+    "level": 0,
+    "kind": "explore",
+    "category": "medicine",
+    "interaction": "A day's energy drawn as a stack of blocks, one per hundred kilocalories: even asleep the body spends most of them keeping warm and running the brain, heart and organs. Scrub through a day and watch the blocks go hour by hour, then add an hour of walking, a run or a football match from a list and see how few extra blocks each adds next to the resting pile; a body-size slider shows a bigger body spending more even at rest. Pick a food from a short list and see how many blocks it is.",
+    "takeaway": "Most of the energy you eat is spent just staying alive and warm, so an hour of exercise adds only a small pile next to the big one the body burns anyway.",
+    "prerequisites": [],
+    "related": [
+     "homeostasis",
+     "respiration-atp"
+    ],
+    "needs": "Resting rate from the Mifflin-St Jeor equation; activity costs from the Compendium of Physical Activities MET table; food energies from USDA FoodData Central.",
+    "pitfall": "Exercise matters for health; the page says it is a small share of the energy budget, not that it is useless. Calorie counts are estimates: resting rates vary by ten to fifteen percent between people of the same size, and food labels are rounded.",
+    "why": "'How does your body burn 2,000 calories a day but you have to run a mile to burn 100 extra?' is cited as one of the most popular questions ever asked on r/explainlikeimfive: https://www.howtogeek.com/694298/what-does-eli5-mean-and-how-do-you-use-it",
+    "overlapWith": "homeostasis: blood sugar control after a meal and a run; this page is the energy budget, where the day's kilocalories go, not how sugar is regulated.",
+    "needsSource": "Mifflin-St Jeor (published formula); Compendium of Physical Activities (Ainsworth et al., published, free online, no formal licence: numeric values only); USDA FoodData Central (US government work, public domain).",
+    "leadsTo": [
+     "homeostasis"
+    ],
+    "everyday": true
+   },
+   {
+    "slug": "3d-printer-layers",
+    "title": "How a 3D printer builds a shape",
+    "level": 0,
+    "kind": "step",
+    "category": "computing",
+    "interaction": "Drag a plane up through a small model and watch each slice become the loop the nozzle will trace; press print and the nozzle draws the slices one on top of another, squeezing a thread of plastic round the loop and zigzagging across the inside. One control, the layer thickness: thin layers give a smooth cup and take all afternoon, thick ones print in minutes and show steps on every curve. Tilt the model to make an overhang the nozzle cannot draw in mid-air and see where supports go.",
+    "takeaway": "A 3D printer draws a shape as a stack of flat layers, one slice at a time, so thinner layers mean a smoother object and a much longer print.",
+    "prerequisites": [],
+    "related": [
+     "graphics-3d",
+     "bezier-curves"
+    ],
+    "needs": "A small 3D model: a shape generated by the page, or an openly licensed mesh.",
+    "pitfall": "The printer does not carve or cast the shape: material is added, and each layer rests on the one below, which is why overhangs need supports.",
+    "why": "'How does a 3D printer work' beginner guides (slicing and layer height) are a staple of the hobby: https://www.snapmaker.com/blog/what-is-a-slicer-in-3d-printing/",
+    "overlapWith": "graphics-3d: projecting a triangle mesh onto a screen; this page cuts the same kind of mesh into physical layers and traces them.",
+    "needsSource": "none required (shapes generated in-page); any external mesh must be CC0 or CC BY.",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "drone-four-rotors",
+    "title": "How a drone steers with four rotors",
+    "level": 0,
+    "kind": "build",
+    "category": "energy",
+    "interaction": "Four speed dials, one per rotor, with each rotor's push drawn as an arrow on the drone. Turn all four up together and it rises; make the two back rotors a little faster and it tips and slides forward; make the left pair faster and it slides right. Then speed up the two rotors that spin clockwise and slow the two that spin the other way: the lift stays the same but the drone turns on the spot; set all four to spin the same way and watch the body spin helplessly the opposite way.",
+    "takeaway": "A drone has no flaps or rudder: it climbs, tilts and turns only by spinning its four rotors at slightly different speeds, two one way and two the other.",
+    "prerequisites": [],
+    "related": [
+     "flight",
+     "feedback-control"
+    ],
+    "needs": "",
+    "pitfall": "The rotors do not all spin the same way: the pairs spin opposite ways so their twists cancel, and turning on the spot uses that twist. It is the tilt that moves the drone sideways, not a sideways push from a rotor.",
+    "why": "'How do drones fly' is a standard beginner question; explainer of quadcopter lift, pitch, roll and yaw: https://rchelicopterfun.com/quadrocopter.html",
+    "overlapWith": "helicopter-rotor (pool, level 0): one rotor whose disc tilts, plus a tail rotor; this page has four fixed rotors and steers only by speed differences, with the twist cancelled by counter-rotating pairs. feedback-control (level 2) holds a drone at a height; this page is how the rotor speeds move it at all.",
+    "needsSource": "none",
+    "leadsTo": [
+     "newtons-laws"
+    ],
+    "everyday": true
+   },
+   {
+    "slug": "differential-gear",
+    "title": "The differential: how a car turns a corner",
+    "level": 0,
+    "kind": "manipulate",
+    "category": "energy",
+    "interaction": "Drive a toy car round a bend and watch the outer wheel roll farther than the inner one; lock the two wheels to one axle and the inner tyre skids. Open the axle to show the differential: a ring gear turns a cage, and two small gears inside let one wheel turn faster while the other turns slower by exactly as much, a turn counter on each wheel adding up to twice the cage's. Drag the bend tighter and the counters split further; put one wheel on ice and watch it spin while the other stops.",
+    "takeaway": "A differential lets two driven wheels turn at different speeds while one shaft drives both, which is what turning a corner without skidding needs.",
+    "prerequisites": [],
+    "related": [],
+    "needs": "",
+    "pitfall": "The differential does not send more torque to the outer wheel: it gives both wheels the same torque, which is why one wheel on ice spins and the other stops (the problem a limited-slip differential addresses).",
+    "why": "Chevrolet's 1937 film 'Around the Corner' (public domain) has tens of millions of views as the classic explanation: https://www.thedrive.com/news/35298/this-incredible-film-from-1937-teaches-you-how-a-cars-differential-works",
+    "overlapWith": "No catalogue page covers gears; nearest pool neighbours are car-steering-corners (steering geometry and grip) and bicycle-gears (ratios). This page is the mechanism that splits one input between two outputs that may turn at different speeds.",
+    "needsSource": "none",
+    "leadsTo": [
+     "newtons-laws"
+    ],
+    "everyday": true
+   },
+   {
+    "slug": "leap-years",
+    "title": "Leap years: why February gets an extra day",
+    "level": 0,
+    "kind": "explore",
+    "category": "space",
+    "interaction": "A calendar wheel turns inside Earth's orbit: one lap of the Sun takes 365 days and about a quarter more, so each New Year falls a quarter-day short. Scrub forward with no leap days and watch the first day of summer slide through the calendar, a month after a century and into winter after seven or eight centuries; switch on 'one extra day every four years' and the slide almost stops; zoom out over a thousand years to see the small drift that is left and the 'skip every hundred, keep every four hundred' rule that fixes it.",
+    "takeaway": "A year is not a whole number of days, so a calendar without leap days drifts out of step with the seasons; an extra day every four years, with a few skipped, keeps them matched.",
+    "prerequisites": [],
+    "related": [
+     "orbits-kepler"
+    ],
+    "needs": "",
+    "pitfall": "A leap day fixes the calendar, not the orbit; nothing about the seasons changes. The rule is not simply every four years: 1900 was not a leap year and 2000 was.",
+    "why": "NASA/JPL Education, 'Doing the math on why we have leap day' (interest spikes every leap year): https://www.jpl.nasa.gov/edu/news/doing-the-math-on-why-we-have-leap-day/",
+    "overlapWith": "sun-earth-moon: why there are seasons; this page is why the calendar needs correcting to stay lined up with them.",
+    "needsSource": "none",
+    "leadsTo": [
+     "sun-earth-moon"
+    ],
+    "everyday": true
+   },
+   {
+    "slug": "forest-fire-spread",
+    "title": "How a wildfire crosses a forest, or stops",
+    "level": 0,
+    "kind": "simulate",
+    "category": "earth",
+    "interaction": "A square forest of trees on a grid; light the left edge and watch the fire pass from each burning tree to its neighbours, leaving ash. One control: how densely the trees are planted. At half density the fire burns a few trees and dies, at two-thirds it nearly always crosses the forest, and around six in ten it is a coin toss, with a tally of how far the fire got over many runs; then cut a firebreak and find the width that stops it, or add wind so the fire jumps one extra tree downwind.",
+    "takeaway": "A fire's chance of crossing a forest does not grow gradually with how many trees there are: it flips from almost never to almost always over a narrow band of density, which is why thinning and firebreaks work.",
+    "prerequisites": [],
+    "related": [
+     "epidemics"
+    ],
+    "needs": "",
+    "pitfall": "The tipping density (about 59% for four neighbours on a square grid) belongs to the grid and the rule, not to forests; real fires also depend on wind, slope, moisture and fuel, which the page says it leaves out.",
+    "why": "The NetLogo Fire model, one of the most used models in the NetLogo library, documents the sharp transition near 59% density: https://ccl.northwestern.edu/netlogo/models/Fire",
+    "overlapWith": "epidemics: spread through a moving crowd with a threshold set by immunity; this page is spread on a fixed grid where the threshold is set by how many cells there are (percolation). Pool neighbours life-on-a-grid and cellular-automata are rule-based grids with no randomness or threshold; fire-triangle is what a fire needs chemically.",
+    "needsSource": "none",
+    "leadsTo": [
+     "epidemics",
+     "ecosystems"
+    ],
+    "everyday": false
+   },
+   {
+    "slug": "bezier-curves",
+    "title": "Bézier curves: how fonts and vector drawings bend",
+    "level": 1,
+    "kind": "manipulate",
+    "category": "math",
+    "interaction": "Drag the four control points of a curve and it follows; slide t from 0 to 1 and watch the construction: a point slides the fraction t along each leg between control points, then along the legs between those points, and the last point traces the curve. Chain curves into a letter and see that a join is smooth only when the two handles at the join lie on one line; turn on the hull to see that a curve never leaves the shape of its own control points, and add or remove control points.",
+    "takeaway": "A Bézier curve is nothing but repeated straight-line interpolation between its control points, which is why a few draggable handles can describe any letter, logo or animation path.",
+    "prerequisites": [],
+    "related": [
+     "graphics-3d",
+     "perlin-noise-terrain",
+     "3d-printer-layers"
+    ],
+    "needs": "",
+    "pitfall": "The curve passes through its end points but not, in general, its middle control points; and t is not distance along the curve: equal steps of t do not give equal lengths.",
+    "why": "Freya Holmér's 'The Beauty of Bézier Curves' and Bartosz Ciechanowski's 'Curves and Surfaces' are among the most-shared maths explainers, and the construction is a standard graphics assignment (Berkeley CS184): https://classcentral.com/course/youtube-the-beauty-of-bezier-curves-129121",
+    "overlapWith": "unit-circle: a point moving round a circle traces sine; this page is a point tracing a curve by repeated straight-line mixing, with no trigonometry.",
+    "needsSource": "none",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "colliding-blocks-pi",
+    "title": "Why colliding blocks count the digits of pi",
+    "level": 1,
+    "kind": "simulate",
+    "category": "math",
+    "interaction": "A small block sits between a wall and a big block sliding toward it; every collision is perfectly elastic and counted. With equal masses there are 3 collisions, with the big block 100 times heavier 31, 10,000 times heavier 314, each run playable at speed or stepped collision by collision while bars show momentum and energy staying put. A second view plots the two speeds as one point bouncing between a line and a circle, and the count becomes the number of equal angles that fit in a quarter turn.",
+    "takeaway": "With only two conservation laws, a block 100 to the n times heavier collides 3, 31, 314... times, the digits of pi, because the collision rule becomes equal-angle steps round a circle.",
+    "prerequisites": [
+     "newtons-laws"
+    ],
+    "related": [
+     "unit-circle"
+    ],
+    "needs": "",
+    "pitfall": "The count is exact only for perfectly elastic collisions on a frictionless surface; any loss stops the digits early. It is not a practical way to compute pi, and the page says so.",
+    "why": "3Blue1Brown's colliding-blocks videos (2019, and a 2025 second edition) are among its most-watched: https://3blue1brown.substack.com/p/revisiting-those-colliding-blocks",
+    "overlapWith": "newtons-laws: carts collide and momentum and energy are conserved; this page takes those two laws to a counting puzzle whose answer is pi.",
+    "needsSource": "none",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "polarized-light",
+    "title": "Polarized light: sunglasses, screens and the third filter",
+    "level": 1,
+    "kind": "manipulate",
+    "category": "physics",
+    "interaction": "Light drawn as a wave wiggling in one direction meets a filter the reader rotates; the fraction that gets through falls from all to none over a quarter turn, plotted against the angle. Cross two filters and nothing passes; slide a third in between at 45° and an eighth of the light comes back, with the wave's direction redrawn after each filter. Then aim the filter at glare off a wet road and rotate it to kill the glare, and look at a phone screen through it.",
+    "takeaway": "A polarizing filter keeps only the part of a light wave that wiggles along its axis, so two crossed filters block everything, and yet a third filter between them lets light through again.",
+    "prerequisites": [
+     "waves-interference"
+    ],
+    "related": [
+     "light-optics",
+     "electromagnetism",
+     "vision-color"
+    ],
+    "needs": "",
+    "pitfall": "A filter does not let through the photons that were already aligned and block the rest; it projects every wave onto its axis, which is why the middle filter can restore light. Glare is polarized by reflection off horizontal surfaces, not by water being wet.",
+    "why": "The three-polarizer paradox is a standard demonstration (LibreTexts tutorial), and polarized sunglasses and 3D glasses are everyday objects: https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Quantum_Tutorials_(Rioux)/07%3A_Quantum_Optics/7.13%3A_The_Three-Polarizer_Paradox",
+    "overlapWith": "light-optics: bending, focusing and dispersion, with polarization absent. liquid-crystals (pool, level 3) computes the LCD pixel between crossed polarizers; this page stops at the filters and the glare and links there.",
+    "needsSource": "none",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "spinning-balls-curve",
+    "title": "Why a spinning ball curves",
+    "level": 1,
+    "kind": "simulate",
+    "category": "physics",
+    "interaction": "Kick, throw or drop a ball with a chosen speed and spin and watch its path bend, with the air drawn flowing past it: the side spinning with the flow carries air round, the air leaves deflected to one side and the ball is pushed to the other. Sliders set spin, speed and the ball (football, tennis, baseball, table tennis, beach ball), and the path curves more for light balls with fast spin; compare a backspin shot that hangs with a topspin shot that dives, and drop a backspinning ball from a dam to watch it sail away from the wall.",
+    "takeaway": "A spinning ball drags air round with it, so the air leaves it deflected to one side and the ball is pushed to the other: the curve of a free kick, a slice and a topspin lob.",
+    "prerequisites": [
+     "newtons-laws"
+    ],
+    "related": [
+     "flight"
+    ],
+    "needs": "Drag and Magnus-lift coefficients for the balls, from published wind-tunnel measurements, or a documented simplified model stated on the page.",
+    "pitfall": "Do not explain it with 'faster air on one side, lower pressure' as if the air had to arrive at the same time, the false story the flight page bans; the deflected wake is the honest picture. At low spin a smooth ball can even curve the other way.",
+    "why": "The backspin basketball dropped from the Gordon Dam (Veritasium with How Ridiculous, 2015) went viral worldwide: https://www.npr.org/sections/thetwo-way/2015/07/17/423899841/watch-magnus-effect-whisks-basketball-into-the-spin-zone",
+    "overlapWith": "flight: a wing turns air downward (level 2); this page is the same deflection produced by spin on a ball at level 1, with the ball's whole path shown. newtons-laws has projectiles with drag but no spin.",
+    "needsSource": "Published coefficient fits (e.g. Goff & Carré 2010 for a football, Nathan 2008 for a baseball), cited; no dataset shipped.",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "musical-scales-ratios",
+    "title": "Why music has twelve notes",
+    "level": 1,
+    "kind": "explore",
+    "category": "physics",
+    "interaction": "A keyboard whose keys play, each note drawn as its wave; press two keys and the page plays them together and draws how the waves line up: an octave (double the frequency) every cycle, a fifth (3:2) every two, while clashing pairs beat and a roughness meter rises. Slide a divider to cut the octave into 5, 7, 12, 19 or 31 equal steps and see how close each ladder lands to the simple ratios; twelve lands nearly on the fifth, which is why pianos have twelve keys. Compare an equal-tempered chord with a pure one by ear.",
+    "takeaway": "Notes sound good together when their frequencies are in simple ratios, and twelve equal steps per octave is the smallest ladder that lands close to those ratios, which is why keyboards have twelve notes.",
+    "prerequisites": [
+     "waves-interference"
+    ],
+    "related": [
+     "fourier-transform",
+     "shazam-audio-fingerprint"
+    ],
+    "needs": "",
+    "pitfall": "Twelve is a good compromise, not a law of nature or of the ear: other traditions divide the octave differently, and equal temperament makes every fifth slightly flat. Consonance also depends on timbre; the roughness model (Plomp-Levelt 1965) is one measurable part of it.",
+    "why": "'Why 12 notes to the octave?' (University of Waterloo) is a widely read answer to a perennial question: https://www.math.uwaterloo.ca/~mrubinst/tuning/12.html",
+    "overlapWith": "waves-interference: beats and a string's harmonics; this page is which pairs of notes fit together and why the octave is cut into twelve.",
+    "needsSource": "none (tones synthesized in the browser; the Plomp-Levelt roughness curve is a published formula)",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "pcr-copying-dna",
+    "title": "PCR: copying DNA until there is enough to see",
+    "level": 1,
+    "kind": "step",
+    "category": "biology",
+    "interaction": "A tube with a few strands of DNA and a thermometer: step through one cycle (heat to split the strands, cool so short primers stick at the ends of the target, warm for the enzyme to extend them) and two strands become four; press play and the count doubles every cycle while the plot shoots up and the primers and building blocks run down. Set the starting number of copies and see when the glowing signal crosses the detection line: one copy takes about ten cycles longer than a thousand, which is how a PCR test reads how much virus was in the swab. Change the primers and a non-matching DNA stays uncopied.",
+    "takeaway": "PCR copies a chosen stretch of DNA by doubling it every heating-and-cooling cycle, so thirty cycles turn a few molecules into a billion, and the cycle at which the signal appears says how many there were to start with.",
+    "prerequisites": [
+     "dna-to-protein"
+    ],
+    "related": [
+     "dna-fingerprinting",
+     "epidemics"
+    ],
+    "needs": "",
+    "pitfall": "Doubling is not forever: primers and nucleotides run out and the curve flattens, so the plateau says nothing about the starting amount; only the threshold cycle does. A Ct value is not a measure of how ill someone is.",
+    "why": "'How does a PCR test work' became a mass question in 2020; public-health explainer of cycles and Ct values: https://www.publichealthontario.ca/en/About/News/2021/Explained-COVID19-PCR-Testing-and-Cycle-Thresholds",
+    "overlapWith": "dna-to-protein: how DNA is read into protein; this page is how a chosen piece of DNA is copied in a tube and counted. dna-sequencing (pool, level 3) reads the letters; PCR only multiplies a chosen piece.",
+    "needsSource": "none",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "dna-fingerprinting",
+    "title": "DNA fingerprinting: matching a profile",
+    "level": 1,
+    "kind": "step",
+    "category": "biology",
+    "interaction": "DNA from a scene and from three suspects; at each of a dozen marker sites the DNA repeats a short word a number of times that differs between people. Step through: copy each site, sort the copies by length into peaks, and read off the repeat counts as a profile; compare profiles site by site, where one mismatch excludes a suspect and a full match is weighed by how common each count is in real population tables, the page multiplying the shares as sites are added, from one in ten with one marker to one in a billion with twelve. Mix two people's DNA and see the peaks overlap.",
+    "takeaway": "A DNA profile is a list of repeat counts at a dozen or so places: most people share any one count, almost nobody shares all of them, and the odds of a chance match come from how common each count is.",
+    "prerequisites": [
+     "dna-to-protein",
+     "bayes-theorem"
+    ],
+    "related": [
+     "pcr-copying-dna",
+     "meiosis-inheritance"
+    ],
+    "needs": "STR allele frequencies for a US population sample from NIST (Hill et al. 2013, 1,036 individuals, 29 loci).",
+    "pitfall": "A match is a probability from population tables, not certainty, and one in a billion is the chance of a random match, not the chance the suspect is innocent. Relatives share more counts than strangers. The suspects' profiles are synthetic and labelled so; only the frequencies are real.",
+    "why": "Genetic fingerprinting is in the AQA A-level Biology specification (7402, section 3.8.4.3: VNTRs, PCR, electrophoresis, forensic use), and NIST's STRBase is the reference for the method's population data: https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification/subject-content",
+    "overlapWith": "meiosis-inheritance: how variants are shuffled between generations; this page uses that variation as an identifier. gwas-polygenic-risk (pool) links variants to disease; this page only matches repeat counts between samples.",
+    "needsSource": "NIST's own US population STR dataset (Hill et al. 2013): US government work, public domain. Not STRBase's compilation of published studies, whose rights vary.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "tsunamis",
+    "title": "Tsunamis: a wave as long as the ocean is deep",
+    "level": 1,
+    "kind": "simulate",
+    "category": "earth",
+    "interaction": "A slice of the Pacific from Japan to California with the real sea floor under it. Jolt the floor up near the trench and watch the hump race across the deep ocean at airliner speed while a clock counts the hours and markers show arrival times; a speed gauge follows the depth, fast over the abyss and slowing over the shelf, where the wave bunches up and grows from under a metre to many metres. Drag the floor to change a shelf's slope or add an island, and compare with a wind wave of the same height, which barely notices the depth.",
+    "takeaway": "A tsunami is a shallow-water wave even over the deepest ocean, so its speed is set by the depth alone: it crosses an ocean in hours, is barely visible at sea, and rears up only when it reaches the shallows.",
+    "prerequisites": [
+     "waves-interference",
+     "earthquakes"
+    ],
+    "related": [
+     "plate-tectonics"
+    ],
+    "needs": "An ocean depth transect from NOAA's ETOPO 2022 relief model; the one-dimensional shallow-water equations run on that profile (a single transect ignores spreading across the ocean, so the far-shore height is an upper bound: state it on the page).",
+    "pitfall": "A tsunami is not a towering surf wave: at the coast it arrives as a fast-rising flood lasting minutes, often after the sea draws back; and it is not a tidal wave, tides have nothing to do with it.",
+    "why": "NOAA's tsunami facts (speed is the square root of gravity times depth, about 765 km/h over 4,600 m of water) answer the common 'how do tsunamis work': https://noaa.gov/node/10981",
+    "overlapWith": "beach-waves (pool, level 0): wind waves slowing and breaking on a beach; this page is a wave longer than the ocean is deep, with its speed set by depth all the way across and real travel times. earthquakes: the seismic waves inside the Earth; this page is the water wave an undersea quake launches.",
+    "needsSource": "ETOPO 2022 (NOAA NCEI, US government work, public domain).",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "game-tree-search",
+    "title": "How a computer plays a game: the search tree",
+    "level": 1,
+    "kind": "build",
+    "category": "computing",
+    "interaction": "Play noughts and crosses against the page and open its mind: a tree of the moves it is weighing, the leaves scored win, draw or loss and the scores passed up, the computer taking the best of its moves and assuming you take the worst for it. Switch to Connect Four, where the whole tree is too big, and set how many moves ahead it looks: at two it blunders, at six it is hard to beat, with the count of positions examined rising about sevenfold per extra move; turn on pruning and watch whole branches greyed out with the answer unchanged. Build the scoring rule yourself from a palette of features (centre column, three in a row) and test it.",
+    "takeaway": "A game-playing program looks ahead down a tree of moves, assumes the opponent plays its best, and picks the line with the best guaranteed outcome; how deep it can afford to look is set by how fast the tree grows.",
+    "prerequisites": [
+     "graph-search"
+    ],
+    "related": [
+     "sorting",
+     "reinforcement-learning"
+    ],
+    "needs": "",
+    "pitfall": "The program does not plan like a person; it counts. And it does not look at every possible game: depth is limited and the leaves are scored by a rule of thumb, which is why a better scoring rule can beat a deeper search.",
+    "why": "'How does a chess computer work' tutorials (freeCodeCamp's step-by-step chess AI) are among the most-read introductions to minimax: https://www.freecodecamp.org/news/simple-chess-ai-step-by-step-1d55a9266977",
+    "overlapWith": "graph-search: searching a map for a route; this page searches a tree of moves against an opponent, where a value flows up instead of a path being found. monte-carlo-tree-search (pool, level 3) uses random playouts and AlphaGo; this page is the full deterministic search at level 1.",
+    "needsSource": "none",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "perlin-noise-terrain",
+    "title": "Random worlds: how games make terrain",
+    "level": 1,
+    "kind": "manipulate",
+    "category": "computing",
+    "interaction": "A grid of random arrows and the height map computed from them, drawn as a shaded landscape the reader can tilt; one slider sets how far apart the arrows are, wide for rolling hills, close for rubble. Add layers, each twice as fine and half as tall, and the hills grow ridges, then rocks, with a slider for how fast the layers shrink setting smooth against craggy. Set a sea level to flood the valleys, change the seed for a new world that is different yet looks the same, and compare with plain random numbers per cell, which give static, not land.",
+    "takeaway": "Natural-looking terrain comes from adding up smooth random bumps at several scales, big for mountains and small for rocks, which is how a game makes an endless world from one seed.",
+    "prerequisites": [],
+    "related": [
+     "chaos-fractals",
+     "graphics-3d",
+     "bezier-curves"
+    ],
+    "needs": "",
+    "pitfall": "This noise is not random in the sense of static: neighbouring points are correlated, which is what makes it look like land. It is not a model of geology, only of its look, and the page should not present it as how mountains form.",
+    "why": "Minecraft's terrain is layered gradient noise, and 'how is a Minecraft world generated' is a common question (Minecraft Wiki): https://minecraft.fandom.com/wiki/Noise_generator",
+    "overlapWith": "chaos-fractals: Mandelbrot and self-similar structure found in simple rules; this page builds a deliberately self-similar random landscape and is about generating, not discovering, it.",
+    "needsSource": "none",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "shazam-audio-fingerprint",
+    "title": "How Shazam recognises a song",
+    "level": 2,
+    "kind": "step",
+    "category": "networks",
+    "interaction": "Play one of a few short clips synthesized in the page and watch its spectrogram scroll by; the page keeps only the brightest peaks, a constellation of dots, and turns pairs of nearby peaks into fingerprints (two pitches and the gap between them), building a tiny database of a dozen clips the same way. Record a few seconds of one clip with noise, a cough and a different start time added, and watch its fingerprints looked up: hits on the wrong clips scatter, hits on the right one line up at a single time offset, and the spike in the histogram names the song. Slide the noise up until the spike disappears.",
+    "takeaway": "A song is recognised not by comparing sound but by matching a sparse set of peak pairs whose time gaps line up, which is why a few noisy seconds from the middle of a track are enough.",
+    "prerequisites": [
+     "fourier-transform",
+     "binary"
+    ],
+    "related": [
+     "compression",
+     "musical-scales-ratios"
+    ],
+    "needs": "",
+    "pitfall": "It does not match the melody or the lyrics and cannot find a cover version or a hummed tune: a different performance has different peaks. The time alignment, not the number of matching hashes alone, is what makes a match reliable.",
+    "why": "Avery Wang's Shazam paper (2003) is a standard course reading and 'how does Shazam work' a classic question: https://www.princeton.edu/~cuff/ele201/files/Wang03-shazam.pdf",
+    "overlapWith": "compression: dropping high-frequency detail from image blocks; this page keeps only spectrogram peaks and matches them, discarding the sound altogether. voice-assistant-wake-word (pool) classifies speech with a trained model; this page is deterministic hashing.",
+    "needsSource": "none (clips synthesized in the browser with Web Audio; no recordings shipped)",
+    "leadsTo": [],
+    "everyday": true
+   },
+   {
+    "slug": "mri-k-space",
+    "title": "MRI: an image from spinning protons",
+    "level": 3,
+    "kind": "step",
+    "category": "medicine",
+    "interaction": "Tip the protons of a slice with a radio pulse and watch their net magnetization precess and decay under the Bloch equations, the signal fading faster or slower with T1 and T2 sliders. Switch on a field gradient: protons on one side precess faster, their phases fan out, and the signal recorded while the gradient is on is one line of the slice's Fourier transform; step through a pulse sequence, each gradient pair filling one line of k-space, and watch the image emerge from a phantom as the lines are added. Fill only the centre for a blur, only the edges for outlines, skip every other line for a ghost, and change the echo time to turn fat bright or dark.",
+    "takeaway": "An MRI scanner never measures a picture: gradients make protons at different positions precess at different rates, so the recorded signal is the image's Fourier transform, acquired one line at a time and inverted by computer.",
+    "prerequisites": [
+     "fourier-transform",
+     "electromagnetism",
+     "medical-imaging"
+    ],
+    "related": [],
+    "needs": "The Shepp-Logan phantom (a mathematical object, no data); optionally one real T1-weighted brain slice.",
+    "pitfall": "MRI uses no ionizing radiation, and the image is not proton density alone: contrast comes as much from T1 and T2 relaxation as from how many protons there are. The gradient does not scan slice by slice the way CT rotates; k-space is the honest picture.",
+    "why": "'How does an MRI work' is among the most-asked medical-technology questions, and k-space MRI theory is a standard biomedical-engineering course (Purdue BME 55500): https://engineering.purdue.edu/online/courses/tagged_items/magnetic-resonance-imaging-mri-theory",
+    "overlapWith": "medical-imaging: CT from projections, with MRI only sketched at the end; this page builds the MRI image from the Bloch equations and k-space. nmr-spectroscopy (pool, chemistry, level 3) has the same spins and pulses but no gradients and no image.",
+    "needsSource": "Shepp-Logan: none. Real slice, if used: an OpenNeuro dataset (CC0), named on the page.",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "ensemble-weather-forecasting",
+    "title": "Weather forecasts: why they come as odds",
+    "level": 3,
+    "kind": "simulate",
+    "category": "earth",
+    "interaction": "A ring of forty weather cells round a latitude circle (the Lorenz-96 model) runs as a strip of colour, the true weather on top and the reader's forecast started from a measurement of it with adjustable error. Launch one forecast and watch it track the truth for a few days and then diverge; launch fifty from slightly different starts and watch the fan open, narrow on some days and wide on others, with the spread plotted against the actual error. Shrink the measurement error tenfold and the useful range grows only a few days; make the model slightly wrong and the fan goes confident and wrong; then run the forecast-observe-correct cycle and watch the analysis stay close.",
+    "takeaway": "Because small errors in today's weather double every couple of days, one forecast is useless past a week or so; forecasters run many from slightly different starts, and where they agree the forecast is sure and where they fan out it is not.",
+    "prerequisites": [
+     "chaos-fractals",
+     "atmosphere-weather"
+    ],
+    "related": [
+     "bayes-theorem"
+    ],
+    "needs": "",
+    "pitfall": "A 70% chance of rain is a calibrated statement, not a count of members that happened to rain; the spread is itself a forecast that must be checked. Chaos does not make forecasting useless: the horizon differs from day to day and the ensemble shows which days are which.",
+    "why": "ECMWF's training course teaches ensemble prediction with the Lorenz-96 model, and 'why are weather forecasts wrong' is a perennial public question: https://events.ecmwf.int/event/405/contributions/4491/attachments/2523/4335/lorenz-part1.pdf",
+    "overlapWith": "chaos-fractals: two double pendulums diverge; this page is what forecasters do about that: many starts, spread as a forecast of uncertainty, and the correction cycle. atmosphere-weather is the physics of circulation, with no forecasting.",
+    "needsSource": "none (Lorenz 1996 equations)",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "kuramoto-synchronization",
+    "title": "Synchronization: metronomes, bridges and the Kuramoto model",
+    "level": 3,
+    "kind": "simulate",
+    "category": "physics",
+    "interaction": "A hundred oscillators drawn as dots running round a circle, each with its own natural rate drawn from a bell curve, and a slider for how strongly each pulls on the others. Below a critical coupling the dots smear round the circle and the order parameter stays near zero; above it a clump forms and grows, with the locked fraction and the critical value plotted against the spread of rates. Load the real cases: metronomes on a board whose sway couples them, the Millennium Bridge whose walkers' steps locked once enough of them were on it (the published model and parameters), and a ring of neighbours-only coupling that locks into travelling waves instead.",
+    "takeaway": "Oscillators that pull weakly on each other stay independent, but above a sharp coupling threshold a growing fraction locks together, so synchrony appears suddenly, in metronomes, fireflies and a wobbling bridge.",
+    "prerequisites": [
+     "oscillations-resonance",
+     "calculus"
+    ],
+    "related": [
+     "fireflies-in-sync",
+     "power-grid",
+     "neurons"
+    ],
+    "needs": "Parameters for the Millennium Bridge case from Strogatz et al. 2005.",
+    "pitfall": "Synchrony needs neither a leader nor identical oscillators; the spread of natural rates against the coupling decides. The Millennium Bridge wobble was sideways, driven by walkers' lateral steps locking to the sway, not by people marching in time.",
+    "why": "Veritasium's 'The Surprising Secret of Synchronization' (2021), built on Strogatz's Sync, is one of the channel's most-watched: https://veritasium.com/videos/2021/3/31/the-secret-of-synchronization",
+    "overlapWith": "oscillations-resonance: one oscillator driven at a frequency; this page is many self-sustained oscillators with their own rates locking to each other, a phase transition in the coupling. fireflies-in-sync (this batch, level 0) is the pulse-coupled toy.",
+    "needsSource": "none for the base model; the bridge case uses the numbers published in Strogatz, Abrams, McRobie, Eckhardt & Ott, Nature 2005 (cited).",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "asteroid-impact",
+    "title": "What an asteroid does when it hits",
+    "level": 3,
+    "kind": "simulate",
+    "category": "space",
+    "interaction": "Choose an impactor's size, density, speed and angle and integrate its fall through the atmosphere step by step: drag slows it, heating ablates it, and when the air's ram pressure exceeds its strength it spreads and bursts, its energy released as an airburst at a height the page reports (Chelyabinsk and Tunguska are presets with their published sizes). A body that survives hits the ground: the page scales the crater from the energy and the target rock, then draws rings of effects against distance, the fireball's thermal pulse, the air blast, the ground shaking and the ejecta, over a map at scale. Compare 20 m, 100 m, 1 km and 10 km bodies on one chart.",
+    "takeaway": "Small asteroids never reach the ground: the air stops them and they burst high up; bodies above about a hundred metres cross the atmosphere as if it were not there, and their effects on the ground scale with their energy in published ways.",
+    "prerequisites": [
+     "orbits-kepler",
+     "earthquakes"
+    ],
+    "related": [
+     "deep-time"
+    ],
+    "needs": "The published entry, cratering and effects equations (Collins, Melosh & Marcus 2005, and the program's documentation PDF) and literature parameters for Chelyabinsk and Tunguska.",
+    "pitfall": "A meteor does not burn up by combustion; it is stopped and shattered by air pressure, and an airburst is itself the hazard. The effect scalings are published fits valid over stated ranges, not a dataset; show their limits.",
+    "why": "The Earth Impact Effects Program (Collins, Melosh & Marcus 2005) is the public calculator behind every popular asteroid-impact simulator, and Veritasium's asteroid video is among its most-viewed: https://impact.ese.ic.ac.uk/ImpactEarth/ImpactEffects",
+    "overlapWith": "deep-time: the Chicxulub impact as a point on the timeline. shooting-stars (pool, level 0): a sand grain to a boulder entering the air with size as the one control; this page continues to the bodies that survive the air, with fragmentation, airbursts, craters and the published scaling of effects.",
+    "needsSource": "Published equations in Meteoritics & Planetary Science 40, 817-840 (2005) and the Imperial documentation; not a dataset. Chelyabinsk parameters from Popova et al. 2013 (cited).",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "poynting-energy-flow",
+    "title": "Where the energy in a circuit really flows",
+    "level": 3,
+    "kind": "manipulate",
+    "category": "physics",
+    "interaction": "A battery, two long wires and a lamp on a grid; the page solves for the surface charges on the wires held at their potentials, draws the electric field, the magnetic field of the current and the Poynting vector, the energy flow, as arrows in the space around the wires: it leaves the battery through the surrounding space, runs alongside the wires and dives into the lamp from outside, with almost none inside the metal. Drag the lamp away and the flow follows the wires; make the wires resistive and watch some energy dive into them along their length. Replay the thought experiment of a lamp a metre from a battery joined by wires a light-second long, run in the time domain, with a small transient reaching the lamp in nanoseconds and the full current only after the round trip.",
+    "takeaway": "Electrical energy travels in the fields around the wires, not inside them: the Poynting vector flows from the battery through space into the lamp, and the wires only guide it.",
+    "prerequisites": [
+     "electromagnetism",
+     "electric-circuits"
+    ],
+    "related": [
+     "wireless-signals"
+    ],
+    "needs": "",
+    "pitfall": "Energy flowing through space does not mean the lamp lights fully at once or that wires are unnecessary: the wires' surface charges guide the fields, and in the long-wire experiment only a small transient arrives early. The Poynting vector is a classical field quantity; nothing about electrons 'carrying' energy or not.",
+    "why": "Veritasium's 'The Big Misconception About Electricity' (2021) drew tens of millions of views and months of engineering-forum argument: https://veritasium.com/videos/2021/11/19/the-big-misconception-about-electricity",
+    "overlapWith": "electric-circuits: current and voltage in loops, whose pitfall already notes that charges drift slowly while the lamp lights at once; this page shows where the energy travels, in the fields outside the wires. maxwell-equations (pool) is a Yee grid for antennas and waveguides and could host the time-domain run; radiating-charge (pool) is one charge's field.",
+    "needsSource": "none",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "tennis-racket-theorem",
+    "title": "The tennis racket theorem: why a spinning handle flips",
+    "level": 3,
+    "kind": "simulate",
+    "category": "physics",
+    "interaction": "A rigid body (a racket, a phone, a T-shaped handle) floats free of gravity; spin it about any axis and the page integrates Euler's equations. About the axis of largest or smallest moment of inertia it spins steadily; about the middle axis it spins, flips over, spins, flips, in a rhythm that slows as the start is made more exact but never stops. A second view draws the angular-momentum sphere with its constant-energy curves, closed loops round two axes and crossing paths through the third, with the current state as a moving dot; change the body's shape, and add a little dissipation to watch the spin migrate to the axis of largest inertia.",
+    "takeaway": "A free body spins stably about its longest and shortest axes but not the middle one, because on the sphere of possible spins the middle axis sits on a crossing of paths, so the slightest wobble carries the body round to the opposite spin and back.",
+    "prerequisites": [
+     "calculus",
+     "linear-transformations"
+    ],
+    "related": [],
+    "needs": "",
+    "pitfall": "It is not an effect of air, gravity or imbalance: a perfectly balanced body in vacuum does it. Nor is angular momentum lost: the momentum vector stays fixed in space; it is the body that turns round it.",
+    "why": "Veritasium's 'The Bizarre Behavior of Rotating Bodies, Explained' (2019; the Dzhanibekov effect) is among its most-watched: https://www.veritasium.com/videos/2019/9/19/the-bizarre-behavior-of-rotating-bodies-explained",
+    "overlapWith": "newtons-laws: forces and energy for point masses, with nothing on rotation. spinning-tops (pool, level 0) is a top's precession under gravity; this page is a free body with no gravity and the instability of the middle axis.",
+    "needsSource": "none",
+    "leadsTo": [],
+    "everyday": false
+   },
+   {
+    "slug": "ozone-layer-chemistry",
+    "title": "The ozone layer and the hole in it",
+    "level": 3,
+    "kind": "simulate",
+    "category": "earth",
+    "interaction": "A column of stratosphere lit by the Sun's ultraviolet; the page integrates the Chapman reactions (oxygen split by UV, ozone made and destroyed) and the ozone settles into a layer at 20 to 30 km while a spectrum at ground level shows the ultraviolet it removes. Add chlorine from CFCs and watch the catalytic cycle: one chlorine atom destroys thousands of ozone molecules and comes back unchanged. Switch to the Antarctic spring: polar stratospheric clouds in the dark winter turn the chlorine reservoirs active, sunrise releases it, and the column drops to a third in weeks, the model's October column plotted beside NASA's measured record since 1979; then run the Montreal Protocol phase-out and watch the slow recovery.",
+    "takeaway": "Ozone is made and destroyed continuously by sunlight and its amount is a balance; a single chlorine atom from a CFC tips that balance thousands of times over, which is why a few million tonnes of gas opened a hole each spring, and why banning them is closing it.",
+    "prerequisites": [
+     "reaction-rates-equilibrium",
+     "atmosphere-weather"
+    ],
+    "related": [
+     "greenhouse-effect",
+     "sunscreen-spf"
+    ],
+    "needs": "NASA Ozone Watch's annual Antarctic record (minimum column and hole area since 1979); rate constants from the JPL chemical kinetics evaluation.",
+    "pitfall": "The ozone hole neither causes nor is caused by global warming (CFCs are also greenhouse gases, a separate effect), and it is not over Antarctica because CFCs are used there: the cold polar winter and the spring sunrise make the chemistry fast there. A hole is a thinning, not a gap.",
+    "why": "NASA reports the hole's size every year and it stays in the news; 'is the ozone hole healing' is a recurring question: https://www.nasa.gov/earth/climate-change/ozone-layer/2023-ozone-hole-ranks-16th-largest",
+    "overlapWith": "greenhouse-effect: the infrared balance that sets temperature; this page is a different gas, a different wavelength and a chemical cycle. atmosphere-weather has the circulation that isolates the polar vortex but none of the chemistry.",
+    "needsSource": "NASA Ozone Watch and the JPL kinetics evaluation (NASA, US government work, public domain).",
+    "leadsTo": [],
+    "everyday": false
+   }
+  ],
+  "reserveDisposition": [
+   {
+    "item": "Exponentials & logarithms",
+    "decision": "promote",
+    "slug": "exponentials-logarithms",
+    "reason": "'How does exponential growth work' is a top demand item and a catalogue hole; the pool's level-1 entry covers it honestly."
+   },
+   {
+    "item": "Differential equations",
+    "decision": "promote",
+    "slug": "phase-portraits",
+    "reason": "The demand is 'what is a differential equation'; the pool's phase-portraits (level 3, with heat-and-wave-equations as companion) is the honest version, built on calculus."
+   },
+   {
+    "item": "Game theory",
+    "decision": "merge",
+    "slug": "evolutionary-game-theory",
+    "reason": "Two pool entries (evolutionary-game-theory in math, evolutionary-games in biology) run the same replicator model; keep one. Demand is strong (Nicky Case's 'Evolution of Trust')."
+   },
+   {
+    "item": "Fluid dynamics",
+    "decision": "promote",
+    "slug": "navier-stokes",
+    "reason": "A lattice-Boltzmann flow past a cylinder is a real browser model and 'how does turbulence work' is a Veritasium-scale question."
+   },
+   {
+    "item": "Embryo development & pattern formation",
+    "decision": "promote",
+    "slug": "turing-patterns",
+    "reason": "'Why do zebras have stripes' is a classic question; turing-patterns (with morphogen-gradients as companion) is the real reaction-diffusion model at level 3."
+   },
+   {
+    "item": "DNA sequencing",
+    "decision": "promote",
+    "slug": "dna-sequencing",
+    "reason": "'How is a genome sequenced' is asked constantly; the pool's phiX174 assembly page is a real algorithm on open data."
+   },
+   {
+    "item": "Hearing & the cochlea",
+    "decision": "promote",
+    "slug": "cochlea-hearing",
+    "reason": "'How does hearing work' is a top body question; the pool has the level-3 cochlea model and a level-0 hearing-and-the-ear, which can both stand."
+   },
+   {
+    "item": "Telescopes",
+    "decision": "merge",
+    "slug": "aperture-synthesis",
+    "reason": "Lenses and mirrors are already on light-optics; a level-1 telescope page would add only light-gathering and the diffraction limit. The pool's aperture-synthesis (level 3) carries the modern frontier that 'how does JWST see' asks about."
+   },
+   {
+    "item": "Operating systems",
+    "decision": "promote",
+    "slug": "os-scheduling",
+    "reason": "Demand is moderate but it is a core computing hole; the pool's scheduling page (with virtual-memory) is a real algorithm."
+   },
+   {
+    "item": "Compilers",
+    "decision": "promote",
+    "slug": "compilers",
+    "reason": "The pool's toy-language pipeline into the CPU page's processor is a real build and closes an obvious computing gap."
+   },
+   {
+    "item": "Cellular automata",
+    "decision": "promote",
+    "slug": "cellular-automata",
+    "reason": "Game of Life is among the most-visited recreational-maths subjects; the pool has it at level 1 and a level-0 life-on-a-grid."
+   },
+   {
+    "item": "Lasers & LEDs",
+    "decision": "promote",
+    "slug": "lasers",
+    "reason": "'How does a laser work' is a perennial; LEDs are already the p-n junction of semiconductors and solar-cells run backward, so only lasers need a page."
+   },
+   {
+    "item": "Heat pumps",
+    "decision": "promote",
+    "slug": "heat-pumps-refrigeration",
+    "reason": "'How does a heat pump work' is one of the fastest-growing energy questions; the pool's pressure-enthalpy page is the real cycle, with refrigerator as its level-0 pair."
+   },
+   {
+    "item": "Clustering & dimensionality reduction",
+    "decision": "promote",
+    "slug": "clustering-gaussian-mixtures",
+    "reason": "t-SNE and UMAP maps are everywhere and 'what is k-means' is a top ML question; the pool splits the item into clustering-gaussian-mixtures and dimensionality-reduction, both real."
+   }
+  ]
+ }
+]

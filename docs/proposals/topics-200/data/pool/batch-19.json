@@ -1,651 +1,648 @@
 [
  {
-  "slug": "kettle",
-  "title": "Electric kettle",
-  "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Fill the kettle with one, two or four cups, switch it on and watch the element warm the water next to it, which rises while cooler water sinks to take its place, with a thermometer climbing and a timer counting the seconds. At 100 °C the thermometer stops however long the kettle stays on, bubbles of steam leave the water, the steam climbs the tube to a strip that bends, and the switch clicks off. Compare the seconds to the boil for each filling.",
-  "takeaway": "Twice the water takes twice as long to boil, and once it boils the water stops getting hotter, so leaving the kettle on longer only turns water into steam.",
-  "prerequisites": [],
+  "slug": "tls-handshake",
+  "title": "TLS: how a connection becomes private",
+  "level": 3,
+  "kind": "step",
+  "category": "networks",
+  "interaction": "Step through a TLS 1.3 handshake between a browser and a server: hello messages carrying key shares, an elliptic-curve key exchange, a certificate chain checked signature by signature up to a root the browser already trusts, and the derivation of the session keys that then encrypt every record. Put an attacker in the middle who swaps in his own key share: the certificate check fails visibly; later reveal the server's long-term key and see that past sessions stay unreadable.",
+  "takeaway": "A padlock means two strangers agreed a fresh secret in the open, and one of them proved who it was through a chain of signatures leading to someone the browser already trusts.",
+  "prerequisites": [
+   "cryptography",
+   "elliptic-curve-cryptography",
+   "internet"
+  ],
   "related": [
-   "toaster",
-   "room-thermostat",
-   "thermos-flask"
+   "onion-routing"
   ],
-  "needs": "",
-  "pitfall": "Boiling water does not keep getting hotter the longer it boils, and the bubbles are steam, not air.",
-  "why": "PhET 'Energy Forms and Changes' (CC BY) heats water and other materials and is the standard primary and middle-school simulation of heating (https://climate.gov/teaching/resources/energy-forms-and-changes-35754); NGSS 4-PS3-2, energy transferred by heat and electric currents (https://www.cpp.edu/respect/resources/documents_4th/gr4.et_ngss.pdf).",
-  "overlapWith": "states-of-matter: that page runs a molecular-dynamics box through melting and boiling; this page heats a real appliance's worth of water, counting cups and seconds, and ends at the automatic switch.",
-  "needsSource": "none",
-  "leadsTo": [
-   "states-of-matter",
-   "electric-circuits"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
+  "needs": "One real certificate chain, for example the site's own GitHub Pages chain; certificates are public documents.",
+  "pitfall": "The padlock says nothing about the site being honest, only that you are talking to the holder of that certificate. Key exchange and authentication are separate jobs: Diffie-Hellman alone is defeated by a man in the middle, which is exactly what the certificate prevents.",
+  "why": "Cloudflare Learning Center, 'What happens in a TLS handshake?' https://cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake",
+  "overlapWith": "cryptography: that page shows key exchange, hashing and signing separately on small numbers; this page is the protocol that combines them, with the certificate chain as the new piece.",
+  "needsSource": "a real public certificate chain (public, no licence restriction)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
  },
  {
-  "slug": "levers-and-scissors",
-  "title": "Levers, seesaws & scissors",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Put a child and an adult on a seesaw and drag the pivot until it balances, with each side's turning effect shown as weights times notches from the pivot. Then cut a card with scissors near the pivot and out at the tips, crack a nut with a nutcracker, open a tin with a can opener and pick up a crumb with tweezers, and see which end of each lever moves far and which pushes hard.",
-  "takeaway": "A lever trades distance for force: the end that moves farther pushes less, which is why a long handle and a short jaw crack the nut and why nothing is gained for free.",
-  "prerequisites": [],
+  "slug": "video-codecs",
+  "title": "Video compression",
+  "level": 3,
+  "kind": "step",
+  "category": "networks",
+  "interaction": "Step through encoding a short clip: each frame is cut into blocks, every block searches the previous frame for its best match and keeps only a motion vector and the difference, which is transformed and quantised like the JPEG blocks of the compression page. Scrub the quality and the search range and watch bits per frame fall while blocking and smearing appear; corrupt one keyframe and see the damage propagate until the next.",
+  "takeaway": "A video is mostly its previous frame moved a little, so a codec sends motion and the leftovers, and almost none of the pixels.",
+  "prerequisites": [
+   "compression",
+   "fourier-transform"
+  ],
   "related": [
-   "pulleys-and-cranes",
-   "bicycle-gears",
-   "screws-and-screwdrivers",
-   "car-brakes"
+   "convolution-vision",
+   "audio-codecs",
+   "gpu"
   ],
-  "needs": "",
-  "pitfall": "A lever does not create force or energy: the push times the distance moved is the same at both ends, and scissors cut better near the pivot because the force is larger there, not because the blades are sharper.",
-  "why": "KS2 science, Year 5 Forces (levers, pulleys and gears let a smaller force have a greater effect; https://www.stem.org.uk/node/12696); PhET's 'Balancing Act' teeter-totter is the standard primary simulation of the same idea (listed at https://phys.libretexts.org/Learning_Objects/Visualizations_and_Simulations/PhET_Simulations).",
-  "overlapWith": "bridges-structures: that page colours the members of a built structure by tension and compression under a rolling load; this page is the turning effect about a pivot, with the reader moving the pivot and the loads.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws",
-   "bridges-structures"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
+  "needs": "A few seconds of Big Buck Bunny frames (Blender Foundation, CC BY 3.0), video only: the film's score is CC BY-NC-ND and must not be shipped.",
+  "pitfall": "Motion vectors are not object tracking: each is whichever block matched best, which is why they look chaotic on textures. The decoder must reconstruct exactly what the encoder predicted from, or the drift compounds frame after frame.",
+  "why": "Demand: Google 'how does video compression work' https://www.google.com/search?q=how+does+video+compression+work (the Stanford EE398A Image and Video Compression course page was not fetched this session, the search budget ran out)",
+  "overlapWith": "compression: that page compresses one still image by discarding high frequencies; this page adds time, prediction from the previous frame, which is where almost all the saving comes from.",
+  "needsSource": "Big Buck Bunny frames, CC BY 3.0 (openly licensed; audio excluded)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
  },
  {
-  "slug": "light-bulb-hot-wire",
-  "title": "Why a light bulb glows (and gets hot)",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Slide a dimmer and watch the thin wire inside an old-style bulb go from dark to dull red to orange to white as it heats, while a bar splits what the bulb takes into light you can see and heat you can feel. At full brightness the heat bar is many times the light bar; a hand held near the bulb feels it. Swap in an LED bulb giving the same light and the heat bar nearly vanishes.",
-  "takeaway": "An old bulb makes light by heating a wire until it glows white, and most of what it takes leaves as heat, while an LED makes the same light nearly cold.",
-  "prerequisites": [],
-  "related": [
-   "battery-runs-down",
-   "socket-to-power-station"
-  ],
-  "needs": "The CIE 1931 colour-matching functions and the photopic sensitivity curve, to turn the glowing wire's temperature into a colour on screen and a light-versus-heat split (CIE tables, freely distributed by the Colour & Vision Research Laboratory, cvrl.org); tungsten's emissivity from a physics reference if the colour is to be exact.",
-  "pitfall": "The wire does not burn: there is no oxygen inside the bulb, which is why a tungsten filament glows for a thousand hours. Brightness does not rise in step with the dimmer: a little more current makes the wire much hotter, much brighter and whiter, so the colour changes with the brightness.",
-  "why": "England KS2 science, Year 6 electricity: associate the brightness of a lamp with the cells in the circuit, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study ('how does a light bulb work' is a perennial search question)",
-  "overlapWith": "electric-circuits: that page lights bulbs as circuit elements with current and voltage meters; this page is what happens inside the bulb's wire and where the energy ends up, with the LED as the comparison.",
-  "needsSource": "CIE 1931 colour-matching functions and V(lambda) via cvrl.org (freely distributed CIE tables).",
-  "leadsTo": [
-   "electric-circuits",
-   "light-optics"
-  ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "lock-and-key",
-  "title": "Lock & key",
-  "level": 0,
-  "kind": "build",
-  "category": "energy",
-  "interaction": "Cut a key by setting the depth of each of its five notches, slide it into a pin-tumbler lock and watch each spring-loaded pin stack ride up its notch. Turn the key: the plug rotates only if every stack's split sits exactly at the gap between plug and housing. Then try a neighbour's key, file one notch too deep, or push the pins up one at a time with a pick to see why the plug jams or turns.",
-  "takeaway": "A key does not push the pins out of the way; it lifts each stack to exactly the height where its split lines up with the edge of the turning cylinder, and one wrong height is enough to block it.",
-  "prerequisites": [],
-  "related": [
-   "zipper",
-   "click-pen",
+  "slug": "zero-knowledge-proofs",
+  "title": "Zero-knowledge proofs",
+  "level": 3,
+  "kind": "step",
+  "category": "networks",
+  "interaction": "Colour a small graph with three colours, cover every vertex, and let the verifier uncover one random edge; repeat with a fresh random permutation of the colours each round and watch a cheater's chance of surviving fall round by round while the verifier's transcript never contains a full colouring. Then run the Schnorr protocol on small numbers: prove you know a discrete logarithm without revealing it, and watch a simulator forge a transcript that nobody could tell from a real one.",
+  "takeaway": "You can convince someone that a statement is true while their view of the exchange contains nothing they could not have made up themselves.",
+  "prerequisites": [
    "cryptography"
   ],
-  "needs": "",
-  "pitfall": "A notch cut too deep blocks the lock as surely as one too shallow: the pins must line up, not be moved aside, and picking works on small manufacturing gaps, not on magic.",
-  "why": "'How do pin tumbler locks work?' is a perennial everyday-engineering question (ScienceABC explainer, https://www.scienceabc.com/innovation/pick-door-locks-pin-tumbler-sherlock-doors-open.html; LockWiki 'Shear line', https://LockWiki.com/index.php/Shear_line).",
-  "overlapWith": "logic-gates: that page wires AND and OR gates into circuits; the lock is one mechanical AND of five pins, and the reader cuts a key rather than wiring.",
-  "needsSource": "none",
-  "leadsTo": [
-   "logic-gates"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "power-station-kettle",
-  "title": "A power station is a giant kettle",
-  "level": 0,
-  "kind": "step",
-  "category": "energy",
-  "interaction": "Step through a power station from the fire to the wire: fuel heats water in a boiler, steam blasts through turbine blades and spins them, the spinning magnet makes electricity, and the spent steam is cooled back to water in the cooling tower. Choose the heat source (coal, gas, nuclear, geothermal, mirrors focusing the sun) and the chain stays the same, while a bar of buckets shows how much of the heat leaves as electricity and how much goes out through the cooling tower: about one bucket in three for coal and nuclear, nearer one in two for the best gas plants.",
-  "takeaway": "Most of the world's electricity is made by boiling water to spin a magnet, whatever the heat comes from, and more of the heat goes out the cooling tower than down the wire.",
-  "prerequisites": [],
   "related": [
-   "socket-to-power-station",
-   "dam-water-height",
-   "geothermal-heat-below",
-   "heat-engines"
+   "consensus-blockchains",
+   "sat-solving",
+   "tls-handshake"
   ],
-  "needs": "Average heat rates by fuel from the US EIA (Electric Power Annual, public domain), so the bar of buckets changes with the fuel chosen.",
-  "pitfall": "The cooling tower's white plume is water vapour, not smoke, and the tower is not the chimney. The turbine is spun by steam, not by the fire, and a nuclear plant boils water the same way as a coal one.",
-  "why": "US EIA Energy Explained, 'How electricity is generated', https://www.eia.gov/energyexplained/electricity/how-electricity-is-generated.php (curriculum: England KS3 science, 'fuels and energy resources')",
-  "overlapWith": "heat-engines: that page is a four-stroke piston engine and the efficiency law; this page is the steam chain of a power station, with the two-out-of-three loss shown as a count from real plant data, not derived.",
-  "needsSource": "EIA Electric Power Annual, average operating heat rates by energy source (public domain).",
-  "leadsTo": [
-   "electric-circuits",
-   "states-of-matter"
-  ],
+  "needs": "",
+  "pitfall": "Zero-knowledge is a property of what the verifier learns, not a kind of encryption, and a single round proves almost nothing: soundness comes from repetition, and the verifier's choices must be unpredictable.",
+  "why": "Computerphile 'Zero Knowledge Proofs', about 235,000 views (view count from aggregator snapshots found this session; the video id is recalled, not fetched this session) https://www.youtube.com/watch?v=HUs1bH85X9I",
+  "overlapWith": "cryptography: that page proves identity with a signature, which reveals the signed message; this page proves knowledge while revealing nothing, and the probability of a cheater surviving is the graphic.",
+  "needsSource": "none",
+  "leadsTo": [],
   "everyday": false,
-  "origin": "vehicles-and-big-machines"
+  "origin": "computing-networks-l3"
  },
  {
-  "slug": "pulleys-and-cranes",
-  "title": "Pulleys & cranes",
-  "level": 0,
-  "kind": "build",
-  "category": "energy",
-  "interaction": "Hang a crate from a rope, add pulleys to the hook and to the beam one at a time, and pull the free end: a counter shows the rope you pulled in against the height the crate rose, and a gauge shows the pull it took. Then build a crane with a boom, a winch and a counterweight at the back, swing the crate out along the boom and find where it tips.",
-  "takeaway": "Each extra rope holding the crate divides the pull you need and multiplies the rope you must pull, and a crane stands as long as its counterweight's turning effect beats the load's.",
-  "prerequisites": [],
-  "related": [
-   "levers-and-scissors",
-   "bridges-structures"
-  ],
-  "needs": "",
-  "pitfall": "Pulleys give no free lifting: a single fixed pulley only changes the direction of the pull, and every halving of the force doubles the rope.",
-  "why": "KS2 science, Year 5 Forces (pulleys), and the STEM Learning primary collection 'Forces: Gears, pulleys, levers and springs' (https://stem.org.uk/node/12033); Year 5 design and technology projects build pulley or gear mechanisms (https://www.brattonstpeters.org.uk/media/53368/year-5-mechanical-systems-pulleys-or-gears.pdf).",
-  "overlapWith": "bridges-structures: that page is a static structure carrying a load to the ground; here a rope and wheels trade rope length for force, and the only structure is a boom that may tip.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws",
-   "bridges-structures"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "refrigerator",
-  "title": "Refrigerator & freezer",
-  "level": 0,
-  "kind": "step",
-  "category": "energy",
-  "interaction": "Step or play one parcel of refrigerant round its loop: it boils in the cold pipes inside the box and soaks up heat, the compressor squeezes it until it is hotter than the kitchen, it gives that heat away through the warm coils at the back, and a narrow valve lets it expand and go cold again. Set the dial, open the door, put in a warm pot or move the fridge into a hot room and watch the thermometer and how long the compressor runs. Then try to cool the kitchen by leaving the door open and watch the room get warmer.",
-  "takeaway": "A fridge does not make cold; it carries heat from the inside to the coils on its back, and the work of carrying it also ends up as heat in the room.",
-  "prerequisites": [
-   "thermos-flask"
-  ],
-  "related": [
-   "room-thermostat",
-   "kettle",
-   "heat-engines"
-  ],
-  "needs": "",
-  "pitfall": "Cold is not a substance the fridge produces: an open fridge warms the kitchen, and the back of a fridge is always warmer than the room.",
-  "why": "Google's 2017 how-to data shows fridge repair as the top household how-to across warm-climate countries (https://www.engadget.com/2017-09-04-google-interactive-map-how-to-searches.html); 'How does a refrigerator work?' is a standing Q&A on physics sites (https://www.askamathematician.com/2009/10/q-how-does-a-refrigerator-work/). The catalogue's Reserve lists Heat pumps.",
-  "overlapWith": "heat-engines: that page steps a four-stroke engine round a pressure-volume loop at level 2; this page runs the same kind of loop backwards as a parcel of refrigerant, with heat counted as it leaves the box, and no chart or efficiency.",
-  "needsSource": "none",
-  "leadsTo": [
-   "states-of-matter"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "room-thermostat",
-  "title": "Thermostat",
-  "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Turn the dial on a room thermostat and watch the heater switch on when the room drops below the setting and off when it rises above it, while heat leaks out through the walls and the room temperature wobbles in a band around the target. Open a window, change the heater's power or widen the switch's gap and see the wobble, the heater's on-time and the overshoot change; zoom into the bimetal strip bending toward and away from its contact.",
-  "takeaway": "A thermostat is a switch, not a tap: turning it up does not heat the room faster, it only moves the line where the heater turns off, and the room always wobbles a little around that line.",
-  "prerequisites": [],
-  "related": [
-   "refrigerator",
-   "kettle",
-   "feedback-control",
-   "homeostasis"
-  ],
-  "needs": "",
-  "pitfall": "Turning the dial higher does not make the heater hotter or the room warm faster; the heater is either on or off, and the setting only decides when it switches.",
-  "why": "'How do thermostats work?' explainers and classroom bimetal thermostat kits (Explain That Stuff, https://explainthatstuff.com/thermostats.html; Flinn Scientific thermostat model, https://www.flinnsci.com/thermostat-model/ap4735/).",
-  "overlapWith": "feedback-control: that page tunes the three gains of a PID controller at level 2 with response plots; this is a single on/off switch with one dial, and the reader watches the room wobble.",
-  "needsSource": "none",
-  "leadsTo": [
-   "homeostasis",
-   "electric-circuits"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "screws-and-screwdrivers",
-  "title": "Screws, ramps & screwdrivers",
+  "slug": "autocomplete-spellcheck",
+  "title": "How your phone guesses your word",
   "level": 0,
   "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Push a crate up a ramp whose slope you set and watch the push needed fall as the ramp gets longer. Wrap the same ramp around a post to make a screw thread, turn it, and count the turns it takes to go in one finger's width with a coarse and with a fine thread. Then swap the screwdriver's handle for a fatter or a thinner one and see the twist you need change.",
-  "takeaway": "A ramp, a screw thread and a fat handle all let a small push do a heavy job by making it travel farther, and the finer the thread the more turns it costs.",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Type a word with a slip in it and watch the phone's two counts: which real words are one or two changes away, and how often each of those is used in a huge pile of books. The suggestion is the common one that is close; type a rare name and watch it 'corrected' into a common word. Then type the start of a sentence and see the next-word guesses, which are nothing but a count of which word most often followed the last one in the pile; change the last word and the counts change.",
+  "takeaway": "A phone guesses your word by counting: which real words are nearest to what you typed and which are used most, so it is confidently wrong whenever you are unusual.",
   "prerequisites": [],
   "related": [
-   "levers-and-scissors",
-   "bicycle-gears",
-   "water-taps-and-pipes"
+   "spam-filter-word-counts",
+   "emoji-and-text-as-numbers",
+   "voice-assistant-wake-word"
   ],
-  "needs": "",
-  "pitfall": "The thread does not multiply work: the push times the distance is the same as lifting straight up, and a screw stays put because its thread is shallow enough for friction to hold it, not because the thread is shaped to grip.",
-  "why": "Nearest standard: KS2 science Year 5 Forces names levers, pulleys and gears as mechanisms that let a smaller force have a greater effect, and KS1 design and technology adds wheels and axles; ramps and screws are the simple machines those lists leave out (primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf). No page-specific signal was found before the search budget ran out.",
-  "overlapWith": "newtons-laws: that page sends a cart along an editable track with energy bars; this page compares a ramp, a thread and a handle by counting pushes and turns, with no energy bars.",
-  "needsSource": "none",
+  "needs": "Word and word-pair counts: a subset of the Google Books Ngram data (1-grams and 2-grams, CC BY 3.0, https://storage.googleapis.com/books/ngrams/books/datasetsv3.html), or counts the page builds itself from a Project Gutenberg text (public domain).",
+  "needsSource": "Google Books Ngram (CC BY 3.0) and/or a public-domain book; Norvig's count_1w and count_2w files derive from the Google Web Trillion Word corpus with no stated data terms, so not those.",
+  "pitfall": "The phone does not understand the sentence and is not reading your mind; it also learns your own words by counting them. Do not call the next-word counts a language model with a network: here it is a table of counts, and language-models is where the network comes in.",
+  "why": "AI4K12 Big Idea 4, Natural Interaction, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/); the nearest existing page is level 2.",
+  "overlapWith": "language-models (level 2): that page shows a real network's next-token probabilities and sampling; this one has no network, only edit distance and counted word pairs, and the suggestions can be checked by hand.",
   "leadsTo": [
-   "newtons-laws"
+   "learning-from-data",
+   "bayes-theorem"
   ],
-  "everyday": true,
-  "origin": "home-mechanisms"
+  "origin": "everyday-technology"
  },
  {
-  "slug": "skyscraper-sway-damper",
-  "title": "Skyscrapers in the wind",
+  "slug": "face-unlock-depth",
+  "title": "Why a photo cannot unlock your phone",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Turn a head in front of a drawn phone: the phone sprays a pattern of thousands of invisible dots onto it, a second camera sees where each dot lands, and the page shows the depth map they measure, nose nearest, ears farthest. Enrol the head, then present it again turned, smiling or with glasses: the map differs a little and the match bar stays above the line. Hold up a flat photo of the same face and every dot lands at the same depth, so the bar collapses; present a twin's head with the same shape and the bar stays up.",
+  "takeaway": "Face unlock measures the shape of your face in depth from where a pattern of dots lands, so a flat photo fails while a face with the same shape, a twin, can pass.",
+  "prerequisites": [],
+  "related": [
+   "fingerprint-match",
+   "password-guessing",
+   "digital-camera-sensor"
+  ],
+  "needs": "A head to measure: a simple parametric head drawn on the page (no external data), or a scanned head if one under an open licence is confirmed.",
+  "needsSource": "none; depth is computed by triangulating projected dots against the head's surface on the page.",
+  "pitfall": "It is not reading your eyes or your DNA, and a match is a score above a line, never certainty; the phone follows gradual changes such as a beard by updating the stored map. Name the depth method as one kind (structured light) and say that other phones use other depth tricks.",
+  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Face ID' averaged about 14,500 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Face_ID/monthly/2025010100/2025123100).",
+  "overlapWith": "fingerprint-match in this batch: the same enough-points-agree rule on ridges; light-optics (level 1) has the ray model. medical-imaging reconstructs a slice from many shadows; here depth comes from where projected dots land.",
+  "leadsTo": [
+   "light-optics",
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "fingerprint-match",
+  "title": "How a phone knows your finger",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Press a finger on a drawn sensor and see what it sees: a small patch of ridges, not the whole print, with the ridge ends and forks marked as dots, which are all the phone keeps. Press again, sliding and turning the finger or pressing only a corner, and watch the match count, how many dots line up, rise or fall past the 'enough' line. Wet the finger or put a cut across it and lose a few dots; press a different finger and watch almost none line up.",
+  "takeaway": "A phone stores a map of where your ridges end and fork, not a picture, and unlocks when enough of those points line up, never all of them.",
+  "prerequisites": [],
+  "related": [
+   "face-unlock-depth",
+   "password-guessing",
+   "touchscreens",
+   "teach-a-machine"
+  ],
+  "needs": "Fingerprint images generated on the page with a published synthetic-fingerprint model (an orientation field with cores and deltas filtered into ridges, as in SFinGe, Cappelli et al. 2000), stated on the page as synthetic; the FVC benchmark databases are research-use only and are not shipped.",
+  "needsSource": "none shipped; synthetic ridges from a published model, with the minutiae extracted by thinning. Real fingerprint databases (FVC, NIST SD) are not openly licensed.",
+  "pitfall": "The match is never total: a threshold decides, so a dirty or cut finger can fail and, rarely, a stranger can pass. The phone keeps no image of the print, and the sensor reads a patch, which is why enrolment asks for many presses.",
+  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Fingerprint' averaged about 17,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Fingerprint/monthly/2025010100/2025123100).",
+  "overlapWith": "face-unlock-depth in this batch: the same decision rule, enough points agree, on a different measurement; cryptography (level 2) is how the secret is kept. Nothing existing shows a biometric match.",
+  "leadsTo": [
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "spam-filter-word-counts",
+  "title": "How a spam filter decides",
+  "level": 0,
+  "kind": "build",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "A pile of real text messages arrives, each already marked spam or not; pick any word, 'free', 'win', 'tonight', 'mum', and see two counts, how many spam messages contain it and how many ordinary ones. Build the filter by letting it count every word, then write a message of your own and watch the words vote: each nudges the score toward spam or not according to its two counts. Try to sneak past with 'fr33' and watch the vote change; mark your message and see the counts update.",
+  "takeaway": "A spam filter has no idea what a message means: it counts which words turned up more in past spam, which is why spammers misspell and why your 'report spam' clicks teach it.",
+  "prerequisites": [],
+  "related": [
+   "autocomplete-spellcheck",
+   "teach-a-machine",
+   "you-might-also-like"
+  ],
+  "needs": "The SMS Spam Collection (Almeida and Hidalgo, UCI Machine Learning Repository, 5,574 messages, CC BY 4.0), or a subset.",
+  "needsSource": "UCI SMS Spam Collection, CC BY 4.0 (https://archive.ics.uci.edu/dataset/228/sms+spam+collection).",
+  "pitfall": "No word is bad: 'free' is only commoner in spam. The filter can be fooled both ways, and how much spam exists overall matters, so a rare kind of message needs stronger evidence; keep that as counts, not Bayes' formula.",
+  "why": "AI4K12 Big Idea 3, Learning, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/).",
+  "overlapWith": "bayes-theorem (level 1) counts true and false positives in a grid of 1,000 people and learning-from-data fits a curve; this page builds the simplest real classifier on a real corpus, with word counts the reader can check.",
+  "leadsTo": [
+   "bayes-theorem",
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "step-counter",
+  "title": "How a phone counts your steps",
   "level": 0,
   "kind": "simulate",
-  "category": "energy",
-  "interaction": "Blow gusty wind at a tall tower and watch its top sway a few metres back and forth; the sway builds when the gusts arrive in time with the tower's own rhythm. Hang a huge steel ball near the top on cables, tuned to swing at that same rhythm, and watch it swing the other way and cut the sway by nearly half; detune the ball, widen the tower's base, or try a short stubby building for comparison.",
-  "takeaway": "A tall building sways like a tree, and a giant pendulum hidden near the top swinging against it is what keeps the sway small.",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Play a real recording from a phone on someone's waist as they walk, climb stairs, sit and stand, with the stretches labelled: a line jiggles with every stride. Set the 'that was a step' line and watch the counter: too low and the fidgets during the sitting stretches count as steps, too high and the gentle strolling stretches are missed. Then shake the phone in a drawn car on a bumpy road and watch the counter climb without anyone walking.",
+  "takeaway": "A step counter counts jolts of a shaking sensor, so it needs a line between a stride and a fidget, and a bumpy ride can count as a walk.",
   "prerequisites": [],
   "related": [
-   "crane-counterweight",
-   "swing-pumping-alone"
+   "teach-a-machine"
   ],
-  "needs": "",
-  "pitfall": "The ball does not hold the building still by being heavy; it works by swinging out of step, and a ball tuned to the wrong rhythm does almost nothing. Skyscrapers are meant to sway: a tower that could not bend would crack.",
-  "why": "Taipei 101's 660-tonne tuned mass damper, on public display and the subject of many explainers, https://www.amusingplanet.com/2014/08/the-728-ton-tuned-mass-damper-of-taipei.html",
-  "overlapWith": "bridges-structures: that page loads a still frame and colours members by stress; this page is a building moving in the wind and the machine that calms it. oscillations-resonance shows resonance with a mass on a spring; here it is the problem, and the damper the cure.",
-  "needsSource": "none",
+  "needs": "Continuous raw accelerometer traces at 50 samples a second, with activity labels, from the Smartphone-Based Recognition of Human Activities and Postural Transitions dataset (UCI, CC BY 4.0).",
+  "needsSource": "UCI HAPT dataset, CC BY 4.0 (https://archive.ics.uci.edu/dataset/341/smartphone+based+recognition+of+human+activities+and+postural+transitions). It labels activity stretches but records no step counts, so there is no step ground truth: false counts are steps counted while sitting or standing, and the walking count is judged against the strides visible in the trace. The bumpy-car trace is synthesised and said to be.",
+  "pitfall": "The phone does not sense feet or use GPS to count steps; it counts jolts. Show the misses and the false counts, not a perfect counter.",
+  "why": "AI4K12 Big Idea 1, Perception: 'computers perceive the world using sensors' (https://ai4k12.org/); 'Pedometer' averaged about 3,800 views a month on English Wikipedia in 2025.",
+  "overlapWith": "newtons-laws (level 1) is forces and motion and feedback-control reads sensors into a controller; nothing existing counts events in a real sensor trace.",
   "leadsTo": [
-   "oscillations-resonance",
-   "bridges-structures"
+   "learning-from-data",
+   "newtons-laws"
   ],
-  "everyday": false,
-  "origin": "vehicles-and-big-machines"
+  "origin": "everyday-technology"
  },
  {
-  "slug": "socket-to-power-station",
-  "title": "Where the socket's electricity comes from",
+  "slug": "teach-a-machine",
+  "title": "Teach a machine to tell things apart",
+  "level": 0,
+  "kind": "build",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Draw a few cats and a few houses (or pull examples from a pile of other people's doodles), label them, and draw a new one: the machine shrinks every drawing to a small grid of squares, finds the stored drawings most like the new one square by square, and the labels of those neighbours vote. Watch it get the first guesses wrong, add more examples and watch the votes firm up. Then teach it a trap: every cat drawn in the top corner, every house at the bottom, and see it decide by position instead of shape.",
+  "takeaway": "A machine learns to sort things by comparing new examples with the ones it was shown, so more and more varied examples make it better, and a lazy pattern in the examples teaches it the wrong thing.",
+  "prerequisites": [],
+  "related": [
+   "spam-filter-word-counts",
+   "you-might-also-like",
+   "voice-assistant-wake-word",
+   "fingerprint-match",
+   "step-counter"
+  ],
+  "needs": "Optional: doodles from the Quick, Draw! dataset (Google, CC BY 4.0) as a ready pile of examples; the reader's own drawings need nothing.",
+  "needsSource": "Quick, Draw! dataset, CC BY 4.0 (https://github.com/googlecreativelab/quickdraw-dataset), optional.",
+  "pitfall": "The machine does not know what a cat is; it compares squares. Do not call the neighbour vote a neural network; neural-networks comes later. The trap where every wolf photo had snow is real and belongs on the page.",
+  "why": "AI4K12 Big Idea 3, Learning, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/).",
+  "overlapWith": "learning-from-data (level 1): that page fits a curve to points and shows overfitting with a test set; this one classifies drawings by nearest neighbours with no curve and no error plot, and leads into it.",
+  "leadsTo": [
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "voice-assistant-wake-word",
+  "title": "How a speaker hears its name",
+  "level": 0,
+  "kind": "step",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Say 'go' or 'stop' into the microphone (or pick one of the shipped recordings of other people saying it) and step through what the speaker does: the sound becomes a picture, time left to right and pitch bottom to top, with the loud parts bright; a small trained network that has looked at thousands of such pictures lights a confidence bar for each word it knows. Whisper, add kitchen noise or say a word it never learned, and watch the bars fall or the 'unknown' bar rise. The page says which words the network knows and that everything after the wake word goes to a bigger computer.",
+  "takeaway": "A voice assistant turns sound into a picture of pitches over time, and a small network that has seen thousands of people say the word recognises the shape, which is why noise and unfamiliar voices trip it.",
+  "prerequisites": [],
+  "related": [
+   "sound-as-numbers",
+   "autocomplete-spellcheck",
+   "teach-a-machine"
+  ],
+  "needs": "A small keyword-spotting model that runs in the browser: the TensorFlow.js speech-commands model (Apache 2.0), trained on the Speech Commands dataset (CC BY 4.0), whose vocabulary is the digits plus up, down, left, right, go, stop, yes and no; plus a handful of shipped clips from that dataset for readers who decline the microphone.",
+  "needsSource": "TensorFlow.js speech-commands model (Apache 2.0, https://github.com/tensorflow/tfjs-models/tree/master/speech-commands) and Speech Commands v2 (CC BY 4.0).",
+  "pitfall": "The wake-word listener does not understand words and does not send everything it hears: the small network runs on the device and knows only a few words, and the rest is sent only after it fires. It is not matching against one recording of the owner.",
+  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Virtual assistant' averaged about 7,400 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Virtual_assistant/monthly/2025010100/2025123100).",
+  "overlapWith": "convolution-vision (level 2) inspects a trained image classifier layer by layer on drawn digits; here the input is sound, the picture is the spectrogram the reader watches being made, and the network is a box with confidence bars. language-models is what runs after the wake word.",
+  "leadsTo": [
+   "waves-interference",
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "you-might-also-like",
+  "title": "Why the app says 'you might also like'",
   "level": 0,
   "kind": "explore",
-  "category": "energy",
-  "interaction": "Switch on a lamp and follow its wire back out of the house, up the pole, through the transformer and along the pylons to the plants feeding the region, all drawn from one real region's hourly generation record. Scrub through a day and a year: the share from the sun rises and falls with daylight, wind comes and goes, and gas, coal, nuclear and hydro fill whatever is left, with the lamp's glow coloured in the same shares. Pick a cloudy day, a windy night, or summer against winter.",
-  "takeaway": "The electricity at a socket is being made at that very moment by a changing mix of plants, and the mix on a calm night is not the mix at a breezy noon.",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Start on any article in a small web of real Wikipedia pages and see where its readers went next, as arrows whose thickness is a count; the 'you might also like' box is just the thickest arrows. Pick a different starting page and the box changes; follow a few arrows yourself and watch the suggestions drift toward the most-visited pages, which turn up in nearly everyone's box. Then add a brand-new page with no visits and see that nothing can recommend it yet.",
+  "takeaway": "'You might also like' is a count of where other people went after the same thing you are looking at, so it pulls everyone toward the popular and has nothing to say about anything new.",
   "prerequisites": [],
   "related": [
-   "wind-turbine-wind-speed",
-   "solar-panel-tilt-day",
-   "power-station-kettle",
-   "power-grid",
-   "light-bulb-hot-wire"
+   "spam-filter-word-counts",
+   "teach-a-machine"
   ],
-  "needs": "Hourly generation by fuel for one or two balancing regions over a full year from the US EIA Hourly Electric Grid Monitor (Form EIA-930; US government work, public domain), or a European region from the ENTSO-E transparency platform (free reuse with attribution).",
-  "pitfall": "Electricity is not stored in the wires and does not travel from one named plant to one named house: every plant feeds the same grid, so the lamp's share is the region's share. Nor do solar and wind 'run out' at night and leave the lamp dark; other plants take over, which the record shows.",
-  "why": "The US EIA built a public Hourly Electric Grid Monitor because people ask exactly this: https://www.eia.gov/electricity/gridmonitor/ (curriculum: NGSS 4-ESS3-1, energy and natural resources)",
-  "overlapWith": "power-grid: that page has the reader balance supply and demand with dispatch, transformers and frequency; this page asks nothing but a scrub through a real year and shows only where the electricity actually came from.",
-  "needsSource": "EIA-930 hourly generation by fuel type (public domain, https://www.eia.gov/electricity/gridmonitor/); alternative ENTSO-E transparency data (attribution required).",
+  "needs": "A small subset of the Wikipedia Clickstream (monthly referer-to-article counts, CC0), e.g. the neighbourhood of a few dozen articles.",
+  "needsSource": "Wikimedia Clickstream, CC0 (https://dumps.wikimedia.org/other/clickstream/). No open user-by-film ratings set was found (MovieLens is research-use only), so 'people like you' from ratings is not built here; the page is item-to-item counts.",
+  "pitfall": "The app does not know you; it knows counts of other people's paths, or in shops their purchases. Do not present the suggestion as taste or understanding, and show the pull toward the popular and the empty box for a new item rather than hiding them.",
+  "why": "AI4K12 Big Idea 3, Learning (https://ai4k12.org/); 'Recommender system' averaged about 7,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Recommender_system/monthly/2025010100/2025123100).",
+  "overlapWith": "pagerank (level 2): that page ranks pages by who links to whom with a random surfer; this one uses counts of actual reader paths from one page to the next, and the output is a 'next' list, not a ranking of the whole web. learning-from-data fits a model; here there is only counting.",
   "leadsTo": [
-   "electric-circuits",
-   "greenhouse-effect"
+   "learning-from-data",
+   "graph-search"
   ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
+  "origin": "everyday-technology"
  },
  {
-  "slug": "solar-panel-tilt-day",
-  "title": "A solar panel through the day",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Tilt and turn a solar panel on a roof while the sun crosses the sky for the chosen date and place; a meter shows the panel's output, biggest when it faces the sun squarely and zero at night. Scrub the year: a panel set for summer loses out in winter, and a cloud passing over cuts the meter at once. Compare a flat panel, a tilted one and one that follows the sun as counts of homes lit over a year.",
-  "takeaway": "A solar panel makes most when it faces the sun squarely, so its tilt, the hour, the season and the clouds all show up in its output.",
-  "prerequisites": [],
-  "related": [
-   "wind-turbine-wind-speed",
-   "socket-to-power-station",
-   "solar-cells"
-  ],
-  "needs": "",
-  "pitfall": "A panel needs light, not heat: it makes less on a hot day, not more, and a cold bright winter noon beats a hot hazy afternoon. The sun is not overhead at noon outside the tropics, so a flat panel is never the best one.",
-  "why": "NGSS 4-ESS3-1, energy from renewable resources, https://www.nextgenscience.org/pe/4-ess3-1-earth-and-human-activity ('which way should solar panels face' is a common search question)",
-  "overlapWith": "solar-cells: that page is the p-n junction and the band-gap trade-off at level 2; this page treats the panel as a box and asks only how much sunlight reaches it. sun-earth-moon shows the angle of sunlight to explain seasons; here the control is the panel, not the planet.",
-  "needsSource": "none (sun position from NOAA's published solar-position equations, US government work, https://gml.noaa.gov/grad/solcalc/; clear-sky sunlight from a published clear-sky model such as Haurwitz)",
-  "leadsTo": [
-   "sun-earth-moon",
-   "electric-circuits"
-  ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "toilet-flush",
-  "title": "Toilet flush & siphons",
-  "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Press the lever: the flapper lifts, the tank pours into the bowl and the bowl's water climbs toward the top of the bend behind it. The moment it spills over, the whole bend fills and the bowl drains itself, fast, until air gets in and it gurgles to a stop. Then pour a bucket in slowly or quickly to find what starts the siphon, and watch the float rise with the refilling tank and shut its own valve.",
-  "takeaway": "The tank does not push anything down the drain; it only raises the bowl high enough to fill the bend, and from then on the siphon empties the bowl by itself until air breaks it.",
-  "prerequisites": [],
-  "related": [
-   "water-taps-and-pipes",
-   "drinking-straw",
-   "feedback-control"
-  ],
-  "needs": "",
-  "pitfall": "The flush is not a pump and not 'suction': the bowl drains because the water in the falling leg of the bend outweighs the water in the rising leg, and a slow pour that never fills the bend drains nothing.",
-  "why": "A university general-education course on everyday physics opens with a lecture chapter titled 'Toilet Science' (HKU PHYS0607, https://www.physics.hku.hk/~phys0607/lectures/chap02.html); Google's 2017 how-to data puts toilet repair at the top of North American searches (https://www.engadget.com/2017-09-04-google-interactive-map-how-to-searches.html).",
-  "overlapWith": "feedback-control: that page tunes PID gains on a pendulum, a drone and a car at level 2; here the float valve is only the last step, an on/off switch, and the page is the siphon, which no existing page shows.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "umbrella",
-  "title": "Umbrella",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Slide the runner up the shaft and watch the short stretchers push the ribs outward until the canopy is taut and the runner clicks into its catch; slide it down and the ribs fold in. Then blow wind at the open umbrella from below with a slider: the ribs bend, and past a gust strength the canopy flips inside out, which a second slider for rib stiffness delays.",
-  "takeaway": "An umbrella opens because a sliding ring pushes short struts that lever the ribs outward, and it flips inside out when wind from below pushes the ribs past the point where they can push back.",
-  "prerequisites": [],
-  "related": [
-   "levers-and-scissors",
-   "flight",
-   "bridges-structures"
-  ],
-  "needs": "",
-  "pitfall": "Wind does not pull the umbrella up: air from below pushes on the canopy, and it is the catch that holds the runner, not the ribs, that keeps it open.",
-  "why": "KS2 design and technology, mechanical systems including levers and linkages (STEM Learning KS2 'Mechanical systems' collection, https://stem.org.uk/node/466480; statutory text in the primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf).",
-  "overlapWith": "flight: that page is lift on a wing with streamlines and a pressure map at level 2; here the wind is only a load on a linkage the reader opens and closes with a runner.",
-  "needsSource": "none",
-  "leadsTo": [
-   "bridges-structures"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "vacuum-cleaner",
-  "title": "Vacuum cleaner",
-  "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Switch on the fan and watch it push air out of the body, so the air inside thins and the room's air pushes in through the nozzle, carrying dust grains along wherever the airflow past them is strong enough to lift them. Narrow the nozzle, lift it off the carpet, or let the bag fill with dust and watch the airflow and the lifting change; block the hose and the fan roars while nothing moves.",
-  "takeaway": "A vacuum cleaner does not pull: its fan empties the air inside, the room's air rushes in to fill the gap and carries the dust, and if the flow is blocked the fan can roar without lifting anything.",
+  "slug": "k-means-clustering",
+  "title": "Clustering",
+  "level": 1,
+  "kind": "step",
+  "category": "ai",
+  "interaction": "Scatter points by hand or load a real dataset of penguins measured by bill and flipper, then step k-means: drop k centres, colour every point by its nearest centre, move each centre to the middle of its colour, and repeat until nothing moves. Change k and the starting positions and watch the result change, plot the total distance against k to choose a number of groups, and try a cloud shaped like two rings, where k-means fails and a method that follows density succeeds.",
+  "takeaway": "A computer can find groups in data with no labels at all, by alternately assigning points to the nearest centre and moving the centres, but which groups it finds depends on how many it is told to look for and where it starts.",
   "prerequisites": [
-   "drinking-straw"
+   "learning-from-data"
   ],
   "related": [
-   "water-taps-and-pipes",
-   "flight"
+   "embeddings"
   ],
-  "needs": "",
-  "pitfall": "Suction is not a pull and more motor power is not more cleaning: a full bag or a blocked hose defeats the strongest fan, because it is the airflow that carries the dust.",
-  "why": "KS3 science, Year 8 pressure in fluids: gas pressure and atmospheric pressure as the push of air (scheme at https://flipeducation.ai/curriculum/gb/science/year-8/pressure-in-fluids); nearest standard, no page-specific signal was found before the search budget ran out.",
-  "overlapWith": "atmosphere-weather: that page lets pressure differences drive wind and weather over a map at level 2; here the pressure difference is made by a fan in a box and the wind is in a hose.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "water-taps-and-pipes",
-  "title": "Taps, pipes & water towers",
-  "level": 0,
-  "kind": "build",
-  "category": "energy",
-  "interaction": "Fill a water tower, lay pipes from it to a house and open a tap: a gauge shows the push of the water growing with the tower's height, and the flow from the tap growing with that push and shrinking as the pipe gets longer or thinner. Open a second tap, run the shower upstairs and downstairs at once, or kink the garden hose, and watch the flows share out; raise the tower to fix a feeble upstairs shower.",
-  "takeaway": "What pushes water out of a tap is the height of the water above it, and every long or thin pipe on the way uses up part of that push, which is why the upstairs shower weakens when a downstairs tap opens.",
-  "prerequisites": [],
-  "related": [
-   "toilet-flush",
-   "drinking-straw",
-   "screws-and-screwdrivers",
-   "electric-circuits"
-  ],
-  "needs": "",
-  "pitfall": "A pump does not push water straight to each tap, and opening a tap wider does not raise the pressure: it lowers it, because more flow loses more push in the pipes.",
-  "why": "KS3 physics, pressure in liquids set by depth, with the pipe network as the familiar case (end points at https://files.schudio.com/oswaldtwistleschool/files/documents/KS3_Physics_End_Points.pdf; Year 8 scheme at https://flipeducation.ai/curriculum/gb/science/year-8/pressure-in-fluids).",
-  "overlapWith": "electric-circuits: that page wires batteries and bulbs and meters current and voltage; this page is the water version, a tower and pipes solved the same way, and it is the analogy that prepares for the circuit page rather than a copy of it.",
-  "needsSource": "none",
-  "leadsTo": [
-   "electric-circuits"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "wind-turbine-wind-speed",
-  "title": "Wind turbines: a little more wind, a lot more power",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Turn up the wind over a turbine and watch the blades spin faster while a row of houses lights up one by one; the count of lit houses climbs far faster than the wind does, and doubling the wind lights eight times as many. Lengthen the blades for more, then push the wind past the turbine's limit and watch it hold steady and finally feather its blades and stop. A real wind farm's measured power against wind speed is drawn under the toy's curve.",
-  "takeaway": "Doubling the wind speed gives a turbine about eight times the power, so where a turbine stands matters more than how big it is.",
-  "prerequisites": [],
-  "related": [
-   "socket-to-power-station",
-   "solar-panel-tilt-day",
-   "dam-water-height",
-   "kite-string-wind",
-   "power-grid"
-  ],
-  "needs": "Measured ten-minute power and wind-speed records of a real wind farm as the reference curve: the Kelmarsh or Penmanshiel SCADA data on Zenodo (Cubico Sustainable Investments, CC BY 4.0).",
-  "pitfall": "More wind is not always more power: above its rated wind the turbine holds its output steady, and above cut-out it stops, so the eight-times rule holds only below rated power. The blades turn because the wind lifts them like a wing, not because it pushes them from behind.",
-  "why": "NGSS 4-ESS3-1, obtaining energy from natural resources, and the US DOE's much-visited 'How do wind turbines work' explainer: https://www.energy.gov/eere/wind/how-do-wind-turbines-work",
-  "overlapWith": "power-grid: that page dispatches wind as one source among many to hold the grid's frequency; this page is one turbine, the wind alone, and the cube law shown as a count of lit houses.",
-  "needsSource": "Kelmarsh (https://doi.org/10.5281/zenodo.5841834) and Penmanshiel (https://doi.org/10.5281/zenodo.5946808) wind farm SCADA datasets, CC BY 4.0.",
-  "leadsTo": [
-   "newtons-laws"
-  ],
+  "needs": "A small real dataset with natural clusters.",
+  "needsSource": "the Palmer penguins dataset (CC0)",
+  "pitfall": "k-means does not discover the number of groups and finds only compact round blobs; the elbow plot is a heuristic. Different starts give different answers, so run it several times.",
+  "why": "Google's 'Introduction to Clustering' course (choose a similarity measure, cluster with k-means, evaluate the result) https://developers.google.com/machine-learning/clustering",
+  "overlapWith": "learning-from-data fits labelled points and embeddings shows a map of words that cluster; neither runs the algorithm that finds groups without labels. The pool's clustering-gaussian-mixtures (level 3) is EM on Gaussian mixtures; this is the level-1 k-means by hand.",
+  "leadsTo": [],
   "everyday": false,
-  "origin": "vehicles-and-big-machines"
+  "origin": "holes-l1-l2"
  },
  {
-  "slug": "wind-up-toy",
-  "title": "Wind-up toys",
-  "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Turn the key of a toy and watch its spiral spring coil tighter, with a counter of turns stored; let go and the spring unwinds through a train of gears into the legs, and the toy walks until the counter reaches zero. Swap the gear train for a faster or a slower one and see the toy run quickly for a short time or slowly for a long time from the same turns; add a spinning fan governor and watch it even out the speed.",
-  "takeaway": "Every turn you put into the spring comes back out through the gears, so a gear train that makes the toy slower makes it walk for longer, because the stored turns are all you have to spend.",
-  "prerequisites": [],
-  "related": [
-   "bicycle-gears",
-   "clock-escapement",
-   "springs-and-scales"
-  ],
-  "needs": "",
-  "pitfall": "Winding faster stores nothing extra, and the spring does not run out all at once: its push weakens as it unwinds, which is why the toy slows at the end unless a governor evens it out.",
-  "why": "KS2 design and technology: pupils 'understand and use mechanical systems in their products, for example gears, pulleys, cams, levers and linkages' (primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf; teaching collection at https://planbee.com/collections/mechanisms-mechanical-systems).",
-  "overlapWith": "newtons-laws: that page shows energy bars on a track; here energy is stored as counted turns in a spring and spent through a gear train, which no existing page shows.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "zipper",
-  "title": "Zipper",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Drag the slider up and watch its Y-shaped channel bend the two tapes toward each other so that each tooth's hook drops into the hollow between the two teeth across from it; drag it down and the wedge inside prises them apart one at a time. Then pull the two sides of a closed stretch apart with a growing force and see every locked tooth take a share of it, and pull the same way on an open stretch.",
-  "takeaway": "A zip holds because each tooth is trapped by the two teeth across from it, and only the slider's wedge can free them, one at a time.",
-  "prerequisites": [],
-  "related": [
-   "lock-and-key",
-   "click-pen"
-  ],
-  "needs": "",
-  "pitfall": "The slider does not stick or lock the teeth: it only bends the tapes so the staggered teeth can interleave, and once interleaved they hold each other.",
-  "why": "'How Zippers Work' is a long-running HowStuffWorks everyday-innovations explainer (https://science.howstuffworks.com/innovation/everyday-innovations/zipper.htm/printable).",
-  "overlapWith": "bridges-structures: that page loads a structure the reader built and colours members by tension and compression; a zip is a chain of identical hooks that the slider engages and frees one by one, and the pull test only shows that the chain shares a load.",
-  "needsSource": "none",
-  "leadsTo": [
-   "bridges-structures"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "abs-brakes",
-  "title": "ABS & the tire's grip",
+  "slug": "adaptive-optimizers",
+  "title": "Momentum, Adam & learning-rate schedules",
   "level": 3,
   "kind": "simulate",
-  "category": "energy",
-  "interaction": "Brake a car from highway speed on dry asphalt, wet road or ice: each wheel's spin follows its own equation of motion, the tire's braking force follows a friction-against-slip curve of measured shape that peaks at around ten to twenty percent slip and falls when the wheel locks, and the stopping distance is marked on the road. Brake too hard with ABS off and the wheel locks, the car slides further and no longer answers the steering; switch ABS on and watch the controller cycle the brake pressure to keep each wheel near the peak.",
-  "takeaway": "A tire grips best while still turning slightly slower than the road passes under it, a locked wheel brakes less and cannot steer, and ABS holds each wheel in that narrow band by releasing and reapplying the brake many times a second.",
+  "category": "ai",
+  "interaction": "Race plain gradient descent, momentum, RMSProp and Adam on a bowl whose condition number you set with a slider: stretch it a thousand to one and watch plain descent zigzag or stall while Adam's per-parameter step sizes, drawn as arrows, rescale the long axis. Tune momentum past critical damping to see it oscillate, then add warmup and a cosine schedule and compare how each optimizer finishes on a small real network's loss curve.",
+  "takeaway": "Gradient descent is slow when the loss is stretched more along some parameters than others, and momentum, per-parameter scaling and schedules each fix a different part of that.",
   "prerequisites": [
-   "newtons-laws",
-   "feedback-control"
-  ],
-  "related": [
-   "ev-drivetrains",
-   "bicycle-stability"
-  ],
-  "needs": "Tire friction-slip curves: Pacejka's 'magic formula' with coefficient sets for dry, wet and icy surfaces as published in the literature (published values; the textbook is paywalled).",
-  "pitfall": "ABS does not usually shorten the stop on dry road by much; its main job is to keep steering, and on loose gravel or snow a locked wheel can even stop shorter by building a wedge.",
-  "why": "Pacejka, Tire and Vehicle Dynamics (the standard reference for the slip curve and ABS target slip): https://shop.elsevier.com/books/tire-and-vehicle-dynamics/pacejka/978-0-08-097016-5 (from search results); the same search found ABS design papers using the magic formula to set the slip target.",
-  "overlapWith": "feedback-control: that page tunes a PID on generic plants; this one is the specific nonlinear plant whose slip curve is the whole point, and the controller is a bang-bang cycler, not a PID.",
-  "needsSource": "Pacejka magic-formula coefficients (published values).",
-  "leadsTo": [],
-  "everyday": true,
-  "origin": "energy-machines-l3"
- },
- {
-  "slug": "battery-degradation",
-  "title": "Why batteries wear out",
-  "level": 3,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Run a lithium-ion cell through years of use in minutes with a published semi-empirical ageing model: calendar ageing grows the solid-electrolyte interphase with the square root of time, faster at high state of charge and temperature, while each cycle adds wear that depends on its depth and current. Choose a usage pattern, a daily commute, a phone charged to 100 percent every night, a grid battery cycling once a day, and compare the capacity curves, including the knee where loss accelerates; overlay measured capacity fade from a public ageing dataset.",
-  "takeaway": "A battery ages even on the shelf, fastest when hot and full, and every cycle adds wear that grows with its depth, so the same cell lasts far longer cycled between 20 and 80 percent than between 0 and 100.",
-  "prerequisites": [
-   "redox-batteries",
-   "lithium-cell-dynamics",
-   "reaction-rates-equilibrium"
-  ],
-  "related": [
-   "ev-drivetrains",
-   "grid-storage-sizing"
-  ],
-  "needs": "A published semi-empirical ageing model with its fitted parameters (e.g. Schmalstieg et al. 2014, J. Power Sources, NMC 18650 cells; paper paywalled, parameters are published values), and measured capacity-fade curves from the NASA Ames PCoE Li-ion battery ageing datasets (US government data; licence field unstated on data.gov, to confirm).",
-  "pitfall": "Memory effect belongs to nickel-cadmium cells; lithium-ion cells have none, and their ageing is chemical, not a punishment for partial charging.",
-  "why": "NASA Ames PCoE Li-ion battery ageing datasets, cycled to 30 percent capacity fade under varied temperatures and loads: https://catalog.data.gov/dataset/li-ion-battery-aging-datasets (from search results); demand: Wikipedia, Lithium-ion battery, Degradation section, https://en.wikipedia.org/wiki/Lithium-ion_battery#Degradation.",
-  "overlapWith": "redox-batteries: that page charges and discharges a cell once and its capacity never changes; this page is the months-to-years chemistry that shrinks the capacity, and it sits above lithium-cell-dynamics (this batch), which is the seconds-to-hours physics of one discharge.",
-  "needsSource": "Schmalstieg et al. 2014 model parameters (published values; paper paywalled); NASA PCoE ageing data (US government; licence to confirm).",
-  "leadsTo": [],
-  "everyday": true,
-  "origin": "energy-machines-l3"
- },
- {
-  "slug": "bicycle-stability",
-  "title": "Why a bicycle balances itself",
-  "level": 3,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Push a riderless bicycle at a chosen speed and let its linearized equations of motion run: below a certain speed it slowly falls, in a middle band it wobbles and recovers on its own, and above it it slowly leans away. Drag the speed and watch the eigenvalues of lean and steer cross the stability boundary; change the trail, the head angle and the front-wheel mass, cancel the gyroscopic effect of the wheels and the trail in turn and see which bicycles still balance; then steer left and watch the bike first lean right.",
-  "takeaway": "A bicycle balances itself in a band of speeds because a fall makes its front wheel steer into the fall, and it still does so with the gyroscopic effect of its wheels cancelled.",
-  "prerequisites": [
-   "newtons-laws",
-   "oscillations-resonance",
+   "gradient-descent",
    "linear-transformations"
   ],
   "related": [
-   "feedback-control",
-   "abs-brakes"
-  ],
-  "needs": "The benchmark bicycle parameters and linearized equations of Meijaard, Papadopoulos, Ruina and Schwab (2007, Proc. R. Soc. A, doi:10.1098/rspa.2007.1857), published for exactly this kind of reuse and summarized openly at http://ruina.tam.cornell.edu/research/topics/bicycle_mechanics/",
-  "pitfall": "The gyroscopic effect of the wheels is not what keeps a bicycle up: a bicycle with its gyroscopic effect cancelled still balances, and the page must show it.",
-  "why": "Bartosz Ciechanowski, Bicycle (interactive explainer; demand signal): https://ciechanow.ski/bicycle/ (from search results; page reachable).",
-  "overlapWith": "feedback-control balances an inverted pendulum with a controller; this page balances with no controller at all, from the geometry's own eigenvalues.",
-  "needsSource": "Meijaard et al. 2007 benchmark (published values; paper paywalled, parameters openly reproduced on the Cornell page).",
-  "leadsTo": [],
-  "everyday": true,
-  "origin": "energy-machines-l3"
- },
- {
-  "slug": "carbon-capture",
-  "title": "Carbon capture",
-  "level": 3,
-  "kind": "step",
-  "category": "energy",
-  "interaction": "Step a stream of gas through an absorber where an amine solution takes up CO2 and a stripper where heat drives it back out, with the solvent's loading and the heat duty computed from the published equilibrium and the cycle's heat balance. Then slide the CO2 concentration of the source from a cement kiln's flue gas down to the air's 420 parts per million: the thermodynamic minimum work of separation climbs as the gas gets more dilute and the real process sits several times above it; connect the capture plant to a power-plant model and watch its output fall by the energy penalty.",
-  "takeaway": "The work needed to pull CO2 out of a gas climbs steeply as the gas gets more dilute, so capture from a chimney costs a fraction of capture from the air, and even at the chimney it takes a fifth or more of the plant's output.",
-  "prerequisites": [
-   "entropy",
-   "greenhouse-effect",
-   "acids-bases",
-   "reaction-rates-equilibrium"
-  ],
-  "related": [
-   "carbon-cycle",
-   "reverse-osmosis",
-   "exergy-analysis"
-  ],
-  "needs": "Vapor-liquid equilibrium of CO2 in aqueous monoethanolamine from published measurements or a published model (the Kent-Eisenberg correlation; parameters are published values).",
-  "pitfall": "Capture does not make a coal plant clean for free: the energy penalty is real and the page must show it; and direct air capture is not the same thing done to air, it faces a thermodynamic floor many times higher.",
-  "why": "National Academies, Negative Emissions Technologies and Reliable Sequestration (2019), direct air capture and its energy requirements: https://doi.org/10.17226/25259 (page reachable; content not reconfirmed, search budget exhausted).",
-  "overlapWith": "greenhouse-effect and carbon-cycle show what CO2 does and where it goes; this page is the machine that removes it and its thermodynamic cost.",
-  "needsSource": "Kent-Eisenberg CO2-MEA equilibrium parameters (published values).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "energy-machines-l3"
- },
- {
-  "slug": "chip-cooling",
-  "title": "Keeping a chip cool",
-  "level": 3,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Set the power of each core of a processor die and watch a heat-diffusion model spread it through the silicon, the lid and the heat sink, with the temperature map on the die and the stack of thermal resistances drawn from junction to air. Change the fan speed, the thermal paste, the heat sink's fin count and the spreader material, then shrink the hot core and see its hotspot temperature rise at the same total power; let the chip throttle itself when it hits its limit and watch the clock speed fall.",
-  "takeaway": "Heat leaving a chip must cross several layers in series, each with its own thermal resistance, and the hottest spot depends less on the total power than on how concentrated it is.",
-  "prerequisites": [
-   "cpu",
-   "entropy"
-  ],
-  "related": [
-   "heat-pumps-refrigeration",
-   "semiconductors",
-   "transistors-chipmaking",
-   "gpu",
-   "thermoelectrics"
+   "dropout-and-batch-norm",
+   "scaling-laws"
   ],
   "needs": "",
-  "pitfall": "Thermal paste is not a better conductor than metal; it is there to fill the microscopic air gaps that would be far worse, and a thick layer makes things worse, not better.",
-  "why": "MIT OCW 2.51 Intermediate Heat and Mass Transfer (conduction, fins, thermal resistance networks): https://ocw.mit.edu/courses/2-51-intermediate-heat-and-mass-transfer-fall-2008/ (course page reachable; content not reconfirmed, search budget exhausted).",
-  "overlapWith": "cpu covers what the chip computes and transistors-chipmaking how it is made; this page is how its heat gets out, which neither shows.",
-  "needsSource": "none; published thermal conductivities, and a representative die floorplan drawn on the page.",
-  "leadsTo": [],
-  "everyday": true,
-  "origin": "energy-machines-l3"
- },
- {
-  "slug": "decay-heat",
-  "title": "Decay heat & nuclear waste",
-  "level": 3,
-  "kind": "explore",
-  "category": "energy",
-  "interaction": "Scram a reactor and scrub time forward on a logarithmic axis from a second to a million years: the decay heat is computed by summing the decay chains of the fission products and actinides in the fuel, and the curve drops from seven percent of full power through the hours when a pool must keep cooling to the centuries when a cask stands in air. Hover any point to see which nuclides are producing the heat; change the burnup and the fuel type, and compare the radiotoxicity with that of the ore the uranium came from.",
-  "takeaway": "A reactor still produces about seven percent of its power the instant its chain reaction stops, and that decay heat falls quickly at first and then ever more slowly, carried by a different few nuclides at each timescale.",
-  "prerequisites": [
-   "nuclear-fission",
-   "radioactivity"
-  ],
-  "related": [
-   "deep-time",
-   "nuclear-fusion"
-  ],
-  "needs": "Fission-product yields and decay data (half-lives, decay energies, branching) from ENDF/B-VIII.0 at the NNDC (US government, public domain; https://www.nndc.bnl.gov/endf-b8.0/) or JEFF-3.3 (OECD NEA, openly distributed), reduced to the few hundred nuclides that matter; ingestion dose coefficients for the radiotoxicity comparison from ICRP Publication 119 (open access).",
-  "pitfall": "Fukushima's reactors were shut down by the earthquake; it was decay heat with no cooling, not a runaway chain reaction, that melted the cores.",
-  "why": "MIT OCW 22.06 Engineering of Nuclear Systems (decay heat, shutdown cooling, spent fuel): https://ocw.mit.edu/courses/22-06-engineering-of-nuclear-systems-fall-2010/ (course page reachable; content not reconfirmed, search budget exhausted); demand: Wikipedia, Decay heat https://en.wikipedia.org/wiki/Decay_heat.",
-  "overlapWith": "radioactivity shows single half-lives and nuclear-fission stops at holding the chain reaction; this page starts when the chain reaction stops and sums thousands of decay chains.",
-  "needsSource": "ENDF/B-VIII.0 decay and yield data (public domain) or JEFF-3.3 (openly distributed); ICRP 119 dose coefficients (open access).",
+  "pitfall": "Adam does not find better minima, it reaches them faster, and on some problems plain momentum generalizes better; do not declare a winner. The momentum analysis is exact only for quadratics, say so.",
+  "why": "Distill, Why Momentum Really Works (Goh 2017): https://distill.pub/2017/momentum/",
+  "overlapWith": "gradient-descent: that page already offers a momentum toggle on ravines and plateaus; here the ravine's conditioning is the control, and per-parameter scaling (RMSProp, Adam) and schedules are new.",
+  "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
-  "origin": "energy-machines-l3"
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "adversarial-examples",
+  "title": "Adversarial examples",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "ai",
+  "interaction": "Draw a digit for a small classifier running in the browser, then drag an epsilon slider: the page adds epsilon times the sign of the loss gradient, an image you can see beside the digit, and the prediction flips from 3 to 8 while the drawn digit looks unchanged. Compare a random perturbation of the same size, which does nothing, then switch to a model trained adversarially and see the flip need a visible epsilon and the clean accuracy fall.",
+  "takeaway": "Because a classifier is nearly linear in its input, a tiny step along the gradient of its loss, invisible to the eye, flips its output, while random noise of the same size does not.",
+  "prerequisites": [
+   "convolution-vision",
+   "gradient-descent"
+  ],
+  "related": [
+   "generative-adversarial-networks",
+   "uncertainty-calibration",
+   "federated-learning"
+  ],
+  "needs": "A small digit classifier with backpropagation to the input in the browser, trained on MNIST (CC BY-SA 3.0) as the existing convolution-vision page's drawn-digit classifier is, plus an adversarially trained twin; the page ships only its own weights, no images.",
+  "pitfall": "Adversarial examples are not a bug of one model; they transfer between models trained separately. The perturbation is not noise, and robustness is bought with clean accuracy.",
+  "why": "Goodfellow, Shlens and Szegedy 2015, Explaining and Harnessing Adversarial Examples: https://arxiv.org/abs/1412.6572",
+  "overlapWith": "convolution-vision: that page inspects what a classifier responds to; this one attacks the same kind of classifier through its gradient.",
+  "needsSource": "MNIST, CC BY-SA 3.0 (confirmed); only own trained weights are shipped, following the data decision of convolution-vision.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "clustering-gaussian-mixtures",
+  "title": "Clustering: k-means & Gaussian mixtures",
+  "level": 3,
+  "kind": "simulate",
+  "category": "ai",
+  "interaction": "Scatter points or load the Palmer penguins without their labels and step k-means: assign each point to its nearest centre, move the centres, repeat; try several k and seeds and watch it fail on elongated clusters. Switch to expectation-maximization on a Gaussian mixture, where each point is colored by its soft responsibilities, the ellipses stretch to fit and the log-likelihood climbs; then watch a density-based method pick out a ring that both of the others cut in half.",
+  "takeaway": "Clustering is fitting a model of groups without labels, and each algorithm's idea of a group, nearest centre, Gaussian blob or dense region, decides what it can and cannot find.",
+  "prerequisites": [
+   "central-limit-theorem",
+   "bayes-theorem"
+  ],
+  "related": [
+   "dimensionality-reduction",
+   "variational-autoencoders",
+   "embeddings"
+  ],
+  "needs": "Palmer penguins dataset (CC0).",
+  "pitfall": "k-means returns k clusters whether or not they exist, so show it carving a single blob; EM finds a local maximum that depends on the start.",
+  "why": "Stanford CS229 fall 2021 syllabus, k-means, expectation-maximization and mixtures of Gaussians: https://cs229.stanford.edu/syllabus-fall2021.html",
+  "overlapWith": "learning-from-data: that page fits labeled points; here there are no labels and the algorithm's assumption about group shape is what is on display.",
+  "needsSource": "Palmer penguins, CC0 (from memory, unverified in this session).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "contrastive-learning",
+  "title": "Contrastive & self-supervised learning",
+  "level": 3,
+  "kind": "simulate",
+  "category": "ai",
+  "interaction": "Train a small encoder on unlabeled clothing images where the only signal is agreement: two random augmentations (crop, flip, blur) of the same image are pulled together on a unit circle of embeddings and all other images are pushed apart. Watch the circle sort itself into clothing types without ever seeing a label, slide the temperature to make the negatives push harder or softer, then flip to the CLIP variant where a grid of image-text similarities is trained to light up only on its diagonal.",
+  "takeaway": "A representation can be learned with no labels by making a network agree with itself across augmentations and disagree with other examples, and the augmentations decide what the representation learns to ignore.",
+  "prerequisites": [
+   "neural-networks",
+   "embeddings",
+   "convolution-vision"
+  ],
+  "related": [
+   "variational-autoencoders",
+   "dimensionality-reduction"
+  ],
+  "needs": "A Fashion-MNIST subset (MIT); the encoder trains live or is scrubbed from precomputed checkpoints (own weights).",
+  "pitfall": "Self-supervised is not unsupervised clustering: the augmentations are a design choice that injects knowledge. Collapse, every embedding equal, is the failure to show.",
+  "why": "Chen et al. 2020, SimCLR, A Simple Framework for Contrastive Learning of Visual Representations: https://arxiv.org/abs/2002.05709",
+  "overlapWith": "embeddings: that page explores a given embedding space; this one shows how such a space is trained without labels.",
+  "needsSource": "Fashion-MNIST, MIT licence (confirmed); own weights.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "dimensionality-reduction",
+  "title": "Dimensionality reduction: PCA & t-SNE",
+  "level": 3,
+  "kind": "explore",
+  "category": "ai",
+  "interaction": "Rotate a 3-D cloud of points and watch its shadow on the screen: the principal axes are the rotation that keeps the most spread, and dropping the third axis loses the least. Then run t-SNE live on a few hundred clothing images: the map forms as the gradient steps run, and sliding the perplexity or reseeding rearranges it, which shows what is real (who neighbours whom) and what is an artefact (cluster sizes and the gaps between them).",
+  "takeaway": "PCA keeps the directions of largest variance and nothing else, while t-SNE keeps each point's neighbours and sacrifices everything else, so the two maps answer different questions.",
+  "prerequisites": [
+   "linear-transformations",
+   "embeddings"
+  ],
+  "related": [
+   "clustering-gaussian-mixtures",
+   "variational-autoencoders",
+   "tensors"
+  ],
+  "needs": "A Fashion-MNIST subset (MIT).",
+  "pitfall": "Distances between t-SNE clusters and their sizes mean nothing; the page must not read them. Principal components are directions of variance, not the features that matter for a task.",
+  "why": "Distill, How to Use t-SNE Effectively: https://distill.pub/2016/misread-tsne/",
+  "overlapWith": "embeddings: that page's pitfall warns that its 2-D map distorts distances; this page is about how such maps are made and exactly what each one distorts.",
+  "needsSource": "Fashion-MNIST, MIT licence (confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "double-descent",
+  "title": "Bias, variance & double descent",
+  "level": 3,
+  "kind": "simulate",
+  "category": "ai",
+  "interaction": "Fit random-feature ridge regression to noisy data and slide the number of features from a few to many times the number of points: the test error rises, peaks exactly where the model can first fit every point, then falls again, while the training error hits zero and stays there. Resample the training set many times to see the fits' spread (variance) and their average's miss (bias), add label noise to sharpen the peak, and add ridge regularization to erase it.",
+  "takeaway": "Test error peaks where a model has just enough parameters to memorize its data and falls again beyond it, so models larger than their data can generalize, and regularization smooths the peak away.",
+  "prerequisites": [
+   "learning-from-data",
+   "linear-transformations"
+  ],
+  "related": [
+   "tree-ensembles",
+   "dropout-and-batch-norm",
+   "scaling-laws",
+   "gaussian-processes"
+  ],
+  "needs": "",
+  "pitfall": "The classical U-shaped curve is not wrong, it is the left half. The second descent needs the minimum-norm (or implicitly regularized) solution; with an arbitrary interpolating fit it does not happen.",
+  "why": "OpenAI, Deep Double Descent (Nakkiran et al. 2019): https://openai.com/index/deep-double-descent",
+  "overlapWith": "learning-from-data: that page stops where the test error turns upward; this one keeps adding parameters through the interpolation peak and down the other side.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "dropout-and-batch-norm",
+  "title": "Dropout, weight decay & batch normalization",
+  "level": 3,
+  "kind": "build",
+  "category": "ai",
+  "interaction": "Build a small network on a 2-D dataset from a palette that includes dropout and batch-norm layers and train it live: the decision boundary, the weight histogram and each layer's activation distribution update as it learns. Switch dropout on to see many thinned sub-networks' boundaries and their average; add weight decay and watch the weights shrink and the boundary smooth; add batch norm, raise the learning rate tenfold and see the activations stay centred where the plain network's blow up.",
+  "takeaway": "Dropout trains an ensemble of thinned networks at once, weight decay keeps the function smooth, and batch norm keeps each layer's inputs in range so training survives large steps.",
+  "prerequisites": [
+   "neural-networks",
+   "gradient-descent"
+  ],
+  "related": [
+   "double-descent",
+   "adaptive-optimizers"
+  ],
+  "needs": "",
+  "pitfall": "Dropout is off at test time with activations rescaled, and batch norm behaves differently in training and inference; the page must show both modes. Do not state that batch norm works by removing internal covariate shift as established fact.",
+  "why": "Stanford CS231n, lecture Training Neural Networks (dropout, batch normalization, weight decay): https://cs231n.stanford.edu/schedule.html",
+  "overlapWith": "neural-networks: that page builds and trains plain layers; this one adds the regularizers and the normalization and shows what each does to the weights and activations.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "evolutionary-algorithms",
+  "title": "Evolutionary algorithms",
+  "level": 3,
+  "kind": "simulate",
+  "category": "ai",
+  "interaction": "Release a population on the landscapes gradient descent uses, plus a jagged one with no useful gradient: CMA-ES draws its population as an ellipse that stretches along the valley and shrinks as it converges, with mutation strength and population size as sliders. Then run a genetic algorithm on a discrete problem, a short tour through cities, with crossover, mutation and selection pressure as controls, and watch diversity collapse when selection is too strong.",
+  "takeaway": "A population under selection, mutation and recombination can climb a landscape with no gradient at all, and the spread of the population is the search's memory of which directions worked.",
+  "prerequisites": [
+   "gradient-descent",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "evolution",
+   "world-models",
+   "reinforcement-learning"
+  ],
+  "needs": "",
+  "pitfall": "Evolutionary search is an optimizer, not a model of biology; fitness is a function the designer chose. Do not present the genetic algorithm as the method of choice: CMA-ES is what is used on continuous problems.",
+  "why": "David Ha, A Visual Guide to Evolution Strategies: https://blog.otoro.net/2017/10/29/visual-evolution-strategies/",
+  "overlapWith": "evolution: that page shows natural selection acting on creatures at level 1; here selection, mutation and recombination are optimizers on a fitness landscape, compared with gradient descent.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "federated-learning",
+  "title": "Federated learning & differential privacy",
+  "level": 3,
+  "kind": "simulate",
+  "category": "ai",
+  "interaction": "Split a 2-D dataset across several devices, each holding its own skewed slice, and run federated averaging: every device trains locally for a few steps, sends its update, and the server averages them into one model whose boundary is drawn on every device. Make the slices more unlike each other and watch client drift pull the average off course; then clip each update and add noise with a privacy budget slider and see the accuracy paid for every notch of privacy.",
+  "takeaway": "A model can be trained without the data leaving the devices by averaging their updates, and the privacy of each update is bought with clipping and noise that cost accuracy.",
+  "prerequisites": [
+   "neural-networks",
+   "gradient-descent",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "cryptography",
+   "adversarial-examples",
+   "internet"
+  ],
+  "needs": "",
+  "pitfall": "Federated learning alone is not private: gradients can leak training data, which is why differential privacy is added. Epsilon is a bound on how much one person's data can change the output, not a probability of a leak.",
+  "why": "McMahan et al. 2017, Communication-Efficient Learning of Deep Networks from Decentralized Data: https://arxiv.org/abs/1602.05629",
+  "overlapWith": "neural-networks: that page trains on one dataset in one place; here the data is split over devices, averaging is the mechanism and privacy noise is the trade.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "gaussian-processes",
+  "title": "Gaussian processes",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "ai",
+  "interaction": "Click to add observations on a blank axis and watch the posterior mean and its 95% band snap to them with sample functions drawn through; the band pinches to nothing at the data and swells between points. Drag the kernel's length scale and noise, swap kernels (squared exponential, periodic, linear) with the kernel matrix shown as a heat map alongside, then let the page choose the next point to query by upper confidence bound, the step at the heart of Bayesian optimization.",
+  "takeaway": "A Gaussian process is a distribution over functions set by a kernel, and conditioning it on data pins it down where observed and leaves uncertainty that grows with distance from the data at a rate the kernel sets.",
+  "prerequisites": [
+   "central-limit-theorem",
+   "linear-transformations",
+   "bayes-theorem"
+  ],
+  "related": [
+   "support-vector-machines",
+   "markov-chain-monte-carlo",
+   "uncertainty-calibration",
+   "learning-from-data"
+  ],
+  "needs": "",
+  "pitfall": "Draw sample functions, not only the mean and band; the mean alone looks like any smoother. The band's width away from data comes from the prior, not from evidence.",
+  "why": "Rasmussen and Williams, Gaussian Processes for Machine Learning, the standard text, free online: https://gaussianprocess.org/gpml/",
+  "overlapWith": "learning-from-data: that page fits one curve; here the fit is a whole distribution of curves and the uncertainty between data points is the point.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "generative-adversarial-networks",
+  "title": "Generative adversarial networks",
+  "level": 3,
+  "kind": "simulate",
+  "category": "ai",
+  "interaction": "Choose a 2-D dataset (a ring of eight Gaussians, a spiral) and train a tiny generator and discriminator live: the generator's cloud of samples chases the data while the discriminator's verdict is painted underneath as a field. Unbalance the two learning rates or shrink the discriminator and watch mode collapse, the cloud settling on one blob and hopping between them; then scrub precomputed sample grids from a GAN trained on clothing images epoch by epoch.",
+  "takeaway": "Two networks play a game, one forging samples and one judging them, and the forger learns the data distribution only through the judge's verdicts, which is why training oscillates and can collapse onto a few modes.",
+  "prerequisites": [
+   "neural-networks",
+   "gradient-descent"
+  ],
+  "related": [
+   "variational-autoencoders",
+   "diffusion-models",
+   "normalizing-flows",
+   "adversarial-examples"
+  ],
+  "needs": "None for the live 2-D case; precomputed sample grids from a small GAN trained offline on Fashion-MNIST (MIT), own weights.",
+  "pitfall": "GAN losses are not a progress meter: a falling generator loss says nothing about sample quality, so the page must not draw the loss as a curve to be minimized. Do not claim a GAN memorizes training images.",
+  "why": "MIT 6.S191 2025 lecture 4, Deep Generative Modeling, and Stanford CS236: https://introtodeeplearning.com/2025/index.html",
+  "overlapWith": "diffusion-models: its 2-D cloud is denoised through many fixed steps; here one network maps noise to data in a single pass and the only learning signal is a second network's judgement.",
+  "needsSource": "Fashion-MNIST, MIT licence (confirmed) for the precomputed image samples; own weights.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "graph-neural-networks",
+  "title": "Graph neural networks",
+  "level": 3,
+  "kind": "step",
+  "category": "ai",
+  "interaction": "On Zachary's karate club (34 members, two factions) label two members and step message passing one layer at a time: each node's vector becomes an aggregate of its neighbours', drawn as a 2-D embedding that moves at every layer, and the faction prediction spreads outward from the two seeds. Keep stacking layers and watch every embedding converge to one point, then show two different graphs that every such network embeds identically.",
+  "takeaway": "A graph network updates each node from its neighbours' messages, so after k layers a node summarizes its k-hop neighbourhood, and with too many layers every node summarizes the same thing.",
+  "prerequisites": [
+   "neural-networks",
+   "graph-search",
+   "linear-transformations"
+  ],
+  "related": [
+   "pagerank",
+   "embeddings",
+   "protein-folding"
+  ],
+  "needs": "Zachary's karate-club graph (34 nodes, Table 3 of Zachary 1977, redistributed with NetworkX).",
+  "pitfall": "Message passing is not PageRank: the aggregation weights are learned. The Weisfeiler-Lehman limit means some non-isomorphic graphs are indistinguishable to message passing, and the page should show a pair.",
+  "why": "Stanford CS224W 2023 slides on message passing and GNN expressive power: https://snap.stanford.edu/class/cs224w-2023/slides/07-theory.pdf",
+  "overlapWith": "pagerank: that page propagates a scalar along links by a fixed rule; here vectors propagate with learned weights, and oversmoothing and the expressiveness limit are new.",
+  "needsSource": "Zachary karate club: 34-node table from a 1977 paper, widely redistributed, licence unverified; trivially small and could be re-entered from the paper with citation.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "induction-heads",
+  "title": "Induction heads & in-context learning",
+  "level": 3,
+  "kind": "explore",
+  "category": "ai",
+  "interaction": "Scrub through the training run of a tiny two-layer attention-only transformer trained on repeated random token sequences (checkpoints precomputed): the loss on the second copy of each sequence drops suddenly at one point of training, and hovering any token shows the attention pattern at that checkpoint. Before the drop the heads attend diffusely; after it, one head in the first layer attends to the previous token and one in the second attends to the token that followed the current token's last occurrence, and ablating either head erases the drop live.",
+  "takeaway": "In-context copying is done by a two-head circuit, a previous-token head feeding an induction head, and it appears abruptly during training, which is why the loss curve has a step.",
+  "prerequisites": [
+   "transformers",
+   "language-models"
+  ],
+  "related": [
+   "superposition-features",
+   "recurrent-networks"
+  ],
+  "needs": "The project's own precomputed checkpoints of a tiny attention-only transformer (a vocabulary of tens of tokens, two layers), run in the browser.",
+  "pitfall": "The circuit is established in small attention-only models; in large models the evidence is correlational, say so. Attention weights are not explanations on their own; the ablation is the evidence.",
+  "why": "Anthropic, In-context Learning and Induction Heads (Olsson et al. 2022): https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html",
+  "overlapWith": "transformers: that page shows a trained model's attention on sentences; this one shows a circuit of two heads forming during training and tests it by ablation.",
+  "needsSource": "none external; own checkpoints",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
  }
 ]

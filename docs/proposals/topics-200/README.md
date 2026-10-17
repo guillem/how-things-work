@@ -3,8 +3,8 @@
 The self-handover for this piece of work. Read it top to bottom before continuing; the
 "Resume" section at the end says exactly what to run next.
 
-Last updated: 2026-10-18 00:05 UTC+2 (run 4, the last two generator lenses, in flight; see
-"Where the runs stand").
+Last updated: 2026-10-18 00:50 UTC+2. **Phase A (generation) is complete; phase B (judging) is the next
+step.** The session was stopped here on purpose; see "Resume".
 
 ## What the user asked for
 
@@ -76,28 +76,31 @@ prompt text, the 19 lens briefs, helpers).
 
 ## Where the runs stand
 
-- **Runs 1 and 2 (the single-run script)** both died on the user's usage limit: 5 generator
-  lenses finished in run 1, 5 more in run 2 (the resume replayed nothing, see "Lessons"). Their
-  results were recovered from the workflow journals into `data/generators-runs-1-2.json`
-  (10 lenses: vehicles-and-big-machines, basic-physical-science, chemistry-and-cooking,
-  physics-l3, math-l3, earth-sky-weather, numbers-shapes-computers, living-things-and-body,
-  home-mechanisms, everyday-technology).
-- **Run 3 (phase A)** ran the 9 missing lenses; 7 finished (chemistry-l3, biology-l3,
-  computing-networks-l3, ai-l3, medicine-l3, earth-space-l3, energy-machines-l3, 30 candidates
-  each) before the limit tripped again. Collected into `data/generators-run-3.json`.
-- **Run 4 (phase A)** runs the last two lenses, `demand` and `holes-l1-l2`, launched 2026-10-18
-  00:00 UTC+2. Its journal:
-  `~/.claude/projects/-Users-guillem-Development-how-things-work/6ab4727d-d0eb-4d1e-9581-9ca8ca472f63/subagents/workflows/wf_e9fab2d3-a1a/journal.jsonl`.
-  If it finished, its results are in `data/generators-run-4.json`; if that file is missing, the
-  session was stopped first: collect it from the journal (Resume, step 1) and re-run whatever is
-  still missing (step 2).
-- **The pool** (`data/pool.json`, `data/pool/`, `data/phase-b-args.json`) was last built from
-  runs 1 to 3: 499 candidates (235 at level 0, 2 at level 1, 262 at level 3; by category: math
-  51, physics 82, chemistry 56, biology 48, medicine 50, earth 36, space 27, computing 32,
-  networks 19, ai 37, energy 61). Rebuild it with run 4 included before phase B. The two missing
-  lenses are the only sources of level-1 and level-2 candidates (10 + 3 slots) and of the
-  demand-driven subjects, so phase B should not run without them.
-- Phases B and C have not run.
+**Phase A is done: all 19 lenses finished, 557 candidates in the pool.** It took four runs:
+
+- Runs 1 and 2 (the original single-run script) died on the usage limit with 5 + 5 generator
+  lenses finished; their results were recovered from the workflow journals into
+  `data/generators-runs-1-2.json`.
+- Run 3 (phase A) finished 7 of the 9 remaining lenses (`data/generators-run-3.json`); the
+  limit tripped again on the last two.
+- Run 4 (phase A) finished those two, `demand` and `holes-l1-l2`
+  (`data/generators-run-4.json`).
+
+The pool (`data/pool.json`, one entry per candidate with `origin` = lens; `data/pool/<category>.json`;
+`data/pool/batch-01..23.json`, 25 per batch in category order; `data/phase-b-args.json`) is built
+from all four run files: **557 candidates** after exact-slug dedupe (nothing merged yet), by level
+247 / 36 / 5 / 269 (levels 0 / 1 / 2 / 3), by category math 58, physics 94, chemistry 58,
+biology 56, medicine 56, earth 42, space 30, computing 38, networks 21, ai 38, energy 66; by kind
+manipulate 176, simulate 217, step 61, build 62, explore 41; 196 flagged `everyday`. Every
+level-0 and level-3 target cell has more candidates than its quota; the level-1 and level-2
+slots (10 + 3) draw on 41 candidates, nearly all from the `holes-l1-l2` and `demand` lenses.
+
+`data/dispositions.json` holds 55 generator dispositions covering all 14 Reserve items (most say
+"promote", some "merge" into a named candidate); the proposal's Reserve table reconciles them by
+hand, one decision per item.
+
+**Phases B and C have not run.** Nothing has been judged, merged or verified; the pool is raw
+generator output.
 
 ## Lessons from the failed runs (read before launching anything)
 
@@ -112,55 +115,72 @@ prompt text, the 19 lens briefs, helpers).
   results on through files (`data/`) and `args`.
 - **Workflow `args` must stay small** (the pool is 550 KB; the compact rows are 22 KB). That is
   why phases B and C take rows and read the full entries from `data/pool/`.
+- **Phase B as scripted is too big for one usage window.** With 23 batches it launches 11 merge
+  agents, 46 judges and a curator (about 4 to 5 million tokens). Split it before running (see
+  Resume, step 4): the merge and judge agents depend only on the files in `data/pool/`, so they
+  can run as several small workflows whose results are collected from their journals; the
+  quota selection is plain code and can move into a local script; the curator is one agent.
+  Phase C (about 20 verify batches, the replacement rounds, 3 critics) needs the same treatment.
 - **Agents' output quality has been good:** entries in the catalogue's voice, curriculum anchors
   with URLs (NGSS, KS2/KS3, MIT OCW), honest `overlapWith` notes. Keep the generator prompt as it
   is (the cached lenses were produced with it).
 
 ## Resume
 
-From the repository root, after `npm install`:
+Steps 1 to 3 of the earlier plan (collect the generator runs, build the pool) are done; the pool
+files are committed. From the repository root, after `npm install`:
 
-1. **Collect the latest run** from its journal (works whether the run finished or died):
-   `node docs/proposals/topics-200/scripts/collect-run.mjs <journal.jsonl above>
-docs/proposals/topics-200/data/generators-run-N.json` (N = 4 for run 4). It prints the
-   finished lenses and the failed ones.
-2. **Re-run any lens still missing** with phase A: pass `data/workflow-args.json` as `args`,
-   plus `"scratch"` (any directory) and `"doneLenses"` (the lens keys already in
-   `generators-runs-1-2.json`, `generators-run-3.json` and later run files). `scriptPath` is
-   `docs/proposals/topics-200/workflows/phase-a-generate.js`. Append its results to
-   `generators-run-3.json` (or a `generators-run-4.json`; `prep-pool.mjs` takes any number of
-   files).
-3. **Build the pool:** `node docs/proposals/topics-200/scripts/prep-pool.mjs
-docs/proposals/topics-200/data/generators-run-3.json
-docs/proposals/topics-200/data/generators-run-4.json` (every run file after runs 1 and 2,
-   which prep-pool always includes). It prints the pool size by level and category and writes
-   `data/phase-b-args.json`.
-4. **Phase B:** launch `workflows/phase-b-judge.js` with `args` = the contents of
-   `data/workflow-args.json` merged with `data/phase-b-args.json` (`rows`, `poolDir`,
-   `batches`), plus `"scratch"`. Save its result as `data/phase-b.json` (it contains `selected`
-   and `runnersUp` rows, `mergedOut`, `rejectedByJudges`, the curator's swaps and notes).
-   Expect about 11 + 2 × 23 + 1 agents for ~560 candidates.
-5. **Phase C:** launch `workflows/phase-c-verify.js` with `args` = `workflow-args.json` merged
-   with `{"selected": <phase-b selected>, "runnersUp": <phase-b runnersUp>, "poolDir": <same as
-phase B>}`. Save its result as `data/phase-c.json`.
-6. **Assemble and render:** `node docs/proposals/topics-200/scripts/assemble.mjs
-docs/proposals/topics-200/data/phase-c.json`, then
-   `node docs/proposals/topics-200/scripts/render.mjs docs/proposals/topics-200/data/final.json
-src/routes`. Fix every `PROBLEM` it prints (usually by hand in `final.json`: a prerequisite
-   above the level, a Related link to a slug that was not selected) until it prints none.
-7. **Write `docs/TOPICS-PROPOSAL.md`** from `drafts/skeleton.md`: fill `{{TABLES}}` from
+1. **Re-read this file and the three workflow scripts** (`workflows/`), and skim
+   `data/pool/physics.json` to see what a candidate looks like.
+2. **Restructure phase B for the usage window** (one short session of script work, no agents):
+   - `workflows/phase-b-judge.js`: give it a `stage` argument. `stage: "merge"` runs only the
+     11 merge agents and returns `mergedOut`; `stage: "judge"` with `batchFrom` / `batchTo` runs
+     the two judges for those batch numbers only and returns the raw verdicts (slug, lens,
+     score, reject, reason, suggestedLevel); `stage: "curate"` takes `selected` and `runnersUp`
+     rows and runs only the curator, returning its swaps and overlaps. Keep the prompts as they
+     are. The journal of every run records each agent's result, so a run that dies can be
+     collected with a small variant of `scripts/collect-run.mjs` (match labels `merge:` /
+     `judge:` instead of `gen:`).
+   - `scripts/select.mjs` (new): reads the pool rows, the collected merge drops and verdicts,
+     computes scores as the script does (mean of the two judges × 3; any `reject` removes the
+     candidate; the fit-level judge's `suggestedLevel` re-levels), runs `selectByQuota` (copy it
+     from the script: level quotas 45 / 10 / 3 / 42, the per-category level-0 and level-3
+     targets, at most 12 per category), applies the curator's same-level swaps, and writes
+     `data/selection.json` with `selected` and `runnersUp` rows.
+3. **Run phase B in pieces**, collecting each piece into `data/` as it finishes: the merge run
+   (11 agents), then judge runs of about 8 batches each (16 agents, roughly 1.2 million tokens
+   each; three runs for 23 batches), then `select.mjs`, then the curator run, then `select.mjs`
+   again to apply the swaps. `args` for every run = the contents of `data/workflow-args.json`
+   plus `data/phase-b-args.json` (`rows`, `poolDir`, `batches`), plus `"scratch"` and the stage
+   fields. `poolDir` must be the absolute path of `docs/proposals/topics-200/data/pool`.
+4. **Phase C the same way** (`workflows/phase-c-verify.js`): a `stage: "verify"` that takes the
+   rows to verify (about 10 batches of 5 per run) and returns verdicts with fixes; a local
+   `scripts/replace.mjs` that applies the replacement rule (a refuted topic is replaced by the
+   best untried runner-up at the same level, same category first, at most 12 per category) and
+   emits the next rows to verify, until nothing is refuted; then a `stage: "gaps"` run (3 critics,
+   then one verify run over their candidates) and the gap-swap rule (a verified gap entry replaces
+   the lowest-scoring selected topic at the same level, at most 10 swaps). The invariant pass at
+   the end of the script is plain code; keep it in the last stage or move it into
+   `scripts/assemble.mjs`.
+5. **Assemble and render:** `node docs/proposals/topics-200/scripts/assemble.mjs <phase C
+output>` writes `data/final.json`; `node docs/proposals/topics-200/scripts/render.mjs
+docs/proposals/topics-200/data/final.json src/routes` checks the invariants over existing +
+   proposed and writes `data/entries.md`, `data/tables.md`, `data/checklist.md`,
+   `data/validation.json`. Fix every `PROBLEM` it prints (by hand in `final.json`) until it
+   prints none. (`assemble.mjs` expects the phase-C result shape of the current script: `final`
+   rows with `fix`, `gapEntries`; adjust it to whatever the restructured stages return.)
+6. **Write `docs/TOPICS-PROPOSAL.md`** from `drafts/skeleton.md`: fill `{{TABLES}}` from
    `data/tables.md`, `{{ENTRIES}}` from `data/entries.md`, `{{CHECKLIST}}` from
    `data/checklist.md`, `{{BACKLINKS}}` from `data/validation.json`, the Reserve table from
    `data/dispositions.json` (one decision per item, reconciled by hand), the categories,
    evenness, waves and method sections from `drafts/prose.md` (fill its placeholders with the
    run's numbers), the framework section from `drafts/framework.md`, and a runners-up section
    from phase C's `runnersUp` (the best 30 or so, as the new Reserve). Read every entry once as
-   an editor: the catalogue's voice, no duplicated mechanism, one sentence takeaways.
-8. **Document and commit:** update this README's status, the one-paragraph note in
+   an editor: the catalogue's voice, no duplicated mechanism, one-sentence takeaways.
+7. **Document and commit:** update this README's status, the one-paragraph note in
    `docs/STATUS.md` ("Current development") and `docs/BACKLOG.md`, run `make check`, commit by
    path. Do not touch `TOPICS.md`; do not release.
 
-Then ask the user to review the proposal; the open questions for them are listed at the end of
-`drafts/skeleton.md`'s summary once written: the level-0 definition, the target split, the
-optional "Everyday things" category, the re-levelling footnote, and which Reserve dispositions to
-accept.
+Then ask the user to review the proposal; the open questions for them: the level-0 definition,
+the target split, the optional "Everyday things" category, the re-levelling footnote, and which
+Reserve dispositions to accept.

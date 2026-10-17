@@ -222,6 +222,29 @@
   "origin": "numbers-shapes-computers"
  },
  {
+  "slug": "monty-hall",
+  "title": "The three doors",
+  "level": 0,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Pick one of three doors; the host, who knows where the prize is, opens another to show a goat, and you stay or switch. Play by hand, then let the page play a hundred games with 'always stay' and a hundred with 'always switch', the wins piling into two columns at about two to one. Flip the board to see the three places the prize could be and which choice wins in each, then try ten doors where the host opens eight.",
+  "takeaway": "Switching wins twice as often as staying, because the first pick is right only one time in three and the host's open door points to the prize the rest of the time.",
+  "prerequisites": [],
+  "related": [
+   "bayes-theorem"
+  ],
+  "needs": "",
+  "pitfall": "The host must know where the prize is and always open a goat door; if he opens a door at random and happens to show a goat, the two remaining doors really are equal, and the page should show that case too.",
+  "why": "The Monty Hall problem is among the most-read probability articles on Wikipedia and a staple of popular maths: https://en.wikipedia.org/wiki/Monty_Hall_problem",
+  "overlapWith": "bayes-theorem: counting a grid of 1,000 people to update on a test result; this page updates on what a host does, with doors and tallies instead of rates and formulas.",
+  "needsSource": "none",
+  "leadsTo": [
+   "bayes-theorem"
+  ],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
   "slug": "percent-off",
   "title": "Per cent: out of a hundred",
   "level": 0,
@@ -521,6 +544,29 @@
   "origin": "numbers-shapes-computers"
  },
  {
+  "slug": "bezier-curves",
+  "title": "Bézier curves: how fonts and vector drawings bend",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag the four control points of a curve and it follows; slide t from 0 to 1 and watch the construction: a point slides the fraction t along each leg between control points, then along the legs between those points, and the last point traces the curve. Chain curves into a letter and see that a join is smooth only when the two handles at the join lie on one line; turn on the hull to see that a curve never leaves the shape of its own control points, and add or remove control points.",
+  "takeaway": "A Bézier curve is nothing but repeated straight-line interpolation between its control points, which is why a few draggable handles can describe any letter, logo or animation path.",
+  "prerequisites": [],
+  "related": [
+   "graphics-3d",
+   "perlin-noise-terrain",
+   "3d-printer-layers"
+  ],
+  "needs": "",
+  "pitfall": "The curve passes through its end points but not, in general, its middle control points; and t is not distance along the curve: equal steps of t do not give equal lengths.",
+  "why": "Freya Holmér's 'The Beauty of Bézier Curves' and Bartosz Ciechanowski's 'Curves and Surfaces' are among the most-shared maths explainers, and the construction is a standard graphics assignment (Berkeley CS184): https://classcentral.com/course/youtube-the-beauty-of-bezier-curves-129121",
+  "overlapWith": "unit-circle: a point moving round a circle traces sine; this page is a point tracing a curve by repeated straight-line mixing, with no trigonometry.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
   "slug": "cellular-automata",
   "title": "Cellular automata",
   "level": 1,
@@ -545,82 +591,26 @@
   "origin": "math-l3"
  },
  {
-  "slug": "exponentials-logarithms",
-  "title": "Exponentials & logarithms",
+  "slug": "colliding-blocks-pi",
+  "title": "Why colliding blocks count the digits of pi",
   "level": 1,
-  "kind": "manipulate",
+  "kind": "simulate",
   "category": "math",
-  "interaction": "Fold a strip of paper, breed bacteria or compound interest: a slider sets the growth factor, a counter of doublings runs and the curve shoots off the chart; switch the vertical axis to a log scale and the curve becomes a straight line whose slope is the growth rate. Compare 'add the same amount each step' with 'multiply by the same factor each step' on one chart, read a logarithm as the number of doublings needed, and build a slide rule that multiplies by adding lengths.",
-  "takeaway": "Growing by a fixed factor each step outruns growing by a fixed amount, and a logarithm just counts how many of those steps it took.",
-  "prerequisites": [],
-  "related": [
-   "radioactivity",
-   "epidemics",
-   "acids-bases",
-   "earthquakes",
-   "sorting"
-  ],
-  "needs": "",
-  "pitfall": "Exponential does not mean fast: with a factor just above 1 it starts slowly. And a log-scale line that looks tame is not growth slowing down; say that the rate stays the same.",
-  "why": "Common Core HSF-LE, Linear, Quadratic and Exponential Models: https://www.thecorestandards.org/Math/Content/HSF/LE/",
-  "overlapWith": "radioactivity: that page shows exponential decay through half-lives and epidemics shows cases doubling; this page isolates the rule itself, puts growth and decay on one log axis, and defines the logarithm as a count of steps.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": true,
-  "origin": "math-l3"
- },
- {
-  "slug": "calculus-of-variations",
-  "title": "The brachistochrone & calculus of variations",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "math",
-  "interaction": "Drag the control points of a ramp between two fixed points and a bead slides down it under gravity, its descent time computed by integrating along the curve; race the straight line, a circular arc and your curve. Press optimize and the curve relaxes step by step toward the cycloid as the page descends the gradient of the time functional, while a panel shows the Euler–Lagrange residual along the curve going to zero; a second example finds the hanging-chain shape.",
-  "takeaway": "The fastest slide is a curve, not a straight line, and the curve that beats all its neighbors is the one along which the Euler–Lagrange equation holds everywhere.",
+  "interaction": "A small block sits between a wall and a big block sliding toward it; every collision is perfectly elastic and counted. With equal masses there are 3 collisions, with the big block 100 times heavier 31, 10,000 times heavier 314, each run playable at speed or stepped collision by collision while bars show momentum and energy staying put. A second view plots the two speeds as one point bouncing between a line and a circle, and the count becomes the number of equal angles that fit in a quarter turn.",
+  "takeaway": "With only two conservation laws, a block 100 to the n times heavier collides 3, 31, 314... times, the digits of pi, because the collision rule becomes equal-angle steps round a circle.",
   "prerequisites": [
-   "calculus",
    "newtons-laws"
   ],
   "related": [
-   "light-optics",
-   "gradient-descent",
-   "convex-duality",
-   "orbits-kepler"
+   "unit-circle"
   ],
   "needs": "",
-  "pitfall": "The best curve can dip below the end point and still win, and the straight line is not 'almost as good': show it losing to the cycloid by a measured margin.",
-  "why": "myPhysicsLab brachistochrone simulation (demand: the canonical interactive version of the problem): https://www.myphysicslab.com/roller/brachistochrone-en.html",
-  "overlapWith": "newtons-laws: that page sends a cart along an editable track with energy bars; this page asks which track is best and finds it by varying the whole curve.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": true,
-  "origin": "math-l3"
- },
- {
-  "slug": "channel-capacity",
-  "title": "Information theory & channel capacity",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "math",
-  "interaction": "Send bits through a binary symmetric channel: drag the flip probability and the input bias and watch the mutual information between sent and received, with its maximum over inputs marked as the capacity 1 − H(p). Then race codes against the channel, repetition codes of growing length and random block codes decoded by nearest codeword: a code with rate below capacity drives its error rate toward zero as blocks lengthen, one above capacity never does, and the Shannon limit is drawn on the plot.",
-  "takeaway": "Every noisy channel has a capacity: below it, coding can make errors as rare as you like; above it, no code can.",
-  "prerequisites": [
-   "compression",
-   "error-correction",
-   "bayes-theorem"
-  ],
-  "related": [
-   "wireless-signals",
-   "entropy",
-   "sampling-theorem"
-  ],
-  "needs": "",
-  "pitfall": "Capacity is not the number of bits that arrive uncorrupted: a channel that flips every bit has capacity 1 and one that flips half of them has capacity 0. Show both cases.",
-  "why": "Stanford EE376A Information Theory, course outline (entropy, mutual information, channel capacity, coding theorem): https://web.stanford.edu/class/ee376a/outline.html",
-  "overlapWith": "compression: that page measures a source's entropy and builds a Huffman code, and error-correction repairs single flips with a Hamming code; this page measures what a channel lets through and shows the limit both of those are pushing toward.",
+  "pitfall": "The count is exact only for perfectly elastic collisions on a frictionless surface; any loss stops the digits early. It is not a practical way to compute pi, and the page says so.",
+  "why": "3Blue1Brown's colliding-blocks videos (2019, and a 2025 second edition) are among its most-watched: https://3blue1brown.substack.com/p/revisiting-those-colliding-blocks",
+  "overlapWith": "newtons-laws: carts collide and momentum and energy are conserved; this page takes those two laws to a counting puzzle whose answer is pi.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
-  "origin": "math-l3"
+  "origin": "demand"
  }
 ]

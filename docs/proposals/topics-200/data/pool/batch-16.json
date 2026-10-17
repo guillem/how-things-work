@@ -1,633 +1,642 @@
 [
  {
-  "slug": "lambda-calculus",
-  "title": "Lambda calculus & types",
-  "level": 3,
-  "kind": "step",
-  "category": "computing",
-  "interaction": "Write expressions in a language with three forms (variable, function, application) and step the reductions, with the redex highlighted and the substitution animated; encode numbers and booleans as functions and watch addition happen by substitution alone. Reduce the Y combinator to see recursion appear from nothing, run the self-applying omega and watch it never halt, then switch on simple types and see the same term rejected.",
-  "takeaway": "Functions alone, with substitution as the only rule, are enough to compute anything a computer can; adding types removes some programs, and with them the ones that never stop.",
-  "prerequisites": [
-   "turing-machines"
-  ],
-  "related": [
-   "compilers"
-  ],
-  "needs": "",
-  "pitfall": "It is not just functional-programming notation: evaluation order matters (normal order finds a normal form whenever one exists, applicative order can loop), and the simply typed calculus is not Turing-complete, which is the point of it.",
-  "why": "Computerphile 'Lambda Calculus' (Graham Hutton), about 1.08 million views (view count from aggregator snapshots found this session; the video id is recalled, not fetched this session) https://www.youtube.com/watch?v=eis11j_iGMs",
-  "overlapWith": "turing-machines: the same limit from the other side, a machine with a tape against a calculus with only substitution, and the page shows they compute the same things.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "locks-deadlock",
-  "title": "Locks, races & deadlock",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "computing",
-  "interaction": "Drag the interleaving of two threads that both increment a shared counter and watch the final value come out wrong; add a lock and the bad interleavings disappear. Then seat philosophers around a table, assign each an order for picking up forks and run them until they freeze, with a resource-allocation graph that shows the cycle; break it by ordering the locks or by a timeout and compare.",
-  "takeaway": "Two correct programs sharing memory can produce a wrong answer, and the locks that fix it can freeze both forever unless they are always taken in the same order.",
-  "prerequisites": [
-   "os-scheduling",
-   "cpu"
-  ],
-  "related": [
-   "consensus-blockchains",
-   "b-trees-transactions"
-  ],
-  "needs": "",
-  "pitfall": "A data race is not a rare glitch: an unsynchronised increment loses updates under every scheduler. Deadlock needs all four conditions (mutual exclusion, hold-and-wait, no preemption, circular wait), so removing any one of them prevents it.",
-  "why": "Berkeley CS162, 'Synchronization (Finish), Scheduling' lecture https://inst.eecs.berkeley.edu/~cs162/fa16 (the free OSTEP textbook's 'Common Concurrency Problems' chapter covers the same ground)",
-  "overlapWith": "consensus-blockchains: that page gets machines to agree over a network; this one is agreement between threads inside one machine that share memory, where the failure is silent corruption or a freeze.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "os-scheduling",
-  "title": "Operating systems: processes & scheduling",
-  "level": 3,
-  "kind": "simulate",
-  "category": "computing",
-  "interaction": "Create a handful of jobs with different lengths and I/O habits and run them on one core under first-come-first-served, shortest-job-first, round robin with an adjustable time slice and a multi-level feedback queue; a Gantt chart fills in and each job's turnaround and response time are plotted. Add a context-switch cost and a second core and watch the fair policies lose throughput and an interactive job go unresponsive under the wrong one.",
-  "takeaway": "A single processor appears to run many programs at once by switching between them many times a second, and which one it picks next decides whether the machine feels fast or fair.",
-  "prerequisites": [
-   "cpu"
-  ],
-  "related": [
-   "virtual-memory",
-   "locks-deadlock"
-  ],
-  "needs": "",
-  "pitfall": "Shortest-job-first minimises average turnaround but the scheduler cannot know job lengths in advance; the feedback queue's whole point is that it learns them from how each job behaves.",
-  "why": "Berkeley CS162 Operating Systems and Systems Programming, scheduling lectures (course description: 'resource allocation and scheduling') https://inst.eecs.berkeley.edu/~cs162/fa23",
-  "overlapWith": "cpu: that page runs a single program; this page is what runs on top of it to share one processor between many.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "pseudo-random-numbers",
-  "title": "Pseudo-random numbers",
-  "level": 3,
-  "kind": "explore",
-  "category": "computing",
-  "interaction": "Pick a generator (a linear congruential generator with editable multiplier and modulus, xorshift, a counter-based one) and a seed, and plot successive outputs as points in two and three dimensions; rotate the cloud until RANDU's points collapse onto fifteen planes. Run a chi-square and a serial test live, shrink the modulus until the period shows as repetition, and reseed from the clock or from real entropy to see when the sequence is reproducible and when it must not be.",
-  "takeaway": "A computer's random numbers are a deterministic sequence that merely looks random, and a bad generator hides its pattern until you look at it from the right angle.",
-  "prerequisites": [
-   "primes-modular-arithmetic",
-   "central-limit-theorem"
-  ],
-  "related": [
-   "cryptography",
-   "chaos-fractals",
-   "hash-tables-bloom-filters"
-  ],
-  "needs": "",
-  "pitfall": "Passing statistical tests is not security: a simulation generator can be predicted from a few outputs and must not make keys, and seeding with the time does not make it unpredictable.",
-  "why": "Marsaglia, 'Random numbers fall mainly in the planes', PNAS 1968 (RANDU's triples lie on 15 planes) https://pmc.ncbi.nlm.nih.gov/articles/PMC285899",
-  "overlapWith": "chaos-fractals: the logistic map there is deterministic chaos; here determinism is engineered to pass as randomness, and the lattice structure is the tell.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "regular-expressions-automata",
-  "title": "Regular expressions & automata",
-  "level": 3,
-  "kind": "build",
-  "category": "computing",
-  "interaction": "Type a regular expression and watch it become a Thompson NFA, then collapse into a DFA by subset construction; feed it text one character at a time and watch the set of active states move. Race the DFA against a backtracking matcher on a pattern such as (a?)^n a^n: one runs in time linear in the input while the other explodes. Try to write a pattern for balanced parentheses and see the pumping argument show why no finite machine can.",
-  "takeaway": "A regular expression is a finite machine in disguise, which is why it can match in a single pass; what no finite machine can count, no regular expression can match.",
-  "prerequisites": [
-   "turing-machines"
-  ],
-  "related": [
-   "compilers",
-   "cellular-automata"
-  ],
-  "needs": "",
-  "pitfall": "Modern 'regex' engines with backreferences are not regular, and the exponential blow-up (ReDoS) is a property of the backtracking implementation, not of the language being matched.",
-  "why": "Russ Cox, 'Regular Expression Matching Can Be Simple And Fast' (Thompson NFA, 20 microseconds against Perl's 60 seconds) https://swtch.com/~rsc/regexp/regexp1.html",
-  "overlapWith": "turing-machines: Turing machines are the top of the hierarchy; this page is its bottom, a machine with no tape, and shows exactly what that costs and what it buys.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "sat-solving",
-  "title": "P vs NP & SAT solving",
-  "level": 3,
-  "kind": "build",
-  "category": "computing",
-  "interaction": "Build a puzzle (colour a small map, or seat guests under constraints) and watch it compile into clauses; run a solver that propagates forced choices, branches, and learns a new clause from each conflict, with the search tree drawn as it is pruned. Generate random 3-SAT and sweep the clause-to-variable ratio: the solver's effort spikes near 4.26, where the formulas switch from almost always satisfiable to almost never.",
-  "takeaway": "A solver that learns from its dead ends prunes the search far below brute force, and random formulas turn hardest exactly where they switch from almost always satisfiable to almost never.",
-  "prerequisites": [
-   "turing-machines",
-   "logic-gates"
-  ],
-  "related": [
-   "graph-search",
-   "quantum-computing"
-  ],
-  "needs": "",
-  "pitfall": "NP does not mean 'exponential'; it means a solution can be checked quickly. NP-complete problems are solved routinely in practice, just not with a worst-case guarantee, and a quantum computer is not known to change that.",
-  "why": "MIT 6.045J Automata, Computability and Complexity, Lecture 15 'Polynomial-time reducibility, NP-completeness, SAT' https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/resources/mit6_045js11_lec15",
-  "overlapWith": "turing-machines: that page shows the travelling-salesman search space exploding; this page shows what a reduction is and how a real solver still succeeds on structured instances, and where it stops.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "virtual-memory",
-  "title": "Virtual memory & paging",
-  "level": 3,
-  "kind": "explore",
-  "category": "computing",
-  "interaction": "Pan across the address spaces of two processes that both use address 0x1000 and follow any address through its page table to a physical frame, with the TLB holding the recent translations and a hover showing each step. Run the processes until they ask for more memory than the machine has, watch pages fault in and get evicted to disk, and compare FIFO, LRU and the clock algorithm on the same reference string, including the case where adding frames causes more faults.",
-  "takeaway": "Every program sees its own private, contiguous memory, but that memory is an illusion assembled page by page from wherever free frames and disk happen to be.",
-  "prerequisites": [
-   "cache-memory-hierarchy",
-   "cpu"
-  ],
-  "related": [
-   "os-scheduling"
-  ],
-  "needs": "",
-  "pitfall": "Swapping is not what makes the memory 'virtual': isolation and relocation are the point, and a machine with no swap still uses it. A page fault is normal operation, not an error.",
-  "why": "MIT 6.004 Computation Structures, L18 'Virtual memory: mapping, protection, contexts' https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar (also Berkeley CS162 Fall 2023, three Virtual Memory lectures)",
-  "overlapWith": "cpu: that page addresses a single flat memory directly; this page puts a translation between every address and the frame that holds it, so many programs can share and be protected from each other.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "barcode-stripes",
-  "title": "Barcodes at the checkout",
-  "level": 0,
-  "kind": "step",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Drag a scanner's red line across a barcode and watch what it sees, a trace of dark and light over time, then step through it: a start mark, six groups of stripes, a middle mark, six more and an end mark, each group of four widths one digit. Scan slowly, fast, at an angle or upside down and the widths all stretch together, so the digits come out the same. Smudge one stripe and the last digit, a check digit, says the number is wrong.",
-  "takeaway": "A barcode is a number written as stripe widths, read as proportions so that speed and angle do not matter, with a last digit that catches a misread; the price is looked up afterwards.",
-  "prerequisites": [],
-  "related": [
-   "qr-codes",
-   "remote-control-blinks"
-  ],
-  "needs": "",
-  "needsSource": "none; the EAN-13 layout (95 modules, 7 per digit, L/G/R patterns, weighted check digit) from the published GS1 specification.",
-  "pitfall": "The barcode does not contain the price or the product name; it is a number the till looks up. The scanner reads ratios of widths, not absolute sizes, which is why the code can be printed at any size.",
-  "why": "'Barcode' averaged about 29,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Barcode/monthly/2025010100/2025123100).",
-  "overlapWith": "qr-codes in this batch: the two-dimensional cousin with error correction; this page is one row of widths, a check digit and no repair. binary reads bits; here a digit is a pattern of four widths.",
-  "leadsTo": [
-   "binary"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "cell-towers-handover",
-  "title": "How your phone finds a tower",
-  "level": 0,
-  "kind": "simulate",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Drag a phone across a town map dotted with towers; each tower's reach is drawn as a fading patch, the bars on the phone follow the nearest strong tower, and a line shows which tower the phone is talking to. Start a call and walk a route: as one tower fades and the next grows, the line jumps over without the call dropping. Drive into a valley or a thick building and watch the bars fall; put a stadium crowd in one patch and watch its calls queue because the tower has only so many lines.",
-  "takeaway": "Your phone only ever talks to the nearest tower with a clear signal, and towers pass you along as you move, so coverage means a tower close enough, not a satellite overhead.",
-  "prerequisites": [],
-  "related": [
-   "wifi-and-walls",
-   "radio-tuning"
-  ],
-  "needs": "",
-  "needsSource": "none; signal strength from a standard distance-and-obstacle path-loss model, handover to the stronger tower with a margin, and a fixed number of channels per tower. Real tower positions could come from OpenCelliD (CC BY-SA 4.0) but are not needed.",
-  "pitfall": "Ordinary phones do not talk to satellites, and a text does not go phone to phone: it goes to a tower, into the network and out of another tower. Bars measure the link to the tower, not the distance to the person you are calling.",
-  "why": "England KS2 computing: 'understand computer networks, including the internet; how they can provide multiple services' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); 'Cellular network' averaged about 12,400 views a month on English Wikipedia in 2025.",
-  "overlapWith": "internet (level 1): that page follows packets through routers; this one stays at the first hop, the radio link between a phone and a tower and the handover, and never shows a packet. wireless-signals (level 2) is how bits ride the wave.",
-  "leadsTo": [
-   "internet",
-   "waves-interference"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "password-guessing",
-  "title": "How a password gets guessed",
-  "level": 0,
-  "kind": "simulate",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Type a password (or pick one) and release a guessing machine against it. It tries the hundred thousand most common passwords first and finds '123456' or 'liverpool1' in a blink, then starts counting through every combination: a counter shows how many guesses are left and how long that takes at a million guesses a second. Make the password one letter longer and the count multiplies; swap letters for symbols and it barely moves; type three unrelated words and the counter runs off the chart.",
-  "takeaway": "Each extra character multiplies the guesses needed, so a long password of ordinary words beats a short one full of symbols, unless it is on the list of common ones that every guesser tries first.",
-  "prerequisites": [],
-  "related": [
-   "fingerprint-match",
-   "face-unlock-depth",
-   "contactless-cards"
-  ],
-  "needs": "The NCSC and Have I Been Pwned list of the 100,000 most common breached passwords (2019): the NCSC pages quote the top counts but state no licence for the file (NCSC content is usually under the Open Government Licence v3; unconfirmed). Fallback: the top entries and counts quoted in the NCSC announcement plus a permissively licensed word list (SCOWL).",
-  "needsSource": "NCSC top-100k password list, licence unconfirmed; the counting model itself needs no data.",
-  "pitfall": "Guessing at the login screen is slow and gets locked out; the fast guessing happens against stolen scrambled copies, which is why strength still matters. Symbol substitutions such as 'p@ssw0rd' are on the lists. The count assumes the guesser does not know your recipe: real guessers also try combinations of common words, so the words must be genuinely unrelated, and the page should say so. Do not show the scrambling itself; hashing is cryptography, level 2.",
-  "why": "England KS3 computing: 'use technology safely, respectfully, responsibly and securely, including protecting their online identity and privacy' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); NCSC's 2019 analysis of the 100,000 most common breached passwords (https://www.ncsc.gov.uk/news/most-hacked-passwords-revealed-as-uk-cyber-survey-exposes-gaps-in-online-security).",
-  "overlapWith": "cryptography (level 2) hashes and signs, and primes-modular-arithmetic shows easy-forward, hard-back; this page is only counting guesses, with the common-password list as the twist.",
-  "leadsTo": [
-   "primes-modular-arithmetic",
-   "binary"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "qr-codes",
-  "title": "QR codes",
-  "level": 0,
-  "kind": "build",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Type a short message and watch it become a square of black and white cells, built the real way: the three big corner squares that tell a camera where the code is and which way up, then the message as cells, then spare cells computed from the message. Point a drawn camera at it from any angle and it reads. Now paint over cells with a brush: the message still comes out, and a counter shows how many cells are damaged; keep painting and find the moment it fails, then paint over a corner square instead, which fails at once.",
-  "takeaway": "A QR code carries its message plus spare cells computed from it, so a scratched or half-covered code still reads, until too much is gone or the corner finders are hidden.",
-  "prerequisites": [],
-  "related": [
-   "barcode-stripes",
-   "emoji-and-text-as-numbers"
-  ],
-  "needs": "None to ship; the page runs a real encoder and decoder (open-source implementations of the QR standard exist under MIT and Apache 2.0, e.g. qrcode-generator and jsQR).",
-  "needsSource": "none; an in-browser QR encoder and decoder (Reed-Solomon) under MIT/Apache 2.0.",
-  "pitfall": "The three corner squares hold no message; they are for finding and orienting. The code is not read in a spiral or line by line, and the spare cells are not a copy of the message, so do not say the data is duplicated.",
-  "why": "NGSS 4-PS4-3: 'using a grid of 1's and 0's representing black and white to send information about a picture' (https://www.nextgenscience.org/pe/4-ps4-3-waves-and-their-applications-technologies-information-transfer); 'QR code' averaged about 388,000 views a month on English Wikipedia in 2025.",
-  "overlapWith": "error-correction (level 2): that page shows a Hamming code's parity checks on bits; this one is the object, with damage painted on and a count of cells survivable, and no arithmetic shown. barcode-stripes in this batch is the one-dimensional cousin with only a check digit.",
-  "leadsTo": [
-   "binary"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "radio-tuning",
-  "title": "Tuning a radio",
+  "slug": "twinkling-stars",
+  "title": "Why stars twinkle (and planets don't)",
   "level": 0,
   "kind": "manipulate",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Several stations broadcast at once and the antenna wire picks up all of them as one tangled wiggle. Turn the tuning knob: a swing inside the radio that likes one rhythm builds up only for the station whose rhythm matches, and the others fall away; between stations the swing stays small and you hear hiss. Then look at one station's wave up close: the music rides on it as changes in height (AM) or in rhythm (FM); pick which and hear why FM survives a lightning crackle better.",
-  "takeaway": "Every station reaches the antenna at the same time, and tuning means choosing which rhythm the radio swings along with.",
+  "category": "space",
+  "interaction": "Starlight drawn as a thin beam crossing layers of air that drift and wobble, each bending the beam a little, while at the bottom an eye sees the star brighten, fade and jump about. The one control is the star's height above the horizon: low down, the beam crosses far more wobbling air and the twinkling grows wild, and straight overhead it almost stops. Swap the point of light for a small disc, a planet, and the many beams from across the disc average out, so it shines steadily.",
+  "takeaway": "Stars twinkle because moving air bends their light differently every instant, worst near the horizon, and planets twinkle much less because they are little discs whose many beams average out.",
   "prerequisites": [],
   "related": [
-   "cell-towers-handover",
-   "speakers-and-microphones"
+   "sun-is-a-star",
+   "aurora-rings",
+   "dark-night-sky"
   ],
   "needs": "",
-  "needsSource": "none; a sum of carrier waves through a tuned resonant filter whose centre follows the knob, then envelope or frequency detection, synthesised to audio.",
-  "pitfall": "Radio waves are not sound waves: nothing in the air is playing the music, and the station is not caught alone; selection happens inside the set by resonance. Tuning does not make the other stations leave the wire.",
-  "why": "'Radio' averaged about 25,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Radio/monthly/2025010100/2025123100).",
-  "overlapWith": "oscillations-resonance (level 1) shows one oscillator building up when pushed at its natural frequency, and wireless-signals (level 2) shows modulation; what is new here is many stations on one wire at once and selection by the swing, with sound as the output.",
+  "needsSource": "none (a stack of drifting random refractive-index layers, ray bending, brightness on a small aperture, the path through air growing as the star nears the horizon)",
+  "pitfall": "Stars do not flicker themselves, and twinkling says nothing about distance: the same star barely twinkles overhead on a calm night and dances near the horizon.",
+  "why": "'Why do stars twinkle' is a standing how-does-it-work question; the Wikipedia article 'Twinkling' explains the turbulence, the horizon effect and why planets twinkle less (https://en.wikipedia.org/wiki/Twinkling); England KS3 physics, 'our sun as a star, other stars in our galaxy'.",
+  "overlapWith": "light-optics (level 1) refracts rays through lenses and prisms with a fixed index; this page has air whose index wobbles in time, which that bench cannot show.",
   "leadsTo": [
-   "oscillations-resonance",
-   "waves-interference"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "remote-control-blinks",
-  "title": "What a remote control says",
-  "level": 0,
-  "kind": "step",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Press a button on a drawn remote and a lamp on its nose blinks in invisible light; the page shows the blinks slowed a thousand times: a long opening flash, then a string of short flashes with short and long gaps that spell the button's number, then the same string inverted as a check. Hold the button and a short 'still pressed' pattern repeats. Point the remote at the wall and the blinks bounce to the TV; put a hand in front and nothing arrives; look through a phone camera (a front camera especially; many rear ones filter infrared out) and the blinks become visible.",
-  "takeaway": "A remote talks in fast blinks of invisible light, each button its own pattern of long and short gaps, which is why it needs a clear line, or a wall to bounce off, and many phone cameras can see it.",
-  "prerequisites": [],
-  "related": [
-   "wifi-and-walls",
-   "barcode-stripes",
-   "digital-clock-counting"
-  ],
-  "needs": "",
-  "needsSource": "none; the pattern follows the widely documented NEC infrared protocol (38 kHz carrier, 9 ms leader, short and long gaps for 0 and 1, inverted copy of the command, repeat code), with brightness falling with distance and reflection.",
-  "pitfall": "The remote is not sending heat rays or radio: most TV remotes use infrared light pulses (some newer ones use radio and work through walls; say so). The TV does not see steady light: it listens for flashes at one fast rhythm, which is why sunlight does not change the channel.",
-  "why": "NGSS 4-PS4-3: 'generate and compare multiple solutions that use patterns to transfer information' (https://www.nextgenscience.org/pe/4-ps4-3-waves-and-their-applications-technologies-information-transfer).",
-  "overlapWith": "wireless-signals (level 2) modulates a carrier and binary reads bits; this page is the everyday object, with the pattern shown as long and short gaps and a line-of-sight model.",
-  "leadsTo": [
-   "binary",
    "light-optics"
   ],
-  "origin": "everyday-technology"
+  "everyday": false,
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "wifi-and-walls",
-  "title": "Wi-Fi around the house",
+  "slug": "what-planets-are-made-of",
+  "title": "What the Moon and the planets are made of",
   "level": 0,
   "kind": "build",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Place a router on a floor plan and the rooms fill with a signal map; drag the laptop around and its speed gauge follows the colour. Add walls, a brick one, a fridge, a fish tank, and watch each cut a shadow in the map and the gauge drop, as the link slows down to be heard through the loss. Switch the router to the faster, shorter-reach band and compare; then add a neighbour's router on the same channel and watch the two take turns.",
-  "takeaway": "Wi-Fi is radio: walls and water eat it, the link slows down rather than breaking as the signal fades, and two networks on one channel must take turns.",
+  "category": "space",
+  "everyday": false,
+  "interaction": "Pick a world (the Moon, Earth, Mars, Jupiter, Saturn) and the page shows how big it is and how heavy, measured from its pull on the things that orbit it. Fill a ball of its size with layers from a palette of rock, iron, ice and squashed gas until the scale reads right: the Moon fills with rock almost alone, Earth will not get heavy enough without a lump of iron in the middle, Jupiter is nearly all gas squeezed hard, and Saturn comes out lighter than the same ball of water. A last step compares a glass of each world's stuff on a kitchen scale.",
+  "takeaway": "Weighing a world and measuring its size tells what it is made of without going there: the Moon weighs like rock, Earth is too heavy to be rock alone and must hold iron inside, and Saturn is lighter than water.",
   "prerequisites": [],
   "related": [
-   "cell-towers-handover",
-   "remote-control-blinks"
+   "solar-system-to-scale",
+   "earth-is-a-ball",
+   "sun-is-a-star",
+   "shooting-stars"
   ],
-  "needs": "",
-  "needsSource": "none beyond published indoor loss figures (ITU-R P.1238 indoor propagation model and typical wall losses).",
-  "pitfall": "Wi-Fi is not the internet; a full signal to the router says nothing about the line out of the house. Distance does not reduce the router's 'speed': the devices slow their sending so that the weaker signal can still be read.",
-  "why": "NGSS MS-PS4-2: 'waves are reflected, absorbed, or transmitted through various materials' (https://www.nextgenscience.org/pe/ms-ps4-2-waves-and-their-applications-technologies-information-transfer); 'Wi-Fi' averaged about 73,900 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Wi-Fi/monthly/2025010100/2025123100).",
-  "overlapWith": "wireless-signals (level 2): that page packs bits onto a carrier against noise; this one is where to put the router, computed from a wall-by-wall loss model, with speed shown as a gauge and no waveform.",
   "leadsTo": [
-   "internet",
-   "waves-interference"
+   "earthquakes",
+   "sun-earth-moon"
   ],
-  "origin": "everyday-technology"
+  "needs": "Mass, radius and mean density of the Moon and planets from the NASA NSSDC Planetary Fact Sheet (https://nssdc.gsfc.nasa.gov/planetary/factsheet/), US Government work, public domain; densities of rock, iron, ice and water from any standard table.",
+  "needsSource": "NASA NSSDC Planetary Fact Sheet (public domain)",
+  "pitfall": "Saturn 'floating' is a comparison of density only, not something that could happen; and the Moon is not weightless or hollow: it is a ball of rock whose pull is a sixth of Earth's because it is smaller. The page states that deep inside a giant planet gas is squeezed to the density of water, which is why 'gas' fills Jupiter.",
+  "why": "NGSS MS-ESS1-3: 'Analyze and interpret data to determine scale properties of objects in the solar system' (https://www.nextgenscience.org/pe/ms-ess1-3-earths-place-universe); 'would Saturn float on water' is a standing popular question (https://www.worldatlas.com/space/would-saturn-float-on-water.html).",
+  "overlapWith": "earthquakes (level 1) finds Earth's iron core from seismic waves; this page finds it from weight and size alone, and no existing page says what the Moon or the giant planets are made of.",
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "audio-codecs",
-  "title": "Sampling & perceptual audio coding",
-  "level": 3,
+  "slug": "telescopes",
+  "title": "Telescopes",
+  "level": 2,
   "kind": "manipulate",
-  "category": "networks",
-  "interaction": "Sample a tone at an adjustable rate and watch it alias into a lower pitch once the rate drops below twice its frequency, then reconstruct the samples with sinc interpolation and reduce the bit depth until quantisation noise shows on the spectrum. Load a short clip: the page computes its spectrum frame by frame, draws a masking threshold around the loud components and drops everything beneath it; a slider trades bits against audible damage, shown on the spectrogram and in the bit count.",
-  "takeaway": "Digital audio can be perfect below half the sampling rate, and most of what a recording contains is sound the ear would never notice, so a codec throws it away.",
+  "category": "space",
+  "interaction": "Trace rays through a refractor and a reflector, drag the eyepiece to focus and read the magnification; then point the telescope at a pair of stars and shrink the aperture until their blurred images, computed from diffraction, merge into one, and widen it to gather more light until a faint star appears. Compare the eye, a 10 cm amateur scope, a 1 m observatory and a 6.5 m space telescope on the same star field, switch on atmospheric seeing to see why the big ground mirror is still blurred, and change the wavelength to see why a radio telescope must be enormous.",
+  "takeaway": "A telescope's power is in its aperture, not its magnification: a wider mirror gathers more light and resolves finer detail, and the limit set by the wave nature of light is why radio dishes are huge and the sharpest telescopes are in space.",
   "prerequisites": [
-   "fourier-transform",
-   "compression",
+   "light-optics",
    "waves-interference"
   ],
   "related": [
-   "video-codecs",
    "vision-color",
-   "fast-fourier-transform"
-  ],
-  "needs": "A short CC0 music or speech clip (Wikimedia Commons or Freesound CC0). The masking model must be a published simplification (a spreading-function model as in Johnston 1988), stated on the page, because the MPEG psychoacoustic model lives in an ISO standard that is not open; that makes this the weaker of the two codec candidates.",
-  "pitfall": "Sampling loses nothing below the Nyquist frequency, so 'digital sound is steppy' is wrong. Perceptual coding is lossy by design: what is dropped is gone, not hidden somewhere.",
-  "why": "MIT 6.003 Signals and Systems, Lecture 22 'Sampling and quantization' https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/resources/mit6_003f11_lec22/ (the sampling-theorem seed is folded in here)",
-  "overlapWith": "compression: that page drops frequencies an image will not miss; this page does it for sound with a model of hearing, and adds sampling itself, which no existing page covers.",
-  "needsSource": "CC0 audio clip (openly licensed); masking model from the published literature, since the ISO psychoacoustic model is not open",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "distributed-hash-tables",
-  "title": "Distributed hash tables & consistent hashing",
-  "level": 3,
-  "kind": "simulate",
-  "category": "networks",
-  "interaction": "Hash keys and servers onto a ring and watch a lookup walk around it; add or remove a server and count how many keys move, with consistent hashing against the naive modulo rule. Then give each node a finger table and watch lookups finish in a number of hops that grows only logarithmically as the network grows to thousands of nodes; churn nodes in and out and see the ring heal or lose keys depending on how many replicas each key has.",
-  "takeaway": "Thousands of machines can find any key among them in a dozen hops with no directory, and adding one machine moves only its own share of the keys.",
-  "prerequisites": [
-   "hash-tables-bloom-filters",
-   "internet"
-  ],
-  "related": [
-   "consensus-blockchains",
-   "pagerank",
-   "graph-search"
+   "exoplanets",
+   "stars"
   ],
   "needs": "",
-  "pitfall": "Consistent hashing is not fair by default: with one point per server the loads vary widely, which is what virtual nodes fix. A DHT finds where a key lives; it does not make the data durable, replication does.",
-  "why": "MIT 6.824 Distributed Systems, lecture 20 'DHTs / Chord' https://pdos.csail.mit.edu/archive/6.824-2011/notes/l20.txt",
-  "overlapWith": "consensus-blockchains: that page makes nodes agree on one log; this one spreads keys across nodes with no agreement at all, which is how a CDN or BitTorrent finds things.",
-  "needsSource": "none",
+  "needsSource": "none; the Airy pattern and light-gathering are computed, and a synthetic star field needs no catalogue",
+  "pitfall": "Magnification is cheap and is not the point; a small telescope at high power shows a bigger blur. The blur limit comes from diffraction at the aperture, not from lens flaws, and the atmosphere, not the mirror, limits most ground telescopes.",
+  "why": "AQA A-level Physics 7408 astrophysics option: refracting and reflecting telescopes, resolving power and the Rayleigh criterion, CCDs https://egglescliffe.org.uk/wp-content/uploads/2026/03/Physics-A-Level-Revision-Checklist-2025-26.pdf",
+  "overlapWith": "light-optics traces rays through single lenses and mirrors on a bench; this page assembles them into an instrument and adds what ray tracing cannot show, the diffraction limit. The pool's aperture-synthesis (level 3) is interferometry; this is the single-aperture page the earth-sky-weather lens asked another lens to write.",
   "leadsTo": [],
   "everyday": false,
-  "origin": "computing-networks-l3"
+  "origin": "holes-l1-l2"
  },
  {
-  "slug": "elliptic-curve-cryptography",
-  "title": "Elliptic-curve cryptography",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "networks",
-  "interaction": "Drag two points on an elliptic curve over the real numbers and watch the chord-and-tangent rule produce their sum; switch the same curve to a finite field and the smooth curve becomes a scatter of points on which the same rule still works. Multiply a point by k with double-and-add, step by step, and see that landing on a target point gives no clue what k was; then run Diffie-Hellman on the curve and compare the key sizes with the modular version.",
-  "takeaway": "Adding points on a curve is easy to do and, over a finite field, practically impossible to undo, so a 256-bit curve key does the job of a 3,000-bit modular one.",
-  "prerequisites": [
-   "cryptography"
-  ],
-  "related": [
-   "tls-handshake",
-   "consensus-blockchains",
-   "quantum-computing"
-  ],
-  "needs": "Curve parameters from public standards (secp256k1, Curve25519), which are published specifications.",
-  "pitfall": "The picture over the real numbers is for intuition only: the cryptography lives on the finite-field points, where there is no curve to see, and the hardness is the discrete logarithm, not the shape. 'Elliptic' has nothing to do with ellipses.",
-  "why": "Cloudflare, 'A (relatively easy to understand) primer on elliptic curve cryptography' https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/",
-  "overlapWith": "cryptography: that page does Diffie-Hellman with modular exponentiation on a clock face; this page swaps the group for curve points and shows why that buys so much for so few bits.",
-  "needsSource": "published curve parameters (public standards); nothing else",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "git-merkle-trees",
-  "title": "Version control & Merkle trees",
+  "slug": "aperture-synthesis",
+  "title": "Interferometry & aperture synthesis",
   "level": 3,
   "kind": "build",
-  "category": "networks",
-  "interaction": "Edit files in a toy repository and commit; the page hashes each file, each directory and each commit and draws the resulting graph of content-addressed objects, where two identical files are one object. Branch, make conflicting edits and merge: the three-way merge runs a real diff algorithm on each file and shows where it has to ask you. Change one byte in an old commit and watch every hash above it change, then verify one file's membership with a Merkle proof whose size grows only with the logarithm of the tree.",
-  "takeaway": "Naming every piece of data by the hash of its contents makes history tamper-evident and lets two copies prove they agree by comparing one hash.",
+  "category": "space",
+  "interaction": "Place radio dishes on a map and pick a model sky; every pair of dishes samples one point of the sky's Fourier transform, and as the Earth turns each pair traces an arc in the uv plane. Watch the dirty beam and the dirty image form from whatever the array has sampled: two dishes see only stripes, a dozen over six hours see the source. Run CLEAN step by step, subtracting the beam from the brightest point until the image emerges, and compare it with the truth; shrink the array to lose resolution, spread it to lose the extended emission.",
+  "takeaway": "An array of small telescopes can see as sharply as one dish as wide as the array, because what it measures is the sky's Fourier transform, and the Earth's rotation fills in the gaps.",
   "prerequisites": [
-   "cryptography"
+   "fourier-transform",
+   "waves-interference",
+   "light-optics"
   ],
   "related": [
-   "consensus-blockchains",
-   "distributed-hash-tables"
+   "medical-imaging",
+   "black-holes",
+   "gravitational-waves"
   ],
   "needs": "",
-  "pitfall": "Git does not store diffs; it stores snapshots and computes diffs on demand, and a commit hash commits to the whole history, not just to that change. A Merkle tree is a tree; the hash chain of consensus-blockchains is its degenerate one-branch case.",
-  "why": "Pro Git, chapter 10 'Git Internals: Git Objects' (free online, CC BY-NC-SA 3.0) https://git-scm.com/book/en/v2/Git-Internals-Git-Objects",
-  "overlapWith": "consensus-blockchains: that page chains blocks by hash to show tampering; this page builds the general tree, with branching and merging, and the membership proofs that follow from it.",
+  "pitfall": "An interferometer does not gain the collecting area of a filled dish, only its resolution, and the dirty image is not a photograph of the sky but of what was sampled.",
+  "why": "NRAO Synthesis Imaging Workshop, the graduate course on aperture synthesis theory and technique: https://aas.org/events/2022-02/18th-synthesis-imaging-workshop",
+  "overlapWith": "light-optics: that page forms images with lenses; this page forms an image with no lens at all, from the correlations between separated telescopes.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
-  "origin": "computing-networks-l3"
+  "origin": "earth-space-l3"
  },
  {
-  "slug": "kalman-filter",
-  "title": "The Kalman filter",
+  "slug": "asteroid-impact",
+  "title": "What an asteroid does when it hits",
   "level": 3,
   "kind": "simulate",
-  "category": "networks",
-  "interaction": "Track a moving object from a noisy sensor: at each step the filter predicts where the object will be, then blends in the new measurement, with the estimate's uncertainty drawn as an ellipse that grows on prediction and shrinks on measurement. Turn the measurement noise up and watch the filter lean on its model; add a second sensor (an accelerometer to the GPS fix) and see the fused estimate beat either alone; make the object swerve and watch a filter with the wrong motion model lag behind, confidently.",
-  "takeaway": "The best estimate of where something is comes from weighing a prediction against a measurement in proportion to how much each can be trusted, and the filter keeps that weighting up to date.",
+  "category": "space",
+  "interaction": "Choose an impactor's size, density, speed and angle and integrate its fall through the atmosphere step by step: drag slows it, heating ablates it, and when the air's ram pressure exceeds its strength it spreads and bursts, its energy released as an airburst at a height the page reports (Chelyabinsk and Tunguska are presets with their published sizes). A body that survives hits the ground: the page scales the crater from the energy and the target rock, then draws rings of effects against distance, the fireball's thermal pulse, the air blast, the ground shaking and the ejecta, over a map at scale. Compare 20 m, 100 m, 1 km and 10 km bodies on one chart.",
+  "takeaway": "Small asteroids never reach the ground: the air stops them and they burst high up; bodies above about a hundred metres cross the atmosphere as if it were not there, and their effects on the ground scale with their energy in published ways.",
   "prerequisites": [
-   "bayes-theorem",
-   "central-limit-theorem",
-   "linear-transformations",
-   "feedback-control"
+   "orbits-kepler",
+   "earthquakes"
   ],
   "related": [
-   "gps",
-   "radar-sonar"
+   "deep-time"
   ],
-  "needs": "",
-  "pitfall": "It does not average measurements: with a good model it can be more certain than any single measurement. It is optimal only for linear systems with Gaussian noise, and when the model is wrong the failure mode is confident and wrong.",
-  "why": "MIT OCW 16.322 Stochastic Estimation and Control (discrete- and continuous-time Kalman filtering) https://ocw.mit.edu/courses/16-322-stochastic-estimation-and-control-fall-2004/pages/syllabus",
-  "overlapWith": "feedback-control: that page corrects an actuator from an error signal; this page estimates the state the controller needs from noisy measurements, and the two are usually paired in a real robot.",
-  "needsSource": "none",
+  "needs": "The published entry, cratering and effects equations (Collins, Melosh & Marcus 2005, and the program's documentation PDF) and literature parameters for Chelyabinsk and Tunguska.",
+  "pitfall": "A meteor does not burn up by combustion; it is stopped and shattered by air pressure, and an airburst is itself the hazard. The effect scalings are published fits valid over stated ranges, not a dataset; show their limits.",
+  "why": "The Earth Impact Effects Program (Collins, Melosh & Marcus 2005) is the public calculator behind every popular asteroid-impact simulator, and Veritasium's asteroid video is among its most-viewed: https://impact.ese.ic.ac.uk/ImpactEarth/ImpactEffects",
+  "overlapWith": "deep-time: the Chicxulub impact as a point on the timeline. shooting-stars (pool, level 0): a sand grain to a boulder entering the air with size as the one control; this page continues to the bodies that survive the air, with fragmentation, airbursts, craters and the published scaling of effects.",
+  "needsSource": "Published equations in Meteoritics & Planetary Science 40, 817-840 (2005) and the Imperial documentation; not a dataset. Chelyabinsk parameters from Popova et al. 2013 (cited).",
   "leadsTo": [],
   "everyday": false,
-  "origin": "computing-networks-l3"
+  "origin": "demand"
  },
  {
-  "slug": "mimo-beamforming",
-  "title": "Antenna arrays, beamforming & MIMO",
+  "slug": "atmospheric-escape",
+  "title": "Planetary atmospheres & escape",
   "level": 3,
   "kind": "manipulate",
-  "category": "networks",
-  "interaction": "Set the spacing and relative phases of a row of antennas and watch the radiation pattern form a beam; steer it by phase alone, add elements to narrow it and widen the spacing until grating lobes appear. Then place scatterers between a transmitting and a receiving array: the page computes the channel matrix from the path geometry, and its singular values show how many independent streams the link can carry, from one in open line of sight to several in a cluttered room.",
-  "takeaway": "Many antennas can aim a signal without moving, and in a cluttered environment can send several signals at once over the same frequencies, which is where modern wireless capacity comes from.",
+  "category": "space",
+  "interaction": "Pick a body (Earth, Mars, Venus, Titan, the Moon, a hot Jupiter) or set mass, radius and exobase temperature, and pick a gas. The page draws the Maxwell-Boltzmann speed distribution against the escape speed and integrates the tail into the Jeans escape flux, then converts it into the time to lose the atmosphere. A chart of escape speed against temperature places every solar-system body and every gas on either side of the diagonal that separates kept from lost; push the Jeans parameter below about three and the escape turns hydrodynamic, with the whole atmosphere blowing off as a wind.",
+  "takeaway": "Whether a world keeps a gas depends on the race between its escape speed and the gas's thermal speed, which is why the Moon is bare, Mars lost its water's hydrogen, and Earth keeps nitrogen but leaks hydrogen.",
   "prerequisites": [
-   "waves-interference",
-   "wireless-signals",
-   "linear-transformations"
+   "states-of-matter",
+   "orbits-kepler"
   ],
   "related": [
-   "radar-sonar",
-   "channel-capacity",
-   "electromagnetism"
+   "exoplanets",
+   "carbonate-silicate-thermostat"
   ],
-  "needs": "",
-  "pitfall": "Multipath is not only an enemy: MIMO needs scattering to work, and a clean line of sight gives one stream. A beam is formed by interference between elements, not by any element pointing anywhere.",
-  "why": "Stanford EE359 Wireless Communications, MIMO lectures 14 and 15 https://ee359.stanford.edu/pdfs/syllabusWIN20.pdf",
-  "overlapWith": "wireless-signals: that page modulates one carrier from one antenna; this page is what many antennas add, direction and parallel streams.",
-  "needsSource": "none",
+  "needs": "Planetary masses, radii and exobase temperatures (NASA planetary fact sheets, US government work; retyped numbers).",
+  "pitfall": "Thermal escape is molecule by molecule from the tail of the distribution, so a gas is never lost all at once; and Mars lost its air mainly because it is small, not only because it lost its magnetic field.",
+  "why": "University of Arizona PTYS 595B Escape of Planetary Atmospheres (Jeans, hydrodynamic and nonthermal escape): https://lpl.arizona.edu/node/3594",
+  "overlapWith": "exoplanets: that page places a planet in the habitable zone by its orbit; this page asks whether it can hold an atmosphere at all, which the zone alone does not decide.",
+  "needsSource": "NASA planetary fact-sheet values (US government work; retyped numbers).",
   "leadsTo": [],
   "everyday": false,
-  "origin": "computing-networks-l3"
+  "origin": "earth-space-l3"
  },
  {
-  "slug": "onion-routing",
-  "title": "Tor & onion routing",
+  "slug": "cmb-power-spectrum",
+  "title": "The CMB power spectrum",
   "level": 3,
-  "kind": "simulate",
-  "category": "networks",
-  "interaction": "Pick a guard, a middle and an exit relay on a map and watch a message be wrapped in three layers of encryption and peeled one layer per hop; click any relay to see what it alone can learn (the guard knows you, the exit knows the destination, the middle knows neither). Give an observer control of some fraction of the relays and run many circuits to see how often one observer sees both ends; then let a global observer correlate the timing of packets at both ends anyway.",
-  "takeaway": "Routing through three relays with layered encryption means no single point knows both who is talking and to whom, and the protection is only as good as the share of relays an adversary does not control.",
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "Each wavelength of the early universe's photon-baryon fluid is a driven, damped oscillator in the tight-coupling approximation; the page integrates a few hundred of them through recombination and projects the result onto the sky to draw the angular power spectrum, with the Planck 2018 measurements as points. Slide the baryon density and the odd peaks rise against the even ones; slide the dark-matter density and the peaks shift and shrink; curve the universe and every peak slides in angle. The sound horizon and the angular-diameter distance are drawn as the two rulers behind the first peak.",
+  "takeaway": "The peaks in the CMB are the sound waves of the first 380,000 years frozen on the sky, and their positions and relative heights read off the universe's contents and geometry.",
   "prerequisites": [
-   "internet",
-   "cryptography"
-  ],
-  "related": [
-   "tls-handshake",
-   "consensus-blockchains"
-  ],
-  "needs": "",
-  "pitfall": "Tor hides who is talking to whom, not what is said at the exit: traffic to a plain HTTP site is readable by the exit relay. It is not a VPN with extra hops; a VPN is one party who knows everything.",
-  "why": "Tor specifications, 'A short introduction to Tor' (relays, signed directory, circuits) https://spec.torproject.org/intro/",
-  "overlapWith": "internet: that page routes packets by shortest path with no secrecy; this page chooses the path for anonymity and encrypts in layers, and the fraction of compromised circuits is the graphic.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "radar-sonar",
-  "title": "Radar & sonar",
-  "level": 3,
-  "kind": "simulate",
-  "category": "networks",
-  "interaction": "Fire a pulse at targets you place and drag, and watch the echoes return on a range display; shorten the pulse for resolution and lose energy, then replace it with a chirp and a matched filter and get both at once. Set a target moving and read its speed from the Doppler shift, build a range-Doppler map, raise the noise until targets vanish into clutter, and switch the medium to water to see why sonar runs slow and low-frequency.",
-  "takeaway": "Radar and sonar measure distance by timing an echo and speed by its pitch, and the shape of the pulse decides how finely each can be told apart.",
-  "prerequisites": [
-   "waves-interference",
-   "fourier-transform",
-   "wireless-signals"
-  ],
-  "related": [
-   "gps",
-   "medical-imaging",
-   "mimo-beamforming",
-   "kalman-filter"
-  ],
-  "needs": "",
-  "pitfall": "Range comes from timing, not triangulation; stealth is mostly about where the echo goes, not about absorbing it; and the Doppler shift measures only the speed toward or away from the antenna.",
-  "why": "MIT OCW RES.LL-003, 'Build a Small Radar System Capable of Sensing Range, Doppler, and Synthetic Aperture Radar Imaging' https://ocw.mit.edu/courses/res-ll-003-build-a-small-radar-system-capable-of-sensing-range-doppler-and-synthetic-aperture-radar-imaging-january-iap-2011/",
-  "overlapWith": "medical-imaging: that page reconstructs an image from projections and mentions ultrasound in passing; this page is the echo itself: pulse shape, matched filtering and Doppler.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "tcp-congestion-control",
-  "title": "TCP congestion control",
-  "level": 3,
-  "kind": "simulate",
-  "category": "networks",
-  "interaction": "Send a file across a link with a bottleneck and a queue of adjustable size, and watch the sender's window grow in slow start, collapse on a loss and resume with additive increase, tracing the sawtooth of throughput against time. Add a second flow and see the two converge to a fair share; oversize the buffer and watch delay balloon while throughput does not improve; compare Reno, CUBIC and a delay-based sender on the same link.",
-  "takeaway": "The Internet has no traffic police; every sender probes for its share of the bottleneck by speeding up until packets drop and backing off, and that simple rule is what keeps the network from collapsing.",
-  "prerequisites": [
-   "internet",
-   "feedback-control"
-  ],
-  "related": [
-   "wireless-signals",
-   "channel-capacity"
-  ],
-  "needs": "",
-  "pitfall": "Congestion control is not flow control: the receiver's window protects the receiver, the congestion window protects the network. A loss on a wireless link is often noise rather than congestion, which classic TCP misreads as a signal to slow down.",
-  "why": "Stanford CS144 Introduction to Computer Networking, transport unit: 'reliable delivery over an unreliable network, flow control, and congestion control' (AIMD, Tahoe, Reno) https://bulletin.stanford.edu/courses/2075241",
-  "overlapWith": "internet: that page shows a lost packet being resent; this page is the rate-control loop that decides how fast to send in the first place, and what happens when every sender runs it at once.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "tls-handshake",
-  "title": "TLS: how a connection becomes private",
-  "level": 3,
-  "kind": "step",
-  "category": "networks",
-  "interaction": "Step through a TLS 1.3 handshake between a browser and a server: hello messages carrying key shares, an elliptic-curve key exchange, a certificate chain checked signature by signature up to a root the browser already trusts, and the derivation of the session keys that then encrypt every record. Put an attacker in the middle who swaps in his own key share: the certificate check fails visibly; later reveal the server's long-term key and see that past sessions stay unreadable.",
-  "takeaway": "A padlock means two strangers agreed a fresh secret in the open, and one of them proved who it was through a chain of signatures leading to someone the browser already trusts.",
-  "prerequisites": [
-   "cryptography",
-   "elliptic-curve-cryptography",
-   "internet"
-  ],
-  "related": [
-   "onion-routing"
-  ],
-  "needs": "One real certificate chain, for example the site's own GitHub Pages chain; certificates are public documents.",
-  "pitfall": "The padlock says nothing about the site being honest, only that you are talking to the holder of that certificate. Key exchange and authentication are separate jobs: Diffie-Hellman alone is defeated by a man in the middle, which is exactly what the certificate prevents.",
-  "why": "Cloudflare Learning Center, 'What happens in a TLS handshake?' https://cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake",
-  "overlapWith": "cryptography: that page shows key exchange, hashing and signing separately on small numbers; this page is the protocol that combines them, with the certificate chain as the new piece.",
-  "needsSource": "a real public certificate chain (public, no licence restriction)",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "video-codecs",
-  "title": "Video compression",
-  "level": 3,
-  "kind": "step",
-  "category": "networks",
-  "interaction": "Step through encoding a short clip: each frame is cut into blocks, every block searches the previous frame for its best match and keeps only a motion vector and the difference, which is transformed and quantised like the JPEG blocks of the compression page. Scrub the quality and the search range and watch bits per frame fall while blocking and smearing appear; corrupt one keyframe and see the damage propagate until the next.",
-  "takeaway": "A video is mostly its previous frame moved a little, so a codec sends motion and the leftovers, and almost none of the pixels.",
-  "prerequisites": [
-   "compression",
+   "big-bang",
+   "oscillations-resonance",
    "fourier-transform"
   ],
   "related": [
-   "convolution-vision",
-   "audio-codecs",
-   "gpu"
+   "dark-energy-supernovae",
+   "inflation-horizon",
+   "cosmic-web-formation",
+   "dark-matter"
   ],
-  "needs": "A few seconds of Big Buck Bunny frames (Blender Foundation, CC BY 3.0), video only: the film's score is CC BY-NC-ND and must not be shipped.",
-  "pitfall": "Motion vectors are not object tracking: each is whichever block matched best, which is why they look chaotic on textures. The decoder must reconstruct exactly what the encoder predicted from, or the drift compounds frame after frame.",
-  "why": "Demand: Google 'how does video compression work' https://www.google.com/search?q=how+does+video+compression+work (the Stanford EE398A Image and Video Compression course page was not fetched this session, the search budget ran out)",
-  "overlapWith": "compression: that page compresses one still image by discarding high frequencies; this page adds time, prediction from the previous frame, which is where almost all the saving comes from.",
-  "needsSource": "Big Buck Bunny frames, CC BY 3.0 (openly licensed; audio excluded)",
+  "needs": "The Planck 2018 TT binned power spectrum from the ESA Planck Legacy Archive (publicly downloadable; the ESA Space Science Archives terms seen in this round are CC BY-NC 3.0 IGO, so the data are not openly licensed in the task's sense and the candidate is weaker for it).",
+  "pitfall": "The peaks are not harmonics of one note and the spectrum is not an ordinary Fourier transform of a sound; and the tight-coupling model is an approximation stated as such, not a replacement for a Boltzmann code.",
+  "why": "Wayne Hu's CMB tutorial on the acoustic peaks and baryon loading, the standard teaching reference: https://background.uchicago.edu/~whu/intermediate/intermediate.html",
+  "overlapWith": "big-bang: that page shows the CMB as a moment on the timeline; this page reads the cosmological parameters off its spectrum.",
+  "needsSource": "Planck 2018 TT spectrum from the ESA Planck Legacy Archive; the ESA archive terms seen were CC BY-NC 3.0 IGO (non-commercial), so not openly licensed in the task's sense.",
   "leadsTo": [],
   "everyday": false,
-  "origin": "computing-networks-l3"
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "cosmic-distance-ladder",
+  "title": "The cosmic distance ladder",
+  "level": 3,
+  "kind": "step",
+  "category": "space",
+  "interaction": "Climb the ladder one rung at a time. Measure a parallax with the reader's chosen baseline and precision and see how far it reaches; use those distances to calibrate the Cepheid period-luminosity relation from real Cepheids, and the Cepheids in a few nearby galaxies to calibrate the peak brightness of Type Ia supernovae; use the supernovae in the Hubble flow to read the Hubble constant. At each rung the reader sets the measurement error and watches it propagate up the ladder into the error bar on the expansion rate, and the last rung shows the gap between the ladder's value and the CMB's.",
+  "takeaway": "Every cosmic distance stands on a nearer one, so the uncertainty in the size of the universe is built, rung by rung, from the uncertainty of a parallax.",
+  "prerequisites": [
+   "stars",
+   "big-bang"
+  ],
+  "related": [
+   "dark-energy-supernovae",
+   "supernova-light-curves",
+   "cmb-power-spectrum"
+  ],
+  "needs": "Gaia DR3 parallaxes for nearby Cepheids (free to use with credit to ESA/Gaia/DPAC; not a Creative Commons licence), OGLE Magellanic Cloud Cepheids for the period-luminosity relation (public download; licence not confirmed), and the Pantheon+/SH0ES distance tables (public download; licence not confirmed).",
+  "pitfall": "The Hubble tension is a disagreement between two careful measurements, not a mistake in one of them; show both error bars.",
+  "why": "3Blue1Brown's two-part video with Terence Tao on the cosmic distance ladder (2025): https://3blue1brown.substack.com/p/the-cosmic-distance-ladder-with-terence",
+  "overlapWith": "big-bang: that page shows galaxies receding faster with distance; this page is how those distances are measured and how the errors stack up.",
+  "needsSource": "Gaia DR3 (free with credit, no CC licence); OGLE Cepheids (public download, licence not confirmed); Pantheon+/SH0ES tables (GitHub, licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "cosmic-ray-air-showers",
+  "title": "Cosmic rays & air showers",
+  "level": 3,
+  "kind": "step",
+  "category": "space",
+  "interaction": "Step a cosmic ray into the atmosphere generation by generation in the Heitler-Matthews model: each particle travels one interaction length and splits, neutral pions decay to photons, and the cascade doubles until the particles fall below the critical energy and stop multiplying. Set the primary's energy and type (proton, iron nucleus, photon) and watch the particle count and the depth of maximum: ten times the energy gives ten times the particles at maximum and pushes the maximum deeper by a fixed step, while an iron nucleus, 56 lighter showers at once, peaks higher in the sky. Compare the model's depth of maximum against the energy spectrum and composition trend in the Pierre Auger open data.",
+  "takeaway": "One particle with the energy of a thrown tennis ball becomes billions in the air, and the depth at which the shower peaks tells both how energetic it was and how heavy it was.",
+  "prerequisites": [
+   "standard-model",
+   "radioactivity"
+  ],
+  "related": [
+   "supernova-light-curves",
+   "pulsar-spin-down"
+  ],
+  "needs": "The Pierre Auger Observatory open data (a public release of ten percent of its events with documentation; licence not confirmed in this round).",
+  "pitfall": "Cosmic rays are particles, not rays, and the muons reaching the reader at sea level are shower products; the Heitler model is a toy that gets the scalings right and the numbers roughly, and the page says so.",
+  "why": "Matthews 2005, A Heitler model of extensive air showers, the standard teaching model of the cascade: https://inspirehep.net/literature/675329",
+  "overlapWith": "standard-model: that page builds particles and steps through one decay; this page runs a cascade of billions of them through the atmosphere.",
+  "needsSource": "Auger open data (public release; licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "cosmic-web-formation",
+  "title": "The cosmic web",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "A box of dark matter solved as a two-dimensional particle-mesh N-body simulation in an expanding universe, starting from faint Gaussian ripples laid down by the Zel'dovich approximation. Press run and the ripples grow as the box expands: matter drains from voids into sheets, sheets into filaments, filaments into knots. Tilt the slope of the initial power spectrum to grow small or large structures first, change the matter density to speed or stall the growth, and compare the measured growth of the ripples against the linear growth factor until they outrun it.",
+  "takeaway": "Gravity amplifies tiny early ripples into a web of filaments and voids, so today's map of galaxies is the fingerprint of fluctuations that were one part in a hundred thousand.",
+  "prerequisites": [
+   "big-bang",
+   "dark-matter"
+  ],
+  "related": [
+   "cmb-power-spectrum",
+   "inflation-horizon",
+   "galaxy-collisions"
+  ],
+  "needs": "",
+  "pitfall": "Galaxies form where dark matter gathers; the web is not galaxies that attracted each other from a uniform start, and the box's expansion is space stretching, not motion through it.",
+  "why": "Ohio State Astronomy 8873 cosmology notes on N-body simulations from Zel'dovich initial conditions: https://www.astronomy.ohio-state.edu/weinberg.21/A8873/notes10.pdf",
+  "overlapWith": "dark-matter: that page infers a halo from one galaxy's rotation curve and lensing; this page grows the halos and the web between them from the initial ripples.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "dark-energy-supernovae",
+  "title": "Dark energy & the accelerating universe",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "The Hubble diagram of the Pantheon+ Type Ia supernovae, distance against redshift, with a model curve from the Friedmann equation. Slide the matter density, the dark-energy density and its equation of state and the curve bends; a residual panel and a chi-square readout show the fit, and a universe without dark energy misses the far supernovae, which are fainter than it allows. A second plot runs the scale factor forward and back for the chosen model, with deceleration giving way to acceleration about six billion years ago, and the age and fate of the universe update live.",
+  "takeaway": "Distant supernovae are fainter than any slowing universe allows, which means the expansion is speeding up and something that behaves like a cosmological constant makes up most of the universe.",
+  "prerequisites": [
+   "big-bang",
+   "cosmic-distance-ladder"
+  ],
+  "related": [
+   "cmb-power-spectrum",
+   "dark-matter",
+   "supernova-light-curves"
+  ],
+  "needs": "The Pantheon+ distance-modulus and covariance tables (GitHub DataRelease; public download, licence not confirmed).",
+  "pitfall": "Dark energy and dark matter are different unknowns, and the acceleration is of the expansion rate; galaxies are not pushed apart by a force acting through space.",
+  "why": "Curriculum or demand URL not fetched in this round; grounded in the Pantheon+ cosmological analysis the page reproduces (Brout et al. 2022): https://arxiv.org/abs/2112.03864",
+  "overlapWith": "big-bang: that page shows expansion and redshift qualitatively, while this page fits the real supernova data to the Friedmann equation and finds the acceleration; it stays apart from cosmic-distance-ladder, which ends at the Hubble constant from the low-redshift rungs, whereas this page uses the high-redshift shape to fit the contents.",
+  "needsSource": "Pantheon+ tables (GitHub DataRelease; public download, licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "galaxy-collisions",
+  "title": "Colliding galaxies",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Two galaxies, each a disc of thousands of massless stars orbiting a central mass, pass each other as in Toomre and Toomre's 1972 model. Set the closest approach, the mass ratio and whether each disc spins with or against the orbit, then run: a prograde pass throws out a long tidal tail and a bridge, a retrograde one barely stirs the disc. Match the Antennae or the Mice by trial, and scrub forward a billion years to see the pair fall back together.",
+  "takeaway": "Tides, not impacts, shape colliding galaxies, so a slow pass in the direction of a disc's spin throws its stars into long tails while the same pass against the spin leaves it almost untouched.",
+  "prerequisites": [
+   "orbits-kepler"
+  ],
+  "related": [
+   "dark-matter",
+   "cosmic-web-formation",
+   "lagrange-points-three-body"
+  ],
+  "needs": "",
+  "pitfall": "Stars do not collide in a galaxy collision; the gaps between them are too large, and the tails are stars pulled out by tides, not debris from impacts.",
+  "why": "UC San Diego Physics 141 midterm project, reproducing the Toomre and Toomre encounter with a student-written integrator: https://jduarte.physics.ucsd.edu/phys141/midterm_final/midterm_final.html",
+  "overlapWith": "dark-matter: that page spins a single galaxy to read its rotation curve; this page throws two together and shows the tidal tails.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "inflation-horizon",
+  "title": "Inflation & the horizon problem",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Run the scale factor from the Friedmann equation through the radiation, matter and dark-energy eras on a log-log plot of comoving scale against time, with the comoving Hubble radius drawn: today's observable universe is a line far above the Hubble radius at early times, so its patches never touched. Add an inflating phase driven by a slow-rolling scalar field on a potential the reader shapes, and the Hubble radius shrinks for sixty e-folds: the observable scales dive inside it, then re-emerge in the right order. A second plot shows the curvature parameter driven toward zero by the same phase.",
+  "takeaway": "A brief period of accelerating expansion lets the whole observable universe come from a patch that was once in causal contact.",
+  "prerequisites": [
+   "big-bang",
+   "calculus"
+  ],
+  "related": [
+   "cmb-power-spectrum",
+   "cosmic-web-formation"
+  ],
+  "needs": "",
+  "pitfall": "Inflation does not expand space faster than light in any local sense, and it is a hypothesis with evidence, not an established fact; show which observations it explains and which it does not predict.",
+  "why": "Baumann's TASI Lectures on Inflation, the standard open-access introduction, which opens with the horizon and flatness problems: https://arxiv.org/pdf/0907.5424",
+  "overlapWith": "big-bang: that page runs the expansion on a grid of galaxies; this page compares the expansion against the reach of light to show why the early universe should not have been uniform and how inflation fixes that.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "lagrange-points-three-body",
+  "title": "The three-body problem & Lagrange points",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "The circular restricted three-body problem drawn in the frame that rotates with the two large bodies. Set the mass ratio (Sun-Earth, Earth-Moon) and the five Lagrange points appear; set the probe's energy (the Jacobi constant) and the forbidden regions shade in, opening gates at L1 and L2 as the energy rises. Drop a probe at L1 or L2 and it drifts away within months, drop one at L4 and it wanders in a tadpole around the point for as long as the reader waits, as Jupiter's Trojans do, and nudge a starting position by a hair to run two probes side by side and watch their paths split.",
+  "takeaway": "With three bodies there is no formula for the motion, but there are five points where a small body can sit, three balanced on a knife edge and two stable, and an energy map says where it can and cannot go.",
+  "prerequisites": [
+   "orbits-kepler"
+  ],
+  "related": [
+   "rockets",
+   "chaos-fractals",
+   "galaxy-collisions",
+   "tidal-evolution-resonance"
+  ],
+  "needs": "",
+  "pitfall": "L1 and L2 are not places where gravity cancels; a spacecraft there orbits the Sun with Earth's period because the two pulls add to exactly the needed centripetal force, and it still needs station-keeping.",
+  "why": "MIT OCW 16.346 Astrodynamics, lecture 25 on the restricted problem of three bodies (Jacobi integral, surfaces of zero relative velocity): https://ocw.mit.edu/courses/16-346-astrodynamics-fall-2008/resources/lec_25",
+  "overlapWith": "orbits-kepler: that page adds a second planet to see two bodies disturb each other; this page moves to the rotating frame, where the forbidden regions and the stability of the five points become visible.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "pulsar-spin-down",
+  "title": "Neutron stars & pulsars",
+  "level": 3,
+  "kind": "explore",
+  "category": "space",
+  "interaction": "The period against spin-down rate of every known pulsar from the ATNF catalogue, drawn as the P-Pdot diagram: hover any dot to read its age, magnetic field and spin-down power as the magnetic-dipole model computes them, with lines of constant field and constant age across the plot and the magnetars sitting alone in the upper right. Set a newborn pulsar's period and field and run the dipole braking: it slides down and to the right along its track and crosses the death line where it should fall silent. Spin a dead one up by accretion in a binary and it reappears as a millisecond pulsar in the lower left.",
+  "takeaway": "A pulsar's position on one diagram tells its age, field and fate, because its slowing spin is a magnetic dipole radiating away the energy of a star-sized flywheel.",
+  "prerequisites": [
+   "stars",
+   "electromagnetism"
+  ],
+  "related": [
+   "gravitational-waves",
+   "supernova-light-curves",
+   "black-holes"
+  ],
+  "needs": "The ATNF Pulsar Catalogue (CSIRO; publicly downloadable and listed on data.gov; licence not confirmed).",
+  "pitfall": "Pulsars pulse because a lighthouse beam sweeps past us, not because the star pulsates, and the spin-down age assumes a birth spin much faster than today's.",
+  "why": "Curricular signal weak in this round; grounded in the catalogue paper, Manchester et al. 2005, The ATNF Pulsar Catalogue: https://arxiv.org/abs/astro-ph/0412641",
+  "overlapWith": "stars: that page ends a star as a neutron star; this page is what neutron stars look like as a population and how their spin reveals their age.",
+  "needsSource": "ATNF Pulsar Catalogue (CSIRO; public download, licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "stellar-nucleosynthesis",
+  "title": "Nuclear reaction networks in stars",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "A small nuclear reaction network (the pp chains, the CNO cycle, triple-alpha and carbon burning) integrated as stiff rate equations at the temperature and density the reader sets. Slide the core temperature from the Sun's 15 million kelvin past 100 million: the plot of energy generation against temperature shows the pp chain give way to the CNO cycle and then helium burning switch on, while the flow diagram lights up the dominant path and the isotope abundances drift. Hold the Sun's core conditions and the hydrogen depletes over billions of simulated years.",
+  "takeaway": "Which reactions power a star depends so steeply on temperature that a few million degrees change the fuel, the path and the ash.",
+  "prerequisites": [
+   "stars",
+   "nuclear-fusion",
+   "atoms-periodic-table"
+  ],
+  "related": [
+   "supernova-light-curves",
+   "stellar-spectra-saha",
+   "radioactivity"
+  ],
+  "needs": "Thermonuclear reaction rates: the Caughlan & Fowler 1988 analytic fits (published formulas, retyped), or the JINA REACLIB library (publicly downloadable; licence not confirmed).",
+  "pitfall": "Stars do not burn in the chemical sense, and the Sun's core is not hot enough for the CNO cycle to dominate; the page must not show the Sun as a CNO star.",
+  "why": "UCSC Ay 112 Physics of Stars (Woosley) lecture notes, the course that runs from spectra to nuclear burning; adjacent lecture fetched, the burning lectures themselves were not: https://www.ucolick.org/~woosley/ay112-14/lectures/lecture3.4x.pdf",
+  "overlapWith": "stars: that page shows which element the core fuses at each stage; this page runs the reactions themselves and shows why the switch happens at a given temperature.",
+  "needsSource": "Caughlan & Fowler 1988 rate fits (published formulas) or JINA REACLIB (public download, licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "stellar-spectra-saha",
+  "title": "Stellar spectra & the Saha equation",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "Slide a star's surface temperature from 3,000 to 40,000 kelvin. The page draws the blackbody continuum and, on it, the strengths of the hydrogen Balmer lines, helium, ionized calcium and neutral metals, computed from the Boltzmann and Saha equations for the fraction of each atom in the right state to absorb. The Balmer lines grow, peak near 10,000 kelvin and fade as hydrogen ionizes, which is why the sequence OBAFGKM reads as it does; the real SDSS spectrum of each type is overlaid, and the reader classifies an unknown spectrum by sliding until it fits.",
+  "takeaway": "A star's spectral type is its temperature in disguise: hydrogen lines are strongest not in the hottest stars but in those warm enough to excite hydrogen and cool enough not to ionize it.",
+  "prerequisites": [
+   "stars",
+   "atoms-periodic-table",
+   "quantum-mechanics"
+  ],
+  "related": [
+   "stellar-nucleosynthesis",
+   "exoplanets"
+  ],
+  "needs": "SDSS stellar spectra, one per spectral type (SDSS states that its public data releases are in the public domain), and atomic energy levels and partition functions (NIST Atomic Spectra Database, US government work).",
+  "pitfall": "Line strength does not measure abundance alone: A stars are not hydrogen-rich and O stars hydrogen-poor; they differ in temperature.",
+  "why": "University of Sydney senior astrophysics lab asking students to show from the Saha and Boltzmann equations why hydrogen lines are strongest in A stars: https://www.physics.usyd.edu.au/~helenj/SeniorAstro/lab1.pdf",
+  "overlapWith": "stars: that page moves a star across the HR diagram by colour and brightness; this page is what the spectrum itself shows and why temperature, not composition, orders the types.",
+  "needsSource": "SDSS spectra (stated public domain by SDSS); NIST atomic data (US government work).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "supernova-light-curves",
+  "title": "Supernova light curves",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Set the mass of nickel-56 made in an explosion and the mass and speed of the ejecta, and the page runs the Arnett model: nickel decays to cobalt and then iron on 8.8-day and 111-day timescales, the heat diffuses out through the expanding, thinning ejecta, and the bolometric light curve rises to a peak and falls onto the cobalt tail. More nickel raises the peak; heavier ejecta delay and broaden it. Overlay a measured Type Ia light curve and read its nickel mass, then try to make a faint, slow one or a bright, fast one and see why the width-brightness relation holds.",
+  "takeaway": "A supernova's light is radioactive afterglow: the peak measures how much nickel-56 the explosion made and the width how much mass it has to shine through.",
+  "prerequisites": [
+   "stars",
+   "radioactivity"
+  ],
+  "related": [
+   "stellar-nucleosynthesis",
+   "cosmic-distance-ladder",
+   "dark-energy-supernovae",
+   "cosmic-ray-air-showers"
+  ],
+  "needs": "One well-observed Type Ia light curve, e.g. from the Pantheon+ light-curve release (publicly downloadable from the collaboration's GitHub; licence not confirmed).",
+  "pitfall": "The light at peak is not the explosion's flash but weeks of radioactive heating, and Type Ia supernovae are standardizable candles, not standard ones.",
+  "why": "Curricular signal weak in this round; grounded in the Arnett-model literature, e.g. Chatzopoulos et al.'s analytic light-curve paper: https://arxiv.org/pdf/1301.3333",
+  "overlapWith": "stars: that page ends a massive star in an explosion as one frame; this page is the explosion's light curve and what it measures.",
+  "needsSource": "Pantheon+ light curves (GitHub DataRelease; public download, licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "tidal-evolution-resonance",
+  "title": "Tidal locking & orbital resonance",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "A planet and a moon, each raising a tidal bulge on the other that lags by an amount the reader sets through the tidal quality factor. Run the secular equations: the moon's spin slows until it shows one face to the planet, the planet's day lengthens and the moon drifts outward, with the Moon's 3.8 centimeters a year drawn to scale. Add two more moons and let the inner one migrate: it catches the next in a 2:1 resonance and drags it along, then both catch the third, the chain Io, Europa and Ganymede sit in; the resonance pumps their eccentricity and the tidal heating that melts Io's interior is plotted.",
+  "takeaway": "Tides are not only a daily rise and fall: over millions of years they lock spins, push moons outward and herd them into resonant chains that keep squeezing them.",
+  "prerequisites": [
+   "sun-earth-moon",
+   "orbits-kepler"
+  ],
+  "related": [
+   "ocean-tides-amphidromes",
+   "lagrange-points-three-body",
+   "exoplanets"
+  ],
+  "needs": "",
+  "pitfall": "The Moon does rotate, once per orbit, and its far side is not its dark side.",
+  "why": "Tel Aviv University planetary geology lecture on the tidal evolution of close satellites and the Galilean resonance: https://www.tau.ac.il/~morris/03411203/chapter3/resonance2.htm",
+  "overlapWith": "sun-earth-moon: that page shows the tides a moon raises today; this page runs the tides for a billion years and shows what they do to spins and orbits.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "3d-printer-layers",
+  "title": "How a 3D printer builds a shape",
+  "level": 0,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Drag a plane up through a small model and watch each slice become the loop the nozzle will trace; press print and the nozzle draws the slices one on top of another, squeezing a thread of plastic round the loop and zigzagging across the inside. One control, the layer thickness: thin layers give a smooth cup and take all afternoon, thick ones print in minutes and show steps on every curve. Tilt the model to make an overhang the nozzle cannot draw in mid-air and see where supports go.",
+  "takeaway": "A 3D printer draws a shape as a stack of flat layers, one slice at a time, so thinner layers mean a smoother object and a much longer print.",
+  "prerequisites": [],
+  "related": [
+   "graphics-3d",
+   "bezier-curves"
+  ],
+  "needs": "A small 3D model: a shape generated by the page, or an openly licensed mesh.",
+  "pitfall": "The printer does not carve or cast the shape: material is added, and each layer rests on the one below, which is why overhangs need supports.",
+  "why": "'How does a 3D printer work' beginner guides (slicing and layer height) are a staple of the hobby: https://www.snapmaker.com/blog/what-is-a-slicer-in-3d-printing/",
+  "overlapWith": "graphics-3d: projecting a triangle mesh onto a screen; this page cuts the same kind of mesh into physical layers and traces them.",
+  "needsSource": "none required (shapes generated in-page); any external mesh must be CC0 or CC BY.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
+  "slug": "computer-coin-flip",
+  "title": "How a computer flips a coin",
+  "level": 0,
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Pick a starting number and press next: a fixed rule (multiply, add, keep the last two digits) spins a wheel to the next number, and the numbers land on a board looking as scattered as coin flips. Keep pressing and the wheel comes back to where it started and the sequence repeats, sooner for a small wheel. Reset with the same start and the same 'random' flips come out again, which is how a game replays the same level; pick a bigger wheel and count how long it takes to repeat.",
+  "takeaway": "A computer makes its 'random' numbers by a fixed rule from a starting number, so the same start replays the same sequence, and every rule on a wheel eventually comes round to the beginning.",
+  "prerequisites": [
+   "coin-streaks"
+  ],
+  "related": [
+   "life-on-a-grid",
+   "secret-codes"
+  ],
+  "needs": "",
+  "pitfall": "'Eventually repeats' is true of any rule on a finite wheel, but real generators take longer than the age of the universe: show the small wheel repeating and say the real ones are bigger, not different in kind. And do not claim computers can never be random: dice-like hardware sources exist.",
+  "why": "Wikipedia, 'Pseudorandom number generator': the sequence is 'completely determined by an initial value' (the seed) and reproducible; the everyday question is 'how do computers generate random numbers'. https://en.wikipedia.org/wiki/Pseudorandom_number_generator",
+  "overlapWith": "cryptography (level 2) relies on randomness but never shows where its random numbers come from; coin-streaks (this batch) is about a real coin, while this page is about the rule a computer uses instead of one.",
+  "needsSource": "none",
+  "leadsTo": [
+   "epidemics"
+  ],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "digital-clock-counting",
+  "title": "How a digital clock keeps time",
+  "level": 0,
+  "kind": "simulate",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Switch on a tiny quartz tuning fork, kept shaking by the battery and a small circuit, and it shakes 32,768 times a second, far too fast to see; the page slows it down and feeds its shakes into a chain of halvers, where each box passes on one tick for every two it gets, and after fifteen boxes one tick a second comes out and the seconds digit advances. Then run the clock for a month against a reference clock while warming or cooling the fork: a shake that is off by a hair becomes seconds of drift by the end of the month.",
+  "takeaway": "A digital clock is a very fast, very steady shake counted down by halving, and a shake that is off by a tiny fraction adds up to seconds a month.",
+  "prerequisites": [],
+  "related": [
+   "remote-control-blinks"
+  ],
+  "needs": "",
+  "needsSource": "none beyond published figures: 32,768-per-second tuning-fork crystals halved fifteen times, and a parabolic temperature drift of about -0.035 parts per million per degree squared away from the turnover point (manufacturers' datasheets, as quoted on Wikipedia's Quartz clock page).",
+  "pitfall": "The crystal does not 'know' time and does not shake once a second; the slow ticks come from counting. The clock on a mains-powered oven counts the grid's alternations instead, a different reference; say so rather than lumping the two together.",
+  "why": "'Quartz clock' averaged about 12,500 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Quartz_clock/monthly/2025010100/2025123100).",
+  "overlapWith": "oscillations-resonance: that page shows why a resonator has a natural frequency; this one takes the steady shake as given and shows the counting chain and the drift, with no spring or pendulum model. The household lens's clock-escapement candidate is the mechanical clock.",
+  "leadsTo": [
+   "binary",
+   "oscillations-resonance"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "elevator-chooses-floors",
+  "title": "How an elevator chooses its next floor",
+  "level": 0,
+  "kind": "simulate",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Press call buttons on the floors of a ten-storey building and inside the car, in any order, and watch the car run: it keeps going the way it is going, stops at every call ahead of it, then turns round, while a stopwatch on each waiting person adds up. Flip the rule to 'answer calls in the order they were pressed' and replay the same calls: the car zigzags and the stopwatches run much longer. Add a second car and watch the two share the calls.",
+  "takeaway": "An elevator does not answer calls in the order they were pressed: it sweeps up, then down, serving everything on the way, and that simple rule makes everyone wait less.",
+  "prerequisites": [],
+  "related": [
+   "traffic-light-controller"
+  ],
+  "needs": "",
+  "needsSource": "none; a discrete-event simulation of the up-then-down rule (a car keeps answering calls in its direction until none remain, then reverses, as described on Wikipedia's Elevator page) against first-come-first-served.",
+  "pitfall": "Pressing the button again does not call the car faster: a call is registered once. Do not promise that the sweep is the best possible rule, only that it beats first-come-first-served; real buildings add further rules for parking and peak times.",
+  "why": "'Elevator' averaged about 14,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Elevator/monthly/2025010100/2025123100).",
+  "overlapWith": "sorting: the nearest existing page on comparing rules by their cost; nothing existing has a scheduling rule. The household lens's elevator-counterweight candidate is the rope and the motor; this page is the decision rule, and the two can link.",
+  "leadsTo": [
+   "sorting",
+   "graph-search"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "emoji-and-text-as-numbers",
+  "title": "Emoji and text as numbers",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Type a message and watch it travel as a row of numbers, one per letter, space or emoji, taken from an agreed list that every phone owns a copy of. Switch the receiving phone to an older model that has no picture for one of the numbers: that emoji arrives as an empty box while the letters are fine. Then watch the message counter: 160 plain letters fit in one text, and adding a single emoji drops the room to 70, because every character now has to be sent as a bigger number.",
+  "takeaway": "Letters and emoji travel as numbers from a shared list, and the picture is drawn by the phone that receives them, so a number it does not know shows as a box.",
+  "prerequisites": [],
+  "related": [
+   "screens-and-pixels",
+   "keyboard-rows-and-columns",
+   "qr-codes"
+  ],
+  "needs": "The Unicode character and emoji lists (Unicode Character Database and emoji-test.txt) under the Unicode licence, which allows copying and redistribution with the notice; the text-message rules (GSM 7-bit alphabet, 160 characters; UCS-2, 70 characters) from the published GSM 03.38 specification.",
+  "needsSource": "Unicode data files (Unicode licence v3, permissive with notice); GSM 03.38 alphabet, a published standard.",
+  "pitfall": "An emoji is not a picture that is sent: the same number is drawn differently by each phone maker, and some emoji (skin tones, families, flags) are several numbers joined, which the page should show rather than hide. Characters are not all the same size on the wire, so 'one character is one byte' is wrong; show the byte count, not a formula.",
+  "why": "England KS3 computing: data of various types 'including text, sounds and pictures' represented in binary (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); 'Emoji' averaged about 62,200 views a month on English Wikipedia in 2025.",
+  "overlapWith": "binary: that page reads one byte as a number, a character and a colour; this one works on whole messages at the everyday layer: the shared list of numbers, the drawing done by the receiver, and the text-message counter.",
+  "leadsTo": [
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "keyboard-rows-and-columns",
+  "title": "Inside a keyboard",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Press keys on a drawn keyboard with its lid off: under the keys there is no wire per key, only a few row wires crossing a few column wires, and a scanner that runs along the rows many times a second and lights the crossing where a pressed key connects. Hold three keys that make three corners of a rectangle and watch a fourth key light up that nobody pressed. Switch the layout from QWERTY to AZERTY and press the same key: the keyboard sends the same crossing, and the computer's table turns it into a different letter.",
+  "takeaway": "A keyboard does not send letters: it reports which row and column met, and the computer looks the letter up, which is why one keyboard can type any alphabet and some key combinations confuse it.",
+  "prerequisites": [],
+  "related": [
+   "emoji-and-text-as-numbers",
+   "touchscreens"
+  ],
+  "needs": "",
+  "needsSource": "none; a scanned row-and-column matrix with the ghost path traced through three closed switches.",
+  "pitfall": "Two different failures: ghosting is a phantom fourth key when three corners of a rectangle are held (cured by a diode at each key), and blocking is a cheap keyboard refusing a third key to avoid it. Do not present them as one thing, and do not say a key 'sends a letter'.",
+  "why": "'Computer keyboard' averaged about 24,800 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Computer_keyboard/monthly/2025010100/2025123100).",
+  "overlapWith": "logic-gates: that page wires gates and reads a truth table; here the only logic is a scan of crossings, and the point is the lookup from a position to a character.",
+  "leadsTo": [
+   "binary",
+   "logic-gates",
+   "electric-circuits"
+  ],
+  "origin": "everyday-technology"
  }
 ]

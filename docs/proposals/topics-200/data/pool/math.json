@@ -222,6 +222,29 @@
   "origin": "numbers-shapes-computers"
  },
  {
+  "slug": "monty-hall",
+  "title": "The three doors",
+  "level": 0,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Pick one of three doors; the host, who knows where the prize is, opens another to show a goat, and you stay or switch. Play by hand, then let the page play a hundred games with 'always stay' and a hundred with 'always switch', the wins piling into two columns at about two to one. Flip the board to see the three places the prize could be and which choice wins in each, then try ten doors where the host opens eight.",
+  "takeaway": "Switching wins twice as often as staying, because the first pick is right only one time in three and the host's open door points to the prize the rest of the time.",
+  "prerequisites": [],
+  "related": [
+   "bayes-theorem"
+  ],
+  "needs": "",
+  "pitfall": "The host must know where the prize is and always open a goat door; if he opens a door at random and happens to show a goat, the two remaining doors really are equal, and the page should show that case too.",
+  "why": "The Monty Hall problem is among the most-read probability articles on Wikipedia and a staple of popular maths: https://en.wikipedia.org/wiki/Monty_Hall_problem",
+  "overlapWith": "bayes-theorem: counting a grid of 1,000 people to update on a test result; this page updates on what a host does, with doors and tallies instead of rates and formulas.",
+  "needsSource": "none",
+  "leadsTo": [
+   "bayes-theorem"
+  ],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
   "slug": "percent-off",
   "title": "Per cent: out of a hundred",
   "level": 0,
@@ -521,6 +544,29 @@
   "origin": "numbers-shapes-computers"
  },
  {
+  "slug": "bezier-curves",
+  "title": "Bézier curves: how fonts and vector drawings bend",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag the four control points of a curve and it follows; slide t from 0 to 1 and watch the construction: a point slides the fraction t along each leg between control points, then along the legs between those points, and the last point traces the curve. Chain curves into a letter and see that a join is smooth only when the two handles at the join lie on one line; turn on the hull to see that a curve never leaves the shape of its own control points, and add or remove control points.",
+  "takeaway": "A Bézier curve is nothing but repeated straight-line interpolation between its control points, which is why a few draggable handles can describe any letter, logo or animation path.",
+  "prerequisites": [],
+  "related": [
+   "graphics-3d",
+   "perlin-noise-terrain",
+   "3d-printer-layers"
+  ],
+  "needs": "",
+  "pitfall": "The curve passes through its end points but not, in general, its middle control points; and t is not distance along the curve: equal steps of t do not give equal lengths.",
+  "why": "Freya Holmér's 'The Beauty of Bézier Curves' and Bartosz Ciechanowski's 'Curves and Surfaces' are among the most-shared maths explainers, and the construction is a standard graphics assignment (Berkeley CS184): https://classcentral.com/course/youtube-the-beauty-of-bezier-curves-129121",
+  "overlapWith": "unit-circle: a point moving round a circle traces sine; this page is a point tracing a curve by repeated straight-line mixing, with no trigonometry.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
   "slug": "cellular-automata",
   "title": "Cellular automata",
   "level": 1,
@@ -543,6 +589,29 @@
   "leadsTo": [],
   "everyday": false,
   "origin": "math-l3"
+ },
+ {
+  "slug": "colliding-blocks-pi",
+  "title": "Why colliding blocks count the digits of pi",
+  "level": 1,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "A small block sits between a wall and a big block sliding toward it; every collision is perfectly elastic and counted. With equal masses there are 3 collisions, with the big block 100 times heavier 31, 10,000 times heavier 314, each run playable at speed or stepped collision by collision while bars show momentum and energy staying put. A second view plots the two speeds as one point bouncing between a line and a circle, and the count becomes the number of equal angles that fit in a quarter turn.",
+  "takeaway": "With only two conservation laws, a block 100 to the n times heavier collides 3, 31, 314... times, the digits of pi, because the collision rule becomes equal-angle steps round a circle.",
+  "prerequisites": [
+   "newtons-laws"
+  ],
+  "related": [
+   "unit-circle"
+  ],
+  "needs": "",
+  "pitfall": "The count is exact only for perfectly elastic collisions on a frictionless surface; any loss stops the digits early. It is not a practical way to compute pi, and the page says so.",
+  "why": "3Blue1Brown's colliding-blocks videos (2019, and a 2025 second edition) are among its most-watched: https://3blue1brown.substack.com/p/revisiting-those-colliding-blocks",
+  "overlapWith": "newtons-laws: carts collide and momentum and energy are conserved; this page takes those two laws to a counting puzzle whose answer is pi.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
  },
  {
   "slug": "exponentials-logarithms",
@@ -568,6 +637,102 @@
   "leadsTo": [],
   "everyday": true,
   "origin": "math-l3"
+ },
+ {
+  "slug": "game-theory-cooperation",
+  "title": "Game theory: why cooperate?",
+  "level": 1,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Play the prisoner's dilemma against the page with a payoff table whose four numbers can be edited, and find that cheating pays once but not when the same two players meet again. Enter strategies (always cheat, always cooperate, tit for tat, grudger, random) into a round-robin tournament of repeated games and watch the scores; let the population evolve, with well-scoring strategies copied more often, and add a little noise to the signals to see which strategies survive it. Finish on a grid where each cell plays its neighbours, so that clusters of cooperators grow or are eaten.",
+  "takeaway": "When the same players meet repeatedly, being nice, retaliating and forgiving beats pure selfishness, so cooperation can emerge among players who each look after only themselves.",
+  "prerequisites": [],
+  "related": [
+   "evolution",
+   "ecosystems",
+   "reinforcement-learning"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Tit for tat never beat an opponent in a single game; it won the tournaments by scoring well with everyone. There is no best strategy independent of the population it plays in, and the result changes with the payoff numbers and with noise.",
+  "why": "Nicky Case's 'The Evolution of Trust', an interactive built on Axelrod's tournaments https://ncase.me/trust/ (coverage: https://boingboing.net/2017/07/26/fun-interactive-game-theory-si.html )",
+  "overlapWith": "evolution runs selection on a heritable trait and ecosystems couples populations; here the agents choose, with payoffs. The pool's evolutionary-game-theory (level 3) is the replicator ODE on the simplex; this is the level-1 tournament-and-grid version with no equation.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "probability-trees",
+  "title": "Counting & probability trees",
+  "level": 1,
+  "kind": "build",
+  "category": "math",
+  "interaction": "Build a tree of chance events by adding branches with their probabilities: sweets drawn from a bag with and without putting them back, coins, dice; the page multiplies along each branch and adds across them to give the probability of any outcome. Press run to perform the experiment a thousand times and watch the tally approach the tree's prediction. Then grow Pascal's triangle by counting paths through a grid, use it to answer how-many-ways questions, and end with the birthday problem, where the tree makes a surprising answer unavoidable.",
+  "takeaway": "The probability of a sequence of events is found by multiplying along its path and adding the paths that lead to the same result, and counting paths is why rare-seeming coincidences are common.",
+  "prerequisites": [],
+  "related": [
+   "bayes-theorem",
+   "central-limit-theorem"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Independent events have no memory: after five heads the next flip is still even. Drawing without replacement changes the probabilities on later branches, and that is the only difference between the two bag problems.",
+  "why": "Tree diagrams and conditional probability in GCSE (higher) and Edexcel A-level Mathematics statistics https://www.mathsgenie.co.uk/a-level/maths/edexcel/content/a-level-statistics-tree-diagrams",
+  "overlapWith": "bayes-theorem colours a grid of 1,000 people to show base rates and central-limit-theorem drops balls through a Galton board; neither builds a tree, counts paths or runs the with-and-without-replacement comparison at the core of school probability.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "statistics-correlation",
+  "title": "Statistics: averages, spread & correlation",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag points on a dot plot and watch the mean, median and spread respond, an outlier dragging the mean but not the median. Then drag points on a scatter plot: the correlation coefficient and the best-fit line update live, the squared vertical gaps the line minimises are drawn, and four very different clouds with identical statistics (Anscombe's quartet) show why the picture matters. Finish with a real dataset in which two variables rise together, and a slider that reveals the third variable driving both.",
+  "takeaway": "An average without a spread hides half the story, a correlation coefficient measures how close points lie to a line and nothing else, and two things rising together does not mean one causes the other.",
+  "prerequisites": [],
+  "related": [
+   "learning-from-data",
+   "central-limit-theorem",
+   "bayes-theorem"
+  ],
+  "needs": "Anscombe's quartet (44 numbers) and one small real dataset with a confounding variable.",
+  "needsSource": "Anscombe 1973 (the published data are facts and are reproduced everywhere); the Palmer penguins dataset (CC0) for a real scatter with a species variable behind it",
+  "pitfall": "A correlation of zero does not mean no relationship, only no straight-line one, and the line of y on x is not the line of x on y. Do not draw the line by eye: show the residuals it minimises.",
+  "why": "A-level Mathematics statistics (scatter diagrams, the product moment correlation coefficient, the regression line of y on x) https://alevelmathsrevision.com/pdf/alevel-revision-notes/1/correlation-and-regression/correlation-and-regression/hw/ ; AP Statistics' first two units are one- and two-variable data",
+  "overlapWith": "learning-from-data (level 1) fits curves of adjustable flexibility and holds out a test set; this page stops at the straight line and asks what the number r means and what it does not. central-limit-theorem is about averages of samples, not the description of one dataset.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "differential-equations",
+  "title": "Differential equations",
+  "level": 2,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Choose a rule for the slope at every point (growth in proportion to the amount, cooling in proportion to the temperature difference, a spring's pull, rabbits and foxes) and the plane fills with small slope arrows; click anywhere to drop a starting point and watch a solution curve thread through them. Step the curve by hand with Euler's method, shrink the step and watch it converge, then compare with the exact solution where one exists and see that most rules have none, only the arrows.",
+  "takeaway": "A differential equation says how fast something changes given where it is, and that rule plus a starting point fixes the whole future, which can be followed step by step even when no formula exists.",
+  "prerequisites": [
+   "calculus"
+  ],
+  "related": [
+   "newtons-laws",
+   "oscillations-resonance",
+   "epidemics",
+   "chaos-fractals",
+   "feedback-control",
+   "how-simulations-work"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "A differential equation is not solved by finding a formula; most have none, and the slope field is where the solution lives. Euler's method with too large a step shows oscillation or blow-up that the equation does not have.",
+  "why": "3Blue1Brown, 'Differential equations, a tourist's guide' (over 4 million views) https://www.classcentral.com/classroom/youtube-differential-equations-a-tourist-s-guide-133384 ; AP Calculus BC Unit 7 (slope fields, Euler's method) https://fiveable.me/ap-calc/unit-7.md",
+  "overlapWith": "calculus is the derivative and the integral of a given curve; this page starts from the derivative rule and finds the curve. The pool's phase-portraits (level 3) is the sequel (stability, linearisation); this is the level-2 slope-field-and-Euler page whose level the Reserve line asked about. The proposed how-simulations-work (level 1) steps a ball and an orbit with the same method; this page is the rule for the slope and the field it draws, not the engine.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
  },
  {
   "slug": "calculus-of-variations",

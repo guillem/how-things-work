@@ -1,0 +1,185 @@
+[
+ {
+  "slug": "robot-arm-kinematics",
+  "title": "Robot arm kinematics",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Drag the hand of a six-joint industrial arm and a Jacobian-based inverse-kinematics solver moves the joints to follow it, with the manipulability ellipsoid showing which directions are easy. Approach a fully stretched or a wrist-aligned pose and watch the ellipsoid flatten, the joint speeds blow up and the solver stall at the singularity; add a seventh joint and move the elbow through the null space while the hand stays put.",
+  "takeaway": "The matrix linking joint speeds to hand speeds changes with the pose, and where it loses rank the arm cannot move in some direction no matter how fast its joints turn.",
+  "prerequisites": [
+   "linear-transformations",
+   "feedback-control"
+  ],
+  "related": [
+   "graphics-3d",
+   "hydraulic-systems"
+  ],
+  "needs": "Link lengths and joint offsets of a real arm: the Universal Robots UR5 Denavit-Hartenberg parameters, published by the manufacturer and in ROS description packages (BSD/Apache licences).",
+  "pitfall": "Inverse kinematics is not one lookup: the same hand pose usually has several joint solutions, and near a singularity small hand motions need huge joint motions, which is the geometry's doing, not the controller's.",
+  "why": "MIT OCW 2.12 Introduction to Robotics (kinematics, Jacobian, singularities, redundancy): https://ocw.mit.edu/courses/2-12-introduction-to-robotics-fall-2005/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "feedback-control: its arm reaches a point as a closing example; this page is the geometry itself, with the Jacobian, singularities and redundancy that page never shows.",
+  "needsSource": "UR5 DH parameters (manufacturer-published; ROS packages under BSD/Apache).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "ship-stability",
+  "title": "Why ships stay upright",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Heel a ship's hull with a drag and the submerged cross-section is re-integrated each frame: the center of buoyancy shifts outboard, the righting arm is drawn, and its curve against heel angle fills in. Load cargo high or low to move the center of gravity, open a partly filled tank to see the free-surface effect shrink the righting arm, and push the heel past the angle of vanishing stability where the ship capsizes; then compare a narrow hull with a broad one.",
+  "takeaway": "A ship rights itself as long as its buoyancy shifts outboard faster than its weight leans, and the righting-arm curve shows both how stiff it is in small rolls and the angle beyond which it will not come back.",
+  "prerequisites": [
+   "newtons-laws",
+   "calculus"
+  ],
+  "related": [
+   "bridges-structures",
+   "feedback-control",
+   "flight"
+  ],
+  "needs": "A hull form: the analytic Wigley hull (a formula, no licence issue) or a parametric hull built on the page.",
+  "pitfall": "A ship is not stable because it is heavy at the bottom: a hull with a low centre of gravity still capsizes once its buoyancy stops shifting outboard, and a wide raft with its weight high is stable because it is wide.",
+  "why": "MIT OCW 2.019 Design of Ocean Systems (hydrostatics, stability, righting arm): https://ocw.mit.edu/courses/2-019-design-of-ocean-systems-spring-2011/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "bridges-structures: static equilibrium of a built thing under load; no existing page covers buoyancy or a stability curve.",
+  "needsSource": "none; the Wigley hull is an analytic formula.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "steam-power-cycles",
+  "title": "Steam turbines & the Rankine cycle",
+  "level": 3,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Assemble a steam plant from a boiler, turbine stages, a condenser and a pump, with every state computed from the real steam property equations and traced on a temperature-entropy diagram. Add a superheater, a reheat stage and feedwater heaters one at a time and raise the boiler pressure toward supercritical; the efficiency, the net work per kilogram and the moisture at the turbine exit respond, and the last turbine blades show erosion when the steam gets too wet.",
+  "takeaway": "Each refinement of the steam cycle, superheat, reheat and feedwater heating, raises the average temperature at which heat enters and lifts the efficiency while keeping the turbine's exhaust dry.",
+  "prerequisites": [
+   "heat-engines",
+   "entropy"
+  ],
+  "related": [
+   "power-grid",
+   "gas-turbines-combined-cycle",
+   "exergy-analysis",
+   "geothermal-power"
+  ],
+  "needs": "Water and steam properties from the IAPWS-IF97 industrial formulation (equations published freely by IAPWS, https://www.iapws.org/relguide/IF97-Rev.html; open implementations exist, e.g. CoolProp, MIT licence), ported to the browser or tabulated.",
+  "pitfall": "The condenser is not where the plant carelessly 'wastes' two thirds of its heat: rejecting heat at the cold temperature is required by the second law, and the real shortfall against Carnot comes from heat entering at an average temperature far below the flame's.",
+  "why": "University energy-systems syllabus (Bologna, Energy Systems T): steam plants with reheat and regeneration, T-s diagrams, efficiency vs. pressure and temperature: https://www.unibo.it/en/study/course-units-transferable-skills-moocs/course-unit-catalogue/course-unit/2025/432100 (from search results).",
+  "overlapWith": "heat-engines: that page runs a closed-cylinder four-stroke gas cycle on a p-V chart; this one is the continuous steam plant with a real two-phase fluid, a T-s diagram and the cycle refinements that lift efficiency.",
+  "needsSource": "IAPWS-IF97 steam property equations (freely published by IAPWS; CoolProp implementation under the MIT licence).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "superconducting-magnets",
+  "title": "Superconducting magnets & quench",
+  "level": 3,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Ramp the current in a superconducting coil and watch its operating point climb inside the critical surface of temperature, field and current density for niobium-titanium, with the stored magnetic energy counted up. Deposit a small heat pulse somewhere in the winding: a one-dimensional heat model shows the normal zone either shrinking back or growing as Joule heating outruns cooling and racing along the conductor as a quench; fire the dump resistor in time and the energy leaves as heat in the resistor, or too late and the hot spot melts.",
+  "takeaway": "A magnet stays superconducting only inside a surface of temperature, field and current, and once one spot crosses it the stored energy must be dumped within seconds or that spot burns out.",
+  "prerequisites": [
+   "electromagnetism",
+   "entropy"
+  ],
+  "related": [
+   "nuclear-fusion",
+   "medical-imaging",
+   "maglev-trains",
+   "standard-model",
+   "hvdc-transmission"
+  ],
+  "needs": "A published critical-current parametrization for NbTi (Bottura's fit; published values) and low-temperature properties of copper and NbTi from the NIST cryogenic materials database (US government, public): https://trc.nist.gov/cryogenics/materials/materialproperties.htm",
+  "pitfall": "Superconductors do not carry unlimited current: the critical surface, not zero resistance alone, defines what the magnet can do, and the resistance-free coil still needs cooling power to hold its temperature.",
+  "why": "MIT OCW 22.68J Superconducting Magnets (critical surface, stability, quench and protection): https://ocw.mit.edu/courses/22-68j-superconducting-magnets-spring-2003/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "nuclear-fusion confines plasma with a magnetic field taken as given, and medical-imaging uses one; this page is the magnet itself and what happens when it fails.",
+  "needsSource": "NbTi critical-current fit (published values); NIST cryogenic material properties (public).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "thermoelectrics",
+  "title": "Thermoelectric generators & coolers",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Hold one end of a thermoelectric leg hot and the other cold and draw current: the one-dimensional model with Seebeck, Peltier, Joule and conduction terms gives the voltage, the power and the efficiency, which peak at different currents. Change the material's Seebeck coefficient, electrical conductivity and thermal conductivity and watch the figure of merit ZT and the efficiency rise together toward the Carnot value; reverse the current and the same leg pumps heat as a cooler, with its coldest reachable temperature set by the same ZT.",
+  "takeaway": "A thermoelectric's efficiency is set by one material number, ZT, which pulls it toward the Carnot value only slowly, so near ZT of 1 it reaches about a fifth of Carnot.",
+  "prerequisites": [
+   "heat-engines",
+   "entropy",
+   "semiconductors"
+  ],
+  "related": [
+   "solar-cells",
+   "heat-pumps-refrigeration",
+   "chip-cooling"
+  ],
+  "needs": "Seebeck coefficient, electrical and thermal conductivity against temperature for bismuth telluride and a few other materials from published measurements (published values; papers may be paywalled).",
+  "pitfall": "Waste heat is not free energy: a thermoelectric on a car exhaust or a stove gives percents, not tens of percents, and the page must show why the three material properties fight each other.",
+  "why": "MIT OCW 2.60J Fundamentals of Advanced Energy Conversion (direct energy conversion including thermoelectrics): https://ocw.mit.edu/courses/2-60j-fundamentals-of-advanced-energy-conversion-spring-2020/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "solar-cells converts photons in a semiconductor with a ceiling set by the band gap; this page converts heat in one with a ceiling set by ZT, and runs backward as a cooler.",
+  "needsSource": "Published thermoelectric material property measurements (values published; papers may be paywalled).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "tribology-lubrication",
+  "title": "Friction, bearings & lubrication",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Slide a shaft in a bearing with sliders for speed, load and oil viscosity: the one-dimensional Reynolds equation is solved for the oil film to show the pressure wedge that lifts the shaft, the film thickness and the friction torque. Sweep the speed and the friction traces the Stribeck curve, from metal-on-metal boundary friction at a crawl through the mixed regime to the thin-film hydrodynamic minimum and up again as viscous drag grows; thicken the oil, cool it or roughen the surfaces and watch the minimum move.",
+  "takeaway": "A lubricated shaft floats on a pressure wedge that its own motion builds, so friction falls as it spins up, bottoms out where the film just separates the surfaces, and rises again from stirring the oil.",
+  "prerequisites": [
+   "newtons-laws",
+   "states-of-matter"
+  ],
+  "related": [
+   "escapements",
+   "flywheels",
+   "involute-gears"
+  ],
+  "needs": "Viscosity against temperature for standard oil grades (ISO VG, published openly) and surface roughness values from the literature.",
+  "pitfall": "Oil does not work by being slippery: at speed the surfaces never touch, and the friction that remains is the oil's own viscosity, which is why thicker oil is not always better.",
+  "why": "MIT OCW 2.800 Tribology (Reynolds equation, hydrodynamic lubrication, Stribeck regimes): https://ocw.mit.edu/courses/2-800-tribology-fall-2004/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "newtons-laws treats friction as a coefficient; this page replaces the coefficient with the physics of the oil film, and shows when the coefficient picture holds.",
+  "needsSource": "none; ISO VG oil viscosity data (openly published).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "wind-turbine-aerodynamics",
+  "title": "Wind turbines & the Betz limit",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Start with an actuator disc: drag how much the air slows through the rotor and watch the stream tube widen, the thrust and power change, and the power coefficient peak at 16/27. Then replace the disc with real blades: set the tip-speed ratio, the blade pitch and the twist, and a blade-element-momentum model with a measured airfoil polar computes the angle of attack along the blade, the power curve against wind speed, and the stall or pitch regulation that holds power steady above rated wind.",
+  "takeaway": "No rotor can take more than 59 percent of the wind's power because the air must keep moving to get out of the way, and real blades approach that only near one tip-speed ratio.",
+  "prerequisites": [
+   "flight"
+  ],
+  "related": [
+   "power-grid",
+   "hydro-turbines"
+  ],
+  "needs": "Lift and drag polars of a wind-turbine airfoil: NREL S809 wind-tunnel data or the NREL 5-MW reference turbine's airfoil tables (US government laboratory, openly published), or NACA airfoil data (public domain).",
+  "pitfall": "The Betz limit is not a design shortcoming of today's turbines; it applies to any device that takes energy from a free stream, so a rotor near 50 percent is close to perfect.",
+  "why": "Penn State AERSP 583 Wind Turbine Aerodynamics (actuator disc, Betz limit, blade element momentum theory): https://www.e-education.psu.edu/aersp583/ (from search results); also the OpenMDAO Betz-limit worked example https://openmdao.org/docs/latest/examples/betz_limit.html.",
+  "overlapWith": "flight: it reuses the airfoil polar, but the graphic is the whole rotor and the momentum balance of the stream through it; solar-cells is the only other page with a hard physical ceiling on efficiency.",
+  "needsSource": "NREL S809 / NREL 5-MW reference turbine airfoil data (openly published by a US government laboratory); NACA data (public domain).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ }
+]

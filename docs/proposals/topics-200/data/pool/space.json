@@ -103,6 +103,29 @@
   "origin": "earth-sky-weather"
  },
  {
+  "slug": "leap-years",
+  "title": "Leap years: why February gets an extra day",
+  "level": 0,
+  "kind": "explore",
+  "category": "space",
+  "interaction": "A calendar wheel turns inside Earth's orbit: one lap of the Sun takes 365 days and about a quarter more, so each New Year falls a quarter-day short. Scrub forward with no leap days and watch the first day of summer slide through the calendar, a month after a century and into winter after seven or eight centuries; switch on 'one extra day every four years' and the slide almost stops; zoom out over a thousand years to see the small drift that is left and the 'skip every hundred, keep every four hundred' rule that fixes it.",
+  "takeaway": "A year is not a whole number of days, so a calendar without leap days drifts out of step with the seasons; an extra day every four years, with a few skipped, keeps them matched.",
+  "prerequisites": [],
+  "related": [
+   "orbits-kepler"
+  ],
+  "needs": "",
+  "pitfall": "A leap day fixes the calendar, not the orbit; nothing about the seasons changes. The rule is not simply every four years: 1900 was not a leap year and 2000 was.",
+  "why": "NASA/JPL Education, 'Doing the math on why we have leap day' (interest spikes every leap year): https://www.jpl.nasa.gov/edu/news/doing-the-math-on-why-we-have-leap-day/",
+  "overlapWith": "sun-earth-moon: why there are seasons; this page is why the calendar needs correcting to stay lined up with them.",
+  "needsSource": "none",
+  "leadsTo": [
+   "sun-earth-moon"
+  ],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
   "slug": "rocket-throws-mass",
   "title": "Rockets: going up by throwing things down",
   "level": 0,
@@ -314,6 +337,32 @@
   "origin": "earth-sky-weather"
  },
  {
+  "slug": "telescopes",
+  "title": "Telescopes",
+  "level": 2,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "Trace rays through a refractor and a reflector, drag the eyepiece to focus and read the magnification; then point the telescope at a pair of stars and shrink the aperture until their blurred images, computed from diffraction, merge into one, and widen it to gather more light until a faint star appears. Compare the eye, a 10 cm amateur scope, a 1 m observatory and a 6.5 m space telescope on the same star field, switch on atmospheric seeing to see why the big ground mirror is still blurred, and change the wavelength to see why a radio telescope must be enormous.",
+  "takeaway": "A telescope's power is in its aperture, not its magnification: a wider mirror gathers more light and resolves finer detail, and the limit set by the wave nature of light is why radio dishes are huge and the sharpest telescopes are in space.",
+  "prerequisites": [
+   "light-optics",
+   "waves-interference"
+  ],
+  "related": [
+   "vision-color",
+   "exoplanets",
+   "stars"
+  ],
+  "needs": "",
+  "needsSource": "none; the Airy pattern and light-gathering are computed, and a synthetic star field needs no catalogue",
+  "pitfall": "Magnification is cheap and is not the point; a small telescope at high power shows a bigger blur. The blur limit comes from diffraction at the aperture, not from lens flaws, and the atmosphere, not the mirror, limits most ground telescopes.",
+  "why": "AQA A-level Physics 7408 astrophysics option: refracting and reflecting telescopes, resolving power and the Rayleigh criterion, CCDs https://egglescliffe.org.uk/wp-content/uploads/2026/03/Physics-A-Level-Revision-Checklist-2025-26.pdf",
+  "overlapWith": "light-optics traces rays through single lenses and mirrors on a bench; this page assembles them into an instrument and adds what ray tracing cannot show, the diffraction limit. The pool's aperture-synthesis (level 3) is interferometry; this is the single-aperture page the earth-sky-weather lens asked another lens to write.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
   "slug": "aperture-synthesis",
   "title": "Interferometry & aperture synthesis",
   "level": 3,
@@ -339,6 +388,30 @@
   "leadsTo": [],
   "everyday": false,
   "origin": "earth-space-l3"
+ },
+ {
+  "slug": "asteroid-impact",
+  "title": "What an asteroid does when it hits",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Choose an impactor's size, density, speed and angle and integrate its fall through the atmosphere step by step: drag slows it, heating ablates it, and when the air's ram pressure exceeds its strength it spreads and bursts, its energy released as an airburst at a height the page reports (Chelyabinsk and Tunguska are presets with their published sizes). A body that survives hits the ground: the page scales the crater from the energy and the target rock, then draws rings of effects against distance, the fireball's thermal pulse, the air blast, the ground shaking and the ejecta, over a map at scale. Compare 20 m, 100 m, 1 km and 10 km bodies on one chart.",
+  "takeaway": "Small asteroids never reach the ground: the air stops them and they burst high up; bodies above about a hundred metres cross the atmosphere as if it were not there, and their effects on the ground scale with their energy in published ways.",
+  "prerequisites": [
+   "orbits-kepler",
+   "earthquakes"
+  ],
+  "related": [
+   "deep-time"
+  ],
+  "needs": "The published entry, cratering and effects equations (Collins, Melosh & Marcus 2005, and the program's documentation PDF) and literature parameters for Chelyabinsk and Tunguska.",
+  "pitfall": "A meteor does not burn up by combustion; it is stopped and shattered by air pressure, and an airburst is itself the hazard. The effect scalings are published fits valid over stated ranges, not a dataset; show their limits.",
+  "why": "The Earth Impact Effects Program (Collins, Melosh & Marcus 2005) is the public calculator behind every popular asteroid-impact simulator, and Veritasium's asteroid video is among its most-viewed: https://impact.ese.ic.ac.uk/ImpactEarth/ImpactEffects",
+  "overlapWith": "deep-time: the Chicxulub impact as a point on the timeline. shooting-stars (pool, level 0): a sand grain to a boulder entering the air with size as the one control; this page continues to the bodies that survive the air, with fragmentation, airbursts, craters and the published scaling of effects.",
+  "needsSource": "Published equations in Meteoritics & Planetary Science 40, 817-840 (2005) and the Imperial documentation; not a dataset. Chelyabinsk parameters from Popova et al. 2013 (cited).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
  },
  {
   "slug": "atmospheric-escape",

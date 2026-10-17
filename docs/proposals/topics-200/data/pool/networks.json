@@ -175,6 +175,54 @@
   "origin": "everyday-technology"
  },
  {
+  "slug": "web-page-rendering",
+  "title": "How a web page is drawn",
+  "level": 1,
+  "kind": "step",
+  "category": "networks",
+  "interaction": "Edit a few lines of HTML and CSS in a box and step through what the browser does with them: the text is parsed into a tree of elements, each element is matched against the style rules, boxes are laid out from the tree into rows and columns by a small real layout engine, and the boxes are painted to pixels. Change a width, a font size or a rule's selector and watch the tree, the boxes and the picture update; then slow down a script that edits the tree and see the page redraw.",
+  "takeaway": "A web page is text describing a tree, and the browser turns the tree into boxes and the boxes into pixels, so every visual change is a change to the tree or to the rules.",
+  "prerequisites": [
+   "internet"
+  ],
+  "related": [
+   "graphics-3d"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "HTML is not a program and a browser does not run a page from top to bottom like a script: parse, style, layout and paint are separate passes over the tree, which is why a style change can relayout without reparsing.",
+  "why": "'How does the browser render a webpage?' is a standing question with its own explainer genre (e.g. https://betterprogramming.pub/how-does-the-browser-render-a-webpage-75cdb53ba49d ), and KS3 computing asks pupils to understand how instructions and data are turned into the pages they use",
+  "overlapWith": "internet traces a web request from name lookup to response and stops when the bytes arrive; this page starts there. graphics-3d projects triangles; this layout is 2D boxes.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "shazam-audio-fingerprint",
+  "title": "How Shazam recognises a song",
+  "level": 2,
+  "kind": "step",
+  "category": "networks",
+  "interaction": "Play one of a few short clips synthesized in the page and watch its spectrogram scroll by; the page keeps only the brightest peaks, a constellation of dots, and turns pairs of nearby peaks into fingerprints (two pitches and the gap between them), building a tiny database of a dozen clips the same way. Record a few seconds of one clip with noise, a cough and a different start time added, and watch its fingerprints looked up: hits on the wrong clips scatter, hits on the right one line up at a single time offset, and the spike in the histogram names the song. Slide the noise up until the spike disappears.",
+  "takeaway": "A song is recognised not by comparing sound but by matching a sparse set of peak pairs whose time gaps line up, which is why a few noisy seconds from the middle of a track are enough.",
+  "prerequisites": [
+   "fourier-transform",
+   "binary"
+  ],
+  "related": [
+   "compression",
+   "musical-scales-ratios"
+  ],
+  "needs": "",
+  "pitfall": "It does not match the melody or the lyrics and cannot find a cover version or a hummed tune: a different performance has different peaks. The time alignment, not the number of matching hashes alone, is what makes a match reliable.",
+  "why": "Avery Wang's Shazam paper (2003) is a standard course reading and 'how does Shazam work' a classic question: https://www.princeton.edu/~cuff/ele201/files/Wang03-shazam.pdf",
+  "overlapWith": "compression: dropping high-frequency detail from image blocks; this page keeps only spectrogram peaks and matches them, discarding the sound altogether. voice-assistant-wake-word (pool) classifies speech with a trained model; this page is deterministic hashing.",
+  "needsSource": "none (clips synthesized in the browser with Web Audio; no recordings shipped)",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
   "slug": "audio-codecs",
   "title": "Sampling & perceptual audio coding",
   "level": 3,

@@ -1,651 +1,626 @@
 [
  {
-  "slug": "zero-knowledge-proofs",
-  "title": "Zero-knowledge proofs",
-  "level": 3,
-  "kind": "step",
-  "category": "networks",
-  "interaction": "Colour a small graph with three colours, cover every vertex, and let the verifier uncover one random edge; repeat with a fresh random permutation of the colours each round and watch a cheater's chance of surviving fall round by round while the verifier's transcript never contains a full colouring. Then run the Schnorr protocol on small numbers: prove you know a discrete logarithm without revealing it, and watch a simulator forge a transcript that nobody could tell from a real one.",
-  "takeaway": "You can convince someone that a statement is true while their view of the exchange contains nothing they could not have made up themselves.",
-  "prerequisites": [
-   "cryptography"
-  ],
+  "slug": "life-on-a-grid",
+  "title": "Life on a grid",
+  "level": 0,
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Paint a few squares on a grid and press step: every square counts its live neighbours at once, and the three rules (lonely dies, crowded dies, exactly three neighbours gives birth) show as the counts on each square. Press play and find the shapes that blink, the ones that sit still and the glider that walks across the board. Change one number in a rule and watch the same seed grow, freeze or die.",
+  "takeaway": "A rule about counting neighbours, applied to every square at once, makes things that blink, walk and grow that nobody drew.",
+  "prerequisites": [],
   "related": [
-   "consensus-blockchains",
-   "sat-solving",
-   "tls-handshake"
+   "growing-patterns",
+   "computer-coin-flip",
+   "repeat-loops"
   ],
   "needs": "",
-  "pitfall": "Zero-knowledge is a property of what the verifier learns, not a kind of encryption, and a single round proves almost nothing: soundness comes from repetition, and the verifier's choices must be unpredictable.",
-  "why": "Computerphile 'Zero Knowledge Proofs', about 235,000 views (view count from aggregator snapshots found this session; the video id is recalled, not fetched this session) https://www.youtube.com/watch?v=HUs1bH85X9I",
-  "overlapWith": "cryptography: that page proves identity with a signature, which reveals the signed message; this page proves knowledge while revealing nothing, and the probability of a cheater surviving is the graphic.",
+  "pitfall": "All squares update together from the previous picture, not one after another; a page that updates in place gets wrong patterns. And do not call Life 'random': the same seed gives the same future every time.",
+  "why": "Numberphile, 'Inventing Game of Life (John Conway)' (title confirmed; YouTube does not render view counts in fetch); promotes the Reserve item 'Cellular automata' at level 0. https://www.youtube.com/watch?v=R9Plq-D1gEk",
+  "overlapWith": "chaos-fractals (level 2) shows simple rules making unpredictable paths; this page's rule is three neighbour counts on a grid the reader paints, and the reader can edit the rule.",
+  "needsSource": "none",
+  "leadsTo": [
+   "ecosystems"
+  ],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "pixels-and-pictures",
+  "title": "A picture is a grid of numbers",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "computing",
+  "interaction": "Pinch into a photograph until it breaks into squares, then into one square: a single colour, kept as three counts. Paint a tiny picture on a grid of lights that are only on or off and read the row of numbers that describes it; switch to four shades of grey, then to colour, and the row of numbers grows. Double the grid's size and watch the picture sharpen while the number count jumps fourfold.",
+  "takeaway": "A picture in a computer is a grid of squares each kept as a few numbers, so more squares mean a sharper picture and four times as many numbers for each doubling.",
+  "prerequisites": [],
+  "related": [
+   "zoom-by-tens",
+   "twenty-questions"
+  ],
+  "needs": "One small photograph, CC0 from Wikimedia Commons or taken in-house.",
+  "pitfall": "Zooming in does not add detail: a blurry photo enlarged stays blurry, which the page shows instead of the TV trope of 'enhance'. Keep to counts; no bits, bytes or hex.",
+  "why": "England KS3 computing: 'how data of various types (including text, sounds and pictures) can be represented and manipulated digitally'; CS Unplugged's Image Representation ('Colour by Numbers') activity. https://classic.csunplugged.org/activities/image-representation/",
+  "overlapWith": "binary (level 1) reads one byte as a colour among other conventions; this page never shows a bit, only the grid, the shade counts and the resolution.",
+  "needsSource": "A CC0 photograph from Wikimedia Commons, or an in-house photo; no model or dataset.",
+  "leadsTo": [
+   "binary",
+   "vision-color"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "repeat-loops",
+  "title": "Repeat: loops",
+  "level": 0,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Draw a square by giving a pen-robot eight cards, then wrap 'forward, turn' in a repeat card set to 4 and get the same square from two cards; the page counts cards written against steps taken. Change the repeat count and the turn and the square becomes a triangle, a hexagon, a star. Put a repeat inside a repeat and a few cards draw a flower of forty squares.",
+  "takeaway": "A loop does the same few steps many times, so a handful of cards can draw a picture of thousands of steps, and changing one number changes the whole picture.",
+  "prerequisites": [
+   "robot-instructions",
+   "angles-as-turns"
+  ],
+  "related": [
+   "sunflower-spirals",
+   "life-on-a-grid"
+  ],
+  "needs": "",
+  "pitfall": "The turn for a star is the robot's own turn, not the star's inside angle; let the reader see a wrong count fail to close the shape rather than correcting it.",
+  "why": "England KS2 computing: 'use sequence, selection, and repetition in programs; work with variables and various forms of input and output'. https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study",
+  "overlapWith": "cpu (level 2) runs a loop as a conditional jump over machine instructions; here the loop is a card that wraps other cards, with no counters or jumps shown.",
+  "needsSource": "none",
+  "leadsTo": [
+   "sorting"
+  ],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "robot-instructions",
+  "title": "A robot follows instructions",
+  "level": 0,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Drag instruction cards (forward, turn left, turn right, pick up) into a list and press run: a robot on a floor grid does exactly what the cards say, in order, and walks into the wall if that is what they say. Fix the list until it reaches the flag, then try the 'make a sandwich' list with a step missing and watch the robot butter the air. Hand the same list to a second robot standing somewhere else and see where it ends up.",
+  "takeaway": "A robot does exactly what its list says, in order, nothing more and nothing less, so a missing or swapped card changes the whole result.",
+  "prerequisites": [],
+  "related": [
+   "solving-a-maze",
+   "sorting-network"
+  ],
+  "needs": "",
+  "pitfall": "The computer does not 'understand' the goal: a list that nearly works gets no credit, and the page must never auto-correct the reader's list. Also, left and right are the robot's, not the viewer's.",
+  "why": "England KS1 computing: 'programs execute by following precise and unambiguous instructions'; CS Unplugged Kidbots (ages 5 to 10). https://www.csunplugged.org/en/topics/kidbots/",
+  "overlapWith": "cpu (level 2) steps a real processor through fetch, decode and execute with registers and memory; this page has a robot and cards, no memory or arithmetic, and is the first idea of a program.",
+  "needsSource": "none",
+  "leadsTo": [
+   "sorting",
+   "graph-search"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "screens-and-pixels",
+  "title": "Screens and pixels",
+  "level": 0,
+  "kind": "explore",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Pinch into a photo until the picture falls apart into a grid of squares, then further, until each square turns out to be three tiny lights, red, green and blue, side by side. Pick one square and slide its three lights up and down: from a distance the square turns yellow, pink, white or black, with no yellow or white light anywhere in it. Then take pixels away from the whole picture, by halves, and watch a face become blocks.",
+  "takeaway": "A screen picture is a grid of tiny red, green and blue lights, and every colour you see on it is those three lights at different brightnesses, blurred together by your eye.",
+  "prerequisites": [],
+  "related": [
+   "digital-camera-sensor",
+   "e-reader-ink",
+   "emoji-and-text-as-numbers"
+  ],
+  "needs": "One photograph under CC0 (Wikimedia Commons), shown at its real pixel grid.",
+  "needsSource": "none beyond a CC0 photograph; the subpixel drawing and the mixing are computed from the pixel values.",
+  "pitfall": "There is no yellow or white light on the screen: white is all three lights on. A black pixel is lights off, or on an LCD a backlight blocked by a shutter; say which kind of screen is drawn rather than presenting one as how all screens work.",
+  "why": "England KS3 computing: 'understand how data of various types (including text, sounds and pictures) can be represented and manipulated digitally, in the form of binary digits' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study).",
+  "overlapWith": "vision-color: that page mixes red, green and blue light to match a colour and shows the cone responses; this one starts from the object, the screen, and shows that the mixing is done by three tiny lights per pixel and the grid they make, with no eye model.",
+  "leadsTo": [
+   "binary",
+   "vision-color"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "secret-codes",
+  "title": "Secret codes & code-breaking",
+  "level": 0,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Turn the inner ring of a code wheel and type a message: each letter steps along the alphabet by the same amount, and your friend turns the ring back to read it. A spy who does not know the turn tries all 25 turns at once and the one that reads as words jumps out. Scramble the alphabet instead of turning it; now the spy counts the letters in the secret message, lines its tallest bar up with the tallest bar of ordinary English, and the message comes out letter by letter.",
+  "takeaway": "A code that shifts every letter the same way falls to trying all 25 shifts, and a code that scrambles the alphabet falls to counting letters, because E stays the most common letter however it is disguised.",
+  "prerequisites": [],
+  "related": [
+   "twenty-questions",
+   "computer-coin-flip"
+  ],
+  "needs": "English letter frequencies counted at build time by a script from a public-domain text, e.g. Project Gutenberg's Alice's Adventures in Wonderland (public domain), not typed in from memory.",
+  "pitfall": "A short message has too few letters for counting to work: show the counting fail on a one-line note and succeed on a paragraph, rather than pretending frequency analysis always works.",
+  "why": "The National Cipher Challenge, the University of Southampton's codebreaking competition for school teams, starts every year with ciphers of this kind. https://www.cipherchallenge.org/",
+  "overlapWith": "cryptography (level 2) covers key exchange, hashing and signatures with modular arithmetic; this page is pen-and-paper ciphers and the two ways they break, with no keys shared over a channel.",
+  "needsSource": "A Project Gutenberg public-domain English text for the letter counts.",
+  "leadsTo": [
+   "primes-modular-arithmetic"
+  ],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "solving-a-maze",
+  "title": "Solving a maze",
+  "level": 0,
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Press 'new maze' and the page draws one; put your explorer's hand on the right-hand wall and press walk: it traces every dead end and comes out at the exit. Switch to a maze with an island in it and watch the same explorer circle the island forever. Give it chalk to mark every passage it enters and it finds the way out of any maze; then compare its chalk marks with the shortest route.",
+  "takeaway": "Keeping one hand on the wall gets you out of a maze without loops but circles forever when there is an island, while an explorer that marks where it has been always gets out.",
+  "prerequisites": [],
+  "related": [
+   "robot-instructions",
+   "treasure-map-coordinates"
+  ],
+  "needs": "",
+  "pitfall": "The wall-follower fails on mazes that are not simply connected (loops, islands) and when started from inside; the marking explorer finds an exit but not necessarily the shortest route: show both limits.",
+  "why": "Wikipedia, 'Maze-solving algorithm' (wall follower; Trémaux's algorithm, which 'is not guaranteed to find the shortest route'). https://en.wikipedia.org/wiki/Maze-solving_algorithm",
+  "overlapWith": "graph-search (level 1) expands breadth-first and A* frontiers on a grid with costs; this page sends one explorer with one rule and never shows a frontier or a cost.",
+  "needsSource": "none",
+  "leadsTo": [
+   "graph-search"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "sorting-network",
+  "title": "A sorting machine",
+  "level": 0,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Six numbered balls roll down a board of tracks; where two tracks meet, the smaller ball goes left and the larger right, and the balls arrive at the bottom in order. Rebuild the board yourself by placing meeting points, drop a shuffled set of balls and see whether they come out sorted; press 'try every order' and the page drops all 720 shuffles and reports any that fail. Then count how many meeting points fire at the same moment: the board sorts in rounds, not one swap at a time.",
+  "takeaway": "A fixed board of pairwise swaps sorts any shuffle of the balls, and several swaps happen at once, so the board finishes in fewer rounds than it has swaps.",
+  "prerequisites": [],
+  "related": [
+   "twenty-questions",
+   "robot-instructions"
+  ],
+  "needs": "",
+  "pitfall": "A board that sorts the examples you tried may still fail on another order; the page must test all orders, not a few. And this is not how most software sorts: say it is how hardware and parallel sorters do it.",
+  "why": "CS Unplugged Sorting Networks, with lessons for ages 5 to 7, 8 to 10 and 11 to 14 (site content CC BY-SA 4.0; reuse the idea, not the worksheets). https://www.csunplugged.org/en/topics/sorting-networks/",
+  "overlapWith": "sorting (level 1) steps bubble, insertion, merge and quick sort one comparison at a time and plots Big-O; this page is a fixed, parallel board of swaps the reader builds and verifies, with no growth curves.",
+  "needsSource": "none",
+  "leadsTo": [
+   "sorting",
+   "logic-gates"
+  ],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "sound-as-numbers",
+  "title": "Sound as a list of numbers",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Record a clap or a word (or pick a shipped clip) and see it as a wiggly line; a slider sets how many times a second the computer measures the line, from tens of thousands down to a few hundred, and the measurements appear as dots that join into a new line. Play the dots back: the sound stays itself until the dots get too sparse, then the high parts go first and voices turn muffled and wrong. A second slider sets how many different heights a measurement may take, from thousands down to four, and the sound turns grainy.",
+  "takeaway": "A recording is a long list of measurements of the air's push taken thousands of times a second, and the sound survives as long as the measurements are frequent and fine enough.",
+  "prerequisites": [],
+  "related": [
+   "speakers-and-microphones",
+   "voice-assistant-wake-word",
+   "screens-and-pixels"
+  ],
+  "needs": "A short sound clip under CC0 (Freesound) for readers who decline the microphone; the microphone path uses the browser's own audio input.",
+  "needsSource": "none beyond a CC0 clip; sampling and requantising are computed on the page.",
+  "pitfall": "More measurements per second do not make a sound louder or longer, only truer; the wiggly line is a graph of pressure against time, not a picture of air moving sideways. Do not invoke the sampling theorem by name; show the point where the dots fail.",
+  "why": "England KS3 computing: data of various types 'including text, sounds and pictures' represented in binary (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); NGSS MS-PS4-3 on digitized signals (https://www.nextgenscience.org/pe/ms-ps4-3-waves-and-their-applications-technologies-information-transfer).",
+  "overlapWith": "compression (level 2) uses frequency content to drop detail and fourier-transform decomposes signals; this page stops at measurements, how often and how finely, listened to.",
+  "leadsTo": [
+   "binary",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "traffic-light-controller",
+  "title": "Traffic lights that know you are there",
+  "level": 0,
+  "kind": "build",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Cars arrive at a crossroads from four directions while a timer runs the lights through a fixed cycle; queues grow on the busy road while the empty road gets its green anyway. Bury a sensor loop in each lane and switch the controller to 'skip a green nobody is waiting for': the queues shrink. Then set the busy road's green longer and shorter and find which choice keeps the total queue smallest.",
+  "takeaway": "A traffic light is a small counting program, and giving it a sensor so that it can skip empty roads makes the whole crossroads wait less.",
+  "prerequisites": [],
+  "related": [
+   "elevator-chooses-floors",
+   "metal-detector"
+  ],
+  "needs": "",
+  "needsSource": "none; cars arrive at random at set rates and queue, and the loop detector follows the published inductive-loop principle (a metal mass above the loop lowers its inductance and trips the controller).",
+  "pitfall": "The loop in the road is not a pressure plate: it senses metal, which is why a bicycle may fail to trigger it. Pressing a pedestrian button again does not shorten the wait; the request is registered once.",
+  "why": "England KS2 computing: 'design, write and debug programs that accomplish specific goals, including controlling or simulating physical systems' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); traffic lights are the standard project of the Teach Computing Year 5 physical-computing unit (https://teachcomputing.org/curriculum/key-stage-2/programming-a-selection-in-physical-computing/connecting-crumbles).",
+  "overlapWith": "feedback-control (level 2) tunes a continuous controller; this one is a rule with a sensor and a timer, with a queue of cars as the cost. graph-search routes one car across a map; this page runs one crossing.",
+  "leadsTo": [
+   "logic-gates",
+   "graph-search"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "twenty-questions",
+  "title": "Twenty questions: halving the haystack",
+  "level": 0,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Think of a number from 1 to 100 and answer the page's 'higher or lower' questions: a bar of candidates shrinks by half each answer and the counter stops at seven. Now find a word in a thousand-page dictionary by opening it in the middle, then in the middle of the right half, counting the opens, against a search that flips through every page. Then play animal twenty questions: each yes/no question hides half of the hundred animals on the board until one is left.",
+  "takeaway": "A question that splits what is left in half finds the answer in a handful of steps, where checking one at a time takes hundreds.",
+  "prerequisites": [],
+  "related": [
+   "secret-codes",
+   "pixels-and-pictures",
+   "sorting-network"
+  ],
+  "needs": "The animal board: the UCI Zoo dataset (101 animals, 16 yes/no and count features), CC BY 4.0.",
+  "pitfall": "Halving only works on a sorted list or on questions that really split the pile: show 'is it a penguin?' barely shrinking the board, and the dictionary trick failing on an unsorted pile of pages.",
+  "why": "England KS3 computing: 'several key algorithms that reflect computational thinking [for example, ones for sorting and searching]'; CS Unplugged Searching Algorithms ('How many guesses?', 'Divide and conquer', ages 5 to 10). https://www.csunplugged.org/en/topics/searching-algorithms/",
+  "overlapWith": "sorting (level 1) shows how the cost of sorting grows with input size; nothing in the catalogue shows searching. This page shows halving against one-by-one on counts alone, without growth curves.",
+  "needsSource": "UCI Machine Learning Repository, Zoo dataset, CC BY 4.0.",
+  "leadsTo": [
+   "sorting",
+   "learning-from-data"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "databases-and-queries",
+  "title": "Databases & queries",
+  "level": 1,
+  "kind": "explore",
+  "category": "computing",
+  "interaction": "Browse a real table of a few hundred rows, then split it into linked tables with keys so that nothing is stored twice; type a query (filter, sort, join) and watch the rows it touches light up and the result assemble. Turn an index on and off for a search and count the rows examined, then run two edits at once and see why a transaction must either complete or leave no trace.",
+  "takeaway": "A database keeps each fact once, in tables tied together by keys, and answers questions by combining them, with an index to avoid reading everything.",
+  "prerequisites": [
+   "sorting"
+  ],
+  "related": [
+   "graph-search"
+  ],
+  "needs": "A small open dataset with natural relations (for instance countries, cities and populations).",
+  "needsSource": "GeoNames (CC BY 4.0) or the Palmer penguins dataset (CC0)",
+  "pitfall": "A spreadsheet is not a database: it has no keys, so the same fact can be typed twice and drift apart. An index speeds reading and slows writing; it is not free.",
+  "why": "OCR A-level Computer Science H446 (relational databases, normalisation to third normal form, SQL) https://www.savemyexams.com/learning-hub/exam-specifications/a-level/computer-science/ocr/",
+  "overlapWith": "sorting and graph-search are algorithms on bare arrays and graphs and pagerank builds a web of links; no page shows tables, keys, joins or indexes. The pool's b-trees-transactions (level 3) is the structure of the index and the transaction; this page shows their effect.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "game-tree-search",
+  "title": "How a computer plays a game: the search tree",
+  "level": 1,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Play noughts and crosses against the page and open its mind: a tree of the moves it is weighing, the leaves scored win, draw or loss and the scores passed up, the computer taking the best of its moves and assuming you take the worst for it. Switch to Connect Four, where the whole tree is too big, and set how many moves ahead it looks: at two it blunders, at six it is hard to beat, with the count of positions examined rising about sevenfold per extra move; turn on pruning and watch whole branches greyed out with the answer unchanged. Build the scoring rule yourself from a palette of features (centre column, three in a row) and test it.",
+  "takeaway": "A game-playing program looks ahead down a tree of moves, assumes the opponent plays its best, and picks the line with the best guaranteed outcome; how deep it can afford to look is set by how fast the tree grows.",
+  "prerequisites": [
+   "graph-search"
+  ],
+  "related": [
+   "sorting",
+   "reinforcement-learning"
+  ],
+  "needs": "",
+  "pitfall": "The program does not plan like a person; it counts. And it does not look at every possible game: depth is limited and the leaves are scored by a rule of thumb, which is why a better scoring rule can beat a deeper search.",
+  "why": "'How does a chess computer work' tutorials (freeCodeCamp's step-by-step chess AI) are among the most-read introductions to minimax: https://www.freecodecamp.org/news/simple-chess-ai-step-by-step-1d55a9266977",
+  "overlapWith": "graph-search: searching a map for a route; this page searches a tree of moves against an opponent, where a value flows up instead of a path being found. monte-carlo-tree-search (pool, level 3) uses random playouts and AlphaGo; this page is the full deterministic search at level 1.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
+  "slug": "how-simulations-work",
+  "title": "How a simulation works",
+  "level": 1,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Drop a ball and advance time by hand: each tick the velocity is updated by gravity and the position by the velocity, and the dots trace a path that bends, more smoothly the smaller the step. Make the step too large and the ball tunnels through the floor or an orbiting planet spirals away; compare the stepped path with the exact one and watch the error shrink as the step shrinks, then see that a half-step update holds an orbit that plain stepping loses. Finally open the hood on this site's own pendulum and epidemic pages to find the same loop at work.",
+  "takeaway": "A simulation is a rule for the next instant applied over and over, so its accuracy is bought with smaller steps and a better update rule, and every animated model on this site is that loop.",
+  "prerequisites": [
+   "newtons-laws"
+  ],
+  "related": [
+   "calculus",
+   "feedback-control",
+   "chaos-fractals",
+   "oscillations-resonance",
+   "differential-equations"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Smaller steps are not always the fix: a method that gains or loses energy every step (plain Euler on an orbit) drifts however small the step, and the page must show a better update rule curing what a smaller step does not.",
+  "why": "AP Calculus BC Unit 7, topic 7.5 'Approximating solutions using Euler's method' (slope fields and stepping) https://fiveable.me/ap-calc/unit-7.md ; and the site's own need for a page that explains what every other page is doing",
+  "overlapWith": "calculus (level 2) shows the derivative as a slope and the integral as an area; this page is their numerical shadow at level 1, and the only page that explains the site's own engine. The pool's numerical-stability (level 3) is the analysis of why methods fail; this page shows them failing. The proposed differential-equations (level 2) draws the slope field and the idea of a rule for the slope; this page is the position-and-velocity update on a ball and an orbit, the engine itself.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "perlin-noise-terrain",
+  "title": "Random worlds: how games make terrain",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "computing",
+  "interaction": "A grid of random arrows and the height map computed from them, drawn as a shaded landscape the reader can tilt; one slider sets how far apart the arrows are, wide for rolling hills, close for rubble. Add layers, each twice as fine and half as tall, and the hills grow ridges, then rocks, with a slider for how fast the layers shrink setting smooth against craggy. Set a sea level to flood the valleys, change the seed for a new world that is different yet looks the same, and compare with plain random numbers per cell, which give static, not land.",
+  "takeaway": "Natural-looking terrain comes from adding up smooth random bumps at several scales, big for mountains and small for rocks, which is how a game makes an endless world from one seed.",
+  "prerequisites": [],
+  "related": [
+   "chaos-fractals",
+   "graphics-3d",
+   "bezier-curves"
+  ],
+  "needs": "",
+  "pitfall": "This noise is not random in the sense of static: neighbouring points are correlated, which is what makes it look like land. It is not a model of geology, only of its look, and the page should not present it as how mountains form.",
+  "why": "Minecraft's terrain is layered gradient noise, and 'how is a Minecraft world generated' is a common question (Minecraft Wiki): https://minecraft.fandom.com/wiki/Noise_generator",
+  "overlapWith": "chaos-fractals: Mandelbrot and self-similar structure found in simple rules; this page builds a deliberately self-similar random landscape and is about generating, not discovering, it.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
+  "slug": "recursion",
+  "title": "Recursion",
+  "level": 1,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Step through a function that calls itself: the call stack grows as frames are pushed and shrinks as results return, shown beside the code for factorial, the Towers of Hanoi and a tree that draws itself. Count the calls for Fibonacci and watch the call tree explode, switch on memoisation and see it collapse to a line, then remove the base case and watch the stack overflow.",
+  "takeaway": "A problem that contains smaller copies of itself can be solved by a function that calls itself on the copies, provided it has a smallest case that it answers directly.",
+  "prerequisites": [
+   "sorting"
+  ],
+  "related": [
+   "chaos-fractals",
+   "turing-machines",
+   "graph-search"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Recursion is not a loop in disguise: each call is a separate frame with its own variables, which is both why it works and why a missing base case crashes. Naive recursive Fibonacci is slow because it repeats work, not because recursion is slow.",
+  "why": "OCR A-level Computer Science H446: recursion and stack frames, 'explain recursive techniques, situations when recursion is more useful than iteration' https://denbigh.net/wp-content/uploads/2023/11/Year-13-Computer-Science-SOL.pdf",
+  "overlapWith": "sorting runs merge sort without showing the call stack and chaos-fractals zooms into self-similar sets; this page is the mechanism they share, the stack of frames and the base case.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "b-trees-transactions",
+  "title": "Databases: B-trees & transactions",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "computing",
+  "interaction": "Insert and delete keys in a B+tree of adjustable fan-out and watch nodes split and merge, with the disk reads per lookup counted and compared with a binary tree on the same keys. Then run two transactions that interleave on the same rows with a write-ahead log, crash the machine at any point and replay the log to recover, and compare locking with snapshot isolation on an update that each transaction alone would get right.",
+  "takeaway": "A database keeps rows findable in a handful of disk reads by keeping its tree short and wide, and keeps them correct through a crash by writing its intentions down before acting on them.",
+  "prerequisites": [
+   "sorting",
+   "locks-deadlock"
+  ],
+  "related": [
+   "cache-memory-hierarchy",
+   "consensus-blockchains",
+   "hash-tables-bloom-filters"
+  ],
+  "needs": "",
+  "pitfall": "'Atomic' means all-or-nothing, not instantaneous, and a transaction is durable once its log record reaches disk, not when the rows are updated; the data pages can be stale at a crash and still be recovered.",
+  "why": "CMU 15-445 Database Systems, Lecture 08 'B+Tree Index' https://15445.courses.cs.cmu.edu/spring2024/slides/08-trees.pdf",
+  "overlapWith": "consensus-blockchains: that page replicates one log among machines; this one is a single machine's log and index, and why a tree rather than a chain is what makes lookup fast.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
   "origin": "computing-networks-l3"
  },
  {
-  "slug": "autocomplete-spellcheck",
-  "title": "How your phone guesses your word",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Type a word with a slip in it and watch the phone's two counts: which real words are one or two changes away, and how often each of those is used in a huge pile of books. The suggestion is the common one that is close; type a rare name and watch it 'corrected' into a common word. Then type the start of a sentence and see the next-word guesses, which are nothing but a count of which word most often followed the last one in the pile; change the last word and the counts change.",
-  "takeaway": "A phone guesses your word by counting: which real words are nearest to what you typed and which are used most, so it is confidently wrong whenever you are unusual.",
-  "prerequisites": [],
-  "related": [
-   "spam-filter-word-counts",
-   "emoji-and-text-as-numbers",
-   "voice-assistant-wake-word"
-  ],
-  "needs": "Word and word-pair counts: a subset of the Google Books Ngram data (1-grams and 2-grams, CC BY 3.0, https://storage.googleapis.com/books/ngrams/books/datasetsv3.html), or counts the page builds itself from a Project Gutenberg text (public domain).",
-  "needsSource": "Google Books Ngram (CC BY 3.0) and/or a public-domain book; Norvig's count_1w and count_2w files derive from the Google Web Trillion Word corpus with no stated data terms, so not those.",
-  "pitfall": "The phone does not understand the sentence and is not reading your mind; it also learns your own words by counting them. Do not call the next-word counts a language model with a network: here it is a table of counts, and language-models is where the network comes in.",
-  "why": "AI4K12 Big Idea 4, Natural Interaction, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/); the nearest existing page is level 2.",
-  "overlapWith": "language-models (level 2): that page shows a real network's next-token probabilities and sampling; this one has no network, only edit distance and counted word pairs, and the suggestions can be checked by hand.",
-  "leadsTo": [
-   "learning-from-data",
-   "bayes-theorem"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "face-unlock-depth",
-  "title": "Why a photo cannot unlock your phone",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Turn a head in front of a drawn phone: the phone sprays a pattern of thousands of invisible dots onto it, a second camera sees where each dot lands, and the page shows the depth map they measure, nose nearest, ears farthest. Enrol the head, then present it again turned, smiling or with glasses: the map differs a little and the match bar stays above the line. Hold up a flat photo of the same face and every dot lands at the same depth, so the bar collapses; present a twin's head with the same shape and the bar stays up.",
-  "takeaway": "Face unlock measures the shape of your face in depth from where a pattern of dots lands, so a flat photo fails while a face with the same shape, a twin, can pass.",
-  "prerequisites": [],
-  "related": [
-   "fingerprint-match",
-   "password-guessing",
-   "digital-camera-sensor"
-  ],
-  "needs": "A head to measure: a simple parametric head drawn on the page (no external data), or a scanned head if one under an open licence is confirmed.",
-  "needsSource": "none; depth is computed by triangulating projected dots against the head's surface on the page.",
-  "pitfall": "It is not reading your eyes or your DNA, and a match is a score above a line, never certainty; the phone follows gradual changes such as a beard by updating the stored map. Name the depth method as one kind (structured light) and say that other phones use other depth tricks.",
-  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Face ID' averaged about 14,500 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Face_ID/monthly/2025010100/2025123100).",
-  "overlapWith": "fingerprint-match in this batch: the same enough-points-agree rule on ridges; light-optics (level 1) has the ray model. medical-imaging reconstructs a slice from many shadows; here depth comes from where projected dots land.",
-  "leadsTo": [
-   "light-optics",
-   "learning-from-data"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "fingerprint-match",
-  "title": "How a phone knows your finger",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Press a finger on a drawn sensor and see what it sees: a small patch of ridges, not the whole print, with the ridge ends and forks marked as dots, which are all the phone keeps. Press again, sliding and turning the finger or pressing only a corner, and watch the match count, how many dots line up, rise or fall past the 'enough' line. Wet the finger or put a cut across it and lose a few dots; press a different finger and watch almost none line up.",
-  "takeaway": "A phone stores a map of where your ridges end and fork, not a picture, and unlocks when enough of those points line up, never all of them.",
-  "prerequisites": [],
-  "related": [
-   "face-unlock-depth",
-   "password-guessing",
-   "touchscreens",
-   "teach-a-machine"
-  ],
-  "needs": "Fingerprint images generated on the page with a published synthetic-fingerprint model (an orientation field with cores and deltas filtered into ridges, as in SFinGe, Cappelli et al. 2000), stated on the page as synthetic; the FVC benchmark databases are research-use only and are not shipped.",
-  "needsSource": "none shipped; synthetic ridges from a published model, with the minutiae extracted by thinning. Real fingerprint databases (FVC, NIST SD) are not openly licensed.",
-  "pitfall": "The match is never total: a threshold decides, so a dirty or cut finger can fail and, rarely, a stranger can pass. The phone keeps no image of the print, and the sensor reads a patch, which is why enrolment asks for many presses.",
-  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Fingerprint' averaged about 17,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Fingerprint/monthly/2025010100/2025123100).",
-  "overlapWith": "face-unlock-depth in this batch: the same decision rule, enough points agree, on a different measurement; cryptography (level 2) is how the secret is kept. Nothing existing shows a biometric match.",
-  "leadsTo": [
-   "learning-from-data"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "spam-filter-word-counts",
-  "title": "How a spam filter decides",
-  "level": 0,
-  "kind": "build",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "A pile of real text messages arrives, each already marked spam or not; pick any word, 'free', 'win', 'tonight', 'mum', and see two counts, how many spam messages contain it and how many ordinary ones. Build the filter by letting it count every word, then write a message of your own and watch the words vote: each nudges the score toward spam or not according to its two counts. Try to sneak past with 'fr33' and watch the vote change; mark your message and see the counts update.",
-  "takeaway": "A spam filter has no idea what a message means: it counts which words turned up more in past spam, which is why spammers misspell and why your 'report spam' clicks teach it.",
-  "prerequisites": [],
-  "related": [
-   "autocomplete-spellcheck",
-   "teach-a-machine",
-   "you-might-also-like"
-  ],
-  "needs": "The SMS Spam Collection (Almeida and Hidalgo, UCI Machine Learning Repository, 5,574 messages, CC BY 4.0), or a subset.",
-  "needsSource": "UCI SMS Spam Collection, CC BY 4.0 (https://archive.ics.uci.edu/dataset/228/sms+spam+collection).",
-  "pitfall": "No word is bad: 'free' is only commoner in spam. The filter can be fooled both ways, and how much spam exists overall matters, so a rare kind of message needs stronger evidence; keep that as counts, not Bayes' formula.",
-  "why": "AI4K12 Big Idea 3, Learning, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/).",
-  "overlapWith": "bayes-theorem (level 1) counts true and false positives in a grid of 1,000 people and learning-from-data fits a curve; this page builds the simplest real classifier on a real corpus, with word counts the reader can check.",
-  "leadsTo": [
-   "bayes-theorem",
-   "learning-from-data"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "step-counter",
-  "title": "How a phone counts your steps",
-  "level": 0,
+  "slug": "cache-memory-hierarchy",
+  "title": "Caches & the memory hierarchy",
+  "level": 3,
   "kind": "simulate",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Play a real recording from a phone on someone's waist as they walk, climb stairs, sit and stand, with the stretches labelled: a line jiggles with every stride. Set the 'that was a step' line and watch the counter: too low and the fidgets during the sitting stretches count as steps, too high and the gentle strolling stretches are missed. Then shake the phone in a drawn car on a bumpy road and watch the counter climb without anyone walking.",
-  "takeaway": "A step counter counts jolts of a shaking sensor, so it needs a line between a stride and a fidget, and a bumpy ride can count as a walk.",
-  "prerequisites": [],
+  "category": "computing",
+  "interaction": "Choose a program's access pattern (sum an array row by row or column by column, walk a linked list, multiply matrices with and without blocking) and run it through a cache with adjustable size, line length, associativity and replacement policy; each access lights a line as a hit or a miss, and the miss count and the average memory access time plot live. Add a second level of cache and watch where the knee of the curve moves.",
+  "takeaway": "The same program runs many times faster or slower depending only on whether it touches memory in an order the cache can predict.",
+  "prerequisites": [
+   "cpu"
+  ],
   "related": [
-   "teach-a-machine"
+   "gpu",
+   "virtual-memory"
   ],
-  "needs": "Continuous raw accelerometer traces at 50 samples a second, with activity labels, from the Smartphone-Based Recognition of Human Activities and Postural Transitions dataset (UCI, CC BY 4.0).",
-  "needsSource": "UCI HAPT dataset, CC BY 4.0 (https://archive.ics.uci.edu/dataset/341/smartphone+based+recognition+of+human+activities+and+postural+transitions). It labels activity stretches but records no step counts, so there is no step ground truth: false counts are steps counted while sitting or standing, and the walking count is judged against the strides visible in the trace. The bumpy-car trace is synthesised and said to be.",
-  "pitfall": "The phone does not sense feet or use GPS to count steps; it counts jolts. Show the misses and the false counts, not a perfect counter.",
-  "why": "AI4K12 Big Idea 1, Perception: 'computers perceive the world using sensors' (https://ai4k12.org/); 'Pedometer' averaged about 3,800 views a month on English Wikipedia in 2025.",
-  "overlapWith": "newtons-laws (level 1) is forces and motion and feedback-control reads sensors into a controller; nothing existing counts events in a real sensor trace.",
-  "leadsTo": [
-   "learning-from-data",
-   "newtons-laws"
-  ],
-  "origin": "everyday-technology"
+  "needs": "",
+  "pitfall": "A bigger cache is not always better: a direct-mapped cache thrashes on a stride equal to its size however large it is, and the unit moved is a whole line, never a byte, so a miss costs the same for one byte as for sixty-four.",
+  "why": "MIT 6.004 Computation Structures, Unit 14 'Multilevel memories: locality, performance, caches' https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar",
+  "overlapWith": "cpu: that page single-steps instructions against a flat memory that answers instantly; this page makes memory itself the model and shows why one access costs one cycle and the next two hundred.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
  },
  {
-  "slug": "teach-a-machine",
-  "title": "Teach a machine to tell things apart",
-  "level": 0,
-  "kind": "build",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Draw a few cats and a few houses (or pull examples from a pile of other people's doodles), label them, and draw a new one: the machine shrinks every drawing to a small grid of squares, finds the stored drawings most like the new one square by square, and the labels of those neighbours vote. Watch it get the first guesses wrong, add more examples and watch the votes firm up. Then teach it a trap: every cat drawn in the top corner, every house at the bottom, and see it decide by position instead of shape.",
-  "takeaway": "A machine learns to sort things by comparing new examples with the ones it was shown, so more and more varied examples make it better, and a lazy pattern in the examples teaches it the wrong thing.",
-  "prerequisites": [],
-  "related": [
-   "spam-filter-word-counts",
-   "you-might-also-like",
-   "voice-assistant-wake-word",
-   "fingerprint-match",
-   "step-counter"
-  ],
-  "needs": "Optional: doodles from the Quick, Draw! dataset (Google, CC BY 4.0) as a ready pile of examples; the reader's own drawings need nothing.",
-  "needsSource": "Quick, Draw! dataset, CC BY 4.0 (https://github.com/googlecreativelab/quickdraw-dataset), optional.",
-  "pitfall": "The machine does not know what a cat is; it compares squares. Do not call the neighbour vote a neural network; neural-networks comes later. The trap where every wolf photo had snow is real and belongs on the page.",
-  "why": "AI4K12 Big Idea 3, Learning, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/).",
-  "overlapWith": "learning-from-data (level 1): that page fits a curve to points and shows overfitting with a test set; this one classifies drawings by nearest neighbours with no curve and no error plot, and leads into it.",
-  "leadsTo": [
-   "learning-from-data"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "voice-assistant-wake-word",
-  "title": "How a speaker hears its name",
-  "level": 0,
+  "slug": "compilers",
+  "title": "Compilers",
+  "level": 3,
   "kind": "step",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Say 'go' or 'stop' into the microphone (or pick one of the shipped recordings of other people saying it) and step through what the speaker does: the sound becomes a picture, time left to right and pitch bottom to top, with the loud parts bright; a small trained network that has looked at thousands of such pictures lights a confidence bar for each word it knows. Whisper, add kitchen noise or say a word it never learned, and watch the bars fall or the 'unknown' bar rise. The page says which words the network knows and that everything after the wake word goes to a bigger computer.",
-  "takeaway": "A voice assistant turns sound into a picture of pitches over time, and a small network that has seen thousands of people say the word recognises the shape, which is why noise and unfamiliar voices trip it.",
-  "prerequisites": [],
+  "category": "computing",
+  "interaction": "Type a small program in a toy language and step it through the compiler: characters become tokens, tokens a parse tree, the tree an intermediate form, and the intermediate form instructions for the minimal processor of the CPU page, which then runs them. Toggle optimisations (constant folding, dead-code elimination, register allocation by graph colouring) and watch the emitted code shrink and the instruction count fall; introduce a syntax error and see exactly where the parser gives up.",
+  "takeaway": "A compiler is a chain of mechanical translations, each simple on its own, that turns text a person wrote into instructions a processor can run.",
+  "prerequisites": [
+   "cpu",
+   "regular-expressions-automata"
+  ],
   "related": [
-   "sound-as-numbers",
-   "autocomplete-spellcheck",
-   "teach-a-machine"
+   "turing-machines",
+   "lambda-calculus"
   ],
-  "needs": "A small keyword-spotting model that runs in the browser: the TensorFlow.js speech-commands model (Apache 2.0), trained on the Speech Commands dataset (CC BY 4.0), whose vocabulary is the digits plus up, down, left, right, go, stop, yes and no; plus a handful of shipped clips from that dataset for readers who decline the microphone.",
-  "needsSource": "TensorFlow.js speech-commands model (Apache 2.0, https://github.com/tensorflow/tfjs-models/tree/master/speech-commands) and Speech Commands v2 (CC BY 4.0).",
-  "pitfall": "The wake-word listener does not understand words and does not send everything it hears: the small network runs on the device and knows only a few words, and the rest is sent only after it fires. It is not matching against one recording of the owner.",
-  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Virtual assistant' averaged about 7,400 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Virtual_assistant/monthly/2025010100/2025123100).",
-  "overlapWith": "convolution-vision (level 2) inspects a trained image classifier layer by layer on drawn digits; here the input is sound, the picture is the spectrogram the reader watches being made, and the network is a box with confidence bars. language-models is what runs after the wake word.",
-  "leadsTo": [
-   "waves-interference",
-   "learning-from-data"
-  ],
-  "origin": "everyday-technology"
+  "needs": "",
+  "pitfall": "A compiler does not understand the program: parsing is a grammar check, and an optimisation may change the code only where it can prove the result is unchanged, which is why it often cannot.",
+  "why": "Stanford CS143 Compilers (lexical analysis, parsing, code generation, register allocation) https://web.stanford.edu/class/cs143/",
+  "overlapWith": "cpu: that page runs hand-written assembly; this page shows where the assembly comes from and reuses the same processor so the output actually runs.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
  },
  {
-  "slug": "you-might-also-like",
-  "title": "Why the app says 'you might also like'",
-  "level": 0,
-  "kind": "explore",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Start on any article in a small web of real Wikipedia pages and see where its readers went next, as arrows whose thickness is a count; the 'you might also like' box is just the thickest arrows. Pick a different starting page and the box changes; follow a few arrows yourself and watch the suggestions drift toward the most-visited pages, which turn up in nearly everyone's box. Then add a brand-new page with no visits and see that nothing can recommend it yet.",
-  "takeaway": "'You might also like' is a count of where other people went after the same thing you are looking at, so it pulls everyone toward the popular and has nothing to say about anything new.",
-  "prerequisites": [],
-  "related": [
-   "spam-filter-word-counts",
-   "teach-a-machine"
+  "slug": "cpu-pipelines",
+  "title": "Pipelines & branch prediction",
+  "level": 3,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Feed a short program into a five-stage pipeline and step it cycle by cycle while instructions overlap in a pipeline diagram; a dependency between neighbouring instructions stalls the pipe until forwarding is switched on. Insert a loop and compare a predictor that always guesses 'not taken' with a two-bit counter, counting the cycles thrown away on each misprediction, then deepen the pipeline and watch that cost grow.",
+  "takeaway": "A pipelined processor finishes an instruction nearly every cycle only while it can guess what comes next; each wrong guess empties the pipe.",
+  "prerequisites": [
+   "cpu"
   ],
-  "needs": "A small subset of the Wikipedia Clickstream (monthly referer-to-article counts, CC0), e.g. the neighbourhood of a few dozen articles.",
-  "needsSource": "Wikimedia Clickstream, CC0 (https://dumps.wikimedia.org/other/clickstream/). No open user-by-film ratings set was found (MovieLens is research-use only), so 'people like you' from ratings is not built here; the page is item-to-item counts.",
-  "pitfall": "The app does not know you; it knows counts of other people's paths, or in shops their purchases. Do not present the suggestion as taste or understanding, and show the pull toward the popular and the empty box for a new item rather than hiding them.",
-  "why": "AI4K12 Big Idea 3, Learning (https://ai4k12.org/); 'Recommender system' averaged about 7,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Recommender_system/monthly/2025010100/2025123100).",
-  "overlapWith": "pagerank (level 2): that page ranks pages by who links to whom with a random surfer; this one uses counts of actual reader paths from one page to the next, and the output is a 'next' list, not a ranking of the whole web. learning-from-data fits a model; here there is only counting.",
-  "leadsTo": [
-   "learning-from-data",
+  "related": [
+   "cache-memory-hierarchy",
+   "gpu"
+  ],
+  "needs": "",
+  "pitfall": "Pipelining does not make any single instruction faster; it raises throughput, and a deeper pipeline raises the price of every hazard.",
+  "why": "MIT 6.004 Computation Structures, Unit 15 'Pipelining the Beta: pipeline diagrams, data hazards' and 'control hazards and exceptions' https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar",
+  "overlapWith": "cpu: that page runs one instruction at a time through fetch, decode and execute; this page overlaps several in flight and shows what breaks when they depend on each other.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "dynamic-programming",
+  "title": "Dynamic programming",
+  "level": 3,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Watch the recursion tree for the edit distance between two words explode with repeated subproblems, then fill the table cell by cell and trace the cheapest path back to the alignment. Carve seams out of a photo: the page finds the lowest-energy path through the pixel grid with the same table idea and removes it, so the image narrows without squashing its subject; try knapsack with a budget slider.",
+  "takeaway": "When a problem's subproblems overlap, solving each once and looking it up turns an exponential search into a table that fills in polynomial time.",
+  "prerequisites": [
+   "sorting",
    "graph-search"
   ],
-  "origin": "everyday-technology"
+  "related": [
+   "sat-solving",
+   "compression"
+  ],
+  "needs": "One CC0 photograph for seam carving (Wikimedia Commons CC0, or a public-domain NASA image).",
+  "pitfall": "The name has nothing to do with programming or dynamics: it is memoised recursion, and it only works when an optimal solution is built from optimal solutions of subproblems, which the travelling-salesman problem does not offer in polynomial size.",
+  "why": "MIT 6.006 Introduction to Algorithms, Lectures 15 to 18 'Dynamic Programming' https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/calendar",
+  "overlapWith": "graph-search: Dijkstra's algorithm is a special case; this page makes the table and the overlapping subproblems the object, with seam carving as the visible payoff.",
+  "needsSource": "one CC0 photo (Wikimedia Commons CC0 or NASA public domain); openly licensed",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
  },
  {
-  "slug": "adaptive-optimizers",
-  "title": "Momentum, Adam & learning-rate schedules",
+  "slug": "fast-fourier-transform",
+  "title": "The fast Fourier transform",
   "level": 3,
-  "kind": "simulate",
-  "category": "ai",
-  "interaction": "Race plain gradient descent, momentum, RMSProp and Adam on a bowl whose condition number you set with a slider: stretch it a thousand to one and watch plain descent zigzag or stall while Adam's per-parameter step sizes, drawn as arrows, rescale the long axis. Tune momentum past critical damping to see it oscillate, then add warmup and a cosine schedule and compare how each optimizer finishes on a small real network's loss curve.",
-  "takeaway": "Gradient descent is slow when the loss is stretched more along some parameters than others, and momentum, per-parameter scaling and schedules each fix a different part of that.",
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Step the recursion on 8, 16 or 64 samples: split even and odd, recurse, and combine with twiddle factors drawn as rotations on the unit circle, in a butterfly diagram that grows with n. Count the multiplications against the direct transform as n doubles, then use the result to multiply two long polynomials (or two big integers) and watch the product appear in n log n steps.",
+  "takeaway": "The Fourier transform of n samples takes n squared steps done directly, but the two halves of the problem share nearly all their work, and reusing it brings the cost down to n log n.",
   "prerequisites": [
-   "gradient-descent",
-   "linear-transformations"
+   "fourier-transform",
+   "sorting"
   ],
   "related": [
-   "dropout-and-batch-norm",
-   "scaling-laws"
+   "compression",
+   "medical-imaging",
+   "wireless-signals"
   ],
   "needs": "",
-  "pitfall": "Adam does not find better minima, it reaches them faster, and on some problems plain momentum generalizes better; do not declare a winner. The momentum analysis is exact only for quadratics, say so.",
-  "why": "Distill, Why Momentum Really Works (Goh 2017): https://distill.pub/2017/momentum/",
-  "overlapWith": "gradient-descent: that page already offers a momentum toggle on ravines and plateaus; here the ravine's conditioning is the control, and per-parameter scaling (RMSProp, Adam) and schedules are new.",
+  "pitfall": "The FFT is not an approximation or a different transform: it computes exactly the discrete Fourier transform, only faster, and it needs evenly spaced samples.",
+  "why": "MIT 6.046J Design and Analysis of Algorithms, Lecture 3 'Divide & Conquer: FFT' (Demaine: 'probably the most taught algorithm at MIT') https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/resources/lecture-3-divide-conquer-fft/",
+  "overlapWith": "fourier-transform: that page shows what the transform means; this one shows how to compute it fast, and the counting of operations is the graphic.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
-  "origin": "ai-l3"
+  "origin": "computing-networks-l3"
  },
  {
-  "slug": "adversarial-examples",
-  "title": "Adversarial examples",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "ai",
-  "interaction": "Draw a digit for a small classifier running in the browser, then drag an epsilon slider: the page adds epsilon times the sign of the loss gradient, an image you can see beside the digit, and the prediction flips from 3 to 8 while the drawn digit looks unchanged. Compare a random perturbation of the same size, which does nothing, then switch to a model trained adversarially and see the flip need a visible epsilon and the clean accuracy fall.",
-  "takeaway": "Because a classifier is nearly linear in its input, a tiny step along the gradient of its loss, invisible to the eye, flips its output, while random noise of the same size does not.",
-  "prerequisites": [
-   "convolution-vision",
-   "gradient-descent"
-  ],
-  "related": [
-   "generative-adversarial-networks",
-   "uncertainty-calibration",
-   "federated-learning"
-  ],
-  "needs": "A small digit classifier with backpropagation to the input in the browser, trained on MNIST (CC BY-SA 3.0) as the existing convolution-vision page's drawn-digit classifier is, plus an adversarially trained twin; the page ships only its own weights, no images.",
-  "pitfall": "Adversarial examples are not a bug of one model; they transfer between models trained separately. The perturbation is not noise, and robustness is bought with clean accuracy.",
-  "why": "Goodfellow, Shlens and Szegedy 2015, Explaining and Harnessing Adversarial Examples: https://arxiv.org/abs/1412.6572",
-  "overlapWith": "convolution-vision: that page inspects what a classifier responds to; this one attacks the same kind of classifier through its gradient.",
-  "needsSource": "MNIST, CC BY-SA 3.0 (confirmed); only own trained weights are shipped, following the data decision of convolution-vision.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "clustering-gaussian-mixtures",
-  "title": "Clustering: k-means & Gaussian mixtures",
-  "level": 3,
-  "kind": "simulate",
-  "category": "ai",
-  "interaction": "Scatter points or load the Palmer penguins without their labels and step k-means: assign each point to its nearest centre, move the centres, repeat; try several k and seeds and watch it fail on elongated clusters. Switch to expectation-maximization on a Gaussian mixture, where each point is colored by its soft responsibilities, the ellipses stretch to fit and the log-likelihood climbs; then watch a density-based method pick out a ring that both of the others cut in half.",
-  "takeaway": "Clustering is fitting a model of groups without labels, and each algorithm's idea of a group, nearest centre, Gaussian blob or dense region, decides what it can and cannot find.",
-  "prerequisites": [
-   "central-limit-theorem",
-   "bayes-theorem"
-  ],
-  "related": [
-   "dimensionality-reduction",
-   "variational-autoencoders",
-   "embeddings"
-  ],
-  "needs": "Palmer penguins dataset (CC0).",
-  "pitfall": "k-means returns k clusters whether or not they exist, so show it carving a single blob; EM finds a local maximum that depends on the start.",
-  "why": "Stanford CS229 fall 2021 syllabus, k-means, expectation-maximization and mixtures of Gaussians: https://cs229.stanford.edu/syllabus-fall2021.html",
-  "overlapWith": "learning-from-data: that page fits labeled points; here there are no labels and the algorithm's assumption about group shape is what is on display.",
-  "needsSource": "Palmer penguins, CC0 (from memory, unverified in this session).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "contrastive-learning",
-  "title": "Contrastive & self-supervised learning",
-  "level": 3,
-  "kind": "simulate",
-  "category": "ai",
-  "interaction": "Train a small encoder on unlabeled clothing images where the only signal is agreement: two random augmentations (crop, flip, blur) of the same image are pulled together on a unit circle of embeddings and all other images are pushed apart. Watch the circle sort itself into clothing types without ever seeing a label, slide the temperature to make the negatives push harder or softer, then flip to the CLIP variant where a grid of image-text similarities is trained to light up only on its diagonal.",
-  "takeaway": "A representation can be learned with no labels by making a network agree with itself across augmentations and disagree with other examples, and the augmentations decide what the representation learns to ignore.",
-  "prerequisites": [
-   "neural-networks",
-   "embeddings",
-   "convolution-vision"
-  ],
-  "related": [
-   "variational-autoencoders",
-   "dimensionality-reduction"
-  ],
-  "needs": "A Fashion-MNIST subset (MIT); the encoder trains live or is scrubbed from precomputed checkpoints (own weights).",
-  "pitfall": "Self-supervised is not unsupervised clustering: the augmentations are a design choice that injects knowledge. Collapse, every embedding equal, is the failure to show.",
-  "why": "Chen et al. 2020, SimCLR, A Simple Framework for Contrastive Learning of Visual Representations: https://arxiv.org/abs/2002.05709",
-  "overlapWith": "embeddings: that page explores a given embedding space; this one shows how such a space is trained without labels.",
-  "needsSource": "Fashion-MNIST, MIT licence (confirmed); own weights.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "dimensionality-reduction",
-  "title": "Dimensionality reduction: PCA & t-SNE",
+  "slug": "floating-point",
+  "title": "Floating point",
   "level": 3,
   "kind": "explore",
-  "category": "ai",
-  "interaction": "Rotate a 3-D cloud of points and watch its shadow on the screen: the principal axes are the rotation that keeps the most spread, and dropping the third axis loses the least. Then run t-SNE live on a few hundred clothing images: the map forms as the gradient steps run, and sliding the perplexity or reseeding rearranges it, which shows what is real (who neighbours whom) and what is an artefact (cluster sizes and the gaps between them).",
-  "takeaway": "PCA keeps the directions of largest variance and nothing else, while t-SNE keeps each point's neighbours and sacrifices everything else, so the two maps answer different questions.",
+  "category": "computing",
+  "interaction": "Zoom along the number line and watch the representable numbers thin out away from zero, with the bits of the selected value shown; type 0.1 + 0.2 and see where each operand lands and why the sum misses 0.3 by one unit in the last place. Subtract two nearly equal numbers and watch the significant digits vanish, sum a million small numbers in two orders and compare, then switch on compensated summation; run the same calculation in half, single and double precision.",
+  "takeaway": "A floating-point number is the nearest representable value, not the number itself, and the gap between neighbours grows with size, so the order of operations changes the answer.",
   "prerequisites": [
-   "linear-transformations",
-   "embeddings"
+   "binary"
   ],
   "related": [
-   "clustering-gaussian-mixtures",
-   "variational-autoencoders",
-   "tensors"
-  ],
-  "needs": "A Fashion-MNIST subset (MIT).",
-  "pitfall": "Distances between t-SNE clusters and their sizes mean nothing; the page must not read them. Principal components are directions of variance, not the features that matter for a task.",
-  "why": "Distill, How to Use t-SNE Effectively: https://distill.pub/2016/misread-tsne/",
-  "overlapWith": "embeddings: that page's pitfall warns that its 2-D map distorts distances; this page is about how such maps are made and exactly what each one distorts.",
-  "needsSource": "Fashion-MNIST, MIT licence (confirmed).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "double-descent",
-  "title": "Bias, variance & double descent",
-  "level": 3,
-  "kind": "simulate",
-  "category": "ai",
-  "interaction": "Fit random-feature ridge regression to noisy data and slide the number of features from a few to many times the number of points: the test error rises, peaks exactly where the model can first fit every point, then falls again, while the training error hits zero and stays there. Resample the training set many times to see the fits' spread (variance) and their average's miss (bias), add label noise to sharpen the peak, and add ridge regularization to erase it.",
-  "takeaway": "Test error peaks where a model has just enough parameters to memorize its data and falls again beyond it, so models larger than their data can generalize, and regularization smooths the peak away.",
-  "prerequisites": [
-   "learning-from-data",
-   "linear-transformations"
-  ],
-  "related": [
-   "tree-ensembles",
-   "dropout-and-batch-norm",
-   "scaling-laws",
-   "gaussian-processes"
+   "chaos-fractals",
+   "gpu"
   ],
   "needs": "",
-  "pitfall": "The classical U-shaped curve is not wrong, it is the left half. The second descent needs the minimum-norm (or implicitly regularized) solution; with an arbitrary interpolating fit it does not happen.",
-  "why": "OpenAI, Deep Double Descent (Nakkiran et al. 2019): https://openai.com/index/deep-double-descent",
-  "overlapWith": "learning-from-data: that page stops where the test error turns upward; this one keeps adding parameters through the interpolation peak and down the other side.",
+  "pitfall": "Floating-point arithmetic is not random or buggy: each operation is correctly rounded and its error is predictable from the exponent; the trouble is accumulation and cancellation, not the single operation.",
+  "why": "Computerphile 'Floating Point Numbers', about 2.5 million views (view count from aggregator snapshots found this session; the video id is recalled, not fetched this session) https://www.youtube.com/watch?v=PZRI1IfStY0",
+  "overlapWith": "binary: that page reads one bit pattern as a float; this page explores the gaps between floats and what they do to arithmetic.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
-  "origin": "ai-l3"
+  "origin": "computing-networks-l3"
  },
  {
-  "slug": "dropout-and-batch-norm",
-  "title": "Dropout, weight decay & batch normalization",
+  "slug": "garbage-collection",
+  "title": "Garbage collection",
   "level": 3,
-  "kind": "build",
-  "category": "ai",
-  "interaction": "Build a small network on a 2-D dataset from a palette that includes dropout and batch-norm layers and train it live: the decision boundary, the weight histogram and each layer's activation distribution update as it learns. Switch dropout on to see many thinned sub-networks' boundaries and their average; add weight decay and watch the weights shrink and the boundary smooth; add batch norm, raise the learning rate tenfold and see the activations stay centred where the plain network's blow up.",
-  "takeaway": "Dropout trains an ensemble of thinned networks at once, weight decay keeps the function smooth, and batch norm keeps each layer's inputs in range so training survives large steps.",
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Run a small program that allocates objects and drops references, shown as a heap of boxes with pointers; press collect and watch mark-and-sweep trace from the roots and free what it never reached, then switch to a copying collector that compacts the survivors and to a generational one that collects only the nursery most of the time. Tune the heap size and watch pause length and memory use trade against each other; build a cycle of objects and see reference counting leak it.",
+  "takeaway": "A collector never knows what the program will need; it keeps whatever is still reachable from the running program and reclaims everything else.",
   "prerequisites": [
-   "neural-networks",
-   "gradient-descent"
+   "cpu"
   ],
   "related": [
-   "double-descent",
-   "adaptive-optimizers"
+   "virtual-memory",
+   "graph-search"
   ],
   "needs": "",
-  "pitfall": "Dropout is off at test time with activations rescaled, and batch norm behaves differently in training and inference; the page must show both modes. Do not state that batch norm works by removing internal covariate shift as established fact.",
-  "why": "Stanford CS231n, lecture Training Neural Networks (dropout, batch normalization, weight decay): https://cs231n.stanford.edu/schedule.html",
-  "overlapWith": "neural-networks: that page builds and trains plain layers; this one adds the regularizers and the normalization and shows what each does to the weights and activations.",
+  "pitfall": "Reference counting is not the whole story: it cannot free cycles, and 'the program is done with this object' is undecidable in general, so reachability is the proxy every collector uses.",
+  "why": "UC Berkeley CS61B, Lecture 39 'Garbage collection' (mark-sweep, copying, generational) https://inst.eecs.berkeley.edu/~cs61b/fa17/materials/lectures/lect39.pdf",
+  "overlapWith": "graph-search: marking is a graph traversal; graph-search finds a path, this page uses the traversal to decide what memory can be thrown away and shows the pauses it costs.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
-  "origin": "ai-l3"
+  "origin": "computing-networks-l3"
  },
  {
-  "slug": "evolutionary-algorithms",
-  "title": "Evolutionary algorithms",
+  "slug": "hash-tables-bloom-filters",
+  "title": "Hash tables & Bloom filters",
   "level": 3,
-  "kind": "simulate",
-  "category": "ai",
-  "interaction": "Release a population on the landscapes gradient descent uses, plus a jagged one with no useful gradient: CMA-ES draws its population as an ellipse that stretches along the valley and shrinks as it converges, with mutation strength and population size as sliders. Then run a genetic algorithm on a discrete problem, a short tour through cities, with crossover, mutation and selection pressure as controls, and watch diversity collapse when selection is too strong.",
-  "takeaway": "A population under selection, mutation and recombination can climb a landscape with no gradient at all, and the spread of the population is the search's memory of which directions worked.",
+  "kind": "manipulate",
+  "category": "computing",
+  "interaction": "Insert keys into a table with chaining or open addressing and raise the load factor; every probe is drawn, and the measured mean probe length is plotted against the expected curve until the table resizes and rehashes. Then feed the same keys to a Bloom filter with an adjustable bit array and number of hash functions, query keys that were never inserted and watch the measured false-positive rate track the formula; degrade the hash function with a slider and see both structures cluster.",
+  "takeaway": "A good hash spreads keys evenly, so lookups stay constant-time until the table fills, and a Bloom filter trades a known, tunable false-positive rate for a fraction of the memory.",
   "prerequisites": [
-   "gradient-descent",
-   "central-limit-theorem"
-  ],
-  "related": [
-   "evolution",
-   "world-models",
-   "reinforcement-learning"
-  ],
-  "needs": "",
-  "pitfall": "Evolutionary search is an optimizer, not a model of biology; fitness is a function the designer chose. Do not present the genetic algorithm as the method of choice: CMA-ES is what is used on continuous problems.",
-  "why": "David Ha, A Visual Guide to Evolution Strategies: https://blog.otoro.net/2017/10/29/visual-evolution-strategies/",
-  "overlapWith": "evolution: that page shows natural selection acting on creatures at level 1; here selection, mutation and recombination are optimizers on a fitness landscape, compared with gradient descent.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "federated-learning",
-  "title": "Federated learning & differential privacy",
-  "level": 3,
-  "kind": "simulate",
-  "category": "ai",
-  "interaction": "Split a 2-D dataset across several devices, each holding its own skewed slice, and run federated averaging: every device trains locally for a few steps, sends its update, and the server averages them into one model whose boundary is drawn on every device. Make the slices more unlike each other and watch client drift pull the average off course; then clip each update and add noise with a privacy budget slider and see the accuracy paid for every notch of privacy.",
-  "takeaway": "A model can be trained without the data leaving the devices by averaging their updates, and the privacy of each update is bought with clipping and noise that cost accuracy.",
-  "prerequisites": [
-   "neural-networks",
-   "gradient-descent",
-   "central-limit-theorem"
+   "sorting",
+   "binary"
   ],
   "related": [
    "cryptography",
-   "adversarial-examples",
-   "internet"
+   "distributed-hash-tables",
+   "b-trees-transactions"
   ],
   "needs": "",
-  "pitfall": "Federated learning alone is not private: gradients can leak training data, which is why differential privacy is added. Epsilon is a bound on how much one person's data can change the output, not a probability of a leak.",
-  "why": "McMahan et al. 2017, Communication-Efficient Learning of Deep Networks from Decentralized Data: https://arxiv.org/abs/1602.05629",
-  "overlapWith": "neural-networks: that page trains on one dataset in one place; here the data is split over devices, averaging is the mechanism and privacy noise is the trade.",
+  "pitfall": "A hash table's constant time is an average under a good hash, not a guarantee; the cryptographic hash of the cryptography page is a different tool; and a Bloom filter can only ever say 'definitely absent', never 'definitely present'.",
+  "why": "MIT 6.006 Introduction to Algorithms, Lecture 4 'Hashing' https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/lecture-notes (Bloom filters appear in CMU 15-445's index lectures)",
+  "overlapWith": "cryptography: that page shows a hash as a one-way fingerprint; here the hash is a fast bucket index, and the model is the statistics of collisions as the table fills.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "gaussian-processes",
-  "title": "Gaussian processes",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "ai",
-  "interaction": "Click to add observations on a blank axis and watch the posterior mean and its 95% band snap to them with sample functions drawn through; the band pinches to nothing at the data and swells between points. Drag the kernel's length scale and noise, swap kernels (squared exponential, periodic, linear) with the kernel matrix shown as a heat map alongside, then let the page choose the next point to query by upper confidence bound, the step at the heart of Bayesian optimization.",
-  "takeaway": "A Gaussian process is a distribution over functions set by a kernel, and conditioning it on data pins it down where observed and leaves uncertainty that grows with distance from the data at a rate the kernel sets.",
-  "prerequisites": [
-   "central-limit-theorem",
-   "linear-transformations",
-   "bayes-theorem"
-  ],
-  "related": [
-   "support-vector-machines",
-   "markov-chain-monte-carlo",
-   "uncertainty-calibration",
-   "learning-from-data"
-  ],
-  "needs": "",
-  "pitfall": "Draw sample functions, not only the mean and band; the mean alone looks like any smoother. The band's width away from data comes from the prior, not from evidence.",
-  "why": "Rasmussen and Williams, Gaussian Processes for Machine Learning, the standard text, free online: https://gaussianprocess.org/gpml/",
-  "overlapWith": "learning-from-data: that page fits one curve; here the fit is a whole distribution of curves and the uncertainty between data points is the point.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "generative-adversarial-networks",
-  "title": "Generative adversarial networks",
-  "level": 3,
-  "kind": "simulate",
-  "category": "ai",
-  "interaction": "Choose a 2-D dataset (a ring of eight Gaussians, a spiral) and train a tiny generator and discriminator live: the generator's cloud of samples chases the data while the discriminator's verdict is painted underneath as a field. Unbalance the two learning rates or shrink the discriminator and watch mode collapse, the cloud settling on one blob and hopping between them; then scrub precomputed sample grids from a GAN trained on clothing images epoch by epoch.",
-  "takeaway": "Two networks play a game, one forging samples and one judging them, and the forger learns the data distribution only through the judge's verdicts, which is why training oscillates and can collapse onto a few modes.",
-  "prerequisites": [
-   "neural-networks",
-   "gradient-descent"
-  ],
-  "related": [
-   "variational-autoencoders",
-   "diffusion-models",
-   "normalizing-flows",
-   "adversarial-examples"
-  ],
-  "needs": "None for the live 2-D case; precomputed sample grids from a small GAN trained offline on Fashion-MNIST (MIT), own weights.",
-  "pitfall": "GAN losses are not a progress meter: a falling generator loss says nothing about sample quality, so the page must not draw the loss as a curve to be minimized. Do not claim a GAN memorizes training images.",
-  "why": "MIT 6.S191 2025 lecture 4, Deep Generative Modeling, and Stanford CS236: https://introtodeeplearning.com/2025/index.html",
-  "overlapWith": "diffusion-models: its 2-D cloud is denoised through many fixed steps; here one network maps noise to data in a single pass and the only learning signal is a second network's judgement.",
-  "needsSource": "Fashion-MNIST, MIT licence (confirmed) for the precomputed image samples; own weights.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "graph-neural-networks",
-  "title": "Graph neural networks",
-  "level": 3,
-  "kind": "step",
-  "category": "ai",
-  "interaction": "On Zachary's karate club (34 members, two factions) label two members and step message passing one layer at a time: each node's vector becomes an aggregate of its neighbours', drawn as a 2-D embedding that moves at every layer, and the faction prediction spreads outward from the two seeds. Keep stacking layers and watch every embedding converge to one point, then show two different graphs that every such network embeds identically.",
-  "takeaway": "A graph network updates each node from its neighbours' messages, so after k layers a node summarizes its k-hop neighbourhood, and with too many layers every node summarizes the same thing.",
-  "prerequisites": [
-   "neural-networks",
-   "graph-search",
-   "linear-transformations"
-  ],
-  "related": [
-   "pagerank",
-   "embeddings",
-   "protein-folding"
-  ],
-  "needs": "Zachary's karate-club graph (34 nodes, Table 3 of Zachary 1977, redistributed with NetworkX).",
-  "pitfall": "Message passing is not PageRank: the aggregation weights are learned. The Weisfeiler-Lehman limit means some non-isomorphic graphs are indistinguishable to message passing, and the page should show a pair.",
-  "why": "Stanford CS224W 2023 slides on message passing and GNN expressive power: https://snap.stanford.edu/class/cs224w-2023/slides/07-theory.pdf",
-  "overlapWith": "pagerank: that page propagates a scalar along links by a fixed rule; here vectors propagate with learned weights, and oversmoothing and the expressiveness limit are new.",
-  "needsSource": "Zachary karate club: 34-node table from a 1977 paper, widely redistributed, licence unverified; trivially small and could be re-entered from the paper with citation.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "induction-heads",
-  "title": "Induction heads & in-context learning",
-  "level": 3,
-  "kind": "explore",
-  "category": "ai",
-  "interaction": "Scrub through the training run of a tiny two-layer attention-only transformer trained on repeated random token sequences (checkpoints precomputed): the loss on the second copy of each sequence drops suddenly at one point of training, and hovering any token shows the attention pattern at that checkpoint. Before the drop the heads attend diffusely; after it, one head in the first layer attends to the previous token and one in the second attends to the token that followed the current token's last occurrence, and ablating either head erases the drop live.",
-  "takeaway": "In-context copying is done by a two-head circuit, a previous-token head feeding an induction head, and it appears abruptly during training, which is why the loss curve has a step.",
-  "prerequisites": [
-   "transformers",
-   "language-models"
-  ],
-  "related": [
-   "superposition-features",
-   "recurrent-networks"
-  ],
-  "needs": "The project's own precomputed checkpoints of a tiny attention-only transformer (a vocabulary of tens of tokens, two layers), run in the browser.",
-  "pitfall": "The circuit is established in small attention-only models; in large models the evidence is correlational, say so. Attention weights are not explanations on their own; the ablation is the evidence.",
-  "why": "Anthropic, In-context Learning and Induction Heads (Olsson et al. 2022): https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html",
-  "overlapWith": "transformers: that page shows a trained model's attention on sentences; this one shows a circuit of two heads forming during training and tests it by ablation.",
-  "needsSource": "none external; own checkpoints",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "keyword-spotting-ctc",
-  "title": "Speech recognition: from sound to letters",
-  "level": 3,
-  "kind": "step",
-  "category": "ai",
-  "interaction": "Pick a one-second spoken word from the Speech Commands set, or say one into the microphone, and step it through the pipeline: waveform, spectrogram, mel features, then a small network's per-frame letter probabilities drawn as a lattice. Watch connectionist temporal classification collapse the frames, repeats and blanks, into the word, and drag the alignment to see why the model never needs to know where each letter starts.",
-  "takeaway": "Speech recognition turns a spectrogram into a letter probability per time slice and then collapses repeats and blanks, so the network is never told where each sound begins and ends.",
-  "prerequisites": [
-   "fourier-transform",
-   "neural-networks",
-   "recurrent-networks"
-  ],
-  "related": [
-   "convolution-vision",
-   "wireless-signals",
-   "language-models"
-  ],
-  "needs": "A subset of Google's Speech Commands v2 (CC BY 4.0, with a no-speaker-identification condition) and a small CTC model trained on it offline (own weights).",
-  "pitfall": "This is isolated-word recognition; continuous speech adds a language model and beam-search decoding, say so. Do not say the network hears phonemes.",
-  "why": "Speech Commands dataset card, CC BY 4.0: https://huggingface.co/datasets/google/speech_commands ; Stanford CS224S Spoken Language Processing covers CTC.",
-  "overlapWith": "fourier-transform: that page turns a signal into frequencies; this one continues from the spectrogram to letters and shows the CTC alignment.",
-  "needsSource": "Google Speech Commands v2, CC BY 4.0 (confirmed); own trained weights.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "mixture-of-experts",
-  "title": "Mixture of experts",
-  "level": 3,
-  "kind": "build",
-  "category": "ai",
-  "interaction": "Assemble a layer from a palette of small expert networks and a router, set how many experts each input may use, and train it on a 2-D regression: the plane is tiled by which expert each input is routed to, each expert's own fit is drawn in its tile, and a histogram counts inputs per expert. Remove the load-balancing loss and watch one expert take every input while the others idle; a counter shows parameters stored against parameters used per input.",
-  "takeaway": "A router sends each input to a few of many experts, so a model can hold far more parameters than it spends per token, and routing collapses onto one expert unless a balancing term pushes traffic apart.",
-  "prerequisites": [
-   "neural-networks",
-   "transformers"
-  ],
-  "related": [
-   "language-models",
-   "scaling-laws"
-  ],
-  "needs": "",
-  "pitfall": "Experts do not specialize by topic as the name suggests; in real language models they split by token-level patterns. The top-k choice is discrete, so show that the gate's softmax weight is what carries the gradient.",
-  "why": "Hugging Face, Mixture of Experts Explained: https://huggingface.co/blog/moe",
-  "overlapWith": "transformers: that page shows attention mixing tokens; this one replaces the feed-forward block with routed experts and shows the compute-per-token against total-parameters trade.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
- },
- {
-  "slug": "monte-carlo-tree-search",
-  "title": "Monte Carlo tree search & AlphaGo",
-  "level": 3,
-  "kind": "step",
-  "category": "ai",
-  "interaction": "Play Connect Four against the page and step its thinking one simulation at a time: selection walks down the tree by the upper-confidence rule, expansion adds a node, a random rollout plays the game to the end, and the result is backed up as visit counts and win rates, so the tree grows lopsided toward promising moves. Set the simulation budget and the exploration constant, then replace the random rollouts with a small value and policy network trained by self-play and see the same budget play far better.",
-  "takeaway": "Tree search can play well with no rules of thumb by sampling games and growing the tree where the samples look best, and a learned value network in place of random rollouts is the AlphaGo idea.",
-  "prerequisites": [
-   "reinforcement-learning",
-   "graph-search"
-  ],
-  "related": [
-   "world-models",
-   "evolutionary-algorithms"
-  ],
-  "needs": "None for the search itself; a small Connect Four policy and value network trained by self-play offline (own weights).",
-  "pitfall": "MCTS is not minimax with random tie-breaking; the asymmetric growth is the point. AlphaGo's networks did not replace search, they guided it.",
-  "why": "Silver et al. 2016, Mastering the game of Go with deep neural networks and tree search, Nature: https://www.nature.com/articles/nature16961",
-  "overlapWith": "graph-search: that page finds shortest paths in a known graph; here the tree is grown by sampling under uncertainty and value estimates decide where it grows.",
-  "needsSource": "none external; own weights",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "ai-l3"
+  "origin": "computing-networks-l3"
  }
 ]

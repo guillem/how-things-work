@@ -1,5 +1,30 @@
 [
  {
+  "slug": "blood-types",
+  "title": "Blood types: who can give to whom",
+  "level": 0,
+  "kind": "build",
+  "category": "medicine",
+  "interaction": "Pick a donor and a patient from the eight blood types and drop the donor's blood into the patient's: red cells carry their flags (A, B, both or none, plus the Rh dot), the patient's blood carries guards against the flags it lacks, and a flagged cell that meets its guard is clumped. Try pairs and the page fills in the eight-by-eight chart of safe gifts; find the type that can give to everyone and the one that can take from everyone.",
+  "takeaway": "A transfusion is safe when the donor's cells carry no flag the patient's blood attacks, which is why O-negative can give to anyone and AB-positive can receive from anyone.",
+  "prerequisites": [],
+  "related": [
+   "meiosis-inheritance",
+   "immune-system"
+  ],
+  "needs": "",
+  "pitfall": "The chart is for red cells; plasma goes the other way (AB is the universal plasma donor), and real blood banks still cross-match every unit. 'Universal donor' does not mean O-negative can receive from anyone.",
+  "why": "'Which blood type can donate to whom' is a perennial question; blood centres publish the compatibility chart: https://communityblood.org/resources/about-blood/blood-type-compatibility",
+  "overlapWith": "immune-system: antibodies selected and multiplied against an invader; this page uses only the fixed anti-A and anti-B antibodies and the Rh factor, with no selection or memory.",
+  "needsSource": "none",
+  "leadsTo": [
+   "heart-circulation",
+   "meiosis-inheritance"
+  ],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
   "slug": "body-thermostat",
   "title": "Why you shiver and sweat",
   "level": 0,
@@ -417,6 +442,54 @@
   "origin": "living-things-and-body"
  },
  {
+  "slug": "sunscreen-spf",
+  "title": "What the number on sunscreen means",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "A hundred rays of summer sun fall on a patch of skin and the page counts how many get through: bare skin lets in all hundred, and a slider for SPF thins them, with the count read off the skin, about 3 at SPF 30, 2 at SPF 50, 1 at SPF 100. A second slider thins the layer applied, as most people do, and the count climbs back. A timer shows how long the skin takes to redden at each setting.",
+  "takeaway": "SPF says how many times thinner the burning rays are through the lotion, so SPF 50 is not twice SPF 30: both stop nearly all of them, and how much you put on matters more than the number.",
+  "prerequisites": [],
+  "related": [
+   "vision-color",
+   "ozone-layer-chemistry"
+  ],
+  "needs": "",
+  "pitfall": "SPF measures the burning rays (UVB) only, not UVA; it is not minutes of protection, and no sunscreen blocks everything at any SPF.",
+  "why": "'SPF 30 vs SPF 50' is a top sunscreen question and a known misconception (dermatology explainer): https://www.schweigerderm.com/skin-care-articles/skin-care-tips/spf-30-vs-spf-50/",
+  "overlapWith": "light-optics: how light bends and splits; this page is how much of one kind of light a layer absorbs, as counts of rays (the SPF ratio and Beer-Lambert thinning underneath, with the standard 2 mg/cm² test dose).",
+  "needsSource": "none",
+  "leadsTo": [
+   "light-optics"
+  ],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
+  "slug": "where-calories-go",
+  "title": "Where your calories go",
+  "level": 0,
+  "kind": "explore",
+  "category": "medicine",
+  "interaction": "A day's energy drawn as a stack of blocks, one per hundred kilocalories: even asleep the body spends most of them keeping warm and running the brain, heart and organs. Scrub through a day and watch the blocks go hour by hour, then add an hour of walking, a run or a football match from a list and see how few extra blocks each adds next to the resting pile; a body-size slider shows a bigger body spending more even at rest. Pick a food from a short list and see how many blocks it is.",
+  "takeaway": "Most of the energy you eat is spent just staying alive and warm, so an hour of exercise adds only a small pile next to the big one the body burns anyway.",
+  "prerequisites": [],
+  "related": [
+   "homeostasis",
+   "respiration-atp"
+  ],
+  "needs": "Resting rate from the Mifflin-St Jeor equation; activity costs from the Compendium of Physical Activities MET table; food energies from USDA FoodData Central.",
+  "pitfall": "Exercise matters for health; the page says it is a small share of the energy budget, not that it is useless. Calorie counts are estimates: resting rates vary by ten to fifteen percent between people of the same size, and food labels are rounded.",
+  "why": "'How does your body burn 2,000 calories a day but you have to run a mile to burn 100 extra?' is cited as one of the most popular questions ever asked on r/explainlikeimfive: https://www.howtogeek.com/694298/what-does-eli5-mean-and-how-do-you-use-it",
+  "overlapWith": "homeostasis: blood sugar control after a meal and a run; this page is the energy budget, where the day's kilocalories go, not how sugar is regulated.",
+  "needsSource": "Mifflin-St Jeor (published formula); Compendium of Physical Activities (Ainsworth et al., published, free online, no formal licence: numeric values only); USDA FoodData Central (US government work, public domain).",
+  "leadsTo": [
+   "homeostasis"
+  ],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
   "slug": "why-bruises-change-colour",
   "title": "Why bruises change colour",
   "level": 0,
@@ -518,6 +591,53 @@
    "homeostasis"
   ],
   "origin": "living-things-and-body"
+ },
+ {
+  "slug": "kidney-water-balance",
+  "title": "The kidney & water balance",
+  "level": 1,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Let a person drink a litre of water, run on a hot day or eat a salty meal, and watch the blood's water content, the ADH level and the urine's volume and concentration respond over the following hours. Zoom into one nephron: blood is filtered under pressure, glucose and most of the water are reclaimed along the tubule, and the final adjustment is made where ADH sets how much water the collecting duct lets back; raise blood glucose until sugar spills into the urine, then stop the kidneys and run dialysis across a membrane instead.",
+  "takeaway": "The kidney does not pick out waste; it filters almost everything out of the blood and then takes back what the body needs, with a hormone setting how much water it keeps.",
+  "prerequisites": [
+   "homeostasis",
+   "diffusion-osmosis"
+  ],
+  "related": [
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "reference physiology values (about 180 litres filtered a day, 1 to 2 litres of urine); no dataset",
+  "pitfall": "Urine is not filtered blood: about 99% of the filtrate is reabsorbed, and glucose appears in urine only when the tubule's capacity to reclaim it is exceeded. ADH makes the kidney keep water, so more ADH means less, and more concentrated, urine.",
+  "why": "AQA GCSE Biology 8461 topic 4.5.3.3 'Maintaining water and nitrogen balance in the body' (the kidney, ADH and negative feedback, dialysis) https://www.developingexperts.com/unit-library/units/4-5-homeostasis-and-response-copy",
+  "overlapWith": "homeostasis shows the glucose-insulin loop; this is the water loop and the organ that closes it. The pool's kidney-nephron and dialysis (level 3) model countercurrent multiplication and dialyser transport; this page keeps to filter-then-reclaim and the ADH loop that GCSE asks for.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "reflex-arc-reaction-time",
+  "title": "The nervous system: reflexes & reaction time",
+  "level": 1,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Touch a virtual hand to a hot plate and watch the signal run along the sensory neuron to the spinal cord, across a synapse to a motor neuron and back to the arm muscle, against a stopwatch: the hand has moved before the signal reaches the brain. Then run the classroom ruler-drop test: catch the ruler and the page turns the distance fallen into a reaction time, slower for a conscious choice than for a reflex, and plots how caffeine, distraction and practice shift the distribution over many trials.",
+  "takeaway": "A reflex is fast because its signal takes a short loop through the spinal cord instead of the longer route through the brain, and even the fastest nerve signal takes a measurable fraction of a second.",
+  "prerequisites": [],
+  "related": [
+   "neurons",
+   "homeostasis",
+   "vision-color"
+  ],
+  "needs": "Conduction speeds of myelinated and unmyelinated nerve fibres, typical synaptic delay and path lengths.",
+  "needsSource": "standard physiology reference values; no dataset",
+  "pitfall": "Reflexes are not instant: a signal travels at tens of metres per second and each synapse costs about a millisecond. The brain is not bypassed entirely; it learns of the reflex after the fact, which is why the heat is felt after the hand has moved.",
+  "why": "AQA GCSE Biology 8461 topic 4.5.2 'The human nervous system' (the reflex arc) with Required practical 7, factors affecting human reaction time https://www.developingexperts.com/unit-library/units/4-5-homeostasis-and-response-copy",
+  "overlapWith": "neurons (level 2) is the single cell: ion channels, the spike and the synapse. This page is the system at level 1, the loop from receptor to muscle and the time it takes; the pool's reflexes (level 0) has the knee-jerk without the timing model.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
  },
  {
   "slug": "ageing-mortality",
@@ -1092,6 +1212,29 @@
   "leadsTo": [],
   "everyday": false,
   "origin": "medicine-l3"
+ },
+ {
+  "slug": "mri-k-space",
+  "title": "MRI: an image from spinning protons",
+  "level": 3,
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Tip the protons of a slice with a radio pulse and watch their net magnetization precess and decay under the Bloch equations, the signal fading faster or slower with T1 and T2 sliders. Switch on a field gradient: protons on one side precess faster, their phases fan out, and the signal recorded while the gradient is on is one line of the slice's Fourier transform; step through a pulse sequence, each gradient pair filling one line of k-space, and watch the image emerge from a phantom as the lines are added. Fill only the centre for a blur, only the edges for outlines, skip every other line for a ghost, and change the echo time to turn fat bright or dark.",
+  "takeaway": "An MRI scanner never measures a picture: gradients make protons at different positions precess at different rates, so the recorded signal is the image's Fourier transform, acquired one line at a time and inverted by computer.",
+  "prerequisites": [
+   "fourier-transform",
+   "electromagnetism",
+   "medical-imaging"
+  ],
+  "related": [],
+  "needs": "The Shepp-Logan phantom (a mathematical object, no data); optionally one real T1-weighted brain slice.",
+  "pitfall": "MRI uses no ionizing radiation, and the image is not proton density alone: contrast comes as much from T1 and T2 relaxation as from how many protons there are. The gradient does not scan slice by slice the way CT rotates; k-space is the honest picture.",
+  "why": "'How does an MRI work' is among the most-asked medical-technology questions, and k-space MRI theory is a standard biomedical-engineering course (Purdue BME 55500): https://engineering.purdue.edu/online/courses/tagged_items/magnetic-resonance-imaging-mri-theory",
+  "overlapWith": "medical-imaging: CT from projections, with MRI only sketched at the end; this page builds the MRI image from the Bloch equations and k-space. nmr-spectroscopy (pool, chemistry, level 3) has the same spins and pulses but no gradients and no image.",
+  "needsSource": "Shepp-Logan: none. Real slice, if used: an OpenNeuro dataset (CC0), named on the page.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
  },
  {
   "slug": "pain-gate-control",

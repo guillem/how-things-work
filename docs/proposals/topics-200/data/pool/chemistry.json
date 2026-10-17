@@ -705,6 +705,56 @@
   "origin": "chemistry-and-cooking"
  },
  {
+  "slug": "electrolysis",
+  "title": "Electrolysis",
+  "level": 1,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Dip two electrodes into molten lead bromide, then into salt water, and switch on the current: ions drift to the electrode of opposite charge and are turned back into atoms, particle by particle, with bubbles of gas or a growing metal coating. Choose the salt and the solvent and the page predicts from the reactivity series which ion is discharged at each electrode, while a meter adds up the charge passed so that the mass deposited can be read against it. Finish with the aluminium cell and why it eats so much electricity.",
+  "takeaway": "Electricity can pull a compound apart: positive ions gain electrons at one electrode and negative ions lose them at the other, and the amount made is set by the charge passed.",
+  "prerequisites": [
+   "chemical-bonds",
+   "electric-circuits"
+  ],
+  "related": [
+   "redox-batteries",
+   "acids-bases"
+  ],
+  "needs": "The reactivity series and, for the quantitative step, Faraday's constant and the ionic charges.",
+  "needsSource": "reference constants (IUPAC, CODATA); no dataset",
+  "pitfall": "In solution the less reactive of two possible products is discharged: hydrogen rather than sodium at the cathode, and oxygen rather than a halogen unless a halide is present. Electrolysis is a battery run backwards, so the supply must push the electrons uphill.",
+  "why": "AQA GCSE Chemistry 8462 topic 4.4.3 'Electrolysis' (molten ionic compounds, aqueous solutions, extraction of aluminium; Required practical 3) https://www.savemyexams.com/learning-hub/exam-specifications/gcse/chemistry/aqa/",
+  "overlapWith": "redox-batteries (level 2) is the cell discharging through a load; electrolysis is the same chemistry driven backwards by a supply, which that page mentions only as charging a lithium cell. The rule for which ion wins in solution and the charge-to-mass relation are new.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "moles-and-stoichiometry",
+  "title": "The mole & reacting masses",
+  "level": 1,
+  "kind": "build",
+  "category": "chemistry",
+  "interaction": "Drag atoms into a reaction box to balance an equation by making the count of each element match on both sides, then pour in reactants by mass: a scale converts grams into counts of molecules through the mole, the reaction runs until the scarcer ingredient is used up, and the leftover is shown. Swap a solid product for a gas to see the volume a mole takes at room temperature, and compare the predicted and actual yields of a reaction that loses product along the way.",
+  "takeaway": "A chemical equation is a recipe in counts, not in grams, and a reaction stops when the ingredient with the fewest molecules runs out, however much of the others is left.",
+  "prerequisites": [
+   "atoms-periodic-table",
+   "chemical-bonds"
+  ],
+  "related": [
+   "reaction-rates-equilibrium",
+   "gas-laws"
+  ],
+  "needs": "Relative atomic masses.",
+  "needsSource": "IUPAC standard atomic weights (CC BY 4.0) or the PubChem periodic table (US government work, public domain)",
+  "pitfall": "Equal masses of two substances do not hold equal numbers of molecules; a mole is a count, and it is the count that reacts. The molar volume of about 24 litres holds for a gas at room temperature and pressure, not for liquids or solids.",
+  "why": "AQA GCSE Chemistry 8462 topic 4.3 'Quantitative chemistry' (conservation of mass, moles, limiting reactants, gas volumes, yield) https://www.savemyexams.com/learning-hub/exam-specifications/gcse/chemistry/aqa/ ; IB Chemistry stoichiometry (the mole, reacting masses, limiting reagents) https://ibchem.com/IB25/03.00t.php",
+  "overlapWith": "atoms-periodic-table builds single atoms and reaction-rates-equilibrium (level 2) runs collisions and asks how fast and how far; the counting step between them, from grams to molecules and back, on which every chemistry calculation rests, is on no page.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
   "slug": "chromatography",
   "title": "Chromatography: separating by stickiness",
   "level": 3,

@@ -1,5 +1,30 @@
 [
  {
+  "slug": "ant-trails",
+  "title": "How ants find the shortest way",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Ants wander out of a nest at random; one that finds the sugar walks home laying a scent, and the others follow scent rather than chance, so a trail forms and thickens. Drag the sugar farther away or drop a pebble on the trail and watch the colony reroute. Then offer a long bridge and a short one to the same food and count the ants on each: the short one wins because its scent is refreshed more often, and with the scent's fading switched off the colony stays stuck on whichever bridge it found first.",
+  "takeaway": "A colony finds the shortest path with no map and no ant that knows it: a scent that fades rewards the route that gets walked most often.",
+  "prerequisites": [],
+  "related": [
+   "flocking-birds",
+   "graph-search"
+  ],
+  "needs": "",
+  "pitfall": "No ant knows where the food is or compares the routes, and the queen gives no orders; real ants also use sight and memory, which the page leaves out and says so.",
+  "why": "The NetLogo Ants model, a standard classroom agent model of pheromone trails (Deneubourg's double-bridge experiment): https://ccl.northwestern.edu/netlogo/models/Ants",
+  "overlapWith": "graph-search: an algorithm explores a map systematically to find the shortest route; this page finds one with many simple agents and a fading scent, with no map at all.",
+  "needsSource": "none",
+  "leadsTo": [
+   "graph-search",
+   "ecosystems"
+  ],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
   "slug": "apple-browning",
   "title": "Why a cut apple goes brown",
   "level": 0,
@@ -102,6 +127,55 @@
    "dna-to-protein"
   ],
   "origin": "living-things-and-body"
+ },
+ {
+  "slug": "fireflies-in-sync",
+  "title": "Fireflies that flash together",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "A meadow of fireflies, each with its own inner clock that flashes when it strikes twelve and starts again. One control: how much a neighbour's flash nudges a firefly's clock forward. At zero the meadow twinkles at random; turn it up and patches start flashing together, then waves, then the whole field as one; drag a finger through the swarm to scramble it and watch it fall back into step.",
+  "takeaway": "Thousands of fireflies flash together with no conductor, because each one nudges its own clock a little toward every flash it sees.",
+  "prerequisites": [],
+  "related": [
+   "flocking-birds",
+   "kuramoto-synchronization"
+  ],
+  "needs": "",
+  "pitfall": "There is no lead firefly and no outside signal; synchrony appears only from each insect reacting to its neighbours. Only some firefly species do this.",
+  "why": "Nicky Case's 'Fireflies' explorable (public domain), the interactive credited in Veritasium's synchronization video: https://ncase.me/fireflies/",
+  "overlapWith": "oscillations-resonance: one oscillator pushed at a frequency; this page is many self-timed flashers nudging each other into step, which is not resonance. kuramoto-synchronization (this batch, level 3) is the grown-up phase-coupled model.",
+  "needsSource": "none",
+  "leadsTo": [
+   "oscillations-resonance"
+  ],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
+  "slug": "flocking-birds",
+  "title": "Flocks without a leader",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "A hundred birds fly across the stage following three rules, each drawn as a short arrow on one highlighted bird: keep a little distance from your neighbours, fly the way they fly, drift toward the middle of them. Switch one rule off at a time: without the first the birds pile into clumps, without the second the flock never agrees on a direction, without the third it scatters. Add a hawk and watch the flock split around it and close again with no bird in charge.",
+  "takeaway": "A flock keeps its shape because every bird follows the same three simple rules about its nearest neighbours, not because any bird leads.",
+  "prerequisites": [],
+  "related": [
+   "ant-trails",
+   "fireflies-in-sync",
+   "ecosystems"
+  ],
+  "needs": "",
+  "pitfall": "No bird leads or sees the whole flock; each reacts only to its few nearest neighbours, and the shapes of a murmuration are planned by nobody.",
+  "why": "NGSS 3-LS2-1 (some animals form groups that help members survive); Reynolds's boids is the classic classroom model of it (MIT StarLogo activity): https://www.nextgenscience.org/pe/3-ls2-1-ecosystems-interactions-energy-and-dynamics",
+  "overlapWith": "ecosystems: populations tied together by birth and predation rates; this page is the movement of one group where each animal follows a rule about its neighbours, with no population counts at all.",
+  "needsSource": "none",
+  "leadsTo": [
+   "ecosystems"
+  ],
+  "everyday": false,
+  "origin": "demand"
  },
  {
   "slug": "flowers-and-bees",
@@ -494,6 +568,129 @@
    "photosynthesis"
   ],
   "origin": "living-things-and-body"
+ },
+ {
+  "slug": "diffusion-osmosis",
+  "title": "Diffusion, osmosis & active transport",
+  "level": 1,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Drop dye into one corner of a box of jiggling particles and watch it spread, faster when warmer, while a concentration graph flattens. Put a membrane down the middle with pores that pass water but not sugar, set the sugar concentration on each side and watch the water level rise on the sugary side; then make the box a cell, place it in pure water, salt water and something in between, and see it swell, shrink or hold, as a potato slice does in the classroom experiment. Finally switch on a pump that carries particles against the gradient and watch its ATP meter drain.",
+  "takeaway": "Particles spread from where they are crowded to where they are not by random motion alone, water does the same across a membrane that holds the dissolved particles back, and moving anything the other way costs energy.",
+  "prerequisites": [
+   "the-cell",
+   "states-of-matter"
+  ],
+  "related": [
+   "entropy",
+   "respiration-atp",
+   "kidney-water-balance"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Osmosis is water moving toward the higher solute concentration, not toward 'more water'. Diffusion needs no force or pump: particles have no direction of their own, and the net flow is a counting effect. A plant cell in pure water becomes firm rather than bursting, because of its wall.",
+  "why": "AQA GCSE Biology 8461 topic 4.1.3 'Transport in cells' (diffusion, osmosis, active transport) with Required practical 3, osmosis in plant tissue https://www.edplace.com/gcse-revision/biology/aqa",
+  "overlapWith": "entropy (level 2) shows two gases mixing as a count of microstates and the-cell shows the membrane as a structure; neither has a membrane that passes water and holds solute, a cell that swells or shrinks, or a pump that spends ATP. The pool's smells-and-diffusion (level 0) spreads a smell without the membrane.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "dna-fingerprinting",
+  "title": "DNA fingerprinting: matching a profile",
+  "level": 1,
+  "kind": "step",
+  "category": "biology",
+  "interaction": "DNA from a scene and from three suspects; at each of a dozen marker sites the DNA repeats a short word a number of times that differs between people. Step through: copy each site, sort the copies by length into peaks, and read off the repeat counts as a profile; compare profiles site by site, where one mismatch excludes a suspect and a full match is weighed by how common each count is in real population tables, the page multiplying the shares as sites are added, from one in ten with one marker to one in a billion with twelve. Mix two people's DNA and see the peaks overlap.",
+  "takeaway": "A DNA profile is a list of repeat counts at a dozen or so places: most people share any one count, almost nobody shares all of them, and the odds of a chance match come from how common each count is.",
+  "prerequisites": [
+   "dna-to-protein",
+   "bayes-theorem"
+  ],
+  "related": [
+   "pcr-copying-dna",
+   "meiosis-inheritance"
+  ],
+  "needs": "STR allele frequencies for a US population sample from NIST (Hill et al. 2013, 1,036 individuals, 29 loci).",
+  "pitfall": "A match is a probability from population tables, not certainty, and one in a billion is the chance of a random match, not the chance the suspect is innocent. Relatives share more counts than strangers. The suspects' profiles are synthetic and labelled so; only the frequencies are real.",
+  "why": "Genetic fingerprinting is in the AQA A-level Biology specification (7402, section 3.8.4.3: VNTRs, PCR, electrophoresis, forensic use), and NIST's STRBase is the reference for the method's population data: https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification/subject-content",
+  "overlapWith": "meiosis-inheritance: how variants are shuffled between generations; this page uses that variation as an identifier. gwas-polygenic-risk (pool) links variants to disease; this page only matches repeat counts between samples.",
+  "needsSource": "NIST's own US population STR dataset (Hill et al. 2013): US government work, public domain. Not STRBase's compilation of published studies, whose rights vary.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
+  "slug": "enzymes-and-digestion",
+  "title": "Enzymes & digestion",
+  "level": 1,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Follow a meal through the mouth, stomach and small intestine while amylase, protease and lipase, drawn as lock-and-key shapes, cut starch, protein and fat into pieces small enough to cross the gut wall, with a counter of molecules absorbed. Change the temperature and the pH of each stage and watch the rate rise, peak and collapse as the enzyme's shape distorts; add bile to break fat into droplets and see the lipase rate jump with the surface area.",
+  "takeaway": "Digestion is enzymes cutting big molecules into small ones, and each enzyme works fastest at one temperature and one pH and stops working when its shape is changed.",
+  "prerequisites": [
+   "the-cell"
+  ],
+  "related": [
+   "respiration-atp",
+   "acids-bases"
+  ],
+  "needs": "Rate-against-temperature and rate-against-pH behaviour for amylase, pepsin and lipase (optimum pH near 7, 2 and 8).",
+  "needsSource": "a documented Michaelis-Menten model with stated optima needs no dataset; measured constants, if wanted, from the BRENDA enzyme database (its licence was not confirmed in this research; say so before relying on it)",
+  "pitfall": "Heat does not kill an enzyme, it denatures it: the protein unfolds and the active site no longer fits. Cold slows an enzyme but does not denature it. Enzymes are not used up by the reaction they speed.",
+  "why": "AQA GCSE Biology 8461 topic 4.2.2.1 'The human digestive system' with Required practical 5, the effect of pH on the rate of reaction of amylase https://cognito.org/blog/gcse-aqa-biology",
+  "overlapWith": "respiration-atp (level 2) follows one glucose molecule after it has been absorbed and the-cell zooms through a cell; digestion, and the enzyme as a shape that works in a narrow range of temperature and pH, is on no page. The pool's digestion-journey (level 0) is the route without the enzyme model, and its enzyme-kinetics (level 3) is the Michaelis-Menten mathematics; this page shows the behaviour between them.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "pcr-copying-dna",
+  "title": "PCR: copying DNA until there is enough to see",
+  "level": 1,
+  "kind": "step",
+  "category": "biology",
+  "interaction": "A tube with a few strands of DNA and a thermometer: step through one cycle (heat to split the strands, cool so short primers stick at the ends of the target, warm for the enzyme to extend them) and two strands become four; press play and the count doubles every cycle while the plot shoots up and the primers and building blocks run down. Set the starting number of copies and see when the glowing signal crosses the detection line: one copy takes about ten cycles longer than a thousand, which is how a PCR test reads how much virus was in the swab. Change the primers and a non-matching DNA stays uncopied.",
+  "takeaway": "PCR copies a chosen stretch of DNA by doubling it every heating-and-cooling cycle, so thirty cycles turn a few molecules into a billion, and the cycle at which the signal appears says how many there were to start with.",
+  "prerequisites": [
+   "dna-to-protein"
+  ],
+  "related": [
+   "dna-fingerprinting",
+   "epidemics"
+  ],
+  "needs": "",
+  "pitfall": "Doubling is not forever: primers and nucleotides run out and the curve flattens, so the plateau says nothing about the starting amount; only the threshold cycle does. A Ct value is not a measure of how ill someone is.",
+  "why": "'How does a PCR test work' became a mass question in 2020; public-health explainer of cycles and Ct values: https://www.publichealthontario.ca/en/About/News/2021/Explained-COVID19-PCR-Testing-and-Cycle-Thresholds",
+  "overlapWith": "dna-to-protein: how DNA is read into protein; this page is how a chosen piece of DNA is copied in a tube and counted. dna-sequencing (pool, level 3) reads the letters; PCR only multiplies a chosen piece.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
+  "slug": "plant-transport",
+  "title": "Plant transport & transpiration",
+  "level": 1,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Set the light, temperature, humidity and wind around a potted plant and watch water drawn up its xylem from root to leaf as it evaporates from the open stomata, with a potometer bubble marking the rate; close the stomata and the flow stops. Pull a thread of water up a thin tube to see how evaporation at the top can lift a column that is never pushed, then switch to the phloem and watch sugar made in the leaf loaded in, drawing water after it, and flowing down to the roots and fruit.",
+  "takeaway": "A plant has no pump: water is pulled up by evaporation from its leaves through tubes it cannot break, and sugar is pushed from leaf to root by the water it attracts.",
+  "prerequisites": [
+   "photosynthesis",
+   "diffusion-osmosis"
+  ],
+  "related": [
+   "global-water-cycle"
+  ],
+  "needs": "",
+  "needsSource": "none; the transpiration rate is modelled from the vapour-pressure deficit and stomatal opening, documented as a simplification",
+  "pitfall": "Transpiration is not a waste: it is what moves water and minerals up the plant. Roots do not push water to the top of a tree; root pressure is small and the pull from the leaves does the work.",
+  "why": "AQA GCSE Biology 8461 topic 4.2.3.2 'Plant organ system' (transpiration and translocation, factors affecting the rate of transpiration) https://cognito.org/blog/gcse-aqa-biology",
+  "overlapWith": "photosynthesis makes sugar in the leaf and sets light and CO2; the pool's how-plants-drink (level 0) shows water rising without the rates. This page is the plumbing: the pull of transpiration, the four factors that set its rate, and the phloem.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
  },
  {
   "slug": "bacterial-chemotaxis",

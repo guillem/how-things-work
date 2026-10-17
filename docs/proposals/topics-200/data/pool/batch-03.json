@@ -1,5 +1,193 @@
 [
  {
+  "slug": "resampling-inference",
+  "title": "Hypothesis tests, the bootstrap & permutation",
+  "level": 3,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Compare a measurement between two groups of real penguins: shuffle the group labels thousands of times, build the histogram of differences that chance alone produces, and read the p-value as where the observed difference falls in it. Resample each group with replacement for a bootstrap confidence interval on the difference and on a regression slope; then drag the true effect and the sample size of a simulated study to plot its power, and run twenty null comparisons at once to watch one of them come out 'significant'.",
+  "takeaway": "A p-value is where the real result sits among the results that pure chance makes, and sample size, not luck, is what makes a real effect visible.",
+  "prerequisites": [
+   "central-limit-theorem",
+   "bayes-theorem",
+   "learning-from-data"
+  ],
+  "related": [
+   "markov-chain-monte-carlo",
+   "epidemics"
+  ],
+  "needs": "The Palmer penguins dataset (344 penguins, bill and flipper measurements by species; palmerpenguins, CC0).",
+  "pitfall": "A p-value is not the probability that the null hypothesis is true, and failing to reject is not evidence of no effect. The power plot must show a true effect that a small study routinely misses.",
+  "why": "Hesterberg, What Teachers Should Know about the Bootstrap: Resampling in the Undergraduate Statistics Curriculum: https://arxiv.org/abs/1411.5279",
+  "overlapWith": "learning-from-data: that page fits a curve and shows overfitting with a held-out set; this page asks whether a difference or a slope is real, by rebuilding the chance distribution from the data itself.",
+  "needsSource": "Palmer penguins (Gorman, Williams & Fraser 2014; palmerpenguins package): CC0",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "riemann-zeta-primes",
+  "title": "The Riemann zeta function & the primes",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Scrub along the critical line and watch ζ(1/2 + it), computed on the page by the Riemann–Siegel formula, spiral through the origin at each zero, while a count of primes up to x steps beside the smooth estimates x/ln x and Li(x). Add the zeros one pair at a time to Riemann's explicit formula and watch the smooth curve grow wiggles that lock onto the prime staircase, the way adding Fourier terms sharpens a square wave.",
+  "takeaway": "The zeros of the zeta function are the frequencies of the primes: adding them one by one turns a smooth guess into the exact staircase.",
+  "prerequisites": [
+   "complex-numbers",
+   "primes-modular-arithmetic",
+   "fourier-transform"
+  ],
+  "related": [
+   "continued-fractions",
+   "taylor-series",
+   "winding-numbers"
+  ],
+  "needs": "None required: the zeros are found on the page by root-finding the Riemann–Siegel Z(t). The first 100 zeros from LMFDB (lmfdb.org/zeros/zeta; the LMFDB datasets page states CC BY-SA for its datasets) serve as a test reference.",
+  "pitfall": "ζ(s) = Σ n^−s holds only for Re(s) > 1; on the critical line the page must use the analytic continuation, not a truncated sum, and the computed zeros illustrate the hypothesis without proving it.",
+  "why": "3Blue1Brown, Visualizing the Riemann zeta function and analytic continuation: https://www.youtube.com/watch?v=sD0NjbwqlYw",
+  "overlapWith": "primes-modular-arithmetic: that page strikes out multiples on a grid; this page asks how many primes there are up to x and shows the answer encoded in the zeros of a complex function.",
+  "needsSource": "none required; LMFDB zeta zeros (CC BY-SA per lmfdb.org/datasets) as a test reference only",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "sampling-theorem",
+  "title": "Sampling & the Nyquist limit",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Pick or draw a band-limited signal, drag the sampling rate and watch the samples be rebuilt into a continuous curve by summing one sinc per sample: the reconstruction is exact until the rate drops below twice the highest frequency, when a lower-frequency alias appears, visible in the spectrum as its copies overlapping. Spin a wheel under a strobe to see it stop or reverse, and play a tone sampled at adjustable rates to hear the alias.",
+  "takeaway": "A signal with no frequencies above B is completely determined by samples taken more than 2B times a second, and sampling slower folds its high frequencies into false low ones.",
+  "prerequisites": [
+   "fourier-transform",
+   "waves-interference"
+  ],
+  "related": [
+   "wireless-signals",
+   "compression",
+   "medical-imaging",
+   "channel-capacity"
+  ],
+  "needs": "",
+  "pitfall": "The samples need not look like the signal: a sine sampled just above twice its frequency looks like jagged nothing yet reconstructs exactly. Show the sinc reconstruction, never connect the dots.",
+  "why": "MIT OCW RES.6.007 Signals and Systems, Lecture 16: Sampling: https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/resources/lecture-16-sampling/",
+  "overlapWith": "fourier-transform: that page rebuilds a signal from its frequencies, and wireless-signals modulates a carrier; this page is about turning a continuous signal into numbers and back, and the exact rate at which that stops working.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "svd-low-rank",
+  "title": "The singular value decomposition",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag the columns of a 2×2 or 2×3 matrix and see the transformation as rotate, stretch along two axes, rotate: the unit circle's image is an ellipse whose axes are the singular values. Load a grayscale photo, slide the number of kept singular values from 1 to full rank and watch the image sharpen while the plotted singular values fall off and a counter compares numbers stored; apply the same cut to a matrix of noisy measurements and the noise is seen to live in the small singular values.",
+  "takeaway": "Every matrix is a rotation, a stretch and a rotation, and keeping only the largest stretches gives the best low-rank version, which is why a few numbers can carry most of a picture.",
+  "prerequisites": [
+   "linear-transformations",
+   "tensors"
+  ],
+  "related": [
+   "embeddings",
+   "compression",
+   "convolution-vision",
+   "gpu"
+  ],
+  "needs": "One grayscale photograph in the public domain or CC0 (NASA image library, or a Wikimedia Commons CC0 image).",
+  "pitfall": "Singular values are not eigenvalues: a rotation has singular values 1 and 1 and no real eigenvectors. Keep the eigen view from linear-transformations distinct from this one.",
+  "why": "MIT OCW 18.065, Lecture 17, Rapidly decreasing singular values (low-rank images): https://ocw.mit.edu/courses/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/resources/lecture-17-rapidly-decreasing-singular-values/",
+  "overlapWith": "linear-transformations: that page shows eigenvectors as the directions that only stretch; this page decomposes any matrix, rectangular ones included, and uses the decomposition to compress and denoise.",
+  "needsSource": "one photo: NASA image library (public domain) or Wikimedia Commons (CC0)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "symmetry-groups",
+  "title": "Symmetry & groups",
+  "level": 3,
+  "kind": "build",
+  "category": "math",
+  "interaction": "Compose the symmetries of a triangle, a square or a frieze by clicking them in order: the shape moves and the Cayley table fills in, showing that order matters for the square (a rotation then a flip is not a flip then a rotation), with subgroups and cosets lit up by color. Then pick generators and a lattice and the page tiles the plane with a motif, cycling through the 17 wallpaper groups, with a counter showing why a 5-fold rotation never closes up.",
+  "takeaway": "Symmetries combine like numbers but need not commute, their multiplication table captures the whole structure, and the plane admits exactly 17 repeating patterns.",
+  "prerequisites": [
+   "linear-transformations",
+   "unit-circle"
+  ],
+  "related": [
+   "galois-theory",
+   "hyperbolic-geometry",
+   "semiconductors",
+   "knot-invariants"
+  ],
+  "needs": "",
+  "pitfall": "A group is not tied to one shape: the rotations of a hexagon and addition mod 6 have the same table after relabeling. Show two different-looking tables that match.",
+  "why": "A-level Further Mathematics, groups (Edexcel FP2 chapter 2: Cayley tables, subgroups, Lagrange): https://pmt.physicsandmathstutor.com/download/Maths/A-level/Further/Additional-Pure/Edexcel/FP2/Cheat-Sheets/Ch.2%20Groups.pdf",
+  "overlapWith": "linear-transformations: that page shows one matrix at a time; this page composes transformations and studies the structure of the whole set of them.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "taylor-series",
+  "title": "Taylor series & where they stop working",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Pick a function and add Taylor terms one at a time with a slider: the polynomial hugs e^x and sin x ever further from the center, but for 1/(1 + x²) it fits perfectly up to |x| = 1 and blows up beyond, however many terms are added. A linked complex plane shows the disk of convergence growing from the center and stopping exactly when it touches the function's nearest singularity at ±i; drag the center and the disk resizes to match. Compare with Chebyshev interpolation to see a polynomial that fits the whole interval anyway.",
+  "takeaway": "A Taylor series converges exactly as far as the nearest singularity in the complex plane, even when nothing goes wrong on the real line.",
+  "prerequisites": [
+   "calculus",
+   "complex-numbers"
+  ],
+  "related": [
+   "fourier-transform",
+   "riemann-zeta-primes",
+   "numerical-stability",
+   "generating-functions"
+  ],
+  "needs": "",
+  "pitfall": "More terms do not always mean a better fit: outside the radius each new term makes the polynomial worse, and a function can be smooth everywhere on the real line and still have a finite radius.",
+  "why": "3Blue1Brown, Essence of calculus: Taylor series: https://www.3blue1brown.com/lessons/taylor-series",
+  "overlapWith": "calculus: that page shows the tangent line (the first Taylor term) and the integral; this page stacks the higher terms and explains the radius of convergence through the complex plane.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "vector-calculus",
+  "title": "Div, grad & curl",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Pick or paint a 2D vector field (a source, a vortex, a shear, a dipole) and drag a small box or loop over it: the net flow out of the box is the divergence and the net circulation around the loop is the curl, both computed numerically and colored across the whole field. Drag a scalar hill to see its gradient field, shrink the loop to watch circulation per area converge to the curl, then fill a large loop with small boxes and watch the interior edges cancel, which is Green's theorem in one picture.",
+  "takeaway": "Divergence is outflow per area and curl is spin per area, and adding up tiny boxes cancels everything but the boundary, which is why a surface integral can equal a line integral.",
+  "prerequisites": [
+   "calculus",
+   "linear-transformations"
+  ],
+  "related": [
+   "electromagnetism",
+   "atmosphere-weather",
+   "flight",
+   "heat-and-wave-equations"
+  ],
+  "needs": "",
+  "pitfall": "A field can swirl visibly and have zero curl (the 1/r vortex), and parallel straight arrows can have nonzero curl (a shear). Show both, so that curl is not read as 'looks rotating'.",
+  "why": "MIT OCW 18.02SC Multivariable Calculus (vector fields, Green's, Stokes' and the divergence theorem): https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/",
+  "overlapWith": "electromagnetism: that page draws field lines of charges and induction; this page is the mathematics of fields themselves, with the theorems that Maxwell's equations are written in.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
   "slug": "winding-numbers",
   "title": "Winding numbers & the fundamental theorem of algebra",
   "level": 3,
@@ -453,185 +641,6 @@
   "leadsTo": [
    "newtons-laws"
   ],
-  "origin": "basic-physical-science"
- },
- {
-  "slug": "glowing-hot",
-  "title": "Why hot things glow",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "physics",
-  "everyday": true,
-  "interaction": "Slide the temperature of an iron bar from a warm room up through a toaster element, a candle flame, a light-bulb filament and the surface of the Sun: its glow is worked out from the real law for hot bodies and turned into the colour you would see, nothing, then dull red, orange, yellow, white, blue-white. Switch to a thermal camera and see that the bar was glowing in infrared all along, even at room temperature. Line up a candle, a bulb and the Sun to read their temperatures from their colours.",
-  "takeaway": "Hot things glow with a colour set by their temperature, red-hot is cooler than white-hot, and even things too cool to see are glowing in infrared.",
-  "prerequisites": [],
-  "related": [
-   "temperature-and-touch",
-   "blue-sky-red-sunset",
-   "stars"
-  ],
-  "needs": "The CIE 2012 colour-matching functions already shipped by vision-color (`cone-data.ts`, CVRL) and its `blackBody` routine, which stars already reuses.",
-  "pitfall": "The tap colour code is backwards for glowing things: blue-white is hotter than red. And nothing has to be 'on fire' to glow; a toaster element and a bulb filament simply get hot.",
-  "why": "PhET 'Blackbody Spectrum' https://phet.colorado.edu/en/simulations/blackbody-spectrum ; KS3 physics 'Energy' (energy transfer by radiation) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "stars: that page colours a star by its surface temperature on the Hertzsprung-Russell diagram as one detail of a life story; this one makes the colour-temperature link the whole page, with a toaster and a bulb, and adds the infrared the eye cannot see.",
-  "needsSource": "Planck's law converted to screen colour with the shipped CMFs (vision-color/colour.ts `blackBody` and `cssColour`); no new data.",
-  "leadsTo": [
-   "greenhouse-effect",
-   "light-optics"
-  ],
-  "origin": "basic-physical-science"
- },
- {
-  "slug": "helicopter-rotor",
-  "title": "Helicopters: a spinning wing",
-  "level": 0,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Spin up a helicopter's rotor and lift off: the blades are wings going round, and the faster they spin or the more they tilt, the harder they throw air down and the more the helicopter is pushed up. Tilt the whole rotor disc to slide forward, backward or sideways; then switch off the tail rotor and watch the body spin the opposite way to the blades, and turn it back on to point where you like.",
-  "takeaway": "A helicopter rises by throwing air down with wings that go round, moves by tilting the whole rotor, and needs its tail rotor to stop the body spinning the other way.",
-  "prerequisites": [],
-  "related": [
-   "paper-plane-glide",
-   "kite-string-wind",
-   "rocket-throws-mass",
-   "flight"
-  ],
-  "needs": "",
-  "pitfall": "The rotor does not screw into the air like a propeller into wood; it lifts like a wing. Without the tail rotor the helicopter does not simply stop turning: the engine turning the blades one way turns the body the other, and the tail rotor's push is the only thing that cancels it.",
-  "why": "Smithsonian National Air and Space Museum, 'How Things Fly', https://howthingsfly.si.edu/ ('how do helicopters fly' is a perennial search question)",
-  "overlapWith": "flight: that page is a fixed wing section at level 2; this page's wing goes round, and the new ideas are the tilted disc and the body spinning the other way.",
-  "needsSource": "none (rotor thrust from momentum theory)",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": false,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "hot-air-balloon-lift",
-  "title": "Hot-air balloons: a bag of lighter air",
-  "level": 0,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Fire the burner under a balloon and watch the air inside warm, spread out and grow lighter than the cold air around it, until the bag, basket and passengers weigh less than the air they push aside and the whole thing lifts. Let it cool and it sinks; pull the vent to drop faster; add passengers and see how much hotter the air must be. Climb high and watch the lift fade as the outside air thins.",
-  "takeaway": "A hot-air balloon floats because the warm air inside is lighter than the cool air outside, and the burner is the only control a pilot has for up and down.",
-  "prerequisites": [],
-  "related": [
-   "submarine-ballast-tanks",
-   "parachute-terminal-speed"
-  ],
-  "needs": "",
-  "pitfall": "Hot air does not rise because 'heat rises': the warm air is pushed up by the heavier cold air around it, the same reason a cork comes up in water. The balloon is not sealed or pressurised; it is open at the bottom, and warm air spilling out is normal.",
-  "why": "England KS3 science, the particle model: changes of density with temperature, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study ('how do hot air balloons work' is a common search question)",
-  "overlapWith": "states-of-matter: that page heats particles in a box to change state; this page heats air inside a bag and asks only whether the bag is lighter than the air outside it.",
-  "needsSource": "none (air density from the ideal-gas law and a standard atmosphere)",
-  "leadsTo": [
-   "states-of-matter",
-   "newtons-laws"
-  ],
-  "everyday": false,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "ice-skates-glide-and-grip",
-  "title": "Ice skates: glide forward, grip sideways",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "physics",
-  "interaction": "Give a sled one shove on grass, on a wooden floor, on concrete and on ice and count how far it slides on each; ice is in a class of its own. Then put on skates: a blade glides along its length but bites sideways, so pushing off at an angle sends you forward, and leaning onto an edge carves a curve, while a skater who pushes straight back goes nowhere. A zoom shows the thin wet layer on the ice that makes the gliding possible.",
-  "takeaway": "Skating works because ice is uncommonly slippery along the blade while the blade's edge still grips sideways, and every push is made against that sideways grip.",
-  "prerequisites": [],
-  "related": [
-   "train-wheel-cones",
-   "car-brakes-stopping-distance",
-   "car-steering-corners"
-  ],
-  "needs": "Measured sliding-friction coefficients for ice, wood, concrete and grass from a cited physics reference (textbook values, no dataset).",
-  "pitfall": "The blade does not melt the ice by pressure: the melting-point drop under a skater is a few hundredths of a degree. Ice is slippery because its surface carries a thin liquid-like layer and rubbing warms it further, which is why flat shoes slip too.",
-  "why": "Robert Rosenberg, 'Why is ice slippery?', Physics Today (2005), the standard correction of the pressure-melting story, https://physicstoday.aip.org/features/why-is-ice-slippery",
-  "overlapWith": "newtons-laws: that page treats friction as a slider on a cart; this page is a surface comparison and the odd sideways grip of a blade, and it corrects the pressure-melting story.",
-  "needsSource": "none (friction coefficients quoted from a cited reference)",
-  "leadsTo": [
-   "newtons-laws",
-   "states-of-matter"
-  ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "keeping-things-warm",
-  "title": "Keeping things warm (and cold)",
-  "level": 0,
-  "kind": "build",
-  "category": "physics",
-  "everyday": true,
-  "interaction": "Build a container for hot tea from layers in a palette (paper, metal, foam, wool, an air gap, a vacuum gap, a lid or no lid) and start the clock: a thermometer in the tea and a plot show it cooling toward the room's temperature, fast or slow depending on the walls. Swap the tea for an ice cube and the same walls keep the cold in just as well. Compare a paper cup, a mug, a vacuum flask and a sleeping bag side by side.",
-  "takeaway": "A good insulator makes no heat of its own; it slows heat on its way out, or in, so the temperature curve bends more slowly.",
-  "prerequisites": [],
-  "related": [
-   "temperature-and-touch",
-   "drying-and-evaporation",
-   "greenhouse-effect"
-  ],
-  "needs": "Thermal conductivity and heat capacity for a handful of materials (handbook values).",
-  "pitfall": "A coat or a blanket does not make warmth and cold is not a substance that gets in; both just slow the heat flowing between the inside and the outside, which is why a vacuum flask keeps iced water cold too.",
-  "why": "NGSS MS-PS3-3: design, construct and test a device that minimises or maximises thermal energy transfer (clarification: an insulated box, a Styrofoam cup) https://learninglab.si.edu/standards/MS-PS3-3/1924 ; KS3 physics 'Energy' (energy transfer from the hotter to the cooler object; use of insulators) and KS2 Year 5 'Properties and changes of materials' (conductivity, electrical and thermal) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "greenhouse-effect: that page balances sunlight in against infrared out for a planet; this one balances a hot drink against a room through walls the reader builds, with no sunlight and no gases.",
-  "needsSource": "Lumped thermal model (heat capacities joined by the conductances of each layer, Newton's cooling at the surface). Material values from a handbook table (Wikipedia's thermal conductivity list, CC BY-SA 4.0, or a textbook); a few values only.",
-  "leadsTo": [
-   "greenhouse-effect",
-   "homeostasis"
-  ],
-  "origin": "basic-physical-science"
- },
- {
-  "slug": "kite-string-wind",
-  "title": "Kites: how a string holds you to the wind",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "physics",
-  "interaction": "Fly a kite on a line and change the wind: the kite climbs to the angle where the wind's push, its weight and the pull of the string balance, and a gauge shows the tug in your hand. Move the knot where the string joins the kite to tilt it more or less into the wind, add a tail, and find the settings that make it fly steady, nose over, or refuse to lift; cut the string and it tumbles away downwind.",
-  "takeaway": "A kite flies because the wind pushes on a tilted surface and the string turns that push into lift, so no wind or no string means no kite.",
-  "prerequisites": [],
-  "related": [
-   "sailing-into-wind",
-   "paper-plane-glide",
-   "parachute-terminal-speed",
-   "wind-turbine-wind-speed",
-   "flight",
-   "helicopter-rotor"
-  ],
-  "needs": "",
-  "pitfall": "The kite does not rise because the wind blows upward: the wind is level, and the tilt of the kite turns part of its push upward. Running with a kite works only because running makes wind.",
-  "why": "NASA Glenn Research Center, Beginner's Guide to Aeronautics, 'Kites', https://www.grc.nasa.gov/www/k-12/airplane/kite1.html",
-  "overlapWith": "flight: that page is a wing section at level 2 with streamlines, a pressure map and stall; this page is a flat kite on a string with one control, trimmed by hand, and prepares the reader for it.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "magnets-and-poles",
-  "title": "Magnets & poles",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "physics",
-  "everyday": true,
-  "interaction": "Drag two bar magnets about on a board: arrows show the pull or push between them, computed from their poles, and a compass needle and a sprinkle of iron filings line up along the field. Flip one magnet end for end and the pull turns into a push. Slide a steel paper clip toward a magnet to see it become a magnet of its own and pick up a chain of clips, then cut a magnet in half and find that each half still has two ends.",
-  "takeaway": "A magnet always has two ends; like ends push apart and unlike ends pull together, and the pull fades quickly with distance.",
-  "prerequisites": [],
-  "related": [
-   "balloons-and-static",
-   "electromagnetism"
-  ],
-  "needs": "",
-  "pitfall": "A magnet does not attract all metals, only iron, steel, nickel and cobalt; and cutting a magnet never separates its poles, each piece has two.",
-  "why": "NGSS 3-PS2-3 (electric or magnetic interactions between objects not in contact; the clarification names paper clips and magnets) https://www2.cde.ca.gov/cacs/id/web/29018 ; KS2 Year 3 'Forces and magnets' (magnets have two poles; predict whether two magnets attract or repel) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "electromagnetism: that page (level 2) places charges, draws field lines and induces currents with coils; this one has no electricity at all, only permanent magnets, their two poles, what they attract and how a clip becomes a temporary magnet.",
-  "needsSource": "none; the model is the two-pole (Gilbert) bar magnet with inverse-square pole forces and an induced pole pair for steel.",
-  "leadsTo": [],
   "origin": "basic-physical-science"
  }
 ]

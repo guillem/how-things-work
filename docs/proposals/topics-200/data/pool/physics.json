@@ -1311,6 +1311,227 @@
   "origin": "basic-physical-science"
  },
  {
+  "slug": "fluid-pressure-buoyancy",
+  "title": "Pressure in fluids & buoyancy",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Drag an object of adjustable volume and density into a tank of water and watch it sink, hover or float: arrows show the pressure growing with depth on every face, and the net upward push equals the weight of the water the object displaces, drawn as a bar beside the object's own weight. Lower a diver with a pressure gauge down the column, swap the water for oil or brine, then press on the small piston of a hydraulic lift to raise a car on the large one.",
+  "takeaway": "Pressure in a fluid grows with depth and pushes in every direction, so a submerged object is pushed harder from below than from above, and it floats when that difference exceeds its weight.",
+  "prerequisites": [
+   "newtons-laws"
+  ],
+  "related": [
+   "states-of-matter",
+   "flight"
+  ],
+  "needs": "",
+  "needsSource": "none; the densities of water, brine, oil, ice, wood and steel are standard reference values",
+  "pitfall": "Buoyancy is not a special force of water: it is the ordinary pressure difference between an object's bottom and its top. Floating does not need a lot of water around the object; a ship floats in a snug dock, and the upthrust depends on the fluid displaced, not on how much fluid is left.",
+  "why": "AQA GCSE Physics 8463 topic 4.5.5 'Pressure and pressure differences in fluids' (pressure with depth, upthrust, atmospheric pressure) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF ; AP Physics 1 Unit 8 'Fluids' carries 10 to 15% of the exam https://apstudents.collegeboard.org/courses/ap-physics-1",
+  "overlapWith": "states-of-matter runs a particle box with pressure as a control and flight shows lift on a wing; neither shows pressure growing with depth or the upthrust that follows from it. The pool's level-0 water-pressure-and-hydraulics and air-pressure-and-straws feel the push without the force balance.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "gas-laws",
+  "title": "Gas laws: pressure, volume & temperature",
+  "level": 1,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Pump molecules into a cylinder with a movable piston and a heater; the pressure is measured by counting molecules hitting the walls, not read from a formula. Hold the temperature and squeeze the piston to trace pressure against volume; hold the volume and heat the gas to trace pressure against temperature, then extend that line back to where the pressure would reach zero and find absolute zero. Pump up a bicycle tyre to see why it warms.",
+  "takeaway": "Gas pressure is molecules hitting the walls, so halving the volume doubles the pressure and heating a sealed container raises it, and tracing the pressure back to zero points to a lowest possible temperature.",
+  "prerequisites": [
+   "states-of-matter"
+  ],
+  "related": [
+   "entropy",
+   "heat-engines"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "The three laws hold for a fixed amount of gas and absolute temperature: pressure against degrees Celsius is a straight line that misses the origin. Squeezing a gas quickly warms it, so a quick squeeze is not a constant-temperature experiment.",
+  "why": "AQA GCSE Physics 8463 topic 4.3.3 'Particle model and pressure' (gas pressure and temperature, pressure and volume) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF ; PhET's 'Gas Properties' (pump molecules, change volume, add heat, measure pressure) is one of its most used simulations https://phet.colorado.edu/en/search?q=Thermo",
+  "overlapWith": "states-of-matter runs a molecular box through freezing, melting and boiling with temperature and pressure as controls; this page stays in the gas phase and measures the three relationships between pressure, volume and temperature that the phase page never plots.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "magnets-and-electromagnets",
+  "title": "Magnets & electromagnets",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Drag bar magnets around a board scattered with compass needles and iron filings; the field, computed from the magnets' poles, redraws as they move, and a meter shows the pull between two magnets falling as they are separated. Wind a coil around an iron core, set its current and number of turns, and lift a stack of paper clips; reverse the current to swap the poles, then zoom out to the Earth as one large magnet that turns every compass.",
+  "takeaway": "A magnet's force reaches through space as a field that loops from one pole to the other, and a coil carrying a current is a magnet that can be switched on, off and over.",
+  "prerequisites": [
+   "electric-circuits"
+  ],
+  "related": [
+   "electromagnetism",
+   "motors-generators"
+  ],
+  "needs": "",
+  "needsSource": "none; the dipole and coil fields are computed, and the strength of Earth's field is a reference value",
+  "pitfall": "Field lines are a drawing convention, not threads: the field exists everywhere between them. Filings show the field's direction, not its strength; use the compass deflection and the meter for that. Earth's geographic north is a magnetic south pole, which is why a compass's north end points there.",
+  "why": "AQA GCSE Physics 8463 topic 4.7 'Magnetism and electromagnetism' (permanent and induced magnets, magnetic fields, electromagnets) https://www.aqa.org.uk/subjects/science/gcse/physics-8463/specification-at-a-glance ; AQA KS3 syllabus 3.2.4 'Electromagnets' https://www.oxfordaqa.com/oaqaresources/science/teaching/aqa-science-ks3-syllabus.pdf",
+  "overlapWith": "electromagnetism (level 2) starts from charges and induction and assumes circuits; this page is the level-1 magnet itself (permanent magnets, fields, electromagnets, the Earth) that it steps over. The pool's level-0 magnets-and-poles and compass-and-magnetic-poles have no field model and no current.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "momentum-impulse-crashes",
+  "title": "Momentum, impulse & crashes",
+  "level": 1,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Crash two carts head-on with chosen masses, speeds and bounciness, from perfectly elastic to perfectly sticky, and watch the momentum bars before and after. Add a crumple zone or an airbag to one cart and see the force on its passenger drop as the collision is stretched over a longer time, on a force-time graph whose area stays the same. Then fire a cannon on a frozen lake to see the recoil, and play pool on a table where the balls meet at an angle.",
+  "takeaway": "In every collision the total momentum is unchanged, so what a crumple zone changes is not how much momentum is lost but how long losing it takes, and a longer time means a smaller force.",
+  "prerequisites": [
+   "newtons-laws"
+  ],
+  "related": [
+   "rockets"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Momentum is conserved in every collision, including sticky ones; it is kinetic energy that an inelastic collision turns into heat and deformation. A crumple zone does not absorb momentum, it stretches the collision in time.",
+  "why": "AQA GCSE Physics 8463 topic 4.5.7 'Momentum' (conservation, changes in momentum, safety features) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF ; AP Physics 1 Unit 4 'Linear momentum' (impulse, conservation, collisions) https://apstudents.collegeboard.org/courses/ap-physics-1",
+  "overlapWith": "newtons-laws already collides carts of different mass to show momentum passing between objects; this page keeps that as its first step and adds what it does not show: the bounciness of a collision, impulse as force spread over time (crash safety), recoil and collisions at an angle.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "musical-scales-ratios",
+  "title": "Why music has twelve notes",
+  "level": 1,
+  "kind": "explore",
+  "category": "physics",
+  "interaction": "A keyboard whose keys play, each note drawn as its wave; press two keys and the page plays them together and draws how the waves line up: an octave (double the frequency) every cycle, a fifth (3:2) every two, while clashing pairs beat and a roughness meter rises. Slide a divider to cut the octave into 5, 7, 12, 19 or 31 equal steps and see how close each ladder lands to the simple ratios; twelve lands nearly on the fifth, which is why pianos have twelve keys. Compare an equal-tempered chord with a pure one by ear.",
+  "takeaway": "Notes sound good together when their frequencies are in simple ratios, and twelve equal steps per octave is the smallest ladder that lands close to those ratios, which is why keyboards have twelve notes.",
+  "prerequisites": [
+   "waves-interference"
+  ],
+  "related": [
+   "fourier-transform",
+   "shazam-audio-fingerprint"
+  ],
+  "needs": "",
+  "pitfall": "Twelve is a good compromise, not a law of nature or of the ear: other traditions divide the octave differently, and equal temperament makes every fifth slightly flat. Consonance also depends on timbre; the roughness model (Plomp-Levelt 1965) is one measurable part of it.",
+  "why": "'Why 12 notes to the octave?' (University of Waterloo) is a widely read answer to a perennial question: https://www.math.uwaterloo.ca/~mrubinst/tuning/12.html",
+  "overlapWith": "waves-interference: beats and a string's harmonics; this page is which pairs of notes fit together and why the octave is cut into twelve.",
+  "needsSource": "none (tones synthesized in the browser; the Plomp-Levelt roughness curve is a published formula)",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
+  "slug": "polarized-light",
+  "title": "Polarized light: sunglasses, screens and the third filter",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Light drawn as a wave wiggling in one direction meets a filter the reader rotates; the fraction that gets through falls from all to none over a quarter turn, plotted against the angle. Cross two filters and nothing passes; slide a third in between at 45° and an eighth of the light comes back, with the wave's direction redrawn after each filter. Then aim the filter at glare off a wet road and rotate it to kill the glare, and look at a phone screen through it.",
+  "takeaway": "A polarizing filter keeps only the part of a light wave that wiggles along its axis, so two crossed filters block everything, and yet a third filter between them lets light through again.",
+  "prerequisites": [
+   "waves-interference"
+  ],
+  "related": [
+   "light-optics",
+   "electromagnetism",
+   "vision-color"
+  ],
+  "needs": "",
+  "pitfall": "A filter does not let through the photons that were already aligned and block the rest; it projects every wave onto its axis, which is why the middle filter can restore light. Glare is polarized by reflection off horizontal surfaces, not by water being wet.",
+  "why": "The three-polarizer paradox is a standard demonstration (LibreTexts tutorial), and polarized sunglasses and 3D glasses are everyday objects: https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Quantum_Tutorials_(Rioux)/07%3A_Quantum_Optics/7.13%3A_The_Three-Polarizer_Paradox",
+  "overlapWith": "light-optics: bending, focusing and dispersion, with polarization absent. liquid-crystals (pool, level 3) computes the LCD pixel between crossed polarizers; this page stops at the filters and the glare and links there.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
+  "slug": "spinning-balls-curve",
+  "title": "Why a spinning ball curves",
+  "level": 1,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Kick, throw or drop a ball with a chosen speed and spin and watch its path bend, with the air drawn flowing past it: the side spinning with the flow carries air round, the air leaves deflected to one side and the ball is pushed to the other. Sliders set spin, speed and the ball (football, tennis, baseball, table tennis, beach ball), and the path curves more for light balls with fast spin; compare a backspin shot that hangs with a topspin shot that dives, and drop a backspinning ball from a dam to watch it sail away from the wall.",
+  "takeaway": "A spinning ball drags air round with it, so the air leaves it deflected to one side and the ball is pushed to the other: the curve of a free kick, a slice and a topspin lob.",
+  "prerequisites": [
+   "newtons-laws"
+  ],
+  "related": [
+   "flight"
+  ],
+  "needs": "Drag and Magnus-lift coefficients for the balls, from published wind-tunnel measurements, or a documented simplified model stated on the page.",
+  "pitfall": "Do not explain it with 'faster air on one side, lower pressure' as if the air had to arrive at the same time, the false story the flight page bans; the deflected wake is the honest picture. At low spin a smooth ball can even curve the other way.",
+  "why": "The backspin basketball dropped from the Gordon Dam (Veritasium with How Ridiculous, 2015) went viral worldwide: https://www.npr.org/sections/thetwo-way/2015/07/17/423899841/watch-magnus-effect-whisks-basketball-into-the-spin-zone",
+  "overlapWith": "flight: a wing turns air downward (level 2); this page is the same deflection produced by spin on a ball at level 1, with the ball's whole path shown. newtons-laws has projectiles with drag but no spin.",
+  "needsSource": "Published coefficient fits (e.g. Goff & Carré 2010 for a football, Nathan 2008 for a baseball), cited; no dataset shipped.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
+  "slug": "nuclear-binding-energy",
+  "title": "Mass, binding energy & the valley of stability",
+  "level": 2,
+  "kind": "explore",
+  "category": "physics",
+  "interaction": "Scan the chart of all known nuclei, protons against neutrons, coloured by how they decay, with the stable ones running as a valley down the middle; click any nucleus and its measured mass is compared with the mass of its parts, the difference shown as binding energy through E = mc². Follow binding energy per nucleon along the curve from hydrogen to uranium, with the peak near iron, and slide a marker to see why fusing light nuclei and splitting heavy ones both release energy while the middle releases none; pick a decay and watch the daughter land closer to the valley floor.",
+  "takeaway": "A nucleus weighs less than its parts, the missing mass is the energy holding it together, and because that energy per particle peaks near iron, fusion pays on the light side and fission on the heavy side.",
+  "prerequisites": [
+   "radioactivity",
+   "special-relativity"
+  ],
+  "related": [
+   "nuclear-fission",
+   "nuclear-fusion",
+   "stars",
+   "standard-model"
+  ],
+  "needs": "Measured atomic masses and decay modes of all known nuclides.",
+  "needsSource": "AME2020 and NUBASE2020 from the IAEA Atomic Mass Data Centre: free ASCII files, to be cited through their Chinese Physics C papers (CC BY 3.0); the data files themselves state no licence https://www-nds.iaea.org/amdc",
+  "pitfall": "Binding energy is not energy stored in the nucleus waiting to come out; it is energy released when the nucleus formed and would have to be put back to take it apart. Iron-56 is not the most tightly bound nucleus, nickel-62 is by a hair; say 'near iron'.",
+  "why": "AQA A-level Physics 7408 nuclear physics: mass difference and binding energy, binding energy per nucleon, fission and fusion https://senecalearning.com/en-GB/revision-notes/a-level/physics/aqa/8-1-10-binding-energy",
+  "overlapWith": "nuclear-fission fires neutrons and holds a reactor at criticality, nuclear-fusion heats a plasma, and stars names where elements were made; none shows the curve that explains why either process releases energy, or the chart of nuclides with its valley of stability.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "photoelectric-effect",
+  "title": "The photoelectric effect",
+  "level": 2,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Shine light on a metal plate in a vacuum tube and watch electrons leave, or not: slide the colour from red toward ultraviolet and nothing happens until a threshold, then electrons appear at once however dim the light; turn up the intensity and more electrons leave but none faster. Apply a reverse voltage to stop them and plot the stopping voltage against frequency: a straight line whose slope is Planck's constant and whose intercept is the metal's work function; change the metal and the line shifts but keeps its slope. A side panel shows what a wave model predicts and where it fails.",
+  "takeaway": "Light delivers its energy in packets whose size depends only on colour, so dim blue light frees electrons that bright red light never can, and the graph's slope is the same for every metal.",
+  "prerequisites": [
+   "waves-interference",
+   "electric-circuits",
+   "atoms-periodic-table"
+  ],
+  "related": [
+   "quantum-mechanics",
+   "solar-cells",
+   "light-optics"
+  ],
+  "needs": "Work functions of a few metals (sodium, potassium, zinc, copper, platinum).",
+  "needsSource": "reference constants (CRC Handbook of Chemistry and Physics; the values are facts reproduced in textbooks); no dataset",
+  "pitfall": "Brighter light does not give faster electrons, and there is no delay while a dim beam charges up the metal; both are the wave model's failed predictions and should be shown failing, not merely stated.",
+  "why": "AQA A-level Physics 7408 topic 3.2.2.1 'The photoelectric effect' (threshold frequency, work function, stopping potential) https://www.tutopiya.com/tools/uk-revision-checklist/aqa-alevel/physics ; PhET's 'Photoelectric Effect' is a widely used classroom simulation https://script.spoken-tutorial.org/index.php/PhET/C2/Photoelectric-Effect/English",
+  "overlapWith": "quantum-mechanics (level 3) starts at the double slit and tunnelling, and solar-cells (level 2) uses photons freeing electrons in a junction; the experiment that first showed light comes in packets, and the graph that measures Planck's constant, is on neither.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
   "slug": "bell-inequality",
   "title": "Entanglement & Bell's theorem",
   "level": 3,
@@ -1650,6 +1871,32 @@
   "origin": "physics-l3"
  },
  {
+  "slug": "kuramoto-synchronization",
+  "title": "Synchronization: metronomes, bridges and the Kuramoto model",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "A hundred oscillators drawn as dots running round a circle, each with its own natural rate drawn from a bell curve, and a slider for how strongly each pulls on the others. Below a critical coupling the dots smear round the circle and the order parameter stays near zero; above it a clump forms and grows, with the locked fraction and the critical value plotted against the spread of rates. Load the real cases: metronomes on a board whose sway couples them, the Millennium Bridge whose walkers' steps locked once enough of them were on it (the published model and parameters), and a ring of neighbours-only coupling that locks into travelling waves instead.",
+  "takeaway": "Oscillators that pull weakly on each other stay independent, but above a sharp coupling threshold a growing fraction locks together, so synchrony appears suddenly, in metronomes, fireflies and a wobbling bridge.",
+  "prerequisites": [
+   "oscillations-resonance",
+   "calculus"
+  ],
+  "related": [
+   "fireflies-in-sync",
+   "power-grid",
+   "neurons"
+  ],
+  "needs": "Parameters for the Millennium Bridge case from Strogatz et al. 2005.",
+  "pitfall": "Synchrony needs neither a leader nor identical oscillators; the spread of natural rates against the coupling decides. The Millennium Bridge wobble was sideways, driven by walkers' lateral steps locking to the sway, not by people marching in time.",
+  "why": "Veritasium's 'The Surprising Secret of Synchronization' (2021), built on Strogatz's Sync, is one of the channel's most-watched: https://veritasium.com/videos/2021/3/31/the-secret-of-synchronization",
+  "overlapWith": "oscillations-resonance: one oscillator driven at a frequency; this page is many self-sustained oscillators with their own rates locking to each other, a phase transition in the coupling. fireflies-in-sync (this batch, level 0) is the pulse-coupled toy.",
+  "needsSource": "none for the base model; the bridge case uses the numbers published in Strogatz, Abrams, McRobie, Eckhardt & Ott, Nature 2005 (cited).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
   "slug": "lasers",
   "title": "Lasers",
   "level": 3,
@@ -1854,6 +2101,30 @@
   "origin": "physics-l3"
  },
  {
+  "slug": "poynting-energy-flow",
+  "title": "Where the energy in a circuit really flows",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "A battery, two long wires and a lamp on a grid; the page solves for the surface charges on the wires held at their potentials, draws the electric field, the magnetic field of the current and the Poynting vector, the energy flow, as arrows in the space around the wires: it leaves the battery through the surrounding space, runs alongside the wires and dives into the lamp from outside, with almost none inside the metal. Drag the lamp away and the flow follows the wires; make the wires resistive and watch some energy dive into them along their length. Replay the thought experiment of a lamp a metre from a battery joined by wires a light-second long, run in the time domain, with a small transient reaching the lamp in nanoseconds and the full current only after the round trip.",
+  "takeaway": "Electrical energy travels in the fields around the wires, not inside them: the Poynting vector flows from the battery through space into the lamp, and the wires only guide it.",
+  "prerequisites": [
+   "electromagnetism",
+   "electric-circuits"
+  ],
+  "related": [
+   "wireless-signals"
+  ],
+  "needs": "",
+  "pitfall": "Energy flowing through space does not mean the lamp lights fully at once or that wires are unnecessary: the wires' surface charges guide the fields, and in the long-wire experiment only a small transient arrives early. The Poynting vector is a classical field quantity; nothing about electrons 'carrying' energy or not.",
+  "why": "Veritasium's 'The Big Misconception About Electricity' (2021) drew tens of millions of views and months of engineering-forum argument: https://veritasium.com/videos/2021/11/19/the-big-misconception-about-electricity",
+  "overlapWith": "electric-circuits: current and voltage in loops, whose pitfall already notes that charges drift slowly while the lamp lights at once; this page shows where the energy travels, in the fields outside the wires. maxwell-equations (pool) is a Yee grid for antennas and waveguides and could host the time-domain run; radiating-charge (pool) is one charge's field.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
   "slug": "quantum-harmonic-oscillator",
   "title": "The quantum harmonic oscillator",
   "level": 3,
@@ -2056,6 +2327,28 @@
   "leadsTo": [],
   "everyday": false,
   "origin": "physics-l3"
+ },
+ {
+  "slug": "tennis-racket-theorem",
+  "title": "The tennis racket theorem: why a spinning handle flips",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "A rigid body (a racket, a phone, a T-shaped handle) floats free of gravity; spin it about any axis and the page integrates Euler's equations. About the axis of largest or smallest moment of inertia it spins steadily; about the middle axis it spins, flips over, spins, flips, in a rhythm that slows as the start is made more exact but never stops. A second view draws the angular-momentum sphere with its constant-energy curves, closed loops round two axes and crossing paths through the third, with the current state as a moving dot; change the body's shape, and add a little dissipation to watch the spin migrate to the axis of largest inertia.",
+  "takeaway": "A free body spins stably about its longest and shortest axes but not the middle one, because on the sphere of possible spins the middle axis sits on a crossing of paths, so the slightest wobble carries the body round to the opposite spin and back.",
+  "prerequisites": [
+   "calculus",
+   "linear-transformations"
+  ],
+  "related": [],
+  "needs": "",
+  "pitfall": "It is not an effect of air, gravity or imbalance: a perfectly balanced body in vacuum does it. Nor is angular momentum lost: the momentum vector stays fixed in space; it is the body that turns round it.",
+  "why": "Veritasium's 'The Bizarre Behavior of Rotating Bodies, Explained' (2019; the Dzhanibekov effect) is among its most-watched: https://www.veritasium.com/videos/2019/9/19/the-bizarre-behavior-of-rotating-bodies-explained",
+  "overlapWith": "newtons-laws: forces and energy for point masses, with nothing on rotation. spinning-tops (pool, level 0) is a top's precession under gravity; this page is a free body with no gravity and the instability of the middle axis.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
  },
  {
   "slug": "turbulence-cascade",

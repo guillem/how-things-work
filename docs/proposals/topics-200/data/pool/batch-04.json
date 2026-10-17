@@ -1,5 +1,184 @@
 [
  {
+  "slug": "glowing-hot",
+  "title": "Why hot things glow",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Slide the temperature of an iron bar from a warm room up through a toaster element, a candle flame, a light-bulb filament and the surface of the Sun: its glow is worked out from the real law for hot bodies and turned into the colour you would see, nothing, then dull red, orange, yellow, white, blue-white. Switch to a thermal camera and see that the bar was glowing in infrared all along, even at room temperature. Line up a candle, a bulb and the Sun to read their temperatures from their colours.",
+  "takeaway": "Hot things glow with a colour set by their temperature, red-hot is cooler than white-hot, and even things too cool to see are glowing in infrared.",
+  "prerequisites": [],
+  "related": [
+   "temperature-and-touch",
+   "blue-sky-red-sunset",
+   "stars"
+  ],
+  "needs": "The CIE 2012 colour-matching functions already shipped by vision-color (`cone-data.ts`, CVRL) and its `blackBody` routine, which stars already reuses.",
+  "pitfall": "The tap colour code is backwards for glowing things: blue-white is hotter than red. And nothing has to be 'on fire' to glow; a toaster element and a bulb filament simply get hot.",
+  "why": "PhET 'Blackbody Spectrum' https://phet.colorado.edu/en/simulations/blackbody-spectrum ; KS3 physics 'Energy' (energy transfer by radiation) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "stars: that page colours a star by its surface temperature on the Hertzsprung-Russell diagram as one detail of a life story; this one makes the colour-temperature link the whole page, with a toaster and a bulb, and adds the infrared the eye cannot see.",
+  "needsSource": "Planck's law converted to screen colour with the shipped CMFs (vision-color/colour.ts `blackBody` and `cssColour`); no new data.",
+  "leadsTo": [
+   "greenhouse-effect",
+   "light-optics"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "helicopter-rotor",
+  "title": "Helicopters: a spinning wing",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Spin up a helicopter's rotor and lift off: the blades are wings going round, and the faster they spin or the more they tilt, the harder they throw air down and the more the helicopter is pushed up. Tilt the whole rotor disc to slide forward, backward or sideways; then switch off the tail rotor and watch the body spin the opposite way to the blades, and turn it back on to point where you like.",
+  "takeaway": "A helicopter rises by throwing air down with wings that go round, moves by tilting the whole rotor, and needs its tail rotor to stop the body spinning the other way.",
+  "prerequisites": [],
+  "related": [
+   "paper-plane-glide",
+   "kite-string-wind",
+   "rocket-throws-mass",
+   "flight"
+  ],
+  "needs": "",
+  "pitfall": "The rotor does not screw into the air like a propeller into wood; it lifts like a wing. Without the tail rotor the helicopter does not simply stop turning: the engine turning the blades one way turns the body the other, and the tail rotor's push is the only thing that cancels it.",
+  "why": "Smithsonian National Air and Space Museum, 'How Things Fly', https://howthingsfly.si.edu/ ('how do helicopters fly' is a perennial search question)",
+  "overlapWith": "flight: that page is a fixed wing section at level 2; this page's wing goes round, and the new ideas are the tilted disc and the body spinning the other way.",
+  "needsSource": "none (rotor thrust from momentum theory)",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "hot-air-balloon-lift",
+  "title": "Hot-air balloons: a bag of lighter air",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Fire the burner under a balloon and watch the air inside warm, spread out and grow lighter than the cold air around it, until the bag, basket and passengers weigh less than the air they push aside and the whole thing lifts. Let it cool and it sinks; pull the vent to drop faster; add passengers and see how much hotter the air must be. Climb high and watch the lift fade as the outside air thins.",
+  "takeaway": "A hot-air balloon floats because the warm air inside is lighter than the cool air outside, and the burner is the only control a pilot has for up and down.",
+  "prerequisites": [],
+  "related": [
+   "submarine-ballast-tanks",
+   "parachute-terminal-speed"
+  ],
+  "needs": "",
+  "pitfall": "Hot air does not rise because 'heat rises': the warm air is pushed up by the heavier cold air around it, the same reason a cork comes up in water. The balloon is not sealed or pressurised; it is open at the bottom, and warm air spilling out is normal.",
+  "why": "England KS3 science, the particle model: changes of density with temperature, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study ('how do hot air balloons work' is a common search question)",
+  "overlapWith": "states-of-matter: that page heats particles in a box to change state; this page heats air inside a bag and asks only whether the bag is lighter than the air outside it.",
+  "needsSource": "none (air density from the ideal-gas law and a standard atmosphere)",
+  "leadsTo": [
+   "states-of-matter",
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "ice-skates-glide-and-grip",
+  "title": "Ice skates: glide forward, grip sideways",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Give a sled one shove on grass, on a wooden floor, on concrete and on ice and count how far it slides on each; ice is in a class of its own. Then put on skates: a blade glides along its length but bites sideways, so pushing off at an angle sends you forward, and leaning onto an edge carves a curve, while a skater who pushes straight back goes nowhere. A zoom shows the thin wet layer on the ice that makes the gliding possible.",
+  "takeaway": "Skating works because ice is uncommonly slippery along the blade while the blade's edge still grips sideways, and every push is made against that sideways grip.",
+  "prerequisites": [],
+  "related": [
+   "train-wheel-cones",
+   "car-brakes-stopping-distance",
+   "car-steering-corners"
+  ],
+  "needs": "Measured sliding-friction coefficients for ice, wood, concrete and grass from a cited physics reference (textbook values, no dataset).",
+  "pitfall": "The blade does not melt the ice by pressure: the melting-point drop under a skater is a few hundredths of a degree. Ice is slippery because its surface carries a thin liquid-like layer and rubbing warms it further, which is why flat shoes slip too.",
+  "why": "Robert Rosenberg, 'Why is ice slippery?', Physics Today (2005), the standard correction of the pressure-melting story, https://physicstoday.aip.org/features/why-is-ice-slippery",
+  "overlapWith": "newtons-laws: that page treats friction as a slider on a cart; this page is a surface comparison and the odd sideways grip of a blade, and it corrects the pressure-melting story.",
+  "needsSource": "none (friction coefficients quoted from a cited reference)",
+  "leadsTo": [
+   "newtons-laws",
+   "states-of-matter"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "keeping-things-warm",
+  "title": "Keeping things warm (and cold)",
+  "level": 0,
+  "kind": "build",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Build a container for hot tea from layers in a palette (paper, metal, foam, wool, an air gap, a vacuum gap, a lid or no lid) and start the clock: a thermometer in the tea and a plot show it cooling toward the room's temperature, fast or slow depending on the walls. Swap the tea for an ice cube and the same walls keep the cold in just as well. Compare a paper cup, a mug, a vacuum flask and a sleeping bag side by side.",
+  "takeaway": "A good insulator makes no heat of its own; it slows heat on its way out, or in, so the temperature curve bends more slowly.",
+  "prerequisites": [],
+  "related": [
+   "temperature-and-touch",
+   "drying-and-evaporation",
+   "greenhouse-effect"
+  ],
+  "needs": "Thermal conductivity and heat capacity for a handful of materials (handbook values).",
+  "pitfall": "A coat or a blanket does not make warmth and cold is not a substance that gets in; both just slow the heat flowing between the inside and the outside, which is why a vacuum flask keeps iced water cold too.",
+  "why": "NGSS MS-PS3-3: design, construct and test a device that minimises or maximises thermal energy transfer (clarification: an insulated box, a Styrofoam cup) https://learninglab.si.edu/standards/MS-PS3-3/1924 ; KS3 physics 'Energy' (energy transfer from the hotter to the cooler object; use of insulators) and KS2 Year 5 'Properties and changes of materials' (conductivity, electrical and thermal) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "greenhouse-effect: that page balances sunlight in against infrared out for a planet; this one balances a hot drink against a room through walls the reader builds, with no sunlight and no gases.",
+  "needsSource": "Lumped thermal model (heat capacities joined by the conductances of each layer, Newton's cooling at the surface). Material values from a handbook table (Wikipedia's thermal conductivity list, CC BY-SA 4.0, or a textbook); a few values only.",
+  "leadsTo": [
+   "greenhouse-effect",
+   "homeostasis"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "kite-string-wind",
+  "title": "Kites: how a string holds you to the wind",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Fly a kite on a line and change the wind: the kite climbs to the angle where the wind's push, its weight and the pull of the string balance, and a gauge shows the tug in your hand. Move the knot where the string joins the kite to tilt it more or less into the wind, add a tail, and find the settings that make it fly steady, nose over, or refuse to lift; cut the string and it tumbles away downwind.",
+  "takeaway": "A kite flies because the wind pushes on a tilted surface and the string turns that push into lift, so no wind or no string means no kite.",
+  "prerequisites": [],
+  "related": [
+   "sailing-into-wind",
+   "paper-plane-glide",
+   "parachute-terminal-speed",
+   "wind-turbine-wind-speed",
+   "flight",
+   "helicopter-rotor"
+  ],
+  "needs": "",
+  "pitfall": "The kite does not rise because the wind blows upward: the wind is level, and the tilt of the kite turns part of its push upward. Running with a kite works only because running makes wind.",
+  "why": "NASA Glenn Research Center, Beginner's Guide to Aeronautics, 'Kites', https://www.grc.nasa.gov/www/k-12/airplane/kite1.html",
+  "overlapWith": "flight: that page is a wing section at level 2 with streamlines, a pressure map and stall; this page is a flat kite on a string with one control, trimmed by hand, and prepares the reader for it.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "magnets-and-poles",
+  "title": "Magnets & poles",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Drag two bar magnets about on a board: arrows show the pull or push between them, computed from their poles, and a compass needle and a sprinkle of iron filings line up along the field. Flip one magnet end for end and the pull turns into a push. Slide a steel paper clip toward a magnet to see it become a magnet of its own and pick up a chain of clips, then cut a magnet in half and find that each half still has two ends.",
+  "takeaway": "A magnet always has two ends; like ends push apart and unlike ends pull together, and the pull fades quickly with distance.",
+  "prerequisites": [],
+  "related": [
+   "balloons-and-static",
+   "electromagnetism"
+  ],
+  "needs": "",
+  "pitfall": "A magnet does not attract all metals, only iron, steel, nickel and cobalt; and cutting a magnet never separates its poles, each piece has two.",
+  "why": "NGSS 3-PS2-3 (electric or magnetic interactions between objects not in contact; the clarification names paper clips and magnets) https://www2.cde.ca.gov/cacs/id/web/29018 ; KS2 Year 3 'Forces and magnets' (magnets have two poles; predict whether two magnets attract or repel) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "electromagnetism: that page (level 2) places charges, draws field lines and induces currents with coils; this one has no electricity at all, only permanent magnets, their two poles, what they attract and how a clip becomes a temporary magnet.",
+  "needsSource": "none; the model is the two-pole (Gilbert) bar magnet with inverse-square pole forces and an induced pole pair for steel.",
+  "leadsTo": [],
+  "origin": "basic-physical-science"
+ },
+ {
   "slug": "metal-detector",
   "title": "Metal detectors",
   "level": 0,
@@ -445,181 +624,6 @@
   "leadsTo": [
    "newtons-laws",
    "states-of-matter"
-  ],
-  "everyday": false,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "swing-pumping-alone",
-  "title": "Pumping a swing with nobody pushing",
-  "level": 0,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Sit on a swing and tap to stand up or crouch: stand at the bottom of each pass and crouch at the ends, and the swing goes higher and higher with no one pushing; do it at the wrong moments and it dies away. A trace shows each swing's height over time; a second rider pumps seated by leaning back and forward instead. Shorten the chains and feel the timing change.",
-  "takeaway": "You pump a swing by lifting yourself at the bottom and dropping at the ends, and only the right timing adds to the swing.",
-  "prerequisites": [],
-  "related": [
-   "roller-coaster-feel",
-   "skyscraper-sway-damper"
-  ],
-  "needs": "",
-  "pitfall": "Pumping is not pushing against the air or the chains: the swing gains because you lift your weight when the chain is tight at the bottom and let it drop at the ends. The rhythm is twice per swing, not once.",
-  "why": "NGSS 3-PS2-2, patterns in motion, whose examples include a child swinging on a swing, https://www.nextgenscience.org/pe/3-ps2-2-motion-and-stability-forces-and-interactions",
-  "overlapWith": "oscillations-resonance: that page drives a pendulum with an outside periodic push; this page has no outside push at all, the rider pumps by changing the swing's length, which is a different mechanism.",
-  "needsSource": "none (variable-length pendulum; the seated pumping is a stated simplification)",
-  "leadsTo": [
-   "oscillations-resonance",
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "swings-and-pendulums",
-  "title": "Swings & pendulums",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "physics",
-  "everyday": true,
-  "interaction": "Two swings hang side by side; put a big child on one and a small child on the other, release them together, and they swing in step. Lengthen one swing's chains and it falls behind the other, beat by beat. Push one harder and it swings further out but keeps the same beat; a metronome and a grandfather clock sit beside them, keeping time by the same rule.",
-  "takeaway": "How fast a swing swings depends on how long it is, not on who is sitting in it or how hard it was pushed.",
-  "prerequisites": [],
-  "related": [
-   "bouncing-ball",
-   "oscillations-resonance"
-  ],
-  "needs": "",
-  "pitfall": "A heavier child does not swing slower, and a bigger push does not make the swing go faster, only further; both are common guesses the page must disprove on screen.",
-  "why": "Signal not verified this session (web-search budget was exhausted); expected signals: NGSS 3-PS2-2 (patterns in motion that predict future motion, with a child on a swing as the clarification example) and PhET 'Pendulum Lab'. KS2 Year 5 'Forces' (gravity, mechanisms) is the nearest verified standard https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "oscillations-resonance: that page sets mass, stiffness and damping and plots amplitude against a driving frequency; this one has two swings, one control at a time, no plot and no driving, and exists to show that weight and push do not change the beat.",
-  "needsSource": "none; the full pendulum equation (no small-angle shortcut) with light damping, run for two pendulums at once.",
-  "leadsTo": [
-   "oscillations-resonance"
-  ],
-  "origin": "basic-physical-science"
- },
- {
-  "slug": "temperature-and-touch",
-  "title": "Temperature & what the hand feels",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "physics",
-  "everyday": true,
-  "interaction": "Touch things around a room (a metal spoon, a wooden spoon, a wool hat, a tiled floor) with a hand that feels how fast heat leaves it, then with a thermometer that reads its own temperature once it has settled: the thermometer says they are all the same, the hand says the metal is colder. Put the thermometer in a kettle and watch its liquid climb as its particles jiggle harder. Pour a cup of boiling water into a bath of warm water and see which temperature wins.",
-  "takeaway": "Things that have sat in the same room are all at the same temperature; what the hand feels is how fast heat flows out of it, which is why metal feels colder than wood.",
-  "prerequisites": [],
-  "related": [
-   "keeping-things-warm",
-   "glowing-hot",
-   "states-of-matter"
-  ],
-  "needs": "Thermal conductivity, density and heat capacity for a handful of materials (handbook values).",
-  "pitfall": "Metal in a room is not colder than wood; it only takes heat from the hand faster. And temperature is not the amount of heat: a warm bath holds far more heat than a cup of boiling water.",
-  "why": "Veritasium, 'Why Does Metal Feel Colder Than Wood If They're Same Temp?' (Misconceptions About Temperature), as listed by STEM Learning UK https://stem.org.uk/rxeyxn ; KS3 physics 'Energy' (heating and thermal equilibrium: a temperature difference leads to energy transfer from the hotter to the cooler object) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "states-of-matter: that page turns a temperature knob to melt and boil a box of molecules; this one is about what a thermometer and a hand each measure, and why they disagree.",
-  "needsSource": "One-dimensional heat conduction between skin and object (the rate set by each material's conductivity and heat capacity), a thermometer as a small thermal mass, mixing by heat capacity. Material values from a handbook table (Wikipedia, CC BY-SA 4.0, or a textbook).",
-  "leadsTo": [
-   "states-of-matter",
-   "homeostasis"
-  ],
-  "origin": "basic-physical-science"
- },
- {
-  "slug": "thermos-flask",
-  "title": "Thermos flasks & keeping things warm",
-  "level": 0,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Pour hot tea into a bare mug, a mug with a lid, a foam cup and a vacuum flask and watch four thermometers fall over an hour at different rates, with heat shown leaking through the walls, out of the open top and as a glow from the surface. Swap the wall material, add a lid, pump the air out of the double wall and silver it, and see which change stops which leak; then fill them with iced water and watch the same walls keep the cold in.",
-  "takeaway": "A drink cools by heat leaking through its walls, out of its open top and as a glow, and a flask stays hot by blocking each route in turn: a vacuum for the walls, a lid for the top and a mirror for the glow.",
-  "prerequisites": [],
-  "related": [
-   "kettle",
-   "room-thermostat"
-  ],
-  "needs": "",
-  "pitfall": "A flask does not make heat or 'keep the cold in' as if cold were a substance: it slows heat flow in either direction, and metal feels cold only because it conducts heat away fast.",
-  "why": "KS2 science, Year 5 Properties and changes of materials: compare everyday materials as thermal insulators (primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf); NGSS 4-PS3-2, energy transferred by heat (https://www.cpp.edu/respect/resources/documents_4th/gr4.et_ngss.pdf).",
-  "overlapWith": "entropy: that page mixes fast and slow particles and counts microstates at level 2; here heat flows out of a cup by three named routes and the page is about slowing each one.",
-  "needsSource": "none",
-  "leadsTo": [
-   "greenhouse-effect"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "toaster",
-  "title": "Toaster",
-  "level": 0,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Push the lever down and watch current flow through the thin wires, which heat up and glow a colour that follows their temperature, from dull red to orange. Set the browning dial and watch the bread's surface darken, faster near the wires than far from them, until the timer releases the latch; turn the dial up and down to see that it changes the time the bread spends there, not the heat of the wires.",
-  "takeaway": "The wires glow because they are hot, and their colour tells how hot; the dial only sets how long the bread sits in front of them.",
-  "prerequisites": [],
-  "related": [
-   "kettle",
-   "room-thermostat",
-   "stars",
-   "electric-circuits"
-  ],
-  "needs": "The wire's glow colour comes from Planck's law weighted by the CIE 2 degree colour-matching functions already shipped for vision-color (`src/routes/vision-color/cone-data.ts`, read from CVRL's copy of the CIE 2012 XYZ functions; CVRL states no licence, recorded as unconfirmed in docs/DATA-SOURCES.md). A published blackbody-to-sRGB fit would avoid the data. The browning rate is a stated simplification (faster when hotter), not measured data.",
-  "pitfall": "The wire does not glow because electricity is light: it glows because it is hot, and a higher setting on most toasters makes the bread stay longer, not the wires hotter.",
-  "why": "NGSS 4-PS3-2: energy can be transferred from place to place by light, heat and electric currents (https://www.cpp.edu/respect/resources/documents_4th/gr4.et_ngss.pdf); nearest standard, no toaster-specific signal was found before the search budget ran out.",
-  "overlapWith": "stars: that page links a star's colour to its temperature at level 2 with spectra and a Hertzsprung-Russell diagram; here the same rule is read off a toaster wire, with no spectrum or diagram.",
-  "needsSource": "CIE colour-matching functions via CVRL, already shipped for vision-color (no licence stated at source; unconfirmed in docs/DATA-SOURCES.md), or a published blackbody-colour approximation needing no data",
-  "leadsTo": [
-   "electric-circuits",
-   "vision-color"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "touchscreens",
-  "title": "How a touchscreen feels your finger",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "physics",
-  "everyday": true,
-  "interaction": "Drag a finger over a screen whose glass is made see-through: under it is a grid of thin crossing wires, and at every crossing a small store of charge that your finger, a bag of salty water, draws a little from when it comes near. The grid lights up where the draw is biggest and the phone marks the spot between the brightest crossings. Press harder and nothing changes; put on a woollen glove and the glow fades to nothing; add a second finger and a second spot appears; drip water on the glass and a false spot wanders.",
-  "takeaway": "A touchscreen does not feel pressure: it notices where your body draws a little charge from a grid of crossings under the glass, which is why gloves and water confuse it and pressing harder does nothing.",
-  "prerequisites": [],
-  "related": [
-   "keyboard-rows-and-columns",
-   "fingerprint-match"
-  ],
-  "needs": "",
-  "needsSource": "none; mutual capacitance at each crossing reduced in proportion to the overlap with a conductive footprint, then a centroid between the strongest crossings.",
-  "pitfall": "No pressure and no warmth is sensed (older resistive screens did sense pressure; say so). The finger does not conduct electricity into the phone; it only needs to be near. A plastic stylus does nothing, and a touchscreen stylus works because its tip is conductive.",
-  "why": "'Touchscreen' averaged about 12,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Touchscreen/monthly/2025010100/2025123100).",
-  "overlapWith": "electric-circuits (level 1) has charge flowing in wires and electromagnetism (level 2) has fields and charges; here the model is a grid of capacitances reduced under a conductive footprint and a peak-finding rule.",
-  "leadsTo": [
-   "electric-circuits"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "train-wheel-cones",
-  "title": "Train wheels: why trains stay on the rails",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "physics",
-  "interaction": "Roll a pair of train wheels joined by an axle along two rails and nudge it sideways: because each wheel is a slight cone, the side pushed outward rides on a bigger circle and runs faster, and the pair swings back to the middle, wobbling less and less. Swap in flat wheels and the pair drifts to the rail's edge and leans on its flange; make the cone steeper and the wobble gets wilder. Send the pair round a curve and watch it steer itself with no differential.",
-  "takeaway": "A train steers itself because its wheels are cones: whichever side rides up onto the bigger part of the cone turns the axle back toward the middle.",
-  "prerequisites": [],
-  "related": [
-   "ice-skates-glide-and-grip",
-   "car-steering-corners"
-  ],
-  "needs": "",
-  "pitfall": "The flanges do not steer the train: on straight track they rarely touch the rail, and a train running on its flanges squeals and wears. The wheels are not free to spin separately as a car's are; they are fixed to one axle, which is why the cone is needed.",
-  "why": "Feynman's explanation of conical train wheels, retold in Tadashi Tokieda's widely shared video, https://kottke.org/21/10/the-simple-physics-trick-that-helps-trains-stay-on-their-tracks",
-  "overlapWith": "oscillations-resonance: that page is a mass on a spring and a pendulum; the wheelset's wobble is a geometric oscillation on rails with no spring at all, and the page is about steering, not resonance.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws",
-   "oscillations-resonance"
   ],
   "everyday": false,
   "origin": "vehicles-and-big-machines"

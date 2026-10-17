@@ -206,6 +206,29 @@
   "origin": "everyday-technology"
  },
  {
+  "slug": "k-means-clustering",
+  "title": "Clustering",
+  "level": 1,
+  "kind": "step",
+  "category": "ai",
+  "interaction": "Scatter points by hand or load a real dataset of penguins measured by bill and flipper, then step k-means: drop k centres, colour every point by its nearest centre, move each centre to the middle of its colour, and repeat until nothing moves. Change k and the starting positions and watch the result change, plot the total distance against k to choose a number of groups, and try a cloud shaped like two rings, where k-means fails and a method that follows density succeeds.",
+  "takeaway": "A computer can find groups in data with no labels at all, by alternately assigning points to the nearest centre and moving the centres, but which groups it finds depends on how many it is told to look for and where it starts.",
+  "prerequisites": [
+   "learning-from-data"
+  ],
+  "related": [
+   "embeddings"
+  ],
+  "needs": "A small real dataset with natural clusters.",
+  "needsSource": "the Palmer penguins dataset (CC0)",
+  "pitfall": "k-means does not discover the number of groups and finds only compact round blobs; the elbow plot is a heuristic. Different starts give different answers, so run it several times.",
+  "why": "Google's 'Introduction to Clustering' course (choose a similarity measure, cluster with k-means, evaluate the result) https://developers.google.com/machine-learning/clustering",
+  "overlapWith": "learning-from-data fits labelled points and embeddings shows a map of words that cluster; neither runs the algorithm that finds groups without labels. The pool's clustering-gaussian-mixtures (level 3) is EM on Gaussian mixtures; this is the level-1 k-means by hand.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
   "slug": "adaptive-optimizers",
   "title": "Momentum, Adam & learning-rate schedules",
   "level": 3,

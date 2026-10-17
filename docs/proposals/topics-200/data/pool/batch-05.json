@@ -1,5 +1,180 @@
 [
  {
+  "slug": "swing-pumping-alone",
+  "title": "Pumping a swing with nobody pushing",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Sit on a swing and tap to stand up or crouch: stand at the bottom of each pass and crouch at the ends, and the swing goes higher and higher with no one pushing; do it at the wrong moments and it dies away. A trace shows each swing's height over time; a second rider pumps seated by leaning back and forward instead. Shorten the chains and feel the timing change.",
+  "takeaway": "You pump a swing by lifting yourself at the bottom and dropping at the ends, and only the right timing adds to the swing.",
+  "prerequisites": [],
+  "related": [
+   "roller-coaster-feel",
+   "skyscraper-sway-damper"
+  ],
+  "needs": "",
+  "pitfall": "Pumping is not pushing against the air or the chains: the swing gains because you lift your weight when the chain is tight at the bottom and let it drop at the ends. The rhythm is twice per swing, not once.",
+  "why": "NGSS 3-PS2-2, patterns in motion, whose examples include a child swinging on a swing, https://www.nextgenscience.org/pe/3-ps2-2-motion-and-stability-forces-and-interactions",
+  "overlapWith": "oscillations-resonance: that page drives a pendulum with an outside periodic push; this page has no outside push at all, the rider pumps by changing the swing's length, which is a different mechanism.",
+  "needsSource": "none (variable-length pendulum; the seated pumping is a stated simplification)",
+  "leadsTo": [
+   "oscillations-resonance",
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "swings-and-pendulums",
+  "title": "Swings & pendulums",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Two swings hang side by side; put a big child on one and a small child on the other, release them together, and they swing in step. Lengthen one swing's chains and it falls behind the other, beat by beat. Push one harder and it swings further out but keeps the same beat; a metronome and a grandfather clock sit beside them, keeping time by the same rule.",
+  "takeaway": "How fast a swing swings depends on how long it is, not on who is sitting in it or how hard it was pushed.",
+  "prerequisites": [],
+  "related": [
+   "bouncing-ball",
+   "oscillations-resonance"
+  ],
+  "needs": "",
+  "pitfall": "A heavier child does not swing slower, and a bigger push does not make the swing go faster, only further; both are common guesses the page must disprove on screen.",
+  "why": "Signal not verified this session (web-search budget was exhausted); expected signals: NGSS 3-PS2-2 (patterns in motion that predict future motion, with a child on a swing as the clarification example) and PhET 'Pendulum Lab'. KS2 Year 5 'Forces' (gravity, mechanisms) is the nearest verified standard https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "oscillations-resonance: that page sets mass, stiffness and damping and plots amplitude against a driving frequency; this one has two swings, one control at a time, no plot and no driving, and exists to show that weight and push do not change the beat.",
+  "needsSource": "none; the full pendulum equation (no small-angle shortcut) with light damping, run for two pendulums at once.",
+  "leadsTo": [
+   "oscillations-resonance"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "temperature-and-touch",
+  "title": "Temperature & what the hand feels",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Touch things around a room (a metal spoon, a wooden spoon, a wool hat, a tiled floor) with a hand that feels how fast heat leaves it, then with a thermometer that reads its own temperature once it has settled: the thermometer says they are all the same, the hand says the metal is colder. Put the thermometer in a kettle and watch its liquid climb as its particles jiggle harder. Pour a cup of boiling water into a bath of warm water and see which temperature wins.",
+  "takeaway": "Things that have sat in the same room are all at the same temperature; what the hand feels is how fast heat flows out of it, which is why metal feels colder than wood.",
+  "prerequisites": [],
+  "related": [
+   "keeping-things-warm",
+   "glowing-hot",
+   "states-of-matter"
+  ],
+  "needs": "Thermal conductivity, density and heat capacity for a handful of materials (handbook values).",
+  "pitfall": "Metal in a room is not colder than wood; it only takes heat from the hand faster. And temperature is not the amount of heat: a warm bath holds far more heat than a cup of boiling water.",
+  "why": "Veritasium, 'Why Does Metal Feel Colder Than Wood If They're Same Temp?' (Misconceptions About Temperature), as listed by STEM Learning UK https://stem.org.uk/rxeyxn ; KS3 physics 'Energy' (heating and thermal equilibrium: a temperature difference leads to energy transfer from the hotter to the cooler object) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "states-of-matter: that page turns a temperature knob to melt and boil a box of molecules; this one is about what a thermometer and a hand each measure, and why they disagree.",
+  "needsSource": "One-dimensional heat conduction between skin and object (the rate set by each material's conductivity and heat capacity), a thermometer as a small thermal mass, mixing by heat capacity. Material values from a handbook table (Wikipedia, CC BY-SA 4.0, or a textbook).",
+  "leadsTo": [
+   "states-of-matter",
+   "homeostasis"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "thermos-flask",
+  "title": "Thermos flasks & keeping things warm",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Pour hot tea into a bare mug, a mug with a lid, a foam cup and a vacuum flask and watch four thermometers fall over an hour at different rates, with heat shown leaking through the walls, out of the open top and as a glow from the surface. Swap the wall material, add a lid, pump the air out of the double wall and silver it, and see which change stops which leak; then fill them with iced water and watch the same walls keep the cold in.",
+  "takeaway": "A drink cools by heat leaking through its walls, out of its open top and as a glow, and a flask stays hot by blocking each route in turn: a vacuum for the walls, a lid for the top and a mirror for the glow.",
+  "prerequisites": [],
+  "related": [
+   "kettle",
+   "room-thermostat"
+  ],
+  "needs": "",
+  "pitfall": "A flask does not make heat or 'keep the cold in' as if cold were a substance: it slows heat flow in either direction, and metal feels cold only because it conducts heat away fast.",
+  "why": "KS2 science, Year 5 Properties and changes of materials: compare everyday materials as thermal insulators (primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf); NGSS 4-PS3-2, energy transferred by heat (https://www.cpp.edu/respect/resources/documents_4th/gr4.et_ngss.pdf).",
+  "overlapWith": "entropy: that page mixes fast and slow particles and counts microstates at level 2; here heat flows out of a cup by three named routes and the page is about slowing each one.",
+  "needsSource": "none",
+  "leadsTo": [
+   "greenhouse-effect"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "toaster",
+  "title": "Toaster",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Push the lever down and watch current flow through the thin wires, which heat up and glow a colour that follows their temperature, from dull red to orange. Set the browning dial and watch the bread's surface darken, faster near the wires than far from them, until the timer releases the latch; turn the dial up and down to see that it changes the time the bread spends there, not the heat of the wires.",
+  "takeaway": "The wires glow because they are hot, and their colour tells how hot; the dial only sets how long the bread sits in front of them.",
+  "prerequisites": [],
+  "related": [
+   "kettle",
+   "room-thermostat",
+   "stars",
+   "electric-circuits"
+  ],
+  "needs": "The wire's glow colour comes from Planck's law weighted by the CIE 2 degree colour-matching functions already shipped for vision-color (`src/routes/vision-color/cone-data.ts`, read from CVRL's copy of the CIE 2012 XYZ functions; CVRL states no licence, recorded as unconfirmed in docs/DATA-SOURCES.md). A published blackbody-to-sRGB fit would avoid the data. The browning rate is a stated simplification (faster when hotter), not measured data.",
+  "pitfall": "The wire does not glow because electricity is light: it glows because it is hot, and a higher setting on most toasters makes the bread stay longer, not the wires hotter.",
+  "why": "NGSS 4-PS3-2: energy can be transferred from place to place by light, heat and electric currents (https://www.cpp.edu/respect/resources/documents_4th/gr4.et_ngss.pdf); nearest standard, no toaster-specific signal was found before the search budget ran out.",
+  "overlapWith": "stars: that page links a star's colour to its temperature at level 2 with spectra and a Hertzsprung-Russell diagram; here the same rule is read off a toaster wire, with no spectrum or diagram.",
+  "needsSource": "CIE colour-matching functions via CVRL, already shipped for vision-color (no licence stated at source; unconfirmed in docs/DATA-SOURCES.md), or a published blackbody-colour approximation needing no data",
+  "leadsTo": [
+   "electric-circuits",
+   "vision-color"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "touchscreens",
+  "title": "How a touchscreen feels your finger",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Drag a finger over a screen whose glass is made see-through: under it is a grid of thin crossing wires, and at every crossing a small store of charge that your finger, a bag of salty water, draws a little from when it comes near. The grid lights up where the draw is biggest and the phone marks the spot between the brightest crossings. Press harder and nothing changes; put on a woollen glove and the glow fades to nothing; add a second finger and a second spot appears; drip water on the glass and a false spot wanders.",
+  "takeaway": "A touchscreen does not feel pressure: it notices where your body draws a little charge from a grid of crossings under the glass, which is why gloves and water confuse it and pressing harder does nothing.",
+  "prerequisites": [],
+  "related": [
+   "keyboard-rows-and-columns",
+   "fingerprint-match"
+  ],
+  "needs": "",
+  "needsSource": "none; mutual capacitance at each crossing reduced in proportion to the overlap with a conductive footprint, then a centroid between the strongest crossings.",
+  "pitfall": "No pressure and no warmth is sensed (older resistive screens did sense pressure; say so). The finger does not conduct electricity into the phone; it only needs to be near. A plastic stylus does nothing, and a touchscreen stylus works because its tip is conductive.",
+  "why": "'Touchscreen' averaged about 12,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Touchscreen/monthly/2025010100/2025123100).",
+  "overlapWith": "electric-circuits (level 1) has charge flowing in wires and electromagnetism (level 2) has fields and charges; here the model is a grid of capacitances reduced under a conductive footprint and a peak-finding rule.",
+  "leadsTo": [
+   "electric-circuits"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "train-wheel-cones",
+  "title": "Train wheels: why trains stay on the rails",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Roll a pair of train wheels joined by an axle along two rails and nudge it sideways: because each wheel is a slight cone, the side pushed outward rides on a bigger circle and runs faster, and the pair swings back to the middle, wobbling less and less. Swap in flat wheels and the pair drifts to the rail's edge and leans on its flange; make the cone steeper and the wobble gets wilder. Send the pair round a curve and watch it steer itself with no differential.",
+  "takeaway": "A train steers itself because its wheels are cones: whichever side rides up onto the bigger part of the cone turns the axle back toward the middle.",
+  "prerequisites": [],
+  "related": [
+   "ice-skates-glide-and-grip",
+   "car-steering-corners"
+  ],
+  "needs": "",
+  "pitfall": "The flanges do not steer the train: on straight track they rarely touch the rail, and a train running on its flanges squeals and wears. The wheels are not free to spin separately as a car's are; they are fixed to one axle, which is why the cone is needed.",
+  "why": "Feynman's explanation of conical train wheels, retold in Tadashi Tokieda's widely shared video, https://kottke.org/21/10/the-simple-physics-trick-that-helps-trains-stay-on-their-tracks",
+  "overlapWith": "oscillations-resonance: that page is a mass on a spring and a pendulum; the wheelset's wobble is a geometric oscillation on rails with no spring at all, and the page is about steering, not resonance.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "oscillations-resonance"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
   "slug": "vibrations-and-sound",
   "title": "Vibrations & sound",
   "level": 0,
@@ -74,6 +249,227 @@
    "bridges-structures"
   ],
   "origin": "basic-physical-science"
+ },
+ {
+  "slug": "fluid-pressure-buoyancy",
+  "title": "Pressure in fluids & buoyancy",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Drag an object of adjustable volume and density into a tank of water and watch it sink, hover or float: arrows show the pressure growing with depth on every face, and the net upward push equals the weight of the water the object displaces, drawn as a bar beside the object's own weight. Lower a diver with a pressure gauge down the column, swap the water for oil or brine, then press on the small piston of a hydraulic lift to raise a car on the large one.",
+  "takeaway": "Pressure in a fluid grows with depth and pushes in every direction, so a submerged object is pushed harder from below than from above, and it floats when that difference exceeds its weight.",
+  "prerequisites": [
+   "newtons-laws"
+  ],
+  "related": [
+   "states-of-matter",
+   "flight"
+  ],
+  "needs": "",
+  "needsSource": "none; the densities of water, brine, oil, ice, wood and steel are standard reference values",
+  "pitfall": "Buoyancy is not a special force of water: it is the ordinary pressure difference between an object's bottom and its top. Floating does not need a lot of water around the object; a ship floats in a snug dock, and the upthrust depends on the fluid displaced, not on how much fluid is left.",
+  "why": "AQA GCSE Physics 8463 topic 4.5.5 'Pressure and pressure differences in fluids' (pressure with depth, upthrust, atmospheric pressure) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF ; AP Physics 1 Unit 8 'Fluids' carries 10 to 15% of the exam https://apstudents.collegeboard.org/courses/ap-physics-1",
+  "overlapWith": "states-of-matter runs a particle box with pressure as a control and flight shows lift on a wing; neither shows pressure growing with depth or the upthrust that follows from it. The pool's level-0 water-pressure-and-hydraulics and air-pressure-and-straws feel the push without the force balance.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "gas-laws",
+  "title": "Gas laws: pressure, volume & temperature",
+  "level": 1,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Pump molecules into a cylinder with a movable piston and a heater; the pressure is measured by counting molecules hitting the walls, not read from a formula. Hold the temperature and squeeze the piston to trace pressure against volume; hold the volume and heat the gas to trace pressure against temperature, then extend that line back to where the pressure would reach zero and find absolute zero. Pump up a bicycle tyre to see why it warms.",
+  "takeaway": "Gas pressure is molecules hitting the walls, so halving the volume doubles the pressure and heating a sealed container raises it, and tracing the pressure back to zero points to a lowest possible temperature.",
+  "prerequisites": [
+   "states-of-matter"
+  ],
+  "related": [
+   "entropy",
+   "heat-engines"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "The three laws hold for a fixed amount of gas and absolute temperature: pressure against degrees Celsius is a straight line that misses the origin. Squeezing a gas quickly warms it, so a quick squeeze is not a constant-temperature experiment.",
+  "why": "AQA GCSE Physics 8463 topic 4.3.3 'Particle model and pressure' (gas pressure and temperature, pressure and volume) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF ; PhET's 'Gas Properties' (pump molecules, change volume, add heat, measure pressure) is one of its most used simulations https://phet.colorado.edu/en/search?q=Thermo",
+  "overlapWith": "states-of-matter runs a molecular box through freezing, melting and boiling with temperature and pressure as controls; this page stays in the gas phase and measures the three relationships between pressure, volume and temperature that the phase page never plots.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "magnets-and-electromagnets",
+  "title": "Magnets & electromagnets",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Drag bar magnets around a board scattered with compass needles and iron filings; the field, computed from the magnets' poles, redraws as they move, and a meter shows the pull between two magnets falling as they are separated. Wind a coil around an iron core, set its current and number of turns, and lift a stack of paper clips; reverse the current to swap the poles, then zoom out to the Earth as one large magnet that turns every compass.",
+  "takeaway": "A magnet's force reaches through space as a field that loops from one pole to the other, and a coil carrying a current is a magnet that can be switched on, off and over.",
+  "prerequisites": [
+   "electric-circuits"
+  ],
+  "related": [
+   "electromagnetism",
+   "motors-generators"
+  ],
+  "needs": "",
+  "needsSource": "none; the dipole and coil fields are computed, and the strength of Earth's field is a reference value",
+  "pitfall": "Field lines are a drawing convention, not threads: the field exists everywhere between them. Filings show the field's direction, not its strength; use the compass deflection and the meter for that. Earth's geographic north is a magnetic south pole, which is why a compass's north end points there.",
+  "why": "AQA GCSE Physics 8463 topic 4.7 'Magnetism and electromagnetism' (permanent and induced magnets, magnetic fields, electromagnets) https://www.aqa.org.uk/subjects/science/gcse/physics-8463/specification-at-a-glance ; AQA KS3 syllabus 3.2.4 'Electromagnets' https://www.oxfordaqa.com/oaqaresources/science/teaching/aqa-science-ks3-syllabus.pdf",
+  "overlapWith": "electromagnetism (level 2) starts from charges and induction and assumes circuits; this page is the level-1 magnet itself (permanent magnets, fields, electromagnets, the Earth) that it steps over. The pool's level-0 magnets-and-poles and compass-and-magnetic-poles have no field model and no current.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "momentum-impulse-crashes",
+  "title": "Momentum, impulse & crashes",
+  "level": 1,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Crash two carts head-on with chosen masses, speeds and bounciness, from perfectly elastic to perfectly sticky, and watch the momentum bars before and after. Add a crumple zone or an airbag to one cart and see the force on its passenger drop as the collision is stretched over a longer time, on a force-time graph whose area stays the same. Then fire a cannon on a frozen lake to see the recoil, and play pool on a table where the balls meet at an angle.",
+  "takeaway": "In every collision the total momentum is unchanged, so what a crumple zone changes is not how much momentum is lost but how long losing it takes, and a longer time means a smaller force.",
+  "prerequisites": [
+   "newtons-laws"
+  ],
+  "related": [
+   "rockets"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Momentum is conserved in every collision, including sticky ones; it is kinetic energy that an inelastic collision turns into heat and deformation. A crumple zone does not absorb momentum, it stretches the collision in time.",
+  "why": "AQA GCSE Physics 8463 topic 4.5.7 'Momentum' (conservation, changes in momentum, safety features) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF ; AP Physics 1 Unit 4 'Linear momentum' (impulse, conservation, collisions) https://apstudents.collegeboard.org/courses/ap-physics-1",
+  "overlapWith": "newtons-laws already collides carts of different mass to show momentum passing between objects; this page keeps that as its first step and adds what it does not show: the bounciness of a collision, impulse as force spread over time (crash safety), recoil and collisions at an angle.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "musical-scales-ratios",
+  "title": "Why music has twelve notes",
+  "level": 1,
+  "kind": "explore",
+  "category": "physics",
+  "interaction": "A keyboard whose keys play, each note drawn as its wave; press two keys and the page plays them together and draws how the waves line up: an octave (double the frequency) every cycle, a fifth (3:2) every two, while clashing pairs beat and a roughness meter rises. Slide a divider to cut the octave into 5, 7, 12, 19 or 31 equal steps and see how close each ladder lands to the simple ratios; twelve lands nearly on the fifth, which is why pianos have twelve keys. Compare an equal-tempered chord with a pure one by ear.",
+  "takeaway": "Notes sound good together when their frequencies are in simple ratios, and twelve equal steps per octave is the smallest ladder that lands close to those ratios, which is why keyboards have twelve notes.",
+  "prerequisites": [
+   "waves-interference"
+  ],
+  "related": [
+   "fourier-transform",
+   "shazam-audio-fingerprint"
+  ],
+  "needs": "",
+  "pitfall": "Twelve is a good compromise, not a law of nature or of the ear: other traditions divide the octave differently, and equal temperament makes every fifth slightly flat. Consonance also depends on timbre; the roughness model (Plomp-Levelt 1965) is one measurable part of it.",
+  "why": "'Why 12 notes to the octave?' (University of Waterloo) is a widely read answer to a perennial question: https://www.math.uwaterloo.ca/~mrubinst/tuning/12.html",
+  "overlapWith": "waves-interference: beats and a string's harmonics; this page is which pairs of notes fit together and why the octave is cut into twelve.",
+  "needsSource": "none (tones synthesized in the browser; the Plomp-Levelt roughness curve is a published formula)",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
+  "slug": "polarized-light",
+  "title": "Polarized light: sunglasses, screens and the third filter",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Light drawn as a wave wiggling in one direction meets a filter the reader rotates; the fraction that gets through falls from all to none over a quarter turn, plotted against the angle. Cross two filters and nothing passes; slide a third in between at 45° and an eighth of the light comes back, with the wave's direction redrawn after each filter. Then aim the filter at glare off a wet road and rotate it to kill the glare, and look at a phone screen through it.",
+  "takeaway": "A polarizing filter keeps only the part of a light wave that wiggles along its axis, so two crossed filters block everything, and yet a third filter between them lets light through again.",
+  "prerequisites": [
+   "waves-interference"
+  ],
+  "related": [
+   "light-optics",
+   "electromagnetism",
+   "vision-color"
+  ],
+  "needs": "",
+  "pitfall": "A filter does not let through the photons that were already aligned and block the rest; it projects every wave onto its axis, which is why the middle filter can restore light. Glare is polarized by reflection off horizontal surfaces, not by water being wet.",
+  "why": "The three-polarizer paradox is a standard demonstration (LibreTexts tutorial), and polarized sunglasses and 3D glasses are everyday objects: https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Quantum_Tutorials_(Rioux)/07%3A_Quantum_Optics/7.13%3A_The_Three-Polarizer_Paradox",
+  "overlapWith": "light-optics: bending, focusing and dispersion, with polarization absent. liquid-crystals (pool, level 3) computes the LCD pixel between crossed polarizers; this page stops at the filters and the glare and links there.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
+  "slug": "spinning-balls-curve",
+  "title": "Why a spinning ball curves",
+  "level": 1,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Kick, throw or drop a ball with a chosen speed and spin and watch its path bend, with the air drawn flowing past it: the side spinning with the flow carries air round, the air leaves deflected to one side and the ball is pushed to the other. Sliders set spin, speed and the ball (football, tennis, baseball, table tennis, beach ball), and the path curves more for light balls with fast spin; compare a backspin shot that hangs with a topspin shot that dives, and drop a backspinning ball from a dam to watch it sail away from the wall.",
+  "takeaway": "A spinning ball drags air round with it, so the air leaves it deflected to one side and the ball is pushed to the other: the curve of a free kick, a slice and a topspin lob.",
+  "prerequisites": [
+   "newtons-laws"
+  ],
+  "related": [
+   "flight"
+  ],
+  "needs": "Drag and Magnus-lift coefficients for the balls, from published wind-tunnel measurements, or a documented simplified model stated on the page.",
+  "pitfall": "Do not explain it with 'faster air on one side, lower pressure' as if the air had to arrive at the same time, the false story the flight page bans; the deflected wake is the honest picture. At low spin a smooth ball can even curve the other way.",
+  "why": "The backspin basketball dropped from the Gordon Dam (Veritasium with How Ridiculous, 2015) went viral worldwide: https://www.npr.org/sections/thetwo-way/2015/07/17/423899841/watch-magnus-effect-whisks-basketball-into-the-spin-zone",
+  "overlapWith": "flight: a wing turns air downward (level 2); this page is the same deflection produced by spin on a ball at level 1, with the ball's whole path shown. newtons-laws has projectiles with drag but no spin.",
+  "needsSource": "Published coefficient fits (e.g. Goff & Carré 2010 for a football, Nathan 2008 for a baseball), cited; no dataset shipped.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
+  "slug": "nuclear-binding-energy",
+  "title": "Mass, binding energy & the valley of stability",
+  "level": 2,
+  "kind": "explore",
+  "category": "physics",
+  "interaction": "Scan the chart of all known nuclei, protons against neutrons, coloured by how they decay, with the stable ones running as a valley down the middle; click any nucleus and its measured mass is compared with the mass of its parts, the difference shown as binding energy through E = mc². Follow binding energy per nucleon along the curve from hydrogen to uranium, with the peak near iron, and slide a marker to see why fusing light nuclei and splitting heavy ones both release energy while the middle releases none; pick a decay and watch the daughter land closer to the valley floor.",
+  "takeaway": "A nucleus weighs less than its parts, the missing mass is the energy holding it together, and because that energy per particle peaks near iron, fusion pays on the light side and fission on the heavy side.",
+  "prerequisites": [
+   "radioactivity",
+   "special-relativity"
+  ],
+  "related": [
+   "nuclear-fission",
+   "nuclear-fusion",
+   "stars",
+   "standard-model"
+  ],
+  "needs": "Measured atomic masses and decay modes of all known nuclides.",
+  "needsSource": "AME2020 and NUBASE2020 from the IAEA Atomic Mass Data Centre: free ASCII files, to be cited through their Chinese Physics C papers (CC BY 3.0); the data files themselves state no licence https://www-nds.iaea.org/amdc",
+  "pitfall": "Binding energy is not energy stored in the nucleus waiting to come out; it is energy released when the nucleus formed and would have to be put back to take it apart. Iron-56 is not the most tightly bound nucleus, nickel-62 is by a hair; say 'near iron'.",
+  "why": "AQA A-level Physics 7408 nuclear physics: mass difference and binding energy, binding energy per nucleon, fission and fusion https://senecalearning.com/en-GB/revision-notes/a-level/physics/aqa/8-1-10-binding-energy",
+  "overlapWith": "nuclear-fission fires neutrons and holds a reactor at criticality, nuclear-fusion heats a plasma, and stars names where elements were made; none shows the curve that explains why either process releases energy, or the chart of nuclides with its valley of stability.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "photoelectric-effect",
+  "title": "The photoelectric effect",
+  "level": 2,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Shine light on a metal plate in a vacuum tube and watch electrons leave, or not: slide the colour from red toward ultraviolet and nothing happens until a threshold, then electrons appear at once however dim the light; turn up the intensity and more electrons leave but none faster. Apply a reverse voltage to stop them and plot the stopping voltage against frequency: a straight line whose slope is Planck's constant and whose intercept is the metal's work function; change the metal and the line shifts but keeps its slope. A side panel shows what a wave model predicts and where it fails.",
+  "takeaway": "Light delivers its energy in packets whose size depends only on colour, so dim blue light frees electrons that bright red light never can, and the graph's slope is the same for every metal.",
+  "prerequisites": [
+   "waves-interference",
+   "electric-circuits",
+   "atoms-periodic-table"
+  ],
+  "related": [
+   "quantum-mechanics",
+   "solar-cells",
+   "light-optics"
+  ],
+  "needs": "Work functions of a few metals (sodium, potassium, zinc, copper, platinum).",
+  "needsSource": "reference constants (CRC Handbook of Chemistry and Physics; the values are facts reproduced in textbooks); no dataset",
+  "pitfall": "Brighter light does not give faster electrons, and there is no delay while a dim beam charges up the metal; both are the wave model's failed predictions and should be shown failing, not merely stated.",
+  "why": "AQA A-level Physics 7408 topic 3.2.2.1 'The photoelectric effect' (threshold frequency, work function, stopping potential) https://www.tutopiya.com/tools/uk-revision-checklist/aqa-alevel/physics ; PhET's 'Photoelectric Effect' is a widely used classroom simulation https://script.spoken-tutorial.org/index.php/PhET/C2/Photoelectric-Effect/English",
+  "overlapWith": "quantum-mechanics (level 3) starts at the double slit and tunnelling, and solar-cells (level 2) uses photons freeing electrons in a junction; the experiment that first showed light comes in packets, and the graph that measures Planck's constant, is on neither.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
  },
  {
   "slug": "bell-inequality",
@@ -226,420 +622,6 @@
   "pitfall": "The force is not evidence of a vast tappable energy in the vacuum, and it can equally be computed from fluctuating charges in the plates; say so.",
   "why": "Wikipedia 'Casimir effect', a perennial 'how does it work' question whose popular explanation is disputed on the page itself: https://en.wikipedia.org/wiki/Casimir_effect",
   "overlapWith": "blackbody-cavity-modes: counts the same cavity modes with thermal energy; here it is their zero-point energy and the force it exerts.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "crystal-diffraction",
-  "title": "Diffraction & crystal structure",
-  "level": 3,
-  "kind": "build",
-  "category": "physics",
-  "interaction": "Place atoms in a unit cell and choose the lattice; the page builds the reciprocal lattice and lights up each Bragg reflection with its structure factor, so adding a second atom at the body centre makes half the spots vanish. Rotate the crystal in a monochromatic beam to see which reflections flash, then load a real structure (salt, diamond, quartz) from the Crystallography Open Database and compare its computed powder pattern with the cell you built.",
-  "takeaway": "A diffraction pattern is the crystal's lattice seen in reciprocal space, and the brightness of each spot encodes where the atoms sit within the cell.",
-  "prerequisites": [
-   "waves-interference",
-   "fourier-transform"
-  ],
-  "related": [
-   "semiconductors",
-   "protein-folding",
-   "medical-imaging",
-   "dna-to-protein"
-  ],
-  "needs": "Crystal structures as CIF files from the Crystallography Open Database; CC0.",
-  "pitfall": "Diffraction does not image atoms: the spots give the Fourier transform's magnitudes and the phases are lost, which is why a structure must be inferred.",
-  "why": "MIT OCW 8.231 Physics of Solids I: diffraction and the reciprocal lattice, Bloch's theorem: https://ocw.mit.edu/courses/8-231-physics-of-solids-i-fall-2006/pages/syllabus/",
-  "overlapWith": "semiconductors: shows lattices beside energy bands; this page is how the lattices are known at all, from their diffraction patterns.",
-  "needsSource": "Crystallography Open Database, https://www.crystallography.net/cod/ ; CC0 with a request to cite the original authors.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "dirac-equation",
-  "title": "The Dirac equation",
-  "level": 3,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Launch a wave packet governed by the one-dimensional Dirac equation and watch its two spinor components: at low momentum it moves like a Schrödinger packet, near c it respects the speed limit and trembles (Zitterbewegung) when positive- and negative-energy parts mix. Raise a potential step above twice the rest energy and the packet passes through where Schrödinger says it must stop (the Klein paradox), the first sign of antiparticles.",
-  "takeaway": "Marrying quantum mechanics to special relativity forces a second set of solutions on the equation, and they are the antiparticles.",
-  "prerequisites": [
-   "quantum-mechanics",
-   "special-relativity"
-  ],
-  "related": [
-   "standard-model",
-   "feynman-diagrams",
-   "stern-gerlach"
-  ],
-  "needs": "",
-  "pitfall": "Negative-energy states are not negative mass or an error; present them as the positron's states.",
-  "why": "MIT OCW 8.323 Relativistic Quantum Field Theory I: Dirac theory: https://ocw.mit.edu/courses/8-323-relativistic-quantum-field-theory-i-spring-2023/pages/syllabus",
-  "overlapWith": "standard-model: lists the antiparticles; this page shows where they come from in the equation.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "feynman-diagrams",
-  "title": "Feynman diagrams",
-  "level": 3,
-  "kind": "build",
-  "category": "physics",
-  "interaction": "Choose the incoming and outgoing particles of a QED process and draw diagrams from a palette of electron, muon and photon lines joined at vertices; the page checks each against the rules, grades it by its powers of the coupling, and evaluates the tree-level amplitude numerically to plot the angular distribution and the cross section against energy. Compare electron-positron annihilation into muon pairs with the LEP measurements.",
-  "takeaway": "Each diagram is a term in a calculation, its vertices count the powers of a small number, and summing the few lowest ones reproduces what colliders measure.",
-  "prerequisites": [
-   "standard-model",
-   "perturbation-theory",
-   "special-relativity"
-  ],
-  "related": [
-   "dirac-equation",
-   "quantum-scattering",
-   "casimir-effect"
-  ],
-  "needs": "Measured e+e- → μ+μ- cross sections and asymmetries from LEP at 192-208 GeV, HEPData record 48691 and its companions, released under CC0.",
-  "pitfall": "Diagrams are not pictures of what happens: the virtual photon is a term in a sum, and the page must not animate it as a real particle in flight.",
-  "why": "MIT OCW 8.323 Relativistic Quantum Field Theory I: Feynman diagrams, Feynman rules and e+e- → μ+μ-: https://ocw.mit.edu/courses/8-323-relativistic-quantum-field-theory-i-spring-2023/pages/syllabus",
-  "overlapWith": "standard-model: steps through beta decay as an exchange of force carriers; this page turns the diagram into a calculator whose output is compared with collider data.",
-  "needsSource": "HEPData (CERN), https://www.hepdata.net/record/48691; terms of use say datasets are CC0 unless stated otherwise, https://hepdata.net/terms",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "frozen-in-flux",
-  "title": "Magnetohydrodynamics: frozen-in field lines",
-  "level": 3,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Paint a flow (a vortex, a shear, a converging stream) over a conducting fluid threaded by a magnetic field and set the magnetic Reynolds number: the page integrates the induction equation on a grid, and the field lines are swept, stretched and wound up with the fluid at high values, or slip through it and diffuse away at low ones. Pluck a field line and watch an Alfvén wave run along it.",
-  "takeaway": "In a good conductor the magnetic field is carried with the fluid like dye, so moving the fluid stretches and winds the field, which is how stars and planets build theirs.",
-  "prerequisites": [
-   "electromagnetism",
-   "navier-stokes"
-  ],
-  "related": [
-   "plasma-kinetics",
-   "nuclear-fusion",
-   "stars",
-   "atmosphere-weather"
-  ],
-  "needs": "",
-  "pitfall": "Field lines moving with the fluid is a theorem about ideal conductors, not a property of magnetic fields in general; show the diffusive case beside it.",
-  "why": "MIT OCW 22.611J Introduction to Plasma Physics I: MHD models, equilibrium and stability: https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2003/pages/syllabus",
-  "overlapWith": "nuclear-fusion: holds a plasma in a magnetic bottle; this page shows the field being moved by the conducting fluid instead of the other way round.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "hamiltonian-phase-space",
-  "title": "Hamiltonian mechanics & phase space",
-  "level": 3,
-  "kind": "explore",
-  "category": "physics",
-  "interaction": "Pan and zoom the phase portrait of a pendulum and hover to launch a trajectory, finding the separatrix between swinging and spinning. Drop a cloud of nearby starting states and watch it stretch and fold while its area stays exactly fixed; add friction and the area shrinks toward a point. Switch to a periodically kicked rotor and scrub the kick strength to see its Poincaré section go from nested curves to a chaotic sea.",
-  "takeaway": "Hamiltonian flow moves a cloud of states through phase space like an incompressible fluid, preserving its area, and only dissipation can shrink it.",
-  "prerequisites": [
-   "least-action"
-  ],
-  "related": [
-   "chaos-fractals",
-   "entropy",
-   "noethers-theorem"
-  ],
-  "needs": "",
-  "pitfall": "Area preservation does not mean the cloud keeps its shape: it stretches into filaments that look like they fill the space, which is where coarse-grained entropy comes from.",
-  "why": "MIT OCW 8.223 Classical Mechanics II, lectures 15-19 on Hamiltonian mechanics and Poisson brackets: https://ocw.mit.edu/courses/8-223-classical-mechanics-ii-january-iap-2017/pages/syllabus",
-  "overlapWith": "chaos-fractals: starts two double pendulums and zooms the Mandelbrot set; this page is about the geometry of the state space itself, its conserved area and the Poincaré section.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "hydrogen-atom",
-  "title": "The Schrödinger equation & the hydrogen atom",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "physics",
-  "interaction": "Shoot the radial Schrödinger equation numerically: slide the trial energy and watch the wavefunction blow up one way or the other until it settles into a bound state, then collect the ladder of levels and their 1/n² pattern. Pick n, l and m to render the orbital's probability cloud, and compare the computed Balmer wavelengths with the measured lines from the NIST database.",
-  "takeaway": "Hydrogen's spectral lines are the differences between the only energies at which a wave fits around the proton, and the orbitals are the shapes of those fitted waves.",
-  "prerequisites": [
-   "quantum-mechanics",
-   "electromagnetism"
-  ],
-  "related": [
-   "atoms-periodic-table",
-   "quantum-harmonic-oscillator",
-   "stern-gerlach"
-  ],
-  "needs": "Hydrogen energy levels and Balmer-line wavelengths from the NIST Atomic Spectra Database (SRD 78); US government data, public domain.",
-  "pitfall": "The 1s state has zero angular momentum and is not a circular orbit; the cloud is a probability density, not a smeared-out electron.",
-  "why": "MIT OCW 8.04 Quantum Physics I: Schrödinger's equation in three dimensions, central potentials and hydrogenic systems: https://ocw.mit.edu/courses/8-04-quantum-physics-i-spring-2013/pages/syllabus",
-  "overlapWith": "atoms-periodic-table: fills shells and views orbital shapes in 3D; this page solves the equation that produces those shells and checks its energies against measured lines.",
-  "needsSource": "NIST ASD, https://physics.nist.gov/asd; NIST data, public domain in the US under the NIST open licence.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "ising-model",
-  "title": "The Ising model & phase transitions",
-  "level": 3,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Run a lattice of spins with the Metropolis algorithm and slide the temperature through the critical point: domains grow out of noise, the magnetization jumps from zero to nearly full, and the susceptibility and heat capacity spike. Apply a field and sweep it back and forth to trace a hysteresis loop; grow the lattice to see the transition sharpen, and shrink it to one dimension to see it vanish.",
-  "takeaway": "Nearest-neighbour alignment alone produces a sharp phase transition, and the ordered state appears at a precise temperature only in the limit of a large system.",
-  "prerequisites": [
-   "entropy",
-   "partition-function"
-  ],
-  "related": [
-   "states-of-matter",
-   "neural-networks"
-  ],
-  "needs": "",
-  "pitfall": "A one-dimensional chain has no phase transition at any temperature above zero; show that case so the reader does not believe order is automatic.",
-  "why": "MIT OCW RES.8-010 Introduction to Statistical Physics, lecture 8 on the Ising model via its partition function: https://www.ocw.mit.edu/courses/res-8-010-introduction-to-statistical-physics-summer-2018/mitres_8_010su18_lec8.pdf",
-  "overlapWith": "states-of-matter: freezes and boils a box of molecules; this page strips a transition down to the simplest possible model and shows the critical point's divergences.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "lasers",
-  "title": "Lasers",
-  "level": 3,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Pump a four-level gain medium between two mirrors and watch the populations and the photon number evolve under the rate equations: below threshold the cavity holds a few spontaneous photons, and at threshold the inversion clamps while the output climbs linearly with pump power. Lower the mirror reflectivity, switch to a three-level or a two-level medium, or open and close a shutter to see relaxation oscillations and a Q-switched pulse.",
-  "takeaway": "A laser is a cavity in which stimulated emission out-competes loss, and above that threshold every extra pumped atom adds a photon to the same mode.",
-  "prerequisites": [
-   "quantum-mechanics",
-   "oscillations-resonance"
-  ],
-  "related": [
-   "bose-einstein-condensation",
-   "bifurcations",
-   "semiconductors",
-   "solar-cells",
-   "perturbation-theory"
-  ],
-  "needs": "",
-  "pitfall": "Population inversion is impossible by pumping a two-level system at any power; the page must show the two-level case saturating at equal populations.",
-  "why": "PhET 'Lasers' is in its quantum collection, and MIT OCW 6.977 builds threshold and inversion from the rate equations: https://ocw.mit.edu/courses/6-977-semiconductor-optoelectronics-theory-and-design-fall-2002/",
-  "overlapWith": "solar-cells: a junction turns photons into current; this is the inverse, a medium amplifying light, and the LED half of the Reserve item is a sentence in semiconductors, not a page.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "least-action",
-  "title": "The principle of least action",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "physics",
-  "interaction": "Drag the control points of a ball's path through a space-time plot between two fixed events; the action (kinetic minus potential energy summed along the path) is computed live and compared with the true trajectory, and the path snaps toward the stationary one when released. Switch the potential to a spring, a planet or a light ray crossing two media and watch the straight line, the ellipse and the refracted ray each fall out of the same rule.",
-  "takeaway": "Nature's path between two events is the one whose action is stationary, and the laws of motion and refraction are that one rule in different potentials.",
-  "prerequisites": [
-   "newtons-laws",
-   "calculus"
-  ],
-  "related": [
-   "light-optics"
-  ],
-  "needs": "",
-  "pitfall": "The true path makes the action stationary, not always least: for a long enough path in a spring potential it is a saddle, and the page must show that case rather than call it a minimum.",
-  "why": "MIT OCW 8.223 Classical Mechanics II, lectures 1-4 on Lagrangian mechanics with the reading 'When action is not least' (Gray & Taylor): https://ocw.mit.edu/courses/8-223-classical-mechanics-ii-january-iap-2017/pages/syllabus",
-  "overlapWith": "newtons-laws: that page pushes carts with forces; this one derives the same motions from a single scalar quantity attached to a whole path.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "maxwell-equations",
-  "title": "Maxwell's equations on a grid",
-  "level": 3,
-  "kind": "build",
-  "category": "physics",
-  "interaction": "Draw metal walls, dielectric blocks and a current source on a grid; the page integrates Maxwell's two curl equations step by step (the Yee scheme) and paints the electric and magnetic fields as they evolve. Build a dipole antenna and see its radiation pattern, a waveguide that cuts off below a frequency, a slab that focuses a pulse.",
-  "takeaway": "A changing electric field makes a magnetic field and vice versa, and iterating those two rules on a grid is enough to make antennas radiate, guides channel and lenses focus.",
-  "prerequisites": [
-   "electromagnetism",
-   "calculus"
-  ],
-  "related": [
-   "light-optics",
-   "wireless-signals",
-   "radiating-charge"
-  ],
-  "needs": "",
-  "pitfall": "The grid is not the physics: show the time-step limit (Courant condition) and the numerical dispersion so the reader does not take grid artefacts for wave behaviour.",
-  "why": "MIT OCW 8.07 Electromagnetism II: Maxwell's equations, electromagnetic waves, radiation: https://ocw.mit.edu/courses/8-07-electromagnetism-ii-fall-2012/",
-  "overlapWith": "electromagnetism: shows static field lines and induction in a coil; this page solves the full time-dependent equations on a grid so that waves, antennas and guides emerge from them.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "navier-stokes",
-  "title": "Fluid flow & the Navier-Stokes equations",
-  "level": 3,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Drive a fluid past a cylinder (a lattice-Boltzmann solver on a grid) and slide the Reynolds number: at low values the flow creeps symmetrically around it, then a pair of standing eddies forms, then vortices shed alternately into a wavy street whose frequency the page measures, and finally the wake turns irregular. Draw your own obstacle, add a second one downstream, and watch the drag.",
-  "takeaway": "One dimensionless number, the ratio of inertia to viscosity, decides whether a flow is smooth, periodic or turbulent, whatever the fluid or the size.",
-  "prerequisites": [
-   "newtons-laws",
-   "calculus"
-  ],
-  "related": [
-   "flight",
-   "atmosphere-weather",
-   "heart-circulation"
-  ],
-  "needs": "",
-  "pitfall": "Turbulence is not randomness injected into the model; it emerges from the deterministic equations at high Reynolds number and the page must not add noise.",
-  "why": "MIT OCW 2.25 Advanced Fluid Mechanics: Navier-Stokes, similarity and dimensional analysis, boundary layers and separation: https://ocw.mit.edu/courses/2-25-advanced-fluid-mechanics-fall-2013/pages/syllabus",
-  "overlapWith": "flight: puts a wing in a stream and shows lift and stall; this page is the governing equation itself, swept through Reynolds number to the onset of turbulence.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "noethers-theorem",
-  "title": "Noether's theorem",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "physics",
-  "interaction": "Run a simulated planet, a bead on a wire or two colliding masses, then apply a transformation to the whole experiment with a dial: shift it in space, rotate it, shift it in time. Meters show which of momentum, angular momentum and energy stays constant along the trajectory; break a symmetry by adding a wall, a fixed centre or a potential that changes with time and watch the matching meter start to drift while the others hold.",
-  "takeaway": "Every continuous symmetry of a system's action comes paired with a quantity that stays constant, and breaking the symmetry is exactly what lets that quantity change.",
-  "prerequisites": [
-   "least-action"
-  ],
-  "related": [
-   "hamiltonian-phase-space",
-   "standard-model"
-  ],
-  "needs": "",
-  "pitfall": "The symmetry belongs to the action, not to the motion: an elliptical orbit is not rotationally symmetric, yet angular momentum is conserved because the potential is.",
-  "why": "MIT OCW 8.223 Classical Mechanics II, the lectures on conserved quantities that follow the Lagrangian unit: https://ocw.mit.edu/courses/8-223-classical-mechanics-ii-january-iap-2017/pages/syllabus",
-  "overlapWith": "newtons-laws: shows energy and momentum conserved in collisions; here conservation is derived from a symmetry and switched off by breaking that symmetry.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "partition-function",
-  "title": "The partition function",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "physics",
-  "interaction": "Build a small system from a palette of energy levels (a two-level atom, a quantum oscillator, a rotor, a particle in a box) and slide the temperature: the page computes the Boltzmann weights and their sum, the partition function, and fills each level with its share of the population. Linked plots show the mean energy and heat capacity; watch the Schottky bump of a two-level system and the freezing-out of an oscillator's heat capacity, then compare the oscillator model with the measured heat capacity of diamond.",
-  "takeaway": "Once a system's energy levels are known, one sum over them fixes its energy, heat capacity and entropy at every temperature.",
-  "prerequisites": [
-   "entropy"
-  ],
-  "related": [
-   "quantum-harmonic-oscillator",
-   "states-of-matter"
-  ],
-  "needs": "Measured heat capacity of diamond against temperature as tabulated by Einstein (1907) from Weber's measurements; public domain.",
-  "pitfall": "Temperature is not average energy: a two-level system's energy saturates, so its heat capacity rises and then falls back to zero as it gets hotter.",
-  "why": "MIT OCW 8.044 Statistical Physics I: microcanonical and canonical ensembles: https://ocw.mit.edu/courses/8-044-statistical-physics-i-spring-2013/pages/syllabus",
-  "overlapWith": "entropy: counts the microstates of a gas at fixed energy; this page fixes the temperature instead and shows how the Boltzmann weighting over levels yields every thermal property.",
-  "needsSource": "Einstein, Annalen der Physik 22 (1907), table of Weber's diamond heat-capacity data; public domain.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "perturbation-theory",
-  "title": "Perturbation theory",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "physics",
-  "interaction": "Add a small extra term to a potential (an electric field on hydrogen, an x⁴ term on an oscillator) and slide its strength: the page diagonalizes the full problem numerically and lays the exact levels beside the first- and second-order estimates, so the reader sees where the series tracks and where it fails. Then switch the perturbation on and off in time and watch transitions appear at the rate Fermi's golden rule predicts.",
-  "takeaway": "A problem you cannot solve can be approximated from one you can, order by order, and the exact answer tells you where the series stops tracking.",
-  "prerequisites": [
-   "hydrogen-atom",
-   "quantum-harmonic-oscillator",
-   "linear-transformations"
-  ],
-  "related": [
-   "lasers"
-  ],
-  "needs": "",
-  "pitfall": "The series for the anharmonic oscillator diverges for any coupling; show the terms getting worse past some order rather than implying convergence.",
-  "why": "MIT OCW 8.06 Quantum Physics III: time-independent and time-dependent perturbation theory, Fermi's golden rule: https://ocw.mit.edu/courses/8-06-quantum-physics-iii-spring-2018/",
-  "overlapWith": "hydrogen-atom: solves the unperturbed atom; this page adds a field to it and shows the Stark shifts and transitions that result.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "plasma-kinetics",
-  "title": "Plasma: shielding, oscillations & Landau damping",
-  "level": 3,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Run a one-dimensional particle-in-cell plasma: drop in a test charge and watch electrons cloud around it until its field dies beyond the Debye length; displace a slab of electrons and release it to ring at the plasma frequency; launch a wave and see it fade as particles moving at its speed absorb it (Landau damping); send two beams through each other and watch the instability grow.",
-  "takeaway": "A plasma shields, oscillates and trades energy with waves collectively, through its own electric field rather than through collisions.",
-  "prerequisites": [
-   "electromagnetism",
-   "entropy"
-  ],
-  "related": [
-   "nuclear-fusion",
-   "stars",
-   "frozen-in-flux",
-   "wireless-signals"
-  ],
-  "needs": "",
-  "pitfall": "Landau damping takes energy from the wave with no collisions at all; do not add a friction term and call it damping.",
-  "why": "MIT OCW 22.611J Introduction to Plasma Physics I: Debye shielding, plasma waves, Landau damping, streaming instabilities: https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2003/pages/syllabus",
-  "overlapWith": "nuclear-fusion: confines a plasma as a hot fluid to reach ignition; this page is the plasma's own electrostatic behaviour, particle by particle.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "quantum-harmonic-oscillator",
-  "title": "The quantum harmonic oscillator",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "physics",
-  "interaction": "Slide up the energy ladder of a quantum spring and see each level's wavefunction and probability density against the classical turning points. Mix levels with the raising operator to build a coherent state and press play: the packet swings back and forth like a classical mass without spreading, while a squeezed state breathes and a single level stands still.",
-  "takeaway": "A quantum spring holds energy only in equal steps, and the right superposition of those steps moves exactly like the classical oscillator.",
-  "prerequisites": [
-   "quantum-mechanics",
-   "oscillations-resonance"
-  ],
-  "related": [
-   "partition-function",
-   "blackbody-cavity-modes",
-   "lasers",
-   "hydrogen-atom"
-  ],
-  "needs": "",
-  "pitfall": "The ground state has energy and its probability leaks past the classical turning points; the lowest state is not 'at rest'.",
-  "why": "MIT OCW 8.05 Quantum Physics II course description: the harmonic oscillator, spin and angular momentum: https://ocw.mit.edu/courses/8-05-quantum-physics-ii-fall-2013/pages/syllabus",
-  "overlapWith": "quantum-mechanics: sends a free packet at a barrier; this page confines the packet in a spring, the one potential whose quantum states underlie photons and phonons.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,

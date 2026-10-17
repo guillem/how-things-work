@@ -1,636 +1,620 @@
 [
  {
-  "slug": "rock-to-sand",
-  "title": "Where sand comes from",
-  "level": 0,
-  "kind": "step",
-  "category": "earth",
-  "interaction": "Step a chunk of rock down a river: it breaks off a cliff, bangs along in a flood, and at each stop it is rounder and smaller as its corners knock off, faster for soft rock than hard. Where the river slows, the grains it carries settle by size, boulders first, then gravel, then sand, with mud going farthest; at the beach the waves finish the job. Scrub back and forth along the river to see where each size ends up.",
-  "takeaway": "Every grain of sand on a beach is a piece of a mountain that was knocked smaller and rounder on its way down, and the river sorts the grains by size as it slows.",
-  "prerequisites": [],
-  "related": [
-   "river-valleys",
-   "beach-waves",
-   "sand-dunes",
-   "fossil-layers",
-   "soil-in-a-jar"
-  ],
-  "needs": "",
-  "needsSource": "none (Sternberg's law of downstream abrasion with published coefficients for a few rock types, and settling speeds by grain size)",
-  "pitfall": "Sand is not all ground up by the sea, and not all sand is quartz: white tropical sand is broken shell and coral.",
-  "why": "England KS2 science, Year 3 Rocks: 'compare and group together different kinds of rocks on the basis of their appearance and simple physical properties' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); NGSS 4-ESS2-1.",
-  "overlapWith": "river-valleys: that page shows the land being cut; this one follows a single rock through the cutting and asks what becomes of it.",
-  "leadsTo": [
-   "deep-time",
-   "plate-tectonics"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "sand-dunes",
-  "title": "How dunes march",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A flat bed of sand under a steady wind, drawn as little stacked slabs; press play and the wind lifts grains from the side facing it and drops them a little downwind, they pile until a slope gets too steep and slides, and out of a flat bed grows a field of dunes, each with a gentle face toward the wind and a steep slip face behind. The one control is the wind's direction, later its strength. Turn the wind and the dunes slowly rebuild to face it; everything creeps downwind.",
-  "takeaway": "Dunes are the wind moving sand uphill one grain at a time and the sand sliding down the back, so a whole dune walks downwind and always faces into the wind.",
-  "prerequisites": [],
-  "related": [
-   "rock-to-sand",
-   "beach-waves",
-   "sea-breeze"
-  ],
-  "needs": "",
-  "needsSource": "none (Werner's 1995 cellular dune model: sand slabs, wind shadows, avalanching at the angle of repose)",
-  "pitfall": "Deserts are not defined by sand or by heat but by dryness: most desert is rock and gravel, and some of it is cold.",
-  "why": "NGSS 4-ESS2-1, erosion by wind (https://www.nextgenscience.org/pe/4-ess2-1-earths-systems); US National Park Service, 'Aeolian (Dunes) Landforms' (https://www.nps.gov/subjects/geology/aeolian-landforms.htm).",
-  "overlapWith": "rock-to-sand makes the grains; this page is what the wind does with them, and no existing page shows a landform built by wind.",
-  "leadsTo": [
-   "deep-time"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "sea-breeze",
-  "title": "Where wind comes from: the sea breeze",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A coast in cross-section, land on one side and sea on the other, filled with air drawn as drifting particles. Drag the Sun across the sky: by afternoon the land is warmer than the sea, the air over it rises, and air from the sea slides in underneath as a breeze that a flag on the beach shows. At night the land cools faster than the water and the breeze turns around and blows out to sea.",
-  "takeaway": "Wind is air moving from where it is cool and heavy toward where it is warm and rising, so uneven heating of land and water is enough to make a wind blow, and to turn it around at night.",
-  "prerequisites": [],
-  "related": [
-   "cloud-base",
-   "tornado-spin",
-   "a-year-of-weather",
-   "beach-waves"
-  ],
-  "needs": "",
-  "needsSource": "none (a small 2D buoyant-convection solver on a coarse grid, with the sea slower to warm than the land)",
-  "pitfall": "Warm air does not rise because heat goes up: it rises because it is lighter than the cooler air around it, which pushes it up.",
-  "why": "NOAA JetStream, 'The Sea Breeze' (https://www.noaa.gov/jetstream/ocean/sea-breeze); NGSS MS-ESS2-5 on air masses moving from high to low pressure.",
-  "overlapWith": "atmosphere-weather (level 2) heats a whole spinning globe into convection cells and winds with Coriolis; this page heats one beach and gets one wind, no rotation.",
-  "leadsTo": [
-   "states-of-matter"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "snowflake-growth",
-  "title": "Why snowflakes have six arms",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "Start from a speck in cold, moist air and watch a crystal grow on a honeycomb grid: water molecules arrive from all sides, the corners that stick out catch more of them, and six arms shoot out and branch. One control: the amount of moisture in the air, then the temperature. Low moisture grows flat plates and stubby prisms, high moisture grows branching stars, and a little randomness means no two crystals come out the same, though every one keeps its six-fold symmetry.",
-  "takeaway": "Six-fold symmetry comes from the way water molecules pack, and the shape of the arms comes from the air the crystal grew in, so every snowflake is a record of its own journey.",
-  "prerequisites": [],
-  "related": [
-   "dew-and-fog",
-   "how-rain-forms",
-   "glacier-flow"
-  ],
-  "needs": "",
-  "needsSource": "none (Reiter's 2005 hexagonal cellular automaton for snow crystal growth, or the Gravner-Griffeath 2008 model, checked against the Nakaya morphology diagram)",
-  "pitfall": "Snowflakes are not frozen raindrops; that is sleet. A snow crystal grows from vapour straight into ice.",
-  "why": "NOAA, 'How do snowflakes form? Get the science behind snow' (https://www.noaa.gov/stories/how-do-snowflakes-form-science-behind-snow); KS2 Year 4 states of matter.",
-  "overlapWith": "states-of-matter (level 1) shows water freezing into its open lattice; this page shows a single crystal growing from vapour and why its shape depends on the air.",
-  "leadsTo": [
-   "states-of-matter",
-   "chemical-bonds"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "soil-in-a-jar",
-  "title": "What soil is made of: the jar test",
-  "level": 0,
-  "kind": "step",
-  "category": "earth",
-  "everyday": true,
-  "interaction": "Scoop soil from a chosen place (a sandy garden, a clay field, a forest floor, a river bank) into a jar of water, shake it and step the clock: after a minute the sand has dropped to the bottom, after an hour the silt lies on top of it, and a day later the cloudy water has finally let its clay down, while bits of rotted leaf and root still float. A ruler reads the thickness of each layer and names the soil from the mix. A last step pours water on each soil: it runs straight through the sandy one and sits for hours on the clay.",
-  "takeaway": "Soil is rock ground into grains of three sizes plus the rotted remains of living things, and the mix decides whether water runs through it or stays.",
-  "prerequisites": [],
-  "related": [
-   "rock-to-sand",
-   "river-valleys",
-   "water-cycle",
-   "fossil-layers"
-  ],
-  "leadsTo": [
-   "ecosystems",
-   "plate-tectonics"
-  ],
-  "needs": "",
-  "needsSource": "none (settling speeds by grain size from Stokes' law, the sand, silt and clay size classes and the USDA soil texture triangle, US Department of Agriculture work, public domain)",
-  "pitfall": "Soil is not dirt that was always there and is not the same everywhere: a few centimetres take centuries to form, and the floating bits are as much a part of soil as the grains.",
-  "why": "England KS2 science, Year 3 Rocks: 'recognise that soils are made from rocks and organic matter' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); the jar test is a standard extension-service activity (https://hgic.clemson.edu/factsheet/soil-texture-analysis-the-jar-test/).",
-  "overlapWith": "rock-to-sand: that page sorts grains by size along a river; this one sorts them in a jar the reader can shake at home and adds the half of soil that was never rock.",
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "tornado-spin",
-  "title": "How a tornado spins up",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "earth",
-  "interaction": "A wide, slowly turning column of air under a thunderstorm, drawn as rings of particles. Drag the storm's updraft to stretch the column taller and thinner: the particles keep their swing but have less room, so they whirl faster, like a skater pulling in her arms, and a funnel appears where the whirl is fast enough for the pressure drop at its heart to make a cloud. Let the column widen again and it slows and the funnel fades.",
-  "takeaway": "A spinning column of air spins faster when it is stretched thinner, and the funnel you see is just the place where the whirl is fast enough to make a cloud.",
-  "prerequisites": [],
-  "related": [
-   "sea-breeze",
-   "how-rain-forms",
-   "lightning-and-thunder"
-  ],
-  "needs": "",
-  "needsSource": "none (a Rankine-type vortex with angular momentum conserved under stretching, particle advection, and the pressure drop that condenses the funnel)",
-  "pitfall": "The visible funnel is not the whole tornado: the wind spins just as hard outside it before the cloud appears, which is why damage starts before the funnel seems to touch down.",
-  "why": "NGSS 3-ESS3-1, weather-related hazards (https://www.nextgenscience.org/pe/3-ess3-1-earth-and-human-activity); 'how do tornadoes form' is a standing how-does-it-work question.",
-  "overlapWith": "atmosphere-weather (level 2) grows a hurricane from a warm sea on a rotating globe; this page stretches one small vortex with no Coriolis effect at all.",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "volcano-eruptions",
-  "title": "Why some volcanoes explode and others ooze",
-  "level": 0,
-  "kind": "step",
-  "category": "earth",
-  "interaction": "Step magma up a pipe toward the surface with gas dissolved in it like a shaken fizzy drink: as the weight of rock above lessens, bubbles appear and grow. The one control is how runny or sticky the magma is: runny magma lets the bubbles float out, and lava fountains and flows spill gently down the slope, while sticky magma traps them until the froth bursts and the cone blows its top in ash. A second control adds more gas and makes the sticky case worse.",
-  "takeaway": "What makes an eruption explosive is not how hot the magma is but how hard it is for its gas to get out: runny magma fizzes, sticky magma bursts.",
-  "prerequisites": [],
-  "related": [
-   "rock-to-sand",
-   "fossil-layers"
-  ],
-  "needs": "",
-  "needsSource": "none (bubble growth as pressure falls, bubble rise speed set by the magma's viscosity, fragmentation above a gas fraction threshold)",
-  "pitfall": "Lava is not fire and a volcano is not a hole into a burning centre: magma is melted rock, and most of the Earth's inside is solid.",
-  "why": "USGS FAQ, 'How do volcanoes erupt?', runny magma that lets gas escape against sticky magma that traps it (https://www.usgs.gov/faqs/how-do-volcanoes-erupt); England KS2 geography, volcanoes and earthquakes.",
-  "overlapWith": "plate-tectonics (level 1) shows where volcanoes are and why; this page shows what happens inside one when it erupts, which that page does not.",
-  "leadsTo": [
-   "plate-tectonics",
-   "states-of-matter"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "water-cycle",
-  "title": "The water cycle",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A sea, a mountain and the sky, with the water drawn as a few hundred dots that the page follows one by one. Turn the Sun up and more dots leave the sea as invisible vapour, rise, cool and gather into clouds that rain on the mountain, from where streams carry them back to the sea; turn it down and the air dries and the rivers shrink. A counter shows how many dots are in the sea, the air, the ice and the rivers at any moment, and the sea always holds almost all of them.",
-  "takeaway": "Water is never used up: the same water goes round and round between sea, air and land, lifted by the Sun's heat and brought back down by gravity.",
-  "prerequisites": [],
-  "related": [
-   "cloud-base",
-   "how-rain-forms",
-   "why-the-sea-is-salty",
-   "river-valleys"
-  ],
-  "needs": "",
-  "needsSource": "none (the share of water in each store from the USGS Water Science School, US Government work, public domain)",
-  "pitfall": "Evaporation does not need boiling: water leaves the sea at ordinary temperatures, faster when it is warmer. And the vapour is invisible; the white of a cloud is droplets.",
-  "why": "England KS2 science, Year 4 States of matter: 'identify the part played by evaporation and condensation in the water cycle' and 'associate the rate of evaporation with temperature' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); also NGSS MS-ESS2-4 (https://www.nextgenscience.org/pe/ms-ess2-4-earths-systems).",
-  "overlapWith": "carbon-cycle: the same idea of stores joined by flows, but for water, with every drop followed as a particle in a landscape instead of flows drawn to scale between boxes.",
-  "leadsTo": [
-   "carbon-cycle",
-   "states-of-matter"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "why-the-sea-is-salty",
-  "title": "Why the sea is salty",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A lake fed by a river that carries a pinch of salt in every bucket of water; the Sun lifts pure water out and the salt stays. Open or close the lake's outlet: with an outlet the salt leaves as fast as it arrives and the lake stays fresh, close it and the salt count climbs year after year until crystals ring the shore, like the Dead Sea. Then the ocean: rivers in, evaporation out, and salt also leaving into the sea floor, so its saltiness holds steady at about two teaspoons of salt in every glass.",
-  "takeaway": "Rivers carry a little salt to the sea and the Sun takes only the water back, so salt collects wherever water can leave only by evaporating.",
-  "prerequisites": [],
-  "related": [
-   "water-cycle",
-   "rock-to-sand",
-   "dew-and-fog",
-   "how-caves-form"
-  ],
-  "needs": "",
-  "needsSource": "none (a salt mass-balance box model; seawater at about 35 g per kg and the average river at about 0.1 g per litre, from the USGS Water Science School, US Government work)",
-  "pitfall": "The ocean is not getting steadily saltier today: salt leaves into the sea floor about as fast as rivers bring it.",
-  "why": "USGS Water Science School, 'Why is the ocean salty?' (https://www.usgs.gov/special-topics/water-science-school/science/why-ocean-salty); 'why is the sea salty?' is among the questions UK parents say they cannot answer (https://www.stornowaygazette.co.uk/arts-and-culture/top-30-impossible-questions-that-children-ask-840687).",
-  "overlapWith": "ocean-currents (level 2) uses salinity to drive the deep circulation; this page asks where the salt came from and never mentions currents.",
-  "leadsTo": [
-   "states-of-matter",
-   "acids-bases"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "carbonate-silicate-thermostat",
-  "title": "The carbonate-silicate thermostat",
+  "slug": "clinical-trials",
+  "title": "Randomized trials & their statistics",
   "level": 3,
   "kind": "simulate",
-  "category": "earth",
-  "interaction": "A box model in which volcanoes outgas CO2, silicate weathering removes it at a rate that rises with temperature and rainfall (the Walker, Hays and Kasting feedback), and a one-layer energy balance sets the temperature. Dim the young Sun to seventy percent and run a million years: CO2 piles up until weathering catches up and the planet stays unfrozen. Freeze the planet to stop weathering and watch CO2 climb for millions of years until the ice gives way; move the planet outward or switch off the volcanoes to find where the thermostat fails.",
-  "takeaway": "Over millions of years rock weathering acts as a thermostat, because a warmer, wetter planet draws down CO2 faster, which is why Earth stayed habitable under a brightening Sun and how a Snowball Earth ends.",
+  "category": "medicine",
+  "interaction": "Set a treatment's true effect, the spread of outcomes between patients and the number enrolled, then run a trial: patients are drawn, allocated at random or by the doctor's choice (which lets sicker patients drift into one arm), and the result lands on a p-value scale. Run a thousand trials at once to see the power and the false-positive rate, add several outcome measures and stop early when one looks good, and watch how often a treatment that does nothing 'works'.",
+  "takeaway": "Randomization is what makes two groups comparable in everything, measured or not, and a trial too small for the effect it is hunting will usually miss it and, when it does find something, will overstate it.",
   "prerequisites": [
-   "carbon-cycle",
-   "greenhouse-effect"
+   "central-limit-theorem",
+   "bayes-theorem"
   ],
   "related": [
-   "ocean-acidification",
-   "radiative-convective-column",
-   "deep-time",
-   "atmospheric-escape"
+   "placebo-expectation",
+   "screening-overdiagnosis",
+   "learning-from-data"
   ],
   "needs": "",
-  "pitfall": "This thermostat works over a million years and does nothing about fossil-fuel CO2 on human timescales; the fast carbon cycle and the slow one are different pages.",
-  "why": "University of Arizona PTYS 522 (Showman, Spring 2020), taught from Pierrehumbert's Principles of Planetary Climate; the carbonate-silicate week was not confirmed in the fetched excerpt: https://www.lpl.arizona.edu/sites/default/files/courses/PTYS_522_Showman_Spring_2020.pdf",
-  "overlapWith": "carbon-cycle: that page runs the fast cycle over decades with human emissions; this page runs the slow rock cycle over millions of years and shows the feedback that makes it a thermostat.",
   "needsSource": "none",
+  "pitfall": "A p-value is not the probability that the treatment does not work; it is how surprising the data would be if it did nothing.",
+  "why": "Hypothesis testing, power and the design of randomized experiments are units of MIT OCW 18.05 Introduction to Probability and Statistics: https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2014/",
+  "overlapWith": "bayes-theorem: that page counts true and false positives of a test on a grid of people; this page builds the experiment that decides whether a treatment works and shows what randomization and sample size buy.",
   "leadsTo": [],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "medicine-l3"
  },
  {
-  "slug": "earths-magnetic-field",
-  "title": "Earth's magnetic field & the geodynamo",
+  "slug": "coagulation-cascade",
+  "title": "Blood clotting",
   "level": 3,
-  "kind": "explore",
-  "category": "earth",
-  "interaction": "Scrub the years 1900 to 2025 while a globe draws the field computed from the IGRF Gauss coefficients: the magnetic poles wander, the field drifts westward and the South Atlantic Anomaly deepens. Switch the spherical-harmonic degrees on one at a time to split the field into its dipole and the smaller-scale parts that the fluid core stirs, and read the dipole's strength falling over the century. A second track scrubs the polarity record of the last 160 million years, where the reader can hunt for a regular period and fail to find one.",
-  "takeaway": "Earth's field is close to a dipole but not fixed: its pole wanders, its strength has fallen measurably since 1900, and the record of past reversals shows no regular clock.",
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Expose tissue factor at a cut and step through clotting as a chain of enzymes, each activating many copies of the next: initiation makes a trickle of thrombin, the trickle switches on the amplifying factors, and the burst follows, all driven by the published rate equations of the extrinsic pathway and its inhibitors. Remove factor VIII (haemophilia A), lower the vitamin-K factors as warfarin does, boost antithrombin as heparin does, and compare the thrombin curves. The platelet plug and the later dissolving of the clot are shown as stages, not computed, since the model stops at thrombin.",
+  "takeaway": "Clotting is a chain of enzymes each activating many of the next, so a tiny trigger becomes a burst of thrombin in minutes, and inhibitors keep the burst from spreading beyond the wound.",
   "prerequisites": [
-   "electromagnetism"
+   "reaction-rates-equilibrium",
+   "heart-circulation"
   ],
   "related": [
-   "earthquakes",
-   "plate-tectonics",
-   "mantle-convection"
+   "sepsis-inflammation",
+   "wound-healing"
   ],
-  "needs": "IGRF-14 Gauss coefficients (IAGA V-MOD, distributed by NOAA NCEI as a US-government work; the accompanying software is stated public domain, the coefficient file itself carries no licence line) and the geomagnetic polarity time scale (published chron boundaries, retyped as a table).",
-  "pitfall": "The field is not a bar magnet inside the Earth: the core is far above its Curie temperature and the field comes from flow in the liquid outer core. A falling dipole does not mean a reversal is due.",
-  "why": "MIT OCW 12.201 Essentials of Geophysics, chapter 3 notes on the geodynamo, secular variation and reversals: https://ocw.mit.edu/courses/12-201-essentials-of-geophysics-fall-2004/resources/ch3pdf",
-  "overlapWith": "earthquakes: that page reveals the liquid outer core through S-wave shadows; this page shows what the liquid core does, the field it generates and how that field changes.",
-  "needsSource": "IGRF-14 coefficients from NOAA NCEI (US government work; software stated public domain, no licence line on the coefficient file); polarity chron boundaries from the published time scale (numbers, retyped).",
+  "needs": "Rate constants and initial concentrations of the Hockin–Mann model of thrombin generation, as curated in BioModels (BIOMD0000000335, CC0).",
+  "needsSource": "BioModels BIOMD0000000335 (Hockin et al. 2002), CC0: https://www.ebi.ac.uk/biomodels/BIOMD0000000335",
+  "pitfall": "The 'intrinsic' and 'extrinsic' pathways of the textbook diagram are a laboratory artefact: in the body tissue factor starts clotting and factors VIII and IX amplify it, which is why haemophilia bleeds despite an intact extrinsic pathway.",
+  "why": "The coagulation cascade and its drugs (warfarin, heparin) are Hematologic-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
+  "overlapWith": "heart-circulation: that page shows blood moving; this page shows how it stops, as a cascade of reactions with the real kinetics.",
   "leadsTo": [],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "medicine-l3"
  },
  {
-  "slug": "groundwater-flow",
-  "title": "Groundwater & aquifers",
+  "slug": "cochlea-hearing",
+  "title": "Hearing & the cochlea",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Play a tone, a chord or a spoken word into a cochlea modelled as a chain of coupled resonators whose stiffness falls along the basilar membrane, and watch the travelling wave peak at a place that depends on frequency. Drag the frequency and the peak moves; switch on the outer hair cells' amplification and the peak sharpens; kill the hair cells near the base, as loud noise does, and the audiogram loses its high frequencies. Then replace the cochlea with a cochlear implant: split the sound into a few bands, drive one electrode per band, and hear the result.",
+  "takeaway": "The cochlea sorts sound by frequency along its length, so pitch is a place, and a cochlear implant works by stimulating those places with a handful of electrodes.",
+  "prerequisites": [
+   "waves-interference",
+   "fourier-transform",
+   "neurons"
+  ],
+  "related": [
+   "vision-color",
+   "compression"
+  ],
+  "needs": "A short openly licensed speech clip (CC0 or public domain) for the implant demonstration, or synthesized speech; the cochlear model itself is a standard one-dimensional transmission-line model with published parameters.",
+  "needsSource": "none beyond a CC0 speech clip",
+  "pitfall": "Noise damage does not simply turn the volume down: the lost hair cells remove the amplification, so soft sounds vanish while loud ones still hurt.",
+  "why": "Reserve item of the catalogue; the place theory of hearing is KS3/GCSE sound content and first-year physiology, and a high-traffic reference topic: https://en.wikipedia.org/wiki/Place_theory_(hearing)",
+  "overlapWith": "vision-color: that page builds an image and colour from three kinds of sensor; this page builds pitch from thousands of sensors in a row, each tuned by its position.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "dialysis",
+  "title": "Dialysis: a kidney from a membrane",
   "level": 3,
   "kind": "build",
-  "category": "earth",
-  "interaction": "Draw an aquifer in plan view with zones of different hydraulic conductivity, a river and a recharge rate, and the page solves the groundwater flow equation on a finite-difference grid. Place pumping wells and set their rates: cones of depression form in the water table, overlap, and can pull the river's water into a well; release a tracer and watch its path and travel time to each well, which draws the well's capture zone. Switch to transient mode and the cone keeps spreading for years after pumping starts.",
-  "takeaway": "Groundwater moves slowly down the slope of the water table, so a well's effect spreads for years and its catchment is a shape on the map, not a radius.",
+  "category": "medicine",
+  "interaction": "Assemble an artificial kidney: pick the membrane area and pore size, set the blood pump and the dialysate pump, and choose whether the two flows run the same way or opposite ways; a mass-transfer model shows the urea concentration along both sides of the membrane and the clearance it achieves. Then run a week of three four-hour sessions through a single-pool urea model and watch the sawtooth of urea in the patient, compared with a healthy kidney's flat line and with a slow continuous treatment.",
+  "takeaway": "Running blood and dialysate in opposite directions keeps a concentration difference along the whole membrane, which is what lets a machine clear in four hours what a kidney does continuously, and the patient's urea still swings between sessions.",
+  "prerequisites": [
+   "kidney-nephron"
+  ],
+  "related": [
+   "blood-acid-base"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Dialysis does not 'clean' the blood of everything: it removes what diffuses through the membrane, so small molecules like urea go while protein-bound and large toxins stay.",
+  "why": "Dialysis adequacy is defined by Kt/V from urea kinetic modelling, the quantity this page computes: https://en.wikipedia.org/wiki/Kt/V",
+  "overlapWith": "heart-circulation: that page pumps blood round a body; this page puts a membrane in the circuit and shows what crosses it and how fast.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "ecg-arrhythmias",
+  "title": "The ECG & arrhythmias",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run a sheet of heart muscle as an excitable medium (the Aliev–Panfilov equations on a grid) with a pacemaker, a conduction system and a slow atrioventricular node, and read the ECG off it as the projection of the tissue's net electrical vector onto the limb leads of Einthoven's triangle. Then break it: slow conduction in a patch, add a scar, fire an early beat into tissue that has only partly recovered and watch a spiral wave take over the ECG as tachycardia and then fibrillation; deliver a shock that resets every cell at once. Real recordings from the MIT-BIH database sit beside the simulated traces.",
+  "takeaway": "An ECG is the shadow of a wave of excitation crossing the heart, and the dangerous rhythms are not a faster pacemaker but a wave that finds a way to chase its own tail.",
+  "prerequisites": [
+   "heart-circulation",
+   "neurons"
+  ],
+  "related": [
+   "baroreflex-blood-pressure"
+  ],
+  "needs": "Annotated ECG records from the MIT-BIH Arrhythmia Database on PhysioNet (Open Data Commons Attribution License v1.0).",
+  "needsSource": "PhysioNet MIT-BIH Arrhythmia Database, ODC-By 1.0: https://physionet.org/content/mitdb/1.0.0/",
+  "pitfall": "A defibrillator does not restart a stopped heart; it stops a chaotic rhythm so the natural pacemaker can take over, and a flat line is not a shockable rhythm.",
+  "why": "Rhythm interpretation and the conduction system are Cardiovascular-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
+  "overlapWith": "heart-circulation: that page shows a healthy ECG synchronized with the beating pump; this page computes the ECG from a model of the tissue and lets the reader break the rhythm.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "fetal-circulation",
+  "title": "The first breath",
+  "level": 3,
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Trace blood through a fetal circulation modelled as a network of resistances with three shunts: the placenta supplying oxygen, the collapsed lungs with their high resistance, and the two openings that let blood skip them. Then step through birth: the lungs inflate and their resistance falls, the cord is clamped and the placenta's low resistance disappears, the pressures on the two sides of the heart cross over, and the flap between the atria shuts. Oxygen levels in each vessel update at every step, with fetal haemoglobin's steeper curve explaining how the fetus lives on so little.",
+  "takeaway": "Before birth the lungs are bypassed because their resistance is high, and the first breath drops that resistance enough to reverse the pressure difference that was holding the shunts open.",
+  "prerequisites": [
+   "heart-circulation",
+   "haemoglobin-oxygen"
+  ],
+  "related": [
+   "lung-gas-exchange",
+   "menstrual-cycle-hormones"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "The shunts do not close because they are no longer needed; they close because the pressures that held them open reverse, and if lung resistance stays high they stay open.",
+  "why": "Fetal circulation and its transition at birth are Cardiovascular-system content in the USMLE Step 1 outline and a staple 'how does a baby breathe before birth' question: https://en.wikipedia.org/wiki/Fetal_circulation",
+  "overlapWith": "heart-circulation: that page runs the two pumps in series as in an adult; this page runs them in parallel, as in a fetus, and shows the switch.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "gwas-polygenic-risk",
+  "title": "Genome-wide association & polygenic risk",
+  "level": 3,
+  "kind": "explore",
+  "category": "medicine",
+  "interaction": "Scrub the sample size of a simulated case–control study from a hundred people to a million and watch the Manhattan plot rise out of the noise (each variant's test statistic is drawn from its sampling distribution, set by its true effect and the sample size, so nobody is simulated one by one): a few of the thousands of variants that truly matter clear the genome-wide line first, the rest surface slowly, and a hidden ancestry difference between cases and controls paints false peaks across every chromosome until it is corrected for. Build a polygenic score from the hits and see how far it separates people's risk and how much is left unexplained; real summary statistics for one published trait from the GWAS Catalog are there to compare.",
+  "takeaway": "Common diseases are shaped by thousands of variants of tiny effect, so finding them takes enormous samples, and a polygenic score shifts a person's odds without ever predicting them.",
+  "prerequisites": [
+   "meiosis-inheritance",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "cancer",
+   "learning-from-data"
+  ],
+  "needs": "Summary statistics for one well-studied trait from the NHGRI-EBI GWAS Catalog (most studies CC0 or EMBL-EBI terms of use; the per-study licence column must be checked for the chosen study).",
+  "needsSource": "NHGRI-EBI GWAS Catalog summary statistics, mostly CC0 with per-study exceptions: https://www.ebi.ac.uk/gwas/downloads/summary-statistics",
+  "pitfall": "There is no 'gene for' a common disease; a genome-wide significant variant usually changes risk by a few percent, and a score built from thousands of them still explains only part of the heritability.",
+  "why": "Genome-wide association studies and polygenic scores are standard content of university genetics courses and a high-traffic reference topic: https://en.wikipedia.org/wiki/Genome-wide_association_study",
+  "overlapWith": "meiosis-inheritance: that page follows single genes through Punnett squares; this page asks what inheritance looks like when a trait depends on thousands of them at once.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "haemoglobin-oxygen",
+  "title": "Oxygen & haemoglobin",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Drag the oxygen pressure along haemoglobin's binding curve, computed from the four-site cooperative model, and read how much oxygen the blood carries and how much it gives up between lungs and muscle. Shift the curve with acidity and carbon dioxide (the Bohr effect), temperature and 2,3-BPG, compare it with myoglobin's hyperbola and fetal haemoglobin, and poison the blood with carbon monoxide to see why that is worse than losing the same amount of haemoglobin.",
+  "takeaway": "Haemoglobin's S-shaped curve is what lets it fill up in the lungs and dump most of its load in working muscle, and the body tunes delivery by shifting that curve.",
+  "prerequisites": [
+   "reaction-rates-equilibrium",
+   "chemical-bonds"
+  ],
+  "related": [
+   "respiration-atp",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Carbon monoxide is worse than anaemia with the same oxygen content, because it also shifts the curve so that what oxygen remains is not released.",
+  "why": "Oxygen transport, the dissociation curve and its shifts are Respiratory-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
+  "overlapWith": "respiration-atp: that page uses oxygen at the end of the electron transport chain; this page is how oxygen gets there, and why the carrier's curve has the shape it has.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "hippocampus-memory",
+  "title": "Memory & the hippocampus",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Store a few drawn patterns in a network of neurons that strengthen the connections between cells that fire together, as the hippocampus's CA3 region is thought to, then give it a smudged or half-erased pattern and watch the cells settle into the whole. Store more patterns and watch recall start to blend them; switch on a separating stage, as the dentate gyrus does, and see similar inputs kept apart. Then replay the stored patterns slowly into a second, larger network and show that the hippocampal copy can be lost without losing the memory.",
+  "takeaway": "A memory is a pattern of strengthened connections that a partial cue can regrow into the whole, which is why remembering is reconstruction, why similar memories blur, and why the hippocampus can hand its copies on to the cortex.",
+  "prerequisites": [
+   "neurons"
+  ],
+  "related": [
+   "neural-networks",
+   "cerebellum-motor-learning"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Memory is not a recording played back: recall is reconstruction, and each recall can alter the trace.",
+  "why": "The 2024 Nobel Prize in Physics went to Hopfield for the associative memory that stores and reconstructs patterns: https://www.nobelprize.org/prizes/physics/2024/press-release/",
+  "overlapWith": "neural-networks: that page trains a feed-forward network on examples; this page is a recurrent network whose only job is to complete what it has seen, read as a model of CA3 with the neurons page as its base.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "ige-crosslinking-allergy",
+  "title": "Allergy, IgE & anaphylaxis",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Coat a mast cell with IgE and drag the allergen concentration: a bivalent allergen bridges pairs of antibodies, and the number of bridges, computed from the crosslinking equilibrium, rises and then falls again when there is so much allergen that each antibody holds its own molecule. Degranulation is taken to follow the number of bridges (a stated simplification: inhibitory signalling also shapes the falling side of the real curve); set the released histamine loose on a lumped circulation and watch vessels dilate, fluid leak out and blood pressure fall; inject adrenaline to reverse it, or desensitise by exposing the cell to tiny rising doses.",
+  "takeaway": "An allergic reaction is an armed trap, antibodies already sitting on mast cells, sprung when an allergen bridges two of them; anaphylaxis is that trap going off in every tissue at once.",
+  "prerequisites": [
+   "immune-system",
+   "heart-circulation"
+  ],
+  "related": [
+   "thymic-selection-tolerance",
+   "baroreflex-blood-pressure"
+  ],
+  "needs": "",
+  "needsSource": "none; the bell-shaped dose response and its signalling are reviewed in Huber, Cell Commun. Signal. 11, 7 (2013): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3598417/",
+  "pitfall": "The first exposure to an allergen does not cause a reaction; it arms one, and the response is not strongest at the highest dose.",
+  "why": "Type I hypersensitivity and anaphylaxis are Immune-system content in the USMLE Step 1 outline and a high-traffic reference topic: https://en.wikipedia.org/wiki/Anaphylaxis",
+  "overlapWith": "immune-system: that page shows the adaptive response doing its job; this page shows one antibody class doing damage, from a single bridged receptor pair to a whole-body collapse.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "kidney-nephron",
+  "title": "The nephron: filter, then reclaim",
+  "level": 3,
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Follow one drop of filtrate along a nephron, segment by segment: the glomerulus filters by a pressure difference, the proximal tubule takes back most of the water and salt, and the loop of Henle builds the salty medulla one 'single effect' at a time, so the countercurrent multiplier can be stepped cycle by cycle while the gradient grows. Then set the antidiuretic hormone level and see the collecting duct release concentrated or dilute urine; raise the blood pressure, block the loop's pump as a diuretic does, or give an osmotic load such as glucose.",
+  "takeaway": "The kidney filters the whole plasma volume many times a day and reclaims nearly all of it, and it can make urine saltier than blood only because the loop of Henle multiplies a small difference along its length into a large one.",
+  "prerequisites": [
+   "homeostasis",
+   "the-cell"
+  ],
+  "related": [
+   "baroreflex-blood-pressure",
+   "liver-drug-metabolism"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "The kidney does not pick toxins out of the blood; it filters almost everything small and then chooses what to take back.",
+  "why": "Glomerular filtration and the countercurrent mechanism are Renal & Urinary system content in the USMLE Step 1 content outline: https://www.usmle.org/exam-resources/step-1-materials/step-1-content-outline-and-specifications",
+  "overlapWith": "homeostasis: that page keeps glucose steady with hormones; this page is one organ's plumbing, where a countercurrent loop, not a hormone, does the hard work.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "liver-drug-metabolism",
+  "title": "The liver & drug interactions",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Send a drug through a liver modelled as a well-stirred compartment with the portal blood flow on one side and enzyme activity on the other: drag the enzyme's intrinsic clearance and see the extraction ratio and the fraction surviving first pass. Give the same dose by mouth and by vein for a drug the liver clears easily and one it clears slowly, then inhibit the enzyme as grapefruit juice does or induce it as St John's wort does, and compare how much the exposure changes for each. Finish with alcohol, whose enzyme saturates, so that its level falls at a fixed rate instead of halving.",
+  "takeaway": "For a drug the liver clears easily the blood flow is the bottleneck and an enzyme inhibitor barely matters, while for a drug it clears slowly enzyme activity sets the exposure and an inhibitor can multiply it several-fold.",
+  "prerequisites": [
+   "pharmacokinetics-dosing",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "kidney-nephron"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "An inducer or inhibitor does not change every drug's exposure by the same amount; the difference between a tenfold change and almost none is the extraction ratio, not the dose.",
+  "why": "Drug metabolism and drug interaction are listed topics of MIT OCW HST.151 Principles of Pharmacology: https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/",
+  "overlapWith": "reaction-rates-equilibrium: that page's catalyst lowers a barrier in a beaker; here the enzyme sits in a flow, and whether it or the flow is the bottleneck is the whole story (pharmacokinetics-dosing, in this batch, treats clearance as one number).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "lung-gas-exchange",
+  "title": "The lungs & gas exchange",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Set the breathing rate and depth, the oxygen fraction in the air and the altitude, and watch alveolar and arterial oxygen and carbon dioxide settle in a lung made of many units with different ventilation-to-blood-flow ratios, each unit's blood passing through the real oxygen and carbon dioxide dissociation curves before it mixes. Drag the distribution of ratios: widen it as in lung disease, add a shunt where blood bypasses ventilated alveoli or dead space where air reaches no blood, and see which problems extra oxygen fixes and which it cannot.",
+  "takeaway": "Arterial oxygen is set by the worst-matched parts of the lung, because well-ventilated units cannot carry extra oxygen to make up for blood that never met air.",
+  "prerequisites": [
+   "haemoglobin-oxygen",
+   "homeostasis"
+  ],
+  "related": [
+   "fetal-circulation",
+   "sepsis-inflammation"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Giving more oxygen does not help every kind of low oxygen: blood passing through a true shunt comes out unchanged however rich the air is.",
+  "why": "Ventilation–perfusion matching, shunt and dead space are Respiratory-system content in the USMLE Step 1 content outline: https://www.usmle.org/exam-resources/step-1-materials/step-1-content-outline-and-specifications",
+  "overlapWith": "heart-circulation: that page shows blood picking up oxygen in the lungs as a colour change; this page computes how much it gets, unit by unit, and why the average lies.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "menstrual-cycle-hormones",
+  "title": "The menstrual cycle's hormone loops",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run the published model of the cycle, thirteen delay equations linking the pituitary's two hormones, the ovary's follicles and corpus luteum, and estradiol, progesterone and inhibin, and watch a 28-day oscillation emerge with no clock inside it. Hover the moment estradiol's feedback flips from suppressing the pituitary to driving it and the LH surge fires; then give a combined pill as a steady level of both hormones and see the surge never come, remove it and watch the cycle restart, and deplete the follicles to see the oscillation die out as at menopause.",
+  "takeaway": "The cycle is an oscillator built from feedback: estrogen holds the pituitary back at low levels and flips to driving it at high ones, that sign change fires ovulation, and the pill works by never letting it flip.",
+  "prerequisites": [
+   "homeostasis",
+   "calculus"
+  ],
+  "related": [
+   "oscillations-resonance",
+   "fetal-circulation"
+  ],
+  "needs": "Parameters of the Harris Clark–Schlosser–Selgrade model of the human menstrual cycle (Bull. Math. Biol. 2003); the earlier Schlosser–Selgrade 2000 model is also on the Physiome Model Repository as CellML (licence to check).",
+  "needsSource": "Published model parameters (Harris Clark, Schlosser & Selgrade, Bull. Math. Biol. 2003: https://selgrade.math.ncsu.edu/BMB_Selgrade.pdf); CellML version of the 2000 model on the Physiome repository, licence to check: https://models.physiomeproject.org/exposure/a56c737c0317784d45a0189591c8b3af",
+  "pitfall": "The pill does not 'kill eggs' or hold back a pre-set clock; it removes the surge that would release one, and the cycle has no clock beyond its own feedback.",
+  "why": "The hormonal control of the menstrual cycle and how the pill suppresses ovulation are Reproductive-system content in the USMLE Step 1 outline and a high-traffic reference topic: https://en.wikipedia.org/wiki/Menstrual_cycle",
+  "overlapWith": "homeostasis: that page uses negative feedback to hold a level steady; this page shows feedback that flips sign and makes an oscillator instead.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "mri-k-space",
+  "title": "MRI: an image from spinning protons",
+  "level": 3,
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Tip the protons of a slice with a radio pulse and watch their net magnetization precess and decay under the Bloch equations, the signal fading faster or slower with T1 and T2 sliders. Switch on a field gradient: protons on one side precess faster, their phases fan out, and the signal recorded while the gradient is on is one line of the slice's Fourier transform; step through a pulse sequence, each gradient pair filling one line of k-space, and watch the image emerge from a phantom as the lines are added. Fill only the centre for a blur, only the edges for outlines, skip every other line for a ghost, and change the echo time to turn fat bright or dark.",
+  "takeaway": "An MRI scanner never measures a picture: gradients make protons at different positions precess at different rates, so the recorded signal is the image's Fourier transform, acquired one line at a time and inverted by computer.",
+  "prerequisites": [
+   "fourier-transform",
+   "electromagnetism",
+   "medical-imaging"
+  ],
+  "related": [],
+  "needs": "The Shepp-Logan phantom (a mathematical object, no data); optionally one real T1-weighted brain slice.",
+  "pitfall": "MRI uses no ionizing radiation, and the image is not proton density alone: contrast comes as much from T1 and T2 relaxation as from how many protons there are. The gradient does not scan slice by slice the way CT rotates; k-space is the honest picture.",
+  "why": "'How does an MRI work' is among the most-asked medical-technology questions, and k-space MRI theory is a standard biomedical-engineering course (Purdue BME 55500): https://engineering.purdue.edu/online/courses/tagged_items/magnetic-resonance-imaging-mri-theory",
+  "overlapWith": "medical-imaging: CT from projections, with MRI only sketched at the end; this page builds the MRI image from the Bloch equations and k-space. nmr-spectroscopy (pool, chemistry, level 3) has the same spins and pulses but no gradients and no image.",
+  "needsSource": "Shepp-Logan: none. Real slice, if used: an OpenNeuro dataset (CC0), named on the page.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
+  "slug": "pain-gate-control",
+  "title": "Pain & the gate in the spinal cord",
+  "level": 3,
+  "kind": "build",
+  "category": "medicine",
+  "interaction": "Wire the dorsal horn from a palette of integrate-and-fire neurons: thick touch fibres, thin fast and slow pain fibres, an inhibitory interneuron and the projection cell that carries the signal to the brain, with a descending input from the brainstem. Then stimulate: a pinch alone drives the output, rubbing the skin at the same time quiets it, and a descending opioid-like signal quiets it further. Fire the slow fibres repeatedly and watch the projection cell's response grow with each volley until a touch alone hurts.",
+  "takeaway": "Pain is not a wire from injury to brain; the signal is gated in the spinal cord by other touch input and by the brain itself, and a gate held open long enough starts to let touch through as pain.",
+  "prerequisites": [
+   "neurons"
+  ],
+  "related": [
+   "anaesthesia-infusion",
+   "placebo-expectation"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Pain intensity is not proportional to tissue damage; the same injury can hurt differently depending on what else the spinal cord and brain are doing.",
+  "why": "Gate control theory (Melzack & Wall, Science 1965) remains the standard teaching model of spinal pain modulation: https://en.wikipedia.org/wiki/Gate_control_theory",
+  "overlapWith": "neurons: that page fires one neuron and adds inputs at one synapse; this page wires a handful of them into the circuit that decides whether a signal counts as pain.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "pharmacokinetics-dosing",
+  "title": "Pharmacokinetics & dosing",
+  "level": 3,
+  "kind": "build",
+  "category": "medicine",
+  "interaction": "Place doses on a timeline from a palette (an intravenous bolus, an oral tablet, a constant infusion, a loading dose) and run them through a one- or two-compartment model whose clearance, volume of distribution and absorption rate are sliders; the plasma concentration is plotted against the drug's therapeutic window. Change the interval, miss a dose, halve the clearance to model a failing kidney or switch the drug to saturable elimination, and watch the level, the time to steady state and the peaks and troughs respond.",
+  "takeaway": "Repeated doses pile up until elimination balances intake, and that steady state arrives after about four or five half-lives whatever the dose, so the dose sets the level and the half-life sets how long it takes to get there.",
   "prerequisites": [
    "calculus"
   ],
   "related": [
-   "river-meanders"
+   "homeostasis",
+   "artificial-pancreas"
   ],
-  "needs": "",
-  "pitfall": "Aquifers are not underground rivers or lakes but water in the pores of rock and sediment, and the sustainable yield is not the recharge rate alone, because pumping also takes water from rivers and springs.",
-  "why": "MIT OCW 1.72 Groundwater Hydrology syllabus (Darcy's equation, well hydraulics, numerical models): https://ocw.mit.edu/courses/1-72-groundwater-hydrology-fall-2005/pages/syllabus/",
-  "overlapWith": "carbon-cycle: the nearest reservoirs-and-flows page; nothing in the catalogue covers water underground, and this page solves a flow field rather than a box budget.",
-  "needsSource": "none",
+  "needs": "Clearance, volume of distribution and half-life for four or five example drugs, taken from their FDA prescribing information (US government work, public domain).",
+  "needsSource": "FDA prescribing information via DailyMed, public domain: https://dailymed.nlm.nih.gov/",
+  "pitfall": "Doubling the dose doubles the steady-state level but does not reach it any sooner; only a loading dose shortens the wait.",
+  "why": "MIT OCW HST.151 Principles of Pharmacology lists pharmacokinetics, dose–response and drug delivery as core topics: https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/",
+  "overlapWith": "homeostasis: that page doses insulin by hand against a glucose loop; this page models what happens to any drug's concentration after a dose, with no body response in the loop.",
   "leadsTo": [],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "medicine-l3"
  },
  {
-  "slug": "hurricane-heat-engine",
-  "title": "Hurricanes as heat engines",
-  "level": 3,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "Set the sea-surface temperature, the outflow temperature at the top of the storm and the humidity of the inflowing air, and the page computes Emanuel's potential intensity, the Carnot limit of an engine whose heat source is the ocean and whose sink is the upper troposphere, drawing the cycle on a temperature-entropy chart. Press run and a one-dimensional intensity model spins the storm up toward that limit over days; add vertical wind shear or let the storm cool the sea beneath it and watch it fall short of the ceiling.",
-  "takeaway": "A hurricane is a heat engine whose maximum wind is set by the temperature difference between the sea surface and the top of the storm, and most storms never reach that limit because shear and cold water cut them short.",
-  "prerequisites": [
-   "heat-engines",
-   "atmosphere-weather"
-  ],
-  "related": [
-   "entropy",
-   "ocean-currents",
-   "radiative-convective-column"
-  ],
-  "needs": "Optional: a monthly climatological sea-surface temperature field (NOAA; US government work, licence line not checked in this round) for a map of the limit.",
-  "pitfall": "The Carnot bound is an upper limit, not a forecast, and the storm's energy comes from evaporation off the warm sea, not from the Coriolis effect, which only sets the direction of spin.",
-  "why": "MIT OCW 12.811 Tropical Meteorology, lecture 4 on tropical cyclone energetics and potential intensity: https://ocw.mit.edu/courses/earth-atmospheric-and-planetary-sciences/12-811-tropical-meteorology-spring-2011/lecture-notes/MIT12_811S11_lecture_4.pdf",
-  "overlapWith": "atmosphere-weather: that page grows a hurricane by warming the sea surface; this page computes the thermodynamic ceiling on its winds and runs an intensity model against that ceiling.",
-  "needsSource": "none required; optional NOAA SST climatology (US government work; licence line not checked in this round).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "isotope-dating-concordia",
-  "title": "Isotope dating: concordia & isochrons",
+  "slug": "placebo-expectation",
+  "title": "The placebo effect",
   "level": 3,
   "kind": "manipulate",
-  "category": "earth",
-  "interaction": "Crystallize a zircon at a chosen age and watch its two uranium-lead clocks tick along the concordia curve as the ratios of lead-206 to uranium-238 and lead-207 to uranium-235 grow at their own rates. Strike it with a metamorphic event that strips some lead and the point jumps onto a straight discordia whose two intercepts give both ages; several grains losing different amounts line up and the page fits the line. Switch to rubidium-strontium and tilt an isochron by ageing a rock whose minerals started with the same strontium ratio.",
-  "takeaway": "Two decay chains in one crystal give two ages that must agree, so when they do not, the mismatch itself dates the event that disturbed them.",
+  "category": "medicine",
+  "interaction": "Set the pain a stimulus actually produces and the pain a person expects, each with its own confidence, and watch the felt pain land between them, weighted toward whichever is more certain, as in the Bayesian account of placebo analgesia. Build the expectation by conditioning over trials, give the same painkiller openly or hidden to see the open one work better, then switch to a three-arm trial where no treatment, a placebo and the drug are compared, and separate getting better anyway and regression to the mean from the placebo effect proper.",
+  "takeaway": "What a person feels is a weighted mix of what the body reports and what the brain expects, so a credible expectation changes the experience, and in a trial that effect sits on top of recovery that would have happened anyway.",
   "prerequisites": [
-   "radioactivity"
+   "bayes-theorem",
+   "neurons"
   ],
   "related": [
-   "radiocarbon-calibration",
-   "deep-time"
+   "clinical-trials",
+   "pain-gate-control"
   ],
   "needs": "",
-  "pitfall": "Radiometric ages are not circular with the fossil record; the concordia test is internal to the crystal, and a discordant point is information, not a failure of the method.",
-  "why": "UCL geochronology notes, chapter 5 on U-Pb concordia and discordia (Vermeesch): https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch5.html",
-  "overlapWith": "deep-time: that page scrubs 4.5 billion years already dated; this page is how a single crystal yields a date and how the date survives a disturbance.",
-  "needsSource": "none beyond published decay constants",
+  "needsSource": "none; the expectation model follows the Bayesian account in Büchel et al., Neuron 81, 1223–1239 (2014): https://pubmed.ncbi.nlm.nih.gov/24656247/",
+  "pitfall": "The improvement in a trial's placebo arm is not all placebo effect: much of it is natural recovery and regression to the mean, and the Bayesian model here is a normative account of expectation, not a mechanism in the tissue.",
+  "why": "The placebo effect and why trials need a placebo arm are standard clinical-research teaching and a high-traffic reference topic: https://en.wikipedia.org/wiki/Placebo",
+  "overlapWith": "bayes-theorem: that page updates a probability with a test result; this page uses the same rule to combine an expectation with a sensation, and shows why the result feels real.",
   "leadsTo": [],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "medicine-l3"
  },
  {
-  "slug": "mantle-convection",
-  "title": "Mantle convection",
+  "slug": "screening-overdiagnosis",
+  "title": "Screening, lead time & overdiagnosis",
   "level": 3,
   "kind": "simulate",
-  "category": "earth",
-  "interaction": "Set the Rayleigh number and the viscosity contrast between hot and cold rock and run a two-dimensional convection box solved on a grid (infinite Prandtl number, Boussinesq, temperature-dependent viscosity). A low Rayleigh number gives a few sluggish cells; a high one gives thin plumes under a cold, stiff lid. Drag a probe to read local temperature and speed, watch the heat carried (the Nusselt number) climb with Rayleigh number on a log-log plot, and tune the lid until it either locks in place or founders in plate-like pieces.",
-  "takeaway": "Rock that is solid on human timescales flows over millions of years, and one number, the Rayleigh number, decides whether a planet's mantle sits still, rolls in slow cells, or sends narrow plumes up under a cold lid.",
+  "category": "medicine",
+  "interaction": "Grow a cohort of people in whom tumours start at random times and grow at random rates, some fast and many slow, and set the size at which a tumour causes symptoms and the size at which it kills. Switch on a screening programme with a chosen detection size and interval and watch which tumours it finds: mostly the slow ones, often years early. The five-year survival from diagnosis is plotted beside the death rate of the whole cohort, with and without screening, and with a treatment that works or does not.",
+  "takeaway": "Finding a disease earlier raises survival-from-diagnosis even when nobody lives a day longer, so only the death rate of the whole population can say whether a screening programme helps.",
   "prerequisites": [
-   "plate-tectonics",
-   "states-of-matter"
+   "bayes-theorem",
+   "cancer"
   ],
   "related": [
-   "earths-magnetic-field",
-   "glacier-flow"
+   "clinical-trials",
+   "ageing-mortality"
   ],
   "needs": "",
-  "pitfall": "The mantle is solid rock that creeps, not a sea of magma, and plates are the cold upper boundary layer of the convection, not rafts floating on it.",
-  "why": "MIT OCW 12.002 Physics and Chemistry of the Terrestrial Planets, problem set 5 on convection and the Rayleigh number: https://ocw.mit.edu/courses/12-002-physics-and-chemistry-of-the-terrestrial-planets-fall-2008/5c713900869468f1a4616e1345658265_MIT12_002f08_ps05.pdf",
-  "overlapWith": "plate-tectonics: that page moves plates by hand and builds the landforms; this page shows the convection underneath that moves them and why it takes the form of plumes and a stiff lid.",
   "needsSource": "none",
+  "pitfall": "A rise in five-year survival after screening is introduced is not evidence that the screening works; lead time and the slow tumours it finds produce it on their own.",
+  "why": "Lead-time bias and overdiagnosis are the standard teaching cases of epidemiology courses on screening: https://en.wikipedia.org/wiki/Overdiagnosis",
+  "overlapWith": "bayes-theorem: that page shows that a positive test is often false when a disease is rare; this page shows that even a true positive can be a harm, because the disease it found would never have mattered.",
   "leadsTo": [],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "medicine-l3"
  },
  {
-  "slug": "ocean-acidification",
-  "title": "Ocean acidification & carbonate chemistry",
+  "slug": "sepsis-inflammation",
+  "title": "Sepsis: when the response is the disease",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Infect a model body with the four-variable acute-inflammation model: pathogen, activated immune cells, tissue damage and an anti-inflammatory brake. Set the pathogen's growth rate and the initial dose and watch the four outcomes: a clean recovery, a persistent infection, death with the pathogen winning, and death from inflammation after the pathogen is already gone. Add antibiotics at different times, add or remove the anti-inflammatory brake, and close with the circulation: leaking vessels and falling pressure as in septic shock.",
+  "takeaway": "In sepsis the body's own inflammatory response, not the microbe, does the damage: the same response that clears a small infection runs away once the damage it causes feeds back into more inflammation.",
+  "prerequisites": [
+   "immune-system",
+   "heart-circulation"
+  ],
+  "related": [
+   "coagulation-cascade",
+   "lung-gas-exchange",
+   "antibiotic-dosing-resistance"
+  ],
+  "needs": "",
+  "needsSource": "none; the model is Reynolds et al., J. Theor. Biol. 242, 220–236 (2006): https://scholar.usuhs.edu/en/publications/a-reduced-mathematical-model-of-the-acute-inflammatory-response-i/",
+  "pitfall": "Sepsis is not 'blood poisoning' by a microbe's toxins; a patient can die of it after the microbe is gone, and suppressing inflammation blindly can kill by the other route.",
+  "why": "Sepsis and septic shock are Multisystem content in the USMLE Step 1 outline and a high-traffic reference topic: https://en.wikipedia.org/wiki/Sepsis",
+  "overlapWith": "immune-system: that page shows the response doing its job; this page shows what happens when the fast general response does not stop.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "thymic-selection-tolerance",
+  "title": "Self-tolerance & autoimmunity",
   "level": 3,
   "kind": "manipulate",
-  "category": "earth",
-  "interaction": "Slide atmospheric CO2 from the pre-industrial 280 ppm past 1,000 ppm while the page solves the seawater carbonate system (the dissociation constants of carbonic acid in seawater, with alkalinity held fixed): pH falls, dissolved CO2 and bicarbonate rise, carbonate ion falls, and the aragonite saturation state drops below one first in cold water. A Bjerrum plot shows the species shifting with pH, a temperature slider shows why polar seas get there first, and the Revelle factor shows why the ocean's uptake slows as it fills.",
-  "takeaway": "Adding CO2 to seawater does not just lower its pH, it consumes carbonate ions, the building block of shells, and cold water runs short of them first.",
+  "category": "medicine",
+  "interaction": "Generate thousands of random T-cell receptors and test each against the body's own peptides in a model thymus: drag the lower affinity threshold below which a cell is useless and dies, and the upper threshold above which it is dangerous and dies, and watch what survives. Then challenge the survivors with a pathogen and with the body's own tissues: a strict upper threshold leaves few cells that can fight, a lax one lets self-reactive clones escape, and a peptide the thymus never displays leaves a hole in the pruning.",
+  "takeaway": "Tolerance is a threshold on a continuous scale of self-reactivity, so the immune system can only trade attacks on itself against failures to fight invaders, and some self-reactive cells always get through.",
   "prerequisites": [
-   "acids-bases",
-   "carbon-cycle",
-   "reaction-rates-equilibrium"
+   "immune-system"
   ],
   "related": [
-   "carbonate-silicate-thermostat",
-   "ocean-currents"
-  ],
-  "needs": "The seawater dissociation constants as functions of temperature and salinity (published empirical fits, as used by CO2SYS; numbers retyped from the literature).",
-  "pitfall": "The ocean is not becoming acid (its pH stays above 7); acidification means moving toward acid, and the harm is the loss of carbonate ion, not corrosive water.",
-  "why": "University of Texas MNS 193 Ocean and Estuarine Acidification, a course built around CO2SYS carbonate-chemistry calculations: https://hulab.utmsi.utexas.edu/OA_class/index.htm",
-  "overlapWith": "acids-bases: that page titrates a single acid and counts hydrogen ions; this page solves the coupled carbonate equilibria of seawater and reads off the carbonate ion and saturation state that acids-bases never reaches.",
-  "needsSource": "none beyond published equilibrium-constant fits",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "ocean-tides-amphidromes",
-  "title": "Tides in a real ocean",
-  "level": 3,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A rotating shallow-water model of an ocean basin forced by the Moon's twice-daily tidal potential (the Laplace tidal equations on a grid). Start with a boundless ocean and the bulge follows the Moon; close the basin and the tide becomes waves running around points of zero range, the amphidromic points, turning one way in the northern hemisphere and the other in the southern. Reshape the basin and change its depth to tune its natural period, so that a bay of the right length resonates and its range grows to the many meters of the Bay of Fundy, and compare the result with the harmonic constituents measured at a real port.",
-  "takeaway": "The ocean cannot keep up with the Moon's pull, so the real tide is a set of waves sloshing around each basin, with no tide at their centers and huge tides where a bay's natural period matches the Moon's.",
-  "prerequisites": [
-   "sun-earth-moon",
-   "waves-interference",
-   "oscillations-resonance"
-  ],
-  "related": [
-   "ocean-currents",
-   "rossby-waves",
-   "tidal-evolution-resonance"
-  ],
-  "needs": "Optional: tidal harmonic constituents for one or two ports from NOAA CO-OPS (US government work; licence line not checked in this round).",
-  "pitfall": "The two-bulge picture explains the forcing, not the tide people see, and the far-side bulge is not centrifugal force but the difference in the Moon's pull across the Earth.",
-  "why": "AMS Introduction to Ocean Sciences, chapter 10 on tides, which teaches amphidromic systems in undergraduate oceanography: https://www.ametsoc.org/ams/education-careers/education-program/undergraduate-curriculum/teaching-ocean-sciences/introduction-to-ocean-sciences-6th-edition-textbook/ocean-chapter-10/",
-  "overlapWith": "sun-earth-moon: that page shows the tides following the Moon and strengthening at alignment (the equilibrium tide); this page is the dynamic tide, with amphidromes, Kelvin waves and resonant bays that the geometry alone cannot show.",
-  "needsSource": "none required; optional NOAA CO-OPS harmonic constituents (US government work; licence line not checked in this round).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "radiative-convective-column",
-  "title": "Radiative transfer & the climate column",
-  "level": 3,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A column of air from the surface to the stratosphere, solved with the two-stream radiative transfer equations for a grey gas plus an infrared window, with convection adjusting any layer steeper than the chosen lapse rate. Slide the infrared optical depth (the CO2 amount) and the lapse rate and watch the temperature profile, the tropopause and the emission height move, while a side panel shows which layer the escaping infrared leaves from. Switch convection off to see pure radiative equilibrium and its unstable lower layers.",
-  "takeaway": "Adding greenhouse gas raises the height from which the planet radiates to space, and because air is colder higher up the whole column below must warm to restore the balance, while the stratosphere above it cools.",
-  "prerequisites": [
-   "greenhouse-effect",
-   "atmosphere-weather"
-  ],
-  "related": [
-   "carbonate-silicate-thermostat",
-   "hurricane-heat-engine"
+   "ige-crosslinking-allergy",
+   "cancer-immunotherapy"
   ],
   "needs": "",
-  "pitfall": "Greenhouse gases do not trap heat like a blanket or reflect infrared; the column warms because the effective emission level rises into colder air. A band that is saturated at the surface still warms the planet, because emission from higher, thinner layers is what matters.",
-  "why": "Pierrehumbert's Principles of Planetary Climate courseware, chapter 4 grey radiative-convective equilibrium notebook: https://users.physics.ox.ac.uk/~pierrehumbert/PrinciplesPlanetaryClimate/Courseware/PlanetaryClimateCourseware2/ChapterScripts/Chapter4/Chapter4.html",
-  "overlapWith": "greenhouse-effect: that page balances sunlight in against infrared out with adjustable CO2 in a zero-dimensional budget; this page adds the vertical structure, which is where the emission height, the lapse rate and stratospheric cooling live.",
   "needsSource": "none",
+  "pitfall": "Autoimmunity is not the immune system 'getting confused' by a single mistake; it is the escape of cells that every repertoire contains, normally held in check by further layers.",
+  "why": "Central tolerance by positive and negative selection is a chapter of Janeway's Immunobiology, free on the NCBI Bookshelf: https://www.ncbi.nlm.nih.gov/books/NBK10757/",
+  "overlapWith": "immune-system: that page multiplies the clones that match an invader; this page shows how the repertoire is pruned against the body itself before it is ever used, and what happens when the pruning fails.",
   "leadsTo": [],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "medicine-l3"
  },
  {
-  "slug": "radiocarbon-calibration",
-  "title": "Radiocarbon calibration",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "earth",
-  "interaction": "Enter a laboratory radiocarbon age with its error bar and the page maps it through the IntCal20 calibration curve into a calendar-date probability: a sharp bump where the curve is steep, a smear or several islands where it plateaus. Drag the age along the curve to find the plateaus (the Hallstatt plateau around 2,500 years ago) and the wiggles. Add a sequence of samples with known gaps between them, as in tree rings, and wiggle-match the whole set at once, which pins down a date the single sample could not.",
-  "takeaway": "A radiocarbon age is not a date: the amount of carbon-14 in the air has varied, so one measurement can map to several calendar ranges, and only the curve's wiggles, matched over a sequence, turn it into a date.",
-  "prerequisites": [
-   "radioactivity",
-   "bayes-theorem"
-  ],
-  "related": [
-   "isotope-dating-concordia",
-   "deep-time"
-  ],
-  "needs": "The IntCal20 calibration curve (Reimer et al. 2020, doi:10.1017/RDC.2020.68); shipped in the CRAN rintcal package under GPL (>= 2); the terms of the intcal.org files themselves were not checked.",
-  "pitfall": "A calibrated range is a probability distribution, not an error bar; the page must not present the single most likely year as the answer.",
-  "why": "UCL geochronology course notes (Vermeesch, Geotopes), the same course whose U-Pb chapter was fetched; the radiocarbon chapter itself was not fetched: https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch5.html",
-  "overlapWith": "radioactivity: that page dates a sample from its remaining carbon-14; this page is the step it skips, from that raw age to a calendar range through the curve's wiggles and plateaus.",
-  "needsSource": "IntCal20 (Reimer et al. 2020); available in the rintcal R package under GPL (>= 2); intcal.org terms not confirmed.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "river-meanders",
-  "title": "River meanders",
+  "slug": "wound-healing",
+  "title": "Wound healing",
   "level": 3,
   "kind": "simulate",
-  "category": "earth",
-  "interaction": "A nearly straight river on a floodplain with one small kink; the page runs the Ikeda-Parker-Sawai bend model, in which the faster current on the outside of each bend erodes that bank in proportion to its excess speed while the inside bank builds a point bar. Set bank erodibility, channel width and discharge and watch bends grow, migrate downstream, swing and finally cut off, leaving oxbow lakes; a plot tracks sinuosity rising, dropping at each cutoff and hovering around a value. Scrub back through time to see the scroll bars the channel left behind.",
-  "takeaway": "A river meanders because a bend feeds itself, pushing fast water onto its outer bank, until bends meet and cut off, so sinuosity grows and resets around a steady value instead of running away.",
-  "prerequisites": [],
+  "category": "medicine",
+  "interaction": "Draw a wound of any shape in a sheet of skin and watch it close under the Sherratt–Murray equations: cells at the edge multiply and migrate, so the edge advances as a travelling wave at a speed set by the division and migration rates, and a chemical the wound releases speeds division nearby. Set the rates, then add an infection or starve the tissue of blood flow as in diabetes, each applied as a stated reduction of the division and migration rates since the model has no immune or vascular terms, and compare closure times; the stages of inflammation, proliferation and remodelling are marked on the clock.",
+  "takeaway": "A wound's edge advances at a constant speed set by how fast cells divide and move, so a wound twice as wide takes twice as long, and anything that stalls the cells, infection or poor blood supply, stalls the closure.",
+  "prerequisites": [
+   "the-cell"
+  ],
   "related": [
-   "groundwater-flow"
+   "coagulation-cascade",
+   "bone-remodelling",
+   "cancer"
   ],
   "needs": "",
-  "pitfall": "Meanders are not caused by obstacles or by the Coriolis effect; a uniform floodplain and a tiny initial wobble are enough.",
-  "why": "CSDMS teaching platform, manual of the Meander Centerline Migration Model built on the Ikeda-Parker-Sawai theory: https://csdms.colorado.edu/csdms_wiki/images/Manual_of_the_MCMM.pdf",
-  "overlapWith": "plate-tectonics: the nearest landscape-building page; nothing in the catalogue treats rivers, and this page is a channel evolving under its own flow law rather than crust built by hand.",
-  "needsSource": "none",
+  "needsSource": "none; the closure model is Sherratt & Murray, Proc. R. Soc. B 241, 29–36 (1990): https://researchportal.hw.ac.uk/en/publications/models-of-epidermal-wound-healing/",
+  "pitfall": "Wounds do not heal from the inside out by filling with new skin; the surface closes from the edges, and scar is collagen laid down fast, not skin regrown.",
+  "why": "The phases of wound healing are standard first-year physiology and pathology content and a high-traffic reference topic: https://en.wikipedia.org/wiki/Wound_healing",
+  "overlapWith": "cancer: that page lets cells divide without control; this page lets them divide and move exactly as far as needed, and stop.",
   "leadsTo": [],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "medicine-l3"
  },
  {
-  "slug": "rossby-waves",
-  "title": "Jet streams & Rossby waves",
-  "level": 3,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A strip of the mid-latitude atmosphere solved with the barotropic vorticity equation on a beta plane. Drop a blob of spin into a westerly jet and it drifts west relative to the flow while its energy drifts east; set the jet speed and wavelength to find the waves that stand still over the ground. Raise a mountain range and a train of stationary waves forms downstream, as it does behind the Rockies; crank the amplitude until a wave breaks and a high-pressure block parks for days.",
-  "takeaway": "The jet stream's meanders are waves that exist because the Coriolis effect changes with latitude; the long ones drift west against the wind and can lock in place over mountains to hold a weather pattern for days.",
-  "prerequisites": [
-   "atmosphere-weather",
-   "waves-interference"
-  ],
-  "related": [
-   "ocean-currents",
-   "chaos-fractals",
-   "ocean-tides-amphidromes"
-  ],
-  "needs": "",
-  "pitfall": "The polar vortex and the jet stream are not the same thing, and the jet does not push weather along like a conveyor; the waves on it steer the highs and lows.",
-  "why": "MIT OCW 12.803 Quasi-Balanced Circulations, lecture 10 on Rossby wave propagation from the barotropic vorticity equation: https://ocw.mit.edu/courses/12-803-quasi-balanced-circulations-in-oceans-and-atmospheres-fall-2009/2fecfb67e4ae41a48d23ee1cd3f84013_MIT12_803F09_lec10.pdf",
-  "overlapWith": "atmosphere-weather: that page heats and spins a globe to produce the convection cells and prevailing winds; this page takes the resulting jet and shows the waves that run along it and why they stall.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "sea-level-fingerprints",
-  "title": "Sea-level fingerprints",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "earth",
-  "interaction": "Melt a chosen amount of Greenland or West Antarctica with a slider and a globe shows the resulting change in sea level, solved from the sea-level equation: the ice sheet's gravitational pull on the ocean weakens, so the sea falls within about two thousand kilometers of it and rises by more than the global average far away. Melt both and compare the patterns, then pick a coastal city to read its share. The model is gravitational self-attraction on a rigid Earth, with the elastic and rotational terms stated as omitted.",
-  "takeaway": "Melting ice does not raise the sea evenly: the water pulls away from the vanishing ice sheet, so the coasts nearest the melt see the least rise and distant ones the most.",
-  "prerequisites": [
-   "newtons-laws"
-  ],
-  "related": [
-   "glacier-flow",
-   "ice-ages",
-   "ocean-currents"
-  ],
-  "needs": "A land-ocean mask with bathymetry (ETOPO global relief, NOAA NCEI, US government work; licence line not checked in this round) and ice-sheet outlines from published masks.",
-  "pitfall": "Sea-level rise is a pattern, not a bathtub filling evenly, and the fall near a melting ice sheet is real, not a sign that no water was added.",
-  "why": "WHOI Geophysical Fluid Dynamics program lecture notes by Mitrovica on sea-level fingerprints: https://geodynamicsprogram.whoi.edu/wp-content/uploads/sites/14/2018/10/PR0929-ESEP-Mitrovica_48713.pdf",
-  "overlapWith": "greenhouse-effect: that page runs emission scenarios to a global temperature; sea level appears nowhere in the catalogue, and this page shows that each melt source stamps its own geography on the rise.",
-  "needsSource": "ETOPO land-ocean mask (NOAA NCEI, US government work; licence line not checked in this round); ice-sheet outlines from published masks.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "seismic-tomography",
-  "title": "Seismic tomography",
-  "level": 3,
-  "kind": "build",
-  "category": "earth",
-  "interaction": "Paint fast and slow patches into a cross-section of the mantle, place earthquakes and seismometers (stations can only go on land), and the page traces rays between every pair through a reference Earth and records their travel times. Press invert: a damped least-squares solution rebuilds an image from the times alone, and the reader compares it with what they painted. Replace the painting with a checkerboard to see which regions the ray coverage can resolve and which smear into streaks.",
-  "takeaway": "An image of Earth's interior is the smoothest model that explains thousands of arrival times, and it is sharp only where many rays cross.",
-  "prerequisites": [
-   "earthquakes",
-   "linear-transformations"
-  ],
-  "related": [
-   "medical-imaging",
-   "mantle-convection"
-  ],
-  "needs": "The PREM velocity table (Dziewonski & Anderson 1981; published table) for the reference Earth the rays bend through.",
-  "pitfall": "Blue and red in a tomogram are percent deviations from a reference, not absolute temperatures, and a smooth, featureless region may be unresolved rather than uniform.",
-  "why": "UNC Chapel Hill geophysics notes on travel-time tomography as a linear inverse problem: https://leesj.sites.oasis.unc.edu/FETCH/GRAB/Vignettes/invtomo.pdf",
-  "overlapWith": "medical-imaging: that page reconstructs a CT slice from evenly spaced projections it controls; here the sources are earthquakes nobody chose and the stations sit on land, so rays bend, coverage is uneven, and the inversion must be regularized and its resolution tested.",
-  "needsSource": "PREM velocity table (published in Dziewonski & Anderson 1981).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "aurora-rings",
-  "title": "Auroras: the Sun's wind on Earth's magnet",
+  "slug": "a-year-of-weather",
+  "title": "A year of weather, two places",
   "level": 0,
-  "kind": "simulate",
-  "category": "space",
-  "interaction": "Earth with its magnetic field drawn as loops, in a stream of charged specks from the Sun; press play and the specks cannot cross the field lines, so they slide along them and spiral down into the air in two rings around the magnetic poles, where the sky glows green and, higher up, red. The one control is the strength of the solar wind. A gust squeezes the field and the glowing rings widen toward the equator, which is when people far from the poles get to see the lights.",
-  "takeaway": "Auroras happen in rings around the magnetic poles because Earth's magnetic field steers the Sun's charged particles there, and a stronger solar wind pushes the rings toward the equator.",
+  "kind": "explore",
+  "category": "earth",
+  "interaction": "Scrub through one real year of daily weather at a chosen station: each day a bar from the night's low to the afternoon's high and a drop for the rain, the 365 days drawn in a ring. Pick a second place (a desert, a rainy tropical coast, the Arctic, a foggy coast, a snowy interior) and its ring appears beside the first. Flip to the next year: the days are different every time, but the shape of each ring, the climate, comes back.",
+  "takeaway": "Weather is what happens today and nobody can tell you a month ahead; climate is the shape of the whole year, different in each place and the same from year to year.",
   "prerequisites": [],
   "related": [
-   "compass-and-magnetic-poles",
-   "comet-tails",
-   "twinkling-stars"
+   "sea-breeze",
+   "cloud-base",
+   "dew-and-fog",
+   "water-cycle"
   ],
-  "needs": "",
-  "needsSource": "none (charged particles integrated in a dipole field, the field's sunward edge pushed in by solar-wind pressure, glow colour by height; the page states the simplification that particles are shown guided straight down the field lines, where the real ones arrive by way of the night-side tail; the NOAA SWPC OVATION aurora forecast, public domain, can be shown for comparison)",
-  "pitfall": "Auroras are not sunlight reflected off polar ice, and they are not in the clouds: they glow a hundred kilometres up and higher.",
-  "why": "NASA Space Place, 'What Is an Aurora?' (https://spaceplace.nasa.gov/aurora/en/).",
-  "overlapWith": "electromagnetism (level 2) shows charges moving in fields in the abstract; this page shows it once, on a planet, with the pattern it makes in the sky.",
+  "needs": "Daily high, low and rain for a handful of US stations in contrasting climates (Phoenix for desert, Hilo for wet tropics, Utqiagvik for the Arctic, San Francisco for a coast, Minneapolis for a continental interior) from NOAA GHCN-Daily (https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily); US stations are US Government data, public domain. Non-US stations in GHCN-Daily carry no clear licence, so the page uses US stations only.",
+  "needsSource": "NOAA GHCN-Daily, US stations only (US Government data, public domain)",
+  "pitfall": "One cold week does not disprove a warming climate and one hot day does not prove it: the page compares whole years, never single days.",
+  "why": "NGSS 3-ESS2-1: 'Represent data in tables and graphical displays to describe typical weather conditions expected during a particular season' (https://www.nextgenscience.org/pe/3-ess2-1-earths-systems); England KS1 geography, seasonal and daily weather patterns.",
+  "overlapWith": "greenhouse-effect (level 1) runs emission scenarios to 2100; this page shows no trend and no model, only measured days, to separate weather from climate before any warming is discussed.",
   "leadsTo": [
-   "atoms-periodic-table"
+   "greenhouse-effect"
   ],
   "everyday": false,
   "origin": "earth-sky-weather"
  },
  {
-  "slug": "comet-tails",
-  "title": "Comets and their tails",
+  "slug": "beach-waves",
+  "title": "Waves at the beach",
   "level": 0,
-  "kind": "explore",
-  "category": "space",
-  "interaction": "Scrub a comet along its real stretched orbit, far out and frozen, then swinging in close to the Sun. As it warms, gas and dust stream off it, and the tail always points away from the Sun, whichever way the comet is going, so on the way out the comet flies tail-first. Two tails appear: a straight blue gas tail pushed by the solar wind and a curved dust tail of grains that lag along the orbit; zoom in to see the grains leave.",
-  "takeaway": "A comet's tail is blown by the Sun, not left behind by motion, so it always points away from the Sun and the comet travels tail-first when it leaves.",
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "A cross-section of sea from deep water to the sand, with a rubber duck floating on it. Watch a wave pass: the duck bobs round in a small circle and ends up where it started, so the water does not travel with the wave. Drag the sea floor to make the beach steeper or gentler: as the water gets shallow the waves slow down, bunch together, grow taller and finally topple and break, far out on a gentle beach and right at the shore on a steep one.",
+  "takeaway": "A wave carries its shape across the sea while the water only circles in place, and waves break where the water gets too shallow to carry them.",
   "prerequisites": [],
   "related": [
-   "shooting-stars",
-   "solar-system-to-scale",
-   "aurora-rings"
+   "rock-to-sand",
+   "sand-dunes",
+   "sea-breeze"
   ],
-  "needs": "Orbital elements of one or two real comets (Halley, and a recent bright one) from the JPL Small-Body Database API (https://ssd-api.jpl.nasa.gov/doc/sbdb.html); NASA/JPL data with no separate licence text, free to use with the credit 'Courtesy NASA/JPL-Caltech' under JPL's use policy. Treat as open but confirm against the API's terms before shipping.",
-  "needsSource": "JPL Small-Body Database orbital elements (NASA/JPL, free with credit; no explicit data licence)",
-  "pitfall": "The tail does not trail behind like exhaust, and a comet is not a burning rock: it is ice and dust turning to gas in sunlight.",
-  "why": "NASA Space Place, 'What Is a Comet?' (https://spaceplace.nasa.gov/comets/en/); England KS2 Year 5, the movement of bodies relative to the Sun.",
-  "overlapWith": "orbits-kepler (level 1) launches bodies into ellipses; this page uses one real ellipse and asks only which way the tail points.",
+  "needs": "",
+  "needsSource": "none (water waves slowing with depth, growing as they slow, breaking when their height nears the depth; a tracer following the orbital motion)",
+  "pitfall": "Beach waves are not made by the tide: they are made by wind far out at sea, and the water only rushes forward in the surf, not on the way in.",
+  "why": "NOAA National Ocean Service, 'Why does the ocean have waves?' (https://oceanservice.noaa.gov/facts/wavesinocean.html); NGSS 4-PS4-1 and England KS3 geography, coasts.",
+  "overlapWith": "waves-interference (level 1) is a ripple tank of interference, harmonics and Doppler; this page has one wave, a sloping floor and a duck, and sun-earth-moon's tides are not waves.",
   "leadsTo": [
-   "orbits-kepler",
+   "waves-interference",
+   "oscillations-resonance"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "cloud-base",
+  "title": "Why clouds form, and why their bottoms are flat",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "Drag a bubble of air up from the warm ground: it swells and its thermometer drops about one degree for every hundred metres, which is also why it is colder on a mountain, until the invisible water it carries turns to droplets and the bubble turns white. Every bubble released from the same ground turns white at the same height, so the clouds have flat bottoms; make the day more humid and the cloud base drops, dry the air and clouds form higher or not at all. A last step blows the bubble over a mountain: it rains on the side facing the wind and the air comes down the far side dry.",
+  "takeaway": "Rising air cools, and a cloud appears at exactly the height where the air gets cold enough for its water to condense, which is why cloud bottoms are flat and why mountains are cold.",
+  "prerequisites": [],
+  "related": [
+   "water-cycle",
+   "dew-and-fog",
+   "how-rain-forms",
+   "sea-breeze"
+  ],
+  "needs": "",
+  "needsSource": "none (dry-adiabatic cooling of a parcel and the Magnus saturation formula, the standard textbook model)",
+  "pitfall": "It is not colder on a mountain because it is farther from the Sun: a few kilometres make no difference to sunlight, and the air up there is cold because it has expanded. Clouds are not made of vapour and are not lighter than air: they are droplets falling so slowly that the rising air carries them.",
+  "why": "UCAR Center for Science Education, 'Clouds and How They Form' (https://scied.ucar.edu/learning-zone/clouds/how-clouds-form); NGSS MS-ESS2-4 on the changes of state in the water cycle.",
+  "overlapWith": "atmosphere-weather (level 2) shows global convection, pressure systems and fronts; this page follows one bubble of air and one cloud, with no Coriolis and no map.",
+  "leadsTo": [
    "states-of-matter"
   ],
   "everyday": false,

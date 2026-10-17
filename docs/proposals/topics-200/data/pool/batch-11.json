@@ -1,632 +1,651 @@
 [
  {
-  "slug": "reflexes",
-  "title": "Reflexes",
-  "level": 0,
-  "kind": "simulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Touch a hot pan on screen and watch two signals race along the body's wiring: one takes the short loop to the spinal cord and straight back to the arm muscle, the other carries on up to the brain; the hand is away before the ouch arrives, with both times on a clock. Then take the page's own reaction test, click when the colour changes, and see your time land far above the reflex's.",
-  "takeaway": "A reflex is a shortcut through the spinal cord, which is why your hand is off the hot pan before you feel the pain.",
-  "prerequisites": [],
-  "related": [
-   "heartbeat-and-pulse",
-   "why-spinning-makes-you-dizzy",
-   "neurons"
-  ],
-  "needs": "",
-  "needsSource": "none: path lengths times textbook nerve conduction speeds (tens of metres per second for the fast fibres, with a short delay at each junction), and a reaction-time test measured in the browser",
-  "pitfall": "The brain does not decide to pull the hand away; it finds out afterwards. And the reflex is not faster because its signal travels faster: it is faster because its path is shorter.",
-  "why": "NGSS MS-LS1-8: sensory receptors send messages that result in immediate behaviour or memories, with the hot-handle example. https://nyssls.info/index.php/MS-LS1-8",
-  "overlapWith": "neurons: that page is the spike itself, ions and myelin at level 2; this one shows no voltage, only paths and timings, and the reader's own reaction time.",
-  "leadsTo": [
-   "the-cell",
-   "electric-circuits"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "smell-and-taste",
-  "title": "Smell and taste",
-  "level": 0,
-  "kind": "build",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Build a smell: drag a molecule across a row of a dozen receptor locks and see which ones it fits, lighting a pattern; a different molecule lights a different pattern, and two together light a new one, so the nose tells smells apart by the pattern rather than by one lock each. Then eat a strawberry with the nose pinched and watch only the tongue's five basic tastes light up: most of what you call flavour vanishes.",
-  "takeaway": "There is no sensor for each smell: a smell is the pattern of many sensors lit at once, and most of what you taste is really smell.",
-  "prerequisites": [],
-  "related": [
-   "hearing-and-the-ear",
-   "hunger-and-fullness",
-   "vision-color"
-  ],
-  "needs": "",
-  "needsSource": "The receptor matrix is a stated toy with real counts (about four hundred human odorant-receptor types, five basic tastes), after the combinatorial-code result of Malnic, Hirono, Sato and Buck (1999, Cell 96:713); if an open odorant-receptor response dataset is used to fill it, its licence must be checked",
-  "pitfall": "The tongue map (sweet at the tip, bitter at the back) is a myth: every taste is sensed all over the tongue. And flavour is not a sixth taste; it is smell arriving through the back of the mouth.",
-  "why": "NGSS MS-LS1-8: sensory receptors respond to stimuli, with tongue and nose receptors reacting to specific chemicals. https://thewonderofscience.com/msls18",
-  "overlapWith": "vision-color: that page builds colour from three cone types; this one builds a smell from hundreds of receptors, the same pattern idea with a different sense and a pinched-nose test.",
-  "leadsTo": [
-   "vision-color",
-   "the-cell"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "sugar-and-tooth-decay",
-  "title": "Sugar and your teeth",
-  "level": 0,
-  "kind": "simulate",
-  "category": "medicine",
-  "everyday": true,
-  "interaction": "Place snacks and drinks on a day's timeline and run it: each sugary bite drops the mouth's acid meter into the red for about half an hour, and the enamel on a close-up tooth wears away only while the meter is there. Try one big bag of sweets at once against the same sweets spread through the day, then add brushing with fluoride toothpaste and watch the meter recover faster.",
-  "takeaway": "Teeth are damaged by how often sugar arrives, not by how much: the same sweets spread through the day keep the mouth acid for hours.",
-  "prerequisites": [],
-  "related": [
-   "germs-and-hand-washing",
-   "digestion-journey",
-   "acids-bases"
-  ],
-  "needs": "",
-  "needsSource": "Stephan curve: the published plaque pH-after-sugar curve (Stephan 1944, Journal of Dental Research; summarised at https://www.dentalcare.com/en-us/ce-courses/ce713/stephan-curve) is used as the model's shape; no dataset is shipped",
-  "pitfall": "Sugar does not dissolve teeth: the bacteria in plaque turn it into acid, and the acid does the damage below a mouth pH of about 5.5. Sugar-free does not mean acid-free: fizzy drinks are acid on their own.",
-  "why": "England KS2 Year 4 statutory requirement: identify the different types of teeth in humans and their simple functions, taught with tooth-decay investigations. https://www-legacy.stem.org.uk/resources/community/collection/12365/year-4-animals-including-humans",
-  "overlapWith": "acids-bases: that page is the chemistry of acids; this one is one acid attack you can schedule, on a tooth, with no chemistry shown.",
-  "leadsTo": [
-   "acids-bases"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "why-bruises-change-colour",
-  "title": "Why bruises change colour",
-  "level": 0,
-  "kind": "step",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Bump a shin, lightly or hard, and watch blood leak from tiny broken vessels and pool under the skin; then scrub the days: the pool darkens as its oxygen goes, turns green as the red pigment is taken apart, then yellow, then fades as the pieces are carried off. A harder bump makes a bigger pool that takes longer to clear, and a colour key under the scrubber tells you roughly how old a bruise is.",
-  "takeaway": "A bruise is blood trapped under the skin, and its changing colours are the body taking that blood apart piece by piece.",
-  "prerequisites": [],
-  "related": [
-   "how-cuts-heal",
-   "heartbeat-and-pulse",
-   "heart-circulation"
-  ],
-  "needs": "",
-  "needsSource": "none: haemoglobin to biliverdin to bilirubin as first-order conversions in a spreading pool, with the colour mixed from the three pigments; timings stated as ranges, since bruise ageing varies with size and person",
-  "pitfall": "Bruises are not blood going bad, and the green and yellow are not signs of infection: the yellow is the same pigment that colours jaundice, and it is the normal end of the clean-up.",
-  "why": "Demand: a standing reader question in the Ask Discover column. https://www.discovermagazine.com/ask-discover-39543",
-  "overlapWith": "heart-circulation: that page keeps blood in the vessels; this one follows blood that got out, day by day, with no pump.",
-  "leadsTo": [
-   "heart-circulation"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "why-shots-protect-you",
-  "title": "Why a shot protects you",
-  "level": 0,
-  "kind": "simulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Let a germ into a body and watch a race of counts: the germ doubles every few hours while the body's matching defenders start from a handful and take about a week to multiply, so you are ill before they win. Give the same body a shot first, a harmless lookalike of the germ, and run the race again: the defenders start in their thousands and the germ never gets going; add a second shot and see the head start grow.",
-  "takeaway": "A shot is a practice run: the defenders are already made, so the real germ loses the race before it can multiply enough to make you ill.",
-  "prerequisites": [],
-  "related": [
-   "germs-and-hand-washing",
-   "fever",
-   "immune-system",
-   "mrna-vaccines",
-   "epidemics"
-  ],
-  "needs": "",
-  "needsSource": "none: two growth curves with textbook timescales (a first response taking about a week, a second taking days; germ doubling times stated), after the standard primary and secondary antibody curves",
-  "pitfall": "The shot does not contain the illness and does not make you a little sick to teach you: it is a lookalike, and feeling sore or warm afterward is the practice run itself.",
-  "why": "England statutory RSHE and health education guidance, primary health education: the facts and scientific evidence relating to vaccination and immunisation, introduced when vaccinations are offered to pupils. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
-  "overlapWith": "mrna-vaccines: that page follows the mRNA into a cell at level 2, and immune-system selects the matching cells; this one shows no cells, only the race of counts with and without a head start.",
-  "leadsTo": [
-   "epidemics"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "why-spinning-makes-you-dizzy",
-  "title": "Why spinning makes you dizzy",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Spin a head on a chair with a slider and watch the fluid in the ear's three rings lag behind, bending the little flap that tells the brain turning; keep spinning at a steady speed and the fluid catches up, so the feeling fades. Stop suddenly and the fluid keeps going, the flap bends the other way, and the brain reports turning in the opposite direction while the room stands still: that is dizzy.",
-  "takeaway": "Your ears sense turning with a ring of fluid, and when you stop spinning the fluid keeps going, so you feel you are turning the other way.",
-  "prerequisites": [],
-  "related": [
-   "hearing-and-the-ear",
-   "reflexes",
-   "oscillations-resonance"
-  ],
-  "needs": "",
-  "needsSource": "none: the torsion-pendulum model of the semicircular canal (fluid lag with a time constant of a few seconds, plus the brain's longer velocity storage), driven by the slider's turning speed",
-  "pitfall": "Dizziness after spinning is not blood sloshing or the brain being overwhelmed by speed: the sensor is faithfully reporting a real movement of fluid that is no longer the head's movement.",
-  "why": "Demand: a standing Life's Little Mysteries question. https://www.livescience.com/33828-spinning-dizzy.html",
-  "overlapWith": "oscillations-resonance: that page drives a spring; this one is a sensor's lag, with the same inner ear as hearing-and-the-ear but a different organ in it.",
-  "leadsTo": [
-   "oscillations-resonance",
-   "newtons-laws"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "why-you-get-sleepy",
-  "title": "Why you get sleepy",
-  "level": 0,
-  "kind": "simulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Set a bedtime and a wake-up time and run three days: a sleep-pressure tank fills while you are awake and drains while you sleep, and a body clock sets the hours when sleep comes easily; sleepiness is the gap between them. Skip a night and watch the tank overflow; nap in the afternoon and see tonight's sleep come later; a strip under the plot shows the night's cycles of light and deep sleep.",
-  "takeaway": "Sleepiness is a pressure that builds all day and drains at night, gated by a clock that opens a window for it; when the two disagree you lie awake tired or nod off at noon.",
-  "prerequisites": [],
-  "related": [
-   "body-thermostat",
-   "growing-up",
-   "homeostasis"
-  ],
-  "needs": "",
-  "needsSource": "none: the two-process model (Borbely 1982; retrospective at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9540767/) is an exponential sleep pressure and a daily rhythm with two thresholds; the night stages follow the standard ninety-minute cycle",
-  "pitfall": "The page explains when you get sleepy, not why animals sleep at all, which is still an open question. And a weekend lie-in drains the tank but does not move the clock, which is why Monday feels like jet lag.",
-  "why": "England statutory RSHE and health education guidance, primary health education: the importance of sufficient good quality sleep for health, the amount of sleep recommended for their age, and practical steps for improving sleep. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
-  "overlapWith": "homeostasis: that page is a feedback loop around blood sugar over hours; this one is a pressure and a clock over days, with no hormones shown.",
-  "leadsTo": [
-   "homeostasis"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "ageing-mortality",
-  "title": "Ageing & the mortality curve",
-  "level": 3,
-  "kind": "explore",
-  "category": "medicine",
-  "interaction": "Scrub through real life tables and watch the chance of dying in the next year climb exponentially from about age thirty, doubling roughly every eight years on a log scale, with the curve for each decade of the twentieth century shifting down but keeping its slope. Then run the evolutionary explanation: a population with mutations that act at different ages, where selection cannot see what happens after reproduction, and watch late-acting harm accumulate; add a damage model whose redundant parts fail at random and see the same straight line appear on its own.",
-  "takeaway": "The risk of dying doubles every eight years or so across adult life, and that straight line on a log scale is what a body of many redundant parts, shaped by selection that cannot see old age, would produce.",
-  "prerequisites": [
-   "evolution",
-   "central-limit-theorem"
-  ],
-  "related": [
-   "bone-remodelling",
-   "screening-overdiagnosis",
-   "deep-time"
-  ],
-  "needs": "Period life tables by age and year from the US National Center for Health Statistics (public domain); the Human Mortality Database (free with registration) for other countries.",
-  "needsSource": "CDC/NCHS United States Life Tables, public domain: https://www.cdc.gov/nchs/products/life_tables.htm",
-  "pitfall": "Ageing is not a programme that switches on; nothing in the model wants the body to die, and the curve falls out of what selection could and could not reach.",
-  "why": "The Gompertz–Makeham law of mortality is the standard description of adult mortality: https://en.wikipedia.org/wiki/Gompertz%E2%80%93Makeham_law_of_mortality",
-  "overlapWith": "evolution: that page adapts a trait to an environment; this page shows what evolution leaves alone, because it happens after reproduction.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "anaesthesia-infusion",
-  "title": "Anaesthesia: the sleeping dose",
-  "level": 3,
-  "kind": "simulate",
-  "category": "medicine",
-  "interaction": "Run a propofol infusion through the three-compartment model that real target-controlled infusion pumps use, with an effect-site compartment for the brain and a sigmoid dose–effect curve that turns concentration into the chance of being unconscious. Set a target and watch the pump overshoot the blood to reach the brain quickly; then stop the infusion after ten minutes or after eight hours and compare how long the patient takes to wake. Add a second drug that acts on the same curve and see the effect shift.",
-  "takeaway": "Waking from a short anaesthetic is mostly the drug draining out of the blood into muscle and fat, not the body breaking it down, so the longer the infusion has run, the fuller those stores are and the slower the wake-up.",
-  "prerequisites": [
-   "pharmacokinetics-dosing",
-   "neurons"
-  ],
-  "related": [
-   "pain-gate-control"
-  ],
-  "needs": "Parameters of the Schnider propofol model and its effect-site rate constant, published in Anesthesiology (1998–1999); numbers, not copyrightable.",
-  "needsSource": "Published model parameters; no dataset.",
-  "pitfall": "A drug's elimination half-life does not predict how fast a patient wakes; the context-sensitive half-time depends on how long the infusion ran.",
-  "why": "The Schnider model and the context-sensitive half-time are core pharmacokinetics content of the anaesthesia primary exam syllabus (CICM primary, pharmacokinetics chapter): https://derangedphysiology.com/main/cicm-primary-exam/pharmacokinetics/Chapter-323/context-sensitive-half-time",
-  "overlapWith": "neurons: that page opens ion channels on one neuron; this page never opens a channel, it tracks where the drug is and how likely the brain is to be switched off.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "antibiotic-dosing-resistance",
-  "title": "Antibiotic dosing & resistance",
-  "level": 3,
-  "kind": "simulate",
-  "category": "medicine",
-  "interaction": "Dose a bacterial infection with an antibiotic whose concentration follows a pharmacokinetic curve, and watch a population of sensitive cells and a rare resistant mutant through a kill curve whose rate depends on concentration: above the sensitive strain's minimum inhibitory concentration the sensitive cells die, and only above a higher one do the mutants. Change the dose, the interval, the course length and the mutation rate, spread the same drug across a plate with a concentration gradient as in the MEGA-plate experiment, and compare one drug with two given together.",
-  "takeaway": "Resistance is selected in the window of concentrations that kill the sensitive strain but not the mutant, so what matters is how much time the drug spends in that window, not whether a course was 'finished'.",
-  "prerequisites": [
-   "evolution",
-   "pharmacokinetics-dosing"
-  ],
-  "related": [
-   "cancer",
-   "epidemics",
-   "sepsis-inflammation"
-  ],
-  "needs": "",
-  "needsSource": "none",
-  "pitfall": "Longer courses are not automatically safer: a course that keeps the concentration in the selection window for longer can select more resistance, not less.",
-  "why": "The MEGA-plate experiment (Baym et al., Science 2016) made the spatial selection of resistance visible and widely watched: https://www.sciencedaily.com/releases/2016/09/160908150908.htm",
-  "overlapWith": "evolution: that page uses an antibiotic dose as one environment that shifts a trait; this page adds the drug's rise and fall in the body and shows that the dosing schedule, not the drug, decides whether resistance wins.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "artificial-pancreas",
-  "title": "The artificial pancreas",
-  "level": 3,
-  "kind": "simulate",
-  "category": "medicine",
-  "interaction": "Close the loop on a type-1 patient modelled with a published glucose–insulin model: a sensor reads glucose from under the skin with its lag, a pump delivers insulin under the skin that takes close to an hour to peak, and a controller the reader tunes decides the dose every five minutes. Serve a meal, announced or not, send the patient for a run, and watch an aggressive controller overshoot into hypoglycaemia hours later; replace reacting with predicting and see the difference.",
-  "takeaway": "Controlling blood glucose is hard not because the goal is complicated but because every measurement and every action is delayed by close to an hour, so a controller that reacts will overshoot and one that predicts can hold the line.",
-  "prerequisites": [
-   "homeostasis",
-   "feedback-control"
-  ],
-  "related": [
-   "pharmacokinetics-dosing"
-  ],
-  "needs": "Parameters of the Hovorka glucose–insulin model (Physiological Measurement 2004); numbers, not copyrightable.",
-  "needsSource": "Published model parameters (Hovorka et al. 2004); the absorption delay as the limiting factor is analysed in Boiroux et al., DYCOPS 2010: https://skoge.folk.ntnu.no/prost/proceedings/dycops-2010/Papers_DYCOPS2010/MoAT1-02.pdf",
-  "pitfall": "A closed loop is not a pancreas: it cannot deliver insulin into the portal vein or take back insulin already absorbed, so it must leave room for its own delay.",
-  "why": "Closed-loop insulin delivery is now a licensed treatment and a high-traffic reference topic: https://en.wikipedia.org/wiki/Artificial_pancreas",
-  "overlapWith": "homeostasis: that page lets the reader dose insulin by hand against a glucose loop; this page hands the job to a controller and shows the delays that make it fail.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "baroreflex-blood-pressure",
-  "title": "Blood pressure & the baroreflex",
-  "level": 3,
-  "kind": "simulate",
-  "category": "medicine",
-  "interaction": "Run a circulation in which pressure is cardiac output times resistance, and close the loop: stretch sensors in the neck read the pressure, and with a short delay the heart rate, the heart's strength and the vessel tone respond along a sigmoid curve. Stand the person up and watch pressure dip then recover; bleed them slowly and see the pressure hold while the heart rate climbs until the reserve runs out; perform a Valsalva manoeuvre and see its four phases; then move the set point up, as chronic hypertension does, and see the reflex defend the wrong pressure.",
-  "takeaway": "Blood pressure is held by a fast reflex that trades heart rate and vessel tone against pressure, which hides a haemorrhage until it is large and defends a high pressure once the set point has drifted.",
-  "prerequisites": [
-   "heart-circulation",
-   "feedback-control"
-  ],
-  "related": [
-   "ecg-arrhythmias",
-   "kidney-nephron",
-   "ige-crosslinking-allergy"
-  ],
-  "needs": "",
-  "needsSource": "none",
-  "pitfall": "A normal blood pressure does not mean no blood has been lost; the reflex hides the loss, and it defends the current set point, not a healthy one.",
-  "why": "The baroreceptor reflex is Cardiovascular-system content in the USMLE Step 1 outline and the answer to the staple 'why do I get dizzy when I stand up': https://en.wikipedia.org/wiki/Baroreflex",
-  "overlapWith": "heart-circulation: that page narrows the arteries and shows the pressure change; this page closes the loop that reacts to it.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "blood-acid-base",
-  "title": "Acid–base balance of blood",
+  "slug": "membrane-potential",
+  "title": "Membrane transport & the resting potential",
   "level": 3,
   "kind": "manipulate",
-  "category": "medicine",
-  "interaction": "Drag a patient's point on the Davenport diagram, bicarbonate against pH with lines of constant carbon dioxide, and the lungs and kidneys answer: hold the breath or hyperventilate and the point slides along the buffer line within minutes, lose acid by vomiting or make it in diabetic ketoacidosis and the point jumps across the lines, and the kidneys drag it back over days. Each disturbance leaves its own trail, so a given reading can be traced back to what went wrong and how long ago.",
-  "takeaway": "Blood pH is held by one buffer whose two halves are controlled by two organs on different clocks, so the pattern of carbon dioxide and bicarbonate says which went wrong and how long ago.",
-  "prerequisites": [
-   "acids-bases",
-   "lung-gas-exchange",
-   "kidney-nephron"
-  ],
-  "related": [
-   "dialysis"
-  ],
-  "needs": "",
-  "needsSource": "none",
-  "pitfall": "Bicarbonate is a poor buffer at pH 7.4 in a closed flask (its pKa is 6.1); it works in the body only because the lungs blow off the carbon dioxide it makes.",
-  "why": "Arterial blood gas interpretation on the Davenport diagram is core content of medical physiology courses: https://en.wikipedia.org/wiki/Davenport_diagram",
-  "overlapWith": "acids-bases: that page titrates an acid in a beaker; this page titrates blood with two organs that keep moving the end point.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "bone-remodelling",
-  "title": "Bone remodelling",
-  "level": 3,
-  "kind": "simulate",
-  "category": "medicine",
-  "interaction": "Load a small two-dimensional block of bone and let it remodel: a coarse elastic grid of a few thousand elements computes the strain in each, bone is added where strain is high and removed where it is low or where damage builds, and a trabecular pattern emerges aligned with the load, the model's own rather than a picture. Change the direction of the load, remove it as in bed rest or spaceflight and watch the struts thin, and shift the balance of the bone-dissolving and bone-building cells as in osteoporosis.",
-  "takeaway": "Bone is continually dissolved and rebuilt, and because rebuilding follows strain, a bone grows the struts its load needs and loses them when the load goes away.",
-  "prerequisites": [
-   "bridges-structures",
-   "the-cell"
-  ],
-  "related": [
-   "wound-healing",
-   "ageing-mortality"
-  ],
-  "needs": "",
-  "needsSource": "none; the remodelling rule follows Huiskes et al., Nature 405, 704–706 (2000): https://ideas.repec.org/a/nat/nature/v405y2000i6787d10.1038_35015116.html",
-  "pitfall": "Bone is not a fixed scaffold that only wears out; adult bone is replaced roughly every decade, and loss in old age or weightlessness is remodelling with the balance tipped, which loading can partly tip back.",
-  "why": "Bone remodelling, osteoporosis and bone loss in spaceflight are first-year physiology content and a high-traffic reference topic: https://en.wikipedia.org/wiki/Bone_remodeling",
-  "overlapWith": "bridges-structures: that page loads a structure the reader builds; this page lets the structure rebuild itself to suit the load.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "cancer-immunotherapy",
-  "title": "Cancer immunotherapy",
-  "level": 3,
-  "kind": "simulate",
-  "category": "medicine",
-  "interaction": "Run a tumour against the immune cells that hunt it with the classic tumour–immune equations: the tumour grows, effector cells are recruited in proportion to it and are killed or exhausted by it. Set how visible the tumour is to the immune system and how strongly it suppresses the cells that reach it, and watch the three outcomes: elimination, a long standoff, or escape. Then release the brake, as a checkpoint inhibitor does, and see which tumours collapse and which barely notice; add engineered T cells and follow their expansion and the cytokine surge.",
-  "takeaway": "The immune system is already fighting most tumours; checkpoint drugs do not attack the cancer, they remove a brake on that fight, which is why they work dramatically on some tumours and not at all on others.",
-  "prerequisites": [
-   "cancer",
-   "immune-system"
-  ],
-  "related": [
-   "thymic-selection-tolerance",
-   "ecosystems"
-  ],
-  "needs": "",
-  "needsSource": "none",
-  "pitfall": "Immunotherapy does not 'boost' the immune system in general; it removes a specific brake, and the same brake removal causes autoimmune side effects.",
-  "why": "The 2018 Nobel Prize in Physiology or Medicine was awarded for cancer therapy by inhibition of negative immune regulation: https://www.nobelprize.org/prizes/medicine/2018/press-release/",
-  "overlapWith": "cancer: that page evolves a tumour under mutation and a drug that kills cells; this page adds the immune cells hunting it and shows what changes when their brake is released.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "cerebellum-motor-learning",
-  "title": "The cerebellum & motor learning",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "medicine",
-  "interaction": "Move the mouse or a finger to targets while the cursor is secretly rotated by thirty degrees, and watch yourself miss, correct and adapt over a few dozen reaches; beside the hand, a two-rate error-driven model updates its prediction trial by trial and its curve sits over the reader's own. Remove the rotation and both show an aftereffect in the opposite direction; adapt again and both learn faster. The eye's reflex that keeps the world still when the head turns runs the same loop with magnifying or reversing spectacles.",
-  "takeaway": "The cerebellum learns from error, nudging a prediction a little after every miss, and the aftereffect when the world changes back shows the correction was learned, not reasoned.",
+  "category": "biology",
+  "interaction": "Drag the ion concentrations on each side of a membrane and the permeability of each channel type, and watch ions cross while the voltage settles: with only potassium channels open it sits at the Nernst potential, and as sodium leaks in it drifts toward the Goldman-Hodgkin-Katz value shown live. Switch the sodium-potassium pump off and watch the gradients, the voltage and the cell's volume decay over simulated hours; then dilute the outside solution and see water follow the ions.",
+  "takeaway": "A cell's voltage is a weighted average of each ion's equilibrium potential, weighted by how permeable the membrane is to it, and holding that voltage and the cell's volume costs a steady stream of ATP through the pump.",
   "prerequisites": [
    "neurons",
-   "feedback-control"
-  ],
-  "related": [
-   "hippocampus-memory",
-   "gradient-descent",
-   "reinforcement-learning"
-  ],
-  "needs": "",
-  "needsSource": "none; the two-rate model is Smith, Ghazizadeh & Shadmehr, PLoS Biology 4(6): e179 (2006): https://pmc.ncbi.nlm.nih.gov/articles/PMC1463025",
-  "pitfall": "Adaptation is not the same as knowing a trick: the reader cannot cancel the aftereffect by being told the rotation is gone.",
-  "why": "Motor adaptation and the cerebellum are standard neuroscience-course content and a high-traffic reference topic: https://en.wikipedia.org/wiki/Motor_learning",
-  "overlapWith": "reinforcement-learning: that agent learns from reward alone; here the error itself is the teaching signal and the learner is the reader's own hand.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "clinical-trials",
-  "title": "Randomized trials & their statistics",
-  "level": 3,
-  "kind": "simulate",
-  "category": "medicine",
-  "interaction": "Set a treatment's true effect, the spread of outcomes between patients and the number enrolled, then run a trial: patients are drawn, allocated at random or by the doctor's choice (which lets sicker patients drift into one arm), and the result lands on a p-value scale. Run a thousand trials at once to see the power and the false-positive rate, add several outcome measures and stop early when one looks good, and watch how often a treatment that does nothing 'works'.",
-  "takeaway": "Randomization is what makes two groups comparable in everything, measured or not, and a trial too small for the effect it is hunting will usually miss it and, when it does find something, will overstate it.",
-  "prerequisites": [
-   "central-limit-theorem",
-   "bayes-theorem"
-  ],
-  "related": [
-   "placebo-expectation",
-   "screening-overdiagnosis",
-   "learning-from-data"
-  ],
-  "needs": "",
-  "needsSource": "none",
-  "pitfall": "A p-value is not the probability that the treatment does not work; it is how surprising the data would be if it did nothing.",
-  "why": "Hypothesis testing, power and the design of randomized experiments are units of MIT OCW 18.05 Introduction to Probability and Statistics: https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2014/",
-  "overlapWith": "bayes-theorem: that page counts true and false positives of a test on a grid of people; this page builds the experiment that decides whether a treatment works and shows what randomization and sample size buy.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "coagulation-cascade",
-  "title": "Blood clotting",
-  "level": 3,
-  "kind": "step",
-  "category": "medicine",
-  "interaction": "Expose tissue factor at a cut and step through clotting as a chain of enzymes, each activating many copies of the next: initiation makes a trickle of thrombin, the trickle switches on the amplifying factors, and the burst follows, all driven by the published rate equations of the extrinsic pathway and its inhibitors. Remove factor VIII (haemophilia A), lower the vitamin-K factors as warfarin does, boost antithrombin as heparin does, and compare the thrombin curves. The platelet plug and the later dissolving of the clot are shown as stages, not computed, since the model stops at thrombin.",
-  "takeaway": "Clotting is a chain of enzymes each activating many of the next, so a tiny trigger becomes a burst of thrombin in minutes, and inhibitors keep the burst from spreading beyond the wound.",
-  "prerequisites": [
-   "reaction-rates-equilibrium",
-   "heart-circulation"
-  ],
-  "related": [
-   "sepsis-inflammation",
-   "wound-healing"
-  ],
-  "needs": "Rate constants and initial concentrations of the Hockin–Mann model of thrombin generation, as curated in BioModels (BIOMD0000000335, CC0).",
-  "needsSource": "BioModels BIOMD0000000335 (Hockin et al. 2002), CC0: https://www.ebi.ac.uk/biomodels/BIOMD0000000335",
-  "pitfall": "The 'intrinsic' and 'extrinsic' pathways of the textbook diagram are a laboratory artefact: in the body tissue factor starts clotting and factors VIII and IX amplify it, which is why haemophilia bleeds despite an intact extrinsic pathway.",
-  "why": "The coagulation cascade and its drugs (warfarin, heparin) are Hematologic-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
-  "overlapWith": "heart-circulation: that page shows blood moving; this page shows how it stops, as a cascade of reactions with the real kinetics.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "cochlea-hearing",
-  "title": "Hearing & the cochlea",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "medicine",
-  "interaction": "Play a tone, a chord or a spoken word into a cochlea modelled as a chain of coupled resonators whose stiffness falls along the basilar membrane, and watch the travelling wave peak at a place that depends on frequency. Drag the frequency and the peak moves; switch on the outer hair cells' amplification and the peak sharpens; kill the hair cells near the base, as loud noise does, and the audiogram loses its high frequencies. Then replace the cochlea with a cochlear implant: split the sound into a few bands, drive one electrode per band, and hear the result.",
-  "takeaway": "The cochlea sorts sound by frequency along its length, so pitch is a place, and a cochlear implant works by stimulating those places with a handful of electrodes.",
-  "prerequisites": [
-   "waves-interference",
-   "fourier-transform",
-   "neurons"
-  ],
-  "related": [
-   "vision-color",
-   "compression"
-  ],
-  "needs": "A short openly licensed speech clip (CC0 or public domain) for the implant demonstration, or synthesized speech; the cochlear model itself is a standard one-dimensional transmission-line model with published parameters.",
-  "needsSource": "none beyond a CC0 speech clip",
-  "pitfall": "Noise damage does not simply turn the volume down: the lost hair cells remove the amplification, so soft sounds vanish while loud ones still hurt.",
-  "why": "Reserve item of the catalogue; the place theory of hearing is KS3/GCSE sound content and first-year physiology, and a high-traffic reference topic: https://en.wikipedia.org/wiki/Place_theory_(hearing)",
-  "overlapWith": "vision-color: that page builds an image and colour from three kinds of sensor; this page builds pitch from thousands of sensors in a row, each tuned by its position.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "dialysis",
-  "title": "Dialysis: a kidney from a membrane",
-  "level": 3,
-  "kind": "build",
-  "category": "medicine",
-  "interaction": "Assemble an artificial kidney: pick the membrane area and pore size, set the blood pump and the dialysate pump, and choose whether the two flows run the same way or opposite ways; a mass-transfer model shows the urea concentration along both sides of the membrane and the clearance it achieves. Then run a week of three four-hour sessions through a single-pool urea model and watch the sawtooth of urea in the patient, compared with a healthy kidney's flat line and with a slow continuous treatment.",
-  "takeaway": "Running blood and dialysate in opposite directions keeps a concentration difference along the whole membrane, which is what lets a machine clear in four hours what a kidney does continuously, and the patient's urea still swings between sessions.",
-  "prerequisites": [
-   "kidney-nephron"
-  ],
-  "related": [
-   "blood-acid-base"
-  ],
-  "needs": "",
-  "needsSource": "none",
-  "pitfall": "Dialysis does not 'clean' the blood of everything: it removes what diffuses through the membrane, so small molecules like urea go while protein-bound and large toxins stay.",
-  "why": "Dialysis adequacy is defined by Kt/V from urea kinetic modelling, the quantity this page computes: https://en.wikipedia.org/wiki/Kt/V",
-  "overlapWith": "heart-circulation: that page pumps blood round a body; this page puts a membrane in the circuit and shows what crosses it and how fast.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "ecg-arrhythmias",
-  "title": "The ECG & arrhythmias",
-  "level": 3,
-  "kind": "simulate",
-  "category": "medicine",
-  "interaction": "Run a sheet of heart muscle as an excitable medium (the Aliev–Panfilov equations on a grid) with a pacemaker, a conduction system and a slow atrioventricular node, and read the ECG off it as the projection of the tissue's net electrical vector onto the limb leads of Einthoven's triangle. Then break it: slow conduction in a patch, add a scar, fire an early beat into tissue that has only partly recovered and watch a spiral wave take over the ECG as tachycardia and then fibrillation; deliver a shock that resets every cell at once. Real recordings from the MIT-BIH database sit beside the simulated traces.",
-  "takeaway": "An ECG is the shadow of a wave of excitation crossing the heart, and the dangerous rhythms are not a faster pacemaker but a wave that finds a way to chase its own tail.",
-  "prerequisites": [
-   "heart-circulation",
-   "neurons"
-  ],
-  "related": [
-   "baroreflex-blood-pressure"
-  ],
-  "needs": "Annotated ECG records from the MIT-BIH Arrhythmia Database on PhysioNet (Open Data Commons Attribution License v1.0).",
-  "needsSource": "PhysioNet MIT-BIH Arrhythmia Database, ODC-By 1.0: https://physionet.org/content/mitdb/1.0.0/",
-  "pitfall": "A defibrillator does not restart a stopped heart; it stops a chaotic rhythm so the natural pacemaker can take over, and a flat line is not a shockable rhythm.",
-  "why": "Rhythm interpretation and the conduction system are Cardiovascular-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
-  "overlapWith": "heart-circulation: that page shows a healthy ECG synchronized with the beating pump; this page computes the ECG from a model of the tissue and lets the reader break the rhythm.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "fetal-circulation",
-  "title": "The first breath",
-  "level": 3,
-  "kind": "step",
-  "category": "medicine",
-  "interaction": "Trace blood through a fetal circulation modelled as a network of resistances with three shunts: the placenta supplying oxygen, the collapsed lungs with their high resistance, and the two openings that let blood skip them. Then step through birth: the lungs inflate and their resistance falls, the cord is clamped and the placenta's low resistance disappears, the pressures on the two sides of the heart cross over, and the flap between the atria shuts. Oxygen levels in each vessel update at every step, with fetal haemoglobin's steeper curve explaining how the fetus lives on so little.",
-  "takeaway": "Before birth the lungs are bypassed because their resistance is high, and the first breath drops that resistance enough to reverse the pressure difference that was holding the shunts open.",
-  "prerequisites": [
-   "heart-circulation",
-   "haemoglobin-oxygen"
-  ],
-  "related": [
-   "lung-gas-exchange",
-   "menstrual-cycle-hormones"
-  ],
-  "needs": "",
-  "needsSource": "none",
-  "pitfall": "The shunts do not close because they are no longer needed; they close because the pressures that held them open reverse, and if lung resistance stays high they stay open.",
-  "why": "Fetal circulation and its transition at birth are Cardiovascular-system content in the USMLE Step 1 outline and a staple 'how does a baby breathe before birth' question: https://en.wikipedia.org/wiki/Fetal_circulation",
-  "overlapWith": "heart-circulation: that page runs the two pumps in series as in an adult; this page runs them in parallel, as in a fetus, and shows the switch.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "gwas-polygenic-risk",
-  "title": "Genome-wide association & polygenic risk",
-  "level": 3,
-  "kind": "explore",
-  "category": "medicine",
-  "interaction": "Scrub the sample size of a simulated case–control study from a hundred people to a million and watch the Manhattan plot rise out of the noise (each variant's test statistic is drawn from its sampling distribution, set by its true effect and the sample size, so nobody is simulated one by one): a few of the thousands of variants that truly matter clear the genome-wide line first, the rest surface slowly, and a hidden ancestry difference between cases and controls paints false peaks across every chromosome until it is corrected for. Build a polygenic score from the hits and see how far it separates people's risk and how much is left unexplained; real summary statistics for one published trait from the GWAS Catalog are there to compare.",
-  "takeaway": "Common diseases are shaped by thousands of variants of tiny effect, so finding them takes enormous samples, and a polygenic score shifts a person's odds without ever predicting them.",
-  "prerequisites": [
-   "meiosis-inheritance",
-   "central-limit-theorem"
-  ],
-  "related": [
-   "cancer",
-   "learning-from-data"
-  ],
-  "needs": "Summary statistics for one well-studied trait from the NHGRI-EBI GWAS Catalog (most studies CC0 or EMBL-EBI terms of use; the per-study licence column must be checked for the chosen study).",
-  "needsSource": "NHGRI-EBI GWAS Catalog summary statistics, mostly CC0 with per-study exceptions: https://www.ebi.ac.uk/gwas/downloads/summary-statistics",
-  "pitfall": "There is no 'gene for' a common disease; a genome-wide significant variant usually changes risk by a few percent, and a score built from thousands of them still explains only part of the heritability.",
-  "why": "Genome-wide association studies and polygenic scores are standard content of university genetics courses and a high-traffic reference topic: https://en.wikipedia.org/wiki/Genome-wide_association_study",
-  "overlapWith": "meiosis-inheritance: that page follows single genes through Punnett squares; this page asks what inheritance looks like when a trait depends on thousands of them at once.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
- },
- {
-  "slug": "haemoglobin-oxygen",
-  "title": "Oxygen & haemoglobin",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "medicine",
-  "interaction": "Drag the oxygen pressure along haemoglobin's binding curve, computed from the four-site cooperative model, and read how much oxygen the blood carries and how much it gives up between lungs and muscle. Shift the curve with acidity and carbon dioxide (the Bohr effect), temperature and 2,3-BPG, compare it with myoglobin's hyperbola and fetal haemoglobin, and poison the blood with carbon monoxide to see why that is worse than losing the same amount of haemoglobin.",
-  "takeaway": "Haemoglobin's S-shaped curve is what lets it fill up in the lungs and dump most of its load in working muscle, and the body tunes delivery by shifting that curve.",
-  "prerequisites": [
-   "reaction-rates-equilibrium",
-   "chemical-bonds"
+   "the-cell"
   ],
   "related": [
    "respiration-atp",
+   "electric-circuits",
+   "homeostasis"
+  ],
+  "needs": "",
+  "pitfall": "The pump's direct electrical contribution to the resting potential is a few millivolts; the voltage comes mostly from the potassium gradient the pump maintains, and the page must not show the pump charging the membrane like a battery.",
+  "why": "University of Kent LearnSci module on membrane potential, with Nernst and GHK calculation as learning outcomes: https://www.learnsci.com/resources/membrane-potential",
+  "overlapWith": "neurons: that page fires an action potential on top of a resting voltage it takes for granted; this one builds that resting voltage from gradients, permeabilities and the pump.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "metabolic-flux",
+  "title": "Metabolic networks & flux balance",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "biology",
+  "interaction": "Open a map of central carbon metabolism (glycolysis, the pentose phosphate pathway, the TCA cycle, fermentation, respiration) with every reaction's stoichiometry, and choose what the cell maximises and what it may take up. A linear-programme solver in the browser finds the flux through every reaction, drawn as arrow widths; cut the oxygen supply and watch flux reroute to fermentation, knock out a gene and see whether growth survives by a detour, and sweep the glucose uptake to trace growth rate against it.",
+  "takeaway": "Knowing only which reactions exist and that nothing accumulates, a cell's best possible division of flux can be computed, and the network's detours are what make most single knockouts survivable.",
+  "prerequisites": [
+   "respiration-atp",
+   "enzyme-kinetics",
+   "linear-transformations"
+  ],
+  "related": [
+   "photosynthesis",
+   "rubisco-photorespiration",
+   "graph-search"
+  ],
+  "needs": "A documented core E. coli network. The BiGG e_coli_core model is free for educational and non-profit use but not openly licensed (UC Regents terms), so build the network from textbook stoichiometry with references, or from a CC0 BioModels-curated central-metabolism model.",
+  "pitfall": "FBA predicts a bound, not a measurement: it has no kinetics and no regulation, so the page must say that the optimum is a hypothesis about what the cell maximises and that real fluxes can differ.",
+  "why": "UCSD Systems Biology Research Group FBA tutorial with the core E. coli model: https://sbrg.ucsd.edu/node/61",
+  "overlapWith": "respiration-atp: that page follows one glucose through the pathways; this one treats the whole network at once and asks how flux divides among all routes.",
+  "needsSource": "BiGG e_coli_core is non-commercial only (weak); textbook stoichiometry needs no licence; BioModels is CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "microbiome-dynamics",
+  "title": "The microbiome as an ecosystem",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a gut community of ten bacterial groups with the interaction matrix Stein et al. inferred from mouse data; it settles to a stable mix. Dose it with an antibiotic for a chosen number of days and watch some groups crash and others bloom; introduce C. difficile before, during and after the course and see it fail, invade, or take hold; stop the antibiotic and find that the community does not always return, then transplant a healthy community to push it back.",
+  "takeaway": "A gut community is a web of competition and support with more than one stable state, so a disturbance can tip it into a new one that persists after the disturbance is gone.",
+  "prerequisites": [
+   "ecosystems",
+   "the-cell"
+  ],
+  "related": [
+   "epidemics",
+   "immune-system",
+   "evolutionary-games"
+  ],
+  "needs": "Generalized Lotka-Volterra interaction matrix and antibiotic susceptibilities from Stein et al. 2013, PLOS Computational Biology (CC BY).",
+  "pitfall": "The parameters come from mice and one antibiotic, and gLV fits are uncertain; the page must say the model illustrates the dynamics and is not a prediction for a human gut.",
+  "why": "Demand: public coverage of ecological modelling of the gut microbiota (Gut Microbiota for Health): https://www.gutmicrobiotaforhealth.com/ecological-modeling-of-intestinal-microbiota/ ; model source is Stein et al. 2013, https://doi.org/10.1371/journal.pcbi.1003388 (no curriculum signal found in this round).",
+  "overlapWith": "ecosystems: that page has one predator, one prey and a small food web; here a ten-group community with alternative stable states, driven by real inferred interactions and perturbed by an antibiotic.",
+  "needsSource": "PLOS Computational Biology article and supplementary parameters, CC BY.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "molecular-motors",
+  "title": "Molecular motors: how kinesin walks",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Watch a kinesin dimer take 8 nm steps along a microtubule while a cargo bead trails it in a simulated optical trap; each step waits a random time set by ATP binding and hydrolysis, so the trace is a staircase with jittery dwells. Lower the ATP concentration and the dwells lengthen; raise the backward load and the motor slows, stalls near 7 pN and starts stepping backward; plot velocity against force and against ATP and compare the shapes with published single-molecule curves.",
+  "takeaway": "A molecular motor is not a tiny engine with a steady push: it takes random, thermally driven steps that ATP hydrolysis biases forward, and a load of a few piconewtons is enough to stop it.",
+  "prerequisites": [
+   "respiration-atp",
+   "newtons-laws"
+  ],
+  "related": [
+   "enzyme-kinetics",
+   "the-cell",
+   "heat-engines"
+  ],
+  "needs": "Discrete-state mechanochemical model and parameters from Fisher & Kolomeisky 2001 (PNAS, published values); a kinesin structure from the Protein Data Bank (CC0) for the illustration.",
+  "pitfall": "Do not draw the motor as pulled by a constant force or sliding smoothly; at this scale thermal motion dominates, and the forward bias comes from rectifying it with chemical energy.",
+  "why": "Workshop lecture notes rather than a syllabus: BIRS lecture on molecular-motor stepping citing Kolomeisky & Fisher as the standard model, https://stats.birs.ca/workshops/2018/18w5144/files/fricks.pdf (no curriculum signal found in this round).",
+  "overlapWith": "respiration-atp: that page makes ATP with a rotary motor; this one spends ATP to move along a track, with the stochastic stepping shown rather than a turning rotor.",
+  "needsSource": "Model parameters from the published paper; PDB structures are CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "morphogen-gradients",
+  "title": "Morphogen gradients & positional information",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "biology",
+  "interaction": "Drag the production rate, diffusion constant and lifetime of a morphogen made at one end of an embryo and watch its concentration profile settle into an exponential whose length scale the page reports. Set two or three thresholds and the cells paint themselves in bands, Wolpert's French flag; double the embryo's length to see the bands fail to scale, then switch on a scaling mechanism and compare; add noise to see which boundaries are robust.",
+  "takeaway": "A cell can learn where it is from how much of one substance reaches it, and the shape of that gradient, set by diffusion and decay, decides where the boundaries fall.",
+  "prerequisites": [
+   "the-cell",
+   "dna-to-protein"
+  ],
+  "related": [],
+  "needs": "",
+  "pitfall": "The synthesis-diffusion-degradation model is a working hypothesis and the Bicoid gradient's formation is still debated; the page must present the exponential as what the model predicts and say where it is tested.",
+  "why": "Stanford course on morphogenesis listing morphogen gradients and Turing patterns: https://bulletin.stanford.edu/courses/2126934",
+  "overlapWith": "the-cell: that page zooms into one cell; this one shows how thousands of cells in a row find out which part of the body they are making.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "phylogenetics",
+  "title": "Phylogenetics: building the tree of life",
+  "level": 3,
+  "kind": "build",
+  "category": "biology",
+  "interaction": "Pick a handful of species, align their cytochrome b sequences and watch the page count differences into a distance matrix. Build the tree by UPGMA, merging the closest pair step by step, then rebuild it by neighbour joining and see where the two disagree; speed up one lineage's clock and watch UPGMA put it in the wrong place; switch to a parsimony score and drag branches to try to beat the algorithm.",
+  "takeaway": "A tree of life is not observed but computed from the differences between sequences, and a method's assumptions, such as a constant rate of change, decide which tree it finds.",
+  "prerequisites": [
+   "dna-to-protein",
+   "evolution",
+   "graph-search"
+  ],
+  "related": [
+   "coalescent",
+   "dna-sequencing",
+   "deep-time",
+   "sorting"
+  ],
+  "needs": "Mitochondrial cytochrome b (or 16S rRNA) sequences for a dozen species from GenBank (NCBI places no restrictions on reuse); the species' accepted relationships from the Open Tree of Life synthetic tree for comparison (reported CC0, to confirm on the project site).",
+  "pitfall": "Humans are not at the 'top' of the tree and no living species is the ancestor of another: the page must let the reader rotate nodes to show that only the branching order carries information.",
+  "why": "CUHK BMEG3102 Bioinformatics tutorial on molecular phylogenetics (UPGMA, NJ, parsimony, likelihood): https://webarchive.lib.cuhk.edu.hk/20210407143348mp_/http:/www.cse.cuhk.edu.hk/~qdou/bmeg3102/tutorials/BMEG3102_2021Spring_Tutorial06_MolecularPhylogenetics_CUHK.pdf",
+  "overlapWith": "deep-time: that page scrubs a dated timeline of life; this one computes the branching order from today's sequences and has no dates until a clock is assumed.",
+  "needsSource": "GenBank sequences, no reuse restrictions (load-bearing); Open Tree of Life reported CC0, to confirm.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "population-genetics",
+  "title": "Population genetics: drift & selection",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a hundred Wright-Fisher populations at once as allele-frequency traces: with no selection they wander and fix at random, faster in small populations; with a selection coefficient s they bend toward fixation, and a counter shows how often a new beneficial mutation is lost anyway, approaching Kimura's 2s. Set dominance to see recessive alleles hide from selection, and compare the Hardy-Weinberg genotype frequencies with the simulated ones each generation.",
+  "takeaway": "Allele frequencies change by chance as well as by selection, and in a small population chance wins: most beneficial mutations are lost before selection can act on them.",
+  "prerequisites": [
+   "meiosis-inheritance",
+   "evolution",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "luria-delbruck",
+   "cancer"
+  ],
+  "needs": "",
+  "pitfall": "Hardy-Weinberg is not 'evolution stops': it is the one-generation baseline that shows which forces are absent, and drift is not selection by another name; the page must keep them separate.",
+  "why": "Cal State LA BIOL 415 Population Genetics syllabus (Hardy-Weinberg, drift, effective size, selection, coalescent): https://www.calstatela.edu/sites/default/files/syllabibiol415.pdf",
+  "overlapWith": "evolution: that page shifts a trait distribution with predators and food; this one tracks a single allele's frequency and separates chance from selection with explicit N and s.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "quasispecies-error-threshold",
+  "title": "Origin of life & the error threshold",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a pool of self-copying RNA strings on a fitness peak with a chosen copying error rate per base and a chosen length: below a threshold the population clusters around the best sequence as a cloud of mutants, above it the information melts into random sequences. Lengthen the genome and watch the threshold fall, then let the strings evolve a copying enzyme with better fidelity and see the longest sustainable genome grow; close with parasites exploiting a shared replicase and compartments containing them.",
+  "takeaway": "A replicator can carry only as much information as its copying accuracy allows, so the first genomes had to be short, and getting longer required evolving better copiers first.",
+  "prerequisites": [
+   "dna-to-protein",
+   "population-genetics"
+  ],
+  "related": [
+   "genetic-code-error-tolerance",
+   "error-correction",
+   "luria-delbruck"
+  ],
+  "needs": "",
+  "pitfall": "The error threshold has no single agreed definition and the RNA world is a hypothesis; the page must not present the simulation as a reconstruction of how life began.",
+  "why": "Wikipedia, 'Error threshold (evolution)' (Eigen's paradox and the RNA world): https://en.wikipedia.org/wiki/Error_threshold_(evolution)",
+  "overlapWith": "error-correction: that page adds redundancy to a message to survive noise; here the message is a genome that must copy itself through noise, and the question is how long it can be.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "quorum-sensing",
+  "title": "Quorum sensing",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Grow a colony of bacteria on a grid; each cell secretes an autoinducer that diffuses and decays, and once its receptor sees enough of it the LuxI/LuxR positive feedback switches the cell's light genes on. Watch the colony stay dark until a sharp density is reached and then light up together; shrink the chamber, slow the diffusion, or add an enzyme that destroys the signal, and find the population at which the switch flips.",
+  "takeaway": "Bacteria count themselves by releasing a molecule and listening for it, and positive feedback turns a gradual rise in signal into a collective, all-or-none switch at a threshold density.",
+  "prerequisites": [
+   "lac-operon",
+   "the-cell"
+  ],
+  "related": [
+   "bacterial-chemotaxis",
+   "genetic-circuits",
+   "epidemics"
+  ],
+  "needs": "",
+  "pitfall": "The signal measures confinement and diffusion as much as cell number: a single cell in a tiny sealed space can trigger its own switch, and the page must show that.",
+  "why": "iGEM Wageningen UR 2017 quorum-sensing model (LuxI/LuxR ODEs with positive feedback): https://2017.igem.org/Team:Wageningen_UR/Model/QS",
+  "overlapWith": "crispr: both are bacterial systems, but this page is about cells coordinating by diffusion and feedback rather than remembering viruses.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "rubisco-photorespiration",
+  "title": "Rubisco, photorespiration & C4 plants",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run the Farquhar-von Caemmerer-Berry model of a leaf: set CO2, oxygen, light and temperature and watch Rubisco split its time between fixing CO2 and wastefully grabbing O2, with the assimilation curve against CO2 drawn live and the limiting step marked. Raise the temperature and watch photorespiration eat the gain; then switch the leaf to a C4 anatomy that pumps CO2 into the bundle sheath, or to CAM that opens its stomata at night, and compare carbon gain and water loss across a hot day.",
+  "takeaway": "The enzyme at the base of nearly all food confuses oxygen with CO2, and C4 and CAM plants are two engineering fixes that concentrate CO2 around it or move its work to the night.",
+  "prerequisites": [
+   "photosynthesis",
+   "enzyme-kinetics"
+  ],
+  "related": [
+   "respiration-atp",
+   "carbon-cycle",
+   "atmosphere-weather"
+  ],
+  "needs": "Rubisco kinetic constants and their temperature dependence (von Caemmerer 2000; Bernacchi et al. 2001; published values).",
+  "pitfall": "C4 is not 'better' photosynthesis: at cool temperatures and low light its extra ATP cost makes it lose to C3, and the page must show the crossover.",
+  "why": "POGIL classroom activity 'C4 and CAM Photosynthesis' for upper-level plant physiology: https://pac.pogil.org/index.php/pac/article/view/557",
+  "overlapWith": "photosynthesis: that page follows photons to sugar in one chloroplast; this one is the enzyme kinetics of the carbon-fixing step and the leaf-level consequences of its oxygen mistake.",
+  "needsSource": "Published kinetic parameters only.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "segmentation-clock",
+  "title": "The segmentation clock",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a strip of cells along a growing embryo axis, each with a delayed negative-feedback oscillator (the her1/her7 model) and a wavefront that sweeps back as the tail grows and freezes each cell's phase when it passes. Watch waves of expression sweep forward and somites pinch off one per cycle; speed the clock or the wavefront and measure how somite size changes, then couple neighbouring oscillators through Notch and remove the coupling to see the stripes blur.",
+  "takeaway": "A body's segments are counted out by a clock: every cycle of an oscillator, a moving front freezes one more block of cells, so segment size equals clock period times front speed.",
+  "prerequisites": [
+   "circadian-clocks",
+   "morphogen-gradients"
+  ],
+  "related": [
+   "turing-patterns",
+   "oscillations-resonance"
+  ],
+  "needs": "",
+  "pitfall": "Somite size is not set by a prepattern of fixed stripes; the page must show that changing the clock period changes the size, which a prepattern could not.",
+  "why": "Teaching material rather than a syllabus: tutorial review 'Waves, patterns and bifurcations' on the vertebrate segmentation clock, https://arxiv.org/pdf/2403.00457 (no curriculum signal found in this round).",
+  "overlapWith": "turing-patterns: both make periodic stripes, but here the period is in time and is converted into space by a moving front, with a different model (Lewis 2003 delay oscillator) and a different control.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "signalling-cascades",
+  "title": "Cell signalling: cascades & ultrasensitivity",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Apply a graded dose of signal to the top of a three-tier kinase cascade (the Huang-Ferrell MAPK model) and plot each tier's active fraction against dose: the first tier responds gently, the last switches almost all-or-none. Change the phosphatase levels, remove the second phosphorylation site, or close a feedback loop and watch the response steepen, flatten or become bistable; a sketch places the cascade between a receptor and the nucleus.",
+  "takeaway": "Stacking enzyme steps with double phosphorylation turns a gentle input into a sharp threshold, so a cell can make a decision from a graded signal without any single cooperative molecule.",
+  "prerequisites": [
+   "enzyme-kinetics",
+   "the-cell"
+  ],
+  "related": [
+   "lac-operon",
+   "homeostasis",
+   "feedback-control"
+  ],
+  "needs": "Huang & Ferrell 1996 MAPK cascade model as curated in BioModels (BIOMD0000000009, CC0).",
+  "pitfall": "The steep response is not cooperativity in hemoglobin's sense: no enzyme in the model is allosteric, and the page must attribute the Hill coefficient of four to five to the cascade's structure.",
+  "why": "BioModels/COPASI course tutorial built on the Huang-Ferrell model: https://www.ebi.ac.uk/biomodels/courses/20160706/tutorial_handout.pdf",
+  "overlapWith": "homeostasis: that page is whole-body hormone feedback; this one is the enzyme-level machinery inside one cell that turns a signal into a decision.",
+  "needsSource": "BioModels curated model, CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "speciation",
+  "title": "Speciation",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Split a population in two with a barrier and let each half accumulate its own mutations in a set of interacting genes, each change neutral or useful at home. Lift the barrier after a chosen time and cross the two: hybrid fitness falls as pairs of alleles that never met prove incompatible (Dobzhansky-Muller), and a counter shows incompatibilities growing faster than linearly with time. Let gene flow leak through the barrier to see divergence stall, and add selection against hybrids to watch reinforcement finish the job.",
+  "takeaway": "Two populations become species not by one changing into something new but by each drifting along its own path until their genes no longer work together, and the barrier between them grows faster the longer they are apart.",
+  "prerequisites": [
+   "population-genetics",
+   "evolution"
+  ],
+  "related": [
+   "coalescent",
+   "phylogenetics",
+   "evolutionary-games"
+  ],
+  "needs": "",
+  "pitfall": "No single mutation makes a new species and no individual is 'the first' of one; incompatibilities arise between alleles that were each harmless where they evolved.",
+  "why": "MERLOT peer-reviewed classroom activity modelling the Dobzhansky-Muller process: https://awscbdev.merlot.org/merlot/viewMaterial.htm?id=851638",
+  "overlapWith": "evolution: that page adapts one population to its environment; this one follows two separated populations and measures the barrier that grows between them.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "synaptic-plasticity",
+  "title": "Synaptic plasticity: Hebbian learning & STDP",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Pair a presynaptic and a postsynaptic spike at a chosen interval and watch the synapse's weight grow when the input leads by a few milliseconds and shrink when it lags, tracing the STDP window over sixty pairings. Then feed a neuron twenty inputs with different timings and let STDP run: the earliest reliable inputs win, the rest fade, and a pattern hidden in noise is picked out. Switch to a plain Hebbian rule without timing and watch the weights run away until a normalisation is added.",
+  "takeaway": "Synapses strengthen when the input helps cause the output and weaken when it arrives too late, so a neuron learns to respond to the earliest predictors of its own firing, with no teacher.",
+  "prerequisites": [
+   "neurons",
+   "neural-networks"
+  ],
+  "related": [
+   "central-pattern-generators",
+   "gradient-descent",
+   "reinforcement-learning"
+  ],
+  "needs": "STDP window shape and time constants from Bi & Poo 1998 (published values; the page uses the standard exponential rule, no dataset shipped).",
+  "pitfall": "'Cells that fire together wire together' is incomplete: order matters, and a rule with no depression or no bound makes every weight grow without limit; the page must show the depression side and the need for normalisation.",
+  "why": "HSE course 'Mathematical Models of Brain Neural Networks' listing Hodgkin-Huxley, synaptic plasticity and STDP: https://www.hse.ru/edu/courses/835249132",
+  "overlapWith": "neural-networks: that page adjusts weights by gradient descent against a target; here the weights change by a local rule from spike timing alone, with no error signal.",
+  "needsSource": "Published parameter values only.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "turing-patterns",
+  "title": "Turing patterns",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run an activator-inhibitor reaction-diffusion system on a grid from near-uniform noise and watch spots or stripes crystallise. Change the ratio of the two diffusion rates and the pattern appears only once the inhibitor spreads much faster than the activator; change the reaction rates to move from spots to stripes to labyrinths; grow the domain and extra stripes insert themselves, and taper the grid into a tail to see spots become bands as it narrows.",
+  "takeaway": "Two chemicals, one that makes more of itself and a faster-spreading one that suppresses it, can turn a uniform field into regular spots or stripes with no blueprint, at a wavelength set by rates alone.",
+  "prerequisites": [
+   "morphogen-gradients",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "chaos-fractals",
+   "segmentation-clock"
+  ],
+  "needs": "",
+  "pitfall": "Not every stripe in nature is a Turing pattern; the page should name where the mechanism is supported (digits, hair follicles, fish skin) and must not claim it for zebra stripes or fingerprints without saying that is contested.",
+  "why": "University of Manchester undergraduate brochure feature on the Turing pattern: https://www.scieng.manchester.ac.uk/undergraduate-brochures/2024/the-turing-pattern/",
+  "overlapWith": "chaos-fractals: that page grows patterns by iterating a map; here they grow from a PDE with a definite wavelength, and the control is the diffusion ratio.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "viral-dynamics",
+  "title": "Viral replication inside a host",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Infect a host in the Perelson model: virus enters target cells, infected cells bud new virions and die, and viral load climbs to a plateau where production and clearance balance. Start a drug that blocks new infections and watch the load fall in two phases whose slopes give the half-lives of free virus (hours) and of infected cells (about a day); stop the drug early and it rebounds; let the virus mutate at a chosen rate and see a resistant strain take over under one drug but not under three.",
+  "takeaway": "A steady viral load is not a quiet infection but a furious balance of billions of virions made and cleared every day, which is why resistance evolves so fast and why combination therapy works.",
+  "prerequisites": [
+   "epidemics",
+   "immune-system"
+  ],
+  "related": [
+   "mrna-vaccines",
+   "population-genetics",
+   "cancer",
+   "crispr"
+  ],
+  "needs": "",
+  "pitfall": "The two-phase decay and its half-lives are estimates fitted to patients by Perelson et al.; the page must present them as fitted values, not as constants of the virus.",
+  "why": "q-bio Summer School 'Viral Dynamics' (Perelson's lecture 'How to model a viral infection within the host'): https://q-bio.org/wiki/The_Seventh_q-bio_Summer_School:_Viral_Dynamics",
+  "overlapWith": "epidemics: that page counts infected people; this one counts infected cells inside one person, where the same kind of equations give half-lives rather than reproduction numbers.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "blood-types",
+  "title": "Blood types: who can give to whom",
+  "level": 0,
+  "kind": "build",
+  "category": "medicine",
+  "interaction": "Pick a donor and a patient from the eight blood types and drop the donor's blood into the patient's: red cells carry their flags (A, B, both or none, plus the Rh dot), the patient's blood carries guards against the flags it lacks, and a flagged cell that meets its guard is clumped. Try pairs and the page fills in the eight-by-eight chart of safe gifts; find the type that can give to everyone and the one that can take from everyone.",
+  "takeaway": "A transfusion is safe when the donor's cells carry no flag the patient's blood attacks, which is why O-negative can give to anyone and AB-positive can receive from anyone.",
+  "prerequisites": [],
+  "related": [
+   "meiosis-inheritance",
+   "immune-system"
+  ],
+  "needs": "",
+  "pitfall": "The chart is for red cells; plasma goes the other way (AB is the universal plasma donor), and real blood banks still cross-match every unit. 'Universal donor' does not mean O-negative can receive from anyone.",
+  "why": "'Which blood type can donate to whom' is a perennial question; blood centres publish the compatibility chart: https://communityblood.org/resources/about-blood/blood-type-compatibility",
+  "overlapWith": "immune-system: antibodies selected and multiplied against an invader; this page uses only the fixed anti-A and anti-B antibodies and the Rh factor, with no selection or memory.",
+  "needsSource": "none",
+  "leadsTo": [
+   "heart-circulation",
+   "meiosis-inheritance"
+  ],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
+  "slug": "body-thermostat",
+  "title": "Why you shiver and sweat",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Put a person in weather from snowy to scorching, resting or running, and watch a heat budget: the body makes heat all the time and loses it through the skin, and a thermostat in the brain keeps the core at one temperature by turning the skin pale or flushed, then shivering, then sweating. Push the weather past what sweat can carry away and the core creeps up.",
+  "takeaway": "You are a heater set to one temperature: shivering turns the heat up and sweating carries it away, and the colour of your skin shows which way the thermostat is pushing.",
+  "prerequisites": [],
+  "related": [
+   "hunger-and-fullness",
+   "why-you-get-sleepy",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "none: a one-node heat balance with resting heat near a hundred watts, shivering up to several times that, skin blood flow, and sweat cooling by evaporation up to a stated maximum, from textbook physiology",
+  "pitfall": "Sweat only cools when it evaporates, so sweat dripping off on a humid day has done nothing yet. And feeling cold is not the core being cold: the skin reports first, which is what the thermostat acts on.",
+  "why": "NGSS MS-LS1-8: skin receptors respond to temperature and send messages to the brain for immediate behaviour. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "homeostasis: that page holds blood sugar steady with insulin; this one holds temperature steady with shivering and sweat, the same feedback idea with no hormones and one control at a time.",
+  "leadsTo": [
+   "homeostasis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "breathing-and-lungs",
+  "title": "How you breathe",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Drag the diaphragm down and up on a cutaway chest and watch the ribs lift, the lungs swell and air flow in through a counter, with a bell jar and balloon beside it doing the same thing. Let go and set a slider for sleeping, walking or sprinting to see breaths per minute and the size of each breath change; then hold the breath and watch the carbon-dioxide bar climb until the urge to breathe wins.",
+  "takeaway": "The lungs cannot suck: the diaphragm makes the chest bigger, which lowers the pressure inside, and the outside air pushes itself in.",
+  "prerequisites": [],
+  "related": [
+   "how-fish-breathe",
+   "heartbeat-and-pulse",
    "heart-circulation"
   ],
   "needs": "",
-  "needsSource": "none",
-  "pitfall": "Carbon monoxide is worse than anaemia with the same oxygen content, because it also shifts the curve so that what oxygen remains is not released.",
-  "why": "Oxygen transport, the dissociation curve and its shifts are Respiratory-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
-  "overlapWith": "respiration-atp: that page uses oxygen at the end of the electron transport chain; this page is how oxygen gets there, and why the carrier's curve has the shape it has.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "medicine-l3"
+  "needsSource": "none: chest volume to pressure by Boyle's law, airflow proportional to the pressure difference, and breathing rates by activity from textbook physiology, all stated on the page",
+  "pitfall": "Breathed-out air is not carbon dioxide: it still holds most of the oxygen that went in, which is why rescue breaths work. And the lungs are not muscles; the diaphragm and the rib muscles do the work.",
+  "why": "England KS3 programme of study: the mechanism of breathing to move air in and out of the lungs, using a pressure model to explain the movement of gases. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "heart-circulation: that page shows oxygen levels in the blood as the heart pumps; this one is the pump for air, with nothing about the blood.",
+  "leadsTo": [
+   "heart-circulation",
+   "states-of-matter"
+  ],
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "hippocampus-memory",
-  "title": "Memory & the hippocampus",
-  "level": 3,
-  "kind": "manipulate",
+  "slug": "digestion-journey",
+  "title": "Where your food goes",
+  "level": 0,
+  "kind": "step",
   "category": "medicine",
-  "interaction": "Store a few drawn patterns in a network of neurons that strengthen the connections between cells that fire together, as the hippocampus's CA3 region is thought to, then give it a smudged or half-erased pattern and watch the cells settle into the whole. Store more patterns and watch recall start to blend them; switch on a separating stage, as the dentate gyrus does, and see similar inputs kept apart. Then replay the stored patterns slowly into a second, larger network and show that the hippocampal copy can be lost without losing the memory.",
-  "takeaway": "A memory is a pattern of strengthened connections that a partial cue can regrow into the whole, which is why remembering is reconstruction, why similar memories blur, and why the hippocampus can hand its copies on to the cortex.",
-  "prerequisites": [
-   "neurons"
-  ],
+  "everyday": false,
+  "interaction": "Pick a mouthful (bread, apple, cheese or a sweet) and push it through the tube on a scrub bar: the mouth, stomach, small intestine and large intestine each take their real time on a clock, and the mouthful breaks into ever smaller pieces only where the right juices are. Watch nutrient dots cross into the blood all along the coiled small intestine and what is left become waste; swap the food to see fat linger in the stomach and fibre pass through untouched.",
+  "takeaway": "Food does not just fall through you: each part of the tube takes its own time and does its own job, and almost everything useful is taken out in the long, coiled small intestine.",
+  "prerequisites": [],
   "related": [
-   "neural-networks",
-   "cerebellum-motor-learning"
+   "hunger-and-fullness",
+   "sugar-and-tooth-decay",
+   "homeostasis"
   ],
   "needs": "",
-  "needsSource": "none",
-  "pitfall": "Memory is not a recording played back: recall is reconstruction, and each recall can alter the trace.",
-  "why": "The 2024 Nobel Prize in Physics went to Hopfield for the associative memory that stores and reconstructs patterns: https://www.nobelprize.org/prizes/physics/2024/press-release/",
-  "overlapWith": "neural-networks: that page trains a feed-forward network on examples; this page is a recurrent network whose only job is to complete what it has seen, read as a model of CA3 with the neurons page as its base.",
-  "leadsTo": [],
+  "needsSource": "none: transit times and which juices act where are textbook physiology; the compartment model with first-order breakdown of starch, protein and fat is a stated simplification",
+  "pitfall": "The stomach does not do most of digestion: it is a mixing bag of acid, and most breakdown and nearly all absorption happen in the small intestine. Food does not drop by gravity either; muscles squeeze it along, which is why you can swallow upside down.",
+  "why": "England KS2 Year 4 statutory requirement: describe the simple functions of the basic parts of the digestive system in humans. https://www-legacy.stem.org.uk/resources/community/collection/12365/year-4-animals-including-humans",
+  "overlapWith": "homeostasis: homeostasis plots blood sugar after a meal has been absorbed; this page is the tube itself, what happens to the mouthful before anything reaches the blood.",
+  "leadsTo": [
+   "homeostasis",
+   "the-cell"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "fever",
+  "title": "What a fever is",
+  "level": 0,
+  "kind": "step",
+  "category": "medicine",
   "everyday": false,
-  "origin": "medicine-l3"
+  "interaction": "Catch a germ and step through a fever: the brain turns the thermostat up to 39 degrees, so a body at its normal temperature now reads as too cold, shivers and curls under a blanket until it reaches the new setting; when the germ is beaten the setting drops back and the same body reads as too hot and sweats. Drag the thermostat yourself to see the chills come from raising it and the sweats from lowering it.",
+  "takeaway": "A fever is not the body overheating: the brain raises its own thermostat, which is why you shiver on the way up and sweat on the way down.",
+  "prerequisites": [
+   "body-thermostat"
+  ],
+  "related": [
+   "why-shots-protect-you",
+   "germs-and-hand-washing",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "none: the body-thermostat heat model with a moving set point",
+  "pitfall": "A fever is a setting the body chooses, not a fault in its heating; a fever-reducing medicine lowers the setting, it does not cool the body. The page does not claim that the heat kills germs.",
+  "why": "NGSS MS-LS1-8: skin receptors respond to temperature; the fever page is the thermostat page's own example and the most-asked question about being ill. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "homeostasis: that page breaks a feedback loop to model diabetes; this one moves the loop's target on purpose and watches the body chase it.",
+  "leadsTo": [
+   "homeostasis",
+   "epidemics"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "germs-and-hand-washing",
+  "title": "Germs and hand washing",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Watch a classroom through a morning under germ light: one child's hands glow, every door handle, pencil and hand they touch takes a share, and the next hand to touch the handle takes a share of that, the counts shrinking with each hop and as germs die on dry surfaces. Choose who washes and when, with soap for a proper count or a quick rinse, and see how far the glow has got by lunchtime.",
+  "takeaway": "Germs travel hand to thing to hand, losing a share at each hop, and one good wash cuts the chain.",
+  "prerequisites": [],
+  "related": [
+   "why-shots-protect-you",
+   "sugar-and-tooth-decay",
+   "epidemics"
+  ],
+  "needs": "",
+  "needsSource": "Transfer fractions per touch and surface die-off rates from published fomite-transmission studies (e.g. Rusin, Maxwell and Gerba 2002) stated on the page; no dataset shipped",
+  "pitfall": "Germs on a dry doorknob do not multiply, they slowly die; the danger is the hop to a hand and from the hand to a mouth. Soap works mostly by lifting germs off so the water can carry them away, which is why the time spent rubbing matters.",
+  "why": "England statutory RSHE and health education guidance, primary health education: personal hygiene and germs including bacteria, viruses, how they are spread and treated, and the importance of handwashing. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
+  "overlapWith": "epidemics: that page spreads an infection through a moving crowd and plots the curves; this one is one classroom's hands and surfaces, counted, with no curves and no immunity.",
+  "leadsTo": [
+   "epidemics",
+   "the-cell"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "growing-up",
+  "title": "How you grow",
+  "level": 0,
+  "kind": "explore",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Slide a child's age from birth to twenty along real growth curves and watch the figure grow, with the typical range of heights shaded so that a tall nine-year-old and a short twelve-year-old are both normal; a second curve shows how much is added each year: a lot in the first year, a slow plateau, one last spurt, then nothing. Switch between girls and boys to see the spurt land at different ages.",
+  "takeaway": "You do not grow steadily: fastest as a baby, slowly through childhood, one last spurt, and then growing stops for good.",
+  "prerequisites": [],
+  "related": [
+   "how-a-bone-heals",
+   "why-you-get-sleepy",
+   "inside-an-egg",
+   "caterpillar-to-butterfly"
+  ],
+  "needs": "CDC Growth Charts data files (stature-for-age and weight-for-age percentiles, 2000; a US government work, public domain): https://www.cdc.gov/growthcharts/cdc-data-files.htm. Growth per year is derived by differencing the chart.",
+  "needsSource": "CDC Growth Charts data files, US government work (public domain)",
+  "pitfall": "Being below or above the middle line is not behind or ahead: the shaded band is normal, and the spurt's timing varies by years between children. The charts describe typical children, not a target.",
+  "why": "England KS2 Year 5 statutory requirement: describe the changes as humans develop to old age. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "homeostasis: that page plots hours of one person's blood sugar; this one scrubs years of the typical child's height from a real dataset, the way deep-time scrubs its record.",
+  "leadsTo": [
+   "the-cell",
+   "homeostasis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "hearing-and-the-ear",
+  "title": "How your ear hears",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Slide a tone from low to high and watch it shake the eardrum, three tiny bones lever the shake into the fluid of the snail-shaped cochlea, and a ripple run along its ribbon until it peaks at one spot; each pitch peaks somewhere else, high notes near the entrance and low notes at the far end. Play two notes at once and see two bumps; turn the loudness up and the bumps grow.",
+  "takeaway": "The ear sorts sounds by pitch before the brain hears them: each note makes a different place along the spiral wiggle.",
+  "prerequisites": [],
+  "related": [
+   "why-spinning-makes-you-dizzy",
+   "smell-and-taste",
+   "vision-color"
+  ],
+  "needs": "",
+  "needsSource": "none: the Greenwood (1961) frequency-to-place function for the human cochlea, a middle-ear lever ratio, and a passive bank of tuned filters for the ribbon, stated as a simplification",
+  "pitfall": "The cochlea is not a microphone with one signal: it is thousands of sensors each listening at its own spot. And loud is not the same as high: loudness grows the bump, pitch moves it.",
+  "why": "NGSS MS-LS1-8: sensory receptors respond to stimuli, with ear receptors reacting to vibrations. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "waves-interference: that page is the wave in the air; this one is the receiver, from eardrum to the place-by-pitch map. The reserve item Hearing and the cochlea merges here at level 0; the cochlea's own mechanics (travelling wave, active amplifier) stay open for a level-3 page.",
+  "leadsTo": [
+   "waves-interference",
+   "oscillations-resonance"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "heartbeat-and-pulse",
+  "title": "Your pulse",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Put two fingers on your own wrist and count along with a pulse the page beats for you: a stopwatch counts fifteen seconds and multiplies by four. Then slide the figure from resting to walking to sprinting and watch the beat speed up and the push of each beat travel down the arm to the wrist; stop, and the rate drifts back down over a minute or two, faster for a fit heart.",
+  "takeaway": "Your pulse is the heart's push arriving at your wrist, and it speeds up with effort because working muscles need more blood.",
+  "prerequisites": [],
+  "related": [
+   "breathing-and-lungs",
+   "muscles-pull-in-pairs",
+   "why-bruises-change-colour",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "none: heart rate rising with effort toward a maximum near 220 minus age, recovery as an exponential with a fitness-dependent time, and the pulse as a pressure wave travelling far faster than the blood, from textbook physiology",
+  "pitfall": "The pulse is not the blood arriving: the push travels along the artery many times faster than the blood itself moves. And a slower resting pulse usually means a stronger heart, not a weaker one.",
+  "why": "England KS2 Year 6: the circulatory system and the effect of exercise, taught by measuring the pulse before and after two minutes of exercise. https://www-legacy.stem.org.uk/resources/community/collection/13109/year-6-animals-including-humans",
+  "overlapWith": "heart-circulation: that page is inside the heart, with valves, an ECG and a pressure curve; this one never opens the heart: it is the beat you can feel and how exercise changes it.",
+  "leadsTo": [
+   "heart-circulation"
+  ],
+  "origin": "living-things-and-body"
  }
 ]

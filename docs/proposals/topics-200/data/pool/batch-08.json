@@ -1,5 +1,553 @@
 [
  {
+  "slug": "sponge-and-paper-towel",
+  "title": "How a sponge holds water",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "A cut-away sponge and a strip of paper towel over a puddle. Lower either one until it touches: water climbs into the holes, higher in the narrow ones than the wide ones, and the puddle shrinks; a side view shows the water clinging to the walls and pulling itself up. One control at a time: the size of the holes, squeezing the sponge, or swapping the water for oil. A last scene stands a stick of celery in coloured water and watches the colour climb its tubes.",
+  "takeaway": "Water climbs into small holes because it clings to their walls, and the narrower the hole the higher it climbs, which is why a sponge full of tiny holes holds water and does not drip.",
+  "prerequisites": [],
+  "related": [
+   "bubbles-and-foam",
+   "soap-and-grease",
+   "bean-in-a-jar"
+  ],
+  "needs": "",
+  "needsSource": "none; capillary rise in pores of different width from the surface tension of water and of oil (two constants)",
+  "pitfall": "A sponge does not 'suck' water in; the water pulls itself in, and squeezing only works because it closes the holes.",
+  "why": "Science World 'Escaping Water' paper-towel capillary activity: https://www.scienceworld.ca/resource/escaping-water/; England KS2 Year 3 'Plants' (water transport in a stem).",
+  "overlapWith": "states-of-matter: shares the particle look only; no existing page shows capillary action, and the celery here is a wick rather than the cell of the-cell.",
+  "leadsTo": [
+   "states-of-matter",
+   "photosynthesis"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "toast-and-browning",
+  "title": "Why toast goes brown",
+  "level": 0,
+  "kind": "simulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "A slice of bread in a toaster, seen in cross-section with a thermometer in its surface. One control: the toaster dial. The surface colour runs from pale through gold to black as a browning count climbs, but only once the surface has dried and climbed well past the heat of boiling water; a second slice dipped in water stays pale for as long as it is wet, and a slice held in steam does not brown in the time any toasting takes. A time scrub replays any run, and the model is a browning rate that doubles every few degrees.",
+  "takeaway": "Food only browns once it is dry and hotter than boiling water, which is why toast, roast and fried food brown while boiled or steamed food stays pale for as long as it is wet.",
+  "prerequisites": [],
+  "related": [
+   "caramel-and-candy-stages",
+   "cooking-an-egg",
+   "kitchen-thermometer",
+   "apple-browning"
+  ],
+  "needs": "A browning rate against temperature (Maillard kinetics: one activation energy) from published food-science measurements; no dataset.",
+  "needsSource": "One published activation energy for Maillard browning (food-science literature); a constant, no dataset",
+  "pitfall": "Browning is not burning, and it is not the sugar alone (that is caramel): the colour comes from sugars and proteins reacting together once the surface is dry and hot.",
+  "why": "Modernist Cuisine, 'The Maillard Reaction' (why boiled food does not brown): https://modernistcuisine.com/mc/the-maillard-reaction/",
+  "overlapWith": "reaction-rates-equilibrium: that page shows collision energy crossing a barrier at level 2; here the reader sees only that wet food cannot get hot enough and dry food can, from a thermometer and a colour.",
+  "leadsTo": [
+   "states-of-matter",
+   "chemical-bonds"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "water-drops-and-surface-tension",
+  "title": "Water drops & surface tension",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "Drag a drop of water onto a waxed leaf and it pulls itself into a bead; on paper it spreads; inside the drop every particle is pulled every way, at the surface only inward, and the drop's shape follows from the simulated pulls. Keep adding water to a coin until the bulge finally spills; lay a paperclip flat on the surface and it rests in a dent; land a pond skater. Touch a drop of soap to the surface and the bead flattens, the paperclip sinks and a sprinkle of pepper races to the edges.",
+  "takeaway": "Water pulls itself together at its surface, enough to bead up and hold a paperclip, and a touch of soap weakens that pull.",
+  "prerequisites": [],
+  "related": [
+   "soap-and-grease",
+   "floating-sinking-and-boats",
+   "states-of-matter"
+  ],
+  "needs": "",
+  "pitfall": "There is no skin or film on water; the surface behaves like one because the particles there are pulled inward with nothing pulling back. The paperclip is not lighter than water; it would sink if pushed through.",
+  "why": "Signal not verified this session (search budget exhausted before the surface-tension search ran); expected demand signals: the Wikipedia 'Surface tension' article and the pepper-and-soap / paperclip home experiments. The nearest verified standard is KS3 chemistry 'The particulate nature of matter' https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "states-of-matter: that page runs a molecular box with no free surface to show melting and boiling; this one is all about the free surface of a liquid, wetting, beading and what soap does to it.",
+  "needsSource": "none; a two-dimensional molecular box with attraction between water particles and a free surface, a substrate that attracts them more or less (wetting), and soap as particles that weaken the surface pull; or a particle fluid with a surface-tension force.",
+  "leadsTo": [
+   "chemical-bonds",
+   "states-of-matter"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "why-metal-feels-cold",
+  "title": "Why metal feels cold",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "A table with a metal spoon, a wooden spoon, a plastic cup and a woollen glove, all at room temperature, with a thermometer that reads the same on each. Drag a finger onto any one: a strip of heat colour flows out of the fingertip into the object, fast into the metal and barely at all into the wool, and a 'feels like' dial follows the fingertip's own temperature. One control: the room temperature; set the room hot and the same metal now feels hottest. The flow is a heat-conduction model with each material's real conductivity.",
+  "takeaway": "Everything on the table is the same temperature; the metal feels cold because it carries heat out of your finger fastest, and the same metal feels hottest in a hot room.",
+  "prerequisites": [],
+  "related": [
+   "salt-and-ice",
+   "kitchen-thermometer"
+  ],
+  "needs": "Thermal conductivity, density and heat capacity of a few common materials (a metal, wood, plastic, wool, skin), from textbook or Wikipedia tables (CC BY-SA); under ten constants.",
+  "needsSource": "Under ten published material constants (textbook tables; Wikipedia CC BY-SA); facts, no dataset",
+  "pitfall": "Metal is not colder than wood, and cold does not flow into your hand: heat flows out of it, and a thermometer shows the two objects equal.",
+  "why": "Veritasium, 'Why Does Metal Feel Colder Than Wood If They're the Same Temperature?' (a classic misconception video): https://www.youtube.com/watch?v=vqDbMEdLiCs; England KS2 Year 5 lists thermal conductivity among material properties.",
+  "overlapWith": "entropy: that page shows heat flowing between fast and slow particles at level 2; here it is one finger on one object, and the only question is how fast heat leaves the skin.",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "electrolysis",
+  "title": "Electrolysis",
+  "level": 1,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Dip two electrodes into molten lead bromide, then into salt water, and switch on the current: ions drift to the electrode of opposite charge and are turned back into atoms, particle by particle, with bubbles of gas or a growing metal coating. Choose the salt and the solvent and the page predicts from the reactivity series which ion is discharged at each electrode, while a meter adds up the charge passed so that the mass deposited can be read against it. Finish with the aluminium cell and why it eats so much electricity.",
+  "takeaway": "Electricity can pull a compound apart: positive ions gain electrons at one electrode and negative ions lose them at the other, and the amount made is set by the charge passed.",
+  "prerequisites": [
+   "chemical-bonds",
+   "electric-circuits"
+  ],
+  "related": [
+   "redox-batteries",
+   "acids-bases"
+  ],
+  "needs": "The reactivity series and, for the quantitative step, Faraday's constant and the ionic charges.",
+  "needsSource": "reference constants (IUPAC, CODATA); no dataset",
+  "pitfall": "In solution the less reactive of two possible products is discharged: hydrogen rather than sodium at the cathode, and oxygen rather than a halogen unless a halide is present. Electrolysis is a battery run backwards, so the supply must push the electrons uphill.",
+  "why": "AQA GCSE Chemistry 8462 topic 4.4.3 'Electrolysis' (molten ionic compounds, aqueous solutions, extraction of aluminium; Required practical 3) https://www.savemyexams.com/learning-hub/exam-specifications/gcse/chemistry/aqa/",
+  "overlapWith": "redox-batteries (level 2) is the cell discharging through a load; electrolysis is the same chemistry driven backwards by a supply, which that page mentions only as charging a lithium cell. The rule for which ion wins in solution and the charge-to-mass relation are new.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "moles-and-stoichiometry",
+  "title": "The mole & reacting masses",
+  "level": 1,
+  "kind": "build",
+  "category": "chemistry",
+  "interaction": "Drag atoms into a reaction box to balance an equation by making the count of each element match on both sides, then pour in reactants by mass: a scale converts grams into counts of molecules through the mole, the reaction runs until the scarcer ingredient is used up, and the leftover is shown. Swap a solid product for a gas to see the volume a mole takes at room temperature, and compare the predicted and actual yields of a reaction that loses product along the way.",
+  "takeaway": "A chemical equation is a recipe in counts, not in grams, and a reaction stops when the ingredient with the fewest molecules runs out, however much of the others is left.",
+  "prerequisites": [
+   "atoms-periodic-table",
+   "chemical-bonds"
+  ],
+  "related": [
+   "reaction-rates-equilibrium",
+   "gas-laws"
+  ],
+  "needs": "Relative atomic masses.",
+  "needsSource": "IUPAC standard atomic weights (CC BY 4.0) or the PubChem periodic table (US government work, public domain)",
+  "pitfall": "Equal masses of two substances do not hold equal numbers of molecules; a mole is a count, and it is the count that reacts. The molar volume of about 24 litres holds for a gas at room temperature and pressure, not for liquids or solids.",
+  "why": "AQA GCSE Chemistry 8462 topic 4.3 'Quantitative chemistry' (conservation of mass, moles, limiting reactants, gas volumes, yield) https://www.savemyexams.com/learning-hub/exam-specifications/gcse/chemistry/aqa/ ; IB Chemistry stoichiometry (the mole, reacting masses, limiting reagents) https://ibchem.com/IB25/03.00t.php",
+  "overlapWith": "atoms-periodic-table builds single atoms and reaction-rates-equilibrium (level 2) runs collisions and asks how fast and how far; the counting step between them, from grams to molecules and back, on which every chemistry calculation rests, is on no page.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "chromatography",
+  "title": "Chromatography: separating by stickiness",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Inject a mixture at the top of a column and watch each molecule hop at random between the moving phase and the stationary phase, with the time spent stuck set by its partition coefficient, so the bands separate and broaden; a detector at the end draws the chromatogram. Slide the flow rate and the plate height traces the van Deemter curve with its minimum, as eddy paths, diffusion along the column and slow exchange each take their turn at blurring the bands; lengthen the column or change the packing to improve the resolution.",
+  "takeaway": "A column separates molecules by how much of the time each spends stuck rather than moving, and there is a best flow speed: slower and diffusion blurs the bands, faster and the molecules cannot keep up with the exchange.",
+  "prerequisites": [
+   "central-limit-theorem",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "mass-spectrometry",
+   "diffusion-in-solids"
+  ],
+  "needs": "",
+  "pitfall": "Most chromatography is not a sieve by size: two molecules of the same size separate by how differently they stick, and the bands are Gaussian because the hopping is random.",
+  "why": "Undergraduate analytical chemistry teaches band broadening through the van Deemter equation (Bates College chromatography learning objectives): https://www.bates.edu/chemistry-biochemistry/files/2012/01/wenzel-chrom-learning-objectives.pdf",
+  "overlapWith": "central-limit-theorem: that page shows why sums of random steps are Gaussian; this one uses that fact to separate molecules and to find the flow rate that separates them best.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "colloids-dlvo",
+  "title": "Colloids: why particles stay apart, and when they stick",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Run charged particles in water that diffuse and interact through the DLVO potential, a short-range van der Waals attraction plus a repulsion from the ion cloud around each particle, drawn as a curve beside the box. Slide the salt concentration and watch the cloud shrink, the barrier in the curve sink and the particles flocculate; raise the surface charge to re-stabilize them, and compare the critical salt concentration for mono-, di- and trivalent ions.",
+  "takeaway": "Particles in water stay apart because of a cloud of ions around each one, and adding salt shrinks that cloud until they stick, which is why a river drops its mud where it meets the sea.",
+  "prerequisites": [
+   "electromagnetism",
+   "dispersion-forces",
+   "states-of-matter"
+  ],
+  "related": [
+   "surfactants-micelles",
+   "acids-bases",
+   "liquid-crystals"
+  ],
+  "needs": "",
+  "pitfall": "A colloid is not stable because its particles float: they are denser than water and would settle quickly once clumped, and it is the repulsion between them, not Brownian motion alone, that keeps them apart.",
+  "why": "TU/e 'Polymer and colloid science' covers electrical double layers, van der Waals forces and DLVO theory: https://eduxchange.nl/ewuu/guest/catalog-tue/courses/polymer-and-colloid-science_df728589-acde-471e-927b-089f5e54e90d",
+  "overlapWith": "states-of-matter: that page is a one-component box; this one models suspended particles whose fate depends on the ions around them.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "composites-ashby",
+  "title": "Choosing a material: composites & Ashby charts",
+  "level": 3,
+  "kind": "explore",
+  "category": "chemistry",
+  "interaction": "Pan and zoom a chart of stiffness against density for hundreds of real materials and drag the selection line for a light, stiff beam or a light, strong tie to see which materials rise to the top. Mix a fibre and a matrix with a volume-fraction slider and the composite appears between them on the chart, bounded by the rule-of-mixtures lines for aligned and transverse fibres; a fibre pull-out panel shows why a composite tolerates cracks that would shatter its ceramic fibres alone.",
+  "takeaway": "No material is best on its own: which one wins depends on the job's combination of properties, and a composite earns a spot on the chart that neither of its parts could reach.",
+  "prerequisites": [
+   "bridges-structures",
+   "fracture-mechanics"
+  ],
+  "related": [
+   "dislocations-alloys",
+   "flight"
+  ],
+  "needs": "Elastic moduli and densities for crystalline materials from an open database, plus a small table for polymers, woods and composites.",
+  "pitfall": "Stiffness and strength are different properties, carbon fibre is stiff where aramid is strong, and a composite's stiffness along its fibres says nothing about the direction across them.",
+  "why": "MIT OCW 3.22 Mechanical Behavior of Materials treats elastic and plastic behaviour across metals, ceramics and polymers: https://ocw.mit.edu/courses/3-22-mechanical-behavior-of-materials-spring-2008/pages/syllabus",
+  "overlapWith": "bridges-structures: that page compares shapes for one material budget; this one compares materials for one shape and shows how a composite gets around the trade-off.",
+  "needsSource": "Materials Project (CC BY 4.0) for computed bulk and shear moduli and densities of crystalline materials; polymers, woods and composites are absent there and need a hand-made table of published values (Ashby/CES data is proprietary), which is a weakness of this page.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "corrosion-pourbaix",
+  "title": "Corrosion: why iron rusts and zinc saves it",
+  "level": 3,
+  "kind": "explore",
+  "category": "chemistry",
+  "interaction": "Drag a point over the potential-pH map of iron in water, computed live from the Nernst lines of its species, and see which form is stable there: bare metal, dissolved ions or a protective oxide. Couple the iron to a second metal (zinc, copper, tin) and the mixed-potential diagram shows where the two electrode curves cross and which metal dissolves; change the oxygen level, pH or salt content and watch the corrosion current move.",
+  "takeaway": "Whether a metal corrodes depends on pH and potential together, and sacrificial zinc protects steel by pulling its potential into the region where iron stays metal.",
+  "prerequisites": [
+   "electrode-kinetics",
+   "acids-bases"
+  ],
+  "related": [
+   "redox-batteries"
+  ],
+  "needs": "Standard potentials and free energies of formation for the iron, zinc, copper and tin species in water, and exchange current densities for the mixed-potential diagram.",
+  "pitfall": "Rusting is not iron simply reacting with air: it is an electrochemical cell with anodic and cathodic spots on the same piece of metal, which is why salt water speeds it up so much.",
+  "why": "MIT OCW 10.626 Lecture 2 builds cell thermodynamics from the Nernst equation, the basis of Pourbaix and Evans diagrams: https://ocw.mit.edu/courses/chemical-engineering/10-626-electrochemical-energy-systems-spring-2014/lecture-notes/MIT10_626S14_Lec2.pdf",
+  "overlapWith": "electrode-kinetics (proposed): that page holds one electrode under control; this one lets two reactions on the same metal find their own potential and maps the outcome over pH.",
+  "needsSource": "ΔG°f and standard potentials from the NBS tables of chemical thermodynamic properties (Wagman et al. 1982, a US-government compilation; confirm redistribution terms) or equivalent NIST data; exchange current densities from the literature. The Pourbaix Atlas itself is copyrighted and not needed: the lines are computed.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "diffusion-in-solids",
+  "title": "Diffusion in solids",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Watch atoms in a lattice hop into neighbouring vacancies at a rate set by temperature and an activation energy, and plot the concentration profile of carbon diffusing into iron against the erf solution of Fick's law; the depth grows with the square root of time, and a temperature slider changes the rate by orders of magnitude. Join two metals with different hop rates and watch the interface markers drift (the Kirkendall effect) while vacancies pile up on the faster side.",
+  "takeaway": "Atoms in a solid move by hopping into empty sites, so diffusion depth grows as the square root of time and rises exponentially with temperature: a treatment that takes an hour at 900 °C would take centuries at room temperature.",
+  "prerequisites": [
+   "states-of-matter",
+   "central-limit-theorem",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "transistors-chipmaking",
+   "chromatography",
+   "free-energy-of-mixing",
+   "glass-transition"
+  ],
+  "needs": "The diffusion prefactor and activation energy for carbon in iron.",
+  "pitfall": "Nothing pushes the atoms toward low concentration; each hops at random, and the net flow from high to low comes only from there being more atoms on one side.",
+  "why": "MIT OCW 3.205 covers Fick's laws, self- and interdiffusion and the Kirkendall effect: https://ocw.mit.edu/courses/3-205-thermodynamics-and-kinetics-of-materials-fall-2006/pages/calendar",
+  "overlapWith": "entropy: that page mixes gases by removing a wall; this one is diffusion through a solid lattice via vacancies, with its Arrhenius rate and its uses in steel and chips.",
+  "needsSource": "Published D0 and Q for carbon in iron (textbook numbers).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "dislocations-alloys",
+  "title": "Dislocations: why metals bend and alloys resist",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Shear a two-dimensional crystal of simulated atoms with an edge dislocation inside it and watch the defect glide one row of bonds at a time at a stress far below what sliding the whole plane would take; remove the dislocation and the perfect crystal holds until it fails all at once. Sprinkle in larger or smaller foreign atoms and the dislocation snags on them so the crystal needs more stress to yield; keep deforming and dislocations pile up and the metal hardens.",
+  "takeaway": "A metal bends at a stress a thousand times below the strength of its bonds because a dislocation moves one row of bonds at a time, and an alloy is harder because foreign atoms get in its way.",
+  "prerequisites": [
+   "semiconductors",
+   "newtons-laws"
+  ],
+  "related": [
+   "fracture-mechanics",
+   "bridges-structures",
+   "free-energy-of-mixing",
+   "x-ray-diffraction"
+  ],
+  "needs": "",
+  "pitfall": "Crystals do not deform by whole planes sliding at once; the theoretical strength computed that way is a thousand times higher than what any real metal shows.",
+  "why": "MITx 3.012S.3x Structure of Materials covers dislocation descriptors and motion: https://openlearninglibrary.mit.edu/courses/course-v1:MITx+3.012S.3x+1T2019/about",
+  "overlapWith": "bridges-structures: that page colors members by stress; this one goes inside the metal to the defect that lets it yield and the atoms that stop it.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "dispersion-forces",
+  "title": "Van der Waals forces: why neutral atoms stick",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "interaction": "Place two neutral atoms, each modelled as an electron on a spring to its nucleus, and drag them closer: the page solves their coupled oscillations and shows the zero-point energy drop as their flickering dipoles fall into step, tracing an attraction that falls as the sixth power of distance. Slide the atoms' polarizability to deepen the well, add permanent dipoles and a hydrogen bond to build up the full potential curve, and compare the computed well depths with the boiling points of the noble gases and halogens.",
+  "takeaway": "Even neutral atoms attract because their electron clouds flicker in step, and that attraction grows with the size of the cloud, which is why bigger molecules boil hotter.",
+  "prerequisites": [
+   "chemical-bonds",
+   "oscillations-resonance",
+   "quantum-mechanics"
+  ],
+  "related": [
+   "states-of-matter",
+   "colloids-dlvo",
+   "protein-folding",
+   "surfactants-micelles"
+  ],
+  "needs": "Polarizabilities and boiling points of the noble gases and halogens.",
+  "pitfall": "Dispersion is not negligible: summed over a large molecule it rivals a hydrogen bond and it is the force a gecko climbs with; nor is it a weak form of the chemical bond.",
+  "why": "MIT OCW 3.091 Fall 2018 syllabus runs from molecular orbitals into intermolecular forces: https://ocw.mit.edu/courses/3-091-introduction-to-solid-state-chemistry-fall-2018/pages/syllabus/",
+  "overlapWith": "states-of-matter: that page takes the attraction between molecules as given; this one shows where it comes from and why its size varies.",
+  "needsSource": "Polarizabilities and boiling points from the NIST Chemistry WebBook or the CRC Handbook (a short table of published numbers).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "electrode-kinetics",
+  "title": "Electrode kinetics: Nernst to Butler-Volmer",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Set the potential of an electrode in a solution of a redox couple and watch the concentration ratio at its surface follow the Nernst equation while the current follows the Butler-Volmer curve, with a Tafel plot alongside. A diffusion layer in front of the electrode is computed on a grid, so sweeping the potential up and down traces a cyclic voltammogram whose peaks grow with the sweep rate, and pushing too hard shows the current starve as molecules cannot arrive fast enough.",
+  "takeaway": "The electrode potential sets the ratio of oxidized to reduced molecules at the surface, and the current is set by how far you push from that balance, until diffusion caps it.",
+  "prerequisites": [
+   "redox-batteries",
+   "reaction-free-energy"
+  ],
+  "related": [
+   "corrosion-pourbaix",
+   "solar-cells"
+  ],
+  "needs": "",
+  "pitfall": "The Nernst equation gives a cell's voltage with no current flowing; under load the voltage is lower by the overpotentials, and current is not the speed of the electrons.",
+  "why": "MIT OCW 10.626 Electrochemical Energy Systems covers the thermodynamics, reaction kinetics and transport of electrochemical cells: https://www.ocw.mit.edu/courses/10-626-electrochemical-energy-systems-spring-2014/pages/syllabus",
+  "overlapWith": "redox-batteries: that page follows ions and electrons through a lithium cell; this one models the interface itself, how potential sets composition and current.",
+  "needsSource": "none (a textbook couple such as ferri/ferrocyanide with literature rate constants)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "enzyme-kinetics",
+  "title": "Enzyme kinetics",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Watch one enzyme molecule bind substrate, convert it and release product as a random sequence of events while a thousand copies beside it build the smooth rate curve; slide the substrate concentration and see the rate saturate at Vmax with Km read off at half-height. Add a competitive or a non-competitive inhibitor and watch the curve and its Lineweaver-Burk line change in different ways; load real Km and kcat values for enzymes from carbonic anhydrase to catalase.",
+  "takeaway": "An enzyme's rate climbs with substrate only until every enzyme is busy, so the plateau measures the enzyme's speed and the half-way point its grip on the substrate, and an inhibitor reveals which of the two it attacks.",
+  "prerequisites": [
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "surface-catalysis",
+   "respiration-atp",
+   "homeostasis",
+   "transition-state-theory"
+  ],
+  "needs": "Km and kcat values for a handful of enzymes.",
+  "pitfall": "Vmax is never reached, only approached, and Km is not simply the binding constant: it also contains the catalytic rate.",
+  "why": "MIT OCW 5.60 Lecture 35 (enzyme catalysis: Michaelis-Menten and Lineweaver-Burk) and 5.07 session 4: https://ocw.mit.edu/courses/5-60-thermodynamics-kinetics-spring-2008/resources/5_60_lecture35",
+  "overlapWith": "respiration-atp: that page follows one glucose through the pathways; this one models how fast any enzyme works and what limits it.",
+  "needsSource": "BRENDA enzyme database (CC BY 4.0).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "fracture-mechanics",
+  "title": "Cracks & fracture",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Stretch a sheet made of a lattice of breakable springs and watch the stress concentrate at the tip of a notch the reader cuts; raise the load until the crack runs, and plot the breaking stress against the notch length to find Griffith's rule. Switch the material from glass-like to metal-like: springs that yield before breaking blunt the tip and absorb energy, so the same crack needs far more stress to run.",
+  "takeaway": "A crack grows when the elastic energy it releases pays for the new surface it makes, so a longer crack needs less stress to run, and a material's strength is set by its flaws as much as by its bonds.",
+  "prerequisites": [
+   "bridges-structures",
+   "newtons-laws"
+  ],
+  "related": [
+   "dislocations-alloys",
+   "glass-transition",
+   "earthquakes",
+   "composites-ashby"
+  ],
+  "needs": "Fracture toughness and modulus values for a few materials, to label the glass-like and metal-like settings.",
+  "pitfall": "Strength is not a fixed material constant: Griffith's glass fibres were many times stronger than bulk glass because they had smaller flaws, and a scratch is what makes a pane weak.",
+  "why": "MIT OCW 3.22 Mechanical Behavior of Materials covers fracture across metals, ceramics and polymers: https://ocw.mit.edu/courses/3-22-mechanical-behavior-of-materials-spring-2008/pages/syllabus",
+  "overlapWith": "bridges-structures: that page fails members when their load limit is exceeded; this one shows why the limit depends on cracks and how a crack decides to run.",
+  "needsSource": "Published K_IC and modulus values (textbook numbers); the spring network needs no data.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "free-energy-of-mixing",
+  "title": "Free energy of mixing & phase diagrams",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "interaction": "Drag the interaction energy and the temperature of a two-component regular solution and watch its free-energy curve bend; wherever a common tangent lies below the curve the page draws it and splits the mixture into two phases at the tangent points. Sweep the temperature and the phase diagram assembles underneath (miscibility gap and spinodal); add solid and liquid curves to build lens and eutectic diagrams, and drag a composition to read the lever rule.",
+  "takeaway": "A phase diagram is the shadow of free-energy curves: a mixture splits wherever a straight line between two compositions lies below the curve, and the tangent points become the phase boundaries.",
+  "prerequisites": [
+   "entropy",
+   "states-of-matter"
+  ],
+  "related": [
+   "dislocations-alloys",
+   "glass-transition",
+   "diffusion-in-solids",
+   "reaction-free-energy",
+   "nucleation-crystal-growth"
+  ],
+  "needs": "",
+  "pitfall": "A two-phase region on a phase diagram is not a phase; the mixture there is two phases of the boundary compositions, in amounts the lever rule gives.",
+  "why": "MIT OCW 3.012 problem set 6 builds phase diagrams from common tangents on free-energy curves: https://ocw.mit.edu/courses/3-012-fundamentals-of-materials-science-fall-2005/2cbcd5557e2886b8ce70445f8312394b_ps06_sol.pdf",
+  "overlapWith": "states-of-matter: that page tracks one substance on a pressure-temperature diagram; this one derives a two-component diagram from free energy.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "glass-transition",
+  "title": "Glass: the liquid that ran out of time",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Cool a box of two sizes of simulated atoms at a rate the reader chooses and watch the volume-temperature plot: cooled slowly, a pure sample snaps into a crystal with a sharp drop; cooled quickly, or mixed, it jams into a glass at a gentle kink whose temperature rises with the cooling rate. A mean-squared-displacement plot shows the atoms caging each other as the glass forms, and a structure panel compares the crystal's repeating rows with the glass's frozen liquid.",
+  "takeaway": "A glass is a liquid cooled too fast to crystallize, so its atoms jam where they stand, and the temperature where that happens depends on how fast it was cooled.",
+  "prerequisites": [
+   "states-of-matter",
+   "entropy"
+  ],
+  "related": [
+   "rubber-elasticity",
+   "free-energy-of-mixing",
+   "diffusion-in-solids",
+   "fracture-mechanics",
+   "nucleation-crystal-growth"
+  ],
+  "needs": "",
+  "pitfall": "Window glass does not flow at room temperature; old panes are thicker at one edge because of how they were made, not because the glass sagged.",
+  "why": "MIT OCW 3.091 Fall 2018 syllabus includes glasses after crystals and defects: https://ocw.mit.edu/courses/3-091-introduction-to-solid-state-chemistry-fall-2018/pages/syllabus/",
+  "overlapWith": "states-of-matter: that page freezes a box into a crystal; this one cools a mixture fast enough that it cannot, and shows what forms instead.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "hartree-fock",
+  "title": "Hartree-Fock: the self-consistent field",
+  "level": 3,
+  "kind": "step",
+  "category": "chemistry",
+  "interaction": "Step through a self-consistent-field calculation on H2 or HeH+ in a minimal basis: start from a guessed orbital, build the Fock matrix from it, solve, and watch the orbitals, the electron density and the energy settle iteration by iteration until the field the electrons make is the field they were solved in. Then drag the bond length to trace the energy curve, and switch on the exact two-determinant answer in the same basis to see the mean-field curve go wrong as the bond breaks.",
+  "takeaway": "Each electron is solved in the average field of the others and the loop repeats until nothing changes, which captures most of the bond but misses the correlation between electrons that matters most when a bond is pulled apart.",
+  "prerequisites": [
+   "huckel-molecular-orbitals",
+   "quantum-mechanics"
+  ],
+  "related": [
+   "atoms-periodic-table",
+   "gradient-descent"
+  ],
+  "needs": "STO-3G exponents and contraction coefficients for H and He; all integrals are computed in the browser.",
+  "pitfall": "Exchange is not a force between electrons, and the Hartree-Fock energy is an upper bound: the missing correlation energy is small per electron but is exactly what a stretched bond needs.",
+  "why": "MIT OCW 5.61 covers molecular orbital theory, and the Szabo & Ostlund HeH+ SCF program is the standard worked example (CCL archive): https://ccl.net/cca/software/SOURCES/FORTRAN/szabo/index.html",
+  "overlapWith": "huckel-molecular-orbitals (proposed): Hückel takes the matrix elements as parameters; this page computes them from the electrons' own repulsion and iterates to self-consistency.",
+  "needsSource": "STO-3G parameters from the Basis Set Exchange (MolSSI, openly licensed; confirm the current licence) or as printed in Szabo & Ostlund (a dozen numbers).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "huckel-molecular-orbitals",
+  "title": "Molecular orbitals & conjugation",
+  "level": 3,
+  "kind": "build",
+  "category": "chemistry",
+  "interaction": "Snap carbon atoms into chains and rings to build a π system (ethene, butadiene, benzene, cyclobutadiene, a cyanine dye); the page diagonalizes the Hückel matrix and draws the molecular orbitals as signed lobes on the atoms beside an energy ladder filled with the π electrons. Lengthen a dye chain and watch the HOMO-LUMO gap shrink while a swatch shows the color it absorbs; close a chain into a ring and watch the levels regroup into the aromatic pattern, or fail to for a four-membered ring.",
+  "takeaway": "Electrons delocalized over a π system fill a ladder of orbitals whose gap narrows as the system grows, which is why longer dyes are redder and why a six-membered ring is stable where a four-membered one is not.",
+  "prerequisites": [
+   "chemical-bonds",
+   "linear-transformations"
+  ],
+  "related": [
+   "quantum-mechanics",
+   "carbon-polymers",
+   "semiconductors"
+  ],
+  "needs": "Measured absorption maxima of a cyanine dye series for the color panel, to set beside the computed gap.",
+  "pitfall": "Benzene's bonds do not alternate between single and double; the orbitals spread over the whole ring, and the two Kekulé drawings are a convention, not structures it flips between.",
+  "why": "MIT OCW 5.61 Physical Chemistry devotes Lecture 26 to qualitative MO theory (Hückel): https://ocw.mit.edu/courses/5-61-physical-chemistry-fall-2017/resources/qualitative-mo-theory-huckel/",
+  "overlapWith": "chemical-bonds: that page builds molecules from localized electron pairs and VSEPR shapes; this one computes delocalized orbital energies and shapes from the Hückel Hamiltonian.",
+  "needsSource": "Published λmax values of the classic cyanine dye series (literature numbers, not a licensed dataset); the Hückel model itself needs no data.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "liquid-crystals",
+  "title": "Liquid crystals & the LCD pixel",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Run a lattice of rod-like molecules (Lebwohl-Lasher Monte Carlo) and slide the temperature: above a point the rods point every way, below it they agree on a direction and the order parameter jumps. Apply a voltage across the cell and watch the rods swing toward the field; place the twisted cell between crossed polarizers and the page computes the light that gets through, so the pixel goes from bright to dark as the voltage rises.",
+  "takeaway": "A liquid crystal is a liquid whose molecules agree on a direction, and a small voltage re-aims them, which turns a pixel from light to dark in front of a backlight.",
+  "prerequisites": [
+   "states-of-matter",
+   "light-optics",
+   "electromagnetism"
+  ],
+  "related": [
+   "vision-color",
+   "colloids-dlvo"
+  ],
+  "needs": "",
+  "pitfall": "The liquid crystal in a screen emits no light; it is a voltage-controlled shutter, and the colors come from filters over a white backlight.",
+  "why": "TU/e 'Polymer and colloid science' covers liquid-crystal phases and Onsager theory, and EngineerGuy's LCD teardown is a widely shared explainer: https://eduxchange.nl/ewuu/guest/catalog-tue/courses/polymer-and-colloid-science_300b6aa7-1f16-46f4-be98-05e87310000a",
+  "overlapWith": "states-of-matter: that page has solid, liquid and gas; this one adds the state between liquid and crystal and the device built on it.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "chemistry-l3"
+ },
+ {
   "slug": "mass-spectrometry",
   "title": "Mass spectrometry",
   "level": 3,
@@ -103,550 +651,5 @@
   "leadsTo": [],
   "everyday": false,
   "origin": "chemistry-l3"
- },
- {
-  "slug": "quantum-dots",
-  "title": "Quantum dots: color from size",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "chemistry",
-  "interaction": "Slide the radius of a semiconductor nanocrystal from 2 to 10 nm and the page solves the confinement energy of its electron and hole, adds the bulk band gap and shows the color it emits, next to a ladder of discrete levels that spreads as the dot shrinks. Switch the material and compare the computed emission with measured peak wavelengths of real dots; a density-of-states panel shows the smooth bulk band breaking into sharp levels as the box closes in.",
-  "takeaway": "Trap an electron in a box a few nanometres wide and the energy it gives back as light is set by the size of the box, so one material glows in every color depending on how small it is made.",
-  "prerequisites": [
-   "quantum-mechanics",
-   "semiconductors"
-  ],
-  "related": [
-   "solar-cells",
-   "vision-color",
-   "photochemistry"
-  ],
-  "needs": "Effective masses, bulk gaps and dielectric constants for CdSe, CdS and InP, and measured size-to-emission data.",
-  "pitfall": "The color is not a different chemical or a dye inside the dot: it is the confinement energy added to the same material's gap, and bigger dots are redder, not bluer.",
-  "why": "The 2023 Nobel Prize in Chemistry for the discovery and synthesis of quantum dots: https://www.bu.edu/nano-bu/?p=5287",
-  "overlapWith": "solar-cells: that page uses a bulk band gap; this one shows the gap itself depending on size once the crystal is nanometres wide.",
-  "needsSource": "Material parameters from the literature; size-to-wavelength calibration from Yu, Qu, Guo & Peng, Chem. Mater. 2003 (published numbers, no licensed dataset).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "chemistry-l3"
- },
- {
-  "slug": "reaction-free-energy",
-  "title": "Free energy & the equilibrium constant",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "chemistry",
-  "interaction": "Drag the extent of a reaction (N2O4 ⇌ 2 NO2, with real enthalpy and entropy) along a plot of the mixture's Gibbs energy and watch it fall to a minimum part-way, where the composition matches the equilibrium constant; switch off the mixing-entropy term that bends the curve to see why the reaction would otherwise run to completion. Change the temperature and the pressure and watch the minimum, K and the yield move.",
-  "takeaway": "A reaction runs downhill in free energy and stops at the bottom of a curve that lies at a mixture rather than at completion, because mixing itself lowers the free energy; the depth of that bottom is the equilibrium constant.",
-  "prerequisites": [
-   "reaction-rates-equilibrium",
-   "entropy"
-  ],
-  "related": [
-   "free-energy-of-mixing",
-   "electrode-kinetics",
-   "respiration-atp"
-  ],
-  "needs": "Standard enthalpies of formation and entropies for N2O4 and NO2.",
-  "pitfall": "A negative ΔG° does not mean the reaction goes to completion and a positive one does not mean it does not happen; the sign sets K, and the mixture always settles at a minimum between the two extremes.",
-  "why": "MIT OCW 5.60 Thermodynamics & Kinetics covers chemical equilibrium of gas- and solution-phase reactions through the Gibbs energy: https://ocw.mit.edu/courses/5-60-thermodynamics-kinetics-spring-2008",
-  "overlapWith": "reaction-rates-equilibrium: that page reaches equilibrium kinetically, as equal forward and reverse rates; this one locates it thermodynamically as the minimum of G and ties it to K and temperature.",
-  "needsSource": "NIST-JANAF thermochemical tables (NIST Standard Reference Data, free to use with citation; a few numbers).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "chemistry-l3"
- },
- {
-  "slug": "rubber-elasticity",
-  "title": "Rubber & polymer chains: the entropic spring",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "chemistry",
-  "interaction": "Grab the ends of a freely-jointed chain of a few hundred links and pull; the page samples the chain's random walks and shows the count of shapes that fit each end-to-end distance collapsing, with the restoring force computed from that count and the temperature. Turn up the temperature and the stretched chain pulls harder and shortens; cross-link many chains into a network and rubber's stress-strain curve appears beside Hooke's law, with the warming on stretching shown on a thermometer.",
-  "takeaway": "Rubber pulls back not because its bonds are stretched but because a stretched chain has fewer shapes to be in, so it pulls harder when hotter and warms when stretched, the opposite of a metal spring.",
-  "prerequisites": [
-   "carbon-polymers",
-   "entropy"
-  ],
-  "related": [
-   "glass-transition",
-   "bridges-structures",
-   "protein-folding"
-  ],
-  "needs": "",
-  "pitfall": "The force in rubber is entropic, not from stretched bonds: a rubber band heated under a weight contracts, which a steel spring never does.",
-  "why": "MIT OCW 3.064 Polymer Engineering lecture on chain conformation and the kinetic theory of rubber elasticity (and Feynman's much-shared rubber-band clip): https://ocw.mit.edu/courses/3-064-polymer-engineering-fall-2003/resources/lec_6",
-  "overlapWith": "carbon-polymers: that page links monomers and relates stiffness to chain length and cross-links; this one derives the restoring force from the statistics of a chain's shapes.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": true,
-  "origin": "chemistry-l3"
- },
- {
-  "slug": "sn1-sn2",
-  "title": "Substitution mechanisms: SN1 and SN2",
-  "level": 3,
-  "kind": "step",
-  "category": "chemistry",
-  "interaction": "Step a nucleophile toward a carbon bearing a leaving group across an energy surface built from two coupled bond curves (an empirical valence-bond model) plus an ionic state whose energy drops as the solvent-polarity slider rises: the surface shows either a single pass with the nucleophile arriving from the back or a two-step route through a flat carbocation. Change the substrate from methyl to tertiary, the nucleophile's strength and concentration, and watch the computed rate law and the stereochemical outcome (clean inversion versus a racemic mix) change.",
-  "takeaway": "A substitution either happens in one step from the back, inverting the molecule, or in two steps through a flat ion that either side can attack, and only the second is indifferent to how much nucleophile is present.",
-  "prerequisites": [
-   "carbon-polymers",
-   "transition-state-theory"
-  ],
-  "related": [
-   "reaction-rates-equilibrium",
-   "enzyme-kinetics"
-  ],
-  "needs": "Relative rate constants for the methyl-to-tertiary series and for solvent changes, to calibrate the model.",
-  "pitfall": "The 1 and 2 count the molecules in the rate-determining step, not the number of steps, and SN1 versus SN2 is not a property of the substrate alone: solvent and nucleophile shift the balance.",
-  "why": "MIT OCW 5.12 Organic Chemistry I emphasizes substitution and elimination, with a dedicated SN2/SN1 handout: https://live.ocw.mit.edu/courses/5-12-organic-chemistry-i-spring-2005/resources/sn2sn1",
-  "overlapWith": "transition-state-theory (proposed): that page runs trajectories on an atom-exchange surface; this one applies the idea to the organic reaction where two competing paths explain the rate law and the stereochemistry.",
-  "needsSource": "Published relative rates (the classic Hughes-Ingold and Streitwieser compilations; textbook numbers). The valence-bond parameters are fitted to these, which the page must state.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "chemistry-l3"
- },
- {
-  "slug": "surface-catalysis",
-  "title": "Catalysis on a surface",
-  "level": 3,
-  "kind": "simulate",
-  "category": "chemistry",
-  "interaction": "Run CO oxidation on a lattice of catalyst sites: CO lands on one empty site, O2 splits onto two neighbouring sites, and adjacent CO and O react into CO2 and leave (the Ziff-Gulari-Barshad model). Slide the CO fraction in the gas and watch the CO2 rate rise, peak and collapse as the surface smothers in CO, with the coverages plotted beside a Langmuir isotherm; raise the temperature to let CO desorb and the dead surface recover.",
-  "takeaway": "A catalyst works by holding the reactants next to each other on its surface, and too much of one reactant can cover every site and stop the reaction entirely.",
-  "prerequisites": [
-   "reaction-rates-equilibrium"
-  ],
-  "related": [
-   "enzyme-kinetics",
-   "transition-state-theory"
-  ],
-  "needs": "",
-  "pitfall": "A catalyst is not consumed, but it is not inert either: its activity depends on what covers it, and a poisoned surface is a catalyst that has stopped working.",
-  "why": "MIT OCW 10.37 Chemical and Biological Reaction Engineering covers heterogeneous catalysis and Langmuir-Hinshelwood kinetics: https://ocw.mit.edu/courses/10-37-chemical-and-biological-reaction-engineering-spring-2007/pages/lecture-notes",
-  "overlapWith": "reaction-rates-equilibrium: that page's catalyst only lowers a barrier; this one models the surface sites, their coverage and the poisoning that follows.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "chemistry-l3"
- },
- {
-  "slug": "surfactants-micelles",
-  "title": "Soap: surfactants & micelles",
-  "level": 3,
-  "kind": "simulate",
-  "category": "chemistry",
-  "interaction": "Drop amphiphiles, each a water-loving head on a water-fearing tail, into a box of simulated water and oil and watch them gather at the interface, then, as the reader adds more, begin forming micelles: the plot of free amphiphiles against the total shows the kink at the critical micelle concentration. Add a drop of oil and watch micelles swallow it; change the tail length and head size and see the threshold shift and the aggregates change from spheres to bilayers.",
-  "takeaway": "Molecules with a water-loving head and a water-fearing tail arrange themselves to hide their tails, and above a threshold concentration they do it by forming clusters that can carry grease away.",
-  "prerequisites": [
-   "chemical-bonds",
-   "entropy"
-  ],
-  "related": [
-   "colloids-dlvo",
-   "the-cell",
-   "mrna-vaccines",
-   "dispersion-forces"
-  ],
-  "needs": "",
-  "pitfall": "Soap does not break or dissolve oil molecules; it wraps them in micelles that water can carry, and the driving force is water's preference for itself, not an attraction between the tails.",
-  "why": "University of Genoa soft-matter course covers the hydrophobic interaction, surface tension and self-assembly: https://corsi.unige.it/en/node/221635",
-  "overlapWith": "the-cell: that page shows the membrane as a bilayer; this one models why amphiphiles assemble at all and the concentration at which they start.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": true,
-  "origin": "chemistry-l3"
- },
- {
-  "slug": "transition-state-theory",
-  "title": "Reaction trajectories & the transition state",
-  "level": 3,
-  "kind": "simulate",
-  "category": "chemistry",
-  "interaction": "Fire a classical trajectory of A + BC → AB + C across a potential-energy surface (LEPS model of H + H2 and F + H2) drawn as a contour map, choosing how much energy goes into translation and how much into vibration, and see whether it crosses the saddle or turns back. Sweep the temperature to watch the Eyring rate climb, move the barrier early or late along the path to see which kind of energy gets molecules over it, and swap H for D to watch the zero-point energy and the rate change.",
-  "takeaway": "A reaction is a journey over a mountain pass on an energy landscape; the pass's height sets how often molecules make it and its position sets which kind of energy gets them over.",
-  "prerequisites": [
-   "reaction-rates-equilibrium",
-   "newtons-laws"
-  ],
-  "related": [
-   "enzyme-kinetics",
-   "surface-catalysis",
-   "sn1-sn2"
-  ],
-  "needs": "LEPS (Sato) parameters for the H3 and FH2 surfaces.",
-  "pitfall": "The transition state is not an intermediate that can be isolated; it is the top of the pass, crossed in a single vibration, and a catalyst lowers the pass rather than pushing molecules over it.",
-  "why": "MIT OCW 5.60 covers rates of chemical reactions and transition-state theory (Lectures 33-35): https://ocw.mit.edu/courses/5-60-thermodynamics-kinetics-spring-2008/resources/lec33_th",
-  "overlapWith": "reaction-rates-equilibrium: that page draws a 1D energy profile beside colliding balls; this one computes the 2D surface and real trajectories over it, with the isotope effect as a bonus.",
-  "needsSource": "Published LEPS/Sato parameters for H + H2 and F + H2 (journal numbers; no licensed dataset).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "chemistry-l3"
- },
- {
-  "slug": "van-der-waals-fluid",
-  "title": "The critical point & supercritical fluids",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "chemistry",
-  "interaction": "Drag the temperature of a van der Waals gas (real constants for CO2 and water) and watch its isotherm on a pressure-volume plot: below a critical temperature it develops a loop that the page replaces with the flat line of the equal-area rule, which marks boiling, and the ends of all those lines trace the liquid-gas dome. Push past the critical point and the loop vanishes: compress the fluid and it goes from gas-like to liquid-like with no boiling, while a particle box beside the plot shows the meniscus disappearing.",
-  "takeaway": "Above the critical temperature there is no boiling because liquid and gas have become the same phase, and a fluid there has the density of a liquid with the mobility of a gas.",
-  "prerequisites": [
-   "states-of-matter",
-   "entropy"
-  ],
-  "related": [
-   "heat-engines",
-   "free-energy-of-mixing"
-  ],
-  "needs": "Critical temperature and pressure of CO2 and water.",
-  "pitfall": "The loop in the van der Waals isotherm is not what a real fluid does; the flat coexistence line is, and a supercritical fluid is not a fourth state of matter.",
-  "why": "MIT OCW 5.60 Thermodynamics & Kinetics (equations of state and phase equilibria lectures): https://ocw.mit.edu/courses/5-60-thermodynamics-kinetics-spring-2008/resources/",
-  "overlapWith": "states-of-matter: that page tracks a substance across its phase diagram; this one explains where the liquid-gas line ends and what lies beyond it.",
-  "needsSource": "Critical constants of CO2 and water from the NIST Chemistry WebBook (free to use with citation; a handful of numbers).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "chemistry-l3"
- },
- {
-  "slug": "vibrational-spectroscopy",
-  "title": "Molecular vibrations: IR & Raman",
-  "level": 3,
-  "kind": "build",
-  "category": "chemistry",
-  "interaction": "Assemble a small molecule (HCl, CO2, H2O, CH4) from atoms and bond springs with real force constants; the page diagonalizes the Hessian and animates each normal mode. For each mode it tests whether the vibration changes the molecule's dipole or its polarizability and draws the predicted IR and Raman stick spectra next to measured line positions; swap an atom for a heavier isotope and the peaks shift.",
-  "takeaway": "A molecule's IR spectrum is the set of its vibration frequencies, fixed by bond stiffness and atom masses, and a vibration appears in IR only if it moves charge and in Raman only if it changes polarizability, so CO2's symmetric stretch is silent in one and bright in the other.",
-  "prerequisites": [
-   "chemical-bonds",
-   "oscillations-resonance"
-  ],
-  "related": [
-   "greenhouse-effect",
-   "light-optics"
-  ],
-  "needs": "Harmonic force constants for the molecules (Herzberg's tabulations) and measured band positions for comparison.",
-  "pitfall": "CO2 is a greenhouse gas because its bend and asymmetric stretch change its dipole, not because it is a gas that traps heat; N2 and O2 vibrate too but stay invisible in IR.",
-  "why": "MIT OCW 5.61 covers molecular spectroscopy, and OCR/AQA A-level chemistry assess IR spectra with an absorption data sheet: https://ocw.mit.edu/courses/5-61-physical-chemistry-fall-2017/",
-  "overlapWith": "greenhouse-effect: that page takes absorption as an input; this one computes which vibrations absorb and why from the molecule's own mechanics.",
-  "needsSource": "HITRAN line lists for CO2, H2O, HCl and CH4 (free with citation per hitran.org; the 1986 edition mirror at NCAR is CC BY 4.0). NIST WebBook IR spectra are free to view but their redistribution terms are not clearly open, so the page should rely on HITRAN.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "chemistry-l3"
- },
- {
-  "slug": "x-ray-diffraction",
-  "title": "X-ray diffraction: reading a crystal",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "chemistry",
-  "interaction": "Pick a real crystal structure (NaCl, CsCl, diamond, copper, silicon) and the page computes its structure factors and draws the powder pattern against angle from Bragg's law and the atomic scattering factors; rotate a single crystal to see the spots of its reciprocal lattice pass through the Ewald sphere. Edit the cell by swapping an atom, deleting one or changing the lattice type, and watch peaks appear, vanish or shift; change the X-ray wavelength and the whole pattern rescales.",
-  "takeaway": "A diffraction pattern is the crystal's Fourier transform: peak positions come from the spacing of the lattice and peak intensities from where the atoms sit in the cell, so the missing peaks are as telling as the present ones.",
-  "prerequisites": [
-   "waves-interference",
-   "fourier-transform",
-   "semiconductors"
-  ],
-  "related": [
-   "medical-imaging",
-   "protein-folding",
-   "dislocations-alloys"
-  ],
-  "needs": "CIF files for the structures and atomic scattering-factor coefficients.",
-  "pitfall": "Bragg 'reflection' is not a mirror bouncing a beam off a plane: every atom scatters in all directions and the peaks are where those waves add up, which is why intensities depend on the atoms and not only on the planes.",
-  "why": "MIT OCW 3.091 Fall 2018 runs through crystallography and x-rays: https://ocw.mit.edu/courses/3-091-introduction-to-solid-state-chemistry-fall-2018/pages/syllabus/",
-  "overlapWith": "semiconductors: that page shows lattices beside their bands; this one computes what X-rays see in a lattice and how structures are solved from it.",
-  "needsSource": "Crystallography Open Database entries (COD states they are free to download, reuse and redistribute; confirm its public-domain statement on crystallography.net); scattering factors from the Waasmaier-Kirfel or Cromer-Mann parameterisations as redistributed in BSD-licensed xraylib (the International Tables themselves are copyrighted).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "chemistry-l3"
- },
- {
-  "slug": "apple-browning",
-  "title": "Why a cut apple goes brown",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "biology",
-  "everyday": true,
-  "interaction": "A cut apple face, drawn as a sheet of cells. Scrub the minutes and brown spreads in from wherever air touches the cut, because an enzyme freed by the cut meets the air, while a brownness meter climbs. One control at a time: paint a region with lemon juice (the enzyme stops in acid), press cling film over a region (no air), move the apple into the fridge (slower), or dip a slice in boiling water (the enzyme is destroyed). Each region browns at its own pace side by side.",
-  "takeaway": "An apple browns because a cut lets one of its own enzymes meet the air, so keeping air off, chilling it, or lemon juice each slow the browning, and heat stops it for good.",
-  "prerequisites": [],
-  "related": [
-   "onion-tears",
-   "toast-and-browning",
-   "ripening-fruit",
-   "fridge-and-spoilage"
-  ],
-  "needs": "",
-  "needsSource": "none; a cut-surface grid with air diffusing in and an enzyme rate that depends on acidity and temperature (constants from the polyphenol-oxidase references)",
-  "pitfall": "Browning is not rotting and not the apple going bad: a brown apple slice is safe. And lemon juice does not 'seal' the surface; it stops the enzyme.",
-  "why": "Science Buddies 'Enzymatic Browning' activity (apple and banana, lemon juice): https://www.sciencebuddies.org/stem-activities/enzymatic-browning",
-  "overlapWith": "the-cell: this page's cells are only the containers a cut breaks open, and the-cell never shows an enzyme at work; its browning is also unrelated to the dry-heat browning of toast.",
-  "leadsTo": [
-   "the-cell"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "bean-in-a-jar",
-  "title": "A bean in a jar",
-  "level": 0,
-  "kind": "simulate",
-  "category": "biology",
-  "everyday": true,
-  "interaction": "A bean seed pressed against the glass of a jar with a wet paper towel. One control at a time: water or none, warm or cold, light or a dark cupboard. Scrub the days and the seed swells, splits, sends a root down and a shoot up while a growth ruler follows. No water and nothing happens; cold and it takes weeks; in the dark it sprouts just as well but the seedling grows pale and leggy, then stops once its stored food is used up, while the one in the light turns green and keeps going. Turn the jar on its side and the root bends down again.",
-  "takeaway": "A seed needs water and warmth, not light, to sprout, because it lives on food stored inside it, and only once that runs out does the seedling need light to make its own.",
-  "prerequisites": [],
-  "related": [
-   "sponge-and-paper-towel",
-   "ripening-fruit"
-  ],
-  "needs": "",
-  "needsSource": "none; a germination and growth rate against temperature and water with a stored-food budget, constants from published bean germination studies",
-  "pitfall": "Seeds do not need light or soil to germinate, and a seedling in the dark grows taller, not shorter, at first; that is not healthy growth but stored food running out.",
-  "why": "England KS2 Year 3 'Plants' (requirements for life and growth) and NGSS 3-LS1-1 (life cycles): https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study (curriculum page; not fetched this session, search budget exhausted)",
-  "overlapWith": "photosynthesis: that page runs the chloroplast with light and CO2 at level 1; here light matters only after the seed's stored food is gone, and the controls are water, warmth and a dark cupboard.",
-  "leadsTo": [
-   "photosynthesis",
-   "the-cell"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "bread-and-yeast",
-  "title": "Bread and yeast",
-  "level": 0,
-  "kind": "simulate",
-  "category": "biology",
-  "everyday": true,
-  "interaction": "A ball of dough in a bowl, with a window into it: yeast cells drawn as dots eat sugar particles and give off gas particles that collect in bubbles, so the dough swells and a ruler follows it. One control: the temperature of the room. Cold and the yeast barely move; warm and the dough doubles in an hour; too hot and the yeast die and the rise stops for good. A second run bakes the dough: the oven swells the bubbles once more and then sets the crumb, and the baked slice shows its holes.",
-  "takeaway": "Dough rises because living yeast eat sugar and breathe out gas that gets trapped in the dough, fastest when it is warm but not hot, and the holes in bread are those bubbles.",
-  "prerequisites": [],
-  "related": [
-   "baking-soda-and-vinegar",
-   "cake-rising",
-   "milk-and-yogurt",
-   "fridge-and-spoilage",
-   "mould-on-bread"
-  ],
-  "needs": "Rate of gas production by baker's yeast against temperature, from a published fermentation study (a cardinal-temperature curve with a few fitted constants); no dataset.",
-  "needsSource": "A few fitted constants from a published yeast fermentation-rate study; facts, no dataset",
-  "pitfall": "Yeast is alive and does not simply 'activate': too much heat kills it, and the holes in bread are not air mixed in by kneading.",
-  "why": "Demand: 'why does yeast make bread rise' (BBC Science Focus): https://www.sciencefocus.com/nature/why-does-yeast-make-bread-rise/; England KS2 Year 6 'Living things' (micro-organisms) and NGSS MS-LS1-1.",
-  "overlapWith": "respiration-atp: that page follows glucose through the cell at level 2; here the yeast is a dot that eats sugar and makes a bubble, and the only control is warmth.",
-  "leadsTo": [
-   "the-cell"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "caterpillar-to-butterfly",
-  "title": "Caterpillar to butterfly",
-  "level": 0,
-  "kind": "step",
-  "category": "biology",
-  "everyday": false,
-  "interaction": "Step a monarch from egg to butterfly on a day counter: the caterpillar eats and swells until its skin, which cannot stretch, splits and is shed, five times over, growing about two thousand times heavier in two weeks; then it hangs, sheds once more into a chrysalis, and a cutaway shows most of its insides dissolved and rebuilt into wings, legs and a drinking straw while the stored fat drains. Warm the days and every stage runs faster.",
-  "takeaway": "A caterpillar is an eating machine that must shed its skin to grow, and inside the chrysalis it is largely taken apart and rebuilt into a flying one.",
-  "prerequisites": [],
-  "related": [
-   "inside-an-egg",
-   "flowers-and-bees",
-   "growing-up"
-  ],
-  "needs": "",
-  "needsSource": "none: growth across five instars with a moult whenever the body outgrows its skin, a mass budget in the pupa, and stage lengths versus temperature from the monarch literature (Monarch Joint Venture; Zalucki 1982), stated on the page",
-  "pitfall": "The caterpillar does not turn to soup: its nervous system, some muscles and the small clusters of cells that become the wings survive and build the adult, and the butterfly is the same individual, not a new one.",
-  "why": "England KS2 Year 5 statutory requirement: describe the differences in the life cycles of a mammal, an amphibian, an insect and a bird. https://www.ase.org.uk/sites/default/files/PLAN%20Examples%20of%20Work%20Y5%20Living%20things%20and%20their%20habitats%20Melissa.pdf",
-  "overlapWith": "the-cell: that page shows what a cell contains; this one follows one animal's body being rebuilt, as masses and moults, with no cell biology.",
-  "leadsTo": [
-   "the-cell",
-   "dna-to-protein"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "flowers-and-bees",
-  "title": "Flowers and bees",
-  "level": 0,
-  "kind": "simulate",
-  "category": "biology",
-  "everyday": false,
-  "interaction": "Watch bees work a meadow of flowers: each visit leaves pollen from the last flower and picks up new, and a flower only sets seed once pollen from another of its kind has arrived; count the seed heads at the end of the day. Take the bees away, paint the flowers dull, or thin the meadow, and count again.",
-  "takeaway": "A flower cannot move, so it pays bees in sugar to carry its pollen, and without the bees most of the seeds never form.",
-  "prerequisites": [],
-  "related": [
-   "seeds-and-germination",
-   "food-chains",
-   "caterpillar-to-butterfly",
-   "ecosystems"
-  ],
-  "needs": "",
-  "needsSource": "none: an agent simulation of bees drawn to colour and scent, carrying pollen that is deposited and diluted at each visit, with seed set requiring pollen of the right kind and nectar that refills over time",
-  "pitfall": "Bees are not helping on purpose and flowers are not for people: each is feeding, and the pollen hitches a ride. Not every flower needs a bee: grasses and many trees use the wind.",
-  "why": "England KS2 Year 3 statutory requirement: explore the part that flowers play in the life cycle of flowering plants, including pollination, seed formation and seed dispersal. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "ecosystems: that page couples a predator and its prey; this one couples two species that trade, counted in seeds, with no population cycles.",
-  "leadsTo": [
-   "meiosis-inheritance",
-   "ecosystems"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "food-chains",
-  "title": "Who eats whom",
-  "level": 0,
-  "kind": "build",
-  "category": "biology",
-  "everyday": false,
-  "interaction": "Drag plants and animals from a shelf into a chain, grass to grasshopper to frog to hawk, and the arrows point the way the food goes; then feed it: a thousand plants feed about a hundred grasshoppers, ten frogs and one hawk, and the pyramid of counts builds itself. Cross two chains into a web, remove the grass or add a second hawk, and watch how many of each the field can feed.",
-  "takeaway": "Each step up a food chain feeds about ten times fewer animals, which is why a field holds a thousand grass plants, a hundred grasshoppers, ten frogs and one hawk.",
-  "prerequisites": [],
-  "related": [
-   "flowers-and-bees",
-   "ecosystems",
-   "carbon-cycle"
-  ],
-  "needs": "",
-  "needsSource": "none: an energy-budget pyramid with a transfer fraction of about one tenth per link (Lindeman 1942, a rule of thumb stated as such) and example daily intakes from textbook ecology",
-  "pitfall": "Arrows point from the food to the eater, the direction the energy goes, not from the eater to the eaten. And the one-tenth is a rule of thumb, not a law: the page says about.",
-  "why": "NGSS 5-LS2-1: develop a model to describe the movement of matter among plants, animals, decomposers and the environment; also England KS2 Year 4 food chains. https://keslerscience.com/ngss-5-ls2-1-cycling-of-matter",
-  "overlapWith": "ecosystems: that page runs predator and prey through time and removes species from a web; this one has no time at all, only arrows and counts, the door to that page.",
-  "leadsTo": [
-   "ecosystems",
-   "carbon-cycle"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "fridge-and-spoilage",
-  "title": "How a fridge keeps food fresh",
-  "level": 0,
-  "kind": "simulate",
-  "category": "biology",
-  "everyday": true,
-  "interaction": "A plate of food with a count of germs on it, starting at a handful. One control: where the plate sits (a warm kitchen, a cool room, the fridge, the freezer), set by dragging the plate. Scrub the hours and days: on the counter the count doubles every half hour or so and passes the 'unsafe' line in hours; in the fridge each doubling takes many hours and the line is reached in days; in the freezer the count stands still. Move a plate from the freezer back to the counter and the doubling resumes from where it stopped.",
-  "takeaway": "Cold does not kill the germs on food; it slows how often they double, so the same food lasts hours on the counter, days in the fridge, and months in the freezer.",
-  "prerequisites": [],
-  "related": [
-   "mould-on-bread",
-   "bread-and-yeast",
-   "kitchen-thermometer",
-   "apple-browning",
-   "ripening-fruit"
-  ],
-  "needs": "Bacterial growth rate against temperature for a common spoilage bacterium (the Ratkowsky square-root model and its fitted constants; Ratkowsky et al., J. Bacteriol. 1982 and 1983, free to read on PMC), plus the USDA FSIS 'danger zone' limits (public domain).",
-  "needsSource": "Fitted constants from Ratkowsky et al. 1982/1983 (free on PMC; a few numbers, not a dataset) and USDA FSIS limits (public domain)",
-  "pitfall": "Freezing does not kill bacteria and the fridge does not 'clean' food: thawed food carries every germ it froze with, and cooking is what kills them.",
-  "why": "USDA FSIS 'Danger Zone' guidance (bacteria double in as little as 20 minutes between 40 and 140 °F): https://www.fsis.usda.gov/news-events/news-press-releases/usda-urges-consumers-keep-clear-danger-zone-summer",
-  "overlapWith": "epidemics: that page spreads infection between people at level 1; here germs multiply on one plate and the only control is its temperature, with nothing spreading between people.",
-  "leadsTo": [
-   "the-cell",
-   "epidemics"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "how-fish-breathe",
-  "title": "How fish breathe",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "biology",
-  "everyday": false,
-  "interaction": "Push water over a gill with a slider while blood runs through it the other way, and count the oxygen dots that cross from water to blood; flip a switch to make the blood run the same way as the water and the dots that cross fall to about half. Lift the fish out of the water and the feathery gill folds collapse onto each other and dry, and the dots stop crossing.",
-  "takeaway": "A fish gets oxygen by running its blood against the water flow, so the blood always meets water fresher than itself.",
-  "prerequisites": [],
-  "related": [
-   "breathing-and-lungs",
-   "why-big-birds-flap-slowly",
-   "heart-circulation"
-  ],
-  "needs": "",
-  "needsSource": "none: a one-dimensional counter-current exchanger with diffusion between two flows; water holds about thirty times less oxygen per litre than air, from textbook physiology",
-  "pitfall": "Fish out of water are not short of oxygen (air has more): the gill folds stick together and dry out so nothing can cross. And gills are not lungs that happen to be outside: the water flows through, it is never held.",
-  "why": "NGSS 4-LS1-1: internal structures that support survival, with gills among the standard classroom examples. https://www2.cde.ca.gov/cacs/id/web/29023",
-  "overlapWith": "heart-circulation: that page has one loop for the lungs; this is the gill itself as an exchanger you can run backwards, with no heart.",
-  "leadsTo": [
-   "heart-circulation",
-   "states-of-matter"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "how-plants-drink",
-  "title": "How plants drink",
-  "level": 0,
-  "kind": "simulate",
-  "category": "biology",
-  "everyday": true,
-  "interaction": "Stand a stick of celery or a white flower in coloured water and watch the dye climb; set the day to sunny, windy, humid or dark and the climb speeds up or stalls, because the pull comes from water leaving the leaves. Zoom to the leaf's pores opening and closing, then scale up to a tree on a hot day and count the buckets it lifts.",
-  "takeaway": "A plant has no pump: the leaves let water escape into the air, and that pulls a chain of water up from the roots.",
-  "prerequisites": [],
-  "related": [
-   "seeds-and-germination",
-   "why-leaves-change-colour",
-   "tree-rings"
-  ],
-  "needs": "",
-  "needsSource": "none: cohesion-tension with a simple evaporative-demand term (light, wind, humidity, pore opening) sets the flow, and the dye front follows it; a tree's daily water use quoted from textbook plant physiology",
-  "pitfall": "Roots do not push water up a tree (root pressure is tiny), and plants do not eat soil: the soil supplies water and a little mineral salt, and the plant's bulk comes from the air.",
-  "why": "NGSS 5-LS1-1: plants acquire their material for growth chiefly from air and water. https://www2.cde.ca.gov/cacs/id/web/29040",
-  "overlapWith": "photosynthesis: that page opens the stomata for carbon dioxide; this one follows the water those same pores let out, and nothing is made.",
-  "leadsTo": [
-   "photosynthesis",
-   "states-of-matter"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "inside-an-egg",
-  "title": "Inside an egg",
-  "level": 0,
-  "kind": "explore",
-  "category": "biology",
-  "everyday": true,
-  "interaction": "Scrub the 21 days of a hen's egg in a warm incubator: candle it to watch the embryo grow, the yolk shrink and the air pocket at the blunt end widen as water seeps out through the shell's tiny holes. Turn the incubator's humidity up or down and the pocket grows too slowly or too fast; at day 21 the chick breaks into that pocket for its first breath and then through the shell.",
-  "takeaway": "An egg is a packed lunch with a breathing shell: the chick eats the yolk, breathes through thousands of tiny holes, and the air pocket it needs at the end is made by the water those holes let out.",
-  "prerequisites": [],
-  "related": [
-   "caterpillar-to-butterfly",
-   "why-big-birds-flap-slowly",
-   "growing-up"
-  ],
-  "needs": "A published day-by-day table of chick embryo mass (e.g. Romanoff 1960, The Avian Embryo) transcribed with citation, not yet confirmed open; the 12 percent water-loss target by day 18 comes from hatchery guides (Pas Reform, Cobb) that are published but not openly licensed; candling views drawn in-house.",
-  "needsSource": "weak until a source is confirmed: the daily embryo mass curve needs a citable table (Romanoff 1960 or a poultry-science paper); water-loss targets from hatchery guides, published but not openly licensed",
-  "pitfall": "A supermarket egg has no chick in it and never will: it is unfertilised. And the shell is not sealed: it breathes, which is why the air pocket grows and why a dirty or waxed egg can suffocate a chick.",
-  "why": "Classroom hatching programmes (4-H embryology) with candling lessons, taught in primary schools across the US; the Year 5 bird life cycle in England. https://afs.ca.uky.edu/sites/afs.ca.uky.edu/files/Embryology%20-%20Lesson%206%20-%20Candling.pdf",
-  "overlapWith": "the-cell: that page zooms into a finished cell; this one watches one cell's descendants become a chick, as masses and an air pocket, with no cell biology.",
-  "leadsTo": [
-   "the-cell",
-   "meiosis-inheritance"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "jelly-and-pineapple",
-  "title": "Jelly and the pineapple problem",
-  "level": 0,
-  "kind": "simulate",
-  "category": "biology",
-  "everyday": true,
-  "interaction": "A bowl of hot jelly at particle scale: long strands drifting free. Scrub it cooling in the fridge and the strands tangle into a net that holds the water still, so the bowl stops sloshing. One control: what fruit goes in. Tinned pineapple, strawberries or oranges change nothing; fresh pineapple (or kiwi) brings an enzyme that snips strands wherever it meets them, and the net never joins up however long it cools. Heat the fresh pineapple first and the enzyme is wrecked and the jelly sets.",
-  "takeaway": "Jelly sets when long strands tangle into a net, and fresh pineapple carries an enzyme that cuts the strands faster than they can tangle, which cooking the pineapple stops.",
-  "prerequisites": [],
-  "related": [
-   "cooking-an-egg",
-   "onion-tears",
-   "milk-and-yogurt"
-  ],
-  "needs": "",
-  "needsSource": "none; a strand-network model (percolation) with a cutting enzyme that heat destroys",
-  "pitfall": "The pineapple does not 'melt' the jelly or add water; it cuts the strands. And tinned pineapple works because it was cooked, not because it was sweetened.",
-  "why": "A standard home experiment: 'Fruit enzymes gelatin experiment' (which fruits stop jelly setting, and why cooked pineapple does not): https://teachbesideme.com/fruit-enzymes-gelatin-experiment/; England KS3 biology (enzymes in digestion).",
-  "overlapWith": "protein-folding: that page folds a chain against an energy score at level 2; here strands only tangle or get cut, and the reader's control is the fruit.",
-  "leadsTo": [
-   "the-cell"
-  ],
-  "origin": "chemistry-and-cooking"
  }
 ]

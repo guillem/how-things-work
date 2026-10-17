@@ -187,5 +187,201 @@
   "slug": "heat-pumps-refrigeration",
   "reason": "Promoted as a level-3 page built on a real vapor-compression cycle with CoolProp refrigerant properties on a p-h diagram, COP against temperature lift and the Carnot comparison; it is the inverse of heat-engines, which never runs the cycle backward, and the IEA's Future of Heat Pumps report and Purdue's thermodynamics homework show both demand and curriculum fit.",
   "lens": "energy-machines-l3"
+ },
+ {
+  "item": "Exponentials & logarithms",
+  "decision": "promote",
+  "slug": "exponentials-logarithms",
+  "reason": "Honest at level 1 and a hole the catalogue leans on without naming (radioactivity, epidemics, acids-bases, earthquakes); full entry above, under the slug the math-l3 lens already put in the pool at level 1, so the pool keeps one copy.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Differential equations",
+  "decision": "promote",
+  "slug": "differential-equations",
+  "reason": "Honest level for the subject as named is 2: slope fields plus Euler's method need only calculus (level 2) and are AP Calculus BC and first-year material; full entry above. The math-l3 lens's phase-portraits (level 3) is the sequel on stability, not a duplicate.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Game theory",
+  "decision": "promote",
+  "slug": "game-theory-cooperation",
+  "reason": "Honest at level 1 as the repeated prisoner's dilemma, the tournament and the spatial grid (Axelrod, Nicky Case); full entry above. The math-l3 lens's evolutionary-game-theory (level 3, replicator ODE) remains the university version.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Fluid dynamics",
+  "decision": "promote",
+  "slug": "navier-stokes",
+  "reason": "Not level-1 or level-2 material: the honest model of flow is a grid solver, which the physics-l3 lens proposes as navier-stokes. This lens adds the statics on-ramp that is a real GCSE and AP hole, fluid-pressure-buoyancy at level 1.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Embryo development & pattern formation",
+  "decision": "promote",
+  "slug": "turing-patterns",
+  "reason": "No honest level-1 or level-2 face: the models are reaction-diffusion and morphogen PDEs and the subject is not on GCSE or A-level syllabi. Leave it to the biology-l3 lens's turing-patterns and morphogen-gradients (level 3).",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "DNA sequencing",
+  "decision": "promote",
+  "slug": "dna-sequencing",
+  "reason": "A-level biology names Sanger and nanopore sequencing descriptively, but the real model (chain termination, reads, assembly) is the biology-l3 lens's dna-sequencing at level 3; a level-2 page would duplicate it with less. Not proposed here.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Hearing & the cochlea",
+  "decision": "promote",
+  "slug": "cochlea-hearing",
+  "reason": "The level-0 hearing-and-the-ear and the medicine-l3 cochlea-hearing (level 3, transmission-line cochlea) cover both ends, and the level-1 physics of sound is already in waves-interference; a level-1 page between them would repeat the place-by-pitch takeaway. No entry from this lens.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Telescopes",
+  "decision": "promote",
+  "slug": "telescopes",
+  "reason": "Promoted at level 2 (A-level astrophysics: ray tracing plus the diffraction limit and light-gathering); full entry above. The earth-space-l3 lens's aperture-synthesis (level 3) is interferometry and does not overlap.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Operating systems",
+  "decision": "promote",
+  "slug": "os-scheduling",
+  "reason": "Not level-1 or level-2 material with one honest model; the computing-networks-l3 lens promotes it as os-scheduling (level 3). The GCSE face, file management, is too thin for a page with a real model, so this lens proposes none.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Compilers",
+  "decision": "promote",
+  "slug": "compilers",
+  "reason": "University material; the computing-networks-l3 lens promotes it at level 3 as a toy language compiled to the existing cpu page's processor. No level-1 or level-2 page.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Cellular automata",
+  "decision": "promote",
+  "slug": "cellular-automata",
+  "reason": "Honest at level 1 (Life plus the 256 elementary rules, no data); full entry above under the slug the math-l3 lens already put in the pool, so the pool keeps one copy. The level-0 life-on-a-grid is the on-ramp and universality is left for level 3.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Lasers & LEDs",
+  "decision": "promote",
+  "slug": "lasers",
+  "reason": "The laser is the physics-l3 lens's rate-equation page (level 3); the LED half is a p-n junction run as a light source and belongs as a sentence in semiconductors or solar-cells. Neither is A-level core, so no level-1 or level-2 page.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Heat pumps",
+  "decision": "promote",
+  "slug": "heat-pumps",
+  "reason": "Promoted at level 1 as the householder's page (heat moved not made, COP falling with the temperature lift, the same loop as an air conditioner); full entry above. It sits between the level-0 refrigerator and the energy-machines-l3 heat-pumps-refrigeration (CoolProp p-h diagram), the slot the basic-physical-science lens left to another lens.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Clustering & dimensionality reduction",
+  "decision": "promote",
+  "slug": "k-means-clustering",
+  "reason": "The clustering half is honest at level 1 as k-means stepped by hand on a CC0 dataset; full entry above. Dimensionality reduction stays with the ai-l3 lens's dimensionality-reduction (level 3): PCA needs linear-transformations (level 2) and t-SNE is university material.",
+  "lens": "holes-l1-l2"
+ },
+ {
+  "item": "Exponentials & logarithms",
+  "decision": "promote",
+  "slug": "exponentials-logarithms",
+  "reason": "'How does exponential growth work' is a top demand item and a catalogue hole; the pool's level-1 entry covers it honestly.",
+  "lens": "demand"
+ },
+ {
+  "item": "Differential equations",
+  "decision": "promote",
+  "slug": "phase-portraits",
+  "reason": "The demand is 'what is a differential equation'; the pool's phase-portraits (level 3, with heat-and-wave-equations as companion) is the honest version, built on calculus.",
+  "lens": "demand"
+ },
+ {
+  "item": "Game theory",
+  "decision": "merge",
+  "slug": "evolutionary-game-theory",
+  "reason": "Two pool entries (evolutionary-game-theory in math, evolutionary-games in biology) run the same replicator model; keep one. Demand is strong (Nicky Case's 'Evolution of Trust').",
+  "lens": "demand"
+ },
+ {
+  "item": "Fluid dynamics",
+  "decision": "promote",
+  "slug": "navier-stokes",
+  "reason": "A lattice-Boltzmann flow past a cylinder is a real browser model and 'how does turbulence work' is a Veritasium-scale question.",
+  "lens": "demand"
+ },
+ {
+  "item": "Embryo development & pattern formation",
+  "decision": "promote",
+  "slug": "turing-patterns",
+  "reason": "'Why do zebras have stripes' is a classic question; turing-patterns (with morphogen-gradients as companion) is the real reaction-diffusion model at level 3.",
+  "lens": "demand"
+ },
+ {
+  "item": "DNA sequencing",
+  "decision": "promote",
+  "slug": "dna-sequencing",
+  "reason": "'How is a genome sequenced' is asked constantly; the pool's phiX174 assembly page is a real algorithm on open data.",
+  "lens": "demand"
+ },
+ {
+  "item": "Hearing & the cochlea",
+  "decision": "promote",
+  "slug": "cochlea-hearing",
+  "reason": "'How does hearing work' is a top body question; the pool has the level-3 cochlea model and a level-0 hearing-and-the-ear, which can both stand.",
+  "lens": "demand"
+ },
+ {
+  "item": "Telescopes",
+  "decision": "merge",
+  "slug": "aperture-synthesis",
+  "reason": "Lenses and mirrors are already on light-optics; a level-1 telescope page would add only light-gathering and the diffraction limit. The pool's aperture-synthesis (level 3) carries the modern frontier that 'how does JWST see' asks about.",
+  "lens": "demand"
+ },
+ {
+  "item": "Operating systems",
+  "decision": "promote",
+  "slug": "os-scheduling",
+  "reason": "Demand is moderate but it is a core computing hole; the pool's scheduling page (with virtual-memory) is a real algorithm.",
+  "lens": "demand"
+ },
+ {
+  "item": "Compilers",
+  "decision": "promote",
+  "slug": "compilers",
+  "reason": "The pool's toy-language pipeline into the CPU page's processor is a real build and closes an obvious computing gap.",
+  "lens": "demand"
+ },
+ {
+  "item": "Cellular automata",
+  "decision": "promote",
+  "slug": "cellular-automata",
+  "reason": "Game of Life is among the most-visited recreational-maths subjects; the pool has it at level 1 and a level-0 life-on-a-grid.",
+  "lens": "demand"
+ },
+ {
+  "item": "Lasers & LEDs",
+  "decision": "promote",
+  "slug": "lasers",
+  "reason": "'How does a laser work' is a perennial; LEDs are already the p-n junction of semiconductors and solar-cells run backward, so only lasers need a page.",
+  "lens": "demand"
+ },
+ {
+  "item": "Heat pumps",
+  "decision": "promote",
+  "slug": "heat-pumps-refrigeration",
+  "reason": "'How does a heat pump work' is one of the fastest-growing energy questions; the pool's pressure-enthalpy page is the real cycle, with refrigerator as its level-0 pair.",
+  "lens": "demand"
+ },
+ {
+  "item": "Clustering & dimensionality reduction",
+  "decision": "promote",
+  "slug": "clustering-gaussian-mixtures",
+  "reason": "t-SNE and UMAP maps are everywhere and 'what is k-means' is a top ML question; the pool splits the item into clustering-gaussian-mixtures and dimensionality-reduction, both real.",
+  "lens": "demand"
  }
 ]

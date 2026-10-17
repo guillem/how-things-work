@@ -201,6 +201,51 @@
   "origin": "vehicles-and-big-machines"
  },
  {
+  "slug": "differential-gear",
+  "title": "The differential: how a car turns a corner",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Drive a toy car round a bend and watch the outer wheel roll farther than the inner one; lock the two wheels to one axle and the inner tyre skids. Open the axle to show the differential: a ring gear turns a cage, and two small gears inside let one wheel turn faster while the other turns slower by exactly as much, a turn counter on each wheel adding up to twice the cage's. Drag the bend tighter and the counters split further; put one wheel on ice and watch it spin while the other stops.",
+  "takeaway": "A differential lets two driven wheels turn at different speeds while one shaft drives both, which is what turning a corner without skidding needs.",
+  "prerequisites": [],
+  "related": [],
+  "needs": "",
+  "pitfall": "The differential does not send more torque to the outer wheel: it gives both wheels the same torque, which is why one wheel on ice spins and the other stops (the problem a limited-slip differential addresses).",
+  "why": "Chevrolet's 1937 film 'Around the Corner' (public domain) has tens of millions of views as the classic explanation: https://www.thedrive.com/news/35298/this-incredible-film-from-1937-teaches-you-how-a-cars-differential-works",
+  "overlapWith": "No catalogue page covers gears; nearest pool neighbours are car-steering-corners (steering geometry and grip) and bicycle-gears (ratios). This page is the mechanism that splits one input between two outputs that may turn at different speeds.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
+  "slug": "drone-four-rotors",
+  "title": "How a drone steers with four rotors",
+  "level": 0,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Four speed dials, one per rotor, with each rotor's push drawn as an arrow on the drone. Turn all four up together and it rises; make the two back rotors a little faster and it tips and slides forward; make the left pair faster and it slides right. Then speed up the two rotors that spin clockwise and slow the two that spin the other way: the lift stays the same but the drone turns on the spot; set all four to spin the same way and watch the body spin helplessly the opposite way.",
+  "takeaway": "A drone has no flaps or rudder: it climbs, tilts and turns only by spinning its four rotors at slightly different speeds, two one way and two the other.",
+  "prerequisites": [],
+  "related": [
+   "flight",
+   "feedback-control"
+  ],
+  "needs": "",
+  "pitfall": "The rotors do not all spin the same way: the pairs spin opposite ways so their twists cancel, and turning on the spot uses that twist. It is the tilt that moves the drone sideways, not a sideways push from a rotor.",
+  "why": "'How do drones fly' is a standard beginner question; explainer of quadcopter lift, pitch, roll and yaw: https://rchelicopterfun.com/quadrocopter.html",
+  "overlapWith": "helicopter-rotor (pool, level 0): one rotor whose disc tilts, plus a tail rotor; this page has four fixed rotors and steers only by speed differences, with the twist cancelled by counter-rotating pairs. feedback-control (level 2) holds a drone at a height; this page is how the rotor speeds move it at all.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
   "slug": "elevator",
   "title": "Elevator",
   "level": 0,
@@ -790,6 +835,81 @@
   ],
   "everyday": true,
   "origin": "home-mechanisms"
+ },
+ {
+  "slug": "heat-pumps",
+  "title": "Heat pumps",
+  "level": 1,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Set the temperature outside and the temperature wanted inside and watch the refrigerant loop run: it boils in the outdoor coil, taking heat from cold air, is compressed, and condenses in the indoor coil, giving that heat plus the compressor's work to the room. Bars show the heat delivered against the electricity used; slide the outdoor temperature down and watch the ratio fall, compare with an electric heater and a gas boiler, then flip a valve to run the same loop backwards as an air conditioner.",
+  "takeaway": "A heat pump does not make heat, it moves it, so it can deliver several units of heat for each unit of electricity, and it delivers fewer the colder it is outside.",
+  "prerequisites": [
+   "states-of-matter"
+  ],
+  "related": [
+   "heat-engines",
+   "heat-transfer-insulation",
+   "power-grid"
+  ],
+  "needs": "The coefficient of performance as a function of the temperature lift.",
+  "needsSource": "no dataset: the Carnot limit times a stated second-law efficiency (a documented simplification), or the published empirical fit for air-source heat pumps in Staffell et al. 2012 (Energy & Environmental Science, not open access; the fit is a formula to cite)",
+  "pitfall": "An efficiency above 100% breaks no law: the extra energy is heat taken from outside, and the loop obeys the same limit as a heat engine run backwards. Heat pumps work below freezing; they just deliver less per unit of electricity.",
+  "why": "IEA, 'The Future of Heat Pumps' (sales up 15% in 2021, 35% in the EU; installed capacity to more than double by 2030) https://www.iea.org/reports/the-future-of-heat-pumps",
+  "overlapWith": "heat-engines (level 2) runs the cycle forward with a pressure-volume loop; this is that cycle backwards at level 1, without the diagram. The pool has refrigerator (level 0, heat moved not made) and heat-pumps-refrigeration (level 3, CoolProp on a p-h diagram); this is the householder's page between them, which the basic-physical-science lens left to another lens.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "heat-transfer-insulation",
+  "title": "Heat transfer: conduction, convection & radiation",
+  "level": 1,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Set the temperature inside and outside a house, choose the wall's material and thickness, and watch heat diffuse through a cross-section on a grid coloured by temperature while a meter shows the rate of loss; add double glazing, loft insulation and a draught excluder and compare the bills. Switch to a pan on a stove to watch convection currents carry heat up and around, then hold a hand near a radiator to see radiation cross empty space, with a thermal-camera view of a hot and a cold mug.",
+  "takeaway": "Heat moves from hot to cold in three ways, through a material, with a moving fluid and as radiation, and each is slowed by a different trick: a thick poor conductor, a trapped still gas and a shiny surface.",
+  "prerequisites": [
+   "states-of-matter"
+  ],
+  "related": [
+   "entropy",
+   "greenhouse-effect",
+   "heat-pumps"
+  ],
+  "needs": "A small table of thermal conductivities for common building materials (brick, wood, glass, mineral wool, still air).",
+  "needsSource": "reference values (CRC Handbook or engineering tables); physical constants, not a copyrightable dataset",
+  "pitfall": "Insulation does not make heat: a jumper keeps you warm by slowing the loss of heat your body makes. Metal feels colder than wood at the same temperature because it conducts heat away faster, not because it is colder.",
+  "why": "NGSS MS-PS3-3 'design, construct, and test a device that either minimizes or maximizes thermal energy transfer' https://www2.cde.ca.gov/cacs/id/web/29109 ; AQA GCSE Physics 8463 topic 4.1.1.4 (thermal conductivity, rate of cooling of a building) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF",
+  "overlapWith": "entropy (level 2) shows heat equalising as a count of microstates and greenhouse-effect shows a planet's radiation balance; neither shows conduction through a wall, convection in a fluid or how insulation works. The pool's level-0 keeping-things-warm is the same idea without the heat equation.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "mains-electricity",
+  "title": "Electricity at home",
+  "level": 1,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Wire a house: plug appliances with their real power ratings into the ring, watch the mains voltage swing fifty times a second on an oscilloscope beside the steady voltage of a battery, and read the current each appliance draws and the meter counting kilowatt-hours. Overload a socket until its fuse blows, let a live wire touch a metal kettle with and without an earth wire and watch the breaker trip; then set a transformer's turns ratio to step the voltage up and down and see why the grid transmits at hundreds of thousands of volts.",
+  "takeaway": "Mains electricity is a voltage that reverses direction many times a second, power is voltage times current, and fuses, earth wires and breakers exist to cut the current before a fault heats a wire or a person.",
+  "prerequisites": [
+   "electric-circuits"
+  ],
+  "related": [
+   "power-grid",
+   "motors-generators",
+   "magnets-and-electromagnets"
+  ],
+  "needs": "",
+  "needsSource": "none; appliance power ratings are nameplate values",
+  "pitfall": "The neutral wire sits near zero volts but still carries the full current. A residual-current device trips on an imbalance between live and neutral, not on a large current; a fuse does the reverse. Appliances do not use up electricity: charge returns along the neutral, and what the meter bills is energy.",
+  "why": "AQA GCSE Physics 8463 topic 4.2.3 'Domestic uses and safety' (direct and alternating potential difference, mains electricity, plug wiring) and 4.2.4 'Energy transfers' (power, the National Grid) https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF",
+  "overlapWith": "electric-circuits is batteries, bulbs and resistors on a DC board; power-grid (level 2) dispatches plants and balances frequency. This page is the house between them: alternating current, the plug, fuses and earthing, the meter, and the transformer that joins the two.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "holes-l1-l2"
  },
  {
   "slug": "abs-brakes",

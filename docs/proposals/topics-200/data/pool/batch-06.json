@@ -1,5 +1,469 @@
 [
  {
+  "slug": "crystal-diffraction",
+  "title": "Diffraction & crystal structure",
+  "level": 3,
+  "kind": "build",
+  "category": "physics",
+  "interaction": "Place atoms in a unit cell and choose the lattice; the page builds the reciprocal lattice and lights up each Bragg reflection with its structure factor, so adding a second atom at the body centre makes half the spots vanish. Rotate the crystal in a monochromatic beam to see which reflections flash, then load a real structure (salt, diamond, quartz) from the Crystallography Open Database and compare its computed powder pattern with the cell you built.",
+  "takeaway": "A diffraction pattern is the crystal's lattice seen in reciprocal space, and the brightness of each spot encodes where the atoms sit within the cell.",
+  "prerequisites": [
+   "waves-interference",
+   "fourier-transform"
+  ],
+  "related": [
+   "semiconductors",
+   "protein-folding",
+   "medical-imaging",
+   "dna-to-protein"
+  ],
+  "needs": "Crystal structures as CIF files from the Crystallography Open Database; CC0.",
+  "pitfall": "Diffraction does not image atoms: the spots give the Fourier transform's magnitudes and the phases are lost, which is why a structure must be inferred.",
+  "why": "MIT OCW 8.231 Physics of Solids I: diffraction and the reciprocal lattice, Bloch's theorem: https://ocw.mit.edu/courses/8-231-physics-of-solids-i-fall-2006/pages/syllabus/",
+  "overlapWith": "semiconductors: shows lattices beside energy bands; this page is how the lattices are known at all, from their diffraction patterns.",
+  "needsSource": "Crystallography Open Database, https://www.crystallography.net/cod/ ; CC0 with a request to cite the original authors.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "dirac-equation",
+  "title": "The Dirac equation",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Launch a wave packet governed by the one-dimensional Dirac equation and watch its two spinor components: at low momentum it moves like a Schrödinger packet, near c it respects the speed limit and trembles (Zitterbewegung) when positive- and negative-energy parts mix. Raise a potential step above twice the rest energy and the packet passes through where Schrödinger says it must stop (the Klein paradox), the first sign of antiparticles.",
+  "takeaway": "Marrying quantum mechanics to special relativity forces a second set of solutions on the equation, and they are the antiparticles.",
+  "prerequisites": [
+   "quantum-mechanics",
+   "special-relativity"
+  ],
+  "related": [
+   "standard-model",
+   "feynman-diagrams",
+   "stern-gerlach"
+  ],
+  "needs": "",
+  "pitfall": "Negative-energy states are not negative mass or an error; present them as the positron's states.",
+  "why": "MIT OCW 8.323 Relativistic Quantum Field Theory I: Dirac theory: https://ocw.mit.edu/courses/8-323-relativistic-quantum-field-theory-i-spring-2023/pages/syllabus",
+  "overlapWith": "standard-model: lists the antiparticles; this page shows where they come from in the equation.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "feynman-diagrams",
+  "title": "Feynman diagrams",
+  "level": 3,
+  "kind": "build",
+  "category": "physics",
+  "interaction": "Choose the incoming and outgoing particles of a QED process and draw diagrams from a palette of electron, muon and photon lines joined at vertices; the page checks each against the rules, grades it by its powers of the coupling, and evaluates the tree-level amplitude numerically to plot the angular distribution and the cross section against energy. Compare electron-positron annihilation into muon pairs with the LEP measurements.",
+  "takeaway": "Each diagram is a term in a calculation, its vertices count the powers of a small number, and summing the few lowest ones reproduces what colliders measure.",
+  "prerequisites": [
+   "standard-model",
+   "perturbation-theory",
+   "special-relativity"
+  ],
+  "related": [
+   "dirac-equation",
+   "quantum-scattering",
+   "casimir-effect"
+  ],
+  "needs": "Measured e+e- → μ+μ- cross sections and asymmetries from LEP at 192-208 GeV, HEPData record 48691 and its companions, released under CC0.",
+  "pitfall": "Diagrams are not pictures of what happens: the virtual photon is a term in a sum, and the page must not animate it as a real particle in flight.",
+  "why": "MIT OCW 8.323 Relativistic Quantum Field Theory I: Feynman diagrams, Feynman rules and e+e- → μ+μ-: https://ocw.mit.edu/courses/8-323-relativistic-quantum-field-theory-i-spring-2023/pages/syllabus",
+  "overlapWith": "standard-model: steps through beta decay as an exchange of force carriers; this page turns the diagram into a calculator whose output is compared with collider data.",
+  "needsSource": "HEPData (CERN), https://www.hepdata.net/record/48691; terms of use say datasets are CC0 unless stated otherwise, https://hepdata.net/terms",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "frozen-in-flux",
+  "title": "Magnetohydrodynamics: frozen-in field lines",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Paint a flow (a vortex, a shear, a converging stream) over a conducting fluid threaded by a magnetic field and set the magnetic Reynolds number: the page integrates the induction equation on a grid, and the field lines are swept, stretched and wound up with the fluid at high values, or slip through it and diffuse away at low ones. Pluck a field line and watch an Alfvén wave run along it.",
+  "takeaway": "In a good conductor the magnetic field is carried with the fluid like dye, so moving the fluid stretches and winds the field, which is how stars and planets build theirs.",
+  "prerequisites": [
+   "electromagnetism",
+   "navier-stokes"
+  ],
+  "related": [
+   "plasma-kinetics",
+   "nuclear-fusion",
+   "stars",
+   "atmosphere-weather"
+  ],
+  "needs": "",
+  "pitfall": "Field lines moving with the fluid is a theorem about ideal conductors, not a property of magnetic fields in general; show the diffusive case beside it.",
+  "why": "MIT OCW 22.611J Introduction to Plasma Physics I: MHD models, equilibrium and stability: https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2003/pages/syllabus",
+  "overlapWith": "nuclear-fusion: holds a plasma in a magnetic bottle; this page shows the field being moved by the conducting fluid instead of the other way round.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "hamiltonian-phase-space",
+  "title": "Hamiltonian mechanics & phase space",
+  "level": 3,
+  "kind": "explore",
+  "category": "physics",
+  "interaction": "Pan and zoom the phase portrait of a pendulum and hover to launch a trajectory, finding the separatrix between swinging and spinning. Drop a cloud of nearby starting states and watch it stretch and fold while its area stays exactly fixed; add friction and the area shrinks toward a point. Switch to a periodically kicked rotor and scrub the kick strength to see its Poincaré section go from nested curves to a chaotic sea.",
+  "takeaway": "Hamiltonian flow moves a cloud of states through phase space like an incompressible fluid, preserving its area, and only dissipation can shrink it.",
+  "prerequisites": [
+   "least-action"
+  ],
+  "related": [
+   "chaos-fractals",
+   "entropy",
+   "noethers-theorem"
+  ],
+  "needs": "",
+  "pitfall": "Area preservation does not mean the cloud keeps its shape: it stretches into filaments that look like they fill the space, which is where coarse-grained entropy comes from.",
+  "why": "MIT OCW 8.223 Classical Mechanics II, lectures 15-19 on Hamiltonian mechanics and Poisson brackets: https://ocw.mit.edu/courses/8-223-classical-mechanics-ii-january-iap-2017/pages/syllabus",
+  "overlapWith": "chaos-fractals: starts two double pendulums and zooms the Mandelbrot set; this page is about the geometry of the state space itself, its conserved area and the Poincaré section.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "hydrogen-atom",
+  "title": "The Schrödinger equation & the hydrogen atom",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Shoot the radial Schrödinger equation numerically: slide the trial energy and watch the wavefunction blow up one way or the other until it settles into a bound state, then collect the ladder of levels and their 1/n² pattern. Pick n, l and m to render the orbital's probability cloud, and compare the computed Balmer wavelengths with the measured lines from the NIST database.",
+  "takeaway": "Hydrogen's spectral lines are the differences between the only energies at which a wave fits around the proton, and the orbitals are the shapes of those fitted waves.",
+  "prerequisites": [
+   "quantum-mechanics",
+   "electromagnetism"
+  ],
+  "related": [
+   "atoms-periodic-table",
+   "quantum-harmonic-oscillator",
+   "stern-gerlach"
+  ],
+  "needs": "Hydrogen energy levels and Balmer-line wavelengths from the NIST Atomic Spectra Database (SRD 78); US government data, public domain.",
+  "pitfall": "The 1s state has zero angular momentum and is not a circular orbit; the cloud is a probability density, not a smeared-out electron.",
+  "why": "MIT OCW 8.04 Quantum Physics I: Schrödinger's equation in three dimensions, central potentials and hydrogenic systems: https://ocw.mit.edu/courses/8-04-quantum-physics-i-spring-2013/pages/syllabus",
+  "overlapWith": "atoms-periodic-table: fills shells and views orbital shapes in 3D; this page solves the equation that produces those shells and checks its energies against measured lines.",
+  "needsSource": "NIST ASD, https://physics.nist.gov/asd; NIST data, public domain in the US under the NIST open licence.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "ising-model",
+  "title": "The Ising model & phase transitions",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Run a lattice of spins with the Metropolis algorithm and slide the temperature through the critical point: domains grow out of noise, the magnetization jumps from zero to nearly full, and the susceptibility and heat capacity spike. Apply a field and sweep it back and forth to trace a hysteresis loop; grow the lattice to see the transition sharpen, and shrink it to one dimension to see it vanish.",
+  "takeaway": "Nearest-neighbour alignment alone produces a sharp phase transition, and the ordered state appears at a precise temperature only in the limit of a large system.",
+  "prerequisites": [
+   "entropy",
+   "partition-function"
+  ],
+  "related": [
+   "states-of-matter",
+   "neural-networks"
+  ],
+  "needs": "",
+  "pitfall": "A one-dimensional chain has no phase transition at any temperature above zero; show that case so the reader does not believe order is automatic.",
+  "why": "MIT OCW RES.8-010 Introduction to Statistical Physics, lecture 8 on the Ising model via its partition function: https://www.ocw.mit.edu/courses/res-8-010-introduction-to-statistical-physics-summer-2018/mitres_8_010su18_lec8.pdf",
+  "overlapWith": "states-of-matter: freezes and boils a box of molecules; this page strips a transition down to the simplest possible model and shows the critical point's divergences.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "kuramoto-synchronization",
+  "title": "Synchronization: metronomes, bridges and the Kuramoto model",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "A hundred oscillators drawn as dots running round a circle, each with its own natural rate drawn from a bell curve, and a slider for how strongly each pulls on the others. Below a critical coupling the dots smear round the circle and the order parameter stays near zero; above it a clump forms and grows, with the locked fraction and the critical value plotted against the spread of rates. Load the real cases: metronomes on a board whose sway couples them, the Millennium Bridge whose walkers' steps locked once enough of them were on it (the published model and parameters), and a ring of neighbours-only coupling that locks into travelling waves instead.",
+  "takeaway": "Oscillators that pull weakly on each other stay independent, but above a sharp coupling threshold a growing fraction locks together, so synchrony appears suddenly, in metronomes, fireflies and a wobbling bridge.",
+  "prerequisites": [
+   "oscillations-resonance",
+   "calculus"
+  ],
+  "related": [
+   "fireflies-in-sync",
+   "power-grid",
+   "neurons"
+  ],
+  "needs": "Parameters for the Millennium Bridge case from Strogatz et al. 2005.",
+  "pitfall": "Synchrony needs neither a leader nor identical oscillators; the spread of natural rates against the coupling decides. The Millennium Bridge wobble was sideways, driven by walkers' lateral steps locking to the sway, not by people marching in time.",
+  "why": "Veritasium's 'The Surprising Secret of Synchronization' (2021), built on Strogatz's Sync, is one of the channel's most-watched: https://veritasium.com/videos/2021/3/31/the-secret-of-synchronization",
+  "overlapWith": "oscillations-resonance: one oscillator driven at a frequency; this page is many self-sustained oscillators with their own rates locking to each other, a phase transition in the coupling. fireflies-in-sync (this batch, level 0) is the pulse-coupled toy.",
+  "needsSource": "none for the base model; the bridge case uses the numbers published in Strogatz, Abrams, McRobie, Eckhardt & Ott, Nature 2005 (cited).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
+  "slug": "lasers",
+  "title": "Lasers",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Pump a four-level gain medium between two mirrors and watch the populations and the photon number evolve under the rate equations: below threshold the cavity holds a few spontaneous photons, and at threshold the inversion clamps while the output climbs linearly with pump power. Lower the mirror reflectivity, switch to a three-level or a two-level medium, or open and close a shutter to see relaxation oscillations and a Q-switched pulse.",
+  "takeaway": "A laser is a cavity in which stimulated emission out-competes loss, and above that threshold every extra pumped atom adds a photon to the same mode.",
+  "prerequisites": [
+   "quantum-mechanics",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "bose-einstein-condensation",
+   "bifurcations",
+   "semiconductors",
+   "solar-cells",
+   "perturbation-theory"
+  ],
+  "needs": "",
+  "pitfall": "Population inversion is impossible by pumping a two-level system at any power; the page must show the two-level case saturating at equal populations.",
+  "why": "PhET 'Lasers' is in its quantum collection, and MIT OCW 6.977 builds threshold and inversion from the rate equations: https://ocw.mit.edu/courses/6-977-semiconductor-optoelectronics-theory-and-design-fall-2002/",
+  "overlapWith": "solar-cells: a junction turns photons into current; this is the inverse, a medium amplifying light, and the LED half of the Reserve item is a sentence in semiconductors, not a page.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "least-action",
+  "title": "The principle of least action",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Drag the control points of a ball's path through a space-time plot between two fixed events; the action (kinetic minus potential energy summed along the path) is computed live and compared with the true trajectory, and the path snaps toward the stationary one when released. Switch the potential to a spring, a planet or a light ray crossing two media and watch the straight line, the ellipse and the refracted ray each fall out of the same rule.",
+  "takeaway": "Nature's path between two events is the one whose action is stationary, and the laws of motion and refraction are that one rule in different potentials.",
+  "prerequisites": [
+   "newtons-laws",
+   "calculus"
+  ],
+  "related": [
+   "light-optics"
+  ],
+  "needs": "",
+  "pitfall": "The true path makes the action stationary, not always least: for a long enough path in a spring potential it is a saddle, and the page must show that case rather than call it a minimum.",
+  "why": "MIT OCW 8.223 Classical Mechanics II, lectures 1-4 on Lagrangian mechanics with the reading 'When action is not least' (Gray & Taylor): https://ocw.mit.edu/courses/8-223-classical-mechanics-ii-january-iap-2017/pages/syllabus",
+  "overlapWith": "newtons-laws: that page pushes carts with forces; this one derives the same motions from a single scalar quantity attached to a whole path.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "maxwell-equations",
+  "title": "Maxwell's equations on a grid",
+  "level": 3,
+  "kind": "build",
+  "category": "physics",
+  "interaction": "Draw metal walls, dielectric blocks and a current source on a grid; the page integrates Maxwell's two curl equations step by step (the Yee scheme) and paints the electric and magnetic fields as they evolve. Build a dipole antenna and see its radiation pattern, a waveguide that cuts off below a frequency, a slab that focuses a pulse.",
+  "takeaway": "A changing electric field makes a magnetic field and vice versa, and iterating those two rules on a grid is enough to make antennas radiate, guides channel and lenses focus.",
+  "prerequisites": [
+   "electromagnetism",
+   "calculus"
+  ],
+  "related": [
+   "light-optics",
+   "wireless-signals",
+   "radiating-charge"
+  ],
+  "needs": "",
+  "pitfall": "The grid is not the physics: show the time-step limit (Courant condition) and the numerical dispersion so the reader does not take grid artefacts for wave behaviour.",
+  "why": "MIT OCW 8.07 Electromagnetism II: Maxwell's equations, electromagnetic waves, radiation: https://ocw.mit.edu/courses/8-07-electromagnetism-ii-fall-2012/",
+  "overlapWith": "electromagnetism: shows static field lines and induction in a coil; this page solves the full time-dependent equations on a grid so that waves, antennas and guides emerge from them.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "navier-stokes",
+  "title": "Fluid flow & the Navier-Stokes equations",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Drive a fluid past a cylinder (a lattice-Boltzmann solver on a grid) and slide the Reynolds number: at low values the flow creeps symmetrically around it, then a pair of standing eddies forms, then vortices shed alternately into a wavy street whose frequency the page measures, and finally the wake turns irregular. Draw your own obstacle, add a second one downstream, and watch the drag.",
+  "takeaway": "One dimensionless number, the ratio of inertia to viscosity, decides whether a flow is smooth, periodic or turbulent, whatever the fluid or the size.",
+  "prerequisites": [
+   "newtons-laws",
+   "calculus"
+  ],
+  "related": [
+   "flight",
+   "atmosphere-weather",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "pitfall": "Turbulence is not randomness injected into the model; it emerges from the deterministic equations at high Reynolds number and the page must not add noise.",
+  "why": "MIT OCW 2.25 Advanced Fluid Mechanics: Navier-Stokes, similarity and dimensional analysis, boundary layers and separation: https://ocw.mit.edu/courses/2-25-advanced-fluid-mechanics-fall-2013/pages/syllabus",
+  "overlapWith": "flight: puts a wing in a stream and shows lift and stall; this page is the governing equation itself, swept through Reynolds number to the onset of turbulence.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "noethers-theorem",
+  "title": "Noether's theorem",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Run a simulated planet, a bead on a wire or two colliding masses, then apply a transformation to the whole experiment with a dial: shift it in space, rotate it, shift it in time. Meters show which of momentum, angular momentum and energy stays constant along the trajectory; break a symmetry by adding a wall, a fixed centre or a potential that changes with time and watch the matching meter start to drift while the others hold.",
+  "takeaway": "Every continuous symmetry of a system's action comes paired with a quantity that stays constant, and breaking the symmetry is exactly what lets that quantity change.",
+  "prerequisites": [
+   "least-action"
+  ],
+  "related": [
+   "hamiltonian-phase-space",
+   "standard-model"
+  ],
+  "needs": "",
+  "pitfall": "The symmetry belongs to the action, not to the motion: an elliptical orbit is not rotationally symmetric, yet angular momentum is conserved because the potential is.",
+  "why": "MIT OCW 8.223 Classical Mechanics II, the lectures on conserved quantities that follow the Lagrangian unit: https://ocw.mit.edu/courses/8-223-classical-mechanics-ii-january-iap-2017/pages/syllabus",
+  "overlapWith": "newtons-laws: shows energy and momentum conserved in collisions; here conservation is derived from a symmetry and switched off by breaking that symmetry.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "partition-function",
+  "title": "The partition function",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Build a small system from a palette of energy levels (a two-level atom, a quantum oscillator, a rotor, a particle in a box) and slide the temperature: the page computes the Boltzmann weights and their sum, the partition function, and fills each level with its share of the population. Linked plots show the mean energy and heat capacity; watch the Schottky bump of a two-level system and the freezing-out of an oscillator's heat capacity, then compare the oscillator model with the measured heat capacity of diamond.",
+  "takeaway": "Once a system's energy levels are known, one sum over them fixes its energy, heat capacity and entropy at every temperature.",
+  "prerequisites": [
+   "entropy"
+  ],
+  "related": [
+   "quantum-harmonic-oscillator",
+   "states-of-matter"
+  ],
+  "needs": "Measured heat capacity of diamond against temperature as tabulated by Einstein (1907) from Weber's measurements; public domain.",
+  "pitfall": "Temperature is not average energy: a two-level system's energy saturates, so its heat capacity rises and then falls back to zero as it gets hotter.",
+  "why": "MIT OCW 8.044 Statistical Physics I: microcanonical and canonical ensembles: https://ocw.mit.edu/courses/8-044-statistical-physics-i-spring-2013/pages/syllabus",
+  "overlapWith": "entropy: counts the microstates of a gas at fixed energy; this page fixes the temperature instead and shows how the Boltzmann weighting over levels yields every thermal property.",
+  "needsSource": "Einstein, Annalen der Physik 22 (1907), table of Weber's diamond heat-capacity data; public domain.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "perturbation-theory",
+  "title": "Perturbation theory",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Add a small extra term to a potential (an electric field on hydrogen, an x⁴ term on an oscillator) and slide its strength: the page diagonalizes the full problem numerically and lays the exact levels beside the first- and second-order estimates, so the reader sees where the series tracks and where it fails. Then switch the perturbation on and off in time and watch transitions appear at the rate Fermi's golden rule predicts.",
+  "takeaway": "A problem you cannot solve can be approximated from one you can, order by order, and the exact answer tells you where the series stops tracking.",
+  "prerequisites": [
+   "hydrogen-atom",
+   "quantum-harmonic-oscillator",
+   "linear-transformations"
+  ],
+  "related": [
+   "lasers"
+  ],
+  "needs": "",
+  "pitfall": "The series for the anharmonic oscillator diverges for any coupling; show the terms getting worse past some order rather than implying convergence.",
+  "why": "MIT OCW 8.06 Quantum Physics III: time-independent and time-dependent perturbation theory, Fermi's golden rule: https://ocw.mit.edu/courses/8-06-quantum-physics-iii-spring-2018/",
+  "overlapWith": "hydrogen-atom: solves the unperturbed atom; this page adds a field to it and shows the Stark shifts and transitions that result.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "plasma-kinetics",
+  "title": "Plasma: shielding, oscillations & Landau damping",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Run a one-dimensional particle-in-cell plasma: drop in a test charge and watch electrons cloud around it until its field dies beyond the Debye length; displace a slab of electrons and release it to ring at the plasma frequency; launch a wave and see it fade as particles moving at its speed absorb it (Landau damping); send two beams through each other and watch the instability grow.",
+  "takeaway": "A plasma shields, oscillates and trades energy with waves collectively, through its own electric field rather than through collisions.",
+  "prerequisites": [
+   "electromagnetism",
+   "entropy"
+  ],
+  "related": [
+   "nuclear-fusion",
+   "stars",
+   "frozen-in-flux",
+   "wireless-signals"
+  ],
+  "needs": "",
+  "pitfall": "Landau damping takes energy from the wave with no collisions at all; do not add a friction term and call it damping.",
+  "why": "MIT OCW 22.611J Introduction to Plasma Physics I: Debye shielding, plasma waves, Landau damping, streaming instabilities: https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2003/pages/syllabus",
+  "overlapWith": "nuclear-fusion: confines a plasma as a hot fluid to reach ignition; this page is the plasma's own electrostatic behaviour, particle by particle.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "poynting-energy-flow",
+  "title": "Where the energy in a circuit really flows",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "A battery, two long wires and a lamp on a grid; the page solves for the surface charges on the wires held at their potentials, draws the electric field, the magnetic field of the current and the Poynting vector, the energy flow, as arrows in the space around the wires: it leaves the battery through the surrounding space, runs alongside the wires and dives into the lamp from outside, with almost none inside the metal. Drag the lamp away and the flow follows the wires; make the wires resistive and watch some energy dive into them along their length. Replay the thought experiment of a lamp a metre from a battery joined by wires a light-second long, run in the time domain, with a small transient reaching the lamp in nanoseconds and the full current only after the round trip.",
+  "takeaway": "Electrical energy travels in the fields around the wires, not inside them: the Poynting vector flows from the battery through space into the lamp, and the wires only guide it.",
+  "prerequisites": [
+   "electromagnetism",
+   "electric-circuits"
+  ],
+  "related": [
+   "wireless-signals"
+  ],
+  "needs": "",
+  "pitfall": "Energy flowing through space does not mean the lamp lights fully at once or that wires are unnecessary: the wires' surface charges guide the fields, and in the long-wire experiment only a small transient arrives early. The Poynting vector is a classical field quantity; nothing about electrons 'carrying' energy or not.",
+  "why": "Veritasium's 'The Big Misconception About Electricity' (2021) drew tens of millions of views and months of engineering-forum argument: https://veritasium.com/videos/2021/11/19/the-big-misconception-about-electricity",
+  "overlapWith": "electric-circuits: current and voltage in loops, whose pitfall already notes that charges drift slowly while the lamp lights at once; this page shows where the energy travels, in the fields outside the wires. maxwell-equations (pool) is a Yee grid for antennas and waveguides and could host the time-domain run; radiating-charge (pool) is one charge's field.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
+  "slug": "quantum-harmonic-oscillator",
+  "title": "The quantum harmonic oscillator",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Slide up the energy ladder of a quantum spring and see each level's wavefunction and probability density against the classical turning points. Mix levels with the raising operator to build a coherent state and press play: the packet swings back and forth like a classical mass without spreading, while a squeezed state breathes and a single level stands still.",
+  "takeaway": "A quantum spring holds energy only in equal steps, and the right superposition of those steps moves exactly like the classical oscillator.",
+  "prerequisites": [
+   "quantum-mechanics",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "partition-function",
+   "blackbody-cavity-modes",
+   "lasers",
+   "hydrogen-atom"
+  ],
+  "needs": "",
+  "pitfall": "The ground state has energy and its probability leaks past the classical turning points; the lowest state is not 'at rest'.",
+  "why": "MIT OCW 8.05 Quantum Physics II course description: the harmonic oscillator, spin and angular momentum: https://ocw.mit.edu/courses/8-05-quantum-physics-ii-fall-2013/pages/syllabus",
+  "overlapWith": "quantum-mechanics: sends a free packet at a barrier; this page confines the packet in a spring, the one potential whose quantum states underlie photons and phonons.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
   "slug": "quantum-scattering",
   "title": "Quantum scattering",
   "level": 3,
@@ -175,477 +639,5 @@
   "leadsTo": [],
   "everyday": false,
   "origin": "physics-l3"
- },
- {
-  "slug": "turbulence-cascade",
-  "title": "Turbulence: the energy cascade",
-  "level": 3,
-  "kind": "simulate",
-  "category": "physics",
-  "interaction": "Stir energy into a fluid at one large scale and watch it pass down to smaller and smaller eddies (a shell model of the Navier-Stokes equations, with a slider for viscosity): the energy spectrum builds a straight −5/3 slope on a log-log plot between the stirring scale and the scale where viscosity turns it to heat. Lower the viscosity and the straight stretch lengthens; stop stirring and watch the spectrum drain from the small scales first.",
-  "takeaway": "Turbulent energy flows from big eddies to small ones at a steady rate and is lost only at the smallest, which fixes the −5/3 spectrum.",
-  "prerequisites": [
-   "navier-stokes",
-   "fourier-transform"
-  ],
-  "related": [
-   "atmosphere-weather",
-   "ocean-currents",
-   "chaos-fractals"
-  ],
-  "needs": "",
-  "pitfall": "Shell models are caricatures: say the model keeps the cascade but not the geometry of real eddies, and that the −5/3 law is a statement about averages.",
-  "why": "Ditlevsen, Turbulence and Shell Models (Cambridge UP), the standard graduate text on the GOY and Sabra models: https://assets.cambridge.org/97805211/90367/toc/9780521190367_toc.pdf",
-  "overlapWith": "navier-stokes: shows the wake turning irregular; this page shows what turbulence does with energy once it is there.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "physics-l3"
- },
- {
-  "slug": "baking-soda-and-vinegar",
-  "title": "Baking soda meets vinegar",
-  "level": 0,
-  "kind": "simulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "A beaker of vinegar particles. One control: how many spoonfuls of baking soda to tip in. Each baking-soda particle that meets a vinegar particle turns into a bubble of gas that rises out of the beaker, and a counter tallies the bubbles. Tip in more soda than there is vinegar and the fizzing stops with white powder left on the bottom; pour in more vinegar instead and the powder all goes. A second run puts the gas to work: the same fizz inflates a balloon over the bottle neck, or lifts a muffin batter in a warm oven, where baking powder is baking soda sold with its own dry acid.",
-  "takeaway": "The fizz is a new substance, a gas, made one particle from one particle, so it stops the moment either ingredient runs out, and the leftovers can never be turned back into vinegar and powder.",
-  "prerequisites": [],
-  "related": [
-   "cake-rising",
-   "bread-and-yeast",
-   "fizzy-drinks"
-  ],
-  "needs": "",
-  "needsSource": "none",
-  "pitfall": "The bubbles are not air that was hiding in the powder, and the fizzing does not go on for ever: the amount of gas is fixed by whichever ingredient runs out first.",
-  "why": "NGSS 5-PS1-4 (does mixing two substances make a new substance; baking soda and vinegar is the named example): https://www.nextgenscience.org/dci-arrangement/5-ps1-matter-and-its-interactions",
-  "overlapWith": "acids-bases: that page titrates an acid with a base and tracks pH on a logarithmic scale; this page counts particles and bubbles with no pH at all, and the leftover powder is the point.",
-  "leadsTo": [
-   "acids-bases",
-   "chemical-bonds"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "bubbles-and-foam",
-  "title": "Bubbles and foam",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "A wand and a dish of liquid. Dip and blow: with plain water the film snaps back before it can close; with soapy water a film stretches, pinches off and pulls itself round. The film is a mesh of points pulled by surface tension that the reader can poke and watch spring back into a sphere; press two bubbles together and a flat wall forms between them; swap in a square wand and the bubble still comes out round. Last, whip the soapy water into a foam and scrub time to watch the walls drain thin and the bubbles pop from the top down.",
-  "takeaway": "A bubble is a skin of water that soap lets stretch, and the skin pulls itself into the shape with the least surface for the air inside, a sphere, whatever the wand's shape.",
-  "prerequisites": [],
-  "related": [
-   "soap-and-grease",
-   "sponge-and-paper-towel",
-   "fizzy-drinks"
-  ],
-  "needs": "",
-  "needsSource": "none; a surface-tension spring-mesh film model",
-  "pitfall": "Soap does not make the film stronger; it makes it stretchier and slower to drain. And a bubble is not round because of the wand or because air 'pushes equally': the film shrinks to the smallest surface it can.",
-  "why": "Children's Museum of Sonoma County, 'Bubble science facts for kids' (why bubbles are round, why plain water will not bubble): https://www.cmosc.org/the-science-of-bubbles-for-kids/",
-  "overlapWith": "states-of-matter: it shares the particle look, but no existing page shows surface tension or a film; this page's whole model is a film pulling itself into the least surface.",
-  "leadsTo": [
-   "states-of-matter"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "cake-rising",
-  "title": "Why a cake rises (and sinks)",
-  "level": 0,
-  "kind": "step",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "Step through a cake from batter to cooling, with the bubbles of gas from the baking powder drawn inside the batter: the oven's heat makes each bubble swell; the batter around them stiffens as it reaches its setting heat; the cake cools. The only control is a scrub bar for oven time, with a door that can be opened at any point. Open it early and the bubbles shrink before their walls have set and the middle sinks; add too much baking powder and the bubbles grow faster than the walls can hold and the top collapses. The model tracks every bubble's size against temperature and the firmness of the batter around it.",
-  "takeaway": "A cake rises because gas bubbles swell in the heat and the batter sets around them; let it cool before the walls have set and the bubbles shrink and the middle falls.",
-  "prerequisites": [],
-  "related": [
-   "baking-soda-and-vinegar",
-   "bread-and-yeast",
-   "cooking-an-egg",
-   "popcorn"
-  ],
-  "needs": "",
-  "needsSource": "none; gas expansion with temperature plus a setting temperature for egg and starch, stated as a simplification",
-  "pitfall": "The rise does not come from the batter 'cooking up': it comes from gas already inside it expanding, and more leavening does not make a taller cake.",
-  "why": "Demand: 'why did my cake sink in the middle' is a perennial search question, e.g. https://www.kitchenaid.com/pinch-of-help/stand-mixers/why-did-my-cake-sink-in-the-middle.html; curriculum: NGSS 2-PS1-4 / MS-PS1-4 (heating changes materials, some irreversibly).",
-  "overlapWith": "states-of-matter: that page shows gas particles spreading out when heated; here the expanding gas is trapped in bubbles racing against a batter that is setting around them.",
-  "leadsTo": [
-   "states-of-matter"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "candle-flame",
-  "title": "How a candle burns",
-  "level": 0,
-  "kind": "step",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "Step through Faraday's candle: light the wick and watch the heat melt a cup of wax, the liquid climb the wick, the wax turn to vapour at the top and the vapour burn in a cone whose colour shows where it is hottest. Scrub a probe up and down the flame to read its temperature and see what is burning where. Blow it out and bring a match to the trail of smoke: the flame jumps back down the trail to the wick. One control per step: the lighter, the probe, the breath.",
-  "takeaway": "It is the wax that burns, not the wick, and it burns only once the heat has turned it into a gas, which is why a flame can relight down a trail of smoke.",
-  "prerequisites": [],
-  "related": [
-   "fire-triangle",
-   "kitchen-thermometer"
-  ],
-  "needs": "Faraday, The Chemical History of a Candle, for the demonstrations (Project Gutenberg #14474, public domain); flame temperature zones from a textbook table.",
-  "needsSource": "Project Gutenberg #14474, public domain; a few flame temperatures from standard references",
-  "pitfall": "The wick is not the fuel; it is the pipe. And the wax does not burn as a liquid: the flame sits above the wick where the wax has become a gas.",
-  "why": "Faraday's Royal Institution lectures for young audiences, still the canonical kitchen-chemistry demonstration: https://www.gutenberg.org/ebooks/14474; England KS3 chemistry lists combustion among chemical reactions.",
-  "overlapWith": "states-of-matter: that page melts and boils one substance in a box; here the three states of wax are stages in a flame that keeps itself going, and the burning gas is the point.",
-  "leadsTo": [
-   "states-of-matter",
-   "chemical-bonds"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "candle-under-a-jar",
-  "title": "A candle under a jar",
-  "level": 0,
-  "kind": "step",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "Step through what a candle does: the flame melts the wax, the wick draws it up, the wax turns to vapour and joins with oxygen from the air, and the atoms are counted before and after as they regroup into water vapour and carbon dioxide, giving off light and heat. Lower a jar over the flame and watch the oxygen particles in the jar run down until the flame dims and goes out. Pick a bigger jar and the flame lasts longer; put the sealed jar on a scale and the reading never changes.",
-  "takeaway": "Burning joins the fuel with oxygen from the air into new gases, so a flame needs air and dies when the oxygen runs low, while every atom is still there afterwards.",
-  "prerequisites": [],
-  "related": [
-   "fizz-and-balloons",
-   "air-pressure-and-straws",
-   "chemical-bonds"
-  ],
-  "needs": "",
-  "pitfall": "It is the wax that burns, not the wick, and the jar does not run out of 'air': carbon dioxide and water vapour take the oxygen's place. The wax has not vanished; its atoms left as gases, which is why the sealed jar weighs the same.",
-  "why": "KS2 Year 5 'Properties and changes of materials' (some changes result in the formation of new materials and are not usually reversible, including changes associated with burning) and KS3 chemistry 'Chemical reactions' (combustion, oxidation) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "chemical-bonds: that page builds molecules and their shapes; this one takes one everyday reaction, counts its atoms in and out, and shows why the flame needs oxygen.",
-  "needsSource": "none; oxygen in the jar consumed at a rate that follows the flame, extinction when the oxygen share drops too low, atom counting from the balanced reaction.",
-  "leadsTo": [
-   "chemical-bonds",
-   "carbon-cycle"
-  ],
-  "origin": "basic-physical-science"
- },
- {
-  "slug": "caramel-and-candy-stages",
-  "title": "Sugar syrup and caramel",
-  "level": 0,
-  "kind": "step",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "A pan of sugar and water on the stove with a thermometer. Step through the boil: at first the thermometer sticks at the boiling point of water; as water boils away the reading climbs and a gauge shows how much water is left in the pan; at each stage a drop of syrup is dropped into cold water and shown (thread, soft ball, hard crack); with the water gone the sugar itself starts to brown and finally smoke. A scrub bar is the only control, and the thermometer reading is computed from the real link between water left and boiling point.",
-  "takeaway": "A candy thermometer is really measuring how much water is left in the syrup, and only when it is all gone does the sugar turn to caramel.",
-  "prerequisites": [],
-  "related": [
-   "toast-and-browning",
-   "dissolving-sugar-and-salt",
-   "growing-crystals",
-   "kitchen-thermometer"
-  ],
-  "needs": "Boiling point of sugar syrup against sugar content (the candy-stage table: thread about 110 °C, soft ball 112 to 116 °C, hard crack 149 to 154 °C), from the Exploratorium's Science of Cooking candy pages and food-chemistry references; a short published table.",
-  "needsSource": "A short published table of candy stages (Exploratorium Science of Cooking; food-chemistry references); facts, no dataset",
-  "pitfall": "Caramel is not the browning of toast: it is sugar alone, and it does not begin until the syrup is far hotter than boiling water.",
-  "why": "Exploratorium 'Science of Cooking: Candy' (the candy stages by temperature and sugar content): https://annex.exploratorium.edu/cooking/candy/firmball.html",
-  "overlapWith": "states-of-matter: that page boils a pure liquid at one temperature; here the boiling point climbs as the mixture changes, and the thermometer becomes a water gauge.",
-  "leadsTo": [
-   "states-of-matter"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "cooking-an-egg",
-  "title": "Cooking an egg",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "An egg in cross-section in a pan of water. One control: drag the thermometer. Inside the white and the yolk, proteins drawn as curled-up strings unfold as the heat rises and tangle with their neighbours; the white turns from clear to cloudy to firm at a lower heat than the yolk, so dragging slowly gives a runny yolk in a set white, and holding at a hard boil for long gives a rubbery white and a grey ring. Drag the thermometer back down and nothing uncurls.",
-  "takeaway": "Heat makes an egg's proteins unfold and tangle together, the white a little before the yolk, and once tangled they never go back, which is why a cooked egg cannot be uncooked.",
-  "prerequisites": [],
-  "related": [
-   "cake-rising",
-   "milk-and-yogurt",
-   "jelly-and-pineapple",
-   "toast-and-browning",
-   "kitchen-thermometer"
-  ],
-  "needs": "Setting temperatures of the main egg-white proteins and of yolk (ovotransferrin about 61 to 63 °C, ovalbumin about 80 to 84 °C, yolk about 65 to 70 °C), from published food-chemistry tables (e.g. Hervé This); a handful of constants, no dataset.",
-  "needsSource": "A handful of published denaturation temperatures (food-chemistry references); facts, no licence issue",
-  "pitfall": "Cooking an egg is not drying it or burning it, and the white sets well below boiling, so boiling harder only makes it tougher.",
-  "why": "Exploratorium 'Science of Cooking: Eggs': https://annex.exploratorium.edu/cooking/eggs; NGSS 2-PS1-4 (some changes caused by heating cannot be reversed).",
-  "overlapWith": "protein-folding: that page folds a chain by hand against an energy score at level 2; here the proteins only unfold and tangle with heat, and the control is a thermometer.",
-  "leadsTo": [
-   "the-cell",
-   "states-of-matter"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "dissolving-sugar",
-  "title": "Dissolving: where the sugar goes",
-  "level": 0,
-  "kind": "simulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "Drop a sugar cube into a glass: water particles knock sugar particles loose from its surface one by one and they wander off into the water, while a counter shows that every one of them is still there and the scale under the glass does not change. Warm the water and the cube shrinks faster; stir it, or crush it first, and faster still. Keep adding sugar until no more will dissolve; then try sand, which never does.",
-  "takeaway": "Dissolving spreads a solid out among the water's particles without destroying it; warmth, stirring and small pieces speed it up, and there is a limit to how much fits.",
-  "prerequisites": [],
-  "related": [
-   "smells-and-diffusion",
-   "states-of-matter"
-  ],
-  "needs": "How much sugar and salt dissolve in water at a few temperatures (handbook values).",
-  "pitfall": "The sugar has not vanished and has not melted; it is all still there, spread out, and the glass weighs the same. Dissolving and melting are different things.",
-  "why": "KS2 Year 5 'Properties and changes of materials' (some materials dissolve in liquid to form a solution; dissolving is a reversible change) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study ; KS3 chemistry 'Pure and impure substances' (mixtures, including dissolving), same document.",
-  "overlapWith": "states-of-matter: that page melts and boils one substance; this one keeps the water liquid and spreads a second substance through it, counting the particles to show nothing is lost.",
-  "needsSource": "Particles detaching from a lattice at a rate that rises with temperature and stirring, then random-walking through the water up to a solubility limit; solubility values from Wikipedia's solubility table (CC BY-SA 4.0) or a textbook.",
-  "leadsTo": [
-   "states-of-matter",
-   "acids-bases"
-  ],
-  "origin": "basic-physical-science"
- },
- {
-  "slug": "dissolving-sugar-and-salt",
-  "title": "Dissolving: where does the sugar go?",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "A glass of water drawn as particles. One control at a time: drag the spoon to stir, drag the thermometer to warm the water, or tip in another spoonful of sugar or salt. Each grain breaks up into particles that wander off between the water particles until no more will fit, and the rest sits on the bottom; a counter shows how many spoonfuls have gone in. At the end, let the water dry away and watch the same particles pile back into grains.",
-  "takeaway": "Dissolved sugar has not gone anywhere: its particles are spread out between the water particles, warm water takes more of them, and drying the water out brings every grain back.",
-  "prerequisites": [],
-  "related": [
-   "separating-mixtures",
-   "growing-crystals",
-   "fizzy-drinks",
-   "states-of-matter"
-  ],
-  "needs": "Solubility of sugar and of table salt in water at a few temperatures (CRC Handbook or the IUPAC-NIST Solubility Data Series); about a dozen published numbers, not a licensed dataset.",
-  "needsSource": "A dozen tabulated solubility values from the CRC Handbook or the IUPAC-NIST Solubility Data Series; facts, no dataset licence to clear.",
-  "pitfall": "Dissolving is not melting, and the sugar does not disappear or turn into water: the particles are all still there, which is why the water tastes sweet and weighs more.",
-  "why": "England KS2 Year 5 'Properties and changes of materials' (dissolving; recovering a dissolved solid by evaporation): https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study; also NGSS 5-PS1-3 (solubility as an identifying property): https://www.nextgenscience.org/dci-arrangement/5-ps1-matter-and-its-interactions",
-  "overlapWith": "states-of-matter: that page heats and squeezes one substance through solid, liquid and gas; this one mixes two substances and asks how much of one will fit into the other and how to get it back.",
-  "leadsTo": [
-   "states-of-matter",
-   "chemical-bonds"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "drying-and-evaporation",
-  "title": "Why wet things dry",
-  "level": 0,
-  "kind": "simulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "Watch a wet T-shirt on a line lose water one particle at a time: only the fastest particles at the surface escape, long before the water is anywhere near boiling, and a thermometer in the cloth dips a little as they leave. Turn up the sun, or the wind, or spread the shirt out instead of leaving it bunched, and the drying time falls. Hang it in a steamy bathroom and the drying almost stops; finally let a runner sweat and feel the same cooling.",
-  "takeaway": "Water dries by its fastest particles escaping from the surface one at a time, so warmth, wind and a bigger surface speed it up and what is left is a little cooler.",
-  "prerequisites": [],
-  "related": [
-   "keeping-things-warm",
-   "separating-mixtures",
-   "smells-and-diffusion",
-   "states-of-matter"
-  ],
-  "needs": "",
-  "pitfall": "A puddle does not need to boil to disappear, and the water is not gone: it has joined the air and will come back as dew or rain. Drying in a draught is not the wind 'blowing the water away' but carrying the escaped particles off so more can leave.",
-  "why": "KS2 Year 4 'States of matter' (the part played by evaporation and condensation in the water cycle; associate the rate of evaporation with temperature) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "states-of-matter: that page boils a box of molecules by raising the temperature past boiling; this one stays below boiling and shows escape from a surface, the effect of wind and humidity, and the cooling of what remains.",
-  "needsSource": "none; a molecular box with the hottest surface particles escaping (Boltzmann-weighted), the escaped ones blown away or allowed to build up as humidity, and the heat they carry off cooling the rest.",
-  "leadsTo": [
-   "states-of-matter",
-   "homeostasis"
-  ],
-  "origin": "basic-physical-science"
- },
- {
-  "slug": "fire-triangle",
-  "title": "What a fire needs",
-  "level": 0,
-  "kind": "simulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "A candle under a glass jar, with the air drawn as particles: the flame eats oxygen particles, the oxygen counter falls, the flame shrinks, and it goes out with most of the air still in the jar. One control at a time: the size of the jar, a gap under its rim, a lid, a splash of water that cools the wick, a wet cloth, or cutting the wick short. Each run shows which of the three things (fuel, heat, air) the move took away and how many seconds the flame lasted.",
-  "takeaway": "A fire needs fuel, heat and air all at once, and taking away any one of them puts it out, which is why a jar snuffs a candle long before the air inside is gone.",
-  "prerequisites": [],
-  "related": [
-   "candle-flame",
-   "rust"
-  ],
-  "needs": "",
-  "needsSource": "none; the oxygen fraction below which a candle flame fails (roughly 16 per cent) is a single published fire-science figure",
-  "pitfall": "A candle under a jar does not use up all the oxygen: it goes out when the oxygen drops below what the flame needs, with most of the air still there, and the water that climbs into an upturned jar afterwards is mostly the cooling air shrinking.",
-  "why": "UL Xplorlabs 'Fire Triangle' investigation (candle under a jar, remove one side at a time): https://xplorlabs.org/wp-content/uploads/2023/01/Investigation1-FireTriangle-Teacher.pdf; England KS3 chemistry: combustion.",
-  "overlapWith": "reaction-rates-equilibrium: that page collides particles over an energy barrier at level 2; here the only question is which of three ingredients is missing, counted in oxygen particles and seconds.",
-  "leadsTo": [
-   "chemical-bonds",
-   "states-of-matter"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "fizz-and-balloons",
-  "title": "Fizz, balloons & where the gas comes from",
-  "level": 0,
-  "kind": "simulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "Pour vinegar onto baking soda in a bottle with a balloon stretched over its neck: particles meet, bubbles of a new gas form, the balloon swells, and a counter shows the atoms regrouping with none lost. Watch a scale under the bottle: sealed with the balloon it does not move, with the balloon off it falls as gas escapes. Change the amount of vinegar or of soda and see the fizz stop as soon as one of them runs out; warm the vinegar to make it go faster.",
-  "takeaway": "The fizz is a new gas made by the reaction, not air that was hiding, and the weight seems to drop only when that gas is allowed to escape.",
-  "prerequisites": [],
-  "related": [
-   "candle-under-a-jar",
-   "fizzy-drinks",
-   "acids-bases"
-  ],
-  "needs": "",
-  "pitfall": "The bubbles are not air and the reaction does not 'get tired': it stops when one ingredient is used up. Nothing is destroyed; in a sealed bottle the scale reads the same throughout.",
-  "why": "KS2 Year 5 'Properties and changes of materials' (changes that form new materials, including the action of acid on bicarbonate of soda) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "acids-bases: that page titrates and plots pH on a logarithmic scale; this one never mentions pH, only counts the atoms of one acid-and-soda reaction, the gas it makes and when it stops.",
-  "needsSource": "none; the balanced reaction with the ingredient that runs out first, a rate that rises with amounts and warmth, and the gas volume from the ideal gas at the balloon's pressure.",
-  "leadsTo": [
-   "acids-bases",
-   "chemical-bonds"
-  ],
-  "origin": "basic-physical-science"
- },
- {
-  "slug": "fizzy-drinks",
-  "title": "Why fizzy drinks go flat",
-  "level": 0,
-  "kind": "simulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "A sealed bottle holds carbon dioxide particles dissolved through the drink and crowded into the gap under the cap; a fizz meter counts the dissolved ones. Open the cap and the gap's push drops, dissolved gas climbs out as bubbles and the meter falls. Chill the bottle to keep more gas in, warm it to lose more, shake a sealed bottle and see that nothing is lost until it is opened; drop in a rough sweet and watch bubbles start all over its surface.",
-  "takeaway": "Fizz is gas squeezed into a drink under pressure; opening the bottle lets it out, warm drinks lose it faster, and rough surfaces give bubbles places to start.",
-  "prerequisites": [
-   "dissolving-sugar"
-  ],
-  "related": [
-   "air-pressure-and-straws",
-   "fizz-and-balloons",
-   "acids-bases"
-  ],
-  "needs": "How much carbon dioxide dissolves in water at a few temperatures and pressures (Henry's law constants).",
-  "pitfall": "The bubbles are not air and a shaken sealed bottle has not lost its fizz; it is only easier to lose once opened. A drink goes flat because gas leaves, not because it gets 'old'.",
-  "why": "Live Science, 'Why do soft drinks go flat?' (Henry's law; cold liquids hold more dissolved gas) https://www.livescience.com/32461-why-do-soft-drinks-go-flat.html ; Scientific American, 'Why does a shaken soda fizz more than an unshaken one?' https://www.scientificamerican.com/article/why-does-a-shaken-soda-fi",
-  "overlapWith": "acids-bases: that page places fizzy drinks on its pH scale as one everyday liquid and never shows the bubbles, while this one is about the dissolved gas, the pressure that keeps it in and the warmth that lets it out; among proposed pages, dissolving-sugar dissolves a solid, this one a gas.",
-  "needsSource": "Henry's law partitioning between drink and headspace with a temperature-dependent constant, the headspace as an ideal gas, and bubble starts that rise with how far the drink is oversaturated. Constants: not verified this session; expected sources are R. Sander's compilation of Henry's law constants (Atmospheric Chemistry and Physics, CC BY 4.0) or the NIST Chemistry WebBook (US government, public domain).",
-  "leadsTo": [
-   "states-of-matter",
-   "acids-bases"
-  ],
-  "origin": "basic-physical-science"
- },
- {
-  "slug": "growing-crystals",
-  "title": "Growing crystals",
-  "level": 0,
-  "kind": "simulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "A jar of hot sugar water with a string hanging in it. One control: how fast the jar cools. As the water cools it holds fewer sugar particles, and they settle onto the string one by one, each finding a spot that lines up with its neighbours, while a readout follows the size of the biggest crystal. Cool it fast and hundreds of tiny crystals appear everywhere at once; cool it slowly and a few big ones grow over days. Switch to salt water left to dry on a plate and watch cubes form.",
-  "takeaway": "Crystals grow one particle at a time onto a neat stack, and the slower the solution cools, the fewer and bigger the crystals.",
-  "prerequisites": [
-   "dissolving-sugar-and-salt"
-  ],
-  "related": [
-   "salt-and-ice",
-   "caramel-and-candy-stages"
-  ],
-  "needs": "Solubility of sugar and salt against temperature: the same dozen published values as dissolving-sugar-and-salt.",
-  "needsSource": "A dozen tabulated solubility values (CRC Handbook / IUPAC-NIST Solubility Data Series); facts, no dataset licence",
-  "pitfall": "Crystals are not alive and do not grow from the inside: they grow by particles landing on the outside, which is why they stop when the solution is used up.",
-  "why": "Science Buddies 'Rock Candy' activity (cooling rate and crystal size): https://www.sciencebuddies.org/stem-activities/rock-candy",
-  "overlapWith": "states-of-matter: that page freezes a pure substance by cooling it; here the solid comes out of a mixture because the water can no longer hold it, and the control is the cooling rate.",
-  "leadsTo": [
-   "states-of-matter",
-   "atoms-periodic-table"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "kitchen-thermometer",
-  "title": "A kitchen thermometer, from freezer to oven",
-  "level": 0,
-  "kind": "explore",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "One tall thermometer from the freezer to a hot oven, with shelves of everyday things beside it: ice, butter, chocolate, an egg, a pan of water, a pan of sugar, oil, bread. Scrub the temperature up and each thing changes at its own mark: ice melts, butter softens, chocolate melts, the egg white sets, water boils and will not get hotter, sugar browns, oil smokes, bread toasts; the safe-cooking marks for meat sit on the scale too. Hover any mark for what happens there. Every change is a real recorded temperature.",
-  "takeaway": "Every change in the kitchen happens at its own temperature, and boiling water is a ceiling that anything wet can never get past, which is why wet food does not brown.",
-  "prerequisites": [],
-  "related": [
-   "toast-and-browning",
-   "caramel-and-candy-stages",
-   "cooking-an-egg",
-   "why-metal-feels-cold",
-   "fridge-and-spoilage",
-   "candle-flame",
-   "popcorn"
-  ],
-  "needs": "Change temperatures of common foods and materials (melting points of ice, butter and chocolate; egg white and yolk set points; boiling point of water; sugar browning and oil smoke points; USDA FSIS safe minimum internal temperatures, public domain); about twenty published numbers with a source each.",
-  "needsSource": "About twenty published numbers: USDA FSIS safe-temperature chart (public domain) plus food-chemistry references; facts, no dataset",
-  "pitfall": "Things do not get hotter the longer they boil: boiling water stays at the same temperature however high the flame.",
-  "why": "USDA FSIS 'Safe Temperature Chart' (public domain, the reference everyone looks up): https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/safe-temperature-chart; NGSS MS-PS1-4 (temperature and state of a substance).",
-  "overlapWith": "states-of-matter: that page tracks one substance across its phase diagram; here many substances sit on one scale and the reader learns where the kitchen's changes happen relative to each other.",
-  "leadsTo": [
-   "states-of-matter"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "lemon-battery",
-  "title": "The lemon battery",
-  "level": 0,
-  "kind": "build",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "A workbench with lemons, copper coins, zinc nails, wires, a small light and a meter. Push one coin and one nail into a lemon and the meter shows a small push, under one volt; swap the nail for a second copper coin and it drops to nothing; try other pairs of metals. Wire lemons in a chain and the pushes add up until the light glows; wire two such chains side by side and the light lasts longer instead. Inside each lemon, a cutaway shows the zinc slowly dissolving as the current flows.",
-  "takeaway": "Two different metals in a lemon make a small push of electricity, more lemons in a row push harder, and the lemon is not the fuel: the zinc is, which is why it slowly disappears.",
-  "prerequisites": [],
-  "related": [
-   "rust",
-   "redox-batteries"
-  ],
-  "needs": "Standard electrode potentials of a few metals (zinc, copper, iron, magnesium) and the turn-on voltage of a small LED; a handful of textbook or Wikipedia (CC BY-SA) constants.",
-  "needsSource": "A handful of textbook electrode potentials (Wikipedia tables CC BY-SA) and one LED datasheet value; facts, no dataset",
-  "pitfall": "The lemon's juice is not the source of the energy; the metal is, and one lemon alone will not light a bulb however big or sour the lemon.",
-  "why": "Science World 'Lemon Battery' classroom resource (three to four lemons to light an LED): https://www.scienceworld.ca/resource/lemon-battery/",
-  "overlapWith": "redox-batteries: that page charges and discharges a lithium-ion cell at level 2; here the reader only counts lemons and swaps metals, and the takeaway is that the metal, not the fruit, is the fuel.",
-  "leadsTo": [
-   "electric-circuits",
-   "atoms-periodic-table"
-  ],
-  "origin": "chemistry-and-cooking"
- },
- {
-  "slug": "popcorn",
-  "title": "Why popcorn pops",
-  "level": 0,
-  "kind": "simulate",
-  "category": "chemistry",
-  "everyday": true,
-  "interaction": "A pan with one kernel in cross-section and a hundred more around it. Heat is the only control. Inside the kernel the water turns to steam and a pressure gauge climbs as the kernel warms, until the hull can hold no more and bursts, the starch puffing into a white flake; a counter tallies popped kernels against time. Swap the kernel for a cracked one and it only hisses; dry a kernel out and it never pops; turn the heat to full and the outside burns before the inside has warmed.",
-  "takeaway": "A popcorn kernel is a tiny pressure cooker: its own water turns to steam, the hull holds until the pressure is enormous, and a cracked or dried-out kernel has nothing to pop with.",
-  "prerequisites": [],
-  "related": [
-   "cake-rising",
-   "kitchen-thermometer"
-  ],
-  "needs": "Steam pressure against temperature (a standard steam table), and the measured popping temperature (about 180 °C) and hull strength from Virot and Ponomarenko, 'Popcorn: critical temperature, jump and sound', J. R. Soc. Interface 2015, DOI 10.1098/rsif.2014.1247 (full text on HAL; the journal's open-access status not confirmed).",
-  "needsSource": "Steam table values (standard reference) plus two figures from Virot & Ponomarenko 2015 (full text on HAL: https://hal-polytechnique.archives-ouvertes.fr/hal-01178414; journal OA status unconfirmed)",
-  "pitfall": "Popcorn does not pop because the kernel 'explodes' from heat alone: without water inside, or with a leaky hull, it never pops, which is why old kernels fail.",
-  "why": "Science News Explores, 'How popcorn got its pop' (coverage of the 2015 study): https://www.snexplores.org/blog/eureka-lab/how-popcorn-got-its-pop",
-  "overlapWith": "states-of-matter: that page boils water in an open box; here the boiling is trapped inside a shell and the question is when the shell gives way.",
-  "leadsTo": [
-   "states-of-matter",
-   "newtons-laws"
-  ],
-  "origin": "chemistry-and-cooking"
  }
 ]

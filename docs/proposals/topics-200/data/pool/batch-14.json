@@ -1,654 +1,649 @@
 [
  {
-  "slug": "dark-night-sky",
-  "title": "Why the sky is dark at night",
-  "level": 0,
-  "kind": "simulate",
-  "category": "space",
-  "everyday": false,
-  "interaction": "Stand in a forest drawn from above and widen it: with a few trees you see out between the trunks, but keep adding trees farther away and every line of sight ends on bark, so the forest closes into a wall. Then swap trees for stars scattered through space at their real sparseness and press play: light from the stars has been travelling only as long as the universe has existed, so only the stars within that distance can be seen, and a counter shows the sky is still almost entirely black. Drag the age of the universe up and watch the sky slowly fill; it would take an unimaginably longer time than the real one before the night sky glowed like the Sun's surface everywhere.",
-  "takeaway": "In an endless forest of stars shining forever, every direction would end on a star and the night sky would blaze; it is dark because the universe has an age, so the light from most of those stars has not arrived yet.",
-  "prerequisites": [],
-  "related": [
-   "sun-is-a-star",
-   "solar-system-to-scale",
-   "twinkling-stars",
-   "big-bang"
-  ],
-  "leadsTo": [],
-  "needs": "",
-  "needsSource": "none (the fraction of the sky covered by stars of a given size scattered at a given density out to the light-travel distance, computed by counting lines of sight; the page states the simplification that it ignores the stretching of light by the expansion of space, which darkens the sky further)",
-  "pitfall": "The sky is not dark because stars are too far or too faint, or because dust hides them: with endless stars for endless time the faint ones would add up and the dust would glow too. It is dark because light has had only a limited time to travel.",
-  "why": "Olbers' paradox is a standing popular question: Scientific American, 'Why Is the Sky Dark at Night? You Can Thank the Big Bang' (https://www.scientificamerican.com/article/why-is-the-night-sky-dark-olbers); the MinutePhysics video 'Why is it dark at night?' (https://www.universetoday.com/97678/video-why-is-the-sky-dark-at-night).",
-  "overlapWith": "big-bang (level 2) runs the expansion and the timeline of the universe; this page uses only one consequence of the universe having an age, that light has had limited time to travel, and never mentions expansion on the stage.",
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "earth-is-a-ball",
-  "title": "Earth is a ball",
+  "slug": "compass-and-magnetic-poles",
+  "title": "The compass and Earth's magnetic poles",
   "level": 0,
   "kind": "manipulate",
-  "category": "space",
-  "interaction": "Drag a ship out to sea and watch it from the shore: on a flat world it only shrinks, but on the round one its hull disappears before its sails as the sea bulges up between you and it, and climbing a cliff brings it back into view. Then walk a little figure around the globe: wherever it stands its feet point to the middle, and a dropped ball falls toward the middle too, so nobody on the far side falls off.",
-  "takeaway": "The world is a ball, so the sea itself hides the bottom of a distant ship, and 'down' means toward the middle wherever you stand.",
-  "prerequisites": [],
-  "related": [
-   "time-zones",
-   "compass-and-magnetic-poles",
-   "solar-system-to-scale",
-   "what-planets-are-made-of"
-  ],
-  "needs": "",
-  "needsSource": "none (the geometry of a sphere: horizon distance from eye height and the height hidden beyond it; gravity drawn toward the centre)",
-  "pitfall": "People on the far side are not upside down and do not have to hold on: the page draws no up arrow anywhere. And the ship does not vanish because it got too small.",
-  "why": "NGSS 5-PS2-1: 'Support an argument that the gravitational force exerted by Earth on objects is directed down', with 'down' pointing toward the center of the spherical Earth (https://www.nextgenscience.org/pe/5-ps2-1-motion-and-stability-forces-and-interactions); England KS2 Year 5: 'describe the sun, Earth and moon as approximately spherical bodies'.",
-  "overlapWith": "sun-earth-moon (level 1) tilts and orbits the Earth; this page never moves it, only shows that it is round and which way down is.",
-  "leadsTo": [
-   "sun-earth-moon",
-   "newtons-laws",
-   "orbits-kepler"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "rocket-throws-mass",
-  "title": "Rockets: going up by throwing things down",
-  "level": 0,
-  "kind": "simulate",
-  "category": "space",
-  "interaction": "Stand on a skateboard and throw a ball: you roll the other way, and the harder or heavier the throw the faster you roll; throw a bag of balls one after another and you keep speeding up. Then pump up a bottle rocket on the lawn: water is thrown out of the neck and the bottle shoots up, and sliding the water fill from empty to full finds the amount that goes highest. Launch the same rocket in a vacuum chamber and on the Moon and it still goes.",
-  "takeaway": "A rocket climbs by throwing something out of its back as fast as it can, and it needs nothing to push against, so it works just as well in empty space.",
-  "prerequisites": [],
-  "related": [
-   "helicopter-rotor",
-   "fireworks-shell-burst",
-   "satellite-sky-tracks",
-   "rockets"
-  ],
-  "needs": "",
-  "pitfall": "A rocket does not push against the air or the ground: it pushes against what it throws out, which is why it works in a vacuum. A full bottle is not best: too much water leaves no room for the air that pushes it out, and too little gives nothing to throw.",
-  "why": "NASA, 'Activity four: optimize a water rocket engine' (grades 5 to 8, aligned to MS-PS2-2), https://www.nasa.gov/wp-content/uploads/2021/11/sls-activity-four-optimize-a-water-rocket.pdf",
-  "overlapWith": "rockets: that page is the velocity budget, staging and transfer orbits at level 2; this page is only the throwing itself, on a skateboard and in a bottle, and which water fill lifts a bottle highest.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws",
-   "orbits-kepler"
-  ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "satellite-sky-tracks",
-  "title": "Satellites: the ones that race and the one that stays",
-  "level": 0,
-  "kind": "explore",
-  "category": "space",
-  "interaction": "Scrub a day and watch the Space Station lap the Earth sixteen times in a band of tracks that shifts each lap as the Earth turns beneath it, while a TV satellite far higher hangs over one spot and a weather satellite in between keeps its own count. Stand in your town and the sky view shows when the Station crosses overhead and why it is seen only just after dusk or before dawn: it must be in sunlight while you are in shadow. Drag a satellite higher and watch it slow and take longer round.",
-  "takeaway": "Low satellites race round the Earth many times a day while one special height keeps pace with the turning ground, and a satellite is seen only when the Sun lights it while you are in the dark.",
-  "prerequisites": [],
-  "related": [
-   "rocket-throws-mass",
-   "lighthouse-beam",
-   "gps"
-  ],
-  "needs": "The Space Station's orbital elements from NASA (public domain, e.g. the ISS trajectory data behind Spot the Station) and the altitudes of a named weather and TV satellite from their operators' public pages. CelesTrak two-line elements would be convenient but their redistribution terms are not clearly open, so the page must not depend on them.",
-  "pitfall": "Satellites do not stay up because there is no gravity in space: the Station is falling all the time and only misses the ground because it is moving sideways so fast. A satellite that seems to hang still is not stopped; it is racing round once a day, exactly as fast as the ground beneath it turns.",
-  "why": "NASA Spot the Station, a service built around the public's question of when the Station can be seen, https://spotthestation.nasa.gov/ (curriculum: NGSS MS-ESS1-2, gravity and orbits)",
-  "overlapWith": "orbits-kepler: that page launches a body and derives Kepler's laws; this page launches nothing, it scrubs real satellites by height and the geometry of seeing them. gps, at level 2, is what one constellation is for.",
-  "needsSource": "NASA ISS trajectory data (public domain, https://spotthestation.nasa.gov/); operator pages for a GOES-class weather satellite and a geostationary TV satellite.",
-  "leadsTo": [
-   "orbits-kepler",
-   "sun-earth-moon"
-  ],
-  "everyday": false,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "shooting-stars",
-  "title": "Shooting stars: what burns up and what gets through",
-  "level": 0,
-  "kind": "simulate",
-  "category": "space",
-  "interaction": "Drop a space pebble into the top of the air at twenty kilometres a second and watch: it rams the air so hard that the air in front glows and the pebble boils away, a streak a hundred kilometres up that lasts a second. The one control is the size of the rock: a sand grain vanishes in a flash, a fist-sized rock makes a fireball that lasts longer and reaches lower, and a boulder keeps a cold middle all the way down and lands as a meteorite, with a bar showing how much of it is left. A second control changes the speed.",
-  "takeaway": "A shooting star is a grain of dust heating the air by hitting it so fast that the air glows, a hundred kilometres up; only a rock big enough to keep a cold middle reaches the ground.",
-  "prerequisites": [],
-  "related": [
-   "comet-tails",
-   "solar-system-to-scale",
-   "what-planets-are-made-of"
-  ],
-  "needs": "",
-  "needsSource": "none (the single-body meteoroid equations: drag, mass loss and glow through the US Standard Atmosphere 1976, public domain, the same atmosphere the rockets and flight pages already use)",
-  "pitfall": "A meteor is not heated by friction rubbing on the air but by the air it squeezes in front of it, and a meteorite is not hot when it lands. A shooting star is not a star.",
-  "why": "NASA Space Place, 'Asteroid or Meteor: What's the Difference?' (https://spaceplace.nasa.gov/asteroid-or-meteor/en/) and 'What Is a Meteor Shower?' (https://spaceplace.nasa.gov/meteor-shower/en/).",
-  "overlapWith": "rockets (level 2) flies up through the same atmosphere model; this page falls through it, and no existing page shows anything burning up on entry.",
-  "leadsTo": [
-   "newtons-laws",
-   "orbits-kepler"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "solar-system-to-scale",
-  "title": "The solar system to scale",
-  "level": 0,
-  "kind": "explore",
-  "category": "space",
-  "interaction": "Start with Earth as a marble and zoom out along a line drawn to one true scale, sizes and distances alike: the Moon is a pea thirty marbles away, the Sun is a ball as tall as a child a hundred and fifty metres down the street, and the outer planets are specks far beyond. Press play to send a flash of light from the Sun and watch the clock: it passes Mercury after three minutes, reaches Earth after eight, Jupiter after forty-three, and Neptune after four hours. Zoom all the way out and the planets vanish into the emptiness.",
-  "takeaway": "The solar system is almost entirely empty space: with Earth a marble, the Sun is a ball as tall as a child far down the street, and even light takes hours to cross the planets.",
-  "prerequisites": [],
-  "related": [
-   "sun-is-a-star",
-   "comet-tails",
-   "earth-is-a-ball",
-   "shooting-stars",
-   "what-planets-are-made-of",
-   "dark-night-sky"
-  ],
-  "needs": "Planet and Moon diameters, mean distances from the Sun and orbital periods from the NASA NSSDC Planetary Fact Sheet (https://nssdc.gsfc.nasa.gov/planetary/factsheet/), US Government work, public domain.",
-  "needsSource": "NASA NSSDC Planetary Fact Sheet (public domain)",
-  "pitfall": "No drawing that fits the planets on one page can show both their sizes and their distances; this page never breaks scale, so at most zooms the planets are too small to see, and it says so.",
-  "why": "NGSS MS-ESS1-3: 'Analyze and interpret data to determine scale properties of objects in the solar system' (https://www.nextgenscience.org/pe/ms-ess1-3-earths-place-universe); NASA Space Place, 'What Is a Light-Year?' (https://spaceplace.nasa.gov/light-year/en/).",
-  "overlapWith": "sun-earth-moon (level 1) moves three bodies on a diagram that is not to scale; this page is only scale and light time, with nothing orbiting.",
-  "leadsTo": [
-   "sun-earth-moon",
-   "orbits-kepler"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "sun-is-a-star",
-  "title": "The Sun is a star",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "space",
-  "interaction": "The Sun hangs in a black sky; drag it away. As it recedes it shrinks and dims by the same rule as a torch across a field (twice as far, a quarter as bright), until at the distance of the nearest star it is one faint dot among the others. Then the other way: pick a star from the night sky (Sirius, Betelgeuse, Proxima) and drag it in to the Sun's distance, where it is a glaring disc bigger or smaller than ours.",
-  "takeaway": "The Sun looks nothing like the stars only because it is close: dragged far enough it becomes one of them, and some of them, brought close, would outshine it.",
-  "prerequisites": [],
-  "related": [
-   "solar-system-to-scale",
-   "twinkling-stars",
-   "dark-night-sky"
-  ],
-  "needs": "Distances, brightness and colour for a few dozen named stars from the Yale Bright Star Catalogue, 5th edition (BSC5), as hosted by NASA HEASARC (https://heasarc.gsfc.nasa.gov/W3Browse/star-catalog/bsc5p.html), whose documentation states it is in the public domain; the HYG database v4.2 (https://astronexus.com/hyg, CC BY-SA 4.0) is a share-alike alternative and is not needed.",
-  "needsSource": "Yale Bright Star Catalogue BSC5 via NASA HEASARC (public domain)",
-  "pitfall": "The Sun is not a huge or unusual star, and the stars are not small lights: each is a sun. Brightness falls with the square of distance, not in step with it.",
-  "why": "NGSS 5-ESS1-1: 'Support an argument that the apparent brightness of the sun and stars is due to their relative distances from the Earth' (https://www.nextgenscience.org/pe/5-ess1-1-earths-place-universe); NASA Space Place, 'How Does Our Sun Compare With Other Stars?' (https://spaceplace.nasa.gov/sun-compare/en/).",
-  "overlapWith": "stars (level 2) runs a star's life on the Hertzsprung-Russell diagram; this page never changes a star, only its distance.",
-  "leadsTo": [
-   "exoplanets",
-   "sun-earth-moon"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "time-zones",
-  "title": "Day, night and time zones",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "space",
-  "interaction": "A globe lit from one side. Spin it and watch cities pass from night into dawn, noon, dusk and night again; each city has a clock, and the clocks disagree: when it is noon in London it is already evening in Tokyo and still early morning in New York. Drag the hour and the day-night line sweeps round the world once per turn; cross the date line and the calendar flips.",
-  "takeaway": "There is no single 'now' on the clock: the Sun is overhead at different places at different moments, so clocks are set by how far east or west you live, in strips that go round with the spinning Earth.",
+  "category": "earth",
+  "interaction": "A globe with a magnet buried inside, its field drawn as lines looping from pole to pole. Drag a compass anywhere on the surface and its needle swings to lie along the local line: near the equator it lies flat along the ground, and near a magnetic pole it tries to point straight down and becomes useless. The magnetic pole sits hundreds of kilometres from the geographic one and drifts year by year, so from most places the needle misses true north by an angle the page measures as you move.",
+  "takeaway": "A compass does not point at the North Pole: it lines up with Earth's magnetic field, which comes out of a magnetic pole hundreds of kilometres from the geographic one and dips into the ground as you go north.",
   "prerequisites": [],
   "related": [
    "earth-is-a-ball",
-   "compass-and-magnetic-poles",
-   "a-year-of-weather"
-  ],
-  "needs": "Zone offsets from the IANA tz database (https://www.iana.org/time-zones, public domain) and city positions from Natural Earth populated places (https://www.naturalearthdata.com/downloads/10m-cultural-vectors/, public domain). Zone boundaries, if drawn, from timezone-boundary-builder (https://github.com/evansiroky/timezone-boundary-builder, ODbL, share-alike, since Natural Earth's own time-zone layer is believed withdrawn and could not be confirmed); the documented fallback is to draw no boundaries and colour each city by its offset.",
-  "needsSource": "IANA tz database and Natural Earth populated places (public domain); zone boundaries optional, timezone-boundary-builder (ODbL)",
-  "pitfall": "The Sun does not go round the Earth, and night is not the Sun switching off: it is the Earth's own shadowed side.",
-  "why": "England KS2 science, Year 5 Earth and space: 'use the idea of the Earth's rotation to explain day and night and the apparent movement of the sun across the sky' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study).",
-  "overlapWith": "sun-earth-moon (level 1) gives day length by latitude and season; this page keeps the tilt out and adds clocks, zones and the date line, which that page does not have.",
-  "leadsTo": [
-   "sun-earth-moon"
-  ],
-  "everyday": true,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "twinkling-stars",
-  "title": "Why stars twinkle (and planets don't)",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "space",
-  "interaction": "Starlight drawn as a thin beam crossing layers of air that drift and wobble, each bending the beam a little, while at the bottom an eye sees the star brighten, fade and jump about. The one control is the star's height above the horizon: low down, the beam crosses far more wobbling air and the twinkling grows wild, and straight overhead it almost stops. Swap the point of light for a small disc, a planet, and the many beams from across the disc average out, so it shines steadily.",
-  "takeaway": "Stars twinkle because moving air bends their light differently every instant, worst near the horizon, and planets twinkle much less because they are little discs whose many beams average out.",
-  "prerequisites": [],
-  "related": [
-   "sun-is-a-star",
    "aurora-rings",
-   "dark-night-sky"
+   "time-zones"
   ],
-  "needs": "",
-  "needsSource": "none (a stack of drifting random refractive-index layers, ray bending, brightness on a small aperture, the path through air growing as the star nears the horizon)",
-  "pitfall": "Stars do not flicker themselves, and twinkling says nothing about distance: the same star barely twinkles overhead on a calm night and dances near the horizon.",
-  "why": "'Why do stars twinkle' is a standing how-does-it-work question; the Wikipedia article 'Twinkling' explains the turbulence, the horizon effect and why planets twinkle less (https://en.wikipedia.org/wiki/Twinkling); England KS3 physics, 'our sun as a star, other stars in our galaxy'.",
-  "overlapWith": "light-optics (level 1) refracts rays through lenses and prisms with a fixed index; this page has air whose index wobbles in time, which that bench cannot show.",
+  "needs": "Earth's field from the World Magnetic Model WMM2025 coefficients, NOAA NCEI (https://www.ncei.noaa.gov/products/world-magnetic-model), US Government work stated as public domain; a tilted offset dipole is the documented fallback.",
+  "needsSource": "World Magnetic Model WMM2025 coefficients (NOAA NCEI, public domain)",
+  "pitfall": "The needle is not pulled toward the North Star or the geographic pole, and the magnetic pole is not a fixed place: it has moved hundreds of kilometres in a lifetime.",
+  "why": "England KS3 physics, Magnetism: 'Earth's magnetism, compass and navigation' and KS2 Year 3 'describe magnets as having 2 poles' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study).",
+  "overlapWith": "electromagnetism (level 2) covers fields, induction and Maxwell; this page uses one magnet, one needle and a globe, and is the only one where a compass is navigated.",
   "leadsTo": [
-   "light-optics"
+   "earthquakes"
   ],
-  "everyday": false,
+  "everyday": true,
   "origin": "earth-sky-weather"
  },
  {
-  "slug": "what-planets-are-made-of",
-  "title": "What the Moon and the planets are made of",
+  "slug": "dew-and-fog",
+  "title": "Dew, fog and the cold glass",
   "level": 0,
-  "kind": "build",
-  "category": "space",
-  "everyday": false,
-  "interaction": "Pick a world (the Moon, Earth, Mars, Jupiter, Saturn) and the page shows how big it is and how heavy, measured from its pull on the things that orbit it. Fill a ball of its size with layers from a palette of rock, iron, ice and squashed gas until the scale reads right: the Moon fills with rock almost alone, Earth will not get heavy enough without a lump of iron in the middle, Jupiter is nearly all gas squeezed hard, and Saturn comes out lighter than the same ball of water. A last step compares a glass of each world's stuff on a kitchen scale.",
-  "takeaway": "Weighing a world and measuring its size tells what it is made of without going there: the Moon weighs like rock, Earth is too heavy to be rock alone and must hold iron inside, and Saturn is lighter than water.",
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "A glass of iced water stands in a room: drag its temperature down and watch the air touching it, nothing, nothing, then at one particular temperature, the dew point, the glass mists over. Switch to a field at night and drag the night's temperature down: the grass gets wet at the same dew point, keep going and the air itself turns to fog, and if the dew point is below freezing you get frost instead. Make the day more humid and the dew point rises, so the dew comes sooner.",
+  "takeaway": "Air carries an invisible amount of water, and the moment anything cools it past one particular temperature, the dew point, that water comes out as drops, mist or frost.",
   "prerequisites": [],
   "related": [
-   "solar-system-to-scale",
-   "earth-is-a-ball",
-   "sun-is-a-star",
-   "shooting-stars"
+   "cloud-base",
+   "water-cycle",
+   "snowflake-growth",
+   "how-rain-forms"
   ],
+  "needs": "",
+  "needsSource": "none (saturation vapour pressure from the Magnus formula, relative humidity, frost point)",
+  "pitfall": "The water on a cold glass does not leak through the glass: it comes out of the air. Fog is a cloud sitting on the ground, not smoke or steam.",
+  "why": "England KS2 science, Year 4 States of matter: 'identify the part played by evaporation and condensation in the water cycle' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study).",
+  "overlapWith": "states-of-matter (level 1) shows condensation in a box of molecules under temperature and pressure; this page shows it on a glass, on grass and in the air, at one temperature the reader finds by hand.",
   "leadsTo": [
-   "earthquakes",
-   "sun-earth-moon"
+   "states-of-matter"
   ],
-  "needs": "Mass, radius and mean density of the Moon and planets from the NASA NSSDC Planetary Fact Sheet (https://nssdc.gsfc.nasa.gov/planetary/factsheet/), US Government work, public domain; densities of rock, iron, ice and water from any standard table.",
-  "needsSource": "NASA NSSDC Planetary Fact Sheet (public domain)",
-  "pitfall": "Saturn 'floating' is a comparison of density only, not something that could happen; and the Moon is not weightless or hollow: it is a ball of rock whose pull is a sixth of Earth's because it is smaller. The page states that deep inside a giant planet gas is squeezed to the density of water, which is why 'gas' fills Jupiter.",
-  "why": "NGSS MS-ESS1-3: 'Analyze and interpret data to determine scale properties of objects in the solar system' (https://www.nextgenscience.org/pe/ms-ess1-3-earths-place-universe); 'would Saturn float on water' is a standing popular question (https://www.worldatlas.com/space/would-saturn-float-on-water.html).",
-  "overlapWith": "earthquakes (level 1) finds Earth's iron core from seismic waves; this page finds it from weight and size alone, and no existing page says what the Moon or the giant planets are made of.",
+  "everyday": true,
   "origin": "earth-sky-weather"
  },
  {
-  "slug": "aperture-synthesis",
-  "title": "Interferometry & aperture synthesis",
-  "level": 3,
-  "kind": "build",
-  "category": "space",
-  "interaction": "Place radio dishes on a map and pick a model sky; every pair of dishes samples one point of the sky's Fourier transform, and as the Earth turns each pair traces an arc in the uv plane. Watch the dirty beam and the dirty image form from whatever the array has sampled: two dishes see only stripes, a dozen over six hours see the source. Run CLEAN step by step, subtracting the beam from the brightest point until the image emerges, and compare it with the truth; shrink the array to lose resolution, spread it to lose the extended emission.",
-  "takeaway": "An array of small telescopes can see as sharply as one dish as wide as the array, because what it measures is the sky's Fourier transform, and the Earth's rotation fills in the gaps.",
-  "prerequisites": [
-   "fourier-transform",
-   "waves-interference",
-   "light-optics"
-  ],
+  "slug": "forest-fire-spread",
+  "title": "How a wildfire crosses a forest, or stops",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A square forest of trees on a grid; light the left edge and watch the fire pass from each burning tree to its neighbours, leaving ash. One control: how densely the trees are planted. At half density the fire burns a few trees and dies, at two-thirds it nearly always crosses the forest, and around six in ten it is a coin toss, with a tally of how far the fire got over many runs; then cut a firebreak and find the width that stops it, or add wind so the fire jumps one extra tree downwind.",
+  "takeaway": "A fire's chance of crossing a forest does not grow gradually with how many trees there are: it flips from almost never to almost always over a narrow band of density, which is why thinning and firebreaks work.",
+  "prerequisites": [],
   "related": [
-   "medical-imaging",
-   "black-holes",
-   "gravitational-waves"
+   "epidemics"
   ],
   "needs": "",
-  "pitfall": "An interferometer does not gain the collecting area of a filled dish, only its resolution, and the dirty image is not a photograph of the sky but of what was sampled.",
-  "why": "NRAO Synthesis Imaging Workshop, the graduate course on aperture synthesis theory and technique: https://aas.org/events/2022-02/18th-synthesis-imaging-workshop",
-  "overlapWith": "light-optics: that page forms images with lenses; this page forms an image with no lens at all, from the correlations between separated telescopes.",
+  "pitfall": "The tipping density (about 59% for four neighbours on a square grid) belongs to the grid and the rule, not to forests; real fires also depend on wind, slope, moisture and fuel, which the page says it leaves out.",
+  "why": "The NetLogo Fire model, one of the most used models in the NetLogo library, documents the sharp transition near 59% density: https://ccl.northwestern.edu/netlogo/models/Fire",
+  "overlapWith": "epidemics: spread through a moving crowd with a threshold set by immunity; this page is spread on a fixed grid where the threshold is set by how many cells there are (percolation). Pool neighbours life-on-a-grid and cellular-automata are rule-based grids with no randomness or threshold; fire-triangle is what a fire needs chemically.",
   "needsSource": "none",
-  "leadsTo": [],
+  "leadsTo": [
+   "epidemics",
+   "ecosystems"
+  ],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "demand"
  },
  {
-  "slug": "atmospheric-escape",
-  "title": "Planetary atmospheres & escape",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "space",
-  "interaction": "Pick a body (Earth, Mars, Venus, Titan, the Moon, a hot Jupiter) or set mass, radius and exobase temperature, and pick a gas. The page draws the Maxwell-Boltzmann speed distribution against the escape speed and integrates the tail into the Jeans escape flux, then converts it into the time to lose the atmosphere. A chart of escape speed against temperature places every solar-system body and every gas on either side of the diagonal that separates kept from lost; push the Jeans parameter below about three and the escape turns hydrodynamic, with the whole atmosphere blowing off as a wind.",
-  "takeaway": "Whether a world keeps a gas depends on the race between its escape speed and the gas's thermal speed, which is why the Moon is bare, Mars lost its water's hydrogen, and Earth keeps nitrogen but leaks hydrogen.",
-  "prerequisites": [
-   "states-of-matter",
-   "orbits-kepler"
-  ],
+  "slug": "fossil-layers",
+  "title": "Fossils and rock layers",
+  "level": 0,
+  "kind": "build",
+  "category": "earth",
+  "interaction": "Drop a shell, a leaf or a fish onto a sea floor and let mud and sand rain down year after year; add another creature later, and another, and switch the sea for land for a while. The layers pile up, squeeze, harden into rock, and the buried creatures turn to stone. Then cut the cliff: the oldest things lie deepest, and the stretch that was land leaves leaves above shells.",
+  "takeaway": "Rock layers pile up from the bottom, so in an undisturbed cliff deeper means older, and the fossils in each layer are a snapshot of what lived there then.",
+  "prerequisites": [],
   "related": [
-   "exoplanets",
-   "carbonate-silicate-thermostat"
+   "rock-to-sand",
+   "river-valleys",
+   "why-the-sea-is-salty"
   ],
-  "needs": "Planetary masses, radii and exobase temperatures (NASA planetary fact sheets, US government work; retyped numbers).",
-  "pitfall": "Thermal escape is molecule by molecule from the tail of the distribution, so a gas is never lost all at once; and Mars lost its air mainly because it is small, not only because it lost its magnetic field.",
-  "why": "University of Arizona PTYS 595B Escape of Planetary Atmospheres (Jeans, hydrodynamic and nonthermal escape): https://lpl.arizona.edu/node/3594",
-  "overlapWith": "exoplanets: that page places a planet in the habitable zone by its orbit; this page asks whether it can hold an atmosphere at all, which the zone alone does not decide.",
-  "needsSource": "NASA planetary fact-sheet values (US government work; retyped numbers).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "cmb-power-spectrum",
-  "title": "The CMB power spectrum",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "space",
-  "interaction": "Each wavelength of the early universe's photon-baryon fluid is a driven, damped oscillator in the tight-coupling approximation; the page integrates a few hundred of them through recombination and projects the result onto the sky to draw the angular power spectrum, with the Planck 2018 measurements as points. Slide the baryon density and the odd peaks rise against the even ones; slide the dark-matter density and the peaks shift and shrink; curve the universe and every peak slides in angle. The sound horizon and the angular-diameter distance are drawn as the two rulers behind the first peak.",
-  "takeaway": "The peaks in the CMB are the sound waves of the first 380,000 years frozen on the sky, and their positions and relative heights read off the universe's contents and geometry.",
-  "prerequisites": [
-   "big-bang",
-   "oscillations-resonance",
-   "fourier-transform"
-  ],
-  "related": [
-   "dark-energy-supernovae",
-   "inflation-horizon",
-   "cosmic-web-formation",
-   "dark-matter"
-  ],
-  "needs": "The Planck 2018 TT binned power spectrum from the ESA Planck Legacy Archive (publicly downloadable; the ESA Space Science Archives terms seen in this round are CC BY-NC 3.0 IGO, so the data are not openly licensed in the task's sense and the candidate is weaker for it).",
-  "pitfall": "The peaks are not harmonics of one note and the spectrum is not an ordinary Fourier transform of a sound; and the tight-coupling model is an approximation stated as such, not a replacement for a Boltzmann code.",
-  "why": "Wayne Hu's CMB tutorial on the acoustic peaks and baryon loading, the standard teaching reference: https://background.uchicago.edu/~whu/intermediate/intermediate.html",
-  "overlapWith": "big-bang: that page shows the CMB as a moment on the timeline; this page reads the cosmological parameters off its spectrum.",
-  "needsSource": "Planck 2018 TT spectrum from the ESA Planck Legacy Archive; the ESA archive terms seen were CC BY-NC 3.0 IGO (non-commercial), so not openly licensed in the task's sense.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "cosmic-distance-ladder",
-  "title": "The cosmic distance ladder",
-  "level": 3,
-  "kind": "step",
-  "category": "space",
-  "interaction": "Climb the ladder one rung at a time. Measure a parallax with the reader's chosen baseline and precision and see how far it reaches; use those distances to calibrate the Cepheid period-luminosity relation from real Cepheids, and the Cepheids in a few nearby galaxies to calibrate the peak brightness of Type Ia supernovae; use the supernovae in the Hubble flow to read the Hubble constant. At each rung the reader sets the measurement error and watches it propagate up the ladder into the error bar on the expansion rate, and the last rung shows the gap between the ladder's value and the CMB's.",
-  "takeaway": "Every cosmic distance stands on a nearer one, so the uncertainty in the size of the universe is built, rung by rung, from the uncertainty of a parallax.",
-  "prerequisites": [
-   "stars",
-   "big-bang"
-  ],
-  "related": [
-   "dark-energy-supernovae",
-   "supernova-light-curves",
-   "cmb-power-spectrum"
-  ],
-  "needs": "Gaia DR3 parallaxes for nearby Cepheids (free to use with credit to ESA/Gaia/DPAC; not a Creative Commons licence), OGLE Magellanic Cloud Cepheids for the period-luminosity relation (public download; licence not confirmed), and the Pantheon+/SH0ES distance tables (public download; licence not confirmed).",
-  "pitfall": "The Hubble tension is a disagreement between two careful measurements, not a mistake in one of them; show both error bars.",
-  "why": "3Blue1Brown's two-part video with Terence Tao on the cosmic distance ladder (2025): https://3blue1brown.substack.com/p/the-cosmic-distance-ladder-with-terence",
-  "overlapWith": "big-bang: that page shows galaxies receding faster with distance; this page is how those distances are measured and how the errors stack up.",
-  "needsSource": "Gaia DR3 (free with credit, no CC licence); OGLE Cepheids (public download, licence not confirmed); Pantheon+/SH0ES tables (GitHub, licence not confirmed).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "cosmic-ray-air-showers",
-  "title": "Cosmic rays & air showers",
-  "level": 3,
-  "kind": "step",
-  "category": "space",
-  "interaction": "Step a cosmic ray into the atmosphere generation by generation in the Heitler-Matthews model: each particle travels one interaction length and splits, neutral pions decay to photons, and the cascade doubles until the particles fall below the critical energy and stop multiplying. Set the primary's energy and type (proton, iron nucleus, photon) and watch the particle count and the depth of maximum: ten times the energy gives ten times the particles at maximum and pushes the maximum deeper by a fixed step, while an iron nucleus, 56 lighter showers at once, peaks higher in the sky. Compare the model's depth of maximum against the energy spectrum and composition trend in the Pierre Auger open data.",
-  "takeaway": "One particle with the energy of a thrown tennis ball becomes billions in the air, and the depth at which the shower peaks tells both how energetic it was and how heavy it was.",
-  "prerequisites": [
-   "standard-model",
+  "needs": "",
+  "needsSource": "none (sedimentation and compaction through time, relative dating by superposition; optionally real fossil occurrences from the Paleobiology Database, CC BY 4.0)",
+  "pitfall": "A fossil is not a bone that survived: it is rock that took the bone's place. And layers are not one per year like tree rings.",
+  "why": "NGSS 4-ESS1-1: 'Identify evidence from patterns in rock formations and fossils in rock layers to support an explanation for changes in a landscape over time' (https://www.nextgenscience.org/pe/4-ess1-1-earths-place-universe); England KS2 Year 3: 'describe in simple terms how fossils are formed when things that have lived are trapped within rock'.",
+  "overlapWith": "deep-time (level 1) scrubs a dated timeline of 4.5 billion years; this page has no dates at all, only the order of layers and what is buried in them.",
+  "leadsTo": [
+   "deep-time",
+   "evolution",
    "radioactivity"
   ],
-  "related": [
-   "supernova-light-curves",
-   "pulsar-spin-down"
-  ],
-  "needs": "The Pierre Auger Observatory open data (a public release of ten percent of its events with documentation; licence not confirmed in this round).",
-  "pitfall": "Cosmic rays are particles, not rays, and the muons reaching the reader at sea level are shower products; the Heitler model is a toy that gets the scalings right and the numbers roughly, and the page says so.",
-  "why": "Matthews 2005, A Heitler model of extensive air showers, the standard teaching model of the cascade: https://inspirehep.net/literature/675329",
-  "overlapWith": "standard-model: that page builds particles and steps through one decay; this page runs a cascade of billions of them through the atmosphere.",
-  "needsSource": "Auger open data (public release; licence not confirmed).",
-  "leadsTo": [],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "cosmic-web-formation",
-  "title": "The cosmic web",
-  "level": 3,
+  "slug": "geothermal-heat-below",
+  "title": "Heat from underground",
+  "level": 0,
   "kind": "simulate",
-  "category": "space",
-  "interaction": "A box of dark matter solved as a two-dimensional particle-mesh N-body simulation in an expanding universe, starting from faint Gaussian ripples laid down by the Zel'dovich approximation. Press run and the ripples grow as the box expands: matter drains from voids into sheets, sheets into filaments, filaments into knots. Tilt the slope of the initial power spectrum to grow small or large structures first, change the matter density to speed or stall the growth, and compare the measured growth of the ripples against the linear growth factor until they outrun it.",
-  "takeaway": "Gravity amplifies tiny early ripples into a web of filaments and voids, so today's map of galaxies is the fingerprint of fluctuations that were one part in a hundred thousand.",
-  "prerequisites": [
-   "big-bang",
-   "dark-matter"
-  ],
+  "category": "earth",
+  "interaction": "Drill a well down from a field and read the thermometer as it goes: the rock gets warmer with every kilometre, warm enough for a bath a few kilometres down and for steam in volcanic ground. Pump water down and up to heat a town and watch the ground around the well cool over years, then rest it and watch the heat creep back; move the well to Iceland or beside a hot spring and compare. A map shows the heat measured flowing out of the ground around the world.",
+  "takeaway": "The ground gets hotter the deeper you go, so a deep enough well reaches heat that can warm a house or boil water, soonest where volcanoes are near.",
+  "prerequisites": [],
   "related": [
-   "cmb-power-spectrum",
-   "inflation-horizon",
-   "galaxy-collisions"
+   "power-station-kettle",
+   "dam-water-height"
+  ],
+  "needs": "Measured heat flow out of the ground around the world, for the map and the local gradient: the IHFC Global Heat Flow Database (CC BY 4.0).",
+  "pitfall": "Underground heat is not the Sun's heat stored in the ground: the Sun warms only the top few metres, and below that the warmth comes from the Earth itself. Nor is it endless at one spot: pump too fast and the rock around the well cools for decades.",
+  "why": "US DOE, 'Geothermal basics', https://www.energy.gov/eere/geothermal/geothermal-basics (curriculum: NGSS 4-ESS3-1, energy resources)",
+  "overlapWith": "plate-tectonics: that page shows where volcanoes are and why; this page follows the heat down a well anywhere, and what pumping it out does to the ground.",
+  "needsSource": "IHFC Global Heat Flow Database, https://ihfc-iugg.org/products/global-heat-flow-database (CC BY 4.0).",
+  "leadsTo": [
+   "plate-tectonics"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "glacier-flow",
+  "title": "Glaciers: rivers of ice",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A mountain valley in cross-section, with snow falling on the high ground and melting on the low ground; press play and the snow that outlasts the summer packs into ice, and the ice, once thick enough, creeps downhill like very slow honey, dragging rocks that scrape the valley into a U. The one control is the climate: make it colder or snowier and the front advances, warmer and the front retreats. Flags frozen into the ice show that the ice itself still flows forward even while the front is retreating.",
+  "takeaway": "A glacier is a slow river of ice whose front moves forward or back depending on whether the snow it gains up high outpaces the melting at its toe, while the ice itself always flows downhill.",
+  "prerequisites": [],
+  "related": [
+   "river-valleys",
+   "snowflake-growth",
+   "how-caves-form",
+   "a-year-of-weather"
   ],
   "needs": "",
-  "pitfall": "Galaxies form where dark matter gathers; the web is not galaxies that attracted each other from a uniform start, and the box's expansion is space stretching, not motion through it.",
-  "why": "Ohio State Astronomy 8873 cosmology notes on N-body simulations from Zel'dovich initial conditions: https://www.astronomy.ohio-state.edu/weinberg.21/A8873/notes10.pdf",
-  "overlapWith": "dark-matter: that page infers a halo from one galaxy's rotation curve and lensing; this page grows the halos and the web between them from the initial ripples.",
-  "needsSource": "none",
-  "leadsTo": [],
+  "needsSource": "none (a one-dimensional shallow-ice flowline with Glen's flow law and a snowfall-minus-melt balance that depends on height; PhET's legacy Glaciers sim is the reference interaction)",
+  "pitfall": "A retreating glacier does not flow backward or uphill: it melts at its toe faster than it flows forward.",
+  "why": "England KS3 geography: 'glaciation, hydrology and coasts' (https://www.gov.uk/government/publications/national-curriculum-in-england-geography-programmes-of-study/national-curriculum-in-england-geography-programmes-of-study); PhET Glaciers (https://phet.colorado.edu/en/simulations/glaciers).",
+  "overlapWith": "ice-ages (level 2) explains when ice sheets grow from orbital cycles; this page shows how one glacier flows and why its front moves.",
+  "leadsTo": [
+   "deep-time"
+  ],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "dark-energy-supernovae",
-  "title": "Dark energy & the accelerating universe",
-  "level": 3,
+  "slug": "how-caves-form",
+  "title": "How caves form",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A block of limestone threaded with hair-thin cracks, and slightly acid rainwater seeping in from the top; press play with the clock running thousands of years. Water flows where it can and dissolves a little rock as it goes, and every crack it widens carries more water and so widens faster, until one path wins and swells into a tunnel while the others stay cracks; the one control is how acid the rain is. Lower the water table and the tunnel drains into an air-filled cave where drips start building stalactites.",
+  "takeaway": "Caves are dissolved, not dug: the crack that carries the most water widens fastest, so a maze of hair-thin cracks turns into one big tunnel.",
+  "prerequisites": [],
+  "related": [
+   "why-the-sea-is-salty",
+   "river-valleys",
+   "glacier-flow",
+   "rock-to-sand"
+  ],
+  "needs": "",
+  "needsSource": "none (a fracture-network karst model: flow through a crack growing with the cube of its width, dissolution from the standard calcite kinetics, a sped-up clock)",
+  "pitfall": "Most caves were not washed out by underground rivers or cracked open by earthquakes: the rock was dissolved, slowly, by water that was only slightly acid.",
+  "why": "England KS3 geography: 'rocks, weathering and soils' (https://www.gov.uk/government/publications/national-curriculum-in-england-geography-programmes-of-study/national-curriculum-in-england-geography-programmes-of-study); US National Park Service, Caves and Karst (https://www.nps.gov/subjects/caves/index.htm).",
+  "overlapWith": "acids-bases (level 1) shows acids reacting; this page is about a positive feedback in flow, and the acid is only the thing that does the dissolving.",
+  "leadsTo": [
+   "acids-bases",
+   "deep-time"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "how-rain-forms",
+  "title": "From cloud droplet to raindrop, or hailstone",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A cloud of tiny droplets hangs in gently rising air, each falling slower than the air rises, so the cloud floats; press play and droplets bump and merge, and the bigger one gets the faster it falls and the more it sweeps up, until it outruns the updraft and drops out as rain, a size scale showing the drop is a hundred droplets across and took about a million of them. The one control is the updraft: turn it up and the drops grow larger before they fall, the difference between drizzle and a downpour. Turn it up to thunderstorm strength and the drops are carried above the freezing height, where each trip up adds a layer of ice until a hailstone too heavy for the wind drops out, and you can cut it open and count the rings.",
+  "takeaway": "A cloud droplet must merge with about a million others before it falls faster than the air that holds the cloud up, so rain is the end of a chain of collisions, and the stronger the rising air, the bigger what finally falls, up to hail.",
+  "prerequisites": [
+   "cloud-base"
+  ],
+  "related": [
+   "water-cycle",
+   "snowflake-growth",
+   "dew-and-fog",
+   "tornado-spin",
+   "lightning-and-thunder"
+  ],
+  "needs": "",
+  "needsSource": "none (collision-coalescence growth with terminal velocities from the standard published fall-speed relation for water drops, and an ice sphere's fall speed against the updraft for the hail step)",
+  "pitfall": "Raindrops are not tear-shaped: small ones are spheres and big ones flatten into buns. A cloud does not rain because it has become too heavy, and hail is not frozen rain and does not need a cold day: it falls from summer thunderstorms whose tops are far below freezing.",
+  "why": "NGSS MS-ESS2-4, whose clarification stresses 'the ways water changes its state as it moves through the multiple pathways of the hydrologic cycle' (https://www.nextgenscience.org/pe/ms-ess2-4-earths-systems); NGSS 3-ESS3-1 on weather-related hazards (https://www.nextgenscience.org/pe/3-ess3-1-earth-and-human-activity).",
+  "overlapWith": "cloud-base: that page ends where a cloud appears; this one asks why its droplets stay up and what has to happen before they come down.",
+  "leadsTo": [
+   "newtons-laws",
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "lighthouse-beam",
+  "title": "Lighthouses: how far a light can be seen",
+  "level": 0,
   "kind": "manipulate",
-  "category": "space",
-  "interaction": "The Hubble diagram of the Pantheon+ Type Ia supernovae, distance against redshift, with a model curve from the Friedmann equation. Slide the matter density, the dark-energy density and its equation of state and the curve bends; a residual panel and a chi-square readout show the fit, and a universe without dark energy misses the far supernovae, which are fainter than it allows. A second plot runs the scale factor forward and back for the chosen model, with deceleration giving way to acceleration about six billion years ago, and the age and fate of the universe update live.",
-  "takeaway": "Distant supernovae are fainter than any slowing universe allows, which means the expansion is speeding up and something that behaves like a cosmological constant makes up most of the universe.",
-  "prerequisites": [
-   "big-bang",
-   "cosmic-distance-ladder"
-  ],
+  "category": "earth",
+  "interaction": "Raise a lighthouse's lamp up its tower and watch the lit stretch of sea grow as the Earth's curve stops hiding it; a ship sails in from beyond the horizon and its lookout sees the flash first from the crow's nest, then from the deck. Spin the lamp's lens to send a beam round and set its rhythm of flashes from a real list of lights; the ship reads the rhythm to tell this lighthouse from the next one down the coast.",
+  "takeaway": "The Earth's curve hides a low light, so lighthouses are tall and lookouts climb high, and each light's rhythm of flashes is its name.",
+  "prerequisites": [],
   "related": [
-   "cmb-power-spectrum",
-   "dark-matter",
-   "supernova-light-curves"
+   "satellite-sky-tracks"
   ],
-  "needs": "The Pantheon+ distance-modulus and covariance tables (GitHub DataRelease; public download, licence not confirmed).",
-  "pitfall": "Dark energy and dark matter are different unknowns, and the acceleration is of the expansion rate; galaxies are not pushed apart by a force acting through space.",
-  "why": "Curriculum or demand URL not fetched in this round; grounded in the Pantheon+ cosmological analysis the page reproduces (Brout et al. 2022): https://arxiv.org/abs/2112.03864",
-  "overlapWith": "big-bang: that page shows expansion and redshift qualitatively, while this page fits the real supernova data to the Friedmann equation and finds the acceleration; it stays apart from cosmic-distance-ladder, which ends at the Hubble constant from the low-redshift rungs, whereas this page uses the high-redshift shape to fit the contents.",
-  "needsSource": "Pantheon+ tables (GitHub DataRelease; public download, licence not confirmed).",
-  "leadsTo": [],
+  "needs": "Heights, ranges and flash characteristics of a few named lighthouses from the US Coast Guard Light List (US government work, public domain).",
+  "pitfall": "A light is not hidden by distance alone: on a flat Earth a bright enough lamp would be seen from anywhere. The lens does not make the lamp brighter; it gathers light that would be wasted upward and sideways into a beam, which is why the light flashes as the beam sweeps past.",
+  "why": "The US Coast Guard Light List, the real register of lights and their characteristics, https://www.navcen.uscg.gov/light-lists ('how far can you see a lighthouse' is a common search question)",
+  "overlapWith": "light-optics: that page traces rays through lenses on a bench; this page does not trace the lens at all, it uses the curve of the Earth and the rhythm of flashes.",
+  "needsSource": "USCG Light List (public domain), https://www.navcen.uscg.gov/light-lists",
+  "leadsTo": [
+   "light-optics",
+   "sun-earth-moon"
+  ],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "vehicles-and-big-machines"
  },
  {
-  "slug": "galaxy-collisions",
-  "title": "Colliding galaxies",
-  "level": 3,
-  "kind": "simulate",
-  "category": "space",
-  "interaction": "Two galaxies, each a disc of thousands of massless stars orbiting a central mass, pass each other as in Toomre and Toomre's 1972 model. Set the closest approach, the mass ratio and whether each disc spins with or against the orbit, then run: a prograde pass throws out a long tidal tail and a bridge, a retrograde one barely stirs the disc. Match the Antennae or the Mice by trial, and scrub forward a billion years to see the pair fall back together.",
-  "takeaway": "Tides, not impacts, shape colliding galaxies, so a slow pass in the direction of a disc's spin throws its stars into long tails while the same pass against the spin leaves it almost untouched.",
-  "prerequisites": [
-   "orbits-kepler"
-  ],
+  "slug": "lightning-and-thunder",
+  "title": "Lightning and thunder: count the seconds",
+  "level": 0,
+  "kind": "build",
+  "category": "earth",
+  "interaction": "A storm scene: a charged cloud, open ground and a palette of things to place on it (a tree, a house, a tall rod, a person); press strike and a branching bolt grows down from the cloud step by step, landing on the tallest thing near its path more often than anywhere else. Then the flash reaches the viewer at once while the thunder's sound front crawls out at a third of a kilometre per second, a counter ticking off the seconds until it arrives. Drag the viewer farther away: more seconds, fainter rumble.",
+  "takeaway": "Thunder is the sound of the lightning you already saw: light arrives at once and sound takes about three seconds per kilometre, so counting the gap tells how far away the storm is, and the bolt favours the tallest path to the ground.",
+  "prerequisites": [],
   "related": [
-   "dark-matter",
-   "cosmic-web-formation",
-   "lagrange-points-three-body"
+   "how-rain-forms",
+   "sea-breeze",
+   "tornado-spin"
   ],
   "needs": "",
-  "pitfall": "Stars do not collide in a galaxy collision; the gaps between them are too large, and the tails are stars pulled out by tides, not debris from impacts.",
-  "why": "UC San Diego Physics 141 midterm project, reproducing the Toomre and Toomre encounter with a student-written integrator: https://jduarte.physics.ucsd.edu/phys141/midterm_final/midterm_final.html",
-  "overlapWith": "dark-matter: that page spins a single galaxy to read its rotation curve; this page throws two together and shows the tidal tails.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
+  "needsSource": "none (the dielectric-breakdown model of Niemeyer, Pietronero and Wiesmann, 1984, grown on a grid with grounded objects; sound at 343 m/s)",
+  "pitfall": "Thunder is not clouds bumping together, and lightning does strike the same place twice: tall things get hit again and again.",
+  "why": "US National Weather Service, 'Understanding Lightning: Thunder', with the count-the-seconds rule (https://www.weather.gov/safety/lightning-science-thunder); KS2 Year 4 Sound: 'sounds get fainter as the distance from the sound source increases'.",
+  "overlapWith": "waves-interference (level 1) treats sound as a wave with speed and Doppler shift; this page uses only the fact that sound is slow and light is not, plus where a bolt goes.",
+  "leadsTo": [
+   "waves-interference",
+   "electric-circuits"
+  ],
+  "everyday": true,
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "inflation-horizon",
-  "title": "Inflation & the horizon problem",
-  "level": 3,
+  "slug": "river-valleys",
+  "title": "How rivers carve valleys",
+  "level": 0,
   "kind": "simulate",
-  "category": "space",
-  "interaction": "Run the scale factor from the Friedmann equation through the radiation, matter and dark-energy eras on a log-log plot of comoving scale against time, with the comoving Hubble radius drawn: today's observable universe is a line far above the Hubble radius at early times, so its patches never touched. Add an inflating phase driven by a slow-rolling scalar field on a potential the reader shapes, and the Hubble radius shrinks for sixty e-folds: the observable scales dive inside it, then re-emerge in the right order. A second plot shows the curvature parameter driven toward zero by the same phase.",
-  "takeaway": "A brief period of accelerating expansion lets the whole observable universe come from a patch that was once in causal contact.",
-  "prerequisites": [
-   "big-bang",
-   "calculus"
-  ],
+  "category": "earth",
+  "interaction": "Rain falls on a bumpy block of land shown from above and in cross-section. Water runs downhill, joins into streams, picks up soil where it runs fast and drops it where it slows: the streams branch like a tree, cut valleys, and a fan of dropped mud grows where the river meets the sea. One control: how much it rains; a later step lifts the land to see the rivers cut faster.",
+  "takeaway": "Rivers do not just follow valleys, they make them: moving water carries the land downhill a grain at a time and drops it wherever it slows.",
+  "prerequisites": [],
   "related": [
-   "cmb-power-spectrum",
-   "cosmic-web-formation"
+   "rock-to-sand",
+   "water-cycle",
+   "glacier-flow",
+   "fossil-layers",
+   "soil-in-a-jar"
   ],
   "needs": "",
-  "pitfall": "Inflation does not expand space faster than light in any local sense, and it is a hypothesis with evidence, not an established fact; show which observations it explains and which it does not predict.",
-  "why": "Baumann's TASI Lectures on Inflation, the standard open-access introduction, which opens with the horizon and flatness problems: https://arxiv.org/pdf/0907.5424",
-  "overlapWith": "big-bang: that page runs the expansion on a grid of galaxies; this page compares the expansion against the reach of light to show why the early universe should not have been uniform and how inflation fixes that.",
-  "needsSource": "none",
-  "leadsTo": [],
+  "needsSource": "none (a cellular hydraulic-erosion model: flow routing on a small grid, erosion by fast water with a carrying limit, deposition where it slows, hillslope creep; optionally a real hillside from USGS 3DEP elevation, public domain)",
+  "pitfall": "A valley is not a crack that opened: the river removed what used to fill it, and it took far longer than a lifetime.",
+  "why": "NGSS 4-ESS2-1: 'Make observations and/or measurements to provide evidence of the effects of weathering or the rate of erosion by water, ice, wind, or vegetation' (https://www.nextgenscience.org/pe/4-ess2-1-earths-systems); England KS2 geography, rivers.",
+  "overlapWith": "plate-tectonics (level 1) builds mountains; this page wears them down, and it is the only page where water shapes the land.",
+  "leadsTo": [
+   "plate-tectonics",
+   "deep-time"
+  ],
   "everyday": false,
-  "origin": "earth-space-l3"
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "lagrange-points-three-body",
-  "title": "The three-body problem & Lagrange points",
-  "level": 3,
+  "slug": "rock-to-sand",
+  "title": "Where sand comes from",
+  "level": 0,
+  "kind": "step",
+  "category": "earth",
+  "interaction": "Step a chunk of rock down a river: it breaks off a cliff, bangs along in a flood, and at each stop it is rounder and smaller as its corners knock off, faster for soft rock than hard. Where the river slows, the grains it carries settle by size, boulders first, then gravel, then sand, with mud going farthest; at the beach the waves finish the job. Scrub back and forth along the river to see where each size ends up.",
+  "takeaway": "Every grain of sand on a beach is a piece of a mountain that was knocked smaller and rounder on its way down, and the river sorts the grains by size as it slows.",
+  "prerequisites": [],
+  "related": [
+   "river-valleys",
+   "beach-waves",
+   "sand-dunes",
+   "fossil-layers",
+   "soil-in-a-jar"
+  ],
+  "needs": "",
+  "needsSource": "none (Sternberg's law of downstream abrasion with published coefficients for a few rock types, and settling speeds by grain size)",
+  "pitfall": "Sand is not all ground up by the sea, and not all sand is quartz: white tropical sand is broken shell and coral.",
+  "why": "England KS2 science, Year 3 Rocks: 'compare and group together different kinds of rocks on the basis of their appearance and simple physical properties' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); NGSS 4-ESS2-1.",
+  "overlapWith": "river-valleys: that page shows the land being cut; this one follows a single rock through the cutting and asks what becomes of it.",
+  "leadsTo": [
+   "deep-time",
+   "plate-tectonics"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "sand-dunes",
+  "title": "How dunes march",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A flat bed of sand under a steady wind, drawn as little stacked slabs; press play and the wind lifts grains from the side facing it and drops them a little downwind, they pile until a slope gets too steep and slides, and out of a flat bed grows a field of dunes, each with a gentle face toward the wind and a steep slip face behind. The one control is the wind's direction, later its strength. Turn the wind and the dunes slowly rebuild to face it; everything creeps downwind.",
+  "takeaway": "Dunes are the wind moving sand uphill one grain at a time and the sand sliding down the back, so a whole dune walks downwind and always faces into the wind.",
+  "prerequisites": [],
+  "related": [
+   "rock-to-sand",
+   "beach-waves",
+   "sea-breeze"
+  ],
+  "needs": "",
+  "needsSource": "none (Werner's 1995 cellular dune model: sand slabs, wind shadows, avalanching at the angle of repose)",
+  "pitfall": "Deserts are not defined by sand or by heat but by dryness: most desert is rock and gravel, and some of it is cold.",
+  "why": "NGSS 4-ESS2-1, erosion by wind (https://www.nextgenscience.org/pe/4-ess2-1-earths-systems); US National Park Service, 'Aeolian (Dunes) Landforms' (https://www.nps.gov/subjects/geology/aeolian-landforms.htm).",
+  "overlapWith": "rock-to-sand makes the grains; this page is what the wind does with them, and no existing page shows a landform built by wind.",
+  "leadsTo": [
+   "deep-time"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "sea-breeze",
+  "title": "Where wind comes from: the sea breeze",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A coast in cross-section, land on one side and sea on the other, filled with air drawn as drifting particles. Drag the Sun across the sky: by afternoon the land is warmer than the sea, the air over it rises, and air from the sea slides in underneath as a breeze that a flag on the beach shows. At night the land cools faster than the water and the breeze turns around and blows out to sea.",
+  "takeaway": "Wind is air moving from where it is cool and heavy toward where it is warm and rising, so uneven heating of land and water is enough to make a wind blow, and to turn it around at night.",
+  "prerequisites": [],
+  "related": [
+   "cloud-base",
+   "tornado-spin",
+   "a-year-of-weather",
+   "beach-waves"
+  ],
+  "needs": "",
+  "needsSource": "none (a small 2D buoyant-convection solver on a coarse grid, with the sea slower to warm than the land)",
+  "pitfall": "Warm air does not rise because heat goes up: it rises because it is lighter than the cooler air around it, which pushes it up.",
+  "why": "NOAA JetStream, 'The Sea Breeze' (https://www.noaa.gov/jetstream/ocean/sea-breeze); NGSS MS-ESS2-5 on air masses moving from high to low pressure.",
+  "overlapWith": "atmosphere-weather (level 2) heats a whole spinning globe into convection cells and winds with Coriolis; this page heats one beach and gets one wind, no rotation.",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "snowflake-growth",
+  "title": "Why snowflakes have six arms",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "Start from a speck in cold, moist air and watch a crystal grow on a honeycomb grid: water molecules arrive from all sides, the corners that stick out catch more of them, and six arms shoot out and branch. One control: the amount of moisture in the air, then the temperature. Low moisture grows flat plates and stubby prisms, high moisture grows branching stars, and a little randomness means no two crystals come out the same, though every one keeps its six-fold symmetry.",
+  "takeaway": "Six-fold symmetry comes from the way water molecules pack, and the shape of the arms comes from the air the crystal grew in, so every snowflake is a record of its own journey.",
+  "prerequisites": [],
+  "related": [
+   "dew-and-fog",
+   "how-rain-forms",
+   "glacier-flow"
+  ],
+  "needs": "",
+  "needsSource": "none (Reiter's 2005 hexagonal cellular automaton for snow crystal growth, or the Gravner-Griffeath 2008 model, checked against the Nakaya morphology diagram)",
+  "pitfall": "Snowflakes are not frozen raindrops; that is sleet. A snow crystal grows from vapour straight into ice.",
+  "why": "NOAA, 'How do snowflakes form? Get the science behind snow' (https://www.noaa.gov/stories/how-do-snowflakes-form-science-behind-snow); KS2 Year 4 states of matter.",
+  "overlapWith": "states-of-matter (level 1) shows water freezing into its open lattice; this page shows a single crystal growing from vapour and why its shape depends on the air.",
+  "leadsTo": [
+   "states-of-matter",
+   "chemical-bonds"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "soil-in-a-jar",
+  "title": "What soil is made of: the jar test",
+  "level": 0,
+  "kind": "step",
+  "category": "earth",
+  "everyday": true,
+  "interaction": "Scoop soil from a chosen place (a sandy garden, a clay field, a forest floor, a river bank) into a jar of water, shake it and step the clock: after a minute the sand has dropped to the bottom, after an hour the silt lies on top of it, and a day later the cloudy water has finally let its clay down, while bits of rotted leaf and root still float. A ruler reads the thickness of each layer and names the soil from the mix. A last step pours water on each soil: it runs straight through the sandy one and sits for hours on the clay.",
+  "takeaway": "Soil is rock ground into grains of three sizes plus the rotted remains of living things, and the mix decides whether water runs through it or stays.",
+  "prerequisites": [],
+  "related": [
+   "rock-to-sand",
+   "river-valleys",
+   "water-cycle",
+   "fossil-layers"
+  ],
+  "leadsTo": [
+   "ecosystems",
+   "plate-tectonics"
+  ],
+  "needs": "",
+  "needsSource": "none (settling speeds by grain size from Stokes' law, the sand, silt and clay size classes and the USDA soil texture triangle, US Department of Agriculture work, public domain)",
+  "pitfall": "Soil is not dirt that was always there and is not the same everywhere: a few centimetres take centuries to form, and the floating bits are as much a part of soil as the grains.",
+  "why": "England KS2 science, Year 3 Rocks: 'recognise that soils are made from rocks and organic matter' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); the jar test is a standard extension-service activity (https://hgic.clemson.edu/factsheet/soil-texture-analysis-the-jar-test/).",
+  "overlapWith": "rock-to-sand: that page sorts grains by size along a river; this one sorts them in a jar the reader can shake at home and adds the half of soil that was never rock.",
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "tornado-spin",
+  "title": "How a tornado spins up",
+  "level": 0,
   "kind": "manipulate",
-  "category": "space",
-  "interaction": "The circular restricted three-body problem drawn in the frame that rotates with the two large bodies. Set the mass ratio (Sun-Earth, Earth-Moon) and the five Lagrange points appear; set the probe's energy (the Jacobi constant) and the forbidden regions shade in, opening gates at L1 and L2 as the energy rises. Drop a probe at L1 or L2 and it drifts away within months, drop one at L4 and it wanders in a tadpole around the point for as long as the reader waits, as Jupiter's Trojans do, and nudge a starting position by a hair to run two probes side by side and watch their paths split.",
-  "takeaway": "With three bodies there is no formula for the motion, but there are five points where a small body can sit, three balanced on a knife edge and two stable, and an energy map says where it can and cannot go.",
-  "prerequisites": [
-   "orbits-kepler"
-  ],
+  "category": "earth",
+  "interaction": "A wide, slowly turning column of air under a thunderstorm, drawn as rings of particles. Drag the storm's updraft to stretch the column taller and thinner: the particles keep their swing but have less room, so they whirl faster, like a skater pulling in her arms, and a funnel appears where the whirl is fast enough for the pressure drop at its heart to make a cloud. Let the column widen again and it slows and the funnel fades.",
+  "takeaway": "A spinning column of air spins faster when it is stretched thinner, and the funnel you see is just the place where the whirl is fast enough to make a cloud.",
+  "prerequisites": [],
   "related": [
-   "rockets",
-   "chaos-fractals",
-   "galaxy-collisions",
-   "tidal-evolution-resonance"
+   "sea-breeze",
+   "how-rain-forms",
+   "lightning-and-thunder"
   ],
   "needs": "",
-  "pitfall": "L1 and L2 are not places where gravity cancels; a spacecraft there orbits the Sun with Earth's period because the two pulls add to exactly the needed centripetal force, and it still needs station-keeping.",
-  "why": "MIT OCW 16.346 Astrodynamics, lecture 25 on the restricted problem of three bodies (Jacobi integral, surfaces of zero relative velocity): https://ocw.mit.edu/courses/16-346-astrodynamics-fall-2008/resources/lec_25",
-  "overlapWith": "orbits-kepler: that page adds a second planet to see two bodies disturb each other; this page moves to the rotating frame, where the forbidden regions and the stability of the five points become visible.",
+  "needsSource": "none (a Rankine-type vortex with angular momentum conserved under stretching, particle advection, and the pressure drop that condenses the funnel)",
+  "pitfall": "The visible funnel is not the whole tornado: the wind spins just as hard outside it before the cloud appears, which is why damage starts before the funnel seems to touch down.",
+  "why": "NGSS 3-ESS3-1, weather-related hazards (https://www.nextgenscience.org/pe/3-ess3-1-earth-and-human-activity); 'how do tornadoes form' is a standing how-does-it-work question.",
+  "overlapWith": "atmosphere-weather (level 2) grows a hurricane from a warm sea on a rotating globe; this page stretches one small vortex with no Coriolis effect at all.",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "volcano-eruptions",
+  "title": "Why some volcanoes explode and others ooze",
+  "level": 0,
+  "kind": "step",
+  "category": "earth",
+  "interaction": "Step magma up a pipe toward the surface with gas dissolved in it like a shaken fizzy drink: as the weight of rock above lessens, bubbles appear and grow. The one control is how runny or sticky the magma is: runny magma lets the bubbles float out, and lava fountains and flows spill gently down the slope, while sticky magma traps them until the froth bursts and the cone blows its top in ash. A second control adds more gas and makes the sticky case worse.",
+  "takeaway": "What makes an eruption explosive is not how hot the magma is but how hard it is for its gas to get out: runny magma fizzes, sticky magma bursts.",
+  "prerequisites": [],
+  "related": [
+   "rock-to-sand",
+   "fossil-layers"
+  ],
+  "needs": "",
+  "needsSource": "none (bubble growth as pressure falls, bubble rise speed set by the magma's viscosity, fragmentation above a gas fraction threshold)",
+  "pitfall": "Lava is not fire and a volcano is not a hole into a burning centre: magma is melted rock, and most of the Earth's inside is solid.",
+  "why": "USGS FAQ, 'How do volcanoes erupt?', runny magma that lets gas escape against sticky magma that traps it (https://www.usgs.gov/faqs/how-do-volcanoes-erupt); England KS2 geography, volcanoes and earthquakes.",
+  "overlapWith": "plate-tectonics (level 1) shows where volcanoes are and why; this page shows what happens inside one when it erupts, which that page does not.",
+  "leadsTo": [
+   "plate-tectonics",
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "water-cycle",
+  "title": "The water cycle",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A sea, a mountain and the sky, with the water drawn as a few hundred dots that the page follows one by one. Turn the Sun up and more dots leave the sea as invisible vapour, rise, cool and gather into clouds that rain on the mountain, from where streams carry them back to the sea; turn it down and the air dries and the rivers shrink. A counter shows how many dots are in the sea, the air, the ice and the rivers at any moment, and the sea always holds almost all of them.",
+  "takeaway": "Water is never used up: the same water goes round and round between sea, air and land, lifted by the Sun's heat and brought back down by gravity.",
+  "prerequisites": [],
+  "related": [
+   "cloud-base",
+   "how-rain-forms",
+   "why-the-sea-is-salty",
+   "river-valleys"
+  ],
+  "needs": "",
+  "needsSource": "none (the share of water in each store from the USGS Water Science School, US Government work, public domain)",
+  "pitfall": "Evaporation does not need boiling: water leaves the sea at ordinary temperatures, faster when it is warmer. And the vapour is invisible; the white of a cloud is droplets.",
+  "why": "England KS2 science, Year 4 States of matter: 'identify the part played by evaporation and condensation in the water cycle' and 'associate the rate of evaporation with temperature' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); also NGSS MS-ESS2-4 (https://www.nextgenscience.org/pe/ms-ess2-4-earths-systems).",
+  "overlapWith": "carbon-cycle: the same idea of stores joined by flows, but for water, with every drop followed as a particle in a landscape instead of flows drawn to scale between boxes.",
+  "leadsTo": [
+   "carbon-cycle",
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "why-the-sea-is-salty",
+  "title": "Why the sea is salty",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A lake fed by a river that carries a pinch of salt in every bucket of water; the Sun lifts pure water out and the salt stays. Open or close the lake's outlet: with an outlet the salt leaves as fast as it arrives and the lake stays fresh, close it and the salt count climbs year after year until crystals ring the shore, like the Dead Sea. Then the ocean: rivers in, evaporation out, and salt also leaving into the sea floor, so its saltiness holds steady at about two teaspoons of salt in every glass.",
+  "takeaway": "Rivers carry a little salt to the sea and the Sun takes only the water back, so salt collects wherever water can leave only by evaporating.",
+  "prerequisites": [],
+  "related": [
+   "water-cycle",
+   "rock-to-sand",
+   "dew-and-fog",
+   "how-caves-form"
+  ],
+  "needs": "",
+  "needsSource": "none (a salt mass-balance box model; seawater at about 35 g per kg and the average river at about 0.1 g per litre, from the USGS Water Science School, US Government work)",
+  "pitfall": "The ocean is not getting steadily saltier today: salt leaves into the sea floor about as fast as rivers bring it.",
+  "why": "USGS Water Science School, 'Why is the ocean salty?' (https://www.usgs.gov/special-topics/water-science-school/science/why-ocean-salty); 'why is the sea salty?' is among the questions UK parents say they cannot answer (https://www.stornowaygazette.co.uk/arts-and-culture/top-30-impossible-questions-that-children-ask-840687).",
+  "overlapWith": "ocean-currents (level 2) uses salinity to drive the deep circulation; this page asks where the salt came from and never mentions currents.",
+  "leadsTo": [
+   "states-of-matter",
+   "acids-bases"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "global-water-cycle",
+  "title": "The water cycle",
+  "level": 1,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A diagram of reservoirs (ocean, ice, groundwater, lakes and rivers, soil, air, living things) joined by flows drawn to scale: evaporation, transpiration, precipitation, runoff and infiltration. Drop a tagged water molecule anywhere and follow it; a counter shows how long it typically waits in each reservoir, days in the air against thousands of years in the deep ocean or an ice sheet. Warm the air to see how much more vapour it can hold, cool a parcel to its dew point and watch cloud and rain appear, then pave a catchment and see runoff rise and infiltration fall.",
+  "takeaway": "The same water goes round and round, but it moves through the air in days and through ice and deep groundwater in millennia, and warmer air carries more of it.",
+  "prerequisites": [
+   "states-of-matter"
+  ],
+  "related": [
+   "atmosphere-weather",
+   "ocean-currents",
+   "carbon-cycle",
+   "greenhouse-effect",
+   "plant-transport"
+  ],
+  "needs": "Reservoir volumes and annual flows of the global water cycle, and the saturation vapour pressure of water against temperature.",
+  "needsSource": "reservoir volumes from the USGS Water Science School table (US government work, public domain; it credits Shiklomanov 1993) https://www.usgs.gov/water-science-school/science/how-much-water-there-earth ; annual flows from Oki & Kanae 2006 (Science, not open access; the figure's numbers are facts and are reproduced in open teaching material) - confirm one consistent set before building; vapour pressure from the Magnus formula",
+  "pitfall": "Water is not used up: the amount on Earth is fixed, and what people run short of is fresh water in the right place at the right time. Clouds are not water vapour; vapour is invisible, and a cloud is droplets that have already condensed.",
+  "why": "NGSS MS-ESS2-4 'Develop a model to describe the cycling of water through Earth's systems driven by energy from the sun and the force of gravity' https://www.nextgenscience.org/pe/ms-ess2-4-earths-systems ; the brief notes the water cycle is not covered by any existing page",
+  "overlapWith": "atmosphere-weather (level 2) moves heat and makes fronts and hurricanes, and carbon-cycle has the same reservoir-and-flow design for carbon; nothing on the site follows water itself. The pool's water-cycle (level 0) tells the story without the budget, the residence times or the dew point.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "nitrogen-cycle",
+  "title": "The nitrogen cycle",
+  "level": 1,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "Run a field as an agent model of plants, animals, decomposers and three kinds of soil bacteria: nitrogen-fixing bacteria turn air nitrogen into ammonium, nitrifying bacteria turn it into the nitrate that plants take up, and denitrifying bacteria return it to the air, with a reservoir diagram beside the field keeping the running totals. Add fertiliser, plough in a legume crop or flood the soil and watch where the nitrogen goes; overdo the fertiliser and follow the runoff into a lake, where algae bloom, die, and the decomposers use up the oxygen.",
+  "takeaway": "Most of the air is nitrogen that plants cannot use, so almost every living thing depends on bacteria that convert it, and adding too much of the converted form washes into water and chokes it.",
+  "prerequisites": [
+   "ecosystems"
+  ],
+  "related": [
+   "carbon-cycle"
+  ],
+  "needs": "Global nitrogen budget flows (fixation by lightning, bacteria and the Haber process; denitrification) if the reservoir diagram is drawn to scale.",
+  "needsSource": "Fowler et al. 2013, Phil. Trans. R. Soc. B 368:20130164, free on PubMed Central (PMC3682748) but its reuse licence was not confirmed in this research: either confirm it or keep the diagram qualitative and let the agent model be the real part",
+  "pitfall": "Plants do not take nitrogen from the air, and fertiliser is not food: it supplies nitrate for making protein, while the energy still comes from photosynthesis. Eutrophication kills fish through the decomposers' use of oxygen, not through the fertiliser itself.",
+  "why": "AQA A-level Biology 7402 topic 3.5.4 'Nutrient cycles' (nitrogen fixation, ammonification, nitrification, denitrification; fertilisers and eutrophication) https://www.savemyexams.com/a-level/biology/aqa/17/revision-notes/5-energy-transfers-in--between-organisms-a-level-only/5-4-nutrient-cycles-a-level-only/5-4-1-nutrient-cycles ; Edexcel GCSE Biology Topic 9 (the carbon, water and nitrogen cycles) https://pmt.physicsandmathstutor.com/download/Biology/GCSE/Notes/Edexcel/9-Ecosystems-and-Material-Cycles/Flashcards/Flashcards%20-%20Topic%209%20Nutrient%20cycles%20and%20decomposers%20-%20Edexcel%20Biology%20GCSE.pdf",
+  "overlapWith": "carbon-cycle is a reservoir-and-flow diagram driven by burning; here bacteria, not fire, are the gatekeepers, and the second half (fertiliser runoff and eutrophication) links to ecosystems, which has the predator-prey model but no nutrient.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "tsunamis",
+  "title": "Tsunamis: a wave as long as the ocean is deep",
+  "level": 1,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A slice of the Pacific from Japan to California with the real sea floor under it. Jolt the floor up near the trench and watch the hump race across the deep ocean at airliner speed while a clock counts the hours and markers show arrival times; a speed gauge follows the depth, fast over the abyss and slowing over the shelf, where the wave bunches up and grows from under a metre to many metres. Drag the floor to change a shelf's slope or add an island, and compare with a wind wave of the same height, which barely notices the depth.",
+  "takeaway": "A tsunami is a shallow-water wave even over the deepest ocean, so its speed is set by the depth alone: it crosses an ocean in hours, is barely visible at sea, and rears up only when it reaches the shallows.",
+  "prerequisites": [
+   "waves-interference",
+   "earthquakes"
+  ],
+  "related": [
+   "plate-tectonics"
+  ],
+  "needs": "An ocean depth transect from NOAA's ETOPO 2022 relief model; the one-dimensional shallow-water equations run on that profile (a single transect ignores spreading across the ocean, so the far-shore height is an upper bound: state it on the page).",
+  "pitfall": "A tsunami is not a towering surf wave: at the coast it arrives as a fast-rising flood lasting minutes, often after the sea draws back; and it is not a tidal wave, tides have nothing to do with it.",
+  "why": "NOAA's tsunami facts (speed is the square root of gravity times depth, about 765 km/h over 4,600 m of water) answer the common 'how do tsunamis work': https://noaa.gov/node/10981",
+  "overlapWith": "beach-waves (pool, level 0): wind waves slowing and breaking on a beach; this page is a wave longer than the ocean is deep, with its speed set by depth all the way across and real travel times. earthquakes: the seismic waves inside the Earth; this page is the water wave an undersea quake launches.",
+  "needsSource": "ETOPO 2022 (NOAA NCEI, US government work, public domain).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
+  "slug": "carbonate-silicate-thermostat",
+  "title": "The carbonate-silicate thermostat",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A box model in which volcanoes outgas CO2, silicate weathering removes it at a rate that rises with temperature and rainfall (the Walker, Hays and Kasting feedback), and a one-layer energy balance sets the temperature. Dim the young Sun to seventy percent and run a million years: CO2 piles up until weathering catches up and the planet stays unfrozen. Freeze the planet to stop weathering and watch CO2 climb for millions of years until the ice gives way; move the planet outward or switch off the volcanoes to find where the thermostat fails.",
+  "takeaway": "Over millions of years rock weathering acts as a thermostat, because a warmer, wetter planet draws down CO2 faster, which is why Earth stayed habitable under a brightening Sun and how a Snowball Earth ends.",
+  "prerequisites": [
+   "carbon-cycle",
+   "greenhouse-effect"
+  ],
+  "related": [
+   "ocean-acidification",
+   "radiative-convective-column",
+   "deep-time",
+   "atmospheric-escape"
+  ],
+  "needs": "",
+  "pitfall": "This thermostat works over a million years and does nothing about fossil-fuel CO2 on human timescales; the fast carbon cycle and the slow one are different pages.",
+  "why": "University of Arizona PTYS 522 (Showman, Spring 2020), taught from Pierrehumbert's Principles of Planetary Climate; the carbonate-silicate week was not confirmed in the fetched excerpt: https://www.lpl.arizona.edu/sites/default/files/courses/PTYS_522_Showman_Spring_2020.pdf",
+  "overlapWith": "carbon-cycle: that page runs the fast cycle over decades with human emissions; this page runs the slow rock cycle over millions of years and shows the feedback that makes it a thermostat.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
   "origin": "earth-space-l3"
  },
  {
-  "slug": "pulsar-spin-down",
-  "title": "Neutron stars & pulsars",
+  "slug": "earths-magnetic-field",
+  "title": "Earth's magnetic field & the geodynamo",
   "level": 3,
   "kind": "explore",
-  "category": "space",
-  "interaction": "The period against spin-down rate of every known pulsar from the ATNF catalogue, drawn as the P-Pdot diagram: hover any dot to read its age, magnetic field and spin-down power as the magnetic-dipole model computes them, with lines of constant field and constant age across the plot and the magnetars sitting alone in the upper right. Set a newborn pulsar's period and field and run the dipole braking: it slides down and to the right along its track and crosses the death line where it should fall silent. Spin a dead one up by accretion in a binary and it reappears as a millisecond pulsar in the lower left.",
-  "takeaway": "A pulsar's position on one diagram tells its age, field and fate, because its slowing spin is a magnetic dipole radiating away the energy of a star-sized flywheel.",
+  "category": "earth",
+  "interaction": "Scrub the years 1900 to 2025 while a globe draws the field computed from the IGRF Gauss coefficients: the magnetic poles wander, the field drifts westward and the South Atlantic Anomaly deepens. Switch the spherical-harmonic degrees on one at a time to split the field into its dipole and the smaller-scale parts that the fluid core stirs, and read the dipole's strength falling over the century. A second track scrubs the polarity record of the last 160 million years, where the reader can hunt for a regular period and fail to find one.",
+  "takeaway": "Earth's field is close to a dipole but not fixed: its pole wanders, its strength has fallen measurably since 1900, and the record of past reversals shows no regular clock.",
   "prerequisites": [
-   "stars",
    "electromagnetism"
   ],
   "related": [
-   "gravitational-waves",
-   "supernova-light-curves",
-   "black-holes"
+   "earthquakes",
+   "plate-tectonics",
+   "mantle-convection"
   ],
-  "needs": "The ATNF Pulsar Catalogue (CSIRO; publicly downloadable and listed on data.gov; licence not confirmed).",
-  "pitfall": "Pulsars pulse because a lighthouse beam sweeps past us, not because the star pulsates, and the spin-down age assumes a birth spin much faster than today's.",
-  "why": "Curricular signal weak in this round; grounded in the catalogue paper, Manchester et al. 2005, The ATNF Pulsar Catalogue: https://arxiv.org/abs/astro-ph/0412641",
-  "overlapWith": "stars: that page ends a star as a neutron star; this page is what neutron stars look like as a population and how their spin reveals their age.",
-  "needsSource": "ATNF Pulsar Catalogue (CSIRO; public download, licence not confirmed).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "stellar-nucleosynthesis",
-  "title": "Nuclear reaction networks in stars",
-  "level": 3,
-  "kind": "simulate",
-  "category": "space",
-  "interaction": "A small nuclear reaction network (the pp chains, the CNO cycle, triple-alpha and carbon burning) integrated as stiff rate equations at the temperature and density the reader sets. Slide the core temperature from the Sun's 15 million kelvin past 100 million: the plot of energy generation against temperature shows the pp chain give way to the CNO cycle and then helium burning switch on, while the flow diagram lights up the dominant path and the isotope abundances drift. Hold the Sun's core conditions and the hydrogen depletes over billions of simulated years.",
-  "takeaway": "Which reactions power a star depends so steeply on temperature that a few million degrees change the fuel, the path and the ash.",
-  "prerequisites": [
-   "stars",
-   "nuclear-fusion",
-   "atoms-periodic-table"
-  ],
-  "related": [
-   "supernova-light-curves",
-   "stellar-spectra-saha",
-   "radioactivity"
-  ],
-  "needs": "Thermonuclear reaction rates: the Caughlan & Fowler 1988 analytic fits (published formulas, retyped), or the JINA REACLIB library (publicly downloadable; licence not confirmed).",
-  "pitfall": "Stars do not burn in the chemical sense, and the Sun's core is not hot enough for the CNO cycle to dominate; the page must not show the Sun as a CNO star.",
-  "why": "UCSC Ay 112 Physics of Stars (Woosley) lecture notes, the course that runs from spectra to nuclear burning; adjacent lecture fetched, the burning lectures themselves were not: https://www.ucolick.org/~woosley/ay112-14/lectures/lecture3.4x.pdf",
-  "overlapWith": "stars: that page shows which element the core fuses at each stage; this page runs the reactions themselves and shows why the switch happens at a given temperature.",
-  "needsSource": "Caughlan & Fowler 1988 rate fits (published formulas) or JINA REACLIB (public download, licence not confirmed).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "stellar-spectra-saha",
-  "title": "Stellar spectra & the Saha equation",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "space",
-  "interaction": "Slide a star's surface temperature from 3,000 to 40,000 kelvin. The page draws the blackbody continuum and, on it, the strengths of the hydrogen Balmer lines, helium, ionized calcium and neutral metals, computed from the Boltzmann and Saha equations for the fraction of each atom in the right state to absorb. The Balmer lines grow, peak near 10,000 kelvin and fade as hydrogen ionizes, which is why the sequence OBAFGKM reads as it does; the real SDSS spectrum of each type is overlaid, and the reader classifies an unknown spectrum by sliding until it fits.",
-  "takeaway": "A star's spectral type is its temperature in disguise: hydrogen lines are strongest not in the hottest stars but in those warm enough to excite hydrogen and cool enough not to ionize it.",
-  "prerequisites": [
-   "stars",
-   "atoms-periodic-table",
-   "quantum-mechanics"
-  ],
-  "related": [
-   "stellar-nucleosynthesis",
-   "exoplanets"
-  ],
-  "needs": "SDSS stellar spectra, one per spectral type (SDSS states that its public data releases are in the public domain), and atomic energy levels and partition functions (NIST Atomic Spectra Database, US government work).",
-  "pitfall": "Line strength does not measure abundance alone: A stars are not hydrogen-rich and O stars hydrogen-poor; they differ in temperature.",
-  "why": "University of Sydney senior astrophysics lab asking students to show from the Saha and Boltzmann equations why hydrogen lines are strongest in A stars: https://www.physics.usyd.edu.au/~helenj/SeniorAstro/lab1.pdf",
-  "overlapWith": "stars: that page moves a star across the HR diagram by colour and brightness; this page is what the spectrum itself shows and why temperature, not composition, orders the types.",
-  "needsSource": "SDSS spectra (stated public domain by SDSS); NIST atomic data (US government work).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "supernova-light-curves",
-  "title": "Supernova light curves",
-  "level": 3,
-  "kind": "simulate",
-  "category": "space",
-  "interaction": "Set the mass of nickel-56 made in an explosion and the mass and speed of the ejecta, and the page runs the Arnett model: nickel decays to cobalt and then iron on 8.8-day and 111-day timescales, the heat diffuses out through the expanding, thinning ejecta, and the bolometric light curve rises to a peak and falls onto the cobalt tail. More nickel raises the peak; heavier ejecta delay and broaden it. Overlay a measured Type Ia light curve and read its nickel mass, then try to make a faint, slow one or a bright, fast one and see why the width-brightness relation holds.",
-  "takeaway": "A supernova's light is radioactive afterglow: the peak measures how much nickel-56 the explosion made and the width how much mass it has to shine through.",
-  "prerequisites": [
-   "stars",
-   "radioactivity"
-  ],
-  "related": [
-   "stellar-nucleosynthesis",
-   "cosmic-distance-ladder",
-   "dark-energy-supernovae",
-   "cosmic-ray-air-showers"
-  ],
-  "needs": "One well-observed Type Ia light curve, e.g. from the Pantheon+ light-curve release (publicly downloadable from the collaboration's GitHub; licence not confirmed).",
-  "pitfall": "The light at peak is not the explosion's flash but weeks of radioactive heating, and Type Ia supernovae are standardizable candles, not standard ones.",
-  "why": "Curricular signal weak in this round; grounded in the Arnett-model literature, e.g. Chatzopoulos et al.'s analytic light-curve paper: https://arxiv.org/pdf/1301.3333",
-  "overlapWith": "stars: that page ends a massive star in an explosion as one frame; this page is the explosion's light curve and what it measures.",
-  "needsSource": "Pantheon+ light curves (GitHub DataRelease; public download, licence not confirmed).",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "earth-space-l3"
- },
- {
-  "slug": "tidal-evolution-resonance",
-  "title": "Tidal locking & orbital resonance",
-  "level": 3,
-  "kind": "simulate",
-  "category": "space",
-  "interaction": "A planet and a moon, each raising a tidal bulge on the other that lags by an amount the reader sets through the tidal quality factor. Run the secular equations: the moon's spin slows until it shows one face to the planet, the planet's day lengthens and the moon drifts outward, with the Moon's 3.8 centimeters a year drawn to scale. Add two more moons and let the inner one migrate: it catches the next in a 2:1 resonance and drags it along, then both catch the third, the chain Io, Europa and Ganymede sit in; the resonance pumps their eccentricity and the tidal heating that melts Io's interior is plotted.",
-  "takeaway": "Tides are not only a daily rise and fall: over millions of years they lock spins, push moons outward and herd them into resonant chains that keep squeezing them.",
-  "prerequisites": [
-   "sun-earth-moon",
-   "orbits-kepler"
-  ],
-  "related": [
-   "ocean-tides-amphidromes",
-   "lagrange-points-three-body",
-   "exoplanets"
-  ],
-  "needs": "",
-  "pitfall": "The Moon does rotate, once per orbit, and its far side is not its dark side.",
-  "why": "Tel Aviv University planetary geology lecture on the tidal evolution of close satellites and the Galilean resonance: https://www.tau.ac.il/~morris/03411203/chapter3/resonance2.htm",
-  "overlapWith": "sun-earth-moon: that page shows the tides a moon raises today; this page runs the tides for a billion years and shows what they do to spins and orbits.",
-  "needsSource": "none",
+  "needs": "IGRF-14 Gauss coefficients (IAGA V-MOD, distributed by NOAA NCEI as a US-government work; the accompanying software is stated public domain, the coefficient file itself carries no licence line) and the geomagnetic polarity time scale (published chron boundaries, retyped as a table).",
+  "pitfall": "The field is not a bar magnet inside the Earth: the core is far above its Curie temperature and the field comes from flow in the liquid outer core. A falling dipole does not mean a reversal is due.",
+  "why": "MIT OCW 12.201 Essentials of Geophysics, chapter 3 notes on the geodynamo, secular variation and reversals: https://ocw.mit.edu/courses/12-201-essentials-of-geophysics-fall-2004/resources/ch3pdf",
+  "overlapWith": "earthquakes: that page reveals the liquid outer core through S-wave shadows; this page shows what the liquid core does, the field it generates and how that field changes.",
+  "needsSource": "IGRF-14 coefficients from NOAA NCEI (US government work; software stated public domain, no licence line on the coefficient file); polarity chron boundaries from the published time scale (numbers, retyped).",
   "leadsTo": [],
   "everyday": false,
   "origin": "earth-space-l3"

@@ -1,629 +1,634 @@
 [
  {
-  "slug": "computer-coin-flip",
-  "title": "How a computer flips a coin",
-  "level": 0,
+  "slug": "ensemble-weather-forecasting",
+  "title": "Weather forecasts: why they come as odds",
+  "level": 3,
   "kind": "simulate",
-  "category": "computing",
-  "interaction": "Pick a starting number and press next: a fixed rule (multiply, add, keep the last two digits) spins a wheel to the next number, and the numbers land on a board looking as scattered as coin flips. Keep pressing and the wheel comes back to where it started and the sequence repeats, sooner for a small wheel. Reset with the same start and the same 'random' flips come out again, which is how a game replays the same level; pick a bigger wheel and count how long it takes to repeat.",
-  "takeaway": "A computer makes its 'random' numbers by a fixed rule from a starting number, so the same start replays the same sequence, and every rule on a wheel eventually comes round to the beginning.",
+  "category": "earth",
+  "interaction": "A ring of forty weather cells round a latitude circle (the Lorenz-96 model) runs as a strip of colour, the true weather on top and the reader's forecast started from a measurement of it with adjustable error. Launch one forecast and watch it track the truth for a few days and then diverge; launch fifty from slightly different starts and watch the fan open, narrow on some days and wide on others, with the spread plotted against the actual error. Shrink the measurement error tenfold and the useful range grows only a few days; make the model slightly wrong and the fan goes confident and wrong; then run the forecast-observe-correct cycle and watch the analysis stay close.",
+  "takeaway": "Because small errors in today's weather double every couple of days, one forecast is useless past a week or so; forecasters run many from slightly different starts, and where they agree the forecast is sure and where they fan out it is not.",
   "prerequisites": [
-   "coin-streaks"
+   "chaos-fractals",
+   "atmosphere-weather"
   ],
   "related": [
-   "life-on-a-grid",
-   "secret-codes"
+   "bayes-theorem"
   ],
   "needs": "",
-  "pitfall": "'Eventually repeats' is true of any rule on a finite wheel, but real generators take longer than the age of the universe: show the small wheel repeating and say the real ones are bigger, not different in kind. And do not claim computers can never be random: dice-like hardware sources exist.",
-  "why": "Wikipedia, 'Pseudorandom number generator': the sequence is 'completely determined by an initial value' (the seed) and reproducible; the everyday question is 'how do computers generate random numbers'. https://en.wikipedia.org/wiki/Pseudorandom_number_generator",
-  "overlapWith": "cryptography (level 2) relies on randomness but never shows where its random numbers come from; coin-streaks (this batch) is about a real coin, while this page is about the rule a computer uses instead of one.",
-  "needsSource": "none",
-  "leadsTo": [
-   "epidemics"
-  ],
+  "pitfall": "A 70% chance of rain is a calibrated statement, not a count of members that happened to rain; the spread is itself a forecast that must be checked. Chaos does not make forecasting useless: the horizon differs from day to day and the ensemble shows which days are which.",
+  "why": "ECMWF's training course teaches ensemble prediction with the Lorenz-96 model, and 'why are weather forecasts wrong' is a perennial public question: https://events.ecmwf.int/event/405/contributions/4491/attachments/2523/4335/lorenz-part1.pdf",
+  "overlapWith": "chaos-fractals: two double pendulums diverge; this page is what forecasters do about that: many starts, spread as a forecast of uncertainty, and the correction cycle. atmosphere-weather is the physics of circulation, with no forecasting.",
+  "needsSource": "none (Lorenz 1996 equations)",
+  "leadsTo": [],
   "everyday": false,
-  "origin": "numbers-shapes-computers"
+  "origin": "demand"
  },
  {
-  "slug": "digital-clock-counting",
-  "title": "How a digital clock keeps time",
-  "level": 0,
-  "kind": "simulate",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Switch on a tiny quartz tuning fork, kept shaking by the battery and a small circuit, and it shakes 32,768 times a second, far too fast to see; the page slows it down and feeds its shakes into a chain of halvers, where each box passes on one tick for every two it gets, and after fifteen boxes one tick a second comes out and the seconds digit advances. Then run the clock for a month against a reference clock while warming or cooling the fork: a shake that is off by a hair becomes seconds of drift by the end of the month.",
-  "takeaway": "A digital clock is a very fast, very steady shake counted down by halving, and a shake that is off by a tiny fraction adds up to seconds a month.",
-  "prerequisites": [],
+  "slug": "groundwater-flow",
+  "title": "Groundwater & aquifers",
+  "level": 3,
+  "kind": "build",
+  "category": "earth",
+  "interaction": "Draw an aquifer in plan view with zones of different hydraulic conductivity, a river and a recharge rate, and the page solves the groundwater flow equation on a finite-difference grid. Place pumping wells and set their rates: cones of depression form in the water table, overlap, and can pull the river's water into a well; release a tracer and watch its path and travel time to each well, which draws the well's capture zone. Switch to transient mode and the cone keeps spreading for years after pumping starts.",
+  "takeaway": "Groundwater moves slowly down the slope of the water table, so a well's effect spreads for years and its catchment is a shape on the map, not a radius.",
+  "prerequisites": [
+   "calculus"
+  ],
   "related": [
-   "remote-control-blinks"
+   "river-meanders"
   ],
   "needs": "",
-  "needsSource": "none beyond published figures: 32,768-per-second tuning-fork crystals halved fifteen times, and a parabolic temperature drift of about -0.035 parts per million per degree squared away from the turnover point (manufacturers' datasheets, as quoted on Wikipedia's Quartz clock page).",
-  "pitfall": "The crystal does not 'know' time and does not shake once a second; the slow ticks come from counting. The clock on a mains-powered oven counts the grid's alternations instead, a different reference; say so rather than lumping the two together.",
-  "why": "'Quartz clock' averaged about 12,500 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Quartz_clock/monthly/2025010100/2025123100).",
-  "overlapWith": "oscillations-resonance: that page shows why a resonator has a natural frequency; this one takes the steady shake as given and shows the counting chain and the drift, with no spring or pendulum model. The household lens's clock-escapement candidate is the mechanical clock.",
-  "leadsTo": [
-   "binary",
+  "pitfall": "Aquifers are not underground rivers or lakes but water in the pores of rock and sediment, and the sustainable yield is not the recharge rate alone, because pumping also takes water from rivers and springs.",
+  "why": "MIT OCW 1.72 Groundwater Hydrology syllabus (Darcy's equation, well hydraulics, numerical models): https://ocw.mit.edu/courses/1-72-groundwater-hydrology-fall-2005/pages/syllabus/",
+  "overlapWith": "carbon-cycle: the nearest reservoirs-and-flows page; nothing in the catalogue covers water underground, and this page solves a flow field rather than a box budget.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "hurricane-heat-engine",
+  "title": "Hurricanes as heat engines",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "Set the sea-surface temperature, the outflow temperature at the top of the storm and the humidity of the inflowing air, and the page computes Emanuel's potential intensity, the Carnot limit of an engine whose heat source is the ocean and whose sink is the upper troposphere, drawing the cycle on a temperature-entropy chart. Press run and a one-dimensional intensity model spins the storm up toward that limit over days; add vertical wind shear or let the storm cool the sea beneath it and watch it fall short of the ceiling.",
+  "takeaway": "A hurricane is a heat engine whose maximum wind is set by the temperature difference between the sea surface and the top of the storm, and most storms never reach that limit because shear and cold water cut them short.",
+  "prerequisites": [
+   "heat-engines",
+   "atmosphere-weather"
+  ],
+  "related": [
+   "entropy",
+   "ocean-currents",
+   "radiative-convective-column"
+  ],
+  "needs": "Optional: a monthly climatological sea-surface temperature field (NOAA; US government work, licence line not checked in this round) for a map of the limit.",
+  "pitfall": "The Carnot bound is an upper limit, not a forecast, and the storm's energy comes from evaporation off the warm sea, not from the Coriolis effect, which only sets the direction of spin.",
+  "why": "MIT OCW 12.811 Tropical Meteorology, lecture 4 on tropical cyclone energetics and potential intensity: https://ocw.mit.edu/courses/earth-atmospheric-and-planetary-sciences/12-811-tropical-meteorology-spring-2011/lecture-notes/MIT12_811S11_lecture_4.pdf",
+  "overlapWith": "atmosphere-weather: that page grows a hurricane by warming the sea surface; this page computes the thermodynamic ceiling on its winds and runs an intensity model against that ceiling.",
+  "needsSource": "none required; optional NOAA SST climatology (US government work; licence line not checked in this round).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "isotope-dating-concordia",
+  "title": "Isotope dating: concordia & isochrons",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "Crystallize a zircon at a chosen age and watch its two uranium-lead clocks tick along the concordia curve as the ratios of lead-206 to uranium-238 and lead-207 to uranium-235 grow at their own rates. Strike it with a metamorphic event that strips some lead and the point jumps onto a straight discordia whose two intercepts give both ages; several grains losing different amounts line up and the page fits the line. Switch to rubidium-strontium and tilt an isochron by ageing a rock whose minerals started with the same strontium ratio.",
+  "takeaway": "Two decay chains in one crystal give two ages that must agree, so when they do not, the mismatch itself dates the event that disturbed them.",
+  "prerequisites": [
+   "radioactivity"
+  ],
+  "related": [
+   "radiocarbon-calibration",
+   "deep-time"
+  ],
+  "needs": "",
+  "pitfall": "Radiometric ages are not circular with the fossil record; the concordia test is internal to the crystal, and a discordant point is information, not a failure of the method.",
+  "why": "UCL geochronology notes, chapter 5 on U-Pb concordia and discordia (Vermeesch): https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch5.html",
+  "overlapWith": "deep-time: that page scrubs 4.5 billion years already dated; this page is how a single crystal yields a date and how the date survives a disturbance.",
+  "needsSource": "none beyond published decay constants",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "mantle-convection",
+  "title": "Mantle convection",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "Set the Rayleigh number and the viscosity contrast between hot and cold rock and run a two-dimensional convection box solved on a grid (infinite Prandtl number, Boussinesq, temperature-dependent viscosity). A low Rayleigh number gives a few sluggish cells; a high one gives thin plumes under a cold, stiff lid. Drag a probe to read local temperature and speed, watch the heat carried (the Nusselt number) climb with Rayleigh number on a log-log plot, and tune the lid until it either locks in place or founders in plate-like pieces.",
+  "takeaway": "Rock that is solid on human timescales flows over millions of years, and one number, the Rayleigh number, decides whether a planet's mantle sits still, rolls in slow cells, or sends narrow plumes up under a cold lid.",
+  "prerequisites": [
+   "plate-tectonics",
+   "states-of-matter"
+  ],
+  "related": [
+   "earths-magnetic-field",
+   "glacier-flow"
+  ],
+  "needs": "",
+  "pitfall": "The mantle is solid rock that creeps, not a sea of magma, and plates are the cold upper boundary layer of the convection, not rafts floating on it.",
+  "why": "MIT OCW 12.002 Physics and Chemistry of the Terrestrial Planets, problem set 5 on convection and the Rayleigh number: https://ocw.mit.edu/courses/12-002-physics-and-chemistry-of-the-terrestrial-planets-fall-2008/5c713900869468f1a4616e1345658265_MIT12_002f08_ps05.pdf",
+  "overlapWith": "plate-tectonics: that page moves plates by hand and builds the landforms; this page shows the convection underneath that moves them and why it takes the form of plumes and a stiff lid.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "ocean-acidification",
+  "title": "Ocean acidification & carbonate chemistry",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "Slide atmospheric CO2 from the pre-industrial 280 ppm past 1,000 ppm while the page solves the seawater carbonate system (the dissociation constants of carbonic acid in seawater, with alkalinity held fixed): pH falls, dissolved CO2 and bicarbonate rise, carbonate ion falls, and the aragonite saturation state drops below one first in cold water. A Bjerrum plot shows the species shifting with pH, a temperature slider shows why polar seas get there first, and the Revelle factor shows why the ocean's uptake slows as it fills.",
+  "takeaway": "Adding CO2 to seawater does not just lower its pH, it consumes carbonate ions, the building block of shells, and cold water runs short of them first.",
+  "prerequisites": [
+   "acids-bases",
+   "carbon-cycle",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "carbonate-silicate-thermostat",
+   "ocean-currents"
+  ],
+  "needs": "The seawater dissociation constants as functions of temperature and salinity (published empirical fits, as used by CO2SYS; numbers retyped from the literature).",
+  "pitfall": "The ocean is not becoming acid (its pH stays above 7); acidification means moving toward acid, and the harm is the loss of carbonate ion, not corrosive water.",
+  "why": "University of Texas MNS 193 Ocean and Estuarine Acidification, a course built around CO2SYS carbonate-chemistry calculations: https://hulab.utmsi.utexas.edu/OA_class/index.htm",
+  "overlapWith": "acids-bases: that page titrates a single acid and counts hydrogen ions; this page solves the coupled carbonate equilibria of seawater and reads off the carbonate ion and saturation state that acids-bases never reaches.",
+  "needsSource": "none beyond published equilibrium-constant fits",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "ocean-tides-amphidromes",
+  "title": "Tides in a real ocean",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A rotating shallow-water model of an ocean basin forced by the Moon's twice-daily tidal potential (the Laplace tidal equations on a grid). Start with a boundless ocean and the bulge follows the Moon; close the basin and the tide becomes waves running around points of zero range, the amphidromic points, turning one way in the northern hemisphere and the other in the southern. Reshape the basin and change its depth to tune its natural period, so that a bay of the right length resonates and its range grows to the many meters of the Bay of Fundy, and compare the result with the harmonic constituents measured at a real port.",
+  "takeaway": "The ocean cannot keep up with the Moon's pull, so the real tide is a set of waves sloshing around each basin, with no tide at their centers and huge tides where a bay's natural period matches the Moon's.",
+  "prerequisites": [
+   "sun-earth-moon",
+   "waves-interference",
    "oscillations-resonance"
   ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "elevator-chooses-floors",
-  "title": "How an elevator chooses its next floor",
-  "level": 0,
-  "kind": "simulate",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Press call buttons on the floors of a ten-storey building and inside the car, in any order, and watch the car run: it keeps going the way it is going, stops at every call ahead of it, then turns round, while a stopwatch on each waiting person adds up. Flip the rule to 'answer calls in the order they were pressed' and replay the same calls: the car zigzags and the stopwatches run much longer. Add a second car and watch the two share the calls.",
-  "takeaway": "An elevator does not answer calls in the order they were pressed: it sweeps up, then down, serving everything on the way, and that simple rule makes everyone wait less.",
-  "prerequisites": [],
   "related": [
-   "traffic-light-controller"
+   "ocean-currents",
+   "rossby-waves",
+   "tidal-evolution-resonance"
   ],
-  "needs": "",
-  "needsSource": "none; a discrete-event simulation of the up-then-down rule (a car keeps answering calls in its direction until none remain, then reverses, as described on Wikipedia's Elevator page) against first-come-first-served.",
-  "pitfall": "Pressing the button again does not call the car faster: a call is registered once. Do not promise that the sweep is the best possible rule, only that it beats first-come-first-served; real buildings add further rules for parking and peak times.",
-  "why": "'Elevator' averaged about 14,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Elevator/monthly/2025010100/2025123100).",
-  "overlapWith": "sorting: the nearest existing page on comparing rules by their cost; nothing existing has a scheduling rule. The household lens's elevator-counterweight candidate is the rope and the motor; this page is the decision rule, and the two can link.",
-  "leadsTo": [
-   "sorting",
-   "graph-search"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "emoji-and-text-as-numbers",
-  "title": "Emoji and text as numbers",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Type a message and watch it travel as a row of numbers, one per letter, space or emoji, taken from an agreed list that every phone owns a copy of. Switch the receiving phone to an older model that has no picture for one of the numbers: that emoji arrives as an empty box while the letters are fine. Then watch the message counter: 160 plain letters fit in one text, and adding a single emoji drops the room to 70, because every character now has to be sent as a bigger number.",
-  "takeaway": "Letters and emoji travel as numbers from a shared list, and the picture is drawn by the phone that receives them, so a number it does not know shows as a box.",
-  "prerequisites": [],
-  "related": [
-   "screens-and-pixels",
-   "keyboard-rows-and-columns",
-   "qr-codes"
-  ],
-  "needs": "The Unicode character and emoji lists (Unicode Character Database and emoji-test.txt) under the Unicode licence, which allows copying and redistribution with the notice; the text-message rules (GSM 7-bit alphabet, 160 characters; UCS-2, 70 characters) from the published GSM 03.38 specification.",
-  "needsSource": "Unicode data files (Unicode licence v3, permissive with notice); GSM 03.38 alphabet, a published standard.",
-  "pitfall": "An emoji is not a picture that is sent: the same number is drawn differently by each phone maker, and some emoji (skin tones, families, flags) are several numbers joined, which the page should show rather than hide. Characters are not all the same size on the wire, so 'one character is one byte' is wrong; show the byte count, not a formula.",
-  "why": "England KS3 computing: data of various types 'including text, sounds and pictures' represented in binary (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); 'Emoji' averaged about 62,200 views a month on English Wikipedia in 2025.",
-  "overlapWith": "binary: that page reads one byte as a number, a character and a colour; this one works on whole messages at the everyday layer: the shared list of numbers, the drawing done by the receiver, and the text-message counter.",
-  "leadsTo": [
-   "binary"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "keyboard-rows-and-columns",
-  "title": "Inside a keyboard",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Press keys on a drawn keyboard with its lid off: under the keys there is no wire per key, only a few row wires crossing a few column wires, and a scanner that runs along the rows many times a second and lights the crossing where a pressed key connects. Hold three keys that make three corners of a rectangle and watch a fourth key light up that nobody pressed. Switch the layout from QWERTY to AZERTY and press the same key: the keyboard sends the same crossing, and the computer's table turns it into a different letter.",
-  "takeaway": "A keyboard does not send letters: it reports which row and column met, and the computer looks the letter up, which is why one keyboard can type any alphabet and some key combinations confuse it.",
-  "prerequisites": [],
-  "related": [
-   "emoji-and-text-as-numbers",
-   "touchscreens"
-  ],
-  "needs": "",
-  "needsSource": "none; a scanned row-and-column matrix with the ghost path traced through three closed switches.",
-  "pitfall": "Two different failures: ghosting is a phantom fourth key when three corners of a rectangle are held (cured by a diode at each key), and blocking is a cheap keyboard refusing a third key to avoid it. Do not present them as one thing, and do not say a key 'sends a letter'.",
-  "why": "'Computer keyboard' averaged about 24,800 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Computer_keyboard/monthly/2025010100/2025123100).",
-  "overlapWith": "logic-gates: that page wires gates and reads a truth table; here the only logic is a scan of crossings, and the point is the lookup from a position to a character.",
-  "leadsTo": [
-   "binary",
-   "logic-gates",
-   "electric-circuits"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "life-on-a-grid",
-  "title": "Life on a grid",
-  "level": 0,
-  "kind": "simulate",
-  "category": "computing",
-  "interaction": "Paint a few squares on a grid and press step: every square counts its live neighbours at once, and the three rules (lonely dies, crowded dies, exactly three neighbours gives birth) show as the counts on each square. Press play and find the shapes that blink, the ones that sit still and the glider that walks across the board. Change one number in a rule and watch the same seed grow, freeze or die.",
-  "takeaway": "A rule about counting neighbours, applied to every square at once, makes things that blink, walk and grow that nobody drew.",
-  "prerequisites": [],
-  "related": [
-   "growing-patterns",
-   "computer-coin-flip",
-   "repeat-loops"
-  ],
-  "needs": "",
-  "pitfall": "All squares update together from the previous picture, not one after another; a page that updates in place gets wrong patterns. And do not call Life 'random': the same seed gives the same future every time.",
-  "why": "Numberphile, 'Inventing Game of Life (John Conway)' (title confirmed; YouTube does not render view counts in fetch); promotes the Reserve item 'Cellular automata' at level 0. https://www.youtube.com/watch?v=R9Plq-D1gEk",
-  "overlapWith": "chaos-fractals (level 2) shows simple rules making unpredictable paths; this page's rule is three neighbour counts on a grid the reader paints, and the reader can edit the rule.",
-  "needsSource": "none",
-  "leadsTo": [
-   "ecosystems"
-  ],
+  "needs": "Optional: tidal harmonic constituents for one or two ports from NOAA CO-OPS (US government work; licence line not checked in this round).",
+  "pitfall": "The two-bulge picture explains the forcing, not the tide people see, and the far-side bulge is not centrifugal force but the difference in the Moon's pull across the Earth.",
+  "why": "AMS Introduction to Ocean Sciences, chapter 10 on tides, which teaches amphidromic systems in undergraduate oceanography: https://www.ametsoc.org/ams/education-careers/education-program/undergraduate-curriculum/teaching-ocean-sciences/introduction-to-ocean-sciences-6th-edition-textbook/ocean-chapter-10/",
+  "overlapWith": "sun-earth-moon: that page shows the tides following the Moon and strengthening at alignment (the equilibrium tide); this page is the dynamic tide, with amphidromes, Kelvin waves and resonant bays that the geometry alone cannot show.",
+  "needsSource": "none required; optional NOAA CO-OPS harmonic constituents (US government work; licence line not checked in this round).",
+  "leadsTo": [],
   "everyday": false,
-  "origin": "numbers-shapes-computers"
+  "origin": "earth-space-l3"
  },
  {
-  "slug": "pixels-and-pictures",
-  "title": "A picture is a grid of numbers",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "computing",
-  "interaction": "Pinch into a photograph until it breaks into squares, then into one square: a single colour, kept as three counts. Paint a tiny picture on a grid of lights that are only on or off and read the row of numbers that describes it; switch to four shades of grey, then to colour, and the row of numbers grows. Double the grid's size and watch the picture sharpen while the number count jumps fourfold.",
-  "takeaway": "A picture in a computer is a grid of squares each kept as a few numbers, so more squares mean a sharper picture and four times as many numbers for each doubling.",
-  "prerequisites": [],
-  "related": [
-   "zoom-by-tens",
-   "twenty-questions"
-  ],
-  "needs": "One small photograph, CC0 from Wikimedia Commons or taken in-house.",
-  "pitfall": "Zooming in does not add detail: a blurry photo enlarged stays blurry, which the page shows instead of the TV trope of 'enhance'. Keep to counts; no bits, bytes or hex.",
-  "why": "England KS3 computing: 'how data of various types (including text, sounds and pictures) can be represented and manipulated digitally'; CS Unplugged's Image Representation ('Colour by Numbers') activity. https://classic.csunplugged.org/activities/image-representation/",
-  "overlapWith": "binary (level 1) reads one byte as a colour among other conventions; this page never shows a bit, only the grid, the shade counts and the resolution.",
-  "needsSource": "A CC0 photograph from Wikimedia Commons, or an in-house photo; no model or dataset.",
-  "leadsTo": [
-   "binary",
-   "vision-color"
-  ],
-  "everyday": true,
-  "origin": "numbers-shapes-computers"
- },
- {
-  "slug": "repeat-loops",
-  "title": "Repeat: loops",
-  "level": 0,
-  "kind": "build",
-  "category": "computing",
-  "interaction": "Draw a square by giving a pen-robot eight cards, then wrap 'forward, turn' in a repeat card set to 4 and get the same square from two cards; the page counts cards written against steps taken. Change the repeat count and the turn and the square becomes a triangle, a hexagon, a star. Put a repeat inside a repeat and a few cards draw a flower of forty squares.",
-  "takeaway": "A loop does the same few steps many times, so a handful of cards can draw a picture of thousands of steps, and changing one number changes the whole picture.",
+  "slug": "ozone-layer-chemistry",
+  "title": "The ozone layer and the hole in it",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A column of stratosphere lit by the Sun's ultraviolet; the page integrates the Chapman reactions (oxygen split by UV, ozone made and destroyed) and the ozone settles into a layer at 20 to 30 km while a spectrum at ground level shows the ultraviolet it removes. Add chlorine from CFCs and watch the catalytic cycle: one chlorine atom destroys thousands of ozone molecules and comes back unchanged. Switch to the Antarctic spring: polar stratospheric clouds in the dark winter turn the chlorine reservoirs active, sunrise releases it, and the column drops to a third in weeks, the model's October column plotted beside NASA's measured record since 1979; then run the Montreal Protocol phase-out and watch the slow recovery.",
+  "takeaway": "Ozone is made and destroyed continuously by sunlight and its amount is a balance; a single chlorine atom from a CFC tips that balance thousands of times over, which is why a few million tonnes of gas opened a hole each spring, and why banning them is closing it.",
   "prerequisites": [
-   "robot-instructions",
-   "angles-as-turns"
+   "reaction-rates-equilibrium",
+   "atmosphere-weather"
   ],
   "related": [
-   "sunflower-spirals",
-   "life-on-a-grid"
+   "greenhouse-effect",
+   "sunscreen-spf"
   ],
-  "needs": "",
-  "pitfall": "The turn for a star is the robot's own turn, not the star's inside angle; let the reader see a wrong count fail to close the shape rather than correcting it.",
-  "why": "England KS2 computing: 'use sequence, selection, and repetition in programs; work with variables and various forms of input and output'. https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study",
-  "overlapWith": "cpu (level 2) runs a loop as a conditional jump over machine instructions; here the loop is a card that wraps other cards, with no counters or jumps shown.",
-  "needsSource": "none",
-  "leadsTo": [
-   "sorting"
-  ],
+  "needs": "NASA Ozone Watch's annual Antarctic record (minimum column and hole area since 1979); rate constants from the JPL chemical kinetics evaluation.",
+  "pitfall": "The ozone hole neither causes nor is caused by global warming (CFCs are also greenhouse gases, a separate effect), and it is not over Antarctica because CFCs are used there: the cold polar winter and the spring sunrise make the chemistry fast there. A hole is a thinning, not a gap.",
+  "why": "NASA reports the hole's size every year and it stays in the news; 'is the ozone hole healing' is a recurring question: https://www.nasa.gov/earth/climate-change/ozone-layer/2023-ozone-hole-ranks-16th-largest",
+  "overlapWith": "greenhouse-effect: the infrared balance that sets temperature; this page is a different gas, a different wavelength and a chemical cycle. atmosphere-weather has the circulation that isolates the polar vortex but none of the chemistry.",
+  "needsSource": "NASA Ozone Watch and the JPL kinetics evaluation (NASA, US government work, public domain).",
+  "leadsTo": [],
   "everyday": false,
-  "origin": "numbers-shapes-computers"
+  "origin": "demand"
  },
  {
-  "slug": "robot-instructions",
-  "title": "A robot follows instructions",
-  "level": 0,
-  "kind": "build",
-  "category": "computing",
-  "interaction": "Drag instruction cards (forward, turn left, turn right, pick up) into a list and press run: a robot on a floor grid does exactly what the cards say, in order, and walks into the wall if that is what they say. Fix the list until it reaches the flag, then try the 'make a sandwich' list with a step missing and watch the robot butter the air. Hand the same list to a second robot standing somewhere else and see where it ends up.",
-  "takeaway": "A robot does exactly what its list says, in order, nothing more and nothing less, so a missing or swapped card changes the whole result.",
-  "prerequisites": [],
-  "related": [
-   "solving-a-maze",
-   "sorting-network"
-  ],
-  "needs": "",
-  "pitfall": "The computer does not 'understand' the goal: a list that nearly works gets no credit, and the page must never auto-correct the reader's list. Also, left and right are the robot's, not the viewer's.",
-  "why": "England KS1 computing: 'programs execute by following precise and unambiguous instructions'; CS Unplugged Kidbots (ages 5 to 10). https://www.csunplugged.org/en/topics/kidbots/",
-  "overlapWith": "cpu (level 2) steps a real processor through fetch, decode and execute with registers and memory; this page has a robot and cards, no memory or arithmetic, and is the first idea of a program.",
-  "needsSource": "none",
-  "leadsTo": [
-   "sorting",
-   "graph-search"
-  ],
-  "everyday": true,
-  "origin": "numbers-shapes-computers"
- },
- {
-  "slug": "screens-and-pixels",
-  "title": "Screens and pixels",
-  "level": 0,
-  "kind": "explore",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Pinch into a photo until the picture falls apart into a grid of squares, then further, until each square turns out to be three tiny lights, red, green and blue, side by side. Pick one square and slide its three lights up and down: from a distance the square turns yellow, pink, white or black, with no yellow or white light anywhere in it. Then take pixels away from the whole picture, by halves, and watch a face become blocks.",
-  "takeaway": "A screen picture is a grid of tiny red, green and blue lights, and every colour you see on it is those three lights at different brightnesses, blurred together by your eye.",
-  "prerequisites": [],
-  "related": [
-   "digital-camera-sensor",
-   "e-reader-ink",
-   "emoji-and-text-as-numbers"
-  ],
-  "needs": "One photograph under CC0 (Wikimedia Commons), shown at its real pixel grid.",
-  "needsSource": "none beyond a CC0 photograph; the subpixel drawing and the mixing are computed from the pixel values.",
-  "pitfall": "There is no yellow or white light on the screen: white is all three lights on. A black pixel is lights off, or on an LCD a backlight blocked by a shutter; say which kind of screen is drawn rather than presenting one as how all screens work.",
-  "why": "England KS3 computing: 'understand how data of various types (including text, sounds and pictures) can be represented and manipulated digitally, in the form of binary digits' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study).",
-  "overlapWith": "vision-color: that page mixes red, green and blue light to match a colour and shows the cone responses; this one starts from the object, the screen, and shows that the mixing is done by three tiny lights per pixel and the grid they make, with no eye model.",
-  "leadsTo": [
-   "binary",
-   "vision-color"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "secret-codes",
-  "title": "Secret codes & code-breaking",
-  "level": 0,
-  "kind": "step",
-  "category": "computing",
-  "interaction": "Turn the inner ring of a code wheel and type a message: each letter steps along the alphabet by the same amount, and your friend turns the ring back to read it. A spy who does not know the turn tries all 25 turns at once and the one that reads as words jumps out. Scramble the alphabet instead of turning it; now the spy counts the letters in the secret message, lines its tallest bar up with the tallest bar of ordinary English, and the message comes out letter by letter.",
-  "takeaway": "A code that shifts every letter the same way falls to trying all 25 shifts, and a code that scrambles the alphabet falls to counting letters, because E stays the most common letter however it is disguised.",
-  "prerequisites": [],
-  "related": [
-   "twenty-questions",
-   "computer-coin-flip"
-  ],
-  "needs": "English letter frequencies counted at build time by a script from a public-domain text, e.g. Project Gutenberg's Alice's Adventures in Wonderland (public domain), not typed in from memory.",
-  "pitfall": "A short message has too few letters for counting to work: show the counting fail on a one-line note and succeed on a paragraph, rather than pretending frequency analysis always works.",
-  "why": "The National Cipher Challenge, the University of Southampton's codebreaking competition for school teams, starts every year with ciphers of this kind. https://www.cipherchallenge.org/",
-  "overlapWith": "cryptography (level 2) covers key exchange, hashing and signatures with modular arithmetic; this page is pen-and-paper ciphers and the two ways they break, with no keys shared over a channel.",
-  "needsSource": "A Project Gutenberg public-domain English text for the letter counts.",
-  "leadsTo": [
-   "primes-modular-arithmetic"
-  ],
-  "everyday": false,
-  "origin": "numbers-shapes-computers"
- },
- {
-  "slug": "solving-a-maze",
-  "title": "Solving a maze",
-  "level": 0,
+  "slug": "radiative-convective-column",
+  "title": "Radiative transfer & the climate column",
+  "level": 3,
   "kind": "simulate",
-  "category": "computing",
-  "interaction": "Press 'new maze' and the page draws one; put your explorer's hand on the right-hand wall and press walk: it traces every dead end and comes out at the exit. Switch to a maze with an island in it and watch the same explorer circle the island forever. Give it chalk to mark every passage it enters and it finds the way out of any maze; then compare its chalk marks with the shortest route.",
-  "takeaway": "Keeping one hand on the wall gets you out of a maze without loops but circles forever when there is an island, while an explorer that marks where it has been always gets out.",
-  "prerequisites": [],
+  "category": "earth",
+  "interaction": "A column of air from the surface to the stratosphere, solved with the two-stream radiative transfer equations for a grey gas plus an infrared window, with convection adjusting any layer steeper than the chosen lapse rate. Slide the infrared optical depth (the CO2 amount) and the lapse rate and watch the temperature profile, the tropopause and the emission height move, while a side panel shows which layer the escaping infrared leaves from. Switch convection off to see pure radiative equilibrium and its unstable lower layers.",
+  "takeaway": "Adding greenhouse gas raises the height from which the planet radiates to space, and because air is colder higher up the whole column below must warm to restore the balance, while the stratosphere above it cools.",
+  "prerequisites": [
+   "greenhouse-effect",
+   "atmosphere-weather"
+  ],
   "related": [
-   "robot-instructions",
-   "treasure-map-coordinates"
+   "carbonate-silicate-thermostat",
+   "hurricane-heat-engine"
   ],
   "needs": "",
-  "pitfall": "The wall-follower fails on mazes that are not simply connected (loops, islands) and when started from inside; the marking explorer finds an exit but not necessarily the shortest route: show both limits.",
-  "why": "Wikipedia, 'Maze-solving algorithm' (wall follower; Trémaux's algorithm, which 'is not guaranteed to find the shortest route'). https://en.wikipedia.org/wiki/Maze-solving_algorithm",
-  "overlapWith": "graph-search (level 1) expands breadth-first and A* frontiers on a grid with costs; this page sends one explorer with one rule and never shows a frontier or a cost.",
+  "pitfall": "Greenhouse gases do not trap heat like a blanket or reflect infrared; the column warms because the effective emission level rises into colder air. A band that is saturated at the surface still warms the planet, because emission from higher, thinner layers is what matters.",
+  "why": "Pierrehumbert's Principles of Planetary Climate courseware, chapter 4 grey radiative-convective equilibrium notebook: https://users.physics.ox.ac.uk/~pierrehumbert/PrinciplesPlanetaryClimate/Courseware/PlanetaryClimateCourseware2/ChapterScripts/Chapter4/Chapter4.html",
+  "overlapWith": "greenhouse-effect: that page balances sunlight in against infrared out with adjustable CO2 in a zero-dimensional budget; this page adds the vertical structure, which is where the emission height, the lapse rate and stratospheric cooling live.",
   "needsSource": "none",
-  "leadsTo": [
-   "graph-search"
-  ],
-  "everyday": true,
-  "origin": "numbers-shapes-computers"
- },
- {
-  "slug": "sorting-network",
-  "title": "A sorting machine",
-  "level": 0,
-  "kind": "build",
-  "category": "computing",
-  "interaction": "Six numbered balls roll down a board of tracks; where two tracks meet, the smaller ball goes left and the larger right, and the balls arrive at the bottom in order. Rebuild the board yourself by placing meeting points, drop a shuffled set of balls and see whether they come out sorted; press 'try every order' and the page drops all 720 shuffles and reports any that fail. Then count how many meeting points fire at the same moment: the board sorts in rounds, not one swap at a time.",
-  "takeaway": "A fixed board of pairwise swaps sorts any shuffle of the balls, and several swaps happen at once, so the board finishes in fewer rounds than it has swaps.",
-  "prerequisites": [],
-  "related": [
-   "twenty-questions",
-   "robot-instructions"
-  ],
-  "needs": "",
-  "pitfall": "A board that sorts the examples you tried may still fail on another order; the page must test all orders, not a few. And this is not how most software sorts: say it is how hardware and parallel sorters do it.",
-  "why": "CS Unplugged Sorting Networks, with lessons for ages 5 to 7, 8 to 10 and 11 to 14 (site content CC BY-SA 4.0; reuse the idea, not the worksheets). https://www.csunplugged.org/en/topics/sorting-networks/",
-  "overlapWith": "sorting (level 1) steps bubble, insertion, merge and quick sort one comparison at a time and plots Big-O; this page is a fixed, parallel board of swaps the reader builds and verifies, with no growth curves.",
-  "needsSource": "none",
-  "leadsTo": [
-   "sorting",
-   "logic-gates"
-  ],
+  "leadsTo": [],
   "everyday": false,
-  "origin": "numbers-shapes-computers"
+  "origin": "earth-space-l3"
  },
  {
-  "slug": "sound-as-numbers",
-  "title": "Sound as a list of numbers",
-  "level": 0,
+  "slug": "radiocarbon-calibration",
+  "title": "Radiocarbon calibration",
+  "level": 3,
   "kind": "manipulate",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Record a clap or a word (or pick a shipped clip) and see it as a wiggly line; a slider sets how many times a second the computer measures the line, from tens of thousands down to a few hundred, and the measurements appear as dots that join into a new line. Play the dots back: the sound stays itself until the dots get too sparse, then the high parts go first and voices turn muffled and wrong. A second slider sets how many different heights a measurement may take, from thousands down to four, and the sound turns grainy.",
-  "takeaway": "A recording is a long list of measurements of the air's push taken thousands of times a second, and the sound survives as long as the measurements are frequent and fine enough.",
+  "category": "earth",
+  "interaction": "Enter a laboratory radiocarbon age with its error bar and the page maps it through the IntCal20 calibration curve into a calendar-date probability: a sharp bump where the curve is steep, a smear or several islands where it plateaus. Drag the age along the curve to find the plateaus (the Hallstatt plateau around 2,500 years ago) and the wiggles. Add a sequence of samples with known gaps between them, as in tree rings, and wiggle-match the whole set at once, which pins down a date the single sample could not.",
+  "takeaway": "A radiocarbon age is not a date: the amount of carbon-14 in the air has varied, so one measurement can map to several calendar ranges, and only the curve's wiggles, matched over a sequence, turn it into a date.",
+  "prerequisites": [
+   "radioactivity",
+   "bayes-theorem"
+  ],
+  "related": [
+   "isotope-dating-concordia",
+   "deep-time"
+  ],
+  "needs": "The IntCal20 calibration curve (Reimer et al. 2020, doi:10.1017/RDC.2020.68); shipped in the CRAN rintcal package under GPL (>= 2); the terms of the intcal.org files themselves were not checked.",
+  "pitfall": "A calibrated range is a probability distribution, not an error bar; the page must not present the single most likely year as the answer.",
+  "why": "UCL geochronology course notes (Vermeesch, Geotopes), the same course whose U-Pb chapter was fetched; the radiocarbon chapter itself was not fetched: https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch5.html",
+  "overlapWith": "radioactivity: that page dates a sample from its remaining carbon-14; this page is the step it skips, from that raw age to a calendar range through the curve's wiggles and plateaus.",
+  "needsSource": "IntCal20 (Reimer et al. 2020); available in the rintcal R package under GPL (>= 2); intcal.org terms not confirmed.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "river-meanders",
+  "title": "River meanders",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A nearly straight river on a floodplain with one small kink; the page runs the Ikeda-Parker-Sawai bend model, in which the faster current on the outside of each bend erodes that bank in proportion to its excess speed while the inside bank builds a point bar. Set bank erodibility, channel width and discharge and watch bends grow, migrate downstream, swing and finally cut off, leaving oxbow lakes; a plot tracks sinuosity rising, dropping at each cutoff and hovering around a value. Scrub back through time to see the scroll bars the channel left behind.",
+  "takeaway": "A river meanders because a bend feeds itself, pushing fast water onto its outer bank, until bends meet and cut off, so sinuosity grows and resets around a steady value instead of running away.",
   "prerequisites": [],
   "related": [
-   "speakers-and-microphones",
-   "voice-assistant-wake-word",
-   "screens-and-pixels"
+   "groundwater-flow"
   ],
-  "needs": "A short sound clip under CC0 (Freesound) for readers who decline the microphone; the microphone path uses the browser's own audio input.",
-  "needsSource": "none beyond a CC0 clip; sampling and requantising are computed on the page.",
-  "pitfall": "More measurements per second do not make a sound louder or longer, only truer; the wiggly line is a graph of pressure against time, not a picture of air moving sideways. Do not invoke the sampling theorem by name; show the point where the dots fail.",
-  "why": "England KS3 computing: data of various types 'including text, sounds and pictures' represented in binary (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); NGSS MS-PS4-3 on digitized signals (https://www.nextgenscience.org/pe/ms-ps4-3-waves-and-their-applications-technologies-information-transfer).",
-  "overlapWith": "compression (level 2) uses frequency content to drop detail and fourier-transform decomposes signals; this page stops at measurements, how often and how finely, listened to.",
-  "leadsTo": [
-   "binary",
+  "needs": "",
+  "pitfall": "Meanders are not caused by obstacles or by the Coriolis effect; a uniform floodplain and a tiny initial wobble are enough.",
+  "why": "CSDMS teaching platform, manual of the Meander Centerline Migration Model built on the Ikeda-Parker-Sawai theory: https://csdms.colorado.edu/csdms_wiki/images/Manual_of_the_MCMM.pdf",
+  "overlapWith": "plate-tectonics: the nearest landscape-building page; nothing in the catalogue treats rivers, and this page is a channel evolving under its own flow law rather than crust built by hand.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "rossby-waves",
+  "title": "Jet streams & Rossby waves",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A strip of the mid-latitude atmosphere solved with the barotropic vorticity equation on a beta plane. Drop a blob of spin into a westerly jet and it drifts west relative to the flow while its energy drifts east; set the jet speed and wavelength to find the waves that stand still over the ground. Raise a mountain range and a train of stationary waves forms downstream, as it does behind the Rockies; crank the amplitude until a wave breaks and a high-pressure block parks for days.",
+  "takeaway": "The jet stream's meanders are waves that exist because the Coriolis effect changes with latitude; the long ones drift west against the wind and can lock in place over mountains to hold a weather pattern for days.",
+  "prerequisites": [
+   "atmosphere-weather",
    "waves-interference"
   ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "traffic-light-controller",
-  "title": "Traffic lights that know you are there",
-  "level": 0,
-  "kind": "build",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Cars arrive at a crossroads from four directions while a timer runs the lights through a fixed cycle; queues grow on the busy road while the empty road gets its green anyway. Bury a sensor loop in each lane and switch the controller to 'skip a green nobody is waiting for': the queues shrink. Then set the busy road's green longer and shorter and find which choice keeps the total queue smallest.",
-  "takeaway": "A traffic light is a small counting program, and giving it a sensor so that it can skip empty roads makes the whole crossroads wait less.",
-  "prerequisites": [],
   "related": [
-   "elevator-chooses-floors",
-   "metal-detector"
-  ],
-  "needs": "",
-  "needsSource": "none; cars arrive at random at set rates and queue, and the loop detector follows the published inductive-loop principle (a metal mass above the loop lowers its inductance and trips the controller).",
-  "pitfall": "The loop in the road is not a pressure plate: it senses metal, which is why a bicycle may fail to trigger it. Pressing a pedestrian button again does not shorten the wait; the request is registered once.",
-  "why": "England KS2 computing: 'design, write and debug programs that accomplish specific goals, including controlling or simulating physical systems' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); traffic lights are the standard project of the Teach Computing Year 5 physical-computing unit (https://teachcomputing.org/curriculum/key-stage-2/programming-a-selection-in-physical-computing/connecting-crumbles).",
-  "overlapWith": "feedback-control (level 2) tunes a continuous controller; this one is a rule with a sensor and a timer, with a queue of cars as the cost. graph-search routes one car across a map; this page runs one crossing.",
-  "leadsTo": [
-   "logic-gates",
-   "graph-search"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "twenty-questions",
-  "title": "Twenty questions: halving the haystack",
-  "level": 0,
-  "kind": "step",
-  "category": "computing",
-  "interaction": "Think of a number from 1 to 100 and answer the page's 'higher or lower' questions: a bar of candidates shrinks by half each answer and the counter stops at seven. Now find a word in a thousand-page dictionary by opening it in the middle, then in the middle of the right half, counting the opens, against a search that flips through every page. Then play animal twenty questions: each yes/no question hides half of the hundred animals on the board until one is left.",
-  "takeaway": "A question that splits what is left in half finds the answer in a handful of steps, where checking one at a time takes hundreds.",
-  "prerequisites": [],
-  "related": [
-   "secret-codes",
-   "pixels-and-pictures",
-   "sorting-network"
-  ],
-  "needs": "The animal board: the UCI Zoo dataset (101 animals, 16 yes/no and count features), CC BY 4.0.",
-  "pitfall": "Halving only works on a sorted list or on questions that really split the pile: show 'is it a penguin?' barely shrinking the board, and the dictionary trick failing on an unsorted pile of pages.",
-  "why": "England KS3 computing: 'several key algorithms that reflect computational thinking [for example, ones for sorting and searching]'; CS Unplugged Searching Algorithms ('How many guesses?', 'Divide and conquer', ages 5 to 10). https://www.csunplugged.org/en/topics/searching-algorithms/",
-  "overlapWith": "sorting (level 1) shows how the cost of sorting grows with input size; nothing in the catalogue shows searching. This page shows halving against one-by-one on counts alone, without growth curves.",
-  "needsSource": "UCI Machine Learning Repository, Zoo dataset, CC BY 4.0.",
-  "leadsTo": [
-   "sorting",
-   "learning-from-data"
-  ],
-  "everyday": true,
-  "origin": "numbers-shapes-computers"
- },
- {
-  "slug": "b-trees-transactions",
-  "title": "Databases: B-trees & transactions",
-  "level": 3,
-  "kind": "manipulate",
-  "category": "computing",
-  "interaction": "Insert and delete keys in a B+tree of adjustable fan-out and watch nodes split and merge, with the disk reads per lookup counted and compared with a binary tree on the same keys. Then run two transactions that interleave on the same rows with a write-ahead log, crash the machine at any point and replay the log to recover, and compare locking with snapshot isolation on an update that each transaction alone would get right.",
-  "takeaway": "A database keeps rows findable in a handful of disk reads by keeping its tree short and wide, and keeps them correct through a crash by writing its intentions down before acting on them.",
-  "prerequisites": [
-   "sorting",
-   "locks-deadlock"
-  ],
-  "related": [
-   "cache-memory-hierarchy",
-   "consensus-blockchains",
-   "hash-tables-bloom-filters"
-  ],
-  "needs": "",
-  "pitfall": "'Atomic' means all-or-nothing, not instantaneous, and a transaction is durable once its log record reaches disk, not when the rows are updated; the data pages can be stale at a crash and still be recovered.",
-  "why": "CMU 15-445 Database Systems, Lecture 08 'B+Tree Index' https://15445.courses.cs.cmu.edu/spring2024/slides/08-trees.pdf",
-  "overlapWith": "consensus-blockchains: that page replicates one log among machines; this one is a single machine's log and index, and why a tree rather than a chain is what makes lookup fast.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "cache-memory-hierarchy",
-  "title": "Caches & the memory hierarchy",
-  "level": 3,
-  "kind": "simulate",
-  "category": "computing",
-  "interaction": "Choose a program's access pattern (sum an array row by row or column by column, walk a linked list, multiply matrices with and without blocking) and run it through a cache with adjustable size, line length, associativity and replacement policy; each access lights a line as a hit or a miss, and the miss count and the average memory access time plot live. Add a second level of cache and watch where the knee of the curve moves.",
-  "takeaway": "The same program runs many times faster or slower depending only on whether it touches memory in an order the cache can predict.",
-  "prerequisites": [
-   "cpu"
-  ],
-  "related": [
-   "gpu",
-   "virtual-memory"
-  ],
-  "needs": "",
-  "pitfall": "A bigger cache is not always better: a direct-mapped cache thrashes on a stride equal to its size however large it is, and the unit moved is a whole line, never a byte, so a miss costs the same for one byte as for sixty-four.",
-  "why": "MIT 6.004 Computation Structures, Unit 14 'Multilevel memories: locality, performance, caches' https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar",
-  "overlapWith": "cpu: that page single-steps instructions against a flat memory that answers instantly; this page makes memory itself the model and shows why one access costs one cycle and the next two hundred.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "compilers",
-  "title": "Compilers",
-  "level": 3,
-  "kind": "step",
-  "category": "computing",
-  "interaction": "Type a small program in a toy language and step it through the compiler: characters become tokens, tokens a parse tree, the tree an intermediate form, and the intermediate form instructions for the minimal processor of the CPU page, which then runs them. Toggle optimisations (constant folding, dead-code elimination, register allocation by graph colouring) and watch the emitted code shrink and the instruction count fall; introduce a syntax error and see exactly where the parser gives up.",
-  "takeaway": "A compiler is a chain of mechanical translations, each simple on its own, that turns text a person wrote into instructions a processor can run.",
-  "prerequisites": [
-   "cpu",
-   "regular-expressions-automata"
-  ],
-  "related": [
-   "turing-machines",
-   "lambda-calculus"
-  ],
-  "needs": "",
-  "pitfall": "A compiler does not understand the program: parsing is a grammar check, and an optimisation may change the code only where it can prove the result is unchanged, which is why it often cannot.",
-  "why": "Stanford CS143 Compilers (lexical analysis, parsing, code generation, register allocation) https://web.stanford.edu/class/cs143/",
-  "overlapWith": "cpu: that page runs hand-written assembly; this page shows where the assembly comes from and reuses the same processor so the output actually runs.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "cpu-pipelines",
-  "title": "Pipelines & branch prediction",
-  "level": 3,
-  "kind": "step",
-  "category": "computing",
-  "interaction": "Feed a short program into a five-stage pipeline and step it cycle by cycle while instructions overlap in a pipeline diagram; a dependency between neighbouring instructions stalls the pipe until forwarding is switched on. Insert a loop and compare a predictor that always guesses 'not taken' with a two-bit counter, counting the cycles thrown away on each misprediction, then deepen the pipeline and watch that cost grow.",
-  "takeaway": "A pipelined processor finishes an instruction nearly every cycle only while it can guess what comes next; each wrong guess empties the pipe.",
-  "prerequisites": [
-   "cpu"
-  ],
-  "related": [
-   "cache-memory-hierarchy",
-   "gpu"
-  ],
-  "needs": "",
-  "pitfall": "Pipelining does not make any single instruction faster; it raises throughput, and a deeper pipeline raises the price of every hazard.",
-  "why": "MIT 6.004 Computation Structures, Unit 15 'Pipelining the Beta: pipeline diagrams, data hazards' and 'control hazards and exceptions' https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar",
-  "overlapWith": "cpu: that page runs one instruction at a time through fetch, decode and execute; this page overlaps several in flight and shows what breaks when they depend on each other.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "dynamic-programming",
-  "title": "Dynamic programming",
-  "level": 3,
-  "kind": "step",
-  "category": "computing",
-  "interaction": "Watch the recursion tree for the edit distance between two words explode with repeated subproblems, then fill the table cell by cell and trace the cheapest path back to the alignment. Carve seams out of a photo: the page finds the lowest-energy path through the pixel grid with the same table idea and removes it, so the image narrows without squashing its subject; try knapsack with a budget slider.",
-  "takeaway": "When a problem's subproblems overlap, solving each once and looking it up turns an exponential search into a table that fills in polynomial time.",
-  "prerequisites": [
-   "sorting",
-   "graph-search"
-  ],
-  "related": [
-   "sat-solving",
-   "compression"
-  ],
-  "needs": "One CC0 photograph for seam carving (Wikimedia Commons CC0, or a public-domain NASA image).",
-  "pitfall": "The name has nothing to do with programming or dynamics: it is memoised recursion, and it only works when an optimal solution is built from optimal solutions of subproblems, which the travelling-salesman problem does not offer in polynomial size.",
-  "why": "MIT 6.006 Introduction to Algorithms, Lectures 15 to 18 'Dynamic Programming' https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/calendar",
-  "overlapWith": "graph-search: Dijkstra's algorithm is a special case; this page makes the table and the overlapping subproblems the object, with seam carving as the visible payoff.",
-  "needsSource": "one CC0 photo (Wikimedia Commons CC0 or NASA public domain); openly licensed",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "fast-fourier-transform",
-  "title": "The fast Fourier transform",
-  "level": 3,
-  "kind": "step",
-  "category": "computing",
-  "interaction": "Step the recursion on 8, 16 or 64 samples: split even and odd, recurse, and combine with twiddle factors drawn as rotations on the unit circle, in a butterfly diagram that grows with n. Count the multiplications against the direct transform as n doubles, then use the result to multiply two long polynomials (or two big integers) and watch the product appear in n log n steps.",
-  "takeaway": "The Fourier transform of n samples takes n squared steps done directly, but the two halves of the problem share nearly all their work, and reusing it brings the cost down to n log n.",
-  "prerequisites": [
-   "fourier-transform",
-   "sorting"
-  ],
-  "related": [
-   "compression",
-   "medical-imaging",
-   "wireless-signals"
-  ],
-  "needs": "",
-  "pitfall": "The FFT is not an approximation or a different transform: it computes exactly the discrete Fourier transform, only faster, and it needs evenly spaced samples.",
-  "why": "MIT 6.046J Design and Analysis of Algorithms, Lecture 3 'Divide & Conquer: FFT' (Demaine: 'probably the most taught algorithm at MIT') https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/resources/lecture-3-divide-conquer-fft/",
-  "overlapWith": "fourier-transform: that page shows what the transform means; this one shows how to compute it fast, and the counting of operations is the graphic.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "floating-point",
-  "title": "Floating point",
-  "level": 3,
-  "kind": "explore",
-  "category": "computing",
-  "interaction": "Zoom along the number line and watch the representable numbers thin out away from zero, with the bits of the selected value shown; type 0.1 + 0.2 and see where each operand lands and why the sum misses 0.3 by one unit in the last place. Subtract two nearly equal numbers and watch the significant digits vanish, sum a million small numbers in two orders and compare, then switch on compensated summation; run the same calculation in half, single and double precision.",
-  "takeaway": "A floating-point number is the nearest representable value, not the number itself, and the gap between neighbours grows with size, so the order of operations changes the answer.",
-  "prerequisites": [
-   "binary"
-  ],
-  "related": [
+   "ocean-currents",
    "chaos-fractals",
-   "gpu"
+   "ocean-tides-amphidromes"
   ],
   "needs": "",
-  "pitfall": "Floating-point arithmetic is not random or buggy: each operation is correctly rounded and its error is predictable from the exponent; the trouble is accumulation and cancellation, not the single operation.",
-  "why": "Computerphile 'Floating Point Numbers', about 2.5 million views (view count from aggregator snapshots found this session; the video id is recalled, not fetched this session) https://www.youtube.com/watch?v=PZRI1IfStY0",
-  "overlapWith": "binary: that page reads one bit pattern as a float; this page explores the gaps between floats and what they do to arithmetic.",
+  "pitfall": "The polar vortex and the jet stream are not the same thing, and the jet does not push weather along like a conveyor; the waves on it steer the highs and lows.",
+  "why": "MIT OCW 12.803 Quasi-Balanced Circulations, lecture 10 on Rossby wave propagation from the barotropic vorticity equation: https://ocw.mit.edu/courses/12-803-quasi-balanced-circulations-in-oceans-and-atmospheres-fall-2009/2fecfb67e4ae41a48d23ee1cd3f84013_MIT12_803F09_lec10.pdf",
+  "overlapWith": "atmosphere-weather: that page heats and spins a globe to produce the convection cells and prevailing winds; this page takes the resulting jet and shows the waves that run along it and why they stall.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
-  "origin": "computing-networks-l3"
+  "origin": "earth-space-l3"
  },
  {
-  "slug": "garbage-collection",
-  "title": "Garbage collection",
-  "level": 3,
-  "kind": "simulate",
-  "category": "computing",
-  "interaction": "Run a small program that allocates objects and drops references, shown as a heap of boxes with pointers; press collect and watch mark-and-sweep trace from the roots and free what it never reached, then switch to a copying collector that compacts the survivors and to a generational one that collects only the nursery most of the time. Tune the heap size and watch pause length and memory use trade against each other; build a cycle of objects and see reference counting leak it.",
-  "takeaway": "A collector never knows what the program will need; it keeps whatever is still reachable from the running program and reclaims everything else.",
-  "prerequisites": [
-   "cpu"
-  ],
-  "related": [
-   "virtual-memory",
-   "graph-search"
-  ],
-  "needs": "",
-  "pitfall": "Reference counting is not the whole story: it cannot free cycles, and 'the program is done with this object' is undecidable in general, so reachability is the proxy every collector uses.",
-  "why": "UC Berkeley CS61B, Lecture 39 'Garbage collection' (mark-sweep, copying, generational) https://inst.eecs.berkeley.edu/~cs61b/fa17/materials/lectures/lect39.pdf",
-  "overlapWith": "graph-search: marking is a graph traversal; graph-search finds a path, this page uses the traversal to decide what memory can be thrown away and shows the pauses it costs.",
-  "needsSource": "none",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "computing-networks-l3"
- },
- {
-  "slug": "hash-tables-bloom-filters",
-  "title": "Hash tables & Bloom filters",
+  "slug": "sea-level-fingerprints",
+  "title": "Sea-level fingerprints",
   "level": 3,
   "kind": "manipulate",
-  "category": "computing",
-  "interaction": "Insert keys into a table with chaining or open addressing and raise the load factor; every probe is drawn, and the measured mean probe length is plotted against the expected curve until the table resizes and rehashes. Then feed the same keys to a Bloom filter with an adjustable bit array and number of hash functions, query keys that were never inserted and watch the measured false-positive rate track the formula; degrade the hash function with a slider and see both structures cluster.",
-  "takeaway": "A good hash spreads keys evenly, so lookups stay constant-time until the table fills, and a Bloom filter trades a known, tunable false-positive rate for a fraction of the memory.",
+  "category": "earth",
+  "interaction": "Melt a chosen amount of Greenland or West Antarctica with a slider and a globe shows the resulting change in sea level, solved from the sea-level equation: the ice sheet's gravitational pull on the ocean weakens, so the sea falls within about two thousand kilometers of it and rises by more than the global average far away. Melt both and compare the patterns, then pick a coastal city to read its share. The model is gravitational self-attraction on a rigid Earth, with the elastic and rotational terms stated as omitted.",
+  "takeaway": "Melting ice does not raise the sea evenly: the water pulls away from the vanishing ice sheet, so the coasts nearest the melt see the least rise and distant ones the most.",
   "prerequisites": [
-   "sorting",
-   "binary"
+   "newtons-laws"
   ],
   "related": [
-   "cryptography",
-   "distributed-hash-tables",
-   "b-trees-transactions"
+   "glacier-flow",
+   "ice-ages",
+   "ocean-currents"
   ],
-  "needs": "",
-  "pitfall": "A hash table's constant time is an average under a good hash, not a guarantee; the cryptographic hash of the cryptography page is a different tool; and a Bloom filter can only ever say 'definitely absent', never 'definitely present'.",
-  "why": "MIT 6.006 Introduction to Algorithms, Lecture 4 'Hashing' https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/lecture-notes (Bloom filters appear in CMU 15-445's index lectures)",
-  "overlapWith": "cryptography: that page shows a hash as a one-way fingerprint; here the hash is a fast bucket index, and the model is the statistics of collisions as the table fills.",
-  "needsSource": "none",
+  "needs": "A land-ocean mask with bathymetry (ETOPO global relief, NOAA NCEI, US government work; licence line not checked in this round) and ice-sheet outlines from published masks.",
+  "pitfall": "Sea-level rise is a pattern, not a bathtub filling evenly, and the fall near a melting ice sheet is real, not a sign that no water was added.",
+  "why": "WHOI Geophysical Fluid Dynamics program lecture notes by Mitrovica on sea-level fingerprints: https://geodynamicsprogram.whoi.edu/wp-content/uploads/sites/14/2018/10/PR0929-ESEP-Mitrovica_48713.pdf",
+  "overlapWith": "greenhouse-effect: that page runs emission scenarios to a global temperature; sea level appears nowhere in the catalogue, and this page shows that each melt source stamps its own geography on the rise.",
+  "needsSource": "ETOPO land-ocean mask (NOAA NCEI, US government work; licence line not checked in this round); ice-sheet outlines from published masks.",
   "leadsTo": [],
   "everyday": false,
-  "origin": "computing-networks-l3"
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "seismic-tomography",
+  "title": "Seismic tomography",
+  "level": 3,
+  "kind": "build",
+  "category": "earth",
+  "interaction": "Paint fast and slow patches into a cross-section of the mantle, place earthquakes and seismometers (stations can only go on land), and the page traces rays between every pair through a reference Earth and records their travel times. Press invert: a damped least-squares solution rebuilds an image from the times alone, and the reader compares it with what they painted. Replace the painting with a checkerboard to see which regions the ray coverage can resolve and which smear into streaks.",
+  "takeaway": "An image of Earth's interior is the smoothest model that explains thousands of arrival times, and it is sharp only where many rays cross.",
+  "prerequisites": [
+   "earthquakes",
+   "linear-transformations"
+  ],
+  "related": [
+   "medical-imaging",
+   "mantle-convection"
+  ],
+  "needs": "The PREM velocity table (Dziewonski & Anderson 1981; published table) for the reference Earth the rays bend through.",
+  "pitfall": "Blue and red in a tomogram are percent deviations from a reference, not absolute temperatures, and a smooth, featureless region may be unresolved rather than uniform.",
+  "why": "UNC Chapel Hill geophysics notes on travel-time tomography as a linear inverse problem: https://leesj.sites.oasis.unc.edu/FETCH/GRAB/Vignettes/invtomo.pdf",
+  "overlapWith": "medical-imaging: that page reconstructs a CT slice from evenly spaced projections it controls; here the sources are earthquakes nobody chose and the stations sit on land, so rays bend, coverage is uneven, and the inversion must be regularized and its resolution tested.",
+  "needsSource": "PREM velocity table (published in Dziewonski & Anderson 1981).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "aurora-rings",
+  "title": "Auroras: the Sun's wind on Earth's magnet",
+  "level": 0,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Earth with its magnetic field drawn as loops, in a stream of charged specks from the Sun; press play and the specks cannot cross the field lines, so they slide along them and spiral down into the air in two rings around the magnetic poles, where the sky glows green and, higher up, red. The one control is the strength of the solar wind. A gust squeezes the field and the glowing rings widen toward the equator, which is when people far from the poles get to see the lights.",
+  "takeaway": "Auroras happen in rings around the magnetic poles because Earth's magnetic field steers the Sun's charged particles there, and a stronger solar wind pushes the rings toward the equator.",
+  "prerequisites": [],
+  "related": [
+   "compass-and-magnetic-poles",
+   "comet-tails",
+   "twinkling-stars"
+  ],
+  "needs": "",
+  "needsSource": "none (charged particles integrated in a dipole field, the field's sunward edge pushed in by solar-wind pressure, glow colour by height; the page states the simplification that particles are shown guided straight down the field lines, where the real ones arrive by way of the night-side tail; the NOAA SWPC OVATION aurora forecast, public domain, can be shown for comparison)",
+  "pitfall": "Auroras are not sunlight reflected off polar ice, and they are not in the clouds: they glow a hundred kilometres up and higher.",
+  "why": "NASA Space Place, 'What Is an Aurora?' (https://spaceplace.nasa.gov/aurora/en/).",
+  "overlapWith": "electromagnetism (level 2) shows charges moving in fields in the abstract; this page shows it once, on a planet, with the pattern it makes in the sky.",
+  "leadsTo": [
+   "atoms-periodic-table"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "comet-tails",
+  "title": "Comets and their tails",
+  "level": 0,
+  "kind": "explore",
+  "category": "space",
+  "interaction": "Scrub a comet along its real stretched orbit, far out and frozen, then swinging in close to the Sun. As it warms, gas and dust stream off it, and the tail always points away from the Sun, whichever way the comet is going, so on the way out the comet flies tail-first. Two tails appear: a straight blue gas tail pushed by the solar wind and a curved dust tail of grains that lag along the orbit; zoom in to see the grains leave.",
+  "takeaway": "A comet's tail is blown by the Sun, not left behind by motion, so it always points away from the Sun and the comet travels tail-first when it leaves.",
+  "prerequisites": [],
+  "related": [
+   "shooting-stars",
+   "solar-system-to-scale",
+   "aurora-rings"
+  ],
+  "needs": "Orbital elements of one or two real comets (Halley, and a recent bright one) from the JPL Small-Body Database API (https://ssd-api.jpl.nasa.gov/doc/sbdb.html); NASA/JPL data with no separate licence text, free to use with the credit 'Courtesy NASA/JPL-Caltech' under JPL's use policy. Treat as open but confirm against the API's terms before shipping.",
+  "needsSource": "JPL Small-Body Database orbital elements (NASA/JPL, free with credit; no explicit data licence)",
+  "pitfall": "The tail does not trail behind like exhaust, and a comet is not a burning rock: it is ice and dust turning to gas in sunlight.",
+  "why": "NASA Space Place, 'What Is a Comet?' (https://spaceplace.nasa.gov/comets/en/); England KS2 Year 5, the movement of bodies relative to the Sun.",
+  "overlapWith": "orbits-kepler (level 1) launches bodies into ellipses; this page uses one real ellipse and asks only which way the tail points.",
+  "leadsTo": [
+   "orbits-kepler",
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "dark-night-sky",
+  "title": "Why the sky is dark at night",
+  "level": 0,
+  "kind": "simulate",
+  "category": "space",
+  "everyday": false,
+  "interaction": "Stand in a forest drawn from above and widen it: with a few trees you see out between the trunks, but keep adding trees farther away and every line of sight ends on bark, so the forest closes into a wall. Then swap trees for stars scattered through space at their real sparseness and press play: light from the stars has been travelling only as long as the universe has existed, so only the stars within that distance can be seen, and a counter shows the sky is still almost entirely black. Drag the age of the universe up and watch the sky slowly fill; it would take an unimaginably longer time than the real one before the night sky glowed like the Sun's surface everywhere.",
+  "takeaway": "In an endless forest of stars shining forever, every direction would end on a star and the night sky would blaze; it is dark because the universe has an age, so the light from most of those stars has not arrived yet.",
+  "prerequisites": [],
+  "related": [
+   "sun-is-a-star",
+   "solar-system-to-scale",
+   "twinkling-stars",
+   "big-bang"
+  ],
+  "leadsTo": [],
+  "needs": "",
+  "needsSource": "none (the fraction of the sky covered by stars of a given size scattered at a given density out to the light-travel distance, computed by counting lines of sight; the page states the simplification that it ignores the stretching of light by the expansion of space, which darkens the sky further)",
+  "pitfall": "The sky is not dark because stars are too far or too faint, or because dust hides them: with endless stars for endless time the faint ones would add up and the dust would glow too. It is dark because light has had only a limited time to travel.",
+  "why": "Olbers' paradox is a standing popular question: Scientific American, 'Why Is the Sky Dark at Night? You Can Thank the Big Bang' (https://www.scientificamerican.com/article/why-is-the-night-sky-dark-olbers); the MinutePhysics video 'Why is it dark at night?' (https://www.universetoday.com/97678/video-why-is-the-sky-dark-at-night).",
+  "overlapWith": "big-bang (level 2) runs the expansion and the timeline of the universe; this page uses only one consequence of the universe having an age, that light has had limited time to travel, and never mentions expansion on the stage.",
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "earth-is-a-ball",
+  "title": "Earth is a ball",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "Drag a ship out to sea and watch it from the shore: on a flat world it only shrinks, but on the round one its hull disappears before its sails as the sea bulges up between you and it, and climbing a cliff brings it back into view. Then walk a little figure around the globe: wherever it stands its feet point to the middle, and a dropped ball falls toward the middle too, so nobody on the far side falls off.",
+  "takeaway": "The world is a ball, so the sea itself hides the bottom of a distant ship, and 'down' means toward the middle wherever you stand.",
+  "prerequisites": [],
+  "related": [
+   "time-zones",
+   "compass-and-magnetic-poles",
+   "solar-system-to-scale",
+   "what-planets-are-made-of"
+  ],
+  "needs": "",
+  "needsSource": "none (the geometry of a sphere: horizon distance from eye height and the height hidden beyond it; gravity drawn toward the centre)",
+  "pitfall": "People on the far side are not upside down and do not have to hold on: the page draws no up arrow anywhere. And the ship does not vanish because it got too small.",
+  "why": "NGSS 5-PS2-1: 'Support an argument that the gravitational force exerted by Earth on objects is directed down', with 'down' pointing toward the center of the spherical Earth (https://www.nextgenscience.org/pe/5-ps2-1-motion-and-stability-forces-and-interactions); England KS2 Year 5: 'describe the sun, Earth and moon as approximately spherical bodies'.",
+  "overlapWith": "sun-earth-moon (level 1) tilts and orbits the Earth; this page never moves it, only shows that it is round and which way down is.",
+  "leadsTo": [
+   "sun-earth-moon",
+   "newtons-laws",
+   "orbits-kepler"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "leap-years",
+  "title": "Leap years: why February gets an extra day",
+  "level": 0,
+  "kind": "explore",
+  "category": "space",
+  "interaction": "A calendar wheel turns inside Earth's orbit: one lap of the Sun takes 365 days and about a quarter more, so each New Year falls a quarter-day short. Scrub forward with no leap days and watch the first day of summer slide through the calendar, a month after a century and into winter after seven or eight centuries; switch on 'one extra day every four years' and the slide almost stops; zoom out over a thousand years to see the small drift that is left and the 'skip every hundred, keep every four hundred' rule that fixes it.",
+  "takeaway": "A year is not a whole number of days, so a calendar without leap days drifts out of step with the seasons; an extra day every four years, with a few skipped, keeps them matched.",
+  "prerequisites": [],
+  "related": [
+   "orbits-kepler"
+  ],
+  "needs": "",
+  "pitfall": "A leap day fixes the calendar, not the orbit; nothing about the seasons changes. The rule is not simply every four years: 1900 was not a leap year and 2000 was.",
+  "why": "NASA/JPL Education, 'Doing the math on why we have leap day' (interest spikes every leap year): https://www.jpl.nasa.gov/edu/news/doing-the-math-on-why-we-have-leap-day/",
+  "overlapWith": "sun-earth-moon: why there are seasons; this page is why the calendar needs correcting to stay lined up with them.",
+  "needsSource": "none",
+  "leadsTo": [
+   "sun-earth-moon"
+  ],
+  "everyday": true,
+  "origin": "demand"
+ },
+ {
+  "slug": "rocket-throws-mass",
+  "title": "Rockets: going up by throwing things down",
+  "level": 0,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Stand on a skateboard and throw a ball: you roll the other way, and the harder or heavier the throw the faster you roll; throw a bag of balls one after another and you keep speeding up. Then pump up a bottle rocket on the lawn: water is thrown out of the neck and the bottle shoots up, and sliding the water fill from empty to full finds the amount that goes highest. Launch the same rocket in a vacuum chamber and on the Moon and it still goes.",
+  "takeaway": "A rocket climbs by throwing something out of its back as fast as it can, and it needs nothing to push against, so it works just as well in empty space.",
+  "prerequisites": [],
+  "related": [
+   "helicopter-rotor",
+   "fireworks-shell-burst",
+   "satellite-sky-tracks",
+   "rockets"
+  ],
+  "needs": "",
+  "pitfall": "A rocket does not push against the air or the ground: it pushes against what it throws out, which is why it works in a vacuum. A full bottle is not best: too much water leaves no room for the air that pushes it out, and too little gives nothing to throw.",
+  "why": "NASA, 'Activity four: optimize a water rocket engine' (grades 5 to 8, aligned to MS-PS2-2), https://www.nasa.gov/wp-content/uploads/2021/11/sls-activity-four-optimize-a-water-rocket.pdf",
+  "overlapWith": "rockets: that page is the velocity budget, staging and transfer orbits at level 2; this page is only the throwing itself, on a skateboard and in a bottle, and which water fill lifts a bottle highest.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "orbits-kepler"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "satellite-sky-tracks",
+  "title": "Satellites: the ones that race and the one that stays",
+  "level": 0,
+  "kind": "explore",
+  "category": "space",
+  "interaction": "Scrub a day and watch the Space Station lap the Earth sixteen times in a band of tracks that shifts each lap as the Earth turns beneath it, while a TV satellite far higher hangs over one spot and a weather satellite in between keeps its own count. Stand in your town and the sky view shows when the Station crosses overhead and why it is seen only just after dusk or before dawn: it must be in sunlight while you are in shadow. Drag a satellite higher and watch it slow and take longer round.",
+  "takeaway": "Low satellites race round the Earth many times a day while one special height keeps pace with the turning ground, and a satellite is seen only when the Sun lights it while you are in the dark.",
+  "prerequisites": [],
+  "related": [
+   "rocket-throws-mass",
+   "lighthouse-beam",
+   "gps"
+  ],
+  "needs": "The Space Station's orbital elements from NASA (public domain, e.g. the ISS trajectory data behind Spot the Station) and the altitudes of a named weather and TV satellite from their operators' public pages. CelesTrak two-line elements would be convenient but their redistribution terms are not clearly open, so the page must not depend on them.",
+  "pitfall": "Satellites do not stay up because there is no gravity in space: the Station is falling all the time and only misses the ground because it is moving sideways so fast. A satellite that seems to hang still is not stopped; it is racing round once a day, exactly as fast as the ground beneath it turns.",
+  "why": "NASA Spot the Station, a service built around the public's question of when the Station can be seen, https://spotthestation.nasa.gov/ (curriculum: NGSS MS-ESS1-2, gravity and orbits)",
+  "overlapWith": "orbits-kepler: that page launches a body and derives Kepler's laws; this page launches nothing, it scrubs real satellites by height and the geometry of seeing them. gps, at level 2, is what one constellation is for.",
+  "needsSource": "NASA ISS trajectory data (public domain, https://spotthestation.nasa.gov/); operator pages for a GOES-class weather satellite and a geostationary TV satellite.",
+  "leadsTo": [
+   "orbits-kepler",
+   "sun-earth-moon"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "shooting-stars",
+  "title": "Shooting stars: what burns up and what gets through",
+  "level": 0,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Drop a space pebble into the top of the air at twenty kilometres a second and watch: it rams the air so hard that the air in front glows and the pebble boils away, a streak a hundred kilometres up that lasts a second. The one control is the size of the rock: a sand grain vanishes in a flash, a fist-sized rock makes a fireball that lasts longer and reaches lower, and a boulder keeps a cold middle all the way down and lands as a meteorite, with a bar showing how much of it is left. A second control changes the speed.",
+  "takeaway": "A shooting star is a grain of dust heating the air by hitting it so fast that the air glows, a hundred kilometres up; only a rock big enough to keep a cold middle reaches the ground.",
+  "prerequisites": [],
+  "related": [
+   "comet-tails",
+   "solar-system-to-scale",
+   "what-planets-are-made-of"
+  ],
+  "needs": "",
+  "needsSource": "none (the single-body meteoroid equations: drag, mass loss and glow through the US Standard Atmosphere 1976, public domain, the same atmosphere the rockets and flight pages already use)",
+  "pitfall": "A meteor is not heated by friction rubbing on the air but by the air it squeezes in front of it, and a meteorite is not hot when it lands. A shooting star is not a star.",
+  "why": "NASA Space Place, 'Asteroid or Meteor: What's the Difference?' (https://spaceplace.nasa.gov/asteroid-or-meteor/en/) and 'What Is a Meteor Shower?' (https://spaceplace.nasa.gov/meteor-shower/en/).",
+  "overlapWith": "rockets (level 2) flies up through the same atmosphere model; this page falls through it, and no existing page shows anything burning up on entry.",
+  "leadsTo": [
+   "newtons-laws",
+   "orbits-kepler"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "solar-system-to-scale",
+  "title": "The solar system to scale",
+  "level": 0,
+  "kind": "explore",
+  "category": "space",
+  "interaction": "Start with Earth as a marble and zoom out along a line drawn to one true scale, sizes and distances alike: the Moon is a pea thirty marbles away, the Sun is a ball as tall as a child a hundred and fifty metres down the street, and the outer planets are specks far beyond. Press play to send a flash of light from the Sun and watch the clock: it passes Mercury after three minutes, reaches Earth after eight, Jupiter after forty-three, and Neptune after four hours. Zoom all the way out and the planets vanish into the emptiness.",
+  "takeaway": "The solar system is almost entirely empty space: with Earth a marble, the Sun is a ball as tall as a child far down the street, and even light takes hours to cross the planets.",
+  "prerequisites": [],
+  "related": [
+   "sun-is-a-star",
+   "comet-tails",
+   "earth-is-a-ball",
+   "shooting-stars",
+   "what-planets-are-made-of",
+   "dark-night-sky"
+  ],
+  "needs": "Planet and Moon diameters, mean distances from the Sun and orbital periods from the NASA NSSDC Planetary Fact Sheet (https://nssdc.gsfc.nasa.gov/planetary/factsheet/), US Government work, public domain.",
+  "needsSource": "NASA NSSDC Planetary Fact Sheet (public domain)",
+  "pitfall": "No drawing that fits the planets on one page can show both their sizes and their distances; this page never breaks scale, so at most zooms the planets are too small to see, and it says so.",
+  "why": "NGSS MS-ESS1-3: 'Analyze and interpret data to determine scale properties of objects in the solar system' (https://www.nextgenscience.org/pe/ms-ess1-3-earths-place-universe); NASA Space Place, 'What Is a Light-Year?' (https://spaceplace.nasa.gov/light-year/en/).",
+  "overlapWith": "sun-earth-moon (level 1) moves three bodies on a diagram that is not to scale; this page is only scale and light time, with nothing orbiting.",
+  "leadsTo": [
+   "sun-earth-moon",
+   "orbits-kepler"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "sun-is-a-star",
+  "title": "The Sun is a star",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "The Sun hangs in a black sky; drag it away. As it recedes it shrinks and dims by the same rule as a torch across a field (twice as far, a quarter as bright), until at the distance of the nearest star it is one faint dot among the others. Then the other way: pick a star from the night sky (Sirius, Betelgeuse, Proxima) and drag it in to the Sun's distance, where it is a glaring disc bigger or smaller than ours.",
+  "takeaway": "The Sun looks nothing like the stars only because it is close: dragged far enough it becomes one of them, and some of them, brought close, would outshine it.",
+  "prerequisites": [],
+  "related": [
+   "solar-system-to-scale",
+   "twinkling-stars",
+   "dark-night-sky"
+  ],
+  "needs": "Distances, brightness and colour for a few dozen named stars from the Yale Bright Star Catalogue, 5th edition (BSC5), as hosted by NASA HEASARC (https://heasarc.gsfc.nasa.gov/W3Browse/star-catalog/bsc5p.html), whose documentation states it is in the public domain; the HYG database v4.2 (https://astronexus.com/hyg, CC BY-SA 4.0) is a share-alike alternative and is not needed.",
+  "needsSource": "Yale Bright Star Catalogue BSC5 via NASA HEASARC (public domain)",
+  "pitfall": "The Sun is not a huge or unusual star, and the stars are not small lights: each is a sun. Brightness falls with the square of distance, not in step with it.",
+  "why": "NGSS 5-ESS1-1: 'Support an argument that the apparent brightness of the sun and stars is due to their relative distances from the Earth' (https://www.nextgenscience.org/pe/5-ess1-1-earths-place-universe); NASA Space Place, 'How Does Our Sun Compare With Other Stars?' (https://spaceplace.nasa.gov/sun-compare/en/).",
+  "overlapWith": "stars (level 2) runs a star's life on the Hertzsprung-Russell diagram; this page never changes a star, only its distance.",
+  "leadsTo": [
+   "exoplanets",
+   "sun-earth-moon"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "time-zones",
+  "title": "Day, night and time zones",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "A globe lit from one side. Spin it and watch cities pass from night into dawn, noon, dusk and night again; each city has a clock, and the clocks disagree: when it is noon in London it is already evening in Tokyo and still early morning in New York. Drag the hour and the day-night line sweeps round the world once per turn; cross the date line and the calendar flips.",
+  "takeaway": "There is no single 'now' on the clock: the Sun is overhead at different places at different moments, so clocks are set by how far east or west you live, in strips that go round with the spinning Earth.",
+  "prerequisites": [],
+  "related": [
+   "earth-is-a-ball",
+   "compass-and-magnetic-poles",
+   "a-year-of-weather"
+  ],
+  "needs": "Zone offsets from the IANA tz database (https://www.iana.org/time-zones, public domain) and city positions from Natural Earth populated places (https://www.naturalearthdata.com/downloads/10m-cultural-vectors/, public domain). Zone boundaries, if drawn, from timezone-boundary-builder (https://github.com/evansiroky/timezone-boundary-builder, ODbL, share-alike, since Natural Earth's own time-zone layer is believed withdrawn and could not be confirmed); the documented fallback is to draw no boundaries and colour each city by its offset.",
+  "needsSource": "IANA tz database and Natural Earth populated places (public domain); zone boundaries optional, timezone-boundary-builder (ODbL)",
+  "pitfall": "The Sun does not go round the Earth, and night is not the Sun switching off: it is the Earth's own shadowed side.",
+  "why": "England KS2 science, Year 5 Earth and space: 'use the idea of the Earth's rotation to explain day and night and the apparent movement of the sun across the sky' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study).",
+  "overlapWith": "sun-earth-moon (level 1) gives day length by latitude and season; this page keeps the tilt out and adds clocks, zones and the date line, which that page does not have.",
+  "leadsTo": [
+   "sun-earth-moon"
+  ],
+  "everyday": true,
+  "origin": "earth-sky-weather"
  }
 ]

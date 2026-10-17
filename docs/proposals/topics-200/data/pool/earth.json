@@ -129,6 +129,30 @@
   "origin": "earth-sky-weather"
  },
  {
+  "slug": "forest-fire-spread",
+  "title": "How a wildfire crosses a forest, or stops",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A square forest of trees on a grid; light the left edge and watch the fire pass from each burning tree to its neighbours, leaving ash. One control: how densely the trees are planted. At half density the fire burns a few trees and dies, at two-thirds it nearly always crosses the forest, and around six in ten it is a coin toss, with a tally of how far the fire got over many runs; then cut a firebreak and find the width that stops it, or add wind so the fire jumps one extra tree downwind.",
+  "takeaway": "A fire's chance of crossing a forest does not grow gradually with how many trees there are: it flips from almost never to almost always over a narrow band of density, which is why thinning and firebreaks work.",
+  "prerequisites": [],
+  "related": [
+   "epidemics"
+  ],
+  "needs": "",
+  "pitfall": "The tipping density (about 59% for four neighbours on a square grid) belongs to the grid and the rule, not to forests; real fires also depend on wind, slope, moisture and fuel, which the page says it leaves out.",
+  "why": "The NetLogo Fire model, one of the most used models in the NetLogo library, documents the sharp transition near 59% density: https://ccl.northwestern.edu/netlogo/models/Fire",
+  "overlapWith": "epidemics: spread through a moving crowd with a threshold set by immunity; this page is spread on a fixed grid where the threshold is set by how many cells there are (percolation). Pool neighbours life-on-a-grid and cellular-automata are rule-based grids with no randomness or threshold; fire-triangle is what a fire needs chemically.",
+  "needsSource": "none",
+  "leadsTo": [
+   "epidemics",
+   "ecosystems"
+  ],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
   "slug": "fossil-layers",
   "title": "Fossils and rock layers",
   "level": 0,
@@ -577,6 +601,80 @@
   "origin": "earth-sky-weather"
  },
  {
+  "slug": "global-water-cycle",
+  "title": "The water cycle",
+  "level": 1,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A diagram of reservoirs (ocean, ice, groundwater, lakes and rivers, soil, air, living things) joined by flows drawn to scale: evaporation, transpiration, precipitation, runoff and infiltration. Drop a tagged water molecule anywhere and follow it; a counter shows how long it typically waits in each reservoir, days in the air against thousands of years in the deep ocean or an ice sheet. Warm the air to see how much more vapour it can hold, cool a parcel to its dew point and watch cloud and rain appear, then pave a catchment and see runoff rise and infiltration fall.",
+  "takeaway": "The same water goes round and round, but it moves through the air in days and through ice and deep groundwater in millennia, and warmer air carries more of it.",
+  "prerequisites": [
+   "states-of-matter"
+  ],
+  "related": [
+   "atmosphere-weather",
+   "ocean-currents",
+   "carbon-cycle",
+   "greenhouse-effect",
+   "plant-transport"
+  ],
+  "needs": "Reservoir volumes and annual flows of the global water cycle, and the saturation vapour pressure of water against temperature.",
+  "needsSource": "reservoir volumes from the USGS Water Science School table (US government work, public domain; it credits Shiklomanov 1993) https://www.usgs.gov/water-science-school/science/how-much-water-there-earth ; annual flows from Oki & Kanae 2006 (Science, not open access; the figure's numbers are facts and are reproduced in open teaching material) - confirm one consistent set before building; vapour pressure from the Magnus formula",
+  "pitfall": "Water is not used up: the amount on Earth is fixed, and what people run short of is fresh water in the right place at the right time. Clouds are not water vapour; vapour is invisible, and a cloud is droplets that have already condensed.",
+  "why": "NGSS MS-ESS2-4 'Develop a model to describe the cycling of water through Earth's systems driven by energy from the sun and the force of gravity' https://www.nextgenscience.org/pe/ms-ess2-4-earths-systems ; the brief notes the water cycle is not covered by any existing page",
+  "overlapWith": "atmosphere-weather (level 2) moves heat and makes fronts and hurricanes, and carbon-cycle has the same reservoir-and-flow design for carbon; nothing on the site follows water itself. The pool's water-cycle (level 0) tells the story without the budget, the residence times or the dew point.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "nitrogen-cycle",
+  "title": "The nitrogen cycle",
+  "level": 1,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "Run a field as an agent model of plants, animals, decomposers and three kinds of soil bacteria: nitrogen-fixing bacteria turn air nitrogen into ammonium, nitrifying bacteria turn it into the nitrate that plants take up, and denitrifying bacteria return it to the air, with a reservoir diagram beside the field keeping the running totals. Add fertiliser, plough in a legume crop or flood the soil and watch where the nitrogen goes; overdo the fertiliser and follow the runoff into a lake, where algae bloom, die, and the decomposers use up the oxygen.",
+  "takeaway": "Most of the air is nitrogen that plants cannot use, so almost every living thing depends on bacteria that convert it, and adding too much of the converted form washes into water and chokes it.",
+  "prerequisites": [
+   "ecosystems"
+  ],
+  "related": [
+   "carbon-cycle"
+  ],
+  "needs": "Global nitrogen budget flows (fixation by lightning, bacteria and the Haber process; denitrification) if the reservoir diagram is drawn to scale.",
+  "needsSource": "Fowler et al. 2013, Phil. Trans. R. Soc. B 368:20130164, free on PubMed Central (PMC3682748) but its reuse licence was not confirmed in this research: either confirm it or keep the diagram qualitative and let the agent model be the real part",
+  "pitfall": "Plants do not take nitrogen from the air, and fertiliser is not food: it supplies nitrate for making protein, while the energy still comes from photosynthesis. Eutrophication kills fish through the decomposers' use of oxygen, not through the fertiliser itself.",
+  "why": "AQA A-level Biology 7402 topic 3.5.4 'Nutrient cycles' (nitrogen fixation, ammonification, nitrification, denitrification; fertilisers and eutrophication) https://www.savemyexams.com/a-level/biology/aqa/17/revision-notes/5-energy-transfers-in--between-organisms-a-level-only/5-4-nutrient-cycles-a-level-only/5-4-1-nutrient-cycles ; Edexcel GCSE Biology Topic 9 (the carbon, water and nitrogen cycles) https://pmt.physicsandmathstutor.com/download/Biology/GCSE/Notes/Edexcel/9-Ecosystems-and-Material-Cycles/Flashcards/Flashcards%20-%20Topic%209%20Nutrient%20cycles%20and%20decomposers%20-%20Edexcel%20Biology%20GCSE.pdf",
+  "overlapWith": "carbon-cycle is a reservoir-and-flow diagram driven by burning; here bacteria, not fire, are the gatekeepers, and the second half (fertiliser runoff and eutrophication) links to ecosystems, which has the predator-prey model but no nutrient.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "holes-l1-l2"
+ },
+ {
+  "slug": "tsunamis",
+  "title": "Tsunamis: a wave as long as the ocean is deep",
+  "level": 1,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A slice of the Pacific from Japan to California with the real sea floor under it. Jolt the floor up near the trench and watch the hump race across the deep ocean at airliner speed while a clock counts the hours and markers show arrival times; a speed gauge follows the depth, fast over the abyss and slowing over the shelf, where the wave bunches up and grows from under a metre to many metres. Drag the floor to change a shelf's slope or add an island, and compare with a wind wave of the same height, which barely notices the depth.",
+  "takeaway": "A tsunami is a shallow-water wave even over the deepest ocean, so its speed is set by the depth alone: it crosses an ocean in hours, is barely visible at sea, and rears up only when it reaches the shallows.",
+  "prerequisites": [
+   "waves-interference",
+   "earthquakes"
+  ],
+  "related": [
+   "plate-tectonics"
+  ],
+  "needs": "An ocean depth transect from NOAA's ETOPO 2022 relief model; the one-dimensional shallow-water equations run on that profile (a single transect ignores spreading across the ocean, so the far-shore height is an upper bound: state it on the page).",
+  "pitfall": "A tsunami is not a towering surf wave: at the coast it arrives as a fast-rising flood lasting minutes, often after the sea draws back; and it is not a tidal wave, tides have nothing to do with it.",
+  "why": "NOAA's tsunami facts (speed is the square root of gravity times depth, about 765 km/h over 4,600 m of water) answer the common 'how do tsunamis work': https://noaa.gov/node/10981",
+  "overlapWith": "beach-waves (pool, level 0): wind waves slowing and breaking on a beach; this page is a wave longer than the ocean is deep, with its speed set by depth all the way across and real travel times. earthquakes: the seismic waves inside the Earth; this page is the water wave an undersea quake launches.",
+  "needsSource": "ETOPO 2022 (NOAA NCEI, US government work, public domain).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
+ },
+ {
   "slug": "carbonate-silicate-thermostat",
   "title": "The carbonate-silicate thermostat",
   "level": 3,
@@ -627,6 +725,30 @@
   "leadsTo": [],
   "everyday": false,
   "origin": "earth-space-l3"
+ },
+ {
+  "slug": "ensemble-weather-forecasting",
+  "title": "Weather forecasts: why they come as odds",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A ring of forty weather cells round a latitude circle (the Lorenz-96 model) runs as a strip of colour, the true weather on top and the reader's forecast started from a measurement of it with adjustable error. Launch one forecast and watch it track the truth for a few days and then diverge; launch fifty from slightly different starts and watch the fan open, narrow on some days and wide on others, with the spread plotted against the actual error. Shrink the measurement error tenfold and the useful range grows only a few days; make the model slightly wrong and the fan goes confident and wrong; then run the forecast-observe-correct cycle and watch the analysis stay close.",
+  "takeaway": "Because small errors in today's weather double every couple of days, one forecast is useless past a week or so; forecasters run many from slightly different starts, and where they agree the forecast is sure and where they fan out it is not.",
+  "prerequisites": [
+   "chaos-fractals",
+   "atmosphere-weather"
+  ],
+  "related": [
+   "bayes-theorem"
+  ],
+  "needs": "",
+  "pitfall": "A 70% chance of rain is a calibrated statement, not a count of members that happened to rain; the spread is itself a forecast that must be checked. Chaos does not make forecasting useless: the horizon differs from day to day and the ensemble shows which days are which.",
+  "why": "ECMWF's training course teaches ensemble prediction with the Lorenz-96 model, and 'why are weather forecasts wrong' is a perennial public question: https://events.ecmwf.int/event/405/contributions/4491/attachments/2523/4335/lorenz-part1.pdf",
+  "overlapWith": "chaos-fractals: two double pendulums diverge; this page is what forecasters do about that: many starts, spread as a forecast of uncertainty, and the correction cycle. atmosphere-weather is the physics of circulation, with no forecasting.",
+  "needsSource": "none (Lorenz 1996 equations)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
  },
  {
   "slug": "groundwater-flow",
@@ -778,6 +900,31 @@
   "leadsTo": [],
   "everyday": false,
   "origin": "earth-space-l3"
+ },
+ {
+  "slug": "ozone-layer-chemistry",
+  "title": "The ozone layer and the hole in it",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A column of stratosphere lit by the Sun's ultraviolet; the page integrates the Chapman reactions (oxygen split by UV, ozone made and destroyed) and the ozone settles into a layer at 20 to 30 km while a spectrum at ground level shows the ultraviolet it removes. Add chlorine from CFCs and watch the catalytic cycle: one chlorine atom destroys thousands of ozone molecules and comes back unchanged. Switch to the Antarctic spring: polar stratospheric clouds in the dark winter turn the chlorine reservoirs active, sunrise releases it, and the column drops to a third in weeks, the model's October column plotted beside NASA's measured record since 1979; then run the Montreal Protocol phase-out and watch the slow recovery.",
+  "takeaway": "Ozone is made and destroyed continuously by sunlight and its amount is a balance; a single chlorine atom from a CFC tips that balance thousands of times over, which is why a few million tonnes of gas opened a hole each spring, and why banning them is closing it.",
+  "prerequisites": [
+   "reaction-rates-equilibrium",
+   "atmosphere-weather"
+  ],
+  "related": [
+   "greenhouse-effect",
+   "sunscreen-spf"
+  ],
+  "needs": "NASA Ozone Watch's annual Antarctic record (minimum column and hole area since 1979); rate constants from the JPL chemical kinetics evaluation.",
+  "pitfall": "The ozone hole neither causes nor is caused by global warming (CFCs are also greenhouse gases, a separate effect), and it is not over Antarctica because CFCs are used there: the cold polar winter and the spring sunrise make the chemistry fast there. A hole is a thinning, not a gap.",
+  "why": "NASA reports the hole's size every year and it stays in the news; 'is the ozone hole healing' is a recurring question: https://www.nasa.gov/earth/climate-change/ozone-layer/2023-ozone-hole-ranks-16th-largest",
+  "overlapWith": "greenhouse-effect: the infrared balance that sets temperature; this page is a different gas, a different wavelength and a chemical cycle. atmosphere-weather has the circulation that isolates the polar vortex but none of the chemistry.",
+  "needsSource": "NASA Ozone Watch and the JPL kinetics evaluation (NASA, US government work, public domain).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "demand"
  },
  {
   "slug": "radiative-convective-column",
