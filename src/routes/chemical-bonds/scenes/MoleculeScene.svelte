@@ -274,14 +274,8 @@
 	};
 	const wrap = (x: number) =>
 		((((x + Math.PI) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)) - Math.PI;
-	const arc = $derived.by(() => {
-		if (!a.complete || molecule.ligands.length < 2 || prog.current < 0.98) return null;
-		const m = a.measured[0];
-		const value = m?.degrees ?? a.ideal;
-		if (value == null || value === 180) return null;
-		const want = m?.between ?? [molecule.ligands[0], molecule.ligands[1]];
-		const i = molecule.ligands.findIndex((l) => l === want[0]);
-		const j = molecule.ligands.findIndex((l, k) => k !== i && l === want[1]);
+	/** The arc between ligands i and j, or null when one of them is not drawn. */
+	function arcBetween(i: number, j: number, value: number) {
 		const pi = scene.ligandPos[i];
 		const pj = scene.ligandPos[j];
 		if (!pi || !pj) return null;
@@ -329,8 +323,45 @@
 			label: `${value === 180 ? '180' : value.toFixed(1)}°`,
 			// Fade out when the arc is seen edge-on (a thin sliver) or when another bond or
 			// lone pair projects into the wedge (the arc would cross it).
-			opacity: smoothstep(14, 32, chord) * smoothstep(0.05, 0.22, room)
+			opacity: smoothstep(14, 32, chord) * smoothstep(0.05, 0.22, room),
+			chord
 		};
+	}
+	// When several pairs of atoms make the angle (the H atoms of NH₃ or CH₄), the arc joins
+	// the pair seen most clearly: the widest unobstructed wedge on screen. While the
+	// molecule turns, the pair it is on keeps the arc until another is clearly better, so
+	// the arc does not hop back and forth (a plain variable: the last choice).
+	let arcPair = '';
+	const arc = $derived.by(() => {
+		if (!a.complete || molecule.ligands.length < 2 || prog.current < 0.98) return null;
+		const m = a.measured[0];
+		const value = m?.degrees ?? a.ideal;
+		if (value == null || value === 180) return null;
+		const want = m?.between ?? [molecule.ligands[0], molecule.ligands[1]];
+		const ls = molecule.ligands;
+		type Arc = NonNullable<ReturnType<typeof arcBetween>>;
+		let best: Arc | null = null;
+		let bestKey = '';
+		let kept: Arc | null = null;
+		const score = (c: Arc) => c.opacity * c.chord;
+		for (let i = 0; i < ls.length; i++)
+			for (let j = i + 1; j < ls.length; j++) {
+				const fits =
+					(ls[i] === want[0] && ls[j] === want[1]) || (ls[i] === want[1] && ls[j] === want[0]);
+				if (!fits) continue;
+				const c = arcBetween(i, j, value);
+				if (!c) continue;
+				const key = `${molKey}|${i}|${j}`;
+				if (key === arcPair) kept = c;
+				if (!best || score(c) > score(best)) {
+					best = c;
+					bestKey = key;
+				}
+			}
+		if (!best) return null;
+		if (kept && score(kept) > 0.8 * score(best)) return kept;
+		arcPair = bestKey;
+		return best;
 	});
 
 	// ---- polarity arrow -------------------------------------------------------------------------

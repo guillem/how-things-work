@@ -97,6 +97,30 @@ test('the bond angle is drawn on the molecule in the still frame', async ({ page
 	await expect(arc).toHaveText('116.1°');
 });
 
+test('the still frame draws the angle arc wide open, on the clearest pair of atoms', async ({
+	page
+}) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	const arc = stage(page).getByTestId('angle-arc');
+	/** The arc's chord, in scene units (the stage is 960 × 600). */
+	const chord = () =>
+		arc.locator('path').evaluate((p: SVGPathElement) => {
+			const a = p.getPointAtLength(0);
+			const b = p.getPointAtLength(p.getTotalLength());
+			return Math.hypot(a.x - b.x, a.y - b.y);
+		});
+	await page.goto('./chemical-bonds/#lonepairs');
+	for (const [mol, angle] of [
+		['NH3', '106.7°'],
+		['CH4', '109.5°'],
+		['H2O', '104.5°']
+	]) {
+		await page.locator(`button[data-control=lpMol][data-value=${mol}]`).click();
+		await expect(arc).toHaveText(angle);
+		expect(await chord()).toBeGreaterThan(60);
+	}
+});
+
 test('hovering an atom holds the turning molecule still to be clicked', async ({ page }) => {
 	await page.clock.install();
 	await page.goto('./chemical-bonds/#build');
