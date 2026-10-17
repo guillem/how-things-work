@@ -31,7 +31,7 @@ import {
 // of the body-wave tables and page 3 of the core phases). Seconds. The PKPab row (the branch
 // through the outer core, the only one beyond about 155°, and the "core" arrival the station
 // step lists) is from TauP in ObsPy 1.5.1 with its ak135 model, as the core-phase page is a
-// scanned image; TauP gives the other rows within 0.02 s of the printed tables.
+// scanned image; TauP gives the other rows within 0.05 s of the printed tables.
 const TABLE = [
 	{ kind: 'P', dist: 30, time: 6 * 60 + 10.27 },
 	{ kind: 'S', dist: 30, time: 11 * 60 + 9.14 },
