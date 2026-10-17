@@ -12,8 +12,18 @@
 	 *           `challenge` control (half or full adder) starts from a blank with
 	 *           that adder's switches and lamps and checks the truth table against
 	 *           the reference circuit's
+	 *   adder4 — the 4-bit build (`hints.edit`), in two stages. "block": a full adder
+	 *           from gates, as the full-adder challenge (kept in `params['circuit:fa']`,
+	 *           starting from the build step's circuit if that one has a full adder's
+	 *           switches and lamps); the `packBlock` action stores it, once its table
+	 *           is right, as the block definition `params['block:fa']`. "chain": the
+	 *           nine switches and five lamps of `ADDER4_BLANK` (`params['circuit:chain']`),
+	 *           where the `tool4` control adds full-adder blocks (evaluated by the
+	 *           reader's own circuit) and a checker tries all 512 inputs, drawn as a
+	 *           map of right and wrong sums in place of the truth table
 	 *
-	 * Switch states are a string of 0/1 in input order in `params['sw:' + step.id]`.
+	 * Switch states are a string of 0/1 in input order in `params['sw:' + step.id]`
+	 * (on the 4-bit build, `params['sw:' + canvas key]`, one per stage).
 	 * Until the reader touches a switch, the guided steps play through the rows of
 	 * the truth table on their own (one row every ROW_S seconds, a pure function of t).
 	 *
@@ -34,21 +44,29 @@
 	import { clamp, startDrag, toSvg, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
+		ADDER4_BLANK,
 		BLANK,
 		FULL_ADDER,
 		HALF_ADDER,
+		adder4Inputs,
+		adder4Reading,
+		checkAdder4,
 		evaluate,
 		inputCount,
 		inputsOf,
+		isFullAdder,
 		makesLoop,
+		outputCount,
 		outputsOf,
 		parseCircuit,
 		serializeCircuit,
 		singleGate,
 		truthTable,
+		type Blocks,
 		type Circuit,
 		type GateKind,
 		type LogicNode,
+		type NodeKind,
 		type Wire
 	} from '../logic';
 
@@ -70,11 +88,27 @@
 	// ---- which circuit --------------------------------------------------------------
 	const phase = $derived(String(step.hints?.phase ?? 'gates'));
 	const edit = $derived(step.hints?.edit === true);
-	/** The build step's challenge, if one is picked. */
+	const isAdder4 = $derived(edit && phase === 'adder4');
+	/** The 4-bit build's block: the reader's full adder, once packed (and only if it is one). */
+	const block = $derived.by(() => {
+		const c = isAdder4 ? parseCircuit(params['block:fa']) : null;
+		return c && isFullAdder(c) ? c : null;
+	});
+	const blocks: Blocks = $derived(block ? { FA: block } : {});
+	/** The 4-bit build: chaining blocks (else, on that step, building the block). */
+	const chain = $derived(isAdder4 && block !== null);
+	/** What the canvas is checked against: the build step's challenge, or the 4-bit build's stage. */
 	const goal = $derived(
-		edit && (params.challenge === 'half' || params.challenge === 'full') ? params.challenge : null
+		isAdder4
+			? chain
+				? 'four'
+				: 'full'
+			: edit && (params.challenge === 'half' || params.challenge === 'full')
+				? params.challenge
+				: null
 	);
-	const challenge = $derived(goal !== null);
+	/** A truth-table challenge: the half or full adder (the 4-bit build has its own checker). */
+	const challenge = $derived(goal === 'half' || goal === 'full');
 	const gateKind = $derived(String(params.gateKind ?? 'AND') as GateKind);
 
 	/** Blank canvas for the half-adder challenge: inputs A, B; outputs Sum, Carry. */
@@ -102,7 +136,15 @@
 		],
 		wires: []
 	};
-	const blank = $derived(goal === 'full' ? FULL_BLANK : goal === 'half' ? HALF_BLANK : BLANK);
+	const blank = $derived(
+		goal === 'four'
+			? ADDER4_BLANK
+			: goal === 'full'
+				? FULL_BLANK
+				: goal === 'half'
+					? HALF_BLANK
+					: BLANK
+	);
 	/** The circuit a challenge asks for: the target columns come from its truth table. */
 	const reference = $derived(goal === 'full' ? FULL_ADDER : HALF_ADDER);
 	const goalOuts = $derived(outputsOf(reference).map((n) => n.label ?? n.id));
@@ -114,9 +156,14 @@
 		outputsOf(blank)
 			.map((n) => n.label ?? n.id)
 			.join();
+	/** Where the canvas being edited is kept. */
+	const canvasKey = $derived(isAdder4 ? (chain ? 'circuit:chain' : 'circuit:fa') : 'circuit:build');
 	const builtCircuit = $derived.by(() => {
-		const c = parseCircuit(params['circuit:build']);
-		return c && fits(c) ? c : blank;
+		const c = parseCircuit(params[canvasKey]);
+		if (c && fits(c)) return c;
+		// The 4-bit build starts from a full adder built on the build step, if there is one.
+		const earlier = isAdder4 && !chain ? parseCircuit(params['circuit:build']) : null;
+		return earlier && fits(earlier) ? earlier : blank;
 	});
 
 	const circuit: Circuit = $derived(
@@ -141,7 +188,7 @@
 	const ins = $derived(inputsOf(circuit));
 
 	// ---- inputs -----------------------------------------------------------------------
-	const swKey = $derived('sw:' + step.id);
+	const swKey = $derived(isAdder4 ? 'sw:' + canvasKey : 'sw:' + step.id);
 	const stored = $derived(params[swKey]);
 	const auto = $derived(!edit && typeof stored !== 'string');
 	const rows = $derived(2 ** ins.length);
@@ -190,31 +237,51 @@
 
 	const safeEval = (c: Circuit, a: Record<string, boolean>) => {
 		try {
-			return evaluate(c, a);
+			return evaluate(c, a, blocks);
 		} catch {
-			return { value: new Map<string, boolean>(), depth: new Map<string, number>() };
+			return {
+				value: new Map<string, boolean>(),
+				depth: new Map<string, number>(),
+				ports: new Map<string, boolean[]>(),
+				portDepth: new Map<string, number[]>()
+			};
 		}
 	};
 	const now = $derived(safeEval(circuit, assign(bits)));
 	const before = $derived(safeEval(circuit, assign(clock.prev)));
 
-	/** When node n takes its new value, in seconds after the change. */
-	const changeAt = (n: LogicNode) => {
-		const d = now.depth.get(n.id) ?? 0;
+	/** When output `port` of node n takes its new value, in seconds after the change. */
+	const changeAt = (n: LogicNode, port = 0) => {
+		const d = now.portDepth.get(n.id)?.[port] ?? 0;
 		return n.kind === 'in' ? 0 : n.kind === 'out' ? d * GATE_S + WIRE_S : d * GATE_S;
 	};
-	const shown = (n: LogicNode) =>
-		clock.elapsed >= changeAt(n) ? !!now.value.get(n.id) : !!before.value.get(n.id);
+	const shown = (n: LogicNode, port = 0) =>
+		clock.elapsed >= changeAt(n, port)
+			? !!now.ports.get(n.id)?.[port]
+			: !!before.ports.get(n.id)?.[port];
 
 	// ---- ports -------------------------------------------------------------------------
-	const outPort = (n: LogicNode): Point =>
-		n.kind === 'in' ? { x: X(n.x) + 26, y: Y(n.y) } : { x: X(n.x) + 40, y: Y(n.y) };
+	/** A full-adder block: half width and height of its body, and how far out its pins reach. */
+	const FA_W = 40;
+	const FA_H = 42;
+	const FA_PIN = 52;
+	/** Pin heights on a block: inputs A, B, carry in; outputs sum, carry out. */
+	const FA_IN = [-24, 0, 24];
+	const FA_OUT = [-24, 24];
+	const outPort = (n: LogicNode, port = 0): Point =>
+		n.kind === 'in'
+			? { x: X(n.x) + 26, y: Y(n.y) }
+			: n.kind === 'FA'
+				? { x: X(n.x) + FA_PIN, y: Y(n.y) + FA_OUT[port] }
+				: { x: X(n.x) + 40, y: Y(n.y) };
 	const inPort = (n: LogicNode, slot: number): Point =>
 		n.kind === 'out'
 			? { x: X(n.x) - 26, y: Y(n.y) }
-			: n.kind === 'NOT'
-				? { x: X(n.x) - 40, y: Y(n.y) }
-				: { x: X(n.x) - 40, y: Y(n.y) + (slot ? 11 : -11) };
+			: n.kind === 'FA'
+				? { x: X(n.x) - FA_PIN, y: Y(n.y) + FA_IN[slot] }
+				: n.kind === 'NOT'
+					? { x: X(n.x) - 40, y: Y(n.y) }
+					: { x: X(n.x) - 40, y: Y(n.y) + (slot ? 11 : -11) };
 	/** Where an input pin meets the gate's body (x offset from the centre). */
 	const bodyIn: Record<string, number> = {
 		AND: -26,
@@ -222,13 +289,41 @@
 		OR: -23,
 		XOR: -30,
 		NOT: -24,
+		FA: -FA_W,
 		out: -13
 	};
-	const bodyOut: Record<string, number> = { AND: 26, NAND: 32, OR: 28, XOR: 28, NOT: 24 };
+	const bodyOut: Record<string, number> = { AND: 26, NAND: 32, OR: 28, XOR: 28, NOT: 24, FA: FA_W };
+	/** Half the room a part takes on the canvas (for keeping new parts apart, and wire detours). */
+	const halfW = (k: NodeKind) => (k === 'FA' ? 52 : 38);
+	const halfH = (k: NodeKind) => (k === 'FA' ? 46 : 28);
 
 	// ---- wires -------------------------------------------------------------------------
-	function route(a: Point, b: Point, slot: number, endX: number) {
+	/**
+	 * A wire's path. Forward wires run along a vertical lane just before their input;
+	 * a wire that has to go back left (a carry out into the next block's carry in,
+	 * when the blocks sit one under the other) detours under or over its block when
+	 * there is room; otherwise (and from a gate) it curves.
+	 */
+	function route(a: Point, b: Point, slot: number, endX: number, src?: LogicNode) {
 		if (b.x < a.x + 20) {
+			if (src?.kind === 'FA') {
+				const down = b.y > a.y;
+				const cy = Y(src.y) + (down ? 1 : -1) * (FA_H + 12);
+				const lane = b.x - 16 - 14 * slot;
+				if (down ? cy < b.y - 12 : cy > b.y + 12) {
+					const x1 = a.x + 12;
+					const r = 6;
+					const s = down ? 1 : -1;
+					return {
+						d:
+							`M${a.x} ${a.y} H${x1 - r} Q${x1} ${a.y} ${x1} ${a.y + s * r} ` +
+							`V${cy - s * r} Q${x1} ${cy} ${x1 - r} ${cy} H${lane + r} ` +
+							`Q${lane} ${cy} ${lane} ${cy + s * r} V${b.y - s * r} ` +
+							`Q${lane} ${b.y} ${lane + r} ${b.y} H${endX}`,
+						lane: NaN
+					};
+				}
+			}
 			return {
 				d: `M${a.x} ${a.y} C${a.x + 70} ${a.y} ${b.x - 70} ${b.y} ${b.x} ${b.y} H${endX}`,
 				lane: NaN
@@ -252,15 +347,18 @@
 		circuit.wires.flatMap((w) => {
 			const src = byId.get(w.from);
 			const dst = byId.get(w.to);
-			if (!src || !dst || w.slot >= inputCount(dst.kind)) return [];
-			const a = outPort(src);
+			const port = w.port ?? 0;
+			if (!src || !dst || w.slot >= inputCount(dst.kind) || port >= outputCount(src.kind))
+				return [];
+			const a = outPort(src, port);
 			const b = inPort(dst, w.slot);
 			const endX = X(dst.x) + (bodyIn[dst.kind] ?? -26);
-			const { d, lane } = route(a, b, w.slot, endX);
-			const oldV = !!before.value.get(src.id);
-			const newV = !!now.value.get(src.id);
-			const u = oldV === newV ? 1 : clamp((clock.elapsed - changeAt(src)) / WIRE_S, 0, 1);
-			return [{ key: `${w.from}>${w.to}.${w.slot}`, w, d, lane, a, b, oldV, newV, u, ty: b.y }];
+			const { d, lane } = route(a, b, w.slot, endX, src);
+			const oldV = !!before.ports.get(src.id)?.[port];
+			const newV = !!now.ports.get(src.id)?.[port];
+			const u = oldV === newV ? 1 : clamp((clock.elapsed - changeAt(src, port)) / WIRE_S, 0, 1);
+			const from = `${w.from}:${port}`;
+			return [{ key: `${from}>${w.to}.${w.slot}`, w, from, d, lane, a, b, oldV, newV, u, ty: b.y }];
 		})
 	);
 	/** The value a wire shows along most of its length (for junction dots). */
@@ -272,7 +370,7 @@
 		const groups = new Map<string, { sy: number; lane: number; ys: number[]; on: boolean }>();
 		for (const w of wires) {
 			if (Number.isNaN(w.lane)) continue;
-			const k = `${w.w.from}@${w.lane.toFixed(1)}`;
+			const k = `${w.from}@${w.lane.toFixed(1)}`;
 			const g = groups.get(k) ?? { sy: w.a.y, lane: w.lane, ys: [], on: wireOn(w) };
 			g.ys.push(w.ty);
 			groups.set(k, g);
@@ -285,7 +383,7 @@
 			const further = wires.some(
 				(v) =>
 					v !== w &&
-					v.w.from === w.w.from &&
+					v.from === w.from &&
 					!Number.isNaN(v.lane) &&
 					(Math.abs(v.ty - v.a.y) < 1 ? v.b.x : v.lane) > w.lane + 0.5
 			);
@@ -304,8 +402,10 @@
 
 	// ---- truth table ---------------------------------------------------------------------
 	const table = $derived.by(() => {
+		// The 4-bit build's nine switches would make 512 rows: its checker replaces the table.
+		if (chain) return null;
 		try {
-			return truthTable(circuit);
+			return truthTable(circuit, blocks);
 		} catch {
 			return null;
 		}
@@ -359,6 +459,57 @@
 		};
 	});
 
+	// ---- the 4-bit checker ------------------------------------------------------------------
+	/** All 512 inputs tried on the reader's chain (only when the circuit changes, never per frame). */
+	const check = $derived(chain ? checkAdder4(circuit, blocks) : null);
+	const solved4 = $derived(!!check && check.right === check.total);
+	/** The map of right and wrong sums: a row per A, a column per B, one half per carry in. */
+	const MAP = { cell: 7, rows: 16, gap: 10 };
+	const mapW = MAP.cell * 32 + MAP.gap;
+	const CHECK = $derived.by(() => {
+		const h = 392;
+		const y0 = Math.max(24, 286 - h / 2);
+		const gx = PANEL.x0 + (PANEL.x1 - PANEL.x0 - mapW) / 2 + 6;
+		return { y0, h, gx, gy: y0 + 166 };
+	});
+	const cellX = (b: number, carryIn: boolean) =>
+		CHECK.gx + (carryIn ? 16 * MAP.cell + MAP.gap : 0) + b * MAP.cell;
+	const cellY = (a: number) => CHECK.gy + a * MAP.cell;
+	/** One path per colour: 512 rects would blow the scene's node budget. */
+	const mapPaths = $derived.by(() => {
+		if (!check) return { right: '', wrong: '' };
+		const s = MAP.cell - 1;
+		let right = '';
+		let wrong = '';
+		check.ok.forEach((ok, k) => {
+			const d = `M${cellX(k & 15, k >= 256)} ${cellY((k >> 4) & 15)}h${s}v${s}h${-s}Z`;
+			if (ok) right += d;
+			else wrong += d;
+		});
+		return { right, wrong };
+	});
+	/** The numbers on the switches, and what the lamps read. */
+	const nowAdd = $derived.by(() => {
+		if (!chain) return null;
+		const sw = assign(bits);
+		const num = (p: string) => [0, 1, 2, 3].reduce((v, i) => v + (sw[p + i] ? 2 ** i : 0), 0);
+		const a = num('a');
+		const b = num('b');
+		const carryIn = !!sw.ci;
+		return { a, b, carryIn, want: a + b + (carryIn ? 1 : 0), got: adder4Reading(now.value) };
+	});
+	const bin = (v: number, n: number) => v.toString(2).padStart(n, '0');
+	/**
+	 * A suggested place for each bit's block, in its switches' row (circuit units),
+	 * outlined until a block sits in that row.
+	 */
+	const SLOTS = [80, 220, 340, 460].map((y, bit) => ({ bit, x: 500, y }));
+	const openSlots = $derived(
+		chain
+			? SLOTS.filter((s) => !nodes.some((n) => n.kind === 'FA' && Math.abs(n.y - s.y) < 60))
+			: []
+	);
+
 	// ---- labels & readouts ----------------------------------------------------------------
 	const rule: Record<GateKind, string> = {
 		AND: 'on only if both inputs are on',
@@ -371,11 +522,14 @@
 		const n = byId.get(id);
 		return n && shown(n) ? 1 : 0;
 	};
-	const settled = $derived(nodes.every((n) => shown(n) === !!now.value.get(n.id)));
+	const settled = $derived(
+		nodes.every((n) => (now.ports.get(n.id) ?? []).every((v, p) => shown(n, p) === v))
+	);
 
-	// ---- editing (build step) -------------------------------------------------------------
+	// ---- editing (build steps) ------------------------------------------------------------
+	/** A port: an input slot, or (side 'out') the output numbered `slot`. */
 	type PortRef = { node: string; side: 'out' | 'in'; slot: number };
-	const tool = $derived(String(params.tool ?? 'AND'));
+	const tool = $derived(String((isAdder4 ? params.tool4 : params.tool) ?? 'AND'));
 	let msg = $state<{ text: string; at: number } | null>(null);
 	const say = (text: string) => (msg = { text, at: t });
 	const msgOpacity = $derived(
@@ -385,16 +539,26 @@
 	let wiring = $state<{ from: PortRef; x: number; y: number } | null>(null);
 	let pending = $state<PortRef | null>(null);
 
-	const commit = (c: Circuit) => setParam('circuit:build', serializeCircuit(c));
+	/** Stores an edit of the canvas; a note about the previous edit no longer applies. */
+	const commit = (c: Circuit) => {
+		msg = null;
+		setParam(canvasKey, serializeCircuit(c));
+	};
+
+	/** The switches of the 4-bit build set to 11 + 6 with carry in 0 (the ripple step's sum). */
+	const START4 = inputsOf(ADDER4_BLANK)
+		.map((n) => (adder4Inputs(11, 6, false)[n.id] ? '1' : '0'))
+		.join('');
 
 	// "Start again": react to a change of the press count. A message or a
 	// half-finished wire belongs to the step and challenge it started on, so
-	// either changing clears it (the same scene serves every canvas step).
+	// either changing clears it (the same scene serves every canvas step). On the
+	// 4-bit build, packing the block moves to the next stage and keeps its message.
 	let seenReset = untrack(() => params.resetCanvas);
-	let seenContext = untrack(() => `${step.id}|${goal}`);
+	let seenContext = untrack(() => `${step.id}|${isAdder4 ? '' : goal}`);
 	$effect(() => {
 		const n = params.resetCanvas;
-		const context = `${step.id}|${goal}`;
+		const context = `${step.id}|${isAdder4 ? '' : goal}`;
 		untrack(() => {
 			if (context !== seenContext) {
 				seenContext = context;
@@ -404,22 +568,62 @@
 			if (n === seenReset) return;
 			seenReset = n;
 			commit(blank);
-			setParam('sw:build', '');
+			setParam(swKey, chain ? START4 : '');
 			msg = null;
 			pending = null;
 		});
 	});
 
-	const snap = (p: Point) => ({
-		x: Math.round(IX(clamp(p.x, 130, 560)) / 25) * 25,
+	// "Use it as a block" (4-bit build): pack the reader's full adder, once it is one.
+	let seenPack = untrack(() => params.packBlock);
+	$effect(() => {
+		const n = params.packBlock;
+		untrack(() => {
+			if (n === seenPack) return;
+			seenPack = n;
+			if (!isAdder4) return;
+			if (chain) {
+				say('Your full adder is already a block: place four of them');
+				return;
+			}
+			if (!isFullAdder(circuit)) {
+				const k = table ? table.rows.filter((_, i) => rowOk(i)).length : 0;
+				say(`Not a full adder yet: ${k} of 8 rows match. Finish it first`);
+				return;
+			}
+			pending = null;
+			setParam('block:fa', serializeCircuit(circuit));
+			setParam('sw:circuit:chain', START4);
+			setParam('tool4', 'FA');
+			say('Your full adder is now a block: place one in each bit’s row');
+		});
+	});
+
+	/** A canvas point snapped to the grid, kept inside the canvas (a block keeps clear of the lamps). */
+	const snap = (p: Point, kind: NodeKind = 'AND') => ({
+		x: Math.round(IX(clamp(p.x, kind === 'FA' ? 220 : 130, kind === 'FA' ? 500 : 560)) / 25) * 25,
 		y: Math.round(IY(clamp(p.y, 60, 500)) / 20) * 20
 	});
 
 	function addGate(p: Point) {
 		if (tool === 'erase') return;
-		const at = snap(p);
+		if (tool === 'FA' && !block) {
+			say('Build a full adder first, then press “Use it as a block”');
+			return;
+		}
+		const kind = tool as GateKind | 'FA';
+		// A click inside a dashed outline puts the block right there.
+		const slot =
+			kind === 'FA'
+				? openSlots.find(
+						(s) => Math.abs(p.x - X(s.x)) <= FA_W + 6 && Math.abs(p.y - Y(s.y)) <= FA_H + 6
+					)
+				: undefined;
+		const at = slot ? { x: slot.x, y: slot.y } : snap(p, kind);
 		const near = circuit.nodes.some(
-			(n) => Math.abs(X(n.x) - X(at.x)) < 76 && Math.abs(Y(n.y) - Y(at.y)) < 56
+			(n) =>
+				Math.abs(X(n.x) - X(at.x)) < halfW(n.kind) + halfW(kind) &&
+				Math.abs(Y(n.y) - Y(at.y)) < halfH(n.kind) + halfH(kind)
 		);
 		if (near) {
 			say('Too close to another part: click some empty space');
@@ -428,7 +632,7 @@
 		let k = 1;
 		while (circuit.nodes.some((n) => n.id === `g${k}`)) k++;
 		commit({
-			nodes: [...circuit.nodes, { id: `g${k}`, kind: tool as GateKind, ...at }],
+			nodes: [...circuit.nodes, { id: `g${k}`, kind, ...at }],
 			wires: circuit.wires
 		});
 	}
@@ -450,7 +654,7 @@
 			say("A gate can't feed its own input");
 			return;
 		}
-		const w: Wire = { from: o.node, to: i.node, slot: i.slot };
+		const w: Wire = { from: o.node, ...(o.slot ? { port: o.slot } : {}), to: i.node, slot: i.slot };
 		if (makesLoop(circuit, w)) {
 			say("That would make a loop: here, outputs can't feed back into earlier gates");
 			return;
@@ -466,9 +670,11 @@
 	const ports = $derived(
 		edit
 			? nodes.flatMap((n) => [
-					...(n.kind === 'out'
-						? []
-						: [{ ref: { node: n.id, side: 'out' as const, slot: 0 }, p: outPort(n), n }]),
+					...Array.from({ length: outputCount(n.kind) }, (_, s) => ({
+						ref: { node: n.id, side: 'out' as const, slot: s },
+						p: outPort(n, s),
+						n
+					})),
 					...Array.from({ length: inputCount(n.kind) }, (_, s) => ({
 						ref: { node: n.id, side: 'in' as const, slot: s },
 						p: inPort(n, s),
@@ -479,13 +685,23 @@
 	);
 	const portKey = (r: PortRef) => `${r.node}:${r.side}:${r.slot}`;
 	const nodeName = (n: LogicNode) =>
-		n.kind === 'in' ? `switch ${n.label}` : n.kind === 'out' ? `lamp ${n.label}` : `${n.kind} gate`;
+		n.kind === 'in'
+			? `switch ${n.label}`
+			: n.kind === 'out'
+				? `lamp ${n.label}`
+				: n.kind === 'FA'
+					? 'full adder block'
+					: `${n.kind} gate`;
+	const FA_IN_NAMES = ['Input A', 'Input B', 'Carry in'];
+	const FA_OUT_NAMES = ['Sum', 'Carry out'];
 	const portLabel = (r: PortRef, n: LogicNode) =>
-		r.side === 'out'
-			? `Output of ${nodeName(n)}`
-			: inputCount(n.kind) === 2
-				? `Input ${r.slot + 1} of ${nodeName(n)}`
-				: `Input of ${nodeName(n)}`;
+		n.kind === 'FA'
+			? `${(r.side === 'out' ? FA_OUT_NAMES : FA_IN_NAMES)[r.slot]} of ${nodeName(n)}`
+			: r.side === 'out'
+				? `Output of ${nodeName(n)}`
+				: inputCount(n.kind) === 2
+					? `Input ${r.slot + 1} of ${nodeName(n)}`
+					: `Input of ${nodeName(n)}`;
 
 	function onPortDown(e: PointerEvent, r: PortRef, p: Point) {
 		if (tool === 'erase') return;
@@ -538,7 +754,7 @@
 			e,
 			(p) => {
 				if (!off) off = { x: p.x - X(n.x), y: p.y - Y(n.y) };
-				dragPos = { id: n.id, ...snap({ x: p.x - off.x, y: p.y - off.y }) };
+				dragPos = { id: n.id, ...snap({ x: p.x - off.x, y: p.y - off.y }, n.kind) };
 			},
 			() => {
 				const d = dragPos;
@@ -572,7 +788,7 @@
 		const m = dir[e.key];
 		if (!m) return;
 		e.preventDefault();
-		const s = snap({ x: X(n.x + m[0]), y: Y(n.y + m[1]) });
+		const s = snap({ x: X(n.x + m[0]), y: Y(n.y + m[1]) }, n.kind);
 		commit({
 			nodes: circuit.nodes.map((q) => (q.id === n.id ? { ...q, ...s } : q)),
 			wires: circuit.wires
@@ -590,7 +806,17 @@
 		edit
 			? tool === 'erase'
 				? 'Eraser: click a gate or a wire to remove it'
-				: `Click empty space to add ${tool === 'AND' || tool === 'OR' || tool === 'XOR' ? 'an' : 'a'} ${tool} gate · drag from an output dot to an input dot to wire`
+				: isAdder4 && !chain && solved
+					? 'Right! Now press “Use it as a block” to pack your full adder into one part'
+					: chain && solved4
+						? 'Flip the switches to add any two numbers'
+						: tool === 'FA'
+							? !chain
+								? 'First build a full adder from gates (pick a gate under Add)'
+								: openSlots.length
+									? 'Click a dashed outline to place a full adder block · drag from an output dot to an input dot to wire'
+									: 'Wire switches, carries and lamps: drag from an output dot to an input dot'
+							: `Click empty space to add ${tool === 'AND' || tool === 'OR' || tool === 'XOR' ? 'an' : 'a'} ${tool} gate · drag from an output dot to an input dot to wire`
 			: auto
 				? 'Playing through every row of the table · click a switch to take over'
 				: 'Click a switch (or Tab to it and press Enter) to flip it'
@@ -680,6 +906,36 @@
 			}}
 		/>
 	{/if}
+
+	<!-- 4-bit build: where each bit's block can go -->
+	{#each openSlots as s (s.bit)}
+		<g style:pointer-events="none">
+			<rect
+				x={X(s.x) - FA_W}
+				y={Y(s.y) - FA_H}
+				width={2 * FA_W}
+				height={2 * FA_H}
+				rx="10"
+				fill="none"
+				stroke="var(--lg-gate-edge)"
+				stroke-opacity="0.5"
+				stroke-dasharray="5 4"
+			/>
+			<Readout id="lg-slot-{s.bit}">
+				{@render txt(X(s.x), Y(s.y) - 2, `bit ${s.bit}`, 12, {
+					anchor: 'middle',
+					weight: 600,
+					muted: true,
+					halo: false
+				})}
+				{@render txt(X(s.x), Y(s.y) + 14, 'block here', 10, {
+					anchor: 'middle',
+					muted: true,
+					halo: false
+				})}
+			</Readout>
+		</g>
+	{/each}
 
 	<!-- full adder: the two half adders -->
 	{#if phase === 'full' && !edit}
@@ -792,7 +1048,12 @@
 					halo: false
 				})}
 			</g>
-			{@render txt(cx - 2, cy - 22, n.label ?? '', 14, { anchor: 'middle', weight: 700 })}
+			{#if chain}
+				<!-- nine switches stacked: the names go on the left -->
+				{@render txt(cx - 34, cy + 5, n.label ?? '', 13, { anchor: 'end', weight: 700 })}
+			{:else}
+				{@render txt(cx - 2, cy - 22, n.label ?? '', 14, { anchor: 'middle', weight: 700 })}
+			{/if}
 		{:else if n.kind === 'out'}
 			{#if !circuit.wires.some((w) => w.to === n.id)}
 				<line x1={cx - 26} y1={cy} x2={cx - 13} y2={cy} stroke="var(--lg-off)" stroke-width="2.5" />
@@ -814,6 +1075,91 @@
 				anchor: 'middle',
 				weight: 600
 			})}
+		{:else if n.kind === 'FA'}
+			<!-- a full-adder block: the reader's own circuit, packed -->
+			{#each FA_OUT as dy, p (p)}
+				<line
+					x1={cx + FA_W}
+					y1={cy + dy}
+					x2={cx + FA_PIN}
+					y2={cy + dy}
+					stroke={wireCol(shown(n, p))}
+					stroke-width="3"
+				/>
+			{/each}
+			{#each FA_IN as dy, s (s)}
+				{#if !circuit.wires.some((w) => w.to === n.id && w.slot === s)}
+					<line
+						x1={cx - FA_PIN}
+						y1={cy + dy}
+						x2={cx - FA_W}
+						y2={cy + dy}
+						stroke="var(--lg-off)"
+						stroke-width="2.5"
+					/>
+				{/if}
+			{/each}
+			<g
+				transform="translate({cx} {cy})"
+				class="focusable"
+				class:dragging={dragPos?.id === n.id}
+				role="button"
+				tabindex="0"
+				aria-label="Full adder block: drag or use the arrow keys to move it, Delete to remove it"
+				style:cursor={tool === 'erase' ? 'not-allowed' : 'grab'}
+				style:touch-action="none"
+				onpointerdown={(e) => onGateDown(e, n)}
+				onkeydown={(e) => onGateKey(e, n)}
+			>
+				<rect
+					class="ring"
+					x={-FA_W - 6}
+					y={-FA_H - 6}
+					width={2 * FA_W + 12}
+					height={2 * FA_H + 12}
+					rx="14"
+					fill="none"
+					stroke="var(--focus)"
+					stroke-width="2"
+				/>
+				<rect
+					x={-FA_W}
+					y={-FA_H}
+					width={2 * FA_W}
+					height={2 * FA_H}
+					rx="10"
+					fill="var(--lg-gate)"
+					stroke="var(--lg-gate-edge)"
+					stroke-width="2"
+				/>
+				{#each ['A', 'B', 'Cin'] as l, s (l)}
+					{@render txt(-FA_W + 5, FA_IN[s] + 3.5, l, 10, {
+						weight: 600,
+						color: 'var(--lg-gate-edge)',
+						halo: false
+					})}
+				{/each}
+				{#each ['Sum', 'Cout'] as l, p (l)}
+					{@render txt(FA_W - 5, FA_OUT[p] + 3.5, l, 10, {
+						anchor: 'end',
+						weight: 600,
+						color: 'var(--lg-gate-edge)',
+						halo: false
+					})}
+				{/each}
+				{@render txt(3, -1, 'full', 11, {
+					anchor: 'middle',
+					weight: 700,
+					color: 'var(--lg-gate-edge)',
+					halo: false
+				})}
+				{@render txt(3, 12, 'adder', 11, {
+					anchor: 'middle',
+					weight: 700,
+					color: 'var(--lg-gate-edge)',
+					halo: false
+				})}
+			</g>
 		{:else}
 			{@const pinX = bodyOut[n.kind] ?? 26}
 			<line x1={cx + pinX} y1={cy} x2={cx + 40} y2={cy} stroke={wireCol(on)} stroke-width="3" />
@@ -1180,6 +1526,153 @@
 				})}
 			{/if}
 		{/each}
+	{/if}
+
+	<!-- the 4-bit checker: all 512 inputs, mapped -->
+	{#if check && nowAdd}
+		{@const y0 = CHECK.y0}
+		{@const gx = CHECK.gx}
+		{@const gy = CHECK.gy}
+		{@const fw = check.firstWrong}
+		{@const ready = settled}
+		{@const nowOk = nowAdd.got === nowAdd.want}
+		<rect
+			x={PANEL.x0}
+			y={y0}
+			width={PANEL.x1 - PANEL.x0}
+			height={CHECK.h}
+			rx="12"
+			fill="var(--surface)"
+			stroke={solved4 ? 'var(--lg-ok)' : 'var(--border)'}
+			stroke-width={solved4 ? 2 : 1}
+		/>
+		<Readout id="lg-check-title">
+			{@render txt(PANEL.x0 + 16, y0 + 27, 'Checker', 15, { weight: 700, halo: false })}
+			{@render txt(PANEL.x0 + 16, y0 + 48, 'It tries all 512 inputs: A and B', 12, {
+				muted: true,
+				halo: false
+			})}
+			{@render txt(PANEL.x0 + 16, y0 + 64, 'from 0 to 15, with carry in 0 and 1', 12, {
+				muted: true,
+				halo: false
+			})}
+		</Readout>
+		<Readout
+			id="lg-check"
+			order={3}
+			label="Checker: all 512 inputs"
+			value={solved4 ? '✓ all 512 right: a 4-bit adder!' : `${check.right} of 512 right`}
+			note={solved4 || !fw
+				? undefined
+				: `first wrong: ${fw.a} + ${fw.b} + ${fw.carryIn ? 1 : 0} gave ${fw.got}`}
+			color={solved4 ? 'var(--lg-ok)' : undefined}
+		>
+			{@render txt(
+				PANEL.x0 + 16,
+				y0 + 100,
+				solved4 ? '✓ All 512 right' : `${check.right} of 512 right`,
+				19,
+				{ weight: 700, color: solved4 ? 'var(--lg-ok)' : undefined, halo: false }
+			)}
+			{@render txt(
+				PANEL.x0 + 16,
+				y0 + 122,
+				solved4
+					? 'That is a 4-bit adder!'
+					: fw
+						? `First wrong: ${fw.a} + ${fw.b} + ${fw.carryIn ? 1 : 0} gave ${fw.got}`
+						: '',
+				12,
+				{ weight: solved4 ? 700 : 500, color: solved4 ? 'var(--lg-ok)' : undefined, halo: false }
+			)}
+		</Readout>
+		<Readout id="lg-check-map">
+			{#each [false, true] as ci (ci)}
+				{@render txt(cellX(8, ci), gy - 9, `carry in ${ci ? 1 : 0}`, 11, {
+					anchor: 'middle',
+					muted: true,
+					halo: false
+				})}
+				{@render txt(cellX(0, ci), gy + 16 * MAP.cell + 14, 'B 0', 10, {
+					muted: true,
+					halo: false
+				})}
+				{@render txt(cellX(16, ci) - 1, gy + 16 * MAP.cell + 14, '15', 10, {
+					anchor: 'end',
+					muted: true,
+					halo: false
+				})}
+			{/each}
+			{@render txt(gx - 5, gy + 6, 'A 0', 10, { anchor: 'end', muted: true, halo: false })}
+			{@render txt(gx - 5, gy + 16 * MAP.cell - 1, '15', 10, {
+				anchor: 'end',
+				muted: true,
+				halo: false
+			})}
+			{@render txt(PANEL.x0 + 16, gy + 16 * MAP.cell + 40, '■', 11, {
+				color: 'var(--lg-ok)',
+				halo: false
+			})}
+			{@render txt(PANEL.x0 + 29, gy + 16 * MAP.cell + 40, 'right', 11, {
+				muted: true,
+				halo: false
+			})}
+			{@render txt(PANEL.x0 + 66, gy + 16 * MAP.cell + 40, '■', 11, {
+				color: 'var(--lg-off)',
+				halo: false
+			})}
+			{@render txt(PANEL.x0 + 79, gy + 16 * MAP.cell + 40, 'wrong', 11, {
+				muted: true,
+				halo: false
+			})}
+			{@render txt(PANEL.x0 + 124, gy + 16 * MAP.cell + 40, '□ your switches', 11, {
+				muted: true,
+				halo: false
+			})}
+		</Readout>
+		<path d={mapPaths.right} fill="var(--lg-ok)" />
+		<path d={mapPaths.wrong} fill="var(--lg-off)" opacity="0.4" />
+		<rect
+			x={cellX(nowAdd.b, nowAdd.carryIn) - 1.5}
+			y={cellY(nowAdd.a) - 1.5}
+			width={MAP.cell + 2}
+			height={MAP.cell + 2}
+			rx="1.5"
+			fill="none"
+			stroke="var(--stage-ink)"
+			stroke-width="1.5"
+		/>
+		<Readout
+			id="lg-now4"
+			order={2}
+			label="Your switches"
+			value="{nowAdd.a} + {nowAdd.b} + {nowAdd.carryIn ? 1 : 0} = {nowAdd.want}"
+			note={ready
+				? `the lamps read ${bin(nowAdd.got, 5)} = ${nowAdd.got}${nowOk ? ' ✓' : ' ✗'}`
+				: 'adding…'}
+		>
+			{@render txt(
+				PANEL.x0 + 16,
+				y0 + 352,
+				`${nowAdd.a} + ${nowAdd.b} + ${nowAdd.carryIn ? 1 : 0} = ${nowAdd.want}`,
+				14,
+				{ weight: 700, halo: false }
+			)}
+			{@render txt(
+				PANEL.x0 + 16,
+				y0 + 372,
+				ready
+					? `the lamps read ${bin(nowAdd.got, 5)} = ${nowAdd.got}${nowOk ? ' ✓' : ' ✗'}`
+					: 'adding…',
+				12,
+				{
+					weight: ready ? 600 : 500,
+					color: ready && nowOk ? 'var(--lg-ok)' : undefined,
+					muted: !ready || !nowOk,
+					halo: false
+				}
+			)}
+		</Readout>
 	{/if}
 
 	<!-- messages and hint -->
