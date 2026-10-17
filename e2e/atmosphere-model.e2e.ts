@@ -9,6 +9,7 @@ import {
 	cells,
 	climate,
 	coriolis,
+	frontAt,
 	hadleyEdge,
 	insolation,
 	maxIntensity,
@@ -126,6 +127,41 @@ test('a low wraps warm and cold air into fronts: the temperature contrast sharpe
 	expect(maxGradient(36)).toBeGreaterThan(2 * maxGradient(0));
 	// No systems: nothing moves.
 	expect(advectedTemperature([], 0, 300, 48)).toBeCloseTo(advectedTemperature([], 0, 300, 0), 9);
+});
+
+test('fronts: cold air advancing makes a cold front, warm air a warm front, neither a stationary one', () => {
+	// Warm to the south: the gradient (°C per 100 km) points south.
+	const cold = frontAt(0, -6, 0, -10); // a north wind pushes the cold air south
+	expect(cold?.kind).toBe('cold');
+	expect(cold?.ny).toBeCloseTo(-1, 9); // the front moves south, into the warm air
+	const warm = frontAt(0, -6, 0, 10); // a south wind pushes the warm air north
+	expect(warm?.kind).toBe('warm');
+	expect(warm?.ny).toBeCloseTo(1, 9); // the front moves north, into the cold air
+	expect(frontAt(0, -6, 12, 0.5)?.kind).toBe('stationary'); // wind along the boundary
+	expect(frontAt(0, -2, 0, -10)).toBeNull(); // too gentle a contrast to be a front
+});
+
+test('a low winds up both a warm and a cold front within a day and a half; none at the start', () => {
+	const low: System[] = [{ kind: 'low', x: 0, y: 0, dp: -15, r: 500 }];
+	const fronts = (hours: number) => {
+		const count = { cold: 0, warm: 0, stationary: 0 };
+		for (let x = -1200; x <= 1200; x += 50)
+			for (let y = -1200; y <= 1200; y += 50) {
+				if (Math.hypot(x, y) < 0.45 * 500) continue; // the tightly wound centre
+				const T = (xx: number, yy: number) => advectedTemperature(low, xx, yy, hours);
+				const d = 10; // km
+				const gradE = ((T(x + d, y) - T(x - d, y)) / (2 * d)) * 100;
+				const gradN = ((T(x, y + d) - T(x, y - d)) / (2 * d)) * 100;
+				const [u, v] = wind(low, x, y, 45, false);
+				const f = frontAt(gradE, gradN, u, v);
+				if (f) count[f.kind]++;
+			}
+		return count;
+	};
+	expect(fronts(0)).toEqual({ cold: 0, warm: 0, stationary: 0 });
+	const later = fronts(36);
+	expect(later.cold).toBeGreaterThan(20);
+	expect(later.warm).toBeGreaterThan(20);
 });
 
 test('hurricanes: warmer seas allow stronger storms; none over cool water or at the equator', () => {

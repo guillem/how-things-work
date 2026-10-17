@@ -387,6 +387,40 @@ export function advectedTemperature(
 	return initial(py);
 }
 
+/** Weakest temperature contrast (°C per 100 km) that counts as a front. */
+export const FRONT_GRADIENT = 4.5;
+/** Wind across a front (m/s) below which neither air mass is advancing: a stationary front. */
+export const FRONT_ADVANCE = 1.5;
+
+export interface FrontPoint {
+	kind: 'cold' | 'warm' | 'stationary';
+	/**
+	 * Unit vector [east, north]: the way the front moves (from the advancing air
+	 * into the air it replaces); for a stationary front, towards the warm side.
+	 */
+	nx: number;
+	ny: number;
+}
+
+/**
+ * What kind of front, if any, runs through a point where the temperature
+ * gradient is (`gradE`, `gradN`) °C per 100 km (pointing towards the warm side)
+ * and the wind is (`u`, `v`) m/s [east, north]. No front where the contrast is
+ * weaker than FRONT_GRADIENT. A cold front where the wind blows across it from
+ * the cold side to the warm side (cold air advancing), a warm front the other
+ * way, and a stationary front where the wind blows along it.
+ */
+export function frontAt(gradE: number, gradN: number, u: number, v: number): FrontPoint | null {
+	const g = Math.hypot(gradE, gradN);
+	if (!(g > FRONT_GRADIENT)) return null;
+	const across = (u * gradE + v * gradN) / g; // m/s towards the warm side
+	if (Math.abs(across) > FRONT_ADVANCE) {
+		const s = Math.sign(across);
+		return { kind: across > 0 ? 'cold' : 'warm', nx: (s * gradE) / g, ny: (s * gradN) / g };
+	}
+	return { kind: 'stationary', nx: gradE / g, ny: gradN / g };
+}
+
 // ------------------------------------------------------------ 6. hurricanes
 
 /** Sea surface temperature (°C) below which hurricanes do not form. */
