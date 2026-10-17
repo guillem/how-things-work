@@ -194,8 +194,6 @@ at>` (badge), minor labels in a bare `<Readout>`; pass the scene's fade as `opac
   (several hundred text elements, each needing editorial choices), plus axis ticks in the shared chart
   helpers.
 
-- Cards on the index have hand-drawn art only for topics that have a vignette in
-  `src/lib/components/TopicArt.svelte` (99 of the 100 topics do; sun-earth-moon has none).
 - Possible cleanup: knip (2026-10-15) lists about 160 unused exports and 60 unused types in
   `src/routes/*/*.ts` (helpers exported for tests or never used). Its "unused files" for
   `scripts/data/*.mjs`, `scripts/shot.mjs` and `scripts/batch-review.ts`, and the

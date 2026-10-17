@@ -65,7 +65,20 @@ Last updated: 2026-10-17 UTC.
 
 ## Current development
 
-**Nothing in progress; committed on local `main`, not pushed or released** (2026-10-17):
+**Overnight backlog round (started 2026-10-17 ~00:30 UTC)**, before releasing 1.0. One agent per
+package in a local worktree; each branch is merged into local `main` as it finishes. Nothing is
+pushed or released until the user validates. Wave 1: logic-gates gate-level adder; phone readouts
+A (ocean-currents, semiconductors, black-holes, homeostasis); phone readouts B (states-of-matter,
+chemical-bonds + NH₃ arc, waves-interference + Handle unmount, fourier-transform); framework
+(scene-driven controls, deep-time slider, atmosphere-weather fronts into the model); extras
+bio/AI (the-cell, dna-to-protein, respiration-atp, convolution-vision); source re-checks
+(vision-color, evolution, crispr, solar-cells, photosynthesis). Wave 2: shared `<Axes>` ticks on
+phones; extras physics/space (quantum-computing, stars, nuclear-fusion, big-bang, flight,
+oscillations-resonance); external-data items (atoms-periodic-table isotopes, embeddings GloVe,
+earthquakes ak135); diffusion-models retrain; knip cleanup. Left for the user: data licences and
+the modelling choices (BACKLOG). If interrupted: `git worktree list` shows unmerged packages.
+
+**Before that, committed on local `main`, not pushed or released** (2026-10-17):
 
 - Index search and filters: search box, Area and Level toggles with live counts, an empty state
   with "Clear filters", the state in the query string; tested in `e2e/index.e2e.ts` (@smoke).
