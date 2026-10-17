@@ -215,3 +215,9 @@ Non-commercial:
   97: 136, 2021) carry only "© 1998-2026 Lindsey, J. S.; Taniguchi, M.; Du, H." and no licence
   or permission to redistribute; the OMLC copy (https://omlc.org/spectra/PhotochemCAD/) is
   reworked by S. Prahl with no licence either. Not used; the Gaussian approximations stay.
+- **Webster et al. 2000** (vision-color, red–green channel with an S input): M. A. Webster,
+  E. Miyahara, G. Malkoc & V. E. Raker, "Variations in normal color vision. II. Unique hues",
+  JOSA A 17: 1545–1555 (2000), read from the authors' copy
+  https://labs.psych.unr.edu/websterlab/files/WebsterJOSA2000b.pdf (retrieved 2026-10-17;
+  © Optical Society of America). Cited for "S-cone signals also contribute substantially to
+  red–green sensations"; no data used. The channel's S weight is computed from the CVRL cones.
