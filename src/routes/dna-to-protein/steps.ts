@@ -28,6 +28,27 @@ const codon: Control = {
 	help: 'Step the ribosome along the message one codon at a time (arrow keys on the slider).'
 };
 
+const copyAuto: Control = {
+	type: 'toggle',
+	id: 'copy-auto',
+	label: 'Copy by itself',
+	default: true,
+	help: 'Off: the slider below sets how many letters are copied. Moving the slider turns this off.'
+};
+
+const copied: Control = {
+	type: 'range',
+	id: 'copied',
+	label: 'Letters copied',
+	min: 0,
+	max: 1700,
+	bounds: (params) => [0, geneOf(params, true).transcribed.length],
+	step: 1,
+	default: 0,
+	format: (v) => `${v.toLocaleString('en-US')} letters`,
+	help: 'Step the polymerase along the gene one letter at a time (arrow keys on the slider).'
+};
+
 const edit: Control = {
 	type: 'select',
 	id: 'edit',
@@ -114,11 +135,11 @@ export const spec: ExplainerSpec = {
 			title: 'Copying a gene into RNA',
 			scene: 'transcribe',
 			duration: 85,
-			controls: [gene],
+			controls: [gene, copyAuto, copied],
 			body: `
 <p>DNA never leaves the nucleus. To use a gene, the cell makes a working copy of it in <dfn data-def="Ribonucleic acid: a single-stranded cousin of DNA, with U (uracil) in place of T.">RNA</dfn>. This is <strong>transcription</strong>.</p>
 <p>An enzyme, <dfn data-def="The enzyme that unzips a short stretch of DNA and builds an RNA copy of one strand, letter by letter.">RNA polymerase</dfn>, opens a short bubble in the double helix and reads one strand, the <strong>template strand</strong>. For each letter it adds the matching RNA letter: G for C, C for G, A for T, and <strong>U</strong> (uracil) for A, because RNA uses U instead of T. It reads the template from 3′ to 5′ and builds the RNA from 5′ to 3′, then the DNA zips up again behind it.</p>
-<p>The RNA comes out with the same letters as the other DNA strand, the <strong>coding strand</strong>, only with U for T. In our cells the polymerase copies about 500–4,000 letters a minute; here it runs at 1,200. Pick a gene: β-globin, a short bacterial gene, or type your own.</p>`,
+<p>The RNA comes out with the same letters as the other DNA strand, the <strong>coding strand</strong>, only with U for T. In our cells the polymerase copies about 500–4,000 letters a minute; here it runs at 1,200. Pick a gene: β-globin, a short bacterial gene, or type your own. To follow it letter by letter, move the <strong>Letters copied</strong> slider: the polymerase stops and steps with it.</p>`,
 			notes: `<p>Human genes that code for proteins are copied by RNA polymerase II, a machine of 12 proteins; the drawing is schematic. It starts at a <dfn data-def="A stretch of DNA just before a gene where proteins gather to start the polymerase.">promoter</dfn> before the gene and copies the whole gene, introns included (next step). Elongation rates measured in human cells range from about 0.5 to 4 kilobases per minute (Jonkers &amp; Lis, Nat. Rev. Mol. Cell Biol. 2015). The β-globin sequence shown is the gene from its transcription start, GRCh38 chr11:5,225,464–5,227,071 (minus strand). trpL is the 45-letter gene of the <i>E. coli</i> trp leader peptide (RefSeq NC_000913.3); bacteria have no nucleus, so their ribosomes start reading an RNA while it is still being made. Only trpL’s 45 coding letters are shown; the real RNA starts a little earlier and continues into the next genes of the operon.</p>`
 		},
 		{
