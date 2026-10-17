@@ -115,3 +115,41 @@ test('one calendar year: the dinosaurs die out on 26 December, humans at 23:23',
 	await expect(stage(page)).toContainText('Industrial Revolution · 23:59:58');
 	await expect(stage(page)).toContainText('the last 0.55 s');
 });
+
+test.describe('with motion', () => {
+	test.use({ reducedMotion: 'no-preference' });
+
+	test('while the drift plays, the time slider follows the globe; switched off, it takes over there', async ({
+		page
+	}) => {
+		await page.clock.install();
+		await open(page, './deep-time/#drift');
+		// time moves only when the test says so
+		await page.clock.pauseAt(Date.now() + 1000);
+		const slider = range(page, 'tDrift');
+		const readout = page.locator('label:has(input[data-control=tDrift]) output');
+		await expect(readout).toHaveText('250 million years ago');
+		const play = page.locator('input[type=checkbox][data-control=driftPlay]');
+		await play.focus();
+		await page.keyboard.press('Space');
+		await expect(play).toBeChecked();
+		await expect(slider).toBeDisabled();
+
+		await page.clock.runFor(5_000);
+		const first = await readout.textContent();
+		expect(first).toMatch(/million years ago/);
+		expect(first).not.toBe('250 million years ago');
+		await expect(stage(page)).toContainText(first!);
+		await page.clock.runFor(5_000);
+		const later = await readout.textContent();
+		expect(later).not.toBe(first);
+		await expect(stage(page)).toContainText(later!);
+
+		await page.keyboard.press('Space');
+		await expect(play).not.toBeChecked();
+		await expect(slider).toBeEnabled();
+		await page.clock.runFor(2_000);
+		await expect(readout).toHaveText(later!);
+		await expect(stage(page)).toContainText(later!);
+	});
+});

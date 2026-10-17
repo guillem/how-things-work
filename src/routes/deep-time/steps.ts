@@ -6,7 +6,13 @@ import { EARTH_AGE, ZOOMS, ageText, zoomSpan } from './deeptime';
  * that the slider runs from old (left) to today (right); `zoom` names the step's zoom control,
  * or fixes the window when it is not a control id.
  */
-function scrub(id: string, def: number, zoom: string, label = 'Move through time'): Control {
+function scrub(
+	id: string,
+	def: number,
+	zoom: string,
+	label = 'Move through time',
+	disabled?: (p: Params) => boolean
+): Control {
 	const span = (p: Params) => zoomSpan(String(p[zoom] ?? zoom));
 	return {
 		type: 'range',
@@ -26,7 +32,8 @@ function scrub(id: string, def: number, zoom: string, label = 'Move through time
 			const age = Math.max(0, EARTH_AGE - v);
 			return age < 1e-7 ? 'today' : ageText(age);
 		},
-		help: 'Or drag the line on the timeline.'
+		help: 'Or drag the line on the timeline.',
+		disabled
 	};
 }
 
@@ -46,7 +53,7 @@ const play: Control = {
 	id: 'driftPlay',
 	label: 'Play a billion years of drift',
 	default: false,
-	help: 'Runs the globe from 1,000 million years ago to today, over about 50 seconds. The slider takes over again when you switch it off.'
+	help: 'Runs the globe from 1,000 million years ago to today, over about 50 seconds. The slider follows it, and takes over again when you switch it off.'
 };
 
 const calendarEvent: Control = {
@@ -113,7 +120,11 @@ export const spec: ExplainerSpec = {
 			scene: 'time',
 			hints: { phase: 'drift', time: 'tDrift', zoom: 'billion' },
 			duration: 30,
-			controls: [scrub('tDrift', 250, 'billion'), play],
+			controls: [
+				// the globe's "play" drives the time: the slider follows it, and takes over again after
+				scrub('tDrift', 250, 'billion', undefined, (p) => p.driftPlay === true),
+				play
+			],
 			body: `
 <p>In <a href="../plate-tectonics/">plate tectonics</a> you saw that the plates move a few centimetres a year. Over hundreds of millions of years that rebuilds the map. The globe shows a reconstruction of the continents over the last billion years: drag the line back and watch them travel.</p>
 <p>About 250 million years ago almost all the land was joined in one supercontinent, <strong>Pangaea</strong>, with Paris in the tropics. It then broke apart: the Atlantic opened, India raced north, and Australia left Antarctica. Go back further and the pieces assemble and break up again: before about 750 million years ago most of them were gathered in an older supercontinent, <strong>Rodinia</strong>.</p>

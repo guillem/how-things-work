@@ -114,6 +114,19 @@
 		return Math.max(0, Math.min(span, EARTH_AGE - rawValue));
 	});
 	const cx = $derived(xOf(age, sp));
+	// While "play" runs, the time slider (disabled meanwhile, see steps.ts) shows the played
+	// time, and keeps it when play is switched off. Rounded to what the slider's read-out shows,
+	// so the write-back runs only when that changes, not on every frame.
+	const played = $derived.by(() => {
+		if (!playing) return null;
+		const unit = age >= 10 ? 1 : age >= 1 ? 0.1 : 0.001;
+		return EARTH_AGE - Math.round(age / unit) * unit;
+	});
+	$effect(() => {
+		const v = played;
+		const id = timeId;
+		if (v !== null) untrack(() => setParam(id, v));
+	});
 
 	function ondown(e: PointerEvent) {
 		if (playing) return;
