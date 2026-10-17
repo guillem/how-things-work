@@ -273,7 +273,7 @@
 		xTicks={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
 		yTicks={[0, 0.25, 0.5, 0.75, 1]}
 		yFormat={(y) => pct(y)}
-		xLabel="R₀: people each case infects when nobody is immune"
+		xLabel="R₀: people each case infects, none immune"
 		yLabel="immune share (vaccinated)"
 	/>
 
