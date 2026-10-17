@@ -9,7 +9,7 @@
 	 *
 	 */
 	import { clamp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { capacity, data, valence, type Sym } from '../model';
 	import { ATOM } from '../look';
 
@@ -63,6 +63,12 @@
 	const shown = (c: (typeof cards)[number], k: number) =>
 		smoothstep(0, 0.25, time - c.start - k * 0.12);
 	const pulse = $derived(reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 3));
+
+	// Phone readout: the bonds of every card in one row.
+	const bondsRow = cards
+		.filter((c) => c.cap > 0 && c.sym !== 'Na')
+		.map((c) => `${c.sym} ${c.cap}`)
+		.join(' · ');
 </script>
 
 {#snippet txt(
@@ -86,13 +92,30 @@
 
 <g>
 	<!-- group and period labels -->
-	{#each Object.entries(COL) as [g, x] (g)}
-		{@render txt(x, 44, `group ${g}`, 11, { muted: true })}
-	{/each}
-	{#each Object.entries(ROW) as [p, y] (p)}
-		{@render txt(28, y + 4, `${p}`, 11, { muted: true })}
-	{/each}
-	{@render txt(28, 44, 'period', 11, { muted: true })}
+	<Readout id="axes">
+		{#each Object.entries(COL) as [g, x] (g)}
+			{@render txt(x, 44, `group ${g}`, 11, { muted: true })}
+		{/each}
+		{#each Object.entries(ROW) as [p, y] (p)}
+			{@render txt(28, y + 4, `${p}`, 11, { muted: true })}
+		{/each}
+		{@render txt(28, 44, 'period', 11, { muted: true })}
+	</Readout>
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout
+		id="bonds"
+		order={1}
+		label="Bonds each atom makes"
+		value={bondsRow}
+		note="electrons short of a full shell (8; for H, 2) · Ne: full shell · Na: gives its 1 away"
+	/>
+	<Readout
+		id="key-unpaired"
+		order={2}
+		label="unpaired electron: ready to pair up in a bond"
+		color="var(--atom-electron)"
+	/>
+	<Readout id="key-lone" order={3} label="lone pair: stays on the atom" color="var(--stage-ink)" />
 
 	{#each cards as c (c.sym)}
 		{@const appear = smoothstep(0, 0.3, time - c.start + 0.3)}
@@ -138,45 +161,53 @@
 					opacity={o}
 				/>
 			{/each}
-			{@render txt(
-				c.x,
-				c.y + 60,
-				c.cap === 0
-					? 'full shell'
-					: c.sym === 'Na'
-						? 'gives 1 away'
-						: `${c.cap} bond${c.cap > 1 ? 's' : ''}`,
-				14,
-				{
-					weight: 700
-				}
-			)}
-			{@render txt(c.x, c.y + 77, `${c.v} outer e⁻`, 11, { muted: true })}
+			<Readout id="card-{c.sym}">
+				{@render txt(
+					c.x,
+					c.y + 60,
+					c.cap === 0
+						? 'full shell'
+						: c.sym === 'Na'
+							? 'gives 1 away'
+							: `${c.cap} bond${c.cap > 1 ? 's' : ''}`,
+					14,
+					{
+						weight: 700
+					}
+				)}
+				{@render txt(c.x, c.y + 77, `${c.v} outer e⁻`, 11, { muted: true })}
+			</Readout>
 		</g>
 	{/each}
 
-	<!-- legend, in the empty corner of the table -->
-	<g transform="translate(300 74)" opacity={clamp(time - 0.3)}>
-		<rect
-			x="-10"
-			y="-6"
-			width="560"
-			height="104"
-			rx="10"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
-		<circle cx="12" cy="20" r={6 + 2.5 * pulse} fill="var(--atom-electron)" opacity="0.25" />
-		<circle cx="12" cy="20" r="4" fill="var(--atom-electron)" />
-		{@render txt(28, 24, 'unpaired electron: ready to pair up in a bond', 13, { anchor: 'start' })}
-		<circle cx="7" cy="48" r="4" fill="var(--stage-ink)" />
-		<circle cx="17" cy="48" r="4" fill="var(--stage-ink)" />
-		{@render txt(28, 52, 'lone pair: stays on the atom', 13, { anchor: 'start' })}
-		{@render txt(0, 82, 'Bonds = electrons short of a full shell (8; for hydrogen, 2)', 13, {
-			anchor: 'start',
-			weight: 600
-		})}
-	</g>
-	{@render txt(96, 578, 'Na: one electron, easier to lose', 11, { muted: true })}
-	{@render txt(680, 578, 'Cl: one short of eight', 11, { muted: true })}
+	<!-- legend, in the empty corner of the table (on phones: the key chips above) -->
+	<Readout id="legend">
+		<g transform="translate(300 74)" opacity={clamp(time - 0.3)}>
+			<rect
+				x="-10"
+				y="-6"
+				width="560"
+				height="104"
+				rx="10"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			<circle cx="12" cy="20" r={6 + 2.5 * pulse} fill="var(--atom-electron)" opacity="0.25" />
+			<circle cx="12" cy="20" r="4" fill="var(--atom-electron)" />
+			{@render txt(28, 24, 'unpaired electron: ready to pair up in a bond', 13, {
+				anchor: 'start'
+			})}
+			<circle cx="7" cy="48" r="4" fill="var(--stage-ink)" />
+			<circle cx="17" cy="48" r="4" fill="var(--stage-ink)" />
+			{@render txt(28, 52, 'lone pair: stays on the atom', 13, { anchor: 'start' })}
+			{@render txt(0, 82, 'Bonds = electrons short of a full shell (8; for hydrogen, 2)', 13, {
+				anchor: 'start',
+				weight: 600
+			})}
+		</g>
+	</Readout>
+	<Readout id="footnotes">
+		{@render txt(96, 578, 'Na: one electron, easier to lose', 11, { muted: true })}
+		{@render txt(680, 578, 'Cl: one short of eight', 11, { muted: true })}
+	</Readout>
 </g>

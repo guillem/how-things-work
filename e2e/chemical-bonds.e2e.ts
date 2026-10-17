@@ -116,3 +116,34 @@ test('hovering an atom holds the turning molecule still to be clicked', async ({
 	await page.clock.runFor(5000);
 	await expect(turn).toHaveAttribute('aria-valuenow', held ?? '');
 });
+
+// Phone readouts (as in phone-readouts.e2e.ts): on a narrow screen the readouts leave the
+// drawing and are listed as text under the stage.
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+	const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+
+	test('the bond tug-of-war is text under the stage and follows the pair', async ({ page }) => {
+		await page.goto('./chemical-bonds/#tug');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Chlorine\s*electronegativity 3\.16/);
+		await expect(panel).toContainText(/H–Cl bond\s*ΔEN = 3\.16 − 2\.20 = 0\.96/);
+		await expect(panel).toContainText('a polar covalent bond');
+		await expect(stage(page)).not.toContainText('a polar covalent bond');
+		await page.locator('button[data-control=pair][data-value=NaCl]').click();
+		await expect(panel).toContainText('the electron is handed over (ionic)');
+	});
+
+	test('the molecule readout is text under the stage and follows the molecule', async ({
+		page
+	}) => {
+		await page.goto('./chemical-bonds/#lonepairs');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Shape\s*bent/);
+		await expect(panel).toContainText('H–O–H angle: 104.5°');
+		await expect(stage(page)).not.toContainText('H–O–H angle');
+		await page.locator('button[data-control=lpMol][data-value=NH3]').click();
+		await expect(panel).toContainText(/Shape\s*trigonal pyramidal/);
+		await expect(panel).toContainText(/Bond angles\s*CH₄ 109\.5° · NH₃ 106\.7° · H₂O 104\.5°/);
+	});
+});

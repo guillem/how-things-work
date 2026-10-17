@@ -25,7 +25,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, lerp, smoothstep, startDrag, toSvg, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		CENTRES,
 		TERMINALS,
@@ -503,6 +503,23 @@
 		})
 	);
 	const degX = (d: number) => RX + 10 + ((d - 100) / 10) * 250;
+
+	// Phone readouts: the readout column as rows under the stage.
+	const shapeNote = $derived.by(() => {
+		const parts: string[] = [];
+		if (angleLine) parts.push(`${angleLine.main}, ${angleLine.note}`);
+		if (mode === 'shapes') {
+			const f = FAMILY.find((f) => f.shape === a.shape);
+			if (f && molecule.ligands.length > 1) parts.push(`${f.dom}, like ${f.ex}`);
+		}
+		return parts.join(' · ') || undefined;
+	});
+	const compareValue = $derived(
+		compareRows.map((r) => `${r.label} ${r.deg.toFixed(1)}°`).join(' · ')
+	);
+	const compareNote = $derived(
+		`lone pairs ${compareRows.map((r) => r.lone).join(' · ')}; measured (NIST CCCBDB)`
+	);
 </script>
 
 {#snippet txt(
@@ -672,7 +689,9 @@
 	{#if arc && arc.opacity > 0.02 && !charges}
 		<g opacity={arc.opacity} style:pointer-events="none" data-testid="angle-arc">
 			<path d={arc.d} fill="none" stroke="var(--stage-ink)" stroke-width="1.5" />
-			{@render txt(arc.x, arc.y, arc.label, 13, { anchor: 'middle', weight: 700 })}
+			<Readout id="arc-label">
+				{@render txt(arc.x, arc.y, arc.label, 13, { anchor: 'middle', weight: 700 })}
+			</Readout>
 		</g>
 	{/if}
 
@@ -726,7 +745,9 @@
 
 		<!-- palette -->
 		{@render txt(24, 104, 'Add an atom', 13, { weight: 700 })}
-		{@render txt(24, 121, 'drag it in, or click', 11, { muted: true })}
+		<Readout id="palette-hint">
+			{@render txt(24, 121, 'drag it in, or click', 11, { muted: true })}
+		</Readout>
 		{#each palette as p (p.sym)}
 			{@const why = refusal(molecule, p.sym)}
 			{@const cap = capacity(p.sym)}
@@ -745,13 +766,15 @@
 					weight: 600,
 					muted: why !== null
 				})}
-				{@render txt(
-					p.x + 30,
-					p.y + 13,
-					cap === 1 ? 'single' : cap === 2 ? 'double' : 'triple',
-					11,
-					{ muted: true }
-				)}
+				<Readout id="palette-{p.sym}">
+					{@render txt(
+						p.x + 30,
+						p.y + 13,
+						cap === 1 ? 'single' : cap === 2 ? 'double' : 'triple',
+						11,
+						{ muted: true }
+					)}
+				</Readout>
 			</g>
 		{/each}
 
@@ -782,15 +805,19 @@
 				{@render txt(x + 31, 572, ex.label, 13, { anchor: 'middle', weight: 600 })}
 			</g>
 		{/each}
-		{@render txt(
-			CX,
-			530,
-			'Drag the empty space to turn it · click an outer atom to remove it',
-			11,
-			{ anchor: 'middle', muted: true }
-		)}
+		<Readout id="hint">
+			{@render txt(
+				CX,
+				530,
+				'Drag the empty space to turn it · click an outer atom to remove it',
+				11,
+				{ anchor: 'middle', muted: true }
+			)}
+		</Readout>
 	{:else}
-		{@render txt(CX, 560, 'Drag to turn the molecule', 11, { anchor: 'middle', muted: true })}
+		<Readout id="hint">
+			{@render txt(CX, 560, 'Drag to turn the molecule', 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/if}
 
 	<!-- the palette atom being dragged -->
@@ -802,88 +829,133 @@
 
 	<!-- readout -->
 	<g transform="translate({RX} 0)">
-		{@render txt(0, 92, a.formula, 26, { weight: 700 })}
-		{#if a.name}
-			{@render txt(0, 116, a.name, 14, { muted: true })}
-		{/if}
-		{@render txt(0, 146, status.text, 13, {
-			weight: 600,
-			color: status.warn ? 'var(--atom-proton)' : undefined
-		})}
-		{@render txt(0, 168, `Around ${molecule.centre}: ${a.centreElectrons} electrons`, 13)}
-		{@render txt(0, 186, pairsLine, 12, { muted: true })}
-		{#if a.complete}
-			{@render txt(0, 222, molecule.ligands.length === 1 ? 'linear (two atoms)' : a.shape, 18, {
-				weight: 700
-			})}
-			{#if angleLine}
-				{@render txt(0, 244, angleLine.main, 13, { weight: 600 })}
-				{@render txt(0, 261, angleLine.note, 11, { muted: true })}
+		<Readout id="formula" order={1} label="Molecule" value={a.formula} note={a.name ?? undefined}>
+			{@render txt(0, 92, a.formula, 26, { weight: 700 })}
+			{#if a.name}
+				{@render txt(0, 116, a.name, 14, { muted: true })}
 			{/if}
+		</Readout>
+		<Readout
+			id="status"
+			order={2}
+			label="Outer shells"
+			value={status.text}
+			note="around {molecule.centre}: {a.centreElectrons} electrons · {pairsLine}"
+			color={status.warn ? 'var(--atom-proton)' : undefined}
+		>
+			{@render txt(0, 146, status.text, 13, {
+				weight: 600,
+				color: status.warn ? 'var(--atom-proton)' : undefined
+			})}
+			{@render txt(0, 168, `Around ${molecule.centre}: ${a.centreElectrons} electrons`, 13)}
+			{@render txt(0, 186, pairsLine, 12, { muted: true })}
+		</Readout>
+		{#if a.complete}
+			<Readout
+				id="shape"
+				order={3}
+				label="Shape"
+				value={molecule.ligands.length === 1 ? 'linear (two atoms)' : a.shape}
+				note={shapeNote}
+			>
+				{@render txt(0, 222, molecule.ligands.length === 1 ? 'linear (two atoms)' : a.shape, 18, {
+					weight: 700
+				})}
+				{#if angleLine}
+					{@render txt(0, 244, angleLine.main, 13, { weight: 600 })}
+					{@render txt(0, 261, angleLine.note, 11, { muted: true })}
+				{/if}
+			</Readout>
 		{/if}
 	</g>
 
 	{#if mode === 'shapes'}
-		<g transform="translate({RX} 296)">
-			{@render txt(0, 0, 'The family of shapes', 13, { weight: 700 })}
-			{#each FAMILY as f, i (f.shape)}
-				{@const on = a.complete && a.shape === f.shape && molecule.ligands.length > 1}
-				<rect
-					x="-8"
-					y={12 + i * 42}
-					width="288"
-					height="38"
-					rx="8"
-					fill={on ? 'var(--focus)' : 'var(--surface)'}
-					fill-opacity={on ? 0.16 : 0.7}
-					stroke={on ? 'var(--focus)' : 'var(--border)'}
-				/>
-				{@render txt(4, 29 + i * 42, f.shape, 13, { weight: on ? 700 : 600 })}
-				{@render txt(4, 44 + i * 42, f.dom, 11, { muted: true })}
-				{@render txt(270, 29 + i * 42, f.ex, 12, { anchor: 'end' })}
-			{/each}
-		</g>
+		<!-- on phones the shape row's note names the family -->
+		<Readout id="family">
+			<g transform="translate({RX} 296)">
+				{@render txt(0, 0, 'The family of shapes', 13, { weight: 700 })}
+				{#each FAMILY as f, i (f.shape)}
+					{@const on = a.complete && a.shape === f.shape && molecule.ligands.length > 1}
+					<rect
+						x="-8"
+						y={12 + i * 42}
+						width="288"
+						height="38"
+						rx="8"
+						fill={on ? 'var(--focus)' : 'var(--surface)'}
+						fill-opacity={on ? 0.16 : 0.7}
+						stroke={on ? 'var(--focus)' : 'var(--border)'}
+					/>
+					{@render txt(4, 29 + i * 42, f.shape, 13, { weight: on ? 700 : 600 })}
+					{@render txt(4, 44 + i * 42, f.dom, 11, { muted: true })}
+					{@render txt(270, 29 + i * 42, f.ex, 12, { anchor: 'end' })}
+				{/each}
+			</g>
+		</Readout>
 	{/if}
 
 	{#if mode === 'polar'}
 		<g transform="translate({RX} 300)">
 			{#if a.complete}
-				{@render txt(0, 0, a.polar ? 'Polar' : 'Not polar', 20, {
-					weight: 700,
-					color: a.polar ? NEG : undefined
-				})}
-				{@render txt(0, 22, a.polarity.replace(/^(not )?polar: /, ''), 12)}
+				<Readout
+					id="polarity"
+					order={4}
+					label="Polarity"
+					value={a.polar ? 'Polar' : 'Not polar'}
+					note={a.polarity.replace(/^(not )?polar: /, '') +
+						(charges && a.polar ? '; the arrow points to the negative end' : '')}
+					color={a.polar ? NEG : undefined}
+				>
+					{@render txt(0, 0, a.polar ? 'Polar' : 'Not polar', 20, {
+						weight: 700,
+						color: a.polar ? NEG : undefined
+					})}
+					{@render txt(0, 22, a.polarity.replace(/^(not )?polar: /, ''), 12)}
+				</Readout>
 			{:else}
-				{@render txt(0, 0, 'Finish the molecule to see', 13, { muted: true })}
-				{@render txt(0, 18, 'whether it is polar.', 13, { muted: true })}
+				<Readout
+					id="polarity"
+					order={4}
+					label="Polarity"
+					value="finish the molecule to see whether it is polar"
+				>
+					{@render txt(0, 0, 'Finish the molecule to see', 13, { muted: true })}
+					{@render txt(0, 18, 'whether it is polar.', 13, { muted: true })}
+				</Readout>
 			{/if}
 			{#if charges}
-				<circle cx="8" cy="56" r="8" fill={NEG} fill-opacity="0.7" />
-				{@render txt(24, 61, 'δ− electrons pulled here', 12)}
-				<circle cx="8" cy="80" r="8" fill={POS} fill-opacity="0.7" />
-				{@render txt(24, 85, 'δ+ electrons pulled away', 12)}
-				{#if a.polar}
-					<line
-						x1="0"
-						y1="106"
-						x2="30"
-						y2="106"
-						stroke="var(--stage-ink)"
-						stroke-width="2.5"
-						marker-end="url(#arrowhead)"
-					/>
-					<line x1="6" y1="100" x2="6" y2="112" stroke="var(--stage-ink)" stroke-width="2.5" />
-					{@render txt(42, 110, 'points to the negative end', 12)}
-				{/if}
-				{@render txt(0, 140, 'Colours: a guide from electronegativity,', 11, { muted: true })}
-				{@render txt(0, 155, 'not a computed charge.', 11, { muted: true })}
+				<Readout id="key-neg" order={10} label="δ− electrons pulled here" color={NEG} />
+				<Readout id="key-pos" order={11} label="δ+ electrons pulled away" color={POS} />
+				<Readout id="legend">
+					<circle cx="8" cy="56" r="8" fill={NEG} fill-opacity="0.7" />
+					{@render txt(24, 61, 'δ− electrons pulled here', 12)}
+					<circle cx="8" cy="80" r="8" fill={POS} fill-opacity="0.7" />
+					{@render txt(24, 85, 'δ+ electrons pulled away', 12)}
+					{#if a.polar}
+						<line
+							x1="0"
+							y1="106"
+							x2="30"
+							y2="106"
+							stroke="var(--stage-ink)"
+							stroke-width="2.5"
+							marker-end="url(#arrowhead)"
+						/>
+						<line x1="6" y1="100" x2="6" y2="112" stroke="var(--stage-ink)" stroke-width="2.5" />
+						{@render txt(42, 110, 'points to the negative end', 12)}
+					{/if}
+					{@render txt(0, 140, 'Colours: a guide from electronegativity,', 11, { muted: true })}
+					{@render txt(0, 155, 'not a computed charge.', 11, { muted: true })}
+				</Readout>
 			{/if}
 		</g>
 	{/if}
 
 	{#if mode === 'compare'}
 		<g transform="translate(0 300)">
-			{@render txt(RX, 0, 'Angle between two bonds', 13, { weight: 700 })}
+			<Readout id="compare" order={4} label="Bond angles" value={compareValue} note={compareNote}>
+				{@render txt(RX, 0, 'Angle between two bonds', 13, { weight: 700 })}
+			</Readout>
 			{#each [100, 105, 110] as d (d)}
 				<line
 					x1={degX(d)}
@@ -906,19 +978,23 @@
 					fill="var(--focus)"
 					fill-opacity={r.on ? 0.75 : 0.25}
 				/>
-				{@render txt(degX(r.deg) + 6, y + 16, `${r.deg.toFixed(1)}°`, 13, {
-					weight: r.on ? 700 : 500
-				})}
-				{@render txt(
-					RX + 10,
-					y + 36,
-					`${r.label}: ${r.lone} lone pair${r.lone === 1 ? '' : 's'}`,
-					11,
-					{ muted: !r.on }
-				)}
+				<Readout id="compare-{r.k}">
+					{@render txt(degX(r.deg) + 6, y + 16, `${r.deg.toFixed(1)}°`, 13, {
+						weight: r.on ? 700 : 500
+					})}
+					{@render txt(
+						RX + 10,
+						y + 36,
+						`${r.label}: ${r.lone} lone pair${r.lone === 1 ? '' : 's'}`,
+						11,
+						{ muted: !r.on }
+					)}
+				</Readout>
 			{/each}
-			{@render txt(RX, 194, 'Measured values (NIST CCCBDB);', 11, { muted: true })}
-			{@render txt(RX, 209, 'axis starts at 100°.', 11, { muted: true })}
+			<Readout id="compare-source">
+				{@render txt(RX, 194, 'Measured values (NIST CCCBDB);', 11, { muted: true })}
+				{@render txt(RX, 209, 'axis starts at 100°.', 11, { muted: true })}
+			</Readout>
 		</g>
 	{/if}
 </g>
