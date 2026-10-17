@@ -1,10 +1,16 @@
 // Checks the circuit evaluator behind the logic-gates explainer. Runs in Node.
 import { expect, test } from '@playwright/test';
 import {
+	ADDER4,
+	ADDER4_BLANK,
 	BLANK,
 	FULL_ADDER,
 	HALF_ADDER,
+	adder4Inputs,
+	adder4Reading,
+	checkAdder4,
 	evaluate,
+	isFullAdder,
 	makesLoop,
 	pairsRight,
 	parseCircuit,
@@ -14,8 +20,8 @@ import {
 	truthTable
 } from '../src/routes/logic-gates/logic';
 
-const outs = (c: Parameters<typeof truthTable>[0]) =>
-	truthTable(c).rows.map((r) => r.outputs.map(Number).join(''));
+const outs = (c: Parameters<typeof truthTable>[0], blocks?: Parameters<typeof truthTable>[1]) =>
+	truthTable(c, blocks).rows.map((r) => r.outputs.map(Number).join(''));
 
 test('each gate’s truth table', () => {
 	expect(outs(singleGate('AND'))).toEqual(['0', '0', '0', '1']);
@@ -104,6 +110,86 @@ test('loops are refused, unwired slots read 0, the text form round-trips', () =>
 	expect(makesLoop(FULL_ADDER, { from: 'o', to: 'x1', slot: 0 })).toBe(true);
 	expect(makesLoop(FULL_ADDER, { from: 'a', to: 'o', slot: 0 })).toBe(false);
 	expect(evaluate(BLANK, { a: true, b: true }).value.get('q')).toBe(false);
-	for (const c of [HALF_ADDER, FULL_ADDER, BLANK])
+	for (const c of [HALF_ADDER, FULL_ADDER, BLANK, ADDER4])
 		expect(serializeCircuit(parseCircuit(serializeCircuit(c))!)).toBe(serializeCircuit(c));
+	// a block's carry out (its second output) survives the text form
+	expect(parseCircuit(serializeCircuit(ADDER4))!.wires).toContainEqual({
+		from: 'f0',
+		port: 1,
+		to: 'f1',
+		slot: 2
+	});
+});
+
+/** One full-adder block with its own three switches and two lamps. */
+const ONE_BLOCK = {
+	nodes: [
+		{ id: 'a', kind: 'in' as const, x: 0, y: 0, label: 'A' },
+		{ id: 'b', kind: 'in' as const, x: 0, y: 1, label: 'B' },
+		{ id: 'ci', kind: 'in' as const, x: 0, y: 2, label: 'Carry in' },
+		{ id: 'f', kind: 'FA' as const, x: 1, y: 1 },
+		{ id: 's', kind: 'out' as const, x: 2, y: 0, label: 'Sum' },
+		{ id: 'co', kind: 'out' as const, x: 2, y: 1, label: 'Carry out' }
+	],
+	wires: [
+		{ from: 'a', to: 'f', slot: 0 },
+		{ from: 'b', to: 'f', slot: 1 },
+		{ from: 'ci', to: 'f', slot: 2 },
+		{ from: 'f', to: 's', slot: 0 },
+		{ from: 'f', port: 1, to: 'co', slot: 0 }
+	]
+};
+
+test('a full-adder block adds like the circuit inside it, which takes three gate delays', () => {
+	expect(isFullAdder(FULL_ADDER)).toBe(true);
+	expect(isFullAdder(HALF_ADDER)).toBe(false);
+	expect(isFullAdder(ONE_BLOCK)).toBe(false); // without its circuit a block outputs 0
+	const blocks = { FA: FULL_ADDER };
+	expect(outs(ONE_BLOCK, blocks)).toEqual(outs(FULL_ADDER));
+	// A → XOR → AND → OR reaches the carry out; the carry in passes only AND → OR
+	const { portDepth } = evaluate(ONE_BLOCK, { a: true, b: true, ci: true }, blocks);
+	expect(portDepth.get('f')).toEqual([2, 3]);
+});
+
+test('in the 4-bit chain the carry ripples: two more gate delays for every block it crosses', () => {
+	const { depth } = evaluate(ADDER4, adder4Inputs(15, 1, false), { FA: FULL_ADDER });
+	// carry out of bit 0 after 3 gates, then 2 per block: 5, 7, 9
+	expect(depth.get('co')).toBe(9);
+	// bit 3's sum waits for the carry into it (7) and one XOR
+	expect(depth.get('s3')).toBe(8);
+	expect(depth.get('s0')).toBe(2);
+});
+
+test('four full-adder blocks in a chain add every pair of 4-bit numbers, with either carry in', () => {
+	const check = checkAdder4(ADDER4, { FA: FULL_ADDER });
+	expect(check.right).toBe(512);
+	expect(check.total).toBe(512);
+	expect(check.firstWrong).toBeNull();
+	const { value } = evaluate(ADDER4, adder4Inputs(11, 6, false), { FA: FULL_ADDER });
+	expect(adder4Reading(value)).toBe(17);
+	// with the blank canvas (no blocks, no wires) only 0 + 0 + 0 comes out right
+	expect(checkAdder4(ADDER4_BLANK, { FA: FULL_ADDER }).right).toBe(1);
+});
+
+test('the 4-bit checker catches a missing carry wire and crossed sum lamps', () => {
+	const blocks = { FA: FULL_ADDER };
+	const noCarry = {
+		nodes: ADDER4.nodes,
+		wires: ADDER4.wires.filter((w) => !(w.from === 'f1' && w.to === 'f2'))
+	};
+	const missing = checkAdder4(noCarry, blocks);
+	expect(missing.right).toBeLessThan(512);
+	expect(missing.right).toBeGreaterThan(0);
+	const fw = missing.firstWrong!;
+	expect(fw.got).not.toBe(fw.a + fw.b + (fw.carryIn ? 1 : 0));
+	// a pair whose bit 1 carries (2 + 2) loses that carry; one with no carry (1 + 2) still adds
+	expect(adder4Reading(evaluate(noCarry, adder4Inputs(2, 2, false), blocks).value)).not.toBe(4);
+	expect(adder4Reading(evaluate(noCarry, adder4Inputs(1, 2, false), blocks).value)).toBe(3);
+	const crossed = {
+		nodes: ADDER4.nodes,
+		wires: ADDER4.wires.map((w) =>
+			w.to === 's0' ? { ...w, to: 's1' } : w.to === 's1' ? { ...w, to: 's0' } : w
+		)
+	};
+	expect(checkAdder4(crossed, blocks).right).toBeLessThan(512);
 });

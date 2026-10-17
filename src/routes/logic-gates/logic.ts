@@ -3,14 +3,21 @@
  * the wires, with a gate delay so signals can be watched propagating.
  *
  * A circuit is a set of nodes — inputs (switches), gates (AND, OR, NOT, XOR,
- * and NAND for the "one gate is enough" note) and outputs (lamps) — and
- * wires from one node's output to an input slot of another. Circuits here
- * have no loops (no feedback), so every output is a fixed function of the
- * inputs.
+ * and NAND for the "one gate is enough" note), blocks and outputs (lamps) —
+ * and wires from one of a node's outputs to an input slot of another.
+ * Circuits here have no loops (no feedback), so every output is a fixed
+ * function of the inputs.
+ *
+ * A block (kind 'FA', a full adder) is a circuit used as one part: the
+ * circuit inside it is given separately (`Blocks`), its switches in reading
+ * order are the block's input slots and its lamps in reading order are the
+ * block's outputs. A full-adder block has three inputs (A, B, carry in) and
+ * two outputs (port 0 the sum, port 1 the carry out).
  */
 
 export type GateKind = 'AND' | 'OR' | 'NOT' | 'XOR' | 'NAND';
-export type NodeKind = 'in' | 'out' | GateKind;
+export type BlockKind = 'FA';
+export type NodeKind = 'in' | 'out' | GateKind | BlockKind;
 
 export interface LogicNode {
 	id: string;
@@ -25,17 +32,24 @@ export interface LogicNode {
 export interface Wire {
 	/** Node whose output drives the wire. */
 	from: string;
-	/** Node and input slot (0 or 1) it feeds. */
+	/** Which output of that node (a block has two); 0 if left out. */
+	port?: number;
+	/** Node and input slot (0 or 1; 0 to 2 on a block) it feeds. */
 	to: string;
 	slot: number;
 }
+
+/** The circuit inside each kind of block. */
+export type Blocks = Partial<Record<BlockKind, Circuit>>;
 
 export interface Circuit {
 	nodes: LogicNode[];
 	wires: Wire[];
 }
 
-export const inputCount = (k: NodeKind) => (k === 'in' ? 0 : k === 'NOT' || k === 'out' ? 1 : 2);
+export const inputCount = (k: NodeKind) =>
+	k === 'in' ? 0 : k === 'NOT' || k === 'out' ? 1 : k === 'FA' ? 3 : 2;
+export const outputCount = (k: NodeKind) => (k === 'out' ? 0 : k === 'FA' ? 2 : 1);
 
 export function gate(kind: GateKind, a: boolean, b: boolean) {
 	switch (kind) {
@@ -61,41 +75,119 @@ export const outputsOf = (c: Circuit) =>
 /**
  * Value of every node for the given input values (by input id). A gate slot
  * with no wire reads as 0 (false). Returns also each node's "depth": how many
- * gates a signal passes through to reach it (for the propagation animation).
- * Throws if the circuit has a loop.
+ * gates a signal passes through to reach it, at most (for the propagation
+ * animation), and the same per output in `portDepth` (a block's sum and carry
+ * out are ready at different times: the depth through a block follows the
+ * paths of the circuit inside it), and `ports`, the value of each output
+ * (`value` is output 0). A block whose circuit isn't given outputs 0, and so
+ * does a block inside a block's circuit. Throws if the circuit has a loop.
  */
-export function evaluate(c: Circuit, inputs: Record<string, boolean>) {
+export function evaluate(c: Circuit, inputs: Record<string, boolean>, blocks: Blocks = {}) {
 	const byId = new Map(c.nodes.map((n) => [n.id, n]));
-	const feeds = new Map<string, (string | undefined)[]>();
-	for (const n of c.nodes) feeds.set(n.id, new Array(inputCount(n.kind)).fill(undefined));
+	type Feed = { from: string; port: number } | undefined;
+	const feeds = new Map<string, Feed[]>();
+	for (const n of c.nodes)
+		feeds.set(
+			n.id,
+			Array.from({ length: inputCount(n.kind) }, (): Feed => undefined)
+		);
 	for (const w of c.wires) {
 		const slots = feeds.get(w.to);
-		if (slots && w.slot < slots.length && byId.has(w.from)) slots[w.slot] = w.from;
+		const src = byId.get(w.from);
+		const port = w.port ?? 0;
+		if (slots && src && w.slot < slots.length && port < outputCount(src.kind))
+			slots[w.slot] = { from: w.from, port };
 	}
-	const value = new Map<string, boolean>();
-	const depth = new Map<string, number>();
+	const ports = new Map<string, boolean[]>();
+	const portDepth = new Map<string, number[]>();
 	const visiting = new Set<string>();
-	const visit = (id: string): boolean => {
-		if (value.has(id)) return value.get(id)!;
+	const visit = (id: string): boolean[] => {
+		const known = ports.get(id);
+		if (known) return known;
 		if (visiting.has(id)) throw new Error('The circuit has a loop');
 		visiting.add(id);
 		const n = byId.get(id)!;
-		let v: boolean;
-		let d = 0;
-		if (n.kind === 'in') v = !!inputs[id];
-		else {
+		let out: boolean[];
+		let d: number[];
+		if (n.kind === 'in') {
+			out = [!!inputs[id]];
+			d = [0];
+		} else {
 			const src = feeds.get(id)!;
-			const vals = src.map((s) => (s ? visit(s) : false));
-			d = Math.max(0, ...src.map((s) => (s ? depth.get(s)! : 0))) + (n.kind === 'out' ? 0 : 1);
-			v = n.kind === 'out' ? vals[0] : gate(n.kind, vals[0], vals[1] ?? false);
+			const vals = src.map((s) => (s ? visit(s.from)[s.port] : false));
+			const at = src.map((s) => (s ? portDepth.get(s.from)![s.port] : 0));
+			const latest = Math.max(0, ...at);
+			if (n.kind === 'out') {
+				out = [vals[0]];
+				d = [latest];
+			} else if (n.kind === 'FA') {
+				const def = blocks[n.kind];
+				out = def ? blockOutputs(def, vals) : [false, false];
+				// each output is ready once the slowest input that reaches it has gone
+				// through the gates in between (an output no input reaches is ready at once)
+				const paths = def ? innerPaths(def) : null;
+				d = [0, 1].map((p) =>
+					Math.max(0, ...at.map((t, s) => (paths?.[s] && paths[s][p] >= 0 ? t + paths[s][p] : 0)))
+				);
+			} else {
+				out = [gate(n.kind, vals[0], vals[1] ?? false)];
+				d = [latest + 1];
+			}
 		}
 		visiting.delete(id);
-		value.set(id, v);
-		depth.set(id, d);
-		return v;
+		ports.set(id, out);
+		portDepth.set(id, d);
+		return out;
 	};
 	for (const n of c.nodes) visit(n.id);
-	return { value, depth };
+	const value = new Map([...ports].map(([id, v]) => [id, v[0] ?? false] as const));
+	const depth = new Map([...portDepth].map(([id, d]) => [id, Math.max(0, ...d)] as const));
+	return { value, depth, ports, portDepth };
+}
+
+/** A full-adder block's two outputs for its three input values, worked out by the circuit inside it. */
+function blockOutputs(def: Circuit, vals: boolean[]) {
+	const ins = inputsOf(def);
+	const outs = outputsOf(def);
+	const { value } = evaluate(def, Object.fromEntries(ins.map((n, i) => [n.id, vals[i] ?? false])));
+	return [0, 1].map((k) => (outs[k] ? value.get(outs[k].id)! : false));
+}
+
+const pathCache = new WeakMap<Circuit, number[][]>();
+/**
+ * Inside a block's circuit: `paths[slot][output]` is the number of gates on the
+ * longest path from that input to that output, or -1 if there is none.
+ */
+function innerPaths(def: Circuit) {
+	const cached = pathCache.get(def);
+	if (cached) return cached;
+	const byId = new Map(def.nodes.map((n) => [n.id, n]));
+	const into = new Map<string, string[]>();
+	for (const w of def.wires) into.set(w.to, [...(into.get(w.to) ?? []), w.from]);
+	const memo = new Map<string, number>();
+	const longest = (id: string, from: string, seen: Set<string>): number => {
+		const key = `${id}<${from}`;
+		const m = memo.get(key);
+		if (m !== undefined) return m;
+		const n = byId.get(id);
+		let r = -1;
+		if (n && n.kind === 'in') r = id === from ? 0 : -1;
+		else if (n && n.kind !== 'FA' && !seen.has(id)) {
+			const step = n.kind === 'out' ? 0 : 1;
+			for (const s of into.get(id) ?? []) {
+				const l = longest(s, from, new Set([...seen, id]));
+				if (l >= 0) r = Math.max(r, l + step);
+			}
+		}
+		memo.set(key, r);
+		return r;
+	};
+	const outs = outputsOf(def);
+	const paths = inputsOf(def).map((i) =>
+		[0, 1].map((k) => (outs[k] ? longest(outs[k].id, i.id, new Set()) : -1))
+	);
+	pathCache.set(def, paths);
+	return paths;
 }
 
 /** True if adding this wire would close a loop. */
@@ -118,7 +210,7 @@ export function makesLoop(c: Circuit, w: Wire) {
  * The truth table: every combination of the inputs (first input = most
  * significant), with the outputs for each.
  */
-export function truthTable(c: Circuit) {
+export function truthTable(c: Circuit, blocks: Blocks = {}) {
 	const ins = inputsOf(c);
 	const outs = outputsOf(c);
 	const rows: { inputs: boolean[]; outputs: boolean[] }[] = [];
@@ -129,7 +221,7 @@ export function truthTable(c: Circuit) {
 			assign[n.id] = b;
 			return b;
 		});
-		const { value } = evaluate(c, assign);
+		const { value } = evaluate(c, assign, blocks);
 		rows.push({ inputs: iv, outputs: outs.map((o) => value.get(o.id)!) });
 	}
 	return {
@@ -145,14 +237,17 @@ export function serializeCircuit(c: Circuit) {
 	const n = c.nodes
 		.map((x) => `${x.id},${x.kind},${Math.round(x.x)},${Math.round(x.y)},${x.label ?? ''}`)
 		.join(';');
-	const w = c.wires.map((x) => `${x.from}>${x.to}.${x.slot}`).join(';');
+	// A wire from a block's second output is written `from:1>to.slot`.
+	const w = c.wires
+		.map((x) => `${x.from}${x.port ? `:${x.port}` : ''}>${x.to}.${x.slot}`)
+		.join(';');
 	return `${n}|${w}`;
 }
 
 export function parseCircuit(s: unknown): Circuit | null {
 	if (typeof s !== 'string' || !s.includes('|')) return null;
 	const [ns, ws] = s.split('|');
-	const kinds = new Set(['in', 'out', 'AND', 'OR', 'NOT', 'XOR', 'NAND']);
+	const kinds = new Set(['in', 'out', 'AND', 'OR', 'NOT', 'XOR', 'NAND', 'FA']);
 	const nodes: LogicNode[] = [];
 	for (const item of ns ? ns.split(';') : []) {
 		const [id, kind, x, y, label] = item.split(',');
@@ -161,9 +256,10 @@ export function parseCircuit(s: unknown): Circuit | null {
 	}
 	const wires: Wire[] = [];
 	for (const item of ws ? ws.split(';') : []) {
-		const m = /^([^>]+)>([^.]+)\.(\d)$/.exec(item);
+		const m = /^([^>:]+)(?::(\d))?>([^.]+)\.(\d)$/.exec(item);
 		if (!m) return null;
-		wires.push({ from: m[1], to: m[2], slot: +m[3] });
+		const port = m[2] ? +m[2] : 0;
+		wires.push({ from: m[1], ...(port ? { port } : {}), to: m[3], slot: +m[4] });
 	}
 	return { nodes, wires };
 }
@@ -297,4 +393,91 @@ export function pairsRight(links: readonly boolean[]) {
 	for (let a = 0; a < 16; a++)
 		for (let b = 0; b < 16; b++) if (ripple4(a, b, false, links).value === a + b) n++;
 	return n;
+}
+
+// ------------------------------------------------------------ a 4-bit adder from full-adder blocks
+
+/** True if the circuit adds like a full adder: switches A, B, carry in; lamps sum, carry out. */
+export function isFullAdder(c: Circuit) {
+	if (inputsOf(c).length !== 3 || outputsOf(c).length !== 2) return false;
+	try {
+		const want = truthTable(FULL_ADDER).rows;
+		return truthTable(c).rows.every((r, i) => r.outputs.every((v, j) => v === want[i].outputs[j]));
+	} catch {
+		return false;
+	}
+}
+
+const SUB = '₀₁₂₃';
+/** The nine switches and five lamps of the 4-bit build: bit 0 at the top, as the carry ripples down. */
+export const ADDER4_BLANK: Circuit = {
+	nodes: [
+		node('a0', 'in', 165, 30, `A${SUB[0]}`),
+		node('b0', 'in', 165, 78, `B${SUB[0]}`),
+		node('ci', 'in', 165, 126, 'Carry in'),
+		node('a1', 'in', 165, 192, `A${SUB[1]}`),
+		node('b1', 'in', 165, 240, `B${SUB[1]}`),
+		node('a2', 'in', 165, 310, `A${SUB[2]}`),
+		node('b2', 'in', 165, 358, `B${SUB[2]}`),
+		node('a3', 'in', 165, 428, `A${SUB[3]}`),
+		node('b3', 'in', 165, 476, `B${SUB[3]}`),
+		...[0, 1, 2, 3].map((i) => node(`s${i}`, 'out', 840, 60 + 100 * i, `S${SUB[i]}`)),
+		node('co', 'out', 840, 460, 'Carry out')
+	],
+	wires: []
+};
+
+/** The 4-bit ripple-carry adder: four full-adder blocks, each carry out wired to the next carry in. */
+export const ADDER4: Circuit = {
+	nodes: [...ADDER4_BLANK.nodes, ...[78, 216, 334, 452].map((y, i) => node(`f${i}`, 'FA', 500, y))],
+	wires: [
+		...[0, 1, 2, 3].flatMap((i) => [
+			wire(`a${i}`, `f${i}`, 0),
+			wire(`b${i}`, `f${i}`, 1),
+			i === 0 ? wire('ci', 'f0', 2) : { from: `f${i - 1}`, port: 1, to: `f${i}`, slot: 2 },
+			wire(`f${i}`, `s${i}`)
+		]),
+		{ from: 'f3', port: 1, to: 'co', slot: 0 }
+	]
+};
+
+/** The switch values for A + B with this carry in, by switch id. */
+export function adder4Inputs(a: number, b: number, carryIn: boolean) {
+	const inputs: Record<string, boolean> = { ci: carryIn };
+	for (let i = 0; i < 4; i++) {
+		inputs[`a${i}`] = ((a >> i) & 1) === 1;
+		inputs[`b${i}`] = ((b >> i) & 1) === 1;
+	}
+	return inputs;
+}
+
+/** The number the five lamps of the 4-bit build show (S₀ worth 1 … carry out worth 16). */
+export const adder4Reading = (value: Map<string, boolean>) =>
+	[0, 1, 2, 3].reduce((v, i) => v + (value.get(`s${i}`) ? 2 ** i : 0), 0) +
+	(value.get('co') ? 16 : 0);
+
+/**
+ * Tries the 4-bit build on all 512 inputs (A and B from 0 to 15, carry in 0 or 1).
+ * `ok[k]` says whether input k = carryIn·256 + A·16 + B came out as A + B + carry in;
+ * `firstWrong` is the first input that didn't (in that order), with what the lamps read.
+ * A circuit with a loop gets every input wrong.
+ */
+export function checkAdder4(c: Circuit, blocks: Blocks) {
+	const ok: boolean[] = [];
+	let firstWrong: { a: number; b: number; carryIn: boolean; got: number } | null = null;
+	for (let k = 0; k < 512; k++) {
+		const carryIn = k >= 256;
+		const a = (k >> 4) & 15;
+		const b = k & 15;
+		let got = -1;
+		try {
+			got = adder4Reading(evaluate(c, adder4Inputs(a, b, carryIn), blocks).value);
+		} catch {
+			/* a loop: nothing adds */
+		}
+		const right = got === a + b + (carryIn ? 1 : 0);
+		ok.push(right);
+		if (!right && !firstWrong) firstWrong = { a, b, carryIn, got };
+	}
+	return { ok, right: ok.filter(Boolean).length, total: ok.length, firstWrong };
 }

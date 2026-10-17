@@ -202,8 +202,8 @@ const explainers: Explainer[] = [
 		summary:
 			'Flip switches into AND, OR, NOT and XOR gates, wire them into a circuit with a live truth table, and build the adders at the heart of every processor.',
 		accent: '#f08c00',
-		steps: 5,
-		minutes: 10
+		steps: 6,
+		minutes: 14
 	},
 	{
 		slug: 'central-limit-theorem',
