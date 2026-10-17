@@ -84,7 +84,13 @@ cytoplasm; dna-to-protein "Letters copied" slider; respiration-atp yeast and E. 
 convolution-vision's editable map builds up). Open question for the user: the-cell's small
 molecules (ATP, ions) still count from the whole box. logic-gates: a new sixth step, "Build a 4-bit adder": the reader's own full
 adder becomes a two-output block, four chained, checked over all 512 inputs (once packed, the
-block can't be re-edited without a reload).
+block can't be re-edited without a reload). Source re-checks: vision-color's cones match cvrl.org
+(build script reads CVRL now) and option B landed (S feeds red–green; 475 nm neutral, violet
+reddish); evolution's Luria–Delbrück figures from the 1943 paper (11.35); crispr's note checked
+against Barrangou Fig. 3; photosynthesis' #water caption overlap fixed. Still open: solar-cells
+(NLR hasn't added LONGi yet), measured pigment spectra (no redistribution licence). For the
+user: evolution's model keeps 20 million cells and 3×10⁻⁸ (paper: 5.6×10⁸, ~1.1×10⁻⁸; stated on
+the page); crispr's `added` strain still immune to 2972 in the model (not shown on stage).
 
 **Before that, committed on local `main`, not pushed or released** (2026-10-17):
 
