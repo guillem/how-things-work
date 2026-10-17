@@ -7,6 +7,7 @@
 	 */
 	import { Axes, Label, areaPath, linePath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
+	import { useReadouts } from '#lib/explainer/readouts.svelte.ts';
 	import { DAY, type Hour } from '../day';
 	import { at, dailyEnergy, demandAt, demandExtremes, type Source } from '../grid';
 
@@ -22,6 +23,29 @@
 	const Y1 = $derived(mode === 'mix' ? 420 : 490);
 	const sx = scale([0, 24], [X0, X1]);
 	const sy = $derived(scale(mode === 'mix' ? [-10000, 35000] : [0, 35000], [Y1, Y0]));
+
+	// On phones (≤ 640 px, the readouts' breakpoint) the stage is drawn at ~0.37 scale; the
+	// unit caption over the y axis is then drawn at a real 9.5 px, like the axis titles of
+	// <Axes> (it measures the scale the same way). Wide screens keep the 12-unit caption.
+	const readouts = useReadouts();
+	const narrow = $derived(readouts?.out ?? false);
+	let frame = $state<SVGGElement>();
+	let unit = $state(0.37);
+	$effect(() => {
+		const g = frame;
+		const svg = g?.ownerSVGElement;
+		if (!narrow || !g || !svg) return;
+		const measure = () => {
+			const m = g.getScreenCTM();
+			const k = m ? Math.hypot(m.a, m.b) : 0;
+			if (k > 0) unit = k;
+		};
+		measure();
+		const ro = new ResizeObserver(measure);
+		ro.observe(svg);
+		return () => ro.disconnect();
+	});
+	const captionSize = $derived(narrow ? Math.max(12, 9.5 / unit) : 12);
 
 	// the hourly means sit at the middle of each hour; the ends are held flat
 	const xs = [0, ...DAY.map((h) => h.hour + 0.5), 24];
@@ -97,7 +121,7 @@
 	);
 </script>
 
-<g>
+<g bind:this={frame}>
 	<defs>
 		<clipPath id="day-reveal">
 			<rect x={X0 - 1} y={Y0 - 30} width={clipW} height={Y1 - Y0 + 60} />
@@ -112,7 +136,14 @@
 		yTicks={mode === 'mix' ? [-10000, 0, 10000, 20000, 30000] : [0, 10000, 20000, 30000]}
 		yFormat={(v) => `${v / 1000}`}
 	/>
-	<Label x={X0 - 10} y={Y0 - 18} text="GW (thousands of MW)" anchor="start" muted size={12} />
+	<Label
+		x={X0 - 10}
+		y={Y0 - 18}
+		text="GW (thousands of MW)"
+		anchor="start"
+		muted
+		size={captionSize}
+	/>
 	<Label
 		x={X1}
 		y={Y0 - 18}
