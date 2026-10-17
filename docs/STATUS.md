@@ -90,7 +90,10 @@ reddish); evolution's Luria–Delbrück figures from the 1943 paper (11.35); cri
 against Barrangou Fig. 3; photosynthesis' #water caption overlap fixed. Still open: solar-cells
 (NLR hasn't added LONGi yet), measured pigment spectra (no redistribution licence). For the
 user: evolution's model keeps 20 million cells and 3×10⁻⁸ (paper: 5.6×10⁸, ~1.1×10⁻⁸; stated on
-the page); crispr's `added` strain still immune to 2972 in the model (not shown on stage).
+the page); crispr's `added` strain still immune to 2972 in the model (not shown on stage). Phone readouts B: states-of-matter, chemical-bonds,
+waves-interference, fourier-transform converted (desktop pixel-identical); `startDrag` returns
+an end function that Handle/VectorHandle call on destroy; chemical-bonds' angle arc picks the
+clearest pair (NH₃ readable).
 
 **Before that, committed on local `main`, not pushed or released** (2026-10-17):
 
