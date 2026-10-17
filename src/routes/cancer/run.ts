@@ -18,15 +18,14 @@ import {
 	type Therapy
 } from './model';
 
-export type View =
-	'balance' | 'passengers' | 'driver' | 'hits' | 'repair' | 'treat' | 'combo' | 'recap';
+type View = 'balance' | 'passengers' | 'driver' | 'hits' | 'repair' | 'treat' | 'combo' | 'recap';
 
 /** The seed of the first run on every step; "Run again" counts up from it. */
-export const SEED = 25;
+const SEED = 25;
 
 const DRIVERS = KRAS | P53A | P53B;
 
-export interface Setup {
+interface Setup {
 	view: View;
 	scenario: Partial<Scenario>;
 }
@@ -75,7 +74,7 @@ export function run(scenario: Partial<Scenario>): Run {
 	return r;
 }
 
-export interface Plan {
+interface Plan {
 	/** Last generation shown. */
 	end: number;
 	/** Generations per second, before and after the tumour is found. */

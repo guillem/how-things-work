@@ -10,15 +10,15 @@
 import { E_EXC, E_INH, simulate, spikeTimes, type Sample, type SynEvent } from './hh';
 
 /** Peak conductance (mS/cm²) and time constant (ms) of one synapse. ILLUSTRATIVE. */
-export const EXC = { g: 0.025, tau: 1 } as const;
-export const INH = { g: 0.08, tau: 4 } as const;
+const EXC = { g: 0.025, tau: 1 } as const;
+const INH = { g: 0.08, tau: 4 } as const;
 
 /** When the first input arrives, ms. */
 export const FIRST = 2;
 /** Length of a run, ms. */
 export const WINDOW = 30;
 
-export interface InputSet {
+interface InputSet {
 	/** Number of excitatory synapses that are active. */
 	exc: number;
 	/** Number of inhibitory synapses that are active. */
@@ -62,7 +62,7 @@ export const WIRING = {
 /** When each input neuron's spike reaches the receiving cells, ms. */
 export const INPUT_TIMES = [FIRST, FIRST + 0.5, FIRST + 1];
 
-export function circuitEvents(
+function circuitEvents(
 	cell: 'A' | 'B',
 	active: readonly boolean[],
 	strength3A: number

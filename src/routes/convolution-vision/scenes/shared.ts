@@ -59,7 +59,7 @@ export function extendStroke(setParam: Set, p: Pt) {
 }
 type Set = (id: string, value: ParamValue) => void;
 
-export interface Input {
+interface Input {
 	img: Float32Array;
 	/** index in SAMPLES, or -1 for the drawing */
 	sample: number;

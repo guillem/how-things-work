@@ -53,7 +53,7 @@ export interface CrowdOptions {
 }
 
 /** A meeting between an infectious person and someone else. */
-export interface Contact {
+interface Contact {
 	from: number;
 	to: number;
 	day: number;
@@ -69,7 +69,7 @@ export interface Sample {
 	v: number;
 }
 
-export interface Infection {
+interface Infection {
 	/** Index of the person infected. */
 	who: number;
 	/** Index of the person who infected them (−1 for the initial cases). */
@@ -78,16 +78,16 @@ export interface Infection {
 }
 
 /** Simulation time step, in days. */
-export const DT = 0.1;
+const DT = 0.1;
 
 /**
  * Meetings per day of each infectious person. Must be at least the largest
  * R0 / D the controls allow, so that the transmission probability stays ≤ 1.
  */
-export const CONTACTS_PER_DAY = 4;
+const CONTACTS_PER_DAY = 4;
 
 /** Probability that one meeting with a susceptible person passes the infection on. */
-export const transmissionChance = (o: Pick<CrowdOptions, 'r0' | 'days'>) =>
+const transmissionChance = (o: Pick<CrowdOptions, 'r0' | 'days'>) =>
 	Math.min(1, o.r0 / (CONTACTS_PER_DAY * o.days));
 
 const wrap = (v: number, size: number) => ((v % size) + size) % size;
@@ -293,7 +293,7 @@ function shuffle(n: number, rand: () => number) {
 
 // ---------------------------------------------------------------- SIR theory
 
-export interface SirOptions {
+interface SirOptions {
 	r0: number;
 	days: number;
 	vaccinated: number;

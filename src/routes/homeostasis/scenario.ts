@@ -11,9 +11,9 @@ import { HEALTHY, basalFor, simulate, type Sample, type Scenario } from './model
 export const FROM = -30;
 export const TO = 360;
 /** Length of a run, in minutes. */
-export const RUN_FOR = 45;
+const RUN_FOR = 45;
 
-export const INTENSITY: Record<string, number> = { none: 0, easy: 40, run: 65 };
+const INTENSITY: Record<string, number> = { none: 0, easy: 40, run: 65 };
 
 const DEFAULTS = {
 	carbs: 75,
@@ -28,11 +28,11 @@ const DEFAULTS = {
 };
 
 /** Background insulin that holds a body without insulin of its own at 100 mg/dL. */
-export const BASAL = basalFor(100);
+const BASAL = basalFor(100);
 
-export type Case = 'meal' | 'run' | 'type1' | 'type2' | 'dosing';
+type Case = 'meal' | 'run' | 'type1' | 'type2' | 'dosing';
 
-export interface Setup {
+interface Setup {
 	kind: Case;
 	scenario: Scenario;
 	/** The faint comparison curve: the same day without the step's change. */

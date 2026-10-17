@@ -55,7 +55,7 @@ function bondRadius(s: Sym, order: number) {
 export const bondLength = (a: Sym, b: Sym, pxPerPm = 1.05, order = 1) =>
 	pxPerPm * (bondRadius(a, order) + bondRadius(b, order));
 
-export interface Projected {
+interface Projected {
 	x: number;
 	y: number;
 	/** Positive is towards the viewer. */

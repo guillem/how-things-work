@@ -39,7 +39,7 @@ export type Rule = 'left' | 'mid' | 'right';
 /** Where each rule measures a rectangle's height, as a fraction of its width. */
 const ruleOffset: Record<Rule, number> = { left: 0, mid: 0.5, right: 1 };
 
-export interface Rect {
+interface Rect {
 	x: number;
 	width: number;
 	/** Signed height: rectangles below the axis count as negative area. */

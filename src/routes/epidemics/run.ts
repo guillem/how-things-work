@@ -9,7 +9,7 @@ export const POPULATION = 300;
 /** Side of the square field the crowd wanders over, in stage units. */
 export const FIELD = 440;
 /** Walking speed in stage units per simulated day (only drawn). */
-export const WALK = 5;
+const WALK = 5;
 /** Simulated days after which a run is cut off (no run lasts nearly this long). */
 const MAX_DAYS = 3000;
 

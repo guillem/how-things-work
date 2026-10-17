@@ -32,7 +32,7 @@ export const FAST_IPC = 4;
 
 export type Path = 'all' | 'sphere' | 'sky' | 'end';
 
-export interface Instruction {
+interface Instruction {
 	path: Path;
 	/** The instruction, written for the listing. */
 	text: string;
@@ -74,7 +74,7 @@ export const SHADER: Instruction[] = [
 	{ path: 'end', text: 'store colour → pixel', flops: 0 }
 ];
 
-export const count = (path: Path) => SHADER.filter((i) => i.path === path).length;
+const count = (path: Path) => SHADER.filter((i) => i.path === path).length;
 const flopsOf = (path: Path) =>
 	SHADER.filter((i) => i.path === path).reduce((sum, i) => sum + i.flops, 0);
 
@@ -98,7 +98,7 @@ const BASE = [0.95, 0.42, 0.12]; // the ball's colour
 const SKY_TOP = [0.2, 0.42, 0.78];
 const SKY_BOTTOM = [0.72, 0.84, 0.96];
 
-export interface Shaded {
+interface Shaded {
 	on: boolean;
 	rgb: [number, number, number];
 }
@@ -123,7 +123,7 @@ export function shade(x: number, y: number): Shaded {
 
 // ---------------------------------------------------------------- jobs
 
-export interface Job {
+interface Job {
 	kind: 'pixels' | 'matrix';
 	/** Number of independent tasks (pixels, or elements of the product). */
 	tasks: number;
@@ -235,7 +235,7 @@ export function exampleProduct(n = MATRIX_N) {
 
 // ---------------------------------------------------------------- running a job
 
-export interface Run {
+interface Run {
 	/** Cycles until the last task is done. */
 	cycles: number;
 	/** Lane-instructions that did useful work. */
@@ -244,7 +244,7 @@ export interface Run {
 	capacity: number;
 }
 
-export interface FastRun extends Run {
+interface FastRun extends Run {
 	/** done[k] = cycle at which task k is finished (tasks run in order). */
 	done: Float64Array;
 }
@@ -260,7 +260,7 @@ export function runFast(job: Job, serial = 0): FastRun {
 	return { cycles: instr / FAST_IPC, useful: instr, capacity: instr, done };
 }
 
-export interface LanesRun extends Run {
+interface LanesRun extends Run {
 	lanes: number;
 	/** Warps of 32 lanes. */
 	warps: number;
@@ -318,7 +318,7 @@ export const efficiency = (r: Run) => r.useful / r.capacity;
  */
 export const amdahl = (s: number, n: number) => 1 / (s + (1 - s) / n);
 
-export interface Measured {
+interface Measured {
 	/** Cycles on one lane, and on n lanes. */
 	one: number;
 	many: number;
@@ -354,7 +354,7 @@ export const gpuPeakGFLOPS = RTX_4090.cudaCores * 2 * RTX_4090.boostGHz;
 /** Intel's 64-bit figure rebuilt: cores × base clock × 16 operations per tick. */
 export const cpuFp64FromParts = I9_14900K.cores * I9_14900K.baseGHz * 16;
 /** 32-bit numbers: an AVX2 register holds 8 floats instead of 4 doubles, so twice the rate. */
-export const cpuPeakGFLOPS = 2 * I9_14900K.fp64GFLOPS;
+const cpuPeakGFLOPS = 2 * I9_14900K.fp64GFLOPS;
 /**
  * FP32 multiply-adds per core per tick implied by Intel's figure, which applies one
  * formula to all 24 cores: the big cores' rate applied to all 24; the small cores do

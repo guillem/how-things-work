@@ -11,7 +11,7 @@
  *    z = 0, never runs off to infinity (Mandelbrot 1980).
  */
 
-export const G = 9.81;
+const G = 9.81;
 
 // ------------------------------------------------------------ 1. double pendulum
 
@@ -23,8 +23,8 @@ export interface PendulumState {
 	w2: number;
 }
 
-export const ARM = 1; // m, both rods
-export const MASS = 1; // kg, both bobs
+const ARM = 1; // m, both rods
+const MASS = 1; // kg, both bobs
 
 /** Time derivatives of the state (equal masses m and equal lengths L). */
 function deriv(s: PendulumState, L = ARM): PendulumState {
@@ -50,7 +50,7 @@ const add = (s: PendulumState, k: PendulumState, h: number): PendulumState => ({
 });
 
 /** One RK4 step of length h. */
-export function rk4(s: PendulumState, h: number): PendulumState {
+function rk4(s: PendulumState, h: number): PendulumState {
 	const k1 = deriv(s);
 	const k2 = deriv(add(s, k1, h / 2));
 	const k3 = deriv(add(s, k2, h / 2));

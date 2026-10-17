@@ -24,7 +24,7 @@ import { rng } from '#lib/draw/math.ts';
 
 // ===================================================================================== text
 
-export interface SymbolStat {
+interface SymbolStat {
 	/** The symbol (one Unicode code point). */
 	symbol: string;
 	count: number;
@@ -71,7 +71,7 @@ export const fixedBits = (k: number): number => (k <= 1 ? 1 : Math.ceil(Math.log
 
 // ===================================================================================== Huffman
 
-export interface HuffNode {
+interface HuffNode {
 	id: number;
 	weight: number;
 	/** Leaf symbol, or undefined for an internal node. */
@@ -80,7 +80,7 @@ export interface HuffNode {
 	children?: [number, number];
 }
 
-export interface Huffman {
+interface Huffman {
 	/** All nodes: the leaves first (in order of first appearance), then one per merge. */
 	nodes: HuffNode[];
 	/** Merge k joins merges[k][0] (bit 0) and merges[k][1] (bit 1) into node leaves + k. */
@@ -309,7 +309,7 @@ export function blockAt(img: Grey, bx: number, by: number): number[] {
 export const category = (v: number): number =>
 	v === 0 ? 0 : Math.floor(Math.log2(Math.abs(v))) + 1;
 
-export interface JpegResult {
+interface JpegResult {
 	/** The decoded image. */
 	image: Grey;
 	/** Quantised coefficients of each block (row-major within the block), blocks row by row. */
@@ -360,7 +360,7 @@ export function jpeg(img: Grey, quality: number): JpegResult {
  * for DC and one for AC. Headers and the tables themselves are not counted; the 16-bit limit
  * on code length (it never binds at these sizes) and the reserved all-ones code word are ignored.
  */
-export function jpegBits(blocks: number[][]): number {
+function jpegBits(blocks: number[][]): number {
 	const dc = new Map<string, number>();
 	const ac = new Map<string, number>();
 	const bump = (m: Map<string, number>, k: string) => m.set(k, (m.get(k) ?? 0) + 1);

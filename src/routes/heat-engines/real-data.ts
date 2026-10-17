@@ -14,7 +14,7 @@
  */
 
 /** Btu per kWh: 1 kWh = 3,412.14 Btu. */
-export const BTU_PER_KWH = 3412.14;
+const BTU_PER_KWH = 3412.14;
 
 /** EIA 2024 average tested heat rates, Btu/kWh. */
 export const EIA_HEAT_RATE = {
@@ -26,7 +26,7 @@ export const EIA_HEAT_RATE = {
 
 export const fromHeatRate = (btuPerKwh: number) => BTU_PER_KWH / btuPerKwh;
 
-export interface RealEngine {
+interface RealEngine {
 	id: string;
 	label: string;
 	/** Efficiency, or a range [low, high]. */

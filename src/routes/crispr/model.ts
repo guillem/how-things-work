@@ -23,11 +23,11 @@ import { rng } from '#lib/draw/math.ts';
 // --------------------------------------------------------------- 1. sequences
 
 /** The PAM of the Cas9 drawn on this page (Streptococcus pyogenes Cas9): any letter, then GG. */
-export const PAM = 'NGG';
+const PAM = 'NGG';
 /** Letters next to the PAM that Cas9 checks first; any mismatch here and it lets go. */
 export const SEED = 10;
 /** Mismatches tolerated in the rest of the match, far from the PAM. */
-export const DISTAL_TOLERANCE = 1;
+const DISTAL_TOLERANCE = 1;
 /** Length of the spacers on this page (real ones in S. thermophilus CRISPR1: 29–31, mostly 30). */
 export const SPACER_LENGTH = 20;
 
@@ -42,7 +42,7 @@ export const reverseComplement = (s: string) => complement(s).split('').reverse(
 export const toRna = (s: string) => s.replace(/T/g, 'U');
 
 /** Does `letter` fit the IUPAC code `code` (N any, W = A or T, R = A or G)? */
-export function fits(code: string, letter: string): boolean {
+function fits(code: string, letter: string): boolean {
 	if (code === 'N') return true;
 	if (code === 'W') return letter === 'A' || letter === 'T';
 	if (code === 'R') return letter === 'A' || letter === 'G';
@@ -180,14 +180,14 @@ export const fromPam = (index: number) => PROTO_AT + SPACER_LENGTH - index;
 
 // ------------------------------------------------------------ 2. the array
 
-export interface Spacer {
+interface Spacer {
 	seq: string;
 	/** Which invader it was copied from (a label for the picture). */
 	source: string;
 }
 
 /** A CRISPR array: leader, then repeat–spacer–repeat–…–repeat. Index 0 is next to the leader. */
-export interface CrisprArray {
+interface CrisprArray {
 	spacers: Spacer[];
 }
 
@@ -284,14 +284,14 @@ export interface SpacerKey {
 	site: number;
 	variant: number;
 }
-export interface BacStrain {
+interface BacStrain {
 	id: number;
 	spacers: SpacerKey[];
 	n: number;
 	/** Hour the strain appeared. */
 	born: number;
 }
-export interface PhageStrain {
+interface PhageStrain {
 	id: number;
 	/** Spelling of each protospacer site (0 = the original; each escape gives a new number). */
 	sites: number[];
@@ -299,7 +299,7 @@ export interface PhageStrain {
 	born: number;
 }
 
-export const isImmune = (b: { spacers: SpacerKey[] }, p: { sites: number[] }) =>
+const isImmune = (b: { spacers: SpacerKey[] }, p: { sites: number[] }) =>
 	b.spacers.some((s) => p.sites[s.site] === s.variant);
 
 /** Illustrative rates (per hour), chosen so a run lasts a few days. */
@@ -325,13 +325,13 @@ export const POP = {
 	phage0: 1e3
 };
 
-export interface PopOptions {
+interface PopOptions {
 	crispr: boolean;
 	mutate: boolean;
 	seed: number;
 }
 
-export interface Sample {
+interface Sample {
 	t: number;
 	bacteria: number;
 	phage: number;
@@ -343,7 +343,7 @@ export interface Sample {
 	changes: number;
 }
 
-export interface PopEvent {
+interface PopEvent {
 	t: number;
 	kind: 'spacer' | 'escape';
 	/** The site concerned. */
@@ -351,7 +351,7 @@ export interface PopEvent {
 	variant: number;
 }
 
-export interface PopRun {
+interface PopRun {
 	samples: Sample[];
 	/** Moments when a new bacterial strain or phage strain becomes common (≥ 10% of its population). */
 	events: PopEvent[];

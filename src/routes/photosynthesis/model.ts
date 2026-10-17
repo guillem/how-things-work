@@ -135,7 +135,7 @@ function tav(alpha: number, nr: number): number {
 	return (ts + tp1 + tp2 + tp3 + tp4 + tp5) / (2 * sa * sa);
 }
 
-export interface Leaf {
+interface Leaf {
 	/** Structure parameter: the number of plates the leaf behaves like. */
 	n: number;
 	/** Chlorophyll a + b content (µg cm⁻²). */
@@ -151,9 +151,9 @@ export interface Leaf {
  * carotenoids, 90 g m⁻² of dry mass and a structure of 1.5 plates — the
  * middle of the ranges PROSPECT is calibrated on (Féret et al. 2017).
  */
-export const TYPICAL_LEAF: Leaf = { n: 1.5, chlorophyll: 40, carotenoids: 10, dryMass: 0.009 };
+const TYPICAL_LEAF: Leaf = { n: 1.5, chlorophyll: 40, carotenoids: 10, dryMass: 0.009 };
 
-export interface Optics {
+interface Optics {
 	reflectance: number;
 	transmittance: number;
 	absorptance: number;
@@ -208,8 +208,7 @@ export function solutionAbsorptance(nm: number, leaf: Leaf = TYPICAL_LEAF): numb
 }
 
 /** Fraction of the photons a leaf absorbs at wavelength `nm`. */
-export const leafAbsorptance = (nm: number, leaf: Leaf = TYPICAL_LEAF) =>
-	leafOptics(nm, leaf).absorptance;
+const leafAbsorptance = (nm: number, leaf: Leaf = TYPICAL_LEAF) => leafOptics(nm, leaf).absorptance;
 
 /**
  * Fraction of the photons of white light a leaf absorbs: the average over
@@ -237,7 +236,7 @@ let typicalWhite: number | undefined;
 const R_GAS = 8.314;
 const T25 = 298.15;
 /** Oxygen in the air and in the leaf (mmol mol⁻¹). */
-export const O2_AIR = 210;
+const O2_AIR = 210;
 /** Photosynthetically active photons in full sunlight (µmol m⁻² s⁻¹). */
 export const FULL_SUN = 2000;
 /** CO₂ inside the leaf as a fraction of the air's (stomata not modelled). */
@@ -249,7 +248,7 @@ export const CI_RATIO = 0.7;
  * respiration 1.5% of Vcmax (Collatz et al. 1991), curvature θ = 0.7 and a
  * 15% loss of absorbed light to other absorbers (von Caemmerer 2000).
  */
-export const LEAF_25 = { vcmax: 60, jmax: 100, rd: 0.9, theta: 0.7, f: 0.15 };
+const LEAF_25 = { vcmax: 60, jmax: 100, rd: 0.9, theta: 0.7, f: 0.15 };
 
 /** Arrhenius temperature factor, 1 at 25 °C (activation energy in J mol⁻¹). */
 const arrhenius = (ea: number, tK: number) => Math.exp((ea * (tK - T25)) / (T25 * R_GAS * tK));
@@ -260,7 +259,7 @@ function peaked(ha: number, hd: number, ds: number, tK: number) {
 }
 
 /** Temperature-dependent constants of the FvCB model at `tempC` °C. */
-export function constants(tempC: number) {
+function constants(tempC: number) {
 	const tK = tempC + 273.15;
 	const tGrowth = 25;
 	return {
@@ -287,7 +286,7 @@ export interface Conditions {
 	tempC: number;
 }
 
-export interface Rate {
+interface Rate {
 	/** Photons absorbed by the leaf (µmol m⁻² s⁻¹). */
 	absorbed: number;
 	/** Electron transport rate J (µmol e⁻ m⁻² s⁻¹). */

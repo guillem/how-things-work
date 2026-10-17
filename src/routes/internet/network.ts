@@ -42,9 +42,9 @@
 // Topology
 // ---------------------------------------------------------------------------
 
-export type NodeKind = 'host' | 'router';
+type NodeKind = 'host' | 'router';
 
-export interface NetNode {
+interface NetNode {
 	id: string;
 	kind: NodeKind;
 	label: string;
@@ -55,7 +55,7 @@ export interface NetNode {
 	address?: string;
 }
 
-export interface Link {
+interface Link {
 	/** Sorted pair of node ids, e.g. 'C-E'. */
 	id: string;
 	a: string;
@@ -69,7 +69,7 @@ export interface Link {
 }
 
 /** Signal speed on the map, scene units per simulated second. */
-export const SPEED = 420;
+const SPEED = 420;
 
 export const NODES: NetNode[] = [
 	{ id: 'ada', kind: 'host', label: 'Ada', x: 62, y: 240, address: '192.0.2.10' },
@@ -104,7 +104,7 @@ const PAIRS: [string, string][] = [
 	['H', 'ben']
 ];
 
-export const linkId = (a: string, b: string) => (a < b ? `${a}-${b}` : `${b}-${a}`);
+const linkId = (a: string, b: string) => (a < b ? `${a}-${b}` : `${b}-${a}`);
 
 export const LINKS: Link[] = PAIRS.map(([a, b]) => {
 	const na = nodeById.get(a)!;
@@ -128,7 +128,7 @@ for (const l of LINKS) {
 	neighbours.get(l.a)!.push({ node: l.b, link: l });
 	neighbours.get(l.b)!.push({ node: l.a, link: l });
 }
-export const neighboursOf = (id: string) => neighbours.get(id) ?? [];
+const neighboursOf = (id: string) => neighbours.get(id) ?? [];
 
 export const ROUTERS = NODES.filter((n) => n.kind === 'router').map((n) => n.id);
 
@@ -137,23 +137,23 @@ export const ROUTERS = NODES.filter((n) => n.kind === 'router').map((n) => n.id)
 // ---------------------------------------------------------------------------
 
 /** Time a router takes to forward one packet (it handles one at a time). */
-export const SERVICE = 0.16;
+const SERVICE = 0.16;
 /** Packets that can wait in a router's queue (besides the one being sent). */
 export const BUFFER = 3;
 /** Ada puts one packet on the wire every GAP seconds. */
-export const GAP = 0.4;
+const GAP = 0.4;
 /** Ben's acknowledgements are small: one every ACK_GAP seconds at most. */
-export const ACK_GAP = 0.12;
+const ACK_GAP = 0.12;
 /** Time for the routers at the ends of a cut link to notice it is dead. */
 export const DETECT = 0.35;
 /** When the chosen link is cut, in every run. */
 export const CUT_AT = 1.9;
 /** Packets are dropped after passing through this many routers. */
-export const MAX_HOPS = 12;
+const MAX_HOPS = 12;
 /** The router that can be given other people's traffic. */
 export const BUSY = 'G';
 /** Ada starts sending at this time. */
-export const START = 0.3;
+const START = 0.3;
 /** Nothing is simulated after this time. */
 export const HORIZON = 120;
 
@@ -162,7 +162,7 @@ export const HORIZON = 120;
 // ---------------------------------------------------------------------------
 
 /** Cheapest cost (seconds of delay) from every node to `dst`, avoiding `down` links. */
-export function distancesTo(dst: string, down: ReadonlySet<string> = new Set()) {
+function distancesTo(dst: string, down: ReadonlySet<string> = new Set()) {
 	const dist = new Map<string, number>(NODES.map((n) => [n.id, Infinity]));
 	dist.set(dst, 0);
 	const done = new Set<string>();
@@ -184,7 +184,7 @@ export function distancesTo(dst: string, down: ReadonlySet<string> = new Set()) 
 }
 
 /** One router's forwarding table: destination → next hop (or null: unreachable). */
-export type Table = Map<string, string | null>;
+type Table = Map<string, string | null>;
 
 /** Next hop from `from` towards `dst`, given the links it believes are down. */
 export function nextHop(from: string, dst: string, down: ReadonlySet<string> = new Set()) {
@@ -259,7 +259,7 @@ export function learnTimes(cut: string | null, cutAt = CUT_AT) {
 
 export const MESSAGE = 'SEE YOU AT NOON!';
 /** Letters of data per packet (real packets carry up to about 1,500 bytes). */
-export const PER_PACKET = 2;
+const PER_PACKET = 2;
 
 export function packetize(message = MESSAGE, size = PER_PACKET) {
 	const out: string[] = [];
@@ -300,7 +300,7 @@ export interface Scenario {
 	seed: number;
 }
 
-export const DEFAULT_SCENARIO: Scenario = { cut: null, loss: 0, load: 0, seed: 1 };
+const DEFAULT_SCENARIO: Scenario = { cut: null, loss: 0, load: 0, seed: 1 };
 
 export type PacketKind = 'data' | 'ack' | 'other';
 
@@ -615,7 +615,7 @@ export function simulate(sc: Partial<Scenario> = {}): SimResult {
 // Sampling the result at a time (for drawing)
 // ---------------------------------------------------------------------------
 
-export type Where =
+type Where =
 	| { kind: 'link'; from: string; to: string; u: number }
 	| { kind: 'queue'; node: string; slot: number; serving: boolean };
 
@@ -654,7 +654,7 @@ export function queueAt(result: SimResult, node: string, t: number) {
 export type Lane = 'browser' | 'resolver' | 'root' | 'tld' | 'auth' | 'server';
 export type Phase = 'dns' | 'tcp' | 'tls' | 'http';
 
-export interface WebMessage {
+interface WebMessage {
 	id: string;
 	from: Lane;
 	to: Lane;
@@ -665,7 +665,7 @@ export interface WebMessage {
 	t1: number;
 }
 
-export interface WebOptions {
+interface WebOptions {
 	/** Round trip between the browser and the web server, ms. */
 	rtt: number;
 	/** The resolver already has the address in its cache. */

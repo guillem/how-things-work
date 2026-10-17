@@ -35,7 +35,7 @@ export const P1 = SIDE / 2; // 14
 export const P2 = SIDE / 4; // 7
 export const FLAT = C2 * P2 * P2; // 784
 
-export interface Weights {
+interface Weights {
 	/** conv 1: [8][1][5][5] */
 	c1w: Float32Array;
 	c1b: Float32Array;
@@ -128,10 +128,10 @@ export function conv2d(
 }
 
 /** max(0, v) for every value. */
-export const relu = (a: Float32Array): Float32Array => a.map((v) => (v > 0 ? v : 0));
+const relu = (a: Float32Array): Float32Array => a.map((v) => (v > 0 ? v : 0));
 
 /** 2 × 2 max pooling with stride 2 of `c` maps of h × w (h and w even). */
-export function maxPool(a: ArrayLike<number>, c: number, h: number, w: number): Float32Array {
+function maxPool(a: ArrayLike<number>, c: number, h: number, w: number): Float32Array {
 	const h2 = h >> 1;
 	const w2 = w >> 1;
 	const out = new Float32Array(c * h2 * w2);
@@ -145,14 +145,14 @@ export function maxPool(a: ArrayLike<number>, c: number, h: number, w: number): 
 }
 
 /** Softmax: e^z / Σ e^z (shifted by the largest z, which changes nothing but avoids overflow). */
-export function softmax(z: ArrayLike<number>): number[] {
+function softmax(z: ArrayLike<number>): number[] {
 	const m = Math.max(...Array.from(z));
 	const e = Array.from(z, (v) => Math.exp(v - m));
 	const s = e.reduce((a, b) => a + b, 0);
 	return e.map((v) => v / s);
 }
 
-export interface Activations {
+interface Activations {
 	input: ArrayLike<number>;
 	/** first convolution, before the ReLU: 8 × 28 × 28 */
 	conv1: Float32Array;
@@ -201,7 +201,7 @@ export interface Pt {
 export type Stroke = Pt[];
 
 /** Pen radius in pixels of the 28 × 28 image: strokes about 2.6 px wide, like MNIST's. */
-export const PEN = 1.3;
+const PEN = 1.3;
 /** The bounding box of the ink (pen included) is scaled to fit this square, as in MNIST. */
 export const BOX = 20;
 

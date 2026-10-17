@@ -135,5 +135,5 @@ export const E0_HYDROGEN = 0;
 /** O₂ + 4H⁺ + 4e⁻ ⇌ 2H₂O (same table): the top of water's stability window. */
 export const E0_OXYGEN = 1.229;
 
-export const coupleById = new Map(COUPLES.map((c) => [c.id, c]));
+const coupleById = new Map(COUPLES.map((c) => [c.id, c]));
 export const couple = (id: string): Couple => coupleById.get(id) ?? COUPLES[4];

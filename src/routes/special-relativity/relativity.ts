@@ -26,7 +26,7 @@ export const MUON_LIFETIME = 2.1969811e-6;
  * Illustrative sizes used on the page (not data): the light clock's mirrors are
  * 1.5 m apart and the train and the platform are each 200 m long at rest.
  */
-export const MIRROR_GAP = 1.5;
+const MIRROR_GAP = 1.5;
 export const TRAIN_LENGTH = 200;
 
 /** The Lorentz factor γ = 1 / √(1 − β²) for a speed β = v / c (0 ≤ |β| < 1). */
@@ -67,7 +67,7 @@ export function interval(e: Event, from: Event = { ct: 0, x: 0 }) {
 	return dt * dt - dx * dx;
 }
 
-export type IntervalKind = 'timelike' | 'spacelike' | 'lightlike';
+type IntervalKind = 'timelike' | 'spacelike' | 'lightlike';
 export function intervalKind(s2: number, eps = 1e-9): IntervalKind {
 	return Math.abs(s2) <= eps ? 'lightlike' : s2 > 0 ? 'timelike' : 'spacelike';
 }
@@ -140,7 +140,7 @@ export function measuredLength(beta: number, restLength = TRAIN_LENGTH, atCt = 0
 
 // ------------------------------------------------------------------ Einstein's train
 
-export interface Lightning {
+interface Lightning {
 	/** Strike at the back (left) end of the train, at the front (right) end. */
 	back: Event;
 	front: Event;

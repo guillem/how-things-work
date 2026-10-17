@@ -20,8 +20,8 @@
  */
 
 /** Faraday constant, C/mol, and gas constant, J/(mol·K) (CODATA 2018). */
-export const FARADAY = 96485.33212;
-export const GAS = 8.314462618;
+const FARADAY = 96485.33212;
+const GAS = 8.314462618;
 
 export type Ion = 'K' | 'Na' | 'Cl';
 
@@ -43,10 +43,10 @@ export const P_REST: Record<Ion, number> = { K: 1, Na: 0.04, Cl: 0.45 };
 export const P_PEAK: Record<Ion, number> = { K: 1, Na: 20, Cl: 0.45 };
 
 /** Temperature used on the page, °C. */
-export const ROOM = 20;
+const ROOM = 20;
 
 /** RT/F in mV at temperature T (°C). */
-export function rtf(T: number = ROOM): number {
+function rtf(T: number = ROOM): number {
 	return ((GAS * (T + 273.15)) / FARADAY) * 1000;
 }
 
@@ -54,7 +54,7 @@ export function rtf(T: number = ROOM): number {
  * Nernst equilibrium potential (mV, inside relative to outside) of an ion of
  * charge z: the voltage at which its electrical pull balances its diffusion.
  */
-export function nernst(z: number, outside: number, inside: number, T: number = ROOM): number {
+function nernst(z: number, outside: number, inside: number, T: number = ROOM): number {
 	return (rtf(T) / z) * Math.log(outside / inside);
 }
 

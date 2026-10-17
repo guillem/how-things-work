@@ -13,7 +13,7 @@
  */
 import { rng } from '#lib/draw/math.ts';
 
-export type Move = 'L' | 'R';
+type Move = 'L' | 'R';
 
 const NAME = /^[A-Za-z][A-Za-z0-9]*$/;
 
@@ -57,7 +57,7 @@ carry 0 -> 1 L done
 carry _ -> 1 L done`;
 
 /** The reader's first exercise: the same walk, but borrow instead of carry. */
-export const DECREMENT_SOURCE = `right 0 -> 0 R right
+const DECREMENT_SOURCE = `right 0 -> 0 R right
 right 1 -> 1 R right
 right _ -> _ L borrow
 borrow 0 -> 1 L borrow
@@ -263,12 +263,12 @@ export function countOnes(f: Frame): number {
 
 export const MAX_STEPS = 500;
 
-export interface ParseError {
+interface ParseError {
 	line: number;
 	message: string;
 }
 
-export type Parsed = { ok: true; machine: Machine } | { ok: false; errors: ParseError[] };
+type Parsed = { ok: true; machine: Machine } | { ok: false; errors: ParseError[] };
 
 /**
  * Parse a rule table, one rule per line: `state symbol -> write move next`.
@@ -321,7 +321,7 @@ export function parseMachine(source: string, blank = '_'): Parsed {
  * 1^(state+1) 0 1^(symbol+1) 0 1^(write+1) 0 1^(move+1) 0 1^(next+1) 00, with
  * states and symbols numbered in table order (halting states after the rest).
  */
-export function encode(m: Machine): string {
+function encode(m: Machine): string {
 	const nextNames = [...m.states];
 	for (const s of m.states)
 		for (const r of Object.values(m.rules[s]))
@@ -353,7 +353,7 @@ export type Verdict = 'halts' | 'loops';
  * (it will walk forever). This settles every machine in the table below, but
  * no such trick settles every machine: that is the halting problem.
  */
-export function decide(m: Machine, input: string, maxSteps = 20000): Verdict | 'unknown' {
+function decide(m: Machine, input: string, maxSteps = 20000): Verdict | 'unknown' {
 	const tape = new Map<number, string>();
 	for (let i = 0; i < input.length; i++) if (input[i] !== m.blank) tape.set(i, input[i]);
 	let lo = 0;
@@ -434,7 +434,7 @@ c _ -> _ R c`
 	}
 ];
 
-export interface HaltingTable {
+interface HaltingTable {
 	names: string[];
 	codes: string[];
 	/** cells[i][j]: does machine i halt when given machine j's description? */
@@ -456,7 +456,7 @@ export function haltingTable(): HaltingTable {
 
 // ---- the travelling salesman ----------------------------------------------------------
 
-export interface City {
+interface City {
 	x: number;
 	y: number;
 }
@@ -516,7 +516,7 @@ export function eachTour(n: number, visit: (tour: number[]) => void): void {
 	permute(0);
 }
 
-export interface Search {
+interface Search {
 	/** The tours in the order tried (for the replay; only for small n). */
 	tried: number[][];
 	/** Index in `tried` of each new best tour, with its length. */

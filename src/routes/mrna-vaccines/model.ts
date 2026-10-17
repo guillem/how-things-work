@@ -85,7 +85,7 @@ export const WALSH = { low: 1.7, high: 3.8, target: Math.sqrt(1.7 * 3.8) } as co
 /** Days between the two doses of the BioNTech/Pfizer vaccine (Comirnaty) as authorised. */
 export const INTERVAL = 21;
 
-export interface Schedule {
+interface Schedule {
 	/** Days of the vaccine doses. */
 	doses: readonly number[];
 	/** Day of an infection with the model's virus (Cao et al.'s dose), or null. */
@@ -124,7 +124,7 @@ type State = [
 ];
 
 /** Clearance of the spike protein already made (an assumption, see the header). */
-export const SPIKE = {
+const SPIKE = {
 	/** Half-life of the spike made, days. */
 	halfLifeDays: 1,
 	/** Loss rate, per day. */
@@ -136,7 +136,7 @@ export const SPIKE = {
  * with the mRNA, and cleared at `SPIKE.rate`; zero at the injection, it rises
  * and then falls. Its integral over time is the same as for e^(−δM·t).
  */
-export function spikeLevel(doses: readonly number[], t: number): number {
+function spikeLevel(doses: readonly number[], t: number): number {
 	const dm = MRNA.rate;
 	const rate = SPIKE.rate;
 	let a = 0;

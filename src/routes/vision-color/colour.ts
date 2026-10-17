@@ -16,7 +16,7 @@
 import { LMS, NM0, NM1 } from './cone-data';
 
 export type Cones = [number, number, number];
-export interface Line {
+interface Line {
 	nm: number;
 	power: number;
 }
@@ -51,7 +51,7 @@ export function peak(k: 0 | 1 | 2): number {
 // ------------------------------------------------------------------ display
 
 /** CIE 170-2:2015: the 2012 2° XYZ functions as combinations of the 2006 2° L, M, S. */
-export const LMS_TO_XYZ = [
+const LMS_TO_XYZ = [
 	[1.94735469, -1.41445123, 0.36476327],
 	[0.68990272, 0.34832189, 0],
 	[0, 0, 1.93485343]
@@ -72,7 +72,7 @@ const apply = (m: readonly (readonly number[])[], v: readonly number[]): Cones =
 export const toXYZ = (c: Cones): Cones => apply(LMS_TO_XYZ, c);
 
 /** Linear sRGB of cone responses (unclipped: may be negative or above 1). */
-export const linearRGB = (c: Cones): Cones => apply(XYZ_TO_RGB, toXYZ(c));
+const linearRGB = (c: Cones): Cones => apply(XYZ_TO_RGB, toXYZ(c));
 
 const det3 = (m: readonly (readonly number[])[]) =>
 	m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
@@ -176,7 +176,7 @@ function powersFor(c: Cones): Cones {
  * One unit of each slider is the power of that laser in the mixture that matches equal-energy
  * white, scaled so that 1, 1, 1 matches a white of total power 1.
  */
-export const UNIT: Cones = powersFor(EQUAL_ENERGY);
+const UNIT: Cones = powersFor(EQUAL_ENERGY);
 
 /** The light from the three lasers at slider settings r, g, b (units of `UNIT`). */
 export function mixture(r: number, g: number, b: number): Line[] {
@@ -190,7 +190,7 @@ export function matchFor(c: Cones): Cones {
 }
 
 /** Planck's law: spectral radiance of a black body at T kelvin, at `nm` (arbitrary scale). */
-export function planck(nm: number, T: number): number {
+function planck(nm: number, T: number): number {
 	const l = nm * 1e-9;
 	const h = 6.62607015e-34;
 	const c = 299792458;
@@ -206,7 +206,7 @@ export function blackBody(T: number): Line[] {
 	return lines.map((l) => ({ nm: l.nm, power: l.power / sum }));
 }
 
-export interface Target {
+interface Target {
 	id: string;
 	label: string;
 	/** The target light, scaled so its exact match needs a largest slider of 0.75. */
@@ -277,7 +277,7 @@ export function bestMatch(c: Cones): { rgb: Cones; mismatch: number } {
  * channel is returned as a contrast between its two sides, from −1 (all green, all yellow) to
  * +1 (all red, all blue).
  */
-export const UNIQUE_BLUE = 475;
+const UNIQUE_BLUE = 475;
 const U = cones(UNIQUE_BLUE);
 const EE = EQUAL_ENERGY;
 const C_RG = (U[1] * EE[0] - U[0] * EE[1]) / (U[2] * EE[1] - U[1] * EE[2]);

@@ -89,7 +89,7 @@ function constants(tc: number, S: number): Constants {
 const K = constants(TEMP_C, SALINITY);
 
 /** Surface seawater's alkalinity, mol/kg: a typical value (GLODAP), held fixed. */
-export const ALKALINITY = 2300e-6;
+const ALKALINITY = 2300e-6;
 
 /** Hydrogen ion concentration (mol/kg) of seawater with dissolved inorganic carbon `dic` (mol/kg). */
 function hydrogen(dic: number): number {
@@ -110,7 +110,7 @@ function hydrogen(dic: number): number {
 }
 
 /** CO₂ partial pressure (µatm ≈ ppm) of seawater with `dic` mol/kg. */
-export function seawaterPCO2(dic: number): number {
+function seawaterPCO2(dic: number): number {
 	const h = hydrogen(dic);
 	const { K0, K1, K2 } = K;
 	const co2 = (dic * h * h) / (h * h + K1 * h + K1 * K2);
@@ -156,7 +156,7 @@ const MOL_PER_GTC = 1e15 / 12.011;
 const M_SURF = (PRE.surfaceOcean * MOL_PER_GTC) / DIC0;
 /** The rest of the ocean (1.37 × 10²¹ kg in all), split into thermocline and deep. */
 const OCEAN_MASS = 1.37e21;
-export const THERMOCLINE_SHARE = 0.25;
+const THERMOCLINE_SHARE = 0.25;
 const M_THERMO = (OCEAN_MASS - M_SURF) * THERMOCLINE_SHARE;
 const M_DEEP = OCEAN_MASS - M_SURF - M_THERMO;
 
@@ -172,7 +172,7 @@ export interface Params {
 }
 
 /** Water carried down out of the mixed layer by subduction (AR6 Fig. 5.12: 275 GtC/yr), kg/yr. */
-export const SUBDUCTION_WATER = (NATURAL.subduction * MOL_PER_GTC) / DIC0;
+const SUBDUCTION_WATER = (NATURAL.subduction * MOL_PER_GTC) / DIC0;
 
 /**
  * Default parameters. Gas exchange comes straight from the natural flows (IPCC
@@ -219,7 +219,7 @@ export const ZERO: State = {
 	burnt: 0
 };
 
-export interface Fluxes {
+interface Fluxes {
 	/** Net flow air → ocean surface. */
 	ocean: number;
 	/** Net flow air → plants and soils from the environment (the "land sink"). */
@@ -229,7 +229,7 @@ export interface Fluxes {
 	waterPPM: number;
 }
 
-export const surfaceDIC = (s: State) => DIC0 + (s.surface * MOL_PER_GTC) / M_SURF;
+const surfaceDIC = (s: State) => DIC0 + (s.surface * MOL_PER_GTC) / M_SURF;
 
 /** The perturbation fluxes, GtC/yr, at state `s` (emissions not included). */
 function fluxes(s: State, p: Params) {
@@ -329,7 +329,7 @@ export const pHOf = (s: State) => seawaterPH(surfaceDIC(s));
 
 // ------------------------------------------------------------------ history, 1750–2024
 
-export interface Year {
+interface Year {
 	year: number;
 	/** The state at the end of the year. */
 	state: State;
@@ -424,7 +424,7 @@ export function future(
 	return out;
 }
 
-export interface PulseShare {
+interface PulseShare {
 	air: number;
 	ocean: number;
 	land: number;

@@ -100,17 +100,17 @@
 const DAY = 1440;
 
 /** Net glucose production at zero glucose, mg/dL per minute (Topp: 864 mg/dL/day). */
-export const R0 = 864 / DAY;
+const R0 = 864 / DAY;
 /** Glucose uptake that needs no insulin, per minute (Topp: EG0 = 1.44 /day). */
-export const EG0 = 1.44 / DAY;
+const EG0 = 1.44 / DAY;
 /** Insulin sensitivity, mL/µU per minute (Topp: SI = 0.72 mL/µU/day). */
-export const SI = 0.72 / DAY;
+const SI = 0.72 / DAY;
 /** Topp's normal fasting state: glucose 100 mg/dL, insulin 10 µU/mL (R0 / (EG0 + SI·10) = 100). */
-export const FASTING_GLUCOSE = 100;
-export const FASTING_INSULIN = 10;
+const FASTING_GLUCOSE = 100;
+const FASTING_INSULIN = 10;
 
 /** Plasma insulin clearance, per minute (Hovorka 2004: ke = 0.138 /min; Topp: k = 432 /day = 0.3 /min). */
-export const KE = 0.138;
+const KE = 0.138;
 
 /**
  * The β-cells' response to glucose: a Hill function, as in Topp et al.
@@ -133,27 +133,27 @@ const hill = (g: number) =>
 const SECRETION_MAX = (KE * FASTING_INSULIN) / hill(FASTING_GLUCOSE);
 
 /** Rate at which insulin action follows plasma insulin, per minute (Roy & Parker 2006, Table 1: p2 = 0.037). */
-export const P2 = 0.037;
+const P2 = 0.037;
 
 /** Body weight of the virtual adult, kg (the usual reference adult of Hovorka et al.). */
-export const BODY_WEIGHT = 70;
+const BODY_WEIGHT = 70;
 /** Glucose distribution volume, dL (Hovorka 2004: 0.16 L/kg). */
-export const VG = 0.16 * BODY_WEIGHT * 10;
+const VG = 0.16 * BODY_WEIGHT * 10;
 /** Insulin distribution volume, mL (Hovorka 2004: 0.12 L/kg). */
-export const VI = 0.12 * BODY_WEIGHT * 1000;
+const VI = 0.12 * BODY_WEIGHT * 1000;
 /** Share of a meal's carbohydrate that reaches the blood (Hovorka 2004: AG = 0.8). */
-export const AG = 0.8;
+const AG = 0.8;
 /** Time to peak absorption of a meal, min (Hovorka 2004: tmax,G = 40). */
-export const TMAX_G = 40;
+const TMAX_G = 40;
 /** Time to peak absorption of rapid-acting insulin injected under the skin, min (Hovorka 2004: tmax,I = 55). */
-export const TMAX_I = 55;
+const TMAX_I = 55;
 /** Kidney threshold above which glucose spills into urine, mg/dL (Hovorka 2004: 9 mmol/L). */
-export const RENAL_THRESHOLD = 9 * 18;
+const RENAL_THRESHOLD = 9 * 18;
 /** Renal glucose clearance above the threshold, per minute (Hovorka 2004: 0.003 /min). */
 const RENAL_RATE = 0.003;
 
 /** Resting exercise level, % of maximal oxygen uptake (Roy & Parker 2006, citing Felig & Wahren 1975). */
-export const REST_INTENSITY = 8;
+const REST_INTENSITY = 8;
 /** Rate at which the body reaches the exercise intensity, per minute (Roy & Parker 2006, eq. 4). */
 const INTENSITY_RATE = 0.8;
 /** Exercise-induced insulin clearance, µU/mL/min² per % (Roy & Parker 2006, eq. 10 and Table 2: a6). */
@@ -173,7 +173,7 @@ const A7 = 0.009;
 const EXERCISE_UPTAKE = 0.5 * (0.011 / 0.9);
 
 /** Glucose below which glucagon rises: the counter-regulation threshold, mg/dL (Schwartz et al. 1987: 3.8 mmol/L). */
-export const GLUCAGON_THRESHOLD = 68;
+const GLUCAGON_THRESHOLD = 68;
 /** Time constant with which glucagon follows its target, min (plasma half-life of a few minutes). */
 const GLUCAGON_TAU = 5;
 /** ILLUSTRATIVE. Liver output rises by this share of each step of glucagon above fasting. */
@@ -293,7 +293,7 @@ export interface Sample {
 const exertion = (p: number) => Math.max(0, p - REST_INTENSITY) / (65 - REST_INTENSITY);
 
 /** Insulin secretion, µU/mL per minute, at glucose `g` (see HILL_N). */
-export function secretion(g: number, production: number) {
+function secretion(g: number, production: number) {
 	return production * SECRETION_MAX * hill(g);
 }
 
@@ -301,7 +301,7 @@ export function secretion(g: number, production: number) {
 const SECRETION_FASTING = secretion(FASTING_GLUCOSE, 1);
 
 /** Glucagon level the islets aim for, relative to normal fasting. */
-export function glucagonTarget(g: number, sec: number, production: number, effort: number) {
+function glucagonTarget(g: number, sec: number, production: number, effort: number) {
 	// Insulin from neighbouring β-cells brakes glucagon: halved once secretion
 	// is three times its fasting rate.
 	const brake = (1 - GLUCAGON_FLOOR) * Math.min(1, Math.max(0, (sec / SECRETION_FASTING - 1) / 2));

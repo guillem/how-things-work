@@ -12,7 +12,7 @@ import { THYLAKOID, THYLAKOID_VIEW_OFFSET } from './plant';
 import { ATOM_SPOTS } from './frames';
 import { MACHINES } from './shapes';
 
-export type Placed = {
+type Placed = {
 	id: keyof typeof MACHINES;
 	x: number;
 	y: number;
@@ -27,12 +27,12 @@ export type Placed = {
  * (an 8 µm nucleus) is ≈ 1.2 × 10⁵ per µm³; a slice cuts n × 11 nm ≈ 1,300
  * per µm². They appear in short runs: a slice cuts the 3D thread into pieces.
  */
-export const NUCLEOSOMES_PER_UM3 = 6.4e9 / 200 / ((Math.PI / 6) * 8 ** 3);
-export const NUCLEOSOME = 11;
+const NUCLEOSOMES_PER_UM3 = 6.4e9 / 200 / ((Math.PI / 6) * 8 ** 3);
+const NUCLEOSOME = 11;
 /** Linker DNA between nucleosomes, nm (≈ 50 bp × 0.34 nm). */
-export const LINKER = 17;
+const LINKER = 17;
 
-export interface ChromatinRun {
+interface ChromatinRun {
 	/** Nucleosome centres along the run, and the linker path between them. */
 	beads: [number, number][];
 }
@@ -186,7 +186,7 @@ export const ATP_PER_NM3 = 3.38e-3 * 6.022e23 * 1e-24;
  * crista fold, ribosomes, DNA) are taken out. A concentration is a count per volume of
  * the compartment, so the count in a slice is n × d × the free area, not the box's area.
  */
-export function freeFraction(
+function freeFraction(
 	box: { x0: number; x1: number; y0: number; y1: number },
 	exclude: (x: number, y: number) => boolean,
 	step = 2
@@ -345,7 +345,7 @@ export const CROWD_MIX: { id: Placed['id']; share: number; d: number }[] = [
 	{ id: 'citrateSynthase', share: 0.08, d: 8 }
 ];
 
-export interface Crowd {
+interface Crowd {
 	ribosomes: Placed[];
 	proteins: Placed[];
 	membrane: Placed[];

@@ -6,7 +6,7 @@
  */
 import { hash, type Point } from '#lib/draw/index.ts';
 
-export interface Atom {
+interface Atom {
 	i: number;
 	r: number;
 	c: number;
@@ -14,7 +14,7 @@ export interface Atom {
 	y: number;
 }
 
-export interface Bond {
+interface Bond {
 	i: number;
 	a: number;
 	b: number;
@@ -23,7 +23,7 @@ export interface Bond {
 	horizontal: boolean;
 }
 
-export interface Lattice {
+interface Lattice {
 	cols: number;
 	rows: number;
 	gap: number;
@@ -143,7 +143,7 @@ export function wander(L: Lattice, start: Point, s: number, seed: number, drift:
  * by the seed. With `dir` = −1 (or +1) it prefers bonds further left (right), as when a
  * voltage pulls electrons the other way; at the box edge it re-enters at the other side.
  */
-export function holeWalk(L: Lattice, start: number, seed: number, hops: number, dir: number) {
+function holeWalk(L: Lattice, start: number, seed: number, hops: number, dir: number) {
 	const path = [start];
 	let cur = start;
 	for (let h = 0; h < hops; h++) {

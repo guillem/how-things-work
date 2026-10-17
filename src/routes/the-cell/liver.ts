@@ -97,7 +97,7 @@ const OUTLINE: Pt[] = [
 	[-13.1, 3.0]
 ];
 
-export function polygonArea(p: readonly Pt[]) {
+function polygonArea(p: readonly Pt[]) {
 	let s = 0;
 	for (let i = 0; i < p.length; i++) {
 		const [x0, y0] = p[i];
@@ -107,7 +107,7 @@ export function polygonArea(p: readonly Pt[]) {
 	return Math.abs(s) / 2;
 }
 
-export function insidePolygon(p: readonly Pt[], x: number, y: number) {
+function insidePolygon(p: readonly Pt[], x: number, y: number) {
 	let inside = false;
 	for (let i = 0, j = p.length - 1; i < p.length; j = i++) {
 		const [xi, yi] = p[i];
@@ -131,7 +131,7 @@ function edgeDistance(p: readonly Pt[], x: number, y: number) {
 	return d;
 }
 
-export const capsuleArea = (c: Capsule) => Math.PI * c.b * c.b + 4 * c.b * (c.a - c.b);
+const capsuleArea = (c: Capsule) => Math.PI * c.b * c.b + 4 * c.b * (c.a - c.b);
 
 /** Is (x, y) inside capsule c, grown by `pad`? */
 export function inCapsule(c: Capsule, x: number, y: number, pad = 0) {
@@ -148,7 +148,7 @@ const polyLength = (pts: readonly Pt[]) =>
 	pts.reduce((s, p, i) => (i ? s + Math.hypot(p[0] - pts[i - 1][0], p[1] - pts[i - 1][1]) : 0), 0);
 
 /** A crista: a fold of the inner membrane across a mitochondrion. */
-export interface Crista {
+interface Crista {
 	/** Position along the long axis, µm from the centre. */
 	s: number;
 	/** The side it grows from: −1 or +1 (across the long axis). */
@@ -178,7 +178,7 @@ export interface RibosomeOnER {
 	ny: number;
 }
 
-export interface Hepatocyte {
+interface Hepatocyte {
 	outline: Pt[];
 	area: number;
 	nucleus: Disc;
@@ -562,14 +562,14 @@ export type { Rng };
 
 // ---- the tissue around the cell -------------------------------------------------------------
 
-export interface TissueCell {
+interface TissueCell {
 	outline: Pt[];
 	nucleus: Disc;
 	/** The cell at the centre (drawn in detail by the next view). */
 	target: boolean;
 }
 
-export interface LiverTissue {
+interface LiverTissue {
 	cells: TissueCell[];
 	/** Red blood cells in the sinusoids: centre, half-length, half-thickness, angle. */
 	rbcs: { x: number; y: number; a: number; b: number; angle: number }[];
@@ -580,7 +580,7 @@ export interface LiverTissue {
 }
 
 /** Sinusoid width drawn, µm (measured 5–15 µm). */
-export const SINUSOID = 9;
+const SINUSOID = 9;
 
 let tissueCache: LiverTissue | null = null;
 

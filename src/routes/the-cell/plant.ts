@@ -65,7 +65,7 @@ export interface Chloroplast {
 	angle: number;
 }
 
-export interface Granum {
+interface Granum {
 	/** Centre in the chloroplast's own frame (u along, v across), µm. */
 	u: number;
 	v: number;
@@ -76,7 +76,7 @@ export interface Granum {
 	row: number;
 }
 
-export interface Leaf {
+interface Leaf {
 	upper: BoxCell[];
 	lower: BoxCell[];
 	palisade: BoxCell[];
@@ -84,7 +84,7 @@ export interface Leaf {
 	stomata: number[];
 }
 
-export interface PalisadeCell {
+interface PalisadeCell {
 	box: BoxCell;
 	chloroplasts: Chloroplast[];
 	nucleus: Disc;
@@ -108,8 +108,8 @@ const rbox = (x: number, y: number, w: number, h: number, r: number): BoxCell =>
 	h,
 	r
 });
-export const boxArea = (b: BoxCell) => b.w * b.h - (4 - Math.PI) * b.r * b.r;
-export const lensArea = (c: Chloroplast) => Math.PI * c.a * c.b;
+const boxArea = (b: BoxCell) => b.w * b.h - (4 - Math.PI) * b.r * b.r;
+const lensArea = (c: Chloroplast) => Math.PI * c.a * c.b;
 
 let leafCache: Leaf | null = null;
 export function leaf(): Leaf {

@@ -113,10 +113,10 @@ export const moonLatitude = (fromNode: number, inclination = MOON_INCLINATION) =
 	deg(Math.asin(Math.sin(rad(inclination)) * Math.sin(rad(fromNode))));
 
 /** Mean apparent radii seen from Earth, and the Moon's mean horizontal parallax (degrees). */
-export const SUN_RADIUS = 0.267;
-export const MOON_RADIUS = 0.259;
-export const MOON_PARALLAX = 0.951;
-export const SUN_PARALLAX = 0.0024;
+const SUN_RADIUS = 0.267;
+const MOON_RADIUS = 0.259;
+const MOON_PARALLAX = 0.951;
+const SUN_PARALLAX = 0.0024;
 
 /**
  * Limits on the Moon's distance from the ecliptic (degrees) for an eclipse
@@ -129,10 +129,10 @@ export const SUN_PARALLAX = 0.0024;
  *   2% widening accounting for Earth's atmosphere.
  */
 export const SOLAR_LIMIT = SUN_RADIUS + MOON_RADIUS + MOON_PARALLAX - SUN_PARALLAX;
-export const UMBRA_RADIUS = 1.02 * (MOON_PARALLAX + SUN_PARALLAX - SUN_RADIUS);
+const UMBRA_RADIUS = 1.02 * (MOON_PARALLAX + SUN_PARALLAX - SUN_RADIUS);
 export const LUNAR_LIMIT = UMBRA_RADIUS + MOON_RADIUS;
 
-export type Eclipse = 'solar' | 'lunar' | null;
+type Eclipse = 'solar' | 'lunar' | null;
 
 /**
  * Whether a new Moon (phase 0) or full Moon (phase 180) at this distance from

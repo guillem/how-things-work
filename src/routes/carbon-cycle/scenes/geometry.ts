@@ -5,11 +5,11 @@
 import { along, polylineLength, smooth, type Point } from '#lib/draw/index.ts';
 
 /** Square scene units per GtC of a reservoir. */
-export const AREA_PER_GTC = 3.2;
+const AREA_PER_GTC = 3.2;
 /** Scene units of band width per GtC/yr of flow. */
-export const WIDTH_PER_GTCYR = 0.35;
+const WIDTH_PER_GTCYR = 0.35;
 /** Flows thinner than this are drawn at this width, dashed. */
-export const MIN_WIDTH = 1.5;
+const MIN_WIDTH = 1.5;
 
 export const widthOf = (flux: number) => Math.max(MIN_WIDTH, flux * WIDTH_PER_GTCYR);
 export const toScale = (flux: number) => flux * WIDTH_PER_GTCYR >= MIN_WIDTH;
@@ -18,7 +18,7 @@ export const toScale = (flux: number) => flux * WIDTH_PER_GTCYR >= MIN_WIDTH;
 export const widthFor = (gtc: number, height: number) => (gtc * AREA_PER_GTC) / height;
 export const heightFor = (gtc: number, width: number) => (gtc * AREA_PER_GTC) / width;
 
-export interface Band {
+interface Band {
 	/** Centre line (smoothed). */
 	line: Point[];
 	/** Outline of the band with its arrowhead, as an SVG path. */

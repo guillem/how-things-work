@@ -10,11 +10,11 @@
 import { GEOMETRY } from './geometry.ts';
 
 export type P3 = [number, number, number];
-export interface Atom3 {
+interface Atom3 {
 	el: 'C' | 'H';
 	pos: P3;
 }
-export interface Mol3 {
+interface Mol3 {
 	atoms: Atom3[];
 	bonds: [number, number][];
 }

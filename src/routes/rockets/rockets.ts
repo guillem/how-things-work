@@ -56,10 +56,10 @@ export function atmosphere(h: number): { p: number; rho: number } {
 
 // ---- Earth --------------------------------------------------------------------------------
 
-export const MU = EARTH.gm;
+const MU = EARTH.gm;
 export const RE = EARTH.radius;
 /** Earth's spin (rad/s) and the eastward speed of the ground at the launch site (m/s). */
-export const OMEGA = (2 * Math.PI) / EARTH.siderealDay;
+const OMEGA = (2 * Math.PI) / EARTH.siderealDay;
 export const SPIN = OMEGA * RE * Math.cos((KSC_LATITUDE * Math.PI) / 180);
 
 /** Speed of a circular orbit at height h (m/s). */
@@ -67,7 +67,7 @@ export const circularSpeed = (h: number) => Math.sqrt(MU / (RE + h));
 
 // ---- vehicles -----------------------------------------------------------------------------
 
-export interface Vehicle {
+interface Vehicle {
 	name: string;
 	stages: StageFigures[];
 	/** Reference area for drag (m²). */
@@ -78,7 +78,7 @@ export interface Vehicle {
 }
 
 /** Drag coefficient (a constant: see the header). */
-export const CD = 0.5;
+const CD = 0.5;
 
 export const saturnV: Vehicle = {
 	name: 'Saturn V',
@@ -174,9 +174,9 @@ export interface Sample {
 	burned: number;
 }
 
-export type Outcome = 'orbit' | 'falls';
+type Outcome = 'orbit' | 'falls';
 
-export interface Flight {
+interface Flight {
 	samples: Sample[];
 	outcome: Outcome;
 	/** When the engines stopped (s), and where: height (m), speed (m/s). */
@@ -198,7 +198,7 @@ export interface Flight {
 	staging: number[];
 }
 
-export interface FlightOptions {
+interface FlightOptions {
 	/** Height the guidance aims to level off at (m). */
 	target?: number;
 	/** Tilt from vertical given at the start of the turn (degrees). */
@@ -212,7 +212,7 @@ export interface FlightOptions {
 }
 
 /** Orbit perigee and apogee radii (m) from position and velocity. */
-export function apsides(x: number, y: number, vx: number, vy: number) {
+function apsides(x: number, y: number, vx: number, vy: number) {
 	const r = Math.hypot(x, y);
 	const v2 = vx * vx + vy * vy;
 	const energy = v2 / 2 - MU / r;
@@ -224,7 +224,7 @@ export function apsides(x: number, y: number, vx: number, vy: number) {
 }
 
 /** Flies `v` from the pad. */
-export function fly(v: Vehicle, opts: FlightOptions = {}): Flight {
+function fly(v: Vehicle, opts: FlightOptions = {}): Flight {
 	const target = opts.target ?? v.target ?? 190e3;
 	/** Mass at which a stage is empty, its reserve burnt too. */
 	const empty = (s: StageFigures) => s.mf - (s.reserve ?? 0);

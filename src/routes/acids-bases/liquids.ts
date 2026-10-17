@@ -26,7 +26,7 @@
  */
 import { fractions, solvePH } from './model';
 
-export interface Liquid {
+interface Liquid {
 	id: string;
 	name: string;
 	/** pH, or the low and high ends of a measured range. */

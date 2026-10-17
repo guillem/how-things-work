@@ -25,7 +25,7 @@ export const AFTER_DISCS = [
 	{ id: 'magenta', name: 'magenta', rgb: [205, 40, 205], x: 480, y: 344, after: 'greenish' }
 ] as const;
 /** How far adaptation goes in a 20 s stare: an illustrative value, not a measurement. */
-export const AFTER_STRENGTH = 0.3;
+const AFTER_STRENGTH = 0.3;
 /** The cone signals the grey gives after staring at a disc of this colour (shown as a swatch). */
 export const afterimageOf = (rgb: readonly [number, number, number]): Cones =>
 	afterimage(conesOfRGB(...rgb), conesOfRGB(...AFTER_GREY), AFTER_STRENGTH);

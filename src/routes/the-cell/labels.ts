@@ -24,7 +24,7 @@ import {
 import { leaf, palisadeCell } from './plant';
 import { ATOM_SPOTS } from './frames';
 
-export interface Callout {
+interface Callout {
 	/** Structure the label picks. */
 	id: string;
 	text: string;

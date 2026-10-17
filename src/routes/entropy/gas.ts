@@ -47,13 +47,13 @@ export const R = 0.022;
 /** Half-thickness of the middle wall. */
 export const WALL = 0.012;
 /** Stiffness of the contact force (mass 1). */
-export const KAPPA = 3e4;
+const KAPPA = 3e4;
 /** Integrator time step (s) and recorded frames per second. */
 export const FPS = 60;
 const STEPS_PER_FRAME = 16;
-export const DT = 1 / (FPS * STEPS_PER_FRAME);
+const DT = 1 / (FPS * STEPS_PER_FRAME);
 /** Integer units per length unit. */
-export const SCALE = 1e12;
+const SCALE = 1e12;
 /** Kinetic energy (mass 1) of one temperature unit. */
 export const E0 = 0.048;
 /** Packets of energy per particle when counting ways to share energy. */
@@ -61,7 +61,7 @@ export const PACKETS_PER_PARTICLE = 50;
 
 // ------------------------------------------------------------------ the gas
 
-export interface GasConfig {
+interface GasConfig {
 	/** Number of particles. */
 	n: number;
 	/** Starting temperatures of the left and right halves. */
@@ -90,7 +90,7 @@ export const DEFAULT_GAS: GasConfig = {
 };
 
 /** What is measured in one recorded frame. */
-export interface FrameStats {
+interface FrameStats {
 	/** Particles in the left half (x < W/2). */
 	nLeft: number;
 	/** Total kinetic energy in each half. */

@@ -28,11 +28,11 @@ import { E_START, E_STEP, FLUX, POWER } from './spectrum';
 export { GAPS, K_B, Q, T_ROOM };
 
 /** Planck constant, J·s (exact). */
-export const H = 6.62607015e-34;
+const H = 6.62607015e-34;
 /** Speed of light, m/s (exact). */
-export const C = 299792458;
+const C = 299792458;
 /** hc in eV·nm: a photon of wavelength λ (nm) carries 1239.84/λ eV. */
-export const HC_EV_NM = (H * C * 1e9) / Q;
+const HC_EV_NM = (H * C * 1e9) / Q;
 
 /** Photon energy (eV) of light of wavelength `nm`. */
 export const photonEnergy = (nm: number) => HC_EV_NM / nm;
@@ -82,7 +82,7 @@ export function blackbodyAbove(gap: number, T = T_ROOM): number {
 	return ((2 * Math.PI * Q ** 3) / (H ** 3 * C ** 2)) * s;
 }
 
-export interface CellOptions {
+interface CellOptions {
 	/** Light intensity in suns (1 = standard sunlight). */
 	suns?: number;
 	/** Cell temperature, K. */
@@ -90,11 +90,10 @@ export interface CellOptions {
 }
 
 /** Short-circuit current density of the ideal cell, A/m² (÷ 10 for mA/cm²). */
-export const shortCircuit = (gap: number, { suns = 1 }: CellOptions = {}) =>
-	Q * photonsAbove(gap) * suns;
+const shortCircuit = (gap: number, { suns = 1 }: CellOptions = {}) => Q * photonsAbove(gap) * suns;
 
 /** Dark (saturation) current density J₀ = q Φ_bb, A/m². */
-export const darkCurrent = (gap: number, T = T_ROOM) => Q * blackbodyAbove(gap, T);
+const darkCurrent = (gap: number, T = T_ROOM) => Q * blackbodyAbove(gap, T);
 
 /** Current density (A/m²) delivered at voltage `V`: the lit diode. */
 export function cellCurrent(V: number, gap: number, opts: CellOptions = {}): number {
@@ -102,7 +101,7 @@ export function cellCurrent(V: number, gap: number, opts: CellOptions = {}): num
 	return shortCircuit(gap, opts) - diodeCurrent(V, darkCurrent(gap, T), T);
 }
 
-export interface Cell {
+interface Cell {
 	gap: number;
 	T: number;
 	suns: number;
@@ -162,7 +161,7 @@ export function cell(gap: number, opts: CellOptions = {}): Cell {
 	};
 }
 
-export interface Split {
+interface Split {
 	/** Photons below the gap: they pass through. */
 	below: number;
 	/** Absorbed photons' energy above the gap: given to the crystal as heat. */

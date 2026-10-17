@@ -19,7 +19,7 @@ export const sx = scale([X0, X1], [LEFT, RIGHT]);
 /** The curve's plot always shows this range of heights (the knots stay inside it). */
 export const F_RANGE: [number, number] = [-4, 12];
 
-export interface Box {
+interface Box {
 	top: number;
 	bottom: number;
 }

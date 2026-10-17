@@ -23,9 +23,9 @@
 import { rng as seeded } from '#lib/draw/math.ts';
 import { HUMAN_AUTOSOMES, type HumanChromosome } from './human-map';
 
-export type Rand = () => number;
+type Rand = () => number;
 /** Which homologue of the parent a stretch of chromatid was copied from. */
-export type Origin = 0 | 1;
+type Origin = 0 | 1;
 
 /** A stretch of chromatid ending at `to` (Morgans), starting where the previous one ended. */
 export interface Segment {
@@ -34,7 +34,7 @@ export interface Segment {
 }
 export type Chromatid = Segment[];
 
-export interface ChromosomeKind {
+interface ChromosomeKind {
 	id: string;
 	/** Genetic length, Morgans. */
 	length: number;
@@ -106,14 +106,14 @@ function poisson(m: number, rand: Rand) {
 	return k;
 }
 
-export interface Crossover {
+interface Crossover {
 	/** Position along the chromosome, Morgans. */
 	at: number;
 	/** Which sister of homologue 0 (0 or 1) and of homologue 1 take part. */
 	sisters: [number, number];
 }
 
-export interface PairMeiosis {
+interface PairMeiosis {
 	/** The chiasmata of this pair. */
 	crossovers: Crossover[];
 	/**
@@ -125,7 +125,7 @@ export interface PairMeiosis {
 	flipped: boolean;
 }
 
-export interface MeiosisChoice {
+interface MeiosisChoice {
 	/** Crossover positions (Morgans). Omitted: drawn at random (Poisson). */
 	crossovers?: number[];
 	/** Meiosis I orientation. Omitted: a coin toss. */
@@ -190,7 +190,7 @@ export function tetrad(pairs: PairMeiosis[]): Chromatid[][] {
 }
 
 /** One random gamete: one meiosis, then one of its four products. */
-export function gamete(kinds: ChromosomeKind[], rand: Rand): Chromatid[] {
+function gamete(kinds: ChromosomeKind[], rand: Rand): Chromatid[] {
 	return kinds.map((k) => meiosisOfPair(k, rand).chromatids[Math.floor(rand() * 4)]);
 }
 
@@ -210,10 +210,10 @@ export interface Gene {
 }
 
 /** A parent's two homologues, as the allele each carries at every gene. */
-export type Genotype = Record<string, [string, string]>;
+type Genotype = Record<string, [string, string]>;
 
 /** The alleles a gamete carries, from the parent's genotype and the gamete's chromatids. */
-export function allelesOf(g: Chromatid[], genes: Gene[], parent: Genotype): Record<string, string> {
+function allelesOf(g: Chromatid[], genes: Gene[], parent: Genotype): Record<string, string> {
 	const out: Record<string, string> = {};
 	for (const gene of genes) out[gene.id] = parent[gene.id][originAt(g[gene.chromosome], gene.at)];
 	return out;
@@ -225,7 +225,7 @@ export function pairName(a: string, b: string) {
 }
 
 /** The trait shown by a pair of alleles (complete dominance). */
-export function phenotype(gene: Gene, a: string, b: string) {
+function phenotype(gene: Gene, a: string, b: string) {
 	return a === gene.dominant || b === gene.dominant ? gene.dominantTrait : gene.recessiveTrait;
 }
 
@@ -293,7 +293,7 @@ export function gameteKinds(parent: Genotype, genes: Gene[]): Map<string, number
 }
 
 /** The trait combination of an offspring, e.g. "round, yellow". */
-export function traitsOf(genes: Gene[], a: Record<string, string>, b: Record<string, string>) {
+function traitsOf(genes: Gene[], a: Record<string, string>, b: Record<string, string>) {
 	return genes.map((g) => phenotype(g, a[g.id], b[g.id])).join(', ');
 }
 
@@ -309,7 +309,7 @@ export function expected(genes: Gene[], mother: Genotype, father: Genotype): Map
 	return out;
 }
 
-export interface Offspring {
+interface Offspring {
 	/** Alleles received from each parent. */
 	fromMother: Record<string, string>;
 	fromFather: Record<string, string>;
@@ -449,14 +449,14 @@ export function recombinants(d: number, n: number, seed: number) {
 // Human siblings: the 22 autosomes with their real genetic lengths.
 
 /** Physical position (Mb) of genetic position x (Morgans) on a human chromosome. */
-export function physical(c: HumanChromosome, x: number) {
+function physical(c: HumanChromosome, x: number) {
 	const u = Math.min(1, Math.max(0, x / (c.cM / 100))) * (c.knots.length - 1);
 	const i = Math.min(c.knots.length - 2, Math.floor(u));
 	return c.knots[i] + (u - i) * (c.knots[i + 1] - c.knots[i]);
 }
 
 /** A human chromosome as a meiosis sees it (centromere position does not matter for the mosaic). */
-export const humanKind = (c: HumanChromosome): ChromosomeKind => ({
+const humanKind = (c: HumanChromosome): ChromosomeKind => ({
 	id: String(c.n),
 	length: c.cM / 100,
 	centromere: 0

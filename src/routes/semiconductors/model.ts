@@ -43,7 +43,7 @@ export const K_B = 8.617333262e-5;
 /** Elementary charge (C), exact. */
 export const Q = 1.602176634e-19;
 /** Vacuum permittivity (F/cm), CODATA 2018. */
-export const EPS0 = 8.8541878128e-14;
+const EPS0 = 8.8541878128e-14;
 /** Room temperature (K). */
 export const T_ROOM = 300;
 /** Thermal energy kT at room temperature (eV) — also the thermal voltage Vₜ in volts. */
@@ -53,7 +53,7 @@ export const KT = K_B * T_ROOM;
 
 export type Material = 'metal' | 'insulator' | 'semiconductor';
 
-export interface Gap {
+interface Gap {
 	name: string;
 	symbol: string;
 	/** Band gap at 300 K (eV). */
@@ -72,11 +72,11 @@ export const NI_SI = 9.65e9;
 export const NI_GE = 2.0e13;
 
 /** Silicon lattice constant (cm). */
-export const A_SI = 5.431e-8;
+const A_SI = 5.431e-8;
 /** Silicon atoms per cm³: 8 per cubic cell of the diamond structure. */
 export const N_SI = 8 / A_SI ** 3;
 /** Relative permittivity of silicon. */
-export const EPS_SI = 11.7;
+const EPS_SI = 11.7;
 /** Copper's resistivity (Ω·cm) at 20 °C. */
 export const RHO_COPPER = 1.68e-6;
 
@@ -149,13 +149,13 @@ export function carriers(nd: number, na: number, ni = NI_SI) {
 }
 
 /** Electron mobility (cm²/V·s) in phosphorus-doped silicon (Masetti et al. 1983). */
-export function electronMobility(nTotal: number) {
+function electronMobility(nTotal: number) {
 	const N = Math.max(nTotal, 1);
 	return 68.5 + (1414 - 68.5) / (1 + (N / 9.2e16) ** 0.711) - 56.1 / (1 + (3.41e20 / N) ** 1.98);
 }
 
 /** Hole mobility (cm²/V·s) in boron-doped silicon (Masetti et al. 1983). */
-export function holeMobility(nTotal: number) {
+function holeMobility(nTotal: number) {
 	const N = Math.max(nTotal, 1);
 	return (
 		44.9 * Math.exp(-9.23e16 / N) +

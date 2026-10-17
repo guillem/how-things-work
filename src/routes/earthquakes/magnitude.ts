@@ -51,7 +51,7 @@ export const NOTABLE = [
 ] as const;
 
 /** Years covered by the catalogue. */
-export const CATALOGUE_YEARS = 10;
+const CATALOGUE_YEARS = 10;
 
 /** Earthquakes a year of magnitude ≥ m (m ≥ 5.5), from the 2015–2024 catalogue. */
 export const perYearAtLeast = (m: number) =>

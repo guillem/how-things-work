@@ -23,8 +23,8 @@ export const EARTH_R = 6371;
 export const MOHO_DEPTH = 35;
 export const CMB_DEPTH = 2891.5;
 export const ICB_DEPTH = 5153.5;
-export const R_CMB = EARTH_R - CMB_DEPTH;
-export const R_ICB = EARTH_R - ICB_DEPTH;
+const R_CMB = EARTH_R - CMB_DEPTH;
+const R_ICB = EARTH_R - ICB_DEPTH;
 export const KM_PER_DEG = (Math.PI / 180) * EARTH_R;
 export const DEG = 180 / Math.PI;
 
@@ -142,7 +142,7 @@ export interface Ray {
  * Traces the ray of parameter `p` (s/rad) for a wave starting `sourceDepth` km down and leaving
  * downwards. Returns null for a ray that cannot reach the surface (trapped in a slow layer).
  */
-export function trace(
+function trace(
 	wave: Wave,
 	p: number,
 	sourceDepth: number,
@@ -230,7 +230,7 @@ export function trace(
 }
 
 /** Speed of a wave right at the earthquake (the side below, at a boundary). */
-export const sourceSpeed = (wave: Wave, depth: number, model: EarthModel = 'ak135') => {
+const sourceSpeed = (wave: Wave, depth: number, model: EarthModel = 'ak135') => {
 	const sh = shellsFor(model, depth);
 	const rs = EARTH_R - depth;
 	const s = sh.find((x) => x.rBot < rs) ?? sh[sh.length - 1];
@@ -310,7 +310,7 @@ function table(wave: Wave, depth: number, model: EarthModel): Sample[][] {
 	return branches;
 }
 
-export interface Arrival {
+interface Arrival {
 	kind: Exclude<RayKind, 'blocked'>;
 	/** Seconds after the earthquake. */
 	time: number;

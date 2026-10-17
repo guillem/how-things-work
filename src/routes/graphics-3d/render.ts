@@ -35,12 +35,12 @@ export const add = (a: Vec3, b: Vec3): Vec3 => [a[0] + b[0], a[1] + b[1], a[2] +
 export const sub = (a: Vec3, b: Vec3): Vec3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 export const scale = (a: Vec3, s: number): Vec3 => [a[0] * s, a[1] * s, a[2] * s];
 export const dot = (a: Vec3, b: Vec3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-export const cross = (a: Vec3, b: Vec3): Vec3 => [
+const cross = (a: Vec3, b: Vec3): Vec3 => [
 	a[1] * b[2] - a[2] * b[1],
 	a[2] * b[0] - a[0] * b[2],
 	a[0] * b[1] - a[1] * b[0]
 ];
-export const length = (a: Vec3) => Math.hypot(a[0], a[1], a[2]);
+const length = (a: Vec3) => Math.hypot(a[0], a[1], a[2]);
 export const normalize = (a: Vec3): Vec3 => {
 	const l = length(a) || 1;
 	return [a[0] / l, a[1] / l, a[2] / l];
@@ -69,11 +69,11 @@ export function schlick(cosi: number, n1: number, n2: number): number {
 
 // ---------------------------------------------------------------- 4 × 4 matrices
 /** A 4 × 4 matrix, row-major: m[4 * row + col]. Points are columns [x, y, z, 1]. */
-export type Mat4 = number[];
+type Mat4 = number[];
 
-export const identity = (): Mat4 => [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+const identity = (): Mat4 => [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
-export function multiply(a: Mat4, b: Mat4): Mat4 {
+function multiply(a: Mat4, b: Mat4): Mat4 {
 	const m = new Array<number>(16).fill(0);
 	for (let r = 0; r < 4; r++)
 		for (let c = 0; c < 4; c++) {
@@ -84,7 +84,7 @@ export function multiply(a: Mat4, b: Mat4): Mat4 {
 	return m;
 }
 
-export const translation = (x: number, y: number, z: number): Mat4 => [
+const translation = (x: number, y: number, z: number): Mat4 => [
 	1,
 	0,
 	0,
@@ -103,10 +103,10 @@ export const translation = (x: number, y: number, z: number): Mat4 => [
 	1
 ];
 
-export const scaling = (s: number): Mat4 => [s, 0, 0, 0, 0, s, 0, 0, 0, 0, s, 0, 0, 0, 0, 1];
+const scaling = (s: number): Mat4 => [s, 0, 0, 0, 0, s, 0, 0, 0, 0, s, 0, 0, 0, 0, 1];
 
 /** Rotation by `a` radians about the vertical (y) axis, counter-clockwise seen from above. */
-export function rotationY(a: number): Mat4 {
+function rotationY(a: number): Mat4 {
 	const c = Math.cos(a);
 	const s = Math.sin(a);
 	return [c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1];
@@ -122,13 +122,13 @@ export function transform4(m: Mat4, p: Vec3, w = 1): [number, number, number, nu
 	];
 }
 export const transformPoint = (m: Mat4, p: Vec3): Vec3 => transform4(m, p, 1).slice(0, 3) as Vec3;
-export const transformDir = (m: Mat4, p: Vec3): Vec3 => transform4(m, p, 0).slice(0, 3) as Vec3;
+const transformDir = (m: Mat4, p: Vec3): Vec3 => transform4(m, p, 0).slice(0, 3) as Vec3;
 
 /**
  * The view matrix: moves and turns the world so that the camera sits at the origin looking down
  * −z, with y up (the OpenGL `lookAt`).
  */
-export function lookAt(eye: Vec3, target: Vec3, up: Vec3 = [0, 1, 0]): Mat4 {
+function lookAt(eye: Vec3, target: Vec3, up: Vec3 = [0, 1, 0]): Mat4 {
 	const f = normalize(sub(target, eye));
 	const r = normalize(cross(f, up));
 	const u = cross(r, f);
@@ -157,7 +157,7 @@ export function lookAt(eye: Vec3, target: Vec3, up: Vec3 = [0, 1, 0]): Mat4 {
  * width/height `aspect`, near and far planes. It copies −z (the distance in front of the camera)
  * into w, so that the perspective divide x/w, y/w shrinks far things.
  */
-export function perspective(fovY: number, aspect: number, near: number, far: number): Mat4 {
+function perspective(fovY: number, aspect: number, near: number, far: number): Mat4 {
 	const f = 1 / Math.tan(fovY / 2);
 	return [
 		f / aspect,
@@ -180,9 +180,9 @@ export function perspective(fovY: number, aspect: number, near: number, far: num
 }
 
 // ---------------------------------------------------------------- the scene
-export type Material = 'floor' | 'matte' | 'mirror' | 'glass';
+type Material = 'floor' | 'matte' | 'mirror' | 'glass';
 
-export interface Mesh {
+interface Mesh {
 	name: string;
 	material: Material;
 	/** Linear-light base colour. */
@@ -194,13 +194,13 @@ export interface Mesh {
 	tris: number[];
 }
 
-export interface SceneObject {
+interface SceneObject {
 	id: number;
 	mesh: Mesh;
 	model: Mat4;
 }
 
-export function cubeMesh(): Mesh {
+function cubeMesh(): Mesh {
 	const positions: Vec3[] = [];
 	const normals: Vec3[] = [];
 	const uvs: [number, number][] = [];
@@ -239,7 +239,7 @@ export function cubeMesh(): Mesh {
 }
 
 /** A unit icosphere: an icosahedron with each face split into four `level` times. */
-export function icosphere(level: number): { positions: Vec3[]; tris: number[] } {
+function icosphere(level: number): { positions: Vec3[]; tris: number[] } {
 	const t = (1 + Math.sqrt(5)) / 2;
 	const positions: Vec3[] = (
 		[
@@ -338,7 +338,7 @@ export const MIRROR_R = 0.85;
 export const GLASS_CENTRE: Vec3 = [0.7, 0.55, 1.5];
 export const GLASS_R = 0.55;
 /** Refractive index of the glass ball (ordinary crown glass, as in the light-and-optics page). */
-export const GLASS_N = 1.5;
+const GLASS_N = 1.5;
 
 /** Object ids, also the values of the id buffers (0 = sky). */
 export const ID = { sky: 0, floor: 1, cube: 2, mirror: 3, glass: 4 } as const;
@@ -422,7 +422,7 @@ export function lightPos(l: LightSpec): Vec3 {
 	];
 }
 
-export interface Camera {
+interface Camera {
 	eye: Vec3;
 	view: Mat4;
 	proj: Mat4;
@@ -454,7 +454,7 @@ export function projectPoint(cam: Camera, p: Vec3) {
 
 // ---------------------------------------------------------------- shading
 /** The floor's texture: an 8 × 8 checkerboard of texels, looked up by (u, v) in 0…1. */
-export function floorTexture(u: number, v: number): number {
+function floorTexture(u: number, v: number): number {
 	const i = Math.floor(u * FLOOR_TILES);
 	const j = Math.floor(v * FLOOR_TILES);
 	return (i + j) % 2 === 0 ? 0.82 : 0.18;
@@ -462,7 +462,7 @@ export function floorTexture(u: number, v: number): number {
 
 export type Shading = 'none' | 'lambert' | 'phong';
 
-export interface ShadeOptions {
+interface ShadeOptions {
 	shading: Shading;
 	texture: boolean;
 }
@@ -476,7 +476,7 @@ const SPECULAR: Record<Material, [number, number]> = {
 };
 
 /** Albedo of a surface point (texture lookup for the floor). */
-export function albedo(mesh: Mesh, uv: [number, number], texture: boolean): Vec3 {
+function albedo(mesh: Mesh, uv: [number, number], texture: boolean): Vec3 {
 	if (mesh.material === 'floor') {
 		const g = texture ? floorTexture(uv[0], uv[1]) : 0.5;
 		return [g, g, g * 0.96];
@@ -498,7 +498,7 @@ export function phong(n: Vec3, l: Vec3, v: Vec3, shininess: number): number {
  * Local shading of a surface point: ambient + Lambert diffuse + Phong highlight, the light's part
  * multiplied by `lit` (0 in shadow). Linear light.
  */
-export function shade(
+function shade(
 	mesh: Mesh,
 	p: Vec3,
 	n: Vec3,
@@ -517,7 +517,7 @@ export function shade(
 }
 
 /** The Phong highlight part of `shade` alone (0 unless shading is 'phong'). */
-export function highlight(
+function highlight(
 	mesh: Mesh,
 	p: Vec3,
 	n: Vec3,
@@ -532,7 +532,7 @@ export function highlight(
 }
 
 /** Sky colour seen along unit direction `d` (linear light): pale at the horizon, bluer above. */
-export function sky(d: Vec3): Vec3 {
+function sky(d: Vec3): Vec3 {
 	const k = Math.max(0, Math.min(1, d[1] * 1.6 + 0.15));
 	return [0.62 - 0.42 * k, 0.72 - 0.34 * k, 0.86 - 0.1 * k];
 }
@@ -540,7 +540,7 @@ export function sky(d: Vec3): Vec3 {
 const encode = (x: number) => Math.round(255 * Math.min(1, Math.max(0, x)) ** (1 / 2.2));
 
 /** The direction of the ray from the eye through the centre of pixel (px, py) (fractional ok). */
-export function pixelRay(cam: Camera, px: number, py: number): Vec3 {
+function pixelRay(cam: Camera, px: number, py: number): Vec3 {
 	const tanY = Math.tan(cam.fovY / 2);
 	const x = ((2 * px) / cam.width - 1) * tanY * (cam.width / cam.height);
 	const y = (1 - (2 * py) / cam.height) * tanY;
@@ -600,7 +600,7 @@ export const DEFAULT_RASTER: RasterOptions = {
 	perspectiveCorrect: true
 };
 
-export interface RasterResult extends Image {
+interface RasterResult extends Image {
 	/** Depth of each pixel's surface, 0 (near plane) … 1 (far plane); 1 where only sky. */
 	depth: Float32Array;
 	/** Texture coordinates (u, v) used at each pixel, two numbers per pixel. */
@@ -792,7 +792,7 @@ interface Bound {
 }
 
 /** The scene's triangles in world space, grouped per object with a bounding sphere each. */
-export interface TraceWorld {
+interface TraceWorld {
 	bounds: Bound[];
 	triangles: number;
 }
@@ -844,7 +844,7 @@ export const DEFAULT_TRACE: TraceOptions = {
 	bounces: 3
 };
 
-export interface TraceStats {
+interface TraceStats {
 	/** Rays from the eye, one per pixel. */
 	primary: number;
 	/** Rays from a surface point towards the light. */
@@ -1059,7 +1059,7 @@ function trace(
 
 const mul = (a: Vec3, b: Vec3): Vec3 => [a[0] * b[0], a[1] * b[1], a[2] * b[2]];
 
-export interface TraceResult extends Image {
+interface TraceResult extends Image {
 	stats: TraceStats;
 }
 

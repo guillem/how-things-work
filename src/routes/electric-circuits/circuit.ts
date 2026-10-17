@@ -36,28 +36,28 @@ export interface Board {
 	parts: Part[];
 }
 
-export const WIRE_R = 1e-5;
-export const BATTERY_R = 0.02;
-export const BATTERY_V = 6;
+const WIRE_R = 1e-5;
+const BATTERY_R = 0.02;
+const BATTERY_V = 6;
 export const BULB_R = 12;
-export const RESISTOR_R = 12;
+const RESISTOR_R = 12;
 /** Above this current (A) anywhere, the circuit is treated as a short circuit. */
 export const SHORT_CURRENT = 10;
 /** A bulb at its rated power (6 V across 12 Ω = 3 W) glows at full brightness. */
-export const BULB_RATED_W = (BATTERY_V * BATTERY_V) / BULB_R;
+const BULB_RATED_W = (BATTERY_V * BATTERY_V) / BULB_R;
 const GMIN = 1e-9;
 
-export const defaultValue = (kind: PartKind) =>
+const defaultValue = (kind: PartKind) =>
 	kind === 'battery' ? BATTERY_V : kind === 'bulb' ? BULB_R : kind === 'resistor' ? RESISTOR_R : 0;
 
 export const valueOf = (p: Part) => p.value ?? defaultValue(p.kind);
 
 /** Does this part let current through? */
-export const conducts = (p: Part) =>
+const conducts = (p: Part) =>
 	p.kind === 'voltmeter' ? false : p.kind === 'switch' ? !!p.closed : true;
 
 /** Resistance of a conducting part (Ω). */
-export function resistance(p: Part) {
+function resistance(p: Part) {
 	switch (p.kind) {
 		case 'bulb':
 		case 'resistor':
@@ -72,11 +72,11 @@ export function resistance(p: Part) {
 // ------------------------------------------------------------ pegboard geometry
 
 export const peg = (b: Pick<Board, 'cols'>, col: number, row: number) => row * b.cols + col;
-export const pegCol = (b: Pick<Board, 'cols'>, id: number) => id % b.cols;
-export const pegRow = (b: Pick<Board, 'cols'>, id: number) => Math.floor(id / b.cols);
+const pegCol = (b: Pick<Board, 'cols'>, id: number) => id % b.cols;
+const pegRow = (b: Pick<Board, 'cols'>, id: number) => Math.floor(id / b.cols);
 
 /** Are two pegs neighbours (one step left/right/up/down)? */
-export function adjacent(b: Pick<Board, 'cols' | 'rows'>, p: number, q: number) {
+function adjacent(b: Pick<Board, 'cols' | 'rows'>, p: number, q: number) {
 	const dc = Math.abs(pegCol(b, p) - pegCol(b, q));
 	const dr = Math.abs(pegRow(b, p) - pegRow(b, q));
 	return dc + dr === 1;
@@ -156,7 +156,7 @@ export function parseBoard(s: unknown): Board | null {
 
 // ------------------------------------------------------------ solving
 
-export interface Solution {
+interface Solution {
 	/** Potential of every peg (V), 0 at the negative terminal of a battery in its circuit. */
 	v: number[];
 	/** Current through every part (A), positive from a to b (conventional current). */
@@ -285,8 +285,8 @@ export const driftSpeed = (amps: number, areaMm2 = 1) =>
 
 // ------------------------------------------------------------ the circuits the page starts from
 
-export const COLS = 7;
-export const ROWS = 5;
+const COLS = 7;
+const ROWS = 5;
 
 type Spec = [PartKind, [number, number], [number, number], number?];
 
@@ -398,7 +398,7 @@ export const SWITCHES = board(
 );
 
 /** Where the reader's own board starts: a battery and a bulb in a loop. */
-export const STARTER = board(
+const STARTER = board(
 	['battery', [1, 2], [1, 1]],
 	['bulb', [5, 1], [5, 2]],
 	...wires([1, 1], [2, 1], [3, 1], [4, 1], [5, 1]),

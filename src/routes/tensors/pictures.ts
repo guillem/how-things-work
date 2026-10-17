@@ -43,7 +43,7 @@ export const channelGreyUrl = (c: number) =>
  * An (n, 3) matrix of pixel values (one row per pixel) drawn as an image 3 cells wide and n
  * tall, each column in its channel's colour.
  */
-export function pixelsUrl(m: Tensor): string {
+function pixelsUrl(m: Tensor): string {
 	const n = m.shape[0];
 	const rgb = new Float64Array(n * 3 * 3);
 	for (let p = 0; p < n; p++)
@@ -55,13 +55,13 @@ export function pixelsUrl(m: Tensor): string {
 }
 
 /** The colours of an (n, 3) matrix as a strip of n swatches, `across` or down. */
-export function swatchesUrl(m: Tensor, across: boolean): string {
+function swatchesUrl(m: Tensor, across: boolean): string {
 	const n = m.shape[0];
 	return across ? rgbBmpUrl(n, 1, m.data) : rgbBmpUrl(1, n, m.data);
 }
 
 export type SliceAxis = 'height' | 'width' | 'channel';
-export const AXIS_INDEX: Record<SliceAxis, number> = { height: 0, width: 1, channel: 2 };
+const AXIS_INDEX: Record<SliceAxis, number> = { height: 0, width: 1, channel: 2 };
 
 /** The slice and its picture. */
 export function sliceOf(axis: SliceAxis, i: number) {
@@ -70,7 +70,7 @@ export function sliceOf(axis: SliceAxis, i: number) {
 }
 
 /** The photo reshaped to (3, 48, 36): layer k is numbers 1728·k … 1728·k + 1727, read as grey. */
-export const reshaped = reshape(photo, [3, H, W]);
+const reshaped = reshape(photo, [3, H, W]);
 /** The photo transposed to channels first: layer k is channel k. */
 export const transposed = transpose(photo, [2, 0, 1]);
 
@@ -92,7 +92,7 @@ function pixelsUrlRow(): string {
 }
 
 /** The pixel list (1728, 3), and its picture. */
-export const pixelList = reshape(photo, [H * W, 3]);
+const pixelList = reshape(photo, [H * W, 3]);
 let pixelListPic: string | null = null;
 export const pixelListUrl = () => (pixelListPic ??= pixelsUrl(pixelList));
 

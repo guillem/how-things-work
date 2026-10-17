@@ -9,10 +9,10 @@ import { RATE, T0, hanford, livingston, nrHanford, nrLivingston } from './gw1509
 export { RATE, T0, hanford, livingston, nrHanford, nrLivingston };
 
 /** Time of sample i, s after 09:50:45 UTC. */
-export const timeOf = (i: number) => T0 + i / RATE;
+const timeOf = (i: number) => T0 + i / RATE;
 
 /** Value of a series at time t, interpolated linearly (NaN outside the excerpt). */
-export function sampleAt(y: readonly number[], t: number) {
+function sampleAt(y: readonly number[], t: number) {
 	const x = (t - T0) * RATE;
 	const i = Math.floor(x);
 	if (i < 0 || i + 1 >= y.length) return NaN;
@@ -36,7 +36,7 @@ export const combined = livingston.map((l, i) =>
 /** The stretch of the signal where its cycles stand clear of the noise, s. */
 export const FIT_WINDOW: readonly [number, number] = [0.355, 0.42];
 /** Above this the band-pass filter (350 Hz) and the merger take over. */
-export const FIT_MAX_F = 160;
+const FIT_MAX_F = 160;
 
 /** Frequency estimates (one per half cycle) from the averaged signal, in the fit window. */
 export const measuredTrack = crossingFrequencies(combined, T0, RATE).filter(

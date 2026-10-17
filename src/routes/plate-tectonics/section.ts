@@ -35,14 +35,14 @@
 export type Crust = 'ocean' | 'continent';
 
 /** Densities, g/cm³. */
-export const RHO = { mantle: 3.3, continent: 2.8, ocean: 2.9, water: 1.03 } as const;
+const RHO = { mantle: 3.3, continent: 2.8, ocean: 2.9, water: 1.03 } as const;
 /** Thickness of normal continental and oceanic crust, km. */
 export const CONTINENT_CRUST = 35;
-export const OCEAN_CRUST = 7;
+const OCEAN_CRUST = 7;
 /** Height above sea level of a continent with normal crust, km. */
 export const CONTINENT_ELEVATION = 0.5;
 /** Thickness of continental lithosphere, km. */
-export const CONTINENT_LITHOSPHERE = 150;
+const CONTINENT_LITHOSPHERE = 150;
 /** Age of the sea floor of an existing ocean plate at the start, Myr (left older than right). */
 export const OCEAN_AGE = { left: 60, right: 30 } as const;
 /** Half-width of the section, km. */
@@ -50,7 +50,7 @@ export const HALF_WIDTH = 900;
 /** Width of the zone that starts to stretch in a continental rift, km. */
 export const RIFT_WIDTH = 80;
 /** Height of the broad dome under a young continental rift, raised by hot mantle, km. */
-export const RIFT_DOME = 1.5;
+const RIFT_DOME = 1.5;
 /** Half-width of that dome (a Gaussian centred on the rift), km. */
 const DOME_HALF_WIDTH = 400;
 /** Stretching factor at which continental crust breaks and new ocean floor starts to form. */
@@ -58,7 +58,7 @@ export const BREAKUP_BETA = 4;
 /** Depth of the top of the sinking plate beneath arc volcanoes, km. */
 export const ARC_SLAB_DEPTH = 100;
 /** Depth of the deepest earthquakes, where slabs reach the bottom of the upper mantle, km. */
-export const DEEPEST_QUAKES = 700;
+const DEEPEST_QUAKES = 700;
 
 const KAPPA = 1e-6; // m²/s
 const MYR = 3.15576e13; // s
@@ -100,7 +100,7 @@ export function mckenzieSubsidence(beta: number): number {
  * while the floor is above sea level and with sea water below it (isostasy is linear in the load).
  * `start` is the elevation the floor subsides from (the continent, raised by any dome).
  */
-export function riftFloorElevation(beta: number, start = CONTINENT_ELEVATION): number {
+function riftFloorElevation(beta: number, start = CONTINENT_ELEVATION): number {
 	const airFactor = (RHO_HOT - RHO.water) / RHO_HOT;
 	const dropInAir = mckenzieSubsidence(beta) * airFactor;
 	if (dropInAir <= start) return start - dropInAir;
@@ -112,11 +112,11 @@ export function riftFloorElevation(beta: number, start = CONTINENT_ELEVATION): n
  * apart: it grows in over the first 40 km and stays centred on the rift (the hot mantle), so the
  * margins of a young ocean slide off it as they drift apart.
  */
-export function riftDome(x: number, open: number): number {
+function riftDome(x: number, open: number): number {
 	return RIFT_DOME * smooth01(open / 40) * Math.exp(-((x / DOME_HALF_WIDTH) ** 2));
 }
 
-export interface P {
+interface P {
 	x: number;
 	z: number;
 }
@@ -209,7 +209,7 @@ export interface Section {
 const STEP = 5;
 
 /** Time the plates take to move `km` at `speed` cm/yr, Myr. */
-export const myrFor = (km: number, speed: number) => Math.abs(km) / (speed * 10);
+const myrFor = (km: number, speed: number) => Math.abs(km) / (speed * 10);
 
 const smooth01 = (u: number) => {
 	const v = Math.min(1, Math.max(0, u));

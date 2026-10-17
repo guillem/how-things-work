@@ -13,7 +13,7 @@ export { PLATES, NAMED_VOLCANOES };
 export const EARTH_RADIUS = 6371;
 const KM_PER_DEG = (Math.PI / 180) * EARTH_RADIUS;
 
-export interface Quake {
+interface Quake {
 	lon: number;
 	lat: number;
 	depth: number;
@@ -22,13 +22,13 @@ export interface Quake {
 	day: number;
 }
 export type Setting = 'subduction' | 'rift' | 'intraplate' | 'unknown';
-export interface Volcano {
+interface Volcano {
 	lon: number;
 	lat: number;
 	setting: Setting;
 }
-export type Group = 'divergent' | 'transform' | 'subduction' | 'convergent';
-export interface Line {
+type Group = 'divergent' | 'transform' | 'subduction' | 'convergent';
+interface Line {
 	name: string;
 	cls: BoundaryClass;
 	group: Group;
@@ -43,7 +43,7 @@ export interface Line {
 }
 
 const SETTINGS: Setting[] = ['subduction', 'rift', 'intraplate', 'unknown'];
-export const GROUP_OF: Record<BoundaryClass, Group> = {
+const GROUP_OF: Record<BoundaryClass, Group> = {
 	OSR: 'divergent',
 	CRB: 'divergent',
 	OTF: 'transform',
@@ -77,18 +77,16 @@ for (let i = 0; i < VOLCANOES.length; i += 3)
 		setting: SETTINGS[VOLCANOES[i + 2]]
 	});
 
-export const lines: Line[] = BOUNDARIES.map(
-	([name, cls, side, km, speed, divergent, p]: Boundary) => ({
-		name,
-		cls,
-		group: GROUP_OF[cls],
-		side,
-		km,
-		speed,
-		divergent,
-		pts: pairs(p)
-	})
-);
+const lines: Line[] = BOUNDARIES.map(([name, cls, side, km, speed, divergent, p]: Boundary) => ({
+	name,
+	cls,
+	group: GROUP_OF[cls],
+	side,
+	km,
+	speed,
+	divergent,
+	pts: pairs(p)
+}));
 
 export const land: [number, number][][] = LAND.map(pairs);
 

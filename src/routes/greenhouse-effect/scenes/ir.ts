@@ -7,7 +7,7 @@
  */
 import { hash, smoothstep } from '#lib/draw/index.ts';
 
-export interface IrOptions {
+interface IrOptions {
 	/** Horizontal range of the photons' starting points. */
 	x0: number;
 	x1: number;
@@ -24,7 +24,7 @@ export interface IrOptions {
 	salt?: number;
 }
 
-export interface IrPhoton {
+interface IrPhoton {
 	key: number;
 	x: number;
 	y: number;

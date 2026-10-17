@@ -51,7 +51,7 @@ export const inputCount = (k: NodeKind) =>
 	k === 'in' ? 0 : k === 'NOT' || k === 'out' ? 1 : k === 'FA' ? 3 : 2;
 export const outputCount = (k: NodeKind) => (k === 'out' ? 0 : k === 'FA' ? 2 : 1);
 
-export function gate(kind: GateKind, a: boolean, b: boolean) {
+function gate(kind: GateKind, a: boolean, b: boolean) {
 	switch (kind) {
 		case 'AND':
 			return a && b;

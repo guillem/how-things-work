@@ -31,8 +31,8 @@
 import { MASS } from './molecule.ts';
 import { ALKANES } from './compounds.ts';
 
-export const R = 8.314462618; // J/(mol·K)
-export const ROOM = 298.15; // K
+const R = 8.314462618; // J/(mol·K)
+const ROOM = 298.15; // K
 export const toC = (k: number) => k - 273.15;
 
 // ------------------------------------------------------------------ the alkane series

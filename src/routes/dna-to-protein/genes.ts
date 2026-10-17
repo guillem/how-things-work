@@ -6,9 +6,9 @@ import type { Params } from '#lib/explainer/index.ts';
 import { cleanDna, type Edit } from './genetics';
 import { HBB_CDS, HBB_EXONS, HBB_GENE, HBB_MRNA, TRPL_GENE } from './genes-data';
 
-export type GeneId = 'hbb' | 'trpl' | 'own';
+type GeneId = 'hbb' | 'trpl' | 'own';
 
-export interface Gene {
+interface Gene {
 	id: GeneId;
 	name: string;
 	/** Short name for tight spots. */
@@ -28,7 +28,7 @@ export interface Gene {
 export const MAX_OWN = 120;
 
 /** The reader's starting sequence: trpL, a whole real gene, start to stop. */
-export const DEFAULT_OWN = TRPL_GENE;
+const DEFAULT_OWN = TRPL_GENE;
 
 export const HBB: Gene = {
 	id: 'hbb',
@@ -42,7 +42,7 @@ export const HBB: Gene = {
 	source: 'RefSeq NM_000518.5; Ensembl ENST00000335295'
 };
 
-export const TRPL: Gene = {
+const TRPL: Gene = {
 	id: 'trpl',
 	name: 'E. coli trp leader peptide (trpL)',
 	short: 'trpL',
@@ -66,7 +66,7 @@ export function ownOf(params: Params): string {
 	return typeof v === 'string' ? cleanDna(v, MAX_OWN) : DEFAULT_OWN;
 }
 
-export function ownGene(seq: string): Gene {
+function ownGene(seq: string): Gene {
 	return {
 		id: 'own',
 		name: 'Your sequence',
@@ -89,9 +89,9 @@ export function geneOf(params: Params, offered: boolean, fallback: GeneId = 'hbb
 }
 
 /** HBB letters in coding-DNA numbering: c.1 is the A of the start codon. */
-export const hbbIndex = (c: number) => HBB_CDS.start + c - 1;
+const hbbIndex = (c: number) => HBB_CDS.start + c - 1;
 
-export interface Variant {
+interface Variant {
 	id: string;
 	edit: Edit;
 	/** HGVS name on NM_000518.5. */

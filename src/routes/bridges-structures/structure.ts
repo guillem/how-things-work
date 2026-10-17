@@ -31,8 +31,8 @@
  */
 
 export const E = 200e9; // Pa, steel
-export const YIELD = 250e6; // Pa, structural steel
-export const CABLE_STRENGTH = 1500e6; // Pa, high-strength steel wire
+const YIELD = 250e6; // Pa, structural steel
+const CABLE_STRENGTH = 1500e6; // Pa, high-strength steel wire
 export const DENSITY = 7850; // kg/m³
 export const G = 9.81;
 export const GRID = 2.5; // m
@@ -40,13 +40,13 @@ export const GRID = 2.5; // m
 /** The gap: road level is y = 0, the banks are at x ≤ 0 and x ≥ SPAN. */
 export const SPAN = 40;
 /** How far the banks reach on each side (for anchors and towers). */
-export const BANK = 12.5;
+const BANK = 12.5;
 /** Depth of the gap below the road. */
 export const DEPTH = 12.5;
 /** Steel available for every design (kg). */
 export const BUDGET = 25_000;
 /** The truck: 30 tonnes. */
-export const TRUCK_MASS = 30_000;
+const TRUCK_MASS = 30_000;
 
 export type MemberKind = 'beam' | 'post' | 'cable';
 
@@ -94,17 +94,16 @@ export function isAnchor(p: Joint) {
  */
 export const isRoller = (p: Joint) => near(p.x, SPAN) && near(p.y, 0);
 
-export const memberLength = (s: Structure, m: Member) =>
+const memberLength = (s: Structure, m: Member) =>
 	Math.hypot(s.joints[m.b].x - s.joints[m.a].x, s.joints[m.b].y - s.joints[m.a].y);
 
-export const totalLength = (s: Structure) => s.members.reduce((t, m) => t + memberLength(s, m), 0);
+const totalLength = (s: Structure) => s.members.reduce((t, m) => t + memberLength(s, m), 0);
 
 /** Cross-section area every member gets if the steel budget is shared out equally by length (m²). */
-export const sectionArea = (s: Structure, budget = BUDGET) =>
+const sectionArea = (s: Structure, budget = BUDGET) =>
 	budget / DENSITY / Math.max(1e-9, totalLength(s));
 
-export const equalAreas = (s: Structure, budget = BUDGET) =>
-	s.members.map(() => sectionArea(s, budget));
+const equalAreas = (s: Structure, budget = BUDGET) => s.members.map(() => sectionArea(s, budget));
 
 /** Mass of steel in a structure with these member areas (kg). */
 export const steelMass = (s: Structure, areas: readonly number[]) =>
@@ -177,7 +176,7 @@ export const memberBetween = (s: Structure, a: number, b: number) =>
 	s.members.findIndex((m) => (m.a === a && m.b === b) || (m.a === b && m.b === a));
 
 /** Snaps a point to the grid. */
-export const snap = (p: Joint): Joint => ({
+const snap = (p: Joint): Joint => ({
 	x: Math.round(p.x / GRID) * GRID,
 	y: Math.round(p.y / GRID) * GRID
 });
@@ -731,10 +730,10 @@ const deckXs = Array.from({ length: SPAN / 5 + 1 }, (_, i) => i * 5);
 const DECK = chain(...deckXs.map((x) => [x, 0] as [number, number]));
 
 /** A plain beam across the gap (the road itself, in 5 m pieces joined rigidly). */
-export const BEAM = build(DECK);
+const BEAM = build(DECK);
 
 /** A Howe-type truss: the road, a top chord 5 m up, verticals, and diagonals rising towards midspan. */
-export const TRUSS = build([
+const TRUSS = build([
 	...DECK,
 	...chain(...[5, 10, 15, 20, 25, 30, 35].map((x) => [x, 5] as [number, number])),
 	...deckXs
@@ -770,7 +769,7 @@ export const TRUSS = build([
  * leave the posts idle). */
 /** The arch: a parabola from the gap's faces 10 m below the road up to 2.5 m below it. */
 const archY = (x: number) => -10 + 7.5 * (1 - ((x - 20) / 20) ** 2);
-export const ARCH = build(
+const ARCH = build(
 	[
 		...DECK,
 		...chain(...[0, 5, 10, 15, 20, 25, 30, 35, 40].map((x) => [x, archY(x)] as [number, number]))
@@ -788,7 +787,7 @@ export const ARCH = build(
 /** A suspension bridge: towers on the banks, a main cable over them, hangers holding the road. */
 /** The main cable: a parabola from the tower tops (15 m) down to 2.5 m above the road. */
 const cableY = (x: number) => 2.5 + 12.5 * ((x - 20) / 20) ** 2;
-export const SUSPENSION = build(
+const SUSPENSION = build(
 	[
 		...DECK,
 		[
@@ -837,7 +836,7 @@ export const STARTER = BEAM;
  * post in the first chapter. Pulled, it fails when the steel yields; pushed,
  * it buckles first unless it is short.
  */
-export const TUBE = {
+const TUBE = {
 	diameter: 0.0483,
 	wall: 0.0032,
 	get area() {

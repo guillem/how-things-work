@@ -40,7 +40,7 @@ export type Op =
 	/** The part of the array being worked on (merge, quick) and an optional pivot. */
 	| { kind: 'focus'; lo: number; hi: number; pivot?: number };
 
-export interface Counts {
+interface Counts {
 	comparisons: number;
 	/** Bars moved: one per swap, one per merge "move". */
 	moves: number;
@@ -161,7 +161,7 @@ export function run(algorithm: Algorithm, input: readonly number[], record = tru
 }
 
 /** Applies one operation to the array in place. */
-export function applyOp(a: number[], op: Op) {
+function applyOp(a: number[], op: Op) {
 	if (op.kind === 'swap') [a[op.i], a[op.j]] = [a[op.j], a[op.i]];
 	else if (op.kind === 'move') {
 		const v = a[op.from];
@@ -171,7 +171,7 @@ export function applyOp(a: number[], op: Op) {
 }
 
 /** The array after replaying the first `k` operations on `input`. */
-export function replay(input: readonly number[], ops: readonly Op[], k: number): number[] {
+function replay(input: readonly number[], ops: readonly Op[], k: number): number[] {
 	const a = input.slice();
 	for (let s = 0; s < Math.min(k, ops.length); s++) {
 		const op = ops[s];

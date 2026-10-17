@@ -55,7 +55,7 @@ import { rng } from '#lib/draw/math.ts';
  * Complementary error function, Chebyshev fit of Numerical Recipes ("erfcc"):
  * fractional error below 1.2 × 10⁻⁷ everywhere.
  */
-export function erfc(x: number) {
+function erfc(x: number) {
 	const z = Math.abs(x);
 	const t = 1 / (1 + 0.5 * z);
 	const ans =
@@ -87,7 +87,7 @@ export const dbToLin = (db: number) => 10 ** (db / 10);
 export const linToDb = (v: number) => 10 * Math.log10(v);
 
 /** Standard normal random numbers (Box–Muller) from a seeded uniform generator. */
-export function gaussian(seed: number) {
+function gaussian(seed: number) {
 	const u = rng(seed);
 	let spare: number | null = null;
 	return () => {
@@ -106,7 +106,7 @@ export function gaussian(seed: number) {
 }
 
 /** In-place radix-2 FFT of a complex array (length a power of two). */
-export function fft(re: Float64Array, im: Float64Array) {
+function fft(re: Float64Array, im: Float64Array) {
 	const n = re.length;
 	for (let i = 1, j = 0; i < n; i++) {
 		let bit = n >> 1;
@@ -146,17 +146,17 @@ export function fft(re: Float64Array, im: Float64Array) {
 /** The drawn carrier frequency, MHz (time is in microseconds). */
 export const FC = 5;
 /** Tone used as the "voice" for the analogue AM and FM examples, MHz. */
-export const TONE = 0.5;
+const TONE = 0.5;
 /** AM modulation depth. */
 export const AM_DEPTH = 0.6;
 /** FM peak frequency deviation, MHz (modulation index β = 3). */
-export const FM_DEV = 1.5;
+const FM_DEV = 1.5;
 /** FSK: the two tones are the carrier ± this, MHz. */
 export const FSK_DEV = 1;
 /** ASK: amplitude of a 0 bit (a 1 bit has amplitude 1). */
 export const ASK_LOW = 0.25;
 /** Roll-off of the raised-cosine pulses used to smooth the switches. */
-export const ROLLOFF = 0.5;
+const ROLLOFF = 0.5;
 
 export type Mode = 'carrier' | 'am' | 'fm' | 'ask' | 'fsk' | 'psk' | 'qpsk';
 
@@ -172,7 +172,7 @@ export const textBits = (text: string) =>
 	});
 
 /** Raised-cosine pulse (roll-off α) for symbol time 1, centred at 0. */
-export function raisedCosine(t: number, alpha = ROLLOFF) {
+function raisedCosine(t: number, alpha = ROLLOFF) {
 	if (Math.abs(t) < 1e-9) return 1;
 	const d = 1 - (2 * alpha * t) ** 2;
 	const sinc = Math.sin(Math.PI * t) / (Math.PI * t);
@@ -199,7 +199,7 @@ function symbolsOf(mode: Mode, bits: readonly number[]) {
 	return { re, im };
 }
 
-export interface Synth {
+interface Synth {
 	/** Sample rate, MHz (samples per µs). */
 	fs: number;
 	/** Complex baseband b(t). */
@@ -275,12 +275,12 @@ export function synth(
 }
 
 /** Random bits from a seed. */
-export function randomBits(n: number, seed: number) {
+function randomBits(n: number, seed: number) {
 	const u = rng(seed);
 	return Array.from({ length: n }, () => (u() < 0.5 ? 0 : 1));
 }
 
-export interface Spectrum {
+interface Spectrum {
 	/** Frequency of each bin, MHz (absolute: carrier + offset), ascending. */
 	freq: Float64Array;
 	/** Power per bin, normalised to a total of 1. */
@@ -380,7 +380,7 @@ function axisOf(scheme: Scheme): Axis {
 	return { L, k: k / 2, scale: 1 / Math.sqrt((2 * (M - 1)) / 3) };
 }
 
-export interface Point {
+interface Point {
 	i: number;
 	q: number;
 	/** The bits this point stands for, as a string ("0110"). */
@@ -429,7 +429,7 @@ const popcount = (v: number) => {
  * modulated subcarriers, so the part of its signal inside our channel reaches
  * our receiver as practically Gaussian noise. It is modelled as such.
  */
-export interface Interferer {
+interface Interferer {
 	/** Its power inside our channel at the receiver, relative to our signal (linear). */
 	power: number;
 }
@@ -576,8 +576,8 @@ export const minEbN0 = (eta: number) => (2 ** eta - 1) / eta;
 
 // ---- the radio link ----------------------------------------------------------------------------
 
-export const C = 299_792_458;
-export const BOLTZMANN = 1.380649e-23;
+const C = 299_792_458;
+const BOLTZMANN = 1.380649e-23;
 
 /** Free-space path loss, dB, at distance d (m) and frequency f (Hz), isotropic antennas. */
 export const fsplDb = (d: number, f: number) => 20 * Math.log10((4 * Math.PI * d * f) / C);
@@ -588,7 +588,7 @@ export const noiseDbm = (b: number) => 10 * Math.log10(BOLTZMANN * 290 * b * 100
 /** Maximum transmit power of 2.4 GHz Wi-Fi in Europe, dBm e.i.r.p. (ETSI EN 300 328 §4.3.2.2.3). */
 export const TX_DBM = 20;
 
-export interface Link {
+interface Link {
 	lossDb: number;
 	rxDbm: number;
 	noiseDbm: number;
@@ -618,7 +618,7 @@ export function overlap(a: number, b: number, width = 20) {
 }
 
 /** Data subcarriers of an 802.11n/ac OFDM channel by width (MHz). */
-export const DATA_SUBCARRIERS: Record<number, number> = { 20: 52, 40: 108, 80: 234, 160: 468 };
+const DATA_SUBCARRIERS: Record<number, number> = { 20: 52, 40: 108, 80: 234, 160: 468 };
 
 /** Wi-Fi (802.11n/ac) data rate, Mbit/s, for one spatial stream. */
 export function wifiRate(

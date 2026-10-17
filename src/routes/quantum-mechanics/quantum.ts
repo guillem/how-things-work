@@ -39,11 +39,11 @@ import { rng } from '#lib/draw/math.ts';
 /** Reduced Planck constant, eV·fs. */
 export const HBAR = 0.6582119569;
 /** ħ²/2mₑ for the electron, eV·nm². */
-export const H2M = 0.0380998212;
+const H2M = 0.0380998212;
 /** Planck constant, eV·fs. */
 export const PLANCK = 2 * Math.PI * HBAR;
 
-export interface Units {
+interface Units {
 	/** ħ in the unit system. */
 	hbar: number;
 	/** ħ²/2m in the unit system. */
@@ -90,7 +90,7 @@ function plan(n: number) {
  * In-place radix-2 FFT: X[k] = Σ x[j] e^(∓2πijk/n) (− forward, + inverse);
  * the inverse also divides by n, so fft(fft(x), inverse) = x.
  */
-export function fft(re: Float64Array, im: Float64Array, inverse = false) {
+function fft(re: Float64Array, im: Float64Array, inverse = false) {
 	const n = re.length;
 	const { rev, cos, sin } = plan(n);
 	for (let i = 0; i < n; i++) {
@@ -133,7 +133,7 @@ export function fft(re: Float64Array, im: Float64Array, inverse = false) {
 
 // ---------------------------------------------------------------- grid and waves
 
-export interface Grid {
+interface Grid {
 	n: number;
 	dx: number;
 	/** Positions x_j = (j − n/2)·dx: the grid is centred on 0. */
@@ -168,7 +168,7 @@ export function norm(g: Grid, w: Wave) {
 }
 
 /** Probability of finding the particle with a ≤ x < b. */
-export function probabilityBetween(g: Grid, w: Wave, a: number, b: number) {
+function probabilityBetween(g: Grid, w: Wave, a: number, b: number) {
 	let s = 0;
 	for (let j = 0; j < g.n; j++) {
 		const x = g.x[j];
@@ -399,10 +399,10 @@ export function packetT(E0: number, sigma: number, V0: number, a: number) {
 	return s / w;
 }
 
-export const TUNNEL_GRID = { n: 1024, dx: 0.05 }; // 51.2 nm wide, k up to 63 nm⁻¹
-export const TUNNEL_DT = 0.02; // fs
+const TUNNEL_GRID = { n: 1024, dx: 0.05 }; // 51.2 nm wide, k up to 63 nm⁻¹
+const TUNNEL_DT = 0.02; // fs
 
-export interface TunnelSetup {
+interface TunnelSetup {
 	/** Mean kinetic energy of the electron, eV. */
 	E: number;
 	/** Barrier height, eV. */
@@ -480,7 +480,7 @@ export function tunnel(setup: TunnelSetup) {
  * τ = z/k, k = 2π/λ. Each slit's own wave is propagated separately so that
  * they can be added coherently (no record of the slit) or not.
  */
-export interface SlitSetup {
+interface SlitSetup {
 	/** Slit width (separation = 1). */
 	w: number;
 	/** λ × distance to the screen (separation² units): sets the fringe spacing λL/d. */
@@ -491,7 +491,7 @@ export interface SlitSetup {
 	columns?: number;
 }
 
-export const SLIT_GRID = { n: 2048, dx: 1 / 64 }; // ±16 separations sideways
+const SLIT_GRID = { n: 2048, dx: 1 / 64 }; // ±16 separations sideways
 
 /** Antialiased slit aperture centred on yc: the fraction of each cell inside the slit. */
 function aperture(g: Grid, yc: number, width: number): Wave {

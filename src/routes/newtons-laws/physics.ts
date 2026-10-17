@@ -189,7 +189,7 @@ export function push(m: number, F: number, pushFor: number, mu = 0) {
 
 // ------------------------------------------------------------------ track
 
-export interface Track {
+interface Track {
 	/** Height (m) at horizontal position x (m), for x in [0, length]. */
 	h: (x: number) => number;
 	/** Slope dh/dx. */
@@ -236,7 +236,7 @@ export function trackThrough(heights: number[], length: number): Track {
 	};
 }
 
-export interface RideSample {
+interface RideSample {
 	t: number;
 	/** Horizontal position (m). */
 	x: number;

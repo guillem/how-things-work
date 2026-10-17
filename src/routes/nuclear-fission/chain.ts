@@ -14,7 +14,7 @@ export const CHAIN_GENERATIONS = 40;
  * core; the rest are captured. From the core model's 3% leakage per neutron
  * against the 1 − 1/ν̄ of all neutrons lost in a critical core (about 5%).
  */
-export const ESCAPED_SHARE = (1 - NON_LEAKAGE) / (1 - 1 / U235.nu);
+const ESCAPED_SHARE = (1 - NON_LEAKAGE) / (1 - 1 / U235.nu);
 
 /**
  * The page's seed. Chosen so that the critical run (k = 1) stays within ±10%
@@ -26,7 +26,7 @@ export const CHAIN_SEED = 227;
 
 export type Fate = 'fission' | 'captured' | 'escaped';
 
-export interface TreeNeutron {
+interface TreeNeutron {
 	id: string;
 	/** Generation of the fission that released it. */
 	g: number;
@@ -36,7 +36,7 @@ export interface TreeNeutron {
 	child: number;
 }
 
-export interface TreeFission {
+interface TreeFission {
 	g: number;
 	/** Index in its generation. */
 	i: number;
@@ -44,7 +44,7 @@ export interface TreeFission {
 	parent: number;
 }
 
-export interface Tree {
+interface Tree {
 	fissions: TreeFission[][];
 	neutrons: TreeNeutron[][];
 	/** Fissions dropped from the drawing because a column was full. */

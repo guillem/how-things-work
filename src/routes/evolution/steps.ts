@@ -3,7 +3,7 @@ import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
 const fmtCount = (v: number) => v.toLocaleString('en-GB');
 
 /** Mutation rate per gene per generation, as "1 in …". */
-export const fmtRate = (v: number) => (v === 0 ? 'none' : `1 in ${fmtCount(Math.round(1 / v))}`);
+const fmtRate = (v: number) => (v === 0 ? 'none' : `1 in ${fmtCount(Math.round(1 / v))}`);
 
 const environment: Control = {
 	type: 'select',

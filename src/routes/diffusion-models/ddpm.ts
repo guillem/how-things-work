@@ -40,15 +40,15 @@ import { rng } from '#lib/draw/math.ts';
 
 /** Number of diffusion steps the models were trained with (Ho et al. 2020). */
 export const T = 1000;
-export const BETA_1 = 1e-4;
-export const BETA_T = 0.02;
+const BETA_1 = 1e-4;
+const BETA_T = 0.02;
 
 /** β_t, α_t = 1 − β_t and ᾱ_t = ∏ α_s, for t = 1 … T (index t − 1). */
 export const BETAS = Float64Array.from(
 	{ length: T },
 	(_, i) => BETA_1 + ((BETA_T - BETA_1) * i) / (T - 1)
 );
-export const ALPHA_BAR = (() => {
+const ALPHA_BAR = (() => {
 	const a = new Float64Array(T);
 	let p = 1;
 	for (let i = 0; i < T; i++) a[i] = p *= 1 - BETAS[i];
@@ -107,7 +107,7 @@ export interface NetConfig {
 /** The digit model's size (trained by scripts/data/diffusion-models/train.mjs; not shipped). */
 export const MNIST_NET: NetConfig = { D: 784, H: 512, E: 32, blocks: 3, classes: 10 };
 
-export interface Weights {
+interface Weights {
 	cfg: NetConfig;
 	/** [H][D + 2E] */
 	win: Float32Array;
@@ -175,7 +175,7 @@ export function decodeWeights(cfg: NetConfig, base64: string): Weights {
 }
 
 /** The sinusoidal embedding of the step t (as in the Transformer and in Ho et al.'s network). */
-export function timeEmbedding(t: number, E: number, out: Float32Array, o = 0) {
+function timeEmbedding(t: number, E: number, out: Float32Array, o = 0) {
 	const half = E / 2;
 	for (let i = 0; i < half; i++) {
 		const f = Math.exp((-Math.log(10000) * i) / half);
@@ -184,10 +184,10 @@ export function timeEmbedding(t: number, E: number, out: Float32Array, o = 0) {
 	}
 }
 
-export const silu = (z: number) => z / (1 + Math.exp(-z));
+const silu = (z: number) => z / (1 + Math.exp(-z));
 
 /** What the forward pass keeps for backpropagation (used by the training script). */
-export interface Activations {
+interface Activations {
 	/** [B][D + 2E]: the input and the condition */
 	inp: Float32Array;
 	/** [blocks + 1][B][H]: h before each block, and after the last one */
@@ -300,7 +300,7 @@ export function schedule(steps: number): number[] {
 	return out;
 }
 
-export interface SampleOptions {
+interface SampleOptions {
 	/** sampling steps (1 … T); T is Ho et al.'s full sampler */
 	steps: number;
 	/** seed of the starting noise and of the noise added at each step */

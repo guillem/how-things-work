@@ -23,16 +23,16 @@ export const LEFT = { x: 24, y: 16, w: 480, h: 384 };
 /** The loss-per-step plot, bottom left. */
 export const LOSS = { x: 78, y: 446, w: 410, h: 112 };
 
-export type Phase = 'explore' | 'gradient' | 'run' | 'compare';
+type Phase = 'explore' | 'gradient' | 'run' | 'compare';
 
 /** The three learning rates of the "compare" step, with their colours and verdicts. */
-export const COMPARE = [
+const COMPARE = [
 	{ lr: 0.05, color: 'var(--gd-run1)', verdict: 'too small: crawls' },
 	{ lr: 0.6, color: 'var(--gd-run2)', verdict: 'about right: converges' },
 	{ lr: 2.05, color: 'var(--gd-run3)', verdict: 'too big: diverges' }
 ];
 
-export const STEPS = 300;
+const STEPS = 300;
 
 const num = (v: unknown, fallback: number) => {
 	const n = Number(v);
@@ -79,7 +79,7 @@ export function setup(step: Step, params: Params) {
 	return { phase, left, land, start, startKey, lr, momentum, noise, batch, seed, key, offered };
 }
 
-export type Setup = ReturnType<typeof setup>;
+type Setup = ReturnType<typeof setup>;
 
 export function clampToMap(land: Landscape, [x, y]: readonly [number, number]): [number, number] {
 	return [Math.min(land.x[1], Math.max(land.x[0], x)), Math.min(land.y[1], Math.max(land.y[0], y))];
@@ -168,7 +168,7 @@ export const fromMap = (land: Landscape, px: number, py: number): [number, numbe
 export const contourColor = (u: number) =>
 	`color-mix(in oklab, var(--gd-c-high) ${Math.round(100 * Math.min(1, Math.max(0, u)))}%, var(--gd-c-low))`;
 /** Colour of the surface at height u (0–1). */
-export const surfaceColor = (u: number) =>
+const surfaceColor = (u: number) =>
 	`color-mix(in oklab, var(--gd-high) ${Math.round(100 * Math.min(1, Math.max(0, u)))}%, var(--gd-low))`;
 
 const contourCache = new Map<LandscapeId, { level: number; u: number; d: string }[]>();
@@ -232,7 +232,7 @@ export function project(land: Landscape, x: number, y: number, z: number) {
 	return { x: SURF.ox + SURF.scale * u, y: SURF.oy - SURF.scale * SIN_EL * d - SURF.height * z };
 }
 
-export interface Mesh {
+interface Mesh {
 	/** Rows of the grid, back to front: their filled patches (one per colour band), then their lines. */
 	rows: { key: string; patches: { key: string; d: string; fill: string }[]; line: string }[];
 }

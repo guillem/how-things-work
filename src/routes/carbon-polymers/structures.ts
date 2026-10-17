@@ -40,7 +40,7 @@ export interface Structure {
 }
 
 /** Drawn length of a bond to hydrogen, relative to C–C: ≈ 1.09 Å / 1.53 Å. */
-export const H_LENGTH = 0.72;
+const H_LENGTH = 0.72;
 
 const used = (s: Structure, i: number) =>
 	s.bonds.filter((b) => b.a === i || b.b === i).reduce((t, b) => t + b.order, 0);
@@ -99,7 +99,7 @@ export function withHydrogens(s: Structure): Structure {
 	return { atoms, bonds, aromatic: s.aromatic };
 }
 
-export function countsOf(s: Structure) {
+function countsOf(s: Structure) {
 	const full = withHydrogens(s);
 	const c: Record<El, number> = { C: 0, H: 0, O: 0, N: 0, Cl: 0 };
 	for (const a of full.atoms) c[a.el]++;

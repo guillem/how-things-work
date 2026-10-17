@@ -77,7 +77,7 @@ export const factorText = (n: number) =>
 
 // ---------------------------------------------------------------- the sieve
 
-export interface SieveStage {
+interface SieveStage {
 	/** The prime whose multiples are struck at this stage. */
 	prime: number;
 	/** All its multiples 2p, 3p, … ≤ n. */
@@ -86,7 +86,7 @@ export interface SieveStage {
 	fresh: number[];
 }
 
-export interface Sieve {
+interface Sieve {
 	n: number;
 	/** The stages, one per prime p with p² ≤ n. */
 	stages: SieveStage[];
@@ -157,7 +157,7 @@ export function multiplyHops(a: number, b: number, m: number): number[] {
 	return out;
 }
 
-export interface TimesMap {
+interface TimesMap {
 	/** image[k] = a·k mod m for every hour k. */
 	image: number[];
 	/** Hours that some k lands on, in increasing order. */
@@ -186,7 +186,7 @@ export function timesMap(a: number, m: number): TimesMap {
 export const shufflers = (m: number) =>
 	Array.from({ length: m - 1 }, (_, i) => i + 1).filter((a) => timesMap(a, m).shuffles);
 
-export interface PowerWalk {
+interface PowerWalk {
 	/** g⁰, g¹, g², … mod m, up to and including the first repeated value. */
 	seq: number[];
 	/** Index in `seq` where the repeat cycle starts (seq[last] === seq[cycleStart]). */
@@ -231,7 +231,7 @@ export const isPrimitiveRoot = (g: number, p: number) => order(g, p) === p - 1;
 
 // ---------------------------------------------------------------- fast powers
 
-export interface LadderRung {
+interface LadderRung {
 	/** k: this rung holds g^(2^k). */
 	k: number;
 	/** 2^k. */
@@ -246,7 +246,7 @@ export interface LadderRung {
 	running: number;
 }
 
-export interface FastPower {
+interface FastPower {
 	result: number;
 	rungs: LadderRung[];
 	squarings: number;

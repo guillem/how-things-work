@@ -39,7 +39,7 @@ import { KT } from '../semiconductors/model';
 
 export { KT };
 /** Elementary charge (C). */
-export const Q = 1.602176634e-19;
+const Q = 1.602176634e-19;
 
 // ------------------------------------------------------------------ MOSFET
 
@@ -50,9 +50,9 @@ export const COX = 8.6e-15;
 /** Gate-oxide thickness (nm). */
 export const TOX_NM = 4.08;
 /** Subthreshold slope factor. */
-export const N_SLOPE = 1.5;
+const N_SLOPE = 1.5;
 
-export interface Device {
+interface Device {
 	kind: 'n' | 'p';
 	/** Process transconductance µC_ox (A/V²). */
 	kp: number;
@@ -148,7 +148,7 @@ export function nand(a: boolean, b: boolean) {
 
 // ------------------------------------------------------------------ lithography
 
-export interface Tool {
+interface Tool {
 	id: string;
 	name: string;
 	light: string;

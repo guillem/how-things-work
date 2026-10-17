@@ -16,7 +16,7 @@ export interface Test {
 	specificity: number;
 }
 
-export interface Counts {
+interface Counts {
 	truePos: number;
 	falseNeg: number;
 	falsePos: number;

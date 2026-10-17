@@ -78,7 +78,7 @@ export function refusal(b: Build): string | null {
 	}
 	return null;
 }
-export const valid = (b: Build) => refusal(b) === null;
+const valid = (b: Build) => refusal(b) === null;
 
 /** The same molecule with the lowest locant (chains read from the nearer end; rings from it). */
 export function canonical(b: Build): Build {
@@ -130,20 +130,20 @@ export function allBuilds(): Build[] {
 
 // ------------------------------------------------------------------ the graph
 
-export interface Atom {
+interface Atom {
 	el: El;
 	/** The skeleton carbon this atom is (1-based), or the carbon it hangs from. */
 	carbon: number;
 	/** Part of the functional group (or the multiple bond's carbons). */
 	group?: boolean;
 }
-export interface Bond {
+interface Bond {
 	a: number;
 	b: number;
 	/** 1, 2, 3, or 1.5 for an aromatic ring bond. */
 	order: number;
 }
-export interface Graph {
+interface Graph {
 	atoms: Atom[];
 	bonds: Bond[];
 }
@@ -229,7 +229,7 @@ export function bondSums(g: Graph): number[] {
 	);
 }
 
-export function counts(g: Graph): Record<El, number> {
+function counts(g: Graph): Record<El, number> {
 	const c: Record<El, number> = { C: 0, H: 0, O: 0, N: 0, Cl: 0 };
 	for (const a of g.atoms) c[a.el]++;
 	return c;
@@ -255,9 +255,9 @@ export const molarMass = (b: Build) => massOf(counts(graph(b)));
 
 // ------------------------------------------------------------------ names
 
-export const STEMS = ['meth', 'eth', 'prop', 'but', 'pent', 'hex', 'hept', 'oct'];
+const STEMS = ['meth', 'eth', 'prop', 'but', 'pent', 'hex', 'hept', 'oct'];
 
-export type Family =
+type Family =
 	| 'alkane'
 	| 'alkene'
 	| 'alkyne'

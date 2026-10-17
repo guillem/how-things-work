@@ -12,24 +12,24 @@ import { MAX_MA, RINGS, RING_PLATES, ROTATIONS, STEP_MA } from './data/continent
 
 export { MAX_MA, RING_PLATES };
 
-export type Quat = [number, number, number, number];
-export type Vec = [number, number, number];
+type Quat = [number, number, number, number];
+type Vec = [number, number, number];
 export type LonLat = [number, number];
 
 const D2R = Math.PI / 180;
 
-export const toVec = ([lon, lat]: LonLat): Vec => {
+const toVec = ([lon, lat]: LonLat): Vec => {
 	const la = lat * D2R;
 	const lo = lon * D2R;
 	return [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)];
 };
-export const toLonLat = ([x, y, z]: Vec): LonLat => [
+const toLonLat = ([x, y, z]: Vec): LonLat => [
 	Math.atan2(y, x) / D2R,
 	Math.asin(Math.max(-1, Math.min(1, z))) / D2R
 ];
 
 /** Rotates vector `v` by unit quaternion `q`. */
-export function rotate(q: Quat, v: Vec): Vec {
+function rotate(q: Quat, v: Vec): Vec {
 	const [w, x, y, z] = q;
 	// v' = v + 2w (u × v) + 2 u × (u × v), u = (x, y, z)
 	const cx = y * v[2] - z * v[1];
@@ -75,7 +75,7 @@ const sample = (s: number[], i: number): Quat => [
 ];
 
 /** Total rotation of rotation series `series` at `age` Ma (null beyond its samples). */
-export function rotationAt(series: number, age: number): Quat | null {
+function rotationAt(series: number, age: number): Quat | null {
 	const s = ROTATIONS[series];
 	const n = s.length / 4;
 	const f = Math.max(0, age) / STEP_MA;
@@ -84,7 +84,7 @@ export function rotationAt(series: number, age: number): Quat | null {
 	return slerp(sample(s, i), sample(s, i + 1), f - i);
 }
 
-export interface Ring {
+interface Ring {
 	/** Rotation series of the ring's plate. */
 	series: number;
 	/** Age (Ma) at which the ring's crust first exists in the model (9999: before the model). */
@@ -95,7 +95,7 @@ export interface Ring {
 	lonlat: LonLat[];
 }
 
-export const rings: Ring[] = RINGS.map(([series, from, flat]) => {
+const rings: Ring[] = RINGS.map(([series, from, flat]) => {
 	const lonlat: LonLat[] = [];
 	for (let i = 0; i < flat.length; i += 2) lonlat.push([flat[i] / 10, flat[i + 1] / 10]);
 	return { series, from, pts: lonlat.map(toVec), lonlat };
@@ -129,7 +129,7 @@ function ringArea(ring: LonLat[]): number {
 let areas: number[] | undefined;
 
 /** Index of a ring that contains a present-day point (the smallest by area, if several), or −1. */
-export function ringAt(p: LonLat): number {
+function ringAt(p: LonLat): number {
 	areas ??= rings.map((r) => ringArea(r.lonlat));
 	let best = -1;
 	rings.forEach((r, i) => {
@@ -157,7 +157,7 @@ export function distanceKm(a: LonLat, b: LonLat): number {
 }
 
 /** How visible a ring is at `age`: it fades in over the 20 Myr after its crust appears. */
-export const ringOpacity = (r: Ring, age: number) =>
+const ringOpacity = (r: Ring, age: number) =>
 	age > MAX_MA ? 0 : Math.max(0, Math.min(1, (r.from - age) / 20));
 
 /** The continents at `age` Ma: each visible ring's vertices as unit vectors, with its opacity. */

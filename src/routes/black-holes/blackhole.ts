@@ -36,12 +36,12 @@ export const R_GPS = 2.656e7;
 /** The astronomical unit, m (IAU 2012 Resolution B2, exact). */
 export const AU = 1.495978707e11;
 /** The parsec, m (IAU 2015 Resolution B2). */
-export const PARSEC = 3.085677581491367e16;
+const PARSEC = 3.085677581491367e16;
 /** Seconds in a Julian year. */
 export const YEAR_S = 365.25 * 86400;
 
 /** One micro-arcsecond in radians. */
-export const MICROARCSEC = Math.PI / 180 / 3600 / 1e6;
+const MICROARCSEC = Math.PI / 180 / 3600 / 1e6;
 /** One arcsecond in radians. */
 export const ARCSEC = Math.PI / 180 / 3600;
 

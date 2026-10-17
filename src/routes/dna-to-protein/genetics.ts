@@ -12,7 +12,7 @@
  * https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi (rows AAs and Base1–Base3).
  * Column i is the codon Base1[i] Base2[i] Base3[i]; '*' is a stop codon.
  */
-export const NCBI_TABLE_1 = {
+const NCBI_TABLE_1 = {
 	AAs: 'FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG',
 	Base1: 'TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG',
 	Base2: 'TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG',
@@ -20,7 +20,7 @@ export const NCBI_TABLE_1 = {
 } as const;
 
 export type Base = 'A' | 'C' | 'G' | 'T';
-export const BASES: readonly Base[] = ['A', 'C', 'G', 'T'];
+const BASES: readonly Base[] = ['A', 'C', 'G', 'T'];
 /** Order of the rows and columns of the printed code table (U, C, A, G). */
 export const TABLE_ORDER: readonly Base[] = ['T', 'C', 'A', 'G'];
 
@@ -33,7 +33,7 @@ export const CODE: ReadonlyMap<string, string> = new Map(
 );
 
 export const STOP = '*';
-export const START_CODON = 'ATG';
+const START_CODON = 'ATG';
 
 /**
  * Chemical character of a side chain, the way introductory texts group them: water-repelling
@@ -42,7 +42,7 @@ export const START_CODON = 'ATG';
  */
 export type AminoKind = 'nonpolar' | 'polar' | 'positive' | 'negative' | 'stop';
 
-export interface AminoAcid {
+interface AminoAcid {
 	one: string;
 	three: string;
 	name: string;
@@ -138,14 +138,14 @@ export function cleanDna(input: string, max = Infinity): string {
 		.slice(0, max);
 }
 
-export interface Codon {
+interface Codon {
 	/** Index of its first letter in the sequence. */
 	at: number;
 	codon: string;
 	aa: string;
 }
 
-export interface Translation {
+interface Translation {
 	/** Index of the A of the first ATG, or −1 if there is none. */
 	start: number;
 	/** The codons read, from the start codon up to and including the stop codon. */
@@ -233,7 +233,7 @@ export type Effect =
 	| 'start-changed'
 	| 'no-start';
 
-export interface Comparison {
+interface Comparison {
 	effect: Effect;
 	before: Translation;
 	after: Translation;

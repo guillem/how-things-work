@@ -212,7 +212,7 @@ export const MATERIALS: readonly Material[] = [
 	}
 ];
 
-export const materialById = new Map(MATERIALS.map((m) => [m.id, m]));
+const materialById = new Map(MATERIALS.map((m) => [m.id, m]));
 export const material = (id: string, side: Side): Material =>
 	materialById.get(id) ?? (side === 'anode' ? MATERIALS[3] : MATERIALS[0]);
 export const CATHODES = MATERIALS.filter((m) => m.side === 'cathode');

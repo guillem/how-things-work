@@ -36,7 +36,7 @@ const OM = 0.3;
 const OL = 0.7;
 
 /** Comoving distance (Mpc) to redshift z, flat ΛCDM, by Simpson's rule. */
-export function comovingMpc(z1: number, z2 = 0): number {
+function comovingMpc(z1: number, z2 = 0): number {
 	const [a, b] = z1 < z2 ? [z1, z2] : [z2, z1];
 	const n = 400;
 	const h = (b - a) / n;
@@ -58,10 +58,10 @@ export function lookbackGyr(z: number): number {
 }
 
 /** Angular-diameter distance (Mpc) from redshift zl to zs (flat universe). */
-export const angularMpc = (zs: number, zl = 0) => comovingMpc(zs, zl) / (1 + zs);
+const angularMpc = (zs: number, zl = 0) => comovingMpc(zs, zl) / (1 + zs);
 
-export const Z_CLUSTER = 0.296;
-export const Z_SOURCE = 1;
+const Z_CLUSTER = 0.296;
+const Z_SOURCE = 1;
 
 /** kpc per arcsecond at the cluster. */
 export const kpcPerArcsec = (z = Z_CLUSTER) => (angularMpc(z) * 1000 * Math.PI) / (180 * 3600);
@@ -103,13 +103,13 @@ export const BRADAC = {
 	err250: 0.2e14
 } as const;
 
-export const STAR_FRACTION = 0.015;
+const STAR_FRACTION = 0.015;
 export const FIELD_STARS = STAR_FRACTION * BRADAC.fieldTotal;
 export const FIELD_VISIBLE = BRADAC.fieldGas + FIELD_STARS;
 /** The dark matter the lensing total asks for: 91 − 13 − 1.4 ≈ 77 × 10¹³ M☉. */
 export const DARK_NEEDED = BRADAC.fieldTotal - FIELD_VISIBLE;
 
-export interface XY {
+interface XY {
 	x: number;
 	y: number;
 }
@@ -142,7 +142,7 @@ const POS = (() => {
 })();
 export const POSITIONS: Readonly<Record<keyof typeof CLOWE, XY>> = POS;
 
-export type Kind = 'gas' | 'stars' | 'dark';
+type Kind = 'gas' | 'stars' | 'dark';
 
 const GAS_MAIN_A = 552;
 const GAS_SUB_A = 656;
@@ -151,7 +151,7 @@ const STARS_SUB_A = 544;
 const DARK_MAIN_A = 312;
 const DARK_SUB_A = 326;
 
-export interface Blob extends XY {
+interface Blob extends XY {
 	id: string;
 	kind: Kind;
 	/** Total mass, M☉. */
@@ -168,7 +168,7 @@ export interface Blob extends XY {
  * Bradač's 2.8 and 2.3 × 10¹⁴ M☉ within 250 kpc of the two clusters (with
  * everything else) when the field holds its measured 91 × 10¹³ M☉.
  */
-export const SIZE = {
+const SIZE = {
 	gasMain: GAS_MAIN_A,
 	gasSub: GAS_SUB_A,
 	starsMain: STARS_MAIN_A,
@@ -244,7 +244,7 @@ export function blobs(dark: number): Blob[] {
 
 // ---- lensing --------------------------------------------------------------------
 
-export interface Lensing {
+interface Lensing {
 	/** Convergence: surface density ÷ the critical one. */
 	kappa: number;
 	/** Shear components. */
@@ -278,7 +278,7 @@ export function lensAt(bs: readonly Blob[], x: number, y: number, sc = sigmaCrit
 }
 
 /** Projected surface density (M☉/kpc²) at a point. */
-export function sigmaAt(bs: readonly Blob[], x: number, y: number) {
+function sigmaAt(bs: readonly Blob[], x: number, y: number) {
 	let s = 0;
 	for (const b of bs) {
 		const q = (x - b.x) ** 2 + (y - b.y) ** 2 + b.a * b.a;
@@ -342,7 +342,7 @@ export function lensedShape(es: XY, l: Lensing): { q: number; angle: number } {
 }
 
 /** Grid of κ over a box, for contours and for finding the peak. */
-export interface Grid {
+interface Grid {
 	x0: number;
 	y0: number;
 	dx: number;

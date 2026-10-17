@@ -24,7 +24,7 @@
  */
 
 export const MEM_SIZE = 32;
-export const REGISTERS = 4;
+const REGISTERS = 4;
 /** Instructions executed before a run that never halts is stopped. */
 export const MAX_INSTRUCTIONS = 1000;
 
@@ -89,7 +89,7 @@ export function decode(b0: number, b1: number): Decoded | null {
 	return { op, r: (b0 >> 2) & 3, s: b0 & 3, n: b1 };
 }
 
-export function encode(d: Decoded): [number, number] {
+function encode(d: Decoded): [number, number] {
 	return [(OPCODES[d.op] << 4) | (d.r << 2) | d.s, d.n & 255];
 }
 
@@ -113,13 +113,13 @@ export function disassemble(d: Decoded): string {
 
 // ---- assembler -----------------------------------------------------------------
 
-export interface AsmError {
+interface AsmError {
 	/** 1-based source line. */
 	line: number;
 	message: string;
 }
 
-export interface AsmItem {
+interface AsmItem {
 	/** Address of the first byte. */
 	addr: number;
 	/** 1-based source line. */
@@ -128,7 +128,7 @@ export interface AsmItem {
 	kind: 'instr' | 'data';
 }
 
-export type Assembled =
+type Assembled =
 	| { ok: true; memory: number[]; items: AsmItem[]; labels: Record<string, number> }
 	| { ok: false; errors: AsmError[] };
 
@@ -350,7 +350,7 @@ function clone(m: Machine): Machine {
 	return { pc: m.pc, ir: [m.ir[0], m.ir[1]], regs: [...m.regs], z: m.z, c: m.c, mem: [...m.mem] };
 }
 
-export function boot(memory: number[]): Machine {
+function boot(memory: number[]): Machine {
 	return { pc: 0, ir: [0, 0], regs: [0, 0, 0, 0], z: false, c: false, mem: [...memory] };
 }
 

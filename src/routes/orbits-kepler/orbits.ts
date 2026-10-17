@@ -22,7 +22,7 @@ export const AU_PER_YEAR_KMS = 4.74;
 /** The circular speed at 1 AU (the Earth's mean orbital speed) in km/s: 2π AU/yr ≈ 29.8. */
 export const EARTH_SPEED_KMS = 2 * Math.PI * AU_PER_YEAR_KMS;
 
-export interface Vec {
+interface Vec {
 	x: number;
 	y: number;
 }
@@ -79,7 +79,7 @@ export function elements(r: Vec, v: Vec): Elements {
 	return { energy, h, a, e, perihelion, aphelion, period, kind, periAngle: Math.atan2(ey, ex) };
 }
 
-export interface Body {
+interface Body {
 	r: Vec;
 	v: Vec;
 	/** Mass as a fraction of the Sun's (pulls on the Sun and on the other planets). */
@@ -97,7 +97,7 @@ export interface Track {
 }
 
 /** The Sun's radius in AU (for crashes). */
-export const SUN_RADIUS = 0.00465;
+const SUN_RADIUS = 0.00465;
 
 /**
  * Integrates the bodies for `years`, sampling every `sample` years with
@@ -162,7 +162,7 @@ export function integrate(bodies: Body[], years: number, sample = 0.005, sub = 8
 }
 
 /** Area of the triangle Sun–p–q (AU²), for the equal-areas overlay. */
-export const triangleArea = (p: Vec, q: Vec) => Math.abs(p.x * q.y - p.y * q.x) / 2;
+const triangleArea = (p: Vec, q: Vec) => Math.abs(p.x * q.y - p.y * q.x) / 2;
 
 /** Area swept by body i of a track between samples s0 and s1 (sum of thin triangles). */
 export function sweptArea(t: Track, i: number, s0: number, s1: number) {

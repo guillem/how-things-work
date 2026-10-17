@@ -26,37 +26,37 @@ import { ARCHIVE_PLANETS, type ArchivePlanet, type ArchiveStar } from './archive
 // ---- constants -----------------------------------------------------------------------
 
 /** Newton's gravitational constant, m³ kg⁻¹ s⁻² (CODATA 2018). */
-export const G = 6.6743e-11;
+const G = 6.6743e-11;
 /** Speed of light, m/s (exact, SI). */
 export const C = 299_792_458;
 /** The astronomical unit, m (IAU 2012 Resolution B2, exact). */
 export const AU = 1.495978707e11;
-export const DAY = 86_400;
+const DAY = 86_400;
 /** The Sun's GM, m³/s² (IAU 2015 Resolution B3, nominal). */
-export const GM_SUN = 1.3271244e20;
+const GM_SUN = 1.3271244e20;
 /** The Sun's radius, m (IAU 2015 Resolution B3, nominal). */
 export const R_SUN = 6.957e8;
 /** The Sun's effective temperature, K (IAU 2015 Resolution B3, nominal). */
-export const TEFF_SUN = 5772;
+const TEFF_SUN = 5772;
 /** The Earth's GM, m³/s² (IAU 2015 Resolution B3, nominal). */
-export const GM_EARTH = 3.986004e14;
+const GM_EARTH = 3.986004e14;
 /** The Earth's mean radius, m (IUGG mean radius R1). Mean radii, so that densities come out right. */
-export const R_EARTH = 6.371e6;
+const R_EARTH = 6.371e6;
 /** Jupiter's GM, m³/s² (IAU 2015 Resolution B3, nominal). */
-export const GM_JUPITER = 1.2668653e17;
+const GM_JUPITER = 1.2668653e17;
 /** Jupiter's volumetric mean radius, m (NASA Jupiter fact sheet). */
-export const R_JUPITER = 6.9911e7;
+const R_JUPITER = 6.9911e7;
 /** Jupiter's orbit: semi-major axis 5.2038 AU (NASA Jupiter fact sheet). */
 export const A_JUPITER = 5.2038;
 
-export const M_SUN = GM_SUN / G;
-export const M_EARTH = GM_EARTH / G;
+const M_SUN = GM_SUN / G;
+const M_EARTH = GM_EARTH / G;
 /** Jupiter's mass in Earth masses (≈ 317.8). */
 export const JUPITER_MASSES = GM_JUPITER / GM_EARTH;
 /** Jupiter's radius in Earth radii (≈ 11.0). */
 export const JUPITER_RADII = R_JUPITER / R_EARTH;
 /** The Sun's radius in Earth radii (≈ 109). */
-export const SUN_RADII = R_SUN / R_EARTH;
+const SUN_RADII = R_SUN / R_EARTH;
 
 /**
  * Lines in the visible spectrum of a Sun-like star (air wavelengths, nm, NIST
@@ -289,7 +289,7 @@ export function habitableZone(s: Star) {
 	};
 }
 
-export type Zone = 'too hot' | 'optimistic' | 'habitable zone' | 'too cold';
+type Zone = 'too hot' | 'optimistic' | 'habitable zone' | 'too cold';
 
 /** Where a planet getting `flux` (Earth = 1) sits relative to the zone of a star of `teff`. */
 export function zoneOf(flux: number, teff: number): Zone {
@@ -303,7 +303,7 @@ export function zoneOf(flux: number, teff: number): Zone {
 // ---- the stars and planets of the explainer ---------------------------------------------
 
 /** A star from the archive's table, in the model's units. */
-export function archiveStar(st: ArchiveStar): Star {
+function archiveStar(st: ArchiveStar): Star {
 	return { radius: st.radius, mass: st.mass, teff: st.teff, lum: 10 ** st.logLum };
 }
 

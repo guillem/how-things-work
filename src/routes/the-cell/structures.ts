@@ -15,7 +15,7 @@ import { NM, UM } from './units';
 export type CellType = 'animal' | 'plant' | 'bacterium';
 export type Kind = 'tissue' | 'cell' | 'organelle' | 'machine' | 'molecule';
 
-export interface Structure {
+interface Structure {
 	id: string;
 	name: string;
 	kind: Kind;

@@ -39,18 +39,18 @@
  * number of samples per beat).
  */
 
-export const SAMPLE = 0.002;
+const SAMPLE = 0.002;
 const DT = 0.0005;
 
 /** Compartment order in the state vector. */
 export const RA = 0;
 export const RV = 1;
-export const PA = 2;
-export const PV = 3;
+const PA = 2;
+const PV = 3;
 export const LA = 4;
 export const LV = 5;
 export const SA = 6;
-export const SV = 7;
+const SV = 7;
 
 export type Valve = 'mitral' | 'aortic';
 
@@ -74,7 +74,7 @@ interface Chamber {
 }
 
 /** Chamber stiffness (mmHg/mL) relaxed and fully contracted, unstressed volume (mL). */
-export const CHAMBERS = {
+const CHAMBERS = {
 	ra: { emin: 0.1, emax: 0.25, v0: 4 },
 	rv: { emin: 0.05, emax: 0.55, v0: 10 },
 	la: { emin: 0.12, emax: 0.3, v0: 4 },
@@ -82,10 +82,10 @@ export const CHAMBERS = {
 } satisfies Record<string, Chamber>;
 
 /** Compliances (mL/mmHg) of the vessels. */
-export const COMPLIANCE = { pa: 4, pv: 12, sa: 1.3, sv: 70 };
+const COMPLIANCE = { pa: 4, pv: 12, sa: 1.3, sv: 70 };
 
 /** Resistances (mmHg·s/mL). */
-export const RESISTANCE = {
+const RESISTANCE = {
 	tricuspid: 0.004,
 	pulmonary: 0.006,
 	lungs: 0.08,
@@ -100,7 +100,7 @@ export const RESISTANCE = {
 export const BLOOD = 1100;
 
 /** Oxygen. */
-export const O2 = {
+const O2 = {
 	/** Saturation of blood leaving the lungs. */
 	arterial: 0.98,
 	/** Oxygen used by the body at rest (mL O₂ per minute). */
@@ -152,13 +152,13 @@ export function timing(hr: number): Timing {
 }
 
 /** Atrial activation (0–1) at time τ into the beat. */
-export function atrialActivation(T: Timing, tau: number) {
+function atrialActivation(T: Timing, tau: number) {
 	const u = (tau - T.atria) / T.atriaDur;
 	return u > 0 && u < 1 ? 0.5 * (1 - Math.cos(2 * Math.PI * u)) : 0;
 }
 
 /** Ventricular activation (0–1) at time τ into the beat: half-cosine rise, faster fall. */
-export function ventricularActivation(T: Timing, tau: number) {
+function ventricularActivation(T: Timing, tau: number) {
 	const t = tau - T.ventricles;
 	if (t <= 0) return 0;
 	if (t < T.rise) return 0.5 * (1 - Math.cos((Math.PI * t) / T.rise));
@@ -198,7 +198,7 @@ const elastance = (c: Chamber, a: number) => c.emin + (c.emax - c.emin) * a;
 export const leakFlow = (area: number, dp: number) =>
 	(50 * area * dp) / Math.sqrt(Math.abs(dp) + 0.25);
 
-export interface Instant {
+interface Instant {
 	/** Pressures (mmHg), indexed by compartment. */
 	p: number[];
 	/** Flows (mL/s) through the four valves (+ forward, − leak back) and the two beds. */
@@ -373,7 +373,7 @@ const max = (a: Float64Array) => a.reduce((m, x) => Math.max(m, x), -Infinity);
 const min = (a: Float64Array) => a.reduce((m, x) => Math.min(m, x), Infinity);
 const mean = (a: Float64Array) => a.reduce((s, x) => s + x, 0) / a.length;
 
-export interface Summary {
+interface Summary {
 	hr: number;
 	/** Left ventricle: volume when full and after squeezing (mL). */
 	edv: number;

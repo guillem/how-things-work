@@ -144,7 +144,7 @@ export function peak(spectrum: readonly Harmonic[], terms: number, count = 8192)
 export type WaveShape = 'square' | 'sawtooth' | 'triangle' | 'pulse';
 
 /** Fraction of the period a pulse is high. */
-export const PULSE_WIDTH = 0.2;
+const PULSE_WIDTH = 0.2;
 
 /**
  * The preset waveforms, one period, values between −1 and 1. At a jump the
@@ -152,7 +152,7 @@ export const PULSE_WIDTH = 0.2;
  * Fourier series converges to there; it also keeps the square wave exactly odd,
  * so its spectrum is made of pure sines.
  */
-export function shapeValue(shape: WaveShape, u: number): number {
+function shapeValue(shape: WaveShape, u: number): number {
 	const v = u - Math.floor(u);
 	switch (shape) {
 		case 'square':
@@ -255,7 +255,7 @@ export function strengthAt(samples: readonly number[], k: number, periods = 1): 
 // ---- closed curves ---------------------------------------------------------------------
 
 /** One rotating circle of a closed curve: radius |c|, k turns per period, starting angle arg c. */
-export interface Epicycle {
+interface Epicycle {
 	k: number;
 	c: Complex;
 	radius: number;

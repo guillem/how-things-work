@@ -36,12 +36,12 @@
  *   Atmos. Chem. Phys. 23, 10901 (2023), henrys-law.org, CAS 124-38-9).
  */
 
-export const PKW = 14;
-export const KW = 10 ** -PKW;
+const PKW = 14;
+const KW = 10 ** -PKW;
 /** Avogadro's constant, per mole (exact, SI 2019). */
-export const AVOGADRO = 6.02214076e23;
+const AVOGADRO = 6.02214076e23;
 
-export interface AcidSystem {
+interface AcidSystem {
 	/** Total concentration of all forms, mol/L. */
 	c: number;
 	/** Charge of the most protonated form (0 for CH₃COOH, +1 for NH₄⁺). */
@@ -50,7 +50,7 @@ export interface AcidSystem {
 	pKa: readonly number[];
 }
 
-export interface Solution {
+interface Solution {
 	systems?: readonly AcidSystem[];
 	/** Fixed positive charge (mol/L of charge), e.g. Na⁺ from NaOH. */
 	cations?: number;
@@ -62,7 +62,7 @@ export interface Solution {
  * Average number of protons lost by one system at hydrogen-ion concentration h:
  * the fractions of its forms are proportional to Ka₁…Kaⱼ / hʲ.
  */
-export function protonsLost(pKa: readonly number[], h: number): number {
+function protonsLost(pKa: readonly number[], h: number): number {
 	// Work in logs so that very small or large ratios do not overflow.
 	const logH = Math.log10(h);
 	const logs = [0];
@@ -121,7 +121,7 @@ export function solvePH(s: Solution): number {
 
 export type AcidId = 'hcl' | 'acetic' | 'hocl';
 
-export interface Acid {
+interface Acid {
 	id: AcidId;
 	name: string;
 	formula: string;
@@ -150,7 +150,7 @@ export const ACIDS: Record<AcidId, Acid> = {
 };
 
 /** An acid at concentration c (mol/L) with c_b mol/L of Na⁺ from added NaOH. */
-export function acidSolution(acid: Acid, c: number, cb = 0): Solution {
+function acidSolution(acid: Acid, c: number, cb = 0): Solution {
 	return acid.pKa === null
 		? { anions: c, cations: cb }
 		: { systems: [{ c, z: 0, pKa: [acid.pKa] }], cations: cb };
@@ -170,7 +170,7 @@ export function dissociated(acid: Acid, c: number): number {
 
 // ---- titration --------------------------------------------------------------------------
 
-export interface Titration {
+interface Titration {
 	acid: Acid;
 	/** Acid concentration in the flask before any base, mol/L. */
 	ca: number;
@@ -215,7 +215,7 @@ export function titrationCurve(T: Titration, vmax: number, dv = 0.25): { v: numb
 // ---- counting ions -----------------------------------------------------------------------
 
 /** Volume of the cube in the zoomed view: 1 µm on a side = 10⁻¹⁵ L. */
-export const CUBE_LITRES = 1e-15;
+const CUBE_LITRES = 1e-15;
 
 /** Average number of H⁺ (H₃O⁺) and OH⁻ ions in a 1 µm cube at pH `ph`. */
 export function ionsInCube(ph: number): { h: number; oh: number } {
@@ -237,7 +237,7 @@ export const WATER_IN_CUBE = ((0.997 * 1000) / 18.015) * AVOGADRO * CUBE_LITRES;
  */
 export type IndicatorId = 'methylOrange' | 'bromothymol' | 'phenolphthalein';
 
-export interface Indicator {
+interface Indicator {
 	id: IndicatorId;
 	name: string;
 	pKIn: number;

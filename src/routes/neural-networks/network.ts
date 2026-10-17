@@ -47,7 +47,7 @@ export function activate(f: Activation, z: number): number {
 }
 
 /** The slope f′(z) of the activation. */
-export function slope(f: Activation, z: number): number {
+function slope(f: Activation, z: number): number {
 	switch (f) {
 		case 'tanh': {
 			const a = Math.tanh(z);
@@ -86,7 +86,7 @@ export interface Net {
 	b: Float64Array[];
 }
 
-export function layerAct(net: Net, l: number): Activation {
+function layerAct(net: Net, l: number): Activation {
 	// l counts weight layers: 0 … sizes.length − 2; the last one is the output.
 	return l === net.sizes.length - 2 ? 'sigmoid' : net.act;
 }
@@ -122,7 +122,7 @@ export function cloneNet(net: Net): Net {
 	};
 }
 
-export interface Forward {
+interface Forward {
 	/** z[l]: the sums of layer l + 1 (before the activation). */
 	z: number[][];
 	/** a[0] is the input; a[l] the outputs of layer l. */
@@ -158,7 +158,7 @@ export function predict(net: Net, x: readonly number[]) {
 	return a[a.length - 1][0];
 }
 
-export interface Backward {
+interface Backward {
 	/** delta[l]: ∂L/∂z for the neurons of layer l + 1 (same shape as Forward.z). */
 	delta: number[][];
 	gW: Float64Array[];
@@ -200,7 +200,7 @@ export function backward(net: Net, fw: Forward, y: number): Backward {
 
 // ---------------------------------------------------------------------- data
 
-export interface Example {
+interface Example {
 	x: number;
 	y: number;
 	/** Class: 0 or 1. */
@@ -297,7 +297,7 @@ export function dataset(id: DatasetId): Example[] {
 
 // ---------------------------------------------------------------------- loss and training
 
-export function meanLoss(net: Net, data: readonly Example[]) {
+function meanLoss(net: Net, data: readonly Example[]) {
 	let s = 0;
 	for (const e of data) {
 		const { z } = forward(net, [e.x, e.y]);
@@ -335,10 +335,10 @@ export function applyStep(net: Net, g: { gW: Float64Array[]; gb: Float64Array[] 
 	}
 }
 
-export const BATCH = 10;
+const BATCH = 10;
 
 /** One epoch of mini-batch SGD, in place. */
-export function trainEpoch(net: Net, data: readonly Example[], lr: number, rand: () => number) {
+function trainEpoch(net: Net, data: readonly Example[], lr: number, rand: () => number) {
 	const order = data.map((_, i) => i);
 	for (let i = order.length - 1; i > 0; i--) {
 		const j = Math.floor(rand() * (i + 1));
@@ -360,7 +360,7 @@ export interface RunSpec {
 }
 
 /** Whether every weight and bias of a network is a finite number. */
-export function isFiniteNet(net: Net) {
+function isFiniteNet(net: Net) {
 	return [...net.W, ...net.b].every((v) => v.every(Number.isFinite));
 }
 
@@ -485,7 +485,7 @@ export const BEND_EPOCHS = 91;
 // ---------------------------------------------------------------------- one example at a time
 
 /** The step-through network: 2 inputs, 2 hidden tanh neurons, 1 output, on the four corners. */
-export const STEP_SIZES = [2, 2, 1];
+const STEP_SIZES = [2, 2, 1];
 export const STEP_LR = 0.5;
 const stepNets: Net[] = [];
 let stepOrder: number[] = [];

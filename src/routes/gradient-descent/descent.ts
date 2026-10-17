@@ -77,7 +77,7 @@ export function lineLoss(a: number, b: number, pts: readonly { x: number; y: num
 }
 
 /** Its gradient: (2/n) Σ (a·x + b − y)·(x, 1). */
-export function lineGrad(
+function lineGrad(
 	a: number,
 	b: number,
 	pts: readonly { x: number; y: number }[]
@@ -132,7 +132,7 @@ const quadratic = (l1: number, l2: number, angle: number, cx = 0, cy = 0) => {
 
 const BOWL = quadratic(1, 1, 0);
 /** Curvature along the ravine's floor and across it. */
-export const RAVINE_CURVATURES = [0.02, 1] as const;
+const RAVINE_CURVATURES = [0.02, 1] as const;
 const RAVINE = quadratic(RAVINE_CURVATURES[0], RAVINE_CURVATURES[1], Math.PI / 6);
 
 /** The plateau: depth, width and centre of the well, and the plain's gentle slope. */
@@ -173,7 +173,7 @@ const wellsGrad = (x: number, y: number): [number, number] => {
 };
 
 /** Newton's method on the gradient, from a guess, to pin a minimum down exactly. */
-export function refineMinimum(
+function refineMinimum(
 	grad: (x: number, y: number) => [number, number],
 	x: number,
 	y: number
@@ -288,7 +288,7 @@ export const LANDSCAPE_IDS = Object.keys(landscapes) as LandscapeId[];
 
 // ---------------------------------------------------------------------- descent
 
-export interface RunOptions {
+interface RunOptions {
 	/** Learning rate η. */
 	lr: number;
 	/** Momentum β (0: plain gradient descent). */

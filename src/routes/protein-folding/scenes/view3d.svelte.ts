@@ -6,7 +6,7 @@
 import { clamp, startDrag, type Point } from '#lib/draw/index.ts';
 import type { Vec3 } from '../structure';
 
-export interface Projected {
+interface Projected {
 	x: number;
 	y: number;
 	/** Towards the viewer is positive. */
@@ -28,7 +28,7 @@ export function projector(yaw: number, pitch: number, scale: number, cx: number,
 	};
 }
 
-export interface Piece {
+interface Piece {
 	key: string;
 	d: string;
 	color: string;

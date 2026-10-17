@@ -61,7 +61,7 @@ export const compose = (m: Mat, n: Mat): Mat => ({
 });
 
 export const det = (m: Mat): number => m.a * m.d - m.b * m.c;
-export const trace = (m: Mat): number => m.a + m.d;
+const trace = (m: Mat): number => m.a + m.d;
 
 /** Straight-line blend between two matrices (s = 0 gives m, s = 1 gives n). */
 export const lerpMat = (m: Mat, n: Mat, s: number): Mat => ({
@@ -104,13 +104,13 @@ export function rank(m: Mat, eps = 1e-9): 0 | 1 | 2 {
 	return Math.max(Math.abs(m.a), Math.abs(m.b), Math.abs(m.c), Math.abs(m.d)) > eps ? 1 : 0;
 }
 
-export interface EigenPair {
+interface EigenPair {
 	value: number;
 	/** A unit vector along the eigen-direction. */
 	vector: Vec;
 }
 
-export type Eigen =
+type Eigen =
 	/** Two different real eigenvalues; `pairs` is ordered by |λ|, biggest first. */
 	| { kind: 'two'; pairs: [EigenPair, EigenPair] }
 	/** One repeated eigenvalue with a single direction (a shear-like matrix). */

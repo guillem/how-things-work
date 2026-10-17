@@ -28,7 +28,7 @@ function lerpRows<R extends readonly number[]>(rows: readonly R[], x: number, co
 	return a.map((v, k) => v + (b[k] - v) * u);
 }
 
-export interface Saturation {
+interface Saturation {
 	T: number;
 	/** MPa */
 	p: number;
@@ -63,7 +63,7 @@ export function superheated(T: number) {
 	return { T, v, h, s };
 }
 
-export interface Rankine {
+interface Rankine {
 	tSteam: number;
 	tCond: number;
 	/** Condenser pressure, MPa. */

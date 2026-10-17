@@ -14,7 +14,7 @@ export const dateText = (day: number) => {
 export const agoText = (ka: number) =>
 	Math.round(ka) === 0 ? 'today' : `${Math.round(ka).toLocaleString('en-US')},000 years ago`;
 
-export const TODAY_DAY = Math.round(perihelionDay(TODAY));
+const TODAY_DAY = Math.round(perihelionDay(TODAY));
 
 const tilt: Control = {
 	type: 'range',

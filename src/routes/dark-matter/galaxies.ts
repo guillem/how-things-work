@@ -29,15 +29,15 @@ export const GYR_S = 3.15576e16;
 
 /** SPARC's standard mass-to-light ratios at 3.6 µm (Lelli et al. 2016, §5). */
 export const ML_DISK_DEFAULT = 0.5;
-export const ML_BULGE_DEFAULT = 0.7;
+const ML_BULGE_DEFAULT = 0.7;
 /** The bulge ratio follows the disc one in SPARC's proportion (0.7 / 0.5). */
-export const BULGE_OVER_DISK = ML_BULGE_DEFAULT / ML_DISK_DEFAULT;
+const BULGE_OVER_DISK = ML_BULGE_DEFAULT / ML_DISK_DEFAULT;
 /** Helium and metals: gas mass = 1.33 × hydrogen (SPARC Table 2 note). */
-export const HELIUM = 1.33;
+const HELIUM = 1.33;
 
-export type GalaxyId = keyof typeof SPARC;
+type GalaxyId = keyof typeof SPARC;
 
-export interface GalaxyInfo {
+interface GalaxyInfo {
 	id: GalaxyId;
 	/** Display name, e.g. "NGC 3198". */
 	name: string;
@@ -52,10 +52,9 @@ export const GALAXIES: readonly GalaxyInfo[] = [
 	{ id: 'NGC2841', name: 'NGC 2841', kind: 'giant spiral with a central bulge' }
 ];
 
-export const galaxyInfo = (id: string): GalaxyInfo =>
-	GALAXIES.find((g) => g.id === id) ?? GALAXIES[0];
+const galaxyInfo = (id: string): GalaxyInfo => GALAXIES.find((g) => g.id === id) ?? GALAXIES[0];
 
-export interface Point {
+interface Point {
 	r: number;
 	v: number;
 	e: number;
@@ -64,7 +63,7 @@ export interface Point {
 	bulge: number;
 }
 
-export interface Galaxy extends Omit<SparcGalaxy, 'points'> {
+interface Galaxy extends Omit<SparcGalaxy, 'points'> {
 	id: GalaxyId;
 	name: string;
 	kind: string;
@@ -89,11 +88,11 @@ export function galaxy(id: string): Galaxy {
 
 const sq = (v: number) => v * Math.abs(v);
 /** √ that keeps the sign: the inverse of V·|V|. */
-export const signedSqrt = (v2: number) => Math.sign(v2) * Math.sqrt(Math.abs(v2));
+const signedSqrt = (v2: number) => Math.sign(v2) * Math.sqrt(Math.abs(v2));
 
 // ---- the visible matter ----------------------------------------------------------
 
-export interface Visible {
+interface Visible {
 	/** Signed speeds (km/s) each component alone would give. */
 	gas: number;
 	stars: number;
@@ -102,7 +101,7 @@ export interface Visible {
 }
 
 /** Speeds from the visible matter at a measured point, for a disc ratio Υ. */
-export function visibleAt(p: Point, mlDisk: number): Visible {
+function visibleAt(p: Point, mlDisk: number): Visible {
 	const gas2 = sq(p.gas);
 	const stars2 = mlDisk * sq(p.disk) + mlDisk * BULGE_OVER_DISK * sq(p.bulge);
 	return { gas: p.gas, stars: signedSqrt(stars2), total: signedSqrt(gas2 + stars2) };
@@ -127,7 +126,7 @@ export const keplerSpeed = (mass: number, r: number) => Math.sqrt((G * mass) / r
 
 // ---- the dark halo ---------------------------------------------------------------
 
-export interface Halo {
+interface Halo {
 	/** Halo mass inside the last measured radius ÷ the galaxy's visible mass. */
 	ratio: number;
 	/** Core radius, kpc. */
@@ -158,7 +157,7 @@ export function haloDensity(g: Galaxy, h: Halo, mlDisk: number) {
 
 // ---- the whole model against the data --------------------------------------------
 
-export interface ModelPoint extends Visible {
+interface ModelPoint extends Visible {
 	r: number;
 	halo: number;
 	/** Visible + halo. */
@@ -175,7 +174,7 @@ export function curve(g: Galaxy, mlDisk: number, h: Halo | null): ModelPoint[] {
 	});
 }
 
-export interface Fit {
+interface Fit {
 	/** Σ ((v_measured − v_model) / error)². */
 	chi2: number;
 	/** χ² per degree of freedom (number of points − number of adjusted values). */
@@ -268,7 +267,7 @@ export const massForSpeed = (v: number, r: number) => (v * v * r) / G;
  * A&A 641, A6, Table 2 (TT,TE,EE+lowE+lensing): Ω_b h² = 0.02237 ± 0.00015,
  * Ω_c h² = 0.1200 ± 0.0012, h = 0.6736, Ω_Λ = 0.6847.
  */
-export const PLANCK = {
+const PLANCK = {
 	ombh2: 0.02237,
 	omch2: 0.12,
 	h: 0.6736,

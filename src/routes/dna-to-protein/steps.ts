@@ -12,7 +12,7 @@ const gene: Control = {
 };
 
 /** Number of codons the ribosome reads in the chosen gene (stop codon included). */
-export function codonCount(params: Params): number {
+function codonCount(params: Params): number {
 	return Math.max(1, translate(geneOf(params, true).mrna).codons.length);
 }
 

@@ -59,7 +59,7 @@ export const toMap = (m: MapBox, x: number, z: number) => ({
 	x: m.x + m.size / 2 + x * m.scale,
 	y: m.y + m.size / 2 + z * m.scale
 });
-export const fromMap = (m: MapBox, p: { x: number; y: number }) => ({
+const fromMap = (m: MapBox, p: { x: number; y: number }) => ({
 	x: (p.x - m.x - m.size / 2) / m.scale,
 	z: (p.y - m.y - m.size / 2) / m.scale
 });

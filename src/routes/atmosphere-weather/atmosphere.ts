@@ -21,10 +21,10 @@
  *    a storm to form.
  */
 
-export const EARTH_RADIUS = 6.371e6; // m
-export const OMEGA = 7.292e-5; // rad/s, Earth's rotation (sidereal day)
-export const SOLAR_CONSTANT = 1361; // W/m²
-export const G = 9.81;
+const EARTH_RADIUS = 6.371e6; // m
+const OMEGA = 7.292e-5; // rad/s, Earth's rotation (sidereal day)
+const SOLAR_CONSTANT = 1361; // W/m²
+const G = 9.81;
 
 const rad = (d: number) => (d * Math.PI) / 180;
 const deg = (r: number) => (r * 180) / Math.PI;
@@ -48,20 +48,20 @@ export const insolation = (lat: number) =>
  * D_EARTH so that the model's climate resembles today's (about 28 °C at the
  * equator, a global mean near 14 °C and a peak poleward heat flow near 6 PW).
  */
-export const albedo = (lat: number) => 0.34 + 0.22 * P2(Math.sin(rad(lat)));
+const albedo = (lat: number) => 0.34 + 0.22 * P2(Math.sin(rad(lat)));
 
 /** Sunlight absorbed at latitude φ (W/m²). */
-export const absorbed = (lat: number) => insolation(lat) * (1 - albedo(lat));
+const absorbed = (lat: number) => insolation(lat) * (1 - albedo(lat));
 
 /** Outgoing heat radiation to space at temperature T (°C): A + B·T (North et al. 1981's fit to satellite data, after Budyko). */
-export const OLR_A = 203.3; // W/m²
-export const OLR_B = 2.09; // W/m² per °C
-export const emitted = (T: number) => OLR_A + OLR_B * T;
+const OLR_A = 203.3; // W/m²
+const OLR_B = 2.09; // W/m² per °C
+const emitted = (T: number) => OLR_A + OLR_B * T;
 
 /** Heat-transport coefficient (W/m² per °C) that roughly matches today's climate. */
 export const D_EARTH = 0.7;
 
-export interface Climate {
+interface Climate {
 	/** Latitudes of the bands (°), south to north. */
 	lat: number[];
 	/** Surface temperature of each band (°C). */
@@ -167,7 +167,7 @@ export function hadleyEdge(spin: number) {
 	return Math.min(90, deg(Math.sqrt((5 / 3) * R)));
 }
 
-export interface Cell {
+interface Cell {
 	/** From and to latitude (°, northern hemisphere; mirrored in the south). */
 	from: number;
 	to: number;
@@ -295,7 +295,7 @@ export interface System {
 	r: number;
 }
 
-export const AIR_DENSITY = 1.2; // kg/m³ near the ground
+const AIR_DENSITY = 1.2; // kg/m³ near the ground
 
 /** Sea-level pressure (hPa) at (x, y) km: 1013 plus a Gaussian bump or dip per system. */
 export function pressure(systems: readonly System[], x: number, y: number) {
@@ -306,7 +306,7 @@ export function pressure(systems: readonly System[], x: number, y: number) {
 }
 
 /** Pressure gradient (Pa per m) at (x, y) km. */
-export function pressureGradient(systems: readonly System[], x: number, y: number) {
+function pressureGradient(systems: readonly System[], x: number, y: number) {
 	let gx = 0;
 	let gy = 0;
 	for (const s of systems) {
@@ -319,8 +319,8 @@ export function pressureGradient(systems: readonly System[], x: number, y: numbe
 }
 
 /** Angle (°) by which friction turns the near-ground wind across the isobars towards low pressure, and the slow-down. */
-export const FRICTION_ANGLE = 30;
-export const FRICTION_SLOWDOWN = 0.7;
+const FRICTION_ANGLE = 30;
+const FRICTION_SLOWDOWN = 0.7;
 
 /**
  * Wind (m/s, [east, north]) at (x, y) km. Aloft: the geostrophic wind
@@ -390,9 +390,9 @@ export function advectedTemperature(
 /** Weakest temperature contrast (°C per 100 km) that counts as a front. */
 export const FRONT_GRADIENT = 4.5;
 /** Wind across a front (m/s) below which neither air mass is advancing: a stationary front. */
-export const FRONT_ADVANCE = 1.5;
+const FRONT_ADVANCE = 1.5;
 
-export interface FrontPoint {
+interface FrontPoint {
 	kind: 'cold' | 'warm' | 'stationary';
 	/**
 	 * Unit vector [east, north]: the way the front moves (from the advancing air
@@ -452,7 +452,7 @@ export const STORM_SEED = 15;
 /** Growth rate of a storm over warm sea (per hour, logistic). */
 const STORM_GROWTH = 1 / 24;
 /** E-folding time (hours) of a storm's decay over cool water, land or near the equator. */
-export const STORM_DECAY_HOURS = 24;
+const STORM_DECAY_HOURS = 24;
 
 /**
  * Wind speed of a storm `hours` after it had wind `v0` (m/s), if the sea

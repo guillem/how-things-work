@@ -39,7 +39,7 @@ export const envelopeThickness = ECOLI.outerMembrane + ECOLI.periplasm + ECOLI.i
 export const capsuleVolume = (L: number, d: number) =>
 	Math.PI * (d / 2) ** 2 * (L - d) + (Math.PI / 6) * d ** 3;
 
-export interface Bug extends Capsule {
+interface Bug extends Capsule {
 	flagella: { angle: number; length: number; phase: number; at: number }[];
 }
 
@@ -107,7 +107,7 @@ export function flagellumPath(cell: Capsule, fl: Bug['flagella'][number], t = 0,
 	return pts;
 }
 
-export interface EcoliSection {
+interface EcoliSection {
 	cell: Capsule;
 	/** Nucleoid outline (a lobed blob), µm. */
 	nucleoid: Pt[];

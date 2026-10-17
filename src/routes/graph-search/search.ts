@@ -22,7 +22,7 @@
  * recently found), so every replay is identical.
  */
 
-export const MUD = 5;
+const MUD = 5;
 
 export type Cell = 0 | 1 | 2; // 0 ground, 1 mud, 2 wall
 
@@ -36,14 +36,14 @@ export interface Grid {
 
 export type Algorithm = 'bfs' | 'dijkstra' | 'astar';
 
-export interface SearchStep {
+interface SearchStep {
 	/** The cell expanded at this step (taken off the frontier). */
 	current: number;
 	/** Cells added to the frontier at this step (newly discovered or improved). */
 	added: number[];
 }
 
-export interface SearchResult {
+interface SearchResult {
 	algorithm: Algorithm;
 	steps: SearchStep[];
 	/** Cells expanded, in order (= steps.map(s => s.current)). */
@@ -60,10 +60,10 @@ export interface SearchResult {
 
 export const cellCost = (c: Cell) => (c === 1 ? MUD : 1);
 
-export const col = (g: Pick<Grid, 'cols'>, i: number) => i % g.cols;
-export const row = (g: Pick<Grid, 'cols'>, i: number) => Math.floor(i / g.cols);
+const col = (g: Pick<Grid, 'cols'>, i: number) => i % g.cols;
+const row = (g: Pick<Grid, 'cols'>, i: number) => Math.floor(i / g.cols);
 
-export function neighbours(g: Grid, i: number): number[] {
+function neighbours(g: Grid, i: number): number[] {
 	const c = col(g, i);
 	const r = row(g, i);
 	const out: number[] = [];
@@ -315,21 +315,21 @@ export const PRESETS: Record<string, Grid> = { open: OPEN, marsh: MARSH, mixed: 
 
 // ------------------------------------------------------------ road map
 
-export interface Town {
+interface Town {
 	name: string;
 	/** Position in km. */
 	x: number;
 	y: number;
 }
 
-export interface Road {
+interface Road {
 	a: number;
 	b: number;
 	/** Length in km (at least the straight-line distance). */
 	km: number;
 }
 
-export interface RoadMap {
+interface RoadMap {
 	towns: Town[];
 	roads: Road[];
 }

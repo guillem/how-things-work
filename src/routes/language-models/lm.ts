@@ -75,7 +75,7 @@ export interface LmData {
 }
 
 /** A next-token distribution as the page shows it: the top tokens and everything else. */
-export interface Dist {
+interface Dist {
 	ids: number[];
 	/** Probability of each of `ids`. */
 	p: number[];
@@ -86,7 +86,7 @@ export interface Dist {
 }
 
 /** A cut-off (top-k or top-p) applied to a distribution. */
-export interface Cut {
+interface Cut {
 	/** Is each of the shown tokens kept? */
 	kept: boolean[];
 	/** How many tokens are kept in all (null: more than the shown ones, number not stored). */
@@ -98,7 +98,7 @@ export interface Cut {
 }
 
 /** The index of temperature T in the grid (T is rounded to the grid's 0.1 step). */
-export function tIndex(T: number): number {
+function tIndex(T: number): number {
 	return Math.min(19, Math.max(0, Math.round(T * 10) - 1));
 }
 

@@ -83,7 +83,7 @@ export const Tc99m: Isotope = {
 };
 
 /** Element symbol and name for an atomic number (mendeleev data). */
-export const symbolOf = (z: number) => element(z).symbol;
+const symbolOf = (z: number) => element(z).symbol;
 export const nameOf = (z: number) => element(z).name;
 
 /** "C-14", "Tc-99m". */
@@ -135,7 +135,7 @@ export function spread(n0: number, t: number, halfLife: number) {
 	return Math.sqrt(n0 * p * (1 - p));
 }
 
-export interface Sample {
+interface Sample {
 	/** Number of nuclei at the start. */
 	n0: number;
 	/** Lifetime of each nucleus, in half-lives, in grid order. */

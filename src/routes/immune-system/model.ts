@@ -161,7 +161,7 @@ export interface Scenario {
 	days: number;
 }
 
-export const DEFAULT: Scenario = {
+const DEFAULT: Scenario = {
 	dose: CAO.V0,
 	innate: true,
 	tcells: true,

@@ -48,7 +48,7 @@ import { translate } from '../dna-to-protein/genetics';
 import { KRAS_START } from './data';
 
 export type Rand = () => number;
-export const rng = seeded;
+const rng = seeded;
 
 // ------------------------------------------------------------------ tissue model
 
@@ -59,15 +59,15 @@ export const SITES = W * H;
 
 /** Per-generation probabilities of a normal cell. */
 export const D0 = 0.08;
-export const B0 = 0.5;
+const B0 = 0.5;
 /** KRAS on: tries to divide every generation. */
-export const B_KRAS = 0.7;
+const B_KRAS = 0.7;
 /** TP53 lost: dies this many times less often. */
-export const P53_DEATH = 0.25;
+const P53_DEATH = 0.25;
 /** Broken mismatch repair: this many times more mutations. */
-export const REPAIR_FACTOR = 20;
+const REPAIR_FACTOR = 20;
 /** Cancer cells killed per generation by a drug they don't resist. */
-export const KILL = 0.6;
+const KILL = 0.6;
 /**
  * Chance per division of a cancer cell that a resistance gene is hit. Real resistance often
  * needs one particular change (of the order of 1 in 10 million divisions), but a real tumour
@@ -75,11 +75,11 @@ export const KILL = 0.6;
  * Cancer Treatment Reports, 1979). A model tumour of a hundred cells needs a much higher rate
  * to match. Only cancer cells are followed for it: in other cells the change does nothing.
  */
-export const RES_MU = 0.003;
+const RES_MU = 0.003;
 /** Harmless (passenger) mutations per cell per division. */
 export const PASSENGERS = 0.5;
 /** Chance that a cancer cell's division into an occupied site crowds the occupant out. */
-export const INVADE = 0.2;
+const INVADE = 0.2;
 /** The tumour is "found" when it has this many cells. */
 export const DETECT = 120;
 
@@ -391,7 +391,7 @@ export function multistageDensity(t: number, k: number, u: number): number {
 	return Math.exp(logF);
 }
 
-export interface PowerFit {
+interface PowerFit {
 	/** Number of steps k = slope + 1. */
 	k: number;
 	slope: number;
@@ -431,7 +431,7 @@ export function interceptFor(
 // ------------------------------------------------------------------ Knudson
 
 /** Knudson (1971): mean number of retinoblastomas in a child who inherits one broken RB1. */
-export const KNUDSON_MEAN = 3;
+const KNUDSON_MEAN = 3;
 
 /** Chances, under Knudson's Poisson model, that a carrier has no tumour, one eye, both eyes. */
 export function knudsonOdds(mean = KNUDSON_MEAN) {
@@ -439,7 +439,7 @@ export function knudsonOdds(mean = KNUDSON_MEAN) {
 	return { none: none * none, oneEye: 2 * none * (1 - none), bothEyes: (1 - none) ** 2 };
 }
 
-export interface Child {
+interface Child {
 	carrier: boolean;
 	/** Tumours in the left and right eye. */
 	left: number;

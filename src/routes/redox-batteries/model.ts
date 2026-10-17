@@ -23,25 +23,25 @@ import { COUPLES, couple, type Couple } from './potentials';
 import { ATOMIC, fillAt, potentialAt, type Material } from './electrodes';
 
 /** Elementary charge, C (exact). */
-export const E_CHARGE = 1.602176634e-19;
+const E_CHARGE = 1.602176634e-19;
 /** Avogadro's constant, 1/mol (exact). */
-export const AVOGADRO = 6.02214076e23;
+const AVOGADRO = 6.02214076e23;
 /** Faraday's constant, C/mol: the charge of a mole of electrons. */
 export const FARADAY = E_CHARGE * AVOGADRO;
 /** Gas constant, J/(mol·K). */
-export const R_GAS = 1.380649e-23 * AVOGADRO;
+const R_GAS = 1.380649e-23 * AVOGADRO;
 /** 25 °C in kelvin. */
-export const T25 = 298.15;
+const T25 = 298.15;
 /** RT/F at 25 °C, V (≈ 25.7 mV). */
 export const THERMAL_V = (R_GAS * T25) / FARADAY;
 /** RT·ln10 / F at 25 °C: the voltage per tenfold change of Q for one electron (≈ 59.2 mV). */
 export const NERNST_SLOPE = THERMAL_V * Math.LN10;
 /** Coulombs in one milliamp-hour. */
-export const MAH = 3.6;
+const MAH = 3.6;
 
 // ---- 1. two couples ----------------------------------------------------------------------
 
-export interface Pairing {
+interface Pairing {
 	/** The couple that is oxidised: the metal gives up electrons (the − terminal, anode). */
 	anode: Couple;
 	/** The couple that is reduced: its ions take electrons (the + terminal, cathode). */
@@ -63,15 +63,15 @@ export const freeEnergy = (n: number, e0: number) => (-n * FARADAY * e0) / 1000;
 
 // ---- 2. the Daniell cell and Nernst ------------------------------------------------------
 
-export const ZINC = couple('zn');
-export const COPPER = couple('cu');
+const ZINC = couple('zn');
+const COPPER = couple('cu');
 /** E° of the Daniell cell, V: 0.3419 − (−0.7618) = 1.1037. */
 export const DANIELL_E0 = COPPER.e0 - ZINC.e0;
 /** Electrons per zinc atom. */
-export const DANIELL_N = 2;
+const DANIELL_N = 2;
 
 /** Nernst: the cell voltage for reaction quotient q, with n electrons, at 25 °C. */
-export const nernst = (e0: number, n: number, q: number) => e0 - (NERNST_SLOPE / n) * Math.log10(q);
+const nernst = (e0: number, n: number, q: number) => e0 - (NERNST_SLOPE / n) * Math.log10(q);
 
 /** The Daniell cell's voltage with these concentrations (mol/L). */
 export const daniellVoltage = (zn: number, cu: number) => nernst(DANIELL_E0, DANIELL_N, zn / cu);
@@ -80,10 +80,10 @@ export const daniellVoltage = (zn: number, cu: number) => nernst(DANIELL_E0, DAN
 export const log10K = (e0: number, n: number) => (n * e0) / NERNST_SLOPE;
 
 /** The Daniell beakers of the page: each 100 mL, both solutions 1.0 mol/L to start. */
-export const BEAKER_L = 0.1;
-export const START_M = 1;
+const BEAKER_L = 0.1;
+const START_M = 1;
 
-export interface DaniellState {
+interface DaniellState {
 	/** Charge passed through the wire, mol of electrons. */
 	electrons: number;
 	/** The same in amp-hours. */
@@ -165,7 +165,7 @@ export function meanVoltage(cathode: Material, anode: Material, samples = 400) {
 	return sum / samples;
 }
 
-export interface PairFigures {
+interface PairFigures {
 	/** Usable mAh/g of each. */
 	qCathode: number;
 	qAnode: number;

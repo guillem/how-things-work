@@ -120,12 +120,7 @@ export function parseWeb(s: unknown): Web | null {
 // ------------------------------------------------------------ ranks
 
 /** One round of the update: the share of rank each page holds after one more hop. */
-export function step(
-	web: Web,
-	rank: readonly number[],
-	d = DAMPING,
-	out = outLinks(web)
-): number[] {
+function step(web: Web, rank: readonly number[], d = DAMPING, out = outLinks(web)): number[] {
 	const n = rank.length;
 	const next = new Array(n).fill(0);
 	let spread = 0; // rank handed out evenly to every page: random jumps and dead ends
@@ -179,7 +174,7 @@ export function pagerank(web: Web, d = DAMPING, tol = 1e-12, maxRounds = 10_000)
 
 // ------------------------------------------------------------ the random surfer
 
-export interface Walk {
+interface Walk {
 	/** path[k] = the page the surfer is on after k hops (path[0] is the start). */
 	path: Uint8Array;
 	/** jumped[k] = 1 if hop k (from path[k−1] to path[k]) was a random jump rather than a link. */

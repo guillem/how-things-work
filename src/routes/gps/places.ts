@@ -1,5 +1,5 @@
 /** Places a receiver can be put, for the steps that use the real constellation. */
-export interface Place {
+interface Place {
 	id: string;
 	name: string;
 	lat: number;

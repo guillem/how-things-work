@@ -53,9 +53,9 @@ export function galton(rows: number, count: number, seed = 1) {
 // ------------------------------------------------------------ 2. sample means
 
 /** A distribution: weights per bin (need not be normalised). */
-export type Shape = number[];
+type Shape = number[];
 
-export const normalise = (w: Shape) => {
+const normalise = (w: Shape) => {
 	const s = w.reduce((a, b) => a + Math.max(0, b), 0);
 	return w.map((v) => (s > 0 ? Math.max(0, v) / s : 1 / w.length));
 };
@@ -149,7 +149,7 @@ export function meanBars(w: Shape, n: number) {
 }
 
 /** The error function (Abramowitz & Stegun 7.1.26, error below 1.5·10⁻⁷). */
-export function erf(x: number) {
+function erf(x: number) {
 	const t = 1 / (1 + 0.3275911 * Math.abs(x));
 	const y =
 		1 -

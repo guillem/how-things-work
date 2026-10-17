@@ -8,9 +8,9 @@ export const ATOM = {
 	iEdge: '#4c2fb0'
 } as const;
 /** Atom radii and bond lengths in drawing units. */
-export const R_H = 5;
-export const R_I = 9;
-export const BOND = { h2: 7, i2: 14, hi: 11 } as const;
+const R_H = 5;
+const R_I = 9;
+const BOND = { h2: 7, i2: 14, hi: 11 } as const;
 
 /** SVG path of a circle, for drawing many atoms in one <path>. */
 export const circ = (x: number, y: number, r: number) =>

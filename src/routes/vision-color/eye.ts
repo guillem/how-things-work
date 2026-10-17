@@ -20,9 +20,9 @@
 export const N_AIR = 1;
 export const N_WATER = 1.333;
 /** Aqueous and vitreous humour. */
-export const N_HUMOUR = 4 / 3;
-export const N_LENS = 1.416;
-export const R_CORNEA = 7.8;
+const N_HUMOUR = 4 / 3;
+const N_LENS = 1.416;
+const R_CORNEA = 7.8;
 /** The lens's back face, mm behind the cornea (the same relaxed and accommodated). */
 export const LENS_BACK = 7.2;
 /** Glasses sit this far in front of the cornea, mm. */
@@ -30,7 +30,7 @@ export const VERTEX = 12;
 /** Pupil diameter used for the rays and the blur, mm (a pupil in ordinary indoor light). */
 export const PUPIL = 5;
 
-export interface Surface {
+interface Surface {
 	/** Position on the axis, mm from the corneal apex. */
 	z: number;
 	/** Radius of curvature, mm (positive: centre behind the surface). */
@@ -42,7 +42,7 @@ export interface Surface {
 	power: number;
 }
 
-export interface Lens {
+interface Lens {
 	front: number;
 	thickness: number;
 	r1: number;
@@ -67,7 +67,7 @@ const surface = (z: number, r: number, n1: number, n2: number): Surface => ({
 });
 
 /** The eye's three refracting surfaces for a lens shape, in air or under water. */
-export function surfaces(shape: number, outside = N_AIR): Surface[] {
+function surfaces(shape: number, outside = N_AIR): Surface[] {
 	const l = lensFor(shape);
 	return [
 		surface(0, R_CORNEA, outside, N_HUMOUR),
@@ -178,7 +178,7 @@ export function imageZ(v: number, shape: number, outside = N_AIR): number {
 export const NORMAL_LENGTH = imageZ(0, 0);
 
 /** Vergence at the cornea (D) that a lens of this shape focuses on a retina `length` mm away. */
-export function focusedVergence(length: number, shape: number, outside = N_AIR): number {
+function focusedVergence(length: number, shape: number, outside = N_AIR): number {
 	const [A, B, C, D] = eyeMatrix(shape, outside);
 	const k = ((length - LENS_BACK) / 1000) * (1 / N_HUMOUR);
 	// Behind the lens: y_r = y2 + k·nu2 = 0 → (A + kC)·y + (B + kD)·nu = 0, with nu = −v·y.
@@ -229,7 +229,7 @@ export function prescription(length: number): number {
 }
 
 /** Axial length (mm) of an eye whose glasses prescription is `rx` dioptres. */
-export function lengthFor(rx: number): number {
+function lengthFor(rx: number): number {
 	let lo = 18;
 	let hi = 32;
 	for (let i = 0; i < 80; i++) {

@@ -38,14 +38,14 @@ import { rng } from '#lib/draw/math.ts';
 
 /** 0 floor, 1 wall, 2 reward (+10), 3 small reward (+1), 4 penalty (−10). */
 export type Cell = 0 | 1 | 2 | 3 | 4;
-export const FLOOR = 0;
+const FLOOR = 0;
 export const WALL = 1;
 export const REWARD = 2;
 export const SMALL = 3;
 export const PENALTY = 4;
 
 /** What stepping onto a square pays. */
-export const PAYOFF: Record<Cell, number> = { 0: 0, 1: 0, 2: 10, 3: 1, 4: -10 };
+const PAYOFF: Record<Cell, number> = { 0: 0, 1: 0, 2: 10, 3: 1, 4: -10 };
 
 export interface World {
 	cols: number;
@@ -132,7 +132,7 @@ export interface Run {
 }
 
 /** Index of the largest entry among Q(s, ·), ties broken by `rand`. */
-export function bestMove(q: ArrayLike<number>, s: number, rand: () => number): number {
+function bestMove(q: ArrayLike<number>, s: number, rand: () => number): number {
 	let best = -Infinity;
 	let ties = 0;
 	let pick = 0;

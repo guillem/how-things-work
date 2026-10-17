@@ -30,15 +30,15 @@ export const F0 = 50;
 /** Deviation at which primary reserve (FCR) is fully used, and the operating band, Hz. */
 export const BAND = 0.2;
 /** Self-regulation of load: demand falls 1 % for each hertz the frequency falls. */
-export const LOAD_DAMPING = 0.01;
+const LOAD_DAMPING = 0.01;
 /** First-order lag of the primary response (governors and turbines), s: half of it is in
  * within 4.2 s and 99 % within 28 s, inside the 15 s and 30 s that the CE rules ask for. */
-export const FCR_LAG = 6;
+const FCR_LAG = 6;
 /** LFSM-O: above 50.2 Hz every generator turns down along a 5 % droop. */
-export const LFSM_O = { from: 0.2, droop: 0.05 };
+const LFSM_O = { from: 0.2, droop: 0.05 };
 /** Under-frequency load shedding: six steps of 7.5 % of the load (45 % in all). */
 export const UFLS_STEPS = [49.0, 48.8, 48.6, 48.4, 48.2, 48.0];
-export const UFLS_SHARE = 0.075;
+const UFLS_SHARE = 0.075;
 /** Generators may disconnect to protect themselves above this frequency, Hz. */
 export const OVER_TRIP = 51.5;
 
@@ -76,7 +76,7 @@ export interface TripInput {
 	duration?: number;
 }
 
-export interface TripSample {
+interface TripSample {
 	t: number;
 	/** Frequency, Hz. */
 	f: number;
@@ -92,7 +92,7 @@ export interface TripSample {
 	inertia: number;
 }
 
-export interface TripResult {
+interface TripResult {
 	samples: TripSample[];
 	/** Kinetic energy stored in the spinning machines, MW·s. */
 	kinetic: number;
@@ -113,12 +113,12 @@ export interface TripResult {
 export const UNDER_TRIP = 47.5;
 
 /** Kinetic energy of the spinning generators, MW·s: H times their output. */
-export function kineticEnergy(load: number, inverterShare: number, H = CE.H): number {
+function kineticEnergy(load: number, inverterShare: number, H = CE.H): number {
 	return H * load * (1 - inverterShare);
 }
 
 /** Initial rate of change of frequency after losing `lost` MW, Hz/s (the swing equation). */
-export function rocof(lost: number, kinetic: number): number {
+function rocof(lost: number, kinetic: number): number {
 	return (-F0 * lost) / (2 * kinetic);
 }
 
@@ -243,7 +243,7 @@ export function dailyEnergy(key: Source): number {
 
 /** Plants with spinning generators locked to the grid (solar PV and wind feed it through
  * inverters), and their inertia constants H (s, on their output). Pumping motors spin too. */
-export const SPINNING: Partial<Record<Source, number>> = {
+const SPINNING: Partial<Record<Source, number>> = {
 	nuclear: 5,
 	coal: 5,
 	gas: 5,
@@ -303,7 +303,7 @@ export const realDispatch = (hour: number): Dispatch => ({
 /** A passing cloud shades a quarter of the country's solar farms, cutting their output by
  * about 70 %: 17.5 % of all solar PV, faded in and out over 15 minutes, for an hour. */
 export const CLOUD = { depth: 0.175, ramp: 0.25, hold: 0.5 };
-export function cloudShade(sinceHours: number): number {
+function cloudShade(sinceHours: number): number {
 	const { depth, ramp, hold } = CLOUD;
 	if (sinceHours < 0) return 0;
 	const u =
@@ -315,7 +315,7 @@ export function cloudShade(sinceHours: number): number {
 	return depth * u;
 }
 
-export interface GridState {
+interface GridState {
 	hour: number;
 	demand: number;
 	/** Output of each source, MW (exchange: net imports; storage: negative while charging). */
@@ -403,7 +403,7 @@ export function unlisted(hour: number): number {
 }
 
 /** The operator's answer to a trip or a cloud: reserves called up over a few minutes. */
-export const OPERATOR_LAG = 5 / 60;
+const OPERATOR_LAG = 5 / 60;
 
 /**
  * The autopilot: the real schedule, plus gas called up to replace what a trip or a cloud
@@ -431,9 +431,9 @@ export function autopilot(hour: number, ev: Events = {}): Dispatch {
 /** Primary reserve of the island in the game, MW: the size of its largest plant. */
 export const ISLAND_FCR = 1000;
 /** The largest plant: one nuclear reactor, MW. */
-export const LARGEST_UNIT = 1000;
+const LARGEST_UNIT = 1000;
 
-export interface Island {
+interface Island {
 	/** Frequency, Hz, once the governors have settled (seconds after any change). */
 	f: number;
 	/** Primary reserve in use, MW (positive: generating more). */
@@ -480,15 +480,15 @@ export function island(surplus: number, load: number, sync = load): Island {
 // ---------------------------------------------------------------- transmission
 
 /** Resistivity of aluminium at 20 °C, Ω·m. */
-export const RHO_AL = 2.82e-8;
+const RHO_AL = 2.82e-8;
 /** Aluminium in each phase of the line: three conductors of 500 mm², m². */
-export const PHASE_AREA = 3 * 500e-6;
+const PHASE_AREA = 3 * 500e-6;
 /** Resistance of each phase, Ω per km. */
 export const R_PER_KM = (RHO_AL / PHASE_AREA) * 1000;
 /** Roughly the most current these conductors carry before they overheat, A. */
 export const AMPACITY = 3000;
 
-export interface Line {
+interface Line {
 	/** Current in each of the three phases, A. */
 	current: number;
 	/** Power turned into heat in the wires, MW. */

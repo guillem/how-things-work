@@ -21,13 +21,13 @@ import { FIRST_YEAR, FUTURE, HISTORY, LAST_YEAR, SPLIT_YEAR } from './scenarios-
 // ------------------------------------------------------------------ radiation
 
 /** Stefan–Boltzmann constant, W m⁻² K⁻⁴ (CODATA 2018, exact). */
-export const SIGMA = 5.670374419e-8;
+const SIGMA = 5.670374419e-8;
 /** Total solar irradiance, W/m² (AR6 WG1 §7.2.2; Kopp & Lean 2011). */
 export const SOLAR = 1361;
 /** Sunlight averaged over the whole sphere: a disc catches it, a sphere four times larger shares it. */
 export const INCOMING = SOLAR / 4;
 /** Earth's albedo: 100 of the 340 W/m² are reflected (AR6 WG1 Fig. 7.2, after Wild et al. 2015, 2019). */
-export const ALBEDO = 100 / 340;
+const ALBEDO = 100 / 340;
 /** Earth's average surface temperature, K (about 15 °C). */
 export const T_SURFACE = 288;
 
@@ -119,7 +119,7 @@ export const ECS_VERY_LIKELY: [number, number] = [2, 5];
  * past climates. The difference, −0.15, is kept with the Planck response, so that
  * every feedback switched off removes exactly its Table 7.10 value.
  */
-export const LAMBDA_ALL = -F2X / ECS_BEST;
+const LAMBDA_ALL = -F2X / ECS_BEST;
 
 export interface Feedbacks {
 	water: boolean;
@@ -169,7 +169,7 @@ export function budget(forcing: number, dT: number, f: Feedbacks) {
  */
 export const OCEAN = { mixed: 8.3, deep: 122, exchange: 0.655, efficacy: 1.29 };
 
-export interface OceanState {
+interface OceanState {
 	/** Warming of the surface and mixed layer, °C. */
 	T: number;
 	/** Warming of the deep ocean, °C. */
@@ -220,7 +220,7 @@ export const SCENARIOS: { id: ScenarioId; name: string; label: string }[] = [
 	{ id: 'ssp585', name: 'SSP5-8.5', label: 'very high' }
 ];
 
-export interface Year {
+interface Year {
 	year: number;
 	ppm: number;
 	/** CO₂ emissions, GtCO₂/yr. */

@@ -23,11 +23,11 @@
 // ---- constants --------------------------------------------------------------------------
 
 /** Ratio of specific heats of dry air, κ = 1.4 (ISO 2533:1975, Standard Atmosphere). */
-export const GAMMA_AIR = 1.4;
+const GAMMA_AIR = 1.4;
 /** Molar gas constant, J/(mol·K) (CODATA 2018; exact since the 2019 SI redefinition). */
-export const GAS_CONSTANT = 8.314462618;
+const GAS_CONSTANT = 8.314462618;
 /** Mean molar mass of dry air, kg/mol (ISO 2533:1975; also the U.S. Standard Atmosphere 1976). */
-export const MOLAR_MASS_AIR = 0.0289644;
+const MOLAR_MASS_AIR = 0.0289644;
 
 /**
  * Speed of sound in dry air (m/s) at a temperature in °C, from the ideal-gas
@@ -236,7 +236,7 @@ export function pluckedString(u: number, cycles: number, p: number, height = 1, 
  * its direction of motion (cos θ = 1 straight ahead, −1 straight behind):
  * f' = f·c / (c − v·cos θ). The listener is at rest in the air.
  */
-export const dopplerShift = (f: number, v: number, c: number, cosTheta: number) =>
+const dopplerShift = (f: number, v: number, c: number, cosTheta: number) =>
 	(f * c) / (c - v * cosTheta);
 
 /** Heard straight ahead of an approaching source: f·c / (c − v). */

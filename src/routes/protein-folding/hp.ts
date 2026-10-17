@@ -25,7 +25,7 @@ import { rng } from '#lib/draw/math.ts';
 
 export type Residue = 'H' | 'P';
 /** A grid point [x, y]; y increases upwards. */
-export type Cell = readonly [number, number];
+type Cell = readonly [number, number];
 export type Fold = Cell[];
 
 const key = (x: number, y: number) => `${x},${y}`;
@@ -171,9 +171,9 @@ export function walkCount(steps: number): number {
 }
 
 /** Connective constant of the square lattice (Clisby & Jensen, J. Phys. A 45, 115202, 2012). */
-export const MU = 2.6381585303279;
+const MU = 2.6381585303279;
 /** Critical exponent γ = 43/32 of 2D self-avoiding walks (Nienhuis, PRL 49, 1062, 1982). */
-export const GAMMA = 43 / 32;
+const GAMMA = 43 / 32;
 
 /**
  * Number of self-avoiding walks of `steps` steps for long chains, from the asymptotic law
@@ -249,7 +249,7 @@ export interface Frame {
 	best: number;
 }
 
-export interface RunOptions {
+interface RunOptions {
 	/** Temperature in units of ε/k_B. */
 	T: number;
 	/** Monte Carlo move attempts between recorded frames. */

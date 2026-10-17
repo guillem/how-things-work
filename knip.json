@@ -1,0 +1,9 @@
+{
+	"entry": [
+		"e2e/**/*.ts",
+		"scripts/**/*.{mjs,ts}",
+		"playwright*.config.ts",
+		"src/routes/**/+*.{svelte,ts}"
+	],
+	"project": ["src/**/*.{ts,svelte}", "e2e/**/*.ts", "scripts/**/*.{mjs,ts}"]
+}

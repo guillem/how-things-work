@@ -192,10 +192,10 @@ export const PAINTS = {
 export type PaintId = keyof typeof PAINTS;
 
 /** A mixture: parts of each base paint (only the proportions matter). */
-export type Mixture = Partial<Record<PaintId, number>>;
+type Mixture = Partial<Record<PaintId, number>>;
 
 /** Pours mixtures together, part for part. */
-export function pour(...mixtures: Mixture[]): Mixture {
+function pour(...mixtures: Mixture[]): Mixture {
 	const out: Mixture = {};
 	for (const m of mixtures)
 		for (const [k, v] of Object.entries(m) as [PaintId, number][]) out[k] = (out[k] ?? 0) + v;
@@ -203,7 +203,7 @@ export function pour(...mixtures: Mixture[]): Mixture {
 }
 
 /** Proportions of a mixture, summing to 1. */
-export function proportions(m: Mixture): Mixture {
+function proportions(m: Mixture): Mixture {
 	const total = Object.values(m).reduce((s, v) => s + (v ?? 0), 0);
 	const out: Mixture = {};
 	for (const [k, v] of Object.entries(m) as [PaintId, number][]) out[k] = v / total;

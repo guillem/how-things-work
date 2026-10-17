@@ -29,7 +29,7 @@ function byteOrder(): number[] {
 	return bs;
 }
 
-export const END_OF_TEXT = 50256;
+const END_OF_TEXT = 50256;
 
 /** One merge applied while encoding a piece, for showing the process. */
 export interface Merge {

@@ -40,12 +40,12 @@ import { rng } from '#lib/draw/math.ts';
 export type Bits = number[];
 
 /** True if `pos` (1-based) is a check-bit position (a power of two). */
-export const isCheck = (pos: number) => pos > 0 && (pos & (pos - 1)) === 0;
+const isCheck = (pos: number) => pos > 0 && (pos & (pos - 1)) === 0;
 
 /** Block length of the Hamming code with r check bits. */
-export const blockLength = (r: number) => 2 ** r - 1;
+const blockLength = (r: number) => 2 ** r - 1;
 /** Number of data bits it carries. */
-export const dataLength = (r: number) => 2 ** r - 1 - r;
+const dataLength = (r: number) => 2 ** r - 1 - r;
 
 /** Positions (1-based) covered by check bit `k` in a block of n bits. */
 export function covered(k: number, n = 7) {
@@ -55,11 +55,11 @@ export function covered(k: number, n = 7) {
 }
 
 /** Data positions of an n-bit block, in order. */
-export const dataPositions = (n = 7) =>
+const dataPositions = (n = 7) =>
 	Array.from({ length: n }, (_, i) => i + 1).filter((p) => !isCheck(p));
 
 /** Check-bit positions of an n-bit block. */
-export const checkPositions = (n = 7) => Array.from({ length: n }, (_, i) => i + 1).filter(isCheck);
+const checkPositions = (n = 7) => Array.from({ length: n }, (_, i) => i + 1).filter(isCheck);
 
 /** Encodes data bits (length n − r for some r ≥ 2) into a Hamming block (index i = position i + 1). */
 export function encode(data: Bits): Bits {
@@ -90,9 +90,9 @@ export function syndrome(word: Bits) {
 	return s;
 }
 
-export const extractData = (word: Bits) => dataPositions(word.length).map((p) => word[p - 1]);
+const extractData = (word: Bits) => dataPositions(word.length).map((p) => word[p - 1]);
 
-export interface Decoded {
+interface Decoded {
 	/** 0 if every check passed, else the position the decoder flips back. */
 	position: number;
 	corrected: Bits;
@@ -108,7 +108,7 @@ export function decode(word: Bits): Decoded {
 
 /** XOR of two equal-length bit lists. */
 export const xor = (a: Bits, b: Bits) => a.map((x, i) => x ^ (b[i] ?? 0));
-export const weight = (a: Bits) => a.reduce((s, b) => s + b, 0);
+const weight = (a: Bits) => a.reduce((s, b) => s + b, 0);
 export const distance = (a: Bits, b: Bits) => weight(xor(a, b));
 
 /** All 4-bit data words, most significant first. */
@@ -118,7 +118,7 @@ export const nibbles = () =>
 // ------------------------------------------------------------- a single parity bit
 
 /** Even parity: the bit that makes the number of 1s even. */
-export const parityBit = (data: Bits) => data.reduce((s, b) => s ^ b, 0);
+const parityBit = (data: Bits) => data.reduce((s, b) => s ^ b, 0);
 /** Data followed by its parity bit. */
 export const withParity = (data: Bits) => [...data, parityBit(data)];
 /** True if the block still has an even number of 1s. */
@@ -129,7 +129,7 @@ export const parityOk = (word: Bits) => parityBit(word) === 0;
 /** The (8, 4) code: the (7, 4) block followed by an overall parity bit. */
 export const encodeSecded = (data: Bits) => withParity(encode(data));
 
-export type SecdedStatus = 'ok' | 'corrected' | 'double';
+type SecdedStatus = 'ok' | 'corrected' | 'double';
 
 /** Corrects one error, detects (without correcting) two. */
 export function decodeSecded(word: Bits): { status: SecdedStatus; data: Bits | null } {
@@ -147,20 +147,20 @@ export function decodeSecded(word: Bits): { status: SecdedStatus; data: Bits | n
 // ------------------------------------------------------------------- the channel
 
 /** `n` uniform random numbers in [0, 1) from `seed`: the channel's fixed dice. */
-export function dice(n: number, seed: number) {
+function dice(n: number, seed: number) {
 	const next = rng(seed);
 	return Array.from({ length: n }, () => next());
 }
 
 /** Which of the bits are flipped at flip probability p. */
-export const flipsFor = (u: number[], p: number) => u.map((x) => (x < p ? 1 : 0));
+const flipsFor = (u: number[], p: number) => u.map((x) => (x < p ? 1 : 0));
 
 export const charToBits = (c: string) => {
 	const v = c.charCodeAt(0) & 0xff;
 	return Array.from({ length: 8 }, (_, i) => (v >> (7 - i)) & 1);
 };
-export const bitsToChar = (b: Bits) => String.fromCharCode(b.reduce((v, x) => (v << 1) | x, 0));
-export const textToBits = (s: string) => [...s].flatMap(charToBits);
+const bitsToChar = (b: Bits) => String.fromCharCode(b.reduce((v, x) => (v << 1) | x, 0));
+const textToBits = (s: string) => [...s].flatMap(charToBits);
 
 export interface Transmission {
 	/** The text as received (after decoding, with coding). */
@@ -225,7 +225,7 @@ export function sendCoded(text: string, p: number, seed: number): Transmission {
 // ------------------------------------------------------------------ the odds
 
 /** Chance that n bits all arrive unflipped. */
-export const allIntact = (p: number, n: number) => (1 - p) ** n;
+const allIntact = (p: number, n: number) => (1 - p) ** n;
 /** Chance that a Hamming block of n bits has at most one flip (and so decodes correctly). */
 export const blockOk = (p: number, n = 7) => (1 - p) ** n + n * p * (1 - p) ** (n - 1);
 /** Chance an 8-bit character arrives intact without coding. */

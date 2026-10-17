@@ -266,7 +266,7 @@ export function zoomRange(chain: readonly Frame[]): [number, number] {
 	return [chain.at(-1)!.W * 0.75, chain[0].W * 1.25];
 }
 
-export interface Camera {
+interface Camera {
 	/** Centre of the view, metres. */
 	x: number;
 	y: number;
@@ -299,14 +299,14 @@ export function cameraAt(chain: readonly Frame[], f: number): Camera {
  * How opaque a drawn frame is at view width f: it fades in as the view
  * narrows from 3 W to 1.25 W (on a log scale). The first frame is always opaque.
  */
-export function fadeIn(frame: Frame, f: number, first: boolean) {
+function fadeIn(frame: Frame, f: number, first: boolean) {
 	if (first) return 1;
 	const u = Math.log((3 * frame.W) / f) / Math.log(3 / 1.25);
 	const v = Math.min(1, Math.max(0, u));
 	return v * v * (3 - 2 * v);
 }
 
-export interface Layer {
+interface Layer {
 	frame: Frame;
 	opacity: number;
 	/** Transform from the frame's own units to stage units. */

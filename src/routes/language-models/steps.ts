@@ -14,7 +14,7 @@ export type PromptId = keyof typeof PROMPTS;
 export const DEFAULT_MESSAGE = 'The Eiffel Tower is unbelievably tall!';
 
 /** Temperatures and runs stored for the sampling steps (see the build script). */
-export const RUN_TEMPS = ['0', '0.3', '0.7', '1', '1.5'] as const;
+const RUN_TEMPS = ['0', '0.3', '0.7', '1', '1.5'] as const;
 
 const prompt: Control = {
 	type: 'select',

@@ -23,14 +23,14 @@ export const C = 299_792_458;
 /** Earth's gravitational parameter as GPS uses it (IS-GPS-200), m³/s². */
 export const MU = 3.986005e14;
 /** Earth's rotation rate (WGS 84), rad/s. */
-export const OMEGA_E = 7.2921151467e-5;
+const OMEGA_E = 7.2921151467e-5;
 /** WGS 84 ellipsoid: equatorial radius (m) and flattening. */
-export const WGS84_A = 6_378_137;
-export const WGS84_F = 1 / 298.257223563;
+const WGS84_A = 6_378_137;
+const WGS84_F = 1 / 298.257223563;
 /** Earth's oblateness coefficient J₂ (WGS 84). */
-export const J2 = 1.08263e-3;
+const J2 = 1.08263e-3;
 /** Relativistic eccentricity constant F = −2√μ/c² (IS-GPS-200), s/√m. */
-export const F_REL = (-2 * Math.sqrt(MU)) / (C * C);
+const F_REL = (-2 * Math.sqrt(MU)) / (C * C);
 export const DAY = 86_400;
 /** Mean radius of the Earth (IUGG), m. */
 export const R_EARTH = 6_371_000;
@@ -43,7 +43,7 @@ const dot = (a: Vec, b: Vec) => a.reduce((s, v, i) => s + v * b[i], 0);
 
 // ---- the constellation --------------------------------------------------------------------
 
-export interface SatState {
+interface SatState {
 	prn: number;
 	/** Position (m) in the Earth-fixed frame (ECEF). */
 	ecef: Vec;
@@ -54,7 +54,7 @@ export interface SatState {
 }
 
 /** Solves Kepler's equation M = E − e sin E by Newton's method. */
-export function eccentricAnomaly(M: number, e: number): number {
+function eccentricAnomaly(M: number, e: number): number {
 	let E = M;
 	for (let k = 0; k < 20; k++) {
 		const d = (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E));
@@ -118,7 +118,7 @@ export function geodeticToEcef(lat: number, lon: number, h = 0): Vec {
 }
 
 /** Unit vectors east, north and up at a latitude and longitude (degrees). */
-export function enuBasis(lat: number, lon: number): [Vec, Vec, Vec] {
+function enuBasis(lat: number, lon: number): [Vec, Vec, Vec] {
 	const p = toRad(lat);
 	const l = toRad(lon);
 	return [
@@ -129,13 +129,13 @@ export function enuBasis(lat: number, lon: number): [Vec, Vec, Vec] {
 }
 
 /** A vector (m) split into east, north and up at a place. */
-export function toEnu(v: Vec, lat: number, lon: number): Vec {
+function toEnu(v: Vec, lat: number, lon: number): Vec {
 	const [e, n, u] = enuBasis(lat, lon);
 	return [dot(v, e), dot(v, n), dot(v, u)];
 }
 
 /** Elevation above the horizon and azimuth from north (degrees) of `sat` seen from `rx`. */
-export function lookAngles(sat: Vec, rx: Vec, lat: number, lon: number) {
+function lookAngles(sat: Vec, rx: Vec, lat: number, lon: number) {
 	const [e, n, u] = toEnu(sub(sat, rx), lat, lon);
 	return {
 		elevation: toDeg(Math.atan2(u, Math.hypot(e, n))),
@@ -180,7 +180,7 @@ export function skyTracks(lat: number, lon: number, stepS = 900) {
 // ---- linear algebra for the small normal equations --------------------------------------
 
 /** Inverse of a small square matrix (Gauss–Jordan); null if it is singular. */
-export function inverse(m: number[][]): number[][] | null {
+function inverse(m: number[][]): number[][] | null {
 	const n = m.length;
 	const a = m.map((row, i) => [...row, ...Array.from({ length: n }, (_, j) => (i === j ? 1 : 0))]);
 	for (let c = 0; c < n; c++) {
@@ -214,7 +214,7 @@ export function pseudoranges(sats: Vec[], rx: Vec, clock = 0, satErr: number[] =
 	return sats.map((s, i) => norm(sub(s, rx)) + clock - (satErr[i] ?? 0));
 }
 
-export interface Fix {
+interface Fix {
 	/** Solved position (m). */
 	pos: Vec;
 	/** Solved receiver clock error, as a length c·b (m); the assumed one if not solved for. */
@@ -277,7 +277,7 @@ export const rms = (r: number[]) => Math.sqrt(r.reduce((s, v) => s + v * v, 0) /
 
 // ---- dilution of precision -----------------------------------------------------------------
 
-export interface Dop {
+interface Dop {
 	gdop: number;
 	pdop: number;
 	hdop: number;
@@ -372,7 +372,7 @@ export const eccentricityTerm = (s: AlmanacEntry, E: number) => F_REL * s.e * s.
 
 // ---- a receiver on the Earth, all together ----------------------------------------------------
 
-export interface Scenario {
+interface Scenario {
 	/** Satellites in view (ECEF), with their PRN, elevation and azimuth. */
 	sats: (SatState & { elevation: number; azimuth: number })[];
 	rx: Vec;

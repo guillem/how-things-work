@@ -263,14 +263,14 @@ export function lambert(
 }
 
 /** Low parking orbits the Mars trip starts and ends in: 200 km above each planet. */
-export const R_PARK_EARTH = EARTH.radius + 200e3;
-export const R_PARK_MARS = MARS.radius + 200e3;
+const R_PARK_EARTH = EARTH.radius + 200e3;
+const R_PARK_MARS = MARS.radius + 200e3;
 
 /** Burn (m/s) to leave (or be captured into) a circular orbit of radius r with excess speed vInf. */
-export const escapeBurn = (mu: number, r: number, vInf: number) =>
+const escapeBurn = (mu: number, r: number, vInf: number) =>
 	Math.sqrt(vInf * vInf + (2 * mu) / r) - Math.sqrt(mu / r);
 
-export interface MarsTrip {
+interface MarsTrip {
 	/** Days after J2000 at departure, and the flight time (days). */
 	depart: number;
 	flight: number;

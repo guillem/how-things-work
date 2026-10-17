@@ -82,7 +82,7 @@ export const C0 = C;
 
 // ---- inside a chloroplast ---------------------------------------------------------------------
 
-export interface ChloroplastPaths {
+interface ChloroplastPaths {
 	/** Grana as solid blocks (for distant views). */
 	blocks: string;
 	/** Each thylakoid as a rounded bar (lumen + membranes), for close views. */

@@ -78,7 +78,7 @@ const CONTROL = [
 	'US'
 ];
 
-export interface CharReading {
+interface CharReading {
 	/** What to show: the character, or the name of a control code ("LF"). */
 	text: string;
 	kind: 'printable' | 'space' | 'control' | 'latin1';
@@ -102,7 +102,7 @@ export function char(byte: number): CharReading {
 
 // ------------------------------------------------------------ colour
 
-export interface Colour {
+interface Colour {
 	r: number;
 	g: number;
 	b: number;
@@ -135,7 +135,7 @@ export function colour(bits: Bits): Colour {
 
 // ------------------------------------------------------------ floating point
 
-export interface FloatReading {
+interface FloatReading {
 	sign: number;
 	/** Exponent field as stored, and with the bias removed. */
 	exponentBits: number;
@@ -250,7 +250,7 @@ function roundEven(v: number) {
 
 // ------------------------------------------------------------ adding
 
-export interface Sum {
+interface Sum {
 	/** Result bits (width bits; the carry out of the top is lost). */
 	bits: Bits;
 	/** carries[i] = carry INTO column i (from the column to its right); carries[width] = 0. */

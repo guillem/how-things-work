@@ -32,7 +32,7 @@ export function formatLength(m: number, sig = 2): string {
 /** Nice lengths for a scale bar: 1, 2, 5 × 10ⁿ. */
 const NICE = [1, 2, 5];
 
-export interface ScaleBar {
+interface ScaleBar {
 	/** Length the bar stands for, metres. */
 	length: number;
 	/** Its length on the stage, stage units (960 across the view). */

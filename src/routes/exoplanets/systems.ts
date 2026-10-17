@@ -16,7 +16,7 @@ import {
 	type Star
 } from './exoplanets';
 
-export interface System {
+interface System {
 	star: Star;
 	planet: Planet;
 }
@@ -71,7 +71,7 @@ export function mysterySystem(id: string): System {
 }
 
 /** What the curves of a mystery planet really show: depth in %, K in m/s, period in days. */
-export function mysteryTruth(id: string) {
+function mysteryTruth(id: string) {
 	const { star, planet } = mysterySystem(id);
 	return {
 		depthPercent: transits(star, planet) ? transitDepth(star, planet) * 100 : 0,

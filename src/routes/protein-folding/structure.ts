@@ -11,8 +11,8 @@ export type Vec3 = [number, number, number];
 export type Mat3 = [Vec3, Vec3, Vec3];
 
 export const sub = (a: Vec3, b: Vec3): Vec3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
-export const add = (a: Vec3, b: Vec3): Vec3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
-export const dot = (a: Vec3, b: Vec3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+const add = (a: Vec3, b: Vec3): Vec3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+const dot = (a: Vec3, b: Vec3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 export const distance = (a: Vec3, b: Vec3) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
 export const apply = (m: Mat3, v: Vec3): Vec3 => [dot(m[0], v), dot(m[1], v), dot(m[2], v)];
 
@@ -30,7 +30,7 @@ export function centroid(ps: readonly Vec3[]): Vec3 {
  * Eigenvalues and eigenvectors of a symmetric matrix by Jacobi rotations. Returns them
  * sorted by decreasing eigenvalue; `vectors[k]` is the k-th eigenvector.
  */
-export function eigenSymmetric(a: number[][]): { values: number[]; vectors: number[][] } {
+function eigenSymmetric(a: number[][]): { values: number[]; vectors: number[][] } {
 	const n = a.length;
 	const m = a.map((r) => r.slice());
 	const v: number[][] = m.map((_, i) => m.map((__, j) => (i === j ? 1 : 0)));
@@ -70,7 +70,7 @@ export function eigenSymmetric(a: number[][]): { values: number[]; vectors: numb
 	return { values: order.map((i) => m[i][i]), vectors: order.map((i) => v.map((row) => row[i])) };
 }
 
-export interface Superposition {
+interface Superposition {
 	/** Rotation to apply to the moving points after subtracting `from`. */
 	rotation: Mat3;
 	/** Centroid of the moving points. */

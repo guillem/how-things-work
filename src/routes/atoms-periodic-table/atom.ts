@@ -63,7 +63,7 @@ export const isPredicted = (z: number) => z >= 104;
 
 // ------------------------------------------------------------ subshells
 
-export interface Subshell {
+interface Subshell {
 	n: number;
 	l: number;
 	/** e.g. "3d". */
@@ -180,7 +180,7 @@ export function cell(z: number): { row: number; col: number } {
 
 // ------------------------------------------------------------ building an atom
 
-export interface Build {
+interface Build {
 	protons: number;
 	neutrons: number;
 	electrons: number;
@@ -191,7 +191,7 @@ export interface Build {
  * isotopes.ts), as inclusive ranges [from, to]: from the lightest to the heaviest made so far,
  * with a few gaps (carbon-21 has never been seen, carbon-22 has).
  */
-export const knownIsotopes = (z: number) => isotopes.known[z - 1] ?? [];
+const knownIsotopes = (z: number) => isotopes.known[z - 1] ?? [];
 
 /** Has a nucleus with this atomic number and mass number ever been observed? */
 export const isKnownIsotope = (z: number, massNumber: number) =>

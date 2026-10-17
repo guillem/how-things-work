@@ -4,7 +4,7 @@
  * crowding the labels already placed and without leaving the panel.
  */
 
-export interface Point {
+interface Point {
 	x: number;
 	y: number;
 }

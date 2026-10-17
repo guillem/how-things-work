@@ -19,7 +19,7 @@ export interface Frame {
 	y1: number;
 }
 
-export interface Line {
+interface Line {
 	/** Screen points of the upper half (ρ > 0); the lower half is its mirror image. */
 	points: { x: number; y: number }[];
 	closed: boolean;

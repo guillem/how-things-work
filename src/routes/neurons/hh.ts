@@ -75,7 +75,7 @@ function vtrap(x: number): number {
 }
 
 /** The six rate constants at 6.3 °C, ms⁻¹, at absolute voltage V (mV). Eqs. (12)–(13), (20)–(21), (23)–(24). */
-export function rates(V: number) {
+function rates(V: number) {
 	const u = V - REST; // depolarisation from rest, HH's −V
 	return {
 		an: 0.01 * vtrap(10 - u),
@@ -88,7 +88,7 @@ export function rates(V: number) {
 }
 
 /** Steady-state values of the gates at voltage V. */
-export function steady(V: number) {
+function steady(V: number) {
 	const r = rates(V);
 	return {
 		m: r.am / (r.am + r.bm),
@@ -97,14 +97,14 @@ export function steady(V: number) {
 	};
 }
 
-export interface Gates {
+interface Gates {
 	m: number;
 	h: number;
 	n: number;
 }
 
 /** Ionic current densities (µA/cm², outward positive) at V with the gates g. */
-export function currents(V: number, g: Gates, block: Block = {}) {
+function currents(V: number, g: Gates, block: Block = {}) {
 	// A blocker removes the voltage-gated part of a conductance; the small conductance open at
 	// rest is kept as a fixed leak, so that a blocked membrane still rests at REST (without it a
 	// full K⁺ block lets the cell fire on its own and stick near +4 mV).
@@ -125,7 +125,7 @@ export function currents(V: number, g: Gates, block: Block = {}) {
  * Fractions of the voltage-gated channels left working (1 = none blocked). TTX blocks Na⁺, TEA
  * blocks K⁺. Only the voltage-dependent opening is blocked; the conductance open at rest stays.
  */
-export interface Block {
+interface Block {
 	na?: number;
 	k?: number;
 }
@@ -139,12 +139,12 @@ export interface SynEvent {
 	E: number;
 }
 
-export function synG(e: SynEvent, t: number): number {
+function synG(e: SynEvent, t: number): number {
 	const s = (t - e.at) / e.tau;
 	return s <= 0 ? 0 : e.g * s * Math.exp(1 - s);
 }
 
-export interface PointRun {
+interface PointRun {
 	/** Length of the run, ms. */
 	tEnd: number;
 	/** Injected current density (µA/cm², inward positive as HH's stimulus) at time t. */
@@ -180,7 +180,7 @@ export function pulse(amp: number, start: number, dur: number) {
 }
 
 /** The steady state at rest (no current): the resting gates. */
-export const RESTING: Gates = steady(REST);
+const RESTING: Gates = steady(REST);
 
 /**
  * Integrates one patch of membrane (a space-clamped axon, as in HH's
@@ -248,7 +248,7 @@ export function simulate(run: PointRun): Sample[] {
 }
 
 /** Voltage that counts as a spike: an upward crossing of 0 mV. */
-export const SPIKE_LEVEL = 0;
+const SPIKE_LEVEL = 0;
 
 /** Times (ms) at which the voltage crosses SPIKE_LEVEL upwards. */
 export function spikeTimes(s: readonly Sample[]): number[] {
@@ -303,7 +303,7 @@ export function firingRate(I: number, T: number = HH.T0): number {
 
 // ------------------------------------------------------------------- the cable
 
-export interface CableRun {
+interface CableRun {
 	/** Axon radius, cm. */
 	radius: number;
 	/** Specific resistance of the axoplasm, Ω·cm. */
@@ -324,7 +324,7 @@ export interface CableRun {
 	every: number;
 }
 
-export interface CableResult {
+interface CableResult {
 	/** Positions of the compartment centres, cm. */
 	x: Float64Array;
 	/** Times of the frames, ms. */

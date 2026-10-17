@@ -15,7 +15,7 @@
 
 import { rng } from '#lib/draw/math.ts';
 
-export interface GloveData {
+interface GloveData {
 	DIMS: number;
 	WORDS: string;
 	VECTORS: string;
@@ -24,7 +24,7 @@ export interface GloveData {
 	CLUSTERS: string;
 }
 
-export type MapKind = 'tsne' | 'pca';
+type MapKind = 'tsne' | 'pca';
 
 export interface Neighbour {
 	word: string;
@@ -45,7 +45,7 @@ export function dot(a: ArrayLike<number>, b: ArrayLike<number>): number {
 	return s;
 }
 
-export function length(a: ArrayLike<number>): number {
+function length(a: ArrayLike<number>): number {
 	return Math.sqrt(dot(a, a));
 }
 

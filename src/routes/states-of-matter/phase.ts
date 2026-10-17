@@ -32,7 +32,7 @@ export interface Point {
 	P: number;
 }
 
-export interface SubstanceData {
+interface SubstanceData {
 	name: string;
 	formula: string;
 	triple: Point;

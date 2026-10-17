@@ -5,7 +5,7 @@
 import type { Params, Step } from '#lib/explainer/index.ts';
 import { simulate, type Sample, type Scenario } from './model';
 
-export interface Setup {
+interface Setup {
 	kind: 'standoff' | 'primary' | 'second';
 	scenario: Partial<Scenario>;
 	/** Day of the second infection (for `second`). */

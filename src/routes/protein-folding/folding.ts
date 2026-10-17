@@ -7,7 +7,7 @@ import { PROTEINS, type ProteinRecord } from './proteins-data';
 import { landscape, type Landscape } from './hp';
 import { distance, type Vec3 } from './structure';
 
-export interface LatticeChain {
+interface LatticeChain {
 	id: string;
 	label: string;
 	seq: string;
@@ -76,7 +76,7 @@ export function meanPlddt(p: ProteinRecord, from: number, to: number): number {
 }
 
 /** Cα–Cα distance beyond which two consecutive points are not bonded (a gap in the data). */
-export const GAP = 4.3;
+const GAP = 4.3;
 
 /**
  * Runs of consecutive residues (indices) that form an unbroken chain in a trace: missing

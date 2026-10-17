@@ -46,10 +46,10 @@
  */
 
 export const RHO = 1025; // kg/m³, sea water
-export const RHO_AIR = 1.2; // kg/m³
-export const CD = 1.3e-3; // drag coefficient of the sea surface
-export const OMEGA = 7.292e-5; // rad/s
-export const EARTH_RADIUS = 6.371e6; // m
+const RHO_AIR = 1.2; // kg/m³
+const CD = 1.3e-3; // drag coefficient of the sea surface
+const OMEGA = 7.292e-5; // rad/s
+const EARTH_RADIUS = 6.371e6; // m
 export const SV = 1e6; // m³/s: one sverdrup
 const rad = (d: number) => (d * Math.PI) / 180;
 
@@ -82,7 +82,7 @@ export const TRADES = 7;
 export const WESTERLIES = 9;
 const WIND_WIDTH = 10; // ° (1/e half-width of each wind band)
 
-export interface Winds {
+interface Winds {
 	/** Speed of the trade winds (blowing from the east), m/s. */
 	trades: number;
 	/** Speed of the westerlies (blowing from the west), m/s. */
@@ -110,7 +110,7 @@ interface Mode {
 	m2: number;
 }
 
-export interface Gyre {
+interface Gyre {
 	winds: Winds;
 	/** Whether the Coriolis effect grows northwards (β ≠ 0). */
 	beta: boolean;
@@ -245,7 +245,7 @@ export interface Streamline {
  * comes back to its start. Also records the travel time along it, for
  * particles that move with the flow.
  */
-export function traceStreamline(g: Gyre, x0: number, y0: number, maxSteps = 4000): Streamline {
+function traceStreamline(g: Gyre, x0: number, y0: number, maxSteps = 4000): Streamline {
 	const xs = [x0];
 	const ys = [y0];
 	const time = [0];
@@ -338,7 +338,7 @@ export const BOX = {
 };
 
 /** Overturning coefficient k (m³/s per unit relative density difference), calibrated to today. */
-export const K_FLOW = BOX.q0 / (BOX.alpha * (BOX.Teq - BOX.Tpole0) - BOX.betaS * BOX.dS0);
+const K_FLOW = BOX.q0 / (BOX.alpha * (BOX.Teq - BOX.Tpole0) - BOX.betaS * BOX.dS0);
 /** Today's freshwater input to the polar box (m³/s), from today's steady salt balance. */
 export const F_TODAY = ((BOX.q0 + BOX.K) * BOX.dS0) / BOX.S0;
 
@@ -360,7 +360,7 @@ export function dSdt(dS: number, Tpole: number, fresh: number) {
 export const heatTransport = (Tpole: number, q: number) =>
 	BOX.rho0 * BOX.cp * q * (BOX.Teq - Tpole);
 
-export interface Equilibrium {
+interface Equilibrium {
 	dS: number;
 	q: number;
 	stable: boolean;
@@ -413,7 +413,7 @@ export function restartThreshold(Tpole: number) {
 	return (BOX.K * aT) / (BOX.betaS * F_TODAY * BOX.S0);
 }
 
-export const YEAR = 365.25 * 86400;
+const YEAR = 365.25 * 86400;
 
 export interface Overturn {
 	/** Sample spacing (years). */
@@ -525,13 +525,13 @@ export function steadyPacific(strength: number): PacificState {
 }
 
 /** Length of the westerly burst (non-dimensional: 3 = six months). */
-export const BURST_LENGTH = 3;
+const BURST_LENGTH = 3;
 
 /** Westerly wind burst (tilt units) at non-dimensional time s: a half-sine lasting `length`. */
-export const burstAt = (s: number, amp: number, length = BURST_LENGTH) =>
+const burstAt = (s: number, amp: number, length = BURST_LENGTH) =>
 	s > 0 && s < length ? amp * Math.sin((Math.PI * s) / length) : 0;
 
-export interface Enso {
+interface Enso {
 	/** Sample spacing (non-dimensional). */
 	dt: number;
 	T: Float64Array;

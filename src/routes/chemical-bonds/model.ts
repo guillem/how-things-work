@@ -73,7 +73,7 @@ export const electronegativity = (sym: Sym) => data(sym).electronegativity ?? 0;
 
 // ------------------------------------------------------------------ bonds
 
-export type BondKind = 'nonpolar' | 'polar' | 'ionic';
+type BondKind = 'nonpolar' | 'polar' | 'ionic';
 
 /** Bond between two atoms, classified by their electronegativity difference. */
 export function bond(a: Sym, b: Sym) {
@@ -115,7 +115,7 @@ export function parse(s: string | undefined | null, fallback: Molecule): Molecul
 }
 
 /** Bonds still open on the centre (its unpaired electrons). */
-export function openBonds(m: Molecule): number {
+function openBonds(m: Molecule): number {
 	return capacity(m.centre) - m.ligands.reduce((s, l) => s + capacity(l), 0);
 }
 
@@ -128,7 +128,7 @@ export function refusal(m: Molecule, sym: Sym): string | null {
 	if (need > open) return `${sym} needs ${need} bonds; ${m.centre} has only ${open} left`;
 	return null;
 }
-export const canAdd = (m: Molecule, sym: Sym) => refusal(m, sym) === null;
+const canAdd = (m: Molecule, sym: Sym) => refusal(m, sym) === null;
 
 // Formula in the usual order (Hill order for carbon compounds; otherwise H first for
 // acids, centre first for the rest), with subscripts.
@@ -143,7 +143,7 @@ const FORMULA: Record<string, string> = {
 	'F:Cl': 'ClF',
 	'N:H,O': 'HNO'
 };
-export function formula(m: Molecule): string {
+function formula(m: Molecule): string {
 	const fixed = FORMULA[`${m.centre}:${[...m.ligands].sort().join(',')}`];
 	if (fixed) return fixed;
 	const counts = new Map<Sym, number>();
@@ -194,18 +194,18 @@ const NAMES: Record<string, string> = {
 	H2O2: 'hydrogen peroxide'
 };
 const plain = (f: string) => [...f].map((c) => (SUB.includes(c) ? SUB.indexOf(c) : c)).join('');
-export const commonName = (m: Molecule) => NAMES[plain(formula(m))] ?? null;
+const commonName = (m: Molecule) => NAMES[plain(formula(m))] ?? null;
 
 // ------------------------------------------------------------------ shape
 
-export type Shape =
+type Shape =
 	'single atom' | 'linear' | 'bent' | 'trigonal planar' | 'trigonal pyramidal' | 'tetrahedral';
 
 /** Ideal angle between electron domains for 2, 3 and 4 domains (degrees). */
-export const TETRAHEDRAL = (Math.acos(-1 / 3) * 180) / Math.PI;
-export const IDEAL: Record<number, number> = { 2: 180, 3: 120, 4: TETRAHEDRAL };
+const TETRAHEDRAL = (Math.acos(-1 / 3) * 180) / Math.PI;
+const IDEAL: Record<number, number> = { 2: 180, 3: 120, 4: TETRAHEDRAL };
 
-export function shapeOf(bonded: number, lone: number): Shape {
+function shapeOf(bonded: number, lone: number): Shape {
 	if (bonded === 0) return 'single atom';
 	if (bonded === 1) return 'linear';
 	const sn = bonded + lone;
@@ -216,7 +216,7 @@ export function shapeOf(bonded: number, lone: number): Shape {
 }
 
 /** Angle measured for a molecule, between two of its outer atoms. */
-export interface Measured {
+interface Measured {
 	between: [Sym, Sym];
 	degrees: number;
 }
@@ -247,7 +247,7 @@ const key = (m: Molecule) => `${m.centre}:${[...m.ligands].sort().join(',')}`;
 
 export type Vec = [number, number, number];
 
-export interface Domain {
+interface Domain {
 	kind: 'bond' | 'lone' | 'single';
 	/** Index into `ligands` for a bond. */
 	ligand?: number;
@@ -255,7 +255,7 @@ export interface Domain {
 	dir: Vec;
 }
 
-export interface Analysis {
+interface Analysis {
 	molecule: Molecule;
 	formula: string;
 	name: string | null;

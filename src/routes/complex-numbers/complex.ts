@@ -38,7 +38,7 @@ export const mul = (z: Complex, w: Complex): Complex => ({
 	im: z.re * w.im + z.im * w.re
 });
 
-export const scale = (z: Complex, k: number): Complex => ({ re: z.re * k, im: z.im * k });
+const scale = (z: Complex, k: number): Complex => ({ re: z.re * k, im: z.im * k });
 
 /** zⁿ by repeated multiplication (n ≥ 0). */
 export function pow(z: Complex, n: number): Complex {

@@ -33,10 +33,10 @@ export interface Tensor {
 }
 
 /** Number of elements of an array of this shape (1 for a scalar, whose shape is empty). */
-export const size = (shape: readonly number[]) => shape.reduce((a, b) => a * b, 1);
+const size = (shape: readonly number[]) => shape.reduce((a, b) => a * b, 1);
 
 /** How far apart, in the stored list, neighbours along each axis are. */
-export function strides(shape: readonly number[]): number[] {
+function strides(shape: readonly number[]): number[] {
 	const out = new Array<number>(shape.length);
 	let s = 1;
 	for (let a = shape.length - 1; a >= 0; a--) {
@@ -62,7 +62,7 @@ export function offset(shape: readonly number[], index: readonly number[]): numb
 }
 
 /** The indices of the element stored at position `o`. */
-export function unravel(shape: readonly number[], o: number): number[] {
+function unravel(shape: readonly number[], o: number): number[] {
 	return strides(shape).map((s, a) => Math.floor(o / s) % shape[a]);
 }
 
@@ -230,7 +230,7 @@ export type Mat2 = readonly [Vec2, Vec2];
 const rad = (deg: number) => (deg * Math.PI) / 180;
 
 /** The rotation by θ degrees (anticlockwise). Its columns are the turned axes x′ and y′. */
-export function rotation(deg: number): Mat2 {
+function rotation(deg: number): Mat2 {
 	const c = Math.cos(rad(deg));
 	const s = Math.sin(rad(deg));
 	return [
@@ -239,15 +239,15 @@ export function rotation(deg: number): Mat2 {
 	];
 }
 
-export const mul = (a: Mat2, b: Mat2): Mat2 => [
+const mul = (a: Mat2, b: Mat2): Mat2 => [
 	[a[0][0] * b[0][0] + a[0][1] * b[1][0], a[0][0] * b[0][1] + a[0][1] * b[1][1]],
 	[a[1][0] * b[0][0] + a[1][1] * b[1][0], a[1][0] * b[0][1] + a[1][1] * b[1][1]]
 ];
-export const apply = (m: Mat2, v: Vec2): Vec2 => [
+const apply = (m: Mat2, v: Vec2): Vec2 => [
 	m[0][0] * v[0] + m[0][1] * v[1],
 	m[1][0] * v[0] + m[1][1] * v[1]
 ];
-export const transposed = (m: Mat2): Mat2 => [
+const transposed = (m: Mat2): Mat2 => [
 	[m[0][0], m[1][0]],
 	[m[0][1], m[1][1]]
 ];

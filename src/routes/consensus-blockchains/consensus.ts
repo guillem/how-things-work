@@ -55,10 +55,10 @@ export function naiveReplicas(writes = NAIVE.writes) {
 // ================================================================ Byzantine generals
 
 export type Order = 'attack' | 'retreat';
-export const opposite = (v: Order): Order => (v === 'attack' ? 'retreat' : 'attack');
+const opposite = (v: Order): Order => (v === 'attack' ? 'retreat' : 'attack');
 
 /** What a traitor sends to `receiver` when it should pass on `value`. */
-export type Lie = (sender: number, receiver: number, value: Order) => Order;
+type Lie = (sender: number, receiver: number, value: Order) => Order;
 
 /**
  * The traitors' strategies used in the tests. `twoFaced` is the one on the page: a traitor
@@ -77,7 +77,7 @@ export const LIES: Record<string, Lie> = {
 };
 
 /** Majority of the values; a tie means the default, retreat. */
-export function majority(values: Order[]): Order {
+function majority(values: Order[]): Order {
 	const a = values.filter((v) => v === 'attack').length;
 	return a > values.length - a ? 'attack' : 'retreat';
 }
@@ -97,7 +97,7 @@ interface OmResult {
  * lieutenant then acts as commander of OM(m − 1) to pass on what it received, and finally
  * takes the majority of its own value and the values relayed to it by the others.
  */
-export function om(
+function om(
 	m: number,
 	commander: number,
 	lieutenants: number[],
@@ -238,7 +238,7 @@ export interface RaftScenario {
 }
 
 /** Timings in seconds, slowed down (Raft's paper suggests 150–300 ms election timeouts). */
-export const RAFT = {
+const RAFT = {
 	n: 5,
 	delay: [0.3, 0.45] as const,
 	timeout: [3, 6] as const,
@@ -247,7 +247,7 @@ export const RAFT = {
 };
 
 /** Commands every 2.2 s from 4 s on. */
-export const defaultCommands = (horizon: number) =>
+const defaultCommands = (horizon: number) =>
 	Array.from({ length: Math.floor((horizon - 4) / 2.2) + 1 }, (_, i) => 4 + 2.2 * i);
 
 type Ev =
@@ -693,7 +693,7 @@ export const blockHash = (b: Block) => toHex(blockDigest(b));
 export const GENESIS_PREV = '0'.repeat(64);
 
 /** How many nonces mining tries before giving up (never reached below 20 bits). */
-export const MINE_LIMIT = 1 << 24;
+const MINE_LIMIT = 1 << 24;
 
 /** Tries nonces 0, 1, 2, … until the block's hash starts with `bits` zero bits. */
 export function mine(b: Omit<Block, 'nonce'>, bits: number, limit = MINE_LIMIT) {
@@ -791,7 +791,7 @@ export function retargetRun(jump: number, periods = 8, jumpAt = 2) {
 
 // ================================================================ forks
 
-export interface ForkBlock {
+interface ForkBlock {
 	id: number;
 	parent: number;
 	height: number;

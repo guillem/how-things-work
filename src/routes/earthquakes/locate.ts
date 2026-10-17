@@ -19,7 +19,7 @@ export function gcDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 /** The point `dist` degrees from (lat, lon) in the direction `az` (degrees clockwise from north). */
-export function destination(lat: number, lon: number, az: number, dist: number): [number, number] {
+function destination(lat: number, lon: number, az: number, dist: number): [number, number] {
 	const [p1, l1, a, d] = [lat * RAD, lon * RAD, az * RAD, dist * RAD];
 	const p2 = Math.asin(Math.sin(p1) * Math.cos(d) + Math.cos(p1) * Math.sin(d) * Math.cos(a));
 	const l2 =
@@ -33,9 +33,9 @@ export const smallCircle = (lat: number, lon: number, radius: number, n = 180) =
 	Array.from({ length: n + 1 }, (_, i) => destination(lat, lon, (360 * i) / n, radius));
 
 /** Earthquake depth used for locating, km (the USGS depth of the Gorkha earthquake). */
-export const DEPTH = ORIGIN.depth;
+const DEPTH = ORIGIN.depth;
 
-export interface Station {
+interface Station {
 	rec: Recording;
 	/** True distance from the epicentre, degrees. */
 	dist: number;

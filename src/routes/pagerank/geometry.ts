@@ -9,7 +9,7 @@ import { hasLink, type Web } from './pagerank';
 export const pageRadius = (rank: number, n: number) =>
 	Math.max(16, Math.min(58, 30 * Math.sqrt(rank * Math.max(1, n))));
 
-export interface LinkGeometry {
+interface LinkGeometry {
 	/** SVG path from the edge of the source page to the tip of the arrowhead. */
 	d: string;
 	/** Arrowhead polygon points (`x,y x,y x,y`). */

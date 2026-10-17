@@ -28,7 +28,7 @@ export const C = 299_792_458;
 
 export type MaterialId = 'air' | 'water' | 'silica' | 'crown' | 'flint' | 'diamond';
 
-export interface Material {
+interface Material {
 	id: MaterialId;
 	name: string;
 	/** Refractive index at the wavelength `nm` (nanometres). */
@@ -208,7 +208,7 @@ const unit = (a: Vec): Vec => mul(a, 1 / len(a));
 export const dir = (deg: number): Vec => ({ x: Math.cos(toRad(deg)), y: Math.sin(toRad(deg)) });
 
 /** A region whose intersection with others makes a body. */
-export type Region =
+type Region =
 	/** Points with (x − p)·normal ≤ 0; `normal` points out of the region. */
 	| { kind: 'half'; p: Vec; normal: Vec }
 	| { kind: 'disc'; c: Vec; r: number }
@@ -272,7 +272,7 @@ function crossings(r: Region, o: Vec, d: Vec): number[] {
 }
 
 /** Is q inside the body (all regions)? */
-export function contains(body: Body, q: Vec): boolean {
+function contains(body: Body, q: Vec): boolean {
 	return body.regions.every((r) => inRegion(r, q, 0));
 }
 
@@ -351,7 +351,7 @@ export interface RayPath {
 	end: 'out' | 'screen' | 'limit';
 }
 
-export interface TraceOptions {
+interface TraceOptions {
 	/** Wavelength, nm. */
 	nm?: number;
 	/** Index of the surrounding medium. */

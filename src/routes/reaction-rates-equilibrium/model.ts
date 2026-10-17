@@ -92,14 +92,14 @@ export const EA_F = -R * arrhenius.b;
 /** Activation energy of 2 HI → H₂ + I₂ (J/mol): higher by −ΔH. */
 export const EA_R = EA_F - DH;
 /** Arrhenius pre-factor of the forward reaction (L mol⁻¹ s⁻¹). */
-export const A_F = Math.exp(arrhenius.a);
+const A_F = Math.exp(arrhenius.a);
 
 /**
  * Activation energy of HI decomposition on a gold surface, ≈ 105 kJ/mol: the value
  * textbooks quote from C. N. Hinshelwood and C. R. Prichard, J. Chem. Soc. 127,
  * 1551–1555 (1925). The page uses it only for the size of the drop it makes.
  */
-export const EA_GOLD = 105e3;
+const EA_GOLD = 105e3;
 /** How much gold lowers the barrier, in both directions (J/mol). */
 export const GOLD_LOWERING = EA_R - EA_GOLD;
 
@@ -174,7 +174,7 @@ export const hiShare = (m: Mix) => m.hi / (m.hi + 2 * m.i2);
 // ------------------------------------------------------------------ running it
 
 /** Conditions in force from a moment on. */
-export interface Conditions {
+interface Conditions {
 	T: number;
 	/** Barrier lowering by a catalyst (J/mol), 0 = none. */
 	lowering: number;

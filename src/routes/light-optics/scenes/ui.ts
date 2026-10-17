@@ -84,7 +84,7 @@ export function pulsesOn(
 export const mainPaths = (paths: RayPath[]) => paths.filter((p) => p.parent < 0);
 
 /** Rays of several colours traced from the same start. */
-export interface ColourSet {
+interface ColourSet {
 	nm: number;
 	paths: RayPath[];
 }

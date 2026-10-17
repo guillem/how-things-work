@@ -52,7 +52,7 @@
  */
 import { rng as seeded } from '#lib/draw/math.ts';
 
-export type Rand = () => number;
+type Rand = () => number;
 export const rng = seeded;
 
 // ------------------------------------------------------------------ samplers
@@ -74,7 +74,7 @@ export function poisson(lambda: number, rand: Rand): number {
 }
 
 /** Standard normal deviate (Box–Muller). */
-export function gauss(rand: Rand): number {
+function gauss(rand: Rand): number {
 	const u = Math.max(rand(), 1e-12);
 	return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * rand());
 }
@@ -84,7 +84,7 @@ export function gauss(rand: Rand): number {
  * of the rarer outcome is small, normal approximation otherwise. The fate of a
  * rare allele is decided while its count is small, where the draw is exact.
  */
-export function binomial(n: number, p: number, rand: Rand): number {
+function binomial(n: number, p: number, rand: Rand): number {
 	if (p <= 0 || n <= 0) return 0;
 	if (p >= 1) return n;
 	if (p > 0.5) return n - binomial(n, 1 - p, rand);
@@ -113,11 +113,11 @@ export function binomial(n: number, p: number, rand: Rand): number {
 export const LOCI = 6;
 export const SHADES = 2 * LOCI + 1;
 /** Dark-allele frequency of the founding population (mostly pale moths). */
-export const FOUNDING_DARK = 0.2;
+const FOUNDING_DARK = 0.2;
 /** How many moths of each generation the scene draws (and records in detail). */
-export const SAMPLE = 100;
+const SAMPLE = 100;
 
-export interface MothSettings {
+interface MothSettings {
 	/** Population size (constant: Wright–Fisher). */
 	N: number;
 	/** Chance that an allele flips in an offspring, per gene per generation. */
@@ -135,7 +135,7 @@ export interface MothSettings {
 	founding?: number;
 }
 
-export interface MothGeneration {
+interface MothGeneration {
 	g: number;
 	bark: number;
 	/** Moths of each shade class (0 … 2·LOCI dark alleles) before the birds. */
@@ -308,7 +308,7 @@ export function runMoths(set: MothSettings): MothGeneration[] {
 // --------------------------------------------------------- one-gene Wright–Fisher
 
 /** One Wright–Fisher generation: the number of copies (of 2N) of an allele with advantage s. */
-export function wfStep(count: number, twoN: number, s: number, rand: Rand): number {
+function wfStep(count: number, twoN: number, s: number, rand: Rand): number {
 	const p = count / twoN;
 	const ps = (p * (1 + s)) / (1 + p * s);
 	return binomial(twoN, ps, rand);
@@ -328,13 +328,7 @@ export interface Trajectory {
 }
 
 /** Follows one allele from `count` copies until it is lost or fixed, or `maxGen` generations pass. */
-export function trajectory(
-	N: number,
-	s: number,
-	count: number,
-	maxGen: number,
-	rand: Rand
-): Trajectory {
+function trajectory(N: number, s: number, count: number, maxGen: number, rand: Rand): Trajectory {
 	const twoN = 2 * N;
 	const p = [count / twoN];
 	let c = count;
@@ -345,7 +339,7 @@ export function trajectory(
 	return { p, fixed: c === twoN, lost: c === 0 };
 }
 
-export interface Fates {
+interface Fates {
 	trials: number;
 	fixed: number;
 	lost: number;
@@ -399,23 +393,23 @@ export function driftRuns(
  * 1.1–5.6 × 10⁸ (Genetics 28: 491, Tables 2 and 3); with LD_MU it gives e^(−0.6) ≈ 55% of
  * cultures with no mutant, as the 11 of 20 empty samples of their experiment 16.
  */
-export const LD_FINAL = 2e7;
+const LD_FINAL = 2e7;
 /** Doublings from the inoculum to LD_FINAL (an inoculum of about 600 cells). */
-export const LD_DOUBLINGS = 15;
+const LD_DOUBLINGS = 15;
 /**
  * Mutation rate to resistance per cell per division. Luria & Delbrück's estimates from the
  * average counts were 1.1–4.1 × 10⁻⁸ per bacterium per time unit (their Table 4).
  */
-export const LD_MU = 3e-8;
+const LD_MU = 3e-8;
 
-export interface FluctuationResult {
+interface FluctuationResult {
 	counts: number[];
 	mean: number;
 	variance: number;
 	zeros: number;
 }
 
-export function summary(counts: number[]): FluctuationResult {
+function summary(counts: number[]): FluctuationResult {
 	const n = counts.length;
 	const mean = counts.reduce((s, c) => s + c, 0) / n;
 	const variance = counts.reduce((s, c) => s + (c - mean) ** 2, 0) / (n - 1);
@@ -423,7 +417,7 @@ export function summary(counts: number[]): FluctuationResult {
 }
 
 /** Resistant cells in one culture if mutations happen at random during its growth. */
-export function growCulture(rand: Rand, mu = LD_MU, doublings = LD_DOUBLINGS, final = LD_FINAL) {
+function growCulture(rand: Rand, mu = LD_MU, doublings = LD_DOUBLINGS, final = LD_FINAL) {
 	const start = final / 2 ** doublings;
 	let resistant = 0;
 	for (let g = 0; g < doublings; g++) {
@@ -467,7 +461,7 @@ export const CLASSES = 5;
 export const BANDS = [0, 3, 30, 300, 3000];
 export const PATCHES_PER_BAND = 3;
 
-export interface PlateSettings {
+interface PlateSettings {
 	/** Cells a patch holds when full. */
 	K: number;
 	/** Chance that a division gives a mutant one class more resistant. */
@@ -482,7 +476,7 @@ export interface PlateSettings {
 	every?: number;
 }
 
-export interface PlateRun {
+interface PlateRun {
 	/** Drug in each patch (× MIC), left to right: 0 … top … 0. */
 	drug: number[];
 	/** snapshots[i][patch][class] = cells, at generation i·every. */
@@ -495,7 +489,7 @@ export interface PlateRun {
 }
 
 /** Drug level in each patch of the symmetric plate (drug-free at both ends, top dose in the middle). */
-export function plateDrug(intermediate: boolean): number[] {
+function plateDrug(intermediate: boolean): number[] {
 	const half = intermediate ? BANDS : BANDS.map((b, i) => (i === BANDS.length - 1 ? b : 0));
 	const bands = [...half, ...half.slice(0, -1).reverse()];
 	return bands.flatMap((b) => Array<number>(PATCHES_PER_BAND).fill(b));
@@ -583,9 +577,9 @@ export function runPlate(set: PlateSettings): PlateRun {
 // ------------------------------------------------------------- peppered moth
 
 /** Dark (carbonaria) share of the moths when the dark allele has frequency q (dominant). */
-export const darkShare = (q: number) => 1 - (1 - q) ** 2;
+const darkShare = (q: number) => 1 - (1 - q) ** 2;
 /** Dark allele frequency giving a dark share f. */
-export const qFromShare = (f: number) => 1 - Math.sqrt(1 - f);
+const qFromShare = (f: number) => 1 - Math.sqrt(1 - f);
 
 /**
  * Deterministic selection on a dominant allele: dark moths (one or two copies)
@@ -622,7 +616,7 @@ export const MADINGLEY: readonly { year: number; share: number }[] = [
 ];
 
 /** Sum of squared errors of the model decline from 2001 against the Madingley shares. */
-export function madingleyError(s: number): number {
+function madingleyError(s: number): number {
 	const model = dominantSelection(MADINGLEY[0].share, -s, MADINGLEY.length - 1);
 	return MADINGLEY.reduce((e, d, i) => e + (model[i] - d.share) ** 2, 0);
 }

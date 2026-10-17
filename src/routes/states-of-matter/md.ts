@@ -97,11 +97,11 @@ export const MODELS: Record<Model, ModelSpec> = {
 };
 
 /** Number of molecules (80 in both models; the LJ lattice is 12 × 7 with the last row short). */
-export const N = 80;
+const N = 80;
 
 export const FPS = 60;
-export const STEPS_PER_FRAME = 16;
-export const DT = 0.005;
+const STEPS_PER_FRAME = 16;
+const DT = 0.005;
 /** Piston mass and the fraction of its speed kept per step (damps its bouncing). */
 const PISTON_MASS = 4;
 const PISTON_KEEP = 0.998;
@@ -122,7 +122,7 @@ const ARMS = [0, (2 * Math.PI) / 3, (4 * Math.PI) / 3];
 /** Pairs further apart than this have no hydrogen bond (G(0.45) ≈ 10⁻⁶). */
 const HB_CUT = 1.45;
 /** A hydrogen bond counts as formed when its energy is below this (ε_HB / 2). */
-export const HB_FORMED = -0.5;
+const HB_FORMED = -0.5;
 const gauss = (x: number) => Math.exp(-(x * x) / (2 * SIG_HB * SIG_HB));
 
 /** One recorded frame. */
@@ -140,7 +140,7 @@ export interface Frame {
 }
 
 /** Measured quantities of a frame. */
-export interface FrameStats {
+interface FrameStats {
 	/** Fraction of molecules sitting in an ordered, crystal-like neighbourhood. */
 	order: number;
 	/** Fraction of molecules with at most one neighbour (flying free). */
@@ -515,7 +515,7 @@ export class BoxRun {
 // ------------------------------------------------------------------ measuring a frame
 
 /** Hydrogen-bond energy between molecules i and j of a water frame. */
-export function bondEnergy(f: Frame, i: number, j: number): number {
+function bondEnergy(f: Frame, i: number, j: number): number {
 	const dx = f.x[j] - f.x[i];
 	const dy = f.y[j] - f.y[i];
 	const d = Math.hypot(dx, dy);

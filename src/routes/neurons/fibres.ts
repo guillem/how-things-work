@@ -26,10 +26,10 @@
 import { SQUID_AXON } from './hh';
 
 /** Hursh (1939): m/s per µm of fibre diameter. */
-export const HURSH = 6;
+const HURSH = 6;
 
 /** Squid giant axon diameter, µm (2 × HH's 238 µm radius). */
-export const SQUID_DIAMETER = SQUID_AXON.radius * 2e4;
+const SQUID_DIAMETER = SQUID_AXON.radius * 2e4;
 
 /** Speed of a myelinated fibre of outer diameter d (µm), m/s. */
 export function myelinatedSpeed(d: number): number {

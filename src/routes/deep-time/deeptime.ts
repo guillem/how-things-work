@@ -78,7 +78,7 @@ export const PERIODS: Unit[] = [
 ];
 
 /** The unit of a list that contains `age` (the younger one on a boundary). */
-export const unitAt = (list: Unit[], age: number): Unit | undefined =>
+const unitAt = (list: Unit[], age: number): Unit | undefined =>
 	list.find((x) => age >= x.top && (age < x.base || (age === x.base && x.base === EARTH_AGE)));
 
 /** "Cambrian period, Paleozoic era, Phanerozoic eon": the finest named units at `age`. */
@@ -88,7 +88,7 @@ export function placeIn(age: number): { eon?: Unit; era?: Unit; period?: Unit } 
 
 // ------------------------------------------------------------------ temperature
 
-export interface Temperature {
+interface Temperature {
 	stage: string;
 	top: number;
 	base: number;
@@ -170,7 +170,7 @@ export const sunBrightness = (age: number) =>
 /** Today's share of O₂ in dry air, % by volume. */
 export const O2_TODAY = 20.95;
 
-export interface Oxygen {
+interface Oxygen {
 	/** % of the air by volume: best guess, and the ends of the uncertainty window. */
 	mid: number;
 	min: number;
@@ -339,7 +339,7 @@ export const LIFE: LifeGroup[] = [
 	}
 ];
 
-export interface LifeEvent {
+interface LifeEvent {
 	id: string;
 	name: string;
 	age: number;
@@ -409,7 +409,7 @@ export const EXTINCTIONS = [
 // ------------------------------------------------------------------ dating
 
 /** Half-life of uranium-238, Myr (NNDC NuDat 3: 4.468 × 10⁹ years). */
-export const U238_HALF_LIFE = 4468;
+const U238_HALF_LIFE = 4468;
 
 /** Share of the uranium-238 a crystal started with that is left after `age` Myr. */
 export const uraniumLeft = (age: number) => 2 ** (-age / U238_HALF_LIFE);
@@ -445,7 +445,7 @@ const YEAR_S = 365 * 86400;
 /** Years of Earth's history per second of the calendar year. */
 export const YEARS_PER_SECOND = (EARTH_AGE * 1e6) / YEAR_S;
 
-export interface CalendarTime {
+interface CalendarTime {
 	/** 0–11. */
 	month: number;
 	/** 1–31. */

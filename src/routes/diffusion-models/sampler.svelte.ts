@@ -21,7 +21,7 @@ export interface JobReply {
 	done: number;
 	frames?: Float32Array;
 }
-export interface Run {
+interface Run {
 	steps: number;
 	/** steps computed so far */
 	done: number;

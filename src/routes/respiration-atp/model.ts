@@ -25,18 +25,18 @@
  */
 
 /** Faraday constant, C/mol. */
-export const F = 96485;
+const F = 96485;
 /** Gas constant, J/(mol·K). */
-export const R = 8.314;
+const R = 8.314;
 /** Body temperature, K. */
-export const T_BODY = 310.15;
+const T_BODY = 310.15;
 /** F/RT at body temperature, 1/V. */
-export const F_RT = F / (R * T_BODY);
+const F_RT = F / (R * T_BODY);
 
 /** Standard free energy of glucose + 6 O₂ → 6 CO₂ + 6 H₂O, kJ/mol (Lehninger). */
-export const DG_GLUCOSE = -2840;
+const DG_GLUCOSE = -2840;
 /** Standard free energy of ATP hydrolysis, kJ/mol. */
-export const DG_ATP_STANDARD = -30.5;
+const DG_ATP_STANDARD = -30.5;
 /** Free energy of ATP hydrolysis in a living cell, kJ/mol (the phosphorylation potential is −50 to −65). */
 export const DG_ATP_CELL = -50;
 
@@ -187,7 +187,7 @@ export const CITRIC_ACID_CYCLE: Reaction[] = [
 	{ enzyme: 'malate dehydrogenase', product: 'oxaloacetate', carbons: 4, nadh: 1, times: 2 }
 ];
 
-export interface Tally {
+interface Tally {
 	atp: number;
 	nadh: number;
 	fadh2: number;
@@ -195,7 +195,7 @@ export interface Tally {
 }
 
 /** Totals per glucose over a list of reactions. */
-export function tally(reactions: Reaction[]): Tally {
+function tally(reactions: Reaction[]): Tally {
 	const out = { atp: 0, nadh: 0, fadh2: 0, co2: 0 };
 	for (const r of reactions) {
 		out.atp += (r.atp ?? 0) * r.times;
@@ -265,7 +265,7 @@ export const C_RINGS = [
 export const synthaseHPerATP = (c: number) => c / 3;
 
 /** Protons to import one phosphate (with an H⁺) and swap ADP³⁻ in for ATP⁴⁻ out (one charge). */
-export const TRANSPORT_H = 1;
+const TRANSPORT_H = 1;
 
 /** Protons per ATP delivered to the cytosol. */
 export const hPerATP = (c: number) => synthaseHPerATP(c) + TRANSPORT_H;
@@ -280,7 +280,7 @@ export const poRatio = (protons: number, hAtp: number) => protons / hAtp;
 export type Count = 'measured' | 'ring' | 'classic';
 export type Shuttle = 'malate' | 'glycerol';
 
-export interface YieldRow {
+interface YieldRow {
 	id: string;
 	label: string;
 	/** Number of molecules per glucose (ATP, NADH or FADH₂). */
@@ -398,7 +398,7 @@ export interface ChainConditions {
 	uncoupler: boolean;
 }
 
-export interface ChainFluxes {
+interface ChainFluxes {
 	/** NAD⁺ reduced by the citric acid cycle. */
 	supply: number;
 	/** Electron pairs through complex I, II, III, IV (net, per unit time). */
@@ -417,7 +417,7 @@ export interface ChainFluxes {
 }
 
 export const NORMAL: ChainConditions = { oxygen: true, synthase: true, uncoupler: false };
-export const REST_STATE: ChainState = { nadh: 0.5, q: 0.4, c: 0.3, dp: 0.17 };
+const REST_STATE: ChainState = { nadh: 0.5, q: 0.4, c: 0.3, dp: 0.17 };
 
 const K = {
 	supply: 24,

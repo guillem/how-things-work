@@ -34,7 +34,7 @@ export type { HadronData, ModeData, Quantity } from './pdg';
 /** Reduced Planck constant, MeV·s (CODATA; exact in the SI since 2019). */
 export const HBAR = 6.582119569e-22;
 /** ħc in MeV·fm (CODATA 2018). */
-export const HBARC = 197.3269804;
+const HBARC = 197.3269804;
 
 // ---------------------------------------------------------------- the 17 particles
 
@@ -179,7 +179,7 @@ export const TOKENS: Token[] = [...FLAVOURS, ...FLAVOURS.map((f) => `~${f}` as T
 
 export const isAnti = (t: Token) => t.startsWith('~');
 export const flavourOf = (t: Token) => (isAnti(t) ? t.slice(1) : t) as Flavour;
-export const quarkCharge3 = (f: Flavour) => F[f].charge3;
+const quarkCharge3 = (f: Flavour) => F[f].charge3;
 /** Charge of a quark or antiquark, in thirds of e. */
 export const charge3Of = (t: Token) => (isAnti(t) ? -1 : 1) * quarkCharge3(flavourOf(t));
 /** Quark mass in MeV (u, d, s: MS-bar at 2 GeV; c, b: MS-bar at their own mass; t: direct). */
@@ -196,11 +196,11 @@ export function parseTokens(s: string): Token[] {
 }
 
 export type Colour = 'r' | 'g' | 'b';
-export const COLOURS: Colour[] = ['r', 'g', 'b'];
+const COLOURS: Colour[] = ['r', 'g', 'b'];
 
-export type BuildKind = 'empty' | 'coloured' | 'baryon' | 'antibaryon' | 'meson';
+type BuildKind = 'empty' | 'coloured' | 'baryon' | 'antibaryon' | 'meson';
 
-export interface Build {
+interface Build {
 	tokens: Token[];
 	kind: BuildKind;
 	/** Colourless: it can exist on its own. */
@@ -218,7 +218,7 @@ export interface Build {
 	hadron?: Hadron;
 }
 
-export interface Hadron {
+interface Hadron {
 	name: string;
 	/** The PDG entry: for an antiparticle, the particle's (same mass and lifetime). */
 	data: HadronData;
@@ -407,7 +407,7 @@ const D = (
 	S: q.S ?? 0
 });
 
-export const DECAY_PARTICLES: DecayParticle[] = [
+const DECAY_PARTICLES: DecayParticle[] = [
 	D('p', 'p', 1, hadronMass('proton'), true, { B: 1 }),
 	D('n', 'n', 0, hadronMass('neutron'), true, { B: 1 }),
 	D('Lambda', 'Λ⁰', 0, hadronMass('Λ⁰'), true, { B: 1, S: -1 }),
@@ -452,8 +452,8 @@ export const PRODUCTS = [
 ] as const;
 export const MAX_PRODUCTS = 4;
 
-export type LawId = 'charge' | 'baryon' | 'electron' | 'muon' | 'energy' | 'spin';
-export interface Law {
+type LawId = 'charge' | 'baryon' | 'electron' | 'muon' | 'energy' | 'spin';
+interface Law {
 	id: LawId;
 	label: string;
 	before: number;
@@ -461,7 +461,7 @@ export interface Law {
 	ok: boolean;
 }
 
-export interface DecayCheck {
+interface DecayCheck {
 	laws: Law[];
 	/** Energy released (parent mass − product masses), MeV; negative when too heavy. */
 	q: number;
@@ -535,7 +535,7 @@ export function mainMode(parentKey: string): readonly string[] {
 // ---------------------------------------------------------------- processes
 
 /** A particle line in a process, with the quantum numbers its ledger adds up. */
-export interface Line {
+interface Line {
 	key: string;
 	label: string;
 	/** Charge in thirds of e. */
@@ -579,14 +579,14 @@ const Lb = (key: string, label: string, charge3: number, kind: Line['kind'], col
 	colour
 });
 
-export interface Stage {
+interface Stage {
 	/** Short label for the stage control and the diagram. */
 	label: string;
 	/** What is present at that moment (between vertices). */
 	lines: Line[];
 }
 
-export interface Process {
+interface Process {
 	id: string;
 	title: string;
 	/** The force whose carrier is exchanged. */
@@ -678,7 +678,7 @@ export const PROCESSES: Record<string, Process> = {
 	}
 };
 
-export interface Ledger {
+interface Ledger {
 	charge3: number;
 	baryon3: number;
 	Le: number;
@@ -734,7 +734,7 @@ const SUP: Record<string, string> = {
 	'9': '⁹',
 	'-': '⁻'
 };
-export const sup = (n: number) =>
+const sup = (n: number) =>
 	String(n)
 		.split('')
 		.map((c) => SUP[c] ?? c)

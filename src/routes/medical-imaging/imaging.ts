@@ -394,7 +394,7 @@ export const POINT: Phantom = {
 /** Detector bins and image pixels across the field of view. */
 export const CT_N = 128;
 
-export interface Sinogram {
+interface Sinogram {
 	/** Number of angles K, at θk = kπ/K. */
 	angles: number;
 	/** Bins per projection. */
@@ -414,7 +414,7 @@ export const binOffset = (j: number, bins: number, tau: number) => (j + 0.5 - bi
  * Small deterministic pseudo-random normal numbers (Box–Muller on a hashed
  * integer), so a noisy scan looks the same every time it is drawn.
  */
-export function gauss(i: number): number {
+function gauss(i: number): number {
 	const h = (n: number) => {
 		let x = Math.imul(n ^ 0x9e3779b9, 0x85ebca6b);
 		x ^= x >>> 13;
@@ -454,7 +454,7 @@ export function scan(p: Phantom, angles: number, photons?: number, bins = 2 * CT
 }
 
 /** The Ram–Lak (ramp) kernel h(n) for bin spacing τ, n = −(bins−1)…bins−1. */
-export function rampKernel(bins: number, tau: number): Float64Array {
+function rampKernel(bins: number, tau: number): Float64Array {
 	const h = new Float64Array(2 * bins - 1);
 	for (let n = -(bins - 1); n <= bins - 1; n++) {
 		const i = n + bins - 1;
@@ -654,12 +654,12 @@ export function impedance(t: Tissue | 'water'): number {
 const WATER = { density: 994.04, speed: 1482.3, alpha0: 0.025328436, alphaPower: 1 };
 
 /** Fraction of the sound intensity reflected where tissue a meets tissue b. */
-export function reflected(za: number, zb: number): number {
+function reflected(za: number, zb: number): number {
 	const r = (zb - za) / (zb + za);
 	return r * r;
 }
 
-export interface Layer {
+interface Layer {
 	tissue: Tissue | 'water';
 	/** Thickness, cm. */
 	d: number;
@@ -747,7 +747,7 @@ export const wavelengthMm = (fMHz: number) => (C_ASSUMED / (fMHz * 1e6)) * 1000;
 // ======================================================================================
 
 /** Proton gyromagnetic ratio γ/2π, MHz/T (CODATA 2022). */
-export const GAMMA_MHZ_T = 42.577478461;
+const GAMMA_MHZ_T = 42.577478461;
 
 /** Larmor (precession) frequency of hydrogen nuclei in a field B (T), MHz. */
 export const larmorMHz = (B: number) => GAMMA_MHZ_T * B;
@@ -816,7 +816,7 @@ export function gradientEcho(density: (x: number) => number, GmTm: number, n = 1
  * magnitude, divided by n) of samples taken at times (i − n/2)·dt, for
  * frequencies −n/2…n/2−1 times 1/(n·dt).
  */
-export function spectrum(re: ArrayLike<number>, im: ArrayLike<number>) {
+function spectrum(re: ArrayLike<number>, im: ArrayLike<number>) {
 	const n = re.length;
 	const out = new Float64Array(n);
 	for (let f = 0; f < n; f++) {

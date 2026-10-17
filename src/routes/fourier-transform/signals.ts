@@ -16,12 +16,12 @@ import {
 /** Samples per period of a waveform (a multiple of 5 and 4, so the presets' corners fall on samples). */
 export const N_WAVE = 400;
 /** Points of a closed curve. */
-export const N_CURVE = 200;
+const N_CURVE = 200;
 /** How many bars the spectrum charts show (1 … BARS Hz, plus 0 Hz). */
 export const BARS = 16;
 
-export const WAVE_SHAPES: readonly WaveShape[] = ['square', 'sawtooth', 'triangle', 'pulse'];
-export const CURVE_SHAPES: readonly CurveShape[] = ['heart', 'star', 'square'];
+const WAVE_SHAPES: readonly WaveShape[] = ['square', 'sawtooth', 'triangle', 'pulse'];
+const CURVE_SHAPES: readonly CurveShape[] = ['heart', 'star', 'square'];
 
 export const WAVE_NAMES: Record<string, string> = {
 	square: 'square wave',

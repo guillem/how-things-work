@@ -66,7 +66,7 @@ export const MACHINE = {
 } as const;
 
 /** Coil area A = L·w, m². */
-export const AREA = MACHINE.L * MACHINE.w;
+const AREA = MACHINE.L * MACHINE.w;
 /** N·B·A, the machine's constant (V·s per rad, or N·m per A). */
 export const NBA = MACHINE.turns * MACHINE.B * AREA;
 
@@ -87,7 +87,7 @@ export type Connection = 'commutator' | 'slip';
 export const normal = (theta: number) => ({ x: Math.cos(theta), y: Math.sin(theta) });
 
 /** Positions (m, from the shaft; x along B, y up) of the coil's sides a and b. */
-export function sides(theta: number, w: number = MACHINE.w) {
+function sides(theta: number, w: number = MACHINE.w) {
 	const h = w / 2;
 	return {
 		a: { x: -h * Math.sin(theta), y: h * Math.cos(theta) },
@@ -100,7 +100,7 @@ export function sides(theta: number, w: number = MACHINE.w) {
  * page), in a field B along +x: F = N I L × B, so with L = ±ẑ it points along
  * ±ŷ, always perpendicular to the field whatever the coil's angle.
  */
-export function sideForce(current: number, outOfPage: boolean) {
+function sideForce(current: number, outOfPage: boolean) {
 	const sign = outOfPage ? 1 : -1;
 	return { x: 0, y: sign * MACHINE.turns * current * MACHINE.L * MACHINE.B };
 }
@@ -187,7 +187,7 @@ export const steadyAngle = (t: number, f: number) => 2 * Math.PI * f * t;
 
 // ------------------------------------------------------------------ motor
 
-export interface MotorParams {
+interface MotorParams {
 	/** Battery voltage, V. */
 	V: number;
 	connection: Connection;
@@ -201,7 +201,7 @@ export interface MotorState {
 }
 
 /** External (battery) current, A, at angle θ and speed ω: (V − back emf) / R. */
-export function motorCurrent(p: MotorParams, theta: number, omega: number) {
+function motorCurrent(p: MotorParams, theta: number, omega: number) {
 	// Back emf seen through the connection: N B A ω s(θ), with s = |sin θ| or sin θ.
 	return (p.V - terminalVoltage(theta, omega, p.connection)) / MACHINE.R;
 }

@@ -25,13 +25,13 @@ import { rng } from '#lib/draw/math.ts';
 
 export const G = 9.81;
 /** Controller period (s). */
-export const DT = 0.001;
+const DT = 0.001;
 const TAU = 2 * Math.PI;
 
 // ------------------------------------------------------------ random numbers
 
 /** Standard normal samples from a uniform generator (Box–Muller). */
-export function gaussian(u: () => number) {
+function gaussian(u: () => number) {
 	return () => Math.sqrt(-2 * Math.log(1 - u())) * Math.cos(TAU * u());
 }
 
@@ -43,7 +43,7 @@ export interface Gains {
 	kd: number;
 }
 
-export interface PidOptions extends Gains {
+interface PidOptions extends Gains {
 	/** Output limits. */
 	min: number;
 	max: number;
@@ -55,17 +55,17 @@ export interface PidOptions extends Gains {
 	antiWindup?: boolean;
 }
 
-export interface PidState {
+interface PidState {
 	i: number;
 	d: number;
 	prev: number;
 	started: boolean;
 }
 
-export const pidState = (i = 0): PidState => ({ i, d: 0, prev: 0, started: false });
+const pidState = (i = 0): PidState => ({ i, d: 0, prev: 0, started: false });
 
 /** One controller tick: error e = r − y, measured y; returns the clamped output and its terms. */
-export function pidTick(o: PidOptions, s: PidState, r: number, y: number, dt = DT) {
+function pidTick(o: PidOptions, s: PidState, r: number, y: number, dt = DT) {
 	const e = r - y;
 	const rate = s.started ? (y - s.prev) / dt : 0;
 	s.prev = y;
@@ -85,7 +85,7 @@ export function pidTick(o: PidOptions, s: PidState, r: number, y: number, dt = D
 
 // ------------------------------------------------------------ a closed loop
 
-export interface Plant {
+interface Plant {
 	/** Number of state variables. */
 	n: number;
 	/** State derivative for actuator command u at time t. */
@@ -98,7 +98,7 @@ export interface Plant {
 	limit?(x: Float64Array): void;
 }
 
-export interface LoopOptions {
+interface LoopOptions {
 	plant: Plant;
 	x0: number[];
 	/** Target at time t. */
@@ -151,7 +151,7 @@ function rk4(plant: Plant, x: Float64Array, u: number, t: number, h: number, w: 
 }
 
 /** Runs the loop for `seconds`, storing every `sample` s. */
-export function runLoop(o: LoopOptions): Run {
+function runLoop(o: LoopOptions): Run {
 	const sample = o.sample ?? 1 / 30;
 	const every = Math.max(1, Math.round(sample / DT));
 	const n = Math.floor(o.seconds / sample) + 1;
@@ -304,14 +304,14 @@ export const CAR = {
 };
 
 /** Engine torque (N·m) at engine speed ω (rad/s). */
-export const torque = (w: number) => Math.max(0, CAR.tm * (1 - CAR.beta * (w / CAR.wm - 1) ** 2));
+const torque = (w: number) => Math.max(0, CAR.tm * (1 - CAR.beta * (w / CAR.wm - 1) ** 2));
 /** Force at the wheels (N) at full throttle and speed v (m/s). */
 export const fullForce = (v: number) => CAR.alpha * torque(CAR.alpha * Math.max(0, v));
 /** Rolling resistance plus air drag (N) at speed v on the flat. */
-export const resistance = (v: number) =>
+const resistance = (v: number) =>
 	CAR.m * G * CAR.cr * Math.sign(v) + 0.5 * CAR.rho * CAR.cd * CAR.area * v * v;
 /** Force (N) of gravity along a slope of grade s (rise over run). */
-export const slopeForce = (s: number) => CAR.m * G * Math.sin(Math.atan(s));
+const slopeForce = (s: number) => CAR.m * G * Math.sin(Math.atan(s));
 /** Throttle (0–1) that holds speed v on grade s. */
 export const throttleToHold = (v: number, s = 0) => (resistance(v) + slopeForce(s)) / fullForce(v);
 
@@ -349,7 +349,7 @@ export function roadHeight(road: Road, x: number) {
 }
 
 /** The car as a plant: state [distance, speed, engine throttle]; the command is the throttle. */
-export function carPlant(road: Road): Plant {
+function carPlant(road: Road): Plant {
 	return {
 		n: 3,
 		deriv(x, u, _t, out) {
@@ -363,7 +363,7 @@ export function carPlant(road: Road): Plant {
 	};
 }
 
-export interface CarOptions {
+interface CarOptions {
 	road: Road;
 	/** Gains in throttle (0–1) per m/s of error (and per second, × second). */
 	gains: Gains;
@@ -478,7 +478,7 @@ export const DRONE = {
 	tf: 0.02
 };
 
-export interface DroneOptions {
+interface DroneOptions {
 	gains: Gains;
 	/** Extra mass the controller doesn't know about (kg). */
 	parcel?: number;

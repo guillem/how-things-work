@@ -54,7 +54,7 @@ function bytes(b64: string): Uint8Array {
 	return out;
 }
 
-export function dot(a: ArrayLike<number>, b: ArrayLike<number>): number {
+function dot(a: ArrayLike<number>, b: ArrayLike<number>): number {
 	let s = 0;
 	for (let i = 0; i < a.length; i++) s += a[i] * b[i];
 	return s;
@@ -73,7 +73,7 @@ export function softmax(scores: readonly number[]): number[] {
 	return e.map((x) => x / sum);
 }
 
-export interface AttentionStep {
+interface AttentionStep {
 	/** q·k for every key j ≤ i (the earlier tokens and the token itself). */
 	dots: number[];
 	/** The scores q·k / √d. */
@@ -107,7 +107,7 @@ export function attend(
 }
 
 /** One fixed sentence and the attention of all 144 heads of GPT-2 small on it. */
-export class Sentence {
+class Sentence {
 	readonly id: string;
 	readonly text: string;
 	readonly tokens: string[];

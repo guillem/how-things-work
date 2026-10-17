@@ -25,15 +25,15 @@
  *    c = 1/√(μ₀ε₀).
  */
 
-export const K_E = 8.9875517923e9; // Coulomb constant, N·m²/C²
+const K_E = 8.9875517923e9; // Coulomb constant, N·m²/C²
 export const MU0 = 1.25663706212e-6; // vacuum permeability, T·m/A
-export const EPS0 = 8.8541878128e-12; // vacuum permittivity, F/m
+const EPS0 = 8.8541878128e-12; // vacuum permittivity, F/m
 /** Speed of light from Maxwell's constants, 1/√(μ₀ε₀) ≈ 2.998 × 10⁸ m/s. */
 export const C = 1 / Math.sqrt(MU0 * EPS0);
 /** Horizontal part of the Earth's magnetic field in much of Europe, ≈ 20 µT. */
 export const EARTH_H = 20e-6;
 
-export interface Vec {
+interface Vec {
 	x: number;
 	y: number;
 }
@@ -76,7 +76,7 @@ export function potentialAt(charges: readonly Charge[], x: number, y: number) {
 	return v;
 }
 
-export interface FieldLineOptions {
+interface FieldLineOptions {
 	/** Lines leaving a charge of `unit` coulombs (more for bigger charges). */
 	linesPerUnit: number;
 	unit: number;
@@ -89,7 +89,7 @@ export interface FieldLineOptions {
 	maxSteps?: number;
 }
 
-export interface FieldLine {
+interface FieldLine {
 	points: Vec[];
 	/** Index of the charge the line starts from (its + end), or −1 (from the edge). */
 	from: number;
@@ -312,7 +312,7 @@ export function loopFlux(loop: Loop, b: number, z: number): number {
 export const loopAxisField = (loop: Loop, z: number) =>
 	(MU0 * loop.I * loop.a ** 2) / (2 * (loop.a ** 2 + (z - loop.z) ** 2) ** 1.5);
 
-export interface Coil {
+interface Coil {
 	/** Radius (m), length (m), centre (m), turns, current (A). */
 	a: number;
 	length: number;
@@ -334,7 +334,7 @@ export function coilLoops(c: Coil, slices = 12): Loop[] {
 	}));
 }
 
-export interface BarMagnet {
+interface BarMagnet {
 	/** Radius (m), length (m), centre (m), remanence B_r (T); north pole towards +z. */
 	a: number;
 	length: number;
@@ -365,7 +365,7 @@ export function loopsField(loops: readonly Loop[], rho: number, z: number) {
 }
 
 /** Total flux (Wb·turns) linked by a pickup coil: Σ over its turns of each source loop's flux. */
-export function linkedFlux(sources: readonly Loop[], pickup: Coil, slices = 6): number {
+function linkedFlux(sources: readonly Loop[], pickup: Coil, slices = 6): number {
 	const n = Math.max(1, slices);
 	let total = 0;
 	for (let i = 0; i < n; i++) {
@@ -376,7 +376,7 @@ export function linkedFlux(sources: readonly Loop[], pickup: Coil, slices = 6): 
 }
 
 /** Mutual inductance (H) of two coaxial coils. */
-export function mutualInductance(a: Coil, b: Coil): number {
+function mutualInductance(a: Coil, b: Coil): number {
 	return linkedFlux(coilLoops({ ...a, I: 1 }, 6), b);
 }
 
@@ -394,7 +394,7 @@ export function magnetLinkage(z: number, turns = PICKUP.turns, magnet = MAGNET) 
 }
 
 /** dΦ/dz (Wb·turns per metre) for the magnet at z, by a central difference. */
-export function magnetLinkageSlope(z: number, turns = PICKUP.turns, magnet = MAGNET) {
+function magnetLinkageSlope(z: number, turns = PICKUP.turns, magnet = MAGNET) {
 	const h = 2e-4;
 	return (magnetLinkage(z + h, turns, magnet) - magnetLinkage(z - h, turns, magnet)) / (2 * h);
 }
@@ -434,7 +434,7 @@ export function swing(t: number, vMax: number, Z = 0.1) {
 }
 
 /** The neighbouring coil (A) and the pickup (B), coaxial, `gap` metres apart (centre to centre). */
-export const COIL_A: Coil = { a: 0.02, length: 0.012, z: 0, turns: 500, I: 0 };
+const COIL_A: Coil = { a: 0.02, length: 0.012, z: 0, turns: 500, I: 0 };
 
 /**
  * Alternating current I₀ cos(2π f t) in coil A (f = 0: a steady I₀), and the

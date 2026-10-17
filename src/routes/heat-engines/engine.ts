@@ -19,7 +19,7 @@ export const CP = GAMMA * CV;
 /** Standard atmosphere, Pa. */
 export const P_ATM = 101325;
 /** Swept volume of one cylinder: a 2-litre four-cylinder engine has 0.5 L per cylinder. */
-export const SWEPT = 0.5e-3;
+const SWEPT = 0.5e-3;
 /** Crank geometry: crank radius and connecting-rod length (rod ratio 3.5), in units of the stroke. */
 export const CRANK = 0.5;
 export const ROD = 1.75;
@@ -32,7 +32,7 @@ export interface State {
 	S: number;
 }
 
-export interface Point {
+interface Point {
 	V: number;
 	P: number;
 	T: number;
@@ -62,11 +62,11 @@ export interface Cycle {
 }
 
 /** Entropy of m kg of ideal gas at (T, V) relative to (T0, V0), J/K. */
-export const entropy = (m: number, T: number, V: number, T0: number, V0: number) =>
+const entropy = (m: number, T: number, V: number, T0: number, V0: number) =>
 	m * (CV * Math.log(T / T0) + R_AIR * Math.log(V / V0));
 
 /** Largest and smallest volume of the cylinder for a compression ratio r (m³). */
-export function volumes(r: number, swept = SWEPT) {
+function volumes(r: number, swept = SWEPT) {
 	const vMax = (swept * r) / (r - 1);
 	return { vMax, vMin: vMax / r };
 }
@@ -271,7 +271,7 @@ export const reservoirEntropy = (c: Cycle) => -c.qIn / c.tMax + c.qOut / c.tMin;
 
 // ---- the entropy ledger --------------------------------------------------------------------
 
-export interface Ledger {
+interface Ledger {
 	qHot: number;
 	work: number;
 	qCold: number;

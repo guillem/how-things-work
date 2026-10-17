@@ -21,7 +21,7 @@
 export type State = number[];
 
 /** One RK4 step for dy/dt = f(y). */
-export function rk4(f: (y: State) => State, y: State, h: number): State {
+function rk4(f: (y: State) => State, y: State, h: number): State {
 	const k1 = f(y);
 	const k2 = f(y.map((v, i) => v + (h / 2) * k1[i]));
 	const k3 = f(y.map((v, i) => v + (h / 2) * k2[i]));
@@ -53,7 +53,7 @@ export const logisticExact = (N0: number, a: number, K: number, t: number) =>
 
 // ------------------------------------------------------------ 2. predator and prey
 
-export interface LV {
+interface LV {
 	/** Prey growth rate (per year): births minus natural deaths. */
 	a: number;
 	/** Predation rate (per predator per year). */

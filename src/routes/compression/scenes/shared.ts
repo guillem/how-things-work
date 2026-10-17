@@ -3,7 +3,7 @@ import type { Params } from '#lib/explainer/index.ts';
 import { SIZE, bmpDataUrl, lumaOf, makeImage, type Grey, type ImageId } from '../compression';
 
 /** A traditional English tongue-twister: 37 characters, 11 different symbols, skewed counts. */
-export const DEFAULT_MESSAGE = 'she sells sea shells by the sea shore';
+const DEFAULT_MESSAGE = 'she sells sea shells by the sea shore';
 export const MAX_LENGTH = 40;
 
 export const PRESETS: { label: string; value: string }[] = [
@@ -34,7 +34,7 @@ export const int = (v: number) => Math.round(v).toLocaleString('en-US');
 export const BLOCKS = SIZE / 8;
 
 /** A test image, or the reader's own picture ('own'). */
-export type PictureId = ImageId | 'own';
+type PictureId = ImageId | 'own';
 
 const images = new Map<ImageId, Grey>();
 /** The reader's own picture, once loaded (it never leaves the browser). */

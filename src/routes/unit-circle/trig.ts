@@ -7,7 +7,7 @@
 import type { Params, Step } from '#lib/explainer/index.ts';
 
 export const toRad = (deg: number) => (deg * Math.PI) / 180;
-export const toDeg = (rad: number) => (rad * 180) / Math.PI;
+const toDeg = (rad: number) => (rad * 180) / Math.PI;
 
 /** Angle in degrees, in [0, 360), of point (x, y) seen from (cx, cy), with y pointing DOWN on screen. */
 export function screenAngle(cx: number, cy: number, x: number, y: number) {

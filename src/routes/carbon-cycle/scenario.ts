@@ -17,7 +17,7 @@ export const CONTROL_DEFAULTS = {
 	mixing: 100
 };
 
-export interface Setup {
+interface Setup {
 	fossil: number;
 	luc: number;
 	years: number;

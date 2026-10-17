@@ -25,10 +25,10 @@ const mod360 = (a: number) => ((a % 360) + 360) % 360;
 /** Total solar irradiance, W/m² (Kopp & Lean 2011, GRL 38, L01706: 1360.8 ± 0.5). */
 export const SOLAR = 1361;
 /** Length of the year, days, and day of the March equinox (0 = 1 January; 20 March). */
-export const YEAR = 365.2422;
-export const MARCH_EQUINOX_DAY = 78.6;
+const YEAR = 365.2422;
+const MARCH_EQUINOX_DAY = 78.6;
 /** The latitude most often used since Milankovitch: where the great northern ice sheets grew. */
-export const LAT_65N = 65;
+const LAT_65N = 65;
 
 export interface Orbit {
 	/** Eccentricity: 0 for a circle. */
@@ -41,7 +41,7 @@ export interface Orbit {
 
 // ------------------------------------------------------------------ orbit through time
 
-export const ORBIT_LAST_KYR = ORBIT_FIRST_KYR + ECCENTRICITY.length - 1;
+const ORBIT_LAST_KYR = ORBIT_FIRST_KYR + ECCENTRICITY.length - 1;
 
 /**
  * Orbit `kyr` thousand years from now (negative: in the past), interpolated
@@ -69,7 +69,7 @@ export function distance(o: Orbit, lambda: number) {
 }
 
 /** Solar declination, degrees, at true longitude `lambda` (90 = June solstice). */
-export const declination = (o: Orbit, lambda: number) =>
+const declination = (o: Orbit, lambda: number) =>
 	deg(Math.asin(Math.sin(rad(o.tilt)) * Math.sin(rad(lambda))));
 
 /** Daily mean insolation at the top of the atmosphere, W/m², at latitude `lat` (degrees). */

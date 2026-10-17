@@ -20,13 +20,13 @@ export const MEV = 1.602176634e-13;
 /** Avogadro constant, per mole (exact). */
 export const AVOGADRO = 6.02214076e23;
 /** Atomic mass unit in MeV (CODATA 2018). */
-export const AMU_MEV = 931.49410242;
+const AMU_MEV = 931.49410242;
 
 // ---------------------------------------------------------------------------
 // Binding energy (AME2020)
 // ---------------------------------------------------------------------------
 
-export interface CurvePoint {
+interface CurvePoint {
 	A: number;
 	Z: number;
 	element: string;
@@ -42,7 +42,7 @@ export const bindingCurve: readonly CurvePoint[] = curve.map(([A, Z, element, ke
 	b: keV / 1000
 }));
 
-export type NuclideKey = keyof typeof nuclides;
+type NuclideKey = keyof typeof nuclides;
 
 /** Binding energy per nucleon of a named nucleus, MeV. */
 export const perNucleon = (key: NuclideKey) => nuclides[key].perNucleon / 1000;
@@ -56,7 +56,7 @@ export function peak(): CurvePoint {
 // The energy of a split
 // ---------------------------------------------------------------------------
 
-export interface Split {
+interface Split {
 	id: string;
 	/** Light and heavy fragment, as they fly apart. */
 	light: NuclideKey;
@@ -146,14 +146,14 @@ export const U235 = { fission: 587.3, capture: 99.5, nu: 2.425 } as const;
  * from V.F. Sears, "Neutron scattering lengths and cross sections", Neutron News
  * 3, 26 (1992), via the NIST Center for Neutron Research table.
  */
-export const ABSORB = { U238: 2.68, H: 0.3326, O: 0.00019 } as const;
+const ABSORB = { U238: 2.68, H: 0.3326, O: 0.00019 } as const;
 const SCATTER_BOUND = { H: 82.03, O: 4.232 } as const;
 
 /** Natural uranium: 0.711% U-235 by weight, as the enrichment slider counts it (0.720% by atoms, same NIST table). */
 export const NATURAL = 0.711;
 
 /** Atom fraction of U-235 for an enrichment given in percent by weight. */
-export function atomFraction(enrichmentPct: number): number {
+function atomFraction(enrichmentPct: number): number {
 	const w = enrichmentPct / 100;
 	return w / 235.0439 / (w / 235.0439 + (1 - w) / 238.0508);
 }
@@ -179,7 +179,7 @@ export function xi(A: number): number {
 export const collisions = (from: number, to: number, x: number) => Math.log(from / to) / x;
 
 /** Energy of a fission neutron (eV, typical) and of a thermal one at 20 °C. */
-export const FAST_EV = 2e6;
+const FAST_EV = 2e6;
 export const THERMAL_EV = 0.0253;
 
 /** Free-atom scattering cross section, barns (σ_bound × (A / (A + 1))²). */
@@ -209,7 +209,7 @@ export const U235_FAST_FISSION = 1;
  * 300 °C at 15.5 MPa); about 2 volumes of water per volume of fuel, typical of a
  * PWR. These are representative design values, not one particular reactor.
  */
-export const LATTICE = {
+const LATTICE = {
 	uo2Density: 10.4,
 	pelletRadius: 0.41,
 	waterDensity: 0.72,
@@ -217,7 +217,7 @@ export const LATTICE = {
 } as const;
 
 /** Fast-fission factor ε: extra neutrons from fast fission of U-238 (textbook value for LWR lattices). */
-export const EPSILON = 1.03;
+const EPSILON = 1.03;
 /** Share of neutrons that do not leak out of a large core (a design choice of this page). */
 export const NON_LEAKAGE = 0.97;
 
@@ -227,18 +227,18 @@ export const NON_LEAKAGE = 0.97;
  * ratio in cm²/g (as given in J.R. Lamarsh and A.J. Baratta, Introduction to
  * Nuclear Engineering, 3rd ed., ch. 6).
  */
-export function resonanceIntegral(): number {
+function resonanceIntegral(): number {
 	const sm = 2 / (LATTICE.uo2Density * LATTICE.pelletRadius);
 	return 4.45 + 26.6 * Math.sqrt(sm);
 }
 
 /** Integral worth shape of a control rod: share of its full effect at insertion x (0–1). */
-export const rodShape = (x: number) => {
+const rodShape = (x: number) => {
 	const u = Math.min(1, Math.max(0, x));
 	return u - Math.sin(2 * Math.PI * u) / (2 * Math.PI);
 };
 
-export interface CoreSettings {
+interface CoreSettings {
 	/** U-235 enrichment, percent by weight. */
 	enrichment: number;
 	/** Water in the core relative to the design amount (1 = design). */
@@ -247,7 +247,7 @@ export interface CoreSettings {
 	rods: number;
 }
 
-export interface Factors {
+interface Factors {
 	eta: number;
 	epsilon: number;
 	/** Resonance escape: share of neutrons not captured by U-238 while slowing down. */
@@ -289,7 +289,7 @@ function factorsWith(s: CoreSettings, rodAbs: number): Factors {
  * absorbers in the fuel together.
  */
 export const DESIGN: CoreSettings = { enrichment: 4, water: 1, rods: 0.5 };
-export const ROD_STRENGTH = (() => {
+const ROD_STRENGTH = (() => {
 	const out = factorsWith({ ...DESIGN, rods: 0 }, 0);
 	const m = macroscopic(DESIGN.enrichment);
 	const ratio = DESIGN.water * LATTICE.waterPerFuel;
@@ -301,7 +301,7 @@ export const ROD_STRENGTH = (() => {
 /** The four factors and k of a core. */
 export const factors = (s: CoreSettings): Factors => factorsWith(s, ROD_STRENGTH);
 
-export type Regime = 'subcritical' | 'critical' | 'supercritical';
+type Regime = 'subcritical' | 'critical' | 'supercritical';
 /** Within ±0.001 of 1 counts as critical (what the page calls "steady"). */
 export function regime(k: number, tolerance = 0.001): Regime {
 	if (k < 1 - tolerance) return 'subcritical';
@@ -370,7 +370,7 @@ export const expectedChain = (k: number, n0: number, g: number) => n0 * k ** g;
  * fission neutrons and decay constant (per second). G.R. Keepin, Physics of
  * Nuclear Kinetics (1965), as tabulated in Lamarsh and Baratta (3rd ed.).
  */
-export const DELAYED = [
+const DELAYED = [
 	{ beta: 0.000215, lambda: 0.0124 },
 	{ beta: 0.001424, lambda: 0.0305 },
 	{ beta: 0.001274, lambda: 0.111 },

@@ -7,7 +7,7 @@
  */
 
 export const LABELS = ['upper moon', 'lower moon'] as const;
-export const JITTER = 0.05;
+const JITTER = 0.05;
 const SCALE = 1.2;
 
 /** One point of moon `label`, from a uniform and a normal generator. */
@@ -31,7 +31,7 @@ export function moonCurve(label: number, n = 60): [number, number][] {
 }
 
 /** Distance from (px, py) to the centre line of moon `label`, in the page's coordinates. */
-export function distanceToMoon(px: number, py: number, label: number): number {
+function distanceToMoon(px: number, py: number, label: number): number {
 	// back to make_moons coordinates, where the moon is a half circle of radius 1
 	const x = px / SCALE + 0.5;
 	const y = py / SCALE + 0.25;

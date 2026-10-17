@@ -21,15 +21,15 @@ import { rng } from '#lib/draw/math.ts';
 export const BOX_W = 404;
 export const BOX_H = 380;
 /** Molecule slots (the most molecules the box can hold). */
-export const SLOTS = 96;
+const SLOTS = 96;
 /** Centre distance at which two molecules touch. */
-export const CONTACT = 19;
+const CONTACT = 19;
 /** Margin from the walls for a molecule's centre. */
 const PAD = 11;
 /** Collision detection step (animation seconds). */
 const DT = 1 / 60;
 
-export type Species = 'h2' | 'i2' | 'hi' | 'none';
+type Species = 'h2' | 'i2' | 'hi' | 'none';
 
 interface Path {
 	x0: number;
@@ -78,7 +78,7 @@ export function position(i: number, t: number): { x: number; y: number; angle: n
 
 // ------------------------------------------------------------------ collisions
 
-export interface Collision {
+interface Collision {
 	t: number;
 	i: number;
 	j: number;
@@ -124,7 +124,7 @@ function collisionsUntil(t: number): readonly Collision[] {
 // ------------------------------------------------------------------ a run
 
 /** Reactions the model has done by animation time t, in molecules. */
-export interface Targets {
+interface Targets {
 	forward: number;
 	reverse: number;
 }
@@ -135,7 +135,7 @@ export interface Dose {
 	n: number;
 }
 
-export interface Flash {
+interface Flash {
 	t: number;
 	x: number;
 	y: number;
@@ -143,7 +143,7 @@ export interface Flash {
 	kind: 'forward' | 'reverse';
 }
 
-export interface BoxState {
+interface BoxState {
 	species: Species[];
 	/** When each slot last changed (for fades), and what it was before. */
 	since: number[];

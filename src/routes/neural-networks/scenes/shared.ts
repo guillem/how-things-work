@@ -90,13 +90,13 @@ export function createSince() {
  * Fill for a value u in [−1, 1]: orange (class 0) below 0, blue (class 1) above, fading to
  * the neutral middle at 0. `strength` caps how saturated the far ends get.
  */
-export function shade(u: number, strength: number) {
+function shade(u: number, strength: number) {
 	if (!Number.isFinite(u)) return 'var(--nn-mid)';
 	const k = Math.round(100 * strength * Math.min(1, Math.abs(u)));
 	return `color-mix(in oklab, var(${u < 0 ? '--nn-a-fill' : '--nn-b-fill'}) ${k}%, var(--nn-mid))`;
 }
 
-export interface Band {
+interface Band {
 	key: string;
 	d: string;
 	fill: string;

@@ -20,7 +20,7 @@ import { CHFCLBR, CH2FCL } from './geometry.ts';
 export type V3 = [number, number, number];
 export type M3 = [V3, V3, V3];
 
-export interface Group {
+interface Group {
 	/** Label drawn on the ball ("H", "F", "CH₃", …). */
 	label: string;
 	/** The atom that bonds to the centre (sets the colour). */
@@ -28,7 +28,7 @@ export interface Group {
 	/** Position relative to the centre carbon (Å). */
 	pos: V3;
 }
-export interface Centre {
+interface Centre {
 	id: string;
 	name: string;
 	formula: string;
@@ -38,14 +38,14 @@ export interface Centre {
 }
 
 const sub = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
-export const dot = (a: V3, b: V3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-export const cross = (a: V3, b: V3): V3 => [
+const dot = (a: V3, b: V3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+const cross = (a: V3, b: V3): V3 => [
 	a[1] * b[2] - a[2] * b[1],
 	a[2] * b[0] - a[0] * b[2],
 	a[0] * b[1] - a[1] * b[0]
 ];
-export const norm = (a: V3) => Math.hypot(a[0], a[1], a[2]);
-export const unit = (a: V3): V3 => {
+const norm = (a: V3) => Math.hypot(a[0], a[1], a[2]);
+const unit = (a: V3): V3 => {
 	const l = norm(a) || 1;
 	return [a[0] / l, a[1] / l, a[2] / l];
 };
@@ -54,7 +54,7 @@ export const mul = (a: M3, b: M3): M3 =>
 	[0, 1, 2].map((i) =>
 		[0, 1, 2].map((j) => a[i][0] * b[0][j] + a[i][1] * b[1][j] + a[i][2] * b[2][j])
 	) as M3;
-export const transpose = (m: M3): M3 => [
+const transpose = (m: M3): M3 => [
 	[m[0][0], m[1][0], m[2][0]],
 	[m[0][1], m[1][1], m[2][1]],
 	[m[0][2], m[1][2], m[2][2]]
@@ -213,7 +213,7 @@ export function bestFit(from: V3[], to: V3[]): { R: M3; rms: number } {
 	};
 }
 
-export function rmsd(a: V3[], b: V3[]) {
+function rmsd(a: V3[], b: V3[]) {
 	const s = a.reduce((acc, p, i) => acc + dot(sub(p, b[i]), sub(p, b[i])), 0);
 	return Math.sqrt(s / a.length);
 }

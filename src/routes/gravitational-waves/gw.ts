@@ -25,13 +25,13 @@ export const GM_SUN = 1.32712440041e20; // m³/s² (IAU 2015 nominal)
 export const M_SUN = GM_SUN / G; // kg
 export const GM_EARTH = 3.986004418e14; // m³/s²
 /** G M☉ / c³: the Sun's mass as a time, 4.93 µs. */
-export const T_SUN = GM_SUN / C ** 3;
+const T_SUN = GM_SUN / C ** 3;
 /** G M☉ / c²: the Sun's mass as a length, 1.48 km. */
 export const L_SUN = GM_SUN / C ** 2;
 export const AU = 1.495978707e11; // m
-export const PC = 3.0856775814913e16; // m
+const PC = 3.0856775814913e16; // m
 export const MPC = 1e6 * PC;
-export const DAY = 86_400;
+const DAY = 86_400;
 export const YEAR = 365.25 * DAY;
 /** c⁵/G, the natural unit of gravitational-wave power: 3.6 × 10⁵² W. */
 export const PLANCK_POWER = C ** 5 / G;
@@ -47,7 +47,7 @@ export const LIGO_BASELINE = 3.002e6;
 /** Chirp mass (m₁m₂)^(3/5)/(m₁+m₂)^(1/5), the one combination the inspiral depends on. */
 export const chirpMass = (m1: number, m2: number) => (m1 * m2) ** 0.6 / (m1 + m2) ** 0.2;
 /** Symmetric mass ratio η = m₁m₂/(m₁+m₂)², ¼ for equal masses. */
-export const eta = (m1: number, m2: number) => (m1 * m2) / (m1 + m2) ** 2;
+const eta = (m1: number, m2: number) => (m1 * m2) / (m1 + m2) ** 2;
 /** Smallest total mass for a given chirp mass (equal masses): 2^(6/5) M_c. */
 export const minTotalMass = (mc: number) => 2 ** 1.2 * mc;
 /** Masses m₁ ≥ m₂ with chirp mass `mc` and ratio q = m₂/m₁ ≤ 1. */
@@ -132,7 +132,7 @@ export function cycles(f1: number, f2: number, mc: number) {
 	return ((3 / 5) * (f1 ** (-5 / 3) - f2 ** (-5 / 3))) / k;
 }
 /** Phase of the wave (radians) τ seconds before coalescence, up to a constant. */
-export function phaseAt(tau: number, mc: number) {
+function phaseAt(tau: number, mc: number) {
 	return -2 * (tau / (5 * mc * T_SUN)) ** (5 / 8);
 }
 
@@ -236,7 +236,7 @@ export const GW150914 = {
 // ---------------------------------------------------------------- reading the data
 
 /** Interpolated times where the series crosses zero. */
-export function zeroCrossings(y: readonly number[], t0: number, rate: number) {
+function zeroCrossings(y: readonly number[], t0: number, rate: number) {
 	const out: number[] = [];
 	for (let i = 1; i < y.length; i++) {
 		const a = y[i - 1];
