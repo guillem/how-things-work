@@ -24,7 +24,7 @@
 	 */
 	import { SvelteMap } from 'svelte/reactivity';
 	import { hash, lerp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		GAPS,
 		IONISATION,
@@ -251,7 +251,9 @@
 
 <g>
 	<!-- palette -->
-	{@render txt(24, 47, 'Put in:', 13, { anchor: 'start', weight: 700 })}
+	<Readout id="put-in">
+		{@render txt(24, 47, 'Put in:', 13, { anchor: 'start', weight: 700 })}
+	</Readout>
 	{#each CHIPS as c (c.sym)}
 		<g
 			class="chip"
@@ -285,7 +287,9 @@
 				anchor: 'start',
 				weight: 600
 			})}
-			{@render txt(c.x - 12, 55, c.note, 10, { anchor: 'start', muted: true })}
+			<Readout id="chip-note-{c.sym}">
+				{@render txt(c.x - 12, 55, c.note, 10, { anchor: 'start', muted: true })}
+			</Readout>
 		</g>
 	{/each}
 	<g
@@ -409,19 +413,42 @@
 	{/each}
 
 	<!-- readout -->
-	{@render txt(275, 470, `Free electrons: ${counts.electrons}  ·  Holes: ${counts.holes}`, 15, {
-		weight: 700
-	})}
-	{@render txt(275, 492, verdict, 13, { weight: 600 })}
-	{@render txt(275, 522, 'Click an atom to swap it (or Tab to it and press Enter).', 12, {
-		muted: true
-	})}
-	{@render txt(275, 540, 'Not to scale: real doping is one atom in thousands to billions.', 11, {
-		muted: true
-	})}
+	<Readout
+		id="electrons"
+		order={1}
+		label="Free electrons"
+		value={String(counts.electrons)}
+		color="var(--semi-electron)"
+	>
+		{@render txt(275, 470, `Free electrons: ${counts.electrons}  ·  Holes: ${counts.holes}`, 15, {
+			weight: 700
+		})}
+	</Readout>
+	<Readout
+		id="holes"
+		order={2}
+		label="Holes"
+		value={String(counts.holes)}
+		color="var(--semi-hole)"
+	/>
+	<Readout id="verdict" order={3} label="So the silicon is" value={verdict}>
+		{@render txt(275, 492, verdict, 13, { weight: 600 })}
+	</Readout>
+	<Readout id="try" order={4} label="Try it" value="tap an atom to swap it">
+		{@render txt(275, 522, 'Click an atom to swap it (or Tab to it and press Enter).', 12, {
+			muted: true
+		})}
+	</Readout>
+	<Readout id="scale">
+		{@render txt(275, 540, 'Not to scale: real doping is one atom in thousands to billions.', 11, {
+			muted: true
+		})}
+	</Readout>
 
 	<!-- bands -->
-	{@render txt((BX0 + BX1) / 2, 104, 'Energy bands of the doped silicon', 14, { weight: 700 })}
+	<Readout id="bands-title">
+		{@render txt((BX0 + BX1) / 2, 104, 'Energy bands of the doped silicon', 14, { weight: 700 })}
+	</Readout>
 	<rect
 		x={BX0}
 		y={EC - 100}
@@ -440,8 +467,12 @@
 		fill="var(--semi-filled)"
 		stroke="var(--semi-band-edge)"
 	/>
-	{@render txt((BX0 + BX1) / 2, EC - 76, 'conduction band', 13, { weight: 600 })}
-	{@render txt((BX0 + BX1) / 2, EV + 84, 'valence band', 13, { weight: 600 })}
+	<Readout id="cb" order={10} label="Conduction band" marker={1} at={[(BX0 + BX1) / 2, EC - 70]}>
+		{@render txt((BX0 + BX1) / 2, EC - 76, 'conduction band', 13, { weight: 600 })}
+	</Readout>
+	<Readout id="vb" order={11} label="Valence band" marker={2} at={[(BX0 + BX1) / 2, EV + 78]}>
+		{@render txt((BX0 + BX1) / 2, EV + 84, 'valence band', 13, { weight: 600 })}
+	</Readout>
 	<line
 		x1={BX1 + 18}
 		x2={BX1 + 18}
@@ -451,8 +482,10 @@
 		marker-start="url(#arrowhead)"
 		marker-end="url(#arrowhead)"
 	/>
-	{@render txt(BX1 + 26, (EC + EV) / 2 - 4, '1.12', 12, { anchor: 'start', weight: 600 })}
-	{@render txt(BX1 + 26, (EC + EV) / 2 + 12, 'eV', 11, { anchor: 'start', muted: true })}
+	<Readout id="gap">
+		{@render txt(BX1 + 26, (EC + EV) / 2 - 4, '1.12', 12, { anchor: 'start', weight: 600 })}
+		{@render txt(BX1 + 26, (EC + EV) / 2 + 12, 'eV', 11, { anchor: 'start', muted: true })}
+	</Readout>
 
 	{#each [...donors, ...acceptors] as d (d)}
 		{@const x = toBand(L.atoms[d].x)}
@@ -504,24 +537,20 @@
 
 	{#if firstDonor !== undefined}
 		{@const s = sites[firstDonor] as Dopant}
-		{@render txt(
-			BX0 + 4,
-			EC + 34,
-			`donor level (${s}): ${(IONISATION[s] * 1000).toFixed(0)} meV below the band`,
-			12,
-			{ anchor: 'start', muted: true }
-		)}
+		{@const text = `donor level (${s}): ${(IONISATION[s] * 1000).toFixed(0)} meV below the band`}
+		<Readout id="donor-level" order={12} label="D{text.slice(1)}" color={COLOR[s]}>
+			{@render txt(BX0 + 4, EC + 34, text, 12, { anchor: 'start', muted: true })}
+		</Readout>
 	{/if}
 	{#if acceptors.length}
-		{@render txt(
-			BX0 + 4,
-			EV - 24,
-			`acceptor level (B): ${(IONISATION.B * 1000).toFixed(0)} meV above the band`,
-			12,
-			{ anchor: 'start', muted: true }
-		)}
+		{@const text = `acceptor level (B): ${(IONISATION.B * 1000).toFixed(0)} meV above the band`}
+		<Readout id="acceptor-level" order={13} label="A{text.slice(1)}" color={COLOR.B}>
+			{@render txt(BX0 + 4, EV - 24, text, 12, { anchor: 'start', muted: true })}
+		</Readout>
 	{/if}
-	{@render txt((BX0 + BX1) / 2, 572, 'Gap and levels to scale.', 11, { muted: true })}
+	<Readout id="to-scale">
+		{@render txt((BX0 + BX1) / 2, 572, 'Gap and levels to scale.', 11, { muted: true })}
+	</Readout>
 </g>
 
 <style>
