@@ -103,9 +103,13 @@ and then applies the fixes.
 
 ## Next topics (after v1.0.0)
 
-A level 0 and 100 new topics are being researched and proposed, not built: see
-[`proposals/topics-200/README.md`](proposals/topics-200/README.md) for the state and how to
-resume. Nothing is built until the user promotes entries from the proposal into `TOPICS.md`.
+A level 0 and 100 new topics are proposed, not built: [`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md)
+(how it was made: [`proposals/topics-200/README.md`](proposals/topics-200/README.md)). Waiting on
+the user's review of its open questions (the level-0 definition, the 39 / 10 / 3 / 48 split and
+the LLM ladder's second wave, the optional Everyday things category, the re-levelling footnote,
+the Reserve dispositions, the water cycle). Nothing is built until the user promotes entries into
+`TOPICS.md`; promoting the first level-0 entry also needs the parser change under "Index search
+and filters" below (level 0 in `Level`, `levelNames` and the level check).
 
 ## Site and framework work
 

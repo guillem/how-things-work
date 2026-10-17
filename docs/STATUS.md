@@ -67,14 +67,16 @@ Last updated: 2026-10-17 22:50 UTC, after v1.0.0.
 
 ## Current development
 
-**Next topics, in progress (2026-10-17, after v1.0.0): a level 0 and 100 new topics.** The user
-asked for a researched proposal (no code yet): a new level 0 for beginners, the levels made more
-even (level 3 has 6 topics today), 100 new entries. The work, its data and how to resume it are
-in [`proposals/topics-200/README.md`](proposals/topics-200/README.md) (the self-handover for
-that piece). State at the time of writing (2026-10-17 22:50 UTC): phase A (generation) is complete, all 19
-lenses, 557 candidates in `proposals/topics-200/data/pool.json`; judging (phase B) and
-verification (phase C) not started; `docs/TOPICS-PROPOSAL.md` not written. The README there says
-how to split phase B so it fits a usage window. `TOPICS.md` is untouched.
+**Next topics, proposed for review (2026-10-18, after v1.0.0): a level 0 and 100 new topics.**
+The user asked for a researched proposal (no code): a new level 0 for beginners, the levels made
+more even (level 3 has 6 topics today), 100 new entries. Done:
+[`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md) holds 100 entries in the catalogue's format (39 / 10 / 3
+/ 48 at levels 0 to 3, after the user asked to lean towards AI with a ladder for understanding
+LLMs and to take those slots from level 0), the Reserve dispositions, the links to add to existing
+entries, suggested first waves and the runners-up; the invariants hold over all 200. The open
+questions for the user are at the end of that file. How it was made, and every agent's output, is
+in [`proposals/topics-200/README.md`](proposals/topics-200/README.md). `TOPICS.md` is untouched;
+nothing is built or released.
 
 **Released as v1.0.0 (2026-10-17): the backlog round (overnight) and the index work below.** Before
 releasing 1.0 the user asked to clear the backlog. One agent per package in a local worktree,
