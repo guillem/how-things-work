@@ -82,7 +82,9 @@ played age; atmosphere-weather's `frontAt` in the model; note: the model's front
 around the low, not the textbook wave shape)); extras bio/AI (the-cell counts from free space, was 19% high in the
 cytoplasm; dna-to-protein "Letters copied" slider; respiration-atp yeast and E. coli split;
 convolution-vision's editable map builds up). Open question for the user: the-cell's small
-molecules (ATP, ions) still count from the whole box.
+molecules (ATP, ions) still count from the whole box. logic-gates: a new sixth step, "Build a 4-bit adder": the reader's own full
+adder becomes a two-output block, four chained, checked over all 512 inputs (once packed, the
+block can't be re-edited without a reload).
 
 **Before that, committed on local `main`, not pushed or released** (2026-10-17):
 
