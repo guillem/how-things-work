@@ -1,0 +1,658 @@
+[
+ {
+  "label": "verify:r1ab5",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "forest-fire-spread",
+     "refuted": false,
+     "reason": "Distinct from epidemics (SIR in a moving crowd) and ecosystems: no catalogue page shows site percolation on a fixed grid. The physics checks out: the site-percolation threshold on the square lattice with four neighbours is about 0.5927, and the NetLogo Fire model shows it. The model is a trivial cellular automaton, needs no data, and the level-0 framing (\"six in ten\", tallies) holds up. One small correction: the jump is only sharp on a large grid, and the line \"which is why thinning and firebreaks work\" claims too much about real fire management, so the takeaway is tightened.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "In a big forest, a fire's chance of crossing does not grow gradually with how many trees there are: it flips from almost never to almost always over a narrow band of density, so removing a few trees or cutting a gap can stop a fire that would otherwise get through."
+     }
+    },
+    {
+     "slug": "sea-breeze",
+     "refuted": true,
+     "reason": "It is distinct from atmosphere-weather (level 2: a globe, Coriolis, cells), and a coarse 2D Boussinesq convection solver runs easily in a browser. The level-0 framing is honest, and the pitfall about buoyancy is correct. But the takeaway claims too much: it says wind in general is air moving from cool to warm. Large-scale winds are steered by Earth's rotation and pressure systems and blow mostly along isobars, which is the very content of atmosphere-weather. The takeaway has to be narrowed to the local, thermally driven breeze. The cited standard is fine: the MS-ESS2-5 clarification mentions air flowing from high to low pressure, and MS-ESS2-6 is about unequal heating.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "Uneven heating is enough to make a wind: by day air slides in from over the cooler sea to replace the warm air rising over the land, and at night the land cools below the sea and the breeze turns around.",
+      "pitfall": "Warm air does not rise because heat goes up: it rises because it is lighter than the cooler air around it, which pushes it up. And not every wind is a sea breeze: big weather systems are steered by Earth's spin, which this page leaves out."
+     }
+    },
+    {
+     "slug": "monty-hall",
+     "refuted": false,
+     "reason": "No catalogue page covers it. bayes-theorem counts test results on a grid of 1,000 people and never models a host's informed choice. The probabilities are correct (2/3 against 1/3), and the pitfall about a random host giving 1/2 is the standard result (Brilliant, Encyclopedia of Math). The model is a simple Monte Carlo with tallies and needs no data. Tallies and counts suit level 0, and the ten-door version is a sound way to build intuition.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "shapes-that-tile",
+     "refuted": true,
+     "reason": "It is distinct, since no catalogue page covers tiling, and it is level 0 with an L0 prerequisite (angles-as-turns, in the pool). It is buildable as a geometric construction. But the takeaway as written is false for shapes in general. Every triangle and every quadrilateral tiles, and Rao (2017) completed the list of 15 families of convex pentagons that tile. The rule \"corners fit into one full turn\" only decides the case of regular polygons tiling alone. The takeaway and pitfall need to say \"regular\". The leadsTo link to states-of-matter is a weak tie but acceptable (crystal lattices).",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "A regular shape (all sides and corners equal) tiles a floor on its own only when copies of its corner fit together into exactly one full turn, which equilateral triangles, squares and regular hexagons do and regular pentagons and octagons do not.",
+      "pitfall": "Regular pentagons do not tile, but some irregular pentagons do (fifteen families of convex pentagons are known, and a 2017 proof says there are no more), and every triangle and every four-sided shape tiles. So the page must say 'this regular pentagon', never 'pentagons'."
+     }
+    },
+    {
+     "slug": "why-triangles-are-stiff",
+     "refuted": false,
+     "reason": "It is distinct from bridges-structures, which colours members by tension and compression under load. This page is about the rigidity of a pin-jointed frame (a mechanism against a structure), and the pitfall keeps the two apart. The claim is correct: the pin-jointed triangle is the only polygon that cannot deform, and triangulation makes a frame rigid. A small constraint solver (or springs) that shows the motions still allowed is easy to build in the browser and needs no data. It is honest at level 0 and grounded in the KS1/KS2 design and technology wording on stiffening structures.",
+     "hasFix": false,
+     "fixed": {}
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1ab10",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "shadows-and-pinholes",
+     "refuted": false,
+     "reason": "Distinct from light-optics, which only bends rays through lenses and prisms; blocking rays, umbra and penumbra, and the pinhole image are not on any page, and the eclipse case stays with sun-earth-moon. The level is honest: KS2 Year 3 and Year 6 'Light' cover this, it needs no formulas, and shadow size is a comparison. Ray projection past polygons from a point source or an extended one is a cheap geometric model and needs no data. The takeaway and the pitfall (shadow as an absence of light; phases are not Earth's shadow) are both correct.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "vibrations-and-sound",
+     "refuted": true,
+     "reason": "Distinct from waves-interference, which has two sources, harmonics and Doppler but never shows what sound is: one vibrating source, a longitudinal push passed along a chain, the need for a medium. The level fits KS2 Year 4, and a ruler that sounds higher when shortened (f ~ 1/L^2) plus a mass-spring chain is a real model. One small flaw: the takeaway says 'with no air nothing reaches the ear', which teaches that sound needs air specifically. Sound also travels through solids and water (the bell jar's stand leaks some), so the claim should be that it needs some material to pass the push along. Fixed by rewording the takeaway and adding this to the pitfall.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "A sound is a wobble passed along through the air: a faster wobble is a higher note, a bigger wobble a louder one, and with nothing in between to pass it on, nothing reaches the ear.",
+      "pitfall": "Sound does not travel as air flying from the source to the ear; each bit of air jiggles in place and passes the push on. Louder is not higher: loudness and pitch are two different things. Sound needs some material to carry it, not air in particular: it travels through water, wood and metal too, and only empty space stops it."
+     }
+    },
+    {
+     "slug": "musical-scales-ratios",
+     "refuted": true,
+     "reason": "Distinct from waves-interference, which covers beats and string harmonics but not which intervals fit together or how the octave is divided. Level 1 is fair (frequency ratios and logarithmic steps), synthesized tones plus the published Plomp-Levelt roughness curve make an honest model, and no data is needed. The takeaway overclaims in two ways. First, 5- and 7-step divisions also land within about 20 cents of the fifth, so twelve is not simply 'the smallest ladder that lands close'. What makes 12 special is that 7/12 is a continued-fraction convergent of log2(3/2), putting its fifth within 2 cents (the next good ones are 41 and 53). Second, the twelve-key keyboard came from chains of fifths in Pythagorean and meantone tunings, centuries before equal temperament, so equal temperament is not why pianos have twelve keys. Fixed by narrowing the takeaway and the interaction to what the graphic shows.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "A keyboard whose keys play, each note drawn as its wave; press two keys and the page plays them together and draws how the waves line up: an octave (double the frequency) repeats every cycle, a fifth (3:2) every two, while clashing pairs beat and a roughness meter (the Plomp-Levelt curve) rises. Slide a divider to cut the octave into 5, 7, 12, 19, 31 or 53 equal steps and read off how many cents each ladder misses the pure fifth and major third by; twelve is the first small ladder whose fifth lands within 2 cents. Compare an equal-tempered chord with a pure one by ear.",
+      "takeaway": "Notes sound smooth together when their frequencies are in simple ratios, and twelve equal steps per octave is the smallest small ladder whose fifth lands almost exactly on the pure 3:2."
+     }
+    },
+    {
+     "slug": "ising-model",
+     "refuted": true,
+     "reason": "Distinct from states-of-matter, a level-1 molecular-dynamics box with no critical point or divergences. Level 3 is honest (statistical physics courses cover it, e.g. MIT OCW RES.8-010), its prerequisites are entropy (level 2) and the proposed level-3 partition-function, and Metropolis on a 2D lattice runs easily in the browser. Two physics errors. (a) The interaction says the magnetization 'jumps from zero to nearly full' at Tc, but the 2D Ising transition is continuous (second order): it rises steeply and continuously (beta = 1/8) as T falls below Tc. A jump would teach the first-order picture. (b) The takeaway says nearest-neighbour alignment 'alone' gives a sharp transition, yet the page itself shows that the one-dimensional chain has none, so dimension (at least two) must be in the takeaway. Also: near Tc, single-flip Metropolis slows down sharply (critical slowing down), so offer a Wolff cluster update, and the hysteresis loop only appears below Tc.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Run a square lattice of spins with the Metropolis algorithm (or the Wolff cluster update, which stays fast near the critical point) and slide the temperature through Tc: domains grow out of noise, the magnetization rises steeply but continuously from zero as the lattice cools below Tc, and the susceptibility and heat capacity spike. Below Tc, apply a field and sweep it back and forth to trace a hysteresis loop; grow the lattice to see the peaks sharpen, and shrink it to a one-dimensional chain to see the transition vanish.",
+      "takeaway": "In two dimensions, nearest-neighbour alignment alone produces a phase transition at a definite temperature, sharp only in the limit of a large system, while a one-dimensional chain never orders."
+     }
+    },
+    {
+     "slug": "lasers",
+     "refuted": false,
+     "reason": "Not in the catalogue; it is the 'Lasers & LEDs' item in the Reserve list, and nearest pages (solar-cells, semiconductors) do not show stimulated emission, cavity threshold or inversion. Level 3 is honest (rate equations, Q-switching and relaxation oscillations are university laser-physics material, e.g. MIT 6.977), and its prerequisites (quantum-mechanics, level 3; oscillations-resonance, level 1) are within level. A few coupled rate-equation ODEs integrate easily at interactive rates, and no data is needed. The pitfall is correct (steady incoherent pumping of a two-level system saturates at N1 = N2). The takeaway's 'every extra pumped atom adds a photon' is the ideal case: non-radiative decay and pump-to-upper-level efficiency lower it, and only the mirror-transmitted fraction leaves. Softened accordingly.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "A laser is a cavity in which stimulated emission out-competes loss, and above that threshold the inversion stops growing and nearly every extra pumped atom adds a photon to the same mode."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1ab6",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "bezier-curves",
+     "refuted": false,
+     "reason": "Distinct: no catalogue page (graphics-3d is projection and ray tracing) builds curves from control points. Level 1 is honest because de Casteljau's construction is repeated straight-line mixing that a slider shows with no formula. The model is trivial to run in the browser and needs no data. The pitfall is correct (the curve passes through its end points but not its middle handles, and t is not arc length), and so is the convex-hull claim. One imprecision: a join is smooth (G1) only when both handles and the join point are collinear with the join point between them. Collinear handles on the same side give a cusp, so the interaction wording is tightened.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Drag the four control points of a curve and it follows; slide t from 0 to 1 and watch the construction: a point slides the fraction t along each leg between control points, then along the legs between those points, and the last point traces the curve. Chain curves into a letter and see that a join is smooth only when the two handles at the join and the join point lie on one straight line, with the join point between them; turn on the hull to see that a curve never leaves the shape of its own control points, and add or remove control points.",
+      "why": "Freya Holmér's 'The Beauty of Bézier Curves' is one of the most-shared maths explainers, and de Casteljau's construction is a standard graphics assignment (Berkeley CS184 HW2, Bézier curves and surfaces): https://cs184.eecs.berkeley.edu/fa26/hw/hw2/section1/"
+     }
+    },
+    {
+     "slug": "probability-trees",
+     "refuted": true,
+     "reason": "The core is distinct and well grounded: bayes-theorem uses a grid of 1,000 people and never builds a tree or compares drawing with and without replacement, which GCSE higher and A-level teach directly. Two parts of the scope are a problem. Counting paths through a grid to grow Pascal's triangle is what the Galton board in central-limit-theorem already shows (balls taking binomial paths into bins). The birthday problem is a chain of 'no match yet' factors, not path counting, so the takeaway's claim that counting paths explains coincidences is loose. Fix: drop Pascal's triangle, frame the birthday problem as a long product of no-match branches, and correct the takeaway.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Build a tree of chance events by adding branches with their probabilities: sweets drawn from a bag with and without putting them back, coins, dice; the page multiplies along each branch and adds across them to give the probability of any outcome. Press run to perform the experiment a thousand times and watch the tally approach the tree's prediction. End with the birthday problem as one long branch of 'no match yet': add people one at a time and watch the product of the no-match probabilities fall below a half at 23.",
+      "takeaway": "The probability of a sequence of events is found by multiplying along its path and adding the paths that lead to the same result, and a long chain of individually likely 'no match' steps multiplies down fast, which is why shared birthdays in a class are common.",
+      "overlapWith": "bayes-theorem colours a grid of 1,000 people to show base rates, and central-limit-theorem's Galton board already counts binomial paths into bins; this page builds the tree itself, compares drawing with and without replacement, and multiplies a chain of branches (the birthday problem), none of which the existing pages do.",
+      "why": "Tree diagrams for dependent events (without replacement) in GCSE higher maths: https://www.cognito.org/blog/gcse-maths-probability ; Edexcel A-level statistics tree diagrams: https://www.mathsgenie.co.uk/a-level/maths/edexcel/content/a-level-statistics-tree-diagrams"
+     }
+    },
+    {
+     "slug": "differential-equations",
+     "refuted": true,
+     "reason": "This is a Reserve topic, and level 2 is honest (AP Calculus BC Unit 7 covers slope fields and Euler's method). Three problems remain. (a) Stepping by hand with Euler's method, shrinking the step and watching it converge or blow up is the whole of the proposed how-simulations-work (L1), and numerical-stability (L3) covers the blow-up, so the page would repeat both. (b) The spring and rabbits-and-foxes are second-order or two-variable systems: they cannot be drawn as a slope field in the (t, y) plane, and as phase-plane flows they belong to phase-portraits. (c) The pitfall overstates its case: a formula, when one exists, is a solution; the point is that most equations have none. Fix: keep the page to first-order equations dy/dt = f(t, y) and to slope fields and solution curves, with Euler only as 'follow the arrows'.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Choose a rule for the slope at every point (growth in proportion to the amount, cooling toward room temperature, logistic growth with a ceiling, a fish stock under steady harvesting) and the plane of time against amount fills with small slope arrows; click anywhere to drop a starting value and watch a solution curve thread through the arrows. Drop several starts and see that curves never cross, that some settle on a level line and others run away from it, and raise the harvest until the level line vanishes and every curve crashes; where an exact formula exists, overlay it on the traced curve.",
+      "takeaway": "A differential equation says how fast something changes given where it is, and that rule plus a starting point fixes one curve through the field of arrows, which can be followed even when no formula exists.",
+      "pitfall": "Not every differential equation can be solved with a formula: most cannot, and the slope field still fixes each solution. Solution curves of one equation never cross, so two different futures cannot start from the same state.",
+      "overlapWith": "calculus finds the slope and area of a given curve; this page starts from the slope rule and finds the curve. how-simulations-work (L1) owns the step-size and accuracy story of Euler stepping, and phase-portraits (L3) owns two-variable systems such as springs and predator–prey; this page is the one-variable slope field, equilibria and their stability.",
+      "related": [
+       "calculus",
+       "epidemics",
+       "ecosystems",
+       "how-simulations-work",
+       "phase-portraits",
+       "feedback-control"
+      ]
+     }
+    },
+    {
+     "slug": "calculus-of-variations",
+     "refuted": false,
+     "reason": "Distinct: newtons-laws runs a cart along an editable track, but nothing in the catalogue optimises over whole curves. Level 3 is honest, because the brachistochrone and the catenary are standard material in university classical mechanics and calculus-of-variations courses. The model is real and cheap: the descent time is integrated along a discretised curve (the 1/sqrt(y) singularity at the start can be integrated), and gradient descent on a few dozen nodes runs at interactive rates. The catenary needs a length constraint (a Lagrange multiplier), which is also tractable. The pitfall is correct: the path dips below the end point when the horizontal distance exceeds π/2 times the drop. Two small fixes. The Euler–Lagrange equation is necessary, not sufficient, so the takeaway should say the optimum makes it hold rather than that a curve holding it beats every neighbour. And a brachistochrone is not an everyday object.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "The fastest slide between two points is a curve, the cycloid, not the straight line, and at the optimum the Euler–Lagrange residual is zero all along the curve, so no small change to its shape makes the slide faster.",
+      "everyday": false,
+      "pitfall": "The best curve can dip below the end point and still win (it does whenever the horizontal distance is more than about π/2 times the drop), and the straight line is not 'almost as good': show it losing to the cycloid by a measured margin. A curve that satisfies the Euler–Lagrange equation is stationary, not automatically the minimum.",
+      "why": "Fowler, Graduate Classical Mechanics, ch. 2 'The Calculus of Variations' (brachistochrone): https://phys.libretexts.org/Bookshelves/Classical_Mechanics/Graduate_Classical_Mechanics_(Fowler)/02%3A_The_Calculus_of_Variations/2.05%3A_Fastest_Curve_for_Given_Horizontal_Distance ; demand: myPhysicsLab brachistochrone simulation https://www.myphysicslab.com/roller/brachistochrone-en.html"
+     }
+    },
+    {
+     "slug": "phase-portraits",
+     "refuted": true,
+     "reason": "Distinct enough and honestly at level 3: it is MIT 18.03 Unit IV. hamiltonian-phase-space (pool, L3) is about preserved area and Poincaré sections, not about classifying fixed points. The model is cheap to run in the browser. But the takeaway is factually wrong and contradicts the entry's own pitfall. 'Near each fixed point the real flow is the linear flow' holds only at hyperbolic points (Hartman–Grobman); at centers, and at the Hopf bifurcation the page itself shows, it fails (MIT 18.03SC's structural-stability note gives a linearised center that settles nothing). 'Long-run behavior read off from a few fixed points' also ignores the limit cycles the page creates. Fix the takeaway, and add the proposed L2 differential-equations as a prerequisite.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "Near a fixed point whose eigenvalues have nonzero real parts, the real flow looks like its linearization, so a few fixed points and their eigenvalues sketch the whole portrait; when the eigenvalues reach the imaginary axis, as at a Hopf bifurcation, the nonlinear terms take over and a limit cycle can appear that no fixed point predicts.",
+      "prerequisites": [
+       "linear-transformations",
+       "calculus",
+       "differential-equations"
+      ],
+      "overlapWith": "chaos-fractals shows sensitivity to initial conditions and the logistic map's cascade, and the pool's hamiltonian-phase-space is about area preservation and Poincaré sections; this page classifies flows in the plane by their fixed points and eigenvalues and shows where linearization stops working (ecosystems shows one predator–prey cycle at level 1 as curves, not as a portrait).",
+      "why": "MIT OCW 18.03SC, Unit IV, Linearization near critical points (including its structural-stability note on borderline centers): https://ocw.mit.edu/courses/18-03sc-differential-equations-fall-2011/pages/unit-iv-first-order-systems/linearization-near-critical-points"
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1ab1",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "ant-trails",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct from graph-search (no map, agents plus a scent field), honest level 0, and buildable as an agent model with a pheromone grid (NetLogo Ants). The problem is the mechanism. In Deneubourg's and Goss's double-bridge work the short branch wins because ants that take it get back sooner and lay scent on it first, so it pulls ahead even with no fading. Fading matters when a shortcut appears later: Goss et al. 1989 (Naturwissenschaften 76:579) added the short branch after a trail had formed, and the Argentine ants mostly stayed on the long one. So 'with fading switched off the colony stays stuck on whichever bridge it found first' is wrong when both bridges are offered at once, and the takeaway credits the fading for what the round-trip time does. The fix rewrites the interaction and takeaway to separate the two effects.",
+     "fixed": {
+      "interaction": "Ants wander out of a nest at random; one that finds the sugar walks home laying a scent, and the others tend to follow scent, so a trail forms and thickens. Drag the sugar farther away or drop a pebble on the trail and watch the colony reroute. Then offer a long bridge and a short one together and count the ants on each: ants on the short one get back first, so its scent builds up sooner and the short one wins. Open the short bridge only after a trail has formed on the long one, and the colony stays on the long one until the scent's fading is switched on.",
+      "takeaway": "A colony finds the shorter path with no map and no ant that knows it: ants on the short route return sooner, so its scent builds up faster and draws more ants, and a fading scent lets the colony give up an old route.",
+      "pitfall": "No ant knows where the food is or compares the routes, and the queen gives no orders. Fading is not what makes the short bridge win when both are offered at once; it is what lets a colony switch to a shortcut that appears later, and real Argentine ants often do not. Real ants also use sight and memory, which the page leaves out and says so."
+     }
+    },
+    {
+     "slug": "fireflies-in-sync",
+     "refuted": false,
+     "hasFix": false,
+     "reason": "No existing page shows pulse-coupled synchronization. oscillations-resonance is one driven oscillator, and the pool's kuramoto-synchronization is the level-3 phase model, so this is the level-0 entry to it. The model is a pulse-coupled integrate-and-fire population (Mirollo-Strogatz, as in Nicky Case's explorable), which runs easily in the browser with one coupling control, and the synchrony is visible without text. Needs no data. The takeaway and pitfall are sound: there is no leader, and only some species (Photinus carolinus, Pteroptyx) do this. The leadsTo link to oscillations-resonance is loose but acceptable.",
+     "fixed": {}
+    },
+    {
+     "slug": "flocking-birds",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct from ecosystems (population counts, not movement) and buildable: boids run in the browser at interactive rates, at an honest level 0, with NGSS 3-LS2-1 as the signal. The fault is factual. The takeaway says real flocks keep their shape 'because every bird follows the same three simple rules'. Reynolds's three rules are a model that reproduces flocking, not measured bird behaviour. Field data (Ballerini et al. 2008, PNAS) show starlings each track a fixed count of about six or seven nearest neighbours, whatever the distance. The takeaway should say the rules are sufficient, not that they are what birds do, and the pitfall can name the measured neighbour count.",
+     "fixed": {
+      "takeaway": "A flock can hold together and turn as one with no leader: in the model, three simple rules about each bird's nearest neighbours are enough to make one.",
+      "pitfall": "No bird leads or sees the whole flock, and the three rules are a model that reproduces flocking, not a list real birds were found to obey. Real starlings each keep track of about six or seven nearest neighbours, however far apart they are (Ballerini et al. 2008), and nobody plans the shapes of a murmuration."
+     }
+    },
+    {
+     "slug": "milk-and-yogurt",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct from acids-bases and from the pool's cooking-an-egg (proteins unfolding in heat), and buildable: Brownian colloid particles whose repulsion falls as pH nears casein's isoelectric point (about 4.6), plus bacterial growth with a temperature optimum that makes the acid. The pitfall is wrong in two ways. Most cheese is set by rennet, an enzyme that clips kappa-casein, not by acid, so 'the same clumping is cheese' is false except for acid cheeses such as paneer or ricotta. And raw milk turns sour through lactic acid bacteria much like yogurt cultures, which contradicts 'the bacteria in yogurt are not the bacteria that spoil food'. 'Kept apart by their charge' also oversimplifies: the micelles are held apart by a charged, hairy kappa-casein coat, mostly by its bulk. needsSource should name the few constants it uses.",
+     "fixed": {
+      "takeaway": "Milk is a cloud of tiny protein balls kept apart by a charged, fuzzy coat; acid, poured in or made by bacteria, takes the charge away and lets them clump, which is curds in a minute or yogurt overnight.",
+      "pitfall": "Curdling milk with vinegar is not milk 'going off', though milk left out does sour the same way, by lactic acid bacteria much like yogurt's. Most cheese is not made this way: rennet, an enzyme, sets it by clipping the protein balls' coat, and only some cheeses (paneer, ricotta) are set by acid.",
+      "needsSource": "No dataset. The model uses textbook constants: casein's isoelectric point near pH 4.6 (dairy-science reviews such as de Kruif's), and yogurt cultures (Streptococcus thermophilus, Lactobacillus bulgaricus) that work best around 40 to 45 C and stop near fridge temperature. Shown as comparisons, never as numbers."
+     }
+    },
+    {
+     "slug": "diffusion-osmosis",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct enough: entropy mixes two gases with no membrane, the-cell is structure, and the pool's level-0 smells-and-diffusion has no membrane, no osmosis and no pump. The level-1 rating is honest (AQA GCSE 4.1.3), the prerequisites are level 1, and a particle box with a membrane that lets water through and blocks solute is a real client-side model. The flaw is that the takeaway says water 'does the same' as diffusing particles, the textbook story that water flows down its own concentration gradient. That is a known misconception: Kramer and Myers (2013, Trends in Plant Science) show osmotic flow is several times larger than water's diffusion alone would give, and it comes from the solute's push on the membrane. The particle simulation would itself show bulk flow, so the page must not explain it as dilution. The fix keeps the GCSE outcome (water moves toward the side with more dissolved particles) without the false cause.",
+     "fixed": {
+      "takeaway": "Particles spread from where they are crowded to where they are not by random motion alone; a membrane that holds dissolved particles back makes water flow toward the side with more of them; and moving anything the other way costs energy.",
+      "pitfall": "Osmosis moves water toward the side with more dissolved particles, but not because those particles 'dilute' the water so that fewer water molecules reach the pore: the flow is far larger than water's own diffusion would give, and it comes from the trapped particles pushing on the membrane. Diffusion needs no force or pump; particles have no direction of their own, and the net flow is a counting effect. A plant cell in pure water becomes firm rather than bursting, because of its wall."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1ab4",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "huckel-molecular-orbitals",
+     "refuted": false,
+     "reason": "Distinct: chemical-bonds (L1) uses localized pairs and VSEPR, and the pool's hartree-fock does a different self-consistent method. The level is honest (MIT 5.61 lecture on Hückel), the build is real (diagonalize an N×N matrix of at most about 20 sites in the browser), and the data are just literature λmax facts for a cyanine series, as used in standard undergraduate labs (KIT practical, Rioux). Two small faults. The takeaway ties stability to ring size ('six-membered stable, four-membered not'), but the actual rule is the electron count (4n+2 against 4n): cyclooctatetraene fails too, and charged rings such as C5H5- and C7H7+ pass. The interaction should also say that simple Hückel overestimates how far a polyene's gap closes, which is why the colour panel uses cyanines (bonds evened out) and not long polyenes.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "Electrons delocalized over a π system fill a ladder of orbitals whose gap narrows as the system grows, which is why longer dyes absorb redder light, and a ring is stabilized only when its π electrons exactly fill a closed shell (2, 6, 10: benzene) and destabilized when they half-fill a degenerate pair (4, 8: cyclobutadiene).",
+      "interaction": "Snap carbon atoms into chains and rings to build a π system (ethene, butadiene, benzene, cyclobutadiene, the cyclopentadienyl anion, a cyanine dye); the page diagonalizes the Hückel matrix and draws the molecular orbitals as signed lobes on the atoms beside an energy ladder filled with the π electrons. Lengthen a cyanine chain and watch the HOMO-LUMO gap shrink beside the dye series' measured absorption maxima and a swatch of the colour it absorbs; close a chain into a ring and add or remove electrons to see which counts fill a closed shell and which leave two electrons alone in a degenerate pair.",
+      "prerequisites": [
+       "chemical-bonds",
+       "linear-transformations",
+       "quantum-mechanics"
+      ]
+     }
+    },
+    {
+     "slug": "surface-catalysis",
+     "refuted": true,
+     "reason": "Distinct from reaction-rates-equilibrium, whose catalyst only lowers a barrier, and a ZGB lattice Monte Carlo of about 100x100 sites runs easily in the browser; it needs no data. But the interaction misdescribes the ZGB model. The rate does not simply 'rise, peak and collapse as the surface smothers in CO'. Below a CO fraction of about 0.39 the surface is poisoned by oxygen (a continuous transition, rate zero), and the rate climbs across a reactive window before falling abruptly, a first-order jump, to CO poisoning at about 0.525. The 'Langmuir isotherm' alongside is also the wrong comparison: ZGB is a non-equilibrium steady state, so the fair comparison is the mean-field Langmuir-Hinshelwood rate, which misses the poisoning transitions the lattice shows. Small fix to the interaction; the takeaway already allows either reactant to poison.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Run CO oxidation on a lattice of catalyst sites: CO lands on one empty site, O2 splits onto two neighbouring empty sites, and adjacent CO and O react into CO2 and leave (the Ziff-Gulari-Barshad model). Slide the CO fraction in the gas: with too little CO the surface fills with oxygen and goes dead, across a narrow window the CO2 rate climbs, and just past its peak it collapses abruptly as CO covers every site, with the lattice's rate and coverages plotted beside the smooth mean-field Langmuir-Hinshelwood prediction that misses both dead ends. Add a CO desorption rate (a hotter surface) and watch the abrupt collapse soften and the poisoned surface recover.",
+      "related": [
+       "enzyme-kinetics",
+       "transition-state-theory",
+       "phase-transitions"
+      ]
+     }
+    },
+    {
+     "slug": "transition-state-theory",
+     "refuted": true,
+     "reason": "Distinct from reaction-rates-equilibrium (a 1D profile only), and buildable: collinear A+BC on a LEPS surface is a 2-degree-of-freedom ODE, cheap to integrate live, and LEPS/Sato parameters for H3 and FH2 are published numbers reproduced in teaching labs (for example the Imperial College MRD lab). The level is honest (MIT 5.60). But a purely classical trajectory has no zero-point energy, so the H/D swap as written cannot show a ZPE effect. The trajectories must be quasiclassical (the initial vibration seeded with its ZPE) and the Eyring rate must use a ZPE-corrected barrier, and even then the transition state's ZPE is a known weakness of QCT. 'Move the barrier early or late' also has no honest continuous control on a fixed LEPS surface. The honest version is to compare F+H2 (early barrier), its reverse H+HF (late barrier) and symmetric H+H2.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Fire a quasiclassical trajectory of A + BC → AB + C across a potential-energy surface (LEPS model of H + H2 and F + H2) drawn as a contour map, choosing how much energy goes into translation and how much into vibration (never less than the zero-point vibration), and see whether it crosses the saddle or turns back. Compare the early barrier of F + H2 with the late barrier of its reverse, H + HF, to see that translation carries molecules over an early pass and vibration over a late one; sweep the temperature to watch the Eyring rate climb, and swap H for D to watch the zero-point energies, the effective barrier and the rate change."
+     }
+    },
+    {
+     "slug": "x-ray-diffraction",
+     "refuted": true,
+     "reason": "It duplicates another candidate in this pool: physics.json's crystal-diffraction (L3) has the same mechanism and takeaway (build or load a cell, structure factors make reflections appear or vanish, rotate the crystal through the beam, compute a COD powder pattern; 'the brightness of each spot encodes where the atoms sit'). Only one of the two should survive. Otherwise it is sound: COD data are CC0 / public domain, scattering factors are available through BSD-licensed xraylib, and the level is honest (MIT 3.091). It can't stand as a separate topic; merge it into crystal-diffraction, adding its wavelength control and Ewald sphere there, or drop crystal-diffraction in its favour.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "cloud-base",
+     "refuted": true,
+     "reason": "It is distinct enough: dew-and-fog (pool L0) cools air by contact, and water-cycle and global-water-cycle cover the cycle and budgets, while this page's mechanism is cooling by rising and expansion, the flat base at the lifting condensation level and the rain shadow. A parcel model with the Magnus formula needs no data, and the level is honest for L0 (counts and comparisons only). The numbers are right: about 10 °C per km dry, and the cloud base drops as humidity rises (about 125 m for each degree between the temperature and the dew point). Two factual faults. (a) The interaction says the bubble's 1 °C per 100 m 'is also why it is colder on a mountain', but the air around a mountain cools by only about 6.5 °C per km on average, so the mountain should not show the parcel's dry rate. (b) The pitfall says clouds are 'not lighter than air', which is muddled: a growing cumulus is buoyant air, warmer and lighter than its surroundings, that happens to carry droplets. The droplets are what is heavier, and they stay up because they fall more slowly than the air rises. The droplets point also overlaps how-rain-forms, so it should be kept brief.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Drag a bubble of air up from the warm ground: it swells and its thermometer drops about one degree for every hundred metres, until the invisible water it carries turns to droplets and the bubble turns white. Every bubble released from the same ground turns white at the same height, so the clouds have flat bottoms; make the day more humid and the cloud base drops, dry the air and clouds form higher or not at all. A last step blows the bubble over a mountain: it cools as it is pushed up the slope, rains on the side facing the wind, and comes down the far side drier and warmer than it started.",
+      "takeaway": "Rising air swells and cools, and a cloud appears at exactly the height where the air gets cold enough for its water to turn into droplets, which is why the bottoms of clouds are flat.",
+      "pitfall": "It is not colder up a mountain because it is farther from the Sun: a few kilometres make no difference to sunlight; the air up there is cold because air that rises expands and cools. Clouds are not made of vapour: they are tiny droplets, each heavier than air, that stay up because they fall more slowly than the rising air beneath them."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1ab8",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "why-spinning-makes-you-dizzy",
+     "refuted": false,
+     "reason": "Distinct: no catalogue page covers the vestibular system (the related L0 candidate hearing-and-the-ear covers the cochlea, not the canals). The torsion-pendulum model of the canal (cupula lag, ~7-10 s return during steady spin, reversed deflection on stopping) is the textbook mechanism and runs trivially in the browser with one slider. Takeaway is visible in the graphic, and the pitfall is correct. Honest L0: no formulas, one control, starts from a familiar experience. Small fix: it is an everyday experience, and the related link to oscillations-resonance should be mutual through leadsTo, which it already is.",
+     "hasFix": true,
+     "fixed": {
+      "everyday": true,
+      "related": [
+       "hearing-and-the-ear",
+       "oscillations-resonance",
+       "newtons-laws"
+      ]
+     }
+    },
+    {
+     "slug": "why-you-get-sleepy",
+     "refuted": true,
+     "reason": "Distinct and buildable (Borbely two-process model, no data needed; the L3 pool candidate circadian-clocks handles the gene loop), but the pitfall is factually wrong: a weekend lie-in does shift the clock, because late waking moves light exposure, meals and activity later and delays the circadian rhythm; that delay is what social jet lag is (Roenneberg). The fixed-clock two-process model cannot show this, so the page must not claim it. The 90-minute sleep-stage strip is a stylised schedule, not part of the model, and should be labelled as such.",
+     "hasFix": true,
+     "fixed": {
+      "pitfall": "The page explains when you get sleepy, not why animals sleep at all, which is still an open question. And the body clock is not fixed: late mornings and evening screen light push it later, which is why a weekend of lie-ins makes Monday feel like jet lag (the toy keeps the clock fixed, and says so).",
+      "interaction": "Set a bedtime and a wake-up time and run three days: a sleep-pressure tank fills while you are awake and drains while you sleep, and a body clock sets the hours when sleep comes easily; sleepiness is the gap between them. Skip a night and watch the tank overflow; nap in the afternoon and see tonight's sleep come later. A strip under the plot sketches the night's usual rounds of light and deep sleep, about ninety minutes each."
+     }
+    },
+    {
+     "slug": "pharmacokinetics-dosing",
+     "refuted": true,
+     "reason": "Distinct from homeostasis (insulin by hand against a glucose loop) and radioactivity (single exponential decay, no accumulation), and a real buildable compartment ODE. At the judged level 2 (prerequisite calculus is level 2, fine), the interaction is too heavy and the takeaway is overstated: 'whatever the dose' and the pitfall's 'doubling the dose doubles the level' hold only for linear (first-order) elimination, which the page itself breaks with the saturable-elimination switch. The two-compartment option is extra for level 2. Data source: DailyMed's labels are manufacturer-authored and its public-domain status is only asserted secondhand. The openFDA drug-label API (CC0) is the cleaner citation, and the few numeric PK parameters are facts anyway. Overlaps partly with the L3 pool candidate liver-drug-metabolism (first-pass extraction), which this page does not model.",
+     "hasFix": true,
+     "fixed": {
+      "level": 2,
+      "interaction": "Place doses on a timeline from a palette (an injection, a tablet, a steady drip, a loading dose) and run them through a one-compartment model whose clearance, volume of distribution and absorption rate are sliders; the blood level is plotted against the drug's therapeutic window. Change the interval, miss a dose or halve the clearance to model a failing kidney, and watch the level, the time to steady state and the peaks and troughs respond; a last switch makes elimination saturable and shows the rules break.",
+      "takeaway": "Repeated doses pile up until elimination balances intake, and for most drugs that steady state arrives after about four or five half-lives whatever the dose, so the dose sets the level and the half-life sets how long it takes to get there.",
+      "pitfall": "Doubling the dose of a normally eliminated drug doubles the steady-state level but does not reach it any sooner; only a loading dose shortens the wait. For drugs with saturable elimination (phenytoin, alcohol) neither rule holds.",
+      "prerequisites": [
+       "calculus",
+       "radioactivity"
+      ],
+      "related": [
+       "homeostasis",
+       "radioactivity",
+       "liver-drug-metabolism"
+      ],
+      "needs": "Clearance, volume of distribution and half-life for four or five example drugs, taken from their US prescribing information.",
+      "needsSource": "openFDA drug label API (FDA, CC0 1.0): https://open.fda.gov/apis/drug/label/ ; the same labels are viewable on DailyMed (https://dailymed.nlm.nih.gov/). The few numeric parameters are facts, not copyrightable."
+     }
+    },
+    {
+     "slug": "cerebellum-motor-learning",
+     "refuted": true,
+     "reason": "Distinct (no motor-learning page; reinforcement-learning and gradient-descent are different), buildable (the reader's own cursor reaches under a rotation, plus the Smith-Ghazizadeh-Shadmehr 2006 two-rate state-space model, open access), and honestly level 3. Two factual problems. First, with a 30-degree rotation much of the early, fast correction is deliberate re-aiming, not cerebellar adaptation (Taylor, Krakauer & Ivry 2014), so 'the cerebellum learns' is wrong as a description of the reader's whole curve. Second, the two-rate model predicts savings ('adapt again and learn faster') only after a brief counter-adaptation, not after full washout; its signature prediction is spontaneous recovery. Fix: name the explicit part, show the implicit aftereffect, and use the model's real prediction.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Move the mouse or a finger to targets while the cursor is secretly rotated by thirty degrees, and watch yourself miss, correct and adapt over a few dozen reaches; beside the hand, a two-rate error-driven model (a fast and a slow learner) updates its prediction trial by trial and its curve sits over the reader's own. Remove the rotation and say 'aim straight': the aftereffect that remains is the implicit, cerebellar part. Reverse the rotation briefly, then hide the errors, and both the model and the hand drift back toward the first adaptation as the fast learner fades and the slow one remains.",
+      "takeaway": "An implicit learner nudges its prediction a little after every miss, and the aftereffect that survives being told the world is back to normal shows a correction that was learned, not reasoned.",
+      "pitfall": "Not all of the reader's correction comes from the cerebellum: much of the quick early improvement under a large rotation is deliberate re-aiming, and only the slow, implicit part persists as an aftereffect when the reader is told the rotation is gone."
+     }
+    },
+    {
+     "slug": "cochlea-hearing",
+     "refuted": false,
+     "reason": "Distinct from vision-color, waves-interference and the L0 candidate hearing-and-the-ear: this page has the active outer-hair-cell amplifier, the audiogram and the implant vocoder. The 1D transmission-line cochlea and a noise vocoder both run in the browser with Web Audio. Prerequisites are levels 1 and 2, so the level is honest. The pitfall (losing outer hair cells removes the amplification, so soft sounds vanish while loud ones still hurt, i.e. recruitment) is well supported. Fixes: the 'why' signal is weak, since place theory is not KS3 content, so cite a university course instead. Noise damage typically shows first as a dip around 4 kHz, not at the extreme base. Name a real open speech source: LibriSpeech is CC BY 4.0, not CC0.",
+     "hasFix": true,
+     "fixed": {
+      "why": "MIT OCW HST.720 Physiology of the Ear covers cochlear mechanics and cochlear amplification as core sessions: https://ocw.mit.edu/courses/hst-720-physiology-of-the-ear-fall-2004/",
+      "interaction": "Play a tone, a chord or a spoken word into a cochlea modelled as a chain of coupled resonators whose stiffness falls along the basilar membrane, and watch the travelling wave peak at a place that depends on frequency. Drag the frequency and the peak moves; switch on the outer hair cells' amplification and the peak sharpens; kill the outer hair cells at the place tuned near 4 kHz, as loud noise does, and the audiogram develops the classic notch. Then replace the cochlea with a cochlear implant: split the sound into a few bands, drive one electrode per band, and hear the result.",
+      "needs": "A short openly licensed speech clip for the implant demonstration (a LibriSpeech utterance, CC BY 4.0, or synthesized speech); the cochlear model itself is a standard one-dimensional transmission-line model with published parameters.",
+      "needsSource": "LibriSpeech, CC BY 4.0 (https://www.openslr.org/12), or speech synthesized in the browser; no other data"
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1ab2",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "pcr-copying-dna",
+     "refuted": false,
+     "reason": "Distinct from every existing page: dna-to-protein reads a gene, and nothing in the catalogue covers amplification. The pool's dna-fingerprinting uses PCR only as one step. The model (doubling per cycle, logistic depletion of primers and nucleotides, threshold crossing) is small and real. The quoted numbers check out: at 100% efficiency each tenfold dilution adds about 3.32 cycles, so 1 copy versus 1000 copies is about 10 cycles, and 2^30 is about 1e9. The pitfall is sound: the plateau carries no information about the starting amount, and Ct tracks the amount of template, not how ill someone is. Level 1 is honest (A-level and IB biology teach PCR, and the doubling arithmetic is high-school level). No external data is needed. Small fix: the exact target-length fragment only appears from cycle 3, so the page should not draw the first doublings as already target-sized copies.",
+     "hasFix": true,
+     "fixed": {
+      "pitfall": "Doubling is not forever: primers and nucleotides run out and the curve flattens, so the plateau says nothing about the starting amount; only the threshold cycle does. A Ct value is not a measure of how ill someone is. Nor is every copy the target from the first cycle: the short piece bounded by both primers only appears from the third cycle, after which it dominates."
+     }
+    },
+    {
+     "slug": "bacterial-chemotaxis",
+     "refuted": false,
+     "reason": "No existing page shows run-and-tumble or adaptation. ecosystems and homeostasis are unrelated mechanisms. A few hundred agents, each with a reduced Barkai-Leibler (receptor activity plus methylation) state, runs easily at interactive rates. Perfect adaptation after a uniform step, with tumble frequency recovering within seconds, is the established result (Barkai & Leibler 1997; Alon et al. 1999). The takeaway is observable in the drifting swarm and the dip-and-recover trace, and the pitfall is correct. Level 3 is honest: university systems-biology courses (Alon's Introduction to Systems Biology, MIT 7.32/8.591) teach it. No external data is needed beyond published rate constants. Small improvement: the pool's random-walks page should be a related link.",
+     "hasFix": true,
+     "fixed": {
+      "related": [
+       "random-walks",
+       "quorum-sensing",
+       "feedback-control",
+       "homeostasis",
+       "brownian-motion"
+      ]
+     }
+    },
+    {
+     "slug": "lac-operon",
+     "refuted": true,
+     "reason": "The topic is distinct and buildable: a small ODE (Ozbudak 2004 or Santillán-style) from published parameters, with no external data. The pool's genetic-circuits page shows synthetic toggle switches, while this one is the natural two-signal operon and diauxie. Two parts of the interaction overstate the textbook picture, though. (a) It says to sweep 'the inducer' up and down for hysteresis, but the pitfall itself notes bistability was measured with TMG and not shown with lactose (Ozbudak et al. 2004, and later reviews), so the sweep must be explicitly with a gratuitous inducer. (b) It attributes glucose's effect to CAP alone, but in E. coli the glucose-lactose diauxie is mainly caused by inducer exclusion: unphosphorylated EIIA-Glc blocks LacY while glucose is being imported, and cAMP levels barely differ between the two sugars (Inada et al. 1996; Kimata et al. 1997, PNAS). CAP-cAMP plays a supporting role. The overlap with genetic-circuits should also be named.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Set the glucose and lactose in a bacterium's medium and watch an ODE model of the lac operon respond: the repressor leaves the operator when an inducer is present, the permease the operon makes imports more inducer, and while glucose is flowing in the glucose transporter blocks that permease (inducer exclusion), with CAP-cAMP giving a smaller extra boost when glucose is scarce. Sweep the gratuitous inducer TMG up and then down to trace the hysteresis loop, and grow a culture on both sugars to see the diauxic pause when the glucose runs out.",
+      "pitfall": "Bistability and hysteresis were measured with the gratuitous inducer TMG; with plain lactose the loop is weak or absent because lactose is also consumed, so the page must not present lactose itself as a memory switch. Nor should it pin the diauxic pause on cAMP and CAP alone: in E. coli it comes mainly from inducer exclusion, where glucose uptake blocks the lactose permease.",
+      "overlapWith": "dna-to-protein: that page reads one gene into a protein; this one is about when the gene is read at all, as a dynamical switch with feedback (model of Ozbudak et al. 2004). genetic-circuits (pool) builds synthetic switches from parts; this is the natural operon, with two sugar signals and diauxic growth."
+     }
+    },
+    {
+     "slug": "luria-delbruck",
+     "refuted": true,
+     "reason": "The topic is distinct, buildable and honestly levelled. The model is a stochastic branching or clone simulation with Poisson and jackpot distributions and the p0 = e^-m estimate, which Luria and Delbruck's own example used (11 of 20 plates empty). evolution only states the conclusion in its pitfall. The takeaway overgeneralizes, however: the experiment shows that phage-resistance mutations arose before and independently of exposure to the phage. It does not show that mutations in general happen 'regardless' of the challenge: stress-induced mutagenesis exists and raises mutation rates without directing them. The takeaway should be scoped to what the graphic shows.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "The resistant bacteria were already there before the virus arrived, from random mutations in earlier generations, and the wild spread between replicate cultures (a few jackpots, many empty plates) is the signature of mutations that come before selection rather than in response to it."
+     }
+    },
+    {
+     "slug": "population-genetics",
+     "refuted": true,
+     "reason": "The topic is distinct from evolution (an explicit allele with N and s, and drift kept apart from selection). The Wright-Fisher model is binomial sampling, trivially fast for a hundred populations, and level 3 is honest (university population genetics, per the cited syllabus). It has two factual errors. (1) The interaction says the counter shows how often a beneficial mutation is lost, 'approaching Kimura's 2s', but 2s is the probability of fixation, not of loss (Haldane 1927, generalized by Kimura). (2) The takeaway says most beneficial mutations are lost because the population is small, but a new beneficial mutation fixes with probability about 2s whatever N is (once Ns >> 1), so even in a huge population most are lost by chance while still rare. Small N makes drift dominate selection: that is the regime where |Ns| is about 1 or less.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Run a hundred Wright-Fisher populations at once as allele-frequency traces: with no selection they wander and fix at random, faster in small populations; with a selection coefficient s they bend toward fixation, and a counter shows the share of new beneficial mutations that fix, approaching Haldane's 2s however large the population, so most are lost anyway. Set dominance to see recessive alleles hide from selection, and compare the Hardy-Weinberg genotype frequencies with the simulated ones each generation.",
+      "takeaway": "Allele frequencies change by chance as well as by selection: in a small population chance can fix a harmful allele or lose a good one, and even in a large population most new beneficial mutations vanish while they are still rare."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1ab7",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "random-graphs",
+     "refuted": false,
+     "reason": "Distinct from every existing page (internet routes packets over a fixed network, epidemics has an R0 threshold in time not a structural one, pagerank ranks a hand-built web); Erdos-Renyi with a few hundred nodes and union-find runs at interactive rates; level 3 is honest (network science / random graph theory course, MIT 6.207). Two weaknesses: the page tries three toys (ER, preferential attachment, grid percolation), and preferential attachment's takeaway (hubs) is a different idea not observable in the same graphic; and the takeaway says 'suddenly' while the pitfall rightly says a finite graph is rounded. Narrow to ER with a node-count control so the knee sharpening is the thing seen, keep grid percolation as the second view of the same threshold, and qualify the takeaway.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Slide the average degree of a random graph and watch components merge, coloured by size: the largest component's share of the nodes stays near zero until the average degree passes 1, then climbs, plotted live against degree. Raise the number of nodes from 50 to a few thousand and rerun the sweep: the curve's knee at degree 1 sharpens toward a corner. A second view opens bonds on a square grid at random and shows a spanning cluster appearing at its own threshold, near half the bonds open.",
+      "takeaway": "In a large random network, adding links does not connect it gradually: a giant connected piece appears abruptly once each node has about one link on average, and the bigger the network, the sharper that switch.",
+      "related": [
+       "epidemics",
+       "internet",
+       "pagerank",
+       "markov-chains",
+       "states-of-matter"
+      ]
+     }
+    },
+    {
+     "slug": "resampling-inference",
+     "refuted": true,
+     "reason": "Data is fine (palmerpenguins is CC0, confirmed). But two problems. Duplication: the power plot, the false-positive rate and the 'run twenty null comparisons and one is significant' demo are exactly the core of the proposed level-3 clinical-trials page (power, false positives, multiple outcomes, early stopping). Level: p-values, power and Type I error, and even simulation-based permutation tests, are AP Statistics / first-year intro-stats material (Hesterberg's cited paper is about the undergraduate intro curriculum), i.e. level 2, not level 3. A small change fixes both: narrow to resampling itself and make it genuinely university-level by checking the bootstrap against a known population, where its interval coverage can be measured and seen to fall short at small n or for statistics like the maximum (Efron & Tibshirani; Hesterberg 2015 notes percentile intervals undercover for small n).",
+     "hasFix": true,
+     "fixed": {
+      "title": "The bootstrap & permutation tests",
+      "interaction": "Compare flipper length between two species of real penguins: shuffle the group labels thousands of times to build the histogram of differences that chance alone produces, and read the p-value as where the observed difference falls in it. Resample each group with replacement to build a bootstrap distribution and a confidence interval for the difference and for a regression slope. Then switch to a known simulated population, repeat the whole procedure hundreds of times, and count how often the interval catches the true value: drag the sample size down, skew the population or ask for the maximum instead of the mean, and watch the coverage fall below 95%.",
+      "takeaway": "Resampling rebuilds the chance distribution from the data itself, and it works only as well as the sample stands in for the population: with small or skewed samples the intervals miss the truth more often than they claim.",
+      "pitfall": "A p-value is not the probability that the null hypothesis is true, and a bootstrap interval is not guaranteed to have its stated coverage: the bootstrap does not cure a small sample. The coverage counter must show the shortfall, not a reassuring 95%.",
+      "related": [
+       "markov-chain-monte-carlo",
+       "clinical-trials",
+       "central-limit-theorem"
+      ],
+      "overlapWith": "learning-from-data: that page fits a curve and shows overfitting with a held-out set; this page asks whether a difference or slope is real by rebuilding the chance distribution from the data. clinical-trials (proposed) owns power, false positives and multiple comparisons; this page leaves those to it and is about resampling and its coverage."
+     }
+    },
+    {
+     "slug": "taylor-series",
+     "refuted": false,
+     "reason": "Not a duplicate: calculus shows only tangent and area; fourier-transform sums sines, not powers. Level is borderline: Taylor polynomials and radius/interval of convergence are AP Calculus BC (high school) material, which alone would be level 2; what makes it level 3 is explaining the radius by the nearest complex singularity (complex analysis), so that disk must be the core, not a side panel. One factual slip: the series for 1/(1+x^2) does not 'fit perfectly up to |x| = 1'; it converges only for |x| < 1, slowly near 1, and diverges at |x| = 1 itself. Takeaway should say the function is analytic at the centre. All buildable as closed-form polynomials; prerequisites calculus and complex-numbers are level 2, fine.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Pick a function and add Taylor terms one at a time with a slider: the polynomial hugs e^x and sin x ever further from the center, but for 1/(1 + x²) it closes in only for |x| < 1 and swings ever wilder beyond, however many terms are added. A linked complex plane shows the disk of convergence and the function's singularities at ±i: the disk stops exactly where it touches the nearest one; drag the center along the real line and the disk, and the stretch of the real line the polynomials fit, resize to match. A last toggle overlays Chebyshev interpolation, which fits the whole interval anyway.",
+      "takeaway": "The Taylor series of a function converges exactly out to its nearest singularity in the complex plane, even when nothing goes wrong on the real line.",
+      "pitfall": "More terms do not always mean a better fit: outside the radius each new term makes the polynomial worse, and a function can be smooth everywhere on the real line and still have a finite radius. Do not claim convergence on the boundary circle: for 1/(1 + x²) the series diverges at x = ±1."
+     }
+    },
+    {
+     "slug": "hearing-and-the-ear",
+     "refuted": true,
+     "reason": "Distinct from waves-interference (the wave in air) and vision-color; acceptable alongside the proposed level-0 vibrations-and-sound (source and medium, no ear) and level-3 cochlea-hearing (active amplifier, implants), though those should be related. Level 0 is honest and a passive tuned-filter bank on the Greenwood map is a real, cheap model. But the middle-ear mechanism as written is a known textbook misconception: the ossicles' lever gives only about 1.3x; most of the gain (around 13-20x, roughly 25 dB) comes from the eardrum's large area pushing on the tiny stirrup footplate (Britannica; Wikipedia 'Middle ear'). 'Three tiny bones lever the shake' and a needsSource of 'a middle-ear lever ratio' would teach the wrong thing. Also loudness does not only grow the bump: loud tones broaden it and shift it slightly, so the pitfall should say 'mainly'.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Slide a tone from low to high and watch it shake the big eardrum, which passes the shake through three tiny bones onto a much smaller window into the fluid of the snail-shaped cochlea, concentrating the push; a ripple then runs along the cochlea's ribbon until it peaks at one spot. Each pitch peaks somewhere else, high notes near the entrance and low notes at the far end. Play two notes at once and see two bumps; turn the loudness up and the bumps grow.",
+      "needsSource": "none: the Greenwood (1961) frequency-to-place function for the human cochlea, the middle ear's eardrum-to-footplate area ratio (about 17 to 1) with a small ossicle lever (about 1.3), and a passive bank of tuned filters for the ribbon, stated as a simplification",
+      "pitfall": "The cochlea is not a microphone with one signal: it is thousands of sensors each listening at its own spot. Loud is not the same as high: loudness mainly grows the bump, pitch moves it. And the little bones are not the main amplifier: most of the boost comes from a big eardrum pushing on a tiny window.",
+      "related": [
+       "vibrations-and-sound",
+       "cochlea-hearing",
+       "vision-color",
+       "smell-and-taste",
+       "why-spinning-makes-you-dizzy"
+      ]
+     }
+    },
+    {
+     "slug": "muscles-pull-in-pairs",
+     "refuted": true,
+     "reason": "Distinct from bridges-structures and from the proposed joints-and-skeleton (joint shapes, no forces); it overlaps the proposed levers-and-scissors only in the lever ratio, which here is applied to the body, so acceptable with a related link. Level 0 and the two-link statics model are honest; the force ratio is right (biceps inserts about 4-5 cm from the elbow, hand about 35 cm, so roughly 7-8 times the load with the forearm level). But the interaction teaches a common misconception: dragging the hand down with a bag in it is not the triceps' job; the biceps keeps pulling while it lengthens to lower the load slowly (an eccentric contraction), and gravity does the lowering. The triceps straightens the elbow against resistance (pushing up from a chair, pushing down on a table, lifting the hand overhead). The page must show this or it repeats the error the pitfall claims to avoid.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Drag the hand of a cutaway arm: bending the elbow, the biceps shortens and bulges; straightening it against a push, such as pressing down on a table or pushing up from a chair, the triceps shortens instead, and tugging either muscle alone shows it can only pull, never push. Hang a bag of shopping from the hand and watch the biceps pull many times the bag's weight, because it grips the forearm so close to the elbow; lower the bag slowly and the biceps is still the one pulling, getting longer as it lets the bag down.",
+      "pitfall": "Muscles never push; the opposite movement is another muscle pulling, or gravity. Lowering a bag slowly is the biceps braking while it lengthens, not the triceps pushing it down. And a bigger muscle does not change the lever: it still pulls from the same place.",
+      "related": [
+       "joints-and-skeleton",
+       "levers-and-scissors",
+       "heartbeat-and-pulse",
+       "bridges-structures"
+      ]
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1ab9",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "ecg-arrhythmias",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct from heart-circulation, whose ECG is a drawn P-QRS-T template (circulation.ts) with no tissue model, re-entry or fibrillation. Level 3 is honest because cardiac excitable-media modelling is a biomedical-engineering topic, and all prerequisites are level 1 or 2. It is buildable: a 2D Aliev-Panfilov grid runs explicitly in the browser (an ibiblio e-notes HTML5 demo runs 512x512), and a ~150x150 grid with a pseudo-ECG computed from the dipole is light. The MIT-BIH data is confirmed as ODC-By 1.0 on PhysioNet. Two problems, both small. (1) The takeaway overstates: not every dangerous rhythm is re-entry. Complete heart block (too slow), triggered activity and torsades also exist, and some fast rhythms come from a focus that fires too often. (2) The interaction implies real limb leads from a whole heart. A 2D sheet gives a pseudo-ECG from the net dipole, so it should say so, so the reader doesn't take the simulated trace for a clinical 12-lead. The pitfall is correct.",
+     "fixed": {
+      "takeaway": "An ECG is the shadow of a wave of excitation crossing the heart, and the most dangerous fast rhythms are usually not a faster pacemaker but a wave that finds a loop and chases its own tail.",
+      "interaction": "Run a sheet of heart muscle as an excitable medium (the Aliev–Panfilov equations on a grid) with a pacemaker, a fast conduction path and a slow atrioventricular node, and read a pseudo-ECG off it: the tissue's net electrical vector projected onto the three limb leads of Einthoven's triangle. Then break it: slow conduction in a patch, add a scar, fire an early beat into tissue that has only partly recovered and watch a spiral wave take over the trace as tachycardia and then break up into fibrillation; deliver a shock that excites every cell at once and lets the pacemaker take back control. Real annotated recordings from the MIT-BIH database sit beside the simulated traces for comparison.",
+      "pitfall": "A defibrillator does not restart a stopped heart: it stops a chaotic rhythm so the natural pacemaker can take over, and a flat line is not a shockable rhythm. And not every arrhythmia is re-entry: a heart can also beat too slowly when conduction is blocked."
+     }
+    },
+    {
+     "slug": "mri-k-space",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Partly duplicated, and the overlapWith is inaccurate. medical-imaging does not just sketch MRI at the end. It has three full MRI steps (src/routes/medical-imaging/steps.ts): Larmor precession; a gradient whose received signal is Fourier-transformed into a water profile (gradientEcho in imaging.ts, which is exactly 'the signal is the image's Fourier transform' in 1D); and T1/T2 contrast with TR/TE sliders (spinEcho). Its notes even mention k-space. So this candidate's T1/T2 sliders, 'echo time turns fat bright or dark' and the 1D-gradient-equals-Fourier step repeat that page. What is new: 2D phase and frequency encoding filling k-space line by line, a Bloch-equation spin echo (dephasing and refocusing), and the artefacts from editing k-space (centre only, edges only, skipped lines giving aliasing or ghosts). Narrow the page to those, with medical-imaging as a prerequisite to build on. The pitfall is also misleading: standard 2D MRI does acquire slice by slice (a slice-selective pulse with a gradient), so 'the gradient does not scan slice by slice' is wrong. Level 3 is honest (a BME MRI course), and the Shepp-Logan phantom needs no data.",
+     "fixed": {
+      "interaction": "Start where Medical imaging stops: one gradient turns position into frequency. Step through a real 2D pulse sequence on a phantom: a slice-selective pulse tips the protons, a phase-encoding gradient gives each row its own twist, and a readout gradient records one line of the slice's 2D Fourier transform. Watch k-space fill line by line beside the image that its inverse transform gives so far. A Bloch-equation view of a few spins shows them fan out and refocus into an echo. Then edit k-space: keep only the centre for a blurred image, only the edges for outlines, skip every other line to fold the image onto itself, or shrink the field of view until the head wraps around.",
+      "takeaway": "An MRI scanner never measures a picture: gradients give each position its own precession frequency and phase, so every echo is one line of the image's 2D Fourier transform, and the centre of k-space carries the contrast while its edges carry the detail.",
+      "prerequisites": [
+       "medical-imaging",
+       "fourier-transform",
+       "electromagnetism"
+      ],
+      "pitfall": "MRI uses no ionizing radiation, and the image is not proton density alone. A point in k-space is not a pixel: every sample holds information about the whole image, which is why dropping lines blurs or ghosts the whole picture instead of leaving holes.",
+      "overlapWith": "medical-imaging: that page already shows Larmor precession, a single gradient whose Fourier transform gives a 1D water profile, and T1/T2 contrast from TR and TE; this page adds 2D phase-plus-frequency encoding, the echo, filling k-space line by line, and the artefacts of editing it. nmr-spectroscopy (pool, chemistry, level 3) has the same spins and pulses but no gradients and no image."
+     }
+    },
+    {
+     "slug": "blue-sky-red-sunset",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct: light-optics refracts and disperses light and never scatters it, and no catalogue page explains the colour of the sky. Level 0 is honest, since the fourth-power law stays hidden in the model and the reader only scrubs the Sun and thickens the air. The model (single Rayleigh scattering along an air path, plus a lightly coloured haze term) runs easily in the browser. The takeaway and pitfall are correct (violet: less of it in sunlight and lower eye sensitivity). The data question is the weak point, and the entry admits it. The licence of the ASTM G173 AM0 column is unconfirmed: the ASTM standard is copyrighted, and I found no statement on NREL's file. The CVRL/CIE colour-matching functions also carry no stated licence (CIE's own data pages show none). Under the 'default refute on data' rule, switch both to sources with no data question. Above the atmosphere, a 5772 K Planck spectrum gives the same screen colour as AM0 (Fraunhofer lines don't change a colour). The CIE 1931 functions can come from the published analytic fit of Wyman, Sloan and Shirley (2013), which is a formula. Optionally keep AM0 as a cited comparison once its licence is settled.",
+     "fixed": {
+      "needs": "None that needs a licence: sunlight above the air as a Planck spectrum at the Sun's effective temperature (5772 K, the IAU nominal value), and the CIE 1931 colour-matching functions from the analytic fit of Wyman, Sloan & Shirley (JCGT 2013), a formula. Optional, once its licence is confirmed: the ASTM G173-03 AM0 'Etr' column from NLR/NREL as a cited cross-check.",
+      "needsSource": "Two spectra from one model: the Sun's disc is the Planck spectrum attenuated by Rayleigh scattering (fourth power of wavelength) along the air path for the Sun's height; the sky patch is the light scattered into the line of sight along that path and attenuated on its way to the eye (single scattering), with optional haze of weak colour dependence; both are turned into screen colour with the analytic CIE 1931 fit. No data files: the Planck law and the fit are formulas. The ASTM G173 file (licence unconfirmed; the standard itself is ASTM copyright) and the CVRL tables (no licence stated) are avoided."
+     }
+    },
+    {
+     "slug": "floating-sinking-and-boats",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct from the catalogue: states-of-matter only shows ice less dense than water inside a molecular box, and flight is about lift, not buoyancy. Level 0 is honest (KS3 upthrust, PhET Buoyancy Basics), and the model (Archimedes with a waterline from a hull's cross-section) is easily buildable. Handbook densities are facts. Note for the curator: the pool also has sink-or-float (chemistry) and fluid-pressure-buoyancy (physics), so these are probably to be merged or chosen between. Two factual faults. (1) The takeaway says a thing floats when it pushes aside MORE than its own weight. A floating object pushes aside exactly its own weight. The rule is that it floats if it can push aside its own weight before it is completely under, and as written the takeaway invites the opposite misconception. (2) A 'scale under the tank' does not show the pushed-aside water: for a stone resting on the bottom, it rises by the stone's whole weight. The honest instrument is an overflow (eureka) can spilling into a cup on a scale, set beside a spring balance holding the object.",
+     "fixed": {
+      "takeaway": "A thing floats if it can push aside its own weight of water (or air) before it is completely under, which is why the same lump of clay sinks as a ball and floats as a bowl.",
+      "interaction": "Lower objects into a brim-full tank (a stone, an apple, a wooden block, a steel ball, a ball of modelling clay): the water each one pushes aside spills into a cup on a scale, and a spring balance holding the object shows it getting lighter as it goes in. Each one sinks, or settles where the spilled water weighs as much as it does. Reshape the clay from a ball into a bowl and the same lump floats; load it with marbles until it goes under. Change the water to salt water or to oil and see who floats now; finally warm the air inside a balloon and watch it rise through the surrounding air the same way."
+     }
+    },
+    {
+     "slug": "magnets-and-poles",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct from electromagnetism (level 2: charges, field lines, induction), and squarely NGSS 3-PS2-3 / KS2 Year 3. Level 0 is honest. The Gilbert two-pole model with inverse-square pole forces, a field-direction field for the filings and compass, and an induced dipole in steel is a real, cheap model; it needs no data. Note for the curator: the pool also has magnets-and-electromagnets (physics) and compass-and-magnetic-poles (earth), which overlap at this level. The fault is the pitfall: 'only iron, steel, nickel and cobalt' repeats a misconception. Common austenitic stainless steels (304/316, cutlery and sinks) are not attracted or only barely, while many alloys and some rare-earth metals are. The takeaway and the cut-magnet point are correct.",
+     "fixed": {
+      "pitfall": "A magnet does not attract all metals, nor even all steel: it pulls iron, nickel, cobalt and most steels, but not aluminium, copper, gold or many stainless-steel spoons and sinks. And cutting a magnet never separates its poles: each piece has two."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1ab3",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "turing-patterns",
+     "refuted": false,
+     "reason": "Nothing in the catalogue runs a reaction-diffusion PDE. chaos-fractals iterates maps, and morphogen-gradients and segmentation-clock are separate pool proposals. A 2D activator-inhibitor grid (Gierer-Meinhardt or Schnakenberg) runs at interactive rates on the client. Level 3 is honest: Turing instability and its diffusion-ratio condition are taught in university mathematical biology (Murray). The diffusion-ratio threshold, the stripes inserted as the domain grows (Kondo & Asai 1995, Pomacanthus) and the spots that turn to bands on a tapering tail are standard results, and the pitfall about contested cases is sound. Two small corrections. The wavelength is set by the reaction rates together with the two diffusion coefficients, not by 'rates alone'. The angelfish case is itself debated (Painter, Maini & Othmer 1999 add cell movement), so the pitfall should hedge it.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "Two chemicals, one that makes more of itself and a faster-spreading one that suppresses it, can turn a uniform field into regular spots or stripes with no blueprint, at a spacing set by their reaction and diffusion rates.",
+      "pitfall": "Not every stripe in nature is a Turing pattern. The page should name where a Turing-type mechanism is well supported (digit spacing, hair and feather follicles) and where the evidence is mixed (fish skin, where pigment cells also move). It must not claim the mechanism for zebra stripes or fingerprints without saying that is contested."
+     }
+    },
+    {
+     "slug": "dissolving-sugar-and-salt",
+     "refuted": true,
+     "reason": "It is distinct from the catalogue (states-of-matter changes one substance's phase), but it nearly duplicates the pool candidate dissolving-sugar: a particle counter, warming, a saturation limit, nothing lost. Its dry-it-back step overlaps separating-mixtures (the evaporating dish) and growing-crystals. The takeaway is also wrong for half the page. Salt's solubility barely changes with temperature (about 35.7 to 39 g per 100 g of water from 0 to 100 °C), while sucrose's rises from about 179 to 487 g. So 'warm water takes more' holds for sugar only. 'Until no more will fit' teaches the misconception that saturation means running out of room between water particles. The fix narrows the page to what neither sibling shows: sugar and salt side by side, and how differently temperature affects them. It should be merged with dissolving-sugar, or that one dropped.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Two glasses of water drawn as particles, one for sugar and one for salt, and a spoonful counter under each. One control at a time: tip in another spoonful, then slide the thermometer to warm both glasses. Each grain breaks into particles that wander off among the water particles until the water will take no more, and the rest sits on the bottom. Warming lets the sugar glass take spoonful after spoonful more, while the salt glass hardly takes any extra. At the end, let the water dry away and watch the same particles gather back into grains.",
+      "takeaway": "Dissolved sugar and salt have not vanished: their particles are spread among the water's, each glass of water takes only so much, and warming lets it take far more sugar but hardly any more salt.",
+      "pitfall": "Dissolving is not melting, and the sugar does not disappear or turn into water: every particle is still there, which is why the water tastes sweet and weighs more. A full glass is not 'out of room' between water particles: it stops because dissolving and grains re-forming have come into balance.",
+      "overlapWith": "dissolving-sugar (pool) and states-of-matter: states-of-matter changes the phase of one substance. This page compares two solids and shows that temperature raises how much sugar water will take but barely changes salt. It should be merged with dissolving-sugar rather than built alongside it.",
+      "needs": "Solubility of sucrose and of sodium chloride in water from 0 to 100 °C (about a dozen values) from the IUPAC-NIST Solubility Data Series, freely readable at NIST, or the ACS Middle School Chemistry tables; published facts, no dataset licence to clear.",
+      "needsSource": "About a dozen tabulated solubility values (IUPAC-NIST Solubility Data Series via NIST; ACS Middle School Chemistry, chapter 5 lesson 6); facts, no licence needed."
+     }
+    },
+    {
+     "slug": "salt-and-ice",
+     "refuted": false,
+     "reason": "No catalogue page covers freezing-point depression or freezing mixtures: states-of-matter covers only pure substances. Its level-0 framing works without formulas, using temperatures only as comparisons. The data source is real and public domain: FHWA-RD-95-202, Appendix B (freezing points of chemical solutions), is a US government work. The physics is right. NaCl brine's lowest freezing point is about −21 °C, the bath cools because melting absorbs heat, and the pitfall is correct. The one gap is that the interaction does not name its model. The honest model is the brine freezing-point curve plus a heat balance between ice, brine and cream, with the particle picture as illustration. A small edit makes that explicit and replaces the vague 'turn the cold down'.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "A block of ice drawn as a neat stack of water particles, with a thermometer. One control at a time: sprinkle salt, and salt particles get between the water particles at the surface so the stack cannot re-form, and the ice melts although the thermometer reads below freezing. Set the weather colder and the salt stops working; pour on more salt and see the point where extra salt no longer helps. Then put a bag of cream into the salted ice: the melting pulls heat out of the cream, the bath's thermometer drops below what plain ice could reach, and the cream freezes. Behind the picture runs the measured freezing-point curve of salt water and a running count of the heat that melting takes from the bath and the cream."
+     }
+    },
+    {
+     "slug": "why-metal-feels-cold",
+     "refuted": true,
+     "reason": "It is distinct from entropy, levelled honestly for KS2 (Year 5 lists thermal conductivity among material properties), and buildable as 1D heat conduction between skin and object. The physics, though, is stated wrongly in two places. First, what sets the felt temperature is the contact temperature, which depends on each material's thermal effusivity sqrt(k·ρ·c) (conductivity, density and heat capacity together), not on conductivity alone. Physics-teaching papers flag 'conducts heat away faster' as the misleading version, so the model must use effusivity, even though the page never says the word. Second, metal feels hottest only when the room is warmer than the skin (above about 33 °C), not merely 'hot'.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "A table with a metal spoon, a wooden spoon, a plastic cup and a woollen glove, all at room temperature, with a thermometer that reads the same on each. Drag a finger onto any one: a strip of heat colour flows out of the fingertip into the object, fast into the metal and barely at all into the wool, and a 'feels like' dial follows the temperature where skin meets object. One control: the room temperature. Warm the room past the temperature of your hand and the order flips, so the same metal now feels hottest. The flow is a heat-conduction model in which each material uses its real conductivity, density and heat capacity.",
+      "takeaway": "Everything on the table is the same temperature; the metal feels cold because it draws heat out of your finger fastest, and when the room is warmer than your hand the same metal feels hottest.",
+      "needs": "Thermal conductivity, density and specific heat of skin, a metal (steel or aluminium), wood, plastic and wool: under twenty published constants from textbook tables or Wikipedia's material-property tables (CC BY-SA). The model combines them, because contact temperature depends on all three.",
+      "pitfall": "Metal is not colder than wood, and cold does not flow into your hand: heat flows out of it, and a thermometer shows the two objects equal. The page also should not say conductivity alone decides it: how much heat the material soaks up per degree matters too."
+     }
+    },
+    {
+     "slug": "dislocations-alloys",
+     "refuted": true,
+     "reason": "Nothing in the catalogue covers dislocations (bridges-structures stays at the scale of members). Level 3 is honest: dislocation glide and solid-solution strengthening are core university materials science (MIT 3.012, MITx 3.012S.3x). A 2D Lennard-Jones crystal of a few hundred to a few thousand atoms is buildable on the client: states-of-matter already runs 2D molecular dynamics, and Bailey, Sethna and Myers simulate an edge dislocation in a 2D Lennard-Jones crystal. Three problems need fixing. (a) The takeaway's 'a thousand times below' cannot be observed in the graphic: a small 2D Lennard-Jones toy shows a large gap, but not the factor of 100 to 10,000 of real metals. The number belongs in the text, not the takeaway. (b) Work hardening by multiplying dislocations needs dislocation sources and large boxes; the honest small-box version is a pile-up against an obstacle. (c) newtons-laws is an unhelpful prerequisite. The crystal lattice comes from semiconductors ('Crystals & semiconductors') and the atom-box simulation from states-of-matter.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Shear a two-dimensional crystal of simulated atoms that contains an edge dislocation, and watch the defect glide one row of bonds at a time while a gauge shows the stress it took. Remove the dislocation, and the perfect crystal holds to a far higher stress before a whole plane slips at once. Sprinkle in larger or smaller foreign atoms and the dislocation snags on them, so the gauge must climb higher before it moves. Add a second and third dislocation and drive them against a row of obstacles, where they pile up and resist further slip.",
+      "takeaway": "A crystal with a dislocation yields at a small fraction of the stress a perfect crystal needs, because the defect breaks one row of bonds at a time, and foreign atoms raise that stress by pinning it.",
+      "prerequisites": [
+       "semiconductors",
+       "states-of-matter"
+      ],
+      "needs": "None beyond a 2D Lennard-Jones pair potential, the same kind of model states-of-matter runs. Solute atoms are modelled as particles with a larger or smaller size parameter. The real-metal factor between ideal and measured shear strength (G/10 against measured yield) is quoted in the text from textbook values.",
+      "needsSource": "none"
+     }
+    }
+   ]
+  }
+ }
+]

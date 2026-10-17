@@ -1,0 +1,622 @@
+[
+ {
+  "label": "verify:r1bb9",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "distributed-hash-tables",
+     "refuted": false,
+     "reason": "Not on the site: consensus-blockchains is about agreeing on a log, internet about packet routing; nothing shows key placement on a ring, the share of keys that move under consistent hashing compared with modulo, or finger-table routing. Its prerequisite hash-tables-bloom-filters is a level-3 candidate in this pool (computing.json), so the levels are consistent. Level 3 is honest: MIT 6.824 and Brown CS168 teach Chord. The model is a pure algorithm and needs no data. The facts check out: Chord lookups take O(log N) hops (about half of log2 N on average, so about 6 to 12 for thousands of nodes), and adding a node moves only about K/N keys. The pitfall about virtual nodes and about replication versus lookup is correct.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "elliptic-curve-cryptography",
+     "refuted": true,
+     "reason": "The page is distinct from cryptography (modular Diffie-Hellman on a clock face) and the level is honest: ECC is taught in university cryptography courses. Curve parameters are public standards. The 256-bit versus about 3,072-bit equivalence is NIST SP 800-57's 128-bit security level. The takeaway is wrong as written, though: adding two points is easy to undo (subtract one), and the one-way step is scalar multiplication. Recovering k from kP is the elliptic-curve discrete log. Small fix.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "Multiplying a point on a curve by a secret number is quick, but over a finite field nobody knows a practical way to recover the number from the result, so a 256-bit curve key does the job of a 3,000-bit modular one."
+     }
+    },
+    {
+     "slug": "kalman-filter",
+     "refuted": false,
+     "reason": "Not on the site: feedback-control tunes PID gains and adds sensor noise but never estimates state, and gps solves for position from timing. A 2D constant-velocity Kalman filter with a covariance ellipse runs trivially in the browser and uses synthetic data, so no dataset is needed. Level 3 is honest (MIT OCW 16.322). The prerequisites are at level 2 or below. The pitfall is accurate: the filter is optimal only for linear-Gaussian systems, can be more certain than any one measurement, and a wrong motion model gives confident errors. The 'networks' category is a slight stretch, but the category is information processing, so it is acceptable.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "radar-sonar",
+     "refuted": false,
+     "reason": "Distinct: waves-interference shows a Doppler shift of sound, and medical-imaging reconstructs CT and mentions ultrasound only in passing. Neither shows pulse-echo ranging, chirp pulse compression with a matched filter, or range-Doppler maps. These are 1D signal-processing models that run easily client-side and use synthetic targets, so no data is needed. Level 3 is honest (MIT OCW RES.LL-003 radar course), and the prerequisites are at level 2. The facts check out. Seawater's conductivity absorbs radio waves, so sonar uses sound at about 1,500 m/s, and sound absorption rises steeply with frequency, which is why long-range sonar is low-frequency. Doppler gives only the radial speed. Shaping is the primary way stealth reduces radar cross-section, with absorbent material secondary.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "tcp-congestion-control",
+     "refuted": false,
+     "reason": "Distinct from internet, which only resends lost packets; nothing on the site shows slow start, AIMD, convergence to fairness or bufferbloat. The model is a fluid or packet-level simulation of a bottleneck queue, cheap to run in the browser, with no data. Level 3 is honest (Stanford CS144). The 1986 congestion collapse and Jacobson's 1988 fix support the claim that it keeps the network from collapsing. Small fix: the takeaway says every sender backs off on packet drops, but the page itself compares a delay-based sender, so it should name classic loss-based TCP. The pitfall should also add that AIMD's fair share holds only for flows with equal round-trip times.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "The Internet has no traffic police: each classic TCP sender probes for its share of the bottleneck by speeding up until the queue overflows and packets drop, then backs off, and that simple rule is what keeps the network from collapsing.",
+      "pitfall": "Congestion control is not flow control: the receiver's window protects the receiver, and the congestion window protects the network. A loss on a wireless link is often noise rather than congestion, and classic TCP misreads it as a signal to slow down. AIMD's 'fair share' is fair only between flows with similar round-trip times; a flow with a short round-trip time grabs more."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1bb6",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "radiative-convective-column",
+     "refuted": false,
+     "reason": "Distinct: the existing greenhouse-effect page (src/routes/greenhouse-effect/climate.ts) is a single leaky-greenhouse layer plus a two-layer ocean energy budget. It has no vertical temperature profile, lapse rate, convective adjustment or emission height. A semi-grey two-stream column with convective adjustment is a standard level-3 model (Pierrehumbert ch. 4) and solves in milliseconds in the browser, with no external data. The takeaway is physically right, with one catch. In a purely grey gas the stratosphere settles at the skin temperature, which does not depend on optical depth, so a grey column will not show stratospheric cooling. Cooling appears only through the infrared window (Goessling and Bathiany's window-grey model, https://esd.copernicus.org/preprints/esd-2016-8/esd-2016-8-manuscript-version4.pdf). Recent work (Cohen, Pincus and Polvani 2026) stresses that it depends on the gas's spectroscopy. The interaction and pitfall should say so, so the page doesn't imply that every greenhouse gas cools the stratosphere.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "A column of air from the surface to the stratosphere, solved with the two-stream radiative transfer equations for a grey gas plus an infrared window, with convection adjusting any layer steeper than the chosen lapse rate. Slide the infrared optical depth (the CO2 amount) and the lapse rate and watch the temperature profile, the tropopause and the emission height move, while a side panel shows which layer the escaping infrared leaves from. Close the window to make the gas fully grey and watch the stratosphere stop cooling as CO2 rises; switch convection off to see pure radiative equilibrium and its unstable lower layers.",
+      "pitfall": "Greenhouse gases do not trap heat like a lid or reflect infrared; the column warms because the effective emission level rises into colder air. A band that is saturated at the surface still warms the planet, because emission from higher, thinner layers is what matters. Stratospheric cooling is not automatic for any absorber: in a perfectly grey atmosphere the stratosphere's temperature does not change, and it cools here because part of the infrared escapes through the window."
+     }
+    },
+    {
+     "slug": "clock-escapement",
+     "refuted": false,
+     "reason": "Distinct from oscillations-resonance, which shows the period of a free pendulum. This page is the catch-and-release escapement and the split between the drive and the timekeeper. The model is buildable: a pendulum ODE with an impulse and lock at each tooth, and a weight-driven escape wheel. Level 0 is honest: the reader counts ticks against a second hand and needs no formulas. It has no prerequisites, and leadsTo oscillations-resonance is level 1. The takeaway and pitfall are sound. Clock-pendulum dynamics (arXiv 1501.03673) shows that more drive raises the amplitude, which shifts the rate only slightly (circular error makes it slower, not faster), so 'hardly changes the rate' and 'a bigger swing does not tick faster' are both correct. No data is needed.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "drone-four-rotors",
+     "refuted": true,
+     "reason": "The physics is right and the page is distinct from flight (a wing) and feedback-control (PID altitude hold). It is buildable as a rigid body with thrust growing with rotor speed and reaction torque per rotor. Every direction claim checks out: faster back rotors pitch the nose down and the drone moves forward; a faster left pair rolls it right; speeding up the clockwise rotors yaws the body counterclockwise (Parallax multirotor lesson; arXiv 1908.07401). The level-0 rule fails, though. A level-0 page offers one control at a time, and four independent speed dials at once is exactly what it must avoid. The small fix: one control per step (all-up throttle, then a tilt-forward, a tilt-sideways and a turn control), with the four rotor speeds and arrows shown changing as the result. The four-dial sandbox comes only in a final free-play step.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Each step gives one control, and the drone shows its four rotors with a push arrow and a speed bar on each. Raise the throttle and all four speed up together so the drone rises; push the forward control and watch the back pair speed up, the drone tip and slide forward; push the sideways control and the left pair speeds up so it tips and slides right. Then the turn control speeds up the two rotors that spin clockwise and slows the other two: the lift stays the same but the drone turns on the spot, and if all four spin the same way the body spins helplessly the opposite way. A last step hands over the four rotor speeds directly."
+     }
+    },
+    {
+     "slug": "hydraulics-digger-arm",
+     "refuted": true,
+     "reason": "Distinct (no catalogue page covers fluid pressure or hydraulics) and buildable: area-ratio pistons conserve volume and work, the air bubble compresses by Boyle's law, and the three cylinders drive the arm's linkage kinematics. Level 0 holds if the ratios stay as comparisons (ten times wider area, ten times the push, a tenth of the distance). KS3 schemes of work teach hydraulics as force multiplication. The takeaway is wrong as worded. It says the liquid passes the 'push' on undiminished and then that the wide piston gets many times the push, which contradicts itself and conflates force with pressure, a classic misconception. The liquid passes on the push per bit of area (the pressure), not the total force. Rewrite the takeaway and say this in the pitfall.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "A trapped liquid passes on the same push on every bit of surface it touches, so a piston with ten times the area gets ten times the push, paid for by moving only a tenth as far.",
+      "pitfall": "Hydraulics make no energy: the work in equals the work out, and the small piston simply travels much farther. The liquid does not pass on the same total force; it passes on the same push per bit of area, which is why the bigger piston gets more. A liquid barely squashes, which is the whole point; a spongy brake pedal is air in the line."
+     }
+    },
+    {
+     "slug": "room-thermostat",
+     "refuted": false,
+     "reason": "Distinct: feedback-control is level-2 PID tuning, and homeostasis only mentions a thermostat as an analogy (src/routes/homeostasis/steps.ts). Here the model is a Newton-cooling room plus an on/off switch with a gap: a small ODE that runs easily in the browser with no data. It fits level 0 with one dial at a time and makes the wobble visible. The takeaway and pitfall are correct for on/off heaters and match energy-agency myth-busting (e.g. EDF Energy winter energy myths, https://www.edfenergy.com/energywise/winter-energy-myths). Modulating boilers and heat pumps do change their output, so the text should call this an on/off heater, as the takeaway already implies. leadsTo homeostasis and electric-circuits are both level 1.",
+     "hasFix": false,
+     "fixed": {}
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1bb8",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "wind-turbine-aerodynamics",
+     "refuted": false,
+     "reason": "Distinct: flight shows a single airfoil section and lift, while no existing energy page has momentum theory, the Betz limit or a rotor. The level-3 claim is honest, because actuator disc plus blade-element-momentum is the core of university wind-energy courses (Penn State AERSP 583). Its prerequisite flight is level 2, which is allowed. BEM with a polar lookup runs easily at interactive rates. The takeaway (16/27 is about 59%, reached at a = 1/3) and the pitfall are correct. One weak point is the licence claim: NREL is a contractor-operated lab, so its outputs are not automatically public domain. The NREL 5-MW airfoil tables ship in the OpenFAST r-test repository, which is labelled Apache-2.0, and that is the source to cite. The interaction should also name tip-loss and the high-induction (Glauert) correction, so the BEM model stays honest at high tip-speed ratios.",
+     "hasFix": true,
+     "fixed": {
+      "needs": "Lift and drag polars of wind-turbine airfoils: the NREL 5-MW reference turbine's AeroData tables (DU and NACA64 sections) as distributed in the OpenFAST r-test repository (github.com/OpenFAST/r-test, Apache-2.0), with blade chord and twist from the same reference turbine; NACA airfoil data (public domain) as a fallback.",
+      "needsSource": "OpenFAST r-test repository, 5MW_Baseline/AeroData (Apache-2.0; check the repository LICENSE when shipping); NACA reports (public domain).",
+      "interaction": "Start with an actuator disc: drag how much the air slows through the rotor and watch the stream tube widen, the thrust and power change, and the power coefficient peak at 16/27 when the air leaving is slowed to a third. Then replace the disc with real blades: set the tip-speed ratio and the blade pitch, and a blade-element-momentum model (with tip-loss and the high-induction correction) using measured airfoil polars computes the angle of attack along the blade, the power coefficient against tip-speed ratio, and the power curve against wind speed with pitch control holding power at rated above rated wind."
+     }
+    },
+    {
+     "slug": "barcode-stripes",
+     "refuted": false,
+     "reason": "No existing page covers barcodes. binary is about bits, and this page is about width patterns, reading by proportion and a check digit. Level 0 is honest if the check digit is shown as a pass/fail light and not as a weighted sum. The model (EAN/UPC module patterns, decoding by ratios, the check digit) is a small algorithm. The layout is a published fact, also documented on Wikipedia, so no data licence is needed. The pitfall is correct. There is one factual flaw in the interaction: an EAN-13 has 13 digits, but only 12 groups of stripes appear. The first digit is hidden in the odd/even pattern of the left six groups. Either use UPC-A (12 digits, 6 + 6, all visible), which is the same symbol as EAN-13 with a leading 0, or say where the 13th digit lives. Reading upside down works because the left and right halves use different patterns, and the page should show that.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Drag a scanner's red line across a barcode (a UPC-A, the 12-digit form found on many products) and watch what it sees, a trace of dark and light over time, then step through it: a start mark, six groups of stripes, a middle mark, six more and an end mark, each group of two bars and two gaps one digit. Scan slowly, fast or at a slant and the widths all stretch together, so the digits come out the same; scan it upside down and the scanner tells, from the left groups looking different from the right ones, which way to read. Smudge one stripe and the last digit, a check digit, turns the light red: the number is wrong, scan again.",
+      "needsSource": "none; the UPC-A/EAN-13 symbol layout (95 modules, 7 per digit, L/G/R patterns, check digit) is public structural information (GS1 General Specifications; Wikipedia 'International Article Number', CC BY-SA, for the parity table)."
+     }
+    },
+    {
+     "slug": "qr-codes",
+     "refuted": false,
+     "reason": "Distinct from error-correction, which is level 2 and shows Hamming parity checks on bits. This page is the physical object, its finder patterns, and Reed-Solomon tolerance to painted damage, with no arithmetic shown. An honest level 0. It is buildable: qrcode-generator (MIT) encodes, and jsQR (Apache-2.0) decodes a canvas rendered from the SVG. Covering a finder pattern does make decoding fail, as described. The pitfall misses one point: the recoverable fraction (7/15/25/30% for L/M/Q/H) is counted in damaged codewords (bytes), not cells. A count of cells cannot give a fixed failure threshold, because scattered damage touches more codewords than a compact blot. The format information next to the finders is also critical. The pitfall should say this, so the counter is not read as a universal cell budget.",
+     "hasFix": true,
+     "fixed": {
+      "pitfall": "The three corner squares hold no message; they are for finding and orienting. The code is not read in a spiral or line by line, and the spare cells are not a copy of the message, so do not say the data is duplicated. The survivable damage (about 7 to 30 percent depending on the level chosen) is counted in damaged bytes, not cells or area: a scatter of specks can break a code that a single blot of the same size does not, so the cell counter is a guide, not a fixed limit.",
+      "takeaway": "A QR code carries its message plus spare cells computed from it, so a scratched or half-covered code still reads, until too much of the message is spoiled or a corner finder is hidden."
+     }
+    },
+    {
+     "slug": "wifi-and-walls",
+     "refuted": true,
+     "reason": "Distinct from wireless-signals, which covers modulation and noise. The level-0 framing (a signal map and a speed gauge, no dB) is honest, and a multi-wall path-loss model with per-material losses plus CSMA-style turn-taking is easy to run in the browser. Two problems. First, the data: 'published indoor loss figures' names no source with a clear licence. ITU-R recommendations are copyrighted, although their formula is a fact. A public-domain source exists: NIST IR 6055, Electromagnetic Signal Attenuation in Construction Materials (Stone, 1997, a US government work), which measured brick, concrete, drywall, glass, plywood and wet wood at 0.5 to 8 GHz. Second, the pitfall's sentence 'Distance does not reduce the router's speed' contradicts the gauge, which does drop with distance. The intended point is that the slowdown is the devices choosing a sturdier, slower way to send, not the signal 'running out'. The page should also not imply that a wall's straight-line shadow is the whole story, since reflections fill in behind walls; a multi-wall model is a simplification and should be named as one.",
+     "hasFix": true,
+     "fixed": {
+      "needs": "Attenuation per wall material at 2.4 and 5 GHz: NIST IR 6055, 'Electromagnetic Signal Attenuation in Construction Materials' (W. C. Stone, NIST, 1997; brick, concrete, drywall, glass, plywood, wet wood), for a multi-wall path-loss model; water (fish tank, people) from the same report's wet-material results or textbook absorption values.",
+      "needsSource": "NIST IR 6055 (US federal government work, public domain; https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir6055.pdf).",
+      "pitfall": "Wi-Fi is not the internet; a full signal to the router says nothing about the line out of the house. The signal does not stop at an edge: it fades gradually, and the devices then choose a slower, sturdier way of sending so that it can still be read, which is why the gauge drops step by step instead of cutting out. Walls are not perfect shadows either; reflections leak signal around them, which this simple wall-counting model leaves out."
+     }
+    },
+    {
+     "slug": "shazam-audio-fingerprint",
+     "refuted": false,
+     "reason": "No existing page matches audio. compression keeps spectral coefficients for reconstruction, and this page keeps peak pairs for lookup. Level 2 is honest: a spectrogram needs fourier-transform (level 2), and binary (level 1) is also a valid prerequisite. Short-time FFT, peak picking, combinatorial hashing and an offset histogram over a dozen synthesized clips all run in the browser at interactive rates. No data is needed, since the clips are synthesized. The takeaway and pitfall match Wang (2003): the decisive evidence is time-offset alignment, and the method does not find covers or hummed tunes. The batch target asks for few level-2 topics, but that is a selection question, not a flaw.",
+     "hasFix": false,
+     "fixed": {}
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1bb5",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "hash-tables-bloom-filters",
+     "refuted": false,
+     "reason": "No existing page covers hashing as an index: cryptography (L2) shows the avalanche of a one-way hash, and sorting covers comparisons, not collisions. The level is honest, since hashing is taught in MIT 6.006 (a second-year CS course), and the prerequisites sorting and binary are both L1. The model is pure algorithm, so it is easily client-side and needs no data. The takeaway and pitfall are correct: a Bloom filter has no false negatives. Small improvement: (1-e^{-kn/m})^k is only the standard approximation. Bose et al. 2008 showed it underestimates the rate, noticeably for small m. The page should say the measured rate tracks it closely for large filters, which a small-bit-array slider can show.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Insert keys into a table with chaining or open addressing and raise the load factor; every probe is drawn, and the measured mean probe length is plotted against the expected curve until the table resizes and rehashes. Then feed the same keys to a Bloom filter with an adjustable bit array and number of hash functions, query keys that were never inserted and watch the measured false-positive rate track the standard approximation (closely for large arrays, drifting above it for tiny ones); degrade the hash function with a slider and see both structures cluster."
+     }
+    },
+    {
+     "slug": "tsunamis",
+     "refuted": false,
+     "reason": "No existing page covers tsunamis. earthquakes shows seismic waves inside the Earth. waves-interference shows superposition and standing waves, not depth-limited speed or shoaling. The pool's beach-waves (L0) is wind waves breaking. Level 1 is honest: speed = sqrt(g*depth) is high-school algebra, and the prerequisites (waves-interference L1, earthquakes L1) are not above it. A linear 1D shallow-water solver on a few thousand cells of an ETOPO transect runs at interactive rates, and the entry honestly flags the 1D upper bound. NCEI metadata says ETOPO 2022 is not subject to copyright and may be redistributed at no cost. The takeaway (about 765 km/h over 4,600 m, per NOAA) and the pitfall (flood-like arrival, frequent drawback, not tidal) are correct.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "carbonate-silicate-thermostat",
+     "refuted": false,
+     "reason": "It is distinct from carbon-cycle (L1: the fast cycle and human emissions over decades) and greenhouse-effect (L1: energy balance, no weathering feedback). The Walker-Hays-Kasting box model with a one-layer energy balance is a small ODE and easily client-side, needing no data beyond published parameters (such as the ~17.7 K e-folding temperature). Level 3 is honest: the topic is taught in graduate and upper-level climate courses (MIT 12.842, UChicago GEOS 32060), and the prerequisites are both L1. The takeaway and pitfall are sound. The page should still call the faint-young-Sun resolution the leading explanation, since higher early CO2 is debated alongside other factors. The weak point is the 'why' signal: it admits the course week was unconfirmed, so replace it with the MIT OCW 12.842 lecture, which covers this exact content.",
+     "hasFix": true,
+     "fixed": {
+      "why": "MIT OCW 12.842 Climate Physics and Chemistry, Lecture 4 'The Faint Young Sun Paradox, the geochemical C cycle and climate on geologic time scales': https://ocw.mit.edu/courses/12-842-climate-physics-and-chemistry-fall-2008/resources/part1_lec4",
+      "pitfall": "This thermostat works over hundreds of thousands to millions of years and does nothing about fossil-fuel CO2 on human timescales; the fast carbon cycle and the slow one are different pages. It is the leading explanation of the faint young Sun paradox, not a settled one: the page should not present a single CO2 history as known."
+     }
+    },
+    {
+     "slug": "ensemble-weather-forecasting",
+     "refuted": true,
+     "reason": "The page is distinct and buildable. chaos-fractals (L2) only shows divergence. A 40-variable Lorenz-96 with a 50-member ensemble and an ensemble Kalman filter runs easily in the browser, and data assimilation is university atmospheric-science material, with prerequisites at L2. But the takeaway overstates: a single forecast is not 'useless past a week or so'. Operational deterministic skill reaches about 10 days in midlatitudes, and the intrinsic limit is about two weeks. Synoptic error-doubling estimates range from about 1.5 to 5 days, so 'a couple of days' is acceptable. The pitfall also muddles the probability point: a raw ensemble fraction is exactly a count of members, and calibration is a separate post-processing step. The interaction already shows the real lesson, an over-confident wrong fan from a biased model. Rewrite the takeaway and pitfall.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "Because small errors in today's weather keep doubling every few days, a single forecast loses its skill after a week or two; forecasters run many from slightly different starts, and where the runs agree the forecast is sure and where they fan out it is not.",
+      "pitfall": "Chaos does not make forecasting useless: the useful range differs from day to day, and the ensemble shows which days are which. But an ensemble's spread is not automatically a trustworthy probability: a slightly wrong model gives a narrow, confident fan that misses, which is why forecasters check spread against error and calibrate. A '70% chance of rain' means a 70% chance at any one spot, not rain over 70% of the area or 70% of the day."
+     }
+    },
+    {
+     "slug": "ocean-acidification",
+     "refuted": false,
+     "reason": "It is distinct from acids-bases (L1 titration and the pH scale) and carbon-cycle (L1 reservoirs and flows). Neither solves the seawater carbonate system or reaches carbonate ion, saturation state or the Revelle factor. Level 3 is honest: it is chemical oceanography with CO2SYS, and the prerequisites (L1 and L2) are not above it. Fixed-alkalinity speciation is a 1D root-find, so the page is instant client-side. The takeaway is correct: polar and cold waters reach aragonite undersaturation first, through higher CO2 solubility and lower alkalinity, and seasonal undersaturation is already observed in some polar seas. The pitfall is correct. Improvement: name the specific published constants, because the needs field is vague. Borate must be included in the alkalinity, or pH comes out wrong.",
+     "hasFix": true,
+     "fixed": {
+      "needs": "Published empirical fits for seawater equilibrium constants as functions of temperature and salinity, the same ones CO2SYS uses: K0 (Weiss 1974), K1 and K2 of carbonic acid (Lueker et al. 2000), borate KB (Dickson 1990) and total boron (Uppström 1974) for the alkalinity, and aragonite and calcite solubility (Mucci 1983). These are published coefficients, retyped and cited. Cross-check the solver against PyCO2SYS (open source, GPL-3) in a model test.",
+      "needsSource": "none beyond published equilibrium-constant fits (Weiss 1974; Lueker et al. 2000; Dickson 1990; Mucci 1983), verified against PyCO2SYS (GPL-3, used only as a test oracle, not shipped)"
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1bb4",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "secret-codes",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct from cryptography (L2: key exchange, hashing and signatures), honestly level 0 (letter counts shown as bars), buildable, and its data source is fine (a Project Gutenberg text, public domain). But it overstates frequency analysis: lining up the bars by height finds E, T and A, and nothing more. Past the first few letters the ranks in English are close and change from text to text, so the reader has to fix the rest by spotting part-words. The interaction and takeaway are corrected to say so. leadsTo primes-modular-arithmetic (level 1) is valid.",
+     "fixed": {
+      "interaction": "Turn the inner ring of a code wheel and type a message: each letter steps along the alphabet by the same amount, and your friend turns the ring back to read it. A spy who does not know the turn tries all 25 turns at once and the one that reads as words jumps out. Scramble the alphabet instead; now the spy counts the letters in the secret message and lines its bars up with the bars of ordinary English: the tallest few give E, T and A, half-words like TH_ appear, and the reader swaps the remaining letters until the message reads.",
+      "takeaway": "A code that shifts every letter the same way falls to trying all 25 shifts, and a code that scrambles the alphabet falls to counting letters, because in a long message E stays the most common letter however it is disguised."
+     }
+    },
+    {
+     "slug": "twenty-questions",
+     "refuted": false,
+     "reason": "No existing page shows searching by halving. graph-search expands a frontier across a map, and compression (L2) measures bits of surprise with formulas. The counts are right: a number from 1 to 100 takes at most 7 guesses (2^7 = 128), and a 1000-page dictionary about 10 opens. Level 0 is honest (counts only, one question at a time). The UCI Zoo dataset (101 animals, yes/no features) is distributed by UCI under a Creative Commons licence, CC BY 4.0 like UCI's other datasets; the search snippet confirmed Creative Commons but cut off before the version, so the page should cite it with its DOI 10.24432/C5R59V. Its features do not split the animals exactly in half, which is useful: it shows the pitfall honestly. leadsTo sorting and learning-from-data are both level 1. One small fix: the pitfall says halving needs a sorted list, but animal questions need no sorting, only questions that split the pile, so the pitfall now keeps the two cases apart.",
+     "hasFix": true,
+     "fixed": {
+      "pitfall": "Halving needs either a list in order (the dictionary trick fails on a shuffled pile of pages) or a question that really splits what is left: show 'is it a penguin?' barely shrinking the board, and do not claim every yes/no question halves the pile.",
+      "needsSource": "UCI Machine Learning Repository, Zoo dataset (Forsyth 1990, DOI 10.24432/C5R59V), CC BY 4.0."
+     }
+    },
+    {
+     "slug": "game-tree-search",
+     "refuted": false,
+     "reason": "Distinct from graph-search (a path through a map, with no opponent and no value passed back up the tree), from reinforcement-learning (values learned in a grid world) and from the pool's monte-carlo-tree-search (random playouts and AlphaGo, level 3). Minimax with alpha-beta pruning runs at interactive rates in a browser: the full noughts-and-crosses tree is tiny, and Connect Four at depth 6 is about 7^6, or 120 thousand positions, fewer with pruning. The facts hold: Connect Four's branching factor is at most 7, and pruning never changes the move chosen. Level 1 is a slight stretch, since alpha-beta usually comes in a first university AI course, but minimax on noughts and crosses is common in high-school computing and the page needs no formulas. One small fix: the 'about sevenfold' figure holds only with pruning off, so the interaction now says that.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Play noughts and crosses against the page and open its mind: a tree of the moves it is weighing, the leaves scored win, draw or loss and the scores passed up, the computer taking the best of its moves and assuming you take the worst for it. Switch to Connect Four, where the whole tree is too big, and set how many moves ahead it looks: at two it blunders, at six it is hard to beat, and with pruning off the count of positions examined rises about sevenfold per extra move; turn on pruning and watch whole branches greyed out, the count falling steeply with the chosen move unchanged. Build the scoring rule yourself from a palette of features (centre column, three in a row) and test it."
+     }
+    },
+    {
+     "slug": "how-simulations-work",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Two statements are false. (1) The pitfall says plain Euler on an orbit drifts however small the step. It is a first-order method, so its energy error over a fixed time shrinks in proportion to the step. It drifts at every finite step and over long enough runs always spirals out, but the drift is not independent of the step. (2) The takeaway says every animated model on this site is that loop, but deep-time scrubs a dataset, sorting runs an algorithm and diffusion-models runs a trained network. It also overlaps the pool's differential-equations (L2: Euler stepping, shrinking the step, comparison with the exact solution) and numerical-stability (L3: orbit drift, leapfrog against Euler). So it is narrowed to the level-1 core of position and velocity stepping, with the half-step update kept as a short demonstration, not an analysis.",
+     "fixed": {
+      "takeaway": "A simulation is a rule for the next instant applied over and over, so its accuracy is bought with smaller steps and a better update rule, and the moving physics on this site's pages comes from exactly this loop.",
+      "pitfall": "Smaller steps are not the whole fix: plain stepping on an orbit gains a little energy every step, so it always spirals out eventually; a smaller step only slows the drift, while a half-step update keeps the orbit closed for thousands of turns even with a larger step. And a step too large to resolve a collision lets a ball pass through the floor, which is a step-size problem, not a law of physics.",
+      "overlapWith": "differential-equations (pool, level 2) steps a solution along a slope field and shows Euler converging; numerical-stability (pool, level 3) analyses stability regions and stiffness. This page is the level-1 engine itself: position and velocity updated tick by tick for a falling ball and an orbit, with no derivatives written down, and shows where it fails without the analysis of why."
+     }
+    },
+    {
+     "slug": "cache-memory-hierarchy",
+     "refuted": false,
+     "reason": "Distinct from cpu (L2), whose memory answers instantly, and from gpu. It is genuinely level 3, covered in MIT 6.004 and in standard computer-architecture courses (Hennessy and Patterson). Buildable as a cache simulator running over address traces generated in the browser; it needs no external data. The facts are right: row-by-row and column-by-column summing differ sharply in miss rate, blocking cuts misses in matrix multiply, a direct-mapped cache thrashes when it alternates between two addresses a cache-size apart, and data moves in whole lines. One small fix: a single miss does cost about the same for one byte as for a whole line, but the takeaway's 'many times faster' should be shown as average memory access time in cycles, not wall-clock speed, so it is observable and honest.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "The same program, doing the same arithmetic, takes many times more cycles waiting for memory or many times fewer, depending only on whether it touches memory in an order the cache can exploit."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1bb2",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "chain-of-thought-scratchpad",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct from every existing page, and buildable as two tiny transformers the project trains itself. But the interaction and takeaway overclaim what the source shows. Nye et al. (arXiv 2112.00114) trained on 1-8 digits and tested on 9-10: the scratchpad model generalised better, but it still degraded, so it does not 'keep going'. Length generalisation is a known weak point for scratchpad models too. 'Fails once the carries outrun its layers' is also wrong as a mechanism. A fixed-depth transformer can represent addition in parallel, and direct addition is learned well when the answer is written least-significant digit first. The gap is clearest when the answer is written most-significant digit first, where the first output digit depends on every carry. Level 3 and the prerequisites are fine.",
+     "fixed": {
+      "interaction": "Two tiny transformers of the same size were trained by the project on 1- to 8-digit addition with the answer written most-significant digit first: one writes the answer straight away, the other first writes its working (each column's digit sum and carry). Pose sums and step through each model token by token, with the carry chain highlighted: the direct model must settle every carry before its first output digit and errs on long carry chains, while the scratchpad model reads the carry it just wrote back in. An accuracy chart by number of digits and by longest carry chain compares the two, with 9 and 10 digits shown as beyond training, where both fall off but the scratchpad model falls more slowly.",
+      "takeaway": "A transformer does a fixed amount of computation per token, so writing intermediate steps gives the same model more computation and a place to keep partial results, and it then solves carry-heavy sums the direct model gets wrong.",
+      "pitfall": "The written steps help because they are computation the model conditions on, not because the model narrates a hidden thought, and in large models the written reasoning is not guaranteed to be a faithful account of how the answer was reached. Do not say transformers cannot add directly (they learn it well when the answer is written least-significant digit first), and do not say a scratchpad solves length generalisation: beyond the trained lengths, both models degrade."
+     }
+    },
+    {
+     "slug": "kv-cache-inference",
+     "refuted": false,
+     "hasFix": true,
+     "reason": "Not a duplicate. The gpu page already introduces the roofline with RTX 4090 bandwidth and peak throughput, but it never shows prefill against decode, the KV cache or batching, so this page reuses that tool for a new mechanism. Level 3 is honest: Stanford CS336 has a whole inference lecture on arithmetic intensity, memory-bound decoding and the KV cache. The model is counting arithmetic and bytes over published configurations, so it is client-side and buildable. The takeaway and pitfall are correct. Fixes: count operations and bytes rather than measure wall-clock time in the browser (nondeterministic and untestable), name the existing gpu roofline in overlapWith, and replace the vendor blog with the course signal.",
+     "fixed": {
+      "interaction": "Generate text with a small transformer running in the page, first recomputing every earlier token at each step and then with a cache that keeps each layer's keys and values; counters show the arithmetic and the bytes read per new token, growing with the context without the cache and staying flat with it. Then scale up to a published model configuration on a published GPU: drag the batch size and the context length and watch the gpu page's roofline place prefill (the whole prompt at once) on the compute ceiling and each decode step far below it, on the memory-bandwidth slope, until a large batch lifts it, while a bar shows the cache overtaking the weights in memory at long contexts.",
+      "why": "Stanford CS336 Language Modeling from Scratch, lecture 10 (Inference: arithmetic intensity, memory-bound decoding, KV cache): https://cs336.stanford.edu/lectures/?trace=lecture_10",
+      "overlapWith": "gpu: that page introduces the roofline and memory bandwidth with a matrix multiply; this one places LLM prefill and decode on it and shows how the KV cache and batching move decode along the bandwidth slope.",
+      "needsSource": "GPU figures from vendor datasheets (published specifications; the gpu page already ships RTX 4090 figures); layer, width and head counts from public model config files (e.g. Llama or Qwen config.json on Hugging Face); GPT-2 small, MIT on Hugging Face (modified MIT in the OpenAI repository), if used."
+     }
+    },
+    {
+     "slug": "positional-encoding",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Partial duplicate. The existing transformers page already has a 'Where a token stands' step. It shows GPT-2's learned position embeddings as a cosine-similarity map, says that averaged word vectors cannot tell 'dog bit man' from 'man bit dog', and mentions sinusoids and rotary embeddings in the notes. So the first half of the takeaway (position must be added) is already shown. What is new is the geometry of the sinusoidal and rotary schemes and RoPE's dependence on relative distance; the page should narrow to that. 'Push past the training length and compare how each scheme copes' needs trained models for each scheme, which the entry does not provide. Replace it with the geometric fact: past the trained length, the slow dimension pairs reach angles never seen in training. The pitfall should also say that a causal mask already leaks some order. The formulas are closed-form, so no data is needed.",
+     "fixed": {
+      "interaction": "Drag a position slider and watch the sinusoidal encoding's dimension pairs turn like clock hands at geometrically spaced speeds, fast pairs telling neighbours apart and slow pairs telling far positions apart. Switch to RoPE, where the query and key themselves are rotated, and drag two tokens along the sentence: their attention score stays fixed while their distance does and changes when it does, whereas with an added sinusoid the score also drifts with absolute position. Extend the sentence past a marked training length and see the slowest pairs reach angles that never occurred in training.",
+      "takeaway": "Rotating each query and key by angles proportional to its position makes their attention score depend only on how far apart the two tokens are, not on where they stand.",
+      "pitfall": "RoPE does not add a position vector to the embeddings and is not applied to the values. 'Depends only on relative position' holds for the score of one query-key pair, not for the whole network's behaviour beyond the trained length. Attention with a causal mask is not fully blind to order, since each token sees a different number of predecessors; it is order-blind only without the mask.",
+      "overlapWith": "transformers: that page shows GPT-2's learned position embeddings and states that position must be added; this one shows the sinusoidal and rotary schemes and why rotation makes attention depend on relative distance."
+     }
+    },
+    {
+     "slug": "residual-stream-logit-lens",
+     "refuted": false,
+     "hasFix": true,
+     "reason": "Distinct. The transformers page says in one step's text that each block's attention and MLP add to the token's vector, but its stage shows attention weights only: no residual sum, no MLP contribution, no per-layer readout and no ablation. Level 3 is honest (interpretability coursework; the tuned-lens paper uses the logit lens on GPT-2 as its baseline). Precomputing GPT-2 small runs is feasible, since 12 layers x 2 components of ablations per prompt is small, and the weights are already used on the site (MIT on Hugging Face). The pitfall matches the Tuned Lens paper (works roughly on GPT-2, fails on GPT-Neo). Small fix: the lens must apply GPT-2's final layer norm before the unembedding; say so, and acknowledge the existing text in overlapWith.",
+     "fixed": {
+      "pitfall": "The logit lens reads early layers with the final layer norm and unembedding, which they were never trained for; it works roughly on GPT-2 and fails on some other models (the tuned lens fixes this). Apply the final layer norm before unembedding, as the lens is defined, and do not present early-layer guesses as what the model 'thinks'.",
+      "overlapWith": "transformers: that page shows attention weights and says in text that each block adds to the token's vector; this one draws the residual sum of attention and MLP outputs, reads the prediction out at every depth, and lets the reader ablate components."
+     }
+    },
+    {
+     "slug": "rlhf-alignment",
+     "refuted": false,
+     "hasFix": true,
+     "reason": "Distinct. The language-models page only names RLHF in a sentence, and reinforcement-learning works on a painted grid. Level 3 is honest (Stanford CS224N has an RLHF lecture). The model is genuine and runs at interactive rates: a Bradley-Terry fit of a linear reward on precomputed embeddings, and the exact KL-regularised optimum, pi proportional to pi_ref times exp(r/beta), on a finite candidate set. DPO is derived from the same closed form. Licences check out: GPT-2 is MIT on Hugging Face (modified MIT in the OpenAI repository), and all-MiniLM-L6-v2 is Apache 2.0 in its model card metadata, though the repository has no LICENSE file and a community thread questions some training-data licences. Fixes: record that licence status, and soften 'RLHF teaches no new facts', which is a contested hypothesis in general. The sound version is that the policy on this page can only reweight continuations the base model already gives probability to, because the KL optimum keeps the base model's support.",
+     "fixed": {
+      "pitfall": "On this page the policy can only reweight continuations the base model already gives probability to, because the KL-regularised optimum keeps the base model's support; do not generalise that into a claim that RLHF can never change what a model knows. On a finite candidate set that optimum is closed-form, so the page must not pretend PPO is running; say that DPO is derived from the same closed form. Reward hacking here means over-optimising a learned proxy, not the model 'wanting' to cheat.",
+      "needsSource": "GPT-2 small weights: MIT on Hugging Face (openai-community/gpt2), modified MIT in the OpenAI repository (confirmed). all-MiniLM-L6-v2: Apache 2.0 in the Hugging Face model card metadata (confirmed); the repository has no LICENSE file, and a community thread questions some training-data licences (MS MARCO, GooAQ), which does not affect shipping a few hundred precomputed embeddings. The continuations and labels are generated by the project."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1bb1",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "next-word-guessing-game",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "It substantially overlaps a sibling level-0 pool entry, autocomplete-spellcheck. That page's second half already shows next-word guesses as counts of which word followed the last one in a pile of books, and its overlapWith ignores this. ngram-text-models covers the same counting idea at level 1. The parts autocomplete does not show are writing by repeated sampling (rolling a die weighted by the counts and feeding the output back in) and the chatbot framing. Narrowing the interaction to those parts keeps it as the level-0 rung of the LLM ladder the user asked for. As written, 'always picking from those counts' is ambiguous; it should be a weighted random pick, not always the top card. Otherwise the level is honest (counts on cards, one button), the data is public domain from Project Gutenberg, and the model runs in the browser. The why URL points to /lessons/8, but the Chatbots and LLMs lesson is reported as the fourth of eight lessons, so cite the unit page instead.",
+     "fixed": {
+      "interaction": "Play a guessing game against a tiny machine that has read a few children's books: a story stops mid-sentence, you guess the next word, and the machine shows its own guess as a row of word cards, each with a count of how often that word came next in everything it read. Then let it write on its own: each word is drawn by chance like a spinner whose slices are as big as the counts, so it usually picks a common word but sometimes an odd one, and the word it picked becomes the start of the next guess. Press the one button, 'read more books', and watch the cards fill up and its stories get better.",
+      "takeaway": "A chatbot writes by guessing one word at a time from what usually came next in the text it learned from, adding each guess to the story before making the next, so it picks likely words, not true ones.",
+      "overlapWith": "autocomplete-spellcheck (proposed, level 0) suggests the single most common next word while you type; this page has the machine write whole stories by drawing words at random in proportion to the counts and feeding each one back in, the loop a chatbot runs. language-models shows the same loop with a real network for a level-2 reader. The next-word half of autocomplete-spellcheck should be cut back so the two pages do not repeat each other.",
+      "why": "Code.org How AI Works, lesson 'Chatbots and Large Language Models' (grades 6-12): https://code.org/ai/how-ai-works"
+     }
+    },
+    {
+     "slug": "spam-filter-word-counts",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "It is distinct from bayes-theorem (a disease-test grid) and from learning-from-data (curve fitting). A word-count classifier is a real model that runs in the browser, and at level 0 it stays honest as counts and votes. There are two problems. (a) The takeaway claims 'A spam filter has no idea what a message means: it counts which words...'. That describes the classic word-count (naive Bayes) filter; modern mail filters also use sender reputation, links and neural networks, so the claim needs to be scoped. (b) The SMS Spam Collection includes adult and crude spam taken from the Grumbletext forum, which is not suitable for readers aged 9 to 13. The page needs a hand-checked, child-safe subset. The licence (CC BY 4.0 on the UCI page) could not be confirmed by search and should be checked on the dataset page before shipping. The 'fr33' trick works as described: an unseen word adds nothing to the vote.",
+     "fixed": {
+      "takeaway": "This kind of spam filter has no idea what a message means: it counts which words turned up more in past spam than in ordinary messages, which is why spammers misspell and why your 'report spam' clicks teach it.",
+      "needs": "The SMS Spam Collection (Almeida, Gómez Hidalgo and Silva, UCI Machine Learning Repository, 5,574 messages), reduced to a hand-checked subset of a few hundred messages with adult or crude spam removed, since the audience is children.",
+      "needsSource": "UCI SMS Spam Collection (https://archive.ics.uci.edu/dataset/228/sms+spam+collection), listed by UCI as CC BY 4.0; confirm the licence line on the dataset page, and ship only a curated child-safe subset.",
+      "pitfall": "No word is bad: 'free' is only commoner in spam. The filter can be fooled both ways, and how much spam exists overall matters, so a rare kind of message needs stronger evidence; keep that as counts, not Bayes' formula. Do not say this is how every modern mail filter works: real ones also look at the sender, the links and use neural networks."
+     }
+    },
+    {
+     "slug": "teach-a-machine",
+     "refuted": false,
+     "hasFix": true,
+     "reason": "It is distinct from learning-from-data: it is nearest-neighbour classification on downsampled drawings, with no curve fitting. It is buildable in the browser as a real algorithm. The position trap works with a pixel-grid nearest-neighbour vote, so the takeaway can be seen in the graphic. The level-0 level is honest. Quick, Draw! is CC BY 4.0, but its README warns that the moderated drawings may still contain inappropriate content, so a hand-checked subset is needed for children. The pitfall misstates the wolf-and-snow story. In Ribeiro et al. 2016 (LIME) the researchers trained that classifier on purpose on hand-picked photos where every wolf had snow behind it, to test whether people would notice. It was a constructed demonstration, not an accident found in the wild.",
+     "fixed": {
+      "needs": "Optional: a hand-checked subset of doodles (a few hundred per class) from the Quick, Draw! dataset (Google, CC BY 4.0) as a ready pile of examples; the reader's own drawings need nothing.",
+      "needsSource": "Quick, Draw! dataset, CC BY 4.0 (https://github.com/googlecreativelab/quickdraw-dataset), optional; its README warns that moderated drawings may still be inappropriate, so ship a hand-checked subset.",
+      "pitfall": "The machine does not know what a cat is; it compares squares. Do not call the neighbour vote a neural network; neural-networks comes later. If the wolves-in-snow story is told, tell it accurately: researchers (Ribeiro et al., 2016) built that trap on purpose, picking photos where every wolf had snow behind it, to show how a model can learn the background; it was not an accident discovered in a real product."
+     }
+    },
+    {
+     "slug": "k-means-clustering",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "It is not in the existing catalogue, but it nearly duplicates the pool's clustering-gaussian-mixtures (level 3). That entry's first half is the same step-through of k-means on unlabelled Palmer penguins, plus the same failure on a ring and the same density-based rescue. This level-1 entry also crowds in an elbow plot and a second, density-based algorithm. k-means itself (nearest centre, then average) is honest level-1 material. The fix is to narrow this page to k-means only (assign, move, repeat; k and the starting points; the ring where it fails) and leave the density method and soft Gaussian clustering to the level-3 page. That page should then list this one as a prerequisite and drop its own k-means walkthrough. The title 'Clustering' is too generic. Palmer penguins is CC0, which is confirmed.",
+     "fixed": {
+      "title": "Finding groups: k-means",
+      "interaction": "Scatter points by hand or load real penguins measured by bill length and flipper length, with their species hidden, then step k-means: drop k centres, colour every point by its nearest centre, move each centre to the middle of its colour, and repeat until nothing moves. Change k and the starting positions and watch the groups change, reveal the species to compare, and draw two rings, one inside the other, to see k-means cut them in half because it only knows 'nearest centre'.",
+      "takeaway": "A computer can find groups in data with no labels at all, by alternately assigning points to the nearest centre and moving the centres, but which groups it finds depends on how many it is told to look for and where it starts.",
+      "needs": "The Palmer penguins measurements (344 penguins, three species).",
+      "needsSource": "palmerpenguins (Horst, Hill and Gorman), CC0, from Palmer Station LTER (https://allisonhorst.github.io/palmerpenguins/).",
+      "pitfall": "k-means does not discover the number of groups and finds only compact, roughly round blobs of similar size; different starts give different answers, so run it several times. The groups it finds need not match the species.",
+      "overlapWith": "clustering-gaussian-mixtures (proposed, level 3) should start where this ends: soft Gaussian clusters with EM and density-based methods, with this page as its prerequisite and no repeat of k-means. Among existing pages, learning-from-data fits labelled points and embeddings shows a map of words that cluster; neither runs an algorithm that finds groups without labels.",
+      "related": [
+       "embeddings",
+       "clustering-gaussian-mixtures",
+       "words-keep-company"
+      ]
+     }
+    },
+    {
+     "slug": "ngram-text-models",
+     "refuted": false,
+     "hasFix": true,
+     "reason": "It is distinct from language-models (a trained network's precomputed probabilities). It is also distinct from the level-0 next-word-guessing-game and autocomplete-spellcheck, because it adds what they lack: the window slider, measured unseen contexts on held-out text, and the drift into verbatim copying. Counting n-grams over about 1 MB of text is quick in the browser. The level-1 level is honest: counts, held-out text and exponential growth fit a high-school reader. The takeaway and pitfall are correct: there are vocabulary-to-the-power-n possible contexts, and smoothing and back-off do not add long-range structure. Shakespeare's text is public domain; the MIT claim for the char-rnn repository was not confirmed by search, but it does not matter if the text is taken straight from Project Gutenberg. Small fixes: say where the text comes from without depending on the repository's licence, and add autocomplete-spellcheck to related.",
+     "fixed": {
+      "needs": "About 1 MB of Shakespeare's plays (the 'Tiny Shakespeare' extract popularised by Karpathy's char-rnn, or the same plays taken from Project Gutenberg) and the reader's own text.",
+      "needsSource": "Shakespeare's plays are public domain (Project Gutenberg, https://www.gutenberg.org/ebooks/100); the Tiny Shakespeare file is an extract of them, so its repository's licence does not matter.",
+      "related": [
+       "next-word-guessing-game",
+       "autocomplete-spellcheck",
+       "language-models",
+       "compression",
+       "training-a-tiny-language-model",
+       "tokenization"
+      ],
+      "overlapWith": "language-models shows a trained network's predictions; this page builds the counting model that came before it and measures why counting cannot reach far back. The level-0 pages next-word-guessing-game and autocomplete-spellcheck use one- or two-word counts with no window slider and no held-out measurement."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1bb10",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "comet-tails",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct (no catalogue page has comets; sun-earth-moon and orbits-kepler never show tails) and an honest L0 toy. A real model is buildable: a Kepler ellipse, a gas tail drawn along the anti-Sun direction, and dust grains released along the orbit with reduced effective gravity (Finson-Probstein syndynes), which produce the lagging curve. Two things need fixing. First, the takeaway says the tail 'always points away from the Sun', but that is exact only for the gas (ion) tail. The page's own dust tail curves and lags behind along the orbit, and from Earth it can even look like an anti-tail pointing sunward. Second, the data licence is left unsettled ('confirm before shipping'). Orbital elements for one or two comets are physical measurements, not creative works, and JPL is a NASA facility whose data are freely reusable with credit, so the source can be stated plainly. Only one real comet is needed, Halley.",
+     "fixed": {
+      "takeaway": "A comet's tails are pushed out by the Sun, not left behind by its motion, so the gas tail always points straight away from the Sun and the comet leaves tail-first, while the dust tail bends back along the path it has travelled.",
+      "needs": "Orbital elements of comet 1P/Halley (perihelion distance, eccentricity, period) from the JPL Small-Body Database (https://ssd-api.jpl.nasa.gov/doc/sbdb.html). These are measured physical facts published by NASA/JPL and are freely reusable with the credit 'Courtesy NASA/JPL-Caltech'. Only a few numbers are needed, typed into the model with the credit; no API call happens at runtime. The tail directions come from the model: the gas tail along the anti-Sun line, and dust grains released along the orbit under sunlight pressure.",
+      "needsSource": "JPL Small-Body Database, Halley's orbital elements (NASA/JPL measured facts, free to reuse with credit)"
+     }
+    },
+    {
+     "slug": "earth-is-a-ball",
+     "refuted": false,
+     "hasFix": true,
+     "reason": "Not a duplicate: sun-earth-moon moves a tilted Earth and never shows that it is round or which way is down. The level is honest (NGSS 5-PS2-1 and KS2 Y5 both ask for exactly this), and the model is real sphere geometry: the horizon distance and the height hidden behind it, computed from eye height. Two small improvements keep it honest. Light bending in the air (refraction) lets you see somewhat farther than straight-line geometry predicts (roughly 15% in typical conditions), so the page should not claim exact hull-hiding distances. Also, at true scale the bulge is far too small to see, so the drawing must say the curve is exaggerated. The pitfall 'it doesn't vanish because it got too small' is best shown by a binoculars toggle: zooming in brings back a small ship but not a hidden hull. That makes the takeaway observable without any text.",
+     "fixed": {
+      "interaction": "Drag a ship out to sea and watch it from the shore. On a flat world it only shrinks, and binoculars bring all of it back. On the round world its hull sinks out of sight before its sails as the sea bulges up between you and it (the curve drawn exaggerated, the distances real). Binoculars cannot bring the hull back, but climbing a cliff can. Then walk a little figure around the globe: wherever it stands its feet point to the middle, and a dropped ball falls toward the middle too, so nobody on the far side falls off.",
+      "pitfall": "People on the far side are not upside down and do not have to hold on: the page draws no fixed up arrow anywhere. The ship does not vanish because it got too small, and magnifying it does not bring the hull back. The bulge is drawn much bigger than it really is, and air bends light a little so you see slightly farther than the plain geometry says; the page does not claim exact distances."
+     }
+    },
+    {
+     "slug": "leap-years",
+     "refuted": false,
+     "hasFix": false,
+     "reason": "Distinct from sun-earth-moon, which explains why there are seasons, not how a calendar stays lined up with them. It suits L0: it starts from an everyday object (February 29), the numbers are only counts and comparisons (a quarter of a day), and one toggle drives each step. The model is the real arithmetic of the tropical year (about 365.2422 days) against the calendar rules. The numbers check out. Without leap days the calendar slips about 0.24 days a year: roughly a month in about 125 years, and the summer solstice reaches winter after about 750 years ('seven or eight centuries'). The Julian every-four-years rule leaves about one day per 128 years, roughly 8 days in a thousand years, the 'small drift' the 1582 Gregorian reform fixed. The pitfall about 1900 and 2000 is correct. No external data is needed; the length of the year is a standard astronomical constant.",
+     "fixed": {}
+    },
+    {
+     "slug": "galaxy-collisions",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Not a duplicate: dark-matter spins one galaxy to read its rotation curve. The level is honest; galaxy interactions and the Toomre restricted model are taught in university galactic dynamics courses, and the UCSD Physics 141 project rebuilds exactly this. The model is cheap in the browser: two point masses plus a few thousand massless test stars, as in Toomre and Toomre (1972), drawn as a 3D projection. One claim is wrong for this model, though. 'Scrub forward a billion years to see the pair fall back together' cannot happen with two point masses on a parabolic or hyperbolic pass: that orbit never closes, so the pair never merges. A merger needs dynamical friction from extended dark haloes, which the restricted model lacks. Either add a Chandrasekhar dynamical-friction drag on the two centres, labelled as an added ingredient, or drop the merger. The takeaway and pitfall are sound: prograde passes make tails and retrograde passes barely do, and stars do not collide. Matching the Antennae or the Mice also needs controls for disc tilt and viewing angle, so they should be named. dark-matter (L2, at or below L3) is a natural prerequisite, because the merger depends on haloes.",
+     "fixed": {
+      "interaction": "Two galaxies, each a tilted disc of thousands of massless stars orbiting a central mass, pass each other as in Toomre and Toomre's 1972 model. Set the closest approach, the mass ratio, each disc's tilt and whether it spins with or against the orbit, then run. A prograde pass throws out a long tidal tail and a bridge; a retrograde one barely stirs the disc. Turn the view to match the Antennae or the Mice by trial. Then switch on dynamical friction from the dark haloes, an added ingredient the original model leaves out, and scrub forward a billion years to see the pair, which would otherwise fly apart for ever, fall back together and merge.",
+      "prerequisites": [
+       "orbits-kepler",
+       "dark-matter"
+      ]
+     }
+    },
+    {
+     "slug": "lagrange-points-three-body",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct and honest. orbits-kepler adds a second planet in the inertial frame, while this page uses the rotating frame, the Jacobi constant, zero-velocity curves and the stability of the Lagrange points, which is standard university astrodynamics (MIT OCW 16.346). The circular restricted three-body problem integrates easily in the browser. The takeaway and pitfall need correcting. 'There is no formula for the motion' is too strong: Sundman (1912) found a convergent series solution. The accurate claim is that there is no general closed-form solution and that nearby starts diverge, which is also what the side-by-side probes actually show. The pitfall says the two pulls 'add' at L1 and L2, but at L1 Earth's pull partly cancels the Sun's; only at L2 do they add. The stability of L4 and L5 also depends on the mass ratio: they are stable only below Routh's limit, mu < 0.0385, which Sun-Jupiter, Sun-Earth and Earth-Moon all satisfy. A mass-ratio slider that crosses this limit makes the claim 'two stable points' visible rather than asserted.",
+     "fixed": {
+      "interaction": "The circular restricted three-body problem, drawn in the frame that rotates with the two large bodies. Set the mass ratio (Sun-Jupiter, Sun-Earth, Earth-Moon, or a slider) and the five Lagrange points appear. Set the probe's energy (the Jacobi constant) and the forbidden regions shade in, opening gates at L1 and L2 as the energy rises. Drop a probe at L1 or L2 and it drifts away within months. Drop one near L4 and it wanders in a tadpole around the point for as long as the reader waits, as Jupiter's Trojans do. Push the mass ratio past about 1 in 26 and the same probe escapes. Nudge a starting position by a hair to run two probes side by side and watch their paths split.",
+      "takeaway": "Three bodies have no general closed-form solution, and nearby paths split apart, but there are five points where a small body can keep pace: three balanced on a knife edge, two stable while the smaller mass is light enough. An energy map shows where the body can and cannot go.",
+      "pitfall": "L1 and L2 are not places where gravity cancels. A spacecraft there circles the Sun in exactly one Earth year because the combined pull (Earth's pull partly offsets the Sun's at L1 and adds to it at L2) is exactly what that orbit needs, and it still needs station-keeping. The general three-body problem is not 'unsolvable': Sundman found a convergent series, but no closed formula and no long-term predictability."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1bb7",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "toilet-flush",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct (no existing page shows a siphon; level 0 and a small tank-and-bend flow model are honest and buildable). But the takeaway is stated as true of every toilet, and it is not. Washdown toilets, the usual design in Europe, Japan and Australia, never siphon: the rush from the tank pushes the water over the weir (https://horow.com/blogs/guide/siphon-jet-vs-washdown-toilet-guide-to-choosing-the-right-toilet-flushing-system, https://plumbingconnection.com.au/drainline-transport-waste/). The pitfall explains the siphon as one leg 'outweighing' the other, which is the contested chain model. It also says a slow pour 'drains nothing', when in fact the extra water trickles over the weir and the bowl stays full. Fix: name the siphonic toilet, add a washdown bowl for contrast, and correct the pitfall.",
+     "fixed": {
+      "interaction": "Press the lever: the flapper lifts, the tank pours into the bowl and the bowl's water climbs toward the top of the bend behind it. The moment it spills over fast enough, the whole bend fills and the bowl drains itself, fast, until air gets in and it gurgles to a stop. Then pour a bucket in slowly or quickly to find what starts the siphon, swap in a wide-bend washdown bowl that never siphons and only pushes the extra water over the top, and watch the float rise with the refilling tank and shut its own valve.",
+      "takeaway": "In a siphonic toilet the tank only has to fill the bend behind the bowl; once it is full, the water running down the long side drains the bowl by itself until air gets in and breaks the siphon.",
+      "pitfall": "The flush is not suction, and not every toilet siphons. In a siphonic toilet, gravity pulls the water down the long side of the bend while the air pressing on the bowl pushes more water in behind it. A slow pour never fills the bend and just trickles over the top, so the bowl stays full. Washdown toilets, the usual kind in much of Europe, never siphon: the tank's rush pushes the water over the weir."
+     }
+    },
+    {
+     "slug": "abs-brakes",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "Distinct from feedback-control (a nonlinear slip-curve plant with a bang-bang cycler). Level 3 is honest: wheel-slip dynamics belong to university vehicle-dynamics courses, and a quarter-car wheel ODE runs easily in the browser. The data source is the problem. 'Pacejka coefficients, published values, textbook paywalled' names no usable dataset. The Burckhardt friction-slip model is the standard open alternative, and its coefficient sets for dry asphalt, wet asphalt and snow are reproduced in openly readable papers such as arXiv 2211.10336 (https://arxiv.org/pdf/2211.10336). Coefficients are facts, so they can be reused. I found no peer-reviewed ice set, so ice must use a cited low-mu curve or be dropped. The interaction also says the peak is at 10 to 20 percent slip on every surface, but on snow the curve peaks at much lower slip.",
+     "fixed": {
+      "interaction": "Brake a car from highway speed on dry asphalt, wet asphalt or snow: each wheel's spin follows its own equation of motion, and the tire's braking force follows a measured friction-against-slip curve whose peak sits near ten to twenty percent slip on dry asphalt and at smaller slip on snow, falling away as the wheel locks; the stopping distance is marked on the road. Brake too hard with ABS off and the wheel locks, the car slides further and no longer answers the steering; switch ABS on and watch the controller cycle the brake pressure to keep each wheel near the peak.",
+      "needs": "Tire friction-slip curves from the Burckhardt model, mu = c1(1 - e^(-c2 s)) - c3 s, with its published coefficient sets for dry asphalt, wet asphalt and snow (reproduced openly, e.g. arXiv:2211.10336); an icy surface only if a cited coefficient set is found.",
+      "needsSource": "Burckhardt friction-slip coefficients, published in the open literature (arXiv:2211.10336 among others); coefficients are facts, freely reusable."
+     }
+    },
+    {
+     "slug": "bicycle-stability",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "The takeaway and pitfall are factually wrong for the model the page would run. I computed the eigenvalues of the Meijaard et al. 2007 benchmark bicycle. With all terms in place it is self-stable from about 4.3 to 6.0 m/s, the published band. With the wheels' spin angular momentum removed (S_R = S_F = 0 in C1 and K2), it is not self-stable at any speed from 0 to 15 m/s. So the page would show the opposite of its takeaway. What is true (Kooijman et al., Science 2011, https://swov.nl/en/publicatie/bicycle-can-be-self-stable-without-gyroscopic-or-caster-effects) is that neither the gyroscopic effect nor trail is necessary in principle: a specially designed 'two-mass-skate' bicycle balances with neither. On an ordinary bicycle, both contribute. The rest holds up: distinct from feedback-control, level 3 is honest (linearised multibody eigenvalues), the model is a 4x4 linear system that runs at interactive rates, and the parameters are published.",
+     "fixed": {
+      "interaction": "Push a riderless bicycle at a chosen speed and let its linearized equations of motion run: below a certain speed it slowly falls, in a middle band it wobbles and recovers on its own, and above it it slowly leans away. Drag the speed and watch the eigenvalues of lean and steer cross the stability boundary; change the trail, the head angle and the front-wheel mass, cancel the gyroscopic effect of the wheels and the trail in turn and see the ordinary bicycle lose its self-stable band, then load the two-mass-skate design that balances with neither; finally steer left and watch the bike first lean right.",
+      "takeaway": "A riderless bicycle balances itself in a band of speeds because a lean makes its front wheel steer into the fall, and that self-steering comes from the geometry and mass of the whole front assembly, not from any single effect such as the wheels' gyroscopic spin.",
+      "pitfall": "Neither 'the gyroscope keeps it up' nor 'the gyroscope plays no part' is right. On the standard benchmark bicycle, cancelling the wheels' gyroscopic effect removes its self-stable speed band. Yet Kooijman et al. (2011) built a bicycle that balances with neither a gyroscopic effect nor trail. Self-stability comes from several effects working together.",
+      "needs": "The benchmark bicycle parameters and linearized equations of Meijaard, Papadopoulos, Ruina and Schwab (2007, Proc. R. Soc. A, doi:10.1098/rspa.2007.1857), reproduced openly at http://ruina.tam.cornell.edu/research/topics/bicycle_mechanics/, and the two-mass-skate parameters of Kooijman et al. (2011, Science 332:339, doi:10.1126/science.1201959).",
+      "needsSource": "Meijaard et al. 2007 benchmark and Kooijman et al. 2011 parameters (published numerical values, which are facts; the benchmark is openly reproduced on the Cornell page)."
+     }
+    },
+    {
+     "slug": "gas-turbines-combined-cycle",
+     "refuted": true,
+     "hasFix": true,
+     "reason": "The Brayton half substantially duplicates jet-engines, a level-3 page in this same pool that already plots a gas turbine on a T-s diagram from its cycle, station by station. The steam half duplicates steam-power-cycles, which already has real steam properties and a T-s diagram. The only new mechanism is the coupling: the heat-recovery boiler and its pinch point, and why the pair beats either engine alone. The pitfall is also muddled. It mixes up net work and efficiency: ideal Brayton efficiency rises without limit with pressure ratio, and with component losses both work and efficiency peak, at different ratios. 'Over half the turbine work' is only true on average: typical back-work ratios are 40 to 80 percent (Purdue ME 200 notes, https://engineering.purdue.edu/~wassgren/teaching/ME20000/NotesAndReading/Lec39_Reading_Wassgren.pdf). Fix: narrow the page to the combined cycle, built on jet-engines and steam-power-cycles. The data (NASA Glenn polynomials, public domain; IAPWS-IF97, free) is fine.",
+     "fixed": {
+      "slug": "combined-cycle-power-plants",
+      "title": "Combined-cycle power plants",
+      "interaction": "Set a gas turbine's pressure ratio and turbine inlet temperature and watch its exhaust leave at several hundred degrees; then route that exhaust through a heat-recovery steam generator drawn as a temperature-heat diagram, the cooling gas line above the heating water-and-steam line. Drag the steam pressure and the pinch-point gap, add a second and third pressure level, and see the two lines hug more closely, the stack temperature fall and the plant's combined efficiency climb past 60 percent.",
+      "takeaway": "A combined-cycle plant reaches about 60 percent efficiency because a steam cycle turns the gas turbine's hot exhaust into extra work, and it recovers more the more closely the steam's heating line can follow the cooling exhaust.",
+      "pitfall": "The best gas turbine for a combined cycle is not the most efficient stand-alone one. A lower pressure ratio leaves a hotter exhaust for the steam cycle, so the plant's optimum pressure ratio is below the gas turbine's own. And the steam cycle burns no extra fuel: it only uses heat that would otherwise go up the stack.",
+      "prerequisites": [
+       "heat-engines",
+       "entropy",
+       "jet-engines",
+       "steam-power-cycles"
+      ],
+      "related": [
+       "power-grid",
+       "heat-pumps-refrigeration"
+      ],
+      "overlapWith": "jet-engines and steam-power-cycles each show one of the two cycles on a T-s diagram; this page shows only what neither does: the heat-recovery boiler's temperature-heat matching and pinch point that couple them into one plant.",
+      "needs": "Specific heats of air and combustion products as functions of temperature (NASA Glenn thermodynamic polynomial coefficients, US government, public domain); water and steam properties from IAPWS-IF97 (freely published), as in steam-power-cycles."
+     }
+    },
+    {
+     "slug": "heat-pumps-refrigeration",
+     "refuted": false,
+     "hasFix": true,
+     "reason": "Sound. No existing page runs a cycle backward or uses a real refrigerant with a phase change. Level 3 is honest: Thermodynamics I covers the vapor-compression cycle on a p-h diagram (Purdue ME 200). CoolProp is MIT-licensed and covers R-134a, propane (R-290) and CO2 (R-744), transcritical CO2 included, and property tables or fits can be shipped to the browser. The takeaway and pitfall are correct: the Carnot COP falls as the temperature lift grows. Two small improvements. This pool also proposes refrigerator (L0) and heat-pumps (L1), so the three form a ladder; the L1 page should be a prerequisite, and overlapWith should say how the L3 page differs from it. The Reserve item 'Heat pumps' is now claimed by the L1 page.",
+     "fixed": {
+      "prerequisites": [
+       "heat-engines",
+       "entropy",
+       "states-of-matter",
+       "heat-pumps"
+      ],
+      "related": [
+       "refrigerator",
+       "steam-power-cycles",
+       "chip-cooling",
+       "geothermal-power",
+       "thermoelectrics"
+      ],
+      "overlapWith": "heat-pumps (L1, this batch) runs the loop with bars for heat delivered against work; this page adds what it leaves out: a real refrigerant on a p-h diagram, compressor losses, subcooling and superheat, the Carnot comparison and the transcritical CO2 cycle. heat-engines never runs a cycle backward and has no phase change."
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r1bb3",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "scaling-laws",
+     "refuted": false,
+     "reason": "Distinct: no existing page (language-models, gradient-descent, neural-networks, learning-from-data) shows loss against model size and data or the compute-optimal split. Level 3 is honest, since university LLM courses (e.g. Stanford CS324) teach it. Buildable: the sweep is trained offline and shipped, only one point is retrained live, and the Chinchilla optimum under C ~ 6ND is closed-form. Three small fixes. The Epoch AI reconstructed data has no licence I could find, so it is dropped as a data source; the fitted constants are published facts and need no licence. The page should show Hoffmann's and Epoch's corrected constants side by side, because Epoch found the original parametric fit inconsistent with the paper's other methods. The why field is a paper, not a curriculum or demand signal, so it is replaced. The sweep can reuse the tiny char transformer from training-a-tiny-language-model.",
+     "hasFix": true,
+     "fixed": {
+      "needs": "The project's own precomputed sweep of small character-level transformers (the training-a-tiny-language-model architecture) trained on Tiny Shakespeare at several widths and data sizes; the Chinchilla parametric fit L = E + A/N^a + B/D^b with Hoffmann et al. 2022's published constants and Epoch AI's corrected constants (Besiroglu et al. 2024), shown side by side.",
+      "needsSource": "Own sweep (Tiny Shakespeare: public-domain text, char-rnn repository MIT). Fitted constants are published numerical facts from arXiv papers and are used as numbers, not as copied data. Epoch AI's reconstructed data points are not used: no licence could be found.",
+      "why": "Stanford CS324 Large Language Models, lecture on scaling laws: https://stanford-cs324.github.io/winter2022/lectures/scaling-laws/ ; also Wikipedia, Neural scaling law: https://en.wikipedia.org/wiki/Neural_scaling_law",
+      "related": [
+       "double-descent",
+       "mixture-of-experts",
+       "language-models",
+       "training-a-tiny-language-model"
+      ],
+      "pitfall": "Scaling laws are empirical fits with disputed constants (Epoch AI's replication found Hoffmann's parametric fit inconsistent with the paper's own other methods); do not present them as physics, and say the loss never reaches zero but approaches an irreducible floor E. Compute-optimal minimizes training cost only; models meant for heavy use are deliberately trained on far more tokens than the optimum. The live retrain must be tiny and labelled as such, not a per-slider sweep."
+     }
+    },
+    {
+     "slug": "speculative-decoding",
+     "refuted": false,
+     "reason": "Distinct from language-models (sampling) and from the proposed kv-cache-inference (why a decode step is memory-bound). The rejection rule, accept with min(1, p/q) and otherwise resample from the normalized max(0, p-q), is exact and confirmed in the literature, so the takeaway is correct. Level 3 is honest: it is LLM-systems course material, and its prerequisites are L2 and L3. Buildable with a char-level target and a bigram draft over the same vocabulary. Small fixes: the target weights are shipped from the training page rather than trained here; draft and target must share a vocabulary; a fully accepted run of guesses earns one extra token from the target; and the 10,000-sample histogram matches only within sampling noise.",
+     "hasFix": true,
+     "fixed": {
+      "needs": "Two char-level models sharing one vocabulary, both run in the page: as target, the tiny transformer whose weights are shipped precomputed from training-a-tiny-language-model; as draft, a bigram table counted from the same Tiny Shakespeare text (or a smaller transformer).",
+      "needsSource": "None external beyond Tiny Shakespeare (public-domain text; char-rnn repository MIT); the weights are the project's own.",
+      "interaction": "A cheap draft model guesses the next few tokens and the large target model checks them all in one pass: step through each guess, accepted with probability min(1, p/q) or rejected and replaced by a sample from the leftover distribution max(0, p - q), with p and q drawn as overlapping bar charts. When every guess is accepted, the target's own pass adds one more token for free. Change the number of guesses and swap in a better or worse draft to see the tokens gained per target pass, then run ten thousand samples and watch their histogram converge on the target model's distribution.",
+      "pitfall": "It is not an approximation: with the rejection rule the output distribution equals the target's (a finite sample histogram matches only up to sampling noise). Accepting only exact matches with the target's top choice is valid only for greedy decoding. The speed-up pays off because a decode pass at small batch is memory-bound, so checking several tokens costs about as much as one; the tiny models on the page are not memory-bound, so the page counts target passes, not seconds."
+     }
+    },
+    {
+     "slug": "tokenization",
+     "refuted": true,
+     "reason": "Distinct from language-models, which only shows text split into tokens; this page builds BPE merge by merge and applies GPT-2's real merges. Level 3 is defensible: university NLP courses teach byte-level BPE, with its regex pre-split and rank-order merging, and the prerequisites are L2. Data: tiktoken is MIT, and OpenAI's gpt-2 repository and the Hugging Face openai-community/gpt2 repository (which ships vocab.json and merges.txt) carry modified-MIT and MIT licences, so it is usable. The takeaway is factually wrong (rule 5): 'never sees letters' is false. GPT-2 has single-character tokens, and rare words and byte fallback do break down to letters. What is true is that the model cannot see the letters inside a merged token. A small rewording fixes it.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "Tokens are built by greedily merging the most frequent pairs in the training text, so a model sees whole words where text is common and fragments where it is rare, and cannot see the letters inside a token.",
+      "pitfall": "Merges apply in rank order, not by longest match, so the split is deterministic given the merge list; byte-level BPE never needs an unknown token. Do not say models never see letters (single characters are tokens too), nor that they count letters: inside a merged token the spelling is invisible to them.",
+      "needsSource": "tiktoken, MIT (confirmed). GPT-2's merge list and vocabulary: OpenAI's gpt-2 repository (modified MIT) and the Hugging Face openai-community/gpt2 repository, tagged MIT, which ships vocab.json and merges.txt (456 kB)."
+     }
+    },
+    {
+     "slug": "training-a-tiny-language-model",
+     "refuted": true,
+     "reason": "Distinct and honest at L3: it is the 'Let's build GPT' material, the existing language-models page only reads precomputed probabilities, and the prerequisites are L2 and proposed L1 and L3. Rule 3 risk as written: training to convergence live in the browser for every width, context and data setting is minutes of compute per point, and no browser demo of live transformer training turned up (the TF.js example is an LSTM and warns that browser training is slow). Promising that it beats the 5-gram line is unsafe. A two-layer model with tens of thousands of weights may not beat a well-smoothed char 5-gram within a short browser run, and an unsmoothed 5-gram scores badly on validation, so the line depends on smoothing. Also, 'a fixed order' of sample improvement is an observed tendency, not a law. Fix: train only the default configuration live, in a Web Worker with a fixed seed, ship precomputed curves and samples for the parameter grid, and commit only to the bigram and smoothed trigram lines.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Press train and a small character-level transformer (two layers, a few tens of thousands of weights) learns Tiny Shakespeare live in the page, with a fixed seed: the training and validation cross-entropy fall on a loss curve with smoothed bigram and trigram models' validation scores drawn as horizontal lines, perplexity is read off beside it, and a sample is written every few hundred steps. Change the model width, the context length and the amount of data to load precomputed runs of the same model (trained offline with the same code) and compare them: bigger models and longer contexts end lower, and with too little data the two curves split as it starts memorising.",
+      "takeaway": "Training a language model is gradient descent on one number, the average surprise at the next character, and as that number falls the samples go from random letters to plausible spelling to words and line structure.",
+      "needs": "Tiny Shakespeare; a tiny char-level transformer trained by the page itself for the default configuration (nanoGPT's character-level configuration is the reference), plus the project's own precomputed loss curves and samples for the other settings, trained offline with the same code; smoothed n-gram baselines counted from the same train/validation split.",
+      "pitfall": "Perplexity is the exponential of the average cross-entropy per token and is comparable only between models with the same tokenizer and the same validation text; a training loss near zero is memorisation, not success. The order in which samples improve is a typical pattern, not a guaranteed sequence."
+     }
+    },
+    {
+     "slug": "life-on-a-grid",
+     "refuted": false,
+     "reason": "No existing page is a cellular automaton (chaos-fractals is L2 with continuous systems, and the Reserve lists cellular automata as a gap). Honest at L0: neighbour counts of 0 to 8, one control at a time, no formulas, and the emerging blinkers and gliders are the takeaway, visible without text. Synchronous Game of Life is an exact, cheap algorithm, needs no data, and has no prerequisites; leadsTo ecosystems is an existing L1 slug (births and deaths from crowding). The pitfall about synchronous update and determinism is correct. Flag for the curator: the pool's cellular-automata (L1, a runner-up) duplicates the Life half of this page and would have to narrow to 1D elementary rules if it were ever promoted.",
+     "hasFix": false,
+     "fixed": {}
+    }
+   ]
+  }
+ }
+]

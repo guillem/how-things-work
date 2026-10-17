@@ -15,6 +15,35 @@ const STAGES = path.join(DATA, 'stages');
 const CAT_MAX = 12;
 const capOf = (c) => (c === 'ai' ? 18 : CAT_MAX); // the AI tilt, as in select.mjs
 const GAP_SWAPS = 10;
+// level targets as in select.mjs (the AI tilt: 39 / 10 / 3 / 48)
+const L3_TARGET = {
+	math: 5,
+	physics: 2,
+	chemistry: 5,
+	biology: 5,
+	medicine: 4,
+	earth: 4,
+	space: 2,
+	computing: 2,
+	networks: 5,
+	ai: 9,
+	energy: 5
+};
+const L0_TARGET = {
+	math: 3,
+	physics: 5,
+	chemistry: 3,
+	biology: 4,
+	medicine: 4,
+	earth: 3,
+	space: 3,
+	computing: 3,
+	networks: 3,
+	ai: 3,
+	energy: 5
+};
+const targetOf = (level, cat) =>
+	(level === 3 ? L3_TARGET[cat] : level === 0 ? L0_TARGET[cat] : 0) || 0;
 const KINDS = ['manipulate', 'simulate', 'step', 'build', 'explore'];
 const acceptUnverified = process.argv.includes('--accept-unverified');
 const norm = (s) =>
@@ -133,8 +162,9 @@ for (const [label, r] of Object.entries(critics)) {
 			gapCands.some((x) => x.slug === slug)
 		)
 			continue;
-		if (sel.runnersUp.some((x) => x.slug === slug) || sel.mergedOut.some((x) => x.slug === slug))
-			continue;
+		// A critic re-proposing a runner-up (in its own, usually better-built version) is an
+		// independent endorsement: it goes to gap verification with the critic's entry.
+		if (sel.mergedOut.some((x) => x.slug === slug)) continue;
 		gapCands.push({ ...raw, slug, origin: `gap:${label.slice('critic:'.length)}` });
 	}
 }
@@ -164,7 +194,19 @@ if (!pending.length && gapCands.length) {
 		const victims = final
 			.filter((e) => e.level === g.level && !String(e.origin || '').startsWith('gap'))
 			.filter((e) => e.category === g.category || (cc[g.category] || 0) < capOf(g.category))
-			.sort((a, b) => (a.score || 0) - (b.score || 0));
+			// never an LLM-ladder rung, and never below a category's level target (select.mjs)
+			.filter((e) => e.ladderStage === undefined)
+			.filter(
+				(e) =>
+					e.category === g.category ||
+					final.filter((x) => x.level === e.level && x.category === e.category).length - 1 >=
+						targetOf(e.level, e.category)
+			)
+			.sort(
+				(a, b) =>
+					(a.score || 0) - (b.score || 0) ||
+					((a.scores || {})['fit-level'] || 0) - ((b.scores || {})['fit-level'] || 0)
+			);
 		if (!victims.length) {
 			gapEntries.push({ ...g, kept: 'runner-up (no slot at its level)' });
 			continue;
@@ -182,6 +224,8 @@ if (!pending.length && gapCands.length) {
 			verifyNote: g.verifyNote
 		});
 		runnersUp.unshift(out);
+		const dup = runnersUp.findIndex((x) => x.slug === g.slug);
+		if (dup >= 0) runnersUp.splice(dup, 1);
 		gapEntries.push({ ...g, kept: 'selected' });
 		gapSwaps.push({
 			out: out.slug,

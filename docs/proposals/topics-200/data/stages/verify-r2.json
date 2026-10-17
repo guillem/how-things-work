@@ -1,0 +1,26 @@
+[
+ {
+  "label": "verify:r2b1",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "chromatography",
+     "refuted": false,
+     "reason": "Distinct: no catalogue page covers separation or partitioning. central-limit-theorem only shows that sums of random steps are Gaussian, and reaction-rates-equilibrium shows forward and reverse rates, not differential migration or band broadening. Level 3 is honest because van Deemter plate height and resolution are taught in undergraduate analytical and instrumental chemistry (Bates, UML and UF lecture notes; LibreTexts CHM 331 problems). Both prerequisites are level 2, so neither sits above the topic. It is buildable as a real client-side model: the Giddings-Eyring stochastic model has particles hopping between the phases with exponential residence times set by k', plus axial diffusion and multipath, and runs easily at interactive rates. H(u) can be measured from the simulated peak variance and checked against H = A + B/u + Cu. It needs no external data: partition coefficients and diffusivities are generic parameters, not claims about real compounds. Two small accuracy fixes. First, the interaction says eddy paths, longitudinal diffusion and slow exchange 'each take their turn' as the flow changes. In the van Deemter equation the eddy (A) term does not depend on flow; it is a floor set by the packing. Only B/u dominates at low flow and Cu at high flow. Second, the pitfall says the bands are Gaussian because the hopping is random. They are only near-Gaussian, because many random hops add up; real peaks tail, and few exchanges or a heterogeneous surface skew them.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Inject a mixture at the top of a column and watch each molecule hop at random between the moving phase and the stationary phase. The time each one spends stuck is set by its partition coefficient, so the bands separate and broaden, and a detector at the end draws the chromatogram. Slide the flow rate and the measured plate height traces the van Deemter curve: diffusion along the column dominates at slow flow, slow exchange at fast flow, and the uneven paths through the packing add a floor that the flow does not change. Lengthen the column or use finer packing to see the resolution improve.",
+      "pitfall": "Most chromatography is not a sieve by size: two molecules of the same size separate because they stick differently. The bands are close to Gaussian only because each molecule makes many random hops that add up; with few exchanges or uneven sticky sites, real peaks tail.",
+      "needs": "No external data: the model is the Giddings-Eyring stochastic model (exponential residence times in each phase, plus axial diffusion and multipath dispersion), with illustrative partition coefficients and diffusivities, not values for named compounds.",
+      "related": [
+       "mass-spectrometry",
+       "diffusion-in-solids",
+       "central-limit-theorem",
+       "reaction-rates-equilibrium"
+      ]
+     }
+    }
+   ]
+  }
+ }
+]
