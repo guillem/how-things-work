@@ -19,7 +19,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, Label, clamp, linePath, scale, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { MMOL_PER_MGDL, THRESHOLDS, at, extremes, type Sample } from '../model';
 	import { FROM, TO, run, setup } from '../scenario';
 
@@ -329,17 +329,26 @@
 
 <g style:font-variant-numeric="tabular-nums">
 	<!-- ===================== left: the readout and the tank ===================== -->
-	<Label x={24} y={36} text={fmtMin(minute)} size={13} anchor="start" muted />
-	<text x={24} y={76} font-size="30" font-weight="600" style:fill={z.color}
-		>{Math.round(now.g)}<tspan font-size="14" font-weight="500" dx="6">mg/dL</tspan></text
+	<Readout
+		id="glucose"
+		order={1}
+		label="Glucose, {fmtMin(minute)}"
+		value="{Math.round(now.g)} mg/dL"
+		note="{mmol(now.g)} mmol/L · {z.text}"
+		color={z.strong ? z.color : undefined}
 	>
-	<text x={24} y={100} class="muted"
-		>{mmol(now.g)} mmol/L ·<tspan
-			dx="4"
-			font-weight={z.strong ? 600 : 400}
-			style:fill={z.strong ? z.color : undefined}>{z.text}</tspan
-		></text
-	>
+		<Label x={24} y={36} text={fmtMin(minute)} size={13} anchor="start" muted />
+		<text x={24} y={76} font-size="30" font-weight="600" style:fill={z.color}
+			>{Math.round(now.g)}<tspan font-size="14" font-weight="500" dx="6">mg/dL</tspan></text
+		>
+		<text x={24} y={100} class="muted"
+			>{mmol(now.g)} mmol/L ·<tspan
+				dx="4"
+				font-weight={z.strong ? 600 : 400}
+				style:fill={z.strong ? z.color : undefined}>{z.text}</tspan
+			></text
+		>
+	</Readout>
 
 	<!-- pipes under the tank so that their ends tuck behind its walls -->
 	{#each pipes as p (p.id)}
@@ -402,61 +411,101 @@
 			y2={tankY(g)}
 			stroke="var(--stage-ink-muted)"
 		/>
-		<text x={TX + TW - 19} y={tankY(g) + 4} font-size="10" class="muted halo" text-anchor="end"
-			>{g}</text
-		>
+		<Readout id="tank-{g}">
+			<text x={TX + TW - 19} y={tankY(g) + 4} font-size="10" class="muted halo" text-anchor="end"
+				>{g}</text
+			>
+		</Readout>
 	{/each}
-	<Label x={TX + TW / 2} y={TY0 - 10} text="glucose in the blood" size={12} weight={600} />
+	<Readout id="tank-title">
+		<Label x={TX + TW / 2} y={TY0 - 10} text="glucose in the blood" size={12} weight={600} />
+	</Readout>
 
 	{#each pipes as p (p.id)}
 		{@const anchor = p.anchor as 'start' | 'end'}
 		<g opacity={p.id === 'urine' && p.w === 0 ? 0.45 : 1}>
-			<text x={p.lx} y={p.ly} font-weight="600" text-anchor={anchor} style:fill={p.color}
-				>{p.label}</text
+			<!-- on phones: a badge at the pipe, named in the key -->
+			<Readout
+				id="pipe-{p.id}"
+				order={10 + ['gut', 'liver', 'uptake', 'urine'].indexOf(p.id)}
+				label={p.label.charAt(0).toUpperCase() + p.label.slice(1)}
+				color={p.color}
+				marker={1 + ['gut', 'liver', 'uptake', 'urine'].indexOf(p.id)}
+				at={[anchor === 'end' ? p.lx - 22 : p.lx + 22, p.ly - 4]}
 			>
-			<text
-				x={p.lx}
-				y={p.id === 'urine' ? p.ly + 16 : p.ly + 34}
-				font-size="11"
-				class="muted"
-				text-anchor={anchor}>{fmtRate(p.rate)} mg/dL/min</text
-			>
+				<text x={p.lx} y={p.ly} font-weight="600" text-anchor={anchor} style:fill={p.color}
+					>{p.label}</text
+				>
+				<text
+					x={p.lx}
+					y={p.id === 'urine' ? p.ly + 16 : p.ly + 34}
+					font-size="11"
+					class="muted"
+					text-anchor={anchor}>{fmtRate(p.rate)} mg/dL/min</text
+				>
+			</Readout>
 		</g>
 	{/each}
 
 	<!-- hormones now -->
-	<g>
-		<circle cx={30} cy={496} r="5" fill="var(--hm-insulin)" />
-		<text x={42} y={500} font-size="13"
-			>insulin <tspan font-weight="600">{now.i.toFixed(now.i < 10 ? 1 : 0)}</tspan><tspan
-				class="muted"
-				font-size="11"
-				dx="4">µU/mL</tspan
-			></text
-		>
-		<circle cx={30} cy={520} r="5" fill="var(--hm-glucagon)" />
-		<text x={42} y={524} font-size="13"
-			>glucagon <tspan font-weight="600">×{now.gcg.toFixed(1)}</tspan><tspan
-				class="muted"
-				font-size="11"
-				dx="4">fasting level</tspan
-			></text
-		>
-	</g>
+	<Readout
+		id="insulin"
+		order={2}
+		label="Insulin"
+		value="{now.i.toFixed(now.i < 10 ? 1 : 0)} µU/mL"
+		color="var(--hm-insulin)"
+	/>
+	<Readout
+		id="glucagon"
+		order={3}
+		label="Glucagon"
+		value="×{now.gcg.toFixed(1)} fasting"
+		color="var(--hm-glucagon)"
+	/>
+	<Readout id="hormones">
+		<g>
+			<circle cx={30} cy={496} r="5" fill="var(--hm-insulin)" />
+			<text x={42} y={500} font-size="13"
+				>insulin <tspan font-weight="600">{now.i.toFixed(now.i < 10 ? 1 : 0)}</tspan><tspan
+					class="muted"
+					font-size="11"
+					dx="4">µU/mL</tspan
+				></text
+			>
+			<circle cx={30} cy={520} r="5" fill="var(--hm-glucagon)" />
+			<text x={42} y={524} font-size="13"
+				>glucagon <tspan font-weight="600">×{now.gcg.toFixed(1)}</tspan><tspan
+					class="muted"
+					font-size="11"
+					dx="4">fasting level</tspan
+				></text
+			>
+		</g>
+	</Readout>
 
 	<!-- the step's key result -->
-	<g opacity={verdictShow}>
-		<text x={24} y={560} font-size="14" font-weight="600">{verdict.text}</text>
-		{#if verdict.sub}
-			<text
-				x={24}
-				y={578}
-				font-size="12"
-				font-weight={verdict.ok ? 400 : 600}
-				style:fill={verdict.ok ? 'var(--stage-ink-muted)' : 'var(--hm-hypo)'}>{verdict.sub}</text
-			>
-		{/if}
-	</g>
+	<Readout
+		id="verdict"
+		order={4}
+		label="Result"
+		value={verdict.text}
+		note={verdict.sub}
+		color={verdict.ok ? undefined : 'var(--hm-hypo)'}
+		opacity={verdictShow}
+	>
+		<g opacity={verdictShow}>
+			<text x={24} y={560} font-size="14" font-weight="600">{verdict.text}</text>
+			{#if verdict.sub}
+				<text
+					x={24}
+					y={578}
+					font-size="12"
+					font-weight={verdict.ok ? 400 : 600}
+					style:fill={verdict.ok ? 'var(--stage-ink-muted)' : 'var(--hm-hypo)'}>{verdict.sub}</text
+				>
+			{/if}
+		</g>
+	</Readout>
 
 	<!-- ===================== right: the three charts ===================== -->
 	<!-- exercise and the meal, behind everything -->
@@ -469,14 +518,16 @@
 			fill="var(--hm-muscle)"
 			opacity="0.08"
 		/>
-		<Label
-			x={(sx(runSpan.a) + sx(runSpan.b)) / 2}
-			y={G.y0 + 30}
-			text={runLabel}
-			size={11}
-			weight={600}
-			color="var(--hm-muscle)"
-		/>
+		<Readout id="key-run" order={20} label="Shaded: the {runLabel}" color="var(--hm-muscle)">
+			<Label
+				x={(sx(runSpan.a) + sx(runSpan.b)) / 2}
+				y={G.y0 + 30}
+				text={runLabel}
+				size={11}
+				weight={600}
+				color="var(--hm-muscle)"
+			/>
+		</Readout>
 	{/if}
 
 	<!-- glucose -->
@@ -488,16 +539,25 @@
 		fill="var(--hm-hypo-bg)"
 	/>
 	<Axes {sx} sy={syG} xTicks={[]} yTicks={gTicks} yLabel="blood glucose, mg/dL" />
-	<text
-		x={sx(0) + 6}
-		y={syG(lines === 'hypo' ? 54 : THRESHOLDS.hypo) + 13}
-		font-size="11"
-		class="halo"
-		style:fill="var(--hm-hypo)"
-		>{lines === 'hypo'
-			? 'below 70: hypoglycaemia · below 54 (dashed): dangerous'
-			: 'below 70: hypoglycaemia'}</text
+	<Readout
+		id="key-hypo"
+		order={21}
+		label={lines === 'hypo'
+			? 'Below 70: hypoglycaemia · below 54 (dashed): dangerous'
+			: 'Below 70: hypoglycaemia'}
+		color="var(--hm-hypo)"
 	>
+		<text
+			x={sx(0) + 6}
+			y={syG(lines === 'hypo' ? 54 : THRESHOLDS.hypo) + 13}
+			font-size="11"
+			class="halo"
+			style:fill="var(--hm-hypo)"
+			>{lines === 'hypo'
+				? 'below 70: hypoglycaemia · below 54 (dashed): dangerous'
+				: 'below 70: hypoglycaemia'}</text
+		>
+	</Readout>
 	{#if lines === 'ogtt'}
 		<line
 			x1={X0}
@@ -548,26 +608,30 @@
 		{#each panels as pn (pn.y0)}
 			<line x1={sx(0)} x2={sx(0)} y1={pn.y0} y2={pn.y1} stroke="var(--hm-gut)" stroke-width="1.2" />
 		{/each}
-		<Label
-			x={sx(0) + 5}
-			y={G.y0 + 12}
-			text="meal: {sc.carbs} g"
-			size={11}
-			weight={600}
-			anchor="start"
-		/>
+		<Readout id="key-meal" order={22} label="Meal: {sc.carbs} g" color="var(--hm-gut)">
+			<Label
+				x={sx(0) + 5}
+				y={G.y0 + 12}
+				text="meal: {sc.carbs} g"
+				size={11}
+				weight={600}
+				anchor="start"
+			/>
+		</Readout>
 	{/if}
 	{#if sc.dose > 0}
 		{@const dx = sx(sc.doseAt)}
 		<path d="M{dx - 6} {I.y0} h12 l-6 10 Z" fill="var(--hm-insulin)" />
-		<Label
-			x={dx + 9}
-			y={I.y0 + 10}
-			text="{sc.dose} U injected"
-			size={11}
-			weight={600}
-			anchor="start"
-		/>
+		<Readout id="key-dose" order={23} label="▼ {sc.dose} U injected" color="var(--hm-insulin)">
+			<Label
+				x={dx + 9}
+				y={I.y0 + 10}
+				text="{sc.dose} U injected"
+				size={11}
+				weight={600}
+				anchor="start"
+			/>
+		</Readout>
 	{/if}
 
 	{#if ghost}
@@ -590,27 +654,38 @@
 
 	<!-- reference-line labels, above the curves so that their halo keeps them legible -->
 	{#if lines === 'ogtt'}
-		<Label
-			x={X1 - 4}
-			y={syG(140) - 6}
-			text="140: normal limit 2 h after"
-			size={11}
-			anchor="end"
-			muted
-		/>
+		<Readout id="key-140" order={24} label="Dashed 140: normal limit 2 h after">
+			<Label
+				x={X1 - 4}
+				y={syG(140) - 6}
+				text="140: normal limit 2 h after"
+				size={11}
+				anchor="end"
+				muted
+			/>
+		</Readout>
 	{/if}
 	{#if lines === 'diagnosis'}
-		<Label
-			x={X1 - 4}
-			y={syG(126) - 6}
-			text="126: diabetes if fasting"
-			size={11}
-			anchor="end"
+		<Readout
+			id="key-126"
+			order={24}
+			label="Dashed 126: diabetes if fasting"
 			color="var(--hm-glucose)"
-		/>
+		>
+			<Label
+				x={X1 - 4}
+				y={syG(126) - 6}
+				text="126: diabetes if fasting"
+				size={11}
+				anchor="end"
+				color="var(--hm-glucose)"
+			/>
+		</Readout>
 	{/if}
 	{#if lines === 'hypo'}
-		<Label x={X1 - 4} y={syG(180) - 6} text="target 70–180" size={11} anchor="end" muted />
+		<Readout id="key-target" order={24} label="Target 70–180" color="var(--hm-glucagon)">
+			<Label x={X1 - 4} y={syG(180) - 6} text="target 70–180" size={11} anchor="end" muted />
+		</Readout>
 	{/if}
 
 	<!-- insulin -->
@@ -673,7 +748,9 @@
 			stroke-width="1.5"
 			stroke-dasharray="4 3"
 		/>
-		<text x={X1 - 122} y={40} font-size="12" class="muted">{cfg.ghostLabel}</text>
+		<Readout id="key-ghost" order={25} label="Faint dashed: {cfg.ghostLabel}">
+			<text x={X1 - 122} y={40} font-size="12" class="muted">{cfg.ghostLabel}</text>
+		</Readout>
 	{/if}
 
 	<!-- cursor -->

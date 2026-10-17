@@ -107,3 +107,38 @@ test('the dot on the I–V curve moves by keyboard', async ({ page }) => {
 	await expect(stage(page)).toContainText('-2.00 V → −1.00 fA');
 	await expect(page.locator('input[type=range][data-control=v]')).toHaveValue('-2');
 });
+
+// Phone readouts (<Readout>): on screens ≤ 640 px the readouts leave the drawing and are
+// listed as text under the stage (see e2e/phone-readouts.e2e.ts).
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+	const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+	const drawing = (page: Page) => page.locator('.stage svg');
+	const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
+
+	test('the band gap and the carriers are text under the stage', async ({ page }) => {
+		await page.goto('./semiconductors/#semiconductor');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Band gap\s*1\.12 eV/);
+		await expect(panel).toContainText('Silicon: a semiconductor');
+		await expect(drawing(page)).not.toContainText('gap 1.12 eV');
+		await page.goto('./semiconductors/#donor');
+		await expect(panel).toContainText(/Free electrons\s*1/);
+		await expect(panel).toContainText(/Holes\s*0/);
+		await expect(panel).toContainText('n-type');
+		await expect(drawing(page)).not.toContainText('Free electrons');
+	});
+
+	test('the resistivity and the diode current follow their sliders', async ({ page }) => {
+		await page.goto('./semiconductors/#amount');
+		const panel = readouts(page);
+		await range(page, 'conc').fill('16');
+		await expect(panel).toContainText(/Phosphorus-doped resistivity\s*0\.53 Ω·cm/);
+		await expect(drawing(page)).not.toContainText('0.53 Ω·cm');
+		await page.goto('./semiconductors/#forward');
+		await expect(panel).toContainText(/Current at 0\.70 V forward\s*575 µA/);
+		await expect(drawing(page)).not.toContainText('current:');
+		await range(page, 'vf').fill('0.76');
+		await expect(panel).toContainText('5.85 mA');
+	});
+});

@@ -9,7 +9,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		ARCSEC,
 		AU,
@@ -74,9 +74,25 @@
 	const fmtKm = (km: number) => Math.round(km).toLocaleString('en').replace(/,/g, ' ');
 </script>
 
-{#snippet row(y: number, label: string, value: string, color?: string)}
-	<Label anchor="start" x={CX + 16} {y} text={label} size={12.5} muted />
-	<Label x={CX + CW - 16} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+{#snippet row(
+	y: number,
+	label: string,
+	value: string,
+	color?: string,
+	o: { note?: string; hide?: boolean } = {}
+)}
+	<!-- on phones: a row of the panel under the stage, or left out to keep the panel short -->
+	<Readout
+		id="row-{label}"
+		order={y}
+		label={o.hide ? undefined : label}
+		{value}
+		note={o.note}
+		{color}
+	>
+		<Label anchor="start" x={CX + 16} {y} text={label} size={12.5} muted />
+		<Label x={CX + CW - 16} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+	</Readout>
 {/snippet}
 
 <g>
@@ -145,119 +161,168 @@
 		stroke="var(--bh-space)"
 		stroke-width="1.5"
 	/>
-	<Label x={earth.X} y={earth.Y - 14} text="Earth" size={12} anchor="middle" weight={600} />
-	<Label x={pull.LX} y={pull.LY} text="gravity" size={11.5} anchor="middle" weight={600} />
+	<Readout id="key-earth" order={50} label="Earth" color="var(--bh-probe)">
+		<Label x={earth.X} y={earth.Y - 14} text="Earth" size={12} anchor="middle" weight={600} />
+	</Readout>
+	<Readout id="key-gravity" order={51} label="Gravity" color="var(--bh-star)">
+		<Label x={pull.LX} y={pull.LY} text="gravity" size={11.5} anchor="middle" weight={600} />
+	</Readout>
 
 	{#if k.current < 0.5}
-		<Label x={SX} y={SY + 50} text="the Sun (drawn 25× too big)" size={12} anchor="middle" muted />
+		<Readout id="key-sun" order={52} label="The Sun (drawn 25× too big)" color="var(--bh-star)">
+			<Label
+				x={SX}
+				y={SY + 50}
+				text="the Sun (drawn 25× too big)"
+				size={12}
+				anchor="middle"
+				muted
+			/>
+		</Readout>
 	{:else}
+		<Readout
+			id="key-hole"
+			order={52}
+			label="A black hole of one solar mass (dashed: the Sun’s edge)"
+			marker={1}
+			at={[SX, SY + 50]}
+		>
+			<Label
+				x={SX}
+				y={SY + 44}
+				text="a black hole of one solar mass"
+				size={12}
+				anchor="middle"
+				weight={600}
+			/>
+			<Label
+				x={SX}
+				y={SY + 62}
+				text="dashed: where the Sun’s edge was (enlarged)"
+				size={11.5}
+				anchor="middle"
+				muted
+			/>
+		</Readout>
+	{/if}
+	<Readout
+		id="key-orbit"
+		order={53}
+		label="Dashed: the Earth’s orbit, 1 AU"
+		color="var(--bh-newton)"
+	>
 		<Label
 			x={SX}
-			y={SY + 44}
-			text="a black hole of one solar mass"
+			y={SY - ORBIT - 10}
+			text="the Earth’s orbit: 1 AU"
 			size={12}
-			anchor="middle"
-			weight={600}
-		/>
-		<Label
-			x={SX}
-			y={SY + 62}
-			text="dashed: where the Sun’s edge was (enlarged)"
-			size={11.5}
 			anchor="middle"
 			muted
 		/>
-	{/if}
-	<Label
-		x={SX}
-		y={SY - ORBIT - 10}
-		text="the Earth’s orbit: 1 AU"
-		size={12}
-		anchor="middle"
-		muted
-	/>
+	</Readout>
 
 	<!-- readouts -->
 	<Card x={CX} y={PY0} w={CW} h={228} />
-	<Label
-		anchor="start"
-		x={CX + 16}
-		y={PY0 + 28}
-		text={squeeze ? 'Round a black hole' : 'Round the Sun'}
-		size={15}
-		weight={700}
-	/>
-	{@render row(PY0 + 60, 'Mass', '1 Sun')}
+	<Readout id="title">
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 28}
+			text={squeeze ? 'Round a black hole' : 'Round the Sun'}
+			size={15}
+			weight={700}
+		/>
+	</Readout>
+	{@render row(PY0 + 60, 'Mass', '1 Sun', undefined, { hide: true })}
 	{@render row(
 		PY0 + 88,
 		'Size',
-		squeeze ? `${((2 * rs) / 1000).toFixed(1)} km across` : `${fmtKm((2 * R_SUN) / 1000)} km`
+		squeeze ? `${((2 * rs) / 1000).toFixed(1)} km across` : `${fmtKm((2 * R_SUN) / 1000)} km`,
+		undefined,
+		{ note: squeeze ? 'a black hole of 1 Sun’s mass' : 'the Sun' }
 	)}
-	{@render row(PY0 + 116, 'Earth’s distance', '1 AU (150 million km)')}
+	{@render row(PY0 + 116, 'Earth’s distance', '1 AU (150 million km)', undefined, { hide: true })}
 	{@render row(PY0 + 144, 'Earth’s speed', `${vOrbit.toFixed(1)} km/s`, 'var(--bh-probe)')}
 	{@render row(PY0 + 172, 'Earth’s year', '365.25 days', 'var(--bh-probe)')}
-	{@render row(PY0 + 200, 'Extra turn (relativity)', `${earthTurn.toFixed(1)}″ a century`)}
+	{@render row(
+		PY0 + 200,
+		'Extra turn (relativity)',
+		`${earthTurn.toFixed(1)}″ a century`,
+		undefined,
+		{
+			hide: true
+		}
+	)}
 
 	<Card x={CX} y={PY0 + 244} w={CW} h={150} />
-	<Label
-		anchor="start"
-		x={CX + 16}
-		y={PY0 + 270}
-		text="Where they differ"
-		size={13.5}
-		weight={700}
-	/>
-	<Label
-		anchor="start"
-		x={CX + 16}
-		y={PY0 + 292}
-		text="Only close in. Anywhere outside the"
-		size={12.5}
-	/>
-	<Label
-		anchor="start"
-		x={CX + 16}
-		y={PY0 + 312}
-		text={`Sun’s surface (${fmtKm(R_SUN / 1000)} km), both pull`}
-		size={12.5}
-	/>
-	<Label
-		anchor="start"
-		x={CX + 16}
-		y={PY0 + 332}
-		text="the same. Below that, the Sun’s pull"
-		size={12.5}
-	/>
-	<Label
-		anchor="start"
-		x={CX + 16}
-		y={PY0 + 352}
-		text="weakens; the black hole’s keeps growing,"
-		size={12.5}
-	/>
-	<Label
-		anchor="start"
-		x={CX + 16}
-		y={PY0 + 372}
-		text={`down to a horizon ${(rs / 1000).toFixed(1)} km from its centre.`}
-		size={12.5}
-	/>
+	<Readout id="differ">
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 270}
+			text="Where they differ"
+			size={13.5}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 292}
+			text="Only close in. Anywhere outside the"
+			size={12.5}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 312}
+			text={`Sun’s surface (${fmtKm(R_SUN / 1000)} km), both pull`}
+			size={12.5}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 332}
+			text="the same. Below that, the Sun’s pull"
+			size={12.5}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 352}
+			text="weakens; the black hole’s keeps growing,"
+			size={12.5}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY0 + 372}
+			text={`down to a horizon ${(rs / 1000).toFixed(1)} km from its centre.`}
+			size={12.5}
+		/>
+	</Readout>
 
 	<Card x={CX} y={PY1 - 96} w={CW} h={96} />
-	<Label
-		anchor="start"
-		x={CX + 16}
-		y={PY1 - 68}
-		text="A black hole doesn’t suck."
-		size={13.5}
-		weight={700}
-	/>
-	<Label
-		anchor="start"
-		x={CX + 16}
-		y={PY1 - 46}
-		text="From far away it is just a mass,"
-		size={12.5}
-	/>
-	<Label anchor="start" x={CX + 16} y={PY1 - 26} text="orbited like any other." size={12.5} />
+	<Readout
+		id="suck"
+		order={PY1 - 68}
+		label="A black hole doesn’t suck"
+		value="from far away it is just a mass, orbited like any other"
+	>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY1 - 68}
+			text="A black hole doesn’t suck."
+			size={13.5}
+			weight={700}
+		/>
+		<Label
+			anchor="start"
+			x={CX + 16}
+			y={PY1 - 46}
+			text="From far away it is just a mass,"
+			size={12.5}
+		/>
+		<Label anchor="start" x={CX + 16} y={PY1 - 26} text="orbited like any other." size={12.5} />
+	</Readout>
 </g>

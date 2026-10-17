@@ -29,7 +29,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { cycle, scale, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		JIN,
 		MEAN_TILT,
@@ -347,7 +347,9 @@
 			opacity={0.15 + 0.7 * tradesOp}
 		/>
 	{/each}
-	{@render txt(walker.x1 + 8, 120, 'dry air sinks', 11, { muted: true })}
+	<Readout id="sinks">
+		{@render txt(walker.x1 + 8, 120, 'dry air sinks', 11, { muted: true })}
+	</Readout>
 	<!-- rain clouds over the warmest water -->
 	<g>
 		<ellipse cx={rainX} cy="78" rx="62" ry="18" fill="var(--oc-cloud)" />
@@ -366,7 +368,9 @@
 			opacity={d.o}
 		/>
 	{/each}
-	{@render txt(rainX, 48 - 8, 'moist air rises: rain', 11, { anchor: 'middle', weight: 600 })}
+	<Readout id="rain">
+		{@render txt(rainX, 48 - 8, 'moist air rises: rain', 11, { anchor: 'middle', weight: 600 })}
+	</Readout>
 
 	<!-- trade winds along the surface -->
 	{#each windChevrons as c (c.j)}
@@ -381,18 +385,20 @@
 			opacity={c.o * tradesOp}
 		/>
 	{/each}
-	{@render txt(
-		X1 - 30,
-		surfY(X1) - 40,
-		pic.trades < 0 ? 'trades reversed: westerly' : `← trade winds ${Math.round(trades * 100)}%`,
-		12,
-		{
-			anchor: 'end',
-			weight: 600,
-			color: 'var(--oc-wind)',
-			opacity: 0.35 + 0.65 * Math.min(1, trades * 2)
-		}
-	)}
+	<Readout id="trades">
+		{@render txt(
+			X1 - 30,
+			surfY(X1) - 40,
+			pic.trades < 0 ? 'trades reversed: westerly' : `← trade winds ${Math.round(trades * 100)}%`,
+			12,
+			{
+				anchor: 'end',
+				weight: 600,
+				color: 'var(--oc-wind)',
+				opacity: 0.35 + 0.65 * Math.min(1, trades * 2)
+			}
+		)}
+	</Readout>
 
 	<!-- ===== ocean ===== -->
 	<rect x={X0} y={SURF - 20} width={X1 - X0} height={BOTTOM - SURF + 20} fill="var(--oc-deep)" />
@@ -420,25 +426,36 @@
 		stroke-width="2"
 		stroke-dasharray="7 4"
 	/>
-	{@render txt((X0 + X1) / 2, (yW + yE) / 2 + 18, 'thermocline', 12, {
-		anchor: 'middle',
-		weight: 600
-	})}
-	{@render txt(X0 + 10, yW + 18, `${Math.round(pic.westDepth)} m`, 12, { weight: 600 })}
-	{@render txt(
-		X1 - 10,
-		Math.max(yE + 18, surfY(X1) + 40),
-		`${pic.eastDepth < 5 ? '< 5' : Math.round(pic.eastDepth)} m`,
-		12,
-		{
-			anchor: 'end',
+	<Readout
+		id="thermocline"
+		order={10}
+		label="Thermocline"
+		marker={1}
+		at={[(X0 + X1) / 2, (yW + yE) / 2 + 16]}
+	>
+		{@render txt((X0 + X1) / 2, (yW + yE) / 2 + 18, 'thermocline', 12, {
+			anchor: 'middle',
 			weight: 600
-		}
-	)}
-	{@render txt((X0 + X1) / 2, BOTTOM - 12, 'cold deep water', 12, {
-		anchor: 'middle',
-		muted: true
-	})}
+		})}
+	</Readout>
+	<!-- the depths are the card's "thermocline depth" on phones -->
+	<Readout id="depths">
+		{@render txt(X0 + 10, yW + 18, `${Math.round(pic.westDepth)} m`, 12, { weight: 600 })}
+		{@render txt(
+			X1 - 10,
+			Math.max(yE + 18, surfY(X1) + 40),
+			`${pic.eastDepth < 5 ? '< 5' : Math.round(pic.eastDepth)} m`,
+			12,
+			{
+				anchor: 'end',
+				weight: 600
+			}
+		)}
+		{@render txt((X0 + X1) / 2, BOTTOM - 12, 'cold deep water', 12, {
+			anchor: 'middle',
+			muted: true
+		})}
+	</Readout>
 	<!-- upwelling in the east -->
 	{#if trades > 0.2}
 		{#each [0, 1] as k (k)}
@@ -453,32 +470,39 @@
 				opacity={Math.sin(Math.PI * u) * Math.min(1, trades)}
 			/>
 		{/each}
-		{@render txt(X1 - 60, Math.min(BOTTOM - 20, yE + 60) + 18, 'upwelling', 11, {
-			anchor: 'middle',
-			muted: true,
-			opacity: Math.min(1, trades)
+		<Readout id="upwelling">
+			{@render txt(X1 - 60, Math.min(BOTTOM - 20, yE + 60) + 18, 'upwelling', 11, {
+				anchor: 'middle',
+				muted: true,
+				opacity: Math.min(1, trades)
+			})}
+		</Readout>
+	{/if}
+	<Readout id="warm-pool" order={11} label="Warm pool" marker={2} at={[X0 + 36, surfY(X0) + 22]}>
+		{@render txt(X0 + 12, surfY(X0) + 22, `${fmtT(pic.westSST)} warm pool`, 12, {
+			weight: 700,
+			color: 'var(--oc-warm)'
 		})}
-	{/if}
-	{@render txt(X0 + 12, surfY(X0) + 22, `${fmtT(pic.westSST)} warm pool`, 12, {
-		weight: 700,
-		color: 'var(--oc-warm)'
-	})}
-	{@render txt(X1 - 12, surfY(X1) + 20, fmtT(pic.eastSST), 12, {
-		anchor: 'end',
-		weight: 700,
-		color: sstText(pic.eastSST)
-	})}
-	{#if pic.seaLevel > 0.05}
-		{@render txt(
-			X0 + 12,
-			surfY(X0) + 38,
-			`sea ${pic.seaLevel.toFixed(1)} m higher than in the east`,
-			11,
-			{
-				muted: true
-			}
-		)}
-	{/if}
+	</Readout>
+	<!-- in the card on phones -->
+	<Readout id="surface">
+		{@render txt(X1 - 12, surfY(X1) + 20, fmtT(pic.eastSST), 12, {
+			anchor: 'end',
+			weight: 700,
+			color: sstText(pic.eastSST)
+		})}
+		{#if pic.seaLevel > 0.05}
+			{@render txt(
+				X0 + 12,
+				surfY(X0) + 38,
+				`sea ${pic.seaLevel.toFixed(1)} m higher than in the east`,
+				11,
+				{
+					muted: true
+				}
+			)}
+		{/if}
+	</Readout>
 
 	<!-- land -->
 	<path
@@ -492,36 +516,63 @@
 		fill="var(--oc-land)"
 		stroke="var(--oc-land-edge)"
 	/>
-	{@render txt(58, SURF + 60, 'Indonesia', 11, { anchor: 'middle', muted: true, rotate: -90 })}
-	{@render txt(900, SURF + 70, 'South America', 11, { anchor: 'middle', muted: true, rotate: -90 })}
-	{#if farAway}
-		{@render txt(26, SURF - 28, farAway.west, 12, {
-			weight: 700,
-			color: anomaly > 0 ? 'var(--oc-warm)' : 'var(--oc-cold)'
-		})}
-		{@render txt(940, SURF - 116, farAway.east, 12, {
-			anchor: 'end',
-			weight: 700,
-			color: anomaly > 0 ? 'var(--oc-cold)' : 'var(--oc-warm)'
-		})}
-	{/if}
-	{@render txt(X0, BOTTOM + 18, '120°E', 11, { anchor: 'middle', muted: true })}
-	{@render txt(
-		(X0 + X1) / 2,
-		BOTTOM + 18,
-		'along the equator · depths to scale with each other (about 20,000× stretched), sea level exaggerated more',
-		11,
-		{
+	<Readout id="indonesia" order={12} label="Indonesia" marker={3} at={[58, SURF + 104]}>
+		{@render txt(58, SURF + 60, 'Indonesia', 11, { anchor: 'middle', muted: true, rotate: -90 })}
+	</Readout>
+	<Readout id="america" order={13} label="South America" marker={4} at={[900, SURF + 124]}>
+		{@render txt(900, SURF + 70, 'South America', 11, {
 			anchor: 'middle',
-			muted: true
-		}
-	)}
-	{@render txt(X1, BOTTOM + 18, '80°W', 11, { anchor: 'middle', muted: true })}
+			muted: true,
+			rotate: -90
+		})}
+	</Readout>
+	{#if farAway}
+		<Readout
+			id="far-away"
+			order={3}
+			label="Weather far away"
+			value="Indonesia: {farAway.west}"
+			note="South America: {farAway.east}"
+		>
+			{@render txt(26, SURF - 28, farAway.west, 12, {
+				weight: 700,
+				color: anomaly > 0 ? 'var(--oc-warm)' : 'var(--oc-cold)'
+			})}
+			{@render txt(940, SURF - 116, farAway.east, 12, {
+				anchor: 'end',
+				weight: 700,
+				color: anomaly > 0 ? 'var(--oc-cold)' : 'var(--oc-warm)'
+			})}
+		</Readout>
+	{/if}
+	<Readout id="axis">
+		{@render txt(X0, BOTTOM + 18, '120°E', 11, { anchor: 'middle', muted: true })}
+		{@render txt(
+			(X0 + X1) / 2,
+			BOTTOM + 18,
+			'along the equator · depths to scale with each other (about 20,000× stretched), sea level exaggerated more',
+			11,
+			{
+				anchor: 'middle',
+				muted: true
+			}
+		)}
+		{@render txt(X1, BOTTOM + 18, '80°W', 11, { anchor: 'middle', muted: true })}
+	</Readout>
 
 	<!-- ===== below: readouts / the run ===== -->
 	{#if ensoOn.current < 0.99}
 		<g opacity={1 - ensoOn.current}>
-			<Card x={X0 - 60} y={456} w={X1 - X0 + 148} cells={normalCells} row cellH={76} />
+			<Card
+				id="normal"
+				x={X0 - 60}
+				y={456}
+				w={X1 - X0 + 148}
+				cells={normalCells}
+				row
+				cellH={76}
+				opacity={1 - ensoOn.current}
+			/>
 		</g>
 	{/if}
 	{#if ensoOn.current > 0.01}
@@ -572,18 +623,21 @@
 					font-size="11">{yr === 8 ? '8 years' : yr}</text
 				>
 			{/each}
-			{@render txt(PLOT.x1 - 6, py(R * 0.82), 'El Niño', 11, {
-				anchor: 'end',
-				weight: 600,
-				color: 'var(--oc-warm)'
-			})}
-			{@render txt(PLOT.x1 - 6, py(-R * 0.75), 'La Niña', 11, {
-				anchor: 'end',
-				weight: 600,
-				color: 'var(--oc-cold)'
-			})}
-			{@render txt(PLOT.x0 - 100, PLOT.top - 4, 'east Pacific', 11, { muted: true })}
-			{@render txt(PLOT.x0 - 100, PLOT.top + 10, 'vs normal', 11, { muted: true })}
+			<!-- the card's "east Pacific vs normal" names the state on phones -->
+			<Readout id="plot-labels">
+				{@render txt(PLOT.x1 - 6, py(R * 0.82), 'El Niño', 11, {
+					anchor: 'end',
+					weight: 600,
+					color: 'var(--oc-warm)'
+				})}
+				{@render txt(PLOT.x1 - 6, py(-R * 0.75), 'La Niña', 11, {
+					anchor: 'end',
+					weight: 600,
+					color: 'var(--oc-cold)'
+				})}
+				{@render txt(PLOT.x0 - 100, PLOT.top - 4, 'east Pacific', 11, { muted: true })}
+				{@render txt(PLOT.x0 - 100, PLOT.top + 10, 'vs normal', 11, { muted: true })}
+			</Readout>
 			<path
 				d={trace}
 				fill="none"
@@ -599,7 +653,16 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			<Card x={676} y={456} w={268} cells={ensoCells} row cellH={76} />
+			<Card
+				id="enso"
+				x={676}
+				y={456}
+				w={268}
+				cells={ensoCells}
+				row
+				cellH={76}
+				opacity={ensoOn.current}
+			/>
 		</g>
 	{/if}
 </g>

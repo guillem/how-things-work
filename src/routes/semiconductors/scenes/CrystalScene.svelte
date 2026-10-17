@@ -17,7 +17,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { hash, lerp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { GAPS, KT, NI_SI, N_SI, chainLevels, sci } from '../model';
 	import {
 		bondDot,
@@ -174,6 +174,14 @@
 		semiconductor: ['Silicon: a semiconductor', 'the same bonds, but a smaller gap']
 	};
 	const title = $derived(TITLES[material] ?? TITLES.semiconductor);
+	/** The same, split for the phone panel: a number and a note. */
+	const carriers = $derived(
+		material === 'metal'
+			? { value: '8.5 × 10²² per cm³', note: 'about one per atom' }
+			: material === 'insulator'
+				? { value: 'practically none', note: 'the gap is over 200 × kT' }
+				: { value: `${sci(NI_SI, 2)} per cm³`, note: `one per ${sci(N_SI / NI_SI, 1)} atoms` }
+	);
 	const readout = $derived(
 		material === 'metal'
 			? 'About one free electron per atom: 8.5 × 10²² per cm³'
@@ -205,18 +213,30 @@
 <g>
 	{#if phase === 'levels'}
 		<!-- atoms coming together -->
-		{@render txt(240, 70, N === 1 ? 'One atom' : `${N} atoms`, 16, { weight: 700 })}
-		{@render txt(
-			240,
-			92,
-			N === 1
+		<Readout
+			id="atoms"
+			order={1}
+			label="Atoms"
+			value={N === 1 ? 'one' : `${N}`}
+			note={N === 1
 				? 'on its own'
 				: together < 0.5
 					? 'far apart'
-					: 'close enough to share their outer electrons',
-			12,
-			{ muted: true }
-		)}
+					: 'close enough to share electrons'}
+		>
+			{@render txt(240, 70, N === 1 ? 'One atom' : `${N} atoms`, 16, { weight: 700 })}
+			{@render txt(
+				240,
+				92,
+				N === 1
+					? 'on its own'
+					: together < 0.5
+						? 'far apart'
+						: 'close enough to share their outer electrons',
+				12,
+				{ muted: true }
+			)}
+		</Readout>
 		{#each atomsDrawn as a (a.i)}
 			<circle cx={a.x} cy={a.y} r={a.r * 1.5} fill="var(--semi-filled)" opacity="0.35" />
 			<circle
@@ -239,7 +259,9 @@
 			stroke-width="1.5"
 			marker-end="url(#arrowhead)"
 		/>
-		{@render txt(540, 110, 'energy', 12, { anchor: 'start', muted: true })}
+		<Readout id="energy-axis">
+			{@render txt(540, 110, 'energy', 12, { anchor: 'start', muted: true })}
+		</Readout>
 		{#if N >= 16}
 			<rect
 				x={LX0}
@@ -275,19 +297,35 @@
 				{/each}
 			{/each}
 		{/if}
-		{@render txt(LX1 + 14, HIGH.y + 4, N === 1 ? 'next atomic level' : `${N} levels`, 13, {
-			anchor: 'start',
-			weight: 600
-		})}
-		{@render txt(LX1 + 14, HIGH.y + 21, 'empty', 12, { anchor: 'start', muted: true })}
-		{@render txt(LX1 + 14, LOW.y + 4, N === 1 ? 'outer level' : `${N} levels`, 13, {
-			anchor: 'start',
-			weight: 600
-		})}
-		{@render txt(LX1 + 14, LOW.y + 21, 'full: 2 electrons each', 12, {
-			anchor: 'start',
-			muted: true
-		})}
+		<Readout
+			id="high"
+			order={10}
+			label={N === 1 ? 'Next atomic level: empty' : `${N} upper levels: empty`}
+			marker={1}
+			at={[LX1 + 36, HIGH.y]}
+		>
+			{@render txt(LX1 + 14, HIGH.y + 4, N === 1 ? 'next atomic level' : `${N} levels`, 13, {
+				anchor: 'start',
+				weight: 600
+			})}
+			{@render txt(LX1 + 14, HIGH.y + 21, 'empty', 12, { anchor: 'start', muted: true })}
+		</Readout>
+		<Readout
+			id="low"
+			order={11}
+			label={N === 1 ? 'Outer level: full' : `${N} outer levels: full, 2 electrons each`}
+			marker={2}
+			at={[LX1 + 36, LOW.y]}
+		>
+			{@render txt(LX1 + 14, LOW.y + 4, N === 1 ? 'outer level' : `${N} levels`, 13, {
+				anchor: 'start',
+				weight: 600
+			})}
+			{@render txt(LX1 + 14, LOW.y + 21, 'full: 2 electrons each', 12, {
+				anchor: 'start',
+				muted: true
+			})}
+		</Readout>
 		{#if N > 1}
 			{@const top = LOW.y - LOW.hw * together}
 			{@const bot = HIGH.y + HIGH.hw * together}
@@ -300,27 +338,47 @@
 					stroke="var(--stage-ink-muted)"
 					stroke-dasharray="4 4"
 				/>
-				{@render txt((LX0 + LX1) / 2 + 10, (top + bot) / 2 + 5, 'gap: no levels', 13, {
-					anchor: 'start',
-					weight: 600
-				})}
+				<Readout id="level-gap">
+					{@render txt((LX0 + LX1) / 2 + 10, (top + bot) / 2 + 5, 'gap: no levels', 13, {
+						anchor: 'start',
+						weight: 600
+					})}
+				</Readout>
 			</g>
 		{/if}
-		{@render txt(
-			480,
-			568,
-			N >= 16
-				? 'So many levels, so close together: a continuous band. Its width has stopped growing.'
+		<Readout
+			id="levels-caption"
+			order={2}
+			label="Energy levels"
+			value={N >= 16
+				? 'so close together: a continuous band'
 				: N === 1
-					? 'A single atom: sharp energy levels.'
-					: `${N} atoms: each level splits into ${N}. The band widens towards a fixed limit.`,
-			14,
-			{ weight: 600 }
-		)}
+					? 'sharp, one of each'
+					: `each splits into ${N}`}
+			note={N >= 16
+				? 'its width has stopped growing'
+				: N === 1
+					? undefined
+					: 'the band widens towards a fixed limit'}
+		>
+			{@render txt(
+				480,
+				568,
+				N >= 16
+					? 'So many levels, so close together: a continuous band. Its width has stopped growing.'
+					: N === 1
+						? 'A single atom: sharp energy levels.'
+						: `${N} atoms: each level splits into ${N}. The band widens towards a fixed limit.`,
+				14,
+				{ weight: 600 }
+			)}
+		</Readout>
 	{:else}
 		<!-- ===================== crystal ===================== -->
-		{@render txt(250, 58, title[0], 16, { weight: 700 })}
-		{@render txt(250, 80, title[1], 12, { muted: true })}
+		<Readout id="material" order={1} label="Material" value={title[0]} note={title[1]}>
+			{@render txt(250, 58, title[0], 16, { weight: 700 })}
+			{@render txt(250, 80, title[1], 12, { muted: true })}
+		</Readout>
 
 		<!-- battery plates -->
 		<g opacity={fieldOn ? 1 : 0.25}>
@@ -405,50 +463,81 @@
 					/>
 					{#if pair.s < 3.2}
 						<g opacity={smoothstep(0.9, 1.3, pair.s) * (1 - smoothstep(2.8, 3.2, pair.s))}>
-							{@render txt(pair.e.x, pair.e.y - 14, 'free electron', 12, {
-								weight: 600,
-								color: 'var(--semi-electron)'
-							})}
-							{@render txt(holePos.x, holePos.y + 24, 'hole', 12, {
-								weight: 600,
-								color: 'var(--semi-hole)'
-							})}
+							<Readout id="pair-labels">
+								{@render txt(pair.e.x, pair.e.y - 14, 'free electron', 12, {
+									weight: 600,
+									color: 'var(--semi-electron)'
+								})}
+								{@render txt(holePos.x, holePos.y + 24, 'hole', 12, {
+									weight: 600,
+									color: 'var(--semi-hole)'
+								})}
+							</Readout>
 						</g>
 					{/if}
 				</g>
 			{/if}
 		{/if}
-		{@render txt(250, 492, readout, 13, { weight: 600 })}
-		{@render txt(
-			250,
-			512,
-			fieldOn
-				? material === 'metal'
-					? 'The electron sea drifts towards +: a current.'
-					: material === 'insulator'
-						? 'Voltage on, yet nothing moves: no current.'
-						: 'The electron drifts to +, the hole to −: a tiny current.'
-				: 'No voltage: carriers only wander at random.',
-			12,
-			{ muted: true }
-		)}
 		{#if material === 'semiconductor'}
+			<Readout id="key-e" order={20} label="Free electron" color="var(--semi-electron)" />
+			<Readout id="key-h" order={21} label="Hole" color="var(--semi-hole)" />
+		{/if}
+		<Readout
+			id="carriers"
+			order={2}
+			label="Free electrons"
+			value={carriers.value}
+			note={carriers.note}
+		>
+			{@render txt(250, 492, readout, 13, { weight: 600 })}
+		</Readout>
+		<Readout
+			id="current"
+			order={3}
+			label={fieldOn ? 'Voltage on' : 'No voltage'}
+			value={fieldOn
+				? material === 'metal'
+					? 'the electron sea drifts to +: a current'
+					: material === 'insulator'
+						? 'nothing moves: no current'
+						: 'electron to +, hole to −: a tiny current'
+				: 'carriers only wander at random'}
+		>
 			{@render txt(
 				250,
-				548,
-				'Drawn: one thermal pair at a time (really one per 5 trillion atoms).',
-				11,
-				{
-					muted: true
-				}
+				512,
+				fieldOn
+					? material === 'metal'
+						? 'The electron sea drifts towards +: a current.'
+						: material === 'insulator'
+							? 'Voltage on, yet nothing moves: no current.'
+							: 'The electron drifts to +, the hole to −: a tiny current.'
+					: 'No voltage: carriers only wander at random.',
+				12,
+				{ muted: true }
 			)}
+		</Readout>
+		{#if material === 'semiconductor'}
+			<Readout id="drawn">
+				{@render txt(
+					250,
+					548,
+					'Drawn: one thermal pair at a time (really one per 5 trillion atoms).',
+					11,
+					{
+						muted: true
+					}
+				)}
+			</Readout>
 		{/if}
 
 		<!-- ===================== bands ===================== -->
 		{@const g = gap.current}
 		{@const cbBottom = yE(g)}
-		{@render txt((BX0 + BX1) / 2, 58, 'Energy bands', 15, { weight: 700 })}
-		{@render txt((BX0 + BX1) / 2, 80, 'same scale for every material', 12, { muted: true })}
+		<Readout id="bands-title">
+			{@render txt((BX0 + BX1) / 2, 58, 'Energy bands', 15, { weight: 700 })}
+			{@render txt((BX0 + BX1) / 2, 80, 'same scale for every material', 12, { muted: true })}
+		</Readout>
 		<!-- conduction band -->
 		<rect
 			x={BX0}
@@ -496,13 +585,32 @@
 			stroke-width="1.4"
 			stroke-dasharray="6 4"
 		/>
-		{@render txt(BX0 + 6, yE(fermi) - 6, 'Fermi level', 11, { anchor: 'start', weight: 600 })}
+		<Readout id="fermi" order={12} label="Fermi level" marker={3} at={[BX0 - 30, yE(fermi)]}>
+			{@render txt(BX0 + 6, yE(fermi) - 6, 'Fermi level', 11, { anchor: 'start', weight: 600 })}
+		</Readout>
 
 		<g opacity={1 - metalMix.current}>
-			{@render txt((BX0 + BX1) / 2, yE(g + BAND_H) + 22, 'conduction band', 13, { weight: 600 })}
-			{@render txt((BX0 + BX1) / 2, yE(g + BAND_H) + 40, 'empty', 12, { muted: true })}
-			{@render txt((BX0 + BX1) / 2, yE(0) + 60, 'valence band', 13, { weight: 600 })}
-			{@render txt((BX0 + BX1) / 2, yE(0) + 78, 'full: the bond electrons', 12, { muted: true })}
+			<!-- key chips only while these bands are the ones drawn (not the metal's) -->
+			<Readout
+				id="cb"
+				order={10}
+				label={material === 'metal' ? undefined : 'Conduction band: empty'}
+				marker={material === 'metal' ? undefined : 1}
+				at={[(BX0 + BX1) / 2, yE(g + BAND_H) + 28]}
+			>
+				{@render txt((BX0 + BX1) / 2, yE(g + BAND_H) + 22, 'conduction band', 13, { weight: 600 })}
+				{@render txt((BX0 + BX1) / 2, yE(g + BAND_H) + 40, 'empty', 12, { muted: true })}
+			</Readout>
+			<Readout
+				id="vb"
+				order={11}
+				label={material === 'metal' ? undefined : 'Valence band: full'}
+				marker={material === 'metal' ? undefined : 2}
+				at={[(BX0 + BX1) / 2, yE(0) + 66]}
+			>
+				{@render txt((BX0 + BX1) / 2, yE(0) + 60, 'valence band', 13, { weight: 600 })}
+				{@render txt((BX0 + BX1) / 2, yE(0) + 78, 'full: the bond electrons', 12, { muted: true })}
+			</Readout>
 			{#if g > 0.4}
 				<line
 					x1={BX1 - 26}
@@ -514,16 +622,34 @@
 					marker-end="url(#arrowhead)"
 					marker-start="url(#arrowhead)"
 				/>
-				{@render txt(BX1 - 36, cbBottom + 15, `gap ${g.toFixed(2)} eV`, 13, {
-					anchor: 'end',
-					weight: 700
-				})}
+				<Readout id="gap" order={4} label="Band gap" value="{g.toFixed(2)} eV">
+					{@render txt(BX1 - 36, cbBottom + 15, `gap ${g.toFixed(2)} eV`, 13, {
+						anchor: 'end',
+						weight: 700
+					})}
+				</Readout>
 			{/if}
 		</g>
 		<g opacity={metalMix.current}>
-			{@render txt((BX0 + BX1) / 2, yE(BAND_H) + 22, 'empty levels', 13, { weight: 600 })}
-			{@render txt((BX0 + BX1) / 2, yE(0) + 60, 'filled levels', 13, { weight: 600 })}
-			{@render txt((BX0 + BX1) / 2, yE(0) + 78, 'one band, about half full', 12, { muted: true })}
+			<Readout
+				id="metal-empty"
+				order={10}
+				label={material === 'metal' ? 'Empty levels' : undefined}
+				marker={material === 'metal' ? 1 : undefined}
+				at={[(BX0 + BX1) / 2, yE(BAND_H) + 28]}
+			>
+				{@render txt((BX0 + BX1) / 2, yE(BAND_H) + 22, 'empty levels', 13, { weight: 600 })}
+			</Readout>
+			<Readout
+				id="metal-filled"
+				order={11}
+				label={material === 'metal' ? 'Filled levels: one band, about half full' : undefined}
+				marker={material === 'metal' ? 2 : undefined}
+				at={[(BX0 + BX1) / 2, yE(0) + 66]}
+			>
+				{@render txt((BX0 + BX1) / 2, yE(0) + 60, 'filled levels', 13, { weight: 600 })}
+				{@render txt((BX0 + BX1) / 2, yE(0) + 78, 'one band, about half full', 12, { muted: true })}
+			</Readout>
 			{#each nearEF as e (e.i)}
 				<circle cx={e.x} cy={e.y} r="4" fill="var(--semi-electron)" />
 			{/each}
@@ -561,7 +687,9 @@
 		{/if}
 
 		<!-- gaps to scale -->
-		{@render txt(865, 58, 'Gaps to scale', 13, { weight: 700 })}
+		<Readout id="ruler" order={13} label="Gaps to scale, in eV" marker={4} at={[802, VB_TOP - 44]}>
+			{@render txt(865, 58, 'Gaps to scale', 13, { weight: 700 })}
+		</Readout>
 		{#each RULER as r (r.key)}
 			{@const on = r.key === current || (r.key === 'kT' && material === 'insulator')}
 			<rect
@@ -580,7 +708,9 @@
 		{/each}
 		{@render txt(865, VB_TOP + 38, 'eV', 11, { muted: true })}
 		{#if material === 'metal'}
-			{@render txt(865, VB_TOP + 62, 'metal: no gap', 12, { weight: 600 })}
+			<Readout id="no-gap">
+				{@render txt(865, VB_TOP + 62, 'metal: no gap', 12, { weight: 600 })}
+			</Readout>
 		{/if}
 	{/if}
 </g>

@@ -25,7 +25,7 @@
 	 * 3× on the shadow, with the horizon's own size for comparison.
 	 */
 	import { cycle, Handle, hash, Label, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		B_CRIT,
 		alphaAt,
@@ -281,9 +281,25 @@
 	>
 {/snippet}
 
-{#snippet row(y: number, label: string, value: string, color?: string)}
-	<Label anchor="start" x={CX + 16} {y} text={label} size={12.5} muted />
-	<Label x={CX + CW - 16} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+{#snippet row(
+	y: number,
+	label: string,
+	value: string,
+	color?: string,
+	o: { note?: string; hide?: boolean } = {}
+)}
+	<!-- on phones: a row of the panel under the stage, or left out to keep the panel short -->
+	<Readout
+		id="row-{label}"
+		order={y}
+		label={o.hide ? undefined : label}
+		{value}
+		note={o.note}
+		{color}
+	>
+		<Label anchor="start" x={CX + 16} {y} text={label} size={12.5} muted />
+		<Label x={CX + CW - 16} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+	</Readout>
 {/snippet}
 
 <g>
@@ -361,10 +377,28 @@
 	<!-- labels on the sky -->
 	{#if !unlensed}
 		{#if phase === 'lens'}
-			{@render onSky(H.x, Math.max(PY0 + 16, H.y - ringR - 8), 'Einstein ring', 12)}
+			<Readout
+				id="ring"
+				order={50}
+				label="Dashed: the Einstein ring"
+				marker={1}
+				at={[H.x, Math.max(PY0 + 22, H.y - ringR - 14)]}
+			>
+				{@render onSky(H.x, Math.max(PY0 + 16, H.y - ringR - 8), 'Einstein ring', 12)}
+			</Readout>
 		{:else}
-			{@render onSky(H.x, H.y + shadowR + 18, 'edge of the shadow: 2.6 rₛ', 12.5)}
-			{@render onSky(H.x, H.y + 4, 'horizon size', 11, 'middle', 500)}
+			<Readout
+				id="edge"
+				order={50}
+				label="Edge of the shadow: 2.6 rₛ"
+				marker={1}
+				at={[H.x, H.y + shadowR + 14]}
+			>
+				{@render onSky(H.x, H.y + shadowR + 18, 'edge of the shadow: 2.6 rₛ', 12.5)}
+			</Readout>
+			<Readout id="horizon" order={51} label="Dashed: horizon size" marker={2} at={[H.x, H.y]}>
+				{@render onSky(H.x, H.y + 4, 'horizon size', 11, 'middle', 500)}
+			</Readout>
 		{/if}
 	{/if}
 
@@ -387,17 +421,44 @@
 	<!-- readouts -->
 	{#if phase === 'lens'}
 		<Card x={CX} y={PY0} w={CW} h={200} />
-		<Label anchor="start" x={CX + 16} y={PY0 + 28} text="The bright star" size={15} weight={700} />
+		<Readout id="title-lens">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 28}
+				text="The bright star"
+				size={15}
+				weight={700}
+			/>
+		</Readout>
 		{#if star}
-			{@render row(PY0 + 60, 'Off the line to the hole', `${f1(star.beta / thetaE)} ring radii`)}
+			{@render row(
+				PY0 + 60,
+				'Off the line to the hole',
+				`${f1(star.beta / thetaE)} ring radii`,
+				undefined,
+				{ hide: true }
+			)}
 			{@render row(
 				PY0 + 88,
 				'Images seen',
 				unlensed ? '1 (no hole)' : star.beta < RHO ? 'a ring' : '2'
 			)}
 			{#if !unlensed}
-				{@render row(PY0 + 116, 'Outer image at', `${f1(star.im.outer / thetaE)} ring radii`)}
-				{@render row(PY0 + 144, 'Inner image at', `${f1(star.im.inner / thetaE)} ring radii`)}
+				{@render row(
+					PY0 + 116,
+					'Outer image at',
+					`${f1(star.im.outer / thetaE)} ring radii`,
+					undefined,
+					{ note: `inner: ${f1(star.im.inner / thetaE)}` }
+				)}
+				{@render row(
+					PY0 + 144,
+					'Inner image at',
+					`${f1(star.im.inner / thetaE)} ring radii`,
+					undefined,
+					{ hide: true }
+				)}
 				{@render row(
 					PY0 + 172,
 					'Brighter by',
@@ -407,158 +468,194 @@
 			{/if}
 		{/if}
 		<Card x={CX} y={PY0 + 216} w={CW} h={130} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 242}
-			text="Drag the black hole"
-			size={13.5}
-			weight={700}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 264}
-			text="Stars near it are pushed outwards and"
-			size={12.5}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 284}
-			text="stretched into arcs; each also shows"
-			size={12.5}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 304}
-			text="a second, fainter image inside the"
-			size={12.5}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 324}
-			text="dashed ring, on the other side."
-			size={12.5}
-		/>
+		<Readout
+			id="drag"
+			order={PY0 + 242}
+			label="Drag the black hole"
+			value="nearby stars are pushed out into arcs"
+			note="each with a fainter image inside the ring, on the other side"
+		>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 242}
+				text="Drag the black hole"
+				size={13.5}
+				weight={700}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 264}
+				text="Stars near it are pushed outwards and"
+				size={12.5}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 284}
+				text="stretched into arcs; each also shows"
+				size={12.5}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 304}
+				text="a second, fainter image inside the"
+				size={12.5}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 324}
+				text="dashed ring, on the other side."
+				size={12.5}
+			/>
+		</Readout>
 		<Card x={CX} y={PY1 - 96} w={CW} h={96} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 70}
-			text="Camera 30 rₛ from the hole; every"
-			size={12}
-			muted
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 50}
-			text="ray’s bend traced from the model. The"
-			size={12}
-			muted
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 30}
-			text="ring’s size depends on that distance."
-			size={12}
-			muted
-		/>
+		<Readout id="camera">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 70}
+				text="Camera 30 rₛ from the hole; every"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 50}
+				text="ray’s bend traced from the model. The"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 30}
+				text="ring’s size depends on that distance."
+				size={12}
+				muted
+			/>
+		</Readout>
 	{:else}
 		<Card x={CX} y={PY0} w={CW} h={186} />
-		<Label anchor="start" x={CX + 16} y={PY0 + 28} text="The shadow" size={15} weight={700} />
+		<Readout id="title-shadow">
+			<Label anchor="start" x={CX + 16} y={PY0 + 28} text="The shadow" size={15} weight={700} />
+		</Readout>
 		{@render row(PY0 + 60, 'Horizon radius', '1 rₛ')}
-		{@render row(PY0 + 88, 'Shadow radius', `${f1(B_CRIT / 2)} rₛ`, 'var(--bh-sphere)')}
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 118}
-			text="Every ray aimed inside 2.6 rₛ falls"
-			size={12.5}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 138}
-			text="in, so the dark disc is 2.6 times"
-			size={12.5}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 158}
-			text="wider than the horizon itself."
-			size={12.5}
-		/>
+		{@render row(PY0 + 88, 'Shadow radius', `${f1(B_CRIT / 2)} rₛ`, 'var(--bh-sphere)', {
+			note: 'every ray aimed inside it falls in'
+		})}
+		<Readout id="shadow-note">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 118}
+				text="Every ray aimed inside 2.6 rₛ falls"
+				size={12.5}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 138}
+				text="in, so the dark disc is 2.6 times"
+				size={12.5}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 158}
+				text="wider than the horizon itself."
+				size={12.5}
+			/>
+		</Readout>
 		<Card x={CX} y={PY0 + 202} w={CW} h={178} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 228}
-			text="Event Horizon Telescope"
-			size={13.5}
-			weight={700}
-		/>
-		{@render row(PY0 + 254, 'M87* (2019)', '')}
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 274}
-			text="6.2 billion suns; predicted 38 µas,"
-			size={12}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 292}
-			text="ring measured 42 ± 3 µas"
-			size={12}
-			weight={600}
-		/>
-		{@render row(PY0 + 318, 'Sgr A* (2022)', '')}
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 338}
-			text="4.15 million suns; predicted 52 µas,"
-			size={12}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 356}
-			text="ring measured 51.8 ± 2.3 µas"
-			size={12}
-			weight={600}
-		/>
+		<Readout id="eht">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 228}
+				text="Event Horizon Telescope"
+				size={13.5}
+				weight={700}
+			/>
+		</Readout>
+		<Readout
+			id="m87"
+			order={PY0 + 254}
+			label="M87* (2019)"
+			value="ring 42 ± 3 µas"
+			note="6.2 billion suns; predicted 38 µas"
+		>
+			{@render row(PY0 + 254, 'M87* (2019)', '')}
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 274}
+				text="6.2 billion suns; predicted 38 µas,"
+				size={12}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 292}
+				text="ring measured 42 ± 3 µas"
+				size={12}
+				weight={600}
+			/>
+		</Readout>
+		<Readout
+			id="sgra"
+			order={PY0 + 318}
+			label="Sgr A* (2022)"
+			value="ring 51.8 ± 2.3 µas"
+			note="4.15 million suns; predicted 52 µas"
+		>
+			{@render row(PY0 + 318, 'Sgr A* (2022)', '')}
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 338}
+				text="4.15 million suns; predicted 52 µas,"
+				size={12}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 356}
+				text="ring measured 51.8 ± 2.3 µas"
+				size={12}
+				weight={600}
+			/>
+		</Readout>
 		<Card x={CX} y={PY1 - 96} w={CW} h={96} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 70}
-			text="µas: a millionth of an arcsecond."
-			size={12}
-			muted
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 50}
-			text="52 µas is about the size of a doughnut"
-			size={12}
-			muted
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 30}
-			text="on the Moon, seen from the Earth."
-			size={12}
-			muted
-		/>
+		<Readout id="uas">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 70}
+				text="µas: a millionth of an arcsecond."
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 50}
+				text="52 µas is about the size of a doughnut"
+				size={12}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 30}
+				text="on the Moon, seen from the Earth."
+				size={12}
+				muted
+			/>
+		</Readout>
 	{/if}
 </g>

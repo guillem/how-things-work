@@ -120,3 +120,32 @@ test('a black hole in front of the stars bends them; moving it repaints the sky'
 	await switchOn(page, 'unlensed');
 	await expect(stage(page)).toContainText(/Images seen\s*1 \(no hole\)/);
 });
+
+// Phone readouts (<Readout>): on screens ≤ 640 px the readout cards leave the drawing and are
+// listed as text under the stage (see e2e/phone-readouts.e2e.ts).
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+	const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+	const drawing = (page: Page) => page.locator('.stage svg');
+
+	test('the light ray’s fate is text under the stage and follows the aim', async ({ page }) => {
+		await page.goto('./black-holes/#horizon');
+		const panel = readouts(page);
+		await range(page, 'aim').fill('2.5');
+		await expect(panel).toContainText(/Fate\s*falls into the hole/);
+		await expect(drawing(page)).not.toContainText('falls into the hole');
+		await range(page, 'aim').fill('3');
+		await expect(panel).toContainText(/Fate\s*flies on, bent \d+°/);
+	});
+
+	test('the lowered clock’s rate and colour are text and follow its height', async ({ page }) => {
+		await page.goto('./black-holes/#clocks');
+		const panel = readouts(page);
+		await range(page, 'clockR').fill('2');
+		await expect(panel).toContainText(/Ticks per 100 far ticks\s*71/);
+		await expect(panel).toContainText(/Its green flash arrives\s*750 nm, red/);
+		await expect(drawing(page)).not.toContainText('Ticks per 100');
+		await range(page, 'clockR').fill('1.1');
+		await expect(panel).toContainText(/Ticks per 100 far ticks\s*30/);
+	});
+});

@@ -30,7 +30,7 @@
 		smoothstep,
 		type Point
 	} from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		GAPS,
 		JUNCTION_DOPING,
@@ -323,43 +323,68 @@
 			weight: 700,
 			color: plusLeft ? 'var(--circ-low)' : 'var(--circ-high)'
 		})}
-		{@render txt(
-			480,
-			WIRE_Y + 34,
-			`${Math.abs(targetV).toFixed(2)} V ${forward ? 'forward' : reverse ? 'reverse' : ''}`,
-			13,
-			{ weight: 700 }
-		)}
+		<Readout id="battery">
+			{@render txt(
+				480,
+				WIRE_Y + 34,
+				`${Math.abs(targetV).toFixed(2)} V ${forward ? 'forward' : reverse ? 'reverse' : ''}`,
+				13,
+				{ weight: 700 }
+			)}
+		</Readout>
 		{#each wireDots as w (w.k)}
 			<circle cx={w.a.x} cy={w.a.y} r="3.5" fill="var(--semi-electron)" />
 			<circle cx={w.b.x} cy={w.b.y} r="3.5" fill="var(--semi-electron)" />
 		{/each}
 		<!-- ammeter readout -->
-		<g>
-			<rect
-				x="600"
-				y={WIRE_Y - 17}
-				width="230"
-				height="30"
-				rx="15"
-				fill="var(--surface)"
-				stroke={forward && current > 1e-6 ? 'var(--circ-glow)' : 'var(--border)'}
-				stroke-width={forward && current > 1e-6 ? 2.5 : 1}
-			/>
-			{@render txt(715, WIRE_Y + 3, `current: ${currentText}`, 13, { weight: 700 })}
-		</g>
+		<Readout
+			id="current"
+			order={1}
+			label="Current at {Math.abs(targetV).toFixed(2)} V{forward
+				? ' forward'
+				: reverse
+					? ' reverse'
+					: ''}"
+			value={currentText}
+			color="var(--semi-electron)"
+		>
+			<g>
+				<rect
+					x="600"
+					y={WIRE_Y - 17}
+					width="230"
+					height="30"
+					rx="15"
+					fill="var(--surface)"
+					stroke={forward && current > 1e-6 ? 'var(--circ-glow)' : 'var(--border)'}
+					stroke-width={forward && current > 1e-6 ? 2.5 : 1}
+				/>
+				{@render txt(715, WIRE_Y + 3, `current: ${currentText}`, 13, { weight: 700 })}
+			</g>
+		</Readout>
 	{:else}
-		{@render txt(
-			XJ,
-			40,
-			j < 0.02
-				? 'Two separate pieces, each electrically neutral'
+		<Readout
+			id="state"
+			order={1}
+			label={j < 0.02 ? 'Two separate pieces' : j < 0.98 ? 'Joining' : 'Joined'}
+			value={j < 0.02
+				? 'each electrically neutral'
 				: j < 0.98
-					? 'Joining: carriers spread across the boundary…'
-					: 'Joined: a depletion zone has formed',
-			15,
-			{ weight: 700 }
-		)}
+					? 'carriers spread across the boundary…'
+					: 'a depletion zone has formed'}
+		>
+			{@render txt(
+				XJ,
+				40,
+				j < 0.02
+					? 'Two separate pieces, each electrically neutral'
+					: j < 0.98
+						? 'Joining: carriers spread across the boundary…'
+						: 'Joined: a depletion zone has formed',
+				15,
+				{ weight: 700 }
+			)}
+		</Readout>
 	{/if}
 
 	<!-- ===================== cross-section ===================== -->
@@ -477,16 +502,21 @@
 	{/each}
 
 	<!-- labels under the bar -->
-	{@render txt(XL - gapOpen, BAR_Y1 + 20, 'p-type: holes ○, fixed B⁻ ions', 12, {
-		anchor: 'start',
-		weight: 600
-	})}
-	{@render txt(XR + gapOpen, BAR_Y1 + 20, 'n-type: electrons ●, fixed P⁺ ions', 12, {
-		anchor: 'end',
-		weight: 600
-	})}
+	<Readout id="key-p" order={10} label="p-type: holes ○, B⁻ ions" color="var(--semi-hole)">
+		{@render txt(XL - gapOpen, BAR_Y1 + 20, 'p-type: holes ○, fixed B⁻ ions', 12, {
+			anchor: 'start',
+			weight: 600
+		})}
+	</Readout>
+	<Readout id="key-n" order={11} label="n-type: electrons ●, P⁺ ions" color="var(--semi-electron)">
+		{@render txt(XR + gapOpen, BAR_Y1 + 20, 'n-type: electrons ●, fixed P⁺ ions', 12, {
+			anchor: 'end',
+			weight: 600
+		})}
+	</Readout>
 	{#if j > 0.3}
-		<g opacity={smoothstep(0.3, 0.8, j)}>
+		{@const fz = smoothstep(0.3, 0.8, j)}
+		<g opacity={fz}>
 			{#if hw > 14}
 				<line
 					x1={XJ + hw - 3}
@@ -498,13 +528,22 @@
 					marker-end="url(#arrowhead)"
 				/>
 			{/if}
-			{@render txt(
-				XJ,
-				BAR_Y1 + 58,
-				`depletion zone ${W.toFixed(2)} µm` + (hw > 14 ? ' · field from n to p' : ''),
-				12,
-				{ weight: 600 }
-			)}
+			<Readout
+				id="zone"
+				order={2}
+				label="Depletion zone"
+				value="{W.toFixed(2)} µm"
+				note={hw > 14 ? 'field from n to p' : undefined}
+				opacity={fz}
+			>
+				{@render txt(
+					XJ,
+					BAR_Y1 + 58,
+					`depletion zone ${W.toFixed(2)} µm` + (hw > 14 ? ' · field from n to p' : ''),
+					12,
+					{ weight: 600 }
+				)}
+			</Readout>
 		</g>
 	{/if}
 
@@ -519,11 +558,17 @@
 			stroke-width="1.4"
 			marker-end="url(#arrowhead)"
 		/>
-		{@render txt(78, 296, 'electron energy', 11, { anchor: 'start', muted: true })}
+		<Readout id="energy-axis">
+			{@render txt(78, 296, 'electron energy', 11, { anchor: 'start', muted: true })}
+		</Readout>
 		<path d={ecPath} fill="none" stroke="var(--stage-ink)" stroke-width="2.4" />
 		<path d={evPath} fill="none" stroke="var(--stage-ink)" stroke-width="2.4" />
-		{@render txt(XR + 4, EC_N + 4, 'conduction band', 11, { anchor: 'start', weight: 600 })}
-		{@render txt(XR + 4, EC_N + EG + 4, 'valence band', 11, { anchor: 'start', weight: 600 })}
+		<Readout id="cb" order={12} label="Conduction band" marker={1} at={[XR + 30, EC_N - 22]}>
+			{@render txt(XR + 4, EC_N + 4, 'conduction band', 11, { anchor: 'start', weight: 600 })}
+		</Readout>
+		<Readout id="vb" order={13} label="Valence band" marker={2} at={[XR + 30, EC_N + EG + 22]}>
+			{@render txt(XR + 4, EC_N + EG + 4, 'valence band', 11, { anchor: 'start', weight: 600 })}
+		</Readout>
 		<!-- resting carriers in the bands -->
 		{#each bandCarriers as b (b.k)}
 			{@const xn = lerp(XJ + hw + 14, XR - 10, b.f) + gapOpen}
@@ -575,14 +620,16 @@
 				stroke-dasharray="6 4"
 				stroke-width="1.4"
 			/>
-			{@render txt(XL - gapOpen + 4, efP - 6, 'Fermi level (p)', 11, {
-				anchor: 'start',
-				muted: true
-			})}
-			{@render txt(XR + gapOpen - 4, efN + 16, 'Fermi level (n)', 11, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout id="fermi-pn" order={14} label="Dashed: the Fermi levels of p and n">
+				{@render txt(XL - gapOpen + 4, efP - 6, 'Fermi level (p)', 11, {
+					anchor: 'start',
+					muted: true
+				})}
+				{@render txt(XR + gapOpen - 4, efN + 16, 'Fermi level (n)', 11, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 		{:else if Math.abs(volts) < 0.005}
 			<line
 				x1={XL}
@@ -593,7 +640,9 @@
 				stroke-dasharray="6 4"
 				stroke-width="1.4"
 			/>
-			{@render txt(XR - 4, efN + 16, 'Fermi level: flat', 11, { anchor: 'end', muted: true })}
+			<Readout id="fermi-flat" order={14} label="Dashed: the Fermi level, flat">
+				{@render txt(XR - 4, efN + 16, 'Fermi level: flat', 11, { anchor: 'end', muted: true })}
+			</Readout>
 		{:else}
 			<line
 				x1={XJ - hw}
@@ -613,14 +662,20 @@
 				stroke-dasharray="6 4"
 				stroke-width="1.4"
 			/>
-			{@render txt(XL + 4, efP - 6, "holes' Fermi level", 11, {
-				anchor: 'start',
-				color: 'var(--semi-hole)'
-			})}
-			{@render txt(XJ + hw + 10, efN + 15, "electrons' Fermi level", 11, {
-				anchor: 'start',
-				color: 'var(--semi-electron)'
-			})}
+			<Readout
+				id="fermi-split"
+				order={14}
+				label="Dashed: the two Fermi levels, {Math.abs(volts).toFixed(2)} eV apart"
+			>
+				{@render txt(XL + 4, efP - 6, "holes' Fermi level", 11, {
+					anchor: 'start',
+					color: 'var(--semi-hole)'
+				})}
+				{@render txt(XJ + hw + 10, efN + 15, "electrons' Fermi level", 11, {
+					anchor: 'start',
+					color: 'var(--semi-electron)'
+				})}
+			</Readout>
 			<line
 				x1={XR - 30}
 				x2={XR - 30}
@@ -632,16 +687,18 @@
 				marker-start="url(#arrowhead)"
 				opacity={Math.abs(efN - efP) > 14 ? 1 : 0}
 			/>
-			{@render txt(
-				XR - 38,
-				Math.abs(efN - efP) > 30 ? (efN + efP) / 2 + 4 : Math.max(efN, efP) + 16,
-				`qV = ${Math.abs(volts).toFixed(2)} eV`,
-				11,
-				{
-					anchor: 'end',
-					weight: 600
-				}
-			)}
+			<Readout id="qv">
+				{@render txt(
+					XR - 38,
+					Math.abs(efN - efP) > 30 ? (efN + efP) / 2 + 4 : Math.max(efN, efP) + 16,
+					`qV = ${Math.abs(volts).toFixed(2)} eV`,
+					11,
+					{
+						anchor: 'end',
+						weight: 600
+					}
+				)}
+			</Readout>
 		{/if}
 		<!-- barrier -->
 		{#if stepEV > 0.02}
@@ -671,29 +728,52 @@
 				marker-end="url(#arrowhead)"
 				opacity={stepEV > 0.2 ? 1 : 0}
 			/>
-			{@render txt(
-				XJ + hw + 58,
-				stepEV > 0.3 ? (EC_N + barrierTop) / 2 + 4 : barrierTop - 14,
-				`hill for electrons: ${stepEV.toFixed(2)} eV`,
-				12,
-				{ anchor: 'start', weight: 700, color: 'var(--semi-field)' }
-			)}
+			<Readout
+				id="hill"
+				order={3}
+				label="Hill for electrons"
+				value="{stepEV.toFixed(2)} eV"
+				color="var(--semi-field)"
+			>
+				{@render txt(
+					XJ + hw + 58,
+					stepEV > 0.3 ? (EC_N + barrierTop) / 2 + 4 : barrierTop - 14,
+					`hill for electrons: ${stepEV.toFixed(2)} eV`,
+					12,
+					{ anchor: 'start', weight: 700, color: 'var(--semi-field)' }
+				)}
+			</Readout>
 		{/if}
-		{@render txt(
-			480,
-			588,
-			phase === 'join'
+		<Readout
+			id="caption"
+			order={4}
+			label="Bands"
+			value={phase === 'join'
 				? j < 0.02
-					? 'Separate: the Fermi level, the top of the sea of electrons, is higher in the n piece.'
-					: `Joined: the bands bend by the built-in voltage, ${VBI.toFixed(2)} V, until the Fermi level is flat.`
+					? 'the Fermi level, the top of the sea of electrons, is higher in the n piece'
+					: `bent by the built-in voltage, ${VBI.toFixed(2)} V, until the Fermi level is flat`
 				: forward
-					? 'Forward: the hill drops by qV, and electrons and holes stream over it.'
+					? 'the hill drops by qV: electrons and holes stream over it'
 					: reverse
-						? 'Reverse: the hill grows by qV; no majority carrier can climb it.'
-						: 'No voltage: the hill stops the flow.',
-			13,
-			{ weight: 600 }
-		)}
+						? 'the hill grows by qV: no majority carrier can climb it'
+						: 'no voltage: the hill stops the flow'}
+		>
+			{@render txt(
+				480,
+				588,
+				phase === 'join'
+					? j < 0.02
+						? 'Separate: the Fermi level, the top of the sea of electrons, is higher in the n piece.'
+						: `Joined: the bands bend by the built-in voltage, ${VBI.toFixed(2)} V, until the Fermi level is flat.`
+					: forward
+						? 'Forward: the hill drops by qV, and electrons and holes stream over it.'
+						: reverse
+							? 'Reverse: the hill grows by qV; no majority carrier can climb it.'
+							: 'No voltage: the hill stops the flow.',
+				13,
+				{ weight: 600 }
+			)}
+		</Readout>
 	{:else}
 		<!-- ===================== I–V curve ===================== -->
 		{#if logScale}
@@ -728,17 +808,44 @@
 				stroke="var(--stage-ink)"
 				stroke-width="1.4"
 			/>
-			{@render txt(sv(vb) + 8, (yOf(diodeCurrent(va)) + yOf(diodeCurrent(vb))) / 2 + 4, '×10', 12, {
-				anchor: 'start',
-				weight: 700
-			})}
-			{@render txt(sv((va + vb) / 2), yOf(diodeCurrent(va)) + 18, '60 mV', 12, { weight: 600 })}
-			{@render txt(sv(-1), syLog(-15) - 12, 'reverse: stuck at 10⁻¹⁵ A', 12, { weight: 600 })}
+			<Readout
+				id="shape-log"
+				order={3}
+				label="Forward"
+				value="×10 for every 60 mV"
+				note="reverse: stuck at 10⁻¹⁵ A"
+			>
+				{@render txt(
+					sv(vb) + 8,
+					(yOf(diodeCurrent(va)) + yOf(diodeCurrent(vb))) / 2 + 4,
+					'×10',
+					12,
+					{
+						anchor: 'start',
+						weight: 700
+					}
+				)}
+				{@render txt(sv((va + vb) / 2), yOf(diodeCurrent(va)) + 18, '60 mV', 12, { weight: 600 })}
+				{@render txt(sv(-1), syLog(-15) - 12, 'reverse: stuck at 10⁻¹⁵ A', 12, { weight: 600 })}
+			</Readout>
 		{:else}
-			{@render txt(sv(-1), syLin(0) - 12, 'reverse: practically zero', 12, { weight: 600 })}
-			{@render txt(sv(0.72), syLin(0.02), 'forward: shoots up', 12, { anchor: 'end', weight: 600 })}
+			<Readout
+				id="shape-lin"
+				order={3}
+				label="Forward"
+				value="shoots up"
+				note="reverse: practically zero"
+			>
+				{@render txt(sv(-1), syLin(0) - 12, 'reverse: practically zero', 12, { weight: 600 })}
+				{@render txt(sv(0.72), syLin(0.02), 'forward: shoots up', 12, {
+					anchor: 'end',
+					weight: 600
+				})}
+			</Readout>
 		{/if}
-		{@render txt(PX1 + 6, PY1 + 30, 'voltage', 11, { anchor: 'end', muted: true })}
+		<Readout id="v-axis">
+			{@render txt(PX1 + 6, PY1 + 30, 'voltage', 11, { anchor: 'end', muted: true })}
+		</Readout>
 		<Handle
 			x={sv(volts)}
 			y={handleY}
@@ -751,9 +858,11 @@
 			{onmove}
 			{onkey}
 		/>
-		{@render txt(PX0 + 14, PY0 + 6, `${targetV.toFixed(2)} V → ${amps(current)}`, 15, {
-			anchor: 'start',
-			weight: 700
-		})}
+		<Readout id="iv-now">
+			{@render txt(PX0 + 14, PY0 + 6, `${targetV.toFixed(2)} V → ${amps(current)}`, 15, {
+				anchor: 'start',
+				weight: 700
+			})}
+		</Readout>
 	{/if}
 </g>
