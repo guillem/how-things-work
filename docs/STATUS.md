@@ -101,7 +101,13 @@ storage moves similarities by at most 0.0034 (GloVe fixture, tests only); earthq
 row from TauP ak135 and the three Nepal stations on the summary slice. diffusion-models: no retrain needed (the shipped runs
 hold the finished digits); `mnist-nearest.ts` (tests only) stores each digit's distance to its
 nearest training digit, and a test backs the page's "generated, not copied" note (mean 8.48 vs
-8.57 for test digits); `train.mjs` loads again (it lost `mulberry32` in the rng refactor).
+8.57 for test digits); `train.mjs` loads again (it lost `mulberry32` in the rng refactor). Physics/space extras: quantum-computing A's axis
+0°/90° (B's slider now measures from z), stars remnant marker, oscillations-resonance stiffness
+and swing dots, big-bang Peebles atom (half bound at z ≈ 1272, 87% at z*; headline follows it),
+flight "160 times slower" tested, nuclear-fusion tokamak cross-section (the q = 3 field line is
+still open). Export cleanup (knip.json). Shared `<Axes>` readable on phones (desktop
+pixel-identical). `make e2e-full` on main after these merges: 2,195 passed (2.9 min, with one
+agent running alongside). Last package running: per-topic chart fixes on phones.
 
 **Before that, committed on local `main`, not pushed or released** (2026-10-17):
 
