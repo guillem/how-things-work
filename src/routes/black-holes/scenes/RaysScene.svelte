@@ -28,7 +28,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		B_CRIT,
 		circularL,
@@ -440,9 +440,25 @@
 	const rayColor = (f: Fate) => (f === 'captured' ? 'var(--bh-captured)' : 'var(--bh-light)');
 </script>
 
-{#snippet row(y: number, label: string, value: string, color?: string)}
-	<Label anchor="start" x={CX + 16} {y} text={label} size={12.5} muted />
-	<Label x={CX + CW - 16} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+{#snippet row(
+	y: number,
+	label: string,
+	value: string,
+	color?: string,
+	o: { note?: string; hide?: boolean } = {}
+)}
+	<!-- on phones: a row of the panel under the stage, or left out to keep the panel short -->
+	<Readout
+		id="row-{label}"
+		order={y}
+		label={o.hide ? undefined : label}
+		{value}
+		note={o.note}
+		{color}
+	>
+		<Label anchor="start" x={CX + 16} {y} text={label} size={12.5} muted />
+		<Label x={CX + CW - 16} {y} text={value} size={13.5} anchor="end" weight={650} {color} />
+	</Readout>
 {/snippet}
 
 <g>
@@ -657,87 +673,121 @@
 	<g opacity={fade.current}>
 		{#if 2 * S > 30}
 			<!-- on the dark hole itself: no halo -->
-			<text
-				x={cx}
-				y={cy + 4}
-				text-anchor="middle"
-				font-size="12"
-				style:fill="var(--bh-on-hole)"
-				style:pointer-events="none">horizon</text
-			>
+			<Readout id="hole" order={50} label="Horizon" marker={1} at={[cx, cy]}>
+				<text
+					x={cx}
+					y={cy + 4}
+					text-anchor="middle"
+					font-size="12"
+					style:fill="var(--bh-on-hole)"
+					style:pointer-events="none">horizon</text
+				>
+			</Readout>
 		{:else}
-			<Label
-				x={cx}
-				y={cy + 2 * S + 18}
-				text={phase === 'weak' ? 'a compact mass' : 'black hole'}
-				size={12}
-				anchor="middle"
-				muted
-			/>
+			<Readout
+				id="hole-small"
+				order={50}
+				label={phase === 'weak' ? 'A compact mass' : 'Black hole'}
+				marker={1}
+				at={[cx, cy + 2 * S + 14]}
+			>
+				<Label
+					x={cx}
+					y={cy + 2 * S + 18}
+					text={phase === 'weak' ? 'a compact mass' : 'black hole'}
+					size={12}
+					anchor="middle"
+					muted
+				/>
+			</Readout>
 		{/if}
 		{#if phase === 'light' || phase === 'sphere'}
-			<Label
-				x={cx}
-				y={cy + 3 * S + 16}
-				text="photon sphere 1.5 rₛ"
-				size={11.5}
+			<Readout
+				id="sphere"
+				order={51}
+				label="Photon sphere, 1.5 rₛ"
 				color="var(--bh-sphere)"
-				weight={600}
-				anchor="middle"
-			/>
+				marker={2}
+				at={[cx, cy + 3 * S + 12]}
+			>
+				<Label
+					x={cx}
+					y={cy + 3 * S + 16}
+					text="photon sphere 1.5 rₛ"
+					size={11.5}
+					color="var(--bh-sphere)"
+					weight={600}
+					anchor="middle"
+				/>
+			</Readout>
 		{/if}
 		{#if phase === 'light'}
-			<Label
-				anchor="start"
-				x={PX0 + 12}
-				y={cy - B_CRIT * S - 8}
-				text="aim inside this band: captured"
-				size={11.5}
+			<Readout
+				id="band"
+				order={52}
+				label="Shaded band, 2.6 rₛ either side: captured"
 				color="var(--bh-captured)"
-				weight={600}
-			/>
-			<Label
-				anchor="start"
-				x={PX0 + 12}
-				y={cy + B_CRIT * S + 18}
-				text="2.6 rₛ either side"
-				size={11.5}
-				color="var(--bh-captured)"
-			/>
+			>
+				<Label
+					anchor="start"
+					x={PX0 + 12}
+					y={cy - B_CRIT * S - 8}
+					text="aim inside this band: captured"
+					size={11.5}
+					color="var(--bh-captured)"
+					weight={600}
+				/>
+				<Label
+					anchor="start"
+					x={PX0 + 12}
+					y={cy + B_CRIT * S + 18}
+					text="2.6 rₛ either side"
+					size={11.5}
+					color="var(--bh-captured)"
+				/>
+			</Readout>
 		{/if}
 		{#if weakGeo}
-			<Label
-				anchor="start"
-				x={PX0 + 12}
-				y={weakGeo.Y0 - 8}
-				text="the straight path"
-				size={11.5}
-				muted
-			/>
-			{#if arrived}
+			<Readout id="straight" order={52} label="Dashed: the straight path" color="var(--bh-newton)">
 				<Label
-					x={Math.min(PX1 - 12, weakGeo.ex - 6)}
-					y={Math.min(PY1 - 10, weakGeo.ey + 24)}
-					text="bent {(bendAngle * DEG).toFixed(1)}°"
-					size={13}
-					weight={700}
-					anchor="end"
-					color="var(--bh-light)"
+					anchor="start"
+					x={PX0 + 12}
+					y={weakGeo.Y0 - 8}
+					text="the straight path"
+					size={11.5}
+					muted
 				/>
+			</Readout>
+			{#if arrived}
+				<Readout id="bent">
+					<Label
+						x={Math.min(PX1 - 12, weakGeo.ex - 6)}
+						y={Math.min(PY1 - 10, weakGeo.ey + 24)}
+						text="bent {(bendAngle * DEG).toFixed(1)}°"
+						size={13}
+						weight={700}
+						anchor="end"
+						color="var(--bh-light)"
+					/>
+				</Readout>
 			{/if}
 		{/if}
 		{#if flash && lamp}
-			<Label anchor="start" x={lamp.X + 12} y={lamp.Y + 16} text="lamp" size={12} weight={600} />
+			<Readout id="lamp" order={53} label="Lamp" marker={3} at={[lamp.X + 30, lamp.Y + 12]}>
+				<Label anchor="start" x={lamp.X + 12} y={lamp.Y + 16} text="lamp" size={12} weight={600} />
+			</Readout>
 			{#if flash.cone > 0.002}
-				<Label
-					x={lamp.X}
-					y={Math.max(PY0 + 16, lamp.Y - 72)}
-					text="escape cone"
-					size={11.5}
-					anchor="middle"
-					color="var(--bh-light)"
-					weight={600}
-				/>
+				<Readout id="cone" order={54} label="Escape cone" color="var(--bh-light)">
+					<Label
+						x={lamp.X}
+						y={Math.max(PY0 + 16, lamp.Y - 72)}
+						text="escape cone"
+						size={11.5}
+						anchor="middle"
+						color="var(--bh-light)"
+						weight={600}
+					/>
+				</Readout>
 			{/if}
 		{/if}
 	</g>
@@ -745,63 +795,91 @@
 	<!-- ---- readout cards ---- -->
 	{#if phase === 'weak' && current}
 		<Card x={CX} y={PY0} w={CW} h={196} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 28}
-			text="Light passing a mass"
-			size={15}
-			weight={700}
-		/>
+		<Readout id="title-weak">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 28}
+				text="Light passing a mass"
+				size={15}
+				weight={700}
+			/>
+		</Readout>
 		{@render row(PY0 + 60, 'Passes at', `${bendB.toFixed(1)} rₛ`)}
 		{@render row(PY0 + 88, 'Bend (traced)', `${(bendAngle * DEG).toFixed(2)}°`, 'var(--bh-light)')}
-		{@render row(PY0 + 116, 'Einstein’s 4GM/(c²b)', `${((2 / bendB) * DEG).toFixed(2)}°`)}
-		{@render row(PY0 + 144, 'Light as a bullet', `${((1 / bendB) * DEG).toFixed(2)}°`)}
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 176}
-			text="Close in, the real bend grows faster."
-			size={12}
-			muted
-		/>
+		{@render row(
+			PY0 + 116,
+			'Einstein’s 4GM/(c²b)',
+			`${((2 / bendB) * DEG).toFixed(2)}°`,
+			undefined,
+			{
+				note: `as a bullet: ${((1 / bendB) * DEG).toFixed(2)}°`
+			}
+		)}
+		{@render row(PY0 + 144, 'Light as a bullet', `${((1 / bendB) * DEG).toFixed(2)}°`, undefined, {
+			hide: true
+		})}
+		<Readout id="note-weak">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 176}
+				text="Close in, the real bend grows faster."
+				size={12}
+				muted
+			/>
+		</Readout>
 		<Card x={CX} y={PY0 + 212} w={CW} h={112} />
-		<Label anchor="start" x={CX + 16} y={PY0 + 240} text="The Sun, 1919" size={14} weight={700} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 262}
-			text="Grazing its edge (236 000 rₛ):"
-			size={12.5}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 284}
-			text="predicted 1.75″, measured 1.98″ ± 0.12″"
-			size={12.5}
-			weight={600}
-		/>
-		<Label anchor="start" x={CX + 16} y={PY0 + 306} text="as a bullet: 0.88″" size={12.5} muted />
+		<Readout
+			id="sun"
+			order={PY0 + 240}
+			label="The Sun, 1919"
+			value="measured 1.98″ ± 0.12″"
+			note="grazing its edge (236 000 rₛ): predicted 1.75″, as a bullet 0.88″"
+		>
+			<Label anchor="start" x={CX + 16} y={PY0 + 240} text="The Sun, 1919" size={14} weight={700} />
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 262}
+				text="Grazing its edge (236 000 rₛ):"
+				size={12.5}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 284}
+				text="predicted 1.75″, measured 1.98″ ± 0.12″"
+				size={12.5}
+				weight={600}
+			/>
+			<Label anchor="start" x={CX + 16} y={PY0 + 306} text="as a bullet: 0.88″" size={12.5} muted />
+		</Readout>
 	{:else if (phase === 'light' || phase === 'sphere') && current}
 		<Card x={CX} y={PY0} w={CW} h={phase === 'sphere' ? 196 : 170} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 28}
-			text={phase === 'sphere' ? 'Near the knife edge' : 'Your light ray'}
-			size={15}
-			weight={700}
-		/>
+		<Readout id="title-light">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 28}
+				text={phase === 'sphere' ? 'Near the knife edge' : 'Your light ray'}
+				size={15}
+				weight={700}
+			/>
+		</Readout>
 		{@render row(
 			PY0 + 60,
 			'Aim',
-			`${(current.b / 2).toFixed(phase === 'sphere' ? Math.min(11, aimDigits + 1) : 2)} rₛ`
+			`${(current.b / 2).toFixed(phase === 'sphere' ? Math.min(11, aimDigits + 1) : 2)} rₛ`,
+			undefined,
+			{ note: phase === 'sphere' ? 'critical: 2.598 076 211… rₛ' : undefined }
 		)}
 		{@render row(
 			PY0 + 88,
 			'Closest to the centre',
-			current.fate === 'captured' ? 'crosses the horizon' : `${(current.rmin / 2).toFixed(2)} rₛ`
+			current.fate === 'captured' ? 'crosses the horizon' : `${(current.rmin / 2).toFixed(2)} rₛ`,
+			undefined,
+			{ hide: phase === 'sphere' }
 		)}
 		{#if phase === 'sphere'}
 			{@render row(PY0 + 116, 'Times round the hole', loops.toFixed(1))}
@@ -815,75 +893,97 @@
 						: 'still circling',
 				rayColor(current.fate)
 			)}
-			<Label
-				anchor="start"
-				x={CX + 16}
-				y={PY0 + 176}
-				text="Critical aim: 2.598 076 211… rₛ"
-				size={12}
-				muted
-			/>
+			<Readout id="note-sphere">
+				<Label
+					anchor="start"
+					x={CX + 16}
+					y={PY0 + 176}
+					text="Critical aim: 2.598 076 211… rₛ"
+					size={12}
+					muted
+				/>
+			</Readout>
 		{:else}
 			{@render row(PY0 + 116, 'Fate', fateText(current), rayColor(current.fate))}
+			<Readout id="note-light">
+				<Label
+					anchor="start"
+					x={CX + 16}
+					y={PY0 + 150}
+					text="Captured if aimed inside 2.6 rₛ"
+					size={12}
+					muted
+				/>
+			</Readout>
+		{/if}
+		<Card x={CX} y={PY1 - 124} w={CW} h={124} />
+		<Readout
+			id="rs"
+			order={PY1 - 98}
+			label="Distances in rₛ = 2GM/c²"
+			value="the radius of the horizon"
+			note="3 km for the Sun’s mass, 9 mm for the Earth’s, 12 million km for Sgr A*"
+		>
 			<Label
 				anchor="start"
 				x={CX + 16}
-				y={PY0 + 150}
-				text="Captured if aimed inside 2.6 rₛ"
-				size={12}
+				y={PY1 - 98}
+				text="Distances in rₛ = 2GM/c²,"
+				size={12.5}
+				weight={600}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 78}
+				text="the radius of the horizon:"
+				size={12.5}
+				weight={600}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 56}
+				text="3 km for the Sun’s mass"
+				size={12.5}
 				muted
 			/>
-		{/if}
-		<Card x={CX} y={PY1 - 124} w={CW} h={124} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 98}
-			text="Distances in rₛ = 2GM/c²,"
-			size={12.5}
-			weight={600}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 78}
-			text="the radius of the horizon:"
-			size={12.5}
-			weight={600}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 56}
-			text="3 km for the Sun’s mass"
-			size={12.5}
-			muted
-		/>
-		<Label anchor="start" x={CX + 16} y={PY1 - 36} text="9 mm for the Earth’s" size={12.5} muted />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 16}
-			text="12 million km for Sgr A*"
-			size={12.5}
-			muted
-		/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 36}
+				text="9 mm for the Earth’s"
+				size={12.5}
+				muted
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 16}
+				text="12 million km for Sgr A*"
+				size={12.5}
+				muted
+			/>
+		</Readout>
 	{:else if flash}
 		<Card x={CX} y={PY0} w={CW} h={170} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 28}
-			text="A lamp held still"
-			size={15}
-			weight={700}
-		/>
+		<Readout id="title-flash">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 28}
+				text="A lamp held still"
+				size={15}
+				weight={700}
+			/>
+		</Readout>
 		{@render row(PY0 + 60, 'Height', `${lampR.toFixed(2)} rₛ`)}
 		{@render row(
 			PY0 + 88,
 			'Light that escapes',
 			`${(skyShare * 100).toFixed(0)}%`,
-			'var(--bh-light)'
+			'var(--bh-light)',
+			{ note: 'half at 1.5 rₛ, none at 1 rₛ' }
 		)}
 		{@render row(
 			PY0 + 116,
@@ -891,63 +991,90 @@
 			`${(100 - Number((skyShare * 100).toFixed(0))).toFixed(0)}%`,
 			'var(--bh-captured)'
 		)}
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 150}
-			text="Half the sky at 1.5 rₛ; none at 1 rₛ"
-			size={12}
-			muted
-		/>
+		<Readout id="note-flash">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 150}
+				text="Half the sky at 1.5 rₛ; none at 1 rₛ"
+				size={12}
+				muted
+			/>
+		</Readout>
 		<Card x={CX} y={PY1 - 116} w={CW} h={116} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 90}
-			text="Inside the horizon"
-			size={13.5}
-			weight={700}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 68}
-			text="every direction, even light’s,"
-			size={12.5}
-		/>
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 48}
-			text="leads further in. There is no"
-			size={12.5}
-		/>
-		<Label anchor="start" x={CX + 16} y={PY1 - 28} text="way out to aim for." size={12.5} />
+		<Readout
+			id="inside"
+			order={PY1 - 90}
+			label="Inside the horizon"
+			value="every direction, even light’s, leads further in"
+			note="there is no way out to aim for"
+		>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 90}
+				text="Inside the horizon"
+				size={13.5}
+				weight={700}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 68}
+				text="every direction, even light’s,"
+				size={12.5}
+			/>
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 48}
+				text="leads further in. There is no"
+				size={12.5}
+			/>
+			<Label anchor="start" x={CX + 16} y={PY1 - 28} text="way out to aim for." size={12.5} />
+		</Readout>
 	{:else if probeRun}
 		<Card x={CX} y={PY0} w={CW} h={phase === 'isco' ? 170 : 226} />
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY0 + 28}
-			text={phase === 'isco' ? 'A circular orbit, nudged' : 'Your probe'}
-			size={15}
-			weight={700}
-		/>
+		<Readout id="title-probe">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY0 + 28}
+				text={phase === 'isco' ? 'A circular orbit, nudged' : 'Your probe'}
+				size={15}
+				weight={700}
+			/>
+		</Readout>
 		{#if phase === 'probe'}
 			{@render row(PY0 + 60, 'Launched at', `${probeR.toFixed(1)} rₛ`)}
 			{@render row(
 				PY0 + 88,
 				'Real path',
 				probeFate,
-				probeRun.pr.fate === 'captured' ? 'var(--bh-captured)' : 'var(--bh-probe)'
+				probeRun.pr.fate === 'captured' ? 'var(--bh-captured)' : 'var(--bh-probe)',
+				{
+					note: `closest: ${probeRun.pr.fate === 'captured' ? 'the horizon' : `${(probeRun.rmin / 2).toFixed(2)} rₛ`}`
+				}
 			)}
-			{@render row(PY0 + 116, 'Newton’s path', newtonFate)}
+			{@render row(PY0 + 116, 'Newton’s path', newtonFate, undefined, {
+				note: `closest: ${(probeRun.nPeri / 2).toFixed(2)} rₛ`
+			})}
 			{@render row(
 				PY0 + 144,
 				'Closest (real)',
-				probeRun.pr.fate === 'captured' ? 'the horizon' : `${(probeRun.rmin / 2).toFixed(2)} rₛ`
+				probeRun.pr.fate === 'captured' ? 'the horizon' : `${(probeRun.rmin / 2).toFixed(2)} rₛ`,
+				undefined,
+				{ hide: true }
 			)}
-			{@render row(PY0 + 172, 'Closest (Newton)', `${(probeRun.nPeri / 2).toFixed(2)} rₛ`)}
+			{@render row(
+				PY0 + 172,
+				'Closest (Newton)',
+				`${(probeRun.nPeri / 2).toFixed(2)} rₛ`,
+				undefined,
+				{
+					hide: true
+				}
+			)}
 			{@render row(
 				PY0 + 200,
 				'Closest point turns',
@@ -956,37 +1083,42 @@
 		{:else}
 			{@render row(PY0 + 60, 'Radius', `${iscoR.toFixed(2)} rₛ`)}
 			{@render row(PY0 + 88, 'Speed', '0.3% below a circle')}
-			{@render row(
-				PY0 + 116,
-				'Result',
-				probeFate,
-				probeRun.pr.fate === 'captured' ? 'var(--bh-captured)' : 'var(--bh-isco)'
-			)}
-			<Label
-				anchor="start"
-				x={CX + 16}
-				y={PY0 + 150}
-				text={iscoR < 3
+			{@const verdict =
+				iscoR < 3
 					? 'Inside 3 rₛ: no nudge is small enough'
 					: probeRun.pr.fate === 'captured'
 						? 'Just outside 3 rₛ: needs a gentler nudge'
 						: 'Outside 3 rₛ: stable'}
-				size={12}
-				muted
-			/>
+			{@render row(
+				PY0 + 116,
+				'Result',
+				probeFate,
+				probeRun.pr.fate === 'captured' ? 'var(--bh-captured)' : 'var(--bh-isco)',
+				{ note: verdict.charAt(0).toLowerCase() + verdict.slice(1) }
+			)}
+			<Readout id="verdict">
+				<Label anchor="start" x={CX + 16} y={PY0 + 150} text={verdict} size={12} muted />
+			</Readout>
 		{/if}
 		<Card x={CX} y={PY1 - 140} w={CW} h={140} />
 		{#snippet key(y: number, color: string, dash: string, text: string, muted = false)}
-			<line
-				x1={CX + 16}
-				x2={CX + 44}
-				y1={y - 4}
-				y2={y - 4}
-				stroke={color}
-				stroke-width={dash ? 1.6 : 2.4}
-				stroke-dasharray={dash}
-			/>
-			<Label anchor="start" x={CX + 54} {y} {text} size={12.5} {muted} />
+			<Readout
+				id="key-{text}"
+				order={100 + y}
+				label={text.charAt(0).toUpperCase() + text.slice(1)}
+				{color}
+			>
+				<line
+					x1={CX + 16}
+					x2={CX + 44}
+					y1={y - 4}
+					y2={y - 4}
+					stroke={color}
+					stroke-width={dash ? 1.6 : 2.4}
+					stroke-dasharray={dash}
+				/>
+				<Label anchor="start" x={CX + 54} {y} {text} size={12.5} {muted} />
+			</Readout>
 		{/snippet}
 		{@render key(PY1 - 112, 'var(--bh-probe)', '', 'the real path')}
 		{#if phase === 'probe'}
@@ -1004,13 +1136,15 @@
 			'3 4',
 			'photon sphere, 1.5 rₛ'
 		)}
-		<Label
-			anchor="start"
-			x={CX + 16}
-			y={PY1 - 18}
-			text="Paced by the probe’s own clock"
-			size={12}
-			muted
-		/>
+		<Readout id="paced">
+			<Label
+				anchor="start"
+				x={CX + 16}
+				y={PY1 - 18}
+				text="Paced by the probe’s own clock"
+				size={12}
+				muted
+			/>
+		</Readout>
 	{/if}
 </g>

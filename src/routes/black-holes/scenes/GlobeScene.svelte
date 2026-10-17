@@ -9,7 +9,7 @@
 	 * Under reduced motion the frame shows them most of the way up.
 	 */
 	import { clamp, cycle, Label, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import Card from './Card.svelte';
 
 	let { t, reduced }: StageProps = $props();
@@ -172,26 +172,39 @@
 		marker-start="url(#arrowhead)"
 		opacity="0.7"
 	/>
-	<Label x={FCX} y={FY0 - 18} text="On a flat sheet" size={15} weight={700} anchor="middle" />
-	<Label
-		anchor="start"
-		x={fb.X + 14}
-		y={flatY + 4}
-		text="{Math.round(KM_APART).toLocaleString('en').replace(/,/g, ' ')} km"
-		size={12.5}
-		weight={600}
-	/>
-	<Label
-		x={FCX}
-		y={fy0 + 26}
-		text="start: both head straight up (north)"
-		size={12}
-		muted
-		anchor="middle"
-	/>
+	<Readout id="flat" order={10} label="On a flat sheet" marker={1} at={[FCX, FY0 - 24]}>
+		<Label x={FCX} y={FY0 - 18} text="On a flat sheet" size={15} weight={700} anchor="middle" />
+	</Readout>
+	<Readout
+		id="flat-gap"
+		order={1}
+		label="Apart on the flat sheet"
+		value="{Math.round(KM_APART).toLocaleString('en').replace(/,/g, ' ')} km"
+	>
+		<Label
+			anchor="start"
+			x={fb.X + 14}
+			y={flatY + 4}
+			text="{Math.round(KM_APART).toLocaleString('en').replace(/,/g, ' ')} km"
+			size={12.5}
+			weight={600}
+		/>
+	</Readout>
+	<Readout id="start">
+		<Label
+			x={FCX}
+			y={fy0 + 26}
+			text="start: both head straight up (north)"
+			size={12}
+			muted
+			anchor="middle"
+		/>
+	</Readout>
 
 	<!-- ---- globe ---- -->
-	<Label x={GX} y={FY0 - 18} text="On a globe" size={15} weight={700} anchor="middle" />
+	<Readout id="globe" order={11} label="On a globe" marker={2} at={[GX, FY0 - 24]}>
+		<Label x={GX} y={FY0 - 18} text="On a globe" size={15} weight={700} anchor="middle" />
+	</Readout>
 	<circle
 		cx={GX}
 		cy={GY}
@@ -208,8 +221,17 @@
 	{/each}
 	<path d={equator} fill="none" stroke="var(--stage-ink)" stroke-width="1.4" opacity="0.7" />
 	<circle cx={pole.X} cy={pole.Y} r="3.5" fill="var(--stage-ink)" />
-	<Label anchor="start" x={pole.X + 12} y={pole.Y + 4} text="North Pole" size={12} muted />
-	<Label anchor="start" x={GX - GR + 6} y={project(0, -80).Y + 24} text="equator" size={12} muted />
+	<Readout id="globe-names">
+		<Label anchor="start" x={pole.X + 12} y={pole.Y + 4} text="North Pole" size={12} muted />
+		<Label
+			anchor="start"
+			x={GX - GR + 6}
+			y={project(0, -80).Y + 24}
+			text="equator"
+			size={12}
+			muted
+		/>
+	</Readout>
 
 	{#each [LON0, LON1] as lon (lon)}
 		<path
@@ -240,42 +262,65 @@
 			stroke-width="1"
 			opacity={Math.min(0.7, (b.X - a.X - 18) / 20)}
 		/>
-		<Label
-			anchor="start"
-			x={b.X + 14}
-			y={b.Y + 4}
-			text="{Math.round(gapGlobe).toLocaleString('en').replace(/,/g, ' ')} km"
-			size={12.5}
-			weight={600}
-		/>
+		<Readout
+			id="globe-gap"
+			order={2}
+			label="Apart on the globe"
+			value="{Math.round(gapGlobe).toLocaleString('en').replace(/,/g, ' ')} km"
+		>
+			<Label
+				anchor="start"
+				x={b.X + 14}
+				y={b.Y + 4}
+				text="{Math.round(gapGlobe).toLocaleString('en').replace(/,/g, ' ')} km"
+				size={12.5}
+				weight={600}
+			/>
+		</Readout>
 	{/if}
 	{#if met || reduced}
-		<Label
-			x={pole.X}
-			y={pole.Y - 16}
-			text="they meet here"
-			size={13}
-			weight={700}
-			anchor="middle"
+		<Readout
+			id="met"
+			order={3}
+			label="On the globe"
+			value="they meet at the North Pole"
 			opacity={reduced ? 1 : fadeMeet}
-		/>
+		>
+			<Label
+				x={pole.X}
+				y={pole.Y - 16}
+				text="they meet here"
+				size={13}
+				weight={700}
+				anchor="middle"
+				opacity={reduced ? 1 : fadeMeet}
+			/>
+		</Readout>
 	{/if}
 
 	<!-- ---- the point ---- -->
 	<Card x={150} y={524} w={660} h={60} />
-	<Label
-		x={480}
-		y={548}
-		text="Neither traveller ever turns. On the globe they meet anyway:"
-		size={13.5}
-		weight={600}
-		anchor="middle"
-	/>
-	<Label
-		x={480}
-		y={570}
-		text="no force pulls them together — the surface is curved."
-		size={13.5}
-		anchor="middle"
-	/>
+	<Readout
+		id="point"
+		order={4}
+		label="Neither traveller ever turns"
+		value="no force pulls them together"
+		note="the surface is curved"
+	>
+		<Label
+			x={480}
+			y={548}
+			text="Neither traveller ever turns. On the globe they meet anyway:"
+			size={13.5}
+			weight={600}
+			anchor="middle"
+		/>
+		<Label
+			x={480}
+			y={570}
+			text="no force pulls them together — the surface is curved."
+			size={13.5}
+			anchor="middle"
+		/>
+	</Readout>
 </g>
