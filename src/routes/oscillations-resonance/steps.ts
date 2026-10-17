@@ -129,7 +129,7 @@ export const spec: ExplainerSpec = {
 			scene: 'driven',
 			hints: { phase: 'push' },
 			duration: 30,
-			controls: [pushFreq, damping],
+			controls: [pushFreq, damping, stiffness],
 			body: `
 <p>Now give the spring a small, regular push, like pushing a child on a swing. Push slowly (well below its natural frequency) and the mass just follows your hand. Push very fast and it barely moves: it can't keep up.</p>
 <p>Push at its <strong>natural frequency</strong> and each push arrives just as the mass is moving with it, adding a little more energy every time. The swing grows and grows until friction takes away as much energy per swing as the pushes put in. This is <dfn data-def="The build-up of a large oscillation when something is pushed at its natural frequency.">resonance</dfn>.</p>`
@@ -141,9 +141,9 @@ export const spec: ExplainerSpec = {
 			scene: 'driven',
 			hints: { phase: 'curve' },
 			duration: 30,
-			controls: [pushFreq, damping],
+			controls: [pushFreq, damping, stiffness],
 			body: `
-<p>Plot how big the swing finally gets against the push frequency and you get, with light friction, a sharp peak close to the natural frequency. Less friction makes the peak taller and narrower; more friction flattens it and slides it lower, and with enough friction there is no peak at all: the swing only shrinks as the push gets faster.</p>
+<p>Plot how big the swing finally gets against the push frequency and you get, with light friction, a sharp peak close to the natural frequency. Each push frequency you try leaves a dot at the swing the simulation settles to: try a few and they trace the curve. Less friction makes the peak taller and narrower; more friction flattens it and slides it lower, and with enough friction there is no peak at all: the swing only shrinks as the push gets faster. A stiffer spring moves the whole peak to a higher frequency, with its natural frequency.</p>
 <p><strong>Every oscillator has a natural frequency, and pushing it at that frequency makes the motion build up.</strong> That is how a singer can shatter a wine glass, how a radio picks one station out of many, why soldiers break step on bridges — and why engineers add damping to tall buildings, so that wind and earthquakes pushing at their natural frequency can't build up a large sway.</p>`,
 			notes: `<p>The steady swing for a push F₀ at frequency f is F₀ ÷ √((k − m ω²)² + (c ω)²), with ω = 2πf; at the natural frequency the first term vanishes and only friction limits it. The very top of the curve sits slightly lower, at f₀·√(1 − 2ζ²), where ζ = c ÷ (2√(km)) is the damping ratio; once ζ passes 1/√2 (about 0.71) the peak is gone. London's Millennium Bridge swayed sideways on its opening day in 2000: as walkers adjusted their steps to the wobble, they fed it energy at its natural frequency. It closed, and dampers were fitted.</p>`
 		}

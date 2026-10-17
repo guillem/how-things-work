@@ -82,11 +82,14 @@ test('resonance: the steady amplitude peaks near the natural frequency', () => {
 	expect(steadyAmplitude({ ...DEFAULT_SPRING, c: 0.1 }, drive(1))).toBeCloseTo(3 * at(1), 6);
 });
 
-test('the simulation settles to the predicted amplitude', () => {
-	for (const f of [0.6, 1, 1.5]) {
-		const m = springMotion(DEFAULT_SPRING, 0, 0, 60, { F0: 1, f }, S);
-		const tail = m.x.slice(m.x.length - Math.round(5 / S));
-		const amp = Math.max(...tail.map(Math.abs));
-		expect(amp / steadyAmplitude(DEFAULT_SPRING, { F0: 1, f })).toBeCloseTo(1, 2);
-	}
+test('the simulation settles to the predicted amplitude, for any spring the page offers', () => {
+	// the resonance-curve step's dots are the simulated swings; the curve is the formula
+	for (const k of [10, DEFAULT_SPRING.k, 160])
+		for (const f of [0.6, 1, 1.5]) {
+			const spring = { ...DEFAULT_SPRING, k };
+			const m = springMotion(spring, 0, 0, 60, { F0: 1, f }, S);
+			const tail = m.x.slice(m.x.length - Math.round(5 / S));
+			const amp = Math.max(...tail.map(Math.abs));
+			expect(amp / steadyAmplitude(spring, { F0: 1, f })).toBeCloseTo(1, 2);
+		}
 });
