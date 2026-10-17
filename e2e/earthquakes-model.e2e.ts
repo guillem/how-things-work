@@ -28,7 +28,10 @@ import {
 
 // The published ak135 travel-time tables for an earthquake at the surface (Kennett 1997,
 // "AK135 travel time tables", http://rses.anu.edu.au/seismology/ak135/intro.html, pages 2 and 4
-// of the body-wave tables and page 3 of the core phases). Seconds.
+// of the body-wave tables and page 3 of the core phases). Seconds. The PKPab row (the branch
+// through the outer core, the only one beyond about 155°, and the "core" arrival the station
+// step lists) is from TauP in ObsPy 1.5.1 with its ak135 model, as the core-phase page is a
+// scanned image; TauP gives the other rows within 0.02 s of the printed tables.
 const TABLE = [
 	{ kind: 'P', dist: 30, time: 6 * 60 + 10.27 },
 	{ kind: 'S', dist: 30, time: 11 * 60 + 9.14 },
@@ -37,7 +40,8 @@ const TABLE = [
 	{ kind: 'P', dist: 90, time: 13 * 60 + 1.4 },
 	{ kind: 'S', dist: 90, time: 23 * 60 + 55.44 },
 	{ kind: 'PKIKP', dist: 150, time: 19 * 60 + 47.48 },
-	{ kind: 'PKIKP', dist: 180, time: 20 * 60 + 12.53 }
+	{ kind: 'PKIKP', dist: 180, time: 20 * 60 + 12.53 },
+	{ kind: 'PKP', dist: 170, time: 21 * 60 + 24.62 }
 ] as const;
 
 test('rays traced through ak135 arrive when the published ak135 tables say', () => {
