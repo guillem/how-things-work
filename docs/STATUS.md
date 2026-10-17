@@ -51,9 +51,11 @@ Last updated: 2026-10-17 04:15 UTC.
   (`src/lib/progress.svelte.ts`); the index shows Done / Continue / Start on each card.
 - Index search and filters (`src/routes/+page.svelte`): a search box ("/" focuses it) and
   Area (catalogue category) and Level toggles, multi-select within a group, combined across
-  groups; state in the query string (`?q=&area=physics,biology&level=1`). The prerendered page
-  still lists everything; the options come from the built topics, so new categories and levels
-  appear by themselves (see BACKLOG for what adding a level needs).
+  groups; state in the query string (`?q=&area=physics,biology&level=1`). From 1,100 px wide they
+  sit in a sticky sidebar with the progress counts (the index is 1,360 px wide so three card
+  columns still fit); below that, a compact bar whose Area and Level buttons open the options,
+  and the counts show once something is started. The prerendered page still lists everything;
+  the options come from the built topics, so new categories and levels appear by themselves.
 - Local testing: other work runs on this machine, so ports can clash (4173 is taken). The test
   server uses `PW_PORT` (default 4180). In a worktree, clone `node_modules` (`cp -cR`) rather
   than symlinking it, or svelte-check checks the other checkout's types.

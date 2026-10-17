@@ -150,3 +150,21 @@ test(
 		await expect(page).toHaveURL(/\/how-things-work\/$/);
 	}
 );
+
+test('on a phone the filters fold into Area and Level buttons', async ({ page }) => {
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto('./');
+	const area = page.getByRole('group', { name: 'Area' });
+	const physics = area.getByRole('button', { name: /^Physics/ });
+	await expect(physics).toBeHidden();
+	const toggle = page.getByRole('button', { name: 'Area', exact: true });
+	await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+	await toggle.click();
+	await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+	await physics.click();
+	await expect(page.getByRole('region', { name: 'Biology' })).toHaveCount(0);
+	// The button keeps saying how many areas are chosen once it is closed again.
+	await page.getByRole('button', { name: /^Area/ }).click();
+	await expect(physics).toBeHidden();
+	await expect(page.getByRole('button', { name: /^Area/ })).toHaveAccessibleName('Area, 1 chosen');
+});

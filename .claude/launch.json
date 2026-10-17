@@ -9,6 +9,12 @@
 				"BASE_PATH=/how-things-work npm run build && node scripts/serve-pages.mjs build /how-things-work 4181"
 			],
 			"port": 4181
+		},
+		{
+			"name": "dev",
+			"runtimeExecutable": "npx",
+			"runtimeArgs": ["vite", "dev", "--port", "5290", "--strictPort"],
+			"port": 5290
 		}
 	]
 }
