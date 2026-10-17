@@ -41,7 +41,7 @@ function sqrt(a: Cx): Cx {
 export const DEG = Math.PI / 180;
 
 /** The Joukowski map of the ζ plane onto the section's plane. */
-export const joukowskiMap = (s: Cx): Cx => add(s, div([1, 0], s));
+const joukowskiMap = (s: Cx): Cx => add(s, div([1, 0], s));
 
 export interface Section {
 	/** Circle centre −mx + i·my and radius a in the ζ plane. */
@@ -160,10 +160,10 @@ export const zeroLiftAngle = (sec: Section) => -sec.beta - sec.chordDir;
 
 /** z plane → wind coordinates (free stream along +x) and back. */
 export const toWind = (f: Flow, z: Cx): Cx => mul(z, cis(-f.streamDir));
-export const fromWind = (f: Flow, w: Cx): Cx => mul(w, cis(f.streamDir));
+const fromWind = (f: Flow, w: Cx): Cx => mul(w, cis(f.streamDir));
 
 /** The point of the ζ plane outside the circle that maps to z. */
-export function inverse(f: Flow, z: Cx): Cx {
+function inverse(f: Flow, z: Cx): Cx {
 	const r = sqrt(sub(mul(z, z), [4, 0]));
 	const s1 = mul([0.5, 0], add(z, r));
 	const s2 = mul([0.5, 0], sub(z, r));
@@ -183,7 +183,7 @@ function wZeta(f: Flow, s: Cx): Cx {
 }
 
 /** Velocity (u, v) of the air at a point given in the ζ plane, in wind coordinates. */
-export function velocityAtZeta(f: Flow, s: Cx): Cx {
+function velocityAtZeta(f: Flow, s: Cx): Cx {
 	const J = sub([1, 0], div([1, 0], mul(s, s)));
 	const w = div(wZeta(f, s), J);
 	return toWind(f, [w[0], -w[1]]);
@@ -193,7 +193,7 @@ export function velocityAtZeta(f: Flow, s: Cx): Cx {
 export const velocity = (f: Flow, w: Cx): Cx => velocityAtZeta(f, inverse(f, fromWind(f, w)));
 
 /** Pressure coefficient Cp = (p − p∞)/(½ρU²) = 1 − (V/U)² (Bernoulli). */
-export function pressureAtZeta(f: Flow, s: Cx) {
+function pressureAtZeta(f: Flow, s: Cx) {
 	const v = velocityAtZeta(f, s);
 	return 1 - (v[0] * v[0] + v[1] * v[1]);
 }
@@ -421,7 +421,7 @@ export function pressureCells(
 export const THIN_SLOPE = 2 * Math.PI;
 
 /** Slope of the mean line of a NACA four-digit section (max camber m at chord fraction p). */
-export function naca4Slope(m: number, p: number, x: number) {
+function naca4Slope(m: number, p: number, x: number) {
 	return x < p ? ((2 * m) / (p * p)) * (p - x) : ((2 * m) / ((1 - p) * (1 - p))) * (p - x);
 }
 

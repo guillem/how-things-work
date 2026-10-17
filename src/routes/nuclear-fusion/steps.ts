@@ -28,12 +28,12 @@ const sup = (n: number) =>
 		.map((c) => '⁰¹²³⁴⁵⁶⁷⁸⁹'['0123456789'.indexOf(c)] ?? (c === '-' ? '⁻' : c))
 		.join('');
 /** 10^x written as "2.5 × 10²⁰". */
-export const fmtPow = (x: number) => {
+const fmtPow = (x: number) => {
 	const e = Math.floor(x + 1e-9);
 	const m = 10 ** (x - e);
 	return m < 1.05 ? `10${sup(e)}` : `${m.toFixed(1)} × 10${sup(e)}`;
 };
-export const fmtSeconds = (s: number) =>
+const fmtSeconds = (s: number) =>
 	s >= 1 ? `${s < 9.95 ? s.toFixed(1) : Math.round(s)} s` : `${Math.round(s * 1000)} ms`;
 
 /** Fuel density, as log₁₀ of ions per cubic metre. */

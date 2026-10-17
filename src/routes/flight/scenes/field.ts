@@ -34,9 +34,10 @@ export const POST_STALL = (() => {
 })();
 
 /** Streamline offsets ψ − ψ(surface): a close pair, then evenly spaced lines. */
-export const OFFSETS = [0.12, ...Array.from({ length: 7 }, (_, j) => 0.4 + 0.36 * j)].flatMap(
-	(d) => [d, -d]
-);
+const OFFSETS = [0.12, ...Array.from({ length: 7 }, (_, j) => 0.4 + 0.36 * j)].flatMap((d) => [
+	d,
+	-d
+]);
 
 export interface Field {
 	sec: Section;

@@ -44,20 +44,20 @@ export const PLANCK = {
 
 /** CMB temperature today, K (Fixsen 2009). */
 export const T0 = 2.7255;
-export const N_EFF = 3.046;
+const N_EFF = 3.046;
 
 const MPC_KM = 3.085677581491367e19;
 /** Seconds in a gigayear (Julian years). */
 export const GYR_S = 3.15576e16;
 /** Light years in a megaparsec. */
-export const LY_PER_MPC = 3.261563777e6;
+const LY_PER_MPC = 3.261563777e6;
 const G = 6.6743e-11; // m³ kg⁻¹ s⁻²
 const SIGMA_SB = 5.670374419e-8; // W m⁻² K⁻⁴
 const C_MS = 299792458;
 /** Electron rest energy over Boltzmann's constant, K (0.51099895 MeV / 8.617333262e-11 MeV/K). */
 const ME_K = 0.51099895 / 8.617333262e-11;
 /** Boltzmann's constant, MeV per kelvin. */
-export const K_MEV = 8.617333262e-11;
+const K_MEV = 8.617333262e-11;
 
 /** H0 in 1/s and in 1/Gyr. */
 const H0_S = PLANCK.H0 / MPC_KM;
@@ -71,11 +71,11 @@ export const OMEGA_GAMMA = (() => {
 	return rhoGamma / rhoCrit;
 })();
 /** Neutrinos today (massless): N_eff × 7/8 × (4/11)^{4/3} of the photons. */
-export const OMEGA_NU = OMEGA_GAMMA * N_EFF * (7 / 8) * (4 / 11) ** (4 / 3);
+const OMEGA_NU = OMEGA_GAMMA * N_EFF * (7 / 8) * (4 / 11) ** (4 / 3);
 export const OMEGA_R = OMEGA_GAMMA + OMEGA_NU;
 export const OMEGA_M = PLANCK.omegaM;
 /** Flat: dark energy takes what matter and radiation leave. */
-export const OMEGA_L = 1 - OMEGA_M - OMEGA_R;
+const OMEGA_L = 1 - OMEGA_M - OMEGA_R;
 
 // ------------------------------------------------------------------ the first seconds: e± pairs
 
@@ -169,7 +169,7 @@ export function temperature(a: number) {
 // ------------------------------------------------------------------ the Friedmann equation
 
 /** E(a) = H(a)/H0. */
-export const hubbleRatio = (a: number) => Math.sqrt(radiation(a) + OMEGA_M * a ** -3 + OMEGA_L);
+const hubbleRatio = (a: number) => Math.sqrt(radiation(a) + OMEGA_M * a ** -3 + OMEGA_L);
 /** Hubble parameter at scale factor a, km/s per megaparsec. */
 export const hubble = (a: number) => PLANCK.H0 * hubbleRatio(a);
 /** Hubble parameter in 1/Gyr: the fractional growth of distances per billion years. */
@@ -265,7 +265,7 @@ export const T_ACC = (() => {
 
 /** Redshift of light emitted at scale factor a and seen today. */
 export const redshiftOf = (a: number) => 1 / a - 1;
-export const scaleOfRedshift = (z: number) => 1 / (1 + z);
+const scaleOfRedshift = (z: number) => 1 / (1 + z);
 
 /**
  * Comoving distance today to light emitted at scale factor a: ∫ c da / (a² H), Gly, integrated
@@ -322,19 +322,19 @@ export const recession = (d: number, a: number) => hubblePerGyr(a) * d;
 // ------------------------------------------------------------------ the first three minutes
 
 /** Neutron minus proton rest energy, MeV. */
-export const Q_NP = 1.29333236;
+const Q_NP = 1.29333236;
 /** Neutron lifetime, s (Particle Data Group 2024: 878.4 ± 0.5 s). */
-export const TAU_N = 878.4;
+const TAU_N = 878.4;
 /**
  * Textbook temperatures (standard textbook estimates): weak
  * reactions stop turning protons and neutrons into each other at kT ≈ 0.8 MeV; deuterium
  * survives, and nearly every neutron ends up in helium, below kT ≈ 0.07 MeV.
  */
-export const KT_FREEZE = 0.8;
-export const KT_NUC = 0.07;
+const KT_FREEZE = 0.8;
+const KT_NUC = 0.07;
 
 /** Cosmic time when the photon temperature is T (K), seconds. */
-export function timeAtTemperature(T: number) {
+function timeAtTemperature(T: number) {
 	// temperature(a) falls monotonically: bisect in ln a.
 	let lo = Math.log(1e-12);
 	let hi = Math.log(1e-3);
@@ -349,7 +349,7 @@ export function timeAtTemperature(T: number) {
 export const T_FREEZE_S = timeAtTemperature(KT_FREEZE / K_MEV);
 export const T_NUC_S = timeAtTemperature(KT_NUC / K_MEV);
 /** Neutrons per proton when the weak reactions stop: the Boltzmann factor e^(−Q/kT). */
-export const NP_FREEZE = Math.exp(-Q_NP / KT_FREEZE);
+const NP_FREEZE = Math.exp(-Q_NP / KT_FREEZE);
 
 /**
  * Neutrons per proton (free and bound) at time t, s: in balance with the temperature before the
@@ -404,7 +404,7 @@ export const BALMER = [
 // ------------------------------------------------------------------ recombination
 
 /** Physical baryon density today, Ω_b h² (Planck 2018 VI, table 2, same column). */
-export const OMEGA_B_H2 = 0.02237;
+const OMEGA_B_H2 = 0.02237;
 const M_E = 9.1093837015e-31; // electron mass, kg (CODATA 2018)
 const K_B = 1.380649e-23; // Boltzmann's constant, J/K (exact)
 const H_PLANCK = 6.62607015e-34; // J s (exact)

@@ -19,11 +19,11 @@ import { blackBody, cssColour, exposureFor, response } from '../vision-color/col
 
 /** Nominal solar values (IAU 2015 Resolution B3). */
 export const L_SUN = 3.828e26; // W
-export const R_SUN = 6.957e8; // m
+const R_SUN = 6.957e8; // m
 export const T_SUN = 5772; // K
-export const M_SUN = 1.98841e30; // kg
+const M_SUN = 1.98841e30; // kg
 export const C = 299_792_458; // m/s
-export const YEAR = 3.15576e7; // s (Julian year)
+const YEAR = 3.15576e7; // s (Julian year)
 /** Age of the Sun (Bouvier & Wadhwa 2010) and of the universe (Planck 2018), years. */
 export const SUN_AGE = 4.57e9;
 export const UNIVERSE_AGE = 13.8e9;
@@ -58,7 +58,7 @@ export interface Track {
 	phase: readonly number[];
 }
 
-export const tracks: readonly Track[] = TRACKS;
+const tracks: readonly Track[] = TRACKS;
 export const TRACK_MASSES = tracks.map((t) => t.initial);
 
 export function track(mass: number): Track {
@@ -74,7 +74,7 @@ export const STAGE = stages;
 export const lastIndex = (t: Track) => t.age.length - 1;
 
 /** One moment of a track, at a fractional row index (linear between rows). */
-export interface Moment {
+interface Moment {
 	index: number;
 	age: number;
 	M: number;
@@ -142,8 +142,8 @@ export function atAge(t: Track, age: number): Moment {
 
 // ------------------------------------------------------------------ what is burning
 
-export type Fuel = 'H' | 'He' | 'C';
-export interface Burning {
+type Fuel = 'H' | 'He' | 'C';
+interface Burning {
 	/** What the centre is fusing, if anything. */
 	core: Fuel | null;
 	/** Hydrogen burning in a shell round a helium core. */
@@ -196,7 +196,7 @@ export function stageName(t: Track, m: Moment): string {
 
 // ------------------------------------------------------------------ fates
 
-export type Fate = 'not-yet' | 'white-dwarf' | 'neutron-star' | 'black-hole';
+type Fate = 'not-yet' | 'white-dwarf' | 'neutron-star' | 'black-hole';
 
 /**
  * How a star of this initial mass ends, for a single star of solar composition. Below about
@@ -232,7 +232,7 @@ export const BURNING_STAGES = [
 
 // ------------------------------------------------------------------ the main sequence
 
-export interface GridPoint {
+interface GridPoint {
 	mass: number;
 	/** [age (yr), log L, log Teff, log R] at the zero-age and terminal-age main sequence. */
 	zams: readonly [number, number, number, number];
@@ -323,7 +323,7 @@ export const SOURCE_NAMES: Record<Source, string> = {
 	mergers: 'merging neutron stars'
 };
 
-export interface Origin {
+interface Origin {
 	z: number;
 	symbol: string;
 	synthetic: boolean;

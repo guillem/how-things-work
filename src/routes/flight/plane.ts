@@ -24,10 +24,10 @@
  */
 import { naca4ZeroLift } from './aero.ts';
 
-export const G0 = 9.80665;
-export const LB = 0.45359237;
+const G0 = 9.80665;
+const LB = 0.45359237;
 export const FT = 0.3048;
-export const NM = 1852;
+const NM = 1852;
 export const KT = NM / 3600;
 
 // ---- standard atmosphere ---------------------------------------------------------------
@@ -83,7 +83,7 @@ export const clNeeded = (rho: number, v: number, load = WEIGHT) =>
 export const CL_MAX = clNeeded(RHO0, C172.stallKcas * KT);
 
 /** True airspeed (m/s) for a calibrated (≈ equivalent) airspeed at height h. */
-export const trueFromCalibrated = (vc: number, h: number) => vc * Math.sqrt(RHO0 / density(h));
+const trueFromCalibrated = (vc: number, h: number) => vc * Math.sqrt(RHO0 / density(h));
 export const calibratedFromTrue = (v: number, h: number) => v * Math.sqrt(density(h) / RHO0);
 
 /** True stall speed (m/s) at height h. */
@@ -130,7 +130,7 @@ export const angleFor = (cl: number) => ALPHA_L0 + cl / WING_SLOPE;
 
 // ---- steady flight -------------------------------------------------------------------
 
-export interface FlightState {
+interface FlightState {
 	/** Lift coefficient needed, and whether that is beyond the stall. */
 	cl: number;
 	stalled: boolean;

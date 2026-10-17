@@ -54,7 +54,7 @@ export function nearest(x: number, y: number) {
 }
 
 /** The film: cosmic time (Gyr) swept back and forth between 3 and 20 Gyr, starting at today. */
-export const FILM = { from: 3, to: 20, period: 34 };
+const FILM = { from: 3, to: 20, period: 34 };
 export function filmTime(t: number, today: number) {
 	const span = FILM.to - FILM.from;
 	const u0 = (today - FILM.from) / span; // where today sits, going forward

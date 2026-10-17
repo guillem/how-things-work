@@ -16,7 +16,7 @@ export interface Box {
 
 /** Hot end and cool end of the temperature axis (log₁₀ K), and the luminosity range (log₁₀ L☉). */
 export const LOG_T: [number, number] = [5.0, 3.38];
-export const LOG_L: [number, number] = [-5, 6.4];
+const LOG_L: [number, number] = [-5, 6.4];
 
 export function hrScales(b: Box): { sx: Scale; sy: Scale } {
 	return {
@@ -29,7 +29,7 @@ export const T_TICKS = [50000, 30000, 10000, 5000, 3000];
 export const L_TICKS = [-4, -2, 0, 2, 4, 6];
 export const fmtT = (T: number) => `${T.toLocaleString('en-US')} K`;
 export const fmtL = (lg: number) => (lg === 0 ? '1' : `10${sup(lg)}`);
-export function sup(n: number): string {
+function sup(n: number): string {
 	return String(n)
 		.split('')
 		.map((c) => (c === '-' ? '⁻' : '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(c)]))

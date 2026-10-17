@@ -28,7 +28,7 @@ export interface State {
 	im: Float64Array;
 }
 
-export const cx = (re: number, im = 0): C => ({ re, im });
+const cx = (re: number, im = 0): C => ({ re, im });
 const S2 = Math.SQRT1_2;
 
 // ---- states -----------------------------------------------------------------------------
@@ -41,10 +41,10 @@ export function basis(n: number, k = 0): State {
 	return { n, re, im };
 }
 
-export const copy = (s: State): State => ({ n: s.n, re: s.re.slice(), im: s.im.slice() });
+const copy = (s: State): State => ({ n: s.n, re: s.re.slice(), im: s.im.slice() });
 
 /** A state from its amplitudes, e.g. fromAmplitudes([cx(S2), cx(S2)]). */
-export function fromAmplitudes(a: C[]): State {
+function fromAmplitudes(a: C[]): State {
 	const n = Math.round(Math.log2(a.length));
 	const s = basis(n);
 	a.forEach((z, k) => {
@@ -115,7 +115,7 @@ export function rotation(axis: readonly [number, number, number], a: number): Ma
 }
 
 /** Ry(a): turns the Bloch vector by a about the y axis (|0⟩ towards |+⟩ for a = 90°). */
-export const ry = (a: number) => rotation([0, 1, 0], a);
+const ry = (a: number) => rotation([0, 1, 0], a);
 
 /**
  * Each named gate as a turn of the Bloch sphere: G = e^{iγ} R_axis(angle). The overall phase
@@ -154,7 +154,7 @@ export function apply(s: State, g: Matrix, q: number): State {
 }
 
 /** A gate on every qubit (H on all of them makes the uniform superposition). */
-export function applyAll(s: State, g: Matrix) {
+function applyAll(s: State, g: Matrix) {
 	let out = s;
 	for (let q = 0; q < s.n; q++) out = apply(out, g, q);
 	return out;

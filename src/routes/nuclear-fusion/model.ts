@@ -23,19 +23,19 @@ import { nuclides, type NuclideName } from './binding';
 // ---- constants (CODATA 2018) ------------------------------------------------------------
 
 /** Joules per keV. */
-export const KEV = 1.602176634e-16;
+const KEV = 1.602176634e-16;
 /** Kelvin per keV of temperature (1 keV / k_B). */
 export const KELVIN_PER_KEV = 1.160451812e7;
 /** keV per atomic mass unit (u c²). */
-export const U_KEV = 931494.10242;
+const U_KEV = 931494.10242;
 /** Kilograms per atomic mass unit. */
-export const U_KG = 1.6605390666e-27;
+const U_KG = 1.6605390666e-27;
 /** Fine-structure constant. */
-export const ALPHA = 7.2973525693e-3;
+const ALPHA = 7.2973525693e-3;
 /** e²/4πε₀ in keV·fm: the Coulomb energy of two unit charges 1 fm apart. */
-export const COULOMB_KEV_FM = 1439.96448;
+const COULOMB_KEV_FM = 1439.96448;
 /** Nuclear radius R = R0 · A^⅓, in fm (the usual textbook value). */
-export const R0_FM = 1.2;
+const R0_FM = 1.2;
 
 export const kelvin = (tKeV: number) => tKeV * KELVIN_PER_KEV;
 
@@ -50,7 +50,7 @@ export const atomicMass = (name: NuclideName) =>
  * masses, electrons cancel for charge-conserving reactions, and beta-minus electrons are
  * absorbed into the daughter atoms' masses (electron binding energies neglected).
  */
-export function qValue(reactants: NuclideName[], products: NuclideName[]): number {
+function qValue(reactants: NuclideName[], products: NuclideName[]): number {
 	const sum = (list: NuclideName[]) => list.reduce((s, n) => s + nuclides[n].massExcess, 0);
 	return sum(reactants) - sum(products);
 }
@@ -77,11 +77,11 @@ export const Q_FISSION_PROMPT = qValue(['n', 'U-235'], ['Ba-141', 'Kr-92', 'n', 
  * How the energy of a two-body reaction at rest is shared: momentum is conserved, so the
  * lighter product takes the larger share, in inverse proportion to the masses.
  */
-export function shares(q: number, m1: number, m2: number): [number, number] {
+function shares(q: number, m1: number, m2: number): [number, number] {
 	return [(q * m2) / (m1 + m2), (q * m1) / (m1 + m2)];
 }
 /** [alpha, neutron] energies of D–T fusion, keV. */
-export const DT_SPLIT = shares(Q_DT, atomicMass('He-4'), atomicMass('n'));
+const DT_SPLIT = shares(Q_DT, atomicMass('He-4'), atomicMass('n'));
 export const E_ALPHA = DT_SPLIT[0];
 export const E_NEUTRON = DT_SPLIT[1];
 
@@ -89,7 +89,7 @@ export const E_NEUTRON = DT_SPLIT[1];
 export const DT_MASS_FRACTION = Q_DT / U_KEV / (atomicMass('H-2') + atomicMass('H-3'));
 
 /** Standard enthalpy of combustion of methane, 890.6 kJ/mol (NIST), over its molar mass. */
-export const METHANE_J_PER_KG = 890.6e3 / 16.043e-3;
+const METHANE_J_PER_KG = 890.6e3 / 16.043e-3;
 
 /** Energy released per kilogram of fuel, J/kg. */
 export const energyPerKg = {
@@ -100,13 +100,13 @@ export const energyPerKg = {
 
 // ---- the Coulomb barrier and tunnelling --------------------------------------------------
 
-export interface Pair {
+interface Pair {
 	z1: number;
 	z2: number;
 	a1: number;
 	a2: number;
 }
-export const DT_PAIR: Pair = { z1: 1, z2: 1, a1: 2, a2: 3 };
+const DT_PAIR: Pair = { z1: 1, z2: 1, a1: 2, a2: 3 };
 
 /** Distance at which the two nuclei touch, fm. */
 export const touching = (p: Pair = DT_PAIR) => R0_FM * (Math.cbrt(p.a1) + Math.cbrt(p.a2));
@@ -118,7 +118,7 @@ export const barrier = (p: Pair = DT_PAIR) => coulomb(touching(p), p);
 export const classicalTemperature = (p: Pair = DT_PAIR) => barrier(p) / 1.5;
 
 /** Reduced mass of D and T, as energy (keV). */
-export const MR_DT =
+const MR_DT =
 	(atomicMass('H-2') * atomicMass('H-3') * U_KEV) / (atomicMass('H-2') + atomicMass('H-3'));
 /** Gamow energy E_G = 2 m_r c² (π α Z₁Z₂)², keV. */
 export const gamowEnergy = (mr = MR_DT, z1z2 = 1) => 2 * mr * (Math.PI * ALPHA * z1z2) ** 2;
@@ -170,7 +170,7 @@ export function crossSectionDT(e: number): number {
 	return mb * 1e-31; // millibarn → m²
 }
 
-export type Reaction = 'DT' | 'DDn' | 'DDp' | 'DHe3';
+type Reaction = 'DT' | 'DDn' | 'DDp' | 'DHe3';
 interface Coefs {
 	bg: number;
 	mrc2: number;
@@ -239,7 +239,7 @@ export function reactivityFromCrossSection(tKeV: number): number {
  * Bremsstrahlung: P = 1.69 × 10⁻³² n_e² √T_e Z_eff W/cm³ with n in cm⁻³ and T in eV (NRL
  * Plasma Formulary). In SI with T in keV: C_B n² √T, C_B ≈ 5.34 × 10⁻³⁷ W m³ keV^-½.
  */
-export const C_BREMS = 1.69e-32 * 1e-12 * 1e6 * Math.sqrt(1000);
+const C_BREMS = 1.69e-32 * 1e-12 * 1e6 * Math.sqrt(1000);
 
 export interface Plasma {
 	/** Ion temperature = electron temperature, keV. */
@@ -250,7 +250,7 @@ export interface Plasma {
 	tau: number;
 }
 
-export interface Powers {
+interface Powers {
 	/** Total fusion power, W/m³ (a fifth in alphas, four-fifths in neutrons). */
 	fusion: number;
 	/** Alpha heating: the part of the fusion power that stays in the plasma. */
@@ -267,7 +267,7 @@ export interface Powers {
 	energy: number;
 }
 
-export const thermalEnergy = (n: number, t: number) => 3 * n * t * KEV;
+const thermalEnergy = (n: number, t: number) => 3 * n * t * KEV;
 
 export function powers({ t, n, tau }: Plasma): Powers {
 	const rate = (n * n * reactivity(t)) / 4;
@@ -293,7 +293,7 @@ export function powers({ t, n, tau }: Plasma): Powers {
  * Q in steady state: n τ_E = 3T / (⟨σv⟩(E_fus/Q + E_α)/4 − C_B √T). Q = Infinity gives the
  * ignition (Lawson) condition. Infinity when no n τ_E is enough.
  */
-export function nTauFor(tKeV: number, q = Infinity): number {
+function nTauFor(tKeV: number, q = Infinity): number {
 	const sv = reactivity(tKeV);
 	const gain = (sv * (Q_DT / q + E_ALPHA) * KEV) / 4 - C_BREMS * Math.sqrt(tKeV);
 	return gain > 0 ? (3 * tKeV * KEV) / gain : Infinity;
@@ -344,14 +344,14 @@ export function idealIgnitionTemperature(): number {
 
 // ---- the plasma through time ------------------------------------------------------------
 
-export interface Sample {
+interface Sample {
 	/** Time since the heating was switched off, s. */
 	time: number;
 	t: number;
 	fusion: number;
 }
 
-export interface Run {
+interface Run {
 	samples: Sample[];
 	/** What happened once the heating was off. */
 	outcome: 'ignites' | 'cools' | 'steady';

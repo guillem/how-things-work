@@ -13,10 +13,10 @@
  * plot and checked against the simulation in the tests.
  */
 
-export const G = 9.81;
+const G = 9.81;
 const TAU = 2 * Math.PI;
 
-export interface Spring {
+interface Spring {
 	/** Mass (kg). */
 	m: number;
 	/** Stiffness (N/m). */
@@ -25,7 +25,7 @@ export interface Spring {
 	c: number;
 }
 
-export interface Drive {
+interface Drive {
 	/** Push amplitude (N). */
 	F0: number;
 	/** Push frequency (Hz). */
@@ -64,7 +64,7 @@ export function phaseLag({ m, k, c }: Spring, f: number) {
 	return Math.atan2(c * w, k - m * w * w);
 }
 
-export interface Motion {
+interface Motion {
 	t: Float64Array;
 	x: Float64Array;
 	v: Float64Array;
