@@ -72,7 +72,7 @@
 	);
 
 	// ---- the chart
-	const CX0 = 110;
+	const CX0 = 130;
 	const CX1 = 900;
 	const CY0 = 380;
 	const CY1 = 520;
