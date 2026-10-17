@@ -98,7 +98,10 @@ black-holes, homeostasis (desktop pixel-identical, 148 shots): all 100 topics no
 readouts. Outside data: atoms-periodic-table says "no such nucleus has ever been made" outside
 NUBASE2020's known isotopes (licence unconfirmed: the file states none); embeddings' 8-bit
 storage moves similarities by at most 0.0034 (GloVe fixture, tests only); earthquakes' PKPab
-row from TauP ak135 and the three Nepal stations on the summary slice.
+row from TauP ak135 and the three Nepal stations on the summary slice. diffusion-models: no retrain needed (the shipped runs
+hold the finished digits); `mnist-nearest.ts` (tests only) stores each digit's distance to its
+nearest training digit, and a test backs the page's "generated, not copied" note (mean 8.48 vs
+8.57 for test digits); `train.mjs` loads again (it lost `mulberry32` in the rng refactor).
 
 **Before that, committed on local `main`, not pushed or released** (2026-10-17):
 
