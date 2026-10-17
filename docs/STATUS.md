@@ -79,7 +79,10 @@ earthquakes ak135); diffusion-models retrain; knip cleanup. Left for the user: d
 the modelling choices (BACKLOG). If interrupted: `git worktree list` shows unmerged packages.
 Merged so far: framework (`disabled` on controls; deep-time's slider follows play and keeps the
 played age; atmosphere-weather's `frontAt` in the model; note: the model's fronts form rings
-around the low, not the textbook wave shape).
+around the low, not the textbook wave shape)); extras bio/AI (the-cell counts from free space, was 19% high in the
+cytoplasm; dna-to-protein "Letters copied" slider; respiration-atp yeast and E. coli split;
+convolution-vision's editable map builds up). Open question for the user: the-cell's small
+molecules (ATP, ions) still count from the whole box.
 
 **Before that, committed on local `main`, not pushed or released** (2026-10-17):
 
