@@ -1482,6 +1482,47 @@ test.describe('on a phone', () => {
 	});
 });
 
+// The shared chart frame (<Axes>): on a phone its tick labels and axis titles
+// are drawn at a real ~10 px, and only as many tick labels as fit side by side.
+test.describe('chart axes on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+
+	const boxes = (page: Page, selector: string) =>
+		drawing(page)
+			.locator(selector)
+			.evaluateAll((els) =>
+				els.map((e) => {
+					const r = e.getBoundingClientRect();
+					return { text: e.textContent?.trim() ?? '', x: r.x, y: r.y, w: r.width, h: r.height };
+				})
+			);
+
+	for (const [url, dense] of [
+		['./turing-machines/#explosion', '33'], // 12 y ticks on a short axis
+		['./wireless-signals/#ber', '35'] // 9 x ticks on a narrow chart
+	] as const) {
+		test(`${url}: tick labels are readable and don't overlap`, async ({ page }) => {
+			await page.goto(url);
+			const ticks = drawing(page).locator('text.tick');
+			await expect(ticks.first()).toBeVisible();
+			const labels = await boxes(page, 'text.tick, text.axis-title');
+			const tickCount = await ticks.count();
+			expect(tickCount).toBeGreaterThanOrEqual(5);
+			for (const l of labels) expect(l.h, l.text).toBeGreaterThanOrEqual(9);
+			for (let i = 0; i < labels.length; i++) {
+				for (let j = i + 1; j < labels.length; j++) {
+					const [a, b] = [labels[i], labels[j]];
+					const apart =
+						a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
+					expect(apart, `"${a.text}" overlaps "${b.text}"`).toBe(true);
+				}
+			}
+			// Some of the dense axis's labels made way.
+			expect(labels.map((l) => l.text)).not.toContain(dense);
+		});
+	}
+});
+
 test.describe('on a wide screen', () => {
 	test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
 
