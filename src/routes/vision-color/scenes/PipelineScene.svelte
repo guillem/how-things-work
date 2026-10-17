@@ -60,7 +60,7 @@
 		},
 		{
 			id: 'rg',
-			title: 'red or green: L against M',
+			title: 'red or green: L + a little S against M',
 			left: 'green',
 			right: 'red',
 			value: op.redGreen,
@@ -90,6 +90,7 @@
 		{ k: 1, row: 0, sign: '+' },
 		{ k: 0, row: 1, sign: '+' },
 		{ k: 1, row: 1, sign: '−' },
+		{ k: 2, row: 1, sign: '+' },
 		{ k: 2, row: 2, sign: '+' },
 		{ k: 0, row: 2, sign: '−' },
 		{ k: 1, row: 2, sign: '−' }
@@ -99,8 +100,9 @@
 	const ARRIVE: Record<string, number> = {
 		'0-0': -7,
 		'1-0': 7,
-		'0-1': -7,
-		'1-1': 7,
+		'0-1': -9,
+		'1-1': 0,
+		'2-1': 9,
 		'2-2': 9,
 		'0-2': -9,
 		'1-2': 0
