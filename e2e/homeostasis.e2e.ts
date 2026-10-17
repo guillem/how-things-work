@@ -46,3 +46,31 @@ test('settings suggested on one step do not carry into the next', async ({ page 
 	await page.goto('./homeostasis/#dosing');
 	await expect(stage(page)).toContainText('meal: 75 g');
 });
+
+// Phone readouts (<Readout>): on screens ≤ 640 px the readouts leave the drawing and are
+// listed as text under the stage (see e2e/phone-readouts.e2e.ts).
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+	const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+	const drawing = (page: Page) => page.locator('.stage svg');
+
+	test('the glucose and the verdict are text under the stage and follow the dose', async ({
+		page
+	}) => {
+		await page.goto('./homeostasis/#dosing');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Glucose, .*\d+ mg\/dL/);
+		await expect(panel).toContainText(/Result\s*Lowest \d+, highest \d+ mg\/dL\s*very high/);
+		await expect(drawing(page)).not.toContainText('very high');
+		await page.locator('input[type=range][data-control=dose]').fill('20');
+		await expect(panel).toContainText('level 2 hypoglycaemia: dangerous');
+	});
+
+	test('the body diagram keeps its organs as numbered badges', async ({ page }) => {
+		await page.goto('./homeostasis/#fuel');
+		const panel = readouts(page);
+		await expect(panel).toContainText('Liver: stores, releases');
+		await expect(panel).toContainText(/Glucose in the blood\s*90 mg\/dL/);
+		await expect(drawing(page)).not.toContainText('liver: stores');
+	});
+});

@@ -24,7 +24,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Label, along, cycle, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 
 	let { step, t, reduced }: StageProps = $props();
 
@@ -235,19 +235,39 @@
 	{/each}
 
 	<!-- readout in the middle of the loop -->
-	<Label x={CX} y={CY - 18} text="glucose in the blood" size={13} weight={600} />
-	<text
-		x={CX}
-		y={CY + 16}
-		text-anchor="middle"
-		font-size="28"
-		font-weight="600"
-		style:fill="var(--hm-glucose)"
-		>{Math.round(glucose)}<tspan font-size="14" dx="5" font-weight="500">mg/dL</tspan></text
+	<Readout
+		id="glucose"
+		order={1}
+		label="Glucose in the blood"
+		value="{Math.round(glucose)} mg/dL"
+		note="{(glucose / 18).toFixed(1)} mmol/L · {zoneText}"
+		color="var(--hm-glucose)"
 	>
-	<text x={CX} y={CY + 38} text-anchor="middle" font-size="12" class="muted"
-		>{(glucose / 18).toFixed(1)} mmol/L · {zoneText}</text
-	>
+		{#snippet narrow()}
+			<!-- on phones the number stays in the loop, large -->
+			<text
+				x={CX}
+				y={CY + 16}
+				text-anchor="middle"
+				font-size="44"
+				font-weight="600"
+				style:fill="var(--hm-glucose)">{Math.round(glucose)}</text
+			>
+		{/snippet}
+		<Label x={CX} y={CY - 18} text="glucose in the blood" size={13} weight={600} />
+		<text
+			x={CX}
+			y={CY + 16}
+			text-anchor="middle"
+			font-size="28"
+			font-weight="600"
+			style:fill="var(--hm-glucose)"
+			>{Math.round(glucose)}<tspan font-size="14" dx="5" font-weight="500">mg/dL</tspan></text
+		>
+		<text x={CX} y={CY + 38} text-anchor="middle" font-size="12" class="muted"
+			>{(glucose / 18).toFixed(1)} mmol/L · {zoneText}</text
+		>
+	</Readout>
 
 	<!-- glucose pipes -->
 	{#each pipeDots as p (p.id)}
@@ -292,7 +312,9 @@
 			stroke-linecap="round"
 		/>
 	</g>
-	<Label x={150} y={100} text="gut: glucose from food" size={13} weight={600} />
+	<Readout id="gut" order={10} label="Gut: food" marker={1} at={[150, 96]}>
+		<Label x={150} y={100} text="gut: glucose from food" size={13} weight={600} />
+	</Readout>
 
 	<!-- liver -->
 	<g transform="translate(150 430)">
@@ -302,7 +324,9 @@
 			opacity="0.85"
 		/>
 	</g>
-	<Label x={150} y={494} text="liver: stores and releases glucose" size={13} weight={600} />
+	<Readout id="liver" order={11} label="Liver: stores, releases" marker={2} at={[150, 490]}>
+		<Label x={150} y={494} text="liver: stores and releases glucose" size={13} weight={600} />
+	</Readout>
 
 	<!-- brain -->
 	<g transform="translate(810 160)">
@@ -315,7 +339,9 @@
 			opacity="0.7"
 		/>
 	</g>
-	<Label x={810} y={222} text="brain: needs glucose all the time" size={13} weight={600} />
+	<Readout id="brain" order={12} label="Brain: always needs it" marker={3} at={[810, 218]}>
+		<Label x={810} y={222} text="brain: needs glucose all the time" size={13} weight={600} />
+	</Readout>
 
 	<!-- muscle and fat -->
 	<g transform="translate(810 420)">
@@ -332,7 +358,9 @@
 			/>
 		{/each}
 	</g>
-	<Label x={810} y={480} text="muscle and fat cells" size={13} weight={600} />
+	<Readout id="muscle" order={13} label="Muscle and fat" marker={4} at={[810, 476]}>
+		<Label x={810} y={480} text="muscle and fat cells" size={13} weight={600} />
+	</Readout>
 
 	<!-- pancreas and its islet -->
 	<g opacity={dimPancreas}>
@@ -344,7 +372,9 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-dasharray="3 4"
 		/>
-		<Label x={CX + 8} y={CY + RY + 44} text="measures glucose" size={11} anchor="start" muted />
+		<Readout id="measures">
+			<Label x={CX + 8} y={CY + RY + 44} text="measures glucose" size={11} anchor="start" muted />
+		</Readout>
 		<path
 			d="M392 524 C 410 500, 520 494, 580 506 C 600 512, 600 538, 576 542 C 520 548, 420 552, 396 544 C 384 540, 384 532, 392 524 Z"
 			fill="var(--hm-pancreas)"
@@ -354,13 +384,21 @@
 		<circle cx={CX - 6} cy={517} r={5 + 2 * lw * insulin} fill="var(--hm-insulin)" />
 		<circle cx={CX + 7} cy={519} r="4.5" fill="var(--hm-insulin)" />
 		<circle cx={CX} cy={530} r={4.5 + 2 * lw * glucagon} fill="var(--hm-glucagon)" />
-		<Label
-			x={CX}
-			y={578}
-			text="pancreas: an islet with β-cells (insulin) and α-cells (glucagon)"
-			size={12}
-			weight={600}
-		/>
+		<Readout
+			id="pancreas"
+			order={14}
+			label="Pancreas: β-cells insulin, α-cells glucagon"
+			marker={5}
+			at={[CX + 140, 568]}
+		>
+			<Label
+				x={CX}
+				y={578}
+				text="pancreas: an islet with β-cells (insulin) and α-cells (glucagon)"
+				size={12}
+				weight={600}
+			/>
+		</Readout>
 	</g>
 
 	<!-- hormone routes (loop view) -->
@@ -389,42 +427,72 @@
 
 		<!-- captions: what happens in each half -->
 		<g opacity={lw}>
-			<rect
-				x={250}
-				y={18}
-				width={460}
-				height={64}
-				rx="10"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			<text x={268} y={44} font-size="13" opacity={capA}
-				><tspan font-weight="600" style:fill="var(--hm-glucose)">After a meal:</tspan> glucose rises
-				→ β-cells release <tspan font-weight="600" style:fill="var(--hm-insulin)">insulin</tspan> → cells
-				take glucose in</text
+			<Readout id="captions-card">
+				<rect
+					x={250}
+					y={18}
+					width={460}
+					height={64}
+					rx="10"
+					fill="var(--surface)"
+					stroke="var(--border)"
+				/>
+			</Readout>
+			<Readout
+				id="after-meal"
+				order={2}
+				label="After a meal"
+				value="glucose rises → insulin → cells take glucose in"
+				color="var(--hm-insulin)"
+				opacity={lw * capA}
 			>
-			<text x={268} y={68} font-size="13" opacity={capB}
-				><tspan font-weight="600" style:fill="var(--hm-glucose)">Between meals:</tspan> glucose
-				falls → α-cells release
-				<tspan font-weight="600" style:fill="var(--hm-glucagon)">glucagon</tspan> → liver releases glucose</text
+				<text x={268} y={44} font-size="13" opacity={capA}
+					><tspan font-weight="600" style:fill="var(--hm-glucose)">After a meal:</tspan> glucose
+					rises → β-cells release
+					<tspan font-weight="600" style:fill="var(--hm-insulin)">insulin</tspan> → cells take glucose
+					in</text
+				>
+			</Readout>
+			<Readout
+				id="between-meals"
+				order={3}
+				label="Between meals"
+				value="glucose falls → glucagon → the liver releases glucose"
+				color="var(--hm-glucagon)"
+				opacity={lw * capB}
 			>
+				<text x={268} y={68} font-size="13" opacity={capB}
+					><tspan font-weight="600" style:fill="var(--hm-glucose)">Between meals:</tspan> glucose
+					falls → α-cells release
+					<tspan font-weight="600" style:fill="var(--hm-glucagon)">glucagon</tspan> → liver releases glucose</text
+				>
+			</Readout>
 		</g>
 	{:else}
 		<g opacity={1 - lw}>
-			<Label
-				x={CX}
-				y={44}
-				text="Supply (gut, liver) and demand (brain, muscles) balance:"
-				size={14}
-				weight={600}
-			/>
-			<Label
-				x={CX}
-				y={66}
-				text="the level stays steady between about 70 and 100 mg/dL after a night's fast"
-				size={13}
-				muted
-			/>
+			<Readout
+				id="balance"
+				order={2}
+				label="Supply and demand balance"
+				value="steady at about 70–100 mg/dL after a night's fast"
+				note="supply: gut, liver · demand: brain, muscles"
+				opacity={1 - lw}
+			>
+				<Label
+					x={CX}
+					y={44}
+					text="Supply (gut, liver) and demand (brain, muscles) balance:"
+					size={14}
+					weight={600}
+				/>
+				<Label
+					x={CX}
+					y={66}
+					text="the level stays steady between about 70 and 100 mg/dL after a night's fast"
+					size={13}
+					muted
+				/>
+			</Readout>
 		</g>
 	{/if}
 </g>

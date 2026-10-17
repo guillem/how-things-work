@@ -10,7 +10,7 @@
 	 * Reduced motion freezes the pulses at t = 2.5 s, partway round each loop.
 	 */
 	import { Label, along, cycle, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 
 	let { t }: StageProps = $props();
 
@@ -23,6 +23,8 @@
 		broken: number;
 		note?: string;
 		lines: { head: string; text: string }[];
+		/** The card's point in one line, for the phone panel. */
+		phone: string;
 	}
 	const cards: Card[] = [
 		{
@@ -36,6 +38,7 @@
 			],
 			broken: -1,
 			note: 'set point raised',
+			phone: 'fever: the brain raises the set point on purpose',
 			lines: [
 				{ head: 'Fever:', text: 'the brain raises the set point on purpose.' },
 				{ head: '', text: 'The loop works; its target has moved.' },
@@ -52,6 +55,7 @@
 				['effector', 'kidneys keep water']
 			],
 			broken: 0,
+			phone: 'diabetes insipidus: too little ADH',
 			lines: [
 				{ head: 'Diabetes insipidus:', text: 'too little ADH is' },
 				{ head: '', text: 'released (or the kidneys ignore it). Litres' },
@@ -68,6 +72,7 @@
 				['effector', 'thyroid gland']
 			],
 			broken: 1,
+			phone: 'hypothyroidism: the gland fails, TSH rises',
 			lines: [
 				{ head: 'Hypothyroidism:', text: 'the gland fails, often' },
 				{ head: '', text: 'attacked by the immune system. TSH rises,' },
@@ -84,6 +89,7 @@
 				['effector', 'bones, kidneys, gut']
 			],
 			broken: 2,
+			phone: 'hyperparathyroidism: PTH whatever the calcium',
 			lines: [
 				{ head: 'Primary hyperparathyroidism:', text: 'a gland,' },
 				{ head: '', text: 'usually a benign growth, keeps releasing' },
@@ -158,21 +164,41 @@
 </script>
 
 <g>
-	<Label
-		x={480}
-		y={34}
-		text="Every loop: a sensor measures, a messenger carries the order, an effector pushes back"
-		size={14}
-		weight={600}
-	/>
+	<Readout
+		id="every"
+		order={10}
+		label="Every loop: a sensor measures, a messenger carries the order, an effector pushes back"
+	>
+		<Label
+			x={480}
+			y={34}
+			text="Every loop: a sensor measures, a messenger carries the order, an effector pushes back"
+			size={14}
+			weight={600}
+		/>
+	</Readout>
 
 	{#each cards as c, k (c.id)}
 		{@const o = origin(k)}
 		<g transform="translate({o.x} {o.y})">
 			<rect width={CW} height={CH} rx="14" fill="var(--surface)" stroke="var(--border)" />
-			<text x={16} y={30} font-size="15" font-weight="600"
-				>{c.title}<tspan class="muted" font-size="12" font-weight="400" dx="8">{c.sub}</tspan></text
+			<Readout
+				id="card-{c.id}"
+				order={k + 1}
+				label={c.title}
+				value={c.phone}
+				note={c.nodes.map((n) => n[1]).join(' → ')}
+				color={c.broken >= 0 ? 'var(--hm-hypo)' : 'var(--hm-glucose)'}
 			>
+				{#snippet narrow()}
+					<!-- on phones the title stays, large; the rest is in the panel -->
+					<text x={16} y={40} font-size="30" font-weight="600">{c.title}</text>
+				{/snippet}
+				<text x={16} y={30} font-size="15" font-weight="600"
+					>{c.title}<tspan class="muted" font-size="12" font-weight="400" dx="8">{c.sub}</tspan
+					></text
+				>
+			</Readout>
 
 			<!-- the loop -->
 			<path d={loopD} fill="none" stroke="var(--stage-line)" stroke-width="1.5" />
@@ -191,9 +217,11 @@
 				stroke="var(--stage-line)"
 				stroke-width="1.5"
 			/>
-			<text x={r.x} y={r.y + 16} font-size="11" class="muted" text-anchor="middle"
-				>the effect is measured again</text
-			>
+			<Readout id="again-{c.id}">
+				<text x={r.x} y={r.y + 16} font-size="11" class="muted" text-anchor="middle"
+					>the effect is measured again</text
+				>
+			</Readout>
 
 			{#each c.nodes as [role, name], j (role)}
 				<rect
@@ -205,16 +233,19 @@
 					fill="var(--stage-bg)"
 					stroke="var(--border)"
 				/>
-				<text x={boxX(j) + BW / 2} y={BY + 18} font-size="11" class="muted" text-anchor="middle"
-					>{role}</text
-				>
-				<text
-					x={boxX(j) + BW / 2}
-					y={BY + 35}
-					font-size="12.5"
-					font-weight="600"
-					text-anchor="middle">{name}</text
-				>
+				<!-- named in the panel row on phones -->
+				<Readout id="node-{c.id}-{role}">
+					<text x={boxX(j) + BW / 2} y={BY + 18} font-size="11" class="muted" text-anchor="middle"
+						>{role}</text
+					>
+					<text
+						x={boxX(j) + BW / 2}
+						y={BY + 35}
+						font-size="12.5"
+						font-weight="600"
+						text-anchor="middle">{name}</text
+					>
+				</Readout>
 			{/each}
 
 			{#if c.broken >= 0}
@@ -233,14 +264,16 @@
 					stroke-width="2"
 				/>
 			{:else if c.note}
-				<text
-					x={boxX(0) + BW / 2}
-					y={BY - 8}
-					font-size="11"
-					font-weight="600"
-					text-anchor="middle"
-					style:fill="var(--hm-glucose)">{c.note} ↑</text
-				>
+				<Readout id="note-{c.id}">
+					<text
+						x={boxX(0) + BW / 2}
+						y={BY - 8}
+						font-size="11"
+						font-weight="600"
+						text-anchor="middle"
+						style:fill="var(--hm-glucose)">{c.note} ↑</text
+					>
+				</Readout>
 			{/if}
 
 			<circle
@@ -252,14 +285,17 @@
 			/>
 
 			<!-- what goes wrong -->
-			{#each c.lines as line, j (j)}
-				<text x={16} y={186 + j * 20} font-size="12.5"
-					>{#if line.head}<tspan
-							font-weight="600"
-							style:fill={c.broken >= 0 ? 'var(--hm-hypo)' : 'var(--hm-glucose)'}>{line.head}</tspan
-						>{/if}<tspan dx={line.head ? 5 : 0}>{line.text}</tspan></text
-				>
-			{/each}
+			<Readout id="lines-{c.id}">
+				{#each c.lines as line, j (j)}
+					<text x={16} y={186 + j * 20} font-size="12.5"
+						>{#if line.head}<tspan
+								font-weight="600"
+								style:fill={c.broken >= 0 ? 'var(--hm-hypo)' : 'var(--hm-glucose)'}
+								>{line.head}</tspan
+							>{/if}<tspan dx={line.head ? 5 : 0}>{line.text}</tspan></text
+					>
+				{/each}
+			</Readout>
 		</g>
 	{/each}
 </g>
