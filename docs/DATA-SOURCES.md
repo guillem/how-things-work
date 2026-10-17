@@ -169,3 +169,55 @@ Non-commercial:
 - **Giunta / Bodenstein** (reaction-rates-equilibrium): Giunta and OpenStax are credited on the
   page (2026-10-15); still check the exact wording of the permission on Giunta's page. Re-deriving the values from
   Bodenstein's 1899 paper (public domain) would remove the restriction.
+
+## Primary-source checks, 2026-10-17
+
+- **CVRL cone data** (vision-color, `cone-data.ts`): CVRL's own files
+  http://www.cvrl.org/database/data/cones/linss2_10e_1.csv and
+  http://www.cvrl.org/database/data/cienewxyz/lin2012xyz2e_1_7sf.csv, downloaded 2026-10-17
+  (cvrl.org answers on plain http only). Compared with the shipped table built from the
+  colour-science copy: LMS identical at every nm from 390 to 780; XYZ equal to the 6 significant
+  figures stored (largest difference 4.9 × 10⁻⁶ relative, the rounding of the 7-figure file).
+  `scripts/data/vision-color/build.mjs` now reads CVRL's files directly; the regenerated data
+  rows are unchanged. Licence: cvrl.org states none (no terms, copyright or licence text on its
+  home page). Status: **confirmed against the primary source**; licence still not stated.
+- **Luria & Delbrück 1943** (evolution, plates step): S. E. Luria & M. Delbrück, "Mutations of
+  bacteria from virus sensitivity to virus resistance", Genetics 28: 491–511 (1943),
+  doi:10.1093/genetics/28.6.491, PMC1209226. PMC's PDF is behind a proof-of-work check, Europe
+  PMC and OUP behind a Cloudflare check; read from the Wayback Machine's copy of PMC's scan,
+  http://web.archive.org/web/20240607023413/https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1209226/pdf/491.pdf
+  (retrieved 2026-10-17). Used: Table 1 (exp. 10a: mean 16.7, variance 15), Table 2 (exp. 16:
+  20 cultures of 0.2 ml, 0.08 ml samples, average 11.35, variance 694, 11 of 20 samples with
+  none, 5.6 × 10⁸ bacteria per culture), Table 4 (mutation rates 1.1–4.1 × 10⁻⁸ per time unit)
+  and the text's exp. 23 estimate (0.32 × 10⁻⁸ per division). Facts quoted with citation; no
+  data file shipped. Licence: PMC copyright notice (publisher's copyright); quoting facts only.
+- **Barrangou et al. 2007, Fig. 3** (crispr, yogurt step): R. Barrangou et al., "CRISPR provides
+  acquired resistance against viruses in prokaryotes", Science 315: 1709–1712 (2007),
+  doi:10.1126/science.1138140. Science's full text needs a (free) sign-in, so the figure was read
+  from the Wayback Machine's copy of the journal's figure image,
+  http://web.archive.org/web/2020/https://science.sciencemag.org/content/sci/315/5819/1709/F3.medium.gif
+  (440 × 405 px, legible; retrieved 2026-10-17); the legend text was not available. Read from it:
+  WTΦ858+S1S2 resistant to Φ858, sensitive to Φ2972; ΔCRISPR1 and ::pR (spacers out of the
+  cas-adjacent array) sensitive to Φ858; WTΦ2972+S4::pS1S2 resistant to Φ858 and sensitive to
+  Φ2972 (confirms the reading of Danisco's patent table, US 10066233, behind commit b281621);
+  ::pcas5− sensitive, ::pcas7− still resistant. Licence: © AAAS; consulted, not redistributed.
+  Gene names: Sapranauskas et al. 2011, Nucleic Acids Res. 39: 9275, "cas9 (formerly named cas5
+  and csn1)", read from https://epublications.vu.lt/object/elaba:4437157/4437157.pdf
+  (retrieved 2026-10-17; open access).
+- **NLR cell-efficiency chart** (solar-cells, `records.ts`): re-checked 2026-10-17 for LONGi's
+  newer records. https://www.nlr.gov/pv/cell-efficiency still says "Last Updated Aug. 14, 2026";
+  the data table (cell-efficiency-data-table.xlsx, Last-Modified 14 Aug 2026) and the chart PDF
+  (cell-pv-eff.pdf, Rev. 07-17-2026) are unchanged; re-running `build-records.mjs` on the new
+  download gives the same `records.ts`. Not there yet; nothing changed.
+- **PhotochemCAD pigment spectra** (photosynthesis, candidate to replace `absorbance()`): checked
+  2026-10-17. https://www.photochemcad.com/ and its natural-chlorophylls database (chlorophyll a
+  and b in diethyl ether, NCHL006/NCHL014, Du 1998; Taniguchi & Lindsey, Photochem. Photobiol.
+  97: 136, 2021) carry only "© 1998-2026 Lindsey, J. S.; Taniguchi, M.; Du, H." and no licence
+  or permission to redistribute; the OMLC copy (https://omlc.org/spectra/PhotochemCAD/) is
+  reworked by S. Prahl with no licence either. Not used; the Gaussian approximations stay.
+- **Webster et al. 2000** (vision-color, red–green channel with an S input): M. A. Webster,
+  E. Miyahara, G. Malkoc & V. E. Raker, "Variations in normal color vision. II. Unique hues",
+  JOSA A 17: 1545–1555 (2000), read from the authors' copy
+  https://labs.psych.unr.edu/websterlab/files/WebsterJOSA2000b.pdf (retrieved 2026-10-17;
+  © Optical Society of America). Cited for "S-cone signals also contribute substantially to
+  red–green sensations"; no data used. The channel's S weight is computed from the CVRL cones.

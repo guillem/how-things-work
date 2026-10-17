@@ -268,19 +268,28 @@ export function bestMatch(c: Cones): { rgb: Cones; mismatch: number } {
 /**
  * The three channels the brain compares, built from the cone signals by the retina's ganglion
  * cells: brightness, mostly L and some M (the CIE luminance ȳ = 0.690·L + 0.348·M, the middle row
- * of LMS_TO_XYZ); red–green, L against a·M; blue–yellow, S against b·(L + M). The
- * weights a and b are set so that equal-energy white is neutral on both colour channels (as in
- * the Derrington–Krauskopf–Lennie axes). Each colour channel is returned as a contrast between
- * its two sides, from −1 (all green, all yellow) to +1 (all red, all blue).
+ * of LMS_TO_XYZ); red–green, L plus a little S (c·S) against a·M; blue–yellow, S against
+ * b·(L + M). The weights a and b are set so that equal-energy white is neutral on both colour
+ * channels (as in the Derrington–Krauskopf–Lennie axes). The plain L-against-M comparison of the
+ * retina reads all blue light as greenish; the hues people name are not on that axis, and need
+ * some S on the red side (Webster et al. 2000, JOSA A 17: 1545). Here c is set so that the
+ * blue of UNIQUE_BLUE nm, which looks neither reddish nor greenish, is neutral too. Each colour
+ * channel is returned as a contrast between its two sides, from −1 (all green, all yellow) to
+ * +1 (all red, all blue).
  */
-const A_RG = EQUAL_ENERGY[0] / EQUAL_ENERGY[1];
-const B_BY = EQUAL_ENERGY[2] / (EQUAL_ENERGY[0] + EQUAL_ENERGY[1]);
+export const UNIQUE_BLUE = 475;
+const U = cones(UNIQUE_BLUE);
+const EE = EQUAL_ENERGY;
+const C_RG = (U[1] * EE[0] - U[0] * EE[1]) / (U[2] * EE[1] - U[1] * EE[2]);
+const A_RG = (EE[0] + C_RG * EE[2]) / EE[1];
+const B_BY = EE[2] / (EE[0] + EE[1]);
 export function opponent(c: Cones): { bright: number; redGreen: number; blueYellow: number } {
 	const lm = c[0] + c[1];
 	if (lm <= 0) return { bright: 0, redGreen: 0, blueYellow: 0 };
+	const red = c[0] + C_RG * c[2];
 	return {
 		bright: LMS_TO_XYZ[1][0] * c[0] + LMS_TO_XYZ[1][1] * c[1],
-		redGreen: (c[0] - A_RG * c[1]) / (c[0] + A_RG * c[1]),
+		redGreen: (red - A_RG * c[1]) / (red + A_RG * c[1]),
 		blueYellow: (c[2] - B_BY * lm) / (c[2] + B_BY * lm)
 	};
 }

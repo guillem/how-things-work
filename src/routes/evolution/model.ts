@@ -394,11 +394,18 @@ export function driftRuns(
 
 // --------------------------------------------------------------- Luria–Delbrück
 
-/** Cells per culture at the end (0.2 ml at 10⁸ cells per ml, as Luria and Delbrück). */
+/**
+ * Cells per culture at the end. Fewer than Luria and Delbrück's 0.2 ml cultures, which held
+ * 1.1–5.6 × 10⁸ (Genetics 28: 491, Tables 2 and 3); with LD_MU it gives e^(−0.6) ≈ 55% of
+ * cultures with no mutant, as the 11 of 20 empty samples of their experiment 16.
+ */
 export const LD_FINAL = 2e7;
 /** Doublings from the inoculum to LD_FINAL (an inoculum of about 600 cells). */
 export const LD_DOUBLINGS = 15;
-/** Mutation rate to resistance per cell per division (Luria & Delbrück's order of magnitude). */
+/**
+ * Mutation rate to resistance per cell per division. Luria & Delbrück's estimates from the
+ * average counts were 1.1–4.1 × 10⁻⁸ per bacterium per time unit (their Table 4).
+ */
 export const LD_MU = 3e-8;
 
 export interface FluctuationResult {

@@ -1017,18 +1017,13 @@
 		/>
 		<Label x={24} y={580} text={lumenNote} anchor="start" size={11} muted />
 	</Readout>
-	<Readout
-		id="nolight"
-		order={4}
-		label="No light"
-		value="electron flow stops"
-		note="the gradient drains away"
-		opacity={1 - flow}
-	>
+	<Readout id="nolight" order={4} label="No light" value="electron flow stops" opacity={1 - flow}>
+		<!-- on the title's line, not the lumen caption's: that one already says how the
+		     gradient runs down -->
 		<Label
 			x={940}
-			y={580}
-			text="no light: electron flow stops and the gradient drains away"
+			y={562}
+			text="no light: electron flow stops"
 			anchor="end"
 			size={11}
 			muted

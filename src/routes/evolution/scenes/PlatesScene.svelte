@@ -197,7 +197,7 @@
 		id="ld"
 		order={2}
 		label="Luria & Delbrück 1943"
-		value="average 11.3, variance 694, 11 of 20 with none"
+		value="average 11.35, variance 694, 11 of 20 with none"
 	>
 		<Label
 			x={490}
@@ -211,7 +211,7 @@
 			x={490}
 			y={516}
 			anchor="start"
-			text="average 11.3 · variance 694 · 11 of 20 with none"
+			text="average 11.35 · variance 694 · 11 of 20 with none"
 			size={13}
 		/>
 		<Label

@@ -228,9 +228,11 @@ test('brightness is mostly L: it peaks near 555 nm, like the eye’s daylight se
 	expect(Math.abs(top - 555)).toBeLessThanOrEqual(3);
 });
 
-test('the plain L-against-M channel reads blue light greenish, greener than green light', () => {
-	for (const nm of [440, 460, 475, 490]) expect(opponent(cones(nm)).redGreen).toBeLessThan(-0.1);
-	expect(opponent(cones(460)).redGreen).toBeLessThan(opponent(cones(520)).redGreen);
+test('with a little S on red–green, unique blue is neutral, violet reddish, blue-green greenish', () => {
+	// The page: the blue near 475 nm "sits in the middle, as white does"; violet looks reddish-blue.
+	expect(Math.abs(opponent(cones(475)).redGreen)).toBeLessThan(0.02);
+	for (const nm of [400, 420, 440]) expect(opponent(cones(nm)).redGreen).toBeGreaterThan(0.5);
+	for (const nm of [490, 500, 520, 540]) expect(opponent(cones(nm)).redGreen).toBeLessThan(-0.1);
 });
 
 test('the afterimage scene’s predicted swatches lean the way its labels say', () => {
