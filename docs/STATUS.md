@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-17 04:15 UTC.
+Last updated: 2026-10-17 UTC, after v1.0.0.
 
 ## How we work
 
@@ -34,12 +34,12 @@ Last updated: 2026-10-17 04:15 UTC.
 ## Current state
 
 - **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). `main` is
-  deployed as **v0.1.21** (2026-10-15; v0.1.20 was tagged first, but its release run failed on a
-  timing race in a power-grid browser test and deployed nothing). v0.1.19 carried the user's external audit
-  (`docs/codex-fact-check-complete.md`: 59 findings, 2 High, all applied); v0.1.21 the
-  housekeeping, the stage-text fix and the public-version polish described below. **The project is in
-  maintenance:** no topic work is planned; what is left open is in [`BACKLOG.md`](BACKLOG.md)
-  ("Open after the final push" and "Site and framework work").
+  deployed as **v1.0.0** (2026-10-17): the 100 topics plus the index search and filters (a sticky
+  sidebar on wide screens), faster browser tests and the overnight backlog round described below.
+  Earlier: v0.1.21 (2026-10-15) the housekeeping, stage-text fix and public polish; v0.1.19 the
+  user's external audit (`docs/codex-fact-check-complete.md`). **The project is in maintenance:**
+  what is left open, and the decisions left for the user, are in [`BACKLOG.md`](BACKLOG.md)
+  ("Open after the backlog round").
 - Licence: MIT code, CC BY 4.0 content, third-party data under its own terms (`LICENSE`,
   `LICENSE-CONTENT.md`, `docs/DATA-SOURCES.md`).
 - Tooling: `scripts/cloud-setup.sh` and `docs/cloud.md` for building in cloud sessions;
@@ -67,7 +67,7 @@ Last updated: 2026-10-17 04:15 UTC.
 
 ## Current development
 
-**Backlog round, 2026-10-17 (overnight), done; on local `main`, not pushed or released.** Before
+**Released as v1.0.0 (2026-10-17): the backlog round (overnight) and the index work below.** Before
 releasing 1.0 the user asked to clear the backlog. One agent per package in a local worktree,
 each branch merged into `main` with `make check` and its topics' tests; worktrees removed.
 What is still open, and the decisions left for the user, are in `BACKLOG.md` ("Open after the
@@ -100,7 +100,7 @@ backlog round").
 - Final tree (2026-10-17 ~04:10 UTC): `make check` green; `make e2e-full` 2,195 passed in 2 min 52 s;
   `npx playwright test --workers=2` (closer to CI) 2,195 passed in 7.9 min.
 
-**Before that, committed on local `main`, not pushed or released** (2026-10-17):
+**Also in v1.0.0** (2026-10-17):
 
 - Index search and filters: search box, Area and Level toggles with live counts, an empty state
   with "Clear filters", the state in the query string; tested in `e2e/index.e2e.ts` (@smoke).
