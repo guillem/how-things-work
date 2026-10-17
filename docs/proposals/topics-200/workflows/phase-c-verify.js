@@ -1,7 +1,7 @@
 export const meta = {
   name: 'propose-topics-verify',
-  description: 'Phase C of the 100-topic proposal: adversarial verification with replacement, completeness critics, invariants',
-  phases: [{ title: 'Verify', detail: 'one sceptical reviewer per batch of five, replacements from the runners-up' }, { title: 'Gaps', detail: 'three critics, verified, swapped in' }],
+  description: 'Phase C of the 100-topic proposal, one stage per run: verify selected topics, run the completeness critics, or verify gap candidates',
+  phases: [{ title: 'Verify', detail: 'one sceptical reviewer per batch of five' }, { title: 'Gaps', detail: 'three critics, then their candidates verified' }],
 }
 
 const A = args
@@ -183,8 +183,12 @@ function applyFix(entry, fixed) {
 }
 
 // ======================================================================
-// Phase C (file-based): args.selected and args.runnersUp are rows from phase B
-// ({slug, level, category, kind, title, score, ...}); the full entries live in args.poolDir/<category>.json.
+// Phase C, staged (the usage window cannot hold all of it): args.stage is one of
+//   'verify'    (args.rows: selected rows {slug, level, originalLevel, category, kind, title}; args.tag: round name)
+//               -> { verify: [{ batch, slugs, verdicts }] }; full entries are read from args.poolDir/<category>.json
+//   'critics'   (args.final: the current hundred as rows; args.runnersUp: rows) -> { critics: [{ key, candidates, missing }] }
+//   'gapverify' (args.entries: full gap entries) -> { verify: [{ batch, slugs, verdicts }] }
+// The replacement rule and the gap swaps are applied locally by scripts/replace.mjs.
 const POOL = A.poolDir
 const catFile = (c) => `${POOL}/${c}.json`
 const FIELDS = 'slug, title, level, kind, category, interaction, takeaway, prerequisites, related, needs, pitfall, why, overlapWith, needsSource, leadsTo, everyday'
@@ -198,10 +202,7 @@ const BATCH_VERDICT_SCHEMA = {
   },
   required: ['verdicts'],
 }
-let selected = A.selected.map(r => ({ ...r }))
-let runnersUp = A.runnersUp.map(r => ({ ...r }))
 const rowLine = (e) => `${e.slug} | L${e.level} | ${e.category} | ${e.kind} | ${e.title}`
-log(`${selected.length} selected topics to verify; ${runnersUp.length} runners-up available`)
 
 function verifyPrompt(batch) {
   const cats = [...new Set(batch.map(e => e.category))]
@@ -240,24 +241,6 @@ You are a sceptical reviewer and fact-checker. Review the ${batch.length} propos
 
 ${batch.map(entryText).join('\n\n---\n\n')}`
 }
-async function verifyBatch(batch, tag, prompt) {
-  const r = await agent(prompt(batch), { label: `verify:${tag}`, phase: tag.startsWith('gap') ? 'Gaps' : 'Verify', schema: BATCH_VERDICT_SCHEMA })
-  const out = []
-  for (const e of batch) {
-    const v = r ? (r.verdicts || []).find(x => normSlug(x.slug) === e.slug) : null
-    if (!v) { out.push({ entry: e, ok: true, unverified: r ? 'no verdict for this slug' : 'reviewer returned nothing' }); continue }
-    if (v.refuted && !v.hasFix) { out.push({ entry: e, ok: false, reason: v.reason }); continue }
-    const fixed = { ...e, verifyNote: v.reason }
-    if (v.hasFix && v.fixed && Object.keys(v.fixed).length) {
-      fixed.fix = v.fixed
-      if (v.fixed.level !== undefined && v.fixed.level !== null) fixed.level = Math.max(0, Math.min(3, Math.round(Number(v.fixed.level))))
-      if (v.fixed.kind && KINDS.includes(v.fixed.kind)) fixed.kind = v.fixed.kind
-      if (v.fixed.title) fixed.title = v.fixed.title
-    }
-    out.push({ entry: fixed, ok: true })
-  }
-  return out
-}
 function batchesOf(list, size) {
   const sorted = [...list].sort((a, b) => (a.category + a.level + a.slug < b.category + b.level + b.slug ? -1 : 1))
   const out = []
@@ -265,52 +248,29 @@ function batchesOf(list, size) {
   return out
 }
 
-phase('Verify')
-const tried = new Set(selected.map(e => e.slug))
-const final = []
-const rejectedInVerify = []
-const unverified = []
-function catCountsOf(list) { return list.reduce((a, e) => { a[e.category] = (a[e.category] || 0) + 1; return a }, {}) }
-function pickReplacement(e, current) {
-  const cc = catCountsOf(current)
-  const cands = runnersUp.filter(c => !tried.has(c.slug) && c.level === e.level)
-  return cands.find(c => c.category === e.category) || cands.find(c => (cc[c.category] || 0) < CAT_MAX) || null
-}
-let pending = [...selected]
-let round = 0
-while (pending.length) {
-  round++
-  const bs = batchesOf(pending, 5)
-  log(`Verify round ${round}: ${pending.length} topics in ${bs.length} batches`)
-  const results = await pipeline(bs, (b, _i, i) => verifyBatch(b, `r${round}b${i + 1}`, verifyPrompt))
-  const next = []
-  for (let bi = 0; bi < bs.length; bi++) {
-    const res = results[bi]
-    for (let i = 0; i < bs[bi].length; i++) {
-      const e = bs[bi][i]
-      const r = res ? res[i] : null
-      if (!r) { final.push(e); unverified.push(`${e.slug}: batch failed`); continue }
-      if (r.unverified) unverified.push(`${r.entry.slug}: ${r.unverified}`)
-      if (r.ok) { final.push(r.entry); continue }
-      rejectedInVerify.push({ slug: e.slug, level: e.level, category: e.category, title: e.title, reason: r.reason })
-      const rep = pickReplacement(e, [...final, ...next])
-      if (rep) { tried.add(rep.slug); next.push(rep); log(`replaced ${e.slug} with ${rep.slug} (L${rep.level}/${rep.category})`) }
-      else log(`no runner-up left for L${e.level}/${e.category}; one slot stays open`)
-    }
-  }
-  pending = next
-  if (round >= 5) { log('verify loop stopped after 5 rounds'); break }
-}
-log(`Verified ${final.length} topics; ${rejectedInVerify.length} rejected in verification; ${unverified.length} unverified notes`)
-
-// ======================================================================
-phase('Gaps')
 const GAP_SCHEMA = { type: 'object', properties: { candidates: { type: 'array', items: ENTRY_SCHEMA }, missing: { type: 'string' } }, required: ['candidates', 'missing'] }
 const CRITICS = [
   { key: 'l0', brief: 'You are a primary-school science teacher and a parent. Looking at the existing 100 and the proposed 100, which must-have level-0 subjects (the questions a 10-year-old actually asks, the NGSS 3-8 and KS2-3 core) are still missing?' },
   { key: 'l3', brief: 'You are a university lecturer who has taught across the sciences and engineering. Looking at the existing 100 and the proposed 100, which must-have level-3 subjects (the core of a degree in each field: the models every student in that field builds) are still missing, especially in the categories math, chemistry, biology, medicine, earth, networks and energy?' },
   { key: 'demand', brief: 'You are an editor who tracks what curious adults search for ("how does X work"). Looking at the existing 100 and the proposed 100, which famous, often-asked subjects are still missing at any level? Check with web search (load WebSearch with ToolSearch "select:WebSearch"): Google autocomplete for "how does", popular explainer channels and sites, the PhET list.' },
 ]
+const STAGE = A.stage
+async function verifyAll(list, tag, prompt, ph) {
+  const bs = batchesOf(list, 5)
+  log(`${list.length} topics in ${bs.length} batches of up to five`)
+  const res = await parallel(bs.map((b, i) => () =>
+    agent(prompt(b), { label: `verify:${tag}b${i + 1}`, phase: ph, schema: BATCH_VERDICT_SCHEMA })
+      .then(r => r ? { batch: `${tag}b${i + 1}`, slugs: b.map(e => e.slug), verdicts: r.verdicts } : null)))
+  return { verify: res.filter(Boolean), failed: bs.filter((b, i) => !res[i]).map(b => b.map(e => e.slug)) }
+}
+
+if (STAGE === 'verify') {
+  phase('Verify')
+  return await verifyAll(A.rows, A.tag || 'r1', verifyPrompt, 'Verify')
+}
+
+if (STAGE === 'critics') {
+  phase('Gaps')
 const gapRuns = await parallel(CRITICS.map(c => () =>
   agent(`${SITE}
 
@@ -324,51 +284,17 @@ EXISTING CATALOGUE:
 ${EXISTING.map(compactShort).join('\n')}
 
 PROPOSED NEW TOPICS (slug (level, category): title):
-${final.map(e => `${e.slug} (L${e.level}, ${e.category}): ${e.title}`).join('\n')}
+${A.final.map(e => `${e.slug} (L${e.level}, ${e.category}): ${e.title}`).join('\n')}
 
 RUNNERS-UP ALREADY CONSIDERED (do not re-propose these either):
-${runnersUp.slice(0, 120).map(e => `${e.slug} (L${e.level}, ${e.category}): ${e.title}`).join('\n')}`, { label: `critic:${c.key}`, phase: 'Gaps', schema: GAP_SCHEMA })))
+${A.runnersUp.slice(0, 120).map(e => `${e.slug} (L${e.level}, ${e.category}): ${e.title}`).join('\n')}`, { label: `critic:${c.key}`, phase: 'Gaps', schema: GAP_SCHEMA })))
+  return { critics: CRITICS.map((c, i) => gapRuns[i] ? { key: c.key, ...gapRuns[i] } : null).filter(Boolean) }
+}
 
-const finalSet = new Set(final.map(e => e.slug))
-const gapCands = []
-const criticNotes = []
-for (const g of gapRuns.filter(Boolean)) {
-  criticNotes.push(g.missing)
-  for (const raw of g.candidates || []) {
-    const e = cleanEntry(raw, 'gap')
-    if (!e.slug || EX[e.slug] || finalSet.has(e.slug) || gapCands.some(x => x.slug === e.slug) || runnersUp.some(x => x.slug === e.slug)) continue
-    e.score = 15
-    gapCands.push(e)
-  }
+if (STAGE === 'gapverify') {
+  phase('Gaps')
+  const entries = A.entries.map(e => cleanEntry(e, 'gap'))
+  return await verifyAll(entries, A.tag || 'gap', gapVerifyPrompt, 'Gaps')
 }
-log(`Critics proposed ${gapCands.length} new gap candidates`)
-const gapBatches = batchesOf(gapCands, 5)
-const gapResults = await pipeline(gapBatches, (b, _i, i) => verifyBatch(b, `gap${i + 1}`, gapVerifyPrompt))
-const gapSwaps = []
-const gapEntries = []
-let swapsLeft = 10
-for (let bi = 0; bi < gapBatches.length; bi++) {
-  const res = gapResults[bi]
-  if (!res) continue
-  for (const r of res) {
-    if (!r.ok) { log(`gap candidate ${r.entry.slug} refuted: ${r.reason}`); continue }
-    const g = r.entry
-    if (g.fix) { for (const k of Object.keys(g.fix)) if (g.fix[k] !== undefined && g.fix[k] !== null && g.fix[k] !== '') g[k] = g.fix[k]; delete g.fix }
-    if (swapsLeft <= 0) { log(`gap candidate ${g.slug} verified but the swap budget is used up; kept as a runner-up`); gapEntries.push({ ...g, kept: 'runner-up' }); continue }
-    const victims = final.filter(e => e.level === g.level && e.origin !== 'gap').sort((a, b) => (a.score || 0) - (b.score || 0))
-    if (!victims.length) { log(`no swap slot at level ${g.level} for gap candidate ${g.slug}`); gapEntries.push({ ...g, kept: 'runner-up' }); continue }
-    const v = victims[0]
-    final.splice(final.indexOf(v), 1)
-    final.push({ slug: g.slug, level: g.level, category: g.category, kind: g.kind, title: g.title, score: 15, origin: 'gap', verifyNote: g.verifyNote })
-    gapEntries.push({ ...g, kept: 'selected' })
-    runnersUp.unshift(v)
-    gapSwaps.push({ out: v.slug, outTitle: v.title, in: g.slug, inTitle: g.title, level: g.level })
-    swapsLeft--
-  }
-}
-log(`Gap pass: ${gapSwaps.length} swaps`)
-final.sort((a, b) => (CAT_IDS.indexOf(a.category) - CAT_IDS.indexOf(b.category)) || (a.level - b.level) || (a.slug < b.slug ? -1 : 1))
-const levelCounts = (list) => list.reduce((a, e) => { a[e.level] = (a[e.level] || 0) + 1; return a }, {})
-const counts = { byLevel: levelCounts(final), byCategory: catCountsOf(final), byKind: final.reduce((a, e) => { a[e.kind] = (a[e.kind] || 0) + 1; return a }, {}) }
-log(`Final: ${final.length} topics; levels ${JSON.stringify(counts.byLevel)}`)
-return { counts, final, gapEntries, rejectedInVerify, unverified, gapSwaps, criticNotes, runnersUp: runnersUp.slice(0, 80) }
+
+throw new Error(`unknown stage ${STAGE}`)

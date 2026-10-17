@@ -1,7 +1,7 @@
 export const meta = {
   name: 'propose-topics-judge',
-  description: 'Phase B of the 100-topic proposal: merge near-duplicates, judge, select by quota, curate',
-  phases: [{ title: 'Merge', detail: 'near-duplicate clustering per category' }, { title: 'Judge', detail: 'two judges per batch of 25' }, { title: 'Select', detail: 'quota selection in code, then a curator pass' }],
+  description: 'Phase B of the 100-topic proposal, one stage per run: merge near-duplicates, judge batches, or curate a selection',
+  phases: [{ title: 'Merge', detail: 'near-duplicate clustering per category' }, { title: 'Judge', detail: 'two judges per batch of 25' }, { title: 'Select', detail: 'the curator pass over a selection made in code (scripts/select.mjs)' }],
 }
 
 const A = args
@@ -182,6 +182,11 @@ function applyFix(entry, fixed) {
   return c
 }
 
+// Staged (the usage window cannot hold all of phase B): args.stage is one of
+//   'merge'  (args.cats: category ids, default all) -> { merge: [{ cat, groups, duplicatesOfExisting }] }
+//   'judge'  (args.batchList: batch numbers; args.lenses: judge keys, default both) -> { judge: [{ batch, lens, verdicts }] }
+//   'curate' (args.selected, args.runnersUp: rows from data/selection.json) -> the curator's { swaps, overlaps, notes }
+// Selection by quota and the swaps are applied locally by scripts/select.mjs.
 // ======================================================================
 // Phase B (file-based): args.rows = [slug, level, category, kind, title, batchNo]; the full entries
 // live in args.poolDir/<category>.json and args.poolDir/batch-NN.json, which the agents read.
@@ -189,22 +194,13 @@ const POOL = A.poolDir
 const batchFile = (n) => `${POOL}/batch-${String(n).padStart(2, '0')}.json`
 const catFile = (c) => `${POOL}/${c}.json`
 const FIELDS = 'slug, title, level, kind, category, interaction, takeaway, prerequisites, related, needs, pitfall, why (a curriculum or demand signal with a URL), overlapWith (nearest existing slug and how this differs), needsSource (data and its licence), leadsTo (level 0 only: the existing level-1 topics it prepares for), everyday'
-let pool = A.rows.map(r => ({ slug: r[0], level: r[1], category: r[2], kind: r[3], title: r[4], batch: r[5] }))
-log(`${pool.length} candidates in the pool, ${A.batches} batch files`)
+let pool = (A.rows || []).map(r => ({ slug: r[0], level: r[1], category: r[2], kind: r[3], title: r[4], batch: r[5] }))
+// args.catCounts / args.batchSizes (from scripts/stage-args.mjs) stand in for args.rows to keep args small
+const catSize = (c) => (A.catCounts ? A.catCounts[c] || 0 : pool.filter(e => e.category === c).length)
+const batchSize = (n) => (A.batchSizes ? A.batchSizes[n] || 0 : pool.filter(e => e.batch === n).length)
 const rowLine = (e) => `${e.slug} | L${e.level} | ${e.category} | ${e.kind} | ${e.title}`
 
-// Merge and judge do not depend on each other: run them together.
-phase('Merge')
-const cats = CAT_IDS.filter(c => pool.filter(e => e.category === c).length > 1)
-const mergePromise = parallel(cats.map(cat => () =>
-  agent(`${SITE}
-
-You are deduplicating candidate topics for the category ${CAT_NAME[cat]} (${cat}). Read the file ${catFile(cat)}: a JSON array of ${pool.filter(e => e.category === cat).length} candidate entries (fields: ${FIELDS}), gathered by several independent researchers, so some are the same subject under different names, and some may duplicate an existing catalogue topic. Then read docs/TOPICS.md in the working directory: the entries of this category and the checklist of all 100 slugs.
-
-Return:
-1. groups: clusters of candidates that are substantially the same page (same mechanism, same takeaway) or that would overlap so much that only one should be built. For each group name the one to keep (the better scoped and better levelled one) and the ones to drop, by slug. Two candidates at different levels on the same subject (a level-0 and a level-3 page) are NOT duplicates; keep both. Different mechanisms that share a word are not duplicates.
-2. duplicatesOfExisting: candidates that an existing catalogue page already covers (same mechanism and takeaway), with the existing slug. Be strict about mechanisms, not words: an existing level-1 page and a new level-0 page on a neighbouring everyday experience can coexist if the new page shows something the existing one does not.`, { label: `merge:${cat}`, phase: 'Merge', schema: MERGE_SCHEMA })))
-
+const STAGE = A.stage
 const JUDGES = [
   { key: 'fit-level', prompt: (file, n) => `${SITE}
 
@@ -217,98 +213,41 @@ ${RULES}
 
 Judge lens: BUILDABILITY AND DATA. Read the file ${file}: a JSON array of ${n} candidate entries (fields: ${FIELDS}). For each candidate: can the interaction be built as a real client-side model in SVG as a pure function of time, running at interactive rates (a small ODE or PDE, an agent or particle simulation, an algorithm, a geometric construction, a small dataset or a tiny model)? Is the proposed model the honest one for the stated level, or a picture dressed as a model? If it needs data or a trained model, is that openly licensed and available (check with web search when the entry names a source and you are not sure: load WebSearch with ToolSearch "select:WebSearch")? Score 1 (not buildable as described) to 5 (clear, small, honest model). reject=true if the honest model cannot run interactively in a browser, if the page would be a browse-a-diagram or a picture to tap, or if the needed data is unavailable or not openly licensed. Set suggestedLevel to the candidate's own level unless the model you would have to build is clearly a different level; give a one-sentence reason. Return one verdict per candidate, keyed by slug.` },
 ]
-phase('Judge')
-const batchNos = [...new Set(pool.map(e => e.batch))].sort((a, b) => a - b)
-log(`Judging ${pool.length} candidates in ${batchNos.length} batches, two judges each`)
-const judgePromise = pipeline(batchNos, (n) => {
-  const size = pool.filter(e => e.batch === n).length
-  return parallel(JUDGES.map(j => () =>
-    agent(j.prompt(batchFile(n), size), { label: `judge:${j.key}:b${n}`, phase: 'Judge', schema: JUDGE_SCHEMA })
-      .then(r => ({ lens: j.key, verdicts: r ? r.verdicts : null }))))
-})
-const [mergeResults, judgeRuns] = await Promise.all([mergePromise, judgePromise])
 
-// merge results
-const dropped = new Map()
-for (const m of mergeResults.filter(Boolean)) {
-  for (const g of m.groups || []) for (const d of g.drop || []) if (normSlug(d) !== normSlug(g.keep)) dropped.set(normSlug(d), `merged into ${g.keep}: ${g.reason}`)
-  for (const d of m.duplicatesOfExisting || []) dropped.set(normSlug(d.slug), `duplicate of existing ${d.existing}: ${d.reason}`)
-}
-const mergedOut = pool.filter(e => dropped.has(e.slug)).map(e => ({ slug: e.slug, level: e.level, category: e.category, title: e.title, why: dropped.get(e.slug) }))
-pool = pool.filter(e => !dropped.has(e.slug))
-log(`${pool.length} candidates after merge (${mergedOut.length} dropped; ${mergeResults.filter(Boolean).length} of ${cats.length} merge passes returned)`)
+if (STAGE === 'merge') {
+  phase('Merge')
+  const allCats = CAT_IDS.filter(c => catSize(c) > 1)
+  const mergeCats = A.cats ? allCats.filter(c => A.cats.includes(c)) : allCats
+  log(`Merging ${mergeCats.length} categories: ${mergeCats.join(', ')}`)
+  const mergeRes = await parallel(mergeCats.map(cat => () =>
+  agent(`${SITE}
 
-// judge results
-const verdictsBySlug = {}
-let judgeFailures = 0
-for (const run of judgeRuns.filter(Boolean)) {
-  for (const r of run.filter(Boolean)) {
-    if (!r.verdicts) { judgeFailures++; continue }
-    for (const v of r.verdicts) {
-      const s = normSlug(v.slug)
-      ;(verdictsBySlug[s] = verdictsBySlug[s] || []).push({ ...v, lens: r.lens })
-    }
-  }
-}
-if (judgeFailures) log(`${judgeFailures} judge passes returned nothing`)
-let unjudged = 0
-for (const e of pool) {
-  const vs = verdictsBySlug[e.slug] || []
-  if (vs.length === 0) unjudged++
-  e.scores = {}
-  for (const v of vs) e.scores[v.lens] = v.score
-  const got = Object.keys(e.scores).length
-  const sum = Object.values(e.scores).reduce((a, b) => a + b, 0)
-  e.score = got ? (sum / got) * 3 : 0
-  e.rejected = vs.some(v => v.reject)
-  e.rejectReasons = vs.filter(v => v.reject).map(v => `${v.lens}: ${v.reason}`)
-  e.judgeNotes = vs.map(v => `${v.lens} ${v.score}: ${v.reason}`)
-  const lv = vs.find(v => v.lens === 'fit-level')
-  if (lv && lv.suggestedLevel !== e.level && !lv.reject) { e.originalLevel = e.level; e.level = lv.suggestedLevel }
-}
-if (unjudged) log(`${unjudged} candidates received no verdict (scored 0)`)
-const rejectedCount = pool.filter(e => e.rejected).length
-log(`${rejectedCount} candidates rejected by a judge; ${pool.length - rejectedCount} remain eligible`)
-const relevelled = pool.filter(e => e.originalLevel !== undefined).length
-if (relevelled) log(`${relevelled} candidates re-levelled on the judge's advice`)
+You are deduplicating candidate topics for the category ${CAT_NAME[cat]} (${cat}). Read the file ${catFile(cat)}: a JSON array of ${catSize(cat)} candidate entries (fields: ${FIELDS}), gathered by several independent researchers, so some are the same subject under different names, and some may duplicate an existing catalogue topic. Then read docs/TOPICS.md in the working directory: the entries of this category and the checklist of all 100 slugs.
 
-// ======================================================================
-phase('Select')
-const eligible = pool.filter(e => !e.rejected && e.score > 0)
-const byScore = [...eligible].sort((a, b) => b.score - a.score)
-const levelCounts = (list) => list.reduce((a, e) => { a[e.level] = (a[e.level] || 0) + 1; return a }, {})
-log(`Eligible by level: ${JSON.stringify(levelCounts(eligible))}`)
-function selectByQuota() {
-  const chosen = []
-  const chosenSlugs = new Set()
-  const catCount = {}
-  const levelCount = { 0: 0, 1: 0, 2: 0, 3: 0 }
-  const take = (c) => { chosen.push(c); chosenSlugs.add(c.slug); catCount[c.category] = (catCount[c.category] || 0) + 1; levelCount[c.level]++ }
-  for (const [level, targets] of [[3, L3_TARGET], [0, L0_TARGET]]) {
-    for (const cat of CAT_IDS) {
-      const want = targets[cat] || 0
-      const cell = byScore.filter(c => c.level === level && c.category === cat && !chosenSlugs.has(c.slug))
-      if (cell.length < want) log(`cell L${level}/${cat}: only ${cell.length} eligible candidates for a target of ${want}`)
-      cell.slice(0, want).forEach(take)
-    }
-  }
-  for (const level of [0, 3, 1, 2]) {
-    for (const c of byScore) {
-      if (levelCount[level] >= QUOTA[level]) break
-      if (c.level !== level || chosenSlugs.has(c.slug)) continue
-      if ((catCount[c.category] || 0) >= CAT_MAX) continue
-      take(c)
-    }
-    if (levelCount[level] < QUOTA[level]) log(`level ${level}: ${levelCount[level]} of ${QUOTA[level]} slots filled`)
-  }
-  return chosen
+Return:
+1. groups: clusters of candidates that are substantially the same page (same mechanism, same takeaway) or that would overlap so much that only one should be built. For each group name the one to keep (the better scoped and better levelled one) and the ones to drop, by slug. Two candidates at different levels on the same subject (a level-0 and a level-3 page) are NOT duplicates; keep both. Different mechanisms that share a word are not duplicates.
+2. duplicatesOfExisting: candidates that an existing catalogue page already covers (same mechanism and takeaway), with the existing slug. Be strict about mechanisms, not words: an existing level-1 page and a new level-0 page on a neighbouring everyday experience can coexist if the new page shows something the existing one does not.`, { label: `merge:${cat}`, phase: 'Merge', schema: MERGE_SCHEMA }).then(r => r ? { cat, ...r } : null)))
+  return { merge: mergeRes.filter(Boolean), missing: mergeCats.filter((c, i) => !mergeRes[i]) }
 }
-let selected = selectByQuota()
-let selectedSet = new Set(selected.map(e => e.slug))
-let runnersUp = byScore.filter(e => !selectedSet.has(e.slug))
-log(`Selected ${selected.length} by quota; ${runnersUp.length} runners-up`)
 
-const curator = await agent(`${SITE}
+if (STAGE === 'judge') {
+  phase('Judge')
+  const batchNos = A.batchList
+  const lenses = JUDGES.filter(j => !A.lenses || A.lenses.includes(j.key))
+  log(`Judging batches ${batchNos.join(', ')} with ${lenses.map(j => j.key).join(' and ')}`)
+  const runs = await parallel(batchNos.flatMap(n => lenses.map(j => () => {
+    const size = batchSize(n)
+    return agent(j.prompt(batchFile(n), size), { label: `judge:${j.key}:b${n}`, phase: 'Judge', schema: JUDGE_SCHEMA })
+      .then(r => r ? { batch: n, lens: j.key, verdicts: r.verdicts } : null)
+  })))
+  return { judge: runs.filter(Boolean), failed: runs.map((r, i) => r ? null : i).filter(i => i !== null).length }
+}
+
+if (STAGE === 'curate') {
+  phase('Select')
+  const selected = A.selected
+  const runnersUp = A.runnersUp
+  const curator = await agent(`${SITE}
 
 ${LEVELS}
 
@@ -322,38 +261,7 @@ ${runnersUp.slice(0, 100).map(rowLine).join('\n')}
 
 EXISTING CATALOGUE (slug (level, category): title):
 ${EXISTING.map(compactShort).join('\n')}`, { label: 'curator', phase: 'Select', schema: CURATOR_SCHEMA })
-
-const curatorSwaps = []
-if (curator) {
-  for (const s of curator.swaps || []) {
-    const out = selected.find(e => e.slug === normSlug(s.out))
-    const inn = runnersUp.find(e => e.slug === normSlug(s.in))
-    if (!out || !inn) { log(`curator swap ignored (unknown slug): ${s.out} -> ${s.in}`); continue }
-    if (out.level !== inn.level) { log(`curator swap ignored (level differs): ${s.out} (L${out.level}) -> ${s.in} (L${inn.level})`); continue }
-    selected = selected.filter(e => e.slug !== out.slug)
-    selected.push(inn)
-    runnersUp = runnersUp.filter(e => e.slug !== inn.slug)
-    runnersUp.push(out)
-    curatorSwaps.push({ out: out.slug, in: inn.slug, reason: s.reason })
-  }
-  log(`Curator: ${curatorSwaps.length} swaps applied; ${(curator.overlaps || []).length} overlaps flagged`)
-} else log('curator returned nothing')
-
-const counts = {
-  byLevel: levelCounts(selected),
-  byCategory: selected.reduce((a, e) => { a[e.category] = (a[e.category] || 0) + 1; return a }, {}),
-  byKind: selected.reduce((a, e) => { a[e.kind] = (a[e.kind] || 0) + 1; return a }, {}),
+  return curator
 }
-log(`Selected ${selected.length}: ${JSON.stringify(counts.byLevel)}`)
-const strip = (e) => ({ slug: e.slug, level: e.level, originalLevel: e.originalLevel, category: e.category, kind: e.kind, title: e.title, score: Math.round(e.score * 100) / 100, scores: e.scores, judgeNotes: e.judgeNotes })
-return {
-  counts,
-  poolSize: pool.length,
-  mergedOut,
-  rejectedByJudges: pool.filter(e => e.rejected).map(e => ({ slug: e.slug, level: e.level, category: e.category, title: e.title, reasons: e.rejectReasons })),
-  curatorSwaps,
-  curatorOverlaps: curator ? curator.overlaps : [],
-  curatorNotes: curator ? curator.notes : '',
-  selected: selected.map(strip),
-  runnersUp: runnersUp.slice(0, 150).map(strip),
-}
+
+throw new Error(`unknown stage ${STAGE}`)

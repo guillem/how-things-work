@@ -1,0 +1,38 @@
+[
+ {
+  "label": "merge:space",
+  "result": {
+   "groups": [],
+   "duplicatesOfExisting": []
+  }
+ },
+ {
+  "label": "merge:ai",
+  "result": {
+   "groups": [],
+   "duplicatesOfExisting": []
+  }
+ },
+ {
+  "label": "merge:networks",
+  "result": {
+   "groups": [],
+   "duplicatesOfExisting": []
+  }
+ },
+ {
+  "label": "merge:computing",
+  "result": {
+   "groups": [
+    {
+     "keep": "pixels-and-pictures",
+     "drop": [
+      "screens-and-pixels"
+     ],
+     "reason": "Both are level-0 pages built on the same interaction: pinch into a photo until it breaks into squares, then halve or double the resolution and watch it go blocky or sharp. pixels-and-pictures is better scoped for Computing because it frames the pixel as stored numbers, with shade counts and a fourfold jump in data for each doubling. The distinctive part of screens-and-pixels, three RGB lights blended by the eye, is mostly covered by vision-color's light mixing. It can survive as one scene inside pixels-and-pictures."
+    }
+   ],
+   "duplicatesOfExisting": []
+  }
+ }
+]

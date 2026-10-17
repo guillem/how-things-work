@@ -1,0 +1,163 @@
+[
+ {
+  "label": "merge:math",
+  "result": {
+   "groups": [],
+   "duplicatesOfExisting": []
+  }
+ },
+ {
+  "label": "merge:biology",
+  "result": {
+   "groups": [
+    {
+     "keep": "seeds-and-germination",
+     "drop": [
+      "bean-in-a-jar"
+     ],
+     "reason": "Same level-0 page: a bean sprouting on wet paper with one control at a time (water, warmth, light), the same takeaway that a seed needs water and warmth, not light, because it lives on stored food, and the same dark-grown pale seedling. seeds-and-germination is better scoped: its dry-mass curve, which falls until the leaves open and then climbs, shows the stored food being used up, and it cites a fetched NGSS 5-LS1-1 source. bean-in-a-jar's root gravitropism detail can be folded into it."
+    }
+   ],
+   "duplicatesOfExisting": []
+  }
+ },
+ {
+  "label": "merge:earth",
+  "result": {
+   "groups": [],
+   "duplicatesOfExisting": []
+  }
+ },
+ {
+  "label": "merge:energy",
+  "result": {
+   "groups": [
+    {
+     "keep": "bicycle-gears",
+     "drop": [
+      "bicycle-gears-hills"
+     ],
+     "reason": "Both level 0 with the same mechanism and takeaway: the sprocket ratio trades distance per pedal turn for force, shown on a hill. bicycle-gears is better scoped: it counts wheel turns per pedal turn for each sprocket pair and also has the hill and force gauge, so it covers everything bicycle-gears-hills shows."
+    },
+    {
+     "keep": "pulleys-and-cranes",
+     "drop": [
+      "crane-counterweight"
+     ],
+     "reason": "Both level 0 and both cover a crane that stands only while its counterweight balances the load's turning effect, and both include the rope falls at the hook. pulleys-and-cranes covers the counterweight tipping as well as the pulley force-for-rope trade. The seesaw balance about a pivot is also the core of levers-and-scissors, so a separate crane-counterweight page would repeat both."
+    }
+   ],
+   "duplicatesOfExisting": []
+  }
+ },
+ {
+  "label": "merge:chemistry",
+  "result": {
+   "groups": [
+    {
+     "keep": "fizz-and-balloons",
+     "drop": [
+      "baking-soda-and-vinegar"
+     ],
+     "reason": "Same reaction (vinegar on baking soda, balloon over the bottle), same takeaway: the fizz is a new gas, not hidden air, and it stops when the limiting ingredient runs out. fizz-and-balloons also shows conservation of mass on a scale (sealed vs open), which makes it the stronger page. baking-soda-and-vinegar's baking-powder aside could become a note."
+    },
+    {
+     "keep": "fire-triangle",
+     "drop": [
+      "candle-under-a-jar"
+     ],
+     "reason": "Both centre on lowering a jar over a candle and watching the oxygen count fall until the flame dies, with jar size as the control. fire-triangle has the clearer single idea (fuel, heat and air, remove one) and the right fix for the misconception (the flame goes out with most of the oxygen still there). The rest of candle-under-a-jar, the wax turning to vapour, is candle-flame's whole subject, and its atom counting with a sealed scale is fizz-and-balloons'. candle-flame stays separate: its mechanism is vaporisation and flame structure."
+    },
+    {
+     "keep": "dissolving-sugar-and-salt",
+     "drop": [
+      "dissolving-sugar"
+     ],
+     "reason": "Same page: sugar particles spread between water particles, warmth and stirring help, there is a saturation limit, and the 'not melting, not gone' misconception. dissolving-sugar-and-salt proves 'not gone' by drying the water to bring the grains back. dissolving-sugar's crushed-cube and insoluble-sand controls can be folded into it."
+    }
+   ],
+   "duplicatesOfExisting": []
+  }
+ },
+ {
+  "label": "merge:medicine",
+  "result": {
+   "groups": [
+    {
+     "keep": "reflex-arc-reaction-time",
+     "drop": [
+      "reflexes"
+     ],
+     "reason": "Despite the level labels (0 and 1) these are the same page: a hand on a hot pan, two signals racing (the short loop through the spinal cord against the long route to the brain) on a clock, then a reaction-time test the reader takes. Both have the same takeaway, that a reflex is fast because it skips the brain. The level-1 version contains everything the level-0 one does and adds the synapse and the ruler-drop distribution (GCSE required practical 7), so it is the better-scoped page. Its hot-pan race is easy enough to stand as the entry point."
+    },
+    {
+     "keep": "body-thermostat",
+     "drop": [
+      "fever"
+     ],
+     "reason": "Same model and same mechanism: a heat budget with a set point in the brain that turns on shivering or sweating. fever lists body-thermostat as its prerequisite and calls itself that page's example. Its only addition, moving the set point to 39 degrees and back, is one control or step on the thermostat page (drag the setting and watch chills, then sweats). It does not need its own model, so fold it into body-thermostat as a step."
+    }
+   ],
+   "duplicatesOfExisting": []
+  }
+ },
+ {
+  "label": "merge:physics",
+  "result": {
+   "groups": [
+    {
+     "keep": "air-pressure-and-straws",
+     "drop": [
+      "drinking-straw"
+     ],
+     "reason": "Both level-0 pages on air pushing a drink up a straw and holding a suction cup on a tile. air-pressure-and-straws also shows what pressure is (particle hits) and adds the syringe and the crushed can. The ten-metre straw limit from drinking-straw can be one step in it."
+    },
+    {
+     "keep": "crashes-and-seatbelts",
+     "drop": [
+      "seatbelt-crash"
+     ],
+     "reason": "Same level-0 page: in a crash the passenger keeps going while the car stops, and a belt, crumple zone or airbag that stretches the stop makes the force gentler. crashes-and-seatbelts adds the tablecloth trick for inertia. The belt-reel locking mechanism from seatbelt-crash can be an aside. The level-1 momentum-impulse-crashes stays separate."
+    },
+    {
+     "keep": "falling-and-parachutes",
+     "drop": [
+      "parachute-terminal-speed"
+     ],
+     "reason": "Both level-0 pages have a parachute reach a steady speed when the air's push matches the weight, with bigger and heavier variants and a feather against a stone. falling-and-parachutes also shows that everything falls at the same rate without air, so it covers the whole of the other page."
+    },
+    {
+     "keep": "playground-swing",
+     "drop": [
+      "swings-and-pendulums",
+      "swing-pumping-alone"
+     ],
+     "reason": "All three are level-0 swing pages. swings-and-pendulums shows that only length sets the beat, and playground-swing shows that plus well-timed pushes. Its last step already has a rider who pumps with no push, which is the whole of swing-pumping-alone. One swing page at level 0 covers all three."
+    },
+    {
+     "keep": "thermos-flask",
+     "drop": [
+      "keeping-things-warm"
+     ],
+     "reason": "Same level-0 page: hot tea in cups with different walls cooling toward room temperature on thermometers, and the same walls keeping ice cold. thermos-flask is better scoped because it names the three heat-loss routes (through the walls, out of the top, as a glow) and shows which change blocks which."
+    },
+    {
+     "keep": "floating-sinking-and-boats",
+     "drop": [
+      "submarine-ballast-tanks",
+      "hot-air-balloon-lift"
+     ],
+     "reason": "All three rest on one level-0 mechanism: a body floats, sinks or hovers depending on its weight against the weight of fluid it pushes aside. floating-sinking-and-boats already ends with warm air rising in a balloon and has loading until it sinks. The submarine and the hot-air balloon are applications of it, not separate pages. They could be steps in it. The level-1 fluid-pressure-buoyancy stays separate."
+    },
+    {
+     "keep": "glowing-hot",
+     "drop": [
+      "toaster"
+     ],
+     "reason": "The toaster page's physics is that hot wires glow with a colour set by their temperature, which is exactly glowing-hot's takeaway (it even includes a toaster element on its temperature slider). The rest of the toaster page (a timer dial) is too thin to stand alone."
+    }
+   ],
+   "duplicatesOfExisting": []
+  }
+ }
+]

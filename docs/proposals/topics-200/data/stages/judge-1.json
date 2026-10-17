@@ -1,0 +1,2914 @@
+[
+ {
+  "label": "judge:fit-level:b4",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "glowing-hot",
+     "score": 4,
+     "reject": false,
+     "reason": "A real mechanism (the blackbody law turned into a visible colour) built on familiar objects (toaster, bulb, Sun), honest at level 0, and distinct, since stars only uses colour as one detail.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "helicopter-rotor",
+     "score": 3,
+     "reject": false,
+     "reason": "The rotating wing, disc tilt and tail-rotor torque reaction are a genuine level-0 mechanism, but this is one of four wing-family candidates in the batch (with kite, paper plane and sailing), so it competes with them for a place.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "hot-air-balloon-lift",
+     "score": 3,
+     "reject": false,
+     "reason": "Buoyancy from warm air is a clean level-0 mechanism with no existing page on floating, but it covers the same 'weigh less than the displaced fluid' takeaway as submarine-ballast-tanks in this batch, so only one should become its own page or the two should merge.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "ice-skates-glide-and-grip",
+     "score": 2,
+     "reject": false,
+     "reason": "Glide along the blade and grip across it is a nice idea, but why ice is slippery is still debated by scientists, so the zoom on a 'thin wet layer' risks teaching something uncertain as fact, and the page mixes a friction survey with blade mechanics.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "keeping-things-warm",
+     "score": 4,
+     "reject": false,
+     "reason": "The build-a-container toy shows the takeaway (an insulator only slows heat flow) through an everyday flask and cooling curve; it suits level 0 and no page covers heat conduction.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "kite-string-wind",
+     "score": 3,
+     "reject": false,
+     "reason": "Balancing the wind's push, weight and string tension on a kite is a showable level-0 mechanism, but it overlaps the other wing-family candidates (paper plane, sailing, helicopter) and partly the flight page.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "magnets-and-poles",
+     "score": 5,
+     "reject": false,
+     "reason": "A core primary-school subject with a real mechanism (poles, falling-off pull, induced magnetism in a clip); it is fully level 0 and distinct from the level-2 electromagnetism page, and it is a natural lead-in to it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "metal-detector",
+     "score": 3,
+     "reject": false,
+     "reason": "Eddy-current echoes are a real mechanism and an appealing device, but induction stretches what a 10-year-old can grasp without field ideas, and it should lead to electromagnetism more than to electric-circuits.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "microwave-oven",
+     "score": 4,
+     "reject": false,
+     "reason": "The standing-wave hot spots, the chocolate test and the turntable fix are a vivid and true mechanism from an everyday object, honest at level 0, and distinct from the string and ripple-tank waves page.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "mirror-images",
+     "score": 4,
+     "reject": false,
+     "reason": "Flat-mirror image position, periscopes and counting images at a corner make a real ray mechanism suited to KS2/KS3, and it is distinct enough from the refraction-centred light-optics bench.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "noise-cancelling",
+     "score": 4,
+     "reject": false,
+     "reason": "Adding an inverted wave, with delay as the one control explaining why it fails on high hisses and claps, is a clear mechanism with no formulas and a distinct device-level angle on interference.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "paints-and-lights",
+     "score": 4,
+     "reject": false,
+     "reason": "Subtractive against additive mixing is a classic confusion, and multiplying reflection spectra is a real model; it extends rather than duplicates vision-color, which only mixes lights.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "paper-plane-glide",
+     "score": 4,
+     "reject": false,
+     "reason": "Trimming balance point against wing centre with a paper clip is a hands-on stability mechanism that flight lacks, and it is the strongest of the wing-family candidates for level 0.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "parachute-terminal-speed",
+     "score": 4,
+     "reject": false,
+     "reason": "Drag rising until it balances weight is a KS3 staple with one clear dial, and as a whole page it is distinct from the air-resistance slider in newtons-laws.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "playground-swing",
+     "score": 3,
+     "reject": false,
+     "reason": "A good level-0 entry to oscillations-resonance, but its takeaways (length sets the period; well-timed pushes build up) are largely that page's own pendulum and resonance, simplified.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "pressure-cooker",
+     "score": 4,
+     "reject": false,
+     "reason": "Boiling point set by pressure, shown through cooking time and a mountain pot, is a genuine and well-chosen mechanism at level 0, distinct from the molecular box in states-of-matter (it depends on the kettle candidate).",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "roller-coaster-feel",
+     "score": 3,
+     "reject": false,
+     "reason": "Felt weight in dips and loops plus the first-hill rule is engaging, but newtons-laws already has an editable track with energy, so its distinct part is mainly the felt-weight gauge.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sailing-into-wind",
+     "score": 3,
+     "reject": false,
+     "reason": "Sail-and-keel tacking upwind is a surprising and real mechanism, but it is hard to make honest without force vectors at level 0, and it is another wing-family candidate in this batch.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "seatbelt-crash",
+     "score": 5,
+     "reject": false,
+     "reason": "Inertia and stopping distance shown through crumple zones, belts, airbags and the locking reel is an everyday, important mechanism, fully level 0 and distinct from the cart collisions in newtons-laws.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "shadows-and-pinholes",
+     "score": 5,
+     "reject": false,
+     "reason": "Straight-line light explaining shadow size, soft edges and the pinhole image is core KS2 content, shown purely by geometry, and it never overlaps the refraction bench.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "smoke-detector",
+     "score": 3,
+     "reject": false,
+     "reason": "Both sensing mechanisms are real and showable, but ionisation-chamber current capture is a stretch for a 10-year-old, and the page reads more like a device tour than one takeaway toy.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "speakers-and-microphones",
+     "score": 4,
+     "reject": false,
+     "reason": "Moving the cone by hand, with the coil and magnet shown and the device run backwards as a microphone, is a clear and distinct device mechanism at level 0, and noise-cancelling builds on it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "spinning-tops",
+     "score": 3,
+     "reject": false,
+     "reason": "Gyroscopic precession can be shown well from the real equations, but why spin turns a tip into a wobble cannot honestly be explained without vectors, so at level 0 it risks being a demonstration rather than an understanding.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "springs-and-scales",
+     "score": 4,
+     "reject": false,
+     "reason": "Hooke's law as equal stretch per weight, plus the elastic limit, is KS3 content with a true mechanism, and it is distinct from the oscillating spring in oscillations-resonance.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "submarine-ballast-tanks",
+     "score": 4,
+     "reject": false,
+     "reason": "Floating, sinking and hovering through displaced weight is a gap in the catalogue and a core level-0 idea, and this is the stronger of the two buoyancy candidates because the reader controls the balance directly.",
+     "suggestedLevel": 0
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b1",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "angles-as-turns",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An honest level-0 bridge to unit-circle, and the total-turn walk is a real mechanism, but it sits close to a definition and shares its turn-closing idea with shapes-that-tile and sunflower-spirals in this same batch."
+    },
+    {
+     "slug": "area-and-volume",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Counting tiles and cubes and then doubling a toy to get four times the skin and eight times the insides is a real, visual mechanism (the square-cube law) that no existing page shows, and it works for a 10-year-old."
+    },
+    {
+     "slug": "coin-streaks",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The running share settling while streaks and the heads-minus-tails gap keep growing is a real, counter-intuitive mechanism that fits level 0 and is distinct from central-limit-theorem and from two-dice."
+    },
+    {
+     "slug": "counting-wheels",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An odometer with carries is a true mechanism that makes place value and other bases tangible, and it is a clean level-0 step before binary without duplicating that page."
+    },
+    {
+     "slug": "estimating-a-crowd",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Count a patch and multiply is a usable method that fits level 0 and lets the reader pick a bad patch, but it is thin as a mechanism and the graphic has little to show beyond one multiplication."
+    },
+    {
+     "slug": "fractions-fair-shares",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Honest level 0 and well aimed at a known misconception, but it is closer to teaching a definition than showing how something works, and it overlaps scaling-a-recipe and percent-off in this batch."
+    },
+    {
+     "slug": "growing-patterns",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Adding the same against doubling, side by side, is a strong level-0 toy that fills the gap left by the reserved exponentials topic; epidemics shows doubling only inside a disease model."
+    },
+    {
+     "slug": "infinite-hotel",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Pairing rooms with guests is a real idea a curious 10-year-old can follow and no existing page touches infinity, but it is a thought experiment rather than a mechanism, and it leads to no existing topic."
+    },
+    {
+     "slug": "mirror-symmetry",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An honest level-0 drawing toy, but it leans toward a definition with counting, its mechanism is thin, and its link to unit-circle is weak."
+    },
+    {
+     "slug": "monty-hall",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A famous puzzle with a real mechanism (what the host knows) that tallies and the three-cases board make clear without formulas; it is distinct from bayes-theorem's base-rate grid."
+    },
+    {
+     "slug": "percent-off",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The shifting base and a cut followed by a matching rise that does not cancel are useful and honest at level 0, but it is a modest arithmetic idea that overlaps fractions-fair-shares and scaling-a-recipe."
+    },
+    {
+     "slug": "rectangles-and-primes",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Finding primes by trying rectangles is a nice level-0 way in, but its takeaway (which counts are prime and where they fall) largely repeats what primes-modular-arithmetic's sieve already shows."
+    },
+    {
+     "slug": "rolling-wheel-pi",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Rolling a wheel and unrolling wedges is a hands-on mechanism for pi that works without formulas, and it is distinct from unit-circle and from colliding-blocks-pi."
+    },
+    {
+     "slug": "scaling-a-recipe",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The squash-colour test of a ratio, with the add-one-of-each error shown, is a good level-0 toy, but it overlaps percent-off and fractions-fair-shares and is closer to classroom arithmetic than to how something works."
+    },
+    {
+     "slug": "shapes-that-tile",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Fitting corners around a point until they close one full turn is a clear, buildable mechanism that answers a real question and is distinct from chaos-fractals, though it builds on angles-as-turns."
+    },
+    {
+     "slug": "speed-distance-time",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Reading speed as the steepness of a distance-time line is honest at level 0 and is not the forces of newtons-laws, but it is a graph-reading lesson more than a mechanism and arguably belongs in physics."
+    },
+    {
+     "slug": "sunflower-spirals",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Vogel's one-angle seed model is a real mechanism with a single control and a payoff you can count on a real flower; it fits level 0 if the golden angle stays a dial setting rather than a formula."
+    },
+    {
+     "slug": "treasure-map-coordinates",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Honest level 0 and distinct from graph-search, but naming a spot with two numbers and reading a scale bar is mostly a definition, with little mechanism for the graphic to show."
+    },
+    {
+     "slug": "two-dice",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Counting the 36 ways two dice land while the rolled columns settle into the triangle is a clean level-0 mechanism, distinct from the Galton board in central-limit-theorem and from coin-streaks."
+    },
+    {
+     "slug": "what-an-average-hides",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The mean as a balance point that an outlier drags while the median stays put is a physical, visible mechanism with everyday value, and no existing page shows it."
+    },
+    {
+     "slug": "why-triangles-are-stiff",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A square frame folding and a triangle holding firm is a pure mechanism a 10-year-old can build and test, and it is a well-scoped level-0 step before bridges-structures without its forces."
+    },
+    {
+     "slug": "zoom-by-tens",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Powers of ten as clicks of a dial with true-scale fit counts is a strong level-0 explorer, distinct from deep-time's timeline and from the-cell's zoom through one cell."
+    },
+    {
+     "slug": "bezier-curves",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Repeated straight-line interpolation (de Casteljau) is a real algorithm behind fonts and vector drawing, it draws as a mechanism directly, it is honest at level 1 and no existing page shows it."
+    },
+    {
+     "slug": "cellular-automata",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A topic promoted from the catalogue's reserve, with editable rules and patterns that emerge from them, honest at level 1 and distinct from chaos-fractals' continuous systems."
+    },
+    {
+     "slug": "colliding-blocks-pi",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "A delightful puzzle with a real model, but it is a curiosity more than a how-it-works subject, and explaining the count needs a rescaled velocity plot and an angle argument that sit at level 2, not 1."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b1",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "angles-as-turns",
+     "score": 4,
+     "reject": false,
+     "reason": "A turtle-geometry construction (heading accumulates exterior turns, summed on one pie) plus a divisibility check of steps-per-turn is a small, honest, level-0 model.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "area-and-volume",
+     "score": 4,
+     "reject": false,
+     "reason": "Tile and cube counting on a draggable rectangle and an isometric box, plus a voxel toy scaled by 2 with surface and volume counts, are simple, real computations that draw cleanly in SVG.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "coin-streaks",
+     "score": 5,
+     "reject": false,
+     "reason": "A seeded random-flip sequence with running share, longest-run and heads-minus-tails counters is a tiny, honest simulation, and comparing the reader's typed row against it is cheap.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "counting-wheels",
+     "score": 5,
+     "reject": false,
+     "reason": "An odometer with configurable base and ripple carry, plus Pascaline-style addition, is an exact small algorithm that animates naturally as a function of time.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "estimating-a-crowd",
+     "score": 4,
+     "reject": false,
+     "reason": "A generated non-uniform point field (a 2D settling pile or a density-mapped crowd) with a window count, scale-up and true total is an honest sampling model; the 'real pile' should be a simple deposition or density field, not a photo, and needs no data.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "fractions-fair-shares",
+     "score": 3,
+     "reject": false,
+     "reason": "Buildable as equal-partition geometry with overlay comparison and a sharing division, but the model is thin and risks being a picture to tap unless the sharing step actually computes cuts and redistribution.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "growing-patterns",
+     "score": 3,
+     "reject": false,
+     "reason": "Linear versus doubling sequences with tiles, a chart and a folding counter are trivially computable and honest, but the model is very thin and the 'chart leaves the screen' needs a deliberate scale design.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "infinite-hotel",
+     "score": 4,
+     "reject": false,
+     "reason": "Applying a room-reassignment function to a lazily rendered, scrollable row and enumerating rationals by a diagonal walk is a real algorithm that runs instantly in the browser.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "mirror-symmetry",
+     "score": 4,
+     "reject": false,
+     "reason": "Live reflection and n-fold rotation of a drawn path, and testing a polygon or glyph outline against each flip and turn for coincidence, is a clean geometric construction with no data.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "monty-hall",
+     "score": 5,
+     "reject": false,
+     "reason": "A seeded game simulation with stay/switch tallies, an enumeration of prize positions and an n-door generalisation is a tiny, fully honest model.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "percent-off",
+     "score": 3,
+     "reject": false,
+     "reason": "Honest but nearly calculator-thin: a hundred-square and bars driven by price times rate; the cut-then-rise asymmetry gives it one real observable, so it is buildable if kept tight.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "rectangles-and-primes",
+     "score": 4,
+     "reject": false,
+     "reason": "Enumerating factor pairs to lay out chairs and lighting single-line counts on a hundred-square is a small exact algorithm that draws directly.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "rolling-wheel-pi",
+     "score": 5,
+     "reject": false,
+     "reason": "A rolling-without-slipping wheel leaving rim marks and an n-wedge rearrangement converging to a rectangle are exact geometric constructions, pure functions of time.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "scaling-a-recipe",
+     "score": 3,
+     "reject": false,
+     "reason": "Proportional scaling and a colour computed from the concentrate fraction (a simple mixing or Beer-Lambert-style shade) are honest and small, though the recipe half is close to a bar chart of a multiplication.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "shapes-that-tile",
+     "score": 5,
+     "reject": false,
+     "reason": "Fitting regular polygons around a vertex by interior angle, flooding the plane for the three regular tilings, and an Escher tile whose edited edge is translated to the opposite edge are clean geometric constructions.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "speed-distance-time",
+     "score": 4,
+     "reject": false,
+     "reason": "Constant-speed runners with pauses plotted as distance against ticks is a trivial, honest kinematic model that animates as a pure function of time.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sunflower-spirals",
+     "score": 5,
+     "reject": false,
+     "reason": "Vogel's model (seed n at angle n times the divergence, radius proportional to sqrt n) with parastichy counting by nearest-neighbour offsets is small and exact, and CC0/CC BY sunflower photographs are readily available on Wikimedia Commons.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "treasure-map-coordinates",
+     "score": 3,
+     "reject": false,
+     "reason": "Ordered-pair placement and polyline length times a scale factor are honest but thin computations; buildable, with the scale-invariance step the only real model behaviour.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "two-dice",
+     "score": 5,
+     "reject": false,
+     "reason": "Seeded dice rolls filling a histogram next to the exact 36-outcome enumeration is a tiny, honest simulation.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "what-an-average-hides",
+     "score": 5,
+     "reject": false,
+     "reason": "A plank tipping about a fulcrum by net torque of coin stacks finds the mean physically, with the median computed alongside: a small, honest lever model with no data.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "why-triangles-are-stiff",
+     "score": 4,
+     "reject": false,
+     "reason": "A pin-jointed stick frame solved by position-based distance constraints (Verlet) shows the square folding and the triangle holding, and a rigidity count can score the fewest-sticks challenge; the solver is level-1 code but the observable is level 0.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "zoom-by-tens",
+     "score": 3,
+     "reject": false,
+     "reason": "A log-scale true-size renderer over a cited sizes table is buildable and the NASA NSSDC fact sheet is public domain, but the 'model' is mostly a lookup and the page risks becoming a browse-a-shelf unless the fit counting and click counts stay central.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "bezier-curves",
+     "score": 5,
+     "reject": false,
+     "reason": "De Casteljau's algorithm with draggable control points, a t scrubber, convex hull and joined segments is the exact model and runs instantly in SVG.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "cellular-automata",
+     "score": 5,
+     "reject": false,
+     "reason": "Game of Life on a modest grid and elementary 1D rules from an 8-bit table are exact, cheap algorithms that run at interactive rates in SVG.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "colliding-blocks-pi",
+     "score": 5,
+     "reject": false,
+     "reason": "An event-driven elastic-collision model computes each collision exactly (314 for ratio 10^4 is trivial), and the velocity-space circle view is a direct transform of the same state.",
+     "suggestedLevel": 1
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b3",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "resampling-inference",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Permutation tests, the bootstrap and power are real university statistics with a mechanism the graphic shows directly (rebuilding the null distribution), and the page is clearly distinct from central-limit-theorem and learning-from-data."
+    },
+    {
+     "slug": "riemann-zeta-primes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An honest level-3 page with a striking, showable mechanism: adding zeros to the explicit formula until it locks onto the prime staircase; it goes far beyond the sieve page, though it is heavy to compute correctly."
+    },
+    {
+     "slug": "sampling-theorem",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Sinc reconstruction and aliasing are a core signals mechanism with a vivid strobe and audio toy; distinct from fourier-transform and wireless-signals, and correctly pitched at university level."
+    },
+    {
+     "slug": "svd-low-rank",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Rotate-stretch-rotate geometry plus image compression by rank is a classic, visual level-3 mechanism that clearly extends the eigenvector view on linear-transformations without duplicating it."
+    },
+    {
+     "slug": "symmetry-groups",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Composing symmetries into a Cayley table is a genuine level-3 mechanism, but the page splits across two large subjects (finite groups and the 17 wallpaper groups), and the wallpaper part risks turning into a catalogue."
+    },
+    {
+     "slug": "taylor-series",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Showing the radius of convergence set by a complex singularity is a real and surprising mechanism; plain Taylor polynomials would be level 2, but the complex-disk explanation makes level 3 honest, and it is distinct from calculus."
+    },
+    {
+     "slug": "vector-calculus",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Measuring divergence and curl as flux and circulation in small boxes, with Green's theorem shown as cancelling edges, is a strong university-level mechanism and clearly separate from the field drawings on electromagnetism."
+    },
+    {
+     "slug": "winding-numbers",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An elegant topological proof with a draggable mechanism and an honest level-3 pitch, but its audience is narrower than the other math candidates."
+    },
+    {
+     "slug": "air-pressure-and-straws",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A good level-0 page: air pressure shown as particles hitting a surface, with straws, syringes and suction cups explained as removing push on one side; distinct from states-of-matter, but it nearly duplicates drinking-straw in this file."
+    },
+    {
+     "slug": "balance-and-tipping",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Centre of weight over the base is a clear, formula-free mechanism a 10-year-old can play with (seesaw, leaning tower), and no existing page covers it."
+    },
+    {
+     "slug": "balloons-and-static",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Rubbing to move charge and the cling of uncharged things by induced charge is a familiar experience with a real mechanism; it stays well below electromagnetism and is distinct from it."
+    },
+    {
+     "slug": "blue-sky-red-sunset",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A classic question children ask, answered by a real scattering model scrubbed through a day, with no formulas needed; nothing on the site covers scattering."
+    },
+    {
+     "slug": "bouncing-ball",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An honest level-0 toy, but the energy bars with a dissipated share already appear on newtons-laws, so the new part is mainly the choice of ball and floor."
+    },
+    {
+     "slug": "car-brakes-stopping-distance",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Thinking distance plus braking distance, with doubling the speed quadrupling the braking part, is a concrete and useful mechanism that a level-0 reader can grasp as a comparison; distinct from newtons-laws and from the other car candidates."
+    },
+    {
+     "slug": "car-steering-corners",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The sideways grip needed in a bend is a sound level-0 mechanism, but it shares the tyre-grip idea with the braking and friction candidates, and the Ackermann steering detail is marginal for a 10-year-old."
+    },
+    {
+     "slug": "contactless-cards",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A battery-less card powered by the reader's pulsing magnetism is an everyday mystery with a clear mechanism of power against distance, kept simpler than and distinct from electromagnetism."
+    },
+    {
+     "slug": "crashes-and-seatbelts",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Riding inside the car frame by frame to show that a longer stop means a gentler force is a strong level-0 take on inertia and impulse, distinct from carts colliding on newtons-laws."
+    },
+    {
+     "slug": "digital-camera-sensor",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Light as counted specks in buckets explains grain, overexposure and the colour filter grid with a real mechanism; distinct from light-optics and vision-color."
+    },
+    {
+     "slug": "drinking-straw",
+     "score": 2,
+     "reject": true,
+     "suggestedLevel": 0,
+     "reason": "A substantial duplicate of air-pressure-and-straws in this same file (straw plus suction cup, with the outside air doing the pushing); its ten-metre limit should be folded into that page as one step."
+    },
+    {
+     "slug": "e-reader-ink",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Charged specks that stay put once moved are a neat, honest level-0 mechanism, but the device is niche and the page has fewer steps of real substance than the stronger candidates."
+    },
+    {
+     "slug": "echoes-and-thunder",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Timing a delay to get a distance (echo, thunder, sonar) is a genuine, formula-free mechanism distinct from waves-interference; its prerequisite vibrations-and-sound must itself be accepted as a level-0 page."
+    },
+    {
+     "slug": "falling-and-parachutes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Air on or off for the hammer and feather, and a parachute reaching a steady falling speed, make a clear level-0 mechanism; it is distinct enough from the air-resistance slider on newtons-laws."
+    },
+    {
+     "slug": "fireworks-shell-burst",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An appealing hook with a real mechanism (equal-speed stars form a sphere that falls together), but much of it is a sequence of stages and a colour table rather than one strong toy."
+    },
+    {
+     "slug": "floating-sinking-and-boats",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Floating explained by the weight of the water pushed aside, with the clay ball and clay bowl, is a must-have formula-free mechanism that no existing page covers."
+    },
+    {
+     "slug": "friction-and-grip",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Grip before sliding, the tilt angle and the heat of rubbing are a solid level-0 mechanism not covered by newtons-laws; it should share its grip model with the two car candidates rather than repeat it."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b2",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "exponentials-logarithms",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Repeated multiplication, a linear/log axis toggle and a slide rule made of log-length bars are closed-form geometry with no data, a small, honest level-1 model."
+    },
+    {
+     "slug": "game-theory-cooperation",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "An Axelrod-style round-robin of five fixed strategies, a copy-the-winner population update and a spatial grid game are cheap agent simulations that run easily in the browser, and the honest model needs no equations at level 1."
+    },
+    {
+     "slug": "probability-trees",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Multiplying along branches, a seeded Monte Carlo tally, path counting for Pascal's triangle and the birthday product are exact and trivial to compute; the model is real and needs no data."
+    },
+    {
+     "slug": "statistics-correlation",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Live mean, median, r and least squares on draggable points cost nothing to compute; Anscombe's 44 numbers are published facts, and Palmer penguins is confirmed CC0 and gives a real hidden-variable scatter."
+    },
+    {
+     "slug": "differential-equations",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "Slope fields and Euler or exact solution curves for the four named equations are a few arithmetic operations per arrow, a small honest model with no data."
+    },
+    {
+     "slug": "calculus-of-variations",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The bead's descent time is a 1D quadrature along a spline, and gradient descent on a dozen control points converging to the analytic cycloid (plus the catenary) runs at interactive rates; this is the real functional being minimised."
+    },
+    {
+     "slug": "channel-capacity",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "BSC mutual information and capacity are closed form and repetition codes are trivial, but random codes decoded by nearest codeword need 2^(nR) codewords, so blocks must stay short (about n ≤ 24) and the error-goes-to-zero trend will be modest; the page must present it as a trend, not a limit reached."
+    },
+    {
+     "slug": "continued-fractions",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The expansion is the Euclidean algorithm, and the rectangle cutting, convergents and lattice points are exact constructions; the Metonic example needs only the published lengths of the month and year, which are facts."
+    },
+    {
+     "slug": "convex-duality",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "For a 2D objective with one constraint, the gradients, Lagrange point, a dual function computed by inner minimisation over a grid, and the shadow price are all cheap to compute; the non-convex toggle needs carefully chosen example functions so the duality gap shows clearly."
+    },
+    {
+     "slug": "elliptic-curves",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Chord-and-tangent addition over the reals and over a small prime field (enumerating all points mod p) is exact integer and geometric arithmetic, an honest small model."
+    },
+    {
+     "slug": "evolutionary-game-theory",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Replicator dynamics on the simplex and best-response diagrams are a 2- or 3-variable ODE, and the spatial grid game is a cheap cellular automaton; everything runs live, though it should not repeat the level-1 grid from game-theory-cooperation."
+    },
+    {
+     "slug": "fixed-point-iteration",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Cobwebs and Newton tangents are trivial; the Newton basin image needs per-pixel iteration rendered to a raster image inside the SVG, which is affordable and has precedent in chaos-fractals' Mandelbrot zoom."
+    },
+    {
+     "slug": "galois-theory",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Tracking the roots numerically while the coefficients move and recording the permutation is buildable and honest, but Arnold's nested-commutator argument for degree 5 needs carefully precomputed loops, and the commutator depth is an argument the page shows rather than a model it computes, so this is a hard page to make legible."
+    },
+    {
+     "slug": "generating-functions",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Multiplying polynomials for coins and dice and expanding a rational function's series are exact and cheap; collapsing the Fibonacci series to a fraction is a known closed form shown rather than general symbolic algebra, which is fine for the page."
+    },
+    {
+     "slug": "heat-and-wave-equations",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Finite-difference or spectral solutions of 1D heat and wave equations, plus a small 2D grid, are classic interactive-rate PDEs, and the mode decomposition is an exact FFT; this is an honest model."
+    },
+    {
+     "slug": "hyperbolic-geometry",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Geodesic arcs, the hyperbolic distance, angle-defect area and a {7,3} tiling generated by reflections are exact Möbius-transform geometry that runs live; the three-model switch adds work but no new difficulty."
+    },
+    {
+     "slug": "knot-invariants",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Kauffman bracket (2^n states) and tricolorability are cheap for diagrams of up to about 12 crossings, and diagrams can be hand-entered because KnotInfo has no explicit data licence; extracting a PD code from a freehand curve and doing Reidemeister moves by dragging are hard to build, so a picker plus scripted moves is the realistic version."
+    },
+    {
+     "slug": "linear-programming",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Half-plane intersection, a sliding objective line, simplex pivots on a tiny tableau and a projected 3D polytope are all exact and small; this is the real algorithm."
+    },
+    {
+     "slug": "markov-chain-monte-carlo",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Monte Carlo integration, its error versus dimension, and Metropolis on a 2D target with trace and autocorrelation are cheap seeded simulations, and the bimodal trap appears honestly in the model's own output."
+    },
+    {
+     "slug": "markov-chains",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Walkers on a small chain, the stationary eigenvector, absorption times and letter n-gram text generation are cheap; Eugene Onegin is public domain, but the page must recompute Markov's vowel–consonant counts from a named Wikisource edition rather than quote remembered numbers, and an order-3 English letter table should be built at build time to keep the bundle small."
+    },
+    {
+     "slug": "numerical-stability",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Four integrators on small ODEs, stability regions drawn as level sets of |R(z)| and an explicit heat solver blowing up past the CFL limit are exactly the honest model, and all are cheap."
+    },
+    {
+     "slug": "phase-portraits",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Eigenvalues of a 2×2 matrix, a trace–determinant chart, a streamline field and RK4 trajectories for the pendulum, predator–prey and van der Pol systems through a Hopf bifurcation all run live, with no data."
+    },
+    {
+     "slug": "projective-geometry",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Cone sections, a perspective camera on a floor circle, the cross-ratio and Pascal's line are exact constructions; the cone-and-plane view needs careful 3D-to-SVG projection, but this is still geometry, not a picture to tap."
+    },
+    {
+     "slug": "random-graphs",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Erdős–Rényi graphs on a few hundred nodes with union-find for the giant component, preferential attachment and grid bond percolation are cheap seeded simulations, and the threshold appears in the live plot."
+    },
+    {
+     "slug": "random-walks",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Thousands of walkers, root-mean-square growth, a histogram compared with the heat kernel and a self-similar path are easy; the return experiment can only show the fraction returned by time T, which saturates near 0.34 in 3D and creeps toward 1 slowly in 2D, so the page must not claim to show that every walker returns."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b5",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "swing-pumping-alone",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A familiar experience with a real and surprising mechanism (parametric pumping by changing the swing's length, twice per cycle) that one tap control shows well, distinct from the driven pendulum on oscillations-resonance, though it should share a swing scene with swings-and-pendulums."
+    },
+    {
+     "slug": "swings-and-pendulums",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An honest level-0 isochronism page that busts real misconceptions about weight and push, but its mechanism is the pendulum-length part of oscillations-resonance retold, and it could merge with swing-pumping-alone as one swing page."
+    },
+    {
+     "slug": "temperature-and-touch",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A classic misconception (metal feels colder) with a clear heat-flow mechanism a 10-year-old can feel, not covered by states-of-matter or entropy, though it partly overlaps thermos-flask on conduction."
+    },
+    {
+     "slug": "thermos-flask",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Everyday object, one change at a time, and the three routes heat leaves by (conduction, convection, radiation) are a clear mechanism that no existing page shows; keep the conduction part distinct from temperature-and-touch."
+    },
+    {
+     "slug": "toaster",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Kids know it and glow colour following temperature is a real idea, but the rest is thin (the dial sets the time) and the electrical-heating mechanism is shallow, so it reads more like a fact than a full how-it-works."
+    },
+    {
+     "slug": "touchscreens",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Very high appeal and a real mechanism (a capacitive grid plus peak finding) that the glove, water and pressure tests show without formulas, distinct from electric-circuits and electromagnetism."
+    },
+    {
+     "slug": "train-wheel-cones",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An elegant, little-known geometric mechanism that the graphic can show directly with one control at a time, works without numbers, and has no overlap with any existing page."
+    },
+    {
+     "slug": "vibrations-and-sound",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A core KS2/KS3 and NGSS subject with a clear mechanism (vibration passed along through air: pitch, loudness, the bell jar) that is a true beginner on-ramp to waves-interference and does not duplicate its interference and harmonics."
+    },
+    {
+     "slug": "washing-machine-spin",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An everyday machine that teaches inertia in circular motion honestly (water carries straight on, no centrifugal force), with an extra unbalanced-load step, distinct from newtons-laws' straight-track carts."
+    },
+    {
+     "slug": "water-pressure-and-hydraulics",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Pressure growing with depth and hydraulic force multiplication are honest level-0 ideas, but the page bundles two mechanisms and its hydraulic lift repeats the same step in fluid-pressure-buoyancy in this file."
+    },
+    {
+     "slug": "fluid-pressure-buoyancy",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Fills a real level-1 gap (pressure with depth leading to upthrust and floating) with a force-balance model; drop or trim the hydraulic-lift step that the level-0 water-pressure candidate already covers."
+    },
+    {
+     "slug": "gas-laws",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Standard GCSE content where pressure counted from wall hits gives a genuine mechanism and the extrapolation to absolute zero is a strong payoff; it is distinct enough from states-of-matter, which never plots P, V and T."
+    },
+    {
+     "slug": "magnets-and-electromagnets",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A clear level-1 gap below electromagnetism (field maps, electromagnets, the Earth as a magnet) with a computed field model and an honest level."
+    },
+    {
+     "slug": "momentum-impulse-crashes",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Impulse and crumple zones are worth a page, but newtons-laws already collides carts to show momentum conservation, so only the impulse, elasticity and angled-collision steps are new."
+    },
+    {
+     "slug": "musical-scales-ratios",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "An appealing, distinctive question with a real mechanism (frequency ratios, beats and a roughness model, dividing the octave equally) that waves-interference does not cover, at an honest level 1."
+    },
+    {
+     "slug": "polarized-light",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Rotating the filter and the three-filter surprise make a strong interactive mechanism that light-optics lacks, and it works qualitatively at level 1."
+    },
+    {
+     "slug": "spinning-balls-curve",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "High demand from sport and an honest wake-deflection picture of the Magnus effect, distinct from the wing on flight and from newtons-laws' projectiles, which have no spin."
+    },
+    {
+     "slug": "nuclear-binding-energy",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "The binding-energy curve and the valley of stability explain why both fission and fusion release energy, which neither existing nuclear page shows; the level 2 is honest, but level-2 slots are scarce in this round."
+    },
+    {
+     "slug": "photoelectric-effect",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "A canonical experiment whose model and Planck-constant graph are not on quantum-mechanics or solar-cells; it is honestly level 2, which counts against it given the target mix."
+    },
+    {
+     "slug": "bell-inequality",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A university-level real model (CHSH against any hidden-variable table, with the Delft data) that the graphic can run, clearly beyond quantum-computing's entanglement step."
+    },
+    {
+     "slug": "bifurcations",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Genuine level-3 nonlinear-dynamics content (saddle-node, pitchfork, Hopf) with an animated vector field, distinct from chaos-fractals; it risks becoming a catalogue of types, so it needs one guiding example."
+    },
+    {
+     "slug": "blackbody-cavity-modes",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Deriving the Planck curve by counting modes, showing the ultraviolet catastrophe and fitting COBE is a real level-3 mechanism and a clear step beyond stars' use of the curve."
+    },
+    {
+     "slug": "bose-einstein-condensation",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Comparing occupation under Boltzmann, Bose and Fermi statistics with the JILA data is an honest level-3 statistical-mechanics model, distinct from condensation through attraction in states-of-matter."
+    },
+    {
+     "slug": "brownian-motion",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Langevin random walk and the Einstein relation leading to Avogadro's number make a real, distinctive model; it sits near the level 2/3 boundary but is acceptable at 3 as statistical physics."
+    },
+    {
+     "slug": "casimir-effect",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A real level-3 mode-sum model, but it is niche, the cutoff-independence is abstract to show, and it reuses the cavity-mode machinery of blackbody-cavity-modes in this same file, so it would work better as a step there."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b2",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "exponentials-logarithms",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A core gap: radioactivity and epidemics use exponentials but no page isolates multiply-versus-add growth or explains the log as a count of steps. The slide rule and log axis give the graphic a real mechanism to show."
+    },
+    {
+     "slug": "game-theory-cooperation",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "An Axelrod tournament is a vivid, popular mechanism with no existing equivalent and is honest at level 1. Its spatial-grid finale duplicates the one in evolutionary-game-theory, so the grid belongs on only one of the two pages."
+    },
+    {
+     "slug": "probability-trees",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Probability trees and drawing with or without replacement are core school probability that bayes-theorem and central-limit-theorem don't cover. Running the experiment against the tree's prediction makes a proper interactive mechanism."
+    },
+    {
+     "slug": "statistics-correlation",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Dragging points to move the mean, median and r, plus Anscombe's quartet and a confounder, are much-wanted ideas at an honest level 1. It only touches learning-from-data at the fitted line, and its takeaway is about what r means, which is distinct."
+    },
+    {
+     "slug": "differential-equations",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "Slope fields with Euler stepping are the natural sequel to calculus and a true level-2 page, one of the few justified at that level. Keep the step-size blow-up brief so it doesn't duplicate numerical-stability."
+    },
+    {
+     "slug": "calculus-of-variations",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The brachistochrone race is a classic, visual, wanted subject, and relaxing a curve toward the cycloid shows the real functional being minimized. That is honest level-3 content and distinct from newtons-laws."
+    },
+    {
+     "slug": "channel-capacity",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Mutual information on a binary symmetric channel and codes racing the Shannon limit are the real university model. It caps compression and error-correction without duplicating either."
+    },
+    {
+     "slug": "continued-fractions",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "Cutting squares from a rectangle and finding best rational approximations is a nice mechanism and distinct from existing pages. It needs only fractions, so level 2 is more honest than 3, and its demand is narrower than the core topics."
+    },
+    {
+     "slug": "convex-duality",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Gradient alignment at a constrained optimum and the multiplier as a price are real level-3 content, and the page adds constraints to gradient-descent. The dual-function panel is abstract for a general visitor, and the shadow price overlaps linear-programming."
+    },
+    {
+     "slug": "elliptic-curves",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The chord-and-tangent group law, real and then modulo p, is a highly visual mechanism. It extends cryptography to the curves modern signatures actually use, at an honest level 3."
+    },
+    {
+     "slug": "evolutionary-game-theory",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Replicator dynamics on the simplex, Nash equilibria and the rock-paper-scissors cycle are proper level-3 content distinct from evolution. It shares the prisoner's dilemma and the spatial grid with game-theory-cooperation, so one of them should drop the grid."
+    },
+    {
+     "slug": "fixed-point-iteration",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Cobwebs, the role of the slope in convergence, and Newton basins make a sound mechanism at level 3. They sit close to chaos-fractals (cobwebbed logistic map, complex-plane fractal zoom) and partly to numerical-stability."
+    },
+    {
+     "slug": "galois-theory",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Arnold's topological proof, with roots permuting as coefficients loop, is a rare case where a deep theorem gets a genuine animated mechanism. It is a distinctive level-3 draw, though hard to build well."
+    },
+    {
+     "slug": "generating-functions",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Multiplying polynomials to count coin and dice combinations is a real mechanism, and the level is honest. The subject is closer to formal bookkeeping than a visible process, and its appeal is narrower."
+    },
+    {
+     "slug": "heat-and-wave-equations",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Running one profile under both PDEs side by side, mode by mode, is a strong and honest level-3 page. It goes clearly beyond waves-interference and fourier-transform."
+    },
+    {
+     "slug": "hyperbolic-geometry",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Poincaré disk, with draggable triangles, angle defect and heptagonal tilings, is visually compelling, widely wanted, and unlike any existing page."
+    },
+    {
+     "slug": "knot-invariants",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Reidemeister moves leaving invariants unchanged is a genuine mechanism, and no page covers knots. The Jones polynomial is heavy for the graphic, and the topic is less of a how-it-works subject than most."
+    },
+    {
+     "slug": "linear-programming",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Simplex walking polygon corners is a clear, useful level-3 mechanism. It depends on convex-duality and overlaps it on shadow prices, so the two should split that material."
+    },
+    {
+     "slug": "markov-chain-monte-carlo",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Monte Carlo error falling as 1/√N, and Metropolis chains with trace and autocorrelation plots, are the real working model behind modern statistics. It is distinct from central-limit-theorem and suited to level 3."
+    },
+    {
+     "slug": "markov-chains",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The general theory of stationary distributions, absorption and periodicity is a sound mechanism and a prerequisite for MCMC. Its core picture, walkers converging to a stationary distribution, repeats pagerank's random surfer, so the distinct value lies in the failure cases."
+    },
+    {
+     "slug": "numerical-stability",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Stability regions and stiff problems are real level-3 numerical analysis with a vivid blow-up demo. It overlaps the Euler step-size material in differential-equations and appeals to a narrower audience."
+    },
+    {
+     "slug": "phase-portraits",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Classifying flows by eigenvalues on the trace-determinant chart, with linearizations laid over real flows and a Hopf bifurcation, is the standard university model. It is distinct from chaos-fractals and ecosystems."
+    },
+    {
+     "slug": "projective-geometry",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The page glues two subjects: conic sections, which are level 1 or 2, and projective invariants such as cross-ratio and Pascal's theorem, which are level 3. That split weakens its focus, though it is distinct from graphics-3d."
+    },
+    {
+     "slug": "random-graphs",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The giant component's sudden appearance at average degree 1 is a striking emergent mechanism, and preferential attachment adds real network science. No existing page covers network structure itself."
+    },
+    {
+     "slug": "random-walks",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The √t spreading and Pólya's recurrence across dimensions make a good level-3 page. It overlaps central-limit-theorem's Galton board and heat-and-wave-equations' diffusion, so it should lean on the recurrence and scale-invariance material."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b4",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "glowing-hot",
+     "score": 5,
+     "reject": false,
+     "reason": "Planck's law through the CIE CMFs and blackBody routine the site already ships is a small, honest, real-time model, it needs no new data, and an infrared false-colour view can be computed from the same spectrum.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "helicopter-rotor",
+     "score": 4,
+     "reject": false,
+     "reason": "Momentum-theory thrust from spin and collective, a tilted thrust vector and a yaw ODE for torque reaction make a small rigid-body sim that is honest at level 0, though blade-element detail must stay out.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "hot-air-balloon-lift",
+     "score": 5,
+     "reject": false,
+     "reason": "The ideal gas law, a standard-atmosphere density profile and a buoyancy-minus-weight ODE with burner heating and vent cooling make a clean, small model, and the lift is visible in the motion.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "ice-skates-glide-and-grip",
+     "score": 3,
+     "reject": false,
+     "reason": "The sled comparison is a trivial friction ODE and the blade is an anisotropic-friction rigid body, both buildable, but ice friction coefficients depend on speed and temperature (one cited table must be chosen and named), and the wet-layer zoom is a picture, not a model.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "keeping-things-warm",
+     "score": 5,
+     "reject": false,
+     "reason": "A lumped RC thermal network with the reader's layers as conductances is an honest, tiny ODE, and the few handbook conductivities are available (Wikipedia is CC BY-SA, so prefer a public-domain handbook figure or cite with attribution).",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "kite-string-wind",
+     "score": 4,
+     "reject": false,
+     "reason": "A 2D flat-plate kite with a bridle point, weight, tail drag and string tension can be integrated or solved for equilibrium in real time, and cutting the line is the same ODE with tension zero; the flat-plate lift and drag curves should be stated as a simplification.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "magnets-and-poles",
+     "score": 4,
+     "reject": false,
+     "reason": "A Gilbert two-pole model with inverse-square forces, a field sampled for the compass and filings, and an induced pole pair for steel clips are all cheap to compute, and an honest level-0 approximation as long as the page notes that poles are a model.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "metal-detector",
+     "score": 4,
+     "reject": false,
+     "reason": "A search coil coupled to a target as a small RL loop, with mutual inductance falling off steeply with depth, is a small honest model that distinguishes conductors from a stone and shows the depth-versus-coil-size trade-off.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "microwave-oven",
+     "score": 4,
+     "reject": false,
+     "reason": "An analytic standing-wave mode of a 2D cavity as a heat source, a rotating food sample, exponential penetration and a small diffusion grid for conduction all run in real time; it should be presented as one dominant mode, not a full Maxwell solve.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "mirror-images",
+     "score": 5,
+     "reject": false,
+     "reason": "Ray reflection and image construction over several plane mirrors is exact geometry and cheap, and the image counts at a corner and the periscope follow directly from it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "noise-cancelling",
+     "score": 5,
+     "reject": false,
+     "reason": "Summing a wave with its inverted, delayed copy and showing the residual against frequency is exact and trivial to compute, so the takeaway (delay kills high-frequency cancellation) falls out of the model.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "paints-and-lights",
+     "score": 2,
+     "reject": true,
+     "reason": "The page needs measured CMY pigment reflectance spectra, and searches found only a few CC BY pigments (Bath: vermilion, red lead, lead-tin yellow) while SSHADE and CNR-IFAC are non-commercial or all-rights-reserved, so the model would rest on invented spectra unless it is reframed as openly idealised filters.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "paper-plane-glide",
+     "score": 4,
+     "reject": false,
+     "reason": "A 2D longitudinal glider with thin-plate lift and drag, a pitching moment from the CG-to-neutral-point offset, elevator trim and a stall is a small ODE that honestly produces phugoid, stall and dive, provided the coefficients are labelled as a simplified model.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "parachute-terminal-speed",
+     "score": 5,
+     "reject": false,
+     "reason": "A one-dimensional fall with quadratic drag, a canopy that changes the area, and a Moon case with no drag is a tiny, exact-enough ODE, and the speed dial makes the balance visible.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "playground-swing",
+     "score": 4,
+     "reject": false,
+     "reason": "The pendulum ODE with timed impulses, plus pumping as a time-varying effective length or centre-of-mass shift, is buildable and honest, though the seated-pumping model must be chosen carefully (it is driven, not simply parametric).",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "pressure-cooker",
+     "score": 4,
+     "reject": false,
+     "reason": "Valve weight over its area sets the pressure, Antoine or Clausius-Clapeyron gives the boiling point (published constants, so the NIST licence question can be sidestepped), and altitude uses the barometric formula; the cooking-time rate law is a stated simplification.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "roller-coaster-feel",
+     "score": 4,
+     "reject": false,
+     "reason": "A bead on a reader-drawn spline with friction and normal force computed from curvature is a standard real-time model and an honest source for felt weight and leaving the track; it overlaps heavily with the newtons-laws track, which is a duplication concern rather than a buildability one.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sailing-into-wind",
+     "score": 3,
+     "reject": false,
+     "reason": "Sail and keel as two lift-drag foils with a boat ODE in heading and leeway is buildable, but getting realistic upwind behaviour and leeway without a keel needs tuned polars; it is honest if the polars are simplified and say so.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "seatbelt-crash",
+     "score": 4,
+     "reject": false,
+     "reason": "The dummy as a mass stopped over a chosen distance by dash, belt or airbag (spring-damper restraints) gives real force-time curves cheaply; the inertia-locking ratchet is a small pendulum mechanism and should be simulated as one, not drawn as a picture.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "shadows-and-pinholes",
+     "score": 5,
+     "reject": false,
+     "reason": "2D ray projection from point and extended sources past polygons gives the umbra, penumbra and pinhole inversion exactly, and it is cheap and fully honest.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "smoke-detector",
+     "score": 3,
+     "reject": false,
+     "reason": "Ion drift and capture by smoke particles and light scattering onto a sensor can be an agent sim, but the flaming-versus-smouldering response difference depends on particle size distributions that a level-0 toy model would have to assume, so there is a risk of a picture with dots unless the size dependence of capture and scattering is actually modelled.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "speakers-and-microphones",
+     "score": 4,
+     "reject": false,
+     "reason": "A Lorentz force on the coil driving a mass-spring cone, a 1D wave in the air in front of it, and back-EMF from cone velocity for the microphone together form a small, honest, coupled model.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "spinning-tops",
+     "score": 5,
+     "reject": false,
+     "reason": "The heavy symmetric top with friction torque is a few ODEs that integrate in real time and genuinely produce precession, nutation and the eventual topple; the model is upper-level, but what the reader sees is level 0.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "springs-and-scales",
+     "score": 4,
+     "reject": false,
+     "reason": "Hooke's law with series and parallel springs and a yield point beyond which there is permanent set is a trivial, honest static model, though thin, since the takeaway is a straight line of stretch per weight.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "submarine-ballast-tanks",
+     "score": 5,
+     "reject": false,
+     "reason": "Buoyancy against weight with tank fill as the control, drag, and fin lift when moving forward make a small, honest ODE, and the neutral-buoyancy instability shows directly.",
+     "suggestedLevel": 0
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b3",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "resampling-inference",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Permutation tests, bootstrap and power curves are a few thousand cheap resamples of 344 rows, an honest algorithm at interactive rates; palmerpenguins is confirmed CC0 (the authors ask, as a courtesy and not a licence term, to be contacted before publication)."
+    },
+    {
+     "slug": "riemann-zeta-primes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Riemann–Siegel Z(t), root-finding and the explicit formula with a few hundred zeros all run in milliseconds and are the honest model; the formula is inaccurate for small t (below about 10), so the first zeros need Euler–Maclaurin or a check against the LMFDB zeros (CC BY-SA, test use only)."
+    },
+    {
+     "slug": "sampling-theorem",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Sinc reconstruction, the spectrum's aliased copies, a strobed wheel and Web Audio tones are exact, cheap computations needing no data, and the alias is visible without the text."
+    },
+    {
+     "slug": "svd-low-rank",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 2×2 SVD is closed-form and a one-sided Jacobi SVD of a ~128–256 px public-domain image computed once on load is fast, so the rank-k image is honest. It has to be drawn as a raster (canvas or an SVG <image>), and a 2×3 matrix maps 3D to 2D, which needs a clear picture of its own."
+    },
+    {
+     "slug": "symmetry-groups",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Composing dihedral elements into a Cayley table and tiling a motif with wallpaper-group generators are exact constructions, but cycling all 17 groups is a lot of hand-built geometry, and the 'counter' for why 5-fold rotation never closes is undefined (better as the crystallographic restriction shown on a lattice)."
+    },
+    {
+     "slug": "taylor-series",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Partial sums, the disk of convergence reaching the singularities at ±i, and Chebyshev interpolation are exact cheap computations, and blow-up beyond |x| = 1 is visible at a glance."
+    },
+    {
+     "slug": "vector-calculus",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Numerical flux and circulation over a grid of analytic or painted fields are trivial to compute live, and the 1/r vortex and shear contrasts plus the cancelling interior edges are honest and visible."
+    },
+    {
+     "slug": "winding-numbers",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Accumulating the argument along a dragged loop and mapping circles through a polynomial are exact, cheap geometry, and the integer jump at the crossing and the image passing through the origin are directly visible."
+    },
+    {
+     "slug": "air-pressure-and-straws",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A kinetic particle box whose wall hits set a pressure balancing a liquid column is an honest, small model. The scope (syringe, straw, finger cap, suction cup, crushed can) is wide, and it duplicates drinking-straw in this same batch, so the two should be merged."
+    },
+    {
+     "slug": "balance-and-tipping",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Torques about a pivot, the centre of mass of a stack and the tipping condition (with a rigid-body fall about the base edge) are a small honest model, provided the tip is simulated and not just a static marker crossing a line."
+    },
+    {
+     "slug": "balloons-and-static",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Coulomb forces on pendulum hair strands and an image charge for the wall and the paper are an honest, cheap model. The charge moved per rub and the spark are set values that should be labelled as typical, not computed."
+    },
+    {
+     "slug": "blue-sky-red-sunset",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Single-scattering Rayleigh along the air path, converted with the CMFs the site already ships, is the honest model and cheap. The ASTM G173 AM0 column's licence is unconfirmed (ASTM is copyrighted, NREL redistributes it); a 5772 K blackbody or NASA's public-domain TSIS/SORCE solar spectrum would remove that risk."
+    },
+    {
+     "slug": "bouncing-ball",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Free fall plus a damped contact is honest and trivial. The per-ball and per-floor restitution values need a cited source rather than invented settings, and the thermometer must show the honestly tiny rise (mgh/mc, about hundredths of a degree)."
+    },
+    {
+     "slug": "car-brakes-stopping-distance",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Reaction distance plus v²/(2μg) is the honest model, the doubling and quadrupling are visible on the strip, and the rule 126 figures are Crown copyright published under OGL v3 on GOV.UK."
+    },
+    {
+     "slug": "car-steering-corners",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Ackermann geometry (both wheel axes meeting at one centre) and the required lateral force v²/r against μmg on a grip gauge are a small, honest kinematic model with no data needed."
+    },
+    {
+     "slug": "contactless-cards",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Coupling between coaxial loops against distance with a wake-up threshold is honest but thin: mostly one meter against distance. 'Stack two cards and the reader cannot tell them apart' is wrong, because ISO 14443 anticollision tells cards apart and payment terminals detect the clash and refuse; it also cites a metal-detector page that is not in this batch."
+    },
+    {
+     "slug": "crashes-and-seatbelts",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Two bodies with spring-and-damper restraints and a crumple zone, plus a friction impulse for the tablecloth, form a small honest ODE whose stretched stop and smaller force are visible frame by frame."
+    },
+    {
+     "slug": "digital-camera-sensor",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Poisson photon counts per photosite, a Bayer mosaic and a neighbour-averaging demosaic on a small grid (a few thousand cells) are an honest model of the real thing, and a CC0 Commons photo is easy to find."
+    },
+    {
+     "slug": "drinking-straw",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "p = ρgh and the 10 m limit are honest but very thin, close to a slider driving a column height, and the topic duplicates air-pressure-and-straws in this batch; merge the two, keeping that page's particle box as the model and this one's 10 m limit and pinhole."
+    },
+    {
+     "slug": "e-reader-ink",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Oppositely charged particles drifting at Stokes speed in a capsule under a switchable field are a small honest particle model that shows bistability. Reflected versus emitted light under room dimming is a simple toggle, and the page should say whether it draws the two-pigment or the dyed-oil design."
+    },
+    {
+     "slug": "echoes-and-thunder",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A 2D wave equation on a small grid with reflecting and absorbing edges, or a ray pulse, runs easily and timing out-and-back is honest, though the thunder part is just distance = speed × time."
+    },
+    {
+     "slug": "falling-and-parachutes",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Weight against quadratic drag integrated in time, with an air-off switch, is the textbook honest ODE, and terminal speed and the hammer and feather landing together are directly visible."
+    },
+    {
+     "slug": "fireworks-shell-burst",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Ballistic shell plus hundreds of star particles with drag is a cheap, honest particle simulation. The metal-to-colour table is factual and easy to cite from an open reference, and NIST ASD is free US-government data with citation, though its licence page was not confirmed."
+    },
+    {
+     "slug": "floating-sinking-and-boats",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Solving for the waterline where the displaced area's weight equals the object's weight on a 2D hull polygon is an honest, fast model, and a few handbook densities are uncopyrightable facts."
+    },
+    {
+     "slug": "friction-and-grip",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Coulomb static and kinetic friction on a flat and a tilting floor, with sliding work turned into heat, is an honest small model. The zoomed bumps inset is an illustration rather than a model, and the coefficients should come from a cited table (facts, not copyrightable)."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b5",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "swing-pumping-alone",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A variable-length pendulum ODE with the rider's centre of mass raised at the bottom and lowered at the ends is the honest, tiny model of standing pumping (parametric resonance). Seated pumping is a different torque mechanism, and it needs its own simple rigid-body model, or the page must say clearly that it is simplified."
+    },
+    {
+     "slug": "swings-and-pendulums",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Two nonlinear pendulum ODEs run trivially in the browser and need no data. Because the full equation is used, very hard pushes will visibly slow the beat, so the 'same beat' claim must be limited to ordinary swings, or the page must show that drift honestly."
+    },
+    {
+     "slug": "temperature-and-touch",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The model is honest: the skin-object contact temperature set by thermal effusivity, solved as 1D conduction, plus a thermometer as a lumped mass and mixing by heat capacity. The material constants are handbook facts and freely citable."
+    },
+    {
+     "slug": "thermos-flask",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A lumped Newton-cooling ODE per cup, with separate conduction, open-top (convection and evaporation) and radiation conductances, is small and honest. The entry says it needs no data, but it does need conductivity and emissivity values, all standard handbook figures."
+    },
+    {
+     "slug": "toaster",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Glow colour from Planck's law is buildable without the unlicensed CVRL data by using a published Planckian-locus/CCT-to-sRGB fit. The browning rate, though, is an admitted hand-wave and Joule heating to a fixed wire temperature is thin, so the model behind most of the interaction is weak."
+    },
+    {
+     "slug": "touchscreens",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A grid of mutual capacitances reduced under a conductive footprint, then peak finding and a centroid, is the real sensing algorithm in miniature and runs instantly. One caution: a harder press flattens the fingertip and slightly raises the signal, so 'nothing changes' should be worded as 'pressure itself is not sensed'."
+    },
+    {
+     "slug": "train-wheel-cones",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Klingel's kinematic wheelset ODE (lateral offset changes rolling radii, which yaws the axle) is a clean, tiny, honest model. Flat versus coned wheels, cone angle and the curve all follow directly from it."
+    },
+    {
+     "slug": "vibrations-and-sound",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Cantilever frequency scaling as 1/L squared, a 1D mass-spring chain for the air, distance falloff and Web Audio tones are all small and honest. The bell jar works by reducing the chain's coupling and density."
+    },
+    {
+     "slug": "washing-machine-spin",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Particles carried on a rotating drum that leave tangentially at the holes, plus an unbalanced mass on a sprung mount for the thump and walk, are simple, honest mechanics. How much water escapes at each speed is a stated simplification, not a porous-flow model."
+    },
+    {
+     "slug": "water-pressure-and-hydraulics",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Hydrostatics, Torricelli and Pascal are trivially buildable. However, the honest Torricelli model contradicts the interaction: jets landing at the bottle's base level reach furthest from the middle hole (range 2*sqrt(h(H-h))), not the lowest, so the bottle must stand on a raised support or the claim must change."
+    },
+    {
+     "slug": "fluid-pressure-buoyancy",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A 1D buoyancy-plus-drag ODE with pressure arrows computed from depth is a small, honest model, and the densities are standard reference values. The hydraulic-lift step duplicates the level-0 water-pressure-and-hydraulics candidate and could be dropped."
+    },
+    {
+     "slug": "gas-laws",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A 2D hard-disc gas with a moving piston and pressure counted from wall impulses is exactly the honest model and runs at interactive rates. Adiabatic warming when the tyre is pumped falls out of the moving piston for free."
+    },
+    {
+     "slug": "magnets-and-electromagnets",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Magnetic-charge dipole fields, field-line tracing, filings aligned to the field and a coil field from Biot-Savart are all cheap client-side computations. Lifting paper clips with an iron core needs a stated simplification (no saturation model)."
+    },
+    {
+     "slug": "momentum-impulse-crashes",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "1D collisions with a coefficient of restitution, a spring-damper contact giving a force-time pulse whose area is conserved, recoil and 2D billiard collisions are small, honest mechanics models with no data needed."
+    },
+    {
+     "slug": "musical-scales-ratios",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Equal-division arithmetic, the Plomp-Levelt/Sethares roughness formula, waveform overlays and Web Audio synthesis form a real, tiny model whose results (the 12-EDO fifth within 2 cents) are visible and audible."
+    },
+    {
+     "slug": "polarized-light",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Jones vectors and Malus's law give the three-filter result exactly, and Fresnel reflection coefficients give an honest model of glare near Brewster's angle. The phone-screen step is decorative unless it is modelled as a polarizer."
+    },
+    {
+     "slug": "spinning-balls-curve",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A 3D trajectory ODE with drag and a Magnus lift term from cited coefficient fits (the coefficients are facts from papers) is honest and fast. The air-flow picture must be a stated idealisation (potential flow with circulation), and coefficients that vary with spin rate (including reverse Magnus) should be acknowledged."
+    },
+    {
+     "slug": "nuclear-binding-energy",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "The AME2020/NUBASE2020 values are freely downloadable facts and the papers are CC BY 3.0, but the files carry no licence and only ask for citation, which leaves the data partly unconfirmed. As described, the page is mostly a chart to browse; adding a semi-empirical mass formula the reader can fit against the data would make it a real model."
+    },
+    {
+     "slug": "photoelectric-effect",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "Einstein's equation with sampled electron energies, a retarding potential and a stopping-voltage plot is a small, honest simulation, and work functions are textbook constants. The wave-model comparison panel needs a clearly stated toy prediction."
+    },
+    {
+     "slug": "bell-inequality",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Monte Carlo of reader-defined hidden-variable tables against quantum sampling of the singlet correlations is exact, tiny and honest. The Delft result (S = 2.42 +/- 0.20) can be quoted from the paper, so the 4TU dataset with its non-CC terms is optional and not a blocker."
+    },
+    {
+     "slug": "bifurcations",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The normal-form ODEs, animated vector fields and a continuation diagram are trivially interactive. The real-system examples (laser rate equations, a buckling beam, FitzHugh-Nagumo) are each small ODEs."
+    },
+    {
+     "slug": "blackbody-cavity-modes",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Counting integer mode triples in a box per frequency band, then weighting by kT or Planck's average, is a real and cheap computation. The FIRAS monopole spectrum is a 2 KB public-domain NASA LAMBDA file."
+    },
+    {
+     "slug": "bose-einstein-condensation",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Occupation of harmonic-trap levels under Boltzmann, Bose and Fermi statistics, with the chemical potential solved numerically, is an exact, fast model of an ideal gas. The 1995 JILA image is a picture rather than data, and its public-domain status (NIST/JILA/CU) is still to be confirmed, but it is optional."
+    },
+    {
+     "slug": "brownian-motion",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Langevin simulation with mean-squared-displacement fitting and Stokes-Einstein to Avogadro's number is honest and light. Perrin's displacement counts, reprinted in Les Atomes (1913), are public domain, but the exact table still has to be located in the original."
+    },
+    {
+     "slug": "casimir-effect",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 1D mode sum with a smooth cutoff in a three-plate (piston) geometry gives a cutoff-independent finite force and runs instantly. The page must state that 1D gives a 1/a^2 force while real 3D plates give 1/a^4."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b6",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "crystal-diffraction",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A genuine mechanism (structure factor and reciprocal lattice making spots vanish), honest level 3 and distinct from semiconductors, which only shows lattices; it is close in spirit to quantum-scattering in this batch but is a different subject."
+    },
+    {
+     "slug": "dirac-equation",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "It is real and distinct, but a 1D Dirac spinor with Zitterbewegung and the Klein paradox is at the edge of graduate material, hard to make legible as a graphic, and appeals to fewer visitors than the core level-3 pages."
+    },
+    {
+     "slug": "feynman-diagrams",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "High demand, and turning diagrams into a tree-level calculator checked against LEP data is a real mechanism well beyond standard-model's beta-decay step-through; it does lean on perturbation-theory, which is also in the pool."
+    },
+    {
+     "slug": "frozen-in-flux",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Honest level-3 MHD with a visible mechanism (field lines wound up by the flow), distinct from nuclear-fusion, but niche, and it depends on navier-stokes from the pool."
+    },
+    {
+     "slug": "hamiltonian-phase-space",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Phase-space area preservation and Poincaré sections are a core undergraduate mechanism and distinct from chaos-fractals; it forms a coherent trio with least-action and noethers-theorem without duplicating them."
+    },
+    {
+     "slug": "hydrogen-atom",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A must-have: shooting the radial equation to its 1/n² levels and checking them against NIST lines is the real model, and it explains what atoms-periodic-table only shows."
+    },
+    {
+     "slug": "ising-model",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The canonical stat-mech model of a phase transition, with a clear Metropolis mechanism and the 1D no-transition case; it is distinct from states-of-matter."
+    },
+    {
+     "slug": "kuramoto-synchronization",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Sudden synchrony above a coupling threshold is a striking mechanism with real cases (metronomes, the Millennium Bridge), distinct from oscillations-resonance and properly paired with the level-0 fireflies toy."
+    },
+    {
+     "slug": "lasers",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "High visitor demand and a real rate-equation model (threshold, clamping, two-level saturation, Q-switching) that no existing page covers."
+    },
+    {
+     "slug": "least-action",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Dragging a path and watching the action become stationary is an excellent interactive mechanism, foundational at university level and distinct from newtons-laws."
+    },
+    {
+     "slug": "maxwell-equations",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An FDTD grid where antennas, waveguides and lenses emerge from the two curl equations is real and distinct from the static electromagnetism page; it partly overlaps radiating-charge and poynting-energy-flow in this batch, so the scopes should be kept apart."
+    },
+    {
+     "slug": "navier-stokes",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Reynolds-number sweep from creeping flow to a vortex street to turbulence is a visual, famous mechanism, well beyond flight's wing section."
+    },
+    {
+     "slug": "noethers-theorem",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Breaking a symmetry and watching the matching conserved meter drift is a genuine mechanism with strong demand; it builds on least-action rather than duplicating it."
+    },
+    {
+     "slug": "partition-function",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Filling energy levels with Boltzmann weights to get the Schottky bump and the freezing-out of heat capacity (checked against diamond) is the real model and distinct from entropy's microstate counting."
+    },
+    {
+     "slug": "perturbation-theory",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An honest level-3 method with a good exact-against-series comparison, but it is a technique rather than a phenomenon, so fewer visitors will want it, and it leans on two other pool pages (hydrogen-atom, quantum-harmonic-oscillator)."
+    },
+    {
+     "slug": "plasma-kinetics",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A PIC plasma showing Debye shielding and Landau damping is real and distinct from nuclear-fusion, but it is specialist, and four sub-demos risk turning the page into a survey."
+    },
+    {
+     "slug": "poynting-energy-flow",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A well-known counter-intuitive result with a clear field mechanism, distinct from electric-circuits; its time-domain part overlaps maxwell-equations, so the two need a clean split."
+    },
+    {
+     "slug": "quantum-harmonic-oscillator",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The energy ladder and coherent states form a core level-3 model, distinct from quantum-mechanics' free packet and barrier."
+    },
+    {
+     "slug": "quantum-scattering",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Partial-wave phase shifts and resonances are honest level 3 and distinct from the 1D barrier, but the appeal is narrower and the 3D wave is harder to make legible."
+    },
+    {
+     "slug": "radiating-charge",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The retarded-field kink is a beautiful and correct mechanism, distinct from static electromagnetism, but it overlaps considerably with maxwell-equations (a source on the Yee grid also radiates), so one of the two should probably host the other."
+    },
+    {
+     "slug": "renormalization-group",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Block-spin coarse-graining is a real and visual idea, but it is applied to the same Ising snapshots and could be a final step of ising-model rather than its own page."
+    },
+    {
+     "slug": "schwarzschild-orbits",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The effective potential, the ISCO and Mercury's 43 arcseconds per century give the quantitative level-3 follow-up to black-holes without duplicating its ray-bending and clocks."
+    },
+    {
+     "slug": "solitons",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "KdV steepening balanced against dispersion, with the defining collision test, is a clear mechanism distinct from linear waves-interference."
+    },
+    {
+     "slug": "stern-gerlach",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Chained analyzers giving two spots and cos² counts are the experimental heart of spin, distinct from quantum-computing's abstract Bloch sphere."
+    },
+    {
+     "slug": "superconductivity",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Zero resistance, field expulsion and the BCS gap form a real level-3 model and a popular subject; it is ambitious in scope and depends on bose-einstein-condensation from the pool."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b8",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "sponge-and-paper-towel",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Capillary rise in narrow holes is a real, visible mechanism, starts from objects every child knows, and no existing page shows it, though its 'water clings' idea should stay clearly separate from the surface-tension candidate."
+    },
+    {
+     "slug": "toast-and-browning",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The 'wet food is pinned at boiling, so it can't brown' mechanism is honest and level-0 friendly, but the browning model is thin and the page risks being one observation stretched across 6 to 9 steps."
+    },
+    {
+     "slug": "water-drops-and-surface-tension",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Beading, the coin bulge, the floating paperclip and soap are classic, hands-on surface-tension mechanics absent from states-of-matter; it is distinct from the sponge candidate if that one sticks to adhesion and capillarity."
+    },
+    {
+     "slug": "why-metal-feels-cold",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "It fixes a misconception everyone has with one finger, one control and a real conduction model, and no existing page covers it (it arguably belongs in physics rather than chemistry)."
+    },
+    {
+     "slug": "electrolysis",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Electrolysis is core secondary-school chemistry with a clear particle mechanism; it is the reverse of redox-batteries and adds the discharge rules and the charge-to-mass relation."
+    },
+    {
+     "slug": "moles-and-stoichiometry",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "An honest, much-needed level-1 topic with a showable limiting-reagent mechanism, but it is closer to a calculation procedure than a 'how it works' phenomenon."
+    },
+    {
+     "slug": "chromatography",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Random partitioning that separates bands, plus the van Deemter optimum, is a real stochastic model a chemistry student learns, and no existing page covers it."
+    },
+    {
+     "slug": "colloids-dlvo",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "DLVO stability and salt-induced flocculation are a genuine level-3 model with a nice real-world hook (river deltas), but niche, and it depends on the proposed dispersion-forces page."
+    },
+    {
+     "slug": "composites-ashby",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Ashby chart is mostly a selection survey with little mechanism; the rule of mixtures and fibre pull-out give it some substance, but it is weaker than the other materials candidates."
+    },
+    {
+     "slug": "corrosion-pourbaix",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Pourbaix maps and mixed-potential sacrificial protection are real university electrochemistry that explains a familiar phenomenon, distinct from redox-batteries though it builds on the electrode-kinetics candidate."
+    },
+    {
+     "slug": "diffusion-in-solids",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Vacancy hopping, square-root-of-time depth and the Arrhenius rate are a clean real model with industrial uses, distinct from entropy's gas mixing."
+    },
+    {
+     "slug": "dislocations-alloys",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Why metals yield far below bond strength is a striking, showable mechanism at the heart of materials science, and no existing page covers it."
+    },
+    {
+     "slug": "dispersion-forces",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Drude coupled-oscillator picture of London forces is an elegant real model that explains boiling-point trends, which states-of-matter takes as given."
+    },
+    {
+     "slug": "electrode-kinetics",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Butler-Volmer and cyclic voltammetry are genuine level-3 electrochemistry, but specialist and less appealing to visitors, and it partly overlaps the corrosion candidate's mixed-potential material."
+    },
+    {
+     "slug": "enzyme-kinetics",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Single-enzyme stochastic events building the Michaelis-Menten curve, with inhibitor signatures, is a clear real model; the saturation idea is near level 2, but the inhibition analysis makes it level 3 (it fits biology as well as chemistry)."
+    },
+    {
+     "slug": "fracture-mechanics",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Griffith's energy balance on a spring lattice is a vivid real mechanism that goes beyond bridges-structures' simple load limits."
+    },
+    {
+     "slug": "free-energy-of-mixing",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Deriving phase diagrams from common tangents on free-energy curves is a core university insight with a very interactive graphic; it is related to, but distinct from, the nucleation and glass candidates."
+    },
+    {
+     "slug": "glass-transition",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Cooling-rate-dependent jamming against crystallization is a real simulation with a memorable takeaway; it is distinct from nucleation, but these two should be built as complementary pages."
+    },
+    {
+     "slug": "hartree-fock",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The self-consistent-field loop is real university quantum chemistry and is showable, but it is abstract and niche for this site's visitors, and it depends on the proposed huckel page."
+    },
+    {
+     "slug": "huckel-molecular-orbitals",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Diagonalizing Hückel matrices to explain dye colour and aromaticity is a real model with a visual payoff, and chemical-bonds' VSEPR picture does not cover it."
+    },
+    {
+     "slug": "liquid-crystals",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "It pairs the Lebwohl-Lasher ordering model with the LCD pixel everyone owns: a real mechanism and a strong hook, with no existing page covering it."
+    },
+    {
+     "slug": "mass-spectrometry",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Quadrupole stability plus isotope patterns is a genuine instrument mechanism driven by real equations of motion, distinct from every existing page."
+    },
+    {
+     "slug": "nmr-spectroscopy",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Pulse, precession, FID, Fourier transform and coupling make a real, showable chain that medical-imaging only mentions in passing."
+    },
+    {
+     "slug": "nucleation-crystal-growth",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The critical-nucleus free-energy hill and dendritic growth are real, visual mechanisms beyond states-of-matter; there is some thematic overlap with the glass candidate, but its takeaway is distinct."
+    },
+    {
+     "slug": "photochemistry",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Competing decay routes on a Jablonski diagram are a valid kinetic model, but the graphic is mostly rate-constant bookkeeping with little to see, so its appeal is moderate."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b7",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "tennis-racket-theorem",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A famous, surprising mechanism (Dzhanibekov flip) with the real model (Euler's equations, the angular-momentum sphere) that no existing page touches, and honestly university rigid-body mechanics."
+    },
+    {
+     "slug": "turbulence-cascade",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A genuine level-3 subject with a real (shell) model, but the graphic is mostly a log-log spectrum rather than visible eddies, and it depends on a navier-stokes page that does not yet exist."
+    },
+    {
+     "slug": "baking-soda-and-vinegar",
+     "score": 2,
+     "reject": true,
+     "suggestedLevel": 0,
+     "reason": "Substantially duplicates fizz-and-balloons in this same batch (same reaction, same balloon, same stops-when-one-runs-out takeaway); fold its limiting-ingredient and baking-powder steps into that page."
+    },
+    {
+     "slug": "bubbles-and-foam",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A real mechanism (surface tension pulling a film to least area) no existing page shows, with a pokeable film that is a great level-0 toy; arguably physics rather than chemistry."
+    },
+    {
+     "slug": "cake-rising",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An appealing everyday race between expanding gas and setting batter that suits level 0, though its model is loose and it leans on the same leavening gas as the fizz pages."
+    },
+    {
+     "slug": "candle-flame",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Faraday's candle is a classic mechanism (wick as pipe, wax vapour burning, relight down the smoke) distinct from states-of-matter and honest at level 0; keep its wax-vapour story separate from fire-triangle's jar."
+    },
+    {
+     "slug": "candle-under-a-jar",
+     "score": 2,
+     "reject": true,
+     "suggestedLevel": 0,
+     "reason": "Splits between candle-flame (wax melting, wicking, vapour burning) and fire-triangle (jar, oxygen running low) in this batch; its one extra idea, the sealed jar weighing the same, fits fire-triangle or fizz-and-balloons."
+    },
+    {
+     "slug": "caramel-and-candy-stages",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The thermometer-as-water-gauge insight is a real, distinct mechanism, but explaining a rising boiling point without formulas to a 10-year-old is delicate and the subject is niche."
+    },
+    {
+     "slug": "cooking-an-egg",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Proteins unfolding and tangling irreversibly with heat is a clear mechanism from a universal experience, distinct from level-2 protein-folding, with a single thermometer control."
+    },
+    {
+     "slug": "dissolving-sugar",
+     "score": 2,
+     "reject": true,
+     "suggestedLevel": 0,
+     "reason": "Near-identical to dissolving-sugar-and-salt in this batch (same glass, same particles, warmth, stirring, saturation); keep one and point fizzy-drinks and separating-mixtures at it."
+    },
+    {
+     "slug": "dissolving-sugar-and-salt",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A core KS2/KS3 idea (dissolving is not melting or vanishing, there is a limit, drying brings it back) with a clear particle mechanism no existing page shows; prerequisite for several other level-0 candidates."
+    },
+    {
+     "slug": "drying-and-evaporation",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Evaporation below boiling, its cooling, and the roles of wind and humidity are a distinct mechanism from states-of-matter's boiling box and a good bridge to sweating."
+    },
+    {
+     "slug": "fire-triangle",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Fuel-heat-air with one control removed at a time is a standard primary-school topic with a clear mechanism, distinct from the level-2 reaction-rates page; absorb the jar-weight idea from candle-under-a-jar."
+    },
+    {
+     "slug": "fizz-and-balloons",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A new gas from a reaction, conservation of mass shown on a scale and stopping when one ingredient runs out make a strong, distinct level-0 chemistry page; merge baking-soda-and-vinegar into it."
+    },
+    {
+     "slug": "fizzy-drinks",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Dissolved gas held in by pressure and released by opening, warmth and rough surfaces is a distinct, familiar mechanism (Henry's law without the formula) that suits level 0."
+    },
+    {
+     "slug": "growing-crystals",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Particles stacking from a cooling solution, with slow cooling giving fewer bigger crystals, is a real mechanism and a classic home experiment distinct from freezing a pure substance."
+    },
+    {
+     "slug": "kitchen-thermometer",
+     "score": 2,
+     "reject": true,
+     "suggestedLevel": 0,
+     "reason": "A scale of recorded temperatures with hover facts is a survey rather than a mechanism, and its one insight (boiling water as a ceiling) is already carried by caramel-and-candy-stages."
+    },
+    {
+     "slug": "lemon-battery",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A beloved build activity with a real takeaway (two different metals, the zinc is the fuel, series versus parallel), distinct from the level-2 lithium-ion cell page."
+    },
+    {
+     "slug": "popcorn",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Trapped steam building pressure until the hull bursts is a vivid, distinct mechanism from an everyday object, with one heat control and clear failure cases."
+    },
+    {
+     "slug": "rust",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Water plus air plus salt is a familiar KS3 experiment, but the model is an empirical rate grid with no visible mechanism of why iron and oxygen combine, so the toy explains less than it shows."
+    },
+    {
+     "slug": "salt-and-ice",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Salt blocking re-freezing and the ice-cream bath getting colder than ice is a surprising, distinct mechanism, though the heat-drawing half is hard to make honest for a 10-year-old without energy ideas."
+    },
+    {
+     "slug": "separating-mixtures",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A curriculum staple turned into a genuine build puzzle where each tool exploits one difference between particles, distinct from every existing page."
+    },
+    {
+     "slug": "sink-or-float",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Density as comparison against the same-size lump of water, with the clay boat and the egg in salt water, is a must-have level-0 mechanism no existing page covers; it arguably belongs in physics."
+    },
+    {
+     "slug": "smells-and-diffusion",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Random wandering versus draughts carrying a smell is a distinct, honest particle mechanism (and corrects the common 'diffusion is fast' myth), separate from entropy's microstate counting."
+    },
+    {
+     "slug": "soap-and-grease",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The two-ended soap particle wrapping grease is a clear, highly demanded mechanism (handwashing, viruses) that no existing page shows, and it works without formulas."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b6",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "crystal-diffraction",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Structure factors on a reciprocal lattice, a 2D Ewald-circle rotation and powder patterns are closed-form sums, cheap in the browser; the COD is CC0 (confirmed), so a few preprocessed CIFs can be shipped, but the rotating 3D crystal should be cut to a 2D section to stay in SVG."
+    },
+    {
+     "slug": "dirac-equation",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 1D two-component Dirac packet solved by split-operator FFT is small and fast, and it shows Zitterbewegung and the Klein step honestly; it has to be done in momentum space to avoid fermion doubling on a naive grid."
+    },
+    {
+     "slug": "feynman-diagrams",
+     "score": 2,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "No browser can evaluate amplitudes from an arbitrary drawn diagram, so the 'calculator' would be a lookup of a few closed-form cross sections; also, at 192-208 GeV LEP data are dominated by Z exchange, so pure QED would not match. HEPData is CC0, but record 48691 is the muon A_FB table, so the cross-section companion tables are also needed. Keep only if narrowed to a fixed set of processes with γ+Z formulas."
+    },
+    {
+     "slug": "frozen-in-flux",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The kinematic induction equation for a vector potential, advected by a prescribed 2D flow with magnetic diffusion, is a small grid PDE and shows freezing-in honestly; the plucked Alfvén wave needs the field to push back on the fluid, so it should be a separate 1D model."
+    },
+    {
+     "slug": "hamiltonian-phase-space",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Pendulum trajectories, an advected cloud of points with a measured area, and the standard-map Poincaré section are all tiny symplectic integrations, ideal for SVG."
+    },
+    {
+     "slug": "hydrogen-atom",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Numerov shooting solver for the radial equation runs instantly, orbitals come from analytic wavefunctions, and the NIST ASD hydrogen lines are US government data, freely usable."
+    },
+    {
+     "slug": "ising-model",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Metropolis 2D lattice of a few hundred spins on a side runs easily at interactive rates, and every claimed observation (domains, susceptibility peak, hysteresis, no 1D transition) comes straight out of it."
+    },
+    {
+     "slug": "kuramoto-synchronization",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A hundred coupled phase ODEs are trivial to run, the order parameter is directly visible, and the Millennium Bridge parameters are published numbers from Strogatz et al. 2005, not data that needs a licence."
+    },
+    {
+     "slug": "lasers",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Four-level rate equations with a photon number are a small, stiff-but-easy ODE that shows threshold, clamping, relaxation oscillations and Q-switching honestly."
+    },
+    {
+     "slug": "least-action",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A discretised path whose action is evaluated live and relaxed by gradient descent is small and honest; the planet case is a saddle rather than a minimum, so 'snaps toward' must find a stationary point, not minimise."
+    },
+    {
+     "slug": "maxwell-equations",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 2D Yee FDTD scheme (TM mode, a few hundred cells a side) with conductor and dielectric masks runs in real time in JS, and antennas, waveguide cutoff and focusing emerge from it."
+    },
+    {
+     "slug": "navier-stokes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A D2Q9 lattice-Boltzmann solver past a cylinder runs interactively in the browser (Schroeder's demo is the precedent) and produces the eddies and the vortex street; the 'turbulent' end is only 2D and should be labelled that way."
+    },
+    {
+     "slug": "noethers-theorem",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Small mechanics integrations with momentum, angular-momentum and energy meters, plus symmetry-breaking toggles, are honest and cheap; the transformation dial is more conceptual than model-driven, but the meters drifting is a real observable."
+    },
+    {
+     "slug": "partition-function",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Boltzmann sums over a few level schemes are exact and instant, and Weber's diamond heat-capacity values as tabulated by Einstein in 1907 are public domain."
+    },
+    {
+     "slug": "perturbation-theory",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Diagonalising the anharmonic oscillator in a truncated basis and running a basis TDSE for golden-rule transitions are small, honest computations; the hydrogen Stark case is harder because the exact states are resonances, so it should become a box or oscillator in a field."
+    },
+    {
+     "slug": "plasma-kinetics",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 1D electrostatic particle-in-cell code is the honest model and runs in JS, but showing clean Landau damping needs tens of thousands of particles or a quiet start to beat the noise."
+    },
+    {
+     "slug": "poynting-energy-flow",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Possible but approximate: in-plane E from a Laplace solve with Biot-Savart B normal to the plane gives an in-plane Poynting field, but a 2D Laplace solve treats the wires as sheets, and the light-second time-domain run needs a scaled-down FDTD whose transient size depends on geometry, so it must avoid overclaiming."
+    },
+    {
+     "slug": "quantum-harmonic-oscillator",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Analytic Hermite eigenstates, coherent states and squeezed states evolve exactly as a pure function of time, an ideal fit for this site."
+    },
+    {
+     "slug": "quantum-scattering",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Partial-wave phase shifts for a spherical square well are closed-form spherical-Bessel expressions, so cross sections, resonances and a 2D slice of the scattered wave are cheap and honest."
+    },
+    {
+     "slug": "radiating-charge",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Field lines built from the stored trajectory and retarded times (the known Liénard-Wiechert kink construction) run interactively and show the radiation kink and the relativistic pancake directly."
+    },
+    {
+     "slug": "renormalization-group",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Majority-rule 3x3 blocking of Ising snapshots is trivial, but critical snapshots on a 243- or 729-wide lattice need a Wolff cluster sampler or precomputed configurations, and the 'flow' plot is a correlation proxy, not a true coupling flow."
+    },
+    {
+     "slug": "schwarzschild-orbits",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The effective potential and geodesic ODE are small and exact, the ISCO and the precession fall out directly, and Mercury's 43 arcseconds per century can be read from the analytic formula; the equatorial Kerr extension is also tractable."
+    },
+    {
+     "slug": "solitons",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The 1D KdV equation solved with the Zabusky-Kruskal or a pseudo-spectral scheme is fast and reproduces soliton collisions and the 1965 cosine breakup exactly."
+    },
+    {
+     "slug": "stern-gerlach",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Spin-1/2 amplitudes through chained analyzers, sampled atom by atom, are the honest model and are tiny; the drawn atom paths are cosmetic, and recombination is the idealised Feynman version, which the page should say."
+    },
+    {
+     "slug": "superconductivity",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The London-equation grid, the numerical BCS gap equation and an RCSJ junction ODE are each buildable, but zero resistance would just be set rather than modelled, and four loosely joined models risk becoming a slideshow; it needs narrowing to one or two mechanisms."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b8",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "sponge-and-paper-towel",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Capillary rise from Jurin's law (height inversely proportional to pore radius, with surface tension and contact angle for water and oil) is a small, honest model and the narrow-climbs-higher result shows directly; the celery scene is a picture rather than a model and could be dropped."
+    },
+    {
+     "slug": "toast-and-browning",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A 1D heat-conduction model with an evaporating wet layer pinned at 100 °C plus an Arrhenius browning rate is small and honest, and a published Maillard activation energy is just a number; the page must not claim browning is zero below 100 °C, only far too slow to see."
+    },
+    {
+     "slug": "water-drops-and-surface-tension",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A 2D molecular box with a free surface and a tunable wall attraction honestly shows beading and wetting, but the coin bulge, floating paperclip, pond skater and pepper are macroscopic effects that the particle box cannot reach at its scale, so those scenes need a separate Young-Laplace model or should be cut."
+    },
+    {
+     "slug": "why-metal-feels-cold",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Two semi-infinite bodies in contact under 1D heat conduction, with real conductivity, density and heat capacity (thermal effusivity), give the contact temperature exactly at interactive rates from under ten public constants, and the result shows in the graphic."
+    },
+    {
+     "slug": "electrolysis",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Ion drift and charge counting (Faraday) are a real, small particle model, but which ion is discharged in solution comes from a lookup rule in the reactivity series rather than from the model, and the aluminium-cell coda is a picture; data are only reference constants."
+    },
+    {
+     "slug": "moles-and-stoichiometry",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Balancing by atom counts, converting grams to moles with IUPAC atomic weights (openly available), and finding the limiting reagent are real algorithms, and the leftover reactant shows on screen; the risk is a worksheet rather than a scene, so the counts must be drawn as molecules."
+    },
+    {
+     "slug": "chromatography",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A random walk of molecules hopping between mobile and stationary phases by partition coefficient, with path-length and diffusion noise, separates and broadens bands and produces the van Deemter minimum from a sweep, with no data needed."
+    },
+    {
+     "slug": "colloids-dlvo",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Brownian dynamics of a few hundred particles under the DLVO pair potential (van der Waals plus screened double-layer repulsion with a Debye length set by salt and valence) runs easily in the browser, and flocculation and the strong valence dependence emerge from it; no data is needed."
+    },
+    {
+     "slug": "composites-ashby",
+     "score": 2,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The only real model is the rule of mixtures plus a selection-line ranking; the rest is panning a property chart, close to browsing a diagram, and the data is weak: Materials Project (CC BY 4.0) gives only computed moduli of crystals, so polymers, woods and composites need a hand-compiled table, and the fibre pull-out panel would be a picture."
+    },
+    {
+     "slug": "corrosion-pourbaix",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Pourbaix map is computed live from Nernst lines and the mixed potential from two Butler-Volmer curves, both cheap and honest; the needed free energies and potentials are tabulated facts (the NBS tables are US-government work), and exchange current densities only set illustrative magnitudes."
+    },
+    {
+     "slug": "diffusion-in-solids",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Kinetic Monte Carlo of vacancy hops with an Arrhenius rate, compared with the erf profile, is small and honest, and textbook D0 and Q are facts; but carbon in iron diffuses interstitially, not by vacancies, so the page must use interstitial hops for carbon and keep the vacancy and Kirkendall mechanism for substitutional pairs."
+    },
+    {
+     "slug": "dislocations-alloys",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "2D Lennard-Jones molecular dynamics of a few thousand atoms with an edge dislocation glides under shear at interactive rates and shows solute pinning, but convincing work-hardening pile-ups need more atoms than a browser box holds, so that last step should stay modest."
+    },
+    {
+     "slug": "dispersion-forces",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Coupled Drude oscillators give the zero-point energy shift and the 1/r^6 law analytically and instantly, an honest minimal quantum model; polarizabilities and boiling points are published facts, but the correlation with boiling point is only a trend and must be presented that way."
+    },
+    {
+     "slug": "electrode-kinetics",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 1D diffusion grid with a Butler-Volmer boundary is the standard way to simulate cyclic voltammetry, cheap enough to run live, and it reproduces the Nernst ratio, the Tafel slope, the peaks growing with the square root of the sweep rate and the diffusion limit from a few textbook constants."
+    },
+    {
+     "slug": "enzyme-kinetics",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Gillespie simulation of single enzymes and the Michaelis-Menten curve built from many copies, with the two inhibitor types, is a small, honest model, and Km and kcat values from BRENDA are CC BY 4.0 (confirmed on its licence page)."
+    },
+    {
+     "slug": "fracture-mechanics",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A breakable spring network of a few thousand bonds concentrates stress at a notch and roughly recovers the Griffith rule that breaking stress falls as one over the square root of crack length, with springs that yield giving the ductile case; K_IC and modulus are textbook facts, though the lattice's discreteness makes the scaling only approximate."
+    },
+    {
+     "slug": "free-energy-of-mixing",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The regular-solution free energy with a common tangent (a convex hull) and the spinodal is exact, instant and data-free, and building the phase diagram from free-energy curves is the honest model at this level."
+    },
+    {
+     "slug": "glass-transition",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A small 2D binary Lennard-Jones box (a few hundred particles) shows a one-size liquid crystallizing and a two-size mixture jamming, with a cooling-rate-dependent kink and caging in the mean-squared displacement, though the range of cooling rates within interactive time is narrow; no data is needed."
+    },
+    {
+     "slug": "hartree-fock",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "STO-3G H2 and HeH+ (the Szabo and Ostlund example) need 2x2 matrices and analytic s-Gaussian integrals, so the SCF loop, the bond-length scan and the exact two-determinant comparison all run instantly; the dozen basis numbers are published facts, whatever the Basis Set Exchange data licence."
+    },
+    {
+     "slug": "huckel-molecular-orbitals",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Diagonalizing a small Hückel adjacency matrix is exact and instant, the ring and chain level patterns and aromaticity show directly, and the cyanine absorption maxima are published facts; simple Hückel gets only the trend of the gap, not absolute colours, and the page should say so."
+    },
+    {
+     "slug": "liquid-crystals",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Lebwohl-Lasher Monte Carlo is cheap, but it must run on a small 3D lattice (the 2D model has no true nematic transition) and be drawn as a slice; the field-driven reorientation and the twisted-nematic transmission through Jones matrices are honest and need no data."
+    },
+    {
+     "slug": "mass-spectrometry",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Integrating the Mathieu equation for ions in a quadrupole and drawing the stability diagram is a real, cheap model, and isotope patterns computed from IUPAC/CIAAW abundances are facts; MassBank of North America (MoNA) spectra are listed as CC BY 4.0, which should be confirmed before shipping, and they are optional."
+    },
+    {
+     "slug": "nmr-spectroscopy",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Bloch-equation precession, the decaying signal (FID), its Fourier transform, and a spin Hamiltonian of a few couplings for ethanol (64 states) are all exact and instant; the shifts and couplings are a handful of literature facts, so the unclear licence of nmrshiftdb2 does not matter."
+    },
+    {
+     "slug": "nucleation-crystal-growth",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Both parts are buildable (a lattice-gas or Ising-like Monte Carlo for clusters next to the classical nucleation barrier, and a Kobayashi phase-field model on a grid of about 200x200 for dendrites), but they are two separate models, which makes for a heavy page; no data is needed."
+    },
+    {
+     "slug": "photochemistry",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "First-order rate equations, or a stochastic population, for the competing decay routes give the lifetime, quantum yield, phosphorescent tail and Stern-Volmer line exactly; the model is small and honest, if close to a kinetics diagram, and the fluorophore lifetimes and yields are published facts."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b7",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "tennis-racket-theorem",
+     "score": 5,
+     "reject": false,
+     "reason": "Euler's rigid-body equations are three ODEs, integrated at interactive rates. The angular-momentum sphere with its energy curves is an exact geometric construction, and the flipping can be seen without reading anything.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "turbulence-cascade",
+     "score": 4,
+     "reject": false,
+     "reason": "A GOY or Sabra shell model has about 20 complex ODEs, runs easily in the browser and reproduces the -5/3 spectrum, so it is the honest reduced model at level 3. The spectrum needs time-averaging and a stiff-aware integrator, and the page must say it is a shell model, not Navier-Stokes.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "baking-soda-and-vinegar",
+     "score": 4,
+     "reject": false,
+     "reason": "Particles meeting at 1:1 with a limiting reagent is a small, honest agent model, and the leftover powder shows the result. The muffin and balloon second run is closer to a picture, and the page nearly duplicates fizz-and-balloons, so merge the two.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "bubbles-and-foam",
+     "score": 3,
+     "reject": false,
+     "reason": "A 2D closed film under tension and inside pressure relaxes to a circle, and two bubbles form a flat wall (Plateau), so those parts are buildable. Why plain water fails and soap holds (Marangoni stabilisation) and foam drainage are not captured honestly by a spring mesh, so narrow the page to the least-surface shape.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "cake-rising",
+     "score": 2,
+     "reject": true,
+     "reason": "Ideal-gas expansion of trapped bubbles gives only about 25% rise from room temperature to 100 °C. The real rise comes from CO2 release kinetics and steam, which the entry does not model. As described it is a step-through with threshold rules, close to a picture dressed as a model, and the oven-door collapse claim is shaky.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "candle-flame",
+     "score": 2,
+     "reject": true,
+     "reason": "As described it is a step-through with a probe reading from a temperature table. The honest model of a diffusion flame (Burke-Schumann, wax evaporation and wicking) is above level 0 and is not what is proposed, so this is a browse-a-diagram. Faraday's text (Gutenberg #14474) is public domain, but data is not the issue.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "candle-under-a-jar",
+     "score": 3,
+     "reject": false,
+     "reason": "Oxygen use as an ODE with an extinction threshold of about 16% O2, plus atom counting from the balanced reaction, is small and honest. Much of the page is step-through narration, and it overlaps fire-triangle almost entirely, so merge the two.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "caramel-and-candy-stages",
+     "score": 4,
+     "reject": false,
+     "reason": "Evaporation as an ODE plus the published curve of boiling point against sucrose concentration is a real, tiny model, and the thermometer genuinely reads the water left. Mapping the candy stages to concentration is an honest lookup, and the data is published facts.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "cooking-an-egg",
+     "score": 3,
+     "reject": false,
+     "reason": "Threshold denaturation temperatures are published facts, so it is buildable. But the honest model needs heat conduction into the egg over time (time-at-temperature, first-order kinetics), not a dragged thermometer. The grey ring (iron sulfide) is not modelled.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "dissolving-sugar",
+     "score": 4,
+     "reject": false,
+     "reason": "Particles detach from a lattice at a temperature-dependent rate and random-walk up to a solubility cap: a clean, small agent model with a conserved count. It duplicates dissolving-sugar-and-salt, so merge the two.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "dissolving-sugar-and-salt",
+     "score": 4,
+     "reject": false,
+     "reason": "The same honest particle model as dissolving-sugar, plus evaporation that recrystallises the solute, with a dozen handbook solubility values. Keep this one and fold dissolving-sugar into it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "drying-and-evaporation",
+     "score": 4,
+     "reject": false,
+     "reason": "A molecular box where Boltzmann-weighted fast surface particles escape, with humidity build-up and wind removing the vapour, is honest. Evaporative cooling emerges from the model and is visible on the thermometer.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "fire-triangle",
+     "score": 3,
+     "reject": false,
+     "reason": "The oxygen-depletion part is a real small model, but the water, wet-cloth and wick-cutting controls are rule toggles. It is nearly the same page as candle-under-a-jar, so merge them.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "fizz-and-balloons",
+     "score": 4,
+     "reject": false,
+     "reason": "Stoichiometry with a limiting reagent, a rate law and an ideal-gas balloon volume, with the mass staying constant on the scale, is a small honest model. It duplicates baking-soda-and-vinegar, so keep one.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "fizzy-drinks",
+     "score": 4,
+     "reject": false,
+     "reason": "Henry's-law partition between drink and headspace, with a temperature-dependent constant and nucleation that rises with supersaturation, is a real small model. Constants are available from NIST WebBook (public domain) or Sander's compilation (ACP, Copernicus open access).",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "growing-crystals",
+     "score": 4,
+     "reject": false,
+     "reason": "A lattice Monte Carlo with supersaturation-driven nucleation and growth honestly shows few big crystals from slow cooling and many small ones from fast cooling, and the solubility curves are published facts. The days-long timescale must be compressed openly.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "kitchen-thermometer",
+     "score": 2,
+     "reject": true,
+     "reason": "A scrubbable scale with about twenty hover marks is a browse-a-diagram with no model behind it. The data (USDA FSIS, public domain) is fine, but no dynamics produce the takeaway.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "lemon-battery",
+     "score": 4,
+     "reject": false,
+     "reason": "A circuit model built from electrode potentials, a large internal resistance per lemon, series and parallel addition, an LED threshold and zinc consumption is small and honest. The model must not use the Zn/Cu Daniell 1.1 V, because the lemon's cathode reaction is hydrogen evolution, about 0.9 V.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "popcorn",
+     "score": 4,
+     "reject": false,
+     "reason": "Heat conduction into a kernel, steam-table pressure and a rupture threshold, with spread-out kernel properties for the pop-count curve, is a real small model. The two figures needed (about 180 °C, about 10 atm) are citable facts; the paper's full text is on HAL.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "rust",
+     "score": 3,
+     "reject": false,
+     "reason": "A grid automaton with wetness- and salt-dependent rates is buildable, but the relative rates are loosely sourced and the electrochemical mechanism is hidden. Anchor the rates to published corrosivity categories (ISO 9223) rather than invented numbers.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "salt-and-ice",
+     "score": 4,
+     "reject": false,
+     "reason": "Equilibrium on the NaCl brine liquidus (FHWA table, US government public domain) plus an energy balance for heat of fusion is an honest small model. The bath dropping below 0 °C and freezing the cream emerges from it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "separating-mixtures",
+     "score": 3,
+     "reject": false,
+     "reason": "A rule-based particle sort through a chain of tools is honest at level 0 but closer to a puzzle state machine than a physical model. The chromatography strip could use real retention factors to give it substance.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sink-or-float",
+     "score": 5,
+     "reject": false,
+     "reason": "Archimedes' equilibrium depth from a dozen published densities, with salt changing the water's density, is an exact, tiny, honest model, and the outcome can be seen directly.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "smells-and-diffusion",
+     "score": 4,
+     "reject": false,
+     "reason": "Random walk plus advection in a room with walls is honest and cheap. The model must keep the real timescales, diffusion alone taking hours across a room, so that the draught's dominance is a true result.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "soap-and-grease",
+     "score": 3,
+     "reject": false,
+     "reason": "A coarse-grained 2D bead model (DPD-like) with a few hundred particles can show oil coalescing and amphiphiles coating droplets at interactive rates, so it is honest. It is fiddly to tune into reliable micelles, and the virus step is a picture.",
+     "suggestedLevel": 0
+    }
+   ]
+  }
+ }
+]

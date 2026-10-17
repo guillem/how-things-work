@@ -1,0 +1,2907 @@
+[
+ {
+  "label": "judge:fit-level:b13",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "clinical-trials",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A real mechanism (randomization, power, false positives, early stopping) that readers want and bayes-theorem does not cover, though it partly shares its trial-arm framing with placebo-expectation and screening-overdiagnosis in this batch."
+    },
+    {
+     "slug": "coagulation-cascade",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An amplifying enzyme cascade with published kinetics and drug or haemophilia knockouts is a clear mechanism at an honest level 3, and no existing page covers it."
+    },
+    {
+     "slug": "cochlea-hearing",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The site has no hearing page; the place code (a travelling wave on a graded membrane) and the cochlear-implant finale make a strong, visual, distinct level-3 mechanism."
+    },
+    {
+     "slug": "dialysis",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Countercurrent mass transfer and the urea sawtooth are a real mechanism, but the page leans on kidney-nephron and repeats its countercurrent idea, so it is better as a closing section of that page than as a page of its own."
+    },
+    {
+     "slug": "ecg-arrhythmias",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Computing the ECG from an excitable-medium model and breaking it into a spiral wave goes far past heart-circulation's synced trace, and it is a showcase mechanism at an honest level 3."
+    },
+    {
+     "slug": "fetal-circulation",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The pressure reversal at the first breath is a neat mechanism and distinct, but the subject is niche and it depends on haemoglobin-oxygen and partly reuses lung-gas-exchange from this batch."
+    },
+    {
+     "slug": "gwas-polygenic-risk",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "How sample size makes a Manhattan plot rise out of the noise, false peaks from population structure and the limits of polygenic scores are a real level-3 mechanism with high public interest, and none of it duplicates meiosis-inheritance."
+    },
+    {
+     "slug": "haemoglobin-oxygen",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The cooperative binding curve and its shifts (Bohr effect, carbon monoxide) are a core mechanism, distinct from respiration-atp, and a needed prerequisite for lung-gas-exchange and fetal-circulation."
+    },
+    {
+     "slug": "hippocampus-memory",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Hopfield-style attractor network with pattern completion, interference and consolidation is a genuine level-3 model, and its recurrent completion is distinct from neural-networks' feed-forward training."
+    },
+    {
+     "slug": "ige-crosslinking-allergy",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The bell-shaped crosslinking curve is a real but narrow mechanism; it shares its circulation-collapse ending with sepsis-inflammation, so one of the two is enough."
+    },
+    {
+     "slug": "kidney-nephron",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The countercurrent multiplier stepped cycle by cycle is a classic hard-to-picture mechanism that an animation explains well, it is absent from the site, and two other candidates in the batch depend on it."
+    },
+    {
+     "slug": "liver-drug-metabolism",
+     "score": 2,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Extraction ratio and first-pass metabolism are a real mechanism but a narrow extension of pharmacokinetics-dosing in this batch, and it would work better as a section of that page."
+    },
+    {
+     "slug": "lung-gas-exchange",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Ventilation-perfusion mismatch and shunt, computed through the real dissociation curves, are a strong, counterintuitive level-3 mechanism distinct from heart-circulation, though it sits close to haemoglobin-oxygen."
+    },
+    {
+     "slug": "menstrual-cycle-hormones",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An oscillator emerging from feedback that flips sign, with the pill as the intervention, is a widely relevant mechanism, and it is distinct from homeostasis's steady-state loop."
+    },
+    {
+     "slug": "mri-k-space",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "medical-imaging only sketches MRI; the Bloch equations, the gradients and filling k-space make a distinct, visually striking level-3 page built on fourier-transform."
+    },
+    {
+     "slug": "pain-gate-control",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A small wired circuit that shows gating and sensitization is a real mechanism, but gate-control theory is a simplified, partly dated model and the page overlaps placebo-expectation's descending modulation."
+    },
+    {
+     "slug": "pharmacokinetics-dosing",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "Accumulation to steady state over four to five half-lives is a widely useful mechanism that needs only exponentials, so it reads more honestly at level 2, and it should absorb liver-drug-metabolism."
+    },
+    {
+     "slug": "placebo-expectation",
+     "score": 2,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Bayesian cue-combination model is normative rather than a mechanism, and its trial-arm half (regression to the mean, natural recovery) duplicates clinical-trials in this batch."
+    },
+    {
+     "slug": "screening-overdiagnosis",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "Lead-time and length bias are a counterintuitive mechanism that a cohort simulation shows well and that bayes-theorem does not cover, and they need no university-level model, so level 2 is honest."
+    },
+    {
+     "slug": "sepsis-inflammation",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The four-variable acute-inflammation model, with its distinct outcomes and the response itself as the disease, is a real level-3 dynamical mechanism distinct from immune-system."
+    },
+    {
+     "slug": "thymic-selection-tolerance",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The two-threshold selection trade-off is a clean mechanism distinct from immune-system's clonal expansion, but the model is thin and close to a single plotted histogram."
+    },
+    {
+     "slug": "wound-healing",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A travelling-wave reaction-diffusion model is a genuine level-3 mechanism, but the infection and diabetes effects are only stated rate cuts, and the subject draws weaker demand than the other medicine candidates."
+    },
+    {
+     "slug": "a-year-of-weather",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The weather-versus-climate distinction is a valuable level-0 idea built on real data, but the page shows a pattern rather than a mechanism and is closer to a data explorer than a how-it-works page."
+    },
+    {
+     "slug": "beach-waves",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A familiar beach, one control (the slope of the sea floor), the bobbing duck and waves breaking in the shallows make an ideal level-0 mechanism that leads naturally into waves-interference."
+    },
+    {
+     "slug": "cloud-base",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Following one rising bubble of air explains flat cloud bottoms, cold mountains and the rain shadow with no formulas, an excellent level-0 mechanism distinct from atmosphere-weather's global view."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b11",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "membrane-potential",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A real university mechanism (Nernst/GHK, pump, osmotic volume) that neurons takes for granted, so it is distinct and well suited to a live voltage graphic."
+    },
+    {
+     "slug": "metabolic-flux",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An honest level-3 systems-biology model (FBA by linear programming) with visible flux rerouting, but it is niche for this site's visitors and heavy to build in the browser."
+    },
+    {
+     "slug": "microbiome-dynamics",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Generalised Lotka-Volterra with inferred interactions and alternative stable states is a real level-3 mechanism distinct from the ecosystems page, though a ten-group matrix is hard to make legible."
+    },
+    {
+     "slug": "molecular-motors",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Stochastic stepping, stall force and force-velocity curves are a vivid mechanism the graphic can show, clearly distinct from the ATP synthase rotor in respiration-atp."
+    },
+    {
+     "slug": "morphogen-gradients",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Covers the reserve item on pattern formation with a real diffusion-decay model and the French flag; it is distinct, but it should be planned together with turing-patterns and segmentation-clock so the three do not blur."
+    },
+    {
+     "slug": "phylogenetics",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Computing trees from sequences (UPGMA versus neighbour joining, clock violations) is a genuine algorithmic mechanism that is distinct from deep-time and evolution."
+    },
+    {
+     "slug": "population-genetics",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Wright-Fisher drift versus selection, with Kimura's fixation probability, is the core university model the evolution page lacks, and it is ideal for many live traces."
+    },
+    {
+     "slug": "quasispecies-error-threshold",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Eigen's error threshold is a real mechanism with a clear takeaway, but it is niche, overlaps population-genetics in machinery, and lists a level-3 candidate as a prerequisite."
+    },
+    {
+     "slug": "quorum-sensing",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Diffusion plus LuxI/LuxR positive feedback giving a collective threshold switch is a showable mechanism distinct from crispr and lac-operon, and appealing as glowing bacteria."
+    },
+    {
+     "slug": "rubisco-photorespiration",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Farquhar-von Caemmerer-Berry model is the real level-3 leaf model, and its C3/C4/CAM comparison goes well beyond the level-1 photosynthesis page."
+    },
+    {
+     "slug": "segmentation-clock",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The clock-and-wavefront model is a distinct, elegant mechanism, but it is a third pattern-formation page beside morphogen-gradients and turing-patterns and leans on a level-3 prerequisite."
+    },
+    {
+     "slug": "signalling-cascades",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Huang-Ferrell MAPK ultrasensitivity is a real model with a striking dose-response result, and it is distinct from the hormone-level homeostasis page."
+    },
+    {
+     "slug": "speciation",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Dobzhansky-Muller incompatibilities snowballing is a genuine mechanism, but it builds on population-genetics, a level-3 candidate, and its graphic is more abstract than its siblings'."
+    },
+    {
+     "slug": "synaptic-plasticity",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The STDP window and unsupervised pattern pick-up are a real local learning rule, clearly distinct from gradient-descent training in neural-networks and from spike generation in neurons."
+    },
+    {
+     "slug": "turing-patterns",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Reaction-diffusion spots and stripes are a beautiful, widely sought mechanism driven by a real PDE, and they are distinct from chaos-fractals."
+    },
+    {
+     "slug": "viral-dynamics",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Perelson within-host model with biphasic decay and resistance under combination therapy is real level-3 material, distinct from population-level epidemics."
+    },
+    {
+     "slug": "blood-types",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A familiar subject with a clear flag-and-guard mechanism and a chart the reader fills in, needing no formulas: an ideal level-0 toy."
+    },
+    {
+     "slug": "body-thermostat",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An everyday experience with a clear heat-budget feedback that a 10-year-old can drive with one control; it shares the feedback idea with homeostasis but uses a different variable and a concrete body."
+    },
+    {
+     "slug": "breathing-and-lungs",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The diaphragm-and-bell-jar pressure mechanism is a classic KS2/KS3 'how it works' subject with an immediate toy, and it is distinct from heart-circulation."
+    },
+    {
+     "slug": "digestion-journey",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A core primary curriculum topic with a staged mechanism (where each juice acts, absorption in the small intestine), distinct from homeostasis's blood-glucose view."
+    },
+    {
+     "slug": "fever",
+     "score": 2,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The raised set point is a good insight, but it is the same thermostat model and graphic as the body-thermostat candidate and should be one step of that page rather than a page of its own."
+    },
+    {
+     "slug": "germs-and-hand-washing",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Hand-to-surface transmission chains with counts and one washing control make a clear level-0 mechanism, distinct from the crowd SIR model in epidemics."
+    },
+    {
+     "slug": "growing-up",
+     "score": 2,
+     "reject": true,
+     "suggestedLevel": 0,
+     "reason": "Scrubbing growth-chart data shows what happens but no mechanism (no growth plates, no hormones), so it is a data survey rather than a how-it-works page."
+    },
+    {
+     "slug": "hearing-and-the-ear",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Promotes the reserve cochlea item as a clear place-by-pitch mechanism with one slider, distinct from waves-interference's wave in the air."
+    },
+    {
+     "slug": "heartbeat-and-pulse",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Counting your own pulse is a lovely hands-on start, but the mechanism is thin and partly covered by heart-circulation's rate control, so it would be stronger folded into a level-0 heart page."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b11",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "membrane-potential",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A pump-leak ODE (ion fluxes by GHK, Na/K pump, osmotic volume) is a few coupled equations that run instantly, and the Nernst and GHK values are exact checks; no data needed."
+    },
+    {
+     "slug": "metabolic-flux",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Flux balance analysis on a core network of around 100 reactions is a small LP that a JS simplex solves in milliseconds, but the network must be built from textbook stoichiometry with citations because BiGG e_coli_core is not openly licensed."
+    },
+    {
+     "slug": "microbiome-dynamics",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A ten-species generalized Lotka-Volterra ODE with an antibiotic term is tiny, and Stein et al. 2013 publish the fitted matrix in PLOS Computational Biology under CC BY."
+    },
+    {
+     "slug": "molecular-motors",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Gillespie simulation of a discrete-state kinesin model with Fisher-Kolomeisky rates gives the staircase traces and force-velocity curves cheaply, with the parameters taken from the published paper."
+    },
+    {
+     "slug": "morphogen-gradients",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 1D diffusion-decay PDE with thresholds is a small honest model with an analytic steady state to check against; the scaling mechanism needs one stated extra term."
+    },
+    {
+     "slug": "phylogenetics",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "UPGMA, neighbour joining and parsimony scoring on a dozen short shipped GenBank sequences are trivial in the browser, and GenBank data has no reuse restrictions; letting the reader drag branches is the only fiddly UI part."
+    },
+    {
+     "slug": "population-genetics",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A hundred Wright-Fisher binomial traces per generation are cheap, and fixation near 2s and the Hardy-Weinberg ratios are exact checks; no data needed."
+    },
+    {
+     "slug": "quasispecies-error-threshold",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A population of bit strings copied with errors on a single-peak landscape runs fast and shows the error threshold honestly; the replicase-evolution, parasite and compartment chapters add scope and should be kept lean."
+    },
+    {
+     "slug": "quorum-sensing",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Cells on a grid secreting a diffusing, decaying signal with a Hill-type LuxR switch make a small reaction-diffusion and agent model that shows the collective switch directly."
+    },
+    {
+     "slug": "rubisco-photorespiration",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Farquhar-von Caemmerer-Berry model is closed-form with published Bernacchi temperature parameters, and von Caemmerer's C4 model is also analytic; CAM over a day needs a simpler stated stomatal schedule."
+    },
+    {
+     "slug": "segmentation-clock",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A strip of Lewis delay-differential oscillators with Notch coupling and a moving wavefront is a small DDE system that runs interactively with a history buffer; no data needed."
+    },
+    {
+     "slug": "signalling-cascades",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Huang-Ferrell MAPK ODEs (BIOMD0000000009, CC0) are a few dozen mass-action equations, and the dose-response steepening is directly computable."
+    },
+    {
+     "slug": "speciation",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An explicit two-population, multi-locus simulation with random pairwise Dobzhansky-Muller incompatibilities is cheap and makes the snowball emerge rather than be drawn; migration and reinforcement are extra parameters on the same model."
+    },
+    {
+     "slug": "synaptic-plasticity",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Pair-based exponential STDP and a leaky integrate-and-fire neuron with twenty inputs (Song-Miller-Abbott) run easily in real time; the hidden-pattern demo needs careful tuning so that it emerges reliably."
+    },
+    {
+     "slug": "turing-patterns",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Gierer-Meinhardt or Gray-Scott grid PDE runs at interactive rates in JS (or WebGL) and shows the diffusion-ratio threshold honestly; growing and tapered domains are a mask on the same grid."
+    },
+    {
+     "slug": "viral-dynamics",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Perelson target-cell ODE with drug efficacy and a resistant strain is a handful of equations whose biphasic decay slopes give the stated half-lives."
+    },
+    {
+     "slug": "blood-types",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The honest model is antigen-versus-antibody set logic, which is real but thin; it rises above a tap-and-reveal chart only if the clumping is simulated (cells cross-linked by antibodies) and the eight-by-eight chart is computed from the rule rather than drawn."
+    },
+    {
+     "slug": "body-thermostat",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A one-node heat-balance ODE with a proportional controller for skin blood flow, shivering and capped sweating is small and honest at level 0, and it overheats when evaporation saturates."
+    },
+    {
+     "slug": "breathing-and-lungs",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Boyle's law with airflow driven by the pressure difference, plus a CO2 accumulator for breath-holding, is a small real model, but the risk is an animated cutaway in which the model does little; the CO2 drive should be the model's output, not a scripted bar."
+    },
+    {
+     "slug": "digestion-journey",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A compartment model with first-order breakdown and absorption is buildable, but the rates are rough textbook figures and the page leans toward a scripted scrub-through of a diagram; it needs the food-dependent emptying and breakdown to come from the model."
+    },
+    {
+     "slug": "fever",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "It reuses the body-thermostat heat-balance model with a movable set point, so it is cheap and honest; it may work better as a chapter of body-thermostat than as its own page."
+    },
+    {
+     "slug": "germs-and-hand-washing",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An agent model of touches transferring fractions between hands and surfaces, with decay on surfaces, is small; transfer efficiencies come from published fomite studies (Rusin et al. 2002) as stated parameters, with no dataset to license."
+    },
+    {
+     "slug": "growing-up",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Scrubbing the CDC stature-for-age LMS percentile files (US government, public domain) and differencing them for growth velocity is an honest small-dataset page, though the model is a data lookup rather than a mechanism."
+    },
+    {
+     "slug": "hearing-and-the-ear",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The Greenwood place function with a bank of passive resonators along the basilar membrane, driven by the tone, computes the bump positions honestly and runs easily; the ossicle lever is a stated gain."
+    },
+    {
+     "slug": "heartbeat-and-pulse",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Heart rate following effort with exponential recovery and a pulse-wave delay is a real but very thin model, and the pulse-counting stopwatch is a tool rather than a model; it risks reading as an animation with sliders."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b12",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "how-a-bone-heals",
+     "score": 4,
+     "reject": false,
+     "reason": "A clear staged mechanism (haematoma, soft callus, hard callus, remodelling) with one honest control (cast vs movement) that a 10-year-old who has seen a cast will follow; distinct from bridges-structures and from the level-3 bone-remodelling candidate.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "how-cuts-heal",
+     "score": 3,
+     "reject": false,
+     "reason": "Platelet plug and scab under new skin is a real mechanism from an everyday experience and works at level 0, though the cut-depth and scab-picking controls make a thinner toy than its sibling healing candidates.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "hunger-and-fullness",
+     "score": 3,
+     "reject": false,
+     "reason": "Stomach stretch and gastric emptying rates give a genuine, formula-free mechanism with a nice same-energy comparison, distinct from homeostasis's blood-sugar loop, though the satiety story is simplified (hormones are left out) and the page must not overclaim.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "joints-and-skeleton",
+     "score": 3,
+     "reject": false,
+     "reason": "A build toy where joint shape limits reach is honest at level 0 and distinct from bridges-structures, but it leans towards a classification of joint types more than a single causal mechanism.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "muscles-pull-in-pairs",
+     "score": 4,
+     "reject": false,
+     "reason": "Antagonistic pairs plus the elbow lever (the biceps pulls many times the load) is a vivid mechanism readable with counts and comparisons only, and nothing existing shows it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "reflexes",
+     "score": 4,
+     "reject": false,
+     "reason": "The spinal shortcut against the brain route, with the reader's own reaction test, is a strong level-0 toy distinct from neurons' ion-channel spike; it substantially duplicates the batch's reflex-arc-reaction-time, so only one of the two should go in, and this is the better fit for the level-0 push.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "smell-and-taste",
+     "score": 4,
+     "reject": false,
+     "reason": "The combinatorial receptor-pattern code and the pinched-nose test show a real mechanism a child can play with, a good level-0 sibling to vision-color without repeating it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sugar-and-tooth-decay",
+     "score": 4,
+     "reject": false,
+     "reason": "The Stephan-curve timeline (how often beats how much) makes a counterintuitive, everyday takeaway from one schedulable control; honest at level 0 and distinct from acids-bases.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sunscreen-spf",
+     "score": 4,
+     "reject": false,
+     "reason": "Counting rays through the lotion (1/SPF) and showing that a thin layer matters more than the number is a real mechanism with counts only, high everyday demand, and no overlap with light-optics.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "where-calories-go",
+     "score": 3,
+     "reject": false,
+     "reason": "The resting-versus-exercise energy budget is a useful counterintuitive takeaway and honest at level 0, but it is closer to an accounting display than a mechanism the graphic can show, and must avoid diet-advice framing.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "why-bruises-change-colour",
+     "score": 3,
+     "reject": false,
+     "reason": "Haemoglobin breakdown through green and yellow is a real sequence a child has seen on their own skin, but the toy is mostly a colour timeline with one control, and it sits near how-cuts-heal in theme.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "why-shots-protect-you",
+     "score": 3,
+     "reject": false,
+     "reason": "A head-start race of counts is an honest level-0 framing, but its takeaway (memory is already in place) is the same as mrna-vaccines and immune-system's second response, so it is a simpler retelling rather than a new mechanism.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "why-spinning-makes-you-dizzy",
+     "score": 4,
+     "reject": false,
+     "reason": "Lagging fluid in the semicircular canals, and the reversed feeling on stopping, is a clean inertia mechanism every child has felt, and no existing page covers it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "why-you-get-sleepy",
+     "score": 4,
+     "reject": false,
+     "reason": "The two-process model (a sleep-pressure tank plus a circadian window) is a real model that works as a level-0 toy with one bedtime control, high in everyday interest and distinct from homeostasis.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "kidney-water-balance",
+     "score": 4,
+     "reject": false,
+     "reason": "Filter-then-reclaim and the ADH water loop is core GCSE biology with a genuine mechanism, a natural level-1 sibling to homeostasis, and nothing existing covers it.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "reflex-arc-reaction-time",
+     "score": 2,
+     "reject": true,
+     "reason": "Its hot-plate reflex loop, spinal shortcut and reaction-time test substantially duplicate the batch's level-0 reflexes candidate, so the two should be merged into one page rather than both built.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "ageing-mortality",
+     "score": 4,
+     "reject": false,
+     "reason": "Gompertz life tables, the mutation-accumulation argument and a reliability model that reproduces the straight log line make a real university-level model with a striking takeaway, distinct from evolution.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "anaesthesia-infusion",
+     "score": 4,
+     "reject": false,
+     "reason": "The three-compartment target-controlled infusion model with an effect site and context-sensitive wake-up is exactly what a pharmacology or anaesthesia student learns, and it has a surprising takeaway; it depends on the pool's pharmacokinetics-dosing being chosen.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "antibiotic-dosing-resistance",
+     "score": 4,
+     "reject": false,
+     "reason": "PK curves crossed with the mutant selection window give a real model and a takeaway that corrects a common belief, going well beyond evolution's antibiotic example; it depends on pharmacokinetics-dosing.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "artificial-pancreas",
+     "score": 4,
+     "reject": false,
+     "reason": "A published glucose-insulin model under a tunable controller with sensor and absorption delays is a real level-3 control problem, building on homeostasis and feedback-control without repeating either.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "baroreflex-blood-pressure",
+     "score": 4,
+     "reject": false,
+     "reason": "A closed-loop baroreflex with standing, haemorrhage, Valsalva and set-point drift is a real physiology model, distinct from heart-circulation's open-loop pressure.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "blood-acid-base",
+     "score": 3,
+     "reject": false,
+     "reason": "The Davenport diagram with lungs and kidneys on two clocks is genuine level-3 physiology and distinct from acids-bases, but it is a narrow clinical tool and depends on two pool candidates (lung-gas-exchange, kidney-nephron) as prerequisites.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "bone-remodelling",
+     "score": 3,
+     "reject": false,
+     "reason": "Strain-driven remodelling that grows trabeculae (Wolff's law) is a real model with a striking emergent graphic, but a finite-element grid of thousands of elements is heavy to run as a pure function of time in the browser.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cancer-immunotherapy",
+     "score": 4,
+     "reject": false,
+     "reason": "The Kuznetsov-style tumour-immune ODEs, with elimination, equilibrium and escape and a checkpoint 'brake' to release, are a real model that extends cancer and immune-system without duplicating them.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cerebellum-motor-learning",
+     "score": 5,
+     "reject": false,
+     "reason": "Visuomotor rotation, with the reader's own hand fitted by the two-rate error-driven model and showing aftereffects and savings, is a real research model and an unforgettable interactive with no overlap.",
+     "suggestedLevel": 3
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b10",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "mould-on-bread",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An everyday object with a hidden mechanism (hyphae spreading ahead of the visible spot) that a one-control x-ray toy shows well; no fungus appears anywhere in the catalogue, and the 'cut it off' payoff works for a 10-year-old."
+    },
+    {
+     "slug": "onion-tears",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A familiar experience explained by one clear mechanism (cutting a cell mixes two separated ingredients), with honest single-variable remedies, at level 0, and distinct from the-cell."
+    },
+    {
+     "slug": "ripening-fruit",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A kitchen trick with a real gas-feedback mechanism that the particles and the bag/bowl/fridge controls show directly; honest at level 0, and no page covers fruit or ethylene."
+    },
+    {
+     "slug": "seeds-and-germination",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A classic primary-school experiment with a surprising, showable takeaway (sprouts in the dark, mass falls before leaves open); clearly the stage before photosynthesis, so it doesn't overlap that page."
+    },
+    {
+     "slug": "tree-rings",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Real ring-width data and the crossdating slide give a real mechanism and method, not just a fact, and it works without formulas; distinct from deep-time's whole-Earth timeline."
+    },
+    {
+     "slug": "why-big-birds-flap-slowly",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A good everyday question, but the mechanism is a scaling law that a level-0 page must state as 'the sums stop working' rather than show, so it risks being a correlation chart; it is distinct from flight's wing section."
+    },
+    {
+     "slug": "why-leaves-change-colour",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A universally seen phenomenon with a crisp mechanism (green dismantled, yellow unmasked, red made fresh) that one weather control drives, and the reverse of the photosynthesis page."
+    },
+    {
+     "slug": "diffusion-osmosis",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A core GCSE topic missing from the catalogue, with particle-level mechanisms the graphic shows naturally (spreading, membrane, swelling cell, pump); entropy's mixing count and the-cell's structure do not cover it."
+    },
+    {
+     "slug": "dna-fingerprinting",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A real procedure with a quantitative model (STR repeat counts, product of allele frequencies) that visitors care about, and the level-1 prerequisites are honest; it is distinct from meiosis-inheritance and crispr."
+    },
+    {
+     "slug": "enzymes-and-digestion",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A core curriculum topic with an absent mechanism (enzyme shape, temperature/pH optimum, bile surface area) that the toy shows as rate curves; nothing existing covers digestion or enzyme behaviour."
+    },
+    {
+     "slug": "pcr-copying-dna",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Its doubling-per-cycle model and the Ct readout are a vivid, real mechanism that everyone met through COVID tests, and it is distinct from dna-to-protein; the PCR-test link fits level 1 well."
+    },
+    {
+     "slug": "plant-transport",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A curriculum staple (transpiration pull, four rate factors, phloem) with a clear mechanism, distinct from photosynthesis, though it depends on the diffusion-osmosis candidate being built first."
+    },
+    {
+     "slug": "bacterial-chemotaxis",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A textbook university systems-biology model (run-and-tumble, Barkai-Leibler perfect adaptation) whose emergent drift up the gradient is exactly what an animated simulation shows best, and no page is like it."
+    },
+    {
+     "slug": "cell-cycle-switch",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The real Novak-Tyson model at an honest level 3 with a clear takeaway, but its bistable-switch-with-hysteresis lesson repeats lac-operon, epigenetic-memory and genetic-circuits in this same file, so only some of them should be chosen."
+    },
+    {
+     "slug": "central-pattern-generators",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A half-centre oscillator chained into a swimming lamprey wave is a striking, real neuroscience model distinct from neurons' single-cell firing; level 3 is honest."
+    },
+    {
+     "slug": "circadian-clocks",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Goodwin/Leloup-Goldbeter delayed-feedback oscillator with entrainment and a jet-lag payoff is real level-3 content that visitors want, though its oscillator lesson overlaps the repressilator half of genetic-circuits."
+    },
+    {
+     "slug": "coalescent",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The standard backward-in-time population-genetics model, with a mechanism the stepping graphic shows well (lineages merging, bottleneck collapse), and distinct from forward-time population genetics; it is more abstract for general visitors."
+    },
+    {
+     "slug": "dna-sequencing",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "De Bruijn assembly of a real phiX174 genome is a genuine algorithmic mechanism with clear controls (coverage, k, repeats) and no existing counterpart; the Sanger part is a bit of an add-on."
+    },
+    {
+     "slug": "epigenetic-memory",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The real Dodd et al. model at an honest level, but it is niche and its bistable-memory takeaway is largely the same as lac-operon's, cell-cycle-switch's and the toggle switch's in this file."
+    },
+    {
+     "slug": "evolutionary-games",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Replicator dynamics, ESS, spatial cooperation and Hamilton's rule are core university material with a clear graphic, and frequency-dependent fitness sets it apart from the evolution page; it is broad, so the scope needs trimming."
+    },
+    {
+     "slug": "gene-expression-noise",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A real Gillespie model with the elegant two-reporter scatter, but it is specialised and partly repeated by the stochastic-solver step of genetic-circuits."
+    },
+    {
+     "slug": "genetic-circuits",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The toggle switch and the repressilator are real level-3 synthetic biology, but the switch duplicates lac-operon/epigenetic bistability and the oscillator duplicates circadian-clocks within this file, so it is weaker unless it replaces one of them."
+    },
+    {
+     "slug": "genetic-code-error-tolerance",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An interesting computational result (the real code against shuffled codes), but it is a scoring analysis more than a mechanism in motion, and its appeal is narrower than the other level-3 candidates."
+    },
+    {
+     "slug": "lac-operon",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The canonical model of gene regulation (Ozbudak et al.), with hysteresis and diauxie the toy shows, and it is the prerequisite other candidates rely on; it is distinct from dna-to-protein, and its prerequisite reaction-rates-equilibrium is at level 2, which suits level 3."
+    },
+    {
+     "slug": "luria-delbruck",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A landmark experiment run as a clone-statistics simulation whose jackpot distribution shows its own takeaway, and it deepens evolution's pitfall rather than repeating it."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b9",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "quantum-dots",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Particle-in-a-box confinement added to a real band gap is a genuine university mechanism with a vivid size-to-colour slider, and it extends solar-cells/semiconductors rather than repeating them."
+    },
+    {
+     "slug": "reaction-free-energy",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Locating equilibrium as the minimum of G(extent), with the mixing-entropy term toggled, is the real physical-chemistry model and clearly distinct from the kinetic picture on reaction-rates-equilibrium."
+    },
+    {
+     "slug": "rubber-elasticity",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The entropic spring from counting freely-jointed chain conformations is a striking, counterintuitive mechanism (pulls harder when hot) that carbon-polymers does not cover."
+    },
+    {
+     "slug": "sn1-sn2",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A core university organic mechanism with a real rate-law and stereochemistry payoff, but narrower appeal and an ambitious EVB surface, and it leans on the separately proposed transition-state-theory page."
+    },
+    {
+     "slug": "surface-catalysis",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Ziff-Gulari-Barshad lattice model shows site coverage and CO poisoning, a mechanism the existing page's barrier-lowering catalyst never models."
+    },
+    {
+     "slug": "surfactants-micelles",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Self-assembly with a CMC kink and packing-driven sphere-to-bilayer shapes is real colloid science behind an everyday object (soap), distinct from the-cell's static membrane."
+    },
+    {
+     "slug": "transition-state-theory",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Classical trajectories on a LEPS surface with Polanyi's early/late barrier rules and the kinetic isotope effect are the real university model behind the 1D profile on reaction-rates-equilibrium."
+    },
+    {
+     "slug": "van-der-waals-fluid",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The equal-area construction and critical point are honest level-3 thermodynamics, but states-of-matter already tracks a phase diagram so the new part is the end of the liquid-gas line, a narrower gain."
+    },
+    {
+     "slug": "vibrational-spectroscopy",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Diagonalising a spring Hessian into normal modes and applying IR/Raman selection rules is the real model, and it explains why CO2 absorbs where greenhouse-effect simply assumes it."
+    },
+    {
+     "slug": "x-ray-diffraction",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Structure factors, Bragg peaks and systematic absences make a real, interactive Fourier-transform-of-a-crystal page not covered anywhere; the semiconductors prerequisite is weak and could be dropped."
+    },
+    {
+     "slug": "ant-trails",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Stigmergy with fading pheromone is a clear emergent mechanism a 10-year-old can run and test (double bridge, evaporation off), and nothing on the site shows it."
+    },
+    {
+     "slug": "apple-browning",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A familiar object with one-control experiments (acid, air, cold, heat) showing an enzyme at work is a good level-0 toy, though its 'heat destroys the enzyme' beat overlaps jelly-and-pineapple."
+    },
+    {
+     "slug": "bean-in-a-jar",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A classic school experiment whose surprising takeaway (seeds sprout on stored food, light matters only later) is a real mechanism and a good door to photosynthesis."
+    },
+    {
+     "slug": "bread-and-yeast",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Living yeast making trapped gas, with warmth as the single control, is an honest level-0 mechanism from the kitchen, distinct from respiration-atp's biochemistry."
+    },
+    {
+     "slug": "caterpillar-to-butterfly",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Appealing and honest for level 0, but it is mostly a staged life-cycle sequence of facts with a weak model (moulting because skin cannot stretch), so less of a toy than its peers."
+    },
+    {
+     "slug": "fireflies-in-sync",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Pulse-coupled oscillators syncing with one coupling slider is a magical, genuinely model-driven level-0 toy, distinct from resonance and from the flocking and ant emergence pages."
+    },
+    {
+     "slug": "flocking-birds",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Boids' three rules, switched off one at a time, is the canonical emergent-behaviour toy, wordless and formula-free, with no counterpart on the site."
+    },
+    {
+     "slug": "flowers-and-bees",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Pollination as a trade counted in seeds is level-0 honest and distinct from predator-prey, but the model is thin and the outcome (no bees, fewer seeds) is predictable."
+    },
+    {
+     "slug": "food-chains",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The ten-fold pyramid of counts is a fair level-0 door, but ecosystems (level 1, no prerequisites) already builds food webs and removes species, so the distinct part is only the energy-loss pyramid."
+    },
+    {
+     "slug": "fridge-and-spoilage",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Doubling slowed by cold is an everyday, testable mechanism that teaches exponential growth as counts, distinct from person-to-person spread on epidemics."
+    },
+    {
+     "slug": "how-fish-breathe",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Countercurrent exchange with a flip switch that halves the oxygen crossing is a real, surprising mechanism explained with counted dots, not covered by heart-circulation."
+    },
+    {
+     "slug": "how-plants-drink",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Transpiration pull from the dyed-celery experiment, with weather as the control, is a genuine mechanism for beginners that photosynthesis does not show."
+    },
+    {
+     "slug": "inside-an-egg",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The breathing shell and growing air pocket give it a real mechanism, but much of the page is a developmental timeline of facts and the humidity control is a modest toy."
+    },
+    {
+     "slug": "jelly-and-pineapple",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Strands tangling into a gel versus an enzyme cutting them is a vivid one-control kitchen mechanism; it shares the heat-kills-enzyme beat with apple-browning, so the two should not both be chosen without differentiation."
+    },
+    {
+     "slug": "milk-and-yogurt",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Charged protein balls clumping when acid is added or made by bacteria is a clear mechanism that ties curds and yogurt together without a pH number, distinct from acids-bases."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b12",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "how-a-bone-heals",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A grid where callus ossifies where strain is low and is resorbed where unloaded is a real (if crude) mechanobiology rule and runs easily, but the hematoma-callus-remodel stages risk being a scripted timeline rather than an outcome of the rule; the build must make the non-union and thin-bone results emerge from the grid."
+    },
+    {
+     "slug": "how-cuts-heal",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Platelet particles sticking at a leak until the flow stops is an honest, cheap simulation; the scab and the creeping skin cells are a second, mostly scripted grid, and 'pick the scab and it reopens' is a rule rather than a model, so the page is half model and half animation."
+    },
+    {
+     "slug": "hunger-and-fullness",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Gastric emptying by food type is a small compartment model with published half-times, but the fullness gauge is an invented function of volume plus a gut signal, and the soup-versus-snack takeaway rests entirely on that invented weighting; it needs a cited satiety relation to count as a model."
+    },
+    {
+     "slug": "joints-and-skeleton",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Forward kinematics with per-joint degrees of freedom and textbook ranges is honest and cheap, but reaching the nose, scratching the back and turning a key are 3D tasks that are awkward in 2D SVG, and 'a ball at the knee buckles' needs forces the stated model does not have."
+    },
+    {
+     "slug": "muscles-pull-in-pairs",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A two-link lever with real attachment distances gives the roughly tenfold biceps force directly; a clear, small, honest statics model whose result can be read off the graphic."
+    },
+    {
+     "slug": "reflexes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Path length divided by conduction speed plus synaptic delays is an honest timing model, and the in-browser reaction test gives real data from the reader; buildable, but it nearly duplicates reflex-arc-reaction-time in this batch, so only one should survive."
+    },
+    {
+     "slug": "smell-and-taste",
+     "score": 2,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The receptor 'locks' are an invented toy matrix unless an open odorant-receptor response dataset (for example Pyrfume-hosted data, licence to be checked per set) fills it, and the pinched-nose strawberry is a picture to tap; the combinatorial-code idea survives only if the matrix comes from real data."
+    },
+    {
+     "slug": "sugar-and-tooth-decay",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Superposed Stephan curves with enamel loss integrated while pH is below about 5.5 is a small, honest model that makes the grazing-versus-one-sitting result emerge; the fluoride recovery rate needs a cited figure rather than an invented one."
+    },
+    {
+     "slug": "sunscreen-spf",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Transmission 1/SPF at the 2 mg/cm² test dose, and SPF raised to the fraction applied for thinner layers (Beer-Lambert), are the real relations, and the minimal-erythema-dose timer is a simple product; small and honest, though more a calculator drawn as rays than a dynamic system."
+    },
+    {
+     "slug": "where-calories-go",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Mifflin-St Jeor, Compendium MET values (numbers, free online) and USDA FoodData Central (public domain) give a real, openly sourced energy budget; buildable as an hourly stacked-block model, though it is closer to an explorable calculator than a simulation."
+    },
+    {
+     "slug": "why-bruises-change-colour",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "First-order conversion haemoglobin to biliverdin to bilirubin with clearance, in a spreading pool, colour mixed from the three pigments' absorption, is a small honest kinetic model; the rate constants must be given as ranges, as the entry says."
+    },
+    {
+     "slug": "why-shots-protect-you",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Exponential pathogen growth racing a clonal expansion that starts from a handful versus thousands of memory cells is a tiny ODE with textbook timescales, and the head start is visible in the curves; honest at level 0."
+    },
+    {
+     "slug": "why-spinning-makes-you-dizzy",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The torsion-pendulum canal model with a time constant of a few seconds plus velocity storage is the standard model, a one-line ODE driven by the slider, and the reversed sensation after stopping emerges from it directly."
+    },
+    {
+     "slug": "why-you-get-sleepy",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Borbely's two-process model (exponential Process S, sinusoidal Process C, two thresholds) is a published, tiny model that runs instantly and shows sleep deprivation and nap effects without text; the ninety-minute stage strip is an honest stylisation."
+    },
+    {
+     "slug": "kidney-water-balance",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A compartment model of body water with an ADH feedback loop and a nephron of filter-then-reclaim with a glucose transport maximum is buildable and honest at level 1; the scope (drink, heat, salt, glycosuria, dialysis) is wide and should be trimmed."
+    },
+    {
+     "slug": "reflex-arc-reaction-time",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Conduction timing plus the ruler drop converted with d = ½gt² is honest and builds on the reader's own trials, but 'how caffeine, distraction and practice shift the distribution' has no data source and would be invented unless it comes only from the reader's own runs; it duplicates reflexes in this batch."
+    },
+    {
+     "slug": "ageing-mortality",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "CDC/NCHS life tables are public domain (the Human Mortality Database is CC BY 4.0 for other countries), and a mutation-accumulation population and a redundancy reliability model are both small simulations, so the Gompertz line appears from data and from the models."
+    },
+    {
+     "slug": "anaesthesia-infusion",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Schnider three-compartment model plus ke0 effect site and a sigmoid Emax is a small linear ODE with published parameters, exactly what TCI pumps run, and the context-sensitive half-time emerges from it."
+    },
+    {
+     "slug": "antibiotic-dosing-resistance",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "One-compartment PK driving a two-strain concentration-dependent kill ODE (mutant selection window) is small and honest, and a MEGA-plate gradient grid of strains is a cheap stepping-stone simulation; parameters can be illustrative MICs, stated as such."
+    },
+    {
+     "slug": "artificial-pancreas",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Hovorka model is a published ODE of about a dozen states with open parameters, and a tunable PID or MPC-lite controller on a five-minute loop runs trivially; the exercise effect needs an extension from the literature, stated as such."
+    },
+    {
+     "slug": "baroreflex-blood-pressure",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A lumped circulation with a delayed sigmoid baroreflex is an honest small model that shows orthostatic recovery, haemorrhage and resetting; the four Valsalva phases need an intrathoracic pressure and venous-return compartment, which is extra work but feasible."
+    },
+    {
+     "slug": "blood-acid-base",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Henderson-Hasselbalch with a blood buffer line on a Davenport diagram, plus respiratory compensation in minutes and renal in days as first-order relaxations, is a real, cheap model whose trails are drawn by the model; the compensation rates need cited values."
+    },
+    {
+     "slug": "bone-remodelling",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Huiskes strain-adaptive rule on a 2D finite-element grid of a few thousand elements needs a linear solve per iteration, which a warm-started conjugate-gradient solver does in milliseconds, so trabeculae can emerge at interactive rates; it is iterative rather than a pure function of time, so iterations must be precomputed or cached for scrubbing."
+    },
+    {
+     "slug": "cancer-immunotherapy",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Kuznetsov tumour-immune ODE is a classic two-variable model with published parameters and shows elimination, dormancy and escape; checkpoint release is a parameter change, but the CAR-T expansion and cytokine surge add a second, less canonical model that should be cited or cut."
+    },
+    {
+     "slug": "cerebellum-motor-learning",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Visuomotor rotation measured from the reader's own pointer, with the Smith-Shadmehr two-rate model fitted beside it, is a real experiment plus a tiny published model; aftereffect and savings emerge, and the VOR extension is optional."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b13",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "clinical-trials",
+     "score": 5,
+     "reject": false,
+     "reason": "A Monte Carlo of randomized versus doctor-allocated trials, with power, false positives and early stopping, is small and honest, needs no data, and runs a thousand trials per frame easily.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "coagulation-cascade",
+     "score": 4,
+     "reject": false,
+     "reason": "The Hockin–Mann model is about 34 stiff ODEs, which a small implicit solver handles in milliseconds, and BioModels files are CC0 (the jjj.bio.vu.nl simulator shows it runs). The page is honest about stopping at thrombin, but the clot and its dissolving are shown only as stages.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cochlea-hearing",
+     "score": 4,
+     "reject": false,
+     "reason": "A frequency-domain 1D transmission-line cochlea and a band vocoder (Web Audio) for the implant are both cheap. The outer-hair-cell gain is a phenomenological negative damping and should be stated as one. A CC0 speech clip is easy to find.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "dialysis",
+     "score": 5,
+     "reject": false,
+     "reason": "Countercurrent versus cocurrent mass transfer has closed-form solutions, and single-pool urea kinetics is a one-line ODE; typical KoA and flow values are textbook numbers.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "ecg-arrhythmias",
+     "score": 4,
+     "reject": false,
+     "reason": "Aliev–Panfilov on a grid of about 150 by 150 runs spiral waves at interactive rates, a dipole projection gives an honest ECG, and MIT-BIH is ODC-By (verified on PhysioNet). Putting a conduction system and AV node on a 2D sheet is a hand-built approximation and should be presented as one.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "fetal-circulation",
+     "score": 3,
+     "reject": false,
+     "reason": "Buildable as a small lumped resistance and compliance network, but the resistances need a published fetal lumped model (e.g. Pennati et al.) cited rather than invented; otherwise the page slides toward a stepped diagram with colours.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "gwas-polygenic-risk",
+     "score": 4,
+     "reject": false,
+     "reason": "Drawing each variant's test statistic from its noncentral sampling distribution is an honest and very cheap model. The GWAS Catalog summary statistics are mostly CC0, but the study must be picked by its Usage License column (verified), and the file must be thinned to a shipped subset.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "haemoglobin-oxygen",
+     "score": 5,
+     "reject": false,
+     "reason": "The Adair or MWC four-site binding curve, the published Bohr, temperature and 2,3-BPG shifts, and the CO competition (Haldane) are closed-form; this is a small, exact model.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "hippocampus-memory",
+     "score": 4,
+     "reject": false,
+     "reason": "A Hopfield-style CA3 network with a pattern-separation stage is a small, honest algorithm. The consolidation step, replaying patterns into a cortical network, is also buildable, but it is a conceptual model and the page should say so.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "ige-crosslinking-allergy",
+     "score": 3,
+     "reject": false,
+     "reason": "The bivalent-crosslinking equilibrium (Dembo–Goldstein) is honest and gives the bell curve. The histamine-to-blood-pressure circulation and desensitization are glued-on toy compartments with no sourced parameters, so half the page would be a dressed-up picture.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "kidney-nephron",
+     "score": 4,
+     "reject": false,
+     "reason": "The countercurrent multiplier stepped single effect by single effect is a classic, honest algorithm, and ADH-controlled water permeability in the collecting duct is a simple flux model. Filtration and proximal reabsorption are mostly fixed fractions.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "liver-drug-metabolism",
+     "score": 4,
+     "reject": false,
+     "reason": "The well-stirred hepatic model and Michaelis–Menten alcohol elimination are closed-form and honest, but the example high- and low-extraction drugs need sourced parameters (e.g. FDA labels, public domain), which the entry does not name.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "lung-gas-exchange",
+     "score": 4,
+     "reject": false,
+     "reason": "A West-style multi-compartment V/Q model, with a mass balance per unit solved iteratively through the Kelman or Severinghaus dissociation curves, runs fine for about 50 units. It is the honest model, though more numerically fiddly than it looks.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "menstrual-cycle-hormones",
+     "score": 4,
+     "reject": false,
+     "reason": "Thirteen delay differential equations with 44 published parameters (Harris Clark–Schlosser–Selgrade, the paper is on the Selgrade site) run easily with a fixed-step DDE integrator. Parameter values are facts from the paper, so the CellML licence does not matter if they are typed from the paper.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "mri-k-space",
+     "score": 5,
+     "reject": false,
+     "reason": "Bloch precession for the signal and a 2D FFT of an analytic Shepp–Logan phantom (line-by-line k-space filling and masking) are small, exact and fast; OpenNeuro data are CC0 if a real slice is wanted.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "pain-gate-control",
+     "score": 4,
+     "reject": false,
+     "reason": "A handful of integrate-and-fire neurons with wind-up via facilitation is a small, honest circuit simulation. Gate control is a simplified and partly contested theory, so the page must present it as a model circuit, not established anatomy.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "pharmacokinetics-dosing",
+     "score": 5,
+     "reject": false,
+     "reason": "One- and two-compartment models with superposed doses are closed-form or trivial ODEs, and parameters from FDA labels on DailyMed are public domain.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "placebo-expectation",
+     "score": 3,
+     "reject": false,
+     "reason": "The Bayesian core is just a precision-weighted mean of two Gaussians, which is thin as an interactive model. The three-arm trial with regression to the mean adds a real simulation, but the conditioning-over-trials part needs a stated learning rule.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "screening-overdiagnosis",
+     "score": 5,
+     "reject": false,
+     "reason": "A cohort simulation with random tumour onset and growth rates and periodic screening shows length bias, lead-time bias and overdiagnosis directly. It is small, honest and needs no data.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "sepsis-inflammation",
+     "score": 4,
+     "reject": false,
+     "reason": "The Reynolds 2006 four-variable ODE has published parameters and the four outcomes as its attractors, so it is small and honest. The septic-shock circulation step is an add-on with no model behind it and should stay a labelled stage.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "thymic-selection-tolerance",
+     "score": 3,
+     "reject": false,
+     "reason": "Buildable honestly only if affinity comes from a sequence model, such as the Košmrlj–Chakraborty string-matching model of TCR and peptide. Drawn as independent random numbers, the challenge step becomes circular and the page a toy.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "wound-healing",
+     "score": 4,
+     "reject": false,
+     "reason": "The Sherratt–Murray two-variable reaction–diffusion on a 2D grid with a user-drawn wound runs easily and gives a travelling-wave closure. Infection and diabetes are honestly stated as parameter cuts, and the healing stages are labels only.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "a-year-of-weather",
+     "score": 4,
+     "reject": false,
+     "reason": "A small shipped dataset (five US GHCN-Daily stations over a few years, public domain) drawn as rings is honest and light. It is a data-scrub page rather than a model, which is acceptable at level 0 (like deep-time).",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "beach-waves",
+     "score": 4,
+     "reject": false,
+     "reason": "Linear dispersion with depth, Green's-law shoaling, a breaking criterion (H/d about 0.78) and orbital particle motion make a cheap, honest kinematic model that is a pure function of time. Breaking itself is a threshold, not simulated.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "cloud-base",
+     "score": 5,
+     "reject": false,
+     "reason": "A rising parcel with the dry adiabatic lapse rate, the Magnus saturation formula and a moist lapse rate over the mountain (foehn) is the standard textbook model: tiny, exact and right for level 0.",
+     "suggestedLevel": 0
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b9",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "quantum-dots",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Brus particle-in-a-sphere energy plus a level ladder and density-of-states panel is a small, honest closed-form model. The material constants and the Yu et al. 2003 size calibration are published facts (a polynomial fit), so nothing needs a licence. The page should say that the simple Brus formula overestimates the gap for the smallest dots."
+    },
+    {
+     "slug": "reaction-free-energy",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "G(extent) for N2O4/NO2 from a few NIST-JANAF numbers, with and without the mixing term, is a tiny exact model that responds instantly to T and P. It is honest, though visually it is a single curve, so the page needs a strong composition readout beside it."
+    },
+    {
+     "slug": "rubber-elasticity",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Monte Carlo sampling of a freely jointed chain plus the entropic force law (Gaussian or inverse-Langevin) and an affine network stress-strain curve all run easily in the browser and need no data. The adiabatic warming can be derived from the same entropy."
+    },
+    {
+     "slug": "sn1-sn2",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An EVB surface with a solvent-stabilised ionic state is a legitimate toy, but because its parameters are tuned to textbook relative rates, it risks being a picture dressed as a model. Stereochemistry and the rate law would be largely scripted on top. A simpler two-path competition with calibrated barriers may be more honest, and the page should state the fit."
+    },
+    {
+     "slug": "surface-catalysis",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Ziff-Gulari-Barshad lattice model is a classic, cheap cellular simulation whose CO-poisoning transition emerges on its own, and adding desorption with temperature is a one-line extension. It needs no data."
+    },
+    {
+     "slug": "surfactants-micelles",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 2D lattice Monte Carlo of amphiphiles (Larson-type) can show interface adsorption and a CMC kink at interactive rates. However, the shift from spheres to bilayers with head/tail size and oil solubilisation are hard to obtain reliably in 2D, so the scope should be narrowed to the CMC and the interface."
+    },
+    {
+     "slug": "transition-state-theory",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Classical trajectories on a LEPS surface for H+H2 and F+H2 are a textbook small ODE with published Sato parameters (facts). Polanyi's early/late barrier rules and Eyring rates follow directly. The zero-point-energy isotope effect must be added as a stated harmonic correction."
+    },
+    {
+     "slug": "van-der-waals-fluid",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The vdW isotherms, Maxwell equal-area construction and coexistence dome are an exact, tiny computation using NIST critical constants. The weak part is the particle box: near-critical 2D molecular dynamics is slow and noisy, so it should be clearly qualitative or reuse the states-of-matter engine."
+    },
+    {
+     "slug": "vibrational-spectroscopy",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Diagonalising a 3N x 3N mass-weighted Hessian of a valence force field for molecules of up to 5 atoms is trivial, and IR activity follows from dipole derivatives. Raman activity needs a bond-polarizability model or a symmetry rule, and the page should say which. Comparison needs only a few band centres, which are facts. HITRAN asks for citation but its redistribution terms are unclear, so quote the numbers rather than ship the line lists."
+    },
+    {
+     "slug": "x-ray-diffraction",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Structure factors from Cromer-Mann coefficients, Bragg angles for a powder pattern and an Ewald-sphere construction are a small, honest computation, and editing the cell changes the intensities directly. COD entries are public domain/CC0, and the scattering coefficients are published facts (also in BSD xraylib)."
+    },
+    {
+     "slug": "ant-trails",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A pheromone-laying and evaporating agent model with the double-bridge experiment is a classic, cheap simulation whose takeaway emerges visibly (shorter bridge wins; no evaporation means lock-in). It needs no data."
+    },
+    {
+     "slug": "apple-browning",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An oxygen-diffusion grid with an enzyme rate that depends on pH and temperature is an honest small reaction-diffusion model. However, the PPO constants are only gestured at ('polyphenol-oxidase references'), and with one control per region the result is close to a set of rate multipliers, so a concrete source for the rate-versus-pH/T curve should be named."
+    },
+    {
+     "slug": "bean-in-a-jar",
+     "score": 2,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Germination rate and a stored-food budget are a real but thin model. Most of what the reader sees (swelling, splitting, the root going down and the shoot up, the gravitropic bend, etiolation) would be scripted drawing driven by a few multipliers, so it borders on a picture dressed as a model. The germination constants are only described as 'published studies', with no source named."
+    },
+    {
+     "slug": "bread-and-yeast",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Yeast agents that consume sugar at a cardinal-temperature rate and produce gas filling bubbles are buildable. Dough expansion from gas volume is reasonable, but the baking stage (oven spring, crumb setting) would be scripted, and the fermentation study is not named."
+    },
+    {
+     "slug": "caterpillar-to-butterfly",
+     "score": 2,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Degree-day development (Zalucki 1982 thresholds, facts) and an instar mass curve are real but tiny models. The core of the page is stepping through life-stage drawings and a cutaway of the pupa, which is close to a browse-a-diagram with a temperature multiplier."
+    },
+    {
+     "slug": "fireflies-in-sync",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Mirollo-Strogatz pulse-coupled integrate-and-fire oscillators on a 2D field are cheap and honest, and synchrony visibly emerges as the single coupling slider rises. It needs no data."
+    },
+    {
+     "slug": "flocking-birds",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Reynolds boids with switchable separation/alignment/cohesion rules and a predator is a classic, small agent simulation in which each rule's effect is directly observable. It needs no data."
+    },
+    {
+     "slug": "flowers-and-bees",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Foraging agents attracted by colour, with pollen carryover and dilution and seed set requiring conspecific pollen, form an honest small agent simulation with countable outcomes. It needs no external data, though the attraction and carryover parameters are illustrative and should be described as such."
+    },
+    {
+     "slug": "food-chains",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The model is the 10% transfer arithmetic over a user-built graph: honest and buildable, but thin, verging on a drag-and-drop diagram with a calculator. Energy splitting across a web needs a stated rule to be more than counts."
+    },
+    {
+     "slug": "fridge-and-spoilage",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The Ratkowsky square-root growth model with published constants (PMC, facts) and the public-domain USDA limits is a small, honest model that drives an exponential count with temperature. Adding a lag phase would make the thaw behaviour more truthful."
+    },
+    {
+     "slug": "how-fish-breathe",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A 1D counter-current versus co-current exchanger is a tiny, exact model, and the roughly halved transfer emerges from it. The gill-collapse-in-air step is a scripted state (surface area to near zero) rather than a modelled one, which is acceptable if stated."
+    },
+    {
+     "slug": "how-plants-drink",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Flow set by evaporative demand (light, wind, humidity, stomatal opening), with the dye front advected at that rate, is honest but simple, essentially a demand formula plus advection. The leaf-pore zoom and the tree-scale bucket count are illustrations rather than model output."
+    },
+    {
+     "slug": "inside-an-egg",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Water loss through the shell can be modelled honestly with Fick diffusion against humidity (Ar and Rahn shell conductance, published facts). Embryo mass by day is available in an open-access table (PLOS ONE, PMC4821564, CC BY, E8-E20), so the data is not as weak as the entry says. Candling views and hatching remain largely drawn."
+    },
+    {
+     "slug": "jelly-and-pineapple",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Bond percolation of gelatin strands with an enzyme agent that cuts bonds, inactivated by heating, is a small honest model in which setting versus not setting emerges visibly. It needs no data."
+    },
+    {
+     "slug": "milk-and-yogurt",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Brownian colloids whose repulsion switches off as pH falls, plus a temperature-dependent bacterial acidification rate, can be built at interactive rates and show curdling emerging. The thicker set from preheated milk would need an extra stated rule (denatured whey binding the casein)."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b10",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "mould-on-bread",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A branching hyphal-tip growth model on a grid, with an extension rate set by moisture and temperature, is small and runs at interactive rates; the hidden network spreading ahead of the visible spot comes out of the model itself (spores show only where the mycelium is dense and old), so the takeaway is honest; give rate constants in order-of-magnitude form and call them a simplification."
+    },
+    {
+     "slug": "onion-tears",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Buildable as a cell grid (each cut cell releases gas) feeding a 2D advection-diffusion field, but the four controls are just scale factors on one release term, so it leans toward an animated cartoon; the garlic comparison is a different reaction and should be a separate parameter set, not a cosmetic swap."
+    },
+    {
+     "slug": "ripening-fruit",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A small autocatalytic ODE (ethylene production rises with ripeness, ripening rate rises with ethylene and temperature) coupled to a well-mixed or vented gas volume per container is honest and cheap; the bag, apple and fridge effects all come out of the model, though the postharvest constants are only roughly sourced."
+    },
+    {
+     "slug": "seeds-and-germination",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Hydrothermal time sets when the seed germinates and a reserve-versus-photosynthesis mass balance gives the dip-then-rise curve, both real and small; but the root and shoot turning and the pale growth in the dark are drawn rather than modelled (the entry itself says the model has no light term), so part of the page is a scripted picture."
+    },
+    {
+     "slug": "tree-rings",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Real ring widths from ITRDB, plus a slide-to-match cross-dating step that is an actual correlation algorithm the reader runs by hand; the data is free from NOAA (no explicit CC0 statement turned up in search; contributed series ask for citation), so cite each study; pick a species with sharp drought signals so the narrow years are visible without reading the text."
+    },
+    {
+     "slug": "why-big-birds-flap-slowly",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Pennycuick's scaling formula and the minimum speed from wing loading make a small honest model, but AVONET has mass and wing length and neither wingspan nor wing area, which the formula needs, and the Figshare record shows no clear licence; ship a small table of species with measured span, area and wingbeat frequency (Pennycuick's published tables, or Alerstam et al. 2007, PLoS Biology, CC BY) instead."
+    },
+    {
+     "slug": "why-leaves-change-colour",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Three pigment pools driven by day length, temperature and light, with leaf colour mixed from the pigment fractions, can be built and gives an honest qualitative model for level 0, but the rate constants have no source and the result is close to a scripted colour ramp; mixing from measured absorption spectra (licence to check) would make it more than a picture."
+    },
+    {
+     "slug": "diffusion-osmosis",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A 2D particle box with a membrane that passes only solvent particles is a real model and close to the existing states-of-matter engine; diffusion, osmotic flow and a pump that spends ATP all come out of it, though the scope (four scenes) is large, and in 2D the water level has to be shown as a movable partition or the compartment's volume, not as true hydrostatic height."
+    },
+    {
+     "slug": "dna-fingerprinting",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "The product rule over real allele frequencies is a small honest computation, and NIST's US 1036 dataset is US government work and public domain (use the 2017 revised files, Steffen et al. corrigendum); the electropherogram peaks are synthesised from the repeat counts, which is fine if it says so."
+    },
+    {
+     "slug": "enzymes-and-digestion",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Michaelis-Menten rates scaled by bell-shaped temperature and pH curves, plus a lipase rate proportional to droplet surface area, can be built, but the bell curves are fitted shapes rather than mechanism and the trip through the gut risks becoming an animated diagram; narrow the scope to the rate-against-conditions plot with the meal as a backdrop."
+    },
+    {
+     "slug": "pcr-copying-dna",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Doubling per cycle, with efficiency falling as primers and nucleotides run out, is a small exact model; the threshold-cycle shift of log2(1000), about ten cycles, comes straight out of it, and primer matching is a simple string test."
+    },
+    {
+     "slug": "plant-transport",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Transpiration from the vapour-pressure deficit and stomatal and boundary-layer conductance (a simplified Penman-Monteith) is a small honest model for the potometer, and Münch pressure flow can be a two-compartment model; the cohesion-tension water column is partly illustrative."
+    },
+    {
+     "slug": "bacterial-chemotaxis",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A few hundred run-and-tumble agents, each running a small ODE for receptor methylation with exact adaptation, run comfortably in real time, and the drift up the gradient and the dip-and-recover under a uniform dose come out of the model itself."
+    },
+    {
+     "slug": "cell-cycle-switch",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Tyson or Novak-Tyson ODEs are small, curated in BioModels under CC0, and integrate in real time; the hysteresis loop, the period that changes with growth rate and the checkpoint are all parameters of the real model."
+    },
+    {
+     "slug": "central-pattern-generators",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Half-centre oscillators (Matsuoka or Morris-Lecar) with mutual inhibition, chained as twenty pairs, are a few dozen ODEs and cheap; the travelling wave and its reversal are real model output, though the swimming body is driven by the phases kinematically and has no fluid mechanics, which the page should say."
+    },
+    {
+     "slug": "circadian-clocks",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Goodwin loop or the Leloup-Goldbeter model (BioModels, CC0) is a small ODE; entrainment, phase shifts after a jet-lag jump and the loss of rhythm when the delay is short all come out of integrating it."
+    },
+    {
+     "slug": "coalescent",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A backward Wright-Fisher simulation of ten lineages with mutations dropped on the branches is trivial to run in a browser, and the scaling with population size and the effect of a bottleneck are direct output of the model."
+    },
+    {
+     "slug": "dna-sequencing",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The phiX174 genome is unrestricted GenBank data, and read simulation plus de Bruijn assembly of 5,386 bases is fast in JavaScript; the graph has thousands of k-mer nodes, so it must be drawn compacted (unitigs) or zoomed to stay legible in SVG; the Sanger half is a simple fragment sort."
+    },
+    {
+     "slug": "epigenetic-memory",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Dodd et al. 2007 stochastic nucleosome model (about 60 sites, recruited conversions, halving at division) is small and runs in real time, and bistability, memory and its loss when cooperativity is weak emerge from the model."
+    },
+    {
+     "slug": "evolutionary-games",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Replicator dynamics and a Nowak-May spatial grid are small, honest models that run in real time; the scope (hawk-dove, prisoner's dilemma, spatial play, kin selection) is wide for one graphic, so trim it or split it into steps."
+    },
+    {
+     "slug": "gene-expression-noise",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Gillespie simulation of the telegraph model for a thousand cells is cheap, especially if precomputed per parameter change, and the bursts, the widening histogram and the two-reporter split into intrinsic and extrinsic noise are real model output."
+    },
+    {
+     "slug": "genetic-circuits",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The repressilator (BioModels, CC0) and the Gardner toggle switch are small ODEs with a cheap stochastic version; the free-wiring builder needs a general ODE generator from the drawn graph, which can be built but is more UI work than the model."
+    },
+    {
+     "slug": "genetic-code-error-tolerance",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Scoring thousands of block-preserving random codes against amino-acid property scales (20 published values each, which are facts) is a fast algorithm, and the histogram with the standard code far in the tail is visible without reading any text."
+    },
+    {
+     "slug": "lac-operon",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Ozbudak-style bistable ODE gives the hysteresis loop honestly; showing the diauxic pause needs a separate growth-and-substrate model (Monod with catabolite repression) coupled to it, which is small but should be stated."
+    },
+    {
+     "slug": "luria-delbruck",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Growing twenty cultures by branching with mutations at division, against a Poisson alternative, is a trivial simulation, and the jackpot plates and the estimate from the share of empty plates come directly out of it."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b14",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "compass-and-magnetic-poles",
+     "score": 4,
+     "reject": false,
+     "reason": "A level-0 classic (a needle aligning with a field, plus dip and declination) with a clear draggable mechanism; electromagnetism never navigates with a compass, though it should share the IGRF data with earths-magnetic-field.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "dew-and-fog",
+     "score": 4,
+     "reject": false,
+     "reason": "Starts from a misting glass every child knows and finds the dew point by hand with one control; distinct from the molecular box in states-of-matter.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "forest-fire-spread",
+     "score": 5,
+     "reject": false,
+     "reason": "A real percolation model a 10-year-old can run, with a surprising sharp threshold as the takeaway; distinct from epidemics (moving crowd) and the deterministic grid candidates.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "fossil-layers",
+     "score": 4,
+     "reject": false,
+     "reason": "Superposition is core KS2/NGSS content and the burial-and-cut toy shows the mechanism; it is distinct from deep-time's dated timeline, though leadsTo radioactivity is a stretch.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "geothermal-heat-below",
+     "score": 3,
+     "reject": false,
+     "reason": "The gradient and the depleted-then-recovering well work at level 0, but the page leans toward a reading-and-map survey, and it would fit the energy category better than earth.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "glacier-flow",
+     "score": 4,
+     "reject": false,
+     "reason": "The mass balance that moves the front, shown alongside ice that always flows forward, is a real mechanism with a known misconception; ice-ages does not show how a single glacier flows.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "how-caves-form",
+     "score": 4,
+     "reject": false,
+     "reason": "Positive feedback in dissolution (the widest crack wins) is a genuine and surprising mechanism that works without formulas; no existing page covers karst.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "how-rain-forms",
+     "score": 4,
+     "reject": false,
+     "reason": "Collision-coalescence against the updraft, extended to hail, is a strong mechanism-driven toy that continues from cloud-base; the million-droplet count keeps it numeric-only and honest at level 0.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "lighthouse-beam",
+     "score": 2,
+     "reject": false,
+     "reason": "Only the horizon geometry is a mechanism; flash rhythms are a list of conventions, so the page reads more as trivia than how-it-works and sits oddly in earth.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "lightning-and-thunder",
+     "score": 4,
+     "reject": false,
+     "reason": "Counting the seconds is a beloved everyday experience with a clear light-versus-sound mechanism plus stepped-leader striking; distinct from waves-interference.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "river-valleys",
+     "score": 4,
+     "reject": false,
+     "reason": "Erosion and deposition carving a branching network is core primary geography with a clear simulation; no existing page has water shaping land.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "rock-to-sand",
+     "score": 3,
+     "reject": false,
+     "reason": "A good level-0 story, but its size sorting where the river slows repeats river-valleys' deposition and soil-in-a-jar's settling, so it would be better merged with one of them.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sand-dunes",
+     "score": 3,
+     "reject": false,
+     "reason": "A real grain-saltation-and-avalanche model whose emergent dunes are lovely, though it has a lower curriculum demand and is a cousin of the river and sand candidates.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sea-breeze",
+     "score": 5,
+     "reject": false,
+     "reason": "The canonical first explanation of wind, from uneven heating, with a reversal at night; one control (the Sun), and distinct from the rotating globe in atmosphere-weather.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "snowflake-growth",
+     "score": 4,
+     "reject": false,
+     "reason": "Diffusion-limited growth on a hex grid shows why arms branch and why the shape records humidity, a mechanism a child can watch; it is distinct from the lattice in states-of-matter.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "soil-in-a-jar",
+     "score": 3,
+     "reject": false,
+     "reason": "A real home experiment with settling by grain size and drainage, but its sorting mechanism overlaps rock-to-sand, and the soil-naming part is closer to classification.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "tornado-spin",
+     "score": 4,
+     "reject": false,
+     "reason": "Vortex stretching through the skater analogy is a single honest mechanism with one control; distinct from atmosphere-weather's hurricane, though the pressure-drop cloud needs care at level 0.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "volcano-eruptions",
+     "score": 4,
+     "reject": false,
+     "reason": "Viscosity trapping gas, shown as fizz versus burst, is the mechanism plate-tectonics never shows and works with one control for a 10-year-old.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "why-the-sea-is-salty",
+     "score": 4,
+     "reject": false,
+     "reason": "An evaporation-concentrates-salt box model with the outlet toggle is a clean mechanism answering a classic child's question; ocean-currents does not address it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "water-cycle",
+     "score": 4,
+     "reject": false,
+     "reason": "The most-taught primary earth topic, with particles followed through stores; it shares carbon-cycle's design but is a distinct substance and audience, and should be chosen over global-water-cycle rather than alongside it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "global-water-cycle",
+     "score": 3,
+     "reject": false,
+     "reason": "A sound level-1 page with residence times and Clausius-Clapeyron, but it largely repeats water-cycle (level 0) plus carbon-cycle's reservoir design, and its dew-point step duplicates dew-and-fog; build one of the two water pages.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "nitrogen-cycle",
+     "score": 4,
+     "reject": false,
+     "reason": "Bacteria as gatekeepers and eutrophication form a real agent mechanism that is widely taught at high-school level, and distinct from carbon-cycle and ecosystems.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "tsunamis",
+     "score": 5,
+     "reject": false,
+     "reason": "Speed set by depth (the shallow-water wave), with shoaling over real bathymetry, is a striking and honest level-1 mechanism with high public demand; distinct from earthquakes.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "carbonate-silicate-thermostat",
+     "score": 4,
+     "reject": false,
+     "reason": "A genuine level-3 Walker-Hays-Kasting box model coupled to energy balance, with faint-Sun and snowball experiments; distinct from the fast carbon cycle over decades.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "earths-magnetic-field",
+     "score": 3,
+     "reject": false,
+     "reason": "An honest level-3 spherical-harmonic decomposition of IGRF, but it explores data rather than modelling the geodynamo the title promises, and it shares ground with the compass candidate.",
+     "suggestedLevel": 3
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b16",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "twinkling-stars",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An everyday sight with a clear mechanism (moving air bending a beam) and one honest control, and nothing in light-optics shows a time-varying medium or the planet disc averaging."
+    },
+    {
+     "slug": "what-planets-are-made-of",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Filling a ball until the scale matches is a real inference toy that works with comparisons only, and no existing page covers planetary composition; keep the density idea strictly as 'heavier than the same ball of water'."
+    },
+    {
+     "slug": "telescopes",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "A good mechanism page (aperture and the diffraction limit) that is distinct from light-optics, but it is honestly level 2, the level the plan wants least, and it borders aperture-synthesis."
+    },
+    {
+     "slug": "aperture-synthesis",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A genuine level-3 mechanism (uv coverage, dirty beam, CLEAN) built on fourier-transform, and distinct from the single-dish telescopes candidate."
+    },
+    {
+     "slug": "asteroid-impact",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The atmospheric-entry integration with fragmentation is a real model, but much of the page is published effect scalings drawn as rings, which leans toward a calculator; it is distinct from deep-time."
+    },
+    {
+     "slug": "atmospheric-escape",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Jeans escape from the Maxwell-Boltzmann tail is a crisp university-level mechanism with a strong takeaway, and no existing page covers it."
+    },
+    {
+     "slug": "cmb-power-spectrum",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The acoustic peaks are the real model for reading off the cosmological parameters and go well beyond big-bang's timeline moment; it is ambitious to build but honest at level 3."
+    },
+    {
+     "slug": "cosmic-distance-ladder",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "The error propagation up the rungs is a good mechanism, but parallax, Cepheid calibration and the Hubble law are first-year material rather than level 3, and the page partly overlaps dark-energy-supernovae."
+    },
+    {
+     "slug": "cosmic-web-formation",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A particle-mesh N-body run from Zel'dovich initial conditions is the real model and shows a mechanism (gravitational instability) that dark-matter and big-bang do not show."
+    },
+    {
+     "slug": "dark-energy-supernovae",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Fitting Pantheon+ to the Friedmann equation is the real level-3 analysis, distinct from big-bang, and it complements cosmic-distance-ladder without duplicating it."
+    },
+    {
+     "slug": "galaxy-collisions",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Toomre restricted N-body model is visually striking and has a clear tidal mechanism (prograde against retrograde), and no existing page has it; it could almost sit at level 2."
+    },
+    {
+     "slug": "inflation-horizon",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The comoving Hubble radius plot is the right level-3 tool, but the graphic is abstract and the subject is a hypothesis, so it is less of a must-have than the CMB or the cosmic web."
+    },
+    {
+     "slug": "lagrange-points-three-body",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The rotating-frame CR3BP with Jacobi zero-velocity curves, tadpole orbits and chaotic divergence is a superb level-3 manipulate page that orbits-kepler does not reach."
+    },
+    {
+     "slug": "pulsar-spin-down",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The P-Pdot diagram from ATNF data with dipole braking is real and distinct from stars, but it is mostly an explore of a catalogue, with a thinner mechanism than the other space candidates."
+    },
+    {
+     "slug": "stellar-nucleosynthesis",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A stiff reaction network with the temperature switch from pp to CNO is real level-3 content, but it partly overlaps stars (which fuses what) and nuclear-fusion, and it is heavy to build."
+    },
+    {
+     "slug": "stellar-spectra-saha",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Boltzmann-Saha explanation of why the Balmer lines peak near 10,000 K is a classic counter-intuitive level-3 mechanism, with real SDSS spectra and no overlap with the HR diagram on stars."
+    },
+    {
+     "slug": "supernova-light-curves",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Arnett model with nickel-56 and cobalt decay is a real model with a good takeaway, but it is niche, and it shares the standard-candle thread with dark-energy-supernovae."
+    },
+    {
+     "slug": "tidal-evolution-resonance",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The secular tidal evolution into tidal locking and the Laplace resonance is a real long-timescale mechanism that sun-earth-moon's present-day tides do not show."
+    },
+    {
+     "slug": "3d-printer-layers",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A familiar machine with a visible mechanism (slicing into layers), one control (layer thickness) and a clean takeaway that a 10-year-old can grasp; it is distinct from graphics-3d."
+    },
+    {
+     "slug": "computer-coin-flip",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A deterministic rule on a wheel that repeats is a real mechanism a child can follow, but 'multiply, add, keep the last two digits' borders on arithmetic, and the leadsTo of epidemics is a weak fit (binary or cryptography would fit better)."
+    },
+    {
+     "slug": "digital-clock-counting",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Counting a fast shake down by halving is a clear, visual mechanism that leads naturally to binary; the numbers (32,768, fifteen halvings) work as counts, and it is distinct from oscillations-resonance."
+    },
+    {
+     "slug": "elevator-chooses-floors",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Comparing the sweep rule with first-come-first-served on the same calls, with waiting stopwatches, is an excellent everyday algorithm toy, and no existing page has scheduling."
+    },
+    {
+     "slug": "emoji-and-text-as-numbers",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An honest everyday entry point, but its core idea (a character is a number read by convention) is binary's takeaway at a simpler layer, so it is only partly distinct; the empty-box and SMS-counter details keep it worthwhile."
+    },
+    {
+     "slug": "keyboard-rows-and-columns",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The matrix scan, the ghost key and the layout lookup show a real hidden mechanism in an object everyone uses, and no existing page covers it."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b15",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "ensemble-weather-forecasting",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A real mechanism (Lorenz-96 ensembles, spread against error, and the assimilation cycle) that people meet every day in forecasts; it starts where chaos-fractals stops and is honestly university atmospheric science."
+    },
+    {
+     "slug": "groundwater-flow",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A finite-difference Darcy flow solver with cones of depression and capture zones is a true level-3 hydrogeology model on a subject the catalogue does not cover at all, though public demand is moderate."
+    },
+    {
+     "slug": "hurricane-heat-engine",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Emanuel's potential intensity as a Carnot cycle is a real university model that adds a thermodynamic ceiling atmosphere-weather lacks; it builds clearly on heat-engines."
+    },
+    {
+     "slug": "isotope-dating-concordia",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Concordia, discordia and isochrons are how geochronologists actually date rocks, distinct from radioactivity's single half-life and deep-time's timeline; it is related to radiocarbon-calibration in this batch but uses a different mechanism."
+    },
+    {
+     "slug": "mantle-convection",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Rayleigh-number convection box with a stagnant lid and Nusselt scaling is the real model behind plate-tectonics and is clearly university geophysics."
+    },
+    {
+     "slug": "ocean-acidification",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Seawater carbonate equilibria with saturation state and the Revelle factor are a real coupled model that acids-bases never reaches; the subject is in high demand and the level is honest."
+    },
+    {
+     "slug": "ocean-tides-amphidromes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Laplace tidal equations with amphidromes and resonant bays are the dynamic tide that sun-earth-moon's equilibrium tide cannot show, and they make a visually striking level-3 model."
+    },
+    {
+     "slug": "ozone-layer-chemistry",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Chapman chemistry plus catalytic chlorine and polar stratospheric clouds is a real mechanism with a strong public story, and no existing page covers it; a lighter version could also work at level 1."
+    },
+    {
+     "slug": "radiative-convective-column",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The emission-height and lapse-rate column is the textbook university step beyond greenhouse-effect's zero-dimensional balance, and it explains stratospheric cooling with the real two-stream model."
+    },
+    {
+     "slug": "radiocarbon-calibration",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Mapping a radiocarbon age through IntCal20 plateaus and wiggle-matching is a real and distinct step beyond radioactivity, but it is narrow and sits in the same dating family as isotope-dating-concordia."
+    },
+    {
+     "slug": "river-meanders",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Ikeda-Parker-Sawai bend model gives a vivid self-feeding mechanism with cutoffs and oxbows, on a subject (rivers) the catalogue lacks entirely."
+    },
+    {
+     "slug": "rossby-waves",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The barotropic vorticity equation on a beta plane, with westward drift, stationary waves and blocking, is core university dynamics that atmosphere-weather only hints at."
+    },
+    {
+     "slug": "sea-level-fingerprints",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The sea-level equation's surprising gravitational fingerprint is a real level-3 mechanism and sea level is missing from the catalogue, but the page has a single idea and a narrower audience."
+    },
+    {
+     "slug": "seismic-tomography",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A regularized inversion with uneven ray coverage and checkerboard resolution tests is a real level-3 method, but its core idea (an image computed from many path measurements) partly repeats medical-imaging and earthquakes."
+    },
+    {
+     "slug": "aurora-rings",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Charged specks sliding along field lines into polar rings works without formulas and has one control and a well-known sky phenomenon; leadsTo should point to something nearer than atoms-periodic-table (for example sun-earth-moon), since electromagnetism is level 2."
+    },
+    {
+     "slug": "comet-tails",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A clear, surprising mechanism (the Sun blows the tail away, so the comet leaves tail-first) that a 10-year-old can scrub, and it is distinct from orbits-kepler."
+    },
+    {
+     "slug": "dark-night-sky",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The forest analogy makes Olbers' paradox a real mechanism at level 0 and keeps expansion off the stage, though 'the universe has an age' is abstract for the youngest readers and leadsTo is empty."
+    },
+    {
+     "slug": "earth-is-a-ball",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "An ideal level-0 page: a familiar experience (the ship hull disappearing first), one drag control, and the 'down means toward the middle' idea that prepares for newtons-laws and sun-earth-moon."
+    },
+    {
+     "slug": "leap-years",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Calendar drift is a genuine mechanism, explained with counts of days, that people ask about, and it is distinct from sun-earth-moon's seasons."
+    },
+    {
+     "slug": "rocket-throws-mass",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The skateboard and bottle rocket give a hands-on recoil mechanism with no formulas and an optimal water fill to find, clearly below the rockets page's velocity budget."
+    },
+    {
+     "slug": "satellite-sky-tracks",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Ground tracks, the geostationary height and dusk visibility are appealing and distinct from orbits-kepler, but there are too many ideas and views for a one-control level-0 page; it should be trimmed to one takeaway."
+    },
+    {
+     "slug": "shooting-stars",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Entry heating with rock size as the one control is a clear mechanism a child can play with, and no existing page shows anything burning up in the air."
+    },
+    {
+     "slug": "solar-system-to-scale",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Popular and well suited to level 0, but it shows scale and light-travel time rather than a mechanism, so it sits nearer a survey of facts than a 'how it works' page."
+    },
+    {
+     "slug": "sun-is-a-star",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Dragging the Sun away and other stars in turns 'brightness falls with distance' into a toy using only comparisons, and the one idea is distinct from stars and from solar-system-to-scale."
+    },
+    {
+     "slug": "time-zones",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A spinning lit globe with disagreeing clocks and the date line is an everyday puzzle with a clear mechanism, and it adds what sun-earth-moon lacks."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b14",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "compass-and-magnetic-poles",
+     "score": 5,
+     "reject": false,
+     "reason": "Evaluating WMM2025 (degree 12, 336 coefficients from NOAA NCEI, a US-government product) for declination and inclination at a dragged point is a few hundred multiplications per frame, and the tilted offset dipole is an honest fallback at level 0.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "dew-and-fog",
+     "score": 4,
+     "reject": false,
+     "reason": "The Magnus formula with relative humidity and a frost-point switch is a small, real model that needs no data; it is thin (one threshold crossing), so the glass, the grass and the fog must all come from the same computed dew point rather than from drawn states.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "forest-fire-spread",
+     "score": 5,
+     "reject": false,
+     "reason": "Site percolation on a grid, repeated over many runs to tally crossings near the 0.59 threshold, plus firebreak and wind neighbourhoods, is a small, honest stochastic model that runs fast in the browser.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "fossil-layers",
+     "score": 3,
+     "reject": false,
+     "reason": "Sediment deposition with porosity-depth compaction (Athy's law) and superposition is a real but very thin model, and the risk is a build-a-picture where layers stack because they are drawn; buildable only if burial depth, compaction and the cliff cut are computed, and the optional PBDB data (CC BY 4.0) is not needed.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "geothermal-heat-below",
+     "score": 4,
+     "reject": false,
+     "reason": "The geotherm from local heat flow and conductivity, plus a 1D radial conduction model of the ground cooling and recovering around a producing well, is small and honest; the IHFC Global Heat Flow Database 2024 release is CC BY 4.0 on GFZ Data Services (91k points, so ship a gridded subsample).",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "glacier-flow",
+     "score": 5,
+     "reject": false,
+     "reason": "A 1D shallow-ice flowline with Glen's law and a mass balance that depends on height is the textbook small PDE (PhET's Glaciers did exactly this), and tracer flags moving forward while the front retreats fall straight out of it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "how-caves-form",
+     "score": 4,
+     "reject": false,
+     "reason": "A fracture-network karst model (cubic-law flow solved as a small linear network, dissolution from calcite kinetics, breakthrough feedback) is real and runs on a few hundred links; the stalactite step after the water table drops is a separate, mostly drawn addition and should stay minor.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "how-rain-forms",
+     "score": 4,
+     "reject": false,
+     "reason": "Collision-coalescence with terminal velocities against an updraft is buildable as a few hundred droplets or a small bin model, and hail layers can be computed from trips above the freezing level; the 'million droplets' scale has to come from a bin or size-class model, not from drawn particles.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "lighthouse-beam",
+     "score": 4,
+     "reject": false,
+     "reason": "Geographic range from lamp and eye heights over a curved Earth, plus flash characteristics from the USCG Light List (US-government XML, freely downloadable), is a small honest geometric model; it is thin, so the ship's sighting must be computed from the horizon geometry and not scripted.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "lightning-and-thunder",
+     "score": 4,
+     "reject": false,
+     "reason": "The Niemeyer-Pietronero-Wiesmann dielectric-breakdown model needs a Laplace relaxation on a grid of about 100 by 100 per growth step, which is interactive with warm-started SOR, and with grounded objects as boundary conditions the tall-object preference emerges honestly; thunder delay is simple kinematics.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "river-valleys",
+     "score": 4,
+     "reject": false,
+     "reason": "Cellular flow routing with stream-power erosion, a carrying limit, deposition and hillslope creep on a small grid is a well-known, real model that runs at interactive rates; keep the grid coarse and the optional USGS 3DEP tile (public domain) small.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "rock-to-sand",
+     "score": 3,
+     "reject": false,
+     "reason": "Sternberg's abrasion law and settling speeds by grain size are real but give one exponential and one sort, so as a step-through story it risks being a picture sequence; buildable if the grain sizes along the river are computed from those laws for the chosen rock type.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sand-dunes",
+     "score": 5,
+     "reject": false,
+     "reason": "Werner's 1995 slab model (saltation hops, shadow zones, avalanching at the angle of repose) is a tiny cellular model that grows real dune shapes in seconds in the browser.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sea-breeze",
+     "score": 4,
+     "reject": false,
+     "reason": "A coarse 2D Boussinesq convection solver (stable-fluids style) with land and sea of different heat capacity, forced by the Sun's angle, is buildable at interactive rates and gives the reversal honestly, though it is the heaviest solver in this batch.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "snowflake-growth",
+     "score": 4,
+     "reject": false,
+     "reason": "Reiter's 2005 hexagonal automaton is small and fast, but its two parameters are not temperature and humidity, so mapping a temperature control onto the Nakaya diagram is a fit, not physics; state it, or use Gravner-Griffeath and keep only the moisture control.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "soil-in-a-jar",
+     "score": 4,
+     "reject": false,
+     "reason": "Settling by grain size and the USDA texture triangle (public domain) make an honest small model, but Stokes' law fails for sand, so use a settling law valid across sizes (for example Ferguson and Church 2004); infiltration should come from a simple texture-based conductivity, not drawn timings.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "tornado-spin",
+     "score": 4,
+     "reject": false,
+     "reason": "A Rankine vortex conserving angular momentum under stretching, with advected particles and a cyclostrophic pressure drop crossing the condensation level to draw the funnel, is small and honest for level 0.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "volcano-eruptions",
+     "score": 3,
+     "reject": false,
+     "reason": "Decompression bubble growth, Stokes rise of bubbles through a magma of chosen viscosity, and fragmentation above about 75 percent gas fraction can be computed in a 1D conduit, but the model is coarse and risks becoming a two-ending story unless the eruption style follows from the computed gas fraction.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "water-cycle",
+     "score": 3,
+     "reject": false,
+     "reason": "A Markov-chain particle model between stores is buildable, but with a few hundred dots the true USGS shares (about 0.001 percent in the air) put no dots in the air or rivers, so the visible clouds and rivers contradict the counter unless the page uses a log scale or labels the over-represented stores.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "why-the-sea-is-salty",
+     "score": 4,
+     "reject": false,
+     "reason": "A salt mass-balance box model with an outlet toggle and a sediment sink, using USGS figures (US-government work), is small, honest, and shows the fresh-versus-salty outcome directly.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "global-water-cycle",
+     "score": 4,
+     "reject": false,
+     "reason": "A reservoir box model with residence time computed as stock divided by flux, a Markov walk for the tagged molecule and the Magnus formula is small and real; reservoir volumes are USGS public domain, but Oki and Kanae 2006 is not open, so take the fluxes from an open set (for example the USGS figure or Trenberth et al.) and keep it consistent.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "nitrogen-cycle",
+     "score": 3,
+     "reject": false,
+     "reason": "The bacterial agent model is buildable but its rates are invented, which makes it a dressed-up diagram, and adding eutrophication puts a second model on the page; the Fowler et al. 2013 licence is unconfirmed, so build a stoichiometric box model with literature rates and a qualitative diagram, or scale it down.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "tsunamis",
+     "score": 5,
+     "reject": false,
+     "reason": "The 1D shallow-water equations on an ETOPO 2022 transect (public domain) are a textbook small PDE that runs at interactive rates, and the speed √(gh), the shoaling and the travel times are real outputs; the stated upper-bound caveat for one transect is honest.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "carbonate-silicate-thermostat",
+     "score": 5,
+     "reject": false,
+     "reason": "The Walker-Hays-Kasting weathering feedback with a one-layer energy balance is a two-variable ODE box model that integrates over millions of years in milliseconds and needs no data.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "earths-magnetic-field",
+     "score": 5,
+     "reject": false,
+     "reason": "Summing a spherical harmonic series from IGRF-14 coefficients (freely distributed by NCEI and IAGA; the numbers are facts) for each epoch from 1900 to 2025, with degree truncation, is cheap in the browser, and the polarity time scale is a small table of published chron boundaries.",
+     "suggestedLevel": 3
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b16",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "twinkling-stars",
+     "score": 4,
+     "reject": false,
+     "reason": "Rays bent by drifting random refractive-index layers, summed on a small aperture with airmass scaling, is a small honest geometric-optics model of scintillation at level 0; the planet-as-disc averaging falls out of the same sum.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "what-planets-are-made-of",
+     "score": 4,
+     "reject": false,
+     "reason": "Fill-the-ball arithmetic against NSSDC masses and radii (public domain) is a real, tiny model; use a compressed-gas density rather than one fixed number so Jupiter and Saturn come out right.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "telescopes",
+     "score": 4,
+     "reject": false,
+     "reason": "Ray tracing plus a computed Airy pattern on a synthetic star field, with seeing as a blur kernel, is all client-side and needs no data; it is broad (five sub-scenes) and should be scoped tightly.",
+     "suggestedLevel": 2
+    },
+    {
+     "slug": "aperture-synthesis",
+     "score": 5,
+     "reject": false,
+     "reason": "Baselines tracing uv arcs, a gridded 2D FFT for the dirty beam and image, and Högbom CLEAN on a 128-256 pixel grid are small, exact and fast in the browser, with no data needed.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "asteroid-impact",
+     "score": 4,
+     "reject": false,
+     "reason": "Integrating entry with drag, ablation and pancake breakup, then applying the published Collins-Melosh-Marcus scaling laws, is a small honest model; the equations come from a published paper, so no dataset licence is involved.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "atmospheric-escape",
+     "score": 4,
+     "reject": false,
+     "reason": "The Maxwell-Boltzmann tail, the Jeans flux and the escape-speed chart are closed-form and instant to compute; the NASA fact-sheet values are public domain, and the hydrodynamic regime is honestly flagged rather than simulated.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cmb-power-spectrum",
+     "score": 3,
+     "reject": false,
+     "reason": "A tight-coupling oscillator per k with diffusion damping, projected with Bessel functions (Hu-Sugiyama style), can run interactively, but it is an approximation that needs care to match the peaks; the Planck overlay is CC BY-NC, so use NASA LAMBDA/WMAP binned points or drop the overlay.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cosmic-distance-ladder",
+     "score": 3,
+     "reject": false,
+     "reason": "Propagating errors up the ladder is a simple, honest computation, but every rung's data has an unconfirmed licence (Gaia is free with credit, OGLE and SH0ES are unclear), so the dataset must be checked or cut to small retyped tables with citations before building.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cosmic-ray-air-showers",
+     "score": 4,
+     "reject": false,
+     "reason": "The Heitler-Matthews branching cascade is a small, exact toy model that shows N_max proportional to E and the elongation rate; Auger open data are released on Zenodo under CC BY-SA 4.0, so the data are openly licensed (the entry's 'not confirmed' can be updated).",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cosmic-web-formation",
+     "score": 4,
+     "reject": false,
+     "reason": "A 2D particle-mesh N-body run with an FFT Poisson solve (128-squared mesh, about 16k particles) and Zel'dovich initial conditions runs interactively; cache the run per parameter set so the scene stays a function of time.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "dark-energy-supernovae",
+     "score": 4,
+     "reject": false,
+     "reason": "Fitting a Friedmann luminosity-distance integral by chi-square is cheap and honest; the Pantheon+ licence is unconfirmed, so confirm it or fall back to the public Union2.1 table.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "galaxy-collisions",
+     "score": 5,
+     "reject": false,
+     "reason": "The Toomre restricted N-body model (two point masses with thousands of test stars) is the classic small, honest model and runs easily in the browser with no data.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "inflation-horizon",
+     "score": 4,
+     "reject": false,
+     "reason": "The Friedmann equations plus a slow-roll scalar-field ODE, with the comoving Hubble radius plotted on log axes, are a small honest model; the reader-shaped potential needs guarding so it still yields about 60 e-folds.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "lagrange-points-three-body",
+     "score": 5,
+     "reject": false,
+     "reason": "The circular restricted three-body problem in the rotating frame, with Jacobi zero-velocity curves and RK integration of probes, is exact, small and fast.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "pulsar-spin-down",
+     "score": 4,
+     "reject": false,
+     "reason": "The P-Pdot diagram with dipole formulas and braking tracks is simple and honest; CSIRO's PSRCAT v2 record lists BSD 3-Clause with citation, so the data look reusable, though the catalogue's own site should confirm it.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "stellar-nucleosynthesis",
+     "score": 4,
+     "reject": false,
+     "reason": "A roughly 15-species stiff network with Caughlan-Fowler analytic rates (published formulas) integrates quickly with an implicit solver; REACLIB has no confirmed licence, so use CF88.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "stellar-spectra-saha",
+     "score": 4,
+     "reject": false,
+     "reason": "The Saha-Boltzmann populations times line strength on a Planck continuum are the honest textbook model; SDSS spectra (stated public domain) and NIST levels are open, though overlaid real spectra will differ in detail from the schematic line depths.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "supernova-light-curves",
+     "score": 4,
+     "reject": false,
+     "reason": "The Arnett model with Ni-to-Co-to-Fe heating is a one-integral semi-analytic model that is cheap and honest; one observed light curve is needed, and the Pantheon+ licence is unconfirmed, so a CC BY or public source should be found.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "tidal-evolution-resonance",
+     "score": 3,
+     "reject": false,
+     "reason": "The secular tidal equations for spin and orbit are easy, but capturing the 2:1 chain and the Laplace resonance needs an orbit-resolving N-body run with a parametrised migration force and compressed timescales, which is buildable but harder to keep honest.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "3d-printer-layers",
+     "score": 5,
+     "reject": false,
+     "reason": "Plane-mesh slicing into contours, zigzag infill and overhang detection on a page-generated mesh is a real small algorithm that needs no data.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "computer-coin-flip",
+     "score": 5,
+     "reject": false,
+     "reason": "A tiny linear congruential generator, with its period and the replay from the same seed, is the exact model, trivially interactive.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "digital-clock-counting",
+     "score": 4,
+     "reject": false,
+     "reason": "A divide-by-two counter chain plus the published parabolic temperature-drift law is honest and small, though thin: the oscillation itself is taken as given.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "elevator-chooses-floors",
+     "score": 5,
+     "reject": false,
+     "reason": "A discrete-event simulation of SCAN against first-come-first-served on the same replayed calls, with per-person wait timers, is a clear small algorithm.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "emoji-and-text-as-numbers",
+     "score": 4,
+     "reject": false,
+     "reason": "Encoding text to code points and to the GSM 7-bit or UCS-2 segment rules is real and small, and Unicode data is permissively licensed; the page must count an emoji as a surrogate pair (two UCS-2 units) so the counter is right.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "keyboard-rows-and-columns",
+     "score": 4,
+     "reject": false,
+     "reason": "Row-by-row matrix scanning with ghost-key detection through three closed switches, plus a layout lookup table, is an honest, small algorithm with no data.",
+     "suggestedLevel": 0
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b15",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "ensemble-weather-forecasting",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Lorenz-96 with 40 variables is cheap enough that fifty RK4 members plus a small ensemble Kalman filter run easily in the browser; the model is the standard testbed forecasters use and needs no data."
+    },
+    {
+     "slug": "groundwater-flow",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 2D finite-difference Darcy/Poisson solve on a grid of about 60x60 with wells, a river boundary and particle tracking for capture zones is small and honest, and a transient mode is just a diffusion step; it needs no data."
+    },
+    {
+     "slug": "hurricane-heat-engine",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Emanuel's potential intensity is a closed formula and a one-dimensional intensity ODE (with shear and ocean-cooling terms) runs instantly; it is honest if the page says the spin-up model is a reduced one, and the optional NOAA SST field is US government public domain."
+    },
+    {
+     "slug": "isotope-dating-concordia",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Concordia, discordia line fitting and Rb-Sr isochrons are closed-form decay laws using published decay constants (facts, freely usable), so this is a small, exact geometric model."
+    },
+    {
+     "slug": "mantle-convection",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Isoviscous infinite-Prandtl convection (a streamfunction biharmonic solved by FFT or multigrid on about 128x64) is interactive, but the stagnant-lid and plate-like regimes need viscosity contrasts of 10^4 or more and fine grids at high Rayleigh number, so the solve is stiff and slow; limit the contrast range and precompute the Nusselt-Rayleigh plot, or the lid-foundering part will not run live."
+    },
+    {
+     "slug": "ocean-acidification",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Solving the seawater carbonate system with fixed alkalinity is a one-variable root find using published empirical constants (Lueker/Millero/Mucci fits, facts from the literature), which is the honest CO2SYS model and runs instantly."
+    },
+    {
+     "slug": "ocean-tides-amphidromes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Linear rotating shallow-water equations forced by the M2 potential on a basin grid run explicitly at interactive rates and produce real amphidromes and Kelvin waves; the NOAA CO-OPS harmonic constants are US government data, and Fundy-scale resonance needs a fine enough grid along the bay."
+    },
+    {
+     "slug": "ozone-layer-chemistry",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Chapman plus ClOx column is a small stiff ODE system (it needs an implicit or photostationary solver) and is buildable with JPL rate constants; the polar heterogeneous chemistry must be parameterized, which the page should say; the NASA Ozone Watch annual table is public domain. It is ambitious in scope but honest."
+    },
+    {
+     "slug": "radiative-convective-column",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A grey two-stream column with a window band and convective adjustment (Manabe-Wetherald style) is a classic tiny model that relaxes in milliseconds and needs no data."
+    },
+    {
+     "slug": "radiocarbon-calibration",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Calibration is a likelihood over a curve of a few thousand points and wiggle-matching is a 1D offset search, both trivial; the IntCal20 curve comes with the CC BY 4.0 Radiocarbon paper and is free from intcal.org, so ship it from the paper's supplement with credit rather than through the GPL R package (confirm the intcal.org terms)."
+    },
+    {
+     "slug": "river-meanders",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Ikeda-Parker-Sawai centerline migration model with a few hundred nodes, resampling and cutoff detection is a known small simulation that runs in real time; the cutoff and oxbow handling takes some care, and stepping forward and caching makes scrubbing possible."
+    },
+    {
+     "slug": "rossby-waves",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A beta-plane barotropic vorticity equation on a doubly periodic 128x64 grid solved spectrally with topography runs at interactive rates and honestly shows westward phase drift and lee waves; wave breaking and blocking are reachable but sensitive to tuning."
+    },
+    {
+     "slug": "sea-level-fingerprints",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The rigid-Earth sea-level equation is linear in melt, so the fingerprint of each source can be computed offline (spherical-harmonic or Green's-function convolution with an ocean-function iteration) and only scaled in the page; that is honest but the live part is thin. ETOPO is NOAA public domain, while the ice-sheet masks need a named openly licensed source (e.g. BedMachine/IMBIE) that is not yet given."
+    },
+    {
+     "slug": "seismic-tomography",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Ray tracing through a radially layered PREM (the published table values are facts) plus a damped LSQR inversion over a few hundred cells and rays is small and honest, and the checkerboard test is exactly what the real method does."
+    },
+    {
+     "slug": "aurora-rings",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Integrating particles in a dipole compressed by solar-wind pressure does not produce the auroral oval (that needs tail and reconnection physics), so the stated model risks being a staged picture that teaches direct-entry; an honest L0 version would drive the oval from an empirical model (e.g. Feldstein/OVATION, public domain) with the guiding-centre spiral as an illustration."
+    },
+    {
+     "slug": "comet-tails",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A real Kepler orbit, an anti-sunward ion tail and a dust tail of grains with radiation-pressure beta (the Finson-Probstein particle model) are all small and honest; orbital elements are facts from JPL SBDB/MPC, usable with credit."
+    },
+    {
+     "slug": "dark-night-sky",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The forest is a 2D line-of-sight Monte Carlo and the sky fraction is the analytic covering fraction out to the light-travel distance; both are honest and cheap, though the star stage is mostly a counter because the real covered fraction is vanishingly small."
+    },
+    {
+     "slug": "earth-is-a-ball",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Horizon distance and hidden height from eye height are an exact geometric construction and the falling ball is trivial radial gravity; it is a small honest model at level 0 and needs no data."
+    },
+    {
+     "slug": "leap-years",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Calendar drift is exact arithmetic of the tropical year (about 365.2422 days, a published constant) against the Julian and Gregorian rules, a clear algorithm whose drift is visible on the wheel."
+    },
+    {
+     "slug": "rocket-throws-mass",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Momentum conservation for the skateboard and the standard water-rocket ODE (adiabatic air expansion, Bernoulli exhaust, drag) are small and real, and the optimum fill near one third emerges from the model; it needs no data."
+    },
+    {
+     "slug": "satellite-sky-tracks",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Circular orbits over a rotating Earth give ground tracks, and a shadow-cylinder test gives visibility at dusk; this is honest geometry, ISS elements from NASA are public domain, and generic altitudes suffice for the other satellites."
+    },
+    {
+     "slug": "shooting-stars",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The single-body meteor equations (drag, ablation, luminous efficiency) through the US Standard Atmosphere 1976 (public domain, already used on the site) form a small ODE that shows size-dependent burn-up honestly; fragmentation is ignored and the page should say so."
+    },
+    {
+     "slug": "solar-system-to-scale",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Buildable from the public-domain NSSDC fact sheet, with the light front as a pure function of time, but the model is just scaling and distance over c, so it leans toward a zoomable diagram; it is acceptable at level 0 only if the scale and light-time interaction carry it."
+    },
+    {
+     "slug": "sun-is-a-star",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Inverse-square brightness and angular size are honest and trivial; BSC5 via HEASARC is public domain, but it lacks radii and has unreliable parallaxes, so the disc sizes must be derived (Stefan-Boltzmann from colour and luminosity) or taken from another named open source."
+    },
+    {
+     "slug": "time-zones",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A rotating globe with a terminator from solar geometry and city clocks from IANA offsets (public domain) with Natural Earth places (public domain) is a small honest model, and dropping the ODbL boundaries keeps the data clean."
+    }
+   ]
+  }
+ }
+]
