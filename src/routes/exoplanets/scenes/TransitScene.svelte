@@ -12,6 +12,7 @@
 	 */
 	import { Axes, Label, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
+	import { useReadouts } from '#lib/explainer/readouts.svelte.ts';
 	import {
 		aOverR,
 		flux,
@@ -47,7 +48,11 @@
 	const OCX = (O.x0 + O.x1) / 2;
 	const OCY = 184;
 	const ORX = 196; // orbit radius in the whole-orbit view, px
-	const PX0 = 92;
+	// On phones (≤ 640 px) <Axes> draws its tick labels at a real ~10 px, about 2.7 times
+	// larger; brightness labels such as "100.000%" (a small planet's shallow dip) then need
+	// more room left of the axis.
+	const readouts = useReadouts();
+	const PX0 = $derived(readouts?.out ? 152 : 92);
 	const PX1 = 676;
 	const PY0 = 392;
 	const PY1 = 534;
