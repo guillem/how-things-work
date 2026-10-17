@@ -17,7 +17,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { pulse, travelling, wavelength } from '../waves';
 	import Card from './Card.svelte';
 	import { fmt, pathOf, type Cell } from './ui';
@@ -202,9 +202,11 @@
 				stroke-width="1.5"
 			/>
 			<line x1={X0 - 20} x2={X0} y1={handY} y2={handY} stroke="var(--wav-sum)" stroke-width="3" />
-			<text x={X0 - 36} y={Y + AMP + 40} text-anchor="middle" class="muted" font-size="12"
-				>hand</text
-			>
+			<Readout id="hand" order={10} label="hand" marker={1} at={[X0 - 36, Y + AMP + 44]}>
+				<text x={X0 - 36} y={Y + AMP + 40} text-anchor="middle" class="muted" font-size="12"
+					>hand</text
+				>
+			</Readout>
 
 			<!-- one wavelength -->
 			{#if bracket}
@@ -235,15 +237,17 @@
 					marker-start="url(#arrowhead)"
 					marker-end="url(#arrowhead)"
 				/>
-				<text
-					x={(bracket.a + bracket.b) / 2}
-					y={yb - 10}
-					text-anchor="middle"
-					class="halo"
-					font-size="13"
-					style:fill="var(--wav-a)"
-					font-weight="600">λ = {fmt(lam, 2)} m</text
-				>
+				<Readout id="lambda">
+					<text
+						x={(bracket.a + bracket.b) / 2}
+						y={yb - 10}
+						text-anchor="middle"
+						class="halo"
+						font-size="13"
+						style:fill="var(--wav-a)"
+						font-weight="600">λ = {fmt(lam, 2)} m</text
+					>
+				</Readout>
 			{/if}
 
 			<!-- the front, while it is still on the rope -->
@@ -257,7 +261,9 @@
 					stroke-width="1.5"
 					marker-end="url(#arrowhead)"
 				/>
-				<text x={front + 10} y={Y - 32} class="muted halo" font-size="12">front, 2 m/s</text>
+				<Readout id="front">
+					<text x={front + 10} y={Y - 32} class="muted halo" font-size="12">front, 2 m/s</text>
+				</Readout>
 			{/if}
 		</g>
 	{/if}
@@ -318,14 +324,16 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			<text
-				x={beadX}
-				y={Y + AMP + 26}
-				text-anchor="middle"
-				class="halo"
-				font-size="12"
-				style:fill="var(--wav-bead)">the bead only moves up and down</text
-			>
+			<Readout id="bead" order={11} label="the bead only moves up and down" color="var(--wav-bead)">
+				<text
+					x={beadX}
+					y={Y + AMP + 26}
+					text-anchor="middle"
+					class="halo"
+					font-size="12"
+					style:fill="var(--wav-bead)">the bead only moves up and down</text
+				>
+			</Readout>
 		</g>
 	{/if}
 
@@ -355,40 +363,51 @@
 					>
 				{/if}
 			{:else}
-				<text
-					x={MID}
-					y={Y - Math.max(AMP, peak) - 24}
-					text-anchor="middle"
-					class="halo"
-					font-size="13"
-					font-weight="600"
-					opacity={Math.min(1, (overlap - 0.35) * 3)}
-					>{inverted ? 'up + down = flat' : 'up + up = twice as tall'}</text
-				>
+				<Readout id="overlap">
+					<text
+						x={MID}
+						y={Y - Math.max(AMP, peak) - 24}
+						text-anchor="middle"
+						class="halo"
+						font-size="13"
+						font-weight="600"
+						opacity={Math.min(1, (overlap - 0.35) * 3)}
+						>{inverted ? 'up + down = flat' : 'up + up = twice as tall'}</text
+					>
+				</Readout>
 			{/if}
-			<g transform="translate(0 {Y + 186})">
-				<line x1={X0} x2={X0 + 26} y1="0" y2="0" stroke="var(--wav-sum)" stroke-width="3" />
-				<text x={X0 + 34} y="4" font-size="12">the rope (the sum)</text>
-				<line
-					x1={X0 + 190}
-					x2={X0 + 216}
-					y1="0"
-					y2="0"
-					stroke="var(--wav-a)"
-					stroke-width="2"
-					stroke-dasharray="6 5"
-				/>
-				<line
-					x1={X0 + 222}
-					x2={X0 + 248}
-					y1="0"
-					y2="0"
-					stroke="var(--wav-b)"
-					stroke-width="2"
-					stroke-dasharray="6 5"
-				/>
-				<text x={X0 + 256} y="4" font-size="12">each pulse on its own</text>
-			</g>
+			<Readout id="key-rope" order={12} label="the rope (the sum)" color="var(--wav-sum)" />
+			<Readout
+				id="key-pulses"
+				order={13}
+				label="each pulse on its own (dashed)"
+				color="var(--wav-a)"
+			/>
+			<Readout id="legend">
+				<g transform="translate(0 {Y + 186})">
+					<line x1={X0} x2={X0 + 26} y1="0" y2="0" stroke="var(--wav-sum)" stroke-width="3" />
+					<text x={X0 + 34} y="4" font-size="12">the rope (the sum)</text>
+					<line
+						x1={X0 + 190}
+						x2={X0 + 216}
+						y1="0"
+						y2="0"
+						stroke="var(--wav-a)"
+						stroke-width="2"
+						stroke-dasharray="6 5"
+					/>
+					<line
+						x1={X0 + 222}
+						x2={X0 + 248}
+						y1="0"
+						y2="0"
+						stroke="var(--wav-b)"
+						stroke-width="2"
+						stroke-dasharray="6 5"
+					/>
+					<text x={X0 + 256} y="4" font-size="12">each pulse on its own</text>
+				</g>
+			</Readout>
 		</g>
 	{/if}
 </g>

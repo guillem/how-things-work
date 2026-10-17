@@ -37,7 +37,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		NEAR,
 		amplitudeAt,
@@ -558,11 +558,19 @@
 
 	<!-- labels where the calm lines reach the edge -->
 	<g style:pointer-events="none">
-		{#each edgeLabels as e (e.order)}
-			<text x={e.x} y={e.y + 4} text-anchor={e.anchor} class="halo" font-size="12" font-weight="600"
-				>{e.text}</text
-			>
-		{/each}
+		<!-- <Readout>: on narrow screens listed as HTML under the stage, or hidden -->
+		<Readout id="edge-labels">
+			{#each edgeLabels as e (e.order)}
+				<text
+					x={e.x}
+					y={e.y + 4}
+					text-anchor={e.anchor}
+					class="halo"
+					font-size="12"
+					font-weight="600">{e.text}</text
+				>
+			{/each}
+		</Readout>
 	</g>
 
 	<!-- the spacing, measured beside the pair (outside it, whatever their angle) -->
@@ -587,14 +595,16 @@
 			marker-start="url(#arrowhead)"
 			marker-end="url(#arrowhead)"
 		/>
-		<text
-			x={bracket.label.x}
-			y={bracket.label.y}
-			text-anchor="middle"
-			class="halo"
-			font-size="12"
-			font-weight="600">{fmt(d, 1)} cm</text
-		>
+		<Readout id="bracket">
+			<text
+				x={bracket.label.x}
+				y={bracket.label.y}
+				text-anchor="middle"
+				class="halo"
+				font-size="12"
+				font-weight="600">{fmt(d, 1)} cm</text
+			>
+		</Readout>
 	</g>
 
 	<!-- the probe -->
@@ -676,84 +686,154 @@
 
 	<!-- ---- panel ---- -->
 	<g style:pointer-events="none">
-		<text x={PL} y={40} font-size="16" font-weight="700">Ripple tank</text>
-		<text x={PL} y={60} class="muted" font-size="12">seen from above, slowed down</text>
+		<Readout id="title">
+			<text x={PL} y={40} font-size="16" font-weight="700">Ripple tank</text>
+			<text x={PL} y={60} class="muted" font-size="12">seen from above, slowed down</text>
+		</Readout>
 
 		<!-- legend -->
 		{#if oBands < 0.5}
-			<g transform="translate({PL} 84)">
-				<rect width="16" height="16" rx="3" fill="var(--wav-crest)" stroke="var(--border)" />
-				<text x="24" y="12" font-size="12">crest (water lifted)</text>
-				<rect y="24" width="16" height="16" rx="3" fill="var(--wav-still)" stroke="var(--border)" />
-				<text x="24" y="36" font-size="12">level water</text>
-				<rect
-					y="48"
-					width="16"
-					height="16"
-					rx="3"
-					fill="var(--wav-trough)"
-					stroke="var(--border)"
-				/>
-				<text x="24" y="60" font-size="12">trough</text>
-			</g>
+			<Readout id="key-crest" order={10} label="crest" color="var(--wav-crest)" />
+			<Readout id="key-level" order={11} label="level water" color="var(--wav-still)" />
+			<Readout id="key-trough" order={12} label="trough" color="var(--wav-trough)" />
+			<Readout id="legend">
+				<g transform="translate({PL} 84)">
+					<rect width="16" height="16" rx="3" fill="var(--wav-crest)" stroke="var(--border)" />
+					<text x="24" y="12" font-size="12">crest (water lifted)</text>
+					<rect
+						y="24"
+						width="16"
+						height="16"
+						rx="3"
+						fill="var(--wav-still)"
+						stroke="var(--border)"
+					/>
+					<text x="24" y="36" font-size="12">level water</text>
+					<rect
+						y="48"
+						width="16"
+						height="16"
+						rx="3"
+						fill="var(--wav-trough)"
+						stroke="var(--border)"
+					/>
+					<text x="24" y="60" font-size="12">trough</text>
+				</g>
+			</Readout>
 		{:else}
-			<g transform="translate({PL} 84)">
-				<rect width="16" height="16" rx="3" fill="var(--wav-crest)" stroke="var(--border)" />
-				<text x="24" y="12" font-size="12">water heaves: waves in step</text>
-				<rect
-					y="24"
-					width="16"
-					height="16"
-					rx="3"
-					fill="var(--wav-trough)"
-					stroke="var(--border)"
-				/>
-				<text x="24" y="36" font-size="12">calm: waves cancel</text>
-			</g>
+			<Readout
+				id="key-heave"
+				order={10}
+				label="water heaves: waves in step"
+				color="var(--wav-crest)"
+			/>
+			<Readout id="key-calm" order={11} label="calm: waves cancel" color="var(--wav-trough)" />
+			<Readout id="legend">
+				<g transform="translate({PL} 84)">
+					<rect width="16" height="16" rx="3" fill="var(--wav-crest)" stroke="var(--border)" />
+					<text x="24" y="12" font-size="12">water heaves: waves in step</text>
+					<rect
+						y="24"
+						width="16"
+						height="16"
+						rx="3"
+						fill="var(--wav-trough)"
+						stroke="var(--border)"
+					/>
+					<text x="24" y="36" font-size="12">calm: waves cancel</text>
+				</g>
+			</Readout>
 		{/if}
 
 		<!-- readouts -->
-		<g transform="translate({PL} 176)">
-			<text class="muted" font-size="12">Wavelength</text>
-			<text y="24" font-size="18" font-weight="700">{fmt(lam, 1)} cm</text>
-			<text x="130" class="muted" font-size="12">Spacing</text>
-			<text x="130" y="24" font-size="18" font-weight="700">{fmt(d, 1)} cm</text>
-			<text y="50" class="muted" font-size="12">= {fmt(d / lam, 2)} wavelengths apart</text>
-		</g>
+		<Readout id="lambda" order={1} label="Wavelength" value="{fmt(lam, 1)} cm" />
+		<Readout
+			id="spacing"
+			order={2}
+			label="Spacing"
+			value="{fmt(d, 1)} cm"
+			note="= {fmt(d / lam, 2)} wavelengths apart"
+		/>
+		<Readout id="sizes">
+			<g transform="translate({PL} 176)">
+				<text class="muted" font-size="12">Wavelength</text>
+				<text y="24" font-size="18" font-weight="700">{fmt(lam, 1)} cm</text>
+				<text x="130" class="muted" font-size="12">Spacing</text>
+				<text x="130" y="24" font-size="18" font-weight="700">{fmt(d, 1)} cm</text>
+				<text y="50" class="muted" font-size="12">= {fmt(d / lam, 2)} wavelengths apart</text>
+			</g>
+		</Readout>
 
 		{#if oProbe < 0.5}
-			<g transform="translate({PL} 262)">
-				<text class="muted" font-size="12">Calm lines</text>
-				<text y="26" font-size="22" font-weight="700">{nQuiet}</text>
-				<text y="48" class="muted" font-size="11">one pair for each ½λ, 1½λ, 2½λ…</text>
-				<text y="63" class="muted" font-size="11">that is shorter than the spacing</text>
-				{#if oBands > 0.5}
-					<text y="98" class="muted" font-size="12">First calm line, far away</text>
-					<text y="122" font-size="18" font-weight="700"
-						>{firstAngle === null ? 'none' : `${fmt(firstAngle, 1)}° off centre`}</text
-					>
-					<text y="142" class="muted" font-size="11">sin θ = ½ λ ÷ spacing</text>
-				{/if}
-			</g>
+			<Readout
+				id="calm"
+				order={3}
+				label="Calm lines"
+				value={String(nQuiet)}
+				note="one pair for each ½λ, 1½λ, 2½λ… that is shorter than the spacing"
+			/>
+			{#if oBands > 0.5}
+				<Readout
+					id="first"
+					order={4}
+					label="First calm line, far away"
+					value={firstAngle === null ? 'none' : `${fmt(firstAngle, 1)}° off centre`}
+					note="sin θ = ½ λ ÷ spacing"
+				/>
+			{/if}
+			<Readout id="calm-block">
+				<g transform="translate({PL} 262)">
+					<text class="muted" font-size="12">Calm lines</text>
+					<text y="26" font-size="22" font-weight="700">{nQuiet}</text>
+					<text y="48" class="muted" font-size="11">one pair for each ½λ, 1½λ, 2½λ…</text>
+					<text y="63" class="muted" font-size="11">that is shorter than the spacing</text>
+					{#if oBands > 0.5}
+						<text y="98" class="muted" font-size="12">First calm line, far away</text>
+						<text y="122" font-size="18" font-weight="700"
+							>{firstAngle === null ? 'none' : `${fmt(firstAngle, 1)}° off centre`}</text
+						>
+						<text y="142" class="muted" font-size="11">sin θ = ½ λ ÷ spacing</text>
+					{/if}
+				</g>
+			</Readout>
 		{:else}
-			<g transform="translate({PL} 262)">
-				<text class="muted" font-size="12">From source 1</text>
-				<text y="22" font-size="16" font-weight="700" style:fill="var(--wav-a)"
-					>r₁ = {fmt(r1, 2)} λ</text
-				>
-				<text x="130" class="muted" font-size="12">From source 2</text>
-				<text x="130" y="22" font-size="16" font-weight="700" style:fill="var(--wav-b)"
-					>r₂ = {fmt(r2, 2)} λ</text
-				>
-				<text y="52" class="muted" font-size="12">Path difference r₁ − r₂</text>
-				<text y="76" font-size="18" font-weight="700">{fmt(delta, 2)} λ</text>
-				<text y="104" font-size="14" font-weight="700" style:fill={verdict.c}>{verdict.text}</text>
-				<text y="122" class="muted" font-size="12">{verdict.sub}</text>
-			</g>
+			<Readout
+				id="distances"
+				order={3}
+				label="From sources 1 and 2"
+				value="r₁ = {fmt(r1, 2)} λ · r₂ = {fmt(r2, 2)} λ"
+			/>
+			<Readout
+				id="delta"
+				order={4}
+				label="Path difference r₁ − r₂"
+				value="{fmt(delta, 2)} λ: {verdict.text}"
+				note={verdict.sub}
+				color={verdict.c}
+			/>
+			<Readout id="probe-block">
+				<g transform="translate({PL} 262)">
+					<text class="muted" font-size="12">From source 1</text>
+					<text y="22" font-size="16" font-weight="700" style:fill="var(--wav-a)"
+						>r₁ = {fmt(r1, 2)} λ</text
+					>
+					<text x="130" class="muted" font-size="12">From source 2</text>
+					<text x="130" y="22" font-size="16" font-weight="700" style:fill="var(--wav-b)"
+						>r₂ = {fmt(r2, 2)} λ</text
+					>
+					<text y="52" class="muted" font-size="12">Path difference r₁ − r₂</text>
+					<text y="76" font-size="18" font-weight="700">{fmt(delta, 2)} λ</text>
+					<text y="104" font-size="14" font-weight="700" style:fill={verdict.c}>{verdict.text}</text
+					>
+					<text y="122" class="muted" font-size="12">{verdict.sub}</text>
+				</g>
+			</Readout>
 			<!-- the waves arriving at the probe -->
-			{#each traces as row (row.l)}
+			{#each traces as row, i (row.l)}
 				<line x1={TRX0} x2={TRX1} y1={row.y} y2={row.y} stroke="var(--stage-grid)" />
-				<text x={PL} y={row.y - 20} class="muted" font-size="11">{row.l}</text>
+				<Readout id="trace-{i}" order={20 + i} label={row.l} color={row.c}>
+					<text x={PL} y={row.y - 20} class="muted" font-size="11">{row.l}</text>
+				</Readout>
 				<path
 					d={row.d}
 					transform="translate(0 {row.y})"
@@ -762,9 +842,11 @@
 					stroke-width={row.w}
 				/>
 			{/each}
-			<text x={TRX1} y={588} text-anchor="end" class="muted" font-size="11"
-				>at the probe, over time →</text
-			>
+			<Readout id="traces-note">
+				<text x={TRX1} y={588} text-anchor="end" class="muted" font-size="11"
+					>at the probe, over time →</text
+				>
+			</Readout>
 		{/if}
 	</g>
 </g>

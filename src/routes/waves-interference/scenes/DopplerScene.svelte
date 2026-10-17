@@ -35,7 +35,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, clamp, smoothstep, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { SOUND_SPEED, dopplerAhead, dopplerBehind, passBy } from '../waves';
 	import Card from './Card.svelte';
 	import { playNote, playSweep, stopAll } from './sound';
@@ -424,24 +424,27 @@
 								marker-end="url(#arrowhead)"
 							/>
 						</g>
-						<text
-							x={(a1 + a2) / 2}
-							y={SY + 42}
-							text-anchor="middle"
-							class="halo"
-							font-size="12"
-							style:fill="var(--wav-b)"
-							font-weight="600">squeezed</text
-						>
-						<text
-							x={(b1 + b2) / 2}
-							y={SY + 42}
-							text-anchor="middle"
-							class="halo"
-							font-size="12"
-							style:fill="var(--wav-a)"
-							font-weight="600">stretched</text
-						>
+						<!-- <Readout>: on narrow screens the card's cells say it under the stage -->
+						<Readout id="squeezed">
+							<text
+								x={(a1 + a2) / 2}
+								y={SY + 42}
+								text-anchor="middle"
+								class="halo"
+								font-size="12"
+								style:fill="var(--wav-b)"
+								font-weight="600">squeezed</text
+							>
+							<text
+								x={(b1 + b2) / 2}
+								y={SY + 42}
+								text-anchor="middle"
+								class="halo"
+								font-size="12"
+								style:fill="var(--wav-a)"
+								font-weight="600">stretched</text
+							>
+						</Readout>
 					{/if}
 					{#if vPx > 0 && dragX === null}
 						<line
@@ -459,28 +462,36 @@
 			<!-- listeners -->
 			{#each [{ x: 66, f: fBehind, l: 'behind', c: 'var(--wav-a)', a: 'start' as const }, { x: 894, f: fAhead, l: 'ahead', c: 'var(--wav-b)', a: 'end' as const }] as e (e.l)}
 				<circle cx={e.x} cy={SY} r="9" fill="var(--surface)" stroke={e.c} stroke-width="2.5" />
-				<text
-					x={e.x + (e.a === 'start' ? -30 : 30)}
-					y={SY + 70}
-					text-anchor={e.a}
-					class="halo"
-					font-size="12"
-					style:fill={e.c}
-					font-weight="600">listener {e.l}</text
-				>
-				<text
-					x={e.x + (e.a === 'start' ? -30 : 30)}
-					y={SY + 90}
-					text-anchor={e.a}
-					class="halo"
-					font-size="15"
-					style:fill={e.c}
-					font-weight="700">{fmt(e.f, 0)} Hz</text
-				>
+				<Readout id="listener-{e.l}" order={10} label="listener {e.l}" color={e.c}>
+					<text
+						x={e.x + (e.a === 'start' ? -30 : 30)}
+						y={SY + 70}
+						text-anchor={e.a}
+						class="halo"
+						font-size="12"
+						style:fill={e.c}
+						font-weight="600">listener {e.l}</text
+					>
+					<text
+						x={e.x + (e.a === 'start' ? -30 : 30)}
+						y={SY + 90}
+						text-anchor={e.a}
+						class="halo"
+						font-size="15"
+						style:fill={e.c}
+						font-weight="700">{fmt(e.f, 0)} Hz</text
+					>
+				</Readout>
 			{/each}
-			<text x="32" y={FY1 - 14} class="muted halo" font-size="11"
-				>seen from above · crests drawn hugely slowed down; the speeds’ ratio is real</text
+			<Readout
+				id="fronts-note"
+				order={12}
+				label="seen from above, hugely slowed down; the speeds’ ratio is real"
 			>
+				<text x="32" y={FY1 - 14} class="muted halo" font-size="11"
+					>seen from above · crests drawn hugely slowed down; the speeds’ ratio is real</text
+				>
+			</Readout>
 		</g>
 	{/if}
 	<!-- the source, draggable: its speed follows the hand that moves it; it
@@ -542,7 +553,9 @@
 				stroke="var(--stage-ink)"
 				stroke-width="2.5"
 			/>
-			<text x={LX + 16} y={LY + 4} font-size="12" font-weight="600">you</text>
+			<Readout id="you" order={10} label="you, 10 m from the road" marker={1} at={[LX + 36, LY]}>
+				<text x={LX + 16} y={LY + 4} font-size="12" font-weight="600">you</text>
+			</Readout>
 			<!-- where the sound being heard was sent from -->
 			{#if v > 0}
 				{@const ex = rx(drive.heard.emitted * v)}
@@ -592,9 +605,11 @@
 				stroke="var(--stage-ink-muted)"
 				stroke-dasharray="5 5"
 			/>
-			<text x={RX1} y={py(F) - 6} text-anchor="end" class="muted halo" font-size="11"
-				>the horn’s own 440 Hz</text
-			>
+			<Readout id="horn" order={12} label="dashed: the horn’s own 440 Hz">
+				<text x={RX1} y={py(F) - 6} text-anchor="end" class="muted halo" font-size="11"
+					>the horn’s own 440 Hz</text
+				>
+			</Readout>
 			<path d={curve} fill="none" stroke="var(--wav-sum)" stroke-width="2.5" />
 			<line
 				x1={rx(drive.x)}
@@ -612,10 +627,17 @@
 				opacity={drive.o}
 			/>
 			<line x1={RX0} x2={RX1} y1={PY1} y2={PY1} stroke="var(--stage-line)" />
-			<text x={(RX0 + RX1) / 2} y={PY1 + 22} text-anchor="middle" class="muted" font-size="12"
-				>pitch you hear, against where the car is on the road (same scale as above)</text
+			<Readout
+				id="chart"
+				order={11}
+				label="below: the pitch you hear, by where the car is"
+				color="var(--wav-sum)"
 			>
-			<text x={RX0} y={PY0 - 14} font-size="13" font-weight="600">What you hear</text>
+				<text x={(RX0 + RX1) / 2} y={PY1 + 22} text-anchor="middle" class="muted" font-size="12"
+					>pitch you hear, against where the car is on the road (same scale as above)</text
+				>
+				<text x={RX0} y={PY0 - 14} font-size="13" font-weight="600">What you hear</text>
+			</Readout>
 		</g>
 	{/if}
 </g>
