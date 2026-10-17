@@ -12,6 +12,7 @@
 	 *     onmove={(p) => (params.angle = angleOf(p))}
 	 *     onkey={(step) => (params.angle = Number(params.angle) + step)} />
 	 */
+	import { onDestroy } from 'svelte';
 	import type { Point } from './math';
 	import { startDrag } from './pointer';
 
@@ -56,6 +57,8 @@
 	}: Props = $props();
 
 	let dragging = $state(false);
+	/** Ends the drag in progress, if any. */
+	let stopDrag: (() => void) | null = null;
 
 	function onpointerdown(event: PointerEvent) {
 		// Only the main button drags (as `startDrag` decides): a right-click
@@ -63,11 +66,15 @@
 		if (event.button !== 0) return;
 		dragging = true;
 		ondragstart?.();
-		startDrag(event, onmove, () => {
+		stopDrag = startDrag(event, onmove, () => {
+			stopDrag = null;
 			dragging = false;
 			ondragend?.();
 		});
 	}
+	// A step change can unmount the handle mid-drag, and the pointer's release
+	// would never reach it: the drag ends here, so the scene hears `ondragend`.
+	onDestroy(() => stopDrag?.());
 
 	function onkeydown(event: KeyboardEvent) {
 		if (!onkey) return;

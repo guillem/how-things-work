@@ -287,3 +287,28 @@ test.describe('on a phone', () => {
 		await expect(stage(page)).not.toContainText('26.0 cm');
 	});
 });
+
+test('a step change in the middle of a drag lets go of the source', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('./waves-interference/#doppler');
+	const src = page.getByRole('slider', { name: /The source \(drag it/ });
+	// The brackets of squeezed and stretched crests show while the source moves
+	// on its own, and hide while it is held.
+	await expect(reading(page, 'squeezed')).toBeVisible();
+	const box = (await src.boundingBox())!;
+	await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+	await page.mouse.down();
+	await page.mouse.move(box.x + box.width / 2 + 40, box.y + box.height / 2, { steps: 4 });
+	await expect(reading(page, 'squeezed')).toBeHidden();
+	// The next step and back with the keyboard, the button still down: the
+	// pass-by step takes the source handle away mid-drag.
+	await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+	await page.keyboard.press('ArrowRight');
+	await expect(page).toHaveURL(/#pass-by$/);
+	await page.keyboard.press('ArrowLeft');
+	await expect(page).toHaveURL(/#doppler$/);
+	await expect(src).toBeAttached();
+	// Released: it moves on its own again, without waiting for the button.
+	await expect(reading(page, 'squeezed')).toBeVisible();
+	await page.mouse.up();
+});
