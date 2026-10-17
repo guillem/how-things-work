@@ -3,6 +3,7 @@
 import { expect, test } from '@playwright/test';
 import * as data from '../src/routes/embeddings/glove-data';
 import { Embeddings, angleDeg, cosine, tokens } from '../src/routes/embeddings/embeddings';
+import { FLOAT_VECTORS } from './fixtures/glove-float-sample';
 
 const e = new Embeddings(data);
 const top = (r: { word: string }[]) => r.map((n) => n.word);
@@ -20,6 +21,22 @@ test.describe('the vectors', () => {
 		// Stop words such as "the" are not in the subset.
 		expect(e.has('the')).toBe(false);
 		expect(e.vector('the')).toBeNull();
+	});
+
+	test('8-bit storage moves similarities by less than 0.01, as the page says', () => {
+		// The original GloVe vectors (32-bit text) of 32 words against the page's 8-bit copy.
+		const words = Object.keys(FLOAT_VECTORS);
+		expect(words.length).toBeGreaterThan(30);
+		const float = (w: string) => FLOAT_VECTORS[w].split(' ').map(Number);
+		let worst = 0;
+		for (const a of words)
+			for (const b of words) {
+				if (a >= b) continue;
+				const moved = Math.abs(e.similarity(a, b)! - cosine(float(a), float(b)));
+				worst = Math.max(worst, moved);
+			}
+		expect(worst).toBeLessThan(0.01);
+		expect(worst).toBeGreaterThan(0); // the stored vectors really are rounded
 	});
 
 	test('cosine: 1 for the same direction, 0 at right angles, −1 opposite', () => {
