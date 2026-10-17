@@ -204,3 +204,8 @@ Non-commercial:
   Gene names: Sapranauskas et al. 2011, Nucleic Acids Res. 39: 9275, "cas9 (formerly named cas5
   and csn1)", read from https://epublications.vu.lt/object/elaba:4437157/4437157.pdf
   (retrieved 2026-10-17; open access).
+- **NLR cell-efficiency chart** (solar-cells, `records.ts`): re-checked 2026-10-17 for LONGi's
+  newer records. https://www.nlr.gov/pv/cell-efficiency still says "Last Updated Aug. 14, 2026";
+  the data table (cell-efficiency-data-table.xlsx, Last-Modified 14 Aug 2026) and the chart PDF
+  (cell-pv-eff.pdf, Rev. 07-17-2026) are unchanged; re-running `build-records.mjs` on the new
+  download gives the same `records.ts`. Not there yet; nothing changed.
