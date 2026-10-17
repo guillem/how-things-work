@@ -62,10 +62,10 @@ async function clickStage(page: Page, x: number, y: number) {
 	await page.mouse.click(box.x + (x / 960) * box.width, box.y + (y / 600) * box.height);
 }
 
-/** Wires an output port to an input port with the keyboard (Enter on each). */
-async function wire(page: Page, from: string, fromNth: number, to: string, toNth = 0) {
+/** Wires one port to another with the keyboard (Enter on each), by their names. */
+async function wirePorts(page: Page, from: string, fromNth: number, to: string, toNth = 0) {
 	await page
-		.getByRole('button', { name: new RegExp(`^Output of ${from}:`) })
+		.getByRole('button', { name: new RegExp(`^${from}:`) })
 		.nth(fromNth)
 		.press('Enter');
 	await page
@@ -74,13 +74,18 @@ async function wire(page: Page, from: string, fromNth: number, to: string, toNth
 		.press('Enter');
 }
 
-test('a visitor can build a full adder, and the table checks every row', async ({ page }) => {
-	await page.emulateMedia({ reducedMotion: 'reduce' });
-	await page.goto('./logic-gates/#build');
-	await page.locator('button[data-control=challenge][data-value=full]').click();
-	await expect(page.getByRole('switch', { name: 'Switch Carry in' })).toBeAttached();
-	const add = async (tool: string, x: number, y: number) => {
-		await page.locator(`button[data-control=tool][data-value=${tool}]`).click();
+/** Wires an output port to an input port with the keyboard (Enter on each). */
+const wire = (page: Page, from: string, fromNth: number, to: string, toNth = 0) =>
+	wirePorts(page, `Output of ${from}`, fromNth, to, toNth);
+
+/**
+ * Builds a full adder on a canvas with switches A, B, Carry in and lamps Sum,
+ * Carry out, picking gates with the `tool` control (all but the carry-out wire
+ * when `lastWire` is false).
+ */
+async function buildFullAdder(page: Page, tool: string, lastWire = true) {
+	const add = async (kind: string, x: number, y: number) => {
+		await page.locator(`button[data-control=${tool}][data-value=${kind}]`).click();
 		await clickStage(page, x, y);
 	};
 	await add('XOR', 200, 190);
@@ -103,10 +108,78 @@ test('a visitor can build a full adder, and the table checks every row', async (
 	await wire(page, 'AND gate', 0, 'Input 1 of OR gate');
 	await wire(page, 'AND gate', 1, 'Input 2 of OR gate');
 	await wire(page, 'XOR gate', 1, 'Input of lamp Sum');
+	if (lastWire) await wire(page, 'OR gate', 0, 'Input of lamp Carry out');
+}
+
+test('a visitor can build a full adder, and the table checks every row', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('./logic-gates/#build');
+	await page.locator('button[data-control=challenge][data-value=full]').click();
+	await expect(page.getByRole('switch', { name: 'Switch Carry in' })).toBeAttached();
+	await buildFullAdder(page, 'tool', false);
 	await expect(stage(page)).toContainText('Goal: make your columns match the target');
 	await expect(stage(page)).not.toContainText('✓ Right');
 	await wire(page, 'OR gate', 0, 'Input of lamp Carry out');
 	await expect(stage(page)).toContainText('✓ Right: that is a full adder!');
+});
+
+test('the 4-bit build only packs a full adder that is right', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('./logic-gates/#adder4');
+	await expect(page.getByRole('switch', { name: 'Switch Carry in' })).toBeAttached();
+	// no block to place yet
+	await page.locator('button[data-control=tool4][data-value=FA]').click();
+	await clickStage(page, 360, 250);
+	await expect(stage(page)).toContainText('Build a full adder first');
+	await expect(page.getByRole('button', { name: /^Full adder block/ })).toHaveCount(0);
+	// a half-built one isn't packed
+	await buildFullAdder(page, 'tool4', false);
+	await page.locator('button[data-control=packBlock]').click();
+	await expect(stage(page)).toContainText('Not a full adder yet');
+	await expect(page.getByRole('switch', { name: 'Switch A₀' })).toHaveCount(0);
+	await wire(page, 'OR gate', 0, 'Input of lamp Carry out');
+	await page.locator('button[data-control=packBlock]').click();
+	await expect(page.getByRole('switch', { name: 'Switch A₀' })).toBeAttached();
+	await expect(stage(page)).toContainText('Your full adder is now a block');
+});
+
+test('four of the visitor’s full-adder blocks, chained, add all 512 inputs', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	// the full adder built on the build step carries over to the 4-bit build
+	await page.goto('./logic-gates/#build');
+	await page.locator('button[data-control=challenge][data-value=full]').click();
+	await expect(page.getByRole('switch', { name: 'Switch Carry in' })).toBeAttached();
+	await buildFullAdder(page, 'tool');
+	await page.getByRole('button', { name: 'Next step' }).click();
+	await expect(page.locator('aside h2')).toHaveText('Build a 4-bit adder');
+	await expect(stage(page)).toContainText('✓ Right: that is a full adder!');
+	await page.locator('button[data-control=packBlock]').click();
+	// the switches start on 11 + 6; with nothing wired the lamps read 0
+	await expect(stage(page)).toContainText('11 + 6 + 0 = 17');
+	await expect(stage(page)).toContainText('1 of 512 right');
+	// one block in each bit's row (the dashed outlines)
+	for (const y of [90, 230, 350, 470]) await clickStage(page, 360, y);
+	await expect(page.getByRole('button', { name: /^Full adder block/ })).toHaveCount(4);
+	const sub = '₀₁₂₃';
+	for (let i = 0; i < 4; i++) {
+		await wire(page, `switch A${sub[i]}`, 0, 'Input A of full adder block', i);
+		await wire(page, `switch B${sub[i]}`, 0, 'Input B of full adder block', i);
+		await wirePorts(page, 'Sum of full adder block', i, `Input of lamp S${sub[i]}`);
+	}
+	await wire(page, 'switch Carry in', 0, 'Carry in of full adder block', 0);
+	await wirePorts(page, 'Carry out of full adder block', 0, 'Carry in of full adder block', 1);
+	await wirePorts(page, 'Carry out of full adder block', 2, 'Carry in of full adder block', 3);
+	await wirePorts(page, 'Carry out of full adder block', 3, 'Input of lamp Carry out');
+	// the carry out of bit 1 goes nowhere: 11 + 6 loses it and comes out 13
+	await expect(stage(page)).toContainText('the lamps read 01101 = 13 ✗');
+	await expect(stage(page)).not.toContainText('All 512 right');
+	await wirePorts(page, 'Carry out of full adder block', 1, 'Carry in of full adder block', 2);
+	await expect(stage(page)).toContainText('✓ All 512 right');
+	await expect(stage(page)).toContainText('the lamps read 10001 = 17 ✓');
+	await expect(page.getByRole('img', { name: 'Lamp Carry out: on' })).toBeVisible();
+	// any other sum: 11 + 7 = 18
+	await page.getByRole('switch', { name: 'Switch B₀' }).click();
+	await expect(stage(page)).toContainText('the lamps read 10010 = 18 ✓');
 });
 
 test('the 4-bit adder only adds right once the reader connects every carry', async ({ page }) => {
