@@ -6,10 +6,14 @@
 	 * mode 'slide'  the filter slides: first slowly along one row (with the arithmetic of each
 	 *               position), then over every row until the map is complete. A pure function of
 	 *               t; under reduced motion, the complete map with the window parked on that row.
-	 * mode 'edit'   the complete map; the nine weights are editable on the stage.
+	 * mode 'edit'   the nine weights are editable on the stage. The map builds up in a quick sweep
+	 *               (the window over every position, row by row) at the start of the step and each
+	 *               time the filter or the digit changes; the previous map stays under the part not
+	 *               yet recomputed. Under reduced motion, the complete map.
 	 * mode 'shift'  the digit moved by `params.shift` pixels (no further than the grid allows): the
 	 *               map moves the same way, and the cost of the filter against a fully connected layer.
 	 */
+	import { untrack } from 'svelte';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { SIDE } from '../cnn';
 	import { PRESETS, divisor, effective, filter, shift, window3, denseWeights } from '../filters';
@@ -99,7 +103,52 @@
 	const SLOW = 0.55; // seconds per position in the slow walk
 	const slowEnd = $derived((span[1] - span[0] + 1) * SLOW + 0.6);
 	const FAST = 12; // seconds for the full sweep
+
+	// ---- the build-up of an edited filter's map -----------------------------------------------
+	const SWEEP = 2.5; // seconds for the sweep over all 784 positions
+	/** A key for what the map is made of (the filter's weights and the digit's pixels). */
+	const madeOf = $derived.by(() => {
+		if (mode !== 'edit') return '';
+		let h = 0;
+		for (let i = 0; i < img.length; i++) h = (h * 31 + Math.round(img[i] * 255)) | 0;
+		return `${k.join(',')}|${h}`;
+	});
+	let current: { out: Float32Array; scale: number } | null = null;
+	let changes = 0;
+	/** The map shown before the latest change (null at first), and a count of changes. */
+	const history = $derived.by(() => {
+		void madeOf;
+		const prev = current;
+		// only a change of `madeOf` starts a sweep, not a new array of the same pixels
+		current = untrack(() => ({ out, scale }));
+		return { prev, n: ++changes };
+	});
+	const prevUrl = $derived(
+		history.prev ? signedUrl(history.prev.out, SIDE, SIDE, history.prev.scale, dark) : null
+	);
+	// The sanctioned frame-to-frame exception (docs/scene-guide.md): the sweep restarts at the
+	// moment the filter changes, which no pure function of `t` can know. It restarts when `t`
+	// goes back (a new step, a replay) and stays complete under reduced motion.
+	let sweepFrom = 0;
+	let sweepFor = -1;
+	let lastT = 0;
+	const sweep = $derived.by(() => {
+		const tt = t;
+		const n = history.n;
+		if (mode !== 'edit' || reduced) return 1;
+		if (n !== sweepFor || tt < lastT) {
+			sweepFor = n;
+			sweepFrom = tt;
+		}
+		lastT = tt;
+		return Math.max(0, Math.min(1, (tt - sweepFrom) / SWEEP));
+	});
+
 	const slide = $derived.by(() => {
+		if (mode === 'edit' && sweep < 1) {
+			const p = Math.floor(sweep * SIDE * SIDE);
+			return { phase: 'fast', x: p % SIDE, y: Math.floor(p / SIDE), p };
+		}
 		if (mode !== 'slide') return { phase: 'done', x: -1, y: -1, p: SIDE * SIDE };
 		if (reduced) {
 			const x = Math.round((span[0] + span[1]) / 2);
@@ -114,11 +163,13 @@
 		const p = Math.floor(u * SIDE * SIDE);
 		return { phase: 'fast', x: p % SIDE, y: Math.floor(p / SIDE), p };
 	});
-	const showWindow = $derived(mode === 'slide' && slide.x >= 0);
+	const showWindow = $derived(
+		(mode === 'slide' || (mode === 'edit' && slide.phase === 'fast')) && slide.x >= 0
+	);
 	/** Rectangles that hide the part of the map not computed yet. */
 	const veils = $derived.by(() => {
 		const r: { key: string; x: number; y: number; w: number; h: number }[] = [];
-		if (mode !== 'slide' || slide.phase === 'done') return r;
+		if (slide.phase === 'done') return r;
 		if (slide.phase === 'slow') {
 			const done0 = span[0];
 			const done1 = slide.x;
@@ -338,15 +389,34 @@
 		/>
 		<rect x={B.x - 1} y={B.y - 1} width={W + 2} height={W + 2} fill="none" stroke="var(--border)" />
 		<image href={outUrl} x={B.x} y={B.y} width={W} height={W} class="cv-px" />
-		{#each veils as v (v.key)}
-			<rect
-				x={B.x + v.x * PX}
-				y={B.y + v.y * PX}
-				width={v.w * PX}
-				height={v.h * PX}
-				fill="var(--stage-bg)"
+		{#if mode === 'edit' && prevUrl && veils.length}
+			<!-- the previous map, where the new one is not computed yet -->
+			<clipPath id="cv-veil">
+				{#each veils as v (v.key)}
+					<rect x={B.x + v.x * PX} y={B.y + v.y * PX} width={v.w * PX} height={v.h * PX} />
+				{/each}
+			</clipPath>
+			<rect x={B.x} y={B.y} width={W} height={W} fill="var(--stage-bg)" clip-path="url(#cv-veil)" />
+			<image
+				href={prevUrl}
+				x={B.x}
+				y={B.y}
+				width={W}
+				height={W}
+				class="cv-px"
+				clip-path="url(#cv-veil)"
 			/>
-		{/each}
+		{:else}
+			{#each veils as v (v.key)}
+				<rect
+					x={B.x + v.x * PX}
+					y={B.y + v.y * PX}
+					width={v.w * PX}
+					height={v.h * PX}
+					fill="var(--stage-bg)"
+				/>
+			{/each}
+		{/if}
 		<Readout id="cv-key" order={3} label="Colours" value="blue: positive sum · orange: negative">
 			<rect x={B.x} y={B.y + W + 12} width="12" height="12" fill="var(--cv-pos)" />
 			<Label anchor="start" x={B.x + 18} y={B.y + W + 22} text="positive" size={12} />
@@ -354,6 +424,37 @@
 			<Label anchor="start" x={B.x + 110} y={B.y + W + 22} text="negative" size={12} />
 			<Label anchor="start" x={B.x + 190} y={B.y + W + 22} text="paper colour: 0" size={12} muted />
 		</Readout>
+
+		{#if mode === 'edit'}
+			<Readout
+				id="cv-build"
+				order={4}
+				label="Feature map"
+				value={slide.phase === 'fast'
+					? `the filter slides over row ${slide.y + 1} of ${SIDE}`
+					: `complete: the filter has visited all ${SIDE * SIDE} positions`}
+			>
+				<Label
+					anchor="start"
+					tabular
+					x={A.x}
+					y={492}
+					text={slide.phase === 'fast'
+						? `the filter slides over every position: row ${slide.y + 1} of ${SIDE}`
+						: `map complete: the filter has visited all ${SIDE * SIDE} positions`}
+					size={13}
+					weight={600}
+				/>
+				<Label
+					anchor="start"
+					x={A.x}
+					y={514}
+					text="change a weight or the filter, and the map is made again"
+					size={12}
+					muted
+				/>
+			</Readout>
+		{/if}
 
 		{#if showWindow}
 			<!-- the window on the input and the pixel it makes -->
@@ -377,40 +478,42 @@
 				stroke-width="2.5"
 			/>
 			<!-- the arithmetic at this position -->
-			<Readout
-				id="cv-sum"
-				order={4}
-				label="At ({slide.x}, {slide.y})"
-				value="sum of pixel × weight = {fmt(sum)}"
-			>
-				<Label
-					anchor="start"
-					x={A.x}
-					y={492}
-					text="at ({slide.x}, {slide.y}):"
-					size={13}
-					weight={600}
-				/>
-				{#each win as v, i (i)}
+			{#if mode === 'slide'}
+				<Readout
+					id="cv-sum"
+					order={4}
+					label="At ({slide.x}, {slide.y})"
+					value="sum of pixel × weight = {fmt(sum)}"
+				>
 					<Label
 						anchor="start"
-						x={190 + (i % 3) * 136}
-						y={492 + Math.floor(i / 3) * 24}
-						text="{fmt(v)} × {fmt(eff[i], d === 1 ? 0 : 3)}{i % 3 < 2 ? '  +' : ''}"
+						x={A.x}
+						y={492}
+						text="at ({slide.x}, {slide.y}):"
 						size={13}
-						opacity={Math.abs(v * eff[i]) > 1e-9 ? 1 : 0.5}
+						weight={600}
 					/>
-				{/each}
-				<Label anchor="start" x={610} y={516} text="= {fmt(sum)}" size={18} weight={700} />
-				<Label
-					anchor="start"
-					x={610}
-					y={540}
-					text={slide.phase === 'fast' ? 'every position, row by row' : 'one output pixel'}
-					size={12}
-					muted
-				/>
-			</Readout>
+					{#each win as v, i (i)}
+						<Label
+							anchor="start"
+							x={190 + (i % 3) * 136}
+							y={492 + Math.floor(i / 3) * 24}
+							text="{fmt(v)} × {fmt(eff[i], d === 1 ? 0 : 3)}{i % 3 < 2 ? '  +' : ''}"
+							size={13}
+							opacity={Math.abs(v * eff[i]) > 1e-9 ? 1 : 0.5}
+						/>
+					{/each}
+					<Label anchor="start" x={610} y={516} text="= {fmt(sum)}" size={18} weight={700} />
+					<Label
+						anchor="start"
+						x={610}
+						y={540}
+						text={slide.phase === 'fast' ? 'every position, row by row' : 'one output pixel'}
+						size={12}
+						muted
+					/>
+				</Readout>
+			{/if}
 		{/if}
 
 		{#if mode === 'shift'}

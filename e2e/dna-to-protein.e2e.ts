@@ -7,6 +7,47 @@ const stage = (page: Page) => page.locator('.stage svg > g');
 const choose = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value="${value}"]`).click();
 
+test('the letters-copied slider steps the polymerase along β-globin, letter by letter', async ({
+	page
+}) => {
+	await page.goto('./dna-to-protein/#transcribe');
+	// reduced motion: the copy runs by itself, frozen 46 letters in
+	await expect(stage(page)).toContainText('shown at 1,200 letters a minute');
+	await expect(stage(page)).toContainText('Letter 46 of 1,608 copied · now in exon 1');
+	const auto = page.locator('input[type=checkbox][data-control=copy-auto]');
+	const slider = page.locator('input[type=range][data-control=copied]');
+	// moving the slider takes over: exon 1 of HBB is 142 letters long, then intron 1 begins
+	await slider.fill('142');
+	await expect(auto).not.toBeChecked();
+	await expect(stage(page)).toContainText('stepped with the slider');
+	await expect(stage(page)).toContainText('Letter 142 of 1,608 copied · now in exon 1');
+	await slider.focus();
+	await page.keyboard.press('ArrowRight');
+	await expect(stage(page)).toContainText('Letter 143 of 1,608 copied · now in intron 1');
+	await page.keyboard.press('End');
+	await expect(stage(page)).toContainText(
+		'Copy finished: an RNA of 1,608 letters, introns and all'
+	);
+	// a shorter gene keeps the slider inside it
+	await choose(page, 'gene', 'trpl');
+	await expect(stage(page)).toContainText('Copy finished: an RNA of 45 letters');
+	await expect(slider).toHaveValue('45');
+	await slider.focus();
+	await page.keyboard.press('Home');
+	await expect(stage(page)).toContainText('No letters copied yet');
+});
+
+test('switching “Copy by itself” off leaves the polymerase where the animation was', async ({
+	page
+}) => {
+	await page.goto('./dna-to-protein/#transcribe');
+	await expect(stage(page)).toContainText('Letter 46 of 1,608 copied');
+	await page.locator('input[type=checkbox][data-control=copy-auto]').uncheck({ force: true });
+	await expect(page.locator('input[type=range][data-control=copied]')).toHaveValue('46');
+	await expect(stage(page)).toContainText('stepped with the slider');
+	await expect(stage(page)).toContainText('Letter 46 of 1,608 copied · now in exon 1');
+});
+
 test('the codon slider steps the ribosome along β-globin, codon by codon', async ({ page }) => {
 	await page.goto('./dna-to-protein/#ribosome');
 	await expect(stage(page)).toContainText('Codon 1 of 148: AUG → Met (methionine)');

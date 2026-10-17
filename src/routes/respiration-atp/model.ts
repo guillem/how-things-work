@@ -226,6 +226,14 @@ export function oxygenPerGlucose() {
  * c-ring sizes of real ATP synthases (subunits = protons per rotation). `mito`:
  * the synthase sits in a mitochondrion, so each ATP also pays a proton to be
  * carried out to the cytosol; elsewhere ATP is made where it is used.
+ *
+ * Yeast and E. coli both have 10 c-subunits (yeast: Stock, Leslie & Walker,
+ * Science 286:1700, 1999; E. coli: Jiang, Hermolin & Fillingame, PNAS 98:4966,
+ * 2001), so both pay 10/3 ≈ 3.3 H⁺ per ATP at the synthase. Only the yeast's
+ * sits in a mitochondrion: a bacterium (like a chloroplast) makes its ATP in
+ * the compartment that uses it, with "no electrogenic exchange of ATP for ADP
+ * and Pi across the membranes" (Ferguson, PNAS 107:16755, 2010), so it does not
+ * pay the transport proton: ≈ 4.3 H⁺ per ATP delivered for yeast, 3.3 for E. coli.
  */
 export const C_RINGS = [
 	{
@@ -261,6 +269,10 @@ export const TRANSPORT_H = 1;
 
 /** Protons per ATP delivered to the cytosol. */
 export const hPerATP = (c: number) => synthaseHPerATP(c) + TRANSPORT_H;
+
+/** Protons per ATP delivered where it is used, for one of `C_RINGS`. */
+export const deliveredHPerATP = (ring: { c: number; mito: boolean }) =>
+	ring.mito ? hPerATP(ring.c) : synthaseHPerATP(ring.c);
 
 /** Mechanistic P/O ratio (ATP per two electrons reaching oxygen). */
 export const poRatio = (protons: number, hAtp: number) => protons / hAtp;

@@ -53,6 +53,18 @@ test.describe('settled pictures', () => {
 		await expect(stage(page)).not.toContainText('with transport');
 	});
 
+	test('yeast and E. coli have the same ring, but only yeast pays to export its ATP', async ({
+		page
+	}) => {
+		await open(page, './respiration-atp/#rotor');
+		await page.locator('[data-control=ring][data-value=yeast]').click();
+		await expect(stage(page)).toContainText('10 subunits');
+		await expect(stage(page)).toContainText('3.3 (≈ 4.3 with transport)');
+		await page.locator('[data-control=ring][data-value=ecoli]').click();
+		await expect(stage(page)).toContainText('10 subunits');
+		await expect(stage(page)).toContainText('3.3 (no transport cost)');
+	});
+
 	test('FADH₂ skips complex I and drives 6 protons instead of 10', async ({ page }) => {
 		await open(page, './respiration-atp/#staircase');
 		await expect(stage(page)).toContainText('stored in 10 protons');

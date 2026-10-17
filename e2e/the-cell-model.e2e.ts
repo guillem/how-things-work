@@ -19,7 +19,14 @@ import {
 	type Frame
 } from '../src/routes/the-cell/frames';
 import { hepatocyte, SIZES } from '../src/routes/the-cell/liver';
-import { ER_RIBOSOMES } from '../src/routes/the-cell/molecular';
+import {
+	CROWD_MIX,
+	ENVELOPE,
+	ER_RIBOSOMES,
+	PROTEINS_PER_UM3,
+	crowd,
+	scatter
+} from '../src/routes/the-cell/molecular';
 import { palisadeCell, PLANT_SHARES, THYLAKOID } from '../src/routes/the-cell/plant';
 import { MACHINES, SMALL_MOLECULES } from '../src/routes/the-cell/shapes';
 import { STRUCTURES, STRUCTURE_LIST } from '../src/routes/the-cell/structures';
@@ -136,6 +143,57 @@ test('ribosomes on the rough ER are as far apart as their measured density gives
 		expect(xs[i] - xs[i - 1]).toBeGreaterThan(33);
 		expect(xs[i] - xs[i - 1]).toBeLessThan(41);
 	}
+});
+
+// An ideal thin slice cuts n × d proteins per nm² of the compartment (n per nm³, diameter d).
+// What the slice holds besides the compartment (ribosomes, DNA, a membrane fold) is not
+// part of its volume, so it takes away from the count.
+const perNm2 = (mix: { share: number; d: number }[]) =>
+	mix.reduce((sum, m) => sum + PROTEINS_PER_UM3 * 1e-9 * m.share * m.d, 0);
+
+test('the cytoplasm view holds 3 million proteins per µm³ of the space the ribosomes and DNA leave', () => {
+	const C = crowd();
+	const box = { x0: -240, x1: 240, y0: ENVELOPE.im1 + 1, y1: 150 };
+	const inBox = (x: number, y: number) => x >= box.x0 && x <= box.x1 && y >= box.y0 && y <= box.y1;
+	// the free area, measured on a fine grid: outside the 25 nm ribosomes and the 2 nm DNA
+	const R = (ECOLI.ribosome * 1000) / 2;
+	const nearDna = (x: number, y: number) =>
+		C.dna.some((pts) =>
+			pts.some(
+				([px, py], i) =>
+					i > 0 &&
+					Math.abs(px - x) < 5 &&
+					(() => {
+						const [ax, ay] = pts[i - 1];
+						const [dx, dy] = [px - ax, py - ay];
+						const u = Math.max(
+							0,
+							Math.min(1, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy))
+						);
+						return Math.hypot(ax + u * dx - x, ay + u * dy - y) < 1;
+					})()
+			)
+		);
+	let free = 0;
+	for (let x = box.x0 + 0.5; x < box.x1; x += 1)
+		for (let y = box.y0 + 0.5; y < box.y1; y += 1)
+			if (!C.ribosomes.some((q) => Math.hypot(q.x - x, q.y - y) < R) && !nearDna(x, y)) free++;
+	const total = (box.x1 - box.x0) * (box.y1 - box.y0);
+	// the ribosomes and DNA take a real share of the view (so the test can tell the difference)
+	expect(free / total).toBeLessThan(0.93);
+	const n = C.proteins.filter((p) => inBox(p.x, p.y)).length;
+	expect(n / (perNm2(CROWD_MIX) * free)).toBeGreaterThan(0.96);
+	expect(n / (perNm2(CROWD_MIX) * free)).toBeLessThan(1.04);
+});
+
+test('scattered proteins keep their concentration in the free part of a box', () => {
+	// a 200 × 200 nm box whose left 60% is taken by a structure
+	const box = { x0: -100, x1: 100, y0: -100, y1: 100 };
+	const mix = [{ id: 'adk' as const, share: 0.6, d: 5 }];
+	const placed = scatter(7, box, (x, _y, r) => x < 20 + r, mix);
+	const free = (box.x1 - 20) * (box.y1 - box.y0);
+	expect(placed.length / (perNm2(mix) * free)).toBeGreaterThan(0.97);
+	expect(placed.length / (perNm2(mix) * free)).toBeLessThan(1.03);
 });
 
 test('the leaf cell has the measured shares of vacuole and chloroplasts', () => {

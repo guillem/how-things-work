@@ -13,6 +13,8 @@ import {
 	NORMAL,
 	STAGES,
 	atpYield,
+	C_RINGS,
+	deliveredHPerATP,
 	dropKJ,
 	E,
 	efficiency,
@@ -86,6 +88,19 @@ test('the cow c₈ ring sets 2.7 H⁺ per ATP and P/O maxima of 2.7 and 1.6', ()
 	// Hinkle 2005: a c₁₀ ring (yeast) would give 2.3 and 1.4.
 	expect(poRatio(H_PER_NADH, hPerATP(10))).toBeCloseTo(2.3, 1);
 	expect(poRatio(H_PER_FADH2, hPerATP(10))).toBeCloseTo(1.4, 1);
+});
+
+test('yeast and E. coli both have c₁₀ rings, but only the mitochondrion pays to export its ATP', () => {
+	const ring = (id: string) => C_RINGS.find((r) => r.id === id)!;
+	// Stock et al. 1999 (yeast), Jiang et al. 2001 (E. coli): 10 c-subunits each
+	expect(ring('yeast').c).toBe(10);
+	expect(ring('ecoli').c).toBe(10);
+	// Ferguson 2010: a bacterium has no ATP-for-ADP exchange across a membrane
+	expect(deliveredHPerATP(ring('ecoli'))).toBeCloseTo(3.3, 1);
+	expect(deliveredHPerATP(ring('yeast'))).toBeCloseTo(4.3, 1);
+	// the cow's mitochondrion: 8/3 + 1 ≈ 3.7 (the narrative's figure); a chloroplast's c₁₄: 4.7
+	expect(deliveredHPerATP(ring('cow'))).toBeCloseTo(3.7, 1);
+	expect(deliveredHPerATP(ring('spinach'))).toBeCloseTo(4.7, 1);
 });
 
 test('a glucose yields 30–32 ATP with measured P/O, 36–38 with the old integers', () => {

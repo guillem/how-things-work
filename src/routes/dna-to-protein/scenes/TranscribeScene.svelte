@@ -4,8 +4,14 @@
 	 * the DNA slides through it (20 letters a second, 1,200 a minute, within the measured range
 	 * of human RNA polymerase II): the strands open into a bubble, each template letter gets
 	 * its RNA partner, and the RNA peels away behind. For HBB the RNA letters are marked as
-	 * exon or intron. Everything is a function of `t`.
+	 * exon or intron. Everything is a function of `t`, unless the reader takes over with the
+	 * `copied` slider: then "Copy by itself" (`copy-auto`) goes off and a Tween carries the
+	 * polymerase to the chosen letter. Turning "Copy by itself" off by hand leaves the slider
+	 * where the animation was, so the picture does not jump.
 	 */
+	import { untrack } from 'svelte';
+	import { Tween } from 'svelte/motion';
+	import { cubicInOut } from 'svelte/easing';
 	import { clamp, Label, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { complement, rnaPartner } from '../genetics';
@@ -13,7 +19,7 @@
 	import GeneInput from './GeneInput.svelte';
 	import { baseColor, int } from './shared';
 
-	let { t, params, setParam }: StageProps = $props();
+	let { t, params, setParam, reduced }: StageProps = $props();
 
 	const RATE = 20; // letters per second
 	const DX = 22;
@@ -26,14 +32,56 @@
 	const gene = $derived(geneOf(params, true));
 	const seq = $derived(gene.transcribed);
 	const n = $derived(seq.length);
-	// letters copied so far; a short lead-in so the polymerase is seen arriving
-	const p = $derived(clamp(t * RATE - 4, 0, n));
-	const done = $derived(p >= n);
-	const k = $derived(Math.floor(p));
+	const auto = $derived(params['copy-auto'] !== false);
+	const raw = $derived(Number(params.copied ?? 0));
+	const target = $derived(clamp(Math.round(raw), 0, n));
+	/** Letters copied by the animation; a short lead-in so the polymerase is seen arriving. */
+	const played = (tt: number, len: number) => clamp(tt * RATE - 4, 0, len);
+	const pos = new Tween(0, { easing: cubicInOut });
+	let lastRaw: number | null = null;
+	let lastAuto: boolean | null = null;
+	$effect(() => {
+		const v = raw;
+		const a = auto;
+		const to = target;
+		const len = n;
+		const quick = reduced;
+		untrack(() => {
+			// `t` is read untracked, once per change of a control: where the animation is now
+			const now = played(t, len);
+			let manual = !a;
+			if (a && lastRaw !== null && v !== lastRaw) {
+				// the slider moved: it takes over from where the animation was
+				pos.set(now, { duration: 0 });
+				setParam('copy-auto', false);
+				manual = true;
+			} else if (!a && lastAuto) {
+				// switched off by hand: the slider jumps to the letter being copied
+				const here = Math.floor(now);
+				pos.set(here, { duration: 0 });
+				if (here !== v) setParam('copied', here);
+			}
+			lastRaw = v;
+			lastAuto = !manual;
+			if (manual) {
+				// keep the slider inside the chosen gene (a shorter gene than the last one)
+				if (v > len) setParam('copied', len);
+				const d = Math.abs(to - pos.current);
+				pos.set(to, { duration: quick ? 0 : Math.min(1500, 250 + 3 * d) });
+			}
+		});
+	});
 
-	// After the copy, the camera eases back so that a short RNA sits in the middle.
+	// letters copied so far
+	const p = $derived(auto ? played(t, n) : clamp(pos.current, 0, n));
+	const done = $derived(p >= n);
+	/** The last letter copied (0-based), whose exon or intron the readout names. */
+	const k = $derived(Math.max(0, Math.ceil(p) - 1));
+
+	// After the copy, the camera eases back so that a short RNA sits in the middle; a copy
+	// stepped by hand stays where the reader left it.
 	const cam = $derived.by(() => {
-		if (!done) return p;
+		if (!done || !auto) return p;
 		const settle = smoothstep(0, 1.2, t - (n + 4) / RATE);
 		return p - settle * (p - Math.min(p, n / 2 + 1.5));
 	});
@@ -89,7 +137,9 @@
 				tabular
 				x={24}
 				y={40}
-				text="{gene.name}: {int(n)} letters of DNA, shown at 1,200 letters a minute"
+				text="{gene.name}: {int(n)} letters of DNA, {auto
+					? 'shown at 1,200 letters a minute'
+					: 'stepped with the slider'}"
 				size={14}
 				weight={700}
 			/>
@@ -286,7 +336,9 @@
 				y={548}
 				text={done
 					? `Copy finished: an RNA of ${int(n)} letters${gene.eukaryote ? ', introns and all' : ''}`
-					: `Letter ${int(Math.ceil(p))} of ${int(n)} copied${where ? ` · now in ${where}` : ''}`}
+					: p <= 0
+						? `No letters copied yet: the polymerase is at the start of the gene`
+						: `Letter ${int(Math.ceil(p))} of ${int(n)} copied${where ? ` · now in ${where}` : ''}`}
 				size={15}
 				weight={700}
 			/>

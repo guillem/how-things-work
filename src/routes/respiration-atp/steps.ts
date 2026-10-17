@@ -203,7 +203,8 @@ export const spec: ExplainerSpec = {
 					default: 'cow',
 					options: [
 						{ value: 'cow', label: 'Cow, human (8 c-subunits)' },
-						{ value: 'yeast', label: 'Yeast, E. coli (10)' },
+						{ value: 'yeast', label: 'Yeast (10)' },
+						{ value: 'ecoli', label: 'E. coli (10)' },
 						{ value: 'spinach', label: 'Spinach chloroplast (14)' },
 						{ value: 'spirulina', label: 'Spirulina (15)' }
 					],
@@ -214,7 +215,7 @@ export const spec: ExplainerSpec = {
 <p>This outline is traced from the real structure of a cow's ATP synthase. A proton enters from the intermembrane space through a half-channel in the stator, lands on one of the <strong>c-subunits</strong> of a ring in the membrane, rides almost a full turn, and leaves into the matrix through a second half-channel. Each proton nudges the ring one subunit round.</p>
 <p>The ring turns a crooked shaft (γ) inside the head, which is held still by a side stalk. The head has three catalytic sites; each third of a turn the shaft squeezes one of them shut on an ADP and a phosphate, making <strong>ATP</strong>, while another opens to let a finished ATP go. One full turn: <strong>3 ATP</strong>.</p>
 <p>Our c-ring has 8 subunits, so 8 protons make 3 ATP: <strong>2.7 protons per ATP</strong>, plus about one more to bring the phosphate in and send the ATP out. Try other rings: a spinach chloroplast's has 14 and pays 4.7.</p>`,
-			notes: `<p>The bovine ring's 8 subunits were found by Watt et al. (<i>PNAS</i> 2010); the structure drawn is PDB 6ZPO (Spikes et al. 2020), which has 8 c chains. Rings of 10 to 15 subunits are known in yeast, bacteria and chloroplasts. Paul Boyer proposed the rotating ‘binding change’ mechanism and John Walker solved the head's structure (Nobel Prize 1997); in 1997 Noji and colleagues fixed the head to glass, attached a fluorescent actin filament to the shaft and watched it turn. The real motor turns about 100 times a second; it is drawn much slower.</p>`
+			notes: `<p>The bovine ring's 8 subunits were found by Watt et al. (<i>PNAS</i> 2010); the structure drawn is PDB 6ZPO (Spikes et al. 2020), which has 8 c chains. Rings of 10 to 15 subunits are known in yeast, bacteria and chloroplasts: yeast's has 10 (Stock et al., <i>Science</i> 1999), and so has <i>E. coli</i>'s (Jiang et al., <i>PNAS</i> 2001). Only the yeast's pays the extra proton for transport: bacteria and chloroplasts make their ATP in the compartment that uses it, with no ATP-for-ADP exchange across a membrane (Ferguson, <i>PNAS</i> 2010), so <i>E. coli</i> pays 3.3 protons per ATP and yeast about 4.3. Paul Boyer proposed the rotating ‘binding change’ mechanism and John Walker solved the head's structure (Nobel Prize 1997); in 1997 Noji and colleagues fixed the head to glass, attached a fluorescent actin filament to the shaft and watched it turn. The real motor turns about 100 times a second; it is drawn much slower.</p>`
 		},
 		{
 			id: 'yield',
