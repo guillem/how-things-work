@@ -28,7 +28,10 @@ import {
 
 // The published ak135 travel-time tables for an earthquake at the surface (Kennett 1997,
 // "AK135 travel time tables", http://rses.anu.edu.au/seismology/ak135/intro.html, pages 2 and 4
-// of the body-wave tables and page 3 of the core phases). Seconds.
+// of the body-wave tables and page 3 of the core phases). Seconds. The PKPab row (the branch
+// through the outer core, the only one beyond about 155°, and the "core" arrival the station
+// step lists) is from TauP in ObsPy 1.5.1 with its ak135 model, as the core-phase page is a
+// scanned image; TauP gives the other rows within 0.05 s of the printed tables.
 const TABLE = [
 	{ kind: 'P', dist: 30, time: 6 * 60 + 10.27 },
 	{ kind: 'S', dist: 30, time: 11 * 60 + 9.14 },
@@ -37,7 +40,8 @@ const TABLE = [
 	{ kind: 'P', dist: 90, time: 13 * 60 + 1.4 },
 	{ kind: 'S', dist: 90, time: 23 * 60 + 55.44 },
 	{ kind: 'PKIKP', dist: 150, time: 19 * 60 + 47.48 },
-	{ kind: 'PKIKP', dist: 180, time: 20 * 60 + 12.53 }
+	{ kind: 'PKIKP', dist: 180, time: 20 * 60 + 12.53 },
+	{ kind: 'PKP', dist: 170, time: 21 * 60 + 24.62 }
 ] as const;
 
 test('rays traced through ak135 arrive when the published ak135 tables say', () => {
@@ -110,6 +114,29 @@ test('rays curve back up: the path to 30° dives far deeper than the straight li
 	const chordDepth = EARTH_R * (1 - Math.cos((15 * Math.PI) / 180));
 	expect(EARTH_R - ray.deepest).toBeGreaterThan(2.5 * chordDepth);
 	expect(ray.kind).toBe('P');
+});
+
+test('the rays that reached the three Nepal stations (33°–44°) never left the mantle', () => {
+	// The summary marks these stations: the rays that located the earthquake turn back about
+	// 800–1,100 km down, far above the core (2,891 km).
+	const landing = (wave: 'P' | 'S', dist: number) => {
+		let lo = 0.1;
+		let hi = 1.5;
+		for (let i = 0; i < 40; i++) {
+			const mid = (lo + hi) / 2;
+			if (surfaceDistance(rayAt(wave, mid, ORIGIN.depth)!.angle) > dist) lo = mid;
+			else hi = mid;
+		}
+		return rayAt(wave, lo, ORIGIN.depth)!;
+	};
+	expect(stations.map((s) => Math.round(s.dist)).sort((a, b) => a - b)).toEqual([33, 38, 44]);
+	for (const s of stations)
+		for (const wave of ['P', 'S'] as const) {
+			const ray = landing(wave, s.dist);
+			expect(ray.kind).toBe(wave);
+			expect(EARTH_R - ray.deepest).toBeGreaterThan(700);
+			expect(EARTH_R - ray.deepest).toBeLessThan(1200);
+		}
 });
 
 test('S − P grows with distance, and turns back into the distance', () => {

@@ -13,6 +13,7 @@
  *   shapes), shown as clouds of points sampled from |ψ|².
  */
 import data from './elements';
+import isotopes from './isotopes';
 import { rng } from '#lib/draw/math.ts';
 
 export interface Element {
@@ -185,15 +186,35 @@ export interface Build {
 	electrons: number;
 }
 
-/** What the built atom is: element, mass number, charge, and whether that nucleus is stable. */
+/**
+ * Mass numbers of the element's isotopes that have ever been observed (NUBASE2020, see
+ * isotopes.ts), as inclusive ranges [from, to]: from the lightest to the heaviest made so far,
+ * with a few gaps (carbon-21 has never been seen, carbon-22 has).
+ */
+export const knownIsotopes = (z: number) => isotopes.known[z - 1] ?? [];
+
+/** Has a nucleus with this atomic number and mass number ever been observed? */
+export const isKnownIsotope = (z: number, massNumber: number) =>
+	knownIsotopes(z).some(([a, b]) => massNumber >= a && massNumber <= b);
+
+/**
+ * What the built atom is: element, mass number, charge, and its nucleus: stable, radioactive
+ * (observed, and it decays), or unknown (no such nucleus has ever been observed).
+ */
 export function identify({ protons, neutrons, electrons }: Build) {
 	const e = protons >= 1 && protons <= 118 ? element(protons) : null;
 	const massNumber = protons + neutrons;
+	const stable = e ? e.stable.includes(massNumber) : false;
+	const known = e ? isKnownIsotope(e.z, massNumber) : false;
+	const range = e ? knownIsotopes(e.z) : [];
 	return {
 		element: e,
 		massNumber,
 		charge: protons - electrons,
-		stable: e ? e.stable.includes(massNumber) : false,
+		stable,
+		nucleus: !e ? null : stable ? 'stable' : known ? 'radioactive' : 'unknown',
+		/** Lightest and heaviest mass numbers observed for the element (or null). */
+		knownRange: range.length ? ([range[0][0], range[range.length - 1][1]] as const) : null,
 		/** A stable mass number to suggest, closest to the current one (or null). */
 		nearestStable:
 			e && e.stable.length

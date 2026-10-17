@@ -186,16 +186,45 @@
 				? `ion: ${signed(id.charge)} (${plural(Math.abs(id.charge), 'electron')} ${id.charge > 0 ? 'short' : 'extra'})`
 				: `charge ${signed(id.charge)}`
 	);
+	// Stable, radioactive (observed, and it decays), or never observed (NUBASE2020's list of
+	// every nucleus seen so far: carbon-8 to carbon-22, so no carbon-6 or carbon-40).
 	const stableText = $derived(
-		!el ? '' : id.stable ? 'stable nucleus' : 'radioactive nucleus (it will decay)'
+		id.nucleus === 'stable'
+			? 'stable nucleus'
+			: id.nucleus === 'radioactive'
+				? 'radioactive nucleus (it will decay)'
+				: id.nucleus === 'unknown'
+					? 'no such nucleus has ever been made'
+					: ''
 	);
-	const hintText = $derived.by(() => {
-		if (!el) return 'Add a proton to make an element.';
-		if (id.stable) return '';
-		if (id.nearestStable === null) return `${el.name} has no stable isotope at all.`;
-		const d = id.nearestStable - id.massNumber;
-		return `Nearest stable: ${el.name.toLowerCase()}-${id.nearestStable} (${d > 0 ? 'add' : 'remove'} ${plural(Math.abs(d), 'neutron')})`;
+	const hintLines = $derived.by(() => {
+		if (!el) return ['Add a proton to make an element.'];
+		if (id.stable) return [];
+		const out: string[] = [];
+		if (id.nucleus === 'unknown' && id.knownRange) {
+			const [lo, hi] = id.knownRange;
+			const gap = id.massNumber > lo && id.massNumber < hi;
+			out.push(
+				`Isotopes ever seen: mass numbers ${lo}–${hi}${gap ? `, but not ${id.massNumber}` : ''}`
+			);
+		}
+		if (id.nearestStable === null) out.push(`${el.name} has no stable isotope at all.`);
+		else {
+			const d = id.nearestStable - id.massNumber;
+			out.push(
+				`Nearest stable: ${el.name.toLowerCase()}-${id.nearestStable} (${d > 0 ? 'add' : 'remove'} ${plural(Math.abs(d), 'neutron')})`
+			);
+		}
+		return out;
 	});
+	const hintText = $derived(hintLines.join('. '));
+	const nucleusColor = $derived(
+		id.nucleus === 'stable'
+			? 'var(--atom-p)'
+			: id.nucleus === 'radioactive'
+				? 'var(--atom-proton)'
+				: undefined
+	);
 
 	// No free atom holds two or more extra electrons (multiply charged atomic anions are
 	// not bound in the gas phase).
@@ -546,18 +575,18 @@
 				label="Nucleus"
 				value={stableText}
 				note={hintText || undefined}
-				color={id.stable ? 'var(--atom-p)' : 'var(--atom-proton)'}
+				color={nucleusColor}
 				opacity={el ? wBuild : 0}
 			>
 				{#if el}
 					{@render txt(TX + 112, 135, stableText, 13, {
-						color: id.stable ? 'var(--atom-p)' : 'var(--atom-proton)',
+						color: nucleusColor,
 						weight: 600
 					})}
 				{/if}
-				{#if hintText}
-					{@render txt(TX, 166, hintText, 12, { muted: true })}
-				{/if}
+				{#each hintLines as line, i (i)}
+					{@render txt(TX, 166 + i * 18, line, 12, { muted: true })}
+				{/each}
 			</Readout>
 			<Readout
 				id="build-particles"

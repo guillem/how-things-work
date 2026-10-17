@@ -9,6 +9,7 @@ import {
 	element,
 	identify,
 	isException,
+	isKnownIsotope,
 	lastSubshell,
 	madelung,
 	outerShell,
@@ -90,6 +91,27 @@ test('building an atom: identity, charge, stability', () => {
 	});
 	expect(identify({ protons: 6, neutrons: 8, electrons: 6 }).stable).toBe(false); // carbon-14
 	expect(identify({ protons: 11, neutrons: 12, electrons: 10 }).charge).toBe(1); // Na⁺
+});
+
+test('a nucleus is stable, radioactive, or has never been observed (NUBASE2020)', () => {
+	const nucleus = (protons: number, neutrons: number) =>
+		identify({ protons, neutrons, electrons: protons }).nucleus;
+	expect(nucleus(6, 6)).toBe('stable'); // carbon-12
+	expect(nucleus(6, 8)).toBe('radioactive'); // carbon-14
+	// Carbon's known isotopes run from carbon-8 to carbon-22; carbon-21 has never been seen.
+	expect(identify({ protons: 6, neutrons: 2, electrons: 6 }).knownRange).toEqual([8, 22]);
+	expect(nucleus(6, 0)).toBe('unknown');
+	expect(nucleus(6, 1)).toBe('unknown'); // carbon-7: below the lightest, carbon-8
+	expect(nucleus(6, 2)).toBe('radioactive');
+	expect(nucleus(6, 15)).toBe('unknown'); // carbon-21
+	expect(nucleus(6, 16)).toBe('radioactive'); // carbon-22
+	expect(nucleus(6, 40)).toBe('unknown');
+	expect(nucleus(92, 146)).toBe('radioactive'); // uranium-238
+	expect(nucleus(118, 176)).toBe('radioactive'); // oganesson-294, the heaviest nucleus made
+	expect(nucleus(118, 175)).toBe('unknown'); // oganesson-293: reported, but questioned
+	expect(identify({ protons: 0, neutrons: 4, electrons: 0 }).nucleus).toBeNull();
+	// Every stable isotope in the element data has, of course, been observed.
+	for (const e of ELEMENTS) for (const a of e.stable) expect(isKnownIsotope(e.z, a)).toBe(true);
 });
 
 test('orbital clouds: 90% of the 1s electron lies within ~2.7 Bohr radii; p has two lobes', () => {

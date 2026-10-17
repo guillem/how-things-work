@@ -13,6 +13,25 @@ test('adding a proton turns carbon into nitrogen, and the readout follows', asyn
 	await expect(stage(page)).toContainText('Nearest stable: nitrogen-14');
 });
 
+test('a nucleus far outside the known isotopes is called never made, not radioactive', async ({
+	page
+}) => {
+	await page.goto('./atoms-periodic-table/#build');
+	const remove = page.locator('.action button[data-control=removeNeutron]');
+	await remove.click();
+	await remove.click();
+	await remove.click();
+	await remove.click();
+	await expect(stage(page)).toContainText('carbon-8');
+	await expect(stage(page)).toContainText('radioactive nucleus (it will decay)');
+	await remove.click();
+	await expect(stage(page)).toContainText('carbon-7');
+	await expect(stage(page)).toContainText('no such nucleus has ever been made');
+	await expect(stage(page)).not.toContainText('radioactive');
+	await expect(stage(page)).toContainText('Isotopes ever seen: mass numbers 8–22');
+	await expect(stage(page)).toContainText('Nearest stable: carbon-12 (add 5 neutrons)');
+});
+
 test('filling 24 electrons shows chromium and its exception to the filling rule', async ({
 	page
 }) => {

@@ -268,7 +268,7 @@ export const spec: ExplainerSpec = {
 <li>The <strong>outer core</strong> stops S waves: it is liquid. It slows P waves and casts their shadow.</li>
 <li>The <strong>inner core</strong> speeds P waves up again and sends them into the shadow: it is solid.</li>
 </ul>
-<p>The same earthquake was recorded by seismometers all round the world: the ones nearby told us where it struck, and the waves reaching the far side crossed the core. Every recording that locates an earthquake is also a reading of the inside of the Earth.</p>`,
+<p>The same earthquake was recorded by seismometers all round the world: the ones nearby (the three of the Nepal earthquake, 33–44° away, marked here) told us where it struck, and the waves reaching the far side crossed the core. Every recording that locates an earthquake is also a reading of the inside of the Earth.</p>`,
 			notes: `<p>The sharp boundary at the base of the crust is the Mohorovičić discontinuity, found by Andrija Mohorovičić in 1909 from earthquake waves that had dipped into the faster mantle and overtaken the direct ones. Today seismic tomography goes further: by combining millions of travel times it maps hotter, slower and colder, faster regions inside the mantle in three dimensions — sinking plates and rising plumes.</p>`
 		}
 	]
