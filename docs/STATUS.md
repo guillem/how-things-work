@@ -77,6 +77,9 @@ phones; extras physics/space (quantum-computing, stars, nuclear-fusion, big-bang
 oscillations-resonance); external-data items (atoms-periodic-table isotopes, embeddings GloVe,
 earthquakes ak135); diffusion-models retrain; knip cleanup. Left for the user: data licences and
 the modelling choices (BACKLOG). If interrupted: `git worktree list` shows unmerged packages.
+Merged so far: framework (`disabled` on controls; deep-time's slider follows play and keeps the
+played age; atmosphere-weather's `frontAt` in the model; note: the model's fronts form rings
+around the low, not the textbook wave shape).
 
 **Before that, committed on local `main`, not pushed or released** (2026-10-17):
 
