@@ -20,10 +20,17 @@ Run the dev server with `npm run dev` (http://localhost:5173, hot reload).
 
 ## Contract
 
-- A scene receives `StageProps` (`step, index, t, playing, reduced, dark, params`) as individual
-  props: `let { step, t, params, reduced }: StageProps = $props();` (destructure only what you
-  use). The stage passes them explicitly on purpose: a `{...props}` spread is invalidated as a
+- A scene receives `StageProps` (`step, index, t, playing, reduced, dark, params, setParam`) as
+  individual props: `let { step, t, params, reduced }: StageProps = $props();` (destructure only
+  what you use). The stage passes them explicitly on purpose: a `{...props}` spread is invalidated as a
   whole every frame because `t` changes.
+- A scene that drives a control itself (a "play" that runs the time slider) keeps the control
+  showing the live value with `setParam`, and the control declares
+  `disabled: (p) => p.play === true` in `steps.ts` so the reader can't fight it (any `Control`
+  takes it; a scene can disable one for its own reasons by setting a param no control owns).
+  Write back from an `$effect` on a `$derived` rounded to the read-out's precision, so it runs
+  when the shown value changes rather than every frame. Reference:
+  `deep-time/scenes/TimeScene.svelte`.
 - Render ONE `<g>` root in a 960 × 600 coordinate system. No `<svg>` element and no `<defs>` of
   your own except gradients/clipPaths whose ids are prefixed with the scene name
   (`id="calvin-grad"`).

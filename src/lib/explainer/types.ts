@@ -13,6 +13,13 @@ interface ControlBase {
 	label: string;
 	/** Optional one-line explanation shown under the control. */
 	help?: string;
+	/**
+	 * Greys the control out and ignores the reader while it returns true, for
+	 * example while a "play" toggle drives the value from the scene (which then
+	 * keeps the control showing the live value with `setParam`). A scene can also
+	 * disable it for reasons of its own by setting a param no control owns.
+	 */
+	disabled?: (params: Params) => boolean;
 }
 
 export interface RangeControl extends ControlBase {

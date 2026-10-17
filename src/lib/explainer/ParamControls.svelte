@@ -56,10 +56,11 @@
 
 <div class="controls">
 	{#each controls as control (control.id)}
+		{@const off = control.disabled?.(params) ?? false}
 		{#if control.type === 'range'}
 			{@const value = Number(params[control.id] ?? control.default)}
 			{@const [min, max] = control.bounds?.(params) ?? [control.min, control.max]}
-			<label class="control range">
+			<label class="control range" class:off>
 				<span class="label">
 					<span>{control.label}</span>
 					<output>{formatRange(control, value)}</output>
@@ -71,13 +72,14 @@
 					{max}
 					step={control.step ?? 1}
 					{value}
+					disabled={off}
 					oninput={(e) => rangeInput(e, control)}
 					onkeydown={(e) => rangeKey(e, control)}
 				/>
 				{#if control.help}<span class="help">{control.help}</span>{/if}
 			</label>
 		{:else if control.type === 'toggle'}
-			<label class="control toggle">
+			<label class="control toggle" class:off>
 				<span class="label"><span>{control.label}</span></span>
 				<span class="switch">
 					<input
@@ -85,6 +87,7 @@
 						role="switch"
 						data-control={control.id}
 						checked={Boolean(params[control.id] ?? control.default)}
+						disabled={off}
 						onchange={(e) => (params[control.id] = e.currentTarget.checked)}
 					/>
 					<span class="track" aria-hidden="true"><span class="thumb"></span></span>
@@ -92,7 +95,7 @@
 				{#if control.help}<span class="help">{control.help}</span>{/if}
 			</label>
 		{:else if control.type === 'select'}
-			<div class="control select">
+			<div class="control select" class:off>
 				<span class="label" id="label-{control.id}"><span>{control.label}</span></span>
 				<div class="segmented" role="radiogroup" aria-labelledby="label-{control.id}">
 					{#each control.options as option (option.value)}
@@ -104,6 +107,7 @@
 							data-value={option.value}
 							aria-checked={active}
 							class:active
+							disabled={off}
 							onclick={() => (params[control.id] = option.value)}
 						>
 							{option.label}
@@ -113,10 +117,11 @@
 				{#if control.help}<span class="help">{control.help}</span>{/if}
 			</div>
 		{:else if control.type === 'action'}
-			<div class="control action">
+			<div class="control action" class:off>
 				<button
 					type="button"
 					data-control={control.id}
+					disabled={off}
 					onclick={() => (params[control.id] = Number(params[control.id] ?? 0) + 1)}
 				>
 					{control.action}
@@ -154,6 +159,17 @@
 		color: var(--text-muted);
 		font-weight: 400;
 	}
+	/* Disabled (`control.disabled`): greyed out; the help text stays readable. */
+	.off input[type='range'],
+	.off button,
+	.off .track,
+	.off output {
+		opacity: 0.5;
+	}
+	.off input,
+	.off button {
+		cursor: default;
+	}
 	.help {
 		font-size: 0.8rem;
 		color: var(--text-muted);
@@ -187,7 +203,7 @@
 		box-shadow: var(--shadow-sm);
 		transition: transform 0.15s var(--ease-out);
 	}
-	input[type='range']:hover::-webkit-slider-thumb,
+	input[type='range']:hover:not(:disabled)::-webkit-slider-thumb,
 	input[type='range']:focus-visible::-webkit-slider-thumb {
 		transform: scale(1.12);
 	}
@@ -277,7 +293,7 @@
 			border-color 0.15s,
 			color 0.15s;
 	}
-	.action button:hover {
+	.action button:hover:not(:disabled) {
 		border-color: var(--explainer-accent, var(--accent));
 		color: var(--explainer-accent, var(--accent));
 	}
@@ -304,7 +320,7 @@
 			background-color 0.15s,
 			color 0.15s;
 	}
-	.segmented button:hover {
+	.segmented button:hover:not(:disabled) {
 		color: var(--text);
 	}
 	.segmented button.active {
