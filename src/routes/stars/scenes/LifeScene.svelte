@@ -162,6 +162,24 @@
 		return `core collapses: a black hole of about ${Math.round(f.remnant!)} M☉`;
 	});
 	const showEnd = $derived(to === last ? smoothstep(0.96, 1, u) : 0);
+	// What a massive star leaves, marked on the cutaway (drawn by mass, like the layers): the
+	// inner 1.4 M☉ that collapses into a neutron star, or the helium core that falls into a
+	// black hole (`fate`'s simple rule). The track ends years before the collapse.
+	const remnant = $derived.by(() => {
+		const f = ending;
+		if (f.kind !== 'neutron-star' && f.kind !== 'black-hole') return null;
+		const m = f.remnant!;
+		const r = rOf(m);
+		const hole = f.kind === 'black-hole';
+		return {
+			hole,
+			r,
+			text: hole
+				? `dashed: the ${Math.round(m)} M☉ that will fall into a black hole`
+				: `dashed: the ${m} M☉ that will collapse to a neutron star`
+		};
+	});
+	const showRemnant = $derived(remnant && done && to === last ? showEnd : 0);
 
 	// Focus of the step: a gentle tween of the trail's opacity when the step changes.
 	const focus = new Tween(0, { duration: 700, easing: cubicInOut });
@@ -300,8 +318,44 @@
 			filter="url(#glow)"
 		/>
 	{/if}
+	<!-- the remnant to come -->
+	{#if remnant && showRemnant > 0.01}
+		<g opacity={showRemnant}>
+			<circle
+				cx={CX}
+				cy={CY}
+				r={remnant.r}
+				fill="none"
+				stroke="var(--stage-ink)"
+				stroke-width="1.5"
+				stroke-dasharray="5 4"
+			/>
+			{#if remnant.hole}
+				<circle cx={CX} cy={CY} r="9" fill="#000" stroke="#ffd8a8" stroke-width="1.5" />
+			{:else}
+				<circle cx={CX} cy={CY} r="12" fill="#b197fc" opacity="0.45" />
+				<circle cx={CX} cy={CY} r="5" fill="#d0bfff" stroke="#7048e8" stroke-width="1.5" />
+			{/if}
+			<Readout
+				id="remnant"
+				order={10}
+				label={remnant.text}
+				marker={1}
+				at={[CX + remnant.r * 0.71, CY - remnant.r * 0.71]}
+			>
+				<Label x={CX} y={CY + RC + 22} text={remnant.text} size={12} weight={600} />
+			</Readout>
+		</g>
+	{/if}
 	<Readout id="cut">
-		<Label x={CX} y={CY + RC + 22} text="inside, drawn by mass" size={11} muted />
+		<Label
+			x={CX}
+			y={CY + RC + 22}
+			text="inside, drawn by mass"
+			size={11}
+			muted
+			opacity={1 - showRemnant}
+		/>
 	</Readout>
 
 	<!-- key to the cutaway -->
