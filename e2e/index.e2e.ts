@@ -92,8 +92,9 @@ test(
 		await page.goto('./');
 		const cards = page.locator('main .grid > *');
 		const total = await cards.count();
-		const result = page.getByText(/^(All|Showing) \d+/);
-		await expect(result).toHaveText(`All ${total} explainers`);
+		const result = page.getByText(/^Showing \d+/);
+		// No count line until something is filtered.
+		await expect(result).toHaveCount(0);
 
 		// "/" jumps to the search box; words match titles regardless of case and apostrophes.
 		await page.keyboard.press('/');

@@ -237,12 +237,12 @@
 						{#each levelOptions as l (l)}<span>{l}: {levelNames[l].toLowerCase()}</span>{/each}
 					</span>
 				</div>
-				<p class="result" aria-live="polite">
+				<!-- Kept in the page (empty) while nothing is filtered, so screen readers hear the count
+				     as soon as a filter is set. -->
+				<p class="result" class:idle={!filtering} aria-live="polite">
 					{#if filtering}
 						Showing <b>{shownCount}</b> of {topics.length} explainers
 						<button type="button" class="reset" onclick={clearFilters}>Clear filters</button>
-					{:else}
-						All {topics.length} explainers
 					{/if}
 				</p>
 				<section
@@ -443,6 +443,9 @@
 		color: var(--text-muted);
 		font-size: 0.88rem;
 	}
+	.result.idle {
+		display: none;
+	}
 	.result b {
 		color: var(--text);
 		font-variant-numeric: tabular-nums;
@@ -599,6 +602,10 @@
 		.level .group-label,
 		.legend {
 			grid-column: 1 / -1;
+		}
+		/* Hovering a level chip shows its reader; the written legend is for touch screens. */
+		.legend {
+			display: none;
 		}
 		.legend {
 			flex-direction: column;
