@@ -68,7 +68,7 @@ for (const e of proposed) {
 		warnings.push(`${e.slug}: level 0 without a leadsTo`);
 	if (
 		e.needs &&
-		!/\b(CC|public domain|MIT|open|licen|BSD|Apache|ODbL|GPL|PD)\b/i.test(
+		!/\b(CC|public domain|MIT|open|licen|BSD|Apache|ODbL|GPL|PD)/i.test(
 			e.needs + ' ' + (e.needsSource || '')
 		)
 	) {
@@ -113,7 +113,9 @@ const everyday = proposed.filter((e) => e.everyday);
 
 // --- render ---
 const field = (name, value) =>
-	value && String(value).trim() ? `- **${name}:** ${String(value).trim()}\n` : '';
+	value !== undefined && value !== null && String(value).trim()
+		? `- **${name}:** ${String(value).trim()}\n`
+		: ''; // level 0 is falsy but must render
 const list = (a) => (a && a.length ? a.join(', ') : 'none');
 let md = '';
 for (const c of CATS) {

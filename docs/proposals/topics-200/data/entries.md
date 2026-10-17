@@ -2,30 +2,33 @@
 
 #### monty-hall
 - **Title:** The three doors
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** Pick one of three doors; the host, who knows where the prize is, opens another to show a goat, and you stay or switch. Play by hand, then let the page play a hundred games with 'always stay' and a hundred with 'always switch', the wins piling into two columns at about two to one. Flip the board to see the three places the prize could be and which choice wins in each, then try ten doors where the host opens eight.
 - **Takeaway:** Switching wins twice as often as staying, because the first pick is right only one time in three and the host's open door points to the prize the rest of the time.
 - **Prerequisites:** none
 - **Related:** bayes-theorem
-- **Pitfall:** The host must know where the prize is and always open a goat door; if he opens a door at random and happens to show a goat, the two remaining doors really are equal, and the page should show that case too.
+- **Pitfall:** The host must know where the prize is and always open a goat door; if the host opens a door at random and happens to show a goat, the two remaining doors really are equal, and the page should show that case too.
   > Leads to: bayes-theorem
   > Nearest existing: bayes-theorem: counting a grid of 1,000 people to update on a test result; this page updates on what a host does, with doors and tallies instead of rates and formulas.
   > Why: The Monty Hall problem is among the most-read probability articles on Wikipedia and a staple of popular maths: https://en.wikipedia.org/wiki/Monty_Hall_problem
 
 #### shapes-that-tile
 - **Title:** Shapes that tile a floor
+- **Level:** 0
 - **Kind:** build
 - **Interaction:** Pick a shape from the tray (triangle, square, pentagon, hexagon, octagon) and tap a corner: the page fits copies of the shape around that corner one at a time until it closes the turn, leaves a gap or overlaps. A shape that closes the turn exactly floods the floor with copies; one that does not leaves holes. Then take a square tile and bend one edge: the opposite edge bends to match and the floor still fills, Escher-style.
 - **Takeaway:** A regular shape (all sides and corners equal) tiles a floor on its own only when copies of its corner fit together into exactly one full turn, which equilateral triangles, squares and regular hexagons do and regular pentagons and octagons do not.
 - **Prerequisites:** none
 - **Related:** why-triangles-are-stiff
 - **Pitfall:** Regular pentagons do not tile, but some irregular pentagons do (fifteen families of convex pentagons are known, and a 2017 proof says there are no more), and every triangle and every four-sided shape tiles. So the page must say 'this regular pentagon', never 'pentagons'.
-  > Leads to: states-of-matter
+  > Leads to: unit-circle
   > Nearest existing: chaos-fractals (level 2) is the nearest page about repeating structure; it repeats across scales, while this page repeats one shape across a flat floor and asks only whether its corners close a full turn.
   > Why: England KS2 maths, Year 5: 'angles at a point and 1 whole turn (total 360°)' is the fact the page rests on; Wikipedia's Tessellation article (regular tilings: only the triangle, square and hexagon, because 3π/5 is not a divisor of 2π) is the demand side. https://en.wikipedia.org/wiki/Tessellation
 
 #### why-triangles-are-stiff
 - **Title:** Why triangles are stiff
+- **Level:** 0
 - **Kind:** build
 - **Interaction:** Snap sticks together at their ends with pins to make a square, then push on a corner: it leans over into a diamond. Make a triangle and push: nothing moves. Add one diagonal stick to the square and push again; then build a tall tower and a garden gate and find the fewest sticks that stop them wobbling.
 - **Takeaway:** A triangle is the one shape whose sides fix its corners, so a floppy frame goes stiff the moment a diagonal cuts it into triangles.
@@ -36,29 +39,41 @@
   > Nearest existing: bridges-structures (level 1) loads a bridge and colours members by tension and compression; this page has no loads or forces, only a pin-jointed frame that either keeps its shape or folds.
   > Why: England KS2 design and technology: 'apply their understanding of how to strengthen, stiffen and reinforce more complex structures' (KS1: 'build structures, exploring how they can be made stronger, stiffer and more stable'). https://www.gov.uk/government/publications/national-curriculum-in-england-design-and-technology-programmes-of-study/national-curriculum-in-england-design-and-technology-programmes-of-study
 
-#### bezier-curves
-- **Title:** Bézier curves: how fonts and vector drawings bend
+#### cellular-automata
+- **Title:** Cellular automata
+- **Level:** 1
+- **Kind:** simulate
+- **Interaction:** Set the eight bits of a one-dimensional rule by clicking its lookup table, and run it from a single live cell or a random row, each generation drawn as a new line below the last. Rule 90 draws a Sierpinski triangle, rule 30 looks random, rule 110 carries colliding structures, and rule 184 moves cars along a road that jams once more than half the cells are full. Step through all 256 rules and sort them into Wolfram's four classes (die out, repeat, look random, build structures), with a count of live cells over time to compare rules.
+- **Takeaway:** A rule that only looks at a cell and its two neighbours, applied everywhere at once, can die out, repeat, look random or build moving structures, and changing one bit of the rule can switch between them.
+- **Prerequisites:** life-on-a-grid
+- **Related:** chaos-fractals, turing-machines, logic-gates
+- **Pitfall:** Rule 30 looks random but is completely determined: the same starting row always gives the same pattern. And most rules do not make complexity; they die out or repeat, and only a few, like rule 110, build lasting structures.
+  > Nearest existing: life-on-a-grid (proposed, level 0): that page plays Conway's two-dimensional Game of Life; this page opens the rule itself as an 8-bit table in one dimension, surveys all 256 rules and their classes, and shows a CA as a traffic model and as a universal computer. chaos-fractals shows complexity in continuous systems; turing-machines uses a tape and head, not a grid of cells updating at once.
+  > Why: Wikipedia, Elementary cellular automaton and Rule 184 (traffic model): https://en.wikipedia.org/wiki/Rule_184 ; 'Cellular automata' is listed in the catalogue's Reserve.
+
+#### exponentials-logarithms
+- **Title:** Exponentials & logarithms
 - **Level:** 1
 - **Kind:** manipulate
-- **Interaction:** Drag the four control points of a curve and it follows; slide t from 0 to 1 and watch the construction: a point slides the fraction t along each leg between control points, then along the legs between those points, and the last point traces the curve. Chain curves into a letter and see that a join is smooth only when the two handles at the join and the join point lie on one straight line, with the join point between them; turn on the hull to see that a curve never leaves the shape of its own control points, and add or remove control points.
-- **Takeaway:** A Bézier curve is nothing but repeated straight-line interpolation between its control points, which is why a few draggable handles can describe any letter, logo or animation path.
+- **Interaction:** Fold a strip of paper, breed bacteria or compound interest: a slider sets the growth factor, a counter of doublings runs and the curve shoots off the chart; switch the vertical axis to a log scale and the curve becomes a straight line whose slope is the growth rate. Compare 'add the same amount each step' with 'multiply by the same factor each step' on one chart, read a logarithm as the number of doublings needed, and build a slide rule that multiplies by adding lengths.
+- **Takeaway:** Growing by a fixed factor each step outruns growing by a fixed amount, and a logarithm just counts how many of those steps it took.
 - **Prerequisites:** none
-- **Related:** graphics-3d
-- **Pitfall:** The curve passes through its end points but not, in general, its middle control points; and t is not distance along the curve: equal steps of t do not give equal lengths.
-  > Nearest existing: unit-circle: a point moving round a circle traces sine; this page is a point tracing a curve by repeated straight-line mixing, with no trigonometry.
-  > Why: Freya Holmér's 'The Beauty of Bézier Curves' is one of the most-shared maths explainers, and de Casteljau's construction is a standard graphics assignment (Berkeley CS184 HW2, Bézier curves and surfaces): https://cs184.eecs.berkeley.edu/fa26/hw/hw2/section1/
+- **Related:** radioactivity, epidemics, acids-bases, earthquakes, sorting
+- **Pitfall:** Exponential does not mean fast: with a factor just above 1 it starts slowly. And a log-scale line that looks tame is not growth slowing down; say that the rate stays the same.
+  > Nearest existing: radioactivity: that page shows exponential decay through half-lives and epidemics shows cases doubling; this page isolates the rule itself, puts growth and decay on one log axis, and defines the logarithm as a count of steps.
+  > Why: Common Core HSF-LE, Linear, Quadratic and Exponential Models: https://www.thecorestandards.org/Math/Content/HSF/LE/
 
-#### probability-trees
-- **Title:** Counting & probability trees
+#### game-theory-cooperation
+- **Title:** Game theory: why cooperate?
 - **Level:** 1
-- **Kind:** build
-- **Interaction:** Build a tree of chance events by adding branches with their probabilities: sweets drawn from a bag with and without putting them back, coins, dice; the page multiplies along each branch and adds across them to give the probability of any outcome. Press run to perform the experiment a thousand times and watch the tally approach the tree's prediction. End with the birthday problem as one long branch of 'no match yet': add people one at a time and watch the product of the no-match probabilities fall below a half at 23.
-- **Takeaway:** The probability of a sequence of events is found by multiplying along its path and adding the paths that lead to the same result, and a long chain of individually likely 'no match' steps multiplies down fast, which is why shared birthdays in a class are common.
+- **Kind:** simulate
+- **Interaction:** Play the prisoner's dilemma against the page with a payoff table whose four numbers can be edited, and find that cheating pays once but not when the same two players meet again. Enter strategies (always cheat, always cooperate, tit for tat, grudger, random) into a round-robin tournament of repeated games and watch the scores; let the population evolve, with well-scoring strategies copied more often, and add a little noise to the signals to see which strategies survive it. Finish on a grid where each cell plays its neighbours, so that clusters of cooperators grow or are eaten.
+- **Takeaway:** When the same players meet again and again, strategies that start nice, hit back and forgive can outscore pure selfishness, so cooperation can take hold among players who each look after only themselves, unless the games are too short or too few others cooperate.
 - **Prerequisites:** none
-- **Related:** bayes-theorem, central-limit-theorem
-- **Pitfall:** Independent events have no memory: after five heads the next flip is still even. Drawing without replacement changes the probabilities on later branches, and that is the only difference between the two bag problems.
-  > Nearest existing: bayes-theorem colours a grid of 1,000 people to show base rates, and central-limit-theorem's Galton board already counts binomial paths into bins; this page builds the tree itself, compares drawing with and without replacement, and multiplies a chain of branches (the birthday problem), none of which the existing pages do.
-  > Why: Tree diagrams for dependent events (without replacement) in GCSE higher maths: https://www.cognito.org/blog/gcse-maths-probability ; Edexcel A-level statistics tree diagrams: https://www.mathsgenie.co.uk/a-level/maths/edexcel/content/a-level-statistics-tree-diagrams
+- **Related:** evolution, ecosystems, reinforcement-learning
+- **Pitfall:** Tit for tat never beat an opponent in a single game; it won the tournaments by scoring well with everyone. There is no best strategy independent of the population it plays in, and the result changes with the payoff numbers and with noise.
+  > Nearest existing: evolution runs selection on a heritable trait and ecosystems couples populations; here the agents choose, with payoffs. The pool's evolutionary-game-theory (level 3) is the replicator ODE on the simplex; this is the level-1 tournament-and-grid version with no equation.
+  > Why: Nicky Case's 'The Evolution of Trust', an interactive built on Axelrod's tournaments https://ncase.me/trust/ (coverage: https://boingboing.net/2017/07/26/fun-interactive-game-theory-si.html )
 
 #### differential-equations
 - **Title:** Differential equations
@@ -67,9 +82,9 @@
 - **Interaction:** Choose a rule for the slope at every point (growth in proportion to the amount, cooling toward room temperature, logistic growth with a ceiling, a fish stock under steady harvesting) and the plane of time against amount fills with small slope arrows; click anywhere to drop a starting value and watch a solution curve thread through the arrows. Drop several starts and see that curves never cross, that some settle on a level line and others run away from it, and raise the harvest until the level line vanishes and every curve crashes; where an exact formula exists, overlay it on the traced curve.
 - **Takeaway:** A differential equation says how fast something changes given where it is, and that rule plus a starting point fixes one curve through the field of arrows, which can be followed even when no formula exists.
 - **Prerequisites:** calculus
-- **Related:** epidemics, ecosystems, how-simulations-work, feedback-control
+- **Related:** epidemics, ecosystems, feedback-control
 - **Pitfall:** Not every differential equation can be solved with a formula: most cannot, and the slope field still fixes each solution. Solution curves of one equation never cross, so two different futures cannot start from the same state.
-  > Nearest existing: calculus finds the slope and area of a given curve; this page starts from the slope rule and finds the curve. how-simulations-work (L1) owns the step-size and accuracy story of Euler stepping, and phase-portraits (L3) owns two-variable systems such as springs and predator–prey; this page is the one-variable slope field, equilibria and their stability.
+  > Nearest existing: calculus finds the slope and area of a given curve; this page starts from the slope rule and finds the curve. phase-portraits (proposed, level 3) owns two-variable systems such as springs and predator–prey; this page is the one-variable slope field, equilibria and their stability.
   > Why: 3Blue1Brown, 'Differential equations, a tourist's guide' (over 4 million views) https://www.classcentral.com/classroom/youtube-differential-equations-a-tourist-s-guide-133384 ; AP Calculus BC Unit 7 (slope fields, Euler's method) https://fiveable.me/ap-calc/unit-7.md
 
 #### calculus-of-variations
@@ -117,7 +132,7 @@
 - **Prerequisites:** central-limit-theorem, bayes-theorem, learning-from-data
 - **Needs:** The Palmer penguins dataset (344 penguins, bill and flipper measurements by species; palmerpenguins, CC0).
 - **Pitfall:** A p-value is not the probability that the null hypothesis is true, and a bootstrap interval is not guaranteed to have its stated coverage: the bootstrap does not cure a small sample. The coverage counter must show the shortfall, not a reassuring 95%.
-  > Nearest existing: learning-from-data: that page fits a curve and shows overfitting with a held-out set; this page asks whether a difference or slope is real by rebuilding the chance distribution from the data. clinical-trials (proposed) owns power, false positives and multiple comparisons; this page leaves those to it and is about resampling and its coverage.
+  > Nearest existing: learning-from-data: that page fits a curve and shows overfitting with a held-out set; this page asks whether a difference or slope is real by rebuilding the chance distribution from the data, and how often the resulting intervals actually catch the truth.
   > Why: Hesterberg, What Teachers Should Know about the Bootstrap: Resampling in the Undergraduate Statistics Curriculum: https://arxiv.org/abs/1411.5279
   > Data: Palmer penguins (Gorman, Williams & Fraser 2014; palmerpenguins package): CC0
 
@@ -137,6 +152,7 @@
 
 #### blue-sky-red-sunset
 - **Title:** Why the sky is blue & sunsets red
+- **Level:** 0
 - **Kind:** explore
 - **Interaction:** Scrub the Sun across a day's sky: a patch of sky overhead and the Sun's own disc take the colours that come out when sunlight scatters off air along its path, worked out colour by colour from the real sunlight spectrum and shown as screen colours. Thicken the air or add smoke and the sunset deepens to orange and the daytime sky goes paler. Pump the air away altogether and the sky turns black around a white Sun, as on the Moon.
 - **Takeaway:** Air scatters blue light out of sunlight far more than red, so the sky overhead is blue and the Sun turns red when its light has crossed a lot of air near the horizon.
@@ -151,6 +167,7 @@
 
 #### floating-sinking-and-boats
 - **Title:** Floating, sinking & boats
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Lower objects into a brim-full tank (a stone, an apple, a wooden block, a steel ball, a ball of modelling clay): the water each one pushes aside spills into a cup on a scale, and a spring balance holding the object shows it getting lighter as it goes in. Each one sinks, or settles where the spilled water weighs as much as it does. Reshape the clay from a ball into a bowl and the same lump floats; load it with marbles until it goes under. Change the water to salt water or to oil and see who floats now; finally warm the air inside a balloon and watch it rise through the surrounding air the same way.
 - **Takeaway:** A thing floats if it can push aside its own weight of water (or air) before it is completely under, which is why the same lump of clay sinks as a ball and floats as a bowl.
@@ -165,17 +182,20 @@
 
 #### magnets-and-poles
 - **Title:** Magnets & poles
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Drag two bar magnets about on a board: arrows show the pull or push between them, computed from their poles, and a compass needle and a sprinkle of iron filings line up along the field. Flip one magnet end for end and the pull turns into a push. Slide a steel paper clip toward a magnet to see it become a magnet of its own and pick up a chain of clips, then cut a magnet in half and find that each half still has two ends.
 - **Takeaway:** A magnet always has two ends; like ends push apart and unlike ends pull together, and the pull fades quickly with distance.
 - **Prerequisites:** none
 - **Related:** electromagnetism
 - **Pitfall:** A magnet does not attract all metals, nor even all steel: it pulls iron, nickel, cobalt and most steels, but not aluminium, copper, gold or many stainless-steel spoons and sinks. And cutting a magnet never separates its poles: each piece has two.
+  > Leads to: electromagnetism
   > Nearest existing: electromagnetism: that page (level 2) places charges, draws field lines and induces currents with coils; this one has no electricity at all, only permanent magnets, their two poles, what they attract and how a clip becomes a temporary magnet.
   > Why: NGSS 3-PS2-3 (electric or magnetic interactions between objects not in contact; the clarification names paper clips and magnets) https://www2.cde.ca.gov/cacs/id/web/29018 ; KS2 Year 3 'Forces and magnets' (magnets have two poles; predict whether two magnets attract or repel) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study
 
 #### shadows-and-pinholes
 - **Title:** Shadows & pinholes
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Drag a lamp, a toy and a wall about a room: straight rays from the lamp are blocked by the toy, and the shadow on the wall grows as the lamp comes closer and shrinks as the wall comes closer. Swap the small bulb for a wide lampshade and the shadow's edge goes soft; switch on a second lamp and a second shadow appears. Poke a pinhole in a shoebox and the picture of the lamp forms upside down on its back wall.
 - **Takeaway:** Light travels in straight lines, so a shadow is simply where the lines are blocked, and its size follows the lines back to the lamp.
@@ -188,6 +208,7 @@
 
 #### vibrations-and-sound
 - **Title:** Vibrations & sound
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Twang a ruler held over the edge of a table: the strip wobbles, and a row of air particles passes the push along to an ear, each one jiggling in place while the squeeze travels down the row; the speakers play the note. Slide the ruler in to shorten it and the wobble quickens and the note rises; twang it harder and the wobble widens and the note gets louder. Move the ear away and the sound fades, then pump the air out of a jar around a ringing bell and nothing arrives at all.
 - **Takeaway:** A sound is a wobble passed along through the air: a faster wobble is a higher note, a bigger wobble a louder one, and with nothing in between to pass it on, nothing reaches the ear.
@@ -238,6 +259,7 @@
 
 #### dissolving-sugar-and-salt
 - **Title:** Dissolving: where does the sugar go?
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Two glasses of water drawn as particles, one for sugar and one for salt, and a spoonful counter under each. One control at a time: tip in another spoonful, then slide the thermometer to warm both glasses. Each grain breaks into particles that wander off among the water particles until the water will take no more, and the rest sits on the bottom. Warming lets the sugar glass take spoonful after spoonful more, while the salt glass hardly takes any extra. At the end, let the water dry away and watch the same particles gather back into grains.
 - **Takeaway:** Dissolved sugar and salt have not vanished: their particles are spread among the water's, each glass of water takes only so much, and warming lets it take far more sugar but hardly any more salt.
@@ -246,12 +268,13 @@
 - **Needs:** Solubility of sucrose and of sodium chloride in water from 0 to 100 °C (about a dozen values) from the IUPAC-NIST Solubility Data Series, freely readable at NIST, or the ACS Middle School Chemistry tables; published facts, no dataset licence to clear.
 - **Pitfall:** Dissolving is not melting, and the sugar does not disappear or turn into water: every particle is still there, which is why the water tastes sweet and weighs more. A full glass is not 'out of room' between water particles: it stops because dissolving and grains re-forming have come into balance.
   > Leads to: states-of-matter, chemical-bonds
-  > Nearest existing: dissolving-sugar (pool) and states-of-matter: states-of-matter changes the phase of one substance. This page compares two solids and shows that temperature raises how much sugar water will take but barely changes salt. It should be merged with dissolving-sugar rather than built alongside it.
+  > Nearest existing: states-of-matter: that page changes the phase of one substance; this page mixes two solids into water and shows that temperature raises how much sugar water will take but barely changes salt. (The pool's dissolving-sugar was merged into this entry.)
   > Why: England KS2 Year 5 'Properties and changes of materials' (dissolving; recovering a dissolved solid by evaporation): https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study; also NGSS 5-PS1-3 (solubility as an identifying property): https://www.nextgenscience.org/dci-arrangement/5-ps1-matter-and-its-interactions
   > Data: About a dozen tabulated solubility values (IUPAC-NIST Solubility Data Series via NIST; ACS Middle School Chemistry, chapter 5 lesson 6); facts, no licence needed.
 
 #### salt-and-ice
 - **Title:** Salt on ice: roads and ice cream
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** A block of ice drawn as a neat stack of water particles, with a thermometer. One control at a time: sprinkle salt, and salt particles get between the water particles at the surface so the stack cannot re-form, and the ice melts although the thermometer reads below freezing. Set the weather colder and the salt stops working; pour on more salt and see the point where extra salt no longer helps. Then put a bag of cream into the salted ice: the melting pulls heat out of the cream, the bath's thermometer drops below what plain ice could reach, and the cream freezes. Behind the picture runs the measured freezing-point curve of salt water and a running count of the heat that melting takes from the bath and the cream.
 - **Takeaway:** Salt gets in the way of water re-freezing, so salted ice melts below freezing, and that melting draws so much heat out of its surroundings that a salt-and-ice bath gets colder than ice, cold enough to freeze cream.
@@ -266,6 +289,7 @@
 
 #### why-metal-feels-cold
 - **Title:** Why metal feels cold
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** A table with a metal spoon, a wooden spoon, a plastic cup and a woollen glove, all at room temperature, with a thermometer that reads the same on each. Drag a finger onto any one: a strip of heat colour flows out of the fingertip into the object, fast into the metal and barely at all into the wool, and a 'feels like' dial follows the temperature where skin meets object. One control: the room temperature. Warm the room past the temperature of your hand and the order flips, so the same metal now feels hottest. The flow is a heat-conduction model in which each material uses its real conductivity, density and heat capacity.
 - **Takeaway:** Everything on the table is the same temperature; the metal feels cold because it draws heat out of your finger fastest, and when the room is warmer than your hand the same metal feels hottest.
@@ -276,7 +300,7 @@
   > Leads to: states-of-matter
   > Nearest existing: entropy: that page shows heat flowing between fast and slow particles at level 2; here it is one finger on one object, and the only question is how fast heat leaves the skin.
   > Why: Veritasium, 'Why Does Metal Feel Colder Than Wood If They're the Same Temperature?' (a classic misconception video): https://www.youtube.com/watch?v=vqDbMEdLiCs; England KS2 Year 5 lists thermal conductivity among material properties.
-  > Data: Under ten published material constants (textbook tables; Wikipedia CC BY-SA); facts, no dataset
+  > Data: Under twenty published material constants (textbook tables; Wikipedia CC BY-SA); facts, no dataset
 
 #### chromatography
 - **Title:** Chromatography: separating by stickiness
@@ -285,7 +309,6 @@
 - **Interaction:** Inject a mixture at the top of a column and watch each molecule hop at random between the moving phase and the stationary phase. The time each one spends stuck is set by its partition coefficient, so the bands separate and broaden, and a detector at the end draws the chromatogram. Slide the flow rate and the measured plate height traces the van Deemter curve: diffusion along the column dominates at slow flow, slow exchange at fast flow, and the uneven paths through the packing add a floor that the flow does not change. Lengthen the column or use finer packing to see the resolution improve.
 - **Takeaway:** A column separates molecules by how much of the time each spends stuck rather than moving, and there is a best flow speed: slower and diffusion blurs the bands, faster and the molecules cannot keep up with the exchange.
 - **Prerequisites:** central-limit-theorem, reaction-rates-equilibrium
-- **Needs:** No external data: the model is the Giddings-Eyring stochastic model (exponential residence times in each phase, plus axial diffusion and multipath dispersion), with illustrative partition coefficients and diffusivities, not values for named compounds.
 - **Pitfall:** Most chromatography is not a sieve by size: two molecules of the same size separate because they stick differently. The bands are close to Gaussian only because each molecule makes many random hops that add up; with few exchanges or uneven sticky sites, real peaks tail.
   > Nearest existing: central-limit-theorem: that page shows why sums of random steps are Gaussian; this one uses that fact to separate molecules and to find the flow rate that separates them best.
   > Why: Undergraduate analytical chemistry teaches band broadening through the van Deemter equation (Bates College chromatography learning objectives): https://www.bates.edu/chemistry-biochemistry/files/2012/01/wenzel-chrom-learning-objectives.pdf
@@ -298,7 +321,6 @@
 - **Takeaway:** A crystal with a dislocation yields at a small fraction of the stress a perfect crystal needs, because the defect breaks one row of bonds at a time, and foreign atoms raise that stress by pinning it.
 - **Prerequisites:** semiconductors, states-of-matter
 - **Related:** bridges-structures
-- **Needs:** None beyond a 2D Lennard-Jones pair potential, the same kind of model states-of-matter runs. Solute atoms are modelled as particles with a larger or smaller size parameter. The real-metal factor between ideal and measured shear strength (G/10 against measured yield) is quoted in the text from textbook values.
 - **Pitfall:** Crystals do not deform by whole planes sliding at once; the theoretical strength computed that way is a thousand times higher than what any real metal shows.
   > Nearest existing: bridges-structures: that page colors members by stress; this one goes inside the metal to the defect that lets it yield and the atoms that stop it.
   > Why: MITx 3.012S.3x Structure of Materials covers dislocation descriptors and motion: https://openlearninglibrary.mit.edu/courses/course-v1:MITx+3.012S.3x+1T2019/about
@@ -347,6 +369,7 @@
 
 #### ant-trails
 - **Title:** How ants find the shortest way
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** Ants wander out of a nest at random; one that finds the sugar walks home laying a scent, and the others tend to follow scent, so a trail forms and thickens. Drag the sugar farther away or drop a pebble on the trail and watch the colony reroute. Then offer a long bridge and a short one together and count the ants on each: ants on the short one get back first, so its scent builds up sooner and the short one wins. Open the short bridge only after a trail has formed on the long one, and the colony stays on the long one until the scent's fading is switched on.
 - **Takeaway:** A colony finds the shorter path with no map and no ant that knows it: ants on the short route return sooner, so its scent builds up faster and draws more ants, and a fading scent lets the colony give up an old route.
@@ -359,6 +382,7 @@
 
 #### be-the-bird-camouflage
 - **Title:** Camouflage: you are the hungry bird
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** Moths of many shades rest on a tree trunk and the reader is the bird: tap every moth you spot before the timer runs out. The survivors lay eggs that look like their parents, give or take a little, and the next generation appears; after a few rounds the reader flips the bark from pale to sooty and keeps hunting.
 - **Takeaway:** The moths you fail to see are the ones that have babies, so after a few generations the moths match the bark, and when the bark changes, so do the moths.
@@ -372,6 +396,7 @@
 
 #### fireflies-in-sync
 - **Title:** Fireflies that flash together
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** A meadow of fireflies, each with its own inner clock that flashes when it strikes twelve and starts again. One control: how much a neighbour's flash nudges a firefly's clock forward. At zero the meadow twinkles at random; turn it up and patches start flashing together, then waves, then the whole field as one; drag a finger through the swarm to scramble it and watch it fall back into step.
 - **Takeaway:** Thousands of fireflies flash together with no conductor, because each one nudges its own clock a little toward every flash it sees.
@@ -379,11 +404,12 @@
 - **Related:** flocking-birds
 - **Pitfall:** There is no lead firefly and no outside signal; synchrony appears only from each insect reacting to its neighbours. Only some firefly species do this.
   > Leads to: oscillations-resonance
-  > Nearest existing: oscillations-resonance: one oscillator pushed at a frequency; this page is many self-timed flashers nudging each other into step, which is not resonance. kuramoto-synchronization (this batch, level 3) is the grown-up phase-coupled model.
+  > Nearest existing: oscillations-resonance: one oscillator pushed at a frequency; this page is many self-timed flashers nudging each other into step, which is not resonance. The runner-up kuramoto-synchronization (level 3) is the grown-up phase-coupled model.
   > Why: Nicky Case's 'Fireflies' explorable (public domain), the interactive credited in Veritasium's synchronization video: https://ncase.me/fireflies/
 
 #### flocking-birds
 - **Title:** Flocks without a leader
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** A hundred birds fly across the stage following three rules, each drawn as a short arrow on one highlighted bird: keep a little distance from your neighbours, fly the way they fly, drift toward the middle of them. Switch one rule off at a time: without the first the birds pile into clumps, without the second the flock never agrees on a direction, without the third it scatters. Add a hawk and watch the flock split around it and close again with no bird in charge.
 - **Takeaway:** A flock can hold together and turn as one with no leader: in the model, three simple rules about each bird's nearest neighbours are enough to make one.
@@ -442,17 +468,17 @@
   > Nearest existing: dna-to-protein: that page reads one gene into a protein; this one is about when the gene is read at all, as a dynamical switch with feedback (model of Ozbudak et al. 2004). genetic-circuits (pool) builds synthetic switches from parts; this is the natural operon, with two sugar signals and diauxic growth.
   > Why: MIT OCW 7.01SC Fundamentals of Biology, module 'Gene Regulation and the Lac Operon': https://ocw.mit.edu/courses/7-01sc-fundamentals-of-biology-fall-2011/resources/molecbio_sess5
 
-#### luria-delbruck
-- **Title:** Luria-Delbruck: mutations before selection
+#### morphogen-gradients
+- **Title:** Morphogen gradients & positional information
 - **Level:** 3
-- **Kind:** step
-- **Interaction:** Step through the 1943 experiment: grow twenty cultures from single cells for a chosen number of generations at a chosen mutation rate, plate them all on a phage lawn, and count the survivors. If mutations arose only on contact with the phage the counts would be Poisson and nearly equal; instead a few plates hold hundreds of mutants, the jackpots, because a mutation that happened early was inherited by a whole clone. Replay with mutations induced at plating to see the Poisson alternative, and estimate the mutation rate from the fraction of empty plates.
-- **Takeaway:** The resistant bacteria were already there before the virus arrived, from random mutations in earlier generations, and the wild spread between replicate cultures (a few jackpots, many empty plates) is the signature of mutations that come before selection rather than in response to it.
-- **Prerequisites:** evolution, central-limit-theorem
-- **Related:** population-genetics, cancer, crispr
-- **Pitfall:** The jackpot distribution does not show that the environment induces mutations; it shows the opposite, and the page must make the Poisson alternative explicit so the reader sees it fail.
-  > Nearest existing: evolution: that page's pitfall says mutations do not arise because they are needed; this one is the experiment that proved it, run as a statistics-of-clones simulation.
-  > Why: 'Fascination with Fluctuation: Luria and Delbruck's Legacy', on the experiment in undergraduate mathematics education (University of Delaware): https://udspace.udel.edu/items/2837763f-b87a-465a-9701-2b96405d98f5/full
+- **Kind:** manipulate
+- **Interaction:** Drag the production rate, diffusion constant and lifetime of a morphogen made at one end of a row of cells and watch its concentration profile settle into an exponential whose length scale, the square root of diffusion over decay, the page reports. Set two or three thresholds and the cells paint themselves in bands, Wolpert's French flag. Double the tissue's length and the bands fail to scale; switch on Ben-Zvi and Barkai's expansion-repression circuit (a second diffusing 'expander' that widens the gradient and is shut off by the morphogen) and the bands stay in proportion. Add noise to the concentration and see that boundaries where the gradient is steep stay sharp while those in its flat tail blur.
+- **Takeaway:** A cell can learn where it is from how much of one substance reaches it, and the shape of that gradient, set by diffusion and decay, decides where the boundaries fall.
+- **Prerequisites:** the-cell, dna-to-protein
+- **Needs:** No data needed: a 1D synthesis-diffusion-degradation PDE plus the expansion-repression model (Ben-Zvi & Barkai 2010, PNAS), both run live. Optional comparison: published Bicoid length scales (about 20% of egg length, Gregor et al. 2007), quoted as numbers with citation.
+- **Pitfall:** The synthesis-diffusion-degradation model is a working hypothesis and the Bicoid gradient's formation is still debated; the page must present the exponential as what the model predicts and say where it is tested.
+  > Nearest existing: the-cell: that page zooms into one cell; this one shows how thousands of cells in a row find out which part of the body they are making.
+  > Why: Stanford course on morphogenesis listing morphogen gradients and Turing patterns: https://bulletin.stanford.edu/courses/2126934
 
 #### population-genetics
 - **Title:** Population genetics: drift & selection
@@ -461,7 +487,7 @@
 - **Interaction:** Run a hundred Wright-Fisher populations at once as allele-frequency traces: with no selection they wander and fix at random, faster in small populations; with a selection coefficient s they bend toward fixation, and a counter shows the share of new beneficial mutations that fix, approaching Haldane's 2s however large the population, so most are lost anyway. Set dominance to see recessive alleles hide from selection, and compare the Hardy-Weinberg genotype frequencies with the simulated ones each generation.
 - **Takeaway:** Allele frequencies change by chance as well as by selection: in a small population chance can fix a harmful allele or lose a good one, and even in a large population most new beneficial mutations vanish while they are still rare.
 - **Prerequisites:** meiosis-inheritance, evolution, central-limit-theorem
-- **Related:** luria-delbruck, cancer
+- **Related:** cancer
 - **Pitfall:** Hardy-Weinberg is not 'evolution stops': it is the one-generation baseline that shows which forces are absent, and drift is not selection by another name; the page must keep them separate.
   > Nearest existing: evolution: that page shifts a trait distribution with predators and food; this one tracks a single allele's frequency and separates chance from selection with explicit N and s.
   > Why: Cal State LA BIOL 415 Population Genetics syllabus (Hardy-Weinberg, drift, effective size, selection, coalescent): https://www.calstatela.edu/sites/default/files/syllabibiol415.pdf
@@ -472,7 +498,7 @@
 - **Kind:** simulate
 - **Interaction:** Run an activator-inhibitor reaction-diffusion system on a grid from near-uniform noise and watch spots or stripes crystallise. Change the ratio of the two diffusion rates and the pattern appears only once the inhibitor spreads much faster than the activator; change the reaction rates to move from spots to stripes to labyrinths; grow the domain and extra stripes insert themselves, and taper the grid into a tail to see spots become bands as it narrows.
 - **Takeaway:** Two chemicals, one that makes more of itself and a faster-spreading one that suppresses it, can turn a uniform field into regular spots or stripes with no blueprint, at a spacing set by their reaction and diffusion rates.
-- **Prerequisites:** reaction-rates-equilibrium
+- **Prerequisites:** morphogen-gradients, reaction-rates-equilibrium
 - **Related:** chaos-fractals
 - **Pitfall:** Not every stripe in nature is a Turing pattern. The page should name where a Turing-type mechanism is well supported (digit spacing, hair and feather follicles) and where the evidence is mixed (fish skin, where pigment cells also move). It must not claim the mechanism for zebra stripes or fingerprints without saying that is contested.
   > Nearest existing: chaos-fractals: that page grows patterns by iterating a map; here they grow from a PDE with a definite wavelength, and the control is the diffusion ratio.
@@ -482,6 +508,7 @@
 
 #### hearing-and-the-ear
 - **Title:** How your ear hears
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Slide a tone from low to high and watch it shake the big eardrum, which passes the shake through three tiny bones onto a much smaller window into the fluid of the snail-shaped cochlea, concentrating the push; a ripple then runs along the cochlea's ribbon until it peaks at one spot. Each pitch peaks somewhere else, high notes near the entrance and low notes at the far end. Play two notes at once and see two bumps; turn the loudness up and the bumps grow.
 - **Takeaway:** The ear sorts sounds by pitch before the brain hears them: each note makes a different place along the spiral wiggle.
@@ -494,6 +521,7 @@
 
 #### muscles-pull-in-pairs
 - **Title:** Muscles pull in pairs
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Drag the hand of a cutaway arm: bending the elbow, the biceps shortens and bulges; straightening it against a push, such as pressing down on a table or pushing up from a chair, the triceps shortens instead, and tugging either muscle alone shows it can only pull, never push. Hang a bag of shopping from the hand and watch the biceps pull many times the bag's weight, because it grips the forearm so close to the elbow; lower the bag slowly and the biceps is still the one pulling, getting longer as it lets the bag down.
 - **Takeaway:** A muscle can only pull, so every joint needs a pair that take turns, and the one that grips near the elbow must pull far harder than the weight in your hand.
@@ -506,6 +534,7 @@
 
 #### why-spinning-makes-you-dizzy
 - **Title:** Why spinning makes you dizzy
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Spin a head on a chair with a slider and watch the fluid in the ear's three rings lag behind, bending the little flap that tells the brain turning; keep spinning at a steady speed and the fluid catches up, so the feeling fades. Stop suddenly and the fluid keeps going, the flap bends the other way, and the brain reports turning in the opposite direction while the room stands still: that is dizzy.
 - **Takeaway:** Your ears sense turning with a ring of fluid, and when you stop spinning the fluid keeps going, so you feel you are turning the other way.
@@ -518,6 +547,7 @@
 
 #### why-you-get-sleepy
 - **Title:** Why you get sleepy
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** Set a bedtime and a wake-up time and run three days: a sleep-pressure tank fills while you are awake and drains while you sleep, and a body clock sets the hours when sleep comes easily; sleepiness is the gap between them. Skip a night and watch the tank overflow; nap in the afternoon and see tonight's sleep come later. A strip under the plot sketches the night's usual rounds of light and deep sleep, about ninety minutes each.
 - **Takeaway:** Sleepiness is a pressure that builds all day and drains at night, gated by a clock that opens a window for it; when the two disagree you lie awake tired or nod off at noon.
@@ -598,6 +628,7 @@
 
 #### cloud-base
 - **Title:** Why clouds form, and why their bottoms are flat
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Drag a bubble of air up from the warm ground: it swells and its thermometer drops about one degree for every hundred metres, until the invisible water it carries turns to droplets and the bubble turns white. Every bubble released from the same ground turns white at the same height, so the clouds have flat bottoms; make the day more humid and the cloud base drops, dry the air and clouds form higher or not at all. A last step blows the bubble over a mountain: it cools as it is pushed up the slope, rains on the side facing the wind, and comes down the far side drier and warmer than it started.
 - **Takeaway:** Rising air swells and cools, and a cloud appears at exactly the height where the air gets cold enough for its water to turn into droplets, which is why the bottoms of clouds are flat.
@@ -610,6 +641,7 @@
 
 #### forest-fire-spread
 - **Title:** How a wildfire crosses a forest, or stops
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** A square forest of trees on a grid; light the left edge and watch the fire pass from each burning tree to its neighbours, leaving ash. One control: how densely the trees are planted. At half density the fire burns a few trees and dies, at two-thirds it nearly always crosses the forest, and around six in ten it is a coin toss, with a tally of how far the fire got over many runs; then cut a firebreak and find the width that stops it, or add wind so the fire jumps one extra tree downwind.
 - **Takeaway:** In a big forest, a fire's chance of crossing does not grow gradually with how many trees there are: it flips from almost never to almost always over a narrow band of density, so removing a few trees or cutting a gap can stop a fire that would otherwise get through.
@@ -622,6 +654,7 @@
 
 #### sea-breeze
 - **Title:** Where wind comes from: the sea breeze
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** A coast in cross-section, land on one side and sea on the other, filled with air drawn as drifting particles. Drag the Sun across the sky: by afternoon the land is warmer than the sea, the air over it rises, and air from the sea slides in underneath as a breeze that a flag on the beach shows. At night the land cools faster than the water and the breeze turns around and blows out to sea.
 - **Takeaway:** Uneven heating is enough to make a wind: by day air slides in from over the cooler sea to replace the warm air rising over the land, and at night the land cools below the sea and the breeze turns around.
@@ -699,11 +732,12 @@
 
 #### comet-tails
 - **Title:** Comets and their tails
+- **Level:** 0
 - **Kind:** explore
 - **Interaction:** Scrub a comet along its real stretched orbit, far out and frozen, then swinging in close to the Sun. As it warms, gas and dust stream off it, and the tail always points away from the Sun, whichever way the comet is going, so on the way out the comet flies tail-first. Two tails appear: a straight blue gas tail pushed by the solar wind and a curved dust tail of grains that lag along the orbit; zoom in to see the grains leave.
 - **Takeaway:** A comet's tails are pushed out by the Sun, not left behind by its motion, so the gas tail always points straight away from the Sun and the comet leaves tail-first, while the dust tail bends back along the path it has travelled.
 - **Prerequisites:** none
-- **Needs:** Orbital elements of comet 1P/Halley (perihelion distance, eccentricity, period) from the JPL Small-Body Database (https://ssd-api.jpl.nasa.gov/doc/sbdb.html). These are measured physical facts published by NASA/JPL and are freely reusable with the credit 'Courtesy NASA/JPL-Caltech'. Only a few numbers are needed, typed into the model with the credit; no API call happens at runtime. The tail directions come from the model: the gas tail along the anti-Sun line, and dust grains released along the orbit under sunlight pressure.
+- **Needs:** Orbital elements of comet 1P/Halley (perihelion distance, eccentricity, period) from the JPL Small-Body Database: a few published numbers, typed into the model and free to reuse with the credit 'Courtesy NASA/JPL-Caltech' under JPL's open data policy.
 - **Pitfall:** The tail does not trail behind like exhaust, and a comet is not a burning rock: it is ice and dust turning to gas in sunlight.
   > Leads to: orbits-kepler, states-of-matter
   > Nearest existing: orbits-kepler (level 1) launches bodies into ellipses; this page uses one real ellipse and asks only which way the tail points.
@@ -712,6 +746,7 @@
 
 #### earth-is-a-ball
 - **Title:** Earth is a ball
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Drag a ship out to sea and watch it from the shore. On a flat world it only shrinks, and binoculars bring all of it back. On the round world its hull sinks out of sight before its sails as the sea bulges up between you and it (the curve drawn exaggerated, the distances real). Binoculars cannot bring the hull back, but climbing a cliff can. Then walk a little figure around the globe: wherever it stands its feet point to the middle, and a dropped ball falls toward the middle too, so nobody on the far side falls off.
 - **Takeaway:** The world is a ball, so the sea itself hides the bottom of a distant ship, and 'down' means toward the middle wherever you stand.
@@ -723,6 +758,7 @@
 
 #### leap-years
 - **Title:** Leap years: why February gets an extra day
+- **Level:** 0
 - **Kind:** explore
 - **Interaction:** A calendar wheel turns inside Earth's orbit: one lap of the Sun takes 365 days and about a quarter more, so each New Year falls a quarter-day short. Scrub forward with no leap days and watch the first day of summer slide through the calendar, a month after a century and into winter after seven or eight centuries; switch on 'one extra day every four years' and the slide almost stops; zoom out over a thousand years to see the small drift that is left and the 'skip every hundred, keep every four hundred' rule that fixes it.
 - **Takeaway:** A year is not a whole number of days, so a calendar without leap days drifts out of step with the seasons; an extra day every four years, with a few skipped, keeps them matched.
@@ -733,26 +769,27 @@
   > Nearest existing: sun-earth-moon: why there are seasons; this page is why the calendar needs correcting to stay lined up with them.
   > Why: NASA/JPL Education, 'Doing the math on why we have leap day' (interest spikes every leap year): https://www.jpl.nasa.gov/edu/news/doing-the-math-on-why-we-have-leap-day/
 
-#### galaxy-collisions
-- **Title:** Colliding galaxies
+#### aperture-synthesis
+- **Title:** Interferometry & aperture synthesis
 - **Level:** 3
-- **Kind:** simulate
-- **Interaction:** Two galaxies, each a tilted disc of thousands of massless stars orbiting a central mass, pass each other as in Toomre and Toomre's 1972 model. Set the closest approach, the mass ratio, each disc's tilt and whether it spins with or against the orbit, then run. A prograde pass throws out a long tidal tail and a bridge; a retrograde one barely stirs the disc. Turn the view to match the Antennae or the Mice by trial. Then switch on dynamical friction from the dark haloes, an added ingredient the original model leaves out, and scrub forward a billion years to see the pair, which would otherwise fly apart for ever, fall back together and merge.
-- **Takeaway:** Tides, not impacts, shape colliding galaxies, so a slow pass in the direction of a disc's spin throws its stars into long tails while the same pass against the spin leaves it almost untouched.
-- **Prerequisites:** orbits-kepler, dark-matter
-- **Related:** lagrange-points-three-body
-- **Pitfall:** Stars do not collide in a galaxy collision; the gaps between them are too large, and the tails are stars pulled out by tides, not debris from impacts.
-  > Nearest existing: dark-matter: that page spins a single galaxy to read its rotation curve; this page throws two together and shows the tidal tails.
-  > Why: UC San Diego Physics 141 midterm project, reproducing the Toomre and Toomre encounter with a student-written integrator: https://jduarte.physics.ucsd.edu/phys141/midterm_final/midterm_final.html
+- **Kind:** build
+- **Interaction:** Place radio dishes on a map and pick a model sky; every pair of dishes samples the sky's Fourier transform at one point and its mirror image, and as the Earth turns each pair traces a pair of arcs in the uv plane. Watch the dirty beam and the dirty image form from whatever the array has sampled: two dishes see only stripes, a dozen over six hours see the source. Run CLEAN step by step, subtracting the beam from the brightest point until the image emerges, and compare it with the truth; shrink the array to lose resolution, spread it to lose the extended emission.
+- **Takeaway:** An array of small telescopes can see as sharply as one dish as wide as the array, because what it measures is the sky's Fourier transform, and the Earth's rotation fills in the gaps.
+- **Prerequisites:** fourier-transform, waves-interference, light-optics
+- **Related:** medical-imaging, black-holes, gravitational-waves
+- **Needs:** No external data required: model skies (point sources, a disc, a jet) are generated in code and the model is a 2D FFT plus Hogbom CLEAN. Optional real array layouts (VLA Y with 120-degree arms; ALMA configurations from the CASA simulator's antenna-configuration files, CASA being open source under the GPL), or the coordinates published in open-access papers.
+- **Pitfall:** An interferometer does not gain the collecting area of a filled dish, only its resolution, and the dirty image is not a photograph of the sky but of what was sampled.
+  > Nearest existing: light-optics: that page forms images with lenses and never treats resolution as a Fourier limit; medical-imaging also computes an image from indirect measurements, but from projections combined by filtered back-projection, whereas this page fills the Fourier plane with correlations between pairs of separated telescopes and deconvolves with CLEAN.
+  > Why: NRAO Synthesis Imaging Workshop, the graduate course on aperture synthesis theory and technique: https://aas.org/events/2022-02/18th-synthesis-imaging-workshop
 
 #### lagrange-points-three-body
 - **Title:** The three-body problem & Lagrange points
 - **Level:** 3
 - **Kind:** manipulate
 - **Interaction:** The circular restricted three-body problem, drawn in the frame that rotates with the two large bodies. Set the mass ratio (Sun-Jupiter, Sun-Earth, Earth-Moon, or a slider) and the five Lagrange points appear. Set the probe's energy (the Jacobi constant) and the forbidden regions shade in, opening gates at L1 and L2 as the energy rises. Drop a probe at L1 or L2 and it drifts away within months. Drop one near L4 and it wanders in a tadpole around the point for as long as the reader waits, as Jupiter's Trojans do. Push the mass ratio past about 1 in 26 and the same probe escapes. Nudge a starting position by a hair to run two probes side by side and watch their paths split.
-- **Takeaway:** Three bodies have no general closed-form solution, and nearby paths split apart, but there are five points where a small body can keep pace: three balanced on a knife edge, two stable while the smaller mass is light enough. An energy map shows where the body can and cannot go.
+- **Takeaway:** Three bodies have no general closed-form solution and nearby paths split apart, but there are five points where a small body can keep pace with the other two: three balanced on a knife edge, and two that are stable while the smaller mass is light enough.
 - **Prerequisites:** orbits-kepler
-- **Related:** rockets, chaos-fractals, galaxy-collisions
+- **Related:** rockets, chaos-fractals
 - **Pitfall:** L1 and L2 are not places where gravity cancels. A spacecraft there circles the Sun in exactly one Earth year because the combined pull (Earth's pull partly offsets the Sun's at L1 and adds to it at L2) is exactly what that orbit needs, and it still needs station-keeping. The general three-body problem is not 'unsolvable': Sundman found a convergent series, but no closed formula and no long-term predictability.
   > Nearest existing: orbits-kepler: that page adds a second planet to see two bodies disturb each other; this page moves to the rotating frame, where the forbidden regions and the stability of the five points become visible.
   > Why: MIT OCW 16.346 Astrodynamics, lecture 25 on the restricted problem of three bodies (Jacobi integral, surfaces of zero relative velocity): https://ocw.mit.edu/courses/16-346-astrodynamics-fall-2008/resources/lec_25
@@ -761,6 +798,7 @@
 
 #### life-on-a-grid
 - **Title:** Life on a grid
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** Paint a few squares on a grid and press step: every square counts its live neighbours at once, and the three rules (lonely dies, crowded dies, exactly three neighbours gives birth) show as the counts on each square. Press play and find the shapes that blink, the ones that sit still and the glider that walks across the board. Change one number in a rule and watch the same seed grow, freeze or die.
 - **Takeaway:** A rule about counting neighbours, applied to every square at once, makes things that blink, walk and grow that nobody drew.
@@ -772,6 +810,7 @@
 
 #### secret-codes
 - **Title:** Secret codes & code-breaking
+- **Level:** 0
 - **Kind:** step
 - **Interaction:** Turn the inner ring of a code wheel and type a message: each letter steps along the alphabet by the same amount, and your friend turns the ring back to read it. A spy who does not know the turn tries all 25 turns at once and the one that reads as words jumps out. Scramble the alphabet instead; now the spy counts the letters in the secret message and lines its bars up with the bars of ordinary English: the tallest few give E, T and A, half-words like TH_ appear, and the reader swaps the remaining letters until the message reads.
 - **Takeaway:** A code that shifts every letter the same way falls to trying all 25 shifts, and a code that scrambles the alphabet falls to counting letters, because in a long message E stays the most common letter however it is disguised.
@@ -786,6 +825,7 @@
 
 #### twenty-questions
 - **Title:** Twenty questions: halving the haystack
+- **Level:** 0
 - **Kind:** step
 - **Interaction:** Think of a number from 1 to 100 and answer the page's 'higher or lower' questions: a bar of candidates shrinks by half each answer and the counter stops at seven. Now find a word in a thousand-page dictionary by opening it in the middle, then in the middle of the right half, counting the opens, against a search that flips through every page. Then play animal twenty questions: each yes/no question hides half of the hundred animals on the board until one is left.
 - **Takeaway:** A question that splits what is left in half finds the answer in a handful of steps, where checking one at a time takes hundreds.
@@ -809,18 +849,6 @@
 - **Pitfall:** The program does not plan like a person; it counts. And it does not look at every possible game: depth is limited and the leaves are scored by a rule of thumb, which is why a better scoring rule can beat a deeper search.
   > Nearest existing: graph-search: searching a map for a route; this page searches a tree of moves against an opponent, where a value flows up instead of a path being found. monte-carlo-tree-search (pool, level 3) uses random playouts and AlphaGo; this page is the full deterministic search at level 1.
   > Why: 'How does a chess computer work' tutorials (freeCodeCamp's step-by-step chess AI) are among the most-read introductions to minimax: https://www.freecodecamp.org/news/simple-chess-ai-step-by-step-1d55a9266977
-
-#### how-simulations-work
-- **Title:** How a simulation works
-- **Level:** 1
-- **Kind:** step
-- **Interaction:** Drop a ball and advance time by hand: each tick the velocity is updated by gravity and the position by the velocity, and the dots trace a path that bends, more smoothly the smaller the step. Make the step too large and the ball tunnels through the floor or an orbiting planet spirals away; compare the stepped path with the exact one and watch the error shrink as the step shrinks, then see that a half-step update holds an orbit that plain stepping loses. Finally open the hood on this site's own pendulum and epidemic pages to find the same loop at work.
-- **Takeaway:** A simulation is a rule for the next instant applied over and over, so its accuracy is bought with smaller steps and a better update rule, and the moving physics on this site's pages comes from exactly this loop.
-- **Prerequisites:** newtons-laws
-- **Related:** calculus, feedback-control, chaos-fractals, oscillations-resonance, differential-equations
-- **Pitfall:** Smaller steps are not the whole fix: plain stepping on an orbit gains a little energy every step, so it always spirals out eventually; a smaller step only slows the drift, while a half-step update keeps the orbit closed for thousands of turns even with a larger step. And a step too large to resolve a collision lets a ball pass through the floor, which is a step-size problem, not a law of physics.
-  > Nearest existing: differential-equations (pool, level 2) steps a solution along a slope field and shows Euler converging; numerical-stability (pool, level 3) analyses stability regions and stiffness. This page is the level-1 engine itself: position and velocity updated tick by tick for a falling ball and an orbit, with no derivatives written down, and shows where it fails without the analysis of why.
-  > Why: AP Calculus BC Unit 7, topic 7.5 'Approximating solutions using Euler's method' (slope fields and stepping) https://fiveable.me/ap-calc/unit-7.md ; and the site's own need for a page that explains what every other page is doing
 
 #### cache-memory-hierarchy
 - **Title:** Caches & the memory hierarchy
@@ -850,6 +878,7 @@
 
 #### barcode-stripes
 - **Title:** Barcodes at the checkout
+- **Level:** 0
 - **Kind:** step
 - **Interaction:** Drag a scanner's red line across a barcode (a UPC-A, the 12-digit form found on many products) and watch what it sees, a trace of dark and light over time, then step through it: a start mark, six groups of stripes, a middle mark, six more and an end mark, each group of two bars and two gaps one digit. Scan slowly, fast or at a slant and the widths all stretch together, so the digits come out the same; scan it upside down and the scanner tells, from the left groups looking different from the right ones, which way to read. Smudge one stripe and the last digit, a check digit, turns the light red: the number is wrong, scan again.
 - **Takeaway:** A barcode is a number written as stripe widths, read as proportions so that speed and angle do not matter, with a last digit that catches a misread; the price is looked up afterwards.
@@ -862,6 +891,7 @@
 
 #### qr-codes
 - **Title:** QR codes
+- **Level:** 0
 - **Kind:** build
 - **Interaction:** Type a short message and watch it become a square of black and white cells, built the real way: the three big corner squares that tell a camera where the code is and which way up, then the message as cells, then spare cells computed from the message. Point a drawn camera at it from any angle and it reads. Now paint over cells with a brush: the message still comes out, and a counter shows how many cells are damaged; keep painting and find the moment it fails, then paint over a corner square instead, which fails at once.
 - **Takeaway:** A QR code carries its message plus spare cells computed from it, so a scratched or half-covered code still reads, until too much of the message is spoiled or a corner finder is hidden.
@@ -875,6 +905,7 @@
 
 #### wifi-and-walls
 - **Title:** Wi-Fi around the house
+- **Level:** 0
 - **Kind:** build
 - **Interaction:** Place a router on a floor plan and the rooms fill with a signal map; drag the laptop around and its speed gauge follows the colour. Add walls, a brick one, a fridge, a fish tank, and watch each cut a shadow in the map and the gauge drop, as the link slows down to be heard through the loss. Switch the router to the faster, shorter-reach band and compare; then add a neighbour's router on the same channel and watch the two take turns.
 - **Takeaway:** Wi-Fi is radio: walls and water eat it, the link slows down rather than breaking as the signal fades, and two networks on one channel must take turns.
@@ -918,7 +949,7 @@
 - **Takeaway:** Multiplying a point on a curve by a secret number is quick, but over a finite field nobody knows a practical way to recover the number from the result, so a 256-bit curve key does the job of a 3,000-bit modular one.
 - **Prerequisites:** cryptography
 - **Related:** consensus-blockchains, quantum-computing
-- **Needs:** Curve parameters from public standards (secp256k1, Curve25519), which are published specifications.
+- **Needs:** Curve parameters from the openly published standards SEC 2 (secp256k1) and RFC 7748 (Curve25519).
 - **Pitfall:** The picture over the real numbers is for intuition only: the cryptography lives on the finite-field points, where there is no curve to see, and the hardness is the discrete logarithm, not the shape. 'Elliptic' has nothing to do with ellipses.
   > Nearest existing: cryptography: that page does Diffie-Hellman with modular exponentiation on a clock face; this page swaps the group for curve points and shows why that buys so much for so few bits.
   > Why: Cloudflare, 'A (relatively easy to understand) primer on elliptic curve cryptography' https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/
@@ -964,6 +995,7 @@
 
 #### next-word-guessing-game
 - **Title:** How a chatbot picks its next word
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Play a guessing game against a tiny machine that has read a few children's books: a story stops mid-sentence, you guess the next word, and the machine shows its own guess as a row of word cards, each with a count of how often that word came next in everything it read. Then let it write on its own: each word is drawn by chance like a spinner whose slices are as big as the counts, so it usually picks a common word but sometimes an odd one, and the word it picked becomes the start of the next guess. Press the one button, 'read more books', and watch the cards fill up and its stories get better.
 - **Takeaway:** A chatbot writes by guessing one word at a time from what usually came next in the text it learned from, adding each guess to the story before making the next, so it picks likely words, not true ones.
@@ -972,12 +1004,13 @@
 - **Needs:** A few public-domain children's books (Beatrix Potter, Aesop's fables) from Project Gutenberg, counted in the page.
 - **Pitfall:** Do not say real chatbots only count word pairs: say this toy looks back one or two words, while a real chatbot uses a neural network that looks back over thousands. And it does not look answers up in a stored copy of the books.
   > Leads to: learning-from-data
-  > Nearest existing: autocomplete-spellcheck (proposed, level 0) suggests the single most common next word while you type; this page has the machine write whole stories by drawing words at random in proportion to the counts and feeding each one back in, the loop a chatbot runs. language-models shows the same loop with a real network for a level-2 reader. The next-word half of autocomplete-spellcheck should be cut back so the two pages do not repeat each other.
+  > Nearest existing: language-models shows the same loop with a real network for a level-2 reader; this page has a counting machine write whole stories by drawing words at random in proportion to the counts and feeding each one back in, the loop a chatbot runs. The runner-up autocomplete-spellcheck suggests only the single most common next word while you type.
   > Why: Code.org How AI Works, lesson 'Chatbots and Large Language Models' (grades 6-12): https://code.org/ai/how-ai-works
   > Data: Project Gutenberg texts of books in the US public domain (public domain).
 
 #### spam-filter-word-counts
 - **Title:** How a spam filter decides
+- **Level:** 0
 - **Kind:** build
 - **Interaction:** A pile of real text messages arrives, each already marked spam or not; pick any word, 'free', 'win', 'tonight', 'mum', and see two counts, how many spam messages contain it and how many ordinary ones. Build the filter by letting it count every word, then write a message of your own and watch the words vote: each nudges the score toward spam or not according to its two counts. Try to sneak past with 'fr33' and watch the vote change; mark your message and see the counts update.
 - **Takeaway:** This kind of spam filter has no idea what a message means: it counts which words turned up more in past spam than in ordinary messages, which is why spammers misspell and why your 'report spam' clicks teach it.
@@ -992,6 +1025,7 @@
 
 #### teach-a-machine
 - **Title:** Teach a machine to tell things apart
+- **Level:** 0
 - **Kind:** build
 - **Interaction:** Draw a few cats and a few houses (or pull examples from a pile of other people's doodles), label them, and draw a new one: the machine shrinks every drawing to a small grid of squares, finds the stored drawings most like the new one square by square, and the labels of those neighbours vote. Watch it get the first guesses wrong, add more examples and watch the votes firm up. Then teach it a trap: every cat drawn in the top corner, every house at the bottom, and see it decide by position instead of shape.
 - **Takeaway:** A machine learns to sort things by comparing new examples with the ones it was shown, so more and more varied examples make it better, and a lazy pattern in the examples teaches it the wrong thing.
@@ -1014,7 +1048,7 @@
 - **Related:** embeddings
 - **Needs:** The Palmer penguins measurements (344 penguins, three species).
 - **Pitfall:** k-means does not discover the number of groups and finds only compact, roughly round blobs of similar size; different starts give different answers, so run it several times. The groups it finds need not match the species.
-  > Nearest existing: clustering-gaussian-mixtures (proposed, level 3) should start where this ends: soft Gaussian clusters with EM and density-based methods, with this page as its prerequisite and no repeat of k-means. Among existing pages, learning-from-data fits labelled points and embeddings shows a map of words that cluster; neither runs an algorithm that finds groups without labels.
+  > Nearest existing: learning-from-data fits labelled points and embeddings shows a map of words that cluster; neither runs an algorithm that finds groups without labels. The runner-up clustering-gaussian-mixtures (level 3) would start where this page ends: soft Gaussian clusters with EM and density-based methods.
   > Why: Google's 'Introduction to Clustering' course (choose a similarity measure, cluster with k-means, evaluate the result) https://developers.google.com/machine-learning/clustering
   > Data: palmerpenguins (Horst, Hill and Gorman), CC0, from Palmer Station LTER (https://allisonhorst.github.io/palmerpenguins/).
 
@@ -1028,7 +1062,7 @@
 - **Related:** next-word-guessing-game, language-models, compression, tokenization
 - **Needs:** About 1 MB of Shakespeare's plays (the 'Tiny Shakespeare' extract popularised by Karpathy's char-rnn, or the same plays taken from Project Gutenberg) and the reader's own text.
 - **Pitfall:** Unseen contexts are not a problem solved by more data alone: the count of possible contexts grows exponentially with n. Smoothing and back-off fix the zero counts but not the lack of long-range structure.
-  > Nearest existing: language-models shows a trained network's predictions; this page builds the counting model that came before it and measures why counting cannot reach far back. The level-0 pages next-word-guessing-game and autocomplete-spellcheck use one- or two-word counts with no window slider and no held-out measurement.
+  > Nearest existing: language-models shows a trained network's predictions; this page builds the counting model that came before it and measures why counting cannot reach far back. The level-0 next-word-guessing-game uses one- or two-word counts with no window slider and no held-out measurement.
   > Why: Karpathy, Neural Networks: Zero to Hero, 'building makemore' (bigram character model): https://karpathy.ai/zero-to-hero.html
   > Data: Shakespeare's plays are public domain (Project Gutenberg, https://www.gutenberg.org/ebooks/100); the Tiny Shakespeare file is an extract of them, so its repository's licence does not matter.
 
@@ -1040,7 +1074,7 @@
 - **Takeaway:** A transformer does a fixed amount of computation per token, so writing intermediate steps gives the same model more computation and a place to keep partial results, and it then solves carry-heavy sums the direct model gets wrong.
 - **Prerequisites:** training-a-tiny-language-model, transformers
 - **Related:** turing-machines
-- **Needs:** Two tiny transformers trained offline by the project on generated addition problems (with and without scratchpad), shipped and run in the page.
+- **Needs:** Two tiny transformers trained offline by the project on generated addition problems (with and without a scratchpad), shipped and run in the page; the weights are the project's own, under the site's MIT licence.
 - **Pitfall:** The written steps help because they are computation the model conditions on, not because the model narrates a hidden thought, and in large models the written reasoning is not guaranteed to be a faithful account of how the answer was reached. Do not say transformers cannot add directly (they learn it well when the answer is written least-significant digit first), and do not say a scratchpad solves length generalisation: beyond the trained lengths, both models degrade.
   > Nearest existing: training-a-tiny-language-model: that page trains on prose; this one compares two trained models on a checkable task to show what generated intermediate tokens add.
   > Why: Nye et al., Show Your Work: Scratchpads for Intermediate Computation with Language Models: https://arxiv.org/abs/2112.00114
@@ -1155,6 +1189,7 @@
 
 #### clock-escapement
 - **Title:** Pendulum clocks & the escapement
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** Hang a weight on a cord that turns a toothed wheel and watch the wheel spin away in a blur; add the anchor that rocks with a pendulum, and the wheel can now advance only one tooth per swing, with a tick each time a tooth is caught and a tiny push back to the pendulum to keep it going. Lengthen or shorten the pendulum, or hang a heavier weight, and count ticks against a reference second hand to see which change alters the rate.
 - **Takeaway:** The weight drives the clock and the pendulum only meters it out, one tooth per swing, so the length of the pendulum sets the time and a heavier weight hardly changes the rate.
@@ -1166,6 +1201,7 @@
 
 #### drone-four-rotors
 - **Title:** How a drone steers with four rotors
+- **Level:** 0
 - **Kind:** build
 - **Interaction:** Each step gives one control, and the drone shows its four rotors with a push arrow and a speed bar on each. Raise the throttle and all four speed up together so the drone rises; push the forward control and watch the back pair speed up, the drone tip and slide forward; push the sideways control and the left pair speeds up so it tips and slides right. Then the turn control speeds up the two rotors that spin clockwise and slows the other two: the lift stays the same but the drone turns on the spot, and if all four spin the same way the body spins helplessly the opposite way. A last step hands over the four rotor speeds directly.
 - **Takeaway:** A drone has no flaps or rudder: it climbs, tilts and turns only by spinning its four rotors at slightly different speeds, two one way and two the other.
@@ -1178,6 +1214,7 @@
 
 #### hydraulics-digger-arm
 - **Title:** Diggers and hydraulics: a small push becomes a huge one
+- **Level:** 0
 - **Kind:** manipulate
 - **Interaction:** Push a small piston and watch oil shove a much bigger piston at the digger's arm: the big one moves with many times the force but only a fraction of the distance, and a counter shows the two trade places exactly. Change the piston sizes and lift a car, then a boulder; let an air bubble into the pipe and the arm goes spongy. Drive the three cylinders of a digger's boom, arm and bucket to scoop and dump.
 - **Takeaway:** A trapped liquid passes on the same push on every bit of surface it touches, so a piston with ten times the area gets ten times the push, paid for by moving only a tenth as far.
@@ -1187,20 +1224,23 @@
   > Nearest existing: bridges-structures: that page carries loads through members in tension and compression; this page is the fluid push inside a digger's cylinders and the force-for-distance trade.
   > Why: England KS3 science, forces: pressure in fluids and hydraulics, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study (PhET 'Under Pressure' covers the same ground for middle school)
 
-#### room-thermostat
-- **Title:** Thermostat
-- **Kind:** simulate
-- **Interaction:** Turn the dial on a room thermostat and watch the heater switch on when the room drops below the setting and off when it rises above it, while heat leaks out through the walls and the room temperature wobbles in a band around the target. Open a window, change the heater's power or widen the switch's gap and see the wobble, the heater's on-time and the overshoot change; zoom into the bimetal strip bending toward and away from its contact.
-- **Takeaway:** A thermostat is a switch, not a tap: turning it up does not heat the room faster, it only moves the line where the heater turns off, and the room always wobbles a little around that line.
+#### light-bulb-hot-wire
+- **Title:** Why a light bulb glows (and gets hot)
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Slide a dimmer and watch the thin wire inside an old-style bulb go from dark to dull red to orange to white as it heats, while a bar splits what the bulb takes into light you can see and heat. At full brightness the heat bar is dozens of times the light bar, and most of that heat leaves as invisible infrared you feel on your hand. Swap in an LED bulb giving the same light: the electricity it needs, and so its heat bar, shrinks to about a tenth, though the LED still makes more heat than light and warms its base instead of glowing in infrared.
+- **Takeaway:** An old bulb makes light by heating a wire until it glows white and wastes nearly all its electricity as heat, while an LED makes the same light from about a tenth of the electricity, so far less heat.
 - **Prerequisites:** none
-- **Related:** feedback-control, homeostasis
-- **Pitfall:** Turning the dial higher does not make the heater hotter or the room warm faster; the heater is either on or off, and the setting only decides when it switches.
-  > Leads to: homeostasis, electric-circuits
-  > Nearest existing: feedback-control: that page tunes the three gains of a PID controller at level 2 with response plots; this is a single on/off switch with one dial, and the reader watches the room wobble.
-  > Why: 'How do thermostats work?' explainers and classroom bimetal thermostat kits (Explain That Stuff, https://explainthatstuff.com/thermostats.html; Flinn Scientific thermostat model, https://www.flinnsci.com/thermostat-model/ap4735/).
+- **Needs:** The CIE 1931 colour-matching functions and the photopic V(lambda) curve, to turn the filament's temperature into an on-screen colour and a light-versus-heat split (CIE open-access datasets, CC BY-SA 4.0, cie.co.at/data-tables; also at cvrl.org). Tungsten's resistivity and emissivity against temperature from Jones & Langmuir (1927, General Electric Review), quoted as numbers, or a grey-body emissivity of about 0.4 documented as an approximation. The LED's efficiency is a documented typical value (white LED bulbs at about 90 to 100 lm/W, against about 15 lm/W for incandescent).
+- **Pitfall:** The wire does not burn: there is no oxygen inside the bulb, which is why a tungsten filament lasts about a thousand hours. Brightness does not rise in step with the dimmer: a little more current makes the wire much hotter, much brighter and whiter. And an LED is not cold: it still turns over half its electricity into heat, only much less electricity overall.
+  > Leads to: electric-circuits, light-optics
+  > Nearest existing: electric-circuits: that page lights bulbs as circuit elements with current and voltage meters; this page is what happens inside the bulb's wire and where the energy ends up, with the LED as the comparison.
+  > Why: England KS2 science, Year 6 electricity: associate the brightness of a lamp with the cells in the circuit, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study ('how does a light bulb work' is a perennial search question)
+  > Data: CIE 1931 CMFs and V(lambda): CIE open-access datasets, CC BY-SA 4.0 (cie.co.at); tungsten property values are published physical constants, cited.
 
 #### toilet-flush
 - **Title:** Toilet flush & siphons
+- **Level:** 0
 - **Kind:** simulate
 - **Interaction:** Press the lever: the flapper lifts, the tank pours into the bowl and the bowl's water climbs toward the top of the bend behind it. The moment it spills over fast enough, the whole bend fills and the bowl drains itself, fast, until air gets in and it gurgles to a stop. Then pour a bucket in slowly or quickly to find what starts the siphon, swap in a wide-bend washdown bowl that never siphons and only pushes the extra water over the top, and watch the float rise with the refilling tank and shut its own valve.
 - **Takeaway:** In a siphonic toilet the tank only has to fill the bend behind the bowl; once it is full, the water running down the long side drains the bowl by itself until air gets in and breaks the siphon.
@@ -1263,7 +1303,7 @@
 - **Related:** gas-turbines-combined-cycle
 - **Needs:** Saturation and superheated-vapor properties of R-134a, R-290 and R-744 from CoolProp (MIT licence), tabulated or fitted for the browser.
 - **Pitfall:** A COP of 4 is not '400 percent efficiency' and breaks no law: most of the heat delivered is moved from outside, not made from the electricity, and the second law still caps the COP at the Carnot value for the lift.
-  > Nearest existing: heat-pumps (L1, this batch) runs the loop with bars for heat delivered against work; this page adds what it leaves out: a real refrigerant on a p-h diagram, compressor losses, subcooling and superheat, the Carnot comparison and the transcritical CO2 cycle. heat-engines never runs a cycle backward and has no phase change.
+  > Nearest existing: heat-engines never runs a cycle backward and has no phase change; this page runs a real refrigerant around a p-h diagram, with compressor losses, subcooling and superheat, the Carnot comparison and the transcritical CO2 cycle. The runner-up heat-pumps (level 1) is the householder's version with bars for heat delivered against work.
   > Why: Purdue ME 200 Thermodynamics I homework: a four-component R-134a vapor-compression cycle with evaporator and condenser temperatures, compressor efficiency and COP: https://engineering.purdue.edu/ME200/files/homework/HW36/ME200-Spring2020-HW36-web.html (from search results); demand: IEA, The Future of Heat Pumps, https://www.iea.org/reports/the-future-of-heat-pumps.
   > Data: CoolProp refrigerant property library (MIT licence).
 

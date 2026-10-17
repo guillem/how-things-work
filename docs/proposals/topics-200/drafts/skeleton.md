@@ -1,11 +1,11 @@
 # Proposal: a level 0 and 100 new topics
 
-Written 2026-10-17, after v1.0.0. This is a proposal for the user to review; nothing in it is
-built, and [`TOPICS.md`](TOPICS.md) is unchanged until the user promotes entries from here. The
-entries below use the catalogue's own format, so promoting one is a copy into `TOPICS.md` (plus the
-checklist line, the category count and the links listed under "Links to add to existing entries").
-The indented `>` lines under each entry are proposal notes, not catalogue fields; drop them when
-promoting.
+Written 2026-10-17 and 2026-10-18, after v1.0.0. This is a proposal for the user to review; nothing
+in it is built, and [`TOPICS.md`](TOPICS.md) is unchanged until the user promotes entries from here.
+The entries below use the catalogue's own format, so promoting one is a copy into `TOPICS.md` (plus
+the checklist line, the category count and the links listed under "Links to add to existing
+entries"). The indented `>` lines under each entry are proposal notes, not catalogue fields; drop
+them when promoting.
 
 ## Summary
 
@@ -24,20 +24,20 @@ The catalogue's Levels table gets a new first row:
 
 What a level-0 page is, beyond the reader it is written for:
 
-- It starts from an object or an experience the reader already knows (a toilet, a straw, a
-  shadow, a scab), not from a concept, and the question on the page is the one a ten-year-old
+- It starts from an object or an experience the reader already knows (a toilet, a magnet, a shadow,
+  a sleepy afternoon), not from a concept, and the question on the page is the one a ten-year-old
   asks.
 - No formulas. Numbers appear as counts and comparisons ("twice as far", "a thousand times
   smaller"), with everyday units only (metres, degrees, seconds, litres).
-- One control at a time, and the toy is the takeaway: the reader should see the point by
-  playing, before reading. Six to nine steps, under ten minutes.
-- The bar does not drop: the graphic is driven by a real model, fact-checked like every other
-  page (the toilet's siphon is a real siphon; the lever's balance is the real torque balance).
-  What changes is what is shown and said, not what is computed.
+- One control at a time, and the toy is the takeaway: the reader should see the point by playing,
+  before reading. Six to nine steps, under ten minutes.
+- The bar does not drop: the graphic is driven by a real model, fact-checked like every other page
+  (the toilet's siphon is a real siphon; the drone tilts by real rotor thrusts). What changes is
+  what is shown and said, not what is computed.
 - Prerequisites may only be other level-0 topics, and usually there are none: level-0 pages are
-  roots. Each entry carries a "Leads to" note naming the existing level-1 topics it prepares the
-  reader for. That note is not a catalogue field; it becomes a link when the user wants it (see
-  "Links to add to existing entries").
+  roots. Each entry carries a "Leads to" note naming the existing topics (usually level 1) it
+  prepares the reader for. That note is not a catalogue field; it becomes a link when the user wants
+  it (see "Links to add to existing entries").
 - Every level-0 page ends with a step that names the level-1 page to read next.
 
 {{LEVEL0_FRAMEWORK_NOTE}}
@@ -51,6 +51,10 @@ What a level-0 page is, beyond the reader it is written for:
 ## Categories
 
 {{CATEGORIES}}
+
+## The AI tilt: a ladder for understanding language models
+
+{{LLM_LADDER}}
 
 ## The Reserve list
 
@@ -86,3 +90,7 @@ additions there is nothing to replace; each one is either promoted into this pro
 ## How this list was made
 
 {{METHOD}}
+
+## Open questions
+
+{{OPEN_QUESTIONS}}

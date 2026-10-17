@@ -1,22 +1,6 @@
 {
  "problems": [],
- "warnings": [
-  "resampling-inference: Needs without a licence word: The Palmer penguins dataset (344 penguins, bill and flipper measurements by spec",
-  "blue-sky-red-sunset: Needs without a licence word: None that needs a licence: sunlight above the air as a Planck spectrum at the Su",
-  "magnets-and-poles: level 0 without a leadsTo",
-  "dissolving-sugar-and-salt: Needs without a licence word: Solubility of sucrose and of sodium chloride in water from 0 to 100 °C (about a ",
-  "chromatography: Needs without a licence word: No external data: the model is the Giddings-Eyring stochastic model (exponential",
-  "dislocations-alloys: Needs without a licence word: None beyond a 2D Lennard-Jones pair potential, the same kind of model states-of-",
-  "huckel-molecular-orbitals: Needs without a licence word: Measured absorption maxima of a cyanine dye series for the color panel, to set b",
-  "transition-state-theory: Needs without a licence word: LEPS (Sato) parameters for the H3 and FH2 surfaces.",
-  "be-the-bird-camouflage: Needs without a licence word: Bark textures, either procedurally generated or public-domain or CC0 photographs",
-  "mri-k-space: Needs without a licence word: The Shepp-Logan phantom (a mathematical object, no data); optionally one real T1",
-  "comet-tails: Needs without a licence word: Orbital elements of comet 1P/Halley (perihelion distance, eccentricity, period) ",
-  "elliptic-curve-cryptography: Needs without a licence word: Curve parameters from public standards (secp256k1, Curve25519), which are publis",
-  "k-means-clustering: Needs without a licence word: The Palmer penguins measurements (344 penguins, three species).",
-  "chain-of-thought-scratchpad: Needs without a licence word: Two tiny transformers trained offline by the project on generated addition probl",
-  "bicycle-stability: Needs without a licence word: The benchmark bicycle parameters and linearized equations of Meijaard, Papadopou"
- ],
+ "warnings": [],
  "counts": {
   "byLevelBefore": {
    "1": 38,
@@ -38,11 +22,11 @@
   "kinds": {
    "simulate": 41,
    "build": 12,
-   "manipulate": 29,
+   "manipulate": 31,
    "explore": 6,
-   "step": 12
+   "step": 10
   },
-  "everyday": 28,
+  "everyday": 29,
   "total": 100
  },
  "backlinks": [
@@ -51,16 +35,48 @@
    "add": "monty-hall"
   },
   {
-   "existing": "graphics-3d",
-   "add": "bezier-curves"
+   "existing": "chaos-fractals",
+   "add": "cellular-automata"
   },
   {
-   "existing": "bayes-theorem",
-   "add": "probability-trees"
+   "existing": "turing-machines",
+   "add": "cellular-automata"
   },
   {
-   "existing": "central-limit-theorem",
-   "add": "probability-trees"
+   "existing": "logic-gates",
+   "add": "cellular-automata"
+  },
+  {
+   "existing": "radioactivity",
+   "add": "exponentials-logarithms"
+  },
+  {
+   "existing": "epidemics",
+   "add": "exponentials-logarithms"
+  },
+  {
+   "existing": "acids-bases",
+   "add": "exponentials-logarithms"
+  },
+  {
+   "existing": "earthquakes",
+   "add": "exponentials-logarithms"
+  },
+  {
+   "existing": "sorting",
+   "add": "exponentials-logarithms"
+  },
+  {
+   "existing": "evolution",
+   "add": "game-theory-cooperation"
+  },
+  {
+   "existing": "ecosystems",
+   "add": "game-theory-cooperation"
+  },
+  {
+   "existing": "reinforcement-learning",
+   "add": "game-theory-cooperation"
   },
   {
    "existing": "epidemics",
@@ -216,14 +232,6 @@
   },
   {
    "existing": "cancer",
-   "add": "luria-delbruck"
-  },
-  {
-   "existing": "crispr",
-   "add": "luria-delbruck"
-  },
-  {
-   "existing": "cancer",
    "add": "population-genetics"
   },
   {
@@ -295,6 +303,18 @@
    "add": "leap-years"
   },
   {
+   "existing": "medical-imaging",
+   "add": "aperture-synthesis"
+  },
+  {
+   "existing": "black-holes",
+   "add": "aperture-synthesis"
+  },
+  {
+   "existing": "gravitational-waves",
+   "add": "aperture-synthesis"
+  },
+  {
    "existing": "rockets",
    "add": "lagrange-points-three-body"
   },
@@ -309,22 +329,6 @@
   {
    "existing": "reinforcement-learning",
    "add": "game-tree-search"
-  },
-  {
-   "existing": "calculus",
-   "add": "how-simulations-work"
-  },
-  {
-   "existing": "feedback-control",
-   "add": "how-simulations-work"
-  },
-  {
-   "existing": "chaos-fractals",
-   "add": "how-simulations-work"
-  },
-  {
-   "existing": "oscillations-resonance",
-   "add": "how-simulations-work"
   },
   {
    "existing": "gpu",
@@ -425,14 +429,6 @@
   {
    "existing": "feedback-control",
    "add": "drone-four-rotors"
-  },
-  {
-   "existing": "feedback-control",
-   "add": "room-thermostat"
-  },
-  {
-   "existing": "homeostasis",
-   "add": "room-thermostat"
   },
   {
    "existing": "feedback-control",
@@ -581,12 +577,12 @@
    "by": "lac-operon"
   },
   {
-   "existing": "evolution",
-   "by": "luria-delbruck"
+   "existing": "the-cell",
+   "by": "morphogen-gradients"
   },
   {
-   "existing": "central-limit-theorem",
-   "by": "luria-delbruck"
+   "existing": "dna-to-protein",
+   "by": "morphogen-gradients"
   },
   {
    "existing": "meiosis-inheritance",
@@ -697,12 +693,16 @@
    "by": "radiative-convective-column"
   },
   {
-   "existing": "orbits-kepler",
-   "by": "galaxy-collisions"
+   "existing": "fourier-transform",
+   "by": "aperture-synthesis"
   },
   {
-   "existing": "dark-matter",
-   "by": "galaxy-collisions"
+   "existing": "waves-interference",
+   "by": "aperture-synthesis"
+  },
+  {
+   "existing": "light-optics",
+   "by": "aperture-synthesis"
   },
   {
    "existing": "orbits-kepler",
@@ -711,10 +711,6 @@
   {
    "existing": "graph-search",
    "by": "game-tree-search"
-  },
-  {
-   "existing": "newtons-laws",
-   "by": "how-simulations-work"
   },
   {
    "existing": "cpu",

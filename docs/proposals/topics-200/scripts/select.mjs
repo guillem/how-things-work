@@ -164,17 +164,25 @@ const halfJudged = pool.filter((e) => Object.keys(e.scores).length === 1).map((e
 // --- select by quota (as the single-run script did) ---
 const eligible = pool.filter((e) => !e.rejected && e.score > 0);
 // Scores are means of two 1-to-5 marks, so ties are common. Ties go to the higher fit-level
-// mark (fit, honest level and distinctness), then to AI (the user's tilt), then to the demand
+// mark (fit, honest level and distinctness), then to AI (the user's tilt), then to Reserve promotions, then to the demand
 // lens's candidates, then to a
 // fixed hash of the slug (not the alphabet, which would favour early letters).
 const ORIGIN = Object.fromEntries(
 	JSON.parse(fs.readFileSync(path.join(DATA, 'pool.json'), 'utf8')).map((e) => [e.slug, e.origin])
+);
+// Candidates a generator named as the promotion of one of the catalogue's 14 Reserve items: the
+// catalogue already shortlisted those subjects, so they win exact ties after AI.
+const RESERVE = new Set(
+	JSON.parse(fs.readFileSync(path.join(DATA, 'dispositions.json'), 'utf8'))
+		.filter((d) => d.decision !== 'drop')
+		.map((d) => norm(d.slug))
 );
 const hash = (s) => [...s].reduce((h, c) => (Math.imul(h, 31) + c.charCodeAt(0)) >>> 0, 7);
 const rank = (a, b) =>
 	b.score - a.score ||
 	(b.scores['fit-level'] || 0) - (a.scores['fit-level'] || 0) ||
 	(b.category === 'ai') - (a.category === 'ai') ||
+	(RESERVE.has(b.slug) ? 1 : 0) - (RESERVE.has(a.slug) ? 1 : 0) ||
 	(ORIGIN[b.slug] === 'demand') - (ORIGIN[a.slug] === 'demand') ||
 	hash(a.slug) - hash(b.slug);
 const byScore = [...eligible].sort(rank);
@@ -240,6 +248,12 @@ const targetOf = (level, cat) =>
 // Swaps decided by hand after the curator: the curator's own same-category alternative where its
 // cross-category swap was refused.
 const EDITOR_SWAPS = [
+	{
+		out: 'tennis-racket-theorem',
+		in: 'ising-model',
+		reason:
+			"The curator swapped tennis-racket-theorem for lasers; with the Reserve tie-break lasers enters by itself and pushed out ising-model on a hash tie instead, so this restores the curator's intent: the narrower rigid-body curiosity goes, phase transitions stay."
+	},
 	{
 		out: 'sink-or-float',
 		in: 'salt-and-ice',

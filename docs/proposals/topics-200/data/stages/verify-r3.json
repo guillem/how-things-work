@@ -1,0 +1,99 @@
+[
+ {
+  "label": "verify:r3b2",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "aperture-synthesis",
+     "refuted": false,
+     "reason": "Distinct: no Space page covers telescopes or interferometry; gravitational-waves has a laser interferometer measuring length change, not imaging; medical-imaging is the nearest mechanism (an image computed from indirect samples) but uses projections and back-projection in CT, not Fourier samples from correlated pairs. Level 3 is honest: aperture synthesis is graduate or master's material (NRAO Synthesis Imaging Workshop; Chalmers RRY131; Manchester PHYS40491), and the prerequisites sit at levels 1-2. It can be built in the browser: a 2D FFT on a 128-256 grid, uv tracks from Earth-rotation geometry, and Hogbom CLEAN all run at interactive rates (APSYNSIM, a GPL Python teaching tool, does exactly this on the desktop). The takeaway and pitfall are correct, and so is 'spread it to lose the extended emission': the shortest baseline sets the largest recoverable scale. Small fixes: each baseline samples a Hermitian pair of uv points, not one; name the optional open data (array layouts) in needs; record the medical-imaging contrast in overlapWith.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Place radio dishes on a map and pick a model sky; every pair of dishes samples the sky's Fourier transform at one point and its mirror image, and as the Earth turns each pair traces a pair of arcs in the uv plane. Watch the dirty beam and the dirty image form from whatever the array has sampled: two dishes see only stripes, a dozen over six hours see the source. Run CLEAN step by step, subtracting the beam from the brightest point until the image emerges, and compare it with the truth; shrink the array to lose resolution, spread it to lose the extended emission.",
+      "needs": "No external data required: model skies (point sources, a disc, a jet) are generated in code and the model is a 2D FFT plus Hogbom CLEAN. Optional real array layouts (VLA Y with 120-degree arms; ALMA configurations from the CASA simulator's antenna-configuration files, CASA being open source under the GPL), or the coordinates published in open-access papers.",
+      "needsSource": "none required; optional array layouts from CASA's open-source configuration files (GPL) or open-access papers",
+      "overlapWith": "light-optics: that page forms images with lenses and never treats resolution as a Fourier limit; medical-imaging also computes an image from indirect measurements, but from projections combined by filtered back-projection, whereas this page fills the Fourier plane with correlations between pairs of separated telescopes and deconvolves with CLEAN.",
+      "related": [
+       "medical-imaging",
+       "black-holes",
+       "gravitational-waves",
+       "fourier-transform"
+      ]
+     }
+    }
+   ]
+  }
+ },
+ {
+  "label": "verify:r3b1",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "morphogen-gradients",
+     "refuted": false,
+     "reason": "Distinct from every existing page: the-cell is an organelle zoom and nothing in biology covers development (the catalogue's Reserve list names 'Embryo development & pattern formation' as missing). The selected turing-patterns page is a different mechanism (self-organised wavelength, no source), so the two make a natural pair rather than a duplicate. Level 3 is honest: the steady-state synthesis-diffusion-degradation profile, length scale sqrt(D/k), thresholds and positional error are university developmental and systems biology material. Prerequisites the-cell and dna-to-protein are level 1. It runs as a 1D reaction-diffusion PDE, cheap in the browser. The pitfall is accurate, since Bicoid gradient formation is still debated. The one vague point is 'switch on a scaling mechanism'. The literature model is Ben-Zvi and Barkai's expansion-repression circuit (an expander that widens the gradient and is repressed by morphogen signalling), which also runs as a small PDE. The fix names that model, makes the noise step compute positional error from the gradient's slope, and links turing-patterns.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Drag the production rate, diffusion constant and lifetime of a morphogen made at one end of a row of cells and watch its concentration profile settle into an exponential whose length scale, the square root of diffusion over decay, the page reports. Set two or three thresholds and the cells paint themselves in bands, Wolpert's French flag. Double the tissue's length and the bands fail to scale; switch on Ben-Zvi and Barkai's expansion-repression circuit (a second diffusing 'expander' that widens the gradient and is shut off by the morphogen) and the bands stay in proportion. Add noise to the concentration and see that boundaries where the gradient is steep stay sharp while those in its flat tail blur.",
+      "related": [
+       "turing-patterns"
+      ],
+      "needs": "No data needed: a 1D synthesis-diffusion-degradation PDE plus the expansion-repression model (Ben-Zvi & Barkai 2010, PNAS), both run live. Optional comparison: published Bicoid length scales (about 20% of egg length, Gregor et al. 2007), quoted as numbers with citation.",
+      "needsSource": "none (model only; quoted literature values cited, not redistributed)"
+     }
+    },
+    {
+     "slug": "light-bulb-hot-wire",
+     "refuted": true,
+     "reason": "The page itself is distinct: electric-circuits treats the bulb as a circuit element, and the overlapping pool entry glowing-hot was not selected. Level 0 is honest and the model is buildable: a tungsten filament power balance (resistance rising with temperature, Stefan-Boltzmann radiation) plus Planck's law and the CIE curves, all cheap in the browser. The CIE data checks out: CIE's own open-access datasets carry CC BY-SA 4.0 in their metadata (cie.co.at/data-tables). The problem is a factual error in the LED half. White LED bulbs turn only roughly 30 to 50% of their electricity into light, so the rest is heat. For the same light (about 800 lm, 60 W incandescent against roughly 8 to 9 W LED) the LED's heat falls about tenfold, but it is still larger than its light bar. That heat leaves through the base and heat sink rather than as infrared, so the LED bulb does not 'nearly vanish' or run 'nearly cold'. Saying it does repeats a popular misconception. The fix also states which light bar is shown. An incandescent bulb's visible share is about 2% of its electricity if weighted by eye sensitivity, and roughly 5 to 10% if counted as power in the visible band.",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Slide a dimmer and watch the thin wire inside an old-style bulb go from dark to dull red to orange to white as it heats, while a bar splits what the bulb takes into light you can see and heat. At full brightness the heat bar is dozens of times the light bar, and most of that heat leaves as invisible infrared you feel on your hand. Swap in an LED bulb giving the same light: the electricity it needs, and so its heat bar, shrinks to about a tenth, though the LED still makes more heat than light and warms its base instead of glowing in infrared.",
+      "takeaway": "An old bulb makes light by heating a wire until it glows white and wastes nearly all its electricity as heat, while an LED makes the same light from about a tenth of the electricity, so far less heat.",
+      "pitfall": "The wire does not burn: there is no oxygen inside the bulb, which is why a tungsten filament lasts about a thousand hours. Brightness does not rise in step with the dimmer: a little more current makes the wire much hotter, much brighter and whiter. And an LED is not cold: it still turns over half its electricity into heat, only much less electricity overall.",
+      "needs": "The CIE 1931 colour-matching functions and the photopic V(lambda) curve, to turn the filament's temperature into an on-screen colour and a light-versus-heat split (CIE open-access datasets, CC BY-SA 4.0, cie.co.at/data-tables; also at cvrl.org). Tungsten's resistivity and emissivity against temperature from Jones & Langmuir (1927, General Electric Review), quoted as numbers, or a grey-body emissivity of about 0.4 documented as an approximation. The LED's efficiency is a documented typical value (white LED bulbs at about 90 to 100 lm/W, against about 15 lm/W for incandescent).",
+      "needsSource": "CIE 1931 CMFs and V(lambda): CIE open-access datasets, CC BY-SA 4.0 (cie.co.at); tungsten property values are published physical constants, cited."
+     }
+    },
+    {
+     "slug": "cellular-automata",
+     "refuted": true,
+     "reason": "Against the existing catalogue it is distinct: chaos-fractals is continuous, and turing-machines is a tape machine. 'Cellular automata' is on the Reserve list, the level is honest for level 1, and the model is trivial to run in the browser. But the selection also contains life-on-a-grid (level 0), which already paints cells, steps Conway's Game of Life, finds blinkers and gliders and edits the rule numbers. Half of this page, and its pitfall about gliders, would repeat that page. The fix narrows this one to what the level-0 page lacks: one-dimensional elementary rules and their 8-bit lookup table, the space of 256 rules and Wolfram's four classes, rule 30's deterministic randomness, rule 90's Sierpinski triangle, rule 184 as a traffic model that conserves cars, and rule 110's universality. Life becomes a level-0 prerequisite (allowed, since it is not above level 1).",
+     "hasFix": true,
+     "fixed": {
+      "interaction": "Set the eight bits of a one-dimensional rule by clicking its lookup table, and run it from a single live cell or a random row, each generation drawn as a new line below the last. Rule 90 draws a Sierpinski triangle, rule 30 looks random, rule 110 carries colliding structures, and rule 184 moves cars along a road that jams once more than half the cells are full. Step through all 256 rules and sort them into Wolfram's four classes (die out, repeat, look random, build structures), with a count of live cells over time to compare rules.",
+      "takeaway": "A rule that only looks at a cell and its two neighbours, applied everywhere at once, can die out, repeat, look random or build moving structures, and changing one bit of the rule can switch between them.",
+      "prerequisites": [
+       "life-on-a-grid"
+      ],
+      "related": [
+       "chaos-fractals",
+       "turing-machines",
+       "logic-gates",
+       "life-on-a-grid"
+      ],
+      "pitfall": "Rule 30 looks random but is completely determined: the same starting row always gives the same pattern. And most rules do not make complexity; they die out or repeat, and only a few, like rule 110, build lasting structures.",
+      "overlapWith": "life-on-a-grid (proposed, level 0): that page plays Conway's two-dimensional Game of Life; this page opens the rule itself as an 8-bit table in one dimension, surveys all 256 rules and their classes, and shows a CA as a traffic model and as a universal computer. chaos-fractals shows complexity in continuous systems; turing-machines uses a tape and head, not a grid of cells updating at once.",
+      "why": "Wikipedia, Elementary cellular automaton and Rule 184 (traffic model): https://en.wikipedia.org/wiki/Rule_184 ; 'Cellular automata' is listed in the catalogue's Reserve."
+     }
+    },
+    {
+     "slug": "exponentials-logarithms",
+     "refuted": false,
+     "reason": "The catalogue's Reserve names this topic. radioactivity (half-life decay), epidemics (case doubling) and rockets (the rocket equation) each use an exponential inside a mechanism, but none isolates growth by a constant factor, the log axis or the logarithm as a count of steps. The overlapping pool entry growing-patterns (level 0) was not selected. Level 1 is honest: Common Core HSF-LE puts exponential models and logarithms as solutions of a*b^(ct)=d in high school. It runs as pure arithmetic, curves and a slide-rule construction. The takeaway is sound, reading a logarithm as the count of factor steps, fractional counts included. The pitfall is a real misconception, correctly stated. Small improvement: the entry says the log-scale slope 'is the growth rate'; strictly it is the logarithm of the growth factor per step, so the narrative should phrase it as 'a fixed growth factor'.",
+     "hasFix": false,
+     "fixed": {}
+    },
+    {
+     "slug": "game-theory-cooperation",
+     "refuted": false,
+     "reason": "Distinct from the catalogue: evolution has no choosing agents or payoffs, and reinforcement-learning is a single agent. 'Game theory' is on the Reserve list, and the level-3 replicator-dynamics entries (evolutionary-games, evolutionary-game-theory) were not selected. Level 1 is honest. The model is an exact algorithm: an iterated prisoner's dilemma round-robin, imitation dynamics, and a Nowak-May spatial grid. The pitfall is factually right: Axelrod himself notes tit for tat never did better than the player it faced and won on total score. The 2014 reanalysis (PMC4520619) confirms its success depends on payoffs, tournament design and noise. The takeaway, though, states a universal law ('beats pure selfishness') that the entry's own pitfall contradicts: under noise, or among enough defectors, tit for tat loses. The fix softens the takeaway to 'can outscore', with the conditions observable in the toy.",
+     "hasFix": true,
+     "fixed": {
+      "takeaway": "When the same players meet again and again, strategies that start nice, hit back and forgive can outscore pure selfishness, so cooperation can take hold among players who each look after only themselves, unless the games are too short or too few others cooperate."
+     }
+    }
+   ]
+  }
+ }
+]

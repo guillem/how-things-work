@@ -1,0 +1,62 @@
+{
+ "monty-hall": {
+  "pitfall": "The host must know where the prize is and always open a goat door; if the host opens a door at random and happens to show a goat, the two remaining doors really are equal, and the page should show that case too."
+ },
+ "shapes-that-tile": {
+  "leadsTo": [
+   "unit-circle"
+  ]
+ },
+ "magnets-and-poles": {
+  "leadsTo": [
+   "electromagnetism"
+  ]
+ },
+ "differential-equations": {
+  "overlapWith": "calculus finds the slope and area of a given curve; this page starts from the slope rule and finds the curve. phase-portraits (proposed, level 3) owns two-variable systems such as springs and predator–prey; this page is the one-variable slope field, equilibria and their stability."
+ },
+ "resampling-inference": {
+  "overlapWith": "learning-from-data: that page fits a curve and shows overfitting with a held-out set; this page asks whether a difference or slope is real by rebuilding the chance distribution from the data, and how often the resulting intervals actually catch the truth."
+ },
+ "dissolving-sugar-and-salt": {
+  "overlapWith": "states-of-matter: that page changes the phase of one substance; this page mixes two solids into water and shows that temperature raises how much sugar water will take but barely changes salt. (The pool's dissolving-sugar was merged into this entry.)"
+ },
+ "next-word-guessing-game": {
+  "overlapWith": "language-models shows the same loop with a real network for a level-2 reader; this page has a counting machine write whole stories by drawing words at random in proportion to the counts and feeding each one back in, the loop a chatbot runs. The runner-up autocomplete-spellcheck suggests only the single most common next word while you type."
+ },
+ "k-means-clustering": {
+  "overlapWith": "learning-from-data fits labelled points and embeddings shows a map of words that cluster; neither runs an algorithm that finds groups without labels. The runner-up clustering-gaussian-mixtures (level 3) would start where this page ends: soft Gaussian clusters with EM and density-based methods."
+ },
+ "ngram-text-models": {
+  "overlapWith": "language-models shows a trained network's predictions; this page builds the counting model that came before it and measures why counting cannot reach far back. The level-0 next-word-guessing-game uses one- or two-word counts with no window slider and no held-out measurement."
+ },
+ "heat-pumps-refrigeration": {
+  "overlapWith": "heat-engines never runs a cycle backward and has no phase change; this page runs a real refrigerant around a p-h diagram, with compressor losses, subcooling and superheat, the Carnot comparison and the transcritical CO2 cycle. The runner-up heat-pumps (level 1) is the householder's version with bars for heat delivered against work."
+ },
+ "fireflies-in-sync": {
+  "overlapWith": "oscillations-resonance: one oscillator pushed at a frequency; this page is many self-timed flashers nudging each other into step, which is not resonance. The runner-up kuramoto-synchronization (level 3) is the grown-up phase-coupled model."
+ },
+ "why-metal-feels-cold": {
+  "needsSource": "Under twenty published material constants (textbook tables; Wikipedia CC BY-SA); facts, no dataset"
+ },
+ "chromatography": {
+  "needs": "",
+  "needsSource": "none: the Giddings-Eyring stochastic model with illustrative partition coefficients and diffusivities, not values for named compounds"
+ },
+ "dislocations-alloys": {
+  "needs": "",
+  "needsSource": "none: a 2D Lennard-Jones crystal, the same kind of model states-of-matter runs; the ideal-against-measured shear strength factor is quoted from textbook values"
+ },
+ "comet-tails": {
+  "needs": "Orbital elements of comet 1P/Halley (perihelion distance, eccentricity, period) from the JPL Small-Body Database: a few published numbers, typed into the model and free to reuse with the credit 'Courtesy NASA/JPL-Caltech' under JPL's open data policy."
+ },
+ "elliptic-curve-cryptography": {
+  "needs": "Curve parameters from the openly published standards SEC 2 (secp256k1) and RFC 7748 (Curve25519)."
+ },
+ "chain-of-thought-scratchpad": {
+  "needs": "Two tiny transformers trained offline by the project on generated addition problems (with and without a scratchpad), shipped and run in the page; the weights are the project's own, under the site's MIT licence."
+ },
+ "lagrange-points-three-body": {
+  "takeaway": "Three bodies have no general closed-form solution and nearby paths split apart, but there are five points where a small body can keep pace with the other two: three balanced on a knife edge, and two that are stable while the smaller mass is light enough."
+ }
+}

@@ -2,8 +2,9 @@
 - [ ] monty-hall
 - [ ] shapes-that-tile
 - [ ] why-triangles-are-stiff
-- [ ] bezier-curves
-- [ ] probability-trees
+- [ ] cellular-automata
+- [ ] exponentials-logarithms
+- [ ] game-theory-cooperation
 - [ ] differential-equations
 - [ ] calculus-of-variations
 - [ ] phase-portraits
@@ -40,7 +41,7 @@
 - [ ] pcr-copying-dna
 - [ ] bacterial-chemotaxis
 - [ ] lac-operon
-- [ ] luria-delbruck
+- [ ] morphogen-gradients
 - [ ] population-genetics
 - [ ] turing-patterns
 
@@ -69,7 +70,7 @@
 - [ ] comet-tails
 - [ ] earth-is-a-ball
 - [ ] leap-years
-- [ ] galaxy-collisions
+- [ ] aperture-synthesis
 - [ ] lagrange-points-three-body
 
 **Computing**
@@ -77,7 +78,6 @@
 - [ ] secret-codes
 - [ ] twenty-questions
 - [ ] game-tree-search
-- [ ] how-simulations-work
 - [ ] cache-memory-hierarchy
 - [ ] hash-tables-bloom-filters
 
@@ -112,7 +112,7 @@
 - [ ] clock-escapement
 - [ ] drone-four-rotors
 - [ ] hydraulics-digger-arm
-- [ ] room-thermostat
+- [ ] light-bulb-hot-wire
 - [ ] toilet-flush
 - [ ] abs-brakes
 - [ ] bicycle-stability

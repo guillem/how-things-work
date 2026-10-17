@@ -74,6 +74,33 @@ for (const row of result.final) {
 	e.fixedFields = Object.keys(fix);
 	final.push(e);
 }
+// Agents' structured output sometimes carries HTML entities (&amp;); the catalogue is plain text.
+const decode = (v) =>
+	typeof v === 'string'
+		? v
+				.replace(/&amp;/g, '&')
+				.replace(/&lt;/g, '<')
+				.replace(/&gt;/g, '>')
+				.replace(/&quot;/g, '"')
+				.replace(/&#39;/g, "'")
+		: Array.isArray(v)
+			? v.map(decode)
+			: v;
+for (const e of final) for (const k of Object.keys(e)) e[k] = decode(e[k]);
+
+// --- editorial fixes by hand (data/editorial.json: { slug: { field: value } }), kept in a file so
+// that a re-run of the stages and of this script does not lose them ---
+const EDITS_FILE = path.join(DATA, 'editorial.json');
+const edits = fs.existsSync(EDITS_FILE) ? JSON.parse(fs.readFileSync(EDITS_FILE, 'utf8')) : {};
+for (const e of final)
+	for (const [k, v] of Object.entries(edits[e.slug] || {})) {
+		e[k] = v;
+		e.editorial = [...(e.editorial || []), k];
+	}
+for (const s of Object.keys(edits))
+	if (!final.some((e) => e.slug === s))
+		notes.push(`editorial.json names ${s}, which is not in the final list`);
+
 // --- mechanical link pass ---
 const existing = new Set(
 	JSON.parse(fs.readFileSync(path.join(DATA, 'existing.json'), 'utf8')).existing.map((x) => x.slug)

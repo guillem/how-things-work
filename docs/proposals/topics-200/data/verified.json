@@ -7,14 +7,14 @@
    "3": 48
   },
   "byCategory": {
-   "math": 11,
+   "math": 12,
    "physics": 8,
    "chemistry": 8,
    "biology": 11,
    "medicine": 9,
    "earth": 8,
    "space": 5,
-   "computing": 7,
+   "computing": 6,
    "networks": 9,
    "ai": 14,
    "energy": 10
@@ -22,9 +22,9 @@
   "byKind": {
    "simulate": 41,
    "build": 12,
-   "manipulate": 29,
+   "manipulate": 31,
    "explore": 6,
-   "step": 12
+   "step": 10
   }
  },
  "pending": [],
@@ -85,47 +85,73 @@
    "verifyNote": "It is distinct from bridges-structures, which colours members by tension and compression under load. This page is about the rigidity of a pin-jointed frame (a mechanism against a structure), and the pitfall keeps the two apart. The claim is correct: the pin-jointed triangle is the only polygon that cannot deform, and triangulation makes a frame rigid. A small constraint solver (or springs) that shows the motions still allowed is easy to build in the browser and needs no data. It is honest at level 0 and grounded in the KS1/KS2 design and technology wording on stiffening structures."
   },
   {
-   "slug": "bezier-curves",
+   "slug": "cellular-automata",
    "level": 1,
    "category": "math",
-   "kind": "manipulate",
-   "title": "Bézier curves: how fonts and vector drawings bend",
+   "kind": "simulate",
+   "title": "Cellular automata",
    "score": 13.5,
    "scores": {
     "fit-level": 4,
     "build": 5
    },
    "judgeNotes": [
-    "fit-level 4: Repeated straight-line interpolation (de Casteljau) is a real algorithm behind fonts and vector drawing, it draws as a mechanism directly, it is honest at level 1 and no existing page shows it.",
-    "build 5: De Casteljau's algorithm with draggable control points, a t scrubber, convex hull and joined segments is the exact model and runs instantly in SVG."
+    "fit-level 4: A topic promoted from the catalogue's reserve, with editable rules and patterns that emerge from them, honest at level 1 and distinct from chaos-fractals' continuous systems.",
+    "build 5: Game of Life on a modest grid and elementary 1D rules from an 8-bit table are exact, cheap algorithms that run at interactive rates in SVG."
    ],
-   "verifyNote": "Distinct: no catalogue page (graphics-3d is projection and ray tracing) builds curves from control points. Level 1 is honest because de Casteljau's construction is repeated straight-line mixing that a slider shows with no formula. The model is trivial to run in the browser and needs no data. The pitfall is correct (the curve passes through its end points but not its middle handles, and t is not arc length), and so is the convex-hull claim. One imprecision: a join is smooth (G1) only when both handles and the join point are collinear with the join point between them. Collinear handles on the same side give a cusp, so the interaction wording is tightened.",
+   "verifyNote": "Against the existing catalogue it is distinct: chaos-fractals is continuous, and turing-machines is a tape machine. 'Cellular automata' is on the Reserve list, the level is honest for level 1, and the model is trivial to run in the browser. But the selection also contains life-on-a-grid (level 0), which already paints cells, steps Conway's Game of Life, finds blinkers and gliders and edits the rule numbers. Half of this page, and its pitfall about gliders, would repeat that page. The fix narrows this one to what the level-0 page lacks: one-dimensional elementary rules and their 8-bit lookup table, the space of 256 rules and Wolfram's four classes, rule 30's deterministic randomness, rule 90's Sierpinski triangle, rule 184 as a traffic model that conserves cars, and rule 110's universality. Life becomes a level-0 prerequisite (allowed, since it is not above level 1).",
    "fix": {
-    "interaction": "Drag the four control points of a curve and it follows; slide t from 0 to 1 and watch the construction: a point slides the fraction t along each leg between control points, then along the legs between those points, and the last point traces the curve. Chain curves into a letter and see that a join is smooth only when the two handles at the join and the join point lie on one straight line, with the join point between them; turn on the hull to see that a curve never leaves the shape of its own control points, and add or remove control points.",
-    "why": "Freya Holmér's 'The Beauty of Bézier Curves' is one of the most-shared maths explainers, and de Casteljau's construction is a standard graphics assignment (Berkeley CS184 HW2, Bézier curves and surfaces): https://cs184.eecs.berkeley.edu/fa26/hw/hw2/section1/"
+    "interaction": "Set the eight bits of a one-dimensional rule by clicking its lookup table, and run it from a single live cell or a random row, each generation drawn as a new line below the last. Rule 90 draws a Sierpinski triangle, rule 30 looks random, rule 110 carries colliding structures, and rule 184 moves cars along a road that jams once more than half the cells are full. Step through all 256 rules and sort them into Wolfram's four classes (die out, repeat, look random, build structures), with a count of live cells over time to compare rules.",
+    "takeaway": "A rule that only looks at a cell and its two neighbours, applied everywhere at once, can die out, repeat, look random or build moving structures, and changing one bit of the rule can switch between them.",
+    "prerequisites": [
+     "life-on-a-grid"
+    ],
+    "related": [
+     "chaos-fractals",
+     "turing-machines",
+     "logic-gates",
+     "life-on-a-grid"
+    ],
+    "pitfall": "Rule 30 looks random but is completely determined: the same starting row always gives the same pattern. And most rules do not make complexity; they die out or repeat, and only a few, like rule 110, build lasting structures.",
+    "overlapWith": "life-on-a-grid (proposed, level 0): that page plays Conway's two-dimensional Game of Life; this page opens the rule itself as an 8-bit table in one dimension, surveys all 256 rules and their classes, and shows a CA as a traffic model and as a universal computer. chaos-fractals shows complexity in continuous systems; turing-machines uses a tape and head, not a grid of cells updating at once.",
+    "why": "Wikipedia, Elementary cellular automaton and Rule 184 (traffic model): https://en.wikipedia.org/wiki/Rule_184 ; 'Cellular automata' is listed in the catalogue's Reserve."
    }
   },
   {
-   "slug": "probability-trees",
+   "slug": "exponentials-logarithms",
    "level": 1,
    "category": "math",
-   "kind": "build",
-   "title": "Counting & probability trees",
+   "kind": "manipulate",
+   "title": "Exponentials & logarithms",
    "score": 13.5,
    "scores": {
     "build": 5,
     "fit-level": 4
    },
    "judgeNotes": [
-    "build 5: Multiplying along branches, a seeded Monte Carlo tally, path counting for Pascal's triangle and the birthday product are exact and trivial to compute; the model is real and needs no data.",
-    "fit-level 4: Probability trees and drawing with or without replacement are core school probability that bayes-theorem and central-limit-theorem don't cover. Running the experiment against the tree's prediction makes a proper interactive mechanism."
+    "build 5: Repeated multiplication, a linear/log axis toggle and a slide rule made of log-length bars are closed-form geometry with no data, a small, honest level-1 model.",
+    "fit-level 4: A core gap: radioactivity and epidemics use exponentials but no page isolates multiply-versus-add growth or explains the log as a count of steps. The slide rule and log axis give the graphic a real mechanism to show."
    ],
-   "verifyNote": "The core is distinct and well grounded: bayes-theorem uses a grid of 1,000 people and never builds a tree or compares drawing with and without replacement, which GCSE higher and A-level teach directly. Two parts of the scope are a problem. Counting paths through a grid to grow Pascal's triangle is what the Galton board in central-limit-theorem already shows (balls taking binomial paths into bins). The birthday problem is a chain of 'no match yet' factors, not path counting, so the takeaway's claim that counting paths explains coincidences is loose. Fix: drop Pascal's triangle, frame the birthday problem as a long product of no-match branches, and correct the takeaway.",
+   "verifyNote": "The catalogue's Reserve names this topic. radioactivity (half-life decay), epidemics (case doubling) and rockets (the rocket equation) each use an exponential inside a mechanism, but none isolates growth by a constant factor, the log axis or the logarithm as a count of steps. The overlapping pool entry growing-patterns (level 0) was not selected. Level 1 is honest: Common Core HSF-LE puts exponential models and logarithms as solutions of a*b^(ct)=d in high school. It runs as pure arithmetic, curves and a slide-rule construction. The takeaway is sound, reading a logarithm as the count of factor steps, fractional counts included. The pitfall is a real misconception, correctly stated. Small improvement: the entry says the log-scale slope 'is the growth rate'; strictly it is the logarithm of the growth factor per step, so the narrative should phrase it as 'a fixed growth factor'."
+  },
+  {
+   "slug": "game-theory-cooperation",
+   "level": 1,
+   "category": "math",
+   "kind": "simulate",
+   "title": "Game theory: why cooperate?",
+   "score": 13.5,
+   "scores": {
+    "build": 5,
+    "fit-level": 4
+   },
+   "judgeNotes": [
+    "build 5: An Axelrod-style round-robin of five fixed strategies, a copy-the-winner population update and a spatial grid game are cheap agent simulations that run easily in the browser, and the honest model needs no equations at level 1.",
+    "fit-level 4: An Axelrod tournament is a vivid, popular mechanism with no existing equivalent and is honest at level 1. Its spatial-grid finale duplicates the one in evolutionary-game-theory, so the grid belongs on only one of the two pages."
+   ],
+   "verifyNote": "Distinct from the catalogue: evolution has no choosing agents or payoffs, and reinforcement-learning is a single agent. 'Game theory' is on the Reserve list, and the level-3 replicator-dynamics entries (evolutionary-games, evolutionary-game-theory) were not selected. Level 1 is honest. The model is an exact algorithm: an iterated prisoner's dilemma round-robin, imitation dynamics, and a Nowak-May spatial grid. The pitfall is factually right: Axelrod himself notes tit for tat never did better than the player it faced and won on total score. The 2014 reanalysis (PMC4520619) confirms its success depends on payoffs, tournament design and noise. The takeaway, though, states a universal law ('beats pure selfishness') that the entry's own pitfall contradicts: under noise, or among enough defectors, tit for tat loses. The fix softens the takeaway to 'can outscore', with the conditions observable in the toy.",
    "fix": {
-    "interaction": "Build a tree of chance events by adding branches with their probabilities: sweets drawn from a bag with and without putting them back, coins, dice; the page multiplies along each branch and adds across them to give the probability of any outcome. Press run to perform the experiment a thousand times and watch the tally approach the tree's prediction. End with the birthday problem as one long branch of 'no match yet': add people one at a time and watch the product of the no-match probabilities fall below a half at 23.",
-    "takeaway": "The probability of a sequence of events is found by multiplying along its path and adding the paths that lead to the same result, and a long chain of individually likely 'no match' steps multiplies down fast, which is why shared birthdays in a class are common.",
-    "overlapWith": "bayes-theorem colours a grid of 1,000 people to show base rates, and central-limit-theorem's Galton board already counts binomial paths into bins; this page builds the tree itself, compares drawing with and without replacement, and multiplies a chain of branches (the birthday problem), none of which the existing pages do.",
-    "why": "Tree diagrams for dependent events (without replacement) in GCSE higher maths: https://www.cognito.org/blog/gcse-maths-probability ; Edexcel A-level statistics tree diagrams: https://www.mathsgenie.co.uk/a-level/maths/edexcel/content/a-level-statistics-tree-diagrams"
+    "takeaway": "When the same players meet again and again, strategies that start nice, hit back and forgive can outscore pure selfishness, so cooperation can take hold among players who each look after only themselves, unless the games are too short or too few others cooperate."
    }
   },
   {
@@ -813,23 +839,28 @@
    }
   },
   {
-   "slug": "luria-delbruck",
+   "slug": "morphogen-gradients",
    "level": 3,
    "category": "biology",
-   "kind": "step",
-   "title": "Luria-Delbruck: mutations before selection",
+   "kind": "manipulate",
+   "title": "Morphogen gradients & positional information",
    "score": 13.5,
    "scores": {
     "fit-level": 4,
     "build": 5
    },
    "judgeNotes": [
-    "fit-level 4: A landmark experiment run as a clone-statistics simulation whose jackpot distribution shows its own takeaway, and it deepens evolution's pitfall rather than repeating it.",
-    "build 5: Growing twenty cultures by branching with mutations at division, against a Poisson alternative, is a trivial simulation, and the jackpot plates and the estimate from the share of empty plates come directly out of it."
+    "fit-level 4: Covers the reserve item on pattern formation with a real diffusion-decay model and the French flag; it is distinct, but it should be planned together with turing-patterns and segmentation-clock so the three do not blur.",
+    "build 5: A 1D diffusion-decay PDE with thresholds is a small honest model with an analytic steady state to check against; the scaling mechanism needs one stated extra term."
    ],
-   "verifyNote": "The topic is distinct, buildable and honestly levelled. The model is a stochastic branching or clone simulation with Poisson and jackpot distributions and the p0 = e^-m estimate, which Luria and Delbruck's own example used (11 of 20 plates empty). evolution only states the conclusion in its pitfall. The takeaway overgeneralizes, however: the experiment shows that phage-resistance mutations arose before and independently of exposure to the phage. It does not show that mutations in general happen 'regardless' of the challenge: stress-induced mutagenesis exists and raises mutation rates without directing them. The takeaway should be scoped to what the graphic shows.",
+   "verifyNote": "Distinct from every existing page: the-cell is an organelle zoom and nothing in biology covers development (the catalogue's Reserve list names 'Embryo development & pattern formation' as missing). The selected turing-patterns page is a different mechanism (self-organised wavelength, no source), so the two make a natural pair rather than a duplicate. Level 3 is honest: the steady-state synthesis-diffusion-degradation profile, length scale sqrt(D/k), thresholds and positional error are university developmental and systems biology material. Prerequisites the-cell and dna-to-protein are level 1. It runs as a 1D reaction-diffusion PDE, cheap in the browser. The pitfall is accurate, since Bicoid gradient formation is still debated. The one vague point is 'switch on a scaling mechanism'. The literature model is Ben-Zvi and Barkai's expansion-repression circuit (an expander that widens the gradient and is repressed by morphogen signalling), which also runs as a small PDE. The fix names that model, makes the noise step compute positional error from the gradient's slope, and links turing-patterns.",
    "fix": {
-    "takeaway": "The resistant bacteria were already there before the virus arrived, from random mutations in earlier generations, and the wild spread between replicate cultures (a few jackpots, many empty plates) is the signature of mutations that come before selection rather than in response to it."
+    "interaction": "Drag the production rate, diffusion constant and lifetime of a morphogen made at one end of a row of cells and watch its concentration profile settle into an exponential whose length scale, the square root of diffusion over decay, the page reports. Set two or three thresholds and the cells paint themselves in bands, Wolpert's French flag. Double the tissue's length and the bands fail to scale; switch on Ben-Zvi and Barkai's expansion-repression circuit (a second diffusing 'expander' that widens the gradient and is shut off by the morphogen) and the bands stay in proportion. Add noise to the concentration and see that boundaries where the gradient is steep stay sharp while those in its flat tail blur.",
+    "related": [
+     "turing-patterns"
+    ],
+    "needs": "No data needed: a 1D synthesis-diffusion-degradation PDE plus the expansion-repression model (Ben-Zvi & Barkai 2010, PNAS), both run live. Optional comparison: published Bicoid length scales (about 20% of egg length, Gregor et al. 2007), quoted as numbers with citation.",
+    "needsSource": "none (model only; quoted literature values cited, not redistributed)"
    }
   },
   {
@@ -1331,26 +1362,31 @@
    "verifyNote": "Distinct from sun-earth-moon, which explains why there are seasons, not how a calendar stays lined up with them. It suits L0: it starts from an everyday object (February 29), the numbers are only counts and comparisons (a quarter of a day), and one toggle drives each step. The model is the real arithmetic of the tropical year (about 365.2422 days) against the calendar rules. The numbers check out. Without leap days the calendar slips about 0.24 days a year: roughly a month in about 125 years, and the summer solstice reaches winter after about 750 years ('seven or eight centuries'). The Julian every-four-years rule leaves about one day per 128 years, roughly 8 days in a thousand years, the 'small drift' the 1582 Gregorian reform fixed. The pitfall about 1900 and 2000 is correct. No external data is needed; the length of the year is a standard astronomical constant."
   },
   {
-   "slug": "galaxy-collisions",
+   "slug": "aperture-synthesis",
    "level": 3,
    "category": "space",
-   "kind": "simulate",
-   "title": "Colliding galaxies",
+   "kind": "build",
+   "title": "Interferometry & aperture synthesis",
    "score": 13.5,
    "scores": {
     "fit-level": 4,
     "build": 5
    },
    "judgeNotes": [
-    "fit-level 4: The Toomre restricted N-body model is visually striking and has a clear tidal mechanism (prograde against retrograde), and no existing page has it; it could almost sit at level 2.",
-    "build 5: The Toomre restricted N-body model (two point masses with thousands of test stars) is the classic small, honest model and runs easily in the browser with no data."
+    "fit-level 4: A genuine level-3 mechanism (uv coverage, dirty beam, CLEAN) built on fourier-transform, and distinct from the single-dish telescopes candidate.",
+    "build 5: Baselines tracing uv arcs, a gridded 2D FFT for the dirty beam and image, and Högbom CLEAN on a 128-256 pixel grid are small, exact and fast in the browser, with no data needed."
    ],
-   "verifyNote": "Not a duplicate: dark-matter spins one galaxy to read its rotation curve. The level is honest; galaxy interactions and the Toomre restricted model are taught in university galactic dynamics courses, and the UCSD Physics 141 project rebuilds exactly this. The model is cheap in the browser: two point masses plus a few thousand massless test stars, as in Toomre and Toomre (1972), drawn as a 3D projection. One claim is wrong for this model, though. 'Scrub forward a billion years to see the pair fall back together' cannot happen with two point masses on a parabolic or hyperbolic pass: that orbit never closes, so the pair never merges. A merger needs dynamical friction from extended dark haloes, which the restricted model lacks. Either add a Chandrasekhar dynamical-friction drag on the two centres, labelled as an added ingredient, or drop the merger. The takeaway and pitfall are sound: prograde passes make tails and retrograde passes barely do, and stars do not collide. Matching the Antennae or the Mice also needs controls for disc tilt and viewing angle, so they should be named. dark-matter (L2, at or below L3) is a natural prerequisite, because the merger depends on haloes.",
+   "verifyNote": "Distinct: no Space page covers telescopes or interferometry; gravitational-waves has a laser interferometer measuring length change, not imaging; medical-imaging is the nearest mechanism (an image computed from indirect samples) but uses projections and back-projection in CT, not Fourier samples from correlated pairs. Level 3 is honest: aperture synthesis is graduate or master's material (NRAO Synthesis Imaging Workshop; Chalmers RRY131; Manchester PHYS40491), and the prerequisites sit at levels 1-2. It can be built in the browser: a 2D FFT on a 128-256 grid, uv tracks from Earth-rotation geometry, and Hogbom CLEAN all run at interactive rates (APSYNSIM, a GPL Python teaching tool, does exactly this on the desktop). The takeaway and pitfall are correct, and so is 'spread it to lose the extended emission': the shortest baseline sets the largest recoverable scale. Small fixes: each baseline samples a Hermitian pair of uv points, not one; name the optional open data (array layouts) in needs; record the medical-imaging contrast in overlapWith.",
    "fix": {
-    "interaction": "Two galaxies, each a tilted disc of thousands of massless stars orbiting a central mass, pass each other as in Toomre and Toomre's 1972 model. Set the closest approach, the mass ratio, each disc's tilt and whether it spins with or against the orbit, then run. A prograde pass throws out a long tidal tail and a bridge; a retrograde one barely stirs the disc. Turn the view to match the Antennae or the Mice by trial. Then switch on dynamical friction from the dark haloes, an added ingredient the original model leaves out, and scrub forward a billion years to see the pair, which would otherwise fly apart for ever, fall back together and merge.",
-    "prerequisites": [
-     "orbits-kepler",
-     "dark-matter"
+    "interaction": "Place radio dishes on a map and pick a model sky; every pair of dishes samples the sky's Fourier transform at one point and its mirror image, and as the Earth turns each pair traces a pair of arcs in the uv plane. Watch the dirty beam and the dirty image form from whatever the array has sampled: two dishes see only stripes, a dozen over six hours see the source. Run CLEAN step by step, subtracting the beam from the brightest point until the image emerges, and compare it with the truth; shrink the array to lose resolution, spread it to lose the extended emission.",
+    "needs": "No external data required: model skies (point sources, a disc, a jet) are generated in code and the model is a 2D FFT plus Hogbom CLEAN. Optional real array layouts (VLA Y with 120-degree arms; ALMA configurations from the CASA simulator's antenna-configuration files, CASA being open source under the GPL), or the coordinates published in open-access papers.",
+    "needsSource": "none required; optional array layouts from CASA's open-source configuration files (GPL) or open-access papers",
+    "overlapWith": "light-optics: that page forms images with lenses and never treats resolution as a Fourier limit; medical-imaging also computes an image from indirect measurements, but from projections combined by filtered back-projection, whereas this page fills the Fourier plane with correlations between pairs of separated telescopes and deconvolves with CLEAN.",
+    "related": [
+     "medical-imaging",
+     "black-holes",
+     "gravitational-waves",
+     "fourier-transform"
     ]
    }
   },
@@ -1453,28 +1489,6 @@
    "verifyNote": "Distinct from graph-search (a path through a map, with no opponent and no value passed back up the tree), from reinforcement-learning (values learned in a grid world) and from the pool's monte-carlo-tree-search (random playouts and AlphaGo, level 3). Minimax with alpha-beta pruning runs at interactive rates in a browser: the full noughts-and-crosses tree is tiny, and Connect Four at depth 6 is about 7^6, or 120 thousand positions, fewer with pruning. The facts hold: Connect Four's branching factor is at most 7, and pruning never changes the move chosen. Level 1 is a slight stretch, since alpha-beta usually comes in a first university AI course, but minimax on noughts and crosses is common in high-school computing and the page needs no formulas. One small fix: the 'about sevenfold' figure holds only with pruning off, so the interaction now says that.",
    "fix": {
     "interaction": "Play noughts and crosses against the page and open its mind: a tree of the moves it is weighing, the leaves scored win, draw or loss and the scores passed up, the computer taking the best of its moves and assuming you take the worst for it. Switch to Connect Four, where the whole tree is too big, and set how many moves ahead it looks: at two it blunders, at six it is hard to beat, and with pruning off the count of positions examined rises about sevenfold per extra move; turn on pruning and watch whole branches greyed out, the count falling steeply with the chosen move unchanged. Build the scoring rule yourself from a palette of features (centre column, three in a row) and test it."
-   }
-  },
-  {
-   "slug": "how-simulations-work",
-   "level": 1,
-   "category": "computing",
-   "kind": "step",
-   "title": "How a simulation works",
-   "score": 13.5,
-   "scores": {
-    "fit-level": 4,
-    "build": 5
-   },
-   "judgeNotes": [
-    "fit-level 4: Stepping a ball and an orbit, with step-size error and the half-step update fixing the orbit, is the site's own engine made visible and honest at level 1, and neither calculus nor any physics page shows it.",
-    "build 5: Explicit Euler versus semi-implicit (symplectic) stepping on a falling ball and a Kepler orbit against the exact solution is the honest, tiny model, and the error and energy drift are visible on the graphic."
-   ],
-   "verifyNote": "Two statements are false. (1) The pitfall says plain Euler on an orbit drifts however small the step. It is a first-order method, so its energy error over a fixed time shrinks in proportion to the step. It drifts at every finite step and over long enough runs always spirals out, but the drift is not independent of the step. (2) The takeaway says every animated model on this site is that loop, but deep-time scrubs a dataset, sorting runs an algorithm and diffusion-models runs a trained network. It also overlaps the pool's differential-equations (L2: Euler stepping, shrinking the step, comparison with the exact solution) and numerical-stability (L3: orbit drift, leapfrog against Euler). So it is narrowed to the level-1 core of position and velocity stepping, with the half-step update kept as a short demonstration, not an analysis.",
-   "fix": {
-    "takeaway": "A simulation is a rule for the next instant applied over and over, so its accuracy is bought with smaller steps and a better update rule, and the moving physics on this site's pages comes from exactly this loop.",
-    "pitfall": "Smaller steps are not the whole fix: plain stepping on an orbit gains a little energy every step, so it always spirals out eventually; a smaller step only slows the drift, while a half-step update keeps the orbit closed for thousands of turns even with a larger step. And a step too large to resolve a collision lets a ball pass through the floor, which is a step-size problem, not a law of physics.",
-    "overlapWith": "differential-equations (pool, level 2) steps a solution along a slope field and shows Euler converging; numerical-stability (pool, level 3) analyses stability regions and stiffness. This page is the level-1 engine itself: position and velocity updated tick by tick for a falling ball and an orbit, with no derivatives written down, and shows where it fails without the analysis of why."
    }
   },
   {
@@ -2103,21 +2117,28 @@
    }
   },
   {
-   "slug": "room-thermostat",
+   "slug": "light-bulb-hot-wire",
    "level": 0,
    "category": "energy",
-   "kind": "simulate",
-   "title": "Thermostat",
+   "kind": "manipulate",
+   "title": "Why a light bulb glows (and gets hot)",
    "score": 13.5,
    "scores": {
     "fit-level": 4,
     "build": 5
    },
    "judgeNotes": [
-    "fit-level 4: On/off control with a hysteresis wobble and the 'turning it up doesn't heat faster' takeaway is a good level-0 precursor to feedback-control without duplicating PID.",
-    "build 5: Newton's law of cooling plus a heater with a hysteresis switch is a one-line ODE that shows the wobble band, overshoot and on-time responding to every control; this is the honest model at this level."
+    "fit-level 4: A glowing hot wire and where the energy goes, with an LED to compare, is a clear mechanism and energy story that electric-circuits does not show.",
+    "build 5: Planck's law at the filament temperature, integrated against the CIE colour-matching and V(lambda) tables (freely downloadable from cvrl.org), gives both the glow colour and the light-versus-heat split honestly and cheaply; the LED comparison needs only a cited luminous efficacy."
    ],
-   "verifyNote": "Distinct: feedback-control is level-2 PID tuning, and homeostasis only mentions a thermostat as an analogy (src/routes/homeostasis/steps.ts). Here the model is a Newton-cooling room plus an on/off switch with a gap: a small ODE that runs easily in the browser with no data. It fits level 0 with one dial at a time and makes the wobble visible. The takeaway and pitfall are correct for on/off heaters and match energy-agency myth-busting (e.g. EDF Energy winter energy myths, https://www.edfenergy.com/energywise/winter-energy-myths). Modulating boilers and heat pumps do change their output, so the text should call this an on/off heater, as the takeaway already implies. leadsTo homeostasis and electric-circuits are both level 1."
+   "verifyNote": "The page itself is distinct: electric-circuits treats the bulb as a circuit element, and the overlapping pool entry glowing-hot was not selected. Level 0 is honest and the model is buildable: a tungsten filament power balance (resistance rising with temperature, Stefan-Boltzmann radiation) plus Planck's law and the CIE curves, all cheap in the browser. The CIE data checks out: CIE's own open-access datasets carry CC BY-SA 4.0 in their metadata (cie.co.at/data-tables). The problem is a factual error in the LED half. White LED bulbs turn only roughly 30 to 50% of their electricity into light, so the rest is heat. For the same light (about 800 lm, 60 W incandescent against roughly 8 to 9 W LED) the LED's heat falls about tenfold, but it is still larger than its light bar. That heat leaves through the base and heat sink rather than as infrared, so the LED bulb does not 'nearly vanish' or run 'nearly cold'. Saying it does repeats a popular misconception. The fix also states which light bar is shown. An incandescent bulb's visible share is about 2% of its electricity if weighted by eye sensitivity, and roughly 5 to 10% if counted as power in the visible band.",
+   "fix": {
+    "interaction": "Slide a dimmer and watch the thin wire inside an old-style bulb go from dark to dull red to orange to white as it heats, while a bar splits what the bulb takes into light you can see and heat. At full brightness the heat bar is dozens of times the light bar, and most of that heat leaves as invisible infrared you feel on your hand. Swap in an LED bulb giving the same light: the electricity it needs, and so its heat bar, shrinks to about a tenth, though the LED still makes more heat than light and warms its base instead of glowing in infrared.",
+    "takeaway": "An old bulb makes light by heating a wire until it glows white and wastes nearly all its electricity as heat, while an LED makes the same light from about a tenth of the electricity, so far less heat.",
+    "pitfall": "The wire does not burn: there is no oxygen inside the bulb, which is why a tungsten filament lasts about a thousand hours. Brightness does not rise in step with the dimmer: a little more current makes the wire much hotter, much brighter and whiter. And an LED is not cold: it still turns over half its electricity into heat, only much less electricity overall.",
+    "needs": "The CIE 1931 colour-matching functions and the photopic V(lambda) curve, to turn the filament's temperature into an on-screen colour and a light-versus-heat split (CIE open-access datasets, CC BY-SA 4.0, cie.co.at/data-tables; also at cvrl.org). Tungsten's resistivity and emissivity against temperature from Jones & Langmuir (1927, General Electric Review), quoted as numbers, or a grey-body emissivity of about 0.4 documented as an approximation. The LED's efficiency is a documented typical value (white LED bulbs at about 90 to 100 lm/W, against about 15 lm/W for incandescent).",
+    "needsSource": "CIE 1931 CMFs and V(lambda): CIE open-access datasets, CC BY-SA 4.0 (cie.co.at); tungsten property values are published physical constants, cited."
+   }
   },
   {
    "slug": "toilet-flush",
@@ -3181,6 +3202,22 @@
    ]
   },
   {
+   "slug": "dimensionality-reduction",
+   "level": 3,
+   "category": "ai",
+   "kind": "explore",
+   "title": "Dimensionality reduction: PCA & t-SNE",
+   "score": 13.5,
+   "scores": {
+    "fit-level": 4,
+    "build": 5
+   },
+   "judgeNotes": [
+    "fit-level 4: PCA as the rotation that keeps the most spread, contrasted with t-SNE's artefacts, covers the other half of the reserve topic and answers embeddings' own pitfall; level 3 is honest for t-SNE.",
+    "build 5: PCA on a rotatable 3-D cloud and live t-SNE on a few hundred Fashion-MNIST points (MIT) both run comfortably at interactive rates, and the perplexity and seed artefacts are real outputs of the algorithm."
+   ]
+  },
+  {
    "slug": "support-vector-machines",
    "level": 3,
    "category": "ai",
@@ -3313,22 +3350,6 @@
    ]
   },
   {
-   "slug": "dimensionality-reduction",
-   "level": 3,
-   "category": "ai",
-   "kind": "explore",
-   "title": "Dimensionality reduction: PCA & t-SNE",
-   "score": 13.5,
-   "scores": {
-    "fit-level": 4,
-    "build": 5
-   },
-   "judgeNotes": [
-    "fit-level 4: PCA as the rotation that keeps the most spread, contrasted with t-SNE's artefacts, covers the other half of the reserve topic and answers embeddings' own pitfall; level 3 is honest for t-SNE.",
-    "build 5: PCA on a rotatable 3-D cloud and live t-SNE on a few hundred Fashion-MNIST points (MIT) both run comfortably at interactive rates, and the perplexity and seed artefacts are real outputs of the algorithm."
-   ]
-  },
-  {
    "slug": "double-descent",
    "level": 3,
    "category": "ai",
@@ -3342,6 +3363,22 @@
    "judgeNotes": [
     "fit-level 4: It extends learning-from-data's test-error curve through the interpolation peak with a real random-features model and a bias-variance decomposition, which is clearly level 3 and distinct.",
     "build 5: Random-feature ridge regression is a closed-form linear solve with a few hundred features at most, so sweeping width, resampling and regularisation all compute live, and the interpolation peak emerges from the real model."
+   ]
+  },
+  {
+   "slug": "os-scheduling",
+   "level": 3,
+   "category": "computing",
+   "kind": "simulate",
+   "title": "Operating systems: processes & scheduling",
+   "score": 13.5,
+   "scores": {
+    "build": 5,
+    "fit-level": 4
+   },
+   "judgeNotes": [
+    "build 5: FCFS, SJF, round robin and MLFQ over a handful of jobs are tiny discrete-event simulations, and the Gantt chart and metrics follow directly from them.",
+    "fit-level 4: Promotes 'Operating systems' from the reserve list: real scheduling policies with Gantt charts and turnaround metrics, distinct from cpu, which runs a single program."
    ]
   },
   {
@@ -3374,6 +3411,22 @@
    "judgeNotes": [
     "fit-level 4: Sudden synchrony above a coupling threshold is a striking mechanism with real cases (metronomes, the Millennium Bridge), distinct from oscillations-resonance and properly paired with the level-0 fireflies toy.",
     "build 5: A hundred coupled phase ODEs are trivial to run, the order parameter is directly visible, and the Millennium Bridge parameters are published numbers from Strogatz et al. 2005, not data that needs a licence."
+   ]
+  },
+  {
+   "slug": "bezier-curves",
+   "level": 1,
+   "category": "math",
+   "kind": "manipulate",
+   "title": "Bézier curves: how fonts and vector drawings bend",
+   "score": 13.5,
+   "scores": {
+    "fit-level": 4,
+    "build": 5
+   },
+   "judgeNotes": [
+    "fit-level 4: Repeated straight-line interpolation (de Casteljau) is a real algorithm behind fonts and vector drawing, it draws as a mechanism directly, it is honest at level 1 and no existing page shows it.",
+    "build 5: De Casteljau's algorithm with draggable control points, a t scrubber, convex hull and joined segments is the exact model and runs instantly in SVG."
    ]
   },
   {
@@ -3425,6 +3478,22 @@
    ]
   },
   {
+   "slug": "galaxy-collisions",
+   "level": 3,
+   "category": "space",
+   "kind": "simulate",
+   "title": "Colliding galaxies",
+   "score": 13.5,
+   "scores": {
+    "fit-level": 4,
+    "build": 5
+   },
+   "judgeNotes": [
+    "fit-level 4: The Toomre restricted N-body model is visually striking and has a clear tidal mechanism (prograde against retrograde), and no existing page has it; it could almost sit at level 2.",
+    "build 5: The Toomre restricted N-body model (two point masses with thousands of test stars) is the classic small, honest model and runs easily in the browser with no data."
+   ]
+  },
+  {
    "slug": "haemoglobin-oxygen",
    "level": 3,
    "category": "medicine",
@@ -3441,19 +3510,19 @@
    ]
   },
   {
-   "slug": "os-scheduling",
+   "slug": "luria-delbruck",
    "level": 3,
-   "category": "computing",
-   "kind": "simulate",
-   "title": "Operating systems: processes & scheduling",
+   "category": "biology",
+   "kind": "step",
+   "title": "Luria-Delbruck: mutations before selection",
    "score": 13.5,
    "scores": {
-    "build": 5,
-    "fit-level": 4
+    "fit-level": 4,
+    "build": 5
    },
    "judgeNotes": [
-    "build 5: FCFS, SJF, round robin and MLFQ over a handful of jobs are tiny discrete-event simulations, and the Gantt chart and metrics follow directly from them.",
-    "fit-level 4: Promotes 'Operating systems' from the reserve list: real scheduling policies with Gantt charts and turnaround metrics, distinct from cpu, which runs a single program."
+    "fit-level 4: A landmark experiment run as a clone-statistics simulation whose jackpot distribution shows its own takeaway, and it deepens evolution's pitfall rather than repeating it.",
+    "build 5: Growing twenty cultures by branching with mutations at division, against a Poisson alternative, is a trivial simulation, and the jackpot plates and the estimate from the share of empty plates come directly out of it."
    ]
   },
   {
@@ -3470,22 +3539,6 @@
    "judgeNotes": [
     "fit-level 4: Pipeline hazards, forwarding and a two-bit predictor, shown cycle by cycle, are standard computer architecture with a clear diagram, and it is distinct from cpu's one-at-a-time cycle and from the cache candidate.",
     "build 5: A cycle-accurate five-stage pipeline simulator with hazards, forwarding and a two-bit branch predictor is small and exact, and stall and flush counts come from the model."
-   ]
-  },
-  {
-   "slug": "aperture-synthesis",
-   "level": 3,
-   "category": "space",
-   "kind": "build",
-   "title": "Interferometry & aperture synthesis",
-   "score": 13.5,
-   "scores": {
-    "fit-level": 4,
-    "build": 5
-   },
-   "judgeNotes": [
-    "fit-level 4: A genuine level-3 mechanism (uv coverage, dirty beam, CLEAN) built on fourier-transform, and distinct from the single-dish telescopes candidate.",
-    "build 5: Baselines tracing uv arcs, a gridded 2D FFT for the dirty beam and image, and Högbom CLEAN on a 128-256 pixel grid are small, exact and fast in the browser, with no data needed."
    ]
   },
   {
@@ -3601,6 +3654,38 @@
    ]
   },
   {
+   "slug": "probability-trees",
+   "level": 1,
+   "category": "math",
+   "kind": "build",
+   "title": "Counting & probability trees",
+   "score": 13.5,
+   "scores": {
+    "build": 5,
+    "fit-level": 4
+   },
+   "judgeNotes": [
+    "build 5: Multiplying along branches, a seeded Monte Carlo tally, path counting for Pascal's triangle and the birthday product are exact and trivial to compute; the model is real and needs no data.",
+    "fit-level 4: Probability trees and drawing with or without replacement are core school probability that bayes-theorem and central-limit-theorem don't cover. Running the experiment against the tree's prediction makes a proper interactive mechanism."
+   ]
+  },
+  {
+   "slug": "room-thermostat",
+   "level": 0,
+   "category": "energy",
+   "kind": "simulate",
+   "title": "Thermostat",
+   "score": 13.5,
+   "scores": {
+    "fit-level": 4,
+    "build": 5
+   },
+   "judgeNotes": [
+    "fit-level 4: On/off control with a hysteresis wobble and the 'turning it up doesn't heat faster' takeaway is a good level-0 precursor to feedback-control without duplicating PID.",
+    "build 5: Newton's law of cooling plus a heater with a hysteresis switch is a one-line ODE that shows the wobble band, overshoot and on-time responding to every control; this is the honest model at this level."
+   ]
+  },
+  {
    "slug": "glowing-hot",
    "level": 0,
    "category": "physics",
@@ -3681,6 +3766,22 @@
    ]
   },
   {
+   "slug": "how-simulations-work",
+   "level": 1,
+   "category": "computing",
+   "kind": "step",
+   "title": "How a simulation works",
+   "score": 13.5,
+   "scores": {
+    "fit-level": 4,
+    "build": 5
+   },
+   "judgeNotes": [
+    "fit-level 4: Stepping a ball and an orbit, with step-size error and the half-step update fixing the orbit, is the site's own engine made visible and honest at level 1, and neither calculus nor any physics page shows it.",
+    "build 5: Explicit Euler versus semi-implicit (symplectic) stepping on a falling ball and a Kepler orbit against the exact solution is the honest, tiny model, and the error and energy drift are visible on the graphic."
+   ]
+  },
+  {
    "slug": "locks-deadlock",
    "level": 3,
    "category": "computing",
@@ -3726,22 +3827,6 @@
    "judgeNotes": [
     "fit-level 4: Diffusion plus LuxI/LuxR positive feedback giving a collective threshold switch is a showable mechanism distinct from crispr and lac-operon, and appealing as glowing bacteria.",
     "build 5: Cells on a grid secreting a diffusing, decaying signal with a Hill-type LuxR switch make a small reaction-diffusion and agent model that shows the collective switch directly."
-   ]
-  },
-  {
-   "slug": "light-bulb-hot-wire",
-   "level": 0,
-   "category": "energy",
-   "kind": "manipulate",
-   "title": "Why a light bulb glows (and gets hot)",
-   "score": 13.5,
-   "scores": {
-    "fit-level": 4,
-    "build": 5
-   },
-   "judgeNotes": [
-    "fit-level 4: A glowing hot wire and where the energy goes, with an LED to compare, is a clear mechanism and energy story that electric-circuits does not show.",
-    "build 5: Planck's law at the filament temperature, integrated against the CIE colour-matching and V(lambda) tables (freely downloadable from cvrl.org), gives both the glow colour and the light-versus-heat split honestly and cheaply; the LED comparison needs only a cited luminous efficacy."
    ]
   },
   {
@@ -4114,38 +4199,6 @@
    ]
   },
   {
-   "slug": "cellular-automata",
-   "level": 1,
-   "category": "math",
-   "kind": "simulate",
-   "title": "Cellular automata",
-   "score": 13.5,
-   "scores": {
-    "fit-level": 4,
-    "build": 5
-   },
-   "judgeNotes": [
-    "fit-level 4: A topic promoted from the catalogue's reserve, with editable rules and patterns that emerge from them, honest at level 1 and distinct from chaos-fractals' continuous systems.",
-    "build 5: Game of Life on a modest grid and elementary 1D rules from an 8-bit table are exact, cheap algorithms that run at interactive rates in SVG."
-   ]
-  },
-  {
-   "slug": "exponentials-logarithms",
-   "level": 1,
-   "category": "math",
-   "kind": "manipulate",
-   "title": "Exponentials & logarithms",
-   "score": 13.5,
-   "scores": {
-    "build": 5,
-    "fit-level": 4
-   },
-   "judgeNotes": [
-    "build 5: Repeated multiplication, a linear/log axis toggle and a slide rule made of log-length bars are closed-form geometry with no data, a small, honest level-1 model.",
-    "fit-level 4: A core gap: radioactivity and epidemics use exponentials but no page isolates multiply-versus-add growth or explains the log as a count of steps. The slide rule and log axis give the graphic a real mechanism to show."
-   ]
-  },
-  {
    "slug": "sat-solving",
    "level": 3,
    "category": "computing",
@@ -4303,22 +4356,6 @@
    "judgeNotes": [
     "fit-level 4: Crank, firing order and flywheel smoothing pulses is a genuine mechanism kept apart from heat-engines' P-V loop, and it works without formulas.",
     "build 5: Slider-crank geometry turns a stated pressure profile into torque, and one ODE for shaft speed with flywheel inertia shows the speed ripple shrinking as cylinders and the flywheel are added; a clear, honest model."
-   ]
-  },
-  {
-   "slug": "morphogen-gradients",
-   "level": 3,
-   "category": "biology",
-   "kind": "manipulate",
-   "title": "Morphogen gradients & positional information",
-   "score": 13.5,
-   "scores": {
-    "fit-level": 4,
-    "build": 5
-   },
-   "judgeNotes": [
-    "fit-level 4: Covers the reserve item on pattern formation with a real diffusion-decay model and the French flag; it is distinct, but it should be planned together with turing-patterns and segmentation-clock so the three do not blur.",
-    "build 5: A 1D diffusion-decay PDE with thresholds is a small honest model with an analytic steady state to check against; the scaling mechanism needs one stated extra term."
    ]
   },
   {
@@ -4562,22 +4599,6 @@
    ]
   },
   {
-   "slug": "game-theory-cooperation",
-   "level": 1,
-   "category": "math",
-   "kind": "simulate",
-   "title": "Game theory: why cooperate?",
-   "score": 13.5,
-   "scores": {
-    "build": 5,
-    "fit-level": 4
-   },
-   "judgeNotes": [
-    "build 5: An Axelrod-style round-robin of five fixed strategies, a copy-the-winner population update and a spatial grid game are cheap agent simulations that run easily in the browser, and the honest model needs no equations at level 1.",
-    "fit-level 4: An Axelrod tournament is a vivid, popular mechanism with no existing equivalent and is honest at level 1. Its spatial-grid finale duplicates the one in evolutionary-game-theory, so the grid belongs on only one of the two pages."
-   ]
-  },
-  {
    "slug": "clinical-trials",
    "level": 3,
    "category": "medicine",
@@ -4607,6 +4628,22 @@
    "judgeNotes": [
     "fit-level 4: Sinc reconstruction and aliasing are a core signals mechanism with a vivid strobe and audio toy; distinct from fourier-transform and wireless-signals, and correctly pitched at university level.",
     "build 5: Sinc reconstruction, the spectrum's aliased copies, a strobed wheel and Web Audio tones are exact, cheap computations needing no data, and the alias is visible without the text."
+   ]
+  },
+  {
+   "slug": "refrigerator",
+   "level": 0,
+   "category": "energy",
+   "kind": "step",
+   "title": "Refrigerator & freezer",
+   "score": 12,
+   "scores": {
+    "fit-level": 5,
+    "build": 3
+   },
+   "judgeNotes": [
+    "fit-level 5: Heat carried out, not cold made (with the open-door paradox), is a striking misconception buster that runs heat-engines' loop backwards without the chart; it is the honest level-0 twin of heat-pumps.",
+    "build 3: The box and room heat balance with thermostat duty cycle and the open-door case is an honest lumped ODE, but the refrigerant parcel loop is a stepped diagram unless it is tied to the computed heat flows, so the build must make the loop part of that model."
    ]
   },
   {
@@ -4671,22 +4708,6 @@
    "judgeNotes": [
     "fit-level 5: Levers are the canonical level-0 machine, the turning effect counted in weights times notches needs no formula, and no existing page has it.",
     "build 3: The seesaw torque balance is a real, honest model, but the run of scissors, nutcracker, can opener and tweezers risks turning into a tour of pictures to tap unless each tool keeps the same draggable effort, load and pivot model."
-   ]
-  },
-  {
-   "slug": "refrigerator",
-   "level": 0,
-   "category": "energy",
-   "kind": "step",
-   "title": "Refrigerator & freezer",
-   "score": 12,
-   "scores": {
-    "fit-level": 5,
-    "build": 3
-   },
-   "judgeNotes": [
-    "fit-level 5: Heat carried out, not cold made (with the open-door paradox), is a striking misconception buster that runs heat-engines' loop backwards without the chart; it is the honest level-0 twin of heat-pumps.",
-    "build 3: The box and room heat balance with thermostat duty cycle and the open-door case is an honest lumped ODE, but the refrigerant parcel loop is a stepped diagram unless it is tied to the computed heat flows, so the build must make the loop part of that model."
    ]
   },
   {
@@ -4835,6 +4856,54 @@
    "judgeNotes": [
     "fit-level 4: It makes low-rank updates visible through a singular-value spectrum and compares trainable-weight counts with forgetting, a genuine level-3 mechanism that no other page or candidate covers.",
     "build 4: With the tiny model in place, full versus low-rank fine-tuning on a Gutenberg text can train live, and the SVD of a small update matrix is cheap. It is feasible but depends on the training-a-tiny-language-model infrastructure."
+   ]
+  },
+  {
+   "slug": "dna-sequencing",
+   "level": 3,
+   "category": "biology",
+   "kind": "build",
+   "title": "DNA sequencing & genome assembly",
+   "score": 12,
+   "scores": {
+    "fit-level": 4,
+    "build": 4
+   },
+   "judgeNotes": [
+    "fit-level 4: De Bruijn assembly of a real phiX174 genome is a genuine algorithmic mechanism with clear controls (coverage, k, repeats) and no existing counterpart; the Sanger part is a bit of an add-on.",
+    "build 4: The phiX174 genome is unrestricted GenBank data, and read simulation plus de Bruijn assembly of 5,386 bases is fast in JavaScript; the graph has thousands of k-mer nodes, so it must be drawn compacted (unitigs) or zoomed to stay legible in SVG; the Sanger half is a simple fragment sort."
+   ]
+  },
+  {
+   "slug": "compilers",
+   "level": 3,
+   "category": "computing",
+   "kind": "step",
+   "title": "Compilers",
+   "score": 12,
+   "scores": {
+    "fit-level": 4,
+    "build": 4
+   },
+   "judgeNotes": [
+    "fit-level 4: A compiler pipeline from lexing to optimised code that runs on the existing cpu page is a true level-3 mechanism and a satisfying closure of the computing ladder, though its scope (graph-colouring register allocation as well) is large.",
+    "build 4: A toy lexer, recursive-descent parser, IR, constant folding, dead-code elimination and graph-colouring register allocation targeting the existing cpu page's ISA is a real pipeline that runs instantly; scope is large but honest."
+   ]
+  },
+  {
+   "slug": "heat-pumps",
+   "level": 1,
+   "category": "energy",
+   "kind": "simulate",
+   "title": "Heat pumps",
+   "score": 12,
+   "scores": {
+    "fit-level": 4,
+    "build": 4
+   },
+   "judgeNotes": [
+    "fit-level 4: A Reserve topic with high public demand: heat delivered per unit of electricity, falling as it gets colder, is the right level-1 addition, though it reuses the refrigerator candidate's loop, so the two must divide the work clearly.",
+    "build 4: COP as the Carnot limit times a stated second-law efficiency (or the cited Staffell et al. fit, a formula that does not need open access) is an honest, small model that shows the ratio falling with the temperature lift; the refrigerant loop must be driven by that model so it is not just a picture."
    ]
   },
   {
@@ -5494,22 +5563,6 @@
    ]
   },
   {
-   "slug": "dna-sequencing",
-   "level": 3,
-   "category": "biology",
-   "kind": "build",
-   "title": "DNA sequencing & genome assembly",
-   "score": 12,
-   "scores": {
-    "fit-level": 4,
-    "build": 4
-   },
-   "judgeNotes": [
-    "fit-level 4: De Bruijn assembly of a real phiX174 genome is a genuine algorithmic mechanism with clear controls (coverage, k, repeats) and no existing counterpart; the Sanger part is a bit of an add-on.",
-    "build 4: The phiX174 genome is unrestricted GenBank data, and read simulation plus de Bruijn assembly of 5,386 bases is fast in JavaScript; the graph has thousands of k-mer nodes, so it must be drawn compacted (unitigs) or zoomed to stay legible in SVG; the Sanger half is a simple fragment sort."
-   ]
-  },
-  {
    "slug": "quantum-dots",
    "level": 3,
    "category": "chemistry",
@@ -5670,22 +5723,6 @@
    ]
   },
   {
-   "slug": "compilers",
-   "level": 3,
-   "category": "computing",
-   "kind": "step",
-   "title": "Compilers",
-   "score": 12,
-   "scores": {
-    "fit-level": 4,
-    "build": 4
-   },
-   "judgeNotes": [
-    "fit-level 4: A compiler pipeline from lexing to optimised code that runs on the existing cpu page is a true level-3 mechanism and a satisfying closure of the computing ladder, though its scope (graph-colouring register allocation as well) is large.",
-    "build 4: A toy lexer, recursive-descent parser, IR, constant folding, dead-code elimination and graph-colouring register allocation targeting the existing cpu page's ISA is a real pipeline that runs instantly; scope is large but honest."
-   ]
-  },
-  {
    "slug": "fizz-and-balloons",
    "level": 0,
    "category": "chemistry",
@@ -5827,22 +5864,6 @@
    "judgeNotes": [
     "fit-level 4: Vacancy hopping, square-root-of-time depth and the Arrhenius rate are a clean real model with industrial uses, distinct from entropy's gas mixing.",
     "build 4: Kinetic Monte Carlo of vacancy hops with an Arrhenius rate, compared with the erf profile, is small and honest, and textbook D0 and Q are facts; but carbon in iron diffuses interstitially, not by vacancies, so the page must use interstitial hops for carbon and keep the vacancy and Kirkendall mechanism for substitutional pairs."
-   ]
-  },
-  {
-   "slug": "heat-pumps",
-   "level": 1,
-   "category": "energy",
-   "kind": "simulate",
-   "title": "Heat pumps",
-   "score": 12,
-   "scores": {
-    "fit-level": 4,
-    "build": 4
-   },
-   "judgeNotes": [
-    "fit-level 4: A Reserve topic with high public demand: heat delivered per unit of electricity, falling as it gets colder, is the right level-1 addition, though it reuses the refrigerator candidate's loop, so the two must divide the work clearly.",
-    "build 4: COP as the Carnot limit times a stated second-law efficiency (or the cited Staffell et al. fit, a formula that does not need open access) is an honest, small model that shows the ratio falling with the temperature lift; the refrigerant loop must be driven by that model so it is not just a picture."
    ]
   },
   {
@@ -6902,6 +6923,22 @@
    ]
   },
   {
+   "slug": "clustering-gaussian-mixtures",
+   "level": 3,
+   "category": "ai",
+   "kind": "simulate",
+   "title": "Clustering: k-means & Gaussian mixtures",
+   "score": 12,
+   "scores": {
+    "fit-level": 3,
+    "build": 5
+   },
+   "judgeNotes": [
+    "fit-level 3: EM on Gaussian mixtures with soft responsibilities is real level-3 content, but the candidate also repeats k-means-clustering's stepping and ring demo; it should be refocused on EM and density methods, with k-means-clustering as its prerequisite.",
+    "build 5: k-means, EM on 2-D Gaussian mixtures and DBSCAN are small exact algorithms on Palmer penguins (CC0, confirmed for the palmerpenguins package). It duplicates k-means-clustering's k-means and ring demo, so the level-3 page should start at EM."
+   ]
+  },
+  {
    "slug": "superposition-features",
    "level": 3,
    "category": "ai",
@@ -6934,19 +6971,19 @@
    ]
   },
   {
-   "slug": "clustering-gaussian-mixtures",
+   "slug": "evolutionary-game-theory",
    "level": 3,
-   "category": "ai",
+   "category": "math",
    "kind": "simulate",
-   "title": "Clustering: k-means & Gaussian mixtures",
+   "title": "Game theory & evolutionary dynamics",
    "score": 12,
    "scores": {
-    "fit-level": 3,
-    "build": 5
+    "build": 5,
+    "fit-level": 3
    },
    "judgeNotes": [
-    "fit-level 3: EM on Gaussian mixtures with soft responsibilities is real level-3 content, but the candidate also repeats k-means-clustering's stepping and ring demo; it should be refocused on EM and density methods, with k-means-clustering as its prerequisite.",
-    "build 5: k-means, EM on 2-D Gaussian mixtures and DBSCAN are small exact algorithms on Palmer penguins (CC0, confirmed for the palmerpenguins package). It duplicates k-means-clustering's k-means and ring demo, so the level-3 page should start at EM."
+    "build 5: Replicator dynamics on the simplex and best-response diagrams are a 2- or 3-variable ODE, and the spatial grid game is a cheap cellular automaton; everything runs live, though it should not repeat the level-1 grid from game-theory-cooperation.",
+    "fit-level 3: Replicator dynamics on the simplex, Nash equilibria and the rock-paper-scissors cycle are proper level-3 content distinct from evolution. It shares the prisoner's dilemma and the spatial grid with game-theory-cooperation, so one of them should drop the grid."
    ]
   },
   {
@@ -7288,22 +7325,6 @@
    ]
   },
   {
-   "slug": "evolutionary-game-theory",
-   "level": 3,
-   "category": "math",
-   "kind": "simulate",
-   "title": "Game theory & evolutionary dynamics",
-   "score": 12,
-   "scores": {
-    "build": 5,
-    "fit-level": 3
-   },
-   "judgeNotes": [
-    "build 5: Replicator dynamics on the simplex and best-response diagrams are a 2- or 3-variable ODE, and the spatial grid game is a cheap cellular automaton; everything runs live, though it should not repeat the level-1 grid from game-theory-cooperation.",
-    "fit-level 3: Replicator dynamics on the simplex, Nash equilibria and the rock-paper-scissors cycle are proper level-3 content distinct from evolution. It shares the prisoner's dilemma and the spatial grid with game-theory-cooperation, so one of them should drop the grid."
-   ]
-  },
-  {
    "slug": "lambda-calculus",
    "level": 3,
    "category": "computing",
@@ -7447,6 +7468,22 @@
    "judgeNotes": [
     "fit-level 4: It applies policy-gradient RL with group-relative advantages to a language model and shows pass@1 rising against pass@k, which is distinct from the grid-world RL page and central to modern reasoning models, though live GRPO in the browser is ambitious.",
     "build 3: GRPO on a tiny model needs a group of sampled attempts plus a policy-gradient step per puzzle, so only a very short run is interactive and the rest must be precomputed checkpoints. The pass@1-rises-while-pass@64-stays effect has to be reproduced on the project's own tiny model first, and it may not show at this scale."
+   ]
+  },
+  {
+   "slug": "growing-patterns",
+   "level": 0,
+   "category": "math",
+   "kind": "build",
+   "title": "Growing patterns & doubling",
+   "score": 10.5,
+   "scores": {
+    "fit-level": 4,
+    "build": 3
+   },
+   "judgeNotes": [
+    "fit-level 4: Adding the same against doubling, side by side, is a strong level-0 toy that fills the gap left by the reserved exponentials topic; epidemics shows doubling only inside a disease model.",
+    "build 3: Linear versus doubling sequences with tiles, a chart and a folding counter are trivially computable and honest, but the model is very thin and the 'chart leaves the screen' needs a deliberate scale design."
    ]
   },
   {
@@ -7850,22 +7887,6 @@
    ]
   },
   {
-   "slug": "growing-patterns",
-   "level": 0,
-   "category": "math",
-   "kind": "build",
-   "title": "Growing patterns & doubling",
-   "score": 10.5,
-   "scores": {
-    "fit-level": 4,
-    "build": 3
-   },
-   "judgeNotes": [
-    "fit-level 4: Adding the same against doubling, side by side, is a strong level-0 toy that fills the gap left by the reserved exponentials topic; epidemics shows doubling only inside a disease model.",
-    "build 3: Linear versus doubling sequences with tiles, a chart and a folding counter are trivially computable and honest, but the model is very thin and the 'chart leaves the screen' needs a deliberate scale design."
-   ]
-  },
-  {
    "slug": "onion-tears",
    "level": 0,
    "category": "biology",
@@ -8183,6 +8204,22 @@
    "judgeNotes": [
     "fit-level 3: A real, testable circuit (shown by ablation) that is distinct from transformers, but it is research-frontier interpretability rather than what a typical university student learns, and it depends on precomputed training checkpoints.",
     "build 4: A two-layer attention-only transformer with a tiny vocabulary is cheap to run forward and to ablate in the browser. The phase-change checkpoints must be trained offline (feasible on a laptop), with own weights and no external data."
+   ]
+  },
+  {
+   "slug": "telescopes",
+   "level": 2,
+   "category": "space",
+   "kind": "manipulate",
+   "title": "Telescopes",
+   "score": 10.5,
+   "scores": {
+    "fit-level": 3,
+    "build": 4
+   },
+   "judgeNotes": [
+    "fit-level 3: A good mechanism page (aperture and the diffraction limit) that is distinct from light-optics, but it is honestly level 2, the level the plan wants least, and it borders aperture-synthesis.",
+    "build 4: Ray tracing plus a computed Airy pattern on a synthetic star field, with seeing as a blur kernel, is all client-side and needs no data; it is broad (five sub-scenes) and should be scoped tightly."
    ]
   },
   {
@@ -9112,22 +9149,6 @@
    "judgeNotes": [
     "build 4: A sum of carriers through a resonant band-pass filter followed by envelope and FM detection is an honest small DSP model; scaled-down carrier frequencies plus Web Audio output are needed and should be stated.",
     "fit-level 3: Choosing a station by resonance is a sound mechanism and new in its many-stations framing, but it leans on oscillations-resonance, and the AM/FM comparison risks overloading a level-0 page that should offer one control at a time."
-   ]
-  },
-  {
-   "slug": "telescopes",
-   "level": 2,
-   "category": "space",
-   "kind": "manipulate",
-   "title": "Telescopes",
-   "score": 10.5,
-   "scores": {
-    "fit-level": 3,
-    "build": 4
-   },
-   "judgeNotes": [
-    "fit-level 3: A good mechanism page (aperture and the diffraction limit) that is distinct from light-optics, but it is honestly level 2, the level the plan wants least, and it borders aperture-synthesis.",
-    "build 4: Ray tracing plus a computed Airy pattern on a synthetic star field, with seeing as a blur kernel, is all client-side and needs no data; it is broad (five sub-scenes) and should be scoped tightly."
    ]
   },
   {

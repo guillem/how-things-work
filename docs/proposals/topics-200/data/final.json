@@ -12,7 +12,7 @@
    "bayes-theorem"
   ],
   "needs": "",
-  "pitfall": "The host must know where the prize is and always open a goat door; if he opens a door at random and happens to show a goat, the two remaining doors really are equal, and the page should show that case too.",
+  "pitfall": "The host must know where the prize is and always open a goat door; if the host opens a door at random and happens to show a goat, the two remaining doors really are equal, and the page should show that case too.",
   "why": "The Monty Hall problem is among the most-read probability articles on Wikipedia and a staple of popular maths: https://en.wikipedia.org/wiki/Monty_Hall_problem",
   "overlapWith": "bayes-theorem: counting a grid of 1,000 people to update on a test result; this page updates on what a host does, with doors and tallies instead of rates and formulas.",
   "needsSource": "none",
@@ -32,6 +32,9 @@
   ],
   "verifyNote": "No catalogue page covers it. bayes-theorem counts test results on a grid of 1,000 people and never models a host's informed choice. The probabilities are correct (2/3 against 1/3), and the pitfall about a random host giving 1/2 is the standard result (Brilliant, Encyclopedia of Math). The model is a simple Monte Carlo with tallies and needs no data. Tallies and counts suit level 0, and the ten-door version is a sound way to build intuition.",
   "fixedFields": [],
+  "editorial": [
+   "pitfall"
+  ],
   "linkLog": []
  },
  {
@@ -52,7 +55,7 @@
   "overlapWith": "chaos-fractals (level 2) is the nearest page about repeating structure; it repeats across scales, while this page repeats one shape across a flat floor and asks only whether its corners close a full turn.",
   "needsSource": "none",
   "leadsTo": [
-   "states-of-matter"
+   "unit-circle"
   ],
   "everyday": true,
   "origin": "numbers-shapes-computers",
@@ -69,6 +72,9 @@
   "fixedFields": [
    "takeaway",
    "pitfall"
+  ],
+  "editorial": [
+   "leadsTo"
   ],
   "linkLog": [
    "dropped prerequisite angles-as-turns (not selected)",
@@ -115,62 +121,106 @@
   ]
  },
  {
-  "slug": "bezier-curves",
-  "title": "Bézier curves: how fonts and vector drawings bend",
+  "slug": "cellular-automata",
+  "title": "Cellular automata",
   "level": 1,
-  "kind": "manipulate",
+  "kind": "simulate",
   "category": "math",
-  "interaction": "Drag the four control points of a curve and it follows; slide t from 0 to 1 and watch the construction: a point slides the fraction t along each leg between control points, then along the legs between those points, and the last point traces the curve. Chain curves into a letter and see that a join is smooth only when the two handles at the join and the join point lie on one straight line, with the join point between them; turn on the hull to see that a curve never leaves the shape of its own control points, and add or remove control points.",
-  "takeaway": "A Bézier curve is nothing but repeated straight-line interpolation between its control points, which is why a few draggable handles can describe any letter, logo or animation path.",
-  "prerequisites": [],
+  "interaction": "Set the eight bits of a one-dimensional rule by clicking its lookup table, and run it from a single live cell or a random row, each generation drawn as a new line below the last. Rule 90 draws a Sierpinski triangle, rule 30 looks random, rule 110 carries colliding structures, and rule 184 moves cars along a road that jams once more than half the cells are full. Step through all 256 rules and sort them into Wolfram's four classes (die out, repeat, look random, build structures), with a count of live cells over time to compare rules.",
+  "takeaway": "A rule that only looks at a cell and its two neighbours, applied everywhere at once, can die out, repeat, look random or build moving structures, and changing one bit of the rule can switch between them.",
+  "prerequisites": [
+   "life-on-a-grid"
+  ],
   "related": [
-   "graphics-3d"
+   "chaos-fractals",
+   "turing-machines",
+   "logic-gates"
   ],
   "needs": "",
-  "pitfall": "The curve passes through its end points but not, in general, its middle control points; and t is not distance along the curve: equal steps of t do not give equal lengths.",
-  "why": "Freya Holmér's 'The Beauty of Bézier Curves' is one of the most-shared maths explainers, and de Casteljau's construction is a standard graphics assignment (Berkeley CS184 HW2, Bézier curves and surfaces): https://cs184.eecs.berkeley.edu/fa26/hw/hw2/section1/",
-  "overlapWith": "unit-circle: a point moving round a circle traces sine; this page is a point tracing a curve by repeated straight-line mixing, with no trigonometry.",
+  "pitfall": "Rule 30 looks random but is completely determined: the same starting row always gives the same pattern. And most rules do not make complexity; they die out or repeat, and only a few, like rule 110, build lasting structures.",
+  "why": "Wikipedia, Elementary cellular automaton and Rule 184 (traffic model): https://en.wikipedia.org/wiki/Rule_184 ; 'Cellular automata' is listed in the catalogue's Reserve.",
+  "overlapWith": "life-on-a-grid (proposed, level 0): that page plays Conway's two-dimensional Game of Life; this page opens the rule itself as an 8-bit table in one dimension, surveys all 256 rules and their classes, and shows a CA as a traffic model and as a universal computer. chaos-fractals shows complexity in continuous systems; turing-machines uses a tape and head, not a grid of cells updating at once.",
   "needsSource": "none",
   "leadsTo": [],
   "everyday": false,
-  "origin": "demand",
+  "origin": "math-l3",
   "score": 13.5,
   "scores": {
    "fit-level": 4,
    "build": 5
   },
   "judgeNotes": [
-   "fit-level 4: Repeated straight-line interpolation (de Casteljau) is a real algorithm behind fonts and vector drawing, it draws as a mechanism directly, it is honest at level 1 and no existing page shows it.",
-   "build 5: De Casteljau's algorithm with draggable control points, a t scrubber, convex hull and joined segments is the exact model and runs instantly in SVG."
+   "fit-level 4: A topic promoted from the catalogue's reserve, with editable rules and patterns that emerge from them, honest at level 1 and distinct from chaos-fractals' continuous systems.",
+   "build 5: Game of Life on a modest grid and elementary 1D rules from an 8-bit table are exact, cheap algorithms that run at interactive rates in SVG."
   ],
-  "verifyNote": "Distinct: no catalogue page (graphics-3d is projection and ray tracing) builds curves from control points. Level 1 is honest because de Casteljau's construction is repeated straight-line mixing that a slider shows with no formula. The model is trivial to run in the browser and needs no data. The pitfall is correct (the curve passes through its end points but not its middle handles, and t is not arc length), and so is the convex-hull claim. One imprecision: a join is smooth (G1) only when both handles and the join point are collinear with the join point between them. Collinear handles on the same side give a cusp, so the interaction wording is tightened.",
+  "verifyNote": "Against the existing catalogue it is distinct: chaos-fractals is continuous, and turing-machines is a tape machine. 'Cellular automata' is on the Reserve list, the level is honest for level 1, and the model is trivial to run in the browser. But the selection also contains life-on-a-grid (level 0), which already paints cells, steps Conway's Game of Life, finds blinkers and gliders and edits the rule numbers. Half of this page, and its pitfall about gliders, would repeat that page. The fix narrows this one to what the level-0 page lacks: one-dimensional elementary rules and their 8-bit lookup table, the space of 256 rules and Wolfram's four classes, rule 30's deterministic randomness, rule 90's Sierpinski triangle, rule 184 as a traffic model that conserves cars, and rule 110's universality. Life becomes a level-0 prerequisite (allowed, since it is not above level 1).",
   "fixedFields": [
    "interaction",
+   "takeaway",
+   "prerequisites",
+   "related",
+   "pitfall",
+   "overlapWith",
    "why"
   ],
-  "linkLog": [
-   "dropped related perlin-noise-terrain (not selected)",
-   "dropped related 3d-printer-layers (not selected)"
-  ]
+  "linkLog": []
  },
  {
-  "slug": "probability-trees",
-  "title": "Counting & probability trees",
+  "slug": "exponentials-logarithms",
+  "title": "Exponentials & logarithms",
   "level": 1,
-  "kind": "build",
+  "kind": "manipulate",
   "category": "math",
-  "interaction": "Build a tree of chance events by adding branches with their probabilities: sweets drawn from a bag with and without putting them back, coins, dice; the page multiplies along each branch and adds across them to give the probability of any outcome. Press run to perform the experiment a thousand times and watch the tally approach the tree's prediction. End with the birthday problem as one long branch of 'no match yet': add people one at a time and watch the product of the no-match probabilities fall below a half at 23.",
-  "takeaway": "The probability of a sequence of events is found by multiplying along its path and adding the paths that lead to the same result, and a long chain of individually likely 'no match' steps multiplies down fast, which is why shared birthdays in a class are common.",
+  "interaction": "Fold a strip of paper, breed bacteria or compound interest: a slider sets the growth factor, a counter of doublings runs and the curve shoots off the chart; switch the vertical axis to a log scale and the curve becomes a straight line whose slope is the growth rate. Compare 'add the same amount each step' with 'multiply by the same factor each step' on one chart, read a logarithm as the number of doublings needed, and build a slide rule that multiplies by adding lengths.",
+  "takeaway": "Growing by a fixed factor each step outruns growing by a fixed amount, and a logarithm just counts how many of those steps it took.",
   "prerequisites": [],
   "related": [
-   "bayes-theorem",
-   "central-limit-theorem"
+   "radioactivity",
+   "epidemics",
+   "acids-bases",
+   "earthquakes",
+   "sorting"
+  ],
+  "needs": "",
+  "pitfall": "Exponential does not mean fast: with a factor just above 1 it starts slowly. And a log-scale line that looks tame is not growth slowing down; say that the rate stays the same.",
+  "why": "Common Core HSF-LE, Linear, Quadratic and Exponential Models: https://www.thecorestandards.org/Math/Content/HSF/LE/",
+  "overlapWith": "radioactivity: that page shows exponential decay through half-lives and epidemics shows cases doubling; this page isolates the rule itself, puts growth and decay on one log axis, and defines the logarithm as a count of steps.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "math-l3",
+  "score": 13.5,
+  "scores": {
+   "build": 5,
+   "fit-level": 4
+  },
+  "judgeNotes": [
+   "build 5: Repeated multiplication, a linear/log axis toggle and a slide rule made of log-length bars are closed-form geometry with no data, a small, honest level-1 model.",
+   "fit-level 4: A core gap: radioactivity and epidemics use exponentials but no page isolates multiply-versus-add growth or explains the log as a count of steps. The slide rule and log axis give the graphic a real mechanism to show."
+  ],
+  "verifyNote": "The catalogue's Reserve names this topic. radioactivity (half-life decay), epidemics (case doubling) and rockets (the rocket equation) each use an exponential inside a mechanism, but none isolates growth by a constant factor, the log axis or the logarithm as a count of steps. The overlapping pool entry growing-patterns (level 0) was not selected. Level 1 is honest: Common Core HSF-LE puts exponential models and logarithms as solutions of a*b^(ct)=d in high school. It runs as pure arithmetic, curves and a slide-rule construction. The takeaway is sound, reading a logarithm as the count of factor steps, fractional counts included. The pitfall is a real misconception, correctly stated. Small improvement: the entry says the log-scale slope 'is the growth rate'; strictly it is the logarithm of the growth factor per step, so the narrative should phrase it as 'a fixed growth factor'.",
+  "fixedFields": [],
+  "linkLog": []
+ },
+ {
+  "slug": "game-theory-cooperation",
+  "title": "Game theory: why cooperate?",
+  "level": 1,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Play the prisoner's dilemma against the page with a payoff table whose four numbers can be edited, and find that cheating pays once but not when the same two players meet again. Enter strategies (always cheat, always cooperate, tit for tat, grudger, random) into a round-robin tournament of repeated games and watch the scores; let the population evolve, with well-scoring strategies copied more often, and add a little noise to the signals to see which strategies survive it. Finish on a grid where each cell plays its neighbours, so that clusters of cooperators grow or are eaten.",
+  "takeaway": "When the same players meet again and again, strategies that start nice, hit back and forgive can outscore pure selfishness, so cooperation can take hold among players who each look after only themselves, unless the games are too short or too few others cooperate.",
+  "prerequisites": [],
+  "related": [
+   "evolution",
+   "ecosystems",
+   "reinforcement-learning"
   ],
   "needs": "",
   "needsSource": "none",
-  "pitfall": "Independent events have no memory: after five heads the next flip is still even. Drawing without replacement changes the probabilities on later branches, and that is the only difference between the two bag problems.",
-  "why": "Tree diagrams for dependent events (without replacement) in GCSE higher maths: https://www.cognito.org/blog/gcse-maths-probability ; Edexcel A-level statistics tree diagrams: https://www.mathsgenie.co.uk/a-level/maths/edexcel/content/a-level-statistics-tree-diagrams",
-  "overlapWith": "bayes-theorem colours a grid of 1,000 people to show base rates, and central-limit-theorem's Galton board already counts binomial paths into bins; this page builds the tree itself, compares drawing with and without replacement, and multiplies a chain of branches (the birthday problem), none of which the existing pages do.",
+  "pitfall": "Tit for tat never beat an opponent in a single game; it won the tournaments by scoring well with everyone. There is no best strategy independent of the population it plays in, and the result changes with the payoff numbers and with noise.",
+  "why": "Nicky Case's 'The Evolution of Trust', an interactive built on Axelrod's tournaments https://ncase.me/trust/ (coverage: https://boingboing.net/2017/07/26/fun-interactive-game-theory-si.html )",
+  "overlapWith": "evolution runs selection on a heritable trait and ecosystems couples populations; here the agents choose, with payoffs. The pool's evolutionary-game-theory (level 3) is the replicator ODE on the simplex; this is the level-1 tournament-and-grid version with no equation.",
   "leadsTo": [],
   "everyday": false,
   "origin": "holes-l1-l2",
@@ -180,15 +230,12 @@
    "fit-level": 4
   },
   "judgeNotes": [
-   "build 5: Multiplying along branches, a seeded Monte Carlo tally, path counting for Pascal's triangle and the birthday product are exact and trivial to compute; the model is real and needs no data.",
-   "fit-level 4: Probability trees and drawing with or without replacement are core school probability that bayes-theorem and central-limit-theorem don't cover. Running the experiment against the tree's prediction makes a proper interactive mechanism."
+   "build 5: An Axelrod-style round-robin of five fixed strategies, a copy-the-winner population update and a spatial grid game are cheap agent simulations that run easily in the browser, and the honest model needs no equations at level 1.",
+   "fit-level 4: An Axelrod tournament is a vivid, popular mechanism with no existing equivalent and is honest at level 1. Its spatial-grid finale duplicates the one in evolutionary-game-theory, so the grid belongs on only one of the two pages."
   ],
-  "verifyNote": "The core is distinct and well grounded: bayes-theorem uses a grid of 1,000 people and never builds a tree or compares drawing with and without replacement, which GCSE higher and A-level teach directly. Two parts of the scope are a problem. Counting paths through a grid to grow Pascal's triangle is what the Galton board in central-limit-theorem already shows (balls taking binomial paths into bins). The birthday problem is a chain of 'no match yet' factors, not path counting, so the takeaway's claim that counting paths explains coincidences is loose. Fix: drop Pascal's triangle, frame the birthday problem as a long product of no-match branches, and correct the takeaway.",
+  "verifyNote": "Distinct from the catalogue: evolution has no choosing agents or payoffs, and reinforcement-learning is a single agent. 'Game theory' is on the Reserve list, and the level-3 replicator-dynamics entries (evolutionary-games, evolutionary-game-theory) were not selected. Level 1 is honest. The model is an exact algorithm: an iterated prisoner's dilemma round-robin, imitation dynamics, and a Nowak-May spatial grid. The pitfall is factually right: Axelrod himself notes tit for tat never did better than the player it faced and won on total score. The 2014 reanalysis (PMC4520619) confirms its success depends on payoffs, tournament design and noise. The takeaway, though, states a universal law ('beats pure selfishness') that the entry's own pitfall contradicts: under noise, or among enough defectors, tit for tat loses. The fix softens the takeaway to 'can outscore', with the conditions observable in the toy.",
   "fixedFields": [
-   "interaction",
-   "takeaway",
-   "overlapWith",
-   "why"
+   "takeaway"
   ],
   "linkLog": []
  },
@@ -206,14 +253,13 @@
   "related": [
    "epidemics",
    "ecosystems",
-   "how-simulations-work",
    "feedback-control"
   ],
   "needs": "",
   "needsSource": "none",
   "pitfall": "Not every differential equation can be solved with a formula: most cannot, and the slope field still fixes each solution. Solution curves of one equation never cross, so two different futures cannot start from the same state.",
   "why": "3Blue1Brown, 'Differential equations, a tourist's guide' (over 4 million views) https://www.classcentral.com/classroom/youtube-differential-equations-a-tourist-s-guide-133384 ; AP Calculus BC Unit 7 (slope fields, Euler's method) https://fiveable.me/ap-calc/unit-7.md",
-  "overlapWith": "calculus finds the slope and area of a given curve; this page starts from the slope rule and finds the curve. how-simulations-work (L1) owns the step-size and accuracy story of Euler stepping, and phase-portraits (L3) owns two-variable systems such as springs and predator–prey; this page is the one-variable slope field, equilibria and their stability.",
+  "overlapWith": "calculus finds the slope and area of a given curve; this page starts from the slope rule and finds the curve. phase-portraits (proposed, level 3) owns two-variable systems such as springs and predator–prey; this page is the one-variable slope field, equilibria and their stability.",
   "leadsTo": [],
   "everyday": false,
   "origin": "holes-l1-l2",
@@ -234,7 +280,11 @@
    "overlapWith",
    "related"
   ],
+  "editorial": [
+   "overlapWith"
+  ],
   "linkLog": [
+   "dropped related how-simulations-work (not selected)",
    "dropped related phase-portraits (it lists this topic as a prerequisite)"
   ]
  },
@@ -393,7 +443,7 @@
   "needs": "The Palmer penguins dataset (344 penguins, bill and flipper measurements by species; palmerpenguins, CC0).",
   "pitfall": "A p-value is not the probability that the null hypothesis is true, and a bootstrap interval is not guaranteed to have its stated coverage: the bootstrap does not cure a small sample. The coverage counter must show the shortfall, not a reassuring 95%.",
   "why": "Hesterberg, What Teachers Should Know about the Bootstrap: Resampling in the Undergraduate Statistics Curriculum: https://arxiv.org/abs/1411.5279",
-  "overlapWith": "learning-from-data: that page fits a curve and shows overfitting with a held-out set; this page asks whether a difference or slope is real by rebuilding the chance distribution from the data. clinical-trials (proposed) owns power, false positives and multiple comparisons; this page leaves those to it and is about resampling and its coverage.",
+  "overlapWith": "learning-from-data: that page fits a curve and shows overfitting with a held-out set; this page asks whether a difference or slope is real by rebuilding the chance distribution from the data, and how often the resulting intervals actually catch the truth.",
   "needsSource": "Palmer penguins (Gorman, Williams & Fraser 2014; palmerpenguins package): CC0",
   "leadsTo": [],
   "everyday": false,
@@ -414,6 +464,9 @@
    "takeaway",
    "pitfall",
    "related",
+   "overlapWith"
+  ],
+  "editorial": [
    "overlapWith"
   ],
   "linkLog": [
@@ -567,7 +620,9 @@
   "why": "NGSS 3-PS2-3 (electric or magnetic interactions between objects not in contact; the clarification names paper clips and magnets) https://www2.cde.ca.gov/cacs/id/web/29018 ; KS2 Year 3 'Forces and magnets' (magnets have two poles; predict whether two magnets attract or repel) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
   "overlapWith": "electromagnetism: that page (level 2) places charges, draws field lines and induces currents with coils; this one has no electricity at all, only permanent magnets, their two poles, what they attract and how a clip becomes a temporary magnet.",
   "needsSource": "none; the model is the two-pole (Gilbert) bar magnet with inverse-square pole forces and an induced pole pair for steel.",
-  "leadsTo": [],
+  "leadsTo": [
+   "electromagnetism"
+  ],
   "origin": "basic-physical-science",
   "score": 13.5,
   "scores": {
@@ -581,6 +636,9 @@
   "verifyNote": "Distinct from electromagnetism (level 2: charges, field lines, induction), and squarely NGSS 3-PS2-3 / KS2 Year 3. Level 0 is honest. The Gilbert two-pole model with inverse-square pole forces, a field-direction field for the filings and compass, and an induced dipole in steel is a real, cheap model; it needs no data. Note for the curator: the pool also has magnets-and-electromagnets (physics) and compass-and-magnetic-poles (earth), which overlap at this level. The fault is the pitfall: 'only iron, steel, nickel and cobalt' repeats a misconception. Common austenitic stainless steels (304/316, cutlery and sinks) are not attracted or only barely, while many alloys and some rare-earth metals are. The takeaway and the cut-magnet point are correct.",
   "fixedFields": [
    "pitfall"
+  ],
+  "editorial": [
+   "leadsTo"
   ],
   "linkLog": [
    "dropped related balloons-and-static (not selected)"
@@ -807,7 +865,7 @@
   "needsSource": "About a dozen tabulated solubility values (IUPAC-NIST Solubility Data Series via NIST; ACS Middle School Chemistry, chapter 5 lesson 6); facts, no licence needed.",
   "pitfall": "Dissolving is not melting, and the sugar does not disappear or turn into water: every particle is still there, which is why the water tastes sweet and weighs more. A full glass is not 'out of room' between water particles: it stops because dissolving and grains re-forming have come into balance.",
   "why": "England KS2 Year 5 'Properties and changes of materials' (dissolving; recovering a dissolved solid by evaporation): https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study; also NGSS 5-PS1-3 (solubility as an identifying property): https://www.nextgenscience.org/dci-arrangement/5-ps1-matter-and-its-interactions",
-  "overlapWith": "dissolving-sugar (pool) and states-of-matter: states-of-matter changes the phase of one substance. This page compares two solids and shows that temperature raises how much sugar water will take but barely changes salt. It should be merged with dissolving-sugar rather than built alongside it.",
+  "overlapWith": "states-of-matter: that page changes the phase of one substance; this page mixes two solids into water and shows that temperature raises how much sugar water will take but barely changes salt. (The pool's dissolving-sugar was merged into this entry.)",
   "leadsTo": [
    "states-of-matter",
    "chemical-bonds"
@@ -830,6 +888,9 @@
    "overlapWith",
    "needs",
    "needsSource"
+  ],
+  "editorial": [
+   "overlapWith"
   ],
   "linkLog": [
    "dropped related separating-mixtures (not selected)",
@@ -893,7 +954,7 @@
    "salt-and-ice"
   ],
   "needs": "Thermal conductivity, density and specific heat of skin, a metal (steel or aluminium), wood, plastic and wool: under twenty published constants from textbook tables or Wikipedia's material-property tables (CC BY-SA). The model combines them, because contact temperature depends on all three.",
-  "needsSource": "Under ten published material constants (textbook tables; Wikipedia CC BY-SA); facts, no dataset",
+  "needsSource": "Under twenty published material constants (textbook tables; Wikipedia CC BY-SA); facts, no dataset",
   "pitfall": "Metal is not colder than wood, and cold does not flow into your hand: heat flows out of it, and a thermometer shows the two objects equal. The page also should not say conductivity alone decides it: how much heat the material soaks up per degree matters too.",
   "why": "Veritasium, 'Why Does Metal Feel Colder Than Wood If They're the Same Temperature?' (a classic misconception video): https://www.youtube.com/watch?v=vqDbMEdLiCs; England KS2 Year 5 lists thermal conductivity among material properties.",
   "overlapWith": "entropy: that page shows heat flowing between fast and slow particles at level 2; here it is one finger on one object, and the only question is how fast heat leaves the skin.",
@@ -917,6 +978,9 @@
    "needs",
    "pitfall"
   ],
+  "editorial": [
+   "needsSource"
+  ],
   "linkLog": [
    "dropped related kitchen-thermometer (not selected)"
   ]
@@ -934,11 +998,11 @@
    "reaction-rates-equilibrium"
   ],
   "related": [],
-  "needs": "No external data: the model is the Giddings-Eyring stochastic model (exponential residence times in each phase, plus axial diffusion and multipath dispersion), with illustrative partition coefficients and diffusivities, not values for named compounds.",
+  "needs": "",
   "pitfall": "Most chromatography is not a sieve by size: two molecules of the same size separate because they stick differently. The bands are close to Gaussian only because each molecule makes many random hops that add up; with few exchanges or uneven sticky sites, real peaks tail.",
   "why": "Undergraduate analytical chemistry teaches band broadening through the van Deemter equation (Bates College chromatography learning objectives): https://www.bates.edu/chemistry-biochemistry/files/2012/01/wenzel-chrom-learning-objectives.pdf",
   "overlapWith": "central-limit-theorem: that page shows why sums of random steps are Gaussian; this one uses that fact to separate molecules and to find the flow rate that separates them best.",
-  "needsSource": "none",
+  "needsSource": "none: the Giddings-Eyring stochastic model with illustrative partition coefficients and diffusivities, not values for named compounds",
   "leadsTo": [],
   "everyday": false,
   "origin": "chemistry-l3",
@@ -958,6 +1022,10 @@
    "pitfall",
    "needs",
    "related"
+  ],
+  "editorial": [
+   "needs",
+   "needsSource"
   ],
   "linkLog": [
    "dropped related mass-spectrometry (not selected)",
@@ -979,11 +1047,11 @@
   "related": [
    "bridges-structures"
   ],
-  "needs": "None beyond a 2D Lennard-Jones pair potential, the same kind of model states-of-matter runs. Solute atoms are modelled as particles with a larger or smaller size parameter. The real-metal factor between ideal and measured shear strength (G/10 against measured yield) is quoted in the text from textbook values.",
+  "needs": "",
   "pitfall": "Crystals do not deform by whole planes sliding at once; the theoretical strength computed that way is a thousand times higher than what any real metal shows.",
   "why": "MITx 3.012S.3x Structure of Materials covers dislocation descriptors and motion: https://openlearninglibrary.mit.edu/courses/course-v1:MITx+3.012S.3x+1T2019/about",
   "overlapWith": "bridges-structures: that page colors members by stress; this one goes inside the metal to the defect that lets it yield and the atoms that stop it.",
-  "needsSource": "none",
+  "needsSource": "none: a 2D Lennard-Jones crystal, the same kind of model states-of-matter runs; the ideal-against-measured shear strength factor is quoted from textbook values",
   "leadsTo": [],
   "everyday": true,
   "origin": "chemistry-l3",
@@ -1001,6 +1069,10 @@
    "interaction",
    "takeaway",
    "prerequisites",
+   "needs",
+   "needsSource"
+  ],
+  "editorial": [
    "needs",
    "needsSource"
   ],
@@ -1232,7 +1304,7 @@
   "needs": "",
   "pitfall": "There is no lead firefly and no outside signal; synchrony appears only from each insect reacting to its neighbours. Only some firefly species do this.",
   "why": "Nicky Case's 'Fireflies' explorable (public domain), the interactive credited in Veritasium's synchronization video: https://ncase.me/fireflies/",
-  "overlapWith": "oscillations-resonance: one oscillator pushed at a frequency; this page is many self-timed flashers nudging each other into step, which is not resonance. kuramoto-synchronization (this batch, level 3) is the grown-up phase-coupled model.",
+  "overlapWith": "oscillations-resonance: one oscillator pushed at a frequency; this page is many self-timed flashers nudging each other into step, which is not resonance. The runner-up kuramoto-synchronization (level 3) is the grown-up phase-coupled model.",
   "needsSource": "none",
   "leadsTo": [
    "oscillations-resonance"
@@ -1250,6 +1322,9 @@
   ],
   "verifyNote": "No existing page shows pulse-coupled synchronization. oscillations-resonance is one driven oscillator, and the pool's kuramoto-synchronization is the level-3 phase model, so this is the level-0 entry to it. The model is a pulse-coupled integrate-and-fire population (Mirollo-Strogatz, as in Nicky Case's explorable), which runs easily in the browser with one coupling control, and the synchrony is visible without text. Needs no data. The takeaway and pitfall are sound: there is no leader, and only some species (Photinus carolinus, Pteroptyx) do this. The leadsTo link to oscillations-resonance is loose but acceptable.",
   "fixedFields": [],
+  "editorial": [
+   "overlapWith"
+  ],
   "linkLog": [
    "dropped related kuramoto-synchronization (not selected)"
   ]
@@ -1463,27 +1538,23 @@
   ]
  },
  {
-  "slug": "luria-delbruck",
-  "title": "Luria-Delbruck: mutations before selection",
+  "slug": "morphogen-gradients",
+  "title": "Morphogen gradients & positional information",
   "level": 3,
-  "kind": "step",
+  "kind": "manipulate",
   "category": "biology",
-  "interaction": "Step through the 1943 experiment: grow twenty cultures from single cells for a chosen number of generations at a chosen mutation rate, plate them all on a phage lawn, and count the survivors. If mutations arose only on contact with the phage the counts would be Poisson and nearly equal; instead a few plates hold hundreds of mutants, the jackpots, because a mutation that happened early was inherited by a whole clone. Replay with mutations induced at plating to see the Poisson alternative, and estimate the mutation rate from the fraction of empty plates.",
-  "takeaway": "The resistant bacteria were already there before the virus arrived, from random mutations in earlier generations, and the wild spread between replicate cultures (a few jackpots, many empty plates) is the signature of mutations that come before selection rather than in response to it.",
+  "interaction": "Drag the production rate, diffusion constant and lifetime of a morphogen made at one end of a row of cells and watch its concentration profile settle into an exponential whose length scale, the square root of diffusion over decay, the page reports. Set two or three thresholds and the cells paint themselves in bands, Wolpert's French flag. Double the tissue's length and the bands fail to scale; switch on Ben-Zvi and Barkai's expansion-repression circuit (a second diffusing 'expander' that widens the gradient and is shut off by the morphogen) and the bands stay in proportion. Add noise to the concentration and see that boundaries where the gradient is steep stay sharp while those in its flat tail blur.",
+  "takeaway": "A cell can learn where it is from how much of one substance reaches it, and the shape of that gradient, set by diffusion and decay, decides where the boundaries fall.",
   "prerequisites": [
-   "evolution",
-   "central-limit-theorem"
+   "the-cell",
+   "dna-to-protein"
   ],
-  "related": [
-   "population-genetics",
-   "cancer",
-   "crispr"
-  ],
-  "needs": "",
-  "pitfall": "The jackpot distribution does not show that the environment induces mutations; it shows the opposite, and the page must make the Poisson alternative explicit so the reader sees it fail.",
-  "why": "'Fascination with Fluctuation: Luria and Delbruck's Legacy', on the experiment in undergraduate mathematics education (University of Delaware): https://udspace.udel.edu/items/2837763f-b87a-465a-9701-2b96405d98f5/full",
-  "overlapWith": "evolution: that page's pitfall says mutations do not arise because they are needed; this one is the experiment that proved it, run as a statistics-of-clones simulation.",
-  "needsSource": "none",
+  "related": [],
+  "needs": "No data needed: a 1D synthesis-diffusion-degradation PDE plus the expansion-repression model (Ben-Zvi & Barkai 2010, PNAS), both run live. Optional comparison: published Bicoid length scales (about 20% of egg length, Gregor et al. 2007), quoted as numbers with citation.",
+  "pitfall": "The synthesis-diffusion-degradation model is a working hypothesis and the Bicoid gradient's formation is still debated; the page must present the exponential as what the model predicts and say where it is tested.",
+  "why": "Stanford course on morphogenesis listing morphogen gradients and Turing patterns: https://bulletin.stanford.edu/courses/2126934",
+  "overlapWith": "the-cell: that page zooms into one cell; this one shows how thousands of cells in a row find out which part of the body they are making.",
+  "needsSource": "none (model only; quoted literature values cited, not redistributed)",
   "leadsTo": [],
   "everyday": false,
   "origin": "biology-l3",
@@ -1493,15 +1564,18 @@
    "build": 5
   },
   "judgeNotes": [
-   "fit-level 4: A landmark experiment run as a clone-statistics simulation whose jackpot distribution shows its own takeaway, and it deepens evolution's pitfall rather than repeating it.",
-   "build 5: Growing twenty cultures by branching with mutations at division, against a Poisson alternative, is a trivial simulation, and the jackpot plates and the estimate from the share of empty plates come directly out of it."
+   "fit-level 4: Covers the reserve item on pattern formation with a real diffusion-decay model and the French flag; it is distinct, but it should be planned together with turing-patterns and segmentation-clock so the three do not blur.",
+   "build 5: A 1D diffusion-decay PDE with thresholds is a small honest model with an analytic steady state to check against; the scaling mechanism needs one stated extra term."
   ],
-  "verifyNote": "The topic is distinct, buildable and honestly levelled. The model is a stochastic branching or clone simulation with Poisson and jackpot distributions and the p0 = e^-m estimate, which Luria and Delbruck's own example used (11 of 20 plates empty). evolution only states the conclusion in its pitfall. The takeaway overgeneralizes, however: the experiment shows that phage-resistance mutations arose before and independently of exposure to the phage. It does not show that mutations in general happen 'regardless' of the challenge: stress-induced mutagenesis exists and raises mutation rates without directing them. The takeaway should be scoped to what the graphic shows.",
+  "verifyNote": "Distinct from every existing page: the-cell is an organelle zoom and nothing in biology covers development (the catalogue's Reserve list names 'Embryo development & pattern formation' as missing). The selected turing-patterns page is a different mechanism (self-organised wavelength, no source), so the two make a natural pair rather than a duplicate. Level 3 is honest: the steady-state synthesis-diffusion-degradation profile, length scale sqrt(D/k), thresholds and positional error are university developmental and systems biology material. Prerequisites the-cell and dna-to-protein are level 1. It runs as a 1D reaction-diffusion PDE, cheap in the browser. The pitfall is accurate, since Bicoid gradient formation is still debated. The one vague point is 'switch on a scaling mechanism'. The literature model is Ben-Zvi and Barkai's expansion-repression circuit (an expander that widens the gradient and is repressed by morphogen signalling), which also runs as a small PDE. The fix names that model, makes the noise step compute positional error from the gradient's slope, and links turing-patterns.",
   "fixedFields": [
-   "takeaway"
+   "interaction",
+   "related",
+   "needs",
+   "needsSource"
   ],
   "linkLog": [
-   "dropped related quasispecies-error-threshold (not selected)"
+   "dropped related turing-patterns (it lists this topic as a prerequisite)"
   ]
  },
  {
@@ -1518,7 +1592,6 @@
    "central-limit-theorem"
   ],
   "related": [
-   "luria-delbruck",
    "cancer"
   ],
   "needs": "",
@@ -1543,7 +1616,9 @@
    "interaction",
    "takeaway"
   ],
-  "linkLog": []
+  "linkLog": [
+   "dropped related luria-delbruck (not selected)"
+  ]
  },
  {
   "slug": "turing-patterns",
@@ -1554,6 +1629,7 @@
   "interaction": "Run an activator-inhibitor reaction-diffusion system on a grid from near-uniform noise and watch spots or stripes crystallise. Change the ratio of the two diffusion rates and the pattern appears only once the inhibitor spreads much faster than the activator; change the reaction rates to move from spots to stripes to labyrinths; grow the domain and extra stripes insert themselves, and taper the grid into a tail to see spots become bands as it narrows.",
   "takeaway": "Two chemicals, one that makes more of itself and a faster-spreading one that suppresses it, can turn a uniform field into regular spots or stripes with no blueprint, at a spacing set by their reaction and diffusion rates.",
   "prerequisites": [
+   "morphogen-gradients",
    "reaction-rates-equilibrium"
   ],
   "related": [
@@ -1582,7 +1658,6 @@
    "pitfall"
   ],
   "linkLog": [
-   "dropped prerequisite morphogen-gradients (not selected)",
    "dropped related segmentation-clock (not selected)"
   ]
  },
@@ -2309,7 +2384,7 @@
   "takeaway": "A comet's tails are pushed out by the Sun, not left behind by its motion, so the gas tail always points straight away from the Sun and the comet leaves tail-first, while the dust tail bends back along the path it has travelled.",
   "prerequisites": [],
   "related": [],
-  "needs": "Orbital elements of comet 1P/Halley (perihelion distance, eccentricity, period) from the JPL Small-Body Database (https://ssd-api.jpl.nasa.gov/doc/sbdb.html). These are measured physical facts published by NASA/JPL and are freely reusable with the credit 'Courtesy NASA/JPL-Caltech'. Only a few numbers are needed, typed into the model with the credit; no API call happens at runtime. The tail directions come from the model: the gas tail along the anti-Sun line, and dust grains released along the orbit under sunlight pressure.",
+  "needs": "Orbital elements of comet 1P/Halley (perihelion distance, eccentricity, period) from the JPL Small-Body Database: a few published numbers, typed into the model and free to reuse with the credit 'Courtesy NASA/JPL-Caltech' under JPL's open data policy.",
   "needsSource": "JPL Small-Body Database, Halley's orbital elements (NASA/JPL measured facts, free to reuse with credit)",
   "pitfall": "The tail does not trail behind like exhaust, and a comet is not a burning rock: it is ice and dust turning to gas in sunlight.",
   "why": "NASA Space Place, 'What Is a Comet?' (https://spaceplace.nasa.gov/comets/en/); England KS2 Year 5, the movement of bodies relative to the Sun.",
@@ -2334,6 +2409,9 @@
    "takeaway",
    "needs",
    "needsSource"
+  ],
+  "editorial": [
+   "needs"
   ],
   "linkLog": [
    "dropped related shooting-stars (not selected)",
@@ -2420,25 +2498,28 @@
   "linkLog": []
  },
  {
-  "slug": "galaxy-collisions",
-  "title": "Colliding galaxies",
+  "slug": "aperture-synthesis",
+  "title": "Interferometry & aperture synthesis",
   "level": 3,
-  "kind": "simulate",
+  "kind": "build",
   "category": "space",
-  "interaction": "Two galaxies, each a tilted disc of thousands of massless stars orbiting a central mass, pass each other as in Toomre and Toomre's 1972 model. Set the closest approach, the mass ratio, each disc's tilt and whether it spins with or against the orbit, then run. A prograde pass throws out a long tidal tail and a bridge; a retrograde one barely stirs the disc. Turn the view to match the Antennae or the Mice by trial. Then switch on dynamical friction from the dark haloes, an added ingredient the original model leaves out, and scrub forward a billion years to see the pair, which would otherwise fly apart for ever, fall back together and merge.",
-  "takeaway": "Tides, not impacts, shape colliding galaxies, so a slow pass in the direction of a disc's spin throws its stars into long tails while the same pass against the spin leaves it almost untouched.",
+  "interaction": "Place radio dishes on a map and pick a model sky; every pair of dishes samples the sky's Fourier transform at one point and its mirror image, and as the Earth turns each pair traces a pair of arcs in the uv plane. Watch the dirty beam and the dirty image form from whatever the array has sampled: two dishes see only stripes, a dozen over six hours see the source. Run CLEAN step by step, subtracting the beam from the brightest point until the image emerges, and compare it with the truth; shrink the array to lose resolution, spread it to lose the extended emission.",
+  "takeaway": "An array of small telescopes can see as sharply as one dish as wide as the array, because what it measures is the sky's Fourier transform, and the Earth's rotation fills in the gaps.",
   "prerequisites": [
-   "orbits-kepler",
-   "dark-matter"
+   "fourier-transform",
+   "waves-interference",
+   "light-optics"
   ],
   "related": [
-   "lagrange-points-three-body"
+   "medical-imaging",
+   "black-holes",
+   "gravitational-waves"
   ],
-  "needs": "",
-  "pitfall": "Stars do not collide in a galaxy collision; the gaps between them are too large, and the tails are stars pulled out by tides, not debris from impacts.",
-  "why": "UC San Diego Physics 141 midterm project, reproducing the Toomre and Toomre encounter with a student-written integrator: https://jduarte.physics.ucsd.edu/phys141/midterm_final/midterm_final.html",
-  "overlapWith": "dark-matter: that page spins a single galaxy to read its rotation curve; this page throws two together and shows the tidal tails.",
-  "needsSource": "none",
+  "needs": "No external data required: model skies (point sources, a disc, a jet) are generated in code and the model is a 2D FFT plus Hogbom CLEAN. Optional real array layouts (VLA Y with 120-degree arms; ALMA configurations from the CASA simulator's antenna-configuration files, CASA being open source under the GPL), or the coordinates published in open-access papers.",
+  "pitfall": "An interferometer does not gain the collecting area of a filled dish, only its resolution, and the dirty image is not a photograph of the sky but of what was sampled.",
+  "why": "NRAO Synthesis Imaging Workshop, the graduate course on aperture synthesis theory and technique: https://aas.org/events/2022-02/18th-synthesis-imaging-workshop",
+  "overlapWith": "light-optics: that page forms images with lenses and never treats resolution as a Fourier limit; medical-imaging also computes an image from indirect measurements, but from projections combined by filtered back-projection, whereas this page fills the Fourier plane with correlations between pairs of separated telescopes and deconvolves with CLEAN.",
+  "needsSource": "none required; optional array layouts from CASA's open-source configuration files (GPL) or open-access papers",
   "leadsTo": [],
   "everyday": false,
   "origin": "earth-space-l3",
@@ -2448,17 +2529,18 @@
    "build": 5
   },
   "judgeNotes": [
-   "fit-level 4: The Toomre restricted N-body model is visually striking and has a clear tidal mechanism (prograde against retrograde), and no existing page has it; it could almost sit at level 2.",
-   "build 5: The Toomre restricted N-body model (two point masses with thousands of test stars) is the classic small, honest model and runs easily in the browser with no data."
+   "fit-level 4: A genuine level-3 mechanism (uv coverage, dirty beam, CLEAN) built on fourier-transform, and distinct from the single-dish telescopes candidate.",
+   "build 5: Baselines tracing uv arcs, a gridded 2D FFT for the dirty beam and image, and Högbom CLEAN on a 128-256 pixel grid are small, exact and fast in the browser, with no data needed."
   ],
-  "verifyNote": "Not a duplicate: dark-matter spins one galaxy to read its rotation curve. The level is honest; galaxy interactions and the Toomre restricted model are taught in university galactic dynamics courses, and the UCSD Physics 141 project rebuilds exactly this. The model is cheap in the browser: two point masses plus a few thousand massless test stars, as in Toomre and Toomre (1972), drawn as a 3D projection. One claim is wrong for this model, though. 'Scrub forward a billion years to see the pair fall back together' cannot happen with two point masses on a parabolic or hyperbolic pass: that orbit never closes, so the pair never merges. A merger needs dynamical friction from extended dark haloes, which the restricted model lacks. Either add a Chandrasekhar dynamical-friction drag on the two centres, labelled as an added ingredient, or drop the merger. The takeaway and pitfall are sound: prograde passes make tails and retrograde passes barely do, and stars do not collide. Matching the Antennae or the Mice also needs controls for disc tilt and viewing angle, so they should be named. dark-matter (L2, at or below L3) is a natural prerequisite, because the merger depends on haloes.",
+  "verifyNote": "Distinct: no Space page covers telescopes or interferometry; gravitational-waves has a laser interferometer measuring length change, not imaging; medical-imaging is the nearest mechanism (an image computed from indirect samples) but uses projections and back-projection in CT, not Fourier samples from correlated pairs. Level 3 is honest: aperture synthesis is graduate or master's material (NRAO Synthesis Imaging Workshop; Chalmers RRY131; Manchester PHYS40491), and the prerequisites sit at levels 1-2. It can be built in the browser: a 2D FFT on a 128-256 grid, uv tracks from Earth-rotation geometry, and Hogbom CLEAN all run at interactive rates (APSYNSIM, a GPL Python teaching tool, does exactly this on the desktop). The takeaway and pitfall are correct, and so is 'spread it to lose the extended emission': the shortest baseline sets the largest recoverable scale. Small fixes: each baseline samples a Hermitian pair of uv points, not one; name the optional open data (array layouts) in needs; record the medical-imaging contrast in overlapWith.",
   "fixedFields": [
    "interaction",
-   "prerequisites"
+   "needs",
+   "needsSource",
+   "overlapWith",
+   "related"
   ],
-  "linkLog": [
-   "dropped related cosmic-web-formation (not selected)"
-  ]
+  "linkLog": []
  },
  {
   "slug": "lagrange-points-three-body",
@@ -2467,14 +2549,13 @@
   "kind": "manipulate",
   "category": "space",
   "interaction": "The circular restricted three-body problem, drawn in the frame that rotates with the two large bodies. Set the mass ratio (Sun-Jupiter, Sun-Earth, Earth-Moon, or a slider) and the five Lagrange points appear. Set the probe's energy (the Jacobi constant) and the forbidden regions shade in, opening gates at L1 and L2 as the energy rises. Drop a probe at L1 or L2 and it drifts away within months. Drop one near L4 and it wanders in a tadpole around the point for as long as the reader waits, as Jupiter's Trojans do. Push the mass ratio past about 1 in 26 and the same probe escapes. Nudge a starting position by a hair to run two probes side by side and watch their paths split.",
-  "takeaway": "Three bodies have no general closed-form solution, and nearby paths split apart, but there are five points where a small body can keep pace: three balanced on a knife edge, two stable while the smaller mass is light enough. An energy map shows where the body can and cannot go.",
+  "takeaway": "Three bodies have no general closed-form solution and nearby paths split apart, but there are five points where a small body can keep pace with the other two: three balanced on a knife edge, and two that are stable while the smaller mass is light enough.",
   "prerequisites": [
    "orbits-kepler"
   ],
   "related": [
    "rockets",
-   "chaos-fractals",
-   "galaxy-collisions"
+   "chaos-fractals"
   ],
   "needs": "",
   "pitfall": "L1 and L2 are not places where gravity cancels. A spacecraft there circles the Sun in exactly one Earth year because the combined pull (Earth's pull partly offsets the Sun's at L1 and adds to it at L2) is exactly what that orbit needs, and it still needs station-keeping. The general three-body problem is not 'unsolvable': Sundman found a convergent series, but no closed formula and no long-term predictability.",
@@ -2499,7 +2580,11 @@
    "takeaway",
    "pitfall"
   ],
+  "editorial": [
+   "takeaway"
+  ],
   "linkLog": [
+   "dropped related galaxy-collisions (not selected)",
    "dropped related tidal-evolution-resonance (not selected)"
   ]
  },
@@ -2657,49 +2742,6 @@
   "verifyNote": "Distinct from graph-search (a path through a map, with no opponent and no value passed back up the tree), from reinforcement-learning (values learned in a grid world) and from the pool's monte-carlo-tree-search (random playouts and AlphaGo, level 3). Minimax with alpha-beta pruning runs at interactive rates in a browser: the full noughts-and-crosses tree is tiny, and Connect Four at depth 6 is about 7^6, or 120 thousand positions, fewer with pruning. The facts hold: Connect Four's branching factor is at most 7, and pruning never changes the move chosen. Level 1 is a slight stretch, since alpha-beta usually comes in a first university AI course, but minimax on noughts and crosses is common in high-school computing and the page needs no formulas. One small fix: the 'about sevenfold' figure holds only with pruning off, so the interaction now says that.",
   "fixedFields": [
    "interaction"
-  ],
-  "linkLog": []
- },
- {
-  "slug": "how-simulations-work",
-  "title": "How a simulation works",
-  "level": 1,
-  "kind": "step",
-  "category": "computing",
-  "interaction": "Drop a ball and advance time by hand: each tick the velocity is updated by gravity and the position by the velocity, and the dots trace a path that bends, more smoothly the smaller the step. Make the step too large and the ball tunnels through the floor or an orbiting planet spirals away; compare the stepped path with the exact one and watch the error shrink as the step shrinks, then see that a half-step update holds an orbit that plain stepping loses. Finally open the hood on this site's own pendulum and epidemic pages to find the same loop at work.",
-  "takeaway": "A simulation is a rule for the next instant applied over and over, so its accuracy is bought with smaller steps and a better update rule, and the moving physics on this site's pages comes from exactly this loop.",
-  "prerequisites": [
-   "newtons-laws"
-  ],
-  "related": [
-   "calculus",
-   "feedback-control",
-   "chaos-fractals",
-   "oscillations-resonance",
-   "differential-equations"
-  ],
-  "needs": "",
-  "needsSource": "none",
-  "pitfall": "Smaller steps are not the whole fix: plain stepping on an orbit gains a little energy every step, so it always spirals out eventually; a smaller step only slows the drift, while a half-step update keeps the orbit closed for thousands of turns even with a larger step. And a step too large to resolve a collision lets a ball pass through the floor, which is a step-size problem, not a law of physics.",
-  "why": "AP Calculus BC Unit 7, topic 7.5 'Approximating solutions using Euler's method' (slope fields and stepping) https://fiveable.me/ap-calc/unit-7.md ; and the site's own need for a page that explains what every other page is doing",
-  "overlapWith": "differential-equations (pool, level 2) steps a solution along a slope field and shows Euler converging; numerical-stability (pool, level 3) analyses stability regions and stiffness. This page is the level-1 engine itself: position and velocity updated tick by tick for a falling ball and an orbit, with no derivatives written down, and shows where it fails without the analysis of why.",
-  "leadsTo": [],
-  "everyday": false,
-  "origin": "holes-l1-l2",
-  "score": 13.5,
-  "scores": {
-   "fit-level": 4,
-   "build": 5
-  },
-  "judgeNotes": [
-   "fit-level 4: Stepping a ball and an orbit, with step-size error and the half-step update fixing the orbit, is the site's own engine made visible and honest at level 1, and neither calculus nor any physics page shows it.",
-   "build 5: Explicit Euler versus semi-implicit (symplectic) stepping on a falling ball and a Kepler orbit against the exact solution is the honest, tiny model, and the error and energy drift are visible on the graphic."
-  ],
-  "verifyNote": "Two statements are false. (1) The pitfall says plain Euler on an orbit drifts however small the step. It is a first-order method, so its energy error over a fixed time shrinks in proportion to the step. It drifts at every finite step and over long enough runs always spirals out, but the drift is not independent of the step. (2) The takeaway says every animated model on this site is that loop, but deep-time scrubs a dataset, sorting runs an algorithm and diffusion-models runs a trained network. It also overlaps the pool's differential-equations (L2: Euler stepping, shrinking the step, comparison with the exact solution) and numerical-stability (L3: orbit drift, leapfrog against Euler). So it is narrowed to the level-1 core of position and velocity stepping, with the half-step update kept as a short demonstration, not an analysis.",
-  "fixedFields": [
-   "takeaway",
-   "pitfall",
-   "overlapWith"
   ],
   "linkLog": []
  },
@@ -2994,7 +3036,7 @@
    "consensus-blockchains",
    "quantum-computing"
   ],
-  "needs": "Curve parameters from public standards (secp256k1, Curve25519), which are published specifications.",
+  "needs": "Curve parameters from the openly published standards SEC 2 (secp256k1) and RFC 7748 (Curve25519).",
   "pitfall": "The picture over the real numbers is for intuition only: the cryptography lives on the finite-field points, where there is no curve to see, and the hardness is the discrete logarithm, not the shape. 'Elliptic' has nothing to do with ellipses.",
   "why": "Cloudflare, 'A (relatively easy to understand) primer on elliptic curve cryptography' https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/",
   "overlapWith": "cryptography: that page does Diffie-Hellman with modular exponentiation on a clock face; this page swaps the group for curve points and shows why that buys so much for so few bits.",
@@ -3014,6 +3056,9 @@
   "verifyNote": "The page is distinct from cryptography (modular Diffie-Hellman on a clock face) and the level is honest: ECC is taught in university cryptography courses. Curve parameters are public standards. The 256-bit versus about 3,072-bit equivalence is NIST SP 800-57's 128-bit security level. The takeaway is wrong as written, though: adding two points is easy to undo (subtract one), and the one-way step is scalar multiplication. Recovering k from kP is the elliptic-curve discrete log. Small fix.",
   "fixedFields": [
    "takeaway"
+  ],
+  "editorial": [
+   "needs"
   ],
   "linkLog": [
    "dropped related tls-handshake (not selected)"
@@ -3157,7 +3202,7 @@
   "needs": "A few public-domain children's books (Beatrix Potter, Aesop's fables) from Project Gutenberg, counted in the page.",
   "pitfall": "Do not say real chatbots only count word pairs: say this toy looks back one or two words, while a real chatbot uses a neural network that looks back over thousands. And it does not look answers up in a stored copy of the books.",
   "why": "Code.org How AI Works, lesson 'Chatbots and Large Language Models' (grades 6-12): https://code.org/ai/how-ai-works",
-  "overlapWith": "autocomplete-spellcheck (proposed, level 0) suggests the single most common next word while you type; this page has the machine write whole stories by drawing words at random in proportion to the counts and feeding each one back in, the loop a chatbot runs. language-models shows the same loop with a real network for a level-2 reader. The next-word half of autocomplete-spellcheck should be cut back so the two pages do not repeat each other.",
+  "overlapWith": "language-models shows the same loop with a real network for a level-2 reader; this page has a counting machine write whole stories by drawing words at random in proportion to the counts and feeding each one back in, the loop a chatbot runs. The runner-up autocomplete-spellcheck suggests only the single most common next word while you type.",
   "needsSource": "Project Gutenberg texts of books in the US public domain (public domain).",
   "leadsTo": [
    "learning-from-data"
@@ -3178,6 +3223,9 @@
    "takeaway",
    "overlapWith",
    "why"
+  ],
+  "editorial": [
+   "overlapWith"
   ],
   "linkLog": [
    "dropped related words-keep-company (not selected)"
@@ -3289,7 +3337,7 @@
   "needsSource": "palmerpenguins (Horst, Hill and Gorman), CC0, from Palmer Station LTER (https://allisonhorst.github.io/palmerpenguins/).",
   "pitfall": "k-means does not discover the number of groups and finds only compact, roughly round blobs of similar size; different starts give different answers, so run it several times. The groups it finds need not match the species.",
   "why": "Google's 'Introduction to Clustering' course (choose a similarity measure, cluster with k-means, evaluate the result) https://developers.google.com/machine-learning/clustering",
-  "overlapWith": "clustering-gaussian-mixtures (proposed, level 3) should start where this ends: soft Gaussian clusters with EM and density-based methods, with this page as its prerequisite and no repeat of k-means. Among existing pages, learning-from-data fits labelled points and embeddings shows a map of words that cluster; neither runs an algorithm that finds groups without labels.",
+  "overlapWith": "learning-from-data fits labelled points and embeddings shows a map of words that cluster; neither runs an algorithm that finds groups without labels. The runner-up clustering-gaussian-mixtures (level 3) would start where this page ends: soft Gaussian clusters with EM and density-based methods.",
   "leadsTo": [],
   "everyday": false,
   "origin": "holes-l1-l2",
@@ -3312,6 +3360,9 @@
    "pitfall",
    "overlapWith",
    "related"
+  ],
+  "editorial": [
+   "overlapWith"
   ],
   "linkLog": [
    "dropped related clustering-gaussian-mixtures (not selected)",
@@ -3339,7 +3390,7 @@
   "needs": "About 1 MB of Shakespeare's plays (the 'Tiny Shakespeare' extract popularised by Karpathy's char-rnn, or the same plays taken from Project Gutenberg) and the reader's own text.",
   "pitfall": "Unseen contexts are not a problem solved by more data alone: the count of possible contexts grows exponentially with n. Smoothing and back-off fix the zero counts but not the lack of long-range structure.",
   "why": "Karpathy, Neural Networks: Zero to Hero, 'building makemore' (bigram character model): https://karpathy.ai/zero-to-hero.html",
-  "overlapWith": "language-models shows a trained network's predictions; this page builds the counting model that came before it and measures why counting cannot reach far back. The level-0 pages next-word-guessing-game and autocomplete-spellcheck use one- or two-word counts with no window slider and no held-out measurement.",
+  "overlapWith": "language-models shows a trained network's predictions; this page builds the counting model that came before it and measures why counting cannot reach far back. The level-0 next-word-guessing-game uses one- or two-word counts with no window slider and no held-out measurement.",
   "needsSource": "Shakespeare's plays are public domain (Project Gutenberg, https://www.gutenberg.org/ebooks/100); the Tiny Shakespeare file is an extract of them, so its repository's licence does not matter.",
   "leadsTo": [],
   "origin": "llm-ladder",
@@ -3357,6 +3408,9 @@
    "needs",
    "needsSource",
    "related",
+   "overlapWith"
+  ],
+  "editorial": [
    "overlapWith"
   ],
   "linkLog": [
@@ -3380,7 +3434,7 @@
   "related": [
    "turing-machines"
   ],
-  "needs": "Two tiny transformers trained offline by the project on generated addition problems (with and without scratchpad), shipped and run in the page.",
+  "needs": "Two tiny transformers trained offline by the project on generated addition problems (with and without a scratchpad), shipped and run in the page; the weights are the project's own, under the site's MIT licence.",
   "pitfall": "The written steps help because they are computation the model conditions on, not because the model narrates a hidden thought, and in large models the written reasoning is not guaranteed to be a faithful account of how the answer was reached. Do not say transformers cannot add directly (they learn it well when the answer is written least-significant digit first), and do not say a scratchpad solves length generalisation: beyond the trained lengths, both models degrade.",
   "why": "Nye et al., Show Your Work: Scratchpads for Intermediate Computation with Language Models: https://arxiv.org/abs/2112.00114",
   "overlapWith": "training-a-tiny-language-model: that page trains on prose; this one compares two trained models on a checkable task to show what generated intermediate tokens add.",
@@ -3401,6 +3455,9 @@
    "interaction",
    "takeaway",
    "pitfall"
+  ],
+  "editorial": [
+   "needs"
   ],
   "linkLog": [
    "dropped related reasoning-rl-verifiable-rewards (not selected)"
@@ -3870,43 +3927,46 @@
   ]
  },
  {
-  "slug": "room-thermostat",
-  "title": "Thermostat",
+  "slug": "light-bulb-hot-wire",
+  "title": "Why a light bulb glows (and gets hot)",
   "level": 0,
-  "kind": "simulate",
+  "kind": "manipulate",
   "category": "energy",
-  "interaction": "Turn the dial on a room thermostat and watch the heater switch on when the room drops below the setting and off when it rises above it, while heat leaks out through the walls and the room temperature wobbles in a band around the target. Open a window, change the heater's power or widen the switch's gap and see the wobble, the heater's on-time and the overshoot change; zoom into the bimetal strip bending toward and away from its contact.",
-  "takeaway": "A thermostat is a switch, not a tap: turning it up does not heat the room faster, it only moves the line where the heater turns off, and the room always wobbles a little around that line.",
+  "interaction": "Slide a dimmer and watch the thin wire inside an old-style bulb go from dark to dull red to orange to white as it heats, while a bar splits what the bulb takes into light you can see and heat. At full brightness the heat bar is dozens of times the light bar, and most of that heat leaves as invisible infrared you feel on your hand. Swap in an LED bulb giving the same light: the electricity it needs, and so its heat bar, shrinks to about a tenth, though the LED still makes more heat than light and warms its base instead of glowing in infrared.",
+  "takeaway": "An old bulb makes light by heating a wire until it glows white and wastes nearly all its electricity as heat, while an LED makes the same light from about a tenth of the electricity, so far less heat.",
   "prerequisites": [],
-  "related": [
-   "feedback-control",
-   "homeostasis"
-  ],
-  "needs": "",
-  "pitfall": "Turning the dial higher does not make the heater hotter or the room warm faster; the heater is either on or off, and the setting only decides when it switches.",
-  "why": "'How do thermostats work?' explainers and classroom bimetal thermostat kits (Explain That Stuff, https://explainthatstuff.com/thermostats.html; Flinn Scientific thermostat model, https://www.flinnsci.com/thermostat-model/ap4735/).",
-  "overlapWith": "feedback-control: that page tunes the three gains of a PID controller at level 2 with response plots; this is a single on/off switch with one dial, and the reader watches the room wobble.",
-  "needsSource": "none",
+  "related": [],
+  "needs": "The CIE 1931 colour-matching functions and the photopic V(lambda) curve, to turn the filament's temperature into an on-screen colour and a light-versus-heat split (CIE open-access datasets, CC BY-SA 4.0, cie.co.at/data-tables; also at cvrl.org). Tungsten's resistivity and emissivity against temperature from Jones & Langmuir (1927, General Electric Review), quoted as numbers, or a grey-body emissivity of about 0.4 documented as an approximation. The LED's efficiency is a documented typical value (white LED bulbs at about 90 to 100 lm/W, against about 15 lm/W for incandescent).",
+  "pitfall": "The wire does not burn: there is no oxygen inside the bulb, which is why a tungsten filament lasts about a thousand hours. Brightness does not rise in step with the dimmer: a little more current makes the wire much hotter, much brighter and whiter. And an LED is not cold: it still turns over half its electricity into heat, only much less electricity overall.",
+  "why": "England KS2 science, Year 6 electricity: associate the brightness of a lamp with the cells in the circuit, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study ('how does a light bulb work' is a perennial search question)",
+  "overlapWith": "electric-circuits: that page lights bulbs as circuit elements with current and voltage meters; this page is what happens inside the bulb's wire and where the energy ends up, with the LED as the comparison.",
+  "needsSource": "CIE 1931 CMFs and V(lambda): CIE open-access datasets, CC BY-SA 4.0 (cie.co.at); tungsten property values are published physical constants, cited.",
   "leadsTo": [
-   "homeostasis",
-   "electric-circuits"
+   "electric-circuits",
+   "light-optics"
   ],
   "everyday": true,
-  "origin": "home-mechanisms",
+  "origin": "vehicles-and-big-machines",
   "score": 13.5,
   "scores": {
    "fit-level": 4,
    "build": 5
   },
   "judgeNotes": [
-   "fit-level 4: On/off control with a hysteresis wobble and the 'turning it up doesn't heat faster' takeaway is a good level-0 precursor to feedback-control without duplicating PID.",
-   "build 5: Newton's law of cooling plus a heater with a hysteresis switch is a one-line ODE that shows the wobble band, overshoot and on-time responding to every control; this is the honest model at this level."
+   "fit-level 4: A glowing hot wire and where the energy goes, with an LED to compare, is a clear mechanism and energy story that electric-circuits does not show.",
+   "build 5: Planck's law at the filament temperature, integrated against the CIE colour-matching and V(lambda) tables (freely downloadable from cvrl.org), gives both the glow colour and the light-versus-heat split honestly and cheaply; the LED comparison needs only a cited luminous efficacy."
   ],
-  "verifyNote": "Distinct: feedback-control is level-2 PID tuning, and homeostasis only mentions a thermostat as an analogy (src/routes/homeostasis/steps.ts). Here the model is a Newton-cooling room plus an on/off switch with a gap: a small ODE that runs easily in the browser with no data. It fits level 0 with one dial at a time and makes the wobble visible. The takeaway and pitfall are correct for on/off heaters and match energy-agency myth-busting (e.g. EDF Energy winter energy myths, https://www.edfenergy.com/energywise/winter-energy-myths). Modulating boilers and heat pumps do change their output, so the text should call this an on/off heater, as the takeaway already implies. leadsTo homeostasis and electric-circuits are both level 1.",
-  "fixedFields": [],
+  "verifyNote": "The page itself is distinct: electric-circuits treats the bulb as a circuit element, and the overlapping pool entry glowing-hot was not selected. Level 0 is honest and the model is buildable: a tungsten filament power balance (resistance rising with temperature, Stefan-Boltzmann radiation) plus Planck's law and the CIE curves, all cheap in the browser. The CIE data checks out: CIE's own open-access datasets carry CC BY-SA 4.0 in their metadata (cie.co.at/data-tables). The problem is a factual error in the LED half. White LED bulbs turn only roughly 30 to 50% of their electricity into light, so the rest is heat. For the same light (about 800 lm, 60 W incandescent against roughly 8 to 9 W LED) the LED's heat falls about tenfold, but it is still larger than its light bar. That heat leaves through the base and heat sink rather than as infrared, so the LED bulb does not 'nearly vanish' or run 'nearly cold'. Saying it does repeats a popular misconception. The fix also states which light bar is shown. An incandescent bulb's visible share is about 2% of its electricity if weighted by eye sensitivity, and roughly 5 to 10% if counted as power in the visible band.",
+  "fixedFields": [
+   "interaction",
+   "takeaway",
+   "pitfall",
+   "needs",
+   "needsSource"
+  ],
   "linkLog": [
-   "dropped related refrigerator (not selected)",
-   "dropped related kettle (not selected)"
+   "dropped related battery-runs-down (not selected)",
+   "dropped related socket-to-power-station (not selected)"
   ]
  },
  {
@@ -4106,7 +4166,7 @@
   "needs": "Saturation and superheated-vapor properties of R-134a, R-290 and R-744 from CoolProp (MIT licence), tabulated or fitted for the browser.",
   "pitfall": "A COP of 4 is not '400 percent efficiency' and breaks no law: most of the heat delivered is moved from outside, not made from the electricity, and the second law still caps the COP at the Carnot value for the lift.",
   "why": "Purdue ME 200 Thermodynamics I homework: a four-component R-134a vapor-compression cycle with evaporator and condenser temperatures, compressor efficiency and COP: https://engineering.purdue.edu/ME200/files/homework/HW36/ME200-Spring2020-HW36-web.html (from search results); demand: IEA, The Future of Heat Pumps, https://www.iea.org/reports/the-future-of-heat-pumps.",
-  "overlapWith": "heat-pumps (L1, this batch) runs the loop with bars for heat delivered against work; this page adds what it leaves out: a real refrigerant on a p-h diagram, compressor losses, subcooling and superheat, the Carnot comparison and the transcritical CO2 cycle. heat-engines never runs a cycle backward and has no phase change.",
+  "overlapWith": "heat-engines never runs a cycle backward and has no phase change; this page runs a real refrigerant around a p-h diagram, with compressor losses, subcooling and superheat, the Carnot comparison and the transcritical CO2 cycle. The runner-up heat-pumps (level 1) is the householder's version with bars for heat delivered against work.",
   "needsSource": "CoolProp refrigerant property library (MIT licence).",
   "leadsTo": [],
   "everyday": true,
@@ -4124,6 +4184,9 @@
   "fixedFields": [
    "prerequisites",
    "related",
+   "overlapWith"
+  ],
+  "editorial": [
    "overlapWith"
   ],
   "linkLog": [
