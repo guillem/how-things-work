@@ -16,8 +16,9 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { cycle, hash, Label, startDrag, toSvg } from '#lib/draw/index.ts';
+	import { cycle, hash, Label, spacedLabels, startDrag, toSvg } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
+	import { useReadouts } from '#lib/explainer/readouts.svelte.ts';
 	import {
 		EARTH_AGE,
 		EONS,
@@ -299,6 +300,49 @@
 	);
 
 	const axis = $derived(axisTicks(sp));
+
+	// ---- phones: the time axis's labels at a real size ----------------------------------
+	// On phones (≤ 640 px, the readouts' breakpoint) the stage is drawn at ~0.37 scale, where
+	// 10.5-unit text is ~4 px tall. There the tick labels and "today" are drawn at a real 10 px,
+	// like <Axes> draws its own (it measures the scale the same way), and every k-th label is
+	// kept so that none collide with each other or with "today" (the tick marks all stay).
+	// Wide screens draw exactly what they always did.
+	const readouts = useReadouts();
+	const narrow = $derived(readouts?.out ?? false);
+	let axisFrame = $state<SVGGElement>();
+	let unit = $state(0.37);
+	$effect(() => {
+		const g = axisFrame;
+		const svg = g?.ownerSVGElement;
+		if (!narrow || !g || !svg) return;
+		const measure = () => {
+			const m = g.getScreenCTM();
+			const k = m ? Math.hypot(m.a, m.b) : 0;
+			if (k > 0) unit = k;
+		};
+		measure();
+		const ro = new ResizeObserver(measure);
+		ro.observe(svg);
+		return () => ro.disconnect();
+	});
+	const tickFs = $derived(Math.max(10.5, 10 / unit));
+	const tickRowY = $derived(AXIS_Y + 4 + 0.95 * tickFs);
+	/** Ages of the tick labels drawn on phones. */
+	const phoneTicks = $derived.by(() => {
+		if (!narrow) return new Set<number>();
+		const width = (s: string) => s.length * 0.58 * tickFs;
+		const todayLeft = X1 - width('today');
+		const fit = axis.ticks
+			.map((k) => ({ ...k, x: xOf(k.age, sp) }))
+			.filter((k) => k.x >= X0 - 0.5 && k.x + width(k.text) / 2 <= todayLeft - 0.8 * tickFs);
+		const keep = spacedLabels(
+			fit.map((k) => k.x),
+			fit.map((k) => width(k.text)),
+			0.8 * tickFs,
+			fit.length - 1
+		);
+		return new Set(keep.map((i) => fit[i].age));
+	});
 
 	// ---- the globe -------------------------------------------------------------------
 	const G = { cx: 188, cy: 194, r: 146 };
@@ -1022,17 +1066,30 @@
 	</g>
 
 	<!-- axis -->
-	<g>
+	<g bind:this={axisFrame}>
 		<path d="M{X0} {AXIS_Y}H{X1}" stroke="var(--stage-line)" stroke-width="1" />
 		{#each axis.ticks as k (k.age)}
 			{@const x = xOf(k.age, sp)}
 			{#if x >= X0 - 0.5 && x < X1 - 30}
 				<path d="M{x} {AXIS_Y}v5" stroke="var(--stage-line)" />
-				<text {x} y={AXIS_Y + 18} text-anchor="middle" font-size="10.5" class="muted">{k.text}</text
-				>
+				{#if !narrow}
+					<text {x} y={AXIS_Y + 18} text-anchor="middle" font-size="10.5" class="muted"
+						>{k.text}</text
+					>
+				{:else if phoneTicks.has(k.age)}
+					<text {x} y={tickRowY} text-anchor="middle" font-size={tickFs} class="muted tick"
+						>{k.text}</text
+					>
+				{/if}
 			{/if}
 		{/each}
-		<text x={X1} y={AXIS_Y + 18} text-anchor="end" font-size="10.5" font-weight="600">today</text>
+		{#if !narrow}
+			<text x={X1} y={AXIS_Y + 18} text-anchor="end" font-size="10.5" font-weight="600">today</text>
+		{:else}
+			<text x={X1} y={tickRowY} text-anchor="end" font-size={tickFs} font-weight="600" class="tick"
+				>today</text
+			>
+		{/if}
 		<Readout id="axis-unit">
 			<text x={X0} y={AXIS_Y + 34} font-size="10.5" class="muted">{axis.unit}</text>
 		</Readout>
