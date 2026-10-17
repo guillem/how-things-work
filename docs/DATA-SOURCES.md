@@ -181,3 +181,13 @@ Non-commercial:
   `scripts/data/vision-color/build.mjs` now reads CVRL's files directly; the regenerated data
   rows are unchanged. Licence: cvrl.org states none (no terms, copyright or licence text on its
   home page). Status: **confirmed against the primary source**; licence still not stated.
+- **Luria & Delbrück 1943** (evolution, plates step): S. E. Luria & M. Delbrück, "Mutations of
+  bacteria from virus sensitivity to virus resistance", Genetics 28: 491–511 (1943),
+  doi:10.1093/genetics/28.6.491, PMC1209226. PMC's PDF is behind a proof-of-work check, Europe
+  PMC and OUP behind a Cloudflare check; read from the Wayback Machine's copy of PMC's scan,
+  http://web.archive.org/web/20240607023413/https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1209226/pdf/491.pdf
+  (retrieved 2026-10-17). Used: Table 1 (exp. 10a: mean 16.7, variance 15), Table 2 (exp. 16:
+  20 cultures of 0.2 ml, 0.08 ml samples, average 11.35, variance 694, 11 of 20 samples with
+  none, 5.6 × 10⁸ bacteria per culture), Table 4 (mutation rates 1.1–4.1 × 10⁻⁸ per time unit)
+  and the text's exp. 23 estimate (0.32 × 10⁻⁸ per division). Facts quoted with citation; no
+  data file shipped. Licence: PMC copyright notice (publisher's copyright); quoting facts only.
